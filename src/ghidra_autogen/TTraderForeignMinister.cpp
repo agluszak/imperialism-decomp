@@ -40,17 +40,18 @@ undefined4 * TTraderForeignMinister::CreateObject(void)
 // GHIDRA_NAME TTraderForeignMinister::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TTraderForeignMinister::GetRuntimeClass()
+CRuntimeClass * __thiscall TTraderForeignMinister::GetRuntimeClass(TTraderForeignMinister *this)
 
 {
-  return &classRuntimeClass;
+  return &classTTraderForeignMinister;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005338A0
 // GHIDRA_NAME TTraderForeignMinister::ConstructTTraderForeignMinister
 // GHIDRA_PROTO undefined __thiscall ConstructTTraderForeignMinister(void)
 
-TTraderForeignMinister * TTraderForeignMinister::ConstructTTraderForeignMinister()
+TTraderForeignMinister * __thiscall
+TTraderForeignMinister::ConstructTTraderForeignMinister(TTraderForeignMinister *this)
 
 {
   int iVar1;
@@ -78,7 +79,8 @@ TTraderForeignMinister * TTraderForeignMinister::ConstructTTraderForeignMinister
 // GHIDRA_NAME TTraderForeignMinister::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TTraderForeignMinister * TTraderForeignMinister::_scalar_deleting_destructor_(byte param_1)
+TTraderForeignMinister * __thiscall
+TTraderForeignMinister::_scalar_deleting_destructor_(TTraderForeignMinister *this,byte param_1)
 
 {
   func_0x00407158();
@@ -92,7 +94,7 @@ TTraderForeignMinister * TTraderForeignMinister::_scalar_deleting_destructor_(by
 // GHIDRA_NAME TTraderForeignMinister::DestructTTraderForeignMinister
 // GHIDRA_PROTO undefined __thiscall DestructTTraderForeignMinister(void)
 
-void TTraderForeignMinister::DestructTTraderForeignMinister()
+void __thiscall TTraderForeignMinister::DestructTTraderForeignMinister(TTraderForeignMinister *this)
 
 {
   this->vftable =

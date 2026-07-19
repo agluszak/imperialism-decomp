@@ -24,7 +24,8 @@ undefined4 * TFileBasedDocument::CreateObject(void)
 // GHIDRA_NAME TFileBasedDocument::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TFileBasedDocument * TFileBasedDocument::_scalar_deleting_destructor_(byte param_1)
+TFileBasedDocument * __thiscall
+TFileBasedDocument::_scalar_deleting_destructor_(TFileBasedDocument *this,byte param_1)
 
 {
   func_0x0040850d();
@@ -38,7 +39,7 @@ TFileBasedDocument * TFileBasedDocument::_scalar_deleting_destructor_(byte param
 // GHIDRA_NAME TFileBasedDocument::CreateTFileBasedDocumentInstance
 // GHIDRA_PROTO undefined __thiscall CreateTFileBasedDocumentInstance(void)
 
-void TFileBasedDocument::CreateTFileBasedDocumentInstance()
+void __thiscall TFileBasedDocument::CreateTFileBasedDocumentInstance(TFileBasedDocument *this)
 
 {
   this->vftable =
@@ -50,7 +51,7 @@ void TFileBasedDocument::CreateTFileBasedDocumentInstance()
 // GHIDRA_NAME TFileBasedDocument::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TFileBasedDocument::GetRuntimeClass()
+CRuntimeClass * __thiscall TFileBasedDocument::GetRuntimeClass(TFileBasedDocument *this)
 
 {
   return &classTFileBasedDocument;

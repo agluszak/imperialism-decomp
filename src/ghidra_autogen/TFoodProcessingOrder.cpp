@@ -24,7 +24,7 @@ undefined4 * TFoodProcessingOrder::CreateObject(void)
 // GHIDRA_NAME TFoodProcessingOrder::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TFoodProcessingOrder::GetRuntimeClass()
+CRuntimeClass * __thiscall TFoodProcessingOrder::GetRuntimeClass(TFoodProcessingOrder *this)
 
 {
   return &classTFoodProcessingOrder;
@@ -34,7 +34,8 @@ CRuntimeClass * TFoodProcessingOrder::GetRuntimeClass()
 // GHIDRA_NAME TFoodProcessingOrder::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TFoodProcessingOrder * TFoodProcessingOrder::_scalar_deleting_destructor_(byte param_1)
+TFoodProcessingOrder * __thiscall
+TFoodProcessingOrder::_scalar_deleting_destructor_(TFoodProcessingOrder *this,byte param_1)
 
 {
   func_0x00405b32();
@@ -48,7 +49,8 @@ TFoodProcessingOrder * TFoodProcessingOrder::_scalar_deleting_destructor_(byte p
 // GHIDRA_NAME TFoodProcessingOrder::DestructTFoodProcessingOrderAndMaybeFree
 // GHIDRA_PROTO undefined __thiscall DestructTFoodProcessingOrderAndMaybeFree(void)
 
-void TFoodProcessingOrder::DestructTFoodProcessingOrderAndMaybeFree()
+void __thiscall
+TFoodProcessingOrder::DestructTFoodProcessingOrderAndMaybeFree(TFoodProcessingOrder *this)
 
 {
   this->vftable =
@@ -57,12 +59,11 @@ void TFoodProcessingOrder::DestructTFoodProcessingOrderAndMaybeFree()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B7E80
-// GHIDRA_NAME TFoodProcessingOrder::InitializeCityProductionState_Impl_At004b7e80
-// GHIDRA_PROTO undefined __thiscall InitializeCityProductionState_Impl_At004b7e80(int param_1)
+// GHIDRA_NAME TFoodProcessingOrder::FoodProcessingOrderSlot11
+// GHIDRA_PROTO undefined __thiscall FoodProcessingOrderSlot11(int param_1)
 
 void __thiscall
-TFoodProcessingOrder::InitializeCityProductionState_Impl_At004b7e80
-          (TFoodProcessingOrder *this,int param_1)
+TFoodProcessingOrder::FoodProcessingOrderSlot11(TFoodProcessingOrder *this,int param_1)
 
 {
   int iVar1;
@@ -88,7 +89,7 @@ TFoodProcessingOrder::InitializeCityProductionState_Impl_At004b7e80
 // GHIDRA_NAME TFoodProcessingOrder::MaxOrder
 // GHIDRA_PROTO undefined __thiscall MaxOrder(void)
 
-int TFoodProcessingOrder::MaxOrder()
+int __thiscall TFoodProcessingOrder::MaxOrder(TFoodProcessingOrder *this)
 
 {
   int iVar1;
@@ -117,7 +118,7 @@ int TFoodProcessingOrder::MaxOrder()
 // GHIDRA_NAME TFoodProcessingOrder::SetQuantity
 // GHIDRA_PROTO undefined __thiscall SetQuantity(ushort param_1)
 
-undefined4 TFoodProcessingOrder::SetQuantity(ushort param_1)
+undefined4 __thiscall TFoodProcessingOrder::SetQuantity(TFoodProcessingOrder *this,ushort param_1)
 
 {
   short *psVar1;
@@ -175,7 +176,7 @@ undefined4 TFoodProcessingOrder::SetQuantity(ushort param_1)
 // GHIDRA_NAME TFoodProcessingOrder::CommitIfPending
 // GHIDRA_PROTO undefined __thiscall CommitIfPending(void)
 
-void TFoodProcessingOrder::CommitIfPending()
+void __thiscall TFoodProcessingOrder::CommitIfPending(TFoodProcessingOrder *this)
 
 {
   int *piVar1;
@@ -194,7 +195,7 @@ void TFoodProcessingOrder::CommitIfPending()
 // GHIDRA_NAME TFoodProcessingOrder::ResetCityOrderItemDerivedStateNoop
 // GHIDRA_PROTO undefined __thiscall ResetCityOrderItemDerivedStateNoop(void)
 
-void TFoodProcessingOrder::ResetCityOrderItemDerivedStateNoop()
+void __thiscall TFoodProcessingOrder::ResetCityOrderItemDerivedStateNoop(TFoodProcessingOrder *this)
 
 {
   return;
@@ -204,7 +205,8 @@ void TFoodProcessingOrder::ResetCityOrderItemDerivedStateNoop()
 // GHIDRA_NAME TFoodProcessingOrder::FillOrderSheet
 // GHIDRA_PROTO undefined __thiscall FillOrderSheet(int param_1, ushort param_2)
 
-void TFoodProcessingOrder::FillOrderSheet(int param_1, ushort param_2)
+void __thiscall
+TFoodProcessingOrder::FillOrderSheet(TFoodProcessingOrder *this,int param_1,ushort param_2)
 
 {
   if ((param_2 & 1) != 0) {

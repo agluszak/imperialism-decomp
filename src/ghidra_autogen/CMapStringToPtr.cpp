@@ -128,17 +128,17 @@ bool CMapStringToPtr::LookupKey(undefined4 param_1,undefined4 *param_2)
    
    Library: nafxcw retail msvc500:static */
 
-undefined4 * __thiscall CMapStringToPtr::operator[](CDocTemplate *param_1,char *param_2)
+undefined4 * __thiscall CMapStringToPtr::operator[](CMapStringToOb *param_1,char *param_2)
 
 {
   undefined4 *puVar1;
-  CDocTemplate *local_8;
+  CMapStringToOb *local_8;
   
   local_8 = param_1;
   puVar1 = (undefined4 *)CMapStringToOb__GetAssocAt(param_2,&local_8);
   if (puVar1 == (undefined4 *)0x0) {
     if (*(int *)(param_1 + 4) == 0) {
-      CDocTemplate::CMapStringToOb__InitHashTable(param_1,*(int *)(param_1 + 8),1);
+      CMapStringToOb::InitHashTable(param_1,*(int *)(param_1 + 8),1);
     }
     puVar1 = (undefined4 *)CMapStringToOb__NewAssoc();
     puVar1[1] = local_8;

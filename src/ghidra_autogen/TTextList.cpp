@@ -3,11 +3,27 @@
 // Program: Imperialism.exe
 // Bucket: TTextList.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x0045AEE0
+// GHIDRA_NAME TTextList::TTextList
+// GHIDRA_PROTO undefined TTextList()
+
+undefined4 * __fastcall TTextList::TTextList(undefined4 *param_1)
+
+{
+  func_0x004064e2();
+  *param_1 = &_vftable_;
+  param_1[0x418] = 0;
+  param_1[0x419] = 0;
+  *(undefined2 *)(param_1 + 0x41b) = 0x10;
+  param_1[0x41a] = 0xffffffff;
+  return param_1;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x0045AF30
 // GHIDRA_NAME TTextList::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TTextList * TTextList::_scalar_deleting_destructor_(byte param_1)
+TTextList * __thiscall TTextList::_scalar_deleting_destructor_(TTextList *this,byte param_1)
 
 {
   func_0x004045f7();
@@ -54,7 +70,7 @@ undefined4 * TTextList::CreateObject(void)
 // GHIDRA_NAME TTextList::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TTextList::GetRuntimeClass()
+CRuntimeClass * __thiscall TTextList::GetRuntimeClass(TTextList *this)
 
 {
   return &classTTextList;
@@ -64,7 +80,7 @@ CRuntimeClass * TTextList::GetRuntimeClass()
 // GHIDRA_NAME TTextList::ApplyRectSlot110
 // GHIDRA_PROTO undefined __thiscall ApplyRectSlot110(void)
 
-void TTextList::ApplyRectSlot110()
+void __thiscall TTextList::ApplyRectSlot110(TTextList *this)
 
 {
   short sVar1;
@@ -77,9 +93,10 @@ void TTextList::ApplyRectSlot110()
   CString local_28;
   int local_24;
   char *local_20;
-  int iStack_1c;
+  undefined4 uStack_1c;
   int iStack_18;
   int iStack_14;
+  int iStack_10;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
@@ -93,8 +110,8 @@ void TTextList::ApplyRectSlot110()
   local_2c = 0;
   local_30 = 0;
   local_24 = iVar3;
-  func_0x004093cc(0x2b6c,&local_2c);
-  func_0x004093cc(0x2b6a,&local_30);
+  thunk_MapUiThemeCodeToStyleFlags(0x2b6c,&local_2c);
+  thunk_MapUiThemeCodeToStyleFlags(0x2b6a,&local_30);
   func_0x0040448f(0,0xe,0x2b6c);
   if ((int)*(short *)&this->field_0x106c < this->field38) {
     local_20 = &this->field_0x60 + iVar3 * 0x40;
@@ -104,19 +121,19 @@ void TTextList::ApplyRectSlot110()
       local_4 = 0;
       if (iVar3 == *(int *)&this->field_0x1068) {
         (**(code **)(g_pUiRuntimeContext->vftable + 0x34))(5);
-        iStack_1c = (int)(short)iVar2;
-        iStack_14 = *(short *)&this->field_0x106c + iStack_1c;
-        iStack_18 = this->field34;
-        local_20 = (char *)0x0;
-        func_0x00406546(&local_20);
+        iStack_18 = (int)(short)iVar2;
+        iStack_10 = *(short *)&this->field_0x106c + iStack_18;
+        iStack_14 = this->field34;
+        uStack_1c = 0;
+        thunk_FillRectWithQuickDrawBrushAndContextOffset(&uStack_1c);
       }
-      sVar1 = func_0x00405b7d(&local_28);
+      sVar1 = thunk_MeasureTextExtentWithCachedQuickDrawStyle(&local_28);
       iVar3 = this->field34 / 2 - (int)sVar1 / 2;
       func_0x00409444(local_30);
-      func_0x00408d6e(iVar3 + 1,iVar2 + 0xc);
+      thunk_SetQuickDrawTextOriginWithContextOffset(iVar3 + 1,iVar2 + 0xc);
       func_0x004029aa(&local_28);
       func_0x00409444(local_2c);
-      func_0x00408d6e(iVar3,iVar2 + 0xb);
+      thunk_SetQuickDrawTextOriginWithContextOffset(iVar3,iVar2 + 0xb);
       func_0x004029aa(&local_28);
       iVar2 = iVar2 + CONCAT22(extraout_var,*(undefined2 *)&this->field_0x106c);
       local_24 = local_24 + 1;
@@ -134,7 +151,7 @@ void TTextList::ApplyRectSlot110()
 // GHIDRA_NAME TTextList::BeginMouseCaptureAndStartRepeatTimer
 // GHIDRA_PROTO undefined __thiscall BeginMouseCaptureAndStartRepeatTimer(int param_1)
 
-void TTextList::BeginMouseCaptureAndStartRepeatTimer(int param_1)
+void __thiscall TTextList::BeginMouseCaptureAndStartRepeatTimer(TTextList *this,int param_1)
 
 {
   TTextListVtbl *pTVar1;

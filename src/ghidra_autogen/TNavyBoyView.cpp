@@ -37,7 +37,8 @@ undefined4 * TNavyBoyView::CreateObject(void)
 // GHIDRA_NAME TNavyBoyView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TNavyBoyView * TNavyBoyView::_scalar_deleting_destructor_(byte param_1)
+TNavyBoyView * __thiscall
+TNavyBoyView::_scalar_deleting_destructor_(TNavyBoyView *this,byte param_1)
 
 {
   func_0x0040295f();
@@ -51,7 +52,7 @@ TNavyBoyView * TNavyBoyView::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TNavyBoyView::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TNavyBoyView::GetRuntimeClass()
+CRuntimeClass * __thiscall TNavyBoyView::GetRuntimeClass(TNavyBoyView *this)
 
 {
   return &classTNavyBoyView;
@@ -61,7 +62,7 @@ CRuntimeClass * TNavyBoyView::GetRuntimeClass()
 // GHIDRA_NAME TNavyBoyView::ApplyRectSlot110
 // GHIDRA_PROTO undefined __thiscall ApplyRectSlot110(void)
 
-void TNavyBoyView::ApplyRectSlot110()
+void __thiscall TNavyBoyView::ApplyRectSlot110(TNavyBoyView *this)
 
 {
   undefined2 *puVar1;
@@ -111,7 +112,7 @@ void TNavyBoyView::ApplyRectSlot110()
   CString::CString(&local_68);
   local_4._0_1_ = 1;
   func_0x00401bf9();
-  ___L_YGXPAXIHP6EX0_Z1_Z(&local_44,4,0xe,&SUB_00404642);
+  CallCallbackRepeatedly(&local_44,4,0xe,&SUB_00404642);
   local_4._0_1_ = 2;
   this_00 = &local_44;
   iVar4 = 3;
@@ -189,7 +190,7 @@ void TNavyBoyView::ApplyRectSlot110()
   pCStack_ec = (CString *)0x4af360;
   CString::~CString(&CStack_d8);
   pCStack_ec = (CString *)0x18;
-  func_0x00408d6e(0x50);
+  thunk_SetQuickDrawTextOriginWithContextOffset(0x50);
   pCStack_ec = &CStack_d4;
   func_0x004029aa();
   puVar1 = *(undefined2 **)&this->field_0x60;
@@ -218,8 +219,8 @@ void TNavyBoyView::ApplyRectSlot110()
     pCStack_ec = &CStack_d8;
     local_68.m_pchData._0_1_ = 9;
     (*g_pSimMgr->vftable[0x10].slot_0x04)(0x273c,0x1b);
-    sVar2 = func_0x00405b7d(&uStack_e4);
-    func_0x00408d6e(0x88 - (int)sVar2 / 2,0x25);
+    sVar2 = thunk_MeasureTextExtentWithCachedQuickDrawStyle(&uStack_e4);
+    thunk_SetQuickDrawTextOriginWithContextOffset(0x88 - (int)sVar2 / 2,0x25);
     func_0x004029aa(&uStack_e4);
     local_68.m_pchData._0_1_ = 2;
     pCStack_ec = (CString *)0x4af4ca;
@@ -236,13 +237,13 @@ void TNavyBoyView::ApplyRectSlot110()
   pCStack_ec = (CString *)0x13;
   func_0x00402bdf();
   pCStack_ec = (CString *)0x20;
-  func_0x00408d6e(0x50);
+  thunk_SetQuickDrawTextOriginWithContextOffset(0x50);
   pCStack_ec = (CString *)0x26;
-  func_0x00403bb6(0x50);
+  thunk_DrawCenteredGuideLineOnMapDc(0x50);
   pCStack_ec = (CString *)0x26;
-  func_0x00403bb6(0xa2);
+  thunk_DrawCenteredGuideLineOnMapDc(0xa2);
   pCStack_ec = (CString *)0x20;
-  func_0x00403bb6(0xa2);
+  thunk_DrawCenteredGuideLineOnMapDc(0xa2);
   local_68.m_pchData._0_1_ = 1;
   pCStack_ec = (CString *)&LAB_00405fa1;
   ___M_YGXPAXIHP6EX0_Z_Z(&uStack_a8,4,0xe);

@@ -37,17 +37,18 @@ undefined4 * TIndustryCluster::CreateObject(void)
 // GHIDRA_NAME TIndustryCluster::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TIndustryCluster::GetRuntimeClass()
+CRuntimeClass * __thiscall TIndustryCluster::GetRuntimeClass(TIndustryCluster *this)
 
 {
-  return &g_pClassDescTIndustryCluster;
+  return &classTIndustryCluster;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00588AF0
 // GHIDRA_NAME TIndustryCluster::ConstructTradeMoveStepControlPanel
 // GHIDRA_PROTO undefined __thiscall ConstructTradeMoveStepControlPanel(void)
 
-TIndustryCluster * TIndustryCluster::ConstructTradeMoveStepControlPanel()
+TIndustryCluster * __thiscall
+TIndustryCluster::ConstructTradeMoveStepControlPanel(TIndustryCluster *this)
 
 {
   func_0x00405835();
@@ -60,7 +61,8 @@ TIndustryCluster * TIndustryCluster::ConstructTradeMoveStepControlPanel()
 // GHIDRA_NAME TIndustryCluster::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TIndustryCluster * TIndustryCluster::_scalar_deleting_destructor_(byte param_1)
+TIndustryCluster * __thiscall
+TIndustryCluster::_scalar_deleting_destructor_(TIndustryCluster *this,byte param_1)
 
 {
   func_0x00404746();
@@ -74,7 +76,7 @@ TIndustryCluster * TIndustryCluster::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TIndustryCluster::NoOpUiLifecycleHook
 // GHIDRA_PROTO undefined __thiscall NoOpUiLifecycleHook(void)
 
-void TIndustryCluster::NoOpUiLifecycleHook()
+void __thiscall TIndustryCluster::NoOpUiLifecycleHook(TIndustryCluster *this)
 
 {
   dword dVar1;
@@ -101,7 +103,7 @@ void TIndustryCluster::NoOpUiLifecycleHook()
   }
   pvVar2 = this_00->orderSlotsE4[sVar5];
   *(void **)&this->field_0x88 = pvVar2;
-  iVar4 = TCity::GetBuildingType(this_00,*(short *)((int)pvVar2 + 0x52));
+  iVar4 = TCity::thunk_GetCityBuildingProductionValueBySlot(this_00,*(short *)((int)pvVar2 + 0x52));
   *(short *)&this->field_0x8c = (short)iVar4;
   func_0x004080c6(in_stack_00000004);
   (*this->vftable->UpdateTradeMoveControlsFromDrag)
@@ -113,7 +115,7 @@ void TIndustryCluster::NoOpUiLifecycleHook()
 // GHIDRA_NAME TIndustryCluster::OrphanRetStub_00586ff0
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_00586ff0(void)
 
-void TIndustryCluster::OrphanRetStub_00586ff0()
+void __thiscall TIndustryCluster::OrphanRetStub_00586ff0(TIndustryCluster *this)
 
 {
   (*this->vftable->UpdateTradeMoveControlsFromDrag)();
@@ -124,7 +126,8 @@ void TIndustryCluster::OrphanRetStub_00586ff0()
 // GHIDRA_NAME TIndustryCluster::UpdateTradeMoveControlsFromDrag
 // GHIDRA_PROTO undefined __thiscall UpdateTradeMoveControlsFromDrag(char param_1)
 
-void TIndustryCluster::UpdateTradeMoveControlsFromDrag(char param_1)
+void __thiscall
+TIndustryCluster::UpdateTradeMoveControlsFromDrag(TIndustryCluster *this,char param_1)
 
 {
   _vslot_fn *p_Var1;
@@ -208,7 +211,7 @@ void TIndustryCluster::UpdateTradeMoveControlsFromDrag(char param_1)
 // GHIDRA_NAME TIndustryCluster::UpdateTradeBarFromSelectedMetricRatio_B
 // GHIDRA_PROTO undefined __thiscall UpdateTradeBarFromSelectedMetricRatio_B(void)
 
-void TIndustryCluster::UpdateTradeBarFromSelectedMetricRatio_B()
+void __thiscall TIndustryCluster::UpdateTradeBarFromSelectedMetricRatio_B(TIndustryCluster *this)
 
 {
   int iVar1;
@@ -235,7 +238,8 @@ void TIndustryCluster::UpdateTradeBarFromSelectedMetricRatio_B()
 // GHIDRA_NAME TIndustryCluster::HandleEvent
 // GHIDRA_PROTO undefined __thiscall HandleEvent(int param_1, void * param_2, int param_3)
 
-void TIndustryCluster::HandleEvent(int param_1, void *param_2, int param_3)
+void __thiscall
+TIndustryCluster::HandleEvent(TIndustryCluster *this,int param_1,void *param_2,int param_3)
 
 {
   TIndustryClusterVtbl *pTVar1;

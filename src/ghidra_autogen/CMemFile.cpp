@@ -3,13 +3,50 @@
 // Program: Imperialism.exe
 // Bucket: CMemFile.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00623B46
-// GHIDRA_NAME CMemFile::GetCMemFileRuntimeClass
-// GHIDRA_PROTO undefined __thiscall GetCMemFileRuntimeClass(void)
+// GHIDRA_FUNCTION IMPERIALISM 0x00619AAC
+// GHIDRA_NAME CMemFile::CMemFile
+// GHIDRA_PROTO undefined __thiscall CMemFile(undefined4 param_1)
 
-CRuntimeClass * CMemFile::GetCMemFileRuntimeClass()
+CMemFile * __thiscall CMemFile::CMemFile(CMemFile *this,undefined4 param_1)
 
 {
-  return &classRuntimeClass;
+  CFile::CFile();
+  this->vftable = &CMemFileVtbl_00672f7c;
+  *(undefined4 *)&this->field_0x10 = param_1;
+  *(undefined4 *)&this->field_0x14 = 0;
+  *(undefined4 *)&this->field_0x18 = 0;
+  *(undefined4 *)&this->field_0x1c = 0;
+  *(undefined4 *)&this->field_0x20 = 0;
+  *(undefined4 *)&this->field_0x24 = 1;
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00619AF8
+// GHIDRA_NAME CMemFile::CMemFile
+// GHIDRA_PROTO undefined __thiscall CMemFile(undefined4 param_1, uint param_2, int param_3)
+
+CMemFile * __thiscall CMemFile::CMemFile(CMemFile *this,undefined4 param_1,uint param_2,int param_3)
+
+{
+  CFile::CFile();
+  *(undefined4 *)&this->field_0x14 = 0;
+  *(int *)&this->field_0x10 = param_3;
+  *(undefined4 *)&this->field_0x24 = 0;
+  this->vftable = &CMemFileVtbl_00672f7c;
+  *(uint *)&this->field_0x1c = ~-(uint)(param_3 != 0) & param_2;
+  *(undefined4 *)&this->field_0x20 = param_1;
+  *(uint *)&this->field_0x18 = param_2;
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00619BCA
+// GHIDRA_NAME CMemFile::Realloc
+// GHIDRA_PROTO undefined Realloc()
+
+void CMemFile::Realloc(undefined4 param_1,undefined4 param_2)
+
+{
+  _realloc(param_1,param_2);
+  return;
 }
 

@@ -29,10 +29,21 @@ void CDragListBox::~CDragListBox(void)
   *(undefined4 **)(unaff_EBP + -0x10) = extraout_ECX;
   *extraout_ECX = &PTR_LAB_00670f64;
   *(undefined4 *)(unaff_EBP + -4) = 0;
-  CWnd__DestroyWindow();
+  CWnd::DestroyWindow();
   *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
   Dtor_CListBox_FID_61e8cb();
   *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005E5561
+// GHIDRA_NAME CDragListBox::PreSubclassWindow
+// GHIDRA_PROTO undefined PreSubclassWindow()
+
+void __fastcall CDragListBox::PreSubclassWindow(int param_1)
+
+{
+  Ordinal_13(*(undefined4 *)(param_1 + 0x1c));
   return;
 }
 
@@ -49,6 +60,17 @@ undefined4 __thiscall CDragListBox::BeginDrag(int *param_1,undefined4 param_2,un
   uVar1 = Ordinal_14(param_1[7],param_2,param_3,1);
   (**(code **)(*param_1 + 0xd8))(uVar1);
   return 1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005E5597
+// GHIDRA_NAME CDragListBox::CancelDrag
+// GHIDRA_PROTO undefined CancelDrag()
+
+void __fastcall CDragListBox::CancelDrag(int *param_1)
+
+{
+  (**(code **)(*param_1 + 0xd8))(0xffffffff);
+  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005E55A4
@@ -78,6 +100,48 @@ int __thiscall CDragListBox::Dragging(int *param_1,undefined4 param_2,undefined4
   (**(code **)(*param_1 + 0xd8))(iVar1);
   Ordinal_14(param_1[7],uVar2,unaff_EDI,1);
   return ((iVar1 != -1) - 1 & 0xfffffffe) + 3;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005E55EE
+// GHIDRA_NAME CDragListBox::Dropped
+// GHIDRA_PROTO undefined Dropped()
+
+void CDragListBox::Dropped(void)
+
+{
+  WPARAM WVar1;
+  LRESULT LVar2;
+  WPARAM WVar3;
+  int *extraout_ECX;
+  int unaff_EBP;
+  undefined4 *unaff_FS_OFFSET;
+  
+  _EH_prolog();
+  (**(code **)(*extraout_ECX + 0xd8))(0xffffffff);
+  WVar1 = Ordinal_14(extraout_ECX[7],*(undefined4 *)(unaff_EBP + 0xc),
+                     *(undefined4 *)(unaff_EBP + 0x10),1);
+  WVar3 = *(WPARAM *)(unaff_EBP + 8);
+  *(WPARAM *)(unaff_EBP + 0x10) = WVar1;
+  if ((((WVar3 != 0xffffffff) && (WVar1 != 0xffffffff)) && (WVar1 != WVar3)) && (WVar1 != WVar3 + 1)
+     ) {
+    CString::CString((CString *)(unaff_EBP + -0x10));
+    *(undefined4 *)(unaff_EBP + -4) = 0;
+    CListBox::GetText(WVar3,unaff_EBP + -0x10);
+    LVar2 = SendMessageA((HWND)extraout_ECX[7],0x199,WVar3,0);
+    *(LRESULT *)(unaff_EBP + 8) = LVar2;
+    SendMessageA((HWND)extraout_ECX[7],0x182,WVar3,0);
+    if ((int)WVar3 < *(int *)(unaff_EBP + 0x10)) {
+      *(int *)(unaff_EBP + 0x10) = *(int *)(unaff_EBP + 0x10) + -1;
+    }
+    WVar3 = SendMessageA((HWND)extraout_ECX[7],0x181,*(WPARAM *)(unaff_EBP + 0x10),
+                         *(LPARAM *)(unaff_EBP + -0x10));
+    SendMessageA((HWND)extraout_ECX[7],0x19a,WVar3,*(LPARAM *)(unaff_EBP + 8));
+    SendMessageA((HWND)extraout_ECX[7],0x186,WVar3,0);
+    *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
+    CString::~CString((CString *)(unaff_EBP + -0x10));
+  }
+  *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
+  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005E56CD
@@ -119,7 +183,7 @@ void CDragListBox::DrawSingle(void)
     *(undefined ***)(unaff_EBP + -0x14) = &CBrush::_vftable_;
     *(undefined4 *)(unaff_EBP + -4) = 0;
     pHVar3 = CreateRectRgnIndirect((RECT *)(unaff_EBP + -0x24));
-    CBrush::CGdiObject__Attach((CBrush *)(unaff_EBP + -0x14),(int)pHVar3);
+    CGdiObject::Attach((CGdiObject *)(unaff_EBP + -0x14),(int)pHVar3);
     pHVar4 = GetDC(*(HWND *)(extraout_ECX + 0x1c));
     this = (CDC *)FromHandle_612736(pHVar4);
     CDC::SelectClipRgn(this,unaff_EBP + -0x14);
@@ -135,7 +199,7 @@ void CDragListBox::DrawSingle(void)
     ReleaseDC(*(HWND *)(extraout_ECX + 0x1c),this->m_hDC);
     *(undefined ***)(unaff_EBP + -0x14) = &PTR_LAB_00671054;
     *(undefined4 *)(unaff_EBP + -4) = 1;
-    CGdiObject__DeleteObject();
+    CGdiObject::DeleteObject();
   }
   *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
   return;

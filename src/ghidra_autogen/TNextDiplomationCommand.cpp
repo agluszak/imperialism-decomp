@@ -37,7 +37,7 @@ undefined4 * TNextDiplomationCommand::CreateObject(void)
 // GHIDRA_NAME TNextDiplomationCommand::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TNextDiplomationCommand::GetRuntimeClass()
+CRuntimeClass * __thiscall TNextDiplomationCommand::GetRuntimeClass(TNextDiplomationCommand *this)
 
 {
   return &classRuntimeClass;

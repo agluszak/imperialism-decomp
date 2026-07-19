@@ -70,7 +70,7 @@ undefined4 * TEditText::CreateObject(void)
 // GHIDRA_NAME TEditText::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TEditText::GetRuntimeClass()
+CRuntimeClass * __thiscall TEditText::GetRuntimeClass(TEditText *this)
 
 {
   return &classTEditText;
@@ -86,7 +86,7 @@ CRuntimeClass * TEditText::GetRuntimeClass()
 /* Base constructor for numeric text widgets. Initializes shared style/state fields and allocates an
    auxiliary 4-byte state block before derived numeric vtable install. */
 
-TEditText * TEditText::TEditText()
+TEditText * __thiscall TEditText::TEditText(TEditText *this)
 
 {
   CString *this_00;
@@ -142,7 +142,7 @@ TEditText * TEditText::TEditText()
 // GHIDRA_NAME TEditText::~TEditText
 // GHIDRA_PROTO undefined __thiscall ~TEditText(void)
 
-void TEditText::~TEditText()
+void __thiscall TEditText::~TEditText(TEditText *this)
 
 {
   CString *this_00;
@@ -186,7 +186,7 @@ void TEditText::~TEditText()
 // GHIDRA_NAME TEditText::CallVoidSlotA0
 // GHIDRA_PROTO undefined __thiscall CallVoidSlotA0(void)
 
-void TEditText::CallVoidSlotA0()
+void __thiscall TEditText::CallVoidSlotA0(TEditText *this)
 
 {
   if (*(int **)&this->field_0x94 != (int *)0x0) {
@@ -204,7 +204,7 @@ void TEditText::CallVoidSlotA0()
 // GHIDRA_NAME TEditText::ApplyRectSlot110
 // GHIDRA_PROTO undefined __thiscall ApplyRectSlot110(void)
 
-void TEditText::ApplyRectSlot110()
+void __thiscall TEditText::ApplyRectSlot110(TEditText *this)
 
 {
   int iVar1;
@@ -221,7 +221,7 @@ void TEditText::ApplyRectSlot110()
 // GHIDRA_NAME TEditText::GetBoolSlot28
 // GHIDRA_PROTO undefined __thiscall GetBoolSlot28(void)
 
-undefined1 TEditText::GetBoolSlot28()
+undefined1 __thiscall TEditText::GetBoolSlot28(TEditText *this)
 
 {
   return (char)this->field04;
@@ -231,7 +231,7 @@ undefined1 TEditText::GetBoolSlot28()
 // GHIDRA_NAME TEditText::SetControlValue
 // GHIDRA_PROTO undefined __thiscall SetControlValue(char param_1)
 
-void TEditText::SetControlValue(char param_1)
+void __thiscall TEditText::SetControlValue(TEditText *this,char param_1)
 
 {
   this->field04 = (int)param_1;
@@ -247,7 +247,7 @@ void TEditText::SetControlValue(char param_1)
 // GHIDRA_NAME TEditText::SetEnabled
 // GHIDRA_PROTO undefined __thiscall SetEnabled(int param_1, int param_2)
 
-void TEditText::SetEnabled(int param_1, int param_2)
+void __thiscall TEditText::SetEnabled(TEditText *this,int param_1,int param_2)
 
 {
   if (param_1 != this->padding_08_to_0b) {
@@ -268,7 +268,7 @@ void TEditText::SetEnabled(int param_1, int param_2)
 // GHIDRA_NAME TEditText::DispatchSlot9CToLinkedChildren
 // GHIDRA_PROTO int __thiscall DispatchSlot9CToLinkedChildren(astruct_10 * ui_ctx)
 
-int TEditText::DispatchSlot9CToLinkedChildren(astruct_10 *ui_ctx)
+int __thiscall TEditText::DispatchSlot9CToLinkedChildren(TEditText *this,astruct_10 *ui_ctx)
 
 {
   short sVar1;
@@ -344,8 +344,8 @@ int TEditText::DispatchSlot9CToLinkedChildren(astruct_10 *ui_ctx)
        (iface = **(int **)&this->field_0x84, *(int *)(iface + -8) != 0)) {
       CMcWindow::SetWindowTextOrDelegateToOwner(iface);
     }
-    CWnd__ModifyStyleEx(0,0x20,0);
-    CWnd__ModifyStyle(0x2000000,0,0);
+    CWnd::ModifyStyleEx(0,0x20,0);
+    CWnd::ModifyStyle(0x2000000,0,0);
     dlg_hwnd = (HWND)0x0;
     if (*(int *)&this->field_0x94 != 0) {
       dlg_hwnd = *(HWND *)(*(int *)&this->field_0x94 + 0x1c);
@@ -369,7 +369,8 @@ int TEditText::DispatchSlot9CToLinkedChildren(astruct_10 *ui_ctx)
 /* Sets text selection range in edit control (EM_SETSEL) and scrolls caret into view
    (EM_SCROLLCARET). */
 
-void TEditText::SetEditSelectionAndScrollCaret(short param_1, short param_2)
+void __thiscall
+TEditText::SetEditSelectionAndScrollCaret(TEditText *this,short param_1,short param_2)
 
 {
   int iVar1;
@@ -386,7 +387,7 @@ void TEditText::SetEditSelectionAndScrollCaret(short param_1, short param_2)
 // GHIDRA_NAME TEditText::ActivateCityProductionViewIfAllowed
 // GHIDRA_PROTO undefined __thiscall ActivateCityProductionViewIfAllowed(void)
 
-undefined1 TEditText::ActivateCityProductionViewIfAllowed()
+undefined1 __thiscall TEditText::ActivateCityProductionViewIfAllowed(TEditText *this)
 
 {
   if (*(int *)&this->field_0x94 != 0) {
@@ -399,7 +400,7 @@ undefined1 TEditText::ActivateCityProductionViewIfAllowed()
 // GHIDRA_NAME TEditText::Free
 // GHIDRA_PROTO undefined __thiscall Free(void)
 
-void TEditText::Free()
+void __thiscall TEditText::Free(TEditText *this)
 
 {
   int iVar1;
@@ -472,7 +473,7 @@ TEditText::DispatchUiMouseMoveToChildren
 // GHIDRA_NAME TEditText::HandleCityProductionNoOp
 // GHIDRA_PROTO undefined __thiscall HandleCityProductionNoOp(void)
 
-void TEditText::HandleCityProductionNoOp()
+void __thiscall TEditText::HandleCityProductionNoOp(TEditText *this)
 
 {
   if (*(int *)&this->field_0x94 != 0) {
@@ -486,7 +487,7 @@ void TEditText::HandleCityProductionNoOp()
 // GHIDRA_NAME TEditText::vmethod_0081
 // GHIDRA_PROTO undefined __thiscall vmethod_0081(undefined4 param_1)
 
-void TEditText::vmethod_0081(undefined4 param_1)
+void __thiscall TEditText::vmethod_0081(TEditText *this,undefined4 param_1)
 
 {
   if (*(int *)&this->field_0x94 != 0) {
@@ -500,7 +501,8 @@ void TEditText::vmethod_0081(undefined4 param_1)
 // GHIDRA_NAME TEditText::WrapperFor_StringShared_AssignFromPtr_At00490c70
 // GHIDRA_PROTO undefined __thiscall WrapperFor_StringShared_AssignFromPtr_At00490c70(CString * param_1)
 
-void TEditText::WrapperFor_StringShared_AssignFromPtr_At00490c70(CString *param_1)
+void __thiscall
+TEditText::WrapperFor_StringShared_AssignFromPtr_At00490c70(TEditText *this,CString *param_1)
 
 {
   if (*(int *)&this->field_0x94 != 0) {
@@ -512,10 +514,11 @@ void TEditText::WrapperFor_StringShared_AssignFromPtr_At00490c70(CString *param_
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00490CB0
-// GHIDRA_NAME TEditText::OrphanCallChain_C1_I09_0048ff70
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I09_0048ff70(undefined2 param_1, char param_2)
+// GHIDRA_NAME TEditText::SetTextThemeCodeAndMaybeRefresh
+// GHIDRA_PROTO undefined __thiscall SetTextThemeCodeAndMaybeRefresh(undefined2 param_1, char param_2)
 
-void TEditText::OrphanCallChain_C1_I09_0048ff70(undefined2 param_1, char param_2)
+void __thiscall
+TEditText::SetTextThemeCodeAndMaybeRefresh(TEditText *this,undefined2 param_1,char param_2)
 
 {
   *(undefined2 *)&this->field_0x90 = param_1;
@@ -529,7 +532,8 @@ void TEditText::OrphanCallChain_C1_I09_0048ff70(undefined2 param_1, char param_2
 // GHIDRA_NAME TEditText::InitDialogWindowAndSyncTitleIfChanged
 // GHIDRA_PROTO undefined __thiscall InitDialogWindowAndSyncTitleIfChanged(CString param_1, char param_2)
 
-void TEditText::InitDialogWindowAndSyncTitleIfChanged(CString param_1, char param_2)
+void __thiscall
+TEditText::InitDialogWindowAndSyncTitleIfChanged(TEditText *this,CString param_1,char param_2)
 
 {
   CString CVar1;
@@ -583,7 +587,7 @@ void TEditText::InitDialogWindowAndSyncTitleIfChanged(CString param_1, char para
 // GHIDRA_NAME TEditText::VTableSlot59
 // GHIDRA_PROTO undefined __thiscall VTableSlot59(void)
 
-void TEditText::VTableSlot59()
+void __thiscall TEditText::VTableSlot59(TEditText *this)
 
 {
   tagRECT local_10;
@@ -592,7 +596,7 @@ void TEditText::VTableSlot59()
   if (*(int *)&this->field_0x94 != 0) {
     GetClientRect(*(HWND *)(*(int *)&this->field_0x94 + 0x1c),&local_10);
     if ((local_10.left != this->field2c) || (local_10.top != this->field30)) {
-      CWnd__SetWindowPos(0,this->field2c,this->field30,0,0,0x215);
+      CWnd::SetWindowPos(0,this->field2c,this->field30,0,0,0x215);
     }
   }
   return;
@@ -602,7 +606,7 @@ void TEditText::VTableSlot59()
 // GHIDRA_NAME TEditText::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TEditText * TEditText::_scalar_deleting_destructor_(byte param_1)
+TEditText * __thiscall TEditText::_scalar_deleting_destructor_(TEditText *this,byte param_1)
 
 {
   func_0x004043c7();

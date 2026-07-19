@@ -7,7 +7,7 @@
 // GHIDRA_NAME THighScoresPicture::UniversityDialogMethod_00405623
 // GHIDRA_PROTO undefined __thiscall UniversityDialogMethod_00405623(void)
 
-void THighScoresPicture::UniversityDialogMethod_00405623()
+void __thiscall THighScoresPicture::UniversityDialogMethod_00405623(THighScoresPicture *this)
 
 {
   return;
@@ -17,7 +17,8 @@ void THighScoresPicture::UniversityDialogMethod_00405623()
 // GHIDRA_NAME THighScoresPicture::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-THighScoresPicture * THighScoresPicture::_scalar_deleting_destructor_(byte param_1)
+THighScoresPicture * __thiscall
+THighScoresPicture::_scalar_deleting_destructor_(THighScoresPicture *this,byte param_1)
 
 {
   func_0x00409183();
@@ -61,7 +62,7 @@ undefined4 * THighScoresPicture::CreateObject(void)
 // GHIDRA_NAME THighScoresPicture::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * THighScoresPicture::GetRuntimeClass()
+CRuntimeClass * __thiscall THighScoresPicture::GetRuntimeClass(THighScoresPicture *this)
 
 {
   return &classTHighScoresPicture;
@@ -71,7 +72,7 @@ CRuntimeClass * THighScoresPicture::GetRuntimeClass()
 // GHIDRA_NAME THighScoresPicture::NoOpUiLifecycleHook
 // GHIDRA_PROTO undefined __thiscall NoOpUiLifecycleHook(CString param_1)
 
-void THighScoresPicture::NoOpUiLifecycleHook(CString param_1)
+void __thiscall THighScoresPicture::NoOpUiLifecycleHook(THighScoresPicture *this,CString param_1)
 
 {
   int iVar1;
@@ -131,7 +132,7 @@ void THighScoresPicture::NoOpUiLifecycleHook(CString param_1)
 // GHIDRA_NAME THighScoresPicture::ApplyRectSlot110
 // GHIDRA_PROTO undefined __thiscall ApplyRectSlot110(void)
 
-void THighScoresPicture::ApplyRectSlot110()
+void __thiscall THighScoresPicture::ApplyRectSlot110(THighScoresPicture *this)
 
 {
   int iVar1;
@@ -159,8 +160,8 @@ void THighScoresPicture::ApplyRectSlot110()
   puStack_8 = (undefined1 *)0x0;
   CString::CString(&local_14);
   puStack_8 = (undefined1 *)CONCAT31(puStack_8._1_3_,1);
-  func_0x004093cc(0x2b68,&local_20);
-  func_0x004093cc(0x2b67,&stack0xffffffdc);
+  thunk_MapUiThemeCodeToStyleFlags(0x2b68,&local_20);
+  thunk_MapUiThemeCodeToStyleFlags(0x2b67,&stack0xffffffdc);
   func_0x0040448f(0,0x18,0x2b68);
   piVar2 = (int *)&this->field_0x94;
   local_1c = &this->field_0xbc;
@@ -168,14 +169,14 @@ void THighScoresPicture::ApplyRectSlot110()
   do {
     if (*piVar2 < 1) break;
     iVar3 = iVar3 + 1;
-    CString__Format(&stack0x00000000,&g_szDecimalFormat,iVar3);
+    CString::Format(&stack0x00000000,&g_szDecimalFormat,iVar3);
     CString::operator+=((CString *)&stack0x00000000,&DAT_00698ab4);
     func_0x00409444(0);
     iVar1 = iVar4 + 1;
-    func_0x00408d6e(0x97,iVar1);
+    thunk_SetQuickDrawTextOriginWithContextOffset(0x97,iVar1);
     func_0x004029aa(&stack0x00000000);
     func_0x00409444(local_20);
-    func_0x00408d6e(0x96,iVar4);
+    thunk_SetQuickDrawTextOriginWithContextOffset(0x96,iVar4);
     func_0x004029aa(&stack0x00000000);
     CString::CString(&local_18,local_1c);
     puStack_8._0_1_ = 2;
@@ -183,17 +184,17 @@ void THighScoresPicture::ApplyRectSlot110()
     puStack_8 = (undefined1 *)CONCAT31(puStack_8._1_3_,1);
     CString::~CString(&local_18);
     func_0x00409444(0);
-    func_0x00408d6e(0xbf,iVar1);
+    thunk_SetQuickDrawTextOriginWithContextOffset(0xbf,iVar1);
     func_0x004029aa(&stack0x00000000);
     func_0x00409444(local_20);
-    func_0x00408d6e(0xbe,iVar4);
+    thunk_SetQuickDrawTextOriginWithContextOffset(0xbe,iVar4);
     func_0x004029aa(&stack0x00000000);
-    CString__Format(&stack0x00000000,&g_szDecimalFormat,*piVar2);
+    CString::Format(&stack0x00000000,&g_szDecimalFormat,*piVar2);
     func_0x00409444(0);
-    func_0x00408d6e(0x1af,iVar1);
+    thunk_SetQuickDrawTextOriginWithContextOffset(0x1af,iVar1);
     func_0x004029aa(&stack0x00000000);
     func_0x00409444(local_20);
-    func_0x00408d6e(0x1ae,iVar4);
+    thunk_SetQuickDrawTextOriginWithContextOffset(0x1ae,iVar4);
     func_0x004029aa(&stack0x00000000);
     iVar4 = iVar4 + 0x20;
     piVar2 = piVar2 + 1;
@@ -217,7 +218,7 @@ void THighScoresPicture::ApplyRectSlot110()
 /* Handles command-id 10 path: posts turn-event code 0x5DC and executes follow-up UI reset/sync
    thunks (00593730/00593760/00593790). */
 
-void THighScoresPicture::HandleEvent(int param_1)
+void __thiscall THighScoresPicture::HandleEvent(THighScoresPicture *this,int param_1)
 
 {
   if (param_1 == 10) {

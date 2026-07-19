@@ -37,7 +37,7 @@ undefined4 * TCombatReportView::CreateObject(void)
 // GHIDRA_NAME TCombatReportView::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TCombatReportView::GetRuntimeClass()
+CRuntimeClass * __thiscall TCombatReportView::GetRuntimeClass(TCombatReportView *this)
 
 {
   return &classTCombatReportView;
@@ -62,7 +62,8 @@ _ConstructTCombatReportViewBaseState__YIPAUCombatReportViewState___Z_imperialism
 // GHIDRA_NAME TCombatReportView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TCombatReportView * TCombatReportView::_scalar_deleting_destructor_(byte param_1)
+TCombatReportView * __thiscall
+TCombatReportView::_scalar_deleting_destructor_(TCombatReportView *this,byte param_1)
 
 {
   func_0x00408913();
@@ -78,7 +79,7 @@ TCombatReportView * TCombatReportView::_scalar_deleting_destructor_(byte param_1
 
 /* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 
-void TCombatReportView::IsSelected(char *param_1)
+void __thiscall TCombatReportView::IsSelected(TCombatReportView *this,char *param_1)
 
 {
   char cVar1;
@@ -374,7 +375,7 @@ void TCombatReportView::IsSelected(char *param_1)
   if (piVar7 != (int *)0x0) {
     CString::CString(&CStack_b8);
     CString::CString(&CStack_94);
-    CString__Format(&CStack_94,&g_szDecimalFormat,*(short *)&this->field_0x94 + 1);
+    CString::Format(&CStack_94,&g_szDecimalFormat,*(short *)&this->field_0x94 + 1);
     uVar8 = AssignSharedStringConcatCStrAndRef(&CStack_b0,s_Page_00699318,&CStack_94);
     src_ref = (CString *)AssignSharedStringConcatRefAndCStr(&CStack_ac,uVar8,&DAT_00698448);
     CString::CString((CString *)&stack0xffffff58,src_ref);
@@ -382,7 +383,7 @@ void TCombatReportView::IsSelected(char *param_1)
     CString::~CString((CString *)&stack0xffffff58);
     CString::~CString(&CStack_ac);
     CString::~CString(&CStack_b0);
-    CString__Format(&CStack_94,&g_szDecimalFormat,*(short *)&this->field_0x96 + 1);
+    CString::Format(&CStack_94,&g_szDecimalFormat,*(short *)&this->field_0x96 + 1);
     CString::operator+=(&CStack_94);
     (**(code **)(*piVar7 + 0x1c8))(&CStack_b8,1);
     CString::~CString(&CStack_94);
@@ -398,7 +399,7 @@ void TCombatReportView::IsSelected(char *param_1)
 // GHIDRA_NAME TCombatReportView::ApplyRectSlot110
 // GHIDRA_PROTO undefined __thiscall ApplyRectSlot110(void)
 
-void TCombatReportView::ApplyRectSlot110()
+void __thiscall TCombatReportView::ApplyRectSlot110(TCombatReportView *this)
 
 {
   int iVar1;
@@ -459,7 +460,7 @@ void TCombatReportView::ApplyRectSlot110()
                2);
     }
     local_4 = puVar7;
-    func_0x00408d6e(6,0xb0);
+    thunk_SetQuickDrawTextOriginWithContextOffset(6,0xb0);
     func_0x004029aa(&stack0xffffffa8);
     func_0x00404ee9(9);
     func_0x004065a0(0);
@@ -470,7 +471,7 @@ void TCombatReportView::ApplyRectSlot110()
       CVar2.m_pchData = local_50.m_pchData;
       sVar6 = (short)puVar7;
       if ((short)local_48 <= sVar6) break;
-      func_0x00408d6e(6);
+      thunk_SetQuickDrawTextOriginWithContextOffset(6);
       CString::CString(&local_4c);
       puStack_8._0_1_ = 1;
       if (*(short *)&this->field_0x94 < *(short *)&this->field_0x9c) {
@@ -509,13 +510,13 @@ void TCombatReportView::ApplyRectSlot110()
       func_0x00405493(*(int *)(g_pStrategicMapViewSystem + 0x684) + 4,
                       &g_pActiveQuickDrawSurfaceContext->field_0x4,&uStack_2c,&local_3c,0,0);
       pcVar4 = CVar2.m_pchData + 3;
-      func_0x00408d6e(7,pcVar4);
+      thunk_SetQuickDrawTextOriginWithContextOffset(7,pcVar4);
       func_0x00402e73(1,4);
       (**(code **)(g_pUiRuntimeContext->vftable + 0x34))(0x34);
       iVar1 = (*(int *)(pcVar8 + 0x18) * 3) / 7 + 7;
-      func_0x00403bb6(iVar1,pcVar4);
+      thunk_DrawCenteredGuideLineOnMapDc(iVar1,pcVar4);
       (**(code **)(g_pUiRuntimeContext->vftable + 0x34))(0x33);
-      func_0x00403bb6(iVar1 - (*(int *)(pcVar8 + 0x1c) * 3) / 7,pcVar4);
+      thunk_DrawCenteredGuideLineOnMapDc(iVar1 - (*(int *)(pcVar8 + 0x1c) * 3) / 7,pcVar4);
       (**(code **)(g_pUiRuntimeContext->vftable + 0x34))(0);
       local_38 = (TCombatReportView *)0x0;
       uStack_34 = 6;
@@ -573,7 +574,7 @@ void TCombatReportView::ApplyRectSlot110()
 // GHIDRA_NAME TCombatReportView::HandleEvent
 // GHIDRA_PROTO undefined __thiscall HandleEvent(int param_1, int param_2)
 
-void TCombatReportView::HandleEvent(int param_1, int param_2)
+void __thiscall TCombatReportView::HandleEvent(TCombatReportView *this,int param_1,int param_2)
 
 {
   short sVar1;
@@ -692,7 +693,7 @@ LAB_0058dbdf:
     iStack_4 = 0;
     CString::CString(&CStack_40);
     iStack_4._0_1_ = 1;
-    CString__Format(&CStack_40,&g_szDecimalFormat,*(short *)&this->field_0x94 + 1);
+    CString::Format(&CStack_40,&g_szDecimalFormat,*(short *)&this->field_0x94 + 1);
     uVar4 = AssignSharedStringConcatCStrAndRef(&CStack_30,s_Page_00699318,&CStack_40);
     iStack_4._0_1_ = 2;
     src_ref = (CString *)AssignSharedStringConcatRefAndCStr(&CStack_34,uVar4,&DAT_00698448);
@@ -706,7 +707,7 @@ LAB_0058dbdf:
     CString::~CString(&CStack_34);
     iStack_4._0_1_ = 1;
     CString::~CString(&CStack_30);
-    CString__Format(&CStack_40,&g_szDecimalFormat,*(short *)&this->field_0x96 + 1);
+    CString::Format(&CStack_40,&g_szDecimalFormat,*(short *)&this->field_0x96 + 1);
     CString::operator+=(&CStack_40);
     (**(code **)(*(int *)CONCAT31(extraout_var_05,uVar3) + 0x1c8))(&CStack_3c,1);
     iStack_4 = (uint)iStack_4._1_3_ << 8;

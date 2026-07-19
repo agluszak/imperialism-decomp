@@ -159,10 +159,48 @@ switchD_004934ce_caseD_2:
   }
   CWnd::CreateEx(dwExStyle,0,0,dwStyle,local_58.left,local_58.top,local_58.right - local_58.left,
                  local_58.bottom - local_58.top,uVar5,0,0);
-  CWnd__SetWindowPos(&DAT_006a7990,0,0,0,0,3);
+  CWnd::SetWindowPos(&DAT_006a7990,0,0,0,0,3);
   BringWindowToTop((HWND)param_1[7]);
   *unaff_FS_OFFSET = uStack_c;
   return param_1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00493760
+// GHIDRA_NAME CMcWindow::~CMcWindow
+// GHIDRA_PROTO undefined ~CMcWindow()
+
+void __fastcall CMcWindow::~CMcWindow(CWnd *param_1)
+
+{
+  CCmdTargetVtbl *pCVar1;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 uStack_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  puStack_8 = &LAB_0062f498;
+  uStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &uStack_c;
+  (param_1->ccmdTarget).vftable = (CCmdTargetVtbl *)&PTR_LAB_0064b7c8;
+  pCVar1 = param_1[1].ccmdTarget.vftable;
+  local_4 = 0;
+  if (pCVar1 != (CCmdTargetVtbl *)0x0) {
+    (**(code **)(pCVar1->SetForeignMinisterReadyFlag14 + 0x1d0))();
+  }
+  local_4 = 0xffffffff;
+  CWnd::~CWnd(param_1);
+  *unaff_FS_OFFSET = uStack_c;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004937E0
+// GHIDRA_NAME CMcWindow::GetMessageMap
+// GHIDRA_PROTO undefined GetMessageMap()
+
+undefined ** CMcWindow::GetMessageMap(void)
+
+{
+  return &PTR_PTR_0064b5e8;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00493800
@@ -291,6 +329,26 @@ void __fastcall CMcWindow::OnKeyUp(CWnd *param_1)
   return;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00493C30
+// GHIDRA_NAME CMcWindow::OnCommand
+// GHIDRA_PROTO undefined OnCommand()
+
+void __thiscall CMcWindow::OnCommand(CWnd *param_1,uint param_2,HWND param_3)
+
+{
+  int *piVar1;
+  
+  if (param_2 >> 0x10 == 0x400) {
+    piVar1 = (int *)GetWindowLongA(param_3,-0x15);
+    if (piVar1 != (int *)0x0) {
+      (**(code **)(*piVar1 + 0xe4))();
+      (**(code **)((param_1[1].ccmdTarget.vftable)->SetForeignMinisterReadyFlag14 + 0x13c))();
+    }
+  }
+  CWnd::OnCommand(param_1,param_2,(int)param_3);
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00493CC0
 // GHIDRA_NAME CMcWindow::OnPaletteChanged
 // GHIDRA_PROTO undefined OnPaletteChanged()
@@ -299,6 +357,35 @@ void __fastcall CMcWindow::OnPaletteChanged(CWnd *param_1)
 
 {
   CWnd::Default(param_1);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00493D80
+// GHIDRA_NAME CMcWindow::PreCreateWindow
+// GHIDRA_PROTO undefined PreCreateWindow()
+
+void CMcWindow::PreCreateWindow(int param_1)
+
+{
+  int iVar1;
+  code **ppcVar2;
+  code *local_28 [4];
+  undefined4 local_18;
+  char *local_4;
+  
+  ppcVar2 = local_28;
+  for (iVar1 = 10; iVar1 != 0; iVar1 = iVar1 + -1) {
+    *ppcVar2 = (code *)0x0;
+    ppcVar2 = ppcVar2 + 1;
+  }
+  local_28[1] = DefWindowProcA_exref;
+  iVar1 = AfxGetModuleState();
+  local_18 = *(undefined4 *)(iVar1 + 8);
+  local_28[0] = (code *)0x3;
+  local_4 = "AmbitMcWindow";
+  AfxRegisterClass(local_28);
+  *(char **)(param_1 + 0x28) = "AmbitMcWindow";
+  CWnd::PreCreateWindow(param_1);
   return;
 }
 

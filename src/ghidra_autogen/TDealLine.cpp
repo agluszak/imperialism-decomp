@@ -37,7 +37,7 @@ undefined4 * TDealLine::CreateObject(void)
 // GHIDRA_NAME TDealLine::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TDealLine::GetRuntimeClass()
+CRuntimeClass * __thiscall TDealLine::GetRuntimeClass(TDealLine *this)
 
 {
   return &classTDealLine;
@@ -47,7 +47,7 @@ CRuntimeClass * TDealLine::GetRuntimeClass()
 // GHIDRA_NAME TDealLine::ConstructTDealLineBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTDealLineBaseState(void)
 
-TDealLine * TDealLine::ConstructTDealLineBaseState()
+TDealLine * __thiscall TDealLine::ConstructTDealLineBaseState(TDealLine *this)
 
 {
   func_0x00408f0d();
@@ -59,7 +59,7 @@ TDealLine * TDealLine::ConstructTDealLineBaseState()
 // GHIDRA_NAME TDealLine::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TDealLine * TDealLine::_scalar_deleting_destructor_(byte param_1)
+TDealLine * __thiscall TDealLine::_scalar_deleting_destructor_(TDealLine *this,byte param_1)
 
 {
   func_0x00405c3b();
@@ -70,10 +70,10 @@ TDealLine * TDealLine::_scalar_deleting_destructor_(byte param_1)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005C0E50
-// GHIDRA_NAME TDealLine::OrphanRetStub_0056f460
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0056f460(int * param_1)
+// GHIDRA_NAME TDealLine::CreateLineItemView
+// GHIDRA_PROTO undefined __thiscall CreateLineItemView(int * param_1)
 
-void TDealLine::OrphanRetStub_0056f460(int *param_1)
+void __thiscall TDealLine::CreateLineItemView(TDealLine *this,int *param_1)
 
 {
   int iVar1;
@@ -183,7 +183,7 @@ void TDealLine::OrphanRetStub_0056f460(int *param_1)
   pCStack_88 = local_34;
   CStack_84.m_pchData = (char *)0x0;
   iStack_8c = 0x5c0f53;
-  func_0x00406afa();
+  thunk_BuildUiTextStyleDescriptor();
   iVar1 = *piVar3;
   pCStack_80 = local_34;
   iStack_7c = 0;
@@ -252,7 +252,7 @@ void TDealLine::OrphanRetStub_0056f460(int *param_1)
     CStack_ac.m_pchData = (char *)(int)CStack_98.m_pchData._2_2_;
     CStack_b4.m_pchData = (char *)&CStack_84;
     CStack_b0.m_pchData = &g_szDecimalFormat;
-    CString__Format();
+    CString::Format();
     CStack_ac.m_pchData = (char *)CONCAT22(extraout_var_00,*(undefined2 *)&this->field_0x10);
     CStack_b0.m_pchData = (char *)0x5c1012;
     uVar2 = (*g_pNationInteractionStateManager->vftable[9].slot_0x04)();

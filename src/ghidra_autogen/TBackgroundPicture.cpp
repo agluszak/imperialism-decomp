@@ -37,7 +37,7 @@ undefined4 * TBackgroundPicture::CreateObject(void)
 // GHIDRA_NAME TBackgroundPicture::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TBackgroundPicture::GetRuntimeClass()
+CRuntimeClass * __thiscall TBackgroundPicture::GetRuntimeClass(TBackgroundPicture *this)
 
 {
   return &classTBackgroundPicture;
@@ -47,7 +47,8 @@ CRuntimeClass * TBackgroundPicture::GetRuntimeClass()
 // GHIDRA_NAME TBackgroundPicture::ConstructTBackgroundPictureBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTBackgroundPictureBaseState(void)
 
-TBackgroundPicture * TBackgroundPicture::ConstructTBackgroundPictureBaseState()
+TBackgroundPicture * __thiscall
+TBackgroundPicture::ConstructTBackgroundPictureBaseState(TBackgroundPicture *this)
 
 {
   func_0x00401122();
@@ -60,7 +61,8 @@ TBackgroundPicture * TBackgroundPicture::ConstructTBackgroundPictureBaseState()
 // GHIDRA_NAME TBackgroundPicture::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TBackgroundPicture * TBackgroundPicture::_scalar_deleting_destructor_(byte param_1)
+TBackgroundPicture * __thiscall
+TBackgroundPicture::_scalar_deleting_destructor_(TBackgroundPicture *this,byte param_1)
 
 {
   func_0x00408cf1();
@@ -74,7 +76,7 @@ TBackgroundPicture * TBackgroundPicture::_scalar_deleting_destructor_(byte param
 // GHIDRA_NAME TBackgroundPicture::ApplyRectSlot110
 // GHIDRA_PROTO undefined __thiscall ApplyRectSlot110(void)
 
-void TBackgroundPicture::ApplyRectSlot110()
+void __thiscall TBackgroundPicture::ApplyRectSlot110(TBackgroundPicture *this)
 
 {
   func_0x00404fe8();

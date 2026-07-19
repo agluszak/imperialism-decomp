@@ -38,7 +38,7 @@ undefined4 * TColorFill::CreateObject(void)
 // GHIDRA_NAME TColorFill::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TColorFill * TColorFill::_scalar_deleting_destructor_(byte param_1)
+TColorFill * __thiscall TColorFill::_scalar_deleting_destructor_(TColorFill *this,byte param_1)
 
 {
   func_0x00405583();
@@ -52,7 +52,7 @@ TColorFill * TColorFill::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TColorFill::CreateTColorFillInstance
 // GHIDRA_PROTO undefined __thiscall CreateTColorFillInstance(void)
 
-void TColorFill::CreateTColorFillInstance()
+void __thiscall TColorFill::CreateTColorFillInstance(TColorFill *this)
 
 {
   this->vftable = (TColorFillVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
@@ -63,19 +63,17 @@ void TColorFill::CreateTColorFillInstance()
 // GHIDRA_NAME TColorFill::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TColorFill::GetRuntimeClass()
+CRuntimeClass * __thiscall TColorFill::GetRuntimeClass(TColorFill *this)
 
 {
   return &classTColorFill;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004FF1C0
-// GHIDRA_NAME TColorFill::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d9c0
-// GHIDRA_PROTO undefined __thiscall WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d9c0(void)
+// GHIDRA_NAME TColorFill::AdornerSlot0C
+// GHIDRA_PROTO undefined __thiscall AdornerSlot0C(void)
 
-void __thiscall
-TColorFill::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d9c0
-          (TColorFill *this)
+void __thiscall TColorFill::AdornerSlot0C(TColorFill *this)
 
 {
   if (DAT_006a30b4 == 0) {

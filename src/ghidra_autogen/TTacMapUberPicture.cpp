@@ -4,10 +4,10 @@
 // Bucket: TTacMapUberPicture.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0045D3B0
-// GHIDRA_NAME TTacMapUberPicture::OrphanRetStub_0045d2a0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0045d2a0(void)
+// GHIDRA_NAME TTacMapUberPicture::AutoScrollByEdgeMask
+// GHIDRA_PROTO undefined __thiscall AutoScrollByEdgeMask(void)
 
-void TTacMapUberPicture::OrphanRetStub_0045d2a0()
+void __thiscall TTacMapUberPicture::AutoScrollByEdgeMask(TTacMapUberPicture *this)
 
 {
   if (*(int **)&this->field_0x94 != (int *)0x0) {
@@ -20,7 +20,8 @@ void TTacMapUberPicture::OrphanRetStub_0045d2a0()
 // GHIDRA_NAME TTacMapUberPicture::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TTacMapUberPicture * TTacMapUberPicture::_scalar_deleting_destructor_(byte param_1)
+TTacMapUberPicture * __thiscall
+TTacMapUberPicture::_scalar_deleting_destructor_(TTacMapUberPicture *this,byte param_1)
 
 {
   func_0x0040331e();
@@ -64,7 +65,7 @@ undefined4 * TTacMapUberPicture::CreateObject(void)
 // GHIDRA_NAME TTacMapUberPicture::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TTacMapUberPicture::GetRuntimeClass()
+CRuntimeClass * __thiscall TTacMapUberPicture::GetRuntimeClass(TTacMapUberPicture *this)
 
 {
   return &classTTacMapUberPicture;
@@ -74,7 +75,7 @@ CRuntimeClass * TTacMapUberPicture::GetRuntimeClass()
 // GHIDRA_NAME TTacMapUberPicture::NoOpUiLifecycleHook
 // GHIDRA_PROTO undefined __thiscall NoOpUiLifecycleHook(void)
 
-void TTacMapUberPicture::NoOpUiLifecycleHook()
+void __thiscall TTacMapUberPicture::NoOpUiLifecycleHook(TTacMapUberPicture *this)
 
 {
   undefined uVar1;
@@ -91,7 +92,7 @@ void TTacMapUberPicture::NoOpUiLifecycleHook()
 // GHIDRA_NAME TTacMapUberPicture::ForwardParam
 // GHIDRA_PROTO undefined __thiscall ForwardParam(void)
 
-void TTacMapUberPicture::ForwardParam()
+void __thiscall TTacMapUberPicture::ForwardParam(TTacMapUberPicture *this)
 
 {
   int iVar1;

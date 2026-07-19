@@ -7,7 +7,8 @@
 // GHIDRA_NAME TTradeBookView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TTradeBookView * TTradeBookView::_scalar_deleting_destructor_(byte param_1)
+TTradeBookView * __thiscall
+TTradeBookView::_scalar_deleting_destructor_(TTradeBookView *this,byte param_1)
 
 {
   func_0x0040221b();
@@ -52,7 +53,7 @@ undefined4 * TTradeBookView::CreateObject(void)
 // GHIDRA_NAME TTradeBookView::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TTradeBookView::GetRuntimeClass()
+CRuntimeClass * __thiscall TTradeBookView::GetRuntimeClass(TTradeBookView *this)
 
 {
   return &classTTradeBookView;
@@ -62,7 +63,7 @@ CRuntimeClass * TTradeBookView::GetRuntimeClass()
 // GHIDRA_NAME TTradeBookView::NoOpUiLifecycleHook
 // GHIDRA_PROTO void __thiscall NoOpUiLifecycleHook(uint this_obj)
 
-void TTradeBookView::NoOpUiLifecycleHook(uint this_obj)
+void __thiscall TTradeBookView::NoOpUiLifecycleHook(TTradeBookView *this,uint this_obj)
 
 {
   undefined uVar1;
@@ -140,7 +141,7 @@ void TTradeBookView::NoOpUiLifecycleHook(uint this_obj)
   CStack_4c.m_pchData =
        (char *)((short)((int)((int)*(short *)&g_pSimMgr->field_0x2c +
                              ((int)*(short *)&g_pSimMgr->field_0x2c >> 0x1f & 3U)) >> 2) + 0x717);
-  CString__Format(&temp_tag,&g_szDecimalFormat);
+  CString::Format(&temp_tag,&g_szDecimalFormat);
   CStack_4c.m_pchData = (char *)tmp_buf4;
   (*g_pSimMgr->vftable[6].slot_0x04)();
   text_handle = AssignSharedStringConcatRefAndCStr
@@ -165,7 +166,8 @@ void TTradeBookView::NoOpUiLifecycleHook(uint this_obj)
 // GHIDRA_NAME TTradeBookView::HandleEvent
 // GHIDRA_PROTO undefined __thiscall HandleEvent(int param_1, int param_2, undefined4 param_3)
 
-void TTradeBookView::HandleEvent(int param_1, int param_2, undefined4 param_3)
+void __thiscall
+TTradeBookView::HandleEvent(TTradeBookView *this,int param_1,int param_2,undefined4 param_3)
 
 {
   int iVar1;

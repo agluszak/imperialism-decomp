@@ -7,16 +7,16 @@
 // GHIDRA_NAME CBrush::InitializeGlobalClipRegionHandleState
 // GHIDRA_PROTO undefined __thiscall InitializeGlobalClipRegionHandleState(void)
 
-CBrush * CBrush::InitializeGlobalClipRegionHandleState()
+CBrush * __thiscall CBrush::InitializeGlobalClipRegionHandleState(CBrush *this)
 
 {
-  CBrush *this_00;
+  CGdiObject *this_00;
   HRGN pHVar1;
   
   *(undefined **)(this + 8) = &g_defaultQuickDrawSurfaceSentinel;
-  this_00 = (CBrush *)operator_new(8);
-  if (this_00 == (CBrush *)0x0) {
-    this_00 = (CBrush *)0x0;
+  this_00 = (CGdiObject *)operator_new(8);
+  if (this_00 == (CGdiObject *)0x0) {
+    this_00 = (CGdiObject *)0x0;
   }
   else {
     *(undefined4 *)(this_00 + 4) = 0;
@@ -24,7 +24,7 @@ CBrush * CBrush::InitializeGlobalClipRegionHandleState()
   }
   g_pGlobalClipRegionHandleObject = (int)this_00;
   pHVar1 = CreateRectRgn(0,0,0,0);
-  CGdiObject__Attach(this_00,(int)pHVar1);
+  CGdiObject::Attach(this_00,(int)pHVar1);
   return this;
 }
 
@@ -32,17 +32,18 @@ CBrush * CBrush::InitializeGlobalClipRegionHandleState()
 // GHIDRA_NAME CBrush::Helper_Uses_AttachRegionHandleToClipStateAndRegister_At004955b0
 // GHIDRA_PROTO undefined __thiscall Helper_Uses_AttachRegionHandleToClipStateAndRegister_At004955b0(RECT * param_1)
 
-void CBrush::Helper_Uses_AttachRegionHandleToClipStateAndRegister_At004955b0(RECT *param_1)
+void __thiscall
+CBrush::Helper_Uses_AttachRegionHandleToClipStateAndRegister_At004955b0(CBrush *this,RECT *param_1)
 
 {
   HRGN pHVar1;
   undefined4 uVar2;
   
   if (*(int *)(this + 0x10) != 0) {
-    CGdiObject__DeleteObject();
+    CGdiObject::DeleteObject();
   }
   pHVar1 = CreateRectRgnIndirect(param_1);
-  uVar2 = CGdiObject__Attach(this + 0x14,(int)pHVar1);
+  uVar2 = CGdiObject::Attach((CGdiObject *)(this + 0x14),(int)pHVar1);
   *(undefined4 *)(this + 0x10) = uVar2;
   return;
 }
@@ -74,7 +75,7 @@ void CBrush::~CBrush(void)
 // GHIDRA_NAME CBrush::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-CBrush * CBrush::_scalar_deleting_destructor_(byte param_1)
+CBrush * __thiscall CBrush::_scalar_deleting_destructor_(CBrush *this,byte param_1)
 
 {
   func_0x00406d48();
@@ -82,25 +83,6 @@ CBrush * CBrush::_scalar_deleting_destructor_(byte param_1)
     operator_delete(this);
   }
   return this;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00613A4C
-// GHIDRA_NAME CBrush::CGdiObject::Attach
-// GHIDRA_PROTO undefined __thiscall CGdiObject::Attach(int param_1)
-
-bool CBrush::CGdiObject__Attach(int param_1)
-
-{
-  CMapPtrToPtr *this_00;
-  undefined4 *puVar1;
-  
-  if (param_1 != 0) {
-    this_00 = (CMapPtrToPtr *)afxMapHGDIOBJ(1);
-    *(int *)(this + 4) = param_1;
-    puVar1 = (undefined4 *)CMapPtrToPtr::operator[](this_00,param_1);
-    *puVar1 = this;
-  }
-  return param_1 != 0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00613B5F
@@ -118,24 +100,24 @@ bool CBrush::CGdiObject__Attach(int param_1)
    
    Library: nafxcw retail msvc500:static */
 
-CBrush * CBrush::CBrush(void)
+CGdiObject * CBrush::CBrush(void)
 
 {
   COLORREF color;
   HBRUSH pHVar1;
   int iVar2;
-  CBrush *this;
+  CGdiObject *this;
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
   
   _EH_prolog();
-  *(CBrush **)(unaff_EBP + -0x10) = this;
+  *(CGdiObject **)(unaff_EBP + -0x10) = this;
   *(undefined4 *)(this + 4) = 0;
   color = *(COLORREF *)(unaff_EBP + 8);
   *(undefined4 *)(unaff_EBP + -4) = 0;
   *(undefined ***)this = &PTR_LAB_00672634;
   pHVar1 = CreateSolidBrush(color);
-  iVar2 = CGdiObject__Attach(this,(int)pHVar1);
+  iVar2 = CGdiObject::Attach(this,(int)pHVar1);
   if (iVar2 == 0) {
     AfxThrowResourceException();
   }
@@ -147,24 +129,24 @@ CBrush * CBrush::CBrush(void)
 // GHIDRA_NAME CBrush::CBrush
 // GHIDRA_PROTO undefined CBrush()
 
-CBrush * CBrush::CBrush(void)
+CGdiObject * CBrush::CBrush(void)
 
 {
   COLORREF color;
   HBRUSH pHVar1;
   int iVar2;
-  CBrush *this;
+  CGdiObject *this;
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
   
   _EH_prolog();
-  *(CBrush **)(unaff_EBP + -0x10) = this;
+  *(CGdiObject **)(unaff_EBP + -0x10) = this;
   *(undefined4 *)(this + 4) = 0;
   color = *(COLORREF *)(unaff_EBP + 0xc);
   *(undefined4 *)(unaff_EBP + -4) = 0;
   *(undefined ***)this = &PTR_LAB_00672634;
   pHVar1 = CreateHatchBrush(*(int *)(unaff_EBP + 8),color);
-  iVar2 = CGdiObject__Attach(this,(int)pHVar1);
+  iVar2 = CGdiObject::Attach(this,(int)pHVar1);
   if (iVar2 == 0) {
     AfxThrowResourceException();
   }
@@ -176,23 +158,23 @@ CBrush * CBrush::CBrush(void)
 // GHIDRA_NAME CBrush::CBrush
 // GHIDRA_PROTO undefined CBrush()
 
-CBrush * CBrush::CBrush(void)
+CGdiObject * CBrush::CBrush(void)
 
 {
   HBRUSH pHVar1;
   int iVar2;
-  CBrush *this;
+  CGdiObject *this;
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
   
   _EH_prolog();
-  *(CBrush **)(unaff_EBP + -0x10) = this;
+  *(CGdiObject **)(unaff_EBP + -0x10) = this;
   *(undefined4 *)(this + 4) = 0;
   iVar2 = *(int *)(unaff_EBP + 8);
   *(undefined4 *)(unaff_EBP + -4) = 0;
   *(undefined ***)this = &PTR_LAB_00672634;
   pHVar1 = CreatePatternBrush(*(HBITMAP *)(iVar2 + 4));
-  iVar2 = CGdiObject__Attach(this,(int)pHVar1);
+  iVar2 = CGdiObject::Attach(this,(int)pHVar1);
   if (iVar2 == 0) {
     AfxThrowResourceException();
   }
@@ -215,7 +197,7 @@ CBrush * CBrush::CBrush(void)
    
    Library: nafxcw retail msvc500:static */
 
-int CBrush::CreateDIBPatternBrush(void *param_1, uint param_2)
+int __thiscall CBrush::CreateDIBPatternBrush(CBrush *this,void *param_1,uint param_2)
 
 {
   LPVOID lpPackedDIB;
@@ -224,7 +206,7 @@ int CBrush::CreateDIBPatternBrush(void *param_1, uint param_2)
   
   lpPackedDIB = GlobalLock(param_1);
   pHVar1 = CreateDIBPatternBrushPt(lpPackedDIB,param_2);
-  iVar2 = CGdiObject__Attach(this,(int)pHVar1);
+  iVar2 = CGdiObject::Attach((CGdiObject *)this,(int)pHVar1);
   GlobalUnlock(param_1);
   return iVar2;
 }

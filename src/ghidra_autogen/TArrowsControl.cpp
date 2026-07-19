@@ -37,7 +37,7 @@ undefined4 * TArrowsControl::CreateObject(void)
 // GHIDRA_NAME TArrowsControl::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TArrowsControl::GetRuntimeClass()
+CRuntimeClass * __thiscall TArrowsControl::GetRuntimeClass(TArrowsControl *this)
 
 {
   return &classTArrowsControl;
@@ -47,7 +47,7 @@ CRuntimeClass * TArrowsControl::GetRuntimeClass()
 // GHIDRA_NAME TArrowsControl::ConstructTArrowsControlBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTArrowsControlBaseState(void)
 
-TArrowsControl * TArrowsControl::ConstructTArrowsControlBaseState()
+TArrowsControl * __thiscall TArrowsControl::ConstructTArrowsControlBaseState(TArrowsControl *this)
 
 {
   func_0x00401122();
@@ -60,7 +60,8 @@ TArrowsControl * TArrowsControl::ConstructTArrowsControlBaseState()
 // GHIDRA_NAME TArrowsControl::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TArrowsControl * TArrowsControl::_scalar_deleting_destructor_(byte param_1)
+TArrowsControl * __thiscall
+TArrowsControl::_scalar_deleting_destructor_(TArrowsControl *this,byte param_1)
 
 {
   func_0x0040159b();
@@ -74,7 +75,8 @@ TArrowsControl * TArrowsControl::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TArrowsControl::DispatchPictureResourceCommand
 // GHIDRA_PROTO undefined __thiscall DispatchPictureResourceCommand(int param_1, int param_2)
 
-void TArrowsControl::DispatchPictureResourceCommand(int param_1, int param_2)
+void __thiscall
+TArrowsControl::DispatchPictureResourceCommand(TArrowsControl *this,int param_1,int param_2)
 
 {
   TArrowsControlVtbl *pTVar1;

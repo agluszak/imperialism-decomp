@@ -7,7 +7,8 @@
 // GHIDRA_NAME TTacticalAdiosPicture::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TTacticalAdiosPicture * TTacticalAdiosPicture::_scalar_deleting_destructor_(byte param_1)
+TTacticalAdiosPicture * __thiscall
+TTacticalAdiosPicture::_scalar_deleting_destructor_(TTacticalAdiosPicture *this,byte param_1)
 
 {
   func_0x00408e9a();
@@ -51,7 +52,7 @@ undefined4 * TTacticalAdiosPicture::CreateObject(void)
 // GHIDRA_NAME TTacticalAdiosPicture::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TTacticalAdiosPicture::GetRuntimeClass()
+CRuntimeClass * __thiscall TTacticalAdiosPicture::GetRuntimeClass(TTacticalAdiosPicture *this)
 
 {
   return &classTTacticalAdiosPicture;
@@ -61,7 +62,7 @@ CRuntimeClass * TTacticalAdiosPicture::GetRuntimeClass()
 // GHIDRA_NAME TTacticalAdiosPicture::NoOpUiLifecycleHook
 // GHIDRA_PROTO undefined __thiscall NoOpUiLifecycleHook(void)
 
-void TTacticalAdiosPicture::NoOpUiLifecycleHook()
+void __thiscall TTacticalAdiosPicture::NoOpUiLifecycleHook(TTacticalAdiosPicture *this)
 
 {
   _vslot_fn *p_Var1;
@@ -112,7 +113,7 @@ void TTacticalAdiosPicture::NoOpUiLifecycleHook()
   puStack_40 = auStack_14;
   uStack_3c = 0;
   uStack_44 = 0x5ad526;
-  InitializeUiTextStyleDescriptor();
+  thunk_InitializeUiTextStyleDescriptor();
   puStack_34 = auStack_14;
   uStack_30 = 0;
   uStack_38 = 0x5ad538;
@@ -133,7 +134,7 @@ void TTacticalAdiosPicture::NoOpUiLifecycleHook()
   puStack_54 = auStack_28;
   uStack_50 = 2;
   uStack_58 = 0x5ad56b;
-  InitializeUiTextStyleDescriptor();
+  thunk_InitializeUiTextStyleDescriptor();
   puStack_48 = auStack_28;
   uStack_44 = 0;
   uStack_4c = 0x5ad57d;
@@ -166,7 +167,8 @@ void TTacticalAdiosPicture::NoOpUiLifecycleHook()
 // GHIDRA_NAME TTacticalAdiosPicture::HandleEvent
 // GHIDRA_PROTO undefined __thiscall HandleEvent(int param_1, int param_2)
 
-void TTacticalAdiosPicture::HandleEvent(int param_1, int param_2)
+void __thiscall
+TTacticalAdiosPicture::HandleEvent(TTacticalAdiosPicture *this,int param_1,int param_2)
 
 {
   undefined uVar1;

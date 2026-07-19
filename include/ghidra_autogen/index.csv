@@ -4,9 +4,12 @@ category|datatype|kind|header
 /|/CAmbitDocument|structure|root_types.h
 /|/CArchive|structure|root_types.h
 /|/CArchiveException|structure|root_types.h
+/|/CArray<RuntimeSelectionRecord*,RuntimeSelectionRecord*>|structure|root_types.h
+/|/CArray<void*,void*>|structure|root_types.h
 /|/CCmdTarget|structure|root_types.h
 /|/CCommandLineInfo|structure|root_types.h
 /|/CDC|structure|root_types.h
+/|/CDib|structure|root_types.h
 /|/CDocManager|structure|root_types.h
 /|/CDocTemplate|structure|root_types.h
 /|/CDocument|structure|root_types.h
@@ -18,8 +21,13 @@ category|datatype|kind|header
 /|/CIncludeView|structure|root_types.h
 /|/CityDialogController|structure|root_types.h
 /|/CivilianMapInteractionManager|structure|root_types.h
+/|/CList<long,long>|structure|root_types.h
+/|/CList<TurnEventDialogFactoryProc,TurnEventDialogFactoryProc>|structure|root_types.h
 /|/CMainFrame|structure|root_types.h
+/|/CMap<void*,void*,CacheRecord*,CacheRecord*>|structure|root_types.h
+/|/CMap<WORD,WORD,CacheRecord*,CacheRecord*>|structure|root_types.h
 /|/CMapPtrToPtr|structure|root_types.h
+/|/CMapStringToOb|structure|root_types.h
 /|/CMcWindow|structure|root_types.h
 /|/CMemFile|structure|root_types.h
 /|/CObject|structure|root_types.h
@@ -37,11 +45,16 @@ category|datatype|kind|header
 /|/CWnd|structure|root_types.h
 /|/IMAGE_RESOURCE_DIRECTORY_ENTRY_DirectoryStruct|structure|root_types.h
 /|/IMAGE_RESOURCE_DIRECTORY_ENTRY_DirectoryUnion|union|root_types.h
+/|/ImperialismApp|structure|root_types.h
+/|/ImperialismCommandLineInfo|structure|root_types.h
 /|/InputState|structure|root_types.h
 /|/LandSaleEvent|structure|root_types.h
 /|/LinkedListQueryOwner|structure|root_types.h
 /|/MinisterView|structure|root_types.h
 /|/ObjectPool|structure|root_types.h
+/|/SeapointStretch|structure|root_types.h
+/|/SeaSegmentStretch|structure|root_types.h
+/|/StrategicMapCallbackRecord|structure|root_types.h
 /|/T2PictToggleButton|structure|root_types.h
 /|/T2PictureButton|structure|root_types.h
 /|/TacticalBattleController|structure|root_types.h
@@ -101,6 +114,7 @@ category|datatype|kind|header
 /|/TButton|structure|root_types.h
 /|/TCancelGameOptionsCommand|structure|root_types.h
 /|/TCapacityOrder|structure|root_types.h
+/|/TCdAudioDevice|structure|root_types.h
 /|/TCheater|structure|root_types.h
 /|/TCity|structure|root_types.h
 /|/TCityBarCluster|structure|root_types.h
@@ -236,6 +250,7 @@ category|datatype|kind|header
 /|/TList|structure|root_types.h
 /|/TLoadSavePicture|structure|root_types.h
 /|/TLonelyTileView|structure|root_types.h
+/|/TLongintList|structure|root_types.h
 /|/TLoungeDialog|structure|root_types.h
 /|/TMacViewMgr|structure|root_types.h
 /|/TMadnessButton|structure|root_types.h
@@ -387,7 +402,6 @@ category|datatype|kind|header
 /|/TSortedByRelationshipList|structure|root_types.h
 /|/TSortedList|structure|root_types.h
 /|/TSortedPtrList|structure|root_types.h
-/|/TSoundChannelNode|structure|root_types.h
 /|/TSoundPlayer|structure|root_types.h
 /|/TSpaceCommand|structure|root_types.h
 /|/TSpecialQuitPicture|structure|root_types.h
@@ -457,6 +471,7 @@ category|datatype|kind|header
 /|/TTransportPicture|structure|root_types.h
 /|/TTransportView|structure|root_types.h
 /|/TTreatiesView|structure|root_types.h
+/|/TTurnEventDialogFactoryRegistry|structure|root_types.h
 /|/TTurnEventDialogFactoryRegistryState_0064B328|structure|root_types.h
 /|/TTurnStartEvent|structure|root_types.h
 /|/TTwoPicSlider|structure|root_types.h

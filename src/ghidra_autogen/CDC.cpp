@@ -58,7 +58,7 @@ CDC::GrayStringA(int param_1,int param_2,GRAYSTRINGPROC param_3,LPARAM param_4,i
 // GHIDRA_NAME CDC::CDC
 // GHIDRA_PROTO undefined __thiscall CDC(void)
 
-void CDC::CDC()
+void __thiscall CDC::CDC(CDC *this)
 
 {
   (this->cobject).vftable = (CObjectVtbl *)&_vftable_;
@@ -86,7 +86,7 @@ undefined4 __thiscall CDC::_scalar_deleting_destructor_(undefined4 param_1,byte 
 // GHIDRA_NAME CDC::Attach
 // GHIDRA_PROTO undefined __thiscall Attach(int param_1)
 
-bool CDC::Attach(int param_1)
+bool __thiscall CDC::Attach(CDC *this,int param_1)
 
 {
   CMapPtrToPtr *this_00;
@@ -155,7 +155,7 @@ void CDC::~CDC(void)
 // GHIDRA_NAME CDC::StartDocA
 // GHIDRA_PROTO undefined __thiscall StartDocA(void)
 
-void CDC::StartDocA()
+void __thiscall CDC::StartDocA(CDC *this)
 
 {
   DOCINFOA local_18;
@@ -268,7 +268,7 @@ void __thiscall CDC::SelectObject(int param_1,HGDIOBJ param_2)
 // GHIDRA_NAME CDC::SelectObject
 // GHIDRA_PROTO undefined __thiscall SelectObject(HGDIOBJ param_1)
 
-void CDC::SelectObject(HGDIOBJ param_1)
+void __thiscall CDC::SelectObject(CDC *this,HGDIOBJ param_1)
 
 {
   HGDIOBJ pvVar1;
@@ -294,6 +294,17 @@ void CDC::SelectObject(HGDIOBJ param_1)
     param_1 = ::SelectObject(this->m_hAttribDC,pvVar1);
   }
   CGdiObject::FromHandle(param_1);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00612A78
+// GHIDRA_NAME CDC::SelectPalette
+// GHIDRA_PROTO undefined SelectPalette()
+
+void __fastcall CDC::SelectPalette(TOceanDialog *param_1)
+
+{
+  TOceanDialog::DispatchHandleMapLookupWithReadPtrProbe(param_1);
   return;
 }
 
@@ -498,7 +509,7 @@ void __thiscall CDC::GetClipBox(int param_1,LPRECT param_2)
 // GHIDRA_NAME CDC::SelectClipRgn
 // GHIDRA_PROTO undefined __thiscall SelectClipRgn(int param_1)
 
-int CDC::SelectClipRgn(int param_1)
+int __thiscall CDC::SelectClipRgn(CDC *this,int param_1)
 
 {
   int iVar1;
@@ -733,7 +744,9 @@ UINT __thiscall CDC::SetTextAlign(int param_1,UINT param_2)
    
    Library: nafxcw retail msvc500:static */
 
-int CDC::ArcTo(int param_1, int param_2, int param_3, int param_4, int param_5, int param_6, int param_7, int param_8)
+int __thiscall
+CDC::ArcTo(CDC *this,int param_1,int param_2,int param_3,int param_4,int param_5,int param_6,
+          int param_7,int param_8)
 
 {
   BOOL BVar1;
@@ -764,7 +777,7 @@ int CDC::ArcTo(int param_1, int param_2, int param_3, int param_4, int param_5, 
    
    Library: nafxcw retail msvc500:static */
 
-int CDC::PolyDraw(tagPOINT *param_1, uchar *param_2, int param_3)
+int __thiscall CDC::PolyDraw(CDC *this,tagPOINT *param_1,uchar *param_2,int param_3)
 
 {
   BOOL BVar1;
@@ -1130,7 +1143,7 @@ void CDC::GetHalftoneBrush(void)
   undefined2 local_14 [8];
   
   AfxLockGlobals(8);
-  if (DAT_006a7cb8 == (HBRUSH)0x0) {
+  if (halftoneBrush == (HBRUSH)0x0) {
     iVar3 = 0;
     puVar2 = local_14;
     do {
@@ -1141,12 +1154,12 @@ void CDC::GetHalftoneBrush(void)
     } while (iVar3 < 8);
     hbm = CreateBitmap(8,8,1,1,local_14);
     if (hbm != (HBITMAP)0x0) {
-      DAT_006a7cb8 = CreatePatternBrush(hbm);
+      halftoneBrush = CreatePatternBrush(hbm);
       DeleteObject(hbm);
     }
   }
   AfxUnlockGlobals(8);
-  CGdiObject::FromHandle(DAT_006a7cb8);
+  CGdiObject::FromHandle(halftoneBrush);
   return;
 }
 
@@ -1188,14 +1201,14 @@ void CDC::DrawDragRect(void)
   *(undefined ***)(unaff_EBP + -0x14) = &CBrush::_vftable_;
   *(undefined1 *)(unaff_EBP + -4) = 2;
   pHVar1 = CreateRectRgnIndirect(*(RECT **)(unaff_EBP + 8));
-  CBrush::CGdiObject__Attach((CBrush *)(unaff_EBP + -0x1c),(int)pHVar1);
+  CGdiObject::Attach((CGdiObject *)(unaff_EBP + -0x1c),(int)pHVar1);
   CopyRect((LPRECT)(unaff_EBP + -0x44),*(RECT **)(unaff_EBP + 8));
   InflateRect((LPRECT)(unaff_EBP + -0x44),-*(int *)(unaff_EBP + 0xc),-*(int *)(unaff_EBP + 0x10));
   IntersectRect((LPRECT)(unaff_EBP + -0x44),(RECT *)(unaff_EBP + -0x44),*(RECT **)(unaff_EBP + 8));
   pHVar1 = CreateRectRgnIndirect((RECT *)(unaff_EBP + -0x44));
-  CBrush::CGdiObject__Attach((CBrush *)(unaff_EBP + -0x14),(int)pHVar1);
+  CGdiObject::Attach((CGdiObject *)(unaff_EBP + -0x14),(int)pHVar1);
   pHVar1 = CreateRectRgn(0,0,0,0);
-  CBrush::CGdiObject__Attach((CBrush *)(unaff_EBP + -0x34),(int)pHVar1);
+  CGdiObject::Attach((CGdiObject *)(unaff_EBP + -0x34),(int)pHVar1);
   CombineRgn(*(HRGN *)(unaff_EBP + -0x30),
              (HRGN)(-(uint)(unaff_EBP != 0x1c) & *(uint *)(unaff_EBP + -0x18)),
              (HRGN)(-(uint)(unaff_EBP != 0x14) & *(uint *)(unaff_EBP + -0x10)),3);
@@ -1215,7 +1228,7 @@ void CDC::DrawDragRect(void)
   *(undefined1 *)(unaff_EBP + -4) = 4;
   if (lprcSrc != (RECT *)0x0) {
     pHVar1 = CreateRectRgn(0,0,0,0);
-    CBrush::CGdiObject__Attach((CBrush *)(unaff_EBP + -0x24),(int)pHVar1);
+    CGdiObject::Attach((CGdiObject *)(unaff_EBP + -0x24),(int)pHVar1);
     SetRectRgn(*(HRGN *)(unaff_EBP + -0x18),lprcSrc->left,lprcSrc->top,lprcSrc->right,
                lprcSrc->bottom);
     CopyRect((LPRECT)(unaff_EBP + -0x44),lprcSrc);
@@ -1229,7 +1242,7 @@ void CDC::DrawDragRect(void)
                (HRGN)(-(uint)(unaff_EBP != 0x14) & *(uint *)(unaff_EBP + -0x10)),3);
     if (*(int *)(*(int *)(unaff_EBP + 0x20) + 4) == *(int *)(*(int *)(unaff_EBP + 0x24) + 4)) {
       pHVar1 = CreateRectRgn(0,0,0,0);
-      CBrush::CGdiObject__Attach((CBrush *)(unaff_EBP + -0x2c),(int)pHVar1);
+      CGdiObject::Attach((CGdiObject *)(unaff_EBP + -0x2c),(int)pHVar1);
       CombineRgn(*(HRGN *)(unaff_EBP + -0x28),
                  (HRGN)(-(uint)(unaff_EBP != 0x24) & *(uint *)(unaff_EBP + -0x20)),
                  (HRGN)(-(uint)(unaff_EBP != 0x34) & *(uint *)(unaff_EBP + -0x30)),3);
@@ -1261,23 +1274,23 @@ void CDC::DrawDragRect(void)
   SelectClipRgn(this,0);
   *(undefined ***)(unaff_EBP + -0x2c) = &PTR_LAB_00671054;
   *(undefined1 *)(unaff_EBP + -4) = 5;
-  CGdiObject__DeleteObject();
+  CGdiObject::DeleteObject();
   *(undefined ***)(unaff_EBP + -0x24) = &PTR_LAB_00671054;
   *(char **)(unaff_EBP + -0x2c) = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *(undefined1 *)(unaff_EBP + -4) = 6;
-  CGdiObject__DeleteObject();
+  CGdiObject::DeleteObject();
   *(char **)(unaff_EBP + -0x24) = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *(undefined ***)(unaff_EBP + -0x14) = &PTR_LAB_00671054;
   *(undefined1 *)(unaff_EBP + -4) = 7;
-  CGdiObject__DeleteObject();
+  CGdiObject::DeleteObject();
   *(char **)(unaff_EBP + -0x14) = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *(undefined ***)(unaff_EBP + -0x1c) = &PTR_LAB_00671054;
   *(undefined1 *)(unaff_EBP + -4) = 8;
-  CGdiObject__DeleteObject();
+  CGdiObject::DeleteObject();
   *(char **)(unaff_EBP + -0x1c) = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *(undefined ***)(unaff_EBP + -0x34) = &PTR_LAB_00671054;
   *(undefined4 *)(unaff_EBP + -4) = 9;
-  CGdiObject__DeleteObject();
+  CGdiObject::DeleteObject();
   *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
   return;
 }

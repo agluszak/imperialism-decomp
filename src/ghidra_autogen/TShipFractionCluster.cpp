@@ -7,7 +7,8 @@
 // GHIDRA_NAME TShipFractionCluster::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TShipFractionCluster * TShipFractionCluster::_scalar_deleting_destructor_(byte param_1)
+TShipFractionCluster * __thiscall
+TShipFractionCluster::_scalar_deleting_destructor_(TShipFractionCluster *this,byte param_1)
 
 {
   func_0x004094c6();
@@ -39,7 +40,7 @@ TCluster * TShipFractionCluster::CreateObject(void)
   local_4 = 0;
   pTVar1 = (TCluster *)0x0;
   if (this != (TCluster *)0x0) {
-    TCluster::ConstructUiResourceEntryType4B0C0(this);
+    TCluster::thunk_ConstructUiResourceEntryType4B0C0(this);
     this->vftable = (TClusterVtbl *)&_vftable_;
     pTVar1 = this;
   }
@@ -51,7 +52,7 @@ TCluster * TShipFractionCluster::CreateObject(void)
 // GHIDRA_NAME TShipFractionCluster::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TShipFractionCluster::GetRuntimeClass()
+CRuntimeClass * __thiscall TShipFractionCluster::GetRuntimeClass(TShipFractionCluster *this)
 
 {
   return &classTShipFractionCluster;
@@ -61,7 +62,7 @@ CRuntimeClass * TShipFractionCluster::GetRuntimeClass()
 // GHIDRA_NAME TShipFractionCluster::NoOpUiLifecycleHook
 // GHIDRA_PROTO undefined __thiscall NoOpUiLifecycleHook(void)
 
-void TShipFractionCluster::NoOpUiLifecycleHook()
+void __thiscall TShipFractionCluster::NoOpUiLifecycleHook(TShipFractionCluster *this)
 
 {
   TShipFractionClusterVtbl *pTVar1;
@@ -105,7 +106,8 @@ void TShipFractionCluster::NoOpUiLifecycleHook()
 // GHIDRA_NAME TShipFractionCluster::HandleEvent
 // GHIDRA_PROTO undefined __thiscall HandleEvent(int param_1, void * param_2, int param_3)
 
-void TShipFractionCluster::HandleEvent(int param_1, void *param_2, int param_3)
+void __thiscall
+TShipFractionCluster::HandleEvent(TShipFractionCluster *this,int param_1,void *param_2,int param_3)
 
 {
   int iVar1;

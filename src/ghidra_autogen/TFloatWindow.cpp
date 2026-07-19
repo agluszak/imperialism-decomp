@@ -79,7 +79,7 @@ undefined4 * TFloatWindow::CreateObject(void)
 // GHIDRA_NAME TFloatWindow::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TFloatWindow::GetRuntimeClass()
+CRuntimeClass * __thiscall TFloatWindow::GetRuntimeClass(TFloatWindow *this)
 
 {
   return &classTFloatWindow;
@@ -96,7 +96,7 @@ CRuntimeClass * TFloatWindow::GetRuntimeClass()
 /* Window-entry constructor over ConstructUiResourceEntryBase.
    Links node into global tracked-window list and installs vtable PTR_LAB_0064b340. */
 
-TFloatWindow * TFloatWindow::TFloatWindow()
+TFloatWindow * __thiscall TFloatWindow::TFloatWindow(TFloatWindow *this)
 
 {
   int iVar1;
@@ -161,7 +161,8 @@ TFloatWindow * TFloatWindow::TFloatWindow()
 // GHIDRA_NAME TFloatWindow::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TFloatWindow * TFloatWindow::_scalar_deleting_destructor_(byte param_1)
+TFloatWindow * __thiscall
+TFloatWindow::_scalar_deleting_destructor_(TFloatWindow *this,byte param_1)
 
 {
   func_0x0040830f();
@@ -175,7 +176,7 @@ TFloatWindow * TFloatWindow::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TFloatWindow::GetWindowTypeTag
 // GHIDRA_PROTO undefined __thiscall GetWindowTypeTag(void)
 
-undefined4 TFloatWindow::GetWindowTypeTag()
+undefined4 __thiscall TFloatWindow::GetWindowTypeTag(TFloatWindow *this)
 
 {
   return 0x66776e64;
@@ -192,7 +193,7 @@ undefined4 TFloatWindow::GetWindowTypeTag()
 /* Alternate implementation of ResetChildSelectionAndNotifyParent468 with same
    notification/child-iteration flow. */
 
-void TFloatWindow::CallVoidSlotA0()
+void __thiscall TFloatWindow::CallVoidSlotA0(TFloatWindow *this)
 
 {
   int iVar1;
@@ -231,93 +232,5 @@ void TFloatWindow::CallVoidSlotA0()
   }
   (*this->vftable[0x39].slot_0x04)(0,1);
   return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00492670
-// GHIDRA_NAME TFloatWindow::SerializeRecordList_0x0C_WithBlockPool_C
-// GHIDRA_PROTO undefined __thiscall SerializeRecordList_0x0C_WithBlockPool_C(CArchive * param_1)
-
-void TFloatWindow::SerializeRecordList_0x0C_WithBlockPool_C(CArchive *param_1)
-
-{
-  int iVar1;
-  CArchive *this_00;
-  CArchive *pCVar2;
-  int iVar3;
-  int iVar4;
-  int *piVar5;
-  int iVar6;
-  
-  this_00 = param_1;
-  if ((~param_1->m_nMode & 1U) == 0) {
-    for (iVar3 = CArchive::ReadCount(); iVar3 != 0; iVar3 = iVar3 + -1) {
-      if ((~this_00->m_nMode & 1U) == 0) {
-        CArchive::Read(this_00,(int)&param_1,4);
-      }
-      else {
-        CArchive::Write(this_00,(int)&param_1,4);
-      }
-      pCVar2 = param_1;
-      iVar1 = this->padding_08_to_0b;
-      if (this->field10 == 0) {
-        iVar4 = CPlex::Create(&this->field14,this->field18,0xc);
-        iVar6 = this->field18;
-        piVar5 = (int *)(iVar4 + -8 + iVar6 * 0xc);
-        if (-1 < iVar6 + -1) {
-          do {
-            *piVar5 = this->field10;
-            this->field10 = (int)piVar5;
-            piVar5 = piVar5 + -3;
-            iVar6 = iVar6 + -1;
-          } while (iVar6 != 0);
-        }
-      }
-      piVar5 = (int *)this->field10;
-      this->field10 = *piVar5;
-      piVar5[1] = iVar1;
-      *piVar5 = 0;
-      this->field0c = this->field0c + 1;
-      piVar5[2] = 0;
-      piVar5[2] = (int)pCVar2;
-      if ((undefined4 *)this->padding_08_to_0b == (undefined4 *)0x0) {
-        this->field04 = (int)piVar5;
-      }
-      else {
-        *(undefined4 *)this->padding_08_to_0b = piVar5;
-      }
-      this->padding_08_to_0b = piVar5;
-    }
-  }
-  else {
-    CArchive::WriteCount(param_1,(TNetMgr_GetTNetMgrClassNamePointer_0x00 *)this->field0c);
-    piVar5 = (int *)this->field04;
-    if (piVar5 != (int *)0x0) {
-      do {
-        if ((~this_00->m_nMode & 1U) == 0) {
-          CArchive::Read(this_00,(int)(piVar5 + 2),4);
-        }
-        else {
-          CArchive::Write(this_00,(int)(piVar5 + 2),4);
-        }
-        piVar5 = (int *)*piVar5;
-      } while (piVar5 != (int *)0x0);
-      return;
-    }
-  }
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00492950
-// GHIDRA_NAME TFloatWindow::WrapperFor_FreeHeapBufferIfNotNull_At00492950
-// GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At00492950(byte param_1)
-
-TFloatWindow * TFloatWindow::WrapperFor_FreeHeapBufferIfNotNull_At00492950(byte param_1)
-
-{
-  func_0x004069e7();
-  if ((param_1 & 1) != 0) {
-    operator_delete(this);
-  }
-  return this;
 }
 

@@ -40,17 +40,18 @@ undefined4 * TTextileForeignMinister::CreateObject(void)
 // GHIDRA_NAME TTextileForeignMinister::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TTextileForeignMinister::GetRuntimeClass()
+CRuntimeClass * __thiscall TTextileForeignMinister::GetRuntimeClass(TTextileForeignMinister *this)
 
 {
-  return &classRuntimeClass;
+  return &classTTextileForeignMinister;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00533110
 // GHIDRA_NAME TTextileForeignMinister::ConstructTTextileForeignMinister
 // GHIDRA_PROTO undefined __thiscall ConstructTTextileForeignMinister(void)
 
-TTextileForeignMinister * TTextileForeignMinister::ConstructTTextileForeignMinister()
+TTextileForeignMinister * __thiscall
+TTextileForeignMinister::ConstructTTextileForeignMinister(TTextileForeignMinister *this)
 
 {
   int iVar1;
@@ -78,7 +79,8 @@ TTextileForeignMinister * TTextileForeignMinister::ConstructTTextileForeignMinis
 // GHIDRA_NAME TTextileForeignMinister::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TTextileForeignMinister * TTextileForeignMinister::_scalar_deleting_destructor_(byte param_1)
+TTextileForeignMinister * __thiscall
+TTextileForeignMinister::_scalar_deleting_destructor_(TTextileForeignMinister *this,byte param_1)
 
 {
   func_0x00406aa0();
@@ -92,7 +94,8 @@ TTextileForeignMinister * TTextileForeignMinister::_scalar_deleting_destructor_(
 // GHIDRA_NAME TTextileForeignMinister::DestructTTextileForeignMinister
 // GHIDRA_PROTO undefined __thiscall DestructTTextileForeignMinister(void)
 
-void TTextileForeignMinister::DestructTTextileForeignMinister()
+void __thiscall
+TTextileForeignMinister::DestructTTextileForeignMinister(TTextileForeignMinister *this)
 
 {
   this->vftable =

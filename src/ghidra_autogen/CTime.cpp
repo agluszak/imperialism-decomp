@@ -197,6 +197,29 @@ LAB_006003c8:
   return param_2;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x006003DE
+// GHIDRA_NAME CTime::FormatGmt
+// GHIDRA_PROTO undefined FormatGmt()
+
+CString * __thiscall CTime::FormatGmt(undefined4 param_1,CString *param_2,undefined4 param_3)
+
+{
+  int iVar1;
+  char local_88 [128];
+  undefined4 local_8;
+  
+  local_8 = 0;
+  iVar1 = _gmtime(param_1);
+  if (iVar1 != 0) {
+    iVar1 = _strftime(local_88,0x80,param_3,iVar1);
+    if (iVar1 != 0) goto LAB_00600419;
+  }
+  local_88[0] = '\0';
+LAB_00600419:
+  CString::CString(param_2,local_88);
+  return param_2;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x0060042F
 // GHIDRA_NAME CTime::FormatGmt
 // GHIDRA_PROTO undefined FormatGmt()
@@ -212,7 +235,7 @@ undefined4 CTime::FormatGmt(void)
   *(undefined4 *)(unaff_EBP + -0x14) = 0;
   CString::CString((CString *)(unaff_EBP + -0x10));
   *(undefined4 *)(unaff_EBP + -4) = 1;
-  CString__LoadStringA(*(undefined4 *)(unaff_EBP + 0xc));
+  CString::LoadStringA(*(undefined4 *)(unaff_EBP + 0xc));
   FormatGmt(*(undefined4 *)(unaff_EBP + 8),*(undefined4 *)(unaff_EBP + -0x10));
   *(undefined4 *)(unaff_EBP + -0x14) = 1;
   *(undefined1 *)(unaff_EBP + -4) = 0;

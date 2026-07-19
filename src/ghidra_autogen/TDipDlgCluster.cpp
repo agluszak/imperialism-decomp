@@ -37,7 +37,7 @@ undefined4 * TDipDlgCluster::CreateObject(void)
 // GHIDRA_NAME TDipDlgCluster::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TDipDlgCluster::GetRuntimeClass()
+CRuntimeClass * __thiscall TDipDlgCluster::GetRuntimeClass(TDipDlgCluster *this)
 
 {
   return &classTDipDlgCluster;
@@ -47,7 +47,7 @@ CRuntimeClass * TDipDlgCluster::GetRuntimeClass()
 // GHIDRA_NAME TDipDlgCluster::ConstructTDipDlgClusterBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTDipDlgClusterBaseState(void)
 
-TDipDlgCluster * TDipDlgCluster::ConstructTDipDlgClusterBaseState()
+TDipDlgCluster * __thiscall TDipDlgCluster::ConstructTDipDlgClusterBaseState(TDipDlgCluster *this)
 
 {
   func_0x00405835();
@@ -59,7 +59,8 @@ TDipDlgCluster * TDipDlgCluster::ConstructTDipDlgClusterBaseState()
 // GHIDRA_NAME TDipDlgCluster::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TDipDlgCluster * TDipDlgCluster::_scalar_deleting_destructor_(byte param_1)
+TDipDlgCluster * __thiscall
+TDipDlgCluster::_scalar_deleting_destructor_(TDipDlgCluster *this,byte param_1)
 
 {
   func_0x0040187a();
@@ -73,7 +74,7 @@ TDipDlgCluster * TDipDlgCluster::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TDipDlgCluster::IsTradeControlAtMinimum
 // GHIDRA_PROTO undefined __thiscall IsTradeControlAtMinimum(void)
 
-bool TDipDlgCluster::IsTradeControlAtMinimum()
+bool __thiscall TDipDlgCluster::IsTradeControlAtMinimum(TDipDlgCluster *this)
 
 {
   undefined uVar1;

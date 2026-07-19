@@ -7,7 +7,7 @@
 // GHIDRA_NAME TPageCorner::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TPageCorner * TPageCorner::_scalar_deleting_destructor_(byte param_1)
+TPageCorner * __thiscall TPageCorner::_scalar_deleting_destructor_(TPageCorner *this,byte param_1)
 
 {
   func_0x004064b0();
@@ -65,7 +65,7 @@ undefined4 * TPageCorner::CreateObject(void)
 // GHIDRA_NAME TPageCorner::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TPageCorner::GetRuntimeClass()
+CRuntimeClass * __thiscall TPageCorner::GetRuntimeClass(TPageCorner *this)
 
 {
   return &classTPageCorner;

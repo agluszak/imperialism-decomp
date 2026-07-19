@@ -37,7 +37,7 @@ undefined4 * TMilitaryPageView::CreateObject(void)
 // GHIDRA_NAME TMilitaryPageView::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TMilitaryPageView::GetRuntimeClass()
+CRuntimeClass * __thiscall TMilitaryPageView::GetRuntimeClass(TMilitaryPageView *this)
 
 {
   return &classTMilitaryPageView;
@@ -47,7 +47,8 @@ CRuntimeClass * TMilitaryPageView::GetRuntimeClass()
 // GHIDRA_NAME TMilitaryPageView::ConstructTMilitaryPageViewBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTMilitaryPageViewBaseState(void)
 
-TMilitaryPageView * TMilitaryPageView::ConstructTMilitaryPageViewBaseState()
+TMilitaryPageView * __thiscall
+TMilitaryPageView::ConstructTMilitaryPageViewBaseState(TMilitaryPageView *this)
 
 {
   func_0x0040778e();
@@ -60,7 +61,8 @@ TMilitaryPageView * TMilitaryPageView::ConstructTMilitaryPageViewBaseState()
 // GHIDRA_NAME TMilitaryPageView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TMilitaryPageView * TMilitaryPageView::_scalar_deleting_destructor_(byte param_1)
+TMilitaryPageView * __thiscall
+TMilitaryPageView::_scalar_deleting_destructor_(TMilitaryPageView *this,byte param_1)
 
 {
   func_0x004085c1();
@@ -74,7 +76,7 @@ TMilitaryPageView * TMilitaryPageView::_scalar_deleting_destructor_(byte param_1
 // GHIDRA_NAME TMilitaryPageView::NoOpUiLifecycleHook
 // GHIDRA_PROTO undefined __thiscall NoOpUiLifecycleHook(void)
 
-void TMilitaryPageView::NoOpUiLifecycleHook()
+void __thiscall TMilitaryPageView::NoOpUiLifecycleHook(TMilitaryPageView *this)
 
 {
   func_0x00406f8c();
@@ -89,7 +91,7 @@ void TMilitaryPageView::NoOpUiLifecycleHook()
 // GHIDRA_NAME TMilitaryPageView::CallVoidSlotA0
 // GHIDRA_PROTO undefined __thiscall CallVoidSlotA0(void)
 
-void TMilitaryPageView::CallVoidSlotA0()
+void __thiscall TMilitaryPageView::CallVoidSlotA0(TMilitaryPageView *this)
 
 {
   int *piVar1;

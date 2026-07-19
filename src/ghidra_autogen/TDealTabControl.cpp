@@ -7,7 +7,8 @@
 // GHIDRA_NAME TDealTabControl::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TDealTabControl * TDealTabControl::_scalar_deleting_destructor_(byte param_1)
+TDealTabControl * __thiscall
+TDealTabControl::_scalar_deleting_destructor_(TDealTabControl *this,byte param_1)
 
 {
   func_0x0040372e();
@@ -55,7 +56,7 @@ undefined4 * TDealTabControl::CreateObject(void)
 // GHIDRA_NAME TDealTabControl::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TDealTabControl::GetRuntimeClass()
+CRuntimeClass * __thiscall TDealTabControl::GetRuntimeClass(TDealTabControl *this)
 
 {
   return &classTDealTabControl;
@@ -65,7 +66,8 @@ CRuntimeClass * TDealTabControl::GetRuntimeClass()
 // GHIDRA_NAME TDealTabControl::ConstructTDealTabControlBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTDealTabControlBaseState(int param_1, char param_2)
 
-void TDealTabControl::ConstructTDealTabControlBaseState(int param_1, char param_2)
+void __thiscall
+TDealTabControl::ConstructTDealTabControlBaseState(TDealTabControl *this,int param_1,char param_2)
 
 {
   undefined4 uVar1;
@@ -88,7 +90,7 @@ void TDealTabControl::ConstructTDealTabControlBaseState(int param_1, char param_
 // GHIDRA_NAME TDealTabControl::ApplyRectSlot110
 // GHIDRA_PROTO undefined __thiscall ApplyRectSlot110(void)
 
-void TDealTabControl::ApplyRectSlot110()
+void __thiscall TDealTabControl::ApplyRectSlot110(TDealTabControl *this)
 
 {
   short sVar1;
@@ -145,7 +147,7 @@ void TDealTabControl::ApplyRectSlot110()
 // GHIDRA_NAME TDealTabControl::DispatchPictureResourceCommand
 // GHIDRA_PROTO undefined __thiscall DispatchPictureResourceCommand(int param_1)
 
-void TDealTabControl::DispatchPictureResourceCommand(int param_1)
+void __thiscall TDealTabControl::DispatchPictureResourceCommand(TDealTabControl *this,int param_1)
 
 {
   TDealTabControlVtbl *pTVar1;
@@ -197,7 +199,7 @@ void TDealTabControl::DispatchPictureResourceCommand(int param_1)
 // GHIDRA_NAME TDealTabControl::Free
 // GHIDRA_PROTO undefined __thiscall Free(void)
 
-void TDealTabControl::Free()
+void __thiscall TDealTabControl::Free(TDealTabControl *this)
 
 {
   if (*(int *)&this->field_0x8c != 0) {

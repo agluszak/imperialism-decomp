@@ -7,7 +7,7 @@
 // GHIDRA_NAME TShipLine::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TShipLine * TShipLine::_scalar_deleting_destructor_(byte param_1)
+TShipLine * __thiscall TShipLine::_scalar_deleting_destructor_(TShipLine *this,byte param_1)
 
 {
   func_0x00403404();
@@ -51,17 +51,17 @@ undefined4 * TShipLine::CreateObject(void)
 // GHIDRA_NAME TShipLine::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TShipLine::GetRuntimeClass()
+CRuntimeClass * __thiscall TShipLine::GetRuntimeClass(TShipLine *this)
 
 {
   return &classTShipLine;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00565100
-// GHIDRA_NAME TShipLine::OrphanRetStub_0056f460
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0056f460(int param_1)
+// GHIDRA_NAME TShipLine::CreateLineItemView
+// GHIDRA_PROTO undefined __thiscall CreateLineItemView(int param_1)
 
-void TShipLine::OrphanRetStub_0056f460(int param_1)
+void __thiscall TShipLine::CreateLineItemView(TShipLine *this,int param_1)
 
 {
   undefined4 uVar1;

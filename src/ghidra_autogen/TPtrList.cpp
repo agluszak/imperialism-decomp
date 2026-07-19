@@ -33,11 +33,40 @@ CPtrArray * TPtrList::CreateObject(void)
   return pCVar1;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00488470
+// GHIDRA_NAME TPtrList::InsertCopiedRecordAtFrontOfPtrListAlt
+// GHIDRA_PROTO undefined __thiscall InsertCopiedRecordAtFrontOfPtrListAlt(undefined4 * param_1)
+
+void __thiscall TPtrList::InsertCopiedRecordAtFrontOfPtrListAlt(TPtrList *this,undefined4 *param_1)
+
+{
+  short sVar1;
+  undefined4 *puVar2;
+  uint uVar3;
+  undefined4 *puVar4;
+  
+  puVar2 = (undefined4 *)operator_new((int)*(short *)&this->field_0x14);
+  sVar1 = *(short *)&this->field_0x14;
+  puVar4 = puVar2;
+  for (uVar3 = (uint)(int)sVar1 >> 2; uVar3 != 0; uVar3 = uVar3 - 1) {
+    *puVar4 = *param_1;
+    param_1 = param_1 + 1;
+    puVar4 = puVar4 + 1;
+  }
+  for (uVar3 = (int)sVar1 & 3; uVar3 != 0; uVar3 = uVar3 - 1) {
+    *(undefined1 *)puVar4 = *(undefined1 *)param_1;
+    param_1 = (undefined4 *)((int)param_1 + 1);
+    puVar4 = (undefined4 *)((int)puVar4 + 1);
+  }
+  CPtrArray::InsertAt(0,puVar2,1);
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x004884C0
 // GHIDRA_NAME TPtrList::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TPtrList * TPtrList::_scalar_deleting_destructor_(byte param_1)
+TPtrList * __thiscall TPtrList::_scalar_deleting_destructor_(TPtrList *this,byte param_1)
 
 {
   func_0x00401c71();
@@ -51,7 +80,7 @@ TPtrList * TPtrList::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TPtrList::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TPtrList::GetRuntimeClass()
+CRuntimeClass * __thiscall TPtrList::GetRuntimeClass(TPtrList *this)
 
 {
   return &classTPtrList;
@@ -61,7 +90,7 @@ CRuntimeClass * TPtrList::GetRuntimeClass()
 // GHIDRA_NAME TPtrList::AddHeadSlot28
 // GHIDRA_PROTO undefined __thiscall AddHeadSlot28(void)
 
-void TPtrList::AddHeadSlot28()
+void __thiscall TPtrList::AddHeadSlot28(TPtrList *this)
 
 {
   undefined4 in_stack_00000004;
@@ -74,7 +103,7 @@ void TPtrList::AddHeadSlot28()
 // GHIDRA_NAME TPtrList::AddHeadSlot2C
 // GHIDRA_PROTO undefined __thiscall AddHeadSlot2C(void)
 
-void TPtrList::AddHeadSlot2C()
+void __thiscall TPtrList::AddHeadSlot2C(TPtrList *this)
 
 {
   undefined4 in_stack_00000004;
@@ -87,7 +116,7 @@ void TPtrList::AddHeadSlot2C()
 // GHIDRA_NAME TPtrList::AddTailSlot30
 // GHIDRA_PROTO undefined __thiscall AddTailSlot30(void)
 
-void TPtrList::AddTailSlot30()
+void __thiscall TPtrList::AddTailSlot30(TPtrList *this)
 
 {
   undefined4 in_stack_00000004;
@@ -100,7 +129,7 @@ void TPtrList::AddTailSlot30()
 // GHIDRA_NAME TPtrList::AddTailSlot34
 // GHIDRA_PROTO undefined __thiscall AddTailSlot34(void)
 
-void TPtrList::AddTailSlot34()
+void __thiscall TPtrList::AddTailSlot34(TPtrList *this)
 
 {
   undefined4 in_stack_00000004;
@@ -113,7 +142,7 @@ void TPtrList::AddTailSlot34()
 // GHIDRA_NAME TPtrList::AddTailSlot38
 // GHIDRA_PROTO undefined __thiscall AddTailSlot38(void)
 
-void TPtrList::AddTailSlot38()
+void __thiscall TPtrList::AddTailSlot38(TPtrList *this)
 
 {
   undefined4 in_stack_00000004;
@@ -126,7 +155,7 @@ void TPtrList::AddTailSlot38()
 // GHIDRA_NAME TPtrList::RemoveTailSlot3C
 // GHIDRA_PROTO undefined __thiscall RemoveTailSlot3C(void)
 
-void TPtrList::RemoveTailSlot3C()
+void __thiscall TPtrList::RemoveTailSlot3C(TPtrList *this)
 
 {
   CPtrList::RemoveTail();
@@ -137,7 +166,7 @@ void TPtrList::RemoveTailSlot3C()
 // GHIDRA_NAME TPtrList::AddTailSlot40
 // GHIDRA_PROTO undefined __thiscall AddTailSlot40(void)
 
-void TPtrList::AddTailSlot40()
+void __thiscall TPtrList::AddTailSlot40(TPtrList *this)
 
 {
   undefined4 in_stack_00000004;
@@ -150,7 +179,7 @@ void TPtrList::AddTailSlot40()
 // GHIDRA_NAME TPtrList::RemoveHeadSlot44
 // GHIDRA_PROTO undefined __thiscall RemoveHeadSlot44(void)
 
-void TPtrList::RemoveHeadSlot44()
+void __thiscall TPtrList::RemoveHeadSlot44(TPtrList *this)
 
 {
   CPtrList::RemoveHead();
@@ -161,7 +190,7 @@ void TPtrList::RemoveHeadSlot44()
 // GHIDRA_NAME TPtrList::GetCountSlot48
 // GHIDRA_PROTO undefined __thiscall GetCountSlot48(void)
 
-undefined4 TPtrList::GetCountSlot48()
+undefined4 __thiscall TPtrList::GetCountSlot48(TPtrList *this)
 
 {
   return *(undefined4 *)&this->field_0x10;
@@ -171,7 +200,7 @@ undefined4 TPtrList::GetCountSlot48()
 // GHIDRA_NAME TPtrList::GetEntryByOrdinalSlot4C
 // GHIDRA_PROTO undefined __thiscall GetEntryByOrdinalSlot4C(void)
 
-undefined4 TPtrList::GetEntryByOrdinalSlot4C()
+undefined4 __thiscall TPtrList::GetEntryByOrdinalSlot4C(TPtrList *this)
 
 {
   int iVar1;
@@ -185,7 +214,7 @@ undefined4 TPtrList::GetEntryByOrdinalSlot4C()
 // GHIDRA_NAME TPtrList::RemoveAtOrdinalSlot50
 // GHIDRA_PROTO undefined __thiscall RemoveAtOrdinalSlot50(void)
 
-void TPtrList::RemoveAtOrdinalSlot50()
+void __thiscall TPtrList::RemoveAtOrdinalSlot50(TPtrList *this)
 
 {
   int *piVar1;
@@ -200,7 +229,7 @@ void TPtrList::RemoveAtOrdinalSlot50()
 // GHIDRA_NAME TPtrList::FreePayloadsSlot54
 // GHIDRA_PROTO undefined __thiscall FreePayloadsSlot54(void)
 
-void TPtrList::FreePayloadsSlot54()
+void __thiscall TPtrList::FreePayloadsSlot54(TPtrList *this)
 
 {
   int iVar1;
@@ -219,7 +248,7 @@ void TPtrList::FreePayloadsSlot54()
 // GHIDRA_NAME TPtrList::Release1C
 // GHIDRA_PROTO undefined __thiscall Release1C(void)
 
-void TPtrList::Release1C()
+void __thiscall TPtrList::Release1C(TPtrList *this)
 
 {
   if (this != (TPtrList *)0x0) {
@@ -232,7 +261,7 @@ void TPtrList::Release1C()
 // GHIDRA_NAME TPtrList::FreePayloadsAndDestroySlot58
 // GHIDRA_PROTO undefined __thiscall FreePayloadsAndDestroySlot58(void)
 
-void TPtrList::FreePayloadsAndDestroySlot58()
+void __thiscall TPtrList::FreePayloadsAndDestroySlot58(TPtrList *this)
 
 {
   TPtrListVtbl *pTVar1;
@@ -247,7 +276,7 @@ void TPtrList::FreePayloadsAndDestroySlot58()
 // GHIDRA_NAME TPtrList::RemoveAllSlot5C
 // GHIDRA_PROTO undefined __thiscall RemoveAllSlot5C(void)
 
-void TPtrList::RemoveAllSlot5C()
+void __thiscall TPtrList::RemoveAllSlot5C(TPtrList *this)
 
 {
   CPtrList::RemoveAll((CPtrList *)&this->field_0x4);
@@ -258,7 +287,7 @@ void TPtrList::RemoveAllSlot5C()
 // GHIDRA_NAME TPtrList::SetAtOrdinalSlot60
 // GHIDRA_PROTO undefined __thiscall SetAtOrdinalSlot60(undefined4 * param_1)
 
-void TPtrList::SetAtOrdinalSlot60(undefined4 *param_1)
+void __thiscall TPtrList::SetAtOrdinalSlot60(TPtrList *this,undefined4 *param_1)
 
 {
   int iVar1;

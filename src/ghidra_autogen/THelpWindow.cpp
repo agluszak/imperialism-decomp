@@ -37,15 +37,15 @@ undefined4 * THelpWindow::CreateObject(void)
 // GHIDRA_NAME THelpWindow::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * THelpWindow::GetRuntimeClass()
+CRuntimeClass * __thiscall THelpWindow::GetRuntimeClass(THelpWindow *this)
 
 {
-  return &classRuntimeClass;
+  return &classTHelpWindow;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00504BF0
-// GHIDRA_NAME THelpWindow::ConstructUiWindowResourceEntryType572C0
-// GHIDRA_PROTO undefined __thiscall ConstructUiWindowResourceEntryType572C0(void)
+// GHIDRA_NAME THelpWindow::THelpWindow
+// GHIDRA_PROTO undefined __thiscall THelpWindow(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Thin derived window-entry constructor over ConstructUiWindowResourceEntryType4B340, installing vtable PTR_LAB_006572c0.
 // GHIDRA_COMMENT_END
@@ -53,7 +53,7 @@ CRuntimeClass * THelpWindow::GetRuntimeClass()
 /* Thin derived window-entry constructor over ConstructUiWindowResourceEntryType4B340, installing
    vtable PTR_LAB_006572c0. */
 
-THelpWindow * THelpWindow::ConstructUiWindowResourceEntryType572C0()
+THelpWindow * __thiscall THelpWindow::THelpWindow(THelpWindow *this)
 
 {
   func_0x004054ed();
@@ -65,7 +65,8 @@ THelpWindow * THelpWindow::ConstructUiWindowResourceEntryType572C0()
 // GHIDRA_NAME THelpWindow::DestructTHelpWindowAndMaybeFree
 // GHIDRA_PROTO undefined __thiscall DestructTHelpWindowAndMaybeFree(byte param_1)
 
-THelpWindow * THelpWindow::DestructTHelpWindowAndMaybeFree(byte param_1)
+THelpWindow * __thiscall
+THelpWindow::DestructTHelpWindowAndMaybeFree(THelpWindow *this,byte param_1)
 
 {
   func_0x00408490();
@@ -73,5 +74,17 @@ THelpWindow * THelpWindow::DestructTHelpWindowAndMaybeFree(byte param_1)
     operator_delete(this);
   }
   return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00504C70
+// GHIDRA_NAME THelpWindow::CallVoidSlotA0
+// GHIDRA_PROTO undefined __thiscall CallVoidSlotA0(void)
+
+void __thiscall THelpWindow::CallVoidSlotA0(THelpWindow *this)
+
+{
+  func_0x004067e4();
+  *(undefined4 *)(g_pHelpMgr + 8) = 0;
+  return;
 }
 

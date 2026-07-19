@@ -52,7 +52,7 @@ void __fastcall CDibPal::~CDibPal(undefined4 *param_1)
   }
   *param_1 = &PTR_LAB_00671054;
   local_4 = 0;
-  CGdiObject__DeleteObject();
+  CGdiObject::DeleteObject();
   *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = local_c;
   return;
@@ -62,7 +62,7 @@ void __fastcall CDibPal::~CDibPal(undefined4 *param_1)
 // GHIDRA_NAME CDibPal::BuildPaletteFromBitmapColorTable
 // GHIDRA_PROTO undefined BuildPaletteFromBitmapColorTable()
 
-undefined4 __thiscall CDibPal::BuildPaletteFromBitmapColorTable(CBrush *param_1,int param_2)
+undefined4 __thiscall CDibPal::BuildPaletteFromBitmapColorTable(CGdiObject *param_1,int param_2)
 
 {
   int iVar1;
@@ -102,7 +102,19 @@ undefined4 __thiscall CDibPal::BuildPaletteFromBitmapColorTable(CBrush *param_1,
     } while (param_2 != 0);
   }
   pHVar5 = CreatePalette(*(LOGPALETTE **)(param_1 + 8));
-  uVar6 = CBrush::CGdiObject__Attach(param_1,(int)pHVar5);
+  uVar6 = CGdiObject::Attach(param_1,(int)pHVar5);
   return uVar6;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0047E930
+// GHIDRA_NAME CDibPal::SelectIntoDcAndRealize
+// GHIDRA_PROTO undefined SelectIntoDcAndRealize()
+
+void __thiscall CDibPal::SelectIntoDcAndRealize(undefined4 param_1,int param_2,undefined4 param_3)
+
+{
+  CDC::SelectPalette(param_1,param_3);
+  RealizePalette(*(HDC *)(param_2 + 4));
+  return;
 }
 

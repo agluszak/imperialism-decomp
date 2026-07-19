@@ -37,7 +37,7 @@ undefined4 * TTradeTotalsView::CreateObject(void)
 // GHIDRA_NAME TTradeTotalsView::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TTradeTotalsView::GetRuntimeClass()
+CRuntimeClass * __thiscall TTradeTotalsView::GetRuntimeClass(TTradeTotalsView *this)
 
 {
   return &classTTradeTotalsView;
@@ -47,7 +47,8 @@ CRuntimeClass * TTradeTotalsView::GetRuntimeClass()
 // GHIDRA_NAME TTradeTotalsView::ConstructTTradeTotalsViewBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTTradeTotalsViewBaseState(void)
 
-TTradeTotalsView * TTradeTotalsView::ConstructTTradeTotalsViewBaseState()
+TTradeTotalsView * __thiscall
+TTradeTotalsView::ConstructTTradeTotalsViewBaseState(TTradeTotalsView *this)
 
 {
   func_0x004064e2();
@@ -59,7 +60,8 @@ TTradeTotalsView * TTradeTotalsView::ConstructTTradeTotalsViewBaseState()
 // GHIDRA_NAME TTradeTotalsView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TTradeTotalsView * TTradeTotalsView::_scalar_deleting_destructor_(byte param_1)
+TTradeTotalsView * __thiscall
+TTradeTotalsView::_scalar_deleting_destructor_(TTradeTotalsView *this,byte param_1)
 
 {
   func_0x00403b20();
@@ -73,7 +75,7 @@ TTradeTotalsView * TTradeTotalsView::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TTradeTotalsView::ApplyRectSlot110
 // GHIDRA_PROTO undefined __thiscall ApplyRectSlot110(void)
 
-void TTradeTotalsView::ApplyRectSlot110()
+void __thiscall TTradeTotalsView::ApplyRectSlot110(TTradeTotalsView *this)
 
 {
   TSimMgrVtbl *pTVar1;
@@ -160,17 +162,17 @@ void TTradeTotalsView::ApplyRectSlot110()
   puStack_40 = &stack0xffffffdc;
   uStack_44 = 0x2b6b;
   uStack_48 = 0x5c1c72;
-  func_0x004093cc();
+  thunk_MapUiThemeCodeToStyleFlags();
   puStack_40 = &stack0xffffffd8;
   uStack_44 = 0x2b6c;
   uStack_48 = 0x5c1c84;
-  func_0x004093cc();
+  thunk_MapUiThemeCodeToStyleFlags();
   uStack_44 = 0x5c1c91;
   func_0x00409444();
   puStack_40 = (undefined1 *)0x12;
   uStack_44 = 10;
   uStack_48 = 0x5c1c9d;
-  func_0x00408d6e();
+  thunk_SetQuickDrawTextOriginWithContextOffset();
   puStack_40 = &stack0xffffffd4;
   uStack_44 = 0x5c1caa;
   func_0x004029aa();
@@ -179,7 +181,7 @@ void TTradeTotalsView::ApplyRectSlot110()
   puStack_40 = (undefined1 *)0x11;
   uStack_44 = 9;
   uStack_48 = 0x5c1cc3;
-  func_0x00408d6e();
+  thunk_SetQuickDrawTextOriginWithContextOffset();
   puStack_40 = &stack0xffffffd4;
   uStack_44 = 0x5c1cd0;
   func_0x004029aa();
@@ -196,7 +198,7 @@ void TTradeTotalsView::ApplyRectSlot110()
   puStack_4c = (undefined4 *)0x1e;
   uStack_50 = 8;
   ppuStack_54 = (undefined1 **)0x5c1d06;
-  func_0x00408d6e();
+  thunk_SetQuickDrawTextOriginWithContextOffset();
   puStack_4c = &uStack_38;
   uStack_50 = 0x5c1d13;
   func_0x004029aa();
@@ -207,7 +209,7 @@ void TTradeTotalsView::ApplyRectSlot110()
   ppuStack_54 = (undefined1 **)0x1e;
   uStack_58 = 0x80;
   uStack_5c = 0x5c1d44;
-  func_0x00408d6e();
+  thunk_SetQuickDrawTextOriginWithContextOffset();
   ppuStack_54 = &puStack_40;
   uStack_58 = 0x5c1d51;
   func_0x004029aa();
@@ -219,7 +221,7 @@ void TTradeTotalsView::ApplyRectSlot110()
   ppuStack_60 = (undefined4 **)0x2a;
   uStack_64 = 8;
   pppuStack_68 = (undefined1 ***)0x5c1d77;
-  func_0x00408d6e();
+  thunk_SetQuickDrawTextOriginWithContextOffset();
   ppuStack_60 = &puStack_4c;
   uStack_64 = 0x5c1d84;
   func_0x004029aa();
@@ -235,7 +237,7 @@ void TTradeTotalsView::ApplyRectSlot110()
     ppuStack_6c = (undefined4 **)0x80;
   }
   uStack_70 = 0x5c1dcc;
-  func_0x00408d6e();
+  thunk_SetQuickDrawTextOriginWithContextOffset();
   pppuStack_68 = &ppuStack_54;
   ppuStack_6c = (undefined4 **)0x5c1dd9;
   func_0x004029aa();
@@ -247,7 +249,7 @@ void TTradeTotalsView::ApplyRectSlot110()
   pppuStack_74 = (undefined4 ***)0x36;
   iStack_78 = 8;
   ppppuStack_7c = (undefined1 ****)0x5c1dff;
-  func_0x00408d6e();
+  thunk_SetQuickDrawTextOriginWithContextOffset();
   pppuStack_74 = &ppuStack_60;
   iStack_78 = 0x5c1e0c;
   func_0x004029aa();
@@ -263,7 +265,7 @@ void TTradeTotalsView::ApplyRectSlot110()
     uStack_80 = 0x7c;
   }
   uStack_84 = 0x5c1e56;
-  func_0x00408d6e();
+  thunk_SetQuickDrawTextOriginWithContextOffset();
   ppppuStack_7c = &pppuStack_68;
   uStack_80 = 0x5c1e63;
   func_0x004029aa();
@@ -276,7 +278,7 @@ void TTradeTotalsView::ApplyRectSlot110()
   CStack_88.m_pchData = (char *)0x42;
   CStack_8c.m_pchData = &DAT_00000008;
   ppppuStack_90 = (undefined4 ****)0x5c1e8d;
-  func_0x00408d6e();
+  thunk_SetQuickDrawTextOriginWithContextOffset();
   CStack_88.m_pchData = (char *)&pppuStack_74;
   CStack_8c.m_pchData = (char *)0x5c1e9a;
   func_0x004029aa();
@@ -291,7 +293,7 @@ void TTradeTotalsView::ApplyRectSlot110()
   ppppuStack_90 = (undefined4 ****)0x42;
   uStack_94 = 0x80;
   CStack_98.m_pchData = (char *)0x5c1ed1;
-  func_0x00408d6e();
+  thunk_SetQuickDrawTextOriginWithContextOffset();
   ppppuStack_90 = &ppppuStack_7c;
   uStack_94 = 0x5c1ede;
   func_0x004029aa();
@@ -300,11 +302,11 @@ void TTradeTotalsView::ApplyRectSlot110()
     uStack_94 = 0x1c;
     CStack_98.m_pchData = (char *)0x2740;
     (*g_pSimMgr->vftable[0x10].slot_0x04)();
-    CString__Format(&ppppuStack_7c,&g_szDecimalFormat,
+    CString::Format(&ppppuStack_7c,&g_szDecimalFormat,
                     (int)(char)g_apNationStates[*(short *)&this->field_0x60]->field_0x8f4);
     func_0x0040988b(g_pSimMgr,&CStack_88,iStack_78,ppppuStack_7c);
     iVar3 = 0x4e;
-    func_0x00408d6e(8,0x4e);
+    thunk_SetQuickDrawTextOriginWithContextOffset(8,0x4e);
     func_0x004029aa(&CStack_88);
     (*g_pSimMgr->vftable[0xe].slot_0x04)
               (-*(int *)&g_apNationStates[*(short *)&this->field_0x60]->field_0x8f8,&CStack_88);
@@ -314,17 +316,17 @@ void TTradeTotalsView::ApplyRectSlot110()
     else {
       uVar4 = 0x7c;
     }
-    func_0x00408d6e(uVar4,0x4e);
+    thunk_SetQuickDrawTextOriginWithContextOffset(uVar4,0x4e);
     func_0x004029aa(&ppppuStack_90);
   }
   uStack_94 = 8;
   CStack_98.m_pchData = (char *)0x5c1fda;
   ppppuStack_90 = (undefined4 ****)(iVar3 + 2);
-  func_0x00408d6e();
+  thunk_SetQuickDrawTextOriginWithContextOffset();
   uStack_94 = CONCAT22(extraout_var_02,(short)this->field34 + -8);
   CStack_98.m_pchData = (char *)0x5c1fec;
   ppppuStack_90 = (undefined4 ****)(iVar3 + 2);
-  func_0x00403bb6();
+  thunk_DrawCenteredGuideLineOnMapDc();
   ppppuStack_90 = &ppppuStack_7c;
   pTVar1 = g_pSimMgr->vftable;
   uStack_94 = 0x5c200e;
@@ -345,7 +347,7 @@ void TTradeTotalsView::ApplyRectSlot110()
     uVar4 = 0x80;
   }
   CStack_98.m_pchData = (char *)(iVar3 + 0xe);
-  func_0x00408d6e(uVar4);
+  thunk_SetQuickDrawTextOriginWithContextOffset(uVar4);
   CStack_98.m_pchData = (char *)&uStack_84;
   func_0x004029aa();
   CStack_98.m_pchData = (char *)0x2b6a;
@@ -355,9 +357,9 @@ void TTradeTotalsView::ApplyRectSlot110()
   (*g_pSimMgr->vftable[0xe].slot_0x04)
             (*(int *)&g_apNationStates[*(short *)&this->field_0x60]->field_0x8f0 / 100,&uStack_84);
   func_0x0040988b(g_pSimMgr,&CStack_98,CStack_88.m_pchData,PTR_g_szEmptyString_0066db50);
-  func_0x00408d6e(8,iVar3 + 0x1a);
+  thunk_SetQuickDrawTextOriginWithContextOffset(8,iVar3 + 0x1a);
   func_0x004029aa(&CStack_98);
-  func_0x00408d6e(0x80,iVar3 + 0x1a);
+  thunk_SetQuickDrawTextOriginWithContextOffset(0x80,iVar3 + 0x1a);
   func_0x004029aa(&CStack_8c);
   func_0x0040330f(0);
   ppppuStack_7c._0_1_ = 1;

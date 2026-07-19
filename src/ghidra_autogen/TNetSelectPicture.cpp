@@ -7,7 +7,8 @@
 // GHIDRA_NAME TNetSelectPicture::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TNetSelectPicture * TNetSelectPicture::_scalar_deleting_destructor_(byte param_1)
+TNetSelectPicture * __thiscall
+TNetSelectPicture::_scalar_deleting_destructor_(TNetSelectPicture *this,byte param_1)
 
 {
   func_0x0040546b();
@@ -51,7 +52,7 @@ undefined4 * TNetSelectPicture::CreateObject(void)
 // GHIDRA_NAME TNetSelectPicture::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TNetSelectPicture::GetRuntimeClass()
+CRuntimeClass * __thiscall TNetSelectPicture::GetRuntimeClass(TNetSelectPicture *this)
 
 {
   return &classTNetSelectPicture;
@@ -61,7 +62,7 @@ CRuntimeClass * TNetSelectPicture::GetRuntimeClass()
 // GHIDRA_NAME TNetSelectPicture::NoOpUiLifecycleHook
 // GHIDRA_PROTO undefined __thiscall NoOpUiLifecycleHook(void)
 
-void TNetSelectPicture::NoOpUiLifecycleHook()
+void __thiscall TNetSelectPicture::NoOpUiLifecycleHook(TNetSelectPicture *this)
 
 {
   func_0x00406ba9();
@@ -72,7 +73,7 @@ void TNetSelectPicture::NoOpUiLifecycleHook()
 // GHIDRA_NAME TNetSelectPicture::HandleEvent
 // GHIDRA_PROTO undefined __thiscall HandleEvent(int param_1, int param_2)
 
-void TNetSelectPicture::HandleEvent(int param_1, int param_2)
+void __thiscall TNetSelectPicture::HandleEvent(TNetSelectPicture *this,int param_1,int param_2)
 
 {
   _vslot_fn *p_Var1;

@@ -21,10 +21,10 @@ undefined4 * TOneTimeAnimation::CreateObject(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0049FD20
-// GHIDRA_NAME TOneTimeAnimation::CreateTOneTimeAnimationInstance
-// GHIDRA_PROTO undefined __thiscall CreateTOneTimeAnimationInstance(void)
+// GHIDRA_NAME TOneTimeAnimation::~TOneTimeAnimation
+// GHIDRA_PROTO undefined __thiscall ~TOneTimeAnimation(void)
 
-void TOneTimeAnimation::CreateTOneTimeAnimationInstance()
+void __thiscall TOneTimeAnimation::~TOneTimeAnimation(TOneTimeAnimation *this)
 
 {
   this->vftable =
@@ -36,10 +36,10 @@ void TOneTimeAnimation::CreateTOneTimeAnimationInstance()
 // GHIDRA_NAME TOneTimeAnimation::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TOneTimeAnimation::GetRuntimeClass()
+CRuntimeClass * __thiscall TOneTimeAnimation::GetRuntimeClass(TOneTimeAnimation *this)
 
 {
-  return &classRuntimeClass;
+  return &classTOneTimeAnimation;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0049FD60
@@ -68,10 +68,11 @@ TOneTimeAnimation::ConstructTOneTimeAnimationBaseState
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0049FDE0
-// GHIDRA_NAME TOneTimeAnimation::DestructTOneTimeAnimationAndMaybeFree
-// GHIDRA_PROTO undefined __thiscall DestructTOneTimeAnimationAndMaybeFree(void)
+// GHIDRA_NAME TOneTimeAnimation::AdvanceAnimationTickAndInvalidateOnFrameFlip
+// GHIDRA_PROTO undefined __thiscall AdvanceAnimationTickAndInvalidateOnFrameFlip(void)
 
-void TOneTimeAnimation::DestructTOneTimeAnimationAndMaybeFree()
+void __thiscall
+TOneTimeAnimation::AdvanceAnimationTickAndInvalidateOnFrameFlip(TOneTimeAnimation *this)
 
 {
   int iVar1;
@@ -101,7 +102,9 @@ void TOneTimeAnimation::DestructTOneTimeAnimationAndMaybeFree()
     else {
       this->field_0x2c = 1;
     }
-    func_0x00408035();
+    uStack_4 = 0xffffffff;
+    LStack_40 = 0x49fe94;
+    thunk_DestroyScopedMapQuickDrawContext();
   }
   *unaff_FS_OFFSET = uStack_c;
   return;

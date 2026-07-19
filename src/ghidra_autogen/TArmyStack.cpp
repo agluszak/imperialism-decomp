@@ -63,17 +63,17 @@ undefined4 * TArmyStack::CreateObject(void)
 // GHIDRA_NAME TArmyStack::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TArmyStack::GetRuntimeClass()
+CRuntimeClass * __thiscall TArmyStack::GetRuntimeClass(TArmyStack *this)
 
 {
   return &classTArmyStack;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A76F0
-// GHIDRA_NAME TArmyStack::ConstructTArmyStackBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTArmyStackBaseState(void)
+// GHIDRA_NAME TArmyStack::TArmyStack
+// GHIDRA_PROTO undefined __thiscall TArmyStack(void)
 
-void TArmyStack::ConstructTArmyStackBaseState()
+void __thiscall TArmyStack::TArmyStack(TArmyStack *this)
 
 {
   this->vftable = &_vftable_;
@@ -86,7 +86,7 @@ void TArmyStack::ConstructTArmyStackBaseState()
 // GHIDRA_NAME TArmyStack::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TArmyStack * TArmyStack::_scalar_deleting_destructor_(byte param_1)
+TArmyStack * __thiscall TArmyStack::_scalar_deleting_destructor_(TArmyStack *this,byte param_1)
 
 {
   func_0x004080a8();
@@ -97,11 +97,11 @@ TArmyStack * TArmyStack::_scalar_deleting_destructor_(byte param_1)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A7770
-// GHIDRA_NAME TArmyStack::InitializeBattleSetupArmyStacksAndPopulateSelectionState_Impl_At004a7770
-// GHIDRA_PROTO undefined __thiscall InitializeBattleSetupArmyStacksAndPopulateSelectionState_Impl_At004a7770(undefined1 param_1, undefined2 param_2, undefined2 param_3)
+// GHIDRA_NAME TArmyStack::InitializeSideAndTile
+// GHIDRA_PROTO undefined __thiscall InitializeSideAndTile(undefined1 param_1, undefined2 param_2, undefined2 param_3)
 
 void __thiscall
-TArmyStack::InitializeBattleSetupArmyStacksAndPopulateSelectionState_Impl_At004a7770
+TArmyStack::InitializeSideAndTile
           (TArmyStack *this,undefined1 param_1,undefined2 param_2,undefined2 param_3)
 
 {
@@ -119,7 +119,7 @@ TArmyStack::InitializeBattleSetupArmyStacksAndPopulateSelectionState_Impl_At004a
 // GHIDRA_NAME TArmyStack::ReadFrom
 // GHIDRA_PROTO undefined __thiscall ReadFrom(int * param_1)
 
-void TArmyStack::ReadFrom(int *param_1)
+void __thiscall TArmyStack::ReadFrom(TArmyStack *this,int *param_1)
 
 {
   code *pcVar1;
@@ -202,7 +202,7 @@ void TArmyStack::ReadFrom(int *param_1)
 // GHIDRA_NAME TArmyStack::WriteTo
 // GHIDRA_PROTO undefined __thiscall WriteTo(int * param_1)
 
-void TArmyStack::WriteTo(int *param_1)
+void __thiscall TArmyStack::WriteTo(TArmyStack *this,int *param_1)
 
 {
   code *pcVar1;
@@ -275,11 +275,32 @@ joined_r0x004a79d0:
   } while( true );
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x004A7B20
+// GHIDRA_NAME TArmyStack::AddUnitToChainHead
+// GHIDRA_PROTO undefined AddUnitToChainHead()
+
+void __thiscall TArmyStack::AddUnitToChainHead(int param_1,undefined4 param_2)
+
+{
+  undefined4 *puVar1;
+  
+  puVar1 = (undefined4 *)operator_new(8);
+  if (puVar1 == (undefined4 *)0x0) {
+    MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+    func_0x004057a4(s_D__Ambit_Cross_UArmyMgr_cpp_0069573c,0xbeb);
+  }
+  *puVar1 = param_2;
+  puVar1[1] = *(undefined4 *)(param_1 + 0x14);
+  *(short *)(param_1 + 10) = *(short *)(param_1 + 10) + 1;
+  *(undefined4 **)(param_1 + 0x14) = puVar1;
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x004A7C20
 // GHIDRA_NAME TArmyStack::Free
 // GHIDRA_PROTO undefined __thiscall Free(void)
 
-void TArmyStack::Free()
+void __thiscall TArmyStack::Free(TArmyStack *this)
 
 {
   int iVar1;
@@ -293,34 +314,6 @@ void TArmyStack::Free()
   }
   if (this != (TArmyStack *)0x0) {
     (*this->vftable->~TArmyStack)(1);
-  }
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x005A38E0
-// GHIDRA_NAME TArmyStack::HandleTacticalCommandTag_raly
-// GHIDRA_PROTO undefined __thiscall HandleTacticalCommandTag_raly(int param_1, int param_2, undefined4 param_3, char param_4)
-
-void __thiscall
-TArmyStack::HandleTacticalCommandTag_raly
-          (TArmyStack *this,int param_1,int param_2,undefined4 param_3,char param_4)
-
-{
-  if ((param_4 == '\0') && (*(int *)&g_pSimMgr->field_0x44 != 0)) {
-    func_0x00408855(0x72616c79,param_1,param_2,param_3);
-  }
-  *(undefined4 *)(param_1 + 0x1c) = param_3;
-  if (*(int *)(param_1 + 4) < param_2) {
-    *(int *)(param_1 + 0x34) = *(int *)(param_1 + 4);
-  }
-  else {
-    *(int *)(param_1 + 0x34) = param_2;
-  }
-  if (*(int **)&this->field_0x8 != (int *)0x0) {
-    (**(code **)(**(int **)&this->field_0x8 + 0x1a4))(param_1);
-  }
-  if (*(int *)&this->field_0x8 != 0) {
-    (**(code **)&g_pSfxPlaybackSystem->vftable[1].field_0x10)(0x3aae,0,1);
   }
   return;
 }

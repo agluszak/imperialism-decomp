@@ -3,166 +3,42 @@
 // Program: Imperialism.exe
 // Bucket: CDocument.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004796A0
-// GHIDRA_NAME CDocument::SerializeTMinisterBaseOrderArrayHeader
-// GHIDRA_PROTO undefined __thiscall SerializeTMinisterBaseOrderArrayHeader(void)
+// GHIDRA_FUNCTION IMPERIALISM 0x0061096B
+// GHIDRA_NAME CDocument::CDocument
+// GHIDRA_PROTO undefined CDocument()
 
-undefined4 CDocument::SerializeTMinisterBaseOrderArrayHeader()
-
-{
-  return *(undefined4 *)&this->field_0x44;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004796C0
-// GHIDRA_NAME CDocument::SerializeTMinisterBaseOrderArrayHeader
-// GHIDRA_PROTO undefined __thiscall SerializeTMinisterBaseOrderArrayHeader(undefined4 param_1)
-
-void CDocument::SerializeTMinisterBaseOrderArrayHeader(undefined4 param_1)
+undefined4 * CDocument::CDocument(void)
 
 {
-  *(undefined4 *)&this->field_0x44 = param_1;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00606C4E
-// GHIDRA_NAME CDocument::CCmdTarget::IsInvokeAllowed
-// GHIDRA_PROTO undefined __thiscall CCmdTarget::IsInvokeAllowed(void)
-
-undefined4 CDocument::CCmdTarget__IsInvokeAllowed()
-
-{
-  return 1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00606C54
-// GHIDRA_NAME CDocument::CCmdTarget::GetDispatchIID
-// GHIDRA_PROTO undefined __thiscall CCmdTarget::GetDispatchIID(void)
-
-undefined4 CDocument::CCmdTarget__GetDispatchIID()
-
-{
-  return 0;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00606C59
-// GHIDRA_NAME CDocument::CCmdTarget::GetTypeInfoCount
-// GHIDRA_PROTO undefined __thiscall CCmdTarget::GetTypeInfoCount(void)
-
-undefined4 CDocument::CCmdTarget__GetTypeInfoCount()
-
-{
-  return 0;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00606C5C
-// GHIDRA_NAME CDocument::CCmdTarget::GetTypeLibCache
-// GHIDRA_PROTO undefined __thiscall CCmdTarget::GetTypeLibCache(void)
-
-undefined4 CDocument::CCmdTarget__GetTypeLibCache()
-
-{
-  return 0;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00606C5F
-// GHIDRA_NAME CDocument::CCmdTarget::GetTypeLib
-// GHIDRA_PROTO undefined __thiscall CCmdTarget::GetTypeLib(void)
-
-undefined4 CDocument::CCmdTarget__GetTypeLib()
-
-{
-  return 0x80029c4a;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00606CAC
-// GHIDRA_NAME CDocument::CCmdTarget::GetDispatchMap
-// GHIDRA_PROTO undefined __thiscall CCmdTarget::GetDispatchMap(void)
-
-undefined * CDocument::CCmdTarget__GetDispatchMap()
-
-{
-  return &DAT_00670580;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00606CB2
-// GHIDRA_NAME CDocument::CCmdTarget::GetEventSinkMap
-// GHIDRA_PROTO undefined __thiscall CCmdTarget::GetEventSinkMap(void)
-
-undefined * CDocument::CCmdTarget__GetEventSinkMap()
-
-{
-  return &DAT_006705b0;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00606CB8
-// GHIDRA_NAME CDocument::CCmdTarget::GetInterfaceMap
-// GHIDRA_PROTO undefined __thiscall CCmdTarget::GetInterfaceMap(void)
-
-undefined * CDocument::CCmdTarget__GetInterfaceMap()
-
-{
-  return &DAT_006705e8;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00606CF9
-// GHIDRA_NAME CDocument::CCmdTarget::GetConnectionMap
-// GHIDRA_PROTO undefined __thiscall CCmdTarget::GetConnectionMap(void)
-
-undefined * CDocument::CCmdTarget__GetConnectionMap()
-
-{
-  return &DAT_00670610;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00606CFF
-// GHIDRA_NAME CDocument::CCmdTarget::GetConnectionHook
-// GHIDRA_PROTO undefined __thiscall CCmdTarget::GetConnectionHook(void)
-
-undefined4 CDocument::CCmdTarget__GetConnectionHook()
-
-{
-  return 0;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00606D04
-// GHIDRA_NAME CDocument::CCmdTarget::GetExtraConnectionPoints
-// GHIDRA_PROTO undefined __thiscall CCmdTarget::GetExtraConnectionPoints(void)
-
-undefined4 CDocument::CCmdTarget__GetExtraConnectionPoints()
-
-{
-  return 0;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00606D09
-// GHIDRA_NAME CDocument::CCmdTarget::GetCommandMap
-// GHIDRA_PROTO undefined __thiscall CCmdTarget::GetCommandMap(void)
-
-undefined * CDocument::CCmdTarget__GetCommandMap()
-
-{
-  return &DAT_00670620;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x006109CF
-// GHIDRA_NAME CDocument::??_GCDocument@@UAEPAXI@Z
-// GHIDRA_PROTO undefined __thiscall ??_GCDocument@@UAEPAXI@Z(byte param_1)
-
-CDocument * CDocument::___GCDocument__UAEPAXI_Z(byte param_1)
-
-{
-  CDocument__DestructCDocumentBaseState();
-  if ((param_1 & 1) != 0) {
-    operator_delete(this);
-  }
-  return this;
+  undefined4 uVar1;
+  undefined4 *extraout_ECX;
+  int unaff_EBP;
+  undefined4 *unaff_FS_OFFSET;
+  
+  _EH_prolog();
+  *(undefined4 **)(unaff_EBP + -0x10) = extraout_ECX;
+  CCmdTarget::CCmdTarget();
+  *(undefined4 *)(unaff_EBP + -4) = 0;
+  CString::CString((CString *)(extraout_ECX + 7));
+  *(undefined1 *)(unaff_EBP + -4) = 1;
+  CString::CString((CString *)(extraout_ECX + 8));
+  *(undefined1 *)(unaff_EBP + -4) = 2;
+  CPtrList::CPtrList((CPtrList *)(extraout_ECX + 10),10);
+  extraout_ECX[9] = 0;
+  extraout_ECX[0x11] = 0;
+  uVar1 = *(undefined4 *)(unaff_EBP + -0xc);
+  extraout_ECX[0x13] = 0;
+  *extraout_ECX = &CDocumentVtbl_0067210c;
+  extraout_ECX[0x12] = 1;
+  *unaff_FS_OFFSET = uVar1;
+  return extraout_ECX;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006109EB
-// GHIDRA_NAME CDocument::CDocument::DestructCDocumentBaseState
-// GHIDRA_PROTO undefined CDocument::DestructCDocumentBaseState()
+// GHIDRA_NAME CDocument::DestructCDocumentBaseState
+// GHIDRA_PROTO undefined DestructCDocumentBaseState()
 
-void CDocument::CDocument__DestructCDocumentBaseState(void)
+void CDocument::DestructCDocumentBaseState(void)
 
 {
   CDocument *this;
@@ -190,10 +66,10 @@ void CDocument::CDocument__DestructCDocumentBaseState(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00610A57
-// GHIDRA_NAME CDocument::CDocument::OnFinalRelease
-// GHIDRA_PROTO undefined __thiscall CDocument::OnFinalRelease(void)
+// GHIDRA_NAME CDocument::OnFinalRelease
+// GHIDRA_PROTO undefined __thiscall OnFinalRelease(void)
 
-void CDocument::CDocument__OnFinalRelease()
+void __thiscall CDocument::OnFinalRelease(CDocument *this)
 
 {
                     /* WARNING: Could not recover jumptable at 0x00610a59. Too many branches */
@@ -206,7 +82,7 @@ void CDocument::CDocument__OnFinalRelease()
 // GHIDRA_NAME CDocument::DisconnectViews
 // GHIDRA_PROTO undefined __thiscall DisconnectViews(void)
 
-void CDocument::DisconnectViews()
+void __thiscall CDocument::DisconnectViews(CDocument *this)
 
 {
   int iVar1;
@@ -220,11 +96,42 @@ void CDocument::DisconnectViews()
   return;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00610A80
+// GHIDRA_NAME CDocument::SetTitle
+// GHIDRA_PROTO undefined __thiscall SetTitle(char * param_1)
+
+void __thiscall CDocument::SetTitle(CDocument *this,char *param_1)
+
+{
+  CString::operator=((CString *)&this->field_0x1c,param_1);
+  (*this->vftable[0x15].SetForeignMinisterReadyFlag14)();
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00610A9E
+// GHIDRA_NAME CDocument::OnChangedViewList
+// GHIDRA_PROTO undefined __thiscall OnChangedViewList(void)
+
+void __thiscall CDocument::OnChangedViewList(CDocument *this)
+
+{
+  if ((*(int *)&this->field_0x34 == 0) && (*(int *)&this->field_0x48 != 0)) {
+                    /* WARNING: Could not recover jumptable at 0x00610aac. Too many branches */
+                    /* WARNING: Treating indirect jump as call */
+    (*this->vftable[0x10].slot_0x04)();
+    return;
+  }
+                    /* WARNING: Could not recover jumptable at 0x00610ab4. Too many branches */
+                    /* WARNING: Treating indirect jump as call */
+  (*this->vftable[0x15].SetForeignMinisterReadyFlag14)();
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00610ABA
 // GHIDRA_NAME CDocument::UpdateFrameCounts
 // GHIDRA_PROTO undefined __thiscall UpdateFrameCounts(void)
 
-void CDocument::UpdateFrameCounts()
+void __thiscall CDocument::UpdateFrameCounts(CDocument *this)
 
 {
   CDocumentVtbl *pCVar1;
@@ -316,7 +223,7 @@ void CDocument::UpdateFrameCounts()
    
    Library: nafxcw retail msvc500:static */
 
-undefined1 CDocument::CanCloseFrame()
+undefined1 __thiscall CDocument::CanCloseFrame(CDocument *this)
 
 {
   CDocumentVtbl *pCVar1;
@@ -348,7 +255,7 @@ undefined1 CDocument::CanCloseFrame()
 // GHIDRA_NAME CDocument::SetPathName
 // GHIDRA_PROTO undefined __thiscall SetPathName(undefined4 param_1, int param_2)
 
-void CDocument::SetPathName(undefined4 param_1, int param_2)
+void __thiscall CDocument::SetPathName(CDocument *this,undefined4 param_1,int param_2)
 
 {
   undefined4 uVar1;
@@ -371,6 +278,24 @@ void CDocument::SetPathName(undefined4 param_1, int param_2)
   return;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00610C87
+// GHIDRA_NAME CDocument::OnFileClose
+// GHIDRA_PROTO undefined OnFileClose()
+
+void __fastcall CDocument::OnFileClose(int *param_1)
+
+{
+  int iVar1;
+  int iVar2;
+  
+  iVar1 = *param_1;
+  iVar2 = (**(code **)(iVar1 + 0x98))();
+  if (iVar2 != 0) {
+    (**(code **)(iVar1 + 0x84))();
+  }
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00610CB7
 // GHIDRA_NAME CDocument::DoFileSave
 // GHIDRA_PROTO undefined __thiscall DoFileSave(void)
@@ -386,7 +311,7 @@ void CDocument::SetPathName(undefined4 param_1, int param_2)
    
    Library: nafxcw retail msvc500:static */
 
-undefined4 CDocument::DoFileSave()
+undefined4 __thiscall CDocument::DoFileSave(CDocument *this)
 
 {
   undefined uVar1;
@@ -412,7 +337,7 @@ undefined4 CDocument::DoFileSave()
 // GHIDRA_NAME CDocument::DoSave
 // GHIDRA_PROTO undefined __thiscall DoSave(void)
 
-undefined4 CDocument::DoSave()
+undefined4 __thiscall CDocument::DoSave(CDocument *this)
 
 {
   int *piVar1;
@@ -456,7 +381,7 @@ undefined4 CDocument::DoSave()
   else {
 LAB_00610dc4:
     AfxGetModuleState();
-    CCmdTarget__BeginWaitCursor();
+    CCmdTarget::BeginWaitCursor();
     iVar2 = *extraout_ECX;
     *(undefined1 *)(unaff_EBP + -4) = 2;
     iVar3 = (**(code **)(iVar2 + 0x80))(*(undefined4 *)(unaff_EBP + -0x14));
@@ -466,7 +391,7 @@ LAB_00610dc4:
       }
       *(undefined1 *)(unaff_EBP + -4) = 0;
       AfxGetModuleState();
-      CCmdTarget__EndWaitCursor();
+      CCmdTarget::EndWaitCursor();
       *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
       CString::~CString((CString *)(unaff_EBP + -0x14));
       uVar4 = 1;
@@ -479,7 +404,7 @@ LAB_00610dc4:
     }
     *(undefined1 *)(unaff_EBP + -4) = 0;
     AfxGetModuleState();
-    CCmdTarget__EndWaitCursor();
+    CCmdTarget::EndWaitCursor();
   }
   *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
   CString::~CString((CString *)(unaff_EBP + -0x14));
@@ -493,7 +418,7 @@ LAB_00610e5e:
 // GHIDRA_NAME CDocument::SaveModified
 // GHIDRA_PROTO undefined __thiscall SaveModified(void)
 
-undefined4 CDocument::SaveModified()
+undefined4 __thiscall CDocument::SaveModified(CDocument *this)
 
 {
   char *pcVar1;
@@ -514,7 +439,7 @@ undefined4 CDocument::SaveModified()
     if (iVar2 == 0) {
       CString::operator=((CString *)(unaff_EBP + -0x10),(CString *)(extraout_ECX + 7));
       if (*(int *)(*(int *)(unaff_EBP + -0x10) + -8) == 0) {
-        CString__LoadStringA(0xf003);
+        CString::LoadStringA(0xf003);
       }
     }
     else {
@@ -559,7 +484,7 @@ LAB_00610f75:
 // GHIDRA_NAME CDocument::ReportSaveLoadException
 // GHIDRA_PROTO undefined __thiscall ReportSaveLoadException(void)
 
-void CDocument::ReportSaveLoadException()
+void __thiscall CDocument::ReportSaveLoadException(CDocument *this)
 
 {
   CObject *this_00;
@@ -630,11 +555,52 @@ LAB_006110dd:
   return;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00611334
+// GHIDRA_NAME CDocument::GetFile
+// GHIDRA_PROTO undefined __thiscall GetFile(void)
+
+int * __thiscall CDocument::GetFile(CDocument *this)
+
+{
+  int iVar1;
+  int *piVar2;
+  int iVar3;
+  int unaff_EBP;
+  undefined4 *unaff_FS_OFFSET;
+  
+  _EH_prolog();
+  piVar2 = (int *)operator_new(0x14);
+  *(int **)(unaff_EBP + -0x10) = piVar2;
+  *(undefined4 *)(unaff_EBP + -4) = 0;
+  if (piVar2 == (int *)0x0) {
+    piVar2 = (int *)0x0;
+  }
+  else {
+    CFile::CFile();
+    *(undefined1 *)(unaff_EBP + -4) = 1;
+    CString::CString((CString *)(piVar2 + 4));
+    *piVar2 = (int)&PTR_LAB_006721d4;
+  }
+  iVar1 = *piVar2;
+  *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
+  iVar3 = (**(code **)(iVar1 + 0x28))
+                    (*(undefined4 *)(unaff_EBP + 8),*(undefined4 *)(unaff_EBP + 0xc),
+                     *(undefined4 *)(unaff_EBP + 0x10));
+  if (iVar3 == 0) {
+    if (piVar2 != (int *)0x0) {
+      (**(code **)(iVar1 + 4))(1);
+    }
+    piVar2 = (int *)0x0;
+  }
+  *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
+  return piVar2;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x006113F7
 // GHIDRA_NAME CDocument::ReleaseFile
 // GHIDRA_PROTO undefined __thiscall ReleaseFile(int * param_1, int param_2)
 
-void CDocument::ReleaseFile(int *param_1, int param_2)
+void __thiscall CDocument::ReleaseFile(CDocument *this,int *param_1,int param_2)
 
 {
   int iVar1;
@@ -650,6 +616,23 @@ void CDocument::ReleaseFile(int *param_1, int param_2)
     (**(code **)(iVar1 + 4))(1);
   }
   return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00611420
+// GHIDRA_NAME CDocument::OnNewDocument
+// GHIDRA_PROTO undefined __thiscall OnNewDocument(void)
+
+undefined4 __thiscall CDocument::OnNewDocument(CDocument *this)
+
+{
+  CDocumentVtbl *pCVar1;
+  
+  pCVar1 = this->vftable;
+  (*pCVar1[0xc].SetForeignMinisterReadyFlag14)();
+  (*pCVar1[0xe].slot_0x04)();
+  CString::Empty();
+  (*pCVar1[0xc].slot_0x04)(0);
+  return 1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00611443
@@ -695,12 +678,12 @@ undefined4 CDocument::OnOpenDocument(void)
     pcVar2 = *(code **)(iVar1 + 100);
     *(code **)(unaff_EBP + -0x18) = pcVar2;
     (*pcVar2)(1);
-    CArchive__CArchive(*(undefined4 *)(unaff_EBP + -0x14),3,0x1000,0);
+    CArchive::CArchive(*(undefined4 *)(unaff_EBP + -0x14),3,0x1000,0);
     *(undefined4 *)(unaff_EBP + -0x74) = 0;
     *(int **)(unaff_EBP + -0x78) = extraout_ECX;
     *(undefined1 *)(unaff_EBP + -4) = 5;
     AfxGetModuleState();
-    CCmdTarget__BeginWaitCursor();
+    CCmdTarget::BeginWaitCursor();
     *(undefined1 *)(unaff_EBP + -4) = 6;
     iVar3 = (**(code **)(**(int **)(unaff_EBP + -0x14) + 0x38))();
     if (iVar3 != 0) {
@@ -710,7 +693,7 @@ undefined4 CDocument::OnOpenDocument(void)
     (**(code **)(iVar1 + 0x90))(*(undefined4 *)(unaff_EBP + -0x14),0);
     *(undefined1 *)(unaff_EBP + -4) = 5;
     AfxGetModuleState();
-    CCmdTarget__EndWaitCursor();
+    CCmdTarget::EndWaitCursor();
     *(undefined4 *)(unaff_EBP + -4) = 4;
     (**(code **)(unaff_EBP + -0x18))(0);
     *(undefined1 *)(unaff_EBP + -4) = 2;
@@ -753,19 +736,19 @@ bool CDocument::OnSaveDocument(void)
   iVar2 = (**(code **)(iVar1 + 0x8c))(*(undefined4 *)(unaff_EBP + 8),0x1012,unaff_EBP + -0x30);
   *(int *)(unaff_EBP + -0x14) = iVar2;
   if (iVar2 != 0) {
-    CArchive__CArchive(iVar2,2,0x1000,0);
+    CArchive::CArchive(iVar2,2,0x1000,0);
     *(undefined4 *)(unaff_EBP + -0x70) = 0;
     *(int **)(unaff_EBP + -0x74) = extraout_ECX;
     *(undefined1 *)(unaff_EBP + -4) = 5;
     AfxGetModuleState();
-    CCmdTarget__BeginWaitCursor();
+    CCmdTarget::BeginWaitCursor();
     *(undefined1 *)(unaff_EBP + -4) = 6;
     (**(code **)(iVar1 + 8))(unaff_EBP + -0x74);
     CArchive::Close((CArchive *)(unaff_EBP + -0x74));
     (**(code **)(iVar1 + 0x90))(*(undefined4 *)(unaff_EBP + -0x14),0);
     *(undefined1 *)(unaff_EBP + -4) = 5;
     AfxGetModuleState();
-    CCmdTarget__EndWaitCursor();
+    CCmdTarget::EndWaitCursor();
     *(undefined4 *)(unaff_EBP + -4) = 4;
     (**(code **)(iVar1 + 100))(0);
     *(undefined1 *)(unaff_EBP + -4) = 2;
@@ -830,7 +813,7 @@ void __fastcall CDocument::OnCloseDocument(int *param_1)
 // GHIDRA_NAME CDocument::AddView
 // GHIDRA_PROTO undefined __thiscall AddView(int param_1)
 
-void CDocument::AddView(int param_1)
+void __thiscall CDocument::AddView(CDocument *this,int param_1)
 
 {
   CDocumentVtbl *pCVar1;
@@ -950,7 +933,8 @@ void __fastcall CDocument::SendInitialUpdate(int *param_1)
 // GHIDRA_NAME CDocument::OnCmdMsg
 // GHIDRA_PROTO undefined __thiscall OnCmdMsg(uint param_1, uint param_2, int param_3, undefined4 param_4)
 
-undefined4 CDocument::OnCmdMsg(uint param_1, uint param_2, int param_3, undefined4 param_4)
+undefined4 __thiscall
+CDocument::OnCmdMsg(CDocument *this,uint param_1,uint param_2,int param_3,undefined4 param_4)
 
 {
   int iVar1;

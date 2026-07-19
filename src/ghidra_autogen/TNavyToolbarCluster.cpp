@@ -37,7 +37,7 @@ undefined4 * TNavyToolbarCluster::CreateObject(void)
 // GHIDRA_NAME TNavyToolbarCluster::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TNavyToolbarCluster::GetRuntimeClass()
+CRuntimeClass * __thiscall TNavyToolbarCluster::GetRuntimeClass(TNavyToolbarCluster *this)
 
 {
   return &classTNavyToolbarCluster;
@@ -47,7 +47,8 @@ CRuntimeClass * TNavyToolbarCluster::GetRuntimeClass()
 // GHIDRA_NAME TNavyToolbarCluster::ConstructTNavyToolbarClusterBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTNavyToolbarClusterBaseState(void)
 
-TNavyToolbarCluster * TNavyToolbarCluster::ConstructTNavyToolbarClusterBaseState()
+TNavyToolbarCluster * __thiscall
+TNavyToolbarCluster::ConstructTNavyToolbarClusterBaseState(TNavyToolbarCluster *this)
 
 {
   func_0x00405835();
@@ -59,7 +60,8 @@ TNavyToolbarCluster * TNavyToolbarCluster::ConstructTNavyToolbarClusterBaseState
 // GHIDRA_NAME TNavyToolbarCluster::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TNavyToolbarCluster * TNavyToolbarCluster::_scalar_deleting_destructor_(byte param_1)
+TNavyToolbarCluster * __thiscall
+TNavyToolbarCluster::_scalar_deleting_destructor_(TNavyToolbarCluster *this,byte param_1)
 
 {
   func_0x00403dc3();
@@ -73,7 +75,8 @@ TNavyToolbarCluster * TNavyToolbarCluster::_scalar_deleting_destructor_(byte par
 // GHIDRA_NAME TNavyToolbarCluster::HandleEvent
 // GHIDRA_PROTO undefined __thiscall HandleEvent(int param_1, void * param_2, int param_3)
 
-void TNavyToolbarCluster::HandleEvent(int param_1, void *param_2, int param_3)
+void __thiscall
+TNavyToolbarCluster::HandleEvent(TNavyToolbarCluster *this,int param_1,void *param_2,int param_3)
 
 {
   undefined *puVar1;
@@ -135,7 +138,7 @@ LAB_00569662:
 // GHIDRA_NAME TNavyToolbarCluster::IsTradeControlAtMinimum
 // GHIDRA_PROTO undefined __thiscall IsTradeControlAtMinimum(void)
 
-undefined1 TNavyToolbarCluster::IsTradeControlAtMinimum()
+undefined1 __thiscall TNavyToolbarCluster::IsTradeControlAtMinimum(TNavyToolbarCluster *this)
 
 {
   return 1;
@@ -145,7 +148,8 @@ undefined1 TNavyToolbarCluster::IsTradeControlAtMinimum()
 // GHIDRA_NAME TNavyToolbarCluster::OrphanCallChain_C2_I51_00491790
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C2_I51_00491790(int param_1)
 
-void TNavyToolbarCluster::OrphanCallChain_C2_I51_00491790(int param_1)
+void __thiscall
+TNavyToolbarCluster::OrphanCallChain_C2_I51_00491790(TNavyToolbarCluster *this,int param_1)
 
 {
   undefined uVar1;

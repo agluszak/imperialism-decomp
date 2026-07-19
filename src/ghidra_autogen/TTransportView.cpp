@@ -37,7 +37,8 @@ undefined4 * TTransportView::CreateObject(void)
 // GHIDRA_NAME TTransportView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TTransportView * TTransportView::_scalar_deleting_destructor_(byte param_1)
+TTransportView * __thiscall
+TTransportView::_scalar_deleting_destructor_(TTransportView *this,byte param_1)
 
 {
   func_0x00406e10();
@@ -51,7 +52,7 @@ TTransportView * TTransportView::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TTransportView::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TTransportView::GetRuntimeClass()
+CRuntimeClass * __thiscall TTransportView::GetRuntimeClass(TTransportView *this)
 
 {
   return &classTTransportView;
@@ -61,7 +62,8 @@ CRuntimeClass * TTransportView::GetRuntimeClass()
 // GHIDRA_NAME TTransportView::ApplyCityDialogMinisterValues
 // GHIDRA_PROTO undefined __thiscall ApplyCityDialogMinisterValues(undefined4 param_1)
 
-void TTransportView::ApplyCityDialogMinisterValues(undefined4 param_1)
+void __thiscall
+TTransportView::ApplyCityDialogMinisterValues(TTransportView *this,undefined4 param_1)
 
 {
   code *pcVar1;
@@ -142,7 +144,7 @@ void TTransportView::ApplyCityDialogMinisterValues(undefined4 param_1)
 // GHIDRA_NAME TTransportView::CallVoidSlotA0
 // GHIDRA_PROTO undefined __thiscall CallVoidSlotA0(void)
 
-void TTransportView::CallVoidSlotA0()
+void __thiscall TTransportView::CallVoidSlotA0(TTransportView *this)
 
 {
   undefined uVar1;

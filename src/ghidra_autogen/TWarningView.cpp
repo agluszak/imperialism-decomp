@@ -37,7 +37,7 @@ undefined4 * TWarningView::CreateObject(void)
 // GHIDRA_NAME TWarningView::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TWarningView::GetRuntimeClass()
+CRuntimeClass * __thiscall TWarningView::GetRuntimeClass(TWarningView *this)
 
 {
   return &classTWarningView;
@@ -62,7 +62,8 @@ _ConstructTWarningViewBaseState__YIPAUWarningViewState___Z_imperialismsrcgameTWa
 // GHIDRA_NAME TWarningView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TWarningView * TWarningView::_scalar_deleting_destructor_(byte param_1)
+TWarningView * __thiscall
+TWarningView::_scalar_deleting_destructor_(TWarningView *this,byte param_1)
 
 {
   func_0x004068ed();
@@ -76,7 +77,7 @@ TWarningView * TWarningView::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TWarningView::HandleEvent
 // GHIDRA_PROTO undefined __thiscall HandleEvent(int param_1, int param_2)
 
-void TWarningView::HandleEvent(int param_1, int param_2)
+void __thiscall TWarningView::HandleEvent(TWarningView *this,int param_1,int param_2)
 
 {
   TSimMgrVtbl *pTVar1;
@@ -119,7 +120,7 @@ switchD_0059299f_default:
 // GHIDRA_NAME TWarningView::NoOpUiLifecycleHook
 // GHIDRA_PROTO undefined __thiscall NoOpUiLifecycleHook(void)
 
-void TWarningView::NoOpUiLifecycleHook()
+void __thiscall TWarningView::NoOpUiLifecycleHook(TWarningView *this)
 
 {
   code *pcVar1;
@@ -149,7 +150,7 @@ void TWarningView::NoOpUiLifecycleHook()
   CStack_34.m_pchData = "hg+";
   uVar4 = (*this->vftable->SetForeignMinisterReadyFlag14)();
   CStack_34.m_pchData = (char *)0x2b67;
-  func_0x00406afa();
+  thunk_BuildUiTextStyleDescriptor();
   pcVar1 = *(code **)(*(int *)CONCAT31(extraout_var,uVar4) + 0x94);
   CStack_34.m_pchData = (char *)0x7469746c;
   piVar5 = (int *)(*pcVar1)();

@@ -24,7 +24,8 @@ TIdleMeAnimation * __cdecl TIdleMeAnimation::CreateObject(void)
 // GHIDRA_NAME TIdleMeAnimation::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TIdleMeAnimation * TIdleMeAnimation::_scalar_deleting_destructor_(byte param_1)
+TIdleMeAnimation * __thiscall
+TIdleMeAnimation::_scalar_deleting_destructor_(TIdleMeAnimation *this,byte param_1)
 
 {
   func_0x0040155f();
@@ -38,7 +39,7 @@ TIdleMeAnimation * TIdleMeAnimation::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TIdleMeAnimation::CreateTIdleMeAnimationInstance
 // GHIDRA_PROTO undefined __thiscall CreateTIdleMeAnimationInstance(void)
 
-void TIdleMeAnimation::CreateTIdleMeAnimationInstance()
+void __thiscall TIdleMeAnimation::CreateTIdleMeAnimationInstance(TIdleMeAnimation *this)
 
 {
   this->vftable =
@@ -50,7 +51,7 @@ void TIdleMeAnimation::CreateTIdleMeAnimationInstance()
 // GHIDRA_NAME TIdleMeAnimation::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TIdleMeAnimation::GetRuntimeClass()
+CRuntimeClass * __thiscall TIdleMeAnimation::GetRuntimeClass(TIdleMeAnimation *this)
 
 {
   return &classTIdleMeAnimation;
@@ -60,7 +61,8 @@ CRuntimeClass * TIdleMeAnimation::GetRuntimeClass()
 // GHIDRA_NAME TIdleMeAnimation::ConstructTIdleMeAnimationBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTIdleMeAnimationBaseState(undefined4 param_1)
 
-void TIdleMeAnimation::ConstructTIdleMeAnimationBaseState(undefined4 param_1)
+void __thiscall
+TIdleMeAnimation::ConstructTIdleMeAnimationBaseState(TIdleMeAnimation *this,undefined4 param_1)
 
 {
   undefined4 uVar1;
@@ -84,7 +86,8 @@ void TIdleMeAnimation::ConstructTIdleMeAnimationBaseState(undefined4 param_1)
 // GHIDRA_NAME TIdleMeAnimation::WrapperFor_InvalidateCityDialogRectRegion_At0049f140
 // GHIDRA_PROTO undefined __thiscall WrapperFor_InvalidateCityDialogRectRegion_At0049f140(void)
 
-void TIdleMeAnimation::WrapperFor_InvalidateCityDialogRectRegion_At0049f140()
+void __thiscall
+TIdleMeAnimation::WrapperFor_InvalidateCityDialogRectRegion_At0049f140(TIdleMeAnimation *this)
 
 {
   char cVar1;

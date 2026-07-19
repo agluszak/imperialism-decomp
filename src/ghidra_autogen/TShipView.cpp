@@ -7,7 +7,7 @@
 // GHIDRA_NAME TShipView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TShipView * TShipView::_scalar_deleting_destructor_(byte param_1)
+TShipView * __thiscall TShipView::_scalar_deleting_destructor_(TShipView *this,byte param_1)
 
 {
   func_0x0040897c();
@@ -51,7 +51,7 @@ undefined4 * TShipView::CreateObject(void)
 // GHIDRA_NAME TShipView::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TShipView::GetRuntimeClass()
+CRuntimeClass * __thiscall TShipView::GetRuntimeClass(TShipView *this)
 
 {
   return &classTShipView;
@@ -61,7 +61,7 @@ CRuntimeClass * TShipView::GetRuntimeClass()
 // GHIDRA_NAME TShipView::ApplyRectSlot110
 // GHIDRA_PROTO undefined __thiscall ApplyRectSlot110(void)
 
-void TShipView::ApplyRectSlot110()
+void __thiscall TShipView::ApplyRectSlot110(TShipView *this)
 
 {
   short sVar1;
@@ -99,7 +99,7 @@ void TShipView::ApplyRectSlot110()
   local_4._0_1_ = 1;
   func_0x00401bf9(2,0xc,0x2b6a);
   CString::operator=(&local_60,(CString *)(*(int *)&this->field_0x60 + 0x18));
-  ___L_YGXPAXIHP6EX0_Z1_Z(local_2c,4,8,&SUB_00404642);
+  CallCallbackRepeatedly(local_2c,4,8,&SUB_00404642);
   local_4._0_1_ = 2;
   do {
     (*g_pSimMgr->vftable[0x10].slot_0x04)(0x2760,iVar3);
@@ -114,7 +114,7 @@ void TShipView::ApplyRectSlot110()
   CString::operator+=();
   local_4._0_1_ = 2;
   CString::~CString(&CStack_58);
-  func_0x00408d6e(0x50);
+  thunk_SetQuickDrawTextOriginWithContextOffset(0x50);
   CStack_54.m_pchData = &stack0xffffff90;
   func_0x00406b86();
   CStack_54.m_pchData = &stack0xffffff90;
@@ -131,7 +131,7 @@ void TShipView::ApplyRectSlot110()
     CString::~CString(&CStack_58);
     local_4._0_1_ = 2;
     CString::~CString(&CStack_54);
-    func_0x00408d6e(0x50);
+    thunk_SetQuickDrawTextOriginWithContextOffset(0x50);
     func_0x004029aa();
   }
   sVar2 = *(short *)(*(int *)&this->field_0x60 + 0x1c);
@@ -159,10 +159,10 @@ void TShipView::ApplyRectSlot110()
                   &g_pActiveQuickDrawSurfaceContext->field_0x4,&uStack_3c,&uStack_4c,0x24);
   puStack_50 = &stack0xffffff90;
   func_0x00402bdf();
-  func_0x00408d6e(0x50);
-  func_0x00403bb6(0x50);
-  func_0x00403bb6(0xa2);
-  func_0x00403bb6(0xa2);
+  thunk_SetQuickDrawTextOriginWithContextOffset(0x50);
+  thunk_DrawCenteredGuideLineOnMapDc(0x50);
+  thunk_DrawCenteredGuideLineOnMapDc(0xa2);
+  thunk_DrawCenteredGuideLineOnMapDc(0xa2);
   local_4._0_1_ = 1;
   ___M_YGXPAXIHP6EX0_Z_Z(local_2c,4,8);
   local_4 = (uint)local_4._1_3_ << 8;
@@ -177,7 +177,8 @@ void TShipView::ApplyRectSlot110()
 // GHIDRA_NAME TShipView::HandleEvent
 // GHIDRA_PROTO undefined __thiscall HandleEvent(undefined4 param_1, int param_2, undefined4 param_3)
 
-void TShipView::HandleEvent(undefined4 param_1, int param_2, undefined4 param_3)
+void __thiscall
+TShipView::HandleEvent(TShipView *this,undefined4 param_1,int param_2,undefined4 param_3)
 
 {
   int *piVar1;

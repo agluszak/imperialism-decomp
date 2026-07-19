@@ -46,7 +46,8 @@ undefined4 * TBlockadePortMission::CreateObject(void)
 // GHIDRA_NAME TBlockadePortMission::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TBlockadePortMission * TBlockadePortMission::_scalar_deleting_destructor_(byte param_1)
+TBlockadePortMission * __thiscall
+TBlockadePortMission::_scalar_deleting_destructor_(TBlockadePortMission *this,byte param_1)
 
 {
   func_0x00401ac3();
@@ -70,7 +71,8 @@ undefined ** TBlockadePortMission::GetRuntimeClass(void)
 // GHIDRA_NAME TBlockadePortMission::SerializeTBlockadePortMission
 // GHIDRA_PROTO undefined __thiscall SerializeTBlockadePortMission(int * param_1)
 
-void TBlockadePortMission::SerializeTBlockadePortMission(int *param_1)
+void __thiscall
+TBlockadePortMission::SerializeTBlockadePortMission(TBlockadePortMission *this,int *param_1)
 
 {
   int iVar1;
@@ -87,7 +89,8 @@ void TBlockadePortMission::SerializeTBlockadePortMission(int *param_1)
 // GHIDRA_NAME TBlockadePortMission::DeserializeTBlockadePortMission
 // GHIDRA_PROTO undefined __thiscall DeserializeTBlockadePortMission(int * param_1)
 
-void TBlockadePortMission::DeserializeTBlockadePortMission(int *param_1)
+void __thiscall
+TBlockadePortMission::DeserializeTBlockadePortMission(TBlockadePortMission *this,int *param_1)
 
 {
   undefined4 uVar1;
@@ -158,7 +161,8 @@ TBlockadePortMission::RecomputeAndClearMissionScoreUsingPortZoneContextAverageVa
 // GHIDRA_NAME TBlockadePortMission::ValidateBlockadePortMissionContextAndRefreshChild
 // GHIDRA_PROTO undefined __thiscall ValidateBlockadePortMissionContextAndRefreshChild(void)
 
-uint TBlockadePortMission::ValidateBlockadePortMissionContextAndRefreshChild()
+uint __thiscall
+TBlockadePortMission::ValidateBlockadePortMissionContextAndRefreshChild(TBlockadePortMission *this)
 
 {
   TGreatPower *pTVar1;
@@ -193,7 +197,8 @@ uint TBlockadePortMission::ValidateBlockadePortMissionContextAndRefreshChild()
 // GHIDRA_NAME TBlockadePortMission::SetBlockadePortMissionStateByte8To3
 // GHIDRA_PROTO undefined __thiscall SetBlockadePortMissionStateByte8To3(void)
 
-void TBlockadePortMission::SetBlockadePortMissionStateByte8To3()
+void __thiscall
+TBlockadePortMission::SetBlockadePortMissionStateByte8To3(TBlockadePortMission *this)
 
 {
   this[8] = (TBlockadePortMission)0x3;

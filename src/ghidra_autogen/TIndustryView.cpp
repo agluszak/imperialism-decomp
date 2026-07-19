@@ -58,7 +58,7 @@ int * __cdecl TIndustryView::CreateObject(void)
 // GHIDRA_NAME TIndustryView::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TIndustryView::GetRuntimeClass()
+CRuntimeClass * __thiscall TIndustryView::GetRuntimeClass(TIndustryView *this)
 
 {
   return &classTIndustryView;
@@ -68,7 +68,7 @@ CRuntimeClass * TIndustryView::GetRuntimeClass()
 // GHIDRA_NAME TIndustryView::ConstructTIndustryViewBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTIndustryViewBaseState(void)
 
-TIndustryView * TIndustryView::ConstructTIndustryViewBaseState()
+TIndustryView * __thiscall TIndustryView::ConstructTIndustryViewBaseState(TIndustryView *this)
 
 {
   func_0x00403328();
@@ -83,7 +83,8 @@ TIndustryView * TIndustryView::ConstructTIndustryViewBaseState()
 // GHIDRA_NAME TIndustryView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TIndustryView * TIndustryView::_scalar_deleting_destructor_(byte param_1)
+TIndustryView * __thiscall
+TIndustryView::_scalar_deleting_destructor_(TIndustryView *this,byte param_1)
 
 {
   func_0x004035e9();
@@ -97,7 +98,7 @@ TIndustryView * TIndustryView::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TIndustryView::OrphanRetStub_004c6fd0
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_004c6fd0(void)
 
-void TIndustryView::OrphanRetStub_004c6fd0()
+void __thiscall TIndustryView::OrphanRetStub_004c6fd0(TIndustryView *this)
 
 {
   _vslot_fn *p_Var1;
@@ -187,7 +188,7 @@ void TIndustryView::OrphanRetStub_004c6fd0()
   CStack_54.m_pchData = (char *)0x2b67;
   CStack_58.m_pchData = (char *)0xc;
   CStack_60.m_pchData = (char *)&local_2c;
-  func_0x00406afa();
+  thunk_BuildUiTextStyleDescriptor();
   p_Var1 = this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25;
   CStack_54.m_pchData = (char *)0x6e616d65;
   CStack_58.m_pchData = (char *)0x4cc912;
@@ -212,10 +213,10 @@ void TIndustryView::OrphanRetStub_004c6fd0()
   uVar3 = (*p_Var1)();
   if ((int *)CONCAT31(extraout_var_00,uVar3) != (int *)0x0) {
     CStack_60.m_pchData = (char *)0x4cc98a;
-    TCity::GetBuildingType(this->pCity,*(short *)&this->field_0x9e);
+    TCity::thunk_GetCityBuildingProductionValueBySlot(this->pCity,*(short *)&this->field_0x9e);
     CStack_60.m_pchData = &g_szDecimalFormat;
     CStack_68.m_pchData = (char *)0x4cc99d;
-    CString__Format();
+    CString::Format();
     CStack_60.m_pchData = (char *)0x10;
     CStack_68.m_pchData = (char *)0x4cc9ba;
     (*g_pSimMgr->vftable[0x10].slot_0x04)();
@@ -241,7 +242,7 @@ void TIndustryView::OrphanRetStub_004c6fd0()
          (char *)(**(code **)(**(int **)(*(int *)&this->pCity->field_0xac + 0x90) + 0x28))();
     CStack_68.m_pchData = &stack0xffffffbc;
     pCStack_6c = (CString *)0x4cca3d;
-    CString__Format();
+    CString::Format();
     CStack_60.m_pchData = &stack0xffffffb8;
     CStack_68.m_pchData = (char *)0x2738;
     pCStack_6c = (CString *)0x4cca5a;
@@ -340,7 +341,7 @@ void TIndustryView::OrphanRetStub_004c6fd0()
   pTStack_74 = (TSimMgr *)0x2b69;
   pTStack_78 = (TSimMgr *)0x9;
   puStack_7c = (undefined1 *)0x0;
-  func_0x00406afa();
+  thunk_BuildUiTextStyleDescriptor();
   pTStack_74 = (TSimMgr *)0x6c616256;
   pTStack_78 = (TSimMgr *)0x4ccc6f;
   uVar3 = (*p_Var1)();
@@ -407,7 +408,7 @@ void TIndustryView::OrphanRetStub_004c6fd0()
 // GHIDRA_NAME TIndustryView::HandleEvent
 // GHIDRA_PROTO undefined __thiscall HandleEvent(int param_1, int param_2)
 
-void TIndustryView::HandleEvent(int param_1, int param_2)
+void __thiscall TIndustryView::HandleEvent(TIndustryView *this,int param_1,int param_2)
 
 {
   _vslot_fn *p_Var1;
@@ -464,7 +465,7 @@ void TIndustryView::HandleEvent(int param_1, int param_2)
    Returns:
    - void. */
 
-void TIndustryView::OrphanRetStub_004c6fb0(int *pCityViewDialog)
+void __thiscall TIndustryView::OrphanRetStub_004c6fb0(TIndustryView *this,int *pCityViewDialog)
 
 {
   short sVar1;

@@ -37,7 +37,8 @@ undefined4 * TGameInfoPicture::CreateObject(void)
 // GHIDRA_NAME TGameInfoPicture::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TGameInfoPicture * TGameInfoPicture::_scalar_deleting_destructor_(byte param_1)
+TGameInfoPicture * __thiscall
+TGameInfoPicture::_scalar_deleting_destructor_(TGameInfoPicture *this,byte param_1)
 
 {
   func_0x004037c4();
@@ -51,7 +52,7 @@ TGameInfoPicture * TGameInfoPicture::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TGameInfoPicture::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TGameInfoPicture::GetRuntimeClass()
+CRuntimeClass * __thiscall TGameInfoPicture::GetRuntimeClass(TGameInfoPicture *this)
 
 {
   return &classTGameInfoPicture;
@@ -61,7 +62,7 @@ CRuntimeClass * TGameInfoPicture::GetRuntimeClass()
 // GHIDRA_NAME TGameInfoPicture::NoOpUiLifecycleHook
 // GHIDRA_PROTO undefined __thiscall NoOpUiLifecycleHook(CString param_1)
 
-void TGameInfoPicture::NoOpUiLifecycleHook(CString param_1)
+void __thiscall TGameInfoPicture::NoOpUiLifecycleHook(TGameInfoPicture *this,CString param_1)
 
 {
   _vslot_fn *p_Var1;
@@ -106,7 +107,7 @@ void TGameInfoPicture::NoOpUiLifecycleHook(CString param_1)
 // GHIDRA_NAME TGameInfoPicture::HandleEvent
 // GHIDRA_PROTO undefined __thiscall HandleEvent(int param_1, int param_2)
 
-void TGameInfoPicture::HandleEvent(int param_1, int param_2)
+void __thiscall TGameInfoPicture::HandleEvent(TGameInfoPicture *this,int param_1,int param_2)
 
 {
   uint uVar1;
@@ -203,7 +204,8 @@ void TGameInfoPicture::HandleEvent(int param_1, int param_2)
       uStack_28 = 0;
       puStack_30 = &DAT_006a4048;
       func_0x004076b7(&iStack_20);
-      func_0x004096b0();
+      uStack_2c = 0x56bb03;
+      thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
       goto LAB_0056bb37;
     }
 LAB_0056bb1b:

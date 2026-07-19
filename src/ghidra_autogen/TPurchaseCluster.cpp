@@ -23,7 +23,7 @@ TCluster * TPurchaseCluster::CreateObject(void)
   this = (TCluster *)operator_new(0x8c);
   local_4 = 0;
   if (this != (TCluster *)0x0) {
-    TCluster::ConstructUiResourceEntryType4B0C0(this);
+    TCluster::thunk_ConstructUiResourceEntryType4B0C0(this);
     this->vftable = (TClusterVtbl *)&_vftable_;
     this[1].vftable = (TClusterVtbl *)0x0;
     *unaff_FS_OFFSET = local_c;
@@ -37,7 +37,7 @@ TCluster * TPurchaseCluster::CreateObject(void)
 // GHIDRA_NAME TPurchaseCluster::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TPurchaseCluster::GetRuntimeClass()
+CRuntimeClass * __thiscall TPurchaseCluster::GetRuntimeClass(TPurchaseCluster *this)
 
 {
   return &classTPurchaseCluster;
@@ -47,10 +47,11 @@ CRuntimeClass * TPurchaseCluster::GetRuntimeClass()
 // GHIDRA_NAME TPurchaseCluster::ConstructTPurchaseClusterBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTPurchaseClusterBaseState(void)
 
-TPurchaseCluster * TPurchaseCluster::ConstructTPurchaseClusterBaseState()
+TPurchaseCluster * __thiscall
+TPurchaseCluster::ConstructTPurchaseClusterBaseState(TPurchaseCluster *this)
 
 {
-  TCluster::ConstructUiResourceEntryType4B0C0((TCluster *)this);
+  TCluster::thunk_ConstructUiResourceEntryType4B0C0((TCluster *)this);
   this->vftable = &_vftable_;
   *(undefined4 *)&this->field_0x88 = 0;
   return this;
@@ -60,7 +61,8 @@ TPurchaseCluster * TPurchaseCluster::ConstructTPurchaseClusterBaseState()
 // GHIDRA_NAME TPurchaseCluster::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TPurchaseCluster * TPurchaseCluster::_scalar_deleting_destructor_(byte param_1)
+TPurchaseCluster * __thiscall
+TPurchaseCluster::_scalar_deleting_destructor_(TPurchaseCluster *this,byte param_1)
 
 {
   func_0x004078b5();
@@ -74,7 +76,8 @@ TPurchaseCluster * TPurchaseCluster::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TPurchaseCluster::OrphanCallChain_C1_I08_004cc440
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I08_004cc440(int param_1)
 
-void TPurchaseCluster::OrphanCallChain_C1_I08_004cc440(int param_1)
+void __thiscall
+TPurchaseCluster::OrphanCallChain_C1_I08_004cc440(TPurchaseCluster *this,int param_1)
 
 {
   *(int *)&this->field_0x88 = param_1;
@@ -87,7 +90,7 @@ void TPurchaseCluster::OrphanCallChain_C1_I08_004cc440(int param_1)
 // GHIDRA_NAME TPurchaseCluster::BeginMouseCaptureAndStartRepeatTimer
 // GHIDRA_PROTO undefined __thiscall BeginMouseCaptureAndStartRepeatTimer(void)
 
-void TPurchaseCluster::BeginMouseCaptureAndStartRepeatTimer()
+void __thiscall TPurchaseCluster::BeginMouseCaptureAndStartRepeatTimer(TPurchaseCluster *this)
 
 {
   return;
@@ -97,7 +100,8 @@ void TPurchaseCluster::BeginMouseCaptureAndStartRepeatTimer()
 // GHIDRA_NAME TPurchaseCluster::HandleEvent
 // GHIDRA_PROTO undefined __thiscall HandleEvent(int param_1, void * param_2, int param_3)
 
-void TPurchaseCluster::HandleEvent(int param_1, void *param_2, int param_3)
+void __thiscall
+TPurchaseCluster::HandleEvent(TPurchaseCluster *this,int param_1,void *param_2,int param_3)
 
 {
   undefined uVar1;
@@ -193,7 +197,7 @@ TPurchaseCluster::SetCityViewValueControlAmount
 // GHIDRA_NAME TPurchaseCluster::UpdateCityViewValueControl
 // GHIDRA_PROTO undefined __thiscall UpdateCityViewValueControl(void)
 
-void TPurchaseCluster::UpdateCityViewValueControl()
+void __thiscall TPurchaseCluster::UpdateCityViewValueControl(TPurchaseCluster *this)
 
 {
   undefined uVar1;

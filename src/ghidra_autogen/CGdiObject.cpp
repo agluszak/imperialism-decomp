@@ -7,7 +7,7 @@
 // GHIDRA_NAME CGdiObject::~CGdiObject
 // GHIDRA_PROTO undefined __thiscall ~CGdiObject(void)
 
-void CGdiObject::~CGdiObject()
+void __thiscall CGdiObject::~CGdiObject(CGdiObject *this)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -20,7 +20,7 @@ void CGdiObject::~CGdiObject()
   *unaff_FS_OFFSET = &local_c;
   *(undefined ***)this = &PTR_LAB_00671054;
   local_4 = 0;
-  CGdiObject__DeleteObject();
+  DeleteObject();
   *(char **)this = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = local_c;
   return;
@@ -50,5 +50,42 @@ void CGdiObject::FromHandle(undefined4 param_1)
   afxMapHGDIOBJ(1);
   CHandleMap::FromHandle(param_1);
   return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00613A4C
+// GHIDRA_NAME CGdiObject::Attach
+// GHIDRA_PROTO undefined __thiscall Attach(int param_1)
+
+bool __thiscall CGdiObject::Attach(CGdiObject *this,int param_1)
+
+{
+  CMapPtrToPtr *this_00;
+  undefined4 *puVar1;
+  
+  if (param_1 != 0) {
+    this_00 = (CMapPtrToPtr *)afxMapHGDIOBJ(1);
+    *(int *)(this + 4) = param_1;
+    puVar1 = (undefined4 *)CMapPtrToPtr::operator[](this_00,param_1);
+    *puVar1 = this;
+  }
+  return param_1 != 0;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00613AA3
+// GHIDRA_NAME CGdiObject::DeleteObject
+// GHIDRA_PROTO undefined DeleteObject()
+
+BOOL __fastcall CGdiObject::DeleteObject(int param_1)
+
+{
+  HGDIOBJ ho;
+  BOOL BVar1;
+  
+  if (*(int *)(param_1 + 4) == 0) {
+    return 0;
+  }
+  ho = (HGDIOBJ)CMenu__Detach();
+  BVar1 = ::DeleteObject(ho);
+  return BVar1;
 }
 

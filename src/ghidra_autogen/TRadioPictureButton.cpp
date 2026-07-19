@@ -39,7 +39,7 @@ undefined4 * TRadioPictureButton::CreateObject(void)
 // GHIDRA_NAME TRadioPictureButton::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TRadioPictureButton::GetRuntimeClass()
+CRuntimeClass * __thiscall TRadioPictureButton::GetRuntimeClass(TRadioPictureButton *this)
 
 {
   return &classTRadioPictureButton;
@@ -55,7 +55,7 @@ CRuntimeClass * TRadioPictureButton::GetRuntimeClass()
 /* Clickable picture/icon entry constructor. Derived picture resource class used for civ/agr/command
    icon slots in multiple UI builders. */
 
-TRadioPictureButton * TRadioPictureButton::TRadioPictureButton()
+TRadioPictureButton * __thiscall TRadioPictureButton::TRadioPictureButton(TRadioPictureButton *this)
 
 {
   func_0x00401122();
@@ -70,7 +70,8 @@ TRadioPictureButton * TRadioPictureButton::TRadioPictureButton()
 // GHIDRA_NAME TRadioPictureButton::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TRadioPictureButton * TRadioPictureButton::_scalar_deleting_destructor_(byte param_1)
+TRadioPictureButton * __thiscall
+TRadioPictureButton::_scalar_deleting_destructor_(TRadioPictureButton *this,byte param_1)
 
 {
   func_0x00402095();

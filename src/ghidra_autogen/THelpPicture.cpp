@@ -38,7 +38,7 @@ undefined4 * THelpPicture::CreateObject(void)
 // GHIDRA_NAME THelpPicture::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * THelpPicture::GetRuntimeClass()
+CRuntimeClass * __thiscall THelpPicture::GetRuntimeClass(THelpPicture *this)
 
 {
   return &classTHelpPicture;
@@ -54,7 +54,7 @@ CRuntimeClass * THelpPicture::GetRuntimeClass()
 /* Thin derived picture-entry constructor over ConstructPictureResourceEntryBase, installing vtable
    PTR_LAB_00657080 and clearing two dword fields. */
 
-THelpPicture * THelpPicture::ConstructPictureResourceEntryType57080()
+THelpPicture * __thiscall THelpPicture::ConstructPictureResourceEntryType57080(THelpPicture *this)
 
 {
   func_0x00401122();
@@ -68,7 +68,8 @@ THelpPicture * THelpPicture::ConstructPictureResourceEntryType57080()
 // GHIDRA_NAME THelpPicture::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-THelpPicture * THelpPicture::_scalar_deleting_destructor_(byte param_1)
+THelpPicture * __thiscall
+THelpPicture::_scalar_deleting_destructor_(THelpPicture *this,byte param_1)
 
 {
   func_0x00408c15();
@@ -82,7 +83,7 @@ THelpPicture * THelpPicture::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME THelpPicture::NoOpUiLifecycleHook
 // GHIDRA_PROTO undefined __thiscall NoOpUiLifecycleHook(void)
 
-void THelpPicture::NoOpUiLifecycleHook()
+void __thiscall THelpPicture::NoOpUiLifecycleHook(THelpPicture *this)
 
 {
   undefined4 uVar1;
@@ -114,7 +115,7 @@ void THelpPicture::NoOpUiLifecycleHook()
   uStack_26 = 0;
   uStack_25 = 0;
   uStack_24 = (uint)uStack_24._2_2_ << 0x10;
-  InitializeUiTextStyleDescriptor(&uStack_2c,0,0xc,0x2b67,3);
+  thunk_InitializeUiTextStyleDescriptor(&uStack_2c,0,0xc,0x2b67,3);
   uVar2 = (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25)(0x7377696e);
   piVar3 = (int *)CONCAT31(extraout_var,uVar2);
   (**(code **)(*piVar3 + 0xc))();
@@ -160,7 +161,7 @@ void THelpPicture::NoOpUiLifecycleHook()
 // GHIDRA_NAME THelpPicture::HandleEvent
 // GHIDRA_PROTO undefined __thiscall HandleEvent(int param_1, int param_2)
 
-void THelpPicture::HandleEvent(int param_1, int param_2)
+void __thiscall THelpPicture::HandleEvent(THelpPicture *this,int param_1,int param_2)
 
 {
   uint uVar1;
@@ -221,7 +222,7 @@ void THelpPicture::HandleEvent(int param_1, int param_2)
 // GHIDRA_NAME THelpPicture::OrphanCallChain_C2_I34_00504120
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C2_I34_00504120(void)
 
-void THelpPicture::OrphanCallChain_C2_I34_00504120()
+void __thiscall THelpPicture::OrphanCallChain_C2_I34_00504120(THelpPicture *this)
 
 {
   short sVar1;
@@ -252,7 +253,7 @@ void THelpPicture::OrphanCallChain_C2_I34_00504120()
 // GHIDRA_NAME THelpPicture::OrphanCallChain_C2_I34_005041a0
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C2_I34_005041a0(void)
 
-void THelpPicture::OrphanCallChain_C2_I34_005041a0()
+void __thiscall THelpPicture::OrphanCallChain_C2_I34_005041a0(THelpPicture *this)
 
 {
   short sVar1;
@@ -283,7 +284,7 @@ void THelpPicture::OrphanCallChain_C2_I34_005041a0()
 // GHIDRA_NAME THelpPicture::BuildHelpSubjectListControlsWithPrevNext
 // GHIDRA_PROTO undefined __thiscall BuildHelpSubjectListControlsWithPrevNext(void)
 
-void THelpPicture::BuildHelpSubjectListControlsWithPrevNext()
+void __thiscall THelpPicture::BuildHelpSubjectListControlsWithPrevNext(THelpPicture *this)
 
 {
   _vslot_fn *p_Var1;
@@ -404,21 +405,21 @@ void THelpPicture::BuildHelpSubjectListControlsWithPrevNext()
   uStack_80 = 4;
   local_4 = 0;
   uStack_88 = 0x5042af;
-  InitializeUiTextStyleDescriptor();
+  thunk_InitializeUiTextStyleDescriptor();
   puStack_84 = local_38;
   uStack_74 = 3;
   uStack_78 = 0x2b69;
   iStack_7c = 0xc;
   uStack_80 = 4;
   uStack_88 = 0x5042c7;
-  InitializeUiTextStyleDescriptor();
+  thunk_InitializeUiTextStyleDescriptor();
   puStack_84 = local_44;
   uStack_74 = 1;
   uStack_78 = 0x2b67;
   iStack_7c = 0xc;
   uStack_80 = 0;
   uStack_88 = 0x5042df;
-  InitializeUiTextStyleDescriptor();
+  thunk_InitializeUiTextStyleDescriptor();
   local_58 = this->vftable;
   p_Var1 = local_58->OrphanLeaf_NoCall_Ins07_004d8920_25;
   uStack_74 = 0x7375626a;
@@ -591,7 +592,7 @@ void THelpPicture::BuildHelpSubjectListControlsWithPrevNext()
 // GHIDRA_NAME THelpPicture::RefreshHelpSubjectListControlsWithPrevNext
 // GHIDRA_PROTO undefined __thiscall RefreshHelpSubjectListControlsWithPrevNext(void)
 
-void THelpPicture::RefreshHelpSubjectListControlsWithPrevNext()
+void __thiscall THelpPicture::RefreshHelpSubjectListControlsWithPrevNext(THelpPicture *this)
 
 {
   _vslot_fn *p_Var1;
@@ -697,21 +698,21 @@ void THelpPicture::RefreshHelpSubjectListControlsWithPrevNext()
   uStack_64 = 4;
   local_4 = 0;
   uStack_6c = 0x50474c;
-  InitializeUiTextStyleDescriptor();
+  thunk_InitializeUiTextStyleDescriptor();
   puStack_68 = local_18;
   uStack_58 = 3;
   uStack_5c = 0x2b69;
   uStack_60 = 0xc;
   uStack_64 = 4;
   uStack_6c = 0x504764;
-  InitializeUiTextStyleDescriptor();
+  thunk_InitializeUiTextStyleDescriptor();
   puStack_68 = local_24;
   uStack_58 = 1;
   uStack_5c = 0x2b67;
   uStack_60 = 0xc;
   uStack_64 = 0;
   uStack_6c = 0x50477c;
-  InitializeUiTextStyleDescriptor();
+  thunk_InitializeUiTextStyleDescriptor();
   local_38 = this->vftable;
   p_Var1 = local_38->OrphanLeaf_NoCall_Ins07_004d8920_25;
   uStack_58 = 0x7375626a;

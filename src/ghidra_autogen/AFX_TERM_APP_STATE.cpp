@@ -25,3 +25,14 @@ undefined4 __fastcall _AFX_TERM_APP_STATE::_AFX_TERM_APP_STATE(undefined4 param_
   return param_1;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x005FA80B
+// GHIDRA_NAME _AFX_TERM_APP_STATE::~_AFX_TERM_APP_STATE
+// GHIDRA_PROTO undefined ~_AFX_TERM_APP_STATE()
+
+void _AFX_TERM_APP_STATE::~_AFX_TERM_APP_STATE(void)
+
+{
+  AfxTermLocalData(0,1);
+  return;
+}
+

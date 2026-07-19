@@ -7,7 +7,8 @@
 // GHIDRA_NAME TTechItemLine::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TTechItemLine * TTechItemLine::_scalar_deleting_destructor_(byte param_1)
+TTechItemLine * __thiscall
+TTechItemLine::_scalar_deleting_destructor_(TTechItemLine *this,byte param_1)
 
 {
   func_0x00408c74();
@@ -51,17 +52,17 @@ undefined4 * TTechItemLine::CreateObject(void)
 // GHIDRA_NAME TTechItemLine::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TTechItemLine::GetRuntimeClass()
+CRuntimeClass * __thiscall TTechItemLine::GetRuntimeClass(TTechItemLine *this)
 
 {
   return &classTTechItemLine;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B1160
-// GHIDRA_NAME TTechItemLine::OrphanRetStub_0056f460
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0056f460(void)
+// GHIDRA_NAME TTechItemLine::CreateLineItemView
+// GHIDRA_PROTO undefined __thiscall CreateLineItemView(void)
 
-void TTechItemLine::OrphanRetStub_0056f460()
+void __thiscall TTechItemLine::CreateLineItemView(TTechItemLine *this)
 
 {
   undefined4 *puVar1;

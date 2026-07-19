@@ -46,7 +46,8 @@ undefined4 * TEscortMission::CreateObject(void)
 // GHIDRA_NAME TEscortMission::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TEscortMission * TEscortMission::_scalar_deleting_destructor_(byte param_1)
+TEscortMission * __thiscall
+TEscortMission::_scalar_deleting_destructor_(TEscortMission *this,byte param_1)
 
 {
   func_0x00401a23();
@@ -70,7 +71,8 @@ undefined ** TEscortMission::GetRuntimeClass(void)
 // GHIDRA_NAME TEscortMission::ResetEscortMissionDispatchFlagAndCopyTargetContextId
 // GHIDRA_PROTO undefined __thiscall ResetEscortMissionDispatchFlagAndCopyTargetContextId(void)
 
-void TEscortMission::ResetEscortMissionDispatchFlagAndCopyTargetContextId()
+void __thiscall
+TEscortMission::ResetEscortMissionDispatchFlagAndCopyTargetContextId(TEscortMission *this)
 
 {
   this[0x11] = (TEscortMission)0x0;
@@ -84,7 +86,8 @@ void TEscortMission::ResetEscortMissionDispatchFlagAndCopyTargetContextId()
 
 /* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 
-void TEscortMission::ComputeNationScaledMissionScoreUsingPrimaryPortContextAverage()
+void __thiscall
+TEscortMission::ComputeNationScaledMissionScoreUsingPrimaryPortContextAverage(TEscortMission *this)
 
 {
   double dVar1;
@@ -325,7 +328,8 @@ TEscortMission::HandleBeachheadMissionActionType0Or3ForTargetPort
 // GHIDRA_NAME TEscortMission::ResetBeachheadMissionChildFlagsAndDispatchField5Context
 // GHIDRA_PROTO undefined __thiscall ResetBeachheadMissionChildFlagsAndDispatchField5Context(void)
 
-void TEscortMission::ResetBeachheadMissionChildFlagsAndDispatchField5Context()
+void __thiscall
+TEscortMission::ResetBeachheadMissionChildFlagsAndDispatchField5Context(TEscortMission *this)
 
 {
   if (*(int *)(this + 0x24) != 0) {

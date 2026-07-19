@@ -48,7 +48,7 @@ CListBox::OnChildNotify
     }
     else {
       if (param_2 != 0x39) {
-        uVar1 = CWnd__OnChildNotify(param_2,param_3,param_4,param_5);
+        uVar1 = CWnd::OnChildNotify(param_2,param_3,param_4,param_5);
         return uVar1;
       }
       uVar1 = (**(code **)(*param_1 + 200))(param_4);

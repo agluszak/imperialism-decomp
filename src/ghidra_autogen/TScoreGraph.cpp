@@ -37,7 +37,7 @@ undefined4 * TScoreGraph::CreateObject(void)
 // GHIDRA_NAME TScoreGraph::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TScoreGraph * TScoreGraph::_scalar_deleting_destructor_(byte param_1)
+TScoreGraph * __thiscall TScoreGraph::_scalar_deleting_destructor_(TScoreGraph *this,byte param_1)
 
 {
   func_0x00407c7f();
@@ -51,7 +51,7 @@ TScoreGraph * TScoreGraph::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TScoreGraph::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TScoreGraph::GetRuntimeClass()
+CRuntimeClass * __thiscall TScoreGraph::GetRuntimeClass(TScoreGraph *this)
 
 {
   return &classTScoreGraph;
@@ -61,7 +61,7 @@ CRuntimeClass * TScoreGraph::GetRuntimeClass()
 // GHIDRA_NAME TScoreGraph::NoOpUiLifecycleHook
 // GHIDRA_PROTO undefined __thiscall NoOpUiLifecycleHook(void)
 
-void TScoreGraph::NoOpUiLifecycleHook()
+void __thiscall TScoreGraph::NoOpUiLifecycleHook(TScoreGraph *this)
 
 {
   undefined uVar1;
@@ -92,7 +92,7 @@ void TScoreGraph::NoOpUiLifecycleHook()
 // GHIDRA_NAME TScoreGraph::ApplyRectSlot110
 // GHIDRA_PROTO undefined __thiscall ApplyRectSlot110(void)
 
-void TScoreGraph::ApplyRectSlot110()
+void __thiscall TScoreGraph::ApplyRectSlot110(TScoreGraph *this)
 
 {
   int iVar1;
@@ -101,11 +101,11 @@ void TScoreGraph::ApplyRectSlot110()
   undefined1 *puVar4;
   int iVar5;
   undefined4 *unaff_FS_OFFSET;
-  undefined1 **ppuStack_4c;
+  int *piStack_4c;
   CString *local_48;
   int local_34;
   int local_30;
-  undefined1 *local_2c;
+  int local_2c;
   CString CStack_28;
   undefined1 *local_24;
   undefined1 *local_20;
@@ -122,8 +122,8 @@ void TScoreGraph::ApplyRectSlot110()
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
   local_48 = (CString *)0x2b67;
-  ppuStack_4c = (undefined1 **)0xc;
-  local_2c = (undefined1 *)0x0;
+  piStack_4c = (int *)0xc;
+  local_2c = 0;
   func_0x0040448f(0);
   local_24 = (undefined1 *)0x0;
   local_34 = 0;
@@ -142,7 +142,7 @@ void TScoreGraph::ApplyRectSlot110()
       } while (iVar3 != 0);
       local_20 = (undefined1 *)&local_48;
       local_48 = (CString *)0x0;
-      ppuStack_4c = (undefined1 **)0x4fe40c;
+      piStack_4c = (int *)0x4fe40c;
       func_0x00406b86();
       iVar3 = (int)(short)local_2c;
       local_18 = iVar3 + 2;
@@ -150,8 +150,8 @@ void TScoreGraph::ApplyRectSlot110()
       local_14 = (char *)((short)iVar5 + 2);
       local_10 = iVar3 + 0x26;
       local_1c.m_pchData = (char *)0x2;
-      ppuStack_4c = (undefined1 **)0x4fe43e;
-      func_0x00406546();
+      piStack_4c = (int *)0x4fe43e;
+      thunk_FillRectWithQuickDrawBrushAndContextOffset();
       iVar5 = 0;
       puVar4 = puVar4 + 0x1824;
       do {
@@ -160,11 +160,12 @@ void TScoreGraph::ApplyRectSlot110()
         local_14 = local_1c.m_pchData + (short)iVar1;
         local_10 = iVar3 + 0x24;
         local_48 = (CString *)(iVar5 + 3);
-        ppuStack_4c = (undefined1 **)0x4fe47d;
+        piStack_4c = (int *)0x4fe47d;
         local_18 = iVar3;
         (**(code **)(g_pUiRuntimeContext->vftable + 0x34))();
-        ppuStack_4c = &local_20;
-        func_0x00406546();
+        local_48 = &local_1c;
+        piStack_4c = (int *)0x4fe487;
+        thunk_FillRectWithQuickDrawBrushAndContextOffset();
         local_30 = local_30 + iVar1;
         iVar5 = iVar5 + 1;
         puVar4 = puVar4 + 4;
@@ -173,16 +174,16 @@ void TScoreGraph::ApplyRectSlot110()
       CString::CString(&CStack_28);
       local_48 = &CStack_28;
       uStack_4 = 0;
-      ppuStack_4c = (undefined1 **)0x4fe4c2;
+      piStack_4c = (int *)0x4fe4c2;
       func_0x00405245();
-      local_24 = (undefined1 *)&ppuStack_4c;
-      ppuStack_4c = (undefined1 **)0x0;
+      local_24 = (undefined1 *)&piStack_4c;
+      piStack_4c = (int *)0x0;
       func_0x00406b86();
-      ppuStack_4c = (undefined1 **)(local_30 + 0x30);
-      func_0x00408d6e(0);
-      ppuStack_4c = &local_2c;
+      piStack_4c = (int *)(local_30 + 0x30);
+      thunk_SetQuickDrawTextOriginWithContextOffset(0);
+      piStack_4c = &local_2c;
       func_0x004029aa();
-      local_2c = (undefined1 *)(local_30 + 0x34);
+      local_2c = local_30 + 0x34;
       uStack_4 = 0xffffffff;
       local_48 = (CString *)0x4fe50e;
       CString::~CString(&CStack_28);

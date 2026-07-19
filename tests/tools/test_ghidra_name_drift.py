@@ -18,6 +18,7 @@ from tools.workflow.check_ghidra_name_drift import (
     find_drift,
     find_override_drift,
     keys_for,
+    sanitize_stem,
 )
 
 
@@ -65,6 +66,23 @@ class TestFindDrift(unittest.TestCase):
         class_drift, stale = find_drift(symbols, autogen)
         self.assertEqual(class_drift, [])
         self.assertEqual(stale, [])
+
+    def test_template_bucket_is_not_stale(self):
+        # symbols.csv owns the address under the template class name; the autogen bucket
+        # filename sanitizes the template syntax. These are the same class, not drift.
+        symbols = {"004c65d0": "CList<long,long>::Serialize"}
+        autogen = [("004c65d0", "CList<long,long>::Serialize", "CList_long_long")]
+        class_drift, stale = find_drift(symbols, autogen)
+        self.assertEqual(class_drift, [])
+        self.assertEqual(stale, [])
+
+    def test_sanitize_stem_matches_ghidra_bucket_names(self):
+        self.assertEqual(sanitize_stem("CList<long,long>"), "CList_long_long")
+        self.assertEqual(sanitize_stem("CArray<void*,void*>"), "CArray_void_void")
+        self.assertEqual(
+            sanitize_stem("CMap<void*,void*,CacheRecord*,CacheRecord*>"),
+            "CMap_void_void_CacheRecord_CacheRecord",
+        )
 
     def test_keys_are_stable(self):
         class_drift = [("004c6740", "TLongintList::InsertLast",

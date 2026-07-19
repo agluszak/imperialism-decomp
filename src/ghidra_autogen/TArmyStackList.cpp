@@ -3,63 +3,6 @@
 // Program: Imperialism.exe
 // Bucket: TArmyStackList.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004A18F0
-// GHIDRA_NAME TArmyStackList::InitializeMapContextActionManager
-// GHIDRA_PROTO void __thiscall InitializeMapContextActionManager(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Setting prototype: void InitializeMapContextActionManager(void)
-// GHIDRA_COMMENT_END
-
-/* Setting prototype: void InitializeMapContextActionManager(void) */
-
-void TArmyStackList::InitializeMapContextActionManager()
-
-{
-  undefined4 *puVar1;
-  CPtrArray *this_00;
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 local_c;
-  undefined1 *puStack_8;
-  undefined4 local_4;
-  
-  local_4 = 0xffffffff;
-  puStack_8 = &LAB_0062ff3c;
-  local_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)operator_new(0x20);
-  if (puVar1 == (undefined4 *)0x0) {
-    puVar1 = (undefined4 *)0x0;
-  }
-  else {
-    *puVar1 = &TObject::_vftable_;
-    local_4 = 1;
-    CPtrList::CPtrList((CPtrList *)(puVar1 + 1),10);
-    *puVar1 = &_vftable_;
-  }
-  local_4 = 0xffffffff;
-  *(undefined4 **)&this->field_0xc = puVar1;
-  *(undefined **)&this->field_0x14 = &DAT_00695448;
-  *(undefined **)&this->field_0x18 = &DAT_00695428;
-  this[0x1c].field_0x1a = 0;
-  *(undefined4 *)&this[0x1c].field_0x1c = 0;
-  this[0x1d].vftable = (TArmyStackListVtbl *)0x0;
-  *(undefined4 *)&this[0x1d].field_0x4 = 0;
-  this_00 = (CPtrArray *)operator_new(0x18);
-  local_4 = 2;
-  if (this_00 == (CPtrArray *)0x0) {
-    this_00 = (CPtrArray *)0x0;
-  }
-  else {
-    CPtrArray::CPtrArray(this_00);
-    *(TSortedPtrListVtbl **)this_00 = &TSortedPtrList::_vftable_;
-  }
-  *(CPtrArray **)&this->field_0x4 = this_00;
-  *(undefined2 *)(this_00 + 0x14) = 0x268;
-  this->field_0x8 = 0;
-  *unaff_FS_OFFSET = local_c;
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x004A83B0
 // GHIDRA_NAME TArmyStackList::CreateObject
 // GHIDRA_PROTO undefined CreateObject()
@@ -95,7 +38,7 @@ undefined4 * TArmyStackList::CreateObject(void)
 // GHIDRA_NAME TArmyStackList::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TArmyStackList::GetRuntimeClass()
+CRuntimeClass * __thiscall TArmyStackList::GetRuntimeClass(TArmyStackList *this)
 
 {
   return &classTArmyStackList;
@@ -105,7 +48,7 @@ CRuntimeClass * TArmyStackList::GetRuntimeClass()
 // GHIDRA_NAME TArmyStackList::ConstructTArmyStackListBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTArmyStackListBaseState(void)
 
-TArmyStackList * TArmyStackList::ConstructTArmyStackListBaseState()
+TArmyStackList * __thiscall TArmyStackList::ConstructTArmyStackListBaseState(TArmyStackList *this)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -128,7 +71,8 @@ TArmyStackList * TArmyStackList::ConstructTArmyStackListBaseState()
 // GHIDRA_NAME TArmyStackList::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TArmyStackList * TArmyStackList::_scalar_deleting_destructor_(byte param_1)
+TArmyStackList * __thiscall
+TArmyStackList::_scalar_deleting_destructor_(TArmyStackList *this,byte param_1)
 
 {
   func_0x004019c4();
@@ -142,7 +86,8 @@ TArmyStackList * TArmyStackList::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TArmyStackList::WrapperFor_DestructCPtrListBaseState_At004a84f0
 // GHIDRA_PROTO undefined __thiscall WrapperFor_DestructCPtrListBaseState_At004a84f0(void)
 
-void TArmyStackList::WrapperFor_DestructCPtrListBaseState_At004a84f0()
+void __thiscall
+TArmyStackList::WrapperFor_DestructCPtrListBaseState_At004a84f0(TArmyStackList *this)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -161,10 +106,10 @@ void TArmyStackList::WrapperFor_DestructCPtrListBaseState_At004a84f0()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A8560
-// GHIDRA_NAME TArmyStackList::ConstructTSortedListBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTSortedListBaseState(int param_1, int param_2)
+// GHIDRA_NAME TArmyStackList::Compare
+// GHIDRA_PROTO undefined __thiscall Compare(int param_1, int param_2)
 
-short TArmyStackList::ConstructTSortedListBaseState(int param_1, int param_2)
+short __thiscall TArmyStackList::Compare(TArmyStackList *this,int param_1,int param_2)
 
 {
   if (*(short *)(param_1 + 6) < *(short *)(param_2 + 6)) {

@@ -7,25 +7,13 @@
 // GHIDRA_NAME TMapKey::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TMapKey * TMapKey::_scalar_deleting_destructor_(byte param_1)
+TMapKey * __thiscall TMapKey::_scalar_deleting_destructor_(TMapKey *this,byte param_1)
 
 {
   func_0x004031cf();
   if ((param_1 & 1) != 0) {
     operator_delete(this);
   }
-  return this;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0045AD20
-// GHIDRA_NAME TMapKey::WrapperFor_thunk_ConstructUiTextResourceEntryBase_At0045ad20
-// GHIDRA_PROTO undefined __thiscall WrapperFor_thunk_ConstructUiTextResourceEntryBase_At0045ad20(void)
-
-TMapKey * TMapKey::WrapperFor_thunk_ConstructUiTextResourceEntryBase_At0045ad20()
-
-{
-  func_0x0040541b();
-  this->vftable = (TMapKeyVtbl *)&TTEView::_vftable_;
   return this;
 }
 
@@ -63,7 +51,7 @@ undefined4 * TMapKey::CreateObject(void)
 // GHIDRA_NAME TMapKey::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TMapKey::GetRuntimeClass()
+CRuntimeClass * __thiscall TMapKey::GetRuntimeClass(TMapKey *this)
 
 {
   return &classTMapKey;
@@ -73,7 +61,7 @@ CRuntimeClass * TMapKey::GetRuntimeClass()
 // GHIDRA_NAME TMapKey::NoOpUiLifecycleHook
 // GHIDRA_PROTO undefined __thiscall NoOpUiLifecycleHook(void)
 
-void TMapKey::NoOpUiLifecycleHook()
+void __thiscall TMapKey::NoOpUiLifecycleHook(TMapKey *this)
 
 {
   TMapKeyVtbl *pTVar1;
@@ -137,8 +125,8 @@ void TMapKey::NoOpUiLifecycleHook()
   uStack_55 = 0;
   uStack_54 = 0;
   uStack_53 = 0;
-  func_0x004093cc();
-  InitializeUiTextStyleDescriptor(asStack_5c);
+  thunk_MapUiThemeCodeToStyleFlags();
+  thunk_InitializeUiTextStyleDescriptor(asStack_5c);
   local_78[0] = (int)(short)local_84;
   local_7c = (TMapKey *)(int)(short)((short)iVar5 + (short)iVar2);
   iVar5 = 0;
@@ -202,7 +190,7 @@ void TMapKey::NoOpUiLifecycleHook()
 // GHIDRA_NAME TMapKey::ApplyRectSlot110
 // GHIDRA_PROTO undefined __thiscall ApplyRectSlot110(void)
 
-void TMapKey::ApplyRectSlot110()
+void __thiscall TMapKey::ApplyRectSlot110(TMapKey *this)
 
 {
   func_0x00404fe8();
@@ -278,29 +266,29 @@ void __fastcall TMapKey::RenderMapHintOverlayMode0(int param_1)
   func_0x00401bf9(0,10);
   pCStack_2c = (CString *)&local_10;
   CStack_30.m_pchData = (char *)0x2b6b;
-  func_0x004093cc();
+  thunk_MapUiThemeCodeToStyleFlags();
   pCStack_2c = (CString *)&local_14;
   CStack_30.m_pchData = (char *)0x2b68;
-  func_0x004093cc();
+  thunk_MapUiThemeCodeToStyleFlags();
   pCStack_2c = &local_18;
   CStack_30.m_pchData = (char *)0x5;
   (*g_pSimMgr->vftable[0x10].slot_0x04)(0x2733);
   iVar1 = -iVar4;
   iVar2 = -iVar3;
   func_0x00409444(unaff_EBP);
-  func_0x00408d6e(iVar2 + 0x1df,iVar1 + 0x1d2);
+  thunk_SetQuickDrawTextOriginWithContextOffset(iVar2 + 0x1df,iVar1 + 0x1d2);
   func_0x004029aa(&stack0xffffffdc);
   func_0x00409444(unaff_EBX);
-  func_0x00408d6e(iVar2 + 0x1de,iVar1 + 0x1d1);
+  thunk_SetQuickDrawTextOriginWithContextOffset(iVar2 + 0x1de,iVar1 + 0x1d1);
   func_0x004029aa(&stack0xffffffdc);
   (*g_pSimMgr->vftable[0x10].slot_0x04)(0x2733,0x1e,&stack0xffffffdc);
   iVar4 = -iVar4;
   iVar3 = -iVar3;
   func_0x00409444(pCStack_2c);
-  func_0x00408d6e(iVar3 + 0x1b0,iVar4 + 0x172);
+  thunk_SetQuickDrawTextOriginWithContextOffset(iVar3 + 0x1b0,iVar4 + 0x172);
   func_0x004029aa(&CStack_30);
   func_0x00409444(unaff_EDI);
-  func_0x00408d6e(iVar3 + 0x1af,iVar4 + 0x171);
+  thunk_SetQuickDrawTextOriginWithContextOffset(iVar3 + 0x1af,iVar4 + 0x171);
   func_0x004029aa(&CStack_30);
   CString::~CString(&CStack_30);
   *unaff_FS_OFFSET = unaff_ESI;
@@ -375,8 +363,8 @@ void __fastcall TMapKey::RenderMapHintOverlayMode4(int param_1)
   local_30 = *(undefined2 *)(*(int *)(*(int *)(param_1 + 0x20) + 0x20) + 0x98);
   local_4 = CONCAT31(local_4._1_3_,2);
   func_0x0040448f(0,0xc,0x2b68);
-  func_0x004093cc(0x2b6b,&local_48);
-  func_0x004093cc(0x2b68,&local_4c);
+  thunk_MapUiThemeCodeToStyleFlags(0x2b6b,&local_48);
+  thunk_MapUiThemeCodeToStyleFlags(0x2b68,&local_4c);
   iVar1 = 6;
   iVar2 = 0xc;
   do {
@@ -385,10 +373,10 @@ void __fastcall TMapKey::RenderMapHintOverlayMode4(int param_1)
                        *(short *)((int)&local_44.m_pchData + iVar2) - sVar3);
     iVar4 = CONCAT22(sVar5,*(short *)((int)&local_34 + iVar2) - (short)local_40.m_pchData);
     func_0x00409444(unaff_ESI);
-    func_0x00408d6e(iVar4 + 1,param_1 + 1);
+    thunk_SetQuickDrawTextOriginWithContextOffset(iVar4 + 1,param_1 + 1);
     func_0x004029aa(&stack0xffffffb0);
     func_0x00409444(unaff_EBP);
-    func_0x00408d6e(iVar4,param_1);
+    thunk_SetQuickDrawTextOriginWithContextOffset(iVar4,param_1);
     func_0x004029aa(&stack0xffffffb0);
     iVar2 = iVar2 + 2;
     iVar1 = iVar1 + 1;
@@ -399,13 +387,13 @@ void __fastcall TMapKey::RenderMapHintOverlayMode4(int param_1)
   func_0x00405245(&local_48);
   func_0x0040988b(g_pSimMgr,&stack0xffffffb0,unaff_EBP,local_4c.m_pchData);
   iVar1 = -local_48;
-  sVar3 = func_0x00405b7d(&stack0xffffffb0);
+  sVar3 = thunk_MeasureTextExtentWithCachedQuickDrawStyle(&stack0xffffffb0);
   iVar2 = (0x1bd - (int)sVar3 / 2) - (int)local_44.m_pchData;
   func_0x00409444(unaff_EDI);
-  func_0x00408d6e(iVar2 + 1,iVar1 + 0x173);
+  thunk_SetQuickDrawTextOriginWithContextOffset(iVar2 + 1,iVar1 + 0x173);
   func_0x004029aa(&stack0xffffffb0);
   func_0x00409444(unaff_ESI);
-  func_0x00408d6e(iVar2,iVar1 + 0x172);
+  thunk_SetQuickDrawTextOriginWithContextOffset(iVar2,iVar1 + 0x172);
   func_0x004029aa(&stack0xffffffb0);
   local_14._0_1_ = 1;
   CString::~CString((CString *)&stack0xffffffb0);
@@ -473,8 +461,8 @@ void __fastcall TMapKey::RenderMapHintOverlayMode1(int param_1)
   local_20[0] = *(undefined2 *)(*(int *)(*(int *)(param_1 + 0x20) + 0x20) + 0x98);
   local_4 = CONCAT31(local_4._1_3_,2);
   func_0x0040448f(0,0xc,0x2b68);
-  func_0x004093cc(0x2b6b,&local_38);
-  func_0x004093cc(0x2b68,&local_3c);
+  thunk_MapUiThemeCodeToStyleFlags(0x2b6b,&local_38);
+  thunk_MapUiThemeCodeToStyleFlags(0x2b68,&local_3c);
   iVar1 = 0xe;
   iVar2 = 0x1c;
   do {
@@ -483,10 +471,10 @@ void __fastcall TMapKey::RenderMapHintOverlayMode1(int param_1)
     iVar4 = CONCAT22(sVar5,*(short *)((int)&local_3c.m_pchData + iVar2) - (short)local_30.m_pchData)
     ;
     func_0x00409444(unaff_ESI);
-    func_0x00408d6e(iVar4 + 1,param_1 + 1);
+    thunk_SetQuickDrawTextOriginWithContextOffset(iVar4 + 1,param_1 + 1);
     func_0x004029aa(&stack0xffffffc0);
     func_0x00409444(unaff_EBP);
-    func_0x00408d6e(iVar4,param_1);
+    thunk_SetQuickDrawTextOriginWithContextOffset(iVar4,param_1);
     func_0x004029aa(&stack0xffffffc0);
     iVar2 = iVar2 + 2;
     iVar1 = iVar1 + 1;
@@ -497,13 +485,13 @@ void __fastcall TMapKey::RenderMapHintOverlayMode1(int param_1)
   func_0x00405245(&local_38);
   func_0x0040988b(g_pSimMgr,&stack0xffffffc0,unaff_EBP,local_3c.m_pchData);
   iVar1 = -local_38;
-  sVar3 = func_0x00405b7d(&stack0xffffffc0);
+  sVar3 = thunk_MeasureTextExtentWithCachedQuickDrawStyle(&stack0xffffffc0);
   iVar2 = (0x1bd - (int)sVar3 / 2) - (int)local_34.m_pchData;
   func_0x00409444(unaff_EDI);
-  func_0x00408d6e(iVar2 + 1,iVar1 + 0x173);
+  thunk_SetQuickDrawTextOriginWithContextOffset(iVar2 + 1,iVar1 + 0x173);
   func_0x004029aa(&stack0xffffffc0);
   func_0x00409444(unaff_ESI);
-  func_0x00408d6e(iVar2,iVar1 + 0x172);
+  thunk_SetQuickDrawTextOriginWithContextOffset(iVar2,iVar1 + 0x172);
   func_0x004029aa(&stack0xffffffc0);
   local_14._0_1_ = 1;
   CString::~CString((CString *)&stack0xffffffc0);
@@ -599,11 +587,11 @@ void __fastcall TMapKey::RenderMapHintOverlayMode2(int param_1)
   CStack_64.m_pchData = local_48;
   psStack_68 = (short *)0x2b6b;
   CStack_6c.m_pchData = (char *)0x4fda0a;
-  func_0x004093cc();
+  thunk_MapUiThemeCodeToStyleFlags();
   CStack_64.m_pchData = (char *)&local_4c;
   psStack_68 = (short *)0x2b68;
   CStack_6c.m_pchData = (char *)0x4fda1c;
-  func_0x004093cc();
+  thunk_MapUiThemeCodeToStyleFlags();
   CStack_64.m_pchData = (char *)&local_50;
   psStack_68 = (short *)0x12;
   CStack_6c.m_pchData = (char *)0x2733;
@@ -617,7 +605,7 @@ void __fastcall TMapKey::RenderMapHintOverlayMode2(int param_1)
   puStack_70 = (undefined1 *)(iVar5 + 0x199);
   iStack_74 = iVar3 + 0x154;
   CStack_78.m_pchData = (char *)0x4fda61;
-  func_0x00408d6e();
+  thunk_SetQuickDrawTextOriginWithContextOffset();
   puStack_70 = &stack0xffffffa4;
   iStack_74 = 0x4fda6e;
   func_0x004029aa();
@@ -626,7 +614,7 @@ void __fastcall TMapKey::RenderMapHintOverlayMode2(int param_1)
   CStack_78.m_pchData = (char *)0x4fda85;
   iStack_74 = iVar6;
   puStack_70 = (undefined1 *)(iVar5 + 0x198);
-  func_0x00408d6e();
+  thunk_SetQuickDrawTextOriginWithContextOffset();
   puStack_70 = &stack0xffffffa4;
   iStack_74 = 0x4fda92;
   func_0x004029aa();
@@ -641,10 +629,10 @@ void __fastcall TMapKey::RenderMapHintOverlayMode2(int param_1)
     iVar6 = CONCAT22((short)((uint)iVar6 >> 0x10),*(undefined2 *)((int)&psStack_68 + iVar3));
     iVar5 = CONCAT22((short)((uint)iVar5 >> 0x10),*(undefined2 *)(&stack0xffffffa8 + iVar3));
     func_0x00409444(CStack_64.m_pchData);
-    func_0x00408d6e(iVar5 + 1,iVar6 + 1);
+    thunk_SetQuickDrawTextOriginWithContextOffset(iVar5 + 1,iVar6 + 1);
     func_0x004029aa(&psStack_68);
     func_0x00409444(unaff_EDI);
-    func_0x00408d6e(iVar5,iVar6);
+    thunk_SetQuickDrawTextOriginWithContextOffset(iVar5,iVar6);
     func_0x004029aa(&psStack_68);
     iVar3 = iVar3 + 2;
     local_4c = local_4c + 1;
@@ -654,21 +642,21 @@ void __fastcall TMapKey::RenderMapHintOverlayMode2(int param_1)
   CStack_78.m_pchData = (char *)0x2733;
   (*g_pSimMgr->vftable[0x10].slot_0x04)();
   func_0x00409444(CStack_64.m_pchData);
-  func_0x00408d6e(0x91,0x69);
+  thunk_SetQuickDrawTextOriginWithContextOffset(0x91,0x69);
   func_0x004029aa(&psStack_68);
   func_0x00409444(unaff_EDI);
-  func_0x00408d6e(0x90,0x68);
+  thunk_SetQuickDrawTextOriginWithContextOffset(0x90,0x68);
   func_0x004029aa(&psStack_68);
   (*g_pSimMgr->vftable[0x10].slot_0x04)(0x2733,0x11,&psStack_68);
   func_0x00405245(&stack0xffffffa0);
   func_0x0040988b(g_pSimMgr,&CStack_6c,CStack_78.m_pchData,CStack_64.m_pchData);
-  sVar1 = func_0x00405b7d(&CStack_6c);
+  sVar1 = thunk_MeasureTextExtentWithCachedQuickDrawStyle(&CStack_6c);
   iVar4 = (0x1bd - (int)sVar1 / 2) - iVar4;
   func_0x00409444(iStack_74);
-  func_0x00408d6e(iVar4 + 1,-unaff_ESI + 0x173);
+  thunk_SetQuickDrawTextOriginWithContextOffset(iVar4 + 1,-unaff_ESI + 0x173);
   func_0x004029aa(&CStack_6c);
   func_0x00409444(puStack_70);
-  func_0x00408d6e(iVar4,-unaff_ESI + 0x172);
+  thunk_SetQuickDrawTextOriginWithContextOffset(iVar4,-unaff_ESI + 0x172);
   func_0x004029aa(&CStack_6c);
   if (((g_apTerrainTypeDescriptorTable[*(short *)(*(int *)(unaff_EBP + 0x60) + 0x98)] ==
         (TCountry *)0x0) ||

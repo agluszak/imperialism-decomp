@@ -37,7 +37,7 @@ undefined4 * T2PictToggleButton::CreateObject(void)
 // GHIDRA_NAME T2PictToggleButton::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * T2PictToggleButton::GetRuntimeClass()
+CRuntimeClass * __thiscall T2PictToggleButton::GetRuntimeClass(T2PictToggleButton *this)
 
 {
   return &classT2PictToggleButton;
@@ -47,7 +47,8 @@ CRuntimeClass * T2PictToggleButton::GetRuntimeClass()
 // GHIDRA_NAME T2PictToggleButton::ConstructT2PictToggleButtonBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructT2PictToggleButtonBaseState(void)
 
-T2PictToggleButton * T2PictToggleButton::ConstructT2PictToggleButtonBaseState()
+T2PictToggleButton * __thiscall
+T2PictToggleButton::ConstructT2PictToggleButtonBaseState(T2PictToggleButton *this)
 
 {
   func_0x00402b53();
@@ -59,7 +60,8 @@ T2PictToggleButton * T2PictToggleButton::ConstructT2PictToggleButtonBaseState()
 // GHIDRA_NAME T2PictToggleButton::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-T2PictToggleButton * T2PictToggleButton::_scalar_deleting_destructor_(byte param_1)
+T2PictToggleButton * __thiscall
+T2PictToggleButton::_scalar_deleting_destructor_(T2PictToggleButton *this,byte param_1)
 
 {
   func_0x00405a06();
@@ -73,7 +75,7 @@ T2PictToggleButton * T2PictToggleButton::_scalar_deleting_destructor_(byte param
 // GHIDRA_NAME T2PictToggleButton::IsSelected
 // GHIDRA_PROTO undefined __thiscall IsSelected(void)
 
-undefined4 T2PictToggleButton::IsSelected()
+undefined4 __thiscall T2PictToggleButton::IsSelected(T2PictToggleButton *this)
 
 {
   return CONCAT31((int3)(char)((ushort)*(short *)&this->field_0x84 >> 8),
@@ -84,7 +86,7 @@ undefined4 T2PictToggleButton::IsSelected()
 // GHIDRA_NAME T2PictToggleButton::Select
 // GHIDRA_PROTO undefined __thiscall Select(char param_1)
 
-void T2PictToggleButton::Select(char param_1)
+void __thiscall T2PictToggleButton::Select(T2PictToggleButton *this,char param_1)
 
 {
   short sVar1;

@@ -3,55 +3,6 @@
 // Program: Imperialism.exe
 // Bucket: THQButton.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0048F3C0
-// GHIDRA_NAME THQButton::RenderHintHelperWithCtrlModifierOverlay
-// GHIDRA_PROTO undefined __thiscall RenderHintHelperWithCtrlModifierOverlay(void)
-
-void THQButton::RenderHintHelperWithCtrlModifierOverlay()
-
-{
-  _vslot_fn *p_Var1;
-  undefined uVar2;
-  ushort uVar3;
-  int iVar4;
-  undefined4 uVar5;
-  undefined3 extraout_var;
-  undefined3 extraout_var_00;
-  int iStack_14;
-  int local_10;
-  int iStack_c;
-  int iStack_8;
-  
-  uVar3 = GetAsyncKeyState(0x11);
-  if ((uVar3 & 0x8000) != 0) {
-    (*this->vftable->GetTEventHandlerClassNamePointer_58)(&local_10);
-  }
-  iVar4 = func_0x00409377();
-  if (((iVar4 != 0) &&
-      (iVar4 = *(int *)(*(int *)&this->field_0x8c + 0x10), *(short *)(iVar4 + 0xe) == 8)) &&
-     (*(int *)(iVar4 + 0x10) == 0)) {
-    (*this->vftable->GetTEventHandlerClassNamePointer_58)(&local_10);
-    iVar4 = iStack_8 - local_10;
-    uVar5 = func_0x00409377();
-    func_0x004039e5(uVar5,0,0,iStack_c - iStack_14,iVar4,iStack_14,local_10,0xffffffff);
-    return;
-  }
-  uVar5 = func_0x004021c6(0);
-  func_0x0040492b(uVar5);
-  func_0x00405498();
-  iVar4 = *(int *)(*(int *)(*(int *)&this->field_0x8c + 0x10) + 8);
-  if (iVar4 < 1) {
-    iVar4 = -iVar4;
-  }
-  p_Var1 = this->vftable->GetTEventHandlerClassNamePointer_56;
-  uVar2 = (*p_Var1)(&stack0xffffffe0,this->field34,this->field38,0,0,
-                    *(undefined4 *)(*(int *)(*(int *)&this->field_0x8c + 0x10) + 4),iVar4);
-  uVar2 = (*p_Var1)(&stack0xffffffe4,*(undefined4 *)(CONCAT31(extraout_var,uVar2) + 4));
-  uVar5 = func_0x004021c6(*(undefined4 *)CONCAT31(extraout_var_00,uVar2));
-  func_0x00407c93(uVar5);
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00494A90
 // GHIDRA_NAME THQButton::DrawTextWithCachedQuickDrawStyleState
 // GHIDRA_PROTO undefined DrawTextWithCachedQuickDrawStyleState()
@@ -87,7 +38,9 @@ void __fastcall THQButton::DrawTextWithCachedQuickDrawStyleState(int *param_1)
   if (g_pQuickDrawMemoryDc == (int *)0x0) {
     piVar2 = g_pScopedMapQuickDrawDcHandleObject;
   }
-  (**(code **)(*piVar2 + 100))(DAT_006a1d00,DAT_006a1d04,*param_1,*(undefined4 *)(*param_1 + -8));
+  (**(code **)(*piVar2 + 100))
+            (g_nQuickDrawResolvedTextOriginX,g_nQuickDrawResolvedTextOriginY,*param_1,
+             *(undefined4 *)(*param_1 + -8));
   CDC::SetTextAlign(uVar1);
   piVar2 = g_pQuickDrawMemoryDc;
   if (g_pQuickDrawMemoryDc == (int *)0x0) {
@@ -164,7 +117,7 @@ void __fastcall THQButton::DrawTextWithCachedQuickDrawStyleState(int *param_1)
    
    City entry index mapping used by logic: buildingEnum = slotId + 0x35. */
 
-void THQButton::RenderCityBuildingIcons(tagRECT *pTargetRect)
+void __thiscall THQButton::RenderCityBuildingIcons(THQButton *this,tagRECT *pTargetRect)
 
 {
   TCityVtbl *pTVar1;
@@ -204,7 +157,7 @@ void THQButton::RenderCityBuildingIcons(tagRECT *pTargetRect)
   }
   *(undefined1 *)((int)&this[1].padding_08_to_0b + 2) = 0;
   func_0x00404fe8(pTargetRect);
-  func_0x00408d64(local_20,&stack0xffffffdc);
+  thunk_GetActiveQuickDrawSurfaceContextAndFlags(local_20,&stack0xffffffdc);
   piVar7 = (int *)func_0x004047a0(7000);
   CopyRect(&local_14,(RECT *)(*piVar7 + 8));
   (**(code **)(*g_pDisplayMgr + 0x2c))(&stack0x00000000,8,&local_14);
@@ -218,12 +171,12 @@ void THQButton::RenderCityBuildingIcons(tagRECT *pTargetRect)
     operator_delete(puVar11);
   }
   operator_delete(piVar7);
-  func_0x00406f5f(local_14.right,unaff_EDI);
-  uVar8 = func_0x0040520e(local_14.right);
-  func_0x0040761c(uVar8);
+  thunk_SetActiveQuickDrawSurfaceContext(local_14.right,unaff_EDI);
+  uVar8 = thunk_GetSurfaceObjectAtContextOffset24(local_14.right);
+  thunk_ReturnConstantTrueQuickDrawFlag(uVar8);
   piVar16 = (int *)&g_anCityBuildingSlotOrder;
   do {
-    func_0x00406f5f(local_14.right,unaff_EDI);
+    thunk_SetActiveQuickDrawSurfaceContext(local_14.right,unaff_EDI);
     sVar6 = func_0x00403b16();
     if (g_apNationStates[sVar6] == (TGreatPower *)0x0) {
       pTVar12 = (TCity *)0x0;
@@ -266,7 +219,7 @@ LAB_004ba985:
                 (&g_anCityBuildingSlotCoords)[(int)g_nCityBuildingDrawYOffsetIndex + sVar6 * 2],
                 puVar9,unaff_ESI,unaff_EDI);
       if ((sVar6 == 0xf) && ('2' < *(char *)(*(int *)&pTVar12->field_0xac + 0x8d2))) {
-        func_0x00406f5f(local_14.right,unaff_EDI);
+        thunk_SetActiveQuickDrawSurfaceContext(local_14.right,unaff_EDI);
         uVar15 = 0x1b9e;
         uVar14 = 0x3c;
         uVar8 = 0xa6;
@@ -274,7 +227,7 @@ LAB_004ba985:
       else {
         if ((sVar6 != 0xe) || (*(char *)(*(int *)&pTVar12->field_0xac + 0x8d3) < '3'))
         goto LAB_004baac3;
-        func_0x00406f5f(local_14.right,unaff_EDI);
+        thunk_SetActiveQuickDrawSurfaceContext(local_14.right,unaff_EDI);
         uVar15 = 0x1b9f;
         uVar14 = 0x143;
         uVar8 = 0x6d;
@@ -297,9 +250,9 @@ LAB_004baac3:
         } while (iVar13 != 0);
         iVar10 = iVar10 + -1;
       } while (iVar10 != 0);
-      func_0x00406f5f(unaff_ESI,unaff_EDI);
-      uVar8 = func_0x0040520e(local_14.right);
-      func_0x004024fa(uVar8);
+      thunk_SetActiveQuickDrawSurfaceContext(unaff_ESI,unaff_EDI);
+      uVar8 = thunk_GetSurfaceObjectAtContextOffset24(local_14.right);
+      thunk_NoOpQuickDrawLifecycleHookB(uVar8);
       func_0x004010e6(&local_14.right);
       (**(code **)(*piVar16 + 0x1d4))();
       return;
@@ -341,7 +294,7 @@ undefined4 * THQButton::CreateObject(void)
 // GHIDRA_NAME THQButton::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * THQButton::GetRuntimeClass()
+CRuntimeClass * __thiscall THQButton::GetRuntimeClass(THQButton *this)
 
 {
   return &classTHQButton;
@@ -351,7 +304,7 @@ CRuntimeClass * THQButton::GetRuntimeClass()
 // GHIDRA_NAME THQButton::THQButton
 // GHIDRA_PROTO undefined __thiscall THQButton(void)
 
-THQButton * THQButton::THQButton()
+THQButton * __thiscall THQButton::THQButton(THQButton *this)
 
 {
   func_0x00401122();
@@ -363,7 +316,7 @@ THQButton * THQButton::THQButton()
 // GHIDRA_NAME THQButton::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-THQButton * THQButton::_scalar_deleting_destructor_(byte param_1)
+THQButton * __thiscall THQButton::_scalar_deleting_destructor_(THQButton *this,byte param_1)
 
 {
   func_0x00408abc();
@@ -377,7 +330,7 @@ THQButton * THQButton::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME THQButton::NoOpUiLifecycleHook
 // GHIDRA_PROTO undefined __thiscall NoOpUiLifecycleHook(void)
 
-void THQButton::NoOpUiLifecycleHook()
+void __thiscall THQButton::NoOpUiLifecycleHook(THQButton *this)
 
 {
   short sVar1;
@@ -397,7 +350,7 @@ void THQButton::NoOpUiLifecycleHook()
 // GHIDRA_NAME THQButton::SetControlStateFlagAndMaybeRefresh
 // GHIDRA_PROTO undefined __thiscall SetControlStateFlagAndMaybeRefresh(char param_1)
 
-void THQButton::SetControlStateFlagAndMaybeRefresh(char param_1)
+void __thiscall THQButton::SetControlStateFlagAndMaybeRefresh(THQButton *this,char param_1)
 
 {
   undefined2 uVar1;
@@ -445,7 +398,7 @@ LAB_0058b7a7:
 // GHIDRA_NAME THQButton::HandleEvent
 // GHIDRA_PROTO undefined __thiscall HandleEvent(int param_1)
 
-void THQButton::HandleEvent(int param_1)
+void __thiscall THQButton::HandleEvent(THQButton *this,int param_1)
 
 {
   undefined4 in_stack_00000008;
@@ -474,7 +427,7 @@ void THQButton::HandleEvent(int param_1)
 // GHIDRA_NAME THQButton::IsSelected
 // GHIDRA_PROTO undefined __thiscall IsSelected(undefined4 param_1, undefined4 param_2)
 
-void THQButton::IsSelected(undefined4 param_1, undefined4 param_2)
+void __thiscall THQButton::IsSelected(THQButton *this,undefined4 param_1,undefined4 param_2)
 
 {
   THQButtonVtbl *pTVar1;
@@ -492,7 +445,7 @@ void THQButton::IsSelected(undefined4 param_1, undefined4 param_2)
 // GHIDRA_NAME THQButton::SetSelectionStateAndRefreshBitmap
 // GHIDRA_PROTO undefined __thiscall SetSelectionStateAndRefreshBitmap(short param_1)
 
-void THQButton::SetSelectionStateAndRefreshBitmap(short param_1)
+void __thiscall THQButton::SetSelectionStateAndRefreshBitmap(THQButton *this,short param_1)
 
 {
   undefined4 in_EAX;

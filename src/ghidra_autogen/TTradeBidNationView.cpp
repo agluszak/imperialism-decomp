@@ -7,7 +7,8 @@
 // GHIDRA_NAME TTradeBidNationView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TTradeBidNationView * TTradeBidNationView::_scalar_deleting_destructor_(byte param_1)
+TTradeBidNationView * __thiscall
+TTradeBidNationView::_scalar_deleting_destructor_(TTradeBidNationView *this,byte param_1)
 
 {
   func_0x00402270();
@@ -51,7 +52,7 @@ undefined4 * TTradeBidNationView::CreateObject(void)
 // GHIDRA_NAME TTradeBidNationView::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TTradeBidNationView::GetRuntimeClass()
+CRuntimeClass * __thiscall TTradeBidNationView::GetRuntimeClass(TTradeBidNationView *this)
 
 {
   return &classTTradeBidNationView;
@@ -61,7 +62,7 @@ CRuntimeClass * TTradeBidNationView::GetRuntimeClass()
 // GHIDRA_NAME TTradeBidNationView::ApplyRectSlot110
 // GHIDRA_PROTO undefined __thiscall ApplyRectSlot110(void)
 
-void TTradeBidNationView::ApplyRectSlot110()
+void __thiscall TTradeBidNationView::ApplyRectSlot110(TTradeBidNationView *this)
 
 {
   undefined uVar1;
@@ -114,14 +115,15 @@ void TTradeBidNationView::ApplyRectSlot110()
   iStack_c = (uint)iStack_c._1_3_ << 8;
   CString::~CString((CString *)&stack0xffffffc8);
   func_0x0040448f(0,0xc,0x2b6a);
-  func_0x00408d6e(0x28,0xc);
+  thunk_SetQuickDrawTextOriginWithContextOffset(0x28,0xc);
   func_0x004029aa(&stack0xffffffc4);
   if ((*(short *)&this->field_0x62 < 7) && (*(int *)&g_pSimMgr->field_0x8 == 7)) {
     uVar1 = (*g_apNationStates[*(short *)&this->field_0x62]->vftable->
               OrphanLeaf_NoCall_Ins02_004d7f00)();
-    CString__Format(&stack0xffffffc4,&g_szDecimalFormat,(int)(short)CONCAT31(extraout_var,uVar1));
-    sVar2 = func_0x00405b7d(&stack0xffffffc4,0xc);
-    func_0x00408d6e(CONCAT22(extraout_var_00,(short)this->field34 - sVar2) + -4);
+    CString::Format(&stack0xffffffc4,&g_szDecimalFormat,(int)(short)CONCAT31(extraout_var,uVar1));
+    sVar2 = thunk_MeasureTextExtentWithCachedQuickDrawStyle(&stack0xffffffc4,0xc);
+    thunk_SetQuickDrawTextOriginWithContextOffset
+              (CONCAT22(extraout_var_00,(short)this->field34 - sVar2) + -4);
     func_0x004029aa(&stack0xffffffc4);
   }
   iStack_c = -1;

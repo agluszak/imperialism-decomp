@@ -3,6 +3,48 @@
 // Program: Imperialism.exe
 // Bucket: CToolBarCtrl.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x005E58AB
+// GHIDRA_NAME CToolBarCtrl::Create
+// GHIDRA_PROTO undefined Create()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Multiple Matches With Same Base Name
+// GHIDRA_COMMENT  public: int __thiscall CAnimateCtrl::Create(unsigned long,struct tagRECT const &,class CWnd *,unsigned int)
+// GHIDRA_COMMENT  public: int __thiscall CHeaderCtrl::Create(unsigned long,struct tagRECT const &,class CWnd *,unsigned int)
+// GHIDRA_COMMENT  public: int __thiscall CHotKeyCtrl::Create(unsigned long,struct tagRECT const &,class CWnd *,unsigned int)
+// GHIDRA_COMMENT  public: int __thiscall CListCtrl::Create(unsigned long,struct tagRECT const &,class CWnd *,unsigned int)
+// GHIDRA_COMMENT   11 names - too many to list
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: nafxcw retail msvc500:static
+// GHIDRA_COMMENT_END
+
+/* Library Function - Multiple Matches With Same Base Name
+    public: int __thiscall CAnimateCtrl::Create(unsigned long,struct tagRECT const &,class CWnd
+   *,unsigned int)
+    public: int __thiscall CHeaderCtrl::Create(unsigned long,struct tagRECT const &,class CWnd
+   *,unsigned int)
+    public: int __thiscall CHotKeyCtrl::Create(unsigned long,struct tagRECT const &,class CWnd
+   *,unsigned int)
+    public: int __thiscall CListCtrl::Create(unsigned long,struct tagRECT const &,class CWnd
+   *,unsigned int)
+     11 names - too many to list
+   
+   Library: nafxcw retail msvc500:static */
+
+void __thiscall
+CToolBarCtrl::Create
+          (int *param_1,undefined4 param_2,undefined4 param_3,undefined4 param_4,undefined4 param_5)
+
+{
+  int iVar1;
+  
+  iVar1 = AfxGetModuleState();
+  if ((*(byte *)(iVar1 + 0x18) & 0x10) == 0) {
+    AfxEndDeferRegisterClass(0x10);
+  }
+  (**(code **)(*param_1 + 0x5c))("ToolbarWindow32",0,param_2,param_3,param_4,param_5,0);
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x005E5950
 // GHIDRA_NAME CToolBarCtrl::AddBitmap
 // GHIDRA_PROTO undefined AddBitmap()
@@ -49,5 +91,37 @@ void __thiscall CToolBarCtrl::AddString(int param_1,LPARAM param_2)
     SendMessageA(*(HWND *)(param_1 + 0x1c),0x41c,*(WPARAM *)(iVar1 + 0xc),param_2);
   }
   return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005E5A0D
+// GHIDRA_NAME CToolBarCtrl::OnCreate
+// GHIDRA_PROTO undefined OnCreate()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Single Match
+// GHIDRA_COMMENT  protected: int __thiscall CToolBarCtrl::OnCreate(struct tagCREATESTRUCTA *)
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: nafxcw retail msvc500:static
+// GHIDRA_COMMENT_END
+
+/* Library Function - Single Match
+    protected: int __thiscall CToolBarCtrl::OnCreate(struct tagCREATESTRUCTA *)
+   
+   Library: nafxcw retail msvc500:static */
+
+undefined4 __fastcall CToolBarCtrl::OnCreate(CWnd *param_1)
+
+{
+  int iVar1;
+  undefined4 uVar2;
+  
+  iVar1 = CWnd::Default(param_1);
+  if (iVar1 == -1) {
+    uVar2 = 0xffffffff;
+  }
+  else {
+    SendMessageA(param_1->m_hWnd,0x41e,0x14,0);
+    uVar2 = 0;
+  }
+  return uVar2;
 }
 

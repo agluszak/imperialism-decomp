@@ -37,7 +37,8 @@ CPtrArray * TProvinceDesirabilityList::CreateObject(void)
 // GHIDRA_NAME TProvinceDesirabilityList::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TProvinceDesirabilityList::GetRuntimeClass()
+CRuntimeClass * __thiscall
+TProvinceDesirabilityList::GetRuntimeClass(TProvinceDesirabilityList *this)
 
 {
   return &classTProvinceDesirabilityList;
@@ -59,13 +60,23 @@ TProvinceDesirabilityList::_scalar_deleting_destructor_
   return this;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x004D6610
+// GHIDRA_NAME TProvinceDesirabilityList::InitializeProvinceRecordSize
+// GHIDRA_PROTO undefined InitializeProvinceRecordSize()
+
+void __fastcall TProvinceDesirabilityList::InitializeProvinceRecordSize(int param_1)
+
+{
+  *(undefined2 *)(param_1 + 0x14) = 4;
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x004D6630
-// GHIDRA_NAME TProvinceDesirabilityList::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(int param_1, int param_2)
+// GHIDRA_NAME TProvinceDesirabilityList::Compare
+// GHIDRA_PROTO undefined __thiscall Compare(int param_1, int param_2)
 
 int __thiscall
-TProvinceDesirabilityList::OrphanRetStub_0059add0
-          (TProvinceDesirabilityList *this,int param_1,int param_2)
+TProvinceDesirabilityList::Compare(TProvinceDesirabilityList *this,int param_1,int param_2)
 
 {
   uint uVar1;

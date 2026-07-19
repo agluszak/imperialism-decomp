@@ -39,7 +39,7 @@ undefined4 * TOnOffRadioButton::CreateObject(void)
 // GHIDRA_NAME TOnOffRadioButton::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TOnOffRadioButton::GetRuntimeClass()
+CRuntimeClass * __thiscall TOnOffRadioButton::GetRuntimeClass(TOnOffRadioButton *this)
 
 {
   return &classTOnOffRadioButton;
@@ -49,7 +49,8 @@ CRuntimeClass * TOnOffRadioButton::GetRuntimeClass()
 // GHIDRA_NAME TOnOffRadioButton::ConstructTOnOffRadioButtonBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTOnOffRadioButtonBaseState(void)
 
-TOnOffRadioButton * TOnOffRadioButton::ConstructTOnOffRadioButtonBaseState()
+TOnOffRadioButton * __thiscall
+TOnOffRadioButton::ConstructTOnOffRadioButtonBaseState(TOnOffRadioButton *this)
 
 {
   func_0x00401122();
@@ -64,7 +65,8 @@ TOnOffRadioButton * TOnOffRadioButton::ConstructTOnOffRadioButtonBaseState()
 // GHIDRA_NAME TOnOffRadioButton::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TOnOffRadioButton * TOnOffRadioButton::_scalar_deleting_destructor_(byte param_1)
+TOnOffRadioButton * __thiscall
+TOnOffRadioButton::_scalar_deleting_destructor_(TOnOffRadioButton *this,byte param_1)
 
 {
   func_0x004051a0();
@@ -78,7 +80,7 @@ TOnOffRadioButton * TOnOffRadioButton::_scalar_deleting_destructor_(byte param_1
 // GHIDRA_NAME TOnOffRadioButton::HandleEvent
 // GHIDRA_PROTO undefined __thiscall HandleEvent(int param_1)
 
-void TOnOffRadioButton::HandleEvent(int param_1)
+void __thiscall TOnOffRadioButton::HandleEvent(TOnOffRadioButton *this,int param_1)
 
 {
   undefined4 in_stack_00000008;

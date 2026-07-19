@@ -4,10 +4,10 @@
 // Bucket: TMovieView.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005E2100
-// GHIDRA_NAME TMovieView::CreateTMovieViewInstance
-// GHIDRA_PROTO undefined CreateTMovieViewInstance()
+// GHIDRA_NAME TMovieView::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-undefined4 * TMovieView::CreateTMovieViewInstance(void)
+undefined4 * TMovieView::CreateObject(void)
 
 {
   undefined4 *puVar1;
@@ -50,7 +50,7 @@ undefined4 * TMovieView::CreateTMovieViewInstance(void)
 // GHIDRA_NAME TMovieView::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TMovieView::GetRuntimeClass()
+CRuntimeClass * __thiscall TMovieView::GetRuntimeClass(TMovieView *this)
 
 {
   return &classTMovieView;
@@ -60,7 +60,7 @@ CRuntimeClass * TMovieView::GetRuntimeClass()
 // GHIDRA_NAME TMovieView::ConstructTMovieViewBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTMovieViewBaseState(void)
 
-TMovieView * TMovieView::ConstructTMovieViewBaseState()
+TMovieView * __thiscall TMovieView::ConstructTMovieViewBaseState(TMovieView *this)
 
 {
   CWinThread *pCVar1;
@@ -93,7 +93,7 @@ TMovieView * TMovieView::ConstructTMovieViewBaseState()
 // GHIDRA_NAME TMovieView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TMovieView * TMovieView::_scalar_deleting_destructor_(byte param_1)
+TMovieView * __thiscall TMovieView::_scalar_deleting_destructor_(TMovieView *this,byte param_1)
 
 {
   func_0x004058df();
@@ -107,7 +107,7 @@ TMovieView * TMovieView::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TMovieView::NoOpUiLifecycleHook
 // GHIDRA_PROTO undefined __thiscall NoOpUiLifecycleHook(void)
 
-void TMovieView::NoOpUiLifecycleHook()
+void __thiscall TMovieView::NoOpUiLifecycleHook(TMovieView *this)
 
 {
   undefined uVar1;
@@ -150,7 +150,7 @@ void TMovieView::NoOpUiLifecycleHook()
 // GHIDRA_NAME TMovieView::ApplyRectSlot110
 // GHIDRA_PROTO undefined __thiscall ApplyRectSlot110(void)
 
-void TMovieView::ApplyRectSlot110()
+void __thiscall TMovieView::ApplyRectSlot110(TMovieView *this)
 
 {
   return;
@@ -216,96 +216,5 @@ TMovieView::DispatchUiMouseMoveToChildren
   }
   func_0x0040723e(param_1,param_2,param_3,param_4);
   return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0060A60A
-// GHIDRA_NAME TMovieView::TView::RunModalLoop
-// GHIDRA_PROTO undefined __thiscall TView::RunModalLoop(byte param_1)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Runs modal loop with idle/message pumping.
-// GHIDRA_COMMENT Handles idle/show-on-first-input behavior, dispatches queued messages, sends WM_ENTERIDLE/0x36A notifications, and exits on modal completion.
-// GHIDRA_COMMENT_END
-
-/* Runs modal loop with idle/message pumping.
-   Handles idle/show-on-first-input behavior, dispatches queued messages, sends WM_ENTERIDLE/0x36A
-   notifications, and exits on modal completion. */
-
-int TMovieView::TView__RunModalLoop(byte param_1)
-
-{
-  bool bVar1;
-  bool bVar2;
-  undefined uVar3;
-  uint uVar4;
-  HWND hWnd;
-  CWinThread *pCVar5;
-  BOOL BVar6;
-  LRESULT LVar7;
-  CWinThread *pCVar8;
-  int iVar9;
-  undefined3 extraout_var;
-  LPMSG lpMsg;
-  int local_c;
-  
-  bVar1 = true;
-  local_c = 0;
-  if ((param_1 & 4) != 0) {
-    uVar4 = CWnd__GetStyle();
-    bVar2 = true;
-    if ((uVar4 & 0x10000000) == 0) goto LAB_0060a63b;
-  }
-  bVar2 = false;
-LAB_0060a63b:
-  hWnd = GetParent((HWND)this->controlTag);
-  this->ownerOffsetX = this->ownerOffsetX | 0x18;
-  pCVar5 = AfxGetThread();
-  lpMsg = (LPMSG)(pCVar5 + 0x30);
-LAB_0060a65c:
-  while ((!bVar1 || (BVar6 = PeekMessageA(lpMsg,(HWND)0x0,0,0,0), BVar6 != 0))) {
-    do {
-      pCVar8 = AfxGetThread();
-      iVar9 = (**(code **)(*(int *)pCVar8 + 100))();
-      if (iVar9 == 0) {
-        AfxPostQuitMessage(0);
-        return -1;
-      }
-      if ((bVar2) && ((*(int *)(pCVar5 + 0x34) == 0x118 || (*(int *)(pCVar5 + 0x34) == 0x104)))) {
-        CWnd::ShowWindow((CWnd *)this,1);
-        UpdateWindow((HWND)this->controlTag);
-        bVar2 = false;
-      }
-      uVar3 = (*this->vftable->GetTEventHandlerClassNamePointer_1e)();
-      if (CONCAT31(extraout_var,uVar3) == 0) {
-        this->ownerOffsetX = this->ownerOffsetX & 0xffffffe7;
-        return this->field2c;
-      }
-      pCVar8 = AfxGetThread();
-      iVar9 = (**(code **)(*(int *)pCVar8 + 0x6c))(lpMsg);
-      if (iVar9 != 0) {
-        bVar1 = true;
-        local_c = 0;
-      }
-      BVar6 = PeekMessageA(lpMsg,(HWND)0x0,0,0,0);
-    } while (BVar6 != 0);
-  }
-  if (bVar2) {
-    CWnd::ShowWindow((CWnd *)this,1);
-    UpdateWindow((HWND)this->controlTag);
-    bVar2 = false;
-  }
-  if ((((param_1 & 1) == 0) && (hWnd != (HWND)0x0)) && (local_c == 0)) {
-    SendMessageA(hWnd,0x121,0,this->controlTag);
-  }
-  if ((param_1 & 2) == 0) goto code_r0x0060a6b6;
-  goto LAB_0060a6ce;
-code_r0x0060a6b6:
-  iVar9 = local_c + 1;
-  LVar7 = SendMessageA((HWND)this->controlTag,0x36a,0,local_c);
-  local_c = iVar9;
-  if (LVar7 == 0) {
-LAB_0060a6ce:
-    bVar1 = false;
-  }
-  goto LAB_0060a65c;
 }
 

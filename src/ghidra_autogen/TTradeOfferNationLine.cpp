@@ -7,7 +7,8 @@
 // GHIDRA_NAME TTradeOfferNationLine::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TTradeOfferNationLine * TTradeOfferNationLine::_scalar_deleting_destructor_(byte param_1)
+TTradeOfferNationLine * __thiscall
+TTradeOfferNationLine::_scalar_deleting_destructor_(TTradeOfferNationLine *this,byte param_1)
 
 {
   func_0x00405169();
@@ -51,18 +52,18 @@ undefined4 * TTradeOfferNationLine::CreateObject(void)
 // GHIDRA_NAME TTradeOfferNationLine::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TTradeOfferNationLine::GetRuntimeClass()
+CRuntimeClass * __thiscall TTradeOfferNationLine::GetRuntimeClass(TTradeOfferNationLine *this)
 
 {
   return &classTTradeOfferNationLine;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BD090
-// GHIDRA_NAME TTradeOfferNationLine::OrphanRetStub_0056f460
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0056f460(int param_1, undefined4 param_2)
+// GHIDRA_NAME TTradeOfferNationLine::CreateLineItemView
+// GHIDRA_PROTO undefined __thiscall CreateLineItemView(int param_1, undefined4 param_2)
 
 void __thiscall
-TTradeOfferNationLine::OrphanRetStub_0056f460
+TTradeOfferNationLine::CreateLineItemView
           (TTradeOfferNationLine *this,int param_1,undefined4 param_2)
 
 {

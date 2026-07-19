@@ -37,7 +37,7 @@ undefined4 * TNumberedIcon::CreateObject(void)
 // GHIDRA_NAME TNumberedIcon::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TNumberedIcon::GetRuntimeClass()
+CRuntimeClass * __thiscall TNumberedIcon::GetRuntimeClass(TNumberedIcon *this)
 
 {
   return &classTNumberedIcon;
@@ -47,7 +47,7 @@ CRuntimeClass * TNumberedIcon::GetRuntimeClass()
 // GHIDRA_NAME TNumberedIcon::ConstructTNumberedIconBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTNumberedIconBaseState(void)
 
-TNumberedIcon * TNumberedIcon::ConstructTNumberedIconBaseState()
+TNumberedIcon * __thiscall TNumberedIcon::ConstructTNumberedIconBaseState(TNumberedIcon *this)
 
 {
   func_0x004014ba();
@@ -60,7 +60,8 @@ TNumberedIcon * TNumberedIcon::ConstructTNumberedIconBaseState()
 // GHIDRA_NAME TNumberedIcon::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TNumberedIcon * TNumberedIcon::_scalar_deleting_destructor_(byte param_1)
+TNumberedIcon * __thiscall
+TNumberedIcon::_scalar_deleting_destructor_(TNumberedIcon *this,byte param_1)
 
 {
   func_0x00408ab2();
@@ -74,7 +75,7 @@ TNumberedIcon * TNumberedIcon::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TNumberedIcon::NoOpUiLifecycleHook
 // GHIDRA_PROTO undefined __thiscall NoOpUiLifecycleHook(void)
 
-void TNumberedIcon::NoOpUiLifecycleHook()
+void __thiscall TNumberedIcon::NoOpUiLifecycleHook(TNumberedIcon *this)
 
 {
   TNumberedIconVtbl *pTVar1;
@@ -92,10 +93,10 @@ void TNumberedIcon::NoOpUiLifecycleHook()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00507570
-// GHIDRA_NAME TNumberedIcon::Helper_Uses_ConstructTMyNumberTextBaseState_At00507570
-// GHIDRA_PROTO undefined __thiscall Helper_Uses_ConstructTMyNumberTextBaseState_At00507570(void)
+// GHIDRA_NAME TNumberedIcon::NumberedIconSlot77
+// GHIDRA_PROTO undefined __thiscall NumberedIconSlot77(void)
 
-void TNumberedIcon::Helper_Uses_ConstructTMyNumberTextBaseState_At00507570()
+void __thiscall TNumberedIcon::NumberedIconSlot77(TNumberedIcon *this)
 
 {
   int iVar1;
@@ -155,7 +156,7 @@ void TNumberedIcon::Helper_Uses_ConstructTMyNumberTextBaseState_At00507570()
 // GHIDRA_NAME TNumberedIcon::OrphanCallChain_C1_I10_005076d0
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I10_005076d0(short param_1)
 
-void TNumberedIcon::OrphanCallChain_C1_I10_005076d0(short param_1)
+void __thiscall TNumberedIcon::OrphanCallChain_C1_I10_005076d0(TNumberedIcon *this,short param_1)
 
 {
   if (*(int **)&this->field_0xac != (int *)0x0) {

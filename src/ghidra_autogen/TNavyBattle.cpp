@@ -31,7 +31,7 @@ undefined4 * TNavyBattle::CreateObject(void)
 // GHIDRA_NAME TNavyBattle::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TNavyBattle * TNavyBattle::_scalar_deleting_destructor_(byte param_1)
+TNavyBattle * __thiscall TNavyBattle::_scalar_deleting_destructor_(TNavyBattle *this,byte param_1)
 
 {
   func_0x0040825b();
@@ -45,7 +45,7 @@ TNavyBattle * TNavyBattle::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TNavyBattle::CreateTNavyBattleInstance
 // GHIDRA_PROTO undefined __thiscall CreateTNavyBattleInstance(void)
 
-void TNavyBattle::CreateTNavyBattleInstance()
+void __thiscall TNavyBattle::CreateTNavyBattleInstance(TNavyBattle *this)
 
 {
   this->vftable = (TNavyBattleVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
@@ -56,15 +56,15 @@ void TNavyBattle::CreateTNavyBattleInstance()
 // GHIDRA_NAME TNavyBattle::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TNavyBattle::GetRuntimeClass()
+CRuntimeClass * __thiscall TNavyBattle::GetRuntimeClass(TNavyBattle *this)
 
 {
   return &classTNavyBattle;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005A55C0
-// GHIDRA_NAME TNavyBattle::OrphanRetStub_0059f710
-// GHIDRA_PROTO void __thiscall OrphanRetStub_0059f710(TacticalBattleUnit * pUnit, int targetTileIndex)
+// GHIDRA_NAME TNavyBattle::DeployTacticalUnitToTile
+// GHIDRA_PROTO void __thiscall DeployTacticalUnitToTile(TacticalBattleUnit * pUnit, int targetTileIndex)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Setting prototype: void TryPlaceTacticalUnitOnTileAndAdvanceSelection(TacticalBattleUnit *pUnit, int targetTileIndex)
 // GHIDRA_COMMENT_END
@@ -72,7 +72,9 @@ CRuntimeClass * TNavyBattle::GetRuntimeClass()
 /* Setting prototype: void TryPlaceTacticalUnitOnTileAndAdvanceSelection(TacticalBattleUnit *pUnit,
    int targetTileIndex) */
 
-void TNavyBattle::OrphanRetStub_0059f710(TacticalBattleUnit *pUnit, int targetTileIndex)
+void __thiscall
+TNavyBattle::DeployTacticalUnitToTile
+          (TNavyBattle *this,TacticalBattleUnit *pUnit,int targetTileIndex)
 
 {
   int iVar1;
@@ -223,7 +225,8 @@ LAB_005a58fd:
 // GHIDRA_NAME TNavyBattle::ComputeTacticalReachableTileCostsByUnitCategory
 // GHIDRA_PROTO undefined __thiscall ComputeTacticalReachableTileCostsByUnitCategory(int param_1)
 
-void TNavyBattle::ComputeTacticalReachableTileCostsByUnitCategory(int param_1)
+void __thiscall
+TNavyBattle::ComputeTacticalReachableTileCostsByUnitCategory(TNavyBattle *this,int param_1)
 
 {
   int iVar1;
@@ -294,7 +297,7 @@ void TNavyBattle::ComputeTacticalReachableTileCostsByUnitCategory(int param_1)
 // GHIDRA_NAME TNavyBattle::CreateTTacticalBattleInstance
 // GHIDRA_PROTO undefined __thiscall CreateTTacticalBattleInstance(void)
 
-void TNavyBattle::CreateTTacticalBattleInstance()
+void __thiscall TNavyBattle::CreateTTacticalBattleInstance(TNavyBattle *this)
 
 {
   func_0x00406398();
@@ -305,7 +308,8 @@ void TNavyBattle::CreateTTacticalBattleInstance()
 // GHIDRA_NAME TNavyBattle::ExecuteTacticalActionAndQueueEventIfNoAdjacentValidTarget
 // GHIDRA_PROTO undefined __thiscall ExecuteTacticalActionAndQueueEventIfNoAdjacentValidTarget(void)
 
-void TNavyBattle::ExecuteTacticalActionAndQueueEventIfNoAdjacentValidTarget()
+void __thiscall
+TNavyBattle::ExecuteTacticalActionAndQueueEventIfNoAdjacentValidTarget(TNavyBattle *this)
 
 {
   short sVar1;

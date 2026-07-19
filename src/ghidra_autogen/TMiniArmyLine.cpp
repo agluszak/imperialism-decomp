@@ -7,7 +7,8 @@
 // GHIDRA_NAME TMiniArmyLine::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TMiniArmyLine * TMiniArmyLine::_scalar_deleting_destructor_(byte param_1)
+TMiniArmyLine * __thiscall
+TMiniArmyLine::_scalar_deleting_destructor_(TMiniArmyLine *this,byte param_1)
 
 {
   func_0x00401df7();
@@ -51,17 +52,18 @@ undefined4 * TMiniArmyLine::CreateObject(void)
 // GHIDRA_NAME TMiniArmyLine::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TMiniArmyLine::GetRuntimeClass()
+CRuntimeClass * __thiscall TMiniArmyLine::GetRuntimeClass(TMiniArmyLine *this)
 
 {
   return &classTMiniArmyLine;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004AA960
-// GHIDRA_NAME TMiniArmyLine::OrphanRetStub_0056f460
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0056f460(undefined4 param_1, undefined4 param_2)
+// GHIDRA_NAME TMiniArmyLine::CreateLineItemView
+// GHIDRA_PROTO undefined __thiscall CreateLineItemView(undefined4 param_1, undefined4 param_2)
 
-void TMiniArmyLine::OrphanRetStub_0056f460(undefined4 param_1, undefined4 param_2)
+void __thiscall
+TMiniArmyLine::CreateLineItemView(TMiniArmyLine *this,undefined4 param_1,undefined4 param_2)
 
 {
   undefined1 uVar1;
@@ -147,7 +149,7 @@ void TMiniArmyLine::OrphanRetStub_0056f460(undefined4 param_1, undefined4 param_
   pcVar6[0x62] = '\0';
   pcVar6[99] = '\0';
   local_14 = (undefined1 *)&CStack_64;
-  CStack_68.m_pchData = PTR_g_szEmptyString_0064cb18;
+  CStack_68.m_pchData = g_pMiniCivSharedText_0064cb18;
   uStack_6c = (undefined1 *)0x4aa9f5;
   CStack_60.m_pchData = pcVar6;
   func_0x00401b40();
@@ -207,7 +209,7 @@ void TMiniArmyLine::OrphanRetStub_0056f460(undefined4 param_1, undefined4 param_
     pCStack_94 = &CStack_70;
     puStack_90 = &g_szDecimalFormat;
     puStack_98 = (undefined *)0x4aab05;
-    CString__Format();
+    CString::Format();
     puStack_8c = &uStack_74;
     puStack_90 = (undefined *)(int)(short)CStack_7c.m_pchData;
     pCStack_94 = (CString *)0x4aab1e;
@@ -230,7 +232,7 @@ void TMiniArmyLine::OrphanRetStub_0056f460(undefined4 param_1, undefined4 param_
       puStack_98 = &g_szDecimalFormat;
       uStack_54 = CONCAT31(uStack_54._1_3_,7);
       piStack_a0 = (int *)0x4aab88;
-      CString__Format();
+      CString::Format();
       pCStack_94 = (CString *)&puStack_80;
       puStack_98 = (undefined *)0x6;
       pCStack_9c = (CString *)0x2746;

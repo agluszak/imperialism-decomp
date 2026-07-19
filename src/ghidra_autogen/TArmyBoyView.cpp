@@ -37,7 +37,8 @@ undefined4 * TArmyBoyView::CreateObject(void)
 // GHIDRA_NAME TArmyBoyView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TArmyBoyView * TArmyBoyView::_scalar_deleting_destructor_(byte param_1)
+TArmyBoyView * __thiscall
+TArmyBoyView::_scalar_deleting_destructor_(TArmyBoyView *this,byte param_1)
 
 {
   func_0x00403c51();
@@ -51,7 +52,7 @@ TArmyBoyView * TArmyBoyView::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TArmyBoyView::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TArmyBoyView::GetRuntimeClass()
+CRuntimeClass * __thiscall TArmyBoyView::GetRuntimeClass(TArmyBoyView *this)
 
 {
   return &classTArmyBoyView;
@@ -61,7 +62,7 @@ CRuntimeClass * TArmyBoyView::GetRuntimeClass()
 // GHIDRA_NAME TArmyBoyView::ApplyRectSlot110
 // GHIDRA_PROTO undefined __thiscall ApplyRectSlot110(void)
 
-void TArmyBoyView::ApplyRectSlot110()
+void __thiscall TArmyBoyView::ApplyRectSlot110(TArmyBoyView *this)
 
 {
   short sVar1;
@@ -94,7 +95,7 @@ void TArmyBoyView::ApplyRectSlot110()
   func_0x0040448f(0,0xc);
   local_38.m_pchData = (char *)0x1c474b;
   func_0x00409444();
-  func_0x00408d6e(0x40);
+  thunk_SetQuickDrawTextOriginWithContextOffset(0x40);
   CString::CString(&local_38,(char *)(*(int *)&this->field_0x60 + 4));
   local_4._0_1_ = 2;
   func_0x004029aa();
@@ -131,8 +132,8 @@ void TArmyBoyView::ApplyRectSlot110()
       uVar3 = 0x1f;
     }
     (*g_pSimMgr->vftable[0x10].slot_0x04)(0x273c,uVar3);
-    sVar1 = func_0x00405b7d(&stack0xffffffbc);
-    func_0x00408d6e(0x6a - (int)sVar1 / 2,0x26);
+    sVar1 = thunk_MeasureTextExtentWithCachedQuickDrawStyle(&stack0xffffffbc);
+    thunk_SetQuickDrawTextOriginWithContextOffset(0x6a - (int)sVar1 / 2,0x26);
     func_0x004029aa(&stack0xffffffbc);
     local_4._0_1_ = 1;
     CString::~CString(&local_38);
@@ -146,10 +147,10 @@ void TArmyBoyView::ApplyRectSlot110()
   func_0x00406b86();
   local_38.m_pchData = &stack0xffffffb8;
   func_0x00402bdf();
-  func_0x00408d6e(0x41);
-  func_0x00403bb6(0x41);
-  func_0x00403bb6(0x93);
-  func_0x00403bb6(0x93);
+  thunk_SetQuickDrawTextOriginWithContextOffset(0x41);
+  thunk_DrawCenteredGuideLineOnMapDc(0x41);
+  thunk_DrawCenteredGuideLineOnMapDc(0x93);
+  thunk_DrawCenteredGuideLineOnMapDc(0x93);
   sVar1 = *(short *)(*(int *)&this->field_0x60 + 0x24);
   sVar2 = sVar1 * 0xb;
   if (0x31 < (int)sVar1 % 100) {

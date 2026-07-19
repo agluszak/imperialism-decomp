@@ -3,11 +3,24 @@
 // Program: Imperialism.exe
 // Bucket: TTechStorePage.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x004600C0
+// GHIDRA_NAME TTechStorePage::TTechStorePage
+// GHIDRA_PROTO undefined __thiscall TTechStorePage(void)
+
+TTechStorePage * __thiscall TTechStorePage::TTechStorePage(TTechStorePage *this)
+
+{
+  func_0x0040778e();
+  this->vftable = &_vftable_;
+  return this;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x004600F0
 // GHIDRA_NAME TTechStorePage::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TTechStorePage * TTechStorePage::_scalar_deleting_destructor_(byte param_1)
+TTechStorePage * __thiscall
+TTechStorePage::_scalar_deleting_destructor_(TTechStorePage *this,byte param_1)
 
 {
   func_0x00403ff8();
@@ -17,21 +30,12 @@ TTechStorePage * TTechStorePage::_scalar_deleting_destructor_(byte param_1)
   return this;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00479460
-// GHIDRA_NAME TTechStorePage::OrphanVtableAssignStub_00479460
-// GHIDRA_PROTO undefined __thiscall OrphanVtableAssignStub_00479460(void)
-
-undefined ** TTechStorePage::OrphanVtableAssignStub_00479460()
-
-{
-  return &PTR_PTR_0063e810;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x004796E0
 // GHIDRA_NAME TTechStorePage::WrapperFor_FreeHeapBufferIfNotNull_At004796e0
 // GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At004796e0(byte param_1)
 
-TTechStorePage * TTechStorePage::WrapperFor_FreeHeapBufferIfNotNull_At004796e0(byte param_1)
+TTechStorePage * __thiscall
+TTechStorePage::WrapperFor_FreeHeapBufferIfNotNull_At004796e0(TTechStorePage *this,byte param_1)
 
 {
   func_0x00404ebc();
@@ -39,53 +43,6 @@ TTechStorePage * TTechStorePage::WrapperFor_FreeHeapBufferIfNotNull_At004796e0(b
     operator_delete(this);
   }
   return this;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004797D0
-// GHIDRA_NAME TTechStorePage::InsertTempObjectNodeAndMarkWindowDirtyWithMfcTempMapLock
-// GHIDRA_PROTO undefined __thiscall InsertTempObjectNodeAndMarkWindowDirtyWithMfcTempMapLock(int param_1)
-
-void __thiscall
-TTechStorePage::InsertTempObjectNodeAndMarkWindowDirtyWithMfcTempMapLock
-          (TTechStorePage *this,int param_1)
-
-{
-  int *piVar1;
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 uVar2;
-  undefined4 uStack_c;
-  undefined1 *puStack_8;
-  undefined4 uStack_4;
-  
-  uStack_c = *unaff_FS_OFFSET;
-  uStack_4 = 0xffffffff;
-  puStack_8 = &LAB_0062dfc8;
-  *unaff_FS_OFFSET = &uStack_c;
-  AfxGetModuleState();
-  CCmdTarget__BeginWaitCursor();
-  uStack_4 = 0;
-  piVar1 = (int *)operator_new(8);
-  if (piVar1 == (int *)0x0) {
-    piVar1 = (int *)0x0;
-  }
-  else {
-    piVar1[1] = param_1;
-    *piVar1 = (int)&ArchiveStreamAdapter::_vftable_;
-  }
-  if ((~*(uint *)(param_1 + 0x14) & 1) == 0) {
-    uVar2 = 0;
-    (**(code **)(*(int *)this->field50 + 0x28))(piVar1);
-  }
-  else {
-    uVar2 = 0;
-    (**(code **)(*(int *)this->field50 + 0x2c))(piVar1);
-  }
-  (**(code **)(*piVar1 + 0x1c))();
-  (*this->vftable->VTableSlot19)(1);
-  AfxGetModuleState();
-  CCmdTarget__EndWaitCursor();
-  *unaff_FS_OFFSET = uVar2;
-  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B0E70
@@ -122,7 +79,7 @@ undefined4 * TTechStorePage::CreateObject(void)
 // GHIDRA_NAME TTechStorePage::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TTechStorePage::GetRuntimeClass()
+CRuntimeClass * __thiscall TTechStorePage::GetRuntimeClass(TTechStorePage *this)
 
 {
   return &classTTechStorePage;

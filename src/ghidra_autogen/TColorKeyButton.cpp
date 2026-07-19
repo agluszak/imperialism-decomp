@@ -37,7 +37,7 @@ undefined4 * TColorKeyButton::CreateObject(void)
 // GHIDRA_NAME TColorKeyButton::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TColorKeyButton::GetRuntimeClass()
+CRuntimeClass * __thiscall TColorKeyButton::GetRuntimeClass(TColorKeyButton *this)
 
 {
   return &classTColorKeyButton;
@@ -47,7 +47,8 @@ CRuntimeClass * TColorKeyButton::GetRuntimeClass()
 // GHIDRA_NAME TColorKeyButton::ConstructTColorKeyButtonBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTColorKeyButtonBaseState(void)
 
-TColorKeyButton * TColorKeyButton::ConstructTColorKeyButtonBaseState()
+TColorKeyButton * __thiscall
+TColorKeyButton::ConstructTColorKeyButtonBaseState(TColorKeyButton *this)
 
 {
   func_0x00408ee5();
@@ -59,7 +60,8 @@ TColorKeyButton * TColorKeyButton::ConstructTColorKeyButtonBaseState()
 // GHIDRA_NAME TColorKeyButton::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TColorKeyButton * TColorKeyButton::_scalar_deleting_destructor_(byte param_1)
+TColorKeyButton * __thiscall
+TColorKeyButton::_scalar_deleting_destructor_(TColorKeyButton *this,byte param_1)
 
 {
   func_0x00406703();
@@ -73,7 +75,8 @@ TColorKeyButton * TColorKeyButton::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TColorKeyButton::SetControlStateFlagAndMaybeRefresh
 // GHIDRA_PROTO undefined __thiscall SetControlStateFlagAndMaybeRefresh(char param_1)
 
-void TColorKeyButton::SetControlStateFlagAndMaybeRefresh(char param_1)
+void __thiscall
+TColorKeyButton::SetControlStateFlagAndMaybeRefresh(TColorKeyButton *this,char param_1)
 
 {
   TColorKeyButtonVtbl *pTVar1;
@@ -102,7 +105,7 @@ void TColorKeyButton::SetControlStateFlagAndMaybeRefresh(char param_1)
 // GHIDRA_NAME TColorKeyButton::OrphanCallChain_C1_I05_00572060
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I05_00572060(void)
 
-void TColorKeyButton::OrphanCallChain_C1_I05_00572060()
+void __thiscall TColorKeyButton::OrphanCallChain_C1_I05_00572060(TColorKeyButton *this)
 
 {
   undefined uVar1;

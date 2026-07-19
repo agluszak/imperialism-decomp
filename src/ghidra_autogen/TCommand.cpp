@@ -7,7 +7,8 @@
 // GHIDRA_NAME TCommand::RunCommandModalLoopAndFinalizeState_Impl
 // GHIDRA_PROTO undefined __thiscall RunCommandModalLoopAndFinalizeState_Impl(uint param_1)
 
-TCommandVtbl * TCommand::RunCommandModalLoopAndFinalizeState_Impl(uint param_1)
+TCommandVtbl * __thiscall
+TCommand::RunCommandModalLoopAndFinalizeState_Impl(TCommand *this,uint param_1)
 
 {
   TCommandVtbl *pTVar1;
@@ -43,7 +44,7 @@ undefined4 * TCommand::CreateObject(void)
 // GHIDRA_NAME TCommand::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TCommand::GetRuntimeClass()
+CRuntimeClass * __thiscall TCommand::GetRuntimeClass(TCommand *this)
 
 {
   return &classTCommand;
@@ -53,7 +54,7 @@ CRuntimeClass * TCommand::GetRuntimeClass()
 // GHIDRA_NAME TCommand::ConstructTurnEventPacketBase
 // GHIDRA_PROTO undefined __thiscall ConstructTurnEventPacketBase(void)
 
-void TCommand::ConstructTurnEventPacketBase()
+void __thiscall TCommand::ConstructTurnEventPacketBase(TCommand *this)
 
 {
   *(undefined4 *)&this->field_0x4 = 0;
@@ -69,7 +70,7 @@ void TCommand::ConstructTurnEventPacketBase()
 // GHIDRA_NAME TCommand::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TCommand * TCommand::_scalar_deleting_destructor_(byte param_1)
+TCommand * __thiscall TCommand::_scalar_deleting_destructor_(TCommand *this,byte param_1)
 
 {
   func_0x00408094();
@@ -83,7 +84,7 @@ TCommand * TCommand::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TCommand::Free
 // GHIDRA_PROTO undefined __thiscall Free(void)
 
-void TCommand::Free()
+void __thiscall TCommand::Free(TCommand *this)
 
 {
   if (this != (TCommand *)0x0) {
@@ -96,7 +97,7 @@ void TCommand::Free()
 // GHIDRA_NAME TCommand::NextDiplomacyCommandVtableSlotE8_NotifyOwnerSlot94
 // GHIDRA_PROTO undefined __thiscall NextDiplomacyCommandVtableSlotE8_NotifyOwnerSlot94(void)
 
-void TCommand::NextDiplomacyCommandVtableSlotE8_NotifyOwnerSlot94()
+void __thiscall TCommand::NextDiplomacyCommandVtableSlotE8_NotifyOwnerSlot94(TCommand *this)
 
 {
   if (*(int **)&this->field_0x14 != (int *)0x0) {
@@ -109,22 +110,9 @@ void TCommand::NextDiplomacyCommandVtableSlotE8_NotifyOwnerSlot94()
 // GHIDRA_NAME TCommand::DoIt
 // GHIDRA_PROTO undefined __thiscall DoIt(void)
 
-void TCommand::DoIt()
+void __thiscall TCommand::DoIt(TCommand *this)
 
 {
   return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00488360
-// GHIDRA_NAME TCommand::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(uint param_1, uint param_2)
-
-int TCommand::OrphanRetStub_0059add0(uint param_1, uint param_2)
-
-{
-  if (param_2 < param_1) {
-    return 1;
-  }
-  return -(uint)(param_1 < param_2);
 }
 

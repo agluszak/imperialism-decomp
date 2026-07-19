@@ -37,7 +37,7 @@ undefined4 * TCloseButton::CreateObject(void)
 // GHIDRA_NAME TCloseButton::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TCloseButton::GetRuntimeClass()
+CRuntimeClass * __thiscall TCloseButton::GetRuntimeClass(TCloseButton *this)
 
 {
   return &classTCloseButton;
@@ -47,7 +47,7 @@ CRuntimeClass * TCloseButton::GetRuntimeClass()
 // GHIDRA_NAME TCloseButton::ConstructTCloseButtonBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTCloseButtonBaseState(void)
 
-TCloseButton * TCloseButton::ConstructTCloseButtonBaseState()
+TCloseButton * __thiscall TCloseButton::ConstructTCloseButtonBaseState(TCloseButton *this)
 
 {
   func_0x00405628();
@@ -59,7 +59,8 @@ TCloseButton * TCloseButton::ConstructTCloseButtonBaseState()
 // GHIDRA_NAME TCloseButton::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TCloseButton * TCloseButton::_scalar_deleting_destructor_(byte param_1)
+TCloseButton * __thiscall
+TCloseButton::_scalar_deleting_destructor_(TCloseButton *this,byte param_1)
 
 {
   func_0x0040418d();

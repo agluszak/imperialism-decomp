@@ -101,7 +101,7 @@ undefined4 * TLaborPool::CreateObject(void)
 // GHIDRA_NAME TLaborPool::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TLaborPool::GetRuntimeClass()
+CRuntimeClass * __thiscall TLaborPool::GetRuntimeClass(TLaborPool *this)
 
 {
   return &classTLaborPool;
@@ -111,7 +111,7 @@ CRuntimeClass * TLaborPool::GetRuntimeClass()
 // GHIDRA_NAME TLaborPool::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TLaborPool * TLaborPool::_scalar_deleting_destructor_(byte param_1)
+TLaborPool * __thiscall TLaborPool::_scalar_deleting_destructor_(TLaborPool *this,byte param_1)
 
 {
   func_0x0040852b();
@@ -125,7 +125,7 @@ TLaborPool * TLaborPool::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TLaborPool::DestructTLaborPoolAndMaybeFree
 // GHIDRA_PROTO undefined __thiscall DestructTLaborPoolAndMaybeFree(void)
 
-void TLaborPool::DestructTLaborPoolAndMaybeFree()
+void __thiscall TLaborPool::DestructTLaborPoolAndMaybeFree(TLaborPool *this)
 
 {
   this->vftable = (TLaborPoolVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
@@ -136,7 +136,7 @@ void TLaborPool::DestructTLaborPoolAndMaybeFree()
 // GHIDRA_NAME TLaborPool::WriteTo
 // GHIDRA_PROTO undefined __thiscall WriteTo(int * param_1)
 
-void TLaborPool::WriteTo(int *param_1)
+void __thiscall TLaborPool::WriteTo(TLaborPool *this,int *param_1)
 
 {
   code *pcVar1;
@@ -153,7 +153,7 @@ void TLaborPool::WriteTo(int *param_1)
 // GHIDRA_NAME TLaborPool::ReadFrom
 // GHIDRA_PROTO undefined __thiscall ReadFrom(int * param_1)
 
-void TLaborPool::ReadFrom(int *param_1)
+void __thiscall TLaborPool::ReadFrom(TLaborPool *this,int *param_1)
 
 {
   code *pcVar1;
@@ -170,7 +170,8 @@ void TLaborPool::ReadFrom(int *param_1)
 // GHIDRA_NAME TLaborPool::OrphanLeaf_NoCall_Ins44_004b2270
 // GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins44_004b2270(int param_1, short param_2)
 
-undefined2 TLaborPool::OrphanLeaf_NoCall_Ins44_004b2270(int param_1, short param_2)
+undefined2 __thiscall
+TLaborPool::OrphanLeaf_NoCall_Ins44_004b2270(TLaborPool *this,int param_1,short param_2)
 
 {
   short sVar1;
@@ -209,7 +210,7 @@ undefined2 TLaborPool::OrphanLeaf_NoCall_Ins44_004b2270(int param_1, short param
 // GHIDRA_NAME TLaborPool::CreateTCityInstance
 // GHIDRA_PROTO undefined __thiscall CreateTCityInstance(int param_1, short param_2)
 
-undefined2 TLaborPool::CreateTCityInstance(int param_1, short param_2)
+undefined2 __thiscall TLaborPool::CreateTCityInstance(TLaborPool *this,int param_1,short param_2)
 
 {
   short sVar1;

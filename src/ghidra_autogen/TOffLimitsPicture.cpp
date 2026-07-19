@@ -51,7 +51,7 @@ undefined4 * TOffLimitsPicture::CreateObject(void)
 // GHIDRA_NAME TOffLimitsPicture::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TOffLimitsPicture::GetRuntimeClass()
+CRuntimeClass * __thiscall TOffLimitsPicture::GetRuntimeClass(TOffLimitsPicture *this)
 
 {
   return &classTOffLimitsPicture;
@@ -61,7 +61,8 @@ CRuntimeClass * TOffLimitsPicture::GetRuntimeClass()
 // GHIDRA_NAME TOffLimitsPicture::ConstructTOffLimitsPictureBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTOffLimitsPictureBaseState(void)
 
-TOffLimitsPicture * TOffLimitsPicture::ConstructTOffLimitsPictureBaseState()
+TOffLimitsPicture * __thiscall
+TOffLimitsPicture::ConstructTOffLimitsPictureBaseState(TOffLimitsPicture *this)
 
 {
   func_0x00401122();
@@ -74,7 +75,8 @@ TOffLimitsPicture * TOffLimitsPicture::ConstructTOffLimitsPictureBaseState()
 // GHIDRA_NAME TOffLimitsPicture::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TOffLimitsPicture * TOffLimitsPicture::_scalar_deleting_destructor_(byte param_1)
+TOffLimitsPicture * __thiscall
+TOffLimitsPicture::_scalar_deleting_destructor_(TOffLimitsPicture *this,byte param_1)
 
 {
   func_0x0040414c();
@@ -88,7 +90,7 @@ TOffLimitsPicture * TOffLimitsPicture::_scalar_deleting_destructor_(byte param_1
 // GHIDRA_NAME TOffLimitsPicture::NoOpUiLifecycleHook
 // GHIDRA_PROTO undefined __thiscall NoOpUiLifecycleHook(void)
 
-void TOffLimitsPicture::NoOpUiLifecycleHook()
+void __thiscall TOffLimitsPicture::NoOpUiLifecycleHook(TOffLimitsPicture *this)
 
 {
   undefined4 uVar1;
@@ -104,7 +106,7 @@ void TOffLimitsPicture::NoOpUiLifecycleHook()
 // GHIDRA_NAME TOffLimitsPicture::ApplyRectSlot110
 // GHIDRA_PROTO undefined __thiscall ApplyRectSlot110(void)
 
-void TOffLimitsPicture::ApplyRectSlot110()
+void __thiscall TOffLimitsPicture::ApplyRectSlot110(TOffLimitsPicture *this)
 
 {
   int iVar1;
@@ -130,7 +132,7 @@ void TOffLimitsPicture::ApplyRectSlot110()
 // GHIDRA_NAME TOffLimitsPicture::Free
 // GHIDRA_PROTO undefined __thiscall Free(void)
 
-void TOffLimitsPicture::Free()
+void __thiscall TOffLimitsPicture::Free(TOffLimitsPicture *this)
 
 {
   func_0x0040696a(*(undefined4 *)&this->field_0x90);

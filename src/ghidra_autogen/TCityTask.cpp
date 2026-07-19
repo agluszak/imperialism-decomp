@@ -24,7 +24,7 @@ undefined4 * TCityTask::CreateObject(void)
 // GHIDRA_NAME TCityTask::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TCityTask::GetRuntimeClass()
+CRuntimeClass * __thiscall TCityTask::GetRuntimeClass(TCityTask *this)
 
 {
   return &classTCityTask;
@@ -34,7 +34,7 @@ CRuntimeClass * TCityTask::GetRuntimeClass()
 // GHIDRA_NAME TCityTask::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TCityTask * TCityTask::_scalar_deleting_destructor_(byte param_1)
+TCityTask * __thiscall TCityTask::_scalar_deleting_destructor_(TCityTask *this,byte param_1)
 
 {
   func_0x00402653();
@@ -87,7 +87,7 @@ TCityTask * TCityTask::_scalar_deleting_destructor_(byte param_1)
    - true when command is completed this pass.
    - false when additional passes/queued support work remain. */
 
-bool TCityTask::OrphanLeaf_NoCall_Ins04_005adc30()
+bool __thiscall TCityTask::OrphanLeaf_NoCall_Ins04_005adc30(TCityTask *this)
 
 {
   short sVar1;
@@ -194,7 +194,7 @@ bool TCityTask::OrphanLeaf_NoCall_Ins04_005adc30()
 // GHIDRA_NAME TCityTask::QueueCityOrderType10CommandIfReady
 // GHIDRA_PROTO undefined __thiscall QueueCityOrderType10CommandIfReady(int * param_1)
 
-void TCityTask::QueueCityOrderType10CommandIfReady(int *param_1)
+void __thiscall TCityTask::QueueCityOrderType10CommandIfReady(TCityTask *this,int *param_1)
 
 {
   short sVar1;
@@ -258,7 +258,8 @@ void TCityTask::QueueCityOrderType10CommandIfReady(int *param_1)
    - Sets queued flag (+0x0E) to avoid duplicate enqueue in same cycle.
    - Increments cycle counter (+0x06). */
 
-void TCityTask::QueueCityRecruitmentSupportCommandsIfDeficit(void *pCommandQueue)
+void __thiscall
+TCityTask::QueueCityRecruitmentSupportCommandsIfDeficit(TCityTask *this,void *pCommandQueue)
 
 {
   int *piVar1;
@@ -356,7 +357,7 @@ void TCityTask::QueueCityRecruitmentSupportCommandsIfDeficit(void *pCommandQueue
    Notes:
    - Slot id 5 uses task class 3 instead of 4 (special handling). */
 
-void TCityTask::QueueCityOrderInputDeltaCommands(void *pCommandQueue)
+void __thiscall TCityTask::QueueCityOrderInputDeltaCommands(TCityTask *this,void *pCommandQueue)
 
 {
   short sVar1;
@@ -474,7 +475,7 @@ void TCityTask::QueueCityOrderInputDeltaCommands(void *pCommandQueue)
    Notes:
    - 0x17 slot width matches city production/recruitment slot tables. */
 
-void TCityTask::ApplyProductionDistributionToCitySlots()
+void __thiscall TCityTask::ApplyProductionDistributionToCitySlots(TCityTask *this)
 
 {
   int *piVar1;
@@ -530,7 +531,7 @@ void TCityTask::ApplyProductionDistributionToCitySlots()
    - Actual city state mutation is deferred to command execution, which calls
    ApplyProductionDistributionToCitySlots. */
 
-void TCityTask::QueueCityProductionOrderCommand(void *pCommandQueue)
+void __thiscall TCityTask::QueueCityProductionOrderCommand(TCityTask *this,void *pCommandQueue)
 
 {
   short sVar1;
@@ -576,7 +577,7 @@ void TCityTask::QueueCityProductionOrderCommand(void *pCommandQueue)
 
 /* Serializes CityProductionQueueCommand fields (+4, +6, +0x0C, +0x0E) to archive stream. */
 
-void TCityTask::WriteTo(void *pArchive)
+void __thiscall TCityTask::WriteTo(TCityTask *this,void *pArchive)
 
 {
   code *pcVar1;
@@ -600,7 +601,7 @@ void TCityTask::WriteTo(void *pArchive)
 
 /* Deserializes CityProductionQueueCommand fields (+4, +6, +0x0C, +0x0E) from archive stream. */
 
-void TCityTask::ReadFrom(void *pArchive)
+void __thiscall TCityTask::ReadFrom(TCityTask *this,void *pArchive)
 
 {
   code *pcVar1;

@@ -37,7 +37,7 @@ undefined4 * TMinisterView::CreateObject(void)
 // GHIDRA_NAME TMinisterView::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TMinisterView::GetRuntimeClass()
+CRuntimeClass * __thiscall TMinisterView::GetRuntimeClass(TMinisterView *this)
 
 {
   return &classTMinisterView;
@@ -47,7 +47,7 @@ CRuntimeClass * TMinisterView::GetRuntimeClass()
 // GHIDRA_NAME TMinisterView::ConstructTMinisterViewBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTMinisterViewBaseState(void)
 
-TMinisterView * TMinisterView::ConstructTMinisterViewBaseState()
+TMinisterView * __thiscall TMinisterView::ConstructTMinisterViewBaseState(TMinisterView *this)
 
 {
   func_0x004064e2();
@@ -60,7 +60,8 @@ TMinisterView * TMinisterView::ConstructTMinisterViewBaseState()
 // GHIDRA_NAME TMinisterView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TMinisterView * TMinisterView::_scalar_deleting_destructor_(byte param_1)
+TMinisterView * __thiscall
+TMinisterView::_scalar_deleting_destructor_(TMinisterView *this,byte param_1)
 
 {
   func_0x00402027();
@@ -74,7 +75,7 @@ TMinisterView * TMinisterView::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TMinisterView::OrphanLeaf_NoCall_Ins04_004f2ce0
 // GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins04_004f2ce0(short param_1)
 
-void TMinisterView::OrphanLeaf_NoCall_Ins04_004f2ce0(short param_1)
+void __thiscall TMinisterView::OrphanLeaf_NoCall_Ins04_004f2ce0(TMinisterView *this,short param_1)
 
 {
   *(TCountry **)&this->field_0x64 = g_apTerrainTypeDescriptorTable[param_1];
@@ -121,7 +122,8 @@ TMinisterView::DispatchUiMouseEventToChildrenOrSelf_Impl
 // GHIDRA_NAME TMinisterView::HandleEvent
 // GHIDRA_PROTO undefined __thiscall HandleEvent(int param_1, int param_2, undefined4 param_3)
 
-void TMinisterView::HandleEvent(int param_1, int param_2, undefined4 param_3)
+void __thiscall
+TMinisterView::HandleEvent(TMinisterView *this,int param_1,int param_2,undefined4 param_3)
 
 {
   TMinisterViewVtbl *pTVar1;
@@ -150,7 +152,7 @@ void TMinisterView::HandleEvent(int param_1, int param_2, undefined4 param_3)
 // GHIDRA_NAME TMinisterView::OrphanLeaf_NoCall_Ins03_004f2ea0
 // GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins03_004f2ea0(void)
 
-void TMinisterView::OrphanLeaf_NoCall_Ins03_004f2ea0()
+void __thiscall TMinisterView::OrphanLeaf_NoCall_Ins03_004f2ea0(TMinisterView *this)
 
 {
                     /* WARNING: Could not recover jumptable at 0x004f2ea8. Too many branches */
@@ -163,7 +165,8 @@ void TMinisterView::OrphanLeaf_NoCall_Ins03_004f2ea0()
 // GHIDRA_NAME TMinisterView::OrphanCallChain_C2_I08_004f2ec0
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C2_I08_004f2ec0(undefined4 param_1)
 
-void TMinisterView::OrphanCallChain_C2_I08_004f2ec0(undefined4 param_1)
+void __thiscall
+TMinisterView::OrphanCallChain_C2_I08_004f2ec0(TMinisterView *this,undefined4 param_1)
 
 {
   (*this->vftable->OrphanLeaf_NoCall_Ins03_004f2ea0)();
@@ -175,7 +178,7 @@ void TMinisterView::OrphanCallChain_C2_I08_004f2ec0(undefined4 param_1)
 // GHIDRA_NAME TMinisterView::OrphanCallChain_C1_I09_004f2ef0
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I09_004f2ef0(void)
 
-void TMinisterView::OrphanCallChain_C1_I09_004f2ef0()
+void __thiscall TMinisterView::OrphanCallChain_C1_I09_004f2ef0(TMinisterView *this)
 
 {
   undefined uVar1;

@@ -28,6 +28,20 @@ void __thiscall CRect::InflateRect(int *param_1,int *param_2)
   return;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x0061F342
+// GHIDRA_NAME CRect::DeflateRect
+// GHIDRA_PROTO undefined __thiscall DeflateRect(int * param_1)
+
+void __thiscall CRect::DeflateRect(CRect *this,int *param_1)
+
+{
+  *(int *)this = *(int *)this + *param_1;
+  *(int *)(this + 4) = *(int *)(this + 4) + param_1[1];
+  *(int *)(this + 8) = *(int *)(this + 8) - param_1[2];
+  *(int *)(this + 0xc) = *(int *)(this + 0xc) - param_1[3];
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x0061F37D
 // GHIDRA_NAME CRect::MulDiv
 // GHIDRA_PROTO undefined MulDiv()

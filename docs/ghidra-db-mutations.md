@@ -5,7 +5,7 @@ planned to be replaced with a newer DB in a separate folder. Everything below is
 the record of what has mutated the DB, so the still-wanted mutations can be
 re-run against the new database.
 
-## 2026-07-19: `ghidra-rename-class` tool + a blocked full convergence (recorded, not yet committed)
+## 2026-07-19: `ghidra-rename-class` tool + full autogen convergence (committed)
 
 Added `just ghidra-rename-class OLD NEW --vtable 0xADDR --apply`
 (`tools/ghidra/rename_class.py`) — the atomic class re-attribution the ledger's
@@ -15,6 +15,15 @@ construction-site references automatically), the vtable-struct datatype, the
 `::'vftable'` label, and removes the emptied namespace. Verified end-to-end against the
 `TSoundChannelNode` → `TLongintList` case (vtable 0x650a08): after `--apply` the DB had
 zero `TSoundChannelNode` remnants.
+
+**Convergence landed.** After clearing the 3 stale overrides (below), a single clean
+`sync_exports` regenerated `src/ghidra_autogen` + `include/ghidra_autogen` from the live
+DB and `just export-project` re-wrote the vendored `.gzf` so it matches. Verified:
+`TSoundChannelNode.cpp` is gone with zero remnants; 0x4c6740 is `TLongintList::InsertLast`
+and 0x413250 stayed `TDiplomacyMgr::IsNationSlotEligibleForEventProcessing` (the overrides
+fix held). `config/symbols.csv`/`symbols.ghidra.txt` were kept at HEAD (authoritative
+curation; the export's +2033 uncurated rows dropped). `ghidra-name-drift-gate` baseline
+shrank 222 → 56 (166 drifts resolved, TSoundChannelNode among them).
 
 **CORRECTION (same day):** an earlier version of this note claimed the DB was "~1000
 names behind" and that `sync_exports`'s curated-merge reverted curated names. Both were
@@ -27,10 +36,15 @@ second run then read that half-written file as "curated"; and (2) `sync_exports`
 override rows there still forced pre-rename names (0x413250, 0x60a60a, 0x556410),
 reverting them. Fixed by removing those 3 stale rows and adding an
 override-vs-symbols.csv consistency check to `ghidra-name-drift-gate` (hard invariant:
-an override may never contradict the authoritative symbols.csv). With that cleared, a
-single clean `sync_exports` run + keeping `symbols.csv` curated at HEAD converges the
-autogen (`TSoundChannelNode.cpp` disappears) without corrupting source — the remaining
-mechanical step.
+an override may never contradict the authoritative symbols.csv).
+
+**Drift-gate false-positive fixed in the same pass.** The re-export surfaced 6 MFC
+template-instantiation buckets (`CList_long_long`, `CArray_void_void`,
+`CMap_WORD_WORD_CacheRecord_CacheRecord`, …) as "stale". They were not drift: the autogen
+bucket *filename* sanitizes template syntax (`<`,`,`→`_`, `*`,`>` dropped) while
+`symbols.csv` keeps it (`CList<long,long>::Serialize`), so the gate's string compare never
+matched an owned template class. Added `sanitize_stem()` to normalize before the ownership
+check (+ regression tests) so owned template buckets are no longer falsely flagged.
 
 ## Committed mutations (already in the current .gzf, newest first)
 

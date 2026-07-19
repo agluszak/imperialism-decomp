@@ -3,6 +3,60 @@
 // Program: Imperialism.exe
 // Bucket: TInterNationEventQueueManager.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x0055B710
+// GHIDRA_NAME TInterNationEventQueueManager::InitializeInterNationEventQueueManager
+// GHIDRA_PROTO undefined InitializeInterNationEventQueueManager()
+
+void __fastcall TInterNationEventQueueManager::InitializeInterNationEventQueueManager(int param_1)
+
+{
+  CPtrArray *pCVar1;
+  int iVar2;
+  undefined4 *puVar3;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  puStack_8 = &LAB_006354f4;
+  local_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &local_c;
+  puVar3 = (undefined4 *)(param_1 + 0xef4);
+  iVar2 = 7;
+  do {
+    local_4 = 0xffffffff;
+    pCVar1 = (CPtrArray *)operator_new(0x18);
+    local_4 = 0;
+    if (pCVar1 == (CPtrArray *)0x0) {
+      pCVar1 = (CPtrArray *)0x0;
+    }
+    else {
+      CPtrArray::CPtrArray(pCVar1);
+      *(TPtrListVtbl **)pCVar1 = &TSortedPtrList::_vftable_;
+    }
+    puVar3[-8] = pCVar1;
+    *(undefined2 *)(pCVar1 + 0x14) = 0x24;
+    *puVar3 = 0;
+    puVar3 = puVar3 + 1;
+    iVar2 = iVar2 + -1;
+    local_4 = 0xffffffff;
+  } while (iVar2 != 0);
+  *(undefined4 *)(param_1 + 8) = 0;
+  pCVar1 = (CPtrArray *)operator_new(0x18);
+  local_4 = 1;
+  if (pCVar1 == (CPtrArray *)0x0) {
+    pCVar1 = (CPtrArray *)0x0;
+  }
+  else {
+    CPtrArray::CPtrArray(pCVar1);
+    *(TPtrListVtbl **)pCVar1 = &TSortedPtrList::_vftable_;
+  }
+  *(CPtrArray **)(param_1 + 0xef0) = pCVar1;
+  *(undefined2 *)(pCVar1 + 0x14) = 0x10;
+  *unaff_FS_OFFSET = local_c;
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x0055C970
 // GHIDRA_NAME TInterNationEventQueueManager::QueueInterNationEventIntoNationBucket
 // GHIDRA_PROTO undefined QueueInterNationEventIntoNationBucket()
@@ -127,6 +181,32 @@ TInterNationEventQueueManager::QueueInterNationEventType0FWithBitmaskMerge
     local_c = param_1;
     local_4 = param_3;
     (**(code **)(**(int **)&this->field_0xef0 + 0x38))(&local_10);
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0055CD00
+// GHIDRA_NAME TInterNationEventQueueManager::QueueInterNationEventType11
+// GHIDRA_PROTO undefined QueueInterNationEventType11()
+
+void __thiscall
+TInterNationEventQueueManager::QueueInterNationEventType11
+          (int param_1,undefined4 param_2,undefined4 param_3,char param_4)
+
+{
+  undefined4 local_10;
+  undefined4 local_c;
+  undefined4 local_8;
+  
+  if (g_pSimMgr->field_0x7a == '\0') {
+    if ((param_4 == '\0') && (*(int *)&g_pSimMgr->field_0x44 != 0)) {
+      func_0x004070f4(param_2,param_3);
+      return;
+    }
+    local_8 = param_3;
+    local_c = param_2;
+    local_10 = 0x11;
+    (**(code **)(**(int **)(param_1 + 0xef0) + 0x38))(&local_10);
   }
   return;
 }

@@ -58,7 +58,8 @@ TCivToolbar::LookupCivilianTileOrderCursorTokenByActionIndex(undefined4 param_1,
    branch, 8=immediate order type 8, 9=queue costed work order, 10=open Civilian Report dialog,
    11=prompt engineer rail order dialog. */
 
-int TCivToolbar::ResolveCivilianTileOrderActionCode(short nTileIndex, short nInputHint)
+int __thiscall
+TCivToolbar::ResolveCivilianTileOrderActionCode(TCivToolbar *this,short nTileIndex,short nInputHint)
 
 {
   short sVar1;
@@ -210,7 +211,7 @@ int TCivToolbar::ResolveCivilianTileOrderActionCode(short nTileIndex, short nInp
    - Function does not force productive work; non-applicable tiles can still become move-only
    orders. */
 
-bool TCivToolbar::TryQueueCivilianMoveOrderToTile(int nTileIndex)
+bool __thiscall TCivToolbar::TryQueueCivilianMoveOrderToTile(TCivToolbar *this,int nTileIndex)
 
 {
   char fOrderQueued;
@@ -226,82 +227,6 @@ bool TCivToolbar::TryQueueCivilianMoveOrderToTile(int nTileIndex)
     (*this->vftable->UpdateControlCachedIntFromWindowText)(nTileIndex,this->field04);
   }
   return (bool)fOrderQueued;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004D2F60
-// GHIDRA_NAME TCivToolbar::CanAssignCivilianOrderToTile
-// GHIDRA_PROTO undefined1 __thiscall CanAssignCivilianOrderToTile(short nTileIndex)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Validate whether the selected civilian can be assigned to the clicked tile.
-// GHIDRA_COMMENT Algorithm:
-// GHIDRA_COMMENT 1. Load tile terrain class and per-tile flags from global map state.
-// GHIDRA_COMMENT 2. Reject same-tile reassignments and blocked tiles unless engineer exceptions apply.
-// GHIDRA_COMMENT 3. For base terrain classes (<7), require exact worker-terrain class match.
-// GHIDRA_COMMENT 4. For extended classes, consult terrain descriptors and compatibility matrix.
-// GHIDRA_COMMENT 5. Permit assignment when compatibility resolves to allowed state and unit is not engineer-only blocked.
-// GHIDRA_COMMENT Parameters:
-// GHIDRA_COMMENT - nTileIndex: Target tile for assignment.
-// GHIDRA_COMMENT Returns:
-// GHIDRA_COMMENT - true when assignment is allowed; false otherwise.
-// GHIDRA_COMMENT Notes:
-// GHIDRA_COMMENT - Uses g_pTerrainTypeDescriptorTable and g_pCivilianTerrainCompatibilityMatrix for rules.
-// GHIDRA_COMMENT_END
-
-/* Validate whether the selected civilian can be assigned to the clicked tile.
-   Algorithm:
-   1. Load tile terrain class and per-tile flags from global map state.
-   2. Reject same-tile reassignments and blocked tiles unless engineer exceptions apply.
-   3. For base terrain classes (<7), require exact worker-terrain class match.
-   4. For extended classes, consult terrain descriptors and compatibility matrix.
-   5. Permit assignment when compatibility resolves to allowed state and unit is not engineer-only
-   blocked.
-   Parameters:
-   - nTileIndex: Target tile for assignment.
-   Returns:
-   - true when assignment is allowed; false otherwise.
-   Notes:
-   - Uses g_pTerrainTypeDescriptorTable and g_pCivilianTerrainCompatibilityMatrix for rules. */
-
-bool TCivToolbar::CanAssignCivilianOrderToTile(short nTileIndex)
-
-{
-  bool fTerrainRuleAllowsUnit;
-  short nCompatibilityMatrixValue;
-  short nTileTerrainClass;
-  int nTileDataOffset;
-  int *pSelectedCivilianOrderEntry;
-  
-  nTileTerrainClass =
-       (short)*(char *)(*(int *)&g_pGlobalMapState->field_0xc + 4 + nTileIndex * 0x24);
-  nTileDataOffset = *(int *)&g_pGlobalMapState->field_0xc + nTileIndex * 0x24;
-  pSelectedCivilianOrderEntry = (int *)this->field04;
-  if (((*(short *)((int)pSelectedCivilianOrderEntry + 6) != nTileIndex) &&
-      (*(char *)(nTileDataOffset + 0x13) != '\0')) &&
-     (((*(byte *)(nTileDataOffset + 0x1c) & 1) == 0 || ((short)pSelectedCivilianOrderEntry[1] == 4))
-     )) {
-    if (nTileTerrainClass < 7) {
-                    /* Hard gate: tile must be active/usable and cannot be same-tile reassignment
-                       unless engineer exception path applies. */
-      return nTileTerrainClass == (short)pSelectedCivilianOrderEntry[6];
-    }
-    if (*(short *)&g_apTerrainTypeDescriptorTable[nTileTerrainClass]->field_0xe == -1) {
-      nCompatibilityMatrixValue =
-           func_0x00401b8b((int)(short)pSelectedCivilianOrderEntry[6],(int)nTileTerrainClass);
-                    /* Base terrain classes (<7) require exact civilian terrain-class match. */
-      if ((nCompatibilityMatrixValue == 2) && (*(short *)(this->field04 + 4) != 4)) {
-        return (bool)1;
-      }
-    }
-    else {
-      fTerrainRuleAllowsUnit =
-           (bool)(*g_apTerrainTypeDescriptorTable[nTileTerrainClass]->vftable->
-                   IsDiplomacyTargetClassCode200Match)((int)(short)pSelectedCivilianOrderEntry[6]);
-      if ((fTerrainRuleAllowsUnit != false) && (*(short *)(this->field04 + 4) != 4)) {
-        return (bool)1;
-      }
-    }
-  }
-  return (bool)0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004D3070
@@ -349,7 +274,8 @@ bool TCivToolbar::CanAssignCivilianOrderToTile(short nTileIndex)
    Returns:
    - void. */
 
-void TCivToolbar::HandleCivilianReportDecision(int *pCivilianOrderEntry)
+void __thiscall
+TCivToolbar::HandleCivilianReportDecision(TCivToolbar *this,int *pCivilianOrderEntry)
 
 {
   short sVar1;
@@ -497,7 +423,8 @@ void TCivToolbar::HandleCivilianReportDecision(int *pCivilianOrderEntry)
    Returns:
    true when confirmed and queued; false when canceled or blocked. */
 
-bool TCivToolbar::PromptAndQueueDeveloperTilePurchaseOrder(short nTileIndex)
+bool __thiscall
+TCivToolbar::PromptAndQueueDeveloperTilePurchaseOrder(TCivToolbar *this,short nTileIndex)
 
 {
   char cDialogConfirmed;
@@ -703,7 +630,8 @@ bool TCivToolbar::PromptAndQueueDeveloperTilePurchaseOrder(short nTileIndex)
    - Tile records are 0x24-byte stride; unit list head is at tile+0x20.
    - Unit entry next-link is field index [5], owner nation id is low 16 bits of field [6]. */
 
-int * TCivToolbar::GetTileUnitEntryByOwner(short nTileIndex, short nOwnerNationId)
+int * __thiscall
+TCivToolbar::GetTileUnitEntryByOwner(TCivToolbar *this,short nTileIndex,short nOwnerNationId)
 
 {
   int *piVar1;
@@ -712,92 +640,6 @@ int * TCivToolbar::GetTileUnitEntryByOwner(short nTileIndex, short nOwnerNationI
       (piVar1 != (int *)0x0 && ((short)piVar1[6] != nOwnerNationId)); piVar1 = (int *)piVar1[5]) {
   }
   return piVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00518B40
-// GHIDRA_NAME TCivToolbar::CalculateDeveloperTilePurchaseCost
-// GHIDRA_PROTO int __thiscall CalculateDeveloperTilePurchaseCost(short nTileIndex)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Setting prototype: int CalculateEngineerRailBuildCost(short nTileIndex)
-// GHIDRA_COMMENT_END
-
-/* Setting prototype: int CalculateEngineerRailBuildCost(short nTileIndex) */
-
-int TCivToolbar::CalculateDeveloperTilePurchaseCost(short nTileIndex)
-
-{
-  undefined uVar1;
-  short sVar2;
-  int iVar3;
-  undefined3 extraout_var;
-  int iVar4;
-  int iVar5;
-  
-  iVar4 = 0;
-  iVar5 = 0;
-  do {
-    iVar3 = (int)(short)iVar5 + this->field0c;
-    sVar2 = (short)*(char *)(iVar3 + 0x11 + nTileIndex * 0x24);
-    if (sVar2 != -1) {
-      if (sVar2 < 0x11) {
-        uVar1 = (*g_pNationInteractionStateManager->vftable[9].slot_0x04)
-                          (CONCAT22((short)((uint)iVar3 >> 0x10),sVar2));
-        iVar4 = iVar4 + (short)CONCAT31(extraout_var,uVar1) * 0x14;
-      }
-      else if (sVar2 == 0x15) {
-        iVar4 = iVar4 + 10000;
-      }
-      else if (sVar2 == 0x16) {
-        iVar4 = iVar4 + 4000;
-      }
-    }
-    iVar5 = iVar5 + 1;
-  } while (iVar5 < 2);
-  return iVar4;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00560B00
-// GHIDRA_NAME TCivToolbar::CanDisplayMapOrderEntryInCurrentContext
-// GHIDRA_PROTO undefined __thiscall CanDisplayMapOrderEntryInCurrentContext(int param_1, char param_2)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Checks whether a map-order entry is eligible for display/selection in current context.
-// GHIDRA_COMMENT
-// GHIDRA_COMMENT Behavior:
-// GHIDRA_COMMENT - Validates entry category/type against active filters and nation/context state.
-// GHIDRA_COMMENT - Returns nonzero when entry should be considered by mode-2 selection traversal.
-// GHIDRA_COMMENT_END
-
-/* Checks whether a map-order entry is eligible for display/selection in current context.
-   
-   Behavior:
-   - Validates entry category/type against active filters and nation/context state.
-   - Returns nonzero when entry should be considered by mode-2 selection traversal. */
-
-undefined4 TCivToolbar::CanDisplayMapOrderEntryInCurrentContext(int param_1, char param_2)
-
-{
-  short sVar1;
-  int iVar2;
-  
-  if (param_1 == -1) {
-    sVar1 = func_0x00403b16();
-    param_1 = (int)sVar1;
-  }
-  if ((byte)((byte)this->field10 & '\x01' << ((byte)param_1 & 0x1f)) != 0) {
-    iVar2 = func_0x0040793c();
-    if (iVar2 != 0) {
-      while ((((*(TCivToolbar **)(iVar2 + 8) != this || (*(short *)(iVar2 + 0x14) != param_1)) ||
-              ((param_2 == '\0' && (*(int *)(iVar2 + 0x34) != 0)))) || (*(int *)(iVar2 + 0xc) != 0))
-            ) {
-        iVar2 = *(int *)(iVar2 + 0x24);
-        if (iVar2 == 0) {
-          return 0;
-        }
-      }
-      return 1;
-    }
-  }
-  return 0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058EA00
@@ -822,7 +664,7 @@ TCluster * TCivToolbar::CreateObject(void)
   local_4 = 0;
   pTVar1 = (TCluster *)0x0;
   if (this != (TCluster *)0x0) {
-    TCluster::ConstructUiResourceEntryType4B0C0(this);
+    TCluster::thunk_ConstructUiResourceEntryType4B0C0(this);
     this->vftable = (TClusterVtbl *)&_vftable_;
     pTVar1 = this;
   }
@@ -834,7 +676,7 @@ TCluster * TCivToolbar::CreateObject(void)
 // GHIDRA_NAME TCivToolbar::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TCivToolbar::GetRuntimeClass()
+CRuntimeClass * __thiscall TCivToolbar::GetRuntimeClass(TCivToolbar *this)
 
 {
   return &classTCivToolbar;
@@ -844,10 +686,10 @@ CRuntimeClass * TCivToolbar::GetRuntimeClass()
 // GHIDRA_NAME TCivToolbar::ConstructTCivToolbarBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTCivToolbarBaseState(void)
 
-TCivToolbar * TCivToolbar::ConstructTCivToolbarBaseState()
+TCivToolbar * __thiscall TCivToolbar::ConstructTCivToolbarBaseState(TCivToolbar *this)
 
 {
-  TCluster::ConstructUiResourceEntryType4B0C0((TCluster *)this);
+  TCluster::thunk_ConstructUiResourceEntryType4B0C0((TCluster *)this);
   this->vftable = &_vftable_;
   return this;
 }
@@ -856,7 +698,7 @@ TCivToolbar * TCivToolbar::ConstructTCivToolbarBaseState()
 // GHIDRA_NAME TCivToolbar::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TCivToolbar * TCivToolbar::_scalar_deleting_destructor_(byte param_1)
+TCivToolbar * __thiscall TCivToolbar::_scalar_deleting_destructor_(TCivToolbar *this,byte param_1)
 
 {
   func_0x004079a5();
@@ -996,7 +838,7 @@ TCivToolbar::RefreshCivilianCommandPanelForSelection
    - stk0..stk5: per-tile civilian stack slots.
    - dfnd/latr/done: immediate civilian commands on command panel. */
 
-void TCivToolbar::RefreshCivilianStackButtonsForTile(short nTileIndex)
+void __thiscall TCivToolbar::RefreshCivilianStackButtonsForTile(TCivToolbar *this,short nTileIndex)
 
 {
   TCivToolbarVtbl *pTVar1;
@@ -1112,7 +954,8 @@ void TCivToolbar::RefreshCivilianStackButtonsForTile(short nTileIndex)
    Returns:
    - None. */
 
-void TCivToolbar::HandleEvent(int nEventClass, void *pEventPayload, int nEventFlags)
+void __thiscall
+TCivToolbar::HandleEvent(TCivToolbar *this,int nEventClass,void *pEventPayload,int nEventFlags)
 
 {
   ushort wCtrlKeyState;
@@ -1176,418 +1019,5 @@ void TCivToolbar::HandleEvent(int nEventClass, void *pEventPayload, int nEventFl
   }
   func_0x004023ab(nEventClass,pEventPayload,nEventFlags);
   return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00597A80
-// GHIDRA_NAME TCivToolbar::CycleMapInteractionSelectionAfterHandledClick
-// GHIDRA_PROTO void __thiscall CycleMapInteractionSelectionAfterHandledClick(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Cycles map interaction selection after a handled click.
-// GHIDRA_COMMENT
-// GHIDRA_COMMENT Priority cycle:
-// GHIDRA_COMMENT 1. Next civilian candidate.
-// GHIDRA_COMMENT 2. Next province candidate.
-// GHIDRA_COMMENT 3. Next map-order entry candidate.
-// GHIDRA_COMMENT
-// GHIDRA_COMMENT If no candidate remains in current civilian mode, active civilian pointer is cleared (matches 'last unit deselected' behavior).
-// GHIDRA_COMMENT_END
-
-/* Cycles map interaction selection after a handled click.
-   
-   Priority cycle:
-   1. Next civilian candidate.
-   2. Next province candidate.
-   3. Next map-order entry candidate.
-   
-   If no candidate remains in current civilian mode, active civilian pointer is cleared (matches
-   'last unit deselected' behavior). */
-
-void TCivToolbar::CycleMapInteractionSelectionAfterHandledClick()
-
-{
-  short sVar1;
-  int iVar2;
-  TZone *pTVar3;
-  bool fHasSelectionCandidate;
-  char cVar4;
-  char cVar5;
-  void *pSelectedEntryCandidate;
-  undefined2 extraout_var;
-  undefined4 pSelectedOrderContext;
-  byte bModeCursor;
-  uint unaff_EBX;
-  short nResolvedProvinceId;
-  TZone *pTVar6;
-  bool fSelectionResolved;
-  bool fShouldClearProvinceSelection;
-  undefined2 uVar7;
-  uint dwModeTraversalState;
-  uint dwModeTraversalMask;
-  void *pMapActionContextCursor;
-  ushort wTraversalStateLowWord;
-  
-  bModeCursor = *(byte *)((int)&this[1].padding_08_to_0b + 2);
-  pSelectedOrderContext = func_0x00403b16();
-  fHasSelectionCandidate = (bool)func_0x004044b7(pSelectedOrderContext);
-  if (fHasSelectionCandidate == false) {
-    unaff_EBX = CONCAT22((short)(unaff_EBX >> 0x10),0x700);
-  }
-  cVar5 = (char)(unaff_EBX >> 8);
-  while (cVar4 = (char)(unaff_EBX >> 0x10), cVar5 != '\a') {
-    if (cVar4 != '\0') goto LAB_00597dbc;
-    cVar5 = (char)(unaff_EBX >> 0x18);
-    switch(bModeCursor) {
-    case 0:
-      fSelectionResolved = cVar5 != '\0';
-      if (fSelectionResolved) {
-        pSelectedOrderContext = func_0x00403b16();
-        func_0x00402135(pSelectedOrderContext);
-        unaff_EBX = unaff_EBX | 0x100;
-      }
-      pSelectedOrderContext = func_0x00403b16();
-      pSelectedEntryCandidate = (void *)func_0x0040506a(pSelectedOrderContext);
-      if (pSelectedEntryCandidate == (void *)0x0) {
-        bModeCursor = 1;
-        unaff_EBX = unaff_EBX & 0xffffff;
-        if (*(short *)((int)&this[1].padding_08_to_0b + 2) != 0) {
-          unaff_EBX = unaff_EBX | 0x100;
-        }
-      }
-      else {
-        unaff_EBX = CONCAT13((char)(unaff_EBX >> 0x18),CONCAT12(1,(short)unaff_EBX));
-        if (*(short *)((int)&this[1].padding_08_to_0b + 2) != 0) {
-          func_0x00404633(0);
-          func_0x004032a1(0);
-        }
-        func_0x00406b3b(pSelectedEntryCandidate,1);
-        pMapActionContextCursor = this->vftable;
-        (**(code **)((int)pMapActionContextCursor + 0x1e0))
-                  (CONCAT22(extraout_var,*(undefined2 *)((int)pSelectedEntryCandidate + 6)));
-        (**(code **)((int)pMapActionContextCursor + 0x13c))();
-      }
-      break;
-    case 1:
-      fShouldClearProvinceSelection = cVar5 != '\x01';
-      if (fShouldClearProvinceSelection) {
-        pSelectedOrderContext = func_0x00403b16();
-        func_0x004024dc(pSelectedOrderContext);
-        unaff_EBX = unaff_EBX | 0x200;
-      }
-      pSelectedOrderContext = func_0x00403b16();
-      pSelectedOrderContext = func_0x0040871a(pSelectedOrderContext);
-      nResolvedProvinceId = (short)pSelectedOrderContext;
-      uVar7 = (undefined2)unaff_EBX;
-      if (nResolvedProvinceId == -1) {
-        bModeCursor = 2;
-        unaff_EBX = CONCAT13(1,(int3)unaff_EBX);
-        if (*(short *)((int)&this[1].padding_08_to_0b + 2) != 1) {
-          unaff_EBX = CONCAT22((short)(unaff_EBX >> 0x10),uVar7) | 0x200;
-        }
-      }
-      else {
-        if (*(short *)((int)&this[1].padding_08_to_0b + 2) != 1) {
-          func_0x004032a1(1);
-        }
-        func_0x00408337(pSelectedOrderContext);
-        (**(code **)&this->vftable->field_0x1e0)
-                  (CONCAT22((short)((uint)(nResolvedProvinceId * 0x15) >> 0x10),
-                            *(undefined2 *)
-                             (*(int *)&g_pGlobalMapState->field_0x10 + 4 +
-                             nResolvedProvinceId * 0xa8)));
-        unaff_EBX = CONCAT13((char)(unaff_EBX >> 0x18),CONCAT12(1,uVar7));
-      }
-      break;
-    case 2:
-      iVar2 = this[1].field0c;
-      func_0x0040928c(0);
-      uVar7 = (undefined2)unaff_EBX;
-      pTVar3 = g_pMapActionContextListHead;
-      if ((iVar2 != 0) && (pTVar6 = *(TZone **)(iVar2 + 0x18), pTVar6 != (TZone *)0x0))
-      goto LAB_00597c66;
-      while (pTVar6 = pTVar3, pTVar6 != (TZone *)0x0) {
-LAB_00597c66:
-        cVar4 = func_0x00405bf5(0xffffffff,0);
-        if (cVar4 != '\0') {
-          func_0x004032a1(2);
-          if (*(char *)&this[1].padding_08_to_0b == '\0') {
-            func_0x004019ba(this[1].field0c);
-          }
-          this[1].field0c = (int)pTVar6;
-          func_0x00409458(pTVar6);
-          if (pTVar6 == (TZone *)0x0) {
-            func_0x00408995(0);
-            unaff_EBX = CONCAT13(cVar5,CONCAT12(1,uVar7));
-          }
-          else {
-            pSelectedOrderContext = func_0x0040928c(pTVar6);
-            func_0x00408995(pSelectedOrderContext);
-            unaff_EBX = CONCAT13(cVar5,CONCAT12(1,uVar7));
-          }
-          goto switchD_00597ade_default;
-        }
-        pTVar3 = *(TZone **)&pTVar6->field_0x18;
-      }
-      bModeCursor = 0;
-      this[1].field0c = 0;
-      unaff_EBX = CONCAT22((short)(CONCAT13(2,(int3)unaff_EBX) >> 0x10),uVar7) | 0x400;
-      break;
-    case 3:
-      bModeCursor = 0;
-    }
-switchD_00597ade_default:
-    cVar5 = (char)(unaff_EBX >> 8);
-  }
-  if (cVar4 == '\0') {
-    iVar2 = this[1].field0c;
-    func_0x0040928c(0);
-    pTVar3 = g_pMapActionContextListHead;
-    if ((iVar2 != 0) && (pTVar6 = *(TZone **)(iVar2 + 0x18), pTVar6 != (TZone *)0x0))
-    goto LAB_00597d3c;
-    while (pTVar6 = pTVar3, pTVar6 != (TZone *)0x0) {
-LAB_00597d3c:
-      cVar5 = func_0x00405bf5(0xffffffff,0);
-      if (cVar5 != '\0') {
-        func_0x004032a1(2);
-        if (*(char *)&this[1].padding_08_to_0b == '\0') {
-          func_0x004019ba(this[1].field0c);
-        }
-        this[1].field0c = (int)pTVar6;
-        func_0x00409458(pTVar6);
-        if (pTVar6 == (TZone *)0x0) {
-          func_0x00408995(0);
-          cVar4 = '\x01';
-        }
-        else {
-          pSelectedOrderContext = func_0x0040928c(pTVar6);
-          func_0x00408995(pSelectedOrderContext);
-          cVar4 = '\x01';
-        }
-        goto LAB_00597dbc;
-      }
-      pTVar3 = *(TZone **)&pTVar6->field_0x18;
-    }
-    this[1].field0c = 0;
-  }
-LAB_00597dbc:
-  if (cVar4 == '\0') {
-    sVar1 = *(short *)((int)&this[1].padding_08_to_0b + 2);
-    if (sVar1 == 0) {
-                    /* When no selectable civilians remain, active civilian pointer is cleared (last
-                       unit deselect behavior). */
-      *(undefined4 *)&g_pSelectedCivilianOrderState->field_0x4 = 0;
-    }
-    else {
-      if (sVar1 == 1) {
-        func_0x00408337(0xffffffff);
-        func_0x004032a1(3);
-        return;
-      }
-      if (sVar1 == 2) {
-        func_0x004032a1(2);
-        if (*(char *)&this[1].padding_08_to_0b == '\0') {
-          func_0x004019ba(this[1].field0c);
-        }
-        this[1].field0c = 0;
-        if (*(char *)&this[1].padding_08_to_0b == '\0') {
-          func_0x004019ba(0);
-        }
-        func_0x00408995(0);
-        func_0x004032a1(3);
-        return;
-      }
-    }
-    func_0x004032a1(3);
-  }
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x005D5D30
-// GHIDRA_NAME TCivToolbar::RunNationInfoModalAndReturnNonCancel
-// GHIDRA_PROTO undefined RunNationInfoModalAndReturnNonCancel(int * param_1)
-
-/* WARNING: Removing unreachable block (ram,0x005d5f91) */
-/* WARNING: Removing unreachable block (ram,0x005d5fa7) */
-/* WARNING: Removing unreachable block (ram,0x005d5fcc) */
-/* WARNING: Unknown calling convention -- yet parameter storage is locked */
-
-bool TCivToolbar::RunNationInfoModalAndReturnNonCancel(int *param_1)
-
-{
-  int iVar1;
-  code *pcVar2;
-  undefined uVar3;
-  short sVar4;
-  undefined3 extraout_var;
-  int iVar6;
-  int *piVar7;
-  code *pcVar8;
-  int *in_ECX;
-  TAssetMgrVtbl *pTVar9;
-  undefined1 uVar10;
-  undefined4 *unaff_FS_OFFSET;
-  int *in_stack_00000014;
-  CString CStack_bc;
-  undefined4 uStack_b8;
-  code *pcVar11;
-  undefined4 uVar12;
-  CString local_60;
-  uint local_5c;
-  int iStack_58;
-  CString CStack_54;
-  code *pcStack_50;
-  undefined4 uStack_48;
-  int local_44;
-  uint uStack_40;
-  undefined4 local_3c;
-  undefined4 uStack_c;
-  int *piStack_8;
-  undefined4 local_4;
-  int *piVar5;
-  
-  piStack_8 = (int *)&LAB_0063a05a;
-  uStack_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &uStack_c;
-  local_4 = 0;
-  CString::CString(&local_60);
-  local_4 = CONCAT31(local_4._1_3_,1);
-  uStack_40 = (uint)(ushort)uStack_40;
-  local_3c = (uint)local_3c._2_2_ << 0x10;
-  local_5c = 0;
-  if (*in_stack_00000014 == -1000) {
-    local_5c = (uint)*(ushort *)(in_stack_00000014 + 1);
-  }
-  func_0x00406afa();
-  if ((short)local_5c == 0) {
-    pTVar9 = g_pUiViewManager->vftable;
-  }
-  else {
-    (*g_pUiViewManager->vftable->NoOpRuntimeUiCallback_005df3f0)();
-    pTVar9 = g_pUiViewManager->vftable;
-  }
-  uVar3 = (*pTVar9->ResolveTurnEventDialogNodeByMessageContext)();
-  piVar5 = (int *)CONCAT31(extraout_var,uVar3);
-  if (piVar5 == (int *)0x0) {
-    MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
-    func_0x004057a4();
-  }
-  iVar1 = *piVar5;
-  (**(code **)(iVar1 + 0x1a0))();
-  iVar6 = (**(code **)(iVar1 + 0x1b8))();
-  if (iVar6 != 0) {
-    *(undefined4 *)(iVar6 + 0x14) = 0x6f6b6179;
-  }
-  (**(code **)(*in_ECX + 0x44))();
-  (**(code **)(iVar1 + 0xf0))();
-  pcVar2 = *(code **)(iVar1 + 0x94);
-  piVar7 = (int *)(*pcVar2)();
-  iVar1 = *piVar7;
-  piStack_8 = piVar7;
-  (**(code **)(iVar1 + 0xc))();
-  if (piVar7 == (int *)0x0) {
-    MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
-    func_0x004057a4();
-  }
-  (**(code **)(iVar1 + 0x1c8))();
-  piVar7 = (int *)(*pcVar2)();
-  iVar1 = *piVar7;
-  (**(code **)(iVar1 + 0xc))();
-  if (piVar7 == (int *)0x0) {
-    MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
-    func_0x004057a4();
-  }
-  sVar4 = func_0x00403b16();
-  if ((sVar4 < 0) || (sVar4 = func_0x00403b16(), 6 < sVar4)) {
-    uVar12 = 0;
-    (**(code **)(iVar1 + 0xa4))();
-  }
-  else {
-    uVar12 = 0;
-    func_0x00403b16();
-    (**(code **)(iVar1 + 0x1c8))();
-  }
-  piVar7 = (int *)(*pcVar2)();
-  iVar1 = *piVar7;
-  (**(code **)(iVar1 + 0xc))();
-  (**(code **)(iVar1 + 0x1c8))();
-  piVar7 = (int *)(*pcVar2)();
-  iVar1 = *piVar7;
-  uStack_b8 = uVar12;
-  (**(code **)(iVar1 + 0xc))();
-  CStack_bc.m_pchData = (char *)0x5d6041;
-  (**(code **)(iVar1 + 0x1c8))();
-  CStack_bc.m_pchData = (char *)0x696e666f;
-  piVar7 = (int *)(*pcVar2)();
-  iVar1 = *piVar7;
-  (**(code **)(iVar1 + 0xc))();
-  iVar6 = local_3c;
-  (**(code **)(iVar1 + 500))(uStack_40);
-  (**(code **)(iVar1 + 0x1e4))(&stack0xffffff68,0);
-  sVar4 = func_0x004065e1();
-  local_44 = (int)sVar4;
-  pcVar11 = pcVar2;
-  if (piVar7[0xe] < (int)sVar4) {
-    (**(code **)(iVar1 + 300))(&stack0xffffff6c);
-    pcStack_50 = *(code **)(iVar1 + 0x168);
-    (*pcStack_50)(&stack0xffffff68,0);
-    if (piVar7[0xe] < local_44) {
-      pcVar8 = (code *)operator_new(0x68);
-      local_60.m_pchData._0_1_ = 2;
-      pcStack_50 = pcVar8;
-      if (pcVar8 == (code *)0x0) {
-        pcVar8 = (code *)0x0;
-      }
-      else {
-        func_0x004064e2();
-        *(TScrollViewVtbl **)pcVar8 = &TScrollView::_vftable_;
-      }
-      local_60.m_pchData._0_1_ = 1;
-      func_0x004062e9(uStack_48,piVar7 + 9,piVar7 + 0xd);
-      (**(code **)(*(int *)pcVar8 + 0xdc))(0);
-      (**(code **)(iVar6 + 0x174))(piVar7);
-      (**(code **)(*(int *)pcVar8 + 0x170))(piVar7,0);
-      pcVar11 = (code *)0x0;
-      (*pcVar2)(&stack0xffffff50,0);
-      *(int **)(pcVar8 + 0x60) = piVar7;
-      func_0x00408d82();
-    }
-  }
-  if ((char)uStack_40 != '\0') {
-    piVar7 = (int *)(*pcVar11)(0x636e636c);
-    iVar1 = *piVar7;
-    (**(code **)(iVar1 + 0xc))();
-    (**(code **)(iVar1 + 0xa4))(1,1);
-    (**(code **)(iVar1 + 0xa8))(1,0);
-  }
-  if (*(int *)&g_pSimMgr->field_0x44 == 0) {
-    uVar10 = (char)uStack_40;
-  }
-  else {
-    uVar10 = *(undefined1 *)((int)g_pGameFlowState + 0x68);
-    *(undefined1 *)((int)g_pGameFlowState + 0x68) = 0;
-  }
-  if ((short)uStack_b8 != 0) {
-    (**(code **)&g_pSfxPlaybackSystem->vftable[1].field_0x10)
-              (*(undefined2 *)(&stack0xffffff7c + iStack_58 * 2),0,1);
-  }
-  iVar1 = *piVar5;
-  iVar6 = (**(code **)(iVar1 + 0x1ac))();
-  (**(code **)(iVar1 + 0xa0))();
-  (**(code **)(iVar1 + 0x1c))();
-  if (*(int *)&g_pSimMgr->field_0x44 != 0) {
-    *(undefined1 *)((int)g_pGameFlowState + 0x68) = uVar10;
-  }
-  local_60.m_pchData = local_60.m_pchData & 0xffffff00;
-  if (iVar6 != 0x636e636c) {
-    CString::~CString(&CStack_bc);
-    local_60.m_pchData = (char *)0xffffffff;
-    CString::~CString(&CStack_54);
-  }
-  else {
-    CString::~CString(&CStack_bc);
-    local_60.m_pchData = (char *)0xffffffff;
-    CString::~CString(&CStack_54);
-  }
-  *unaff_FS_OFFSET = pcVar2;
-  return iVar6 != 0x636e636c;
 }
 

@@ -23,7 +23,7 @@ TCluster * TTacNavyToolbar::CreateObject(void)
   this = (TCluster *)operator_new(0x98);
   local_4 = 0;
   if (this != (TCluster *)0x0) {
-    TCluster::ConstructUiResourceEntryType4B0C0(this);
+    TCluster::thunk_ConstructUiResourceEntryType4B0C0(this);
     this[1].vftable = (TClusterVtbl *)0x0;
     this[1].field04 = 0;
     this[1].field0c = 0;
@@ -37,20 +37,21 @@ TCluster * TTacNavyToolbar::CreateObject(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005AD0D0
-// GHIDRA_NAME TTacNavyToolbar::UpdateCurrentDiplomacyCounterpartyControlAndDialogLabel
-// GHIDRA_PROTO undefined __thiscall UpdateCurrentDiplomacyCounterpartyControlAndDialogLabel(void)
+// GHIDRA_NAME TTacNavyToolbar::UpdateTacticalCurrentUnitControlAndDialogLabel
+// GHIDRA_PROTO undefined __thiscall UpdateTacticalCurrentUnitControlAndDialogLabel(void)
 
-void TTacNavyToolbar::UpdateCurrentDiplomacyCounterpartyControlAndDialogLabel()
+void __thiscall
+TTacNavyToolbar::UpdateTacticalCurrentUnitControlAndDialogLabel(TTacNavyToolbar *this)
 
 {
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005AD0F0
-// GHIDRA_NAME TTacNavyToolbar::WrapperFor_InvalidateCityDialogRectRegion_At005acc90
-// GHIDRA_PROTO undefined __thiscall WrapperFor_InvalidateCityDialogRectRegion_At005acc90(void)
+// GHIDRA_NAME TTacNavyToolbar::TacticalToolbarSlot74
+// GHIDRA_PROTO undefined __thiscall TacticalToolbarSlot74(void)
 
-void TTacNavyToolbar::WrapperFor_InvalidateCityDialogRectRegion_At005acc90()
+void __thiscall TTacNavyToolbar::TacticalToolbarSlot74(TTacNavyToolbar *this)
 
 {
   return;
@@ -60,7 +61,8 @@ void TTacNavyToolbar::WrapperFor_InvalidateCityDialogRectRegion_At005acc90()
 // GHIDRA_NAME TTacNavyToolbar::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TTacNavyToolbar * TTacNavyToolbar::_scalar_deleting_destructor_(byte param_1)
+TTacNavyToolbar * __thiscall
+TTacNavyToolbar::_scalar_deleting_destructor_(TTacNavyToolbar *this,byte param_1)
 
 {
   func_0x0040266c();
@@ -74,7 +76,7 @@ TTacNavyToolbar * TTacNavyToolbar::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TTacNavyToolbar::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TTacNavyToolbar::GetRuntimeClass()
+CRuntimeClass * __thiscall TTacNavyToolbar::GetRuntimeClass(TTacNavyToolbar *this)
 
 {
   return &classTTacNavyToolbar;
@@ -84,7 +86,7 @@ CRuntimeClass * TTacNavyToolbar::GetRuntimeClass()
 // GHIDRA_NAME TTacNavyToolbar::NoOpUiLifecycleHook
 // GHIDRA_PROTO undefined __thiscall NoOpUiLifecycleHook(void)
 
-void TTacNavyToolbar::NoOpUiLifecycleHook()
+void __thiscall TTacNavyToolbar::NoOpUiLifecycleHook(TTacNavyToolbar *this)
 
 {
   func_0x004023a6();
@@ -96,7 +98,8 @@ void TTacNavyToolbar::NoOpUiLifecycleHook()
 // GHIDRA_NAME TTacNavyToolbar::HandleEvent
 // GHIDRA_PROTO undefined __thiscall HandleEvent(int param_1, void * param_2, int param_3)
 
-void TTacNavyToolbar::HandleEvent(int param_1, void *param_2, int param_3)
+void __thiscall
+TTacNavyToolbar::HandleEvent(TTacNavyToolbar *this,int param_1,void *param_2,int param_3)
 
 {
   int iVar1;

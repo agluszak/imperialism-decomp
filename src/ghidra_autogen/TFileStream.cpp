@@ -7,7 +7,7 @@
 // GHIDRA_NAME TFileStream::CreateTFileStreamInstance
 // GHIDRA_PROTO undefined __thiscall CreateTFileStreamInstance(char * param_1)
 
-void TFileStream::CreateTFileStreamInstance(char *param_1)
+void __thiscall TFileStream::CreateTFileStreamInstance(TFileStream *this,char *param_1)
 
 {
   char cVar1;
@@ -51,7 +51,7 @@ undefined4 * TFileStream::CreateObject(void)
 // GHIDRA_NAME TFileStream::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TFileStream::GetRuntimeClass()
+CRuntimeClass * __thiscall TFileStream::GetRuntimeClass(TFileStream *this)
 
 {
   return &classTFileStream;
@@ -61,7 +61,7 @@ CRuntimeClass * TFileStream::GetRuntimeClass()
 // GHIDRA_NAME TFileStream::ConstructTFileStreamBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTFileStreamBaseState(void)
 
-void TFileStream::ConstructTFileStreamBaseState()
+void __thiscall TFileStream::ConstructTFileStreamBaseState(TFileStream *this)
 
 {
   this->vftable = &_vftable_;
@@ -73,7 +73,7 @@ void TFileStream::ConstructTFileStreamBaseState()
 // GHIDRA_NAME TFileStream::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TFileStream * TFileStream::_scalar_deleting_destructor_(byte param_1)
+TFileStream * __thiscall TFileStream::_scalar_deleting_destructor_(TFileStream *this,byte param_1)
 
 {
   func_0x00407644();
@@ -87,7 +87,7 @@ TFileStream * TFileStream::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TFileStream::SetBackingArchive
 // GHIDRA_PROTO undefined __thiscall SetBackingArchive(undefined4 param_1)
 
-void TFileStream::SetBackingArchive(undefined4 param_1)
+void __thiscall TFileStream::SetBackingArchive(TFileStream *this,undefined4 param_1)
 
 {
   *(undefined4 *)&this->field_0x4 = param_1;
@@ -98,7 +98,7 @@ void TFileStream::SetBackingArchive(undefined4 param_1)
 // GHIDRA_NAME TFileStream::OrphanTiny_ReturnZero_00488ad0
 // GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_00488ad0(void)
 
-void TFileStream::OrphanTiny_ReturnZero_00488ad0()
+void __thiscall TFileStream::OrphanTiny_ReturnZero_00488ad0(TFileStream *this)
 
 {
                     /* WARNING: Could not recover jumptable at 0x0048918b. Too many branches */
@@ -111,7 +111,7 @@ void TFileStream::OrphanTiny_ReturnZero_00488ad0()
 // GHIDRA_NAME TFileStream::OrphanTiny_ReturnZero_00488af0
 // GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_00488af0(void)
 
-void TFileStream::OrphanTiny_ReturnZero_00488af0()
+void __thiscall TFileStream::OrphanTiny_ReturnZero_00488af0(TFileStream *this)
 
 {
                     /* WARNING: Could not recover jumptable at 0x004891ab. Too many branches */
@@ -124,7 +124,7 @@ void TFileStream::OrphanTiny_ReturnZero_00488af0()
 // GHIDRA_NAME TFileStream::OrphanRetStub_00488e30
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_00488e30(void)
 
-void TFileStream::OrphanRetStub_00488e30()
+void __thiscall TFileStream::OrphanRetStub_00488e30(TFileStream *this)
 
 {
   (**(code **)(**(int **)(*(int *)(*(int *)&this->field_0x4 + 4) + 0x20) + 0x30))();
@@ -135,7 +135,7 @@ void TFileStream::OrphanRetStub_00488e30()
 // GHIDRA_NAME TFileStream::OrphanRetStub_00488e50
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_00488e50(void)
 
-void TFileStream::OrphanRetStub_00488e50()
+void __thiscall TFileStream::OrphanRetStub_00488e50(TFileStream *this)
 
 {
   (**(code **)(**(int **)(*(int *)(*(int *)&this->field_0x4 + 4) + 0x20) + 0x34))();
@@ -146,7 +146,7 @@ void TFileStream::OrphanRetStub_00488e50()
 // GHIDRA_NAME TFileStream::ReadBytes
 // GHIDRA_PROTO undefined __thiscall ReadBytes(void)
 
-void TFileStream::ReadBytes()
+void __thiscall TFileStream::ReadBytes(TFileStream *this)
 
 {
   int in_stack_00000004;
@@ -164,7 +164,7 @@ void TFileStream::ReadBytes()
 // GHIDRA_NAME TFileStream::OrphanRetStub_00488e70
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_00488e70(void)
 
-void TFileStream::OrphanRetStub_00488e70()
+void __thiscall TFileStream::OrphanRetStub_00488e70(TFileStream *this)
 
 {
   int in_stack_00000004;
@@ -182,7 +182,8 @@ void TFileStream::OrphanRetStub_00488e70()
 // GHIDRA_NAME TFileStream::OrphanLeaf_NoCall_Ins02_00489980
 // GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins02_00489980(undefined4 * param_1)
 
-undefined4 TFileStream::OrphanLeaf_NoCall_Ins02_00489980(undefined4 *param_1)
+undefined4 __thiscall
+TFileStream::OrphanLeaf_NoCall_Ins02_00489980(TFileStream *this,undefined4 *param_1)
 
 {
   undefined4 uVar1;
@@ -196,7 +197,7 @@ undefined4 TFileStream::OrphanLeaf_NoCall_Ins02_00489980(undefined4 *param_1)
 // GHIDRA_NAME TFileStream::OrphanRetStub_004899a0
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_004899a0(void)
 
-void TFileStream::OrphanRetStub_004899a0()
+void __thiscall TFileStream::OrphanRetStub_004899a0(TFileStream *this)
 
 {
   int *in_stack_00000004;
@@ -222,7 +223,7 @@ TFileStream::Helper_Uses_EnsureSharedStringCapacityPreserveLength_At00488c50
 // GHIDRA_NAME TFileStream::OrphanCallChain_C2_I21_00489030
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C2_I21_00489030(undefined4 param_1)
 
-void TFileStream::OrphanCallChain_C2_I21_00489030(undefined4 param_1)
+void __thiscall TFileStream::OrphanCallChain_C2_I21_00489030(TFileStream *this,undefined4 param_1)
 
 {
   operator<<(*(undefined4 *)(*(int *)&this->field_0x4 + 4),param_1);

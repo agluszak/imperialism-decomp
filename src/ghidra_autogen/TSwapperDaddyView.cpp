@@ -37,7 +37,8 @@ undefined4 * TSwapperDaddyView::CreateObject(void)
 // GHIDRA_NAME TSwapperDaddyView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TSwapperDaddyView * TSwapperDaddyView::_scalar_deleting_destructor_(byte param_1)
+TSwapperDaddyView * __thiscall
+TSwapperDaddyView::_scalar_deleting_destructor_(TSwapperDaddyView *this,byte param_1)
 
 {
   func_0x00406442();
@@ -51,7 +52,7 @@ TSwapperDaddyView * TSwapperDaddyView::_scalar_deleting_destructor_(byte param_1
 // GHIDRA_NAME TSwapperDaddyView::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TSwapperDaddyView::GetRuntimeClass()
+CRuntimeClass * __thiscall TSwapperDaddyView::GetRuntimeClass(TSwapperDaddyView *this)
 
 {
   return &classTSwapperDaddyView;
@@ -61,7 +62,8 @@ CRuntimeClass * TSwapperDaddyView::GetRuntimeClass()
 // GHIDRA_NAME TSwapperDaddyView::ConstructTSwapperDaddyViewBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTSwapperDaddyViewBaseState(int param_1)
 
-int * TSwapperDaddyView::ConstructTSwapperDaddyViewBaseState(int param_1)
+int * __thiscall
+TSwapperDaddyView::ConstructTSwapperDaddyViewBaseState(TSwapperDaddyView *this,int param_1)
 
 {
   byte bVar1;

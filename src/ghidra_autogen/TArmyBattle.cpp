@@ -7,7 +7,7 @@
 // GHIDRA_NAME TArmyBattle::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TArmyBattle * TArmyBattle::_scalar_deleting_destructor_(byte param_1)
+TArmyBattle * __thiscall TArmyBattle::_scalar_deleting_destructor_(TArmyBattle *this,byte param_1)
 
 {
   func_0x004040e3();
@@ -18,10 +18,10 @@ TArmyBattle * TArmyBattle::_scalar_deleting_destructor_(byte param_1)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0059F7F0
-// GHIDRA_NAME TArmyBattle::ConstructTArmyBattleBaseStateImpl
-// GHIDRA_PROTO undefined __thiscall ConstructTArmyBattleBaseStateImpl(void)
+// GHIDRA_NAME TArmyBattle::AllocateRecordList
+// GHIDRA_PROTO undefined __thiscall AllocateRecordList(void)
 
-void TArmyBattle::ConstructTArmyBattleBaseStateImpl()
+void __thiscall TArmyBattle::AllocateRecordList(TArmyBattle *this)
 
 {
   undefined4 *puVar1;
@@ -47,25 +47,6 @@ void TArmyBattle::ConstructTArmyBattleBaseStateImpl()
   *(undefined4 *)&this->field_0x20 = 0;
   *unaff_FS_OFFSET = local_c;
   return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x005A4690
-// GHIDRA_NAME TArmyBattle::CreateTArmyBattleInstance
-// GHIDRA_PROTO undefined CreateTArmyBattleInstance()
-
-uint __thiscall TArmyBattle::CreateTArmyBattleInstance(int param_1,int param_2)
-
-{
-  uint uVar1;
-  uint uVar2;
-  
-  uVar1 = param_2 / 0x1d;
-  uVar2 = (uVar1 & 1) + (param_2 % 0x1d) * 2;
-  if ((((uVar1 == 5) || (uVar1 == 7)) || (uVar1 == 9)) &&
-     (uVar2 = (int)uVar2 / 2, uVar2 == *(int *)(param_1 + 0x34) - 6U)) {
-    return CONCAT31((int3)(uVar2 >> 8),1);
-  }
-  return uVar2 & 0xffffff00;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005A4710
@@ -96,17 +77,81 @@ undefined4 * TArmyBattle::CreateObject(void)
 // GHIDRA_NAME TArmyBattle::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TArmyBattle::GetRuntimeClass()
+CRuntimeClass * __thiscall TArmyBattle::GetRuntimeClass(TArmyBattle *this)
 
 {
   return &classTArmyBattle;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005A4790
+// GHIDRA_NAME TArmyBattle::InitializeBattleSetupAndMaybeDispatchTurnEventED8
+// GHIDRA_PROTO undefined __thiscall InitializeBattleSetupAndMaybeDispatchTurnEventED8(int param_1, int param_2, undefined4 param_3, undefined4 param_4, undefined4 param_5)
+
+void __thiscall
+TArmyBattle::InitializeBattleSetupAndMaybeDispatchTurnEventED8
+          (TArmyBattle *this,int param_1,int param_2,undefined4 param_3,undefined4 param_4,
+          undefined4 param_5)
+
+{
+  undefined1 uVar1;
+  undefined4 *puVar2;
+  undefined4 *puVar3;
+  int iVar4;
+  int *piVar5;
+  int iVar6;
+  undefined4 unaff_ESI;
+  undefined4 unaff_EDI;
+  char cVar7;
+  char cVar8;
+  
+  *(undefined4 *)&this->field_0x3c = 0x1b3;
+  *(undefined4 *)&this->field_0x40 = 0x1d;
+  uVar1 = 0;
+  if ((*(short *)&g_pSimMgr->field_0x48 != 0) && (*(int *)&g_pSimMgr->field_0x44 == 0)) {
+    uVar1 = g_apNationStates[*(char *)(param_1 + 8)]->field_0xa0;
+  }
+  puVar2 = (undefined4 *)operator_new(0x54);
+  if (puVar2 == (undefined4 *)0x0) {
+    puVar2 = (undefined4 *)0x0;
+  }
+  else {
+    *puVar2 = &TArmyPlayer::_vftable_;
+  }
+  iVar6 = (int)*(char *)(param_1 + 8);
+  func_0x00402c0c(param_1,1,uVar1);
+  puVar3 = (undefined4 *)operator_new(0x54);
+  if (puVar3 == (undefined4 *)0x0) {
+    puVar3 = (undefined4 *)0x0;
+  }
+  else {
+    *puVar3 = &TArmyPlayer::_vftable_;
+  }
+  cVar8 = '\0';
+  func_0x00402c0c(param_2,0,unaff_EDI,(int)*(char *)(param_2 + 8));
+  cVar7 = (char)param_2;
+  func_0x0040877e(puVar2,puVar3);
+  *(undefined4 *)&this->field_0x38 = unaff_ESI;
+  func_0x004056d7(iVar6,unaff_EDI);
+  *(int *)&this->field_0x50 = iVar6;
+  this->field_0x49 = (char)unaff_EDI;
+  if (((DAT_006a4758 != '\0') || (cVar7 != '\0')) || (cVar8 != '\0')) {
+    g_nTurnCooldownDeferCounter006A43C4 = 0;
+    iVar4 = rand(0);
+    func_0x00409381(iVar4 % 3 + 6);
+    (**(code **)(g_pUiRuntimeContext->vftable + 0x4c))(0xed8,0);
+    piVar5 = (int *)(**(code **)(**(int **)(g_pDisplayMgr + 4) + 0x94))(0x444c4f47);
+    (**(code **)(*piVar5 + 0xc))();
+    *(int **)&this->field_0x8 = piVar5;
+    func_0x00409697(iVar6,this);
+  }
+  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005A4990
 // GHIDRA_NAME TArmyBattle::ReadFrom
 // GHIDRA_PROTO undefined __thiscall ReadFrom(int * param_1)
 
-void TArmyBattle::ReadFrom(int *param_1)
+void __thiscall TArmyBattle::ReadFrom(TArmyBattle *this,int *param_1)
 
 {
   short sVar1;
@@ -274,7 +319,7 @@ LAB_005a4b8e:
 // GHIDRA_NAME TArmyBattle::WriteTo
 // GHIDRA_PROTO undefined __thiscall WriteTo(int * param_1)
 
-void TArmyBattle::WriteTo(int *param_1)
+void __thiscall TArmyBattle::WriteTo(TArmyBattle *this,int *param_1)
 
 {
   code *pcVar1;
@@ -371,11 +416,110 @@ void TArmyBattle::WriteTo(int *param_1)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x005A51E0
-// GHIDRA_NAME TArmyBattle::OrphanRetStub_0059f710
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059f710(int * param_1, int param_2)
+// GHIDRA_FUNCTION IMPERIALISM 0x005A4FC0
+// GHIDRA_NAME TArmyBattle::LoadBattleSetupTabDataByIndex
+// GHIDRA_PROTO undefined LoadBattleSetupTabDataByIndex()
 
-int * TArmyBattle::OrphanRetStub_0059f710(int *param_1, int param_2)
+void __thiscall TArmyBattle::LoadBattleSetupTabDataByIndex(int param_1,CString param_2)
+
+{
+  int iVar1;
+  char *pcVar2;
+  undefined4 uVar3;
+  int *piVar4;
+  undefined4 *puVar5;
+  int iVar6;
+  char *pcVar7;
+  undefined4 unaff_EBP;
+  int *unaff_FS_OFFSET;
+  int iVar8;
+  CString local_5c;
+  int local_58;
+  undefined1 *local_54;
+  char *local_50;
+  char local_4c [44];
+  int iStack_20;
+  undefined4 uStack_18;
+  int local_c;
+  undefined1 *puStack_8;
+  int local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_00638720;
+  local_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = (int)&local_c;
+  CString::CString(&local_5c);
+  local_58 = *(int *)(param_1 + 0x3c) + 0xf;
+  local_4 = 0;
+  _sprintf(local_4c,s_data__03d_tab_00699e20);
+  CString::CString(&param_2,local_4c);
+  local_4._0_1_ = 1;
+  CString::operator=(&local_5c,&param_2);
+  local_4 = (uint)local_4._1_3_ << 8;
+  CString::~CString(&param_2);
+  pcVar2 = (char *)operator_new();
+  local_54 = &stack0xffffff90;
+  local_50 = pcVar2;
+  CString::CString((CString *)&stack0xffffff90,&local_5c);
+  uVar3 = func_0x004012e9();
+  func_0x0040255e(uVar3,pcVar2,&local_5c);
+  func_0x00403670(uVar3);
+  iVar1 = local_c;
+  piVar4 = *(int **)(param_1 + 4);
+  iVar8 = 0xf;
+  do {
+    iVar6 = 0;
+    do {
+      pcVar7 = pcVar2;
+      if (0x1d - *(int *)(param_1 + 0x34) <= iVar6) {
+        if ((local_c < 2) || (iVar6 < 0x18)) {
+          *piVar4 = (int)*pcVar7;
+        }
+        else {
+          *piVar4 = 0;
+        }
+        piVar4[1] = 0;
+        piVar4[2] = 0;
+        piVar4[3] = -1;
+        *(undefined1 *)(piVar4 + 4) = 0;
+        piVar4 = piVar4 + 5;
+      }
+      iVar6 = iVar6 + 1;
+      pcVar2 = pcVar7 + 1;
+    } while (iVar6 < 0x1d);
+    pcVar2 = pcVar7 + 2;
+    piVar4 = piVar4 + (0x1d - *(int *)(param_1 + 0x34)) * 5;
+    iVar8 = iVar8 + -1;
+  } while (iVar8 != 0);
+  operator_delete(unaff_EBP);
+  if (iVar1 != 0) {
+    iVar8 = *(int *)(param_1 + 0x34) + -6;
+    if (iVar8 < 0x1b3) {
+      iVar8 = iVar8 * 0x14;
+      do {
+        iVar8 = iVar8 + 0x244;
+        *(int *)(*(int *)(param_1 + 4) + -0x23c + iVar8) = iVar1;
+      } while (iVar8 < 0x21fc);
+    }
+    puVar5 = (undefined4 *)(param_1 + 0x54);
+    iVar8 = 8;
+    do {
+      *puVar5 = *(undefined4 *)(&DAT_00669818 + iVar1 * 4);
+      puVar5 = puVar5 + 1;
+      iVar8 = iVar8 + -1;
+    } while (iVar8 != 0);
+  }
+  uStack_18 = 0xffffffff;
+  CString::~CString((CString *)&stack0xffffff90);
+  *unaff_FS_OFFSET = iStack_20;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005A51E0
+// GHIDRA_NAME TArmyBattle::DeployTacticalUnitToTile
+// GHIDRA_PROTO undefined __thiscall DeployTacticalUnitToTile(int * param_1, int param_2)
+
+int * __thiscall TArmyBattle::DeployTacticalUnitToTile(TArmyBattle *this,int *param_1,int param_2)
 
 {
   int *piVar1;
@@ -434,7 +578,7 @@ int * TArmyBattle::OrphanRetStub_0059f710(int *param_1, int param_2)
 // GHIDRA_NAME TArmyBattle::CreateTTacticalBattleInstance
 // GHIDRA_PROTO undefined __thiscall CreateTTacticalBattleInstance(undefined4 param_1)
 
-void TArmyBattle::CreateTTacticalBattleInstance(undefined4 param_1)
+void __thiscall TArmyBattle::CreateTTacticalBattleInstance(TArmyBattle *this,undefined4 param_1)
 
 {
   int *piVar1;

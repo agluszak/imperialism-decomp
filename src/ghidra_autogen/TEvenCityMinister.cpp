@@ -40,7 +40,7 @@ undefined4 * TEvenCityMinister::CreateObject(void)
 // GHIDRA_NAME TEvenCityMinister::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TEvenCityMinister::GetRuntimeClass()
+CRuntimeClass * __thiscall TEvenCityMinister::GetRuntimeClass(TEvenCityMinister *this)
 
 {
   return &classTEvenCityMinister;
@@ -50,7 +50,8 @@ CRuntimeClass * TEvenCityMinister::GetRuntimeClass()
 // GHIDRA_NAME TEvenCityMinister::ConstructTEvenCityMinisterBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTEvenCityMinisterBaseState(void)
 
-TEvenCityMinister * TEvenCityMinister::ConstructTEvenCityMinisterBaseState()
+TEvenCityMinister * __thiscall
+TEvenCityMinister::ConstructTEvenCityMinisterBaseState(TEvenCityMinister *this)
 
 {
   func_0x0040433b();
@@ -66,7 +67,8 @@ TEvenCityMinister * TEvenCityMinister::ConstructTEvenCityMinisterBaseState()
 // GHIDRA_NAME TEvenCityMinister::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TEvenCityMinister * TEvenCityMinister::_scalar_deleting_destructor_(byte param_1)
+TEvenCityMinister * __thiscall
+TEvenCityMinister::_scalar_deleting_destructor_(TEvenCityMinister *this,byte param_1)
 
 {
   func_0x004015d2();

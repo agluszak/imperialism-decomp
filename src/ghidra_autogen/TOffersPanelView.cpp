@@ -39,7 +39,7 @@ undefined4 * TOffersPanelView::CreateObject(void)
 // GHIDRA_NAME TOffersPanelView::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TOffersPanelView::GetRuntimeClass()
+CRuntimeClass * __thiscall TOffersPanelView::GetRuntimeClass(TOffersPanelView *this)
 
 {
   return &classTOffersPanelView;
@@ -49,7 +49,8 @@ CRuntimeClass * TOffersPanelView::GetRuntimeClass()
 // GHIDRA_NAME TOffersPanelView::ConstructTOffersPanelViewBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTOffersPanelViewBaseState(void)
 
-TOffersPanelView * TOffersPanelView::ConstructTOffersPanelViewBaseState()
+TOffersPanelView * __thiscall
+TOffersPanelView::ConstructTOffersPanelViewBaseState(TOffersPanelView *this)
 
 {
   func_0x004064e2();
@@ -64,7 +65,8 @@ TOffersPanelView * TOffersPanelView::ConstructTOffersPanelViewBaseState()
 // GHIDRA_NAME TOffersPanelView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TOffersPanelView * TOffersPanelView::_scalar_deleting_destructor_(byte param_1)
+TOffersPanelView * __thiscall
+TOffersPanelView::_scalar_deleting_destructor_(TOffersPanelView *this,byte param_1)
 
 {
   func_0x0040615e();
@@ -78,7 +80,7 @@ TOffersPanelView * TOffersPanelView::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TOffersPanelView::NoOpUiLifecycleHook
 // GHIDRA_PROTO undefined __thiscall NoOpUiLifecycleHook(void)
 
-void TOffersPanelView::NoOpUiLifecycleHook()
+void __thiscall TOffersPanelView::NoOpUiLifecycleHook(TOffersPanelView *this)
 
 {
   _vslot_fn *p_Var1;
@@ -135,7 +137,7 @@ void TOffersPanelView::NoOpUiLifecycleHook()
   local_1f = 0;
   local_1e = 0;
   local_1d = 0;
-  func_0x004093cc();
+  thunk_MapUiThemeCodeToStyleFlags();
   puStack_38 = (undefined1 *)in_stack_00000004;
   puStack_3c = (undefined1 *)0x4f905b;
   func_0x00406ba9();
@@ -158,7 +160,7 @@ void TOffersPanelView::NoOpUiLifecycleHook()
   *(undefined2 *)(*(int *)&this->field_0x68 + 0x92) = 5000;
   *(undefined2 *)(*(int *)&this->field_0x6c + 0x92) = 5000;
   aiStack_58[1] = 0x4f9100;
-  func_0x00406afa();
+  thunk_BuildUiTextStyleDescriptor();
   uVar3 = (*p_Var1)();
   piVar4 = (int *)CONCAT31(extraout_var_01,uVar3);
   iVar2 = *piVar4;
@@ -225,7 +227,8 @@ void TOffersPanelView::NoOpUiLifecycleHook()
 // GHIDRA_NAME TOffersPanelView::HandleEvent
 // GHIDRA_PROTO undefined __thiscall HandleEvent(int param_1, int param_2, undefined4 param_3)
 
-void TOffersPanelView::HandleEvent(int param_1, int param_2, undefined4 param_3)
+void __thiscall
+TOffersPanelView::HandleEvent(TOffersPanelView *this,int param_1,int param_2,undefined4 param_3)
 
 {
   int iVar1;
@@ -242,7 +245,7 @@ void TOffersPanelView::HandleEvent(int param_1, int param_2, undefined4 param_3)
 // GHIDRA_NAME TOffersPanelView::ForwardParam
 // GHIDRA_PROTO undefined __thiscall ForwardParam(int param_1)
 
-void TOffersPanelView::ForwardParam(int param_1)
+void __thiscall TOffersPanelView::ForwardParam(TOffersPanelView *this,int param_1)
 
 {
   short sVar1;

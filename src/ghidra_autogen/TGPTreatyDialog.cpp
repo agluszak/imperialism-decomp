@@ -40,7 +40,8 @@ undefined4 * TGPTreatyDialog::CreateObject(void)
 // GHIDRA_NAME TGPTreatyDialog::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TGPTreatyDialog * TGPTreatyDialog::_scalar_deleting_destructor_(byte param_1)
+TGPTreatyDialog * __thiscall
+TGPTreatyDialog::_scalar_deleting_destructor_(TGPTreatyDialog *this,byte param_1)
 
 {
   func_0x00404d13();
@@ -54,7 +55,7 @@ TGPTreatyDialog * TGPTreatyDialog::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TGPTreatyDialog::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TGPTreatyDialog::GetRuntimeClass()
+CRuntimeClass * __thiscall TGPTreatyDialog::GetRuntimeClass(TGPTreatyDialog *this)
 
 {
   return &classTGPTreatyDialog;
@@ -64,7 +65,7 @@ CRuntimeClass * TGPTreatyDialog::GetRuntimeClass()
 // GHIDRA_NAME TGPTreatyDialog::ConstructTGPTreatyDialogBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTGPTreatyDialogBaseState(void)
 
-void TGPTreatyDialog::ConstructTGPTreatyDialogBaseState()
+void __thiscall TGPTreatyDialog::ConstructTGPTreatyDialogBaseState(TGPTreatyDialog *this)
 
 {
   _vslot_fn *p_Var1;

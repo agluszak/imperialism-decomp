@@ -38,7 +38,8 @@ undefined4 * TBuildingConstructionView::CreateObject(void)
 // GHIDRA_NAME TBuildingConstructionView::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TBuildingConstructionView::GetRuntimeClass()
+CRuntimeClass * __thiscall
+TBuildingConstructionView::GetRuntimeClass(TBuildingConstructionView *this)
 
 {
   return &classTBuildingConstructionView;
@@ -229,11 +230,11 @@ TBuildingConstructionView::OpenCityViewBuildingOrderDialog
     (**(code **)(iVar8 + 0x60))();
   }
   else {
-    iVar13 = TCity::GetBuildingType((TCity *)pCityState,nBuildingSlotId);
+    iVar13 = TCity::thunk_GetCityBuildingProductionValueBySlot((TCity *)pCityState,nBuildingSlotId);
     pcVar14 = *(code **)(iVar8 + 0x80);
     *(short *)(pCityState + 0x32) = (short)pCityState[0x32] + (short)iVar13;
     (*pcVar14)();
-    iVar8 = TCity::GetBuildingType((TCity *)pCityState,nBuildingSlotId);
+    iVar8 = TCity::thunk_GetCityBuildingProductionValueBySlot((TCity *)pCityState,nBuildingSlotId);
     *(short *)(pCityState + 0x33) = (short)pCityState[0x33] + (short)iVar8;
     uVar16 = 0x4c9f95;
     (*pcVar14)();
@@ -250,7 +251,7 @@ TBuildingConstructionView::OpenCityViewBuildingOrderDialog
   case 5:
     *(undefined2 *)&this->field_0x96 = 1;
   }
-  func_0x00406afa();
+  thunk_BuildUiTextStyleDescriptor();
   ppuVar11 = (undefined1 **)this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25;
   uVar5 = (*(code *)ppuVar11)();
   if ((int *)CONCAT31(extraout_var,uVar5) == (int *)0x0) {
@@ -283,7 +284,7 @@ TBuildingConstructionView::OpenCityViewBuildingOrderDialog
     (**(code **)(iVar8 + 0x168))();
   }
   puStack_a4 = (undefined1 *)0x2b67;
-  func_0x00406afa();
+  thunk_BuildUiTextStyleDescriptor();
   puStack_a4 = (undefined1 *)0x6e616d65;
   uVar5 = (*(code *)ppuVar11)();
   if ((int *)CONCAT31(extraout_var_01,uVar5) == (int *)0x0) {
@@ -348,7 +349,7 @@ TBuildingConstructionView::OpenCityViewBuildingOrderDialog
   ppCStack_100 = &pCStack_e0;
   puStack_fc = &g_szDecimalFormat;
   p_Stack_104 = (_vslot_fn *)0x4ca260;
-  CString__Format();
+  CString::Format();
 LAB_004ca263:
   CStack_f8.m_pchData = &stack0xffffff28;
   puStack_fc = (undefined *)0x10;
@@ -434,7 +435,7 @@ LAB_004ca263:
             *(int *)(*(int *)(iVar13 + 0xac) + 0x8f0) / 100;
     cVar6 = 4999 < (int)(uVar1 & ((int)uVar1 < 1) - 1);
     pppuStack_13c = (undefined1 ***)0x4ca495;
-    func_0x00406afa();
+    thunk_BuildUiTextStyleDescriptor();
     piVar7 = (int *)(*(code *)pTStack_110)();
     iVar8 = *piVar7;
     (**(code **)(iVar8 + 0xc))();
@@ -470,7 +471,7 @@ LAB_004ca263:
     this_00 = this->pCity;
     pcStack_108 = (code *)CONCAT22(pcStack_108._2_2_,(short)piVar9[1]);
     CStack_cc.m_pchData = *(char **)(*piVar9 + 0x2c);
-    iVar8 = TCity::GetBuildingType(this_00,(short)ppuVar12);
+    iVar8 = TCity::thunk_GetCityBuildingProductionValueBySlot(this_00,(short)ppuVar12);
     pcVar14 = (code *)CONCAT22(uVar15,(short)iVar8);
     (*this_00->vftable->GetCityBuildingDisplayCapacityBySlot)();
     cVar6 = (*pcVar14)();
@@ -488,7 +489,7 @@ LAB_004ca263:
     puStack_168 = &stack0xfffffed0;
     uStack_164 = 0;
     puStack_16c = (undefined4 *)0x4ca5d4;
-    func_0x00406afa();
+    thunk_BuildUiTextStyleDescriptor();
     iVar8 = *piVar7;
     puStack_160 = &stack0xfffffed0;
     uStack_15c = 0;
@@ -604,7 +605,7 @@ TBuildingConstructionView::ApplyCityViewBuildingOrderDialogResult
                        (+0x2C). */
       this_00 = this->pCity;
       iVar4 = *piVar1;
-      iVar3 = TCity::GetBuildingType(this_00,*(short *)&this->field_0x94)
+      iVar3 = TCity::thunk_GetCityBuildingProductionValueBySlot(this_00,*(short *)&this->field_0x94)
       ;
       uVar2 = (*this_00->vftable->GetCityBuildingDisplayCapacityBySlot)
                         (CONCAT22(extraout_var_00,*(undefined2 *)&this->field_0x94));
@@ -619,7 +620,7 @@ TBuildingConstructionView::ApplyCityViewBuildingOrderDialogResult
       }
     }
   }
-  iVar4 = TCity::GetBuildingType(this->pCity,*(short *)&this->field_0x94)
+  iVar4 = TCity::thunk_GetCityBuildingProductionValueBySlot(this->pCity,*(short *)&this->field_0x94)
   ;
   (**(code **)(**(int **)&this->field_0x98 + 0x1e8))(*(undefined2 *)&this->field_0x94,iVar4);
   (**(code **)(**(int **)&this->field_0x98 + 0x1e0))();
@@ -664,13 +665,12 @@ TBuildingConstructionView::SelectNextValidMapOrderEntryFromCursor
   char cVar1;
   undefined4 uVar2;
   TZone *pTVar3;
-  char unaff_retaddr;
   
   if (*(short *)&this->field_0x96 == 2) {
     pTVar3 = *(TZone **)&this->field_0x98;
-    func_0x0040928c(0);
+    TOcean::thunk_EnsureSelectedTaskForceForOrderOwnerAndRefresh(0);
     if (pTVar3 != (TZone *)0x0) {
-      if (unaff_retaddr == '\0') {
+      if ((char)pMapInteractionState == '\0') {
         pTVar3 = *(TZone **)&pTVar3->field_0x18;
       }
       if (pTVar3 != (TZone *)0x0) goto LAB_005997b8;
@@ -689,17 +689,17 @@ LAB_005997b8:
       }
       func_0x004032a1(2);
       if (this->field_0x94 == '\0') {
-        func_0x004019ba(*(undefined4 *)&this->field_0x98);
+        thunk_InvalidateMapRegionForOrderEntry(*(undefined4 *)&this->field_0x98);
       }
       *(TZone **)&this->field_0x98 = pTVar3;
       if (this->field_0x94 == '\0') {
-        func_0x004019ba(pTVar3);
+        thunk_InvalidateMapRegionForOrderEntry(pTVar3);
       }
       if (pTVar3 == (TZone *)0x0) {
         func_0x00408995(0);
         return;
       }
-      uVar2 = func_0x0040928c(pTVar3);
+      uVar2 = TOcean::thunk_EnsureSelectedTaskForceForOrderOwnerAndRefresh(pTVar3);
       func_0x00408995(uVar2);
       return;
     }

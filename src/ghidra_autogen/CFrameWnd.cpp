@@ -3,6 +3,16 @@
 // Program: Imperialism.exe
 // Bucket: CFrameWnd.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x0060A912
+// GHIDRA_NAME CFrameWnd::IsFrameWnd
+// GHIDRA_PROTO undefined IsFrameWnd()
+
+undefined4 CFrameWnd::IsFrameWnd(void)
+
+{
+  return 1;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x0060A916
 // GHIDRA_NAME CFrameWnd::IsTracking
 // GHIDRA_PROTO undefined IsTracking()
@@ -20,8 +30,8 @@ undefined4 __fastcall CFrameWnd::IsTracking(int param_1)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006194DF
-// GHIDRA_NAME CFrameWnd::CFrameWnd::CanEnterHelpMode
-// GHIDRA_PROTO int __thiscall CFrameWnd::CanEnterHelpMode(void)
+// GHIDRA_NAME CFrameWnd::CanEnterHelpMode
+// GHIDRA_PROTO int __thiscall CanEnterHelpMode(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Library Function - Single Match
 // GHIDRA_COMMENT  public: int __thiscall CFrameWnd::CanEnterHelpMode(void)
@@ -34,7 +44,7 @@ undefined4 __fastcall CFrameWnd::IsTracking(int param_1)
    
    Library: nafxcw retail msvc500:static */
 
-int CFrameWnd::CFrameWnd__CanEnterHelpMode()
+int __thiscall CFrameWnd::CanEnterHelpMode(CFrameWnd *this)
 
 {
   undefined uVar1;
@@ -55,6 +65,52 @@ int CFrameWnd::CFrameWnd__CanEnterHelpMode()
   }
   uVar1 = (*this->vftable[5].OnEndPrintPreview)(0xe145,0,0,&local_8);
   return CONCAT31(extraout_var,uVar1);
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0061C5DC
+// GHIDRA_NAME CFrameWnd::CFrameWnd
+// GHIDRA_PROTO undefined CFrameWnd()
+
+undefined4 * CFrameWnd::CFrameWnd(void)
+
+{
+  undefined4 *extraout_ECX;
+  int unaff_EBP;
+  undefined4 *unaff_FS_OFFSET;
+  
+  _EH_prolog();
+  *(undefined4 **)(unaff_EBP + -0x10) = extraout_ECX;
+  CWnd::CWnd();
+  *(undefined4 *)(unaff_EBP + -4) = 0;
+  CPtrList::CPtrList((CPtrList *)(extraout_ECX + 0x1b),10);
+  *(undefined1 *)(unaff_EBP + -4) = 1;
+  CString::CString((CString *)(extraout_ECX + 0x2b));
+  extraout_ECX[0x10] = 0xffffffff;
+  *(undefined1 *)(unaff_EBP + -4) = 2;
+  *extraout_ECX = &PTR_LAB_0067039c;
+  extraout_ECX[0xf] = 1;
+  extraout_ECX[0x27] = 0;
+  extraout_ECX[0x11] = 0;
+  extraout_ECX[0x12] = 0;
+  extraout_ECX[0x23] = 0;
+  extraout_ECX[0x24] = 0;
+  extraout_ECX[0x25] = 0;
+  extraout_ECX[0x26] = 0;
+  extraout_ECX[0x28] = 0;
+  extraout_ECX[0x29] = 0;
+  extraout_ECX[0x1a] = 0;
+  extraout_ECX[0x2a] = 0;
+  extraout_ECX[0x2e] = 0;
+  SetRectEmpty((LPRECT)(extraout_ECX + 0x16));
+  extraout_ECX[0x22] = 0xffffffff;
+  extraout_ECX[0x14] = 0;
+  extraout_ECX[0x13] = 0;
+  extraout_ECX[0x15] = 0;
+  extraout_ECX[0x2c] = 0;
+  extraout_ECX[0x2d] = 0;
+  AddFrameWnd();
+  *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
+  return extraout_ECX;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0061C6A2
@@ -145,7 +201,7 @@ void __fastcall CFrameWnd::RemoveFrameWnd(undefined4 param_1)
 // GHIDRA_NAME CFrameWnd::LoadAccelTable
 // GHIDRA_PROTO undefined __thiscall LoadAccelTable(LPCSTR param_1)
 
-bool CFrameWnd::LoadAccelTable(LPCSTR param_1)
+bool __thiscall CFrameWnd::LoadAccelTable(CFrameWnd *this,LPCSTR param_1)
 
 {
   int iVar1;
@@ -161,7 +217,7 @@ bool CFrameWnd::LoadAccelTable(LPCSTR param_1)
 // GHIDRA_NAME CFrameWnd::GetDefaultAccelerator
 // GHIDRA_PROTO undefined __thiscall GetDefaultAccelerator(void)
 
-int CFrameWnd::GetDefaultAccelerator()
+int __thiscall CFrameWnd::GetDefaultAccelerator(CFrameWnd *this)
 
 {
   undefined uVar1;
@@ -184,7 +240,7 @@ int CFrameWnd::GetDefaultAccelerator()
 // GHIDRA_NAME CFrameWnd::PreTranslateMessage
 // GHIDRA_PROTO undefined __thiscall PreTranslateMessage(LPMSG param_1)
 
-undefined4 CFrameWnd::PreTranslateMessage(LPMSG param_1)
+undefined4 __thiscall CFrameWnd::PreTranslateMessage(CFrameWnd *this,LPMSG param_1)
 
 {
   undefined uVar1;
@@ -217,6 +273,33 @@ LAB_0061c822:
   return uVar3;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x0061C82E
+// GHIDRA_NAME CFrameWnd::PostNcDestroy
+// GHIDRA_PROTO undefined __thiscall PostNcDestroy(void)
+
+void __thiscall CFrameWnd::PostNcDestroy(CFrameWnd *this)
+
+{
+  if (this != (CFrameWnd *)0x0) {
+    (*this->vftable[1].OnEndPrintPreview)(1);
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0061C83A
+// GHIDRA_NAME CFrameWnd::OnPaletteChanged
+// GHIDRA_PROTO undefined OnPaletteChanged()
+
+void __thiscall CFrameWnd::OnPaletteChanged(CWnd *param_1,undefined4 param_2)
+
+{
+  CWnd::Default(param_1);
+  if ((int *)param_1[1].m_nModalResult != (int *)0x0) {
+    (**(code **)(*(int *)param_1[1].m_nModalResult + 0x74))(param_2);
+  }
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x0061C856
 // GHIDRA_NAME CFrameWnd::OnQueryNewPalette
 // GHIDRA_PROTO undefined OnQueryNewPalette()
@@ -241,7 +324,7 @@ undefined4 __fastcall CFrameWnd::OnQueryNewPalette(CWnd *param_1)
 // GHIDRA_NAME CFrameWnd::ExitHelpMode
 // GHIDRA_PROTO undefined __thiscall ExitHelpMode(void)
 
-void CFrameWnd::ExitHelpMode()
+void __thiscall CFrameWnd::ExitHelpMode(CFrameWnd *this)
 
 {
   BOOL BVar1;
@@ -317,7 +400,7 @@ undefined4 __thiscall CFrameWnd::OnCommandHelp(int param_1,undefined4 param_2,in
 // GHIDRA_NAME CFrameWnd::OnCommand
 // GHIDRA_PROTO undefined __thiscall OnCommand(uint param_1, int param_2)
 
-undefined4 CFrameWnd::OnCommand(uint param_1, int param_2)
+undefined4 __thiscall CFrameWnd::OnCommand(CFrameWnd *this,uint param_1,int param_2)
 
 {
   int iVar1;
@@ -345,7 +428,7 @@ undefined4 CFrameWnd::OnCommand(uint param_1, int param_2)
 // GHIDRA_NAME CFrameWnd::BeginModalState
 // GHIDRA_PROTO undefined __thiscall BeginModalState(void)
 
-undefined1 * CFrameWnd::BeginModalState()
+undefined1 * __thiscall CFrameWnd::BeginModalState(CFrameWnd *this)
 
 {
   int iVar1;
@@ -491,7 +574,7 @@ void __thiscall CFrameWnd::ShowOwnedWindows(int param_1,int param_2)
 // GHIDRA_NAME CFrameWnd::OnEnable
 // GHIDRA_PROTO undefined __thiscall OnEnable(int param_1)
 
-void CFrameWnd::OnEnable(int param_1)
+void __thiscall CFrameWnd::OnEnable(CFrameWnd *this,int param_1)
 
 {
   HWND pHVar1;
@@ -500,7 +583,7 @@ void CFrameWnd::OnEnable(int param_1)
   
   if ((param_1 == 0) || ((this->m_nFlags & 4) == 0)) {
     pHVar1 = GetParent(this->m_hWnd);
-    iVar2 = CWnd__FromHandle(pHVar1);
+    iVar2 = CWnd::FromHandle(pHVar1);
     if (iVar2 == 0) {
       if ((param_1 == 0) && (*(int *)&this->field_0xa0 == 0)) {
         *(byte *)&this->m_nFlags = (byte)this->m_nFlags | 0x80;
@@ -541,13 +624,13 @@ void __thiscall CFrameWnd::NotifyFloatingWindows(int param_1,uint param_2)
   HWND hWnd;
   UINT uCmd;
   
-  uVar1 = CWnd__GetStyle();
+  uVar1 = CWnd::GetStyle();
   iVar2 = param_1;
   if ((uVar1 & 0x40000000) == 0) {
     iVar2 = CWnd::GetTopLevelFrame();
   }
   if ((param_2 & 0xc) != 0) {
-    iVar3 = CWnd__IsWindowEnabled();
+    iVar3 = CWnd::IsWindowEnabled();
     if ((((~param_2 & 8) == 0) || (iVar3 == 0)) || (iVar2 == param_1)) {
       SendMessageA(*(HWND *)(iVar2 + 0x1c),0x86,0,0);
     }
@@ -672,7 +755,7 @@ int * CFrameWnd::CreateView(undefined4 param_1,undefined4 param_2)
       if ((uVar3 & 0x200) == 0) {
         return piVar1;
       }
-      CWnd__ModifyStyleEx(0x200,0,0x20);
+      CWnd::ModifyStyleEx(0x200,0,0x20);
       return piVar1;
     }
   }
@@ -746,7 +829,7 @@ undefined4 CFrameWnd::LoadFrame(void)
   *(uint *)&this->field_0x8c = uVar1;
   CString::CString((CString *)(unaff_EBP + 8));
   *(undefined4 *)(unaff_EBP + -4) = 0;
-  iVar2 = CString__LoadStringA(uVar1);
+  iVar2 = CString::LoadStringA(uVar1);
   if (iVar2 != 0) {
     AfxExtractSubString(&this->field_0xac,*(undefined4 *)(unaff_EBP + 8),0,10);
   }
@@ -787,7 +870,7 @@ LAB_0061d0f8:
 // GHIDRA_NAME CFrameWnd::OnUpdateFrameMenu
 // GHIDRA_PROTO undefined __thiscall OnUpdateFrameMenu(HMENU param_1)
 
-void CFrameWnd::OnUpdateFrameMenu(HMENU param_1)
+void __thiscall CFrameWnd::OnUpdateFrameMenu(CFrameWnd *this,HMENU param_1)
 
 {
   undefined uVar1;
@@ -821,7 +904,7 @@ void CFrameWnd::OnUpdateFrameMenu(HMENU param_1)
    
    Library: nafxcw retail msvc500:static */
 
-void __thiscall CFrameWnd::InitialUpdateFrame(int *param_1,int *param_2,int param_3)
+void __thiscall CFrameWnd::InitialUpdateFrame(CFrameWnd *param_1,int *param_2,int param_3)
 
 {
   int iVar1;
@@ -830,30 +913,30 @@ void __thiscall CFrameWnd::InitialUpdateFrame(int *param_1,int *param_2,int para
   CView *pCVar3;
   
   pCVar3 = (CView *)0x0;
-  iVar1 = GetObjectValueAtOffset98();
+  iVar1 = GetActiveView();
   if (iVar1 == 0) {
-    this = (CView *)CWnd::GetDescendantWindow(param_1[7],0xe900,1);
+    this = (CView *)CWnd::GetDescendantWindow(param_1->m_hWnd,0xe900,1);
     if (this != (CView *)0x0) {
       iVar1 = CObject::IsKindOf((CObject *)this);
       if (iVar1 != 0) {
-        CFrameWnd__SetActiveView(param_1,this,0);
+        SetActiveView(param_1,this,0);
         pCVar3 = this;
       }
     }
   }
   if (param_3 != 0) {
-    CWnd::SendMessageToDescendants(param_1[7],0x364,0,0,1,1);
+    CWnd::SendMessageToDescendants(param_1->m_hWnd,0x364,0,0,1,1);
     if (pCVar3 != (CView *)0x0) {
       (**(code **)(*(int *)pCVar3 + 0xf0))(0,param_1);
     }
     uVar2 = 0xffffffff;
     iVar1 = AfxGetModuleState();
     iVar1 = *(int *)(iVar1 + 4);
-    if (param_1 == *(int **)(iVar1 + 0x1c)) {
+    if (param_1 == *(CFrameWnd **)(iVar1 + 0x1c)) {
       uVar2 = *(undefined4 *)(iVar1 + 0x74);
       *(undefined4 *)(iVar1 + 0x74) = 0xffffffff;
     }
-    (**(code **)(*param_1 + 0xd4))(uVar2);
+    (*param_1->vftable[0x35].OnEndPrintPreview)(uVar2);
     if (pCVar3 != (CView *)0x0) {
       (**(code **)(*(int *)pCVar3 + 0xec))(1,pCVar3,pCVar3);
     }
@@ -861,7 +944,7 @@ void __thiscall CFrameWnd::InitialUpdateFrame(int *param_1,int *param_2,int para
   if (param_2 != (int *)0x0) {
     (**(code **)(*param_2 + 0xa8))();
   }
-  (**(code **)(*param_1 + 0xe8))(1);
+  (*param_1->vftable[0x3a].OnEndPrintPreview)(1);
   return;
 }
 
@@ -902,7 +985,7 @@ void __fastcall CFrameWnd::OnClose(int *param_1)
           return;
         }
         CWinApp::HideApplication();
-        CWinApp::CWinApp__CloseAllDocuments(this);
+        CWinApp::CloseAllDocuments(this);
         iVar4 = AfxOleCanExitApp();
         if (iVar4 == 0) {
           AfxOleSetUserCtrl(0);
@@ -968,13 +1051,14 @@ void __fastcall CFrameWnd::OnDestroy(int param_1)
 // GHIDRA_NAME CFrameWnd::OnCmdMsg
 // GHIDRA_PROTO undefined __thiscall OnCmdMsg(uint param_1, uint param_2, int param_3, undefined4 param_4)
 
-undefined4 CFrameWnd::OnCmdMsg(uint param_1, uint param_2, int param_3, undefined4 param_4)
+undefined4 __thiscall
+CFrameWnd::OnCmdMsg(CFrameWnd *this,uint param_1,uint param_2,int param_3,undefined4 param_4)
 
 {
   int *piVar1;
   int iVar2;
   
-  piVar1 = (int *)GetObjectValueAtOffset98();
+  piVar1 = (int *)GetActiveView();
   if (((piVar1 == (int *)0x0) ||
       (iVar2 = (**(code **)(*piVar1 + 0x14))(param_1,param_2,param_3,param_4), iVar2 == 0)) &&
      (iVar2 = CCmdTarget::OnCmdMsg((CCmdTarget *)this,param_1,param_2,param_3,param_4), iVar2 == 0))
@@ -1004,7 +1088,7 @@ void __thiscall CFrameWnd::OnActivate(CWnd *param_1,int param_2,CWnd *param_3,in
   int *piVar6;
   
   CWnd::Default(param_1);
-  uVar2 = CWnd__GetStyle();
+  uVar2 = CWnd::GetStyle();
   pCVar3 = param_1;
   if ((uVar2 & 0x40000000) == 0) {
     pCVar3 = (CWnd *)CWnd::GetTopLevelFrame();
@@ -1025,10 +1109,10 @@ void __thiscall CFrameWnd::OnActivate(CWnd *param_1,int param_2,CWnd *param_3,in
     pCVar3->m_nFlags = pCVar3->m_nFlags | 0x20;
   }
   NotifyFloatingWindows((-(uint)bVar1 & 0xfffffffc) + 8);
-  piVar6 = (int *)GetObjectValueAtOffset98();
+  piVar6 = (int *)GetActiveView();
   if (piVar6 == (int *)0x0) {
     (*(param_1->ccmdTarget).vftable[0x10].slot_0x08)();
-    piVar6 = (int *)GetObjectValueAtOffset98();
+    piVar6 = (int *)GetActiveView();
     if (piVar6 == (int *)0x0) {
       return;
     }
@@ -1052,7 +1136,7 @@ void __thiscall CFrameWnd::OnNcActivate(int *param_1,undefined4 param_2)
   if ((*(byte *)(param_1 + 9) & 0x20) != 0) {
     param_2 = 1;
   }
-  iVar1 = CWnd__IsWindowEnabled();
+  iVar1 = CWnd::IsWindowEnabled();
   if (iVar1 == 0) {
     param_2 = 0;
   }
@@ -1126,7 +1210,7 @@ void __thiscall CFrameWnd::OnDropFiles(int param_1,HDROP param_2)
   UINT local_8;
   
   pHVar1 = SetActiveWindow(*(HWND *)(param_1 + 0x1c));
-  CWnd__FromHandle(pHVar1);
+  CWnd::FromHandle(pHVar1);
   iFile = 0;
   local_8 = DragQueryFileA(param_2,0xffffffff,(LPSTR)0x0,0);
   iVar2 = AfxGetModuleState();
@@ -1185,7 +1269,7 @@ void __thiscall CFrameWnd::OnEndSession(int param_1,int param_2)
   this = *(CWinApp **)(iVar1 + 4);
   if ((param_2 != 0) && (*(int *)(this + 0x1c) == param_1)) {
     AfxOleSetUserCtrl(1);
-    CWinApp::CWinApp__CloseAllDocuments(this);
+    CWinApp::CloseAllDocuments(this);
     (**(code **)(*(int *)this + 0x70))();
   }
   return;
@@ -1242,16 +1326,76 @@ undefined4 __thiscall CFrameWnd::OnDDEExecute(int param_1,HWND param_2,LPARAM pa
   uint local_c;
   HGLOBAL local_8;
   
-  USER32.DLL::UnpackDDElParam(1000,param_3,&local_c,(PUINT_PTR)&local_8);
+  UnpackDDElParam(1000,param_3,&local_c,(PUINT_PTR)&local_8);
   lpString2 = GlobalLock(local_8);
   lstrcpynA(local_214,lpString2,0x208);
   GlobalUnlock(local_8);
-  lParam = USER32.DLL::ReuseDDElParam(param_3,1000,0x3e4,0x8000,(UINT_PTR)local_8);
+  lParam = ReuseDDElParam(param_3,1000,0x3e4,0x8000,(UINT_PTR)local_8);
   PostMessageA(param_2,0x3e4,*(WPARAM *)(param_1 + 0x1c),lParam);
-  iVar1 = CWnd__IsWindowEnabled();
+  iVar1 = CWnd::IsWindowEnabled();
   if (iVar1 != 0) {
     iVar1 = AfxGetModuleState();
     (**(code **)(**(int **)(iVar1 + 4) + 0x9c))(local_214);
+  }
+  return 0;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0061D89B
+// GHIDRA_NAME CFrameWnd::GetActiveView
+// GHIDRA_PROTO undefined GetActiveView()
+
+undefined4 __fastcall CFrameWnd::GetActiveView(int param_1)
+
+{
+  return *(undefined4 *)(param_1 + 0x98);
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0061D8A2
+// GHIDRA_NAME CFrameWnd::SetActiveView
+// GHIDRA_PROTO void __thiscall SetActiveView(CView * param_1, int param_2)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Single Match
+// GHIDRA_COMMENT  public: void __thiscall CFrameWnd::SetActiveView(class CView *,int)
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: nafxcw retail msvc500:static
+// GHIDRA_COMMENT_END
+
+/* Library Function - Single Match
+    public: void __thiscall CFrameWnd::SetActiveView(class CView *,int)
+   
+   Library: nafxcw retail msvc500:static */
+
+void __thiscall CFrameWnd::SetActiveView(CFrameWnd *this,CView *param_1,int param_2)
+
+{
+  CView *pCVar1;
+  
+  pCVar1 = *(CView **)&this->field_0x98;
+  if (param_1 != pCVar1) {
+    *(undefined4 *)&this->field_0x98 = 0;
+    if (pCVar1 != (CView *)0x0) {
+      (**(code **)(*(int *)pCVar1 + 0xec))(0,param_1,pCVar1);
+    }
+    if (((*(int *)&this->field_0x98 == 0) &&
+        (*(CView **)&this->field_0x98 = param_1, param_1 != (CView *)0x0)) && (param_2 != 0)) {
+      (**(code **)(*(int *)param_1 + 0xec))(1,param_1,pCVar1);
+    }
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0061D917
+// GHIDRA_NAME CFrameWnd::GetActiveDocument
+// GHIDRA_PROTO undefined GetActiveDocument()
+
+undefined4 CFrameWnd::GetActiveDocument(void)
+
+{
+  int iVar1;
+  
+  iVar1 = GetActiveView();
+  if (iVar1 != 0) {
+    return *(undefined4 *)(iVar1 + 0x3c);
   }
   return 0;
 }
@@ -1281,7 +1425,7 @@ void CFrameWnd::ShowControlBar(int *param_1,int param_2,int param_3)
   
   this = (CWnd *)CControlBar::GetDockingFrame();
   if (param_3 == 0) {
-    CWnd__SetWindowPos(0,0,0,0,0,(-(uint)(param_2 != 0) & 0xffffffc0) + 0x80 | 0x17);
+    CWnd::SetWindowPos(0,0,0,0,0,(-(uint)(param_2 != 0) & 0xffffffc0) + 0x80 | 0x17);
     (**(code **)(*param_1 + 0xcc))(param_2);
     if ((param_2 != 0) || (iVar2 = CControlBar::IsFloating(), iVar2 == 0)) {
       (*(this->ccmdTarget).vftable[0x11].slot_0x04)(0);
@@ -1355,7 +1499,7 @@ void __thiscall CFrameWnd::OnInitMenuPopup(int param_1,int param_2,undefined4 pa
   UINT UVar5;
   int nPos;
   undefined4 uVar6;
-  undefined1 local_30 [4];
+  CCmdUI local_30 [4];
   UINT local_2c;
   uint local_28;
   int local_24;
@@ -1367,7 +1511,7 @@ void __thiscall CFrameWnd::OnInitMenuPopup(int param_1,int param_2,undefined4 pa
   local_8 = param_1;
   AfxCancelModes(*(undefined4 *)(param_1 + 0x1c));
   if (param_4 == 0) {
-    CCmdUI__CCmdUI(local_30);
+    CCmdUI::CCmdUI(local_30);
     local_24 = param_2;
     iVar1 = AfxGetThreadState();
     if (*(int *)(iVar1 + 0x54) == *(int *)(param_2 + 4)) {
@@ -1487,7 +1631,7 @@ LAB_0061dc3b:
 LAB_0061dc3f:
   if (param_1[0x24] != param_1[0x25]) {
     pHVar2 = GetParent((HWND)param_1[7]);
-    iVar1 = CWnd__FromHandle(pHVar2);
+    iVar1 = CWnd::FromHandle(pHVar2);
     if (iVar1 != 0) {
       PostMessageA((HWND)param_1[7],0x36a,0,0);
     }
@@ -1603,7 +1747,7 @@ void __fastcall CFrameWnd::GetMessageBar(int param_1)
 // GHIDRA_NAME CFrameWnd::OnEnterIdle
 // GHIDRA_PROTO undefined __thiscall OnEnterIdle(int param_1, undefined4 param_2)
 
-void CFrameWnd::OnEnterIdle(int param_1, undefined4 param_2)
+void __thiscall CFrameWnd::OnEnterIdle(CFrameWnd *this,int param_1,undefined4 param_2)
 
 {
   CWnd::OnEnterIdle(param_1,param_2);
@@ -1711,7 +1855,7 @@ undefined4 CFrameWnd::OnToolTipText(void)
   undefined4 *unaff_FS_OFFSET;
   
   _EH_prolog();
-  iVar2 = CCmdTarget__GetRoutingFrame();
+  iVar2 = CCmdTarget::GetRoutingFrame();
   if (iVar2 == 0) {
     CString::CString((CString *)(unaff_EBP + -0x10));
     puVar1 = *(undefined4 **)(unaff_EBP + 0xc);
@@ -1791,7 +1935,7 @@ void __thiscall CFrameWnd::OnUpdateContextHelp(int param_1,int *param_2)
    
    Library: nafxcw retail msvc500:static */
 
-void CFrameWnd::OnUpdateFrameTitle(int param_1)
+void __thiscall CFrameWnd::OnUpdateFrameTitle(CFrameWnd *this,int param_1)
 
 {
   undefined uVar1;
@@ -1800,7 +1944,7 @@ void CFrameWnd::OnUpdateFrameTitle(int param_1)
   undefined3 extraout_var;
   undefined4 uVar4;
   
-  uVar2 = CWnd__GetStyle();
+  uVar2 = CWnd::GetStyle();
   if ((uVar2 & 0x8000) != 0) {
     if ((*(int **)&this->field_0x68 != (int *)0x0) &&
        (iVar3 = (**(code **)(**(int **)&this->field_0x68 + 0x70))(), iVar3 != 0)) {
@@ -1842,7 +1986,7 @@ void __thiscall CFrameWnd::UpdateFrameTitleForDocument(int param_1,LPCSTR param_
   int iVar4;
   CHAR local_208 [516];
   
-  uVar1 = CWnd__GetStyle();
+  uVar1 = CWnd::GetStyle();
   if ((uVar1 & 0x4000) == 0) {
     lstrcpyA(local_208,*(LPCSTR *)(param_1 + 0xac));
     if (param_2 != (LPCSTR)0x0) {
@@ -1878,7 +2022,7 @@ void __thiscall CFrameWnd::UpdateFrameTitleForDocument(int param_1,LPCSTR param_
 // GHIDRA_NAME CFrameWnd::OnSetPreviewMode
 // GHIDRA_PROTO undefined __thiscall OnSetPreviewMode(int param_1, int * param_2)
 
-void CFrameWnd::OnSetPreviewMode(int param_1, int *param_2)
+void __thiscall CFrameWnd::OnSetPreviewMode(CFrameWnd *this,int param_1,int *param_2)
 
 {
   int *piVar1;
@@ -2002,6 +2146,16 @@ void __fastcall CFrameWnd::OnIdleUpdateCmdUI(int *param_1)
   return;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x0061E49C
+// GHIDRA_NAME CFrameWnd::GetActiveFrame
+// GHIDRA_PROTO undefined __thiscall GetActiveFrame(void)
+
+CFrameWnd * __thiscall CFrameWnd::GetActiveFrame(CFrameWnd *this)
+
+{
+  return this;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x0061E49F
 // GHIDRA_NAME CFrameWnd::RecalcLayout
 // GHIDRA_PROTO undefined RecalcLayout()
@@ -2033,7 +2187,7 @@ void __thiscall CFrameWnd::RecalcLayout(CWnd *param_1,int param_2)
     if ((param_2 != 0) && ((int *)param_1[1].m_nModalResult != (int *)0x0)) {
       (**(code **)(*(int *)param_1[1].m_nModalResult + 0x58))();
     }
-    uVar1 = CWnd__GetStyle();
+    uVar1 = CWnd::GetStyle();
     if ((uVar1 & 0x2000) == 0) {
       CWnd::RepositionBars(param_1,0,0xffff,0xe900,2,(LPRECT)&param_1[1].m_hWnd,(int *)0x0,1);
     }
@@ -2045,7 +2199,7 @@ void __thiscall CFrameWnd::RecalcLayout(CWnd *param_1,int param_2)
       CWnd::RepositionBars(param_1,0,0xffff,0xe900,1,&local_14,&local_14.left,0);
       CWnd::RepositionBars(param_1,0,0xffff,0xe900,2,(LPRECT)&param_1[1].m_hWnd,&local_14.left,1);
       (*(param_1->ccmdTarget).vftable[8].slot_0x08)(&local_14,0);
-      CWnd__SetWindowPos(0,0,0,local_14.right - local_14.left,local_14.bottom - local_14.top,0x16);
+      CWnd::SetWindowPos(0,0,0,local_14.right - local_14.left,local_14.bottom - local_14.top,0x16);
     }
     param_1[2].m_pCtrlSite = (void *)0x0;
   }
@@ -2165,7 +2319,7 @@ LRESULT __thiscall CFrameWnd::OnRegisteredMouseWheel(int param_1,int param_2,LRE
 // GHIDRA_NAME CFrameWnd::ActivateFrame
 // GHIDRA_PROTO undefined __thiscall ActivateFrame(int param_1)
 
-void CFrameWnd::ActivateFrame(int param_1)
+void __thiscall CFrameWnd::ActivateFrame(CFrameWnd *this,int param_1)
 
 {
   BOOL BVar1;
@@ -2205,7 +2359,7 @@ void CFrameWnd::ActivateFrame(int param_1)
    
    Library: nafxcw retail msvc500:static */
 
-void CFrameWnd::BringToTop(int param_1)
+void __thiscall CFrameWnd::BringToTop(CFrameWnd *this,int param_1)
 
 {
   HWND hWnd;

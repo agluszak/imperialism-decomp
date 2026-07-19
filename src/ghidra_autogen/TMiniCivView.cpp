@@ -7,7 +7,7 @@
 // GHIDRA_NAME TMiniCivView::OrphanRetStub_004ab800
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_004ab800(void)
 
-void TMiniCivView::OrphanRetStub_004ab800()
+void __thiscall TMiniCivView::OrphanRetStub_004ab800(TMiniCivView *this)
 
 {
   return;
@@ -17,7 +17,8 @@ void TMiniCivView::OrphanRetStub_004ab800()
 // GHIDRA_NAME TMiniCivView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TMiniCivView * TMiniCivView::_scalar_deleting_destructor_(byte param_1)
+TMiniCivView * __thiscall
+TMiniCivView::_scalar_deleting_destructor_(TMiniCivView *this,byte param_1)
 
 {
   func_0x00402004();
@@ -63,7 +64,7 @@ undefined4 * TMiniCivView::CreateObject(void)
 // GHIDRA_NAME TMiniCivView::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TMiniCivView::GetRuntimeClass()
+CRuntimeClass * __thiscall TMiniCivView::GetRuntimeClass(TMiniCivView *this)
 
 {
   return &classTMiniCivView;
@@ -124,7 +125,7 @@ TMiniCivView::ConstructTMiniCivViewBaseState
   *(undefined1 **)(param_1 + 0x84) = puStack_c;
   *(undefined4 *)(param_1 + 0x60) = 0x22;
   puStack_c = &stack0xffffff9c;
-  pCStack_68 = (CString *)PTR_g_szEmptyString_0064cb18;
+  pCStack_68 = (CString *)g_pMiniCivSharedText_0064cb18;
   func_0x00401b40();
   func_0x00404d22();
   CString::CString(&CStack_18);
@@ -139,7 +140,7 @@ TMiniCivView::ConstructTMiniCivViewBaseState
   sVar1 = *(short *)(puVar2 + 6);
   iStack_24._0_1_ = 4;
   pCStack_68 = (CString *)0x4aba39;
-  CString::CString(&CStack_10,PTR_g_szEmptyString_0064cb18);
+  CString::CString(&CStack_10,g_pMiniCivSharedText_0064cb18);
   iStack_24._0_1_ = 5;
   pCStack_68 = (CString *)0x4aba4c;
   CString::operator=(&CStack_18,&CStack_10);
@@ -207,7 +208,7 @@ TMiniCivView::ConstructTMiniCivViewBaseState
         iVar5 = *(int *)&g_pGlobalMapState->field_0xc + (int)sVar6;
         sVar4 = (short)*(char *)(iVar5 + 0x11 + sVar1 * 0x24);
         pCStack_68 = (CString *)CONCAT22((short)((uint)iVar5 >> 0x10),sVar4);
-        if ((sVar4 != -1) && ((&DAT_006963e8)[sVar4] != '\0')) {
+        if ((sVar4 != -1) && ((&g_abResourceTypeMiniCivMentionFlag)[sVar4] != '\0')) {
           (*g_pSimMgr->vftable[0x10].slot_0x04)(0x2711);
           CStack_10.m_pchData = CStack_10.m_pchData + 1;
         }
@@ -282,7 +283,7 @@ TMiniCivView::ConstructTMiniCivViewBaseState
 // GHIDRA_NAME TMiniCivView::ApplyRectSlot110
 // GHIDRA_PROTO undefined __thiscall ApplyRectSlot110(void)
 
-void TMiniCivView::ApplyRectSlot110()
+void __thiscall TMiniCivView::ApplyRectSlot110(TMiniCivView *this)
 
 {
   undefined uVar1;
@@ -332,7 +333,7 @@ void TMiniCivView::ApplyRectSlot110()
   (*g_pSimMgr->vftable[0x10].slot_0x04)();
   CStack_60.m_pchData = (char *)0x18;
   CStack_64.m_pchData = (char *)0x40;
-  func_0x00408d6e();
+  thunk_SetQuickDrawTextOriginWithContextOffset();
   CStack_60.m_pchData = (char *)&CStack_54;
   CStack_64.m_pchData = (char *)0x4ac084;
   func_0x004029aa();
@@ -358,9 +359,9 @@ void TMiniCivView::ApplyRectSlot110()
   uStack_1c = 2;
   CString::~CString((CString *)&stack0xffffffb4);
   func_0x00401bf9(0,0xc);
-  func_0x00408d6e();
+  thunk_SetQuickDrawTextOriginWithContextOffset();
   func_0x004029aa();
-  func_0x00408d6e();
+  thunk_SetQuickDrawTextOriginWithContextOffset();
   func_0x004029aa();
   uVar1 = (*g_pGlobalMapState->vftable->ApplyMapImprovementSelectionState)();
   aiStack_38[0] = (int)(short)CONCAT31(extraout_var,uVar1);
@@ -389,7 +390,7 @@ void TMiniCivView::ApplyRectSlot110()
 // GHIDRA_NAME TMiniCivView::HandleEvent
 // GHIDRA_PROTO undefined __thiscall HandleEvent(int param_1, TMiniCivView * param_2)
 
-void TMiniCivView::HandleEvent(int param_1, TMiniCivView *param_2)
+void __thiscall TMiniCivView::HandleEvent(TMiniCivView *this,int param_1,TMiniCivView *param_2)
 
 {
   TView *pTVar1;

@@ -37,17 +37,17 @@ undefined4 * TPlaceCityDialog::CreateObject(void)
 // GHIDRA_NAME TPlaceCityDialog::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TPlaceCityDialog::GetRuntimeClass()
+CRuntimeClass * __thiscall TPlaceCityDialog::GetRuntimeClass(TPlaceCityDialog *this)
 
 {
   return &classTPlaceCityDialog;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004D1800
-// GHIDRA_NAME TPlaceCityDialog::ConstructTPlaceCityDialogBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTPlaceCityDialogBaseState(void)
+// GHIDRA_NAME TPlaceCityDialog::TPlaceCityDialog
+// GHIDRA_PROTO undefined __thiscall TPlaceCityDialog(void)
 
-TPlaceCityDialog * TPlaceCityDialog::ConstructTPlaceCityDialogBaseState()
+TPlaceCityDialog * __thiscall TPlaceCityDialog::TPlaceCityDialog(TPlaceCityDialog *this)
 
 {
   func_0x00401122();
@@ -59,7 +59,8 @@ TPlaceCityDialog * TPlaceCityDialog::ConstructTPlaceCityDialogBaseState()
 // GHIDRA_NAME TPlaceCityDialog::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TPlaceCityDialog * TPlaceCityDialog::_scalar_deleting_destructor_(byte param_1)
+TPlaceCityDialog * __thiscall
+TPlaceCityDialog::_scalar_deleting_destructor_(TPlaceCityDialog *this,byte param_1)
 
 {
   func_0x00408c83();
@@ -73,7 +74,7 @@ TPlaceCityDialog * TPlaceCityDialog::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TPlaceCityDialog::BuildCityViewResourceRows
 // GHIDRA_PROTO undefined __thiscall BuildCityViewResourceRows(int * param_1)
 
-void TPlaceCityDialog::BuildCityViewResourceRows(int *param_1)
+void __thiscall TPlaceCityDialog::BuildCityViewResourceRows(TPlaceCityDialog *this,int *param_1)
 
 {
   TPlaceCityDialogVtbl *pTVar1;
@@ -253,11 +254,11 @@ void TPlaceCityDialog::BuildCityViewResourceRows(int *param_1)
   puStack_a4 = &g_szDecimalFormat;
   tStack_3c.left = CONCAT31(tStack_3c.left._1_3_,4);
   ptStack_ac = (tagRECT *)0x4d1bc0;
-  CString__Format();
+  CString::Format();
   ppcStack_a8 = &pcStack_80;
   puStack_a4 = &g_szDecimalFormat;
   ptStack_ac = (tagRECT *)0x4d1bd6;
-  CString__Format();
+  CString::Format();
   puStack_a4 = (undefined *)0x5;
   ppcStack_a8 = (code **)0x273f;
   ptStack_ac = (tagRECT *)0x4d1bf3;
@@ -283,7 +284,7 @@ void TPlaceCityDialog::BuildCityViewResourceRows(int *param_1)
   CStack_c4.m_pchData = (char *)&psStack_78;
   CStack_c0.m_pchData = (char *)0x0;
   puStack_c8 = (undefined1 *)0x4d1c49;
-  func_0x00406afa();
+  thunk_BuildUiTextStyleDescriptor();
   CStack_bc.m_pchData = (char *)&psStack_78;
   puStack_b8 = (undefined1 *)0x0;
   CStack_c0.m_pchData = (char *)0x4d1c5b;
@@ -297,7 +298,7 @@ void TPlaceCityDialog::BuildCityViewResourceRows(int *param_1)
   CStack_c4.m_pchData = (char *)0x2b6a;
   puStack_c8 = (undefined1 *)0xe;
   CStack_cc.m_pchData = (char *)0x0;
-  func_0x00406afa(&stack0xffffff7c);
+  thunk_BuildUiTextStyleDescriptor(&stack0xffffff7c);
   puStack_c8 = &stack0xffffff7c;
   CStack_c4.m_pchData = (char *)0x0;
   CStack_cc.m_pchData = (char *)0x4d1c92;
@@ -321,7 +322,7 @@ void TPlaceCityDialog::BuildCityViewResourceRows(int *param_1)
 // GHIDRA_NAME TPlaceCityDialog::ApplyRectSlot110
 // GHIDRA_PROTO undefined __thiscall ApplyRectSlot110(void)
 
-void TPlaceCityDialog::ApplyRectSlot110()
+void __thiscall TPlaceCityDialog::ApplyRectSlot110(TPlaceCityDialog *this)
 
 {
   func_0x00404fe8();

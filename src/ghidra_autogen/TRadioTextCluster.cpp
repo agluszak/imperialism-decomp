@@ -23,7 +23,7 @@ TCluster * TRadioTextCluster::CreateObject(void)
   this = (TCluster *)operator_new(0x98);
   local_4 = 0;
   if (this != (TCluster *)0x0) {
-    TCluster::ConstructUiResourceEntryType4B0C0(this);
+    TCluster::thunk_ConstructUiResourceEntryType4B0C0(this);
     this->vftable = (TClusterVtbl *)&_vftable_;
     *(undefined2 *)&this[1].field04 = 0x4b;
     *(undefined2 *)((int)&this[1].field04 + 2) = 0x49;
@@ -41,7 +41,7 @@ TCluster * TRadioTextCluster::CreateObject(void)
 // GHIDRA_NAME TRadioTextCluster::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TRadioTextCluster::GetRuntimeClass()
+CRuntimeClass * __thiscall TRadioTextCluster::GetRuntimeClass(TRadioTextCluster *this)
 
 {
   return &classTRadioTextCluster;
@@ -51,7 +51,8 @@ CRuntimeClass * TRadioTextCluster::GetRuntimeClass()
 // GHIDRA_NAME TRadioTextCluster::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TRadioTextCluster * TRadioTextCluster::_scalar_deleting_destructor_(byte param_1)
+TRadioTextCluster * __thiscall
+TRadioTextCluster::_scalar_deleting_destructor_(TRadioTextCluster *this,byte param_1)
 
 {
   func_0x00408729();
@@ -65,7 +66,7 @@ TRadioTextCluster * TRadioTextCluster::_scalar_deleting_destructor_(byte param_1
 // GHIDRA_NAME TRadioTextCluster::NoOpUiLifecycleHook
 // GHIDRA_PROTO undefined __thiscall NoOpUiLifecycleHook(void)
 
-void TRadioTextCluster::NoOpUiLifecycleHook()
+void __thiscall TRadioTextCluster::NoOpUiLifecycleHook(TRadioTextCluster *this)
 
 {
   func_0x00406ba9();
@@ -87,7 +88,8 @@ void TRadioTextCluster::NoOpUiLifecycleHook()
    On event code 0x0D, synchronizes selected tag via SetSelectedTextOptionByTag, then forwards to
    shared panel control dispatcher. */
 
-void TRadioTextCluster::HandleEvent(int param_1, void *param_2, int param_3)
+void __thiscall
+TRadioTextCluster::HandleEvent(TRadioTextCluster *this,int param_1,void *param_2,int param_3)
 
 {
   if (param_1 == 0xd) {
@@ -188,7 +190,7 @@ int * __thiscall TRadioTextCluster::AddItem(int param_1)
 // GHIDRA_NAME TRadioTextCluster::ApplyRectSlot110
 // GHIDRA_PROTO undefined __thiscall ApplyRectSlot110(void)
 
-void TRadioTextCluster::ApplyRectSlot110()
+void __thiscall TRadioTextCluster::ApplyRectSlot110(TRadioTextCluster *this)
 
 {
   undefined4 in_EDX;

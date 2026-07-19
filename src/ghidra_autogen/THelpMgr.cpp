@@ -36,7 +36,7 @@ undefined4 * THelpMgr::CreateObject(void)
 // GHIDRA_NAME THelpMgr::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * THelpMgr::GetRuntimeClass()
+CRuntimeClass * __thiscall THelpMgr::GetRuntimeClass(THelpMgr *this)
 
 {
   return &classTHelpMgr;
@@ -46,7 +46,7 @@ CRuntimeClass * THelpMgr::GetRuntimeClass()
 // GHIDRA_NAME THelpMgr::ConstructTHelpMgrBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTHelpMgrBaseState(void)
 
-void THelpMgr::ConstructTHelpMgrBaseState()
+void __thiscall THelpMgr::ConstructTHelpMgrBaseState(THelpMgr *this)
 
 {
   this->vftable = &_vftable_;
@@ -69,7 +69,7 @@ void THelpMgr::ConstructTHelpMgrBaseState()
 // GHIDRA_NAME THelpMgr::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-THelpMgr * THelpMgr::_scalar_deleting_destructor_(byte param_1)
+THelpMgr * __thiscall THelpMgr::_scalar_deleting_destructor_(THelpMgr *this,byte param_1)
 
 {
   func_0x004056d2();
@@ -83,7 +83,7 @@ THelpMgr * THelpMgr::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME THelpMgr::InitializeHelpManagerIndexArrayAndState
 // GHIDRA_PROTO undefined __thiscall InitializeHelpManagerIndexArrayAndState(void)
 
-void THelpMgr::InitializeHelpManagerIndexArrayAndState()
+void __thiscall THelpMgr::InitializeHelpManagerIndexArrayAndState(THelpMgr *this)
 
 {
   CPtrArray *pCVar1;
@@ -145,7 +145,7 @@ void THelpMgr::InitializeHelpManagerIndexArrayAndState()
   *(undefined2 *)(pCVar1 + 0x14) = 0xe;
   *(CPtrArray **)&this->field_0x4 = pCVar1;
   local_4 = 0xffffffff;
-  if (DAT_006a43f0 == '\0') {
+  if (g_bMultiplayerScenarioSetupActive == '\0') {
     uStack_34 = &local_1c;
     local_1c = 0xbc2;
     local_1a = 0;
@@ -365,7 +365,7 @@ void THelpMgr::InitializeHelpManagerIndexArrayAndState()
 // GHIDRA_NAME THelpMgr::OrphanCallChain_C1_I22_00500f10
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I22_00500f10(void)
 
-void THelpMgr::OrphanCallChain_C1_I22_00500f10()
+void __thiscall THelpMgr::OrphanCallChain_C1_I22_00500f10(THelpMgr *this)
 
 {
   int iVar1;
@@ -390,7 +390,7 @@ void THelpMgr::OrphanCallChain_C1_I22_00500f10()
 // GHIDRA_NAME THelpMgr::ReadFrom
 // GHIDRA_PROTO undefined __thiscall ReadFrom(int * param_1)
 
-void THelpMgr::ReadFrom(int *param_1)
+void __thiscall THelpMgr::ReadFrom(THelpMgr *this,int *param_1)
 
 {
   undefined1 uVar1;
@@ -422,7 +422,7 @@ void THelpMgr::ReadFrom(int *param_1)
 // GHIDRA_NAME THelpMgr::WriteTo
 // GHIDRA_PROTO undefined __thiscall WriteTo(int * param_1)
 
-void THelpMgr::WriteTo(int *param_1)
+void __thiscall THelpMgr::WriteTo(THelpMgr *this,int *param_1)
 
 {
   code *pcVar1;
@@ -459,7 +459,7 @@ void THelpMgr::WriteTo(int *param_1)
 // GHIDRA_NAME THelpMgr::Free
 // GHIDRA_PROTO undefined __thiscall Free(void)
 
-void THelpMgr::Free()
+void __thiscall THelpMgr::Free(THelpMgr *this)
 
 {
   if (*(int **)&this->field_0x4 != (int *)0x0) {
@@ -470,5 +470,813 @@ void THelpMgr::Free()
     (*this->vftable->~THelpMgr)(1);
   }
   return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005010B0
+// GHIDRA_NAME THelpMgr::SelectAndActivatePendingEventForCurrentView
+// GHIDRA_PROTO undefined SelectAndActivatePendingEventForCurrentView()
+
+void __fastcall THelpMgr::SelectAndActivatePendingEventForCurrentView(int param_1)
+
+{
+  short sVar1;
+  int iVar2;
+  undefined uVar3;
+  undefined3 extraout_var;
+  int iVar4;
+  int *piVar5;
+  int iVar6;
+  int iVar7;
+  int iVar8;
+  uint uVar9;
+  uint uVar10;
+  int local_c;
+  int local_8;
+  
+  iVar6 = 0;
+  local_c = 0;
+  local_8 = 0;
+  uVar3 = (*g_pSimMgr->vftable[7].slot_0x04)();
+  iVar8 = 1;
+  sVar1 = *(short *)&g_pUiRuntimeContext->field_0x4;
+  piVar5 = *(int **)(param_1 + 4);
+  iVar7 = iVar6;
+  uVar9 = CONCAT31(extraout_var,uVar3);
+  if (0 < piVar5[2]) {
+    do {
+      iVar4 = (**(code **)(*piVar5 + 0x2c))(iVar8);
+      iVar6 = iVar7;
+      uVar10 = uVar9;
+      iVar2 = local_c;
+      if ((((*(short *)(iVar4 + 6) == sVar1) && (iVar2 = iVar4, *(char *)(iVar4 + 10) == '\0')) &&
+          (iVar6 = iVar4, uVar10 = (uint)*(ushort *)(iVar4 + 8), iVar2 = local_c,
+          (short)uVar9 <= (short)*(ushort *)(iVar4 + 8))) &&
+         (iVar6 = iVar7, uVar10 = uVar9, *(short *)(iVar4 + 2) == 0)) {
+        local_8 = iVar4;
+      }
+      local_c = iVar2;
+      piVar5 = *(int **)(param_1 + 4);
+      iVar8 = iVar8 + 1;
+      iVar7 = iVar6;
+      uVar9 = uVar10;
+    } while (iVar8 <= piVar5[2]);
+  }
+  if (iVar6 == 0) {
+    if ((local_c != 0) || (local_c = local_8, local_8 != 0)) {
+      func_0x00402ddd(local_c);
+    }
+    return;
+  }
+  func_0x00402ddd(iVar6);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00501270
+// GHIDRA_NAME THelpMgr::DispatchTurnStateSpecialAdvisoriesAndReturnCount
+// GHIDRA_PROTO undefined DispatchTurnStateSpecialAdvisoriesAndReturnCount()
+
+short THelpMgr::DispatchTurnStateSpecialAdvisoriesAndReturnCount(void)
+
+{
+  short sVar1;
+  int *piVar2;
+  undefined uVar3;
+  char cVar4;
+  undefined4 uVar5;
+  short *psVar6;
+  undefined3 extraout_var;
+  undefined3 extraout_var_00;
+  CString *src_ref;
+  undefined1 *extraout_ECX;
+  undefined1 **extraout_ECX_00;
+  undefined1 *extraout_ECX_01;
+  undefined1 **extraout_ECX_02;
+  TSimMgr *extraout_ECX_03;
+  undefined1 **extraout_ECX_04;
+  TSimMgr *extraout_ECX_05;
+  TSimMgr *extraout_ECX_06;
+  undefined1 *extraout_ECX_07;
+  undefined1 **extraout_ECX_08;
+  undefined1 *extraout_ECX_09;
+  undefined1 **extraout_ECX_10;
+  int iVar7;
+  short sVar8;
+  int *unaff_FS_OFFSET;
+  undefined1 **ppuStack_88;
+  TSimMgr *pTStack_84;
+  undefined1 *puStack_80;
+  TSimMgr *pTStack_7c;
+  CString *pCStack_78;
+  CString *pCStack_74;
+  TSimMgr *pTStack_60;
+  undefined1 *puStack_5c;
+  CString CVar9;
+  CString CStack_40;
+  CString CStack_3c;
+  CString CStack_38;
+  CString CStack_34;
+  CString CStack_30;
+  CString CStack_2c;
+  CString CStack_28;
+  short sStack_24;
+  TCity *pTStack_20;
+  code *pcStack_1c;
+  int iStack_18;
+  int iStack_14;
+  int iStack_c;
+  undefined1 *puStack_8;
+  undefined4 uStack_4;
+  
+  uStack_4 = 0xffffffff;
+  puStack_8 = &LAB_006333e8;
+  iStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = (int)&iStack_c;
+  (*g_pSimMgr->vftable[7].slot_0x04)();
+  uVar5 = func_0x00403b16();
+  _sStack_24 = uVar5;
+  CString::CString(&CStack_3c);
+  sVar8 = 0;
+  uStack_4 = 0;
+  CString::CString(&CStack_40);
+  uStack_4._0_1_ = 1;
+  CString::CString(&CStack_34);
+  uStack_4._0_1_ = 2;
+  CString::CString(&CStack_38);
+  iVar7 = (int)(short)uVar5;
+  uStack_4._0_1_ = 3;
+  if (g_apNationStates[iVar7] == (TGreatPower *)0x0) {
+    pTStack_20 = (TCity *)0x0;
+  }
+  else {
+    pTStack_20 = g_apNationStates[iVar7]->city;
+  }
+  iStack_18 = iVar7;
+  CString::CString(&CStack_2c);
+  CStack_28.m_pchData = (char *)0x1;
+  piVar2 = *(int **)&g_apNationStates[iVar7]->field_0x848;
+  uStack_4._0_1_ = 4;
+  if (0 < piVar2[2]) {
+    pcStack_1c = *(code **)(*piVar2 + 0x2c);
+    sVar8 = 0;
+    do {
+      psVar6 = (short *)(*pcStack_1c)();
+      sVar1 = *psVar6;
+      if (sVar1 == 0x131) {
+        func_0x00405245();
+        puStack_5c = (undefined1 *)0x1c;
+        pTStack_60 = (TSimMgr *)0x2753;
+        (*g_pSimMgr->vftable[0x10].slot_0x04)();
+        (*g_pSimMgr->vftable[0x10].slot_0x04)();
+        pCStack_78 = (CString *)&stack0xffffffac;
+        pCStack_74 = (CString *)puStack_5c;
+        pTStack_7c = g_pSimMgr;
+        puStack_80 = (undefined1 *)0x501568;
+        func_0x0040988b();
+        puStack_80 = &stack0xffffffac;
+        pCStack_74 = (CString *)0x0;
+        pCStack_78 = (CString *)&DAT_006a3180;
+        pTStack_84 = (TSimMgr *)0x501585;
+        pTStack_7c = extraout_ECX_03;
+        CStack_2c.m_pchData = (char *)&pTStack_7c;
+        func_0x004076b7();
+        CStack_38.m_pchData = (char *)&ppuStack_88;
+        CStack_28.m_pchData._0_1_ = 5;
+        ppuStack_88 = extraout_ECX_04;
+LAB_00501596:
+        func_0x004076b7(&pTStack_60);
+        CStack_2c.m_pchData._0_1_ = 4;
+        func_0x00408670(3);
+        sVar8 = sVar8 + 1;
+      }
+      else if (sVar1 == 0x13a) {
+        puStack_5c = (undefined1 *)0x501449;
+        uVar3 = (*g_pDiplomacyTurnStateManager->vftable[0x13].GetTDiplomacyMgrClassNamePointer)();
+        if ((short)CONCAT31(extraout_var_00,uVar3) != sStack_24) {
+          CVar9.m_pchData = (char *)&CStack_34;
+          func_0x00405245();
+          puStack_5c = (undefined1 *)0x50147d;
+          func_0x00405245();
+          puStack_5c = &stack0xffffffbc;
+          pTStack_60 = (TSimMgr *)0x1a;
+          (*g_pSimMgr->vftable[0x10].slot_0x04)();
+          pCStack_74 = (CString *)0x5014b1;
+          (*g_pSimMgr->vftable[0x10].slot_0x04)();
+          pCStack_74 = (CString *)CVar9.m_pchData;
+          puStack_80 = &stack0xffffffa8;
+          pTStack_7c = pTStack_60;
+          pTStack_84 = g_pSimMgr;
+          ppuStack_88 = (undefined1 **)0x5014d1;
+          func_0x0040988b();
+          pTStack_84 = (TSimMgr *)&stack0xffffffa8;
+          pCStack_74 = (CString *)0x0;
+          pCStack_78 = (CString *)0x0;
+          pTStack_7c = (TSimMgr *)&DAT_006a3180;
+          CStack_30.m_pchData = (char *)&puStack_80;
+          ppuStack_88 = (undefined1 **)0x5014ee;
+          puStack_80 = extraout_ECX_01;
+          func_0x004076b7();
+          CStack_38.m_pchData = (char *)&ppuStack_88;
+          CStack_28.m_pchData._0_1_ = 6;
+          ppuStack_88 = extraout_ECX_02;
+          goto LAB_00501596;
+        }
+      }
+      else if (sVar1 == 0x13b) {
+        uVar3 = (*g_pDiplomacyTurnStateManager->vftable[0x13].slot_0x04)();
+        if ((short)CONCAT31(extraout_var,uVar3) != sStack_24) {
+          CVar9.m_pchData = (char *)&CStack_34;
+          func_0x00405245();
+          puStack_5c = (undefined1 *)0x5013ad;
+          func_0x00405245();
+          puStack_5c = &stack0xffffffbc;
+          pTStack_60 = (TSimMgr *)0x1e;
+          (*g_pSimMgr->vftable[0x10].slot_0x04)();
+          pCStack_74 = (CString *)0x5013e1;
+          (*g_pSimMgr->vftable[0x10].slot_0x04)();
+          pCStack_78 = (CString *)CVar9.m_pchData;
+          puStack_80 = &stack0xffffffa8;
+          pTStack_7c = pTStack_60;
+          pTStack_84 = g_pSimMgr;
+          ppuStack_88 = (undefined1 **)0x501401;
+          func_0x0040988b();
+          pTStack_84 = (TSimMgr *)&stack0xffffffa8;
+          pCStack_74 = (CString *)0x0;
+          pCStack_78 = (CString *)0x0;
+          pTStack_7c = (TSimMgr *)&DAT_006a3180;
+          CStack_34.m_pchData = (char *)&puStack_80;
+          ppuStack_88 = (undefined1 **)0x50141e;
+          puStack_80 = extraout_ECX;
+          func_0x004076b7();
+          CStack_34.m_pchData = (char *)&ppuStack_88;
+          CStack_28.m_pchData._0_1_ = 7;
+          ppuStack_88 = extraout_ECX_00;
+          goto LAB_00501596;
+        }
+      }
+      CStack_28.m_pchData = CStack_28.m_pchData + 1;
+      iVar7 = iStack_18;
+    } while ((int)CStack_28.m_pchData <= piVar2[2]);
+  }
+  CString::CString(&CStack_30,PTR_g_szEmptyString_00656f60);
+  uStack_4._0_1_ = 8;
+  cVar4 = (*g_apNationStates[iVar7]->vftable->OrphanLeaf_NoCall_Ins02_004d7f40_53)();
+  if (cVar4 != '\0') {
+    puStack_5c = (undefined1 *)0x3c;
+    pTStack_60 = (TSimMgr *)0x2753;
+    (*g_pSimMgr->vftable[0x10].slot_0x04)();
+    (*g_pSimMgr->vftable[0x10].slot_0x04)();
+    pCStack_74 = (CString *)&puStack_5c;
+    pCStack_78 = &CStack_34;
+    pTStack_7c = (TSimMgr *)0x50163e;
+    src_ref = (CString *)AssignSharedStringConcatRefAndRef();
+    pTStack_20._0_1_ = 9;
+    pCStack_74 = (CString *)0x50164d;
+    CString::CString(&CStack_40,src_ref);
+    pTStack_20._0_1_ = 10;
+    pCStack_74 = (CString *)0x501660;
+    CString::operator=((CString *)&stack0xffffffac,&CStack_40);
+    pTStack_20._0_1_ = 9;
+    CString::~CString(&CStack_40);
+    pTStack_20 = (TCity *)CONCAT31(pTStack_20._1_3_,8);
+    CString::~CString(&CStack_34);
+    pCStack_74 = (CString *)0x1;
+    pCStack_78 = (CString *)&DAT_006a3180;
+    CStack_2c.m_pchData = (char *)&pTStack_7c;
+    puStack_80 = &stack0xffffffac;
+    pTStack_84 = (TSimMgr *)0x501696;
+    pTStack_7c = extraout_ECX_05;
+    func_0x004076b7();
+    CStack_34.m_pchData = (char *)&pTStack_84;
+    ppuStack_88 = &puStack_5c;
+    sStack_24._0_1_ = 0xb;
+    pTStack_84 = extraout_ECX_06;
+    func_0x004076b7();
+    CStack_28.m_pchData._0_1_ = 8;
+    func_0x00408670(3);
+  }
+  puStack_5c = (undefined1 *)0x5016ce;
+  CString::CString(&CStack_28,PTR_g_szEmptyString_00656f60);
+  puStack_8._0_1_ = 0xc;
+  puStack_5c = (undefined1 *)0x5016e1;
+  CString::operator=(&CStack_34,&CStack_28);
+  puStack_8 = (undefined1 *)CONCAT31(puStack_8._1_3_,8);
+  CString::~CString(&CStack_28);
+  puStack_5c = (undefined1 *)0x501703;
+  cVar4 = (*g_apNationStates[iVar7]->vftable->OrphanRetStub_004d7fa0_54)();
+  if (cVar4 != '\0') {
+    puStack_5c = &stack0xffffffbc;
+    pTStack_60 = (TSimMgr *)0x42;
+    (*g_pSimMgr->vftable[0x10].slot_0x04)();
+    pCStack_74 = (CString *)0x50173f;
+    (*g_pSimMgr->vftable[0x10].slot_0x04)();
+    pCStack_74 = (CString *)&stack0xffffffb0;
+    pCStack_78 = (CString *)0x50174d;
+    CString::operator+=();
+    pCStack_74 = (CString *)0x0;
+    pCStack_78 = (CString *)0x1;
+    pTStack_7c = (TSimMgr *)&DAT_006a3180;
+    CStack_30.m_pchData = (char *)&puStack_80;
+    pTStack_84 = (TSimMgr *)&pTStack_60;
+    ppuStack_88 = (undefined1 **)0x501767;
+    puStack_80 = extraout_ECX_07;
+    func_0x004076b7();
+    CStack_38.m_pchData = (char *)&ppuStack_88;
+    CStack_28.m_pchData._0_1_ = 0xd;
+    ppuStack_88 = extraout_ECX_08;
+    func_0x004076b7(&pTStack_60);
+    CStack_2c.m_pchData._0_1_ = 8;
+    func_0x00408670(3);
+  }
+  if (((CStack_28.m_pchData != (char *)0x0) && (*(short *)(CStack_28.m_pchData + 6) != 0)) &&
+     (*(short *)(CStack_28.m_pchData + 8) == 0)) {
+    puStack_5c = &stack0xffffffbc;
+    pTStack_60 = (TSimMgr *)0x16;
+    (*g_pSimMgr->vftable[0x10].slot_0x04)();
+    pCStack_74 = (CString *)0x5017dd;
+    (*g_pSimMgr->vftable[0x10].slot_0x04)();
+    pCStack_74 = (CString *)0x0;
+    pCStack_78 = (CString *)0x2;
+    pTStack_7c = (TSimMgr *)&DAT_006a3180;
+    CStack_30.m_pchData = (char *)&puStack_80;
+    pTStack_84 = (TSimMgr *)&pTStack_60;
+    ppuStack_88 = (undefined1 **)0x5017f7;
+    puStack_80 = extraout_ECX_09;
+    func_0x004076b7();
+    CStack_38.m_pchData = (char *)&ppuStack_88;
+    CStack_28.m_pchData._0_1_ = 0xe;
+    ppuStack_88 = extraout_ECX_10;
+    func_0x004076b7(&pTStack_60);
+    CStack_2c.m_pchData._0_1_ = 8;
+    func_0x00408670(5);
+    sVar8 = sVar8 + 1;
+  }
+  iStack_c._0_1_ = 4;
+  puStack_5c = (undefined1 *)0x50182d;
+  CString::~CString(&CStack_38);
+  iStack_c._0_1_ = 3;
+  puStack_5c = (undefined1 *)0x50183b;
+  CString::~CString(&CStack_34);
+  iStack_c._0_1_ = 2;
+  puStack_5c = (undefined1 *)0x501849;
+  CString::~CString(&CStack_40);
+  iStack_c._0_1_ = 1;
+  puStack_5c = (undefined1 *)0x501857;
+  CString::~CString(&CStack_3c);
+  iStack_c = (uint)iStack_c._1_3_ << 8;
+  puStack_5c = (undefined1 *)0x501865;
+  CString::~CString((CString *)&stack0xffffffb8);
+  iStack_c = -1;
+  puStack_5c = (undefined1 *)0x501876;
+  CString::~CString((CString *)&stack0xffffffbc);
+  *unaff_FS_OFFSET = iStack_14;
+  return sVar8;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00501A20
+// GHIDRA_NAME THelpMgr::ShowPeriodicCapabilityReminderIfNeeded
+// GHIDRA_PROTO undefined ShowPeriodicCapabilityReminderIfNeeded()
+
+void THelpMgr::ShowPeriodicCapabilityReminderIfNeeded(void)
+
+{
+  undefined uVar1;
+  short sVar2;
+  undefined3 extraout_var;
+  short sVar3;
+  undefined4 *unaff_FS_OFFSET;
+  CString CStack_58;
+  undefined1 ***pppuStack_54;
+  CString CStack_50;
+  undefined *puStack_4c;
+  undefined4 uStack_48;
+  undefined4 uStack_44;
+  undefined4 uStack_40;
+  undefined4 uStack_3c;
+  CString **ppCStack_38;
+  undefined4 uStack_34;
+  undefined4 uStack_30;
+  CString *pCStack_2c;
+  CString CStack_20;
+  CString CStack_1c;
+  CString aCStack_18 [3];
+  undefined4 uStack_c;
+  undefined1 *puStack_8;
+  int iStack_4;
+  
+  iStack_4 = 0xffffffff;
+  puStack_8 = &LAB_00633440;
+  uStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &uStack_c;
+  pCStack_2c = (CString *)0x501a45;
+  uVar1 = (*g_pSimMgr->vftable[7].slot_0x04)();
+  sVar3 = (short)CONCAT31(extraout_var,uVar1) % 10;
+  pCStack_2c = (CString *)0x501a5d;
+  sVar2 = func_0x00403b16();
+  pCStack_2c = (CString *)0x501a68;
+  CString::CString(&CStack_1c);
+  iStack_4 = 0;
+  pCStack_2c = (CString *)0x501a79;
+  CString::CString(&CStack_20);
+  iStack_4._0_1_ = 1;
+  pCStack_2c = (CString *)0x501a87;
+  CString::CString(aCStack_18);
+  iStack_4._0_1_ = 2;
+  if (((sVar3 == 0) || (sVar3 == 5)) &&
+     ((&g_pCityOrderCapabilityState->field_0x268)
+      [(int)*(short *)&g_pCityOrderCapabilityState->field_0x262 + sVar2 * 0x1d] == '\0')) {
+    pCStack_2c = &CStack_1c;
+    uStack_30 = 0x18;
+    uStack_34 = 0x2753;
+    ppCStack_38 = (CString **)0x501adc;
+    (*g_pSimMgr->vftable[0x10].slot_0x04)();
+    ppCStack_38 = &pCStack_2c;
+    uStack_3c = 0x19;
+    uStack_40 = 0x2753;
+    uStack_44 = 0x501af6;
+    (*g_pSimMgr->vftable[0x10].slot_0x04)();
+    uStack_44 = 0;
+    uStack_48 = 2;
+    puStack_4c = &DAT_006a3180;
+    pCStack_2c = &CStack_50;
+    pppuStack_54 = (undefined1 ***)&ppCStack_38;
+    CStack_58.m_pchData = (char *)0x501b10;
+    func_0x004076b7();
+    pCStack_2c = &CStack_58;
+    CStack_20.m_pchData._0_1_ = 3;
+    func_0x004076b7(&ppCStack_38);
+    func_0x00408670(5);
+  }
+  iStack_4._0_1_ = 1;
+  pCStack_2c = (CString *)0x501b46;
+  CString::~CString(aCStack_18);
+  iStack_4 = (uint)iStack_4._1_3_ << 8;
+  pCStack_2c = (CString *)0x501b54;
+  CString::~CString(&CStack_20);
+  iStack_4 = 0xffffffff;
+  pCStack_2c = (CString *)0x501b65;
+  CString::~CString(&CStack_1c);
+  *unaff_FS_OFFSET = uStack_c;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00501BE0
+// GHIDRA_NAME THelpMgr::ShowPeriodicNationComparisonAdvisoryIfNeeded
+// GHIDRA_PROTO undefined ShowPeriodicNationComparisonAdvisoryIfNeeded()
+
+undefined1 THelpMgr::ShowPeriodicNationComparisonAdvisoryIfNeeded(void)
+
+{
+  TGreatPower *pTVar1;
+  undefined uVar2;
+  char cVar3;
+  short sVar4;
+  short sVar5;
+  undefined3 extraout_var;
+  undefined3 extraout_var_00;
+  undefined3 extraout_var_01;
+  undefined3 extraout_var_02;
+  undefined3 extraout_var_03;
+  undefined3 extraout_var_04;
+  undefined3 extraout_var_05;
+  undefined3 extraout_var_06;
+  undefined3 extraout_var_07;
+  undefined3 extraout_var_08;
+  undefined3 extraout_var_09;
+  undefined3 extraout_var_10;
+  undefined3 extraout_var_11;
+  undefined3 extraout_var_12;
+  undefined3 extraout_var_13;
+  undefined3 extraout_var_14;
+  undefined3 extraout_var_15;
+  undefined3 extraout_var_16;
+  undefined3 extraout_var_17;
+  undefined3 extraout_var_18;
+  int iVar6;
+  undefined3 extraout_var_19;
+  undefined3 extraout_var_20;
+  undefined3 extraout_var_21;
+  word wVar7;
+  word wVar8;
+  undefined4 uVar9;
+  int iVar10;
+  TGreatPower **ppTVar11;
+  int iVar12;
+  undefined4 *unaff_FS_OFFSET;
+  undefined1 local_25;
+  CString local_24;
+  CString local_20;
+  CString local_1c;
+  CString local_18;
+  int iStack_14;
+  int iStack_10;
+  undefined4 uStack_c;
+  undefined1 *puStack_8;
+  int local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_006334d8;
+  uStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &uStack_c;
+  sVar4 = func_0x00403b16();
+  CString::CString(&local_18);
+  iVar10 = 0;
+  local_4 = 0;
+  CString::CString(&local_1c);
+  local_4._0_1_ = 1;
+  CString::CString(&local_20);
+  local_4._0_1_ = 2;
+  CString::CString(&local_24);
+  local_4 = CONCAT31(local_4._1_3_,3);
+  local_25 = 0;
+  uVar2 = (*g_pSimMgr->vftable[7].slot_0x04)();
+  switch((short)CONCAT31(extraout_var,uVar2) % 10) {
+  case 0:
+    iStack_14 = (int)sVar4;
+    if (g_apNationStates[iStack_14] == (TGreatPower *)0x0) {
+      wVar8 = 0;
+    }
+    else {
+      wVar8 = g_apNationStates[iStack_14]->needCapA6;
+    }
+    ppTVar11 = g_apNationStates;
+    do {
+      cVar3 = func_0x004044b7();
+      if (cVar3 != '\0') {
+        pTVar1 = *ppTVar11;
+        if (pTVar1 == (TGreatPower *)0x0) {
+          wVar7 = 0;
+        }
+        else {
+          wVar7 = pTVar1->needCapA6;
+        }
+        if ((short)wVar8 < (short)wVar7) {
+          if (pTVar1 == (TGreatPower *)0x0) {
+            wVar8 = 0;
+          }
+          else {
+            wVar8 = pTVar1->needCapA6;
+          }
+        }
+      }
+      iVar10 = iVar10 + 1;
+      ppTVar11 = ppTVar11 + 1;
+    } while ((short)iVar10 < 7);
+    if (g_apNationStates[iStack_14] == (TGreatPower *)0x0) {
+      wVar7 = 0;
+    }
+    else {
+      wVar7 = g_apNationStates[iStack_14]->needCapA6;
+    }
+    if ((int)(short)wVar8 <= (short)wVar7 * 2) goto switchD_00501c69_default;
+    func_0x00405245();
+    (*g_pSimMgr->vftable[0x10].slot_0x04)();
+    (*g_pSimMgr->vftable[0x10].slot_0x04)();
+    func_0x0040988b();
+    func_0x004076b7();
+    local_24.m_pchData._0_1_ = 4;
+    break;
+  case 1:
+    iVar12 = func_0x00402e32();
+    iStack_10 = iVar12;
+    do {
+      if ((((short)iVar10 != sVar4) && (cVar3 = func_0x004044b7(), cVar3 != '\0')) &&
+         (iVar6 = func_0x00402e32(), (short)iVar12 < iVar6)) {
+        iVar12 = func_0x00402e32();
+        iStack_14 = iVar10;
+      }
+      iVar10 = iVar10 + 1;
+    } while ((short)iVar10 < 7);
+    if ((int)(short)iVar12 <= iStack_10 * 2) goto switchD_00501c69_default;
+    func_0x00405245();
+    (*g_pSimMgr->vftable[0x10].slot_0x04)();
+    (*g_pSimMgr->vftable[0x10].slot_0x04)();
+    func_0x0040988b();
+    func_0x004076b7();
+    local_24.m_pchData._0_1_ = 0xd;
+    break;
+  case 2:
+    iStack_14 = (int)sVar4;
+    uVar2 = (*g_apNationStates[iStack_14]->vftable->OrphanRetStub_004d7f80_8d)();
+    uVar9 = CONCAT31(extraout_var_00,uVar2);
+    sVar4 = 0;
+    ppTVar11 = g_apNationStates;
+    do {
+      cVar3 = func_0x004044b7();
+      if ((cVar3 != '\0') &&
+         (uVar2 = (*(*ppTVar11)->vftable->OrphanRetStub_004d7f80_8d)(),
+         (int)(short)uVar9 < CONCAT31(extraout_var_01,uVar2))) {
+        uVar2 = (*(*ppTVar11)->vftable->OrphanRetStub_004d7f80_8d)();
+        uVar9 = CONCAT31(extraout_var_02,uVar2);
+      }
+      sVar4 = sVar4 + 1;
+      ppTVar11 = ppTVar11 + 1;
+    } while (sVar4 < 7);
+    uVar2 = (*g_apNationStates[(int)local_18.m_pchData]->vftable->OrphanRetStub_004d7f80_8d)();
+    if ((int)(short)uVar9 <= CONCAT31(extraout_var_03,uVar2) * 2) goto switchD_00501c69_default;
+    func_0x00405245();
+    (*g_pSimMgr->vftable[0x10].slot_0x04)();
+    (*g_pSimMgr->vftable[0x10].slot_0x04)();
+    func_0x0040988b();
+    func_0x004076b7();
+    local_24.m_pchData._0_1_ = 7;
+    break;
+  case 3:
+    iStack_14 = (int)sVar4;
+    ppTVar11 = g_apNationStates;
+    sVar4 = *(short *)&g_apNationStates[iStack_14]->field_0xa4;
+    do {
+      cVar3 = func_0x004044b7();
+      if ((cVar3 != '\0') && (sVar4 < *(short *)&(*ppTVar11)->field_0xa4)) {
+        sVar4 = *(short *)&(*ppTVar11)->field_0xa4;
+      }
+      iVar10 = iVar10 + 1;
+      ppTVar11 = ppTVar11 + 1;
+    } while ((short)iVar10 < 7);
+    if ((int)sVar4 <= *(short *)&g_apNationStates[iStack_14]->field_0xa4 * 2)
+    goto switchD_00501c69_default;
+    func_0x00405245();
+    (*g_pSimMgr->vftable[0x10].slot_0x04)();
+    (*g_pSimMgr->vftable[0x10].slot_0x04)();
+    func_0x0040988b();
+    func_0x004076b7();
+    local_24.m_pchData._0_1_ = 5;
+    break;
+  case 4:
+    uVar2 = (*g_apNationStates[sVar4]->vftable->OrphanLeaf_NoCall_Ins02_004d7f20_86)();
+    iVar10 = CONCAT31(extraout_var_19,uVar2);
+    iVar12 = 0;
+    ppTVar11 = g_apNationStates;
+    iStack_10 = iVar10;
+    do {
+      if ((((short)iVar12 != sVar4) && (cVar3 = func_0x004044b7(), cVar3 != '\0')) &&
+         (uVar2 = (*(*ppTVar11)->vftable->OrphanLeaf_NoCall_Ins02_004d7f20_86)(),
+         (int)(short)iVar10 < CONCAT31(extraout_var_20,uVar2))) {
+        uVar2 = (*(*ppTVar11)->vftable->OrphanLeaf_NoCall_Ins02_004d7f20_86)();
+        iVar10 = CONCAT31(extraout_var_21,uVar2);
+        iStack_14 = iVar12;
+      }
+      iVar12 = iVar12 + 1;
+      ppTVar11 = ppTVar11 + 1;
+    } while ((short)iVar12 < 7);
+    if ((int)(short)iVar10 <= iStack_10 * 2) goto switchD_00501c69_default;
+    func_0x00405245();
+    (*g_pSimMgr->vftable[0x10].slot_0x04)();
+    (*g_pSimMgr->vftable[0x10].slot_0x04)();
+    func_0x0040988b();
+    func_0x004076b7();
+    local_24.m_pchData._0_1_ = 0xe;
+    break;
+  case 5:
+    iStack_14 = (int)sVar4;
+    uVar2 = (*g_apNationStates[iStack_14]->vftable->OrphanRetStub_004d7f80_8d)();
+    uVar9 = CONCAT31(extraout_var_04,uVar2);
+    sVar4 = 0;
+    ppTVar11 = g_apNationStates;
+    do {
+      cVar3 = func_0x004044b7();
+      if ((cVar3 != '\0') &&
+         (uVar2 = (*(*ppTVar11)->vftable->OrphanRetStub_004d7f80_8d)(),
+         (int)(short)uVar9 < CONCAT31(extraout_var_05,uVar2))) {
+        uVar2 = (*(*ppTVar11)->vftable->OrphanRetStub_004d7f80_8d)();
+        uVar9 = CONCAT31(extraout_var_06,uVar2);
+      }
+      sVar4 = sVar4 + 1;
+      ppTVar11 = ppTVar11 + 1;
+    } while (sVar4 < 7);
+    uVar2 = (*g_apNationStates[(int)local_18.m_pchData]->vftable->OrphanRetStub_004d7f80_8d)();
+    if ((int)(short)uVar9 <= CONCAT31(extraout_var_07,uVar2) * 2) goto switchD_00501c69_default;
+    func_0x00405245();
+    (*g_pSimMgr->vftable[0x10].slot_0x04)();
+    (*g_pSimMgr->vftable[0x10].slot_0x04)();
+    func_0x0040988b();
+    func_0x004076b7();
+    local_24.m_pchData._0_1_ = 8;
+    break;
+  case 6:
+    iStack_14 = (int)sVar4;
+    sVar4 = func_0x00401aaf();
+    do {
+      cVar3 = func_0x004044b7();
+      if ((cVar3 != '\0') && (sVar5 = func_0x00401aaf(), sVar4 < sVar5)) {
+        sVar4 = func_0x00401aaf();
+      }
+      iVar10 = iVar10 + 1;
+    } while ((short)iVar10 < 7);
+    sVar5 = func_0x00401aaf();
+    if ((int)sVar4 <= sVar5 * 2) goto switchD_00501c69_default;
+    func_0x00405245();
+    (*g_pSimMgr->vftable[0x10].slot_0x04)();
+    (*g_pSimMgr->vftable[0x10].slot_0x04)();
+    func_0x0040988b();
+    func_0x004076b7();
+    local_24.m_pchData._0_1_ = 6;
+    break;
+  case 7:
+    iStack_14 = (int)sVar4;
+    uVar2 = (*g_apNationStates[iStack_14]->vftable->OrphanRetStub_004d7f80_8d)();
+    uVar9 = CONCAT31(extraout_var_08,uVar2);
+    sVar4 = 0;
+    ppTVar11 = g_apNationStates;
+    do {
+      cVar3 = func_0x004044b7();
+      if ((cVar3 != '\0') &&
+         (uVar2 = (*(*ppTVar11)->vftable->OrphanRetStub_004d7f80_8d)(),
+         (int)(short)uVar9 < CONCAT31(extraout_var_09,uVar2))) {
+        uVar2 = (*(*ppTVar11)->vftable->OrphanRetStub_004d7f80_8d)();
+        uVar9 = CONCAT31(extraout_var_10,uVar2);
+      }
+      sVar4 = sVar4 + 1;
+      ppTVar11 = ppTVar11 + 1;
+    } while (sVar4 < 7);
+    uVar2 = (*g_apNationStates[(int)local_18.m_pchData]->vftable->OrphanRetStub_004d7f80_8d)();
+    if ((int)(short)uVar9 <= CONCAT31(extraout_var_11,uVar2) * 2) goto switchD_00501c69_default;
+    func_0x00405245();
+    (*g_pSimMgr->vftable[0x10].slot_0x04)();
+    (*g_pSimMgr->vftable[0x10].slot_0x04)();
+    func_0x0040988b();
+    func_0x004076b7();
+    local_24.m_pchData._0_1_ = 9;
+    break;
+  case 8:
+    if (g_pCityOrderCapabilityState->field_0x193 == '\0') goto switchD_00501c69_default;
+    iVar10 = (int)sVar4;
+    iStack_14 = iVar10;
+    uVar2 = (*g_apNationStates[iVar10]->vftable->OrphanRetStub_004d7f80_8d)();
+    if (CONCAT31(extraout_var_12,uVar2) == 0) {
+      uVar9 = 0;
+      sVar4 = 0;
+      ppTVar11 = g_apNationStates;
+      do {
+        cVar3 = func_0x004044b7();
+        if ((cVar3 != '\0') &&
+           (uVar2 = (*(*ppTVar11)->vftable->OrphanRetStub_004d7f80_8d)(),
+           (int)(short)uVar9 < CONCAT31(extraout_var_13,uVar2))) {
+          uVar2 = (*(*ppTVar11)->vftable->OrphanRetStub_004d7f80_8d)();
+          uVar9 = CONCAT31(extraout_var_14,uVar2);
+        }
+        sVar4 = sVar4 + 1;
+        ppTVar11 = ppTVar11 + 1;
+      } while (sVar4 < 7);
+      if ((short)uVar9 < 5) goto switchD_00501c69_default;
+      if ((&g_pCityOrderCapabilityState->field_0x27b)[iStack_14 * 0x1d] == '\0') {
+        func_0x00405245();
+        (*g_pSimMgr->vftable[0x10].slot_0x04)();
+        (*g_pSimMgr->vftable[0x10].slot_0x04)();
+        func_0x0040988b();
+        func_0x004076b7();
+        local_24.m_pchData._0_1_ = 0xb;
+      }
+      else {
+        func_0x00405245();
+        (*g_pSimMgr->vftable[0x10].slot_0x04)();
+        (*g_pSimMgr->vftable[0x10].slot_0x04)();
+        func_0x0040988b();
+        func_0x004076b7();
+        local_24.m_pchData._0_1_ = 10;
+      }
+    }
+    else {
+      uVar2 = (*g_apNationStates[iVar10]->vftable->OrphanRetStub_004d7f80_8d)();
+      uVar9 = CONCAT31(extraout_var_15,uVar2);
+      sVar4 = 0;
+      ppTVar11 = g_apNationStates;
+      do {
+        cVar3 = func_0x004044b7();
+        if ((cVar3 != '\0') &&
+           (uVar2 = (*(*ppTVar11)->vftable->OrphanRetStub_004d7f80_8d)(),
+           (int)(short)uVar9 < CONCAT31(extraout_var_16,uVar2))) {
+          uVar2 = (*(*ppTVar11)->vftable->OrphanRetStub_004d7f80_8d)();
+          uVar9 = CONCAT31(extraout_var_17,uVar2);
+        }
+        sVar4 = sVar4 + 1;
+        ppTVar11 = ppTVar11 + 1;
+      } while (sVar4 < 7);
+      uVar2 = (*g_apNationStates[(int)local_18.m_pchData]->vftable->OrphanRetStub_004d7f80_8d)();
+      if ((int)(short)uVar9 <= CONCAT31(extraout_var_18,uVar2) * 2) goto switchD_00501c69_default;
+      func_0x00405245();
+      (*g_pSimMgr->vftable[0x10].slot_0x04)();
+      (*g_pSimMgr->vftable[0x10].slot_0x04)();
+      func_0x0040988b();
+      func_0x004076b7();
+      local_24.m_pchData._0_1_ = 0xc;
+    }
+    break;
+  default:
+    goto switchD_00501c69_default;
+  }
+  func_0x004076b7(&stack0xffffffc8);
+  func_0x00408670(5);
+  local_25 = 1;
+switchD_00501c69_default:
+  local_4._0_1_ = 2;
+  CString::~CString(&local_24);
+  local_4._0_1_ = 1;
+  CString::~CString(&local_20);
+  local_4 = (uint)local_4._1_3_ << 8;
+  CString::~CString(&local_1c);
+  local_4 = 0xffffffff;
+  CString::~CString(&local_18);
+  *unaff_FS_OFFSET = uStack_c;
+  return local_25;
 }
 

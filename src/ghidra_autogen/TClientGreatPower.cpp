@@ -37,7 +37,8 @@ undefined4 * TClientGreatPower::CreateObject(void)
 // GHIDRA_NAME TClientGreatPower::ReturnFalseNationStateCapabilityFlag98
 // GHIDRA_PROTO undefined __thiscall ReturnFalseNationStateCapabilityFlag98(void)
 
-undefined1 TClientGreatPower::ReturnFalseNationStateCapabilityFlag98()
+undefined1 __thiscall
+TClientGreatPower::ReturnFalseNationStateCapabilityFlag98(TClientGreatPower *this)
 
 {
   return 1;
@@ -47,7 +48,8 @@ undefined1 TClientGreatPower::ReturnFalseNationStateCapabilityFlag98()
 // GHIDRA_NAME TClientGreatPower::ReturnFalseNationStateCapabilityFlagA0
 // GHIDRA_PROTO undefined __thiscall ReturnFalseNationStateCapabilityFlagA0(void)
 
-undefined1 TClientGreatPower::ReturnFalseNationStateCapabilityFlagA0()
+undefined1 __thiscall
+TClientGreatPower::ReturnFalseNationStateCapabilityFlagA0(TClientGreatPower *this)
 
 {
   return 0;
@@ -57,7 +59,8 @@ undefined1 TClientGreatPower::ReturnFalseNationStateCapabilityFlagA0()
 // GHIDRA_NAME TClientGreatPower::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TClientGreatPower * TClientGreatPower::_scalar_deleting_destructor_(byte param_1)
+TClientGreatPower * __thiscall
+TClientGreatPower::_scalar_deleting_destructor_(TClientGreatPower *this,byte param_1)
 
 {
   func_0x00403ac1();
@@ -71,7 +74,7 @@ TClientGreatPower * TClientGreatPower::_scalar_deleting_destructor_(byte param_1
 // GHIDRA_NAME TClientGreatPower::DestructTClientGreatPower
 // GHIDRA_PROTO undefined __thiscall DestructTClientGreatPower(void)
 
-void TClientGreatPower::DestructTClientGreatPower()
+void __thiscall TClientGreatPower::DestructTClientGreatPower(TClientGreatPower *this)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -96,7 +99,7 @@ void TClientGreatPower::DestructTClientGreatPower()
 // GHIDRA_NAME TClientGreatPower::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TClientGreatPower::GetRuntimeClass()
+CRuntimeClass * __thiscall TClientGreatPower::GetRuntimeClass(TClientGreatPower *this)
 
 {
   return &classTClientGreatPower;
@@ -106,7 +109,7 @@ CRuntimeClass * TClientGreatPower::GetRuntimeClass()
 // GHIDRA_NAME TClientGreatPower::ApplyAcceptedDiplomacyProposalCode
 // GHIDRA_PROTO undefined __thiscall ApplyAcceptedDiplomacyProposalCode(void)
 
-void TClientGreatPower::ApplyAcceptedDiplomacyProposalCode()
+void __thiscall TClientGreatPower::ApplyAcceptedDiplomacyProposalCode(TClientGreatPower *this)
 
 {
   undefined4 local_20;
@@ -134,7 +137,8 @@ void TClientGreatPower::ApplyAcceptedDiplomacyProposalCode()
 // GHIDRA_NAME TClientGreatPower::QueueInterNationEventForProposalCode12D_130
 // GHIDRA_PROTO undefined __thiscall QueueInterNationEventForProposalCode12D_130(void)
 
-void TClientGreatPower::QueueInterNationEventForProposalCode12D_130()
+void __thiscall
+TClientGreatPower::QueueInterNationEventForProposalCode12D_130(TClientGreatPower *this)
 
 {
   undefined4 local_20;
@@ -162,7 +166,7 @@ void TClientGreatPower::QueueInterNationEventForProposalCode12D_130()
 // GHIDRA_NAME TClientGreatPower::ProcessPendingDiplomacyProposalQueue
 // GHIDRA_PROTO undefined __thiscall ProcessPendingDiplomacyProposalQueue(void)
 
-void TClientGreatPower::ProcessPendingDiplomacyProposalQueue()
+void __thiscall TClientGreatPower::ProcessPendingDiplomacyProposalQueue(TClientGreatPower *this)
 
 {
   undefined4 local_20;
@@ -214,7 +218,7 @@ TClientGreatPower::ExecuteAdvisoryPromptAndApplyActionType2OrFallback
 // GHIDRA_NAME TClientGreatPower::CheckTransitionSlot27C
 // GHIDRA_PROTO undefined __thiscall CheckTransitionSlot27C(void)
 
-undefined4 TClientGreatPower::CheckTransitionSlot27C()
+undefined4 __thiscall TClientGreatPower::CheckTransitionSlot27C(TClientGreatPower *this)
 
 {
   undefined4 uVar1;
@@ -231,7 +235,7 @@ undefined4 TClientGreatPower::CheckTransitionSlot27C()
 // GHIDRA_NAME TClientGreatPower::DispatchTurnEvent11F8NoPayloadSlot2AC
 // GHIDRA_PROTO undefined __thiscall DispatchTurnEvent11F8NoPayloadSlot2AC(void)
 
-void TClientGreatPower::DispatchTurnEvent11F8NoPayloadSlot2AC()
+void __thiscall TClientGreatPower::DispatchTurnEvent11F8NoPayloadSlot2AC(TClientGreatPower *this)
 
 {
   func_0x00406efb(0x6c6f7365,(int)*(short *)&this->field_0xc,0xffffffff);

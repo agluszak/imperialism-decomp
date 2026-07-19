@@ -37,7 +37,7 @@ undefined4 * TOrderView::CreateObject(void)
 // GHIDRA_NAME TOrderView::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TOrderView::GetRuntimeClass()
+CRuntimeClass * __thiscall TOrderView::GetRuntimeClass(TOrderView *this)
 
 {
   return &classTOrderView;
@@ -47,7 +47,7 @@ CRuntimeClass * TOrderView::GetRuntimeClass()
 // GHIDRA_NAME TOrderView::ConstructTOrderViewBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTOrderViewBaseState(void)
 
-TOrderView * TOrderView::ConstructTOrderViewBaseState()
+TOrderView * __thiscall TOrderView::ConstructTOrderViewBaseState(TOrderView *this)
 
 {
   func_0x004064e2();
@@ -60,7 +60,7 @@ TOrderView * TOrderView::ConstructTOrderViewBaseState()
 // GHIDRA_NAME TOrderView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TOrderView * TOrderView::_scalar_deleting_destructor_(byte param_1)
+TOrderView * __thiscall TOrderView::_scalar_deleting_destructor_(TOrderView *this,byte param_1)
 
 {
   func_0x0040879c();
@@ -123,7 +123,7 @@ TOrderView::PopulateDialogControlsFromSelectedProductionEntry
     func_0x004057a4(s_D__Ambit_Cross_UIcon_cpp_00696cc8,0x213);
   }
   iVar4 = *piVar8;
-  iVar5 = TCity::GetBuildingType
+  iVar5 = TCity::thunk_GetCityBuildingProductionValueBySlot
                     (*(TCity **)&this->field_0x60,*(short *)(*(int *)&this->field_0x64 + 0x52));
   (**(code **)(iVar4 + 0x1d4))(iVar5);
   (**(code **)(iVar4 + 0x1c8))(unaff_retaddr + 700,1);
@@ -223,7 +223,7 @@ TOrderView::PopulateDialogControlsFromSelectedProductionEntry
 // GHIDRA_NAME TOrderView::RefreshOrderViewSupplyAndUseControlValues
 // GHIDRA_PROTO undefined __thiscall RefreshOrderViewSupplyAndUseControlValues(void)
 
-void TOrderView::RefreshOrderViewSupplyAndUseControlValues()
+void __thiscall TOrderView::RefreshOrderViewSupplyAndUseControlValues(TOrderView *this)
 
 {
   short sVar1;
@@ -327,7 +327,8 @@ void TOrderView::RefreshOrderViewSupplyAndUseControlValues()
 // GHIDRA_NAME TOrderView::HandleEvent
 // GHIDRA_PROTO undefined __thiscall HandleEvent(int param_1, undefined4 param_2, undefined4 param_3)
 
-void TOrderView::HandleEvent(int param_1, undefined4 param_2, undefined4 param_3)
+void __thiscall
+TOrderView::HandleEvent(TOrderView *this,int param_1,undefined4 param_2,undefined4 param_3)
 
 {
   TOrderViewVtbl *pTVar1;

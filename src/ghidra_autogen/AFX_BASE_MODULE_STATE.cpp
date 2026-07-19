@@ -13,8 +13,34 @@ _AFX_BASE_MODULE_STATE::_scalar_deleting_destructor_(undefined4 param_1,byte par
 {
   AFX_MODULE_STATE::~AFX_MODULE_STATE();
   if ((param_2 & 1) != 0) {
-    CNoTrackObject::delete(param_1);
+    delete(param_1);
   }
   return param_1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00623824
+// GHIDRA_NAME _AFX_BASE_MODULE_STATE>::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
+
+undefined4 * _AFX_BASE_MODULE_STATE>::CreateObject(void)
+
+{
+  undefined4 *puVar1;
+  undefined4 *puVar2;
+  int unaff_EBP;
+  undefined4 *unaff_FS_OFFSET;
+  
+  _EH_prolog();
+  puVar1 = (undefined4 *)new(0x1074);
+  *(undefined4 **)(unaff_EBP + -0x10) = puVar1;
+  *(undefined4 *)(unaff_EBP + -4) = 0;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    AFX_MODULE_STATE::AFX_MODULE_STATE(1);
+    *puVar1 = &PTR____G_AFX_BASE_MODULE_STATE__UAEPAXI_Z_00670c64;
+    puVar2 = puVar1;
+  }
+  *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
+  return puVar2;
 }
 

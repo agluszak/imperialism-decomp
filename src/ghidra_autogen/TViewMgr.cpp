@@ -4,10 +4,10 @@
 // Bucket: TViewMgr.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005D4C60
-// GHIDRA_NAME TViewMgr::CreateTViewMgrInstance
-// GHIDRA_PROTO undefined CreateTViewMgrInstance()
+// GHIDRA_NAME TViewMgr::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-void TViewMgr::CreateTViewMgrInstance(CString param_1,CString param_2)
+void TViewMgr::CreateObject(CString param_1,CString param_2)
 
 {
   CString this;
@@ -16,38 +16,41 @@ void TViewMgr::CreateTViewMgrInstance(CString param_1,CString param_2)
   CString *src_ref;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
-  CString CStack_8;
-  CString local_4;
+  undefined1 *puStack_8;
+  undefined4 local_4;
   
   this.m_pchData = param_1.m_pchData;
   local_c = *unaff_FS_OFFSET;
-  local_4.m_pchData = (char *)0xffffffff;
-  CStack_8.m_pchData = &LAB_00639f88;
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_00639f88;
   *unaff_FS_OFFSET = &local_c;
-  sVar2 = func_0x00405b7d(param_1.m_pchData);
+  sVar2 = thunk_MeasureTextExtentWithCachedQuickDrawStyle(param_1.m_pchData);
   sVar1 = (short)param_2.m_pchData;
   if ((short)param_2.m_pchData < sVar2) {
     CString::CString(&param_2);
-    local_4.m_pchData = (char *)0x0;
+    local_4._0_1_ = 0;
+    local_4._1_3_ = 0;
     do {
                     /* WARNING: Load size is inaccurate */
       src_ref = (CString *)func_0x00404ed5(&param_1,1,*(int *)(*this.m_pchData + -8) + -1);
-      CString::operator=(&local_4,src_ref);
-      CString::~CString(&CStack_8);
-      CString::operator=((CString *)this.m_pchData,&local_4);
-      CString::operator+=(&local_4,&DAT_0069587c);
-      sVar2 = func_0x00405b7d(&local_4);
+      local_4._0_1_ = 1;
+      CString::operator=(&param_2,src_ref);
+      local_4._0_1_ = 0;
+      CString::~CString(&param_1);
+      CString::operator=((CString *)this.m_pchData,&param_2);
+      CString::operator+=(&param_2,&DAT_0069587c);
+      sVar2 = thunk_MeasureTextExtentWithCachedQuickDrawStyle(&param_2);
       if (sVar2 <= sVar1) break;
     } while (4 < *(int *)(param_2.m_pchData + -8));
     if (*(int *)(param_2.m_pchData + -8) < 5) {
       CString::CString(&param_1,PTR_g_szEmptyString_0066ef28);
-      local_4.m_pchData._0_1_ = 2;
+      local_4._0_1_ = 2;
       CString::operator=(&param_2,&param_1);
-      local_4.m_pchData = (char *)((uint)local_4.m_pchData._1_3_ << 8);
+      local_4._0_1_ = 0;
       CString::~CString(&param_1);
     }
     CString::operator=((CString *)this.m_pchData,&param_2);
-    local_4.m_pchData = (char *)0xffffffff;
+    local_4 = 0xffffffff;
     CString::~CString(&param_2);
   }
   *unaff_FS_OFFSET = local_c;
@@ -63,7 +66,7 @@ void TViewMgr::CreateTViewMgrInstance(CString param_1,CString param_2)
 
 /* Returns pointer to the static Turn View Manager class-name descriptor/string table entry. */
 
-CRuntimeClass * TViewMgr::GetRuntimeClass()
+CRuntimeClass * __thiscall TViewMgr::GetRuntimeClass(TViewMgr *this)
 
 {
   return &classTViewMgr;
@@ -80,7 +83,7 @@ CRuntimeClass * TViewMgr::GetRuntimeClass()
    Sets vtable PTR_LAB_0066F120 and initializes current-event and status fields consumed by
    DispatchGlobalTurnEventCode (vtable +0x4C). */
 
-void TViewMgr::ConstructGlobalTurnEventState()
+void __thiscall TViewMgr::ConstructGlobalTurnEventState(TViewMgr *this)
 
 {
   this->vftable = &_vftable_;
@@ -105,7 +108,7 @@ void TViewMgr::ConstructGlobalTurnEventState()
 /* Deleting-destructor wrapper for TurnEventState object. Calls SetTurnEventStateBaseVtable and
    frees memory when delete flag bit0 is set. */
 
-TViewMgr * TViewMgr::_scalar_deleting_destructor_(byte param_1)
+TViewMgr * __thiscall TViewMgr::_scalar_deleting_destructor_(TViewMgr *this,byte param_1)
 
 {
   func_0x0040822e();
@@ -113,6 +116,22 @@ TViewMgr * TViewMgr::_scalar_deleting_destructor_(byte param_1)
     operator_delete(this);
   }
   return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005D50E0
+// GHIDRA_NAME TViewMgr::~TViewMgr
+// GHIDRA_PROTO undefined ~TViewMgr()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Resets this object's vtable pointer to base TurnEventState vtable during teardown.
+// GHIDRA_COMMENT_END
+
+/* Resets this object's vtable pointer to base TurnEventState vtable during teardown. */
+
+void __fastcall TViewMgr::~TViewMgr(undefined4 *param_1)
+
+{
+  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005D5100
@@ -125,7 +144,7 @@ TViewMgr * TViewMgr::_scalar_deleting_destructor_(byte param_1)
 /* Initializes TurnEventState cursor table at this+0x14 by loading 0x36 cursor handles (resource IDs
    1000..1053). */
 
-void TViewMgr::LoadTurnEventCursorTable()
+void __thiscall TViewMgr::LoadTurnEventCursorTable(TViewMgr *this)
 
 {
   undefined4 uVar1;
@@ -153,7 +172,7 @@ void TViewMgr::LoadTurnEventCursorTable()
 /* Releases/destroys dialog/view object if pointer is non-null by calling its virtual slot +0x4 with
    delete flag 1. */
 
-void TViewMgr::Free()
+void __thiscall TViewMgr::Free(TViewMgr *this)
 
 {
   if (this != (TViewMgr *)0x0) {
@@ -172,7 +191,7 @@ void TViewMgr::Free()
 /* Deserialization/load hook for turn-event dispatch state. Invokes base stream load then explicitly
    resets current event code (word +0x4) to 0 and clears transient dispatch flags. */
 
-void TViewMgr::ReadFrom()
+void __thiscall TViewMgr::ReadFrom(TViewMgr *this)
 
 {
   func_0x00403517();
@@ -194,7 +213,7 @@ void TViewMgr::ReadFrom()
 
 /* Serialization/save hook for turn-event dispatch state (delegates to base stream serializer). */
 
-void TViewMgr::WriteTo()
+void __thiscall TViewMgr::WriteTo(TViewMgr *this)
 
 {
   func_0x0040583a();
@@ -385,7 +404,7 @@ switchD_005d5297_caseD_3b:
 
 /* Computes palette index from turn-event code and applies resulting color via FUN_004950F0 path. */
 
-void TViewMgr::ApplyTurnEventPaletteColorByEventCode(undefined4 param_1)
+void __thiscall TViewMgr::ApplyTurnEventPaletteColorByEventCode(TViewMgr *this,undefined4 param_1)
 
 {
   undefined4 uVar1;
@@ -405,7 +424,7 @@ void TViewMgr::ApplyTurnEventPaletteColorByEventCode(undefined4 param_1)
 /* Computes palette index from turn-event code and updates current palette index state with fallback
    handling. */
 
-void TViewMgr::UpdatePaletteIndexFromTurnEventCode(undefined4 param_1)
+void __thiscall TViewMgr::UpdatePaletteIndexFromTurnEventCode(TViewMgr *this,undefined4 param_1)
 
 {
   undefined4 uVar1;
@@ -427,7 +446,7 @@ void TViewMgr::UpdatePaletteIndexFromTurnEventCode(undefined4 param_1)
    Fetches view 0x7E5, updates DLOG/GOLD widget state, runs commit/refresh chain, and temporarily
    masks game-flow flag g_pGameFlowState+0x68 when localization mode is active. */
 
-void TViewMgr::HandleTurnEventVtableSlot40RefreshGoldDialog()
+void __thiscall TViewMgr::HandleTurnEventVtableSlot40RefreshGoldDialog(TViewMgr *this)
 
 {
   int iVar1;
@@ -491,7 +510,7 @@ void TViewMgr::HandleTurnEventVtableSlot40RefreshGoldDialog()
 /* Classifies current turn state (g_pLocalizationTable+8) into overlay mode bucket: returns 0, 1, or
    2. */
 
-undefined4 TViewMgr::ClassifyTurnStateForOverlayMode()
+undefined4 __thiscall TViewMgr::ClassifyTurnStateForOverlayMode(TViewMgr *this)
 
 {
   switch(*(undefined2 *)&g_pSimMgr->field_0x8) {
@@ -522,13 +541,16 @@ undefined4 TViewMgr::ClassifyTurnStateForOverlayMode()
 // GHIDRA_NAME TViewMgr::RunControlStringProviderAndDispatchLocalizedMessage
 // GHIDRA_PROTO undefined __thiscall RunControlStringProviderAndDispatchLocalizedMessage(undefined4 * param_1)
 
-void TViewMgr::RunControlStringProviderAndDispatchLocalizedMessage(undefined4 *param_1)
+void __thiscall
+TViewMgr::RunControlStringProviderAndDispatchLocalizedMessage(TViewMgr *this,undefined4 *param_1)
 
 {
   undefined uVar1;
   undefined3 extraout_var;
+  undefined4 unaff_ESI;
   undefined4 *unaff_FS_OFFSET;
   undefined4 *in_stack_00000008;
+  undefined4 **ppuVar2;
   undefined4 uStack_20;
   undefined4 uStack_1c;
   undefined4 uStack_18;
@@ -547,13 +569,205 @@ void TViewMgr::RunControlStringProviderAndDispatchLocalizedMessage(undefined4 *p
   uStack_14 = 0;
   uStack_1c = in_stack_00000008;
   uStack_20 = in_stack_00000008;
+  ppuVar2 = &param_1;
   in_stack_00000008 = &uStack_20;
-  func_0x004076b7(&param_1);
-  func_0x004096b0();
-  uStack_18 = 0xffffffff;
-  CString::~CString((CString *)&stack0xfffffff0);
-  *unaff_FS_OFFSET = uStack_20;
+  func_0x004076b7(ppuVar2);
+  thunk_DispatchLocalizedUiMessageWithTemplateA13A0(ppuVar2);
+  puStack_8 = (undefined1 *)0xffffffff;
+  uStack_18 = 0x5d5ac6;
+  CString::~CString((CString *)&stack0x00000000);
+  *unaff_FS_OFFSET = unaff_ESI;
   return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005D5D30
+// GHIDRA_NAME TViewMgr::RunNationInfoModalAndReturnNonCancel
+// GHIDRA_PROTO undefined RunNationInfoModalAndReturnNonCancel(int * param_1)
+
+/* WARNING: Removing unreachable block (ram,0x005d5f91) */
+/* WARNING: Removing unreachable block (ram,0x005d5fa7) */
+/* WARNING: Removing unreachable block (ram,0x005d5fcc) */
+/* WARNING: Unknown calling convention -- yet parameter storage is locked */
+
+bool TViewMgr::RunNationInfoModalAndReturnNonCancel(int *param_1)
+
+{
+  int iVar1;
+  code *pcVar2;
+  undefined uVar3;
+  short sVar4;
+  undefined3 extraout_var;
+  int iVar6;
+  int *piVar7;
+  code *pcVar8;
+  int *in_ECX;
+  TAssetMgrVtbl *pTVar9;
+  undefined1 uVar10;
+  undefined4 *unaff_FS_OFFSET;
+  int *in_stack_00000014;
+  CString CStack_bc;
+  undefined4 uStack_b8;
+  code *pcVar11;
+  undefined4 uVar12;
+  CString local_60;
+  uint local_5c;
+  int iStack_58;
+  CString CStack_54;
+  code *pcStack_50;
+  undefined4 uStack_48;
+  int local_44;
+  uint uStack_40;
+  undefined4 local_3c;
+  undefined4 uStack_c;
+  int *piStack_8;
+  undefined4 local_4;
+  int *piVar5;
+  
+  piStack_8 = (int *)&LAB_0063a05a;
+  uStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &uStack_c;
+  local_4 = 0;
+  CString::CString(&local_60);
+  local_4 = CONCAT31(local_4._1_3_,1);
+  uStack_40 = (uint)(ushort)uStack_40;
+  local_3c = (uint)local_3c._2_2_ << 0x10;
+  local_5c = 0;
+  if (*in_stack_00000014 == -1000) {
+    local_5c = (uint)*(ushort *)(in_stack_00000014 + 1);
+  }
+  thunk_BuildUiTextStyleDescriptor();
+  if ((short)local_5c == 0) {
+    pTVar9 = g_pUiViewManager->vftable;
+  }
+  else {
+    (*g_pUiViewManager->vftable->NoOpRuntimeUiCallback_005df3f0)();
+    pTVar9 = g_pUiViewManager->vftable;
+  }
+  uVar3 = (*pTVar9->ResolveTurnEventDialogNodeByMessageContext)();
+  piVar5 = (int *)CONCAT31(extraout_var,uVar3);
+  if (piVar5 == (int *)0x0) {
+    MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+    func_0x004057a4();
+  }
+  iVar1 = *piVar5;
+  (**(code **)(iVar1 + 0x1a0))();
+  iVar6 = (**(code **)(iVar1 + 0x1b8))();
+  if (iVar6 != 0) {
+    *(undefined4 *)(iVar6 + 0x14) = 0x6f6b6179;
+  }
+  (**(code **)(*in_ECX + 0x44))();
+  (**(code **)(iVar1 + 0xf0))();
+  pcVar2 = *(code **)(iVar1 + 0x94);
+  piVar7 = (int *)(*pcVar2)();
+  iVar1 = *piVar7;
+  piStack_8 = piVar7;
+  (**(code **)(iVar1 + 0xc))();
+  if (piVar7 == (int *)0x0) {
+    MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+    func_0x004057a4();
+  }
+  (**(code **)(iVar1 + 0x1c8))();
+  piVar7 = (int *)(*pcVar2)();
+  iVar1 = *piVar7;
+  (**(code **)(iVar1 + 0xc))();
+  if (piVar7 == (int *)0x0) {
+    MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+    func_0x004057a4();
+  }
+  sVar4 = func_0x00403b16();
+  if ((sVar4 < 0) || (sVar4 = func_0x00403b16(), 6 < sVar4)) {
+    uVar12 = 0;
+    (**(code **)(iVar1 + 0xa4))();
+  }
+  else {
+    uVar12 = 0;
+    func_0x00403b16();
+    (**(code **)(iVar1 + 0x1c8))();
+  }
+  piVar7 = (int *)(*pcVar2)();
+  iVar1 = *piVar7;
+  (**(code **)(iVar1 + 0xc))();
+  (**(code **)(iVar1 + 0x1c8))();
+  piVar7 = (int *)(*pcVar2)();
+  iVar1 = *piVar7;
+  uStack_b8 = uVar12;
+  (**(code **)(iVar1 + 0xc))();
+  CStack_bc.m_pchData = (char *)0x5d6041;
+  (**(code **)(iVar1 + 0x1c8))();
+  CStack_bc.m_pchData = (char *)0x696e666f;
+  piVar7 = (int *)(*pcVar2)();
+  iVar1 = *piVar7;
+  (**(code **)(iVar1 + 0xc))();
+  iVar6 = local_3c;
+  (**(code **)(iVar1 + 500))(uStack_40);
+  (**(code **)(iVar1 + 0x1e4))(&stack0xffffff68,0);
+  sVar4 = func_0x004065e1();
+  local_44 = (int)sVar4;
+  pcVar11 = pcVar2;
+  if (piVar7[0xe] < (int)sVar4) {
+    (**(code **)(iVar1 + 300))(&stack0xffffff6c);
+    pcStack_50 = *(code **)(iVar1 + 0x168);
+    (*pcStack_50)(&stack0xffffff68,0);
+    if (piVar7[0xe] < local_44) {
+      pcVar8 = (code *)operator_new(0x68);
+      local_60.m_pchData._0_1_ = 2;
+      pcStack_50 = pcVar8;
+      if (pcVar8 == (code *)0x0) {
+        pcVar8 = (code *)0x0;
+      }
+      else {
+        func_0x004064e2();
+        *(TScrollViewVtbl **)pcVar8 = &TScrollView::_vftable_;
+      }
+      local_60.m_pchData._0_1_ = 1;
+      func_0x004062e9(uStack_48,piVar7 + 9,piVar7 + 0xd);
+      (**(code **)(*(int *)pcVar8 + 0xdc))(0);
+      (**(code **)(iVar6 + 0x174))(piVar7);
+      (**(code **)(*(int *)pcVar8 + 0x170))(piVar7,0);
+      pcVar11 = (code *)0x0;
+      (*pcVar2)(&stack0xffffff50,0);
+      *(int **)(pcVar8 + 0x60) = piVar7;
+      func_0x00408d82();
+    }
+  }
+  if ((char)uStack_40 != '\0') {
+    piVar7 = (int *)(*pcVar11)(0x636e636c);
+    iVar1 = *piVar7;
+    (**(code **)(iVar1 + 0xc))();
+    (**(code **)(iVar1 + 0xa4))(1,1);
+    (**(code **)(iVar1 + 0xa8))(1,0);
+  }
+  if (*(int *)&g_pSimMgr->field_0x44 == 0) {
+    uVar10 = (char)uStack_40;
+  }
+  else {
+    uVar10 = *(undefined1 *)((int)g_pGameFlowState + 0x68);
+    *(undefined1 *)((int)g_pGameFlowState + 0x68) = 0;
+  }
+  if ((short)uStack_b8 != 0) {
+    (**(code **)&g_pSfxPlaybackSystem->vftable[1].field_0x10)
+              (*(undefined2 *)(&stack0xffffff7c + iStack_58 * 2),0,1);
+  }
+  iVar1 = *piVar5;
+  iVar6 = (**(code **)(iVar1 + 0x1ac))();
+  (**(code **)(iVar1 + 0xa0))();
+  (**(code **)(iVar1 + 0x1c))();
+  if (*(int *)&g_pSimMgr->field_0x44 != 0) {
+    *(undefined1 *)((int)g_pGameFlowState + 0x68) = uVar10;
+  }
+  local_60.m_pchData = local_60.m_pchData & 0xffffff00;
+  if (iVar6 != 0x636e636c) {
+    CString::~CString(&CStack_bc);
+    local_60.m_pchData = (char *)0xffffffff;
+    CString::~CString(&CStack_54);
+  }
+  else {
+    CString::~CString(&CStack_bc);
+    local_60.m_pchData = (char *)0xffffffff;
+    CString::~CString(&CStack_54);
+  }
+  *unaff_FS_OFFSET = pcVar2;
+  return iVar6 != 0x636e636c;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005D6480
@@ -797,7 +1011,7 @@ TViewMgr::BuildAndShowTurnOverlayByMode
 /* Computes turn-event dialog placement offsets from current event code (this+0x4), selecting
    special layout buckets for key event ids. */
 
-void TViewMgr::ComputeTurnEventDialogPlacementByCode()
+void __thiscall TViewMgr::ComputeTurnEventDialogPlacementByCode(TViewMgr *this)
 
 {
   short sVar1;
@@ -868,7 +1082,7 @@ LAB_005d6ac9:
 /* Updates main-view nation indicator hooks based on current turn event code (special-case for 0x7DD
    vs default tool branch). */
 
-void TViewMgr::RefreshMainViewNationIndicatorForCurrentTurnEvent()
+void __thiscall TViewMgr::RefreshMainViewNationIndicatorForCurrentTurnEvent(TViewMgr *this)
 
 {
   int iVar1;
@@ -902,7 +1116,7 @@ void TViewMgr::RefreshMainViewNationIndicatorForCurrentTurnEvent()
 /* Refreshes strategic-map status icon widgets for active nation by iterating fixed icon tags
    (sr/am/dg groups) and pushing nation-indexed status values to StrategicMapViewSystem. */
 
-void TViewMgr::RefreshStrategicMapStatusIconsForActiveNation()
+void __thiscall TViewMgr::RefreshStrategicMapStatusIconsForActiveNation(TViewMgr *this)
 
 {
   code *pcVar1;
@@ -927,6 +1141,42 @@ void TViewMgr::RefreshStrategicMapStatusIconsForActiveNation()
   return;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x005D6E50
+// GHIDRA_NAME TViewMgr::HandleTurnEventDialogFactorySlot78
+// GHIDRA_PROTO undefined __thiscall HandleTurnEventDialogFactorySlot78(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT TurnEventState vtable slot +0x78 handler. Same commit/refresh sequence pattern as slot +0x74 over factory-resolved dialog object.
+// GHIDRA_COMMENT_END
+
+/* TurnEventState vtable slot +0x78 handler. Same commit/refresh sequence pattern as slot +0x74 over
+   factory-resolved dialog object. */
+
+void __thiscall TViewMgr::HandleTurnEventDialogFactorySlot78(TViewMgr *this)
+
+{
+  int iVar1;
+  int iVar2;
+  int *piVar3;
+  
+  piVar3 = (int *)(**(code **)(*g_pTurnEventDialogFactoryRegistry + 0x28))();
+  if (piVar3 == (int *)0x0) {
+    MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+    func_0x004057a4(s_D__Ambit_Cross_UViewMgr_cpp_0069b6bc,0x535);
+  }
+  iVar1 = *piVar3;
+  piVar3 = (int *)(**(code **)(iVar1 + 0x94))(0x444c4f47);
+  iVar2 = *piVar3;
+  (**(code **)(iVar2 + 0xc))();
+  if (piVar3 != (int *)0x0) {
+    (**(code **)(iVar2 + 0x1a0))();
+  }
+  (**(code **)(iVar1 + 0x1a0))(1);
+  (**(code **)(iVar1 + 0x1ac))();
+  (**(code **)(iVar1 + 0xa0))();
+  (**(code **)(iVar1 + 0x1c))();
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x005D7090
 // GHIDRA_NAME TViewMgr::DispatchTurnEvent7D8AndUpdateMainViewSelection
 // GHIDRA_PROTO undefined __thiscall DispatchTurnEvent7D8AndUpdateMainViewSelection(void)
@@ -937,7 +1187,7 @@ void TViewMgr::RefreshStrategicMapStatusIconsForActiveNation()
 /* Dispatches turn event 0x7D8, resolves the 'main' UI node, and invokes its post-dispatch update
    callback with the selected nation/context argument. */
 
-void TViewMgr::DispatchTurnEvent7D8AndUpdateMainViewSelection()
+void __thiscall TViewMgr::DispatchTurnEvent7D8AndUpdateMainViewSelection(TViewMgr *this)
 
 {
   int iVar1;
@@ -962,7 +1212,8 @@ void TViewMgr::DispatchTurnEvent7D8AndUpdateMainViewSelection()
 /* Guarded 0x7D8 dispatch path: exits early when turn-flow is busy, otherwise forwards event 0x7D8
    and triggers main-view follow-up update. */
 
-undefined4 TViewMgr::DispatchTurnEvent7D8IfTurnFlowIdle(undefined4 param_1)
+undefined4 __thiscall
+TViewMgr::DispatchTurnEvent7D8IfTurnFlowIdle(TViewMgr *this,undefined4 param_1)
 
 {
   char cVar1;
@@ -1014,6 +1265,24 @@ TViewMgr::InvokeMainWidgetMethod1CCWithArgs
   return;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x005D7F70
+// GHIDRA_NAME TViewMgr::RefreshCityProductionUiSlotAc
+// GHIDRA_PROTO undefined __thiscall RefreshCityProductionUiSlotAc(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Calls StrategicMapViewSystem virtual method at slot +0x5C.
+// GHIDRA_COMMENT_END
+
+/* Calls StrategicMapViewSystem virtual method at slot +0x5C. */
+
+void __thiscall TViewMgr::RefreshCityProductionUiSlotAc(TViewMgr *this)
+
+{
+                    /* WARNING: Could not recover jumptable at 0x005d7f78. Too many branches */
+                    /* WARNING: Treating indirect jump as call */
+  (**(code **)(*g_pStrategicMapViewSystem + 0x5c))();
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x005DB3B0
 // GHIDRA_NAME TViewMgr::HandleTurnEventDialogFactorySlotF4
 // GHIDRA_PROTO undefined __thiscall HandleTurnEventDialogFactorySlotF4(void)
@@ -1024,7 +1293,7 @@ TViewMgr::InvokeMainWidgetMethod1CCWithArgs
 /* TurnEventState vtable slot +0xF4 handler. Selects move/text resources based on current turn state
    and launches matching UI view flow. */
 
-void TViewMgr::HandleTurnEventDialogFactorySlotF4()
+void __thiscall TViewMgr::HandleTurnEventDialogFactorySlotF4(TViewMgr *this)
 
 {
   char cVar1;
@@ -1109,6 +1378,52 @@ LAB_005db4dd:
   return;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x005DB620
+// GHIDRA_NAME TViewMgr::HandleTurnStateExitAndPostFollowupEventCode
+// GHIDRA_PROTO undefined HandleTurnStateExitAndPostFollowupEventCode()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Handles turn-state exit branch by current localization state and posts follow-up event code (5DC/7E0/5EB/or reinit).
+// GHIDRA_COMMENT_END
+
+/* Handles turn-state exit branch by current localization state and posts follow-up event code
+   (5DC/7E0/5EB/or reinit). */
+
+void __thiscall TViewMgr::HandleTurnStateExitAndPostFollowupEventCode(int param_1,short param_2)
+
+{
+  char cVar1;
+  undefined4 uVar2;
+  undefined2 extraout_var;
+  
+  *(short *)(param_1 + 0xf8) = param_2;
+  if (param_2 == 0) {
+    (*g_pSfxPlaybackSystem->vftable->RequestDirectSoundInitIfAllowed)();
+    (*g_pSfxPlaybackSystem->vftable[1].~TEventHandler)
+              (CONCAT22((short)((uint)g_pSimMgr >> 0x10),*(undefined2 *)&g_pSimMgr->field_0x4c));
+    func_0x00406785(CONCAT22(extraout_var,*(undefined2 *)&g_pSimMgr->field_0x4e));
+    *(undefined4 *)(param_1 + 0xf4) = 0;
+    switch(*(undefined4 *)&g_pSimMgr->field_0x8) {
+    case 1:
+      func_0x00408715(0x5dc);
+      return;
+    case 0xe:
+    case 0x16:
+    case 0x17:
+      func_0x00408715(0x7e0);
+      return;
+    case 0x19:
+      uVar2 = func_0x00403b16();
+      cVar1 = func_0x004044b7(uVar2);
+      if (cVar1 != '\0') {
+        func_0x00408715(0x5eb);
+        return;
+      }
+    }
+    func_0x00403553(0);
+  }
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x005DBD30
 // GHIDRA_NAME TViewMgr::HandleTurnEvent5DE_RefreshMainView
 // GHIDRA_PROTO undefined __thiscall HandleTurnEvent5DE_RefreshMainView(void)
@@ -1119,7 +1434,7 @@ LAB_005db4dd:
 /* Event 0x5DE handler: minimal main-view refresh (resolve 'main' widget and invoke refresh vfunc).
     */
 
-void TViewMgr::HandleTurnEvent5DE_RefreshMainView()
+void __thiscall TViewMgr::HandleTurnEvent5DE_RefreshMainView(TViewMgr *this)
 
 {
   int iVar1;
@@ -1148,6 +1463,41 @@ void TViewMgr::HandleTurnEvent5DE_RefreshMainView()
   return;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x005DBDD0
+// GHIDRA_NAME TViewMgr::HandleTurnEvent5DF_RefreshMainView
+// GHIDRA_PROTO undefined __thiscall HandleTurnEvent5DF_RefreshMainView(void)
+
+void __thiscall TViewMgr::HandleTurnEvent5DF_RefreshMainView(TViewMgr *this)
+
+{
+  int iVar1;
+  int *piVar2;
+  
+  piVar2 = (int *)(**(code **)(**(int **)(g_pDisplayMgr + 4) + 0x94))(0x6d61696e);
+  iVar1 = *piVar2;
+  (**(code **)(iVar1 + 0xc))();
+  (**(code **)(iVar1 + 0xe4))();
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005DC1C0
+// GHIDRA_NAME TViewMgr::UiRuntimeSlotC4
+// GHIDRA_PROTO undefined __thiscall UiRuntimeSlotC4(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Calls StrategicMapViewSystem virtual method at slot +0x70.
+// GHIDRA_COMMENT_END
+
+/* Calls StrategicMapViewSystem virtual method at slot +0x70. */
+
+void __thiscall TViewMgr::UiRuntimeSlotC4(TViewMgr *this)
+
+{
+                    /* WARNING: Could not recover jumptable at 0x005dc1c8. Too many branches */
+                    /* WARNING: Treating indirect jump as call */
+  (**(code **)(*g_pStrategicMapViewSystem + 0x70))();
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x005DC1E0
 // GHIDRA_NAME TViewMgr::HandleTurnEventDialogFactorySlotD0
 // GHIDRA_PROTO undefined __thiscall HandleTurnEventDialogFactorySlotD0(void)
@@ -1158,7 +1508,7 @@ void TViewMgr::HandleTurnEvent5DE_RefreshMainView()
 /* TurnEventState vtable slot +0xD0 handler. Builds multi-part text/context payload using
    TOOL/GOLD/MAIN resources and commits through UI runtime path. */
 
-void TViewMgr::HandleTurnEventDialogFactorySlotD0()
+void __thiscall TViewMgr::HandleTurnEventDialogFactorySlotD0(TViewMgr *this)
 
 {
   code *pcVar1;
@@ -1279,7 +1629,7 @@ void TViewMgr::HandleTurnEventDialogFactorySlotD0()
 
 /* Event 0xF3D handler: populates recent-turn message rows from nation turn-log entries. */
 
-void TViewMgr::HandleTurnEventF3D_PopulateRecentTurnMessages()
+void __thiscall TViewMgr::HandleTurnEventF3D_PopulateRecentTurnMessages(TViewMgr *this)
 
 {
   int iVar1;
@@ -1335,7 +1685,7 @@ void TViewMgr::HandleTurnEventF3D_PopulateRecentTurnMessages()
       local_30.m_pchData = *(char **)(*(int *)pcVar5 + 0x2c);
       do {
         psVar3 = (short *)(*(code *)local_30.m_pchData)(iVar6);
-        CString__Format(&local_38,&g_szDecimalFormat,(int)psVar3[3]);
+        CString::Format(&local_38,&g_szDecimalFormat,(int)psVar3[3]);
         switch(psVar3[1]) {
         case 0:
         case 1:
@@ -1361,7 +1711,7 @@ void TViewMgr::HandleTurnEventF3D_PopulateRecentTurnMessages()
         case 3:
           func_0x0040619f(g_pSimMgr,&stack0xffffffc0,0x2747,1 < psVar3[3],0x2717,(int)psVar3[2]);
         }
-        CString__Format(&stack0xffffffc4,&g_szDecimalFormat,(int)*psVar3);
+        CString::Format(&stack0xffffffc4,&g_szDecimalFormat,(int)*psVar3);
         uVar4 = AssignSharedStringConcatCStrAndRef(&CStack_2c,s_Turn_0069b71c,&stack0xffffffc4);
         uStack_c._0_1_ = 3;
         src_ref = (CString *)AssignSharedStringConcatRefAndCStr(&local_30,uVar4,&DAT_00699320);
@@ -1418,7 +1768,7 @@ void TViewMgr::HandleTurnEventF3D_PopulateRecentTurnMessages()
    Initializes a dialog/hotkey control block from DAT_00698B1A template data, conditionally
    registers it, then releases temporary dialog objects. */
 
-void TViewMgr::HandleTurnEventVtableSlot2CInitializeHotKeyDialog()
+void __thiscall TViewMgr::HandleTurnEventVtableSlot2CInitializeHotKeyDialog(TViewMgr *this)
 
 {
   int iVar1;
@@ -1453,7 +1803,7 @@ void TViewMgr::HandleTurnEventVtableSlot2CInitializeHotKeyDialog()
     puVar2 = puVar3;
   } while ((int)puVar3 < 0x698b52);
   func_0x00409764(iVar1);
-  iVar4 = CDialog__DoModal();
+  iVar4 = CDialog::DoModal();
   if (iVar4 != 0) {
     (*g_pSimMgr->vftable[7].GetTSimMgrClassNamePointer)(iVar1);
   }
@@ -1480,7 +1830,7 @@ void TViewMgr::HandleTurnEventVtableSlot2CInitializeHotKeyDialog()
 /* TurnEventState vtable slot +0xB4 handler. Runs factory/view transaction and returns non-cancel
    acceptance state. */
 
-bool TViewMgr::HandleTurnEventDialogFactorySlotB4()
+bool __thiscall TViewMgr::HandleTurnEventDialogFactorySlotB4(TViewMgr *this)
 
 {
   int iVar1;
@@ -1523,7 +1873,7 @@ bool TViewMgr::HandleTurnEventDialogFactorySlotB4()
 /* TurnEventState vtable slot +0xD8 handler. Opens dialog id 0x546, updates GOLD/name widgets with
    argument payload, and commits refresh chain. */
 
-void TViewMgr::HandleTurnEventDialogFactorySlotD8()
+void __thiscall TViewMgr::HandleTurnEventDialogFactorySlotD8(TViewMgr *this)
 
 {
   int iVar1;
@@ -1570,7 +1920,7 @@ void TViewMgr::HandleTurnEventDialogFactorySlotD8()
 /* TurnEventState vtable slot +0xDC handler. Runs factory transaction and returns resulting
    command/status value from commit phase. */
 
-undefined4 TViewMgr::ExecuteUiFactoryModalDialogAndReturnResultTag()
+undefined4 __thiscall TViewMgr::ExecuteUiFactoryModalDialogAndReturnResultTag(TViewMgr *this)
 
 {
   int iVar1;
@@ -1609,7 +1959,7 @@ undefined4 TViewMgr::ExecuteUiFactoryModalDialogAndReturnResultTag()
 /* Handles global-map nation-context selection: if selected nation matches active map state,
    refreshes view id 0x24F9; otherwise forwards to map context-menu helper (FUN_00503AC0). */
 
-void TViewMgr::HandleGlobalMapNationContextSelection(undefined4 param_1)
+void __thiscall TViewMgr::HandleGlobalMapNationContextSelection(TViewMgr *this,undefined4 param_1)
 
 {
   int iVar1;
@@ -1642,7 +1992,7 @@ void TViewMgr::HandleGlobalMapNationContextSelection(undefined4 param_1)
 /* TurnEventState vtable slot +0xE4 handler. Opens dialog id 0x1C52, updates GOLD->name widget path,
    and commits. */
 
-void TViewMgr::HandleTurnEventDialogFactorySlotE4()
+void __thiscall TViewMgr::HandleTurnEventDialogFactorySlotE4(TViewMgr *this)
 
 {
   int iVar1;
@@ -1684,7 +2034,7 @@ void TViewMgr::HandleTurnEventDialogFactorySlotE4()
 /* TurnEventState vtable slot +0xF0 handler. Opens dialog id 0x2506, updates PAGE widget selection,
    and commits refresh chain. */
 
-int * TViewMgr::HandleTurnEventDialogFactorySlotF0()
+int * __thiscall TViewMgr::HandleTurnEventDialogFactorySlotF0(TViewMgr *this)
 
 {
   int iVar1;
@@ -1727,7 +2077,7 @@ int * TViewMgr::HandleTurnEventDialogFactorySlotF0()
 /* TurnEventState vtable slot +0xE8 handler. Opens dialog id 0x0F0A, applies argument to GOLD
    widget, and commits refresh chain. */
 
-void TViewMgr::HandleTurnEventDialogFactorySlotE8()
+void __thiscall TViewMgr::HandleTurnEventDialogFactorySlotE8(TViewMgr *this)
 
 {
   int iVar1;
@@ -1761,6 +2111,130 @@ void TViewMgr::HandleTurnEventDialogFactorySlotE8()
   (**(code **)(iVar1 + 0x1ac))();
   (**(code **)(iVar1 + 0xa0))();
   (**(code **)(iVar1 + 0x1c))();
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005DDD20
+// GHIDRA_NAME TViewMgr::ShowCivilianLedgerDialogAndSelectUnit
+// GHIDRA_PROTO void __thiscall ShowCivilianLedgerDialogAndSelectUnit(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Shows the civilian ledger/list dialog (also reachable via CTRL+Disband and hotkey 't') and applies the selected civilian as active map selection.
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Algorithm:
+// GHIDRA_COMMENT 1. Acquire the map UI page manager and page container for the ledger context.
+// GHIDRA_COMMENT 2. Build and initialize the civilian-ledger dialog instance with page index 10.
+// GHIDRA_COMMENT 3. Enter modal dialog processing until the list selection is confirmed/cancelled.
+// GHIDRA_COMMENT 4. If a civilian index is selected, focus that entry in the map UI context.
+// GHIDRA_COMMENT 5. For active civilian task states (0/2/3), dispatch map selection update callback.
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Parameters:
+// GHIDRA_COMMENT - None.
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Returns:
+// GHIDRA_COMMENT - void.
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Special Cases:
+// GHIDRA_COMMENT - If no list item is selected (index -1), no selection update is applied.
+// GHIDRA_COMMENT - Internal allocation/assertion failures follow engine nil-pointer/failure paths.
+// GHIDRA_COMMENT_END
+
+/* Shows the civilian ledger/list dialog (also reachable via CTRL+Disband and hotkey 't') and
+   applies the selected civilian as active map selection.
+   
+   Algorithm:
+   1. Acquire the map UI page manager and page container for the ledger context.
+   2. Build and initialize the civilian-ledger dialog instance with page index 10.
+   3. Enter modal dialog processing until the list selection is confirmed/cancelled.
+   4. If a civilian index is selected, focus that entry in the map UI context.
+   5. For active civilian task states (0/2/3), dispatch map selection update callback.
+   
+   Parameters:
+   - None.
+   
+   Returns:
+   - void.
+   
+   Special Cases:
+   - If no list item is selected (index -1), no selection update is applied.
+   - Internal allocation/assertion failures follow engine nil-pointer/failure paths. */
+
+void __thiscall TViewMgr::ShowCivilianLedgerDialogAndSelectUnit(TViewMgr *this)
+
+{
+  int iVar1;
+  int *pViewManagerContext;
+  int *pCivilianLedgerDialog;
+  int *piVar2;
+  int nLedgerPageHandle;
+  undefined4 uVar3;
+  int *unaff_FS_OFFSET;
+  int *piVar4;
+  int iVar5;
+  int local_28;
+  int iStack_c;
+  undefined1 *puStack_8;
+  undefined4 uStack_4;
+  int dwViewTypeId;
+  short nSelectedCivilianIndex;
+  
+  uStack_4 = 0xffffffff;
+  puStack_8 = &LAB_0063a4d4;
+  iStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = (int)&iStack_c;
+  pViewManagerContext._0_1_ =
+       (*g_pUiViewManager->vftable->ResolveTurnEventDialogNodeByMessageContext)();
+  pViewManagerContext = (int *)CONCAT31(pViewManagerContext._1_3_,pViewManagerContext._0_1_);
+  if (pViewManagerContext == (int *)0x0) {
+    MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+    func_0x004057a4();
+  }
+  iVar1 = *pViewManagerContext;
+  pCivilianLedgerDialog = (int *)(**(code **)(iVar1 + 0x94))();
+  if (pCivilianLedgerDialog == (int *)0x0) {
+    MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+    func_0x004057a4();
+  }
+  iVar5 = pCivilianLedgerDialog[8];
+  (**(code **)(*pCivilianLedgerDialog + 0x1c))();
+  piVar2 = (int *)operator_new();
+  iStack_c = 0;
+  if (piVar2 == (int *)0x0) {
+    piVar2 = (int *)0x0;
+  }
+  else {
+    func_0x0040778e();
+    *piVar2 = (int)&TSuperCivRoster::_vftable_;
+    *(undefined2 *)(piVar2 + 0x21) = 0xffff;
+  }
+  iStack_c = -1;
+  (**(code **)(*piVar2 + 0x1b8))();
+  piVar2[7] = 0x70616765;
+  nLedgerPageHandle = operator_new(0x94);
+  if (nLedgerPageHandle == 0) {
+    uVar3 = 0;
+  }
+  else {
+    uVar3 = func_0x0040541b();
+  }
+  piVar4 = (int *)0x2746;
+  func_0x00401fd2(0xdac,&stack0xffffffc8,&stack0xffffffd0,5,5,0x2746,10);
+  func_0x00401186(uVar3,0,0xe,0x2b6a,0xfffffffe,0);
+  (**(code **)(*piVar4 + 0x44))(pViewManagerContext,&stack0xffffffbc);
+  (**(code **)(iVar1 + 0xf0))(&stack0xffffffb4,0);
+  (**(code **)(iVar1 + 0x1a0))(1);
+  (**(code **)(iVar1 + 0x1ac))();
+  nSelectedCivilianIndex = (short)piVar2[0x21];
+  (**(code **)(iVar1 + 0xa0))();
+  (**(code **)(iVar1 + 0x1c))();
+  if (nSelectedCivilianIndex != -1) {
+    (**(code **)(*(int *)piVar4[0x3c] + 0x1e8))(nSelectedCivilianIndex);
+    iVar1 = *(int *)(*(int *)(*(int *)&g_pGlobalMapState->field_0xc + 0x20 +
+                             nSelectedCivilianIndex * 0x24) + 8);
+    if (((iVar1 == 0) || (iVar1 == 3)) || (iVar1 == 2)) {
+      (**(code **)(g_pSelectedCivilianOrderState->vftable + 0x28))(nSelectedCivilianIndex,2);
+    }
+  }
+  *unaff_FS_OFFSET = iVar5;
   return;
 }
 
@@ -1834,7 +2308,7 @@ int * TViewMgr::MakePlanetSeedDialog(void)
   (**(code **)(iVar1 + 0xc))();
   pCStack_5c = (CString *)&pcStack_24;
   CStack_60.m_pchData = (char *)0x5de0c7;
-  func_0x00406afa();
+  thunk_BuildUiTextStyleDescriptor();
   CVar9.m_pchData = (char *)0x0;
   (**(code **)(iVar1 + 0x1b4))();
   pCStack_5c = (CString *)0x5de0e7;
@@ -1859,7 +2333,7 @@ int * TViewMgr::MakePlanetSeedDialog(void)
   pcStack_70 = (code *)&stack0xffffffc8;
   uStack_6c = 0;
   uStack_74 = 0x5de150;
-  func_0x00406afa();
+  thunk_BuildUiTextStyleDescriptor();
   puStack_68 = &stack0xffffffc8;
   pcVar8 = (code *)0x0;
   uStack_6c = 0x5de162;
@@ -1880,7 +2354,7 @@ int * TViewMgr::MakePlanetSeedDialog(void)
   (**(code **)(*piVar4 + 0x1c0))();
   CStack_84.m_pchData = (char *)&uStack_6c;
   uStack_6c = 0;
-  func_0x004093cc(0x2b6c);
+  thunk_MapUiThemeCodeToStyleFlags(0x2b6c);
   CStack_84.m_pchData = (char *)&uStack_6c;
   (**(code **)(*g_pDisplayMgr + 0x54))();
   func_0x004010be(0x3b);
@@ -1931,5 +2405,208 @@ int * TViewMgr::MakePlanetSeedDialog(void)
   CString::~CString(&CStack_7c);
   *unaff_FS_OFFSET = text_or_resource_id.m_pchData;
   return unaff_EBX;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005DE8F0
+// GHIDRA_NAME TViewMgr::DispatchUiRuntimeMessage101AAndRefreshActiveView
+// GHIDRA_PROTO undefined DispatchUiRuntimeMessage101AAndRefreshActiveView()
+
+void __fastcall TViewMgr::DispatchUiRuntimeMessage101AAndRefreshActiveView(int *param_1)
+
+{
+  int iVar1;
+  undefined uVar2;
+  undefined3 extraout_var;
+  undefined4 uStack_14;
+  int *piVar3;
+  
+  uStack_14 = 0x101a;
+  uVar2 = (*g_pUiViewManager->vftable->ResolveTurnEventDialogNodeByMessageContext)();
+  piVar3 = (int *)CONCAT31(extraout_var,uVar2);
+  if (piVar3 == (int *)0x0) {
+    MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+    func_0x004057a4(s_D__Ambit_Cross_UViewMgr_more_cpp_0069b740,0x33f);
+  }
+  (**(code **)(*param_1 + 0x44))(piVar3,&stack0xfffffff4);
+  iVar1 = *piVar3;
+  (**(code **)(iVar1 + 0xf0))(&uStack_14,0);
+  (**(code **)(iVar1 + 0x1ac))();
+  (**(code **)(iVar1 + 0xa0))();
+  (**(code **)(iVar1 + 0x1c))();
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005DE990
+// GHIDRA_NAME TViewMgr::ShowLocalizedUiPromptByGroupAndIndex
+// GHIDRA_PROTO char __stdcall ShowLocalizedUiPromptByGroupAndIndex(int uiStringIndex, int uiStringGroup, int promptFlagA, int promptFlagB)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Setting prototype: char ShowLocalizedUiPromptByGroupAndIndex(int uiStringIndex, int uiStringGroup, int promptFlagA, int promptFlagB)
+// GHIDRA_COMMENT_END
+
+/* Setting prototype: char ShowLocalizedUiPromptByGroupAndIndex(int uiStringIndex, int
+   uiStringGroup, int promptFlagA, int promptFlagB) */
+
+char TViewMgr::ShowLocalizedUiPromptByGroupAndIndex
+               (int uiStringIndex,int uiStringGroup,int promptFlagA,int promptFlagB)
+
+{
+  char promptResult;
+  int *unaff_FS_OFFSET;
+  int *piVar1;
+  undefined1 auStack_34 [4];
+  undefined *puStack_30;
+  undefined4 uStack_2c;
+  int iStack_28;
+  CString *pCStack_24;
+  CString CStack_20;
+  int iStack_1c;
+  CString local_10;
+  int local_c;
+  undefined1 *puStack_8;
+  undefined1 *local_4;
+  
+  local_4 = (undefined1 *)0xffffffff;
+  puStack_8 = &LAB_0063a568;
+  local_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = (int)&local_c;
+  iStack_1c = 0x5de9b3;
+  CString::CString(&local_10);
+  iStack_1c = uiStringGroup;
+  pCStack_24 = &local_10;
+  CStack_20.m_pchData = (char *)uiStringIndex;
+  local_4 = (undefined1 *)0x0;
+  iStack_28 = 0x5de9d5;
+  func_0x00401e7e();
+  iStack_28 = uiStringIndex;
+  puStack_30 = &DAT_006a5be0;
+  local_4 = auStack_34;
+  piVar1 = &iStack_1c;
+  func_0x004076b7(piVar1);
+  promptResult = thunk_DispatchLocalizedUiMessageWithTemplateA13A0(piVar1);
+  uStack_2c = 0x5dea0f;
+  CString::~CString(&CStack_20);
+  *unaff_FS_OFFSET = iStack_1c;
+  return promptResult;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005DEA60
+// GHIDRA_NAME TViewMgr::CreateModalMessageCommandAndQueue
+// GHIDRA_PROTO undefined CreateModalMessageCommandAndQueue()
+
+void TViewMgr::CreateModalMessageCommandAndQueue(CString *param_1,undefined4 param_2)
+
+{
+  undefined4 *puVar1;
+  undefined4 *unaff_FS_OFFSET;
+  TApplication *pTVar2;
+  undefined4 uStack_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_0063a592;
+  uStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &uStack_c;
+  puVar1 = (undefined4 *)operator_new(0x20);
+  local_4 = 0;
+  if (puVar1 == (undefined4 *)0x0) {
+    puVar1 = (undefined4 *)0x0;
+  }
+  else {
+    func_0x00403d5f();
+    local_4 = CONCAT31(local_4._1_3_,1);
+    CString::CString((CString *)(puVar1 + 6));
+    *puVar1 = &TModalMessageCommand::_vftable_;
+  }
+  local_4 = 0xffffffff;
+  CString::operator=((CString *)(puVar1 + 6),param_1);
+  puVar1[7] = param_2;
+  pTVar2 = g_pGlobalUiRootController;
+  func_0x00405ee3(0x48657921,g_pGlobalUiRootController,0,0,0);
+  (*g_pGlobalUiRootController->vftable->OrphanCallChain_C11_I88_004874b0)(puVar1);
+  *unaff_FS_OFFSET = pTVar2;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005DEB40
+// GHIDRA_NAME TViewMgr::DispatchGameStateEventIfLocalizedPromptAccepted
+// GHIDRA_PROTO undefined DispatchGameStateEventIfLocalizedPromptAccepted()
+
+char TViewMgr::DispatchGameStateEventIfLocalizedPromptAccepted(int param_1)
+
+{
+  char cVar1;
+  short sVar2;
+  undefined4 extraout_ECX;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 *puVar3;
+  undefined4 uStack_30;
+  undefined *puStack_2c;
+  undefined4 uStack_28;
+  undefined4 uStack_24;
+  CString CStack_20;
+  undefined4 uStack_1c;
+  undefined4 uStack_18;
+  CString local_10;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_0063a5b8;
+  local_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &local_c;
+  uStack_18 = 0x5deb60;
+  CString::CString(&local_10);
+  local_4 = 0;
+  if (*(int *)&g_pSimMgr->field_0x44 == 2) {
+    uStack_18 = 0x31;
+  }
+  else if (*(int *)&g_pSimMgr->field_0x44 == 1) {
+    if (param_1 == 0x6367616d) {
+      uStack_18 = 0x37;
+    }
+    else {
+      uStack_18 = 0x2f;
+    }
+  }
+  else {
+    if (param_1 != 0x6e657767) {
+      if (param_1 == 0x71756974) {
+        uStack_18 = 0x2a;
+        goto LAB_005debfa;
+      }
+      if (param_1 == 0x6c6f6164) {
+        uStack_18 = 0x33;
+        goto LAB_005debfa;
+      }
+    }
+    uStack_18 = 0x2b;
+  }
+LAB_005debfa:
+  CStack_20.m_pchData = (char *)&local_10;
+  uStack_1c = 0x2737;
+  uStack_24 = 0x5dec05;
+  func_0x00401e7e();
+  uStack_24 = 1;
+  uStack_28 = 0;
+  puStack_2c = &DAT_006a5be0;
+  puStack_8 = (undefined1 *)&uStack_30;
+  puVar3 = &uStack_1c;
+  uStack_30 = extraout_ECX;
+  func_0x004076b7(puVar3);
+  cVar1 = thunk_DispatchLocalizedUiMessageWithTemplateA13A0(puVar3);
+  if ((cVar1 != '\0') && (*(int *)&g_pSimMgr->field_0x44 == 2)) {
+    uStack_28 = 0xfffffffe;
+    puStack_2c = (undefined *)0x5dec4a;
+    sVar2 = func_0x00403b16();
+    puStack_2c = (undefined *)(int)sVar2;
+    uStack_30 = 0x61626469;
+    func_0x00406efb();
+  }
+  uStack_28 = 0x5dec6f;
+  CString::~CString(&CStack_20);
+  *unaff_FS_OFFSET = uStack_1c;
+  return cVar1;
 }
 

@@ -7,7 +7,8 @@
 // GHIDRA_NAME TTreatiesView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TTreatiesView * TTreatiesView::_scalar_deleting_destructor_(byte param_1)
+TTreatiesView * __thiscall
+TTreatiesView::_scalar_deleting_destructor_(TTreatiesView *this,byte param_1)
 
 {
   func_0x004032d8();
@@ -51,7 +52,7 @@ undefined4 * TTreatiesView::CreateObject(void)
 // GHIDRA_NAME TTreatiesView::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TTreatiesView::GetRuntimeClass()
+CRuntimeClass * __thiscall TTreatiesView::GetRuntimeClass(TTreatiesView *this)
 
 {
   return &classTTreatiesView;
@@ -61,7 +62,7 @@ CRuntimeClass * TTreatiesView::GetRuntimeClass()
 // GHIDRA_NAME TTreatiesView::NoOpUiLifecycleHook
 // GHIDRA_PROTO undefined __thiscall NoOpUiLifecycleHook(CString param_1)
 
-void TTreatiesView::NoOpUiLifecycleHook(CString param_1)
+void __thiscall TTreatiesView::NoOpUiLifecycleHook(TTreatiesView *this,CString param_1)
 
 {
   _vslot_fn *p_Var1;
@@ -131,7 +132,7 @@ void TTreatiesView::NoOpUiLifecycleHook(CString param_1)
 // GHIDRA_NAME TTreatiesView::ApplyRectSlot110
 // GHIDRA_PROTO undefined __thiscall ApplyRectSlot110(void)
 
-void TTreatiesView::ApplyRectSlot110()
+void __thiscall TTreatiesView::ApplyRectSlot110(TTreatiesView *this)
 
 {
   short sVar1;
@@ -206,11 +207,11 @@ void TTreatiesView::ApplyRectSlot110()
   pCStack_54 = (CString *)&local_38;
   uStack_58 = 0x2b6b;
   uStack_5c = 0x4f7ce3;
-  func_0x004093cc();
+  thunk_MapUiThemeCodeToStyleFlags();
   pCStack_54 = (CString *)&local_3c;
   uStack_58 = 0x2b68;
   uStack_5c = 0x4f7cf5;
-  func_0x004093cc();
+  thunk_MapUiThemeCodeToStyleFlags();
   pCStack_54 = &local_40;
   uStack_58 = 0x20;
   uStack_5c = 0x2733;
@@ -221,12 +222,12 @@ void TTreatiesView::ApplyRectSlot110()
   iVar4 = CONCAT22((short)((uint)unaff_EDI >> 0x10),0x48 - (short)this->ownerOffsetX);
   func_0x00409444();
   puStack_60 = puVar3 + 1;
-  func_0x00408d6e(iVar4 + 1);
+  thunk_SetQuickDrawTextOriginWithContextOffset(iVar4 + 1);
   puStack_60 = &stack0xffffffb4;
   func_0x004029aa();
   func_0x00409444();
   puStack_60 = puVar3;
-  func_0x00408d6e(iVar4);
+  thunk_SetQuickDrawTextOriginWithContextOffset(iVar4);
   puStack_60 = &stack0xffffffb4;
   func_0x004029aa();
   puStack_60 = (undefined1 *)0x1;
@@ -237,16 +238,16 @@ void TTreatiesView::ApplyRectSlot110()
     iVar4 = CONCAT22((short)((uint)iVar4 >> 0x10),
                      *(short *)((int)&local_34[-4].m_pchData + iVar2 * 2) -
                      (short)this->ownerOffsetY);
-    sVar1 = func_0x00405b7d(&uStack_58);
+    sVar1 = thunk_MeasureTextExtentWithCachedQuickDrawStyle(&uStack_58);
     puVar3 = (undefined1 *)
              CONCAT22((short)((uint)puVar3 >> 0x10),
                       (*(short *)((int)&local_34[0].m_pchData + iVar2 * 2) - sVar1 / 2) -
                       (short)this->ownerOffsetX);
     func_0x00409444(pCStack_54);
-    func_0x00408d6e(puVar3 + 1,iVar4 + 1);
+    thunk_SetQuickDrawTextOriginWithContextOffset(puVar3 + 1,iVar4 + 1);
     func_0x004029aa(&uStack_58);
     func_0x00409444(unaff_EDI);
-    func_0x00408d6e(puVar3,iVar4);
+    thunk_SetQuickDrawTextOriginWithContextOffset(puVar3,iVar4);
     func_0x004029aa(&uStack_58);
     iVar2 = iVar2 + 1;
   } while (iVar2 < 7);
@@ -267,7 +268,7 @@ void TTreatiesView::ApplyRectSlot110()
 // GHIDRA_NAME TTreatiesView::OrphanRetStub_00430550
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_00430550(void)
 
-void TTreatiesView::OrphanRetStub_00430550()
+void __thiscall TTreatiesView::OrphanRetStub_00430550(TTreatiesView *this)
 
 {
   undefined uVar1;
@@ -285,7 +286,8 @@ void TTreatiesView::OrphanRetStub_00430550()
 // GHIDRA_NAME TTreatiesView::HandleEvent
 // GHIDRA_PROTO undefined __thiscall HandleEvent(int param_1, int param_2, undefined4 param_3)
 
-void TTreatiesView::HandleEvent(int param_1, int param_2, undefined4 param_3)
+void __thiscall
+TTreatiesView::HandleEvent(TTreatiesView *this,int param_1,int param_2,undefined4 param_3)
 
 {
   uint uVar1;

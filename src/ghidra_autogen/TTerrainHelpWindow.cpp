@@ -37,17 +37,17 @@ undefined4 * TTerrainHelpWindow::CreateObject(void)
 // GHIDRA_NAME TTerrainHelpWindow::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TTerrainHelpWindow::GetRuntimeClass()
+CRuntimeClass * __thiscall TTerrainHelpWindow::GetRuntimeClass(TTerrainHelpWindow *this)
 
 {
-  return &classRuntimeClass;
+  return &classTTerrainHelpWindow;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00504D40
-// GHIDRA_NAME TTerrainHelpWindow::ConstructTTerrainHelpWindowBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTTerrainHelpWindowBaseState(void)
+// GHIDRA_NAME TTerrainHelpWindow::TTerrainHelpWindow
+// GHIDRA_PROTO undefined __thiscall TTerrainHelpWindow(void)
 
-TTerrainHelpWindow * TTerrainHelpWindow::ConstructTTerrainHelpWindowBaseState()
+TTerrainHelpWindow * __thiscall TTerrainHelpWindow::TTerrainHelpWindow(TTerrainHelpWindow *this)
 
 {
   func_0x004054ed();
@@ -59,7 +59,8 @@ TTerrainHelpWindow * TTerrainHelpWindow::ConstructTTerrainHelpWindowBaseState()
 // GHIDRA_NAME TTerrainHelpWindow::DestructTTerrainHelpWindowAndMaybeFree
 // GHIDRA_PROTO undefined __thiscall DestructTTerrainHelpWindowAndMaybeFree(byte param_1)
 
-TTerrainHelpWindow * TTerrainHelpWindow::DestructTTerrainHelpWindowAndMaybeFree(byte param_1)
+TTerrainHelpWindow * __thiscall
+TTerrainHelpWindow::DestructTTerrainHelpWindowAndMaybeFree(TTerrainHelpWindow *this,byte param_1)
 
 {
   func_0x00403873();
@@ -67,5 +68,17 @@ TTerrainHelpWindow * TTerrainHelpWindow::DestructTTerrainHelpWindowAndMaybeFree(
     operator_delete(this);
   }
   return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00504DC0
+// GHIDRA_NAME TTerrainHelpWindow::CallVoidSlotA0
+// GHIDRA_PROTO undefined __thiscall CallVoidSlotA0(void)
+
+void __thiscall TTerrainHelpWindow::CallVoidSlotA0(TTerrainHelpWindow *this)
+
+{
+  func_0x004067e4();
+  *(undefined4 *)(g_pHelpMgr + 0xc) = 0;
+  return;
 }
 

@@ -37,7 +37,7 @@ undefined4 * TCancelGameOptionsCommand::CreateObject(void)
 // GHIDRA_NAME TCancelGameOptionsCommand::DoIt
 // GHIDRA_PROTO undefined __thiscall DoIt(void)
 
-void TCancelGameOptionsCommand::DoIt()
+void __thiscall TCancelGameOptionsCommand::DoIt(TCancelGameOptionsCommand *this)
 
 {
   void *pvVar1;
@@ -70,7 +70,8 @@ TCancelGameOptionsCommand::_scalar_deleting_destructor_
 // GHIDRA_NAME TCancelGameOptionsCommand::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TCancelGameOptionsCommand::GetRuntimeClass()
+CRuntimeClass * __thiscall
+TCancelGameOptionsCommand::GetRuntimeClass(TCancelGameOptionsCommand *this)
 
 {
   return &classTCancelGameOptionsCommand;

@@ -7,7 +7,8 @@
 // GHIDRA_NAME TMyNumberText::CloneCityDialogStateWithSharedStringInit
 // GHIDRA_PROTO undefined __thiscall CloneCityDialogStateWithSharedStringInit(int param_1)
 
-TMyNumberText * TMyNumberText::CloneCityDialogStateWithSharedStringInit(int param_1)
+TMyNumberText * __thiscall
+TMyNumberText::CloneCityDialogStateWithSharedStringInit(TMyNumberText *this,int param_1)
 
 {
   undefined2 uVar1;
@@ -90,17 +91,17 @@ undefined4 * TMyNumberText::CreateObject(void)
 // GHIDRA_NAME TMyNumberText::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TMyNumberText::GetRuntimeClass()
+CRuntimeClass * __thiscall TMyNumberText::GetRuntimeClass(TMyNumberText *this)
 
 {
-  return &classRuntimeClass;
+  return &classTMyNumberText;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B4FD0
-// GHIDRA_NAME TMyNumberText::ConstructTMyNumberTextBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTMyNumberTextBaseState(void)
+// GHIDRA_NAME TMyNumberText::TMyNumberText
+// GHIDRA_PROTO undefined __thiscall TMyNumberText(void)
 
-TMyNumberText * TMyNumberText::ConstructTMyNumberTextBaseState()
+TMyNumberText * __thiscall TMyNumberText::TMyNumberText(TMyNumberText *this)
 
 {
   func_0x0040913d();
@@ -113,7 +114,8 @@ TMyNumberText * TMyNumberText::ConstructTMyNumberTextBaseState()
 // GHIDRA_NAME TMyNumberText::DestructTMyNumberTextAndMaybeFree
 // GHIDRA_PROTO undefined __thiscall DestructTMyNumberTextAndMaybeFree(byte param_1)
 
-TMyNumberText * TMyNumberText::DestructTMyNumberTextAndMaybeFree(byte param_1)
+TMyNumberText * __thiscall
+TMyNumberText::DestructTMyNumberTextAndMaybeFree(TMyNumberText *this,byte param_1)
 
 {
   func_0x004016a4();
@@ -124,10 +126,10 @@ TMyNumberText * TMyNumberText::DestructTMyNumberTextAndMaybeFree(byte param_1)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B5050
-// GHIDRA_NAME TMyNumberText::UpdateMyNumberTextFromTownValueString
-// GHIDRA_PROTO undefined __thiscall UpdateMyNumberTextFromTownValueString(void)
+// GHIDRA_NAME TMyNumberText::UpdateControlCachedIntFromWindowText
+// GHIDRA_PROTO undefined __thiscall UpdateControlCachedIntFromWindowText(void)
 
-char * TMyNumberText::UpdateMyNumberTextFromTownValueString()
+char * __thiscall TMyNumberText::UpdateControlCachedIntFromWindowText(TMyNumberText *this)
 
 {
   int unaff_ESI;

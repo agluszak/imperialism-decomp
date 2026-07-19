@@ -147,6 +147,62 @@ void CFile::~CFile(void)
   return;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x0060AD44
+// GHIDRA_NAME CFile::Duplicate
+// GHIDRA_PROTO undefined Duplicate()
+
+int * CFile::Duplicate(void)
+
+{
+  int iVar1;
+  int *piVar2;
+  HANDLE hTargetProcessHandle;
+  HANDLE hSourceProcessHandle;
+  int extraout_ECX;
+  int unaff_EBP;
+  undefined4 *unaff_FS_OFFSET;
+  HANDLE hSourceHandle;
+  LPHANDLE lpTargetHandle;
+  DWORD DVar3;
+  BOOL BVar4;
+  DWORD dwOptions;
+  undefined4 uVar5;
+  
+  _EH_prolog();
+  iVar1 = operator_new(0x10);
+  *(int *)(unaff_EBP + -0x14) = iVar1;
+  *(undefined4 *)(unaff_EBP + -4) = 0;
+  if (iVar1 == 0) {
+    piVar2 = (int *)0x0;
+  }
+  else {
+    piVar2 = (int *)CFile(0xffffffff);
+  }
+  *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
+  dwOptions = 2;
+  BVar4 = 0;
+  lpTargetHandle = (LPHANDLE)(unaff_EBP + -0x10);
+  DVar3 = 0;
+  hTargetProcessHandle = GetCurrentProcess();
+  hSourceHandle = *(HANDLE *)(extraout_ECX + 4);
+  hSourceProcessHandle = GetCurrentProcess();
+  BVar4 = DuplicateHandle(hSourceProcessHandle,hSourceHandle,hTargetProcessHandle,lpTargetHandle,
+                          DVar3,BVar4,dwOptions);
+  if (BVar4 == 0) {
+    if (piVar2 != (int *)0x0) {
+      (**(code **)(*piVar2 + 4))(1);
+    }
+    uVar5 = 0;
+    DVar3 = GetLastError();
+    CFileException::ThrowOsError(DVar3,uVar5);
+  }
+  uVar5 = *(undefined4 *)(unaff_EBP + -0xc);
+  piVar2[1] = *(int *)(unaff_EBP + -0x10);
+  piVar2[2] = *(int *)(extraout_ECX + 8);
+  *unaff_FS_OFFSET = uVar5;
+  return piVar2;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x0060ADD5
 // GHIDRA_NAME CFile::Open
 // GHIDRA_PROTO undefined Open()
@@ -577,7 +633,7 @@ CString * __thiscall CFile::GetFilePath(CFile *param_1,CString *param_2)
 // GHIDRA_NAME CFile::GetStatus
 // GHIDRA_PROTO undefined __thiscall GetStatus(int * param_1)
 
-undefined4 CFile::GetStatus(int *param_1)
+undefined4 __thiscall CFile::GetStatus(CFile *this,int *param_1)
 
 {
   int iVar1;

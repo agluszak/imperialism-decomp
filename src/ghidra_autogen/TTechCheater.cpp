@@ -37,7 +37,8 @@ undefined4 * TTechCheater::CreateObject(void)
 // GHIDRA_NAME TTechCheater::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TTechCheater * TTechCheater::_scalar_deleting_destructor_(byte param_1)
+TTechCheater * __thiscall
+TTechCheater::_scalar_deleting_destructor_(TTechCheater *this,byte param_1)
 
 {
   func_0x00407ea0();
@@ -51,7 +52,7 @@ TTechCheater * TTechCheater::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TTechCheater::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TTechCheater::GetRuntimeClass()
+CRuntimeClass * __thiscall TTechCheater::GetRuntimeClass(TTechCheater *this)
 
 {
   return &classTTechCheater;
@@ -61,7 +62,7 @@ CRuntimeClass * TTechCheater::GetRuntimeClass()
 // GHIDRA_NAME TTechCheater::OrphanRetStub_004b1410
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_004b1410(void)
 
-void TTechCheater::OrphanRetStub_004b1410()
+void __thiscall TTechCheater::OrphanRetStub_004b1410(TTechCheater *this)
 
 {
   return;

@@ -40,7 +40,7 @@ undefined4 * TTransportPicture::CreateObject(void)
 // GHIDRA_NAME TTransportPicture::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TTransportPicture::GetRuntimeClass()
+CRuntimeClass * __thiscall TTransportPicture::GetRuntimeClass(TTransportPicture *this)
 
 {
   return &classTTransportPicture;
@@ -69,7 +69,8 @@ _ConstructTTransportPictureBaseState__YIPAUTransportPictureState___Z_imperialism
 // GHIDRA_NAME TTransportPicture::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TTransportPicture * TTransportPicture::_scalar_deleting_destructor_(byte param_1)
+TTransportPicture * __thiscall
+TTransportPicture::_scalar_deleting_destructor_(TTransportPicture *this,byte param_1)
 
 {
   func_0x00408d2d();
@@ -83,7 +84,7 @@ TTransportPicture * TTransportPicture::_scalar_deleting_destructor_(byte param_1
 // GHIDRA_NAME TTransportPicture::HandleEvent
 // GHIDRA_PROTO undefined __thiscall HandleEvent(int param_1)
 
-void TTransportPicture::HandleEvent(int param_1)
+void __thiscall TTransportPicture::HandleEvent(TTransportPicture *this,int param_1)
 
 {
   TGreatPower *pTVar1;
@@ -191,7 +192,7 @@ LAB_00592108:
 
 /* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 
-void TTransportPicture::IsSelected()
+void __thiscall TTransportPicture::IsSelected(TTransportPicture *this)
 
 {
   _vslot_fn *p_Var1;
@@ -282,13 +283,13 @@ void TTransportPicture::IsSelected()
   local_10 = 0x11;
   CStack_60.m_pchData = (char *)0x5922fd;
   local_1c = uVar9;
-  func_0x004030e9();
+  thunk_ApplyRectClipRegionToGlobalClipState();
   pcStack_5c = (char *)0x3b;
   CStack_60.m_pchData = (char *)0x59230d;
   (**(code **)(g_pUiRuntimeContext->vftable + 0x34))();
   CStack_60.m_pchData = (char *)&uStack_20;
   ppuStack_64 = (undefined1 **)0x592317;
-  func_0x00406546();
+  thunk_FillRectWithQuickDrawBrushAndContextOffset();
   puStack_2c = (undefined1 *)0xd;
   uStack_24 = 0x11;
   puStack_30 = puVar14;
@@ -312,9 +313,9 @@ LAB_00592373:
     (**(code **)(puVar12 + 0x34))();
   }
   ppuStack_64 = &puStack_34;
-  func_0x004030e9();
+  thunk_ApplyRectClipRegionToGlobalClipState();
   ppuStack_64 = &puStack_34;
-  func_0x00406546();
+  thunk_FillRectWithQuickDrawBrushAndContextOffset();
   func_0x00405be1();
   ppuStack_64 = (undefined1 **)0x0;
   local_38 = (TTransportPictureVtbl *)&ppuStack_64;
@@ -332,8 +333,8 @@ LAB_00592373:
       ppuStack_64 = (undefined1 **)0x34;
       (**(code **)(g_pUiRuntimeContext->vftable + 0x34))();
     }
-    func_0x004030e9();
-    func_0x00406546();
+    thunk_ApplyRectClipRegionToGlobalClipState();
+    thunk_FillRectWithQuickDrawBrushAndContextOffset();
     func_0x00405be1();
     local_3c = &stack0xffffff98;
     func_0x00406b86();
@@ -346,8 +347,8 @@ LAB_00592373:
     MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
     func_0x004057a4();
   }
-  CString__Format(&local_4c);
-  CString__Format(&stack0xffffffb0);
+  CString::Format(&local_4c);
+  CString::Format(&stack0xffffffb0);
   AssignSharedStringConcatRefAndCStr(&local_40);
   local_10._0_1_ = 4;
   src_ref = (CString *)AssignSharedStringConcatRefAndRef(&local_48);
@@ -421,7 +422,7 @@ LAB_005925fa:
 // GHIDRA_NAME TTransportPicture::ApplyRectSlot110
 // GHIDRA_PROTO undefined __thiscall ApplyRectSlot110(void)
 
-void TTransportPicture::ApplyRectSlot110()
+void __thiscall TTransportPicture::ApplyRectSlot110(TTransportPicture *this)
 
 {
   func_0x00404fe8();

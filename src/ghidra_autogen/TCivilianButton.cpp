@@ -7,7 +7,7 @@
 // GHIDRA_NAME TCivilianButton::BeginMouseCaptureAndStartRepeatTimer
 // GHIDRA_PROTO undefined __thiscall BeginMouseCaptureAndStartRepeatTimer(void)
 
-void TCivilianButton::BeginMouseCaptureAndStartRepeatTimer()
+void __thiscall TCivilianButton::BeginMouseCaptureAndStartRepeatTimer(TCivilianButton *this)
 
 {
   undefined4 unaff_ESI;
@@ -56,7 +56,7 @@ TCivilianButton * __cdecl TCivilianButton::CreateObject(void)
 // GHIDRA_NAME TCivilianButton::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TCivilianButton::GetRuntimeClass()
+CRuntimeClass * __thiscall TCivilianButton::GetRuntimeClass(TCivilianButton *this)
 
 {
   return &classTCivilianButton;
@@ -66,7 +66,7 @@ CRuntimeClass * TCivilianButton::GetRuntimeClass()
 // GHIDRA_NAME TCivilianButton::TCivilianButton
 // GHIDRA_PROTO undefined __thiscall TCivilianButton(void)
 
-TCivilianButton * TCivilianButton::TCivilianButton()
+TCivilianButton * __thiscall TCivilianButton::TCivilianButton(TCivilianButton *this)
 
 {
   func_0x00409980();
@@ -79,7 +79,8 @@ TCivilianButton * TCivilianButton::TCivilianButton()
 // GHIDRA_NAME TCivilianButton::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TCivilianButton * TCivilianButton::_scalar_deleting_destructor_(byte param_1)
+TCivilianButton * __thiscall
+TCivilianButton::_scalar_deleting_destructor_(TCivilianButton *this,byte param_1)
 
 {
   func_0x00407ae0();
@@ -93,7 +94,8 @@ TCivilianButton * TCivilianButton::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TCivilianButton::SetSelectionAndEnableByMappedValue
 // GHIDRA_PROTO undefined __thiscall SetSelectionAndEnableByMappedValue(int param_1)
 
-void TCivilianButton::SetSelectionAndEnableByMappedValue(int param_1)
+void __thiscall
+TCivilianButton::SetSelectionAndEnableByMappedValue(TCivilianButton *this,int param_1)
 
 {
   TCivilianButtonVtbl *pTVar1;
@@ -118,7 +120,7 @@ void TCivilianButton::SetSelectionAndEnableByMappedValue(int param_1)
 // GHIDRA_NAME TCivilianButton::ApplyRectSlot110
 // GHIDRA_PROTO undefined __thiscall ApplyRectSlot110(void)
 
-void TCivilianButton::ApplyRectSlot110()
+void __thiscall TCivilianButton::ApplyRectSlot110(TCivilianButton *this)
 
 {
   undefined4 local_20;

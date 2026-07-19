@@ -51,7 +51,7 @@ undefined4 * TPicture::CreateObject(void)
 // GHIDRA_NAME TPicture::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TPicture::GetRuntimeClass()
+CRuntimeClass * __thiscall TPicture::GetRuntimeClass(TPicture *this)
 
 {
   return &classTPicture;
@@ -82,7 +82,7 @@ CRuntimeClass * TPicture::GetRuntimeClass()
    Returns:
    - this pointer. */
 
-TPicture * TPicture::TPicture()
+TPicture * __thiscall TPicture::TPicture(TPicture *this)
 
 {
   ushort uVar1;
@@ -110,14 +110,63 @@ TPicture * TPicture::TPicture()
 // GHIDRA_NAME TPicture::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TPicture * TPicture::_scalar_deleting_destructor_(byte param_1)
+TPicture * __thiscall TPicture::_scalar_deleting_destructor_(TPicture *this,byte param_1)
 
 {
-  TView::DestructCityDialogSharedBaseState((TView *)this);
+  thunk_DestructCityDialogSharedBaseState(this);
   if ((param_1 & 1) != 0) {
     operator_delete(this);
   }
   return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0048F3C0
+// GHIDRA_NAME TPicture::ApplyRectSlot110
+// GHIDRA_PROTO undefined __thiscall ApplyRectSlot110(void)
+
+void __thiscall TPicture::ApplyRectSlot110(TPicture *this)
+
+{
+  _vslot_fn *p_Var1;
+  undefined uVar2;
+  ushort uVar3;
+  int iVar4;
+  undefined4 uVar5;
+  undefined3 extraout_var;
+  undefined3 extraout_var_00;
+  int iStack_14;
+  int local_10;
+  int iStack_c;
+  int iStack_8;
+  
+  uVar3 = GetAsyncKeyState(0x11);
+  if ((uVar3 & 0x8000) != 0) {
+    (*this->vftable->GetTEventHandlerClassNamePointer_58)(&local_10);
+  }
+  iVar4 = func_0x00409377();
+  if (((iVar4 != 0) &&
+      (iVar4 = *(int *)(*(int *)&this->field_0x8c + 0x10), *(short *)(iVar4 + 0xe) == 8)) &&
+     (*(int *)(iVar4 + 0x10) == 0)) {
+    (*this->vftable->GetTEventHandlerClassNamePointer_58)(&local_10);
+    iVar4 = iStack_8 - local_10;
+    uVar5 = func_0x00409377();
+    func_0x004039e5(uVar5,0,0,iStack_c - iStack_14,iVar4,iStack_14,local_10,0xffffffff);
+    return;
+  }
+  uVar5 = func_0x004021c6(0);
+  func_0x0040492b(uVar5);
+  func_0x00405498();
+  iVar4 = *(int *)(*(int *)(*(int *)&this->field_0x8c + 0x10) + 8);
+  if (iVar4 < 1) {
+    iVar4 = -iVar4;
+  }
+  p_Var1 = this->vftable->GetTEventHandlerClassNamePointer_56;
+  uVar2 = (*p_Var1)(&stack0xffffffe0,this->field34,this->field38,0,0,
+                    *(undefined4 *)(*(int *)(*(int *)&this->field_0x8c + 0x10) + 4),iVar4);
+  uVar2 = (*p_Var1)(&stack0xffffffe4,*(undefined4 *)(CONCAT31(extraout_var,uVar2) + 4));
+  uVar5 = func_0x004021c6(*(undefined4 *)CONCAT31(extraout_var_00,uVar2));
+  func_0x00407c93(uVar5);
+  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048F520
@@ -129,7 +178,7 @@ TPicture * TPicture::_scalar_deleting_destructor_(byte param_1)
 
 /* Release current picture resource and clear cached resource id/state for the UI picture entry. */
 
-void TPicture::ResetPictureResourceEntry()
+void __thiscall TPicture::ResetPictureResourceEntry(TPicture *this)
 
 {
   if (*(short *)&this->field_0x84 != -1) {

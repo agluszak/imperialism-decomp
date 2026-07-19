@@ -3,20 +3,6 @@
 // Program: Imperialism.exe
 // Bucket: TIconSlider.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0047E930
-// GHIDRA_NAME TIconSlider::WrapperFor_thunk_DispatchHandleMapLookupWithReadPtrProbe_At0047e930
-// GHIDRA_PROTO undefined WrapperFor_thunk_DispatchHandleMapLookupWithReadPtrProbe_At0047e930()
-
-void __thiscall
-TIconSlider::WrapperFor_thunk_DispatchHandleMapLookupWithReadPtrProbe_At0047e930
-          (undefined4 param_1,int param_2,undefined4 param_3)
-
-{
-  CDC__SelectPalette(param_1,param_3);
-  RealizePalette(*(HDC *)(param_2 + 4));
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x005062D0
 // GHIDRA_NAME TIconSlider::CreateObject
 // GHIDRA_PROTO undefined CreateObject()
@@ -58,7 +44,7 @@ undefined4 * TIconSlider::CreateObject(void)
 // GHIDRA_NAME TIconSlider::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TIconSlider::GetRuntimeClass()
+CRuntimeClass * __thiscall TIconSlider::GetRuntimeClass(TIconSlider *this)
 
 {
   return &classTIconSlider;
@@ -68,7 +54,7 @@ CRuntimeClass * TIconSlider::GetRuntimeClass()
 // GHIDRA_NAME TIconSlider::ConstructTIconSliderBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTIconSliderBaseState(void)
 
-TIconSlider * TIconSlider::ConstructTIconSliderBaseState()
+TIconSlider * __thiscall TIconSlider::ConstructTIconSliderBaseState(TIconSlider *this)
 
 {
   func_0x00403328();
@@ -88,7 +74,7 @@ TIconSlider * TIconSlider::ConstructTIconSliderBaseState()
 // GHIDRA_NAME TIconSlider::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TIconSlider * TIconSlider::_scalar_deleting_destructor_(byte param_1)
+TIconSlider * __thiscall TIconSlider::_scalar_deleting_destructor_(TIconSlider *this,byte param_1)
 
 {
   func_0x004090ca();
@@ -102,7 +88,7 @@ TIconSlider * TIconSlider::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TIconSlider::NoOpUiLifecycleHook
 // GHIDRA_PROTO undefined __thiscall NoOpUiLifecycleHook(void)
 
-void TIconSlider::NoOpUiLifecycleHook()
+void __thiscall TIconSlider::NoOpUiLifecycleHook(TIconSlider *this)
 
 {
   short sVar1;
@@ -132,7 +118,7 @@ void TIconSlider::NoOpUiLifecycleHook()
 // GHIDRA_NAME TIconSlider::OrphanLeaf_NoCall_Ins04_00506560
 // GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins04_00506560(short param_1)
 
-void TIconSlider::OrphanLeaf_NoCall_Ins04_00506560(short param_1)
+void __thiscall TIconSlider::OrphanLeaf_NoCall_Ins04_00506560(TIconSlider *this,short param_1)
 
 {
   *(short *)&this->field_0xb6 = *(short *)&this->field_0x98 * param_1;
@@ -143,7 +129,8 @@ void TIconSlider::OrphanLeaf_NoCall_Ins04_00506560(short param_1)
 // GHIDRA_NAME TIconSlider::OrphanTiny_SetWordEcxOffset_96_005060f0
 // GHIDRA_PROTO undefined __thiscall OrphanTiny_SetWordEcxOffset_96_005060f0(undefined2 param_1)
 
-void TIconSlider::OrphanTiny_SetWordEcxOffset_96_005060f0(undefined2 param_1)
+void __thiscall
+TIconSlider::OrphanTiny_SetWordEcxOffset_96_005060f0(TIconSlider *this,undefined2 param_1)
 
 {
   *(undefined2 *)&this->field_0x96 = param_1;
@@ -154,7 +141,7 @@ void TIconSlider::OrphanTiny_SetWordEcxOffset_96_005060f0(undefined2 param_1)
 // GHIDRA_NAME TIconSlider::OrphanCallChain_C2_I15_005065b0
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C2_I15_005065b0(void)
 
-void TIconSlider::OrphanCallChain_C2_I15_005065b0()
+void __thiscall TIconSlider::OrphanCallChain_C2_I15_005065b0(TIconSlider *this)
 
 {
   POINT *unaff_retaddr;
@@ -199,7 +186,7 @@ TIconSlider::DispatchUiMouseMoveToChildren
 // GHIDRA_NAME TIconSlider::ApplyRectSlot110
 // GHIDRA_PROTO undefined __thiscall ApplyRectSlot110(void)
 
-void TIconSlider::ApplyRectSlot110()
+void __thiscall TIconSlider::ApplyRectSlot110(TIconSlider *this)
 
 {
   func_0x00405f56();
@@ -209,12 +196,10 @@ void TIconSlider::ApplyRectSlot110()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005066C0
-// GHIDRA_NAME TIconSlider::Helper_Uses_WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At00495c_At005066c0
-// GHIDRA_PROTO undefined __thiscall Helper_Uses_WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At00495c_At005066c0(void)
+// GHIDRA_NAME TIconSlider::IconSliderResolveBmpResource
+// GHIDRA_PROTO undefined __thiscall IconSliderResolveBmpResource(void)
 
-void __thiscall
-TIconSlider::Helper_Uses_WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At00495c_At005066c0
-          (TIconSlider *this)
+void __thiscall TIconSlider::IconSliderResolveBmpResource(TIconSlider *this)
 
 {
   undefined1 local_10 [16];
@@ -229,7 +214,7 @@ TIconSlider::Helper_Uses_WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6
 // GHIDRA_NAME TIconSlider::OrphanCallChain_C1_I36_00506710
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I36_00506710(LPRECT param_1)
 
-void TIconSlider::OrphanCallChain_C1_I36_00506710(LPRECT param_1)
+void __thiscall TIconSlider::OrphanCallChain_C1_I36_00506710(TIconSlider *this,LPRECT param_1)
 
 {
   param_1->left = *(LONG *)&this->field_0xa4;
@@ -304,7 +289,7 @@ TIconSlider::DispatchPictureResourceCommand
   }
   uVar2 = func_0x00401127();
   func_0x0040232e(uVar2);
-  func_0x004030e9(&iStack_24);
+  thunk_ApplyRectClipRegionToGlobalClipState(&iStack_24);
   (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_55)(&iStack_24,auStack_14);
   func_0x00405f56(auStack_1c);
   func_0x00405be1(uVar2);

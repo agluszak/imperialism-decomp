@@ -52,7 +52,7 @@ undefined4 * TIncludeView::CreateObject(void)
 // GHIDRA_NAME TIncludeView::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TIncludeView::GetRuntimeClass()
+CRuntimeClass * __thiscall TIncludeView::GetRuntimeClass(TIncludeView *this)
 
 {
   return &classTIncludeView;
@@ -68,7 +68,7 @@ CRuntimeClass * TIncludeView::GetRuntimeClass()
 /* Constructs base turn-event UI entry object (vtable PTR_LAB_00649C60) with default fields and
    label storage for dispatcher-created event packets. */
 
-TIncludeView * TIncludeView::TIncludeView()
+TIncludeView * __thiscall TIncludeView::TIncludeView(TIncludeView *this)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -106,7 +106,8 @@ TIncludeView * TIncludeView::TIncludeView()
 // GHIDRA_NAME TIncludeView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TIncludeView * TIncludeView::_scalar_deleting_destructor_(byte param_1)
+TIncludeView * __thiscall
+TIncludeView::_scalar_deleting_destructor_(TIncludeView *this,byte param_1)
 
 {
   func_0x0040916a();
@@ -165,7 +166,7 @@ TIncludeView::BuildTurnEventFactoryPacket
 /* Dispatches turn-event packet through factory manager using event code from packet field
    pEventPacket[0x18] (offset 0x60), then signals completion to packet window host. */
 
-void TIncludeView::NoOpUiLifecycleHook(int *pEventPacket)
+void __thiscall TIncludeView::NoOpUiLifecycleHook(TIncludeView *this,int *pEventPacket)
 
 {
   TIncludeViewVtbl *pTVar1;

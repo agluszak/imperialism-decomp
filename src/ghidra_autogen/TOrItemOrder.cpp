@@ -25,7 +25,7 @@ undefined4 * TOrItemOrder::CreateObject(void)
 // GHIDRA_NAME TOrItemOrder::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TOrItemOrder::GetRuntimeClass()
+CRuntimeClass * __thiscall TOrItemOrder::GetRuntimeClass(TOrItemOrder *this)
 
 {
   return &classTOrItemOrder;
@@ -35,7 +35,8 @@ CRuntimeClass * TOrItemOrder::GetRuntimeClass()
 // GHIDRA_NAME TOrItemOrder::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TOrItemOrder * TOrItemOrder::_scalar_deleting_destructor_(byte param_1)
+TOrItemOrder * __thiscall
+TOrItemOrder::_scalar_deleting_destructor_(TOrItemOrder *this,byte param_1)
 
 {
   func_0x00401069();
@@ -49,7 +50,7 @@ TOrItemOrder * TOrItemOrder::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TOrItemOrder::DestructTOrItemOrderAndMaybeFree
 // GHIDRA_PROTO undefined __thiscall DestructTOrItemOrderAndMaybeFree(void)
 
-void TOrItemOrder::DestructTOrItemOrderAndMaybeFree()
+void __thiscall TOrItemOrder::DestructTOrItemOrderAndMaybeFree(TOrItemOrder *this)
 
 {
   this->vftable = (TOrItemOrderVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
@@ -57,11 +58,11 @@ void TOrItemOrder::DestructTOrItemOrderAndMaybeFree()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B5870
-// GHIDRA_NAME TOrItemOrder::InitializeCityProductionState_Impl_At004b5870
-// GHIDRA_PROTO undefined __thiscall InitializeCityProductionState_Impl_At004b5870(int param_1, undefined2 param_2, undefined2 param_3, undefined2 param_4, undefined2 param_5)
+// GHIDRA_NAME TOrItemOrder::OrItemOrderSlot12
+// GHIDRA_PROTO undefined __thiscall OrItemOrderSlot12(int param_1, undefined2 param_2, undefined2 param_3, undefined2 param_4, undefined2 param_5)
 
 void __thiscall
-TOrItemOrder::InitializeCityProductionState_Impl_At004b5870
+TOrItemOrder::OrItemOrderSlot12
           (TOrItemOrder *this,int param_1,undefined2 param_2,undefined2 param_3,undefined2 param_4,
           undefined2 param_5)
 
@@ -120,7 +121,7 @@ TOrItemOrder::InitializeCityProductionState_Impl_At004b5870
    - Stores limiting factor code in this+0x40 (0=resource,1=workforce,2=unit counter).
    - Returns the minimum cap. */
 
-int TOrItemOrder::MaxOrder()
+int __thiscall TOrItemOrder::MaxOrder(TOrItemOrder *this)
 
 {
   short sVar1;
@@ -184,7 +185,7 @@ int TOrItemOrder::MaxOrder()
    
    Returns: true if delta applied, false if rejected. */
 
-bool TOrItemOrder::SetQuantity(short nNewOrderAmount)
+bool __thiscall TOrItemOrder::SetQuantity(TOrItemOrder *this,short nNewOrderAmount)
 
 {
   short *psVar1;

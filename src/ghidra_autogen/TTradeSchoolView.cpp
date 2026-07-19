@@ -39,7 +39,7 @@ undefined4 * TTradeSchoolView::CreateObject(void)
 // GHIDRA_NAME TTradeSchoolView::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TTradeSchoolView::GetRuntimeClass()
+CRuntimeClass * __thiscall TTradeSchoolView::GetRuntimeClass(TTradeSchoolView *this)
 
 {
   return &classTTradeSchoolView;
@@ -49,7 +49,8 @@ CRuntimeClass * TTradeSchoolView::GetRuntimeClass()
 // GHIDRA_NAME TTradeSchoolView::ConstructTTradeSchoolViewBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTTradeSchoolViewBaseState(void)
 
-TTradeSchoolView * TTradeSchoolView::ConstructTTradeSchoolViewBaseState()
+TTradeSchoolView * __thiscall
+TTradeSchoolView::ConstructTTradeSchoolViewBaseState(TTradeSchoolView *this)
 
 {
   func_0x00403328();
@@ -64,7 +65,8 @@ TTradeSchoolView * TTradeSchoolView::ConstructTTradeSchoolViewBaseState()
 // GHIDRA_NAME TTradeSchoolView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TTradeSchoolView * TTradeSchoolView::_scalar_deleting_destructor_(byte param_1)
+TTradeSchoolView * __thiscall
+TTradeSchoolView::_scalar_deleting_destructor_(TTradeSchoolView *this,byte param_1)
 
 {
   func_0x00404327();
@@ -102,7 +104,8 @@ TTradeSchoolView * TTradeSchoolView::_scalar_deleting_destructor_(byte param_1)
    Returns:
    - void. */
 
-void TTradeSchoolView::OrphanRetStub_004c6fd0(int *pCityViewDialog)
+void __thiscall
+TTradeSchoolView::OrphanRetStub_004c6fd0(TTradeSchoolView *this,int *pCityViewDialog)
 
 {
   TTradeSchoolViewVtbl *pTVar1;
@@ -176,7 +179,7 @@ void TTradeSchoolView::OrphanRetStub_004c6fd0(int *pCityViewDialog)
   puStack_4c = (undefined4 *)auStack_20;
   puStack_48 = (undefined1 *)0x0;
   CStack_50.m_pchData = (char *)0x4cd942;
-  func_0x00406afa();
+  thunk_BuildUiTextStyleDescriptor();
   p_Var2 = pTVar1->OrphanLeaf_NoCall_Ins07_004d8920_25;
   puStack_40 = (undefined1 *)0x6e616d65;
   uVar4 = (*p_Var2)();
@@ -262,7 +265,7 @@ void TTradeSchoolView::OrphanRetStub_004c6fd0(int *pCityViewDialog)
   iStack_5c = CONCAT31(extraout_var_04,uVar4);
   func_0x0040807b();
   iStack_5c = 0x2b69;
-  func_0x00406afa();
+  thunk_BuildUiTextStyleDescriptor();
   iStack_5c = 0x70617031;
   uVar4 = (*p_Var2)();
   if ((int *)CONCAT31(extraout_var_05,uVar4) == (int *)0x0) {
@@ -332,7 +335,7 @@ void TTradeSchoolView::OrphanRetStub_004c6fd0(int *pCityViewDialog)
   uStack_d4 = 0x4cddc5;
   CString::~CString((CString *)&stack0xffffff44);
   uStack_d4 = 0x2b67;
-  func_0x00406afa();
+  thunk_BuildUiTextStyleDescriptor();
   uStack_d4 = 0x636f7331;
   uVar4 = (*p_Var2)();
   if ((int *)CONCAT31(extraout_var_11,uVar4) == (int *)0x0) {
@@ -369,7 +372,7 @@ void TTradeSchoolView::OrphanRetStub_004c6fd0(int *pCityViewDialog)
 // GHIDRA_NAME TTradeSchoolView::OrphanRetStub_004c6fb0
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_004c6fb0(void)
 
-void TTradeSchoolView::OrphanRetStub_004c6fb0()
+void __thiscall TTradeSchoolView::OrphanRetStub_004c6fb0(TTradeSchoolView *this)
 
 {
   uint uVar1;

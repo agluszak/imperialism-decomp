@@ -7,7 +7,8 @@
 // GHIDRA_NAME TRemoteMinor::ReassignTileObjectOwnerAndNotifyForSelectedCells
 // GHIDRA_PROTO undefined __thiscall ReassignTileObjectOwnerAndNotifyForSelectedCells(int param_1)
 
-void TRemoteMinor::ReassignTileObjectOwnerAndNotifyForSelectedCells(int param_1)
+void __thiscall
+TRemoteMinor::ReassignTileObjectOwnerAndNotifyForSelectedCells(TRemoteMinor *this,int param_1)
 
 {
   CPtrList *this_00;
@@ -233,7 +234,7 @@ TRemoteMinor::ReassignUnitOrdersForCountryTargetChange
    
    Used during country ownership/order-manager transitions. */
 
-void TRemoteMinor::RelinkTileUnitsToCountryOrderManager(int param_1)
+void __thiscall TRemoteMinor::RelinkTileUnitsToCountryOrderManager(TRemoteMinor *this,int param_1)
 
 {
   CPtrList *this_00;
@@ -330,7 +331,7 @@ undefined4 __thiscall TRemoteMinor::_scalar_deleting_destructor_(undefined4 para
 // GHIDRA_NAME TRemoteMinor::~TRemoteMinor
 // GHIDRA_PROTO undefined __thiscall ~TRemoteMinor(void)
 
-void TRemoteMinor::~TRemoteMinor()
+void __thiscall TRemoteMinor::~TRemoteMinor(TRemoteMinor *this)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -357,7 +358,7 @@ void TRemoteMinor::~TRemoteMinor()
 CRuntimeClass * TRemoteMinor::GetRuntimeClass(void)
 
 {
-  return &classRuntimeClass;
+  return &classTRemoteMinor;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00541D90

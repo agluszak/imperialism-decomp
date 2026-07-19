@@ -38,7 +38,7 @@ undefined4 * TColorKeyPicture::CreateObject(void)
 // GHIDRA_NAME TColorKeyPicture::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TColorKeyPicture::GetRuntimeClass()
+CRuntimeClass * __thiscall TColorKeyPicture::GetRuntimeClass(TColorKeyPicture *this)
 
 {
   return &classTColorKeyPicture;
@@ -48,7 +48,8 @@ CRuntimeClass * TColorKeyPicture::GetRuntimeClass()
 // GHIDRA_NAME TColorKeyPicture::ConstructPictureResourceEntry_Vtbl00660b48
 // GHIDRA_PROTO undefined __thiscall ConstructPictureResourceEntry_Vtbl00660b48(void)
 
-TColorKeyPicture * TColorKeyPicture::ConstructPictureResourceEntry_Vtbl00660b48()
+TColorKeyPicture * __thiscall
+TColorKeyPicture::ConstructPictureResourceEntry_Vtbl00660b48(TColorKeyPicture *this)
 
 {
   func_0x00401122();
@@ -62,7 +63,8 @@ TColorKeyPicture * TColorKeyPicture::ConstructPictureResourceEntry_Vtbl00660b48(
 // GHIDRA_NAME TColorKeyPicture::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TColorKeyPicture * TColorKeyPicture::_scalar_deleting_destructor_(byte param_1)
+TColorKeyPicture * __thiscall
+TColorKeyPicture::_scalar_deleting_destructor_(TColorKeyPicture *this,byte param_1)
 
 {
   func_0x004065cd();
@@ -76,7 +78,7 @@ TColorKeyPicture * TColorKeyPicture::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TColorKeyPicture::ApplyRectSlot110
 // GHIDRA_PROTO undefined __thiscall ApplyRectSlot110(void)
 
-void TColorKeyPicture::ApplyRectSlot110()
+void __thiscall TColorKeyPicture::ApplyRectSlot110(TColorKeyPicture *this)
 
 {
   TColorKeyPictureVtbl *pTVar1;
@@ -147,7 +149,8 @@ void TColorKeyPicture::ApplyRectSlot110()
 // GHIDRA_NAME TColorKeyPicture::SetPictureResourceIdAndRefresh
 // GHIDRA_PROTO undefined __thiscall SetPictureResourceIdAndRefresh(short param_1, bool param_2)
 
-void TColorKeyPicture::SetPictureResourceIdAndRefresh(short param_1, bool param_2)
+void __thiscall
+TColorKeyPicture::SetPictureResourceIdAndRefresh(TColorKeyPicture *this,short param_1,bool param_2)
 
 {
   undefined2 in_stack_00000006;
@@ -165,7 +168,7 @@ void TColorKeyPicture::SetPictureResourceIdAndRefresh(short param_1, bool param_
 // GHIDRA_NAME TColorKeyPicture::Free
 // GHIDRA_PROTO undefined __thiscall Free(void)
 
-void TColorKeyPicture::Free()
+void __thiscall TColorKeyPicture::Free(TColorKeyPicture *this)
 
 {
   if (*(int *)&this->field_0x94 != 0) {

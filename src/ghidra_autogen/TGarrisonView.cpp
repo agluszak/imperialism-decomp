@@ -38,7 +38,7 @@ undefined4 * TGarrisonView::CreateObject(void)
 // GHIDRA_NAME TGarrisonView::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TGarrisonView::GetRuntimeClass()
+CRuntimeClass * __thiscall TGarrisonView::GetRuntimeClass(TGarrisonView *this)
 
 {
   return &classTGarrisonView;
@@ -48,7 +48,7 @@ CRuntimeClass * TGarrisonView::GetRuntimeClass()
 // GHIDRA_NAME TGarrisonView::ConstructTGarrisonViewBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTGarrisonViewBaseState(void)
 
-TGarrisonView * TGarrisonView::ConstructTGarrisonViewBaseState()
+TGarrisonView * __thiscall TGarrisonView::ConstructTGarrisonViewBaseState(TGarrisonView *this)
 
 {
   func_0x004032ab();
@@ -61,7 +61,8 @@ TGarrisonView * TGarrisonView::ConstructTGarrisonViewBaseState()
 // GHIDRA_NAME TGarrisonView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TGarrisonView * TGarrisonView::_scalar_deleting_destructor_(byte param_1)
+TGarrisonView * __thiscall
+TGarrisonView::_scalar_deleting_destructor_(TGarrisonView *this,byte param_1)
 
 {
   func_0x00403eae();
@@ -75,7 +76,7 @@ TGarrisonView * TGarrisonView::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TGarrisonView::CallVoidSlotA0
 // GHIDRA_PROTO undefined __thiscall CallVoidSlotA0(void)
 
-void TGarrisonView::CallVoidSlotA0()
+void __thiscall TGarrisonView::CallVoidSlotA0(TGarrisonView *this)
 
 {
   int *piVar1;

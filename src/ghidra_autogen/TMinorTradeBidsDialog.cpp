@@ -40,7 +40,8 @@ undefined4 * TMinorTradeBidsDialog::CreateObject(void)
 // GHIDRA_NAME TMinorTradeBidsDialog::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TMinorTradeBidsDialog * TMinorTradeBidsDialog::_scalar_deleting_destructor_(byte param_1)
+TMinorTradeBidsDialog * __thiscall
+TMinorTradeBidsDialog::_scalar_deleting_destructor_(TMinorTradeBidsDialog *this,byte param_1)
 
 {
   func_0x00401c17();
@@ -54,7 +55,7 @@ TMinorTradeBidsDialog * TMinorTradeBidsDialog::_scalar_deleting_destructor_(byte
 // GHIDRA_NAME TMinorTradeBidsDialog::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TMinorTradeBidsDialog::GetRuntimeClass()
+CRuntimeClass * __thiscall TMinorTradeBidsDialog::GetRuntimeClass(TMinorTradeBidsDialog *this)
 
 {
   return &classTMinorTradeBidsDialog;
@@ -64,7 +65,8 @@ CRuntimeClass * TMinorTradeBidsDialog::GetRuntimeClass()
 // GHIDRA_NAME TMinorTradeBidsDialog::ConstructTMinorTradeBidsDialogBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTMinorTradeBidsDialogBaseState(void)
 
-void TMinorTradeBidsDialog::ConstructTMinorTradeBidsDialogBaseState()
+void __thiscall
+TMinorTradeBidsDialog::ConstructTMinorTradeBidsDialogBaseState(TMinorTradeBidsDialog *this)
 
 {
   code *pcVar1;

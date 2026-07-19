@@ -39,7 +39,7 @@ undefined4 * TOfferDeskPicture::CreateObject(void)
 // GHIDRA_NAME TOfferDeskPicture::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TOfferDeskPicture::GetRuntimeClass()
+CRuntimeClass * __thiscall TOfferDeskPicture::GetRuntimeClass(TOfferDeskPicture *this)
 
 {
   return &classTOfferDeskPicture;
@@ -49,7 +49,8 @@ CRuntimeClass * TOfferDeskPicture::GetRuntimeClass()
 // GHIDRA_NAME TOfferDeskPicture::ConstructTOfferDeskPictureBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTOfferDeskPictureBaseState(void)
 
-TOfferDeskPicture * TOfferDeskPicture::ConstructTOfferDeskPictureBaseState()
+TOfferDeskPicture * __thiscall
+TOfferDeskPicture::ConstructTOfferDeskPictureBaseState(TOfferDeskPicture *this)
 
 {
   func_0x00401122();
@@ -64,7 +65,8 @@ TOfferDeskPicture * TOfferDeskPicture::ConstructTOfferDeskPictureBaseState()
 // GHIDRA_NAME TOfferDeskPicture::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TOfferDeskPicture * TOfferDeskPicture::_scalar_deleting_destructor_(byte param_1)
+TOfferDeskPicture * __thiscall
+TOfferDeskPicture::_scalar_deleting_destructor_(TOfferDeskPicture *this,byte param_1)
 
 {
   func_0x004044cb();
@@ -78,7 +80,7 @@ TOfferDeskPicture * TOfferDeskPicture::_scalar_deleting_destructor_(byte param_1
 // GHIDRA_NAME TOfferDeskPicture::NoOpUiLifecycleHook
 // GHIDRA_PROTO undefined __thiscall NoOpUiLifecycleHook(void)
 
-void TOfferDeskPicture::NoOpUiLifecycleHook()
+void __thiscall TOfferDeskPicture::NoOpUiLifecycleHook(TOfferDeskPicture *this)
 
 {
   _vslot_fn *p_Var1;
@@ -299,7 +301,7 @@ void TOfferDeskPicture::NoOpUiLifecycleHook()
   uVar3 = (uint3)uStack_7c;
   uStack_7c = (uint)(uVar3 & 0xffff);
   uStack_78 = (undefined4 *)((uint)uStack_78._2_2_ << 0x10);
-  func_0x00406afa(&puStack_80,0,0xe,0x2b67);
+  thunk_BuildUiTextStyleDescriptor(&puStack_80,0,0xe,0x2b67);
   (**(code **)(iVar2 + 0x1b4))(&puStack_80,0);
   (**(code **)(iVar2 + 0x1c4))(1,0);
   uVar4 = (*p_Var1)(0x61636365);
@@ -566,7 +568,7 @@ LAB_005bea42:
   CStack_c4.m_pchData = &stack0xffffff60;
   CStack_c0.m_pchData = &g_szDecimalFormat;
   uStack_c8 = 0x5becd8;
-  CString__Format();
+  CString::Format();
   cStack_a5 = (char)((uint)&iStack_10 >> 0x18);
   if (cStack_a5 == '\0') {
     CStack_bc.m_pchData = (char *)0x0;
@@ -644,7 +646,7 @@ LAB_005bea42:
     pCStack_110 = &CStack_b8;
     piStack_10c = (int *)0x0;
     ppTStack_114 = (TSimMgr **)0x5bf022;
-    func_0x00406afa();
+    thunk_BuildUiTextStyleDescriptor();
     pCStack_108 = &CStack_b8;
     pCStack_104 = (CString *)0x0;
     piStack_10c = (int *)0x5bf034;
@@ -733,7 +735,7 @@ LAB_005bea42:
     iStack_184 = (int)(short)uStack_f0;
     puStack_188 = &g_szDecimalFormat;
     uStack_190 = 0x5bf172;
-    CString__Format();
+    CString::Format();
     iStack_184 = 0x6d436170;
     puStack_188 = (undefined *)0x5bf17e;
     uVar3 = (*p_Var1)();
@@ -745,7 +747,7 @@ LAB_005bea42:
     puStack_194 = &uStack_13c;
     uStack_190 = 0;
     uStack_198 = 0x5bf19a;
-    func_0x00406afa();
+    thunk_BuildUiTextStyleDescriptor();
     puStack_18c = &uStack_13c;
     puStack_188 = (undefined *)0x0;
     uStack_190 = 0x5bf1ac;
@@ -787,7 +789,7 @@ LAB_005bea42:
     uStack_1b0 = 0;
     piVar7[0x2a] = (int)ppTStack_114;
     uStack_1b8 = 0x5bf24a;
-    func_0x00406afa();
+    thunk_BuildUiTextStyleDescriptor();
     ppuStack_1ac = &puStack_15c;
     aiStack_1a8[0] = 0;
     uStack_1b0 = 0x5bf25c;
@@ -805,7 +807,7 @@ LAB_005bea42:
     piStack_1c0 = aiStack_1a8 + 1;
     (**(code **)(iVar9 + 0x1dc))();
     (**(code **)(iVar9 + 0x1d8))(0,*(undefined4 *)(aiStack_1a8[0] + -8),1);
-    func_0x004069e2(*(undefined4 *)piVar7[0x12]);
+    thunk_SetGlobalBlitTransparentColorRaw(*(undefined4 *)piVar7[0x12]);
     (**(code **)(*g_pDisplayMgr + 0x54))(aiStack_1a8);
     uVar3 = (*p_Var1)(0x69636f6e);
     iVar9 = *(int *)CONCAT31(extraout_var_14,uVar3);
@@ -971,7 +973,7 @@ LAB_005bea42:
 // GHIDRA_NAME TOfferDeskPicture::HandleEvent
 // GHIDRA_PROTO undefined __thiscall HandleEvent(int param_1, int param_2)
 
-void TOfferDeskPicture::HandleEvent(int param_1, int param_2)
+void __thiscall TOfferDeskPicture::HandleEvent(TOfferDeskPicture *this,int param_1,int param_2)
 
 {
   undefined2 uVar1;
@@ -1014,7 +1016,7 @@ void TOfferDeskPicture::HandleEvent(int param_1, int param_2)
 // GHIDRA_NAME TOfferDeskPicture::ForwardParam
 // GHIDRA_PROTO undefined __thiscall ForwardParam(int param_1)
 
-void TOfferDeskPicture::ForwardParam(int param_1)
+void __thiscall TOfferDeskPicture::ForwardParam(TOfferDeskPicture *this,int param_1)
 
 {
   short sVar1;

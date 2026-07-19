@@ -40,7 +40,7 @@ undefined4 * TStatusButton::CreateObject(void)
 // GHIDRA_NAME TStatusButton::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TStatusButton::GetRuntimeClass()
+CRuntimeClass * __thiscall TStatusButton::GetRuntimeClass(TStatusButton *this)
 
 {
   return &classTStatusButton;
@@ -50,7 +50,7 @@ CRuntimeClass * TStatusButton::GetRuntimeClass()
 // GHIDRA_NAME TStatusButton::ConstructTStatusButtonBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTStatusButtonBaseState(void)
 
-TStatusButton * TStatusButton::ConstructTStatusButtonBaseState()
+TStatusButton * __thiscall TStatusButton::ConstructTStatusButtonBaseState(TStatusButton *this)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -75,7 +75,8 @@ TStatusButton * TStatusButton::ConstructTStatusButtonBaseState()
 // GHIDRA_NAME TStatusButton::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TStatusButton * TStatusButton::_scalar_deleting_destructor_(byte param_1)
+TStatusButton * __thiscall
+TStatusButton::_scalar_deleting_destructor_(TStatusButton *this,byte param_1)
 
 {
   func_0x00405abf();
@@ -89,7 +90,7 @@ TStatusButton * TStatusButton::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TStatusButton::HandleEvent
 // GHIDRA_PROTO undefined __thiscall HandleEvent(int param_1)
 
-void TStatusButton::HandleEvent(int param_1)
+void __thiscall TStatusButton::HandleEvent(TStatusButton *this,int param_1)
 
 {
   TStatusButtonVtbl *pTVar1;

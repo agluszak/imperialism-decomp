@@ -37,7 +37,8 @@ CPtrArray * TSortedByRelationshipList::CreateObject(void)
 // GHIDRA_NAME TSortedByRelationshipList::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TSortedByRelationshipList::GetRuntimeClass()
+CRuntimeClass * __thiscall
+TSortedByRelationshipList::GetRuntimeClass(TSortedByRelationshipList *this)
 
 {
   return &classTSortedByRelationshipList;
@@ -47,7 +48,8 @@ CRuntimeClass * TSortedByRelationshipList::GetRuntimeClass()
 // GHIDRA_NAME TSortedByRelationshipList::ConstructObArrayWithVtable654D38
 // GHIDRA_PROTO undefined __thiscall ConstructObArrayWithVtable654D38(void)
 
-TSortedByRelationshipList * TSortedByRelationshipList::ConstructObArrayWithVtable654D38()
+TSortedByRelationshipList * __thiscall
+TSortedByRelationshipList::ConstructObArrayWithVtable654D38(TSortedByRelationshipList *this)
 
 {
   CPtrArray::CPtrArray((CPtrArray *)this);
@@ -71,13 +73,23 @@ TSortedByRelationshipList::_scalar_deleting_destructor_
   return this;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x004EE5C0
+// GHIDRA_NAME TSortedByRelationshipList::InitializeRelationshipRecordSize
+// GHIDRA_PROTO undefined InitializeRelationshipRecordSize()
+
+void __fastcall TSortedByRelationshipList::InitializeRelationshipRecordSize(int param_1)
+
+{
+  *(undefined2 *)(param_1 + 0x14) = 4;
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x004EE5E0
-// GHIDRA_NAME TSortedByRelationshipList::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(int param_1, int param_2)
+// GHIDRA_NAME TSortedByRelationshipList::Compare
+// GHIDRA_PROTO undefined __thiscall Compare(int param_1, int param_2)
 
 int __thiscall
-TSortedByRelationshipList::OrphanRetStub_0059add0
-          (TSortedByRelationshipList *this,int param_1,int param_2)
+TSortedByRelationshipList::Compare(TSortedByRelationshipList *this,int param_1,int param_2)
 
 {
   uint uVar1;

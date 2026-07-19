@@ -7,7 +7,7 @@
 // GHIDRA_NAME TCreditsPicture::OrphanRetStub_0043d9f0
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_0043d9f0(void)
 
-void TCreditsPicture::OrphanRetStub_0043d9f0()
+void __thiscall TCreditsPicture::OrphanRetStub_0043d9f0(TCreditsPicture *this)
 
 {
   return;
@@ -17,7 +17,8 @@ void TCreditsPicture::OrphanRetStub_0043d9f0()
 // GHIDRA_NAME TCreditsPicture::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TCreditsPicture * TCreditsPicture::_scalar_deleting_destructor_(byte param_1)
+TCreditsPicture * __thiscall
+TCreditsPicture::_scalar_deleting_destructor_(TCreditsPicture *this,byte param_1)
 
 {
   func_0x004018a7();
@@ -61,7 +62,7 @@ undefined4 * TCreditsPicture::CreateObject(void)
 // GHIDRA_NAME TCreditsPicture::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TCreditsPicture::GetRuntimeClass()
+CRuntimeClass * __thiscall TCreditsPicture::GetRuntimeClass(TCreditsPicture *this)
 
 {
   return &classTCreditsPicture;
@@ -71,7 +72,7 @@ CRuntimeClass * TCreditsPicture::GetRuntimeClass()
 // GHIDRA_NAME TCreditsPicture::NoOpUiLifecycleHook
 // GHIDRA_PROTO undefined __thiscall NoOpUiLifecycleHook(void)
 
-void TCreditsPicture::NoOpUiLifecycleHook()
+void __thiscall TCreditsPicture::NoOpUiLifecycleHook(TCreditsPicture *this)
 
 {
   int iVar1;
@@ -103,8 +104,8 @@ void TCreditsPicture::NoOpUiLifecycleHook()
   piVar3 = (int *)CONCAT31(extraout_var,uVar2);
   iVar1 = *piVar3;
   (**(code **)(iVar1 + 0xc))();
-  InitializeUiTextStyleDescriptor(&stack0xffffffe8,0,0xc,0x2b68,3);
-  func_0x004093cc(0x2b6b,&uStack_8);
+  thunk_InitializeUiTextStyleDescriptor(&stack0xffffffe8,0,0xc,0x2b68,3);
+  thunk_MapUiThemeCodeToStyleFlags(0x2b6b,&uStack_8);
   (**(code **)(iVar1 + 0x1dc))(0xfb0);
   (**(code **)(iVar1 + 0x1e4))(&stack0xffffffe4,1);
   piVar3[0x27] = unaff_EBX;
@@ -123,7 +124,8 @@ void TCreditsPicture::NoOpUiLifecycleHook()
 // GHIDRA_NAME TCreditsPicture::HandleEvent
 // GHIDRA_PROTO undefined __thiscall HandleEvent(int param_1, TCreditsPicture * param_2)
 
-void TCreditsPicture::HandleEvent(int param_1, TCreditsPicture *param_2)
+void __thiscall
+TCreditsPicture::HandleEvent(TCreditsPicture *this,int param_1,TCreditsPicture *param_2)
 
 {
   _vslot_fn *p_Var1;
@@ -150,9 +152,9 @@ void TCreditsPicture::HandleEvent(int param_1, TCreditsPicture *param_2)
       uStack_5 = 0;
       uStack_4 = 0;
       uStack_3 = 0;
-      func_0x004093cc(0x2b6b);
+      thunk_MapUiThemeCodeToStyleFlags(0x2b6b);
       piStack_24 = (int *)0x3;
-      InitializeUiTextStyleDescriptor(auStack_c,0,0xc,0x2b68);
+      thunk_InitializeUiTextStyleDescriptor(auStack_c,0,0xc,0x2b68);
       p_Var1 = this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25;
       piStack_24 = (int *)0x63726564;
       uVar3 = (*p_Var1)();
@@ -192,7 +194,7 @@ void TCreditsPicture::HandleEvent(int param_1, TCreditsPicture *param_2)
 // GHIDRA_NAME TCreditsPicture::ApplyRectSlot110
 // GHIDRA_PROTO undefined __thiscall ApplyRectSlot110(void)
 
-void TCreditsPicture::ApplyRectSlot110()
+void __thiscall TCreditsPicture::ApplyRectSlot110(TCreditsPicture *this)
 
 {
   func_0x00404fe8();

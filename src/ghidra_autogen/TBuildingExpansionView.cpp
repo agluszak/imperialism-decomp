@@ -37,7 +37,7 @@ undefined4 * TBuildingExpansionView::CreateObject(void)
 // GHIDRA_NAME TBuildingExpansionView::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TBuildingExpansionView::GetRuntimeClass()
+CRuntimeClass * __thiscall TBuildingExpansionView::GetRuntimeClass(TBuildingExpansionView *this)
 
 {
   return &classTBuildingExpansionView;
@@ -47,7 +47,8 @@ CRuntimeClass * TBuildingExpansionView::GetRuntimeClass()
 // GHIDRA_NAME TBuildingExpansionView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TBuildingExpansionView * TBuildingExpansionView::_scalar_deleting_destructor_(byte param_1)
+TBuildingExpansionView * __thiscall
+TBuildingExpansionView::_scalar_deleting_destructor_(TBuildingExpansionView *this,byte param_1)
 
 {
   func_0x004014a1();
@@ -212,7 +213,7 @@ TBuildingExpansionView::OpenCityViewProductionDialog
   (*pTVar2->SetPictureResourceIdAndRefresh)();
                     /* Load localized title text for selected slot (base id 0x2719 + slot). */
   dwNameControlTag = 0x2b67;
-  func_0x00406afa();
+  thunk_BuildUiTextStyleDescriptor();
   pfnGetControlByTag = pTVar2->OrphanLeaf_NoCall_Ins07_004d8920_25;
   dwNameControlTag = 0x6e616d65;
   pNameTextControl = (int *)(*pfnGetControlByTag)();
@@ -264,7 +265,7 @@ TBuildingExpansionView::OpenCityViewProductionDialog
   ppuStack_a4 = (uint **)(int)nBuildingCostValue;
   puStack_a8 = &g_szDecimalFormat;
   pUpgradeStateDeltaRight = (void *)0x4ce796;
-  CString__Format();
+  CString::Format();
   ppuStack_a4 = &puStack_8c;
   puStack_a8 = (undefined *)0x10;
   puStack_ac = (undefined1 *)0x2738;
@@ -298,7 +299,7 @@ TBuildingExpansionView::OpenCityViewProductionDialog
   pSelectedCityStateData = *(int **)&this->field_0x94;
   puStack_a8 = (undefined *)CONCAT22(puStack_a8._2_2_,(short)piVar3[1]);
   puStack_ac = *(undefined1 **)(*pSelectedBuildingOrderEntry + 0x2c);
-  TCity::GetBuildingType
+  TCity::thunk_GetCityBuildingProductionValueBySlot
             ((TCity *)pSelectedCityStateData,*(short *)&this->field_0x90);
                     /* Read current production value for the selected slot. */
   (**(code **)(*pSelectedCityStateData + 0x54))();
@@ -317,7 +318,7 @@ TBuildingExpansionView::OpenCityViewProductionDialog
     ppvStack_e4 = &pUpgradeStateDeltaRight;
     dwUiPromptTextId = 0;
     puStack_e8 = (undefined1 *)0x4ce909;
-    func_0x00406afa();
+    thunk_BuildUiTextStyleDescriptor();
     ppvStack_dc = &pUpgradeStateDeltaRight;
     iVar1 = *piStack_90;
     dwUiPromptTextId = 0x4ce91f;
@@ -445,7 +446,7 @@ TBuildingExpansionView::ApplyCityProductionDialogChanges
     this_00 = *(TCity **)&this->field_0x94;
     nEntryVtableOrUpdatedValue = *pSelectedCityEntry;
     nSelectedEntryBaseValue =
-         TCity::GetBuildingType(this_00,*(short *)&this->field_0x90);
+         TCity::thunk_GetCityBuildingProductionValueBySlot(this_00,*(short *)&this->field_0x90);
     uVar1 = (*this_00->vftable->GetCityBuildingDisplayCapacityBySlot)
                       (CONCAT22((short)((uint)nSelectedEntryBaseValue >> 0x10),
                                 *(undefined2 *)&this->field_0x90));
@@ -463,7 +464,7 @@ TBuildingExpansionView::ApplyCityProductionDialogChanges
     (**(code **)(*pSelectedCityEntry + 0x2c))(0);
   }
   nEntryVtableOrUpdatedValue =
-       TCity::GetBuildingType
+       TCity::thunk_GetCityBuildingProductionValueBySlot
                  (*(TCity **)&this->field_0x94,*(short *)&this->field_0x90);
   (**(code **)(**(int **)&this->field_0x98 + 0x1e8))
             (*(undefined2 *)&this->field_0x90,nEntryVtableOrUpdatedValue);

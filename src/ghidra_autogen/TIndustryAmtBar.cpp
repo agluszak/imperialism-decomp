@@ -40,7 +40,7 @@ undefined4 * TIndustryAmtBar::CreateObject(void)
 // GHIDRA_NAME TIndustryAmtBar::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TIndustryAmtBar::GetRuntimeClass()
+CRuntimeClass * __thiscall TIndustryAmtBar::GetRuntimeClass(TIndustryAmtBar *this)
 
 {
   return &classTIndustryAmtBar;
@@ -50,7 +50,7 @@ CRuntimeClass * TIndustryAmtBar::GetRuntimeClass()
 // GHIDRA_NAME TIndustryAmtBar::ConstructBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructBaseState(void)
 
-TIndustryAmtBar * TIndustryAmtBar::ConstructBaseState()
+TIndustryAmtBar * __thiscall TIndustryAmtBar::ConstructBaseState(TIndustryAmtBar *this)
 
 {
   func_0x004064e2();
@@ -66,7 +66,8 @@ TIndustryAmtBar * TIndustryAmtBar::ConstructBaseState()
 // GHIDRA_NAME TIndustryAmtBar::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TIndustryAmtBar * TIndustryAmtBar::_scalar_deleting_destructor_(byte param_1)
+TIndustryAmtBar * __thiscall
+TIndustryAmtBar::_scalar_deleting_destructor_(TIndustryAmtBar *this,byte param_1)
 
 {
   func_0x00404c41();
@@ -80,7 +81,7 @@ TIndustryAmtBar * TIndustryAmtBar::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TIndustryAmtBar::NoOpUiLifecycleHook
 // GHIDRA_PROTO undefined __thiscall NoOpUiLifecycleHook(void)
 
-void TIndustryAmtBar::NoOpUiLifecycleHook()
+void __thiscall TIndustryAmtBar::NoOpUiLifecycleHook(TIndustryAmtBar *this)
 
 {
   dword dVar1;
@@ -107,7 +108,7 @@ void TIndustryAmtBar::NoOpUiLifecycleHook()
   }
   pvVar2 = this_00->orderSlotsE4[sVar4];
   *(void **)&this->field_0x68 = pvVar2;
-  iVar5 = TCity::GetBuildingType(this_00,*(short *)((int)pvVar2 + 0x52));
+  iVar5 = TCity::thunk_GetCityBuildingProductionValueBySlot(this_00,*(short *)((int)pvVar2 + 0x52));
   iVar3 = this->field34;
   sVar6 = (short)iVar5;
   sVar4 = (**(code **)(**(int **)&this->field_0x68 + 0x30))();
@@ -124,7 +125,8 @@ void TIndustryAmtBar::NoOpUiLifecycleHook()
 // GHIDRA_NAME TIndustryAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache
 // GHIDRA_PROTO undefined __thiscall RenderPrimarySurfaceOverlayPanelWithClipCache(void)
 
-void TIndustryAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache()
+void __thiscall
+TIndustryAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache(TIndustryAmtBar *this)
 
 {
   TIndustryAmtBarVtbl *pTVar1;
@@ -153,22 +155,24 @@ void TIndustryAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache()
     cVar2 = (*pTVar1->GetTEventHandlerClassNamePointer_3e)();
     if (cVar2 != '\0') {
       (*pTVar1->OrphanCallChain_C11_I88_004874b0_4a)();
-      func_0x004030e9();
+      thunk_ApplyRectClipRegionToGlobalClipState();
       (*pTVar1->OrphanRetStub_0059add0_4b)();
       (*pTVar1->OrphanTiny_ReturnZero_0048a730_4e)();
       uVar4 = extraout_var_01;
       if (0 < *(short *)&this->field_0x60) {
         (**(code **)(g_pUiRuntimeContext->vftable + 0x34))();
         func_0x00402e73(1,4);
-        func_0x00408d6e(0,1);
-        func_0x00403bb6(*(short *)&this->field_0x60 + -1,1);
+        thunk_SetQuickDrawTextOriginWithContextOffset(0,1);
+        thunk_DrawCenteredGuideLineOnMapDc(*(short *)&this->field_0x60 + -1,1);
         func_0x004088aa();
         uVar4 = extraout_var_02;
       }
-      func_0x00408d6e(CONCAT22(uVar4,*(undefined2 *)&this->field_0x62));
+      thunk_SetQuickDrawTextOriginWithContextOffset
+                (CONCAT22(uVar4,*(undefined2 *)&this->field_0x62));
       func_0x00406b86();
       func_0x004088aa();
-      func_0x00403bb6(CONCAT22(extraout_var_00,*(undefined2 *)&this->field_0x62));
+      thunk_DrawCenteredGuideLineOnMapDc(CONCAT22(extraout_var_00,*(undefined2 *)&this->field_0x62))
+      ;
       func_0x00405be1();
       uVar3 = (*pTVar1->SetForeignMinisterReadyFlag14)();
       (**(code **)(*(int *)CONCAT31(extraout_var,uVar3) + 0x13c))();

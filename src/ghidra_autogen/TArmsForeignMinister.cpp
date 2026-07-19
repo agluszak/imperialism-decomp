@@ -40,17 +40,18 @@ undefined4 * TArmsForeignMinister::CreateObject(void)
 // GHIDRA_NAME TArmsForeignMinister::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TArmsForeignMinister::GetRuntimeClass()
+CRuntimeClass * __thiscall TArmsForeignMinister::GetRuntimeClass(TArmsForeignMinister *this)
 
 {
-  return &classRuntimeClass;
+  return &classTArmsForeignMinister;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00534010
 // GHIDRA_NAME TArmsForeignMinister::ConstructTArmsForeignMinister
 // GHIDRA_PROTO undefined __thiscall ConstructTArmsForeignMinister(void)
 
-TArmsForeignMinister * TArmsForeignMinister::ConstructTArmsForeignMinister()
+TArmsForeignMinister * __thiscall
+TArmsForeignMinister::ConstructTArmsForeignMinister(TArmsForeignMinister *this)
 
 {
   int iVar1;
@@ -78,7 +79,8 @@ TArmsForeignMinister * TArmsForeignMinister::ConstructTArmsForeignMinister()
 // GHIDRA_NAME TArmsForeignMinister::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TArmsForeignMinister * TArmsForeignMinister::_scalar_deleting_destructor_(byte param_1)
+TArmsForeignMinister * __thiscall
+TArmsForeignMinister::_scalar_deleting_destructor_(TArmsForeignMinister *this,byte param_1)
 
 {
   func_0x004048e5();
@@ -92,7 +94,7 @@ TArmsForeignMinister * TArmsForeignMinister::_scalar_deleting_destructor_(byte p
 // GHIDRA_NAME TArmsForeignMinister::DestructTArmsForeignMinister
 // GHIDRA_PROTO undefined __thiscall DestructTArmsForeignMinister(void)
 
-void TArmsForeignMinister::DestructTArmsForeignMinister()
+void __thiscall TArmsForeignMinister::DestructTArmsForeignMinister(TArmsForeignMinister *this)
 
 {
   this->vftable =

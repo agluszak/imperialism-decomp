@@ -38,7 +38,7 @@ undefined4 * TPictureRadioButton::CreateObject(void)
 // GHIDRA_NAME TPictureRadioButton::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TPictureRadioButton::GetRuntimeClass()
+CRuntimeClass * __thiscall TPictureRadioButton::GetRuntimeClass(TPictureRadioButton *this)
 
 {
   return &classTPictureRadioButton;
@@ -48,7 +48,8 @@ CRuntimeClass * TPictureRadioButton::GetRuntimeClass()
 // GHIDRA_NAME TPictureRadioButton::ConstructTPictureRadioButtonBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTPictureRadioButtonBaseState(void)
 
-TPictureRadioButton * TPictureRadioButton::ConstructTPictureRadioButtonBaseState()
+TPictureRadioButton * __thiscall
+TPictureRadioButton::ConstructTPictureRadioButtonBaseState(TPictureRadioButton *this)
 
 {
   func_0x00401122();
@@ -61,7 +62,8 @@ TPictureRadioButton * TPictureRadioButton::ConstructTPictureRadioButtonBaseState
 // GHIDRA_NAME TPictureRadioButton::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TPictureRadioButton * TPictureRadioButton::_scalar_deleting_destructor_(byte param_1)
+TPictureRadioButton * __thiscall
+TPictureRadioButton::_scalar_deleting_destructor_(TPictureRadioButton *this,byte param_1)
 
 {
   func_0x00408a80();
@@ -72,12 +74,11 @@ TPictureRadioButton * TPictureRadioButton::_scalar_deleting_destructor_(byte par
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00570DE0
-// GHIDRA_NAME TPictureRadioButton::WrapperFor_thunk_SetUiControlVisibleFlagAndMaybeRefreshWindow_At00570de0
-// GHIDRA_PROTO undefined __thiscall WrapperFor_thunk_SetUiControlVisibleFlagAndMaybeRefreshWindow_At00570de0(char param_1)
+// GHIDRA_NAME TPictureRadioButton::PictureRadioButtonSlot75
+// GHIDRA_PROTO undefined __thiscall PictureRadioButtonSlot75(char param_1)
 
 void __thiscall
-TPictureRadioButton::WrapperFor_thunk_SetUiControlVisibleFlagAndMaybeRefreshWindow_At00570de0
-          (TPictureRadioButton *this,char param_1)
+TPictureRadioButton::PictureRadioButtonSlot75(TPictureRadioButton *this,char param_1)
 
 {
   undefined2 uVar1;
@@ -115,12 +116,10 @@ LAB_00570e4e:
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00570EA0
-// GHIDRA_NAME TPictureRadioButton::WrapperFor_CopyOffset10PointPairToOutOrZero_At00570ea0
-// GHIDRA_PROTO undefined __thiscall WrapperFor_CopyOffset10PointPairToOutOrZero_At00570ea0(void)
+// GHIDRA_NAME TPictureRadioButton::PictureRadioButtonSlot76
+// GHIDRA_PROTO undefined __thiscall PictureRadioButtonSlot76(void)
 
-void __thiscall
-TPictureRadioButton::WrapperFor_CopyOffset10PointPairToOutOrZero_At00570ea0
-          (TPictureRadioButton *this)
+void __thiscall TPictureRadioButton::PictureRadioButtonSlot76(TPictureRadioButton *this)
 
 {
   int iVar1;
@@ -176,7 +175,7 @@ TPictureRadioButton::HandleToggleButtonStateChangeAndRefresh
 // GHIDRA_NAME TPictureRadioButton::DispatchUiMouseMoveToChildren
 // GHIDRA_PROTO undefined __thiscall DispatchUiMouseMoveToChildren(void)
 
-int TPictureRadioButton::DispatchUiMouseMoveToChildren()
+int __thiscall TPictureRadioButton::DispatchUiMouseMoveToChildren(TPictureRadioButton *this)
 
 {
   TPictureRadioButtonVtbl *pTVar1;

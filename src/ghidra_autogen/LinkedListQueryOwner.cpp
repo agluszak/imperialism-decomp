@@ -67,7 +67,7 @@ switchD_005d72b4_default:
   iVar5 = (int)*(short *)(this + 4);
   if (iVar5 < 0x2135) {
     if (iVar5 == 0x2134) {
-      CWnd__ModifyStyle(0,0x2000000);
+      CWnd::ModifyStyle(0,0x2000000);
     }
     else {
       switch(iVar5) {

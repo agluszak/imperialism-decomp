@@ -24,7 +24,7 @@ undefined4 * TFuzzyVar::CreateObject(void)
 // GHIDRA_NAME TFuzzyVar::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TFuzzyVar::GetRuntimeClass()
+CRuntimeClass * __thiscall TFuzzyVar::GetRuntimeClass(TFuzzyVar *this)
 
 {
   return &classTFuzzyVar;
@@ -34,7 +34,7 @@ CRuntimeClass * TFuzzyVar::GetRuntimeClass()
 // GHIDRA_NAME TFuzzyVar::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TFuzzyVar * TFuzzyVar::_scalar_deleting_destructor_(byte param_1)
+TFuzzyVar * __thiscall TFuzzyVar::_scalar_deleting_destructor_(TFuzzyVar *this,byte param_1)
 
 {
   func_0x004057bd();
@@ -42,6 +42,17 @@ TFuzzyVar * TFuzzyVar::_scalar_deleting_destructor_(byte param_1)
     operator_delete(this);
   }
   return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004FF500
+// GHIDRA_NAME TFuzzyVar::~TFuzzyVar
+// GHIDRA_PROTO undefined __thiscall ~TFuzzyVar(void)
+
+void __thiscall TFuzzyVar::~TFuzzyVar(TFuzzyVar *this)
+
+{
+  this->vftable = (TFuzzyVarVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004FF7D0

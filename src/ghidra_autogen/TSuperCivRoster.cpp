@@ -69,7 +69,8 @@ void * TSuperCivRoster::CreateObject(void)
    Returns:
    - this pointer. */
 
-void * TSuperCivRoster::_scalar_deleting_destructor_(byte bFreeMemory)
+void * __thiscall
+TSuperCivRoster::_scalar_deleting_destructor_(TSuperCivRoster *this,byte bFreeMemory)
 
 {
   func_0x004045ed();
@@ -83,18 +84,18 @@ void * TSuperCivRoster::_scalar_deleting_destructor_(byte bFreeMemory)
 // GHIDRA_NAME TSuperCivRoster::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TSuperCivRoster::GetRuntimeClass()
+CRuntimeClass * __thiscall TSuperCivRoster::GetRuntimeClass(TSuperCivRoster *this)
 
 {
   return &classTSuperCivRoster;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004AB470
-// GHIDRA_NAME TSuperCivRoster::ConstructTSuperCivRosterBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTSuperCivRosterBaseState(undefined4 param_1, undefined4 param_2, undefined4 param_3)
+// GHIDRA_NAME TSuperCivRoster::InitializeLedgerRosterPages
+// GHIDRA_PROTO undefined __thiscall InitializeLedgerRosterPages(undefined4 param_1, undefined4 param_2, undefined4 param_3)
 
 void __thiscall
-TSuperCivRoster::ConstructTSuperCivRosterBaseState
+TSuperCivRoster::InitializeLedgerRosterPages
           (TSuperCivRoster *this,undefined4 param_1,undefined4 param_2,undefined4 param_3)
 
 {

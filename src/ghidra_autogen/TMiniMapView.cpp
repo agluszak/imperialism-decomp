@@ -42,7 +42,7 @@ undefined4 * TMiniMapView::CreateObject(void)
 // GHIDRA_NAME TMiniMapView::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TMiniMapView::GetRuntimeClass()
+CRuntimeClass * __thiscall TMiniMapView::GetRuntimeClass(TMiniMapView *this)
 
 {
   return &classTMiniMapView;
@@ -52,7 +52,7 @@ CRuntimeClass * TMiniMapView::GetRuntimeClass()
 // GHIDRA_NAME TMiniMapView::ConstructTMiniMapViewBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTMiniMapViewBaseState(void)
 
-TMiniMapView * TMiniMapView::ConstructTMiniMapViewBaseState()
+TMiniMapView * __thiscall TMiniMapView::ConstructTMiniMapViewBaseState(TMiniMapView *this)
 
 {
   func_0x004087fb();
@@ -70,7 +70,8 @@ TMiniMapView * TMiniMapView::ConstructTMiniMapViewBaseState()
 // GHIDRA_NAME TMiniMapView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TMiniMapView * TMiniMapView::_scalar_deleting_destructor_(byte param_1)
+TMiniMapView * __thiscall
+TMiniMapView::_scalar_deleting_destructor_(TMiniMapView *this,byte param_1)
 
 {
   func_0x004066ea();
@@ -84,7 +85,7 @@ TMiniMapView * TMiniMapView::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TMiniMapView::ApplyRectSlot110
 // GHIDRA_PROTO undefined __thiscall ApplyRectSlot110(void)
 
-void TMiniMapView::ApplyRectSlot110()
+void __thiscall TMiniMapView::ApplyRectSlot110(TMiniMapView *this)
 
 {
   uint uVar1;
@@ -173,7 +174,7 @@ void TMiniMapView::ApplyRectSlot110()
                      );
     }
     else {
-      func_0x00406546(&local_30);
+      thunk_FillRectWithQuickDrawBrushAndContextOffset(&local_30);
     }
     local_2c = local_1c;
     local_24 = local_14;
@@ -184,7 +185,7 @@ void TMiniMapView::ApplyRectSlot110()
     uVar8 = (undefined2)((uint)iVar2 >> 0x10);
     local_8 = iVar11;
     if ((g_pGlobalMapState->field_0x20 != '\0') && (local_18 - local_30 <= this->field34 / 2)) {
-      func_0x00406546(&local_30);
+      thunk_FillRectWithQuickDrawBrushAndContextOffset(&local_30);
       goto LAB_0059a792;
     }
     piVar5 = &local_30;
@@ -198,12 +199,15 @@ LAB_0059a792:
   }
   iVar11 = CONCAT22((short)((uint)iVar10 >> 0x10),*(short *)&this->field_0x94 + local_34);
   func_0x00406b86(0xffffff);
-  func_0x00408d6e(iVar7,iVar11);
-  func_0x00403bb6(CONCAT22(extraout_var_01,*(short *)&this->field_0x98 << 1) + iVar7,iVar11);
-  func_0x00403bb6(CONCAT22(extraout_var_00,*(short *)&this->field_0x98 << 1) + iVar7,
-                  CONCAT22(extraout_var,*(short *)&this->field_0x9c << 1) + iVar11);
-  func_0x00403bb6(iVar7,CONCAT22(extraout_var_02,*(short *)&this->field_0x9c << 1) + iVar11);
-  func_0x00403bb6(iVar7,iVar11);
+  thunk_SetQuickDrawTextOriginWithContextOffset(iVar7,iVar11);
+  thunk_DrawCenteredGuideLineOnMapDc
+            (CONCAT22(extraout_var_01,*(short *)&this->field_0x98 << 1) + iVar7,iVar11);
+  thunk_DrawCenteredGuideLineOnMapDc
+            (CONCAT22(extraout_var_00,*(short *)&this->field_0x98 << 1) + iVar7,
+             CONCAT22(extraout_var,*(short *)&this->field_0x9c << 1) + iVar11);
+  thunk_DrawCenteredGuideLineOnMapDc
+            (iVar7,CONCAT22(extraout_var_02,*(short *)&this->field_0x9c << 1) + iVar11);
+  thunk_DrawCenteredGuideLineOnMapDc(iVar7,iVar11);
   func_0x00406b86(0);
   func_0x00402bdf(0xffffff);
   return;
@@ -213,7 +217,8 @@ LAB_0059a792:
 // GHIDRA_NAME TMiniMapView::DispatchPictureResourceCommand
 // GHIDRA_PROTO undefined __thiscall DispatchPictureResourceCommand(int param_1, int * param_2)
 
-void TMiniMapView::DispatchPictureResourceCommand(int param_1, int *param_2)
+void __thiscall
+TMiniMapView::DispatchPictureResourceCommand(TMiniMapView *this,int param_1,int *param_2)
 
 {
   TMiniMapViewVtbl *pTVar1;

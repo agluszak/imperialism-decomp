@@ -76,7 +76,7 @@ LAB_006002ad:
     else {
       *pbVar2 = bVar1;
       pbVar7 = pbVar2 + 1;
-      if ((*(byte *)((int)&DAT_006a8018 + bVar1 + 1) & 4) != 0) {
+      if ((*(byte *)((int)&_mbctype + bVar1 + 1) & 4) != 0) {
         *pbVar7 = *pbVar6;
         pbVar7 = pbVar2 + 2;
         pbVar6 = param_3 + 2;
@@ -103,7 +103,7 @@ undefined4 CTimeSpan::Format(void)
   *(undefined4 *)(unaff_EBP + -0x14) = 0;
   CString::CString((CString *)(unaff_EBP + -0x10));
   *(undefined4 *)(unaff_EBP + -4) = 1;
-  CString__LoadStringA(*(undefined4 *)(unaff_EBP + 0xc));
+  CString::LoadStringA(*(undefined4 *)(unaff_EBP + 0xc));
   Format(*(undefined4 *)(unaff_EBP + 8),*(undefined4 *)(unaff_EBP + -0x10));
   *(undefined4 *)(unaff_EBP + -0x14) = 1;
   *(undefined1 *)(unaff_EBP + -4) = 0;

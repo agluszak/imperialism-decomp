@@ -3,6 +3,41 @@
 // Program: Imperialism.exe
 // Bucket: TUnit.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00402EEB
+// GHIDRA_NAME TUnit::thunk_RegisterUnitOrderWithOwnerManager
+// GHIDRA_PROTO undefined __thiscall thunk_RegisterUnitOrderWithOwnerManager(undefined2 param_1, short param_2)
+
+void __thiscall
+TUnit::thunk_RegisterUnitOrderWithOwnerManager(TUnit *this,undefined2 param_1,short param_2)
+
+{
+  int iVar1;
+  int *piVar2;
+  undefined2 in_stack_0000000a;
+  
+  *(undefined2 *)&this->field_0x4 = param_1;
+  *(undefined4 *)&this->field_0x8 = 0;
+  (*this->vftable[5].GetTUnitClassNamePointer)(_param_2);
+  if (this->field_0x1c == '\0') {
+    piVar2 = *(int **)&g_apNationStates[param_2]->field_0x89c;
+  }
+  else {
+    piVar2 = *(int **)&g_apTerrainTypeDescriptorTable[param_2]->field_0x44;
+  }
+  if (piVar2 == (int *)0x0) {
+    MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+    func_0x004057a4(s_D__Ambit_Cross_UUnit_cpp_0069aae0,0x11f);
+  }
+  (**(code **)(*piVar2 + 0x30))(this);
+  *(short *)&this->field_0x18 = param_2;
+  *(short *)&this->field_0x1a = param_2;
+  *(undefined2 *)&this->field_0xc = 0xffff;
+  iVar1 = *(int *)&g_pSimMgr->field_0x64 + 1;
+  *(int *)&g_pSimMgr->field_0x64 = iVar1;
+  *(int *)&this->field_0x20 = iVar1;
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x005C2430
 // GHIDRA_NAME TUnit::CreateObject
 // GHIDRA_PROTO undefined CreateObject()
@@ -28,7 +63,7 @@ undefined4 * TUnit::CreateObject(void)
 // GHIDRA_NAME TUnit::DetachUnitOrderFromOwnerAndReset
 // GHIDRA_PROTO undefined __thiscall DetachUnitOrderFromOwnerAndReset(void)
 
-void TUnit::DetachUnitOrderFromOwnerAndReset()
+void __thiscall TUnit::DetachUnitOrderFromOwnerAndReset(TUnit *this)
 
 {
   return;
@@ -38,7 +73,7 @@ void TUnit::DetachUnitOrderFromOwnerAndReset()
 // GHIDRA_NAME TUnit::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TUnit::GetRuntimeClass()
+CRuntimeClass * __thiscall TUnit::GetRuntimeClass(TUnit *this)
 
 {
   return &classTUnit;
@@ -48,7 +83,7 @@ CRuntimeClass * TUnit::GetRuntimeClass()
 // GHIDRA_NAME TUnit::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TUnit * TUnit::_scalar_deleting_destructor_(byte param_1)
+TUnit * __thiscall TUnit::_scalar_deleting_destructor_(TUnit *this,byte param_1)
 
 {
   func_0x004050dd();
@@ -62,7 +97,7 @@ TUnit * TUnit::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TUnit::~TUnit
 // GHIDRA_PROTO undefined __thiscall ~TUnit(void)
 
-void TUnit::~TUnit()
+void __thiscall TUnit::~TUnit(TUnit *this)
 
 {
   this->vftable = (TUnitVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
@@ -102,7 +137,8 @@ void TUnit::~TUnit()
    - This is the key insertion point for newly created recruit/unit objects before map tile linking.
     */
 
-void TUnit::RegisterUnitOrderWithOwnerManager(undefined2 param_1, short param_2)
+void __thiscall
+TUnit::RegisterUnitOrderWithOwnerManager(TUnit *this,undefined2 param_1,short param_2)
 
 {
   int iVar1;
@@ -136,7 +172,7 @@ void TUnit::RegisterUnitOrderWithOwnerManager(undefined2 param_1, short param_2)
 // GHIDRA_NAME TUnit::OrphanRetStub_005c2610
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_005c2610(void)
 
-void TUnit::OrphanRetStub_005c2610()
+void __thiscall TUnit::OrphanRetStub_005c2610(TUnit *this)
 
 {
   return;
@@ -146,7 +182,8 @@ void TUnit::OrphanRetStub_005c2610()
 // GHIDRA_NAME TUnit::SetOrderModeSlot34
 // GHIDRA_PROTO undefined __thiscall SetOrderModeSlot34(undefined4 nOrderType, undefined2 nOrderOwnerId)
 
-void TUnit::SetOrderModeSlot34(undefined4 nOrderType, undefined2 nOrderOwnerId)
+void __thiscall
+TUnit::SetOrderModeSlot34(TUnit *this,undefined4 nOrderType,undefined2 nOrderOwnerId)
 
 {
   *(undefined4 *)&this->field_0x8 = nOrderType;
@@ -158,7 +195,7 @@ void TUnit::SetOrderModeSlot34(undefined4 nOrderType, undefined2 nOrderOwnerId)
 // GHIDRA_NAME TUnit::DispatchSlot2C
 // GHIDRA_PROTO undefined __thiscall DispatchSlot2C(void)
 
-void TUnit::DispatchSlot2C()
+void __thiscall TUnit::DispatchSlot2C(TUnit *this)
 
 {
   if (*(int *)&this->field_0x8 != 2) {
@@ -171,7 +208,7 @@ void TUnit::DispatchSlot2C()
 // GHIDRA_NAME TUnit::Free
 // GHIDRA_PROTO undefined __thiscall Free(void)
 
-void TUnit::Free()
+void __thiscall TUnit::Free(TUnit *this)
 
 {
   int iVar1;
@@ -237,7 +274,7 @@ void TUnit::Free()
    Versioning:
    - DAT_00695278 gates legacy-vs-newer layout for the +0x20 field. */
 
-void TUnit::ReadFrom(int *pArchiveStream)
+void __thiscall TUnit::ReadFrom(TUnit *this,int *pArchiveStream)
 
 {
   undefined2 extraout_var;
@@ -312,7 +349,7 @@ void TUnit::ReadFrom(int *pArchiveStream)
    Notes:
    - Civ/Military serializers wrap this routine and append class-specific fields. */
 
-void TUnit::WriteTo(int *pArchiveStream)
+void __thiscall TUnit::WriteTo(TUnit *this,int *pArchiveStream)
 
 {
   code *pWriteBytesFn;

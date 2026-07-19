@@ -7,7 +7,7 @@
 // GHIDRA_NAME TBook::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TBook * TBook::_scalar_deleting_destructor_(byte param_1)
+TBook * __thiscall TBook::_scalar_deleting_destructor_(TBook *this,byte param_1)
 
 {
   func_0x004099a8();
@@ -52,7 +52,7 @@ undefined4 * TBook::CreateObject(void)
 // GHIDRA_NAME TBook::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TBook::GetRuntimeClass()
+CRuntimeClass * __thiscall TBook::GetRuntimeClass(TBook *this)
 
 {
   return &classTBook;
@@ -62,7 +62,7 @@ CRuntimeClass * TBook::GetRuntimeClass()
 // GHIDRA_NAME TBook::NoOpUiLifecycleHook
 // GHIDRA_PROTO undefined __thiscall NoOpUiLifecycleHook(void)
 
-void TBook::NoOpUiLifecycleHook()
+void __thiscall TBook::NoOpUiLifecycleHook(TBook *this)
 
 {
   _vslot_fn *p_Var1;
@@ -85,7 +85,7 @@ void TBook::NoOpUiLifecycleHook()
 // GHIDRA_NAME TBook::HandleEvent
 // GHIDRA_PROTO undefined __thiscall HandleEvent(int param_1, int param_2)
 
-void TBook::HandleEvent(int param_1, int param_2)
+void __thiscall TBook::HandleEvent(TBook *this,int param_1,int param_2)
 
 {
   short sVar1;

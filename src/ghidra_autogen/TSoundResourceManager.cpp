@@ -22,6 +22,242 @@ bool __thiscall TSoundResourceManager::UpdateLocalizationAudioSlot(int param_1,i
   return iVar2 == 0;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x0049C290
+// GHIDRA_NAME TSoundResourceManager::LoadWaveFileByPathAndBuildBuffer
+// GHIDRA_PROTO undefined LoadWaveFileByPathAndBuildBuffer()
+
+undefined4
+TSoundResourceManager::LoadWaveFileByPathAndBuildBuffer(undefined4 param_1,undefined4 param_2)
+
+{
+  HGLOBAL pvVar1;
+  undefined4 *unaff_FS_OFFSET;
+  LPCVOID local_1c;
+  LPCVOID local_18;
+  undefined4 local_14;
+  undefined4 local_10;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  puStack_8 = &LAB_0062fbf8;
+  local_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &local_c;
+  local_1c = (LPCVOID)0x0;
+  local_18 = (LPCVOID)0x0;
+  local_4 = 0;
+  local_14 = 0;
+  local_10 = 0;
+  func_0x00402bb2(param_1,&local_1c,&local_18,&local_14,&local_10,0);
+  local_4 = func_0x004038f5(&local_1c,param_2);
+  local_c = 0xffffffff;
+  if (local_1c != (LPCVOID)0x0) {
+    pvVar1 = GlobalHandle(local_1c);
+    GlobalUnlock(pvVar1);
+    pvVar1 = GlobalHandle(local_1c);
+    GlobalFree(pvVar1);
+  }
+  local_1c = (LPCVOID)0x0;
+  if (local_18 != (LPCVOID)0x0) {
+    pvVar1 = GlobalHandle(local_18);
+    GlobalUnlock(pvVar1);
+    pvVar1 = GlobalHandle(local_18);
+    GlobalFree(pvVar1);
+  }
+  *unaff_FS_OFFSET = local_14;
+  return local_4;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0049C430
+// GHIDRA_NAME TSoundResourceManager::LoadWaveResourceByNumericIdAndBuildBuffer
+// GHIDRA_PROTO undefined LoadWaveResourceByNumericIdAndBuildBuffer()
+
+undefined4
+TSoundResourceManager::LoadWaveResourceByNumericIdAndBuildBuffer(uint param_1,undefined4 param_2)
+
+{
+  HMODULE hModule;
+  int iVar1;
+  HGLOBAL pvVar2;
+  HRSRC hResInfo;
+  undefined4 uVar3;
+  undefined4 *puVar4;
+  code *pcVar5;
+  undefined4 *unaff_FS_OFFSET;
+  bool bVar6;
+  CString local_6c;
+  int local_68;
+  undefined4 local_64;
+  undefined4 local_60;
+  LPCVOID local_5c;
+  LPCVOID local_58;
+  undefined4 local_54 [5];
+  DWORD local_40;
+  HGLOBAL local_3c;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  uint local_4;
+  
+  puStack_8 = &LAB_0062fc20;
+  local_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &local_c;
+  local_64 = 0;
+  local_60 = 0;
+  local_5c = (LPCVOID)0x0;
+  local_58 = (LPCVOID)0x0;
+  local_4 = 0;
+  CString::CString(&local_6c);
+  local_4 = CONCAT31(local_4._1_3_,1);
+  CString::Format(&local_6c,s__d_wav_0069520c,param_1);
+  iVar1 = CString::GetBuffer(&local_6c,0);
+  pcVar5 = GlobalUnlock_exref;
+  if (local_5c != (LPCVOID)0x0) {
+    pvVar2 = GlobalHandle(local_5c);
+    pcVar5 = GlobalUnlock_exref;
+    GlobalUnlock(pvVar2);
+    pvVar2 = GlobalHandle(local_5c);
+    GlobalFree(pvVar2);
+  }
+  local_5c = (LPCVOID)0x0;
+  if (local_58 != (LPCVOID)0x0) {
+    pvVar2 = GlobalHandle(local_58);
+    (*pcVar5)(pvVar2);
+    pvVar2 = GlobalHandle(local_58);
+    GlobalFree(pvVar2);
+  }
+  local_58 = (LPCVOID)0x0;
+  iVar1 = func_0x00402bb2(iVar1,&local_64,&local_60,&local_5c,&local_58,0);
+  CString::ReleaseBuffer(&local_6c,-1);
+  local_4 = local_4 & 0xffffff00;
+  CString::~CString(&local_6c);
+  if (iVar1 != 0) {
+    hModule = *(HMODULE *)(local_68 + 0x30);
+    if (local_5c != (LPCVOID)0x0) {
+      pvVar2 = GlobalHandle(local_5c);
+      (*pcVar5)(pvVar2);
+      pvVar2 = GlobalHandle(local_5c);
+      GlobalFree(pvVar2);
+    }
+    local_5c = (LPCVOID)0x0;
+    if (local_58 != (LPCVOID)0x0) {
+      pvVar2 = GlobalHandle(local_58);
+      (*pcVar5)(pvVar2);
+      pvVar2 = GlobalHandle(local_58);
+      GlobalFree(pvVar2);
+    }
+    puVar4 = local_54;
+    for (iVar1 = 0x12; iVar1 != 0; iVar1 = iVar1 + -1) {
+      *puVar4 = 0;
+      puVar4 = puVar4 + 1;
+    }
+    local_58 = (LPCVOID)0x0;
+    hResInfo = FindResourceA(hModule,(LPCSTR)(param_1 & 0xffff),&DAT_00695204);
+    if (hResInfo == (HRSRC)0x0) {
+      bVar6 = false;
+    }
+    else {
+      local_3c = LoadResource(hModule,hResInfo);
+      local_54[1] = 0x204d454d;
+      local_40 = SizeofResource(hModule,hResInfo);
+      iVar1 = func_0x00402bb2(0,&local_64,&local_60,&local_5c,&local_58,local_54);
+      bVar6 = iVar1 == 0;
+    }
+    pcVar5 = GlobalUnlock_exref;
+    if (!bVar6) {
+      uVar3 = 0;
+      goto LAB_0049c61c;
+    }
+  }
+  uVar3 = func_0x004038f5(&local_64,param_2);
+LAB_0049c61c:
+  local_4 = 0xffffffff;
+  if (local_5c != (LPCVOID)0x0) {
+    pvVar2 = GlobalHandle(local_5c);
+    (*pcVar5)(pvVar2);
+    pvVar2 = GlobalHandle(local_5c);
+    GlobalFree(pvVar2);
+  }
+  local_5c = (LPCVOID)0x0;
+  if (local_58 != (LPCVOID)0x0) {
+    pvVar2 = GlobalHandle(local_58);
+    (*pcVar5)(pvVar2);
+    pvVar2 = GlobalHandle(local_58);
+    GlobalFree(pvVar2);
+  }
+  *unaff_FS_OFFSET = local_c;
+  return uVar3;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0049C720
+// GHIDRA_NAME TSoundResourceManager::ReadWaveDataAndFormatViaLoaderWithRetry
+// GHIDRA_PROTO undefined ReadWaveDataAndFormatViaLoaderWithRetry()
+
+bool __thiscall
+TSoundResourceManager::ReadWaveDataAndFormatViaLoaderWithRetry
+          (int param_1,undefined4 param_2,int param_3)
+
+{
+  int *piVar1;
+  int iVar2;
+  int iVar3;
+  uint uVar4;
+  uint uVar5;
+  undefined4 *unaff_ESI;
+  undefined4 *puVar6;
+  uint *unaff_EDI;
+  undefined4 *puVar7;
+  undefined4 *puStack_30;
+  undefined1 *puStack_2c;
+  undefined1 *puStack_28;
+  undefined1 *puStack_24;
+  undefined4 uStack_20;
+  undefined1 local_c [4];
+  undefined1 local_8 [4];
+  undefined1 local_4 [4];
+  
+  iVar2 = param_3;
+  puStack_24 = local_8;
+  uStack_20 = 0;
+  puStack_28 = local_4;
+  puStack_2c = local_c;
+  puStack_30 = &param_3;
+  piVar1 = *(int **)(param_1 + 4 + param_3 * 4);
+  iVar3 = (**(code **)(*piVar1 + 0x2c))(piVar1,0,*(undefined4 *)(param_1 + 0x24));
+  if (iVar3 == -0x7787ff6a) {
+    piVar1 = *(int **)(param_1 + 4 + iVar2 * 4);
+    (**(code **)(*piVar1 + 0x50))(piVar1);
+    piVar1 = *(int **)(param_1 + 4 + iVar2 * 4);
+    iVar3 = (**(code **)(*piVar1 + 0x2c))
+                      (piVar1,0,*(undefined4 *)(param_1 + 0x24),&stack0xffffffe4,&puStack_30,
+                       &puStack_28,&puStack_2c,0);
+  }
+  if (iVar3 == 0) {
+    uVar5 = *unaff_EDI;
+    puVar6 = (undefined4 *)unaff_EDI[3];
+    puVar7 = unaff_ESI;
+    for (uVar4 = uVar5 >> 2; uVar4 != 0; uVar4 = uVar4 - 1) {
+      *puVar7 = *puVar6;
+      puVar6 = puVar6 + 1;
+      puVar7 = puVar7 + 1;
+    }
+    for (uVar5 = uVar5 & 3; uVar5 != 0; uVar5 = uVar5 - 1) {
+      *(undefined1 *)puVar7 = *(undefined1 *)puVar6;
+      puVar6 = (undefined4 *)((int)puVar6 + 1);
+      puVar7 = (undefined4 *)((int)puVar7 + 1);
+    }
+    uVar5 = (int)*unaff_EDI / 2;
+    if (uVar5 < (uint)puStack_2c >> 1) {
+      do {
+        uVar5 = uVar5 + 1;
+        *(undefined2 *)((int)unaff_ESI + uVar5 * 2 + -2) = 0;
+      } while (uVar5 < (uint)puStack_2c >> 1);
+    }
+    piVar1 = *(int **)(param_1 + 4 + iVar2 * 4);
+    iVar3 = (**(code **)(*piVar1 + 0x4c))(piVar1,unaff_ESI,puStack_2c,puStack_24,puStack_28);
+  }
+  return iVar3 == 0;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x0049C850
 // GHIDRA_NAME TSoundResourceManager::SetChannelVolumesUntilAccepted
 // GHIDRA_PROTO undefined SetChannelVolumesUntilAccepted()

@@ -7,7 +7,8 @@
 // GHIDRA_NAME TBattleReportView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TBattleReportView * TBattleReportView::_scalar_deleting_destructor_(byte param_1)
+TBattleReportView * __thiscall
+TBattleReportView::_scalar_deleting_destructor_(TBattleReportView *this,byte param_1)
 
 {
   func_0x004055e7();
@@ -18,10 +19,10 @@ TBattleReportView * TBattleReportView::_scalar_deleting_destructor_(byte param_1
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00430A60
-// GHIDRA_NAME TBattleReportView::DestructTBattleReportViewBaseState
-// GHIDRA_PROTO undefined DestructTBattleReportViewBaseState()
+// GHIDRA_NAME TBattleReportView::~TBattleReportView
+// GHIDRA_PROTO undefined ~TBattleReportView()
 
-void __fastcall TBattleReportView::DestructTBattleReportViewBaseState(TView *param_1)
+void __fastcall TBattleReportView::~TBattleReportView(void *param_1)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -33,11 +34,11 @@ void __fastcall TBattleReportView::DestructTBattleReportViewBaseState(TView *par
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
   local_4 = 1;
-  ___M_YGXPAXIHP6EX0_Z_Z(&param_1[0x56].field38,0x30,0x17,&LAB_004038a0);
+  ___M_YGXPAXIHP6EX0_Z_Z((int)param_1 + 0x2078,0x30,0x17,&LAB_004038a0);
   local_4 = local_4 & 0xffffff00;
-  ___M_YGXPAXIHP6EX0_Z_Z(&param_1[0x51].flag4c,0x14,0x17,&LAB_004077bb);
+  ___M_YGXPAXIHP6EX0_Z_Z((int)param_1 + 0x1eac,0x14,0x17,&LAB_004077bb);
   local_4 = 0xffffffff;
-  TView::DestructCityDialogSharedBaseState(param_1);
+  thunk_DestructCityDialogSharedBaseState(param_1);
   *unaff_FS_OFFSET = local_c;
   return;
 }
@@ -77,17 +78,17 @@ undefined4 * TBattleReportView::CreateObject(void)
 // GHIDRA_NAME TBattleReportView::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TBattleReportView::GetRuntimeClass()
+CRuntimeClass * __thiscall TBattleReportView::GetRuntimeClass(TBattleReportView *this)
 
 {
   return &classTBattleReportView;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004ACB60
-// GHIDRA_NAME TBattleReportView::NoOpUiLifecycleHook
-// GHIDRA_PROTO undefined __thiscall NoOpUiLifecycleHook(void)
+// GHIDRA_NAME TBattleReportView::BuildBattleReportLayoutAndMarkers
+// GHIDRA_PROTO undefined __thiscall BuildBattleReportLayoutAndMarkers(void)
 
-void TBattleReportView::NoOpUiLifecycleHook()
+void __thiscall TBattleReportView::BuildBattleReportLayoutAndMarkers(TBattleReportView *this)
 
 {
   code *pcVar1;
@@ -160,7 +161,7 @@ void TBattleReportView::NoOpUiLifecycleHook()
   uStack0000001c = 0;
   uStack0000001d = 0;
   iStack_28 = 0x4acbab;
-  func_0x00406afa();
+  thunk_BuildUiTextStyleDescriptor();
   iStack_18 = 0x2b67;
   iStack_1c = 0xe;
   puStack_24 = &stack0x00000014;
@@ -171,7 +172,7 @@ void TBattleReportView::NoOpUiLifecycleHook()
     puVar6 = puVar6 + 1;
   }
   iStack_28 = 0x4acbcd;
-  func_0x00406afa();
+  thunk_BuildUiTextStyleDescriptor();
   pcVar1 = *(code **)(*extraout_ECX + 0x94);
   iStack_18 = 0x72657375;
   iStack_1c = 0x4acbe1;
@@ -188,7 +189,7 @@ void TBattleReportView::NoOpUiLifecycleHook()
   puStack_30 = &stack0x00000008;
   puStack_2c = (undefined1 *)0x2;
   uStack_34 = 0x4acc0c;
-  func_0x00406afa();
+  thunk_BuildUiTextStyleDescriptor();
   puStack_24 = (undefined1 *)0x6c6f6361;
   iStack_28 = 0x4acc18;
   piVar3 = (int *)(*pcVar1)();
@@ -204,7 +205,7 @@ void TBattleReportView::NoOpUiLifecycleHook()
   puStack_3c = &stack0xfffffffc;
   puStack_38 = (undefined1 *)0x0;
   iStack_40 = 0x4acc43;
-  func_0x00406afa();
+  thunk_BuildUiTextStyleDescriptor();
   puStack_30 = (undefined1 *)0x6661646d;
   uStack_34 = 0x4acc4f;
   piVar3 = (int *)(*pcVar1)();
@@ -230,7 +231,7 @@ void TBattleReportView::NoOpUiLifecycleHook()
   piStack_54 = &iStack_1c;
   ppuStack_50 = (undefined1 **)0x0;
   uStack_58 = 0x4acc9b;
-  func_0x00406afa();
+  thunk_BuildUiTextStyleDescriptor();
   iStack_48 = 0x66736870;
   iStack_4c = 0x4acca7;
   piVar3 = (int *)(*pcVar1)();
@@ -523,7 +524,7 @@ void TBattleReportView::NoOpUiLifecycleHook()
 // GHIDRA_NAME TBattleReportView::Free
 // GHIDRA_PROTO undefined __thiscall Free(void)
 
-void TBattleReportView::Free()
+void __thiscall TBattleReportView::Free(TBattleReportView *this)
 
 {
   if (*(int *)&this->field_0x24cc != 0) {
@@ -534,10 +535,10 @@ void TBattleReportView::Free()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004AD5A0
-// GHIDRA_NAME TBattleReportView::CanHandleCityDialogActionFalse
-// GHIDRA_PROTO undefined __thiscall CanHandleCityDialogActionFalse(uint param_1)
+// GHIDRA_NAME TBattleReportView::DoIdle
+// GHIDRA_PROTO undefined __thiscall DoIdle(uint param_1)
 
-uint TBattleReportView::CanHandleCityDialogActionFalse(uint param_1)
+uint __thiscall TBattleReportView::DoIdle(TBattleReportView *this,uint param_1)
 
 {
   TBattleReportViewVtbl *pTVar1;
@@ -584,8 +585,8 @@ uint TBattleReportView::CanHandleCityDialogActionFalse(uint param_1)
       DAT_006a23b8 = 0;
       DAT_006a23b4 = DAT_006a23b4 == '\0';
       (*pTVar1[0x1f].slot_0x04)();
-      uStack_c = 0xffffffff;
-      param_1 = func_0x00408035();
+      uStack_4 = 0xffffffff;
+      param_1 = thunk_DestroyScopedMapQuickDrawContext();
     }
   }
   *unaff_FS_OFFSET = uStack_c;
@@ -596,7 +597,7 @@ uint TBattleReportView::CanHandleCityDialogActionFalse(uint param_1)
 // GHIDRA_NAME TBattleReportView::HandleEvent
 // GHIDRA_PROTO undefined __thiscall HandleEvent(int param_1, int param_2)
 
-void TBattleReportView::HandleEvent(int param_1, int param_2)
+void __thiscall TBattleReportView::HandleEvent(TBattleReportView *this,int param_1,int param_2)
 
 {
   uint uVar1;
@@ -830,7 +831,8 @@ TBattleReportView::HandleCursorHoverSelectionByChildHitTestAndFallback
 // GHIDRA_NAME TBattleReportView::BeginMouseCaptureAndStartRepeatTimer
 // GHIDRA_PROTO undefined __thiscall BeginMouseCaptureAndStartRepeatTimer(int * param_1)
 
-void TBattleReportView::BeginMouseCaptureAndStartRepeatTimer(int *param_1)
+void __thiscall
+TBattleReportView::BeginMouseCaptureAndStartRepeatTimer(TBattleReportView *this,int *param_1)
 
 {
   int iVar1;
@@ -859,7 +861,7 @@ void TBattleReportView::BeginMouseCaptureAndStartRepeatTimer(int *param_1)
 // GHIDRA_NAME TBattleReportView::ApplyRectSlot110
 // GHIDRA_PROTO undefined __thiscall ApplyRectSlot110(void)
 
-void TBattleReportView::ApplyRectSlot110()
+void __thiscall TBattleReportView::ApplyRectSlot110(TBattleReportView *this)
 
 {
   func_0x00405844();

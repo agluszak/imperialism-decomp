@@ -37,7 +37,8 @@ undefined4 * TBatRepDetLine::CreateObject(void)
 // GHIDRA_NAME TBatRepDetLine::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TBatRepDetLine * TBatRepDetLine::_scalar_deleting_destructor_(byte param_1)
+TBatRepDetLine * __thiscall
+TBatRepDetLine::_scalar_deleting_destructor_(TBatRepDetLine *this,byte param_1)
 
 {
   func_0x0040694c();
@@ -51,7 +52,7 @@ TBatRepDetLine * TBatRepDetLine::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TBatRepDetLine::CreateTBatRepDetLineInstance
 // GHIDRA_PROTO undefined __thiscall CreateTBatRepDetLineInstance(void)
 
-void TBatRepDetLine::CreateTBatRepDetLineInstance()
+void __thiscall TBatRepDetLine::CreateTBatRepDetLineInstance(TBatRepDetLine *this)
 
 {
   this->vftable = (TBatRepDetLineVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
@@ -62,17 +63,18 @@ void TBatRepDetLine::CreateTBatRepDetLineInstance()
 // GHIDRA_NAME TBatRepDetLine::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TBatRepDetLine::GetRuntimeClass()
+CRuntimeClass * __thiscall TBatRepDetLine::GetRuntimeClass(TBatRepDetLine *this)
 
 {
   return &classTBatRepDetLine;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B0040
-// GHIDRA_NAME TBatRepDetLine::OrphanRetStub_0056f460
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0056f460(int * param_1, undefined4 param_2)
+// GHIDRA_NAME TBatRepDetLine::CreateLineItemView
+// GHIDRA_PROTO undefined __thiscall CreateLineItemView(int * param_1, undefined4 param_2)
 
-void TBatRepDetLine::OrphanRetStub_0056f460(int *param_1, undefined4 param_2)
+void __thiscall
+TBatRepDetLine::CreateLineItemView(TBatRepDetLine *this,int *param_1,undefined4 param_2)
 
 {
   uint uVar1;

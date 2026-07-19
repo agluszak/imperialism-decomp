@@ -37,7 +37,7 @@ undefined4 * TSliderPicture::CreateObject(void)
 // GHIDRA_NAME TSliderPicture::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TSliderPicture::GetRuntimeClass()
+CRuntimeClass * __thiscall TSliderPicture::GetRuntimeClass(TSliderPicture *this)
 
 {
   return &classTSliderPicture;
@@ -47,7 +47,7 @@ CRuntimeClass * TSliderPicture::GetRuntimeClass()
 // GHIDRA_NAME TSliderPicture::TSliderPicture
 // GHIDRA_PROTO undefined __thiscall TSliderPicture(void)
 
-TSliderPicture * TSliderPicture::TSliderPicture()
+TSliderPicture * __thiscall TSliderPicture::TSliderPicture(TSliderPicture *this)
 
 {
   func_0x00401122();
@@ -60,7 +60,8 @@ TSliderPicture * TSliderPicture::TSliderPicture()
 // GHIDRA_NAME TSliderPicture::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TSliderPicture * TSliderPicture::_scalar_deleting_destructor_(byte param_1)
+TSliderPicture * __thiscall
+TSliderPicture::_scalar_deleting_destructor_(TSliderPicture *this,byte param_1)
 
 {
   func_0x00408828();
@@ -74,7 +75,7 @@ TSliderPicture * TSliderPicture::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TSliderPicture::ApplyRectSlot110
 // GHIDRA_PROTO undefined __thiscall ApplyRectSlot110(void)
 
-void TSliderPicture::ApplyRectSlot110()
+void __thiscall TSliderPicture::ApplyRectSlot110(TSliderPicture *this)
 
 {
   func_0x00404fe8();

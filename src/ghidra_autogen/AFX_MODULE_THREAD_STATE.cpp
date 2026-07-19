@@ -44,7 +44,7 @@ AFX_MODULE_THREAD_STATE::_scalar_deleting_destructor_(undefined4 param_1,byte pa
 {
   ~AFX_MODULE_THREAD_STATE();
   if ((param_2 & 1) != 0) {
-    CNoTrackObject::delete(param_1);
+    delete(param_1);
   }
   return param_1;
 }

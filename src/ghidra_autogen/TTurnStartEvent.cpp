@@ -25,7 +25,7 @@ undefined4 * TTurnStartEvent::CreateObject(void)
 // GHIDRA_NAME TTurnStartEvent::ApplyJoinEmpireMode2FinalizeNationNameState
 // GHIDRA_PROTO undefined __thiscall ApplyJoinEmpireMode2FinalizeNationNameState(void)
 
-void TTurnStartEvent::ApplyJoinEmpireMode2FinalizeNationNameState()
+void __thiscall TTurnStartEvent::ApplyJoinEmpireMode2FinalizeNationNameState(TTurnStartEvent *this)
 
 {
   return;
@@ -35,7 +35,8 @@ void TTurnStartEvent::ApplyJoinEmpireMode2FinalizeNationNameState()
 // GHIDRA_NAME TTurnStartEvent::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TTurnStartEvent * TTurnStartEvent::_scalar_deleting_destructor_(byte param_1)
+TTurnStartEvent * __thiscall
+TTurnStartEvent::_scalar_deleting_destructor_(TTurnStartEvent *this,byte param_1)
 
 {
   func_0x00408a0d();
@@ -49,7 +50,7 @@ TTurnStartEvent * TTurnStartEvent::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TTurnStartEvent::CreateTTurnStartEventInstance
 // GHIDRA_PROTO undefined __thiscall CreateTTurnStartEventInstance(void)
 
-void TTurnStartEvent::CreateTTurnStartEventInstance()
+void __thiscall TTurnStartEvent::CreateTTurnStartEventInstance(TTurnStartEvent *this)
 
 {
   this->vftable = (TTurnStartEventVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4
@@ -61,7 +62,7 @@ void TTurnStartEvent::CreateTTurnStartEventInstance()
 // GHIDRA_NAME TTurnStartEvent::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TTurnStartEvent::GetRuntimeClass()
+CRuntimeClass * __thiscall TTurnStartEvent::GetRuntimeClass(TTurnStartEvent *this)
 
 {
   return &classTTurnStartEvent;

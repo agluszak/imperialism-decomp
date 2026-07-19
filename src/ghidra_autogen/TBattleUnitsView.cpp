@@ -7,7 +7,8 @@
 // GHIDRA_NAME TBattleUnitsView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TBattleUnitsView * TBattleUnitsView::_scalar_deleting_destructor_(byte param_1)
+TBattleUnitsView * __thiscall
+TBattleUnitsView::_scalar_deleting_destructor_(TBattleUnitsView *this,byte param_1)
 
 {
   func_0x00407946();
@@ -51,7 +52,7 @@ undefined4 * TBattleUnitsView::CreateObject(void)
 // GHIDRA_NAME TBattleUnitsView::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TBattleUnitsView::GetRuntimeClass()
+CRuntimeClass * __thiscall TBattleUnitsView::GetRuntimeClass(TBattleUnitsView *this)
 
 {
   return &classTBattleUnitsView;
@@ -149,7 +150,7 @@ switchD_004b071e_default:
 // GHIDRA_NAME TBattleUnitsView::CallVoidSlotA0
 // GHIDRA_PROTO undefined __thiscall CallVoidSlotA0(void)
 
-void TBattleUnitsView::CallVoidSlotA0()
+void __thiscall TBattleUnitsView::CallVoidSlotA0(TBattleUnitsView *this)
 
 {
   func_0x00409a8e();

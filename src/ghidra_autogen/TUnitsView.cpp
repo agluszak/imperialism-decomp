@@ -37,7 +37,7 @@ undefined4 * TUnitsView::CreateObject(void)
 // GHIDRA_NAME TUnitsView::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TUnitsView::GetRuntimeClass()
+CRuntimeClass * __thiscall TUnitsView::GetRuntimeClass(TUnitsView *this)
 
 {
   return &classTUnitsView;
@@ -47,7 +47,7 @@ CRuntimeClass * TUnitsView::GetRuntimeClass()
 // GHIDRA_NAME TUnitsView::ConstructTUnitsViewBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTUnitsViewBaseState(void)
 
-TUnitsView * TUnitsView::ConstructTUnitsViewBaseState()
+TUnitsView * __thiscall TUnitsView::ConstructTUnitsViewBaseState(TUnitsView *this)
 
 {
   func_0x00403328();
@@ -60,7 +60,7 @@ TUnitsView * TUnitsView::ConstructTUnitsViewBaseState()
 // GHIDRA_NAME TUnitsView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TUnitsView * TUnitsView::_scalar_deleting_destructor_(byte param_1)
+TUnitsView * __thiscall TUnitsView::_scalar_deleting_destructor_(TUnitsView *this,byte param_1)
 
 {
   func_0x00401a69();
@@ -74,7 +74,7 @@ TUnitsView * TUnitsView::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TUnitsView::OrphanRetStub_004c6fd0
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_004c6fd0(void)
 
-void TUnitsView::OrphanRetStub_004c6fd0()
+void __thiscall TUnitsView::OrphanRetStub_004c6fd0(TUnitsView *this)
 
 {
   short sVar1;

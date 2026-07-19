@@ -40,7 +40,8 @@ undefined4 * TMinorTreatyDialog::CreateObject(void)
 // GHIDRA_NAME TMinorTreatyDialog::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TMinorTreatyDialog * TMinorTreatyDialog::_scalar_deleting_destructor_(byte param_1)
+TMinorTreatyDialog * __thiscall
+TMinorTreatyDialog::_scalar_deleting_destructor_(TMinorTreatyDialog *this,byte param_1)
 
 {
   func_0x004083c8();
@@ -54,7 +55,7 @@ TMinorTreatyDialog * TMinorTreatyDialog::_scalar_deleting_destructor_(byte param
 // GHIDRA_NAME TMinorTreatyDialog::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TMinorTreatyDialog::GetRuntimeClass()
+CRuntimeClass * __thiscall TMinorTreatyDialog::GetRuntimeClass(TMinorTreatyDialog *this)
 
 {
   return &classTMinorTreatyDialog;
@@ -64,7 +65,7 @@ CRuntimeClass * TMinorTreatyDialog::GetRuntimeClass()
 // GHIDRA_NAME TMinorTreatyDialog::ConstructTMinorTreatyDialogBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTMinorTreatyDialogBaseState(void)
 
-void TMinorTreatyDialog::ConstructTMinorTreatyDialogBaseState()
+void __thiscall TMinorTreatyDialog::ConstructTMinorTreatyDialogBaseState(TMinorTreatyDialog *this)
 
 {
   _vslot_fn *p_Var1;

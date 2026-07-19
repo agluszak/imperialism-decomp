@@ -7,7 +7,8 @@
 // GHIDRA_NAME TLoungeDialog::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TLoungeDialog * TLoungeDialog::_scalar_deleting_destructor_(byte param_1)
+TLoungeDialog * __thiscall
+TLoungeDialog::_scalar_deleting_destructor_(TLoungeDialog *this,byte param_1)
 
 {
   func_0x00407103();
@@ -51,7 +52,7 @@ undefined4 * TLoungeDialog::CreateObject(void)
 // GHIDRA_NAME TLoungeDialog::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TLoungeDialog::GetRuntimeClass()
+CRuntimeClass * __thiscall TLoungeDialog::GetRuntimeClass(TLoungeDialog *this)
 
 {
   return &classTLoungeDialog;
@@ -61,7 +62,7 @@ CRuntimeClass * TLoungeDialog::GetRuntimeClass()
 // GHIDRA_NAME TLoungeDialog::Free
 // GHIDRA_PROTO undefined __thiscall Free(void)
 
-void TLoungeDialog::Free()
+void __thiscall TLoungeDialog::Free(TLoungeDialog *this)
 
 {
   if (g_nSaveFormatVersion != 0x4d6f696c) {
@@ -75,7 +76,7 @@ void TLoungeDialog::Free()
 // GHIDRA_NAME TLoungeDialog::NoOpUiLifecycleHook
 // GHIDRA_PROTO undefined __thiscall NoOpUiLifecycleHook(void)
 
-void TLoungeDialog::NoOpUiLifecycleHook()
+void __thiscall TLoungeDialog::NoOpUiLifecycleHook(TLoungeDialog *this)
 
 {
   TLoungeDialogVtbl *pTVar1;
@@ -168,10 +169,10 @@ void TLoungeDialog::NoOpUiLifecycleHook()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0054DB40
-// GHIDRA_NAME TLoungeDialog::CanHandleCityDialogActionFalse
-// GHIDRA_PROTO undefined __thiscall CanHandleCityDialogActionFalse(void)
+// GHIDRA_NAME TLoungeDialog::DoIdle
+// GHIDRA_PROTO undefined __thiscall DoIdle(void)
 
-uint TLoungeDialog::CanHandleCityDialogActionFalse()
+uint __thiscall TLoungeDialog::DoIdle(TLoungeDialog *this)
 
 {
   int iVar1;
@@ -336,7 +337,7 @@ uint TLoungeDialog::CanHandleCityDialogActionFalse()
 // GHIDRA_NAME TLoungeDialog::HandleEvent
 // GHIDRA_PROTO undefined __thiscall HandleEvent(int param_1, int * param_2)
 
-void TLoungeDialog::HandleEvent(int param_1, int *param_2)
+void __thiscall TLoungeDialog::HandleEvent(TLoungeDialog *this,int param_1,int *param_2)
 
 {
   uint uVar1;

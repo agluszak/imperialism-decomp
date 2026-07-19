@@ -18,7 +18,7 @@
    
    Library: nafxcw retail msvc500:static */
 
-void CSimpleException::InitString()
+void __thiscall CSimpleException::InitString(CSimpleException *this)
 
 {
   int iVar1;

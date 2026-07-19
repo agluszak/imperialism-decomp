@@ -41,7 +41,7 @@ undefined4 * TProductionCluster::CreateObject(void)
 // GHIDRA_NAME TProductionCluster::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TProductionCluster::GetRuntimeClass()
+CRuntimeClass * __thiscall TProductionCluster::GetRuntimeClass(TProductionCluster *this)
 
 {
   return &classTProductionCluster;
@@ -51,7 +51,8 @@ CRuntimeClass * TProductionCluster::GetRuntimeClass()
 // GHIDRA_NAME TProductionCluster::ConstructTProductionClusterBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTProductionClusterBaseState(void)
 
-TProductionCluster * TProductionCluster::ConstructTProductionClusterBaseState()
+TProductionCluster * __thiscall
+TProductionCluster::ConstructTProductionClusterBaseState(TProductionCluster *this)
 
 {
   func_0x00405835();
@@ -68,7 +69,8 @@ TProductionCluster * TProductionCluster::ConstructTProductionClusterBaseState()
 // GHIDRA_NAME TProductionCluster::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TProductionCluster * TProductionCluster::_scalar_deleting_destructor_(byte param_1)
+TProductionCluster * __thiscall
+TProductionCluster::_scalar_deleting_destructor_(TProductionCluster *this,byte param_1)
 
 {
   func_0x00405420();
@@ -82,7 +84,7 @@ TProductionCluster * TProductionCluster::_scalar_deleting_destructor_(byte param
 // GHIDRA_NAME TProductionCluster::HandleEvent
 // GHIDRA_PROTO undefined __thiscall HandleEvent(void * param_1, int param_2)
 
-void TProductionCluster::HandleEvent(void *param_1, int param_2)
+void __thiscall TProductionCluster::HandleEvent(TProductionCluster *this,void *param_1,int param_2)
 
 {
   undefined uVar1;
@@ -106,7 +108,8 @@ void TProductionCluster::HandleEvent(void *param_1, int param_2)
 // GHIDRA_NAME TProductionCluster::SetTAmtBarClusterWordField8c
 // GHIDRA_PROTO undefined __thiscall SetTAmtBarClusterWordField8c(undefined2 param_1)
 
-void TProductionCluster::SetTAmtBarClusterWordField8c(undefined2 param_1)
+void __thiscall
+TProductionCluster::SetTAmtBarClusterWordField8c(TProductionCluster *this,undefined2 param_1)
 
 {
   *(undefined2 *)&this->field_0x8c = param_1;
@@ -131,7 +134,8 @@ TProductionCluster::OrphanLeaf_NoCall_Ins05_00586a80
 // GHIDRA_NAME TProductionCluster::SetTAmtBarClusterWordField8e
 // GHIDRA_PROTO undefined __thiscall SetTAmtBarClusterWordField8e(undefined2 param_1)
 
-void TProductionCluster::SetTAmtBarClusterWordField8e(undefined2 param_1)
+void __thiscall
+TProductionCluster::SetTAmtBarClusterWordField8e(TProductionCluster *this,undefined2 param_1)
 
 {
   *(undefined2 *)&this->field_0x8e = param_1;

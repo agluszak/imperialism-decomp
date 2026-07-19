@@ -36,7 +36,7 @@ undefined4 __fastcall TLanguageMgr::CreateObject(undefined4 param_1)
 // GHIDRA_NAME TLanguageMgr::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TLanguageMgr::GetRuntimeClass()
+CRuntimeClass * __thiscall TLanguageMgr::GetRuntimeClass(TLanguageMgr *this)
 
 {
   return &classTLanguageMgr;
@@ -46,7 +46,7 @@ CRuntimeClass * TLanguageMgr::GetRuntimeClass()
 // GHIDRA_NAME TLanguageMgr::ConstructTLanguageMgrBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTLanguageMgrBaseState(void)
 
-TLanguageMgr * TLanguageMgr::ConstructTLanguageMgrBaseState()
+TLanguageMgr * __thiscall TLanguageMgr::ConstructTLanguageMgrBaseState(TLanguageMgr *this)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -92,7 +92,8 @@ TLanguageMgr * TLanguageMgr::ConstructTLanguageMgrBaseState()
 // GHIDRA_NAME TLanguageMgr::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TLanguageMgr * TLanguageMgr::_scalar_deleting_destructor_(byte param_1)
+TLanguageMgr * __thiscall
+TLanguageMgr::_scalar_deleting_destructor_(TLanguageMgr *this,byte param_1)
 
 {
   func_0x004055c9();
@@ -106,7 +107,7 @@ TLanguageMgr * TLanguageMgr::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TLanguageMgr::Free
 // GHIDRA_PROTO undefined __thiscall Free(void)
 
-void TLanguageMgr::Free()
+void __thiscall TLanguageMgr::Free(TLanguageMgr *this)
 
 {
   func_0x00408508();
@@ -120,7 +121,7 @@ void TLanguageMgr::Free()
 // GHIDRA_NAME TLanguageMgr::Localize
 // GHIDRA_PROTO undefined __thiscall Localize(CString * param_1, byte * param_2)
 
-CString * TLanguageMgr::Localize(CString *param_1, byte *param_2)
+CString * __thiscall TLanguageMgr::Localize(TLanguageMgr *this,CString *param_1,byte *param_2)
 
 {
   char *pcVar1;
@@ -325,5 +326,25 @@ char __fastcall TLanguageMgr::PickGender(int param_1)
   CString::~CString(&CStack_4c);
   *unaff_FS_OFFSET = unaff_EBX;
   return bVar8 + cVar3;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0055BA10
+// GHIDRA_NAME TLanguageMgr::GetNewsTexPath
+// GHIDRA_PROTO undefined GetNewsTexPath()
+
+int __fastcall TLanguageMgr::GetNewsTexPath(int param_1)
+
+{
+  return param_1 + 0x28;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0055BBF0
+// GHIDRA_NAME TLanguageMgr::GetNewsTabPath
+// GHIDRA_PROTO undefined GetNewsTabPath()
+
+int __fastcall TLanguageMgr::GetNewsTabPath(int param_1)
+
+{
+  return param_1 + 0x2c;
 }
 

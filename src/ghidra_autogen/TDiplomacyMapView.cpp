@@ -41,7 +41,7 @@ void TDiplomacyMapView::FrameRegionOnHdcAndReleaseBrushState(int *param_1)
              (HBRUSH)(-(uint)(&stack0x00000000 != (undefined1 *)0x14) & local_10),1,1);
   }
   local_4 = 1;
-  CGdiObject__DeleteObject();
+  CGdiObject::DeleteObject();
   *unaff_FS_OFFSET = local_c;
   return;
 }
@@ -102,90 +102,6 @@ TDiplomacyMapView::WrapperFor_thunk_RenderDiplomacyMatrixRowWithStatusIconsAndFi
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004D4BF0
-// GHIDRA_NAME TDiplomacyMapView::AppendPackedColorDwordToMaskBuffers
-// GHIDRA_PROTO undefined __thiscall AppendPackedColorDwordToMaskBuffers(uint param_1)
-
-void TDiplomacyMapView::AppendPackedColorDwordToMaskBuffers(uint param_1)
-
-{
-  int iVar1;
-  TViewVtbl *pTVar2;
-  uint uVar3;
-  uint uVar4;
-  undefined1 *puVar5;
-  int *piVar6;
-  int iVar7;
-  uint in_stack_00000008;
-  
-  iVar1 = (in_stack_00000008 & 0xff) * 0x1010101;
-  if (this->ownerOffsetX == 0) {
-    func_0x004046dd(1);
-  }
-  if (this->ownerOffsetY == 0) {
-    this->ownerOffsetY = 1;
-  }
-  pTVar2 = this->ownerContext->vftable;
-  if ((TViewVtbl *)this->padding_08_to_0b <= pTVar2) {
-    func_0x00408b20((undefined1 *)((int)&pTVar2->GetRuntimeClass + 1));
-  }
-  if ((TViewVtbl *)this->field0c <= pTVar2) {
-    this->field0c = (int)((int)&pTVar2->GetRuntimeClass + 1);
-  }
-  *(char *)((int)&pTVar2->GetRuntimeClass + this->field04) = (char)iVar1;
-  if (this->ownerOffsetX == 0) {
-    func_0x004046dd(1);
-  }
-  if (this->ownerOffsetY == 0) {
-    this->ownerOffsetY = 1;
-  }
-  pTVar2 = this->ownerContext->vftable;
-  puVar5 = (undefined1 *)((int)&pTVar2->GetRuntimeClass + 1);
-  if ((undefined1 *)this->padding_08_to_0b <= puVar5) {
-    func_0x00408b20((undefined1 *)((int)&pTVar2->GetRuntimeClass + 2));
-  }
-  if ((undefined1 *)this->field0c <= puVar5) {
-    this->field0c = (int)((int)&pTVar2->GetRuntimeClass + 2);
-  }
-  puVar5[this->field04] = (char)((uint)iVar1 >> 8);
-  if (this->ownerOffsetX == 0) {
-    func_0x004046dd(1);
-  }
-  if (this->ownerOffsetY == 0) {
-    this->ownerOffsetY = 1;
-  }
-  puVar5 = (undefined1 *)
-           func_0x00404f11((undefined1 *)((int)&this->ownerContext->vftable->GetRuntimeClass + 2));
-  *puVar5 = (char)((uint)iVar1 >> 0x10);
-  piVar6 = (int *)func_0x00403d7d(0);
-  puVar5 = (undefined1 *)func_0x00404f11(*piVar6 + 3);
-  *puVar5 = (char)((uint)iVar1 >> 0x18);
-  uVar3 = this->field14;
-  if ((uint)this->padding_08_to_0b <= uVar3) {
-    iVar1 = uVar3 + 1;
-    uVar4 = iVar1 * 2;
-    in_stack_00000008 = uVar4;
-    if (0x7fffffff < uVar4) {
-      in_stack_00000008 = 0x7fffffff;
-    }
-    iVar7 = _realloc(this->field04,uVar4);
-    if (iVar7 == 0) {
-      iVar7 = _realloc(this->field04,iVar1);
-      this->field04 = iVar7;
-      this->padding_08_to_0b = iVar1;
-    }
-    else {
-      this->field04 = iVar7;
-      this->padding_08_to_0b = in_stack_00000008;
-    }
-  }
-  if ((uint)this->field0c <= uVar3) {
-    this->field0c = uVar3 + 1;
-  }
-  (*(code *)(uVar3 + this->field04))();
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x004F3AE0
 // GHIDRA_NAME TDiplomacyMapView::CreateObject
 // GHIDRA_PROTO undefined CreateObject()
@@ -229,7 +145,8 @@ CRuntimeClass * TDiplomacyMapView::GetRuntimeClass(void)
 // GHIDRA_NAME TDiplomacyMapView::ConstructTDiplomacyMapViewBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTDiplomacyMapViewBaseState(void)
 
-TDiplomacyMapView * TDiplomacyMapView::ConstructTDiplomacyMapViewBaseState()
+TDiplomacyMapView * __thiscall
+TDiplomacyMapView::ConstructTDiplomacyMapViewBaseState(TDiplomacyMapView *this)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -243,9 +160,9 @@ TDiplomacyMapView * TDiplomacyMapView::ConstructTDiplomacyMapViewBaseState()
   *unaff_FS_OFFSET = &local_c;
   func_0x00401122();
   local_4 = 0;
-  ___L_YGXPAXIHP6EX0_Z1_Z(&this->field_0x1eac,0x14,0x17,&LAB_00408436);
+  CallCallbackRepeatedly(&this->field_0x1eac,0x14,0x17,&LAB_00408436);
   local_4 = CONCAT31(local_4._1_3_,1);
-  ___L_YGXPAXIHP6EX0_Z1_Z(&this->field_0x2078,0x30,0x17,&LAB_00404d5e);
+  CallCallbackRepeatedly(&this->field_0x2078,0x30,0x17,&LAB_00404d5e);
   this->vftable = (TDiplomacyMapViewVtbl *)&_vftable_;
   *(undefined4 *)&this->field_0x94 = 0;
   *(undefined2 *)&this->field_0x98 = 0;
@@ -262,7 +179,7 @@ TDiplomacyMapView * TDiplomacyMapView::ConstructTDiplomacyMapViewBaseState()
 // GHIDRA_NAME TDiplomacyMapView::DestructTDiplomacyMapViewAndMaybeFree
 // GHIDRA_PROTO undefined __thiscall DestructTDiplomacyMapViewAndMaybeFree(void)
 
-void TDiplomacyMapView::DestructTDiplomacyMapViewAndMaybeFree()
+void __thiscall TDiplomacyMapView::DestructTDiplomacyMapViewAndMaybeFree(TDiplomacyMapView *this)
 
 {
   this->vftable = (TDiplomacyMapViewVtbl *)0x0;
@@ -273,7 +190,8 @@ void TDiplomacyMapView::DestructTDiplomacyMapViewAndMaybeFree()
 // GHIDRA_NAME TDiplomacyMapView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TDiplomacyMapView * TDiplomacyMapView::_scalar_deleting_destructor_(byte param_1)
+TDiplomacyMapView * __thiscall
+TDiplomacyMapView::_scalar_deleting_destructor_(TDiplomacyMapView *this,byte param_1)
 
 {
   func_0x00404363();
@@ -284,10 +202,10 @@ TDiplomacyMapView * TDiplomacyMapView::_scalar_deleting_destructor_(byte param_1
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004F3CC0
-// GHIDRA_NAME TDiplomacyMapView::DestructTDiplomacyMapViewBaseState
-// GHIDRA_PROTO undefined __thiscall DestructTDiplomacyMapViewBaseState(void)
+// GHIDRA_NAME TDiplomacyMapView::~TDiplomacyMapView
+// GHIDRA_PROTO undefined __thiscall ~TDiplomacyMapView(void)
 
-void TDiplomacyMapView::DestructTDiplomacyMapViewBaseState()
+void __thiscall TDiplomacyMapView::~TDiplomacyMapView(TDiplomacyMapView *this)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -303,7 +221,7 @@ void TDiplomacyMapView::DestructTDiplomacyMapViewBaseState()
   local_4 = local_4 & 0xffffff00;
   ___M_YGXPAXIHP6EX0_Z_Z(&this->field_0x1eac,0x14,0x17,&LAB_004077bb);
   local_4 = 0xffffffff;
-  TView::DestructCityDialogSharedBaseState((TView *)this);
+  thunk_DestructCityDialogSharedBaseState(this);
   *unaff_FS_OFFSET = local_c;
   return;
 }
@@ -312,7 +230,7 @@ void TDiplomacyMapView::DestructTDiplomacyMapViewBaseState()
 // GHIDRA_NAME TDiplomacyMapView::NoOpUiLifecycleHook
 // GHIDRA_PROTO undefined __thiscall NoOpUiLifecycleHook(void)
 
-void TDiplomacyMapView::NoOpUiLifecycleHook()
+void __thiscall TDiplomacyMapView::NoOpUiLifecycleHook(TDiplomacyMapView *this)
 
 {
   TDiplomacyMapViewVtbl *pTVar1;
@@ -351,7 +269,8 @@ void TDiplomacyMapView::NoOpUiLifecycleHook()
 // GHIDRA_NAME TDiplomacyMapView::ResetDiplomacyOverlayFlagAndDispatchChildUpdate
 // GHIDRA_PROTO undefined __thiscall ResetDiplomacyOverlayFlagAndDispatchChildUpdate(void)
 
-void TDiplomacyMapView::ResetDiplomacyOverlayFlagAndDispatchChildUpdate()
+void __thiscall
+TDiplomacyMapView::ResetDiplomacyOverlayFlagAndDispatchChildUpdate(TDiplomacyMapView *this)
 
 {
   *(undefined4 *)&g_pGlobalUiRootController->field_0x28 = 0;
@@ -363,7 +282,8 @@ void TDiplomacyMapView::ResetDiplomacyOverlayFlagAndDispatchChildUpdate()
 // GHIDRA_NAME TDiplomacyMapView::BuildDiplomacyNationOverlayGeometryAndHitMasks
 // GHIDRA_PROTO undefined __thiscall BuildDiplomacyNationOverlayGeometryAndHitMasks(void)
 
-void TDiplomacyMapView::BuildDiplomacyNationOverlayGeometryAndHitMasks()
+void __thiscall
+TDiplomacyMapView::BuildDiplomacyNationOverlayGeometryAndHitMasks(TDiplomacyMapView *this)
 
 {
   short sVar1;
@@ -516,7 +436,7 @@ void TDiplomacyMapView::BuildDiplomacyNationOverlayGeometryAndHitMasks()
         iStack_b8 = iVar18;
         iStack_b0 = iVar12;
         func_0x00404b97(&CStack_c0);
-        sVar5 = func_0x00405b7d(&ppTStack_c4);
+        sVar5 = thunk_MeasureTextExtentWithCachedQuickDrawStyle(&ppTStack_c4);
         piVar19 = piStack_b4;
         pLVar16 = pLStack_d0;
         iVar18 = iVar18 + -6;
@@ -643,7 +563,8 @@ LAB_004f4343:
 // GHIDRA_NAME TDiplomacyMapView::RenderDiplomacyMatrixRowWithStatusIconsAndFill
 // GHIDRA_PROTO undefined __thiscall RenderDiplomacyMatrixRowWithStatusIconsAndFill(void)
 
-void TDiplomacyMapView::RenderDiplomacyMatrixRowWithStatusIconsAndFill()
+void __thiscall
+TDiplomacyMapView::RenderDiplomacyMatrixRowWithStatusIconsAndFill(TDiplomacyMapView *this)
 
 {
   int iVar1;
@@ -710,11 +631,164 @@ void TDiplomacyMapView::RenderDiplomacyMatrixRowWithStatusIconsAndFill()
   return;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x004F4A30
+// GHIDRA_NAME TDiplomacyMapView::RenderTerrainAndMinorNationLegendLabels
+// GHIDRA_PROTO undefined RenderTerrainAndMinorNationLegendLabels()
+
+void __fastcall TDiplomacyMapView::RenderTerrainAndMinorNationLegendLabels(int param_1)
+
+{
+  short sVar1;
+  ushort uVar2;
+  TCountry *pTVar3;
+  char cVar4;
+  int iVar5;
+  undefined4 unaff_EBX;
+  undefined2 *puVar6;
+  TCountry **ppTVar7;
+  int unaff_ESI;
+  int unaff_EDI;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 uVar8;
+  undefined4 local_30;
+  undefined1 local_2c;
+  undefined1 uStack_2b;
+  undefined1 uStack_2a;
+  undefined1 uStack_29;
+  CString local_28;
+  int local_24;
+  undefined2 local_1c [8];
+  undefined4 uStack_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_00632bd8;
+  uStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &uStack_c;
+  local_2c = 0;
+  uStack_2b = 0;
+  uStack_2a = 0;
+  uStack_29 = 0;
+  local_30 = 0;
+  local_24 = param_1;
+  func_0x00401bf9(0,10,0x2b68,1);
+  thunk_MapUiThemeCodeToStyleFlags(0x2b68,&local_2c);
+  thunk_MapUiThemeCodeToStyleFlags(0x2b6b,&local_30);
+  ppTVar7 = g_apTerrainTypeDescriptorTable;
+  puVar6 = (undefined2 *)(param_1 + 0x234);
+  do {
+    if (*ppTVar7 != (TCountry *)0x0) {
+      cVar4 = func_0x004050f1(puVar6);
+      if (cVar4 == '\0') {
+        CString::CString(&local_28);
+        local_4 = 0;
+        if (((*ppTVar7 == (TCountry *)0x0) ||
+            (sVar1 = *(short *)&(*ppTVar7)->field_0xe, sVar1 < 100)) || (199 < sVar1)) {
+          func_0x00405245(&local_28);
+          thunk_MapUiThemeCodeToStyleFlags(0x2b68,&local_30);
+          uVar8 = 0x2b6b;
+        }
+        else {
+          func_0x00404b97(&local_28);
+          thunk_MapUiThemeCodeToStyleFlags(0x2b67,&local_30);
+          uVar8 = 0x2b6f;
+        }
+        thunk_MapUiThemeCodeToStyleFlags(uVar8,&stack0xffffffcc);
+        unaff_ESI = CONCAT22((short)((uint)unaff_ESI >> 0x10),puVar6[6]);
+        unaff_EDI = CONCAT22((short)((uint)unaff_EDI >> 0x10),*puVar6);
+        func_0x00409444(unaff_EBX);
+        thunk_SetQuickDrawTextOriginWithContextOffset(unaff_EDI + 1,unaff_ESI + 1);
+        func_0x004029aa(&local_2c);
+        func_0x00409444(local_30);
+        thunk_SetQuickDrawTextOriginWithContextOffset(unaff_EDI,unaff_ESI);
+        func_0x004029aa(&local_2c);
+        local_4 = 0xffffffff;
+        CString::~CString(&local_28);
+      }
+    }
+    ppTVar7 = ppTVar7 + 1;
+    puVar6 = puVar6 + 8;
+  } while ((int)ppTVar7 < 0x6a432c);
+  ppTVar7 = g_apTerrainTypeDescriptorTable + 7;
+  puVar6 = (undefined2 *)(local_24 + 0x2a4);
+  do {
+    if (*ppTVar7 != (TCountry *)0x0) {
+      cVar4 = func_0x004050f1(puVar6);
+      if (cVar4 == '\0') {
+        CString::CString(&local_28);
+        pTVar3 = *ppTVar7;
+        local_4 = 1;
+        if (*(short *)&pTVar3->field_0xe == -1) {
+          func_0x00405245(&local_28);
+          thunk_MapUiThemeCodeToStyleFlags(0x2b6b,&local_30);
+          thunk_MapUiThemeCodeToStyleFlags(0x2b68,&stack0xffffffcc);
+        }
+        else {
+          if (pTVar3 != (TCountry *)0x0) {
+            if ((99 < *(short *)&pTVar3->field_0xe) && (*(short *)&pTVar3->field_0xe < 200)) {
+              func_0x00404b97(&local_28);
+              thunk_MapUiThemeCodeToStyleFlags(0x2b67,&local_30);
+              thunk_MapUiThemeCodeToStyleFlags(0x2b6f,&stack0xffffffcc);
+              goto LAB_004f4d17;
+            }
+          }
+          uVar2 = *(ushort *)&pTVar3->field_0xe;
+          local_1c[0] = 0x2b6e;
+          local_1c[1] = 0x2b69;
+          local_1c[2] = 0x2b70;
+          local_1c[3] = 0x2b71;
+          local_1c[4] = 0x2b72;
+          local_1c[5] = 0x2b73;
+          local_1c[6] = 0x2b74;
+          if ((short)uVar2 < 200) {
+            if ((short)uVar2 < 100) {
+              iVar5 = CONCAT22((short)((uint)pTVar3 >> 0x10),*(undefined2 *)&pTVar3->field_0xc);
+            }
+            else {
+              iVar5 = uVar2 - 100;
+            }
+          }
+          else {
+            iVar5 = uVar2 - 200;
+          }
+          thunk_MapUiThemeCodeToStyleFlags
+                    (CONCAT22((short)((uint)iVar5 >> 0x10),local_1c[(short)iVar5]),&local_2c);
+          thunk_MapUiThemeCodeToStyleFlags(0x2b68,&local_30);
+          func_0x00405245(&local_28);
+        }
+LAB_004f4d17:
+        func_0x00405119();
+        unaff_ESI = CONCAT22((short)((uint)unaff_ESI >> 0x10),puVar6[6]);
+        unaff_EDI = CONCAT22((short)((uint)unaff_EDI >> 0x10),*puVar6);
+        puStack_8._0_1_ = 2;
+        func_0x00409444(unaff_EBX);
+        thunk_SetQuickDrawTextOriginWithContextOffset(unaff_EDI + 1,unaff_ESI + 1);
+        func_0x004029aa(&local_2c);
+        func_0x00409444(local_30);
+        thunk_SetQuickDrawTextOriginWithContextOffset(unaff_EDI,unaff_ESI);
+        func_0x004029aa(&local_2c);
+        puStack_8 = (undefined1 *)CONCAT31(puStack_8._1_3_,1);
+        CDC::SelectPalette(local_24,0);
+        local_4 = 0xffffffff;
+        CString::~CString(&local_28);
+      }
+    }
+    ppTVar7 = ppTVar7 + 1;
+    puVar6 = puVar6 + 8;
+    if (0x6a436b < (int)ppTVar7) {
+      *unaff_FS_OFFSET = uStack_c;
+      return;
+    }
+  } while( true );
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x004F5410
 // GHIDRA_NAME TDiplomacyMapView::HandleDiplomacySelectedNationActionCommand
 // GHIDRA_PROTO undefined __thiscall HandleDiplomacySelectedNationActionCommand(void)
 
-void TDiplomacyMapView::HandleDiplomacySelectedNationActionCommand()
+void __thiscall
+TDiplomacyMapView::HandleDiplomacySelectedNationActionCommand(TDiplomacyMapView *this)
 
 {
   TGreatPower *pTVar1;
@@ -1113,19 +1187,16 @@ LAB_004f6089:
 // GHIDRA_NAME TDiplomacyMapView::RenderDiplomacyLegendSurfaceAndPresent
 // GHIDRA_PROTO undefined __thiscall RenderDiplomacyLegendSurfaceAndPresent(void)
 
-void TDiplomacyMapView::RenderDiplomacyLegendSurfaceAndPresent()
+void __thiscall TDiplomacyMapView::RenderDiplomacyLegendSurfaceAndPresent(TDiplomacyMapView *this)
 
 {
   TDiplomacyMapViewVtbl *pTVar1;
-  undefined4 uVar2;
   undefined2 extraout_var;
   undefined4 *unaff_EBX;
-  TCountry **ppTVar3;
-  undefined4 unaff_EBP;
-  undefined4 unaff_ESI;
-  undefined4 *puVar4;
-  int iVar5;
-  undefined4 *unaff_EDI;
+  TCountry **ppTVar2;
+  undefined4 *unaff_ESI;
+  undefined4 *puVar3;
+  int iVar4;
   undefined4 *unaff_FS_OFFSET;
   undefined4 *unaff_retaddr;
   undefined4 *puStack_64;
@@ -1153,7 +1224,7 @@ void TDiplomacyMapView::RenderDiplomacyLegendSurfaceAndPresent()
   func_0x004021c1();
   pTVar1 = this->vftable;
   puStack_58 = local_1c;
-  puVar4 = (undefined4 *)0x0;
+  puVar3 = (undefined4 *)0x0;
   local_4 = (undefined1 *)0x0;
   puStack_5c = (undefined4 *)0x4f61ac;
   (*pTVar1[7].SelectCandidateTilesWithLowGroundUnitCount)();
@@ -1163,56 +1234,60 @@ void TDiplomacyMapView::RenderDiplomacyLegendSurfaceAndPresent()
     puStack_5c = &uStack_44;
     puStack_60 = (undefined4 *)&stack0xffffffb8;
     puStack_64 = (undefined4 *)0x4f61da;
-    func_0x00408d64();
+    thunk_GetActiveQuickDrawSurfaceContextAndFlags();
     puStack_5c = (undefined4 *)uStack_44;
     puStack_60 = g_pPrimaryRenderSurfaceContext;
     puStack_64 = (undefined4 *)0x4f61ed;
-    func_0x00406f5f();
+    thunk_SetActiveQuickDrawSurfaceContext();
     if (unaff_EBX != g_pPrimaryRenderSurfaceContext) {
       puStack_5c = g_pPrimaryRenderSurfaceContext;
       puStack_60 = (undefined4 *)0x4f6203;
-      puStack_5c = (undefined4 *)func_0x0040520e();
+      puStack_5c = (undefined4 *)thunk_GetSurfaceObjectAtContextOffset24();
       puStack_60 = (undefined4 *)0x4f620c;
-      func_0x0040761c();
+      thunk_ReturnConstantTrueQuickDrawFlag();
     }
     puStack_60 = (undefined4 *)0x4f621b;
     func_0x00404fe8();
-    ppTVar3 = g_apTerrainTypeDescriptorTable;
+    ppTVar2 = g_apTerrainTypeDescriptorTable;
     do {
-      if (*ppTVar3 != (TCountry *)0x0) {
-        puStack_60 = puVar4 + 0x96;
-        puStack_64 = puVar4;
+      if (*ppTVar2 != (TCountry *)0x0) {
+        puStack_60 = puVar3 + 0x96;
+        puStack_64 = puVar3;
         (*pTVar1[0xc].GetTEventHandlerClassNamePointer)();
       }
-      puVar4 = (undefined4 *)((int)puVar4 + 1);
-      ppTVar3 = ppTVar3 + 1;
-    } while ((short)puVar4 < 7);
+      puVar3 = (undefined4 *)((int)puVar3 + 1);
+      ppTVar2 = ppTVar2 + 1;
+    } while ((short)puVar3 < 7);
     puStack_60 = (undefined4 *)0x3f;
     puStack_64 = (undefined4 *)0x4f624c;
     (**(code **)(g_pUiRuntimeContext->vftable + 0x34))();
-    iVar5 = 7;
-    ppTVar3 = g_apTerrainTypeDescriptorTable + 7;
+    iVar4 = 7;
+    ppTVar2 = g_apTerrainTypeDescriptorTable + 7;
     do {
-      if (*ppTVar3 != (TCountry *)0x0) {
+      if (*ppTVar2 != (TCountry *)0x0) {
         puStack_64 = (undefined4 *)0x2bb;
-        (*pTVar1[0xc].GetTEventHandlerClassNamePointer)(iVar5);
+        (*pTVar1[0xc].GetTEventHandlerClassNamePointer)(iVar4);
       }
-      iVar5 = iVar5 + 1;
-      ppTVar3 = ppTVar3 + 1;
-    } while ((short)iVar5 < 0x17);
+      iVar4 = iVar4 + 1;
+      ppTVar2 = ppTVar2 + 1;
+    } while ((short)iVar4 < 0x17);
     puStack_3c = (undefined1 *)&puStack_64;
     puStack_64 = (undefined4 *)0x0;
     func_0x00406b86();
     unaff_retaddr = puStack_8;
     puStack_64 = puStack_8;
-    func_0x00405e16();
-    if (unaff_EDI != g_pPrimaryRenderSurfaceContext) {
-      uVar2 = func_0x0040520e(g_pPrimaryRenderSurfaceContext);
-      func_0x004024fa(uVar2);
+    thunk_RenderTerrainAndMinorNationLegendLabels();
+    if (unaff_ESI != g_pPrimaryRenderSurfaceContext) {
+      puStack_64 = g_pPrimaryRenderSurfaceContext;
+      puStack_64 = (undefined4 *)thunk_GetSurfaceObjectAtContextOffset24();
+      thunk_NoOpQuickDrawLifecycleHookB();
     }
-    func_0x00406f5f(unaff_EDI,unaff_ESI);
-    func_0x00409444(unaff_EBP);
-    func_0x004069e2(unaff_EBX);
+    thunk_SetActiveQuickDrawSurfaceContext(unaff_ESI);
+    puStack_64 = unaff_EBX;
+    func_0x00409444();
+    puStack_5c = (undefined4 *)puStack_3c;
+    puStack_60 = (undefined4 *)0x4f62dc;
+    thunk_SetGlobalBlitTransparentColorRaw();
     *(undefined4 *)&this->field_0x524 = 0;
   }
   if (g_pPrimaryRenderSurfaceContext + 1 !=
@@ -1261,11 +1336,10 @@ TDiplomacyMapView::RebuildDiplomacyLegendPaletteMode4AndBlit
   undefined4 uVar4;
   undefined3 extraout_var;
   undefined4 extraout_ECX;
-  undefined4 unaff_EBP;
   int iVar5;
   undefined4 local_24;
   TDiplomacyMapView *local_20;
-  undefined1 local_1c [4];
+  undefined4 local_1c;
   undefined4 local_18;
   undefined4 local_14;
   LONG local_10;
@@ -1279,10 +1353,10 @@ TDiplomacyMapView::RebuildDiplomacyLegendPaletteMode4AndBlit
   local_4 = param_2[3];
   local_20 = this;
   if (*(int *)&this->field_0x524 != 4) {
-    func_0x00408d64(local_1c,&local_24);
-    func_0x00406f5f(g_pPrimaryRenderSurfaceContext,local_24);
-    uVar4 = func_0x0040520e(g_pPrimaryRenderSurfaceContext);
-    func_0x0040761c(uVar4);
+    thunk_GetActiveQuickDrawSurfaceContextAndFlags(&local_1c,&local_24);
+    thunk_SetActiveQuickDrawSurfaceContext(g_pPrimaryRenderSurfaceContext,local_24);
+    uVar4 = thunk_GetSurfaceObjectAtContextOffset24(g_pPrimaryRenderSurfaceContext);
+    thunk_ReturnConstantTrueQuickDrawFlag(uVar4);
     iVar5 = 0;
     do {
       if ((short)iVar5 == (short)param_1) {
@@ -1297,17 +1371,18 @@ TDiplomacyMapView::RebuildDiplomacyLegendPaletteMode4AndBlit
       local_18 = 0;
       local_14 = 0;
       sVar3 = func_0x00409205(uVar4,&local_18,1);
-      func_0x00402aa4((int)sVar3,extraout_ECX);
-      func_0x00409561(&g_pActiveQuickDrawSurfaceContext->field_0x4);
+      uVar4 = extraout_ECX;
+      TUiStyleRef::thunk_SetUiResourceContextTagWord((int)sVar3);
+      func_0x00409561(&g_pActiveQuickDrawSurfaceContext->field_0x4,uVar4);
       uVar4 = func_0x00409205(0x3f);
       func_0x00404a25(*(undefined4 *)&g_pActiveQuickDrawSurfaceContext->field_0x4,uVar4);
       pTVar1 = local_20;
       iVar5 = iVar5 + 1;
     } while ((short)iVar5 < 0x17);
-    func_0x00405e16(param_2);
-    uVar4 = func_0x0040520e(g_pPrimaryRenderSurfaceContext);
-    func_0x004024fa(uVar4);
-    func_0x00406f5f(local_20,unaff_EBP);
+    thunk_RenderTerrainAndMinorNationLegendLabels(param_2);
+    uVar4 = thunk_GetSurfaceObjectAtContextOffset24(g_pPrimaryRenderSurfaceContext);
+    thunk_NoOpQuickDrawLifecycleHookB(uVar4);
+    thunk_SetActiveQuickDrawSurfaceContext(local_1c,local_24);
     *(undefined4 *)&pTVar1->field_0x524 = 4;
   }
   func_0x00405493(g_pPrimaryRenderSurfaceContext + 4,&g_pActiveQuickDrawSurfaceContext->field_0x4,
@@ -1398,7 +1473,8 @@ TDiplomacyMapView::BlitMonochromeMaskBytePatternToSurface
 // GHIDRA_NAME TDiplomacyMapView::RebuildDiplomacyLegendPaletteMode1AndBlit
 // GHIDRA_PROTO undefined __thiscall RebuildDiplomacyLegendPaletteMode1AndBlit(LONG * param_1)
 
-void TDiplomacyMapView::RebuildDiplomacyLegendPaletteMode1AndBlit(LONG *param_1)
+void __thiscall
+TDiplomacyMapView::RebuildDiplomacyLegendPaletteMode1AndBlit(TDiplomacyMapView *this,LONG *param_1)
 
 {
   TDiplomacyMapView *pTVar1;
@@ -1413,7 +1489,7 @@ void TDiplomacyMapView::RebuildDiplomacyLegendPaletteMode1AndBlit(LONG *param_1)
   TCountry **local_44;
   undefined4 local_40;
   TDiplomacyMapView *local_3c;
-  undefined1 local_38 [8];
+  undefined4 local_38 [2];
   CString local_30;
   CString local_2c;
   CString local_28 [3];
@@ -1444,10 +1520,10 @@ void TDiplomacyMapView::RebuildDiplomacyLegendPaletteMode1AndBlit(LONG *param_1)
   local_14 = in_stack_00000008[2];
   local_10 = in_stack_00000008[3];
   if (*(int *)&this->field_0x524 != 1) {
-    func_0x00408d64(local_38,&local_40);
-    func_0x00406f5f(g_pPrimaryRenderSurfaceContext,local_40);
-    uVar4 = func_0x0040520e(g_pPrimaryRenderSurfaceContext);
-    func_0x0040761c(uVar4);
+    thunk_GetActiveQuickDrawSurfaceContextAndFlags(local_38,&local_40);
+    thunk_SetActiveQuickDrawSurfaceContext(g_pPrimaryRenderSurfaceContext,local_40);
+    uVar4 = thunk_GetSurfaceObjectAtContextOffset24(g_pPrimaryRenderSurfaceContext);
+    thunk_ReturnConstantTrueQuickDrawFlag(uVar4);
     iVar5 = 0;
     local_44 = g_apTerrainTypeDescriptorTable;
     do {
@@ -1457,8 +1533,9 @@ void TDiplomacyMapView::RebuildDiplomacyLegendPaletteMode1AndBlit(LONG *param_1)
         local_2c.m_pchData = (char *)0x0;
         local_28[0].m_pchData = (char *)0x0;
         sVar3 = func_0x00409205(CONCAT31(extraout_var,uVar2) + 200,&local_2c,1);
-        func_0x00402aa4((int)sVar3,extraout_ECX);
-        func_0x00409561(&g_pActiveQuickDrawSurfaceContext->field_0x4);
+        uVar4 = extraout_ECX;
+        TUiStyleRef::thunk_SetUiResourceContextTagWord((int)sVar3);
+        func_0x00409561(&g_pActiveQuickDrawSurfaceContext->field_0x4,uVar4);
         uVar4 = func_0x00409205(0x3f);
         func_0x00404a25(*(undefined4 *)&g_pActiveQuickDrawSurfaceContext->field_0x4,uVar4);
       }
@@ -1466,11 +1543,11 @@ void TDiplomacyMapView::RebuildDiplomacyLegendPaletteMode1AndBlit(LONG *param_1)
       iVar5 = iVar5 + 1;
       local_44 = local_44 + 1;
     } while ((short)iVar5 < 0x17);
-    func_0x00405e16(in_stack_00000008);
+    thunk_RenderTerrainAndMinorNationLegendLabels(in_stack_00000008);
     *(undefined4 *)&pTVar1->field_0x524 = 1;
-    uVar4 = func_0x0040520e(g_pPrimaryRenderSurfaceContext);
-    func_0x004024fa(uVar4);
-    func_0x00406f5f(local_3c,local_44);
+    uVar4 = thunk_GetSurfaceObjectAtContextOffset24(g_pPrimaryRenderSurfaceContext);
+    thunk_NoOpQuickDrawLifecycleHookB(uVar4);
+    thunk_SetActiveQuickDrawSurfaceContext(local_38[0],local_40);
   }
   func_0x00405493(g_pPrimaryRenderSurfaceContext + 4,&g_pActiveQuickDrawSurfaceContext->field_0x4,
                   &local_1c,&local_1c,0,0);
@@ -1504,8 +1581,9 @@ TDiplomacyMapView::BuildTurnEventMonochromeMaskBuffers
   local_8 = 0;
   local_4 = 0;
   sVar1 = func_0x00409205(param_2,&local_8,1);
-  func_0x00402aa4((int)sVar1,extraout_ECX);
-  func_0x00409561(&g_pActiveQuickDrawSurfaceContext->field_0x4);
+  uVar2 = extraout_ECX;
+  TUiStyleRef::thunk_SetUiResourceContextTagWord((int)sVar1);
+  func_0x00409561(&g_pActiveQuickDrawSurfaceContext->field_0x4,uVar2);
   uVar2 = func_0x00409205(0x3f);
   func_0x00404a25(*(undefined4 *)&g_pActiveQuickDrawSurfaceContext->field_0x4,uVar2);
   return;
@@ -1624,7 +1702,7 @@ void TDiplomacyMapView::HandleDiplomacyMapControlTagToggleOrForward
       puVar2 = puVar2 + 1;
     } while ((int)piVar1 < 0x696990);
     if ((int)puVar2 < 6) {
-      WrapperFor_InvalidateCityDialogRectRegion_At004f6d90(puVar2,unaff_ESI);
+      thunk_WrapperFor_InvalidateCityDialogRectRegion_At004f6d90(puVar2,unaff_ESI);
       return;
     }
   }
@@ -1655,7 +1733,8 @@ TDiplomacyMapView::WrapperFor_thunk_ForwardCityDialogParamToChildSlot48_At004f71
 // GHIDRA_NAME TDiplomacyMapView::RenderDiplomacyPendingPolicyIconsAndFrames
 // GHIDRA_PROTO undefined __thiscall RenderDiplomacyPendingPolicyIconsAndFrames(void)
 
-void TDiplomacyMapView::RenderDiplomacyPendingPolicyIconsAndFrames()
+void __thiscall
+TDiplomacyMapView::RenderDiplomacyPendingPolicyIconsAndFrames(TDiplomacyMapView *this)
 
 {
   short sVar1;
@@ -1711,9 +1790,9 @@ void TDiplomacyMapView::RenderDiplomacyPendingPolicyIconsAndFrames()
       }
       func_0x00405c27(&local_28);
       func_0x00406b86(0);
-      func_0x00408d6e(local_24.top,local_24.left);
-      func_0x00403bb6(local_24.top,local_24.right);
-      func_0x00403bb6(local_28,local_24.right);
+      thunk_SetQuickDrawTextOriginWithContextOffset(local_24.bottom,local_24.right);
+      thunk_DrawCenteredGuideLineOnMapDc(local_24.bottom,aiStack_14[0]);
+      thunk_DrawCenteredGuideLineOnMapDc(local_24.top,aiStack_14[0]);
       pTVar4 = g_pDiplomacyTurnStateManager;
     }
     local_24.left = local_24.left + 2;

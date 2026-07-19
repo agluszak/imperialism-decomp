@@ -7,7 +7,8 @@
 // GHIDRA_NAME TTradeOfferNationView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TTradeOfferNationView * TTradeOfferNationView::_scalar_deleting_destructor_(byte param_1)
+TTradeOfferNationView * __thiscall
+TTradeOfferNationView::_scalar_deleting_destructor_(TTradeOfferNationView *this,byte param_1)
 
 {
   func_0x00407a77();
@@ -51,7 +52,7 @@ undefined4 * TTradeOfferNationView::CreateObject(void)
 // GHIDRA_NAME TTradeOfferNationView::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TTradeOfferNationView::GetRuntimeClass()
+CRuntimeClass * __thiscall TTradeOfferNationView::GetRuntimeClass(TTradeOfferNationView *this)
 
 {
   return &classTTradeOfferNationView;
@@ -61,7 +62,7 @@ CRuntimeClass * TTradeOfferNationView::GetRuntimeClass()
 // GHIDRA_NAME TTradeOfferNationView::ApplyRectSlot110
 // GHIDRA_PROTO undefined __thiscall ApplyRectSlot110(void)
 
-void TTradeOfferNationView::ApplyRectSlot110()
+void __thiscall TTradeOfferNationView::ApplyRectSlot110(TTradeOfferNationView *this)
 
 {
   int iVar1;
@@ -116,12 +117,12 @@ void TTradeOfferNationView::ApplyRectSlot110()
     func_0x0040988b(g_pSimMgr);
   }
   else {
-    CString__Format();
+    CString::Format();
     (*g_pSimMgr->vftable[0x10].slot_0x04)();
     func_0x0040988b(g_pSimMgr,&stack0xffffffb4);
   }
   func_0x0040448f();
-  func_0x00408d6e();
+  thunk_SetQuickDrawTextOriginWithContextOffset();
   func_0x004029aa();
   uVar2 = (*g_pNationInteractionStateManager->vftable[0x10].GetTTradeMgrClassNamePointer)();
   func_0x004010be();

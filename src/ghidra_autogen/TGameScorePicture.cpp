@@ -3,11 +3,24 @@
 // Program: Imperialism.exe
 // Bucket: TGameScorePicture.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x0045AF80
+// GHIDRA_NAME TGameScorePicture::TGameScorePicture
+// GHIDRA_PROTO undefined __thiscall TGameScorePicture(void)
+
+TGameScorePicture * __thiscall TGameScorePicture::TGameScorePicture(TGameScorePicture *this)
+
+{
+  func_0x00403328();
+  this->vftable = &_vftable_;
+  return this;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x0045AFB0
 // GHIDRA_NAME TGameScorePicture::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TGameScorePicture * TGameScorePicture::_scalar_deleting_destructor_(byte param_1)
+TGameScorePicture * __thiscall
+TGameScorePicture::_scalar_deleting_destructor_(TGameScorePicture *this,byte param_1)
 
 {
   func_0x0040416f();
@@ -51,7 +64,7 @@ undefined4 * TGameScorePicture::CreateObject(void)
 // GHIDRA_NAME TGameScorePicture::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TGameScorePicture::GetRuntimeClass()
+CRuntimeClass * __thiscall TGameScorePicture::GetRuntimeClass(TGameScorePicture *this)
 
 {
   return &classTGameScorePicture;
@@ -63,7 +76,7 @@ CRuntimeClass * TGameScorePicture::GetRuntimeClass()
 
 /* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 
-void TGameScorePicture::NoOpUiLifecycleHook()
+void __thiscall TGameScorePicture::NoOpUiLifecycleHook(TGameScorePicture *this)
 
 {
   CString CVar1;
@@ -132,11 +145,11 @@ void TGameScorePicture::NoOpUiLifecycleHook()
   CStack_54.m_pchData = (char *)0x2b68;
   puStack_58 = (undefined1 *)0xe;
   CStack_5c.m_pchData = (char *)0x0;
-  func_0x00406afa();
+  thunk_BuildUiTextStyleDescriptor();
   CStack_54.m_pchData = &stack0xffffffc0;
   puStack_58 = (undefined1 *)0x2b6a;
   CStack_5c.m_pchData = (char *)0x57b166;
-  func_0x004093cc();
+  thunk_MapUiThemeCodeToStyleFlags();
   CStack_54.m_pchData = (char *)0x57b174;
   func_0x00403b16();
   CStack_54.m_pchData = (char *)0x57b183;
@@ -152,7 +165,7 @@ void TGameScorePicture::NoOpUiLifecycleHook()
     if (iVar4 == 0xb) {
       puStack_58 = (undefined1 *)0x2b68;
       CStack_5c.m_pchData = (char *)0x12;
-      func_0x00406afa();
+      thunk_BuildUiTextStyleDescriptor();
     }
     CStack_5c.m_pchData = acStack_24;
     puStack_58 = (undefined1 *)0x1;
@@ -188,7 +201,7 @@ void TGameScorePicture::NoOpUiLifecycleHook()
       sVar2 = func_0x00403b16();
       puStack_58 = *(undefined1 **)&g_apNationStates[sVar2]->field_0x958;
       if ((int)puStack_58 % 10 < 1) {
-        CString__Format(&local_30,&g_szDecimalFormat);
+        CString::Format(&local_30,&g_szDecimalFormat);
       }
       else {
         puStack_58 = (undefined1 *)((float)(int)puStack_58 * _DAT_00661ab8);
@@ -206,7 +219,7 @@ void TGameScorePicture::NoOpUiLifecycleHook()
     }
     else {
       func_0x00403b16();
-      CString__Format(&local_30,&g_szDecimalFormat);
+      CString::Format(&local_30,&g_szDecimalFormat);
     }
     (**(code **)(iVar5 + 0x1c8))(&local_30);
     CVar1.m_pchData = local_34.m_pchData;
@@ -233,7 +246,7 @@ void TGameScorePicture::NoOpUiLifecycleHook()
   pTStack_74 = (TSimMgr *)0x2b68;
   puStack_78 = (undefined1 *)0x18;
   CStack_7c.m_pchData = (char *)0x0;
-  InitializeUiTextStyleDescriptor();
+  thunk_InitializeUiTextStyleDescriptor();
   pTStack_74 = (TSimMgr *)&stack0xffffffc4;
   pCStack_70 = (CString *)0x1;
   puStack_78 = (undefined1 *)0x57b43e;
@@ -249,7 +262,7 @@ void TGameScorePicture::NoOpUiLifecycleHook()
   iVar5 = 0x2761;
   (*g_pSimMgr->vftable[0x10].slot_0x04)();
   (**(code **)(iVar4 + 0x1c8))(&local_38,1);
-  func_0x00406afa(&CStack_5c,0,0xe,0x2b68);
+  thunk_BuildUiTextStyleDescriptor(&CStack_5c,0,0xe,0x2b68);
   (**(code **)(iVar4 + 0x1b4))(&CStack_5c,1);
   CStack_50.m_pchData._0_1_ = 1;
   piVar3[0x25] = iVar5;
@@ -272,7 +285,7 @@ void TGameScorePicture::NoOpUiLifecycleHook()
 /* Command callback helper: runs completion handler and, for command-id 10 with tag 'done',
    reinitializes game flow and posts turn-event code 0x5E0. */
 
-void TGameScorePicture::HandleEvent(int param_1, int param_2)
+void __thiscall TGameScorePicture::HandleEvent(TGameScorePicture *this,int param_1,int param_2)
 
 {
   func_0x00404566(param_1,param_2);

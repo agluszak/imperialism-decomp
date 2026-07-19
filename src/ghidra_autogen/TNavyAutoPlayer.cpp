@@ -24,7 +24,8 @@ undefined4 * TNavyAutoPlayer::CreateObject(void)
 // GHIDRA_NAME TNavyAutoPlayer::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TNavyAutoPlayer * TNavyAutoPlayer::_scalar_deleting_destructor_(byte param_1)
+TNavyAutoPlayer * __thiscall
+TNavyAutoPlayer::_scalar_deleting_destructor_(TNavyAutoPlayer *this,byte param_1)
 
 {
   func_0x00409043();
@@ -38,7 +39,7 @@ TNavyAutoPlayer * TNavyAutoPlayer::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TNavyAutoPlayer::CreateTNavyAutoPlayerInstance
 // GHIDRA_PROTO undefined __thiscall CreateTNavyAutoPlayerInstance(void)
 
-void TNavyAutoPlayer::CreateTNavyAutoPlayerInstance()
+void __thiscall TNavyAutoPlayer::CreateTNavyAutoPlayerInstance(TNavyAutoPlayer *this)
 
 {
   this->vftable = (TNavyAutoPlayerVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4
@@ -50,17 +51,17 @@ void TNavyAutoPlayer::CreateTNavyAutoPlayerInstance()
 // GHIDRA_NAME TNavyAutoPlayer::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TNavyAutoPlayer::GetRuntimeClass()
+CRuntimeClass * __thiscall TNavyAutoPlayer::GetRuntimeClass(TNavyAutoPlayer *this)
 
 {
   return &classTNavyAutoPlayer;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0059F110
-// GHIDRA_NAME TNavyAutoPlayer::OrphanRetStub_0059ad70
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059ad70(void)
+// GHIDRA_NAME TNavyAutoPlayer::StartBattle
+// GHIDRA_PROTO undefined __thiscall StartBattle(void)
 
-void TNavyAutoPlayer::OrphanRetStub_0059ad70()
+void __thiscall TNavyAutoPlayer::StartBattle(TNavyAutoPlayer *this)
 
 {
   char cVar1;
@@ -82,10 +83,10 @@ void TNavyAutoPlayer::OrphanRetStub_0059ad70()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0059F160
-// GHIDRA_NAME TNavyAutoPlayer::OrphanRetStub_0059ad90
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059ad90(void)
+// GHIDRA_NAME TNavyAutoPlayer::AdvanceTacticalTurnPulse
+// GHIDRA_PROTO undefined __thiscall AdvanceTacticalTurnPulse(void)
 
-void TNavyAutoPlayer::OrphanRetStub_0059ad90()
+void __thiscall TNavyAutoPlayer::AdvanceTacticalTurnPulse(TNavyAutoPlayer *this)
 
 {
   code *pcVar1;

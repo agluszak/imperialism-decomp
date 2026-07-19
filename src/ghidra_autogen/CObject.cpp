@@ -7,7 +7,7 @@
 // GHIDRA_NAME CObject::Serialize
 // GHIDRA_PROTO void __thiscall Serialize(CArchive * archive)
 
-void CObject::Serialize(CArchive *archive)
+void __thiscall CObject::Serialize(CObject *this,CArchive *archive)
 
 {
   return;
@@ -22,7 +22,7 @@ void CObject::Serialize(CArchive *archive)
 
 /* No-op virtual slot stub (returns immediately). */
 
-void CObject::AssertValid()
+void __thiscall CObject::AssertValid(CObject *this)
 
 {
   return;
@@ -37,7 +37,7 @@ void CObject::AssertValid()
 
 /* No-op virtual slot stub (returns immediately). */
 
-void CObject::Dump(undefined4 dc)
+void __thiscall CObject::Dump(CObject *this,undefined4 dc)
 
 {
   return;
@@ -57,88 +57,12 @@ undefined4 * __thiscall CObject::_scalar_deleting_destructor_(undefined4 *param_
   return param_1;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004927E0
-// GHIDRA_NAME CObject::SerializeRecordList_0x0C_WithBlockPool_D
-// GHIDRA_PROTO undefined __thiscall SerializeRecordList_0x0C_WithBlockPool_D(CArchive * param_1)
-
-void CObject::SerializeRecordList_0x0C_WithBlockPool_D(CArchive *param_1)
-
-{
-  CArchive *this_00;
-  CArchive *pCVar1;
-  int iVar2;
-  int iVar3;
-  CObjectVtbl *pCVar4;
-  CObjectVtbl *pCVar5;
-  CObjectVtbl *pCVar6;
-  
-  this_00 = param_1;
-  if ((~param_1->m_nMode & 1U) == 0) {
-    for (iVar2 = CArchive::ReadCount(); iVar2 != 0; iVar2 = iVar2 + -1) {
-      if ((~this_00->m_nMode & 1U) == 0) {
-        CArchive::Read(this_00,(int)&param_1,4);
-      }
-      else {
-        CArchive::Write(this_00,(int)&param_1,4);
-      }
-      pCVar1 = param_1;
-      pCVar6 = this[2].vftable;
-      if (this[4].vftable == (CObjectVtbl *)0x0) {
-        iVar3 = CPlex::Create(this + 5,this[6].vftable,0xc);
-        pCVar5 = this[6].vftable;
-        pCVar4 = (CObjectVtbl *)(iVar3 + -8 + (int)pCVar5 * 0xc);
-        if (-1 < (int)((int)&pCVar5[-1].slot_0x04 + 3)) {
-          do {
-            pCVar4->SetForeignMinisterReadyFlag14 =
-                 (CObject_SetForeignMinisterReadyFlag14_0x00 *)this[4].vftable;
-            this[4].vftable = pCVar4;
-            pCVar4 = (CObjectVtbl *)&pCVar4[-2].slot_0x04;
-            pCVar5 = (CObjectVtbl *)((int)&pCVar5[-1].slot_0x04 + 3);
-          } while (pCVar5 != (CObjectVtbl *)0x0);
-        }
-      }
-      pCVar4 = this[4].vftable;
-      this[4].vftable = (CObjectVtbl *)pCVar4->SetForeignMinisterReadyFlag14;
-      pCVar4->slot_0x04 = (CObject_slot_0x04_0x04 *)pCVar6;
-      pCVar4->SetForeignMinisterReadyFlag14 = (CObject_SetForeignMinisterReadyFlag14_0x00 *)0x0;
-      this[3].vftable = (CObjectVtbl *)((int)&(this[3].vftable)->SetForeignMinisterReadyFlag14 + 1);
-      pCVar4[1].SetForeignMinisterReadyFlag14 = (CObject_SetForeignMinisterReadyFlag14_0x00 *)0x0;
-      pCVar4[1].SetForeignMinisterReadyFlag14 = (CObject_SetForeignMinisterReadyFlag14_0x00 *)pCVar1
-      ;
-      if (this[2].vftable == (CObjectVtbl *)0x0) {
-        this[1].vftable = pCVar4;
-      }
-      else {
-        (this[2].vftable)->SetForeignMinisterReadyFlag14 =
-             (CObject_SetForeignMinisterReadyFlag14_0x00 *)pCVar4;
-      }
-      this[2].vftable = pCVar4;
-    }
-  }
-  else {
-    CArchive::WriteCount(param_1,(TNetMgr_GetTNetMgrClassNamePointer_0x00 *)this[3].vftable);
-    pCVar6 = this[1].vftable;
-    if (pCVar6 != (CObjectVtbl *)0x0) {
-      do {
-        if ((~this_00->m_nMode & 1U) == 0) {
-          CArchive::Read(this_00,(int)(pCVar6 + 1),4);
-        }
-        else {
-          CArchive::Write(this_00,(int)(pCVar6 + 1),4);
-        }
-        pCVar6 = (CObjectVtbl *)pCVar6->SetForeignMinisterReadyFlag14;
-      } while (pCVar6 != (CObjectVtbl *)0x0);
-      return;
-    }
-  }
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00492980
 // GHIDRA_NAME CObject::WrapperFor_FreeHeapBufferIfNotNull_At00492980
 // GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At00492980(byte param_1)
 
-CObject * CObject::WrapperFor_FreeHeapBufferIfNotNull_At00492980(byte param_1)
+CObject * __thiscall
+CObject::WrapperFor_FreeHeapBufferIfNotNull_At00492980(CObject *this,byte param_1)
 
 {
   func_0x00403887();
@@ -152,7 +76,7 @@ CObject * CObject::WrapperFor_FreeHeapBufferIfNotNull_At00492980(byte param_1)
 // GHIDRA_NAME CObject::GetRuntimeClass
 // GHIDRA_PROTO CRuntimeClass * __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * CObject::GetRuntimeClass()
+CRuntimeClass * __thiscall CObject::GetRuntimeClass(CObject *this)
 
 {
   return &classCObject;
@@ -168,7 +92,7 @@ CRuntimeClass * CObject::GetRuntimeClass()
 /* Traverses a forward-linked chain using next pointer at +0x10 and returns true if the target node
    pointer is present. */
 
-void CObject::IsKindOf()
+void __thiscall CObject::IsKindOf(CObject *this)
 
 {
   undefined uVar1;

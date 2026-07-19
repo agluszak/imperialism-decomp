@@ -37,7 +37,7 @@ CPtrArray * TSortByPriceList::CreateObject(void)
 // GHIDRA_NAME TSortByPriceList::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TSortByPriceList::GetRuntimeClass()
+CRuntimeClass * __thiscall TSortByPriceList::GetRuntimeClass(TSortByPriceList *this)
 
 {
   return &classTSortByPriceList;
@@ -47,7 +47,7 @@ CRuntimeClass * TSortByPriceList::GetRuntimeClass()
 // GHIDRA_NAME TSortByPriceList::ConstructTSortByPriceList
 // GHIDRA_PROTO undefined __thiscall ConstructTSortByPriceList(void)
 
-TSortByPriceList * TSortByPriceList::ConstructTSortByPriceList()
+TSortByPriceList * __thiscall TSortByPriceList::ConstructTSortByPriceList(TSortByPriceList *this)
 
 {
   CPtrArray::CPtrArray((CPtrArray *)this);
@@ -59,7 +59,8 @@ TSortByPriceList * TSortByPriceList::ConstructTSortByPriceList()
 // GHIDRA_NAME TSortByPriceList::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TSortByPriceList * TSortByPriceList::_scalar_deleting_destructor_(byte param_1)
+TSortByPriceList * __thiscall
+TSortByPriceList::_scalar_deleting_destructor_(TSortByPriceList *this,byte param_1)
 
 {
   func_0x004023c9();
@@ -71,7 +72,7 @@ TSortByPriceList * TSortByPriceList::_scalar_deleting_destructor_(byte param_1)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00534770
 // GHIDRA_NAME TSortByPriceList::~TSortByPriceList
-// GHIDRA_PROTO undefined CPtrArray::~CPtrArray()
+// GHIDRA_PROTO undefined ~TSortByPriceList()
 
 void TSortByPriceList::~TSortByPriceList(void)
 
@@ -83,7 +84,7 @@ void TSortByPriceList::~TSortByPriceList(void)
   
   _EH_prolog();
   *(undefined4 **)(unaff_EBP + -0x10) = extraout_ECX;
-  *extraout_ECX = &TIndexAndRankList::_vftable_;
+  *extraout_ECX = &CPtrArray::_vftable_;
   uVar1 = extraout_ECX[1];
   *(undefined4 *)(unaff_EBP + -4) = 0;
   operator_delete(uVar1);
@@ -93,10 +94,10 @@ void TSortByPriceList::~TSortByPriceList(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005347B0
-// GHIDRA_NAME TSortByPriceList::CompareUnsignedIntsAscending
-// GHIDRA_PROTO undefined __thiscall CompareUnsignedIntsAscending(int param_1, int param_2)
+// GHIDRA_NAME TSortByPriceList::Compare
+// GHIDRA_PROTO undefined __thiscall Compare(int param_1, int param_2)
 
-int TSortByPriceList::CompareUnsignedIntsAscending(int param_1, int param_2)
+int __thiscall TSortByPriceList::Compare(TSortByPriceList *this,int param_1,int param_2)
 
 {
   return ((*(short *)(param_1 + 2) <= *(short *)(param_2 + 2)) - 1 & 2) - 1;

@@ -7,7 +7,8 @@
 // GHIDRA_NAME TStatusPicture::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TStatusPicture * TStatusPicture::_scalar_deleting_destructor_(byte param_1)
+TStatusPicture * __thiscall
+TStatusPicture::_scalar_deleting_destructor_(TStatusPicture *this,byte param_1)
 
 {
   func_0x00408b48();
@@ -52,7 +53,7 @@ TStatusPicture * __cdecl TStatusPicture::CreateObject(void)
 // GHIDRA_NAME TStatusPicture::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TStatusPicture::GetRuntimeClass()
+CRuntimeClass * __thiscall TStatusPicture::GetRuntimeClass(TStatusPicture *this)
 
 {
   return &classTStatusPicture;
@@ -62,7 +63,7 @@ CRuntimeClass * TStatusPicture::GetRuntimeClass()
 // GHIDRA_NAME TStatusPicture::NoOpUiLifecycleHook
 // GHIDRA_PROTO undefined __thiscall NoOpUiLifecycleHook(void)
 
-void TStatusPicture::NoOpUiLifecycleHook()
+void __thiscall TStatusPicture::NoOpUiLifecycleHook(TStatusPicture *this)
 
 {
   code *pcVar1;
@@ -171,7 +172,7 @@ void TStatusPicture::NoOpUiLifecycleHook()
 // GHIDRA_NAME TStatusPicture::HandleEvent
 // GHIDRA_PROTO undefined __thiscall HandleEvent(int param_1, int param_2)
 
-void TStatusPicture::HandleEvent(int param_1, int param_2)
+void __thiscall TStatusPicture::HandleEvent(TStatusPicture *this,int param_1,int param_2)
 
 {
   TStatusPictureVtbl *pTVar1;
@@ -264,7 +265,7 @@ LAB_00594498:
 // GHIDRA_NAME TStatusPicture::ApplyRectSlot110
 // GHIDRA_PROTO undefined __thiscall ApplyRectSlot110(void)
 
-void TStatusPicture::ApplyRectSlot110()
+void __thiscall TStatusPicture::ApplyRectSlot110(TStatusPicture *this)
 
 {
   short sVar1;
@@ -289,8 +290,8 @@ void TStatusPicture::ApplyRectSlot110()
             (0x2757,CONCAT22((short)((uint)&stack0x00000000 >> 0x10),*(short *)&this->field_0x90 + 8
                             ),&stack0x00000000);
   func_0x0040448f(0,0xe,0x2b6a);
-  sVar1 = func_0x00405b7d(&CStack_c,0x3c);
-  func_0x00408d6e(0x140 - (int)sVar1 / 2);
+  sVar1 = thunk_MeasureTextExtentWithCachedQuickDrawStyle(&CStack_c,0x3c);
+  thunk_SetQuickDrawTextOriginWithContextOffset(0x140 - (int)sVar1 / 2);
   func_0x004029aa(&CStack_c);
   iVar2 = 100;
   psVar3 = (short *)&this->field_0xb0;
@@ -300,15 +301,15 @@ void TStatusPicture::ApplyRectSlot110()
       CString::CString((CString *)&stack0xffffffcc);
       func_0x0040448f(0,0xc,0x2b6a);
       func_0x00405245(&stack0xffffffcc);
-      func_0x00408d6e(0x9a,iVar2 + -8);
+      thunk_SetQuickDrawTextOriginWithContextOffset(0x9a,iVar2 + -8);
       func_0x004029aa(auStack_38);
       sVar1 = *psVar3;
       iVar4 = 0x98;
       func_0x00406b86(0);
-      func_0x00406546(&stack0xffffffd0);
+      thunk_FillRectWithQuickDrawBrushAndContextOffset(&stack0xffffffd0);
       OffsetRect((LPRECT)&stack0xffffffd0,-1,-1);
       (**(code **)(g_pUiRuntimeContext->vftable + 0x34))(sVar1);
-      func_0x00406546(&stack0xffffffcc);
+      thunk_FillRectWithQuickDrawBrushAndContextOffset(&stack0xffffffd4);
       iVar2 = iVar2 + 0x37;
       CString::~CString((CString *)&stack0xffffffcc);
     }
@@ -324,7 +325,7 @@ void TStatusPicture::ApplyRectSlot110()
 // GHIDRA_NAME TStatusPicture::SortSevenEntriesAndUpdatePictureWidgets
 // GHIDRA_PROTO undefined __thiscall SortSevenEntriesAndUpdatePictureWidgets(void)
 
-void TStatusPicture::SortSevenEntriesAndUpdatePictureWidgets()
+void __thiscall TStatusPicture::SortSevenEntriesAndUpdatePictureWidgets(TStatusPicture *this)
 
 {
   short sVar1;

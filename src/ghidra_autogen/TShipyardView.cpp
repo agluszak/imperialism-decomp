@@ -3,34 +3,6 @@
 // Program: Imperialism.exe
 // Bucket: TShipyardView.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0045AE60
-// GHIDRA_NAME TShipyardView::WrapperFor_thunk_ConstructPictureResourceEntryType606E8_At0045ae60
-// GHIDRA_PROTO undefined __thiscall WrapperFor_thunk_ConstructPictureResourceEntryType606E8_At0045ae60(void)
-
-TShipyardView * __thiscall
-TShipyardView::WrapperFor_thunk_ConstructPictureResourceEntryType606E8_At0045ae60
-          (TShipyardView *this)
-
-{
-  func_0x00403328();
-  this->vftable = (TShipyardViewVtbl *)&TScenarioChooser::_vftable_;
-  return this;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0045AF80
-// GHIDRA_NAME TShipyardView::WrapperFor_thunk_ConstructPictureResourceEntryType606E8_At0045af80
-// GHIDRA_PROTO undefined __thiscall WrapperFor_thunk_ConstructPictureResourceEntryType606E8_At0045af80(void)
-
-TShipyardView * __thiscall
-TShipyardView::WrapperFor_thunk_ConstructPictureResourceEntryType606E8_At0045af80
-          (TShipyardView *this)
-
-{
-  func_0x00403328();
-  this->vftable = (TShipyardViewVtbl *)&TGameScorePicture::_vftable_;
-  return this;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x004C8200
 // GHIDRA_NAME TShipyardView::CreateObject
 // GHIDRA_PROTO undefined CreateObject()
@@ -66,7 +38,7 @@ undefined4 * TShipyardView::CreateObject(void)
 // GHIDRA_NAME TShipyardView::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TShipyardView::GetRuntimeClass()
+CRuntimeClass * __thiscall TShipyardView::GetRuntimeClass(TShipyardView *this)
 
 {
   return &classTShipyardView;
@@ -76,7 +48,7 @@ CRuntimeClass * TShipyardView::GetRuntimeClass()
 // GHIDRA_NAME TShipyardView::ConstructTShipyardViewBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTShipyardViewBaseState(void)
 
-TShipyardView * TShipyardView::ConstructTShipyardViewBaseState()
+TShipyardView * __thiscall TShipyardView::ConstructTShipyardViewBaseState(TShipyardView *this)
 
 {
   func_0x00403328();
@@ -90,7 +62,8 @@ TShipyardView * TShipyardView::ConstructTShipyardViewBaseState()
 // GHIDRA_NAME TShipyardView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TShipyardView * TShipyardView::_scalar_deleting_destructor_(byte param_1)
+TShipyardView * __thiscall
+TShipyardView::_scalar_deleting_destructor_(TShipyardView *this,byte param_1)
 
 {
   func_0x004038be();
@@ -104,7 +77,7 @@ TShipyardView * TShipyardView::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TShipyardView::Free
 // GHIDRA_PROTO undefined __thiscall Free(void)
 
-void TShipyardView::Free()
+void __thiscall TShipyardView::Free(TShipyardView *this)
 
 {
   func_0x004010e6(&this->field_0xb8);
@@ -134,7 +107,7 @@ void TShipyardView::Free()
    3) Initialize slider ranges and default values from current city building entry.
    4) Update summary controls and trigger initial detail refresh. */
 
-void TShipyardView::OrphanRetStub_004c6fd0()
+void __thiscall TShipyardView::OrphanRetStub_004c6fd0(TShipyardView *this)
 
 {
   short sVar1;
@@ -216,7 +189,7 @@ void TShipyardView::OrphanRetStub_004c6fd0()
     local_28 = local_28 + 1;
     local_1c = (undefined *)((int)local_1c + -1);
   } while (local_1c != (undefined *)0x0);
-  func_0x00406afa();
+  thunk_BuildUiTextStyleDescriptor();
   puStack_20 = &this->field_0xa4;
   local_28 = 0;
   local_24 = (undefined1 *)0x636c7530;
@@ -274,14 +247,14 @@ void TShipyardView::OrphanRetStub_004c6fd0()
     local_1c = local_1c + 2;
     local_24 = local_24 + 1;
   } while ((short)local_28 < 8);
-  func_0x00406afa();
+  thunk_BuildUiTextStyleDescriptor();
   uVar4 = (*p_Var8)();
   iVar7 = *(int *)CONCAT31(extraout_var_03,uVar4);
   (**(code **)(iVar7 + 0xc))();
   (**(code **)(iVar7 + 0x1b4))();
   iVar9 = 0xe;
   (**(code **)(iVar7 + 0x1cc))();
-  func_0x00406afa(&local_24,0);
+  thunk_BuildUiTextStyleDescriptor(&local_24,0);
   iVar7 = 0;
   do {
     uVar4 = (*p_Var8)();
@@ -291,12 +264,12 @@ void TShipyardView::OrphanRetStub_004c6fd0()
     (**(code **)(iVar2 + 0x1cc))(0x2736,iVar9 + 0xf,1);
     iVar7 = iVar7 + 1;
   } while ((short)iVar7 < 2);
-  func_0x00406afa(&local_24,0);
+  thunk_BuildUiTextStyleDescriptor(&local_24,0);
   uVar4 = (*p_Var8)();
   iVar7 = *(int *)CONCAT31(extraout_var_05,uVar4);
   (**(code **)(iVar7 + 0xc))();
   (**(code **)(iVar7 + 0x1b4))(&local_28);
-  func_0x00406afa(&stack0xffffffd0,0,10,0x2b6b);
+  thunk_BuildUiTextStyleDescriptor(&stack0xffffffd0,0,10,0x2b6b);
   uVar4 = (*p_Var8)(0x64657363);
   iVar7 = *(int *)CONCAT31(extraout_var_06,uVar4);
   (**(code **)(iVar7 + 0xc))();
@@ -306,7 +279,7 @@ void TShipyardView::OrphanRetStub_004c6fd0()
   *(undefined2 *)&this->field_0xa0 = 0;
   (*pTVar3->InitializeCityViewActionButtons)
             (CONCAT22(extraout_var_08,*(undefined2 *)&this->field_0xa4));
-  func_0x00406afa(&stack0xffffffc0,0,10,0x2b6b);
+  thunk_BuildUiTextStyleDescriptor(&stack0xffffffc0,0,10,0x2b6b);
   uVar4 = (*p_Var8)(0x73656c65);
   iVar7 = *(int *)CONCAT31(extraout_var_07,uVar4);
   (**(code **)(iVar7 + 0xc))();
@@ -319,7 +292,7 @@ void TShipyardView::OrphanRetStub_004c6fd0()
 // GHIDRA_NAME TShipyardView::OrphanRetStub_004c6fb0
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_004c6fb0(void)
 
-void TShipyardView::OrphanRetStub_004c6fb0()
+void __thiscall TShipyardView::OrphanRetStub_004c6fb0(TShipyardView *this)
 
 {
   undefined4 uStack_10;
@@ -340,7 +313,7 @@ void TShipyardView::OrphanRetStub_004c6fb0()
 // GHIDRA_NAME TShipyardView::HandleEvent
 // GHIDRA_PROTO undefined __thiscall HandleEvent(int param_1, int param_2)
 
-void TShipyardView::HandleEvent(int param_1, int param_2)
+void __thiscall TShipyardView::HandleEvent(TShipyardView *this,int param_1,int param_2)
 
 {
   TShipyardViewVtbl *pTVar1;
@@ -440,7 +413,7 @@ void TShipyardView::HandleEvent(int param_1, int param_2)
    3) Enable only valid actions for the current building state.
    4) Clear unused action slots. */
 
-void TShipyardView::InitializeCityViewActionButtons()
+void __thiscall TShipyardView::InitializeCityViewActionButtons(TShipyardView *this)
 
 {
   short sVar1;
@@ -588,7 +561,7 @@ void TShipyardView::InitializeCityViewActionButtons()
   LStack_6c = 0xc4;
   LStack_68 = 0xe6;
   func_0x00408a03(&LStack_74,1);
-  func_0x004069e2(uVar9);
+  thunk_SetGlobalBlitTransparentColorRaw(uVar9);
   CString::~CString(&CStack_98);
   CString::~CString(&CStack_94);
   CString::~CString(&CStack_90);
@@ -606,7 +579,8 @@ void TShipyardView::InitializeCityViewActionButtons()
 /* Setting prototype: void RenderCityViewProductionDialogMetrics(int pDialogState, int*
    pRenderRectData) */
 
-void TShipyardView::ApplyRectSlot110(int pDialogState, int *pRenderRectData)
+void __thiscall
+TShipyardView::ApplyRectSlot110(TShipyardView *this,int pDialogState,int *pRenderRectData)
 
 {
   undefined2 uVar1;
@@ -720,22 +694,22 @@ void TShipyardView::ApplyRectSlot110(int pDialogState, int *pRenderRectData)
         local_6c[3] = 0xe4;
         func_0x00405493(*(int *)(g_pStrategicMapViewSystem + 0x674) + 4,
                         &g_pActiveQuickDrawSurfaceContext->field_0x4,local_6c + 4,local_6c,0x24,0);
-        func_0x00408d6e(local_6c[2],0xb2);
-        CString__Format(&stack0xffffff78,&g_szDecimalFormat,(int)pnCommoditySlotInfo[4]);
+        thunk_SetQuickDrawTextOriginWithContextOffset(local_6c[2],0xb2);
+        CString::Format(&stack0xffffff78,&g_szDecimalFormat,(int)pnCommoditySlotInfo[4]);
         func_0x004029aa(&stack0xffffff78);
-        CString__Format(&stack0xffffff78,&g_szDecimalFormat,
+        CString::Format(&stack0xffffff78,&g_szDecimalFormat,
                         (int)*(short *)(*(int *)&this->field_0x94 + 0xb6 + *pnCommoditySlotInfo * 2)
                        );
         if (*(short *)(*(int *)&this->field_0x94 + 0xb6 + *pnCommoditySlotInfo * 2) <
             pnCommoditySlotInfo[4]) {
           func_0x0040448f(0,10,0x2b69);
-          func_0x00408d6e(local_6c[2],0xe6);
+          thunk_SetQuickDrawTextOriginWithContextOffset(local_6c[2],0xe6);
           func_0x004029aa(&stack0xffffff78);
           func_0x0040448f(0,10,0x2b6b);
         }
         else {
           func_0x0040448f(0,10,0x2b6b);
-          func_0x00408d6e(local_6c[2],0xe6);
+          thunk_SetQuickDrawTextOriginWithContextOffset(local_6c[2],0xe6);
           func_0x004029aa(&stack0xffffff78);
         }
       }
@@ -757,11 +731,11 @@ void TShipyardView::ApplyRectSlot110(int pDialogState, int *pRenderRectData)
       uVar1 = *(undefined2 *)(&stack0xffffff70 + nMetricColumnX * 2);
       nValueTextY = CONCAT22((short)((uint)unaff_EBP >> 0x10),
                              *(undefined2 *)((int)&local_84.m_pchData + nMetricColumnX * 2));
-      func_0x00408d6e(nValueTextY,uVar1);
+      thunk_SetQuickDrawTextOriginWithContextOffset(nValueTextY,uVar1);
       func_0x004029aa(&stack0xffffff6c);
       switch(nMetricColumnX) {
       case 0:
-        nMetricRawValue = func_0x00408ed6(nCommoditySpriteId);
+        nMetricRawValue = thunk_GetResourceTypeRandomDrawBlockFlag(nCommoditySpriteId);
         nMetricValue = (int)nMetricRawValue / 100;
         break;
       case 1:
@@ -786,10 +760,10 @@ void TShipyardView::ApplyRectSlot110(int pDialogState, int *pRenderRectData)
       default:
         goto switchD_004c9540_default;
       }
-      CString__Format(&stack0xffffff6c,&g_szDecimalFormat,nMetricValue);
+      CString::Format(&stack0xffffff6c,&g_szDecimalFormat,nMetricValue);
 switchD_004c9540_default:
       unaff_EBP = nValueTextY + 0x3c;
-      func_0x00408d6e(unaff_EBP,uVar1);
+      thunk_SetQuickDrawTextOriginWithContextOffset(unaff_EBP,uVar1);
       func_0x004029aa(&stack0xffffff6c);
       nMetricColumnX = nMetricColumnX + 1;
     } while (nMetricColumnX < 6);
@@ -840,7 +814,7 @@ TShipyardView::BuildIndustryActionCostSummaryTextByActionIndex
   CString::~CString(&local_10);
   iVar1 = param_2 * 2;
   if (*(short *)(&g_industryActionCostWeightResCode09 + iVar1) != 0) {
-    CString__Format(&local_14,&g_szDecimalFormat,
+    CString::Format(&local_14,&g_szDecimalFormat,
                     (int)*(short *)(&g_industryActionCostWeightResCode09 + iVar1));
     pCVar4 = &local_18;
     uVar3 = 9;
@@ -850,7 +824,7 @@ TShipyardView::BuildIndustryActionCostSummaryTextByActionIndex
     func_0x0040988b(g_pSimMgr,param_1,puVar2,pCVar4,uVar3);
   }
   if (*(short *)(&g_industryActionCostWeightResCode08 + iVar1) != 0) {
-    CString__Format(&local_14,&g_szDecimalFormat,
+    CString::Format(&local_14,&g_szDecimalFormat,
                     (int)*(short *)(&g_industryActionCostWeightResCode08 + iVar1));
     pCVar4 = &local_18;
     uVar3 = 8;
@@ -860,7 +834,7 @@ TShipyardView::BuildIndustryActionCostSummaryTextByActionIndex
     func_0x0040988b(g_pSimMgr,param_1,puVar2,pCVar4,uVar3);
   }
   if (*(short *)(&g_industryActionCostWeightResCode10 + iVar1) != 0) {
-    CString__Format(&local_14,&g_szDecimalFormat,
+    CString::Format(&local_14,&g_szDecimalFormat,
                     (int)*(short *)(&g_industryActionCostWeightResCode10 + iVar1));
     pCVar4 = &local_18;
     uVar3 = 0x10;
@@ -906,7 +880,7 @@ TShipyardView::BuildIndustryActionCostSummaryTextByActionIndex
    Returns:
    - void. */
 
-void TShipyardView::RefreshCityViewStatusPanel(int *pCityViewDialog)
+void __thiscall TShipyardView::RefreshCityViewStatusPanel(TShipyardView *this,int *pCityViewDialog)
 
 {
   int iVar1;
@@ -999,7 +973,7 @@ void TShipyardView::RefreshCityViewStatusPanel(int *pCityViewDialog)
 // GHIDRA_NAME TShipyardView::OrphanCallChain_C1_I15_004c9d20
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I15_004c9d20(int param_1)
 
-void TShipyardView::OrphanCallChain_C1_I15_004c9d20(int param_1)
+void __thiscall TShipyardView::OrphanCallChain_C1_I15_004c9d20(TShipyardView *this,int param_1)
 
 {
   ushort uVar1;

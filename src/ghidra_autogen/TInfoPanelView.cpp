@@ -7,7 +7,8 @@
 // GHIDRA_NAME TInfoPanelView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TInfoPanelView * TInfoPanelView::_scalar_deleting_destructor_(byte param_1)
+TInfoPanelView * __thiscall
+TInfoPanelView::_scalar_deleting_destructor_(TInfoPanelView *this,byte param_1)
 
 {
   func_0x00402fa9();
@@ -51,7 +52,7 @@ undefined4 * TInfoPanelView::CreateObject(void)
 // GHIDRA_NAME TInfoPanelView::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TInfoPanelView::GetRuntimeClass()
+CRuntimeClass * __thiscall TInfoPanelView::GetRuntimeClass(TInfoPanelView *this)
 
 {
   return &classTInfoPanelView;
@@ -61,7 +62,7 @@ CRuntimeClass * TInfoPanelView::GetRuntimeClass()
 // GHIDRA_NAME TInfoPanelView::NoOpUiLifecycleHook
 // GHIDRA_PROTO undefined __thiscall NoOpUiLifecycleHook(void)
 
-void TInfoPanelView::NoOpUiLifecycleHook()
+void __thiscall TInfoPanelView::NoOpUiLifecycleHook(TInfoPanelView *this)
 
 {
   _vslot_fn *p_Var1;
@@ -121,7 +122,7 @@ void TInfoPanelView::NoOpUiLifecycleHook()
 // GHIDRA_NAME TInfoPanelView::ApplyRectSlot110
 // GHIDRA_PROTO undefined __thiscall ApplyRectSlot110(void)
 
-void TInfoPanelView::ApplyRectSlot110()
+void __thiscall TInfoPanelView::ApplyRectSlot110(TInfoPanelView *this)
 
 {
   short sVar1;
@@ -200,11 +201,11 @@ void TInfoPanelView::ApplyRectSlot110()
   pCStack_4c = &local_30;
   CStack_50.m_pchData = (char *)0x2b6b;
   CStack_54.m_pchData = (char *)0x4fa250;
-  func_0x004093cc();
+  thunk_MapUiThemeCodeToStyleFlags();
   pCStack_4c = &local_34;
   CStack_50.m_pchData = (char *)0x2b68;
   CStack_54.m_pchData = (char *)0x4fa262;
-  func_0x004093cc();
+  thunk_MapUiThemeCodeToStyleFlags();
   pCStack_4c = &local_38;
   CStack_50.m_pchData = (char *)0x0;
   CStack_54.m_pchData = (char *)0x2733;
@@ -217,7 +218,7 @@ void TInfoPanelView::ApplyRectSlot110()
   puStack_58 = (undefined1 *)(-(int)CVar14.m_pchData + 0x170);
   iStack_5c = -iVar8 + 0x49;
   uStack_60 = 0x4fa2ab;
-  func_0x00408d6e();
+  thunk_SetQuickDrawTextOriginWithContextOffset();
   puStack_58 = &stack0xffffffbc;
   iStack_5c = 0x4fa2b8;
   func_0x004029aa();
@@ -226,7 +227,7 @@ void TInfoPanelView::ApplyRectSlot110()
   uStack_60 = 0x4fa2cf;
   iStack_5c = -iVar8 + 0x48;
   puStack_58 = puVar9;
-  func_0x00408d6e();
+  thunk_SetQuickDrawTextOriginWithContextOffset();
   puStack_58 = &stack0xffffffbc;
   iStack_5c = 0x4fa2dc;
   func_0x004029aa();
@@ -247,7 +248,7 @@ void TInfoPanelView::ApplyRectSlot110()
   func_0x00409444();
   pCStack_64 = (CString *)((int)&pCVar13->m_pchData + 1);
   pCStack_68 = (CString *)((int)&pCVar10->m_pchData + 1);
-  func_0x00408d6e();
+  thunk_SetQuickDrawTextOriginWithContextOffset();
   pCStack_64 = &CStack_50;
   pCStack_68 = (CString *)0x4fa341;
   func_0x004029aa();
@@ -255,7 +256,7 @@ void TInfoPanelView::ApplyRectSlot110()
   func_0x00409444();
   pCStack_68 = pCVar10;
   pCStack_64 = pCVar13;
-  func_0x00408d6e();
+  thunk_SetQuickDrawTextOriginWithContextOffset();
   pCStack_64 = &CStack_50;
   pCStack_68 = (CString *)0x4fa365;
   func_0x004029aa();
@@ -272,10 +273,11 @@ void TInfoPanelView::ApplyRectSlot110()
       iVar7 = CONCAT22((short)((uint)CVar14.m_pchData >> 0x10),
                        *(short *)((int)&DAT_006969b0 + iVar11 + 2) - sVar1);
       func_0x00409444(puStack_58);
-      func_0x00408d6e(iVar7 + 1,(undefined1 *)((int)&pCVar13->m_pchData + 1));
+      thunk_SetQuickDrawTextOriginWithContextOffset
+                (iVar7 + 1,(undefined1 *)((int)&pCVar13->m_pchData + 1));
       func_0x004029aa(&iStack_5c);
       func_0x00409444(CStack_54.m_pchData);
-      func_0x00408d6e(iVar7,pCVar13);
+      thunk_SetQuickDrawTextOriginWithContextOffset(iVar7,pCVar13);
       func_0x004029aa(&iStack_5c);
       iVar11 = iVar11 + 2;
       local_38.m_pchData = local_38.m_pchData + 1;
@@ -293,19 +295,19 @@ void TInfoPanelView::ApplyRectSlot110()
     iVar7 = CONCAT22((short)((uint)pCVar13 >> 0x10),DAT_006969c0._2_2_ - sVar3);
     iVar11 = CONCAT22((short)((uint)pCVar10 >> 0x10),DAT_006969b0._2_2_ - sVar1);
     func_0x00409444(puStack_58);
-    func_0x00408d6e(iVar11 + 1,iVar7 + 1);
+    thunk_SetQuickDrawTextOriginWithContextOffset(iVar11 + 1,iVar7 + 1);
     func_0x004029aa(&iStack_5c);
     func_0x00409444(CStack_54.m_pchData);
-    func_0x00408d6e(iVar11,iVar7);
+    thunk_SetQuickDrawTextOriginWithContextOffset(iVar11,iVar7);
     func_0x004029aa(&iStack_5c);
     (*g_pSimMgr->vftable[0x10].slot_0x04)(0x2733,0x62,&iStack_5c);
     iVar7 = DAT_006969c4 - (int)CVar14.m_pchData;
     iVar11 = DAT_006969b4 - iVar8;
     func_0x00409444(pCStack_64);
-    func_0x00408d6e(iVar11 + 1,iVar7 + 1);
+    thunk_SetQuickDrawTextOriginWithContextOffset(iVar11 + 1,iVar7 + 1);
     func_0x004029aa(&pCStack_68);
     func_0x00409444(uStack_60);
-    func_0x00408d6e(iVar11,iVar7);
+    thunk_SetQuickDrawTextOriginWithContextOffset(iVar11,iVar7);
     func_0x004029aa(&pCStack_68);
   }
   pCStack_64 = (CString *)0x2b68;
@@ -321,13 +323,13 @@ void TInfoPanelView::ApplyRectSlot110()
   iVar11 = iVar8 + 0xa7;
   func_0x00409444();
   pCStack_68 = (CString *)(local_30.m_pchData + 1);
-  func_0x00408d6e(iVar8 + 0xa8);
+  thunk_SetQuickDrawTextOriginWithContextOffset(iVar8 + 0xa8);
   pCStack_68 = &CStack_54;
   func_0x004029aa();
   pCStack_68 = pCStack_4c;
   func_0x00409444();
   pCStack_68 = (CString *)local_30.m_pchData;
-  func_0x00408d6e(iVar11);
+  thunk_SetQuickDrawTextOriginWithContextOffset(iVar11);
   pCStack_68 = &CStack_54;
   func_0x004029aa();
   pCStack_68 = (CString *)0x2b68;
@@ -341,10 +343,10 @@ void TInfoPanelView::ApplyRectSlot110()
       (*g_pSimMgr->vftable[0x10].slot_0x04)(0x2733,0x17,&pCStack_4c);
       func_0x0040988b(g_pSimMgr,&pCStack_64,puStack_58,CStack_54.m_pchData);
       func_0x00409444(uStack_60);
-      func_0x00408d6e(0x79,0x25);
+      thunk_SetQuickDrawTextOriginWithContextOffset(0x79,0x25);
       func_0x004029aa(&pCStack_64);
       func_0x00409444(iStack_5c);
-      func_0x00408d6e(0x78,0x24);
+      thunk_SetQuickDrawTextOriginWithContextOffset(0x78,0x24);
       func_0x004029aa(&pCStack_64);
     }
   }
@@ -355,10 +357,10 @@ void TInfoPanelView::ApplyRectSlot110()
     func_0x0040988b(g_pSimMgr,&pCStack_64,puStack_58,CStack_54.m_pchData);
     iVar7 = CONCAT22((short)unaff_EBX >> 0xf,DAT_006969b0._2_2_ - sVar1);
     func_0x00409444(uStack_60);
-    func_0x00408d6e(iVar7 + 1,0x25);
+    thunk_SetQuickDrawTextOriginWithContextOffset(iVar7 + 1,0x25);
     func_0x004029aa(&pCStack_64);
     func_0x00409444(iStack_5c);
-    func_0x00408d6e(iVar7,0x24);
+    thunk_SetQuickDrawTextOriginWithContextOffset(iVar7,0x24);
     func_0x004029aa(&pCStack_64);
     CVar12.m_pchData = local_34.m_pchData;
   }
@@ -366,17 +368,17 @@ void TInfoPanelView::ApplyRectSlot110()
   uVar6 = (*g_apTerrainTypeDescriptorTable[(int)CVar12.m_pchData]->ownedRegionList->vftable[5].
             GetTEventHandlerClassNamePointer)();
   pCStack_68 = (CString *)CONCAT31(extraout_var,uVar6);
-  CString__Format(&CStack_54,&g_szDecimalFormat);
+  CString::Format(&CStack_54,&g_szDecimalFormat);
   pCStack_68 = (CString *)CStack_50.m_pchData;
   func_0x00409444();
   pCStack_68 = (CString *)(-(int)CVar14.m_pchData + 0x199);
-  func_0x00408d6e(iVar8 + 0xa8);
+  thunk_SetQuickDrawTextOriginWithContextOffset(iVar8 + 0xa8);
   pCStack_68 = &CStack_54;
   func_0x004029aa();
   pCStack_68 = pCStack_4c;
   func_0x00409444();
   pCStack_68 = (CString *)(-(int)CVar14.m_pchData + 0x198);
-  func_0x00408d6e(iVar11);
+  thunk_SetQuickDrawTextOriginWithContextOffset(iVar11);
   pCStack_68 = &CStack_54;
   func_0x004029aa();
   if (unaff_BP < 7) {
@@ -385,10 +387,10 @@ void TInfoPanelView::ApplyRectSlot110()
     iVar7 = func_0x0040132f();
     (*pTVar5[0x10].slot_0x04)(0x2733,iVar7 + 0x19);
     func_0x00409444(iStack_5c);
-    func_0x00408d6e(iVar8 + 0xa8,-(int)CVar14.m_pchData + 0x1aa);
+    thunk_SetQuickDrawTextOriginWithContextOffset(iVar8 + 0xa8,-(int)CVar14.m_pchData + 0x1aa);
     func_0x004029aa(&uStack_60);
     func_0x00409444(puStack_58);
-    func_0x00408d6e(iVar11,-(int)CVar14.m_pchData + 0x1a9);
+    thunk_SetQuickDrawTextOriginWithContextOffset(iVar11,-(int)CVar14.m_pchData + 0x1a9);
     func_0x004029aa(&uStack_60);
     if (unaff_BP < 7) {
       if (((g_apTerrainTypeDescriptorTable[(int)CVar12.m_pchData] == (TCountry *)0x0) ||
@@ -400,10 +402,10 @@ void TInfoPanelView::ApplyRectSlot110()
                   SetNationPercentFieldByModeAndDescriptorLinks_82)();
         (*pTVar5[0x10].slot_0x04)(0x2733,CONCAT31(extraout_var_00,uVar6) + 0x19);
         func_0x00409444(iStack_5c);
-        func_0x00408d6e(iVar8 + 0xa8,-(int)CVar14.m_pchData + 0x1bb);
+        thunk_SetQuickDrawTextOriginWithContextOffset(iVar8 + 0xa8,-(int)CVar14.m_pchData + 0x1bb);
         func_0x004029aa(&uStack_60);
         func_0x00409444(puStack_58);
-        func_0x00408d6e(iVar11,-(int)CVar14.m_pchData + 0x1ba);
+        thunk_SetQuickDrawTextOriginWithContextOffset(iVar11,-(int)CVar14.m_pchData + 0x1ba);
         func_0x004029aa(&uStack_60);
       }
       if (unaff_BP < 7) goto LAB_004faa26;
@@ -423,10 +425,10 @@ void TInfoPanelView::ApplyRectSlot110()
       func_0x00405245(&puStack_58);
     }
     func_0x00409444(puStack_58);
-    func_0x00408d6e(iVar8 + 0xa8,-(int)CVar14.m_pchData + 0x1bb);
+    thunk_SetQuickDrawTextOriginWithContextOffset(iVar8 + 0xa8,-(int)CVar14.m_pchData + 0x1bb);
     func_0x004029aa(&iStack_5c);
     func_0x00409444(CStack_54.m_pchData);
-    func_0x00408d6e(iVar11,-(int)CVar14.m_pchData + 0x1ba);
+    thunk_SetQuickDrawTextOriginWithContextOffset(iVar11,-(int)CVar14.m_pchData + 0x1ba);
     func_0x004029aa(&iStack_5c);
   }
 LAB_004faa26:
@@ -450,7 +452,7 @@ LAB_004faa26:
 // GHIDRA_NAME TInfoPanelView::OrphanRetStub_00430550
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_00430550(void)
 
-void TInfoPanelView::OrphanRetStub_00430550()
+void __thiscall TInfoPanelView::OrphanRetStub_00430550(TInfoPanelView *this)
 
 {
   _vslot_fn *p_Var1;
@@ -478,7 +480,8 @@ void TInfoPanelView::OrphanRetStub_00430550()
 // GHIDRA_NAME TInfoPanelView::HandleEvent
 // GHIDRA_PROTO undefined __thiscall HandleEvent(int param_1, int param_2, undefined4 param_3)
 
-void TInfoPanelView::HandleEvent(int param_1, int param_2, undefined4 param_3)
+void __thiscall
+TInfoPanelView::HandleEvent(TInfoPanelView *this,int param_1,int param_2,undefined4 param_3)
 
 {
   int iVar1;
@@ -504,7 +507,7 @@ void TInfoPanelView::HandleEvent(int param_1, int param_2, undefined4 param_3)
 // GHIDRA_NAME TInfoPanelView::OrphanLeaf_NoCall_Ins97_004fae00
 // GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins97_004fae00(short param_1)
 
-void TInfoPanelView::OrphanLeaf_NoCall_Ins97_004fae00(short param_1)
+void __thiscall TInfoPanelView::OrphanLeaf_NoCall_Ins97_004fae00(TInfoPanelView *this,short param_1)
 
 {
   short *psVar1;

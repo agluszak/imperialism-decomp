@@ -46,7 +46,7 @@ undefined4 * TArmoryView::CreateObject(void)
 // GHIDRA_NAME TArmoryView::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TArmoryView::GetRuntimeClass()
+CRuntimeClass * __thiscall TArmoryView::GetRuntimeClass(TArmoryView *this)
 
 {
   return &classTArmoryView;
@@ -56,7 +56,7 @@ CRuntimeClass * TArmoryView::GetRuntimeClass()
 // GHIDRA_NAME TArmoryView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TArmoryView * TArmoryView::_scalar_deleting_destructor_(byte param_1)
+TArmoryView * __thiscall TArmoryView::_scalar_deleting_destructor_(TArmoryView *this,byte param_1)
 
 {
   func_0x0040783d();
@@ -95,7 +95,7 @@ TArmoryView * TArmoryView::_scalar_deleting_destructor_(byte param_1)
    Returns:
    - void. */
 
-void TArmoryView::OrphanRetStub_004c6fd0(int *pCityViewDialog)
+void __thiscall TArmoryView::OrphanRetStub_004c6fd0(TArmoryView *this,int *pCityViewDialog)
 
 {
   _vslot_fn *p_Var1;
@@ -136,7 +136,7 @@ void TArmoryView::OrphanRetStub_004c6fd0(int *pCityViewDialog)
   
   iStack_34 = 0x2b6b;
   *(undefined4 *)&this->field_0x98 = *(undefined4 *)(g_pStrategicMapViewSystem + 4);
-  func_0x00406afa();
+  thunk_BuildUiTextStyleDescriptor();
   sVar3 = 0;
   p_Var1 = this->vftable->OrphanLeaf_NoCall_Ins07_004d8920;
   dwCountControlTag = 0x6e756d30;
@@ -173,7 +173,7 @@ void TArmoryView::OrphanRetStub_004c6fd0(int *pCityViewDialog)
     dwCountControlTag = dwCountControlTag + 1;
   } while (sVar3 < 8);
   iStack_34 = 0x2b6b;
-  func_0x00406afa();
+  thunk_BuildUiTextStyleDescriptor();
   iStack_34 = 0x7469746c;
   uVar2 = (*p_Var1)();
   iVar8 = *(int *)CONCAT31(extraout_var_01,uVar2);
@@ -182,7 +182,7 @@ void TArmoryView::OrphanRetStub_004c6fd0(int *pCityViewDialog)
   (**(code **)(iVar8 + 0x1cc))();
   puStack_58 = &stack0xffffffdc;
   iStack_5c = 0x4cf034;
-  func_0x00406afa();
+  thunk_BuildUiTextStyleDescriptor();
   uVar2 = (*p_Var1)();
   iVar8 = *(int *)CONCAT31(extraout_var_02,uVar2);
   (**(code **)(iVar8 + 0xc))();
@@ -193,7 +193,7 @@ void TArmoryView::OrphanRetStub_004c6fd0(int *pCityViewDialog)
   puStack_64 = &stack0xffffffd0;
   piStack_60 = (int *)0x0;
   uStack_68 = 0x4cf06b;
-  func_0x00406afa();
+  thunk_BuildUiTextStyleDescriptor();
   puStack_58 = (undefined1 *)0x636f7374;
   iStack_5c = 0x4cf077;
   uVar2 = (*p_Var1)();
@@ -253,7 +253,7 @@ void TArmoryView::OrphanRetStub_004c6fd0(int *pCityViewDialog)
                     /* Loop bound for four advanced availability rows. */
   } while ((short)uStack_68 < 4);
   iStack_88 = 0x2b6b;
-  func_0x00406afa(&piStack_60,0,10);
+  thunk_BuildUiTextStyleDescriptor(&piStack_60,0,10);
   iStack_88 = 0x64657363;
   uVar2 = (*p_Var1)();
   iVar8 = *(int *)CONCAT31(extraout_var_09,uVar2);
@@ -288,7 +288,7 @@ void TArmoryView::OrphanRetStub_004c6fd0(int *pCityViewDialog)
    - refreshes numeric controls and invalidates the affected rect after successful step changes.
    - all other commands are delegated to HandleCityDialogToggleCommandOrForward. */
 
-void TArmoryView::HandleEvent(int param_1, int param_2)
+void __thiscall TArmoryView::HandleEvent(TArmoryView *this,int param_1,int param_2)
 
 {
   TArmoryViewVtbl *pTVar1;
@@ -394,7 +394,7 @@ void TArmoryView::HandleEvent(int param_1, int param_2)
    Special Cases:
    - Mode 1 uses full workforce, mode 2 uses workforce/2, default uses workforce/4 before clamp. */
 
-void TArmoryView::OrphanRetStub_004c6fb0(int *pCityViewDialog)
+void __thiscall TArmoryView::OrphanRetStub_004c6fb0(TArmoryView *this,int *pCityViewDialog)
 
 {
   _vslot_fn *p_Var1;
@@ -438,9 +438,9 @@ void TArmoryView::OrphanRetStub_004c6fb0(int *pCityViewDialog)
   uVar3 = (*p_Var1)();
   (**(code **)(*(int *)CONCAT31(extraout_var,uVar3) + 0xc))();
   LStack_70 = 0x4cf660;
-  func_0x004093cc();
+  thunk_MapUiThemeCodeToStyleFlags();
   LStack_70 = 0x4cf672;
-  func_0x004093cc();
+  thunk_MapUiThemeCodeToStyleFlags();
                     /* No selected specialist entry: skip refresh and exit. */
   if (*(int *)&this->field_0xa8 == 0) goto LAB_004cfa43;
   sVar5 = *(short *)(*(int *)&this->field_0xa8 + 0x4c);
@@ -572,7 +572,8 @@ LAB_004cfa43:
    3) Refresh slider-derived numeric displays and dependent icons.
    4) Update description/help text blocks for current building state. */
 
-void TArmoryView::RefreshCityViewProductionDetails(short nBuildingSlotId)
+void __thiscall
+TArmoryView::RefreshCityViewProductionDetails(TArmoryView *this,short nBuildingSlotId)
 
 {
   _vslot_fn *p_Var1;
@@ -667,7 +668,7 @@ void TArmoryView::RefreshCityViewProductionDetails(short nBuildingSlotId)
   CStack_8c.m_pchData = "hk+";
   (**(code **)(*(int *)CONCAT31(extraout_var,uVar2) + 0x1c8))();
   CStack_8c.m_pchData = (char *)0x2b6b;
-  func_0x00406afa();
+  thunk_BuildUiTextStyleDescriptor();
   CStack_8c.m_pchData = (char *)0x756e6974;
   uVar2 = (*p_Var1)();
   piVar3 = (int *)CONCAT31(extraout_var_00,uVar2);
@@ -692,7 +693,7 @@ void TArmoryView::RefreshCityViewProductionDetails(short nBuildingSlotId)
   tStack_c0.right = (LONG)&stack0xffffff64;
   tStack_c0.bottom = (LONG)&g_szDecimalFormat;
   tStack_c0.top = 0x4cfdbf;
-  CString__Format();
+  CString::Format();
   tStack_c0.bottom = (LONG)&stack0xffffff64;
   tStack_c0.right = (LONG)&stack0xffffff6c;
   tStack_c0.top = 0x4cfdd6;
@@ -884,7 +885,7 @@ void TArmoryView::RefreshCityViewProductionDetails(short nBuildingSlotId)
 // GHIDRA_NAME TArmoryView::Free
 // GHIDRA_PROTO undefined __thiscall Free(void)
 
-void TArmoryView::Free()
+void __thiscall TArmoryView::Free(TArmoryView *this)
 
 {
   func_0x00408db4();

@@ -7,7 +7,8 @@
 // GHIDRA_NAME TTechHistoryView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TTechHistoryView * TTechHistoryView::_scalar_deleting_destructor_(byte param_1)
+TTechHistoryView * __thiscall
+TTechHistoryView::_scalar_deleting_destructor_(TTechHistoryView *this,byte param_1)
 
 {
   func_0x00408698();
@@ -51,7 +52,7 @@ undefined4 * TTechHistoryView::CreateObject(void)
 // GHIDRA_NAME TTechHistoryView::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TTechHistoryView::GetRuntimeClass()
+CRuntimeClass * __thiscall TTechHistoryView::GetRuntimeClass(TTechHistoryView *this)
 
 {
   return &classTTechHistoryView;
@@ -63,7 +64,7 @@ CRuntimeClass * TTechHistoryView::GetRuntimeClass()
 
 /* WARNING: Type propagation algorithm not settling */
 
-void TTechHistoryView::ConstructTTechHistoryViewBaseState()
+void __thiscall TTechHistoryView::ConstructTTechHistoryViewBaseState(TTechHistoryView *this)
 
 {
   TTechHistoryViewVtbl *pTVar1;
@@ -124,17 +125,17 @@ void TTechHistoryView::ConstructTTechHistoryViewBaseState()
   piStack_68 = (int *)&local_54;
   piStack_6c = (int *)0x2b6a;
   iStack_70 = 0x5b2328;
-  func_0x004093cc();
+  thunk_MapUiThemeCodeToStyleFlags();
   piStack_68 = local_50;
   piStack_6c = (int *)0x2b68;
   iStack_70 = 0x5b233a;
-  func_0x004093cc();
+  thunk_MapUiThemeCodeToStyleFlags();
   puStack_74 = auStack_38;
   piStack_68 = (int *)0x2b6a;
   piStack_6c = (int *)0xc;
   iStack_70 = 0;
   uStack_78 = 0x5b234f;
-  func_0x00406afa();
+  thunk_BuildUiTextStyleDescriptor();
   p_Var2 = pTVar1->OrphanLeaf_NoCall_Ins07_004d8920_25;
   piStack_68 = (int *)0x7469746c;
   piStack_6c = (int *)0x5b2361;

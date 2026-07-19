@@ -7,7 +7,8 @@
 // GHIDRA_NAME TNetMgr::SerializeNodeMapEntries_Key16Value32_WithArchive
 // GHIDRA_PROTO undefined __thiscall SerializeNodeMapEntries_Key16Value32_WithArchive(CArchive * param_1)
 
-void TNetMgr::SerializeNodeMapEntries_Key16Value32_WithArchive(CArchive *param_1)
+void __thiscall
+TNetMgr::SerializeNodeMapEntries_Key16Value32_WithArchive(TNetMgr *this,CArchive *param_1)
 
 {
   TNetMgr_GetTNetMgrClassNamePointer_0x00 *pTVar1;
@@ -126,7 +127,8 @@ LAB_0049b033:
 // GHIDRA_NAME TNetMgr::SerializeNodeMapEntries_Key32Value32_WithArchive
 // GHIDRA_PROTO undefined __thiscall SerializeNodeMapEntries_Key32Value32_WithArchive(CArchive * param_1)
 
-void TNetMgr::SerializeNodeMapEntries_Key32Value32_WithArchive(CArchive *param_1)
+void __thiscall
+TNetMgr::SerializeNodeMapEntries_Key32Value32_WithArchive(TNetMgr *this,CArchive *param_1)
 
 {
   TNetMgr_GetTNetMgrClassNamePointer_0x00 *pTVar1;
@@ -245,7 +247,7 @@ LAB_0049b471:
 // GHIDRA_NAME TNetMgr::CreateTNetMgrInstance
 // GHIDRA_PROTO undefined __thiscall CreateTNetMgrInstance(void)
 
-TNetMgr * TNetMgr::CreateTNetMgrInstance()
+TNetMgr * __thiscall TNetMgr::CreateTNetMgrInstance(TNetMgr *this)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -266,21 +268,38 @@ TNetMgr * TNetMgr::CreateTNetMgrInstance()
   return this;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x005E3390
+// GHIDRA_NAME TNetMgr::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
+
+undefined4 * TNetMgr::CreateObject(void)
+
+{
+  undefined4 *puVar1;
+  
+  puVar1 = (undefined4 *)operator_new(4);
+  if (puVar1 != (undefined4 *)0x0) {
+    *puVar1 = &_vftable_;
+    return puVar1;
+  }
+  return (undefined4 *)0x0;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x005E33C0
 // GHIDRA_NAME TNetMgr::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TNetMgr::GetRuntimeClass()
+CRuntimeClass * __thiscall TNetMgr::GetRuntimeClass(TNetMgr *this)
 
 {
   return &classTNetMgr;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005E33E0
-// GHIDRA_NAME TNetMgr::ConstructGlobalTurnEventQueueManager
-// GHIDRA_PROTO undefined __thiscall ConstructGlobalTurnEventQueueManager(void)
+// GHIDRA_NAME TNetMgr::TNetMgr
+// GHIDRA_PROTO undefined __thiscall TNetMgr(void)
 
-void TNetMgr::ConstructGlobalTurnEventQueueManager()
+void __thiscall TNetMgr::TNetMgr(TNetMgr *this)
 
 {
   this->vftable = &_vftable_;
@@ -291,7 +310,7 @@ void TNetMgr::ConstructGlobalTurnEventQueueManager()
 // GHIDRA_NAME TNetMgr::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TNetMgr * TNetMgr::_scalar_deleting_destructor_(byte param_1)
+TNetMgr * __thiscall TNetMgr::_scalar_deleting_destructor_(TNetMgr *this,byte param_1)
 
 {
   func_0x00403be3();
@@ -305,7 +324,7 @@ TNetMgr * TNetMgr::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TNetMgr::Free
 // GHIDRA_PROTO undefined __thiscall Free(void)
 
-void TNetMgr::Free()
+void __thiscall TNetMgr::Free(TNetMgr *this)
 
 {
   if (this != (TNetMgr *)0x0) {
@@ -318,7 +337,7 @@ void TNetMgr::Free()
 // GHIDRA_NAME TNetMgr::SerializeLinkedRecordListWithFreeNodePool
 // GHIDRA_PROTO undefined __thiscall SerializeLinkedRecordListWithFreeNodePool(CArchive * param_1)
 
-void TNetMgr::SerializeLinkedRecordListWithFreeNodePool(CArchive *param_1)
+void __thiscall TNetMgr::SerializeLinkedRecordListWithFreeNodePool(TNetMgr *this,CArchive *param_1)
 
 {
   CArchive *this_00;
@@ -392,7 +411,7 @@ void TNetMgr::SerializeLinkedRecordListWithFreeNodePool(CArchive *param_1)
 // GHIDRA_NAME TNetMgr::SerializeDynamicDwordPointerArrayState
 // GHIDRA_PROTO undefined __thiscall SerializeDynamicDwordPointerArrayState(CArchive * param_1)
 
-void TNetMgr::SerializeDynamicDwordPointerArrayState(CArchive *param_1)
+void __thiscall TNetMgr::SerializeDynamicDwordPointerArrayState(TNetMgr *this,CArchive *param_1)
 
 {
   TNetMgrVtbl *pTVar1;
@@ -496,7 +515,8 @@ void TNetMgr::SerializeDynamicDwordPointerArrayState(CArchive *param_1)
 // GHIDRA_NAME TNetMgr::WrapperFor_FreeHeapBufferIfNotNull_At005e4a30
 // GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At005e4a30(byte param_1)
 
-TNetMgr * TNetMgr::WrapperFor_FreeHeapBufferIfNotNull_At005e4a30(byte param_1)
+TNetMgr * __thiscall
+TNetMgr::WrapperFor_FreeHeapBufferIfNotNull_At005e4a30(TNetMgr *this,byte param_1)
 
 {
   func_0x00401348();
@@ -510,7 +530,8 @@ TNetMgr * TNetMgr::WrapperFor_FreeHeapBufferIfNotNull_At005e4a30(byte param_1)
 // GHIDRA_NAME TNetMgr::WrapperFor_FreeHeapBufferIfNotNull_At005e4a60
 // GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At005e4a60(byte param_1)
 
-TNetMgr * TNetMgr::WrapperFor_FreeHeapBufferIfNotNull_At005e4a60(byte param_1)
+TNetMgr * __thiscall
+TNetMgr::WrapperFor_FreeHeapBufferIfNotNull_At005e4a60(TNetMgr *this,byte param_1)
 
 {
   func_0x00407ed2();

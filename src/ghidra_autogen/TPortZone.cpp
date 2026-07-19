@@ -48,6 +48,48 @@ undefined4 __thiscall TPortZone::_scalar_deleting_destructor_(undefined4 param_1
   return param_1;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x005616F0
+// GHIDRA_NAME TPortZone::~TPortZone
+// GHIDRA_PROTO undefined __thiscall ~TPortZone(void)
+
+void __thiscall TPortZone::~TPortZone(TPortZone *this)
+
+{
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_c = *unaff_FS_OFFSET;
+  puStack_8 = &LAB_00635808;
+  *unaff_FS_OFFSET = &local_c;
+  this->vftable = (TPortZoneVtbl *)&TZone::_vftable_;
+  local_4 = 0;
+  if ((TPortZone *)g_pMapActionContextListHead == this) {
+    g_pMapActionContextListHead = *(TZone **)&this->field_0x18;
+  }
+  if (*(int *)&this->field_0x18 != 0) {
+    *(undefined4 *)(*(int *)&this->field_0x18 + 0x1c) = *(undefined4 *)&this->field_0x1c;
+  }
+  if (*(int *)&this->field_0x1c != 0) {
+    *(undefined4 *)(*(int *)&this->field_0x1c + 0x18) = *(undefined4 *)&this->field_0x18;
+  }
+  *(undefined4 *)&this->field_0x1c = 0;
+  *(undefined4 *)&this->field_0x18 = 0;
+  *(undefined4 *)&this->field_0x34 = 0x65c754;
+  if (*(int *)&this->field_0x38 != 0) {
+    FreeHeapBlockWithAllocatorTracking(*(int *)&this->field_0x38);
+  }
+  *(undefined4 *)&this->field_0x24 = 0x65c750;
+  if (*(int *)&this->field_0x28 != 0) {
+    FreeHeapBlockWithAllocatorTracking(*(int *)&this->field_0x28);
+  }
+  CString::~CString((CString *)&this->field_0x8);
+  this->vftable = (TPortZoneVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  *unaff_FS_OFFSET = local_c;
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x005617D0
 // GHIDRA_NAME TPortZone::GetRuntimeClass
 // GHIDRA_PROTO undefined GetRuntimeClass()

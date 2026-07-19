@@ -3,6 +3,109 @@
 // Program: Imperialism.exe
 // Bucket: ImperialismApp.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00412AA0
+// GHIDRA_NAME ImperialismApp::GetMessageMap
+// GHIDRA_PROTO undefined GetMessageMap()
+
+undefined ** ImperialismApp::GetMessageMap(void)
+
+{
+  return &ImperialismApp_MessageMapDescriptor;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00412C60
+// GHIDRA_NAME ImperialismApp::~ImperialismApp
+// GHIDRA_PROTO undefined ~ImperialismApp()
+
+void __fastcall ImperialismApp::~ImperialismApp(int param_1)
+
+{
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  int local_4;
+  
+  puStack_8 = &LAB_00627ecc;
+  local_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &local_c;
+  local_4 = 6;
+  CString::~CString((CString *)(param_1 + 0xe0));
+  local_4._0_1_ = 5;
+  CString::~CString((CString *)(param_1 + 0xdc));
+  local_4._0_1_ = 4;
+  CString::~CString((CString *)(param_1 + 0xd8));
+  local_4._0_1_ = 3;
+  CString::~CString((CString *)(param_1 + 0xd4));
+  local_4._0_1_ = 2;
+  CString::~CString((CString *)(param_1 + 0xd0));
+  local_4._0_1_ = 1;
+  CString::~CString((CString *)(param_1 + 0xcc));
+  local_4 = (uint)local_4._1_3_ << 8;
+  CString::~CString((CString *)(param_1 + 0xc4));
+  local_4 = 0xffffffff;
+  CWinApp::~CWinApp();
+  *unaff_FS_OFFSET = local_c;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004138B0
+// GHIDRA_NAME ImperialismApp::PostStartupCommand100
+// GHIDRA_PROTO undefined PostStartupCommand100()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Posts WM_COMMAND(100) to the main thread window.
+// GHIDRA_COMMENT_END
+
+/* Posts WM_COMMAND(100) to the main thread window. */
+
+void __fastcall ImperialismApp::PostStartupCommand100(int param_1)
+
+{
+  PostMessageA(*(HWND *)(*(int *)(param_1 + 0x1c) + 0x1c),0x111,100,0);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004139F0
+// GHIDRA_NAME ImperialismApp::RestoreWaitCursorIfStartupBusy
+// GHIDRA_PROTO undefined RestoreWaitCursorIfStartupBusy()
+
+void __fastcall ImperialismApp::RestoreWaitCursorIfStartupBusy(int param_1)
+
+{
+  if (*(int *)(param_1 + 0xc0) != 0) {
+    AfxGetModuleState();
+    CCmdTarget::RestoreWaitCursor();
+    return;
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00413A20
+// GHIDRA_NAME ImperialismApp::PreTranslateMessage
+// GHIDRA_PROTO undefined __thiscall PreTranslateMessage(undefined4 param_1)
+
+void __thiscall ImperialismApp::PreTranslateMessage(ImperialismApp *this,undefined4 param_1)
+
+{
+  func_0x004037a1(param_1);
+  CWinThread::PreTranslateMessage(param_1);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004145F0
+// GHIDRA_NAME ImperialismApp::OnIdle
+// GHIDRA_PROTO undefined __thiscall OnIdle(int param_1)
+
+undefined4 __thiscall ImperialismApp::OnIdle(ImperialismApp *this,int param_1)
+
+{
+  CWinApp::OnIdle(param_1);
+  if (param_1 == 0) {
+    (*g_pGlobalUiRootController->vftable->OnEndPrintPreview)(0);
+  }
+  (*g_pGlobalUiRootController->vftable->OnEndPrintPreview)(1);
+  return 1;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00414870
 // GHIDRA_NAME ImperialismApp::DetectImperialismInstallDriveAndSetPathPrefix
 // GHIDRA_PROTO undefined DetectImperialismInstallDriveAndSetPathPrefix()

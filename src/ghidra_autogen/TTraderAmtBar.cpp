@@ -40,7 +40,7 @@ undefined4 * TTraderAmtBar::CreateObject(void)
 // GHIDRA_NAME TTraderAmtBar::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TTraderAmtBar::GetRuntimeClass()
+CRuntimeClass * __thiscall TTraderAmtBar::GetRuntimeClass(TTraderAmtBar *this)
 
 {
   return &classTTraderAmtBar;
@@ -50,7 +50,7 @@ CRuntimeClass * TTraderAmtBar::GetRuntimeClass()
 // GHIDRA_NAME TTraderAmtBar::TTraderAmtBar
 // GHIDRA_PROTO undefined __thiscall TTraderAmtBar(void)
 
-TTraderAmtBar * TTraderAmtBar::TTraderAmtBar()
+TTraderAmtBar * __thiscall TTraderAmtBar::TTraderAmtBar(TTraderAmtBar *this)
 
 {
   func_0x004064e2();
@@ -66,7 +66,8 @@ TTraderAmtBar * TTraderAmtBar::TTraderAmtBar()
 // GHIDRA_NAME TTraderAmtBar::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TTraderAmtBar * TTraderAmtBar::_scalar_deleting_destructor_(byte param_1)
+TTraderAmtBar * __thiscall
+TTraderAmtBar::_scalar_deleting_destructor_(TTraderAmtBar *this,byte param_1)
 
 {
   func_0x004064bf();
@@ -80,7 +81,7 @@ TTraderAmtBar * TTraderAmtBar::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TTraderAmtBar::NoOpUiLifecycleHook
 // GHIDRA_PROTO undefined __thiscall NoOpUiLifecycleHook(void)
 
-void TTraderAmtBar::NoOpUiLifecycleHook()
+void __thiscall TTraderAmtBar::NoOpUiLifecycleHook(TTraderAmtBar *this)
 
 {
   TGreatPower *pTVar1;
@@ -141,7 +142,8 @@ void TTraderAmtBar::UpdateFromScaleOrRatio(void)
 // GHIDRA_NAME TTraderAmtBar::ApplyMoveClamp
 // GHIDRA_PROTO undefined __thiscall ApplyMoveClamp(undefined2 param_1, short param_2)
 
-undefined2 TTraderAmtBar::ApplyMoveClamp(undefined2 param_1, short param_2)
+undefined2 __thiscall
+TTraderAmtBar::ApplyMoveClamp(TTraderAmtBar *this,undefined2 param_1,short param_2)
 
 {
   undefined uVar1;
@@ -164,7 +166,7 @@ undefined2 TTraderAmtBar::ApplyMoveClamp(undefined2 param_1, short param_2)
 // GHIDRA_NAME TTraderAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache
 // GHIDRA_PROTO undefined __thiscall RenderPrimarySurfaceOverlayPanelWithClipCache(void)
 
-void TTraderAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache()
+void __thiscall TTraderAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache(TTraderAmtBar *this)
 
 {
   TTraderAmtBarVtbl *pTVar1;
@@ -213,12 +215,12 @@ void TTraderAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache()
       uStack_c._0_1_ = 1;
       this_00 = (CDC *)func_0x004021c6();
       pHVar4 = CreateRectRgnIndirect(&RStack_44);
-      CBrush::CGdiObject__Attach((CBrush *)&local_54,(int)pHVar4);
+      CGdiObject::Attach((CGdiObject *)&local_54,(int)pHVar4);
       CDC::SelectClipRgn(this_00,(int)&local_54);
-      CGdiObject__DeleteObject();
+      CGdiObject::DeleteObject();
       local_54 = &PTR_LAB_00671054;
       uStack_c._0_1_ = 2;
-      CGdiObject__DeleteObject();
+      CGdiObject::DeleteObject();
       local_54 = (undefined **)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
       uStack_c = CONCAT31(uStack_c._1_3_,3);
       (*pTVar1->OrphanRetStub_0059add0_4b)(auStack_24);
@@ -226,11 +228,11 @@ void TTraderAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache()
       iStack_4c = g_nOverlayClipCacheParamY;
       (*pTVar1->OrphanTiny_ReturnZero_0048a730_4e)(&iStack_50);
       if (0 < *(short *)&this->field_0x60) {
-        func_0x00408d6e(0,0);
+        thunk_SetQuickDrawTextOriginWithContextOffset(0,0);
         (**(code **)(g_pUiRuntimeContext->vftable + 0x34))
                   (CONCAT22(extraout_var_00,*(undefined2 *)&this->field_0x66));
         func_0x00402e73(1,5);
-        func_0x00403bb6(*(short *)&this->field_0x60 + -1,0);
+        thunk_DrawCenteredGuideLineOnMapDc(*(short *)&this->field_0x60 + -1,0);
         func_0x004088aa();
       }
       func_0x00405be1(pLVar5);

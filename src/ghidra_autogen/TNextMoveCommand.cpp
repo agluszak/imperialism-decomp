@@ -37,7 +37,7 @@ undefined4 * TNextMoveCommand::CreateObject(void)
 // GHIDRA_NAME TNextMoveCommand::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TNextMoveCommand::GetRuntimeClass()
+CRuntimeClass * __thiscall TNextMoveCommand::GetRuntimeClass(TNextMoveCommand *this)
 
 {
   return &classTNextMoveCommand;
@@ -47,7 +47,8 @@ CRuntimeClass * TNextMoveCommand::GetRuntimeClass()
 // GHIDRA_NAME TNextMoveCommand::ConstructTNextMoveCommandBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTNextMoveCommandBaseState(void)
 
-TNextMoveCommand * TNextMoveCommand::ConstructTNextMoveCommandBaseState()
+TNextMoveCommand * __thiscall
+TNextMoveCommand::ConstructTNextMoveCommandBaseState(TNextMoveCommand *this)
 
 {
   func_0x00403d5f();
@@ -59,7 +60,8 @@ TNextMoveCommand * TNextMoveCommand::ConstructTNextMoveCommandBaseState()
 // GHIDRA_NAME TNextMoveCommand::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TNextMoveCommand * TNextMoveCommand::_scalar_deleting_destructor_(byte param_1)
+TNextMoveCommand * __thiscall
+TNextMoveCommand::_scalar_deleting_destructor_(TNextMoveCommand *this,byte param_1)
 
 {
   func_0x0040312f();
@@ -73,7 +75,7 @@ TNextMoveCommand * TNextMoveCommand::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TNextMoveCommand::DoIt
 // GHIDRA_PROTO undefined __thiscall DoIt(void)
 
-void TNextMoveCommand::DoIt()
+void __thiscall TNextMoveCommand::DoIt(TNextMoveCommand *this)
 
 {
   int *piVar1;

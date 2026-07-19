@@ -38,17 +38,17 @@ undefined4 * TNumberedItem::CreateObject(void)
 // GHIDRA_NAME TNumberedItem::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TNumberedItem::GetRuntimeClass()
+CRuntimeClass * __thiscall TNumberedItem::GetRuntimeClass(TNumberedItem *this)
 
 {
-  return &classRuntimeClass;
+  return &classTNumberedItem;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005077C0
 // GHIDRA_NAME TNumberedItem::ConstructTNumberedItemBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTNumberedItemBaseState(void)
 
-TNumberedItem * TNumberedItem::ConstructTNumberedItemBaseState()
+TNumberedItem * __thiscall TNumberedItem::ConstructTNumberedItemBaseState(TNumberedItem *this)
 
 {
   func_0x004014ba();
@@ -62,7 +62,8 @@ TNumberedItem * TNumberedItem::ConstructTNumberedItemBaseState()
 // GHIDRA_NAME TNumberedItem::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TNumberedItem * TNumberedItem::_scalar_deleting_destructor_(byte param_1)
+TNumberedItem * __thiscall
+TNumberedItem::_scalar_deleting_destructor_(TNumberedItem *this,byte param_1)
 
 {
   func_0x00406dac();
@@ -76,7 +77,7 @@ TNumberedItem * TNumberedItem::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TNumberedItem::ApplyRectSlot110
 // GHIDRA_PROTO undefined __thiscall ApplyRectSlot110(void)
 
-void TNumberedItem::ApplyRectSlot110()
+void __thiscall TNumberedItem::ApplyRectSlot110(TNumberedItem *this)
 
 {
   short sVar1;
@@ -125,8 +126,8 @@ void TNumberedItem::ApplyRectSlot110()
     sVar2 = (short)this->field38 + -5;
     sVar1 = (short)this->field34 + -0x18;
   }
-  func_0x00408d6e(sVar1,sVar2);
-  CString__Format(&local_30,&g_szDecimalFormat,(int)*(short *)&this->field_0xae);
+  thunk_SetQuickDrawTextOriginWithContextOffset(sVar1,sVar2);
+  CString::Format(&local_30,&g_szDecimalFormat,(int)*(short *)&this->field_0xae);
   func_0x004029aa(&local_30);
   local_4 = 0xffffffff;
   CString::~CString(&local_30);
@@ -138,7 +139,8 @@ void TNumberedItem::ApplyRectSlot110()
 // GHIDRA_NAME TNumberedItem::LoadPictureResourceRegionAndRefresh
 // GHIDRA_PROTO undefined __thiscall LoadPictureResourceRegionAndRefresh(undefined4 param_1)
 
-void TNumberedItem::LoadPictureResourceRegionAndRefresh(undefined4 param_1)
+void __thiscall
+TNumberedItem::LoadPictureResourceRegionAndRefresh(TNumberedItem *this,undefined4 param_1)
 
 {
   undefined1 *puVar1;
@@ -175,11 +177,11 @@ void TNumberedItem::LoadPictureResourceRegionAndRefresh(undefined4 param_1)
     *(LONG *)&this->field_0xa4 = tStack_10.right;
     LStack_14 = tStack_10.bottom;
     *(LONG *)&this->field_0xa8 = tStack_10.bottom;
-    func_0x00408d64(auStack_24,auStack_28);
+    thunk_GetActiveQuickDrawSurfaceContextAndFlags(auStack_24,auStack_28);
     (**(code **)(*g_pDisplayMgr + 0x2c))(puVar1,8,&LStack_20);
-    func_0x00406f5f(*(undefined4 *)puVar1,unaff_ESI);
-    uVar5 = func_0x0040520e(*(undefined4 *)puVar1);
-    func_0x0040761c(uVar5);
+    thunk_SetActiveQuickDrawSurfaceContext(*(undefined4 *)puVar1,unaff_ESI);
+    uVar5 = thunk_GetSurfaceObjectAtContextOffset24(*(undefined4 *)puVar1);
+    thunk_ReturnConstantTrueQuickDrawFlag(uVar5);
     func_0x004062d5(*(undefined4 *)&this->field_0x88);
     puVar2 = (undefined4 *)**(int **)&this->field_0x88;
     if (puVar2 != (undefined4 *)0x0) {
@@ -198,9 +200,9 @@ void TNumberedItem::LoadPictureResourceRegionAndRefresh(undefined4 param_1)
         operator_delete(puVar2);
       }
       operator_delete(piVar3);
-      uVar5 = func_0x0040520e(*(undefined4 *)puVar1);
-      func_0x004024fa(uVar5);
-      func_0x00406f5f(unaff_EBP,unaff_ESI);
+      uVar5 = thunk_GetSurfaceObjectAtContextOffset24(*(undefined4 *)puVar1);
+      thunk_NoOpQuickDrawLifecycleHookB(uVar5);
+      thunk_SetActiveQuickDrawSurfaceContext(unaff_EBP,unaff_ESI);
       func_0x00408454(tStack_10.right,tStack_10.bottom);
     }
   }
@@ -211,7 +213,7 @@ void TNumberedItem::LoadPictureResourceRegionAndRefresh(undefined4 param_1)
 // GHIDRA_NAME TNumberedItem::Free
 // GHIDRA_PROTO undefined __thiscall Free(void)
 
-void TNumberedItem::Free()
+void __thiscall TNumberedItem::Free(TNumberedItem *this)
 
 {
   if (*(int *)&this->field_0x94 != 0) {
@@ -226,7 +228,8 @@ void TNumberedItem::Free()
 // GHIDRA_NAME TNumberedItem::OrphanCallChain_C1_I08_00573690
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I08_00573690(undefined2 param_1, char param_2)
 
-void TNumberedItem::OrphanCallChain_C1_I08_00573690(undefined2 param_1, char param_2)
+void __thiscall
+TNumberedItem::OrphanCallChain_C1_I08_00573690(TNumberedItem *this,undefined2 param_1,char param_2)
 
 {
   *(undefined2 *)&this->field_0x98 = param_1;

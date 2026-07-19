@@ -37,7 +37,7 @@ undefined4 * TWarehouseView::CreateObject(void)
 // GHIDRA_NAME TWarehouseView::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TWarehouseView::GetRuntimeClass()
+CRuntimeClass * __thiscall TWarehouseView::GetRuntimeClass(TWarehouseView *this)
 
 {
   return &classTWarehouseView;
@@ -47,7 +47,7 @@ CRuntimeClass * TWarehouseView::GetRuntimeClass()
 // GHIDRA_NAME TWarehouseView::ConstructTWarehouseViewBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTWarehouseViewBaseState(void)
 
-TWarehouseView * TWarehouseView::ConstructTWarehouseViewBaseState()
+TWarehouseView * __thiscall TWarehouseView::ConstructTWarehouseViewBaseState(TWarehouseView *this)
 
 {
   func_0x00403328();
@@ -60,7 +60,8 @@ TWarehouseView * TWarehouseView::ConstructTWarehouseViewBaseState()
 // GHIDRA_NAME TWarehouseView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TWarehouseView * TWarehouseView::_scalar_deleting_destructor_(byte param_1)
+TWarehouseView * __thiscall
+TWarehouseView::_scalar_deleting_destructor_(TWarehouseView *this,byte param_1)
 
 {
   func_0x004058e9();
@@ -74,7 +75,8 @@ TWarehouseView * TWarehouseView::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TWarehouseView::BeginMouseCaptureAndStartRepeatTimer
 // GHIDRA_PROTO undefined __thiscall BeginMouseCaptureAndStartRepeatTimer(undefined4 * param_1)
 
-void TWarehouseView::BeginMouseCaptureAndStartRepeatTimer(undefined4 *param_1)
+void __thiscall
+TWarehouseView::BeginMouseCaptureAndStartRepeatTimer(TWarehouseView *this,undefined4 *param_1)
 
 {
   func_0x0040750e(param_1);
@@ -87,7 +89,7 @@ void TWarehouseView::BeginMouseCaptureAndStartRepeatTimer(undefined4 *param_1)
 
 /* WARNING: Type propagation algorithm not settling */
 
-void TWarehouseView::OrphanRetStub_004c6fd0()
+void __thiscall TWarehouseView::OrphanRetStub_004c6fd0(TWarehouseView *this)
 
 {
   int iVar1;
@@ -184,7 +186,7 @@ void TWarehouseView::OrphanRetStub_004c6fd0()
   pCStack_c0 = (CString *)0x0;
   local_4 = 0;
   CStack_c8.m_pchData = (char *)0x4c73bc;
-  func_0x00406afa();
+  thunk_BuildUiTextStyleDescriptor();
   pCVar12 = (CString *)this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25;
   iStack_b8 = 0x6e616d65;
   CStack_bc.m_pchData = (char *)0x4c73d4;
@@ -213,7 +215,7 @@ void TWarehouseView::OrphanRetStub_004c6fd0()
   ppCStack_ec = (CString **)&stack0xffffff58;
   pTStack_e8 = (TWarehouseView *)0x0;
   puStack_f0 = (undefined *)0x4c742f;
-  func_0x00406afa();
+  thunk_BuildUiTextStyleDescriptor();
   pdVar11 = g_pTradeSummarySelectionMap.summaryTags;
   puVar13 = (undefined4 *)&this->field_0xa0;
   CStack_c4.m_pchData = (char *)0x17;
@@ -418,7 +420,7 @@ void TWarehouseView::OrphanRetStub_004c6fd0()
           pCStack_120 = &CStack_f4;
           pCStack_11c = (CString *)&g_szDecimalFormat;
           CStack_124.m_pchData = (char *)0x4c7827;
-          CString__Format();
+          CString::Format();
           pCStack_118 = &CStack_f8;
           pCStack_120 = (CString *)0x4c783b;
           pCStack_11c = pCVar12;
@@ -440,7 +442,7 @@ void TWarehouseView::OrphanRetStub_004c6fd0()
           pCStack_11c = (CString *)((int)piStack_104 + (int)(short)CONCAT31(extraout_var_06,uVar6));
           CStack_124.m_pchData = (char *)&CStack_f8;
           pCStack_120 = (CString *)&g_szDecimalFormat;
-          CString__Format();
+          CString::Format();
           pCStack_11c = (CString *)&puStack_fc;
           pCStack_120 = (CString *)0x1f;
           CStack_124.m_pchData = (char *)0x2734;
@@ -465,7 +467,7 @@ switchD_004c77eb_caseD_8:
         uVar6 = (*pTVar3->vftable->ApplyJoinEmpireModeForTargetNation_47)();
         pCStack_120 = (CString *)(int)(short)CONCAT31(extraout_var_07,uVar6);
         CStack_124.m_pchData = &g_szDecimalFormat;
-        CString__Format(&puStack_fc);
+        CString::Format(&puStack_fc);
 LAB_004c7958:
         CStack_124.m_pchData = CStack_100.m_pchData;
         pCStack_120 = (CString *)puStack_fc;
@@ -578,7 +580,7 @@ LAB_004c7958:
 // GHIDRA_NAME TWarehouseView::OrphanRetStub_004c6fb0
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_004c6fb0(void)
 
-void TWarehouseView::OrphanRetStub_004c6fb0()
+void __thiscall TWarehouseView::OrphanRetStub_004c6fb0(TWarehouseView *this)
 
 {
   short sVar1;

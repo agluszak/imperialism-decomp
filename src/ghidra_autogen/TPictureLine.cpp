@@ -24,7 +24,7 @@ undefined4 * TPictureLine::CreateObject(void)
 // GHIDRA_NAME TPictureLine::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TPictureLine::GetRuntimeClass()
+CRuntimeClass * __thiscall TPictureLine::GetRuntimeClass(TPictureLine *this)
 
 {
   return &classTPictureLine;
@@ -34,7 +34,8 @@ CRuntimeClass * TPictureLine::GetRuntimeClass()
 // GHIDRA_NAME TPictureLine::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TPictureLine * TPictureLine::_scalar_deleting_destructor_(byte param_1)
+TPictureLine * __thiscall
+TPictureLine::_scalar_deleting_destructor_(TPictureLine *this,byte param_1)
 
 {
   func_0x00407784();
@@ -48,7 +49,7 @@ TPictureLine * TPictureLine::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TPictureLine::DestructTPictureLineAndMaybeFree
 // GHIDRA_PROTO undefined __thiscall DestructTPictureLineAndMaybeFree(void)
 
-void TPictureLine::DestructTPictureLineAndMaybeFree()
+void __thiscall TPictureLine::DestructTPictureLineAndMaybeFree(TPictureLine *this)
 
 {
   this->vftable = (TPictureLineVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
@@ -56,10 +57,11 @@ void TPictureLine::DestructTPictureLineAndMaybeFree()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00570130
-// GHIDRA_NAME TPictureLine::OrphanRetStub_0056f460
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0056f460(undefined4 param_1, undefined4 param_2)
+// GHIDRA_NAME TPictureLine::CreateLineItemView
+// GHIDRA_PROTO undefined __thiscall CreateLineItemView(undefined4 param_1, undefined4 param_2)
 
-void TPictureLine::OrphanRetStub_0056f460(undefined4 param_1, undefined4 param_2)
+void __thiscall
+TPictureLine::CreateLineItemView(TPictureLine *this,undefined4 param_1,undefined4 param_2)
 
 {
   int iVar1;

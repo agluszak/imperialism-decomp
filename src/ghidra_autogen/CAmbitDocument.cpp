@@ -36,95 +36,159 @@ undefined4 __fastcall CAmbitDocument::CreateObject(undefined4 param_1)
 // GHIDRA_NAME CAmbitDocument::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * CAmbitDocument::GetRuntimeClass()
+CRuntimeClass * __thiscall CAmbitDocument::GetRuntimeClass(CAmbitDocument *this)
 
 {
   return &classRuntimeClass;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x006067A2
-// GHIDRA_NAME CAmbitDocument::CWinApp::ProcessMessageFilter
-// GHIDRA_PROTO undefined __thiscall CWinApp::ProcessMessageFilter(int param_1, undefined4 * param_2)
+// GHIDRA_FUNCTION IMPERIALISM 0x00479460
+// GHIDRA_NAME CAmbitDocument::GetMessageMap
+// GHIDRA_PROTO undefined __thiscall GetMessageMap(void)
 
-undefined4 CAmbitDocument::CWinApp__ProcessMessageFilter(int param_1, undefined4 *param_2)
+undefined ** __thiscall CAmbitDocument::GetMessageMap(CAmbitDocument *this)
 
 {
-  CAmbitDocument *pCVar1;
-  undefined uVar2;
-  int iVar3;
-  int iVar4;
-  undefined3 extraout_var;
-  undefined4 *puVar5;
-  HWND hWnd;
-  undefined4 local_24 [7];
-  CAmbitDocument *local_8;
-  
-  if (param_2 == (undefined4 *)0x0) {
-    return 0;
-  }
-  local_8 = this;
-  if (param_1 != 0) {
-    if (param_1 != 2) {
-      return 0;
-    }
-    iVar3 = CWnd__FromHandle(*param_2);
-    if (((((iVar3 != 0) && (iVar3 = CWnd::GetTopLevelFrame(), iVar3 != 0)) &&
-         (iVar4 = CFrameWnd::IsTracking(), iVar4 != 0)) &&
-        ((*(int *)(iVar3 + 0x50) != 0 &&
-         (iVar3 = AfxGetMainWnd(), *(int *)&local_8->field_0x1c != 0)))) &&
-       (((param_2[1] == 0x100 && (param_2[2] == 0xd)) || (param_2[1] == 0x202)))) {
-      hWnd = *(HWND *)(iVar3 + 0x1c);
-      goto LAB_0060685d;
-    }
-  }
-  iVar3 = AfxGetMainWnd();
-  if (((0x332 < DAT_006a7d54) || (iVar3 == 0)) || (iVar4 = IsHelpKey(param_2), iVar4 == 0)) {
-    if ((((param_1 != 0) || (*(int *)&local_8->field_0x20 == 0)) || ((uint)param_2[1] < 0x100)) ||
-       ((0x108 < (uint)param_2[1] ||
-        (iVar3 = CThreadLocalObject::GetData
-                           ((CThreadLocalObject *)&DAT_006a7a50,
-                            CThreadLocal[_AFX_THREAD_STATE]::_AFX_THREAD_STATE>__CreateObject),
-        *(int *)(iVar3 + 0xbc) != 0)))) {
-      return 0;
-    }
-    *(undefined4 *)(iVar3 + 0xbc) = 1;
-    puVar5 = local_24;
-    for (iVar4 = 7; pCVar1 = local_8, iVar4 != 0; iVar4 = iVar4 + -1) {
-      *puVar5 = *param_2;
-      param_2 = param_2 + 1;
-      puVar5 = puVar5 + 1;
-    }
-    iVar4 = CWnd__IsWindowEnabled();
-    if ((iVar4 != 0) &&
-       (uVar2 = (*pCVar1->vftable[3].ConstructTTaskBaseState)(local_24),
-       CONCAT31(extraout_var,uVar2) != 0)) {
-      *(undefined4 *)(iVar3 + 0xbc) = 0;
-      return 1;
-    }
-    *(undefined4 *)(iVar3 + 0xbc) = 0;
-    return 0;
-  }
-  hWnd = *(HWND *)(iVar3 + 0x1c);
-LAB_0060685d:
-  SendMessageA(hWnd,0x111,0xe146,0);
-  return 1;
+  return &PTR_PTR_0063e810;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0061873C
-// GHIDRA_NAME CAmbitDocument::CWinApp::OnDDECommand
-// GHIDRA_PROTO undefined __thiscall CWinApp::OnDDECommand(void)
+// GHIDRA_FUNCTION IMPERIALISM 0x004796A0
+// GHIDRA_NAME CAmbitDocument::IsModified
+// GHIDRA_PROTO undefined __thiscall IsModified(void)
 
-undefined4 CAmbitDocument::CWinApp__OnDDECommand()
+undefined4 __thiscall CAmbitDocument::IsModified(CAmbitDocument *this)
 
 {
-  undefined4 uVar1;
+  return *(undefined4 *)&this->field_0x44;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004796C0
+// GHIDRA_NAME CAmbitDocument::SetModifiedFlag
+// GHIDRA_PROTO undefined __thiscall SetModifiedFlag(undefined4 param_1)
+
+void __thiscall CAmbitDocument::SetModifiedFlag(CAmbitDocument *this,undefined4 param_1)
+
+{
+  *(undefined4 *)&this->field_0x44 = param_1;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004797A0
+// GHIDRA_NAME CAmbitDocument::OnNewDocument
+// GHIDRA_PROTO undefined OnNewDocument()
+
+bool __fastcall CAmbitDocument::OnNewDocument(CDocument *param_1)
+
+{
+  int iVar1;
   
-  if (*(int **)&this[1].field_0x2c == (int *)0x0) {
-    uVar1 = 0;
+  g_bMultiplayerScenarioSetupActive = '\0';
+  iVar1 = CDocument::OnNewDocument(param_1);
+  return iVar1 != 0;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004797D0
+// GHIDRA_NAME CAmbitDocument::Serialize
+// GHIDRA_PROTO undefined __thiscall Serialize(int param_1)
+
+void __thiscall CAmbitDocument::Serialize(CAmbitDocument *this,int param_1)
+
+{
+  int *piVar1;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 uVar2;
+  undefined4 uStack_c;
+  undefined1 *puStack_8;
+  undefined4 uStack_4;
+  
+  uStack_c = *unaff_FS_OFFSET;
+  uStack_4 = 0xffffffff;
+  puStack_8 = &LAB_0062dfc8;
+  *unaff_FS_OFFSET = &uStack_c;
+  AfxGetModuleState();
+  CCmdTarget::BeginWaitCursor();
+  uStack_4 = 0;
+  piVar1 = (int *)operator_new(8);
+  if (piVar1 == (int *)0x0) {
+    piVar1 = (int *)0x0;
   }
   else {
-    uVar1 = (**(code **)(**(int **)&this[1].field_0x2c + 0x38))();
+    piVar1[1] = param_1;
+    *piVar1 = (int)&ArchiveStreamAdapter::_vftable_;
   }
-  return uVar1;
+  if ((~*(uint *)(param_1 + 0x14) & 1) == 0) {
+    uVar2 = 0;
+    (**(code **)(**(int **)&this->field_0x50 + 0x28))(piVar1);
+  }
+  else {
+    uVar2 = 0;
+    (**(code **)(**(int **)&this->field_0x50 + 0x2c))(piVar1);
+  }
+  (**(code **)(*piVar1 + 0x1c))();
+  (*this->vftable[3].OrphanLeaf_NoCall_Ins04_005adc30)(1);
+  AfxGetModuleState();
+  CCmdTarget::EndWaitCursor();
+  *unaff_FS_OFFSET = uVar2;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00479960
+// GHIDRA_NAME CAmbitDocument::OnOpenDocument
+// GHIDRA_PROTO undefined OnOpenDocument()
+
+bool CAmbitDocument::OnOpenDocument(undefined4 param_1)
+
+{
+  int iVar1;
+  
+  g_bMultiplayerScenarioSetupActive = '\x01';
+  iVar1 = CDocument::OnOpenDocument(param_1);
+  return iVar1 != 0;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00479990
+// GHIDRA_NAME CAmbitDocument::OnSaveDocument
+// GHIDRA_PROTO undefined OnSaveDocument()
+
+undefined4 CAmbitDocument::OnSaveDocument(CString param_1)
+
+{
+  CString CVar1;
+  int iVar2;
+  CString *src_ref;
+  undefined4 uVar3;
+  undefined4 *unaff_FS_OFFSET;
+  CString local_10;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  int local_4;
+  
+  CVar1.m_pchData = param_1.m_pchData;
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_0062dff0;
+  local_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &local_c;
+  CString::CString(&param_1,param_1.m_pchData);
+  local_4 = 0;
+  iVar2 = *(int *)(param_1.m_pchData + -8) + -1;
+  if (0 < iVar2) {
+    do {
+      if ((param_1.m_pchData[iVar2] == '/') || (param_1.m_pchData[iVar2] == '\\')) break;
+      iVar2 = iVar2 + -1;
+    } while (0 < iVar2);
+    if (0 < iVar2) {
+      src_ref = (CString *)CString::Left(&local_10,iVar2 + 1);
+      local_4._0_1_ = 1;
+      CString::operator=(&param_1,src_ref);
+      local_4 = (uint)local_4._1_3_ << 8;
+      CString::~CString(&local_10);
+      CreateDirectoryA(param_1.m_pchData,(LPSECURITY_ATTRIBUTES)0x0);
+    }
+  }
+  uVar3 = CDocument::OnSaveDocument(CVar1.m_pchData);
+  local_4 = 0xffffffff;
+  CString::~CString(&param_1);
+  *unaff_FS_OFFSET = local_c;
+  return uVar3;
 }
 

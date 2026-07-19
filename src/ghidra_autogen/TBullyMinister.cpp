@@ -40,7 +40,7 @@ undefined4 * TBullyMinister::CreateObject(void)
 
 /* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 
-float10 TBullyMinister::CreateTBullyMinisterInstance(char param_1)
+float10 __thiscall TBullyMinister::CreateTBullyMinisterInstance(TBullyMinister *this,char param_1)
 
 {
   if (param_1 != '\0') {
@@ -53,7 +53,7 @@ float10 TBullyMinister::CreateTBullyMinisterInstance(char param_1)
 // GHIDRA_NAME TBullyMinister::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TBullyMinister::GetRuntimeClass()
+CRuntimeClass * __thiscall TBullyMinister::GetRuntimeClass(TBullyMinister *this)
 
 {
   return &classTBullyMinister;
@@ -63,7 +63,7 @@ CRuntimeClass * TBullyMinister::GetRuntimeClass()
 // GHIDRA_NAME TBullyMinister::ConstructTBullyMinisterBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTBullyMinisterBaseState(void)
 
-TBullyMinister * TBullyMinister::ConstructTBullyMinisterBaseState()
+TBullyMinister * __thiscall TBullyMinister::ConstructTBullyMinisterBaseState(TBullyMinister *this)
 
 {
   func_0x0040433b();
@@ -76,7 +76,8 @@ TBullyMinister * TBullyMinister::ConstructTBullyMinisterBaseState()
 // GHIDRA_NAME TBullyMinister::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TBullyMinister * TBullyMinister::_scalar_deleting_destructor_(byte param_1)
+TBullyMinister * __thiscall
+TBullyMinister::_scalar_deleting_destructor_(TBullyMinister *this,byte param_1)
 
 {
   func_0x0040495d();

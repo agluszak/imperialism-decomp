@@ -36,7 +36,7 @@ undefined4 __fastcall TShip::CreateObject(undefined4 param_1)
 // GHIDRA_NAME TShip::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TShip::GetRuntimeClass()
+CRuntimeClass * __thiscall TShip::GetRuntimeClass(TShip *this)
 
 {
   return &classTShip;
@@ -46,7 +46,7 @@ CRuntimeClass * TShip::GetRuntimeClass()
 // GHIDRA_NAME TShip::ConstructAndLinkNavyPrimaryOrderNode
 // GHIDRA_PROTO undefined __thiscall ConstructAndLinkNavyPrimaryOrderNode(void)
 
-TShip * TShip::ConstructAndLinkNavyPrimaryOrderNode()
+TShip * __thiscall TShip::ConstructAndLinkNavyPrimaryOrderNode(TShip *this)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -85,7 +85,7 @@ TShip * TShip::ConstructAndLinkNavyPrimaryOrderNode()
 // GHIDRA_NAME TShip::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TShip * TShip::_scalar_deleting_destructor_(byte param_1)
+TShip * __thiscall TShip::_scalar_deleting_destructor_(TShip *this,byte param_1)
 
 {
   func_0x00401faa();
@@ -99,7 +99,7 @@ TShip * TShip::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TShip::DestructTShip
 // GHIDRA_PROTO undefined __thiscall DestructTShip(void)
 
-void TShip::DestructTShip()
+void __thiscall TShip::DestructTShip(TShip *this)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -121,7 +121,7 @@ void TShip::DestructTShip()
 // GHIDRA_NAME TShip::Free
 // GHIDRA_PROTO undefined __thiscall Free(void)
 
-void TShip::Free()
+void __thiscall TShip::Free(TShip *this)
 
 {
   short *psVar1;
@@ -187,7 +187,7 @@ void TShip::Free()
 // GHIDRA_NAME TShip::WriteTo
 // GHIDRA_PROTO undefined __thiscall WriteTo(int * param_1)
 
-void TShip::WriteTo(int *param_1)
+void __thiscall TShip::WriteTo(TShip *this,int *param_1)
 
 {
   int iVar1;
@@ -235,7 +235,7 @@ void TShip::WriteTo(int *param_1)
 // GHIDRA_NAME TShip::ReadFrom
 // GHIDRA_PROTO undefined __thiscall ReadFrom(int * param_1)
 
-void TShip::ReadFrom(int *param_1)
+void __thiscall TShip::ReadFrom(TShip *this,int *param_1)
 
 {
   int iVar1;
@@ -281,6 +281,530 @@ void TShip::ReadFrom(int *param_1)
   (*pcVar2)(&uStack_38,2);
   uVar3 = func_0x004024c3(uVar3);
   *(undefined4 *)&this->field_0x8 = uVar3;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0054FF00
+// GHIDRA_NAME TShip::ComputeNavyOrderPriorityContributionPercentByCategory
+// GHIDRA_PROTO undefined ComputeNavyOrderPriorityContributionPercentByCategory()
+
+uint __thiscall
+TShip::ComputeNavyOrderPriorityContributionPercentByCategory(int param_1,uint param_2)
+
+{
+  int iVar1;
+  short sVar2;
+  int iVar3;
+  
+  iVar3 = (&DAT_006a3ec8)[param_2];
+  switch(param_2) {
+  case 0:
+    sVar2 = *(short *)(param_1 + 0x30);
+    iVar1 = (short)((sVar2 / 100 + (sVar2 >> 0xf)) -
+                   (short)((longlong)(int)sVar2 * 0x51eb851f >> 0x3f)) + 5 +
+            (&g_NavyOrderResourceDescriptorTable)[*(short *)(param_1 + 4) * 9] * 10;
+    return ((int)(short)(((short)(iVar1 / 10) + (short)(iVar1 >> 0x1f)) -
+                        (short)((longlong)iVar1 * 0x66666667 >> 0x3f)) *
+            (int)*(short *)(&g_Calculate_Mission_Order_LookupTable_0069810C +
+                           *(short *)(param_1 + 4) * 9) *
+            (int)*(short *)(&g_Calculate_Mission_Order_LookupTable_0069810C +
+                           *(short *)(param_1 + 4) * 9) * 100) / iVar3;
+  case 1:
+    return ((int)*(short *)(&g_Calculate_Mission_Order_LookupTable_0069810C +
+                           *(short *)(param_1 + 4) * 9) * (int)*(short *)(param_1 + 0x1c) * 10000) /
+           (*(short *)(&g_Task_Force_Order_LookupTable_00698110 + *(short *)(param_1 + 4) * 0x24) *
+           iVar3);
+  case 2:
+    return (*(short *)(&DAT_00698124 + *(short *)(param_1 + 4) * 0x24) * 100) / iVar3;
+  case 3:
+    break;
+  default:
+    return param_2 & 0xffff0000;
+  }
+  if (*(short *)(param_1 + 0x1c) < 1) {
+    return 0 / iVar3;
+  }
+  return (*(short *)(&g_industryActionCostWeightResCode10 + *(short *)(param_1 + 4) * 2) * 100) /
+         iVar3;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005501B0
+// GHIDRA_NAME TShip::CalculateMissionOrderPriorityScore
+// GHIDRA_PROTO int __thiscall CalculateMissionOrderPriorityScore(int nScoreProfileId)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Setting prototype: int CalculateMapOrderChildPriorityScore(int nScoreProfileId)
+// GHIDRA_COMMENT_END
+
+/* Setting prototype: int CalculateMapOrderChildPriorityScore(int nScoreProfileId) */
+
+int __thiscall TShip::CalculateMissionOrderPriorityScore(TShip *this,int nScoreProfileId)
+
+{
+  int iVar1;
+  int iVar2;
+  short sVar3;
+  int iVar4;
+  int local_4;
+  
+  iVar4 = 0;
+  local_4 = 0;
+  do {
+    iVar2 = (&DAT_006a3ec8)[iVar4];
+    switch(iVar4) {
+    case 0:
+      sVar3 = *(short *)&this->field_0x30;
+      iVar1 = (short)((sVar3 / 100 + (sVar3 >> 0xf)) -
+                     (short)((longlong)(int)sVar3 * 0x51eb851f >> 0x3f)) + 5 +
+              (&g_NavyOrderResourceDescriptorTable)[*(short *)&this->field_0x4 * 9] * 10;
+      sVar3 = (short)(((int)(short)(((short)(iVar1 / 10) + (short)(iVar1 >> 0x1f)) -
+                                   (short)((longlong)iVar1 * 0x66666667 >> 0x3f)) *
+                       (int)*(short *)(&g_Calculate_Mission_Order_LookupTable_0069810C +
+                                      *(short *)&this->field_0x4 * 9) *
+                       (int)*(short *)(&g_Calculate_Mission_Order_LookupTable_0069810C +
+                                      *(short *)&this->field_0x4 * 9) * 100) / iVar2);
+      break;
+    case 1:
+      sVar3 = (short)(((int)*(short *)(&g_Calculate_Mission_Order_LookupTable_0069810C +
+                                      *(short *)&this->field_0x4 * 9) *
+                       (int)*(short *)&this->field_0x1c * 10000) /
+                     (*(short *)(&g_Task_Force_Order_LookupTable_00698110 +
+                                *(short *)&this->field_0x4 * 0x24) * iVar2));
+      break;
+    case 2:
+      sVar3 = (short)((*(short *)(&DAT_00698124 + *(short *)&this->field_0x4 * 0x24) * 100) / iVar2)
+      ;
+      break;
+    case 3:
+      if (*(short *)&this->field_0x1c < 1) {
+        sVar3 = (short)(0 / iVar2);
+      }
+      else {
+        sVar3 = (short)((*(short *)(&g_industryActionCostWeightResCode10 +
+                                   *(short *)&this->field_0x4 * 2) * 100) / iVar2);
+      }
+      break;
+    default:
+      sVar3 = 0;
+    }
+    local_4 = local_4 + (int)(short)(&g_Populate_Beachhead_Mission_LookupTable_00697958)
+                                    [nScoreProfileId * 4 + iVar4] * (int)sVar3;
+    iVar4 = iVar4 + 1;
+  } while (iVar4 < 4);
+  return local_4;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00550370
+// GHIDRA_NAME TShip::AdjustMapOrderNodeStatCapped499
+// GHIDRA_PROTO void __thiscall AdjustMapOrderNodeStatCapped499(short nDelta)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Setting prototype: void AdjustMapOrderNodeStatCapped499(short nDelta)
+// GHIDRA_COMMENT_END
+
+/* Setting prototype: void AdjustMapOrderNodeStatCapped499(short nDelta) */
+
+void __thiscall TShip::AdjustMapOrderNodeStatCapped499(TShip *this,short nDelta)
+
+{
+  *(short *)&this->field_0x30 = *(short *)&this->field_0x30 + nDelta;
+  if (499 < *(short *)&this->field_0x30) {
+    *(undefined2 *)&this->field_0x30 = 499;
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005503A0
+// GHIDRA_NAME TShip::GetOrCreateMissionOrderEntryForNode
+// GHIDRA_PROTO void * __thiscall GetOrCreateMissionOrderEntryForNode(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Setting prototype: void* GetOrCreateMapOrderEntryForChildNode(void)
+// GHIDRA_COMMENT_END
+
+/* Setting prototype: void* GetOrCreateMapOrderEntryForChildNode(void) */
+
+void * __thiscall TShip::GetOrCreateMissionOrderEntryForNode(TShip *this)
+
+{
+  short *psVar1;
+  undefined2 uVar2;
+  int *piVar3;
+  int *piVar4;
+  int iVar5;
+  undefined4 *puVar6;
+  short sVar7;
+  int *piVar8;
+  
+  piVar8 = *(int **)&this->field_0xc;
+  if ((piVar8 != (int *)0x0) && ((**(code **)(*piVar8 + 0xc))(), piVar8 != (int *)0x0)) {
+    sVar7 = 0;
+    piVar4 = (int *)piVar8[4];
+    for (piVar3 = piVar4; piVar3 != (int *)0x0; piVar3 = (int *)piVar3[1]) {
+      sVar7 = sVar7 + 1;
+    }
+    if (1 < sVar7) {
+      if (piVar4 == (int *)0x0) {
+        piVar4 = (int *)0x0;
+      }
+      else if ((TShip *)*piVar4 != this) {
+        piVar4 = (int *)func_0x0040635c(this);
+      }
+      if (piVar4 != (int *)0x0) {
+        iVar5 = func_0x00406d8e(this);
+        piVar8[4] = iVar5;
+        psVar1 = (short *)((int)piVar8 +
+                          *(short *)(&DAT_00698120 + *(short *)&this->field_0x4 * 0x24) * 2 + 0x1e);
+        *psVar1 = *psVar1 + -1;
+      }
+      if (this == (TShip *)piVar8[5]) {
+        func_0x00405803();
+      }
+      func_0x004080a3(0);
+      piVar8 = (int *)0x0;
+    }
+    if (piVar8 != (int *)0x0) {
+      return piVar8;
+    }
+  }
+  puVar6 = (undefined4 *)operator_new(0x34);
+  if (puVar6 == (undefined4 *)0x0) {
+    puVar6 = (undefined4 *)0x0;
+  }
+  else {
+    uVar2 = *(undefined2 *)&this->field_0x14;
+    puVar6[6] = *(undefined4 *)&this->field_0x8;
+    *(undefined2 *)(puVar6 + 7) = uVar2;
+    puVar6[1] = 1;
+    puVar6[2] = 0;
+    puVar6[3] = 0;
+    puVar6[4] = 0;
+    puVar6[5] = 0;
+    puVar6[10] = 0;
+    puVar6[0xb] = 0;
+    *(undefined2 *)(puVar6 + 0xc) = 0xffff;
+    *puVar6 = &TTaskForce::_vftable_;
+    *(undefined4 *)((int)puVar6 + 0x1e) = 0;
+    *(undefined4 *)((int)puVar6 + 0x22) = 0;
+  }
+  if (puVar6 == (undefined4 *)0x0) {
+    MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+    func_0x004057a4(s_D__Ambit_Cross_UNavy_cpp_006983c8,0x306);
+  }
+  func_0x004027de(this);
+  return puVar6;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00550510
+// GHIDRA_NAME TShip::GetOrderNodeDescriptorWord20ByResourceType
+// GHIDRA_PROTO undefined GetOrderNodeDescriptorWord20ByResourceType()
+
+undefined4 __fastcall TShip::GetOrderNodeDescriptorWord20ByResourceType(int param_1)
+
+{
+  return CONCAT22((short)((uint)(*(short *)(param_1 + 4) * 9) >> 0x10),
+                  *(undefined2 *)(&DAT_00698120 + *(short *)(param_1 + 4) * 0x24));
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00550550
+// GHIDRA_NAME TShip::ComputeOrderNodeDistanceQuotientByDescriptorWord24
+// GHIDRA_PROTO undefined ComputeOrderNodeDistanceQuotientByDescriptorWord24()
+
+int __thiscall
+TShip::ComputeOrderNodeDistanceQuotientByDescriptorWord24(int param_1,undefined4 param_2)
+
+{
+  short sVar1;
+  
+  sVar1 = func_0x0040954d(param_2);
+  return (*(short *)(&DAT_00698124 + *(short *)(param_1 + 4) * 0x24) + -1 + (int)sVar1) /
+         (int)*(short *)(&DAT_00698124 + *(short *)(param_1 + 4) * 0x24);
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005505A0
+// GHIDRA_NAME TShip::GetNavyOrderNormalizationBaseByNationType
+// GHIDRA_PROTO undefined GetNavyOrderNormalizationBaseByNationType()
+
+undefined4 __fastcall TShip::GetNavyOrderNormalizationBaseByNationType(int param_1)
+
+{
+  return CONCAT22((short)((uint)(*(short *)(param_1 + 4) * 9) >> 0x10),
+                  *(undefined2 *)(&DAT_00698114 + *(short *)(param_1 + 4) * 0x24));
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00550670
+// GHIDRA_NAME TShip::SelectPreferredMapOrderEntryByPriorityRules
+// GHIDRA_PROTO undefined SelectPreferredMapOrderEntryByPriorityRules()
+
+int __thiscall
+TShip::SelectPreferredMapOrderEntryByPriorityRules(int param_1,int param_2,char param_3)
+
+{
+  int iVar1;
+  int iVar2;
+  bool bVar3;
+  short sVar4;
+  short sVar5;
+  
+  if (param_3 != '\0') {
+    if (*(int *)(param_1 + 0x20) != 0) {
+      return param_2;
+    }
+    if (param_2 == 0) {
+      return param_1;
+    }
+    if (*(int *)(param_2 + 0x20) != 0) {
+      return param_1;
+    }
+  }
+  if (param_2 == 0) {
+    return param_1;
+  }
+  if (param_1 != 0) {
+    iVar1 = *(int *)(param_1 + 0x20);
+    iVar2 = *(int *)(param_2 + 0x20);
+    if (iVar1 == 0) {
+      bVar3 = false;
+    }
+    else if (iVar2 == 0) {
+      bVar3 = true;
+    }
+    else {
+      bVar3 = *(short *)(iVar2 + 0x10) < *(short *)(iVar1 + 0x10);
+    }
+    if (bVar3) {
+      return param_1;
+    }
+    if (iVar2 == 0) {
+      bVar3 = false;
+    }
+    else if (iVar1 == 0) {
+      bVar3 = true;
+    }
+    else {
+      bVar3 = *(short *)(iVar1 + 0x10) < *(short *)(iVar2 + 0x10);
+    }
+    if (!bVar3) {
+      if (*(short *)(param_1 + 4) != *(short *)(param_2 + 4)) {
+        if (*(short *)(param_2 + 4) <= *(short *)(param_1 + 4)) {
+          return param_1;
+        }
+        return param_2;
+      }
+      sVar4 = *(short *)(param_1 + 0x30);
+      sVar5 = (sVar4 / 100 + (sVar4 >> 0xf)) - (short)((longlong)(int)sVar4 * 0x51eb851f >> 0x3f);
+      sVar4 = *(short *)(param_2 + 0x30);
+      sVar4 = (sVar4 / 100 + (sVar4 >> 0xf)) - (short)((longlong)(int)sVar4 * 0x51eb851f >> 0x3f);
+      if (sVar5 != sVar4) {
+        if (sVar4 <= sVar5) {
+          return param_1;
+        }
+        return param_2;
+      }
+      if (*(short *)(param_2 + 0x1c) < *(short *)(param_1 + 0x1c)) {
+        return param_1;
+      }
+    }
+  }
+  return param_2;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00550820
+// GHIDRA_NAME TShip::GetOrderNodeDescriptorWord0CByResourceType
+// GHIDRA_PROTO undefined GetOrderNodeDescriptorWord0CByResourceType()
+
+undefined4 __fastcall TShip::GetOrderNodeDescriptorWord0CByResourceType(int param_1)
+
+{
+  return CONCAT22((short)((uint)(*(short *)(param_1 + 4) * 9) >> 0x10),
+                  *(undefined2 *)
+                   (&g_Calculate_Mission_Order_LookupTable_0069810C + *(short *)(param_1 + 4) * 9));
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00550840
+// GHIDRA_NAME TShip::ComputeOrderNodeDerivedScoreFromQuantityAndWord18
+// GHIDRA_PROTO undefined ComputeOrderNodeDerivedScoreFromQuantityAndWord18()
+
+int __fastcall TShip::ComputeOrderNodeDerivedScoreFromQuantityAndWord18(int param_1)
+
+{
+  short sVar1;
+  
+  sVar1 = *(short *)(param_1 + 0x30);
+  return ((short)((sVar1 / 100 + (sVar1 >> 0xf)) -
+                 (short)((longlong)(int)sVar1 * 0x51eb851f >> 0x3f)) + 5 +
+         (&g_Navy_Order_Priority_LookupTable_00698118)[*(short *)(param_1 + 4) * 9] * 10) / 10;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00550AA0
+// GHIDRA_NAME TShip::ComputeMapOrderEntryHeuristicScore
+// GHIDRA_PROTO undefined ComputeMapOrderEntryHeuristicScore()
+
+int __fastcall TShip::ComputeMapOrderEntryHeuristicScore(int param_1)
+
+{
+  int iVar1;
+  short sVar2;
+  int iVar3;
+  int iVar4;
+  
+  iVar3 = (int)*(short *)(param_1 + 4);
+  sVar2 = *(short *)(param_1 + 0x30);
+  iVar4 = (int)(short)((sVar2 / 100 + (sVar2 >> 0xf)) -
+                      (short)((longlong)(int)sVar2 * 0x51eb851f >> 0x3f));
+  iVar1 = iVar4 + 5 + (&g_Navy_Order_Priority_LookupTable_00698118)[iVar3 * 9] * 10;
+  iVar4 = iVar4 + 5 + (&g_NavyOrderResourceDescriptorTable)[iVar3 * 9] * 10;
+  return ((int)(short)(((short)(iVar4 / 10) + (short)(iVar4 >> 0x1f)) -
+                      (short)((longlong)iVar4 * 0x66666667 >> 0x3f)) +
+          ((int)(short)(((short)(iVar1 / 10) + (short)(iVar1 >> 0x1f)) -
+                       (short)((longlong)iVar1 * 0x66666667 >> 0x3f)) +
+          (int)*(short *)(&g_Calculate_Mission_Order_LookupTable_0069810C + iVar3 * 9)) * 100 +
+         (int)*(short *)(param_1 + 0x1c)) /
+         (int)*(short *)(&g_Task_Force_Order_LookupTable_00698110 + iVar3 * 0x24);
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00550F80
+// GHIDRA_NAME TShip::DecrementRequiredCount
+// GHIDRA_PROTO undefined DecrementRequiredCount()
+
+void __thiscall TShip::DecrementRequiredCount(int param_1,short param_2)
+
+{
+  *(short *)(param_1 + 0x1c) = *(short *)(param_1 + 0x1c) - param_2;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00550FF0
+// GHIDRA_NAME TShip::RemoveNode
+// GHIDRA_PROTO void __thiscall RemoveNode(int self)
+
+void __thiscall TShip::RemoveNode(TShip *this,int self)
+
+{
+  int *list_head;
+  int new_head;
+  astruct_8 *owner_ctx;
+  int *next_node;
+  
+  owner_ctx = *(astruct_8 **)&this->field_0xc;
+  if (owner_ctx != (astruct_8 *)0x0) {
+    list_head = owner_ctx->field16_0x10;
+    if ((list_head != (int *)0x0) && ((TShip *)*list_head != this)) {
+      list_head = (int *)func_0x0040635c(this);
+    }
+    if (list_head != (int *)0x0) {
+      list_head = owner_ctx->field16_0x10;
+      if (list_head != (int *)0x0) {
+        if (this == (TShip *)*list_head) {
+          next_node = (int *)list_head[1];
+          if (next_node != (int *)0x0) {
+            next_node[2] = list_head[2];
+          }
+          if (list_head[2] != 0) {
+            *(int *)(list_head[2] + 4) = list_head[1];
+          }
+          operator_delete(list_head);
+          list_head = next_node;
+        }
+        else {
+          func_0x00406d8e(this);
+        }
+      }
+      owner_ctx->field16_0x10 = list_head;
+      *(short *)(&owner_ctx[1].field_0x0 +
+                *(short *)(&DAT_00698120 + *(short *)&this->field_0x4 * 0x24) * 2) =
+           *(short *)(&owner_ctx[1].field_0x0 +
+                     *(short *)(&DAT_00698120 + *(short *)&this->field_0x4 * 0x24) * 2) + -1;
+    }
+    if (this == (TShip *)owner_ctx->field17_0x14) {
+      list_head = owner_ctx->field16_0x10;
+      owner_ctx->field17_0x14 = 0;
+      for (; list_head != (int *)0x0; list_head = (int *)list_head[1]) {
+        new_head = func_0x004076fd(owner_ctx->field17_0x14,0);
+        owner_ctx->field17_0x14 = new_head;
+      }
+    }
+    *(undefined4 *)&this->field_0xc = 0;
+  }
+  if (self != 0) {
+    func_0x004027de(this);
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00551100
+// GHIDRA_NAME TShip::ReassignOrderNodeNationAndRebindParentCounters
+// GHIDRA_PROTO undefined ReassignOrderNodeNationAndRebindParentCounters()
+
+void __thiscall TShip::ReassignOrderNodeNationAndRebindParentCounters(int param_1,short param_2)
+
+{
+  short *psVar1;
+  int iVar2;
+  int iVar3;
+  int *piVar4;
+  undefined4 uVar5;
+  
+  iVar2 = *(int *)(param_1 + 0xc);
+  if ((iVar2 != 0) && (*(short *)(iVar2 + 0x1c) != param_2)) {
+    piVar4 = *(int **)(iVar2 + 0x10);
+    if ((piVar4 != (int *)0x0) && (*piVar4 != param_1)) {
+      piVar4 = (int *)func_0x0040635c(param_1);
+    }
+    if (piVar4 != (int *)0x0) {
+      piVar4 = *(int **)(iVar2 + 0x10);
+      if (piVar4 == (int *)0x0) {
+        piVar4 = (int *)0x0;
+      }
+      else if (param_1 == *piVar4) {
+        piVar4 = (int *)func_0x00407fd6();
+      }
+      else {
+        func_0x00406d8e(param_1);
+      }
+      *(int **)(iVar2 + 0x10) = piVar4;
+      psVar1 = (short *)(iVar2 + 0x1e +
+                        *(short *)(&DAT_00698120 + *(short *)(param_1 + 4) * 0x24) * 2);
+      *psVar1 = *psVar1 + -1;
+    }
+    if (param_1 == *(int *)(iVar2 + 0x14)) {
+      iVar3 = *(int *)(iVar2 + 0x10);
+      *(undefined4 *)(iVar2 + 0x14) = 0;
+      for (; iVar3 != 0; iVar3 = *(int *)(iVar3 + 4)) {
+        uVar5 = func_0x004076fd(*(undefined4 *)(iVar2 + 0x14),0);
+        *(undefined4 *)(iVar2 + 0x14) = uVar5;
+      }
+    }
+    *(undefined4 *)(param_1 + 0xc) = 0;
+  }
+  piVar4 = *(int **)(param_1 + 0x2c);
+  if ((piVar4 != (int *)0x0) && ((short)piVar4[1] != param_2)) {
+    (**(code **)(*piVar4 + 0x8c))(param_1,1);
+  }
+  *(short *)(param_1 + 0x14) = param_2;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00551220
+// GHIDRA_NAME TShip::SetOwnerOrderEntryAndCacheType
+// GHIDRA_PROTO void __thiscall SetOwnerOrderEntryAndCacheType(int * pActiveChildEntry)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Setting prototype: void SetMapOrderActiveChildEntry(int * pActiveChildEntry)
+// GHIDRA_COMMENT_END
+
+/* Setting prototype: void SetMapOrderActiveChildEntry(int * pActiveChildEntry) */
+
+void __thiscall TShip::SetOwnerOrderEntryAndCacheType(TShip *this,int *pActiveChildEntry)
+
+{
+  short sVar1;
+  
+  *(int **)&this->field_0xc = pActiveChildEntry;
+  if (pActiveChildEntry != (int *)0x0) {
+    (**(code **)(*pActiveChildEntry + 0xc))();
+    *(int *)&this->field_0x10 = pActiveChildEntry[1];
+    sVar1 = (short)pActiveChildEntry[2];
+    if ((((sVar1 != 0) && (sVar1 != 7)) && (sVar1 != 8)) && (sVar1 != 4)) {
+      *(undefined4 *)&this->field_0x34 = 0;
+    }
+  }
   return;
 }
 

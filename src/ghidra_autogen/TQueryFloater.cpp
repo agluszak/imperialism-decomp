@@ -7,7 +7,8 @@
 // GHIDRA_NAME TQueryFloater::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TQueryFloater * TQueryFloater::_scalar_deleting_destructor_(byte param_1)
+TQueryFloater * __thiscall
+TQueryFloater::_scalar_deleting_destructor_(TQueryFloater *this,byte param_1)
 
 {
   func_0x00402abd();
@@ -51,7 +52,7 @@ undefined4 * TQueryFloater::CreateObject(void)
 // GHIDRA_NAME TQueryFloater::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TQueryFloater::GetRuntimeClass()
+CRuntimeClass * __thiscall TQueryFloater::GetRuntimeClass(TQueryFloater *this)
 
 {
   return &classTQueryFloater;
@@ -61,7 +62,7 @@ CRuntimeClass * TQueryFloater::GetRuntimeClass()
 // GHIDRA_NAME TQueryFloater::NoOpUiLifecycleHook
 // GHIDRA_PROTO undefined __thiscall NoOpUiLifecycleHook(void)
 
-void TQueryFloater::NoOpUiLifecycleHook()
+void __thiscall TQueryFloater::NoOpUiLifecycleHook(TQueryFloater *this)
 
 {
   int iVar1;
@@ -100,7 +101,7 @@ void TQueryFloater::NoOpUiLifecycleHook()
   pp_Stack_38 = (_vslot_fn **)0xc;
   pp_Stack_40 = &p_Stack_20;
   uStack_3c = 0;
-  func_0x00406afa();
+  thunk_BuildUiTextStyleDescriptor();
   pp_Stack_38 = &p_Stack_20;
   uStack_34 = 0;
   uStack_3c = 0x56e95b;
@@ -108,7 +109,7 @@ void TQueryFloater::NoOpUiLifecycleHook()
   uStack_3c = 0;
   pp_Stack_40 = (_vslot_fn **)0x1;
   (**(code **)(iVar3 + 0x1c4))();
-  func_0x00406afa(&uStack_30,0,0xc,0x2b6c);
+  thunk_BuildUiTextStyleDescriptor(&uStack_30,0,0xc,0x2b6c);
   iVar3 = 0;
   do {
     uVar2 = (*p_Var4)(iVar3 + 0x74657830);
@@ -129,7 +130,7 @@ void TQueryFloater::NoOpUiLifecycleHook()
 // GHIDRA_NAME TQueryFloater::HandleEvent
 // GHIDRA_PROTO undefined __thiscall HandleEvent(int param_1, int param_2)
 
-void TQueryFloater::HandleEvent(int param_1, int param_2)
+void __thiscall TQueryFloater::HandleEvent(TQueryFloater *this,int param_1,int param_2)
 
 {
   uint uVar1;
@@ -213,7 +214,8 @@ LAB_0056ec87:
       uStack_28 = 0;
       puStack_30 = &DAT_006a4048;
       func_0x004076b7(&uStack_20);
-      func_0x004096b0();
+      uStack_28 = 0x56ec97;
+      thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
       goto LAB_0056ecbe;
     }
     puStack_1c = (undefined1 *)0x56eb31;

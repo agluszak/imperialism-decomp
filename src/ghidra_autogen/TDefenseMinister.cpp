@@ -39,7 +39,7 @@ undefined4 * TDefenseMinister::CreateObject(void)
 
 /* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 
-float10 TDefenseMinister::CreateTDefenseMinisterInstance()
+float10 __thiscall TDefenseMinister::CreateTDefenseMinisterInstance(TDefenseMinister *this)
 
 {
   return (float10)_DAT_006548e0;
@@ -49,7 +49,7 @@ float10 TDefenseMinister::CreateTDefenseMinisterInstance()
 // GHIDRA_NAME TDefenseMinister::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TDefenseMinister::GetRuntimeClass()
+CRuntimeClass * __thiscall TDefenseMinister::GetRuntimeClass(TDefenseMinister *this)
 
 {
   return &classTDefenseMinister;
@@ -59,7 +59,8 @@ CRuntimeClass * TDefenseMinister::GetRuntimeClass()
 // GHIDRA_NAME TDefenseMinister::ConstructTDefenseMinisterBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTDefenseMinisterBaseState(void)
 
-TDefenseMinister * TDefenseMinister::ConstructTDefenseMinisterBaseState()
+TDefenseMinister * __thiscall
+TDefenseMinister::ConstructTDefenseMinisterBaseState(TDefenseMinister *this)
 
 {
   func_0x0040433b();
@@ -71,7 +72,8 @@ TDefenseMinister * TDefenseMinister::ConstructTDefenseMinisterBaseState()
 // GHIDRA_NAME TDefenseMinister::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TDefenseMinister * TDefenseMinister::_scalar_deleting_destructor_(byte param_1)
+TDefenseMinister * __thiscall
+TDefenseMinister::_scalar_deleting_destructor_(TDefenseMinister *this,byte param_1)
 
 {
   func_0x00403cbf();
@@ -85,7 +87,7 @@ TDefenseMinister * TDefenseMinister::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TDefenseMinister::WriteTo
 // GHIDRA_PROTO undefined __thiscall WriteTo(int * param_1)
 
-void TDefenseMinister::WriteTo(int *param_1)
+void __thiscall TDefenseMinister::WriteTo(TDefenseMinister *this,int *param_1)
 
 {
   code *pcVar1;
@@ -116,7 +118,7 @@ void TDefenseMinister::WriteTo(int *param_1)
 // GHIDRA_NAME TDefenseMinister::ReadFrom
 // GHIDRA_PROTO undefined __thiscall ReadFrom(int * param_1)
 
-void TDefenseMinister::ReadFrom(int *param_1)
+void __thiscall TDefenseMinister::ReadFrom(TDefenseMinister *this,int *param_1)
 
 {
   undefined1 uVar1;
@@ -159,7 +161,8 @@ void TDefenseMinister::ReadFrom(int *param_1)
 // GHIDRA_NAME TDefenseMinister::DispatchNationStateEventCode10
 // GHIDRA_PROTO undefined __thiscall DispatchNationStateEventCode10(short param_1)
 
-undefined2 TDefenseMinister::DispatchNationStateEventCode10(short param_1)
+undefined2 __thiscall
+TDefenseMinister::DispatchNationStateEventCode10(TDefenseMinister *this,short param_1)
 
 {
   int *piVar1;
@@ -191,7 +194,7 @@ undefined2 TDefenseMinister::DispatchNationStateEventCode10(short param_1)
 // GHIDRA_NAME TDefenseMinister::MinisterSlot12
 // GHIDRA_PROTO undefined __thiscall MinisterSlot12(void)
 
-int TDefenseMinister::MinisterSlot12()
+int __thiscall TDefenseMinister::MinisterSlot12(TDefenseMinister *this)
 
 {
   undefined uVar1;
@@ -217,7 +220,7 @@ int TDefenseMinister::MinisterSlot12()
 // GHIDRA_NAME TDefenseMinister::Call4C
 // GHIDRA_PROTO undefined __thiscall Call4C(void)
 
-void TDefenseMinister::Call4C()
+void __thiscall TDefenseMinister::Call4C(TDefenseMinister *this)
 
 {
   int *piVar1;
@@ -238,7 +241,7 @@ void TDefenseMinister::Call4C()
 // GHIDRA_NAME TDefenseMinister::MinisterSlot14
 // GHIDRA_PROTO undefined __thiscall MinisterSlot14(void)
 
-void TDefenseMinister::MinisterSlot14()
+void __thiscall TDefenseMinister::MinisterSlot14(TDefenseMinister *this)
 
 {
   char cVar1;
@@ -292,7 +295,7 @@ void TDefenseMinister::MinisterSlot14()
     piVar6[1] = 0;
     piVar6[5] = 0;
     piVar6[6] = 10;
-    *piVar6 = (int)&TSoundChannelNode::_vftable_;
+    *piVar6 = (int)&TLongintList::_vftable_;
   }
   do {
     if ((int)*(char *)(*(int *)&g_pGlobalMapState->field_0xc + 4 + (short)iVar16 * 0x24) ==
@@ -488,7 +491,8 @@ void TDefenseMinister::MinisterSlot14()
 // GHIDRA_NAME TDefenseMinister::BuildTileRingPriorityMapForNationTileList
 // GHIDRA_PROTO undefined __thiscall BuildTileRingPriorityMapForNationTileList(int * param_1)
 
-undefined4 * TDefenseMinister::BuildTileRingPriorityMapForNationTileList(int *param_1)
+undefined4 * __thiscall
+TDefenseMinister::BuildTileRingPriorityMapForNationTileList(TDefenseMinister *this,int *param_1)
 
 {
   char cVar1;
@@ -620,7 +624,7 @@ undefined4 * TDefenseMinister::BuildTileRingPriorityMapForNationTileList(int *pa
 // GHIDRA_NAME TDefenseMinister::BuildStrategicTilePriorityHeatmap
 // GHIDRA_PROTO undefined __thiscall BuildStrategicTilePriorityHeatmap(void)
 
-int * TDefenseMinister::BuildStrategicTilePriorityHeatmap()
+int * __thiscall TDefenseMinister::BuildStrategicTilePriorityHeatmap(TDefenseMinister *this)
 
 {
   short sVar1;
@@ -678,7 +682,8 @@ int * TDefenseMinister::BuildStrategicTilePriorityHeatmap()
 // GHIDRA_NAME TDefenseMinister::BuildHexAreaTileIndexListIntoAllocatedBuffer
 // GHIDRA_PROTO undefined __thiscall BuildHexAreaTileIndexListIntoAllocatedBuffer(char param_1)
 
-int * TDefenseMinister::BuildHexAreaTileIndexListIntoAllocatedBuffer(char param_1)
+int * __thiscall
+TDefenseMinister::BuildHexAreaTileIndexListIntoAllocatedBuffer(TDefenseMinister *this,char param_1)
 
 {
   short sVar1;

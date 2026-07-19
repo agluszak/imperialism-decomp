@@ -104,7 +104,7 @@ CPtrArray * TDealList::CreateObject(void)
 // GHIDRA_NAME TDealList::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TDealList::GetRuntimeClass()
+CRuntimeClass * __thiscall TDealList::GetRuntimeClass(TDealList *this)
 
 {
   return &classTDealList;
@@ -114,7 +114,7 @@ CRuntimeClass * TDealList::GetRuntimeClass()
 // GHIDRA_NAME TDealList::ConstructTDealListBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTDealListBaseState(void)
 
-TDealList * TDealList::ConstructTDealListBaseState()
+TDealList * __thiscall TDealList::ConstructTDealListBaseState(TDealList *this)
 
 {
   CPtrArray::CPtrArray((CPtrArray *)this);
@@ -126,7 +126,7 @@ TDealList * TDealList::ConstructTDealListBaseState()
 // GHIDRA_NAME TDealList::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TDealList * TDealList::_scalar_deleting_destructor_(byte param_1)
+TDealList * __thiscall TDealList::_scalar_deleting_destructor_(TDealList *this,byte param_1)
 
 {
   func_0x004057e5();
@@ -137,10 +137,10 @@ TDealList * TDealList::_scalar_deleting_destructor_(byte param_1)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BA260
-// GHIDRA_NAME TDealList::CompareUnsignedIntsAscending
-// GHIDRA_PROTO undefined __thiscall CompareUnsignedIntsAscending(short * param_1, short * param_2)
+// GHIDRA_NAME TDealList::Compare
+// GHIDRA_PROTO undefined __thiscall Compare(short * param_1, short * param_2)
 
-int TDealList::CompareUnsignedIntsAscending(short *param_1, short *param_2)
+int __thiscall TDealList::Compare(TDealList *this,short *param_1,short *param_2)
 
 {
   short sVar1;

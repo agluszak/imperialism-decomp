@@ -7,7 +7,7 @@
 // GHIDRA_NAME TView::CtrlSlot43_GetWordField4E_Impl_af
 // GHIDRA_PROTO undefined __thiscall CtrlSlot43_GetWordField4E_Impl_af(void)
 
-short TView::CtrlSlot43_GetWordField4E_Impl_af()
+short __thiscall TView::CtrlSlot43_GetWordField4E_Impl_af(TView *this)
 
 {
   return this->field4e;
@@ -17,7 +17,7 @@ short TView::CtrlSlot43_GetWordField4E_Impl_af()
 // GHIDRA_NAME TView::VTableSlotC3
 // GHIDRA_PROTO undefined __thiscall VTableSlotC3(void)
 
-void TView::VTableSlotC3()
+void __thiscall TView::VTableSlotC3(TView *this)
 
 {
   return;
@@ -27,7 +27,7 @@ void TView::VTableSlotC3()
 // GHIDRA_NAME TView::HandleMouseCommandToSelf_cd
 // GHIDRA_PROTO undefined __thiscall HandleMouseCommandToSelf_cd(void)
 
-void TView::HandleMouseCommandToSelf_cd()
+void __thiscall TView::HandleMouseCommandToSelf_cd(TView *this)
 
 {
   return;
@@ -37,7 +37,7 @@ void TView::HandleMouseCommandToSelf_cd()
 // GHIDRA_NAME TView::BuildRectFromControlDimensions_Impl_ce
 // GHIDRA_PROTO undefined __thiscall BuildRectFromControlDimensions_Impl_ce(undefined4 * param_1)
 
-void TView::BuildRectFromControlDimensions_Impl_ce(undefined4 *param_1)
+void __thiscall TView::BuildRectFromControlDimensions_Impl_ce(TView *this,undefined4 *param_1)
 
 {
   int iVar1;
@@ -56,7 +56,7 @@ void TView::BuildRectFromControlDimensions_Impl_ce(undefined4 *param_1)
 // GHIDRA_NAME TView::BuildRectFromControlPositionAndSizeFields_cf
 // GHIDRA_PROTO undefined __thiscall BuildRectFromControlPositionAndSizeFields_cf(int * param_1)
 
-void TView::BuildRectFromControlPositionAndSizeFields_cf(int *param_1)
+void __thiscall TView::BuildRectFromControlPositionAndSizeFields_cf(TView *this,int *param_1)
 
 {
   int iVar1;
@@ -79,7 +79,7 @@ void TView::BuildRectFromControlPositionAndSizeFields_cf(int *param_1)
 // GHIDRA_NAME TView::DispatchVslot134WithRectAndRectPlus8_Impl_d0
 // GHIDRA_PROTO undefined __thiscall DispatchVslot134WithRectAndRectPlus8_Impl_d0(int param_1)
 
-void TView::DispatchVslot134WithRectAndRectPlus8_Impl_d0(int param_1)
+void __thiscall TView::DispatchVslot134WithRectAndRectPlus8_Impl_d0(TView *this,int param_1)
 
 {
   _vslot_fn *p_Var1;
@@ -94,7 +94,7 @@ void TView::DispatchVslot134WithRectAndRectPlus8_Impl_d0(int param_1)
 // GHIDRA_NAME TView::UpdateAfterBitmapChange_d5
 // GHIDRA_PROTO undefined __thiscall UpdateAfterBitmapChange_d5(int * param_1)
 
-void TView::UpdateAfterBitmapChange_d5(int *param_1)
+void __thiscall TView::UpdateAfterBitmapChange_d5(TView *this,int *param_1)
 
 {
   param_1[1] = param_1[1] - this->ownerOffsetY;
@@ -106,7 +106,7 @@ void TView::UpdateAfterBitmapChange_d5(int *param_1)
 // GHIDRA_NAME TView::CtrlSlot87_CopyRectFromSlot160_Impl_db
 // GHIDRA_PROTO undefined __thiscall CtrlSlot87_CopyRectFromSlot160_Impl_db(void)
 
-void TView::CtrlSlot87_CopyRectFromSlot160_Impl_db()
+void __thiscall TView::CtrlSlot87_CopyRectFromSlot160_Impl_db(TView *this)
 
 {
   undefined4 *puVar1;
@@ -125,7 +125,7 @@ void TView::CtrlSlot87_CopyRectFromSlot160_Impl_db()
 // GHIDRA_NAME TView::ReturnZeroStatus_b3
 // GHIDRA_PROTO undefined __thiscall ReturnZeroStatus_b3(void)
 
-undefined4 TView::ReturnZeroStatus_b3()
+undefined4 __thiscall TView::ReturnZeroStatus_b3(TView *this)
 
 {
   return 0;
@@ -135,7 +135,7 @@ undefined4 TView::ReturnZeroStatus_b3()
 // GHIDRA_NAME TView::ApplyRectSlot110_c8
 // GHIDRA_PROTO undefined __thiscall ApplyRectSlot110_c8(void)
 
-void TView::ApplyRectSlot110_c8()
+void __thiscall TView::ApplyRectSlot110_c8(TView *this)
 
 {
   return;
@@ -145,7 +145,7 @@ void TView::ApplyRectSlot110_c8()
 // GHIDRA_NAME TView::BeginMouseCaptureAndStartRepeatTimer_cb
 // GHIDRA_PROTO undefined __thiscall BeginMouseCaptureAndStartRepeatTimer_cb(void)
 
-void TView::BeginMouseCaptureAndStartRepeatTimer_cb()
+void __thiscall TView::BeginMouseCaptureAndStartRepeatTimer_cb(TView *this)
 
 {
   return;
@@ -155,7 +155,7 @@ void TView::BeginMouseCaptureAndStartRepeatTimer_cb()
 // GHIDRA_NAME TView::SerializeRecordList_0x0C_WithBlockPool_A
 // GHIDRA_PROTO undefined __thiscall SerializeRecordList_0x0C_WithBlockPool_A(CArchive * param_1)
 
-void TView::SerializeRecordList_0x0C_WithBlockPool_A(CArchive *param_1)
+void __thiscall TView::SerializeRecordList_0x0C_WithBlockPool_A(TView *this,CArchive *param_1)
 
 {
   int iVar1;
@@ -258,7 +258,7 @@ undefined4 __fastcall TView::CreateObject(undefined4 param_1)
 // GHIDRA_NAME TView::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TView::GetRuntimeClass()
+CRuntimeClass * __thiscall TView::GetRuntimeClass(TView *this)
 
 {
   return &classTView;
@@ -268,7 +268,7 @@ CRuntimeClass * TView::GetRuntimeClass()
 // GHIDRA_NAME TView::ConstructTViewBaseState
 // GHIDRA_PROTO void __thiscall ConstructTViewBaseState(void)
 
-void TView::ConstructTViewBaseState()
+void __thiscall TView::ConstructTViewBaseState(TView *this)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -307,10 +307,10 @@ void TView::ConstructTViewBaseState()
 // GHIDRA_NAME TView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TView * TView::_scalar_deleting_destructor_(byte param_1)
+TView * __thiscall TView::_scalar_deleting_destructor_(TView *this,byte param_1)
 
 {
-  TView::DestructTViewBaseState(this);
+  thunk_DestructEngineerDialogBaseState(this);
   if ((param_1 & 1) != 0) {
     operator_delete(this);
   }
@@ -321,7 +321,7 @@ TView * TView::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TView::DestructTViewBaseState
 // GHIDRA_PROTO void __thiscall DestructTViewBaseState(void)
 
-void TView::DestructTViewBaseState()
+void __thiscall TView::DestructTViewBaseState(TView *this)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -349,7 +349,7 @@ void TView::DestructTViewBaseState()
 // GHIDRA_NAME TView::DispatchControlEventToChildrenAndSelf_ba
 // GHIDRA_PROTO undefined __thiscall DispatchControlEventToChildrenAndSelf_ba(void)
 
-void TView::DispatchControlEventToChildrenAndSelf_ba()
+void __thiscall TView::DispatchControlEventToChildrenAndSelf_ba(TView *this)
 
 {
   int *piVar1;
@@ -388,7 +388,7 @@ void TView::DispatchControlEventToChildrenAndSelf_ba()
 // GHIDRA_NAME TView::OrphanLeaf_NoCall_Ins07_004d8920_bb
 // GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920_bb(void)
 
-void TView::OrphanLeaf_NoCall_Ins07_004d8920_bb()
+void __thiscall TView::OrphanLeaf_NoCall_Ins07_004d8920_bb(TView *this)
 
 {
   return;
@@ -398,7 +398,7 @@ void TView::OrphanLeaf_NoCall_Ins07_004d8920_bb()
 // GHIDRA_NAME TView::ForwardMapViewVirtualC4IfPresent_b5
 // GHIDRA_PROTO undefined __thiscall ForwardMapViewVirtualC4IfPresent_b5(void)
 
-void TView::ForwardMapViewVirtualC4IfPresent_b5()
+void __thiscall TView::ForwardMapViewVirtualC4IfPresent_b5(TView *this)
 
 {
   if (this->ownerContext != (TView *)0x0) {
@@ -411,7 +411,7 @@ void TView::ForwardMapViewVirtualC4IfPresent_b5()
 // GHIDRA_NAME TView::GetTEventHandlerClassNamePointer_bc
 // GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer_bc(void)
 
-void TView::GetTEventHandlerClassNamePointer_bc()
+void __thiscall TView::GetTEventHandlerClassNamePointer_bc(TView *this)
 
 {
   return;
@@ -421,7 +421,7 @@ void TView::GetTEventHandlerClassNamePointer_bc()
 // GHIDRA_NAME TView::AttachChildControl_e0
 // GHIDRA_PROTO undefined __thiscall AttachChildControl_e0(int * param_1, int param_2)
 
-void TView::AttachChildControl_e0(int *param_1, int param_2)
+void __thiscall TView::AttachChildControl_e0(TView *this,int *param_1,int param_2)
 
 {
   int iVar1;
@@ -521,7 +521,7 @@ void TView::AttachChildControl_e0(int *param_1, int param_2)
 // GHIDRA_NAME TView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TView * TView::_scalar_deleting_destructor_(byte param_1)
+TView * __thiscall TView::_scalar_deleting_destructor_(TView *this,byte param_1)
 
 {
   func_0x0040511e();
@@ -535,7 +535,7 @@ TView * TView::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TView::DetachUiElementFromOwnerListAndClearBackref_e1
 // GHIDRA_PROTO undefined __thiscall DetachUiElementFromOwnerListAndClearBackref_e1(int param_1)
 
-void TView::DetachUiElementFromOwnerListAndClearBackref_e1(int param_1)
+void __thiscall TView::DetachUiElementFromOwnerListAndClearBackref_e1(TView *this,int param_1)
 
 {
   int iVar1;
@@ -599,7 +599,7 @@ LAB_0048aea6:
 // GHIDRA_NAME TView::CtrlSlot38_SwitchActiveChildAndNotify_Impl_aa
 // GHIDRA_PROTO undefined __thiscall CtrlSlot38_SwitchActiveChildAndNotify_Impl_aa(int * param_1)
 
-void TView::CtrlSlot38_SwitchActiveChildAndNotify_Impl_aa(int *param_1)
+void __thiscall TView::CtrlSlot38_SwitchActiveChildAndNotify_Impl_aa(TView *this,int *param_1)
 
 {
   TViewVtbl *pTVar1;
@@ -625,7 +625,7 @@ void TView::CtrlSlot38_SwitchActiveChildAndNotify_Impl_aa(int *param_1)
    First checks direct child owner match, then scans child list and delegates via child vtable slot
    +0x94. */
 
-TView * TView::FindUiChildControlByWindowHandleRecursive_a9(int param_1)
+TView * __thiscall TView::FindUiChildControlByWindowHandleRecursive_a9(TView *this,int param_1)
 
 {
   undefined4 *puVar1;
@@ -680,7 +680,7 @@ TView * TView::FindUiChildControlByWindowHandleRecursive_a9(int param_1)
 // GHIDRA_NAME TView::SetUiControlVisibleFlagAndMaybeRefreshWindow_ae
 // GHIDRA_PROTO undefined __thiscall SetUiControlVisibleFlagAndMaybeRefreshWindow_ae(int param_1)
 
-void TView::SetUiControlVisibleFlagAndMaybeRefreshWindow_ae(int param_1)
+void __thiscall TView::SetUiControlVisibleFlagAndMaybeRefreshWindow_ae(TView *this,int param_1)
 
 {
   TViewVtbl *pTVar1;
@@ -712,7 +712,7 @@ void TView::SetUiControlVisibleFlagAndMaybeRefreshWindow_ae(int param_1)
    - clears active state fields and releases final owned resource at +0x06, then self-releases via
    virtual destructor slot +0x04. */
 
-void TView::CloseCityDialogChildrenAndReleaseSelf()
+void __thiscall TView::CloseCityDialogChildrenAndReleaseSelf(TView *this)
 
 {
   int iVar1;
@@ -756,7 +756,7 @@ void TView::CloseCityDialogChildrenAndReleaseSelf()
 // GHIDRA_NAME TView::GetCityDialogValueViaChildSlot58
 // GHIDRA_PROTO undefined __thiscall GetCityDialogValueViaChildSlot58(void)
 
-undefined1 TView::GetCityDialogValueViaChildSlot58()
+undefined1 __thiscall TView::GetCityDialogValueViaChildSlot58(TView *this)
 
 {
   undefined uVar1;
@@ -774,7 +774,7 @@ undefined1 TView::GetCityDialogValueViaChildSlot58()
 // GHIDRA_NAME TView::QueryChildMapViewSlot58OrZero_be
 // GHIDRA_PROTO undefined __thiscall QueryChildMapViewSlot58OrZero_be(void)
 
-undefined1 TView::QueryChildMapViewSlot58OrZero_be()
+undefined1 __thiscall TView::QueryChildMapViewSlot58OrZero_be(TView *this)
 
 {
   undefined uVar1;
@@ -792,7 +792,8 @@ undefined1 TView::QueryChildMapViewSlot58OrZero_be()
 // GHIDRA_NAME TView::SetControlActiveFlagAndRefreshIfChanged_ad
 // GHIDRA_PROTO undefined __thiscall SetControlActiveFlagAndRefreshIfChanged_ad(int param_1, int param_2)
 
-void TView::SetControlActiveFlagAndRefreshIfChanged_ad(int param_1, int param_2)
+void __thiscall
+TView::SetControlActiveFlagAndRefreshIfChanged_ad(TView *this,int param_1,int param_2)
 
 {
   if ((param_1 != this->padding_08_to_0b) && (this->padding_08_to_0b = param_1, param_2 != 0)) {
@@ -805,7 +806,7 @@ void TView::SetControlActiveFlagAndRefreshIfChanged_ad(int param_1, int param_2)
 // GHIDRA_NAME TView::CanProcessMapViewSlotECUnderWindowState_bf
 // GHIDRA_PROTO undefined __thiscall CanProcessMapViewSlotECUnderWindowState_bf(void)
 
-undefined4 TView::CanProcessMapViewSlotECUnderWindowState_bf()
+undefined4 __thiscall TView::CanProcessMapViewSlotECUnderWindowState_bf(TView *this)
 
 {
   char cVar1;
@@ -824,7 +825,8 @@ undefined4 TView::CanProcessMapViewSlotECUnderWindowState_bf()
 // GHIDRA_NAME TView::GetTEventHandlerClassNamePointer_c0
 // GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer_c0(undefined4 * param_1, char param_2)
 
-void TView::GetTEventHandlerClassNamePointer_c0(undefined4 *param_1, char param_2)
+void __thiscall
+TView::GetTEventHandlerClassNamePointer_c0(TView *this,undefined4 *param_1,char param_2)
 
 {
   TViewVtbl *pTVar1;
@@ -853,7 +855,7 @@ void TView::GetTEventHandlerClassNamePointer_c0(undefined4 *param_1, char param_
 // GHIDRA_NAME TView::VTableSlotDD
 // GHIDRA_PROTO undefined __thiscall VTableSlotDD(void)
 
-void TView::VTableSlotDD()
+void __thiscall TView::VTableSlotDD(TView *this)
 
 {
   TView *pTVar1;
@@ -920,7 +922,8 @@ void TView::VTableSlotDD()
 // GHIDRA_NAME TView::UpdateControlPositionAndInvalidateUnionRect_c1
 // GHIDRA_PROTO undefined __thiscall UpdateControlPositionAndInvalidateUnionRect_c1(undefined4 * param_1, char param_2)
 
-void TView::UpdateControlPositionAndInvalidateUnionRect_c1(undefined4 *param_1, char param_2)
+void __thiscall
+TView::UpdateControlPositionAndInvalidateUnionRect_c1(TView *this,undefined4 *param_1,char param_2)
 
 {
   _vslot_fn *p_Var1;
@@ -950,7 +953,7 @@ void TView::UpdateControlPositionAndInvalidateUnionRect_c1(undefined4 *param_1, 
 // GHIDRA_NAME TView::InvalidateOffsetRegionUsingChildClipRect_b4
 // GHIDRA_PROTO undefined __thiscall InvalidateOffsetRegionUsingChildClipRect_b4(int * param_1)
 
-void TView::InvalidateOffsetRegionUsingChildClipRect_b4(int *param_1)
+void __thiscall TView::InvalidateOffsetRegionUsingChildClipRect_b4(TView *this,int *param_1)
 
 {
   HRGN pHVar1;
@@ -971,7 +974,7 @@ void TView::InvalidateOffsetRegionUsingChildClipRect_b4(int *param_1)
     local_1c = &CBrush::_vftable_;
     local_4 = 0;
     pHVar1 = CreateRectRgn(0,0,0,0);
-    CBrush::CGdiObject__Attach((CBrush *)&local_1c,(int)pHVar1);
+    CGdiObject::Attach((CGdiObject *)&local_1c,(int)pHVar1);
     if (*param_1 == -0x14) {
       pHVar1 = (HRGN)0x0;
     }
@@ -985,10 +988,10 @@ void TView::InvalidateOffsetRegionUsingChildClipRect_b4(int *param_1)
       InvalidateRgn(*(HWND *)(this->field50 + 0x1c),
                     (HRGN)(-(uint)(&stack0x00000000 != (undefined1 *)0x1c) & (uint)local_18),0);
     }
-    CGdiObject__DeleteObject();
+    CGdiObject::DeleteObject();
     local_1c = &PTR_LAB_00671054;
     local_4 = 1;
-    CGdiObject__DeleteObject();
+    CGdiObject::DeleteObject();
   }
   *unaff_FS_OFFSET = local_c;
   return;
@@ -998,7 +1001,7 @@ void TView::InvalidateOffsetRegionUsingChildClipRect_b4(int *param_1)
 // GHIDRA_NAME TView::ValidateControlRectIfWindowActive_b6
 // GHIDRA_PROTO undefined __thiscall ValidateControlRectIfWindowActive_b6(RECT * param_1)
 
-void TView::ValidateControlRectIfWindowActive_b6(RECT *param_1)
+void __thiscall TView::ValidateControlRectIfWindowActive_b6(TView *this,RECT *param_1)
 
 {
   if ((this->field50 != 0) && (g_McAppUiActiveFlag_006950AC != 0)) {
@@ -1008,10 +1011,10 @@ void TView::ValidateControlRectIfWindowActive_b6(RECT *param_1)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048B6D0
-// GHIDRA_NAME TView::VTableSlotBD
-// GHIDRA_PROTO undefined __thiscall VTableSlotBD(void)
+// GHIDRA_NAME TView::RefreshControl
+// GHIDRA_PROTO undefined __thiscall RefreshControl(void)
 
-void TView::VTableSlotBD()
+void __thiscall TView::RefreshControl(TView *this)
 
 {
   if ((g_McAppUiActiveFlag_006950AC != 0) && (this->field50 != 0)) {
@@ -1032,7 +1035,7 @@ void TView::VTableSlotBD()
    If capture object at this+0x20 exists, forwards to its vtable +0x13C handler; otherwise refreshes
    owner window once under DAT_006A1AF0 recursion guard. */
 
-void TView::ResetUiInputCaptureState_d3()
+void __thiscall TView::ResetUiInputCaptureState_d3(TView *this)
 
 {
   if (this->ownerContext != (TView *)0x0) {
@@ -1055,7 +1058,7 @@ void TView::ResetUiInputCaptureState_d3()
 // GHIDRA_NAME TView::SetGlobalUiSelectionIfChangedAndNotify_c2
 // GHIDRA_PROTO undefined __thiscall SetGlobalUiSelectionIfChangedAndNotify_c2(void)
 
-undefined4 TView::SetGlobalUiSelectionIfChangedAndNotify_c2()
+undefined4 __thiscall TView::SetGlobalUiSelectionIfChangedAndNotify_c2(TView *this)
 
 {
   if (this != g_McAppUiActiveRenderContext_006A1AF4) {
@@ -1071,7 +1074,7 @@ undefined4 TView::SetGlobalUiSelectionIfChangedAndNotify_c2()
 // GHIDRA_NAME TView::GetTEventHandlerClassNamePointer_c4
 // GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer_c4(void)
 
-void TView::GetTEventHandlerClassNamePointer_c4()
+void __thiscall TView::GetTEventHandlerClassNamePointer_c4(TView *this)
 
 {
   func_0x00403729(this);
@@ -1082,7 +1085,7 @@ void TView::GetTEventHandlerClassNamePointer_c4()
 // GHIDRA_NAME TView::CtrlSlot65_ReleaseScopedMapQuickDrawDcHandle_Impl_c5
 // GHIDRA_PROTO undefined __thiscall CtrlSlot65_ReleaseScopedMapQuickDrawDcHandle_Impl_c5(void)
 
-void TView::CtrlSlot65_ReleaseScopedMapQuickDrawDcHandle_Impl_c5()
+void __thiscall TView::CtrlSlot65_ReleaseScopedMapQuickDrawDcHandle_Impl_c5(TView *this)
 
 {
   func_0x00409336(this);
@@ -1090,10 +1093,10 @@ void TView::CtrlSlot65_ReleaseScopedMapQuickDrawDcHandle_Impl_c5()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048B810
-// GHIDRA_NAME TView::OrphanCallChain_C11_I88_004874b0_c6
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C11_I88_004874b0_c6(void)
+// GHIDRA_NAME TView::EnsureField48Buffer
+// GHIDRA_PROTO undefined __thiscall EnsureField48Buffer(void)
 
-void TView::OrphanCallChain_C11_I88_004874b0_c6()
+void __thiscall TView::EnsureField48Buffer(TView *this)
 
 {
   undefined1 *puVar1;
@@ -1121,7 +1124,7 @@ void TView::OrphanCallChain_C11_I88_004874b0_c6()
 // GHIDRA_NAME TView::GetTEventHandlerClassNamePointer_c9
 // GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer_c9(int param_1)
 
-void TView::GetTEventHandlerClassNamePointer_c9(int param_1)
+void __thiscall TView::GetTEventHandlerClassNamePointer_c9(TView *this,int param_1)
 
 {
   TViewVtbl *pTVar1;
@@ -1141,7 +1144,7 @@ void TView::GetTEventHandlerClassNamePointer_c9(int param_1)
 // GHIDRA_NAME TView::PaintVisibleChildrenIntersectingClipRect_c7
 // GHIDRA_PROTO undefined __thiscall PaintVisibleChildrenIntersectingClipRect_c7(undefined4 param_1)
 
-void TView::PaintVisibleChildrenIntersectingClipRect_c7(undefined4 param_1)
+void __thiscall TView::PaintVisibleChildrenIntersectingClipRect_c7(TView *this,undefined4 param_1)
 
 {
   TViewVtbl *pTVar1;
@@ -1193,7 +1196,8 @@ void TView::PaintVisibleChildrenIntersectingClipRect_c7(undefined4 param_1)
 // GHIDRA_NAME TView::OffsetRectByControlPositionAndDispatchVslot138_Impl_d2
 // GHIDRA_PROTO undefined __thiscall OffsetRectByControlPositionAndDispatchVslot138_Impl_d2(int * param_1)
 
-void TView::OffsetRectByControlPositionAndDispatchVslot138_Impl_d2(int *param_1)
+void __thiscall
+TView::OffsetRectByControlPositionAndDispatchVslot138_Impl_d2(TView *this,int *param_1)
 
 {
   param_1[1] = param_1[1] + this->ownerOffsetY;
@@ -1206,7 +1210,8 @@ void TView::OffsetRectByControlPositionAndDispatchVslot138_Impl_d2(int *param_1)
 // GHIDRA_NAME TView::OffsetRectByControlPositionAndDispatchVslot138_EcxBridge_Impl_d1
 // GHIDRA_PROTO undefined __thiscall OffsetRectByControlPositionAndDispatchVslot138_EcxBridge_Impl_d1(int * param_1)
 
-void TView::OffsetRectByControlPositionAndDispatchVslot138_EcxBridge_Impl_d1(int *param_1)
+void __thiscall
+TView::OffsetRectByControlPositionAndDispatchVslot138_EcxBridge_Impl_d1(TView *this,int *param_1)
 
 {
   int iVar1;
@@ -1222,7 +1227,7 @@ void TView::OffsetRectByControlPositionAndDispatchVslot138_EcxBridge_Impl_d1(int
 // GHIDRA_NAME TView::CtrlSlot103_SubtractPosAndDispatchSlot19C_Impl_eb
 // GHIDRA_PROTO undefined __thiscall CtrlSlot103_SubtractPosAndDispatchSlot19C_Impl_eb(int * param_1)
 
-void TView::CtrlSlot103_SubtractPosAndDispatchSlot19C_Impl_eb(int *param_1)
+void __thiscall TView::CtrlSlot103_SubtractPosAndDispatchSlot19C_Impl_eb(TView *this,int *param_1)
 
 {
   int iVar1;
@@ -1238,7 +1243,7 @@ void TView::CtrlSlot103_SubtractPosAndDispatchSlot19C_Impl_eb(int *param_1)
 // GHIDRA_NAME TView::OffsetRectByControlPosition_Impl_d4
 // GHIDRA_PROTO undefined __thiscall OffsetRectByControlPosition_Impl_d4(LPRECT param_1)
 
-void TView::OffsetRectByControlPosition_Impl_d4(LPRECT param_1)
+void __thiscall TView::OffsetRectByControlPosition_Impl_d4(TView *this,LPRECT param_1)
 
 {
   OffsetRect(param_1,this->ownerOffsetX,this->ownerOffsetY);
@@ -1249,7 +1254,7 @@ void TView::OffsetRectByControlPosition_Impl_d4(LPRECT param_1)
 // GHIDRA_NAME TView::CtrlSlot86_GetCachedPosPoint_Impl_da
 // GHIDRA_PROTO undefined __thiscall CtrlSlot86_GetCachedPosPoint_Impl_da(undefined4 * param_1)
 
-void TView::CtrlSlot86_GetCachedPosPoint_Impl_da(undefined4 *param_1)
+void __thiscall TView::CtrlSlot86_GetCachedPosPoint_Impl_da(TView *this,undefined4 *param_1)
 
 {
   int iVar1;
@@ -1264,7 +1269,7 @@ void TView::CtrlSlot86_GetCachedPosPoint_Impl_da(undefined4 *param_1)
 // GHIDRA_NAME TView::CtrlSlot82_TransformPointViaSlot138_Impl_d6
 // GHIDRA_PROTO undefined __thiscall CtrlSlot82_TransformPointViaSlot138_Impl_d6(undefined4 * param_1)
 
-void TView::CtrlSlot82_TransformPointViaSlot138_Impl_d6(undefined4 *param_1)
+void __thiscall TView::CtrlSlot82_TransformPointViaSlot138_Impl_d6(TView *this,undefined4 *param_1)
 
 {
   int unaff_retaddr;
@@ -1284,7 +1289,7 @@ void TView::CtrlSlot82_TransformPointViaSlot138_Impl_d6(undefined4 *param_1)
 // GHIDRA_NAME TView::CtrlSlot83_TransformRectViaSlot148_Impl_d7
 // GHIDRA_PROTO undefined __thiscall CtrlSlot83_TransformRectViaSlot148_Impl_d7(int * param_1)
 
-void TView::CtrlSlot83_TransformRectViaSlot148_Impl_d7(int *param_1)
+void __thiscall TView::CtrlSlot83_TransformRectViaSlot148_Impl_d7(TView *this,int *param_1)
 
 {
   int iVar1;
@@ -1317,7 +1322,8 @@ void TView::CtrlSlot83_TransformRectViaSlot148_Impl_d7(int *param_1)
 // GHIDRA_NAME TView::CtrlSlot84_AddControlPosToPoint_Impl_d8
 // GHIDRA_PROTO undefined __thiscall CtrlSlot84_AddControlPosToPoint_Impl_d8(int param_1, int param_2, int * param_3)
 
-void TView::CtrlSlot84_AddControlPosToPoint_Impl_d8(int param_1, int param_2, int *param_3)
+void __thiscall
+TView::CtrlSlot84_AddControlPosToPoint_Impl_d8(TView *this,int param_1,int param_2,int *param_3)
 
 {
   int iVar1;
@@ -1332,7 +1338,8 @@ void TView::CtrlSlot84_AddControlPosToPoint_Impl_d8(int param_1, int param_2, in
 // GHIDRA_NAME TView::CtrlSlot85_OffsetRectByCachedPos_Impl_d9
 // GHIDRA_PROTO undefined __thiscall CtrlSlot85_OffsetRectByCachedPos_Impl_d9(LONG * param_1, LONG * param_2)
 
-void TView::CtrlSlot85_OffsetRectByCachedPos_Impl_d9(LONG *param_1, LONG *param_2)
+void __thiscall
+TView::CtrlSlot85_OffsetRectByCachedPos_Impl_d9(TView *this,LONG *param_1,LONG *param_2)
 
 {
   tagRECT local_10;
@@ -1353,7 +1360,7 @@ void TView::CtrlSlot85_OffsetRectByCachedPos_Impl_d9(LONG *param_1, LONG *param_
 // GHIDRA_NAME TView::CtrlSlot88_BuildRectFromSlot158AndCachedSize_Impl_dc
 // GHIDRA_PROTO undefined __thiscall CtrlSlot88_BuildRectFromSlot158AndCachedSize_Impl_dc(void)
 
-void TView::CtrlSlot88_BuildRectFromSlot158AndCachedSize_Impl_dc()
+void __thiscall TView::CtrlSlot88_BuildRectFromSlot158AndCachedSize_Impl_dc(TView *this)
 
 {
   int iVar1;
@@ -1385,7 +1392,7 @@ void TView::CtrlSlot88_BuildRectFromSlot158AndCachedSize_Impl_dc()
 
 /* Setting prototype: void CopyCityDialogStateFromSource(TView *this, TView *pSource) */
 
-void TView::CopyCityDialogStateFromSource(TView *pSource)
+void __thiscall TView::CopyCityDialogStateFromSource(TView *this,TView *pSource)
 
 {
   int iVar1;
@@ -1429,7 +1436,7 @@ void TView::CopyCityDialogStateFromSource(TView *pSource)
 // GHIDRA_NAME TView::CloneEngineerDialogStateToNewInstance
 // GHIDRA_PROTO undefined __thiscall CloneEngineerDialogStateToNewInstance(void)
 
-undefined4 TView::CloneEngineerDialogStateToNewInstance()
+undefined4 __thiscall TView::CloneEngineerDialogStateToNewInstance(TView *this)
 
 {
   undefined4 uVar1;
@@ -1443,7 +1450,7 @@ undefined4 TView::CloneEngineerDialogStateToNewInstance()
 // GHIDRA_NAME TView::EvaluateControlInputGate_b7
 // GHIDRA_PROTO undefined __thiscall EvaluateControlInputGate_b7(void)
 
-undefined4 TView::EvaluateControlInputGate_b7()
+undefined4 __thiscall TView::EvaluateControlInputGate_b7(TView *this)
 
 {
   char cVar1;
@@ -1464,7 +1471,7 @@ undefined4 TView::EvaluateControlInputGate_b7()
 // GHIDRA_NAME TView::HasRenderableParentAndContent_b8
 // GHIDRA_PROTO undefined __thiscall HasRenderableParentAndContent_b8(void)
 
-undefined4 TView::HasRenderableParentAndContent_b8()
+undefined4 __thiscall TView::HasRenderableParentAndContent_b8(TView *this)
 
 {
   if (((this->flag4d != 0) && (this->field44 != 0)) && (*(int *)(this->field44 + 0xc) != 0)) {
@@ -1540,7 +1547,7 @@ TView::HandleCursorHoverSelectionByChildHitTestAndFallback_b9
 // GHIDRA_NAME TView::OrphanRetStub_0059add0_b1
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0_b1(void)
 
-void TView::OrphanRetStub_0059add0_b1()
+void __thiscall TView::OrphanRetStub_0059add0_b1(TView *this)
 
 {
   return;
@@ -1550,7 +1557,7 @@ void TView::OrphanRetStub_0059add0_b1()
 // GHIDRA_NAME TView::RefreshCityProductionViewStateFromContext_b2
 // GHIDRA_PROTO undefined __thiscall RefreshCityProductionViewStateFromContext_b2(void)
 
-void TView::RefreshCityProductionViewStateFromContext_b2()
+void __thiscall TView::RefreshCityProductionViewStateFromContext_b2(TView *this)
 
 {
   undefined4 unaff_retaddr;
@@ -1567,7 +1574,7 @@ void TView::RefreshCityProductionViewStateFromContext_b2()
 // GHIDRA_NAME TView::EnableAndProcessFlag
 // GHIDRA_PROTO void __thiscall EnableAndProcessFlag(CString * sharedString)
 
-void TView::EnableAndProcessFlag(CString *sharedString)
+void __thiscall TView::EnableAndProcessFlag(TView *this,CString *sharedString)
 
 {
   this->field5c = 1;
@@ -1579,7 +1586,7 @@ void TView::EnableAndProcessFlag(CString *sharedString)
 // GHIDRA_NAME TView::HandleCursorHoverFallback_b0
 // GHIDRA_PROTO undefined __thiscall HandleCursorHoverFallback_b0(void)
 
-void TView::HandleCursorHoverFallback_b0()
+void __thiscall TView::HandleCursorHoverFallback_b0(TView *this)
 
 {
   TViewVtbl *pTVar1;
@@ -1625,7 +1632,7 @@ void TView::HandleCursorHoverFallback_b0()
 // GHIDRA_NAME TView::UpdateRectCacheIfChangedAndInvalidateCityDialog_de
 // GHIDRA_PROTO undefined __thiscall UpdateRectCacheIfChangedAndInvalidateCityDialog_de(char param_1)
 
-void TView::UpdateRectCacheIfChangedAndInvalidateCityDialog_de(char param_1)
+void __thiscall TView::UpdateRectCacheIfChangedAndInvalidateCityDialog_de(TView *this,char param_1)
 
 {
   TViewVtbl *pTVar1;
@@ -1806,7 +1813,7 @@ TView::DispatchUiMouseEventToChildrenOrSelf_Impl_cc
 // GHIDRA_NAME TView::VTableSlotDF
 // GHIDRA_PROTO undefined __thiscall VTableSlotDF(void)
 
-undefined4 TView::VTableSlotDF()
+undefined4 __thiscall TView::VTableSlotDF(TView *this)
 
 {
   TViewVtbl *pTVar1;
@@ -1831,7 +1838,7 @@ undefined4 TView::VTableSlotDF()
 // GHIDRA_NAME TView::DrawRectangleInCurrentUiContext_e8
 // GHIDRA_PROTO undefined __thiscall DrawRectangleInCurrentUiContext_e8(int * param_1)
 
-void TView::DrawRectangleInCurrentUiContext_e8(int *param_1)
+void __thiscall TView::DrawRectangleInCurrentUiContext_e8(TView *this,int *param_1)
 
 {
   int iVar1;
@@ -1848,7 +1855,7 @@ void TView::DrawRectangleInCurrentUiContext_e8(int *param_1)
 // GHIDRA_NAME TView::AssertMcAppUILine1914_e9
 // GHIDRA_PROTO undefined __thiscall AssertMcAppUILine1914_e9(void)
 
-void TView::AssertMcAppUILine1914_e9()
+void __thiscall TView::AssertMcAppUILine1914_e9(TView *this)
 
 {
   if (g_McAppUiFlag_006A1AFC == 0) {
@@ -1861,7 +1868,7 @@ void TView::AssertMcAppUILine1914_e9()
 // GHIDRA_NAME TView::AssertMcAppUILine1922_ea
 // GHIDRA_PROTO undefined __thiscall AssertMcAppUILine1922_ea(void)
 
-void TView::AssertMcAppUILine1922_ea()
+void __thiscall TView::AssertMcAppUILine1922_ea(TView *this)
 
 {
   undefined1 auStack_10 [16];
@@ -1877,7 +1884,7 @@ void TView::AssertMcAppUILine1922_ea()
 // GHIDRA_NAME TView::CtrlSlot39_DispatchSlot9CToLinkedChildren_Impl_ab
 // GHIDRA_PROTO undefined __thiscall CtrlSlot39_DispatchSlot9CToLinkedChildren_Impl_ab(void)
 
-void TView::CtrlSlot39_DispatchSlot9CToLinkedChildren_Impl_ab()
+void __thiscall TView::CtrlSlot39_DispatchSlot9CToLinkedChildren_Impl_ab(TView *this)
 
 {
   int *piVar1;
@@ -1923,7 +1930,7 @@ void TView::CtrlSlot39_DispatchSlot9CToLinkedChildren_Impl_ab()
    child node.
    Used as a generic fan-out update/notification helper for linked child dialog/view objects. */
 
-void TView::CallVoidSlotA0()
+void __thiscall TView::CallVoidSlotA0(TView *this)
 
 {
   int *piVar1;
@@ -1961,7 +1968,7 @@ void TView::CallVoidSlotA0()
 // GHIDRA_NAME TView::CtrlSlot94_GetWordField54_Impl_e2
 // GHIDRA_PROTO undefined __thiscall CtrlSlot94_GetWordField54_Impl_e2(void)
 
-short TView::CtrlSlot94_GetWordField54_Impl_e2()
+short __thiscall TView::CtrlSlot94_GetWordField54_Impl_e2(TView *this)
 
 {
   return this->field54;
@@ -1971,7 +1978,7 @@ short TView::CtrlSlot94_GetWordField54_Impl_e2()
 // GHIDRA_NAME TView::CtrlSlot95_TestPointInBoundsFromSlot128_Impl_e3
 // GHIDRA_PROTO undefined __thiscall CtrlSlot95_TestPointInBoundsFromSlot128_Impl_e3(void)
 
-byte TView::CtrlSlot95_TestPointInBoundsFromSlot128_Impl_e3()
+byte __thiscall TView::CtrlSlot95_TestPointInBoundsFromSlot128_Impl_e3(TView *this)
 
 {
   BOOL BVar1;
@@ -1988,7 +1995,7 @@ byte TView::CtrlSlot95_TestPointInBoundsFromSlot128_Impl_e3()
 // GHIDRA_NAME TView::OrphanCallChain_C11_I88_004874b0_e4
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C11_I88_004874b0_e4(void)
 
-void TView::OrphanCallChain_C11_I88_004874b0_e4()
+void __thiscall TView::OrphanCallChain_C11_I88_004874b0_e4(TView *this)
 
 {
   return;
@@ -1998,7 +2005,7 @@ void TView::OrphanCallChain_C11_I88_004874b0_e4()
 // GHIDRA_NAME TView::OrphanLeaf_NoCall_Ins07_004d8920_e5
 // GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920_e5(void)
 
-void TView::OrphanLeaf_NoCall_Ins07_004d8920_e5()
+void __thiscall TView::OrphanLeaf_NoCall_Ins07_004d8920_e5(TView *this)
 
 {
   return;
@@ -2008,7 +2015,7 @@ void TView::OrphanLeaf_NoCall_Ins07_004d8920_e5()
 // GHIDRA_NAME TView::OrphanCallChain_C11_I88_004874b0_e6
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C11_I88_004874b0_e6(void)
 
-void TView::OrphanCallChain_C11_I88_004874b0_e6()
+void __thiscall TView::OrphanCallChain_C11_I88_004874b0_e6(TView *this)
 
 {
   return;
@@ -2018,7 +2025,7 @@ void TView::OrphanCallChain_C11_I88_004874b0_e6()
 // GHIDRA_NAME TView::GetTEventHandlerClassNamePointer_e7
 // GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer_e7(void)
 
-void TView::GetTEventHandlerClassNamePointer_e7()
+void __thiscall TView::GetTEventHandlerClassNamePointer_e7(TView *this)
 
 {
   return;
@@ -2028,7 +2035,7 @@ void TView::GetTEventHandlerClassNamePointer_e7()
 // GHIDRA_NAME TView::VTableSlot85
 // GHIDRA_PROTO undefined __thiscall VTableSlot85(byte param_1)
 
-TView * TView::VTableSlot85(byte param_1)
+TView * __thiscall TView::VTableSlot85(TView *this,byte param_1)
 
 {
   func_0x004086e3();
@@ -2042,7 +2049,7 @@ TView * TView::VTableSlot85(byte param_1)
 // GHIDRA_NAME TView::~TView
 // GHIDRA_PROTO undefined __thiscall ~TView(void)
 
-void TView::~TView()
+void __thiscall TView::~TView(TView *this)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -2070,7 +2077,7 @@ void TView::~TView()
 // GHIDRA_NAME TView::~TView
 // GHIDRA_PROTO undefined __thiscall ~TView(void)
 
-void TView::~TView()
+void __thiscall TView::~TView(TView *this)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -2098,7 +2105,7 @@ void TView::~TView()
 // GHIDRA_NAME TView::~TView
 // GHIDRA_PROTO undefined __thiscall ~TView(void)
 
-void TView::~TView()
+void __thiscall TView::~TView(TView *this)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -2116,44 +2123,6 @@ void TView::~TView()
   }
   operator_delete(this->field48);
   local_4 = local_4 & 0xffffff00;
-  CString::~CString(&this->sharedStringRef);
-  this->vftable = (TViewVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
-  *unaff_FS_OFFSET = uStack_c;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0048F250
-// GHIDRA_NAME TView::DestructCityDialogSharedBaseState
-// GHIDRA_PROTO undefined __thiscall DestructCityDialogSharedBaseState(void)
-
-void TView::DestructCityDialogSharedBaseState()
-
-{
-  short sVar1;
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 uStack_c;
-  undefined1 *puStack_8;
-  undefined4 local_4;
-  
-  puStack_8 = &LAB_0062efcb;
-  uStack_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &uStack_c;
-  this->vftable = (TViewVtbl *)&TPicture::_vftable_;
-  sVar1 = (short)this[1].ownerOffsetX;
-  local_4 = 0;
-  if (sVar1 != -1) {
-    func_0x004046bf(CONCAT22((short)((uint)uStack_c >> 0x10),sVar1));
-  }
-  *(undefined2 *)&this[1].ownerOffsetX = 0xffff;
-  this[1].ownerOffsetY = 0;
-  this[1].field2c = 0;
-  this->vftable = &_vftable_;
-  local_4 = 2;
-  if ((int *)this->field44 != (int *)0x0) {
-    (**(code **)(*(int *)this->field44 + 4))(1);
-  }
-  operator_delete(this->field48);
-  local_4 = CONCAT31(local_4._1_3_,1);
   CString::~CString(&this->sharedStringRef);
   this->vftable = (TViewVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = uStack_c;

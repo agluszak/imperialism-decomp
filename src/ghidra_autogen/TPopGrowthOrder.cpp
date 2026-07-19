@@ -7,7 +7,8 @@
 // GHIDRA_NAME TPopGrowthOrder::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TPopGrowthOrder * TPopGrowthOrder::_scalar_deleting_destructor_(byte param_1)
+TPopGrowthOrder * __thiscall
+TPopGrowthOrder::_scalar_deleting_destructor_(TPopGrowthOrder *this,byte param_1)
 
 {
   func_0x004020ef();
@@ -38,7 +39,7 @@ undefined4 * TPopGrowthOrder::CreateObject(void)
 // GHIDRA_NAME TPopGrowthOrder::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TPopGrowthOrder::GetRuntimeClass()
+CRuntimeClass * __thiscall TPopGrowthOrder::GetRuntimeClass(TPopGrowthOrder *this)
 
 {
   return &classTPopGrowthOrder;
@@ -48,7 +49,8 @@ CRuntimeClass * TPopGrowthOrder::GetRuntimeClass()
 // GHIDRA_NAME TPopGrowthOrder::ConstructTPopGrowthOrderBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTPopGrowthOrderBaseState(int param_1)
 
-void TPopGrowthOrder::ConstructTPopGrowthOrderBaseState(int param_1)
+void __thiscall
+TPopGrowthOrder::ConstructTPopGrowthOrderBaseState(TPopGrowthOrder *this,int param_1)
 
 {
   int iVar1;
@@ -74,7 +76,7 @@ void TPopGrowthOrder::ConstructTPopGrowthOrderBaseState(int param_1)
 // GHIDRA_NAME TPopGrowthOrder::MaxOrder
 // GHIDRA_PROTO undefined __thiscall MaxOrder(void)
 
-short TPopGrowthOrder::MaxOrder()
+short __thiscall TPopGrowthOrder::MaxOrder(TPopGrowthOrder *this)
 
 {
   int iVar1;
@@ -107,7 +109,7 @@ short TPopGrowthOrder::MaxOrder()
 // GHIDRA_NAME TPopGrowthOrder::SetQuantity
 // GHIDRA_PROTO undefined __thiscall SetQuantity(short param_1)
 
-undefined4 TPopGrowthOrder::SetQuantity(short param_1)
+undefined4 __thiscall TPopGrowthOrder::SetQuantity(TPopGrowthOrder *this,short param_1)
 
 {
   short *psVar1;
@@ -152,7 +154,7 @@ undefined4 TPopGrowthOrder::SetQuantity(short param_1)
 // GHIDRA_NAME TPopGrowthOrder::CommitIfPending
 // GHIDRA_PROTO undefined __thiscall CommitIfPending(void)
 
-void TPopGrowthOrder::CommitIfPending()
+void __thiscall TPopGrowthOrder::CommitIfPending(TPopGrowthOrder *this)
 
 {
   short *psVar1;
@@ -199,7 +201,7 @@ void TPopGrowthOrder::CommitIfPending()
 // GHIDRA_NAME TPopGrowthOrder::ResetCityOrderItemDerivedStateNoop
 // GHIDRA_PROTO undefined __thiscall ResetCityOrderItemDerivedStateNoop(void)
 
-void TPopGrowthOrder::ResetCityOrderItemDerivedStateNoop()
+void __thiscall TPopGrowthOrder::ResetCityOrderItemDerivedStateNoop(TPopGrowthOrder *this)
 
 {
   return;
@@ -209,7 +211,7 @@ void TPopGrowthOrder::ResetCityOrderItemDerivedStateNoop()
 // GHIDRA_NAME TPopGrowthOrder::FillOrderSheet
 // GHIDRA_PROTO undefined __thiscall FillOrderSheet(void)
 
-void TPopGrowthOrder::FillOrderSheet()
+void __thiscall TPopGrowthOrder::FillOrderSheet(TPopGrowthOrder *this)
 
 {
   undefined2 uStack00000004;

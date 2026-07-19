@@ -10,7 +10,7 @@
 undefined4 * __fastcall CScrollView::CScrollView(undefined4 *param_1)
 
 {
-  CView__CView();
+  CView::CView();
   *param_1 = &PTR_LAB_0067358c;
   memset(param_1 + 0x10,0,0x2c);
   param_1[0x10] = 0;
@@ -21,7 +21,7 @@ undefined4 * __fastcall CScrollView::CScrollView(undefined4 *param_1)
 // GHIDRA_NAME CScrollView::OnPrepareDC
 // GHIDRA_PROTO undefined __thiscall OnPrepareDC(int * param_1, undefined4 param_2)
 
-void CScrollView::OnPrepareDC(int *param_1, undefined4 param_2)
+void __thiscall CScrollView::OnPrepareDC(CScrollView *this,int *param_1,undefined4 param_2)
 
 {
   int iVar1;
@@ -65,7 +65,8 @@ void CScrollView::OnPrepareDC(int *param_1, undefined4 param_2)
 // GHIDRA_NAME CScrollView::SetScaleToFitSize
 // GHIDRA_PROTO undefined __thiscall SetScaleToFitSize(undefined4 param_1, undefined4 param_2)
 
-void CScrollView::SetScaleToFitSize(undefined4 param_1, undefined4 param_2)
+void __thiscall
+CScrollView::SetScaleToFitSize(CScrollView *this,undefined4 param_1,undefined4 param_2)
 
 {
   uint uVar1;
@@ -75,7 +76,7 @@ void CScrollView::SetScaleToFitSize(undefined4 param_1, undefined4 param_2)
   *(undefined4 *)(this + 0x44) = param_1;
   *(undefined4 *)(this + 0x48) = param_2;
   if (*(int *)(this + 0x1c) != 0) {
-    uVar1 = CWnd__GetStyle();
+    uVar1 = CWnd::GetStyle();
     if ((uVar1 & 0x300000) != 0) {
       CWnd::SetScrollPos(0,0,1);
       CWnd::SetScrollPos(1,0,1);
@@ -249,7 +250,7 @@ void CScrollView::ScrollToPosition(void)
 // GHIDRA_NAME CScrollView::GetDeviceScrollPosition
 // GHIDRA_PROTO undefined __thiscall GetDeviceScrollPosition(int * param_1)
 
-void CScrollView::GetDeviceScrollPosition(int *param_1)
+void __thiscall CScrollView::GetDeviceScrollPosition(CScrollView *this,int *param_1)
 
 {
   int iVar1;
@@ -276,7 +277,7 @@ void CScrollView::GetDeviceScrollPosition(int *param_1)
 // GHIDRA_NAME CScrollView::ScrollToDevicePosition
 // GHIDRA_PROTO undefined __thiscall ScrollToDevicePosition(int param_1, int param_2)
 
-void CScrollView::ScrollToDevicePosition(int param_1, int param_2)
+void __thiscall CScrollView::ScrollToDevicePosition(CScrollView *this,int param_1,int param_2)
 
 {
   int iVar1;
@@ -329,7 +330,7 @@ void __thiscall CScrollView::FillOutsideRect(int param_1,int param_2,int param_3
 // GHIDRA_NAME CScrollView::ResizeParentToFit
 // GHIDRA_PROTO undefined __thiscall ResizeParentToFit(int param_1)
 
-void CScrollView::ResizeParentToFit(int param_1)
+void __thiscall CScrollView::ResizeParentToFit(CScrollView *this,int param_1)
 
 {
   code *pcVar1;
@@ -378,8 +379,25 @@ void CScrollView::ResizeParentToFit(int param_1)
   }
   iVar2 = CWnd::GetParentFrame();
   GetWindowRect(*(HWND *)(iVar2 + 0x1c),&local_44);
-  CWnd__SetWindowPos(0,0,0,((local_44.right - local_14.right) - local_44.left) + local_24.right,
+  CWnd::SetWindowPos(0,0,0,((local_44.right - local_14.right) - local_44.left) + local_24.right,
                      ((local_44.bottom - local_14.bottom) - local_44.top) + local_24.bottom,0x16);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00615517
+// GHIDRA_NAME CScrollView::OnSize
+// GHIDRA_PROTO undefined __thiscall OnSize(void)
+
+void __thiscall CScrollView::OnSize(CScrollView *this)
+
+{
+  CWnd::Default((CWnd *)this);
+  if (*(int *)(this + 0x40) == -1) {
+    SetScaleToFitSize(this,*(undefined4 *)(this + 0x44),*(undefined4 *)(this + 0x48));
+  }
+  else {
+    UpdateBars(this);
+  }
   return;
 }
 
@@ -397,7 +415,7 @@ void __thiscall CScrollView::CenterOnPoint(int param_1,int param_2,int param_3)
   GetClientRect(*(HWND *)(param_1 + 0x1c),&local_14);
   param_2 = param_2 - (local_14.right - local_14.left) / 2;
   param_3 = param_3 - (local_14.bottom - local_14.top) / 2;
-  uVar1 = CWnd__GetStyle();
+  uVar1 = CWnd::GetStyle();
   if (((uVar1 & 0x100000) == 0) || (param_2 < 0)) {
     param_2 = 0;
   }
@@ -427,7 +445,7 @@ void __thiscall CScrollView::CenterOnPoint(int param_1,int param_2,int param_3)
 // GHIDRA_NAME CScrollView::GetScrollBarSizes
 // GHIDRA_PROTO undefined __thiscall GetScrollBarSizes(int * param_1)
 
-void CScrollView::GetScrollBarSizes(int *param_1)
+void __thiscall CScrollView::GetScrollBarSizes(CScrollView *this,int *param_1)
 
 {
   code *pcVar1;
@@ -436,10 +454,10 @@ void CScrollView::GetScrollBarSizes(int *param_1)
   
   param_1[1] = 0;
   *param_1 = 0;
-  uVar2 = CWnd__GetStyle();
+  uVar2 = CWnd::GetStyle();
   pcVar1 = *(code **)(*(int *)this + 0x70);
   iVar3 = (*pcVar1)(1);
-  if ((iVar3 == 0) && (*param_1 = DAT_006a7d00, (uVar2 & 0x800000) != 0)) {
+  if ((iVar3 == 0) && (*param_1 = afxData, (uVar2 & 0x800000) != 0)) {
     *param_1 = *param_1 + -1;
   }
   iVar3 = (*pcVar1)(0);
@@ -453,7 +471,7 @@ void CScrollView::GetScrollBarSizes(int *param_1)
 // GHIDRA_NAME CScrollView::GetTrueClientSize
 // GHIDRA_PROTO undefined __thiscall GetTrueClientSize(int * param_1, int * param_2)
 
-undefined4 CScrollView::GetTrueClientSize(int *param_1, int *param_2)
+undefined4 __thiscall CScrollView::GetTrueClientSize(CScrollView *this,int *param_1,int *param_2)
 
 {
   uint uVar1;
@@ -463,7 +481,7 @@ undefined4 CScrollView::GetTrueClientSize(int *param_1, int *param_2)
   GetClientRect(*(HWND *)(this + 0x1c),&local_14);
   *param_1 = local_14.right;
   param_1[1] = local_14.bottom;
-  uVar1 = CWnd__GetStyle();
+  uVar1 = CWnd::GetStyle();
   GetScrollBarSizes(this,param_2);
   if ((*param_2 != 0) && ((uVar1 & 0x200000) != 0)) {
     *param_1 = *param_1 + *param_2;
@@ -543,7 +561,7 @@ CScrollView::GetScrollBarState
 // GHIDRA_NAME CScrollView::UpdateBars
 // GHIDRA_PROTO undefined __thiscall UpdateBars(void)
 
-void CScrollView::UpdateBars()
+void __thiscall CScrollView::UpdateBars(CScrollView *this)
 
 {
   HWND pHVar1;
@@ -577,7 +595,7 @@ void CScrollView::UpdateBars()
   *(undefined4 *)(this + 0x68) = 1;
   local_8 = 1;
   pHVar1 = GetParent(*(HWND *)(this + 0x1c));
-  iVar2 = CWnd__FromHandle(pHVar1);
+  iVar2 = CWnd::FromHandle(pHVar1);
   if ((iVar2 != 0) &&
      (LVar3 = SendMessageA(*(HWND *)(iVar2 + 0x1c),0x368,0,(LPARAM)&local_40), LVar3 != 0)) {
     local_8 = 0;
@@ -630,6 +648,52 @@ LAB_006158e6:
   return;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x006158EE
+// GHIDRA_NAME CScrollView::CalcWindowRect
+// GHIDRA_PROTO undefined __thiscall CalcWindowRect(LPRECT param_1, int param_2)
+
+void __thiscall CScrollView::CalcWindowRect(CScrollView *this,LPRECT param_1,int param_2)
+
+{
+  int iVar1;
+  int iVar2;
+  DWORD DVar3;
+  int iVar4;
+  uint uVar5;
+  int iVar6;
+  BOOL bMenu;
+  CScrollView *local_c;
+  CScrollView *local_8;
+  
+  local_c = this;
+  local_8 = this;
+  if (param_2 == 1) {
+    DVar3 = CWnd::GetExStyle();
+    AdjustWindowRectEx(param_1,0,0,DVar3);
+    if (*(int *)(this + 0x40) != -1) {
+      iVar4 = param_1->right - param_1->left;
+      iVar1 = *(int *)(this + 0x4c);
+      iVar6 = param_1->bottom - param_1->top;
+      iVar2 = *(int *)(this + 0x50);
+      GetScrollBarSizes(local_8,(int *)&local_c);
+      if (iVar2 != iVar6 && -1 < iVar2 - iVar6) {
+        param_1->right = (LONG)(local_c + param_1->right);
+      }
+      if (iVar1 != iVar4 && -1 < iVar1 - iVar4) {
+        param_1->bottom = (LONG)(local_8 + param_1->bottom);
+      }
+    }
+  }
+  else {
+    uVar5 = CWnd::GetExStyle();
+    uVar5 = uVar5 & 0xfffffdff;
+    bMenu = 0;
+    DVar3 = CWnd::GetStyle();
+    AdjustWindowRectEx(param_1,DVar3,bMenu,uVar5);
+  }
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00615975
 // GHIDRA_NAME CScrollView::OnHScroll
 // GHIDRA_PROTO undefined OnHScroll()
@@ -652,6 +716,27 @@ CScrollView::OnHScroll(int *param_1,undefined1 param_2,undefined4 param_3,int pa
   return;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x006159B9
+// GHIDRA_NAME CScrollView::OnVScroll
+// GHIDRA_PROTO undefined OnVScroll()
+
+void __thiscall CScrollView::OnVScroll(int *param_1,byte param_2,undefined4 param_3,int param_4)
+
+{
+  int iVar1;
+  int iVar2;
+  
+  if ((param_4 != 0) && (iVar1 = CWnd::SendChildNotifyLastMsg(0), iVar1 != 0)) {
+    return;
+  }
+  iVar1 = *param_1;
+  iVar2 = (**(code **)(iVar1 + 0x70))(1);
+  if (param_4 == iVar2) {
+    (**(code **)(iVar1 + 0xc4))(CONCAT31((uint3)param_2,0xff),param_3,1);
+  }
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00615A00
 // GHIDRA_NAME CScrollView::OnMouseWheel
 // GHIDRA_PROTO int __thiscall OnMouseWheel(uint param_1, short param_2, CPoint param_3)
@@ -667,7 +752,7 @@ CScrollView::OnHScroll(int *param_1,undefined1 param_2,undefined4 param_3,int pa
    
    Library: Visual Studio 2003 Release */
 
-int CScrollView::OnMouseWheel(ushort param_1)
+int __thiscall CScrollView::OnMouseWheel(CScrollView *this,ushort param_1)
 
 {
   int iVar1;
@@ -683,7 +768,7 @@ int CScrollView::OnMouseWheel(ushort param_1)
 // GHIDRA_NAME CScrollView::DoMouseWheel
 // GHIDRA_PROTO undefined __thiscall DoMouseWheel(short param_1)
 
-int CScrollView::DoMouseWheel(short param_1)
+int __thiscall CScrollView::DoMouseWheel(CScrollView *this,short param_1)
 
 {
   int iVar1;
@@ -696,11 +781,11 @@ int CScrollView::DoMouseWheel(short param_1)
   int iVar8;
   short in_stack_00000008;
   
-  uVar5 = CWnd__GetStyle();
+  uVar5 = CWnd::GetStyle();
   iVar1 = *(int *)this;
   pcVar2 = *(code **)(iVar1 + 0x70);
   iVar6 = (*pcVar2)(1);
-  if (((iVar6 == 0) || (iVar6 = CWnd__IsWindowEnabled(), iVar6 == 0)) && ((uVar5 & 0x200000) == 0))
+  if (((iVar6 == 0) || (iVar6 = CWnd::IsWindowEnabled(), iVar6 == 0)) && ((uVar5 & 0x200000) == 0))
   {
     bVar3 = false;
   }
@@ -709,7 +794,7 @@ int CScrollView::DoMouseWheel(short param_1)
   }
   iVar6 = (*pcVar2)(0);
   iVar8 = 0;
-  if (((iVar6 != 0) && (iVar6 = CWnd__IsWindowEnabled(), iVar6 != 0)) ||
+  if (((iVar6 != 0) && (iVar6 = CWnd::IsWindowEnabled(), iVar6 != 0)) ||
      (bVar4 = false, (uVar5 & 0x100000) != 0)) {
     bVar4 = true;
   }
@@ -849,7 +934,7 @@ undefined4 __thiscall CScrollView::OnScrollBy(CWnd *param_1,int param_2,int para
   int iVar5;
   undefined4 uVar6;
   
-  uVar2 = CWnd__GetStyle();
+  uVar2 = CWnd::GetStyle();
   pCVar1 = (param_1->ccmdTarget).vftable[9].slot_0x04;
   iVar3 = (*pCVar1)(1);
   if (iVar3 == 0) {
@@ -860,7 +945,7 @@ LAB_00615c60:
     }
   }
   else {
-    iVar4 = CWnd__IsWindowEnabled();
+    iVar4 = CWnd::IsWindowEnabled();
     if (iVar4 == 0) goto LAB_00615c60;
     if (iVar3 == 0) goto LAB_00615c5a;
   }
@@ -870,7 +955,7 @@ LAB_00615c7f:
     if ((uVar2 & 0x100000) != 0) goto LAB_00615c89;
   }
   else {
-    iVar4 = CWnd__IsWindowEnabled();
+    iVar4 = CWnd::IsWindowEnabled();
     if (iVar4 != 0) {
       if (iVar3 != 0) goto LAB_00615c89;
       goto LAB_00615c7f;

@@ -3,19 +3,6 @@
 // Program: Imperialism.exe
 // Bucket: TToolBarCluster.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00415540
-// GHIDRA_NAME TToolBarCluster::WrapperFor_GetProfileStringA_At00415540
-// GHIDRA_PROTO undefined WrapperFor_GetProfileStringA_At00415540()
-
-undefined4
-TToolBarCluster::WrapperFor_GetProfileStringA_At00415540
-          (undefined4 param_1,undefined4 param_2,undefined4 param_3)
-
-{
-  CWinApp::GetProfileStringA(param_1,g_pRegistrySettingsSectionAlt_0063E044,param_2,param_3);
-  return param_1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x0044A6F0
 // GHIDRA_NAME TToolBarCluster::WrapperFor_thunk_ConstructUiResourceEntryType4B0C0_At0044a6f0
 // GHIDRA_PROTO undefined __thiscall WrapperFor_thunk_ConstructUiResourceEntryType4B0C0_At0044a6f0(void)
@@ -25,7 +12,7 @@ TToolBarCluster::WrapperFor_thunk_ConstructUiResourceEntryType4B0C0_At0044a6f0
           (TToolBarCluster *this)
 
 {
-  TCluster::ConstructUiResourceEntryType4B0C0((TCluster *)this);
+  TCluster::thunk_ConstructUiResourceEntryType4B0C0((TCluster *)this);
   this->vftable = (TToolBarClusterVtbl *)&TShipFractionCluster::_vftable_;
   return this;
 }
@@ -284,7 +271,7 @@ LAB_004bb114:
               }
               else {
                 puStack_78 = &g_szDecimalFormat;
-                CString__Format(&stack0xffffffa8);
+                CString::Format(&stack0xffffffa8);
                 puStack_78 = (undefined *)0x18;
                 (*g_pSimMgr->vftable[0x10].slot_0x04)(0x2734);
                 (*g_pSimMgr->vftable[0x10].slot_0x04)(0x2734,0x1d,&uStack_10);
@@ -312,11 +299,11 @@ LAB_004bb114:
             else {
               pvVar3 = this_00->orderSlotsE4[(short)(sVar1 + 0x35)];
               puStack_78 = (undefined *)0x4bb303;
-              TCity::GetBuildingType(this_00,sVar1);
+              TCity::thunk_GetCityBuildingProductionValueBySlot(this_00,sVar1);
               puStack_78 = &g_szDecimalFormat;
-              CString__Format(&stack0xffffffa8);
+              CString::Format(&stack0xffffffa8);
               puStack_78 = &g_szDecimalFormat;
-              CString__Format(&local_50);
+              CString::Format(&local_50);
               puStack_78 = (undefined *)0x18;
               (*g_pSimMgr->vftable[0x10].slot_0x04)(0x2734);
               if (*(short *)((int)pvVar3 + 4) < 1) {
@@ -365,7 +352,7 @@ LAB_004bb114:
             pTStack_68 = this;
             func_0x00401d70();
             pTStack_6c = (TToolBarCluster *)CONCAT22(extraout_var_01,(short)this->field30);
-            puStack_8._0_1_ = 7;
+            puStack_8 = (undefined1 *)CONCAT31(puStack_8._1_3_,7);
             func_0x00409a11();
             pTStack_6c = (TToolBarCluster *)local_44.m_pchData;
             func_0x0040232e();
@@ -377,9 +364,9 @@ LAB_004bb114:
             func_0x004047fa();
             pTStack_6c = (TToolBarCluster *)local_44.m_pchData;
             func_0x00405be1();
-            puStack_8 = (undefined1 *)CONCAT31(puStack_8._1_3_,6);
-            pTStack_6c = (TToolBarCluster *)0x4bb501;
-            func_0x00408035();
+            local_4 = CONCAT31(local_4._1_3_,6);
+            pTStack_68 = (TToolBarCluster *)0x4bb501;
+            thunk_DestroyScopedMapQuickDrawContext();
           }
           *(short *)&this[1].controlTag = sVar1;
         }
@@ -433,7 +420,8 @@ LAB_004bb5bb:
 // GHIDRA_NAME TToolBarCluster::InitializeCityProductionDialog
 // GHIDRA_PROTO undefined __thiscall InitializeCityProductionDialog(int param_1, int * param_2)
 
-void TToolBarCluster::InitializeCityProductionDialog(int param_1, int *param_2)
+void __thiscall
+TToolBarCluster::InitializeCityProductionDialog(TToolBarCluster *this,int param_1,int *param_2)
 
 {
   TGreatPower *pTVar1;
@@ -506,11 +494,11 @@ void TToolBarCluster::InitializeCityProductionDialog(int param_1, int *param_2)
   }
   (*g_pSimMgr->vftable[0x10].slot_0x04)();
   (*g_pSimMgr->vftable[0x10].slot_0x04)();
-  CString__Format();
+  CString::Format();
   p_Var4 = pTVar1->vftable->ApplyJoinEmpireModeForTargetNation_47;
   (*p_Var4)();
   (*p_Var4)();
-  CString__Format();
+  CString::Format();
   func_0x0040988b();
   func_0x004076b7();
   func_0x00404d22();
@@ -519,9 +507,9 @@ void TToolBarCluster::InitializeCityProductionDialog(int param_1, int *param_2)
     MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
     func_0x004057a4();
   }
-  CString__Format();
+  CString::Format();
   (*p_Var4)();
-  CString__Format();
+  CString::Format();
   (*g_pSimMgr->vftable[0xf].slot_0x04)();
   func_0x0040988b();
   func_0x004076b7();
@@ -531,9 +519,9 @@ void TToolBarCluster::InitializeCityProductionDialog(int param_1, int *param_2)
     MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
     func_0x004057a4();
   }
-  CString__Format();
+  CString::Format();
   (*p_Var4)();
-  CString__Format();
+  CString::Format();
   (*g_pSimMgr->vftable[0xf].slot_0x04)();
   func_0x0040988b();
   func_0x004076b7();
@@ -732,7 +720,8 @@ void __fastcall TToolBarCluster::InitializeDiplomacyMinisterActionControlsAndLab
 // GHIDRA_NAME TToolBarCluster::ValidateDiplomacyProposalTargetAndShowBlockedDetails
 // GHIDRA_PROTO undefined __thiscall ValidateDiplomacyProposalTargetAndShowBlockedDetails(void)
 
-undefined1 TToolBarCluster::ValidateDiplomacyProposalTargetAndShowBlockedDetails()
+undefined1 __thiscall
+TToolBarCluster::ValidateDiplomacyProposalTargetAndShowBlockedDetails(TToolBarCluster *this)
 
 {
   char cVar1;
@@ -1106,89 +1095,11 @@ TToolBarCluster::RunDiplomacyWaitSheetPopupAndAwaitResponse
   return iVar7 == 0x61636365;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0054CC00
-// GHIDRA_NAME TToolBarCluster::RefreshNationStatusLabelsAndCodesForSlotOrAll
-// GHIDRA_PROTO undefined RefreshNationStatusLabelsAndCodesForSlotOrAll()
-
-void __thiscall
-TToolBarCluster::RefreshNationStatusLabelsAndCodesForSlotOrAll(int param_1,CString param_2)
-
-{
-  CString *this;
-  bool bVar1;
-  CString CVar2;
-  char cVar3;
-  char *pcVar4;
-  int iVar5;
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 local_c;
-  undefined1 *puStack_8;
-  undefined4 local_4;
-  
-  CVar2.m_pchData = param_2.m_pchData;
-  local_4 = 0xffffffff;
-  puStack_8 = &LAB_00634e18;
-  local_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &local_c;
-  if (param_2.m_pchData == (char *)0xffffffff) {
-    iVar5 = 0;
-    do {
-      func_0x00409859(iVar5);
-      iVar5 = iVar5 + 1;
-    } while (iVar5 < 7);
-  }
-  else if (g_apNationStates[(int)param_2.m_pchData] == (TGreatPower *)0x0) {
-    CString::CString(&param_2,(char *)&g_szEmptyString);
-    local_4 = 0;
-    CString::operator=((CString *)(param_1 + 0x78 + (int)CVar2.m_pchData * 4),&param_2);
-    local_4 = 0xffffffff;
-    CString::~CString(&param_2);
-    *(undefined4 *)(param_1 + 0xbc + (int)CVar2.m_pchData * 4) = 0x64656164;
-  }
-  else {
-    if ((g_apNationStates[(int)param_2.m_pchData]->field_0xa0 == '\0') ||
-       (cVar3 = func_0x004044b7(param_2.m_pchData), cVar3 == '\0')) {
-      bVar1 = true;
-    }
-    else {
-      bVar1 = false;
-    }
-    CString::CString(&param_2);
-    local_4 = 1;
-    func_0x00405245(&param_2);
-    pcVar4 = &DAT_0069806c;
-    if (!bVar1) {
-      pcVar4 = (char *)&g_szEmptyString;
-    }
-    CString::CString((CString *)&stack0xffffffec,pcVar4);
-    this = (CString *)(param_1 + 0x78 + (int)CVar2.m_pchData * 4);
-    puStack_8._0_1_ = 2;
-    CString::operator=(this,(CString *)&stack0xffffffec);
-    puStack_8 = (undefined1 *)CONCAT31(puStack_8._1_3_,1);
-    CString::~CString((CString *)&stack0xffffffec);
-    CString::operator+=(&stack0x00000000);
-    pcVar4 = &DAT_006973c8;
-    if (!bVar1) {
-      pcVar4 = (char *)&g_szEmptyString;
-    }
-    CString::operator+=(this,pcVar4);
-    CString::operator=((CString *)(param_1 + 0x94 + (int)CVar2.m_pchData * 4),this);
-    cVar3 = func_0x004044b7(CVar2.m_pchData);
-    if (cVar3 == '\0') {
-      *(undefined4 *)(param_1 + 0xbc + (int)CVar2.m_pchData * 4) = 0x64656361;
-    }
-    local_4 = 0xffffffff;
-    CString::~CString(&param_2);
-  }
-  *unaff_FS_OFFSET = local_c;
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00554E70
 // GHIDRA_NAME TToolBarCluster::BuildNavyOrderStatusLineText
 // GHIDRA_PROTO undefined __thiscall BuildNavyOrderStatusLineText(CString param_1)
 
-void TToolBarCluster::BuildNavyOrderStatusLineText(CString param_1)
+void __thiscall TToolBarCluster::BuildNavyOrderStatusLineText(TToolBarCluster *this,CString param_1)
 
 {
   int iVar1;
@@ -1220,7 +1131,7 @@ void TToolBarCluster::BuildNavyOrderStatusLineText(CString param_1)
   for (iVar1 = this->field10; iVar1 != 0; iVar1 = *(int *)(iVar1 + 4)) {
     iVar3 = iVar3 + 1;
   }
-  CString__Format(&local_14,&g_szDecimalFormat,iVar3);
+  CString::Format(&local_14,&g_szDecimalFormat,iVar3);
   uVar2 = AssignSharedStringConcatRefAndCStr
                     (&param_1,&local_14,g_Build_Map_Order_LookupTable_00695794);
   local_4._0_1_ = 2;
@@ -1310,17 +1221,19 @@ LAB_00554fd0:
    Special Cases:
    - Action code 0 means no context action is available for current tile/flags. */
 
-int TToolBarCluster::TryHandleMapContextAction(short nTileIndex, int nInputFlags)
+int __thiscall
+TToolBarCluster::TryHandleMapContextAction(TToolBarCluster *this,short nTileIndex,int nInputFlags)
 
 {
-  int iVar1;
-  undefined *puVar2;
-  uint uVar3;
-  undefined4 uVar4;
+  undefined *puVar1;
+  uint uVar2;
+  void *pvVar3;
+  int iVar4;
+  undefined4 uVar5;
   undefined2 in_stack_00000006;
   
-  uVar3 = func_0x00407ee1(_nTileIndex,nInputFlags);
-  switch(uVar3) {
+  uVar2 = func_0x00407ee1(_nTileIndex,nInputFlags);
+  switch(uVar2) {
   case 2:
   case 3:
   case 4:
@@ -1329,40 +1242,43 @@ int TToolBarCluster::TryHandleMapContextAction(short nTileIndex, int nInputFlags
   case 7:
   case 8:
                     /* g_pCachedMapActionContext is forwarded to preserve dialog continuity. */
-    uVar4 = func_0x0040318e(_nTileIndex,uVar3 - 2,g_pCachedMapActionContext);
-    uVar4 = func_0x004016a9(uVar4);
-    return CONCAT31((int3)((uint)uVar4 >> 8),1);
+    iVar4 = uVar2 - 2;
+    uVar5 = g_pCachedMapActionContext;
+    pvVar3 = TOcean::thunk_GetMapActionContextByTileIndex(nTileIndex);
+    uVar5 = func_0x004016a9(pvVar3,iVar4,uVar5);
+    return CONCAT31((int3)((uint)uVar5 >> 8),1);
   case 9:
                     /* Action codes 2..8 open context dialogs with action type (code - 2). */
-    uVar4 = func_0x0040318e(_nTileIndex);
-    uVar4 = func_0x004027d9(uVar4);
-    return CONCAT31((int3)((uint)uVar4 >> 8),1);
+    pvVar3 = TOcean::thunk_GetMapActionContextByTileIndex(nTileIndex);
+    uVar5 = func_0x004027d9(pvVar3);
+    return CONCAT31((int3)((uint)uVar5 >> 8),1);
   case 10:
                     /* Action code 10 routes through UI runtime vfunc +0xF0 for active order
                        execution. */
-    puVar2 = g_pUiRuntimeContext->vftable;
-    uVar4 = func_0x0040397c();
-    uVar4 = (**(code **)(puVar2 + 0xf0))(uVar4);
-    return CONCAT31((int3)((uint)uVar4 >> 8),1);
+    puVar1 = g_pUiRuntimeContext->vftable;
+    uVar5 = func_0x0040397c();
+    uVar5 = (**(code **)(puVar1 + 0xf0))(uVar5);
+    return CONCAT31((int3)((uint)uVar5 >> 8),1);
   case 0xb:
                     /* Action code 11 maps tile -> linked entry list node before opening entry-order
                        dialog. */
     break;
   default:
-    return uVar3 & 0xffffff00;
+    return uVar2 & 0xffffff00;
   }
-  for (iVar1 = this->field04; (iVar1 != 0 && (*(short *)(iVar1 + 0x30) != nTileIndex));
-      iVar1 = *(int *)(iVar1 + 0x2c)) {
+  for (iVar4 = this->field04; (iVar4 != 0 && (*(short *)(iVar4 + 0x30) != nTileIndex));
+      iVar4 = *(int *)(iVar4 + 0x2c)) {
   }
-  uVar4 = func_0x00408247(iVar1);
-  return CONCAT31((int3)((uint)uVar4 >> 8),1);
+  uVar5 = func_0x00408247(iVar4);
+  return CONCAT31((int3)((uint)uVar5 >> 8),1);
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00568F90
 // GHIDRA_NAME TToolBarCluster::UpdateIndustryCapabilityControlStateAndValue
 // GHIDRA_PROTO undefined __thiscall UpdateIndustryCapabilityControlStateAndValue(int param_1)
 
-void TToolBarCluster::UpdateIndustryCapabilityControlStateAndValue(int param_1)
+void __thiscall
+TToolBarCluster::UpdateIndustryCapabilityControlStateAndValue(TToolBarCluster *this,int param_1)
 
 {
   undefined uVar1;
@@ -1467,7 +1383,7 @@ TCluster * TToolBarCluster::CreateObject(void)
   local_4 = 0;
   pTVar1 = (TCluster *)0x0;
   if (this != (TCluster *)0x0) {
-    TCluster::ConstructUiResourceEntryType4B0C0(this);
+    TCluster::thunk_ConstructUiResourceEntryType4B0C0(this);
     this->vftable = (TClusterVtbl *)&_vftable_;
     pTVar1 = this;
   }
@@ -1479,7 +1395,7 @@ TCluster * TToolBarCluster::CreateObject(void)
 // GHIDRA_NAME TToolBarCluster::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TToolBarCluster::GetRuntimeClass()
+CRuntimeClass * __thiscall TToolBarCluster::GetRuntimeClass(TToolBarCluster *this)
 
 {
   return &classTToolBarCluster;
@@ -1489,10 +1405,10 @@ CRuntimeClass * TToolBarCluster::GetRuntimeClass()
 // GHIDRA_NAME TToolBarCluster::TToolBarCluster
 // GHIDRA_PROTO undefined __thiscall TToolBarCluster(void)
 
-TToolBarCluster * TToolBarCluster::TToolBarCluster()
+TToolBarCluster * __thiscall TToolBarCluster::TToolBarCluster(TToolBarCluster *this)
 
 {
-  TCluster::ConstructUiResourceEntryType4B0C0((TCluster *)this);
+  TCluster::thunk_ConstructUiResourceEntryType4B0C0((TCluster *)this);
   this->vftable = &_vftable_;
   return this;
 }
@@ -1501,7 +1417,8 @@ TToolBarCluster * TToolBarCluster::TToolBarCluster()
 // GHIDRA_NAME TToolBarCluster::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TToolBarCluster * TToolBarCluster::_scalar_deleting_destructor_(byte param_1)
+TToolBarCluster * __thiscall
+TToolBarCluster::_scalar_deleting_destructor_(TToolBarCluster *this,byte param_1)
 
 {
   func_0x004027b6();
@@ -1515,7 +1432,8 @@ TToolBarCluster * TToolBarCluster::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TToolBarCluster::HandleEvent
 // GHIDRA_PROTO undefined __thiscall HandleEvent(int param_1, void * param_2, int param_3)
 
-void TToolBarCluster::HandleEvent(int param_1, void *param_2, int param_3)
+void __thiscall
+TToolBarCluster::HandleEvent(TToolBarCluster *this,int param_1,void *param_2,int param_3)
 
 {
   uint uVar1;
@@ -1792,7 +1710,7 @@ TToolBarCluster::HandleCursorHoverSelectionByChildHitTestAndFallback
 /* Rebuilds and refreshes turn-order status panel labels/controls based on active event code and
    current panel tag availability. */
 
-void TToolBarCluster::RefreshTurnOrderStatusPanelTextsAndControls()
+void __thiscall TToolBarCluster::RefreshTurnOrderStatusPanelTextsAndControls(TToolBarCluster *this)
 
 {
   TToolBarClusterVtbl *pTVar1;
@@ -2302,7 +2220,7 @@ TToolBarCluster::UpdateControlTagTreaTextFromNationAndMapContext
     }
     else {
       uVar5 = func_0x00401a41();
-      CString__Format(&CStack_14,&g_szDecimalFormat,uVar5);
+      CString::Format(&CStack_14,&g_szDecimalFormat,uVar5);
     }
     (*g_pSimMgr->vftable[0x10].slot_0x04)(0x2732,0x10,&CStack_30);
     func_0x0040988b(g_pSimMgr,&pCStack_40,uVar6,unaff_EBP);
@@ -2316,7 +2234,7 @@ TToolBarCluster::UpdateControlTagTreaTextFromNationAndMapContext
     uStack_10 = 1;
     (*g_pSimMgr->vftable[6].slot_0x04)();
     pCStack_40 = (CString *)&g_szDecimalFormat;
-    CString__Format(&CStack_2c);
+    CString::Format(&CStack_2c);
     pCStack_40 = &CStack_c;
     pCStack_40 = (CString *)AssignSharedStringConcatRefAndCStr(&stack0xffffffe0);
     CStack_14.m_pchData._0_1_ = 2;
@@ -2350,7 +2268,7 @@ LAB_00585e06:
 // GHIDRA_NAME TToolBarCluster::SehCleanup_ReleaseTwoTempSharedStringRefs
 // GHIDRA_PROTO undefined __thiscall SehCleanup_ReleaseTwoTempSharedStringRefs(void)
 
-void TToolBarCluster::SehCleanup_ReleaseTwoTempSharedStringRefs()
+void __thiscall TToolBarCluster::SehCleanup_ReleaseTwoTempSharedStringRefs(TToolBarCluster *this)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -2375,295 +2293,6 @@ void TToolBarCluster::SehCleanup_ReleaseTwoTempSharedStringRefs()
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00596CB0
-// GHIDRA_NAME TToolBarCluster::SetMapInteractionMode
-// GHIDRA_PROTO void __thiscall SetMapInteractionMode(short nMode)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Set active map interaction mode and synchronize associated UI/selection state.
-// GHIDRA_COMMENT
-// GHIDRA_COMMENT Algorithm:
-// GHIDRA_COMMENT 1. If requested mode differs from current mode, clear previous mode selection context.
-// GHIDRA_COMMENT 2. Resolve primary UI root/control objects for mode label updates.
-// GHIDRA_COMMENT 3. Update mode caption text when switching between province and civilian contexts.
-// GHIDRA_COMMENT 4. Trigger mode-specific overlay enter/exit handling when needed.
-// GHIDRA_COMMENT 5. Disable previous mode handler set and enable requested mode handler set.
-// GHIDRA_COMMENT 6. Persist requested mode value at controller offset +0x96.
-// GHIDRA_COMMENT
-// GHIDRA_COMMENT Parameters:
-// GHIDRA_COMMENT - this (IMPLICIT): map interaction controller.
-// GHIDRA_COMMENT - nMode: target interaction mode id.
-// GHIDRA_COMMENT
-// GHIDRA_COMMENT Returns:
-// GHIDRA_COMMENT - void.
-// GHIDRA_COMMENT - Side-effects: UI caption updates, handler table toggles, and selection state resets.
-// GHIDRA_COMMENT_END
-
-/* Set active map interaction mode and synchronize associated UI/selection state.
-   
-   Algorithm:
-   1. If requested mode differs from current mode, clear previous mode selection context.
-   2. Resolve primary UI root/control objects for mode label updates.
-   3. Update mode caption text when switching between province and civilian contexts.
-   4. Trigger mode-specific overlay enter/exit handling when needed.
-   5. Disable previous mode handler set and enable requested mode handler set.
-   6. Persist requested mode value at controller offset +0x96.
-   
-   Parameters:
-   - this (IMPLICIT): map interaction controller.
-   - nMode: target interaction mode id.
-   
-   Returns:
-   - void.
-   - Side-effects: UI caption updates, handler table toggles, and selection state resets. */
-
-void TToolBarCluster::SetMapInteractionMode(short nMode)
-
-{
-  undefined uVar1;
-  undefined3 extraout_var;
-  int *piVar2;
-  int *pModeCaptionControl;
-  CString *src_ref;
-  undefined4 extraout_ECX;
-  short nRequestedMode;
-  char *pcVar3;
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 uStack_48;
-  int *piStack_44;
-  undefined4 uStack_40;
-  CString CStack_3c;
-  CString CStack_34;
-  CString CStack_20;
-  CString aCStack_1c [4];
-  undefined4 dwSavedSehFrame;
-  undefined1 *puStack_8;
-  uint uStack_4;
-  int iUiVtable;
-  short nPreviousMode;
-  
-  nRequestedMode = nMode;
-  dwSavedSehFrame = *unaff_FS_OFFSET;
-  uStack_4 = 0xffffffff;
-  puStack_8 = &LAB_00638360;
-  *unaff_FS_OFFSET = &dwSavedSehFrame;
-  nPreviousMode = *(short *)((int)&this[1].field0c + 2);
-  if (nPreviousMode != nMode) {
-    if (nPreviousMode == 0) {
-      CStack_34.m_pchData = (char *)0x0;
-      CStack_3c.m_pchData = (char *)0x596d0c;
-      func_0x00406b3b();
-    }
-    else if (nPreviousMode == 1) {
-      CStack_34.m_pchData = (char *)0xffffffff;
-      func_0x00408337();
-    }
-    CStack_34.m_pchData = (char *)0x596d14;
-    uVar1 = (*this->vftable->SetForeignMinisterReadyFlag14)();
-    CStack_34.m_pchData = (char *)0x74627231;
-    piVar2 = (int *)(**(code **)(*(int *)CONCAT31(extraout_var,uVar1) + 0x94))();
-    if (piVar2 != (int *)0x0) {
-      if (*(short *)((int)&this[1].field0c + 2) == 1) {
-        CStack_34.m_pchData = (char *)0x666f7263;
-        pModeCaptionControl = (int *)(**(code **)(*piVar2 + 0x94))();
-        (**(code **)(*pModeCaptionControl + 0xc))();
-        pModeCaptionControl[7] = 0x73656173;
-        CString::CString(&CStack_20);
-        puStack_8 = (undefined1 *)0x0;
-        CString::CString((CString *)&stack0xffffffdc);
-        CStack_3c.m_pchData = (char *)0x12;
-        uStack_40 = 0x2730;
-        puStack_8 = (undefined1 *)CONCAT31(puStack_8._1_3_,1);
-        piStack_44 = (int *)0x596d93;
-        (*g_pSimMgr->vftable[0x10].slot_0x04)();
-        piStack_44 = (int *)&stack0xffffffd0;
-        uStack_48 = 8;
-        (*g_pSimMgr->vftable[0x10].slot_0x04)();
-        AssignSharedStringConcatRefAndCStr(&stack0xffffffd4);
-        CStack_20.m_pchData._0_1_ = 2;
-        src_ref = (CString *)AssignSharedStringConcatRefAndRef(&stack0xffffffd0);
-        CStack_20.m_pchData._0_1_ = 3;
-        CString::CString(&CStack_34,src_ref);
-        CStack_20.m_pchData._0_1_ = 4;
-        CString::operator=(&CStack_3c,&CStack_34);
-        CStack_20.m_pchData._0_1_ = 3;
-        CString::~CString(&CStack_34);
-        CStack_20.m_pchData._0_1_ = 2;
-        CString::~CString((CString *)&stack0xffffffd0);
-        CStack_20.m_pchData._0_1_ = 1;
-        CString::~CString((CString *)&stack0xffffffd4);
-        func_0x004076b7(&CStack_3c);
-        func_0x00404d54();
-        uStack_4 = uStack_4 & 0xffffff00;
-        CStack_34.m_pchData = (char *)0x596e4a;
-        CString::~CString(&CStack_20);
-        uStack_4 = 0xffffffff;
-        CStack_34.m_pchData = (char *)0x596e5b;
-        CString::~CString(aCStack_1c);
-        nRequestedMode = nMode;
-      }
-      else if (nRequestedMode == 1) {
-        CStack_34.m_pchData = (char *)0x596e71;
-        CString::CString((CString *)&nMode);
-        CStack_34.m_pchData = (char *)0x73656173;
-        uStack_4 = 5;
-        pModeCaptionControl = (int *)(**(code **)(*piVar2 + 0x94))();
-        (**(code **)(*pModeCaptionControl + 0xc))();
-        pModeCaptionControl[7] = 0x666f7263;
-        CStack_3c.m_pchData = (char *)0x11;
-        uStack_40 = 0x2732;
-        piStack_44 = (int *)0x596eb2;
-        (*g_pSimMgr->vftable[0x10].slot_0x04)();
-        CStack_20.m_pchData = (char *)&uStack_48;
-        uStack_48 = extraout_ECX;
-        piStack_44 = pModeCaptionControl;
-        func_0x004076b7();
-        func_0x00404d54();
-        uStack_4 = 0xffffffff;
-        CStack_34.m_pchData = (char *)0x596edd;
-        CString::~CString((CString *)&nMode);
-      }
-      iUiVtable = *piVar2;
-      CStack_34.m_pchData = (char *)0x596eea;
-      CStack_34.m_pchData = (char *)func_0x00403b16();
-      (**(code **)(iUiVtable + 0x1d0))();
-    }
-    pcVar3 = (char *)(int)nRequestedMode;
-    if (pcVar3 == (char *)0x0) {
-      CStack_34.m_pchData = pcVar3;
-      func_0x00404633();
-    }
-    nPreviousMode = *(short *)((int)&this[1].field0c + 2);
-    if (nPreviousMode < 3) {
-      CStack_34.m_pchData = (char *)0x1;
-      CStack_3c.m_pchData = (char *)0x596f28;
-      (**(code **)(*(int *)(&this[1].ownerOffsetY)[nPreviousMode] + 0xf0))();
-    }
-    *(short *)((int)&this[1].field0c + 2) = nRequestedMode;
-    if (nRequestedMode < 3) {
-      CStack_34.m_pchData = (char *)0x1;
-      CStack_3c.m_pchData = (char *)0x596f4e;
-      (**(code **)(*(int *)(&this[1].ownerOffsetY)[(int)pcVar3] + 0xf0))();
-    }
-  }
-  *unaff_FS_OFFSET = dwSavedSehFrame;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00597810
-// GHIDRA_NAME TToolBarCluster::RefreshMapOrderEntryPanel
-// GHIDRA_PROTO void __thiscall RefreshMapOrderEntryPanel(void * pMapOrderEntry)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Refreshes map order-entry panel controls from active order-entry data.
-// GHIDRA_COMMENT Algorithm:
-// GHIDRA_COMMENT 1. Forces interaction mode to order mode (2).
-// GHIDRA_COMMENT 2. If pMapOrderEntry is null, clears four slider controls (0slc..3slc).
-// GHIDRA_COMMENT 3. Otherwise updates UI threshold from entry child constraints.
-// GHIDRA_COMMENT 4. Loads four slider values from entry short array at offsets +0x1E,+0x20,+0x22,+0x24.
-// GHIDRA_COMMENT 5. Updates command name/value label from entry->command descriptor (entry+4).
-// GHIDRA_COMMENT Data model notes:
-// GHIDRA_COMMENT - Order-entry contains per-category production/order quotas at +0x1E..+0x24.
-// GHIDRA_COMMENT - These values are persisted in the order-entry object and reused when selecting the entry again.
-// GHIDRA_COMMENT_END
-
-/* Refreshes map order-entry panel controls from active order-entry data.
-   Algorithm:
-   1. Forces interaction mode to order mode (2).
-   2. If pMapOrderEntry is null, clears four slider controls (0slc..3slc).
-   3. Otherwise updates UI threshold from entry child constraints.
-   4. Loads four slider values from entry short array at offsets +0x1E,+0x20,+0x22,+0x24.
-   5. Updates command name/value label from entry->command descriptor (entry+4).
-   Data model notes:
-   - Order-entry contains per-category production/order quotas at +0x1E..+0x24.
-   - These values are persisted in the order-entry object and reused when selecting the entry again.
-    */
-
-void TToolBarCluster::RefreshMapOrderEntryPanel(void *pMapOrderEntry)
-
-{
-  _vslot_fn *p_Var1;
-  TToolBarClusterVtbl *pTVar2;
-  undefined uVar3;
-  short sVar4;
-  undefined3 extraout_var;
-  undefined4 uVar5;
-  undefined3 extraout_var_00;
-  undefined3 extraout_var_01;
-  undefined2 extraout_var_02;
-  int iVar6;
-  int unaff_retaddr;
-  undefined4 uVar7;
-  
-  func_0x004032a1(2);
-  func_0x004011e0();
-  if (unaff_retaddr == 0) {
-    iVar6 = 0;
-    p_Var1 = this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25;
-    do {
-      uVar3 = (*p_Var1)(iVar6 + 0x636c7330);
-      (**(code **)(*(int *)CONCAT31(extraout_var,uVar3) + 0xc))();
-      func_0x0040905c(0,0xffffffff);
-      iVar6 = iVar6 + 1;
-    } while (iVar6 < 4);
-    return;
-  }
-  uVar7 = 1;
-  uVar5 = func_0x00408ad0(1);
-  func_0x00401037(uVar5);
-  pTVar2 = this->vftable;
-  (**(code **)&pTVar2->field_0x1e0)
-            (CONCAT22(extraout_var_02,*(undefined2 *)(*(int *)(unaff_retaddr + 0x18) + 0xc)));
-  p_Var1 = pTVar2->OrphanLeaf_NoCall_Ins07_004d8920_25;
-  iVar6 = 0;
-  do {
-    uVar3 = (*p_Var1)(iVar6 + 0x636c7330);
-    (**(code **)(*(int *)CONCAT31(extraout_var_00,uVar3) + 0xc))();
-    sVar4 = func_0x00402153(iVar6);
-    func_0x0040905c((int)(short)uVar7,(int)sVar4);
-    iVar6 = iVar6 + 1;
-  } while (iVar6 < 4);
-  uVar3 = (*p_Var1)(0x756e6176);
-  iVar6 = *(int *)CONCAT31(extraout_var_01,uVar3);
-  (**(code **)(iVar6 + 0xc))();
-  (**(code **)(iVar6 + 0x1c8))(*(int *)(unaff_retaddr + 4) + 0x61677230);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00597950
-// GHIDRA_NAME TToolBarCluster::SetActiveMapOrderEntry
-// GHIDRA_PROTO void __thiscall SetActiveMapOrderEntry(void * pMapOrderEntry)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Sets the active map-order entry pointer (this+0x98), updates ownership references, and refreshes the order-entry panel.
-// GHIDRA_COMMENT If pMapOrderEntry is null, clears panel values; otherwise loads panel values from the selected entry.
-// GHIDRA_COMMENT_END
-
-/* Sets the active map-order entry pointer (this+0x98), updates ownership references, and refreshes
-   the order-entry panel.
-   If pMapOrderEntry is null, clears panel values; otherwise loads panel values from the selected
-   entry. */
-
-void TToolBarCluster::SetActiveMapOrderEntry(void *pMapOrderEntry)
-
-{
-  undefined4 uVar1;
-  int unaff_retaddr;
-  
-  func_0x004032a1(2);
-  if ((char)this[1].field0c == '\0') {
-    func_0x004019ba(this[1].field10);
-  }
-  this[1].field10 = unaff_retaddr;
-  if ((char)this[1].field0c == '\0') {
-    func_0x004019ba(unaff_retaddr);
-  }
-  if (unaff_retaddr == 0) {
-    func_0x00408995(0);
-    return;
-  }
-  uVar1 = func_0x0040928c(unaff_retaddr);
-  func_0x00408995(uVar1);
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00598840
 // GHIDRA_NAME TToolBarCluster::InvalidateMapRegionForEntryIfUiPassive
 // GHIDRA_PROTO undefined __thiscall InvalidateMapRegionForEntryIfUiPassive(undefined4 param_1)
@@ -2681,11 +2310,12 @@ void TToolBarCluster::SetActiveMapOrderEntry(void *pMapOrderEntry)
    - If entry flag at +0x94 is clear, calls InvalidateMapRegionForOrderEntry(entry).
    - Otherwise no-op. */
 
-void TToolBarCluster::InvalidateMapRegionForEntryIfUiPassive(undefined4 param_1)
+void __thiscall
+TToolBarCluster::InvalidateMapRegionForEntryIfUiPassive(TToolBarCluster *this,undefined4 param_1)
 
 {
   if ((char)this[1].field0c == '\0') {
-    func_0x004019ba(param_1);
+    thunk_InvalidateMapRegionForOrderEntry(param_1);
   }
   return;
 }
@@ -2712,12 +2342,11 @@ TToolBarCluster::TrySelectNextValidMapOrderEntry
   char cVar1;
   undefined4 uVar2;
   TZone *pTVar3;
-  char unaff_retaddr;
   
   pTVar3 = (TZone *)this[1].field10;
-  func_0x0040928c(0);
+  TOcean::thunk_EnsureSelectedTaskForceForOrderOwnerAndRefresh(0);
   if (pTVar3 != (TZone *)0x0) {
-    if (unaff_retaddr == '\0') {
+    if ((char)pMapInteractionState == '\0') {
       pTVar3 = *(TZone **)&pTVar3->field_0x18;
     }
     if (pTVar3 != (TZone *)0x0) goto LAB_005998d8;
@@ -2739,17 +2368,17 @@ LAB_005998d8:
   }
   func_0x004032a1(2);
   if ((char)this[1].field0c == '\0') {
-    func_0x004019ba(this[1].field10);
+    thunk_InvalidateMapRegionForOrderEntry(this[1].field10);
   }
   this[1].field10 = (int)pTVar3;
   if ((char)this[1].field0c == '\0') {
-    func_0x004019ba(pTVar3);
+    thunk_InvalidateMapRegionForOrderEntry(pTVar3);
   }
   if (pTVar3 == (TZone *)0x0) {
     func_0x00408995(0);
     return 1;
   }
-  uVar2 = func_0x0040928c(pTVar3);
+  uVar2 = TOcean::thunk_EnsureSelectedTaskForceForOrderOwnerAndRefresh(pTVar3);
   func_0x00408995(uVar2);
   return 1;
 }
@@ -2758,7 +2387,8 @@ LAB_005998d8:
 // GHIDRA_NAME TToolBarCluster::UpdateTradeSelectionStateAndRefreshUiIfChanged
 // GHIDRA_PROTO undefined __thiscall UpdateTradeSelectionStateAndRefreshUiIfChanged(char param_1)
 
-void TToolBarCluster::UpdateTradeSelectionStateAndRefreshUiIfChanged(char param_1)
+void __thiscall
+TToolBarCluster::UpdateTradeSelectionStateAndRefreshUiIfChanged(TToolBarCluster *this,char param_1)
 
 {
   _vslot_fn *p_Var1;
@@ -2902,29 +2532,5 @@ void TToolBarCluster::UpdateTradeSelectionStateAndRefreshUiIfChanged(char param_
     *(undefined1 *)((int)&this[1].field14 + 2) = (undefined1)uStack_4c;
   }
   return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x006003DE
-// GHIDRA_NAME TToolBarCluster::CTime::FormatGmt
-// GHIDRA_PROTO undefined CTime::FormatGmt()
-
-CString * __thiscall
-TToolBarCluster::CTime__FormatGmt(undefined4 param_1,CString *param_2,undefined4 param_3)
-
-{
-  int iVar1;
-  char local_88 [128];
-  undefined4 local_8;
-  
-  local_8 = 0;
-  iVar1 = _gmtime(param_1);
-  if (iVar1 != 0) {
-    iVar1 = _strftime(local_88,0x80,param_3,iVar1);
-    if (iVar1 != 0) goto LAB_00600419;
-  }
-  local_88[0] = '\0';
-LAB_00600419:
-  CString::CString(param_2,local_88);
-  return param_2;
 }
 

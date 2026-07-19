@@ -46,7 +46,8 @@ undefined ** TArmyMission::GetRuntimeClass(void)
 // GHIDRA_NAME TArmyMission::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TArmyMission * TArmyMission::_scalar_deleting_destructor_(byte param_1)
+TArmyMission * __thiscall
+TArmyMission::_scalar_deleting_destructor_(TArmyMission *this,byte param_1)
 
 {
   func_0x00407b94();
@@ -60,7 +61,7 @@ TArmyMission * TArmyMission::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TArmyMission::CleanupTArmyMissionAndReleaseChildContext
 // GHIDRA_PROTO undefined __thiscall CleanupTArmyMissionAndReleaseChildContext(void)
 
-void TArmyMission::CleanupTArmyMissionAndReleaseChildContext()
+void __thiscall TArmyMission::CleanupTArmyMissionAndReleaseChildContext(TArmyMission *this)
 
 {
   int iVar1;

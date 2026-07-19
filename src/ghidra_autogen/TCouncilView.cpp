@@ -37,17 +37,17 @@ undefined4 * TCouncilView::CreateObject(void)
 // GHIDRA_NAME TCouncilView::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TCouncilView::GetRuntimeClass()
+CRuntimeClass * __thiscall TCouncilView::GetRuntimeClass(TCouncilView *this)
 
 {
-  return &classRuntimeClass;
+  return &classTCouncilView;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004FBA70
-// GHIDRA_NAME TCouncilView::RefreshDiplomacyNationOverlayGeometryAndLabels
-// GHIDRA_PROTO undefined __thiscall RefreshDiplomacyNationOverlayGeometryAndLabels(void)
+// GHIDRA_NAME TCouncilView::NoOpUiLifecycleHook
+// GHIDRA_PROTO undefined __thiscall NoOpUiLifecycleHook(void)
 
-void TCouncilView::RefreshDiplomacyNationOverlayGeometryAndLabels()
+void __thiscall TCouncilView::NoOpUiLifecycleHook(TCouncilView *this)
 
 {
   short sVar1;
@@ -154,10 +154,10 @@ void TCouncilView::RefreshDiplomacyNationOverlayGeometryAndLabels()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004FBD60
-// GHIDRA_NAME TCouncilView::DestructTCouncilViewAndMaybeFree
-// GHIDRA_PROTO undefined __thiscall DestructTCouncilViewAndMaybeFree(int param_1, int param_2)
+// GHIDRA_NAME TCouncilView::HandleEvent
+// GHIDRA_PROTO undefined __thiscall HandleEvent(int param_1, int param_2)
 
-void TCouncilView::DestructTCouncilViewAndMaybeFree(int param_1, int param_2)
+void __thiscall TCouncilView::HandleEvent(TCouncilView *this,int param_1,int param_2)
 
 {
   int *piVar1;
@@ -179,7 +179,7 @@ void TCouncilView::DestructTCouncilViewAndMaybeFree(int param_1, int param_2)
       puVar2 = puVar2 + 1;
     } while ((int)piVar1 < 0x696990);
     if ((int)puVar2 < 6) {
-      WrapperFor_InvalidateCityDialogRectRegion_At004f6d90(puVar2,unaff_ESI);
+      thunk_WrapperFor_InvalidateCityDialogRectRegion_At004f6d90(puVar2,unaff_ESI);
       return;
     }
   }
@@ -190,11 +190,11 @@ void TCouncilView::DestructTCouncilViewAndMaybeFree(int param_1, int param_2)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004FC950
-// GHIDRA_NAME TCouncilView::WrapperFor_thunk_HandleCursorHoverSelectionByChildHitTestAndFallback_At004fc950
-// GHIDRA_PROTO undefined __thiscall WrapperFor_thunk_HandleCursorHoverSelectionByChildHitTestAndFallback_At004fc950(undefined4 * param_1, undefined4 param_2)
+// GHIDRA_NAME TCouncilView::HandleCursorHoverSelectionByChildHitTestAndFallback
+// GHIDRA_PROTO undefined __thiscall HandleCursorHoverSelectionByChildHitTestAndFallback(undefined4 * param_1, undefined4 param_2)
 
 void __thiscall
-TCouncilView::WrapperFor_thunk_HandleCursorHoverSelectionByChildHitTestAndFallback_At004fc950
+TCouncilView::HandleCursorHoverSelectionByChildHitTestAndFallback
           (TCouncilView *this,undefined4 *param_1,undefined4 param_2)
 
 {

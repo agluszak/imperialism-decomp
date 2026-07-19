@@ -4,12 +4,11 @@
 // Bucket: TDiplomacyMgr.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00413250
-// GHIDRA_NAME TDiplomacyMgr::WrapperFor_IsNationSlotEligibleForEventProcessingAt413250
-// GHIDRA_PROTO undefined __thiscall WrapperFor_IsNationSlotEligibleForEventProcessingAt413250(uint param_1)
+// GHIDRA_NAME TDiplomacyMgr::IsNationSlotEligibleForEventProcessing
+// GHIDRA_PROTO undefined __thiscall IsNationSlotEligibleForEventProcessing(uint param_1)
 
 int __thiscall
-TDiplomacyMgr::WrapperFor_IsNationSlotEligibleForEventProcessingAt413250
-          (TDiplomacyMgr *this,uint param_1)
+TDiplomacyMgr::IsNationSlotEligibleForEventProcessing(TDiplomacyMgr *this,uint param_1)
 
 {
   uint uVar1;
@@ -86,7 +85,7 @@ undefined4 * TDiplomacyMgr::CreateObject(void)
 // GHIDRA_NAME TDiplomacyMgr::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TDiplomacyMgr::GetRuntimeClass()
+CRuntimeClass * __thiscall TDiplomacyMgr::GetRuntimeClass(TDiplomacyMgr *this)
 
 {
   return &classTDiplomacyMgr;
@@ -96,7 +95,8 @@ CRuntimeClass * TDiplomacyMgr::GetRuntimeClass()
 // GHIDRA_NAME TDiplomacyMgr::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TDiplomacyMgr * TDiplomacyMgr::_scalar_deleting_destructor_(byte param_1)
+TDiplomacyMgr * __thiscall
+TDiplomacyMgr::_scalar_deleting_destructor_(TDiplomacyMgr *this,byte param_1)
 
 {
   func_0x00406f7d();
@@ -110,7 +110,7 @@ TDiplomacyMgr * TDiplomacyMgr::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TDiplomacyMgr::InitializeTDiplomacyTurnStateManagerDefaults
 // GHIDRA_PROTO undefined __thiscall InitializeTDiplomacyTurnStateManagerDefaults(void)
 
-void TDiplomacyMgr::InitializeTDiplomacyTurnStateManagerDefaults()
+void __thiscall TDiplomacyMgr::InitializeTDiplomacyTurnStateManagerDefaults(TDiplomacyMgr *this)
 
 {
   CPtrArray *this_00;
@@ -176,11 +176,58 @@ void TDiplomacyMgr::InitializeTDiplomacyTurnStateManagerDefaults()
   return;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x004EEE60
+// GHIDRA_NAME TDiplomacyMgr::RemoveNationSlotAndNotifyPeers_Impl
+// GHIDRA_PROTO undefined RemoveNationSlotAndNotifyPeers_Impl()
+
+void __thiscall TDiplomacyMgr::RemoveNationSlotAndNotifyPeers_Impl(int param_1,short param_2)
+
+{
+  int iVar1;
+  undefined2 *puVar2;
+  int iVar3;
+  int iVar4;
+  undefined2 *puVar5;
+  short *psVar6;
+  
+  iVar1 = (int)param_2;
+  iVar4 = 0;
+  iVar3 = param_1 + iVar1 * 0x2e;
+  puVar2 = (undefined2 *)(param_1 + 0x79c + iVar1 * 2);
+  psVar6 = (short *)(iVar3 + 0xbbe);
+  do {
+    if ((*psVar6 != 6) || (g_apTerrainTypeDescriptorTable[iVar1] == (TCountry *)0x0)) {
+      *psVar6 = 4;
+      puVar2[0x211] = 4;
+      if (g_apTerrainTypeDescriptorTable[iVar1] == (TCountry *)0x0) {
+        *(undefined2 *)(param_1 + 0x79c + (iVar1 * 0x17 + iVar4) * 2) = 0x5a;
+        *puVar2 = 0x5a;
+      }
+    }
+    iVar4 = iVar4 + 1;
+    psVar6 = psVar6 + 1;
+    puVar2 = puVar2 + 0x17;
+  } while (iVar4 < 7);
+  puVar2 = (undefined2 *)(param_1 + 0x8de + iVar1 * 2);
+  puVar5 = (undefined2 *)(iVar3 + 0x7aa);
+  iVar3 = 0x10;
+  do {
+    puVar5[0x211] = 4;
+    puVar2[0x211] = 4;
+    *puVar5 = 0x5a;
+    *puVar2 = 0x5a;
+    puVar5 = puVar5 + 1;
+    puVar2 = puVar2 + 0x17;
+    iVar3 = iVar3 + -1;
+  } while (iVar3 != 0);
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x004EF080
 // GHIDRA_NAME TDiplomacyMgr::ReadFrom
 // GHIDRA_PROTO undefined __thiscall ReadFrom(int * param_1)
 
-void TDiplomacyMgr::ReadFrom(int *param_1)
+void __thiscall TDiplomacyMgr::ReadFrom(TDiplomacyMgr *this,int *param_1)
 
 {
   undefined1 uVar1;
@@ -284,6 +331,27 @@ void TDiplomacyMgr::ReadFrom(int *param_1)
   return;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x004EF540
+// GHIDRA_NAME TDiplomacyMgr::IsNationPairAtWar
+// GHIDRA_PROTO undefined __thiscall IsNationPairAtWar(short param_1, short param_2)
+
+undefined4 __thiscall
+TDiplomacyMgr::IsNationPairAtWar(TDiplomacyMgr *this,short param_1,short param_2)
+
+{
+  undefined uVar1;
+  undefined3 extraout_var;
+  undefined2 in_stack_00000006;
+  undefined2 in_stack_0000000a;
+  
+  if ((g_apTerrainTypeDescriptorTable[param_1] != (TCountry *)0x0) &&
+     (g_apTerrainTypeDescriptorTable[param_2] != (TCountry *)0x0)) {
+    uVar1 = (*this->vftable[0xe].GetTDiplomacyMgrClassNamePointer)(_param_1,_param_2);
+    return CONCAT31(extraout_var,(short)CONCAT31(extraout_var,uVar1) == 6);
+  }
+  return 0;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x004EF590
 // GHIDRA_NAME TDiplomacyMgr::IsNationPairRelationTurnStampOutOfDate
 // GHIDRA_PROTO undefined __thiscall IsNationPairRelationTurnStampOutOfDate(short param_1, short param_2)
@@ -313,7 +381,8 @@ TDiplomacyMgr::IsNationPairRelationTurnStampOutOfDate
 // GHIDRA_NAME TDiplomacyMgr::HasAnyWarRelationTurnStampOutOfDateForNation
 // GHIDRA_PROTO undefined __thiscall HasAnyWarRelationTurnStampOutOfDateForNation(void)
 
-undefined1 TDiplomacyMgr::HasAnyWarRelationTurnStampOutOfDateForNation()
+undefined1 __thiscall
+TDiplomacyMgr::HasAnyWarRelationTurnStampOutOfDateForNation(TDiplomacyMgr *this)
 
 {
   TDiplomacyMgr_GetTDiplomacyMgrClassNamePointer_0x00 *pTVar1;
@@ -497,7 +566,7 @@ TDiplomacyMgr::ValidateDiplomacyActionTypeAgainstTargetAndSetRejectCode
 // GHIDRA_NAME TDiplomacyMgr::HasAllianceGuardSlot60
 // GHIDRA_PROTO undefined __thiscall HasAllianceGuardSlot60(undefined4 param_1)
 
-undefined4 TDiplomacyMgr::HasAllianceGuardSlot60(undefined4 param_1)
+undefined4 __thiscall TDiplomacyMgr::HasAllianceGuardSlot60(TDiplomacyMgr *this,undefined4 param_1)
 
 {
   TDiplomacyMgr_slot_0x04_0x04 *pTVar1;
@@ -635,7 +704,8 @@ TDiplomacyMgr::CopyDiplomacyStandingMatrixRowAndColumnSlot2c
 // GHIDRA_NAME TDiplomacyMgr::ApplyRelationCode4AndQueueEvent18ForTargetNation
 // GHIDRA_PROTO undefined __thiscall ApplyRelationCode4AndQueueEvent18ForTargetNation(short param_1)
 
-void TDiplomacyMgr::ApplyRelationCode4AndQueueEvent18ForTargetNation(short param_1)
+void __thiscall
+TDiplomacyMgr::ApplyRelationCode4AndQueueEvent18ForTargetNation(TDiplomacyMgr *this,short param_1)
 
 {
   TDiplomacyMgrVtbl *pTVar1;
@@ -651,7 +721,9 @@ void TDiplomacyMgr::ApplyRelationCode4AndQueueEvent18ForTargetNation(short param
   if (g_apTerrainTypeDescriptorTable[in_stack_00000008] != (TCountry *)0x0) {
     (*g_apTerrainTypeDescriptorTable[in_stack_00000008]->vftable->OrphanRetStub_004d7f80)
               (_param_1,0x139);
-    func_0x00406758(0x18,(int)in_stack_00000008,(int)param_1,0);
+    TCountry::thunk_QueueInterNationEventRecordDeduped
+              ((TCountry *)g_pInterNationEventQueueManager,0x18,(int)in_stack_00000008,(int)param_1,
+               '\0');
   }
   return;
 }
@@ -757,7 +829,7 @@ LAB_004f00ff:
 // GHIDRA_NAME TDiplomacyMgr::ApplyDiplomacyInterNationStatesForTurn
 // GHIDRA_PROTO undefined __thiscall ApplyDiplomacyInterNationStatesForTurn(void)
 
-void TDiplomacyMgr::ApplyDiplomacyInterNationStatesForTurn()
+void __thiscall TDiplomacyMgr::ApplyDiplomacyInterNationStatesForTurn(TDiplomacyMgr *this)
 
 {
   short sVar1;
@@ -857,13 +929,15 @@ void TDiplomacyMgr::ApplyDiplomacyInterNationStatesForTurn()
                 *(undefined2 *)
                  (&g_pDiplomacyTurnStateManager->field_0x1402 + (iStack_24 + iVar7) * 2) = 1;
                 *(undefined2 *)(&pTVar3->field_0x1402 + (iVar9 + iVar5) * 2) = 1;
-                func_0x00406758(0x12,iVar9,iVar7,0);
+                TCountry::thunk_QueueInterNationEventRecordDeduped
+                          ((TCountry *)g_pInterNationEventQueueManager,0x12,iVar9,iVar7,'\0');
               }
               else if (sVar1 == 0x134) {
                 *(undefined2 *)
                  (&g_pDiplomacyTurnStateManager->field_0x1402 + (iStack_24 + iVar7) * 2) = 2;
                 *(undefined2 *)(&pTVar3->field_0x1402 + (iVar9 + iVar5) * 2) = 2;
-                func_0x00406758(0x14,iVar9,iVar7,0);
+                TCountry::thunk_QueueInterNationEventRecordDeduped
+                          ((TCountry *)g_pInterNationEventQueueManager,0x14,iVar9,iVar7,'\0');
               }
               else if (sVar1 == 0x131) {
                 cVar4 = (*this->vftable[8].slot_0x04)(iStack_30,iStack_2c);
@@ -907,7 +981,8 @@ void TDiplomacyMgr::ApplyDiplomacyInterNationStatesForTurn()
 // GHIDRA_NAME TDiplomacyMgr::SelectPriorityNationIndicesForMinorCapabilityRows
 // GHIDRA_PROTO undefined __thiscall SelectPriorityNationIndicesForMinorCapabilityRows(void)
 
-void TDiplomacyMgr::SelectPriorityNationIndicesForMinorCapabilityRows()
+void __thiscall
+TDiplomacyMgr::SelectPriorityNationIndicesForMinorCapabilityRows(TDiplomacyMgr *this)
 
 {
   short sVar1;
@@ -1077,7 +1152,8 @@ LAB_004f081d:
 // GHIDRA_NAME TDiplomacyMgr::RebuildDiplomacyStandingAndInfluenceMatrices
 // GHIDRA_PROTO undefined __thiscall RebuildDiplomacyStandingAndInfluenceMatrices(char param_1)
 
-void TDiplomacyMgr::RebuildDiplomacyStandingAndInfluenceMatrices(char param_1)
+void __thiscall
+TDiplomacyMgr::RebuildDiplomacyStandingAndInfluenceMatrices(TDiplomacyMgr *this,char param_1)
 
 {
   TCountry *pTVar1;
@@ -1316,7 +1392,7 @@ LAB_004f12bd:
 // GHIDRA_NAME TDiplomacyMgr::InitializeDiplomacyStandingBaselineRandom
 // GHIDRA_PROTO undefined __thiscall InitializeDiplomacyStandingBaselineRandom(void)
 
-int TDiplomacyMgr::InitializeDiplomacyStandingBaselineRandom()
+int __thiscall TDiplomacyMgr::InitializeDiplomacyStandingBaselineRandom(TDiplomacyMgr *this)
 
 {
   short sVar1;
@@ -1507,7 +1583,8 @@ TDiplomacyMgr::ShowRelationCodeNoticeForNationPairIfRelevant
 // GHIDRA_NAME TDiplomacyMgr::GetNationPairDiplomacyRelationCode
 // GHIDRA_PROTO undefined __thiscall GetNationPairDiplomacyRelationCode(short param_1, short param_2)
 
-undefined4 TDiplomacyMgr::GetNationPairDiplomacyRelationCode(short param_1, short param_2)
+undefined4 __thiscall
+TDiplomacyMgr::GetNationPairDiplomacyRelationCode(TDiplomacyMgr *this,short param_1,short param_2)
 
 {
   return CONCAT22((short)((uint)(&this->field_0xbbe + param_1 * 0x2e) >> 0x10),
@@ -1518,7 +1595,7 @@ undefined4 TDiplomacyMgr::GetNationPairDiplomacyRelationCode(short param_1, shor
 // GHIDRA_NAME TDiplomacyMgr::SetNationPairDiplomacyRelationCodeFinal
 // GHIDRA_PROTO undefined __thiscall SetNationPairDiplomacyRelationCodeFinal(void)
 
-void TDiplomacyMgr::SetNationPairDiplomacyRelationCodeFinal()
+void __thiscall TDiplomacyMgr::SetNationPairDiplomacyRelationCodeFinal(TDiplomacyMgr *this)
 
 {
   (*this->vftable[0xe].slot_0x04)();
@@ -1529,7 +1606,8 @@ void TDiplomacyMgr::SetNationPairDiplomacyRelationCodeFinal()
 // GHIDRA_NAME TDiplomacyMgr::SetNationPairDiplomacyRelationCode
 // GHIDRA_PROTO undefined __thiscall SetNationPairDiplomacyRelationCode(short param_1, short param_2)
 
-void TDiplomacyMgr::SetNationPairDiplomacyRelationCode(short param_1, short param_2)
+void __thiscall
+TDiplomacyMgr::SetNationPairDiplomacyRelationCode(TDiplomacyMgr *this,short param_1,short param_2)
 
 {
   code *pcVar1;
@@ -1590,7 +1668,8 @@ void TDiplomacyMgr::SetNationPairDiplomacyRelationCode(short param_1, short para
   param_1 = (short)pTVar3;
   switch(param_1) {
   case 2:
-    func_0x00406758(0x1a,iVar9,iVar10,0);
+    TCountry::thunk_QueueInterNationEventRecordDeduped
+              ((TCountry *)g_pInterNationEventQueueManager,0x1a,iVar9,iVar10,'\0');
     return;
   case 3:
     uVar12 = CONCAT22(uVar8,*(short *)(&this->field_0x79c + (int)unaff_EBP * 2) + 10);
@@ -1626,7 +1705,8 @@ LAB_004f1e25:
   case 6:
     if ((*(short *)&g_apTerrainTypeDescriptorTable[iVar9]->field_0xe == -1) &&
        (*(short *)&g_apTerrainTypeDescriptorTable[iVar10]->field_0xe < 200)) {
-      func_0x00406758(0x19,iVar9,iVar10,0);
+      TCountry::thunk_QueueInterNationEventRecordDeduped
+                ((TCountry *)g_pInterNationEventQueueManager,0x19,iVar9,iVar10,'\0');
     }
     iVar11 = 300;
     (*g_apTerrainTypeDescriptorTable[iVar9]->vftable->OrphanLeaf_NoCall_Ins07_004d8920_12)
@@ -1697,7 +1777,7 @@ TDiplomacyMgr::BuildRelationshipListSlot88
 // GHIDRA_NAME TDiplomacyMgr::CountMajorAllianceRelationsSlot8c
 // GHIDRA_PROTO undefined __thiscall CountMajorAllianceRelationsSlot8c(int param_1)
 
-int TDiplomacyMgr::CountMajorAllianceRelationsSlot8c(int param_1)
+int __thiscall TDiplomacyMgr::CountMajorAllianceRelationsSlot8c(TDiplomacyMgr *this,int param_1)
 
 {
   int iVar1;
@@ -1721,7 +1801,8 @@ int TDiplomacyMgr::CountMajorAllianceRelationsSlot8c(int param_1)
 // GHIDRA_NAME TDiplomacyMgr::GetNthAlliedMajorNationSlot90
 // GHIDRA_PROTO undefined __thiscall GetNthAlliedMajorNationSlot90(int param_1, int param_2)
 
-int TDiplomacyMgr::GetNthAlliedMajorNationSlot90(int param_1, int param_2)
+int __thiscall
+TDiplomacyMgr::GetNthAlliedMajorNationSlot90(TDiplomacyMgr *this,int param_1,int param_2)
 
 {
   int iVar1;
@@ -1866,5 +1947,16 @@ TDiplomacyMgr::SelectDiplomacyTargetNationFromCandidateSetSlot94
   }
   *unaff_FS_OFFSET = 0xffffffff;
   return unaff_EBP;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004F27F0
+// GHIDRA_NAME TDiplomacyMgr::ApplyTurnEvent2SyncPacketToRelationMatrix
+// GHIDRA_PROTO undefined ApplyTurnEvent2SyncPacketToRelationMatrix()
+
+void __fastcall TDiplomacyMgr::ApplyTurnEvent2SyncPacketToRelationMatrix(int param_1)
+
+{
+  func_0x004059b1(param_1 + 0x79c);
+  return;
 }
 

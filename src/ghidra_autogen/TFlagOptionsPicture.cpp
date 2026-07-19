@@ -7,7 +7,8 @@
 // GHIDRA_NAME TFlagOptionsPicture::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TFlagOptionsPicture * TFlagOptionsPicture::_scalar_deleting_destructor_(byte param_1)
+TFlagOptionsPicture * __thiscall
+TFlagOptionsPicture::_scalar_deleting_destructor_(TFlagOptionsPicture *this,byte param_1)
 
 {
   func_0x004053e4();
@@ -51,7 +52,7 @@ undefined4 * TFlagOptionsPicture::CreateObject(void)
 // GHIDRA_NAME TFlagOptionsPicture::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TFlagOptionsPicture::GetRuntimeClass()
+CRuntimeClass * __thiscall TFlagOptionsPicture::GetRuntimeClass(TFlagOptionsPicture *this)
 
 {
   return &classTFlagOptionsPicture;
@@ -61,7 +62,8 @@ CRuntimeClass * TFlagOptionsPicture::GetRuntimeClass()
 // GHIDRA_NAME TFlagOptionsPicture::HandleEvent
 // GHIDRA_PROTO undefined __thiscall HandleEvent(CString param_1, undefined1 * param_2)
 
-void TFlagOptionsPicture::HandleEvent(CString param_1, undefined1 *param_2)
+void __thiscall
+TFlagOptionsPicture::HandleEvent(TFlagOptionsPicture *this,CString param_1,undefined1 *param_2)
 
 {
   undefined uVar1;
@@ -225,7 +227,8 @@ LAB_0056b526:
         local_c = (undefined1 *)&uStack_38;
         uStack_38 = extraout_ECX;
         func_0x004076b7(&CStack_8);
-        func_0x004096b0();
+        puStack_34 = (undefined *)0x56b455;
+        thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
         uStack_24 = 0x56b463;
         CString::~CString((CString *)&stack0x00000000);
       }
@@ -253,7 +256,7 @@ LAB_0056b529:
 // GHIDRA_NAME TFlagOptionsPicture::NoOpUiLifecycleHook
 // GHIDRA_PROTO undefined __thiscall NoOpUiLifecycleHook(void)
 
-void TFlagOptionsPicture::NoOpUiLifecycleHook()
+void __thiscall TFlagOptionsPicture::NoOpUiLifecycleHook(TFlagOptionsPicture *this)
 
 {
   int iVar1;

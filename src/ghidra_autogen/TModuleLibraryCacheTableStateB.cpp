@@ -7,7 +7,8 @@
 // GHIDRA_NAME TModuleLibraryCacheTableStateB::TModuleLibraryCacheTableStateB
 // GHIDRA_PROTO undefined __thiscall TModuleLibraryCacheTableStateB(void)
 
-void TModuleLibraryCacheTableStateB::TModuleLibraryCacheTableStateB()
+void __thiscall
+TModuleLibraryCacheTableStateB::TModuleLibraryCacheTableStateB(TModuleLibraryCacheTableStateB *this)
 
 {
   *(undefined4 *)this = 0;
@@ -222,7 +223,7 @@ TModuleLibraryCacheTableStateB::LoadModuleLibrarySlotWithErrorDialog
   if (pHVar3 == (HMODULE)0x0) {
     CString::CString(&param_2);
     local_4 = 0;
-    CString__Format(&param_2,s_MissingRequiredFileFormat_00695188,param_1);
+    CString::Format(&param_2,s_MissingRequiredFileFormat_00695188,param_1);
     _AfxMessageBox__YGHPBDII_Z(param_2.m_pchData,0,0);
     local_4 = 0xffffffff;
     CString::~CString(&param_2);
@@ -258,7 +259,7 @@ TModuleLibraryCacheTableStateB::LoadPrimaryDataLibraryWithErrorDialog(int param_
   if (pHVar3 == (HMODULE)0x0) {
     CString::CString(&param_2);
     local_4 = 0;
-    CString__Format(&param_2,s_MissingRequiredFileFormat_00695188,CVar2.m_pchData);
+    CString::Format(&param_2,s_MissingRequiredFileFormat_00695188,CVar2.m_pchData);
     _AfxMessageBox__YGHPBDII_Z(param_2.m_pchData,0,0);
     local_4 = 0xffffffff;
     CString::~CString(&param_2);
@@ -266,6 +267,157 @@ TModuleLibraryCacheTableStateB::LoadPrimaryDataLibraryWithErrorDialog(int param_
   iVar1 = *(int *)(param_1 + 0x4c);
   *unaff_FS_OFFSET = local_c;
   return iVar1 != 0;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00499440
+// GHIDRA_NAME TModuleLibraryCacheTableStateB::LoadUiStringResourceById
+// GHIDRA_PROTO undefined LoadUiStringResourceById()
+
+undefined4 __thiscall
+TModuleLibraryCacheTableStateB::LoadUiStringResourceById(int param_1,CString *param_2,UINT param_3)
+
+{
+  LPSTR lpBuffer;
+  int iVar1;
+  
+  iVar1 = 0x1000;
+  lpBuffer = (LPSTR)CString::GetBuffer(param_2,0x1000);
+  iVar1 = LoadStringA(*(HINSTANCE *)(param_1 + 0x4c),param_3,lpBuffer,iVar1);
+  if (iVar1 == 0) {
+    CString::ReleaseBuffer(param_2,-1);
+    CString::operator=(param_2,(char *)&g_szEmptyString);
+    return 1;
+  }
+  CString::ReleaseBuffer(param_2,-1);
+  return 1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004995C0
+// GHIDRA_NAME TModuleLibraryCacheTableStateB::EnsureDefaultDibPalette
+// GHIDRA_PROTO undefined EnsureDefaultDibPalette()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Resolves bitmap handle for a resource entry; when id is unset it loads default bitmap 0x3B6 from cache and manages reference-counted cache nodes.
+// GHIDRA_COMMENT_END
+
+/* Resolves bitmap handle for a resource entry; when id is unset it loads default bitmap 0x3B6 from
+   cache and manages reference-counted cache nodes. */
+
+int __fastcall TModuleLibraryCacheTableStateB::EnsureDefaultDibPalette(int *param_1)
+
+{
+  undefined4 *puVar1;
+  int *piVar2;
+  int *piVar3;
+  int *piVar4;
+  undefined4 uVar5;
+  int iVar6;
+  undefined4 *puVar7;
+  undefined4 *puVar8;
+  uint uVar9;
+  int *piVar10;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_0062f9aa;
+  local_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &local_c;
+  if (*param_1 == 0) {
+    uVar5 = func_0x00403224(0x3b6);
+    iVar6 = operator_new(0xc);
+    puStack_8 = (undefined1 *)0x0;
+    if (iVar6 == 0) {
+      iVar6 = 0;
+    }
+    else {
+      iVar6 = func_0x004079c3();
+    }
+    puStack_8 = (undefined1 *)0xffffffff;
+    *param_1 = iVar6;
+    func_0x00405fc9(uVar5);
+    if (param_1[2] != 0) {
+      for (puVar7 = *(undefined4 **)(param_1[2] + (int)(0x3b % (ulonglong)(uint)param_1[3]) * 4);
+          puVar7 != (undefined4 *)0x0; puVar7 = (undefined4 *)*puVar7) {
+        if (*(short *)(puVar7 + 2) == 0x3b6) goto LAB_0049964c;
+      }
+    }
+    puVar7 = (undefined4 *)0x0;
+LAB_0049964c:
+    piVar10 = param_1;
+    if (puVar7 != (undefined4 *)0x0) {
+      piVar10 = (int *)puVar7[3];
+    }
+    iVar6 = piVar10[2];
+    piVar10[2] = iVar6 + -1;
+    if (iVar6 + -1 < 1) {
+      if ((int *)piVar10[1] != (int *)0x0) {
+        (**(code **)(*(int *)piVar10[1] + 4))(1);
+      }
+      iVar6 = param_1[9];
+      if (iVar6 != 0) {
+        uVar9 = ((uint)piVar10[1] >> 4) % (uint)param_1[10];
+        piVar4 = *(int **)(iVar6 + uVar9 * 4);
+        piVar3 = (int *)(iVar6 + uVar9 * 4);
+        while (piVar2 = piVar4, piVar2 != (int *)0x0) {
+          if (piVar2[2] == piVar10[1]) {
+            *piVar3 = *piVar2;
+            *piVar2 = param_1[0xc];
+            param_1[0xc] = (int)piVar2;
+            iVar6 = param_1[0xb];
+            param_1[0xb] = iVar6 + -1;
+            if (iVar6 + -1 == 0) {
+              puVar7 = (undefined4 *)param_1[9];
+              if (puVar7 != (undefined4 *)0x0) {
+                puVar8 = puVar7;
+                for (iVar6 = param_1[10]; iVar6 != 0; iVar6 = iVar6 + -1) {
+                  for (puVar1 = (undefined4 *)*puVar8; puVar1 != (undefined4 *)0x0;
+                      puVar1 = (undefined4 *)*puVar1) {
+                  }
+                  puVar8 = puVar8 + 1;
+                }
+              }
+              operator_delete(puVar7);
+              param_1[9] = 0;
+              param_1[0xb] = 0;
+              param_1[0xc] = 0;
+              CPlex::FreeDataChain();
+              param_1[0xd] = 0;
+            }
+            break;
+          }
+          piVar3 = piVar2;
+          piVar4 = (int *)*piVar2;
+        }
+      }
+      iVar6 = param_1[2];
+      if (iVar6 != 0) {
+        uVar9 = ((uint)(int)(short)*piVar10 >> 4) % (uint)param_1[3];
+        piVar4 = *(int **)(iVar6 + uVar9 * 4);
+        piVar3 = (int *)(iVar6 + uVar9 * 4);
+        while (piVar2 = piVar4, piVar2 != (int *)0x0) {
+          if ((short)piVar2[2] == (short)*piVar10) {
+            *piVar3 = *piVar2;
+            *piVar2 = param_1[5];
+            param_1[5] = (int)piVar2;
+            iVar6 = param_1[4];
+            param_1[4] = iVar6 + -1;
+            if (iVar6 + -1 == 0) {
+              func_0x004089f9();
+            }
+            break;
+          }
+          piVar3 = piVar2;
+          piVar4 = (int *)*piVar2;
+        }
+      }
+      operator_delete(piVar10);
+    }
+  }
+  iVar6 = *param_1;
+  *unaff_FS_OFFSET = local_c;
+  return iVar6;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004997E0
@@ -314,7 +466,7 @@ LAB_0049983c:
     local_14 = param_1;
     CString::CString(&local_1c);
     local_4 = 0;
-    CString__Format(&local_1c,s_BmpResourceNameFormat_006951C4,(int)sVar8);
+    CString::Format(&local_1c,s_BmpResourceNameFormat_006951C4,(int)sVar8);
     local_10 = operator_new(0x38);
     local_4._0_1_ = 1;
     if (local_10 != 0) {

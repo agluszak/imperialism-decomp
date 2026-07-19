@@ -37,7 +37,7 @@ undefined4 * TPictureNumberText::CreateObject(void)
 // GHIDRA_NAME TPictureNumberText::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TPictureNumberText::GetRuntimeClass()
+CRuntimeClass * __thiscall TPictureNumberText::GetRuntimeClass(TPictureNumberText *this)
 
 {
   return &classTPictureNumberText;
@@ -47,7 +47,7 @@ CRuntimeClass * TPictureNumberText::GetRuntimeClass()
 // GHIDRA_NAME TPictureNumberText::TPictureNumberText
 // GHIDRA_PROTO undefined __thiscall TPictureNumberText(void)
 
-TPictureNumberText * TPictureNumberText::TPictureNumberText()
+TPictureNumberText * __thiscall TPictureNumberText::TPictureNumberText(TPictureNumberText *this)
 
 {
   func_0x0040913d();
@@ -60,7 +60,8 @@ TPictureNumberText * TPictureNumberText::TPictureNumberText()
 // GHIDRA_NAME TPictureNumberText::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TPictureNumberText * TPictureNumberText::_scalar_deleting_destructor_(byte param_1)
+TPictureNumberText * __thiscall
+TPictureNumberText::_scalar_deleting_destructor_(TPictureNumberText *this,byte param_1)
 
 {
   func_0x0040736a();

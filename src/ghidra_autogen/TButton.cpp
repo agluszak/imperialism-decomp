@@ -48,7 +48,7 @@ undefined4 * TButton::CreateObject(void)
 // GHIDRA_NAME TButton::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TButton * TButton::_scalar_deleting_destructor_(byte param_1)
+TButton * __thiscall TButton::_scalar_deleting_destructor_(TButton *this,byte param_1)
 
 {
   func_0x00404066();
@@ -62,7 +62,7 @@ TButton * TButton::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TButton::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TButton::GetRuntimeClass()
+CRuntimeClass * __thiscall TButton::GetRuntimeClass(TButton *this)
 
 {
   return &classTButton;
@@ -72,7 +72,7 @@ CRuntimeClass * TButton::GetRuntimeClass()
 // GHIDRA_NAME TButton::DestructTButtonAndMaybeFree
 // GHIDRA_PROTO undefined __thiscall DestructTButtonAndMaybeFree(byte param_1)
 
-TButton * TButton::DestructTButtonAndMaybeFree(byte param_1)
+TButton * __thiscall TButton::DestructTButtonAndMaybeFree(TButton *this,byte param_1)
 
 {
   func_0x00401b36();
@@ -86,7 +86,7 @@ TButton * TButton::DestructTButtonAndMaybeFree(byte param_1)
 // GHIDRA_NAME TButton::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TButton * TButton::_scalar_deleting_destructor_(byte param_1)
+TButton * __thiscall TButton::_scalar_deleting_destructor_(TButton *this,byte param_1)
 
 {
   func_0x00409467();

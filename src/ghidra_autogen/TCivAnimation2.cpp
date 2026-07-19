@@ -24,7 +24,8 @@ undefined4 * TCivAnimation2::CreateObject(void)
 // GHIDRA_NAME TCivAnimation2::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TCivAnimation2 * TCivAnimation2::_scalar_deleting_destructor_(byte param_1)
+TCivAnimation2 * __thiscall
+TCivAnimation2::_scalar_deleting_destructor_(TCivAnimation2 *this,byte param_1)
 
 {
   func_0x004015eb();
@@ -38,7 +39,7 @@ TCivAnimation2 * TCivAnimation2::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TCivAnimation2::CreateTCivAnimation2Instance
 // GHIDRA_PROTO undefined __thiscall CreateTCivAnimation2Instance(void)
 
-void TCivAnimation2::CreateTCivAnimation2Instance()
+void __thiscall TCivAnimation2::CreateTCivAnimation2Instance(TCivAnimation2 *this)
 
 {
   this->vftable = (TCivAnimation2Vtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
@@ -49,7 +50,7 @@ void TCivAnimation2::CreateTCivAnimation2Instance()
 // GHIDRA_NAME TCivAnimation2::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TCivAnimation2::GetRuntimeClass()
+CRuntimeClass * __thiscall TCivAnimation2::GetRuntimeClass(TCivAnimation2 *this)
 
 {
   return &classTCivAnimation2;
@@ -108,7 +109,8 @@ TCivAnimation2::ConstructTCivAnimation2BaseState
 // GHIDRA_NAME TCivAnimation2::WrapperFor_InvalidateCityDialogRectRegion_At0049f140
 // GHIDRA_PROTO undefined __thiscall WrapperFor_InvalidateCityDialogRectRegion_At0049f140(void)
 
-uint TCivAnimation2::WrapperFor_InvalidateCityDialogRectRegion_At0049f140()
+uint __thiscall
+TCivAnimation2::WrapperFor_InvalidateCityDialogRectRegion_At0049f140(TCivAnimation2 *this)
 
 {
   ushort uVar1;
@@ -185,7 +187,8 @@ LAB_0049f86f:
 // GHIDRA_NAME TCivAnimation2::RenderBattleReportInsetWithPaletteShift
 // GHIDRA_PROTO undefined __thiscall RenderBattleReportInsetWithPaletteShift(int * param_1)
 
-void TCivAnimation2::RenderBattleReportInsetWithPaletteShift(int *param_1)
+void __thiscall
+TCivAnimation2::RenderBattleReportInsetWithPaletteShift(TCivAnimation2 *this,int *param_1)
 
 {
   short sVar1;
@@ -305,40 +308,5 @@ void TCivAnimation2::RenderBattleReportInsetWithPaletteShift(int *param_1)
   func_0x0040586c(param_1);
   *(short *)&this->field_0x8 = sVar1;
   return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004A0D10
-// GHIDRA_NAME TCivAnimation2::AddObjectToUiTransientRegistry
-// GHIDRA_PROTO undefined __thiscall AddObjectToUiTransientRegistry(void)
-
-void TCivAnimation2::AddObjectToUiTransientRegistry()
-
-{
-  (**(code **)(**(int **)&this->field_0x24 + 0x30))();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004A0D30
-// GHIDRA_NAME TCivAnimation2::FindLinkedListNodeByIdFieldAt18
-// GHIDRA_PROTO undefined __thiscall FindLinkedListNodeByIdFieldAt18(int param_1)
-
-int TCivAnimation2::FindLinkedListNodeByIdFieldAt18(int param_1)
-
-{
-  int iVar1;
-  int iVar2;
-  
-  if (this != (TCivAnimation2 *)0x0) {
-    iVar1 = func_0x00401118();
-    iVar2 = func_0x00403620();
-    while ((iVar2 != 0 && (*(int *)(iVar1 + 0x18) != param_1))) {
-      iVar1 = func_0x00406d20();
-      iVar2 = func_0x00403620();
-    }
-    if ((iVar1 != 0) && (*(int *)(iVar1 + 0x18) == param_1)) {
-      return iVar1;
-    }
-  }
-  return 0;
 }
 

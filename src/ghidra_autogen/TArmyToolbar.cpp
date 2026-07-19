@@ -37,7 +37,7 @@ undefined4 * TArmyToolbar::CreateObject(void)
 // GHIDRA_NAME TArmyToolbar::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TArmyToolbar::GetRuntimeClass()
+CRuntimeClass * __thiscall TArmyToolbar::GetRuntimeClass(TArmyToolbar *this)
 
 {
   return &classTArmyToolbar;
@@ -62,7 +62,8 @@ _ConstructTArmyToolbarBaseState__YIPAUArmyToolbarState___Z_imperialismsrcgameTAr
 // GHIDRA_NAME TArmyToolbar::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TArmyToolbar * TArmyToolbar::_scalar_deleting_destructor_(byte param_1)
+TArmyToolbar * __thiscall
+TArmyToolbar::_scalar_deleting_destructor_(TArmyToolbar *this,byte param_1)
 
 {
   func_0x00408567();
@@ -76,7 +77,7 @@ TArmyToolbar * TArmyToolbar::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TArmyToolbar::HandleEvent
 // GHIDRA_PROTO undefined __thiscall HandleEvent(int param_1, int * param_2)
 
-void TArmyToolbar::HandleEvent(int param_1, int *param_2)
+void __thiscall TArmyToolbar::HandleEvent(TArmyToolbar *this,int param_1,int *param_2)
 
 {
   uint uVar1;

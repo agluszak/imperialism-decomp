@@ -122,7 +122,7 @@ undefined4 * TNavyRoster::CreateObject(void)
 // GHIDRA_NAME TNavyRoster::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TNavyRoster::GetRuntimeClass()
+CRuntimeClass * __thiscall TNavyRoster::GetRuntimeClass(TNavyRoster *this)
 
 {
   return &classTNavyRoster;
@@ -132,7 +132,7 @@ CRuntimeClass * TNavyRoster::GetRuntimeClass()
 // GHIDRA_NAME TNavyRoster::ConstructTNavyRosterBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTNavyRosterBaseState(void)
 
-TNavyRoster * TNavyRoster::ConstructTNavyRosterBaseState()
+TNavyRoster * __thiscall TNavyRoster::ConstructTNavyRosterBaseState(TNavyRoster *this)
 
 {
   func_0x0040778e();
@@ -151,7 +151,7 @@ TNavyRoster * TNavyRoster::ConstructTNavyRosterBaseState()
 // GHIDRA_NAME TNavyRoster::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TNavyRoster * TNavyRoster::_scalar_deleting_destructor_(byte param_1)
+TNavyRoster * __thiscall TNavyRoster::_scalar_deleting_destructor_(TNavyRoster *this,byte param_1)
 
 {
   func_0x0040571d();
@@ -242,7 +242,7 @@ TNavyRoster::InitializePagedListLineDataControlsAndHeaderBitmap
 // GHIDRA_NAME TNavyRoster::CallVoidSlotA0
 // GHIDRA_PROTO undefined __thiscall CallVoidSlotA0(void)
 
-void TNavyRoster::CallVoidSlotA0()
+void __thiscall TNavyRoster::CallVoidSlotA0(TNavyRoster *this)
 
 {
   int *piVar1;

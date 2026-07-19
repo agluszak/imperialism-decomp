@@ -37,7 +37,7 @@ undefined4 * TDlgWindow::CreateObject(void)
 // GHIDRA_NAME TDlgWindow::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TDlgWindow::GetRuntimeClass()
+CRuntimeClass * __thiscall TDlgWindow::GetRuntimeClass(TDlgWindow *this)
 
 {
   return &classTDlgWindow;
@@ -53,7 +53,7 @@ CRuntimeClass * TDlgWindow::GetRuntimeClass()
 /* Constructor for static-backdrop turn-event window entry used by BuildTurnEventDialogUiByCode
    branch 0x3B6. */
 
-TDlgWindow * TDlgWindow::ConstructTurnEventWindowEntryStaticBackdrop()
+TDlgWindow * __thiscall TDlgWindow::ConstructTurnEventWindowEntryStaticBackdrop(TDlgWindow *this)
 
 {
   func_0x00407c43();
@@ -70,7 +70,7 @@ TDlgWindow * TDlgWindow::ConstructTurnEventWindowEntryStaticBackdrop()
 
 /* Destructor wrapper for static-backdrop turn-event window entry. */
 
-TDlgWindow * TDlgWindow::_scalar_deleting_destructor_(byte param_1)
+TDlgWindow * __thiscall TDlgWindow::_scalar_deleting_destructor_(TDlgWindow *this,byte param_1)
 
 {
   func_0x004027c5();
@@ -84,7 +84,7 @@ TDlgWindow * TDlgWindow::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TDlgWindow::AssertMcAppUILine2358
 // GHIDRA_PROTO undefined __thiscall AssertMcAppUILine2358(void)
 
-void TDlgWindow::AssertMcAppUILine2358()
+void __thiscall TDlgWindow::AssertMcAppUILine2358(TDlgWindow *this)
 
 {
   func_0x00408e04();

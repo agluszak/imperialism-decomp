@@ -15,7 +15,7 @@
    Allocates a destination buffer via FUN_00606ff2 and copies a variable-sized payload from the
    source object. */
 
-TObject * TObject::ShallowFree()
+TObject * __thiscall TObject::ShallowFree(TObject *this)
 
 {
   code *pcVar1;
@@ -48,7 +48,7 @@ TObject * TObject::ShallowFree()
 // GHIDRA_NAME TObject::Free
 // GHIDRA_PROTO void __thiscall Free(void)
 
-void TObject::Free()
+void __thiscall TObject::Free(TObject *this)
 
 {
   if (this != (TObject *)0x0) {
@@ -66,7 +66,7 @@ void TObject::Free()
 
 /* Generic forwarder: invokes virtual method +0x24 on object passed in ECX/param_1. */
 
-TObject * TObject::ShallowClone()
+TObject * __thiscall TObject::ShallowClone(TObject *this)
 
 {
   TObject *pTVar1;
@@ -91,32 +91,6 @@ undefined4 __thiscall TObject::_scalar_deleting_destructor_(undefined4 param_1,b
   return param_1;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00485C90
-// GHIDRA_NAME TObject::CreateTObjectInstance
-// GHIDRA_PROTO undefined __thiscall CreateTObjectInstance(int param_1)
-
-void TObject::CreateTObjectInstance(int param_1)
-
-{
-  undefined4 local_2c;
-  undefined4 local_28;
-  int local_24;
-  undefined4 local_20;
-  undefined4 local_1c;
-  
-  CWnd::Default((CWnd *)this);
-  local_2c = 0x2c;
-  GetWindowPlacementFromThisHwnd(&local_2c);
-  if ((param_1 == 0) && (local_24 != 2)) {
-    local_24 = 2;
-    local_1c = 0xfffffc18;
-    local_20 = 0xfffffc18;
-    local_28 = 3;
-    SetWindowPlacementFromThisHwnd(&local_2c);
-  }
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00485DF0
 // GHIDRA_NAME TObject::CreateObject
 // GHIDRA_PROTO undefined CreateObject()
@@ -138,7 +112,7 @@ undefined4 * TObject::CreateObject(void)
 // GHIDRA_NAME TObject::GetRuntimeClass
 // GHIDRA_PROTO CRuntimeClass * __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TObject::GetRuntimeClass()
+CRuntimeClass * __thiscall TObject::GetRuntimeClass(TObject *this)
 
 {
   return (CRuntimeClass *)&classTObject;
@@ -156,7 +130,7 @@ CRuntimeClass * TObject::GetRuntimeClass()
    Builds a temporary dispatch context, then checks bit 0 of state+0x14 and calls callback slot
    +0x14 (clear) or +0x18 (set). */
 
-void TObject::Serialize(CArchive *archive)
+void __thiscall TObject::Serialize(TObject *this,CArchive *archive)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -189,7 +163,7 @@ void TObject::Serialize(CArchive *archive)
 // GHIDRA_NAME TObject::RestoreConstructionSentinelVtable
 // GHIDRA_PROTO undefined __thiscall RestoreConstructionSentinelVtable(void)
 
-void TObject::RestoreConstructionSentinelVtable()
+void __thiscall TObject::RestoreConstructionSentinelVtable(TObject *this)
 
 {
   *(char **)this = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
@@ -200,7 +174,7 @@ void TObject::RestoreConstructionSentinelVtable()
 // GHIDRA_NAME TObject::WriteTo
 // GHIDRA_PROTO void __thiscall WriteTo(TStream * stream)
 
-void TObject::WriteTo(TStream *stream)
+void __thiscall TObject::WriteTo(TObject *this,TStream *stream)
 
 {
   return;
@@ -210,7 +184,7 @@ void TObject::WriteTo(TStream *stream)
 // GHIDRA_NAME TObject::ReadFrom
 // GHIDRA_PROTO void __thiscall ReadFrom(TStream * stream)
 
-void TObject::ReadFrom(TStream *stream)
+void __thiscall TObject::ReadFrom(TObject *this,TStream *stream)
 
 {
   return;

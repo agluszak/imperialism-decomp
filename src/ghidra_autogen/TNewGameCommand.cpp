@@ -43,7 +43,7 @@ undefined4 * TNewGameCommand::CreateObject(void)
 /* Thin wrapper that reinitializes game flow without posting any follow-up turn-event code
    (param=0). */
 
-void TNewGameCommand::DoIt()
+void __thiscall TNewGameCommand::DoIt(TNewGameCommand *this)
 
 {
   func_0x00403553(0);
@@ -54,7 +54,8 @@ void TNewGameCommand::DoIt()
 // GHIDRA_NAME TNewGameCommand::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TNewGameCommand * TNewGameCommand::_scalar_deleting_destructor_(byte param_1)
+TNewGameCommand * __thiscall
+TNewGameCommand::_scalar_deleting_destructor_(TNewGameCommand *this,byte param_1)
 
 {
   func_0x00403df0();
@@ -68,7 +69,7 @@ TNewGameCommand * TNewGameCommand::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TNewGameCommand::CreateTNewGameCommandInstance
 // GHIDRA_PROTO undefined __thiscall CreateTNewGameCommandInstance(void)
 
-void TNewGameCommand::CreateTNewGameCommandInstance()
+void __thiscall TNewGameCommand::CreateTNewGameCommandInstance(TNewGameCommand *this)
 
 {
   this->vftable = (TNewGameCommandVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4
@@ -80,7 +81,7 @@ void TNewGameCommand::CreateTNewGameCommandInstance()
 // GHIDRA_NAME TNewGameCommand::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TNewGameCommand::GetRuntimeClass()
+CRuntimeClass * __thiscall TNewGameCommand::GetRuntimeClass(TNewGameCommand *this)
 
 {
   return &classTNewGameCommand;
@@ -102,71 +103,6 @@ TNewGameCommand::WrapperFor_HandleCityDialogNoOpSlot18_At0049e280
     return;
   }
   (**(code **)(*param_1 + 0x3c))(&this[3].field_0x8,4);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0049E320
-// GHIDRA_NAME TNewGameCommand::HandleTurnEventViewportEdgeAutoScroll
-// GHIDRA_PROTO undefined __thiscall HandleTurnEventViewportEdgeAutoScroll(int param_1, int param_2)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Mouse-move handler that applies edge autoscroll only for selected turn-event states; otherwise forwards to base handler.
-// GHIDRA_COMMENT_END
-
-/* Mouse-move handler that applies edge autoscroll only for selected turn-event states; otherwise
-   forwards to base handler. */
-
-void __thiscall
-TNewGameCommand::HandleTurnEventViewportEdgeAutoScroll
-          (TNewGameCommand *this,int param_1,int param_2)
-
-{
-  short sVar1;
-  int iVar2;
-  int iVar3;
-  byte bVar4;
-  undefined4 in_stack_0000000c;
-  int local_8;
-  int local_4;
-  
-  iVar3 = func_0x004026bc();
-  if (((iVar3 == 0) && (this[3].vftable != (TNewGameCommandVtbl *)0x0)) &&
-     ((sVar1 = *(short *)&g_pUiRuntimeContext->field_0x4, sVar1 == 0x7dd ||
-      ((((sVar1 == 0x3b8 || (sVar1 == 0xed8)) || (sVar1 == 0xf3c)) || (sVar1 == 0x3c0)))))) {
-    iVar3 = func_0x004026bc();
-    if (iVar3 == 0) {
-      local_8 = param_1;
-      local_4 = param_2;
-      (**(code **)(**(int **)(g_pDisplayMgr + 4) + 0x144))(&local_8);
-      if ((-200 < local_8) && (-200 < local_4)) {
-        iVar3 = *(int *)(*(int *)(g_pDisplayMgr + 4) + 0x34);
-        if ((local_8 < iVar3 + 200) &&
-           (iVar2 = *(int *)(*(int *)(g_pDisplayMgr + 4) + 0x38), local_4 < iVar2 + 200)) {
-          bVar4 = 0;
-          if (local_8 < 5) {
-            bVar4 = 8;
-          }
-          else if (iVar3 + -4 <= local_8) {
-            bVar4 = 4;
-          }
-          if (local_4 < 5) {
-            bVar4 = bVar4 | 1;
-          }
-          else if (iVar2 + -4 <= local_4) {
-            bVar4 = bVar4 | 2;
-          }
-          if (bVar4 != 0) {
-            iVar3 = func_0x004092d7();
-            if ((iVar3 < DAT_006a21c0) || (DAT_006a21c0 + 3 < iVar3)) {
-              DAT_006a21c0 = iVar3;
-              (**(code **)((this[3].vftable)->GetTEventClassNamePointer + 0x1d0))(bVar4);
-              return;
-            }
-          }
-        }
-      }
-    }
-  }
-  func_0x00405551(param_1,param_2,in_stack_0000000c);
   return;
 }
 

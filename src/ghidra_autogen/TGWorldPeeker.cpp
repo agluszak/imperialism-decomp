@@ -37,7 +37,8 @@ undefined4 * TGWorldPeeker::CreateObject(void)
 // GHIDRA_NAME TGWorldPeeker::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TGWorldPeeker * TGWorldPeeker::_scalar_deleting_destructor_(byte param_1)
+TGWorldPeeker * __thiscall
+TGWorldPeeker::_scalar_deleting_destructor_(TGWorldPeeker *this,byte param_1)
 
 {
   func_0x00404890();
@@ -51,7 +52,7 @@ TGWorldPeeker * TGWorldPeeker::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TGWorldPeeker::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TGWorldPeeker::GetRuntimeClass()
+CRuntimeClass * __thiscall TGWorldPeeker::GetRuntimeClass(TGWorldPeeker *this)
 
 {
   return &classTGWorldPeeker;
@@ -61,7 +62,7 @@ CRuntimeClass * TGWorldPeeker::GetRuntimeClass()
 // GHIDRA_NAME TGWorldPeeker::ApplyRectSlot110
 // GHIDRA_PROTO undefined __thiscall ApplyRectSlot110(LONG * param_1)
 
-void TGWorldPeeker::ApplyRectSlot110(LONG *param_1)
+void __thiscall TGWorldPeeker::ApplyRectSlot110(TGWorldPeeker *this,LONG *param_1)
 
 {
   LONG local_20;

@@ -7,7 +7,8 @@
 // GHIDRA_NAME TTacticalToolbar::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TTacticalToolbar * TTacticalToolbar::_scalar_deleting_destructor_(byte param_1)
+TTacticalToolbar * __thiscall
+TTacticalToolbar::_scalar_deleting_destructor_(TTacticalToolbar *this,byte param_1)
 
 {
   func_0x004040cf();
@@ -37,7 +38,7 @@ TCluster * TTacticalToolbar::CreateObject(void)
   this = (TCluster *)operator_new(0x98);
   local_4 = 0;
   if (this != (TCluster *)0x0) {
-    TCluster::ConstructUiResourceEntryType4B0C0(this);
+    TCluster::thunk_ConstructUiResourceEntryType4B0C0(this);
     this->vftable = (TClusterVtbl *)&_vftable_;
     this[1].vftable = (TClusterVtbl *)0x0;
     this[1].field04 = 0;
@@ -54,7 +55,7 @@ TCluster * TTacticalToolbar::CreateObject(void)
 // GHIDRA_NAME TTacticalToolbar::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TTacticalToolbar::GetRuntimeClass()
+CRuntimeClass * __thiscall TTacticalToolbar::GetRuntimeClass(TTacticalToolbar *this)
 
 {
   return &classTTacticalToolbar;
@@ -64,7 +65,7 @@ CRuntimeClass * TTacticalToolbar::GetRuntimeClass()
 // GHIDRA_NAME TTacticalToolbar::NoOpUiLifecycleHook
 // GHIDRA_PROTO undefined __thiscall NoOpUiLifecycleHook(void)
 
-void TTacticalToolbar::NoOpUiLifecycleHook()
+void __thiscall TTacticalToolbar::NoOpUiLifecycleHook(TTacticalToolbar *this)
 
 {
   _vslot_fn *p_Var1;
@@ -141,7 +142,7 @@ void TTacticalToolbar::NoOpUiLifecycleHook()
 // GHIDRA_NAME TTacticalToolbar::ApplyRectSlot110
 // GHIDRA_PROTO undefined __thiscall ApplyRectSlot110(void)
 
-int TTacticalToolbar::ApplyRectSlot110()
+int __thiscall TTacticalToolbar::ApplyRectSlot110(TTacticalToolbar *this)
 
 {
   int iVar1;
@@ -208,11 +209,11 @@ int TTacticalToolbar::ApplyRectSlot110()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005ACB50
-// GHIDRA_NAME TTacticalToolbar::UpdateCurrentDiplomacyCounterpartyControlAndDialogLabel
-// GHIDRA_PROTO undefined __thiscall UpdateCurrentDiplomacyCounterpartyControlAndDialogLabel(int * param_1)
+// GHIDRA_NAME TTacticalToolbar::UpdateTacticalCurrentUnitControlAndDialogLabel
+// GHIDRA_PROTO undefined __thiscall UpdateTacticalCurrentUnitControlAndDialogLabel(int * param_1)
 
 void __thiscall
-TTacticalToolbar::UpdateCurrentDiplomacyCounterpartyControlAndDialogLabel
+TTacticalToolbar::UpdateTacticalCurrentUnitControlAndDialogLabel
           (TTacticalToolbar *this,int *param_1)
 
 {
@@ -253,12 +254,10 @@ TTacticalToolbar::UpdateCurrentDiplomacyCounterpartyControlAndDialogLabel
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005ACC90
-// GHIDRA_NAME TTacticalToolbar::WrapperFor_InvalidateCityDialogRectRegion_At005acc90
-// GHIDRA_PROTO undefined __thiscall WrapperFor_InvalidateCityDialogRectRegion_At005acc90(int param_1)
+// GHIDRA_NAME TTacticalToolbar::TacticalToolbarSlot74
+// GHIDRA_PROTO undefined __thiscall TacticalToolbarSlot74(int param_1)
 
-void __thiscall
-TTacticalToolbar::WrapperFor_InvalidateCityDialogRectRegion_At005acc90
-          (TTacticalToolbar *this,int param_1)
+void __thiscall TTacticalToolbar::TacticalToolbarSlot74(TTacticalToolbar *this,int param_1)
 
 {
   int iVar1;
@@ -280,11 +279,84 @@ TTacticalToolbar::WrapperFor_InvalidateCityDialogRectRegion_At005acc90
   return;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x005ACD60
+// GHIDRA_NAME TTacticalToolbar::ConfigureTacticalTargetDoneRetreatAutoControls
+// GHIDRA_PROTO undefined __thiscall ConfigureTacticalTargetDoneRetreatAutoControls(int param_1)
+
+void __thiscall
+TTacticalToolbar::ConfigureTacticalTargetDoneRetreatAutoControls(TTacticalToolbar *this,int param_1)
+
+{
+  _vslot_fn *p_Var1;
+  int iVar2;
+  undefined uVar3;
+  undefined3 extraout_var;
+  undefined3 extraout_var_00;
+  undefined3 extraout_var_01;
+  undefined3 extraout_var_02;
+  undefined3 extraout_var_03;
+  undefined3 extraout_var_04;
+  undefined3 extraout_var_05;
+  undefined3 extraout_var_06;
+  
+  if (param_1 == 0) {
+    p_Var1 = this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25;
+    uVar3 = (*p_Var1)(0x74617267);
+    iVar2 = *(int *)CONCAT31(extraout_var,uVar3);
+    (**(code **)(iVar2 + 0xc))();
+    (**(code **)(iVar2 + 0xa4))(0,1);
+    (**(code **)(iVar2 + 0xa8))(0,1);
+    uVar3 = (*p_Var1)(0x646f6e65);
+    iVar2 = *(int *)CONCAT31(extraout_var_00,uVar3);
+    (**(code **)(iVar2 + 0xc))();
+    (**(code **)(iVar2 + 0x1c8))(0xed4,1);
+    uVar3 = (*p_Var1)(0x72657472);
+    iVar2 = *(int *)CONCAT31(extraout_var_01,uVar3);
+    (**(code **)(iVar2 + 0xc))();
+    (**(code **)(iVar2 + 0x1c8))(0xed2,1);
+    uVar3 = (*p_Var1)(0x6175746f);
+    iVar2 = *(int *)CONCAT31(extraout_var_02,uVar3);
+    (**(code **)(iVar2 + 0xc))();
+    (**(code **)(iVar2 + 0xa4))(0,1);
+    (**(code **)(iVar2 + 0xa8))(0,1);
+    uVar3 = (*p_Var1)(0x646f6e65);
+    func_0x00407ce8(0x273d,0x2e,uVar3);
+    uVar3 = (*p_Var1)(0x72657472);
+    func_0x00407ce8(0x273d,0x2f,uVar3);
+    return;
+  }
+  p_Var1 = this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25;
+  uVar3 = (*p_Var1)(0x74617267);
+  iVar2 = *(int *)CONCAT31(extraout_var_03,uVar3);
+  (**(code **)(iVar2 + 0xc))();
+  (**(code **)(iVar2 + 0xa4))(1,1);
+  (**(code **)(iVar2 + 0xa8))(1,1);
+  uVar3 = (*p_Var1)(0x646f6e65);
+  iVar2 = *(int *)CONCAT31(extraout_var_04,uVar3);
+  (**(code **)(iVar2 + 0xc))();
+  (**(code **)(iVar2 + 0x1c8))(0xece,1);
+  uVar3 = (*p_Var1)(0x72657472);
+  iVar2 = *(int *)CONCAT31(extraout_var_05,uVar3);
+  (**(code **)(iVar2 + 0xc))();
+  (**(code **)(iVar2 + 0x1c8))(0xed0,1);
+  uVar3 = (*p_Var1)(0x6175746f);
+  iVar2 = *(int *)CONCAT31(extraout_var_06,uVar3);
+  (**(code **)(iVar2 + 0xc))();
+  (**(code **)(iVar2 + 0xa4))(1,1);
+  (**(code **)(iVar2 + 0xa8))(1,1);
+  uVar3 = (*p_Var1)(0x646f6e65);
+  func_0x00407ce8(0x273d,0x22,uVar3);
+  uVar3 = (*p_Var1)(0x72657472);
+  func_0x00407ce8(0x273d,0x23,uVar3);
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x005ACF90
 // GHIDRA_NAME TTacticalToolbar::HandleEvent
 // GHIDRA_PROTO undefined __thiscall HandleEvent(int param_1, void * param_2, int param_3)
 
-void TTacticalToolbar::HandleEvent(int param_1, void *param_2, int param_3)
+void __thiscall
+TTacticalToolbar::HandleEvent(TTacticalToolbar *this,int param_1,void *param_2,int param_3)
 
 {
   uint uVar1;

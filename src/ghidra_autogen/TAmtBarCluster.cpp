@@ -37,7 +37,7 @@ undefined4 * TAmtBarCluster::CreateObject(void)
 // GHIDRA_NAME TAmtBarCluster::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TAmtBarCluster::GetRuntimeClass()
+CRuntimeClass * __thiscall TAmtBarCluster::GetRuntimeClass(TAmtBarCluster *this)
 
 {
   return &classTAmtBarCluster;
@@ -47,7 +47,8 @@ CRuntimeClass * TAmtBarCluster::GetRuntimeClass()
 // GHIDRA_NAME TAmtBarCluster::ConstructTradeMoveControlPanelBasic
 // GHIDRA_PROTO undefined __thiscall ConstructTradeMoveControlPanelBasic(void)
 
-TAmtBarCluster * TAmtBarCluster::ConstructTradeMoveControlPanelBasic()
+TAmtBarCluster * __thiscall
+TAmtBarCluster::ConstructTradeMoveControlPanelBasic(TAmtBarCluster *this)
 
 {
   func_0x00405835();
@@ -59,7 +60,8 @@ TAmtBarCluster * TAmtBarCluster::ConstructTradeMoveControlPanelBasic()
 // GHIDRA_NAME TAmtBarCluster::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TAmtBarCluster * TAmtBarCluster::_scalar_deleting_destructor_(byte param_1)
+TAmtBarCluster * __thiscall
+TAmtBarCluster::_scalar_deleting_destructor_(TAmtBarCluster *this,byte param_1)
 
 {
   func_0x00403c24();
@@ -73,7 +75,7 @@ TAmtBarCluster * TAmtBarCluster::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TAmtBarCluster::NoOpUiLifecycleHook
 // GHIDRA_PROTO undefined __thiscall NoOpUiLifecycleHook(void)
 
-void TAmtBarCluster::NoOpUiLifecycleHook()
+void __thiscall TAmtBarCluster::NoOpUiLifecycleHook(TAmtBarCluster *this)
 
 {
   _vslot_fn *p_Var1;
@@ -87,7 +89,7 @@ void TAmtBarCluster::NoOpUiLifecycleHook()
   local_4 = local_4 & 0xffff0000;
   uVar3 = (*p_Var1)(0x6d6f7665);
   if ((int *)CONCAT31(extraout_var,uVar3) != (int *)0x0) {
-    func_0x00406afa(&stack0xfffffff0,0,10,0x2b67);
+    thunk_BuildUiTextStyleDescriptor(&stack0xfffffff0,0,10,0x2b67);
     iVar2 = *(int *)CONCAT31(extraout_var,uVar3);
     (**(code **)(iVar2 + 0x1b4))(&stack0xfffffff0,0);
     (**(code **)(iVar2 + 0x1c4))(0xfffffffe,0);
@@ -106,7 +108,8 @@ void TAmtBarCluster::NoOpUiLifecycleHook()
 // GHIDRA_NAME TAmtBarCluster::HandleEvent
 // GHIDRA_PROTO undefined __thiscall HandleEvent(int param_1, void * param_2, int param_3)
 
-void TAmtBarCluster::HandleEvent(int param_1, void *param_2, int param_3)
+void __thiscall
+TAmtBarCluster::HandleEvent(TAmtBarCluster *this,int param_1,void *param_2,int param_3)
 
 {
   TAmtBarClusterVtbl *pTVar1;
@@ -157,7 +160,7 @@ void TAmtBarCluster::HandleEvent(int param_1, void *param_2, int param_3)
 // GHIDRA_NAME TAmtBarCluster::OrphanRetStub_00586ff0
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_00586ff0(void)
 
-void TAmtBarCluster::OrphanRetStub_00586ff0()
+void __thiscall TAmtBarCluster::OrphanRetStub_00586ff0(TAmtBarCluster *this)
 
 {
   return;

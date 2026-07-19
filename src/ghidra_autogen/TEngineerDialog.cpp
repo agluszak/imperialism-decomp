@@ -39,7 +39,7 @@ undefined4 * TEngineerDialog::CreateObject(void)
 // GHIDRA_NAME TEngineerDialog::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TEngineerDialog::GetRuntimeClass()
+CRuntimeClass * __thiscall TEngineerDialog::GetRuntimeClass(TEngineerDialog *this)
 
 {
   return &classTEngineerDialog;
@@ -49,7 +49,8 @@ CRuntimeClass * TEngineerDialog::GetRuntimeClass()
 // GHIDRA_NAME TEngineerDialog::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TEngineerDialog * TEngineerDialog::_scalar_deleting_destructor_(byte param_1)
+TEngineerDialog * __thiscall
+TEngineerDialog::_scalar_deleting_destructor_(TEngineerDialog *this,byte param_1)
 
 {
   func_0x00402b94();
@@ -63,7 +64,7 @@ TEngineerDialog * TEngineerDialog::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TEngineerDialog::Free
 // GHIDRA_PROTO undefined __thiscall Free(void)
 
-void TEngineerDialog::Free()
+void __thiscall TEngineerDialog::Free(TEngineerDialog *this)
 
 {
   if (*(int *)&this->field_0x60 != 0) {
@@ -97,7 +98,7 @@ void TEngineerDialog::Free()
    - blits footer strip from surface +0x64 for remaining tail.
    - used when Engineer dialog backing surface is present. */
 
-void TEngineerDialog::ApplyRectSlot110()
+void __thiscall TEngineerDialog::ApplyRectSlot110(TEngineerDialog *this)
 
 {
   int iVar1;
@@ -152,6 +153,489 @@ void TEngineerDialog::ApplyRectSlot110()
     func_0x00405493(*(int *)&this->field_0x64 + 4,&g_pActiveQuickDrawSurfaceContext->field_0x4,
                     &local_10,&local_20,0,0);
   }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004D0810
+// GHIDRA_NAME TEngineerDialog::BuildCityViewProductionControls
+// GHIDRA_PROTO void __thiscall BuildCityViewProductionControls(short nBuildingSlotId)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Build city production controls for the selected building slot.
+// GHIDRA_COMMENT Algorithm:
+// GHIDRA_COMMENT 1) Build title and top-level command controls for the slot.
+// GHIDRA_COMMENT 2) Add building-specific production/upgrade/action widgets.
+// GHIDRA_COMMENT 3) Add commodity icon rows with quantity labels.
+// GHIDRA_COMMENT 4) Include special infrastructure blocks (fort/rail/port) when applicable.
+// GHIDRA_COMMENT 5) Attach cancel/close control and finalize layout.
+// GHIDRA_COMMENT_END
+
+/* Build city production controls for the selected building slot.
+   Algorithm:
+   1) Build title and top-level command controls for the slot.
+   2) Add building-specific production/upgrade/action widgets.
+   3) Add commodity icon rows with quantity labels.
+   4) Include special infrastructure blocks (fort/rail/port) when applicable.
+   5) Attach cancel/close control and finalize layout. */
+
+void __thiscall
+TEngineerDialog::BuildCityViewProductionControls(TEngineerDialog *this,short nBuildingSlotId)
+
+{
+  byte bVar1;
+  undefined uVar2;
+  char cVar3;
+  char cVar4;
+  short sVar5;
+  short sVar6;
+  int iVar7;
+  undefined3 extraout_var;
+  short *psVar8;
+  int *piVar9;
+  int *piVar10;
+  int iVar11;
+  short *psVar12;
+  TMapMgr *pTVar13;
+  undefined4 unaff_EBX;
+  undefined4 unaff_EBP;
+  int iVar14;
+  int iVar15;
+  int unaff_EDI;
+  undefined4 *puVar16;
+  undefined2 *puVar17;
+  undefined4 *unaff_FS_OFFSET;
+  short unaff_retaddr;
+  int *piStack_104;
+  char cVar18;
+  undefined4 uStack_e0;
+  undefined1 local_dc [14];
+  undefined2 local_ce;
+  undefined4 local_cc [3];
+  undefined1 auStack_c0 [4];
+  TEngineerDialogVtbl *local_bc;
+  TEngineerDialog *pTStack_b8;
+  TEngineerDialog *local_b4;
+  int aiStack_b0 [2];
+  int iStack_a8;
+  undefined1 local_9e;
+  undefined1 local_9d;
+  undefined1 local_9c;
+  undefined1 local_9b;
+  undefined4 local_98;
+  undefined4 local_94;
+  undefined4 local_90;
+  undefined4 local_8c;
+  short asStack_7c [4];
+  short asStack_74 [2];
+  short asStack_70 [7];
+  short asStack_62 [11];
+  undefined4 uStack_4c;
+  short asStack_44 [2];
+  undefined4 auStack_40 [5];
+  undefined4 uStack_2c;
+  short sStack_1a;
+  undefined4 uStack_c;
+  undefined1 *puStack_8;
+  undefined4 uStack_4;
+  
+  cVar18 = (char)((uint)unaff_EBP >> 0x18);
+  cVar4 = (char)((uint)unaff_EBX >> 0x18);
+  uStack_4 = 0xffffffff;
+  puStack_8 = &LAB_00631b2b;
+  uStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &uStack_c;
+  local_90 = 0x26;
+  local_94 = 0x26;
+  local_8c = 0x20;
+  local_98 = 0xec;
+  local_dc._0_4_ = nBuildingSlotId * 0x24;
+  bVar1 = (byte)*(undefined2 *)(*(int *)&g_pGlobalMapState->field_0xc + 0x1c + local_dc._0_4_);
+  local_cc[0] = 0x28;
+  stack0xffffff30 =
+       CONCAT22(CONCAT11(local_ce._1_1_,(bVar1 >> 4 & 1) == 0),
+                CONCAT11((bVar1 >> 2 & 1) == 0,local_dc[0xc]));
+  uStack_e0 = CONCAT13(1,(undefined3)uStack_e0);
+  local_9e = 0;
+  local_9d = 0;
+  local_9c = 0;
+  local_9b = 0;
+  local_b4 = this;
+  if (*(int *)&this->field_0x60 != 0) {
+    func_0x004010e6();
+  }
+  if (*(int *)&this->field_0x64 != 0) {
+    func_0x004010e6();
+  }
+  if (*(int *)&this->field_0x68 != 0) {
+    func_0x004010e6();
+  }
+  iVar7 = func_0x00401fe1();
+  *(int *)&this->field_0x60 = iVar7;
+  if (iVar7 == 0) {
+    piStack_104 = (int *)0x4d0921;
+    MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+    func_0x004057a4();
+  }
+  iVar7 = func_0x00401fe1();
+  *(int *)&this->field_0x64 = iVar7;
+  if (iVar7 == 0) {
+    piStack_104 = (int *)0x4d0955;
+    MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+    func_0x004057a4();
+  }
+  iVar7 = func_0x00401fe1();
+  *(int *)&this->field_0x68 = iVar7;
+  if (iVar7 == 0) {
+    piStack_104 = (int *)0x4d098a;
+    MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+    func_0x004057a4();
+  }
+  piStack_104 = (int *)0x4d09af;
+  thunk_BuildUiTextStyleDescriptor();
+  local_bc = this->vftable;
+  iVar7 = 0x7469746c;
+  uVar2 = (*local_bc->ResolveControlByTag)();
+  (**(code **)(*(int *)CONCAT31(extraout_var,uVar2) + 0xc))();
+  piStack_104 = (int *)0x2b6a;
+  func_0x00403490((int *)CONCAT31(extraout_var,uVar2),0,0xe);
+  func_0x00403b16();
+  local_bc = (TEngineerDialogVtbl *)func_0x00401343();
+  piStack_104 = (int *)0x4d0a23;
+  func_0x00405baf();
+  if ((local_dc[10] != '\0') && (local_dc[9] != '\0')) {
+    psVar8 = asStack_7c;
+    iVar15 = 6;
+    do {
+      if ((*psVar8 != -1) &&
+         ((*(byte *)(*(int *)&g_pGlobalMapState->field_0xc + 0x1c + *psVar8 * 0x24) & 0x14) != 0)) {
+        unaff_EBX = 0;
+      }
+      cVar4 = (char)((uint)unaff_EBX >> 0x18);
+      psVar8 = psVar8 + 1;
+      iVar15 = iVar15 + -1;
+    } while (iVar15 != 0);
+  }
+  psVar8 = asStack_70;
+  for (iVar15 = 0xb; iVar15 != 0; iVar15 = iVar15 + -1) {
+    psVar8[0] = 0;
+    psVar8[1] = 0;
+    psVar8 = psVar8 + 2;
+  }
+  *psVar8 = 0;
+  puVar16 = auStack_40;
+  for (iVar15 = 0xb; iVar15 != 0; iVar15 = iVar15 + -1) {
+    *puVar16 = 0;
+    puVar16 = puVar16 + 1;
+  }
+  puVar17 = (undefined2 *)((int)puVar16 + 2);
+  *(undefined2 *)puVar16 = 0;
+  pTVar13 = g_pGlobalMapState;
+  iVar15 = 0x28;
+  if ((local_dc[10] != '\0') && (cVar4 != '\0')) {
+    local_dc._4_4_ = 0;
+    do {
+      sVar6 = unaff_retaddr;
+      if ((short)local_dc._4_4_ != 6) {
+        sVar6 = asStack_7c[(short)local_dc._4_4_];
+      }
+      if ((sVar6 != -1) && (*(char *)((int)&local_bc->GetRuntimeClass + (int)sVar6) == '\0')) {
+        iVar14 = sVar6 * 0x24;
+        iVar15 = *(int *)&pTVar13->field_0xc + iVar14;
+        if (*(char *)(iVar15 + 0x13) != '\0') {
+          local_dc[0xb] = *(undefined1 *)(iVar15 + 4);
+          sVar5 = func_0x00403b16();
+          pTVar13 = g_pGlobalMapState;
+          if (local_dc[0xb] == sVar5) {
+            puVar17 = (undefined2 *)0x0;
+            do {
+              sVar5 = (short)*(char *)(*(int *)&pTVar13->field_0xc + (int)(short)puVar17 + 0x11 +
+                                      iVar14);
+              if (sVar5 != -1) {
+                cVar3 = (*pTVar13->vftable->OrphanLeaf_NoCall_Ins14_00513610)();
+                asStack_70[sVar5] = asStack_70[sVar5] + (short)cVar3;
+                pTVar13 = g_pGlobalMapState;
+              }
+              puVar17 = (undefined2 *)((int)puVar17 + 1);
+            } while ((int)puVar17 < 2);
+            iVar15 = (int)*(short *)(*(int *)&pTVar13->field_0xc + 0x14 + iVar14);
+            if (*(short *)(*(int *)&pTVar13->field_0x10 + 4 + iVar15 * 0xa8) == sVar6) {
+              psVar8 = asStack_62;
+              psVar12 = (short *)(*(int *)&pTVar13->field_0x10 + iVar15 * 0xa8 + 0x82);
+              iVar15 = 10;
+              do {
+                sVar6 = *psVar12;
+                puVar17 = (undefined2 *)CONCAT22((short)((uint)puVar17 >> 0x10),sVar6);
+                psVar12 = psVar12 + 1;
+                *psVar8 = *psVar8 + sVar6;
+                psVar8 = psVar8 + 1;
+                iVar15 = iVar15 + -1;
+              } while (iVar15 != 0);
+            }
+          }
+        }
+      }
+      local_dc._4_4_ = local_dc._4_4_ + 1;
+      iVar15 = stack0xffffff30;
+      this = pTStack_b8;
+    } while ((short)local_dc._4_4_ < 7);
+  }
+  if ((local_dc[9] != '\0') && (cVar4 != '\0')) {
+    puVar17 = (undefined2 *)0x0;
+    do {
+      sVar6 = unaff_retaddr;
+      if ((short)puVar17 != 6) {
+        sVar6 = asStack_7c[(short)puVar17];
+      }
+      if ((sVar6 != -1) && (*(char *)((int)&local_bc->GetRuntimeClass + (int)sVar6) == '\0')) {
+        iVar14 = sVar6 * 0x24;
+        local_dc[0xb] = *(undefined1 *)(*(int *)&pTVar13->field_0xc + 4 + iVar14);
+        sVar6 = func_0x00403b16();
+        pTVar13 = g_pGlobalMapState;
+        if (((local_dc[0xb] == sVar6) &&
+            (*(char *)(*(int *)&g_pGlobalMapState->field_0xc + 2 + iVar14) != '\0')) ||
+           (*(char *)(*(int *)&g_pGlobalMapState->field_0xc + 0x13 + iVar14) == '\0')) {
+          sStack_1a = sStack_1a + 1;
+        }
+      }
+      puVar17 = (undefined2 *)((int)puVar17 + 1);
+    } while ((short)puVar17 < 7);
+  }
+  sVar5 = (short)*(char *)(*(int *)&pTVar13->field_0x10 + 3 +
+                          *(short *)(*(int *)&pTVar13->field_0xc + 0x14 + uStack_e0) * 0xa8);
+  sVar6 = func_0x00403b16();
+  iVar14 = (int)sVar6;
+  sVar6 = func_0x00403116();
+  if ((sVar5 < sVar6) &&
+     (*(short *)(*(int *)&g_pGlobalMapState->field_0x10 + 4 +
+                *(short *)(*(int *)&g_pGlobalMapState->field_0xc + 0x14 + uStack_e0) * 0xa8) ==
+      (short)uStack_4)) {
+    iVar7 = operator_new();
+    uStack_c = 0;
+    if (iVar7 == 0) {
+      piVar9 = (int *)0x0;
+    }
+    else {
+      piVar9 = (int *)func_0x00403512();
+    }
+    piStack_104 = (int *)0x5;
+    uStack_c = 0xffffffff;
+    func_0x00403ff3(this,&stack0xffffff1c,&local_98);
+    piVar9[7] = 0x666f7274;
+    (**(code **)(*piVar9 + 0xa8))(1,0);
+    piVar9[0x18] = 0x22;
+    piVar9 = (int *)operator_new(0xa4);
+    uStack_2c = 1;
+    piStack_104 = piVar9;
+    if (piVar9 == (int *)0x0) {
+      piVar9 = (int *)0x0;
+    }
+    else {
+      func_0x0040541b();
+      *(undefined1 *)(piVar9 + 0x26) = 0;
+      *(undefined1 *)((int)piVar9 + 0x99) = 0;
+      *(undefined1 *)((int)piVar9 + 0x9a) = 0;
+      *(undefined1 *)((int)piVar9 + 0x9b) = 0;
+      *(undefined1 *)(piVar9 + 0x27) = 0;
+      *(undefined1 *)((int)piVar9 + 0x9d) = 0;
+      *(undefined1 *)((int)piVar9 + 0x9e) = 0;
+      *(undefined1 *)((int)piVar9 + 0x9f) = 0;
+      uStack_2c = CONCAT31(uStack_2c._1_3_,2);
+      *piVar9 = (int)&TDeluxeText::_vftable_;
+      piVar10 = (int *)func_0x00404863(0,0,0);
+      iVar7 = *piVar10;
+      *(undefined1 *)(piVar9 + 0x28) = 0;
+      piVar9[0x26] = iVar7;
+    }
+    uStack_2c = 0xffffffff;
+    iVar7 = 0;
+    unaff_EDI = 0;
+    cVar18 = '\0';
+    CopyRect((LPRECT)local_dc,(RECT *)&stack0xffffff0c);
+    piStack_104 = (int *)0x54;
+    func_0x00408e31(this,&piStack_104,auStack_c0,local_dc,local_cc,0xfffffffe);
+    iVar15 = *piVar9;
+    (**(code **)(iVar15 + 0x1e8))(0x1c20,CONCAT22((short)((uint)puVar17 >> 0x10),sVar5) + 3);
+    (**(code **)(iVar15 + 0x1f8))(0);
+    iVar15 = 0x52;
+  }
+  if ((local_dc[6] != '\0') && (cVar18 != '\0')) {
+    iVar7 = operator_new();
+    uStack_c = 3;
+    if (iVar7 == 0) {
+      piVar9 = (int *)0x0;
+    }
+    else {
+      piVar9 = (int *)func_0x00403512();
+    }
+    piStack_104 = (int *)0x5;
+    uStack_c = 0xffffffff;
+    func_0x00403ff3(this,&stack0xffffff1c,&local_98);
+    piVar9[7] = 0x7261696c;
+    (**(code **)(*piVar9 + 0xa8))(1,0);
+    piVar9[0x18] = 0x22;
+    piVar9 = (int *)operator_new(0xa4);
+    uStack_2c = 4;
+    piStack_104 = piVar9;
+    if (piVar9 == (int *)0x0) {
+      piVar9 = (int *)0x0;
+    }
+    else {
+      func_0x0040541b();
+      *(undefined1 *)(piVar9 + 0x26) = 0;
+      *(undefined1 *)((int)piVar9 + 0x99) = 0;
+      *(undefined1 *)((int)piVar9 + 0x9a) = 0;
+      *(undefined1 *)((int)piVar9 + 0x9b) = 0;
+      *(undefined1 *)(piVar9 + 0x27) = 0;
+      *(undefined1 *)((int)piVar9 + 0x9d) = 0;
+      *(undefined1 *)((int)piVar9 + 0x9e) = 0;
+      *(undefined1 *)((int)piVar9 + 0x9f) = 0;
+      uStack_2c = CONCAT31(uStack_2c._1_3_,5);
+      *piVar9 = (int)&TDeluxeText::_vftable_;
+      piVar10 = (int *)func_0x00404863(0,0,0);
+      iVar7 = *piVar10;
+      *(undefined1 *)(piVar9 + 0x28) = 0;
+      piVar9[0x26] = iVar7;
+    }
+    uStack_2c = 0xffffffff;
+    iVar7 = 0;
+    unaff_EDI = 0;
+    cVar18 = '\0';
+    CopyRect((LPRECT)local_dc,(RECT *)&stack0xffffff0c);
+    piStack_104 = (int *)0x54;
+    func_0x00408e31(this,&piStack_104,auStack_c0,local_dc,local_cc,0xfffffffe);
+    iVar11 = *piVar9;
+    (**(code **)(iVar11 + 0x1e8))(0x1c20,1);
+    (**(code **)(iVar11 + 0x1f8))(0);
+    local_dc._0_4_ = asStack_74;
+    iVar15 = iVar15 + 0x2a;
+    sVar6 = 0;
+    do {
+      if (*(short *)local_dc._0_4_ != 0) {
+        iVar11 = operator_new();
+        uStack_c = 6;
+        if (iVar11 != 0) {
+          func_0x0040827e();
+        }
+        uStack_c = 0xffffffff;
+        local_dc._8_4_ = this->field34 + -0x60;
+        stack0xffffff30 = 0x18;
+        pTStack_b8 = (TEngineerDialog *)(int)(short)iVar15;
+                    /* Commodity icon base is BMP 700 plus local commodity index. Confirmed IDs: 700
+                       cotton, 703 coal, 704 iron, 707 canned food, 708 fabric, 711 steel, 713
+                       clothing, 714 furniture, 715 tools, 718 fruit, 719 fish, 720 cattle, 721
+                       diamonds, 722 gold. */
+        piStack_104 = (int *)0x5;
+        local_bc = (TEngineerDialogVtbl *)0x54;
+        func_0x0040308a(this,&local_bc,local_dc + 8,5);
+        iVar15 = iVar15 + 0x1c;
+      }
+      sVar6 = sVar6 + 1;
+      local_dc._0_4_ = local_dc._0_4_ + 2;
+    } while (sVar6 < 0x17);
+  }
+  sVar6 = (short)iVar15;
+  if (((local_dc[5] != '\0') && (cVar4 = func_0x00402b30(), cVar4 != '\0')) && (cVar18 != '\0')) {
+    iVar7 = operator_new();
+    uStack_c = 7;
+    if (iVar7 == 0) {
+      piVar9 = (int *)0x0;
+    }
+    else {
+      piVar9 = (int *)func_0x00403512();
+    }
+    piStack_104 = (int *)0x5;
+    uStack_c = 0xffffffff;
+    func_0x00403ff3(this,&stack0xffffff1c,&local_98);
+    piVar9[7] = 0x706f7274;
+    (**(code **)(*piVar9 + 0xa8))(1,0);
+    piVar9[0x18] = 0x22;
+    piVar9 = (int *)operator_new(0xa4);
+    uStack_2c = 8;
+    piStack_104 = piVar9;
+    if (piVar9 == (int *)0x0) {
+      piVar9 = (int *)0x0;
+    }
+    else {
+      func_0x0040541b();
+      *(undefined1 *)(piVar9 + 0x26) = 0;
+      *(undefined1 *)((int)piVar9 + 0x99) = 0;
+      *(undefined1 *)((int)piVar9 + 0x9a) = 0;
+      *(undefined1 *)((int)piVar9 + 0x9b) = 0;
+      *(undefined1 *)(piVar9 + 0x27) = 0;
+      *(undefined1 *)((int)piVar9 + 0x9d) = 0;
+      *(undefined1 *)((int)piVar9 + 0x9e) = 0;
+      *(undefined1 *)((int)piVar9 + 0x9f) = 0;
+      piVar9[0x26] = 0;
+      *piVar9 = (int)&TDeluxeText::_vftable_;
+      *(undefined1 *)(piVar9 + 0x28) = 0;
+    }
+    uStack_2c = 0xffffffff;
+    iVar7 = 0;
+    unaff_EDI = 0;
+    CopyRect((LPRECT)local_dc,(RECT *)&stack0xffffff0c);
+    piStack_104 = (int *)0x54;
+    func_0x00408e31(this,&piStack_104,auStack_c0,local_dc,local_cc,0xfffffffe);
+    iVar11 = *piVar9;
+    (**(code **)(iVar11 + 0x1e8))(0x1c20,2);
+    (**(code **)(iVar11 + 0x1f8))(0);
+    local_dc._0_4_ = asStack_44;
+    iVar15 = iVar15 + 0x2a;
+    sVar5 = 0;
+    do {
+      if (*(short *)local_dc._0_4_ != 0) {
+        iVar11 = operator_new();
+        uStack_c = 9;
+        if (iVar11 != 0) {
+          func_0x0040827e();
+        }
+        uStack_c = 0xffffffff;
+        local_dc._8_4_ = this->field34 + -0x60;
+        stack0xffffff30 = 0x18;
+        pTStack_b8 = (TEngineerDialog *)(int)(short)iVar15;
+                    /* Secondary row uses same commodity icon mapping (700 + index). */
+        piStack_104 = (int *)0x5;
+        local_bc = (TEngineerDialogVtbl *)0x54;
+        func_0x0040308a(this,&local_bc,local_dc + 8,5);
+        iVar15 = iVar15 + 0x1c;
+      }
+      sVar6 = (short)iVar15;
+      sVar5 = sVar5 + 1;
+      local_dc._0_4_ = local_dc._0_4_ + 2;
+    } while (sVar5 < 0x17);
+  }
+  iVar15 = operator_new();
+  uStack_c = 10;
+  if (iVar15 == 0) {
+    piVar9 = (int *)0x0;
+  }
+  else {
+    piVar9 = (int *)func_0x00403512();
+  }
+  piStack_104 = (int *)0x5;
+  register0x00000000 = sVar6 + -2;
+  uStack_c = 0xffffffff;
+  local_dc._8_4_ = 0x11;
+  func_0x00403ff3(this,local_dc + 8,&stack0xffffff1c);
+  piVar9[7] = 0x636e636c;
+  piVar9[0x18] = 0x22;
+  (**(code **)(*piVar9 + 0xa8))(1,0);
+  piVar9 = (int *)(*pcRam00000095)();
+  if (piVar9 == (int *)0x0) {
+    MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+    func_0x004057a4(s_D__Ambit_Cross_UCityViews_cpp_00696650,0xd88);
+  }
+  iVar15 = *piVar9;
+  (**(code **)(iVar15 + 300))(aiStack_b0);
+  iStack_a8 = aiStack_b0[0] + (short)(sVar6 + 0x1e);
+  (**(code **)(iVar15 + 0x168))(&local_b4,1);
+  (**(code **)(unaff_EDI + 300))(&local_bc);
+  local_b4 = (TEngineerDialog *)((int)&local_bc->GetRuntimeClass + (int)(short)(sVar6 + 0x1e));
+  (**(code **)(iVar7 + 0x168))(auStack_c0,1);
+  iVar7 = (**(code **)(iVar15 + 0x1b8))();
+  if (iVar7 != 0) {
+    *(undefined4 *)(iVar7 + 0x14) = 0x636e636c;
+  }
+  operator_delete(iVar14);
+  *unaff_FS_OFFSET = uStack_4c;
   return;
 }
 

@@ -24,7 +24,7 @@ undefined4 * TNavyPlayer::CreateObject(void)
 // GHIDRA_NAME TNavyPlayer::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TNavyPlayer * TNavyPlayer::_scalar_deleting_destructor_(byte param_1)
+TNavyPlayer * __thiscall TNavyPlayer::_scalar_deleting_destructor_(TNavyPlayer *this,byte param_1)
 
 {
   func_0x00407e78();
@@ -38,7 +38,7 @@ TNavyPlayer * TNavyPlayer::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TNavyPlayer::CreateTNavyPlayerInstance
 // GHIDRA_PROTO undefined __thiscall CreateTNavyPlayerInstance(void)
 
-void TNavyPlayer::CreateTNavyPlayerInstance()
+void __thiscall TNavyPlayer::CreateTNavyPlayerInstance(TNavyPlayer *this)
 
 {
   this->vftable = (TNavyPlayerVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
@@ -49,17 +49,17 @@ void TNavyPlayer::CreateTNavyPlayerInstance()
 // GHIDRA_NAME TNavyPlayer::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TNavyPlayer::GetRuntimeClass()
+CRuntimeClass * __thiscall TNavyPlayer::GetRuntimeClass(TNavyPlayer *this)
 
 {
   return &classTNavyPlayer;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0059EDD0
-// GHIDRA_NAME TNavyPlayer::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(void)
+// GHIDRA_NAME TNavyPlayer::CommitTacticalResultsToSourceUnits
+// GHIDRA_PROTO undefined __thiscall CommitTacticalResultsToSourceUnits(void)
 
-void TNavyPlayer::OrphanRetStub_0059add0()
+void __thiscall TNavyPlayer::CommitTacticalResultsToSourceUnits(TNavyPlayer *this)
 
 {
   int *piVar1;
@@ -79,10 +79,10 @@ void TNavyPlayer::OrphanRetStub_0059add0()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0059EE60
-// GHIDRA_NAME TNavyPlayer::Helper_Uses_FindListNodeByKeyFromNodeOrHead_At0059afa0
-// GHIDRA_PROTO undefined __thiscall Helper_Uses_FindListNodeByKeyFromNodeOrHead_At0059afa0(void)
+// GHIDRA_NAME TNavyPlayer::RemoveTacticalUnitFromUnitList
+// GHIDRA_PROTO undefined __thiscall RemoveTacticalUnitFromUnitList(void)
 
-void TNavyPlayer::Helper_Uses_FindListNodeByKeyFromNodeOrHead_At0059afa0()
+void __thiscall TNavyPlayer::RemoveTacticalUnitFromUnitList(TNavyPlayer *this)
 
 {
   CPtrList *this_00;
@@ -98,10 +98,10 @@ void TNavyPlayer::Helper_Uses_FindListNodeByKeyFromNodeOrHead_At0059afa0()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0059EEA0
-// GHIDRA_NAME TNavyPlayer::WrapperFor_AddHead_At0059afe0
-// GHIDRA_PROTO undefined __thiscall WrapperFor_AddHead_At0059afe0(int * param_1)
+// GHIDRA_NAME TNavyPlayer::AddTacticalUnitToUnitListHead
+// GHIDRA_PROTO undefined __thiscall AddTacticalUnitToUnitListHead(int * param_1)
 
-void TNavyPlayer::WrapperFor_AddHead_At0059afe0(int *param_1)
+void __thiscall TNavyPlayer::AddTacticalUnitToUnitListHead(TNavyPlayer *this,int *param_1)
 
 {
   int iVar1;

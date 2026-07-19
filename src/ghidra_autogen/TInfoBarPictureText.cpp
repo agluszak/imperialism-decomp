@@ -46,7 +46,7 @@ undefined4 * TInfoBarPictureText::CreateObject(void)
 // GHIDRA_NAME TInfoBarPictureText::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TInfoBarPictureText::GetRuntimeClass()
+CRuntimeClass * __thiscall TInfoBarPictureText::GetRuntimeClass(TInfoBarPictureText *this)
 
 {
   return &classTInfoBarPictureText;
@@ -56,7 +56,8 @@ CRuntimeClass * TInfoBarPictureText::GetRuntimeClass()
 // GHIDRA_NAME TInfoBarPictureText::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TInfoBarPictureText * TInfoBarPictureText::_scalar_deleting_destructor_(byte param_1)
+TInfoBarPictureText * __thiscall
+TInfoBarPictureText::_scalar_deleting_destructor_(TInfoBarPictureText *this,byte param_1)
 
 {
   func_0x00401ab4();
@@ -68,7 +69,7 @@ TInfoBarPictureText * TInfoBarPictureText::_scalar_deleting_destructor_(byte par
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B5C90
 // GHIDRA_NAME TInfoBarPictureText::DestructTInfoBarPictureTextAndMaybeFree
-// GHIDRA_PROTO undefined TStaticText::~TStaticText()
+// GHIDRA_PROTO undefined DestructTInfoBarPictureTextAndMaybeFree()
 
 void __fastcall TInfoBarPictureText::DestructTInfoBarPictureTextAndMaybeFree(undefined4 *param_1)
 
@@ -103,12 +104,10 @@ void __fastcall TInfoBarPictureText::DestructTInfoBarPictureTextAndMaybeFree(und
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B5CB0
-// GHIDRA_NAME TInfoBarPictureText::SerializeRecordList_0x0C_WithBlockPool_A
-// GHIDRA_PROTO undefined __thiscall SerializeRecordList_0x0C_WithBlockPool_A(RECT * param_1)
+// GHIDRA_NAME TInfoBarPictureText::SetTextAndLayoutRect
+// GHIDRA_PROTO undefined __thiscall SetTextAndLayoutRect(RECT * param_1)
 
-void __thiscall
-TInfoBarPictureText::SerializeRecordList_0x0C_WithBlockPool_A
-          (TInfoBarPictureText *this,RECT *param_1)
+void __thiscall TInfoBarPictureText::SetTextAndLayoutRect(TInfoBarPictureText *this,RECT *param_1)
 
 {
   TInfoBarPictureTextVtbl *pTVar1;
@@ -151,10 +150,10 @@ TInfoBarPictureText::SerializeRecordList_0x0C_WithBlockPool_A
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B5DD0
-// GHIDRA_NAME TInfoBarPictureText::DestructTInfoBarTextAndMaybeFree
-// GHIDRA_PROTO undefined __thiscall DestructTInfoBarTextAndMaybeFree(void)
+// GHIDRA_NAME TInfoBarPictureText::ClearTextAndLayoutRect
+// GHIDRA_PROTO undefined __thiscall ClearTextAndLayoutRect(void)
 
-void TInfoBarPictureText::DestructTInfoBarTextAndMaybeFree()
+void __thiscall TInfoBarPictureText::ClearTextAndLayoutRect(TInfoBarPictureText *this)
 
 {
   TInfoBarPictureTextVtbl *pTVar1;

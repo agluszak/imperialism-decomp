@@ -18,7 +18,8 @@
    
    Library: nafxcw retail msvc500:static */
 
-CCommandLineInfo * CCommandLineInfo::_scalar_deleting_destructor_(byte param_1)
+CCommandLineInfo * __thiscall
+CCommandLineInfo::_scalar_deleting_destructor_(CCommandLineInfo *this,byte param_1)
 
 {
   ~CCommandLineInfo();

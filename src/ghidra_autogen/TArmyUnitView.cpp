@@ -37,7 +37,7 @@ undefined4 * TArmyUnitView::CreateObject(void)
 // GHIDRA_NAME TArmyUnitView::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TArmyUnitView::GetRuntimeClass()
+CRuntimeClass * __thiscall TArmyUnitView::GetRuntimeClass(TArmyUnitView *this)
 
 {
   return &classTArmyUnitView;
@@ -47,7 +47,7 @@ CRuntimeClass * TArmyUnitView::GetRuntimeClass()
 // GHIDRA_NAME TArmyUnitView::ConstructTArmyUnitViewBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTArmyUnitViewBaseState(void)
 
-TArmyUnitView * TArmyUnitView::ConstructTArmyUnitViewBaseState()
+TArmyUnitView * __thiscall TArmyUnitView::ConstructTArmyUnitViewBaseState(TArmyUnitView *this)
 
 {
   func_0x004064e2();
@@ -59,7 +59,8 @@ TArmyUnitView * TArmyUnitView::ConstructTArmyUnitViewBaseState()
 // GHIDRA_NAME TArmyUnitView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TArmyUnitView * TArmyUnitView::_scalar_deleting_destructor_(byte param_1)
+TArmyUnitView * __thiscall
+TArmyUnitView::_scalar_deleting_destructor_(TArmyUnitView *this,byte param_1)
 
 {
   func_0x00409057();
@@ -73,7 +74,7 @@ TArmyUnitView * TArmyUnitView::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TArmyUnitView::ApplyRectSlot110
 // GHIDRA_PROTO undefined __thiscall ApplyRectSlot110(void)
 
-void TArmyUnitView::ApplyRectSlot110()
+void __thiscall TArmyUnitView::ApplyRectSlot110(TArmyUnitView *this)
 
 {
   short sVar1;
@@ -105,13 +106,13 @@ void TArmyUnitView::ApplyRectSlot110()
   local_38 = 0x1c474b;
   func_0x00409444();
   CString::operator=(&local_30,(CString *)(*(int *)&this->field_0x60 + 0x24));
-  func_0x00408d6e();
+  thunk_SetQuickDrawTextOriginWithContextOffset();
   func_0x004029aa();
   func_0x0040448f();
   local_38 = 0x1c474b;
   func_0x00409444();
   (*g_pSimMgr->vftable[0x10].slot_0x04)();
-  func_0x00408d6e(0x40);
+  thunk_SetQuickDrawTextOriginWithContextOffset(0x40);
   func_0x004029aa();
   func_0x00406b86();
   sVar1 = *(short *)(*(int *)&this->field_0x60 + 0x34) / 0x19 + 1;
@@ -136,10 +137,10 @@ void TArmyUnitView::ApplyRectSlot110()
   func_0x00405493(*(int *)(g_pStrategicMapViewSystem + 0x694) + 4,
                   &g_pActiveQuickDrawSurfaceContext->field_0x4,&uStack_28,&local_38,0x24);
   func_0x00402bdf();
-  func_0x00408d6e(0x41);
-  func_0x00403bb6(0x41);
-  func_0x00403bb6(0x93);
-  func_0x00403bb6(0x93);
+  thunk_SetQuickDrawTextOriginWithContextOffset(0x41);
+  thunk_DrawCenteredGuideLineOnMapDc(0x41);
+  thunk_DrawCenteredGuideLineOnMapDc(0x93);
+  thunk_DrawCenteredGuideLineOnMapDc(0x93);
   sVar1 = *(short *)(*(int *)&this->field_0x60 + 0x38);
   sVar2 = (sVar1 / 100) * 0xb;
   if (0x31 < (int)sVar1 % 100) {
@@ -245,7 +246,7 @@ TArmyUnitView::HandleEvent
       local_4 = 0;
       (*g_pSimMgr->vftable[0x10].slot_0x04)();
       func_0x004076b7(&local_4);
-      func_0x004096b0();
+      thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
       local_4 = 0xffffffff;
       CString::~CString(&param_2);
     }

@@ -37,7 +37,7 @@ undefined4 * TTradeOrderPicture::CreateObject(void)
 // GHIDRA_NAME TTradeOrderPicture::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TTradeOrderPicture::GetRuntimeClass()
+CRuntimeClass * __thiscall TTradeOrderPicture::GetRuntimeClass(TTradeOrderPicture *this)
 
 {
   return &classTTradeOrderPicture;
@@ -47,7 +47,7 @@ CRuntimeClass * TTradeOrderPicture::GetRuntimeClass()
 // GHIDRA_NAME TTradeOrderPicture::TTradeOrderPicture
 // GHIDRA_PROTO undefined __thiscall TTradeOrderPicture(void)
 
-TTradeOrderPicture * TTradeOrderPicture::TTradeOrderPicture()
+TTradeOrderPicture * __thiscall TTradeOrderPicture::TTradeOrderPicture(TTradeOrderPicture *this)
 
 {
   func_0x00401122();
@@ -59,7 +59,8 @@ TTradeOrderPicture * TTradeOrderPicture::TTradeOrderPicture()
 // GHIDRA_NAME TTradeOrderPicture::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TTradeOrderPicture * TTradeOrderPicture::_scalar_deleting_destructor_(byte param_1)
+TTradeOrderPicture * __thiscall
+TTradeOrderPicture::_scalar_deleting_destructor_(TTradeOrderPicture *this,byte param_1)
 
 {
   func_0x0040845e();
@@ -73,7 +74,7 @@ TTradeOrderPicture * TTradeOrderPicture::_scalar_deleting_destructor_(byte param
 // GHIDRA_NAME TTradeOrderPicture::NoOpUiLifecycleHook
 // GHIDRA_PROTO undefined __thiscall NoOpUiLifecycleHook(void)
 
-void TTradeOrderPicture::NoOpUiLifecycleHook()
+void __thiscall TTradeOrderPicture::NoOpUiLifecycleHook(TTradeOrderPicture *this)
 
 {
   (*this->vftable->UpdateControlCachedIntFromWindowText_2a)(1,0);
@@ -84,7 +85,7 @@ void TTradeOrderPicture::NoOpUiLifecycleHook()
 // GHIDRA_NAME TTradeOrderPicture::BeginMouseCaptureAndStartRepeatTimer
 // GHIDRA_PROTO undefined __thiscall BeginMouseCaptureAndStartRepeatTimer(void)
 
-void TTradeOrderPicture::BeginMouseCaptureAndStartRepeatTimer()
+void __thiscall TTradeOrderPicture::BeginMouseCaptureAndStartRepeatTimer(TTradeOrderPicture *this)
 
 {
   char cVar1;

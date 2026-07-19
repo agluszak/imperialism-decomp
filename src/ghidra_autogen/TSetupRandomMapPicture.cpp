@@ -40,7 +40,7 @@ undefined4 * TSetupRandomMapPicture::CreateObject(void)
 // GHIDRA_NAME TSetupRandomMapPicture::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TSetupRandomMapPicture::GetRuntimeClass()
+CRuntimeClass * __thiscall TSetupRandomMapPicture::GetRuntimeClass(TSetupRandomMapPicture *this)
 
 {
   return &classTSetupRandomMapPicture;
@@ -50,7 +50,8 @@ CRuntimeClass * TSetupRandomMapPicture::GetRuntimeClass()
 // GHIDRA_NAME TSetupRandomMapPicture::ConstructTSetupRandomMapPictureBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTSetupRandomMapPictureBaseState(void)
 
-TSetupRandomMapPicture * TSetupRandomMapPicture::ConstructTSetupRandomMapPictureBaseState()
+TSetupRandomMapPicture * __thiscall
+TSetupRandomMapPicture::ConstructTSetupRandomMapPictureBaseState(TSetupRandomMapPicture *this)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -76,7 +77,8 @@ TSetupRandomMapPicture * TSetupRandomMapPicture::ConstructTSetupRandomMapPicture
 // GHIDRA_NAME TSetupRandomMapPicture::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TSetupRandomMapPicture * TSetupRandomMapPicture::_scalar_deleting_destructor_(byte param_1)
+TSetupRandomMapPicture * __thiscall
+TSetupRandomMapPicture::_scalar_deleting_destructor_(TSetupRandomMapPicture *this,byte param_1)
 
 {
   func_0x00402d88();
@@ -87,10 +89,10 @@ TSetupRandomMapPicture * TSetupRandomMapPicture::_scalar_deleting_destructor_(by
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00576E30
-// GHIDRA_NAME TSetupRandomMapPicture::DestructTSetupRandomMapPictureBaseState
-// GHIDRA_PROTO undefined __thiscall DestructTSetupRandomMapPictureBaseState(void)
+// GHIDRA_NAME TSetupRandomMapPicture::~TSetupRandomMapPicture
+// GHIDRA_PROTO undefined __thiscall ~TSetupRandomMapPicture(void)
 
-void TSetupRandomMapPicture::DestructTSetupRandomMapPictureBaseState()
+void __thiscall TSetupRandomMapPicture::~TSetupRandomMapPicture(TSetupRandomMapPicture *this)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -104,7 +106,7 @@ void TSetupRandomMapPicture::DestructTSetupRandomMapPictureBaseState()
   local_4 = 0;
   CString::~CString((CString *)&this->field_0x94);
   local_4 = 0xffffffff;
-  TView::DestructCityDialogSharedBaseState((TView *)this);
+  thunk_DestructCityDialogSharedBaseState(this);
   *unaff_FS_OFFSET = local_c;
   return;
 }
@@ -129,7 +131,7 @@ void __fastcall TSetupRandomMapPicture::RecheckCountryName(int *param_1)
 // GHIDRA_NAME TSetupRandomMapPicture::NoOpUiLifecycleHook
 // GHIDRA_PROTO undefined __thiscall NoOpUiLifecycleHook(void)
 
-void TSetupRandomMapPicture::NoOpUiLifecycleHook()
+void __thiscall TSetupRandomMapPicture::NoOpUiLifecycleHook(TSetupRandomMapPicture *this)
 
 {
   short sVar1;
@@ -225,8 +227,8 @@ void TSetupRandomMapPicture::NoOpUiLifecycleHook()
     uStack_3c = 0x5770b8;
     CString::operator=((CString *)&this->field_0x94,(CString *)&g_pGlobalMapState->field_0x1c);
     this->field_0x98 = g_pGlobalMapState->field_0x20;
-    bVar10 = DAT_00698ab0 == -1;
-    *(short *)&this->field_0x9a = DAT_00698ab0;
+    bVar10 = g_nRandomMapSelectedNationSlot00698AB0 == -1;
+    *(short *)&this->field_0x9a = g_nRandomMapSelectedNationSlot00698AB0;
     if (bVar10) {
       iVar4 = rand();
       *(short *)&this->field_0x9a = (short)(iVar4 % 7);
@@ -251,7 +253,7 @@ void TSetupRandomMapPicture::NoOpUiLifecycleHook()
   (**(code **)(*(int *)CONCAT31(extraout_var_00,uVar3) + 0xc))();
   *(undefined2 *)((int *)CONCAT31(extraout_var_00,uVar3) + 0x27) = 0xc;
   uStack_3c = 1;
-  DAT_006a43f0 = '\0';
+  g_bMultiplayerScenarioSetupActive = '\0';
   uStack_40 = 0x577168;
   func_0x00404cd2();
   uStack_40 = 0x686f7421;
@@ -421,7 +423,7 @@ void TSetupRandomMapPicture::NoOpUiLifecycleHook()
     pCVar6 = (CString *)func_0x00402a2c();
     piStack_74._0_1_ = 3;
     piStack_a4 = (int *)0x5774b2;
-    CString::operator=((CString *)&DAT_006a4220,pCVar6);
+    CString::operator=((CString *)&g_cstrCountryNameSettingValue006A4220,pCVar6);
     piStack_74 = (int *)CONCAT31(piStack_74._1_3_,2);
     CString::~CString(&CStack_88);
   }
@@ -429,7 +431,7 @@ void TSetupRandomMapPicture::NoOpUiLifecycleHook()
     pCVar6 = (CString *)func_0x00402a2c();
     piStack_74 = (int *)0x1;
     piStack_a4 = (int *)0x57743b;
-    CString::operator=((CString *)&DAT_006a4220,pCVar6);
+    CString::operator=((CString *)&g_cstrCountryNameSettingValue006A4220,pCVar6);
   }
   piStack_74 = (int *)0xffffffff;
   CString::~CString(&CStack_8c);
@@ -576,7 +578,8 @@ void TSetupRandomMapPicture::NoOpUiLifecycleHook()
 // GHIDRA_NAME TSetupRandomMapPicture::HandleEvent
 // GHIDRA_PROTO undefined __thiscall HandleEvent(int param_1, CString param_2)
 
-void TSetupRandomMapPicture::HandleEvent(int param_1, CString param_2)
+void __thiscall
+TSetupRandomMapPicture::HandleEvent(TSetupRandomMapPicture *this,int param_1,CString param_2)
 
 {
   char cVar1;
@@ -595,8 +598,7 @@ void TSetupRandomMapPicture::HandleEvent(int param_1, CString param_2)
   char *pcStack_58;
   CString CStack_40;
   CString CStack_3c;
-  CString CStack_38;
-  undefined4 uStack_34;
+  CString aCStack_38 [2];
   undefined4 uStack_30;
   undefined1 auStack_1c [4];
   undefined4 uStack_18;
@@ -638,8 +640,8 @@ void TSetupRandomMapPicture::HandleEvent(int param_1, CString param_2)
     func_0x00401d70(CVar2.m_pchData);
     uStack_30 = 0;
     (**(code **)(iVar6 + 0x110))(&uStack_60);
-    uStack_34 = 0xffffffff;
-    func_0x00408035();
+    uStack_4 = 0xffffffff;
+    thunk_DestroyScopedMapQuickDrawContext();
   }
   uVar7 = *(uint *)(CVar2.m_pchData + 0x1c);
   if (uVar7 == 0x676c6f62) {
@@ -680,7 +682,7 @@ void TSetupRandomMapPicture::HandleEvent(int param_1, CString param_2)
   uStack_4 = 1;
   CString::CString(&CStack_40);
   uStack_4._0_1_ = 2;
-  CString::CString(&CStack_38);
+  CString::CString(aCStack_38);
   uStack_4._0_1_ = 3;
   CString::CString(&CStack_3c);
   pCStack_5c = &CStack_40;
@@ -714,7 +716,7 @@ LAB_00577c8c:
   uStack_4._0_1_ = 3;
   CString::~CString(&CStack_3c);
   uStack_4._0_1_ = 2;
-  CString::~CString(&CStack_38);
+  CString::~CString(aCStack_38);
   uStack_4 = CONCAT31(uStack_4._1_3_,1);
   CString::~CString(&CStack_40);
   uStack_4 = 0xffffffff;
@@ -739,7 +741,7 @@ LAB_00577ce4:
 /* Applies selected nation/country setup, updates localization/gameflow fields, and conditionally
    posts event 5E4. */
 
-void TSetupRandomMapPicture::StartGame()
+void __thiscall TSetupRandomMapPicture::StartGame(TSetupRandomMapPicture *this)
 
 {
   _vslot_fn *p_Var1;
@@ -810,7 +812,7 @@ void TSetupRandomMapPicture::StartGame()
   CString::CString((CString *)&stack0xffffffe8,(char *)&g_szEmptyString);
   uStack_c._0_1_ = 2;
   CStack_34.m_pchData = (char *)0x577f56;
-  CString::operator=((CString *)&DAT_006a4220,(CString *)&stack0xffffffe8);
+  CString::operator=((CString *)&g_cstrCountryNameSettingValue006A4220,(CString *)&stack0xffffffe8);
   uStack_c = (uint)uStack_c._1_3_ << 8;
   CString::~CString((CString *)&stack0xffffffe8);
   CStack_34.m_pchData = (char *)0x577f74;
@@ -839,11 +841,11 @@ void TSetupRandomMapPicture::StartGame()
   g_pSimMgr->field_0x68 = ((int *)CONCAT31(extraout_var_02,uVar3))[0x22] != 0x72616e64;
   *(short *)&g_pSimMgr->field_0x62 = (short)(char)g_pSimMgr->field_0x68;
   func_0x00408d0a(1);
-  _DAT_00698ab0 = (int)*(short *)&this->field_0x9a;
+  _g_nRandomMapSelectedNationSlot00698AB0 = (int)*(short *)&this->field_0x9a;
   if (*(int *)&g_pSimMgr->field_0x44 == 0) {
     func_0x00401302(CONCAT22(*(short *)&this->field_0x9a >> 0xf,*(undefined2 *)&this->field_0x9a));
-    CString::CString(&CStack_34,(CString *)&DAT_006a4220);
-    func_0x0040451b(&CStack_34,s_CountryName_00698ae0);
+    CString::CString(&CStack_34,(CString *)&g_cstrCountryNameSettingValue006A4220);
+    func_0x0040451b(&CStack_34,g_szCountryNameProfileKey00698AE0);
     unaff_EBP = unaff_EBP & 0xffffff00;
     CString::~CString(&CStack_3c);
     iVar4 = 0xda;
@@ -857,8 +859,10 @@ void TSetupRandomMapPicture::StartGame()
   }
   else {
     func_0x00408715(0x5e4);
-    CString::operator=((CString *)((int)g_pGameFlowState + 0xb4),(CString *)&DAT_006a4220);
-    CString::operator=((CString *)((int)g_pGameFlowState + 0xb0),(CString *)&DAT_006a4220);
+    CString::operator=((CString *)((int)g_pGameFlowState + 0xb4),
+                       (CString *)&g_cstrCountryNameSettingValue006A4220);
+    CString::operator=((CString *)((int)g_pGameFlowState + 0xb0),
+                       (CString *)&g_cstrCountryNameSettingValue006A4220);
     *(undefined1 *)((int)g_pGameFlowState + 0xdc) = this->field_0x9a;
   }
   CString::~CString(&CStack_38);
@@ -876,7 +880,7 @@ void TSetupRandomMapPicture::StartGame()
 /* Scheduler helper: if g_pLocalizationTable +0x44 is non-zero, runs
    ResetLocalUiStateAndPostTurnEvent5E5; otherwise posts turn-event code 0x5DC. */
 
-void TSetupRandomMapPicture::ExitScreen()
+void __thiscall TSetupRandomMapPicture::ExitScreen(TSetupRandomMapPicture *this)
 
 {
   if (*(int *)&g_pSimMgr->field_0x44 != 0) {
@@ -891,7 +895,8 @@ void TSetupRandomMapPicture::ExitScreen()
 // GHIDRA_NAME TSetupRandomMapPicture::GroundControlToMajorTom
 // GHIDRA_PROTO undefined __thiscall GroundControlToMajorTom(undefined1 param_1)
 
-void TSetupRandomMapPicture::GroundControlToMajorTom(undefined1 param_1)
+void __thiscall
+TSetupRandomMapPicture::GroundControlToMajorTom(TSetupRandomMapPicture *this,undefined1 param_1)
 
 {
   undefined4 *puVar1;
@@ -932,7 +937,7 @@ void TSetupRandomMapPicture::GroundControlToMajorTom(undefined1 param_1)
 // GHIDRA_NAME TSetupRandomMapPicture::ForwardParam
 // GHIDRA_PROTO undefined __thiscall ForwardParam(int param_1)
 
-void TSetupRandomMapPicture::ForwardParam(int param_1)
+void __thiscall TSetupRandomMapPicture::ForwardParam(TSetupRandomMapPicture *this,int param_1)
 
 {
   short sVar1;
@@ -952,7 +957,7 @@ void TSetupRandomMapPicture::ForwardParam(int param_1)
 // GHIDRA_NAME TSetupRandomMapPicture::MajorTomToGroundControl
 // GHIDRA_PROTO undefined __thiscall MajorTomToGroundControl(void)
 
-void TSetupRandomMapPicture::MajorTomToGroundControl()
+void __thiscall TSetupRandomMapPicture::MajorTomToGroundControl(TSetupRandomMapPicture *this)
 
 {
   _vslot_fn *p_Var1;
@@ -1069,7 +1074,7 @@ void TSetupRandomMapPicture::MajorTomToGroundControl()
   uStack_98 = 0x57848a;
   (**(code **)(*(int *)CONCAT31(extraout_var_03,uVar3) + 0x13c))();
   uStack_98 = 0x578495;
-  DAT_006a4268 = this;
+  g_pActiveRandomMapSetupPicture006A4268 = this;
   uVar4 = func_0x004092d7();
   *(undefined4 *)&this->field_0x9c = uVar4;
   *(undefined4 *)&this->field_0xa0 = 0;
@@ -1080,7 +1085,7 @@ void TSetupRandomMapPicture::MajorTomToGroundControl()
   uStack_a0 = 1;
   pcStack_a4 = (code *)0x5784c7;
   func_0x00405704();
-  DAT_006a4268 = (TSetupRandomMapPicture *)0x0;
+  g_pActiveRandomMapSetupPicture006A4268 = (TSetupRandomMapPicture *)0x0;
   pcStack_a4 = (code *)0x5784d8;
   func_0x00401c2b();
   pcStack_a4 = (code *)0x6d617020;
@@ -1126,7 +1131,7 @@ void TSetupRandomMapPicture::MajorTomToGroundControl()
 // GHIDRA_NAME TSetupRandomMapPicture::SpinYourGlobe
 // GHIDRA_PROTO undefined __thiscall SpinYourGlobe(void)
 
-void TSetupRandomMapPicture::SpinYourGlobe()
+void __thiscall TSetupRandomMapPicture::SpinYourGlobe(TSetupRandomMapPicture *this)
 
 {
   undefined uVar1;
@@ -1158,7 +1163,7 @@ void TSetupRandomMapPicture::SpinYourGlobe()
       *(undefined4 *)&this->field_0xa0 = 0;
     }
   }
-  if (DAT_006a4268 == 0) {
+  if (g_pActiveRandomMapSetupPicture006A4268 == 0) {
     *(undefined4 *)&this->field_0xa0 = 0;
   }
   uStack_44 = 0x676c6f62;
@@ -1173,7 +1178,7 @@ void TSetupRandomMapPicture::SpinYourGlobe()
   (**(code **)(iVar4 + 0xf8))();
   (**(code **)(iVar4 + 300))(&uStack_44);
   (**(code **)(iVar4 + 0x110))(&uStack_48);
-  func_0x00408035();
+  thunk_DestroyScopedMapQuickDrawContext();
   *unaff_FS_OFFSET = uStack_24;
   return;
 }

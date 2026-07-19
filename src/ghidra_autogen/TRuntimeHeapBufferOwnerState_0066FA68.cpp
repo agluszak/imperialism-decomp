@@ -4,59 +4,14 @@
 // Bucket: TRuntimeHeapBufferOwnerState_0066FA68.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005E27A5
-// GHIDRA_NAME TRuntimeHeapBufferOwnerState_0066FA68::DestructHeapBufferOwnerState_0066FA68_AndFreeBuffer_At005e47b0
-// GHIDRA_PROTO undefined TRuntimeHeapBufferOwnerState_0066FA68::DestructHeapBufferOwnerState_0066FA68_AndFreeBuffer_At005e47b0()
+// GHIDRA_NAME TRuntimeHeapBufferOwnerState_0066FA68::thunk_DestructHeapBufferOwnerState_0066FA68_AndFreeBuffer_At005e47b0
+// GHIDRA_PROTO undefined thunk_DestructHeapBufferOwnerState_0066FA68_AndFreeBuffer_At005e47b0()
 
 void TRuntimeHeapBufferOwnerState_0066FA68::
-     TRuntimeHeapBufferOwnerState_0066FA68::DestructHeapBufferOwnerState_0066FA68_AndFreeBuffer_At005e47b0(void)
+     thunk_DestructHeapBufferOwnerState_0066FA68_AndFreeBuffer_At005e47b0(void)
 
 {
   func_0x00407ed2();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x005E4780
-// GHIDRA_NAME TRuntimeHeapBufferOwnerState_0066FA68::InitializeRuntimeClassVtablePointer_0066FA68_State
-// GHIDRA_PROTO undefined __thiscall InitializeRuntimeClassVtablePointer_0066FA68_State(void)
-
-void __thiscall
-TRuntimeHeapBufferOwnerState_0066FA68::InitializeRuntimeClassVtablePointer_0066FA68_State
-          (TRuntimeHeapBufferOwnerState_0066FA68 *this)
-
-{
-  *(undefined **)this = &DAT_0066fa68;
-  *(undefined4 *)(this + 4) = 0;
-  *(undefined4 *)(this + 0x10) = 0;
-  *(undefined4 *)(this + 0xc) = 0;
-  *(undefined4 *)(this + 8) = 0;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x005E47B0
-// GHIDRA_NAME TRuntimeHeapBufferOwnerState_0066FA68::DestructHeapBufferOwnerState_0066FA68_AndFreeBuffer_At005e47b0
-// GHIDRA_PROTO undefined __thiscall DestructHeapBufferOwnerState_0066FA68_AndFreeBuffer_At005e47b0(void)
-
-void __thiscall
-TRuntimeHeapBufferOwnerState_0066FA68::
-DestructHeapBufferOwnerState_0066FA68_AndFreeBuffer_At005e47b0
-          (TRuntimeHeapBufferOwnerState_0066FA68 *this)
-
-{
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 local_c;
-  undefined1 *puStack_8;
-  undefined4 local_4;
-  
-  puStack_8 = &LAB_0063aa78;
-  local_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &local_c;
-  *(undefined **)this = &DAT_0066fa68;
-  local_4 = 0;
-  if (*(int *)(this + 4) != 0) {
-    operator_delete(*(int *)(this + 4));
-  }
-  *(char **)this = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
-  *unaff_FS_OFFSET = local_c;
   return;
 }
 

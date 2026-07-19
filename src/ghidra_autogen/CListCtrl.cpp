@@ -19,9 +19,51 @@ CListCtrl::OnChildNotify
     uVar1 = 1;
   }
   else {
-    uVar1 = CWnd__OnChildNotify(param_2,param_3,param_4,param_5);
+    uVar1 = CWnd::OnChildNotify(param_2,param_3,param_4,param_5);
   }
   return uVar1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005E5C0B
+// GHIDRA_NAME CListCtrl::Create
+// GHIDRA_PROTO undefined Create()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Multiple Matches With Same Base Name
+// GHIDRA_COMMENT  public: int __thiscall CAnimateCtrl::Create(unsigned long,struct tagRECT const &,class CWnd *,unsigned int)
+// GHIDRA_COMMENT  public: int __thiscall CHeaderCtrl::Create(unsigned long,struct tagRECT const &,class CWnd *,unsigned int)
+// GHIDRA_COMMENT  public: int __thiscall CHotKeyCtrl::Create(unsigned long,struct tagRECT const &,class CWnd *,unsigned int)
+// GHIDRA_COMMENT  public: int __thiscall CListCtrl::Create(unsigned long,struct tagRECT const &,class CWnd *,unsigned int)
+// GHIDRA_COMMENT   11 names - too many to list
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: nafxcw retail msvc500:static
+// GHIDRA_COMMENT_END
+
+/* Library Function - Multiple Matches With Same Base Name
+    public: int __thiscall CAnimateCtrl::Create(unsigned long,struct tagRECT const &,class CWnd
+   *,unsigned int)
+    public: int __thiscall CHeaderCtrl::Create(unsigned long,struct tagRECT const &,class CWnd
+   *,unsigned int)
+    public: int __thiscall CHotKeyCtrl::Create(unsigned long,struct tagRECT const &,class CWnd
+   *,unsigned int)
+    public: int __thiscall CListCtrl::Create(unsigned long,struct tagRECT const &,class CWnd
+   *,unsigned int)
+     11 names - too many to list
+   
+   Library: nafxcw retail msvc500:static */
+
+void __thiscall
+CListCtrl::Create(int *param_1,undefined4 param_2,undefined4 param_3,undefined4 param_4,
+                 undefined4 param_5)
+
+{
+  int iVar1;
+  
+  iVar1 = AfxGetModuleState();
+  if ((*(byte *)(iVar1 + 0x18) & 0x10) == 0) {
+    AfxEndDeferRegisterClass(0x10);
+  }
+  (**(code **)(*param_1 + 0x5c))("SysListView32",0,param_2,param_3,param_4,param_5,0);
+  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005E5C9C
@@ -177,7 +219,7 @@ CListCtrl::GetItemText
 
 /* Builds mode-4 query struct and sends control message 0x1005; returns extracted output field. */
 
-undefined4 CListCtrl::GetItemData()
+undefined4 __thiscall CListCtrl::GetItemData(CListCtrl *this)
 
 {
   undefined4 local_2c [8];
@@ -187,6 +229,27 @@ undefined4 CListCtrl::GetItemData()
   local_2c[0] = 4;
   SendMessageA(*(HWND *)(this + 0x1c),0x1005,0,(LPARAM)local_2c);
   return local_c;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005E5EEE
+// GHIDRA_NAME CListCtrl::OnChildNotify
+// GHIDRA_PROTO undefined OnChildNotify()
+
+undefined4 __thiscall
+CListCtrl::OnChildNotify
+          (int *param_1,int param_2,undefined4 param_3,undefined4 param_4,undefined4 param_5)
+
+{
+  undefined4 uVar1;
+  
+  if (param_2 == 0x2b) {
+    (**(code **)(*param_1 + 0xc0))(param_4);
+    uVar1 = 1;
+  }
+  else {
+    uVar1 = CWnd::OnChildNotify(param_2,param_3,param_4,param_5);
+  }
+  return uVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005E5F1C
@@ -206,7 +269,7 @@ void __thiscall CListCtrl::RemoveImageList(int param_1,WPARAM param_2)
   int iVar2;
   
   LVar1 = SendMessageA(*(HWND *)(param_1 + 0x1c),0x1002,param_2,0);
-  iVar2 = CMenu__FromHandlePermanent(LVar1);
+  iVar2 = CMenu::FromHandlePermanent(LVar1);
   if (iVar2 != 0) {
     SendMessageA(*(HWND *)(param_1 + 0x1c),0x1003,param_2,0);
   }
@@ -238,5 +301,68 @@ void CListCtrl::OnNcDestroy(void)
   RemoveImageList(2);
   CWnd::OnNcDestroy();
   return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005E663C
+// GHIDRA_NAME CListCtrl::OnChildNotify
+// GHIDRA_PROTO undefined OnChildNotify()
+
+undefined4 __thiscall
+CListCtrl::OnChildNotify
+          (int *param_1,int param_2,undefined4 param_3,undefined4 param_4,undefined4 param_5)
+
+{
+  undefined4 uVar1;
+  
+  if (param_2 == 0x2b) {
+    (**(code **)(*param_1 + 0xc0))(param_4);
+    uVar1 = 1;
+  }
+  else {
+    uVar1 = CWnd::OnChildNotify(param_2,param_3,param_4,param_5);
+  }
+  return uVar1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005E6784
+// GHIDRA_NAME CListCtrl::OnChildNotify
+// GHIDRA_PROTO undefined OnChildNotify()
+
+undefined4 __thiscall
+CListCtrl::OnChildNotify
+          (int *param_1,int param_2,undefined4 param_3,undefined4 param_4,undefined4 param_5)
+
+{
+  undefined4 uVar1;
+  
+  if (param_2 == 0x2b) {
+    (**(code **)(*param_1 + 0xc0))(param_4);
+    uVar1 = 1;
+  }
+  else {
+    uVar1 = CWnd::OnChildNotify(param_2,param_3,param_4,param_5);
+  }
+  return uVar1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0061E87C
+// GHIDRA_NAME CListCtrl::OnChildNotify
+// GHIDRA_PROTO undefined OnChildNotify()
+
+undefined4 __thiscall
+CListCtrl::OnChildNotify
+          (int *param_1,int param_2,undefined4 param_3,undefined4 param_4,undefined4 param_5)
+
+{
+  undefined4 uVar1;
+  
+  if (param_2 == 0x2b) {
+    (**(code **)(*param_1 + 0xc0))(param_4);
+    uVar1 = 1;
+  }
+  else {
+    uVar1 = CWnd::OnChildNotify(param_2,param_3,param_4,param_5);
+  }
+  return uVar1;
 }
 

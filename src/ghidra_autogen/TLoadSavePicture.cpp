@@ -7,7 +7,8 @@
 // GHIDRA_NAME TLoadSavePicture::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TLoadSavePicture * TLoadSavePicture::_scalar_deleting_destructor_(byte param_1)
+TLoadSavePicture * __thiscall
+TLoadSavePicture::_scalar_deleting_destructor_(TLoadSavePicture *this,byte param_1)
 
 {
   func_0x00406be5();
@@ -63,7 +64,7 @@ undefined4 * TLoadSavePicture::CreateObject(void)
 // GHIDRA_NAME TLoadSavePicture::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TLoadSavePicture::GetRuntimeClass()
+CRuntimeClass * __thiscall TLoadSavePicture::GetRuntimeClass(TLoadSavePicture *this)
 
 {
   return &classTLoadSavePicture;
@@ -73,7 +74,7 @@ CRuntimeClass * TLoadSavePicture::GetRuntimeClass()
 // GHIDRA_NAME TLoadSavePicture::NoOpUiLifecycleHook
 // GHIDRA_PROTO undefined __thiscall NoOpUiLifecycleHook(void)
 
-void TLoadSavePicture::NoOpUiLifecycleHook()
+void __thiscall TLoadSavePicture::NoOpUiLifecycleHook(TLoadSavePicture *this)
 
 {
   _vslot_fn *p_Var1;
@@ -142,13 +143,13 @@ void TLoadSavePicture::NoOpUiLifecycleHook()
   CStack_8c.m_pchData = &this->field_0x94;
   CStack_88.m_pchData = (char *)0x1;
   CStack_90.m_pchData = (char *)0x56bd1c;
-  func_0x00406afa();
+  thunk_BuildUiTextStyleDescriptor();
   CStack_8c.m_pchData = &this->field_0x9e;
   iStack_80 = 0x2b6c;
   CStack_84.m_pchData = (char *)0xc;
   CStack_88.m_pchData = (char *)0x0;
   CStack_90.m_pchData = (char *)0x56bd35;
-  func_0x00406afa();
+  thunk_BuildUiTextStyleDescriptor();
   p_Var1 = this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25;
   iStack_80 = 0x63757273;
   CStack_84.m_pchData = (char *)0x56bd49;
@@ -186,7 +187,7 @@ void TLoadSavePicture::NoOpUiLifecycleHook()
     else {
       pcStack_9c = &g_szDecimalFormat;
       CStack_a4.m_pchData = (char *)0x56be38;
-      CString__Format();
+      CString::Format();
     }
     pcStack_9c = (char *)0x56be49;
     func_0x00401b40();
@@ -303,7 +304,7 @@ LAB_0056c0cb:
                                ((int)*(short *)&g_pSimMgr->field_0x2c >> 0x1f & 3U)) >> 2) + 0x717);
     pCStack_b4 = (CString *)&g_szDecimalFormat;
     CStack_bc.m_pchData = (char *)0x56c1a6;
-    CString__Format();
+    CString::Format();
     CStack_b0.m_pchData = (char *)&pcStack_9c;
     pCStack_b4 = (CString *)(*(int *)&g_pSimMgr->field_0x40 + 0xd);
     pCStack_b8 = (CString *)0x2737;
@@ -483,7 +484,8 @@ code_r0x0056c450:
 // GHIDRA_NAME TLoadSavePicture::DestructTLoadSavePictureAndMaybeFree
 // GHIDRA_PROTO undefined __thiscall DestructTLoadSavePictureAndMaybeFree(int param_1)
 
-void TLoadSavePicture::DestructTLoadSavePictureAndMaybeFree(int param_1)
+void __thiscall
+TLoadSavePicture::DestructTLoadSavePictureAndMaybeFree(TLoadSavePicture *this,int param_1)
 
 {
   _vslot_fn *p_Var1;
@@ -542,7 +544,7 @@ void TLoadSavePicture::DestructTLoadSavePictureAndMaybeFree(int param_1)
   else {
     uStack_b4 = (char *)param_1;
     pCStack_b8 = (CString *)&g_szDecimalFormat;
-    CString__Format();
+    CString::Format();
   }
   uStack_b4 = s_Save__00698724;
   pCStack_b8 = (CString *)0x56c80c;
@@ -604,7 +606,7 @@ void TLoadSavePicture::DestructTLoadSavePictureAndMaybeFree(int param_1)
     uStack_24 = 5;
     CString::CString((CString *)&stack0xffffff54);
     uStack_24 = 6;
-    CString__Format(&stack0xffffff44,&g_szDecimalFormat,(short)((uint)unaff_EBP >> 0x10) + 0x717);
+    CString::Format(&stack0xffffff44,&g_szDecimalFormat,(short)((uint)unaff_EBP >> 0x10) + 0x717);
     (*g_pSimMgr->vftable[0x10].slot_0x04)
               (0x2737,CONCAT22((short)((uint)&stack0xffffff54 >> 0x10),(short)uStack_b4._2_1_) + 0xd
                ,&stack0xffffff54);
@@ -649,7 +651,7 @@ void TLoadSavePicture::DestructTLoadSavePictureAndMaybeFree(int param_1)
 // GHIDRA_NAME TLoadSavePicture::HandleEvent
 // GHIDRA_PROTO undefined __thiscall HandleEvent(int param_1, CString param_2)
 
-void TLoadSavePicture::HandleEvent(int param_1, CString param_2)
+void __thiscall TLoadSavePicture::HandleEvent(TLoadSavePicture *this,int param_1,CString param_2)
 
 {
   short sVar1;
@@ -768,7 +770,7 @@ void TLoadSavePicture::HandleEvent(int param_1, CString param_2)
 // GHIDRA_NAME TLoadSavePicture::HandleTurnFlowStateTickOrPostTurnEvent5DC
 // GHIDRA_PROTO undefined __thiscall HandleTurnFlowStateTickOrPostTurnEvent5DC(void)
 
-void TLoadSavePicture::HandleTurnFlowStateTickOrPostTurnEvent5DC()
+void __thiscall TLoadSavePicture::HandleTurnFlowStateTickOrPostTurnEvent5DC(TLoadSavePicture *this)
 
 {
   if (*(int *)&g_pSimMgr->field_0x8 != 1) {
@@ -789,7 +791,7 @@ void TLoadSavePicture::HandleTurnFlowStateTickOrPostTurnEvent5DC()
 // GHIDRA_NAME TLoadSavePicture::ForwardParam
 // GHIDRA_PROTO undefined __thiscall ForwardParam(int param_1)
 
-void TLoadSavePicture::ForwardParam(int param_1)
+void __thiscall TLoadSavePicture::ForwardParam(TLoadSavePicture *this,int param_1)
 
 {
   short sVar1;
@@ -826,7 +828,7 @@ void TLoadSavePicture::ForwardParam(int param_1)
 // GHIDRA_NAME TLoadSavePicture::HandleSaveGameSlotSelectionAndPromptFlow
 // GHIDRA_PROTO undefined __thiscall HandleSaveGameSlotSelectionAndPromptFlow(void)
 
-void TLoadSavePicture::HandleSaveGameSlotSelectionAndPromptFlow()
+void __thiscall TLoadSavePicture::HandleSaveGameSlotSelectionAndPromptFlow(TLoadSavePicture *this)
 
 {
   short sVar1;

@@ -61,7 +61,7 @@ void __fastcall TLineData::PopulateTurnEventDialogArmyUnitLinesForTileSelection(
 // GHIDRA_NAME TLineData::RenderUiBitmapOnRuntimeSurfaceContext
 // GHIDRA_PROTO undefined __thiscall RenderUiBitmapOnRuntimeSurfaceContext(undefined4 param_1)
 
-void TLineData::RenderUiBitmapOnRuntimeSurfaceContext(undefined4 param_1)
+void __thiscall TLineData::RenderUiBitmapOnRuntimeSurfaceContext(TLineData *this,undefined4 param_1)
 
 {
   byte *pbVar1;
@@ -84,10 +84,10 @@ void TLineData::RenderUiBitmapOnRuntimeSurfaceContext(undefined4 param_1)
   piVar6 = (int *)func_0x004047a0(param_1);
   uStack_10 = 0;
   uStack_c = 0;
-  func_0x00408d64(&uStack_14,&uStack_18);
-  func_0x00406f5f(*(undefined4 *)&this[8].field_0x4,uStack_18);
-  uVar7 = func_0x0040520e(*(undefined4 *)&this[8].field_0x4);
-  func_0x0040761c(uVar7);
+  thunk_GetActiveQuickDrawSurfaceContextAndFlags(&uStack_14,&uStack_18);
+  thunk_SetActiveQuickDrawSurfaceContext(*(undefined4 *)&this[8].field_0x4,uStack_18);
+  uVar7 = thunk_GetSurfaceObjectAtContextOffset24(*(undefined4 *)&this[8].field_0x4);
+  thunk_ReturnConstantTrueQuickDrawFlag(uVar7);
   func_0x004062d5(piVar6);
   if (*piVar6 != 0) {
     uVar5 = func_0x004078b0(piVar6);
@@ -109,7 +109,7 @@ void TLineData::RenderUiBitmapOnRuntimeSurfaceContext(undefined4 param_1)
     operator_delete(puVar3);
   }
   operator_delete(piVar6);
-  func_0x00406f5f(uStack_14,uStack_18);
+  thunk_SetActiveQuickDrawSurfaceContext(uStack_14,uStack_18);
   return;
 }
 
@@ -134,7 +134,7 @@ undefined4 * TLineData::CreateObject(void)
 // GHIDRA_NAME TLineData::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TLineData::GetRuntimeClass()
+CRuntimeClass * __thiscall TLineData::GetRuntimeClass(TLineData *this)
 
 {
   return &classTLineData;
@@ -144,7 +144,7 @@ CRuntimeClass * TLineData::GetRuntimeClass()
 // GHIDRA_NAME TLineData::ConstructTLineDataBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTLineDataBaseState(void)
 
-void TLineData::ConstructTLineDataBaseState()
+void __thiscall TLineData::ConstructTLineDataBaseState(TLineData *this)
 
 {
   this->vftable = &_vftable_;
@@ -155,7 +155,7 @@ void TLineData::ConstructTLineDataBaseState()
 // GHIDRA_NAME TLineData::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TLineData * TLineData::_scalar_deleting_destructor_(byte param_1)
+TLineData * __thiscall TLineData::_scalar_deleting_destructor_(TLineData *this,byte param_1)
 
 {
   func_0x00407ba8();
@@ -182,10 +182,10 @@ TLineData::SetLineDataRowAndBounds
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0056F460
-// GHIDRA_NAME TLineData::OrphanRetStub_0056f460
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0056f460(void)
+// GHIDRA_NAME TLineData::CreateLineItemView
+// GHIDRA_PROTO undefined __thiscall CreateLineItemView(void)
 
-void TLineData::OrphanRetStub_0056f460()
+void __thiscall TLineData::CreateLineItemView(TLineData *this)
 
 {
   return;
@@ -195,7 +195,7 @@ void TLineData::OrphanRetStub_0056f460()
 // GHIDRA_NAME TLineData::OrphanRetStub_0056f480
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_0056f480(void)
 
-void TLineData::OrphanRetStub_0056f480()
+void __thiscall TLineData::OrphanRetStub_0056f480(TLineData *this)
 
 {
   return;
@@ -205,7 +205,7 @@ void TLineData::OrphanRetStub_0056f480()
 // GHIDRA_NAME TLineData::ConstructPictureScreenVariantEntry
 // GHIDRA_PROTO undefined __thiscall ConstructPictureScreenVariantEntry(void)
 
-TLineData * TLineData::ConstructPictureScreenVariantEntry()
+TLineData * __thiscall TLineData::ConstructPictureScreenVariantEntry(TLineData *this)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -240,10 +240,10 @@ TLineData * TLineData::ConstructPictureScreenVariantEntry()
 /* Derived UI resource constructor used in call paths that bind tag 'gold' and localized string
    setup; initializes label geometry/sentinel defaults. */
 
-TLineData * TLineData::ConstructUiGoldLabelResourceEntry()
+TLineData * __thiscall TLineData::ConstructUiGoldLabelResourceEntry(TLineData *this)
 
 {
-  TCluster::ConstructUiResourceEntryType4B0C0((TCluster *)this);
+  TCluster::thunk_ConstructUiResourceEntryType4B0C0((TCluster *)this);
   this->vftable = (TLineDataVtbl *)&TRadioTextCluster::_vftable_;
   *(undefined2 *)&this[8].field_0xc = 0x4b;
   *(undefined2 *)&this[8].field_0xe = 0x49;
@@ -263,7 +263,7 @@ TLineData * TLineData::ConstructUiGoldLabelResourceEntry()
 /* TurnEventState vtable slot +0xEC handler. Opens dialog id 0x0DAC, updates PAGE/widget values,
    commits, then updates active-item widget selection. */
 
-void TLineData::HandleTurnEventDialogFactorySlotEC()
+void __thiscall TLineData::HandleTurnEventDialogFactorySlotEC(TLineData *this)
 
 {
   int iVar1;

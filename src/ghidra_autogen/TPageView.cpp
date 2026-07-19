@@ -7,7 +7,7 @@
 // GHIDRA_NAME TPageView::WrapperFor_ConstructTPageViewBaseState_At00435590
 // GHIDRA_PROTO undefined __thiscall WrapperFor_ConstructTPageViewBaseState_At00435590(void)
 
-TPageView * TPageView::WrapperFor_ConstructTPageViewBaseState_At00435590()
+TPageView * __thiscall TPageView::WrapperFor_ConstructTPageViewBaseState_At00435590(TPageView *this)
 
 {
   func_0x0040778e();
@@ -20,24 +20,12 @@ TPageView * TPageView::WrapperFor_ConstructTPageViewBaseState_At00435590()
 // GHIDRA_NAME TPageView::WrapperFor_ConstructTPageViewBaseState_At00435610
 // GHIDRA_PROTO undefined __thiscall WrapperFor_ConstructTPageViewBaseState_At00435610(void)
 
-TPageView * TPageView::WrapperFor_ConstructTPageViewBaseState_At00435610()
+TPageView * __thiscall TPageView::WrapperFor_ConstructTPageViewBaseState_At00435610(TPageView *this)
 
 {
   func_0x0040778e();
   this->vftable = (TPageViewVtbl *)&TTradePageBuyView::_vftable_;
   *(undefined2 *)&this[1].vftable = 0xffff;
-  return this;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004600C0
-// GHIDRA_NAME TPageView::WrapperFor_ConstructTPageViewBaseState_At004600c0
-// GHIDRA_PROTO undefined __thiscall WrapperFor_ConstructTPageViewBaseState_At004600c0(void)
-
-TPageView * TPageView::WrapperFor_ConstructTPageViewBaseState_At004600c0()
-
-{
-  func_0x0040778e();
-  this->vftable = (TPageViewVtbl *)&TTechStorePage::_vftable_;
   return this;
 }
 
@@ -78,7 +66,7 @@ undefined4 * TPageView::CreateObject(void)
 // GHIDRA_NAME TPageView::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TPageView::GetRuntimeClass()
+CRuntimeClass * __thiscall TPageView::GetRuntimeClass(TPageView *this)
 
 {
   return &classTPageView;
@@ -88,7 +76,7 @@ CRuntimeClass * TPageView::GetRuntimeClass()
 // GHIDRA_NAME TPageView::ConstructTPageViewBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTPageViewBaseState(void)
 
-TPageView * TPageView::ConstructTPageViewBaseState()
+TPageView * __thiscall TPageView::ConstructTPageViewBaseState(TPageView *this)
 
 {
   func_0x004064e2();
@@ -104,7 +92,7 @@ TPageView * TPageView::ConstructTPageViewBaseState()
 // GHIDRA_NAME TPageView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TPageView * TPageView::_scalar_deleting_destructor_(byte param_1)
+TPageView * __thiscall TPageView::_scalar_deleting_destructor_(TPageView *this,byte param_1)
 
 {
   func_0x004050d3();
@@ -118,7 +106,7 @@ TPageView * TPageView::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TPageView::NoOpUiLifecycleHook
 // GHIDRA_PROTO undefined __thiscall NoOpUiLifecycleHook(void)
 
-void TPageView::NoOpUiLifecycleHook()
+void __thiscall TPageView::NoOpUiLifecycleHook(TPageView *this)
 
 {
   undefined4 *puVar1;
@@ -169,7 +157,7 @@ void TPageView::NoOpUiLifecycleHook()
     puVar1[1] = 0;
     puVar1[5] = 0;
     puVar1[6] = 10;
-    *puVar1 = &TSoundChannelNode::_vftable_;
+    *puVar1 = &TLongintList::_vftable_;
   }
   *(int *)&this->field_0x74 = this->field38 + -1;
   *(undefined4 **)&this->field_0x80 = puVar1;
@@ -184,7 +172,7 @@ void TPageView::NoOpUiLifecycleHook()
 // GHIDRA_NAME TPageView::OrphanCallChain_C1_I06_0056fbb0
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I06_0056fbb0(void)
 
-void TPageView::OrphanCallChain_C1_I06_0056fbb0()
+void __thiscall TPageView::OrphanCallChain_C1_I06_0056fbb0(TPageView *this)
 
 {
   (**(code **)(**(int **)&this->field_0x7c + 0x30))();
@@ -195,7 +183,7 @@ void TPageView::OrphanCallChain_C1_I06_0056fbb0()
 // GHIDRA_NAME TPageView::OrphanCallChain_C1_I06_0056fbd0
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I06_0056fbd0(void)
 
-void TPageView::OrphanCallChain_C1_I06_0056fbd0()
+void __thiscall TPageView::OrphanCallChain_C1_I06_0056fbd0(TPageView *this)
 
 {
   (**(code **)(**(int **)&this->field_0x78 + 0x30))();
@@ -206,7 +194,7 @@ void TPageView::OrphanCallChain_C1_I06_0056fbd0()
 // GHIDRA_NAME TPageView::ResetSelectableOptionEntriesExceptColorAndOkay
 // GHIDRA_PROTO undefined __thiscall ResetSelectableOptionEntriesExceptColorAndOkay(void)
 
-void TPageView::ResetSelectableOptionEntriesExceptColorAndOkay()
+void __thiscall TPageView::ResetSelectableOptionEntriesExceptColorAndOkay(TPageView *this)
 
 {
   int *piVar1;
@@ -231,7 +219,7 @@ void TPageView::ResetSelectableOptionEntriesExceptColorAndOkay()
 // GHIDRA_NAME TPageView::OrphanCallChain_C8_I82_0056fc80
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C8_I82_0056fc80(void)
 
-void TPageView::OrphanCallChain_C8_I82_0056fc80()
+void __thiscall TPageView::OrphanCallChain_C8_I82_0056fc80(TPageView *this)
 
 {
   short sVar1;
@@ -281,7 +269,7 @@ LAB_0056fd44:
 // GHIDRA_NAME TPageView::OrphanCallChain_C8_I118_0056fdb0
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C8_I118_0056fdb0(short param_1)
 
-void TPageView::OrphanCallChain_C8_I118_0056fdb0(short param_1)
+void __thiscall TPageView::OrphanCallChain_C8_I118_0056fdb0(TPageView *this,short param_1)
 
 {
   short sVar1;
@@ -351,7 +339,7 @@ void TPageView::OrphanCallChain_C8_I118_0056fdb0(short param_1)
 // GHIDRA_NAME TPageView::OrphanCallChain_C4_I18_0056ff90
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C4_I18_0056ff90(void)
 
-void TPageView::OrphanCallChain_C4_I18_0056ff90()
+void __thiscall TPageView::OrphanCallChain_C4_I18_0056ff90(TPageView *this)
 
 {
   (*this->vftable->ResetSelectableOptionEntriesExceptColorAndOkay)();
@@ -367,7 +355,7 @@ void TPageView::OrphanCallChain_C4_I18_0056ff90()
 // GHIDRA_NAME TPageView::Free
 // GHIDRA_PROTO undefined __thiscall Free(void)
 
-void TPageView::Free()
+void __thiscall TPageView::Free(TPageView *this)
 
 {
   if (*(int **)&this->field_0x78 != (int *)0x0) {

@@ -3,6 +3,20 @@
 // Program: Imperialism.exe
 // Bucket: CDataExchange.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x0060A267
+// GHIDRA_NAME CDataExchange::CDataExchange
+// GHIDRA_PROTO undefined CDataExchange()
+
+void __thiscall
+CDataExchange::CDataExchange(undefined4 *param_1,undefined4 param_2,undefined4 param_3)
+
+{
+  param_1[2] = 0;
+  *param_1 = param_3;
+  param_1[1] = param_2;
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x006189C5
 // GHIDRA_NAME CDataExchange::PrepareEditCtrl
 // GHIDRA_PROTO undefined PrepareEditCtrl()

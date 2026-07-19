@@ -40,7 +40,7 @@ undefined4 * TRailAmtBar::CreateObject(void)
 // GHIDRA_NAME TRailAmtBar::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TRailAmtBar::GetRuntimeClass()
+CRuntimeClass * __thiscall TRailAmtBar::GetRuntimeClass(TRailAmtBar *this)
 
 {
   return &g_pClassDescTRailAmtBar;
@@ -50,7 +50,7 @@ CRuntimeClass * TRailAmtBar::GetRuntimeClass()
 // GHIDRA_NAME TRailAmtBar::ConstructBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructBaseState(void)
 
-TRailAmtBar * TRailAmtBar::ConstructBaseState()
+TRailAmtBar * __thiscall TRailAmtBar::ConstructBaseState(TRailAmtBar *this)
 
 {
   func_0x004064e2();
@@ -66,7 +66,7 @@ TRailAmtBar * TRailAmtBar::ConstructBaseState()
 // GHIDRA_NAME TRailAmtBar::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TRailAmtBar * TRailAmtBar::_scalar_deleting_destructor_(byte param_1)
+TRailAmtBar * __thiscall TRailAmtBar::_scalar_deleting_destructor_(TRailAmtBar *this,byte param_1)
 
 {
   func_0x0040173f();
@@ -80,7 +80,7 @@ TRailAmtBar * TRailAmtBar::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TRailAmtBar::NoOpUiLifecycleHook
 // GHIDRA_PROTO undefined __thiscall NoOpUiLifecycleHook(int param_1)
 
-void TRailAmtBar::NoOpUiLifecycleHook(int param_1)
+void __thiscall TRailAmtBar::NoOpUiLifecycleHook(TRailAmtBar *this,int param_1)
 
 {
   uint uVar1;
@@ -158,7 +158,7 @@ void TRailAmtBar::NoOpUiLifecycleHook(int param_1)
 // GHIDRA_NAME TRailAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache
 // GHIDRA_PROTO undefined __thiscall RenderPrimarySurfaceOverlayPanelWithClipCache(void)
 
-void TRailAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache()
+void __thiscall TRailAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache(TRailAmtBar *this)
 
 {
   TRailAmtBarVtbl *pTVar1;
@@ -187,22 +187,24 @@ void TRailAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache()
     cVar2 = (*pTVar1->GetTEventHandlerClassNamePointer_3e)();
     if (cVar2 != '\0') {
       (*pTVar1->OrphanCallChain_C11_I88_004874b0_4a)();
-      func_0x004030e9();
+      thunk_ApplyRectClipRegionToGlobalClipState();
       (*pTVar1->OrphanRetStub_0059add0_4b)();
       (*pTVar1->OrphanTiny_ReturnZero_0048a730_4e)();
       uVar4 = extraout_var_01;
       if (0 < *(short *)&this->field_0x60) {
-        func_0x00408d6e(0);
+        thunk_SetQuickDrawTextOriginWithContextOffset(0);
         (**(code **)(g_pUiRuntimeContext->vftable + 0x34))();
         func_0x00402e73(1,4);
-        func_0x00403bb6(*(short *)&this->field_0x60 + -1,1);
+        thunk_DrawCenteredGuideLineOnMapDc(*(short *)&this->field_0x60 + -1,1);
         func_0x004088aa();
         uVar4 = extraout_var_02;
       }
-      func_0x00408d6e(CONCAT22(uVar4,*(undefined2 *)&this->field_0x62));
+      thunk_SetQuickDrawTextOriginWithContextOffset
+                (CONCAT22(uVar4,*(undefined2 *)&this->field_0x62));
       func_0x00406b86();
       func_0x004088aa();
-      func_0x00403bb6(CONCAT22(extraout_var_00,*(undefined2 *)&this->field_0x62));
+      thunk_DrawCenteredGuideLineOnMapDc(CONCAT22(extraout_var_00,*(undefined2 *)&this->field_0x62))
+      ;
       func_0x00405be1();
       uVar3 = (*pTVar1->SetForeignMinisterReadyFlag14)();
       (**(code **)(*(int *)CONCAT31(extraout_var,uVar3) + 0x13c))();
@@ -218,7 +220,8 @@ void TRailAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache()
 // GHIDRA_NAME TRailAmtBar::RenderQuickDrawOverlayWithHitRegionVariantB
 // GHIDRA_PROTO undefined __thiscall RenderQuickDrawOverlayWithHitRegionVariantB(undefined2 param_1)
 
-void TRailAmtBar::RenderQuickDrawOverlayWithHitRegionVariantB(undefined2 param_1)
+void __thiscall
+TRailAmtBar::RenderQuickDrawOverlayWithHitRegionVariantB(TRailAmtBar *this,undefined2 param_1)
 
 {
   TRailAmtBarVtbl *pTVar1;

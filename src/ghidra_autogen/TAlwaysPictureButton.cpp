@@ -38,7 +38,7 @@ undefined4 * TAlwaysPictureButton::CreateObject(void)
 // GHIDRA_NAME TAlwaysPictureButton::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TAlwaysPictureButton::GetRuntimeClass()
+CRuntimeClass * __thiscall TAlwaysPictureButton::GetRuntimeClass(TAlwaysPictureButton *this)
 
 {
   return &classTAlwaysPictureButton;
@@ -48,7 +48,8 @@ CRuntimeClass * TAlwaysPictureButton::GetRuntimeClass()
 // GHIDRA_NAME TAlwaysPictureButton::ConstructTAlwaysPictureButtonBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTAlwaysPictureButtonBaseState(void)
 
-TAlwaysPictureButton * TAlwaysPictureButton::ConstructTAlwaysPictureButtonBaseState()
+TAlwaysPictureButton * __thiscall
+TAlwaysPictureButton::ConstructTAlwaysPictureButtonBaseState(TAlwaysPictureButton *this)
 
 {
   func_0x00401122();
@@ -61,7 +62,8 @@ TAlwaysPictureButton * TAlwaysPictureButton::ConstructTAlwaysPictureButtonBaseSt
 // GHIDRA_NAME TAlwaysPictureButton::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TAlwaysPictureButton * TAlwaysPictureButton::_scalar_deleting_destructor_(byte param_1)
+TAlwaysPictureButton * __thiscall
+TAlwaysPictureButton::_scalar_deleting_destructor_(TAlwaysPictureButton *this,byte param_1)
 
 {
   func_0x004053ad();
@@ -75,7 +77,8 @@ TAlwaysPictureButton * TAlwaysPictureButton::_scalar_deleting_destructor_(byte p
 // GHIDRA_NAME TAlwaysPictureButton::SetControlStateFlagAndMaybeRefresh
 // GHIDRA_PROTO undefined __thiscall SetControlStateFlagAndMaybeRefresh(char param_1)
 
-void TAlwaysPictureButton::SetControlStateFlagAndMaybeRefresh(char param_1)
+void __thiscall
+TAlwaysPictureButton::SetControlStateFlagAndMaybeRefresh(TAlwaysPictureButton *this,char param_1)
 
 {
   TAlwaysPictureButtonVtbl *pTVar1;
@@ -104,7 +107,7 @@ void TAlwaysPictureButton::SetControlStateFlagAndMaybeRefresh(char param_1)
 // GHIDRA_NAME TAlwaysPictureButton::Select
 // GHIDRA_PROTO undefined __thiscall Select(char param_1, char param_2)
 
-void TAlwaysPictureButton::Select(char param_1, char param_2)
+void __thiscall TAlwaysPictureButton::Select(TAlwaysPictureButton *this,char param_1,char param_2)
 
 {
   func_0x00404e21((int)param_1,(int)param_2);

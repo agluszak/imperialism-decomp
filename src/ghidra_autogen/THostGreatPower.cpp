@@ -37,7 +37,7 @@ undefined4 * THostGreatPower::CreateObject(void)
 // GHIDRA_NAME THostGreatPower::ReturnFalseNationStateCapabilityFlag9C
 // GHIDRA_PROTO undefined __thiscall ReturnFalseNationStateCapabilityFlag9C(void)
 
-undefined1 THostGreatPower::ReturnFalseNationStateCapabilityFlag9C()
+undefined1 __thiscall THostGreatPower::ReturnFalseNationStateCapabilityFlag9C(THostGreatPower *this)
 
 {
   return 1;
@@ -47,7 +47,8 @@ undefined1 THostGreatPower::ReturnFalseNationStateCapabilityFlag9C()
 // GHIDRA_NAME THostGreatPower::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-THostGreatPower * THostGreatPower::_scalar_deleting_destructor_(byte param_1)
+THostGreatPower * __thiscall
+THostGreatPower::_scalar_deleting_destructor_(THostGreatPower *this,byte param_1)
 
 {
   func_0x004011ea();
@@ -61,7 +62,7 @@ THostGreatPower * THostGreatPower::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME THostGreatPower::DestructTHostGreatPower
 // GHIDRA_PROTO undefined __thiscall DestructTHostGreatPower(void)
 
-void THostGreatPower::DestructTHostGreatPower()
+void __thiscall THostGreatPower::DestructTHostGreatPower(THostGreatPower *this)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -86,7 +87,7 @@ void THostGreatPower::DestructTHostGreatPower()
 // GHIDRA_NAME THostGreatPower::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * THostGreatPower::GetRuntimeClass()
+CRuntimeClass * __thiscall THostGreatPower::GetRuntimeClass(THostGreatPower *this)
 
 {
   return &classTHostGreatPower;
@@ -96,7 +97,7 @@ CRuntimeClass * THostGreatPower::GetRuntimeClass()
 // GHIDRA_NAME THostGreatPower::ReadFrom
 // GHIDRA_PROTO undefined __thiscall ReadFrom(int * param_1)
 
-void THostGreatPower::ReadFrom(int *param_1)
+void __thiscall THostGreatPower::ReadFrom(THostGreatPower *this,int *param_1)
 
 {
   func_0x0040376a(param_1);
@@ -110,7 +111,7 @@ void THostGreatPower::ReadFrom(int *param_1)
 // GHIDRA_NAME THostGreatPower::WriteTo
 // GHIDRA_PROTO undefined __thiscall WriteTo(int * param_1)
 
-void THostGreatPower::WriteTo(int *param_1)
+void __thiscall THostGreatPower::WriteTo(THostGreatPower *this,int *param_1)
 
 {
   func_0x00408143(param_1);
@@ -122,7 +123,7 @@ void THostGreatPower::WriteTo(int *param_1)
 // GHIDRA_NAME THostGreatPower::DispatchTurnEvent11F8NoPayloadSlot2AC
 // GHIDRA_PROTO undefined __thiscall DispatchTurnEvent11F8NoPayloadSlot2AC(void)
 
-void THostGreatPower::DispatchTurnEvent11F8NoPayloadSlot2AC()
+void __thiscall THostGreatPower::DispatchTurnEvent11F8NoPayloadSlot2AC(THostGreatPower *this)
 
 {
   char cVar1;

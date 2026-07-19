@@ -25,7 +25,7 @@ undefined4 * TItemOrder::CreateObject(void)
 // GHIDRA_NAME TItemOrder::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TItemOrder::GetRuntimeClass()
+CRuntimeClass * __thiscall TItemOrder::GetRuntimeClass(TItemOrder *this)
 
 {
   return &classTItemOrder;
@@ -35,7 +35,7 @@ CRuntimeClass * TItemOrder::GetRuntimeClass()
 // GHIDRA_NAME TItemOrder::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TItemOrder * TItemOrder::_scalar_deleting_destructor_(byte param_1)
+TItemOrder * __thiscall TItemOrder::_scalar_deleting_destructor_(TItemOrder *this,byte param_1)
 
 {
   func_0x004062ad();
@@ -49,7 +49,7 @@ TItemOrder * TItemOrder::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TItemOrder::DestructTItemOrderAndMaybeFree
 // GHIDRA_PROTO undefined __thiscall DestructTItemOrderAndMaybeFree(void)
 
-void TItemOrder::DestructTItemOrderAndMaybeFree()
+void __thiscall TItemOrder::DestructTItemOrderAndMaybeFree(TItemOrder *this)
 
 {
   this->vftable = (TItemOrderVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
@@ -57,11 +57,11 @@ void TItemOrder::DestructTItemOrderAndMaybeFree()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B5290
-// GHIDRA_NAME TItemOrder::InitializeCityProductionState_Impl_At004b5290
-// GHIDRA_PROTO undefined __thiscall InitializeCityProductionState_Impl_At004b5290(int param_1, undefined2 param_2, undefined2 param_3, undefined2 param_4, undefined2 param_5)
+// GHIDRA_NAME TItemOrder::ItemOrderSlot11
+// GHIDRA_PROTO undefined __thiscall ItemOrderSlot11(int param_1, undefined2 param_2, undefined2 param_3, undefined2 param_4, undefined2 param_5)
 
 void __thiscall
-TItemOrder::InitializeCityProductionState_Impl_At004b5290
+TItemOrder::ItemOrderSlot11
           (TItemOrder *this,int param_1,undefined2 param_2,undefined2 param_3,undefined2 param_4,
           undefined2 param_5)
 
@@ -93,7 +93,7 @@ TItemOrder::InitializeCityProductionState_Impl_At004b5290
 // GHIDRA_NAME TItemOrder::MaxOrder
 // GHIDRA_PROTO undefined __thiscall MaxOrder(void)
 
-uint TItemOrder::MaxOrder()
+uint __thiscall TItemOrder::MaxOrder(TItemOrder *this)
 
 {
   short sVar1;
@@ -138,7 +138,7 @@ uint TItemOrder::MaxOrder()
 // GHIDRA_NAME TItemOrder::SetQuantity
 // GHIDRA_PROTO undefined __thiscall SetQuantity(short param_1)
 
-undefined4 TItemOrder::SetQuantity(short param_1)
+undefined4 __thiscall TItemOrder::SetQuantity(TItemOrder *this,short param_1)
 
 {
   int iVar1;
@@ -196,7 +196,7 @@ undefined4 TItemOrder::SetQuantity(short param_1)
 // GHIDRA_NAME TItemOrder::FillOrderSheet
 // GHIDRA_PROTO undefined __thiscall FillOrderSheet(int param_1)
 
-void TItemOrder::FillOrderSheet(int param_1)
+void __thiscall TItemOrder::FillOrderSheet(TItemOrder *this,int param_1)
 
 {
   short sVar1;
@@ -218,7 +218,7 @@ void TItemOrder::FillOrderSheet(int param_1)
 // GHIDRA_NAME TItemOrder::CommitIfPending
 // GHIDRA_PROTO undefined __thiscall CommitIfPending(void)
 
-void TItemOrder::CommitIfPending()
+void __thiscall TItemOrder::CommitIfPending(TItemOrder *this)
 
 {
   short *psVar1;
@@ -245,7 +245,7 @@ void TItemOrder::CommitIfPending()
 // GHIDRA_NAME TItemOrder::ResetCityOrderItemDerivedStateNoop
 // GHIDRA_PROTO undefined __thiscall ResetCityOrderItemDerivedStateNoop(void)
 
-void TItemOrder::ResetCityOrderItemDerivedStateNoop()
+void __thiscall TItemOrder::ResetCityOrderItemDerivedStateNoop(TItemOrder *this)
 
 {
   short sVar1;
@@ -271,7 +271,7 @@ void TItemOrder::ResetCityOrderItemDerivedStateNoop()
 // GHIDRA_NAME TItemOrder::WriteTo
 // GHIDRA_PROTO undefined __thiscall WriteTo(int * param_1)
 
-void TItemOrder::WriteTo(int *param_1)
+void __thiscall TItemOrder::WriteTo(TItemOrder *this,int *param_1)
 
 {
   code *pcVar1;
@@ -295,7 +295,7 @@ void TItemOrder::WriteTo(int *param_1)
 // GHIDRA_NAME TItemOrder::ReadFrom
 // GHIDRA_PROTO undefined __thiscall ReadFrom(int * param_1)
 
-void TItemOrder::ReadFrom(int *param_1)
+void __thiscall TItemOrder::ReadFrom(TItemOrder *this,int *param_1)
 
 {
   code *pcVar1;

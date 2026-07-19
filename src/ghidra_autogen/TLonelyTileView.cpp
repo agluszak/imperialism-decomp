@@ -37,7 +37,7 @@ undefined4 * TLonelyTileView::CreateObject(void)
 // GHIDRA_NAME TLonelyTileView::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TLonelyTileView::GetRuntimeClass()
+CRuntimeClass * __thiscall TLonelyTileView::GetRuntimeClass(TLonelyTileView *this)
 
 {
   return &classTLonelyTileView;
@@ -47,7 +47,8 @@ CRuntimeClass * TLonelyTileView::GetRuntimeClass()
 // GHIDRA_NAME TLonelyTileView::ConstructTLonelyTileViewBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTLonelyTileViewBaseState(void)
 
-TLonelyTileView * TLonelyTileView::ConstructTLonelyTileViewBaseState()
+TLonelyTileView * __thiscall
+TLonelyTileView::ConstructTLonelyTileViewBaseState(TLonelyTileView *this)
 
 {
   func_0x004064e2();
@@ -59,7 +60,8 @@ TLonelyTileView * TLonelyTileView::ConstructTLonelyTileViewBaseState()
 // GHIDRA_NAME TLonelyTileView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TLonelyTileView * TLonelyTileView::_scalar_deleting_destructor_(byte param_1)
+TLonelyTileView * __thiscall
+TLonelyTileView::_scalar_deleting_destructor_(TLonelyTileView *this,byte param_1)
 
 {
   func_0x004046fb();
@@ -73,7 +75,7 @@ TLonelyTileView * TLonelyTileView::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TLonelyTileView::ApplyRectSlot110
 // GHIDRA_PROTO undefined __thiscall ApplyRectSlot110(void)
 
-void TLonelyTileView::ApplyRectSlot110()
+void __thiscall TLonelyTileView::ApplyRectSlot110(TLonelyTileView *this)
 
 {
   int iVar1;

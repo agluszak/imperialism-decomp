@@ -7,7 +7,8 @@
 // GHIDRA_NAME TMadnessButton::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TMadnessButton * TMadnessButton::_scalar_deleting_destructor_(byte param_1)
+TMadnessButton * __thiscall
+TMadnessButton::_scalar_deleting_destructor_(TMadnessButton *this,byte param_1)
 
 {
   func_0x0040551a();
@@ -51,7 +52,7 @@ undefined4 * TMadnessButton::CreateObject(void)
 // GHIDRA_NAME TMadnessButton::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TMadnessButton::GetRuntimeClass()
+CRuntimeClass * __thiscall TMadnessButton::GetRuntimeClass(TMadnessButton *this)
 
 {
   return &classTMadnessButton;
@@ -61,7 +62,7 @@ CRuntimeClass * TMadnessButton::GetRuntimeClass()
 // GHIDRA_NAME TMadnessButton::NoOpUiLifecycleHook
 // GHIDRA_PROTO undefined __thiscall NoOpUiLifecycleHook(void)
 
-void TMadnessButton::NoOpUiLifecycleHook()
+void __thiscall TMadnessButton::NoOpUiLifecycleHook(TMadnessButton *this)
 
 {
   func_0x00407563();
@@ -74,15 +75,14 @@ void TMadnessButton::NoOpUiLifecycleHook()
 // GHIDRA_NAME TMadnessButton::OrphanCallChain_C4_I45_00571d40
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C4_I45_00571d40(char param_1)
 
-void TMadnessButton::OrphanCallChain_C4_I45_00571d40(char param_1)
+void __thiscall TMadnessButton::OrphanCallChain_C4_I45_00571d40(TMadnessButton *this,char param_1)
 
 {
   TMadnessButtonVtbl *pTVar1;
   char cVar2;
   int iVar3;
   undefined4 *unaff_FS_OFFSET;
-  undefined1 auStack_34 [36];
-  undefined4 uStack_10;
+  undefined1 auStack_34 [40];
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
@@ -113,8 +113,8 @@ void TMadnessButton::OrphanCallChain_C4_I45_00571d40(char param_1)
       func_0x00401d70(this);
       uStack_c = 0;
       (*pTVar1->OrphanTiny_ReturnZero_0048a730_44)(&stack0xffffffc4);
-      uStack_10 = 0xffffffff;
-      func_0x00408035();
+      uStack_4 = 0xffffffff;
+      thunk_DestroyScopedMapQuickDrawContext();
     }
   }
   *unaff_FS_OFFSET = uStack_c;

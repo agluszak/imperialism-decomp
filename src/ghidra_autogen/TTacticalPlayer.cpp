@@ -21,60 +21,60 @@ undefined4 * TTacticalPlayer::CreateObject(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0059AD70
-// GHIDRA_NAME TTacticalPlayer::OrphanRetStub_0059ad70
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059ad70(void)
+// GHIDRA_NAME TTacticalPlayer::StartBattle
+// GHIDRA_PROTO undefined __thiscall StartBattle(void)
 
-void TTacticalPlayer::OrphanRetStub_0059ad70()
+void __thiscall TTacticalPlayer::StartBattle(TTacticalPlayer *this)
 
 {
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0059AD90
-// GHIDRA_NAME TTacticalPlayer::OrphanRetStub_0059ad90
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059ad90(void)
+// GHIDRA_NAME TTacticalPlayer::AdvanceTacticalTurnPulse
+// GHIDRA_PROTO undefined __thiscall AdvanceTacticalTurnPulse(void)
 
-void TTacticalPlayer::OrphanRetStub_0059ad90()
+void __thiscall TTacticalPlayer::AdvanceTacticalTurnPulse(TTacticalPlayer *this)
 
 {
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0059ADB0
-// GHIDRA_NAME TTacticalPlayer::TArmyTacUnit_VtblSlot00
-// GHIDRA_PROTO undefined __thiscall TArmyTacUnit_VtblSlot00(void)
+// GHIDRA_NAME TTacticalPlayer::NoOpTacticalPlayerHook0C
+// GHIDRA_PROTO undefined __thiscall NoOpTacticalPlayerHook0C(void)
 
-void TTacticalPlayer::TArmyTacUnit_VtblSlot00()
+void __thiscall TTacticalPlayer::NoOpTacticalPlayerHook0C(TTacticalPlayer *this)
 
 {
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0059ADD0
-// GHIDRA_NAME TTacticalPlayer::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(void)
+// GHIDRA_NAME TTacticalPlayer::CommitTacticalResultsToSourceUnits
+// GHIDRA_PROTO undefined __thiscall CommitTacticalResultsToSourceUnits(void)
 
-void TTacticalPlayer::OrphanRetStub_0059add0()
+void __thiscall TTacticalPlayer::CommitTacticalResultsToSourceUnits(TTacticalPlayer *this)
 
 {
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0059ADF0
-// GHIDRA_NAME TTacticalPlayer::TArmyTacUnit_VtblSlot04
-// GHIDRA_PROTO undefined __thiscall TArmyTacUnit_VtblSlot04(void)
+// GHIDRA_NAME TTacticalPlayer::AlwaysTrueTacticalPredicate10
+// GHIDRA_PROTO undefined __thiscall AlwaysTrueTacticalPredicate10(void)
 
-undefined1 TTacticalPlayer::TArmyTacUnit_VtblSlot04()
+undefined1 __thiscall TTacticalPlayer::AlwaysTrueTacticalPredicate10(TTacticalPlayer *this)
 
 {
   return 1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0059AE10
-// GHIDRA_NAME TTacticalPlayer::OrphanRetStub_0059ae10
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059ae10(void)
+// GHIDRA_NAME TTacticalPlayer::ProceedAfterBattleIntroAccepted
+// GHIDRA_PROTO undefined __thiscall ProceedAfterBattleIntroAccepted(void)
 
-void TTacticalPlayer::OrphanRetStub_0059ae10()
+void __thiscall TTacticalPlayer::ProceedAfterBattleIntroAccepted(TTacticalPlayer *this)
 
 {
   return;
@@ -84,7 +84,8 @@ void TTacticalPlayer::OrphanRetStub_0059ae10()
 // GHIDRA_NAME TTacticalPlayer::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TTacticalPlayer * TTacticalPlayer::_scalar_deleting_destructor_(byte param_1)
+TTacticalPlayer * __thiscall
+TTacticalPlayer::_scalar_deleting_destructor_(TTacticalPlayer *this,byte param_1)
 
 {
   func_0x0040989f();
@@ -95,10 +96,10 @@ TTacticalPlayer * TTacticalPlayer::_scalar_deleting_destructor_(byte param_1)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0059AE60
-// GHIDRA_NAME TTacticalPlayer::CreateTTacticalPlayerInstance
-// GHIDRA_PROTO undefined __thiscall CreateTTacticalPlayerInstance(void)
+// GHIDRA_NAME TTacticalPlayer::~TTacticalPlayer
+// GHIDRA_PROTO undefined __thiscall ~TTacticalPlayer(void)
 
-void TTacticalPlayer::CreateTTacticalPlayerInstance()
+void __thiscall TTacticalPlayer::~TTacticalPlayer(TTacticalPlayer *this)
 
 {
   this->vftable = (TTacticalPlayerVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4
@@ -110,7 +111,7 @@ void TTacticalPlayer::CreateTTacticalPlayerInstance()
 // GHIDRA_NAME TTacticalPlayer::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TTacticalPlayer::GetRuntimeClass()
+CRuntimeClass * __thiscall TTacticalPlayer::GetRuntimeClass(TTacticalPlayer *this)
 
 {
   return &classTTacticalPlayer;
@@ -120,7 +121,7 @@ CRuntimeClass * TTacticalPlayer::GetRuntimeClass()
 // GHIDRA_NAME TTacticalPlayer::Free
 // GHIDRA_PROTO undefined __thiscall Free(void)
 
-void TTacticalPlayer::Free()
+void __thiscall TTacticalPlayer::Free(TTacticalPlayer *this)
 
 {
   if (*(int **)&this->field_0x4 != (int *)0x0) {
@@ -135,11 +136,40 @@ void TTacticalPlayer::Free()
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0059AFA0
-// GHIDRA_NAME TTacticalPlayer::Helper_Uses_FindListNodeByKeyFromNodeOrHead_At0059afa0
-// GHIDRA_PROTO undefined __thiscall Helper_Uses_FindListNodeByKeyFromNodeOrHead_At0059afa0(void)
+// GHIDRA_FUNCTION IMPERIALISM 0x0059AF20
+// GHIDRA_NAME TTacticalPlayer::SelectNextTacticalUnitForDoneCommand
+// GHIDRA_PROTO undefined SelectNextTacticalUnitForDoneCommand()
 
-void TTacticalPlayer::Helper_Uses_FindListNodeByKeyFromNodeOrHead_At0059afa0()
+void __fastcall TTacticalPlayer::SelectNextTacticalUnitForDoneCommand(int param_1)
+
+{
+  int iVar1;
+  int iVar2;
+  int iVar3;
+  
+  iVar1 = *(int *)(param_1 + 0x18);
+  iVar2 = iVar1;
+  do {
+    *(int *)(param_1 + 0x18) = iVar2 + 1;
+    iVar2 = (**(code **)(**(int **)(param_1 + 4) + 0x48))();
+    if (iVar2 < *(int *)(param_1 + 0x18)) {
+      *(undefined4 *)(param_1 + 0x18) = 1;
+    }
+    iVar3 = (**(code **)(**(int **)(param_1 + 4) + 0x4c))(*(undefined4 *)(param_1 + 0x18));
+    iVar2 = *(int *)(param_1 + 0x18);
+  } while ((iVar2 != iVar1) && (*(int *)(iVar3 + 8) != -2));
+  if (*(int *)(iVar3 + 8) != -2) {
+    *(undefined1 *)(param_1 + 0x10) = 1;
+  }
+  (**(code **)(**(int **)(param_1 + 4) + 0x4c))(*(undefined4 *)(param_1 + 0x18));
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0059AFA0
+// GHIDRA_NAME TTacticalPlayer::RemoveTacticalUnitFromUnitList
+// GHIDRA_PROTO undefined __thiscall RemoveTacticalUnitFromUnitList(void)
+
+void __thiscall TTacticalPlayer::RemoveTacticalUnitFromUnitList(TTacticalPlayer *this)
 
 {
   CPtrList *this_00;
@@ -155,14 +185,80 @@ void TTacticalPlayer::Helper_Uses_FindListNodeByKeyFromNodeOrHead_At0059afa0()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0059AFE0
-// GHIDRA_NAME TTacticalPlayer::WrapperFor_AddHead_At0059afe0
-// GHIDRA_PROTO undefined __thiscall WrapperFor_AddHead_At0059afe0(int * param_1)
+// GHIDRA_NAME TTacticalPlayer::AddTacticalUnitToUnitListHead
+// GHIDRA_PROTO undefined __thiscall AddTacticalUnitToUnitListHead(int * param_1)
 
-void TTacticalPlayer::WrapperFor_AddHead_At0059afe0(int *param_1)
+void __thiscall TTacticalPlayer::AddTacticalUnitToUnitListHead(TTacticalPlayer *this,int *param_1)
 
 {
   CPtrList::AddHead((CPtrList *)(*(int *)&this->field_0x4 + 4),param_1);
   (**(code **)(*param_1 + 0x3c))();
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0059B010
+// GHIDRA_NAME TTacticalPlayer::IsTacticalControllerOwnedByActiveNation
+// GHIDRA_PROTO undefined IsTacticalControllerOwnedByActiveNation()
+
+undefined4 __fastcall TTacticalPlayer::IsTacticalControllerOwnedByActiveNation(int param_1)
+
+{
+  short sVar1;
+  
+  sVar1 = func_0x00403b16();
+  return CONCAT31((int3)(char)((ushort)sVar1 >> 8),*(int *)(param_1 + 0x1c) == (int)sVar1);
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0059B040
+// GHIDRA_NAME TTacticalPlayer::HandleTacticalCommandTag_skip
+// GHIDRA_PROTO undefined HandleTacticalCommandTag_skip()
+
+void __fastcall TTacticalPlayer::HandleTacticalCommandTag_skip(int param_1)
+
+{
+  if (*(short *)(&DAT_00695528 + *(int *)(*(int *)(*(int *)(param_1 + 0x14) + 0x1c) + 0xc) * 2) != 8
+     ) {
+    *(undefined1 *)(param_1 + 0x20) = 1;
+    func_0x0040400c();
+    return;
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0059B740
+// GHIDRA_NAME TTacticalPlayer::RetireUndeployedUnitsToReserveList
+// GHIDRA_PROTO undefined RetireUndeployedUnitsToReserveList()
+
+void __fastcall TTacticalPlayer::RetireUndeployedUnitsToReserveList(int param_1)
+
+{
+  CPtrList *pCVar1;
+  int iVar2;
+  int iVar3;
+  int *piVar4;
+  
+  for (iVar2 = (**(code **)(**(int **)(param_1 + 4) + 0x48))(); 0 < iVar2; iVar2 = iVar2 + -1) {
+    iVar3 = (**(code **)(**(int **)(param_1 + 4) + 0x4c))(iVar2);
+    if (*(int *)(iVar3 + 8) == -2) {
+      pCVar1 = (CPtrList *)(*(int *)(param_1 + 4) + 4);
+      piVar4 = (int *)CPtrList::Find(pCVar1,iVar3,(undefined4 *)0x0);
+      if (piVar4 != (int *)0x0) {
+        CPtrList::RemoveAt(pCVar1,piVar4);
+      }
+      CPtrList::AddHead((CPtrList *)(*(int *)(param_1 + 8) + 4),iVar3);
+    }
+  }
+  iVar2 = func_0x00401118();
+  iVar3 = func_0x00403620();
+  while (iVar3 != 0) {
+    pCVar1 = (CPtrList *)(*(int *)(*(int *)(param_1 + 0x14) + 0x20) + 4);
+    piVar4 = (int *)CPtrList::Find(pCVar1,iVar2,(undefined4 *)0x0);
+    if (piVar4 != (int *)0x0) {
+      CPtrList::RemoveAt(pCVar1,piVar4);
+    }
+    iVar2 = func_0x00406d20();
+    iVar3 = func_0x00403620();
+  }
   return;
 }
 

@@ -28,10 +28,10 @@ undefined4 * TTacticalBattle::CreateObject(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0059F710
-// GHIDRA_NAME TTacticalBattle::OrphanRetStub_0059f710
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059f710(void)
+// GHIDRA_NAME TTacticalBattle::DeployTacticalUnitToTile
+// GHIDRA_PROTO undefined __thiscall DeployTacticalUnitToTile(void)
 
-void TTacticalBattle::OrphanRetStub_0059f710()
+void __thiscall TTacticalBattle::DeployTacticalUnitToTile(TTacticalBattle *this)
 
 {
   return;
@@ -41,7 +41,7 @@ void TTacticalBattle::OrphanRetStub_0059f710()
 // GHIDRA_NAME TTacticalBattle::CreateTTacticalBattleInstance
 // GHIDRA_PROTO undefined __thiscall CreateTTacticalBattleInstance(void)
 
-void TTacticalBattle::CreateTTacticalBattleInstance()
+void __thiscall TTacticalBattle::CreateTTacticalBattleInstance(TTacticalBattle *this)
 
 {
   *(undefined4 *)&this->field_0x44 = 1;
@@ -52,7 +52,7 @@ void TTacticalBattle::CreateTTacticalBattleInstance()
 // GHIDRA_NAME TTacticalBattle::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TTacticalBattle::GetRuntimeClass()
+CRuntimeClass * __thiscall TTacticalBattle::GetRuntimeClass(TTacticalBattle *this)
 
 {
   return &classTTacticalBattle;
@@ -62,7 +62,7 @@ CRuntimeClass * TTacticalBattle::GetRuntimeClass()
 // GHIDRA_NAME TTacticalBattle::ConstructTTacticalBattleBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTTacticalBattleBaseState(void)
 
-void TTacticalBattle::ConstructTTacticalBattleBaseState()
+void __thiscall TTacticalBattle::ConstructTTacticalBattleBaseState(TTacticalBattle *this)
 
 {
   this->vftable = &_vftable_;
@@ -80,7 +80,8 @@ void TTacticalBattle::ConstructTTacticalBattleBaseState()
 // GHIDRA_NAME TTacticalBattle::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TTacticalBattle * TTacticalBattle::_scalar_deleting_destructor_(byte param_1)
+TTacticalBattle * __thiscall
+TTacticalBattle::_scalar_deleting_destructor_(TTacticalBattle *this,byte param_1)
 
 {
   func_0x00408eb8();
@@ -90,11 +91,127 @@ TTacticalBattle * TTacticalBattle::_scalar_deleting_destructor_(byte param_1)
   return this;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x0059F890
+// GHIDRA_NAME TTacticalBattle::BuildTacticalBattleStateFromBothSides
+// GHIDRA_PROTO undefined BuildTacticalBattleStateFromBothSides()
+
+void __thiscall
+TTacticalBattle::BuildTacticalBattleStateFromBothSides(int param_1,int param_2,int param_3)
+
+{
+  code *pcVar1;
+  undefined2 uVar2;
+  int iVar3;
+  int iVar4;
+  undefined4 uVar5;
+  int *piVar6;
+  undefined4 *puVar7;
+  
+  *(int *)(param_1 + 0x14) = param_2;
+  *(int *)(param_1 + 0x18) = param_3;
+  *(int *)(param_2 + 0x14) = param_1;
+  *(int *)(param_3 + 0x14) = param_1;
+  iVar3 = func_0x00401118();
+  iVar4 = func_0x00403620();
+  while (iVar4 != 0) {
+    *(undefined4 *)(iVar3 + 0x20) = 0;
+    uVar2 = rand();
+    *(undefined2 *)(iVar3 + 0x24) = uVar2;
+    (**(code **)(**(int **)(param_1 + 0x20) + 0x30))(iVar3);
+    iVar3 = func_0x00406d20();
+    iVar4 = func_0x00403620();
+  }
+  iVar3 = func_0x00401118();
+  iVar4 = func_0x00403620();
+  while (iVar4 != 0) {
+    *(undefined4 *)(iVar3 + 0x20) = 1;
+    uVar2 = rand();
+    *(undefined2 *)(iVar3 + 0x24) = uVar2;
+    (**(code **)(**(int **)(param_1 + 0x20) + 0x30))(iVar3);
+    iVar3 = func_0x00406d20();
+    iVar4 = func_0x00403620();
+  }
+  *(undefined4 *)(param_1 + 0x10) = 0;
+  *(undefined4 *)(param_1 + 0xc) = 1;
+  *(undefined4 *)(param_1 + 0x44) = 0;
+  uVar5 = func_0x0040809e();
+  *(undefined4 *)(param_1 + 0x1c) = uVar5;
+  iVar3 = 0;
+  piVar6 = (int *)func_0x00401118();
+  iVar4 = func_0x00403620();
+  while (iVar4 != 0) {
+    pcVar1 = *(code **)(*piVar6 + 0x2c);
+    iVar4 = (*pcVar1)();
+    if (iVar3 < iVar4) {
+      iVar3 = (*pcVar1)();
+    }
+    piVar6 = (int *)func_0x00406d20();
+    iVar4 = func_0x00403620();
+  }
+  *(int *)(param_1 + 0x34) = iVar3 + 0xb;
+  uVar5 = operator_new(*(int *)(param_1 + 0x3c) << 1);
+  *(undefined4 *)(param_1 + 0x24) = uVar5;
+  iVar3 = 0;
+  if (0 < *(int *)(param_1 + 0x3c)) {
+    do {
+      iVar3 = iVar3 + 1;
+      *(undefined2 *)(*(int *)(param_1 + 0x24) + -2 + iVar3 * 2) = 0xffff;
+    } while (iVar3 < *(int *)(param_1 + 0x3c));
+  }
+  uVar5 = operator_new(*(undefined4 *)(param_1 + 0x3c));
+  *(undefined4 *)(param_1 + 0x28) = uVar5;
+  iVar3 = 0;
+  if (0 < *(int *)(param_1 + 0x3c)) {
+    do {
+      iVar4 = iVar3 + 1;
+      *(undefined1 *)(iVar3 + *(int *)(param_1 + 0x28)) = 0;
+      iVar3 = iVar4;
+    } while (iVar4 < *(int *)(param_1 + 0x3c));
+  }
+  uVar5 = operator_new(*(int *)(param_1 + 0x3c) << 2);
+  *(undefined4 *)(param_1 + 0x2c) = uVar5;
+  iVar3 = 0;
+  if (0 < *(int *)(param_1 + 0x3c)) {
+    do {
+      iVar3 = iVar3 + 1;
+      *(undefined4 *)(*(int *)(param_1 + 0x2c) + -4 + iVar3 * 4) = 0;
+    } while (iVar3 < *(int *)(param_1 + 0x3c));
+  }
+  uVar5 = operator_new(*(int *)(param_1 + 0x3c) << 2);
+  *(undefined4 *)(param_1 + 0x30) = uVar5;
+  iVar3 = 0;
+  if (0 < *(int *)(param_1 + 0x3c)) {
+    do {
+      iVar3 = iVar3 + 1;
+      *(undefined4 *)(*(int *)(param_1 + 0x30) + -4 + iVar3 * 4) = 0;
+    } while (iVar3 < *(int *)(param_1 + 0x3c));
+  }
+  if (*(int *)(param_1 + 4) != 0) {
+    operator_delete(*(int *)(param_1 + 4));
+  }
+  puVar7 = (undefined4 *)operator_new(*(int *)(param_1 + 0x3c) * 0x14);
+  iVar3 = 0;
+  *(undefined4 **)(param_1 + 4) = puVar7;
+  if (0 < *(int *)(param_1 + 0x3c)) {
+    do {
+      *puVar7 = 0;
+      puVar7[1] = 0;
+      puVar7[2] = 0;
+      puVar7[3] = 0xffffffff;
+      *(undefined1 *)(puVar7 + 4) = 0;
+      puVar7 = puVar7 + 5;
+      iVar3 = iVar3 + 1;
+    } while (iVar3 < *(int *)(param_1 + 0x3c));
+  }
+  DAT_006a475c = param_1;
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x0059FB50
 // GHIDRA_NAME TTacticalBattle::Free
 // GHIDRA_PROTO undefined __thiscall Free(void)
 
-void TTacticalBattle::Free()
+void __thiscall TTacticalBattle::Free(TTacticalBattle *this)
 
 {
   if (*(int *)&this->field_0x24 != 0) {
@@ -129,11 +246,90 @@ void TTacticalBattle::Free()
   return;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x0059FC20
+// GHIDRA_NAME TTacticalBattle::StartBattle
+// GHIDRA_PROTO undefined StartBattle()
+
+void __fastcall TTacticalBattle::StartBattle(int param_1)
+
+{
+                    /* WARNING: Could not recover jumptable at 0x0059fc25. Too many branches */
+                    /* WARNING: Treating indirect jump as call */
+  (**(code **)(**(int **)(param_1 + 0x18) + 0x28))();
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0059FDB0
+// GHIDRA_NAME TTacticalBattle::FinalizeTacticalTurnStateAndQueueEvent232A
+// GHIDRA_PROTO void __thiscall FinalizeTacticalTurnStateAndQueueEvent232A(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Setting prototype: void FinalizeTacticalTurnStateAndQueueEvent232A(void)
+// GHIDRA_COMMENT_END
+
+/* Setting prototype: void FinalizeTacticalTurnStateAndQueueEvent232A(void) */
+
+void __thiscall TTacticalBattle::FinalizeTacticalTurnStateAndQueueEvent232A(TTacticalBattle *this)
+
+{
+  int iVar1;
+  int *piVar2;
+  undefined4 uVar3;
+  
+  func_0x00405ae7();
+  func_0x00405ae7();
+  (**(code **)(**(int **)&this->field_0x20 + 0x68))(&LAB_004083f0,this);
+  *(undefined4 *)&this->field_0x10 = 1;
+  if (*(int *)&this->field_0x8 != 0) {
+    piVar2 = (int *)(**(code **)(**(int **)(*(int *)&this->field_0x8 + 0x20) + 0x94))(0x746f6f6c);
+    (**(code **)(*piVar2 + 0xc))();
+    func_0x0040652d(1);
+  }
+  iVar1 = **(int **)&this->field_0x20;
+  uVar3 = (**(code **)(iVar1 + 0x48))();
+  uVar3 = (**(code **)(iVar1 + 0x4c))(uVar3);
+  *(undefined4 *)&this->field_0x1c = uVar3;
+  func_0x0040400c();
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0059FE40
+// GHIDRA_NAME TTacticalBattle::ApplyTacticalDoneSelectionAndRefreshUi
+// GHIDRA_PROTO undefined ApplyTacticalDoneSelectionAndRefreshUi()
+
+void __thiscall TTacticalBattle::ApplyTacticalDoneSelectionAndRefreshUi(int *param_1,int param_2)
+
+{
+  int iVar1;
+  uint uVar2;
+  int *piVar3;
+  int iVar4;
+  
+  param_1[7] = param_2;
+  (**(code **)(*param_1 + 0x28))(param_2);
+  if (param_1[2] != 0) {
+    piVar3 = (int *)(**(code **)(**(int **)(param_1[2] + 0x20) + 0x94))(0x746f6f6c);
+    iVar1 = *piVar3;
+    (**(code **)(iVar1 + 0xc))();
+    (**(code **)(iVar1 + 0x1cc))(param_1[7]);
+    iVar1 = *(int *)(param_2 + 8);
+    uVar2 = iVar1 / 0x1d;
+    iVar4 = (int)((uVar2 & 1) + (iVar1 % 0x1d) * 2) / 2;
+    if ((((-1 < iVar1) && (-1 < (int)uVar2)) && ((int)uVar2 < 0xf)) &&
+       ((-1 < iVar4 && (iVar4 < param_1[0xd])))) {
+      func_0x004077f7(iVar1);
+    }
+    (**(code **)(*(int *)param_1[2] + 0xe4))();
+    func_0x00405678();
+  }
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x0059FF20
 // GHIDRA_NAME TTacticalBattle::ComputeTacticalReachableTileCostsByUnitCategory
 // GHIDRA_PROTO undefined __thiscall ComputeTacticalReachableTileCostsByUnitCategory(int param_1)
 
-void TTacticalBattle::ComputeTacticalReachableTileCostsByUnitCategory(int param_1)
+void __thiscall
+TTacticalBattle::ComputeTacticalReachableTileCostsByUnitCategory(TTacticalBattle *this,int param_1)
 
 {
   short sVar1;
@@ -255,7 +451,8 @@ LAB_005a0199:
 // GHIDRA_NAME TTacticalBattle::PropagateTileAccessibilityStrengthLevels
 // GHIDRA_PROTO undefined __thiscall PropagateTileAccessibilityStrengthLevels(char * param_1)
 
-void TTacticalBattle::PropagateTileAccessibilityStrengthLevels(char *param_1)
+void __thiscall
+TTacticalBattle::PropagateTileAccessibilityStrengthLevels(TTacticalBattle *this,char *param_1)
 
 {
   char cVar1;
@@ -318,12 +515,156 @@ void TTacticalBattle::PropagateTileAccessibilityStrengthLevels(char *param_1)
   return;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x005A0420
+// GHIDRA_NAME TTacticalBattle::ComputeHexNeighborTileIndices_005A0420
+// GHIDRA_PROTO undefined ComputeHexNeighborTileIndices_005A0420()
+
+void __thiscall
+TTacticalBattle::ComputeHexNeighborTileIndices_005A0420(int param_1,int param_2,int *param_3)
+
+{
+  int iVar1;
+  
+  iVar1 = *(int *)(param_1 + 0x40);
+  if ((param_2 / iVar1 & 1U) == 0) {
+    *param_3 = param_2 - iVar1;
+    param_3[1] = param_2 + 1;
+    param_3[2] = param_2 + *(int *)(param_1 + 0x40);
+    param_3[3] = param_2 + -1 + *(int *)(param_1 + 0x40);
+    param_3[4] = param_2 + -1;
+    iVar1 = (param_2 - *(int *)(param_1 + 0x40)) + -1;
+  }
+  else {
+    *param_3 = (param_2 - iVar1) + 1;
+    param_3[1] = param_2 + 1;
+    param_3[2] = param_2 + 1 + *(int *)(param_1 + 0x40);
+    param_3[3] = param_2 + *(int *)(param_1 + 0x40);
+    param_3[4] = param_2 + -1;
+    iVar1 = param_2 - *(int *)(param_1 + 0x40);
+  }
+  param_3[5] = iVar1;
+  if ((param_2 + 1) % *(int *)(param_1 + 0x40) == 0) {
+    param_3[1] = -1;
+    if ((param_2 / *(int *)(param_1 + 0x40) & 1U) != 0) {
+      *param_3 = -1;
+      param_3[2] = -1;
+    }
+  }
+  else if ((param_2 % *(int *)(param_1 + 0x40) == 0) &&
+          (param_3[4] = -1, (param_2 / *(int *)(param_1 + 0x40) & 1U) == 0)) {
+    param_3[3] = -1;
+    param_3[5] = -1;
+  }
+  if (*(int *)(param_1 + 0x3c) - *(int *)(param_1 + 0x40) <= param_2) {
+    param_3[2] = -1;
+    param_3[3] = -1;
+    return;
+  }
+  if (param_2 < *(int *)(param_1 + 0x40)) {
+    *param_3 = -1;
+    param_3[5] = -1;
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005A0C50
+// GHIDRA_NAME TTacticalBattle::HandleTacticalBattleCommandTag
+// GHIDRA_PROTO void __thiscall HandleTacticalBattleCommandTag(int commandTag)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Setting prototype: void HandleTacticalBattleCommandTag(int commandTag)
+// GHIDRA_COMMENT_END
+
+/* Setting prototype: void HandleTacticalBattleCommandTag(int commandTag) */
+
+void __thiscall
+TTacticalBattle::HandleTacticalBattleCommandTag(TTacticalBattle *this,int commandTag)
+
+{
+  int *piVar1;
+  char cVar2;
+  undefined4 uVar3;
+  
+  if (*(char *)((int)*(int **)(&this->field_0x14 + *(int *)&this->field_0xc * 4) + 0xd) != '\0') {
+    if (commandTag < 0x646f6e66) {
+      if (commandTag == 0x646f6e65) {
+        if (*(int *)&this->field_0x10 == 1) {
+          func_0x0040400c();
+          return;
+        }
+        uVar3 = func_0x0040809e();
+        func_0x00407333(uVar3);
+        return;
+      }
+      if (commandTag == 0x6175746f) {
+        (**(code **)(**(int **)(&this->field_0x14 + *(int *)&this->field_0xc * 4) + 0x44))();
+        return;
+      }
+    }
+    else if (commandTag == 0x72657472) {
+      if (*(int *)&this->field_0x10 == 0) {
+        func_0x004057f9();
+        return;
+      }
+      cVar2 = func_0x004075a9(0x273d,0x32,1,1);
+      if (cVar2 != '\0') {
+        piVar1 = *(int **)(&this->field_0x14 + *(int *)&this->field_0xc * 4);
+        *(undefined1 *)((int)piVar1 + 0xf) = 1;
+        (**(code **)(*piVar1 + 0x44))();
+      }
+    }
+    else {
+      if (commandTag == 0x736b6970) {
+        func_0x004055e2();
+        return;
+      }
+      if (commandTag == 0x74617267) {
+        func_0x00405b4b();
+        return;
+      }
+    }
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005A1010
+// GHIDRA_NAME TTacticalBattle::SetCurrentTacticalUnitSelection
+// GHIDRA_PROTO undefined SetCurrentTacticalUnitSelection()
+
+void __thiscall
+TTacticalBattle::SetCurrentTacticalUnitSelection(int param_1,int *param_2,char param_3)
+
+{
+  int iVar1;
+  
+  if ((param_3 == '\0') && (*(int *)&g_pSimMgr->field_0x44 != 0)) {
+    func_0x00408855(0x73656c65,param_2,0,0);
+  }
+  iVar1 = *(int *)(param_1 + 0xc);
+  if (param_2[8] != iVar1) {
+    *(uint *)(param_1 + 0xc) = (uint)(iVar1 == 0);
+  }
+  if (*(int *)(param_1 + 8) != 0) {
+    func_0x004059e8(CONCAT31((int3)((uint)iVar1 >> 8),(char)param_2[8]));
+  }
+  if (*(int **)(param_1 + 8) != (int *)0x0) {
+    (**(code **)(**(int **)(param_1 + 8) + 0x1a4))(*(undefined4 *)(param_1 + 0x1c));
+  }
+  if (*(int **)(param_1 + 8) != (int *)0x0) {
+    (**(code **)(**(int **)(param_1 + 8) + 0x1a4))(param_2);
+  }
+  iVar1 = (**(code **)(*param_2 + 0x28))();
+  param_2[10] = iVar1;
+  *(undefined1 *)(param_2 + 6) = 1;
+  func_0x00407333(param_2);
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x005A1400
-// GHIDRA_NAME TTacticalBattle::WrapperFor_thunk_ComputeHexNeighborTileIndices_At005a1400
-// GHIDRA_PROTO undefined __thiscall WrapperFor_thunk_ComputeHexNeighborTileIndices_At005a1400(undefined4 param_1, int param_2, char param_3)
+// GHIDRA_NAME TTacticalBattle::HasEnemyUnitOnTilesFlankingHexDirection
+// GHIDRA_PROTO undefined __thiscall HasEnemyUnitOnTilesFlankingHexDirection(undefined4 param_1, int param_2, char param_3)
 
 undefined4 __thiscall
-TTacticalBattle::WrapperFor_thunk_ComputeHexNeighborTileIndices_At005a1400
+TTacticalBattle::HasEnemyUnitOnTilesFlankingHexDirection
           (TTacticalBattle *this,undefined4 param_1,int param_2,char param_3)
 
 {
@@ -356,6 +697,107 @@ TTacticalBattle::WrapperFor_thunk_ComputeHexNeighborTileIndices_At005a1400
     cVar3 = '\x01';
   }
   return CONCAT31((int3)((uint)iVar1 >> 8),cVar3);
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005A1520
+// GHIDRA_NAME TTacticalBattle::MoveTacticalUnitTowardTile
+// GHIDRA_PROTO undefined MoveTacticalUnitTowardTile()
+
+void __thiscall TTacticalBattle::MoveTacticalUnitTowardTile(int *param_1,int *param_2,int param_3)
+
+{
+  int *piVar1;
+  int iVar2;
+  char cVar3;
+  int iVar4;
+  int iVar5;
+  int *piVar6;
+  int local_30 [10];
+  char cStack_8;
+  
+  local_30[0] = param_3;
+  iVar4 = func_0x0040833c(param_3,0,param_2[2],local_30);
+  if (iVar4 != -1) {
+    cVar3 = '\0';
+    if (iVar4 != 0) {
+      piVar6 = local_30 + iVar4 + -4;
+      do {
+        if (cVar3 != '\0') break;
+        (**(code **)(*param_2 + 0xc))();
+        func_0x00403134(param_2,*piVar6,piVar6[-1],0);
+        piVar1 = piVar6 + -1;
+        piVar6 = piVar6 + -1;
+        iVar4 = iVar4 + -1;
+        cVar3 = func_0x00405ace(*piVar1);
+      } while (iVar4 != 0);
+    }
+    param_2[10] = param_2[10] - (int)*(short *)(param_1[9] + local_30[iVar4 + -4] * 2);
+    if ((int *)param_1[2] != (int *)0x0) {
+      (**(code **)(*(int *)param_1[2] + 0x1a4))(param_2);
+    }
+    if ((int *)param_1[2] != (int *)0x0) {
+      (**(code **)(*(int *)param_1[2] + 0x13c))();
+    }
+    iVar5 = local_30[iVar4 + -4];
+    iVar2 = param_2[8];
+    iVar5 = (int)((iVar5 / 0x1d & 1U) + (iVar5 % 0x1d) * 2) / 2;
+    if (((iVar2 == 1) && (param_1[0xd] + -1 <= iVar5)) || ((iVar2 == 0 && (iVar5 == 0)))) {
+      if (param_2[7] == 1) {
+        cStack_8 = '\x01';
+      }
+      else if (param_1[2] != 0) {
+        cStack_8 = (**(code **)(*(int *)param_1[iVar2 + 5] + 0x40))(param_2);
+      }
+      if (cStack_8 != '\0') {
+        iVar4 = local_30[iVar4 + -4];
+        param_2[7] = 2;
+        param_2[2] = -2;
+        *(undefined4 *)(param_1[1] + 4 + iVar4 * 0x14) = 0;
+        func_0x00409606();
+      }
+    }
+    (**(code **)(*param_1 + 0x28))(param_2);
+    if ((int *)param_1[2] != (int *)0x0) {
+      (**(code **)(*(int *)param_1[2] + 0xe4))();
+    }
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005A1910
+// GHIDRA_NAME TTacticalBattle::MoveTacticalUnitBetweenTiles
+// GHIDRA_PROTO undefined MoveTacticalUnitBetweenTiles()
+
+void __thiscall
+TTacticalBattle::MoveTacticalUnitBetweenTiles
+          (int param_1,int param_2,int param_3,int param_4,char param_5)
+
+{
+  if ((param_5 == '\0') && (*(int *)&g_pSimMgr->field_0x44 != 0)) {
+    func_0x00408855(0x6d6f7665,param_2,param_3,param_4);
+  }
+  if (*(int **)(param_1 + 8) != (int *)0x0) {
+    (**(code **)(**(int **)(param_1 + 8) + 0x1a4))(param_2);
+  }
+  *(undefined4 *)(*(int *)(param_1 + 4) + 4 + param_3 * 0x14) = 0;
+  if (*(int *)(param_1 + 8) != 0) {
+    func_0x004024d2();
+  }
+  if ((*(int *)(param_1 + 0x4c) != 7) && (*(int **)(param_1 + 8) != (int *)0x0)) {
+    (**(code **)(**(int **)(param_1 + 8) + 0x1bc))(param_2,param_3,param_4);
+  }
+  *(int *)(param_2 + 8) = param_4;
+  *(int *)(*(int *)(param_1 + 4) + 4 + param_4 * 0x14) = param_2;
+  if (*(int **)(param_1 + 8) != (int *)0x0) {
+    (**(code **)(**(int **)(param_1 + 8) + 0x1a4))(param_2);
+  }
+  if (*(int *)(param_1 + 8) != 0) {
+    func_0x004029f5(param_4);
+  }
+  if (*(int *)(param_1 + 8) != 0) {
+    func_0x00405678();
+  }
+  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005A1BD0
@@ -432,6 +874,70 @@ TTacticalBattle::ExecuteTacticalActionAndQueueEventIfNoAdjacentValidTarget
   }
   func_0x0040400c();
   return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005A1D70
+// GHIDRA_NAME TTacticalBattle::HasValidTacticalFollowupTargetForCurrentAction
+// GHIDRA_PROTO undefined HasValidTacticalFollowupTargetForCurrentAction()
+
+undefined4 __fastcall TTacticalBattle::HasValidTacticalFollowupTargetForCurrentAction(int param_1)
+
+{
+  char cVar1;
+  int iVar2;
+  undefined4 uVar3;
+  int *piVar4;
+  int iVar5;
+  undefined1 local_18 [4];
+  undefined4 local_14;
+  
+  iVar5 = *(int *)(param_1 + 0x1c);
+  if (*(short *)(&DAT_00695528 + *(int *)(iVar5 + 0xc) * 2) == 9) {
+    func_0x004032ec(*(undefined4 *)(iVar5 + 8),local_18);
+    iVar5 = 0;
+    piVar4 = (int *)&stack0xffffffe0;
+    while (((*piVar4 == -1 ||
+            (iVar2 = *(int *)(*(int *)(param_1 + 4) + 4 + *piVar4 * 0x14), iVar2 == 0)) ||
+           (*(int *)(iVar2 + 0x20) != *(int *)(*(int *)(param_1 + 0x1c) + 0x20)))) {
+      iVar5 = iVar5 + 1;
+      piVar4 = piVar4 + 1;
+      if (5 < iVar5) {
+        return 0;
+      }
+    }
+    return 1;
+  }
+  if (*(short *)(&DAT_00695528 + *(int *)(iVar5 + 0xc) * 2) != 8) {
+    local_14 = *(undefined4 *)(*(int *)(param_1 + 0x14 + (*(int *)(iVar5 + 0x20) == 0) * 4) + 4);
+    iVar5 = func_0x00401118();
+    iVar2 = func_0x00403620();
+    if (iVar2 != 0) {
+      do {
+        iVar5 = *(int *)(iVar5 + 8);
+        if (-1 < iVar5) {
+          piVar4 = *(int **)(param_1 + 0x1c);
+          iVar2 = piVar4[2];
+          if ((char)piVar4[6] == '\0') {
+            cVar1 = '\0';
+          }
+          else {
+            uVar3 = (**(code **)(*piVar4 + 0x2c))();
+            uVar3 = _ftol(uVar3);
+            cVar1 = func_0x00406b09(iVar2,iVar5,uVar3);
+          }
+          if (cVar1 != '\0') {
+            return 1;
+          }
+        }
+        iVar5 = func_0x00406d20();
+        iVar2 = func_0x00403620();
+        if (iVar2 == 0) {
+          return 0;
+        }
+      } while( true );
+    }
+  }
+  return 0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005A1EE0
@@ -589,11 +1095,64 @@ LAB_005a1f86:
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x005A2700
-// GHIDRA_NAME TTacticalBattle::OrphanCallChain_C4_I30_005a2700
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C4_I30_005a2700(int param_1)
+// GHIDRA_FUNCTION IMPERIALISM 0x005A24A0
+// GHIDRA_NAME TTacticalBattle::ApplyTacticalActionEffectsAndMaybeRemoveUnit
+// GHIDRA_PROTO undefined ApplyTacticalActionEffectsAndMaybeRemoveUnit()
 
-void TTacticalBattle::OrphanCallChain_C4_I30_005a2700(int param_1)
+void __thiscall
+TTacticalBattle::ApplyTacticalActionEffectsAndMaybeRemoveUnit
+          (int param_1,undefined4 param_2,int *param_3,undefined4 param_4,undefined4 param_5,
+          undefined4 param_6,char param_7,char param_8)
+
+{
+  int unaff_EBX;
+  int unaff_EBP;
+  
+  if ((param_8 == '\0') && (*(int *)&g_pSimMgr->field_0x44 != 0)) {
+    func_0x00405597(0x66697265,param_2,param_3,param_5,param_6,(int)param_7);
+  }
+  (**(code **)(*param_3 + 0x38))(param_5,param_6);
+  if (*(int *)(param_1 + 8) != 0) {
+    func_0x004077f7(param_2);
+    (**(code **)&g_pSfxPlaybackSystem->vftable[1].field_0x10)
+              (CONCAT22((short)((uint)*(int *)(unaff_EBP + 0xc) >> 0x10),
+                        *(undefined2 *)(&DAT_00669dc0 + *(int *)(unaff_EBP + 0xc) * 2)),0,1);
+    if (((*(short *)(&DAT_00695528 + *(int *)(unaff_EBP + 0xc) * 2) == 6) ||
+        (*(short *)(&DAT_00695528 + *(int *)(unaff_EBP + 0xc) * 2) == 7)) ||
+       (*(int *)(unaff_EBP + 0xc) == 0x15)) {
+      if (*(int **)(param_1 + 8) != (int *)0x0) {
+        (**(code **)(**(int **)(param_1 + 8) + 0x1b8))(param_2,0xf6e,6);
+      }
+    }
+    else if (*(int **)(param_1 + 8) != (int *)0x0) {
+      (**(code **)(**(int **)(param_1 + 8) + 0x1b8))(param_2,0xf78,3);
+    }
+    unaff_EBX = unaff_EBP;
+    if (*(int *)(param_1 + 8) != 0) {
+      func_0x004029f5(param_2);
+    }
+  }
+  if (param_3[7] == 3) {
+    if (*(int *)(param_1 + 8) != 0) {
+      func_0x004029f5(param_3[2]);
+    }
+    if (*(int **)(param_1 + 8) != (int *)0x0) {
+      (**(code **)(**(int **)(param_1 + 8) + 0x1a4))(param_3);
+    }
+    *(undefined4 *)(*(int *)(param_1 + 4) + 4 + param_3[2] * 0x14) = 0;
+    param_3[2] = -1;
+  }
+  *(undefined1 *)(unaff_EBX + 0x18) = 0;
+  func_0x00409606();
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005A2700
+// GHIDRA_NAME TTacticalBattle::TransferTacticalUnitToOpposingSide
+// GHIDRA_PROTO undefined __thiscall TransferTacticalUnitToOpposingSide(int param_1)
+
+void __thiscall
+TTacticalBattle::TransferTacticalUnitToOpposingSide(TTacticalBattle *this,int param_1)
 
 {
   int *piVar1;
@@ -607,6 +1166,418 @@ void TTacticalBattle::OrphanCallChain_C4_I30_005a2700(int param_1)
   piVar1 = *(int **)&this->field_0x14;
   (**(code **)(**(int **)&this->field_0x18 + 0x38))(param_1);
   (**(code **)(*piVar1 + 0x3c))(param_1);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005A2750
+// GHIDRA_NAME TTacticalBattle::EvaluateTacticalSideStateAndShowBattleSummaryDialog
+// GHIDRA_PROTO undefined EvaluateTacticalSideStateAndShowBattleSummaryDialog()
+
+/* WARNING: Type propagation algorithm not settling */
+
+void __fastcall TTacticalBattle::EvaluateTacticalSideStateAndShowBattleSummaryDialog(int param_1)
+
+{
+  code *pcVar1;
+  byte bVar2;
+  CString CVar3;
+  char cVar4;
+  undefined uVar5;
+  short sVar6;
+  int *piVar7;
+  int iVar8;
+  undefined3 extraout_var;
+  int iVar9;
+  undefined4 uVar10;
+  CString *src_ref;
+  undefined4 *unaff_FS_OFFSET;
+  CString CStack_114;
+  CString CStack_110;
+  CString CStack_10c;
+  CString CStack_108;
+  CString CStack_104;
+  undefined4 uStack_100;
+  CString CStack_fc;
+  CString CStack_f4;
+  CString *pCStack_f0;
+  CString CStack_ec;
+  CString CStack_e8;
+  char *pcStack_e4;
+  CString CStack_e0;
+  CString CStack_dc;
+  CString CStack_d8;
+  CString CStack_d4;
+  CString CStack_d0;
+  CString CStack_cc;
+  CString CStack_c8;
+  CString CStack_c4;
+  CString CStack_c0;
+  CString CStack_bc;
+  CString CStack_b8;
+  CString CStack_b4;
+  CString CStack_b0;
+  CString CStack_ac;
+  CString CStack_a8;
+  CString CStack_a4;
+  CString CStack_a0;
+  undefined4 uStack_9c;
+  char acStack_98 [4];
+  int iStack_94;
+  undefined4 uStack_90;
+  char local_78 [4];
+  char *pcStack_74;
+  undefined4 uStack_6c;
+  undefined4 uStack_68;
+  int local_64;
+  char acStack_58 [12];
+  undefined1 uStack_4c;
+  int *piStack_44;
+  int iStack_40;
+  undefined4 uStack_3c;
+  undefined1 uStack_32;
+  undefined1 uStack_31;
+  undefined1 uStack_30;
+  undefined1 uStack_2f;
+  undefined4 local_20;
+  undefined4 uStack_c;
+  undefined1 *puStack_8;
+  undefined4 uStack_4;
+  
+  uStack_4 = 0xffffffff;
+  puStack_8 = &LAB_006386a0;
+  uStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &uStack_c;
+  cVar4 = '\0';
+  local_20 = *(undefined4 *)(param_1 + 0x20);
+  local_78[0] = '\0';
+  local_78[1] = '\0';
+  uStack_90 = 0x5a278c;
+  local_64 = param_1;
+  piVar7 = (int *)func_0x00401118();
+  uStack_90 = 0x5a2797;
+  iVar8 = func_0x00403620();
+  while ((iVar8 != 0 && ((cVar4 == '\0' || (local_78[1] == '\0'))))) {
+    uStack_90 = 0x5a27ae;
+    (**(code **)(*piVar7 + 0xc))();
+    if ((piVar7[7] == 0) || (piVar7[7] == 1)) {
+      local_78[piVar7[8]] = '\x01';
+      cVar4 = local_78[0];
+    }
+    uStack_90 = 0x5a27cf;
+    piVar7 = (int *)func_0x00406d20();
+    uStack_90 = 0x5a27da;
+    iVar8 = func_0x00403620();
+  }
+  if (cVar4 == '\0') {
+LAB_005a280a:
+    *(undefined4 *)(param_1 + 0x44) = 2;
+  }
+  else {
+    if ((local_78[1] != '\0') && (*(int *)(param_1 + 0x74) < 0x23)) goto LAB_005a2f65;
+    if ((cVar4 == '\0') || (0x22 < *(int *)(param_1 + 0x74))) goto LAB_005a280a;
+    *(undefined4 *)(param_1 + 0x44) = 1;
+  }
+  if (*(int *)(param_1 + 8) == 0) goto LAB_005a2f65;
+  uStack_90 = 0x5a2824;
+  local_78[0] = func_0x004020c2();
+  if (*(int *)(param_1 + 0x44) == 1) {
+    uStack_90 = 0x5a2838;
+    cVar4 = func_0x004020c2();
+    if (cVar4 == '\0') goto LAB_005a283c;
+LAB_005a284e:
+    bVar2 = 1;
+  }
+  else {
+LAB_005a283c:
+    if (*(int *)(param_1 + 0x44) == 2) {
+      uStack_90 = 0x5a284a;
+      cVar4 = func_0x004020c2();
+      if (cVar4 != '\0') goto LAB_005a284e;
+    }
+    bVar2 = 0;
+  }
+  uStack_90 = 0;
+  iStack_94 = 10 - (uint)bVar2;
+  builtin_strncpy(acStack_98,"v(Z",4);
+  func_0x00409381();
+  acStack_98[0] = 0xed;
+  acStack_98[1] = 0xe;
+  acStack_98[2] = 0;
+  acStack_98[3] = 0;
+  uStack_32 = 0;
+  uStack_31 = 0;
+  uStack_30 = 0;
+  uStack_2f = 0;
+  uStack_9c = 0x5a289a;
+  uVar5 = (*g_pUiViewManager->vftable->ResolveTurnEventDialogNodeByMessageContext)();
+  piStack_44 = (int *)CONCAT31(extraout_var,uVar5);
+  iStack_40 = *piStack_44;
+  uStack_9c = 0x444c4f47;
+  CStack_a0.m_pchData = (char *)0x5a28b1;
+  piVar7 = (int *)(**(code **)(iStack_40 + 0x94))();
+  iVar8 = *piVar7;
+  CStack_a0.m_pchData = (char *)0x5a28ba;
+  (**(code **)(iVar8 + 0xc))();
+  CStack_a0.m_pchData = (char *)0x5a28c5;
+  sVar6 = func_0x00403b16();
+  CStack_a0.m_pchData = (char *)0x0;
+  CStack_a4.m_pchData = (char *)((int)sVar6 + (-(uint)bVar2 & 0xfffffff2) + 0xefb);
+  CStack_a8.m_pchData = (char *)0x5a28e2;
+  (**(code **)(iVar8 + 0x1c8))();
+  pcVar1 = *(code **)(iVar8 + 0x94);
+  CStack_a8.m_pchData = (char *)0x7469746c;
+  CStack_ac.m_pchData = (char *)0x5a28f1;
+  piVar7 = (int *)(*pcVar1)();
+  iVar8 = *piVar7;
+  CStack_ac.m_pchData = (char *)0x5a28fa;
+  (**(code **)(iVar8 + 0xc))();
+  if ((char)iStack_94 == '\0') {
+    pcStack_74 = (char *)((-(uint)(acStack_98[3] != '\0') & 2) + 4);
+  }
+  else {
+    pcStack_74 = (char *)((-(uint)(acStack_98[3] != '\0') & 2) + 1);
+  }
+  CStack_ac.m_pchData = (char *)0x5a2927;
+  CString::CString((CString *)&stack0xffffff7c);
+  CStack_ac.m_pchData = &stack0xffffff7c;
+  CStack_b0.m_pchData = pcStack_74;
+  CStack_b4.m_pchData = (char *)0x273d;
+  local_20 = 0;
+  CStack_b8.m_pchData = "hg+";
+  (*g_pSimMgr->vftable[0x10].slot_0x04)();
+  CStack_b8.m_pchData = (char *)0x2b67;
+  CStack_bc.m_pchData = (char *)0xc;
+  CStack_c4.m_pchData = acStack_58;
+  CStack_c0.m_pchData = (char *)0x0;
+  CStack_c8.m_pchData = (char *)0x5a2962;
+  thunk_BuildUiTextStyleDescriptor();
+  CStack_bc.m_pchData = acStack_58;
+  CStack_b8.m_pchData = (char *)0x0;
+  CStack_c0.m_pchData = (char *)0x5a2974;
+  (**(code **)(iVar8 + 0x1b4))();
+  CStack_c4.m_pchData = acStack_98;
+  CStack_c0.m_pchData = (char *)0x0;
+  CStack_c8.m_pchData = (char *)0x5a2983;
+  (**(code **)(iVar8 + 0x1c8))();
+  uStack_3c = 0xffffffff;
+  CStack_c8.m_pchData = (char *)0x5a2997;
+  CString::~CString(&CStack_a0);
+  CStack_c8.m_pchData = (char *)0x6c6f6361;
+  CStack_cc.m_pchData = (char *)0x5a29a0;
+  piVar7 = (int *)(*pcVar1)();
+  iVar8 = *piVar7;
+  CStack_cc.m_pchData = (char *)0x5a29a9;
+  (**(code **)(iVar8 + 0xc))();
+  CStack_cc.m_pchData = (char *)0x5a29b2;
+  CString::CString(&CStack_b0);
+  iStack_40 = 1;
+  CStack_cc.m_pchData = (char *)0x5a29c6;
+  CString::CString(&CStack_ac);
+  CStack_cc.m_pchData = (char *)&CStack_b0;
+  iStack_40 = CONCAT31(iStack_40._1_3_,2);
+                    /* WARNING: Load size is inaccurate */
+  CStack_d0.m_pchData = CStack_a0.m_pchData[0x38];
+  CStack_d4.m_pchData = (char *)0x5a29e6;
+  func_0x0040918d();
+  CStack_d4.m_pchData = (char *)&CStack_b4;
+  CStack_d8.m_pchData = (char *)0x5a2a14;
+  func_0x00405245();
+  CStack_d8.m_pchData = (char *)0x5a2a1d;
+  CString::CString(&CStack_b4);
+  uStack_4c = 3;
+  CStack_d8.m_pchData = (char *)0x5a2a2e;
+  CString::CString(&CStack_b0);
+  CStack_d8.m_pchData = (char *)&CStack_b4;
+  uStack_4c = 4;
+  CStack_dc.m_pchData = (char *)0x7;
+  CStack_e0.m_pchData = (char *)0x273d;
+  pcStack_e4 = (char *)0x5a2a50;
+  (*g_pSimMgr->vftable[0x10].slot_0x04)();
+  pcStack_e4 = CStack_c4.m_pchData;
+  CStack_e8.m_pchData = CStack_c8.m_pchData;
+  pCStack_f0 = &CStack_bc;
+  CStack_ec.m_pchData = CStack_c0.m_pchData;
+  CStack_f4.m_pchData = (char *)g_pSimMgr;
+  func_0x0040988b();
+  pCStack_f0 = (CString *)&stack0xffffff7c;
+  pcStack_e4 = (char *)0x2b67;
+  CStack_e8.m_pchData = (char *)0xa;
+  CStack_ec.m_pchData = (char *)0x0;
+  CStack_f4.m_pchData = (char *)0x5a2a86;
+  thunk_BuildUiTextStyleDescriptor();
+  CStack_e8.m_pchData = &stack0xffffff7c;
+  pcStack_e4 = (char *)0x0;
+  CStack_ec.m_pchData = (char *)0x5a2a98;
+  (**(code **)(iVar8 + 0x1b4))();
+  pCStack_f0 = &CStack_c4;
+  CStack_ec.m_pchData = (char *)0x1;
+  CStack_f4.m_pchData = (char *)0x5a2aa7;
+  (**(code **)(iVar8 + 0x1c8))();
+  uStack_68._0_1_ = 3;
+  CStack_f4.m_pchData = (char *)0x5a2ab8;
+  CString::~CString(&CStack_cc);
+  uStack_68._0_1_ = 2;
+  CStack_f4.m_pchData = (char *)0x5a2ac9;
+  CString::~CString(&CStack_d0);
+  uStack_68._0_1_ = 1;
+  CStack_f4.m_pchData = (char *)0x5a2ada;
+  CString::~CString(&CStack_d4);
+  uStack_68 = 0xffffffff;
+  CStack_f4.m_pchData = (char *)0x5a2aee;
+  CString::~CString(&CStack_d8);
+  CStack_f4.m_pchData = (char *)0x696e666f;
+  piVar7 = (int *)(*pcVar1)();
+  iVar8 = *piVar7;
+  (**(code **)(iVar8 + 0xc))();
+  CString::CString(&CStack_b8);
+  uStack_6c = 5;
+  CString::CString(&CStack_a4);
+  uStack_6c._0_1_ = 6;
+  CString::CString(&CStack_e0);
+  uStack_6c._0_1_ = 7;
+  CString::CString(&CStack_a8);
+  uStack_6c._0_1_ = 8;
+  CStack_fc.m_pchData = (char *)0x5a2b57;
+  CString::CString(&CStack_bc,PTR_g_szEmptyString_00669db8);
+  uStack_6c._0_1_ = 9;
+  CStack_fc.m_pchData = (char *)0x5a2b6d;
+  CString::operator=(&CStack_b8,&CStack_bc);
+  uStack_6c._0_1_ = 8;
+  CString::~CString(&CStack_bc);
+  CStack_fc.m_pchData = (char *)0xa;
+  CStack_104.m_pchData = acStack_98;
+  uStack_100 = 0;
+  CStack_108.m_pchData = (char *)0x5a2b92;
+  thunk_BuildUiTextStyleDescriptor();
+  CStack_ac.m_pchData = (char *)0x0;
+  CStack_b0.m_pchData = (char *)0x0;
+  piVar7 = (int *)func_0x00401118();
+  iVar9 = func_0x00403620();
+  while (iVar9 != 0) {
+    (**(code **)(*piVar7 + 0xc))();
+    if (piVar7[7] == 3) {
+      (&CStack_b0)[piVar7[8]].m_pchData = (&CStack_b0)[piVar7[8]].m_pchData + 1;
+    }
+    piVar7 = (int *)func_0x00406d20();
+    iVar9 = func_0x00403620();
+  }
+  CString::CString(&CStack_d0);
+  uStack_6c._0_1_ = 10;
+  CString::CString(&CStack_d4);
+  uStack_6c._0_1_ = 0xb;
+  CString::CString(&CStack_c0);
+  uStack_6c._0_1_ = 0xc;
+  CString::CString(&CStack_c4);
+  uStack_6c._0_1_ = 0xd;
+  CString::CString(&CStack_d8);
+  uStack_6c._0_1_ = 0xe;
+  CString::CString(&CStack_dc);
+  uStack_6c._0_1_ = 0xf;
+  CString::CString(&CStack_c8);
+  uStack_6c._0_1_ = 0x10;
+  CStack_fc.m_pchData = (char *)0x5a2c82;
+  func_0x00405245();
+  CVar3.m_pchData = CStack_b4.m_pchData;
+  CStack_fc.m_pchData = (char *)&pcStack_e4;
+  if ((int)CStack_b4.m_pchData < 2) {
+    if (CStack_b4.m_pchData == (char *)0x1) {
+      uStack_100 = 0x25;
+    }
+    else {
+      uStack_100 = 0x26;
+    }
+    CStack_104.m_pchData = (char *)0x273d;
+    CStack_108.m_pchData = (char *)0x5a2cef;
+    (*g_pSimMgr->vftable[0x10].slot_0x04)();
+    CStack_108.m_pchData = CStack_e0.m_pchData;
+    CStack_110.m_pchData = (char *)&CStack_e8;
+    CStack_10c.m_pchData = (char *)pCStack_f0;
+    CStack_114.m_pchData = (char *)g_pSimMgr;
+    func_0x0040988b();
+  }
+  else {
+    uStack_100 = 0x24;
+    CStack_104.m_pchData = (char *)0x273d;
+    CStack_108.m_pchData = (char *)0x5a2ca5;
+    (*g_pSimMgr->vftable[0x10].slot_0x04)();
+    CStack_108.m_pchData = CVar3.m_pchData;
+    CStack_110.m_pchData = (char *)&CStack_d0;
+    CStack_10c.m_pchData = &g_szDecimalFormat;
+    CStack_114.m_pchData = (char *)0x5a2cb5;
+    CString::Format();
+    CStack_108.m_pchData = CStack_d0.m_pchData;
+    CStack_10c.m_pchData = CStack_e0.m_pchData;
+    CStack_114.m_pchData = (char *)&CStack_e8;
+    CStack_110.m_pchData = (char *)pCStack_f0;
+    func_0x0040988b(g_pSimMgr);
+  }
+  CStack_108.m_pchData = (char *)&pcStack_e4;
+  CStack_10c.m_pchData = (char *)0x5a2d24;
+  func_0x00405245();
+  CVar3.m_pchData = CStack_c0.m_pchData;
+  CStack_10c.m_pchData = (char *)&CStack_f4;
+  if ((int)CStack_c0.m_pchData < 2) {
+    if (CStack_c0.m_pchData == (char *)0x1) {
+      CStack_110.m_pchData = (char *)0x25;
+    }
+    else {
+      CStack_110.m_pchData = (char *)0x26;
+    }
+    CStack_114.m_pchData = (char *)0x273d;
+    (*g_pSimMgr->vftable[0x10].slot_0x04)();
+    func_0x0040988b(g_pSimMgr,&CStack_fc,uStack_100,CStack_f4.m_pchData);
+  }
+  else {
+    CStack_110.m_pchData = (char *)0x24;
+    CStack_114.m_pchData = (char *)0x273d;
+    (*g_pSimMgr->vftable[0x10].slot_0x04)();
+    CString::Format(&pcStack_e4,&g_szDecimalFormat,CVar3.m_pchData);
+    func_0x0040988b(g_pSimMgr,&CStack_fc,uStack_100,CStack_f4.m_pchData,pcStack_e4);
+  }
+  uVar10 = AssignSharedStringConcatRefAndCStr(&CStack_d0,&stack0xffffff08,&DAT_00699438);
+  src_ref = (CString *)AssignSharedStringConcatRefAndRef(&CStack_d4,uVar10,&CStack_fc);
+  CString::CString(&CStack_dc,src_ref);
+  CString::operator=(&CStack_e8,&CStack_dc);
+  CString::~CString(&CStack_dc);
+  CString::~CString(&CStack_d4);
+  CString::~CString(&CStack_d0);
+  (**(code **)(iVar8 + 0x1e4))(&CStack_b8,0);
+  (**(code **)(iVar8 + 0x1ec))(&pCStack_f0,0);
+  (**(code **)(iVar8 + 0x1f8))(0);
+  CStack_a0.m_pchData._0_1_ = 0xf;
+  CString::~CString(&CStack_fc);
+  CStack_a0.m_pchData._0_1_ = 0xe;
+  CString::~CString(&CStack_110);
+  CStack_a0.m_pchData._0_1_ = 0xd;
+  CString::~CString(&CStack_10c);
+  CStack_a0.m_pchData._0_1_ = 0xc;
+  CString::~CString((CString *)&stack0xffffff08);
+  CStack_a0.m_pchData._0_1_ = 0xb;
+  CString::~CString(&CStack_f4);
+  CStack_a0.m_pchData._0_1_ = 10;
+  CString::~CString(&CStack_108);
+  CStack_a0.m_pchData._0_1_ = 8;
+  CString::~CString(&CStack_104);
+  CStack_a0.m_pchData._0_1_ = 7;
+  CString::~CString(&CStack_dc);
+  CStack_a0.m_pchData._0_1_ = 6;
+  CString::~CString(&CStack_114);
+  CStack_a0.m_pchData._0_1_ = 5;
+  CString::~CString(&CStack_d8);
+  CStack_a0.m_pchData = (char *)0xffffffff;
+  CString::~CString(&CStack_ec);
+  CVar3.m_pchData = CStack_d0.m_pchData;
+  (**(code **)(CStack_d0.m_pchData + 0x1a0))(1);
+  iVar8 = (**(code **)(CVar3.m_pchData + 0x1b8))();
+  if (iVar8 != 0) {
+    *(undefined4 *)(iVar8 + 0x14) = 0x6f6b6179;
+  }
+  (**(code **)(CVar3.m_pchData + 0x1ac))();
+  (**(code **)(CVar3.m_pchData + 0xa0))();
+  (**(code **)(CVar3.m_pchData + 0x1c))();
+  (**(code **)(**(int **)(CStack_104.m_pchData + 8) + 0x13c))();
+LAB_005a2f65:
+  *unaff_FS_OFFSET = uStack_c;
   return;
 }
 
@@ -694,7 +1665,8 @@ LAB_005a32b7:
 // GHIDRA_NAME TTacticalBattle::ClearTacticalTileStateRunByStride
 // GHIDRA_PROTO undefined __thiscall ClearTacticalTileStateRunByStride(int param_1)
 
-void TTacticalBattle::ClearTacticalTileStateRunByStride(int param_1)
+void __thiscall
+TTacticalBattle::ClearTacticalTileStateRunByStride(TTacticalBattle *this,int param_1)
 
 {
   int *piVar1;
@@ -737,6 +1709,26 @@ TTacticalBattle::ExecuteTacticalMineActionAndQueuePacket
   return;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x005A35A0
+// GHIDRA_NAME TTacticalBattle::HandleTacticalCommandTag_mine
+// GHIDRA_PROTO undefined HandleTacticalCommandTag_mine()
+
+void __thiscall
+TTacticalBattle::HandleTacticalCommandTag_mine
+          (int param_1,undefined4 param_2,undefined4 param_3,char param_4)
+
+{
+  if ((param_4 == '\0') && (*(int *)&g_pSimMgr->field_0x44 != 0)) {
+    func_0x00408855(0x6d696e65,0,param_2,param_3);
+  }
+  func_0x004028c4(param_2,param_3);
+  if (*(int *)(param_1 + 8) != 0) {
+    (**(code **)&g_pSfxPlaybackSystem->vftable[1].field_0x10)(0x3a9d,0,1);
+    (**(code **)(**(int **)(param_1 + 8) + 0x1b8))(param_2,0xf98,6);
+  }
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x005A3640
 // GHIDRA_NAME TTacticalBattle::ExecuteTacticalDigActionAndConsumeUnitActionPoints
 // GHIDRA_PROTO undefined __thiscall ExecuteTacticalDigActionAndConsumeUnitActionPoints(int * param_1, undefined4 param_2)
@@ -762,11 +1754,69 @@ TTacticalBattle::ExecuteTacticalDigActionAndConsumeUnitActionPoints
   return;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x005A36D0
+// GHIDRA_NAME TTacticalBattle::HandleTacticalCommandTag_digg
+// GHIDRA_PROTO undefined HandleTacticalCommandTag_digg()
+
+void __thiscall
+TTacticalBattle::HandleTacticalCommandTag_digg(int param_1,int param_2,int param_3,char param_4)
+
+{
+  byte *pbVar1;
+  byte bVar2;
+  int *piVar3;
+  int iVar4;
+  int iVar5;
+  int iVar6;
+  undefined1 local_18 [24];
+  
+  if ((param_4 == '\0') && (*(int *)&g_pSimMgr->field_0x44 != 0)) {
+    func_0x00408855(0x64696767,param_2,param_3,0);
+  }
+  iVar4 = *(int *)(param_2 + 8);
+  func_0x004032ec(iVar4,local_18);
+  iVar5 = 0;
+  piVar3 = (int *)&stack0xffffffe0;
+  do {
+    if (*piVar3 == param_3) break;
+    iVar5 = iVar5 + 1;
+    piVar3 = piVar3 + 1;
+  } while (iVar5 < 6);
+  iVar4 = iVar4 * 0x14;
+  pbVar1 = (byte *)(iVar4 + 0x10 + *(int *)(param_1 + 4));
+  bVar2 = *(byte *)(iVar4 + 0x10 + *(int *)(param_1 + 4));
+  if (bVar2 == 0) {
+    *pbVar1 = 0x80;
+  }
+  else {
+    *pbVar1 = bVar2 & 0x7f;
+    *(byte *)(iVar4 + 0x10 + *(int *)(param_1 + 4)) =
+         *(byte *)(iVar4 + 0x10 + *(int *)(param_1 + 4)) | 0x40;
+  }
+  iVar6 = iVar5 + 3;
+  *(byte *)(iVar4 + 0x10 + *(int *)(param_1 + 4)) =
+       *(byte *)(iVar4 + 0x10 + *(int *)(param_1 + 4)) | '\x01' << ((byte)iVar5 & 0x1f);
+  if (5 < iVar6) {
+    iVar6 = iVar5 + -3;
+  }
+  param_3 = param_3 * 0x14;
+  bVar2 = *(byte *)(param_3 + 0x10 + *(int *)(param_1 + 4));
+  if (bVar2 != 0) {
+    *(byte *)(param_3 + 0x10 + *(int *)(param_1 + 4)) = bVar2 & 0x7f;
+    *(byte *)(param_3 + 0x10 + *(int *)(param_1 + 4)) =
+         *(byte *)(param_3 + 0x10 + *(int *)(param_1 + 4)) | 0x40;
+  }
+  pbVar1 = (byte *)(param_3 + 0x10 + *(int *)(param_1 + 4));
+  *pbVar1 = *pbVar1 | '\x01' << ((byte)iVar6 & 0x1f);
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x005A3810
 // GHIDRA_NAME TTacticalBattle::ComputeRallyStrengthAndQueueTacticalRallyCommand
 // GHIDRA_PROTO undefined __thiscall ComputeRallyStrengthAndQueueTacticalRallyCommand(int param_1)
 
-void TTacticalBattle::ComputeRallyStrengthAndQueueTacticalRallyCommand(int param_1)
+void __thiscall
+TTacticalBattle::ComputeRallyStrengthAndQueueTacticalRallyCommand(TTacticalBattle *this,int param_1)
 
 {
   int in_stack_00000008;
@@ -776,6 +1826,471 @@ void TTacticalBattle::ComputeRallyStrengthAndQueueTacticalRallyCommand(int param
   }
   func_0x004065af();
   func_0x0040400c();
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005A38E0
+// GHIDRA_NAME TTacticalBattle::HandleTacticalCommandTag_raly
+// GHIDRA_PROTO undefined __thiscall HandleTacticalCommandTag_raly(int param_1, int param_2, undefined4 param_3, char param_4)
+
+void __thiscall
+TTacticalBattle::HandleTacticalCommandTag_raly
+          (TTacticalBattle *this,int param_1,int param_2,undefined4 param_3,char param_4)
+
+{
+  if ((param_4 == '\0') && (*(int *)&g_pSimMgr->field_0x44 != 0)) {
+    func_0x00408855(0x72616c79,param_1,param_2,param_3);
+  }
+  *(undefined4 *)(param_1 + 0x1c) = param_3;
+  if (*(int *)(param_1 + 4) < param_2) {
+    *(int *)(param_1 + 0x34) = *(int *)(param_1 + 4);
+  }
+  else {
+    *(int *)(param_1 + 0x34) = param_2;
+  }
+  if (*(int **)&this->field_0x8 != (int *)0x0) {
+    (**(code **)(**(int **)&this->field_0x8 + 0x1a4))(param_1);
+  }
+  if (*(int *)&this->field_0x8 != 0) {
+    (**(code **)&g_pSfxPlaybackSystem->vftable[1].field_0x10)(0x3aae,0,1);
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005A3A70
+// GHIDRA_NAME TTacticalBattle::FindFortWallTileCrossedByFiringLine
+// GHIDRA_PROTO undefined FindFortWallTileCrossedByFiringLine()
+
+int __thiscall
+TTacticalBattle::FindFortWallTileCrossedByFiringLine(int param_1,int param_2,int param_3)
+
+{
+  int iVar1;
+  float fVar2;
+  int iVar3;
+  int iVar4;
+  int iVar5;
+  int iVar6;
+  int iVar7;
+  int iVar8;
+  
+  iVar1 = *(int *)(param_1 + 0x34);
+  fVar2 = (float)(iVar1 * 2 + -0xc);
+  iVar4 = (param_2 / 0x1d & 1U) + (param_2 % 0x1d) * 2;
+  iVar8 = (param_3 / 0x1d & 1U) + (param_3 % 0x1d) * 2;
+  iVar3 = (param_2 / 0x1d) * 2;
+  iVar7 = (param_3 / 0x1d) * 2;
+  if (iVar8 != iVar4) {
+    iVar5 = iVar4;
+    iVar6 = iVar3;
+    if (iVar4 < iVar8) {
+      iVar5 = iVar8;
+      iVar6 = iVar7;
+      iVar7 = iVar3;
+      iVar8 = iVar4;
+    }
+    if (((float)iVar8 <= fVar2) && (fVar2 <= (float)iVar5)) {
+      if (iVar6 == iVar7) {
+        return (*(int *)(param_1 + 0x40) * iVar6) / 2 + -6 + iVar1;
+      }
+      iVar4 = _ftol();
+      return (iVar1 - iVar4 * *(int *)(param_1 + 0x40)) + -6;
+    }
+  }
+  return 0;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005A3C20
+// GHIDRA_NAME TTacticalBattle::ConsumeFortStrengthPointsAndInvalidateIfDepleted
+// GHIDRA_PROTO void __thiscall ConsumeFortStrengthPointsAndInvalidateIfDepleted(int tileIndex, int consumeAmount)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Setting prototype: void ConsumeTacticalSideResourcePoolAndInvalidateIfEmpty(int tileIndex, int consumeAmount)
+// GHIDRA_COMMENT_END
+
+/* Setting prototype: void ConsumeTacticalSideResourcePoolAndInvalidateIfEmpty(int tileIndex, int
+   consumeAmount) */
+
+void __thiscall
+TTacticalBattle::ConsumeFortStrengthPointsAndInvalidateIfDepleted
+          (TTacticalBattle *this,int tileIndex,int consumeAmount)
+
+{
+  int iVar1;
+  int sideBandIndex;
+  int remainingPool;
+  
+  sideBandIndex = tileIndex / 0x3a;
+  remainingPool = *(int *)(&this->field_0x54 + sideBandIndex * 4) - consumeAmount;
+  *(int *)(&this->field_0x54 + sideBandIndex * 4) = remainingPool;
+  if (remainingPool < 0) {
+    *(undefined4 *)(&this->field_0x54 + sideBandIndex * 4) = 0;
+    iVar1 = *(int *)&this->field_0x34 + -6 + sideBandIndex * 0x3a;
+    if (*(int *)&this->field_0x8 != 0) {
+      func_0x004029f5(iVar1);
+    }
+    if (*(int *)&this->field_0x8 != 0) {
+      func_0x004029f5(iVar1 + 1);
+    }
+    if (*(int *)&this->field_0x8 != 0) {
+      func_0x004029f5(iVar1 + 0x1d);
+    }
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005A3F10
+// GHIDRA_NAME TTacticalBattle::HandleTacticalCommandTag_targ
+// GHIDRA_PROTO undefined __thiscall HandleTacticalCommandTag_targ(void)
+
+/* WARNING: Removing unreachable block (ram,0x005a4018) */
+
+void __thiscall TTacticalBattle::HandleTacticalCommandTag_targ(TTacticalBattle *this)
+
+{
+  int *piVar1;
+  code *pcVar2;
+  code *pcVar3;
+  int *piVar4;
+  char cVar5;
+  int iVar6;
+  undefined4 uVar7;
+  int iVar8;
+  int *piVar9;
+  int iVar10;
+  int local_20;
+  int *local_18;
+  int local_14;
+  int *local_10;
+  
+  iVar8 = *(int *)&this->field_0x1c;
+  local_10 = (int *)0x0;
+  if ((iVar8 != 0) && (*(int *)&this->field_0x8 != 0)) {
+    local_18 = *(int **)(iVar8 + 0x30);
+    piVar1 = *(int **)(*(int *)(&this->field_0x14 + (*(int *)(iVar8 + 0x20) == 0) * 4) + 4);
+    if (local_18 != (int *)0x0) {
+      iVar8 = *piVar1;
+      iVar10 = 1;
+      iVar6 = (**(code **)(iVar8 + 0x48))();
+      if (0 < iVar6) {
+        do {
+          (**(code **)(iVar8 + 0x4c))(iVar10);
+          iVar10 = iVar10 + 1;
+          iVar6 = (**(code **)(iVar8 + 0x48))();
+        } while (iVar10 <= iVar6);
+      }
+      local_18 = (int *)0x0;
+    }
+    if ((local_18 != (int *)0x0) && (local_18[7] == 0)) {
+      piVar9 = *(int **)&this->field_0x1c;
+      iVar8 = local_18[2];
+      iVar6 = piVar9[2];
+      if ((char)piVar9[6] == '\0') {
+        cVar5 = '\0';
+      }
+      else {
+        uVar7 = (**(code **)(*piVar9 + 0x2c))();
+        uVar7 = _ftol(uVar7);
+        cVar5 = func_0x00406b09(iVar6,iVar8,uVar7);
+      }
+      if (cVar5 != '\0') {
+        func_0x004077f7(local_18[2]);
+      }
+    }
+    local_20 = 1;
+    iVar8 = *piVar1;
+    pcVar2 = *(code **)(iVar8 + 0x48);
+    pcVar3 = *(code **)(iVar8 + 0x4c);
+    do {
+      local_14 = local_20 + 1;
+      iVar8 = (*pcVar2)();
+      if (iVar8 < local_14) {
+        local_14 = 1;
+      }
+      piVar9 = (int *)(*pcVar3)(local_14);
+      (**(code **)(*piVar9 + 0xc))();
+      piVar1 = local_10;
+      if (piVar9[7] == 0) {
+        iVar8 = piVar9[2];
+        piVar4 = *(int **)&this->field_0x1c;
+        iVar6 = piVar4[2];
+        if ((char)piVar4[6] == '\0') {
+          cVar5 = '\0';
+        }
+        else {
+          uVar7 = (**(code **)(*piVar4 + 0x2c))();
+          uVar7 = _ftol(uVar7);
+          cVar5 = func_0x00406b09(iVar6,iVar8,uVar7);
+        }
+        if ((cVar5 != '\0') && (piVar1 = piVar9, local_18 == (int *)0x0)) {
+          func_0x004077f7(piVar9[2]);
+          local_18 = piVar9;
+          piVar1 = local_10;
+        }
+      }
+      local_10 = piVar1;
+    } while ((local_14 != 1) && (local_20 = local_14, local_10 == (int *)0x0));
+    *(int **)(*(int *)&this->field_0x1c + 0x30) = local_10;
+    if (local_10 == (int *)0x0) {
+      (**(code **)&g_pSfxPlaybackSystem->vftable[1].field_0x10)(0x1b5a,0,1);
+    }
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005A41C0
+// GHIDRA_NAME TTacticalBattle::ApplyGridColumnSelectionGuard
+// GHIDRA_PROTO undefined ApplyGridColumnSelectionGuard()
+
+uint __thiscall TTacticalBattle::ApplyGridColumnSelectionGuard(int param_1,int param_2)
+
+{
+  int *piVar1;
+  int iVar2;
+  
+  piVar1 = (int *)(param_2 / 0x1d);
+  iVar2 = param_2 % 0x1d;
+  if (((0x1c < param_2) && (piVar1 = (int *)(*(int *)(param_1 + 4) + param_2 * 0x14), *piVar1 != 4))
+     && (piVar1[1] == 0)) {
+    if (*(int *)(param_1 + 0xc) == 0) {
+      piVar1 = (int *)0x0;
+      if ((2 < iVar2) && (iVar2 < 6)) {
+        return 1;
+      }
+    }
+    else {
+      piVar1 = (int *)(*(int *)(param_1 + 0x34) + -3);
+      if ((iVar2 <= (int)piVar1) && (*(int *)(param_1 + 0x34) + -5 <= iVar2)) {
+        return CONCAT31((int3)((uint)piVar1 >> 8),1);
+      }
+    }
+  }
+  return (uint)piVar1 & 0xffffff00;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005A4240
+// GHIDRA_NAME TTacticalBattle::CountFreeDeploymentZoneTilesForCurrentSide
+// GHIDRA_PROTO undefined __thiscall CountFreeDeploymentZoneTilesForCurrentSide(void)
+
+int __thiscall TTacticalBattle::CountFreeDeploymentZoneTilesForCurrentSide(TTacticalBattle *this)
+
+{
+  bool bVar1;
+  int *piVar2;
+  int iVar3;
+  int iVar4;
+  int iVar5;
+  int local_4;
+  
+  iVar4 = 0;
+  iVar5 = 0;
+  local_4 = 0;
+  if (0 < *(int *)&this->field_0x3c) {
+    do {
+      iVar3 = iVar5 % 0x1d;
+      if (((iVar4 < 0x244) || (piVar2 = (int *)(*(int *)&this->field_0x4 + iVar4), *piVar2 == 4)) ||
+         (piVar2[1] != 0)) {
+LAB_005a42a1:
+        bVar1 = false;
+      }
+      else if (*(int *)&this->field_0xc == 0) {
+        if ((iVar3 < 3) || (5 < iVar3)) goto LAB_005a42a1;
+        bVar1 = true;
+      }
+      else {
+        if ((*(int *)&this->field_0x34 + -3 < iVar3) || (iVar3 < *(int *)&this->field_0x34 + -5))
+        goto LAB_005a42a1;
+        bVar1 = true;
+      }
+      if (bVar1) {
+        local_4 = local_4 + 1;
+      }
+      iVar5 = iVar5 + 1;
+      iVar4 = iVar4 + 0x14;
+    } while (iVar5 < *(int *)&this->field_0x3c);
+  }
+  return local_4;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005A4370
+// GHIDRA_NAME TTacticalBattle::HandleTacticalCommandTag_depl
+// GHIDRA_PROTO undefined HandleTacticalCommandTag_depl()
+
+void __thiscall
+TTacticalBattle::HandleTacticalCommandTag_depl(int param_1,int param_2,int param_3,char param_4)
+
+{
+  int iVar1;
+  int *piVar2;
+  int local_18 [6];
+  
+  if ((param_4 == '\0') && (*(int *)&g_pSimMgr->field_0x44 != 0)) {
+    func_0x00408855(0x6465706c,param_2,param_3,0);
+  }
+  *(int *)(param_2 + 8) = param_3;
+  *(int *)(*(int *)(param_1 + 4) + 4 + param_3 * 0x14) = param_2;
+  if (((*(char *)(param_2 + 0x3c) != '\0') && (*(char *)(param_1 + 0x49) == '\0')) &&
+     (*(undefined4 *)(*(int *)(param_1 + 4) + 8 + param_3 * 0x14) = 1, *(int *)(param_1 + 8) != 0))
+  {
+    func_0x004032ec(param_3,local_18);
+    piVar2 = local_18;
+    iVar1 = 6;
+    do {
+      if (*piVar2 != -1) {
+        func_0x004029f5(*piVar2);
+      }
+      piVar2 = piVar2 + 1;
+      iVar1 = iVar1 + -1;
+    } while (iVar1 != 0);
+  }
+  if (*(int **)(param_1 + 8) != (int *)0x0) {
+    (**(code **)(**(int **)(param_1 + 8) + 0x1a4))(param_2);
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005A4460
+// GHIDRA_NAME TTacticalBattle::BuildTacticalDistanceFieldForSide
+// GHIDRA_PROTO undefined BuildTacticalDistanceFieldForSide()
+
+void __thiscall TTacticalBattle::BuildTacticalDistanceFieldForSide(int param_1,char param_2)
+
+{
+  int *piVar1;
+  uint uVar2;
+  bool bVar3;
+  int iVar4;
+  int iVar5;
+  int local_2c;
+  int *local_28;
+  int local_24;
+  int local_20;
+  int local_18 [6];
+  
+  iVar4 = 0;
+  if (0 < *(int *)(param_1 + 0x3c)) {
+    do {
+      iVar4 = iVar4 + 1;
+      *(undefined4 *)(*(int *)(param_1 + 0x30) + -4 + iVar4 * 4) = 0xffffffff;
+    } while (iVar4 < *(int *)(param_1 + 0x3c));
+  }
+  if (param_2 == '\0') {
+    iVar4 = 0;
+    do {
+      iVar5 = *(int *)(param_1 + 0x34) + iVar4;
+      if (*(int *)(*(int *)(param_1 + 4) + -0x14 + iVar5 * 0x14) != 4) {
+        *(undefined4 *)(*(int *)(param_1 + 0x30) + -4 + iVar5 * 4) = 0;
+      }
+      iVar4 = iVar4 + 0x1d;
+    } while (iVar4 < 0x1b3);
+  }
+  else {
+    iVar5 = 0;
+    iVar4 = 0;
+    do {
+      if (*(int *)(iVar4 + *(int *)(param_1 + 4)) != 4) {
+        *(undefined4 *)(*(int *)(param_1 + 0x30) + iVar5) = 0;
+      }
+      iVar4 = iVar4 + 0x244;
+      iVar5 = iVar5 + 0x74;
+    } while (iVar4 < 0x21fc);
+  }
+  local_2c = 0;
+  do {
+    bVar3 = false;
+    local_20 = 0;
+    if (0 < *(int *)(param_1 + 0x3c)) {
+      do {
+        if (*(int *)(*(int *)(param_1 + 0x30) + local_20 * 4) == local_2c) {
+          func_0x004032ec(local_20,local_18);
+          local_28 = local_18;
+          local_24 = 6;
+          do {
+            iVar4 = *local_28;
+            if (((((iVar4 != -1) && (*(int *)(*(int *)(param_1 + 0x30) + iVar4 * 4) == -1)) &&
+                 (piVar1 = (int *)(*(int *)(param_1 + 4) + iVar4 * 0x14),
+                 *(int *)(*(int *)(param_1 + 4) + 4 + iVar4 * 0x14) == 0)) &&
+                ((((iVar5 = piVar1[2], iVar5 < 2 || (iVar5 < 2)) ||
+                  (uVar2 = iVar4 / 0x1d, *(int *)(param_1 + 0x54 + ((int)uVar2 / 2) * 4) < 1)) ||
+                 ((((uVar2 == 5 || (uVar2 == 7)) || (uVar2 == 9)) &&
+                  (((int)((uVar2 & 1) + (iVar4 % 0x1d) * 2) / 2 == *(int *)(param_1 + 0x34) + -6 &&
+                   (param_2 == '\0')))))))) && (*piVar1 != 4)) {
+              bVar3 = true;
+              *(int *)(*(int *)(param_1 + 0x30) + iVar4 * 4) = local_2c + 1;
+            }
+            local_28 = local_28 + 1;
+            local_24 = local_24 + -1;
+          } while (local_24 != 0);
+        }
+        local_20 = local_20 + 1;
+      } while (local_20 < *(int *)(param_1 + 0x3c));
+    }
+    local_2c = local_2c + 1;
+  } while (bVar3);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005A4690
+// GHIDRA_NAME TTacticalBattle::IsTacticalTileAtFortWallSectionSlot
+// GHIDRA_PROTO undefined IsTacticalTileAtFortWallSectionSlot()
+
+uint __thiscall TTacticalBattle::IsTacticalTileAtFortWallSectionSlot(int param_1,int param_2)
+
+{
+  uint uVar1;
+  uint uVar2;
+  
+  uVar1 = param_2 / 0x1d;
+  uVar2 = (uVar1 & 1) + (param_2 % 0x1d) * 2;
+  if ((((uVar1 == 5) || (uVar1 == 7)) || (uVar1 == 9)) &&
+     (uVar2 = (int)uVar2 / 2, uVar2 == *(int *)(param_1 + 0x34) - 6U)) {
+    return CONCAT31((int3)(uVar2 >> 8),1);
+  }
+  return uVar2 & 0xffffff00;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005A53E0
+// GHIDRA_NAME TTacticalBattle::SeekLinkedListCursorByNestedId
+// GHIDRA_PROTO undefined SeekLinkedListCursorByNestedId()
+
+int TTacticalBattle::SeekLinkedListCursorByNestedId(int param_1)
+
+{
+  int iVar1;
+  int iVar2;
+  
+  if (param_1 != 0) {
+    iVar1 = func_0x00401118();
+    iVar2 = func_0x00403620();
+    if (iVar2 != 0) {
+      while( true ) {
+        if ((iVar1 == 0) || (*(int *)(iVar1 + 0x38) == 0)) {
+          iVar2 = 0;
+        }
+        else {
+          iVar2 = *(int *)(*(int *)(iVar1 + 0x38) + 0x20);
+        }
+        if (param_1 == iVar2) break;
+        iVar1 = func_0x00406d20();
+        iVar2 = func_0x00403620();
+        if (iVar2 == 0) {
+          return 0;
+        }
+      }
+      return iVar1;
+    }
+  }
+  return 0;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005A5B90
+// GHIDRA_NAME TTacticalBattle::SetCurrentSideNavyShipDisplayMode
+// GHIDRA_PROTO undefined __thiscall SetCurrentSideNavyShipDisplayMode(undefined4 param_1)
+
+void __thiscall
+TTacticalBattle::SetCurrentSideNavyShipDisplayMode(TTacticalBattle *this,undefined4 param_1)
+
+{
+  *(undefined4 *)(*(int *)(&this->field_0x14 + *(int *)&this->field_0xc * 4) + 0x2c) = param_1;
   return;
 }
 

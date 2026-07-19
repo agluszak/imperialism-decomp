@@ -24,7 +24,7 @@ undefined4 * TAnimation::CreateObject(void)
 // GHIDRA_NAME TAnimation::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TAnimation * TAnimation::_scalar_deleting_destructor_(byte param_1)
+TAnimation * __thiscall TAnimation::_scalar_deleting_destructor_(TAnimation *this,byte param_1)
 
 {
   func_0x004089cc();
@@ -38,7 +38,7 @@ TAnimation * TAnimation::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TAnimation::CreateTAnimationInstance
 // GHIDRA_PROTO undefined __thiscall CreateTAnimationInstance(void)
 
-void TAnimation::CreateTAnimationInstance()
+void __thiscall TAnimation::CreateTAnimationInstance(TAnimation *this)
 
 {
   this->vftable = (TAnimationVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
@@ -49,7 +49,7 @@ void TAnimation::CreateTAnimationInstance()
 // GHIDRA_NAME TAnimation::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TAnimation::GetRuntimeClass()
+CRuntimeClass * __thiscall TAnimation::GetRuntimeClass(TAnimation *this)
 
 {
   return &classTAnimation;
@@ -80,10 +80,10 @@ TAnimation::ConstructTAnimationBaseState
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0049F140
-// GHIDRA_NAME TAnimation::WrapperFor_InvalidateCityDialogRectRegion_At0049f140
-// GHIDRA_PROTO undefined __thiscall WrapperFor_InvalidateCityDialogRectRegion_At0049f140(void)
+// GHIDRA_NAME TAnimation::AdvanceAnimationTickAndInvalidateOnFrameFlip
+// GHIDRA_PROTO undefined __thiscall AdvanceAnimationTickAndInvalidateOnFrameFlip(void)
 
-void TAnimation::WrapperFor_InvalidateCityDialogRectRegion_At0049f140()
+void __thiscall TAnimation::AdvanceAnimationTickAndInvalidateOnFrameFlip(TAnimation *this)
 
 {
   int iVar1;
@@ -105,7 +105,7 @@ void TAnimation::WrapperFor_InvalidateCityDialogRectRegion_At0049f140()
 // GHIDRA_NAME TAnimation::RenderBattleReportInsetWithPaletteShift
 // GHIDRA_PROTO undefined __thiscall RenderBattleReportInsetWithPaletteShift(int * param_1)
 
-void TAnimation::RenderBattleReportInsetWithPaletteShift(int *param_1)
+void __thiscall TAnimation::RenderBattleReportInsetWithPaletteShift(TAnimation *this,int *param_1)
 
 {
   int iVar1;
@@ -149,7 +149,7 @@ void TAnimation::RenderBattleReportInsetWithPaletteShift(int *param_1)
 // GHIDRA_NAME TAnimation::RenderBattleReportViewSurfaceSpriteWithResourceHandle
 // GHIDRA_PROTO undefined __thiscall RenderBattleReportViewSurfaceSpriteWithResourceHandle(void)
 
-void TAnimation::RenderBattleReportViewSurfaceSpriteWithResourceHandle()
+void __thiscall TAnimation::RenderBattleReportViewSurfaceSpriteWithResourceHandle(TAnimation *this)
 
 {
   undefined4 *puVar1;
@@ -167,13 +167,13 @@ void TAnimation::RenderBattleReportViewSurfaceSpriteWithResourceHandle()
   
   local_28 = 0;
   uVar5 = *(undefined4 *)&g_pUiAnimator->field_0x20;
-  func_0x00408d64(&local_24,&local_28);
+  thunk_GetActiveQuickDrawSurfaceContextAndFlags(&local_24,&local_28);
   piVar3 = (int *)func_0x004047a0(*(short *)&this->field_0x8 + *(short *)&this->field_0xc);
   func_0x004062d5(piVar3);
   if (*piVar3 != 0) {
-    func_0x00406f5f(uVar5,local_28);
-    uVar4 = func_0x0040520e(uVar5);
-    func_0x0040761c(uVar4);
+    thunk_SetActiveQuickDrawSurfaceContext(uVar5,local_28);
+    uVar4 = thunk_GetSurfaceObjectAtContextOffset24(uVar5);
+    thunk_ReturnConstantTrueQuickDrawFlag(uVar4);
     puVar1 = (undefined4 *)*piVar3;
     (**(code **)*puVar1)();
     *(byte *)(puVar1 + 1) = *(byte *)(puVar1 + 1) | 1;
@@ -194,9 +194,9 @@ void TAnimation::RenderBattleReportViewSurfaceSpriteWithResourceHandle()
       operator_delete(puVar1);
     }
     operator_delete(piVar3);
-    uVar5 = func_0x0040520e(uVar5);
-    func_0x004024fa(uVar5);
-    func_0x00406f5f(local_24,local_28);
+    uVar5 = thunk_GetSurfaceObjectAtContextOffset24(uVar5);
+    thunk_NoOpQuickDrawLifecycleHookB(uVar5);
+    thunk_SetActiveQuickDrawSurfaceContext(local_24,local_28);
   }
   return;
 }

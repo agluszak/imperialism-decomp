@@ -40,7 +40,8 @@ undefined4 * TRelationshipDialog::CreateObject(void)
 // GHIDRA_NAME TRelationshipDialog::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TRelationshipDialog * TRelationshipDialog::_scalar_deleting_destructor_(byte param_1)
+TRelationshipDialog * __thiscall
+TRelationshipDialog::_scalar_deleting_destructor_(TRelationshipDialog *this,byte param_1)
 
 {
   func_0x004035cb();
@@ -54,7 +55,7 @@ TRelationshipDialog * TRelationshipDialog::_scalar_deleting_destructor_(byte par
 // GHIDRA_NAME TRelationshipDialog::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TRelationshipDialog::GetRuntimeClass()
+CRuntimeClass * __thiscall TRelationshipDialog::GetRuntimeClass(TRelationshipDialog *this)
 
 {
   return &classTRelationshipDialog;
@@ -64,7 +65,7 @@ CRuntimeClass * TRelationshipDialog::GetRuntimeClass()
 // GHIDRA_NAME TRelationshipDialog::CallVoidSlotA0
 // GHIDRA_PROTO undefined __thiscall CallVoidSlotA0(void)
 
-void TRelationshipDialog::CallVoidSlotA0()
+void __thiscall TRelationshipDialog::CallVoidSlotA0(TRelationshipDialog *this)
 
 {
   undefined uVar1;
@@ -117,7 +118,7 @@ void TRelationshipDialog::CallVoidSlotA0()
 // GHIDRA_NAME TRelationshipDialog::VTableSlot68
 // GHIDRA_PROTO undefined __thiscall VTableSlot68(void)
 
-void TRelationshipDialog::VTableSlot68()
+void __thiscall TRelationshipDialog::VTableSlot68(TRelationshipDialog *this)
 
 {
   int iVar1;

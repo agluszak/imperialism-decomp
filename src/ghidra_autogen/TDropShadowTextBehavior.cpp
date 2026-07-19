@@ -40,7 +40,7 @@ undefined4 * TDropShadowTextBehavior::CreateObject(void)
 // GHIDRA_NAME TDropShadowTextBehavior::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TDropShadowTextBehavior::GetRuntimeClass()
+CRuntimeClass * __thiscall TDropShadowTextBehavior::GetRuntimeClass(TDropShadowTextBehavior *this)
 
 {
   return &classTDropShadowTextBehavior;
@@ -50,7 +50,8 @@ CRuntimeClass * TDropShadowTextBehavior::GetRuntimeClass()
 // GHIDRA_NAME TDropShadowTextBehavior::ConstructTDropShadowTextBehaviorBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTDropShadowTextBehaviorBaseState(void)
 
-TDropShadowTextBehavior * TDropShadowTextBehavior::ConstructTDropShadowTextBehaviorBaseState()
+TDropShadowTextBehavior * __thiscall
+TDropShadowTextBehavior::ConstructTDropShadowTextBehaviorBaseState(TDropShadowTextBehavior *this)
 
 {
   func_0x00403602();
@@ -66,7 +67,8 @@ TDropShadowTextBehavior * TDropShadowTextBehavior::ConstructTDropShadowTextBehav
 // GHIDRA_NAME TDropShadowTextBehavior::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TDropShadowTextBehavior * TDropShadowTextBehavior::_scalar_deleting_destructor_(byte param_1)
+TDropShadowTextBehavior * __thiscall
+TDropShadowTextBehavior::_scalar_deleting_destructor_(TDropShadowTextBehavior *this,byte param_1)
 
 {
   func_0x00405cfe();
@@ -80,7 +82,7 @@ TDropShadowTextBehavior * TDropShadowTextBehavior::_scalar_deleting_destructor_(
 // GHIDRA_NAME TDropShadowTextBehavior::OrphanRetStub_004872e0
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_004872e0(void)
 
-void TDropShadowTextBehavior::OrphanRetStub_004872e0()
+void __thiscall TDropShadowTextBehavior::OrphanRetStub_004872e0(TDropShadowTextBehavior *this)
 
 {
   int *piVar1;

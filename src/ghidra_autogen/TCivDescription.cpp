@@ -3,11 +3,23 @@
 // Program: Imperialism.exe
 // Bucket: TCivDescription.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00407F4A
+// GHIDRA_NAME TCivDescription::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
+
+void __thiscall TCivDescription::_scalar_deleting_destructor_(TCivDescription *this,byte param_1)
+
+{
+  _scalar_deleting_destructor_(this,param_1);
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x0044A770
 // GHIDRA_NAME TCivDescription::ConstructTCivDescriptionBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTCivDescriptionBaseState(void)
 
-TCivDescription * TCivDescription::ConstructTCivDescriptionBaseState()
+TCivDescription * __thiscall
+TCivDescription::ConstructTCivDescriptionBaseState(TCivDescription *this)
 
 {
   func_0x004064e2();
@@ -21,7 +33,8 @@ TCivDescription * TCivDescription::ConstructTCivDescriptionBaseState()
 // GHIDRA_NAME TCivDescription::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TCivDescription * TCivDescription::_scalar_deleting_destructor_(byte param_1)
+TCivDescription * __thiscall
+TCivDescription::_scalar_deleting_destructor_(TCivDescription *this,byte param_1)
 
 {
   func_0x00404ef3();
@@ -66,7 +79,7 @@ undefined4 * TCivDescription::CreateObject(void)
 // GHIDRA_NAME TCivDescription::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TCivDescription::GetRuntimeClass()
+CRuntimeClass * __thiscall TCivDescription::GetRuntimeClass(TCivDescription *this)
 
 {
   return &classTCivDescription;
@@ -76,7 +89,8 @@ CRuntimeClass * TCivDescription::GetRuntimeClass()
 // GHIDRA_NAME TCivDescription::UpdateCivilianOrderClassAndRefreshTargetCounts
 // GHIDRA_PROTO undefined __thiscall UpdateCivilianOrderClassAndRefreshTargetCounts(int * param_1)
 
-void TCivDescription::UpdateCivilianOrderClassAndRefreshTargetCounts(int *param_1)
+void __thiscall
+TCivDescription::UpdateCivilianOrderClassAndRefreshTargetCounts(TCivDescription *this,int *param_1)
 
 {
   short sVar1;
@@ -110,7 +124,8 @@ void TCivDescription::UpdateCivilianOrderClassAndRefreshTargetCounts(int *param_
 
 /* WARNING: Removing unreachable block (ram,0x0058f2bf) */
 
-void TCivDescription::BeginMouseCaptureAndStartRepeatTimer(POINT *param_1)
+void __thiscall
+TCivDescription::BeginMouseCaptureAndStartRepeatTimer(TCivDescription *this,POINT *param_1)
 
 {
   short sVar1;
@@ -301,7 +316,7 @@ TCivDescription::UpdateCivilianOrderTargetTileCountsForOwnerNation
 // GHIDRA_NAME TCivDescription::ApplyRectSlot110
 // GHIDRA_PROTO undefined __thiscall ApplyRectSlot110(undefined4 param_1)
 
-void TCivDescription::ApplyRectSlot110(undefined4 param_1)
+void __thiscall TCivDescription::ApplyRectSlot110(TCivDescription *this,undefined4 param_1)
 
 {
   short sVar1;
@@ -355,18 +370,18 @@ void TCivDescription::ApplyRectSlot110(undefined4 param_1)
     local_14 = (TCivDescription *)0x0;
     param_1 = 0;
     func_0x0040448f(0,0xc,0x2b68);
-    func_0x004093cc(0x2b6c,&local_14);
-    func_0x004093cc(0x2b67,&param_1);
+    thunk_MapUiThemeCodeToStyleFlags(0x2b6c,&local_14);
+    thunk_MapUiThemeCodeToStyleFlags(0x2b67,&param_1);
     (*g_pSimMgr->vftable[0x10].slot_0x04)
               (0x2718,CONCAT22((short)((uint)&local_10 >> 0x10),*(undefined2 *)&this->field_0x60),
                &local_10);
-    sVar1 = func_0x00405b7d(&stack0xffffffe4);
+    sVar1 = thunk_MeasureTextExtentWithCachedQuickDrawStyle(&stack0xffffffe4);
     iVar5 = this->field34 / 2 - (int)sVar1 / 2;
     func_0x00409444(puStack_8);
-    func_0x00408d6e(iVar5 + 1,0x47);
+    thunk_SetQuickDrawTextOriginWithContextOffset(iVar5 + 1,0x47);
     func_0x004029aa(&stack0xffffffe4);
     func_0x00409444(unaff_ESI);
-    func_0x00408d6e(iVar5,0x46);
+    thunk_SetQuickDrawTextOriginWithContextOffset(iVar5,0x46);
     func_0x004029aa(&stack0xffffffe4);
   }
   local_4 = 0xffffffff;
@@ -379,7 +394,7 @@ void TCivDescription::ApplyRectSlot110(undefined4 param_1)
 // GHIDRA_NAME TCivDescription::RenderCivilianTargetLegendVariantA
 // GHIDRA_PROTO undefined __thiscall RenderCivilianTargetLegendVariantA(void)
 
-void TCivDescription::RenderCivilianTargetLegendVariantA()
+void __thiscall TCivDescription::RenderCivilianTargetLegendVariantA(TCivDescription *this)
 
 {
   short sVar1;
@@ -462,7 +477,7 @@ void TCivDescription::RenderCivilianTargetLegendVariantA()
   puStack_70 = (undefined1 *)0x60;
   aiStack_78[1] = 0xc;
   aiStack_78[0] = 0x58f8f9;
-  func_0x00408d6e();
+  thunk_SetQuickDrawTextOriginWithContextOffset();
   puStack_70 = &stack0xffffffa4;
   aiStack_78[1] = 0x58f906;
   func_0x004029aa();
@@ -474,7 +489,7 @@ void TCivDescription::RenderCivilianTargetLegendVariantA()
   ppCStack_7c = (CString **)0x78;
   puStack_80 = (undefined4 *)0x28;
   ppuStack_84 = (undefined1 **)0x58f92c;
-  func_0x00408d6e();
+  thunk_SetQuickDrawTextOriginWithContextOffset();
   ppCStack_7c = (CString **)&uStack_68;
   puStack_80 = (undefined4 *)0x58f939;
   func_0x004029aa();
@@ -485,7 +500,7 @@ void TCivDescription::RenderCivilianTargetLegendVariantA()
   ppuStack_84 = (undefined1 **)0x78;
   piStack_88 = (int *)0x54;
   iStack_8c = 0x58f95a;
-  func_0x00408d6e();
+  thunk_SetQuickDrawTextOriginWithContextOffset();
   ppuStack_84 = &puStack_6c;
   piStack_88 = (int *)0x58f967;
   func_0x004029aa();
@@ -504,7 +519,7 @@ void TCivDescription::RenderCivilianTargetLegendVariantA()
   acStack_9c[2] = '\0';
   acStack_9c[3] = '\0';
   CStack_a0.m_pchData = (char *)0x58f9a5;
-  func_0x00408d6e();
+  thunk_SetQuickDrawTextOriginWithContextOffset();
   pppuStack_98 = &ppuStack_84;
   acStack_9c[0] = -0x4e;
   acStack_9c[1] = -7;
@@ -517,7 +532,7 @@ void TCivDescription::RenderCivilianTargetLegendVariantA()
   acStack_9c[2] = '\0';
   acStack_9c[3] = '\0';
   CStack_a0.m_pchData = (char *)0x58f9c1;
-  func_0x00408d6e();
+  thunk_SetQuickDrawTextOriginWithContextOffset();
   pppuStack_98 = (undefined1 ***)&puStack_80;
   acStack_9c[0] = -0x32;
   acStack_9c[1] = -7;
@@ -539,14 +554,14 @@ void TCivDescription::RenderCivilianTargetLegendVariantA()
   pppuStack_ac = (undefined4 ***)0xa8;
   uStack_b0 = 0x28;
   uStack_b4 = 0x58fa0f;
-  func_0x00408d6e();
+  thunk_SetQuickDrawTextOriginWithContextOffset();
   pppuStack_ac = &pppuStack_98;
   uStack_b0 = 0x58fa1c;
   func_0x004029aa();
   pppuStack_ac = (undefined4 ***)0xa8;
   uStack_b0 = 0x54;
   uStack_b4 = 0x58fa2b;
-  func_0x00408d6e();
+  thunk_SetQuickDrawTextOriginWithContextOffset();
   pppuStack_ac = (undefined4 ***)&puStack_94;
   uStack_b0 = 0x58fa38;
   func_0x004029aa();
@@ -556,8 +571,8 @@ void TCivDescription::RenderCivilianTargetLegendVariantA()
   pCStack_b8 = (CString *)0x58fa55;
   (*g_pSimMgr->vftable[0x10].slot_0x04)();
   pCStack_b8 = (CString *)0xd4;
-  sVar1 = func_0x00405b7d(&CStack_a4);
-  func_0x00408d6e(this->field34 / 2 - (int)sVar1 / 2);
+  sVar1 = thunk_MeasureTextExtentWithCachedQuickDrawStyle(&CStack_a4);
+  thunk_SetQuickDrawTextOriginWithContextOffset(this->field34 / 2 - (int)sVar1 / 2);
   pCStack_b8 = &CStack_a4;
   func_0x004029aa();
   pCStack_b8 = (CString *)0x10;
@@ -650,7 +665,7 @@ void TCivDescription::RenderCivilianTargetLegendVariantA()
 // GHIDRA_NAME TCivDescription::RenderCivilianTargetLegendVariantB
 // GHIDRA_PROTO undefined __thiscall RenderCivilianTargetLegendVariantB(void)
 
-void TCivDescription::RenderCivilianTargetLegendVariantB()
+void __thiscall TCivDescription::RenderCivilianTargetLegendVariantB(TCivDescription *this)
 
 {
   char cVar1;
@@ -721,10 +736,10 @@ void TCivDescription::RenderCivilianTargetLegendVariantB()
   local_18 = 0xffffffff;
   local_12 = 0xffff;
   local_10 = 0xffffffff;
-  func_0x004093cc();
+  thunk_MapUiThemeCodeToStyleFlags();
   func_0x00401bf9();
   (*g_pSimMgr->vftable[0x10].slot_0x04)();
-  func_0x00408d6e();
+  thunk_SetQuickDrawTextOriginWithContextOffset();
   func_0x004029aa();
   iVar4 = (-(uint)(cVar1 == '\x02') & 3) + 2;
   iStack_64 = iVar4;
@@ -763,8 +778,8 @@ void TCivDescription::RenderCivilianTargetLegendVariantB()
         local_68.m_pchData[7] = '\0';
       }
       func_0x00409444();
-      func_0x00408d6e(iStack_58 + 2);
-      CString__Format(&stack0xffffff8c,&g_szDecimalFormat);
+      thunk_SetQuickDrawTextOriginWithContextOffset(iStack_58 + 2);
+      CString::Format(&stack0xffffff8c,&g_szDecimalFormat);
       func_0x004029aa();
       func_0x004010be();
       func_0x00406b86();
@@ -853,7 +868,8 @@ void TCivDescription::RenderCivilianTargetLegendVariantB()
    - This renderer consumes the same class/profile mapping table used by
    UpdateCivilianOrderTargetTileCountsForOwnerNation. */
 
-void TCivDescription::RenderCivilianTargetProfilePanel(int *pPanelContext)
+void __thiscall
+TCivDescription::RenderCivilianTargetProfilePanel(TCivDescription *this,int *pPanelContext)
 
 {
   ushort uVar1;
@@ -934,8 +950,8 @@ void TCivDescription::RenderCivilianTargetProfilePanel(int *pPanelContext)
     puStack_98 = &stack0xffffff7c;
     puStack_9c = (undefined *)0x1;
     (*g_pSimMgr->vftable[0x10].slot_0x04)();
-    sVar3 = func_0x00405b7d(&stack0xffffff70);
-    func_0x00408d6e(this->field34 / 2 - (int)sVar3 / 2);
+    sVar3 = thunk_MeasureTextExtentWithCachedQuickDrawStyle(&stack0xffffff70);
+    thunk_SetQuickDrawTextOriginWithContextOffset(this->field34 / 2 - (int)sVar3 / 2);
     func_0x004029aa();
     sVar5 = 0;
     sVar3 = *(short *)(&DAT_00698fe0 + *(short *)&this->field_0x60 * 2);
@@ -968,8 +984,8 @@ void TCivDescription::RenderCivilianTargetProfilePanel(int *pPanelContext)
     func_0x00402bdf();
     func_0x0040448f(0,10);
     (*g_pSimMgr->vftable[0x10].slot_0x04)(0x272d,2);
-    sVar3 = func_0x00405b7d(&puStack_9c,0xa2);
-    func_0x00408d6e(this->field34 / 2 - (int)sVar3 / 2);
+    sVar3 = thunk_MeasureTextExtentWithCachedQuickDrawStyle(&puStack_9c,0xa2);
+    thunk_SetQuickDrawTextOriginWithContextOffset(this->field34 / 2 - (int)sVar3 / 2);
     func_0x004029aa(&puStack_9c);
     func_0x0040448f(0,10,0x2b6c);
     iStack_80 = 0;
@@ -1002,7 +1018,7 @@ void TCivDescription::RenderCivilianTargetProfilePanel(int *pPanelContext)
         func_0x00402bdf();
         puStack_98 = (undefined1 *)(iStack_50 + -4);
         puStack_9c = (undefined *)(iStack_54 + 4);
-        func_0x00408d6e();
+        thunk_SetQuickDrawTextOriginWithContextOffset();
         puStack_98 = (undefined1 *)0x5907aa;
         sVar3 = func_0x00403b16();
         puStack_98 = (undefined1 *)
@@ -1011,7 +1027,7 @@ void TCivDescription::RenderCivilianTargetProfilePanel(int *pPanelContext)
                                  (int)*(short *)(&g_pCityOrderCapabilityState->field_0x3e +
                                                 (sVar3 * 0x17 + iVar6) * 2)];
         puStack_9c = &g_szDecimalFormat;
-        CString__Format();
+        CString::Format();
         puStack_98 = &stack0xffffff7c;
         puStack_9c = (undefined *)0x5907e7;
         func_0x004029aa();
@@ -1070,10 +1086,10 @@ void TCivDescription::RenderCivilianTargetProfilePanel(int *pPanelContext)
           func_0x0040448f();
           puStack_9c = (undefined *)(local_64 + 0x18 + (uint)uVar1);
           puStack_98 = (undefined1 *)0x100;
-          func_0x00408d6e();
+          thunk_SetQuickDrawTextOriginWithContextOffset();
           puStack_98 = (undefined1 *)(int)*psStack_7c;
           puStack_9c = &g_szDecimalFormat;
-          CString__Format();
+          CString::Format();
           puStack_98 = &stack0xffffff7c;
           puStack_9c = (undefined *)0x5909ad;
           func_0x004029aa();

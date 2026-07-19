@@ -58,10 +58,75 @@ undefined4 * TMilitaryUnit::CreateObject(void)
 // GHIDRA_NAME TMilitaryUnit::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TMilitaryUnit::GetRuntimeClass()
+CRuntimeClass * __thiscall TMilitaryUnit::GetRuntimeClass(TMilitaryUnit *this)
 
 {
   return &classRuntimeClass;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005C2DF0
+// GHIDRA_NAME TMilitaryUnit::TMilitaryUnit
+// GHIDRA_PROTO undefined __thiscall TMilitaryUnit(void)
+
+TMilitaryUnit * __thiscall TMilitaryUnit::TMilitaryUnit(TMilitaryUnit *this)
+
+{
+  undefined4 *unaff_FS_OFFSET;
+  CString local_14;
+  TMilitaryUnit *local_10;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  puStack_8 = &LAB_0063991b;
+  local_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &local_c;
+  this->vftable = (TMilitaryUnitVtbl *)&TUnit::_vftable_;
+  *(undefined4 *)&this->field_0x10 = 0;
+  *(undefined4 *)&this->field_0x14 = 0;
+  *(undefined2 *)&this->field_0x6 = 0xffff;
+  this->field_0x1c = 0;
+  local_4 = 0;
+  local_10 = this;
+  CString::CString((CString *)&this->field_0x24);
+  local_4._0_1_ = 1;
+  *(undefined2 *)&this->field_0x38 = 0;
+  *(undefined2 *)&this->field_0x3a = 0;
+  *(undefined2 *)&this->field_0x3c = 0;
+  *(undefined4 *)&this->field_0x40 = 0;
+  this->vftable = &TMilitaryUnitOrderState::_vftable_;
+  this->field_0x1c = 1;
+  *(undefined2 *)&this->field_0x34 = 500;
+  *(undefined2 *)&this->field_0x36 = 0;
+  CString::CString(&local_14,(char *)&g_szEmptyString);
+  local_4._0_1_ = 2;
+  CString::operator=((CString *)&this->field_0x24,&local_14);
+  local_4 = CONCAT31(local_4._1_3_,1);
+  CString::~CString(&local_14);
+  *unaff_FS_OFFSET = local_c;
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005C2F00
+// GHIDRA_NAME TMilitaryUnit::~TMilitaryUnit
+// GHIDRA_PROTO undefined ~TMilitaryUnit()
+
+void __fastcall TMilitaryUnit::~TMilitaryUnit(undefined4 *param_1)
+
+{
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_c = *unaff_FS_OFFSET;
+  puStack_8 = &LAB_00639938;
+  *unaff_FS_OFFSET = &local_c;
+  local_4 = 0;
+  CString::~CString((CString *)(param_1 + 9));
+  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  *unaff_FS_OFFSET = local_c;
+  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005C2F50
@@ -92,13 +157,9 @@ TMilitaryUnit::InitializeRecruitOrderState
           (TMilitaryUnit *this,short param_1,short param_2,short param_3)
 
 {
-  undefined2 in_stack_00000006;
-  undefined2 in_stack_0000000a;
-  undefined2 in_stack_0000000e;
-  
   this->field_0x1c = 1;
   *(undefined2 *)&this->field_0x6 = 0xffff;
-  func_0x00402eeb(_param_1,_param_2,_param_3);
+  TUnit::thunk_RegisterUnitOrderWithOwnerManager((TUnit *)this,param_1,param_2);
   *(short *)&this->field_0x36 = (short)((int)((int)param_1 + ((int)param_1 >> 0x1f & 7U)) >> 3);
   if (0x1a < param_1) {
     func_0x0040231a(&this->field_0x24);
@@ -107,11 +168,110 @@ TMilitaryUnit::InitializeRecruitOrderState
   return;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x005C2FD0
+// GHIDRA_NAME TMilitaryUnit::ReadFrom
+// GHIDRA_PROTO undefined __thiscall ReadFrom(int * param_1)
+
+void __thiscall TMilitaryUnit::ReadFrom(TMilitaryUnit *this,int *param_1)
+
+{
+  undefined1 uVar1;
+  code *pcVar2;
+  undefined1 *puVar3;
+  int iVar4;
+  
+  func_0x00405ed4(param_1);
+  iVar4 = *param_1;
+  (**(code **)(iVar4 + 0x70))(&this->field_0x24,0x20);
+  pcVar2 = *(code **)(iVar4 + 0x3c);
+  puVar3 = &this->field_0x28;
+  (*pcVar2)(puVar3,6);
+  iVar4 = 3;
+  do {
+    uVar1 = *puVar3;
+    *puVar3 = puVar3[1];
+    puVar3[1] = uVar1;
+    puVar3 = puVar3 + 2;
+    iVar4 = iVar4 + -1;
+  } while (iVar4 != 0);
+  puVar3 = &this->field_0x2e;
+  (*pcVar2)(puVar3,6);
+  iVar4 = 3;
+  do {
+    uVar1 = *puVar3;
+    *puVar3 = puVar3[1];
+    puVar3[1] = uVar1;
+    puVar3 = puVar3 + 2;
+    iVar4 = iVar4 + -1;
+  } while (iVar4 != 0);
+  (*pcVar2)(&this->field_0x34,2);
+  (*pcVar2)(&this->field_0x36,2);
+  (*pcVar2)(&this->field_0x38,2);
+  (*pcVar2)(&this->field_0x3a,2);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005C30A0
+// GHIDRA_NAME TMilitaryUnit::WriteTo
+// GHIDRA_PROTO undefined __thiscall WriteTo(int * param_1)
+
+void __thiscall TMilitaryUnit::WriteTo(TMilitaryUnit *this,int *param_1)
+
+{
+  code *pcVar1;
+  undefined4 extraout_ECX;
+  undefined4 uVar2;
+  undefined4 extraout_ECX_00;
+  undefined4 extraout_EDX;
+  undefined4 extraout_EDX_00;
+  undefined2 *puVar3;
+  int unaff_EBP;
+  int iVar4;
+  undefined4 local_4;
+  
+  local_4 = this;
+  func_0x004043ea(param_1);
+  iVar4 = *param_1;
+  (**(code **)(iVar4 + 0xac))(&this->field_0x24);
+  puVar3 = (undefined2 *)&this->field_0x28;
+  pcVar1 = *(code **)(iVar4 + 0x78);
+  iVar4 = 3;
+  uVar2 = extraout_ECX;
+  do {
+    local_4._0_1_ = (undefined1)*puVar3;
+    local_4._1_1_ = (undefined1)((ushort)*puVar3 >> 8);
+    local_4 = (TMilitaryUnit *)
+              CONCAT31(CONCAT21((short)((uint)uVar2 >> 0x10),(undefined1)local_4),local_4._1_1_);
+    (*pcVar1)(&local_4,2);
+    puVar3 = puVar3 + 1;
+    iVar4 = iVar4 + -1;
+    uVar2 = extraout_ECX_00;
+  } while (iVar4 != 0);
+  iVar4 = 3;
+  puVar3 = (undefined2 *)(unaff_EBP + 0x2e);
+  uVar2 = extraout_EDX;
+  do {
+    local_4._1_1_ = (undefined1)((ushort)*puVar3 >> 8);
+    local_4._0_1_ = (undefined1)*puVar3;
+    local_4._0_2_ = CONCAT11((undefined1)local_4,local_4._1_1_);
+    local_4 = (TMilitaryUnit *)CONCAT22((short)((uint)uVar2 >> 0x10),(undefined2)local_4);
+    (*pcVar1)(&local_4,2);
+    puVar3 = puVar3 + 1;
+    iVar4 = iVar4 + -1;
+    uVar2 = extraout_EDX_00;
+  } while (iVar4 != 0);
+  (*pcVar1)(unaff_EBP + 0x34,2);
+  (*pcVar1)(unaff_EBP + 0x36,2);
+  (*pcVar1)(unaff_EBP + 0x38,2);
+  (*pcVar1)(unaff_EBP + 0x3a,2);
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x005C3190
 // GHIDRA_NAME TMilitaryUnit::CopyUnitCurrentTileIntoOrderTargets
 // GHIDRA_PROTO undefined __thiscall CopyUnitCurrentTileIntoOrderTargets(void)
 
-void TMilitaryUnit::CopyUnitCurrentTileIntoOrderTargets()
+void __thiscall TMilitaryUnit::CopyUnitCurrentTileIntoOrderTargets(TMilitaryUnit *this)
 
 {
   undefined2 *puVar1;
@@ -126,5 +286,229 @@ void TMilitaryUnit::CopyUnitCurrentTileIntoOrderTargets()
     iVar2 = iVar2 + -1;
   } while (iVar2 != 0);
   return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005C31C0
+// GHIDRA_NAME TMilitaryUnit::DetachUnitOrderFromOwnerAndReset
+// GHIDRA_PROTO undefined __thiscall DetachUnitOrderFromOwnerAndReset(void)
+
+void __thiscall TMilitaryUnit::DetachUnitOrderFromOwnerAndReset(TMilitaryUnit *this)
+
+{
+  TMilitaryUnitVtbl *pTVar1;
+  
+  if (*(int **)&this->field_0x40 != (int *)0x0) {
+    (**(code **)(**(int **)&this->field_0x40 + 0x88))(this,1);
+  }
+  pTVar1 = this->vftable;
+  (*pTVar1[5].GetTMilitaryUnitClassNamePointer)(0xffffffff);
+  (*pTVar1[7].GetTMilitaryUnitClassNamePointer)();
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005C3200
+// GHIDRA_NAME TMilitaryUnit::VTableSlot10
+// GHIDRA_PROTO undefined __thiscall VTableSlot10(short param_1)
+
+void __thiscall TMilitaryUnit::VTableSlot10(TMilitaryUnit *this,short param_1)
+
+{
+  short sVar1;
+  undefined4 uVar2;
+  bool bVar3;
+  int iVar4;
+  int iVar5;
+  int iVar6;
+  
+  sVar1 = *(short *)&this->field_0x6;
+  if (sVar1 != -1) {
+    if (*(int *)&this->field_0x10 == 0) {
+      if ((-1 < sVar1) && (sVar1 < 0x180)) {
+        *(undefined4 *)(*(int *)&g_pGlobalMapState->field_0x10 + 0x98 + sVar1 * 0xa8) =
+             *(undefined4 *)&this->field_0x14;
+      }
+    }
+    else {
+      *(undefined4 *)(*(int *)&this->field_0x10 + 0x14) = *(undefined4 *)&this->field_0x14;
+    }
+    if (*(int *)&this->field_0x14 != 0) {
+      *(undefined4 *)(*(int *)&this->field_0x14 + 0x10) = *(undefined4 *)&this->field_0x10;
+    }
+    *(undefined2 *)&this->field_0x6 = 0xffff;
+    *(undefined4 *)&this->field_0x10 = 0;
+    *(undefined4 *)&this->field_0x14 = 0;
+  }
+  if (param_1 != -1) {
+    if ((param_1 < 0) || (0x17f < param_1)) {
+      iVar5 = 0;
+    }
+    else {
+      iVar5 = *(int *)(*(int *)&g_pGlobalMapState->field_0x10 + 0x98 + param_1 * 0xa8);
+    }
+    if (iVar5 != 0) {
+      if (*(short *)(&DAT_00695528 + *(short *)&this->field_0x4 * 2) <=
+          *(short *)(&DAT_00695528 + *(short *)(iVar5 + 4) * 2)) {
+        if ((-1 < param_1) && (param_1 < 0x180)) {
+          *(TMilitaryUnit **)(*(int *)&g_pGlobalMapState->field_0x10 + 0x98 + param_1 * 0xa8) = this
+          ;
+        }
+        *(TMilitaryUnit **)(iVar5 + 0x10) = this;
+        *(undefined4 *)&this->field_0x10 = 0;
+        *(int *)&this->field_0x14 = iVar5;
+        *(short *)&this->field_0x6 = param_1;
+        *(undefined2 *)&this->field_0xc = 0xffff;
+        return;
+      }
+      bVar3 = false;
+      iVar4 = *(int *)(iVar5 + 0x14);
+      while ((iVar6 = iVar4, iVar6 != 0 && (!bVar3))) {
+        bVar3 = *(short *)(&DAT_00695528 + *(short *)&this->field_0x4 * 2) <=
+                *(short *)(&DAT_00695528 + *(short *)(iVar6 + 4) * 2);
+        if (bVar3) {
+          iVar6 = iVar5;
+        }
+        iVar4 = *(int *)(iVar6 + 0x14);
+        iVar5 = iVar6;
+      }
+      uVar2 = *(undefined4 *)(iVar5 + 0x14);
+      *(int *)&this->field_0x10 = iVar5;
+      *(undefined4 *)&this->field_0x14 = uVar2;
+      *(TMilitaryUnit **)(iVar5 + 0x14) = this;
+      if (*(int *)&this->field_0x14 != 0) {
+        *(TMilitaryUnit **)(*(int *)&this->field_0x14 + 0x10) = this;
+        *(short *)&this->field_0x6 = param_1;
+        *(undefined2 *)&this->field_0xc = 0xffff;
+        return;
+      }
+      goto LAB_005c32cc;
+    }
+    if ((-1 < param_1) && (param_1 < 0x180)) {
+      *(TMilitaryUnit **)(*(int *)&g_pGlobalMapState->field_0x10 + 0x98 + param_1 * 0xa8) = this;
+    }
+  }
+  *(undefined4 *)&this->field_0x10 = 0;
+  *(undefined4 *)&this->field_0x14 = 0;
+LAB_005c32cc:
+  *(short *)&this->field_0x6 = param_1;
+  *(undefined2 *)&this->field_0xc = 0xffff;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005C35C0
+// GHIDRA_NAME TMilitaryUnit::ResolveEraCapabilityFallbackSlot
+// GHIDRA_PROTO undefined ResolveEraCapabilityFallbackSlot()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Resolves an era-dependent fallback capability slot for the current slot context.
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Inputs (inferred):
+// GHIDRA_COMMENT - current slot id at +0x04
+// GHIDRA_COMMENT - era/state index at +0x18
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Algorithm:
+// GHIDRA_COMMENT 1. Build fallback candidate slot (primary pattern: +8; special cases: +1).
+// GHIDRA_COMMENT 2. Check fallback availability in g_pCityOrderCapabilityState[0x395 + era*0x1E + candidate].
+// GHIDRA_COMMENT 3. If fallback unavailable but current slot still available, return -1.
+// GHIDRA_COMMENT 4. Otherwise return fallback candidate slot.
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT This routine is used in city development path selection.
+// GHIDRA_COMMENT_END
+
+/* Resolves an era-dependent fallback capability slot for the current slot context.
+   
+   Inputs (inferred):
+   - current slot id at +0x04
+   - era/state index at +0x18
+   
+   Algorithm:
+   1. Build fallback candidate slot (primary pattern: +8; special cases: +1).
+   2. Check fallback availability in g_pCityOrderCapabilityState[0x395 + era*0x1E + candidate].
+   3. If fallback unavailable but current slot still available, return -1.
+   4. Otherwise return fallback candidate slot.
+   
+   This routine is used in city development path selection. */
+
+short __fastcall TMilitaryUnit::ResolveEraCapabilityFallbackSlot(int param_1)
+
+{
+  short sVar1;
+  short sVar2;
+  int iVar3;
+  
+  sVar1 = *(short *)(param_1 + 4);
+  if (sVar1 < 0x10) {
+    sVar2 = sVar1 + 8;
+  }
+  else {
+    if ((((sVar1 != 0x18) && (sVar1 != 0x19)) && (sVar1 != 0x1b)) && (sVar1 != 0x1c)) {
+      return -1;
+    }
+    sVar2 = sVar1 + 1;
+  }
+  iVar3 = *(short *)(param_1 + 0x18) * 0x1e;
+  if ((&g_pCityOrderCapabilityState->field_0x395)[iVar3 + sVar2] != '\0') {
+    return sVar2;
+  }
+  if ((&g_pCityOrderCapabilityState->field_0x395)[iVar3 + sVar1] != '\0') {
+    return -1;
+  }
+  return sVar2;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005C3670
+// GHIDRA_NAME TMilitaryUnit::ApplyEraCapabilityCostAndSetSelection
+// GHIDRA_PROTO undefined ApplyEraCapabilityCostAndSetSelection()
+
+bool __fastcall TMilitaryUnit::ApplyEraCapabilityCostAndSetSelection(int param_1)
+
+{
+  short sVar1;
+  TGreatPower *pTVar2;
+  TGreatPowerVtbl *pTVar3;
+  undefined uVar4;
+  short sVar5;
+  short sVar6;
+  undefined3 extraout_var;
+  undefined3 extraout_var_00;
+  uint uVar7;
+  undefined3 extraout_var_01;
+  undefined3 extraout_var_02;
+  int unaff_EBP;
+  int iVar8;
+  
+  sVar5 = func_0x004071e9();
+  if (sVar5 == -1) {
+    return sVar5 != -1;
+  }
+  sVar6 = func_0x004071e9();
+  sVar5 = *(short *)(&g_Classify_Nation_Military_LookupTable_00695CD4 + sVar6 * 0xe);
+  sVar1 = *(short *)(&DAT_00695cda + sVar6 * 0xe);
+  uVar4 = (*g_apNationStates[*(short *)(param_1 + 0x18)]->vftable->OrphanLeaf_NoCall_Ins02_004d7f20)
+                    (0x10);
+  if ((short)CONCAT31(extraout_var,uVar4) < sVar5) {
+    return false;
+  }
+  iVar8 = 0xc;
+  uVar4 = (*g_apNationStates[*(short *)(param_1 + 0x18)]->vftable->OrphanLeaf_NoCall_Ins02_004d7f20)
+                    (0xc);
+  if ((short)CONCAT31(extraout_var_00,uVar4) < (short)unaff_EBP) {
+    return false;
+  }
+  pTVar2 = g_apNationStates[*(short *)(param_1 + 0x18)];
+  if ((pTVar2->field_0xa0 != '\0') &&
+     (uVar7 = *(int *)&pTVar2->field_0x10 + *(int *)&pTVar2->field_0x8f0 / 100,
+     (int)(uVar7 & ((int)uVar7 < 1) - 1) < (int)sVar1)) {
+    return false;
+  }
+  pTVar3 = pTVar2->vftable;
+  uVar4 = (*pTVar3->OrphanLeaf_NoCall_Ins02_004d7f20)(0x10);
+  (*pTVar3->QueueNationOrderManagerPayloadObject_63)
+            (0x10,CONCAT31(extraout_var_01,uVar4) - unaff_EBP);
+  pTVar3 = g_apNationStates[*(short *)(param_1 + 0x18)]->vftable;
+  uVar4 = (*pTVar3->OrphanLeaf_NoCall_Ins02_004d7f20)(0xc);
+  (*pTVar3->QueueNationOrderManagerPayloadObject_63)(0xc,CONCAT31(extraout_var_02,uVar4) - iVar8);
+  *(int *)&g_apNationStates[*(short *)(param_1 + 0x18)]->field_0x10 =
+       *(int *)&g_apNationStates[*(short *)(param_1 + 0x18)]->field_0x10 - (int)sVar1;
+  *(short *)(param_1 + 4) = sVar6;
+  return true;
 }
 

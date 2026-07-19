@@ -7,7 +7,7 @@
 // GHIDRA_NAME CDocManager::OpenDocumentFile
 // GHIDRA_PROTO undefined __thiscall OpenDocumentFile(LPCSTR param_1)
 
-int * CDocManager::OpenDocumentFile(LPCSTR param_1)
+int * __thiscall CDocManager::OpenDocumentFile(CDocManager *this,LPCSTR param_1)
 
 {
   undefined4 *puVar1;
@@ -159,22 +159,22 @@ void __thiscall CDocManager::AddDocTemplate(int *param_1,int *param_2)
   int *piVar3;
   
   if (param_2 == (int *)0x0) {
-    if (DAT_006a6124 != (int *)0x0) {
-      if ((int *)DAT_006a6124[1] != (int *)0x0) {
+    if (pStaticList != (int *)0x0) {
+      if ((int *)pStaticList[1] != (int *)0x0) {
         pcVar1 = *(code **)(*param_1 + 0x14);
-        piVar3 = (int *)DAT_006a6124[1];
+        piVar3 = (int *)pStaticList[1];
         do {
           piVar2 = (int *)*piVar3;
           (*pcVar1)(piVar3[2]);
           piVar3 = piVar2;
         } while (piVar2 != (int *)0x0);
       }
-      if (DAT_006a6124 != (int *)0x0) {
-        (**(code **)(*DAT_006a6124 + 4))(1);
+      if (pStaticList != (int *)0x0) {
+        (**(code **)(*pStaticList + 4))(1);
       }
-      DAT_006a6124 = (int *)0x0;
+      pStaticList = (int *)0x0;
     }
-    DAT_0069bd58 = 0;
+    bStaticInit = 0;
   }
   else {
     (**(code **)(*param_2 + 0x58))();
@@ -226,7 +226,7 @@ bool CDocManager::DoPromptFileName(void)
   *(undefined4 *)(unaff_EBP + -4) = 0;
   CString::CString((CString *)(unaff_EBP + -0x14));
   *(undefined1 *)(unaff_EBP + -4) = 1;
-  CString__LoadStringA(*(undefined4 *)(unaff_EBP + 0xc));
+  CString::LoadStringA(*(undefined4 *)(unaff_EBP + 0xc));
   *(uint *)(unaff_EBP + -0x180) = *(uint *)(unaff_EBP + -0x180) | *(uint *)(unaff_EBP + 0x10);
   CString::CString((CString *)(unaff_EBP + 0x14));
   *(undefined1 *)(unaff_EBP + -4) = 2;
@@ -249,7 +249,7 @@ bool CDocManager::DoPromptFileName(void)
   }
   CString::CString((CString *)(unaff_EBP + -0x18));
   *(undefined1 *)(unaff_EBP + -4) = 4;
-  CString__LoadStringA(0xf002);
+  CString::LoadStringA(0xf002);
   CString::operator+=(unaff_EBP + -0x18);
   CString::operator+=(0);
   CString::operator+=((CString *)(unaff_EBP + 0x14),"*.*");
@@ -543,21 +543,21 @@ void CDocManager::OnFileNew(void)
   else {
     piVar2 = *(int **)(*(int *)(extraout_ECX + 8) + 8);
     if (1 < *(int *)(extraout_ECX + 0x10)) {
-      TControl::CDialog__CDialog((TControl *)(unaff_EBP + -0x70),0x7801,0);
+      CDialog::CDialog((CDialog *)(unaff_EBP + -0x70),0x7801,0);
       *(undefined4 *)(unaff_EBP + -0x10) = 0;
-      *(undefined ***)(unaff_EBP + -0x70) = &PTR_LAB_006732dc;
+      *(undefined ***)(unaff_EBP + -0x70) = &PTR_GetRuntimeClass_006732dc;
       *(int *)(unaff_EBP + -0x14) = extraout_ECX + 4;
       *(undefined4 *)(unaff_EBP + -4) = 0;
-      iVar1 = CDialog__DoModal();
+      iVar1 = CDialog::DoModal();
       if (iVar1 != 1) {
         *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
-        *(undefined ***)(unaff_EBP + -0x70) = &PTR_LAB_006732dc;
+        *(undefined ***)(unaff_EBP + -0x70) = &PTR_GetRuntimeClass_006732dc;
         CDialog::~CDialog((CDialog *)(unaff_EBP + -0x70));
         goto LAB_0061a962;
       }
       piVar2 = *(int **)(unaff_EBP + -0x10);
       *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
-      *(undefined ***)(unaff_EBP + -0x70) = &PTR_LAB_006732dc;
+      *(undefined ***)(unaff_EBP + -0x70) = &PTR_GetRuntimeClass_006732dc;
       CDialog::~CDialog((CDialog *)(unaff_EBP + -0x70));
     }
     (**(code **)(*piVar2 + 0x88))(0,1);
@@ -702,27 +702,27 @@ void CDocManager::UnregisterShellFileTypes(void)
       if (iVar5 == 0) {
         CString::operator=((CString *)(unaff_EBP + -0x20),(CString *)(unaff_EBP + -0x14));
       }
-      CString__Format(unaff_EBP + -0x10,"%s\\DefaultIcon",*(undefined4 *)(unaff_EBP + -0x14));
+      CString::Format(unaff_EBP + -0x10,"%s\\DefaultIcon",*(undefined4 *)(unaff_EBP + -0x14));
       _AfxDeleteRegKey(*(undefined4 *)(unaff_EBP + -0x10));
       iVar5 = (**(code **)(unaff_EBP + -0x1c))(unaff_EBP + -0x10,0);
       if ((iVar5 == 0) || (*(int *)(*(int *)(unaff_EBP + -0x10) + -8) == 0)) {
-        CString__Format(unaff_EBP + -0x10,"%s\\shell\\open\\%s",*(undefined4 *)(unaff_EBP + -0x14),
+        CString::Format(unaff_EBP + -0x10,"%s\\shell\\open\\%s",*(undefined4 *)(unaff_EBP + -0x14),
                         "ddeexec");
         _AfxDeleteRegKey(*(undefined4 *)(unaff_EBP + -0x10));
-        CString__Format(unaff_EBP + -0x10,"%s\\shell\\print\\%s",*(undefined4 *)(unaff_EBP + -0x14),
+        CString::Format(unaff_EBP + -0x10,"%s\\shell\\print\\%s",*(undefined4 *)(unaff_EBP + -0x14),
                         "ddeexec");
         _AfxDeleteRegKey(*(undefined4 *)(unaff_EBP + -0x10));
-        CString__Format(unaff_EBP + -0x10,"%s\\shell\\printto\\%s",
+        CString::Format(unaff_EBP + -0x10,"%s\\shell\\printto\\%s",
                         *(undefined4 *)(unaff_EBP + -0x14),"ddeexec");
         _AfxDeleteRegKey(*(undefined4 *)(unaff_EBP + -0x10));
       }
-      CString__Format(unaff_EBP + -0x10,"%s\\shell\\open\\%s",*(undefined4 *)(unaff_EBP + -0x14),
+      CString::Format(unaff_EBP + -0x10,"%s\\shell\\open\\%s",*(undefined4 *)(unaff_EBP + -0x14),
                       "command");
       _AfxDeleteRegKey(*(undefined4 *)(unaff_EBP + -0x10));
-      CString__Format(unaff_EBP + -0x10,"%s\\shell\\print\\%s",*(undefined4 *)(unaff_EBP + -0x14),
+      CString::Format(unaff_EBP + -0x10,"%s\\shell\\print\\%s",*(undefined4 *)(unaff_EBP + -0x14),
                       "command");
       _AfxDeleteRegKey(*(undefined4 *)(unaff_EBP + -0x10));
-      CString__Format(unaff_EBP + -0x10,"%s\\shell\\printto\\%s",*(undefined4 *)(unaff_EBP + -0x14),
+      CString::Format(unaff_EBP + -0x10,"%s\\shell\\printto\\%s",*(undefined4 *)(unaff_EBP + -0x14),
                       "command");
       _AfxDeleteRegKey(*(undefined4 *)(unaff_EBP + -0x10));
       (**(code **)(unaff_EBP + -0x1c))(unaff_EBP + -0x18,4);
@@ -736,7 +736,7 @@ void CDocManager::UnregisterShellFileTypes(void)
         if (((LVar6 != 0) || (*(int *)(*(int *)(unaff_EBP + -0x10) + -8) == 0)) ||
            (iVar5 = _mbscmp(*(int *)(unaff_EBP + -0x10),*(undefined4 *)(unaff_EBP + -0x14)),
            iVar5 == 0)) {
-          CString__Format(unaff_EBP + -0x10,"%s\\ShellNew",*(undefined4 *)(unaff_EBP + -0x18));
+          CString::Format(unaff_EBP + -0x10,"%s\\ShellNew",*(undefined4 *)(unaff_EBP + -0x18));
           _AfxDeleteRegKey(*(undefined4 *)(unaff_EBP + -0x10));
           _AfxDeleteRegKey(*(undefined4 *)(unaff_EBP + -0x18));
         }
@@ -827,10 +827,10 @@ LAB_00624db3:
       hIcon = ExtractIconA(*(HINSTANCE *)(iVar3 + 8),*(LPCSTR *)(unaff_EBP + -0x30),
                            *(UINT *)(unaff_EBP + -0x38));
       if (hIcon == (HICON)0x0) {
-        CString__Format(unaff_EBP + -0x34,&DAT_00673164,0);
+        CString::Format(unaff_EBP + -0x34,&szIconIndexFmt,0);
       }
       else {
-        CString__Format(unaff_EBP + -0x34,&DAT_00673164,*(undefined4 *)(unaff_EBP + -0x38));
+        CString::Format(unaff_EBP + -0x34,&szIconIndexFmt,*(undefined4 *)(unaff_EBP + -0x38));
         DestroyIcon(hIcon);
       }
       CString::operator+=(unaff_EBP + -0x34);
@@ -854,14 +854,14 @@ LAB_00624db3:
       iVar3 = SetRegKey(*(undefined4 *)(unaff_EBP + -0x10),*(undefined4 *)(unaff_EBP + -0x20),0);
       if (iVar3 != 0) {
         if (*(int *)(unaff_EBP + 8) != 0) {
-          CString__Format(unaff_EBP + -0x14,"%s\\DefaultIcon",*(undefined4 *)(unaff_EBP + -0x10));
+          CString::Format(unaff_EBP + -0x14,"%s\\DefaultIcon",*(undefined4 *)(unaff_EBP + -0x10));
           iVar3 = SetRegKey(*(undefined4 *)(unaff_EBP + -0x14),*(undefined4 *)(unaff_EBP + -0x2c),0)
           ;
           if (iVar3 == 0) goto LAB_00624d52;
         }
         iVar3 = (*pcVar2)(unaff_EBP + -0x14,0);
         if ((iVar3 == 0) || (*(int *)(*(int *)(unaff_EBP + -0x14) + -8) == 0)) {
-          CString__Format(unaff_EBP + -0x14,"%s\\shell\\open\\%s",*(undefined4 *)(unaff_EBP + -0x10)
+          CString::Format(unaff_EBP + -0x14,"%s\\shell\\open\\%s",*(undefined4 *)(unaff_EBP + -0x10)
                           ,"ddeexec");
           iVar3 = SetRegKey(*(undefined4 *)(unaff_EBP + -0x14),"[open(\"%1\")]",0);
           if (iVar3 != 0) {
@@ -870,11 +870,11 @@ LAB_00624db3:
               this = (CString *)(unaff_EBP + -0x1c);
               goto LAB_00624c20;
             }
-            CString__Format(unaff_EBP + -0x14,"%s\\shell\\print\\%s",
+            CString::Format(unaff_EBP + -0x14,"%s\\shell\\print\\%s",
                             *(undefined4 *)(unaff_EBP + -0x10),"ddeexec");
             iVar3 = SetRegKey(*(undefined4 *)(unaff_EBP + -0x14),"[print(\"%1\")]",0);
             if (iVar3 != 0) {
-              CString__Format(unaff_EBP + -0x14,"%s\\shell\\printto\\%s",
+              CString::Format(unaff_EBP + -0x14,"%s\\shell\\printto\\%s",
                               *(undefined4 *)(unaff_EBP + -0x10),"ddeexec");
               iVar3 = SetRegKey(*(undefined4 *)(unaff_EBP + -0x14),
                                 "[printto(\"%1\",\"%2\",\"%3\",\"%4\")]",0);
@@ -897,7 +897,7 @@ LAB_00624c13:
 LAB_00624c20:
             CString::operator+=(this,text);
           }
-          CString__Format(unaff_EBP + -0x14,"%s\\shell\\open\\%s",*(undefined4 *)(unaff_EBP + -0x10)
+          CString::Format(unaff_EBP + -0x14,"%s\\shell\\open\\%s",*(undefined4 *)(unaff_EBP + -0x10)
                           ,"command");
           iVar3 = SetRegKey(*(undefined4 *)(unaff_EBP + -0x14),*(undefined4 *)(unaff_EBP + -0x1c),0)
           ;
@@ -918,19 +918,19 @@ LAB_00624cb1:
                    ((iVar3 = SetRegKey(*(undefined4 *)(unaff_EBP + -0x18),
                                        *(undefined4 *)(unaff_EBP + -0x10),0), iVar3 != 0 &&
                     (*(int *)(unaff_EBP + 8) != 0)))) {
-                  CString__Format(unaff_EBP + -0x14,"%s\\ShellNew",
+                  CString::Format(unaff_EBP + -0x14,"%s\\ShellNew",
                                   *(undefined4 *)(unaff_EBP + -0x18));
                   SetRegKey(*(undefined4 *)(unaff_EBP + -0x14),&DAT_00673204,"NullFile");
                 }
               }
             }
             else {
-              CString__Format(unaff_EBP + -0x14,"%s\\shell\\print\\%s",
+              CString::Format(unaff_EBP + -0x14,"%s\\shell\\print\\%s",
                               *(undefined4 *)(unaff_EBP + -0x10),"command");
               iVar3 = SetRegKey(*(undefined4 *)(unaff_EBP + -0x14),
                                 *(undefined4 *)(unaff_EBP + -0x28),0);
               if (iVar3 != 0) {
-                CString__Format(unaff_EBP + -0x14,"%s\\shell\\printto\\%s",
+                CString::Format(unaff_EBP + -0x14,"%s\\shell\\printto\\%s",
                                 *(undefined4 *)(unaff_EBP + -0x10),"command");
                 iVar3 = SetRegKey(*(undefined4 *)(unaff_EBP + -0x14),
                                   *(undefined4 *)(unaff_EBP + -0x24),0);
