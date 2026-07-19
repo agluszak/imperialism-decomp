@@ -11,7 +11,6 @@
 #include "game/mfc.h"
 #include "game/quickdraw_rendering.h"
 #include "game/quickdraw_guards.h"
-#include "game/ui_widget_thunks.h"
 #include "game/bitmap_descriptor_helpers.h"
 
 // SYNTHETIC: IMPERIALISM 0x004a03f0

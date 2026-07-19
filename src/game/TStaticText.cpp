@@ -10,7 +10,6 @@
 #include "game/quickdraw_guards.h"
 #include "game/quickdraw_rendering.h"
 #include "game/mfc.h"
-#include "game/ui_widget_thunks.h"
 #include <new>
 // FUNCTION: IMPERIALISM 0x004294d0
 void TStaticText::AssignSharedStringFromField84(CString* out) {

@@ -9,7 +9,6 @@
 #include "game/quickdraw_rendering.h"
 #include "game/ui_control_tags.h"
 #include "game/ui_invalidation_guard.h"
-#include "game/ui_widget_thunks.h"
 #include "game/mfc.h"
 
 // FUNCTION: IMPERIALISM 0x00586e50

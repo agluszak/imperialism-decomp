@@ -11,15 +11,12 @@
 #include "game/UiRuntimeContext.h"
 #include "game/quickdraw_guards.h"
 
-#include "game/ui_widget_thunks.h"
 
 #include "game/mfc.h"
 
 const int kAssertLineMoveBarInitNil = 0x725;
 #include "game/TAmtBar.h"
-#include "game/ui_widget_thunks.h"
 #include "game/TUberCluster.h"
-#include "game/ui_widget_thunks.h"
 
 #include <new>
 

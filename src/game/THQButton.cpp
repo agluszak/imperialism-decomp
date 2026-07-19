@@ -5,7 +5,6 @@
 #include "game/UiRuntimeContext.h"
 #include "game/quickdraw_guards.h"
 #include "game/mfc.h"
-#include "game/ui_widget_thunks.h"
 #include <new>
 #include "game/mfc.h"
 // SYNTHETIC: IMPERIALISM 0x0058b5c0
