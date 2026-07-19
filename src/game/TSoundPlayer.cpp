@@ -1,7 +1,6 @@
 #include "game/TSoundPlayer.h"
 
 #include "game/mfc.h"
-#include "game/wave_helpers.h"
 #include "game/global_data_tables.h"
 #include "game/TSimMgr.h"
 #include "game/TApplication.h"

@@ -34425,6 +34425,30 @@
       "type": 1
     },
     {
+      "address": "0x5e0780",
+      "matching": 0.9688581314878892,
+      "name": "WaveOpenFile",
+      "type": 1
+    },
+    {
+      "address": "0x5e09f0",
+      "matching": 0.9047619047619048,
+      "name": "WaveReadFile",
+      "type": 1
+    },
+    {
+      "address": "0x5e0b50",
+      "matching": 0.8858447488584474,
+      "name": "WaveCreateFile",
+      "type": 1
+    },
+    {
+      "address": "0x5e10c0",
+      "matching": 0.6701570680628273,
+      "name": "WaveLoadFile",
+      "type": 1
+    },
+    {
       "address": "0x5e1430",
       "matching": 0.08333333333333333,
       "name": "ProbeAuxOutputDeviceIndexByPidMask",
