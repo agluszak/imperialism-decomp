@@ -68,6 +68,14 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--target", default="IMPERIALISM")
     parser.add_argument("--apply", action="store_true", help="Write and save the DB (default: dry-run).")
     parser.add_argument("--quiet", action="store_true", help="Only print the summary lines.")
+    parser.add_argument(
+        "--strict",
+        action="store_true",
+        help=(
+            "Exit nonzero on any failure, and (dry-run) on any pending change — "
+            "used by ghidra-apply-source-full to require convergence."
+        ),
+    )
     return parser.parse_args()
 
 
@@ -137,7 +145,23 @@ def main() -> int:
             txid = program.startTransaction("apply source model")
 
         stats = {"primary_exact": 0, "fn": 0, "label": 0, "vtable": 0,
-                 "skipped_illegal": 0, "failed": 0}
+                 "skipped_illegal": 0, "failed": 0, "stale_labels_dropped": 0}
+
+        def _drop_stale_same_name_labels(a, simple):
+            """Non-primary labels whose simple name equals the target block the
+            namespace move / rename with DuplicateNameException. They are
+            redundant with the qualified primary being produced — delete them."""
+            removed = 0
+            for sym in list(st.getSymbols(a)):
+                try:
+                    if (not sym.isPrimary()
+                            and sym.getSymbolType().toString() == "Label"
+                            and sym.getName() == simple):
+                        sym.delete()
+                        removed += 1
+                except Exception:  # noqa: BLE001
+                    pass
+            return removed
 
         for addr in sorted(wanted):
             name = wanted[addr]
@@ -164,9 +188,26 @@ def main() -> int:
             try:
                 ns = get_namespace(ns_path) if ns_path else global_ns
                 if fn is not None:
+                    # A stale secondary label with the same simple name (often
+                    # already qualified, e.g. `CMcWindow::OnQueryNewPalette`
+                    # beside a Global-primary `OnQueryNewPalette`) collides with
+                    # the namespace move / rename. It is redundant with the
+                    # primary we are about to produce — drop it first.
+                    if _drop_stale_same_name_labels(a, simple):
+                        stats["stale_labels_dropped"] += 1
                     if ns is not None:
                         fn.setParentNamespace(ns)
-                    fn.setName(simple, SourceType.USER_DEFINED)
+                    try:
+                        # After the namespace move the simple name may already be
+                        # right — Ghidra throws DuplicateName on a same-name rename.
+                        if fn.getName() != simple:
+                            fn.setName(simple, SourceType.USER_DEFINED)
+                    except DuplicateNameException:
+                        if _drop_stale_same_name_labels(a, simple):
+                            fn.setName(simple, SourceType.USER_DEFINED)
+                            stats["stale_labels_dropped"] += 1
+                        else:
+                            raise
                     stats["fn"] += 1
                 else:
                     st.createLabel(a, simple, ns, SourceType.USER_DEFINED).setPrimary()
@@ -200,13 +241,36 @@ def main() -> int:
             txid = None
             program.save("apply source model", pyghidra.task_monitor())
 
-        # Live audit: class namespaces used by source vs DB datatype names.
+        # Live audit 1: source classes whose Vtbl datatype exists but whose class
+        # datatype is missing under the source name.
         source_classes = {c for n in wanted.values() if "::" in n
                           for c in [n.rsplit("::", 1)[0]] if "::" not in c}
         source_classes |= set(vtables.values())
         dt_names = {dt.getName() for dt in dtm.getAllDataTypes()}
         drift = sorted(c for c in source_classes
                        if c not in dt_names and f"{c}Vtbl" in dt_names)
+
+        # Live audit 2: DB class namespaces that own source-claimed functions but
+        # are not the class the source model names — a stale/obsolete namespace
+        # (the TSoundChannelNode pattern) surviving beside the source model.
+        claimed_class = {a: n.rsplit("::", 1)[0] for a, n in wanted.items() if "::" in n}
+        stale_ns: dict[str, int] = {}
+        for fn2 in fm.getFunctions(True):
+            try:
+                addr2 = int(str(fn2.getEntryPoint()), 16)
+            except ValueError:
+                continue
+            want_cls = claimed_class.get(addr2)
+            if want_cls is None:
+                continue
+            have_cls = fn2.getParentNamespace().getName(True)
+            if have_cls not in ("Global", want_cls):
+                stale_ns[have_cls] = stale_ns.get(have_cls, 0) + 1
+        if stale_ns:
+            print(f"audit: {len(stale_ns)} DB namespace(s) own source-claimed functions "
+                  f"under a different class than the source model:")
+            for cls2, cnt in sorted(stale_ns.items())[:10]:
+                print(f"    - {cls2} ({cnt} function(s))")
         if drift:
             print(f"audit: {len(drift)} class(es) with a Vtbl datatype but no class "
                   f"datatype under the source name (repair: just ghidra-rename-class):")
@@ -217,10 +281,16 @@ def main() -> int:
         print(
             f"[{mode}] primary_exact={stats['primary_exact']} set_fn={stats['fn']} "
             f"set_label={stats['label']} vtable_labels={stats['vtable']} "
-            f"skipped_illegal={stats['skipped_illegal']} failed={stats['failed']}"
+            f"skipped_illegal={stats['skipped_illegal']} "
+            f"stale_labels_dropped={stats['stale_labels_dropped']} failed={stats['failed']}"
         )
         if args.apply:
             print("Run `just export-project` so the vendored .gzf carries the result.")
+        if args.strict:
+            pending = 0 if args.apply else (stats["fn"] + stats["label"] + stats["vtable"])
+            if stats["failed"] or pending:
+                print(f"STRICT: not converged (failed={stats['failed']} pending={pending}).")
+                return 1
         return 0
     finally:
         if txid is not None:

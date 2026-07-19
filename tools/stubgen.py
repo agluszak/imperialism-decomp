@@ -150,18 +150,23 @@ def compute_stub_rows(
     repo_root: Path,
     target: str = "IMPERIALISM",
     symbols_csv: str = "config/original_entities.csv",
+    model=None,
+    overlay_rows=None,
 ) -> list[tuple[int, str, str]]:
     """The stub set: generated-symbol function rows minus source-claimed addresses.
 
     Both inputs come from the central source model (tools.source_model) and the
     generated overlay (tools.generate_symbols) — one implementation, so the
-    stub-count gate can never disagree with what generation would emit.
+    stub-count gate can never disagree with what generation would emit. Pass
+    `model`/`overlay_rows` (tools.generate does) to avoid re-building them.
     """
-    model = build_model(repo_root, target)
+    if model is None:
+        model = build_model(repo_root, target)
     claimed = set(model.functions)
-    _fields, overlay_rows, _stats = generate_rows(
-        repo_root, target, inventory=symbols_csv, model=model
-    )
+    if overlay_rows is None:
+        _fields, overlay_rows, _stats = generate_rows(
+            repo_root, target, inventory=symbols_csv, model=model
+        )
 
     rows: list[tuple[int, str, str]] = []
     for row in overlay_rows:
@@ -245,11 +250,18 @@ def clean_output_dir(output_dir: Path) -> None:
         manifest.unlink()
 
 
-def main() -> int:
-    args = parse_args()
-    repo_root = repo_root_from_file(__file__, levels_up=1)
-    output_dir = resolve_repo_path(repo_root, args.output_dir)
-
+def write_stubs(
+    repo_root: Path,
+    output_dir: Path,
+    target: str = "IMPERIALISM",
+    annotation_kind: str = "FUNCTION",
+    chunk_prefix: str = "stubs_part",
+    max_functions_per_file: int = 500,
+    use_prototypes: bool = False,
+    model=None,
+    overlay_rows=None,
+) -> int:
+    """Render the stub chunks + manifest into output_dir; returns the stub count."""
     # Stubs are build artifacts — refuse to write them into the source tree.
     src_dir = (repo_root / "src").resolve()
     try:
@@ -264,9 +276,7 @@ def main() -> int:
         pass
 
     function_rows = compute_stub_rows(
-        repo_root,
-        target=args.target,
-        symbols_csv=args.symbols_csv,
+        repo_root, target=target, model=model, overlay_rows=overlay_rows
     )
 
     output_dir.mkdir(parents=True, exist_ok=True)
@@ -274,15 +284,15 @@ def main() -> int:
 
     seen_idents: set[str] = set()
     generated_files: list[str] = []
-    for idx, chunk in enumerate(chunked_rows(function_rows, args.max_functions_per_file), start=1):
-        relpath = "{}{:03d}.cpp".format(args.chunk_prefix, idx)
+    for idx, chunk in enumerate(chunked_rows(function_rows, max_functions_per_file), start=1):
+        relpath = "{}{:03d}.cpp".format(chunk_prefix, idx)
         (output_dir / relpath).write_text(
             render_chunk(
                 chunk_rows=chunk,
                 seen_idents=seen_idents,
-                target=args.target,
-                annotation_kind=args.annotation_kind,
-                use_prototypes=args.use_prototypes,
+                target=target,
+                annotation_kind=annotation_kind,
+                use_prototypes=use_prototypes,
             ),
             encoding="utf-8",
         )
@@ -292,18 +302,32 @@ def main() -> int:
         "generated_cpp_files": generated_files,
         "chunk_count": len(generated_files),
         "stub_count": len(function_rows),
-        "target": args.target,
-        "max_functions_per_file": args.max_functions_per_file,
+        "target": target,
+        "max_functions_per_file": max_functions_per_file,
     }
     (output_dir / "_manifest.json").write_text(
         json.dumps(manifest_payload, indent=2, sort_keys=True) + "\n",
         encoding="utf-8",
     )
-
     print(
         "Wrote {} chunk file(s) in {} ({} stubs)".format(
             len(generated_files), output_dir, len(function_rows)
         )
+    )
+    return len(function_rows)
+
+
+def main() -> int:
+    args = parse_args()
+    repo_root = repo_root_from_file(__file__, levels_up=1)
+    write_stubs(
+        repo_root,
+        output_dir=resolve_repo_path(repo_root, args.output_dir),
+        target=args.target,
+        annotation_kind=args.annotation_kind,
+        chunk_prefix=args.chunk_prefix,
+        max_functions_per_file=args.max_functions_per_file,
+        use_prototypes=args.use_prototypes,
     )
     return 0
 
