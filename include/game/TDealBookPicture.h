@@ -126,7 +126,9 @@ public:
   // slot 0x70 SetControlStateFlagAndMaybeRefresh inherited unchanged (0x48e810)
   // slot 0x71 ResetPictureResourceEntry inherited unchanged (0x48f520)
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
-  virtual undefined UpdateDealBookResourceSelectionAndToggleControls(); // slot 0x73 0x5baf70
+  virtual void
+  UpdateDealBookResourceSelectionAndToggleControls(int nResourceIndex,
+                                                   short nSelectedRow); // slot 0x73 0x5baf70
   virtual undefined BuildSelectedNationOrderCapabilityRows();           // slot 0x74 0x5bb2e0
   // TPicture's slice ends at 0x90; RTTI oracle confirms sizeof(TDealBookPicture) == 0xb4.
   // The ctor (0x5babc0) writes field90 (= 8) and fieldB2 (= 0); the intervening region and
@@ -136,7 +138,9 @@ public:
   // +0x92 -- computed as max(sellView->field_0x60, buyView->field_0x60) - 1 at the end of
   // RefreshTradeSelectionHeaderAndNationOfferBidLines; purpose beyond that not yet confirmed.
   short field92;
-  unsigned char pad94[4]; // +0x94..0x97 -- no confirmed writer yet
+  short field94;          // +0x94 -- selected row index, written by
+                          // UpdateDealBookResourceSelectionAndToggleControls (0x5baf70)
+  unsigned char pad96[2]; // +0x96..0x97
   // +0x98 -- picture resource id, reapplied via this->SetPictureResourceIdAndRefresh(field98,
   // 1) at the end of RefreshTradeSelectionHeaderAndNationOfferBidLines (only when the byte at
   // +0xb1 was already set on entry).

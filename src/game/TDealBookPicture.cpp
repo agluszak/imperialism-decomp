@@ -8,6 +8,7 @@
 #include "game/ui_invalidation_guard.h"
 
 void LoadUiStringAndDispatchSharedMessageCommand(short group, short index, TView* control);
+void AssignSharedStringToControlState(CString sharedString, TView* control);
 
 // SYNTHETIC: IMPERIALISM 0x005bab00
 // TDealBookPicture::CreateObject
@@ -25,8 +26,68 @@ TDealBookPicture::TDealBookPicture() : TPicture(), field90(8), fieldB2(0) {}
 TDealBookPicture::~TDealBookPicture() {}
 
 // FUNCTION: IMPERIALISM 0x005baf70
-undefined TDealBookPicture::UpdateDealBookResourceSelectionAndToggleControls() {
-  return 0;
+void TDealBookPicture::UpdateDealBookResourceSelectionAndToggleControls(int nResourceIndex,
+                                                                        short nSelectedRow) {
+  CString label;
+
+  if (nSelectedRow != this->field90) {
+    this->field90 = nSelectedRow;
+    this->BuildSelectedNationOrderCapabilityRows();
+  }
+
+  int idx = nResourceIndex;
+  this->field94 = static_cast<short>(idx);
+  ++idx;
+
+  TTradePageBuyView* buyCopy = this->fieldAC;
+  if (static_cast<short>(idx) > buyCopy->field_0x60) {
+    buyCopy->SetEnabled(0, 1);
+  } else {
+    buyCopy->OrphanCallChain_C8_I118_0056fdb0(static_cast<short>(idx));
+    buyCopy->SetEnabled(1, 0);
+  }
+
+  TTradePageSellView* sellCopy = this->fieldA8;
+  if (static_cast<short>(idx) > sellCopy->field_0x60) {
+    sellCopy->SetEnabled(0, 1);
+  } else {
+    sellCopy->OrphanCallChain_C8_I118_0056fdb0(static_cast<short>(idx));
+    sellCopy->SetEnabled(1, 0);
+  }
+
+  TView* leftCtrl = this->ResolveControlByTag(0x6c636f72);
+  if (leftCtrl == nullptr) {
+    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUTradeViews_0069AA94, 0x16e);
+  }
+  TView* rightCtrl = this->ResolveControlByTag(0x72636f72);
+  if (rightCtrl == nullptr) {
+    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUTradeViews_0069AA94, 0x170);
+  }
+
+  if (this->field94 != 0) {
+    leftCtrl->SetEnabled(1, 1);
+    leftCtrl->SetState(1, 1);
+    g_pSimMgr->GetString(0x2730, 0xb, &label);
+  } else {
+    leftCtrl->SetEnabled(0, 1);
+    leftCtrl->SetState(0, 1);
+    label = g_szEmptyString;
+  }
+  AssignSharedStringToControlState(label, leftCtrl);
+
+  short refRow = this->field92;
+  if (this->field94 != refRow && refRow != 0) {
+    rightCtrl->SetEnabled(1, 1);
+    rightCtrl->SetState(1, 1);
+    g_pSimMgr->GetString(0x2730, 0xa, &label);
+  } else {
+    rightCtrl->SetEnabled(0, 1);
+    rightCtrl->SetState(0, 1);
+    label = g_szEmptyString;
+  }
+  AssignSharedStringToControlState(label, rightCtrl);
 }
 
 // FUNCTION: IMPERIALISM 0x005bb2e0
