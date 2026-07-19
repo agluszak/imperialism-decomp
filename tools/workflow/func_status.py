@@ -24,7 +24,7 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 SYMBOLS_CSV = REPO_ROOT / "config" / "original_entities.csv"
 AUTOGEN_INDEX = (REPO_ROOT / "build-msvc500" / "evidence" / "ghidra-export"
                  / "src" / "index.csv")
-BASELINE_REPORT = REPO_ROOT / "config" / "reccmp_progress_baseline.report.json"
+BASELINE_REPORT = REPO_ROOT / "config" / "baselines" / "reccmp_progress_baseline.report.json"
 
 
 def _index_by_address(path: Path) -> dict[str, dict[str, str]]:

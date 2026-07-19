@@ -600,7 +600,7 @@ def main() -> int:
     # override > FID match). Drop FID candidates at override addresses so a manual
     # re-run of this script never overwrites the curated name/symbol/prototype that
     # tools/mfc/apply_library_overrides.py owns (e.g. rand at 0x005e83f0).
-    override_path = resolve_repo_path(repo_root, "config/msvc500_library_overrides.csv")
+    override_path = resolve_repo_path(repo_root, "config/reviewed_library_identities.csv")
     override_addresses: set[int] = set()
     if override_path.is_file():
         try:

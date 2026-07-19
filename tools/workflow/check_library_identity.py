@@ -3,7 +3,7 @@
 
 `symbols-integrity-gate` checks CSV *structure* (header, addresses, overlap) but
 not whether library identities are semantically correct. This gate closes that
-hole for the reviewed set: every row in `config/msvc500_library_overrides.csv`
+hole for the reviewed set: every row in `config/reviewed_library_identities.csv`
 must be faithfully projected into `config/original_entities.csv` and `// LIBRARY:` markers.
 
 It exists because the sync pipeline stabilizes a FID miss into a durable mistake:
@@ -26,7 +26,7 @@ Failures (for the reviewed override set):
 The broader checks the object-matcher oracle enables (every library row carries a
 symbol; a confirmed oracle match missing from the markers; a high-confidence
 library match classified as game code) are deferred until that oracle lands; see
-`config/msvc500_library_overrides.csv` header and docs/reference.
+`config/reviewed_library_identities.csv` header and docs/reference.
 """
 
 from __future__ import annotations
@@ -41,10 +41,10 @@ from tools.common.pipe_csv import read_pipe_rows
 from tools.common.repo import repo_root_from_file, resolve_repo_path
 from tools.mfc.apply_library_overrides import LibraryOverride, load_overrides
 
-DEFAULT_OVERRIDES = "config/msvc500_library_overrides.csv"
-DEFAULT_SYMBOLS = "config/original_entities.csv"
-DEFAULT_BASELINE = "config/library_identity_gate_baseline.json"
-DEFAULT_ORACLE = "config/msvc500_library_oracle.csv"
+DEFAULT_OVERRIDES = "config/reviewed_library_identities.csv"
+DEFAULT_SYMBOLS = "build-msvc500/generated/symbols.csv"
+DEFAULT_BASELINE = "config/baselines/library_identity_gate_baseline.json"
+DEFAULT_ORACLE = "build-msvc500/evidence/library/msvc500_library_oracle.csv"
 DEFAULT_GAMECODE_ALLOWLIST = "config/library_oracle_gamecode_allowlist.csv"
 
 APPLY_KINDS = {"unique", "unique-via-existing"}
@@ -170,7 +170,9 @@ def check_override(
 
     if not ov.symbol:
         problems.append(f"{tag}: reviewed override has no linker symbol")
-    if not prototype_declares_name(ov.prototype, ov.name):
+    # Identity is name+symbol; a reviewed row may omit the prototype (asserts
+    # nothing about the signature — the inventory's advisory value stands).
+    if ov.prototype and not prototype_declares_name(ov.prototype, ov.name):
         problems.append(
             f"{tag}: prototype {ov.prototype!r} does not declare the name {ov.name!r}"
         )
@@ -185,7 +187,7 @@ def check_override(
             problems.append(
                 f"{tag}: symbols.csv symbol={row.get('symbol')!r} != {ov.symbol!r}"
             )
-        if (row.get("prototype") or "") != ov.prototype:
+        if ov.prototype and (row.get("prototype") or "") != ov.prototype:
             problems.append(
                 f"{tag}: symbols.csv prototype={row.get('prototype')!r} != {ov.prototype!r}"
             )

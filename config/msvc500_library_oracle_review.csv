@@ -1,5 +1,0 @@
-address|current_name|current_ownership|oracle_symbol|oracle_name|member|match_kind|candidate_count|reason
-0x004796c0|CAmbitDocument::SetModifiedFlag|manual:src/game/CAmbitDocument.cpp|?SetModifiedFlag@CDocument@@UAEXH@Z|CDocument::SetModifiedFlag|doccore.obj|unique|1|match_owned_by_game_code
-0x00489410|TCountingStream::ConstructTCountingStreamBaseState|manual:src/game/TCountingStream.cpp|??0exception@@QAE@XZ|exception::exception|stdexcpt.obj|unique|1|match_owned_by_game_code
-0x004995a0|TMacViewMgr::WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At004995a0|unowned|?AfxDaoGetEngine@@YGPAU_DAODBEngine@@XZ|AfxDaoGetEngine|daocore.obj|unique|1|outside_library_range
-0x00534c80|ResetMissionField0CToZero|manual:src/game/TMission.cpp|?EnableAggregation@CCmdTarget@@QAEXXZ|CCmdTarget::EnableAggregation|oleunk.obj|unique|1|match_owned_by_game_code

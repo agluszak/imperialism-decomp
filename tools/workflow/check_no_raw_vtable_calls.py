@@ -41,7 +41,7 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--baseline",
-        default=str(repo_root / "config" / "vtable_gate_baseline.csv"),
+        default=str(repo_root / "config" / "baselines" / "vtable_gate_baseline.csv"),
         help="CSV file with baseline per-file pattern counts.",
     )
     parser.add_argument(

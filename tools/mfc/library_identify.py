@@ -28,9 +28,9 @@ from tools.common.repo import repo_root_from_file, resolve_repo_path
 from tools.mfc.apply_library_overrides import load_overrides
 
 DEFAULT_SYMBOLS = "config/original_entities.csv"
-DEFAULT_OVERRIDES = "config/msvc500_library_overrides.csv"
+DEFAULT_OVERRIDES = "config/reviewed_library_identities.csv"
 DEFAULT_FID_MATCHES = "tmp_decomp/msvc500_fid_matches.csv"
-DEFAULT_ORACLE = "config/msvc500_library_oracle.csv"
+DEFAULT_ORACLE = "build-msvc500/evidence/library/msvc500_library_oracle.csv"
 
 # The dense MFC/CRT library region (apply_msvc500_library_region defaults).
 LIBRARY_RANGE = (0x005E539C, 0x00626C7D)
@@ -126,7 +126,7 @@ def main() -> int:
               f"candidates={oracle_row.get('candidate_count', '?')}]")
     else:
         print("Object matcher:      not available "
-              "(config/msvc500_library_oracle.csv not built yet)")
+              "(build-msvc500/evidence/library/msvc500_library_oracle.csv not built yet)")
 
     if override is not None:
         print()
@@ -152,7 +152,7 @@ def main() -> int:
         verdict = (
             "not identified as library. If the body is CRT/MFC-shaped (LCG, ctype, "
             "string/mem helper, MFC macro), do NOT invent a game name — add a "
-            "reviewed override to config/msvc500_library_overrides.csv."
+            "reviewed override to config/reviewed_library_identities.csv."
         )
     print(f"Verdict:             {verdict}")
     return 0

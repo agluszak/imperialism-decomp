@@ -11,9 +11,9 @@ import tempfile
 import unittest
 from pathlib import Path
 
+from tools.generate_symbols import generate
 from tools.mfc.apply_library_overrides import (
     apply_markers,
-    apply_symbols,
     load_overrides,
     render_marker_file,
 )
@@ -69,34 +69,52 @@ class ApplySymbolsTests(unittest.TestCase):
             "address|name|symbol|size|type|prototype|provenance\n" + body,
         )
 
-    def test_rewrites_invented_name(self) -> None:
-        symbols = self._symbols(
+    def _repo(self, inventory_body: str) -> Path:
+        """A minimal repo tree: inventory + reviewed file + empty src/include."""
+        repo = self.tmp / "repo"
+        (repo / "config").mkdir(parents=True, exist_ok=True)
+        (repo / "src").mkdir(exist_ok=True)
+        (repo / "include").mkdir(exist_ok=True)
+        _write(repo / "config" / "original_entities.csv",
+               "address|name|symbol|size|type|prototype|provenance\n" + inventory_body)
+        _write(repo / "config" / "reviewed_library_identities.csv",
+               f"{HEADER}\n{RAND_ROW}\n")
+        return repo
+
+    def test_overlay_rewrites_invented_name(self) -> None:
+        repo = self._repo(
             "5e83f0|GenerateThreadLocalRandom15||45|function|"
             "undefined GenerateThreadLocalRandom15()|\n"
         )
-        changes, changed = apply_symbols(symbols, self.overrides)
-        self.assertTrue(changed)
-        row = _row(symbols, 0x5E83F0)
+        out = generate(repo, "IMPERIALISM", "config/original_entities.csv",
+                       repo / "gen")
+        row = _row(out, 0x5E83F0)
         self.assertEqual(row["name"], "rand")
         self.assertEqual(row["symbol"], "_rand")
         self.assertEqual(row["prototype"], "int __cdecl rand(void)")
-        self.assertEqual(row["provenance"], "msvc500_library_override")
+        # The committed inventory itself is untouched (raw; never merged).
+        inv_row = _row(repo / "config" / "original_entities.csv", 0x5E83F0)
+        self.assertEqual(inv_row["name"], "GenerateThreadLocalRandom15")
 
-    def test_adds_missing_row(self) -> None:
-        symbols = self._symbols("400000|other||4|function|undefined other()|\n")
-        _changes, changed = apply_symbols(symbols, self.overrides)
-        self.assertTrue(changed)
-        self.assertIsNotNone(_row(symbols, 0x5E83F0))
+    def test_overlay_adds_missing_row(self) -> None:
+        repo = self._repo("400000|other||4|function|undefined other()|\n")
+        out = generate(repo, "IMPERIALISM", "config/original_entities.csv",
+                       repo / "gen")
+        row = _row(out, 0x5E83F0)
+        self.assertIsNotNone(row)
+        self.assertEqual(row["provenance"], "reviewed_library_identity")
 
-    def test_idempotent(self) -> None:
-        symbols = self._symbols(
+    def test_overlay_is_idempotent(self) -> None:
+        repo = self._repo(
             "5e83f0|GenerateThreadLocalRandom15||45|function|"
             "undefined GenerateThreadLocalRandom15()|\n"
         )
-        apply_symbols(symbols, self.overrides)
-        changes, changed = apply_symbols(symbols, self.overrides)
-        self.assertFalse(changed)
-        self.assertEqual(changes, [])
+        out1 = generate(repo, "IMPERIALISM", "config/original_entities.csv",
+                        repo / "gen")
+        first = out1.read_text(encoding="utf-8")
+        out2 = generate(repo, "IMPERIALISM", "config/original_entities.csv",
+                        repo / "gen")
+        self.assertEqual(first, out2.read_text(encoding="utf-8"))
 
 
 class ApplyMarkersTests(unittest.TestCase):

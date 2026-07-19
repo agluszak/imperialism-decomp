@@ -2,7 +2,7 @@
 """Propagate reviewed MSVC500 library override NAMES into the live Ghidra DB.
 
 `apply_library_overrides` (run inside `db-resync`) writes the reviewed names in
-``config/msvc500_library_overrides.csv`` into ``config/original_entities.csv``, but nothing
+``config/reviewed_library_identities.csv`` into ``config/original_entities.csv``, but nothing
 pushes them into the Ghidra database itself. `push-names` (which does push
 symbols.csv names into the DB) runs *before* the overrides are applied and also
 skips two whole classes of address:
@@ -37,7 +37,7 @@ from tools.common.pipe_csv import read_pipe_table
 from tools.common.repo import repo_root_from_file
 
 REPO_ROOT = repo_root_from_file(__file__, levels_up=2)
-OVERRIDES = REPO_ROOT / "config" / "msvc500_library_overrides.csv"
+OVERRIDES = REPO_ROOT / "config" / "reviewed_library_identities.csv"
 
 
 def load_override_names() -> list[tuple[int, str]]:

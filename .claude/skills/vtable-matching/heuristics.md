@@ -345,7 +345,7 @@ ground truth because it is built from real nafxcw.lib. Method that worked for CI
    and confirm orig and recomp vtables are the **same length** — if recomp is longer
    (extra OCC/OLE tail), the class can't reach 100% and it's a structural divergence, not a
    naming bug.
-4. Emit one `config/msvc500_library_overrides.csv` row per red slot
+4. Emit one `config/reviewed_library_identities.csv` row per red slot
    (`addr|CView::Name|<recomp mangled symbol>|<prototype>|nafxcw|<obj>|evidence`); take the
    mangled symbol verbatim from the recomp PDB, never hand-mangle. `just regen-stubs` applies
    them. These are shared nafxcw functions, so the rows also fix every other CView-family

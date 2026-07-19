@@ -28,7 +28,7 @@ from tools.common.report_score import effective_matching
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 SYMBOLS_CSV = REPO_ROOT / "config" / "original_entities.csv"
-BASELINE_REPORT = REPO_ROOT / "config" / "reccmp_progress_baseline.report.json"
+BASELINE_REPORT = REPO_ROOT / "config" / "baselines" / "reccmp_progress_baseline.report.json"
 
 
 def _parse_int(value: str) -> int:
