@@ -779,14 +779,17 @@ fix-function-bounds *args: _require-ghidra-install
 prune-ilt-db-functions *args: _require-ghidra-install
   uv run python -m tools.ghidra.prune_ilt_db_functions {{args}}
 
-# MUTATES: Ghidra DB (with --apply).
-# One-time Ghidra cleanup: commit Ghidra's `in_stack_*` stack args as real function
-# parameters in the DB. Iterative: committing params changes decompilation and can
-# expose new in_stack reads — repeat --apply until the dry run reports zero.
-[doc('MUTATES: Ghidra DB (--apply). Commit in_stack_* args as real parameters')]
-[group('ghidra-db')]
-fix-in-stack-params *args: _require-ghidra-install
-  uv run python -m tools.ghidra.fix_in_stack_params {{args}}
+# READ-ONLY audit of Ghidra `in_stack_*` locals (unbound positive-stack reads).
+# These are EVIDENCE (missing param OR wrong convention/boundary/purge/varargs),
+# not a param oracle — classifies each into source-owned / library / unported
+# buckets with the ABI evidence needed to repair the RIGHT fact. Writes
+# build-msvc500/evidence/in_stack_audit.csv. (Replaces the retired unsound
+# `fix-in-stack-params --apply`, whose addParameter appended params at
+# convention-chosen offsets, not the detected slot — see the module docstring.)
+[doc('Audit Ghidra in_stack_* locals (read-only): classify each with ABI evidence')]
+[group('ghidra-inspect')]
+in-stack-audit *args: _require-ghidra-install
+  uv run python -m tools.ghidra.in_stack_audit {{args}}
 
 # MUTATES: Ghidra DB (with --apply).
 [private]
