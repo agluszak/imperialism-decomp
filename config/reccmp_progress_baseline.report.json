@@ -9390,7 +9390,7 @@
     {
       "address": "0x4b5290",
       "matching": 0.06451612903225806,
-      "name": "TItemOrder::InitializeCityProductionState_Impl_At004b5290",
+      "name": "TItemOrder::ItemOrderSlot11",
       "type": 1
     },
     {
@@ -9456,7 +9456,7 @@
     {
       "address": "0x4b5870",
       "matching": 0.06451612903225806,
-      "name": "TOrItemOrder::InitializeCityProductionState_Impl_At004b5870",
+      "name": "TOrItemOrder::OrItemOrderSlot12",
       "type": 1
     },
     {
@@ -9600,7 +9600,7 @@
     {
       "address": "0x4b6b20",
       "matching": 0.08333333333333333,
-      "name": "TTrainingOrder::InitializeCityProductionState_Impl_At004b6b20",
+      "name": "TTrainingOrder::TrainingOrderSlot11",
       "type": 1
     },
     {
@@ -9786,7 +9786,7 @@
     {
       "address": "0x4b7e80",
       "matching": 0.08695652173913043,
-      "name": "TFoodProcessingOrder::InitializeCityProductionState_Impl_At004b7e80",
+      "name": "TFoodProcessingOrder::FoodProcessingOrderSlot11",
       "type": 1
     },
     {
@@ -9984,7 +9984,7 @@
     {
       "address": "0x4b9010",
       "matching": 0.06451612903225806,
-      "name": "TExpansionOrder::InitializeCityProductionState_Impl_At004b9010",
+      "name": "TExpansionOrder::ExpansionOrderSlot12",
       "type": 1
     },
     {

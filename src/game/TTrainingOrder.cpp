@@ -15,8 +15,7 @@ TTrainingOrder::TTrainingOrder() {}
 TTrainingOrder::~TTrainingOrder() {}
 
 // FUNCTION: IMPERIALISM 0x004b6b20
-undefined TTrainingOrder::InitializeCityProductionState_Impl_At004b6b20(int param_1,
-                                                                        undefined2 param_2) {
+undefined TTrainingOrder::TrainingOrderSlot11(int param_1, undefined2 param_2) {
   return 0;
 }
 

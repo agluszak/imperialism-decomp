@@ -14,7 +14,8 @@ TOrItemOrder::TOrItemOrder() {}
 TOrItemOrder::~TOrItemOrder() {}
 
 // FUNCTION: IMPERIALISM 0x004b5870
-undefined TOrItemOrder::InitializeCityProductionState_Impl_At004b5870(int param_1, undefined2 param_2, undefined2 param_3, undefined2 param_4, undefined2 param_5) {
+undefined TOrItemOrder::OrItemOrderSlot12(int param_1, undefined2 param_2, undefined2 param_3,
+                                          undefined2 param_4, undefined2 param_5) {
   return 0;
 }
 
