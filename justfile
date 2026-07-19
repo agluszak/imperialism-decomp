@@ -105,6 +105,8 @@ ghidra-apply-source-full:
   just import-ghidra
   just ghidra-apply-source --apply --quiet --strict
   just ghidra-apply-source --quiet --strict
+  just apply-source-signatures --apply --strict
+  just in-stack-audit
   just export-project
 
 # MUTATES: Ghidra DB (prune), config/original_entities.csv (WHOLESALE refresh).
@@ -790,6 +792,32 @@ prune-ilt-db-functions *args: _require-ghidra-install
 [group('ghidra-inspect')]
 in-stack-audit *args: _require-ghidra-install
   uv run python -m tools.ghidra.in_stack_audit {{args}}
+
+# MUTATES: Ghidra DB (with --apply). Projects source-model C++ prototypes onto
+# source-owned functions whose DB signature is weaker than the declaration (the
+# MSVC500 PDB carries no arg types, so PDB import can't — see PR #91). Applies a
+# COMPLETE signature via replaceParameters(DYNAMIC_STORAGE_FORMAL_PARAMS) with the
+# convention from source (method=>__thiscall, free=>__cdecl), flushes the cache,
+# re-decompiles, and KEEPS ONLY functions whose in_stack actually clears —
+# reverting + queueing the rest (sret / packed-short / spurious) with evidence.
+# --strict fails only on unparsable/apply_error (the classified queue is honest).
+# Writes build-msvc500/evidence/source_signature_queue.csv.
+[private]
+[group('ghidra-db')]
+apply-source-signatures *args: _require-ghidra-install
+  uv run python -m tools.ghidra.daemon stop --quiet
+  uv run python -m tools.ghidra.apply_source_signatures {{args}}
+
+# READ-ONLY static audit of the source->Ghidra signature projection: parses every
+# source-owned C++ prototype and reports which resolve cleanly vs which are queued
+# for a structural reason detectable without mutating (unparsable / unresolved
+# type / sret by-value return). Does NOT verify convergence (that needs --apply);
+# for the full picture run `apply-source-signatures --apply`. --strict fails on
+# unparsable prototypes (a source-hygiene lint).
+[doc('Static audit of source-model signature projection (read-only; no DB write)')]
+[group('ghidra-inspect')]
+source-signature-audit *args: _require-ghidra-install
+  uv run python -m tools.ghidra.apply_source_signatures {{args}}
 
 # MUTATES: Ghidra DB (with --apply).
 [private]
