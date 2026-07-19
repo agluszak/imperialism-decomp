@@ -1015,6 +1015,21 @@ generated-marker-gate:
 ilt-ossification-gate:
   uv run python -m tools.workflow.check_ilt_ossification
 
+# Offline gate (no Ghidra): the Ghidra export must not contradict source. Flags
+# source-owned addresses whose src/ghidra_autogen GHIDRA_NAME sits in a different
+# class namespace than config/symbols.csv, and stale autogen class buckets. Ratchet
+# against config/ghidra_name_drift_baseline.csv (the shrink-only convergence queue,
+# e.g. the retired DB name TSoundChannelNode vs source TLongintList @ 0x650a08).
+[group('gates')]
+ghidra-name-drift-gate:
+  uv run python -m tools.workflow.check_ghidra_name_drift
+
+# MUTATES: config/ghidra_name_drift_baseline.csv. Ratchet down after a DB re-sync
+# (push-source-names / db-resync) converges the autogen toward source.
+[group('gates')]
+ghidra-name-drift-gate-update:
+  uv run python -m tools.workflow.check_ghidra_name_drift --write-baseline
+
 # MUTATES: config/ilt_ossification_baseline.csv. Ratchet down after migrating a thunk
 # or renaming a WrapperFor_/_At body. Never run to silence a new offender.
 [group('gates')]
@@ -1186,6 +1201,7 @@ source-gates:
   just marker-gate
   just generated-marker-gate
   just ilt-ossification-gate
+  just ghidra-name-drift-gate
   just vtable-annotation-gate
   just vtable-collision-gate
   just synthetic-gate

@@ -11,6 +11,7 @@ From `git log --follow -- vendor/ghidra/exports/Imperialism.gzf`:
 
 | commit | what it did to the DB |
 |---|---|
+| (this change) | `just push-source-names --apply`: mirrored current source function/label names into the DB (set_fn=948, set_label=145, already=7106, 0 failed), then `just export-project`. Fixes accumulated DB↔source name drift — e.g. 0x514dc0 now decompiles as the source name `MapMgrSlot1F` instead of the stale `WrapperFor_IsValidSecondary…_At00514dc0`. Function/label names only; placeholder *class datatypes* (e.g. DB `TSoundChannelNode` = source `TLongintList` @ vtable 0x650a08) are NOT touched by this tool and remain a separate datatype-import follow-up. |
 | 3170d5a2 | Propagate Ghidra virtual method names |
 | 05dcd197 | Regenerate ghidra_autogen folder (DB names/types refresh) |
 | 4a1e94a4 | Regenerate ghidra_autogen folder |
