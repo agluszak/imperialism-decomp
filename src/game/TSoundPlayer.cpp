@@ -12,8 +12,9 @@
 #include "game/timer_slots.h"
 #include "game/turn_flow_cooldown.h"
 
-#include <new>
 #include <math.h>
+#include <new>
+#include <stdlib.h>
 
 // Random-cue rotation counter at 0x006a4520 (raw audio-state global, not yet in
 // symbols.csv). Provisional definition until the owning data block is recovered.
@@ -22,7 +23,6 @@ short DAT_006a4520 = 0;
 undefined4 ForwardMciCommand808ToDevice(void);
 undefined4 ReleaseRuntimeSelectionPeersAndResetOwner_Impl(void);
 
-extern "C" int __cdecl rand(void);
 // The deferred-apply timer callback (0x593210); registered by ScheduleTimerSlotCallbackWithInterval
 // as a real function pointer (its return keeps/clears the slot).
 extern undefined4 Function_00593210(void);

@@ -18,8 +18,6 @@
 #include "game/localization_text_helpers.h"
 #include "game/ui_invalidation_guard.h"
 
-extern "C" int __cdecl rand(void);
-
 namespace {
 
 // Reproduces TZonePrimaryNeighborStretch::EnsureSlotAllocatedAndReturnPointer's

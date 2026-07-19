@@ -18,8 +18,6 @@
 #include "game/quickdraw_rendering.h"
 #include "game/ui_invalidation_guard.h"
 
-extern "C" long _ftol(void);
-
 void NormalizeWrappedMapCoord108x60(short* xCoord, short* yCoord);
 
 static inline double DefaultMapCellScale() {
