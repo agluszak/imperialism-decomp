@@ -470,6 +470,10 @@ extern "C" const unsigned int g_tradeCommodityRowTagTable[17];
 extern GlobalViewportRectDefaultsRecord g_globalViewportRectDefaultsRecord;
 extern GlobalViewportRectDefaultsRecord* g_pGlobalViewportRectDefaultsRecord;
 extern TWNetSessionManager g_NetworkSessionManager006a5f60;
+// Seed buffer for the DirectPlay session-open path (TNetMgr::
+// OpenRuntimeSelectionSourceByIndexAndCopyPath strncpy's the caller's seed here,
+// truncated to 31 chars + NUL).
+extern char g_RuntimeSelectionSourceSeedBuffer_006a5fe8[0x20];
 extern CArray<RuntimeSelectionRecord*, RuntimeSelectionRecord*> g_RuntimeSelectionRecords006a15e0;
 // Global TNetMgr (0x6a6014), created by TMultiplayerMgr session init.
 extern TNetMgr* g_pNetMgr006a6014;
@@ -669,6 +673,11 @@ extern char g_szUCountrySourcePath_00696728[];
 // Gate checked by TControl::AssertCityProductionGlobalStateInitialized before the
 // McAppUI.h line-0x56f assert path runs.
 extern int g_McAppUiFlag_006A143C;
+
+// Source path/gate for the USetupScreens.cpp line-0x2e6 assert in
+// TNetSelectPicture::HandleEvent (and siblings in that TU).
+extern char g_szSetupScreensSourcePath_00698AB8[];
+extern int g_SetupScreensAssertFlag_006A4264;
 
 } // extern "C"
 

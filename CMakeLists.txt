@@ -64,8 +64,11 @@ if(WIN32 AND NOT IMPERIALISM_LINT_COMPILE_ONLY)
     # toolchain at C:\msvc\lib\vfw32.lib.
     # dsound: DirectSoundCreate (TSoundResourceManager DirectSound init), from the DX5
     # SDK import lib on LIB at C:\dxsdk\lib\dsound.lib.
+    # dplayx: DirectPlayCreate/DirectPlayEnumerate (TWNetSessionManager DirectPlay
+    # session open/enumerate), same DX5 SDK import-lib directory.
+    # dxguid: IID_IDirectPlay2 (QueryInterface upgrade off the DirectPlayCreate result).
     target_link_libraries(Imperialism PRIVATE
-        gdi32 user32 winmm vfw32 dsound)
+        gdi32 user32 winmm vfw32 dsound dplayx dxguid)
 endif()
 
 if(MSVC AND NOT IMPERIALISM_LINT_COMPILE_ONLY)

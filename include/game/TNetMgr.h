@@ -52,6 +52,20 @@ public:
   // The body does not use `this`, but both retail callers load g_pNetMgr006a6014
   // into ECX before dispatching it.
   void ResetTurnEventQueueRuntimeRecordBuffer(); // 0x5e3ef0
+  // Same reset as ResetTurnEventQueueRuntimeRecordBuffer, but returns true; `this`
+  // unused (a singleton-dispatched wrapper, callers load g_pNetMgr006a6014 into ecx).
+  unsigned char ResetRuntimeSelectionRecordBufferAndReturnTrue(); // 0x5e34d0
+  // Always-true no-op hook bracketing runtime-selection credential setup; `this`
+  // unused (singleton-dispatched, like the pair above). The init half of the pair
+  // (0x5e34b0) is already claimed as the free function
+  // ReturnTrueRuntimeCredentialInitStub() in TMultiplayerMgr.cpp.
+  unsigned char ReturnTrueRuntimeCredentialFinalizeStub(); // 0x5e3c00
+
+  // Copies seed (up to 32 chars) into the DirectPlay session-name buffer and opens the
+  // selection source at index via OpenRuntimeSelectionSourceWithOptionalSeed, posing
+  // the localized error dialog on failure.
+  unsigned char OpenRuntimeSelectionSourceByIndexAndCopyPath(int index, int flag,
+                                                             const char* seed); // 0x5e3a60
 
   // Map a DirectPlay error HRESULT to detail text and pose the localized error dialog.
   // Mac oracle: TNetMgr::HandleError(int). Asserts with D:\Ambit\WNetMgr.cpp line 451.

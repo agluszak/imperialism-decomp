@@ -1,5 +1,12 @@
 #include "game/TNetSelectPicture.h"
 
+#include "game/TCluster.h"
+#include "game/TControl.h"
+#include "game/TMultiplayerMgr.h"
+#include "game/global_data_tables.h"
+#include "game/ui_control_tags.h"
+#include "game/ui_invalidation_guard.h"
+
 // SYNTHETIC: IMPERIALISM 0x0045ae10
 // TNetSelectPicture::`scalar deleting destructor'
 TNetSelectPicture::~TNetSelectPicture() {}
@@ -12,7 +19,23 @@ TNetSelectPicture::~TNetSelectPicture() {}
 IMPLEMENT_DYNCREATE(TNetSelectPicture, TNoHilitePicture)
 
 // FUNCTION: IMPERIALISM 0x005769a0
-void TNetSelectPicture::NoOpUiLifecycleHook(int arg) {}
+void TNetSelectPicture::NoOpUiLifecycleHook(int arg) { TView::NoOpUiLifecycleHook(arg); }
 
 // FUNCTION: IMPERIALISM 0x005769c0
-void TNetSelectPicture::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {}
+void TNetSelectPicture::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+  if (g_SetupScreensAssertFlag_006A4264 == 0) {
+    TemporarilyClearAndRestoreUiInvalidationFlag(g_szSetupScreensSourcePath_00698AB8, 0x2e6);
+  }
+  if (commandId == 0x14 || commandId == 0xa || commandId == 0x22) {
+    if (sourceHandler->controlTag == kControlTagCncl) {
+      g_pGameFlowState->ResetGameFlowStateAndPostTurnEvent5DC();
+    } else if (sourceHandler->controlTag == kControlTagOkay) {
+      TCluster* protControl = static_cast<TCluster*>(ResolveControlByTag(kControlTagProt));
+      protControl->AssertValid();
+      int selectedProtocolTag = protControl->GetField84();
+      TView* protocolOption = ResolveControlByTag(selectedProtocolTag);
+      g_pGameFlowState->ValidateGameFlowNameAndSelectionContext(protocolOption->controlValue3c, 1);
+    }
+  }
+  TControl::HandleEvent(commandId, sourceHandler, event);
+}
