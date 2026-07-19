@@ -35,6 +35,10 @@ public:
   // between a pair on the conditional personalities). slot 0x60 (0x4ec0a0)
   virtual double GetPersonalityWeightByFlag(char flag);
 
+  // +0x10..0x48 -- own block (RTTI m_nObjectSize proves this range is
+  // TDefenseMinister-only, not shared TMinister base state; see TMinister.h). Ctor
+  // (0x4ec0e0) writes nothing here beyond the vtable, so it's still raw/unrecovered.
+  unsigned char state10[0x48 - 0x10];
   // Derived state 0x48..0x94 (sizeof = 0x94, from `new TDefenseMinister()` @ 0x4d976f
   // pushing 0x94 to operator new). Fields unrecovered; raw storage keeps the object the
   // correct size so callers' `operator new` size matches.

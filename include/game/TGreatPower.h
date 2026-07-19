@@ -422,13 +422,16 @@ public:
   unsigned char colonyBoycottFlags[0x17];
   unsigned char pad_92f[0x960 - 0x92f];
   int pendingAidTotal;
-  // Provisional tail promoted from mixed-method imports beyond the core 0x964 block.
-  short actionMetricByQuarter[6];
-  unsigned char mapNodeStateFlags[0x180];
-  unsigned char portZoneStateFlags[0x70];
-  TSortedList* missionQueue;
-  float floatB64;
-  float floatB68;
+  // Object ends here at 0x964 (== CRuntimeClass::m_nObjectSize for TGreatPower and
+  // for TProxyGreatPower/TClientGreatPower/TRemoteGreatPower; THostGreatPower adds one
+  // more dword). The AI-only tail block (actionMetricByQuarter/mapNodeStateFlags/
+  // portZoneStateFlags/missionQueue/floatB64/floatB68) that used to be declared here
+  // moved to TAutoGreatPower (RTTI size 0xb70) -- see TSimMgr::RebuildPrimaryNationState
+  // ForSlot (0x57cda0): every non-Auto concrete subclass allocates exactly its own
+  // RTTI-reported size with no room for that block, and the one "bare TGreatPower"-
+  // looking construction (TSimMgr.cpp, scenario mode 2) is proven by its
+  // operator_new(0xb70) + TAutoGreatPower::TAutoGreatPower() ctor call (thunk 0x407a31
+  // -> 0x4e6b50) to actually construct a TAutoGreatPower, not a bare TGreatPower.
 
   // (All thunk_*_At0040xxxx member wrappers retired: those addresses are pure ILT
   // `jmp` stubs from incremental linking, not real functions. Callsites now call the
@@ -446,8 +449,6 @@ public:
   TGreatPower(int arg1, int arg2);
 
   void CompileGreatPowerRelationshipDeltaLinesAndDispatchMessage(void);
-  void QueueMapActionMissionFromCandidateAndMarkState(eMissionType arg1, int arg2,
-                                                      TZone* portZoneContext, int arg4);
   void ReleaseTrackedObjectsByMapOwnerAndUnassignedEntries(int ownerClass);
   bool ExecuteAdvisoryPromptAndApplyActionType1(int arg1, int arg2);
   void AbsorbCityNeedVectorSlotFC(short* needVector);
@@ -458,23 +459,6 @@ public:
   // map-action context the caller resolved for the scored node; it flows unchanged
   // into metric 4 (navy-order zone match) and metric 7 (zone value average).
   float ComputeMapActionContextCompositeScoreForNation(TZone* zone);
-  // For every unassigned (ownerMission40 == nullptr) non-naval (GetUnitMovementClassId()
-  // == 0) unit in militaryUnitList44, finds the queued mission (kind 3, keyed by the
-  // unit's own tileIndex06) in missionQueue and adopts the unit into it. 0x4eafa0.
-  void SeedTrackedEntryAssignmentsFromEligibleUnits();
-  // 0x4eb8b0 — repeatedly assigns the highest-priority tracked mission's action to a
-  // matching order/unit. Resets every missionQueue entry (ReturnFalseSlot98), then loops:
-  // (1) pick the best-scoring TNavyMission (ReturnZeroSlot5C identity filter — army
-  // entries return null there); if found, build its 9-category weight profile
-  // (ReturnZeroSlot2C) and pair it with the best same-nation, unassigned
-  // (field2c == nullptr) TShip primary-order node (ReturnZeroFloatSlot7C), dispatching
-  // via NoOpSlot84 and restarting. (2) Otherwise pick the best-scoring TArmyMission
-  // (ReturnZeroSlot58 identity filter, with a state08/marker11 tie-break against a
-  // runner-up candidate), build its weight profile, and pair it with the best unassigned
-  // (ownerMission40 == nullptr) militaryUnitList44 unit (ReturnZeroFloatSlot78),
-  // dispatching via AdoptUnitSlot80 and restarting. Stops when neither pass finds a
-  // candidate to act on.
-  void AssignTrackedEntryActionsByProfileToOrdersOrUnits();
   // 0x004e8750 — one metric factor for the advisory map-node scoring family.
   // metricCase 1/2: eligible-nation army/navy strength share for selectedNationSlot;
   // 3: owned-region-weighted neighbor-link ratio (cityIndex node, selectedNationSlot
@@ -500,12 +484,7 @@ public:
   void InitializeNationStateRuntimeSubsystems(int arg1, int arg2);
   void InitializeNationMinisterSubsystemsByPolicyIds(int arg1, int arg2, short arg3, short arg4,
                                                      short arg5);
-  void QueueMapActionMissionsForPortZoneCandidates();
 
-  // Case-16 advisory pass: resets transient candidate flags, re-marks candidate regions
-  // from flagged nations'/minors' owned-region lists, and (when not at war) scores and
-  // flags the top provinces per advisory order type {2,3,4,6}. 0x4e92b0, __thiscall.
-  void PopulateCase16AdvisoryMapNodeCandidateState();
   void HandleTurnInstruction_Civi_DeserializeAndCreateWorkOrder(void* pInstructionRaw);
   void QueueInterNationEventType0FForNationPairContext(short targetNationSlot,
                                                        short sourceNationSlot);
@@ -513,17 +492,4 @@ public:
   TCity* GetCityState(void) {
     return city;
   }
-
-  // Writes `value` into a per-port-zone-context byte flag array starting at this+0xaf0
-  // (region not otherwise recovered yet); `contextOrdinal` is a TZone::GetContextOrdinal-
-  // OrInvalid() result. Called from TControlSeaZoneMission::GetReplacementSlot48's
-  // terrain-coverage-not-found path (0x5389a9) to clear this nation's flag for the
-  // target port zone's context ordinal.
-  void SetByteFlagAtOffsetAF0ByIndex(int contextOrdinal, char value); // 0x4e8bf0
-
-  // Sets mapNodeStateFlags[provinceIndex] to `value`, except when value == 1 and the
-  // province's map-action-context link is unavailable (no active context for this
-  // nation), in which case it's forced to 0 instead. Same gate/array
-  // QueueMapActionMissionsForPortZoneCandidates already uses directly. 0x4e8b50.
-  void SetMapStateByteFlag970WithRuntimeGate(int provinceIndex, int value);
 };

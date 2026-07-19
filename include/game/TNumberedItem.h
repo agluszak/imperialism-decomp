@@ -129,7 +129,8 @@ public:
   // slot 0x73 UniversityDialogMethod_00405623 inherited unchanged (0x572bb0)
   // slot 0x74 OrphanCallChain_C1_I14_005736c0 inherited unchanged (0x5736c0)
   // slot 0x75 OrphanCallChain_C1_I08_00573690 inherited unchanged (0x573690)
-  unsigned char pad0[0xac];
+  // RTTI proves TNumberedItem is TMegaPicture (0xac) + these 4 bytes (0xb0 total) --
+  // the base's own 0xac bytes must not be re-declared here as padding.
   short iconRowIndexAc; // +0xac icon-strip row (badge background variant)
   short badgeCountAe;   // +0xae the number drawn on the badge
 

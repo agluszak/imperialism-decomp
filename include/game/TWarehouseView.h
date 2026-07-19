@@ -130,4 +130,10 @@ public:
   // slot 0x78 SetUniversityDialogTextAndRefresh inherited unchanged (0x4c6ff0)
 
   TWarehouseView();
+
+  // Own fields at +0xa0..+0x104 (RTTI m_nObjectSize 0x104 vs TBuildingView's 0xa0).
+  // CreateObject (0x4c71f0) only re-zeroes inherited TBuildingView::field94 and
+  // installs the vtable -- nothing new is written in this range at construction, so
+  // it's still fully unrecovered warehouse-view state.
+  unsigned char warehouseViewStateA0[0x104 - 0xa0];
 };

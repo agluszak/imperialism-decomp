@@ -8,7 +8,15 @@
 IMPLEMENT_DYNCREATE(TNavyRoster, TMilitaryPageView)
 
 // FUNCTION: IMPERIALISM 0x00564d20
-TNavyRoster::TNavyRoster() {}
+TNavyRoster::TNavyRoster() {
+  field84 = 0;
+  field88 = 0;
+  field8c = 0;
+  field90 = 0;
+  field94 = 0;
+  field98 = 0;
+  field9c = 0;
+}
 
 // SYNTHETIC: IMPERIALISM 0x00564d70
 // TNavyRoster::`scalar deleting destructor'

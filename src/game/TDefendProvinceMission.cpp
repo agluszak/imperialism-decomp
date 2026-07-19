@@ -1,6 +1,7 @@
 // TDefendProvinceMission implementations.
 
 #include "game/TDefendProvinceMission.h"
+#include "game/TAutoGreatPower.h"
 #include "game/TDiplomacyMgr.h"
 #include "game/TGlobalMapState.h"
 #include "game/TMapMgr.h"
@@ -254,7 +255,8 @@ struct TDefendProvinceMissionOrderItemLayout {
 
 // FUNCTION: IMPERIALISM 0x0053ebe0
 void TDefendProvinceMission::Free() {
-  TGreatPower* nationState = g_apNationStates[nationId04];
+  // See TAttackProvinceMission::Free: the tail AI state block is TAutoGreatPower-only.
+  TAutoGreatPower* nationState = static_cast<TAutoGreatPower*>(g_apNationStates[nationId04]);
   nationState->AssertValid();
 
   nationState->SetMapStateByteFlag970WithRuntimeGate(field_14, 0);
@@ -321,7 +323,8 @@ void TDefendProvinceMission::ResetValue0CToZero() {
 
 // FUNCTION: IMPERIALISM 0x0053edf0
 void TDefendProvinceMission::NoOpSlot3C() {
-  TGreatPower* nationState = g_apNationStates[nationId04];
+  // See TAttackProvinceMission::Free: floatB64/floatB68 are TAutoGreatPower-only.
+  TAutoGreatPower* nationState = static_cast<TAutoGreatPower*>(g_apNationStates[nationId04]);
   nationState->AssertValid();
 
   float fStack_c = nationState->floatB68;

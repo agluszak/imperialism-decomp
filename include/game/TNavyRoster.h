@@ -119,4 +119,16 @@ public:
   virtual undefined InitializePagedListLineDataControlsAndHeaderBitmap(); // slot 0x6e 0x564dc0
 
   TNavyRoster();
+
+  // Own fields at +0x88..+0xd0 (RTTI m_nObjectSize 0xd0 vs TMilitaryPageView's 0x88).
+  // CreateObject (0x564c30) zeroes six dwords here (offsets 0x88/0x8c/0x90/0x94/0x98/
+  // 0x9c) in addition to re-initializing the inherited TMilitaryPageView::field84;
+  // semantic meaning not yet recovered beyond "zeroed at construction".
+  int field88;
+  int field8c;
+  int field90;
+  int field94;
+  int field98;
+  int field9c;
+  unsigned char pada0[0xd0 - 0xa0];
 };

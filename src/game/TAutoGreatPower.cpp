@@ -28,8 +28,16 @@
 
 #include "game/TMultiplayerMgr.h"
 #include "game/TShip.h"
+#include "game/GameAssert.h"
+#include "game/ui_invalidation_guard.h"
+#include "game/TMilitaryUnit.h"
+#include "game/TProvinceDesirabilityList.h"
 
 extern "C" int __cdecl rand(void);
+
+// Real body ported in TMission.cpp (0x00535940).
+TMission* __cdecl FindFirstTrackedHandlerMatchingModeAndShortKey(TSortedList* list, int kind,
+                                                                 short key, int mode);
 
 // kNationSlotCount (0x17) comes from TDiplomacyMgr.h.
 static const int kAidAllocationRowCount = 0x10;
@@ -37,13 +45,13 @@ static const int kAidAllocationColumnCount = 0x17;
 static const int kMapNodeCount = 0x180;
 static const int kPortZoneCount = 0x70;
 
-undefined4 PopulateCase16AdvisoryMapNodeCandidateState(void);
-
-// FUNCTION: IMPERIALISM 0x004e6b10
-char TAutoGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage(void) { return 0; }
-
 // SYNTHETIC: IMPERIALISM 0x004e6a70
 // TAutoGreatPower::CreateObject
+
+// FUNCTION: IMPERIALISM 0x004e6b10
+char TAutoGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage(void) {
+  return 0;
+}
 
 // SYNTHETIC: IMPERIALISM 0x004e6b30
 // TAutoGreatPower::GetRuntimeClass
@@ -549,6 +557,306 @@ char TAutoGreatPower::ReturnZeroSlot9D(int targetNation) {
   return 0;
 }
 
+// FUNCTION: IMPERIALISM 0x004e83d0
+void TAutoGreatPower::QueueMapActionMissionsForPortZoneCandidates() {
+  TLongintList* regionList = this->ownedRegionList;
+  int regionCount = regionList->GetSize();
+
+  for (int i = 1; i <= regionCount; i++) {
+    int regionId = regionList->At(i);
+    bool unavailable = g_pGlobalMapState->IsNodeTypeLinkUnavailableAndNoActiveMapActionContext(
+        regionId, this->nationSlot);
+    this->mapNodeStateFlags[regionId] = (unavailable == false);
+    QueueMapActionMissionFromCandidateAndMarkState(kMissionTypeDefendProvince, regionId, 0, -1);
+  }
+
+  TZone* portZone = g_pActiveMapOrderContext->FindFirstPortZoneContextByNation(this->nationSlot);
+
+  if (portZone->PrimaryZoneHeapCapacity() == 0) {
+    void* resized = realloc(portZone->PrimaryZoneHeapData(), 8);
+    if (resized == 0) {
+      resized = realloc(portZone->PrimaryZoneHeapData(), 4);
+      portZone->PrimaryZoneHeapData() = static_cast<TZone**>(resized);
+      portZone->PrimaryZoneHeapCapacity() = 1;
+    } else {
+      portZone->PrimaryZoneHeapData() = static_cast<TZone**>(resized);
+      portZone->PrimaryZoneHeapCapacity() = 2;
+    }
+  }
+
+  if (portZone->PrimaryZoneHeapSize() == 0) {
+    portZone->PrimaryZoneHeapSize() = 1;
+  }
+
+  TZone** heapData = portZone->PrimaryZoneHeapData();
+  TZone* firstEntry = *heapData;
+
+  short index = (firstEntry != 0) ? *(short*)((char*)firstEntry + 0x14) : -1;
+  this->portZoneStateFlags[index] = 1;
+  QueueMapActionMissionFromCandidateAndMarkState(kMissionTypeDefendProvince, -1, firstEntry, -1);
+
+  index = (portZone != 0) ? *(short*)((char*)portZone + 0x14) : -1;
+  this->portZoneStateFlags[index] = 1;
+  QueueMapActionMissionFromCandidateAndMarkState(kMissionTypeDefendProvince, -1, portZone, -1);
+
+  QueueMapActionMissionFromCandidateAndMarkState(kMissionTypeBlockadePort, -1, 0, -1);
+}
+
+// FUNCTION: IMPERIALISM 0x004e8540
+void TAutoGreatPower::QueueMapActionMissionFromCandidateAndMarkState(eMissionType arg1, int arg2,
+                                                                     TZone* portZoneContext,
+                                                                     int arg4) {
+  const unsigned char kNodeStateAvailable = 1;
+  const unsigned char kNodeStateQueued = 2;
+
+  if (arg2 != -1 && this->mapNodeStateFlags[arg2] != kNodeStateAvailable) {
+    return;
+  }
+
+  if ((portZoneContext != 0) && (arg4 == -1)) {
+    short index = g_pMapActionContextListHead->GetContextOrdinalOrInvalid();
+    if (this->portZoneStateFlags[index] != kNodeStateAvailable) {
+      return;
+    }
+  }
+
+  eMissionType missionKind = arg1;
+  if ((portZoneContext != 0) && (arg2 == -1) && (arg4 == -1) &&
+      (arg1 != kMissionTypeBlockadePort)) {
+    missionKind = kMissionTypeDefendProvince;
+    arg4 = -1;
+  }
+
+  TMission* missionObj = CreateMissionObjectByKindAndNodeContext(
+      this->nationSlot, missionKind, arg2, reinterpret_cast<int>(portZoneContext), arg4);
+  if (missionObj == 0) {
+    GAME_FAIL_NIL_POINTER();
+    TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UCountryAuto.cpp", 0x5ed);
+  }
+
+  TSortedList* missionQueue = this->missionQueue;
+  missionQueue->AddTail(missionObj);
+
+  if (arg2 != -1) {
+    this->mapNodeStateFlags[arg2] = kNodeStateQueued;
+  }
+  if (portZoneContext != 0) {
+    // portZoneContext is a tagged parameter in the original: -1 selects the active
+    // context ordinal, other non-null values double as a map-node index below.
+    if (portZoneContext == reinterpret_cast<TZone*>(-1)) {
+      short index = g_pMapActionContextListHead->GetContextOrdinalOrInvalid();
+      this->portZoneStateFlags[index] = kNodeStateQueued;
+    }
+    if (portZoneContext != reinterpret_cast<TZone*>(-1)) {
+      this->mapNodeStateFlags[reinterpret_cast<int>(portZoneContext)] = kNodeStateQueued;
+    }
+  }
+}
+// province's map-action-context link is unavailable for this nation, in which case it's
+// forced to 0 -- the same gate/array QueueMapActionMissionsForPortZoneCandidates above
+// already uses directly.
+// FUNCTION: IMPERIALISM 0x004e8b50
+void TAutoGreatPower::SetMapStateByteFlag970WithRuntimeGate(int provinceIndex, int value) {
+  if (value == 1 && g_pGlobalMapState->IsNodeTypeLinkUnavailableAndNoActiveMapActionContext(
+                        provinceIndex, nationSlot)) {
+    value = 0;
+  }
+  mapNodeStateFlags[provinceIndex] = static_cast<unsigned char>(value);
+}
+
+// FUNCTION: IMPERIALISM 0x004e8bf0
+void TAutoGreatPower::SetByteFlagAtOffsetAF0ByIndex(int contextOrdinal, char value) {
+  portZoneStateFlags[contextOrdinal] = static_cast<unsigned char>(value);
+}
+
+// FUNCTION: IMPERIALISM 0x004e92b0
+void TAutoGreatPower::PopulateCase16AdvisoryMapNodeCandidateState() {
+  int orderTypes[4];
+  orderTypes[0] = 2;
+  orderTypes[1] = 3;
+  orderTypes[2] = 4;
+  orderTypes[3] = 6;
+
+  // Reset the transient (value 1) candidate flags; sticky values survive.
+  int i;
+  for (i = 0; i < 0x180; ++i) {
+    if (mapNodeStateFlags[i] == 1) {
+      mapNodeStateFlags[i] = 0;
+    }
+  }
+
+  // Mark candidate regions from every flagged great power's owned regions, plus (for
+  // eligible slots) the minors whose capability rows decode to that slot.
+  int slot;
+  for (slot = 0; slot < 7; ++slot) {
+    if (g_apNationStates[slot] != 0 && candidateNationFlags[slot] != 0) {
+      int j;
+      for (j = 1; j <= g_apNationStates[slot]->ownedRegionList->GetSize(); ++j) {
+        int region = g_apNationStates[slot]->ownedRegionList->At(j);
+        if (mapNodeStateFlags[region] == 0) {
+          char markValue = 1;
+          if (g_pGlobalMapState->IsNodeTypeLinkUnavailableAndNoActiveMapActionContext(
+                  region, this->nationSlot) != 0) {
+            markValue = 0;
+          }
+          mapNodeStateFlags[region] = markValue;
+        }
+      }
+      if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(slot) != 0) {
+        int minorIndex;
+        for (minorIndex = 0; minorIndex < 9; ++minorIndex) {
+          if (g_apMinorNationCapabilityObjects[minorIndex]->IsEncodedNationSlotMinus200Equal(
+                  slot) != 0) {
+            int m;
+            for (m = 1;
+                 m <= g_apMinorNationCapabilityObjects[minorIndex]->ownedRegionList->GetSize();
+                 ++m) {
+              int minorRegion =
+                  g_apMinorNationCapabilityObjects[minorIndex]->ownedRegionList->At(m);
+              if (mapNodeStateFlags[minorRegion] == 0) {
+                char markValue = 1;
+                if (g_pGlobalMapState->IsNodeTypeLinkUnavailableAndNoActiveMapActionContext(
+                        minorRegion, this->nationSlot) != 0) {
+                  markValue = 0;
+                }
+                mapNodeStateFlags[minorRegion] = markValue;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  // Same marking for every flagged minor's own regions.
+  int minorSlot;
+  for (minorSlot = 0; minorSlot < 16; ++minorSlot) {
+    if (candidateNationFlags[7 + minorSlot] != 0) {
+      int j;
+      for (j = 1; j <= g_apSecondaryNationStateSlots[7 + minorSlot]->ownedRegionList->GetSize();
+           ++j) {
+        int region = g_apSecondaryNationStateSlots[7 + minorSlot]->ownedRegionList->At(j);
+        if (mapNodeStateFlags[region] == 0) {
+          char markValue = 1;
+          if (g_pGlobalMapState->IsNodeTypeLinkUnavailableAndNoActiveMapActionContext(
+                  region, this->nationSlot) != 0) {
+            markValue = 0;
+          }
+          mapNodeStateFlags[region] = markValue;
+        }
+      }
+    }
+  }
+
+  if (g_pDiplomacyTurnStateManager->HasAnyWarRelationForNation(this->nationSlot) != 0) {
+    // At war: purge the interior minister's queues for each advisory order type.
+    int t;
+    for (t = 0; t < 4; ++t) {
+      interiorMinister->InteriorSlot1F(orderTypes[t]);
+    }
+    return;
+  }
+
+  CString nationText;
+  CString turnText;
+  CString preludeText;
+  FormatOverlayTerrainLabelText(&nationText);
+  turnText.Format(g_szDecimalFormat, static_cast<short>(g_pSimMgr->quarterGateTick2c / 4));
+
+  int t;
+  for (t = 0; t < 4; ++t) {
+    g_pSimMgr->GetStringPrelude(static_cast<short>(orderTypes[t]), &preludeText);
+    if (interiorMinister->InteriorSlot1E(orderTypes[t]) >= 5) {
+      TProvinceDesirabilityList* candidates = new TProvinceDesirabilityList();
+      candidates->InitializeProvinceRecordSize();
+
+      int rec;
+      for (rec = 0; rec < 0x180; ++rec) {
+        short owner = g_pGlobalMapState->cityScoreTable[rec].ownerNationCode00;
+        if (owner == -1) {
+          continue;
+        }
+        if (g_pDiplomacyTurnStateManager->GetNationPairDiplomacyRelationCode(this->nationSlot,
+                                                                             owner) == 2) {
+          continue;
+        }
+        if (g_apTerrainTypeDescriptorTable[owner]->encodedNationSlot >= 200) {
+          if (g_pDiplomacyTurnStateManager->GetNationPairDiplomacyRelationCode(
+                  this->nationSlot,
+                  g_apTerrainTypeDescriptorTable[owner]->DecodeOwnerNationSlot()) == 2) {
+            continue;
+          }
+        }
+        if (mapNodeStateFlags[rec] != 0) {
+          continue;
+        }
+        if (((1 << orderTypes[t]) &
+             g_pGlobalMapState->cityScoreTable[rec].resourcePresenceMaskA2) == 0) {
+          continue;
+        }
+
+        short score = g_pDiplomacyTurnStateManager
+                          ->relationStandingScoreMatrix79c[this->nationSlot * 0x17 + owner];
+        int linkBonus;
+        int nodeBuffer[12];
+        if (g_pGlobalMapState->HasDirectOrFallbackLinkedNodeType(rec, this->nationSlot, 1) != 0) {
+          linkBonus = 0;
+        } else if (g_pGlobalMapState->CollectSecondDegreeLinksWithMinorNationFallback(
+                       rec, this->nationSlot, nodeBuffer, 1) != 0) {
+          linkBonus = 0x14;
+        } else if (g_pActiveMapOrderContext->FindMapActionContextContainingNodeByIndex(rec) != 0) {
+          linkBonus = 0x28;
+        } else {
+          continue;
+        }
+        score = static_cast<short>(score + linkBonus);
+
+        struct ProvinceCandidateRecord {
+          short regionIndex;
+          short score;
+        } candidate;
+        candidate.regionIndex = static_cast<short>(rec);
+        candidate.score = score;
+        if (owner < 7 && g_pSimMgr->IsNationSlotEligibleForEventProcessing(owner) != 0) {
+          candidate.score = static_cast<short>(candidate.score + 0x14);
+        }
+        candidates->InsertCopiedRecordSortedByComparator(&candidate);
+      }
+
+      // Flag the top one or two candidates.
+      if (candidates->GetSize() != 0) {
+        short* topRecord = static_cast<short*>(candidates->GetPtrListEntryByOneBasedIndex(1));
+        int topRegion = topRecord[0];
+        if (mapNodeStateFlags[topRegion] == 0) {
+          char markValue = 1;
+          if (g_pGlobalMapState->IsNodeTypeLinkUnavailableAndNoActiveMapActionContext(
+                  topRegion, this->nationSlot) != 0) {
+            markValue = 0;
+          }
+          mapNodeStateFlags[topRegion] = markValue;
+        }
+        if (candidates->GetSize() >= 2) {
+          short* secondRecord = static_cast<short*>(candidates->GetPtrListEntryByOneBasedIndex(2));
+          int secondRegion = secondRecord[0];
+          if (mapNodeStateFlags[secondRegion] == 0) {
+            char markValue = 1;
+            if (g_pGlobalMapState->IsNodeTypeLinkUnavailableAndNoActiveMapActionContext(
+                    secondRegion, this->nationSlot) != 0) {
+              markValue = 0;
+            }
+            mapNodeStateFlags[secondRegion] = markValue;
+          }
+        }
+      }
+      if (candidates != 0) {
+        candidates->ReleasePtrList();
+      }
+    }
+  }
+}
+
+// Sets mapNodeStateFlags[provinceIndex] to `value`, except when value == 1 and the
+
 // FUNCTION: IMPERIALISM 0x004e9a50
 void TAutoGreatPower::SelectAndQueueAdvisoryMapMissionsCase16(void) {
   // Declaration order fixes the frame slot layout (0x12..0x34); the split
@@ -916,6 +1224,22 @@ void TAutoGreatPower::NoOpTailStateHookSlot2B4(void) {}
 // FUNCTION: IMPERIALISM 0x004eae70
 void TAutoGreatPower::NoOpTailStateHookSlot2B8(int arg) {
   (void)arg;
+}
+
+// For every unassigned (ownerMission40 == nullptr) non-naval (GetUnitMovementClassId() ==
+// 0) unit in militaryUnitList44, finds the queued mission (kind 3, keyed by the unit's own
+// tileIndex06) in missionQueue and adopts the unit into it (AdoptUnitSlot80).
+// FUNCTION: IMPERIALISM 0x004eafa0
+void TAutoGreatPower::SeedTrackedEntryAssignmentsFromEligibleUnits() {
+  CIterator iter(militaryUnitList44);
+  for (TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(iter.Reset()); iter.More();
+       unit = static_cast<TMilitaryUnit*>(iter.Advance())) {
+    if (unit->ownerMission40 == nullptr && unit->GetUnitMovementClassId() == 0) {
+      TMission* handler =
+          FindFirstTrackedHandlerMatchingModeAndShortKey(missionQueue, 3, unit->tileIndex06, 0);
+      handler->AdoptUnitSlot80(unit, 1);
+    }
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x004eb0d0

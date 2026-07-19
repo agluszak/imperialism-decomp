@@ -52,10 +52,13 @@ step never silently chooses a model. Current verdicts over 534 records:
 
 | verdict | count | meaning |
 |---|---|---|
-| **verified** | **312** | source declaration reproduces the original object size under the original compiler — safe to project |
-| source_incomplete | 83 | oracle < binary: the source class is missing trailing fields; finish the declaration to unblock |
-| source_oversized | 13 | oracle > binary: the source declares MORE than the original object (e.g. `TGreatPower` 0xb6c vs 0x964, `TMinister` 0x48 vs 0x10) — modelling errors to fix |
+| **verified** | **408** | source declaration reproduces the original object size under the original compiler — safe to project |
+| source_incomplete | 0 | oracle < binary: the source class is missing trailing fields; finish the declaration to unblock |
+| source_oversized | 0 | oracle > binary: the source declares MORE than the original object — modelling errors to fix |
 | no_rtti | 126 | no CRuntimeClass in the binary; oracle-only evidence, projectable with the caveat recorded |
+
+Every class with `CRuntimeClass` evidence is `verified` — the size-mismatch queue
+that used to block `apply-class-model` for a subset of records is empty.
 
 Evidence CSV: `build-msvc500/evidence/class_model_audit.csv`.
 
@@ -72,24 +75,42 @@ Class projection must run BEFORE signature projection in
 `ghidra-apply-source-full`, so the signature projector resolves parameter types
 against real layouts instead of placeholders.
 
-## Worked investigation notes (the remaining 24 blocked classes)
+## Worked investigation notes (resolved re-attributions)
 
-**TGreatPower family (5 × oversized −0x208).** The binary's object size is 0x964
-for TGreatPower and all concrete subclasses except THostGreatPower (0x968 — one
-extra dword). The source's trailing six fields — `actionMetricByQuarter`@0x964,
+**TGreatPower family (was 5 × oversized −0x208; now verified).** The binary's
+object size is 0x964 for TGreatPower and all concrete subclasses except
+THostGreatPower (0x968 — one extra dword, now modelled as `THostGreatPower::
+field964`). The source's trailing six fields — `actionMetricByQuarter`@0x964,
 `mapNodeStateFlags[384]`, `portZoneStateFlags[112]`, `missionQueue`, `floatB64`,
-`floatB68` — sum to **exactly 0x208**: they are real, referenced members (81 uses
-in 5 TUs) that do NOT live inside TGreatPower instances in the original. The
-re-attribution work is tracing those accesses in the disassembly to their real
-receiver (a holder object, globals, or a side allocation the decomp folded into
-the class). Until then the family stays blocked — projecting either model would
-be wrong.
+`floatB68` — summed to exactly 0x208 and turned out to be real `TAutoGreatPower`
+(RTTI size 0xb70) members mis-declared on the shared base: disassembly of
+`TSimMgr::RebuildPrimaryNationStateForSlot` (0x57cda0) proved the one "bare
+`TGreatPower`" construction site actually allocates `operator_new(0xb70)` and
+calls `TAutoGreatPower::TAutoGreatPower()` (ctor thunk 0x407a31 -> 0x4e6b50).
+The six fields (and their five owning methods) moved from `TGreatPower` to
+`TAutoGreatPower`; every non-AI caller (`TAttackProvinceMission`,
+`TDefendProvinceMission`, `TBlockadePortMission`, `TControlSeaZoneMission`,
+`TDefenseMinister`) was retyped from `TGreatPower*` to `TAutoGreatPower*` at
+the point it reaches into that tail block, since missions are an AI-only game
+mechanic.
 
-**TCityInteriorMinister family (5 × incomplete +380 each) + TMinister/TInteriorMinister
-(oversized −0x38/−0x20).** One interconnected hierarchy mis-model: the minister
-base classes over-declare while the concrete city-minister classes under-declare
-by a constant 380 — consistent with fields sitting at the wrong level of the
-hierarchy. Needs the same evidence-driven re-attribution.
+**TCityInteriorMinister family (was 5 × incomplete +380 each) + TMinister/
+TInteriorMinister (was oversized −0x38/−0x20; now verified).** TMinister's
+true RTTI size is 0x10 (vptr + `ownerContextAt04` + `field_8` + `skillIndexC`).
+The block previously declared at TMinister+0x10..0x48 was not shared base
+state: `TForeignMinister` owns it via its own real virtual overrides
+(`AddToForeignMinisterCounterAtIndex` 0x52f4f0, `SetForeignMinisterPrimary-
+AndSecondaryTargets` 0x52f540), while `TInteriorMinister`/`TCityInteriorMinister`
+write the *same relative offsets* (0x14/0x16, confirmed via
+`TSteelCityMinister::TSteelCityMinister` 0x4c59e0 and siblings) for an
+unrelated capability-flag pair of their own — two independent derived-class
+field blocks that coincidentally share layout, not one shared block. Each
+minister subclass (`TForeignMinister`, `TInteriorMinister`, `TDefenseMinister`)
+now declares its own fields/padding for that range, and
+`TCityInteriorMinister` (whose four leaf subclasses add zero bytes of their
+own — all four share its 0x1c4 RTTI size exactly) carries an honest padding
+block for its still-unrecovered +0x28..+0x1c4 state, with the one
+ctor-confirmed scalar (`field18c`) named.
 
 Every remaining class carries its exact delta in
 `build-msvc500/evidence/class_model_audit.csv`; fixing a declaration
@@ -97,3 +118,33 @@ auto-unblocks its projection on the next `generate-type-model` +
 `apply-class-model` run, and the oracle re-run physically verifies each edit
 (as it caught the cascade double-counts and the TDeluxeText→TTEView
 mis-attribution during the delta≤28 campaign).
+
+**Final dozen (5 incomplete UI/view classes, 6 oversized, 1 UI stub) — all now
+verified.** Two distinct bug shapes:
+
+- *Genuinely unrecovered UI state* (`THighScoresPicture` +360, `TScenarioChooser`
+  +204, `TPopulationMgr` +44, `TShipyardView` +44, `TWarehouseView` +100): ctor
+  ground truth showed nothing but a vtable install (or re-zeroing an inherited
+  field), so the gap is closed with an honest byte-array pad and an evidence
+  comment, per the established campaign pattern — no fabricated fields.
+  `TNavyRoster` (+72) was the one exception with real evidence: its ctor
+  (0x564d20, previously an empty stub) zeroes six dwords in its own block, now
+  named fields with the stub body filled in to match.
+- *Base-field duplication* (`TAmtBarCluster` −8, `TCapacityOrder` −80,
+  `TNumberedItem` −172, `TGameWindow` −308, `TTacArmyView` −8, `TShipAmtBar`
+  −4): a derived class re-declared bytes that already belonged to an inherited
+  base field at the same offset — sometimes an entire already-correct base
+  (`TNumberedItem`'s `pad0[0xac]` duplicated all of `TMegaPicture`;
+  `TCapacityOrder` duplicated nearly every field already on `TProductionOrder`/
+  `TItemOrder`), sometimes one coincidentally-reused slot (`TShipAmtBar`'s
+  `selectedShipOrder` was the same offset as inherited `TIndustryAmtBar::
+  selectedMetricRecord`; `TTacArmyView`'s `toolbarD0`/`battlefieldOriginOffsetXD4`
+  were actually `TTacticalBattleView`'s own fields, retyped/renamed there from
+  opaque `int fieldD0`/`fieldd4` once ground truth resolved their real type).
+  Fixed by deleting the duplicate declaration and using the inherited field
+  (retyped to match real usage where the existing base type was wrong, e.g.
+  `TProductionOrder::summaryField0c` from `void*` to `TPopulationMgr*`).
+
+Audit is now 408/408 `CRuntimeClass`-evidenced records `verified`, 0
+`source_incomplete`/`source_oversized` — the size-mismatch queue that used to
+gate `apply-class-model` is empty.

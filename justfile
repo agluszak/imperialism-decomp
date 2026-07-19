@@ -708,6 +708,14 @@ ghidra-vtable-struct-check *args: _require-ghidra-install
 ghidra-datatype-audit *args: _require-ghidra-install
   uv run python -m tools.ghidra.datatype_audit {{args}}
 
+# MUTATES (with --apply): removes /Demangler/<Name> datatypes that duplicate a
+# canonical root datatype by simple name, one cause of TypeResolver's
+# ambiguous_simple_name grade. Dry-run by default.
+[doc('Remove /Demangler duplicate datatypes that make TypeResolver name lookups ambiguous')]
+[group('ghidra-inspect')]
+dedupe-ambiguous-datatypes *args: _require-ghidra-install
+  uv run python -m tools.ghidra.dedupe_ambiguous_datatypes {{args}}
+
 # Decompile benchmark gate: must-keep patterns for curated Ghidra typing work.
 # Pass --strict to also fail on missing should-improve patterns.
 [doc('Decompile benchmark gate for curated Ghidra typing work')]

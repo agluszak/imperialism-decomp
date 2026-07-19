@@ -7,6 +7,7 @@
 // Forward declarations for types referenced by generated signatures.
 class TStream;
 class TCity;
+class TPopulationMgr;
 
 // TProductionOrder is the common base for the city order-slot family
 // (TShipOrder, TTrainingOrder, TItemOrder/TOrItemOrder, TUnitOrder,
@@ -46,7 +47,7 @@ public:
   // roles (pending quantity, owning city, resource/entry id).
   short quantityField04;       // 0x04 — pending order quantity
   TCity* cityField08;          // 0x08 — owning city
-  void* summaryField0c;        // 0x0c — summary/list link (unresolved use)
+  TPopulationMgr* summaryField0c; // 0x0c — city population/production summary
   short trackingSlots10[0x17]; // 0x10..0x3e — per-resource tracking slots
   short field3e;               // 0x3e
   short field40;               // 0x40
