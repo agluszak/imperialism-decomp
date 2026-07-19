@@ -102,7 +102,7 @@ void TArmyBattle::InitializeBattleSetupAndMaybeDispatchTurnEventED8(TArmyStack* 
 // FUNCTION: IMPERIALISM 0x005a4990
 void TArmyBattle::ReadFrom(TStream* stream) {
   stream->ReadBytes(&currentSideC, 4);
-  stream->ReadBytes(&field10, 4);
+  stream->ReadBytes(&battleLive10, 4);
   // Per-side stack identity triplets (index into g_apNationStates, owner nation code,
   // originating tile), written by WriteTo from each player's armyStack28.
   int ourNationIndex;
@@ -178,9 +178,9 @@ void TArmyBattle::ReadFrom(TStream* stream) {
   selectedUnit1c = linkedRecord;
 
   stream->ReadBytes(&battleSiteIndex38, 4);
-  stream->ReadBytes(&field44, 4);
+  stream->ReadBytes(&battleOutcomeCode44, 4);
   stream->ReadBytes(&fortLevel49, 1);
-  stream->ReadBytes(&field4c, 4);
+  stream->ReadBytes(&moveAnimSuppressCode4c, 4);
   stream->ReadBytes(&compositionClass50, 4);
 
   // Rebuild the two combatant stacks and re-add every source unit to its side.
@@ -211,7 +211,7 @@ void TArmyBattle::ReadFrom(TStream* stream) {
 // FUNCTION: IMPERIALISM 0x005a4da0
 void TArmyBattle::WriteTo(TStream* stream) {
   stream->WriteBytesSlot78(&currentSideC, 4);
-  stream->WriteBytesSlot78(&field10, 4);
+  stream->WriteBytesSlot78(&battleLive10, 4);
 
   TArmyPlayer* ourPlayer = static_cast<TArmyPlayer*>(tacticalPlayer14);
   ourPlayer->AssertValid();
@@ -257,9 +257,9 @@ void TArmyBattle::WriteTo(TStream* stream) {
   stream->WriteBytesSlot78(&linkedUnitId, 4);
 
   stream->WriteBytesSlot78(&battleSiteIndex38, 4);
-  stream->WriteBytesSlot78(&field44, 4);
+  stream->WriteBytesSlot78(&battleOutcomeCode44, 4);
   stream->WriteBytesSlot78(&fortLevel49, 1);
-  stream->WriteBytesSlot78(&field4c, 4);
+  stream->WriteBytesSlot78(&moveAnimSuppressCode4c, 4);
   stream->WriteBytesSlot78(&compositionClass50, 4);
 }
 

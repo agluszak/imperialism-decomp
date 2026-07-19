@@ -82,7 +82,9 @@ public:
   TacticalTileRecord* tileGrid4;    // +0x04 per-tile grid, allocated by battle setup (0x59f890)
   TTacticalBattleView* battleView8; // +0x08 live view; null when the battle runs headless
   int currentSideC;                 // +0x0c side (0/1) of the current selection; serialized
-  int field10;                      // +0x10 serialized battle-header dword
+  // battleLive10: 0 until the setup/sort step marks the battle live (see
+  // "marks the battle live (battleLive10 = 1)" below); tested before per-round work runs.
+  int battleLive10;                      // +0x10 serialized battle-header dword
   // The two battle players (Mac oracle: TTacticalBattle::InitTacticalBattle(
   // TTacticalPlayer*, TTacticalPlayer*)). Windows evidence: TTacticalBattle::Free
   // (0x59fb50) Free()s both; 0x5a2700 dispatches slots 0x0e/0x0f on them; 0x59fc20
@@ -105,17 +107,24 @@ public:
   int battleSiteIndex38;        // +0x38 cityScoreTable row of the battle site
   int tacticalTileCount3c;      // +0x3c = 0x1b3 (435 = 15*29 battle tiles)
   int tacticalTileStride40;     // +0x40 = 0x1d (29)
-  int field44;                  // +0x44 serialized; 0x5a5320 sets it to 1
-  char field48;                 // +0x48
+  // battleOutcomeCode44: 0 undecided; 1 = side 0 still standing before round 35 (side-0
+  // win), 2 = side-1 win (see the round-cutoff check near roundCounter74 below).
+  int battleOutcomeCode44;                  // +0x44 serialized; 0x5a5320 sets it to 1
+  // pendingEndOfActionFlag48: cleared when the 0x232a end-of-action turn event is queued
+  // (news a TCommand); TArmyPlayer's move/target-selection loops (via the battle14
+  // back-pointer) gate on it being nonzero. No observed set site in ported code yet.
+  char pendingEndOfActionFlag48;                 // +0x48
   char fortLevel49;             // +0x49 serialized; nonzero suppresses depl trench-marking
   unsigned char pad4a[2];       // +0x4a
-  int field4c;                  // +0x4c serialized; == 7 suppresses the move animation
+  int moveAnimSuppressCode4c;                  // +0x4c serialized; == 7 suppresses the move animation
   int compositionClass50;       // +0x50 stack-composition class of the battle
   // Per-row-pair fort strength pools (one slot per two grid rows, tile/58), seeded by
   // LoadBattleSetupTabDataByIndex from g_anFortStrengthPointsByFortLevel; consumed by
   // the mine action, gates passability in slot 0x0a.
   int fortStrengthPoints54[8]; // +0x54
-  int field74;                 // +0x74
+  // roundCounter74: current battle round; battleOutcomeCode44 is only decided once a side
+  // has no live units and roundCounter74 < 0x23 (35).
+  int roundCounter74;                 // +0x74
 
   TTacticalBattle();
 
@@ -154,7 +163,7 @@ public:
   // finalizes the deployment phase or kicks the incoming side's StartBattle. 0x59fd10.
   void HandleTacticalCommandTag_retr();
   // Ends the deployment phase once both sides are ready: retires undeployed units,
-  // sorts the record list into turn order, marks the battle live (field10 = 1), arms
+  // sorts the record list into turn order, marks the battle live (battleLive10 = 1), arms
   // the live-battle toolbar controls and queues the 0x232a event. 0x59fdb0, __thiscall.
   void FinalizeTacticalTurnStateAndQueueEvent232A();
 
@@ -174,7 +183,7 @@ public:
   void ConsumeFortStrengthPointsAndInvalidateIfDepleted(int tileIndex,
                                                         int consumeAmount); // 0x5a3c20
   void EvaluateTacticalSideStateAndShowBattleSummaryDialog();               // 0x5a2750
-  // Queues the 0x232a end-of-action turn event (news a TCommand and clears field48).
+  // Queues the 0x232a end-of-action turn event (news a TCommand and clears pendingEndOfActionFlag48).
   // 0x5a0d60, __thiscall.
   void QueueTacticalEventPacket232A();
   // Paths the unit toward the target tile. 0x5a1520, __thiscall.

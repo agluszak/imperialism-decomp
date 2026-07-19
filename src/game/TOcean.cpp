@@ -58,11 +58,11 @@ void TZone::HandleKeyDown(int key_id) {
   int** slotTable = reinterpret_cast<int**>(secondaryNeighbors.Data());
   unsigned int slotCount = static_cast<unsigned int>(secondaryNeighbors.GetSize());
 
-  if ((field10 & (1U << ((unsigned char)key_id & 0x1f))) == 0) {
-    field10 = static_cast<unsigned short>(field10 | (1U << ((unsigned char)key_id & 0x1f)));
+  if ((nationKeyMask10 & (1U << ((unsigned char)key_id & 0x1f))) == 0) {
+    nationKeyMask10 = static_cast<unsigned short>(nationKeyMask10 | (1U << ((unsigned char)key_id & 0x1f)));
     sVarSlotId = g_pSimMgr->GetActiveNationId();
 
-    if ((field10 & (1U << ((unsigned char)sVarSlotId & 0x1f))) == 0) {
+    if ((nationKeyMask10 & (1U << ((unsigned char)sVarSlotId & 0x1f))) == 0) {
       uSlotCountLocal = slotCount;
       uSlotIndex = 0;
       if (uSlotCountLocal != 0) {
@@ -90,7 +90,7 @@ void TZone::HandleKeyDown(int key_id) {
         key_id = sVarSlotId + 1;
         nSlotsRemaining = 6;
         do {
-          if ((field10 & (1U << ((unsigned char)(key_id % 7) & 0x1f))) != 0) {
+          if ((nationKeyMask10 & (1U << ((unsigned char)(key_id % 7) & 0x1f))) != 0) {
             sVarSlotId = GetActiveNationSlotTile();
             SetMapTileStateByteAndNotifyObserver(sVarSlotId, key_id % 7 + 7);
             *reinterpret_cast<unsigned short*>(
@@ -115,7 +115,7 @@ void TZone::HandleKeyDown(int key_id) {
     sVarActiveSlot = g_pSimMgr->GetActiveNationId();
   }
 
-  if ((field10 & (1U << ((unsigned char)sVarActiveSlot & 0x1f))) != 0) {
+  if ((nationKeyMask10 & (1U << ((unsigned char)sVarActiveSlot & 0x1f))) != 0) {
     for (pvNode = GetNavyPrimaryOrderListHead(); pvNode != 0; pvNode = pvNode->nextOlder24) {
       if (((pvNode->field08 == this) && (pvNode->ownerNationSlot14 == sVarActiveSlot)) &&
           (pvNode->ownerOrderEntry0c == 0)) {
@@ -262,7 +262,7 @@ void TOcean::InitializeMapActionContextsForNationCountUsingCostField(int nationC
 void TOcean::RefreshMapActionContextNationOverlaysAndOrderRanks() {
   // 1) Clear every map-action context's per-nation key mask.
   for (TZone* maskZone = g_pMapActionContextListHead; maskZone != 0; maskZone = maskZone->prev18) {
-    maskZone->field10 = 0;
+    maskZone->nationKeyMask10 = 0;
   }
 
   // 2) Re-seed the masks from the primary navy order list: each ship flags its zone
@@ -270,8 +270,8 @@ void TOcean::RefreshMapActionContextNationOverlaysAndOrderRanks() {
   for (TShip* shipNode = GetNavyPrimaryOrderListHead(); shipNode != 0;
        shipNode = shipNode->nextOlder24) {
     TZone* orderZone = shipNode->field08;
-    orderZone->field10 = static_cast<unsigned short>(
-        orderZone->field10 | (1 << static_cast<unsigned char>(shipNode->ownerNationSlot14)));
+    orderZone->nationKeyMask10 = static_cast<unsigned short>(
+        orderZone->nationKeyMask10 | (1 << static_cast<unsigned char>(shipNode->ownerNationSlot14)));
   }
 
   // 3) Reset overlay tile states across the whole map: nation-overlay states (7..0xd)
@@ -297,7 +297,7 @@ void TOcean::RefreshMapActionContextNationOverlaysAndOrderRanks() {
   if (g_pMapActionContextListHead != 0) {
     unsigned char activeNationBit = static_cast<unsigned char>(1 << activeNationId);
     for (TZone* ctxZone = g_pMapActionContextListHead; ctxZone != 0; ctxZone = ctxZone->prev18) {
-      unsigned char nationFlagged = (ctxZone->field10 & activeNationBit) != 0 ||
+      unsigned char nationFlagged = (ctxZone->nationKeyMask10 & activeNationBit) != 0 ||
                                     ctxZone->HasSecondaryNeighborWithNationTag(activeNationId) != 0;
       if (nationFlagged != 0) {
         ctxZone->SetMapOrderUiFlag(
@@ -306,7 +306,7 @@ void TOcean::RefreshMapActionContextNationOverlaysAndOrderRanks() {
         int slotsRemaining = 6;
         do {
           int slotWrapped = slotCursor % 7;
-          if ((ctxZone->field10 & static_cast<unsigned char>(1 << slotWrapped)) != 0) {
+          if ((ctxZone->nationKeyMask10 & static_cast<unsigned char>(1 << slotWrapped)) != 0) {
             short slotTile = ctxZone->GetActiveNationSlotTile();
             SetMapTileStateByteAndNotifyObserver(slotTile, slotWrapped + 7);
             *reinterpret_cast<unsigned short*>(
@@ -381,10 +381,10 @@ TZone* TOcean::FindPortZoneBySelectedTile(TCity* city) {
     if (portZone == 0) {
       return 0;
     }
-    if (static_cast<short>(portZone->field0c) == selectedTileId) {
+    if (static_cast<short>(portZone->tileOrTerrainId0c) == selectedTileId) {
       return portZone;
     }
-    if (portZone->field20 == selectedTileId) {
+    if (portZone->activeTileIndex20 == selectedTileId) {
       return portZone;
     }
     if (portZone->field48 == selectedTileId) {
@@ -451,8 +451,8 @@ void TOcean::EnsurePortZoneForTile(short nTileIndex) {
   signed char nationSeed = terrainTable[tileIndex].ownerNationTag04;
 
   TZone* existingZone = TZone::GetFirstPortZone();
-  while (existingZone != 0 && static_cast<short>(existingZone->field0c) != nTileIndex &&
-         existingZone->field20 != nTileIndex &&
+  while (existingZone != 0 && static_cast<short>(existingZone->tileOrTerrainId0c) != nTileIndex &&
+         existingZone->activeTileIndex20 != nTileIndex &&
          static_cast<TPortZone*>(existingZone)->field48 != nTileIndex) {
     existingZone = existingZone->GetNextPortZone();
   }
@@ -469,7 +469,7 @@ void TOcean::EnsurePortZoneForTile(short nTileIndex) {
   }
 
   portZone->SetMapActionContextTargetTileAndRefreshMarkers(static_cast<int>(nationSeed), -1);
-  portZone->field0c = tileIndex;
+  portZone->tileOrTerrainId0c = tileIndex;
   portZone->GenerateZoneStatusCodeIfUnset();
   portZone->GenerateMapActionContextDisplayNameAndHeadline(0, 0);
 
@@ -509,8 +509,8 @@ void TOcean::EnsurePortZoneForTile(short nTileIndex) {
   signed char seaTileClass = terrainTable[bestSeaTile].tileActionClass16;
   if (seaTileClass == 3 || seaTileClass == 0xe) {
     linkedContext = TZone::GetFirstPortZone();
-    while (linkedContext != 0 && static_cast<short>(linkedContext->field0c) != bestSeaTile &&
-           linkedContext->field20 != bestSeaTile &&
+    while (linkedContext != 0 && static_cast<short>(linkedContext->tileOrTerrainId0c) != bestSeaTile &&
+           linkedContext->activeTileIndex20 != bestSeaTile &&
            static_cast<TPortZone*>(linkedContext)->field48 != bestSeaTile) {
       linkedContext = linkedContext->GetNextPortZone();
     }
@@ -543,8 +543,8 @@ void TOcean::EnsurePortZoneForTile(short nTileIndex) {
   }
 
   SetMapTileStateByteAndNotifyObserver(static_cast<int>(bestSeaTile), 3);
-  portZone->field0c = static_cast<int>(bestSeaTile);
-  portZone->field20 = portZone->FindNearestActiveSeaContextTileFromOffset216();
+  portZone->tileOrTerrainId0c = static_cast<int>(bestSeaTile);
+  portZone->activeTileIndex20 = portZone->FindNearestActiveSeaContextTileFromOffset216();
 }
 
 // FUNCTION: IMPERIALISM 0x00564240
@@ -554,7 +554,7 @@ void TOcean::RemovePortZoneByTile(short nTileIndex) {
     zone = zone->prev18;
   }
   while (zone != 0) {
-    if (static_cast<short>(zone->field0c) == nTileIndex || zone->field20 == nTileIndex ||
+    if (static_cast<short>(zone->tileOrTerrainId0c) == nTileIndex || zone->activeTileIndex20 == nTileIndex ||
         static_cast<TPortZone*>(zone)->field48 == nTileIndex) {
       zone->Free();
       return;
@@ -588,7 +588,7 @@ void TOcean::FinalizeQueuedMapOrderEntry(TTaskForce* entry) {
     nation = g_pSimMgr->GetActiveNationId();
   }
   int hasPendingNode = 0;
-  if ((zone->field10 & static_cast<unsigned char>(1 << (nation & 0x1f))) != 0) {
+  if ((zone->nationKeyMask10 & static_cast<unsigned char>(1 << (nation & 0x1f))) != 0) {
     for (TShip* node = GetNavyPrimaryOrderListHead(); node != nullptr;
          node = node->nextOlder24) {
       if (node->field08 == zone && node->ownerNationSlot14 == nation &&

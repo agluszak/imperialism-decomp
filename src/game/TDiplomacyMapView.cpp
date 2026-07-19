@@ -61,12 +61,12 @@ void StrategicMapCallbackRecord::AppendPackedColorDword(int surface, int packedC
   const unsigned int packed = (packedColor & 0xff) * 0x01010101u;
 
   // The secondary opcode buffer stores the primary-buffer write cursor in its first dword.
-  if (field24 == 0) {
+  if (cursorBufferSize24 == 0) {
     ownedBuffer20 = new char[sizeof(int)];
-    field24 = sizeof(int);
+    cursorBufferSize24 = sizeof(int);
   }
-  if (field28 == 0) {
-    field28 = 1;
+  if (cursorBufferInitialized28 == 0) {
+    cursorBufferInitialized28 = 1;
   }
   const int cursor = *reinterpret_cast<int*>(ownedBuffer20);
   *EnsureOpcodeBufferByteAtIndex(cursor) = static_cast<unsigned char>(packed);
@@ -78,7 +78,7 @@ void StrategicMapCallbackRecord::AppendPackedColorDword(int surface, int packedC
   // The original hands the destination surface to the generated code in eax, which has no
   // standard C++ calling convention; this is an unavoidable low-level bridge (executing a
   // JIT'd opcode buffer, not a normal-function convention fake).
-  unsigned char* entry = EnsureOpcodeBufferByteAtIndex(field14);
+  unsigned char* entry = EnsureOpcodeBufferByteAtIndex(alignmentCursor14);
   reinterpret_cast<void (*)(int)>(entry)(surface);
 }
 
@@ -148,7 +148,7 @@ TDiplomacyMapView::TDiplomacyMapView() : TPicture() {
   stateFlagAtB8 = 0;
   // Slot 5 of TViewMgr::cursorTable (0x14 + 5*4 = 0x28), reused here as a plain flag rather
   // than a cursor handle -- matches the established this-codebase pattern of dual-purpose
-  // slots (see e.g. TSimMgr::preferenceValues[0] / TWorldView::field74).
+  // slots (see e.g. TSimMgr::preferenceValues[0] / TWorldView::overlayFlagByte74).
   g_pUiRuntimeContext->cursorTable[5] = reinterpret_cast<void*>(1);
 }
 
@@ -288,8 +288,13 @@ void TDiplomacyMapView::BuildDiplomacyNationOverlayGeometryAndHitMasks() {
         labelRect->top = labelY;
         labelRect->right = labelX + textWidth;
         labelRect->bottom = labelY + 0xc;
+        // Reuses this record's opcode-bookkeeping fields (offset 0x08..0x18: bufferCapacity08,
+        // committedLength0c, appendCursor10, alignmentCursor14) as scratch RECT storage here,
+        // before any opcode data has been written to this slot this session -- the same
+        // contiguous-fields-as-RECT idiom DiplomacyMaskBufferRun uses for leftAt04/topAt08/
+        // rightAt0c/bottomAt10 above.
         ClampRectWithinBoundsPreservingSize(
-            labelRect, reinterpret_cast<RECT*>(&packedColorRuns[nationIndex].field08));
+            labelRect, reinterpret_cast<RECT*>(&packedColorRuns[nationIndex].bufferCapacity08));
         int markerX = (static_cast<short>(nation->homeRegionIndex) % 0x6c) * 5;
         int markerY = (static_cast<short>(nation->homeRegionIndex) / 0x6c + 9) * 5;
         RECT* anchorRect = &nationAnchorRects3A4[nationIndex];

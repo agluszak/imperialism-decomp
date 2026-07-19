@@ -84,13 +84,13 @@ static TBitmapSurfaceNode* InitializeBitmapSurfaceNode(int width, int height, in
     const int rowBits = node->dib->m_pInfoHeader->bmiHeader.biWidth *
                         node->dib->m_pInfoHeader->bmiHeader.biBitCount;
     node->stride = static_cast<short>(((rowBits + 31) / 32) * 4);
-    node->field10 = node->dib->m_pInfoHeader->bmiHeader.biWidth;
-    node->field14 = abs(node->dib->m_pInfoHeader->bmiHeader.biHeight);
+    node->pixelWidth10 = node->dib->m_pInfoHeader->bmiHeader.biWidth;
+    node->pixelHeight14 = abs(node->dib->m_pInfoHeader->bmiHeader.biHeight);
   } else {
-    node->field10 = width;
-    node->field14 = height;
+    node->pixelWidth10 = width;
+    node->pixelHeight14 = height;
   }
-  node->field18 = height;
+  node->requestedHeight18 = height;
   return node;
 }
 
@@ -115,8 +115,8 @@ InitializeBitmapDescriptorNodeFromResourceSurfaceImpl(TBitmapSurfaceContextDescr
       static_cast<short>((node->dib->m_pInfoHeader->bmiHeader.biWidth + 3) & ~3);
   descriptor->clipRect.left = 0;
   descriptor->clipRect.top = 0;
-  descriptor->clipRect.right = node->field10;
-  descriptor->clipRect.bottom = node->field14;
+  descriptor->clipRect.right = node->pixelWidth10;
+  descriptor->clipRect.bottom = node->pixelHeight14;
   descriptor->surfaceDib = node->dib;
   return true;
 }

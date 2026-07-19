@@ -21,12 +21,21 @@ public:
   // wrapping 1..4 (reset to 1 when it exceeds 4).
   short clickCycleCounter72;
   // Written by SetFlagByteAndInvokeVslot1A4 (this+0x74=flagByte), read as a byte gate by
-  // TMapDialog::RenderMapDialogTerrainOverlayFrameByTileOwner.
-  unsigned char field74;
+  // TMapDialog::RenderMapDialogTerrainOverlayFrameByTileOwner (selects the overlay style:
+  // 0 = terrain-frame overlay, nonzero = the alternate palette-index blit).
+  unsigned char overlayFlagByte74;
   unsigned char pad75;
-  unsigned short field76;
-  unsigned short field78;
-  unsigned short field7a;
+  // projectionScale76: passed as the scale arg to
+  // ForwardProjectTileIndexToWrappedScreenOffsetByScale when projecting a tile to screen
+  // space for the map-context overlay preview.
+  unsigned short projectionScale76;
+  // previewSquareRadius78: half-extent the projected preview point is grown by on both axes
+  // to build the preview/badge square (RenderMapContextOverlayWithScopedClipAndSurface).
+  unsigned short previewSquareRadius78;
+  // stridedCellRecord7a: strided map-cell record index stashed here before dispatching
+  // through the owning view's vtable slot 0xd (see the ComputeWrappedMapCellAndRegionBand
+  // callers in TWorldView.cpp).
+  unsigned short stridedCellRecord7a;
 
   DECLARE_DYNCREATE(TWorldView)
   TWorldView();

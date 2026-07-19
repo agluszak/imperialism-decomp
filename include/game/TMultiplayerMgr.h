@@ -9,37 +9,48 @@ class TTacticalUnit;
 struct NetMessage;
 
 // 0xa8-byte nation-status snapshot record with a trailing shared-text CString at +0xa4,
-// used as a stack local by the diplomacy turn-event packet handler (0x543910). The POD
-// prefix mirrors the received nation/city state; interior field semantics are still
-// being mapped (named by offset). The default ctor (0x50ec60) constructs only the
-// CString member; the copy-assignment (0x54ae90) copies the POD prefix then the CString.
+// used as a stack local by the diplomacy turn-event packet handler (0x543910); it is also
+// literally the wire body of the event-0x24 city-record packet
+// (TurnEvent24CityRecordPacket::record in TMultiplayerMgr.cpp), and its case-0x24 handler
+// copies field00/02/03/06/block82/A1/A2 directly into TGlobalMapCityScoreRecord's
+// same-named, same-offset fields (TMapMgr.h) -- so this struct is that record's serialized
+// mirror, byte-for-byte. Fields below are renamed by that position-for-position
+// correspondence (serialization-order evidence); byte3B/byte3C are left unrenamed because
+// TGlobalMapCityScoreRecord's own fields at those offsets are themselves still unresolved
+// placeholders. field98/field9C stay `int` (not TMilitaryUnit*/int) since the wire copy is
+// never dereferenced -- the case-0x24 handler skips them entirely when merging into the
+// live record. The default ctor (0x50ec60) constructs only the CString member; the
+// copy-assignment (0x54ae90) copies the POD prefix then the CString.
 struct NationStateRecordA8 {
-  unsigned char field00;
-  unsigned char field01;
-  unsigned char field02;
-  unsigned char field03;
-  short field04;
-  short field06;
-  unsigned char field08;
+  unsigned char ownerNationCode00;
+  unsigned char formerOwnerNationCode01;
+  unsigned char developmentStage;
+  unsigned char fortLevel03;
+  short cityTileIndex04;
+  short lastTurnTick;
+  unsigned char adjacentRegionCount08;
   unsigned char pad09;
-  short block0A[12];
-  short block22[12];
-  unsigned char field3A;
+  short adjacentRegionIds0A[12];
+  short adjacentRegionAnchorTiles22[12];
+  unsigned char linkedRegionCount;
   unsigned char field3B;
   unsigned char field3C;
   unsigned char pad3D;
-  short field3E;
-  short field40;
-  short block42[0x20];
-  short block82[10];
+  short secondaryNeighborTileIndex3e;
+  short primaryNeighborTileIndex40;
+  short linkedRegionIds42[0x20];
+  short resourceDevelopmentCounts82[10];
   short pad96;
-  int field98;
-  int field9C;
-  unsigned char fieldA0;
-  unsigned char fieldA1;
-  unsigned char fieldA2;
-  unsigned char fieldA3;
-  CString sharedTextA4;
+  // reservedUnitChainSlot98/reservedCityScoreSlot9C: byte-range twin of the live record's
+  // stationedUnitChain98 (TMilitaryUnit*) / cityScoreValue (int); transmitted verbatim but
+  // never read back out of this wire copy.
+  int reservedUnitChainSlot98;
+  int reservedCityScoreSlot9C;
+  unsigned char padA0;
+  unsigned char exploredByNationMaskA1;
+  unsigned char resourcePresenceMaskA2;
+  unsigned char regionClassA3;
+  CString cityNameA4;
 
   NationStateRecordA8();
   NationStateRecordA8& operator=(const NationStateRecordA8& source);

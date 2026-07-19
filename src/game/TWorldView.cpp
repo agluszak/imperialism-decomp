@@ -77,7 +77,7 @@ void TWorldView::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* poi
 
 // FUNCTION: IMPERIALISM 0x00595c40
 void TWorldView::SetFlagByteAndInvokeVslot1A4(unsigned char flagByte) {
-  field74 = flagByte;
+  overlayFlagByte74 = flagByte;
   RenderMapContextOverlayWithScopedClipAndSurface();
 }
 
@@ -126,12 +126,12 @@ void TWorldView::RenderMapContextOverlayWithScopedClipAndSurface() {
   short outX = 0;
   ForwardProjectTileIndexToWrappedScreenOffsetByScale(
       previewTile, reinterpret_cast<int>(&viewportOffsetX), reinterpret_cast<int>(&outX),
-      reinterpret_cast<int>(&outY), field76);
+      reinterpret_cast<int>(&outY), projectionScale76);
 
   GetClip(reusableSurfaceA.tempRgn);
   SetGlobalQuickDrawOrigin(static_cast<short>(absoluteX), static_cast<short>(absoluteY));
 
-  // Preview square: the projected origin grown by field78 on both axes
+  // Preview square: the projected origin grown by previewSquareRadius78 on both axes
   // (Mac Rect field order {top, left, bottom, right}; top/left = outY/outX).
   struct MapOverlayRect {
     long top;
@@ -141,8 +141,8 @@ void TWorldView::RenderMapContextOverlayWithScopedClipAndSurface() {
   } previewRect, contentBounds;
   previewRect.top = outY;
   previewRect.left = outX;
-  previewRect.bottom = outY + field78;
-  previewRect.right = outX + field78;
+  previewRect.bottom = outY + previewSquareRadius78;
+  previewRect.right = outX + previewSquareRadius78;
 
   QueryContentBounds(reinterpret_cast<RECT*>(&contentBounds));
   SectRect(reinterpret_cast<RECT*>(&previewRect), reinterpret_cast<RECT*>(&contentBounds),
@@ -166,14 +166,14 @@ void TWorldView::RenderMapContextOverlayWithScopedClipAndSurface() {
     } else if (interactionMode == 1) {
       badgeRect.top = outY;
       badgeRect.left = outX;
-      badgeRect.bottom = outY + field78;
-      badgeRect.right = outX + field78;
+      badgeRect.bottom = outY + previewSquareRadius78;
+      badgeRect.right = outX + previewSquareRadius78;
       RenderTacticalStackCountIndicatorAndUnitBadge(previewTile, &badgeRect, 1);
     } else if (interactionMode == 2) {
       badgeRect.top = outY;
       badgeRect.left = outX;
-      badgeRect.bottom = outY + field78;
-      badgeRect.right = outX + field78;
+      badgeRect.bottom = outY + previewSquareRadius78;
+      badgeRect.right = outX + previewSquareRadius78;
       RenderMapDialogTerrainOverlayFrameByTileOwner(previewTile, &badgeRect, 1);
     }
   }
@@ -313,7 +313,7 @@ void TWorldView::HandleMapTileClickSetOrderContextAndDispatchEvent79(int arg1, i
 }
 
 // Build a TEvent carrying command/dispatch code 0x78, source/target = this view,
-// stash the strided cell record in field7a, and hand it to the slot-0xd dispatcher.
+// stash the strided cell record in stridedCellRecord7a, and hand it to the slot-0xd dispatcher.
 // The field writes intentionally run even when `new` returns null (the original
 // writes through the raw allocation pointer unconditionally).
 // FUNCTION: IMPERIALISM 0x005963d0
@@ -324,7 +324,7 @@ void TWorldView::DispatchOverlayEvent78FromStridedRecord(int stridedRecord, int 
   event->commandNumber = 0x78;
   event->sourceHandler = this;
   event->targetHandler = this;
-  field7a = static_cast<unsigned short>(stridedRecord);
+  stridedCellRecord7a = static_cast<unsigned short>(stridedRecord);
   DispatchQueuedUiCommandAndRelease(event);
 }
 
@@ -337,7 +337,7 @@ void TWorldView::DispatchOverlayEvent78RootHighFromStridedRecord(int stridedReco
   event->commandNumber = 0x78;
   event->sourceHandler = this;
   event->targetHandler = this;
-  field7a = static_cast<unsigned short>(stridedRecord);
+  stridedCellRecord7a = static_cast<unsigned short>(stridedRecord);
   DispatchQueuedUiCommandAndRelease(event);
 }
 

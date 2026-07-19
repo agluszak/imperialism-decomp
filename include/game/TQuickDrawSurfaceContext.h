@@ -41,12 +41,22 @@ ASSERT_SIZE(TQuickDrawSurfaceContext, 0x30);
 struct TBitmapSurfaceNode {
   void* pixelBits;
   short stride;
-  short field06;
+  // pad06: alignment filler after `stride`, matching the sibling TQuickDrawBlitSurface's
+  // pad06 at the same {pixelBits, stride, pad} layout (see above); no observed read/write
+  // beyond InitializeBitmapSurfaceNode's whole-struct memset(0).
+  short pad06;
   int field08;
   int field0c;
-  int field10;
-  int field14;
-  int field18;
+  // pixelWidth10/pixelHeight14: InitializeBitmapSurfaceNode (bitmap_descriptor_helpers.cpp)
+  // sets these from the backing CDib's biWidth / abs(biHeight), and
+  // InitializeBitmapDescriptorNodeFromResourceSurfaceImpl reads them straight into
+  // descriptor->clipRect.right/bottom.
+  int pixelWidth10;
+  int pixelHeight14;
+  // requestedHeight18: set to the raw `height` parameter passed into
+  // InitializeBitmapSurfaceNode, distinct from pixelHeight14's DIB-derived abs(biHeight) --
+  // no observed read site.
+  int requestedHeight18;
   CDib* dib;
 };
 ASSERT_SIZE(TBitmapSurfaceNode, 0x20);

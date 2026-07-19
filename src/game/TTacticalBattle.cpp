@@ -90,7 +90,7 @@ TTacticalBattle::TTacticalBattle() {
   tileMoveCostArray24 = 0;
   selectedUnit1c = 0;
   battlefieldColumnCount34 = 0;
-  field74 = 0;
+  roundCounter74 = 0;
   recordList20 = 0;
 }
 
@@ -130,9 +130,9 @@ void TTacticalBattle::BuildTacticalBattleStateFromBothSides(TTacticalPlayer* our
     }
   }
 
-  field10 = 0;
+  battleLive10 = 0;
   currentSideC = 1;
-  field44 = 0;
+  battleOutcomeCode44 = 0;
   selectedUnit1c = enemyPlayer->SelectNextTacticalUnitForDoneCommand();
 
   // battlefieldColumnCount34 = longest per-unit range across both sides + 11 (the original calls the
@@ -248,7 +248,7 @@ void TTacticalBattle::FinalizeTacticalTurnStateAndQueueEvent232A() {
   tacticalPlayer14->RetireUndeployedUnitsToReserveList();
   tacticalPlayer18->RetireUndeployedUnitsToReserveList();
   recordList20->SortBy(&CompareTacticalUnitsForTurnOrder, this);
-  field10 = 1;
+  battleLive10 = 1;
   if (battleView8 != 0) {
     TTacticalToolbar* toolbar = static_cast<TTacticalToolbar*>(
         battleView8->ownerContext->ResolveControlByTag(kControlTagTool));
@@ -505,7 +505,7 @@ void TTacticalBattle::HandleTacticalBattleCommandTag(int commandTag) {
   }
   switch (commandTag) {
   case 0x646f6e65: // 'done'
-    if (field10 == 1) {
+    if (battleLive10 == 1) {
       QueueTacticalEventPacket232A();
       return;
     }
@@ -515,7 +515,7 @@ void TTacticalBattle::HandleTacticalBattleCommandTag(int commandTag) {
     player->ProceedAfterBattleIntroAccepted();
     return;
   case 0x72657472: // 'retr'
-    if (field10 == 0) {
+    if (battleLive10 == 0) {
       HandleTacticalCommandTag_retr();
       return;
     }
@@ -538,7 +538,7 @@ void TTacticalBattle::HandleTacticalBattleCommandTag(int commandTag) {
 // command (turn event 0x232a) carrying this battle to the UI root controller.
 // FUNCTION: IMPERIALISM 0x005a0d60
 void TTacticalBattle::QueueTacticalEventPacket232A() {
-  field48 = 0;
+  pendingEndOfActionFlag48 = 0;
   TNextMoveCommand* command = new TNextMoveCommand();
   command->InitializeRangePair(0x232a, g_pGlobalUiRootController, 0, 0, 0);
   command->battle18 = this;
@@ -756,7 +756,7 @@ int TTacticalBattle::BuildPathToTargetByDistanceField(int walkTileIndex, int pat
 }
 
 // Moves a unit from one battle-grid tile to another: multiplayer 'move' echo, clear the
-// source tile's occupant, optionally animate (suppressed when field4c == 7), re-anchor
+// source tile's occupant, optionally animate (suppressed when moveAnimSuppressCode4c == 7), re-anchor
 // the unit on the destination tile, and refresh the affected view rects/marker.
 // FUNCTION: IMPERIALISM 0x005a1910
 void TTacticalBattle::MoveTacticalUnitBetweenTiles(TTacticalUnit* unit, int fromTileIndex,
@@ -775,7 +775,7 @@ void TTacticalBattle::MoveTacticalUnitBetweenTiles(TTacticalUnit* unit, int from
   if (battleView8 != 0) {
     battleView8->TriggerTacticalUiUpdate2711();
   }
-  if (field4c != 7) {
+  if (moveAnimSuppressCode4c != 7) {
     if (battleView8 != 0) {
       battleView8->AnimateTacticalUnitMoveBetweenTiles(unit, fromTileIndex, toTileIndex);
     }
@@ -843,7 +843,7 @@ void TTacticalBattle::MoveTacticalUnitAndQueueEvent232AIfNoAdjacentReachableTarg
   if (g_awTacticalUnitCategoryCodeBySlot[unit->unitTypeC] == 7) {
     unit->selectedFlag18 = 0;
   }
-  if (unit->state1c == 0 && field44 == 0) {
+  if (unit->state1c == 0 && battleOutcomeCode44 == 0) {
     if (unit->selectedFlag18 != 0) {
       if (HasValidTacticalFollowupTargetForCurrentAction() != 0) {
         return;
@@ -868,7 +868,7 @@ void TTacticalBattle::MoveTacticalUnitAndQueueEvent232AIfNoAdjacentReachableTarg
 
 // Resolves the action against the target tile (virtual slot 0x10), then ends the
 // action round; category-4/5 (cavalry) attackers with an adjacent tile still reachable
-// keep the round open unless the battle outcome (field44) is already decided.
+// keep the round open unless the battle outcome (battleOutcomeCode44) is already decided.
 // FUNCTION: IMPERIALISM 0x005a1ca0
 void TTacticalBattle::ExecuteTacticalActionAndQueueEventIfNoAdjacentValidTarget(
     TTacticalUnit* unit, int targetTileIndex) {
@@ -886,7 +886,7 @@ void TTacticalBattle::ExecuteTacticalActionAndQueueEventIfNoAdjacentValidTarget(
         if (moveCost != -1 && moveCost <= selectedUnit1c->actionPoints28) {
           // The cavalry unit can still move on: only close the round when the battle
           // outcome is already decided.
-          if (field44 != 0) {
+          if (battleOutcomeCode44 != 0) {
             QueueTacticalEventPacket232A();
           }
           return;
@@ -1188,9 +1188,9 @@ void TTacticalBattle::TransferTacticalUnitToOpposingSide(TTacticalUnit* unit) {
 }
 
 // Post-round tactical evaluation: scan recordList20 for live units per side, decide
-// the battle outcome code (field44: 1 = side 0 still standing before round 35,
+// the battle outcome code (battleOutcomeCode44: 1 = side 0 still standing before round 35,
 // 2 = side 0 wiped out or round limit reached; battle continues while both sides
-// live and field74 < 35), then -- only when a live battle view exists -- build and run
+// live and roundCounter74 < 35), then -- only when a live battle view exists -- build and run
 // the battle-summary turn-event dialog (message context 0xeed): per-nation header
 // picture (0xeed victory / 0xefb defeat + nation id), 'titl' outcome line (group
 // 0x273d idx 1/3/4/6), 'loca' site line (idx 7 expanded with city name + site-owner
@@ -1212,14 +1212,14 @@ void TTacticalBattle::EvaluateTacticalSideStateAndShowBattleSummaryDialog() {
   }
 
   if (sideHasLiveUnit[0] != 0) {
-    if (sideHasLiveUnit[1] != 0 && field74 < 0x23) {
+    if (sideHasLiveUnit[1] != 0 && roundCounter74 < 0x23) {
       return; // both sides still have live units and the round limit is not reached
     }
   }
-  if (sideHasLiveUnit[0] != 0 && field74 < 0x23) {
-    field44 = 1;
+  if (sideHasLiveUnit[0] != 0 && roundCounter74 < 0x23) {
+    battleOutcomeCode44 = 1;
   } else {
-    field44 = 2;
+    battleOutcomeCode44 = 2;
   }
 
   if (battleView8 == 0) {
@@ -1228,8 +1228,8 @@ void TTacticalBattle::EvaluateTacticalSideStateAndShowBattleSummaryDialog() {
 
   unsigned char localIsSide0Player = tacticalPlayer14->IsTacticalControllerOwnedByActiveNation();
   unsigned char localSideWon;
-  if ((field44 == 1 && tacticalPlayer14->IsTacticalControllerOwnedByActiveNation() != 0) ||
-      (field44 == 2 && tacticalPlayer18->IsTacticalControllerOwnedByActiveNation() != 0)) {
+  if ((battleOutcomeCode44 == 1 && tacticalPlayer14->IsTacticalControllerOwnedByActiveNation() != 0) ||
+      (battleOutcomeCode44 == 2 && tacticalPlayer18->IsTacticalControllerOwnedByActiveNation() != 0)) {
     localSideWon = 1;
   } else {
     localSideWon = 0;
