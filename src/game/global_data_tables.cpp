@@ -1802,6 +1802,13 @@ const int g_hexColOffsetEvenRow_00697450[6] = {0, 1, 0, -1, -1, -1};
 const int g_hexRowOffset_00697468[6] = {-1, 0, 1, 1, 0, -1};
 const int g_hexColOffsetOddRow_00697480[6] = {1, 1, 1, 0, -1, 0};
 
+// GLOBAL: IMPERIALISM 0x00697498
+const int g_coarseHexColOffsetEvenRow_00697498[6] = {1, 1, 1, 0, -1, 0};
+// GLOBAL: IMPERIALISM 0x006974b0
+const int g_coarseHexRowOffset_006974b0[6] = {-1, 0, 1, 1, 0, -1};
+// GLOBAL: IMPERIALISM 0x006974c8
+const int g_coarseHexColOffsetOddRow_006974c8[6] = {0, 1, 0, -1, -1, -1};
+
 // GLOBAL: IMPERIALISM 0x00696e40
 const unsigned short g_hexDirectionBitMasks_00696e40[6] = {1, 2, 4, 8, 16, 32};
 
