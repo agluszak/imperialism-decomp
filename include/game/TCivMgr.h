@@ -58,6 +58,11 @@ public:
   unsigned short LookupCivilianTileOrderCursorTokenByActionIndex(short nTileIndex,
                                                                  short nInputHint);
 
+  // Maps the current tile's idle/working civilian selection state to the corresponding
+  // map cursor resource id (0, 0x3f3, or 0x3f9). Real __thiscall on this manager even
+  // though the body uses only global state. 0x004d2540.
+  unsigned short ResolveCivilianTileSelectionOrReportActionCode(short nTileIndex, short nClickMode);
+
   // 0x004d2ef0. Attempts to queue a plain movement order (order type 1) for the selected
   // civilian onto nTileIndex; false if CanAssignCivilianOrderToTile rejects the tile. Same
   // mis-attribution as the functions above.

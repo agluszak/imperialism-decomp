@@ -212,6 +212,9 @@ extern float g_Classify_Nation_Military_Value_00653710;
 extern short g_DAT_006966d0_Value_006966D0[];
 // Cursor resource id by civilian-tile-order action code (12 entries).
 extern short g_civilianTileOrderCursorTokenTable[];
+// Cursor resource ids keyed by the military/civilian map state classifiers (12 entries each).
+extern short g_mapCursorTokenByStateIndex_00695668[12];
+extern short g_civilianMapCursorTokenByStateIndex_00695680[12];
 // Per-unit-type tactical category code (slot 0x11 garrison sweep).
 extern int g_anUnitTypeTacticalRangeByType_006699E8[30];
 extern short g_awTacticalUnitCategoryCodeBySlot[];
@@ -949,6 +952,10 @@ extern const float g_HexHighlightScreenScale_00658640;
 extern float g_TileHeatmapNeighborDiffusionFactor;
 extern double g_MapPreviewScaleX6A3410;
 extern double g_MapPreviewScaleY6A33D0;
+// Strategic-map screen-coordinate conversion scales (1/64). MSVC500 emits their
+// dynamic initializers at 0x519910/0x519940, matching the original BSS-backed globals.
+extern double g_mapCellRowScale_006a3360;
+extern double g_mapCellColumnScale_006a3388;
 extern double g_ScaleDefault6A1FE8;
 extern double g_ScaleDefault6A1FC0;
 extern int g_ResetStateDword6A1E20;

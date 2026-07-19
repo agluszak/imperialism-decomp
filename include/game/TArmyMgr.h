@@ -225,6 +225,13 @@ public:
   // and province-cycling handlers).
   void SetActiveProvinceSelection(short tileIndex);
 
+  // Cursor-resource lookups for the two map-click state classifiers. Both are real
+  // __thiscall members on the global army/map-context manager; their bodies only use
+  // global state, but every caller loads this manager into ECX.
+  unsigned short LookupMapCursorTokenByStateIndex(short tileIndex, short mode); // 0x4a4930
+  unsigned short LookupCivilianMapCursorTokenByStateIndex(short tileIndex,
+                                                          short mode); // 0x4a4aa0
+
   // Civilian-order counterpart of the free-function ComputeMapCursorStateIndex (this one
   // genuinely reads/writes `this`, e.g. pendingMapActionIndex). 0x004a4c80, 641 bytes.
   int ComputeCivilianMapCursorStateIndex(short tileIndex, short mode);

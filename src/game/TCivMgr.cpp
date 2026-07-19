@@ -50,6 +50,27 @@ bool TCivMgr::HandleCivilianTileSelectionOrReportClick(short nTileIndex, short n
   return 0;
 }
 
+// FUNCTION: IMPERIALISM 0x004d2540
+unsigned short TCivMgr::ResolveCivilianTileSelectionOrReportActionCode(short nTileIndex,
+                                                                       short nClickMode) {
+  int actionKind = 0;
+  TCivUnit* entry =
+      g_pGlobalMapState->GetTileUnitEntryByOwner(nTileIndex, g_pSimMgr->GetActiveNationId());
+  if (entry != nullptr) {
+    entry = g_pGlobalMapState->GetTileUnitEntryByOwner(nTileIndex, g_pSimMgr->GetActiveNationId());
+    if (entry->IsInIdleSelectionState() == 0) {
+      actionKind = 10;
+    } else if (nClickMode == 2 ||
+               (g_pGlobalMapState->terrainStateTable[nTileIndex].activeFlags1c >> 5 & 1) == 0) {
+      actionKind = 2;
+    }
+  }
+  if (actionKind == 2) {
+    return 0x3f9;
+  }
+  return (actionKind != 10) - 1 & 0x3f3;
+}
+
 // FUNCTION: IMPERIALISM 0x004d26d0
 bool TCivMgr::HandleCivilianTileOrderAction(short nTileIndex, short nInputHint) {
   return 0;

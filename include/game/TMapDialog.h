@@ -83,7 +83,7 @@ public:
   // Releases the transient tile-marker slot the given tile occupies (marks the tile's
   // terrain record slot 0xff and re-sentinels that marker). 0x0051e1f0
   virtual void ReleaseTileMarkerForTile(short tileIndex);
-  virtual undefined UpdateMapDialogProjectedTileMarkerAndInvalidate(short tileIndex);
+  virtual void UpdateMapDialogProjectedTileMarkerAndInvalidate(int tileIndex);
   virtual undefined RenderStrategicMapTileCell(short tileIndex, short arg2, short arg3);
   virtual undefined EmitHexAdjacencyTransitionEventsByBitmask(unsigned char connectionMask,
                                                               int screenX, int screenY,

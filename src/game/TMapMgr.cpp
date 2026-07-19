@@ -50,29 +50,6 @@ TMilitaryUnit* TMapMgr::ValidateGridIndexRange0To17F(short index) {
   return cityScoreTable[index].stationedUnitChain98;
 }
 
-// Classify a civilian tile click into a dispatcher action code: 0x3F9 (select idle civilian),
-// 0x3F3 (open report/rescind UI on a working civilian), or 0 (no action).
-// FUNCTION: IMPERIALISM 0x004d2540
-unsigned short __stdcall ResolveCivilianTileSelectionOrReportActionCode(short nTileIndex,
-                                                                        short nClickMode) {
-  int actionKind = 0;
-  TCivUnit* entry =
-      g_pGlobalMapState->GetTileUnitEntryByOwner(nTileIndex, g_pSimMgr->GetActiveNationId());
-  if (entry != nullptr) {
-    entry = g_pGlobalMapState->GetTileUnitEntryByOwner(nTileIndex, g_pSimMgr->GetActiveNationId());
-    if (entry->IsInIdleSelectionState() == 0) {
-      actionKind = 10;
-    } else if (nClickMode == 2 ||
-               (g_pGlobalMapState->terrainStateTable[nTileIndex].activeFlags1c >> 5 & 1) == 0) {
-      actionKind = 2;
-    }
-  }
-  if (actionKind == 2) {
-    return 0x3f9;
-  }
-  return (actionKind != 10) - 1 & 0x3f3;
-}
-
 // Applies the world-state mutation for a completed civilian work order (order->field_8, an
 // int inherited-but-repurposed slot distinct from TUnit's own `orderType` short, holds this
 // specific completion kind: 5=rail section, 6=depot, 7=port, 8=discovery/prospecting,
