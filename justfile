@@ -98,7 +98,7 @@ ghidra-apply-source *args: _require-ghidra-install
 # Order matters: the PDB import names entities from the generated data sources
 # (inventory names), so the source-declaration name pass must run AFTER it —
 # source names win last.
-[doc('MUTATES: Ghidra DB + vendored .gzf. build -> import-ghidra -> apply-source names -> decl-index -> project signatures -> audits -> export')]
+[doc('MUTATES: Ghidra DB + vendored .gzf. build -> import -> names -> decl-index -> in_stack + divergent signature projection -> audits -> export')]
 [group('sync')]
 ghidra-apply-source-full:
   just build
@@ -107,6 +107,7 @@ ghidra-apply-source-full:
   just ghidra-apply-source --quiet --strict
   just clang-decl-index
   just apply-source-signatures --apply --strict
+  just project-divergent-signatures --apply --strict
   just in-stack-audit
   just structural-signature-audit
   just export-project
@@ -809,6 +810,18 @@ in-stack-audit *args: _require-ghidra-install
 apply-source-signatures *args: _require-ghidra-install
   uv run python -m tools.ghidra.daemon stop --quiet
   uv run python -m tools.ghidra.apply_source_signatures {{args}}
+
+# MUTATES: Ghidra DB (with --apply). Source-DRIVEN projection: applies source
+# signatures to claims the DB left incomplete/short (cc=unknown / 0 params / missing
+# trailing params) regardless of whether they show in_stack — the majority that the
+# in_stack-triggered apply-source-signatures never reaches. Per-function transaction,
+# commit ONLY on full convergence (no in_stack introduced + structural signature
+# match), rollback + queue everything else. Needs the decl index (clang-decl-index).
+[private]
+[group('ghidra-db')]
+project-divergent-signatures *args: _require-ghidra-install
+  uv run python -m tools.ghidra.daemon stop --quiet
+  uv run python -m tools.ghidra.apply_source_signatures --project-divergent {{args}}
 
 # READ-ONLY static audit of the source->Ghidra signature projection: parses every
 # source-owned C++ prototype and reports which resolve cleanly vs which are queued

@@ -628,6 +628,130 @@ def _write_audit(rows, out_path):
     out.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
 
+def _write_queue(queued, out_path):
+    out = Path(out_path)
+    out.parent.mkdir(parents=True, exist_ok=True)
+    lines = ["address|name|reason|prototype"]
+    for addr, name, reason, proto in sorted(queued):
+        lines.append(f"0x{addr:08x}|{name}|{reason}|{proto}".replace("\n", " "))
+    out.write_text("\n".join(lines) + "\n", encoding="utf-8")
+
+
+def run_divergent(program, args, model):
+    """Source-DRIVEN projection: apply source signatures to claims whose DB
+    signature is incomplete/short, independent of whether they show `in_stack`.
+
+    Candidate set (the safe, high-value subset of the structural audit):
+      - db_signature_incomplete — DB `cc=unknown` or 0 params, source has a real
+        signature (Ghidra never resolved it; invisible to the in_stack projector);
+      - param_count_mismatch with source arity > DB arity and matching convention
+        (DB is missing trailing parameters).
+    Excluded here (delicate / handled elsewhere): DB over-declared (source arity <
+    DB, likely an MFC override), and convention_mismatch (bridges / ambiguity).
+
+    Acceptance is STRICTER than the in_stack path — these functions had no in_stack
+    to clear, so `in_stack` clearing proves nothing. Commit only on FULL
+    convergence: the re-decompile has NO in_stack (the source signature did not
+    introduce a frame the binary contradicts) AND the resulting DB logical
+    signature structurally matches expected (convention + arity + this). Anything
+    else rolls back (transaction abort = exact restore) and is queued.
+    """
+    from ghidra.program.model.listing import Function, ParameterImpl
+    from ghidra.program.model.symbol import SourceType
+    import pyghidra
+
+    fm = program.getFunctionManager()
+    af = program.getAddressFactory().getDefaultAddressSpace()
+    ifc = _decompiler(program)
+    monitor = pyghidra.task_monitor()
+    resolver = TypeResolver(program)
+    decl_index = getattr(args, "_decl_index", None)
+    addrs = [int(a, 16) for a in args.addrs] if args.addrs else None
+
+    projected, queued = [], []
+    for addr, claim in sorted(model.functions.items()):
+        if claim.kind not in ("FUNCTION", "LIBRARY") or not claim.prototype:
+            continue
+        if addrs is not None and addr not in addrs:
+            continue
+        fn = fm.getFunctionAt(af.getAddress(addr))
+        if fn is None:
+            continue
+        parsed = parse_prototype(claim.prototype)
+        if parsed is None:
+            continue
+        cc, ret_str, param_strs, punct_kind = parsed
+        entity_kind = resolve_entity_kind(decl_index, claim.name, len(param_strs), punct_kind)
+        exp_cc = cc or default_convention(entity_kind)
+        exp_this = entity_kind in ("constructor", "destructor", "instance_method")
+        exp_n = len(param_strs)
+
+        db_cc, db_n, db_this, _ = _db_logical(fn)
+        incomplete = db_cc in ("", "unknown", "default") or (db_n == 0 and exp_n > 0)
+        short = (db_cc == exp_cc and db_this == exp_this and exp_n > db_n)
+        if not (incomplete or short):
+            continue  # not a broad-projection candidate
+        if exp_n == 0 and not incomplete:
+            continue
+
+        # Resolve every parameter type; a non-pointer we cannot size => queue.
+        param_dts, bad = [], None
+        for t in param_strs:
+            dt = resolver.resolve(t)
+            if dt is None:
+                bad = t
+                break
+            param_dts.append(dt)
+        if bad is not None:
+            queued.append((addr, claim.name, f"unresolved_param:{bad}", claim.prototype))
+            continue
+        ret_dt = None if _is_placeholder_return(ret_str) else resolver.resolve(ret_str)
+        if ret_dt is not None and ret_dt.getLength() > 4 and "*" not in ret_str:
+            queued.append((addr, claim.name, "sret_by_value_return", claim.prototype))
+            continue
+
+        if not args.apply:
+            projected.append((addr, claim.name, "would_project", exp_n))
+            continue
+
+        # No pre-decompile needed: the acceptance is "after is fully clean", not a
+        # before/after in_stack diff (these candidates had no in_stack to clear).
+        ftx = program.startTransaction(f"project-divergent 0x{addr:08x}")
+        commit, reason = False, None
+        try:
+            if ret_dt is not None:
+                fn.setReturnType(ret_dt, SourceType.USER_DEFINED)
+            fn.setCallingConvention(exp_cc)
+            impls = [ParameterImpl(f"a{i}", dt, program) for i, dt in enumerate(param_dts)]
+            fn.replaceParameters(
+                Function.FunctionUpdateType.DYNAMIC_STORAGE_FORMAL_PARAMS, True,
+                SourceType.USER_DEFINED, *impls)
+            ifc.flushCache()
+            after = _decompile_in_stack(ifc, fn, monitor)
+            n_cc, n_n, n_this, _ = _db_logical(fn)
+            if after is None:
+                reason = "decompile_failed:after"
+            elif after:
+                reason = "introduced_in_stack:" + ",".join(hex(o) for o in sorted(after))
+            elif n_cc == exp_cc and n_n == exp_n and n_this == exp_this:
+                commit = True
+            else:
+                reason = f"structural_mismatch:db[{n_cc},this={n_this},n={n_n}]"
+        except Exception as exc:  # noqa: BLE001
+            reason = f"apply_error:{type(exc).__name__}"
+        finally:
+            program.endTransaction(ftx, commit)
+
+        if commit:
+            projected.append((addr, claim.name, "projected", exp_n))
+        else:
+            queued.append((addr, claim.name, reason, claim.prototype))
+
+    if args.apply:
+        program.save("project divergent signatures", pyghidra.task_monitor())
+    return projected, queued
+
+
 def main() -> int:
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("--apply", action="store_true", help="Project + verify (default: dry-run).")
@@ -637,6 +761,10 @@ def main() -> int:
     p.add_argument("--structural-audit", action="store_true",
                    help="READ-ONLY: compare every claim's expected signature (source + "
                         "index) to the DB and classify the gap. No projection, no DB write.")
+    p.add_argument("--project-divergent", action="store_true",
+                   help="Source-DRIVEN projection: apply source signatures to claims the DB "
+                        "left incomplete/short (not just in_stack ones). Commit on FULL "
+                        "convergence only. Combine with --apply to write; MUTATES the DB.")
     p.add_argument("--audit-out", default="build-msvc500/evidence/signature_convergence.csv")
     p.add_argument("--decl-index", default=_DEFAULT_DECL_INDEX,
                    help="Clang-AST declaration index for authoritative entity kinds "
@@ -678,6 +806,31 @@ def main() -> int:
         print("  worst type resolution: " + ", ".join(f"{k}={v}" for k, v in sorted(quals.items())))
         return 0
 
+    if args.project_divergent:
+        project = ghidra_env.open_project()
+        consumer = program = None
+        try:
+            consumer, program = ghidra_env.open_program(project, writable=bool(args.apply))
+            projected, queued = run_divergent(program, args, model)
+        finally:
+            if program is not None:
+                program.release(consumer)
+            project.close()
+        _write_queue(queued, args.queue_out)
+        reasons: dict = {}
+        for _a, _n, r, _p in queued:
+            reasons[r.split(":", 1)[0]] = reasons.get(r.split(":", 1)[0], 0) + 1
+        mode = "APPLIED" if args.apply else "DRY RUN"
+        print(f"[{mode}] source-driven projection: projected={len(projected)} queued={len(queued)}")
+        print(f"  queue -> {args.queue_out}")
+        print("  queued by reason: " + ", ".join(f"{k}={v}" for k, v in sorted(reasons.items())))
+        if args.strict:
+            hard = [q for q in queued if q[2].split(":", 1)[0] in _HARD_FAIL_REASONS]
+            if hard:
+                print(f"strict: {len(hard)} hard failure(s)")
+                return 1
+        return 0
+
     project = ghidra_env.open_project()
     consumer = program = None
     try:
@@ -688,12 +841,7 @@ def main() -> int:
             program.release(consumer)
         project.close()
 
-    out = Path(args.queue_out)
-    out.parent.mkdir(parents=True, exist_ok=True)
-    lines = ["address|name|reason|prototype"]
-    for addr, name, reason, proto in sorted(queued):
-        lines.append(f"0x{addr:08x}|{name}|{reason}|{proto}".replace("\n", " "))
-    out.write_text("\n".join(lines) + "\n", encoding="utf-8")
+    _write_queue(queued, args.queue_out)
 
     reasons: dict[str, int] = {}
     for _a, _n, r, _p in queued:
