@@ -76,8 +76,9 @@ void __cdecl ApplyCompletedCivWorkOrderToMapState(TCivUnit* order) {
     break;
   case 3: { // discovery/prospecting
     TTerrainStateRecordView& tile = g_pGlobalMapState->terrainStateTable[order->tileIndex06];
-    // Dual-purpose with pendingDevelopmentFlag0d's documented sentinel-flag use elsewhere:
-    // here it's a per-nation owner-visibility bitmask (bit N = nation N has discovered).
+    // pendingDevelopmentFlag0d is a flags byte; here it accumulates a per-nation
+    // owner-visibility bitmask (bit N = nation N has discovered the tile) -- the same single
+    // flags byte the sentinel-flag reading elsewhere uses, one meaning per bit, not overlaid.
     tile.pendingDevelopmentFlag0d |= static_cast<unsigned char>(1 << order->field_18);
     if (g_apNationStates[order->field_18]->diplomacyEligibilityA0 != 0 &&
         g_pGlobalMapState->CheckTileProspectingDiscoveryCandidate(order->tileIndex06) != 0) {

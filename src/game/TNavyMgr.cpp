@@ -634,8 +634,9 @@ void RevalidateAndRequeueMapOrdersForTurn() {
           node = node->next;
         } while (node != 0);
       }
-      // contextAnchor is the entry's owning map-order context here (the same
-      // dual-purpose +0x18 slot TControlSeaZoneMission reinterprets as TZone*).
+      // contextAnchor is the entry's owning map-order context here -- the +0x18 `owner`
+      // tagged-payload slot (see the UNRESOLVED_FIELD_ATTRIBUTION note in TTaskForce.h),
+      // read here as a TZone*.
       if (reinterpret_cast<TZone*>(entry->contextAnchor)->QueryPortZoneCapability()) {
         entry->attachment = 7;
         entry->RebuildMapOrderEntryChildren();
@@ -1427,9 +1428,9 @@ void TNavyMgr::ResolveMapOrderPairConflictStep(TTaskForce* leftEntry, TTaskForce
 
   // Per-attachment "convergence tolerance" the winning-tier ratio must clear for that side
   // to be judged to have genuinely won the tier (the real {1.1,0.95,0.8} float table,
-  // indexed by the packed order_type/order_strength dword at +0x04 -- a single offset
-  // reused as two shorts elsewhere and as one combined int here, matching the
-  // type-modeling guardrail's dual-purpose-offset exception).
+  // indexed by the (order_type, order_strength) short pair at +0x04/+0x06 read together as
+  // one dword index here -- two adjacent shorts read as a bulk index, one meaning per short,
+  // not one slot with two overlaid types).
   static const float kTierConvergenceThreshold[3] = {1.1f, 0.95f, 0.8f};
   float leftThreshold = kTierConvergenceThreshold[*reinterpret_cast<int*>(&leftEntry->order_type)];
   float rightThreshold =

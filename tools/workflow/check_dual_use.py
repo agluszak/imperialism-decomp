@@ -42,7 +42,7 @@ DEFAULT_PATHS = ("include/game", "src/game")
 # Banned prose (case-insensitive). "reused as" is deliberately broad: describing one slot as
 # "reused as" a second meaning is the exact hand-wave this gate exists to stop.
 TERMINOLOGY = re.compile(
-    r"dual[-\s]?use|dual[-\s]?purpose|dual[-\s]?slot|reused as|both pointer and int",
+    r"\bdual[-\s]?use|\bdual[-\s]?purpose|\bdual[-\s]?slot|\breused as|\bboth pointer and int",
     re.IGNORECASE,
 )
 

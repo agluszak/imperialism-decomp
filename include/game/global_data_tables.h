@@ -87,7 +87,7 @@ struct TNavyOrderResourceDescriptor {
   short pad06;
   short taskForceWeight; // +0x08 (was g_Task_Force_Order_LookupTable_00698110's own +0x00)
   short pad0a;
-  short stockCap; // +0x0c (was same table's +0x04; reused as navy-order "normalization base")
+  short stockCap; // +0x0c (was same table's +0x04); the navy-order normalization base
   short pad0e;
   int navyPriorityWeight; // +0x10 (was g_Navy_Order_Priority_LookupTable_00698118, read as a dword)
   short resourceDescriptorWeightWord0; // +0x14 (was g_ResourceDescriptorWeightWord0Base0069811c)

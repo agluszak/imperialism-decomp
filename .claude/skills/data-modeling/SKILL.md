@@ -193,9 +193,13 @@ codegen shapes fall out (g_wMapDialogViewportTileSpan 0x6a33b0: 0x51adf0 dword r
 *(ex decomp-loop note 119)*
 
 
-When a byte/word region has both a dynamic-index reader (array walk) and named per-offset
-readers, the union "both views" answer is wrong modeling — always. Determine the single
-true model and migrate every accessor to it: the named flags usually turn out to be
+This is the opposite situation from a genuine *discriminated variant* field (one slot whose
+value's TYPE is chosen by a discriminator — e.g. `MapContextActionRecord::tileOrObject08`
+keyed by `actionType04`, modeled as a `union`; see the dual-use rule above). Here there is no
+discriminator: different code just *reads the same bytes two ways*, which means one reading is
+the true model (almost always an array) and the union "both views" answer is wrong — always.
+Determine the single true model and migrate every accessor to it: the named flags usually turn
+out to be
 specific indices of the array (TTechMgr::OrderCapRow's fort/recruit "flags" were
 techStatusByTechId[0x0b/0x16/0x13...]; TGlobalMapCityScoreRecord's stage1/stage2
 "counters" were resourceDevelopmentCounts82[1..8]). Before merging, verify every access

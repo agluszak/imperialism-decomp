@@ -96,9 +96,10 @@ void TBattleReportView::NoOpUiLifecycleHook(int arg) {
 
     short cell;
     if (record->actionType04 == 0 || record->actionType04 == 3 || record->actionType04 == 4) {
-      cell = g_pGlobalMapState->cityScoreTable[record->tileOrObject08].cityTileIndex04;
+      cell = g_pGlobalMapState->cityScoreTable[record->tileOrObject08.tileIndex].cityTileIndex04;
     } else {
-      cell = *reinterpret_cast<short*>(reinterpret_cast<char*>(record->tileOrObject08) + 0xc);
+      cell =
+          *reinterpret_cast<short*>(reinterpret_cast<char*>(record->tileOrObject08.object) + 0xc);
     }
 
     // Spiral outward from the record's cell until a free crowding-grid cell is found.

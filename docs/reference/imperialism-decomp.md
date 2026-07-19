@@ -936,7 +936,7 @@ Interpretation:
 
 ### Confirmed Data Semantics from This Pass
 
-- `tile + 0x04` (for city tiles `tile[0] == 0x05`) is reused as a city-region/cluster class during border/region generation.
+- `tile + 0x04` (for city tiles `tile[0] == 0x05`) holds the city-region/cluster id during border/region generation.
   - Region IDs are represented as `tile[0x04] = regionId + 0x17` in region passes.
 - `tile + 0x10` is used as a preview-slot cache index by `UpdateMapOrderEntryTilePreviewSlot`.
 - Region-border overlay construction and region merging are separate from civilian order queue persistence.
