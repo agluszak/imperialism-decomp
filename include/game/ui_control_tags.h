@@ -155,4 +155,5 @@ const unsigned int kControlTagTex0 = 0x74657830u; // 'tex0' — first of 7 seque
 const unsigned int kControlTagScr0 = 0x73637230u; // 'scr0' — first of 7 sequential score-row labels (scr0-scr6)
 const unsigned int kControlTagCred = 0x63726564u; // 'cred' — credits text line 1
 const unsigned int kControlTagCre2 = 0x63726532u; // 'cre2' — credits text line 2
+const unsigned int kControlTagTxt0 = 0x74787430u; // 'txt0' — first of 8 sequential option text lines (txt0-txt7)
 const unsigned int kControlTagScvw = 0x73637677u; // 'scvw' — scroll view
