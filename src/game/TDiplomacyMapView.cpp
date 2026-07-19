@@ -167,9 +167,8 @@ void TDiplomacyMapView::NoOpUiLifecycleHook(int arg) {
 }
 
 // FUNCTION: IMPERIALISM 0x004f3e30
-char TDiplomacyMapView::CallVoidSlotA0() {
+void TDiplomacyMapView::CallVoidSlotA0() {
   stateFlagAtB8 = 0;
-  return TView::CallVoidSlotA0();
 }
 
 // FUNCTION: IMPERIALISM 0x004f3e60

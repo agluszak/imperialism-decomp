@@ -113,7 +113,7 @@ public:
   virtual class TView* ResolveControlByTag(unsigned int controlTag);            // 0x25 0x48afd0
   virtual void SwitchActiveChildAndNotify(class TView* child);                  // 0x26 0x48af80
   virtual void DispatchSlot9CToLinkedChildren();                                // 0x27 0x48c820
-  virtual char CallVoidSlotA0();                                                // 0x28 0x48c890
+  virtual void CallVoidSlotA0();                                                // 0x28 0x48c890
   virtual void SetEnabled(int enabledState, int refreshFlag);                   // 0x29 0x48b1c0
   virtual void SetState(int state, int refreshFlag);                            // 0x2a 0x48b070
   virtual unsigned short GetField4E();                                          // 0x2b 0x427200

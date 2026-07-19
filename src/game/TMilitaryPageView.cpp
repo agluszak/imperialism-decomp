@@ -29,6 +29,5 @@ void TMilitaryPageView::NoOpUiLifecycleHook(int arg) {
 }
 
 // FUNCTION: IMPERIALISM 0x00564bf0
-char TMilitaryPageView::CallVoidSlotA0() {
-  return 0;
+void TMilitaryPageView::CallVoidSlotA0() {
 }

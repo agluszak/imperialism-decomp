@@ -14,8 +14,7 @@ IMPLEMENT_DYNCREATE(TRelationshipDialog, TDialogView)
 TRelationshipDialog::TRelationshipDialog() {}
 
 // FUNCTION: IMPERIALISM 0x005b2da0
-char TRelationshipDialog::CallVoidSlotA0() {
-  return 0;
+void TRelationshipDialog::CallVoidSlotA0() {
 }
 
 // FUNCTION: IMPERIALISM 0x005b2f10

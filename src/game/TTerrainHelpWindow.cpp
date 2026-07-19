@@ -22,8 +22,7 @@ TTerrainHelpWindow::~TTerrainHelpWindow() {}
 // slot 0x28 — TFloatWindow::CallVoidSlotA0 override: base close/reset, then drop the
 // help manager's pending terrain-help dialog-view pointer.
 // FUNCTION: IMPERIALISM 0x00504dc0
-char TTerrainHelpWindow::CallVoidSlotA0() {
+void TTerrainHelpWindow::CallVoidSlotA0() {
   TFloatWindow::CallVoidSlotA0();
   g_pHelpMgr->pendingDialogViewC = 0;
-  return 0;
 }

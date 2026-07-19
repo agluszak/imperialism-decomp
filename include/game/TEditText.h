@@ -28,7 +28,7 @@ public:
   char ActivateCityProductionViewIfAllowed() override;
   void vmethod_0081(int) override;
   void DispatchSlot9CToLinkedChildren() override;
-  char CallVoidSlotA0() override;
+  void CallVoidSlotA0() override;
   void SetEnabled(int enabledState, int refreshFlag) override;
   void ApplyRectSlot110(RECT* rectBuffer) override;
   char DispatchUiMouseMoveToChildren(CPoint* point, int arg2, int arg3, int arg4) override;

@@ -22,8 +22,7 @@ THelpWindow::~THelpWindow() {}
 // slot 0x28 — TFloatWindow::CallVoidSlotA0 override: base close/reset, then drop the
 // help manager's pending general-help dialog-view pointer.
 // FUNCTION: IMPERIALISM 0x00504c70
-char THelpWindow::CallVoidSlotA0() {
+void THelpWindow::CallVoidSlotA0() {
   TFloatWindow::CallVoidSlotA0();
   g_pHelpMgr->pendingDialogView8 = 0;
-  return 0;
 }

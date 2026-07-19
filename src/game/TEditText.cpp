@@ -36,7 +36,7 @@ TEditText::~TEditText() {
 // Releases the live edit CWnd (field_94) and cached font/style resource
 // (field_98) via virtual-dtor dispatch, in that order — shared by Free() below.
 // FUNCTION: IMPERIALISM 0x00490650
-char TEditText::CallVoidSlotA0() {
+void TEditText::CallVoidSlotA0() {
   if (field_94 != nullptr) {
     delete field_94;
     field_94 = nullptr;
@@ -45,7 +45,6 @@ char TEditText::CallVoidSlotA0() {
     }
     field_98 = nullptr;
   }
-  return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004906a0

@@ -23,6 +23,6 @@ undefined TPlaceCityDialog::BuildCityViewResourceRows() {
 void TPlaceCityDialog::ApplyRectSlot110(RECT* rectBuffer) {}
 
 // FUNCTION: IMPERIALISM 0x004d1e60
-char TPlaceCityDialog::CallVoidSlotA0() {
-  return TView::CallVoidSlotA0();
+void TPlaceCityDialog::CallVoidSlotA0() {
+  TView::CallVoidSlotA0();
 }

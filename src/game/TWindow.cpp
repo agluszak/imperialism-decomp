@@ -258,7 +258,7 @@ void TWindow::DispatchSlot9CToLinkedChildren() {
 // Clear the busy flag, notify the host window, recurse the slot-0x28 hook into every child
 // control, then run the slot-0x73 state-notify chain.
 // FUNCTION: IMPERIALISM 0x0048e060
-char TWindow::CallVoidSlotA0() {
+void TWindow::CallVoidSlotA0() {
   busyFlag98 = 0;
   if (nativeWindow50 != 0 && nativeWindow50->m_hWnd != 0) {
     SendMessageA(reinterpret_cast<HWND>(nativeWindow50->m_hWnd), 0x468, 1, controlTag);
@@ -270,7 +270,7 @@ char TWindow::CallVoidSlotA0() {
       child->CallVoidSlotA0();
     }
   }
-  return OrphanCallChain_C2_I39_0048d900(0, 1);
+  OrphanCallChain_C2_I39_0048d900(0, 1);
 }
 
 // FUNCTION: IMPERIALISM 0x0048e120

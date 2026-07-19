@@ -13,7 +13,7 @@ public:
   TTerrainHelpWindow();
   virtual ~TTerrainHelpWindow() override; // slot 0x01 (scalar deleting destructor 0x504d70)
 
-  char CallVoidSlotA0() override; // slot 0x28 0x504dc0
+  void CallVoidSlotA0() override; // slot 0x28 0x504dc0
 };
 
 ASSERT_SIZE(TTerrainHelpWindow, 0xa0);

@@ -19,6 +19,5 @@ undefined TNewTownView::BuildCityDialogMinisterControls() {
 }
 
 // FUNCTION: IMPERIALISM 0x004bdc10
-char TNewTownView::CallVoidSlotA0() {
-  return 0;
+void TNewTownView::CallVoidSlotA0() {
 }

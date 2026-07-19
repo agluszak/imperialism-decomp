@@ -28,6 +28,5 @@ undefined TNavyRoster::InitializePagedListLineDataControlsAndHeaderBitmap() {
 }
 
 // FUNCTION: IMPERIALISM 0x00564fe0
-char TNavyRoster::CallVoidSlotA0() {
-  return 0;
+void TNavyRoster::CallVoidSlotA0() {
 }

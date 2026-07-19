@@ -43,6 +43,4 @@ undefined TBuildingView::SetUniversityDialogLocalizedTextAndRefresh(int*, int, i
 }
 
 // FUNCTION: IMPERIALISM 0x004c7180
-char TBuildingView::CallVoidSlotA0() {
-  return 0;
-}
+void TBuildingView::CallVoidSlotA0() {}

@@ -13,7 +13,7 @@ public:
   THelpWindow();
   virtual ~THelpWindow() override; // slot 0x01 (scalar deleting destructor 0x504c20)
 
-  char CallVoidSlotA0() override; // slot 0x28 0x504c70
+  void CallVoidSlotA0() override; // slot 0x28 0x504c70
 };
 
 ASSERT_SIZE(THelpWindow, 0xa0);

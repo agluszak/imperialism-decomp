@@ -15,6 +15,4 @@ TGarrisonView::TGarrisonView() {}
 TGarrisonView::~TGarrisonView() {}
 
 // FUNCTION: IMPERIALISM 0x004a8a20
-char TGarrisonView::CallVoidSlotA0() {
-  return 0;
-}
+void TGarrisonView::CallVoidSlotA0() {}
