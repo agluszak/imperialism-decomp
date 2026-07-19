@@ -1,6 +1,7 @@
 #include "game/TArmyBattle.h"
 
 #include <stdio.h>
+#include <stdlib.h>
 
 #include "game/CFile_Virtuals.h"
 #include "game/CIterator.h"
@@ -23,8 +24,6 @@
 #include "game/TView.h"
 #include "game/TViewMgr.h"
 #include "game/global_data_tables.h"
-
-extern "C" int __cdecl rand(void);
 
 // SYNTHETIC: IMPERIALISM 0x004a5c50
 // TArmyBattle::`scalar deleting destructor'

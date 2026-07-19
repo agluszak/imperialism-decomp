@@ -1,10 +1,10 @@
 #include "game/TArmyStack.h"
 
+#include <stdlib.h>
+
 #include "game/TMilitaryUnit.h"
 #include "game/global_data_tables.h"
 #include "game/ui_invalidation_guard.h"
-
-extern "C" int __cdecl rand(void);
 
 // Duplicates TArmyMgr.cpp's own (file-static) IsUnitMeterEligible check -- ground truth
 // repeats this same inline test across every meter-related function in this family
