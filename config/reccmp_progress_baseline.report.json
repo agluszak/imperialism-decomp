@@ -1,33 +1,9 @@
 {
   "data": [
     {
-      "address": "0x40257c",
-      "matching": 0.0,
-      "name": "thunk_GetCityBuildingProductionValueBySlot",
-      "type": 1
-    },
-    {
       "address": "0x4028d8",
       "matching": 0.0,
       "name": "thunk_InitializeCityInteriorMinister",
-      "type": 1
-    },
-    {
-      "address": "0x4042c8",
-      "matching": 0.0,
-      "name": "thunk_ConstructUiResourceEntryType4B0C0",
-      "type": 1
-    },
-    {
-      "address": "0x405c72",
-      "matching": 0.0,
-      "name": "thunk_DestructEngineerDialogBaseState",
-      "type": 1
-    },
-    {
-      "address": "0x4067c1",
-      "matching": 0.0,
-      "name": "thunk_DestructCityDialogSharedBaseState",
       "type": 1
     },
     {
@@ -850,7 +826,7 @@
     },
     {
       "address": "0x430a60",
-      "matching": 0.9523809523809523,
+      "matching": 0.9841269841269841,
       "name": "TBattleReportView::~TBattleReportView",
       "type": 1
     },
@@ -1054,7 +1030,7 @@
     },
     {
       "address": "0x43dbc0",
-      "matching": 0.4967999562387178,
+      "matching": 0.4972375690607735,
       "name": "InitializeArmyNavyReportViewsAndCommandTags",
       "type": 1
     },
@@ -1126,7 +1102,7 @@
     },
     {
       "address": "0x453800",
-      "matching": 0.875,
+      "matching": 1.0,
       "name": "TOverlayRadioButton::TOverlayRadioButton",
       "type": 1
     },
@@ -1138,7 +1114,7 @@
     },
     {
       "address": "0x4538a0",
-      "matching": 0.503273397879207,
+      "matching": 0.5043798985707699,
       "name": "InitializeGameSetupScreenControlsAndModeTags",
       "type": 1
     },
@@ -4484,7 +4460,7 @@
     },
     {
       "address": "0x48a9a0",
-      "matching": 0.9090909090909091,
+      "matching": 1.0,
       "name": "TView::`scalar deleting destructor'",
       "type": 1
     },
@@ -5337,7 +5313,7 @@
     },
     {
       "address": "0x48f050",
-      "matching": 0.9090909090909091,
+      "matching": 1.0,
       "name": "TPicture::`scalar deleting destructor'",
       "type": 1
     },
@@ -11357,7 +11333,8 @@
     },
     {
       "address": "0x4cc3c0",
-      "matching": 0.75,
+      "effective": true,
+      "matching": 0.875,
       "name": "TPurchaseCluster::ConstructTPurchaseClusterBaseState",
       "type": 1
     },
@@ -12474,7 +12451,7 @@
     },
     {
       "address": "0x4dbf00",
-      "matching": 0.23197492163009403,
+      "matching": 0.23510971786833856,
       "name": "TGreatPower::AdvanceOwnedRegionDevelopmentCountersAndDispatchEvents",
       "type": 1
     },
@@ -12703,7 +12680,7 @@
     },
     {
       "address": "0x4dd7f0",
-      "matching": 0.5070422535211268,
+      "matching": 0.647887323943662,
       "name": "TGreatPower::OrphanCallChain_C1_I42_004dd7f0",
       "type": 1
     },
@@ -13138,7 +13115,7 @@
     },
     {
       "address": "0x4e0740",
-      "matching": 0.9,
+      "matching": 1.0,
       "name": "TGreatPower::GetNationRuntimeCityBuildingProductionValueBySlot",
       "type": 1
     },
@@ -13342,7 +13319,7 @@
     },
     {
       "address": "0x4e2880",
-      "matching": 0.867816091954023,
+      "matching": 0.8793103448275862,
       "name": "TGreatPower::ClassifyNationProductionTotalAgainstGlobalDistribution",
       "type": 1
     },
@@ -14960,7 +14937,7 @@
     },
     {
       "address": "0x4f3cc0",
-      "matching": 0.9523809523809523,
+      "matching": 0.9841269841269841,
       "name": "TDiplomacyMapView::~TDiplomacyMapView",
       "type": 1
     },
@@ -16679,7 +16656,7 @@
     },
     {
       "address": "0x50bea0",
-      "matching": 0.20990458882326216,
+      "matching": 0.21081326669695594,
       "name": "TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets",
       "type": 1
     },
@@ -17624,7 +17601,7 @@
     },
     {
       "address": "0x519140",
-      "matching": 0.561344537815126,
+      "matching": 0.5647058823529412,
       "name": "DumpAndResetMapScriptState",
       "type": 1
     },
@@ -24993,7 +24970,7 @@
     },
     {
       "address": "0x571460",
-      "matching": 0.8571428571428571,
+      "matching": 1.0,
       "name": "TUberCluster::ConstructTUberClusterBaseState",
       "type": 1
     },
@@ -26094,7 +26071,7 @@
     },
     {
       "address": "0x5796a0",
-      "matching": 0.9166666666666666,
+      "matching": 1.0,
       "name": "TLineData::ConstructUiGoldLabelResourceEntry",
       "type": 1
     },
@@ -27153,7 +27130,7 @@
     },
     {
       "address": "0x584e20",
-      "matching": 0.8571428571428571,
+      "matching": 1.0,
       "name": "TToolBarCluster::TToolBarCluster",
       "type": 1
     },
@@ -27652,7 +27629,7 @@
     },
     {
       "address": "0x589260",
-      "matching": 0.3064516129032258,
+      "matching": 0.3225806451612903,
       "name": "TIndustryAmtBar::NoOpUiLifecycleHook",
       "type": 1
     },
@@ -27904,7 +27881,7 @@
     },
     {
       "address": "0x58b3e0",
-      "matching": 0.875,
+      "matching": 1.0,
       "name": "TCivilianButton::TCivilianButton",
       "type": 1
     },
@@ -28241,7 +28218,7 @@
     },
     {
       "address": "0x58eaa0",
-      "matching": 0.8571428571428571,
+      "matching": 1.0,
       "name": "TCivToolbar::ConstructTCivToolbarBaseState",
       "type": 1
     },
@@ -34087,7 +34064,7 @@
     },
     {
       "address": "0x5e2320",
-      "matching": 0.6436781609195402,
+      "matching": 0.6666666666666666,
       "name": "DestructMovieViewAndCloseOwnedWindow",
       "type": 1
     },
