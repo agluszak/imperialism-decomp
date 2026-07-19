@@ -77,7 +77,22 @@ _DEFAULT_DECL_INDEX = "build-msvc500/generated/decl_index.json"
 # project them is a DB-CHANGING follow-up, not part of this no-DB-change pass.
 _DECOMPILE_BUDGET_S = 20
 
-_CC_RE = re.compile(r"\b(__cdecl|__stdcall|__thiscall|__fastcall)\b")
+_CC_RE = re.compile(
+    r"\b(__cdecl|__stdcall|__thiscall|__fastcall|CALLBACK|WINAPI|APIENTRY|PASCAL)\b")
+# Win32 API macros that expand to a real MSVC convention keyword — matched by
+# _CC_RE alongside the real keywords so they get stripped from the return-type
+# text the same way, but the CAPTURED text must be normalized to the real
+# convention name before it's ever passed to Ghidra's setCallingConvention
+# (which has never heard of "CALLBACK"). All four are __stdcall by definition
+# in the Win32 ABI, not a guess — see e.g. include/game/TMouseCaptureState.h's
+# `VOID CALLBACK NotifyGlobalCaptureOwnerState1WithCachedCoords(...)`, a real
+# timer-proc declaration that used to leak "VOID CALLBACK" into the return-type
+# text as an unresolvable weak type (`_QUALITY_RANK`'s `unresolved`) because
+# nothing recognized/stripped the macro.
+_CC_MACRO_ALIASES = {
+    "CALLBACK": "__stdcall", "WINAPI": "__stdcall",
+    "APIENTRY": "__stdcall", "PASCAL": "__stdcall",
+}
 _PRIMITIVES = {
     "void": "void", "bool": "bool", "char": "char",
     "uchar": "byte", "unsignedchar": "byte", "byte": "byte",
@@ -150,7 +165,8 @@ def _decompile_in_stack(ifc, fn, monitor) -> set[int] | None:
 
 
 _PLACEHOLDER_RET_RE = re.compile(r"^undefined[1-8]?$")
-_DECL_QUALIFIER_RE = re.compile(r"\b(?:public|protected|private)\s*:|\b(?:virtual|static|inline)\b")
+_DECL_QUALIFIER_RE = re.compile(
+    r"\b(?:public|protected|private)\s*:|\b(?:virtual|static|__forceinline|__inline|inline)\b")
 
 
 def _is_placeholder_return(ret_str: str) -> bool:
@@ -189,9 +205,10 @@ def parse_prototype(proto: str):
     # these, e.g. "public: virtual void __thiscall CDocTemplate::InitialUpdateFrame".
     proto = _DECL_QUALIFIER_RE.sub(" ", proto)
     m = _CC_RE.search(proto)
-    cc = m.group(1) if m else None
-    if cc:
-        proto = proto.replace(cc, " ")
+    raw_cc = m.group(1) if m else None
+    cc = _CC_MACRO_ALIASES.get(raw_cc, raw_cc) if raw_cc else None
+    if raw_cc:
+        proto = proto.replace(raw_cc, " ")
     # Take the FIRST balanced paren group after the name as the arg list — NOT the
     # last. For a constructor with a member-initializer list
     # (`TFoo::TFoo(args) : TBase(...), field(0)`) the last `)` closes the init list,
@@ -320,6 +337,9 @@ _NEEDS_NOUN = {"unsigned", "signed", "class", "struct", "union", "enum",
                "const", "volatile"}
 
 
+_ARRAY_SUFFIX_RE = re.compile(r"^(.*\S)\s*(?:\[[^\]]*\])+$")
+
+
 def _param_type_only(param: str) -> str | None:
     """Strip the parameter NAME, keep the type.
 
@@ -327,25 +347,62 @@ def _param_type_only(param: str) -> str | None:
     `unsigned int` / `struct tagPOINT` (no name; the trailing word completes the
     type). A trailing identifier is a NAME only when it is not itself a type
     keyword and the word before it is not a noun-needing keyword.
+
+    Two additional shapes, both regression-tested from a real MSVC500-reviewed
+    prototype (`TMapMgr::SeedRecruitSearchVisitedStateFromMilitaryUnitCandidates`,
+    `TMilitaryUnit* const candidates[6]`) that used to leak the parameter NAME
+    and array brackets straight into the "type" text, making it unresolvable:
+
+      - A trailing `[N]` (or `[]`) array suffix: an array parameter decays to a
+        pointer to its element type in C++, so it is stripped and a `*` is
+        appended to the resolved base type (no multi-dimensional array
+        parameters — which would need `T(*)[N]` decay — exist in this codebase).
+      - `T* const name` / `T& volatile name`: `const`/`volatile` directly after
+        a pointer/reference qualifies the POINTER itself, not a following type
+        the way a PREFIX `const Foo`/`struct Foo` does — the trailing
+        identifier is still the parameter name to drop, not part of the type.
+        (`resolve_quality` already strips bare `const`/`volatile` tokens from
+        the type text it's ultimately given, so leaving one broken instance in
+        the middle of the returned string, e.g. `T* const*`, still resolves
+        correctly there — this function only needs to draw the name/type
+        boundary in the right place.)
     """
     param = param.strip()
     if not param:
         return None
+    array_decay = False
+    m_arr = _ARRAY_SUFFIX_RE.match(param)
+    if m_arr:
+        param = m_arr.group(1)
+        array_decay = True
+
+    def _finish(result: str) -> str:
+        return result + "*" if array_decay and not result.endswith(("*", "&")) else result
+
     if param.endswith(("*", "&", ">")):
-        return param  # pointer/ref/template tail -> whole token is the type
-    m = re.search(r"[A-Za-z_][A-Za-z0-9_]*$", param)
+        return _finish(param)  # pointer/ref/template tail -> whole token is the type
+    # Capture the whole trailing qualified-name chain (`Foo::Bar::Baz`), not just its
+    # last segment -- otherwise a param with no name at all, like the pure abstract
+    # declarator `enum CDocTemplate::DocStringIndex`, has its own last segment
+    # ("DocStringIndex") mistaken for a parameter name, silently truncating the type
+    # to "enum CDocTemplate::" (a real bug hit by a live MFC prototype).
+    m = re.search(r"(?:[A-Za-z_][A-Za-z0-9_]*::)*[A-Za-z_][A-Za-z0-9_]*$", param)
     if not m:
-        return param
+        return _finish(param)
     last = m.group(0)
     if last in _TYPE_KEYWORDS:
-        return param  # e.g. "unsigned int" — trailing token is part of the type
+        return _finish(param)  # e.g. "unsigned int" — trailing token is part of the type
     head = param[:m.start()].rstrip()
     if not head:
-        return param  # only one token — it is the type ("int", "CPoint")
-    prev = head.split()[-1].rstrip("*&")
+        return _finish(param)  # only one token — it is the type ("int", "CPoint")
+    head_tokens = head.split()
+    prev = head_tokens[-1].rstrip("*&")
+    if prev in ("const", "volatile") and len(head_tokens) >= 2 \
+            and head_tokens[-2].endswith(("*", "&")):
+        return _finish(head)  # "T* const name" — name, not a completing noun
     if prev in _NEEDS_NOUN:
-        return param  # "class CPoint" / "struct tagPOINT" — completes the type
-    return head       # trailing identifier is the parameter name; drop it
+        return _finish(param)  # "class CPoint" / "struct tagPOINT" — completes the type
+    return _finish(head)       # trailing identifier is the parameter name; drop it
 
 
 # Type-resolution quality, worst-ranked last. Only exact_complete / canonical_alias

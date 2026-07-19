@@ -72,6 +72,28 @@ class ParsePrototypeTest(unittest.TestCase):
         self.assertEqual(params, ["short", "int"])
         self.assertEqual(kind, "free_function")
 
+    def test_callback_macro_normalizes_to_stdcall_and_strips_from_return(self):
+        # Regression: a real Win32 timer-proc declaration
+        # (include/game/TMouseCaptureState.h) leaked "VOID CALLBACK" into the
+        # return-type text as an unresolvable weak type, because nothing
+        # recognized CALLBACK as a __stdcall synonym.
+        cc, ret, params, kind = parse_prototype(
+            "VOID CALLBACK NotifyThing(HWND hwnd, UINT message, UINT timerId, DWORD dwTime)")
+        self.assertEqual(cc, "__stdcall")
+        self.assertEqual(ret, "VOID")
+        self.assertEqual(kind, "free_function")
+
+    def test_callback_macro_lowercase_void(self):
+        cc, ret, _params, _kind = parse_prototype(
+            "void CALLBACK DispatchThing(HWND hwnd, UINT msg)")
+        self.assertEqual(cc, "__stdcall")
+        self.assertEqual(ret, "void")
+
+    def test_winapi_apientry_pascal_all_normalize_to_stdcall(self):
+        for macro in ("WINAPI", "APIENTRY", "PASCAL"):
+            cc, _ret, _params, _kind = parse_prototype(f"void {macro} Foo(int a)")
+            self.assertEqual(cc, "__stdcall", macro)
+
     def test_void_param_list_is_empty(self):
         _cc, _ret, params, _k = parse_prototype("void TView::Draw(void)")
         self.assertEqual(params, [])
@@ -120,6 +142,28 @@ class ParsePrototypeTest(unittest.TestCase):
     def test_function_pointer_param_kept_balanced(self):
         _cc, _ret, params, _k = parse_prototype("TFoo::TFoo(int (*cb)(int), TView* v) : TBase()")
         self.assertEqual(params, ["int (*cb)(int)", "TView*"])
+
+    def test_dunder_inline_stripped_from_return_type(self):
+        # Regression: real declaration (include/game/TOcean.h) -- `\binline\b`
+        # doesn't match inside "__inline" (no word boundary before "inline"
+        # when it's preceded by underscores, themselves word characters), so
+        # the qualifier leaked into the return type as "__inline TZone*".
+        _cc, ret, params, kind = parse_prototype(
+            "__inline TZone* GetMapActionContextEntryByNationCodeOffset17(short nationCode)")
+        self.assertEqual(ret, "TZone*")
+        self.assertEqual(params, ["short"])
+        self.assertEqual(kind, "free_function")
+
+    def test_qualified_enum_param_with_no_name_keeps_whole_type(self):
+        # Regression: a real MFC prototype (CDocTemplate::GetDocString) has a
+        # nameless `enum CDocTemplate::DocStringIndex` parameter. The old
+        # trailing-identifier regex only captured the last segment
+        # ("DocStringIndex"), mistaking it for a parameter name and truncating
+        # the type to the bogus, empty-after-cleanup "enum CDocTemplate::".
+        _cc, _ret, params, _k = parse_prototype(
+            "public: virtual int __thiscall CDocTemplate::GetDocString("
+            "class CString &, enum CDocTemplate::DocStringIndex) const")
+        self.assertEqual(params, ["class CString &", "enum CDocTemplate::DocStringIndex"])
 
 
 class EntityKindClassificationTest(unittest.TestCase):
@@ -235,6 +279,25 @@ class ParamTypeOnlyTest(unittest.TestCase):
 
     def test_bare_keyword(self):
         self.assertEqual(_param_type_only("int"), "int")
+
+    def test_array_param_decays_to_pointer(self):
+        self.assertEqual(_param_type_only("int arr[4]"), "int*")
+
+    def test_postfix_const_pointer_array_param_decays(self):
+        # real bug: TMapMgr::SeedRecruitSearchVisitedStateFromMilitaryUnitCandidates
+        self.assertEqual(
+            _param_type_only("class TMilitaryUnit* const candidates[6]"),
+            "class TMilitaryUnit* const*",
+        )
+
+    def test_postfix_const_pointer_without_array_keeps_name_dropped(self):
+        self.assertEqual(
+            _param_type_only("class TMilitaryUnit* const candidate"),
+            "class TMilitaryUnit* const",
+        )
+
+    def test_prefix_const_still_needs_completion_word(self):
+        self.assertEqual(_param_type_only("class CPoint"), "class CPoint")
 
 
 class PlaceholderReturnTest(unittest.TestCase):
