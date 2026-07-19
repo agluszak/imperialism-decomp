@@ -221,6 +221,39 @@ mutations are identical, only the safety/classification of the *apply path* is).
   projection trigger + weak verifier. New live-Ghidra smoke test covers the
   rollback primitive; pure-Python tests cover parse / entity-kind / bucket logic.
 
+## 2026-07-19 (ninth): source-DRIVEN signature projection (PR #96, committed DB change)
+
+The PR #95 structural audit showed the source→DB gap was far larger than the 64
+in_stack queue: ~1936 claims sat at `cc=unknown`/0 params (Ghidra never resolved
+them; they produce no `in_stack`, so the in_stack-triggered projector never saw
+them), plus ~294 arity mismatches. This projects that gap.
+
+`just project-divergent-signatures --apply` (a mode of `apply_source_signatures`,
+`run_divergent`) applies source signatures to the safe, high-value candidates —
+db_signature_incomplete and param_count with source arity > DB arity and matching
+convention — regardless of `in_stack`. Acceptance is STRICTER than the in_stack
+path (those functions have no in_stack to clear, so clearing proves nothing):
+per-function transaction, commit ONLY on FULL convergence — the re-decompile has
+no `in_stack` (the source signature didn't introduce a frame the binary
+contradicts) AND the resulting DB logical signature structurally matches expected
+(convention + arity + this). Everything else rolls back (transaction abort) and is
+queued. Convention_mismatch and DB-over-declared (source arity < DB) are excluded
+as delicate / handled elsewhere.
+
+Applied on the committed #92 base (`d7103d46…`): **projected=1740** (fully
+converged, verified), **queued=277** (unresolved_param=177 — a source type we
+cannot size; introduced_in_stack=87 — source/binary disagree, e.g. sret/packed/
+under-declaration; sret_by_value_return=3; decompile_failed=9; structural_mismatch=1),
+0 apply_error (strict passes). Re-exported → `5ccd1088…`.
+
+Structural convergence over all 4064 claims moved **converged 1813 → 3701**
+(db_signature_incomplete 1936 → 255, param_count_mismatch 294 → 87) — 45% → 91%.
+No regressions (the projector only touches incomplete/short functions and only
+commits full convergence, so a converged function cannot become non-converged).
+The 277 queue is the input to the ABI-exception lowering follow-up (sret / packed
+CUSTOM_STORAGE / type modeling for the 177 unresolved). Wired into
+`ghidra-apply-source-full` after the in_stack projection.
+
 ## Committed mutations (already in the current .gzf, newest first)
 
 From `git log --follow -- vendor/ghidra/exports/Imperialism.gzf`:
