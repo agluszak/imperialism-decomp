@@ -71,3 +71,29 @@ stubs, and rewrite references. Only `verified` and `no_rtti` records project;
 Class projection must run BEFORE signature projection in
 `ghidra-apply-source-full`, so the signature projector resolves parameter types
 against real layouts instead of placeholders.
+
+## Worked investigation notes (the remaining 24 blocked classes)
+
+**TGreatPower family (5 × oversized −0x208).** The binary's object size is 0x964
+for TGreatPower and all concrete subclasses except THostGreatPower (0x968 — one
+extra dword). The source's trailing six fields — `actionMetricByQuarter`@0x964,
+`mapNodeStateFlags[384]`, `portZoneStateFlags[112]`, `missionQueue`, `floatB64`,
+`floatB68` — sum to **exactly 0x208**: they are real, referenced members (81 uses
+in 5 TUs) that do NOT live inside TGreatPower instances in the original. The
+re-attribution work is tracing those accesses in the disassembly to their real
+receiver (a holder object, globals, or a side allocation the decomp folded into
+the class). Until then the family stays blocked — projecting either model would
+be wrong.
+
+**TCityInteriorMinister family (5 × incomplete +380 each) + TMinister/TInteriorMinister
+(oversized −0x38/−0x20).** One interconnected hierarchy mis-model: the minister
+base classes over-declare while the concrete city-minister classes under-declare
+by a constant 380 — consistent with fields sitting at the wrong level of the
+hierarchy. Needs the same evidence-driven re-attribution.
+
+Every remaining class carries its exact delta in
+`build-msvc500/evidence/class_model_audit.csv`; fixing a declaration
+auto-unblocks its projection on the next `generate-type-model` +
+`apply-class-model` run, and the oracle re-run physically verifies each edit
+(as it caught the cascade double-counts and the TDeluxeText→TTEView
+mis-attribution during the delta≤28 campaign).
