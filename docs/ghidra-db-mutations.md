@@ -99,6 +99,26 @@ internals/repair tools, not sanctioned workflows. `refresh-inventory` is
 inventory-only (`sync_exports --inventory-only`); the full decompile/type
 snapshot is the separate optional `just export-ghidra-evidence`.
 
+## 2026-07-19 (fifth): strict convergence + in_stack migration finish (committed)
+
+The 27 residual DuplicateName conflicts are eliminated: stale non-primary labels
+whose simple name equals the target (often an already-qualified secondary like
+`CMcWindow::OnQueryNewPalette` beside a Global primary) are deleted before the
+namespace move; 26 stale labels dropped, 26 functions converged, failed=0.
+`ghidra-apply-source-full` is now STRICT: it fails on any apply failure and
+requires a converged second dry-run (zero pending, zero failures) — verified:
+primary_exact=7205, pending=0, failed=0. The apply audit also reports DB class
+namespaces owning source-claimed functions under a different class than the
+model (6 residual stale namespaces flagged, e.g. TNetMgr x2 — small repair
+queue for ghidra-rename-class).
+
+`fix-in-stack-params --apply` ran iteratively (261 -> 151 -> 136 -> 127 -> 112
+functions across five passes — committing params changes decompilation and
+exposes new in_stack reads, so the fixpoint is asymptotic, not one-shot). The
+migration is NOT complete: ~112 functions remain and the convergence behaviour
+needs investigation before the target can be retired. The target stays, with
+its doc corrected to describe the iterative reality.
+
 ## Committed mutations (already in the current .gzf, newest first)
 
 From `git log --follow -- vendor/ghidra/exports/Imperialism.gzf`:

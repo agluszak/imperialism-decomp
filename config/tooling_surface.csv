@@ -1,9 +1,10 @@
 kind|entry|source|note
 module|tools.ghidra.sync_exports|just:refresh-inventory|Wholesale raw-inventory refresh from the DB
 module|tools.ghidra.apply_source|just:ghidra-apply-source|One-way source model -> Ghidra DB
-module|tools.stubgen|just:generate|Generated build-input stubs (build dir)
-module|tools.source_model|just:generate|The central source model (single scan/parse authority)
-module|tools.generate_symbols|just:generate|Raw-inventory + source overlay -> generated symbols.csv
+module|tools.generate|just:generate|The one-process build-input orchestrator (model -> symbols -> stubs)
+module|tools.stubgen|direct|Stub rendering (invoked by tools.generate; standalone via uv)
+module|tools.source_model|direct|The central source model (invoked by tools.generate; standalone via uv)
+module|tools.generate_symbols|direct|Symbols overlay (invoked by tools.generate; standalone via uv)
 module|tools.workflow.annotate_globals_from_symbols|just:annotate-globals|Global annotation pass
 module|tools.migrations.annotate_vtables_from_symbols|direct|Vtable annotation pass (completed migration; run via uv)
 module|tools.migrations.annotate_strings_from_symbols|direct|String annotation pass (completed migration; run via uv)
@@ -11,7 +12,7 @@ module|tools.workflow.check_no_raw_vtable_calls|just:vtable-gate|Raw-vtable poli
 module|tools.workflow.check_vtable_annotations|just:vtable-annotation-gate|Vtable annotation adjacency gate
 module|tools.workflow.check_vtable_address_collisions|just:vtable-collision-gate|Vtable/data address collision gate
 module|tools.workflow.check_synthetic_names|just:synthetic-gate|Synthetic symbol/source name agreement gate
-module|tools.workflow.check_symbols_anchors|just:symbols-anchor-gate|Sanity-check reccmp-critical symbols.csv rows after Ghidra export
+module|tools.workflow.check_symbols_anchors|just:symbols-anchor-gate|Sanity-check reccmp-critical original_entities.csv rows after an inventory refresh
 module|tools.workflow.normalize_reccmp_markers|just:normalize-markers|Marker normalization utility
 module|tools.workflow.check_marker_hygiene|just:marker-gate|Marker hygiene gate (Hard Rules 3 and 4)
 module|tools.workflow.check_generated_markers|just:generated-marker-gate|Reject stale recover-class generated-decl markers in manual source
@@ -69,7 +70,7 @@ module|tools.workflow.vtable_autofix|just:vtable-autofix|Dry-run-first planner/a
 module|tools.ghidra.raw_disasm|query:raw-disasm|Capstone raw-byte disassembly bypassing the Ghidra instruction DB
 module|tools.ghidra.rtti_class_oracle|just:rtti-oracle|Walk MFC CRuntimeClass descriptors: names, sizes, bases, CreateObject
 module|tools.ghidra.search_whole_binary|query:search|Whole-binary text/dword search for handler hunting
-module|tools.workflow.check_symbols_integrity|just:symbols-integrity-gate|Structural integrity of config/symbols.csv
+module|tools.workflow.check_symbols_integrity|just:symbols-integrity-gate|Structural integrity of config/original_entities.csv
 module|tools.ghidra.linear_disasm|query:linear-disasm|Linear disassembly by address ignoring Ghidra function boundaries
 module|tools.workflow.check_class_sizes|just:class-size-check|Modeled class sizes vs RTTI oracle object_size
 module|tools.ghidra.repair_code_gaps|just:repair-code-gaps|Create missing Ghidra functions at vtable/ILT/symbols targets
@@ -107,9 +108,9 @@ module|tools.workflow.check_empty_bodies|just:noop-gate|Silent no-op detector + 
 module|tools.workflow.check_typedef_ghidra_args|just:typedef-args-audit|Typedef-cast arity/convention audit vs binary RET-imm
 module|tools.workflow.gen_compile_commands|just:gen-compile-commands|Rewrite lint compile_commands.json for host clangd
 module|tools.common.reccmp_report|dependency:tools.reccmp.compare_batch|Shared full-report runner (reccmp-reccmp --json, diet or full)
-module|tools.common.symbols|dependency:tools.reccmp.triage|Shared symbols.csv / function_ownership.csv loaders
+module|tools.common.symbols|dependency:tools.reccmp.triage|Shared original_entities.csv loaders + marker-derived ownership view
 module|tools.mfc.library_identify|just:library-identify|Per-address library-identity diagnostic (symbols/ownership/override/FID/oracle verdict)
-module|tools.workflow.check_library_identity|just:library-identity-gate|Semantic gate: reviewed library overrides applied + ownership=library + ratchet
+module|tools.workflow.check_library_identity|just:library-identity-gate|Semantic gate: every reviewed library identity must project EXACTLY (no count baseline)
 module|tools.mfc.build_library_oracle|just:build-library-oracle|Relocation-masked object matcher: match exe functions to libcmt/nafxcw COFF members
 module|tools.workflow.mfc_collection_audit|just:mfc-collection-audit|Embedded-MFC-collection audit: identity, offsets, block size, duplicate-COMDAT twins
 module|tools.workflow.template_alias_check|just:template-alias-check|Re-verify template_aliases.csv rows: same name + normalized-body equivalence

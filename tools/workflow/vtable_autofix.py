@@ -192,8 +192,9 @@ def plan_for_classes(repo_root: Path, report: VtableReport, classes: list[str]) 
                         cls,
                         "ilt_thunk_referenced",
                         False,
-                        f"referenced ILT slot(s) need callsite repoint + symbols row drop ({addrs})",
-                        "just repair-thunk-migration <addr>",
+                        f"referenced ILT slot(s) need callsite repoint + inventory row drop ({addrs})",
+                        "manual: repoint the callsites to the real target, then delete the "
+                        "thunk's inventory rows (vtable-matching skill, imported-thunk recipe)",
                         tuple(f.orig for f in referenced),
                     )
                 )

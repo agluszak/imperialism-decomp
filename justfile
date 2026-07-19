@@ -103,7 +103,8 @@ ghidra-apply-source *args: _require-ghidra-install
 ghidra-apply-source-full:
   just build
   just import-ghidra
-  just ghidra-apply-source --apply --quiet
+  just ghidra-apply-source --apply --quiet --strict
+  just ghidra-apply-source --quiet --strict
   just export-project
 
 # MUTATES: Ghidra DB (prune), config/original_entities.csv (WHOLESALE refresh).
@@ -122,6 +123,10 @@ refresh-inventory: _require-ghidra-install
     --ghidra-project-name "{{GHIDRA_PROJECT_NAME}}" \
     --ghidra-program-name "{{GHIDRA_PROGRAM_NAME}}"
   just prune-ilt-thunks
+  just symbols-anchor-gate
+  just symbols-integrity-gate
+  just vtable-collision-gate
+  @echo "refresh-inventory done. Run 'just export-project' before committing."
 
 # Optional full Ghidra evidence snapshot (decompiled bodies + type headers) into
 # {{build_dir}}/evidence/ghidra-export/. Read-only over committed state.
@@ -134,10 +139,6 @@ export-ghidra-evidence: _require-ghidra-install
     --ghidra-project-dir "{{GHIDRA_PROJECT_DIR}}" \
     --ghidra-project-name "{{GHIDRA_PROJECT_NAME}}" \
     --ghidra-program-name "{{GHIDRA_PROGRAM_NAME}}"
-  just symbols-anchor-gate
-  just symbols-integrity-gate
-  just vtable-collision-gate
-  @echo "refresh-inventory done. Run 'just export-project' before committing."
 
 # Generate the build inputs (source index + linkable stubs) into <build_dir>/generated.
 # Read-only over committed state: scans source markers directly (no sync step, no
@@ -146,14 +147,12 @@ export-ghidra-evidence: _require-ghidra-install
 [group('build')]
 generate:
   @for d in src/autogen src/ghidra_autogen include/ghidra_autogen; do test ! -e "$d" || { echo "stale $d exists — generated trees live in the build dir now; delete it to avoid stale-scan corruption" >&2; exit 1; }; done
-  uv run python -m tools.source_model --gen-dir "{{build_dir}}/generated"
-  uv run python -m tools.generate_symbols --gen-dir "{{build_dir}}/generated"
-  uv run python -m tools.stubgen \
-    --output-dir "{{build_dir}}/generated/stubs"
+  uv run python -m tools.generate --gen-dir "{{build_dir}}/generated"
 
 # MUTATES: config/original_entities.csv.
 # Drop incremental-link `jmp` thunk rows (linker artifacts) from config/original_entities.csv.
 # reccmp auto-detects unannotated jmp thunks and excludes them from the report.
+[private]
 [doc('MUTATES: original_entities.csv. Drop ILT jmp-thunk function rows (linker artifacts)')]
 [group('sync')]
 prune-ilt-thunks *args:
@@ -187,11 +186,8 @@ detect:
 [group('build')]
 lint flags="":
   mkdir -p "{{lint_build_dir}}"
-  uv run python -m tools.source_model --gen-dir "{{lint_build_dir}}/generated"
-  uv run python -m tools.stubgen \
-    --output-dir "{{lint_build_dir}}/generated/stubs" \
-    --chunk-prefix lint_stubs_part \
-    --annotation-kind none
+  uv run python -m tools.generate --gen-dir "{{lint_build_dir}}/generated" \
+    --chunk-prefix lint_stubs_part --annotation-kind none
   docker run --rm --network none \
     -e CMAKE_FLAGS="{{flags}}" \
     -e LINT=1 \
@@ -777,6 +773,7 @@ fix-function-bounds *args: _require-ghidra-install
 # Remove Function entities sitting on ILT jmp thunks (they block reccmp's thunk
 # auto-resolution and collapse vtable matching). The DB-side counterpart of
 # prune-ilt-thunks; refresh-inventory runs it automatically before the export.
+[private]
 [doc('MUTATES: Ghidra DB (--apply). Remove Function entities on ILT jmp thunks (runs inside refresh-inventory)')]
 [group('ghidra-db')]
 prune-ilt-db-functions *args: _require-ghidra-install
@@ -784,24 +781,27 @@ prune-ilt-db-functions *args: _require-ghidra-install
 
 # MUTATES: Ghidra DB (with --apply).
 # One-time Ghidra cleanup: commit Ghidra's `in_stack_*` stack args as real function
-# parameters in the DB, so after a refresh no `in_stack_*`
-# reads remain anywhere. Read-only by default; pass --apply to write (then refresh-inventory).
+# parameters in the DB. Iterative: committing params changes decompilation and can
+# expose new in_stack reads — repeat --apply until the dry run reports zero.
 [doc('MUTATES: Ghidra DB (--apply). Commit in_stack_* args as real parameters')]
 [group('ghidra-db')]
 fix-in-stack-params *args: _require-ghidra-install
   uv run python -m tools.ghidra.fix_in_stack_params {{args}}
 
 # MUTATES: Ghidra DB (with --apply).
+[private]
 [group('ghidra-db')]
 apply-mfc-datatypes *args: _require-ghidra-install
   uv run python -m tools.ghidra.apply_mfc_datatypes {{args}}
 
 # MUTATES: Ghidra DB (with --apply).
+[private]
 [group('ghidra-db')]
 apply-mfc-rtti *args: _require-ghidra-install
   uv run python -m tools.ghidra.apply_mfc_rtti {{args}}
 
 # MUTATES: Ghidra DB (with --apply).
+[private]
 [group('ghidra-db')]
 apply-fidb *args: _require-ghidra-install
   uv run python -m tools.ghidra.apply_fidb {{args}}
@@ -1246,6 +1246,7 @@ correct-scalar-dtors *args:
 # MUTATES: config/original_entities.csv + stub manifest (with --write).
 # Dry-run-first vtable repair planner. Applies only deterministic fixes with --write:
 # manifest slot promotion, scalar-dtor spelling cleanup, and safe ILT thunk pruning.
+[private]
 [doc('MUTATES (--write): original_entities.csv. Dry-run-first vtable repair planner')]
 [group('rewrite')]
 vtable-autofix *args:
