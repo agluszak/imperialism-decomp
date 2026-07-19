@@ -9,8 +9,8 @@
 #include "game/quickdraw_rendering.h"
 #include "game/global_data_tables.h"
 
-void ApplySharedStringToControlState(CString sharedString, TView* control);
-void AssignSharedStringToControlState(CString sharedString, TView* control);
+void SetControlHoverHelpText(CString sharedString, TView* control);
+void SetControlHoverHelpTextAltEntry(CString sharedString, TView* control);
 
 // FUNCTION: IMPERIALISM 0x005c4310
 TStaticText* __cdecl RefreshActiveControlThenApplyThemeStyleAndCaption(unsigned int controlTag,
@@ -60,7 +60,7 @@ void LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(short group, short in
   CString text;
   g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&text, group, index);
   TView* control = g_pDisplayMgr->activeDialog->ResolveControlByTag(controlTag);
-  ApplySharedStringToControlState(text, control);
+  SetControlHoverHelpText(text, control);
 }
 
 // FUNCTION: IMPERIALISM 0x005c4780
@@ -69,38 +69,38 @@ void LoadUiStringByGroupAndIndexToGlobalControlTag(short group, short index,
   CString text;
   g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&text, group, index);
   TView* control = g_pDisplayMgr->activeDialog->ResolveControlByTag(controlTag);
-  AssignSharedStringToControlState(text, control);
+  SetControlHoverHelpTextAltEntry(text, control);
 }
 
 // FUNCTION: IMPERIALISM 0x005c4850
 void LoadUiStringByGroupAndIndexToControlObject(short group, short index, TView* control) {
   CString text;
   g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&text, group, index);
-  ApplySharedStringToControlState(text, control);
+  SetControlHoverHelpText(text, control);
 }
 
 // FUNCTION: IMPERIALISM 0x005c4910
 void LoadUiStringAndDispatchSharedMessageCommand(short group, short index, TView* control) {
   CString text;
   g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&text, group, index);
-  AssignSharedStringToControlState(text, control);
+  SetControlHoverHelpTextAltEntry(text, control);
 }
 
 // FUNCTION: IMPERIALISM 0x005c49d0
-void ApplySharedStringToControlState(CString sharedString, TView* control) {
-  control->EnableAndProcessFlag(sharedString);
+void SetControlHoverHelpText(CString sharedString, TView* control) {
+  control->SetHoverHelpText(sharedString);
 }
 
 // FUNCTION: IMPERIALISM 0x005c4a40
-void AssignSharedStringToControlState(CString sharedString, TView* control) {
-  control->EnableAndProcessFlag(sharedString);
+void SetControlHoverHelpTextAltEntry(CString sharedString, TView* control) {
+  control->SetHoverHelpText(sharedString);
 }
 
 // FUNCTION: IMPERIALISM 0x005c4ab0
 TView* __cdecl ApplySharedStringToGlobalControlTag(CString sharedString, unsigned int controlTag) {
   TView* control = g_pDisplayMgr->activeDialog->ResolveControlByTag(controlTag);
   control->AssertValid();
-  ApplySharedStringToControlState(sharedString, control);
+  SetControlHoverHelpText(sharedString, control);
   return control;
 }
 
@@ -110,6 +110,6 @@ TView* __cdecl AssignSharedStringToTaggedControlAndProcessState(const char* text
   CString sharedString(text);
   TView* control = g_pDisplayMgr->activeDialog->ResolveControlByTag(controlTag);
   control->AssertValid();
-  AssignSharedStringToControlState(sharedString, control);
+  SetControlHoverHelpTextAltEntry(sharedString, control);
   return control;
 }

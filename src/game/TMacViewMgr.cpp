@@ -1038,7 +1038,7 @@ undefined TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nati
   if (nationSlot == static_cast<word>(-1)) {
     TControl* panel = ResolveTaggedPanelOrFail(hostView, kTagCityProductionTotal);
     g_pSimMgr->GetString(0x2735, 0, &scratch38);
-    panel->EnableAndProcessFlag(scratch38);
+    panel->SetHoverHelpText(scratch38);
 
     TMyStaticText* textEntry = new TMyStaticText();
 
@@ -1057,7 +1057,7 @@ undefined TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nati
     textEntry->controlTag = kTagDetailText;
 
     g_pSimMgr->GetString(0x2735, 1, &scratch38);
-    textEntry->EnableAndProcessFlag(scratch38);
+    textEntry->SetHoverHelpText(scratch38);
 
     short needCap = nation != 0 ? nation->needCapA6 : 0;
     SetPanelShortField(panel, 0x94, nation != 0 ? nation->needsOverCapFlag : 0);
@@ -1331,7 +1331,7 @@ undefined TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nati
     SetPanelShortField(panel, 0x98, deficitCount);
   }
 
-  panel->EnableAndProcessFlag(displayText);
+  panel->SetHoverHelpText(displayText);
 
   if (needCurrent == 0) {
     panel->SetEnabled(0, 0);
@@ -1379,7 +1379,7 @@ undefined TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nati
   textEntry->controlTag = kTagDetailText;
 
   g_pSimMgr->GetString(0x2735, 4, &scratch38);
-  textEntry->EnableAndProcessFlag(scratch38);
+  textEntry->SetHoverHelpText(scratch38);
 
   if (nationSlot == 0x15 || nationSlot == 0x16) {
     TMyStaticText* valueEntry = new TMyStaticText();

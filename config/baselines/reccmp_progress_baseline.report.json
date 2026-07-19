@@ -4912,7 +4912,7 @@
     {
       "address": "0x48c220",
       "matching": 0.4166666666666667,
-      "name": "TView::EnableAndProcessFlag",
+      "name": "TView::SetHoverHelpText",
       "type": 1
     },
     {
@@ -16817,7 +16817,11 @@
     },
     {
       "address": "0x508800",
+<<<<<<< HEAD
       "matching": 0.7230769230769231,
+=======
+      "matching": 0.7076923076923077,
+>>>>>>> ce07dac9 (Rename the "shared string" control helpers to cursor hover-help-text)
       "name": "TLanguageMgr::BuildNewsTableDimensions",
       "type": 1
     },
@@ -21934,7 +21938,11 @@
     },
     {
       "address": "0x545940",
+<<<<<<< HEAD
       "matching": 0.3804137039431157,
+=======
+      "matching": 0.4261712439418417,
+>>>>>>> ce07dac9 (Rename the "shared string" control helpers to cursor hover-help-text)
       "name": "TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine",
       "type": 1
     },
@@ -33362,13 +33370,13 @@
     {
       "address": "0x5c49d0",
       "matching": 0.46153846153846156,
-      "name": "ApplySharedStringToControlState",
+      "name": "SetControlHoverHelpText",
       "type": 1
     },
     {
       "address": "0x5c4a40",
       "matching": 0.46153846153846156,
-      "name": "AssignSharedStringToControlState",
+      "name": "SetControlHoverHelpTextAltEntry",
       "type": 1
     },
     {
