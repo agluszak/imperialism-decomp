@@ -20,12 +20,6 @@ address|class|slot|summary
 0x004c8d70|TShipyardView|0x1f0|declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
 0x004c97c0|TShipyardView|0x1ec|declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x8
 0x004d1880|TPlaceCityDialog|0x1cc|declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
-0x004dca80|TAutoGreatPower|0xfc|declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
-0x004dca80|TClientGreatPower|0xfc|declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
-0x004dca80|TGreatPower|0xfc|declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
-0x004dca80|THostGreatPower|0xfc|declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
-0x004dca80|TProxyGreatPower|0xfc|declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
-0x004dca80|TRemoteGreatPower|0xfc|declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
 0x004e5a40|TMinorRuntimeStatusEntry|0xb8|declared 2 stack dword(s) -> expected RET 0x8, binary shows RET 0x4
 0x004e5a40|TRemoteMinor|0xb8|declared 2 stack dword(s) -> expected RET 0x8, binary shows RET 0x4
 0x004f6820|TBattleReportView|0x1d8|declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4

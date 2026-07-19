@@ -1596,7 +1596,7 @@ void TGreatPower::NotifyCitySlot2C(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x004dca80
-void TGreatPower::OrphanRetStub_004dca80(void) {}
+void TGreatPower::OrphanRetStub_004dca80(int) {}
 
 // FUNCTION: IMPERIALISM 0x004dcaa0
 unsigned int TGreatPower::GetEffectiveDiplomacyCounterA2ForCode(int proposalCode) {

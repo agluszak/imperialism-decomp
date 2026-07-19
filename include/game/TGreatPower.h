@@ -131,8 +131,10 @@ public:
   virtual void DispatchGreatPowerQuarterlyStatusMessageLevel1(CString* message);
   virtual void DispatchGreatPowerQuarterlyStatusMessageLevel0(CString* message);
   // slot 0xfc — placeholder in the original table; city callers use the direct helper
-  // below (`AbsorbCityNeedVectorSlotFC`), not virtual dispatch.
-  virtual void OrphanRetStub_004dca80(void);
+  // below (`AbsorbCityNeedVectorSlotFC`), not virtual dispatch. Body is a bare `ret 4`:
+  // it takes one stack dword (proven by RET 0x4) and ignores it; no vtable call site
+  // exists to pin the argument's type, so it is modeled as an opaque dword.
+  virtual void OrphanRetStub_004dca80(int);
   // slot 0x40 — body 0x004dcaa0: effective diplomacyCounterA2 for a proposal code,
   // reduced by 2 when the interaction manager maps the code into an active minister
   // capability category (4/5/3), or by 1 for the code-3 special case.
