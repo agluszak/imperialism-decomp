@@ -605,7 +605,8 @@ undefined TTacArmyView::DrawTacticalTileInClipRect(int tileIndex, RECT* clipRect
   // Selection-marker animation redraw hook.
   TAnimation* selectionAnim = g_pUiAnimator->FindRegisteredAnimationByTag(0x13);
   if (selectionAnim != 0) {
-    selectionAnim->RenderBattleReportInsetWithPaletteShift();
+    POINT offset = {0, 0};
+    selectionAnim->RenderBattleReportInsetWithPaletteShift(&offset);
   }
 
   // Neighbor units bleeding into this tile from the row-adjacent tiles.

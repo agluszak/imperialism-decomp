@@ -73,7 +73,7 @@ undefined TAnimation::AdvanceAnimationTickAndInvalidateOnFrameFlip() {
 }
 
 // FUNCTION: IMPERIALISM 0x0049f190
-undefined TAnimation::RenderBattleReportInsetWithPaletteShift() {
+undefined TAnimation::RenderBattleReportInsetWithPaletteShift(POINT* offset) {
   return 0;
 }
 

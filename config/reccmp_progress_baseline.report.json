@@ -7366,7 +7366,7 @@
     },
     {
       "address": "0x49f190",
-      "matching": 0.0,
+      "matching": 0.020618556701030927,
       "name": "TAnimation::RenderBattleReportInsetWithPaletteShift",
       "type": 1
     },
@@ -7444,7 +7444,7 @@
     },
     {
       "address": "0x49f8e0",
-      "matching": 0.0,
+      "matching": 0.014925373134328358,
       "name": "TCivAnimation2::RenderBattleReportInsetWithPaletteShift",
       "type": 1
     },
@@ -7552,13 +7552,13 @@
     },
     {
       "address": "0x4a0190",
-      "matching": 0.7142857142857143,
+      "matching": 1.0,
       "name": "TFocusAnimation::VTableSlot0D",
       "type": 1
     },
     {
       "address": "0x4a0250",
-      "matching": 0.8571428571428571,
+      "matching": 0.9523809523809523,
       "name": "TFocusAnimation::RenderBattleReportInsetWithPaletteShift",
       "type": 1
     },
@@ -7618,7 +7618,7 @@
     },
     {
       "address": "0x4a0810",
-      "matching": 0.512396694214876,
+      "matching": 0.5206611570247934,
       "name": "TTransFocusAnimation::RenderBattleReportInsetWithPaletteShift",
       "type": 1
     },
@@ -30417,7 +30417,7 @@
     },
     {
       "address": "0x5a8ac0",
-      "matching": 0.6867469879518072,
+      "matching": 0.6086956521739131,
       "name": "TTacticalBattleView::CenterViewportAroundGridIndexAndSnap",
       "type": 1
     },
@@ -30453,7 +30453,7 @@
     },
     {
       "address": "0x5a9240",
-      "matching": 0.5397590361445783,
+      "matching": 0.5304136253041363,
       "name": "TTacticalBattleView::AnimateTacticalUnitMoveBetweenTiles",
       "type": 1
     },
@@ -30525,7 +30525,7 @@
     },
     {
       "address": "0x5aa900",
-      "matching": 0.2762163795708673,
+      "matching": 0.27709025052822217,
       "name": "TTacArmyView::DrawTacticalTileInClipRect",
       "type": 1
     },

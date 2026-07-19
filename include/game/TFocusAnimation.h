@@ -12,7 +12,8 @@ class TFocusAnimation : public TAnimation {
 public:
   TFocusAnimation();
   virtual undefined AdvanceAnimationTickAndInvalidateOnFrameFlip() override; // slot 10 / 0x28
-  virtual undefined RenderBattleReportInsetWithPaletteShift() override;   // slot 11 / 0x2c 0x4a0250
+  virtual undefined
+  RenderBattleReportInsetWithPaletteShift(POINT* offset) override;        // slot 11 / 0x2c 0x4a0250
   virtual void VTableSlot0D();                                            // slot 13 / 0x34 0x4a0190
   virtual void Helper_Uses_BlitRectWithOptionalTransparency_At004a0280(); // slot 14 / 0x38
 

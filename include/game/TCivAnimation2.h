@@ -28,7 +28,8 @@ public:
   // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
   virtual undefined AdvanceAnimationTickAndInvalidateOnFrameFlip() override; // slot 0x0a 0x49f7c0
-  virtual undefined RenderBattleReportInsetWithPaletteShift() override;      // slot 0x0b 0x49f8e0
+  virtual undefined
+  RenderBattleReportInsetWithPaletteShift(POINT* offset) override; // slot 0x0b 0x49f8e0
   // slot 0x0c RenderBattleReportViewSurfaceSpriteWithResourceHandle inherited unchanged (0x49f2d0)
   // TAnimation's own slice ends at 0x2c (ASSERT_SIZE); RTTI oracle confirms
   // sizeof(TCivAnimation2) == 0x30. Caches the ctor's `kind` selector (see the ctor

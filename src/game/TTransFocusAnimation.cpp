@@ -129,7 +129,7 @@ void TTransFocusAnimation::BlitTransientSurfaceToPrimaryRenderContextWithClip() 
 void TTransFocusAnimation::VTableSlot0D() {}
 
 // FUNCTION: IMPERIALISM 0x004a0810
-undefined TTransFocusAnimation::RenderBattleReportInsetWithPaletteShift() {
+undefined TTransFocusAnimation::RenderBattleReportInsetWithPaletteShift(POINT* offset) {
   short width = screenRect1C.right - screenRect1C.left;
   int height = screenRect1C.bottom - screenRect1C.top;
 

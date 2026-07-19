@@ -6,14 +6,6 @@ address|class|slot|summary
 0x004907a0|TMyNumberText|0x9c|declared void but 2 caller site(s) consume the return register ({'eax': 2})
 0x004907a0|TNumberText|0x9c|declared void but 2 caller site(s) consume the return register ({'eax': 2})
 0x004907a0|TPictureNumberText|0x9c|declared void but 2 caller site(s) consume the return register ({'eax': 2})
-0x0049f190|TAnimation|0x2c|declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
-0x0049f190|TCivAnimation|0x2c|declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
-0x0049f190|TCouncilTickerAnimation|0x2c|declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
-0x0049f190|TIdleMeAnimation|0x2c|declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
-0x0049f190|TOneTimeAnimation|0x2c|declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
-0x0049f8e0|TCivAnimation2|0x2c|declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
-0x004a0250|TFocusAnimation|0x2c|declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
-0x004a0810|TTransFocusAnimation|0x2c|declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
 0x004aa360|TArmyCheckBox|0x1c8|declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x8
 0x004aa3a0|TArmyCheckBox|0x1d0|declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
 0x004aa540|TSuperArmyRoster|0x1b8|declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0xc
