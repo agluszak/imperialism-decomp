@@ -15068,6 +15068,12 @@
       "type": 1
     },
     {
+      "address": "0x4f6d90",
+      "matching": 0.0,
+      "name": "Function_004f6d90",
+      "type": 1
+    },
+    {
       "address": "0x4f70c0",
       "matching": 0.5423728813559322,
       "name": "TDiplomacyMapView::HandleDiplomacyMapControlTagToggleOrForward",
@@ -28457,6 +28463,12 @@
       "type": 1
     },
     {
+      "address": "0x593210",
+      "matching": 0.0425531914893617,
+      "name": "Function_00593210",
+      "type": 1
+    },
+    {
       "address": "0x5932b0",
       "matching": 0.5,
       "name": "TSoundPlayer::CreateObject",
@@ -32824,6 +32836,12 @@
       "address": "0x5c38e0",
       "matching": 0.9636363636363636,
       "name": "FindMilitaryUnitByIdAcrossTerrainDescriptors",
+      "type": 1
+    },
+    {
+      "address": "0x5c3b40",
+      "matching": 0.2222222222222222,
+      "name": "Function_005c3b40",
       "type": 1
     },
     {

@@ -25,7 +25,7 @@ undefined4 ReleaseRuntimeSelectionPeersAndResetOwner_Impl(void);
 extern "C" int __cdecl rand(void);
 // The deferred-apply timer callback (0x593210); registered by ScheduleTimerSlotCallbackWithInterval
 // as a real function pointer (its return keeps/clears the slot).
-extern undefined4 Helper_Uses_ForwardMciCommand808ToDevice_At00593210(void);
+extern undefined4 Function_00593210(void);
 
 // SYNTHETIC: IMPERIALISM 0x005932b0
 // TSoundPlayer::CreateObject
@@ -158,8 +158,7 @@ void TSoundPlayer::SelectAndScheduleRandomAudioCue() {
     this->fieldShort76 = static_cast<unsigned short>(chosen);
     if (this->stateDword7c == 0) {
       this->stateDword7c = GetTickCountDiv16();
-      ScheduleTimerSlotCallbackWithInterval(&Helper_Uses_ForwardMciCommand808ToDevice_At00593210, 6,
-                                            0);
+      ScheduleTimerSlotCallbackWithInterval(&Function_00593210, 6, 0);
     }
   } else {
     this->fieldShort74 = static_cast<unsigned short>(chosen);
@@ -194,8 +193,7 @@ void TSoundPlayer::RequestAudioPresetChangeWithDeferredApply(int presetId, int f
       return;
     }
     this->stateDword7c = GetTickCountDiv16();
-    ScheduleTimerSlotCallbackWithInterval(&Helper_Uses_ForwardMciCommand808ToDevice_At00593210, 6,
-                                          0);
+    ScheduleTimerSlotCallbackWithInterval(&Function_00593210, 6, 0);
     return;
   }
 
