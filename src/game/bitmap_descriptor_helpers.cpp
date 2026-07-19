@@ -141,6 +141,12 @@ void BlitBitmapResourceLoaderToActiveDc(TBitmapResourceLoader** handle, RECT* bo
   StretchDibitsFromCdibToDc(loader->bitmapResource, dcTarget, bounds->left, bounds->top);
 }
 
+// MISATTRIBUTION (7.5%, unported): 0x00495d00 is NOT this free-function initializer. The
+// raw listing is a __thiscall method (MOV ESI,ECX) with an EH prologue that `new`s a
+// 0x38-byte object (PUSH 0x38; CALL operator new 0x606f73), initializes it from its stack
+// args and returns it -- 212 bytes, no callers found. The `TBitmapSurfaceNode* node` first
+// param is bogus (it is really ECX=this). Needs receiver-class + 0x38-object recovery and a
+// full port; kept as a placeholder forwarder so the address stays owned meanwhile.
 // FUNCTION: IMPERIALISM 0x00495d00
 TBitmapSurfaceNode* InitializeBitmapSurfaceFromResourceDescriptor(TBitmapSurfaceNode* node,
                                                                   int width, int height,
