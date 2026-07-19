@@ -14,7 +14,6 @@
 
 IMPLEMENT_SERIAL(TNavyMission, TMission, 1)
 
-
 // Swaps float byte order (Big-Endian <-> Little-Endian)
 static inline float SwapFloat(float val) {
   union {
@@ -256,8 +255,7 @@ int TNavyMission::ReturnZeroSlot2C(int* outBuffer, int unused) {
     // method, while order_type reads the shared order-node field at +0x04.
     TObject* entry = node->payload;
     for (int category = 0; category < 4; ++category) {
-      static_cast<TShip*>(entry)->ComputeNavyOrderPriorityContributionPercentByCategory(
-          category);
+      static_cast<TShip*>(entry)->ComputeNavyOrderPriorityContributionPercentByCategory(category);
     }
     GetNavyOrderNormalizationBaseByResourceType(static_cast<TTaskForce*>(entry)->order_type);
   }
@@ -343,8 +341,8 @@ void TNavyMission::QueueMissionOrdersByPriorityForContext(int pContextAnchor,
   // cdecl stub cast (a name collision with the unrelated real function at 0x535940); the
   // actual callee here (verified via the 0x40635c ILT thunk row) is the already-ported
   // TMapOrderChildLinkNode::FindNodeMatching (0x552510).
-  if (*ppSelectedChildNode != 0 && orderList24->FindNodeMatching(reinterpret_cast<TObject*>(
-                                       *ppSelectedChildNode)) == nullptr) {
+  if (*ppSelectedChildNode != 0 &&
+      orderList24->FindNodeMatching(reinterpret_cast<TObject*>(*ppSelectedChildNode)) == nullptr) {
     *ppSelectedChildNode = 0;
   }
 
@@ -399,8 +397,7 @@ LAB_0053711a:
     if (i == 1 && orderObj == startOrder)
       continue;
 
-    TMapOrderChildLinkNode* node =
-        orderList24->FindNodeMatching(static_cast<TObject*>(orderObj));
+    TMapOrderChildLinkNode* node = orderList24->FindNodeMatching(static_cast<TObject*>(orderObj));
     node->active = 1;
     TTaskForce* entry = static_cast<TShip*>(orderObj)->GetOrCreateMissionOrderEntryForNode();
 
@@ -419,8 +416,9 @@ void TNavyMission::ConsolidateMissionOrderEntriesByTargetAndQueue(int* pContextA
       node->active = 1;
       TTaskForce* entry = static_cast<TShip*>(node->payload)->GetOrCreateMissionOrderEntryForNode();
       for (TMapOrderChildLinkNode* other = orderList24; other != nullptr; other = other->next) {
-        if (other->active == 0 && reinterpret_cast<int>(static_cast<TShip*>(other->payload)->field08) ==
-                                      entry->contextAnchor) {
+        if (other->active == 0 &&
+            reinterpret_cast<int>(static_cast<TShip*>(other->payload)->field08) ==
+                entry->contextAnchor) {
           static_cast<TShip*>(other->payload)->RemoveNode(entry);
           other->active = 1;
         }
@@ -1095,3 +1093,6 @@ float TNavyMission::ComputeMissionNavyOrderDistributionScoreForPortOwnerOrAllies
   }
   return best;
 }
+
+// SYNTHETIC: IMPERIALISM 0x00536450
+// TNavyMission::GetRuntimeClass

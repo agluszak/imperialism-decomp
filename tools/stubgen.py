@@ -3,8 +3,8 @@
 
 Stubs are disposable build inputs, not source: they are regenerated on every
 `just build` from `config/symbols.csv` minus the addresses claimed by manual
-source markers (via tools.source_index) and by curated ownership rows. Nothing
-under the output directory is committed.
+source markers (via tools.source_index). Nothing under the output directory is
+committed.
 
 Default output: build-msvc500/generated/stubs/ (compiled via CMake's
 IMPERIALISM_GENERATED_DIR glob). Chunking is deterministic (address order,
@@ -29,10 +29,6 @@ from tools.common.name_overrides import (
 from tools.common.pipe_csv import read_pipe_rows
 from tools.common.repo import repo_root_from_file, resolve_repo_path
 from tools.source_index import claimed_addresses
-from tools.workflow.function_ownership import (
-    DEFAULT_FUNCTION_OWNERSHIP_CSV,
-    load_function_ownership,
-)
 
 DEFAULT_OUTPUT_DIR = "build-msvc500/generated/stubs"
 
@@ -55,11 +51,6 @@ def parse_args() -> argparse.Namespace:
         "--name-overrides",
         default=DEFAULT_NAME_OVERRIDES_CSV,
         help="Optional pipe-delimited file: address|name|prototype",
-    )
-    parser.add_argument(
-        "--ownership-csv",
-        default=DEFAULT_FUNCTION_OWNERSHIP_CSV,
-        help="Curated ownership rows (read-only; suppresses stubs at owned addresses).",
     )
     parser.add_argument(
         "--output-dir",
@@ -169,23 +160,19 @@ def compute_stub_rows(
     repo_root: Path,
     target: str = "IMPERIALISM",
     symbols_csv: str = "config/symbols.csv",
-    ownership_csv: str = DEFAULT_FUNCTION_OWNERSHIP_CSV,
     name_overrides: str | None = DEFAULT_NAME_OVERRIDES_CSV,
 ) -> list[tuple[int, str, str]]:
     """The stub set: symbols function-kind rows minus source-claimed addresses.
 
-    Claims come from manual-source markers (scanned directly — no sync step) and
-    from curated ownership rows. Shared by stub generation and the stub-count gate
-    so the gate can never disagree with what generation would emit.
+    Claims come from manual-source markers, scanned directly — no sync step and
+    no ownership ledger. Shared by stub generation and the stub-count gate so the
+    gate can never disagree with what generation would emit.
     """
     csv_path = resolve_repo_path(repo_root, symbols_csv)
     if not csv_path.is_file():
         raise SystemExit("Missing symbols CSV: {}".format(csv_path))
 
     claimed = claimed_addresses(repo_root, target)
-    ownership_path = resolve_repo_path(repo_root, ownership_csv)
-    for address in load_function_ownership(ownership_path):
-        claimed.add(address)
 
     overrides = {}
     if name_overrides:
@@ -302,7 +289,6 @@ def main() -> int:
         repo_root,
         target=args.target,
         symbols_csv=args.symbols_csv,
-        ownership_csv=args.ownership_csv,
         name_overrides=args.name_overrides,
     )
 

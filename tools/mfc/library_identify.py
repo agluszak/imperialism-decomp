@@ -28,7 +28,6 @@ from tools.common.repo import repo_root_from_file, resolve_repo_path
 from tools.mfc.apply_library_overrides import load_overrides
 
 DEFAULT_SYMBOLS = "config/symbols.csv"
-DEFAULT_OWNERSHIP = "config/function_ownership.csv"
 DEFAULT_OVERRIDES = "config/msvc500_library_overrides.csv"
 DEFAULT_FID_MATCHES = "tmp_decomp/msvc500_fid_matches.csv"
 DEFAULT_ORACLE = "config/msvc500_library_oracle.csv"
@@ -41,7 +40,6 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("address", help="Function address, e.g. 0x005e83f0")
     parser.add_argument("--symbols", default=DEFAULT_SYMBOLS)
-    parser.add_argument("--ownership", default=DEFAULT_OWNERSHIP)
     parser.add_argument("--overrides", default=DEFAULT_OVERRIDES)
     parser.add_argument("--fid-matches", default=DEFAULT_FID_MATCHES)
     parser.add_argument("--oracle", default=DEFAULT_ORACLE)
@@ -85,7 +83,12 @@ def main() -> int:
     address = parse_hex_address(args.address)
 
     symbols_row = _row_for_address(resolve_repo_path(repo_root, args.symbols), address)
-    ownership_row = _row_for_address(resolve_repo_path(repo_root, args.ownership), address)
+    from tools.source_index import ownership_kind, ownership_view
+
+    claim = ownership_view(repo_root).get(address)
+    ownership_row = (
+        {"ownership": ownership_kind(claim.kind), "target_cpp": claim.file} if claim else None
+    )
     fid_row = _fid_row(resolve_repo_path(repo_root, args.fid_matches), address)
     oracle_row = _row_for_address(resolve_repo_path(repo_root, args.oracle), address)
 

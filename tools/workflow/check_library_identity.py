@@ -4,7 +4,7 @@
 `symbols-integrity-gate` checks CSV *structure* (header, addresses, overlap) but
 not whether library identities are semantically correct. This gate closes that
 hole for the reviewed set: every row in `config/msvc500_library_overrides.csv`
-must be faithfully projected into `config/symbols.csv` and `function_ownership.csv`.
+must be faithfully projected into `config/symbols.csv` and `// LIBRARY:` markers.
 
 It exists because the sync pipeline stabilizes a FID miss into a durable mistake:
 a function FID skipped (e.g. `rand` at 0x005e83f0, whose body is the MSVC LCG
@@ -15,7 +15,7 @@ un-revertible.
 
 Failures (for the reviewed override set):
   - an override is not applied to symbols.csv (name/symbol/prototype/type drift);
-  - an override address is not ownership=library;
+  - an override address has no `// LIBRARY:` marker;
   - an override row is internally inconsistent (missing symbol, or the friendly
     name is absent from the prototype);
   - the number of applied overrides dropped below the ratchet baseline (silent
@@ -43,7 +43,6 @@ from tools.mfc.apply_library_overrides import LibraryOverride, load_overrides
 
 DEFAULT_OVERRIDES = "config/msvc500_library_overrides.csv"
 DEFAULT_SYMBOLS = "config/symbols.csv"
-DEFAULT_OWNERSHIP = "config/function_ownership.csv"
 DEFAULT_BASELINE = "config/library_identity_gate_baseline.json"
 DEFAULT_ORACLE = "config/msvc500_library_oracle.csv"
 DEFAULT_GAMECODE_ALLOWLIST = "config/library_oracle_gamecode_allowlist.csv"
@@ -57,7 +56,6 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--overrides", default=DEFAULT_OVERRIDES)
     parser.add_argument("--symbols", default=DEFAULT_SYMBOLS)
-    parser.add_argument("--ownership", default=DEFAULT_OWNERSHIP)
     parser.add_argument("--baseline", default=DEFAULT_BASELINE)
     parser.add_argument("--oracle", default=DEFAULT_ORACLE)
     parser.add_argument("--gamecode-allowlist", default=DEFAULT_GAMECODE_ALLOWLIST)
@@ -96,33 +94,17 @@ def index_symbols(symbols_path: Path) -> dict[int, dict[str, str]]:
     return out
 
 
-def index_ownership(ownership_path: Path) -> dict[int, str]:
-    out: dict[int, str] = {}
-    for row in read_pipe_rows(ownership_path):
-        addr_text = (row.get("address") or "").strip()
-        if not addr_text:
-            continue
-        try:
-            out[int(addr_text, 16)] = (row.get("ownership") or "").strip().lower()
-        except ValueError:
-            continue
-    return out
+def index_ownership(repo_root: Path) -> dict[int, str]:
+    from tools.source_index import ownership_kind, ownership_view
+
+    return {a: ownership_kind(c.kind) for a, c in ownership_view(repo_root).items()}
 
 
-def index_ownership_full(ownership_path: Path) -> dict[int, tuple[str, str]]:
-    out: dict[int, tuple[str, str]] = {}
-    for row in read_pipe_rows(ownership_path):
-        addr_text = (row.get("address") or "").strip()
-        if not addr_text:
-            continue
-        try:
-            out[int(addr_text, 16)] = (
-                (row.get("target_cpp") or "").strip(),
-                (row.get("ownership") or "").strip().lower(),
-            )
-        except ValueError:
-            continue
-    return out
+def index_ownership_full(repo_root: Path) -> dict[int, tuple[str, str]]:
+    from tools.source_index import ownership_kind, ownership_view
+
+    return {a: (c.file, ownership_kind(c.kind))
+            for a, c in ownership_view(repo_root).items()}
 
 
 def load_gamecode_allowlist(path: Path) -> set[int]:
@@ -222,7 +204,6 @@ def main() -> int:
     repo_root = repo_root_from_file(__file__)
     overrides_path = resolve_repo_path(repo_root, args.overrides)
     symbols_path = resolve_repo_path(repo_root, args.symbols)
-    ownership_path = resolve_repo_path(repo_root, args.ownership)
     baseline_path = resolve_repo_path(repo_root, args.baseline)
 
     overrides = load_overrides(overrides_path)
@@ -237,7 +218,7 @@ def main() -> int:
         return 0
 
     symbols = index_symbols(symbols_path)
-    ownership = index_ownership(ownership_path)
+    ownership = index_ownership(repo_root)
 
     problems: list[str] = []
     for ov in overrides:
@@ -247,7 +228,7 @@ def main() -> int:
     problems.extend(
         check_oracle_gamecode_conflicts(
             resolve_repo_path(repo_root, args.oracle),
-            index_ownership_full(ownership_path),
+            index_ownership_full(repo_root),
             load_gamecode_allowlist(resolve_repo_path(repo_root, args.gamecode_allowlist)),
         )
     )

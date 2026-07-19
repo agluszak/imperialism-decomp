@@ -93,10 +93,8 @@ Whenever you add, remove, or move a `// FUNCTION:` / `// STUB:` / `// SYNTHETIC:
 just build          # regenerates build inputs (source index + stubs) automatically
 ```
 
-There is no separate sequence to remember: generation reconciles
-`config/function_ownership.csv` from source markers (deletion-reconciling;
-curated notes like `mfc_runtime_macro` are never pruned) and verifies
-`config/symbols.csv` integrity before regenerating `src/autogen/stubs/`.
+There is no separate sequence to remember: markers in source ARE the ownership
+authority — generation scans them directly; nothing else needs syncing.
 
 ## 3. Full Ghidra DB resync
 
@@ -123,7 +121,7 @@ must run before committing either way.
 |---|---|---|
 | Curated names/prototypes (top authority) | `config/function_name_overrides.csv` | hand-edited |
 | Exported symbol table (reccmp entity list) | `config/symbols.csv` | `sync-ghidra` (curated names preserved by merge) |
-| Address ownership (stub suppression) | source markers (scanned at build time) + curated `config/function_ownership.csv` rows | `just generate` (runs inside `just build`) |
+| Address ownership (stub suppression) | source markers (scanned at build time) | `just generate` (runs inside `just build`) |
 | Provisional names, disassembly ground truth | vendored Ghidra DB | `push-names`, DB-mutating targets (`ghidra-db` group) |
 
 Renamed targets (old names remain as aliases): `stats-commit` →

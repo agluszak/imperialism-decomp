@@ -4,7 +4,7 @@
 Address-based `xrefs` answers "who references this address"; class-layout work
 needs the other axis: "who touches field +0xNN of TCity". This scans the bodies
 of every function attributed to the class (symbols.csv names `Class::...` +
-config/function_ownership.csv rows owned by src/game/<Class>.cpp), tracking
+source-marker claims owned by src/game/<Class>.cpp), tracking
 which registers hold `this` (starts in ECX, follows plain `MOV reg, thisreg`
 copies, drops on any other write / call clobber), and reports instructions that
 access `[thisreg + offset]`.
@@ -42,13 +42,11 @@ def class_function_addrs(repo_root, cls: str) -> dict[int, str]:
         for addr, name in names_by_addr.items()
         if name.startswith(f"{cls}::") or name.startswith(f"thunk_{cls}::")
     }
+    from tools.source_index import ownership_view
+
     target_cpp = f"src/game/{cls}.cpp"
-    for row in read_pipe_rows(repo_root / "config" / "function_ownership.csv"):
-        if row.get("target_cpp") == target_cpp:
-            try:
-                addr = int(row["address"], 16)
-            except ValueError:
-                continue
+    for addr, claim in ownership_view(repo_root).items():
+        if claim.file == target_cpp:
             out.setdefault(addr, names_by_addr.get(addr, "?"))
     return out
 

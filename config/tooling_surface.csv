@@ -2,7 +2,6 @@ kind|entry|source|note
 module|tools.ghidra.sync_exports|just:sync-ghidra|Primary Ghidra export entrypoint
 module|tools.stubgen|just:generate|Generated build-input stubs (build dir)
 module|tools.source_index|just:generate|Source-marker index (build-dir artifact)
-module|tools.workflow.sync_function_ownership|just:sync-ownership|Marker to ownership sync
 module|tools.workflow.annotate_globals_from_symbols|just:annotate-globals|Global annotation pass
 module|tools.workflow.annotate_vtables_from_symbols|just:annotate-vtables|Vtable annotation pass
 module|tools.workflow.annotate_strings_from_symbols|just:annotate-strings|String annotation pass
@@ -112,7 +111,6 @@ module|tools.workflow.check_typedef_ghidra_args|just:typedef-args-audit|Typedef-
 module|tools.workflow.gen_compile_commands|just:gen-compile-commands|Rewrite lint compile_commands.json for host clangd
 module|tools.common.reccmp_report|dependency:tools.reccmp.compare_batch|Shared full-report runner (reccmp-reccmp --json, diet or full)
 module|tools.common.symbols|dependency:tools.reccmp.triage|Shared symbols.csv / function_ownership.csv loaders
-module|tools.workflow.check_function_ownership_integrity|just:ownership-integrity-gate|function_ownership.csv structural integrity (header/duplicate-address safety)
 module|tools.mfc.apply_library_overrides|just:apply-library-overrides|Project reviewed library-identity overrides onto symbols.csv + LIBRARY markers
 module|tools.mfc.library_identify|just:library-identify|Per-address library-identity diagnostic (symbols/ownership/override/FID/oracle verdict)
 module|tools.workflow.check_library_identity|just:library-identity-gate|Semantic gate: reviewed library overrides applied + ownership=library + ratchet

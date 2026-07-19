@@ -11,4 +11,5 @@ IMPLEMENT_DYNCREATE(TNextMoveCommand, TCommand)
 // TNextMoveCommand::`scalar deleting destructor'
 TNextMoveCommand::~TNextMoveCommand() {}
 
+// FUNCTION: IMPERIALISM 0x005a6620
 void TNextMoveCommand::DoIt() {}

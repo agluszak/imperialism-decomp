@@ -7,7 +7,7 @@ human's mental model); Ghidra names are provisional (Hard Rule 6). After a
 then has to re-overwrite by address every time — names churn but never converge.
 
 This tool closes the loop in the other direction: for every address the *source*
-owns (`function_ownership.csv` ownership=manual) it writes the canonical source
+owns (a non-LIBRARY source marker) it writes the canonical source
 name into the Ghidra DB's function (creating the `Class::` namespace as needed),
 leaving Ghidra-only addresses untouched. The next export then already produces the
 matching name, so `sync-ghidra` converges instead of churning.
@@ -40,7 +40,6 @@ from tools.common.pipe_csv import normalize_hex, read_pipe_rows
 from tools.common.repo import repo_root_from_file
 
 REPO_ROOT = repo_root_from_file(__file__)
-OWNERSHIP_PATH = REPO_ROOT / "config" / "function_ownership.csv"
 NAME_OVERRIDES_PATH = resolve_name_overrides_path(REPO_ROOT, None)
 SYMBOLS_PATH = REPO_ROOT / "config" / "symbols.csv"
 DEFAULT_LIBRARY_START = 0x005E539C
@@ -80,14 +79,10 @@ def parse_address(value: str) -> int:
 
 
 def owned_addresses(kind: str = "manual") -> set[int]:
-    out: set[int] = set()
-    for row in read_pipe_rows(OWNERSHIP_PATH):
-        if (row.get("ownership") or "").strip() != kind:
-            continue
-        addr = normalize_hex((row.get("address") or "").strip())
-        if addr:
-            out.add(int(addr, 16))
-    return out
+    from tools.source_index import ownership_kind, ownership_view
+
+    return {a for a, c in ownership_view(REPO_ROOT).items()
+            if ownership_kind(c.kind) == kind}
 
 
 def canonical_names(owned: set[int]) -> dict[int, str]:

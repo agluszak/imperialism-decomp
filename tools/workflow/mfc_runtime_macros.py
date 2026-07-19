@@ -24,11 +24,6 @@ from pathlib import Path
 from typing import Any
 
 from tools.common.repo import normalize_repo_relative_path, repo_root_from_file, resolve_repo_path
-from tools.workflow.function_ownership import (
-    FunctionOwnership,
-    load_function_ownership,
-    write_function_ownership,
-)
 
 SCHEMA_DYNAMIC = 0xFFFF
 COBJECT_DESC_ADDR = 0x006706E0
@@ -84,9 +79,6 @@ def parse_args() -> argparse.Namespace:
         help="JSON scan with CRuntimeClass descriptor-chain evidence.",
     )
     parser.add_argument("--symbols-csv", default=str(repo_root / "config" / "symbols.csv"))
-    parser.add_argument(
-        "--ownership-csv", default=str(repo_root / "config" / "function_ownership.csv")
-    )
     parser.add_argument(
         "--classes",
         default="",
@@ -516,22 +508,24 @@ def update_symbols(symbols_path: Path, candidates: list[Candidate]) -> int:
     return updates
 
 
-def update_ownership(repo_root: Path, ownership_path: Path, candidates: list[Candidate]) -> int:
-    entries = load_function_ownership(ownership_path)
-    updates = 0
+def write_synthetic_claims(repo_root: Path, candidates: list[Candidate]) -> int:
+    """Claim each macro-generated GetRuntimeClass with the standard two-line
+    // SYNTHETIC block (markers are the only ownership authority)."""
+    from tools.source_index import claimed_addresses
+
+    claimed = claimed_addresses(repo_root, "IMPERIALISM")
+    added = 0
     for candidate in candidates:
-        rel_source = normalize_repo_relative_path(candidate.source_path, repo_root)
-        entry = FunctionOwnership(
-            address=candidate.record.fn_addr,
-            target_cpp=rel_source,
-            ownership="manual",
-            note="mfc_runtime_macro",
-        )
-        if entries.get(candidate.record.fn_addr) != entry:
-            entries[candidate.record.fn_addr] = entry
-            updates += 1
-    write_function_ownership(ownership_path, entries)
-    return updates
+        addr = candidate.record.fn_addr
+        if addr in claimed:
+            continue
+        path = candidate.source_path
+        block = (f"// SYNTHETIC: IMPERIALISM 0x{addr:08x}\n"
+                 f"// {candidate.class_name}::GetRuntimeClass\n")
+        text = path.read_text(encoding="utf-8")
+        path.write_text(text.rstrip() + "\n\n" + block, encoding="utf-8")
+        added += 1
+    return added
 
 
 def apply_candidates(candidates: list[Candidate]) -> tuple[int, int]:
@@ -587,7 +581,6 @@ def main() -> int:
     repo_root = repo_root_from_file(__file__)
     scan_path = resolve_repo_path(repo_root, args.scan)
     symbols_path = resolve_repo_path(repo_root, args.symbols_csv)
-    ownership_path = resolve_repo_path(repo_root, args.ownership_csv)
 
     only = {item.strip() for item in args.classes.split(",") if item.strip()} or None
     records, scan_skips = load_records(scan_path, only)
@@ -636,11 +629,11 @@ def main() -> int:
 
     header_edits, source_edits = apply_candidates(candidates)
     symbol_updates = update_symbols(symbols_path, candidates)
-    ownership_updates = update_ownership(repo_root, ownership_path, candidates)
+    synthetic_claims = write_synthetic_claims(repo_root, candidates)
     print(f"Edited headers: {header_edits}")
     print(f"Edited sources: {source_edits}")
     print(f"symbols.csv cell/row updates: {symbol_updates}")
-    print(f"function_ownership.csv updates: {ownership_updates}")
+    print(f"SYNTHETIC claims added: {synthetic_claims}")
     return 0
 
 

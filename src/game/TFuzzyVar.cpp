@@ -25,3 +25,6 @@ void TFuzzyVar::AllocateAndAppendRecord(int param1, int param2, int param3, int 
   *reinterpret_cast<TFuzzyVar**>(&field_0x8 + field_0x4) = record;
   ++field_0x4;
 }
+
+// SYNTHETIC: IMPERIALISM 0x004ff4d0
+// TFuzzyVar::`scalar deleting destructor'

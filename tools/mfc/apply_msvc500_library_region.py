@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Apply MSVC500 FID matches as generated LIBRARY ownership for a bounded range."""
+"""Apply MSVC500 FID matches as generated `// LIBRARY:` markers for a bounded range."""
 
 from __future__ import annotations
 
@@ -15,11 +15,6 @@ from tools.common.hexutil import parse_hex_address
 from tools.common.pipe_csv import read_pipe_table
 from tools.common.repo import normalize_repo_relative_path, repo_root_from_file, resolve_repo_path
 from tools.ghidra.merge_curated_symbols import write_symbols_csv
-from tools.workflow.function_ownership import (
-    FunctionOwnership,
-    load_function_ownership,
-    write_function_ownership,
-)
 
 
 DEFAULT_START = "0x005e539c"
@@ -27,7 +22,6 @@ DEFAULT_END = "0x00626c7d"
 DEFAULT_FID_MATCHES = "tmp_decomp/msvc500_fid_matches.csv"
 DEFAULT_REVIEW_MAP = "tmp_decomp/msvc500_library_identity_map.csv"
 DEFAULT_SYMBOLS = "config/symbols.csv"
-DEFAULT_OWNERSHIP = "config/function_ownership.csv"
 DEFAULT_MARKERS = "src/game/library_msvc500_fid.cpp"
 DEFAULT_FAMILIES = "nafxcw,libcmt"
 DEFAULT_RANGE_AUDIT = "tmp_decomp/msvc500_library_range_audit.csv"
@@ -72,13 +66,12 @@ class Candidate:
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
-        description="Generate/apply LIBRARY ownership from MSVC500 FID matches."
+        description="Generate/apply LIBRARY markers from MSVC500 FID matches."
     )
     parser.add_argument("--fid-matches", default=DEFAULT_FID_MATCHES)
     parser.add_argument("--symbols", default=DEFAULT_SYMBOLS)
     parser.add_argument("--range-audit", default=DEFAULT_RANGE_AUDIT)
     parser.add_argument("--library-functions", default=DEFAULT_LIBRARY_FUNCTIONS)
-    parser.add_argument("--ownership-csv", default=DEFAULT_OWNERSHIP)
     parser.add_argument("--library-markers", default=DEFAULT_MARKERS)
     parser.add_argument("--out-map", default=DEFAULT_REVIEW_MAP)
     parser.add_argument("--target", default="IMPERIALISM")
@@ -94,7 +87,7 @@ def parse_args() -> argparse.Namespace:
         action="store_true",
         help="Allow converting existing non-LIBRARY source markers. Default: report-only skip.",
     )
-    parser.add_argument("--apply", action="store_true", help="Write symbols/ownership/markers.")
+    parser.add_argument("--apply", action="store_true", help="Write symbols/markers.")
     parser.add_argument(
         "--allow-marker-removals",
         action="store_true",
@@ -102,7 +95,7 @@ def parse_args() -> argparse.Namespace:
             "Permit shrinking the generated LIBRARY marker set. The matches CSV is "
             "treated as the complete source of truth, so running --apply with a "
             "partial tmp_decomp/msvc500_fid_matches.csv would otherwise silently "
-            "wipe previously generated markers/ownership (near-miss on 2026-07-02)."
+            "wipe previously generated markers (near-miss on 2026-07-02)."
         ),
     )
     return parser.parse_args()
@@ -355,14 +348,12 @@ def classify_candidates(
     candidates: list[Candidate],
     *,
     markers: dict[int, SourceMarker],
-    ownership: dict[int, FunctionOwnership],
     marker_rel: str,
     referenced_names: set[str],
     include_manual: bool,
 ) -> None:
     for cand in candidates:
         marker = markers.get(cand.address)
-        owner = ownership.get(cand.address)
         if marker is not None:
             cand.existing_marker_kind = marker.kind
             cand.existing_marker_path = marker.path
@@ -378,9 +369,9 @@ def classify_candidates(
             and demangled_base_name(cand.symbol_name) != marker.name
         ):
             cand.symbol_name = ""
-        if owner is not None:
-            cand.existing_ownership = owner.ownership
-            cand.existing_target_cpp = owner.target_cpp
+        if marker is not None:
+            cand.existing_ownership = "library" if marker.kind == "LIBRARY" else "manual"
+            cand.existing_target_cpp = marker.path
 
         if (
             marker is not None
@@ -406,13 +397,6 @@ def classify_candidates(
             cand.action = "skip_existing_source_marker"
             cand.reason = marker.kind
             continue
-
-        if owner is not None and owner.ownership.strip().lower() not in {"", "autogen", "library"}:
-            stale_marker_sync = marker is None and owner.note.strip() == "marker_sync"
-            if not include_manual and not stale_marker_sync:
-                cand.action = "skip_existing_ownership"
-                cand.reason = owner.ownership
-                continue
 
         if (
             cand.current_name
@@ -579,32 +563,6 @@ def apply_markers(path: Path, candidates: list[Candidate], *, target: str) -> in
     return len(candidates)
 
 
-def apply_ownership(
-    path: Path,
-    entries: dict[int, FunctionOwnership],
-    candidates: list[Candidate],
-    *,
-    marker_rel: str,
-) -> tuple[int, int]:
-    wanted = {c.address for c in candidates}
-    removed = 0
-    for address, entry in list(entries.items()):
-        if entry.target_cpp == marker_rel and address not in wanted:
-            del entries[address]
-            removed += 1
-    updated = 0
-    for cand in candidates:
-        entry = FunctionOwnership(
-            address=cand.address,
-            target_cpp=marker_rel,
-            ownership="library",
-            note=f"msvc500_fid:{cand.library_family}:{cand.library_version}:{cand.library_variant}",
-        )
-        if entries.get(cand.address) != entry:
-            entries[cand.address] = entry
-            updated += 1
-    write_function_ownership(path, entries)
-    return updated, removed
 
 
 def main() -> int:
@@ -620,7 +578,6 @@ def main() -> int:
     symbols_path = resolve_repo_path(repo_root, args.symbols)
     range_audit_path = resolve_repo_path(repo_root, args.range_audit)
     library_functions_path = resolve_repo_path(repo_root, args.library_functions)
-    ownership_path = resolve_repo_path(repo_root, args.ownership_csv)
     marker_path = resolve_repo_path(repo_root, args.library_markers)
     marker_rel = normalize_repo_relative_path(marker_path, repo_root)
     out_map = resolve_repo_path(repo_root, args.out_map)
@@ -660,14 +617,12 @@ def main() -> int:
             print(f"deferred {dropped} FID candidate(s) to reviewed library overrides")
     sizes = load_function_sizes(range_audit_path)
     markers = collect_source_markers(repo_root, args.target)
-    ownership = load_function_ownership(ownership_path)
     referenced_names = collect_manual_source_references(
         repo_root, {c.current_name for c in candidates}, marker_rel=marker_rel
     )
     classify_candidates(
         candidates,
         markers=markers,
-        ownership=ownership,
         marker_rel=marker_rel,
         referenced_names=referenced_names,
         include_manual=bool(args.include_manual),
@@ -688,7 +643,7 @@ def main() -> int:
         print(f"  {action}: {actions[action]}")
 
     if not args.apply:
-        print("dry-run only; re-run with --apply to update symbols, ownership, and markers.")
+        print("dry-run only; re-run with --apply to update symbols and markers.")
         return 0
 
     existing_generated = sum(
@@ -703,13 +658,9 @@ def main() -> int:
 
     symbol_updates, added_symbols = apply_symbols(symbols_path, symbol_targets(candidates), sizes)
     marker_count = apply_markers(marker_path, generated, target=args.target)
-    ownership_updates, ownership_removed = apply_ownership(
-        ownership_path, ownership, generated, marker_rel=marker_rel
-    )
     print(
         f"applied: symbols_updated={symbol_updates} symbols_added={added_symbols} "
-        f"marker_count={marker_count} ownership_updates={ownership_updates} "
-        f"ownership_removed={ownership_removed}"
+        f"marker_count={marker_count}"
     )
     return 0
 

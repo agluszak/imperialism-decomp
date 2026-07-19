@@ -45,7 +45,6 @@ DEFAULT_LIBS = [
     ("nafxcw", "vendor/msvc500/lib/nafxcw.lib"),
 ]
 DEFAULT_SYMBOLS = "config/symbols.csv"
-DEFAULT_OWNERSHIP = "config/function_ownership.csv"
 DEFAULT_OUT = "config/msvc500_library_oracle.csv"
 
 # Below this size a full masked match is not discriminative enough to trust
@@ -134,7 +133,6 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--binary", default=None, help="Original executable (default: $ORIGINAL_BINARY or orig/Imperialism.exe)")
     parser.add_argument("--symbols", default=DEFAULT_SYMBOLS)
-    parser.add_argument("--ownership", default=DEFAULT_OWNERSHIP)
     parser.add_argument("--out", default=DEFAULT_OUT)
     parser.add_argument("--lib", action="append", default=[], help="extra family=path lib")
     parser.add_argument("--quiet", action="store_true")

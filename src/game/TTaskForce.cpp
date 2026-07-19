@@ -69,8 +69,6 @@ void TMapOrderChildLinkNode::SetChainActiveFlag(unsigned char flag) {
 // sibling ComputeMapOrderEntryHeuristicScore does) rather than calling the shared
 // 0x54ff00 helper, so it is reproduced inline to match.
 
-
-
 // FUNCTION: IMPERIALISM 0x00552510
 TMapOrderChildLinkNode* TMapOrderChildLinkNode::FindNodeMatching(TObject* child_node) {
   if (this == 0) {
@@ -188,14 +186,6 @@ TTaskForce::TTaskForce(int contextAnchorArg, short requiredCountArg)
 // FUNCTION: IMPERIALISM 0x005528a0
 TTaskForce::~TTaskForce() {}
 
-void TTaskForce::WriteTo(TStream* stream) {
-  (void)stream;
-}
-
-void TTaskForce::ReadFrom(TStream* stream) {
-  (void)stream;
-}
-
 // FUNCTION: IMPERIALISM 0x005528c0
 void TTaskForce::NoOpTaskForceInitSlot() {}
 
@@ -265,6 +255,16 @@ void TTaskForce::RemoveTaskForceOrderNodesByNationAndClearSelectionState(int nat
                                                                          TZone* contextZone) {
   (void)nation;
   (void)contextZone;
+}
+
+// FUNCTION: IMPERIALISM 0x00552b90
+void TTaskForce::WriteTo(TStream* stream) {
+  (void)stream;
+}
+
+// FUNCTION: IMPERIALISM 0x00552d10
+void TTaskForce::ReadFrom(TStream* stream) {
+  (void)stream;
 }
 
 // FUNCTION: IMPERIALISM 0x00552f60
@@ -441,7 +441,8 @@ void TTaskForce::PromoteMapOrderChainAndQueue(TZone* pContextAnchor) {
   for (TMapOrderChildLinkNode* node = childOrderList; node != nullptr; node = node->next) {
     if (node->active != 0) {
       short priority =
-          g_NavyOrderResourceDescriptorTable[static_cast<TShip*>(node->payload)->resourceType04].descriptorWeight;
+          g_NavyOrderResourceDescriptorTable[static_cast<TShip*>(node->payload)->resourceType04]
+              .descriptorWeight;
       if (priority < minPriority) {
         minPriority = priority;
       }
@@ -678,8 +679,7 @@ void TTaskForce::ApplyTaskForceSelectionModeForCurrentNationOrders(char reserveE
   for (TMapOrderChildLinkNode* node = childOrderList; node != nullptr; node = node->next) {
     if (node->active != 0) {
       // Same node+0x34 overrun documented on FindOrCreateChildOrderLink.
-      static_cast<TShip*>(node->payload)->field34 =
-          (reserveExtraSlot != 0) ? 1u : 2u;
+      static_cast<TShip*>(node->payload)->field34 = (reserveExtraSlot != 0) ? 1u : 2u;
     }
   }
 
@@ -692,8 +692,7 @@ void TTaskForce::ApplyTaskForceSelectionModeForCurrentNationOrders(char reserveE
 
   for (TMapOrderChildLinkNode* recheckNode = childOrderList; recheckNode != nullptr;
        recheckNode = recheckNode->next) {
-    recheckNode->active =
-        static_cast<TShip*>(recheckNode->payload)->field34 == 0;
+    recheckNode->active = static_cast<TShip*>(recheckNode->payload)->field34 == 0;
   }
 }
 
@@ -745,8 +744,10 @@ void TTaskForce::FindOrCreateChildOrderLink(TShip* node) {
     short nodePriority = static_cast<short>(
         g_NavyOrderResourceDescriptorTable[node->resourceType04].enabledFlagOrBucketOffset);
     do {
-      if (static_cast<short>(g_NavyOrderResourceDescriptorTable[static_cast<TShip*>(nextLink->payload)->resourceType04]
-                                 .enabledFlagOrBucketOffset) >= nodePriority) {
+      if (static_cast<short>(
+              g_NavyOrderResourceDescriptorTable[static_cast<TShip*>(nextLink->payload)
+                                                     ->resourceType04]
+                  .enabledFlagOrBucketOffset) >= nodePriority) {
         break;
       }
       prevLink = nextLink;
@@ -805,8 +806,8 @@ void TTaskForce::FindOrCreateChildOrderLink(TShip* node) {
 void TTaskForce::RecomputeMapOrderChildAggregateMetric() {
   activeChildEntry = nullptr;
   for (TMapOrderChildLinkNode* node = childOrderList; node != nullptr; node = node->next) {
-    activeChildEntry =
-        static_cast<TShip*>(node->payload)->SelectPreferredMapOrderEntryByPriorityRules(activeChildEntry, 0);
+    activeChildEntry = static_cast<TShip*>(node->payload)
+                           ->SelectPreferredMapOrderEntryByPriorityRules(activeChildEntry, 0);
   }
 }
 
@@ -843,8 +844,8 @@ void TTaskForce::RebuildMapOrderEntryChildren() {
 
   activeChildEntry = nullptr;
   for (node = childOrderList; node != nullptr; node = node->next) {
-    activeChildEntry =
-        static_cast<TShip*>(node->payload)->SelectPreferredMapOrderEntryByPriorityRules(activeChildEntry, 0);
+    activeChildEntry = static_cast<TShip*>(node->payload)
+                           ->SelectPreferredMapOrderEntryByPriorityRules(activeChildEntry, 0);
   }
 }
 
@@ -879,8 +880,8 @@ char TTaskForce::PruneInactiveTaskForceOrderHead() {
   activeChildEntry = 0;
   TMapOrderChildLinkNode* node;
   for (node = head; node != 0; node = node->next) {
-    activeChildEntry =
-        static_cast<TShip*>(node->payload)->SelectPreferredMapOrderEntryByPriorityRules(activeChildEntry, 0);
+    activeChildEntry = static_cast<TShip*>(node->payload)
+                           ->SelectPreferredMapOrderEntryByPriorityRules(activeChildEntry, 0);
   }
 
   if (childOrderList == 0) {
@@ -975,9 +976,9 @@ void TTaskForce::RequeueMapOrderEntry() {
       node = node->next;
     } else {
       static_cast<TShip*>(node->payload)->ownerOrderEntry0c = 0;
-      short bucketIndex =
-          static_cast<short>(g_NavyOrderResourceDescriptorTable[static_cast<TShip*>(node->payload)->resourceType04]
-                                 .enabledFlagOrBucketOffset);
+      short bucketIndex = static_cast<short>(
+          g_NavyOrderResourceDescriptorTable[static_cast<TShip*>(node->payload)->resourceType04]
+              .enabledFlagOrBucketOffset);
       short* bucketCounter = reinterpret_cast<short*>(pad_1e) + bucketIndex;
       --*bucketCounter;
       if (node == childOrderList) {
@@ -999,8 +1000,8 @@ void TTaskForce::RequeueMapOrderEntry() {
 
   activeChildEntry = 0;
   for (node = childOrderList; node != 0; node = node->next) {
-    activeChildEntry =
-        static_cast<TShip*>(node->payload)->SelectPreferredMapOrderEntryByPriorityRules(activeChildEntry, 0);
+    activeChildEntry = static_cast<TShip*>(node->payload)
+                           ->SelectPreferredMapOrderEntryByPriorityRules(activeChildEntry, 0);
   }
   AssertValid();
 
@@ -1071,8 +1072,9 @@ void TTaskForce::SetTaskForceOrderSelectionByNationClassAndFlag(short nationClas
   if (node == nullptr) {
     return;
   }
-  while (static_cast<short>(g_NavyOrderResourceDescriptorTable[static_cast<TShip*>(node->payload)->resourceType04]
-                                .enabledFlagOrBucketOffset) != nationClass ||
+  while (static_cast<short>(
+             g_NavyOrderResourceDescriptorTable[static_cast<TShip*>(node->payload)->resourceType04]
+                 .enabledFlagOrBucketOffset) != nationClass ||
          node->active == activeFlag) {
     node = node->next;
     if (node == nullptr) {
@@ -1108,8 +1110,9 @@ void TTaskForce::SetTaskForceOrderSelectionByNodeId(TTaskForce* targetOrderObjec
 int TTaskForce::CountTaskForceSelectedOrdersByNationClass(short nationClass) {
   int count = 0;
   for (TMapOrderChildLinkNode* node = childOrderList; node != nullptr; node = node->next) {
-    if (static_cast<short>(g_NavyOrderResourceDescriptorTable[static_cast<TShip*>(node->payload)->resourceType04]
-                               .enabledFlagOrBucketOffset) == nationClass &&
+    if (static_cast<short>(
+            g_NavyOrderResourceDescriptorTable[static_cast<TShip*>(node->payload)->resourceType04]
+                .enabledFlagOrBucketOffset) == nationClass &&
         node->active != 0) {
       ++count;
     }
@@ -1122,9 +1125,11 @@ unsigned int TTaskForce::GetMinActionThresholdFromEntryChildren() {
   unsigned int minWeight = 10000;
   for (TMapOrderChildLinkNode* node = childOrderList; node != nullptr; node = node->next) {
     if (node->active != 0 &&
-        g_NavyOrderResourceDescriptorTable[static_cast<TShip*>(node->payload)->resourceType04].descriptorWeight <
-            static_cast<int>(minWeight)) {
-      minWeight = g_NavyOrderResourceDescriptorTable[static_cast<TShip*>(node->payload)->resourceType04].descriptorWeight;
+        g_NavyOrderResourceDescriptorTable[static_cast<TShip*>(node->payload)->resourceType04]
+                .descriptorWeight < static_cast<int>(minWeight)) {
+      minWeight =
+          g_NavyOrderResourceDescriptorTable[static_cast<TShip*>(node->payload)->resourceType04]
+              .descriptorWeight;
     }
   }
   return minWeight == 10000 ? 0 : minWeight;
@@ -1136,7 +1141,8 @@ int TTaskForce::CalculateMapOrderEntryAverageChildRatingX10() {
   int count = 0;
   for (TMapOrderChildLinkNode* node = childOrderList; node != nullptr; node = node->next) {
     if (node->active != 0) {
-      sum += g_NavyOrderResourceDescriptorTable[static_cast<TShip*>(node->payload)->resourceType04].descriptorWeight;
+      sum += g_NavyOrderResourceDescriptorTable[static_cast<TShip*>(node->payload)->resourceType04]
+                 .descriptorWeight;
       ++count;
     }
   }
@@ -1267,7 +1273,9 @@ char TTaskForce::ResolveTaskForceOrderConflictAndPickCandidate(TTaskForce* other
     int count = 0;
     for (TMapOrderChildLinkNode* node = childOrderList; node != nullptr; node = node->next) {
       if (node->active != 0) {
-        sum += g_NavyOrderResourceDescriptorTable[static_cast<TShip*>(node->payload)->resourceType04].descriptorWeight;
+        sum +=
+            g_NavyOrderResourceDescriptorTable[static_cast<TShip*>(node->payload)->resourceType04]
+                .descriptorWeight;
         ++count;
       }
     }
@@ -1341,7 +1349,8 @@ char TTaskForce::ShouldAttemptMapOrderPairResolution(TTaskForce* other) {
   int count = 0;
   for (TMapOrderChildLinkNode* node = childOrderList; node != nullptr; node = node->next) {
     if (node->active != 0) {
-      sum += g_NavyOrderResourceDescriptorTable[static_cast<TShip*>(node->payload)->resourceType04].descriptorWeight;
+      sum += g_NavyOrderResourceDescriptorTable[static_cast<TShip*>(node->payload)->resourceType04]
+                 .descriptorWeight;
       ++count;
     }
   }
@@ -1404,7 +1413,8 @@ char TTaskForce::ComputeTaskForceOrderTieBreakScore(TTaskForce* other) {
   for (TMapOrderChildLinkNode* node = childOrderList; node != nullptr; node = node->next) {
     if (node->active != 0) {
       short weight = static_cast<short>(
-          g_NavyOrderResourceDescriptorTable[static_cast<TShip*>(node->payload)->resourceType04].descriptorWeight);
+          g_NavyOrderResourceDescriptorTable[static_cast<TShip*>(node->payload)->resourceType04]
+              .descriptorWeight);
       if (weight < static_cast<short>(minDescriptorWeight)) {
         minDescriptorWeight = static_cast<unsigned short>(weight);
       }
@@ -1416,7 +1426,9 @@ char TTaskForce::ComputeTaskForceOrderTieBreakScore(TTaskForce* other) {
   for (TMapOrderChildLinkNode* otherNode = other->childOrderList; otherNode != nullptr;
        otherNode = otherNode->next) {
     if (otherNode->active != 0) {
-      sum += g_NavyOrderResourceDescriptorTable[static_cast<TShip*>(otherNode->payload)->resourceType04].descriptorWeight;
+      sum += g_NavyOrderResourceDescriptorTable[static_cast<TShip*>(otherNode->payload)
+                                                    ->resourceType04]
+                 .descriptorWeight;
       ++count;
     }
   }
@@ -1566,30 +1578,29 @@ void TTaskForce::UpdateNavyOrderMapMarkerByOrderType() {
   // (FindNearestActiveSeaContextTileFromOffset216 slot 0x4c,
   // FindBestCoastalTileForContextAndCityStateByHeuristic slot 0x54).
   switch (attachment) {
-    case 1:
-      markerType = 4;
-      tiebreak_strength =
-          reinterpret_cast<TZone*>(owner)->FindNearestActiveSeaContextTileFromOffset216();
-      break;
-    case 3:
-      markerType = 5;
-      tiebreak_strength = reinterpret_cast<TZone*>(contextAnchor)
-                              ->FindNearestActiveSeaContextTileFromOffset216();
-      break;
-    case 5:
-      markerType = 6;
-      tiebreak_strength = static_cast<short>(
-          reinterpret_cast<TZone*>(contextAnchor)
-              ->FindBestCoastalTileForContextAndCityStateByHeuristic(
-                  reinterpret_cast<int>(owner)));
-      break;
-    case 6:
-      markerType = 2;
-      tiebreak_strength =
-          reinterpret_cast<TZone*>(owner)->FindNearestActiveSeaContextTileFromOffset216();
-      break;
-    default:
-      break;
+  case 1:
+    markerType = 4;
+    tiebreak_strength =
+        reinterpret_cast<TZone*>(owner)->FindNearestActiveSeaContextTileFromOffset216();
+    break;
+  case 3:
+    markerType = 5;
+    tiebreak_strength =
+        reinterpret_cast<TZone*>(contextAnchor)->FindNearestActiveSeaContextTileFromOffset216();
+    break;
+  case 5:
+    markerType = 6;
+    tiebreak_strength = static_cast<short>(
+        reinterpret_cast<TZone*>(contextAnchor)
+            ->FindBestCoastalTileForContextAndCityStateByHeuristic(reinterpret_cast<int>(owner)));
+    break;
+  case 6:
+    markerType = 2;
+    tiebreak_strength =
+        reinterpret_cast<TZone*>(owner)->FindNearestActiveSeaContextTileFromOffset216();
+    break;
+  default:
+    break;
   }
   if (markerType != -1) {
     SetMapTileStateByteAndNotifyObserver(tiebreak_strength, markerType);

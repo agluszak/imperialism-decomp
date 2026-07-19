@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
 """Generated-artifact integrity: no hand-edits under generated directories.
 
-config/function_ownership.csv is tool output (plus legacy generated trees no
-longer in git). A diff may only touch them when it
+Only legacy generated trees (no longer in git) are tool output here. A diff may only touch them when it
 also changes at least one `// FUNCTION:`-family marker in manual src/include —
 that is the signal that the sync pipeline legitimately
 re-derived them. Generated churn with no marker change means someone hand-edited
@@ -28,7 +27,6 @@ GENERATED_VIA_TOOLS = (
     # Legacy generated trees stay listed so stale-checkout leftovers still trip.
     "src/ghidra_autogen/",
     "include/ghidra_autogen/",
-    "config/function_ownership.csv",
 )
 MARKER_RE = re.compile(
     r"^[+-].*//\s*(FUNCTION|SYNTHETIC|TEMPLATE|LIBRARY|GLOBAL|VTABLE|NOOP):",

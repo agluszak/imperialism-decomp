@@ -32,8 +32,6 @@ IMPLEMENT_DYNCREATE(TLanguageMgr, TObject)
 
 TLanguageMgr::~TLanguageMgr() {}
 
-void TLanguageMgr::Free() {}
-
 // FUNCTION: IMPERIALISM 0x00507c60
 TLanguageMgr::TLanguageMgr() : TObject() {
   columnCount = 0;
@@ -49,6 +47,9 @@ TLanguageMgr::TLanguageMgr() : TObject() {
 
 // SYNTHETIC: IMPERIALISM 0x00507d80
 // TLanguageMgr::`scalar deleting destructor'
+
+// FUNCTION: IMPERIALISM 0x00507e20
+void TLanguageMgr::Free() {}
 
 // FUNCTION: IMPERIALISM 0x00507e50
 bool TLanguageMgr::LoadNewsTabTexResourcesAndBuildEntries(const char* basePath, int languageTag) {

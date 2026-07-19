@@ -18,8 +18,8 @@ import subprocess
 from dataclasses import dataclass, field
 from pathlib import Path
 
-from tools.common.pipe_csv import normalize_hex, read_pipe_rows
-from tools.common.repo import repo_root_from_file, resolve_repo_path
+from tools.common.pipe_csv import normalize_hex
+from tools.common.repo import repo_root_from_file
 
 
 VTABLE_HEADER_RE = re.compile(
@@ -145,15 +145,10 @@ def _is_ilt_addr(addr: str) -> bool:
 
 
 def _ilt_target_is_claimed(repo_root: Path, ilt_addr: str) -> bool:
-    """True when the ILT thunk address is claimed in function_ownership.csv."""
-    path = resolve_repo_path(repo_root, "config/function_ownership.csv")
-    if not path.exists():
-        return False
-    needle = normalize_hex(ilt_addr).lower()
-    for row in read_pipe_rows(path):
-        if normalize_hex(row.get("address", "")).lower() == needle:
-            return True
-    return False
+    """True when the ILT thunk address is claimed by a source marker."""
+    from tools.source_index import claimed_addresses
+
+    return int(normalize_hex(ilt_addr), 16) in claimed_addresses(repo_root, "IMPERIALISM")
 
 
 def plan_for_classes(repo_root: Path, report: VtableReport, classes: list[str]) -> list[FixPlan]:
@@ -239,7 +234,7 @@ def apply_plans(repo_root: Path, plans: list[FixPlan], verify: bool) -> int:
         rc = rc or _run_just(repo_root, "prune-ilt-thunks")
     if rc != 0 or not verify:
         return rc
-    for target in ("sync-ownership", "build", "detect"):
+    for target in ("build", "detect"):
         rc = rc or _run_just(repo_root, target)
         if rc:
             return rc
@@ -280,7 +275,7 @@ def parse_args() -> argparse.Namespace:
         "--max-rounds",
         type=int,
         default=0,
-        help="When --write is set, repeat autofix → sync-ownership → build "
+        help="When --write is set, repeat autofix → build "
         "and stop when the aggregate not-matching vtable count stabilizes or rounds "
         "are exhausted. 0 disables the loop (single pass). Implies --all when no "
         "class filter is given.",
@@ -344,7 +339,7 @@ def main() -> int:
 
         rc = apply_plans(repo_root, plans, verify=args.verify or bool(args.max_rounds))
         if args.max_rounds:
-            for target in ("sync-ownership", "build"):
+            for target in ("build",):
                 rc = rc or _run_just(repo_root, target)
                 if rc:
                     return rc

@@ -14,7 +14,7 @@ from pathlib import Path
 
 from tools.common.repo import dirty_tracked_paths
 
-WATCH_PATHS = ["src", "include", "config/symbols.csv", "config/function_ownership.csv"]
+WATCH_PATHS = ["src", "include", "config/symbols.csv"]
 
 
 def warn_if_baseline_stale(repo_root: Path) -> None:

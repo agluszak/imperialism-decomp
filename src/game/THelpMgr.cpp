@@ -67,20 +67,6 @@ IMPLEMENT_DYNCREATE(THelpMgr, TObject)
 
 THelpMgr::~THelpMgr() {}
 
-undefined THelpMgr::OrphanCallChain_C1_I22_00500f10() {
-  return 0;
-}
-
-void THelpMgr::ReadFrom(TStream* stream) {
-  (void)stream;
-}
-
-void THelpMgr::WriteTo(TStream* stream) {
-  (void)stream;
-}
-
-void THelpMgr::Free() {}
-
 // FUNCTION: IMPERIALISM 0x005005e0
 THelpMgr::THelpMgr() : TObject() {
   pendingDialogView8 = 0;
@@ -146,6 +132,24 @@ __inline short ReadLocalizationPendingEventGate5c() {
 }
 
 } // namespace
+
+// FUNCTION: IMPERIALISM 0x00500f10
+undefined THelpMgr::OrphanCallChain_C1_I22_00500f10() {
+  return 0;
+}
+
+// FUNCTION: IMPERIALISM 0x00500f50
+void THelpMgr::ReadFrom(TStream* stream) {
+  (void)stream;
+}
+
+// FUNCTION: IMPERIALISM 0x00500fe0
+void THelpMgr::WriteTo(TStream* stream) {
+  (void)stream;
+}
+
+// FUNCTION: IMPERIALISM 0x00501070
+void THelpMgr::Free() {}
 
 // FUNCTION: IMPERIALISM 0x005010b0
 void THelpMgr::SelectAndActivatePendingEventForCurrentView() {

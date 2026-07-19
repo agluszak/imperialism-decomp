@@ -97,3 +97,9 @@ void TFocusAnimation::FocusAnimationSlot0E() {
   BlitQuickDrawSurfaces(&srcContext->blitSurface, &g_pActiveQuickDrawSurfaceContext->blitSurface,
                         &tStack_14, &local_24, 0);
 }
+
+// SYNTHETIC: IMPERIALISM 0x004a0050
+// TFocusAnimation::`scalar deleting destructor'
+
+// SYNTHETIC: IMPERIALISM 0x004a00a0
+// TFocusAnimation::GetRuntimeClass

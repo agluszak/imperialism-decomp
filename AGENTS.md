@@ -154,7 +154,7 @@ target). They need a built binary + reccmp DB. Details in the `quality-control` 
 
 1. No inline assembly. (enforced by `just antipattern-gate`)
 2. Use `just` targets for normal workflow (`tooling-check`, `build`, `detect`,
-   `compare`, `stats`, `sync-ownership`, `generate`). Do not run raw
+   `compare`, `stats`, `generate`). Do not run raw
    `docker` or `uv run reccmp-*` when a `just` target exists; if no target exists,
    keep the direct command minimal and add a target afterward.
 3. `// FUNCTION: IMPERIALISM 0x...` must be immediately followed by the function

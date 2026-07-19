@@ -74,7 +74,8 @@ float SumMapOrderChildPowerAtOrAboveTier(TMapOrderChildLinkNode* head, int minTi
 int CountMapOrderChildrenAtOrAboveTier(TMapOrderChildLinkNode* head, int minTier) {
   int count = 0;
   for (TMapOrderChildLinkNode* node = head; node != nullptr; node = node->next) {
-    if (g_NavyOrderResourceDescriptorTable[static_cast<TShip*>(node->payload)->resourceType04].priorityTier >= minTier) {
+    if (g_NavyOrderResourceDescriptorTable[static_cast<TShip*>(node->payload)->resourceType04]
+            .priorityTier >= minTier) {
       ++count;
     }
   }
@@ -107,8 +108,9 @@ void ApplyMapOrderConflictAttrition(TMapOrderChildLinkNode* head, int currentCou
       ++selected;
       int roll = static_cast<int>(rand()) % 100 + static_cast<int>(rand()) % 100 + 100;
       TShip* child = static_cast<TShip*>(node->payload);
-      float delta = 0.5f + g_NavyOrderResourceDescriptorTable[child->resourceType04].taskForceWeight *
-                               (roll * 0.005f) * favorRatio * -0.01f;
+      float delta =
+          0.5f + g_NavyOrderResourceDescriptorTable[child->resourceType04].taskForceWeight *
+                     (roll * 0.005f) * favorRatio * -0.01f;
       child->stockLevel1c = static_cast<short>(child->stockLevel1c - static_cast<short>(delta));
     }
   }
@@ -243,38 +245,6 @@ TNavyMgr::TNavyMgr() : orderListHead04(0), field08(-1), field0c(nullptr) {}
 // FUNCTION: IMPERIALISM 0x005565f0
 TNavyMgr::~TNavyMgr() {}
 
-void TNavyMgr::Free() {}
-
-void TNavyMgr::WriteTo(TStream* stream) {
-  (void)stream;
-}
-
-void TNavyMgr::ReadFrom(TStream* stream) {
-  (void)stream;
-}
-
-static void RemoveMatchingSecondaryOrders(short nationSlot) {
-  int* node = reinterpret_cast<int*>(g_pNavySecondaryOrderListHead);
-  while (node != 0) {
-    int* nextNode = reinterpret_cast<int*>(node[5]);
-    if (static_cast<short>(node[1]) == nationSlot) {
-      reinterpret_cast<TObject*>(node)->Free();
-    }
-    node = nextNode;
-  }
-}
-
-static void RemoveMatchingTaskForceOrders(TNavyMgr* navyManager, short nationSlot) {
-  int* node = reinterpret_cast<int*>(navyManager->orderListHead04);
-  while (node != 0) {
-    int* nextNode = reinterpret_cast<int*>(node[0xb]);
-    if (static_cast<short>(node[7]) == nationSlot) {
-      reinterpret_cast<TObject*>(node)->Free();
-    }
-    node = nextNode;
-  }
-}
-
 // Seeds the three navy order-type ranking tables with the identity permutation, then
 // selection-sorts each by descending descriptor weight (resolve / calculate-mission /
 // navy-priority). The weight columns are read as dwords from the descriptor table, matching
@@ -320,6 +290,14 @@ void InitializeNavyOrderPriorityTables() {
       }
     }
   }
+}
+
+// FUNCTION: IMPERIALISM 0x005567a0
+void TNavyMgr::Free() {}
+
+// FUNCTION: IMPERIALISM 0x005568c0
+void TNavyMgr::WriteTo(TStream* stream) {
+  (void)stream;
 }
 
 // FUNCTION: IMPERIALISM 0x005568f0
@@ -374,6 +352,33 @@ void TNavyMgr::SerializeNavyOrderListsByNation(TStream* stream, short nationFilt
     if (nationFilter == -1 || nationFilter == order2->required_count) {
       order2->WriteTo(stream);
     }
+  }
+}
+
+// FUNCTION: IMPERIALISM 0x00556aa0
+void TNavyMgr::ReadFrom(TStream* stream) {
+  (void)stream;
+}
+
+static void RemoveMatchingSecondaryOrders(short nationSlot) {
+  int* node = reinterpret_cast<int*>(g_pNavySecondaryOrderListHead);
+  while (node != 0) {
+    int* nextNode = reinterpret_cast<int*>(node[5]);
+    if (static_cast<short>(node[1]) == nationSlot) {
+      reinterpret_cast<TObject*>(node)->Free();
+    }
+    node = nextNode;
+  }
+}
+
+static void RemoveMatchingTaskForceOrders(TNavyMgr* navyManager, short nationSlot) {
+  int* node = reinterpret_cast<int*>(navyManager->orderListHead04);
+  while (node != 0) {
+    int* nextNode = reinterpret_cast<int*>(node[0xb]);
+    if (static_cast<short>(node[7]) == nationSlot) {
+      reinterpret_cast<TObject*>(node)->Free();
+    }
+    node = nextNode;
   }
 }
 
@@ -601,9 +606,10 @@ void RevalidateAndRequeueMapOrdersForTurn() {
         TMapOrderChildLinkNode* node = entry->childOrderList;
         if (node != 0) {
           do {
-            node->active =
-                static_cast<TShip*>(node->payload)->stockLevel1c <
-                g_NavyOrderResourceDescriptorTable[static_cast<TShip*>(node->payload)->resourceType04].stockCap;
+            node->active = static_cast<TShip*>(node->payload)->stockLevel1c <
+                           g_NavyOrderResourceDescriptorTable[static_cast<TShip*>(node->payload)
+                                                                  ->resourceType04]
+                               .stockCap;
             node = node->next;
           } while (node != 0);
         }
@@ -639,9 +645,10 @@ void RevalidateAndRequeueMapOrdersForTurn() {
             node = node->next;
           } else {
             static_cast<TShip*>(node->payload)->SetOwnerOrderEntryAndCacheType(0);
-            short bucketIndex =
-                static_cast<short>(g_NavyOrderResourceDescriptorTable[static_cast<TShip*>(node->payload)->resourceType04]
-                                       .enabledFlagOrBucketOffset);
+            short bucketIndex = static_cast<short>(
+                g_NavyOrderResourceDescriptorTable[static_cast<TShip*>(node->payload)
+                                                       ->resourceType04]
+                    .enabledFlagOrBucketOffset);
             short* bucketCounter = reinterpret_cast<short*>(entry->pad_1e) + bucketIndex;
             --*bucketCounter;
             if (node == entry->childOrderList) {
@@ -652,8 +659,9 @@ void RevalidateAndRequeueMapOrdersForTurn() {
         }
         entry->activeChildEntry = 0;
         for (node = entry->childOrderList; node != 0; node = node->next) {
-          entry->activeChildEntry = static_cast<TShip*>(node->payload)->SelectPreferredMapOrderEntryByPriorityRules(
-              entry->activeChildEntry, 0);
+          entry->activeChildEntry =
+              static_cast<TShip*>(node->payload)
+                  ->SelectPreferredMapOrderEntryByPriorityRules(entry->activeChildEntry, 0);
         }
         entry->AssertValid();
         if (g_pNavyOrderManager->MoveMapOrderEntryToQueueHeadIfValid(entry)) {
@@ -896,9 +904,9 @@ TTaskForce* TNavyMgr::UpdateType7NavyOrderChildSelectionByChanceThreshold(short 
   if (entry != nullptr) {
     for (TMapOrderChildLinkNode* node = entry->childOrderList; node != nullptr; node = node->next) {
       TShip* child = static_cast<TShip*>(node->payload);
-      bool notSelected =
-          child->stockLevel1c < g_NavyOrderResourceDescriptorTable[child->resourceType04].stockCap ||
-          chancePercent <= rand() % 100;
+      bool notSelected = child->stockLevel1c <
+                             g_NavyOrderResourceDescriptorTable[child->resourceType04].stockCap ||
+                         chancePercent <= rand() % 100;
       node->active = notSelected ? 0 : 1;
     }
   }
@@ -935,7 +943,8 @@ char TNavyMgr::SelectEligibleMapOrderInteractionForNationAndContext(
          node = node->next) {
       TShip* child = static_cast<TShip*>(node->payload);
       char active = 1;
-      if (child->stockLevel1c < g_NavyOrderResourceDescriptorTable[child->resourceType04].stockCap ||
+      if (child->stockLevel1c <
+              g_NavyOrderResourceDescriptorTable[child->resourceType04].stockCap ||
           static_cast<int>(priorityRatio) <= static_cast<int>(rand()) % 100) {
         active = 0;
       }
@@ -984,7 +993,8 @@ char TNavyMgr::SelectEligibleMapOrderInteractionForNationAndContext(
     for (TMapOrderChildLinkNode* node = entry->childOrderList; node != nullptr; node = node->next) {
       if (node->active != 0) {
         ratingSum +=
-            g_NavyOrderResourceDescriptorTable[static_cast<TShip*>(node->payload)->resourceType04].descriptorWeight;
+            g_NavyOrderResourceDescriptorTable[static_cast<TShip*>(node->payload)->resourceType04]
+                .descriptorWeight;
         ++activeCount;
       }
     }
@@ -1111,8 +1121,8 @@ void TNavyMgr::ProcessNationMapOrderInteractionsAndApplyOutcomes(short mode) {
         // (the same AdjustMapOrderNodeStatCapped499 pattern the conflict resolver uses).
         if (orderEntry != nullptr) {
           if (orderEntry->activeChildEntry != nullptr) {
-            orderEntry->activeChildEntry->field30 = static_cast<short>(
-                orderEntry->activeChildEntry->field30 + transferredCount);
+            orderEntry->activeChildEntry->field30 =
+                static_cast<short>(orderEntry->activeChildEntry->field30 + transferredCount);
             if (orderEntry->activeChildEntry->field30 > 499) {
               orderEntry->activeChildEntry->field30 = 499;
             }
@@ -1121,8 +1131,9 @@ void TNavyMgr::ProcessNationMapOrderInteractionsAndApplyOutcomes(short mode) {
           if (childCount > 0) {
             for (TMapOrderChildLinkNode* node = orderEntry->childOrderList; node != nullptr;
                  node = node->next) {
-              static_cast<TShip*>(node->payload)->field30 = static_cast<short>(
-                  static_cast<TShip*>(node->payload)->field30 + (transferredCount * 3) / childCount);
+              static_cast<TShip*>(node->payload)->field30 =
+                  static_cast<short>(static_cast<TShip*>(node->payload)->field30 +
+                                     (transferredCount * 3) / childCount);
               if (static_cast<TShip*>(node->payload)->field30 > 499) {
                 static_cast<TShip*>(node->payload)->field30 = 499;
               }
@@ -1153,14 +1164,18 @@ void TNavyMgr::ResolveMapOrderPairConflictStep(TTaskForce* leftEntry, TTaskForce
   int maxTier = 1;
   for (TMapOrderChildLinkNode* node = leftEntry->childOrderList; node != nullptr;
        node = node->next) {
-    int tier = g_NavyOrderResourceDescriptorTable[static_cast<TShip*>(node->payload)->resourceType04].priorityTier;
+    int tier =
+        g_NavyOrderResourceDescriptorTable[static_cast<TShip*>(node->payload)->resourceType04]
+            .priorityTier;
     if (tier > maxTier) {
       maxTier = tier;
     }
   }
   for (TMapOrderChildLinkNode* rightNode = rightEntry->childOrderList; rightNode != nullptr;
        rightNode = rightNode->next) {
-    int tier = g_NavyOrderResourceDescriptorTable[static_cast<TShip*>(rightNode->payload)->resourceType04].priorityTier;
+    int tier =
+        g_NavyOrderResourceDescriptorTable[static_cast<TShip*>(rightNode->payload)->resourceType04]
+            .priorityTier;
     if (tier > maxTier) {
       maxTier = tier;
     }
@@ -1293,8 +1308,8 @@ void TNavyMgr::ResolveMapOrderPairConflictStep(TTaskForce* leftEntry, TTaskForce
     if (winnerCount > 0) {
       for (TMapOrderChildLinkNode* node = winner->childOrderList; node != nullptr;
            node = node->next) {
-        static_cast<TShip*>(node->payload)->AdjustMapOrderNodeStatCapped499(
-            static_cast<short>((bump * 3) / winnerCount));
+        static_cast<TShip*>(node->payload)
+            ->AdjustMapOrderNodeStatCapped499(static_cast<short>((bump * 3) / winnerCount));
       }
     }
     loser->eliminatedFlag26 = 1;

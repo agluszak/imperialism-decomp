@@ -25,6 +25,7 @@ TNetMgr::TNetMgr() : TObject() {}
 // TNetMgr::`scalar deleting destructor'
 TNetMgr::~TNetMgr() {}
 
+// FUNCTION: IMPERIALISM 0x005e3470
 void TNetMgr::Free() {}
 
 static const char kDirectPlayErrorTitle[] = "DirectPlay Error";
@@ -322,3 +323,6 @@ int TNetMgr::ProbeNationReachabilityAndMarkAwolBitmask() {
   }
   return awolBitmask;
 }
+
+// SYNTHETIC: IMPERIALISM 0x005e33c0
+// TNetMgr::GetRuntimeClass

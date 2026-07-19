@@ -134,7 +134,7 @@ naturally (WaveLoadDescriptor in TSoundResourceManager, 0x49c290/0x49c430).
     no uniquely-pairable out-of-line copy for one `: Base() { oneField = 0; }` ctor while
     emitting them for its siblings. Per the TNextMoveCommand precedent, revert just that
     marker (restore the markerless `{}` body) rather than faking it, AND manually delete
-    the stale `config/function_ownership.csv` row — `just sync-ownership` reports
+    the stale claim — the source-index duplicate check reports
     "Pruned ... 0" and does not auto-remove it; the stub count only rises back after the
     manual delete + re-regen.
 

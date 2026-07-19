@@ -67,7 +67,7 @@ just build
     (`config/datacmp_baseline.csv`) may not regress; `just datacmp` stays the raw
     report.
   - `stub-count-gate` — the autogen stub count (`src/autogen/stubs/_manifest.json`)
-    may not rise. A rise is the sync-ownership prune-trap tell (see the
+    may not rise. A rise is the un-claiming tell (see the
     `sync-pipeline` skill): real marker-less owners got re-stubbed.
   - `class-size-gate` — `ASSERT_SIZE` vs the RTTI oracle, strict; known mismatches
     live in `config/class_size_allowlist.txt`, each citing a bead.

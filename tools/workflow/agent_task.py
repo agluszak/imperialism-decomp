@@ -105,32 +105,32 @@ def _parse_scores(text: str) -> dict[str, float]:
 
 
 def _ownership_row(addr: str, source: str = "") -> dict:
-    """Ownership row for addr from config/function_ownership.csv (optionally from a
-    given git revision's copy)."""
-    import io
-    import tempfile
+    """Marker-derived ownership for addr (optionally from a git revision's tree).
 
-    from tools.common.pipe_csv import read_pipe_rows
-
+    Source markers are the only claim authority; for a revision, `git grep` finds
+    the marker without checking anything out.
+    """
+    addr_int = int(addr, 16)
     if source:
-        content = _git("show", f"{source}:config/function_ownership.csv")
-        with tempfile.NamedTemporaryFile("w", suffix=".csv", delete=False) as fh:
-            fh.write(content)
-            path = Path(fh.name)
-    else:
-        path = REPO_ROOT / "config" / "function_ownership.csv"
-        if not path.is_file():
+        pattern = (r"//[[:space:]]*\(FUNCTION\|STUB\|TEMPLATE\|SYNTHETIC\|LIBRARY\):"
+                   r"[[:space:]]*IMPERIALISM[[:space:]]\+\(0x\)\?0*"
+                   + format(addr_int, "x"))
+        out = _run(["git", "grep", "-i", "-l", "-e", pattern, source, "--",
+                    "src", "include"]).stdout.strip()
+        if not out:
             return {}
-    key = addr.removeprefix("0x").lstrip("0") or "0"
-    try:
-        for row in read_pipe_rows(path):
-            row_addr = (row.get("address") or "").strip().lower().removeprefix("0x").lstrip("0") or "0"
-            if row_addr == key:
-                return row
-    finally:
-        if source:
-            path.unlink(missing_ok=True)
-    return {}
+        first = out.splitlines()[0]
+        path = first.split(":", 1)[1] if ":" in first else first
+        return {"address": format(addr_int, "x"), "target_cpp": path,
+                "ownership": "manual", "note": f"marker in {source}"}
+    from tools.source_index import ownership_kind, ownership_view
+
+    claim = ownership_view(REPO_ROOT).get(addr_int)
+    if claim is None:
+        return {}
+    return {"address": format(addr_int, "x"), "target_cpp": claim.file,
+            "ownership": ownership_kind(claim.kind),
+            "note": f"marker {claim.kind} at {claim.file}:{claim.line}"}
 
 
 # ---------------------------------------------------------------------------
@@ -385,7 +385,6 @@ def cmd_start(args: argparse.Namespace) -> int:
             "ILT thunks are never modeled — resolve to the real target",
         ],
         "allowed_generated_mutations": [
-            "config/function_ownership.csv via `just sync-ownership` only (stubs are build artifacts now)",
             "config/*_baseline.* via their `just *-update` targets only (policy baselines need ALLOW_POLICY_BASELINE_UPDATE=1)",
         ],
     }
