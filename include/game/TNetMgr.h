@@ -4,6 +4,7 @@
 #include "game/mfc.h"
 
 struct NetMessage;
+class TView;
 
 // Global turn-event queue manager handle (ConstructGlobalTurnEventQueueManager @ 0x005e33e0
 // only stores vptr 0x0066fa20 on a 4-byte heap block). Plain TObject derivative — no extra
@@ -66,6 +67,22 @@ public:
   // the localized error dialog on failure.
   unsigned char OpenRuntimeSelectionSourceByIndexAndCopyPath(int index, int flag,
                                                              const char* seed); // 0x5e3a60
+
+  // Joins the game named by outGameName's current value (staged into a static
+  // player-name buffer), lets the user pick the session
+  // (OpenRuntimeSelectionSourceWithUserChoice), creates the local player, tags the
+  // local player id as the default nation id, sets a small player-data payload, and
+  // enumerates existing players to resolve the broadcast nation id. Copies the
+  // chosen name back into *outGameName. Returns success.
+  unsigned char OpenJoinGameRuntimeSelectionAndStartSession(int selectionTag,
+                                                             CString* outGameName,
+                                                             const char* seed); // 0x5e3c20
+
+  // Rebuilds the enumerated-protocol selection list (g_WNetSerializedPtrArrayA006a5f10)
+  // for `provider` via TWNetSessionManager::RebuildRuntimeSelectionSource. That
+  // callee's own DirectPlay enumeration isn't modeled yet, so this remains
+  // structurally incomplete pending it.
+  unsigned char ResetRuntimeProtocolOptionsAndRebuildSelectionSource(TView* provider); // 0x5e39a0
 
   // Map a DirectPlay error HRESULT to detail text and pose the localized error dialog.
   // Mac oracle: TNetMgr::HandleError(int). Asserts with D:\Ambit\WNetMgr.cpp line 451.

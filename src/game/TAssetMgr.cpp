@@ -10,6 +10,8 @@
 #include "game/TTurnEventDialogFactoryRegistry.h"
 #include "game/TViewMgr.h"
 #include "game/global_data_tables.h"
+
+#include <io.h>
 // SYNTHETIC: IMPERIALISM 0x005df1d0
 // TAssetMgr::CreateObject
 
@@ -194,4 +196,17 @@ unsigned char TAssetMgr::OpenMainDocumentFromPathAndMarkLoaded(const CString& lo
   }
   document->SetPathName(g_szLoadedDocumentMarker_0069B854, FALSE);
   return 1;
+}
+
+// FUNCTION: IMPERIALISM 0x005e0290
+void TAssetMgr::LoadSettingValueByKeyIntoOut(LPCSTR key, int defaultValue, int* out) {
+  *out = g_pImperialismApp->GetProfileInt("Settings", key, defaultValue);
+}
+
+// FUNCTION: IMPERIALISM 0x005e02f0
+unsigned char TAssetMgr::HasPendingClientSaveFile() {
+  _finddata_t fileInfo;
+  long findHandle = _findfirst("save/cli_*.imp", &fileInfo);
+  _findclose(findHandle);
+  return findHandle != -1;
 }

@@ -181,6 +181,28 @@ public:
   // DirectPlay session finalize stub's result (always true).
   unsigned char
   InitializeRuntimeSelectionCredentialsFromProviderAndConnect(TView* provider); // 0x545110
+  // Compiled twin of ResetGameFlowStateAndPostTurnEvent5DC (same body, separate
+  // out-of-line copy in the binary).
+  unsigned char ResetGameFlowStateAndPostTurnEvent5DCAlt(); // 0x545290
+  // Hosting a new game: backs up playerNameString into playerNameMirror and clears
+  // the lobby dialog view. No DirectPlay session-join step (unlike
+  // ApplyJoinGameSelectionAndPostTurnEvent5E4).
+  unsigned char AssignStringAtB4FromB0AndResetState40(); // 0x545480
+  // Joins the DirectPlay session named by selectionTag via TNetMgr, staging
+  // playerNameString as both the seed and the round-tripped result buffer. On
+  // success, mirrors the resolved name, clears the lobby dialog view, marks the sim
+  // state "connected" (field44 = 2), and posts setup event 0x5e4. On failure,
+  // restores playerNameString from playerNameMirror.
+  unsigned char ApplyJoinGameSelectionAndPostTurnEvent5E4(int selectionTag); // 0x545320
+  // Uninstalls this manager as the app's cohandler, clears the DirectPlay runtime
+  // selection buffer, and resets the phase tag to 'nada' and the lobby dialog view
+  // -- same as the ResetGameFlowStateAndPostTurnEvent5DC* pair but without posting
+  // a setup event.
+  void ResetDiplomacyRuntimeSelectionAndSetModeNada(); // 0x544630
+  // Rebuilds the protocol-option list for `provider`'s 'prot' cluster and selects
+  // the "DefaultProtocol" setting (falling back to 'pro0' if that tag isn't
+  // present among the options).
+  unsigned char InitializeProtocolOptionControlFromProvider(TView* provider); // 0x544e70
   // Genuinely empty in the shipped binary (single `RET 4`); called by
   // TArmyMgr::CreateTacticalBattleViewAndInitializeBattleSetup with the new battle view,
   // discarding both the argument and the (unset) return value. 0x54c660, __thiscall.

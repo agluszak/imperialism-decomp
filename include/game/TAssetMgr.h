@@ -76,6 +76,12 @@ public:
   // path with the "__loaded" marker; returns whether a document was opened. `this` is
   // unused; callers dispatch through g_pUiViewManager. 0x005e0150.
   unsigned char OpenMainDocumentFromPathAndMarkLoaded(const CString& loadPath);
+  // CWinApp::GetProfileInt(key, defaultValue) under the "Settings" section, stored
+  // into *out. `this` is unused; callers dispatch through g_pUiViewManager. 0x5e0290.
+  void LoadSettingValueByKeyIntoOut(LPCSTR key, int defaultValue, int* out);
+  // Checks for a pending "save/cli_*.imp" client save file (resumable multiplayer
+  // session). `this` is unused; callers dispatch through g_pUiViewManager. 0x5e02f0.
+  unsigned char HasPendingClientSaveFile();
 };
 
 void __stdcall AssignScoresDatPathToSharedString(CString* out);
