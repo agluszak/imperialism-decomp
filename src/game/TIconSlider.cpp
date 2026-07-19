@@ -47,8 +47,7 @@ char TIconSlider::DispatchUiMouseMoveToChildren(CPoint* point, int arg2, int arg
 void TIconSlider::ApplyRectSlot110(RECT* rectBuffer) {}
 
 // FUNCTION: IMPERIALISM 0x005066c0
-undefined TIconSlider::
-    Helper_Uses_WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At00495c_At005066c0() {
+undefined TIconSlider::IconSliderResolveBmpResource() {
   return 0;
 }
 

@@ -107,7 +107,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
   if (CFrameWnd::OnCreate(lpCreateStruct) == -1) {
     return -1;
   }
-  WrapperFor_AllocateWithFallbackHandler_At0049cc60(this);
+  Function_0049cc60(this);
   field_BC = g_pModuleLibraryCacheState->EnsureDefaultDibPalette();
   OnQueryNewPalette();
   return 0;

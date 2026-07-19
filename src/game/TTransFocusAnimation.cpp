@@ -171,13 +171,13 @@ undefined TTransFocusAnimation::RenderBattleReportInsetWithPaletteShift(POINT* o
                           &overlayRect, &clipRect, 0x24);
   }
 
-  Helper_Uses_BlitRectWithOptionalTransparency_At004a0280();
+  FocusAnimationSlot0E();
 
   TQuickDrawSurfaceContext* activeContext;
   int activeFlags;
   GetActiveQuickDrawSurfaceContextAndFlags(&activeContext, &activeFlags);
   SetActiveQuickDrawSurfaceContext(g_pPrimaryRenderSurfaceContext, activeFlags);
-  Helper_Uses_BlitRectWithOptionalTransparency_At004a0280();
+  FocusAnimationSlot0E();
   SetActiveQuickDrawSurfaceContext(activeContext, activeFlags);
 
   return 0;

@@ -111,7 +111,7 @@
     {
       "address": "0x413250",
       "matching": 0.07142857142857142,
-      "name": "TDiplomacyMgr::WrapperFor_IsNationSlotEligibleForEventProcessingAt413250",
+      "name": "TDiplomacyMgr::IsNationSlotEligibleForEventProcessing",
       "type": 1
     },
     {
@@ -7047,6 +7047,12 @@
       "type": 1
     },
     {
+      "address": "0x49cc60",
+      "matching": 0.0,
+      "name": "Function_0049cc60",
+      "type": 1
+    },
+    {
       "address": "0x49cca0",
       "matching": 0.3106796116504854,
       "name": "CreateGlobalBackdropWindowWithDefaultBmp3B6",
@@ -7565,7 +7571,7 @@
     {
       "address": "0x4a0280",
       "matching": 0.25125628140703515,
-      "name": "TFocusAnimation::Helper_Uses_BlitRectWithOptionalTransparency_At004a0280",
+      "name": "TFocusAnimation::FocusAnimationSlot0E",
       "type": 1
     },
     {
@@ -16319,7 +16325,7 @@
     {
       "address": "0x5066c0",
       "matching": 0.08695652173913043,
-      "name": "TIconSlider::Helper_Uses_WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At00495c_At005066c0",
+      "name": "TIconSlider::IconSliderResolveBmpResource",
       "type": 1
     },
     {
@@ -18101,7 +18107,7 @@
     {
       "address": "0x523060",
       "matching": 0.02631578947368421,
-      "name": "TMapDialog::WrapperFor_SetQuickDrawFillColor_At00523060",
+      "name": "TMapDialog::MapDialogSetFillColor",
       "type": 1
     },
     {
