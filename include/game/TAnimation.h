@@ -55,7 +55,7 @@ public:
   // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
   virtual undefined AdvanceAnimationTickAndInvalidateOnFrameFlip();          // slot 0x0a 0x49f140
-  virtual undefined RenderBattleReportInsetWithPaletteShift();               // slot 0x0b 0x49f190
+  virtual undefined RenderBattleReportInsetWithPaletteShift(POINT* offset);  // slot 0x0b 0x49f190
   virtual undefined RenderBattleReportViewSurfaceSpriteWithResourceHandle(); // slot 0x0c 0x49f2d0
   // Object slice verified in 0x49f0c0 (init) and 0x49f140 (per-tick frame flip).
   class TView* ownerView04; // +0x04 view whose rect is invalidated on each frame flip

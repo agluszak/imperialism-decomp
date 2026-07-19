@@ -28,7 +28,7 @@ undefined TCivAnimation2::AdvanceAnimationTickAndInvalidateOnFrameFlip() {
 }
 
 // FUNCTION: IMPERIALISM 0x0049f8e0
-undefined TCivAnimation2::RenderBattleReportInsetWithPaletteShift() {
+undefined TCivAnimation2::RenderBattleReportInsetWithPaletteShift(POINT* offset) {
   return 0;
 }
 

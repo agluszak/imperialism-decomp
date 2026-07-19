@@ -39,13 +39,14 @@ void TFocusAnimation::VTableSlot0D() {
   if (enabledFlag != 0) {
     ScopedMapQuickDrawContextGuard quickDrawContext(ownerView04);
     ownerView04->Refresh();
-    RenderBattleReportInsetWithPaletteShift();
+    POINT offset = {0, 0};
+    RenderBattleReportInsetWithPaletteShift(&offset);
     ownerView04->PostRenderSlotFC();
   }
 }
 
 // FUNCTION: IMPERIALISM 0x004a0250
-undefined TFocusAnimation::RenderBattleReportInsetWithPaletteShift() {
+undefined TFocusAnimation::RenderBattleReportInsetWithPaletteShift(POINT* offset) {
   RenderBattleReportViewSurfaceSpriteWithResourceHandle();
   FocusAnimationSlot0E();
   return 0;
