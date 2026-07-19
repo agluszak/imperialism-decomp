@@ -187,7 +187,7 @@ char TControlSeaZoneMission::MatchesMissionKeySlot4C(int kind, int key, int mode
 // TTaskForce map-order entry MissionSlot44's dispatch passed (navyField20). Builds a per-nation
 // bitmask of nations with an outdated war-relation timestamp against this mission's nation,
 // tracking the first such nation's port-zone context whose cached owner (primaryNeighbors slot
-// 0) matches the entry's contextAnchor (reinterpreted as a TZone*). If the entry's own target
+// 0) matches the entry's contextAnchor (a TZone*). If the entry's own target
 // context (also contextAnchor) has none of those nations already flagged AND a matching context
 // was found, queues map-order type 6 with that context; otherwise queues type 3.
 // FUNCTION: IMPERIALISM 0x00539640
@@ -203,14 +203,14 @@ void TControlSeaZoneMission::NoOpSlot9C(void* pMapOrderEntry) {
       TZone* portZone =
           g_pActiveMapOrderContext->FindFirstPortZoneContextByNation(static_cast<short>(nation));
       TZone** cachedOwnerSlot = portZone->primaryNeighbors.EnsureSlotAllocatedAndReturnPointer(0);
-      if (*cachedOwnerSlot == reinterpret_cast<TZone*>(mapOrderEntry->contextAnchor)) {
+      if (*cachedOwnerSlot == mapOrderEntry->contextAnchor) {
         firstMatchContext =
             g_pActiveMapOrderContext->FindFirstPortZoneContextByNation(static_cast<short>(nation));
       }
     }
   }
 
-  TZone* entryContext = reinterpret_cast<TZone*>(mapOrderEntry->contextAnchor);
+  TZone* entryContext = mapOrderEntry->contextAnchor;
   if ((entryContext->nationKeyMask10 & nationBitmask) == 0 && firstMatchContext != nullptr) {
     mapOrderEntry->SetMapOrderType6AndQueue(reinterpret_cast<int>(firstMatchContext));
     return;

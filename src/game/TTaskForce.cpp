@@ -18,8 +18,6 @@
 #include "game/localization_text_helpers.h"
 #include "game/ui_invalidation_guard.h"
 
-extern "C" int __cdecl rand(void);
-
 namespace {
 
 // Reproduces TZonePrimaryNeighborStretch::EnsureSlotAllocatedAndReturnPointer's
@@ -170,15 +168,16 @@ TMapOrderChildLinkNode* TMapOrderChildLinkNode::PruneDefeatedMapOrderChildrenAnd
 IMPLEMENT_DYNCREATE(TTaskForce, TObject)
 
 TTaskForce::TTaskForce()
-    : order_type(1), order_strength(0), attachment(0), owner(nullptr), childOrderList(nullptr),
-      activeChildEntry(nullptr), contextAnchor(0), required_count(-1), attached_entity(0),
+    : order_type(1), order_strength(0), attachment(0), owner(), childOrderList(nullptr),
+      activeChildEntry(nullptr), contextAnchor(nullptr), required_count(-1), attached_entity(0),
       queue_prev(nullptr), queue_next(nullptr), tiebreak_strength(-1) {}
 
 // FUNCTION: IMPERIALISM 0x00552800
 TTaskForce::TTaskForce(int contextAnchorArg, short requiredCountArg)
-    : order_type(1), order_strength(0), attachment(0), owner(nullptr), childOrderList(nullptr),
-      activeChildEntry(nullptr), contextAnchor(contextAnchorArg), required_count(requiredCountArg),
-      attached_entity(0), queue_prev(nullptr), queue_next(nullptr), tiebreak_strength(-1) {}
+    : order_type(1), order_strength(0), attachment(0), owner(), childOrderList(nullptr),
+      activeChildEntry(nullptr), contextAnchor(reinterpret_cast<TZone*>(contextAnchorArg)),
+      required_count(requiredCountArg), attached_entity(0), queue_prev(nullptr),
+      queue_next(nullptr), tiebreak_strength(-1) {}
 
 // SYNTHETIC: IMPERIALISM 0x00552870
 // TTaskForce::`scalar deleting destructor'
@@ -449,21 +448,20 @@ void TTaskForce::PromoteMapOrderChainAndQueue(TZone* pContextAnchor) {
     }
   }
 
-  owner = reinterpret_cast<TTaskForce*>(contextAnchor);
+  // This order kind (attachment 1) uses the zone member: seed it from the context zone,
+  // then walk the zone neighbor graph one hop at a time toward pContextAnchor.
+  owner.asZone = contextAnchor;
 
   int iterationBudget = (minPriority < 10000) ? minPriority : 0;
   for (int step = 0; step < iterationBudget; ++step) {
-    // `owner` is TTaskForce* (its declared field type -- genuinely polymorphic
-    // per call site, see the owner field comment in TTaskForce.h), but here it
-    // is TZone* shaped (bd 1uj.47.2 evidence); read fresh each time it is
-    // dereferenced below, matching the original's member reload after each
-    // ensure-slot call.
-    TZone* current = reinterpret_cast<TZone*>(owner);
+    // Re-read owner.asZone each time it is dereferenced, matching the original's member
+    // reload after each ensure-slot call.
+    TZone* current = owner.asZone;
     unsigned int index = 0;
     if (current->primaryNeighbors.Count() > 0) {
       do {
         TZone* candidate = *EnsurePrimaryNeighborSlot(current->primaryNeighbors, index);
-        current = reinterpret_cast<TZone*>(owner);
+        current = owner.asZone;
         if (candidate->distanceLevel44 < current->distanceLevel44) {
           // Walk one hop closer to pContextAnchor: promote this neighbor to
           // be the new owner (re-fetches the slot, matching the original's
@@ -471,7 +469,7 @@ void TTaskForce::PromoteMapOrderChainAndQueue(TZone* pContextAnchor) {
           TZone* better = (index < static_cast<unsigned int>(current->primaryNeighbors.Count()))
                               ? *EnsurePrimaryNeighborSlot(current->primaryNeighbors, index)
                               : nullptr;
-          owner = reinterpret_cast<TTaskForce*>(better);
+          owner.asZone = better;
           break;
         }
         ++index;
@@ -511,7 +509,9 @@ void TTaskForce::PromoteMapOrderChainAndQueue(TZone* pContextAnchor) {
 // Sibling of SetMapOrderType9AndQueue for map-order kind 6 (see the header comment).
 // FUNCTION: IMPERIALISM 0x005536c0
 void TTaskForce::SetMapOrderType6AndQueue(int nOrderTarget) {
-  owner = reinterpret_cast<TTaskForce*>(nOrderTarget);
+  // Caller passes the port-zone context pointer as an opaque value; stored raw here and
+  // read back through owner.asZone under attachment 6.
+  owner.raw = nOrderTarget;
   attachment = 6;
   activeChildEntry = nullptr;
 
@@ -590,7 +590,9 @@ void TTaskForce::SetMapOrderType6AndQueue(int nOrderTarget) {
 // Sibling of SetMapOrderType6AndQueue for map-order kind 5 (see the header comment).
 // FUNCTION: IMPERIALISM 0x00553840
 void TTaskForce::SetMapOrderType5AndQueue(int nOrderTarget) {
-  owner = reinterpret_cast<TTaskForce*>(nOrderTarget);
+  // Caller passes the city-target record pointer as an opaque value; stored raw here and
+  // read back through owner.asCityTarget under attachment 5.
+  owner.raw = nOrderTarget;
   attachment = 5;
   activeChildEntry = nullptr;
 
@@ -684,8 +686,8 @@ void TTaskForce::ApplyTaskForceSelectionModeForCurrentNationOrders(char reserveE
   }
 
   for (TShip* ship = g_pNavyPrimaryOrderListHead; ship != nullptr; ship = ship->nextOlder24) {
-    if (reinterpret_cast<int>(ship->field08) == contextAnchor &&
-        ship->ownerNationSlot14 == required_count && ship->ownerOrderEntry0c == 0) {
+    if (ship->field08 == contextAnchor && ship->ownerNationSlot14 == required_count &&
+        ship->ownerOrderEntry0c == 0) {
       FindOrCreateChildOrderLink(ship);
     }
   }
@@ -897,7 +899,7 @@ char TTaskForce::PruneInactiveTaskForceOrderHead() {
 // 0x0E->type6, 0x0F->type1 (special queue path); 1 is the fallback.
 // FUNCTION: IMPERIALISM 0x00554300
 int TTaskForce::ResolveMapOrderCommandFromActionContext(TZone* candidate) {
-  TZone* activeContext = reinterpret_cast<TZone*>(contextAnchor);
+  TZone* activeContext = contextAnchor;
   if (candidate == nullptr || activeContext == candidate) {
     return activeContext->QueryPortZoneCapability() ? 0x0c : 1;
   }
@@ -1181,10 +1183,9 @@ void TTaskForce::BuildTaskForceSelectionOverlayLabelText(CString* out) {
   // pattern as TNavyMgr.cpp and BuildMapOrderBattleSideSnapshot).
   g_apTerrainTypeDescriptorTable[required_count]->FormatOverlayTerrainLabelText(&terrainOwnerLabel);
 
-  // `owner`/`contextAnchor` resolved to real TZone* for this call site (see the
-  // TMapOrderEntryOwnerContext note in TTaskForce.h / bd 1uj.47.2-3): slot 0x2c is
+  // contextAnchor is a real TZone* (see TTaskForce.h); slot 0x2c is
   // TZone::AssignZoneDisplayNameToOutputRef.
-  reinterpret_cast<TZone*>(contextAnchor)->AssignZoneDisplayNameToOutputRef(&contextLabel);
+  contextAnchor->AssignZoneDisplayNameToOutputRef(&contextLabel);
 
   childCountText.Format(g_szDecimalFormat, childCount);
 
@@ -1481,9 +1482,8 @@ int TTaskForce::ComputeTaskForceOrderAggregateScore() {
 
 // Immediate/deferred execution effects for a resolved queue entry (ResolveMapOrderChains-
 // ForTurnPhase's tail passes): no-op once already eliminated. Type 1 (target-assignment)
-// propagates `owner` -- reused here as a raw assignment-target value, not the real
-// parent-chain pointer -- into every active child's own attachment field. Type 5
-// (province-target) sets the target city's owner-flag bit for this entry's nation
+// propagates owner.asZone (the context TZone*) into every active child's own field08. Type 5
+// (province-target) reads owner.asCityTarget and sets the target city's owner-flag bit for its nation
 // (required_count) and, in single-player mode, invalidates that city's redraw. Type 8
 // (progression) advances every active child's required_count by a quarter-step toward
 // its resource-type's stockCap, clamping at the cap. Any other type asserts (once) that
@@ -1498,12 +1498,12 @@ void TTaskForce::ApplyMapOrderTypeExecutionEffects() {
   switch (attachment) {
   case 1: {
     for (TMapOrderChildLinkNode* node = childOrderList; node != nullptr; node = node->next) {
-      static_cast<TShip*>(node->payload)->field08 = reinterpret_cast<TZone*>(owner);
+      static_cast<TShip*>(node->payload)->field08 = owner.asZone;
     }
     return;
   }
   case 5: {
-    TGlobalMapCityScoreRecord* cityRecord = reinterpret_cast<TGlobalMapCityScoreRecord*>(owner);
+    TGlobalMapCityScoreRecord* cityRecord = owner.asCityTarget;
     reinterpret_cast<unsigned char*>(cityRecord)[0xa1] |=
         static_cast<unsigned char>(1 << required_count);
     if (g_pSimMgr->field44 == 1) {
@@ -1580,24 +1580,20 @@ void TTaskForce::UpdateNavyOrderMapMarkerByOrderType() {
   switch (attachment) {
   case 1:
     markerType = 4;
-    tiebreak_strength =
-        reinterpret_cast<TZone*>(owner)->FindNearestActiveSeaContextTileFromOffset216();
+    tiebreak_strength = owner.asZone->FindNearestActiveSeaContextTileFromOffset216();
     break;
   case 3:
     markerType = 5;
-    tiebreak_strength =
-        reinterpret_cast<TZone*>(contextAnchor)->FindNearestActiveSeaContextTileFromOffset216();
+    tiebreak_strength = contextAnchor->FindNearestActiveSeaContextTileFromOffset216();
     break;
   case 5:
     markerType = 6;
     tiebreak_strength = static_cast<short>(
-        reinterpret_cast<TZone*>(contextAnchor)
-            ->FindBestCoastalTileForContextAndCityStateByHeuristic(reinterpret_cast<int>(owner)));
+        contextAnchor->FindBestCoastalTileForContextAndCityStateByHeuristic(owner.raw));
     break;
   case 6:
     markerType = 2;
-    tiebreak_strength =
-        reinterpret_cast<TZone*>(owner)->FindNearestActiveSeaContextTileFromOffset216();
+    tiebreak_strength = owner.asZone->FindNearestActiveSeaContextTileFromOffset216();
     break;
   default:
     break;

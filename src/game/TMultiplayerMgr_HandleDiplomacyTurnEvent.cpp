@@ -7,6 +7,7 @@
 
 #include "game/TMultiplayerMgr.h"
 
+#include <stdlib.h>
 #include <string.h>
 
 #include "game/NetMessage.h"
@@ -700,8 +701,6 @@ void TMultiplayerMgr::CreateCivilianWorkOrdersForSelectedNations(TStream* stream
     }
   }
 }
-
-extern "C" int __cdecl rand(void);
 
 // Replace the nation in `nationSlot` with a freshly rolled AI (TAutoGreatPower):
 // broadcast the 'uhed' (event-0x1F) notice when hosting, deep-copy the vacating

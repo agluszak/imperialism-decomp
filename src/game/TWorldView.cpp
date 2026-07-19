@@ -84,7 +84,10 @@ void TWorldView::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* poi
   field6c = static_cast<unsigned short>(
       ComputeStridedRecordAddress6C(static_cast<int>(tileRow), static_cast<int>(tileColumn)));
 
-  if (field6c == field6e && *hoverBand == clickCycleCounter72) {
+  // Skip the cursor recompute when neither the tile cell nor the region band changed
+  // since the cursor was last rendered (activeRegionBand72 holds that last band; a click
+  // cycles it out of range to force this dedup to miss and the cursor to refresh).
+  if (field6c == field6e && *hoverBand == activeRegionBand72) {
     return;
   }
 
@@ -184,7 +187,7 @@ void TWorldView::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* poi
 
   field6e = field6c;
   field6a = field68;
-  clickCycleCounter72 = *hoverBand;
+  activeRegionBand72 = *hoverBand;
 }
 
 // FUNCTION: IMPERIALISM 0x00595c40
@@ -458,7 +461,8 @@ void TWorldView::HandleMapClickByInteractionMode(short nTileIndex, int nInputFla
   // Per active-unit-category interaction mode, offer the tile click to the map-context
   // (TArmyMgr), civilian-order (TCivMgr) and navy/map-order (g_pNavyOrderManager) handlers
   // in a mode-specific order. A handler that consumes the click either refreshes this view
-  // or advances the owner's selection cycle; every call bumps the 1..4 click-cycle counter.
+  // or advances the owner's selection cycle; every call advances the active region-band
+  // index (+0x72) 1..4, which also invalidates the hover handler's cursor-render dedup.
   char handled;
   switch (static_cast<TMapUberPicture*>(ownerContext)->activeUnitCategoryIndex96) {
   case 0:
@@ -509,9 +513,9 @@ cycle:
     static_cast<TMapUberPicture*>(ownerContext)->CycleMapInteractionSelectionAfterHandledClick();
   }
 tail:
-  ++clickCycleCounter72;
-  if (clickCycleCounter72 > 4) {
-    clickCycleCounter72 = 1;
+  ++activeRegionBand72;
+  if (activeRegionBand72 > 4) {
+    activeRegionBand72 = 1;
   }
 }
 

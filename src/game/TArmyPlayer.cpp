@@ -1,5 +1,7 @@
 #include "game/TArmyPlayer.h"
 
+#include <stdlib.h>
+
 #include "game/CIterator.h"
 #include "game/map_overlay_geometry.h"
 #include "game/TArmyStack.h"
@@ -14,8 +16,6 @@
 #include "game/global_data_tables.h"
 #include "game/turn_event_dialog_provisional.h"
 #include "game/ui_invalidation_guard.h"
-
-extern "C" int __cdecl rand(void);
 
 using turn_event_dialog::TurnEventDialogNode;
 

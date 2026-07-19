@@ -1,5 +1,7 @@
 #include "game/TTacticalBattle.h"
 
+#include <stdlib.h>
+
 #include "game/CIterator.h"
 #include "game/CString.h"
 #include "game/TAssetMgr.h"
@@ -28,8 +30,6 @@
 #include "game/global_data_tables.h"
 #include "game/ui_control_tags.h"
 #include "game/global_data_tables.h"
-
-extern "C" int __cdecl rand(void);
 
 using turn_event_dialog::TurnEventDialogNode;
 

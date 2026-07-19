@@ -64,8 +64,8 @@ IMPLEMENT_DYNCREATE(TShip, TObject)
 TShip::TShip()
     : TObject(), displayName18(), resourceType04(0), pad06(0), field08(0), ownerOrderEntry0c(0),
       quantityFlag10(1), ownerNationSlot14(static_cast<short>(-1)), stockLevel1c(0), pad1e(0),
-      admiralBacklink20(0), nextOlder24(g_pNavyPrimaryOrderListHead), prevNewer28(0), missionBacklink2c(0),
-      field30(0), field34(0) {
+      admiralBacklink20(0), nextOlder24(g_pNavyPrimaryOrderListHead), prevNewer28(0),
+      missionBacklink2c(0), field30(0), field34(0) {
   g_pNavyPrimaryOrderListHead = this;
   if (nextOlder24 != 0) {
     nextOlder24->prevNewer28 = this;
@@ -384,8 +384,8 @@ TTaskForce* TShip::GetOrCreateMissionOrderEntryForNode() {
   // reproducible from C++ source without a manual vtable write, which construction
   // Hard Rule 2 forbids outside quarantined runtime files. `new T()` is the correct
   // model here even though it costs some match percentage at this address.
-  // The entry's zone context comes from this ship's port zone; the entry ctor's
-  // first parameter is the dual int/pointer contextAnchor slot.
+  // The entry's zone context comes from this ship's port zone; the entry ctor takes the
+  // contextAnchor (a TZone*) as an opaque int arg and stores it verbatim.
   TTaskForce* entry = new TTaskForce(reinterpret_cast<int>(field08), ownerNationSlot14);
   if (entry == nullptr) {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
@@ -561,8 +561,9 @@ void TShip::PruneOrPromoteOrderNodeWhenChildCostDepleted() {
     ownerEntry->activeChildEntry = 0;
     TMapOrderChildLinkNode* node;
     for (node = head; node != 0; node = node->next) {
-      ownerEntry->activeChildEntry = static_cast<TShip*>(node->payload)->SelectPreferredMapOrderEntryByPriorityRules(
-          ownerEntry->activeChildEntry, 0);
+      ownerEntry->activeChildEntry =
+          static_cast<TShip*>(node->payload)
+              ->SelectPreferredMapOrderEntryByPriorityRules(ownerEntry->activeChildEntry, 0);
     }
 
     if (ownerEntry->childOrderList == 0) {

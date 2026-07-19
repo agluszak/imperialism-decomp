@@ -11,6 +11,7 @@
 #include <stdlib.h>
 
 #include "decomp_types.h"
+#include "game/TMapMaker.h"
 #include "game/global_data_tables.h"
 
 namespace {
@@ -32,7 +33,7 @@ inline Seapoint* QuadEnsureAt(unsigned int index) {
 } // namespace
 
 // FUNCTION: IMPERIALISM 0x0052cae0
-void BuildOverlaySpanRecordsFromQuadBorderLinks() {
+void TMapMaker::BuildOverlaySpanRecordsFromQuadBorderLinks() {
   SeaSegmentStretch& seg = g_regionBorderLinkTable_006a3900;
   SeapointStretch& quad = g_seapointQuadTable_006a3478;
 

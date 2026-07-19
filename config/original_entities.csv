@@ -3416,15 +3416,19 @@ address|name|symbol|size|type|prototype|provenance
 5274d0|TMapMaker::DispatchEvent||155|function|undefined ValidateCoarseRegionMergeConsistency()|
 5275a0|TMapMaker::MapGenPassSlot0E||314|function|void __thiscall MapGenPassSlot0E(void)|
 527730|TMapMaker::MapGenPassSlot0F||1175|function|void __thiscall MapGenPassSlot0F(void)|
-527d00|TMapMaker::vmethod_0023||367|function|undefined PickRandomType3SeedAndAttemptExpansion()|
-527ed0|TMapMaker::GetDeactivateVetoCode||493|function|undefined TryAssignCellTypeWithDirectionalConstraints()|
+527d00|TMapMaker::CreateRivers||367|function|undefined PickRandomType3SeedAndAttemptExpansion()|
+527ed0|TMapMaker::GrowRiver||493|function|undefined TryAssignCellTypeWithDirectionalConstraints()|
 528140|TMapMaker::OwnerPanel||499|function|undefined TryPlaceType1CoarseCellWithAdjacencyRules()|
 5283c0|TMapMaker::ForwardParam||533|function|undefined TryPlaceType3CoarseCellWithAdjacencyRules()|
-528670|TMapMaker::DoIdle||202|function|undefined BalanceGrowthBudgetAcrossPrimaryAndSecondaryBands()|
-528780|TMapMaker::GetCityDialogValueDword10||222|function|undefined SpreadType6CellsAcrossCoarseRowSegments()|
-5288a0|TMapMaker::SetCityDialogValueDword10||698|function|undefined SpreadType6CellsWithSecondaryNeighborPass()|
+528670|TMapMaker::CreateDeserts||202|function|undefined BalanceGrowthBudgetAcrossPrimaryAndSecondaryBands()|
+528780|TMapMaker::TundraBand||222|function|undefined SpreadType6CellsAcrossCoarseRowSegments()|
+5288a0|TMapMaker::DesertBand||698|function|undefined SpreadType6CellsWithSecondaryNeighborPass()|
 528c10|GetNeighborTileIndexOnMap108x60||145|function|undefined GetNeighborTileIndexOnMap108x60()|
 528ce0|TMapMaker::GetAdjacentRegionGridCell||125|function|int __thiscall GetAdjacentRegionGridCell(int cell, int direction)|
+697498|g_coarseHexColOffsetEvenRow_00697498|||global||
+6974b0|g_coarseHexRowOffset_006974b0|||global||
+6974c8|g_coarseHexColOffsetOddRow_006974c8|||global||
+697568|g_riverConnectionTypeByDirectionPair_00697568|||global||
 528e50|TMapMaker::vmethod_0017||940|function|undefined SmoothCityRegionOwnershipByNeighborSampling()|
 5292f0|TMapMaker::MapGenPassSlot1E||166|function|void __thiscall MapGenPassSlot1E(void)|
 5293d0|RandomizeRegionTemplateBanksForMismatchedNeighborClasses||470|function|undefined RandomizeRegionTemplateBanksForMismatchedNeighborClasses()|
@@ -3434,6 +3438,7 @@ address|name|symbol|size|type|prototype|provenance
 529960|RotateMapColumnsByPeakCityTileDensity||636|function|undefined RotateMapColumnsByPeakCityTileDensity()|
 529d90|OrphanDeadLeaf_NoRefs_00529d90||358|function|undefined OrphanDeadLeaf_NoRefs_00529d90()|
 529f60|TMapMaker::MapGenFinalizePassSlot19||247|function|void __thiscall MapGenFinalizePassSlot19(int mode)|
+6a3498|g_cityRegionIdRemapTable_006a3498|||global||
 52a0a0|OrphanDeadLeaf_NoRefs_0052a0a0||143|function|undefined OrphanDeadLeaf_NoRefs_0052a0a0()|
 52a160|GenerateCityRegionIdsBySeedAndNeighborPropagation||940|function|undefined GenerateCityRegionIdsBySeedAndNeighborPropagation()|
 52a670|GetCityRegionIdAtTileIndex||45|function|undefined GetCityRegionIdAtTileIndex()|
@@ -3458,7 +3463,7 @@ address|name|symbol|size|type|prototype|provenance
 52c990|ConvertTileIndexToOverlayCoord216BySide||77|function|undefined ConvertTileIndexToOverlayCoord216BySide()|
 52ca00|DetachAndResetOverlayQuadRecordArrayBuffer||15|function|undefined DetachAndResetOverlayQuadRecordArrayBuffer()|
 52ca20|EmitOverlaySegmentFromTileEdgeSorted||132|function|undefined EmitOverlaySegmentFromTileEdgeSorted()|
-52cae0|BuildOverlaySpanRecordsFromQuadBorderLinks||1073|function|undefined BuildOverlaySpanRecordsFromQuadBorderLinks()|
+52cae0|TMapMaker::BuildOverlaySpanRecordsFromQuadBorderLinks||1073|function|void __thiscall BuildOverlaySpanRecordsFromQuadBorderLinks()|
 52d030|ComputeWrappedOverlayCoordDeltaMetric||123|function|undefined ComputeWrappedOverlayCoordDeltaMetric()|
 52d0d0|ReserveOverlayQuadRecordArrayCapacity||90|function|undefined ReserveOverlayQuadRecordArrayCapacity()|
 52d150|GetOrCreateOverlayQuadRecordByIndex||115|function|undefined GetOrCreateOverlayQuadRecordByIndex()|

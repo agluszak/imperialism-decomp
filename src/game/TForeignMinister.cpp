@@ -12,13 +12,9 @@
 #include "game/mfc.h"
 #include "game/TStream.h"
 
+#include <stdlib.h>
+
 #include "game/nation_slot_eligibility.h"
-
-extern "C" int __cdecl rand(void);
-
-static __inline unsigned int randValue(void) {
-  return reinterpret_cast<unsigned int(__cdecl*)(void)>(rand)();
-}
 
 static const short kPrimaryNationUnset = static_cast<short>(0xfff6);
 // SYNTHETIC: IMPERIALISM 0x0052efd0
@@ -165,7 +161,7 @@ void TForeignMinister::Call8C() {
       if (foundFallbackNation) {
         break;
       }
-      fallbackNationSlot = randValue() % 7;
+      fallbackNationSlot = rand() % 7;
       if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(
               static_cast<short>(fallbackNationSlot)) != 0) {
         if (g_pDiplomacyTurnStateManager->HasPolicyWithNationSlot44(fallbackNationSlot,
@@ -215,7 +211,7 @@ void TForeignMinister::Call94() {
   if (loopCount != 0) {
     const short* orderKindCursor = kOrderKinds;
     do {
-      int roll = randValue();
+      int roll = rand();
       short orderKind = *orderKindCursor;
       short weightThreshold =
           g_pNationInteractionStateManager->QueryProposalWeightSlot4C(orderKind);
@@ -236,7 +232,7 @@ void TForeignMinister::Call94() {
     } while (loopCount != 0);
   }
 
-  int roll = randValue();
+  int roll = rand();
   short tradeWeight = g_pNationInteractionStateManager->QueryProposalWeightSlot4C(5);
   if (roll % 100 + 200 < static_cast<int>(tradeWeight)) {
     short tradeMetric = owner->GetDiplomacyExternalStateByTarget(5);

@@ -80,18 +80,18 @@ public:
   virtual int ForwardParam(int tileIndex, int retryBudget, int featureType);
   // Verified 0 stack args from the caller (0x527730 calls it with no pushes) -- the
   // header's previous 1-arg form was wrong. slot 19 / 0x4c
-  virtual char DoIdle();
+  virtual void CreateDeserts();
   // Walks the city-region tile ring starting at `coarseIndex`, converting empty tiles
   // ('\0') to '6' with probability `percentChance`/100; returns the number marked.
   // Verified RET 0x8 (2 stack int args, int return) -- the previous 0-arg
   // `GetCityDialogValueDword10()` was templated off TView's real slot-20 virtual and
   // does not describe this slot. slot 20 / 0x50
-  virtual int RandomlyMarkEmptyRegionTilesByChance(int coarseIndex, int percentChance);
+  virtual int TundraBand(int row, int percentChance);
   // Same city-region ring probabilistic marking as slot 0x50 but also marks a hex
   // neighbour of each converted tile. Verified RET 0x8 (2 stack int args, int return) --
   // the previous 1-arg `SetCityDialogValueDword10(int)` was templated off TView's real
   // slot-21 virtual and does not describe this slot. slot 21 / 0x54
-  virtual int RandomlyMarkEmptyRegionTilesAndNeighborsByChance(int coarseIndex, int percentChance);
+  virtual int DesertBand(int row, int percentChance);
   // Verified RET 0xc (3 stack args), from both Ghidra's own (correct) signature
   // recovery and the self-recursive call inside the callee itself -- the header's
   // previous 0-arg `TView*`-returning form was templated off TView's real
@@ -101,15 +101,15 @@ public:
   // (46% chance each) until `retryBudget` spreads land. Returns the spread count.
   // slot 22 / 0x58
   virtual int PlaceCityMarkerAndSpreadNeighbors(int tileIndex, int retryBudget, char markerVariant);
-  virtual char vmethod_0023(); // slot 23 / 0x5c
+  virtual void CreateRivers(); // slot 23 / 0x5c
   // Region-template state transform over the tile record at `coarseIndex` (branches on
   // terrain-state bytes 2/3/5 and mirrors a 36-byte template block). Verified RET 0x14
   // (5 stack dwords) -- the previous 0-arg `char GetDeactivateVetoCode()` was templated
   // off TEventHandler's real slot-24 virtual and does not describe this slot. Arg types
   // beyond the dword count are Ghidra-inferred and provisional (body still a stub).
   // slot 24 / 0x60
-  virtual int TransformRegionTileTemplateState(int coarseIndex, int arg2, char arg3, int arg4,
-                                               char arg5);
+  virtual char GrowRiver(long tileIndex, long incomingDirection, long outgoingDirection, long depth,
+                         unsigned char startedOnHills);
   // Map-gen finalize pass (was junk-named OnDeactivated; takes one mode arg the
   // driver passes as 0 -- verified RET 4). slot 25 / 0x64
   virtual void MapGenFinalizePassSlot19(int mode);
@@ -175,6 +175,11 @@ public:
   // Scans every tile's hex neighbours and emits a Seapoint into the overlay-quad table for
   // each city-region border edge (single edges + 3-region triple junctions). 0x0052c1a0.
   void BuildCityRegionBorderOverlaySegments();
+
+  // Match the per-edge overlay points into the region-border segment table. Although the
+  // body only touches global scratch tables, its sole retail caller loads this into ECX.
+  // 0x0052cae0.
+  void BuildOverlaySpanRecordsFromQuadBorderLinks();
 
   // Compacts city-region ids into a contiguous range, propagating labels across same-region
   // hex neighbours; writes tile[4] = newId + 0x17 and updates cityRegionCount2a4. 0x0052d1f0.

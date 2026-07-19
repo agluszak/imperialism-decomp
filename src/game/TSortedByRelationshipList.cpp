@@ -1,6 +1,8 @@
 #include "game/TSortedByRelationshipList.h"
 #include "game/mfc.h"
 
+#include <stdlib.h>
+
 // SYNTHETIC: IMPERIALISM 0x004ee4b0
 // TSortedByRelationshipList::CreateObject
 // SYNTHETIC: IMPERIALISM 0x004ee520
@@ -19,9 +21,6 @@ void TSortedByRelationshipList::InitializeRelationshipRecordSize() {
 // Destructors are compiler-generated (implicit) from real inheritance.
 // SYNTHETIC: IMPERIALISM 0x004ee570
 // TSortedByRelationshipList::`scalar deleting destructor'
-
-// Not-yet-recovered free functions this file calls into.
-extern "C" int __cdecl rand(void);
 
 // FUNCTION: IMPERIALISM 0x004ee5e0
 short TSortedByRelationshipList::Compare(void* a, void* b) {

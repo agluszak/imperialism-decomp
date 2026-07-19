@@ -1791,6 +1791,8 @@ int g_nUiInvalidationAssertFlagLine495 = 0;
 // 0x006a3900 are untracked scratch tables). The per-tile-edge Seapoint quads are matched
 // into region-border SeaSegments that MergeSmallCityRegionsAndCompactIds consumes. ---
 SeapointStretch g_seapointQuadTable_006a3478;
+// GLOBAL: IMPERIALISM 0x006a3498
+int g_cityRegionIdRemapTable_006a3498[0x100];
 SeaSegmentStretch g_regionBorderLinkTable_006a3900;
 
 // Per tech-item slot, the purchase cost applied/refunded against a nation's field-0x10
@@ -1805,6 +1807,18 @@ const int g_anTechItemPurchaseCostBySlot_0066aae8[34] = {
 const int g_hexColOffsetEvenRow_00697450[6] = {0, 1, 0, -1, -1, -1};
 const int g_hexRowOffset_00697468[6] = {-1, 0, 1, 1, 0, -1};
 const int g_hexColOffsetOddRow_00697480[6] = {1, 1, 1, 0, -1, 0};
+
+// GLOBAL: IMPERIALISM 0x00697498
+const int g_coarseHexColOffsetEvenRow_00697498[6] = {1, 1, 1, 0, -1, 0};
+// GLOBAL: IMPERIALISM 0x006974b0
+const int g_coarseHexRowOffset_006974b0[6] = {-1, 0, 1, 1, 0, -1};
+// GLOBAL: IMPERIALISM 0x006974c8
+const int g_coarseHexColOffsetOddRow_006974c8[6] = {0, 1, 0, -1, -1, -1};
+
+// GLOBAL: IMPERIALISM 0x00697568
+const int g_riverConnectionTypeByDirectionPair_00697568[6][6] = {
+    {0, 0, 1, 2, 3, 0}, {0, 0, 0, 4, 5, 6}, {1, 0, 0, 0, 7, 8},
+    {2, 4, 0, 0, 0, 9}, {3, 5, 7, 0, 0, 0}, {0, 6, 8, 9, 0, 0}};
 
 // GLOBAL: IMPERIALISM 0x00696e40
 const unsigned short g_hexDirectionBitMasks_00696e40[6] = {1, 2, 4, 8, 16, 32};

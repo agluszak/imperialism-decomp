@@ -1,5 +1,7 @@
 #include "game/TNavyMgr.h"
 
+#include <stdlib.h>
+
 #include "game/TAdmiral.h"
 #include "game/TArmyMgr.h"
 #include "game/TCity.h"
@@ -25,8 +27,6 @@
 #include "game/ui_invalidation_guard.h"
 #include "game/localization_text_helpers.h"
 #include "game/map_order_battle_snapshot.h"
-
-extern "C" int __cdecl rand(void);
 
 // 0x00563360 -- __stdcall free resolver (defined in TMapMgr.cpp); used by the
 // reattributed TryQueueMapOrderFromTileAction below.
@@ -211,8 +211,7 @@ void RefreshMapOrderBattleSideSnapshot(MapOrderBattleSnapshot* snapshot, int sid
   }
 
   if (entry != nullptr && entry->attachment == 5) {
-    int cityIndex = GetCityIndexFromCityStatePointer(
-        reinterpret_cast<TGlobalMapCityScoreRecord*>(entry->owner));
+    int cityIndex = GetCityIndexFromCityStatePointer(entry->owner.asCityTarget);
     g_pMapContextActionManager->TrimExcessNavyOrderSupportAndRebuildOrderBuffer(
         snapshot->requiredCountByte[side], cityIndex);
   }
@@ -634,10 +633,9 @@ void RevalidateAndRequeueMapOrdersForTurn() {
           node = node->next;
         } while (node != 0);
       }
-      // contextAnchor is the entry's owning map-order context here -- the +0x18 `owner`
-      // tagged-payload slot (see the UNRESOLVED_FIELD_ATTRIBUTION note in TTaskForce.h),
-      // read here as a TZone*.
-      if (reinterpret_cast<TZone*>(entry->contextAnchor)->QueryPortZoneCapability()) {
+      // contextAnchor (+0x18) is the entry's owning map-action context TZone* (see
+      // TTaskForce.h); slot 0x54 is TZone::QueryPortZoneCapability.
+      if (entry->contextAnchor->QueryPortZoneCapability()) {
         entry->attachment = 7;
         entry->RebuildMapOrderEntryChildren();
         entry->AssertValid();
@@ -765,9 +763,9 @@ void TNavyMgr::ResolveMapOrderChainsForTurnPhase() {
                 other->required_count, entry->required_count)) {
           continue;
         }
-        bool ownerMatch = (other->attachment == 1) &&
-                          (other->contextAnchor == reinterpret_cast<int>(entry->owner) ||
-                           other->owner == entry->owner);
+        bool ownerMatch =
+            (other->attachment == 1) &&
+            (other->contextAnchor == entry->owner.asZone || other->owner.raw == entry->owner.raw);
         if (!ownerMatch)
           continue;
         char result = 0;
@@ -970,14 +968,14 @@ char TNavyMgr::SelectEligibleMapOrderInteractionForNationAndContext(
     }
 
     short attachment = entry->attachment;
-    bool contextMatch = (attachment == 6 && reinterpret_cast<int>(entry->owner) == portZoneContext);
+    bool contextMatch = (attachment == 6 && entry->owner.raw == portZoneContext);
     // attachment 3 matches when this entry's contextAnchor equals the port zone's first
     // primary-neighbor slot (the active map-order context head).
     bool activeContextMatch = false;
     if (attachment == 3 && portZoneContext != 0) {
       TZone** slot = reinterpret_cast<TZone*>(portZoneContext)
                          ->primaryNeighbors.EnsureSlotAllocatedAndReturnPointer(0);
-      activeContextMatch = (entry->contextAnchor == reinterpret_cast<int>(*slot));
+      activeContextMatch = (entry->contextAnchor == *slot);
     }
 
     // Diplomacy eligibility: the entry's nation must relate to the port-zone owner or
@@ -1205,8 +1203,8 @@ unsigned short TNavyMgr::GetMapContextActionLabelToken(short nTileIndex, int nIn
           }
         }
         short threshold = minimumWeight != 10000 ? static_cast<short>(minimumWeight) : 0;
-        short distance = reinterpret_cast<TZone*>(entry->contextAnchor)
-                             ->GetCachedMapActionContextDistanceOrRecompute(context);
+        short distance =
+            entry->contextAnchor->GetCachedMapActionContextDistanceOrRecompute(context);
         canResolve = distance <= threshold;
       }
     }
@@ -1301,8 +1299,7 @@ int TNavyMgr::TryQueueMapOrderFromTileAction(short nTileIndex, int nInputFlags) 
     if (ctx == nullptr) {
       queueable = false;
     } else if (entry->HasActiveMapOrderEntryChildren() == 0) {
-      short dist = reinterpret_cast<TZone*>(entry->contextAnchor)
-                       ->GetCachedMapActionContextDistanceOrRecompute(ctx);
+      short dist = entry->contextAnchor->GetCachedMapActionContextDistanceOrRecompute(ctx);
       queueable = dist <= static_cast<short>(entry->GetMinActionThresholdFromEntryChildren());
     } else {
       queueable = false;
@@ -1333,7 +1330,7 @@ int TNavyMgr::TryQueueMapOrderFromTileAction(short nTileIndex, int nInputFlags) 
   case 0x0d: {
     TZone* ctx = g_pActiveMapOrderContext->GetLinkedZoneForSeaTile(nTileIndex);
     entry->attachment = 1;
-    entry->owner = reinterpret_cast<TTaskForce*>(ctx);
+    entry->owner.asZone = ctx;
     entry->RebuildMapOrderEntryChildren();
     if (g_pNavyOrderManager->MoveMapOrderEntryToQueueHeadIfValid(entry)) {
       g_pActiveMapOrderContext->FinalizeQueuedMapOrderEntry(entry);
@@ -1344,7 +1341,7 @@ int TNavyMgr::TryQueueMapOrderFromTileAction(short nTileIndex, int nInputFlags) 
   case 0x0e: {
     TZone* ctx = g_pActiveMapOrderContext->GetLinkedZoneForSeaTile(nTileIndex);
     entry->attachment = 6;
-    entry->owner = reinterpret_cast<TTaskForce*>(ctx);
+    entry->owner.asZone = ctx;
     entry->RebuildMapOrderEntryChildren();
     if (g_pNavyOrderManager->MoveMapOrderEntryToQueueHeadIfValid(entry)) {
       g_pActiveMapOrderContext->FinalizeQueuedMapOrderEntry(entry);
@@ -1355,7 +1352,7 @@ int TNavyMgr::TryQueueMapOrderFromTileAction(short nTileIndex, int nInputFlags) 
   case 0x0f: {
     TZone* ctx = g_pActiveMapOrderContext->GetLinkedZoneForSeaTile(nTileIndex);
     entry->attachment = 1;
-    entry->owner = reinterpret_cast<TTaskForce*>(ctx);
+    entry->owner.asZone = ctx;
     entry->RebuildMapOrderEntryChildren();
     bool alreadyQueued = false;
     for (TTaskForce* node = g_pNavyOrderManager->orderListHead04; node != nullptr;
@@ -1384,7 +1381,7 @@ int TNavyMgr::TryQueueMapOrderFromTileAction(short nTileIndex, int nInputFlags) 
   }
   case 0x10:
     entry->attachment = 5;
-    entry->owner = reinterpret_cast<TTaskForce*>(GetProvinceByTileIndex(nTileIndex));
+    entry->owner.asCityTarget = GetProvinceByTileIndex(nTileIndex);
     entry->RebuildMapOrderEntryChildren();
     if (g_pNavyOrderManager->MoveMapOrderEntryToQueueHeadIfValid(entry)) {
       g_pActiveMapOrderContext->FinalizeQueuedMapOrderEntry(entry);

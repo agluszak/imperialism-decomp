@@ -1,5 +1,7 @@
 #include "game/TMinor.h"
 
+#include <stdlib.h>
+
 #include "game/CIterator.h"
 #include "game/global_data_tables.h"
 #include "game/mfc.h"
@@ -50,8 +52,6 @@ int SignedDivideBy100(int value) {
 }
 
 } // namespace
-
-extern "C" int __cdecl rand(void);
 
 // SYNTHETIC: IMPERIALISM 0x004e3660
 // TMinor::CreateObject

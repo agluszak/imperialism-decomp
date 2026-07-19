@@ -1,5 +1,6 @@
 #include "game/TArmyMgr.h"
 
+#include <stdlib.h>
 #include <string.h>
 
 #include "game/TList.h"
@@ -36,8 +37,6 @@
 // TArmyMgr::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TArmyMgr, TObject)
-
-extern "C" int __cdecl rand(void);
 
 // Own-source function (not a TArmyMgr method -- ground truth doesn't touch `this`).
 // Classifies a map-click as: 6 (already visited this pass), 0 (blocked -- dialog/order
