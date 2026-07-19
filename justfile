@@ -98,15 +98,17 @@ ghidra-apply-source *args: _require-ghidra-install
 # Order matters: the PDB import names entities from the generated data sources
 # (inventory names), so the source-declaration name pass must run AFTER it —
 # source names win last.
-[doc('MUTATES: Ghidra DB + vendored .gzf. build -> import-ghidra -> apply-source names -> project source signatures -> in-stack audit -> export')]
+[doc('MUTATES: Ghidra DB + vendored .gzf. build -> import-ghidra -> apply-source names -> decl-index -> project signatures -> audits -> export')]
 [group('sync')]
 ghidra-apply-source-full:
   just build
   just import-ghidra
   just ghidra-apply-source --apply --quiet --strict
   just ghidra-apply-source --quiet --strict
+  just clang-decl-index
   just apply-source-signatures --apply --strict
   just in-stack-audit
+  just structural-signature-audit
   just export-project
 
 # MUTATES: Ghidra DB (prune), config/original_entities.csv (WHOLESALE refresh).
@@ -818,6 +820,28 @@ apply-source-signatures *args: _require-ghidra-install
 [group('ghidra-inspect')]
 source-signature-audit *args: _require-ghidra-install
   uv run python -m tools.ghidra.apply_source_signatures {{args}}
+
+# Build the Clang-AST declaration index (qualified name -> kind/static/types) from a
+# real clang parse of the game headers with the vendored MSVC500/MFC includes. Gives
+# the projector authoritative static-vs-instance-vs-namespace facts a definition head
+# cannot show. Writes build-msvc500/generated/decl_index.json. Needs host clang++
+# and the vendored headers (`just vendor-msvc500-headers`).
+[doc('Generate the Clang-AST declaration index (entity kind + types) for the projector')]
+[group('sync')]
+clang-decl-index *args:
+  uv run python -m tools.clang_ast_index {{args}}
+
+# READ-ONLY structural convergence audit: for EVERY source/reviewed claim (not just
+# functions showing in_stack), compare the expected logical signature (source model +
+# clang decl index) against the DB signature and classify the gap (converged /
+# db_signature_incomplete / convention_mismatch / this_presence_mismatch /
+# param_count_mismatch), with per-row type-resolution quality (exact / canonical_alias
+# / generic_pointer_fallback / ambiguous_simple_name / unresolved). No DB write.
+# Writes build-msvc500/evidence/signature_convergence.csv.
+[doc('READ-ONLY: audit every source signature vs the DB, structurally (no DB write)')]
+[group('ghidra-inspect')]
+structural-signature-audit *args: _require-ghidra-install
+  uv run python -m tools.ghidra.apply_source_signatures --structural-audit {{args}}
 
 # MUTATES: Ghidra DB (with --apply).
 [private]
