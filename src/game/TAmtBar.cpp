@@ -12,8 +12,6 @@
 #include "game/ui_widget_thunks.h"
 #include "game/mfc.h"
 
-// 0x5e73d0 is the CRT _ftol (libcmt ftol.obj, oracle-confirmed); same pattern as TMapDialog.
-extern "C" long _ftol(void);
 // FUNCTION: IMPERIALISM 0x00586e50
 int TAmtBar::ApplyMoveClamp(int baseValue, int requestedValue) {
   (void)requestedValue;
@@ -140,9 +138,11 @@ void TAmtBar::ClampAndApplyTradeMoveValue(int* requestedValuePtr) {
     double ratio = static_cast<double>(fildRequested) /
                    (static_cast<double>(fildField34) * static_cast<double>(fildAux));
     ratio = ratio - *reinterpret_cast<double*>(0x006631a0);
-    volatile double ftolOperand = ratio;
-    (void)ftolOperand;
-    baseValue = static_cast<int>(_ftol());
+    // The (double)->int truncation below is a real MSVC5 CRT call (_ftol, libcmt
+    // ftol.obj, 0x005e73d0) whose argument is passed on the FPU stack, not as a normal
+    // C parameter -- static_cast lets the compiler emit that call itself instead of
+    // faking its ABI with a hand-written extern "C" prototype.
+    baseValue = static_cast<int>(ratio);
   } else {
     baseValue = 0;
   }
