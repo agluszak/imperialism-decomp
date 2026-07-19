@@ -16991,7 +16991,7 @@
     },
     {
       "address": "0x50bea0",
-      "matching": 0.20899591094956838,
+      "matching": 0.20354384370740572,
       "name": "TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets",
       "type": 1
     },
@@ -30308,7 +30308,7 @@
     },
     {
       "address": "0x5a39a0",
-      "matching": 0.9545454545454546,
+      "matching": 0.9393939393939394,
       "name": "ComputeHexTileDistanceFromIndices",
       "type": 1
     },
