@@ -46,6 +46,26 @@ def class_of(qualified: str) -> str:
     return qualified.rsplit("::", 1)[0] if "::" in qualified else ""
 
 
+def sanitize_stem(class_name: str) -> str:
+    """Map a symbols.csv class name to the autogen bucket-filename stem.
+
+    Ghidra sanitizes template-instantiation datatype names into filename-safe stems:
+    ``<`` and ``,`` become ``_`` while ``*``, ``>`` and spaces are dropped — e.g.
+    ``CList<long,long>`` -> ``CList_long_long`` and
+    ``CArray<void*,void*>`` -> ``CArray_void_void``. The autogen ``GHIDRA_NAME`` keeps
+    the template syntax, so class-namespace drift compares apples to apples, but the
+    *bucket filename* is sanitized; without this normalization every owned template
+    bucket is falsely reported stale.
+    """
+    return (
+        class_name.replace("<", "_")
+        .replace(",", "_")
+        .replace("*", "")
+        .replace(">", "")
+        .replace(" ", "")
+    )
+
+
 def norm_addr(raw: str) -> str:
     return raw.strip().lower().removeprefix("0x").zfill(8)
 
@@ -96,7 +116,11 @@ def find_drift(symbols: dict[str, str], autogen: list[tuple[str, str, str]]):
 
     stale_buckets: list[tuple[str, str]] = []
     for bucket, addrs in bucket_addrs.items():
-        owned_here = any(class_of(symbols.get(a, "")) == bucket for a in addrs)
+        owned_here = any(
+            class_of(symbols.get(a, "")) == bucket
+            or sanitize_stem(class_of(symbols.get(a, ""))) == bucket
+            for a in addrs
+        )
         if not owned_here and any(a in symbols for a in addrs):
             stale_buckets.append((bucket, bucket))
     return class_drift, stale_buckets

@@ -12,7 +12,8 @@
 
 /* Setting prototype: int GetCityDialogValueDword10(CityDialogController *pDialog) */
 
-int TEventHandler::GetCityDialogValueDword10(CityDialogController *pDialog)
+int __thiscall
+TEventHandler::GetCityDialogValueDword10(TEventHandler *this,CityDialogController *pDialog)
 
 {
   return (int)this[1].vftable;
@@ -22,7 +23,7 @@ int TEventHandler::GetCityDialogValueDword10(CityDialogController *pDialog)
 // GHIDRA_NAME TEventHandler::SetCityDialogValueDword10
 // GHIDRA_PROTO void __thiscall SetCityDialogValueDword10(int value)
 
-void TEventHandler::SetCityDialogValueDword10(int value)
+void __thiscall TEventHandler::SetCityDialogValueDword10(TEventHandler *this,int value)
 
 {
   this[1].vftable = (TEventHandlerVtbl *)value;
@@ -33,7 +34,7 @@ void TEventHandler::SetCityDialogValueDword10(int value)
 // GHIDRA_NAME TEventHandler::CreateTEventHandlerInstance
 // GHIDRA_PROTO undefined __thiscall CreateTEventHandlerInstance(void)
 
-void TEventHandler::CreateTEventHandlerInstance()
+void __thiscall TEventHandler::CreateTEventHandlerInstance(TEventHandler *this)
 
 {
   int iVar1;
@@ -71,7 +72,7 @@ undefined4 * TEventHandler::CreateObject(void)
 // GHIDRA_NAME TEventHandler::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TEventHandler::GetRuntimeClass()
+CRuntimeClass * __thiscall TEventHandler::GetRuntimeClass(TEventHandler *this)
 
 {
   return &classTEventHandler;
@@ -81,7 +82,8 @@ CRuntimeClass * TEventHandler::GetRuntimeClass()
 // GHIDRA_NAME TEventHandler::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TEventHandler * TEventHandler::_scalar_deleting_destructor_(byte param_1)
+TEventHandler * __thiscall
+TEventHandler::_scalar_deleting_destructor_(TEventHandler *this,byte param_1)
 
 {
   func_0x00404ddb();
@@ -95,7 +97,7 @@ TEventHandler * TEventHandler::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TEventHandler::Free
 // GHIDRA_PROTO undefined __thiscall Free(void)
 
-void TEventHandler::Free()
+void __thiscall TEventHandler::Free(TEventHandler *this)
 
 {
   int *piVar1;
@@ -138,7 +140,8 @@ void TEventHandler::Free()
 
 /* Setting prototype: byte GetCityDialogFlagByte4(CityDialogController *pDialog) */
 
-byte TEventHandler::GetCityDialogFlagByte4(CityDialogController *pDialog)
+byte __thiscall
+TEventHandler::GetCityDialogFlagByte4(TEventHandler *this,CityDialogController *pDialog)
 
 {
   return (byte)this->field04;
@@ -148,7 +151,7 @@ byte TEventHandler::GetCityDialogFlagByte4(CityDialogController *pDialog)
 // GHIDRA_NAME TEventHandler::SetCityDialogFlagByte4
 // GHIDRA_PROTO void __thiscall SetCityDialogFlagByte4(char flagValue)
 
-void TEventHandler::SetCityDialogFlagByte4(char flagValue)
+void __thiscall TEventHandler::SetCityDialogFlagByte4(TEventHandler *this,char flagValue)
 
 {
   this->field04 = (int)flagValue;
@@ -183,7 +186,8 @@ TEventHandler::HandleEvent
 
 /* Setting prototype: int GetCityDialogValueDwordC(CityDialogController *pDialog) */
 
-int TEventHandler::GetCityDialogValueDwordC(CityDialogController *pDialog)
+int __thiscall
+TEventHandler::GetCityDialogValueDwordC(TEventHandler *this,CityDialogController *pDialog)
 
 {
   return this->field0c;
@@ -200,7 +204,7 @@ int TEventHandler::GetCityDialogValueDwordC(CityDialogController *pDialog)
 /* Forwards a UI command triplet to the current widget handler at vtable slot +0x3C.
    Used by numeric entry controls to bubble command IDs to parent dialog handlers. */
 
-void TEventHandler::DispatchUiCommandToHandler()
+void __thiscall TEventHandler::DispatchUiCommandToHandler(TEventHandler *this)
 
 {
   (*this->vftable->HandleEvent)();
@@ -211,7 +215,8 @@ void TEventHandler::DispatchUiCommandToHandler()
 // GHIDRA_NAME TEventHandler::ForwardNotifyParamToPrimaryChildSlot44
 // GHIDRA_PROTO undefined __thiscall ForwardNotifyParamToPrimaryChildSlot44(undefined4 param_1)
 
-void TEventHandler::ForwardNotifyParamToPrimaryChildSlot44(undefined4 param_1)
+void __thiscall
+TEventHandler::ForwardNotifyParamToPrimaryChildSlot44(TEventHandler *this,undefined4 param_1)
 
 {
   undefined uVar1;
@@ -228,7 +233,8 @@ void TEventHandler::ForwardNotifyParamToPrimaryChildSlot44(undefined4 param_1)
 // GHIDRA_NAME TEventHandler::ForwardCityDialogParamToChildSlot48
 // GHIDRA_PROTO undefined __thiscall ForwardCityDialogParamToChildSlot48(undefined4 param_1)
 
-void TEventHandler::ForwardCityDialogParamToChildSlot48(undefined4 param_1)
+void __thiscall
+TEventHandler::ForwardCityDialogParamToChildSlot48(TEventHandler *this,undefined4 param_1)
 
 {
   undefined uVar1;
@@ -245,7 +251,7 @@ void TEventHandler::ForwardCityDialogParamToChildSlot48(undefined4 param_1)
 // GHIDRA_NAME TEventHandler::DispatchQueuedUiCommandAndRelease
 // GHIDRA_PROTO undefined __thiscall DispatchQueuedUiCommandAndRelease(int * param_1)
 
-void TEventHandler::DispatchQueuedUiCommandAndRelease(int *param_1)
+void __thiscall TEventHandler::DispatchQueuedUiCommandAndRelease(TEventHandler *this,int *param_1)
 
 {
   (**(code **)(*(int *)param_1[4] + 0x40))(param_1[2],param_1[3],param_1);
@@ -259,18 +265,46 @@ void TEventHandler::DispatchQueuedUiCommandAndRelease(int *param_1)
 // GHIDRA_NAME TEventHandler::DispatchUiSelectionToHandler
 // GHIDRA_PROTO undefined __thiscall DispatchUiSelectionToHandler(void)
 
-void TEventHandler::DispatchUiSelectionToHandler()
+void __thiscall TEventHandler::DispatchUiSelectionToHandler(TEventHandler *this)
 
 {
   (*this->vftable->vmethod_0013)();
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0048A480
-// GHIDRA_NAME TEventHandler::CanHandleCityDialogActionFalse
-// GHIDRA_PROTO undefined __thiscall CanHandleCityDialogActionFalse(void)
+// GHIDRA_FUNCTION IMPERIALISM 0x0048A410
+// GHIDRA_NAME TEventHandler::HandleIdle
+// GHIDRA_PROTO undefined HandleIdle()
 
-undefined1 TEventHandler::CanHandleCityDialogActionFalse()
+void __thiscall TEventHandler::HandleIdle(int *param_1,int param_2)
+
+{
+  char cVar1;
+  int iVar2;
+  int iVar3;
+  
+  if (param_1[4] != 0x7fffffff) {
+    iVar3 = *param_1;
+    cVar1 = (**(code **)(iVar3 + 0x28))();
+    if (cVar1 != '\0') {
+      if ((param_2 == 1) && (iVar2 = func_0x004092d7(), iVar2 - param_1[5] < param_1[4])) {
+        return;
+      }
+      cVar1 = (**(code **)(iVar3 + 0x4c))(param_2);
+      if ((cVar1 == '\0') && (param_2 == 1)) {
+        iVar3 = func_0x004092d7();
+        param_1[5] = iVar3;
+      }
+    }
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0048A480
+// GHIDRA_NAME TEventHandler::DoIdle
+// GHIDRA_PROTO undefined __thiscall DoIdle(void)
+
+undefined1 __thiscall TEventHandler::DoIdle(TEventHandler *this)
 
 {
   return 0;
@@ -280,7 +314,8 @@ undefined1 TEventHandler::CanHandleCityDialogActionFalse()
 // GHIDRA_NAME TEventHandler::DetachActiveCityProductionChildIfMatches
 // GHIDRA_PROTO undefined __thiscall DetachActiveCityProductionChildIfMatches(int param_1)
 
-void TEventHandler::DetachActiveCityProductionChildIfMatches(int param_1)
+void __thiscall
+TEventHandler::DetachActiveCityProductionChildIfMatches(TEventHandler *this,int param_1)
 
 {
   if ((this[1].padding_08_to_0b != 0) && (this[1].padding_08_to_0b == param_1)) {
@@ -294,7 +329,7 @@ void TEventHandler::DetachActiveCityProductionChildIfMatches(int param_1)
 // GHIDRA_NAME TEventHandler::SetUiResourceOwner
 // GHIDRA_PROTO undefined __thiscall SetUiResourceOwner(int param_1)
 
-void TEventHandler::SetUiResourceOwner(int param_1)
+void __thiscall TEventHandler::SetUiResourceOwner(TEventHandler *this,int param_1)
 
 {
   if (param_1 != 0) {
@@ -308,7 +343,7 @@ void TEventHandler::SetUiResourceOwner(int param_1)
 // GHIDRA_NAME TEventHandler::IsCurrentActiveCityProductionView
 // GHIDRA_PROTO undefined __thiscall IsCurrentActiveCityProductionView(void)
 
-bool TEventHandler::IsCurrentActiveCityProductionView()
+bool __thiscall TEventHandler::IsCurrentActiveCityProductionView(TEventHandler *this)
 
 {
   TEventHandler *pTVar1;
@@ -321,7 +356,7 @@ bool TEventHandler::IsCurrentActiveCityProductionView()
 // GHIDRA_NAME TEventHandler::CanStartCityProductionActionFalse
 // GHIDRA_PROTO undefined __thiscall CanStartCityProductionActionFalse(void)
 
-undefined1 TEventHandler::CanStartCityProductionActionFalse()
+undefined1 __thiscall TEventHandler::CanStartCityProductionActionFalse(TEventHandler *this)
 
 {
   return 0;
@@ -331,7 +366,7 @@ undefined1 TEventHandler::CanStartCityProductionActionFalse()
 // GHIDRA_NAME TEventHandler::GetCityDialogZeroValue
 // GHIDRA_PROTO undefined __thiscall GetCityDialogZeroValue(void)
 
-undefined4 TEventHandler::GetCityDialogZeroValue()
+undefined4 __thiscall TEventHandler::GetCityDialogZeroValue(TEventHandler *this)
 
 {
   return 0;
@@ -349,7 +384,7 @@ undefined4 TEventHandler::GetCityDialogZeroValue()
    Returns true when already active or when current active view reports it can be replaced; sets
    global active view on success. */
 
-undefined4 TEventHandler::ActivateCityProductionViewIfAllowed()
+undefined4 __thiscall TEventHandler::ActivateCityProductionViewIfAllowed(TEventHandler *this)
 
 {
   char cVar1;
@@ -373,7 +408,7 @@ undefined4 TEventHandler::ActivateCityProductionViewIfAllowed()
 // GHIDRA_NAME TEventHandler::CtrlSlot32_RootControllerGateDispatch_Impl
 // GHIDRA_PROTO undefined __thiscall CtrlSlot32_RootControllerGateDispatch_Impl(void)
 
-undefined4 TEventHandler::CtrlSlot32_RootControllerGateDispatch_Impl()
+undefined4 __thiscall TEventHandler::CtrlSlot32_RootControllerGateDispatch_Impl(TEventHandler *this)
 
 {
   int iVar1;
@@ -396,7 +431,7 @@ undefined4 TEventHandler::CtrlSlot32_RootControllerGateDispatch_Impl()
 // GHIDRA_NAME TEventHandler::VTableSlot1B
 // GHIDRA_PROTO undefined __thiscall VTableSlot1B(void)
 
-void TEventHandler::VTableSlot1B()
+void __thiscall TEventHandler::VTableSlot1B(TEventHandler *this)
 
 {
   return;
@@ -413,7 +448,7 @@ void TEventHandler::VTableSlot1B()
 /* Dispatches city-production action code 0x1A through object vtable slot +0x40.
    Used as a tiny action wrapper from city/production method table. */
 
-void TEventHandler::DispatchCityProductionAction1A()
+void __thiscall TEventHandler::DispatchCityProductionAction1A(TEventHandler *this)
 
 {
   (*this->vftable->DispatchEvent)(0x1a,this,0);
@@ -424,7 +459,7 @@ void TEventHandler::DispatchCityProductionAction1A()
 // GHIDRA_NAME TEventHandler::VTableSlot19
 // GHIDRA_PROTO undefined __thiscall VTableSlot19(void)
 
-void TEventHandler::VTableSlot19()
+void __thiscall TEventHandler::VTableSlot19(TEventHandler *this)
 
 {
   return;
@@ -434,7 +469,7 @@ void TEventHandler::VTableSlot19()
 // GHIDRA_NAME TEventHandler::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
 
-void TEventHandler::GetTEventHandlerClassNamePointer()
+void __thiscall TEventHandler::GetTEventHandlerClassNamePointer(TEventHandler *this)
 
 {
   return;
@@ -451,7 +486,7 @@ void TEventHandler::GetTEventHandlerClassNamePointer()
 /* Dispatches command ID 0x19 to parent handler via virtual slot +0x40.
    Companion wrappers send 0x1A and 0x1B for numeric decrement/increment actions. */
 
-void TEventHandler::DispatchUiCommand19ToParent()
+void __thiscall TEventHandler::DispatchUiCommand19ToParent(TEventHandler *this)
 
 {
   (*this->vftable->DispatchEvent)(0x19,this,0);
@@ -469,7 +504,7 @@ void TEventHandler::DispatchUiCommand19ToParent()
 /* Dispatches city-production action code 0x1B through object vtable slot +0x40.
    Used as a tiny action wrapper from city/production method table. */
 
-void TEventHandler::ContinueModal()
+void __thiscall TEventHandler::ContinueModal(TEventHandler *this)
 
 {
   (*this->vftable->DispatchEvent)(0x1b,this,0);
@@ -480,7 +515,7 @@ void TEventHandler::ContinueModal()
 // GHIDRA_NAME TEventHandler::VTableSlot21
 // GHIDRA_PROTO undefined __thiscall VTableSlot21(void)
 
-void TEventHandler::VTableSlot21()
+void __thiscall TEventHandler::VTableSlot21(TEventHandler *this)
 
 {
   return;
@@ -490,7 +525,7 @@ void TEventHandler::VTableSlot21()
 // GHIDRA_NAME TEventHandler::OrphanTiny_ReturnZero_0048a730
 // GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(void)
 
-undefined4 TEventHandler::OrphanTiny_ReturnZero_0048a730()
+undefined4 __thiscall TEventHandler::OrphanTiny_ReturnZero_0048a730(TEventHandler *this)
 
 {
   return 0;
@@ -500,7 +535,7 @@ undefined4 TEventHandler::OrphanTiny_ReturnZero_0048a730()
 // GHIDRA_NAME TEventHandler::ShallowClone
 // GHIDRA_PROTO undefined __thiscall ShallowClone(void)
 
-undefined4 * TEventHandler::ShallowClone()
+undefined4 * __thiscall TEventHandler::ShallowClone(TEventHandler *this)
 
 {
   undefined4 *puVar1;

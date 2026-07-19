@@ -37,7 +37,8 @@ undefined4 * TFrameRadioView::CreateObject(void)
 // GHIDRA_NAME TFrameRadioView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TFrameRadioView * TFrameRadioView::_scalar_deleting_destructor_(byte param_1)
+TFrameRadioView * __thiscall
+TFrameRadioView::_scalar_deleting_destructor_(TFrameRadioView *this,byte param_1)
 
 {
   func_0x00404c46();
@@ -51,7 +52,7 @@ TFrameRadioView * TFrameRadioView::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TFrameRadioView::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TFrameRadioView::GetRuntimeClass()
+CRuntimeClass * __thiscall TFrameRadioView::GetRuntimeClass(TFrameRadioView *this)
 
 {
   return &classTFrameRadioView;
@@ -61,7 +62,7 @@ CRuntimeClass * TFrameRadioView::GetRuntimeClass()
 // GHIDRA_NAME TFrameRadioView::ApplyRectSlot110
 // GHIDRA_PROTO undefined __thiscall ApplyRectSlot110(void)
 
-void TFrameRadioView::ApplyRectSlot110()
+void __thiscall TFrameRadioView::ApplyRectSlot110(TFrameRadioView *this)
 
 {
   tagRECT tStack_10;
@@ -84,7 +85,7 @@ void TFrameRadioView::ApplyRectSlot110()
 // GHIDRA_NAME TFrameRadioView::HandleEvent
 // GHIDRA_PROTO undefined __thiscall HandleEvent(int param_1)
 
-void TFrameRadioView::HandleEvent(int param_1)
+void __thiscall TFrameRadioView::HandleEvent(TFrameRadioView *this,int param_1)
 
 {
   TFrameRadioViewVtbl *pTVar1;
@@ -132,7 +133,8 @@ void TFrameRadioView::HandleEvent(int param_1)
 // GHIDRA_NAME TFrameRadioView::SetControlStateFlagAndMaybeRefresh
 // GHIDRA_PROTO undefined __thiscall SetControlStateFlagAndMaybeRefresh(char param_1, char param_2)
 
-void TFrameRadioView::SetControlStateFlagAndMaybeRefresh(char param_1, char param_2)
+void __thiscall
+TFrameRadioView::SetControlStateFlagAndMaybeRefresh(TFrameRadioView *this,char param_1,char param_2)
 
 {
   TFrameRadioViewVtbl *pTVar1;

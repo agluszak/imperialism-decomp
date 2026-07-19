@@ -242,6 +242,16 @@ struct CArchiveException {
     undefined field12_0xf;
 };
 
+typedef struct CArray<RuntimeSelectionRecord*,RuntimeSelectionRecord*> CArray<RuntimeSelectionRecord*,RuntimeSelectionRecord*>, *PCArray<RuntimeSelectionRecord*,RuntimeSelectionRecord*>;
+
+struct CArray<RuntimeSelectionRecord*,RuntimeSelectionRecord*> { // PlaceHolder Class Structure
+};
+
+typedef struct CArray<void*,void*> CArray<void*,void*>, *PCArray<void*,void*>;
+
+struct CArray<void*,void*> { // PlaceHolder Class Structure
+};
+
 typedef struct CCmdTarget CCmdTarget, *PCCmdTarget;
 
 typedef struct CCmdTargetVtbl CCmdTargetVtbl, *PCCmdTargetVtbl;
@@ -287,6 +297,11 @@ struct CDC {
 struct CObjectVtbl {
     undefined (*SetForeignMinisterReadyFlag14)(void);
     undefined (*slot_0x04)(void);
+};
+
+typedef struct CDib CDib, *PCDib;
+
+struct CDib { // PlaceHolder Class Structure
 };
 
 typedef struct CDocManager CDocManager, *PCDocManager;
@@ -849,6 +864,16 @@ struct CivilianMapInteractionManager {
     undefined field8_0xb;
 };
 
+typedef struct CList<long,long> CList<long,long>, *PCList<long,long>;
+
+struct CList<long,long> { // PlaceHolder Class Structure
+};
+
+typedef struct CList<TurnEventDialogFactoryProc,TurnEventDialogFactoryProc> CList<TurnEventDialogFactoryProc,TurnEventDialogFactoryProc>, *PCList<TurnEventDialogFactoryProc,TurnEventDialogFactoryProc>;
+
+struct CList<TurnEventDialogFactoryProc,TurnEventDialogFactoryProc> { // PlaceHolder Class Structure
+};
+
 typedef struct CMainFrame CMainFrame, *PCMainFrame;
 
 typedef struct CMainFrameVtbl CMainFrameVtbl, *PCMainFrameVtbl;
@@ -1047,9 +1072,24 @@ struct CMainFrameVtbl {
     undefined (*SetForeignMinisterReadyFlag14)(void);
 };
 
+typedef struct CMap<void*,void*,CacheRecord*,CacheRecord*> CMap<void*,void*,CacheRecord*,CacheRecord*>, *PCMap<void*,void*,CacheRecord*,CacheRecord*>;
+
+struct CMap<void*,void*,CacheRecord*,CacheRecord*> { // PlaceHolder Class Structure
+};
+
+typedef struct CMap<WORD,WORD,CacheRecord*,CacheRecord*> CMap<WORD,WORD,CacheRecord*,CacheRecord*>, *PCMap<WORD,WORD,CacheRecord*,CacheRecord*>;
+
+struct CMap<WORD,WORD,CacheRecord*,CacheRecord*> { // PlaceHolder Class Structure
+};
+
 typedef struct CMapPtrToPtr CMapPtrToPtr, *PCMapPtrToPtr;
 
 struct CMapPtrToPtr { // PlaceHolder Class Structure
+};
+
+typedef struct CMapStringToOb CMapStringToOb, *PCMapStringToOb;
+
+struct CMapStringToOb { // PlaceHolder Class Structure
 };
 
 typedef struct CMcWindow CMcWindow, *PCMcWindow;
@@ -1663,6 +1703,16 @@ union IMAGE_RESOURCE_DIRECTORY_ENTRY_DirectoryUnion {
     struct IMAGE_RESOURCE_DIRECTORY_ENTRY_DirectoryStruct IMAGE_RESOURCE_DIRECTORY_ENTRY_DirectoryStruct;
 };
 
+typedef struct ImperialismApp ImperialismApp, *PImperialismApp;
+
+struct ImperialismApp { // PlaceHolder Class Structure
+};
+
+typedef struct ImperialismCommandLineInfo ImperialismCommandLineInfo, *PImperialismCommandLineInfo;
+
+struct ImperialismCommandLineInfo { // PlaceHolder Class Structure
+};
+
 typedef struct InputState InputState, *PInputState;
 
 struct InputState { // PlaceHolder Class Structure
@@ -1686,6 +1736,21 @@ struct MinisterView { // PlaceHolder Class Structure
 typedef struct ObjectPool ObjectPool, *PObjectPool;
 
 struct ObjectPool { // PlaceHolder Class Structure
+};
+
+typedef struct SeapointStretch SeapointStretch, *PSeapointStretch;
+
+struct SeapointStretch { // PlaceHolder Class Structure
+};
+
+typedef struct SeaSegmentStretch SeaSegmentStretch, *PSeaSegmentStretch;
+
+struct SeaSegmentStretch { // PlaceHolder Class Structure
+};
+
+typedef struct StrategicMapCallbackRecord StrategicMapCallbackRecord, *PStrategicMapCallbackRecord;
+
+struct StrategicMapCallbackRecord { // PlaceHolder Class Structure
 };
 
 typedef struct T2PictToggleButton T2PictToggleButton, *PT2PictToggleButton;
@@ -22633,6 +22698,11 @@ struct TCapacityOrderVtbl {
     undefined (*CreateTItemOrderInstance)(void);
     undefined (*InitializeCityProductionState_Impl_At004b5290)(void);
     undefined (*InitializeCityProductionState_Impl_At004b8d50)(void);
+};
+
+typedef struct TCdAudioDevice TCdAudioDevice, *PTCdAudioDevice;
+
+struct TCdAudioDevice { // PlaceHolder Class Structure
 };
 
 typedef struct TCheater TCheater, *PTCheater;
@@ -86952,6 +87022,11 @@ struct TLonelyTileViewVtbl {
     undefined (*OrphanRetStub_0059add0_67)(void);
 };
 
+typedef struct TLongintList TLongintList, *PTLongintList;
+
+struct TLongintList { // PlaceHolder Class Structure
+};
+
 typedef struct TLoungeDialog TLoungeDialog, *PTLoungeDialog;
 
 typedef struct TLoungeDialogVtbl TLoungeDialogVtbl, *PTLoungeDialogVtbl;
@@ -133275,11 +133350,6 @@ struct TSortedPtrListVtbl {
     undefined (*slot_0x04)(void);
 };
 
-typedef struct TSoundChannelNode TSoundChannelNode, *PTSoundChannelNode;
-
-struct TSoundChannelNode { // PlaceHolder Class Structure
-};
-
 typedef struct TSoundPlayer TSoundPlayer, *PTSoundPlayer;
 
 typedef struct TSoundPlayerVtbl TSoundPlayerVtbl, *PTSoundPlayerVtbl;
@@ -156878,6 +156948,11 @@ struct TTreatiesViewVtbl {
     undefined (*UpdateControlCachedIntFromWindowText_66)(void);
     undefined (*OrphanRetStub_0059add0_67)(void);
     undefined (*OrphanRetStub_00430550)(void);
+};
+
+typedef struct TTurnEventDialogFactoryRegistry TTurnEventDialogFactoryRegistry, *PTTurnEventDialogFactoryRegistry;
+
+struct TTurnEventDialogFactoryRegistry { // PlaceHolder Class Structure
 };
 
 typedef struct TTurnEventDialogFactoryRegistryState_0064B328 TTurnEventDialogFactoryRegistryState_0064B328, *PTTurnEventDialogFactoryRegistryState_0064B328;

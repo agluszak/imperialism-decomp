@@ -3,6 +3,93 @@
 // Program: Imperialism.exe
 // Bucket: CDialog.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00604BA8
+// GHIDRA_NAME CDialog::PreTranslateMessage
+// GHIDRA_PROTO undefined __thiscall PreTranslateMessage(undefined4 * param_1)
+
+undefined4 __thiscall CDialog::PreTranslateMessage(CDialog *this,undefined4 *param_1)
+
+{
+  int iVar1;
+  uint uVar2;
+  HWND hWnd;
+  BOOL BVar3;
+  undefined4 uVar4;
+  
+  iVar1 = CWnd::PreTranslateMessage((CWnd *)this,param_1);
+  if (iVar1 == 0) {
+    iVar1 = CWnd::GetTopLevelFrame();
+    if ((iVar1 != 0) && (*(int *)(iVar1 + 0x50) != 0)) {
+      return 0;
+    }
+    if ((((param_1[1] != 0x100) ||
+         (((param_1[2] != 0x1b && (param_1[2] != 3)) ||
+          (uVar2 = GetWindowLongA((HWND)*param_1,-0x10), (uVar2 & 4) == 0)))) ||
+        (iVar1 = _AfxCompareClassName(*param_1,&DAT_0066fc20), iVar1 == 0)) ||
+       ((hWnd = GetDlgItem(*(HWND *)(this + 0x1c),2), hWnd != (HWND)0x0 &&
+        (BVar3 = IsWindowEnabled(hWnd), BVar3 == 0)))) {
+      uVar4 = CWnd::PreTranslateInput(param_1);
+      return uVar4;
+    }
+    SendMessageA(*(HWND *)(this + 0x1c),0x111,2,0);
+  }
+  return 1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00604C41
+// GHIDRA_NAME CDialog::OnCmdMsg
+// GHIDRA_PROTO undefined OnCmdMsg()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Multiple Matches With Same Base Name
+// GHIDRA_COMMENT  public: virtual int __thiscall CDialog::OnCmdMsg(unsigned int,int,void *,struct AFX_CMDHANDLERINFO *)
+// GHIDRA_COMMENT  public: virtual int __thiscall CPropertySheet::OnCmdMsg(unsigned int,int,void *,struct AFX_CMDHANDLERINFO *)
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: nafxcw retail msvc500:static
+// GHIDRA_COMMENT_END
+
+/* Library Function - Multiple Matches With Same Base Name
+    public: virtual int __thiscall CDialog::OnCmdMsg(unsigned int,int,void *,struct
+   AFX_CMDHANDLERINFO *)
+    public: virtual int __thiscall CPropertySheet::OnCmdMsg(unsigned int,int,void *,struct
+   AFX_CMDHANDLERINFO *)
+   
+   Library: nafxcw retail msvc500:static */
+
+undefined4 __thiscall
+CDialog::OnCmdMsg(CCmdTarget *param_1,uint param_2,uint param_3,int param_4,undefined4 param_5)
+
+{
+  int iVar1;
+  HWND pHVar2;
+  int *piVar3;
+  CWinThread *pCVar4;
+  undefined4 uVar5;
+  
+  iVar1 = CCmdTarget::OnCmdMsg(param_1,param_2,param_3,param_4,param_5);
+  if (iVar1 == 0) {
+    if ((((param_3 == 0) || (param_3 == 0xffffffff)) && ((param_2 & 0x8000) != 0)) &&
+       (param_2 < 0xf000)) {
+      pHVar2 = GetParent((HWND)param_1[1].vftable);
+      piVar3 = (int *)CWnd::FromHandle(pHVar2);
+      if (piVar3 != (int *)0x0) {
+        iVar1 = (**(code **)(*piVar3 + 0x14))(param_2,param_3,param_4,param_5);
+        if (iVar1 != 0) goto LAB_00604cb8;
+      }
+      pCVar4 = AfxGetThread();
+      if (pCVar4 != (CWinThread *)0x0) {
+        iVar1 = (**(code **)(*(int *)pCVar4 + 0x14))(param_2,param_3,param_4,param_5);
+        if (iVar1 != 0) goto LAB_00604cb8;
+      }
+    }
+    uVar5 = 0;
+  }
+  else {
+LAB_00604cb8:
+    uVar5 = 1;
+  }
+  return uVar5;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00604CC6
 // GHIDRA_NAME CDialog::CDialog
 // GHIDRA_PROTO undefined CDialog()
@@ -11,14 +98,14 @@ undefined4 * __fastcall CDialog::CDialog(undefined4 *param_1)
 
 {
   CWnd::CWnd();
-  *param_1 = &PTR_LAB_0066fc2c;
+  *param_1 = &PTR_GetRuntimeClass_0066fc2c;
   memset(param_1 + 0xf,0,0x20);
   return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00604D04
 // GHIDRA_NAME CDialog::~CDialog
-// GHIDRA_PROTO void __thiscall CDialog::~CDialog(void)
+// GHIDRA_PROTO void __thiscall ~CDialog(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Library Function - Single Match
 // GHIDRA_COMMENT  public: virtual __thiscall CDialog::~CDialog(void)
@@ -31,7 +118,7 @@ undefined4 * __fastcall CDialog::CDialog(undefined4 *param_1)
    
    Library: nafxcw retail msvc500:static */
 
-void CDialog::~CDialog()
+void __thiscall CDialog::~CDialog(CDialog *this)
 
 {
   CWnd *this_00;
@@ -40,10 +127,10 @@ void CDialog::~CDialog()
   
   _EH_prolog();
   *(CWnd **)(unaff_EBP + -0x10) = this_00;
-  (this_00->ccmdTarget).vftable = (CCmdTargetVtbl *)&PTR_LAB_0066fc2c;
+  (this_00->ccmdTarget).vftable = (CCmdTargetVtbl *)&PTR_GetRuntimeClass_0066fc2c;
   *(undefined4 *)(unaff_EBP + -4) = 0;
   if (this_00->m_hWnd != (void *)0x0) {
-    CWnd__DestroyWindow();
+    CWnd::DestroyWindow();
   }
   *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
   CWnd::~CWnd(this_00);
@@ -120,17 +207,43 @@ CDialog::CreateIndirect
 // GHIDRA_NAME CDialog::CDialog
 // GHIDRA_PROTO undefined __thiscall CDialog(undefined4 param_1, undefined4 param_2)
 
-CDialog * CDialog::CDialog(undefined4 param_1, undefined4 param_2)
+CDialog * __thiscall CDialog::CDialog(CDialog *this,undefined4 param_1,undefined4 param_2)
 
 {
   CWnd::CWnd();
-  *(undefined ***)this = &PTR_LAB_0066fc2c;
+  *(undefined ***)this = &PTR_GetRuntimeClass_0066fc2c;
   memset(this + 0x3c,0,0x20);
   *(undefined4 *)(this + 0x50) = param_2;
   *(undefined4 *)(this + 0x40) = param_1;
   if ((short)((uint)param_1 >> 0x10) == 0) {
     *(uint *)(this + 0x3c) = (uint)*(ushort *)(this + 0x40);
   }
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x006050D0
+// GHIDRA_NAME CDialog::CDialog
+// GHIDRA_PROTO undefined __thiscall CDialog(uint param_1, undefined4 param_2)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Initializes base dialog object state from template ID and init parameter.
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Sets template/resource identifiers and clears per-dialog scratch fields used before modal/modeless creation.
+// GHIDRA_COMMENT_END
+
+/* Initializes base dialog object state from template ID and init parameter.
+   
+   Sets template/resource identifiers and clears per-dialog scratch fields used before
+   modal/modeless creation. */
+
+CDialog * __thiscall CDialog::CDialog(CDialog *this,uint param_1,undefined4 param_2)
+
+{
+  CWnd::CWnd();
+  *(undefined ***)this = &PTR_GetRuntimeClass_0066fc2c;
+  memset(this + 0x3c,0,0x20);
+  *(undefined4 *)(this + 0x50) = param_2;
+  *(uint *)(this + 0x3c) = param_1;
+  *(uint *)(this + 0x40) = param_1 & 0xffff;
   return this;
 }
 
@@ -176,6 +289,121 @@ void __fastcall CDialog::PostModal(int param_1)
   AfxGetModuleState();
   CWinApp::EnableModeless(1);
   return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x006051B9
+// GHIDRA_NAME CDialog::DoModal
+// GHIDRA_PROTO undefined DoModal()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Runs modal dialog creation from an in-memory dialog template.
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Algorithm:
+// GHIDRA_COMMENT 1. Resolve/lock dialog template from either resource ID or provided template pointer.
+// GHIDRA_COMMENT 2. Resolve owner window and disable it when needed.
+// GHIDRA_COMMENT 3. Install CBT hook and create dialog via CreateDialogIndirectAndAttach.
+// GHIDRA_COMMENT 4. If modal style flag is set, run modal loop.
+// GHIDRA_COMMENT 5. Restore owner activation/enabled state and cleanup temporary modal-create state.
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Returns:
+// GHIDRA_COMMENT - Dialog result code stored by the dialog object (typically this->m_nModalResult).
+// GHIDRA_COMMENT_END
+
+/* Runs modal dialog creation from an in-memory dialog template.
+   
+   Algorithm:
+   1. Resolve/lock dialog template from either resource ID or provided template pointer.
+   2. Resolve owner window and disable it when needed.
+   3. Install CBT hook and create dialog via CreateDialogIndirectAndAttach.
+   4. If modal style flag is set, run modal loop.
+   5. Restore owner activation/enabled state and cleanup temporary modal-create state.
+   
+   Returns:
+   - Dialog result code stored by the dialog object (typically this->m_nModalResult). */
+
+int CDialog::DoModal(void)
+
+{
+  int iVar1;
+  HRSRC hResInfo;
+  void *hResData;
+  LPVOID pvVar2;
+  HWND hWnd;
+  BOOL BVar3;
+  undefined4 uVar4;
+  uint uVar5;
+  HWND pHVar6;
+  CWnd *this;
+  byte bVar7;
+  HMODULE hModule;
+  int unaff_EBP;
+  undefined4 *unaff_FS_OFFSET;
+  
+  _EH_prolog();
+  *(undefined1 **)(unaff_EBP + -0x10) = &stack0xffffffdc;
+  *(CWnd **)(unaff_EBP + -0x18) = this;
+  hResData = this[1].ccmdTarget.m_pOuterUnknown;
+  *(int *)(unaff_EBP + -0x14) = this[1].ccmdTarget.m_xInnerUnknown;
+  iVar1 = AfxGetModuleState();
+  hModule = *(HMODULE *)(iVar1 + 0xc);
+  if (this[1].ccmdTarget.m_dwRef != 0) {
+    iVar1 = AfxGetModuleState();
+    hModule = *(HMODULE *)(iVar1 + 0xc);
+    hResInfo = FindResourceA(hModule,(LPCSTR)this[1].ccmdTarget.m_dwRef,(LPCSTR)0x5);
+    hResData = LoadResource(hModule,hResInfo);
+  }
+  if (hResData != (HGLOBAL)0x0) {
+    pvVar2 = LockResource(hResData);
+    *(LPVOID *)(unaff_EBP + -0x14) = pvVar2;
+  }
+  if (*(int *)(unaff_EBP + -0x14) == 0) {
+    iVar1 = -1;
+  }
+  else {
+    hWnd = (HWND)PreModal();
+    *(HWND *)(unaff_EBP + -0x20) = hWnd;
+    AfxUnhookWindowCreate();
+    CWnd::FromHandle(hWnd);
+    *(undefined4 *)(unaff_EBP + -0x1c) = 0;
+    if (hWnd != (HWND)0x0) {
+      BVar3 = IsWindowEnabled(hWnd);
+      if (BVar3 != 0) {
+        EnableWindow(hWnd,0);
+        *(undefined4 *)(unaff_EBP + -0x1c) = 1;
+      }
+    }
+    *(undefined4 *)(unaff_EBP + -4) = 0;
+    AfxHookWindowCreate(this);
+    uVar4 = CWnd::FromHandle(hWnd);
+    iVar1 = CWnd::CreateDlgIndirect(*(undefined4 *)(unaff_EBP + -0x14),uVar4,hModule);
+    if (iVar1 != 0) {
+      if ((this->m_nFlags & 0x10) != 0) {
+        bVar7 = 4;
+        uVar5 = CWnd::GetStyle();
+        if ((uVar5 & 0x100) != 0) {
+          bVar7 = 5;
+        }
+        CWnd::RunModalLoop(this,bVar7);
+      }
+      if (this->m_hWnd != (void *)0x0) {
+        CWnd::SetWindowPos(0,0,0,0,0,0x97);
+      }
+    }
+    *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
+    if (*(int *)(unaff_EBP + -0x1c) != 0) {
+      EnableWindow(hWnd,1);
+    }
+    if (hWnd != (HWND)0x0) {
+      pHVar6 = GetActiveWindow();
+      if (pHVar6 == this->m_hWnd) {
+        SetActiveWindow(hWnd);
+      }
+    }
+    (*(this->ccmdTarget).vftable[8].SetForeignMinisterReadyFlag14)();
+    PostModal();
+    iVar1 = this->m_nModalResult;
+  }
+  *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
+  return iVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0060531E
@@ -246,7 +474,7 @@ int __fastcall CDialog::HandleInitDialog(CWnd *param_1)
   iVar3 = CWnd::Default(param_1);
   if ((iVar3 != 0) && ((param_1->m_nFlags & 0x100) != 0)) {
     pHVar4 = GetNextDlgTabItem(param_1->m_hWnd,(HWND)0x0,0);
-    iVar5 = CWnd__FromHandle(pHVar4);
+    iVar5 = CWnd::FromHandle(pHVar4);
     if (iVar5 != 0) {
       CWnd::SetFocus();
       iVar3 = 0;
@@ -290,7 +518,7 @@ undefined4 __fastcall CDialog::OnInitDialog(int param_1)
 // GHIDRA_NAME CDialog::OnOK
 // GHIDRA_PROTO undefined __thiscall OnOK(void)
 
-void CDialog::OnOK()
+void __thiscall CDialog::OnOK(CDialog *this)
 
 {
   int iVar1;
@@ -299,6 +527,17 @@ void CDialog::OnOK()
   if (iVar1 != 0) {
     EndDialog(1);
   }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x006054C3
+// GHIDRA_NAME CDialog::OnCancel
+// GHIDRA_PROTO undefined OnCancel()
+
+void CDialog::OnCancel(void)
+
+{
+  EndDialog(2);
   return;
 }
 

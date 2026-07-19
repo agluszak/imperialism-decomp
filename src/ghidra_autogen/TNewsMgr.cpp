@@ -24,7 +24,7 @@ undefined4 * TNewsMgr::CreateObject(void)
 // GHIDRA_NAME TNewsMgr::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TNewsMgr * TNewsMgr::_scalar_deleting_destructor_(byte param_1)
+TNewsMgr * __thiscall TNewsMgr::_scalar_deleting_destructor_(TNewsMgr *this,byte param_1)
 
 {
   func_0x004093f4();
@@ -38,7 +38,7 @@ TNewsMgr * TNewsMgr::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TNewsMgr::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TNewsMgr::GetRuntimeClass()
+CRuntimeClass * __thiscall TNewsMgr::GetRuntimeClass(TNewsMgr *this)
 
 {
   return &classTNewsMgr;
@@ -48,7 +48,7 @@ CRuntimeClass * TNewsMgr::GetRuntimeClass()
 // GHIDRA_NAME TNewsMgr::Free
 // GHIDRA_PROTO undefined __thiscall Free(void)
 
-void TNewsMgr::Free()
+void __thiscall TNewsMgr::Free(TNewsMgr *this)
 
 {
   int *piVar1;
@@ -79,7 +79,7 @@ void TNewsMgr::Free()
 // GHIDRA_NAME TNewsMgr::ReadFrom
 // GHIDRA_PROTO undefined __thiscall ReadFrom(void)
 
-void TNewsMgr::ReadFrom()
+void __thiscall TNewsMgr::ReadFrom(TNewsMgr *this)
 
 {
   func_0x00403517();
@@ -90,10 +90,732 @@ void TNewsMgr::ReadFrom()
 // GHIDRA_NAME TNewsMgr::WriteTo
 // GHIDRA_PROTO undefined __thiscall WriteTo(void)
 
-void TNewsMgr::WriteTo()
+void __thiscall TNewsMgr::WriteTo(TNewsMgr *this)
 
 {
   func_0x0040583a();
   return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0055B8E0
+// GHIDRA_NAME TNewsMgr::StartNewsPhase
+// GHIDRA_PROTO undefined StartNewsPhase()
+
+void __fastcall TNewsMgr::StartNewsPhase(int param_1)
+
+{
+  short sVar1;
+  int iVar2;
+  CString *src_ref;
+  undefined4 uVar3;
+  int iVar4;
+  int *piVar5;
+  undefined4 *puVar6;
+  TGreatPower **ppTVar7;
+  CString CStack_14;
+  
+  CStack_14.m_pchData = (char *)0x55b8eb;
+  func_0x004023f6();
+  piVar5 = (int *)(param_1 + 0xef4);
+  if (*(int *)(param_1 + 0xef4) == 0) {
+    iVar4 = 7;
+    do {
+      CStack_14.m_pchData = (char *)(*(int *)(param_1 + 8) << 1);
+      iVar2 = operator_new();
+      *piVar5 = iVar2;
+      iVar2 = 0;
+      if (0 < *(int *)(param_1 + 8)) {
+        do {
+          iVar2 = iVar2 + 1;
+          *(undefined2 *)(*piVar5 + -2 + iVar2 * 2) = 0;
+        } while (iVar2 < *(int *)(param_1 + 8));
+      }
+      piVar5 = piVar5 + 1;
+      iVar4 = iVar4 + -1;
+    } while (iVar4 != 0);
+  }
+  CStack_14.m_pchData = (char *)0x55b93b;
+  src_ref = (CString *)func_0x00406a4b();
+  CString::CString(&CStack_14,src_ref);
+  uVar3 = func_0x004012e9();
+  *(undefined4 *)(param_1 + 0xed0) = uVar3;
+  puVar6 = (undefined4 *)(param_1 + 0xc);
+  for (iVar4 = 0x3b1; iVar4 != 0; iVar4 = iVar4 + -1) {
+    *puVar6 = 0;
+    puVar6 = puVar6 + 1;
+  }
+  iVar4 = 0;
+  ppTVar7 = g_apNationStates;
+  do {
+    if ((*ppTVar7 == (TGreatPower *)0x0) || ((*ppTVar7)->field_0xa0 == '\0')) {
+      sVar1 = func_0x00403b16();
+      if (sVar1 == iVar4) goto LAB_0055b98e;
+    }
+    else {
+LAB_0055b98e:
+      func_0x00405a79(iVar4);
+    }
+    ppTVar7 = ppTVar7 + 1;
+    iVar4 = iVar4 + 1;
+    if (0x6a438b < (int)ppTVar7) {
+      operator_delete(*(undefined4 *)(param_1 + 4));
+      func_0x00403670(*(undefined4 *)(param_1 + 0xed0));
+      (**(code **)(**(int **)(param_1 + 0xef0) + 0x20))();
+      return;
+    }
+  } while( true );
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0055BA30
+// GHIDRA_NAME TNewsMgr::LoadNewsTable
+// GHIDRA_PROTO undefined LoadNewsTable()
+
+undefined1 * __fastcall TNewsMgr::LoadNewsTable(int param_1)
+
+{
+  undefined1 uVar1;
+  CString *src_ref;
+  undefined4 uVar2;
+  undefined4 uVar3;
+  int iVar4;
+  undefined1 *puVar5;
+  int iVar6;
+  undefined1 *puVar7;
+  CString CStack_18;
+  
+  CStack_18.m_pchData = (char *)0x55ba43;
+  src_ref = (CString *)func_0x00408dbe();
+  CString::CString(&CStack_18,src_ref);
+  uVar2 = func_0x004012e9();
+  uVar3 = func_0x004042aa(uVar2);
+  iVar4 = operator_new(uVar3);
+  *(int *)(param_1 + 4) = iVar4;
+  if (iVar4 == 0) {
+    MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+    func_0x004057a4(s_D__Ambit_Cross_UNewspaper_cpp_00698470,0x106);
+  }
+  puVar7 = &stack0xfffffff0;
+  func_0x0040255e(uVar2,*(undefined4 *)(param_1 + 4));
+  func_0x00403670(uVar2);
+  iVar4 = 0;
+  puVar5 = (undefined1 *)((int)puVar7 * -0x55555555);
+  *(uint *)(param_1 + 8) = (uint)puVar7 / 0x18;
+  if ((uint)puVar7 / 0x18 != 0) {
+    iVar6 = 0;
+    do {
+      puVar5 = (undefined1 *)(*(int *)(param_1 + 4) + iVar6);
+      iVar4 = iVar4 + 1;
+      iVar6 = iVar6 + 0x18;
+      uVar1 = *puVar5;
+      *puVar5 = puVar5[3];
+      puVar5[3] = uVar1;
+      uVar1 = puVar5[1];
+      puVar5[1] = puVar5[2];
+      puVar5[2] = uVar1;
+      uVar1 = puVar5[4];
+      puVar5[4] = puVar5[7];
+      puVar5[7] = uVar1;
+      uVar1 = puVar5[5];
+      puVar5[5] = puVar5[6];
+      puVar5[6] = uVar1;
+      uVar1 = puVar5[8];
+      puVar5[8] = puVar5[0xb];
+      puVar5[0xb] = uVar1;
+      uVar1 = puVar5[9];
+      puVar5[9] = puVar5[10];
+      puVar5[10] = uVar1;
+      uVar1 = puVar5[0xc];
+      puVar5[0xc] = puVar5[0xf];
+      puVar5[0xf] = uVar1;
+      uVar1 = puVar5[0xd];
+      puVar5[0xd] = puVar5[0xe];
+      puVar5[0xe] = uVar1;
+      uVar1 = puVar5[0x10];
+      puVar5[0x10] = puVar5[0x13];
+      puVar5[0x13] = uVar1;
+      uVar1 = puVar5[0x11];
+      puVar5[0x11] = puVar5[0x12];
+      puVar5[0x12] = uVar1;
+      uVar1 = puVar5[0x14];
+      puVar5[0x14] = puVar5[0x17];
+      puVar5[0x17] = uVar1;
+      uVar1 = puVar5[0x15];
+      puVar5[0x15] = puVar5[0x16];
+      puVar5[0x16] = uVar1;
+    } while (iVar4 < *(int *)(param_1 + 8));
+  }
+  return puVar5;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0055BC10
+// GHIDRA_NAME TNewsMgr::CreateNewspaper
+// GHIDRA_PROTO undefined CreateNewspaper()
+
+void __thiscall TNewsMgr::CreateNewspaper(int param_1,int param_2)
+
+{
+  int *piVar1;
+  short sVar2;
+  int iVar3;
+  undefined uVar4;
+  undefined4 *puVar5;
+  short *psVar6;
+  undefined3 extraout_var;
+  int iVar7;
+  int iVar8;
+  int iVar9;
+  int iVar10;
+  short *psVar11;
+  int iVar12;
+  int unaff_EBP;
+  int unaff_ESI;
+  int *piVar13;
+  int *piVar14;
+  int local_20;
+  int *local_1c;
+  int *piStack_18;
+  short *psStack_14;
+  int iStack_10;
+  int iStack_8;
+  int local_4;
+  
+  local_1c = (int *)0x0;
+  local_20 = 0;
+  iVar12 = 3;
+  puVar5 = (undefined4 *)(param_1 + 0x2c + param_2 * 0x21c);
+  do {
+    iVar10 = 3;
+    do {
+      *puVar5 = 0;
+      puVar5 = puVar5 + 0xf;
+      iVar10 = iVar10 + -1;
+    } while (iVar10 != 0);
+    iVar12 = iVar12 + -1;
+  } while (iVar12 != 0);
+  local_4 = param_1;
+  func_0x0040713f(param_2,&local_20,&local_1c);
+  (**(code **)(**(int **)(param_1 + 0xed4 + param_2 * 4) + 0x20))();
+  iVar12 = *(int *)(param_1 + 0xef4 + param_2 * 4);
+  local_20 = iVar12;
+  psStack_14 = (short *)operator_new(*(int *)(param_1 + 8) << 1);
+  iVar10 = 0;
+  psVar11 = psStack_14;
+  if (0 < *(int *)(param_1 + 8)) {
+    do {
+      *psVar11 = (short)iVar10;
+      iVar10 = iVar10 + 1;
+      psVar11 = psVar11 + 1;
+    } while (iVar10 < *(int *)(param_1 + 8));
+  }
+  iVar10 = *(int *)(param_1 + 8);
+  piStack_18 = (int *)0x0;
+  psVar11 = psStack_14;
+  if (iVar10 != 1 && -1 < iVar10 + -1) {
+    do {
+      psVar6 = psVar11;
+      local_1c = piStack_18;
+      if ((int)piStack_18 < iVar10) {
+        do {
+          sVar2 = *psVar6;
+          if (*(short *)(iVar12 + sVar2 * 2) < *(short *)(iVar12 + *psVar11 * 2)) {
+            *psVar6 = *psVar11;
+            *psVar11 = sVar2;
+          }
+          local_1c = (int *)((int)local_1c + 1);
+          psVar6 = psVar6 + 1;
+        } while ((int)local_1c < *(int *)(param_1 + 8));
+      }
+      iVar10 = *(int *)(param_1 + 8);
+      piStack_18 = (int *)((int)piStack_18 + 1);
+      psVar11 = psVar11 + 1;
+      param_2 = iStack_8;
+    } while ((int)piStack_18 < iVar10 + -1);
+  }
+  iVar10 = 0;
+  uVar4 = (*g_pSimMgr->vftable[7].slot_0x04)();
+  local_1c = (int *)(int)(short)CONCAT31(extraout_var,uVar4);
+joined_r0x0055bd3c:
+  do {
+    while( true ) {
+      if ((2 < unaff_ESI) || (3 < iVar10)) {
+        operator_delete(psStack_14);
+        return;
+      }
+      do {
+        iVar7 = rand();
+        iVar7 = iVar7 % *(int *)(param_1 + 8);
+        iVar8 = rand();
+        iVar3 = iStack_8;
+        iVar8 = iVar8 % *(int *)(param_1 + 8);
+        if (iVar8 <= iVar7) {
+          iVar7 = iVar8;
+        }
+        iVar7 = (int)psStack_14[iVar7];
+      } while (*(int *)(*(int *)(param_1 + 4) + iVar7 * 0x18) < 0);
+      if ((int *)(int)*(short *)(iVar12 + iVar7 * 2) != local_1c) break;
+      iVar10 = iVar10 + 1;
+      param_2 = iStack_8;
+    }
+    piStack_18 = (int *)(*(int *)(param_1 + 4) + iVar7 * 0x18);
+    piVar1 = (int *)(param_1 + 0xc + (unaff_ESI + (unaff_EBP + param_2 * 3) * 3) * 0x3c);
+    iVar8 = *piStack_18;
+    if ((iVar8 < 10) || (iVar12 = local_20, iVar8 % 10 != 0)) goto LAB_0055be65;
+    iVar9 = (int)(short)((int)((int)*(short *)&g_pSimMgr->field_0x2c +
+                              ((int)*(short *)&g_pSimMgr->field_0x2c >> 0x1f & 3U)) >> 2);
+    param_2 = iStack_8;
+  } while ((iVar9 < iVar8 + -10) || (iVar8 <= iVar9));
+  piVar1[4] = 0;
+  piVar1[5] = 0;
+  piVar1[6] = 0;
+  piVar1[7] = 0;
+  piVar13 = piStack_18;
+  piVar14 = piVar1 + 8;
+  for (iVar12 = 6; iVar12 != 0; iVar12 = iVar12 + -1) {
+    *piVar14 = *piVar13;
+    piVar13 = piVar13 + 1;
+    piVar14 = piVar14 + 1;
+  }
+  piVar1[4] = 1;
+  *(undefined1 *)(piVar1 + 0xe) = 1;
+  *piVar1 = 1 << ((byte)iStack_8 & 0x1f);
+  do {
+    do {
+      iVar12 = rand();
+      iVar12 = iVar12 % 7;
+    } while ((short)iVar12 == iVar3);
+  } while (g_apTerrainTypeDescriptorTable[(short)iVar12] == (TCountry *)0x0);
+  goto LAB_0055bec3;
+LAB_0055be65:
+  param_2 = iStack_8;
+  if (iVar8 == 1) {
+    piVar1[4] = 0;
+    piVar1[5] = 0;
+    piVar1[6] = 0;
+    piVar1[7] = 0;
+    piVar13 = piStack_18;
+    piVar14 = piVar1 + 8;
+    for (iVar12 = 6; iVar12 != 0; iVar12 = iVar12 + -1) {
+      *piVar14 = *piVar13;
+      piVar13 = piVar13 + 1;
+      piVar14 = piVar14 + 1;
+    }
+    piVar1[4] = 1;
+    *(undefined1 *)(piVar1 + 0xe) = 1;
+    *piVar1 = 1 << ((byte)iStack_8 & 0x1f);
+    do {
+      do {
+        iVar12 = rand();
+        iVar12 = iVar12 % 7;
+      } while ((short)iVar12 == iVar3);
+    } while (g_apTerrainTypeDescriptorTable[(short)iVar12] == (TCountry *)0x0);
+LAB_0055bec3:
+    piVar1[5] = 1;
+    piVar1[1] = 1 << ((byte)iVar12 & 0x1f);
+    *(undefined2 *)(local_20 + iVar7 * 2) = local_1c._0_2_;
+    unaff_EBP = unaff_EBP + 1;
+    if (unaff_EBP == 3) {
+      unaff_EBP = 0;
+      unaff_ESI = unaff_ESI + 1;
+    }
+    iVar10 = 0;
+    iVar12 = local_20;
+    param_2 = iStack_8;
+    param_1 = iStack_10;
+  }
+  goto joined_r0x0055bd3c;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0055C010
+// GHIDRA_NAME TNewsMgr::CreateEventStories
+// GHIDRA_PROTO undefined CreateEventStories()
+
+void __thiscall TNewsMgr::CreateEventStories(int param_1,int param_2,int *param_3,int *param_4)
+
+{
+  byte bVar1;
+  bool bVar2;
+  short sVar3;
+  short sVar4;
+  int *piVar5;
+  int iVar6;
+  byte *pbVar7;
+  int iVar8;
+  int *piVar9;
+  int iVar10;
+  int *piVar11;
+  int local_c;
+  int local_8;
+  
+  local_c = 0;
+  local_8 = 0;
+  do {
+    if (2 < *param_3) break;
+    if ((local_8 < 0xe) || (0x11 < local_8)) {
+      local_c = local_c + 1;
+      piVar5 = *(int **)(param_1 + 0xef0);
+      if (local_c <= piVar5[2]) {
+        do {
+          piVar5 = (int *)(**(code **)(*piVar5 + 0x2c))(local_c);
+          if ((*piVar5 == local_8) && (piVar5[1] == param_2)) goto LAB_0055c091;
+          piVar5 = *(int **)(param_1 + 0xef0);
+          local_c = local_c + 1;
+        } while (local_c <= piVar5[2]);
+      }
+      piVar5 = (int *)0x0;
+      local_c = 0;
+LAB_0055c091:
+      if (piVar5 == (int *)0x0) {
+        local_c = 0;
+        local_8 = local_8 + 1;
+      }
+      else {
+        piVar11 = (int *)(param_1 + 0xc + ((param_2 * 3 + *param_4) * 3 + *param_3) * 0x3c);
+        *(undefined1 *)(piVar11 + 0xe) = 0;
+        iVar10 = piVar5[1];
+        piVar11[4] = 1;
+        *piVar11 = 1 << ((byte)iVar10 & 0x1f);
+        piVar11[1] = piVar5[2];
+        piVar11[5] = 1;
+        piVar9 = piVar11 + 2;
+        iVar10 = 2;
+        do {
+          *piVar9 = 0;
+          piVar9[4] = 0;
+          piVar9 = piVar9 + 1;
+          iVar10 = iVar10 + -1;
+        } while (iVar10 != 0);
+        iVar10 = *piVar5;
+        iVar8 = -iVar10 + -100;
+        if ((iVar10 < 5) || (0x15 < iVar10)) {
+          bVar2 = false;
+        }
+        else {
+          bVar2 = true;
+        }
+        if (bVar2) {
+          sVar3 = 0;
+          iVar6 = 0;
+          do {
+            if ((piVar5[2] & 1 << ((byte)iVar6 & 0x1f)) != 0) {
+              sVar3 = sVar3 + 1;
+            }
+            iVar6 = iVar6 + 1;
+          } while (iVar6 < 0x17);
+          if (1 < sVar3) {
+            iVar8 = -iVar10 + -0x65;
+          }
+        }
+        piVar5 = *(int **)(param_1 + 4);
+        iVar10 = 0;
+        if (0 < *(int *)(param_1 + 8)) {
+          do {
+            if (*piVar5 == iVar8) goto LAB_0055c14d;
+            piVar5 = piVar5 + 6;
+            iVar10 = iVar10 + 1;
+          } while (iVar10 < *(int *)(param_1 + 8));
+        }
+        piVar5 = (int *)0x0;
+LAB_0055c14d:
+        if (piVar5 != (int *)0x0) {
+          piVar9 = piVar11 + 8;
+          for (iVar10 = 6; iVar10 != 0; iVar10 = iVar10 + -1) {
+            *piVar9 = *piVar5;
+            piVar5 = piVar5 + 1;
+            piVar9 = piVar9 + 1;
+          }
+          iVar10 = *param_4;
+          *param_4 = iVar10 + 1;
+          if (iVar10 + 1 == 3) {
+            *param_4 = 0;
+            *param_3 = *param_3 + 1;
+          }
+        }
+      }
+    }
+    else {
+      local_8 = local_8 + 1;
+    }
+  } while (local_8 < 0x19);
+  if (*param_3 < 3) {
+    local_8 = 0x19;
+    do {
+      if (2 < *param_3) break;
+      local_c = local_c + 1;
+      piVar5 = *(int **)(param_1 + 0xef0);
+      if (local_c <= piVar5[2]) {
+        do {
+          piVar5 = (int *)(**(code **)(*piVar5 + 0x2c))(local_c);
+          if ((*piVar5 == local_8) && (piVar5[1] != param_2)) goto LAB_0055c203;
+          piVar5 = *(int **)(param_1 + 0xef0);
+          local_c = local_c + 1;
+        } while (local_c <= piVar5[2]);
+      }
+      piVar5 = (int *)0x0;
+      local_c = 0;
+LAB_0055c203:
+      if ((piVar5 == (int *)0x0) || (piVar5[2] == 1 << ((byte)param_2 & 0x1f))) {
+        local_c = 0;
+        local_8 = local_8 + 1;
+      }
+      else {
+        piVar11 = (int *)(param_1 + 0xc + ((param_2 * 3 + *param_4) * 3 + *param_3) * 0x3c);
+        *(undefined1 *)(piVar11 + 0xe) = 0;
+        iVar10 = piVar5[1];
+        piVar11[4] = 1;
+        *piVar11 = 1 << ((byte)iVar10 & 0x1f);
+        piVar11[1] = piVar5[2];
+        piVar11[5] = 1;
+        piVar9 = piVar11 + 2;
+        iVar10 = 2;
+        do {
+          *piVar9 = 0;
+          piVar9[4] = 0;
+          piVar9 = piVar9 + 1;
+          iVar10 = iVar10 + -1;
+        } while (iVar10 != 0);
+        piVar9 = *(int **)(param_1 + 4);
+        iVar10 = 0;
+        if (0 < *(int *)(param_1 + 8)) {
+          do {
+            if (*piVar9 == -100 - *piVar5) goto LAB_0055c290;
+            piVar9 = piVar9 + 6;
+            iVar10 = iVar10 + 1;
+          } while (iVar10 < *(int *)(param_1 + 8));
+        }
+        piVar9 = (int *)0x0;
+LAB_0055c290:
+        if (piVar9 != (int *)0x0) {
+          piVar5 = piVar11 + 8;
+          for (iVar10 = 6; iVar10 != 0; iVar10 = iVar10 + -1) {
+            *piVar5 = *piVar9;
+            piVar9 = piVar9 + 1;
+            piVar5 = piVar5 + 1;
+          }
+          iVar10 = *param_4;
+          *param_4 = iVar10 + 1;
+          if (iVar10 + 1 == 3) {
+            *param_4 = 0;
+            *param_3 = *param_3 + 1;
+          }
+        }
+      }
+    } while (local_8 < 0x1e);
+    if (*param_3 < 3) {
+      local_c = 0;
+      do {
+        piVar5 = *(int **)(param_1 + 0xef0);
+        local_c = local_c + 1;
+        if (local_c <= piVar5[2]) {
+          do {
+            piVar5 = (int *)(**(code **)(*piVar5 + 0x2c))(local_c);
+            if ((*piVar5 == 0xf) && (piVar5[1] == param_2)) goto LAB_0055c332;
+            piVar5 = *(int **)(param_1 + 0xef0);
+            local_c = local_c + 1;
+          } while (local_c <= piVar5[2]);
+        }
+        piVar5 = (int *)0x0;
+        local_c = 0;
+LAB_0055c332:
+        if (piVar5 == (int *)0x0) goto LAB_0055c435;
+        piVar11 = (int *)(param_1 + 0xc + ((param_2 * 3 + *param_4) * 3 + *param_3) * 0x3c);
+        *(undefined1 *)(piVar11 + 0xe) = 0;
+        *piVar11 = 1 << ((byte)piVar5[3] & 0x1f);
+        iVar10 = 2;
+        piVar11[4] = 2;
+        piVar11[1] = piVar5[2];
+        piVar11[5] = 1;
+        piVar9 = piVar11 + 2;
+        do {
+          *piVar9 = 0;
+          piVar9[4] = 0;
+          piVar9 = piVar9 + 1;
+          iVar10 = iVar10 + -1;
+        } while (iVar10 != 0);
+        iVar10 = -0x14;
+        if ((*piVar5 < 5) || (0x15 < *piVar5)) {
+          bVar2 = false;
+        }
+        else {
+          bVar2 = true;
+        }
+        if (bVar2) {
+          sVar3 = 0;
+          iVar8 = 0;
+          do {
+            if ((piVar5[2] & 1 << ((byte)iVar8 & 0x1f)) != 0) {
+              sVar3 = sVar3 + 1;
+            }
+            iVar8 = iVar8 + 1;
+          } while (iVar8 < 0x17);
+          if (1 < sVar3) {
+            iVar10 = -0x15;
+          }
+        }
+        piVar9 = *(int **)(param_1 + 4);
+        iVar8 = 0;
+        if (0 < *(int *)(param_1 + 8)) {
+          do {
+            if (*piVar9 == iVar10) goto LAB_0055c3fa;
+            piVar9 = piVar9 + 6;
+            iVar8 = iVar8 + 1;
+          } while (iVar8 < *(int *)(param_1 + 8));
+        }
+        piVar9 = (int *)0x0;
+LAB_0055c3fa:
+        if (piVar9 != (int *)0x0) {
+          piVar11 = piVar11 + 8;
+          for (iVar10 = 6; iVar10 != 0; iVar10 = iVar10 + -1) {
+            *piVar11 = *piVar9;
+            piVar9 = piVar9 + 1;
+            piVar11 = piVar11 + 1;
+          }
+          iVar10 = *param_4;
+          *param_4 = iVar10 + 1;
+          if (iVar10 + 1 == 3) {
+            *param_4 = 0;
+            *param_3 = *param_3 + 1;
+          }
+        }
+        if ((piVar5 == (int *)0x0) || (2 < *param_3)) goto LAB_0055c435;
+      } while( true );
+    }
+  }
+  return;
+LAB_0055c435:
+  if (2 < *param_3) {
+    return;
+  }
+  iVar10 = ((int *)g_pMapContextActionManager[1])[2];
+  if (0 < iVar10) {
+    iVar8 = *(int *)g_pMapContextActionManager[1];
+    iVar6 = rand();
+    pbVar7 = (byte *)(**(code **)(iVar8 + 0x2c))(iVar6 % iVar10 + 1);
+    iVar10 = *(int *)(pbVar7 + 4);
+    piVar5 = (int *)(param_1 + 0xc + ((param_2 * 3 + *param_4) * 3 + *param_3) * 0x3c);
+    if (((iVar10 == 0) || (iVar10 == 3)) || (iVar10 == 4)) {
+      iVar10 = *(int *)(pbVar7 + 8);
+      piVar5[4] = 3;
+      *piVar5 = iVar10;
+      iVar10 = (pbVar7[2] != 0) - 0x1a;
+    }
+    else {
+      sVar3 = func_0x004055ba();
+      *piVar5 = (int)sVar3;
+      piVar5[4] = 4;
+      iVar10 = -0x1b - (uint)(*(int *)(pbVar7 + 4) != 1);
+    }
+    *(undefined1 *)(piVar5 + 0xe) = 1;
+    bVar1 = *pbVar7;
+    piVar5[5] = 1;
+    piVar5[1] = 1 << (bVar1 & 0x1f);
+    bVar1 = pbVar7[1];
+    piVar5[6] = 1;
+    iVar8 = 0;
+    piVar5[2] = 1 << (bVar1 & 0x1f);
+    piVar5[3] = 0;
+    piVar5[7] = 0;
+    piVar9 = *(int **)(param_1 + 4);
+    if (0 < *(int *)(param_1 + 8)) {
+      do {
+        if (*piVar9 == iVar10) goto LAB_0055c522;
+        piVar9 = piVar9 + 6;
+        iVar8 = iVar8 + 1;
+      } while (iVar8 < *(int *)(param_1 + 8));
+    }
+    piVar9 = (int *)0x0;
+LAB_0055c522:
+    if (piVar9 != (int *)0x0) {
+      piVar5 = piVar5 + 8;
+      for (iVar10 = 6; iVar10 != 0; iVar10 = iVar10 + -1) {
+        *piVar5 = *piVar9;
+        piVar9 = piVar9 + 1;
+        piVar5 = piVar5 + 1;
+      }
+      iVar10 = *param_4;
+      *param_4 = iVar10 + 1;
+      if (iVar10 + 1 == 3) {
+        *param_4 = 0;
+        sVar3 = 0;
+        *param_3 = *param_3 + 1;
+        goto LAB_0055c558;
+      }
+    }
+  }
+  sVar3 = 0;
+LAB_0055c558:
+  if (2 < *param_3) {
+    return;
+  }
+  sVar4 = (short)param_2;
+  if (sVar3 != 0) {
+    sVar4 = 999;
+  }
+  local_c = 0;
+  do {
+    local_c = local_c + 1;
+    piVar5 = *(int **)(param_1 + 0xef0);
+    if (local_c <= piVar5[2]) {
+      do {
+        piVar5 = (int *)(**(code **)(*piVar5 + 0x2c))(local_c);
+        if ((*piVar5 == 0x11) && (piVar5[1] == (int)sVar4)) goto LAB_0055c5c2;
+        piVar5 = *(int **)(param_1 + 0xef0);
+        local_c = local_c + 1;
+      } while (local_c <= piVar5[2]);
+    }
+    piVar5 = (int *)0x0;
+    local_c = 0;
+LAB_0055c5c2:
+    if (piVar5 == (int *)0x0) break;
+    piVar9 = (int *)(param_1 + 0xc + ((param_2 * 3 + *param_4) * 3 + *param_3) * 0x3c);
+    *(undefined1 *)(piVar9 + 0xe) = 0;
+    iVar10 = piVar5[1];
+    if (iVar10 == -1) {
+      *piVar9 = 0;
+      piVar9[4] = 0;
+    }
+    else {
+      piVar9[4] = 1;
+      *piVar9 = 1 << ((byte)iVar10 & 0x1f);
+    }
+    iVar10 = 3;
+    piVar11 = piVar9;
+    do {
+      piVar11[1] = 0;
+      piVar11[5] = 0;
+      iVar10 = iVar10 + -1;
+      piVar11 = piVar11 + 1;
+    } while (iVar10 != 0);
+    iVar10 = 0;
+    piVar11 = *(int **)(param_1 + 4);
+    if (0 < *(int *)(param_1 + 8)) {
+      do {
+        if (*piVar11 == -1000 - piVar5[2]) goto LAB_0055c652;
+        piVar11 = piVar11 + 6;
+        iVar10 = iVar10 + 1;
+      } while (iVar10 < *(int *)(param_1 + 8));
+    }
+    piVar11 = (int *)0x0;
+LAB_0055c652:
+    if (piVar11 != (int *)0x0) {
+      piVar9 = piVar9 + 8;
+      for (iVar10 = 6; iVar10 != 0; iVar10 = iVar10 + -1) {
+        *piVar9 = *piVar11;
+        piVar11 = piVar11 + 1;
+        piVar9 = piVar9 + 1;
+      }
+      iVar10 = *param_4;
+      *param_4 = iVar10 + 1;
+      if (iVar10 + 1 == 3) {
+        *param_4 = 0;
+        *param_3 = *param_3 + 1;
+      }
+    }
+    if ((piVar5 == (int *)0x0) || (2 < *param_3)) break;
+  } while( true );
+  sVar3 = sVar3 + 1;
+  if (1 < sVar3) {
+    return;
+  }
+  goto LAB_0055c558;
 }
 

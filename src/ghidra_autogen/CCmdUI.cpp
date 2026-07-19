@@ -3,6 +3,37 @@
 // Program: Imperialism.exe
 // Bucket: CCmdUI.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00606D27
+// GHIDRA_NAME CCmdUI::CCmdUI
+// GHIDRA_PROTO undefined __thiscall CCmdUI(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Single Match
+// GHIDRA_COMMENT  public: __thiscall CCmdUI::CCmdUI(void)
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: nafxcw retail msvc500:static
+// GHIDRA_COMMENT_END
+
+/* Library Function - Single Match
+    public: __thiscall CCmdUI::CCmdUI(void)
+   
+   Library: nafxcw retail msvc500:static */
+
+void __thiscall CCmdUI::CCmdUI(CCmdUI *this)
+
+{
+  *(undefined ***)this = &PTR_Enable_006706cc;
+  *(undefined4 *)(this + 0x20) = 0;
+  *(undefined4 *)(this + 8) = 0;
+  *(undefined4 *)(this + 4) = 0;
+  *(undefined4 *)(this + 0x24) = 0;
+  *(undefined4 *)(this + 0x10) = 0;
+  *(undefined4 *)(this + 0xc) = 0;
+  *(undefined4 *)(this + 0x14) = 0;
+  *(undefined4 *)(this + 0x1c) = 0;
+  *(undefined4 *)(this + 0x18) = 0;
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00606D4D
 // GHIDRA_NAME CCmdUI::Enable
 // GHIDRA_PROTO undefined Enable()
@@ -20,13 +51,13 @@ void __thiscall CCmdUI::Enable(int param_1,int param_2)
       pHVar1 = GetFocus();
       if (pHVar1 == pHVar2) {
         pHVar2 = GetParent(pHVar2);
-        iVar3 = CWnd__FromHandle(pHVar2);
+        iVar3 = CWnd::FromHandle(pHVar2);
         pHVar2 = (HWND)0x0;
         if (*(int *)(param_1 + 0x14) != 0) {
           pHVar2 = *(HWND *)(*(int *)(param_1 + 0x14) + 0x1c);
         }
         pHVar2 = GetNextDlgTabItem(*(HWND *)(iVar3 + 0x1c),pHVar2,0);
-        CWnd__FromHandle(pHVar2);
+        CWnd::FromHandle(pHVar2);
         CWnd::SetFocus();
       }
     }

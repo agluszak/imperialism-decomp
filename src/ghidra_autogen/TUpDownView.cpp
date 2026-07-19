@@ -37,7 +37,7 @@ undefined4 * TUpDownView::CreateObject(void)
 // GHIDRA_NAME TUpDownView::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TUpDownView::GetRuntimeClass()
+CRuntimeClass * __thiscall TUpDownView::GetRuntimeClass(TUpDownView *this)
 
 {
   return &classTUpDownView;
@@ -47,7 +47,7 @@ CRuntimeClass * TUpDownView::GetRuntimeClass()
 // GHIDRA_NAME TUpDownView::ConstructTUpDownViewBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTUpDownViewBaseState(void)
 
-TUpDownView * TUpDownView::ConstructTUpDownViewBaseState()
+TUpDownView * __thiscall TUpDownView::ConstructTUpDownViewBaseState(TUpDownView *this)
 
 {
   func_0x004087fb();
@@ -60,7 +60,7 @@ TUpDownView * TUpDownView::ConstructTUpDownViewBaseState()
 // GHIDRA_NAME TUpDownView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TUpDownView * TUpDownView::_scalar_deleting_destructor_(byte param_1)
+TUpDownView * __thiscall TUpDownView::_scalar_deleting_destructor_(TUpDownView *this,byte param_1)
 
 {
   func_0x004095b1();
@@ -74,7 +74,8 @@ TUpDownView * TUpDownView::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TUpDownView::DispatchPictureResourceCommand
 // GHIDRA_PROTO undefined __thiscall DispatchPictureResourceCommand(int param_1, int param_2)
 
-void TUpDownView::DispatchPictureResourceCommand(int param_1, int param_2)
+void __thiscall
+TUpDownView::DispatchPictureResourceCommand(TUpDownView *this,int param_1,int param_2)
 
 {
   TUpDownViewVtbl *pTVar1;

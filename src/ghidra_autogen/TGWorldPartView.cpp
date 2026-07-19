@@ -7,7 +7,8 @@
 // GHIDRA_NAME TGWorldPartView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TGWorldPartView * TGWorldPartView::_scalar_deleting_destructor_(byte param_1)
+TGWorldPartView * __thiscall
+TGWorldPartView::_scalar_deleting_destructor_(TGWorldPartView *this,byte param_1)
 
 {
   func_0x00406d25();
@@ -51,7 +52,7 @@ undefined4 * TGWorldPartView::CreateObject(void)
 // GHIDRA_NAME TGWorldPartView::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TGWorldPartView::GetRuntimeClass()
+CRuntimeClass * __thiscall TGWorldPartView::GetRuntimeClass(TGWorldPartView *this)
 
 {
   return &classTGWorldPartView;
@@ -61,7 +62,7 @@ CRuntimeClass * TGWorldPartView::GetRuntimeClass()
 // GHIDRA_NAME TGWorldPartView::ApplyRectSlot110
 // GHIDRA_PROTO undefined __thiscall ApplyRectSlot110(void)
 
-void TGWorldPartView::ApplyRectSlot110()
+void __thiscall TGWorldPartView::ApplyRectSlot110(TGWorldPartView *this)
 
 {
   undefined4 local_20;

@@ -37,7 +37,7 @@ undefined4 * TGWorldButton::CreateObject(void)
 // GHIDRA_NAME TGWorldButton::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TGWorldButton::GetRuntimeClass()
+CRuntimeClass * __thiscall TGWorldButton::GetRuntimeClass(TGWorldButton *this)
 
 {
   return &classTGWorldButton;
@@ -47,7 +47,7 @@ CRuntimeClass * TGWorldButton::GetRuntimeClass()
 // GHIDRA_NAME TGWorldButton::ConstructTGWorldButtonBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTGWorldButtonBaseState(void)
 
-TGWorldButton * TGWorldButton::ConstructTGWorldButtonBaseState()
+TGWorldButton * __thiscall TGWorldButton::ConstructTGWorldButtonBaseState(TGWorldButton *this)
 
 {
   func_0x004087fb();
@@ -60,7 +60,8 @@ TGWorldButton * TGWorldButton::ConstructTGWorldButtonBaseState()
 // GHIDRA_NAME TGWorldButton::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TGWorldButton * TGWorldButton::_scalar_deleting_destructor_(byte param_1)
+TGWorldButton * __thiscall
+TGWorldButton::_scalar_deleting_destructor_(TGWorldButton *this,byte param_1)
 
 {
   func_0x004082f1();
@@ -74,7 +75,8 @@ TGWorldButton * TGWorldButton::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TGWorldButton::SetControlStateFlagAndMaybeRefresh
 // GHIDRA_PROTO undefined __thiscall SetControlStateFlagAndMaybeRefresh(char param_1, char param_2)
 
-void TGWorldButton::SetControlStateFlagAndMaybeRefresh(char param_1, char param_2)
+void __thiscall
+TGWorldButton::SetControlStateFlagAndMaybeRefresh(TGWorldButton *this,char param_1,char param_2)
 
 {
   TGWorldButtonVtbl *pTVar1;
@@ -100,7 +102,7 @@ void TGWorldButton::SetControlStateFlagAndMaybeRefresh(char param_1, char param_
 // GHIDRA_NAME TGWorldButton::ApplyRectSlot110
 // GHIDRA_PROTO undefined __thiscall ApplyRectSlot110(void)
 
-void TGWorldButton::ApplyRectSlot110()
+void __thiscall TGWorldButton::ApplyRectSlot110(TGWorldButton *this)
 
 {
   undefined4 local_30;

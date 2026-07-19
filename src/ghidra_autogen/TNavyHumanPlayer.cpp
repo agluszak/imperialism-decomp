@@ -24,7 +24,8 @@ undefined4 * TNavyHumanPlayer::CreateObject(void)
 // GHIDRA_NAME TNavyHumanPlayer::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TNavyHumanPlayer * TNavyHumanPlayer::_scalar_deleting_destructor_(byte param_1)
+TNavyHumanPlayer * __thiscall
+TNavyHumanPlayer::_scalar_deleting_destructor_(TNavyHumanPlayer *this,byte param_1)
 
 {
   func_0x00403e72();
@@ -38,7 +39,7 @@ TNavyHumanPlayer * TNavyHumanPlayer::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TNavyHumanPlayer::CreateTNavyHumanPlayerInstance
 // GHIDRA_PROTO undefined __thiscall CreateTNavyHumanPlayerInstance(void)
 
-void TNavyHumanPlayer::CreateTNavyHumanPlayerInstance()
+void __thiscall TNavyHumanPlayer::CreateTNavyHumanPlayerInstance(TNavyHumanPlayer *this)
 
 {
   this->vftable =
@@ -50,7 +51,7 @@ void TNavyHumanPlayer::CreateTNavyHumanPlayerInstance()
 // GHIDRA_NAME TNavyHumanPlayer::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TNavyHumanPlayer::GetRuntimeClass()
+CRuntimeClass * __thiscall TNavyHumanPlayer::GetRuntimeClass(TNavyHumanPlayer *this)
 
 {
   return &classTNavyHumanPlayer;
@@ -60,7 +61,8 @@ CRuntimeClass * TNavyHumanPlayer::GetRuntimeClass()
 // GHIDRA_NAME TNavyHumanPlayer::ConstructTNavyHumanPlayerBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTNavyHumanPlayerBaseState(undefined4 param_1)
 
-void TNavyHumanPlayer::ConstructTNavyHumanPlayerBaseState(undefined4 param_1)
+void __thiscall
+TNavyHumanPlayer::ConstructTNavyHumanPlayerBaseState(TNavyHumanPlayer *this,undefined4 param_1)
 
 {
   int iVar1;

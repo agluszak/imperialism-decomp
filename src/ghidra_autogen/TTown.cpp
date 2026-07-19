@@ -39,7 +39,7 @@ undefined4 * TTown::CreateObject(void)
 // GHIDRA_NAME TTown::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TTown::GetRuntimeClass()
+CRuntimeClass * __thiscall TTown::GetRuntimeClass(TTown *this)
 
 {
   return &classTTown;
@@ -49,7 +49,7 @@ CRuntimeClass * TTown::GetRuntimeClass()
 // GHIDRA_NAME TTown::TTown
 // GHIDRA_PROTO undefined __thiscall TTown(void)
 
-void TTown::TTown()
+void __thiscall TTown::TTown(TTown *this)
 
 {
   this->vftable = &_vftable_;
@@ -60,7 +60,7 @@ void TTown::TTown()
 // GHIDRA_NAME TTown::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TTown * TTown::_scalar_deleting_destructor_(byte param_1)
+TTown * __thiscall TTown::_scalar_deleting_destructor_(TTown *this,byte param_1)
 
 {
   func_0x0040957a();
@@ -74,7 +74,7 @@ TTown * TTown::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TTown::ReadFrom
 // GHIDRA_PROTO undefined __thiscall ReadFrom(int * param_1)
 
-void TTown::ReadFrom(int *param_1)
+void __thiscall TTown::ReadFrom(TTown *this,int *param_1)
 
 {
   code *pcVar1;
@@ -116,7 +116,7 @@ void TTown::ReadFrom(int *param_1)
 // GHIDRA_NAME TTown::WriteTo
 // GHIDRA_PROTO undefined __thiscall WriteTo(int * param_1)
 
-void TTown::WriteTo(int *param_1)
+void __thiscall TTown::WriteTo(TTown *this,int *param_1)
 
 {
   code *pcVar1;
@@ -167,11 +167,97 @@ void TTown::WriteTo(int *param_1)
   return;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x005B6F70
+// GHIDRA_NAME TTown::RecomputeTownAdjacentTileYieldTotals
+// GHIDRA_PROTO undefined __thiscall RecomputeTownAdjacentTileYieldTotals(void)
+
+void __thiscall TTown::RecomputeTownAdjacentTileYieldTotals(TTown *this)
+
+{
+  char *pcVar1;
+  char cVar2;
+  short sVar3;
+  char cVar4;
+  undefined2 *puVar5;
+  short *psVar6;
+  int iVar7;
+  TMapMgr *pTVar8;
+  int iVar9;
+  short sVar10;
+  undefined4 *puVar11;
+  int local_8;
+  
+  this->field_0x4e = 0;
+  puVar11 = (undefined4 *)&this->field_0x1e;
+  for (iVar7 = 0xb; iVar7 != 0; iVar7 = iVar7 + -1) {
+    *puVar11 = 0;
+    puVar11 = puVar11 + 1;
+  }
+  puVar5 = (undefined2 *)((int)puVar11 + 2);
+  *(undefined2 *)puVar11 = 0;
+  cVar2 = *(char *)(*(int *)&g_pGlobalMapState->field_0xc + 5 + *(short *)&this->field_0x14 * 0x24);
+  local_8 = 0;
+  pTVar8 = g_pGlobalMapState;
+  do {
+    if ((short)local_8 < 6) {
+      puVar5 = (undefined2 *)
+               func_0x0040246e(CONCAT22((short)((uint)local_8 >> 0x10),
+                                        *(undefined2 *)&this->field_0x14),local_8);
+      pTVar8 = g_pGlobalMapState;
+    }
+    else {
+      puVar5 = (undefined2 *)
+               CONCAT22((short)((uint)puVar5 >> 0x10),*(undefined2 *)&this->field_0x14);
+    }
+    sVar10 = (short)puVar5;
+    if (sVar10 != -1) {
+      iVar7 = sVar10 * 0x24;
+      pcVar1 = (char *)(*(int *)&pTVar8->field_0xc + iVar7);
+      if ((((short)*(char *)(*(int *)&pTVar8->field_0xc + 4 + iVar7) == *(short *)&this->field_0x1c)
+          && (pcVar1[5] == cVar2)) || (*pcVar1 == '\x05')) {
+        iVar9 = 0;
+        do {
+          cVar4 = (*pTVar8->vftable->OrphanCallChain_C1_I29_005135a0)(puVar5,iVar9);
+          if (((short)iVar9 != 0x13) || (this->field_0x4d != '\0')) {
+            *(short *)(&this->field_0x1e + (short)iVar9 * 2) =
+                 *(short *)(&this->field_0x1e + (short)iVar9 * 2) + (short)cVar4;
+          }
+          iVar9 = iVar9 + 1;
+          pTVar8 = g_pGlobalMapState;
+        } while ((short)iVar9 < 0x17);
+        if ((*(char *)(*(int *)&g_pGlobalMapState->field_0xc + 2 + iVar7) != '\0') &&
+           (this->field_0x4d != '\0')) {
+          *(short *)&this->field_0x44 = *(short *)&this->field_0x44 + 1;
+        }
+        sVar3 = *(short *)(*(int *)&g_pGlobalMapState->field_0xc + 0x14 + iVar7);
+        pTVar8 = g_pGlobalMapState;
+        if ((sVar3 != -1) &&
+           (iVar7 = sVar3 * 0xa8,
+           *(short *)(*(int *)&g_pGlobalMapState->field_0x10 + 4 + iVar7) == sVar10)) {
+          iVar7 = iVar7 + 0x82;
+          this->field_0x4e = 1;
+          iVar9 = 10;
+          psVar6 = (short *)&this->field_0x2c;
+          do {
+            iVar7 = iVar7 + 2;
+            *psVar6 = *psVar6 + *(short *)(*(int *)&g_pGlobalMapState->field_0x10 + -2 + iVar7);
+            iVar9 = iVar9 + -1;
+            psVar6 = psVar6 + 1;
+            pTVar8 = g_pGlobalMapState;
+          } while (iVar9 != 0);
+        }
+      }
+    }
+    local_8 = local_8 + 1;
+  } while ((short)local_8 < 7);
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x005B7140
 // GHIDRA_NAME TTown::RecomputeTownAdjacentResourceSupplyTotals
 // GHIDRA_PROTO undefined __thiscall RecomputeTownAdjacentResourceSupplyTotals(void)
 
-void TTown::RecomputeTownAdjacentResourceSupplyTotals()
+void __thiscall TTown::RecomputeTownAdjacentResourceSupplyTotals(TTown *this)
 
 {
   char cVar1;
@@ -271,7 +357,7 @@ void TTown::RecomputeTownAdjacentResourceSupplyTotals()
 // GHIDRA_NAME TTown::RecomputeTownAdjacentUniversityWeightedTotals
 // GHIDRA_PROTO undefined __thiscall RecomputeTownAdjacentUniversityWeightedTotals(void)
 
-void TTown::RecomputeTownAdjacentUniversityWeightedTotals()
+void __thiscall TTown::RecomputeTownAdjacentUniversityWeightedTotals(TTown *this)
 
 {
   char cVar1;
@@ -342,7 +428,7 @@ void TTown::RecomputeTownAdjacentUniversityWeightedTotals()
 // GHIDRA_NAME TTown::IncrementProductionDerivedCountersWithTurnParityRules
 // GHIDRA_PROTO undefined __thiscall IncrementProductionDerivedCountersWithTurnParityRules(void)
 
-void TTown::IncrementProductionDerivedCountersWithTurnParityRules()
+void __thiscall TTown::IncrementProductionDerivedCountersWithTurnParityRules(TTown *this)
 
 {
   short sVar1;
@@ -365,7 +451,7 @@ void TTown::IncrementProductionDerivedCountersWithTurnParityRules()
   if ((4 < (short)uVar4) && ((uVar4 & 1) == 0)) {
     sVar5 = *(short *)&this->field_0x20 + *(short *)&this->field_0x1e;
     if (sVar5 != 0) {
-      iVar3 = TCity::GetBuildingType(this_00,1);
+      iVar3 = TCity::thunk_GetCityBuildingProductionValueBySlot(this_00,1);
       sVar1 = *(short *)&this->field_0x2e;
       if ((sVar1 < (short)((int)((int)(short)iVar3 + ((int)(short)iVar3 >> 0x1f & 3U)) >> 2)) &&
          ((int)sVar1 < (int)sVar5 / 2)) {
@@ -373,7 +459,7 @@ void TTown::IncrementProductionDerivedCountersWithTurnParityRules()
       }
     }
     if (*(short *)&this->field_0x22 != 0) {
-      iVar3 = TCity::GetBuildingType(this_00,5);
+      iVar3 = TCity::thunk_GetCityBuildingProductionValueBySlot(this_00,5);
       sVar5 = *(short *)&this->field_0x30;
       if ((sVar5 < (short)((int)((int)(short)iVar3 + ((int)(short)iVar3 >> 0x1f & 3U)) >> 2)) &&
          ((int)sVar5 < (int)*(short *)&this->field_0x22 / 2)) {
@@ -385,7 +471,7 @@ void TTown::IncrementProductionDerivedCountersWithTurnParityRules()
       if (sVar1 <= sVar5) {
         sVar5 = sVar1;
       }
-      iVar3 = TCity::GetBuildingType(this_00,3);
+      iVar3 = TCity::thunk_GetCityBuildingProductionValueBySlot(this_00,3);
       sVar1 = *(short *)&this->field_0x34;
       if ((sVar1 < (short)((int)((int)(short)iVar3 + ((int)(short)iVar3 >> 0x1f & 3U)) >> 2)) &&
          ((int)sVar1 < (int)sVar5 / 2)) {
@@ -422,7 +508,7 @@ void TTown::IncrementProductionDerivedCountersWithTurnParityRules()
 // GHIDRA_NAME TTown::OrphanLeaf_NoCall_Ins29_005b77e0
 // GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins29_005b77e0(char * param_1)
 
-void TTown::OrphanLeaf_NoCall_Ins29_005b77e0(char *param_1)
+void __thiscall TTown::OrphanLeaf_NoCall_Ins29_005b77e0(TTown *this,char *param_1)
 
 {
   char cVar1;

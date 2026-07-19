@@ -25,17 +25,18 @@ undefined4 * TCapacityOrder::CreateObject(void)
 // GHIDRA_NAME TCapacityOrder::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TCapacityOrder::GetRuntimeClass()
+CRuntimeClass * __thiscall TCapacityOrder::GetRuntimeClass(TCapacityOrder *this)
 
 {
-  return &g_pClassDescTCapacityOrder;
+  return &classTCapacityOrder;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B8D00
 // GHIDRA_NAME TCapacityOrder::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TCapacityOrder * TCapacityOrder::_scalar_deleting_destructor_(byte param_1)
+TCapacityOrder * __thiscall
+TCapacityOrder::_scalar_deleting_destructor_(TCapacityOrder *this,byte param_1)
 
 {
   func_0x00401c0d();
@@ -49,7 +50,7 @@ TCapacityOrder * TCapacityOrder::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TCapacityOrder::DestructTCapacityOrderAndMaybeFree
 // GHIDRA_PROTO undefined __thiscall DestructTCapacityOrderAndMaybeFree(void)
 
-void TCapacityOrder::DestructTCapacityOrderAndMaybeFree()
+void __thiscall TCapacityOrder::DestructTCapacityOrderAndMaybeFree(TCapacityOrder *this)
 
 {
   this->vftable = (TCapacityOrderVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
@@ -106,7 +107,7 @@ TCapacityOrder::ICapacityOrder
    - delta/mirror table at city +0x1FC + slot*2
    Handles special-slot behavior (including slot 14 branch and slot 15 derived path). */
 
-void TCapacityOrder::CommitIfPending()
+void __thiscall TCapacityOrder::CommitIfPending(TCapacityOrder *this)
 
 {
   short *psVar1;

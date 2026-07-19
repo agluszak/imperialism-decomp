@@ -38,7 +38,7 @@ undefined4 * TList::CreateObject(void)
 // GHIDRA_NAME TList::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TList::GetRuntimeClass()
+CRuntimeClass * __thiscall TList::GetRuntimeClass(TList *this)
 
 {
   return &classTList;
@@ -48,7 +48,7 @@ CRuntimeClass * TList::GetRuntimeClass()
 // GHIDRA_NAME TList::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TList * TList::_scalar_deleting_destructor_(byte param_1)
+TList * __thiscall TList::_scalar_deleting_destructor_(TList *this,byte param_1)
 
 {
   func_0x00403963();

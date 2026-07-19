@@ -37,7 +37,7 @@ undefined4 * TCommodityLine::CreateObject(void)
 // GHIDRA_NAME TCommodityLine::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TCommodityLine::GetRuntimeClass()
+CRuntimeClass * __thiscall TCommodityLine::GetRuntimeClass(TCommodityLine *this)
 
 {
   return &classTCommodityLine;
@@ -47,7 +47,7 @@ CRuntimeClass * TCommodityLine::GetRuntimeClass()
 // GHIDRA_NAME TCommodityLine::ConstructTCommodityLineBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTCommodityLineBaseState(void)
 
-TCommodityLine * TCommodityLine::ConstructTCommodityLineBaseState()
+TCommodityLine * __thiscall TCommodityLine::ConstructTCommodityLineBaseState(TCommodityLine *this)
 
 {
   func_0x00408f0d();
@@ -59,7 +59,8 @@ TCommodityLine * TCommodityLine::ConstructTCommodityLineBaseState()
 // GHIDRA_NAME TCommodityLine::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TCommodityLine * TCommodityLine::_scalar_deleting_destructor_(byte param_1)
+TCommodityLine * __thiscall
+TCommodityLine::_scalar_deleting_destructor_(TCommodityLine *this,byte param_1)
 
 {
   func_0x00401dca();
@@ -70,10 +71,10 @@ TCommodityLine * TCommodityLine::_scalar_deleting_destructor_(byte param_1)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005C1580
-// GHIDRA_NAME TCommodityLine::OrphanRetStub_0056f460
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0056f460(void)
+// GHIDRA_NAME TCommodityLine::CreateLineItemView
+// GHIDRA_PROTO undefined __thiscall CreateLineItemView(void)
 
-void TCommodityLine::OrphanRetStub_0056f460()
+void __thiscall TCommodityLine::CreateLineItemView(TCommodityLine *this)
 
 {
   TSimMgrVtbl *pTVar1;
@@ -131,7 +132,7 @@ void TCommodityLine::OrphanRetStub_0056f460()
   local_12 = 0;
   local_11 = 0;
   local_10 = (uint)local_10._2_2_ << 0x10;
-  func_0x00406afa();
+  thunk_BuildUiTextStyleDescriptor();
   CStack_54.m_pchData = (char *)local_38;
   uStack_58 = CONCAT22((short)((uint)CStack_54.m_pchData >> 0x10),*(undefined2 *)&this->field_0x10);
   puStack_5c = (undefined1 *)0x5c1603;

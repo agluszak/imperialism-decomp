@@ -22,7 +22,7 @@ InputState::SetMapTileStateByteAndNotifyObserver(int param_1,undefined4 param_2,
 // GHIDRA_NAME InputState::HandleKeyDown
 // GHIDRA_PROTO void __thiscall HandleKeyDown(int key_id)
 
-void InputState::HandleKeyDown(int key_id)
+void __thiscall InputState::HandleKeyDown(InputState *this,int key_id)
 
 {
   short slot_id;
@@ -140,7 +140,7 @@ InputState::InitializeMapActionContextsForNationCountUsingCostField(int param_1,
   else {
     piVar5 = piVar1 + 1;
     *piVar1 = iteration_count;
-    ___L_YGXPAXIHP6EX0_Z1_Z(piVar5,0x48,iteration_count,&SUB_0040405c);
+    CallCallbackRepeatedly(piVar5,0x48,iteration_count,&SUB_0040405c);
   }
   uStack_4 = 0xffffffff;
   *(int **)(param_1 + 8) = piVar5;

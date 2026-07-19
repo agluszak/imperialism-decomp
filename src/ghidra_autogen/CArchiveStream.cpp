@@ -94,7 +94,7 @@ undefined4 CArchiveStream::Seek(void)
   if (((*(int *)(unaff_EBP + 0x10) == 0) ||
       ((*(int *)(unaff_EBP + 0x10) == -1 && (*(int *)(unaff_EBP + 0xc) < 0)))) &&
      (piVar1 = *(int **)(*(int *)(*(int *)(unaff_EBP + 8) + 4) + 0x20), piVar1 != (int *)0x0)) {
-    CArchive__Flush();
+    CArchive::Flush();
     iVar2 = *piVar1;
     *(undefined4 *)(unaff_EBP + -4) = 0;
     uVar4 = (**(code **)(iVar2 + 0x30))

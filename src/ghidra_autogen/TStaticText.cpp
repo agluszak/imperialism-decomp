@@ -7,10 +7,21 @@
 // GHIDRA_NAME TStaticText::AssignSharedStringFromField84
 // GHIDRA_PROTO undefined __thiscall AssignSharedStringFromField84(CString * param_1)
 
-void TStaticText::AssignSharedStringFromField84(CString *param_1)
+void __thiscall TStaticText::AssignSharedStringFromField84(TStaticText *this,CString *param_1)
 
 {
   CString::operator=(param_1,*(CString **)&this->field_0x84);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00486290
+// GHIDRA_NAME TStaticText::UpdateTextEntrySharedStringIfChanged
+// GHIDRA_PROTO undefined UpdateTextEntrySharedStringIfChanged()
+
+void TStaticText::UpdateTextEntrySharedStringIfChanged(undefined4 param_1)
+
+{
+  func_0x0040550b(param_1,0);
   return;
 }
 
@@ -73,7 +84,7 @@ undefined4 * TStaticText::CreateObject(void)
 // GHIDRA_NAME TStaticText::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TStaticText::GetRuntimeClass()
+CRuntimeClass * __thiscall TStaticText::GetRuntimeClass(TStaticText *this)
 
 {
   return &classTStaticText;
@@ -106,7 +117,7 @@ CRuntimeClass * TStaticText::GetRuntimeClass()
    Returns:
    - this pointer. */
 
-TStaticText * TStaticText::TStaticText()
+TStaticText * __thiscall TStaticText::TStaticText(TStaticText *this)
 
 {
   CString *this_00;
@@ -156,7 +167,7 @@ TStaticText * TStaticText::TStaticText()
 // GHIDRA_NAME TStaticText::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TStaticText * TStaticText::_scalar_deleting_destructor_(byte param_1)
+TStaticText * __thiscall TStaticText::_scalar_deleting_destructor_(TStaticText *this,byte param_1)
 
 {
   func_0x00408e5e();
@@ -215,7 +226,7 @@ void __thiscall TStaticText::CopyCityDialogStateFromSource(int param_1,int param
 // GHIDRA_NAME TStaticText::ShallowClone
 // GHIDRA_PROTO undefined __thiscall ShallowClone(void)
 
-undefined1 TStaticText::ShallowClone()
+undefined1 __thiscall TStaticText::ShallowClone(TStaticText *this)
 
 {
   undefined uVar1;
@@ -229,7 +240,7 @@ undefined1 TStaticText::ShallowClone()
 // GHIDRA_NAME TStaticText::~TStaticText
 // GHIDRA_PROTO undefined __thiscall ~TStaticText(void)
 
-void TStaticText::~TStaticText()
+void __thiscall TStaticText::~TStaticText(TStaticText *this)
 
 {
   CString *this_00;
@@ -286,7 +297,8 @@ TStaticText::AssignTextSharedRefIfChangedAndMaybeInvalidate
 // GHIDRA_NAME TStaticText::LoadUiStringAndDispatchViaVslot1C8
 // GHIDRA_PROTO undefined __thiscall LoadUiStringAndDispatchViaVslot1C8(short param_1, short param_2)
 
-void TStaticText::LoadUiStringAndDispatchViaVslot1C8(short param_1, short param_2)
+void __thiscall
+TStaticText::LoadUiStringAndDispatchViaVslot1C8(TStaticText *this,short param_1,short param_2)
 
 {
   int *unaff_FS_OFFSET;
@@ -320,10 +332,11 @@ void TStaticText::LoadUiStringAndDispatchViaVslot1C8(short param_1, short param_
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048FF70
-// GHIDRA_NAME TStaticText::OrphanCallChain_C1_I09_0048ff70
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I09_0048ff70(undefined2 param_1, char param_2)
+// GHIDRA_NAME TStaticText::SetTextThemeCodeAndMaybeRefresh
+// GHIDRA_PROTO undefined __thiscall SetTextThemeCodeAndMaybeRefresh(undefined2 param_1, char param_2)
 
-void TStaticText::OrphanCallChain_C1_I09_0048ff70(undefined2 param_1, char param_2)
+void __thiscall
+TStaticText::SetTextThemeCodeAndMaybeRefresh(TStaticText *this,undefined2 param_1,char param_2)
 
 {
   *(undefined2 *)&this->field_0x90 = param_1;
@@ -337,7 +350,7 @@ void TStaticText::OrphanCallChain_C1_I09_0048ff70(undefined2 param_1, char param
 // GHIDRA_NAME TStaticText::ApplyRectSlot110
 // GHIDRA_PROTO undefined __thiscall ApplyRectSlot110(void)
 
-void TStaticText::ApplyRectSlot110()
+void __thiscall TStaticText::ApplyRectSlot110(TStaticText *this)
 
 {
   short sVar1;
@@ -347,12 +360,13 @@ void TStaticText::ApplyRectSlot110()
   undefined4 uVar5;
   undefined4 *puVar6;
   undefined4 uVar7;
+  CRect aCStack_14 [4];
   undefined1 local_10 [16];
   
   piVar4 = (int *)func_0x004021c6();
   CDC::SetMapperFlags(1);
   (*this->vftable->GetTEventHandlerClassNamePointer_58)(local_10);
-  TTEView::CRect__DeflateRect((TTEView *)&stack0xffffffec,(int *)&this->field_0x68);
+  CRect::DeflateRect(aCStack_14,(int *)&this->field_0x68);
   uVar5 = func_0x004019ce(&this->field_0x78);
   iVar2 = *piVar4;
   pcVar3 = *(code **)(iVar2 + 0x30);
@@ -386,7 +400,7 @@ void TStaticText::ApplyRectSlot110()
 // GHIDRA_NAME TStaticText::RenderControlStateTextBySelectionCode
 // GHIDRA_PROTO undefined __thiscall RenderControlStateTextBySelectionCode(LONG * param_1)
 
-void TStaticText::RenderControlStateTextBySelectionCode(LONG *param_1)
+void __thiscall TStaticText::RenderControlStateTextBySelectionCode(TStaticText *this,LONG *param_1)
 
 {
   int iVar1;

@@ -3,6 +3,31 @@
 // Program: Imperialism.exe
 // Bucket: AFX_WIN_STATE.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x005E54A0
+// GHIDRA_NAME _AFX_WIN_STATE>::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
+
+void _AFX_WIN_STATE>::CreateObject(void)
+
+{
+  int iVar1;
+  undefined4 extraout_ECX;
+  int unaff_EBP;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 uVar2;
+  
+  _EH_prolog();
+  uVar2 = extraout_ECX;
+  iVar1 = new(0x10);
+  *(int *)(unaff_EBP + -0x10) = iVar1;
+  *(undefined4 *)(unaff_EBP + -4) = 0;
+  if (iVar1 != 0) {
+    InitializeThreadObjectVtableProxy(uVar2);
+  }
+  *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00622451
 // GHIDRA_NAME _AFX_WIN_STATE::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined 'scalar_deleting_destructor'()
@@ -12,7 +37,7 @@ undefined4 __thiscall _AFX_WIN_STATE::_scalar_deleting_destructor_(undefined4 pa
 {
   ~_AFX_WIN_STATE();
   if ((param_2 & 1) != 0) {
-    CNoTrackObject::delete(param_1);
+    delete(param_1);
   }
   return param_1;
 }

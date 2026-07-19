@@ -18,7 +18,7 @@
    
    Library: nafxcw retail msvc500:static */
 
-void CTypeLibCache::Unlock()
+void __thiscall CTypeLibCache::Unlock(CTypeLibCache *this)
 
 {
   int *piVar1;

@@ -37,7 +37,7 @@ undefined4 * TInteriorMinisterView::CreateObject(void)
 // GHIDRA_NAME TInteriorMinisterView::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TInteriorMinisterView::GetRuntimeClass()
+CRuntimeClass * __thiscall TInteriorMinisterView::GetRuntimeClass(TInteriorMinisterView *this)
 
 {
   return &classTInteriorMinisterView;
@@ -47,7 +47,8 @@ CRuntimeClass * TInteriorMinisterView::GetRuntimeClass()
 // GHIDRA_NAME TInteriorMinisterView::ConstructTInteriorMinisterViewBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTInteriorMinisterViewBaseState(void)
 
-TInteriorMinisterView * TInteriorMinisterView::ConstructTInteriorMinisterViewBaseState()
+TInteriorMinisterView * __thiscall
+TInteriorMinisterView::ConstructTInteriorMinisterViewBaseState(TInteriorMinisterView *this)
 
 {
   func_0x004064e2();
@@ -60,7 +61,8 @@ TInteriorMinisterView * TInteriorMinisterView::ConstructTInteriorMinisterViewBas
 // GHIDRA_NAME TInteriorMinisterView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TInteriorMinisterView * TInteriorMinisterView::_scalar_deleting_destructor_(byte param_1)
+TInteriorMinisterView * __thiscall
+TInteriorMinisterView::_scalar_deleting_destructor_(TInteriorMinisterView *this,byte param_1)
 
 {
   func_0x004050fb();

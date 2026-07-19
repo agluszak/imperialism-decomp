@@ -37,7 +37,7 @@ undefined4 * TScrollerButton::CreateObject(void)
 // GHIDRA_NAME TScrollerButton::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TScrollerButton::GetRuntimeClass()
+CRuntimeClass * __thiscall TScrollerButton::GetRuntimeClass(TScrollerButton *this)
 
 {
   return &classTScrollerButton;
@@ -47,7 +47,8 @@ CRuntimeClass * TScrollerButton::GetRuntimeClass()
 // GHIDRA_NAME TScrollerButton::ConstructTScrollerButtonBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTScrollerButtonBaseState(void)
 
-TScrollerButton * TScrollerButton::ConstructTScrollerButtonBaseState()
+TScrollerButton * __thiscall
+TScrollerButton::ConstructTScrollerButtonBaseState(TScrollerButton *this)
 
 {
   func_0x00405628();
@@ -59,7 +60,8 @@ TScrollerButton * TScrollerButton::ConstructTScrollerButtonBaseState()
 // GHIDRA_NAME TScrollerButton::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TScrollerButton * TScrollerButton::_scalar_deleting_destructor_(byte param_1)
+TScrollerButton * __thiscall
+TScrollerButton::_scalar_deleting_destructor_(TScrollerButton *this,byte param_1)
 
 {
   func_0x004049da();
@@ -73,7 +75,7 @@ TScrollerButton * TScrollerButton::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TScrollerButton::DispatchPictureResourceCommand
 // GHIDRA_PROTO undefined __thiscall DispatchPictureResourceCommand(void)
 
-void TScrollerButton::DispatchPictureResourceCommand()
+void __thiscall TScrollerButton::DispatchPictureResourceCommand(TScrollerButton *this)
 
 {
   return;

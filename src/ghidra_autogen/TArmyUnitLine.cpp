@@ -37,7 +37,7 @@ undefined4 * TArmyUnitLine::CreateObject(void)
 // GHIDRA_NAME TArmyUnitLine::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TArmyUnitLine::GetRuntimeClass()
+CRuntimeClass * __thiscall TArmyUnitLine::GetRuntimeClass(TArmyUnitLine *this)
 
 {
   return &classTArmyUnitLine;
@@ -47,7 +47,7 @@ CRuntimeClass * TArmyUnitLine::GetRuntimeClass()
 // GHIDRA_NAME TArmyUnitLine::ConstructTArmyUnitLineBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTArmyUnitLineBaseState(void)
 
-TArmyUnitLine * TArmyUnitLine::ConstructTArmyUnitLineBaseState()
+TArmyUnitLine * __thiscall TArmyUnitLine::ConstructTArmyUnitLineBaseState(TArmyUnitLine *this)
 
 {
   func_0x00408f0d();
@@ -59,7 +59,8 @@ TArmyUnitLine * TArmyUnitLine::ConstructTArmyUnitLineBaseState()
 // GHIDRA_NAME TArmyUnitLine::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TArmyUnitLine * TArmyUnitLine::_scalar_deleting_destructor_(byte param_1)
+TArmyUnitLine * __thiscall
+TArmyUnitLine::_scalar_deleting_destructor_(TArmyUnitLine *this,byte param_1)
 
 {
   func_0x004095a7();
@@ -70,10 +71,10 @@ TArmyUnitLine * TArmyUnitLine::_scalar_deleting_destructor_(byte param_1)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A8DF0
-// GHIDRA_NAME TArmyUnitLine::OrphanRetStub_0056f460
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0056f460(int param_1)
+// GHIDRA_NAME TArmyUnitLine::CreateLineItemView
+// GHIDRA_PROTO undefined __thiscall CreateLineItemView(int param_1)
 
-void TArmyUnitLine::OrphanRetStub_0056f460(int param_1)
+void __thiscall TArmyUnitLine::CreateLineItemView(TArmyUnitLine *this,int param_1)
 
 {
   short sVar1;
@@ -285,7 +286,7 @@ LAB_004a8f66:
     pCStack_d0 = &CStack_a4;
     puStack_cc = &g_szDecimalFormat;
     puStack_d4 = (undefined *)0x4a90ba;
-    CString__Format();
+    CString::Format();
     ppiStack_c8 = &piStack_a8;
     puStack_cc = (undefined *)(int)(short)piStack_b4;
     pCStack_d0 = (CString *)0x4a90d3;
@@ -308,7 +309,7 @@ LAB_004a8f66:
       puStack_d4 = &g_szDecimalFormat;
       CStack_84.m_pchData._0_1_ = 9;
       pCStack_dc = (CString *)0x4a913d;
-      CString__Format();
+      CString::Format();
       pCStack_d0 = (CString *)&piStack_b8;
       puStack_d4 = (undefined *)0x6;
       pCStack_d8 = (CString *)0x2746;

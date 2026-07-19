@@ -37,7 +37,7 @@ undefined4 * TTradeTotalsLine::CreateObject(void)
 // GHIDRA_NAME TTradeTotalsLine::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TTradeTotalsLine::GetRuntimeClass()
+CRuntimeClass * __thiscall TTradeTotalsLine::GetRuntimeClass(TTradeTotalsLine *this)
 
 {
   return &classTTradeTotalsLine;
@@ -47,7 +47,8 @@ CRuntimeClass * TTradeTotalsLine::GetRuntimeClass()
 // GHIDRA_NAME TTradeTotalsLine::ConstructTTradeTotalsLineBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTTradeTotalsLineBaseState(void)
 
-TTradeTotalsLine * TTradeTotalsLine::ConstructTTradeTotalsLineBaseState()
+TTradeTotalsLine * __thiscall
+TTradeTotalsLine::ConstructTTradeTotalsLineBaseState(TTradeTotalsLine *this)
 
 {
   func_0x00408f0d();
@@ -59,7 +60,8 @@ TTradeTotalsLine * TTradeTotalsLine::ConstructTTradeTotalsLineBaseState()
 // GHIDRA_NAME TTradeTotalsLine::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TTradeTotalsLine * TTradeTotalsLine::_scalar_deleting_destructor_(byte param_1)
+TTradeTotalsLine * __thiscall
+TTradeTotalsLine::_scalar_deleting_destructor_(TTradeTotalsLine *this,byte param_1)
 
 {
   func_0x00405353();
@@ -73,7 +75,7 @@ TTradeTotalsLine * TTradeTotalsLine::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TTradeTotalsLine::DestructTTradeTotalsLineAndMaybeFree_Impl
 // GHIDRA_PROTO undefined __thiscall DestructTTradeTotalsLineAndMaybeFree_Impl(void)
 
-void TTradeTotalsLine::DestructTTradeTotalsLineAndMaybeFree_Impl()
+void __thiscall TTradeTotalsLine::DestructTTradeTotalsLineAndMaybeFree_Impl(TTradeTotalsLine *this)
 
 {
   this->vftable =
@@ -82,12 +84,11 @@ void TTradeTotalsLine::DestructTTradeTotalsLineAndMaybeFree_Impl()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005C19C0
-// GHIDRA_NAME TTradeTotalsLine::OrphanRetStub_0056f460
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0056f460(undefined4 param_1, undefined4 param_2)
+// GHIDRA_NAME TTradeTotalsLine::CreateLineItemView
+// GHIDRA_PROTO undefined __thiscall CreateLineItemView(undefined4 param_1, undefined4 param_2)
 
 void __thiscall
-TTradeTotalsLine::OrphanRetStub_0056f460
-          (TTradeTotalsLine *this,undefined4 param_1,undefined4 param_2)
+TTradeTotalsLine::CreateLineItemView(TTradeTotalsLine *this,undefined4 param_1,undefined4 param_2)
 
 {
   undefined2 uVar1;

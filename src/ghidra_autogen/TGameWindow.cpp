@@ -41,7 +41,7 @@ undefined4 * TGameWindow::CreateObject(void)
 // GHIDRA_NAME TGameWindow::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TGameWindow::GetRuntimeClass()
+CRuntimeClass * __thiscall TGameWindow::GetRuntimeClass(TGameWindow *this)
 
 {
   return &classTGameWindow;
@@ -57,7 +57,7 @@ CRuntimeClass * TGameWindow::GetRuntimeClass()
 /* Constructor for viewport-adaptive turn-order navigation window entries used by
    BuildTurnEventDialogUiByCode event branches 0x7D1/0x7D2. */
 
-TGameWindow * TGameWindow::TGameWindow()
+TGameWindow * __thiscall TGameWindow::TGameWindow(TGameWindow *this)
 
 {
   func_0x00407c43();
@@ -79,7 +79,7 @@ TGameWindow * TGameWindow::TGameWindow()
 
 /* Destructor wrapper for viewport-adaptive turn-event window entry. */
 
-TGameWindow * TGameWindow::_scalar_deleting_destructor_(byte param_1)
+TGameWindow * __thiscall TGameWindow::_scalar_deleting_destructor_(TGameWindow *this,byte param_1)
 
 {
   func_0x00403d0a();
@@ -93,7 +93,7 @@ TGameWindow * TGameWindow::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TGameWindow::DispatchSlot9CToLinkedChildren
 // GHIDRA_PROTO undefined __thiscall DispatchSlot9CToLinkedChildren(void)
 
-void TGameWindow::DispatchSlot9CToLinkedChildren()
+void __thiscall TGameWindow::DispatchSlot9CToLinkedChildren(TGameWindow *this)
 
 {
   TGameWindowVtbl *pTVar1;
@@ -147,7 +147,7 @@ TGameWindow::DispatchUiMouseEventToChildrenOrSelf_Impl
    0x31..0x35 to turn-state requests (0x69,0x6A,0x67,0x68,0x6D) while guarding against
    already-active target event states (0x7DE,0x7DB,0x7D9/0x7DA,0x7D8,0x8FC). */
 
-void TGameWindow::ForwardParam()
+void __thiscall TGameWindow::ForwardParam(TGameWindow *this)
 
 {
   short sVar1;
@@ -272,7 +272,7 @@ switchD_004ffe93_default:
 /* Layout/update hook for turn-order navigation window. Applies viewport-rect-driven layout update
    when active event code is 0x7D1, then chains the class update callback. */
 
-void TGameWindow::UpdateTurnOrderNavigationWindowLayout()
+void __thiscall TGameWindow::UpdateTurnOrderNavigationWindowLayout(TGameWindow *this)
 
 {
   TGameWindowVtbl *pTVar1;
@@ -306,7 +306,7 @@ void TGameWindow::UpdateTurnOrderNavigationWindowLayout()
 /* No-op return stub (RET). Reached through a thunk-table entry used by turn-order-navigation vtable
    wiring. */
 
-void TGameWindow::NoOpTurnOrderNavigationVtableSlotA()
+void __thiscall TGameWindow::NoOpTurnOrderNavigationVtableSlotA(TGameWindow *this)
 
 {
   return;
@@ -322,7 +322,7 @@ void TGameWindow::NoOpTurnOrderNavigationVtableSlotA()
 /* No-op return stub (RET). Secondary turn-order-navigation vtable slot mapped through thunk-table
    entry. */
 
-void TGameWindow::NoOpTurnOrderNavigationVtableSlotB()
+void __thiscall TGameWindow::NoOpTurnOrderNavigationVtableSlotB(TGameWindow *this)
 
 {
   return;
@@ -338,7 +338,7 @@ void TGameWindow::NoOpTurnOrderNavigationVtableSlotB()
 /* Turn-order navigation window cleanup override: executes class-specific teardown path and clears
    the display-manager active dialog slot (DAT_006a2158 + 0x4). */
 
-void TGameWindow::Free()
+void __thiscall TGameWindow::Free(TGameWindow *this)
 
 {
   (*this->vftable->NoOpTurnOrderNavigationVtableSlotB)();

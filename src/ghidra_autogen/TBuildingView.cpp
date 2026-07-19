@@ -37,7 +37,7 @@ undefined4 * TBuildingView::CreateObject(void)
 // GHIDRA_NAME TBuildingView::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TBuildingView::GetRuntimeClass()
+CRuntimeClass * __thiscall TBuildingView::GetRuntimeClass(TBuildingView *this)
 
 {
   return &classTBuildingView;
@@ -47,7 +47,7 @@ CRuntimeClass * TBuildingView::GetRuntimeClass()
 // GHIDRA_NAME TBuildingView::ConstructTBuildingViewBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTBuildingViewBaseState(void)
 
-TBuildingView * TBuildingView::ConstructTBuildingViewBaseState()
+TBuildingView * __thiscall TBuildingView::ConstructTBuildingViewBaseState(TBuildingView *this)
 
 {
   func_0x00403328();
@@ -60,7 +60,8 @@ TBuildingView * TBuildingView::ConstructTBuildingViewBaseState()
 // GHIDRA_NAME TBuildingView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TBuildingView * TBuildingView::_scalar_deleting_destructor_(byte param_1)
+TBuildingView * __thiscall
+TBuildingView::_scalar_deleting_destructor_(TBuildingView *this,byte param_1)
 
 {
   func_0x00403cdd();
@@ -100,7 +101,7 @@ TBuildingView::ApplyCityViewSelectionPayloadAndRefreshControls
 // GHIDRA_NAME TBuildingView::OrphanRetStub_004c6fb0
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_004c6fb0(void)
 
-void TBuildingView::OrphanRetStub_004c6fb0()
+void __thiscall TBuildingView::OrphanRetStub_004c6fb0(TBuildingView *this)
 
 {
   return;
@@ -110,7 +111,7 @@ void TBuildingView::OrphanRetStub_004c6fb0()
 // GHIDRA_NAME TBuildingView::OrphanRetStub_004c6fd0
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_004c6fd0(void)
 
-void TBuildingView::OrphanRetStub_004c6fd0()
+void __thiscall TBuildingView::OrphanRetStub_004c6fd0(TBuildingView *this)
 
 {
   return;
@@ -120,7 +121,8 @@ void TBuildingView::OrphanRetStub_004c6fd0()
 // GHIDRA_NAME TBuildingView::SetUniversityDialogTextAndRefresh
 // GHIDRA_PROTO undefined __thiscall SetUniversityDialogTextAndRefresh(int * param_1, CString param_2)
 
-void TBuildingView::SetUniversityDialogTextAndRefresh(int *param_1, CString param_2)
+void __thiscall
+TBuildingView::SetUniversityDialogTextAndRefresh(TBuildingView *this,int *param_1,CString param_2)
 
 {
   int iVar1;
@@ -152,7 +154,8 @@ void TBuildingView::SetUniversityDialogTextAndRefresh(int *param_1, CString para
 // GHIDRA_NAME TBuildingView::SetUniversityDialogLocalizedTextAndRefresh
 // GHIDRA_PROTO undefined __thiscall SetUniversityDialogLocalizedTextAndRefresh(int * param_1)
 
-void TBuildingView::SetUniversityDialogLocalizedTextAndRefresh(int *param_1)
+void __thiscall
+TBuildingView::SetUniversityDialogLocalizedTextAndRefresh(TBuildingView *this,int *param_1)
 
 {
   int iVar1;
@@ -172,7 +175,7 @@ void TBuildingView::SetUniversityDialogLocalizedTextAndRefresh(int *param_1)
 // GHIDRA_NAME TBuildingView::CallVoidSlotA0
 // GHIDRA_PROTO undefined __thiscall CallVoidSlotA0(void)
 
-void TBuildingView::CallVoidSlotA0()
+void __thiscall TBuildingView::CallVoidSlotA0(TBuildingView *this)
 
 {
   if (this->field_0x9c != '\0') {

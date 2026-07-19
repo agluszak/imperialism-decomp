@@ -38,7 +38,8 @@ undefined4 * TSuperArmyRoster::CreateObject(void)
 // GHIDRA_NAME TSuperArmyRoster::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TSuperArmyRoster * TSuperArmyRoster::_scalar_deleting_destructor_(byte param_1)
+TSuperArmyRoster * __thiscall
+TSuperArmyRoster::_scalar_deleting_destructor_(TSuperArmyRoster *this,byte param_1)
 
 {
   func_0x00407e46();
@@ -52,7 +53,7 @@ TSuperArmyRoster * TSuperArmyRoster::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TSuperArmyRoster::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TSuperArmyRoster::GetRuntimeClass()
+CRuntimeClass * __thiscall TSuperArmyRoster::GetRuntimeClass(TSuperArmyRoster *this)
 
 {
   return &classTSuperArmyRoster;

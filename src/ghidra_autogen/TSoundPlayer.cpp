@@ -42,7 +42,7 @@ undefined4 * TSoundPlayer::CreateObject(void)
 // GHIDRA_NAME TSoundPlayer::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TSoundPlayer::GetRuntimeClass()
+CRuntimeClass * __thiscall TSoundPlayer::GetRuntimeClass(TSoundPlayer *this)
 
 {
   return &classTSoundPlayer;
@@ -73,7 +73,8 @@ _ConstructTSoundPlayerBaseState__YIPAUSoundPlayerState___Z_imperialismsrcgameTSo
 // GHIDRA_NAME TSoundPlayer::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TSoundPlayer * TSoundPlayer::_scalar_deleting_destructor_(byte param_1)
+TSoundPlayer * __thiscall
+TSoundPlayer::_scalar_deleting_destructor_(TSoundPlayer *this,byte param_1)
 
 {
   func_0x00405b28();
@@ -98,10 +99,10 @@ _DestructTSoundPlayerBaseState__YIXPAUSoundPlayerState___Z_imperialismsrcgameTSo
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00593400
-// GHIDRA_NAME TSoundPlayer::CanHandleCityDialogActionFalse
-// GHIDRA_PROTO undefined __thiscall CanHandleCityDialogActionFalse(void)
+// GHIDRA_NAME TSoundPlayer::DoIdle
+// GHIDRA_PROTO undefined __thiscall DoIdle(void)
 
-uint TSoundPlayer::CanHandleCityDialogActionFalse()
+uint __thiscall TSoundPlayer::DoIdle(TSoundPlayer *this)
 
 {
   uint uVar1;
@@ -154,11 +155,120 @@ uint TSoundPlayer::CanHandleCityDialogActionFalse()
   return (uint)pTVar2 & 0xffffff00;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00593790
+// GHIDRA_NAME TSoundPlayer::SelectAndScheduleRandomAudioCue
+// GHIDRA_PROTO undefined SelectAndScheduleRandomAudioCue()
+
+void __fastcall TSoundPlayer::SelectAndScheduleRandomAudioCue(int param_1)
+
+{
+  int iVar1;
+  char cVar2;
+  int iVar3;
+  undefined4 uVar4;
+  short sVar5;
+  int iVar6;
+  
+  if ((*(short *)&g_pSimMgr->field_0x4e != 0) && (cVar2 = func_0x00403c2e(), cVar2 == '\0')) {
+    iVar3 = (**(code **)(**(int **)(param_1 + 0x70) + 0x28))();
+    if (iVar3 == 0) {
+      iVar3 = (**(code **)(**(int **)(param_1 + 0x6c) + 0x28))();
+      if (iVar3 == 0) {
+        return;
+      }
+      iVar6 = 1;
+      if (0 < iVar3) {
+        do {
+          iVar1 = **(int **)(param_1 + 0x70);
+          uVar4 = (**(code **)(**(int **)(param_1 + 0x6c) + 0x24))(iVar6);
+          (**(code **)(iVar1 + 0x14))(uVar4);
+          iVar6 = iVar6 + 1;
+        } while (iVar6 <= iVar3);
+      }
+      *(undefined2 *)(param_1 + 0x74) = 0;
+    }
+    iVar3 = (**(code **)(**(int **)(param_1 + 0x70) + 0x28))();
+    iVar6 = rand();
+    iVar6 = iVar6 % iVar3 + 1;
+    iVar3 = (**(code **)(**(int **)(param_1 + 0x70) + 0x24))(iVar6);
+    (**(code **)(**(int **)(param_1 + 0x70) + 0x2c))(iVar6);
+    if ((*(short *)&g_pSimMgr->field_0x4e != 0) && (cVar2 = func_0x00403c2e(), cVar2 == '\0')) {
+      cVar2 = func_0x00408594();
+      if (cVar2 == '\0') {
+        *(undefined2 *)&g_pSimMgr->field_0x4e = 0;
+        return;
+      }
+      if (iVar3 != *(short *)(param_1 + 0x74)) {
+        sVar5 = (short)iVar3;
+        if (*(short *)(param_1 + 0x74) < 1) {
+          *(short *)(param_1 + 0x74) = sVar5;
+          func_0x00403373((int)sVar5);
+          func_0x00402a81((int)*(short *)&g_pSimMgr->field_0x4e << 8);
+          *(undefined1 *)(param_1 + 0x78) = 1;
+        }
+        else {
+          *(short *)(param_1 + 0x76) = sVar5;
+          if (*(int *)(param_1 + 0x7c) == 0) {
+            uVar4 = func_0x004092d7();
+            *(undefined4 *)(param_1 + 0x7c) = uVar4;
+            func_0x00407815(&LAB_00406dd4,6,0);
+            return;
+          }
+        }
+      }
+    }
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00593920
+// GHIDRA_NAME TSoundPlayer::RequestAudioPresetChangeWithDeferredApply
+// GHIDRA_PROTO undefined __thiscall RequestAudioPresetChangeWithDeferredApply(int param_1, char param_2)
+
+void __thiscall
+TSoundPlayer::RequestAudioPresetChangeWithDeferredApply(TSoundPlayer *this,int param_1,char param_2)
+
+{
+  char cVar1;
+  short sVar2;
+  undefined4 uVar3;
+  
+  if (*(short *)&g_pSimMgr->field_0x4e != 0) {
+    cVar1 = func_0x00403c2e();
+    if (cVar1 == '\0') {
+      cVar1 = func_0x00408594();
+      if (cVar1 == '\0') {
+        *(undefined2 *)&g_pSimMgr->field_0x4e = 0;
+        return;
+      }
+      if (param_1 != *(short *)&this->field_0x74) {
+        sVar2 = (short)param_1;
+        if ((param_2 == '\0') || (*(short *)&this->field_0x74 < 1)) {
+          *(short *)&this->field_0x74 = sVar2;
+          func_0x00403373((int)sVar2);
+          func_0x00402a81((int)*(short *)&g_pSimMgr->field_0x4e << 8);
+          this->field_0x78 = 1;
+        }
+        else {
+          *(short *)&this->field_0x76 = sVar2;
+          if (*(int *)&this->field_0x7c == 0) {
+            uVar3 = func_0x004092d7();
+            *(undefined4 *)&this->field_0x7c = uVar3;
+            func_0x00407815(&LAB_00406dd4,6,0);
+            return;
+          }
+        }
+      }
+    }
+  }
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00593C10
 // GHIDRA_NAME TSoundPlayer::HandleBlinkStateAndScheduleTimerTick
 // GHIDRA_PROTO undefined __thiscall HandleBlinkStateAndScheduleTimerTick(char param_1)
 
-void TSoundPlayer::HandleBlinkStateAndScheduleTimerTick(char param_1)
+void __thiscall TSoundPlayer::HandleBlinkStateAndScheduleTimerTick(TSoundPlayer *this,char param_1)
 
 {
   int iVar1;
@@ -190,7 +300,8 @@ void TSoundPlayer::HandleBlinkStateAndScheduleTimerTick(char param_1)
 // GHIDRA_NAME TSoundPlayer::InitializeSoundSubsystemAndAllocateChannelLists
 // GHIDRA_PROTO undefined __thiscall InitializeSoundSubsystemAndAllocateChannelLists(undefined4 param_1)
 
-void TSoundPlayer::InitializeSoundSubsystemAndAllocateChannelLists(undefined4 param_1)
+void __thiscall
+TSoundPlayer::InitializeSoundSubsystemAndAllocateChannelLists(TSoundPlayer *this,undefined4 param_1)
 
 {
   char cVar1;
@@ -217,7 +328,7 @@ void TSoundPlayer::InitializeSoundSubsystemAndAllocateChannelLists(undefined4 pa
     puVar2[1] = 0;
     puVar2[5] = 0;
     puVar2[6] = 10;
-    *puVar2 = &TSoundChannelNode::_vftable_;
+    *puVar2 = &TLongintList::_vftable_;
   }
   *(undefined4 **)&this->field_0x6c = puVar2;
   puVar2 = (undefined4 *)operator_new(0x1c);
@@ -231,7 +342,7 @@ void TSoundPlayer::InitializeSoundSubsystemAndAllocateChannelLists(undefined4 pa
     puVar2[1] = 0;
     puVar2[5] = 0;
     puVar2[6] = 10;
-    *puVar2 = &TSoundChannelNode::_vftable_;
+    *puVar2 = &TLongintList::_vftable_;
   }
   *(undefined4 **)&this->field_0x70 = puVar2;
   *(undefined2 *)&this->field_0x74 = 0;
@@ -245,7 +356,7 @@ void TSoundPlayer::InitializeSoundSubsystemAndAllocateChannelLists(undefined4 pa
 // GHIDRA_NAME TSoundPlayer::ReturnConstantTrue_SoundPredicate
 // GHIDRA_PROTO undefined __thiscall ReturnConstantTrue_SoundPredicate(void)
 
-undefined1 TSoundPlayer::ReturnConstantTrue_SoundPredicate()
+undefined1 __thiscall TSoundPlayer::ReturnConstantTrue_SoundPredicate(TSoundPlayer *this)
 
 {
   return 1;
@@ -255,7 +366,7 @@ undefined1 TSoundPlayer::ReturnConstantTrue_SoundPredicate()
 // GHIDRA_NAME TSoundPlayer::RequestDirectSoundInitIfAllowed
 // GHIDRA_PROTO undefined __thiscall RequestDirectSoundInitIfAllowed(void)
 
-void TSoundPlayer::RequestDirectSoundInitIfAllowed()
+void __thiscall TSoundPlayer::RequestDirectSoundInitIfAllowed(TSoundPlayer *this)
 
 {
   if (this->field_0x20 != '\0') {
@@ -270,7 +381,7 @@ void TSoundPlayer::RequestDirectSoundInitIfAllowed()
 // GHIDRA_NAME TSoundPlayer::ReturnConstantFalse_SoundPredicate
 // GHIDRA_PROTO undefined __thiscall ReturnConstantFalse_SoundPredicate(void)
 
-undefined1 TSoundPlayer::ReturnConstantFalse_SoundPredicate()
+undefined1 __thiscall TSoundPlayer::ReturnConstantFalse_SoundPredicate(TSoundPlayer *this)
 
 {
   return 0;
@@ -280,7 +391,7 @@ undefined1 TSoundPlayer::ReturnConstantFalse_SoundPredicate()
 // GHIDRA_NAME TSoundPlayer::ClearDirectSoundInitPendingAndResetState
 // GHIDRA_PROTO undefined __thiscall ClearDirectSoundInitPendingAndResetState(void)
 
-void TSoundPlayer::ClearDirectSoundInitPendingAndResetState()
+void __thiscall TSoundPlayer::ClearDirectSoundInitPendingAndResetState(TSoundPlayer *this)
 
 {
   this->field_0x21 = 0;
@@ -289,10 +400,10 @@ void TSoundPlayer::ClearDirectSoundInitPendingAndResetState()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005E4FF0
-// GHIDRA_NAME TSoundPlayer::NotifyGlobalAudioObjectsViaVslot48
-// GHIDRA_PROTO undefined __thiscall NotifyGlobalAudioObjectsViaVslot48(void)
+// GHIDRA_NAME TSoundPlayer::StopAllSoundChannels
+// GHIDRA_PROTO undefined __thiscall StopAllSoundChannels(void)
 
-void TSoundPlayer::NotifyGlobalAudioObjectsViaVslot48()
+void __thiscall TSoundPlayer::StopAllSoundChannels(TSoundPlayer *this)
 
 {
   int iVar1;
@@ -307,10 +418,10 @@ void TSoundPlayer::NotifyGlobalAudioObjectsViaVslot48()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005E5020
-// GHIDRA_NAME TSoundPlayer::WrapperFor_ftol_At005e5020
-// GHIDRA_PROTO undefined __thiscall WrapperFor_ftol_At005e5020(short param_1)
+// GHIDRA_NAME TSoundPlayer::SetMasterVolumeFromPercent
+// GHIDRA_PROTO undefined __thiscall SetMasterVolumeFromPercent(short param_1)
 
-void TSoundPlayer::WrapperFor_ftol_At005e5020(short param_1)
+void __thiscall TSoundPlayer::SetMasterVolumeFromPercent(TSoundPlayer *this,short param_1)
 
 {
   int iVar1;
@@ -338,7 +449,7 @@ void TSoundPlayer::WrapperFor_ftol_At005e5020(short param_1)
 // GHIDRA_NAME TSoundPlayer::NoOpAudioTickCallback_005e50a0
 // GHIDRA_PROTO undefined __thiscall NoOpAudioTickCallback_005e50a0(void)
 
-void TSoundPlayer::NoOpAudioTickCallback_005e50a0()
+void __thiscall TSoundPlayer::NoOpAudioTickCallback_005e50a0(TSoundPlayer *this)
 
 {
   return;
@@ -348,7 +459,8 @@ void TSoundPlayer::NoOpAudioTickCallback_005e50a0()
 // GHIDRA_NAME TSoundPlayer::UpdateLocalizationAudioSlotAndMaybeRefreshVoiceState
 // GHIDRA_PROTO undefined __thiscall UpdateLocalizationAudioSlotAndMaybeRefreshVoiceState(short param_1)
 
-undefined4 TSoundPlayer::UpdateLocalizationAudioSlotAndMaybeRefreshVoiceState(short param_1)
+undefined4 __thiscall
+TSoundPlayer::UpdateLocalizationAudioSlotAndMaybeRefreshVoiceState(TSoundPlayer *this,short param_1)
 
 {
   int iVar1;
@@ -373,7 +485,7 @@ undefined4 TSoundPlayer::UpdateLocalizationAudioSlotAndMaybeRefreshVoiceState(sh
 // GHIDRA_NAME TSoundPlayer::ForwardActionToVslotB4WithFlag1
 // GHIDRA_PROTO undefined __thiscall ForwardActionToVslotB4WithFlag1(void)
 
-undefined4 TSoundPlayer::ForwardActionToVslotB4WithFlag1()
+undefined4 __thiscall TSoundPlayer::ForwardActionToVslotB4WithFlag1(TSoundPlayer *this)
 
 {
   (**(code **)&this->vftable[1].field_0xc)();
@@ -381,30 +493,30 @@ undefined4 TSoundPlayer::ForwardActionToVslotB4WithFlag1()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005E5170
-// GHIDRA_NAME TSoundPlayer::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_NAME TSoundPlayer::ReturnConstantZero_005e5170
+// GHIDRA_PROTO undefined __thiscall ReturnConstantZero_005e5170(void)
 
-undefined4 TSoundPlayer::_scalar_deleting_destructor_()
+undefined4 __thiscall TSoundPlayer::ReturnConstantZero_005e5170(TSoundPlayer *this)
 
 {
   return 0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005E5190
-// GHIDRA_NAME TSoundPlayer::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME TSoundPlayer::ReturnConstantZero_005e5190
+// GHIDRA_PROTO undefined __thiscall ReturnConstantZero_005e5190(void)
 
-undefined4 TSoundPlayer::GetTEventHandlerClassNamePointer()
+undefined4 __thiscall TSoundPlayer::ReturnConstantZero_005e5190(TSoundPlayer *this)
 
 {
   return 0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005E51B0
-// GHIDRA_NAME TSoundPlayer::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_NAME TSoundPlayer::VTableSlot31
+// GHIDRA_PROTO undefined __thiscall VTableSlot31(void)
 
-undefined4 TSoundPlayer::_scalar_deleting_destructor_()
+undefined4 __thiscall TSoundPlayer::VTableSlot31(TSoundPlayer *this)
 
 {
   CString::~CString((CString *)&stack0x00000004);
@@ -415,7 +527,7 @@ undefined4 TSoundPlayer::_scalar_deleting_destructor_()
 // GHIDRA_NAME TSoundPlayer::Free
 // GHIDRA_PROTO undefined __thiscall Free(void)
 
-void TSoundPlayer::Free()
+void __thiscall TSoundPlayer::Free(TSoundPlayer *this)
 
 {
   if (*(int **)&this->field_0x70 != (int *)0x0) {

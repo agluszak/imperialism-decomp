@@ -24,7 +24,7 @@ undefined4 * TShipBuildingTask::CreateObject(void)
 // GHIDRA_NAME TShipBuildingTask::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TShipBuildingTask::GetRuntimeClass()
+CRuntimeClass * __thiscall TShipBuildingTask::GetRuntimeClass(TShipBuildingTask *this)
 
 {
   return &classTShipBuildingTask;
@@ -34,7 +34,7 @@ CRuntimeClass * TShipBuildingTask::GetRuntimeClass()
 // GHIDRA_NAME TShipBuildingTask::ConstructTShipBuildingTaskBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTShipBuildingTaskBaseState(void)
 
-void TShipBuildingTask::ConstructTShipBuildingTaskBaseState()
+void __thiscall TShipBuildingTask::ConstructTShipBuildingTaskBaseState(TShipBuildingTask *this)
 
 {
   this->vftable = &_vftable_;
@@ -45,7 +45,8 @@ void TShipBuildingTask::ConstructTShipBuildingTaskBaseState()
 // GHIDRA_NAME TShipBuildingTask::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TShipBuildingTask * TShipBuildingTask::_scalar_deleting_destructor_(byte param_1)
+TShipBuildingTask * __thiscall
+TShipBuildingTask::_scalar_deleting_destructor_(TShipBuildingTask *this,byte param_1)
 
 {
   func_0x00407de7();
@@ -80,7 +81,8 @@ TShipBuildingTask * TShipBuildingTask::_scalar_deleting_destructor_(byte param_1
    Context:
    - Participates in turn processing / deferred command pipeline for city production orders. */
 
-uint TShipBuildingTask::OrphanLeaf_NoCall_Ins04_005adc30(int *param_1)
+uint __thiscall
+TShipBuildingTask::OrphanLeaf_NoCall_Ins04_005adc30(TShipBuildingTask *this,int *param_1)
 
 {
   short sVar1;
@@ -203,7 +205,7 @@ uint TShipBuildingTask::OrphanLeaf_NoCall_Ins04_005adc30(int *param_1)
 // GHIDRA_NAME TShipBuildingTask::WriteTo
 // GHIDRA_PROTO undefined __thiscall WriteTo(int * param_1)
 
-void TShipBuildingTask::WriteTo(int *param_1)
+void __thiscall TShipBuildingTask::WriteTo(TShipBuildingTask *this,int *param_1)
 
 {
   code *pcVar1;
@@ -224,7 +226,7 @@ void TShipBuildingTask::WriteTo(int *param_1)
 // GHIDRA_NAME TShipBuildingTask::ReadFrom
 // GHIDRA_PROTO undefined __thiscall ReadFrom(int * param_1)
 
-void TShipBuildingTask::ReadFrom(int *param_1)
+void __thiscall TShipBuildingTask::ReadFrom(TShipBuildingTask *this,int *param_1)
 
 {
   code *pcVar1;

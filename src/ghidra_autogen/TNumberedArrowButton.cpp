@@ -38,7 +38,7 @@ undefined4 * TNumberedArrowButton::CreateObject(void)
 // GHIDRA_NAME TNumberedArrowButton::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TNumberedArrowButton::GetRuntimeClass()
+CRuntimeClass * __thiscall TNumberedArrowButton::GetRuntimeClass(TNumberedArrowButton *this)
 
 {
   return &classTNumberedArrowButton;
@@ -48,7 +48,8 @@ CRuntimeClass * TNumberedArrowButton::GetRuntimeClass()
 // GHIDRA_NAME TNumberedArrowButton::TNumberedArrowButton
 // GHIDRA_PROTO undefined __thiscall TNumberedArrowButton(void)
 
-TNumberedArrowButton * TNumberedArrowButton::TNumberedArrowButton()
+TNumberedArrowButton * __thiscall
+TNumberedArrowButton::TNumberedArrowButton(TNumberedArrowButton *this)
 
 {
   func_0x004087fb();
@@ -62,7 +63,8 @@ TNumberedArrowButton * TNumberedArrowButton::TNumberedArrowButton()
 // GHIDRA_NAME TNumberedArrowButton::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TNumberedArrowButton * TNumberedArrowButton::_scalar_deleting_destructor_(byte param_1)
+TNumberedArrowButton * __thiscall
+TNumberedArrowButton::_scalar_deleting_destructor_(TNumberedArrowButton *this,byte param_1)
 
 {
   func_0x00402f54();
@@ -76,7 +78,8 @@ TNumberedArrowButton * TNumberedArrowButton::_scalar_deleting_destructor_(byte p
 // GHIDRA_NAME TNumberedArrowButton::SetValue
 // GHIDRA_PROTO undefined __thiscall SetValue(undefined2 param_1, char param_2)
 
-void TNumberedArrowButton::SetValue(undefined2 param_1, char param_2)
+void __thiscall
+TNumberedArrowButton::SetValue(TNumberedArrowButton *this,undefined2 param_1,char param_2)
 
 {
   *(undefined2 *)&this->field_0x84 = param_1;
@@ -111,7 +114,7 @@ void __thiscall TNumberedArrowButton::SetState(int *param_1,short param_2,char p
 // GHIDRA_NAME TNumberedArrowButton::ApplyRectSlot110
 // GHIDRA_PROTO undefined __thiscall ApplyRectSlot110(void)
 
-void TNumberedArrowButton::ApplyRectSlot110()
+void __thiscall TNumberedArrowButton::ApplyRectSlot110(TNumberedArrowButton *this)
 
 {
   short sVar1;
@@ -168,17 +171,17 @@ void TNumberedArrowButton::ApplyRectSlot110()
   local_44 = (CString *)0x2b67;
   func_0x0040448f(0,10);
   local_44 = (CString *)(int)*(short *)&this->field_0x84;
-  CString__Format(&local_34,&g_szDecimalFormat);
+  CString::Format(&local_34,&g_szDecimalFormat);
   local_44 = &local_34;
-  sVar1 = func_0x00405b7d();
+  sVar1 = thunk_MeasureTextExtentWithCachedQuickDrawStyle();
   local_44 = (CString *)0x18;
-  func_0x00408d6e(7 - (int)sVar1 / 2);
+  thunk_SetQuickDrawTextOriginWithContextOffset(7 - (int)sVar1 / 2);
   local_44 = &local_34;
   func_0x004029aa();
   local_44 = (CString *)0x2b6c;
   func_0x0040448f(0,10);
   local_44 = (CString *)0x17;
-  func_0x00408d6e(6 - (int)sVar1 / 2);
+  thunk_SetQuickDrawTextOriginWithContextOffset(6 - (int)sVar1 / 2);
   local_44 = &local_34;
   func_0x004029aa();
   local_4 = 0xffffffff;
@@ -192,7 +195,8 @@ void TNumberedArrowButton::ApplyRectSlot110()
 // GHIDRA_NAME TNumberedArrowButton::DispatchPictureResourceCommand
 // GHIDRA_PROTO undefined __thiscall DispatchPictureResourceCommand(int param_1)
 
-void TNumberedArrowButton::DispatchPictureResourceCommand(int param_1)
+void __thiscall
+TNumberedArrowButton::DispatchPictureResourceCommand(TNumberedArrowButton *this,int param_1)
 
 {
   TNumberedArrowButtonVtbl *pTVar1;

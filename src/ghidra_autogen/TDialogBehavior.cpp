@@ -32,7 +32,7 @@ undefined4 * TDialogBehavior::CreateObject(void)
 // GHIDRA_NAME TDialogBehavior::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TDialogBehavior::GetRuntimeClass()
+CRuntimeClass * __thiscall TDialogBehavior::GetRuntimeClass(TDialogBehavior *this)
 
 {
   return &classTDialogBehavior;
@@ -42,7 +42,7 @@ CRuntimeClass * TDialogBehavior::GetRuntimeClass()
 // GHIDRA_NAME TDialogBehavior::ConstructTDialogBehaviorBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTDialogBehaviorBaseState(void)
 
-void TDialogBehavior::ConstructTDialogBehaviorBaseState()
+void __thiscall TDialogBehavior::ConstructTDialogBehaviorBaseState(TDialogBehavior *this)
 
 {
   *(undefined4 *)&this->field_0x4 = 0x20202020;
@@ -61,7 +61,8 @@ void TDialogBehavior::ConstructTDialogBehaviorBaseState()
 // GHIDRA_NAME TDialogBehavior::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TDialogBehavior * TDialogBehavior::_scalar_deleting_destructor_(byte param_1)
+TDialogBehavior * __thiscall
+TDialogBehavior::_scalar_deleting_destructor_(TDialogBehavior *this,byte param_1)
 
 {
   func_0x00403af8();
@@ -75,7 +76,8 @@ TDialogBehavior * TDialogBehavior::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TDialogBehavior::OrphanCallChain_C1_I13_00487430
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I13_00487430(undefined4 param_1)
 
-void TDialogBehavior::OrphanCallChain_C1_I13_00487430(undefined4 param_1)
+void __thiscall
+TDialogBehavior::OrphanCallChain_C1_I13_00487430(TDialogBehavior *this,undefined4 param_1)
 
 {
   if (*(int *)&this->field_0x8 != 0) {
@@ -90,7 +92,8 @@ void TDialogBehavior::OrphanCallChain_C1_I13_00487430(undefined4 param_1)
 // GHIDRA_NAME TDialogBehavior::OrphanCallChain_C1_I17_00487470
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I17_00487470(int param_1, int param_2)
 
-void TDialogBehavior::OrphanCallChain_C1_I17_00487470(int param_1, int param_2)
+void __thiscall
+TDialogBehavior::OrphanCallChain_C1_I17_00487470(TDialogBehavior *this,int param_1,int param_2)
 
 {
   if (param_1 == 0x22) {
@@ -105,7 +108,7 @@ void TDialogBehavior::OrphanCallChain_C1_I17_00487470(int param_1, int param_2)
 // GHIDRA_NAME TDialogBehavior::OrphanCallChain_C11_I88_004874b0
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C11_I88_004874b0(int param_1)
 
-void TDialogBehavior::OrphanCallChain_C11_I88_004874b0(int param_1)
+void __thiscall TDialogBehavior::OrphanCallChain_C11_I88_004874b0(TDialogBehavior *this,int param_1)
 
 {
   short sVar1;
@@ -161,7 +164,7 @@ void TDialogBehavior::OrphanCallChain_C11_I88_004874b0(int param_1)
 // GHIDRA_NAME TDialogBehavior::OrphanCallChain_C6_I49_004875d0
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C6_I49_004875d0(int param_1)
 
-void TDialogBehavior::OrphanCallChain_C6_I49_004875d0(int param_1)
+void __thiscall TDialogBehavior::OrphanCallChain_C6_I49_004875d0(TDialogBehavior *this,int param_1)
 
 {
   int *piVar1;
@@ -198,10 +201,10 @@ void TDialogBehavior::OrphanCallChain_C6_I49_004875d0(int param_1)
 // GHIDRA_NAME TDialogBehavior::CreateTCommandInstance
 // GHIDRA_PROTO undefined __thiscall CreateTCommandInstance(void)
 
-void TDialogBehavior::CreateTCommandInstance()
+void __thiscall TDialogBehavior::CreateTCommandInstance(TDialogBehavior *this)
 
 {
-  TMovieView *this_00;
+  CWnd *this_00;
   int iVar1;
   int *piVar2;
   int iVar3;
@@ -211,11 +214,11 @@ void TDialogBehavior::CreateTCommandInstance()
   piVar2 = (int *)(**(code **)(**(int **)&this->field_0x8 + 0x58))();
   (**(code **)(*piVar2 + 0x9c))();
   iVar3 = (**(code **)(**(int **)&this->field_0x8 + 0x58))();
-  this_00 = *(TMovieView **)(iVar3 + 0x50);
+  this_00 = *(CWnd **)(iVar3 + 0x50);
   this->field_0x20 = 0;
   *(undefined4 *)&this->field_0x1c = 0x20202020;
   CMcWindow::EnableWindowOrDelegateToOwner(1);
-  TMovieView::TView__RunModalLoop(this_00,0);
+  CWnd::RunModalLoop(this_00,0);
   if (iVar1 != 0) {
     func_0x00405db2(1);
     func_0x004012c1();

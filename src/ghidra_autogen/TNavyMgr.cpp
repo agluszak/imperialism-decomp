@@ -27,7 +27,7 @@ undefined4 * TNavyMgr::CreateObject(void)
 // GHIDRA_NAME TNavyMgr::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TNavyMgr::GetRuntimeClass()
+CRuntimeClass * __thiscall TNavyMgr::GetRuntimeClass(TNavyMgr *this)
 
 {
   return &classTNavyMgr;
@@ -37,7 +37,7 @@ CRuntimeClass * TNavyMgr::GetRuntimeClass()
 // GHIDRA_NAME TNavyMgr::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TNavyMgr * TNavyMgr::_scalar_deleting_destructor_(byte param_1)
+TNavyMgr * __thiscall TNavyMgr::_scalar_deleting_destructor_(TNavyMgr *this,byte param_1)
 
 {
   func_0x00401dcf();
@@ -51,7 +51,7 @@ TNavyMgr * TNavyMgr::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TNavyMgr::Free
 // GHIDRA_PROTO undefined __thiscall Free(void)
 
-void TNavyMgr::Free()
+void __thiscall TNavyMgr::Free(TNavyMgr *this)
 
 {
   int *piVar1;
@@ -78,7 +78,7 @@ void TNavyMgr::Free()
 // GHIDRA_NAME TNavyMgr::WriteTo
 // GHIDRA_PROTO undefined __thiscall WriteTo(undefined4 param_1)
 
-void TNavyMgr::WriteTo(undefined4 param_1)
+void __thiscall TNavyMgr::WriteTo(TNavyMgr *this,undefined4 param_1)
 
 {
   func_0x0040583a(param_1);
@@ -90,12 +90,216 @@ void TNavyMgr::WriteTo(undefined4 param_1)
 // GHIDRA_NAME TNavyMgr::ReadFrom
 // GHIDRA_PROTO undefined __thiscall ReadFrom(undefined4 param_1)
 
-void TNavyMgr::ReadFrom(undefined4 param_1)
+void __thiscall TNavyMgr::ReadFrom(TNavyMgr *this,undefined4 param_1)
 
 {
   func_0x00403517(param_1);
   func_0x0040774d(param_1,0xffffffff);
   return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00556AD0
+// GHIDRA_NAME TNavyMgr::DeserializeNavyOrderListsByNation
+// GHIDRA_PROTO undefined DeserializeNavyOrderListsByNation()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Deserializes navy order lists from stream, optionally filtered by nation id.
+// GHIDRA_COMMENT Behavior:
+// GHIDRA_COMMENT - Rebuilds DAT_006A3EDC / DAT_006A3EBC lists and queue entries.
+// GHIDRA_COMMENT - Re-links loaded entries into the active manager chains.
+// GHIDRA_COMMENT - If filter is -1, clears prior lists before repopulation.
+// GHIDRA_COMMENT_END
+
+/* Deserializes navy order lists from stream, optionally filtered by nation id.
+   Behavior:
+   - Rebuilds DAT_006A3EDC / DAT_006A3EBC lists and queue entries.
+   - Re-links loaded entries into the active manager chains.
+   - If filter is -1, clears prior lists before repopulation. */
+
+void __thiscall
+TNavyMgr::DeserializeNavyOrderListsByNation(int param_1,int *param_2,undefined4 param_3)
+
+{
+  code *pcVar1;
+  int iVar2;
+  int *piVar3;
+  int *piVar4;
+  int iVar5;
+  int *piVar6;
+  short sVar7;
+  code *unaff_EBX;
+  int unaff_EBP;
+  code *unaff_ESI;
+  int unaff_EDI;
+  int *unaff_FS_OFFSET;
+  short unaff_retaddr;
+  undefined1 *puVar8;
+  undefined1 local_1c [4];
+  code *local_18;
+  int local_14;
+  undefined4 uStack_10;
+  int iStack_c;
+  undefined1 *puStack_8;
+  undefined4 uStack_4;
+  
+  uStack_4 = 0xffffffff;
+  puStack_8 = &LAB_00635317;
+  iStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = (int)&iStack_c;
+  local_14 = param_1;
+  if ((short)param_3 == -1) {
+    while (g_pNavyPrimaryOrderListHead != (TShip *)0x0) {
+      (*g_pNavyPrimaryOrderListHead->vftable[3].DestructTShipAndFreeIfOwned)();
+    }
+    g_pNavyPrimaryOrderListHead = (TShip *)0x0;
+    while (g_pNavySecondaryOrderListHead != (int *)0x0) {
+      (**(code **)(*g_pNavySecondaryOrderListHead + 0x1c))();
+    }
+    piVar6 = *(int **)(param_1 + 4);
+    if (piVar6 != (int *)0x0) {
+      func_0x00406d16();
+      (**(code **)(*piVar6 + 0x1c))();
+    }
+  }
+  else {
+    func_0x004059f7(param_3);
+  }
+  puVar8 = local_1c;
+  pcVar1 = *(code **)(*param_2 + 0x3c);
+  local_18 = pcVar1;
+  (*pcVar1)(puVar8,2);
+  sVar7 = (short)unaff_EBP;
+  while (unaff_EBP = unaff_EBP + -1, sVar7 != 0) {
+    local_18 = (code *)operator_new(0x38);
+    iStack_c = 0;
+    if (local_18 == (code *)0x0) {
+      piVar6 = (int *)0x0;
+    }
+    else {
+      piVar6 = (int *)func_0x00406ff0();
+    }
+    iStack_c = -1;
+    if (piVar6 == (int *)0x0) {
+      MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+      func_0x004057a4(s_D__Ambit_Cross_UNavy_cpp_006983c8,0xd11);
+    }
+    iVar2 = *piVar6;
+    (**(code **)(iVar2 + 0x18))(uStack_4);
+    if ((unaff_retaddr != -1) && ((short)piVar6[5] != unaff_retaddr)) {
+      (**(code **)(iVar2 + 0x1c))();
+    }
+    pcVar1 = unaff_EBX;
+    sVar7 = (short)unaff_EBP;
+  }
+  (*pcVar1)(&stack0xffffffdc,2);
+  sVar7 = (short)unaff_EDI;
+  while (sVar7 != 0) {
+    piVar6 = (int *)operator_new(0x1c);
+    if (piVar6 == (int *)0x0) {
+      piVar6 = (int *)0x0;
+    }
+    else {
+      *piVar6 = (int)&TObject::_vftable_;
+      local_14._0_1_ = 2;
+      local_14._1_3_ = 0;
+      *(undefined2 *)(piVar6 + 1) = 0xffff;
+      piVar6[2] = 0;
+      CString::CString((CString *)(piVar6 + 3));
+      *(undefined2 *)(piVar6 + 4) = 0;
+      piVar6[5] = (int)g_pNavySecondaryOrderListHead;
+      piVar6[6] = 0;
+      *piVar6 = (int)&TAdmiral::_vftable_;
+      local_14 = CONCAT31(local_14._1_3_,3);
+      g_pNavySecondaryOrderListHead = piVar6;
+      if (piVar6[5] != 0) {
+        *(int **)(piVar6[5] + 0x18) = piVar6;
+      }
+      if ((short)piVar6[1] != -1) {
+        func_0x004058f3();
+      }
+    }
+    local_14 = -1;
+    if (piVar6 == (int *)0x0) {
+      MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+      func_0x004057a4(s_D__Ambit_Cross_UNavy_cpp_006983c8,0xd24);
+    }
+    iVar2 = *piVar6;
+    (**(code **)(iVar2 + 0x18))(iStack_c);
+    if (((short)puStack_8 != -1) && ((short)piVar6[1] != (short)puStack_8)) {
+      (**(code **)(iVar2 + 0x1c))();
+    }
+    sVar7 = (short)(unaff_EDI + -1);
+    pcVar1 = unaff_ESI;
+    unaff_EDI = unaff_EDI + -1;
+  }
+  (*pcVar1)(&stack0xffffffd4,2);
+  sVar7 = (short)puVar8;
+  do {
+    if (sVar7 == 0) {
+      *unaff_FS_OFFSET = unaff_EBP;
+      return;
+    }
+    puVar8 = puVar8 + -1;
+    piVar6 = (int *)operator_new(0x34);
+    if (piVar6 == (int *)0x0) {
+      piVar6 = (int *)0x0;
+    }
+    else {
+      piVar6[1] = 1;
+      piVar6[2] = 0;
+      piVar6[3] = 0;
+      piVar6[4] = 0;
+      piVar6[5] = 0;
+      piVar6[6] = 0;
+      *(undefined2 *)(piVar6 + 7) = 0xffff;
+      piVar6[10] = 0;
+      piVar6[0xb] = 0;
+      *(undefined2 *)(piVar6 + 0xc) = 0xffff;
+      *piVar6 = (int)&TTaskForce::_vftable_;
+      *(undefined4 *)((int)piVar6 + 0x1e) = 0;
+      *(undefined4 *)((int)piVar6 + 0x22) = 0;
+    }
+    if (piVar6 == (int *)0x0) {
+      MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+      func_0x004057a4(s_D__Ambit_Cross_UNavy_cpp_006983c8,0xd37);
+    }
+    iVar2 = *piVar6;
+    (**(code **)(iVar2 + 0x18))(local_14);
+    if (((short)uStack_10 != -1) && ((short)piVar6[7] != (short)uStack_10)) {
+      (**(code **)(iVar2 + 0x1c))();
+    }
+    piVar3 = *(int **)(unaff_EDI + 3);
+    for (piVar4 = piVar3; piVar4 != (int *)0x0; piVar4 = (int *)piVar4[0xb]) {
+      if (piVar4 == piVar6) goto LAB_00556e39;
+    }
+    if (piVar6 == (int *)0x0) {
+      sVar7 = 0;
+    }
+    else {
+      sVar7 = 0;
+      for (iVar5 = piVar6[4]; iVar5 != 0; iVar5 = *(int *)(iVar5 + 4)) {
+        sVar7 = sVar7 + 1;
+      }
+    }
+    if (sVar7 < 1) {
+      (**(code **)(iVar2 + 0x1c))();
+    }
+    else {
+      if (piVar6[10] != 0) {
+        *(int *)(piVar6[10] + 0x2c) = piVar6[0xb];
+      }
+      if (piVar6[0xb] != 0) {
+        *(int *)(piVar6[0xb] + 0x28) = piVar6[10];
+      }
+      piVar6[10] = 0;
+      piVar6[0xb] = (int)piVar3;
+      if (piVar3 != (int *)0x0) {
+        piVar3[10] = (int)piVar6;
+      }
+      *(int **)(unaff_EDI + 3) = piVar6;
+    }
+LAB_00556e39:
+    sVar7 = (short)puVar8;
+  } while( true );
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00557080

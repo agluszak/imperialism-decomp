@@ -3,6 +3,23 @@
 // Program: Imperialism.exe
 // Bucket: CCmdTarget.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x0060698F
+// GHIDRA_NAME CCmdTarget::CCmdTarget
+// GHIDRA_PROTO undefined CCmdTarget()
+
+void __fastcall CCmdTarget::CCmdTarget(undefined4 *param_1)
+
+{
+  *param_1 = &PTR_GetCCmdTargetRuntimeClass_0067066c;
+  param_1[1] = 1;
+  param_1[2] = 0;
+  param_1[3] = 0;
+  param_1[4] = 0;
+  param_1[5] = 1;
+  param_1[6] = 0;
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x006069CB
 // GHIDRA_NAME CCmdTarget::~CCmdTarget
 // GHIDRA_PROTO undefined ~CCmdTarget()
@@ -32,7 +49,8 @@ void CCmdTarget::~CCmdTarget(void)
 // GHIDRA_NAME CCmdTarget::OnCmdMsg
 // GHIDRA_PROTO undefined __thiscall OnCmdMsg(uint param_1, uint param_2, int param_3, undefined4 param_4)
 
-uint CCmdTarget::OnCmdMsg(uint param_1, uint param_2, int param_3, undefined4 param_4)
+uint __thiscall
+CCmdTarget::OnCmdMsg(CCmdTarget *this,uint param_1,uint param_2,int param_3,undefined4 param_4)
 
 {
   void *_Buf1;
@@ -100,6 +118,140 @@ LAB_00606aac:
   return param_2;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00606C4E
+// GHIDRA_NAME CCmdTarget::IsInvokeAllowed
+// GHIDRA_PROTO undefined __thiscall IsInvokeAllowed(void)
+
+undefined4 __thiscall CCmdTarget::IsInvokeAllowed(CCmdTarget *this)
+
+{
+  return 1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00606C54
+// GHIDRA_NAME CCmdTarget::GetDispatchIID
+// GHIDRA_PROTO undefined __thiscall GetDispatchIID(void)
+
+undefined4 __thiscall CCmdTarget::GetDispatchIID(CCmdTarget *this)
+
+{
+  return 0;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00606C59
+// GHIDRA_NAME CCmdTarget::GetTypeInfoCount
+// GHIDRA_PROTO undefined __thiscall GetTypeInfoCount(void)
+
+undefined4 __thiscall CCmdTarget::GetTypeInfoCount(CCmdTarget *this)
+
+{
+  return 0;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00606C5C
+// GHIDRA_NAME CCmdTarget::GetTypeLibCache
+// GHIDRA_PROTO undefined __thiscall GetTypeLibCache(void)
+
+undefined4 __thiscall CCmdTarget::GetTypeLibCache(CCmdTarget *this)
+
+{
+  return 0;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00606C5F
+// GHIDRA_NAME CCmdTarget::GetTypeLib
+// GHIDRA_PROTO undefined __thiscall GetTypeLib(void)
+
+undefined4 __thiscall CCmdTarget::GetTypeLib(CCmdTarget *this)
+
+{
+  return 0x80029c4a;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00606C67
+// GHIDRA_NAME CCmdTarget::BeginWaitCursor
+// GHIDRA_PROTO undefined BeginWaitCursor()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Increments the MFC temporary-handle-map lock counter through module-thread state callback slot +0x98 (argument = 1). Used to bracket command/message dispatch paths.
+// GHIDRA_COMMENT_END
+
+/* Increments the MFC temporary-handle-map lock counter through module-thread state callback slot
+   +0x98 (argument = 1). Used to bracket command/message dispatch paths. */
+
+void CCmdTarget::BeginWaitCursor(void)
+
+{
+  int iVar1;
+  
+  iVar1 = AfxGetModuleState();
+  (**(code **)(**(int **)(iVar1 + 4) + 0x98))(1);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00606C7C
+// GHIDRA_NAME CCmdTarget::EndWaitCursor
+// GHIDRA_PROTO undefined EndWaitCursor()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Decrements/releases the MFC temporary-handle-map lock via module-thread state callback slot +0x98 (argument = -1). Paired with LockMfcTempMaps.
+// GHIDRA_COMMENT_END
+
+/* Decrements/releases the MFC temporary-handle-map lock via module-thread state callback slot +0x98
+   (argument = -1). Paired with LockMfcTempMaps. */
+
+void CCmdTarget::EndWaitCursor(void)
+
+{
+  int iVar1;
+  
+  iVar1 = AfxGetModuleState();
+  (**(code **)(**(int **)(iVar1 + 4) + 0x98))(0xffffffff);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00606C91
+// GHIDRA_NAME CCmdTarget::RestoreWaitCursor
+// GHIDRA_PROTO undefined RestoreWaitCursor()
+
+void CCmdTarget::RestoreWaitCursor(void)
+
+{
+  int iVar1;
+  
+  iVar1 = AfxGetModuleState();
+  (**(code **)(**(int **)(iVar1 + 4) + 0x98))(0);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00606CAC
+// GHIDRA_NAME CCmdTarget::GetDispatchMap
+// GHIDRA_PROTO undefined __thiscall GetDispatchMap(void)
+
+undefined * __thiscall CCmdTarget::GetDispatchMap(CCmdTarget *this)
+
+{
+  return &DAT_00670580;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00606CB2
+// GHIDRA_NAME CCmdTarget::GetEventSinkMap
+// GHIDRA_PROTO undefined __thiscall GetEventSinkMap(void)
+
+undefined * __thiscall CCmdTarget::GetEventSinkMap(CCmdTarget *this)
+
+{
+  return &DAT_006705b0;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00606CB8
+// GHIDRA_NAME CCmdTarget::GetInterfaceMap
+// GHIDRA_PROTO undefined __thiscall GetInterfaceMap(void)
+
+undefined * __thiscall CCmdTarget::GetInterfaceMap(CCmdTarget *this)
+
+{
+  return &DAT_006705e8;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00606CBE
 // GHIDRA_NAME CCmdTarget::OnFinalRelease
 // GHIDRA_PROTO void __thiscall OnFinalRelease(void)
@@ -115,7 +267,7 @@ LAB_00606aac:
    
    Library: Visual Studio 1998 Release */
 
-void CCmdTarget::OnFinalRelease()
+void __thiscall CCmdTarget::OnFinalRelease(CCmdTarget *this)
 
 {
   CCmdTargetVtbl *pCVar1;
@@ -135,22 +287,75 @@ void CCmdTarget::OnFinalRelease()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00606CF0
-// GHIDRA_NAME CCmdTarget::CCmdTarget::OnCreateAggregates
-// GHIDRA_PROTO undefined __thiscall CCmdTarget::OnCreateAggregates(void)
+// GHIDRA_NAME CCmdTarget::OnCreateAggregates
+// GHIDRA_PROTO undefined __thiscall OnCreateAggregates(void)
 
-undefined4 CCmdTarget::CCmdTarget__OnCreateAggregates()
+undefined4 __thiscall CCmdTarget::OnCreateAggregates(CCmdTarget *this)
 
 {
   return 1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00606CF4
-// GHIDRA_NAME CCmdTarget::CCmdTarget::GetInterfaceHook
-// GHIDRA_PROTO undefined __thiscall CCmdTarget::GetInterfaceHook(void)
+// GHIDRA_NAME CCmdTarget::GetInterfaceHook
+// GHIDRA_PROTO undefined __thiscall GetInterfaceHook(void)
 
-undefined4 CCmdTarget::CCmdTarget__GetInterfaceHook()
+undefined4 __thiscall CCmdTarget::GetInterfaceHook(CCmdTarget *this)
 
 {
   return 0;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00606CF9
+// GHIDRA_NAME CCmdTarget::GetConnectionMap
+// GHIDRA_PROTO undefined __thiscall GetConnectionMap(void)
+
+undefined * __thiscall CCmdTarget::GetConnectionMap(CCmdTarget *this)
+
+{
+  return &DAT_00670610;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00606CFF
+// GHIDRA_NAME CCmdTarget::GetConnectionHook
+// GHIDRA_PROTO undefined __thiscall GetConnectionHook(void)
+
+undefined4 __thiscall CCmdTarget::GetConnectionHook(CCmdTarget *this)
+
+{
+  return 0;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00606D04
+// GHIDRA_NAME CCmdTarget::GetExtraConnectionPoints
+// GHIDRA_PROTO undefined __thiscall GetExtraConnectionPoints(void)
+
+undefined4 __thiscall CCmdTarget::GetExtraConnectionPoints(CCmdTarget *this)
+
+{
+  return 0;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00606D09
+// GHIDRA_NAME CCmdTarget::GetCommandMap
+// GHIDRA_PROTO undefined __thiscall GetCommandMap(void)
+
+undefined * __thiscall CCmdTarget::GetCommandMap(CCmdTarget *this)
+
+{
+  return &DAT_00670620;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00606D1B
+// GHIDRA_NAME CCmdTarget::GetRoutingFrame
+// GHIDRA_PROTO undefined GetRoutingFrame()
+
+undefined4 CCmdTarget::GetRoutingFrame(void)
+
+{
+  int iVar1;
+  
+  iVar1 = AfxGetThreadState();
+  return *(undefined4 *)(iVar1 + 0xc4);
 }
 

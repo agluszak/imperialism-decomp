@@ -37,7 +37,7 @@ undefined4 * TShipPlacard::CreateObject(void)
 // GHIDRA_NAME TShipPlacard::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TShipPlacard::GetRuntimeClass()
+CRuntimeClass * __thiscall TShipPlacard::GetRuntimeClass(TShipPlacard *this)
 
 {
   return &classTShipPlacard;
@@ -47,7 +47,7 @@ CRuntimeClass * TShipPlacard::GetRuntimeClass()
 // GHIDRA_NAME TShipPlacard::ConstructTShipPlacardBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTShipPlacardBaseState(void)
 
-TShipPlacard * TShipPlacard::ConstructTShipPlacardBaseState()
+TShipPlacard * __thiscall TShipPlacard::ConstructTShipPlacardBaseState(TShipPlacard *this)
 
 {
   func_0x00403328();
@@ -59,7 +59,8 @@ TShipPlacard * TShipPlacard::ConstructTShipPlacardBaseState()
 // GHIDRA_NAME TShipPlacard::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TShipPlacard * TShipPlacard::_scalar_deleting_destructor_(byte param_1)
+TShipPlacard * __thiscall
+TShipPlacard::_scalar_deleting_destructor_(TShipPlacard *this,byte param_1)
 
 {
   func_0x00407a4a();
@@ -73,7 +74,7 @@ TShipPlacard * TShipPlacard::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TShipPlacard::ApplyRectSlot110
 // GHIDRA_PROTO undefined __thiscall ApplyRectSlot110(void)
 
-void TShipPlacard::ApplyRectSlot110()
+void __thiscall TShipPlacard::ApplyRectSlot110(TShipPlacard *this)
 
 {
   short sVar1;
@@ -92,13 +93,13 @@ void TShipPlacard::ApplyRectSlot110()
   if (0 < sVar1) {
     CString::CString((CString *)&stack0x00000000);
     puStack_8 = (undefined1 *)0x0;
-    CString__Format(&stack0x00000000,&g_szDecimalFormat,(int)sVar1);
+    CString::Format(&stack0x00000000,&g_szDecimalFormat,(int)sVar1);
     func_0x0040448f(0,10,0x2b67);
-    sVar1 = func_0x00405b7d(&stack0x00000000);
-    func_0x00408d6e(0x51 - (int)sVar1 / 2,0x2f);
+    sVar1 = thunk_MeasureTextExtentWithCachedQuickDrawStyle(&stack0x00000000);
+    thunk_SetQuickDrawTextOriginWithContextOffset(0x51 - (int)sVar1 / 2,0x2f);
     func_0x004029aa(&stack0x00000000);
     func_0x0040448f(0,10,0x2b6c);
-    func_0x00408d6e(0x50 - (int)sVar1 / 2,0x2e);
+    thunk_SetQuickDrawTextOriginWithContextOffset(0x50 - (int)sVar1 / 2,0x2e);
     func_0x004029aa(&stack0x00000000);
     puStack_8 = (undefined1 *)0xffffffff;
     CString::~CString((CString *)&stack0x00000000);

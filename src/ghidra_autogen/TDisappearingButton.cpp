@@ -37,7 +37,7 @@ undefined4 * TDisappearingButton::CreateObject(void)
 // GHIDRA_NAME TDisappearingButton::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TDisappearingButton::GetRuntimeClass()
+CRuntimeClass * __thiscall TDisappearingButton::GetRuntimeClass(TDisappearingButton *this)
 
 {
   return &classTDisappearingButton;
@@ -47,7 +47,8 @@ CRuntimeClass * TDisappearingButton::GetRuntimeClass()
 // GHIDRA_NAME TDisappearingButton::ConstructTDisappearingButtonBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTDisappearingButtonBaseState(void)
 
-TDisappearingButton * TDisappearingButton::ConstructTDisappearingButtonBaseState()
+TDisappearingButton * __thiscall
+TDisappearingButton::ConstructTDisappearingButtonBaseState(TDisappearingButton *this)
 
 {
   func_0x00401122();
@@ -59,7 +60,8 @@ TDisappearingButton * TDisappearingButton::ConstructTDisappearingButtonBaseState
 // GHIDRA_NAME TDisappearingButton::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TDisappearingButton * TDisappearingButton::_scalar_deleting_destructor_(byte param_1)
+TDisappearingButton * __thiscall
+TDisappearingButton::_scalar_deleting_destructor_(TDisappearingButton *this,byte param_1)
 
 {
   func_0x00401f50();
@@ -73,7 +75,8 @@ TDisappearingButton * TDisappearingButton::_scalar_deleting_destructor_(byte par
 // GHIDRA_NAME TDisappearingButton::SetControlStateFlagAndMaybeRefresh
 // GHIDRA_PROTO undefined __thiscall SetControlStateFlagAndMaybeRefresh(char param_1)
 
-void TDisappearingButton::SetControlStateFlagAndMaybeRefresh(char param_1)
+void __thiscall
+TDisappearingButton::SetControlStateFlagAndMaybeRefresh(TDisappearingButton *this,char param_1)
 
 {
   TDisappearingButtonVtbl *pTVar1;
@@ -94,7 +97,7 @@ void TDisappearingButton::SetControlStateFlagAndMaybeRefresh(char param_1)
 // GHIDRA_NAME TDisappearingButton::OrphanCallChain_C2_I18_00568c90
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C2_I18_00568c90(void)
 
-void TDisappearingButton::OrphanCallChain_C2_I18_00568c90()
+void __thiscall TDisappearingButton::OrphanCallChain_C2_I18_00568c90(TDisappearingButton *this)
 
 {
   undefined uVar1;

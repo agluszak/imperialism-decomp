@@ -37,7 +37,7 @@ undefined4 * TForeignMinisterView::CreateObject(void)
 // GHIDRA_NAME TForeignMinisterView::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TForeignMinisterView::GetRuntimeClass()
+CRuntimeClass * __thiscall TForeignMinisterView::GetRuntimeClass(TForeignMinisterView *this)
 
 {
   return &classTForeignMinisterView;
@@ -47,7 +47,8 @@ CRuntimeClass * TForeignMinisterView::GetRuntimeClass()
 // GHIDRA_NAME TForeignMinisterView::ConstructTForeignMinisterViewBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTForeignMinisterViewBaseState(void)
 
-TForeignMinisterView * TForeignMinisterView::ConstructTForeignMinisterViewBaseState()
+TForeignMinisterView * __thiscall
+TForeignMinisterView::ConstructTForeignMinisterViewBaseState(TForeignMinisterView *this)
 
 {
   func_0x004064e2();
@@ -60,7 +61,8 @@ TForeignMinisterView * TForeignMinisterView::ConstructTForeignMinisterViewBaseSt
 // GHIDRA_NAME TForeignMinisterView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TForeignMinisterView * TForeignMinisterView::_scalar_deleting_destructor_(byte param_1)
+TForeignMinisterView * __thiscall
+TForeignMinisterView::_scalar_deleting_destructor_(TForeignMinisterView *this,byte param_1)
 
 {
   func_0x00407883();
@@ -137,7 +139,7 @@ TForeignMinisterView::HandleEvent
 // GHIDRA_NAME TForeignMinisterView::OrphanCallChain_C3_I22_004f31d0
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C3_I22_004f31d0(void)
 
-void TForeignMinisterView::OrphanCallChain_C3_I22_004f31d0()
+void __thiscall TForeignMinisterView::OrphanCallChain_C3_I22_004f31d0(TForeignMinisterView *this)
 
 {
   TForeignMinisterViewVtbl *pTVar1;
@@ -156,7 +158,7 @@ void TForeignMinisterView::OrphanCallChain_C3_I22_004f31d0()
 // GHIDRA_NAME TForeignMinisterView::OrphanRetStub_004f3220
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_004f3220(void)
 
-void TForeignMinisterView::OrphanRetStub_004f3220()
+void __thiscall TForeignMinisterView::OrphanRetStub_004f3220(TForeignMinisterView *this)
 
 {
   return;

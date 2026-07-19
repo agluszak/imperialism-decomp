@@ -7,7 +7,7 @@
 // GHIDRA_NAME CSimpleList::AddHead
 // GHIDRA_PROTO undefined __thiscall AddHead(TMacViewMgrVtbl * param_1)
 
-void CSimpleList::AddHead(TMacViewMgrVtbl *param_1)
+void __thiscall CSimpleList::AddHead(CSimpleList *this,TMacViewMgrVtbl *param_1)
 
 {
   *(undefined4 *)((int)&param_1->GetRuntimeClass + *(int *)(this + 4)) = *(undefined4 *)this;

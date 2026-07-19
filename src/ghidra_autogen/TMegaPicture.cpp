@@ -39,7 +39,7 @@ undefined4 * TMegaPicture::CreateObject(void)
 // GHIDRA_NAME TMegaPicture::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TMegaPicture::GetRuntimeClass()
+CRuntimeClass * __thiscall TMegaPicture::GetRuntimeClass(TMegaPicture *this)
 
 {
   return &classTMegaPicture;
@@ -49,7 +49,7 @@ CRuntimeClass * TMegaPicture::GetRuntimeClass()
 // GHIDRA_NAME TMegaPicture::ConstructTMegaPictureBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTMegaPictureBaseState(void)
 
-TMegaPicture * TMegaPicture::ConstructTMegaPictureBaseState()
+TMegaPicture * __thiscall TMegaPicture::ConstructTMegaPictureBaseState(TMegaPicture *this)
 
 {
   func_0x00401122();
@@ -64,7 +64,8 @@ TMegaPicture * TMegaPicture::ConstructTMegaPictureBaseState()
 // GHIDRA_NAME TMegaPicture::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TMegaPicture * TMegaPicture::_scalar_deleting_destructor_(byte param_1)
+TMegaPicture * __thiscall
+TMegaPicture::_scalar_deleting_destructor_(TMegaPicture *this,byte param_1)
 
 {
   func_0x00404d18();
@@ -78,7 +79,7 @@ TMegaPicture * TMegaPicture::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TMegaPicture::ApplyRectSlot110
 // GHIDRA_PROTO undefined __thiscall ApplyRectSlot110(LONG * param_1)
 
-void TMegaPicture::ApplyRectSlot110(LONG *param_1)
+void __thiscall TMegaPicture::ApplyRectSlot110(TMegaPicture *this,LONG *param_1)
 
 {
   _vslot_fn *p_Var1;
@@ -112,7 +113,7 @@ void TMegaPicture::ApplyRectSlot110(LONG *param_1)
     else {
       if ((*(ushort *)&this->field_0x98 & 1) == 0) {
         func_0x00406b86(0xffffff);
-        func_0x00406546(auStack_18);
+        thunk_FillRectWithQuickDrawBrushAndContextOffset(auStack_18);
       }
       local_28 = *(LONG *)&this->field_0x9c;
       local_24 = *(LONG *)&this->field_0xa0;

@@ -7,7 +7,8 @@
 // GHIDRA_NAME TMapPreviewView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TMapPreviewView * TMapPreviewView::_scalar_deleting_destructor_(byte param_1)
+TMapPreviewView * __thiscall
+TMapPreviewView::_scalar_deleting_destructor_(TMapPreviewView *this,byte param_1)
 
 {
   func_0x0040579a();
@@ -57,7 +58,7 @@ undefined4 * TMapPreviewView::CreateObject(void)
 // GHIDRA_NAME TMapPreviewView::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TMapPreviewView::GetRuntimeClass()
+CRuntimeClass * __thiscall TMapPreviewView::GetRuntimeClass(TMapPreviewView *this)
 
 {
   return &classTMapPreviewView;
@@ -67,7 +68,7 @@ CRuntimeClass * TMapPreviewView::GetRuntimeClass()
 // GHIDRA_NAME TMapPreviewView::NoOpUiLifecycleHook
 // GHIDRA_PROTO undefined __thiscall NoOpUiLifecycleHook(void)
 
-void TMapPreviewView::NoOpUiLifecycleHook()
+void __thiscall TMapPreviewView::NoOpUiLifecycleHook(TMapPreviewView *this)
 
 {
   undefined4 uVar1;
@@ -98,9 +99,9 @@ void TMapPreviewView::NoOpUiLifecycleHook()
   puVar6 = &this->field_0x60;
   uStack_20 = unaff_ESI;
   (**(code **)(*g_pDisplayMgr + 0x2c))(puVar6,8,auStack_24);
-  uVar1 = func_0x0040520e(*(undefined4 *)puVar6);
+  uVar1 = thunk_GetSurfaceObjectAtContextOffset24(*(undefined4 *)puVar6);
   puVar2 = (undefined4 *)func_0x00405e39(uVar1);
-  piVar3 = (int *)func_0x0040520e(*(undefined4 *)puVar6);
+  piVar3 = (int *)thunk_GetSurfaceObjectAtContextOffset24(*(undefined4 *)puVar6);
   uVar4 = (unaff_EDI - (int)&stack0xffffffd0) * (*(ushort *)(*piVar3 + 4) & 0x3fff);
   if (0 < (int)uVar4) {
     for (uVar5 = uVar4 >> 2; uVar5 != 0; uVar5 = uVar5 - 1) {
@@ -121,7 +122,7 @@ void TMapPreviewView::NoOpUiLifecycleHook()
 // GHIDRA_NAME TMapPreviewView::Free
 // GHIDRA_PROTO undefined __thiscall Free(void)
 
-void TMapPreviewView::Free()
+void __thiscall TMapPreviewView::Free(TMapPreviewView *this)
 
 {
   func_0x004010e6(&this->field_0x60);
@@ -133,7 +134,8 @@ void TMapPreviewView::Free()
 // GHIDRA_NAME TMapPreviewView::BeginMouseCaptureAndStartRepeatTimer
 // GHIDRA_PROTO undefined __thiscall BeginMouseCaptureAndStartRepeatTimer(int * param_1)
 
-void TMapPreviewView::BeginMouseCaptureAndStartRepeatTimer(int *param_1)
+void __thiscall
+TMapPreviewView::BeginMouseCaptureAndStartRepeatTimer(TMapPreviewView *this,int *param_1)
 
 {
   byte bVar1;
@@ -144,9 +146,9 @@ void TMapPreviewView::BeginMouseCaptureAndStartRepeatTimer(int *param_1)
   int *piVar6;
   int iVar7;
   
-  uVar4 = func_0x0040520e(*(undefined4 *)&this->field_0x60);
+  uVar4 = thunk_GetSurfaceObjectAtContextOffset24(*(undefined4 *)&this->field_0x60);
   iVar5 = func_0x00405e39(uVar4);
-  piVar6 = (int *)func_0x0040520e(*(undefined4 *)&this->field_0x60);
+  piVar6 = (int *)thunk_GetSurfaceObjectAtContextOffset24(*(undefined4 *)&this->field_0x60);
   iVar7 = 0;
   bVar1 = *(byte *)((*(ushort *)(*piVar6 + 4) & 0x3fff) * param_1[1] + iVar5 + *param_1);
   do {
@@ -167,7 +169,7 @@ void TMapPreviewView::BeginMouseCaptureAndStartRepeatTimer(int *param_1)
 
 /* WARNING: Type propagation algorithm not settling */
 
-void TMapPreviewView::ApplyRectSlot110()
+void __thiscall TMapPreviewView::ApplyRectSlot110(TMapPreviewView *this)
 
 {
   int iVar1;
@@ -217,7 +219,7 @@ void TMapPreviewView::ApplyRectSlot110()
 // GHIDRA_NAME TMapPreviewView::TakeSatellitePhoto
 // GHIDRA_PROTO undefined __thiscall TakeSatellitePhoto(int param_1)
 
-void TMapPreviewView::TakeSatellitePhoto(int param_1)
+void __thiscall TMapPreviewView::TakeSatellitePhoto(TMapPreviewView *this,int param_1)
 
 {
   uint uVar1;
@@ -241,9 +243,9 @@ void TMapPreviewView::TakeSatellitePhoto(int param_1)
   short local_6;
   short local_4;
   
-  uVar5 = func_0x0040520e(*(undefined4 *)&this->field_0x60);
+  uVar5 = thunk_GetSurfaceObjectAtContextOffset24(*(undefined4 *)&this->field_0x60);
   local_18 = func_0x00405e39(uVar5);
-  piVar6 = (int *)func_0x0040520e(*(undefined4 *)&this->field_0x60);
+  piVar6 = (int *)thunk_GetSurfaceObjectAtContextOffset24(*(undefined4 *)&this->field_0x60);
   uVar10 = *(ushort *)(*piVar6 + 4) & 0x3fff;
   local_14 = 0;
   do {
@@ -549,9 +551,9 @@ void __fastcall TMapPreviewView::EnhancePhoto(int param_1)
   else {
     local_16 = func_0x00409205(*(undefined2 *)(param_1 + 0x68));
   }
-  uVar3 = func_0x0040520e(*(undefined4 *)(param_1 + 0x60));
+  uVar3 = thunk_GetSurfaceObjectAtContextOffset24(*(undefined4 *)(param_1 + 0x60));
   iVar4 = func_0x00405e39(uVar3);
-  piVar5 = (int *)func_0x0040520e(*(undefined4 *)(param_1 + 0x60));
+  piVar5 = (int *)thunk_GetSurfaceObjectAtContextOffset24(*(undefined4 *)(param_1 + 0x60));
   local_10 = 0xb2;
   uVar7 = *(ushort *)(*piVar5 + 4) & 0x3fff;
   pcVar8 = (char *)(iVar4 + 1 + uVar7);

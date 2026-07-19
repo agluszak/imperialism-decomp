@@ -21,20 +21,20 @@ undefined4 * TTacticalUnit::CreateObject(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005A5D40
-// GHIDRA_NAME TTacticalUnit::OrphanTiny_ReturnZero_005a5d40
-// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_005a5d40(void)
+// GHIDRA_NAME TTacticalUnit::GetBaseActionPoints
+// GHIDRA_PROTO undefined __thiscall GetBaseActionPoints(void)
 
-undefined4 TTacticalUnit::OrphanTiny_ReturnZero_005a5d40()
+undefined4 __thiscall TTacticalUnit::GetBaseActionPoints(TTacticalUnit *this)
 
 {
   return 0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005A5D60
-// GHIDRA_NAME TTacticalUnit::OrphanTiny_ReturnZero_005a5d60
-// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_005a5d60(void)
+// GHIDRA_NAME TTacticalUnit::GetUnitRange
+// GHIDRA_PROTO undefined __thiscall GetUnitRange(void)
 
-undefined4 TTacticalUnit::OrphanTiny_ReturnZero_005a5d60()
+undefined4 __thiscall TTacticalUnit::GetUnitRange(TTacticalUnit *this)
 
 {
   return 0;
@@ -46,7 +46,7 @@ undefined4 TTacticalUnit::OrphanTiny_ReturnZero_005a5d60()
 
 /* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 
-float10 TTacticalUnit::OrphanLeaf_NoCall_Ins02_005a5d80()
+float10 __thiscall TTacticalUnit::OrphanLeaf_NoCall_Ins02_005a5d80(TTacticalUnit *this)
 
 {
   return (float10)_DAT_00669ec0;
@@ -58,7 +58,7 @@ float10 TTacticalUnit::OrphanLeaf_NoCall_Ins02_005a5d80()
 
 /* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 
-float10 TTacticalUnit::OrphanLeaf_NoCall_Ins02_005a5da0()
+float10 __thiscall TTacticalUnit::OrphanLeaf_NoCall_Ins02_005a5da0(TTacticalUnit *this)
 
 {
   return (float10)_DAT_00669ec0;
@@ -68,7 +68,8 @@ float10 TTacticalUnit::OrphanLeaf_NoCall_Ins02_005a5da0()
 // GHIDRA_NAME TTacticalUnit::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TTacticalUnit * TTacticalUnit::_scalar_deleting_destructor_(byte param_1)
+TTacticalUnit * __thiscall
+TTacticalUnit::_scalar_deleting_destructor_(TTacticalUnit *this,byte param_1)
 
 {
   func_0x0040443a();
@@ -82,7 +83,7 @@ TTacticalUnit * TTacticalUnit::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TTacticalUnit::CreateTTacticalUnitInstance
 // GHIDRA_PROTO undefined __thiscall CreateTTacticalUnitInstance(void)
 
-void TTacticalUnit::CreateTTacticalUnitInstance()
+void __thiscall TTacticalUnit::CreateTTacticalUnitInstance(TTacticalUnit *this)
 
 {
   this->vftable = (TTacticalUnitVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
@@ -93,7 +94,7 @@ void TTacticalUnit::CreateTTacticalUnitInstance()
 // GHIDRA_NAME TTacticalUnit::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TTacticalUnit::GetRuntimeClass()
+CRuntimeClass * __thiscall TTacticalUnit::GetRuntimeClass(TTacticalUnit *this)
 
 {
   return &classTTacticalUnit;
@@ -103,7 +104,7 @@ CRuntimeClass * TTacticalUnit::GetRuntimeClass()
 // GHIDRA_NAME TTacticalUnit::ConstructTTacticalUnitBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTTacticalUnitBaseState(void)
 
-void TTacticalUnit::ConstructTTacticalUnitBaseState()
+void __thiscall TTacticalUnit::ConstructTTacticalUnitBaseState(TTacticalUnit *this)
 
 {
   undefined uVar1;
@@ -120,10 +121,10 @@ void TTacticalUnit::ConstructTTacticalUnitBaseState()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005A5E70
-// GHIDRA_NAME TTacticalUnit::VTableSlot0E
-// GHIDRA_PROTO undefined __thiscall VTableSlot0E(int param_1)
+// GHIDRA_NAME TTacticalUnit::ApplyTacticalDamage
+// GHIDRA_PROTO undefined __thiscall ApplyTacticalDamage(int param_1)
 
-void TTacticalUnit::VTableSlot0E(int param_1)
+void __thiscall TTacticalUnit::ApplyTacticalDamage(TTacticalUnit *this,int param_1)
 
 {
   int iVar1;
@@ -138,10 +139,10 @@ void TTacticalUnit::VTableSlot0E(int param_1)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005A5EB0
-// GHIDRA_NAME TTacticalUnit::CreateTArmyTacUnitInstance
-// GHIDRA_PROTO undefined __thiscall CreateTArmyTacUnitInstance(void)
+// GHIDRA_NAME TTacticalUnit::FlipUnitSideAffiliation
+// GHIDRA_PROTO undefined __thiscall FlipUnitSideAffiliation(void)
 
-void TTacticalUnit::CreateTArmyTacUnitInstance()
+void __thiscall TTacticalUnit::FlipUnitSideAffiliation(TTacticalUnit *this)
 
 {
   *(uint *)&this->field_0x20 = (uint)(*(int *)&this->field_0x20 == 0);

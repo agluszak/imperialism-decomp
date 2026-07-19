@@ -7,7 +7,7 @@
 // GHIDRA_NAME TSpecialQuitPicture::OrphanRetStub_0045acb0
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_0045acb0(void)
 
-void TSpecialQuitPicture::OrphanRetStub_0045acb0()
+void __thiscall TSpecialQuitPicture::OrphanRetStub_0045acb0(TSpecialQuitPicture *this)
 
 {
   return;
@@ -17,7 +17,8 @@ void TSpecialQuitPicture::OrphanRetStub_0045acb0()
 // GHIDRA_NAME TSpecialQuitPicture::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TSpecialQuitPicture * TSpecialQuitPicture::_scalar_deleting_destructor_(byte param_1)
+TSpecialQuitPicture * __thiscall
+TSpecialQuitPicture::_scalar_deleting_destructor_(TSpecialQuitPicture *this,byte param_1)
 
 {
   func_0x00406f19();
@@ -61,7 +62,7 @@ undefined4 * TSpecialQuitPicture::CreateObject(void)
 // GHIDRA_NAME TSpecialQuitPicture::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TSpecialQuitPicture::GetRuntimeClass()
+CRuntimeClass * __thiscall TSpecialQuitPicture::GetRuntimeClass(TSpecialQuitPicture *this)
 
 {
   return &classTSpecialQuitPicture;
@@ -71,7 +72,7 @@ CRuntimeClass * TSpecialQuitPicture::GetRuntimeClass()
 // GHIDRA_NAME TSpecialQuitPicture::NoOpUiLifecycleHook
 // GHIDRA_PROTO undefined __thiscall NoOpUiLifecycleHook(void)
 
-void TSpecialQuitPicture::NoOpUiLifecycleHook()
+void __thiscall TSpecialQuitPicture::NoOpUiLifecycleHook(TSpecialQuitPicture *this)
 
 {
   _vslot_fn *p_Var1;
@@ -222,7 +223,8 @@ void TSpecialQuitPicture::NoOpUiLifecycleHook()
    Returns:
    - void. */
 
-void TSpecialQuitPicture::HandleEvent(int nMessage, int pUiEvent)
+void __thiscall
+TSpecialQuitPicture::HandleEvent(TSpecialQuitPicture *this,int nMessage,int pUiEvent)
 
 {
   short sVar1;

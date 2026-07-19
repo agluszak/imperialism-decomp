@@ -25,7 +25,7 @@ undefined4 * TMapMaker::CreateObject(void)
 // GHIDRA_NAME TMapMaker::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TMapMaker::GetRuntimeClass()
+CRuntimeClass * __thiscall TMapMaker::GetRuntimeClass(TMapMaker *this)
 
 {
   return &classRuntimeClass;
@@ -35,7 +35,7 @@ CRuntimeClass * TMapMaker::GetRuntimeClass()
 // GHIDRA_NAME TMapMaker::ConstructTMapMaker
 // GHIDRA_PROTO undefined __thiscall ConstructTMapMaker(void)
 
-void TMapMaker::ConstructTMapMaker()
+void __thiscall TMapMaker::ConstructTMapMaker(TMapMaker *this)
 
 {
   this->padding_08_to_0b = 0;
@@ -47,7 +47,7 @@ void TMapMaker::ConstructTMapMaker()
 // GHIDRA_NAME TMapMaker::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TMapMaker * TMapMaker::_scalar_deleting_destructor_(byte param_1)
+TMapMaker * __thiscall TMapMaker::_scalar_deleting_destructor_(TMapMaker *this,byte param_1)
 
 {
   func_0x0040225c();
@@ -61,18 +61,563 @@ TMapMaker * TMapMaker::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TMapMaker::DestructTMapMaker
 // GHIDRA_PROTO undefined __thiscall DestructTMapMaker(void)
 
-void TMapMaker::DestructTMapMaker()
+void __thiscall TMapMaker::DestructTMapMaker(TMapMaker *this)
 
 {
   this->vftable = (TMapMakerVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   return;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00525A30
+// GHIDRA_NAME TMapMaker::GenerateMapFromTuningStringAndApplyScenarioOverrides
+// GHIDRA_PROTO undefined __thiscall GenerateMapFromTuningStringAndApplyScenarioOverrides(undefined4 param_1, undefined4 * param_2, undefined4 * param_3)
+
+void __thiscall
+TMapMaker::GenerateMapFromTuningStringAndApplyScenarioOverrides
+          (TMapMaker *this,undefined4 param_1,undefined4 *param_2,undefined4 *param_3)
+
+{
+  TMapMakerVtbl *pTVar1;
+  char cVar2;
+  int *piVar3;
+  char *pcVar4;
+  char *pcVar5;
+  uint uVar6;
+  int iVar7;
+  uint uVar8;
+  int iVar9;
+  bool bVar10;
+  
+  this->padding_08_to_0b = param_1;
+  iVar9 = 0x96;
+  iVar7 = 0xfa;
+  this->field0c = (int)param_2;
+  DAT_006a38bc = 200;
+  DAT_006a3470 = 0x96;
+  DAT_006a38c0 = 0xfa;
+  DAT_006a38f8 = 0xfa;
+  DAT_006a38e0 = 0x96;
+  DAT_006a38e4 = 10;
+  DAT_006a38ec = 0xe;
+  DAT_006a38f0 = 8;
+  pcVar5 = (char *)*param_3;
+  bVar10 = false;
+  uVar8 = 1000;
+  cVar2 = *pcVar5;
+  while (cVar2 != '\0') {
+    pcVar4 = pcVar5;
+    if (bVar10) {
+LAB_00525acd:
+      switch(cVar2) {
+      case 'C':
+        DAT_006a38ec = 10;
+        DAT_006a38f0 = 6;
+        break;
+      case 'D':
+        DAT_006a38bc = 300;
+        break;
+      case 'F':
+        iVar7 = 500;
+        DAT_006a38f8 = 500;
+        break;
+      case 'H':
+        DAT_006a38c0 = 500;
+        break;
+      case 'M':
+        DAT_006a3470 = 300;
+        break;
+      case 'P':
+        uVar8 = 0x2ee;
+        break;
+      case 'R':
+        DAT_006a38e4 = 0x14;
+        break;
+      case 'S':
+        iVar9 = 300;
+        DAT_006a38e0 = 300;
+        break;
+      case 'c':
+        DAT_006a38ec = 0x12;
+        DAT_006a38f0 = 10;
+        break;
+      case 'd':
+        DAT_006a38bc = 100;
+        break;
+      case 'f':
+        iVar7 = 100;
+        DAT_006a38f8 = 100;
+        break;
+      case 'h':
+        DAT_006a38c0 = 100;
+        break;
+      case 'm':
+        DAT_006a3470 = 100;
+        break;
+      case 'p':
+        uVar8 = 0x5dc;
+        break;
+      case 'r':
+        DAT_006a38e4 = 5;
+        break;
+      case 's':
+        iVar9 = 100;
+        DAT_006a38e0 = 100;
+      }
+    }
+    else {
+      if (cVar2 == '@') {
+        cVar2 = pcVar5[1];
+        pcVar4 = pcVar5 + 1;
+        if (cVar2 == '^') {
+          cVar2 = pcVar5[2];
+          pcVar4 = pcVar5 + 2;
+          bVar10 = cVar2 == '>';
+        }
+      }
+      if (bVar10) goto LAB_00525acd;
+    }
+    pcVar5 = pcVar4 + 1;
+    cVar2 = pcVar4[1];
+  }
+  uVar6 = iVar9 + DAT_006a38c0 + iVar7 + DAT_006a38bc + DAT_006a3470;
+  if (uVar6 != uVar8) {
+    DAT_006a38bc = (uVar8 * DAT_006a38bc) / uVar6;
+    DAT_006a3470 = (uVar8 * DAT_006a3470) / uVar6;
+    DAT_006a38c0 = (uVar8 * DAT_006a38c0) / uVar6;
+    DAT_006a38f8 = (undefined4)((ulonglong)(uVar8 * iVar7) / (ulonglong)(longlong)(int)uVar6);
+    DAT_006a38e0 = (undefined4)((ulonglong)(uVar8 * iVar9) / (ulonglong)(longlong)(int)uVar6);
+  }
+  DAT_006a38e8 = 0x6e616461;
+  pcVar5 = (char *)*param_3;
+  cVar2 = *pcVar5;
+  while (cVar2 != '\0') {
+    DAT_006a38e8 = ((int)DAT_006a38e8 >> 0x10) + DAT_006a38e8 * 2 + (int)cVar2;
+    pcVar4 = pcVar5 + 1;
+    pcVar5 = pcVar5 + 1;
+    cVar2 = *pcVar4;
+  }
+  if (DAT_006a38e8 == 0) {
+    DAT_006a38e8 = GetCurrentLocalEpochSecondsWithTimezoneCache(0);
+  }
+  DAT_006a38e8 = DAT_006a38e8 * 0x15a4e35 + 1;
+  DAT_006a5aec = DAT_006a38e8 >> 0xc & 0x7fff;
+  if (DAT_006a5aec == 0) {
+    DAT_006a5aec = GetCurrentLocalEpochSecondsWithTimezoneCache(0);
+  }
+  pTVar1 = this->vftable;
+  do {
+    do {
+      if (g_pActiveRandomMapSetupPicture006A4268 != 0) {
+        func_0x00401c2b();
+      }
+      (*pTVar1->ReleaseRuntimeSelectionOwnerAndDestroyObject)();
+      cVar2 = (*pTVar1->GetTEventHandlerClassNamePointer_1a)();
+      if (cVar2 == '\0') {
+        cVar2 = func_0x00402536();
+        if (cVar2 == '\0') {
+          bVar10 = true;
+        }
+        else {
+          cVar2 = func_0x00404d45();
+          bVar10 = cVar2 == '\0';
+        }
+      }
+      else {
+        bVar10 = true;
+      }
+    } while (bVar10);
+    if (g_pActiveRandomMapSetupPicture006A4268 != 0) {
+      func_0x00401c2b();
+    }
+    piVar3 = (int *)&this->field_0x200;
+    iVar9 = 0x17;
+    do {
+      if (*piVar3 == -1) {
+        iVar7 = *(int *)&this->field_0x1fc + 1;
+        *(int *)&this->field_0x1fc = iVar7;
+        *piVar3 = iVar7;
+      }
+      piVar3 = piVar3 + 1;
+      iVar9 = iVar9 + -1;
+    } while (iVar9 != 0);
+    if (g_pActiveRandomMapSetupPicture006A4268 != 0) {
+      func_0x00401c2b();
+    }
+    (*pTVar1->OrphanCallChain_C11_I88_004874b0)();
+    if ((g_pActiveRandomMapSetupPicture006A4268 != 0) &&
+       (func_0x00401c2b(), g_pActiveRandomMapSetupPicture006A4268 != 0)) {
+      func_0x00401c2b();
+    }
+    (*pTVar1->OrphanCallChain_C11_I88_004874b0_1e)();
+    if (g_pActiveRandomMapSetupPicture006A4268 != 0) {
+      func_0x00401c2b();
+    }
+    (*pTVar1->ReleaseRuntimeSelectionOwnerAndDestroyObject_0f)();
+    if (g_pActiveRandomMapSetupPicture006A4268 != 0) {
+      func_0x00401c2b();
+    }
+    func_0x00406d4d();
+    if (g_pActiveRandomMapSetupPicture006A4268 != 0) {
+      func_0x00401c2b();
+    }
+    (*pTVar1->OrphanRetStub_0059add0_19)(0);
+    pcVar5 = (char *)*param_2;
+    uVar8 = DAT_006a38e8;
+    if (DAT_006976d8 != '\0') {
+      iVar9 = 0x6976d9 - (int)pcVar5;
+      cVar2 = DAT_006976d8;
+      do {
+        if (cVar2 != *pcVar5) goto LAB_00525e16;
+        cVar2 = pcVar5[iVar9];
+        pcVar5 = pcVar5 + 1;
+      } while (cVar2 != '\0');
+    }
+    if ((*pcVar5 == '\0') || (*pcVar5 == ' ')) {
+      pcVar5 = (char *)this->padding_08_to_0b;
+      iVar9 = 0x1950;
+      do {
+        if ((*pcVar5 != '\x05') &&
+           (DAT_006a38e8 = uVar8 * 0x15a4e35 + 1, uVar8 = DAT_006a38e8,
+           (DAT_006a38e8 >> 0xc & 0x7fff) % 10 != 0)) {
+          *pcVar5 = '\x06';
+          uVar8 = DAT_006a38e8;
+        }
+        pcVar5 = pcVar5 + 0x24;
+        iVar9 = iVar9 + -1;
+      } while (iVar9 != 0);
+    }
+LAB_00525e16:
+    pcVar5 = (char *)*param_2;
+    if (s_Congo_006976d0[0] != '\0') {
+      iVar9 = 1 - (int)pcVar5;
+      cVar2 = s_Congo_006976d0[0];
+      do {
+        if (cVar2 != *pcVar5) goto LAB_00525e87;
+        cVar2 = pcVar5[(int)(s_Congo_006976d0 + iVar9)];
+        pcVar5 = pcVar5 + 1;
+      } while (cVar2 != '\0');
+    }
+    if ((*pcVar5 == '\0') || (*pcVar5 == ' ')) {
+      pcVar5 = (char *)this->padding_08_to_0b;
+      iVar9 = 0x1950;
+      do {
+        if ((*pcVar5 != '\x05') &&
+           (DAT_006a38e8 = uVar8 * 0x15a4e35 + 1, uVar8 = DAT_006a38e8,
+           (DAT_006a38e8 >> 0xc & 0x7fff) % 10 != 0)) {
+          *pcVar5 = '\x01';
+          pcVar5[0x13] = '\r';
+          uVar8 = DAT_006a38e8;
+        }
+        pcVar5 = pcVar5 + 0x24;
+        iVar9 = iVar9 + -1;
+      } while (iVar9 != 0);
+    }
+LAB_00525e87:
+    pcVar5 = (char *)*param_2;
+    if (s_Mirkwood_006976c4[0] != '\0') {
+      iVar9 = 1 - (int)pcVar5;
+      cVar2 = s_Mirkwood_006976c4[0];
+      do {
+        if (cVar2 != *pcVar5) goto LAB_00525f13;
+        cVar2 = pcVar5[(int)(s_Mirkwood_006976c4 + iVar9)];
+        pcVar5 = pcVar5 + 1;
+      } while (cVar2 != '\0');
+    }
+    if ((*pcVar5 == '\0') || (*pcVar5 == ' ')) {
+      pcVar5 = (char *)this->padding_08_to_0b;
+      iVar9 = 0x1950;
+      do {
+        if ((*pcVar5 != '\x05') &&
+           (DAT_006a38e8 = uVar8 * 0x15a4e35 + 1, uVar8 = DAT_006a38e8,
+           (DAT_006a38e8 >> 0xc & 0x7fff) % 10 != 0)) {
+          *pcVar5 = '\x01';
+          DAT_006a38e8 = DAT_006a38e8 * 0x15a4e35 + 1;
+          pcVar5[0x13] = (~(byte)(DAT_006a38e8 >> 0xc) & 1) << 1 | 0xd;
+          uVar8 = DAT_006a38e8;
+        }
+        pcVar5 = pcVar5 + 0x24;
+        iVar9 = iVar9 + -1;
+      } while (iVar9 != 0);
+    }
+LAB_00525f13:
+    pcVar5 = (char *)*param_2;
+    pcVar4 = pcVar5;
+    if (s_Yucatan_006976b8[0] != '\0') {
+      cVar2 = s_Yucatan_006976b8[0];
+      do {
+        if (cVar2 != *pcVar4) goto LAB_00525f43;
+        cVar2 = pcVar4[(int)(s_Yucatan_006976b8 + (1 - (int)pcVar5))];
+        pcVar4 = pcVar4 + 1;
+      } while (cVar2 != '\0');
+    }
+    if ((*pcVar4 == '\0') || (*pcVar4 == ' ')) {
+LAB_00525f6d:
+      pcVar5 = (char *)this->padding_08_to_0b;
+      iVar9 = 0x1950;
+      do {
+        if ((*pcVar5 != '\x05') &&
+           (DAT_006a38e8 = uVar8 * 0x15a4e35 + 1, uVar8 = DAT_006a38e8,
+           (DAT_006a38e8 >> 0xc & 0x7fff) % 10 != 0)) {
+          *pcVar5 = '\x01';
+          pcVar5[0x13] = '\x0f';
+          uVar8 = DAT_006a38e8;
+        }
+        pcVar5 = pcVar5 + 0x24;
+        iVar9 = iVar9 + -1;
+      } while (iVar9 != 0);
+    }
+    else {
+LAB_00525f43:
+      if (s_Siberia_006976ac[0] != '\0') {
+        iVar9 = 1 - (int)pcVar5;
+        cVar2 = s_Siberia_006976ac[0];
+        do {
+          if (cVar2 != *pcVar5) goto LAB_00525fb0;
+          cVar2 = pcVar5[(int)(s_Siberia_006976ac + iVar9)];
+          pcVar5 = pcVar5 + 1;
+        } while (cVar2 != '\0');
+      }
+      if ((*pcVar5 == '\0') || (*pcVar5 == ' ')) goto LAB_00525f6d;
+    }
+LAB_00525fb0:
+    pcVar5 = (char *)*param_2;
+    if (s_Antarctica_0069769c[0] != '\0') {
+      iVar9 = 1 - (int)pcVar5;
+      cVar2 = s_Antarctica_0069769c[0];
+      do {
+        if (cVar2 != *pcVar5) goto LAB_00526021;
+        cVar2 = pcVar5[(int)(s_Antarctica_0069769c + iVar9)];
+        pcVar5 = pcVar5 + 1;
+      } while (cVar2 != '\0');
+    }
+    if ((*pcVar5 == '\0') || (*pcVar5 == ' ')) {
+      pcVar5 = (char *)this->padding_08_to_0b;
+      iVar9 = 0x1950;
+      do {
+        if ((*pcVar5 != '\x05') &&
+           (DAT_006a38e8 = uVar8 * 0x15a4e35 + 1, uVar8 = DAT_006a38e8,
+           (DAT_006a38e8 >> 0xc & 0x7fff) % 10 != 0)) {
+          *pcVar5 = '\x06';
+          pcVar5[0x13] = '\f';
+          uVar8 = DAT_006a38e8;
+        }
+        pcVar5 = pcVar5 + 0x24;
+        iVar9 = iVar9 + -1;
+      } while (iVar9 != 0);
+    }
+LAB_00526021:
+    pcVar5 = (char *)*param_2;
+    if (s_Kansas_00697694[0] != '\0') {
+      iVar9 = 1 - (int)pcVar5;
+      cVar2 = s_Kansas_00697694[0];
+      do {
+        if (cVar2 != *pcVar5) goto LAB_0052608e;
+        cVar2 = pcVar5[(int)(s_Kansas_00697694 + iVar9)];
+        pcVar5 = pcVar5 + 1;
+      } while (cVar2 != '\0');
+    }
+    if ((*pcVar5 == '\0') || (*pcVar5 == ' ')) {
+      pcVar5 = (char *)this->padding_08_to_0b;
+      iVar9 = 0x1950;
+      do {
+        if ((*pcVar5 != '\x05') &&
+           (DAT_006a38e8 = uVar8 * 0x15a4e35 + 1, uVar8 = DAT_006a38e8,
+           (DAT_006a38e8 >> 0xc & 0x7fff) % 10 != 0)) {
+          *pcVar5 = '\0';
+          uVar8 = DAT_006a38e8;
+        }
+        pcVar5 = pcVar5 + 0x24;
+        iVar9 = iVar9 + -1;
+      } while (iVar9 != 0);
+    }
+LAB_0052608e:
+    pcVar5 = (char *)*param_2;
+    if (DAT_0069768c != '\0') {
+      iVar9 = 0x69768d - (int)pcVar5;
+      cVar2 = DAT_0069768c;
+      do {
+        if (cVar2 != *pcVar5) goto LAB_005260fb;
+        cVar2 = pcVar5[iVar9];
+        pcVar5 = pcVar5 + 1;
+      } while (cVar2 != '\0');
+    }
+    if ((*pcVar5 == '\0') || (*pcVar5 == ' ')) {
+      pcVar5 = (char *)this->padding_08_to_0b;
+      iVar9 = 0x1950;
+      do {
+        if ((*pcVar5 != '\x05') &&
+           (DAT_006a38e8 = uVar8 * 0x15a4e35 + 1, uVar8 = DAT_006a38e8,
+           (DAT_006a38e8 >> 0xc & 0x7fff) % 10 != 0)) {
+          *pcVar5 = '\a';
+          uVar8 = DAT_006a38e8;
+        }
+        pcVar5 = pcVar5 + 0x24;
+        iVar9 = iVar9 + -1;
+      } while (iVar9 != 0);
+    }
+LAB_005260fb:
+    pcVar5 = (char *)*param_2;
+    if (s_Everglades_0069767c[0] != '\0') {
+      iVar9 = 1 - (int)pcVar5;
+      cVar2 = s_Everglades_0069767c[0];
+      do {
+        if (cVar2 != *pcVar5) goto LAB_00526168;
+        cVar2 = pcVar5[(int)(s_Everglades_0069767c + iVar9)];
+        pcVar5 = pcVar5 + 1;
+      } while (cVar2 != '\0');
+    }
+    if ((*pcVar5 == '\0') || (*pcVar5 == ' ')) {
+      pcVar5 = (char *)this->padding_08_to_0b;
+      iVar9 = 0x1950;
+      do {
+        if ((*pcVar5 != '\x05') &&
+           (DAT_006a38e8 = uVar8 * 0x15a4e35 + 1, uVar8 = DAT_006a38e8,
+           (DAT_006a38e8 >> 0xc & 0x7fff) % 5 != 0)) {
+          *pcVar5 = '\x04';
+          uVar8 = DAT_006a38e8;
+        }
+        pcVar5 = pcVar5 + 0x24;
+        iVar9 = iVar9 + -1;
+      } while (iVar9 != 0);
+    }
+LAB_00526168:
+    pcVar5 = (char *)*param_2;
+    if (s_Nepal_00697674[0] != '\0') {
+      iVar9 = 1 - (int)pcVar5;
+      cVar2 = s_Nepal_00697674[0];
+      do {
+        if (cVar2 != *pcVar5) goto LAB_005261d5;
+        cVar2 = pcVar5[(int)(s_Nepal_00697674 + iVar9)];
+        pcVar5 = pcVar5 + 1;
+      } while (cVar2 != '\0');
+    }
+    if ((*pcVar5 == '\0') || (*pcVar5 == ' ')) {
+      pcVar5 = (char *)this->padding_08_to_0b;
+      iVar9 = 0x1950;
+      do {
+        if ((*pcVar5 != '\x05') &&
+           (DAT_006a38e8 = uVar8 * 0x15a4e35 + 1, uVar8 = DAT_006a38e8,
+           (DAT_006a38e8 >> 0xc & 0x7fff) % 5 != 0)) {
+          *pcVar5 = '\x03';
+          uVar8 = DAT_006a38e8;
+        }
+        pcVar5 = pcVar5 + 0x24;
+        iVar9 = iVar9 + -1;
+      } while (iVar9 != 0);
+    }
+LAB_005261d5:
+    pcVar5 = (char *)*param_2;
+    if (s_Scotland_00697668[0] != '\0') {
+      iVar9 = 1 - (int)pcVar5;
+      cVar2 = s_Scotland_00697668[0];
+      do {
+        if (cVar2 != *pcVar5) goto LAB_00526242;
+        cVar2 = pcVar5[(int)(s_Scotland_00697668 + iVar9)];
+        pcVar5 = pcVar5 + 1;
+      } while (cVar2 != '\0');
+    }
+    if ((*pcVar5 == '\0') || (*pcVar5 == ' ')) {
+      pcVar5 = (char *)this->padding_08_to_0b;
+      iVar9 = 0x1950;
+      do {
+        if ((*pcVar5 != '\x05') &&
+           (DAT_006a38e8 = uVar8 * 0x15a4e35 + 1, uVar8 = DAT_006a38e8,
+           (DAT_006a38e8 >> 0xc & 0x7fff) % 5 != 0)) {
+          *pcVar5 = '\x02';
+          uVar8 = DAT_006a38e8;
+        }
+        pcVar5 = pcVar5 + 0x24;
+        iVar9 = iVar9 + -1;
+      } while (iVar9 != 0);
+    }
+LAB_00526242:
+    pcVar5 = (char *)*param_2;
+    if (s_Eclectia_0069765c[0] != '\0') {
+      iVar9 = 1 - (int)pcVar5;
+      cVar2 = s_Eclectia_0069765c[0];
+      do {
+        if (cVar2 != *pcVar5) goto LAB_005262cf;
+        cVar2 = pcVar5[(int)(s_Eclectia_0069765c + iVar9)];
+        pcVar5 = pcVar5 + 1;
+      } while (cVar2 != '\0');
+    }
+    if ((*pcVar5 == '\0') || (*pcVar5 == ' ')) {
+      pcVar5 = (char *)this->padding_08_to_0b;
+      iVar9 = 0x1950;
+      do {
+        iVar7 = (int)pcVar5[4] % 7;
+        if (4 < iVar7) {
+          iVar7 = iVar7 + 1;
+        }
+        if (((*pcVar5 != '\x05') &&
+            (DAT_006a38e8 = uVar8 * 0x15a4e35 + 1, uVar8 = DAT_006a38e8,
+            (DAT_006a38e8 >> 0xc & 0x7fff) % 5 != 0)) &&
+           (*pcVar5 = (char)iVar7, uVar8 = DAT_006a38e8, iVar7 == 1)) {
+          pcVar5[0x13] = '\x0f';
+          uVar8 = DAT_006a38e8;
+        }
+        pcVar5 = pcVar5 + 0x24;
+        iVar9 = iVar9 + -1;
+      } while (iVar9 != 0);
+    }
+LAB_005262cf:
+    if (g_pActiveRandomMapSetupPicture006A4268 != 0) {
+      func_0x00401c2b();
+    }
+    cVar2 = func_0x00406091();
+    if (cVar2 != '\0') {
+      if (g_pActiveRandomMapSetupPicture006A4268 != 0) {
+        func_0x00401c2b();
+      }
+      return;
+    }
+    (*g_pGlobalMapState->vftable->WrapperFor_AllocateWithFallbackHandler_At0050e8b0)();
+    if (g_pActiveRandomMapSetupPicture006A4268 != 0) {
+      func_0x00401c2b();
+    }
+  } while( true );
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00526760
+// GHIDRA_NAME TMapMaker::ValidateTerrainClassAdjacencyCoverageMask
+// GHIDRA_PROTO undefined ValidateTerrainClassAdjacencyCoverageMask()
+
+bool __fastcall TMapMaker::ValidateTerrainClassAdjacencyCoverageMask(int *param_1)
+
+{
+  code *pcVar1;
+  int iVar2;
+  int iVar3;
+  int iVar4;
+  undefined4 local_4;
+  
+  local_4 = 0;
+  iVar3 = 0x1b;
+  do {
+    if (*(char *)(iVar3 + 0x10 + (int)param_1) != -1) {
+      iVar4 = 0;
+      pcVar1 = *(code **)(*param_1 + 0x74);
+      do {
+        iVar2 = (*pcVar1)(iVar3,iVar4);
+        if (*(char *)(iVar2 + 0x10 + (int)param_1) == -1) {
+          local_4 = local_4 | 1 << (*(byte *)(iVar3 + 0x10 + (int)param_1) & 0x1f);
+          break;
+        }
+        iVar4 = iVar4 + 1;
+      } while (iVar4 < 6);
+    }
+    iVar3 = iVar3 + 1;
+    if (0x179 < iVar3) {
+      return local_4 == 0x7fffff;
+    }
+  } while( true );
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00526BA0
 // GHIDRA_NAME TMapMaker::GetBoolSlot28
 // GHIDRA_PROTO undefined __thiscall GetBoolSlot28(uint * param_1, uint * param_2)
 
-void TMapMaker::GetBoolSlot28(uint *param_1, uint *param_2)
+void __thiscall TMapMaker::GetBoolSlot28(TMapMaker *this,uint *param_1,uint *param_2)
 
 {
   DAT_006a38e8 = DAT_006a38e8 * 0x15a4e35 + 1;
@@ -83,10 +628,10 @@ void TMapMaker::GetBoolSlot28(uint *param_1, uint *param_2)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00526C20
-// GHIDRA_NAME TMapMaker::SetControlValue
-// GHIDRA_PROTO undefined __thiscall SetControlValue(void)
+// GHIDRA_NAME TMapMaker::RunMapGenerationAttempt
+// GHIDRA_PROTO undefined __thiscall RunMapGenerationAttempt(void)
 
-void TMapMaker::SetControlValue()
+void __thiscall TMapMaker::RunMapGenerationAttempt(TMapMaker *this)
 
 {
   int *piVar1;
@@ -141,7 +686,7 @@ void TMapMaker::SetControlValue()
   *(undefined4 *)&this->field_0x29c = 0xffffffff;
   local_28 = 0;
   do {
-    if (DAT_006a4268 != 0) {
+    if (g_pActiveRandomMapSetupPicture006A4268 != 0) {
       func_0x00401c2b();
     }
     do {
@@ -181,7 +726,7 @@ void TMapMaker::SetControlValue()
   p_Var4 = pTVar3->UpdateControlCachedIntFromWindowText;
   puStack_20 = (undefined4 *)&this->field_0x21c;
   do {
-    if (DAT_006a4268 != 0) {
+    if (g_pActiveRandomMapSetupPicture006A4268 != 0) {
       func_0x00401c2b();
     }
     uVar10 = (int)(local_28 + -7 + (local_28 + -7 >> 0x1f & 3U)) >> 2;
@@ -240,7 +785,7 @@ void TMapMaker::SetControlValue()
 // GHIDRA_NAME TMapMaker::QueryStepValue
 // GHIDRA_PROTO undefined __thiscall QueryStepValue(int param_1, int param_2)
 
-int TMapMaker::QueryStepValue(int param_1, int param_2)
+int __thiscall TMapMaker::QueryStepValue(TMapMaker *this,int param_1,int param_2)
 
 {
   TMapMakerVtbl *pTVar1;
@@ -358,7 +903,8 @@ int TMapMaker::QueryStepValue(int param_1, int param_2)
 // GHIDRA_NAME TMapMaker::DispatchQueuedUiCommandAndRelease
 // GHIDRA_PROTO undefined __thiscall DispatchQueuedUiCommandAndRelease(undefined4 param_1, int param_2)
 
-uint TMapMaker::DispatchQueuedUiCommandAndRelease(undefined4 param_1, int param_2)
+uint __thiscall
+TMapMaker::DispatchQueuedUiCommandAndRelease(TMapMaker *this,undefined4 param_1,int param_2)
 
 {
   _vslot_fn *p_Var1;
@@ -447,7 +993,7 @@ LAB_0052745a:
 // GHIDRA_NAME TMapMaker::DispatchEvent
 // GHIDRA_PROTO undefined __thiscall DispatchEvent(undefined4 param_1, int param_2)
 
-uint TMapMaker::DispatchEvent(undefined4 param_1, int param_2)
+uint __thiscall TMapMaker::DispatchEvent(TMapMaker *this,undefined4 param_1,int param_2)
 
 {
   _vslot_fn *p_Var1;
@@ -492,10 +1038,10 @@ uint TMapMaker::DispatchEvent(undefined4 param_1, int param_2)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005275A0
-// GHIDRA_NAME TMapMaker::DispatchUiSelectionToHandler
-// GHIDRA_PROTO undefined __thiscall DispatchUiSelectionToHandler(void)
+// GHIDRA_NAME TMapMaker::MapGenPassSlot0E
+// GHIDRA_PROTO undefined __thiscall MapGenPassSlot0E(void)
 
-void TMapMaker::DispatchUiSelectionToHandler()
+void __thiscall TMapMaker::MapGenPassSlot0E(TMapMaker *this)
 
 {
   undefined1 *puVar1;
@@ -580,10 +1126,10 @@ void TMapMaker::DispatchUiSelectionToHandler()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00527730
-// GHIDRA_NAME TMapMaker::HandleEvent
-// GHIDRA_PROTO undefined __thiscall HandleEvent(void)
+// GHIDRA_NAME TMapMaker::MapGenPassSlot0F
+// GHIDRA_PROTO undefined __thiscall MapGenPassSlot0F(void)
 
-void TMapMaker::HandleEvent()
+void __thiscall TMapMaker::MapGenPassSlot0F(TMapMaker *this)
 
 {
   TMapMakerVtbl *pTVar1;
@@ -620,7 +1166,7 @@ void TMapMaker::HandleEvent()
     uVar5 = (*this->vftable->OrphanTiny_ReturnZero_0048a730_12)
                       (uVar12,(uVar6 & 0x7fff) % 0xc + 3,(DAT_006a38e8 >> 0xc & 0x7fff) % 6);
   }
-  if (DAT_006a4268 != 0) {
+  if (g_pActiveRandomMapSetupPicture006A4268 != 0) {
     func_0x00401c2b();
   }
   pcStack_1c = (char *)this->padding_08_to_0b;
@@ -667,7 +1213,7 @@ LAB_00527893:
     pcStack_1c = pcStack_1c + 0x24;
     local_c = local_c + 1;
   } while ((int)local_c < 0x1950);
-  if (DAT_006a4268 != 0) {
+  if (g_pActiveRandomMapSetupPicture006A4268 != 0) {
     func_0x00401c2b();
     uVar6 = DAT_006a38e8;
   }
@@ -681,12 +1227,12 @@ LAB_00527893:
       uVar6 = DAT_006a38e8;
     }
   }
-  if (DAT_006a4268 != 0) {
+  if (g_pActiveRandomMapSetupPicture006A4268 != 0) {
     func_0x00401c2b();
   }
   pTVar1 = this->vftable;
   (*pTVar1->VTableSlot13)();
-  if (DAT_006a4268 != 0) {
+  if (g_pActiveRandomMapSetupPicture006A4268 != 0) {
     func_0x00401c2b();
   }
   local_c = local_c & 0xffffff00;
@@ -701,13 +1247,13 @@ LAB_00527893:
       }
     } while (0 < iVar14);
   }
-  if (DAT_006a4268 != 0) {
+  if (g_pActiveRandomMapSetupPicture006A4268 != 0) {
     func_0x00401c2b();
   }
   do {
     do {
       if (iVar8 < 1) {
-        if (DAT_006a4268 != 0) {
+        if (g_pActiveRandomMapSetupPicture006A4268 != 0) {
           func_0x00401c2b();
         }
         pcVar11 = (char *)this->padding_08_to_0b;
@@ -723,7 +1269,7 @@ LAB_00527893:
           pcVar11 = pcVar11 + 0x24;
           iVar8 = iVar8 + -1;
         } while (iVar8 != 0);
-        if (DAT_006a4268 != 0) {
+        if (g_pActiveRandomMapSetupPicture006A4268 != 0) {
           func_0x00401c2b();
         }
         (*pTVar1->VTableSlot17)();
@@ -778,7 +1324,7 @@ LAB_00527ad7:
 // GHIDRA_NAME TMapMaker::vmethod_0023
 // GHIDRA_PROTO undefined __thiscall vmethod_0023(void)
 
-uint TMapMaker::vmethod_0023()
+uint __thiscall TMapMaker::vmethod_0023(TMapMaker *this)
 
 {
   int iVar1;
@@ -851,10 +1397,11 @@ LAB_00527dfc:
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00527ED0
-// GHIDRA_NAME TMapMaker::vmethod_0024
-// GHIDRA_PROTO undefined __thiscall vmethod_0024(int param_1, int param_2, int param_3, char param_4)
+// GHIDRA_NAME TMapMaker::GetDeactivateVetoCode
+// GHIDRA_PROTO undefined __thiscall GetDeactivateVetoCode(int param_1, int param_2, int param_3, char param_4)
 
-uint TMapMaker::vmethod_0024(int param_1, int param_2, int param_3, char param_4)
+uint __thiscall
+TMapMaker::GetDeactivateVetoCode(TMapMaker *this,int param_1,int param_2,int param_3,char param_4)
 
 {
   undefined4 uVar1;
@@ -953,7 +1500,7 @@ LAB_00528081:
 // GHIDRA_NAME TMapMaker::OwnerPanel
 // GHIDRA_PROTO undefined __thiscall OwnerPanel(int param_1, int param_2, char param_3)
 
-int TMapMaker::OwnerPanel(int param_1, int param_2, char param_3)
+int __thiscall TMapMaker::OwnerPanel(TMapMaker *this,int param_1,int param_2,char param_3)
 
 {
   uint uVar1;
@@ -1055,7 +1602,7 @@ LAB_00528295:
 // GHIDRA_NAME TMapMaker::ForwardParam
 // GHIDRA_PROTO undefined __thiscall ForwardParam(int param_1, int param_2, int param_3)
 
-int TMapMaker::ForwardParam(int param_1, int param_2, int param_3)
+int __thiscall TMapMaker::ForwardParam(TMapMaker *this,int param_1,int param_2,int param_3)
 
 {
   uint uVar1;
@@ -1172,10 +1719,10 @@ LAB_00528574:
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00528670
-// GHIDRA_NAME TMapMaker::CanHandleCityDialogActionFalse
-// GHIDRA_PROTO undefined __thiscall CanHandleCityDialogActionFalse(void)
+// GHIDRA_NAME TMapMaker::DoIdle
+// GHIDRA_PROTO undefined __thiscall DoIdle(void)
 
-void TMapMaker::CanHandleCityDialogActionFalse()
+void __thiscall TMapMaker::DoIdle(TMapMaker *this)
 
 {
   _vslot_fn *p_Var1;
@@ -1229,7 +1776,7 @@ void TMapMaker::CanHandleCityDialogActionFalse()
 // GHIDRA_NAME TMapMaker::GetCityDialogValueDword10
 // GHIDRA_PROTO undefined __thiscall GetCityDialogValueDword10(int param_1, int param_2)
 
-int TMapMaker::GetCityDialogValueDword10(int param_1, int param_2)
+int __thiscall TMapMaker::GetCityDialogValueDword10(TMapMaker *this,int param_1,int param_2)
 
 {
   char cVar1;
@@ -1296,7 +1843,7 @@ joined_r0x00528843:
 // GHIDRA_NAME TMapMaker::SetCityDialogValueDword10
 // GHIDRA_PROTO undefined __thiscall SetCityDialogValueDword10(int param_1, int param_2)
 
-int TMapMaker::SetCityDialogValueDword10(int param_1, int param_2)
+int __thiscall TMapMaker::SetCityDialogValueDword10(TMapMaker *this,int param_1,int param_2)
 
 {
   char cVar1;
@@ -1419,10 +1966,10 @@ LAB_00528a9e:
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00528CE0
-// GHIDRA_NAME TMapMaker::DispatchCityProductionAction1A
-// GHIDRA_PROTO undefined __thiscall DispatchCityProductionAction1A(int param_1, int param_2)
+// GHIDRA_NAME TMapMaker::GetAdjacentRegionGridCell
+// GHIDRA_PROTO undefined __thiscall GetAdjacentRegionGridCell(int param_1, int param_2)
 
-int TMapMaker::DispatchCityProductionAction1A(int param_1, int param_2)
+int __thiscall TMapMaker::GetAdjacentRegionGridCell(TMapMaker *this,int param_1,int param_2)
 
 {
   int iVar1;
@@ -1453,7 +2000,7 @@ int TMapMaker::DispatchCityProductionAction1A(int param_1, int param_2)
 // GHIDRA_NAME TMapMaker::vmethod_0017
 // GHIDRA_PROTO undefined __thiscall vmethod_0017(void)
 
-void TMapMaker::vmethod_0017()
+void __thiscall TMapMaker::vmethod_0017(TMapMaker *this)
 
 {
   char cVar1;
@@ -1636,10 +2183,10 @@ LAB_00529187:
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005292F0
-// GHIDRA_NAME TMapMaker::DispatchCityProductionAction1B
-// GHIDRA_PROTO undefined __thiscall DispatchCityProductionAction1B(void)
+// GHIDRA_NAME TMapMaker::MapGenPassSlot1E
+// GHIDRA_PROTO undefined __thiscall MapGenPassSlot1E(void)
 
-void TMapMaker::DispatchCityProductionAction1B()
+void __thiscall TMapMaker::MapGenPassSlot1E(TMapMaker *this)
 
 {
   char cVar1;
@@ -1667,7 +2214,7 @@ void TMapMaker::DispatchCityProductionAction1B()
     func_0x00401ece(iVar4,(short)cVar1,iVar7,uVar6,iVar5);
     iVar4 = iVar4 + 1;
   } while (iVar4 < 0x17a);
-  if (DAT_006a4268 != 0) {
+  if (g_pActiveRandomMapSetupPicture006A4268 != 0) {
     func_0x00401c2b();
   }
   (*pTVar2->VTableSlot11)();
@@ -1759,7 +2306,8 @@ LAB_0052977b:
 // GHIDRA_NAME TMapMaker::FindUiChildControlByWindowHandleRecursive_25
 // GHIDRA_PROTO undefined __thiscall FindUiChildControlByWindowHandleRecursive_25(short param_1)
 
-void TMapMaker::FindUiChildControlByWindowHandleRecursive_25(short param_1)
+void __thiscall
+TMapMaker::FindUiChildControlByWindowHandleRecursive_25(TMapMaker *this,short param_1)
 
 {
   TMapMakerVtbl *pTVar1;
@@ -1812,7 +2360,7 @@ void TMapMaker::FindUiChildControlByWindowHandleRecursive_25(short param_1)
 // GHIDRA_NAME TMapMaker::vmethod_0081
 // GHIDRA_PROTO undefined __thiscall vmethod_0081(int param_1)
 
-int TMapMaker::vmethod_0081(int param_1)
+int __thiscall TMapMaker::vmethod_0081(TMapMaker *this,int param_1)
 
 {
   int iVar1;
@@ -1826,10 +2374,10 @@ int TMapMaker::vmethod_0081(int param_1)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00529F60
-// GHIDRA_NAME TMapMaker::vmethod_0025
-// GHIDRA_PROTO undefined __thiscall vmethod_0025(char param_1)
+// GHIDRA_NAME TMapMaker::MapGenFinalizePassSlot19
+// GHIDRA_PROTO undefined __thiscall MapGenFinalizePassSlot19(char param_1)
 
-void TMapMaker::vmethod_0025(char param_1)
+void __thiscall TMapMaker::MapGenFinalizePassSlot19(TMapMaker *this,char param_1)
 
 {
   int iVar1;
@@ -1864,114 +2412,29 @@ void TMapMaker::vmethod_0025(char param_1)
       iVar2 = iVar2 + 0x24;
     } while (iVar2 < 0x38f40);
   }
-  if (DAT_006a4268 != 0) {
+  if (g_pActiveRandomMapSetupPicture006A4268 != 0) {
     func_0x00401c2b();
   }
   func_0x00401bcc();
-  if (DAT_006a4268 != 0) {
+  if (g_pActiveRandomMapSetupPicture006A4268 != 0) {
     func_0x00401c2b();
   }
   func_0x00401a55();
-  if (DAT_006a4268 != 0) {
+  if (g_pActiveRandomMapSetupPicture006A4268 != 0) {
     func_0x00401c2b();
   }
   func_0x004084ef();
-  if (DAT_006a4268 != 0) {
+  if (g_pActiveRandomMapSetupPicture006A4268 != 0) {
     func_0x00401c2b();
   }
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0052A760
-// GHIDRA_NAME TMapMaker::SetEnabled
-// GHIDRA_PROTO undefined __thiscall SetEnabled(void)
-
-void TMapMaker::SetEnabled()
-
-{
-  uint uVar1;
-  int iVar2;
-  int iVar3;
-  uint uVar4;
-  undefined4 *puVar5;
-  
-  uVar1 = this->field0c;
-  if ((uint)this->padding_08_to_0b <= uVar1) {
-    iVar3 = uVar1 + 1;
-    uVar4 = iVar3 * 2;
-    if (0x7fffffff < uVar4) {
-      uVar4 = 0x7fffffff;
-    }
-    iVar2 = _realloc(this->field04,iVar3 * 0x30);
-    if (iVar2 == 0) {
-      iVar2 = _realloc(this->field04,iVar3 * 0x18);
-      this->field04 = iVar2;
-      this->padding_08_to_0b = iVar3;
-    }
-    else {
-      this->field04 = iVar2;
-      this->padding_08_to_0b = uVar4;
-    }
-  }
-  if ((uint)this->field0c <= uVar1) {
-    this->field0c = uVar1 + 1;
-  }
-  puVar5 = (undefined4 *)(this->field04 + uVar1 * 0x18);
-  for (iVar3 = 6; register0x00000010 = (BADSPACEBASE *)((int)register0x00000010 + 4), iVar3 != 0;
-      iVar3 = iVar3 + -1) {
-    *puVar5 = *(undefined4 *)register0x00000010;
-    puVar5 = puVar5 + 1;
-  }
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0052C0A0
-// GHIDRA_NAME TMapMaker::SetState
-// GHIDRA_PROTO undefined __thiscall SetState(undefined4 param_1, undefined4 param_2, undefined4 param_3, undefined4 param_4)
-
-void TMapMaker::SetState(undefined4 param_1, undefined4 param_2, undefined4 param_3, undefined4 param_4)
-
-{
-  int iVar1;
-  uint uVar2;
-  int iVar3;
-  uint uVar4;
-  undefined4 *puVar5;
-  
-  uVar2 = this->field0c;
-  if ((uint)this->padding_08_to_0b <= uVar2) {
-    iVar1 = uVar2 + 1;
-    uVar4 = iVar1 * 2;
-    if (0x7fffffff < uVar4) {
-      uVar4 = 0x7fffffff;
-    }
-    iVar3 = _realloc(this->field04,iVar1 * 0x20);
-    if (iVar3 == 0) {
-      iVar3 = _realloc(this->field04,iVar1 * 0x10);
-      this->field04 = iVar3;
-      this->padding_08_to_0b = iVar1;
-    }
-    else {
-      this->field04 = iVar3;
-      this->padding_08_to_0b = uVar4;
-    }
-  }
-  if ((uint)this->field0c <= uVar2) {
-    this->field0c = uVar2 + 1;
-  }
-  puVar5 = (undefined4 *)(uVar2 * 0x10 + this->field04);
-  *puVar5 = param_1;
-  puVar5[1] = param_2;
-  puVar5[2] = param_3;
-  puVar5[3] = param_4;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0052E840
-// GHIDRA_NAME TMapMaker::vmethod_0026
-// GHIDRA_PROTO undefined __thiscall vmethod_0026(void)
+// GHIDRA_NAME TMapMaker::HasMapGenerationFailed
+// GHIDRA_PROTO undefined __thiscall HasMapGenerationFailed(void)
 
-undefined4 TMapMaker::vmethod_0026()
+undefined4 __thiscall TMapMaker::HasMapGenerationFailed(TMapMaker *this)
 
 {
   int *piVar1;
@@ -2000,7 +2463,7 @@ undefined4 TMapMaker::vmethod_0026()
 // GHIDRA_NAME TMapMaker::GetCityDialogFlagByte4
 // GHIDRA_PROTO undefined __thiscall GetCityDialogFlagByte4(short param_1)
 
-void TMapMaker::GetCityDialogFlagByte4(short param_1)
+void __thiscall TMapMaker::GetCityDialogFlagByte4(TMapMaker *this,short param_1)
 
 {
   TMapMakerVtbl *pTVar1;
@@ -2033,7 +2496,7 @@ void TMapMaker::GetCityDialogFlagByte4(short param_1)
 // GHIDRA_NAME TMapMaker::HandleCityProductionNoOp
 // GHIDRA_PROTO undefined __thiscall HandleCityProductionNoOp(void)
 
-void TMapMaker::HandleCityProductionNoOp()
+void __thiscall TMapMaker::HandleCityProductionNoOp(TMapMaker *this)
 
 {
   int *piVar1;

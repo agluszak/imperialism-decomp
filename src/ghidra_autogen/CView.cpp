@@ -3,6 +3,19 @@
 // Program: Imperialism.exe
 // Bucket: CView.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00613CB1
+// GHIDRA_NAME CView::CView
+// GHIDRA_PROTO undefined CView()
+
+undefined4 * __fastcall CView::CView(undefined4 *param_1)
+
+{
+  CWnd::CWnd();
+  param_1[0xf] = 0;
+  *param_1 = &PTR_LAB_00672c54;
+  return param_1;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00613CE3
 // GHIDRA_NAME CView::~CView
 // GHIDRA_PROTO undefined ~CView()
@@ -113,17 +126,30 @@ undefined4 __thiscall CView::OnCreate(CWnd *param_1,int *param_2)
 void __fastcall CView::OnDestroy(int param_1)
 
 {
-  void *this;
+  CFrameWnd *this;
   int iVar1;
   
-  this = (void *)CWnd::GetParentFrame();
-  if (this != (void *)0x0) {
-    iVar1 = GetObjectValueAtOffset98();
+  this = (CFrameWnd *)CWnd::GetParentFrame();
+  if (this != (CFrameWnd *)0x0) {
+    iVar1 = CFrameWnd::GetActiveView();
     if (iVar1 == param_1) {
-      CFrameWnd__SetActiveView(this,(CView *)0x0,1);
+      CFrameWnd::SetActiveView(this,(CView *)0x0,1);
     }
   }
   CWnd::OnDestroy();
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00613DD5
+// GHIDRA_NAME CView::PostNcDestroy
+// GHIDRA_PROTO undefined PostNcDestroy()
+
+void __fastcall CView::PostNcDestroy(int *param_1)
+
+{
+  if (param_1 != (int *)0x0) {
+    (**(code **)(*param_1 + 4))(1);
+  }
   return;
 }
 
@@ -162,6 +188,57 @@ void CView::OnPaint(void)
   return;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00613F04
+// GHIDRA_NAME CView::OnInitialUpdate
+// GHIDRA_PROTO undefined OnInitialUpdate()
+
+void __fastcall CView::OnInitialUpdate(int *param_1)
+
+{
+  (**(code **)(*param_1 + 0xf4))(0,0,0);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00613F12
+// GHIDRA_NAME CView::OnUpdate
+// GHIDRA_PROTO undefined OnUpdate()
+
+void __fastcall CView::OnUpdate(int param_1)
+
+{
+  InvalidateRect(*(HWND *)(param_1 + 0x1c),(RECT *)0x0,1);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00613F22
+// GHIDRA_NAME CView::OnPrint
+// GHIDRA_PROTO undefined OnPrint()
+
+void __thiscall CView::OnPrint(int *param_1,undefined4 param_2)
+
+{
+  (**(code **)(*param_1 + 0xf8))(param_2);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00613F39
+// GHIDRA_NAME CView::OnActivateView
+// GHIDRA_PROTO undefined OnActivateView()
+
+void CView::OnActivateView(int param_1)
+
+{
+  int iVar1;
+  
+  if (param_1 != 0) {
+    iVar1 = CWnd::IsTopParentActive();
+    if (iVar1 != 0) {
+      CWnd::SetFocus();
+    }
+  }
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00613F5A
 // GHIDRA_NAME CView::OnMouseActivate
 // GHIDRA_PROTO undefined OnMouseActivate()
@@ -170,22 +247,22 @@ int __fastcall CView::OnMouseActivate(CWnd *param_1)
 
 {
   int iVar1;
-  void *this;
+  CFrameWnd *this;
   CWnd *pCVar2;
   HWND hWnd;
   BOOL BVar3;
   
   iVar1 = CWnd::Default(param_1);
-  if (((iVar1 != 3) && (iVar1 != 4)) && (this = (void *)CWnd::GetParentFrame(), this != (void *)0x0)
-     ) {
-    pCVar2 = (CWnd *)GetObjectValueAtOffset98();
+  if (((iVar1 != 3) && (iVar1 != 4)) &&
+     (this = (CFrameWnd *)CWnd::GetParentFrame(), this != (CFrameWnd *)0x0)) {
+    pCVar2 = (CWnd *)CFrameWnd::GetActiveView();
     hWnd = GetFocus();
     if (((pCVar2 == param_1) && (param_1->m_hWnd != hWnd)) &&
        (BVar3 = IsChild(param_1->m_hWnd,hWnd), BVar3 == 0)) {
       (*(param_1->ccmdTarget).vftable[0x13].slot_0x08)(1,param_1,param_1);
       return iVar1;
     }
-    CFrameWnd__SetActiveView(this,(CView *)param_1,1);
+    CFrameWnd::SetActiveView(this,(CView *)param_1,1);
   }
   return iVar1;
 }
@@ -214,7 +291,7 @@ CObject * CView::GetParentSplitter(int param_1,int param_2)
   BOOL BVar3;
   
   pHVar1 = GetParent(*(HWND *)(param_1 + 0x1c));
-  this = (CObject *)CWnd__FromHandle(pHVar1);
+  this = (CObject *)CWnd::FromHandle(pHVar1);
   iVar2 = CObject::IsKindOf(this);
   if (iVar2 != 0) {
     if (param_2 != 0) {
@@ -222,7 +299,7 @@ CObject * CView::GetParentSplitter(int param_1,int param_2)
     }
     do {
       pHVar1 = GetParent(*(HWND *)(param_1 + 0x1c));
-      param_1 = CWnd__FromHandle(pHVar1);
+      param_1 = CWnd::FromHandle(pHVar1);
       if (param_1 == 0) {
         return this;
       }
@@ -230,6 +307,37 @@ CObject * CView::GetParentSplitter(int param_1,int param_2)
     } while (BVar3 == 0);
   }
   return (CObject *)0x0;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0061404D
+// GHIDRA_NAME CView::GetScrollBarCtrl
+// GHIDRA_PROTO undefined __thiscall GetScrollBarCtrl(int param_1)
+
+undefined4 __thiscall CView::GetScrollBarCtrl(CView *this,int param_1)
+
+{
+  uint uVar1;
+  int iVar2;
+  uint uVar3;
+  undefined4 uVar4;
+  
+  uVar1 = CWnd::GetStyle();
+  if ((((-(uint)(param_1 != 0) & 0x100000) + 0x100000 & uVar1) == 0) &&
+     (iVar2 = GetParentSplitter(this,1), iVar2 != 0)) {
+    uVar1 = GetDlgCtrlID(*(HWND *)(this + 0x1c));
+    uVar3 = uVar1 & 0xffff;
+    if ((0xe8ff < uVar3) && (uVar3 < 0xea00)) {
+      if (param_1 == 0) {
+        iVar2 = (uVar1 & 0xf) + 0xea00;
+      }
+      else {
+        iVar2 = (uVar3 - 0xe900 >> 4) + 0xea10;
+      }
+      uVar4 = CWnd::GetDlgItem(iVar2);
+      return uVar4;
+    }
+  }
+  return 0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0061416E
@@ -259,6 +367,53 @@ void CView::OnPrepareDC(undefined4 param_1,int *param_2)
     }
     param_2[4] = iVar1;
   }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0061419F
+// GHIDRA_NAME CView::OnEndPrintPreview
+// GHIDRA_PROTO undefined __thiscall OnEndPrintPreview(int * param_1)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Activates target view in frame context, updates active view focus/state, sends WM_SETMESSAGESTRING (0x362) with default status id, and forces frame update.
+// GHIDRA_COMMENT_END
+
+/* Activates target view in frame context, updates active view focus/state, sends
+   WM_SETMESSAGESTRING (0x362) with default status id, and forces frame update. */
+
+void __thiscall CView::OnEndPrintPreview(CView *this,int *param_1)
+
+{
+  CFrameWndVtbl *pCVar1;
+  undefined4 uVar2;
+  CFrameWnd *this_00;
+  BOOL BVar3;
+  CWinThread *pCVar4;
+  CFrameWnd *pCVar5;
+  int *in_stack_00000014;
+  
+  if ((int *)in_stack_00000014[0x1c] != (int *)0x0) {
+    (**(code **)(*(int *)in_stack_00000014[0x1c] + 0x108))(param_1);
+  }
+  uVar2 = CWnd::GetParentFrame();
+  this_00 = (CFrameWnd *)AfxDynamicDownCast(&CFrameWnd::classRuntimeClass,uVar2);
+  if (this_00 != (CFrameWnd *)0x0) {
+    BVar3 = IsIconic(this_00->m_hWnd);
+    if (BVar3 == 0) goto LAB_006141f0;
+  }
+  pCVar4 = AfxGetThread();
+  this_00 = *(CFrameWnd **)(pCVar4 + 0x1c);
+LAB_006141f0:
+  pCVar1 = this_00->vftable;
+  (*pCVar1[0x36].OnEndPrintPreview)(0,in_stack_00000014[0x22]);
+  CFrameWnd::SetActiveView(this_00,*(CView **)(in_stack_00000014[0x22] + 0xc),1);
+  pCVar5 = (CFrameWnd *)CWnd::GetParentFrame();
+  if (this_00 != pCVar5) {
+    (**(code **)(*(int *)this + 0xec))(1,this,this);
+  }
+  (**(code **)(*in_stack_00000014 + 0x60))();
+  (*pCVar1[0x34].OnEndPrintPreview)(1);
+  SendMessageA(this_00->m_hWnd,0x362,0xe001,0);
+  UpdateWindow(this_00->m_hWnd);
   return;
 }
 

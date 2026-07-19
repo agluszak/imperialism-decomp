@@ -7,7 +7,8 @@
 // GHIDRA_NAME TGamePreferencesPicture::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TGamePreferencesPicture * TGamePreferencesPicture::_scalar_deleting_destructor_(byte param_1)
+TGamePreferencesPicture * __thiscall
+TGamePreferencesPicture::_scalar_deleting_destructor_(TGamePreferencesPicture *this,byte param_1)
 
 {
   func_0x00401fc3();
@@ -51,7 +52,7 @@ undefined4 * TGamePreferencesPicture::CreateObject(void)
 // GHIDRA_NAME TGamePreferencesPicture::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TGamePreferencesPicture::GetRuntimeClass()
+CRuntimeClass * __thiscall TGamePreferencesPicture::GetRuntimeClass(TGamePreferencesPicture *this)
 
 {
   return &classTGamePreferencesPicture;
@@ -61,7 +62,7 @@ CRuntimeClass * TGamePreferencesPicture::GetRuntimeClass()
 // GHIDRA_NAME TGamePreferencesPicture::NoOpUiLifecycleHook
 // GHIDRA_PROTO undefined __thiscall NoOpUiLifecycleHook(void)
 
-void TGamePreferencesPicture::NoOpUiLifecycleHook()
+void __thiscall TGamePreferencesPicture::NoOpUiLifecycleHook(TGamePreferencesPicture *this)
 
 {
   int iVar1;

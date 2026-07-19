@@ -38,7 +38,8 @@ undefined4 * TSuperNavyRoster::CreateObject(void)
 // GHIDRA_NAME TSuperNavyRoster::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TSuperNavyRoster * TSuperNavyRoster::_scalar_deleting_destructor_(byte param_1)
+TSuperNavyRoster * __thiscall
+TSuperNavyRoster::_scalar_deleting_destructor_(TSuperNavyRoster *this,byte param_1)
 
 {
   func_0x004084c7();
@@ -52,7 +53,7 @@ TSuperNavyRoster * TSuperNavyRoster::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TSuperNavyRoster::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TSuperNavyRoster::GetRuntimeClass()
+CRuntimeClass * __thiscall TSuperNavyRoster::GetRuntimeClass(TSuperNavyRoster *this)
 
 {
   return &classTSuperNavyRoster;

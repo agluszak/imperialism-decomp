@@ -37,10 +37,52 @@ void CProgressCtrl::~CProgressCtrl(void)
   *(CWnd **)(unaff_EBP + -0x10) = this;
   (this->ccmdTarget).vftable = (CCmdTargetVtbl *)&PTR_LAB_00671094;
   *(undefined4 *)(unaff_EBP + -4) = 0;
-  CWnd__DestroyWindow();
+  CWnd::DestroyWindow();
   *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
   CWnd::~CWnd(this);
   *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005E6557
+// GHIDRA_NAME CProgressCtrl::Create
+// GHIDRA_PROTO undefined Create()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Multiple Matches With Same Base Name
+// GHIDRA_COMMENT  public: int __thiscall CAnimateCtrl::Create(unsigned long,struct tagRECT const &,class CWnd *,unsigned int)
+// GHIDRA_COMMENT  public: int __thiscall CHeaderCtrl::Create(unsigned long,struct tagRECT const &,class CWnd *,unsigned int)
+// GHIDRA_COMMENT  public: int __thiscall CHotKeyCtrl::Create(unsigned long,struct tagRECT const &,class CWnd *,unsigned int)
+// GHIDRA_COMMENT  public: int __thiscall CListCtrl::Create(unsigned long,struct tagRECT const &,class CWnd *,unsigned int)
+// GHIDRA_COMMENT   11 names - too many to list
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: nafxcw retail msvc500:static
+// GHIDRA_COMMENT_END
+
+/* Library Function - Multiple Matches With Same Base Name
+    public: int __thiscall CAnimateCtrl::Create(unsigned long,struct tagRECT const &,class CWnd
+   *,unsigned int)
+    public: int __thiscall CHeaderCtrl::Create(unsigned long,struct tagRECT const &,class CWnd
+   *,unsigned int)
+    public: int __thiscall CHotKeyCtrl::Create(unsigned long,struct tagRECT const &,class CWnd
+   *,unsigned int)
+    public: int __thiscall CListCtrl::Create(unsigned long,struct tagRECT const &,class CWnd
+   *,unsigned int)
+     11 names - too many to list
+   
+   Library: nafxcw retail msvc500:static */
+
+void __thiscall
+CProgressCtrl::Create
+          (int *param_1,undefined4 param_2,undefined4 param_3,undefined4 param_4,undefined4 param_5)
+
+{
+  int iVar1;
+  
+  iVar1 = AfxGetModuleState();
+  if ((*(byte *)(iVar1 + 0x18) & 0x10) == 0) {
+    AfxEndDeferRegisterClass(0x10);
+  }
+  (**(code **)(*param_1 + 0x5c))("msctls_progress32",0,param_2,param_3,param_4,param_5,0);
   return;
 }
 

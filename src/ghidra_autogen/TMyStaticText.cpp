@@ -37,7 +37,7 @@ undefined4 * TMyStaticText::CreateObject(void)
 // GHIDRA_NAME TMyStaticText::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TMyStaticText::GetRuntimeClass()
+CRuntimeClass * __thiscall TMyStaticText::GetRuntimeClass(TMyStaticText *this)
 
 {
   return &classTMyStaticText;
@@ -47,7 +47,8 @@ CRuntimeClass * TMyStaticText::GetRuntimeClass()
 // GHIDRA_NAME TMyStaticText::ConstructUiTextResourceEntry_Vtbl0066cbc8
 // GHIDRA_PROTO undefined __thiscall ConstructUiTextResourceEntry_Vtbl0066cbc8(void)
 
-TMyStaticText * TMyStaticText::ConstructUiTextResourceEntry_Vtbl0066cbc8()
+TMyStaticText * __thiscall
+TMyStaticText::ConstructUiTextResourceEntry_Vtbl0066cbc8(TMyStaticText *this)
 
 {
   func_0x0040541b();
@@ -59,7 +60,8 @@ TMyStaticText * TMyStaticText::ConstructUiTextResourceEntry_Vtbl0066cbc8()
 // GHIDRA_NAME TMyStaticText::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TMyStaticText * TMyStaticText::_scalar_deleting_destructor_(byte param_1)
+TMyStaticText * __thiscall
+TMyStaticText::_scalar_deleting_destructor_(TMyStaticText *this,byte param_1)
 
 {
   func_0x00409ab1();

@@ -7,7 +7,7 @@
 // GHIDRA_NAME TCzechBox::WrapperFor_ConstructTCzechBoxBaseState_At0043d6f0
 // GHIDRA_PROTO undefined __thiscall WrapperFor_ConstructTCzechBoxBaseState_At0043d6f0(void)
 
-TCzechBox * TCzechBox::WrapperFor_ConstructTCzechBoxBaseState_At0043d6f0()
+TCzechBox * __thiscall TCzechBox::WrapperFor_ConstructTCzechBoxBaseState_At0043d6f0(TCzechBox *this)
 
 {
   func_0x0040481d();
@@ -51,7 +51,7 @@ undefined4 * TCzechBox::CreateObject(void)
 // GHIDRA_NAME TCzechBox::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TCzechBox::GetRuntimeClass()
+CRuntimeClass * __thiscall TCzechBox::GetRuntimeClass(TCzechBox *this)
 
 {
   return &classTCzechBox;
@@ -61,7 +61,7 @@ CRuntimeClass * TCzechBox::GetRuntimeClass()
 // GHIDRA_NAME TCzechBox::ConstructTCzechBoxBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTCzechBoxBaseState(void)
 
-TCzechBox * TCzechBox::ConstructTCzechBoxBaseState()
+TCzechBox * __thiscall TCzechBox::ConstructTCzechBoxBaseState(TCzechBox *this)
 
 {
   func_0x00401122();
@@ -75,7 +75,7 @@ TCzechBox * TCzechBox::ConstructTCzechBoxBaseState()
 // GHIDRA_NAME TCzechBox::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TCzechBox * TCzechBox::_scalar_deleting_destructor_(byte param_1)
+TCzechBox * __thiscall TCzechBox::_scalar_deleting_destructor_(TCzechBox *this,byte param_1)
 
 {
   func_0x00407045();
@@ -89,7 +89,7 @@ TCzechBox * TCzechBox::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TCzechBox::HandleEvent
 // GHIDRA_PROTO undefined __thiscall HandleEvent(int param_1)
 
-void TCzechBox::HandleEvent(int param_1)
+void __thiscall TCzechBox::HandleEvent(TCzechBox *this,int param_1)
 
 {
   undefined4 in_stack_00000008;
@@ -106,7 +106,7 @@ void TCzechBox::HandleEvent(int param_1)
 // GHIDRA_NAME TCzechBox::NoOpUiLifecycleHook
 // GHIDRA_PROTO undefined __thiscall NoOpUiLifecycleHook(void)
 
-void TCzechBox::NoOpUiLifecycleHook()
+void __thiscall TCzechBox::NoOpUiLifecycleHook(TCzechBox *this)
 
 {
   *(undefined4 *)&this->field_0x60 = 4;
@@ -117,7 +117,7 @@ void TCzechBox::NoOpUiLifecycleHook()
 // GHIDRA_NAME TCzechBox::SetControlStateFlagAndMaybeRefresh
 // GHIDRA_PROTO undefined __thiscall SetControlStateFlagAndMaybeRefresh(char param_1)
 
-void TCzechBox::SetControlStateFlagAndMaybeRefresh(char param_1)
+void __thiscall TCzechBox::SetControlStateFlagAndMaybeRefresh(TCzechBox *this,char param_1)
 
 {
   if (param_1 != this->field_0x64) {
@@ -131,7 +131,7 @@ void TCzechBox::SetControlStateFlagAndMaybeRefresh(char param_1)
 // GHIDRA_NAME TCzechBox::OrphanCallChain_C4_I45_00571d40
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C4_I45_00571d40(char param_1)
 
-void TCzechBox::OrphanCallChain_C4_I45_00571d40(char param_1)
+void __thiscall TCzechBox::OrphanCallChain_C4_I45_00571d40(TCzechBox *this,char param_1)
 
 {
   ushort uVar1;
@@ -171,7 +171,7 @@ void TCzechBox::OrphanCallChain_C4_I45_00571d40(char param_1)
 // GHIDRA_NAME TCzechBox::OrphanLeaf_NoCall_Ins02_00571de0
 // GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins02_00571de0(void)
 
-undefined1 TCzechBox::OrphanLeaf_NoCall_Ins02_00571de0()
+undefined1 __thiscall TCzechBox::OrphanLeaf_NoCall_Ins02_00571de0(TCzechBox *this)
 
 {
   return this->field_0x94;
@@ -181,7 +181,7 @@ undefined1 TCzechBox::OrphanLeaf_NoCall_Ins02_00571de0()
 // GHIDRA_NAME TCzechBox::OrphanCallChain_C1_I10_00571e00
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I10_00571e00(char param_1)
 
-void TCzechBox::OrphanCallChain_C1_I10_00571e00(char param_1)
+void __thiscall TCzechBox::OrphanCallChain_C1_I10_00571e00(TCzechBox *this,char param_1)
 
 {
   if (this->field_0x94 != param_1) {
@@ -195,7 +195,7 @@ void TCzechBox::OrphanCallChain_C1_I10_00571e00(char param_1)
 // GHIDRA_NAME TCzechBox::OrphanCallChain_C2_I16_00571e40
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C2_I16_00571e40(void)
 
-void TCzechBox::OrphanCallChain_C2_I16_00571e40()
+void __thiscall TCzechBox::OrphanCallChain_C2_I16_00571e40(TCzechBox *this)
 
 {
   TCzechBoxVtbl *pTVar1;
@@ -211,7 +211,8 @@ void TCzechBox::OrphanCallChain_C2_I16_00571e40()
 // GHIDRA_NAME TCzechBox::OrphanCallChain_C3_I23_00571e80
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C3_I23_00571e80(char param_1, undefined4 param_2)
 
-void TCzechBox::OrphanCallChain_C3_I23_00571e80(char param_1, undefined4 param_2)
+void __thiscall
+TCzechBox::OrphanCallChain_C3_I23_00571e80(TCzechBox *this,char param_1,undefined4 param_2)
 
 {
   TCzechBoxVtbl *pTVar1;

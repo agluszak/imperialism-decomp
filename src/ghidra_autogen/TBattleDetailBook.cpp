@@ -7,7 +7,8 @@
 // GHIDRA_NAME TBattleDetailBook::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TBattleDetailBook * TBattleDetailBook::_scalar_deleting_destructor_(byte param_1)
+TBattleDetailBook * __thiscall
+TBattleDetailBook::_scalar_deleting_destructor_(TBattleDetailBook *this,byte param_1)
 
 {
   func_0x0040896d();
@@ -52,7 +53,7 @@ undefined4 * TBattleDetailBook::CreateObject(void)
 // GHIDRA_NAME TBattleDetailBook::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TBattleDetailBook::GetRuntimeClass()
+CRuntimeClass * __thiscall TBattleDetailBook::GetRuntimeClass(TBattleDetailBook *this)
 
 {
   return &classTBattleDetailBook;
@@ -62,7 +63,7 @@ CRuntimeClass * TBattleDetailBook::GetRuntimeClass()
 // GHIDRA_NAME TBattleDetailBook::HandleEvent
 // GHIDRA_PROTO undefined __thiscall HandleEvent(int param_1, int param_2)
 
-void TBattleDetailBook::HandleEvent(int param_1, int param_2)
+void __thiscall TBattleDetailBook::HandleEvent(TBattleDetailBook *this,int param_1,int param_2)
 
 {
   undefined uVar1;

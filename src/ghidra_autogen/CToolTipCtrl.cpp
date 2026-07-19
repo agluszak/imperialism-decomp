@@ -70,7 +70,7 @@ void CToolTipCtrl::~CToolTipCtrl(void)
   *(CWnd **)(unaff_EBP + -0x10) = this;
   (this->ccmdTarget).vftable = (CCmdTargetVtbl *)&PTR_LAB_006744fc;
   *(undefined4 *)(unaff_EBP + -4) = 1;
-  CWnd__DestroyWindow();
+  CWnd::DestroyWindow();
   *(undefined1 *)(unaff_EBP + -4) = 0;
   CMapStringToPtr::~CMapStringToPtr();
   *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
@@ -321,7 +321,7 @@ CToolTipCtrl::GetToolInfo(int param_1,int param_2,undefined4 param_3,undefined4 
 /* Builds 0x2C-byte hit/query structure and sends tooltip message 0x40A for window/id lookup; copies
    out structure on success. */
 
-bool CToolTipCtrl::HitTest(int param_1, undefined4 param_2)
+bool __thiscall CToolTipCtrl::HitTest(CToolTipCtrl *this,int param_1,undefined4 param_2)
 
 {
   LRESULT LVar1;
@@ -403,7 +403,7 @@ void CToolTipCtrl::UpdateTipText(void)
   _EH_prolog();
   CString::CString((CString *)(unaff_EBP + -0x10));
   *(undefined4 *)(unaff_EBP + -4) = 0;
-  CString__LoadStringA(*(undefined4 *)(unaff_EBP + 8));
+  CString::LoadStringA(*(undefined4 *)(unaff_EBP + 8));
   UpdateTipText(*(undefined4 *)(unaff_EBP + -0x10),*(undefined4 *)(unaff_EBP + 0xc),
                 *(undefined4 *)(unaff_EBP + 0x10));
   *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;

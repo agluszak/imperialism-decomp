@@ -7,7 +7,7 @@
 // GHIDRA_NAME TAmtBar::ApplyMoveClamp
 // GHIDRA_PROTO undefined __thiscall ApplyMoveClamp(undefined2 param_1)
 
-undefined2 TAmtBar::ApplyMoveClamp(undefined2 param_1)
+undefined2 __thiscall TAmtBar::ApplyMoveClamp(TAmtBar *this,undefined2 param_1)
 
 {
   return param_1;
@@ -50,7 +50,7 @@ undefined4 * TAmtBar::CreateObject(void)
 // GHIDRA_NAME TAmtBar::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TAmtBar::GetRuntimeClass()
+CRuntimeClass * __thiscall TAmtBar::GetRuntimeClass(TAmtBar *this)
 
 {
   return &classTAmtBar;
@@ -60,7 +60,7 @@ CRuntimeClass * TAmtBar::GetRuntimeClass()
 // GHIDRA_NAME TAmtBar::ConstructBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructBaseState(void)
 
-TAmtBar * TAmtBar::ConstructBaseState()
+TAmtBar * __thiscall TAmtBar::ConstructBaseState(TAmtBar *this)
 
 {
   func_0x004064e2();
@@ -76,7 +76,7 @@ TAmtBar * TAmtBar::ConstructBaseState()
 // GHIDRA_NAME TAmtBar::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TAmtBar * TAmtBar::_scalar_deleting_destructor_(byte param_1)
+TAmtBar * __thiscall TAmtBar::_scalar_deleting_destructor_(TAmtBar *this,byte param_1)
 
 {
   func_0x00401e65();
@@ -90,7 +90,7 @@ TAmtBar * TAmtBar::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TAmtBar::NoOpUiLifecycleHook
 // GHIDRA_PROTO undefined __thiscall NoOpUiLifecycleHook(void)
 
-void TAmtBar::NoOpUiLifecycleHook()
+void __thiscall TAmtBar::NoOpUiLifecycleHook(TAmtBar *this)
 
 {
   func_0x00406ba9();
@@ -101,7 +101,7 @@ void TAmtBar::NoOpUiLifecycleHook()
 // GHIDRA_NAME TAmtBar::UpdateBarValuesAndRefresh
 // GHIDRA_PROTO undefined __thiscall UpdateBarValuesAndRefresh(short param_1, short param_2)
 
-void TAmtBar::UpdateBarValuesAndRefresh(short param_1, short param_2)
+void __thiscall TAmtBar::UpdateBarValuesAndRefresh(TAmtBar *this,short param_1,short param_2)
 
 {
   TAmtBarVtbl *pTVar1;
@@ -118,7 +118,7 @@ void TAmtBar::UpdateBarValuesAndRefresh(short param_1, short param_2)
 // GHIDRA_NAME TAmtBar::ApplyRectSlot110
 // GHIDRA_PROTO undefined __thiscall ApplyRectSlot110(void)
 
-void TAmtBar::ApplyRectSlot110()
+void __thiscall TAmtBar::ApplyRectSlot110(TAmtBar *this)
 
 {
   (*this->vftable->RenderPrimarySurfaceOverlayPanelWithClipCache)();
@@ -129,7 +129,7 @@ void TAmtBar::ApplyRectSlot110()
 // GHIDRA_NAME TAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache
 // GHIDRA_PROTO undefined __thiscall RenderPrimarySurfaceOverlayPanelWithClipCache(void)
 
-void TAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache()
+void __thiscall TAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache(TAmtBar *this)
 
 {
   short sVar1;
@@ -179,7 +179,7 @@ void TAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache()
       uStack_40 = uStack_30;
       uStack_38 = uStack_28;
       uStack_34 = uStack_24;
-      func_0x004030e9();
+      thunk_ApplyRectClipRegionToGlobalClipState();
       (*pTVar2->OrphanRetStub_0059add0_4b)();
       iVar4 = g_nOverlayClipCacheParamX;
       iStack_54 = uStack_24;
@@ -197,14 +197,14 @@ void TAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache()
         iVar4 = 0;
       }
       else {
-        func_0x00408d6e(0);
+        thunk_SetQuickDrawTextOriginWithContextOffset(0);
         (**(code **)(g_pUiRuntimeContext->vftable + 0x34))();
         func_0x00402e73(1,7);
         iVar4 = CONCAT22((short)((uint)unaff_EBX >> 0x10),sVar1);
         if (this->stepOrCurrentValue < sVar1) {
           iVar4 = CONCAT22(extraout_var,this->stepOrCurrentValue);
         }
-        func_0x00403bb6(iVar4 + -1,1);
+        thunk_DrawCenteredGuideLineOnMapDc(iVar4 + -1,1);
         func_0x004088aa();
       }
       if ((short)iVar4 < 1) {
@@ -213,13 +213,15 @@ void TAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache()
       else {
         iVar4 = iVar4 + 1;
       }
-      func_0x00408d6e(iVar4);
+      thunk_SetQuickDrawTextOriginWithContextOffset(iVar4);
       func_0x00406b86();
       func_0x00402e73(1);
-      func_0x00403bb6(CONCAT22(extraout_var_01,*(undefined2 *)&this->field_0x34));
-      func_0x00408d6e(CONCAT22(extraout_var_00,this->stepOrCurrentValue));
+      thunk_DrawCenteredGuideLineOnMapDc(CONCAT22(extraout_var_01,*(undefined2 *)&this->field_0x34))
+      ;
+      thunk_SetQuickDrawTextOriginWithContextOffset
+                (CONCAT22(extraout_var_00,this->stepOrCurrentValue));
       func_0x004088aa();
-      func_0x00403bb6(this->stepOrCurrentValue + -1);
+      thunk_DrawCenteredGuideLineOnMapDc(this->stepOrCurrentValue + -1);
       func_0x00405be1();
     }
   }
@@ -233,7 +235,7 @@ void TAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache()
 // GHIDRA_NAME TAmtBar::BeginMouseCaptureAndStartRepeatTimer
 // GHIDRA_PROTO undefined __thiscall BeginMouseCaptureAndStartRepeatTimer(int * param_1)
 
-void TAmtBar::BeginMouseCaptureAndStartRepeatTimer(int *param_1)
+void __thiscall TAmtBar::BeginMouseCaptureAndStartRepeatTimer(TAmtBar *this,int *param_1)
 
 {
   undefined uVar1;

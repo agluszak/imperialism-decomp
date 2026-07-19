@@ -3,14 +3,47 @@
 // Program: Imperialism.exe
 // Bucket: TModalMessageCommand.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x005DCC90
+// GHIDRA_NAME TModalMessageCommand::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
+
+undefined4 * TModalMessageCommand::CreateObject(void)
+
+{
+  undefined4 *puVar1;
+  undefined4 *puVar2;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_0063a422;
+  local_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &local_c;
+  puVar1 = (undefined4 *)operator_new(0x20);
+  local_4 = 0;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    func_0x00403d5f();
+    local_4 = CONCAT31(local_4._1_3_,1);
+    CString::CString((CString *)(puVar1 + 6));
+    *puVar1 = &_vftable_;
+    puVar2 = puVar1;
+  }
+  *unaff_FS_OFFSET = local_c;
+  return puVar2;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x005DCD10
 // GHIDRA_NAME TModalMessageCommand::DoIt
 // GHIDRA_PROTO undefined __thiscall DoIt(void)
 
-void TModalMessageCommand::DoIt()
+void __thiscall TModalMessageCommand::DoIt(TModalMessageCommand *this)
 
 {
   undefined4 in_EAX;
+  undefined1 *puVar1;
   TModalMessageCommand *pTStack_14;
   undefined *puStack_10;
   undefined4 uStack_c;
@@ -21,9 +54,10 @@ void TModalMessageCommand::DoIt()
   uStack_8 = 0;
   puStack_10 = &DAT_006a5be0;
   puStack_4 = (undefined1 *)&pTStack_14;
+  puVar1 = &this->field_0x18;
   pTStack_14 = this;
-  func_0x004076b7(&this->field_0x18);
-  func_0x004096b0();
+  func_0x004076b7(puVar1);
+  thunk_DispatchLocalizedUiMessageWithTemplateA13A0(puVar1);
   return;
 }
 
@@ -31,7 +65,8 @@ void TModalMessageCommand::DoIt()
 // GHIDRA_NAME TModalMessageCommand::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TModalMessageCommand * TModalMessageCommand::_scalar_deleting_destructor_(byte param_1)
+TModalMessageCommand * __thiscall
+TModalMessageCommand::_scalar_deleting_destructor_(TModalMessageCommand *this,byte param_1)
 
 {
   func_0x004013de();
@@ -42,10 +77,10 @@ TModalMessageCommand * TModalMessageCommand::_scalar_deleting_destructor_(byte p
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005DCD80
-// GHIDRA_NAME TModalMessageCommand::CreateTModalMessageCommandInstance
-// GHIDRA_PROTO undefined __thiscall CreateTModalMessageCommandInstance(void)
+// GHIDRA_NAME TModalMessageCommand::~TModalMessageCommand
+// GHIDRA_PROTO undefined __thiscall ~TModalMessageCommand(void)
 
-void TModalMessageCommand::CreateTModalMessageCommandInstance()
+void __thiscall TModalMessageCommand::~TModalMessageCommand(TModalMessageCommand *this)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -68,7 +103,7 @@ void TModalMessageCommand::CreateTModalMessageCommandInstance()
 // GHIDRA_NAME TModalMessageCommand::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TModalMessageCommand::GetRuntimeClass()
+CRuntimeClass * __thiscall TModalMessageCommand::GetRuntimeClass(TModalMessageCommand *this)
 
 {
   return &classTModalMessageCommand;

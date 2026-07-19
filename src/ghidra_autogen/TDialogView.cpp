@@ -40,7 +40,7 @@ undefined4 * TDialogView::CreateObject(void)
 // GHIDRA_NAME TDialogView::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TDialogView::GetRuntimeClass()
+CRuntimeClass * __thiscall TDialogView::GetRuntimeClass(TDialogView *this)
 
 {
   return &classTDialogView;
@@ -50,7 +50,7 @@ CRuntimeClass * TDialogView::GetRuntimeClass()
 // GHIDRA_NAME TDialogView::EnsureField48Buffer
 // GHIDRA_PROTO undefined __thiscall EnsureField48Buffer(void)
 
-void TDialogView::EnsureField48Buffer()
+void __thiscall TDialogView::EnsureField48Buffer(TDialogView *this)
 
 {
   undefined4 uVar1;
@@ -64,7 +64,7 @@ void TDialogView::EnsureField48Buffer()
 // GHIDRA_NAME TDialogView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TDialogView * TDialogView::_scalar_deleting_destructor_(byte param_1)
+TDialogView * __thiscall TDialogView::_scalar_deleting_destructor_(TDialogView *this,byte param_1)
 
 {
   func_0x00401929();

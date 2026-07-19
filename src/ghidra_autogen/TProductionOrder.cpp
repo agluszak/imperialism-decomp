@@ -24,7 +24,7 @@ undefined4 * TProductionOrder::CreateObject(void)
 // GHIDRA_NAME TProductionOrder::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TProductionOrder::GetRuntimeClass()
+CRuntimeClass * __thiscall TProductionOrder::GetRuntimeClass(TProductionOrder *this)
 
 {
   return &classTProductionOrder;
@@ -34,7 +34,7 @@ CRuntimeClass * TProductionOrder::GetRuntimeClass()
 // GHIDRA_NAME TProductionOrder::ConstructTProductionOrderBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTProductionOrderBaseState(void)
 
-void TProductionOrder::ConstructTProductionOrderBaseState()
+void __thiscall TProductionOrder::ConstructTProductionOrderBaseState(TProductionOrder *this)
 
 {
   this->vftable = &_vftable_;
@@ -45,7 +45,8 @@ void TProductionOrder::ConstructTProductionOrderBaseState()
 // GHIDRA_NAME TProductionOrder::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TProductionOrder * TProductionOrder::_scalar_deleting_destructor_(byte param_1)
+TProductionOrder * __thiscall
+TProductionOrder::_scalar_deleting_destructor_(TProductionOrder *this,byte param_1)
 
 {
   func_0x004031c0();
@@ -87,7 +88,7 @@ TProductionOrder::InitializeBasicCityOrderContext
 // GHIDRA_NAME TProductionOrder::WriteTo
 // GHIDRA_PROTO undefined __thiscall WriteTo(int * param_1)
 
-void TProductionOrder::WriteTo(int *param_1)
+void __thiscall TProductionOrder::WriteTo(TProductionOrder *this,int *param_1)
 
 {
   code *pcVar1;
@@ -107,7 +108,7 @@ void TProductionOrder::WriteTo(int *param_1)
 // GHIDRA_NAME TProductionOrder::ReadFrom
 // GHIDRA_PROTO undefined __thiscall ReadFrom(int * param_1)
 
-void TProductionOrder::ReadFrom(int *param_1)
+void __thiscall TProductionOrder::ReadFrom(TProductionOrder *this,int *param_1)
 
 {
   code *pcVar1;
@@ -127,7 +128,7 @@ void TProductionOrder::ReadFrom(int *param_1)
 // GHIDRA_NAME TProductionOrder::MaxOrder
 // GHIDRA_PROTO undefined __thiscall MaxOrder(void)
 
-undefined2 TProductionOrder::MaxOrder()
+undefined2 __thiscall TProductionOrder::MaxOrder(TProductionOrder *this)
 
 {
   return 0;
@@ -137,7 +138,7 @@ undefined2 TProductionOrder::MaxOrder()
 // GHIDRA_NAME TProductionOrder::SetQuantity
 // GHIDRA_PROTO undefined __thiscall SetQuantity(short param_1)
 
-undefined4 TProductionOrder::SetQuantity(short param_1)
+undefined4 __thiscall TProductionOrder::SetQuantity(TProductionOrder *this,short param_1)
 
 {
   undefined uVar1;
@@ -155,7 +156,7 @@ undefined4 TProductionOrder::SetQuantity(short param_1)
 // GHIDRA_NAME TProductionOrder::ResetCityOrderItemDerivedStateNoop
 // GHIDRA_PROTO undefined __thiscall ResetCityOrderItemDerivedStateNoop(void)
 
-void TProductionOrder::ResetCityOrderItemDerivedStateNoop()
+void __thiscall TProductionOrder::ResetCityOrderItemDerivedStateNoop(TProductionOrder *this)
 
 {
   return;
@@ -165,7 +166,7 @@ void TProductionOrder::ResetCityOrderItemDerivedStateNoop()
 // GHIDRA_NAME TProductionOrder::CommitIfPending
 // GHIDRA_PROTO undefined __thiscall CommitIfPending(void)
 
-void TProductionOrder::CommitIfPending()
+void __thiscall TProductionOrder::CommitIfPending(TProductionOrder *this)
 
 {
   return;
@@ -175,7 +176,8 @@ void TProductionOrder::CommitIfPending()
 // GHIDRA_NAME TProductionOrder::InitializeCityOrderItemWorkingBuffers
 // GHIDRA_PROTO undefined __thiscall InitializeCityOrderItemWorkingBuffers(undefined4 * param_1)
 
-void TProductionOrder::InitializeCityOrderItemWorkingBuffers(undefined4 *param_1)
+void __thiscall
+TProductionOrder::InitializeCityOrderItemWorkingBuffers(TProductionOrder *this,undefined4 *param_1)
 
 {
   int iVar1;
@@ -196,7 +198,7 @@ void TProductionOrder::InitializeCityOrderItemWorkingBuffers(undefined4 *param_1
 // GHIDRA_NAME TProductionOrder::FillOrderSheet
 // GHIDRA_PROTO undefined __thiscall FillOrderSheet(void)
 
-void TProductionOrder::FillOrderSheet()
+void __thiscall TProductionOrder::FillOrderSheet(TProductionOrder *this)
 
 {
   (*this->vftable->InitializeCityOrderItemWorkingBuffers)();

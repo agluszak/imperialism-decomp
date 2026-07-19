@@ -25,7 +25,7 @@ TCluster * TMapEditCluster::CreateObject(void)
   local_4 = 0;
   pTVar1 = (TCluster *)0x0;
   if (this != (TCluster *)0x0) {
-    TCluster::ConstructUiResourceEntryType4B0C0(this);
+    TCluster::thunk_ConstructUiResourceEntryType4B0C0(this);
     this->vftable = (TClusterVtbl *)&_vftable_;
     pTVar1 = this;
   }
@@ -37,7 +37,8 @@ TCluster * TMapEditCluster::CreateObject(void)
 // GHIDRA_NAME TMapEditCluster::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TMapEditCluster * TMapEditCluster::_scalar_deleting_destructor_(byte param_1)
+TMapEditCluster * __thiscall
+TMapEditCluster::_scalar_deleting_destructor_(TMapEditCluster *this,byte param_1)
 
 {
   func_0x00406e9c();
@@ -51,7 +52,7 @@ TMapEditCluster * TMapEditCluster::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TMapEditCluster::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TMapEditCluster::GetRuntimeClass()
+CRuntimeClass * __thiscall TMapEditCluster::GetRuntimeClass(TMapEditCluster *this)
 
 {
   return &classTMapEditCluster;
@@ -61,7 +62,8 @@ CRuntimeClass * TMapEditCluster::GetRuntimeClass()
 // GHIDRA_NAME TMapEditCluster::HandleEvent
 // GHIDRA_PROTO undefined __thiscall HandleEvent(int param_1, void * param_2, int param_3)
 
-void TMapEditCluster::HandleEvent(int param_1, void *param_2, int param_3)
+void __thiscall
+TMapEditCluster::HandleEvent(TMapEditCluster *this,int param_1,void *param_2,int param_3)
 
 {
   func_0x004023ab(param_1,param_2,param_3);

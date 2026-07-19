@@ -3,6 +3,34 @@
 // Program: Imperialism.exe
 // Bucket: TApplication.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00414720
+// GHIDRA_NAME TApplication::PostTurnEventCodeMessage2420
+// GHIDRA_PROTO undefined PostTurnEventCodeMessage2420()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Posts custom message 0x2420 to main thread window with wParam=turn-event code. Central async bridge from state/UI producers into HandleCustomMessage2420DispatchTurnEvent.
+// GHIDRA_COMMENT_END
+
+/* Posts custom message 0x2420 to main thread window with wParam=turn-event code. Central async
+   bridge from state/UI producers into HandleCustomMessage2420DispatchTurnEvent. */
+
+void TApplication::PostTurnEventCodeMessage2420(short param_1)
+
+{
+  CWinThread *pCVar1;
+  int iVar2;
+  
+  pCVar1 = AfxGetThread();
+  if (pCVar1 == (CWinThread *)0x0) {
+    iVar2 = 0;
+  }
+  else {
+    pCVar1 = AfxGetThread();
+    iVar2 = (**(code **)(*(int *)pCVar1 + 0x7c))();
+  }
+  PostMessageA(*(HWND *)(iVar2 + 0x1c),0x2420,(int)param_1,0);
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00486680
 // GHIDRA_NAME TApplication::CreateObject
 // GHIDRA_PROTO undefined CreateObject()
@@ -46,17 +74,40 @@ ApplicationUiRootController * TApplication::CreateObject(void)
 // GHIDRA_NAME TApplication::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TApplication::GetRuntimeClass()
+CRuntimeClass * __thiscall TApplication::GetRuntimeClass(TApplication *this)
 
 {
   return &classTApplication;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00486760
+// GHIDRA_NAME TApplication::TApplication
+// GHIDRA_PROTO undefined __thiscall TApplication(void)
+
+TApplication * __thiscall TApplication::TApplication(TApplication *this)
+
+{
+  func_0x00403049();
+  *(undefined4 *)&this->field_0x20 = 0;
+  *(undefined4 *)&this->field_0x24 = 0;
+  *(undefined4 *)&this->field_0x2c = 0x648ca8;
+  *(undefined4 *)&this->field_0x38 = 0;
+  *(undefined4 *)&this->field_0x3c = 0;
+  *(undefined4 *)&this->field_0x34 = 0;
+  *(undefined4 *)&this->field_0x30 = 0;
+  *(undefined4 *)&this->field_0x40 = 0;
+  *(undefined4 *)&this->field_0x44 = 10;
+  this->vftable = &_vftable_;
+  g_pApplicationUiRootController = (ApplicationUiRootController *)this;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004867B0
 // GHIDRA_NAME TApplication::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TApplication * TApplication::_scalar_deleting_destructor_(byte param_1)
+TApplication * __thiscall
+TApplication::_scalar_deleting_destructor_(TApplication *this,byte param_1)
 
 {
   func_0x00409656();
@@ -66,11 +117,47 @@ TApplication * TApplication::_scalar_deleting_destructor_(byte param_1)
   return this;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x004867E0
+// GHIDRA_NAME TApplication::~TApplication
+// GHIDRA_PROTO undefined __thiscall ~TApplication(void)
+
+void __thiscall TApplication::~TApplication(TApplication *this)
+
+{
+  undefined4 *puVar1;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  puStack_8 = &LAB_0062eac0;
+  local_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &local_c;
+  this->vftable = &_vftable_;
+  g_pApplicationUiRootController = (ApplicationUiRootController *)0x0;
+  *(undefined4 *)&this->field_0x2c = 0x648ca8;
+  puVar1 = *(undefined4 **)&this->field_0x30;
+  local_4 = 1;
+  for (; puVar1 != (undefined4 *)0x0; puVar1 = (undefined4 *)*puVar1) {
+  }
+  *(undefined4 *)&this->field_0x38 = 0;
+  *(undefined4 *)&this->field_0x3c = 0;
+  *(undefined4 *)&this->field_0x34 = 0;
+  *(undefined4 *)&this->field_0x30 = 0;
+  CPlex::FreeDataChain();
+  *(undefined4 *)&this->field_0x40 = 0;
+  *(char **)&this->field_0x2c = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  this->vftable = (TApplicationVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  *unaff_FS_OFFSET = local_c;
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00486880
 // GHIDRA_NAME TApplication::OrphanTiny_SetDwordEcxOffset_20_00486880
 // GHIDRA_PROTO undefined __thiscall OrphanTiny_SetDwordEcxOffset_20_00486880(undefined4 param_1)
 
-void TApplication::OrphanTiny_SetDwordEcxOffset_20_00486880(undefined4 param_1)
+void __thiscall
+TApplication::OrphanTiny_SetDwordEcxOffset_20_00486880(TApplication *this,undefined4 param_1)
 
 {
   *(undefined4 *)&this->field_0x20 = param_1;
@@ -81,27 +168,41 @@ void TApplication::OrphanTiny_SetDwordEcxOffset_20_00486880(undefined4 param_1)
 // GHIDRA_NAME TApplication::OrphanTiny_GetDwordEcxOffset_20_004868a0
 // GHIDRA_PROTO undefined __thiscall OrphanTiny_GetDwordEcxOffset_20_004868a0(void)
 
-undefined4 TApplication::OrphanTiny_GetDwordEcxOffset_20_004868a0()
+undefined4 __thiscall TApplication::OrphanTiny_GetDwordEcxOffset_20_004868a0(TApplication *this)
 
 {
   return *(undefined4 *)&this->field_0x20;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00486990
-// GHIDRA_NAME TApplication::HandleTurnEventViewportEdgeAutoScroll
-// GHIDRA_PROTO undefined __thiscall HandleTurnEventViewportEdgeAutoScroll(void)
+// GHIDRA_FUNCTION IMPERIALISM 0x00486960
+// GHIDRA_NAME TApplication::InModalState
+// GHIDRA_PROTO undefined InModalState()
 
-void TApplication::HandleTurnEventViewportEdgeAutoScroll()
+bool TApplication::InModalState(void)
+
+{
+  int iVar1;
+  
+  func_0x00405db2();
+  iVar1 = func_0x00406eec();
+  return iVar1 == 0;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00486990
+// GHIDRA_NAME TApplication::GetDefaultCursorRegion
+// GHIDRA_PROTO undefined __thiscall GetDefaultCursorRegion(void)
+
+void __thiscall TApplication::GetDefaultCursorRegion(TApplication *this)
 
 {
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004869B0
-// GHIDRA_NAME TApplication::InsertOrRemoveTrackedEntry
-// GHIDRA_PROTO undefined __thiscall InsertOrRemoveTrackedEntry(int param_1, char param_2)
+// GHIDRA_NAME TApplication::InstallCohandler
+// GHIDRA_PROTO undefined __thiscall InstallCohandler(int param_1, char param_2)
 
-void TApplication::InsertOrRemoveTrackedEntry(int param_1, char param_2)
+void __thiscall TApplication::InstallCohandler(TApplication *this,int param_1,char param_2)
 
 {
   undefined4 uVar1;
@@ -179,10 +280,10 @@ LAB_00486a4b:
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00486B10
-// GHIDRA_NAME TApplication::TickEachTrackedEntry
-// GHIDRA_PROTO undefined __thiscall TickEachTrackedEntry(undefined4 param_1)
+// GHIDRA_NAME TApplication::Idle
+// GHIDRA_PROTO undefined __thiscall Idle(undefined4 param_1)
 
-void TApplication::TickEachTrackedEntry(undefined4 param_1)
+void __thiscall TApplication::Idle(TApplication *this,undefined4 param_1)
 
 {
   undefined4 *puVar1;
@@ -204,7 +305,7 @@ void TApplication::TickEachTrackedEntry(undefined4 param_1)
 
 /* Posts custom message 0xBC0 with caller-supplied lParam to main thread window. */
 
-void TApplication::DispatchQueuedUiCommandAndRelease(LPARAM param_1)
+void __thiscall TApplication::DispatchQueuedUiCommandAndRelease(TApplication *this,LPARAM param_1)
 
 {
   CWinThread *pCVar1;
@@ -226,7 +327,7 @@ void TApplication::DispatchQueuedUiCommandAndRelease(LPARAM param_1)
 // GHIDRA_NAME TApplication::vmethod_0017
 // GHIDRA_PROTO undefined __thiscall vmethod_0017(undefined4 param_1)
 
-void TApplication::vmethod_0017(undefined4 param_1)
+void __thiscall TApplication::vmethod_0017(TApplication *this,undefined4 param_1)
 
 {
   CWinThread *pCVar1;
@@ -339,7 +440,8 @@ void TApplication::vmethod_0017(undefined4 param_1)
 // GHIDRA_NAME TApplication::SerializeRecordList_0x0C_WithBlockPool_B
 // GHIDRA_PROTO undefined __thiscall SerializeRecordList_0x0C_WithBlockPool_B(CArchive * param_1)
 
-void TApplication::SerializeRecordList_0x0C_WithBlockPool_B(CArchive *param_1)
+void __thiscall
+TApplication::SerializeRecordList_0x0C_WithBlockPool_B(TApplication *this,CArchive *param_1)
 
 {
   undefined4 uVar1;
@@ -414,7 +516,8 @@ void TApplication::SerializeRecordList_0x0C_WithBlockPool_B(CArchive *param_1)
 // GHIDRA_NAME TApplication::WrapperFor_FreeHeapBufferIfNotNull_At00486f60
 // GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At00486f60(byte param_1)
 
-TApplication * TApplication::WrapperFor_FreeHeapBufferIfNotNull_At00486f60(byte param_1)
+TApplication * __thiscall
+TApplication::WrapperFor_FreeHeapBufferIfNotNull_At00486f60(TApplication *this,byte param_1)
 
 {
   func_0x00407b3a();

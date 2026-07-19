@@ -24,7 +24,8 @@ undefined4 * TCivAnimation::CreateObject(void)
 // GHIDRA_NAME TCivAnimation::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TCivAnimation * TCivAnimation::_scalar_deleting_destructor_(byte param_1)
+TCivAnimation * __thiscall
+TCivAnimation::_scalar_deleting_destructor_(TCivAnimation *this,byte param_1)
 
 {
   func_0x004080ad();
@@ -38,7 +39,7 @@ TCivAnimation * TCivAnimation::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TCivAnimation::CreateTCivAnimationInstance
 // GHIDRA_PROTO undefined __thiscall CreateTCivAnimationInstance(void)
 
-void TCivAnimation::CreateTCivAnimationInstance()
+void __thiscall TCivAnimation::CreateTCivAnimationInstance(TCivAnimation *this)
 
 {
   this->vftable = (TCivAnimationVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
@@ -49,7 +50,7 @@ void TCivAnimation::CreateTCivAnimationInstance()
 // GHIDRA_NAME TCivAnimation::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TCivAnimation::GetRuntimeClass()
+CRuntimeClass * __thiscall TCivAnimation::GetRuntimeClass(TCivAnimation *this)
 
 {
   return &classTCivAnimation;
@@ -59,7 +60,8 @@ CRuntimeClass * TCivAnimation::GetRuntimeClass()
 // GHIDRA_NAME TCivAnimation::WrapperFor_InvalidateCityDialogRectRegion_At0049f140
 // GHIDRA_PROTO undefined __thiscall WrapperFor_InvalidateCityDialogRectRegion_At0049f140(void)
 
-void TCivAnimation::WrapperFor_InvalidateCityDialogRectRegion_At0049f140()
+void __thiscall
+TCivAnimation::WrapperFor_InvalidateCityDialogRectRegion_At0049f140(TCivAnimation *this)
 
 {
   ushort uVar1;

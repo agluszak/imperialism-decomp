@@ -39,7 +39,7 @@ undefined4 * TCityInteriorMinister::CreateObject(void)
 // GHIDRA_NAME TCityInteriorMinister::VTableSlot1D
 // GHIDRA_PROTO undefined __thiscall VTableSlot1D(int param_1)
 
-undefined2 TCityInteriorMinister::VTableSlot1D(int param_1)
+undefined2 __thiscall TCityInteriorMinister::VTableSlot1D(TCityInteriorMinister *this,int param_1)
 
 {
   return *(undefined2 *)(&this->field_0x12a + param_1 * 2);
@@ -49,7 +49,8 @@ undefined2 TCityInteriorMinister::VTableSlot1D(int param_1)
 // GHIDRA_NAME TCityInteriorMinister::CreateTInteriorMinisterInstance
 // GHIDRA_PROTO undefined __thiscall CreateTInteriorMinisterInstance(int param_1)
 
-undefined2 TCityInteriorMinister::CreateTInteriorMinisterInstance(int param_1)
+undefined2 __thiscall
+TCityInteriorMinister::CreateTInteriorMinisterInstance(TCityInteriorMinister *this,int param_1)
 
 {
   return *(undefined2 *)(&this->field_0x158 + param_1 * 2);
@@ -59,7 +60,7 @@ undefined2 TCityInteriorMinister::CreateTInteriorMinisterInstance(int param_1)
 // GHIDRA_NAME TCityInteriorMinister::VTableSlot1F
 // GHIDRA_PROTO undefined __thiscall VTableSlot1F(int param_1)
 
-void TCityInteriorMinister::VTableSlot1F(int param_1)
+void __thiscall TCityInteriorMinister::VTableSlot1F(TCityInteriorMinister *this,int param_1)
 
 {
   *(undefined2 *)(&this->field_0x158 + param_1 * 2) = 0;
@@ -70,7 +71,7 @@ void TCityInteriorMinister::VTableSlot1F(int param_1)
 // GHIDRA_NAME TCityInteriorMinister::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TCityInteriorMinister::GetRuntimeClass()
+CRuntimeClass * __thiscall TCityInteriorMinister::GetRuntimeClass(TCityInteriorMinister *this)
 
 {
   return &classTCityInteriorMinister;
@@ -80,7 +81,8 @@ CRuntimeClass * TCityInteriorMinister::GetRuntimeClass()
 // GHIDRA_NAME TCityInteriorMinister::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TCityInteriorMinister * TCityInteriorMinister::_scalar_deleting_destructor_(byte param_1)
+TCityInteriorMinister * __thiscall
+TCityInteriorMinister::_scalar_deleting_destructor_(TCityInteriorMinister *this,byte param_1)
 
 {
   func_0x0040344f();
@@ -94,7 +96,7 @@ TCityInteriorMinister * TCityInteriorMinister::_scalar_deleting_destructor_(byte
 // GHIDRA_NAME TCityInteriorMinister::Free
 // GHIDRA_PROTO undefined __thiscall Free(void)
 
-void TCityInteriorMinister::Free()
+void __thiscall TCityInteriorMinister::Free(TCityInteriorMinister *this)
 
 {
   if (*(int **)&this->field_0x28 != (int *)0x0) {
@@ -123,7 +125,8 @@ void TCityInteriorMinister::Free()
 // GHIDRA_NAME TCityInteriorMinister::GetTEventHandlerClassNamePointer_20
 // GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer_20(void)
 
-void TCityInteriorMinister::GetTEventHandlerClassNamePointer_20()
+void __thiscall
+TCityInteriorMinister::GetTEventHandlerClassNamePointer_20(TCityInteriorMinister *this)
 
 {
   (**(code **)(**(int **)&this->field_0x28 + 0x14))(0x10);
@@ -146,7 +149,8 @@ void TCityInteriorMinister::GetTEventHandlerClassNamePointer_20()
 // GHIDRA_NAME TCityInteriorMinister::DispatchNationStateEventCode10
 // GHIDRA_PROTO undefined __thiscall DispatchNationStateEventCode10(short param_1)
 
-undefined4 TCityInteriorMinister::DispatchNationStateEventCode10(short param_1)
+undefined4 __thiscall
+TCityInteriorMinister::DispatchNationStateEventCode10(TCityInteriorMinister *this,short param_1)
 
 {
   word wVar1;
@@ -168,7 +172,7 @@ undefined4 TCityInteriorMinister::DispatchNationStateEventCode10(short param_1)
   if (this_00 != (TCity *)0x0) {
     sVar4 = 0;
     do {
-      iVar2 = TCity::GetBuildingType(this_00,sVar4);
+      iVar2 = TCity::thunk_GetCityBuildingProductionValueBySlot(this_00,sVar4);
       iVar5 = iVar5 + iVar2;
       sVar4 = sVar4 + 1;
     } while (sVar4 < 7);
@@ -186,7 +190,8 @@ undefined4 TCityInteriorMinister::DispatchNationStateEventCode10(short param_1)
 // GHIDRA_NAME TCityInteriorMinister::SetForeignMinisterReadyFlag14
 // GHIDRA_PROTO undefined __thiscall SetForeignMinisterReadyFlag14(short param_1)
 
-void TCityInteriorMinister::SetForeignMinisterReadyFlag14(short param_1)
+void __thiscall
+TCityInteriorMinister::SetForeignMinisterReadyFlag14(TCityInteriorMinister *this,short param_1)
 
 {
   if (*(short *)&this->field_0x32 == 0) {
@@ -199,7 +204,7 @@ void TCityInteriorMinister::SetForeignMinisterReadyFlag14(short param_1)
 // GHIDRA_NAME TCityInteriorMinister::VTableSlot1B
 // GHIDRA_PROTO undefined __thiscall VTableSlot1B(short param_1)
 
-void TCityInteriorMinister::VTableSlot1B(short param_1)
+void __thiscall TCityInteriorMinister::VTableSlot1B(TCityInteriorMinister *this,short param_1)
 
 {
   (**(code **)(**(int **)&this->field_0x190 + 0x14))(param_1 + 0x1e);
@@ -210,7 +215,7 @@ void TCityInteriorMinister::VTableSlot1B(short param_1)
 // GHIDRA_NAME TCityInteriorMinister::VTableSlot2D
 // GHIDRA_PROTO undefined __thiscall VTableSlot2D(undefined2 param_1)
 
-void TCityInteriorMinister::VTableSlot2D(undefined2 param_1)
+void __thiscall TCityInteriorMinister::VTableSlot2D(TCityInteriorMinister *this,undefined2 param_1)
 
 {
   *(undefined2 *)&this->field_0x36 = param_1;
@@ -221,7 +226,8 @@ void TCityInteriorMinister::VTableSlot2D(undefined2 param_1)
 // GHIDRA_NAME TCityInteriorMinister::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(short param_1)
 
-void TCityInteriorMinister::GetTEventHandlerClassNamePointer(short param_1)
+void __thiscall
+TCityInteriorMinister::GetTEventHandlerClassNamePointer(TCityInteriorMinister *this,short param_1)
 
 {
   (**(code **)(**(int **)&this->field_0x190 + 0x14))((int)param_1);
@@ -232,7 +238,7 @@ void TCityInteriorMinister::GetTEventHandlerClassNamePointer(short param_1)
 // GHIDRA_NAME TCityInteriorMinister::WriteTo
 // GHIDRA_PROTO undefined __thiscall WriteTo(int * param_1)
 
-void TCityInteriorMinister::WriteTo(int *param_1)
+void __thiscall TCityInteriorMinister::WriteTo(TCityInteriorMinister *this,int *param_1)
 
 {
   code *pcVar1;
@@ -510,7 +516,7 @@ void TCityInteriorMinister::WriteTo(int *param_1)
 // GHIDRA_NAME TCityInteriorMinister::ReadFrom
 // GHIDRA_PROTO undefined __thiscall ReadFrom(int * param_1)
 
-void TCityInteriorMinister::ReadFrom(int *param_1)
+void __thiscall TCityInteriorMinister::ReadFrom(TCityInteriorMinister *this,int *param_1)
 
 {
   undefined1 uVar1;
@@ -782,7 +788,7 @@ void TCityInteriorMinister::ReadFrom(int *param_1)
 // GHIDRA_NAME TCityInteriorMinister::OrphanCallChain_C7_I57_004be5b0
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C7_I57_004be5b0(void)
 
-void TCityInteriorMinister::OrphanCallChain_C7_I57_004be5b0()
+void __thiscall TCityInteriorMinister::OrphanCallChain_C7_I57_004be5b0(TCityInteriorMinister *this)
 
 {
   TCityInteriorMinisterVtbl *pTVar1;
@@ -851,7 +857,7 @@ void TCityInteriorMinister::OrphanCallChain_C7_I57_004be5b0()
 /* WARNING: Removing unreachable block (ram,0x004bf9ad) */
 /* WARNING: Removing unreachable block (ram,0x004bf9bb) */
 
-void TCityInteriorMinister::VTableSlot21(int param_1)
+void __thiscall TCityInteriorMinister::VTableSlot21(TCityInteriorMinister *this,int param_1)
 
 {
   int iVar1;
@@ -884,7 +890,8 @@ void TCityInteriorMinister::VTableSlot21(int param_1)
 // GHIDRA_NAME TCityInteriorMinister::GetTEventHandlerClassNamePointer_22
 // GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer_22(int param_1)
 
-void TCityInteriorMinister::GetTEventHandlerClassNamePointer_22(int param_1)
+void __thiscall
+TCityInteriorMinister::GetTEventHandlerClassNamePointer_22(TCityInteriorMinister *this,int param_1)
 
 {
   if ((*(char *)(param_1 + 0x7c) == '\0') || (*(char *)(param_1 + 0x7d) != '\0')) {
@@ -940,7 +947,7 @@ TCityInteriorMinister::QueueCityProductionRebalanceCommandsByThresholds
   if ((0xe < (short)param_1->fieldB6[0]) || (0xe < (short)param_1->fieldB6[1])) {
     sVar1 = *(short *)(*(int *)&this->field_0x4 + 0x110);
     sVar2 = *(short *)(*(int *)&this->field_0x4 + 0x10e);
-    iVar5 = TCity::GetBuildingType(param_1,0);
+    iVar5 = TCity::thunk_GetCityBuildingProductionValueBySlot(param_1,0);
     iVar5 = (int)(short)(sVar1 + sVar2) / 2 - CONCAT22(extraout_var,(short)iVar5);
     if ((0 < (short)iVar5) && (cVar4 = (**(code **)(*param_2 + 0x7c))(0x35), cVar4 == '\0')) {
       iVar6 = operator_new(0x14);
@@ -956,7 +963,7 @@ TCityInteriorMinister::QueueCityProductionRebalanceCommandsByThresholds
   }
   if ((0xe < (short)param_1->fieldB6[3]) && (0xe < (short)param_1->fieldB6[4])) {
     uVar3 = *(ushort *)(*(int *)&this->field_0x4 + 0x114);
-    iVar5 = TCity::GetBuildingType(param_1,2);
+    iVar5 = TCity::thunk_GetCityBuildingProductionValueBySlot(param_1,2);
     iVar5 = (uint)uVar3 - iVar5;
     if ((0 < (short)iVar5) && (cVar4 = (**(code **)(*param_2 + 0x7c))(0x37), cVar4 == '\0')) {
       iVar6 = operator_new(0x14);
@@ -974,7 +981,7 @@ TCityInteriorMinister::QueueCityProductionRebalanceCommandsByThresholds
   }
   if (0xe < (short)param_1->fieldB6[2]) {
     sVar1 = *(short *)(*(int *)&this->field_0x4 + 0x112);
-    iVar5 = TCity::GetBuildingType(param_1,4);
+    iVar5 = TCity::thunk_GetCityBuildingProductionValueBySlot(param_1,4);
     iVar5 = (int)sVar1 / 2 - iVar5;
     if ((0 < (short)iVar5) && (cVar4 = (**(code **)(*param_2 + 0x7c))(0x39), cVar4 == '\0')) {
       iVar6 = operator_new(0x14);
@@ -991,8 +998,8 @@ TCityInteriorMinister::QueueCityProductionRebalanceCommandsByThresholds
     }
   }
   if (0xe < (short)param_1->fieldB6[8]) {
-    iVar5 = TCity::GetBuildingType(param_1,0);
-    iVar6 = TCity::GetBuildingType(param_1,1);
+    iVar5 = TCity::thunk_GetCityBuildingProductionValueBySlot(param_1,0);
+    iVar6 = TCity::thunk_GetCityBuildingProductionValueBySlot(param_1,1);
     iVar6 = (int)(short)iVar5 / 2 - iVar6;
     if ((0 < (short)iVar6) && (cVar4 = (**(code **)(*param_2 + 0x7c))(0x36), cVar4 == '\0')) {
       iVar5 = operator_new(0x14);
@@ -1009,8 +1016,8 @@ TCityInteriorMinister::QueueCityProductionRebalanceCommandsByThresholds
     }
   }
   if (0xe < (short)param_1->fieldB6[0xb]) {
-    iVar5 = TCity::GetBuildingType(param_1,2);
-    iVar6 = TCity::GetBuildingType(param_1,3);
+    iVar5 = TCity::thunk_GetCityBuildingProductionValueBySlot(param_1,2);
+    iVar6 = TCity::thunk_GetCityBuildingProductionValueBySlot(param_1,3);
     iVar6 = (int)(short)iVar5 / 2 - iVar6;
     if ((0 < (short)iVar6) && (cVar4 = (**(code **)(*param_2 + 0x7c))(0x38), cVar4 == '\0')) {
       iVar5 = operator_new(0x14);
@@ -1027,8 +1034,8 @@ TCityInteriorMinister::QueueCityProductionRebalanceCommandsByThresholds
     }
   }
   if (0xe < (short)param_1->fieldB6[9]) {
-    iVar5 = TCity::GetBuildingType(param_1,4);
-    iVar6 = TCity::GetBuildingType(param_1,5);
+    iVar5 = TCity::thunk_GetCityBuildingProductionValueBySlot(param_1,4);
+    iVar6 = TCity::thunk_GetCityBuildingProductionValueBySlot(param_1,5);
     iVar6 = (int)(short)iVar5 / 2 - iVar6;
     if ((0 < (short)iVar6) && (cVar4 = (**(code **)(*param_2 + 0x7c))(0x3a), cVar4 == '\0')) {
       iVar5 = operator_new(0x14);
@@ -1052,7 +1059,8 @@ TCityInteriorMinister::QueueCityProductionRebalanceCommandsByThresholds
 // GHIDRA_NAME TCityInteriorMinister::GetTEventHandlerClassNamePointer_24
 // GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer_24(void)
 
-void TCityInteriorMinister::GetTEventHandlerClassNamePointer_24()
+void __thiscall
+TCityInteriorMinister::GetTEventHandlerClassNamePointer_24(TCityInteriorMinister *this)
 
 {
   return;
@@ -1159,7 +1167,7 @@ TCityInteriorMinister::DistributeCityProductionCommandBudgetAndQueueOrders
   local_24 = 0;
   local_20 = 0;
   do {
-    iVar3 = TCity::GetBuildingType(param_1,sVar2);
+    iVar3 = TCity::thunk_GetCityBuildingProductionValueBySlot(param_1,sVar2);
     iVar4 = iVar4 + iVar3;
     sVar2 = sVar2 + 1;
   } while (sVar2 < 7);
@@ -1208,8 +1216,8 @@ switchD_004c0143_caseD_0:
     case 1:
     case 3:
     case 5:
-      iVar4 = TCity::GetBuildingType(param_1,nBuildingSlotId + -1);
-      iVar3 = TCity::GetBuildingType(param_1,nBuildingSlotId);
+      iVar4 = TCity::thunk_GetCityBuildingProductionValueBySlot(param_1,nBuildingSlotId + -1);
+      iVar3 = TCity::thunk_GetCityBuildingProductionValueBySlot(param_1,nBuildingSlotId);
       if ((int)(short)iVar3 < (int)(short)iVar4 / 2) goto switchD_004c0143_caseD_0;
     }
     if ((char)uVar5 != '\0') {
@@ -1553,7 +1561,7 @@ TCityInteriorMinister::DistributeCityProductionAcrossOrderTemplatesAndBackfillDe
     iVar6 = (*pcStack_8c)();
     this = (TCityInteriorMinister *)param_1->vftable->AllocateNeedFromOwnerSlot4C;
     unaff_EBX = (code *)CONCAT22((short)((uint)unaff_EBX >> 0x10),(short)piVar17[0x12]);
-    iVar7 = TCity::GetBuildingType
+    iVar7 = TCity::thunk_GetCityBuildingProductionValueBySlot
                       (param_1,*(short *)((int)piVar17 + 0x52));
     (*(code *)this)(unaff_EBX,iVar7);
     if ((short)piVar17[0x10] == 0) {
@@ -1686,7 +1694,7 @@ TCityInteriorMinister::DistributeCityProductionAcrossOrderTemplatesAndBackfillDe
           piVar17 = param_1->orderSlotsE4[sVar5];
           iVar16 = *piVar17;
           (**(code **)(iVar16 + 0xc))();
-          iVar12 = TCity::GetBuildingType
+          iVar12 = TCity::thunk_GetCityBuildingProductionValueBySlot
                              (param_1,*(short *)((int)piVar17 + 0x52));
           (**(code **)(iVar16 + 0x40))(auStack_84,iVar12);
           iVar16 = 0;
@@ -1730,7 +1738,7 @@ LAB_004c0c1d:
 // GHIDRA_NAME TCityInteriorMinister::NoOpForeignMinisterUtilityStub
 // GHIDRA_PROTO undefined __thiscall NoOpForeignMinisterUtilityStub(void)
 
-void TCityInteriorMinister::NoOpForeignMinisterUtilityStub()
+void __thiscall TCityInteriorMinister::NoOpForeignMinisterUtilityStub(TCityInteriorMinister *this)
 
 {
   if (*(char *)(*(int *)&this->field_0x4 + 0xa0) == '\0') {
@@ -1934,7 +1942,8 @@ TCityInteriorMinister::ReconcileCityProductionQueueAgainstTargetsAndAdjustOrders
 // GHIDRA_NAME TCityInteriorMinister::SelectBestSecondaryHomeTileByFrogCityScore
 // GHIDRA_PROTO undefined __thiscall SelectBestSecondaryHomeTileByFrogCityScore(void)
 
-undefined4 TCityInteriorMinister::SelectBestSecondaryHomeTileByFrogCityScore()
+undefined4 __thiscall
+TCityInteriorMinister::SelectBestSecondaryHomeTileByFrogCityScore(TCityInteriorMinister *this)
 
 {
   short sVar1;
@@ -1955,6 +1964,7 @@ undefined4 TCityInteriorMinister::SelectBestSecondaryHomeTileByFrogCityScore()
   int *piVar14;
   int iVar15;
   undefined4 *unaff_FS_OFFSET;
+  CString *pCVar16;
   int local_24;
   int local_20;
   CString local_1c;
@@ -2075,8 +2085,9 @@ undefined4 TCityInteriorMinister::SelectBestSecondaryHomeTileByFrogCityScore()
     CString::CString(&local_1c);
     local_8._0_1_ = 2;
     (*g_pSimMgr->vftable[0x10].slot_0x04)();
-    func_0x004076b7(&local_1c);
-    func_0x004096b0();
+    pCVar16 = &local_1c;
+    func_0x004076b7(pCVar16);
+    thunk_DispatchLocalizedUiMessageWithTemplateA13A0(pCVar16);
     local_8 = CONCAT31(local_8._1_3_,1);
     CString::~CString(&local_1c);
     uVar10 = extraout_var_00;
@@ -2239,7 +2250,8 @@ TCityInteriorMinister::BuildNationTileDevelopmentScoreListForTerrainClass
 
 /* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 
-void TCityInteriorMinister::RebuildMapTileNeighborBucketsForInteriorMinister()
+void __thiscall
+TCityInteriorMinister::RebuildMapTileNeighborBucketsForInteriorMinister(TCityInteriorMinister *this)
 
 {
   uint *puVar1;
@@ -2413,7 +2425,8 @@ void TCityInteriorMinister::RebuildMapTileNeighborBucketsForInteriorMinister()
 // GHIDRA_NAME TCityInteriorMinister::GetTEventHandlerClassNamePointer_32
 // GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer_32(void)
 
-void TCityInteriorMinister::GetTEventHandlerClassNamePointer_32()
+void __thiscall
+TCityInteriorMinister::GetTEventHandlerClassNamePointer_32(TCityInteriorMinister *this)
 
 {
   int *piVar1;
@@ -2483,7 +2496,8 @@ void TCityInteriorMinister::GetTEventHandlerClassNamePointer_32()
 
 /* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 
-void TCityInteriorMinister::AutoAssignProspectingOrdersByTileHeuristics()
+void __thiscall
+TCityInteriorMinister::AutoAssignProspectingOrdersByTileHeuristics(TCityInteriorMinister *this)
 
 {
   char *pcVar1;
@@ -2802,7 +2816,8 @@ LAB_004c237a:
 /* WARNING: Removing unreachable block (ram,0x004c2c59) */
 /* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 
-void TCityInteriorMinister::AutoAssignProspectingOrdersFromSeedTileNeighbors()
+void __thiscall
+TCityInteriorMinister::AutoAssignProspectingOrdersFromSeedTileNeighbors(TCityInteriorMinister *this)
 
 {
   undefined1 *puVar1;
@@ -3151,7 +3166,7 @@ TCityInteriorMinister::SelectBestFrogCityTileFromCandidateSet
     piVar7[1] = 0;
     piVar7[5] = 0;
     piVar7[6] = 10;
-    *piVar7 = (int)&TSoundChannelNode::_vftable_;
+    *piVar7 = (int)&TLongintList::_vftable_;
   }
   local_30 = 1;
   if (0 < iVar16) {
@@ -3578,7 +3593,8 @@ TCityInteriorMinister::BuildFrogCityDistanceMapFromReachableSeaCandidates
 // GHIDRA_NAME TCityInteriorMinister::RebalanceCityOrderAllocationTargets
 // GHIDRA_PROTO undefined __thiscall RebalanceCityOrderAllocationTargets(int * param_1)
 
-void TCityInteriorMinister::RebalanceCityOrderAllocationTargets(int *param_1)
+void __thiscall
+TCityInteriorMinister::RebalanceCityOrderAllocationTargets(TCityInteriorMinister *this,int *param_1)
 
 {
   _vslot_fn *p_Var1;
@@ -3826,7 +3842,8 @@ TCityInteriorMinister::ProcessCityOrderStateTickAndApplyCapabilitySelection
 // GHIDRA_NAME TCityInteriorMinister::RebalanceCitySupportAndLaborAllocations
 // GHIDRA_PROTO undefined __thiscall RebalanceCitySupportAndLaborAllocations(void)
 
-void TCityInteriorMinister::RebalanceCitySupportAndLaborAllocations()
+void __thiscall
+TCityInteriorMinister::RebalanceCitySupportAndLaborAllocations(TCityInteriorMinister *this)
 
 {
   short sVar1;
@@ -3874,7 +3891,7 @@ void TCityInteriorMinister::RebalanceCitySupportAndLaborAllocations()
   else {
     this_00 = *(TCity **)(iVar8 + 0x894);
   }
-  iVar8 = TCity::GetBuildingType(this_00,0xf);
+  iVar8 = TCity::thunk_GetCityBuildingProductionValueBySlot(this_00,0xf);
   sVar4 = (short)iVar8;
   if (*(short *)&this->field_0xda == 0) {
     if (sVar10 < sVar5) {
@@ -3964,7 +3981,8 @@ void TCityInteriorMinister::RebalanceCitySupportAndLaborAllocations()
 // GHIDRA_NAME TCityInteriorMinister::ChooseAndMarkNextCityProductionCommand
 // GHIDRA_PROTO undefined __thiscall ChooseAndMarkNextCityProductionCommand(void)
 
-void TCityInteriorMinister::ChooseAndMarkNextCityProductionCommand()
+void __thiscall
+TCityInteriorMinister::ChooseAndMarkNextCityProductionCommand(TCityInteriorMinister *this)
 
 {
   short sVar1;
@@ -3996,7 +4014,7 @@ void TCityInteriorMinister::ChooseAndMarkNextCityProductionCommand()
     *(undefined2 *)&this->field_0xa6 = 0;
   }
   if ((bVar12) &&
-     (iVar4 = TCity::GetBuildingType(local_20,0xb), (short)iVar4 == 0)) {
+     (iVar4 = TCity::thunk_GetCityBuildingProductionValueBySlot(local_20,0xb), (short)iVar4 == 0)) {
     (*local_20->vftable->ToggleCityPowerPlantUpgradeOrder)(1);
   }
   sVar11 = 0;
@@ -4050,8 +4068,8 @@ void TCityInteriorMinister::ChooseAndMarkNextCityProductionCommand()
     }
     else {
       sVar11 = (short)iVar4;
-      iVar7 = TCity::GetBuildingType(local_20,sVar11);
-      iVar8 = TCity::GetBuildingType(local_20,sVar11 + 1);
+      iVar7 = TCity::thunk_GetCityBuildingProductionValueBySlot(local_20,sVar11);
+      iVar8 = TCity::thunk_GetCityBuildingProductionValueBySlot(local_20,sVar11 + 1);
       if ((float)(int)(short)iVar7 / (float)(int)(short)iVar8 <=
           *(float *)(&DAT_00696450 + iVar4 * 4)) {
         sVar11 = sVar11 + 0x35;
@@ -4060,15 +4078,15 @@ void TCityInteriorMinister::ChooseAndMarkNextCityProductionCommand()
         sVar11 = sVar11 + 0x36;
       }
     }
-    iVar4 = TCity::GetBuildingType(local_20,sVar11 + -0x35);
+    iVar4 = TCity::thunk_GetCityBuildingProductionValueBySlot(local_20,sVar11 + -0x35);
     if (*(short *)(&this->field_0xba + (short)(sVar11 + -0x35) * 2) + 2 < (int)(short)iVar4) {
       sVar11 = 0;
     }
   }
   else {
     if ((auStack_10[0] & 1) != 0) {
-      iVar4 = TCity::GetBuildingType(local_20,(short)auStack_10[0]);
-      iVar7 = TCity::GetBuildingType(local_20,(short)auStack_10[0] + -1);
+      iVar4 = TCity::thunk_GetCityBuildingProductionValueBySlot(local_20,(short)auStack_10[0]);
+      iVar7 = TCity::thunk_GetCityBuildingProductionValueBySlot(local_20,(short)auStack_10[0] + -1);
       if ((short)iVar7 <= (short)iVar4) {
         auStack_10[0]._0_2_ = (short)auStack_10[0] + -1;
       }
@@ -4116,11 +4134,11 @@ TCityInteriorMinister::ComputeCityProductionCommandLimitsFromBuildingOutputs
   else {
     this_00 = *(TCity **)(*(int *)&this->field_0x4 + 0x894);
   }
-  iVar3 = TCity::GetBuildingType(this_00,4);
+  iVar3 = TCity::thunk_GetCityBuildingProductionValueBySlot(this_00,4);
   *(short *)&this->field_0x52 = (short)iVar3 + 1;
-  iVar3 = TCity::GetBuildingType(this_00,0);
+  iVar3 = TCity::thunk_GetCityBuildingProductionValueBySlot(this_00,0);
   *(short *)&this->field_0x50 = (short)iVar3 + 1;
-  iVar3 = TCity::GetBuildingType(this_00,2);
+  iVar3 = TCity::thunk_GetCityBuildingProductionValueBySlot(this_00,2);
   *(short *)&this->field_0x56 = (short)iVar3 + 1;
   if (((short)this_00->fieldB6[10] < 3) && (*(short *)&this->field_0x54 == 0)) {
     *(undefined2 *)&this->field_0x54 = 1;
@@ -4131,7 +4149,7 @@ TCityInteriorMinister::ComputeCityProductionCommandLimitsFromBuildingOutputs
     iVar3 = (int)*(short *)(&DAT_00696400 + iVar3 * 2);
     sVar7 = (short)(((short)this_00->fieldB6[9] - iVar3) / 2);
     if (0 < sVar7) {
-      iVar4 = TCity::GetBuildingType(this_00,5);
+      iVar4 = TCity::thunk_GetCityBuildingProductionValueBySlot(this_00,5);
       if ((short)iVar4 < sVar7) {
         sVar7 = (short)iVar4 + 1;
       }
@@ -4139,7 +4157,7 @@ TCityInteriorMinister::ComputeCityProductionCommandLimitsFromBuildingOutputs
     }
     sVar7 = (short)(((short)this_00->fieldB6[8] - iVar3) / 2);
     if (0 < sVar7) {
-      iVar4 = TCity::GetBuildingType(this_00,1);
+      iVar4 = TCity::thunk_GetCityBuildingProductionValueBySlot(this_00,1);
       if ((short)iVar4 < sVar7) {
         sVar7 = (short)iVar4 + 1;
       }
@@ -4147,7 +4165,7 @@ TCityInteriorMinister::ComputeCityProductionCommandLimitsFromBuildingOutputs
     }
     sVar7 = (short)(((short)this_00->fieldB6[0xb] - iVar3) / 2);
     if (0 < sVar7) {
-      iVar3 = TCity::GetBuildingType(this_00,3);
+      iVar3 = TCity::thunk_GetCityBuildingProductionValueBySlot(this_00,3);
       if ((short)iVar3 < sVar7) {
         sVar7 = (short)iVar3 + 1;
       }

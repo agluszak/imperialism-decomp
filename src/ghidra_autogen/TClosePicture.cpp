@@ -37,7 +37,7 @@ undefined4 * TClosePicture::CreateObject(void)
 // GHIDRA_NAME TClosePicture::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TClosePicture::GetRuntimeClass()
+CRuntimeClass * __thiscall TClosePicture::GetRuntimeClass(TClosePicture *this)
 
 {
   return &classTClosePicture;
@@ -47,7 +47,7 @@ CRuntimeClass * TClosePicture::GetRuntimeClass()
 // GHIDRA_NAME TClosePicture::ConstructTClosePictureBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTClosePictureBaseState(void)
 
-TClosePicture * TClosePicture::ConstructTClosePictureBaseState()
+TClosePicture * __thiscall TClosePicture::ConstructTClosePictureBaseState(TClosePicture *this)
 
 {
   func_0x00405628();
@@ -59,7 +59,8 @@ TClosePicture * TClosePicture::ConstructTClosePictureBaseState()
 // GHIDRA_NAME TClosePicture::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TClosePicture * TClosePicture::_scalar_deleting_destructor_(byte param_1)
+TClosePicture * __thiscall
+TClosePicture::_scalar_deleting_destructor_(TClosePicture *this,byte param_1)
 
 {
   func_0x00403652();

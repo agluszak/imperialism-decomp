@@ -40,7 +40,8 @@ undefined4 * TBismarckMinister::CreateObject(void)
 
 /* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 
-float10 TBismarckMinister::CreateTBismarckMinisterInstance(char param_1)
+float10 __thiscall
+TBismarckMinister::CreateTBismarckMinisterInstance(TBismarckMinister *this,char param_1)
 
 {
   if (param_1 != '\0') {
@@ -53,7 +54,7 @@ float10 TBismarckMinister::CreateTBismarckMinisterInstance(char param_1)
 // GHIDRA_NAME TBismarckMinister::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TBismarckMinister::GetRuntimeClass()
+CRuntimeClass * __thiscall TBismarckMinister::GetRuntimeClass(TBismarckMinister *this)
 
 {
   return &classTBismarckMinister;
@@ -63,7 +64,8 @@ CRuntimeClass * TBismarckMinister::GetRuntimeClass()
 // GHIDRA_NAME TBismarckMinister::ConstructTBismarckMinisterBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTBismarckMinisterBaseState(void)
 
-TBismarckMinister * TBismarckMinister::ConstructTBismarckMinisterBaseState()
+TBismarckMinister * __thiscall
+TBismarckMinister::ConstructTBismarckMinisterBaseState(TBismarckMinister *this)
 
 {
   func_0x0040433b();
@@ -76,7 +78,8 @@ TBismarckMinister * TBismarckMinister::ConstructTBismarckMinisterBaseState()
 // GHIDRA_NAME TBismarckMinister::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TBismarckMinister * TBismarckMinister::_scalar_deleting_destructor_(byte param_1)
+TBismarckMinister * __thiscall
+TBismarckMinister::_scalar_deleting_destructor_(TBismarckMinister *this,byte param_1)
 
 {
   func_0x004062bc();

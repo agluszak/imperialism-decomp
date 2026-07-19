@@ -24,7 +24,8 @@ undefined4 * TCouncilTickerAnimation::CreateObject(void)
 // GHIDRA_NAME TCouncilTickerAnimation::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TCouncilTickerAnimation * TCouncilTickerAnimation::_scalar_deleting_destructor_(byte param_1)
+TCouncilTickerAnimation * __thiscall
+TCouncilTickerAnimation::_scalar_deleting_destructor_(TCouncilTickerAnimation *this,byte param_1)
 
 {
   func_0x0040623f();
@@ -38,7 +39,8 @@ TCouncilTickerAnimation * TCouncilTickerAnimation::_scalar_deleting_destructor_(
 // GHIDRA_NAME TCouncilTickerAnimation::CreateTCouncilTickerAnimationInstance
 // GHIDRA_PROTO undefined __thiscall CreateTCouncilTickerAnimationInstance(void)
 
-void TCouncilTickerAnimation::CreateTCouncilTickerAnimationInstance()
+void __thiscall
+TCouncilTickerAnimation::CreateTCouncilTickerAnimationInstance(TCouncilTickerAnimation *this)
 
 {
   this->vftable =
@@ -50,7 +52,7 @@ void TCouncilTickerAnimation::CreateTCouncilTickerAnimationInstance()
 // GHIDRA_NAME TCouncilTickerAnimation::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TCouncilTickerAnimation::GetRuntimeClass()
+CRuntimeClass * __thiscall TCouncilTickerAnimation::GetRuntimeClass(TCouncilTickerAnimation *this)
 
 {
   return &classTCouncilTickerAnimation;
@@ -171,7 +173,7 @@ TCouncilTickerAnimation::InitializeDiplomacyCouncilViewControlsAndTicker
   uStack_38 = 0;
   puStack_3c = local_18;
   uStack_40 = 0x4fc336;
-  func_0x00406afa();
+  thunk_BuildUiTextStyleDescriptor();
   p_Var2 = this->vftable[1].WrapperFor_thunk_TemporarilyClearAndRestoreUiInvalidationFlag_At004a1100
   ;
   uStack_30 = 0x63616e30;

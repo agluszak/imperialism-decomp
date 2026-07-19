@@ -37,7 +37,7 @@ undefined4 * TNoHiliteText::CreateObject(void)
 // GHIDRA_NAME TNoHiliteText::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TNoHiliteText::GetRuntimeClass()
+CRuntimeClass * __thiscall TNoHiliteText::GetRuntimeClass(TNoHiliteText *this)
 
 {
   return &classTNoHiliteText;
@@ -67,7 +67,7 @@ CRuntimeClass * TNoHiliteText::GetRuntimeClass()
    Returns:
    - this pointer. */
 
-TNoHiliteText * TNoHiliteText::ConstructUiStatusListTextEntry()
+TNoHiliteText * __thiscall TNoHiliteText::ConstructUiStatusListTextEntry(TNoHiliteText *this)
 
 {
   func_0x0040541b();
@@ -79,7 +79,8 @@ TNoHiliteText * TNoHiliteText::ConstructUiStatusListTextEntry()
 // GHIDRA_NAME TNoHiliteText::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TNoHiliteText * TNoHiliteText::_scalar_deleting_destructor_(byte param_1)
+TNoHiliteText * __thiscall
+TNoHiliteText::_scalar_deleting_destructor_(TNoHiliteText *this,byte param_1)
 
 {
   func_0x004015e1();

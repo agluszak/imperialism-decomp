@@ -18,10 +18,10 @@
    
    Libraries: Visual Studio 2005 Release, Visual Studio 2008 Release, Visual Studio 2010 Release */
 
-void CPtrArray::CPtrArray()
+void __thiscall CPtrArray::CPtrArray(CPtrArray *this)
 
 {
-  *(undefined ***)this = &TIndexAndRankList::_vftable_;
+  *(undefined ***)this = &_vftable_;
   *(undefined4 *)(this + 4) = 0;
   *(undefined4 *)(this + 0x10) = 0;
   *(undefined4 *)(this + 0xc) = 0;
@@ -56,7 +56,7 @@ void CPtrArray::~CPtrArray(void)
   
   _EH_prolog();
   *(undefined4 **)(unaff_EBP + -0x10) = extraout_ECX;
-  *extraout_ECX = &TIndexAndRankList::_vftable_;
+  *extraout_ECX = &_vftable_;
   uVar1 = extraout_ECX[1];
   *(undefined4 *)(unaff_EBP + -4) = 0;
   operator_delete(uVar1);
@@ -137,7 +137,7 @@ void __thiscall CPtrArray::SetSize(int param_1,int param_2,int param_3)
 // GHIDRA_NAME CPtrArray::SetAtGrow
 // GHIDRA_PROTO undefined __thiscall SetAtGrow(int param_1, undefined4 param_2)
 
-void CPtrArray::SetAtGrow(int param_1, undefined4 param_2)
+void __thiscall CPtrArray::SetAtGrow(CPtrArray *this,int param_1,undefined4 param_2)
 
 {
   if (*(int *)(this + 8) <= param_1) {
@@ -181,7 +181,7 @@ void __thiscall CPtrArray::InsertAt(int param_1,int param_2,undefined4 param_3,i
 // GHIDRA_NAME CPtrArray::RemoveAt
 // GHIDRA_PROTO undefined __thiscall RemoveAt(int param_1, int param_2)
 
-void CPtrArray::RemoveAt(int param_1, int param_2)
+void __thiscall CPtrArray::RemoveAt(CPtrArray *this,int param_1,int param_2)
 
 {
   int iVar1;

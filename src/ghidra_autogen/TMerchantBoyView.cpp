@@ -37,7 +37,8 @@ undefined4 * TMerchantBoyView::CreateObject(void)
 // GHIDRA_NAME TMerchantBoyView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TMerchantBoyView * TMerchantBoyView::_scalar_deleting_destructor_(byte param_1)
+TMerchantBoyView * __thiscall
+TMerchantBoyView::_scalar_deleting_destructor_(TMerchantBoyView *this,byte param_1)
 
 {
   func_0x004086f2();
@@ -51,7 +52,7 @@ TMerchantBoyView * TMerchantBoyView::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TMerchantBoyView::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TMerchantBoyView::GetRuntimeClass()
+CRuntimeClass * __thiscall TMerchantBoyView::GetRuntimeClass(TMerchantBoyView *this)
 
 {
   return &classTMerchantBoyView;
@@ -61,7 +62,7 @@ CRuntimeClass * TMerchantBoyView::GetRuntimeClass()
 // GHIDRA_NAME TMerchantBoyView::ApplyRectSlot110
 // GHIDRA_PROTO undefined __thiscall ApplyRectSlot110(void)
 
-void TMerchantBoyView::ApplyRectSlot110()
+void __thiscall TMerchantBoyView::ApplyRectSlot110(TMerchantBoyView *this)
 
 {
   undefined2 extraout_var;
@@ -96,7 +97,7 @@ void TMerchantBoyView::ApplyRectSlot110()
   func_0x004062ee();
   CStack_20.m_pchData = (char *)0x18;
   CStack_24.m_pchData = (char *)0x50;
-  func_0x00408d6e();
+  thunk_SetQuickDrawTextOriginWithContextOffset();
   CStack_20.m_pchData = (char *)&local_18;
   CStack_24.m_pchData = (char *)0x4af80a;
   func_0x004029aa();
@@ -110,8 +111,8 @@ void TMerchantBoyView::ApplyRectSlot110()
     (*g_pSimMgr->vftable[0x10].slot_0x04)();
   }
   func_0x0040448f(1,0xc);
-  func_0x00405b7d();
-  func_0x00408d6e(0x50);
+  thunk_MeasureTextExtentWithCachedQuickDrawStyle();
+  thunk_SetQuickDrawTextOriginWithContextOffset(0x50);
   func_0x004029aa();
   func_0x00402bdf();
   uStack_10 = uStack_10 & 0xffffff00;

@@ -36,17 +36,17 @@ undefined4 __fastcall TTacticalBattleView::CreateObject(undefined4 param_1)
 // GHIDRA_NAME TTacticalBattleView::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TTacticalBattleView::GetRuntimeClass()
+CRuntimeClass * __thiscall TTacticalBattleView::GetRuntimeClass(TTacticalBattleView *this)
 
 {
   return &classTTacticalBattleView;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005A83C0
-// GHIDRA_NAME TTacticalBattleView::OrphanRetStub_005a83c0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_005a83c0(void)
+// GHIDRA_NAME TTacticalBattleView::DrawTacticalTileInClipRect
+// GHIDRA_PROTO undefined __thiscall DrawTacticalTileInClipRect(void)
 
-void TTacticalBattleView::OrphanRetStub_005a83c0()
+void __thiscall TTacticalBattleView::DrawTacticalTileInClipRect(TTacticalBattleView *this)
 
 {
   return;
@@ -56,7 +56,8 @@ void TTacticalBattleView::OrphanRetStub_005a83c0()
 // GHIDRA_NAME TTacticalBattleView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TTacticalBattleView * TTacticalBattleView::_scalar_deleting_destructor_(byte param_1)
+TTacticalBattleView * __thiscall
+TTacticalBattleView::_scalar_deleting_destructor_(TTacticalBattleView *this,byte param_1)
 
 {
   func_0x00403792();
@@ -70,7 +71,7 @@ TTacticalBattleView * TTacticalBattleView::_scalar_deleting_destructor_(byte par
 // GHIDRA_NAME TTacticalBattleView::Free
 // GHIDRA_PROTO undefined __thiscall Free(void)
 
-void TTacticalBattleView::Free()
+void __thiscall TTacticalBattleView::Free(TTacticalBattleView *this)
 
 {
   func_0x004010e6(&this->field_0x64);
@@ -88,7 +89,7 @@ void TTacticalBattleView::Free()
 // GHIDRA_NAME TTacticalBattleView::NoOpUiLifecycleHook
 // GHIDRA_PROTO undefined __thiscall NoOpUiLifecycleHook(void)
 
-void TTacticalBattleView::NoOpUiLifecycleHook()
+void __thiscall TTacticalBattleView::NoOpUiLifecycleHook(TTacticalBattleView *this)
 
 {
   TTacticalBattleViewVtbl *pTVar1;
@@ -115,7 +116,7 @@ void TTacticalBattleView::NoOpUiLifecycleHook()
 // GHIDRA_NAME TTacticalBattleView::ForwardParam
 // GHIDRA_PROTO undefined __thiscall ForwardParam(int param_1)
 
-void TTacticalBattleView::ForwardParam(int param_1)
+void __thiscall TTacticalBattleView::ForwardParam(TTacticalBattleView *this,int param_1)
 
 {
   switch(*(undefined2 *)(param_1 + 0x1c)) {
@@ -142,7 +143,8 @@ void TTacticalBattleView::ForwardParam(int param_1)
 // GHIDRA_NAME TTacticalBattleView::BeginMouseCaptureAndStartRepeatTimer
 // GHIDRA_PROTO undefined __thiscall BeginMouseCaptureAndStartRepeatTimer(int param_1)
 
-void TTacticalBattleView::BeginMouseCaptureAndStartRepeatTimer(int param_1)
+void __thiscall
+TTacticalBattleView::BeginMouseCaptureAndStartRepeatTimer(TTacticalBattleView *this,int param_1)
 
 {
   int unaff_ESI;
@@ -158,13 +160,62 @@ void TTacticalBattleView::BeginMouseCaptureAndStartRepeatTimer(int param_1)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x005A8900
-// GHIDRA_NAME TTacticalBattleView::WrapperFor_InvalidateCityDialogRectRegion_At005a8900
-// GHIDRA_PROTO undefined __thiscall WrapperFor_InvalidateCityDialogRectRegion_At005a8900(int param_1)
+// GHIDRA_FUNCTION IMPERIALISM 0x005A87D0
+// GHIDRA_NAME TTacticalBattleView::ComputeTacticalHexTileScreenRect
+// GHIDRA_PROTO undefined ComputeTacticalHexTileScreenRect()
 
 void __thiscall
-TTacticalBattleView::WrapperFor_InvalidateCityDialogRectRegion_At005a8900
-          (TTacticalBattleView *this,int param_1)
+TTacticalBattleView::ComputeTacticalHexTileScreenRect(int param_1,int *param_2,int param_3)
+
+{
+  uint uVar1;
+  int iVar2;
+  
+  uVar1 = param_3 / *(int *)(param_1 + 0x80);
+  iVar2 = (param_3 % *(int *)(param_1 + 0x80)) * *(int *)(param_1 + 0x88) -
+          (int)*(short *)(param_1 + 0x78);
+  *param_2 = iVar2;
+  if ((uVar1 & 1) != 0) {
+    *param_2 = *(int *)(param_1 + 0x88) / 2 + iVar2;
+  }
+  iVar2 = uVar1 * *(int *)(param_1 + 0x8c);
+  param_2[1] = iVar2;
+  param_2[2] = *param_2 + *(int *)(param_1 + 0x88);
+  param_2[3] = iVar2 + *(int *)(param_1 + 0x8c);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005A8860
+// GHIDRA_NAME TTacticalBattleView::InvalidateTacticalHexTileRect
+// GHIDRA_PROTO undefined InvalidateTacticalHexTileRect()
+
+void __thiscall TTacticalBattleView::InvalidateTacticalHexTileRect(int param_1,int param_2)
+
+{
+  uint uVar1;
+  int local_10;
+  int local_c;
+  int local_8;
+  int local_4;
+  
+  uVar1 = param_2 / *(int *)(param_1 + 0x80);
+  local_8 = *(int *)(param_1 + 0x88);
+  local_10 = (param_2 % *(int *)(param_1 + 0x80)) * local_8 - (int)*(short *)(param_1 + 0x78);
+  if ((uVar1 & 1) != 0) {
+    local_10 = local_10 + local_8 / 2;
+  }
+  local_c = uVar1 * *(int *)(param_1 + 0x8c);
+  local_8 = local_10 + local_8;
+  local_4 = local_c + *(int *)(param_1 + 0x8c);
+  func_0x00408a03(&local_10,1);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005A8900
+// GHIDRA_NAME TTacticalBattleView::TacticalBattleViewSlot68
+// GHIDRA_PROTO undefined __thiscall TacticalBattleViewSlot68(int param_1)
+
+void __thiscall TTacticalBattleView::TacticalBattleViewSlot68(TTacticalBattleView *this,int param_1)
 
 {
   uint uVar1;
@@ -187,12 +238,11 @@ TTacticalBattleView::WrapperFor_InvalidateCityDialogRectRegion_At005a8900
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005A89A0
-// GHIDRA_NAME TTacticalBattleView::WrapperFor_InvalidateCityDialogRectRegion_At005a89a0
-// GHIDRA_PROTO undefined __thiscall WrapperFor_InvalidateCityDialogRectRegion_At005a89a0(int param_1)
+// GHIDRA_NAME TTacticalBattleView::InvalidateTacticalUnitTileRect
+// GHIDRA_PROTO undefined __thiscall InvalidateTacticalUnitTileRect(int param_1)
 
 void __thiscall
-TTacticalBattleView::WrapperFor_InvalidateCityDialogRectRegion_At005a89a0
-          (TTacticalBattleView *this,int param_1)
+TTacticalBattleView::InvalidateTacticalUnitTileRect(TTacticalBattleView *this,int param_1)
 
 {
   undefined1 *puStack_18;
@@ -207,11 +257,11 @@ TTacticalBattleView::WrapperFor_InvalidateCityDialogRectRegion_At005a89a0
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005A89F0
-// GHIDRA_NAME TTacticalBattleView::OrphanLeaf_NoCall_Ins59_005a89f0
-// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins59_005a89f0(int param_1, int * param_2)
+// GHIDRA_NAME TTacticalBattleView::ComputeTacticalUnitTileScreenRect
+// GHIDRA_PROTO undefined __thiscall ComputeTacticalUnitTileScreenRect(int param_1, int * param_2)
 
 void __thiscall
-TTacticalBattleView::OrphanLeaf_NoCall_Ins59_005a89f0
+TTacticalBattleView::ComputeTacticalUnitTileScreenRect
           (TTacticalBattleView *this,int param_1,int *param_2)
 
 {
@@ -241,6 +291,39 @@ TTacticalBattleView::OrphanLeaf_NoCall_Ins59_005a89f0
   param_2[1] = 0;
   param_2[2] = 0;
   param_2[3] = 0;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005A8AC0
+// GHIDRA_NAME TTacticalBattleView::CenterViewportAroundGridIndexAndSnap
+// GHIDRA_PROTO undefined CenterViewportAroundGridIndexAndSnap()
+
+void __thiscall TTacticalBattleView::CenterViewportAroundGridIndexAndSnap(int *param_1,int param_2)
+
+{
+  int iVar1;
+  int iVar2;
+  short sVar3;
+  int iVar4;
+  
+  iVar2 = (int)(short)param_1[0x1e] / param_1[0x22];
+  iVar1 = param_1[0xd];
+  iVar4 = (int)((param_2 / 0x1d & 1U) + (param_2 % 0x1d) * 2) / 2;
+  if ((iVar4 < iVar2 + 2) || (iVar1 / param_1[0x22] + iVar2 + -2 < iVar4)) {
+    sVar3 = (short)iVar4 * (short)param_1[0x22] - (short)(iVar1 / 2);
+    *(short *)(param_1 + 0x1e) = sVar3;
+    if (sVar3 < 0) {
+      *(undefined2 *)(param_1 + 0x1e) = 0;
+    }
+    else if (*(short *)((int)param_1 + 0x7a) - iVar1 < (int)sVar3) {
+      *(short *)(param_1 + 0x1e) = *(short *)((int)param_1 + 0x7a) - (short)param_1[0xd];
+    }
+    if ((int)(short)param_1[0x1e] % param_1[0x22] != 0) {
+      *(short *)(param_1 + 0x1e) =
+           (short)((int)(short)param_1[0x1e] / param_1[0x22]) * (short)param_1[0x22];
+    }
+    (**(code **)(*param_1 + 0xe4))();
+  }
   return;
 }
 
@@ -381,18 +464,18 @@ TTacticalBattleView::HandleCursorHoverSelectionByChildHitTestAndFallback
       (**(code **)(**(int **)&this->field_0xd0 + 0x1d0))();
     }
     func_0x00409aac();
-    func_0x00408035();
+    thunk_DestroyScopedMapQuickDrawContext();
   }
   *unaff_FS_OFFSET = uStack_1c;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005A9090
-// GHIDRA_NAME TTacticalBattleView::OrphanCallChain_C2_I66_005a9090
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C2_I66_005a9090(int param_1, undefined4 param_2, undefined4 param_3)
+// GHIDRA_NAME TTacticalBattleView::PlayTacticalTileEffect
+// GHIDRA_PROTO undefined __thiscall PlayTacticalTileEffect(int param_1, undefined4 param_2, undefined4 param_3)
 
 void __thiscall
-TTacticalBattleView::OrphanCallChain_C2_I66_005a9090
+TTacticalBattleView::PlayTacticalTileEffect
           (TTacticalBattleView *this,int param_1,undefined4 param_2,undefined4 param_3)
 
 {
@@ -462,11 +545,11 @@ TTacticalBattleView::RunOneTimeAnimationModalWaitAndInvalidateCityDialog
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005A9240
-// GHIDRA_NAME TTacticalBattleView::WrapperFor_InvalidateCityDialogRectRegion_At005a9240
-// GHIDRA_PROTO undefined __thiscall WrapperFor_InvalidateCityDialogRectRegion_At005a9240(int param_1, int param_2, int param_3)
+// GHIDRA_NAME TTacticalBattleView::AnimateTacticalUnitMoveBetweenTiles
+// GHIDRA_PROTO undefined __thiscall AnimateTacticalUnitMoveBetweenTiles(int param_1, int param_2, int param_3)
 
 void __thiscall
-TTacticalBattleView::WrapperFor_InvalidateCityDialogRectRegion_At005a9240
+TTacticalBattleView::AnimateTacticalUnitMoveBetweenTiles
           (TTacticalBattleView *this,int param_1,int param_2,int param_3)
 
 {
@@ -553,7 +636,8 @@ TTacticalBattleView::WrapperFor_InvalidateCityDialogRectRegion_At005a9240
 // GHIDRA_NAME TTacticalBattleView::DrawUiTilesAndOverlay
 // GHIDRA_PROTO void __thiscall DrawUiTilesAndOverlay(astruct_13 * ui_ctx)
 
-void TTacticalBattleView::DrawUiTilesAndOverlay(astruct_13 *ui_ctx)
+void __thiscall
+TTacticalBattleView::DrawUiTilesAndOverlay(TTacticalBattleView *this,astruct_13 *ui_ctx)
 
 {
   char cVar1;
@@ -655,8 +739,8 @@ void TTacticalBattleView::DrawUiTilesAndOverlay(astruct_13 *ui_ctx)
       text_src_rect_bottom = this->field38;
       src_rect.bottom = *(LONG *)&this->field_0xcc;
       text_src_rect_right = this->field34;
-      text_src_rect = DAT_006a5458;
-      text_src_rect_top = DAT_006a545c;
+      text_src_rect = g_nUiFrameClipOriginX;
+      text_src_rect_top = g_nUiFrameClipOriginY;
       cVar1 = func_0x004043cc(&text_src_rect,&text_dst_rect,&src_rect);
       if (cVar1 != '\0') {
         if (*(int *)&g_pActiveQuickDrawSurfaceContext->field_0x20 != 0) {
@@ -679,6 +763,62 @@ void TTacticalBattleView::DrawUiTilesAndOverlay(astruct_13 *ui_ctx)
     func_0x00408a03(&this->field_0xc0,1);
     *(undefined4 *)&this->field_0xa4 = 0xffffffff;
   }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005A9B40
+// GHIDRA_NAME TTacticalBattleView::UpdateTacticalActionControlBitmapForCurrentUnit
+// GHIDRA_PROTO undefined UpdateTacticalActionControlBitmapForCurrentUnit()
+
+void __fastcall TTacticalBattleView::UpdateTacticalActionControlBitmapForCurrentUnit(int param_1)
+
+{
+  int iVar1;
+  int *piVar2;
+  
+  piVar2 = (int *)(**(code **)(**(int **)(param_1 + 0x20) + 0x94))(0x636f6174);
+  iVar1 = *piVar2;
+  (**(code **)(iVar1 + 0xc))();
+  (**(code **)(iVar1 + 0x1c8))
+            (*(int *)(*(int *)(*(int *)(param_1 + 0x60) + 0x14 +
+                              *(int *)(*(int *)(param_1 + 0x60) + 0xc) * 4) + 0x1c) + 0xea6,1);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005A9BB0
+// GHIDRA_NAME TTacticalBattleView::SpawnTacticalUiMarkerAtUnitTile
+// GHIDRA_PROTO undefined __thiscall SpawnTacticalUiMarkerAtUnitTile(void)
+
+void __thiscall TTacticalBattleView::SpawnTacticalUiMarkerAtUnitTile(TTacticalBattleView *this)
+
+{
+  int iVar1;
+  undefined4 *puVar2;
+  
+  func_0x004030a8(0x2711);
+  iVar1 = *(int *)(*(int *)&this->field_0x60 + 0x1c);
+  if ((iVar1 != 0) && (-1 < *(int *)(iVar1 + 8))) {
+    puVar2 = (undefined4 *)operator_new(0x2c);
+    if (puVar2 == (undefined4 *)0x0) {
+      puVar2 = (undefined4 *)0x0;
+    }
+    else {
+      *puVar2 = &TAnimationVtbl_0064c300;
+    }
+    func_0x0040302b(this,&stack0xffffffec,2,0,10,0x2711);
+    func_0x00402ec8(puVar2);
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005A9CC0
+// GHIDRA_NAME TTacticalBattleView::TriggerTacticalUiUpdate2711
+// GHIDRA_PROTO undefined TriggerTacticalUiUpdate2711()
+
+void TTacticalBattleView::TriggerTacticalUiUpdate2711(void)
+
+{
+  func_0x004030a8(0x2711);
   return;
 }
 

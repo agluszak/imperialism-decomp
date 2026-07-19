@@ -38,7 +38,7 @@ undefined4 * TPictureButton::CreateObject(void)
 // GHIDRA_NAME TPictureButton::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TPictureButton::GetRuntimeClass()
+CRuntimeClass * __thiscall TPictureButton::GetRuntimeClass(TPictureButton *this)
 
 {
   return &classTPictureButton;
@@ -54,7 +54,7 @@ CRuntimeClass * TPictureButton::GetRuntimeClass()
 /* Derived picture constructor reused for cursor/tab glyph entries (observed tags: 'curs',
    'tab0'..'tab8'). Sets timing/word field (+0x92=7000). */
 
-TPictureButton * TPictureButton::TPictureButton()
+TPictureButton * __thiscall TPictureButton::TPictureButton(TPictureButton *this)
 
 {
   func_0x00401122();
@@ -67,7 +67,8 @@ TPictureButton * TPictureButton::TPictureButton()
 // GHIDRA_NAME TPictureButton::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TPictureButton * TPictureButton::_scalar_deleting_destructor_(byte param_1)
+TPictureButton * __thiscall
+TPictureButton::_scalar_deleting_destructor_(TPictureButton *this,byte param_1)
 
 {
   func_0x004087ba();
@@ -81,7 +82,8 @@ TPictureButton * TPictureButton::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TPictureButton::SetControlStateFlagAndMaybeRefresh
 // GHIDRA_PROTO undefined __thiscall SetControlStateFlagAndMaybeRefresh(char param_1)
 
-void TPictureButton::SetControlStateFlagAndMaybeRefresh(char param_1)
+void __thiscall
+TPictureButton::SetControlStateFlagAndMaybeRefresh(TPictureButton *this,char param_1)
 
 {
   TPictureButtonVtbl *pTVar1;
@@ -102,7 +104,7 @@ void TPictureButton::SetControlStateFlagAndMaybeRefresh(char param_1)
 // GHIDRA_NAME TPictureButton::IsSelected
 // GHIDRA_PROTO undefined __thiscall IsSelected(void)
 
-void TPictureButton::IsSelected()
+void __thiscall TPictureButton::IsSelected(TPictureButton *this)
 
 {
   undefined uVar1;
@@ -119,7 +121,7 @@ void TPictureButton::IsSelected()
 // GHIDRA_NAME TPictureButton::BeginMouseCaptureAndStartRepeatTimer
 // GHIDRA_PROTO undefined __thiscall BeginMouseCaptureAndStartRepeatTimer(void)
 
-void TPictureButton::BeginMouseCaptureAndStartRepeatTimer()
+void __thiscall TPictureButton::BeginMouseCaptureAndStartRepeatTimer(TPictureButton *this)
 
 {
   undefined4 unaff_ESI;

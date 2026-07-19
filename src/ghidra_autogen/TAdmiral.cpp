@@ -7,7 +7,7 @@
 // GHIDRA_NAME TAdmiral::GenerateMappedFlavorTextByNationSlotField0C
 // GHIDRA_PROTO undefined __thiscall GenerateMappedFlavorTextByNationSlotField0C(void)
 
-void TAdmiral::GenerateMappedFlavorTextByNationSlotField0C()
+void __thiscall TAdmiral::GenerateMappedFlavorTextByNationSlotField0C(TAdmiral *this)
 
 {
   func_0x00405312();
@@ -72,7 +72,7 @@ undefined4 * TAdmiral::CreateObject(void)
 // GHIDRA_NAME TAdmiral::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TAdmiral::GetRuntimeClass()
+CRuntimeClass * __thiscall TAdmiral::GetRuntimeClass(TAdmiral *this)
 
 {
   return &classTAdmiral;
@@ -82,7 +82,7 @@ CRuntimeClass * TAdmiral::GetRuntimeClass()
 // GHIDRA_NAME TAdmiral::TAdmiral
 // GHIDRA_PROTO undefined __thiscall TAdmiral(undefined2 param_1)
 
-TAdmiral * TAdmiral::TAdmiral(undefined2 param_1)
+TAdmiral * __thiscall TAdmiral::TAdmiral(TAdmiral *this,undefined2 param_1)
 
 {
   undefined1 *this_00;
@@ -129,7 +129,7 @@ TAdmiral * TAdmiral::TAdmiral(undefined2 param_1)
 // GHIDRA_NAME TAdmiral::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TAdmiral * TAdmiral::_scalar_deleting_destructor_(byte param_1)
+TAdmiral * __thiscall TAdmiral::_scalar_deleting_destructor_(TAdmiral *this,byte param_1)
 
 {
   func_0x004051cd();
@@ -143,7 +143,7 @@ TAdmiral * TAdmiral::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TAdmiral::DestructTAdmiral
 // GHIDRA_PROTO undefined __thiscall DestructTAdmiral(void)
 
-void TAdmiral::DestructTAdmiral()
+void __thiscall TAdmiral::DestructTAdmiral(TAdmiral *this)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -165,7 +165,7 @@ void TAdmiral::DestructTAdmiral()
 // GHIDRA_NAME TAdmiral::Free
 // GHIDRA_PROTO undefined __thiscall Free(void)
 
-void TAdmiral::Free()
+void __thiscall TAdmiral::Free(TAdmiral *this)
 
 {
   if (g_pNavySecondaryOrderListHead == this) {
@@ -190,7 +190,7 @@ void TAdmiral::Free()
 // GHIDRA_NAME TAdmiral::WriteTo
 // GHIDRA_PROTO undefined __thiscall WriteTo(int * param_1)
 
-void TAdmiral::WriteTo(int *param_1)
+void __thiscall TAdmiral::WriteTo(TAdmiral *this,int *param_1)
 
 {
   int iVar1;
@@ -222,7 +222,7 @@ void TAdmiral::WriteTo(int *param_1)
 // GHIDRA_NAME TAdmiral::ReadFrom
 // GHIDRA_PROTO undefined __thiscall ReadFrom(int * param_1)
 
-void TAdmiral::ReadFrom(int *param_1)
+void __thiscall TAdmiral::ReadFrom(TAdmiral *this,int *param_1)
 
 {
   int iVar1;

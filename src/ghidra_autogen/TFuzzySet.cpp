@@ -3,17 +3,6 @@
 // Program: Imperialism.exe
 // Bucket: TFuzzySet.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004FF500
-// GHIDRA_NAME TFuzzySet::CreateTFuzzySetInstance
-// GHIDRA_PROTO undefined __thiscall CreateTFuzzySetInstance(void)
-
-void TFuzzySet::CreateTFuzzySetInstance()
-
-{
-  this->vftable = (TFuzzySetVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x004FF690
 // GHIDRA_NAME TFuzzySet::CreateObject
 // GHIDRA_PROTO undefined CreateObject()
@@ -35,17 +24,17 @@ undefined4 * TFuzzySet::CreateObject(void)
 // GHIDRA_NAME TFuzzySet::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TFuzzySet::GetRuntimeClass()
+CRuntimeClass * __thiscall TFuzzySet::GetRuntimeClass(TFuzzySet *this)
 
 {
   return &classTFuzzySet;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004FF6E0
-// GHIDRA_NAME TFuzzySet::ConstructTFuzzySetBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTFuzzySetBaseState(void)
+// GHIDRA_NAME TFuzzySet::TFuzzySet
+// GHIDRA_PROTO undefined __thiscall TFuzzySet(void)
 
-void TFuzzySet::ConstructTFuzzySetBaseState()
+void __thiscall TFuzzySet::TFuzzySet(TFuzzySet *this)
 
 {
   this->vftable = &_vftable_;
@@ -56,7 +45,7 @@ void TFuzzySet::ConstructTFuzzySetBaseState()
 // GHIDRA_NAME TFuzzySet::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TFuzzySet * TFuzzySet::_scalar_deleting_destructor_(byte param_1)
+TFuzzySet * __thiscall TFuzzySet::_scalar_deleting_destructor_(TFuzzySet *this,byte param_1)
 
 {
   func_0x00401cee();
@@ -66,11 +55,22 @@ TFuzzySet * TFuzzySet::_scalar_deleting_destructor_(byte param_1)
   return this;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x004FF730
+// GHIDRA_NAME TFuzzySet::~TFuzzySet
+// GHIDRA_PROTO undefined ~TFuzzySet()
+
+void __fastcall TFuzzySet::~TFuzzySet(undefined4 *param_1)
+
+{
+  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x004FF780
 // GHIDRA_NAME TFuzzySet::Free
 // GHIDRA_PROTO undefined __thiscall Free(void)
 
-void TFuzzySet::Free()
+void __thiscall TFuzzySet::Free(TFuzzySet *this)
 
 {
   int iVar1;

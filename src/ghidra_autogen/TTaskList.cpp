@@ -38,17 +38,40 @@ undefined4 * TTaskList::CreateObject(void)
 // GHIDRA_NAME TTaskList::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TTaskList::GetRuntimeClass()
+CRuntimeClass * __thiscall TTaskList::GetRuntimeClass(TTaskList *this)
 
 {
   return &classTTaskList;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005AEB90
+// GHIDRA_NAME TTaskList::ConstructTaskListBaseState
+// GHIDRA_PROTO undefined __thiscall ConstructTaskListBaseState(void)
+
+TTaskList * __thiscall TTaskList::ConstructTaskListBaseState(TTaskList *this)
+
+{
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  puStack_8 = &LAB_00638908;
+  local_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &local_c;
+  this->vftable = (TTaskListVtbl *)&TObject::_vftable_;
+  local_4 = 0;
+  CPtrList::CPtrList((CPtrList *)&this->field_0x4,10);
+  this->vftable = &_vftable_;
+  *unaff_FS_OFFSET = local_c;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005AEC00
 // GHIDRA_NAME TTaskList::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TTaskList * TTaskList::_scalar_deleting_destructor_(byte param_1)
+TTaskList * __thiscall TTaskList::_scalar_deleting_destructor_(TTaskList *this,byte param_1)
 
 {
   func_0x0040902a();
@@ -62,7 +85,7 @@ TTaskList * TTaskList::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TTaskList::CreateTTechMgrInstance
 // GHIDRA_PROTO undefined __thiscall CreateTTechMgrInstance(void)
 
-undefined4 TTaskList::CreateTTechMgrInstance()
+undefined4 __thiscall TTaskList::CreateTTechMgrInstance(TTaskList *this)
 
 {
   TTaskListVtbl *pTVar1;

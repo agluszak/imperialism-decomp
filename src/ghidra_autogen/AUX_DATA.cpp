@@ -128,3 +128,14 @@ int __fastcall AUX_DATA::AUX_DATA(int param_1)
   return param_1;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00626C02
+// GHIDRA_NAME AUX_DATA::~AUX_DATA
+// GHIDRA_PROTO undefined ~AUX_DATA()
+
+void __fastcall AUX_DATA::~AUX_DATA(int param_1)
+
+{
+  AfxDeleteObject(param_1 + 0x50);
+  return;
+}
+

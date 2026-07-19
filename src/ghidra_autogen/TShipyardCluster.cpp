@@ -37,17 +37,18 @@ undefined4 * TShipyardCluster::CreateObject(void)
 // GHIDRA_NAME TShipyardCluster::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TShipyardCluster::GetRuntimeClass()
+CRuntimeClass * __thiscall TShipyardCluster::GetRuntimeClass(TShipyardCluster *this)
 
 {
-  return &g_pClassDescTShipyardCluster;
+  return &classTShipyardCluster;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058A590
 // GHIDRA_NAME TShipyardCluster::ConstructTradeMoveArrowControlPanel
 // GHIDRA_PROTO undefined __thiscall ConstructTradeMoveArrowControlPanel(void)
 
-TShipyardCluster * TShipyardCluster::ConstructTradeMoveArrowControlPanel()
+TShipyardCluster * __thiscall
+TShipyardCluster::ConstructTradeMoveArrowControlPanel(TShipyardCluster *this)
 
 {
   func_0x00405835();
@@ -60,7 +61,8 @@ TShipyardCluster * TShipyardCluster::ConstructTradeMoveArrowControlPanel()
 // GHIDRA_NAME TShipyardCluster::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TShipyardCluster * TShipyardCluster::_scalar_deleting_destructor_(byte param_1)
+TShipyardCluster * __thiscall
+TShipyardCluster::_scalar_deleting_destructor_(TShipyardCluster *this,byte param_1)
 
 {
   func_0x00403fee();
@@ -74,7 +76,7 @@ TShipyardCluster * TShipyardCluster::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TShipyardCluster::NoOpUiLifecycleHook
 // GHIDRA_PROTO undefined __thiscall NoOpUiLifecycleHook(void)
 
-void TShipyardCluster::NoOpUiLifecycleHook()
+void __thiscall TShipyardCluster::NoOpUiLifecycleHook(TShipyardCluster *this)
 
 {
   short sVar1;
@@ -99,7 +101,7 @@ void TShipyardCluster::NoOpUiLifecycleHook()
 // GHIDRA_NAME TShipyardCluster::OrphanRetStub_00586ff0
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_00586ff0(void)
 
-void TShipyardCluster::OrphanRetStub_00586ff0()
+void __thiscall TShipyardCluster::OrphanRetStub_00586ff0(TShipyardCluster *this)
 
 {
   _vslot_fn *p_Var1;
@@ -165,7 +167,8 @@ void TShipyardCluster::OrphanRetStub_00586ff0()
 // GHIDRA_NAME TShipyardCluster::HandleEvent
 // GHIDRA_PROTO undefined __thiscall HandleEvent(int param_1, void * param_2, int param_3)
 
-void TShipyardCluster::HandleEvent(int param_1, void *param_2, int param_3)
+void __thiscall
+TShipyardCluster::HandleEvent(TShipyardCluster *this,int param_1,void *param_2,int param_3)
 
 {
   TShipyardClusterVtbl *pTVar1;

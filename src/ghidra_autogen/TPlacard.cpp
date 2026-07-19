@@ -37,7 +37,7 @@ undefined4 * TPlacard::CreateObject(void)
 // GHIDRA_NAME TPlacard::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TPlacard::GetRuntimeClass()
+CRuntimeClass * __thiscall TPlacard::GetRuntimeClass(TPlacard *this)
 
 {
   return &classTPlacard;
@@ -47,7 +47,7 @@ CRuntimeClass * TPlacard::GetRuntimeClass()
 // GHIDRA_NAME TPlacard::TPlacard
 // GHIDRA_PROTO undefined __thiscall TPlacard(void)
 
-TPlacard * TPlacard::TPlacard()
+TPlacard * __thiscall TPlacard::TPlacard(TPlacard *this)
 
 {
   func_0x00401122();
@@ -60,7 +60,7 @@ TPlacard * TPlacard::TPlacard()
 // GHIDRA_NAME TPlacard::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TPlacard * TPlacard::_scalar_deleting_destructor_(byte param_1)
+TPlacard * __thiscall TPlacard::_scalar_deleting_destructor_(TPlacard *this,byte param_1)
 
 {
   func_0x00409688();
@@ -74,7 +74,7 @@ TPlacard * TPlacard::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TPlacard::NoOpUiLifecycleHook
 // GHIDRA_PROTO undefined __thiscall NoOpUiLifecycleHook(void)
 
-void TPlacard::NoOpUiLifecycleHook()
+void __thiscall TPlacard::NoOpUiLifecycleHook(TPlacard *this)
 
 {
   func_0x00406ba9();
@@ -90,7 +90,7 @@ void TPlacard::NoOpUiLifecycleHook()
 // GHIDRA_NAME TPlacard::IsSelected
 // GHIDRA_PROTO undefined __thiscall IsSelected(short param_1, char param_2)
 
-void TPlacard::IsSelected(short param_1, char param_2)
+void __thiscall TPlacard::IsSelected(TPlacard *this,short param_1,char param_2)
 
 {
   RECT local_20;
@@ -120,7 +120,7 @@ void TPlacard::IsSelected(short param_1, char param_2)
 // GHIDRA_NAME TPlacard::ApplyRectSlot110
 // GHIDRA_PROTO undefined __thiscall ApplyRectSlot110(void)
 
-void TPlacard::ApplyRectSlot110()
+void __thiscall TPlacard::ApplyRectSlot110(TPlacard *this)
 
 {
   int iVar1;
@@ -143,7 +143,7 @@ void TPlacard::ApplyRectSlot110()
   local_14.m_pchData._3_1_ = 0;
   func_0x00404fe8();
   func_0x0040448f(0,10);
-  CString__Format(&local_14,&g_szDecimalFormat);
+  CString::Format(&local_14,&g_szDecimalFormat);
   if (*(short *)&this->field_0x90 < 10) {
     iVar1 = this->field34 / 2 + -2;
   }
@@ -153,13 +153,13 @@ void TPlacard::ApplyRectSlot110()
   else {
     iVar1 = this->field34 / 2 + -10;
   }
-  func_0x004093cc(0x2b6c);
-  func_0x004093cc(0x2b67);
+  thunk_MapUiThemeCodeToStyleFlags(0x2b6c);
+  thunk_MapUiThemeCodeToStyleFlags(0x2b67);
   func_0x00409444();
-  func_0x00408d6e(iVar1 + 1);
+  thunk_SetQuickDrawTextOriginWithContextOffset(iVar1 + 1);
   func_0x004029aa();
   func_0x00409444();
-  func_0x00408d6e(iVar1);
+  thunk_SetQuickDrawTextOriginWithContextOffset(iVar1);
   func_0x004029aa();
   func_0x00406b86();
   puStack_8 = (undefined1 *)0xffffffff;

@@ -40,7 +40,8 @@ undefined4 * TPirateMinister::CreateObject(void)
 
 /* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 
-float10 TPirateMinister::CreateTPirateMinisterInstance(char param_1)
+float10 __thiscall
+TPirateMinister::CreateTPirateMinisterInstance(TPirateMinister *this,char param_1)
 
 {
   if (param_1 != '\0') {
@@ -53,7 +54,7 @@ float10 TPirateMinister::CreateTPirateMinisterInstance(char param_1)
 // GHIDRA_NAME TPirateMinister::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TPirateMinister::GetRuntimeClass()
+CRuntimeClass * __thiscall TPirateMinister::GetRuntimeClass(TPirateMinister *this)
 
 {
   return &classTPirateMinister;
@@ -63,7 +64,8 @@ CRuntimeClass * TPirateMinister::GetRuntimeClass()
 // GHIDRA_NAME TPirateMinister::ConstructTPirateMinisterBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTPirateMinisterBaseState(void)
 
-TPirateMinister * TPirateMinister::ConstructTPirateMinisterBaseState()
+TPirateMinister * __thiscall
+TPirateMinister::ConstructTPirateMinisterBaseState(TPirateMinister *this)
 
 {
   func_0x0040433b();
@@ -76,7 +78,8 @@ TPirateMinister * TPirateMinister::ConstructTPirateMinisterBaseState()
 // GHIDRA_NAME TPirateMinister::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TPirateMinister * TPirateMinister::_scalar_deleting_destructor_(byte param_1)
+TPirateMinister * __thiscall
+TPirateMinister::_scalar_deleting_destructor_(TPirateMinister *this,byte param_1)
 
 {
   func_0x0040549d();
@@ -90,7 +93,8 @@ TPirateMinister * TPirateMinister::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TPirateMinister::InitializeRecruitQueuePatternC_Mode2_Type2x3
 // GHIDRA_PROTO undefined __thiscall InitializeRecruitQueuePatternC_Mode2_Type2x3(int param_1)
 
-void TPirateMinister::InitializeRecruitQueuePatternC_Mode2_Type2x3(int param_1)
+void __thiscall
+TPirateMinister::InitializeRecruitQueuePatternC_Mode2_Type2x3(TPirateMinister *this,int param_1)
 
 {
   int iVar1;

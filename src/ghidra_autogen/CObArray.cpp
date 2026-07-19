@@ -4,10 +4,10 @@
 // Bucket: CObArray.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004883C0
-// GHIDRA_NAME CPtrArray::~CPtrArray
-// GHIDRA_PROTO undefined CPtrArray::~CPtrArray()
+// GHIDRA_NAME CObArray::thunk_DestructCObArray
+// GHIDRA_PROTO undefined thunk_DestructCObArray()
 
-void CPtrArray::~CPtrArray(void)
+void CObArray::thunk_DestructCObArray(void)
 
 {
   undefined4 uVar1;
@@ -17,7 +17,7 @@ void CPtrArray::~CPtrArray(void)
   
   _EH_prolog();
   *(undefined4 **)(unaff_EBP + -0x10) = extraout_ECX;
-  *extraout_ECX = &TIndexAndRankList::_vftable_;
+  *extraout_ECX = &CPtrArray::_vftable_;
   uVar1 = extraout_ECX[1];
   *(undefined4 *)(unaff_EBP + -4) = 0;
   operator_delete(uVar1);

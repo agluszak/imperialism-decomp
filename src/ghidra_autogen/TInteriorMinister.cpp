@@ -39,7 +39,7 @@ undefined4 * TInteriorMinister::CreateObject(void)
 // GHIDRA_NAME TInteriorMinister::VTableSlot1D
 // GHIDRA_PROTO undefined __thiscall VTableSlot1D(undefined2 param_1)
 
-undefined2 TInteriorMinister::VTableSlot1D(undefined2 param_1)
+undefined2 __thiscall TInteriorMinister::VTableSlot1D(TInteriorMinister *this,undefined2 param_1)
 
 {
   return param_1;
@@ -49,7 +49,8 @@ undefined2 TInteriorMinister::VTableSlot1D(undefined2 param_1)
 // GHIDRA_NAME TInteriorMinister::CreateTInteriorMinisterInstance
 // GHIDRA_PROTO undefined __thiscall CreateTInteriorMinisterInstance(undefined2 param_1)
 
-undefined2 TInteriorMinister::CreateTInteriorMinisterInstance(undefined2 param_1)
+undefined2 __thiscall
+TInteriorMinister::CreateTInteriorMinisterInstance(TInteriorMinister *this,undefined2 param_1)
 
 {
   return param_1;
@@ -59,7 +60,7 @@ undefined2 TInteriorMinister::CreateTInteriorMinisterInstance(undefined2 param_1
 // GHIDRA_NAME TInteriorMinister::VTableSlot1F
 // GHIDRA_PROTO undefined __thiscall VTableSlot1F(void)
 
-void TInteriorMinister::VTableSlot1F()
+void __thiscall TInteriorMinister::VTableSlot1F(TInteriorMinister *this)
 
 {
   return;
@@ -69,7 +70,7 @@ void TInteriorMinister::VTableSlot1F()
 // GHIDRA_NAME TInteriorMinister::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TInteriorMinister::GetRuntimeClass()
+CRuntimeClass * __thiscall TInteriorMinister::GetRuntimeClass(TInteriorMinister *this)
 
 {
   return &classTInteriorMinister;
@@ -79,7 +80,8 @@ CRuntimeClass * TInteriorMinister::GetRuntimeClass()
 // GHIDRA_NAME TInteriorMinister::ConstructTInteriorMinisterBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTInteriorMinisterBaseState(void)
 
-TInteriorMinister * TInteriorMinister::ConstructTInteriorMinisterBaseState()
+TInteriorMinister * __thiscall
+TInteriorMinister::ConstructTInteriorMinisterBaseState(TInteriorMinister *this)
 
 {
   func_0x0040433b();
@@ -93,7 +95,8 @@ TInteriorMinister * TInteriorMinister::ConstructTInteriorMinisterBaseState()
 // GHIDRA_NAME TInteriorMinister::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TInteriorMinister * TInteriorMinister::_scalar_deleting_destructor_(byte param_1)
+TInteriorMinister * __thiscall
+TInteriorMinister::_scalar_deleting_destructor_(TInteriorMinister *this,byte param_1)
 
 {
   func_0x004032b0();
@@ -107,7 +110,7 @@ TInteriorMinister * TInteriorMinister::_scalar_deleting_destructor_(byte param_1
 // GHIDRA_NAME TInteriorMinister::ReadFrom
 // GHIDRA_PROTO undefined __thiscall ReadFrom(int * param_1)
 
-void TInteriorMinister::ReadFrom(int *param_1)
+void __thiscall TInteriorMinister::ReadFrom(TInteriorMinister *this,int *param_1)
 
 {
   undefined1 uVar1;
@@ -138,7 +141,7 @@ void TInteriorMinister::ReadFrom(int *param_1)
 // GHIDRA_NAME TInteriorMinister::WriteTo
 // GHIDRA_PROTO undefined __thiscall WriteTo(int * param_1)
 
-void TInteriorMinister::WriteTo(int *param_1)
+void __thiscall TInteriorMinister::WriteTo(TInteriorMinister *this,int *param_1)
 
 {
   code *pcVar1;
@@ -184,7 +187,8 @@ void TInteriorMinister::WriteTo(int *param_1)
 // GHIDRA_NAME TInteriorMinister::DispatchNationStateEventCode10
 // GHIDRA_PROTO undefined __thiscall DispatchNationStateEventCode10(short param_1)
 
-int TInteriorMinister::DispatchNationStateEventCode10(short param_1)
+int __thiscall
+TInteriorMinister::DispatchNationStateEventCode10(TInteriorMinister *this,short param_1)
 
 {
   if (g_apNationStates[param_1] != (TGreatPower *)0x0) {
@@ -197,7 +201,7 @@ int TInteriorMinister::DispatchNationStateEventCode10(short param_1)
 // GHIDRA_NAME TInteriorMinister::SetForeignMinisterReadyFlag14_1a
 // GHIDRA_PROTO undefined __thiscall SetForeignMinisterReadyFlag14_1a(void)
 
-void TInteriorMinister::SetForeignMinisterReadyFlag14_1a()
+void __thiscall TInteriorMinister::SetForeignMinisterReadyFlag14_1a(TInteriorMinister *this)
 
 {
   return;
@@ -207,7 +211,7 @@ void TInteriorMinister::SetForeignMinisterReadyFlag14_1a()
 // GHIDRA_NAME TInteriorMinister::VTableSlot1B
 // GHIDRA_PROTO undefined __thiscall VTableSlot1B(void)
 
-void TInteriorMinister::VTableSlot1B()
+void __thiscall TInteriorMinister::VTableSlot1B(TInteriorMinister *this)
 
 {
   return;
@@ -217,7 +221,7 @@ void TInteriorMinister::VTableSlot1B()
 // GHIDRA_NAME TInteriorMinister::GetTEventHandlerClassNamePointer_1c
 // GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer_1c(void)
 
-void TInteriorMinister::GetTEventHandlerClassNamePointer_1c()
+void __thiscall TInteriorMinister::GetTEventHandlerClassNamePointer_1c(TInteriorMinister *this)
 
 {
   return;
@@ -241,7 +245,7 @@ TInteriorMinister::OrphanCallChain_C11_I88_004874b0_12
 // GHIDRA_NAME TInteriorMinister::VTableSlot13
 // GHIDRA_PROTO undefined __thiscall VTableSlot13(void)
 
-void TInteriorMinister::VTableSlot13()
+void __thiscall TInteriorMinister::VTableSlot13(TInteriorMinister *this)
 
 {
   *(undefined4 *)&this->field_0x18 = 0;
@@ -255,7 +259,7 @@ void TInteriorMinister::VTableSlot13()
 // GHIDRA_NAME TInteriorMinister::SetForeignMinisterReadyFlag14_14
 // GHIDRA_PROTO undefined __thiscall SetForeignMinisterReadyFlag14_14(void)
 
-void TInteriorMinister::SetForeignMinisterReadyFlag14_14()
+void __thiscall TInteriorMinister::SetForeignMinisterReadyFlag14_14(TInteriorMinister *this)
 
 {
   short sVar1;
@@ -286,7 +290,7 @@ void TInteriorMinister::SetForeignMinisterReadyFlag14_14()
 // GHIDRA_NAME TInteriorMinister::OrphanCallChain_C7_I57_004be5b0
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C7_I57_004be5b0(void)
 
-void TInteriorMinister::OrphanCallChain_C7_I57_004be5b0()
+void __thiscall TInteriorMinister::OrphanCallChain_C7_I57_004be5b0(TInteriorMinister *this)
 
 {
   _vslot_fn *p_Var1;
@@ -341,7 +345,7 @@ void TInteriorMinister::OrphanCallChain_C7_I57_004be5b0()
 // GHIDRA_NAME TInteriorMinister::NoOpForeignMinisterUtilityStub
 // GHIDRA_PROTO undefined __thiscall NoOpForeignMinisterUtilityStub(void)
 
-void TInteriorMinister::NoOpForeignMinisterUtilityStub()
+void __thiscall TInteriorMinister::NoOpForeignMinisterUtilityStub(TInteriorMinister *this)
 
 {
   return;

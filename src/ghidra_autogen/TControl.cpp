@@ -7,7 +7,7 @@
 // GHIDRA_NAME TControl::QuerySelectedIndexSlotBC
 // GHIDRA_PROTO undefined __thiscall QuerySelectedIndexSlotBC(void)
 
-int TControl::QuerySelectedIndexSlotBC()
+int __thiscall TControl::QuerySelectedIndexSlotBC(TControl *this)
 
 {
   return this->hasCommandTagResource;
@@ -17,7 +17,7 @@ int TControl::QuerySelectedIndexSlotBC()
 // GHIDRA_NAME TControl::AssertCityProductionGlobalStateInitialized
 // GHIDRA_PROTO undefined __thiscall AssertCityProductionGlobalStateInitialized(void)
 
-void TControl::AssertCityProductionGlobalStateInitialized()
+void __thiscall TControl::AssertCityProductionGlobalStateInitialized(TControl *this)
 
 {
   if (g_McAppUiFlag_006A143C == 0) {
@@ -35,7 +35,7 @@ void TControl::AssertCityProductionGlobalStateInitialized()
 
 /* Setting prototype: bool LogUnhandledDialogMethodAndReturnFalse(void) */
 
-bool TControl::LogUnhandledDialogMethodAndReturnFalse()
+bool __thiscall TControl::LogUnhandledDialogMethodAndReturnFalse(TControl *this)
 
 {
   func_0x004057a4(g_szMcAppUiHeaderPath_006943CC,0x58f);
@@ -46,7 +46,7 @@ bool TControl::LogUnhandledDialogMethodAndReturnFalse()
 // GHIDRA_NAME TControl::ShallowClone
 // GHIDRA_PROTO undefined __thiscall ShallowClone(void)
 
-undefined4 TControl::ShallowClone()
+undefined4 __thiscall TControl::ShallowClone(TControl *this)
 
 {
   func_0x004057a4(g_szMcAppUiHeaderPath_006943CC,0x594);
@@ -57,7 +57,8 @@ undefined4 TControl::ShallowClone()
 // GHIDRA_NAME TControl::WrapperFor_thunk_ConstructUiCommandTagResourceEntryBase_At0043d610
 // GHIDRA_PROTO undefined __thiscall WrapperFor_thunk_ConstructUiCommandTagResourceEntryBase_At0043d610(void)
 
-TControl * TControl::WrapperFor_thunk_ConstructUiCommandTagResourceEntryBase_At0043d610()
+TControl * __thiscall
+TControl::WrapperFor_thunk_ConstructUiCommandTagResourceEntryBase_At0043d610(TControl *this)
 
 {
   func_0x004087fb();
@@ -73,7 +74,7 @@ TControl * TControl::WrapperFor_thunk_ConstructUiCommandTagResourceEntryBase_At0
 // GHIDRA_NAME TControl::InitializeDialogTemplateFAWithTextState
 // GHIDRA_PROTO undefined __thiscall InitializeDialogTemplateFAWithTextState(void)
 
-TControl * TControl::InitializeDialogTemplateFAWithTextState()
+TControl * __thiscall TControl::InitializeDialogTemplateFAWithTextState(TControl *this)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -86,8 +87,8 @@ TControl * TControl::InitializeDialogTemplateFAWithTextState()
   puStack_8 = &LAB_0062e2f8;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  CDialog__CDialog(this,0xfa,in_stack_00000004);
-  this->vftable = (TControlVtbl *)&PTR_LAB_0063e5a0;
+  CDialog::CDialog((CDialog *)this,0xfa,in_stack_00000004);
+  this->vftable = (TControlVtbl *)&PTR_GetRuntimeClass_0063e5a0;
   *(undefined4 *)&this->field_0x5c = 0;
   this->hasCommandTagResource = 0;
   this->commandTagResourceByte = 0;
@@ -97,7 +98,7 @@ TControl * TControl::InitializeDialogTemplateFAWithTextState()
   local_4 = 0;
   CWnd::CWnd();
   this->field74 = (int)&PTR_LAB_00671d1c;
-  this->vftable = (TControlVtbl *)&PTR_LAB_00646848;
+  this->vftable = (TControlVtbl *)&PTR_GetRuntimeClass_00646848;
   *unaff_FS_OFFSET = local_c;
   return this;
 }
@@ -106,7 +107,7 @@ TControl * TControl::InitializeDialogTemplateFAWithTextState()
 // GHIDRA_NAME TControl::InitializeDialogTemplateADWithTextState
 // GHIDRA_PROTO undefined __thiscall InitializeDialogTemplateADWithTextState(void)
 
-TControl * TControl::InitializeDialogTemplateADWithTextState()
+TControl * __thiscall TControl::InitializeDialogTemplateADWithTextState(TControl *this)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -119,8 +120,8 @@ TControl * TControl::InitializeDialogTemplateADWithTextState()
   puStack_8 = &LAB_0062e448;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  CDialog__CDialog(this,0xad,in_stack_00000004);
-  this->vftable = (TControlVtbl *)&PTR_LAB_0063e5a0;
+  CDialog::CDialog((CDialog *)this,0xad,in_stack_00000004);
+  this->vftable = (TControlVtbl *)&PTR_GetRuntimeClass_0063e5a0;
   *(undefined4 *)&this->field_0x5c = 0;
   this->hasCommandTagResource = 0;
   this->commandTagResourceByte = 0;
@@ -130,7 +131,7 @@ TControl * TControl::InitializeDialogTemplateADWithTextState()
   local_4 = 0;
   CWnd::CWnd();
   this->field74 = (int)&PTR_LAB_00671d1c;
-  this->vftable = (TControlVtbl *)&PTR_LAB_00646d68;
+  this->vftable = (TControlVtbl *)&PTR_GetRuntimeClass_00646d68;
   *unaff_FS_OFFSET = local_c;
   return this;
 }
@@ -139,7 +140,7 @@ TControl * TControl::InitializeDialogTemplateADWithTextState()
 // GHIDRA_NAME TControl::InitializeDialogTemplate104WithRegionState
 // GHIDRA_PROTO undefined __thiscall InitializeDialogTemplate104WithRegionState(void)
 
-TControl * TControl::InitializeDialogTemplate104WithRegionState()
+TControl * __thiscall TControl::InitializeDialogTemplate104WithRegionState(TControl *this)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -152,8 +153,8 @@ TControl * TControl::InitializeDialogTemplate104WithRegionState()
   puStack_8 = &LAB_0062e548;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  CDialog__CDialog(this,0x104,in_stack_00000004);
-  this->vftable = (TControlVtbl *)&PTR_LAB_0063e5a0;
+  CDialog::CDialog((CDialog *)this,0x104,in_stack_00000004);
+  this->vftable = (TControlVtbl *)&PTR_GetRuntimeClass_0063e5a0;
   *(undefined4 *)&this->field_0x5c = 0;
   this->hasCommandTagResource = 0;
   this->commandTagResourceByte = 0;
@@ -163,7 +164,7 @@ TControl * TControl::InitializeDialogTemplate104WithRegionState()
   local_4 = 0;
   CWnd::CWnd();
   this->field74 = (int)&PTR_LAB_00671d1c;
-  this->vftable = (TControlVtbl *)&PTR_LAB_00646ea0;
+  this->vftable = (TControlVtbl *)&PTR_GetRuntimeClass_00646ea0;
   *unaff_FS_OFFSET = local_c;
   return this;
 }
@@ -172,7 +173,7 @@ TControl * TControl::InitializeDialogTemplate104WithRegionState()
 // GHIDRA_NAME TControl::InitializeDialogTemplateA7WithSharedText
 // GHIDRA_PROTO undefined __thiscall InitializeDialogTemplateA7WithSharedText(void)
 
-TControl * TControl::InitializeDialogTemplateA7WithSharedText()
+TControl * __thiscall TControl::InitializeDialogTemplateA7WithSharedText(TControl *this)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -185,11 +186,11 @@ TControl * TControl::InitializeDialogTemplateA7WithSharedText()
   puStack_8 = &LAB_0062e633;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  CDialog__CDialog(this,0xa7,in_stack_00000004);
+  CDialog::CDialog((CDialog *)this,0xa7,in_stack_00000004);
   local_4 = 0;
   CString::CString((CString *)&this->field_0x5c);
   local_4 = CONCAT31(local_4._1_3_,1);
-  this->vftable = (TControlVtbl *)&PTR_LAB_00647740;
+  this->vftable = (TControlVtbl *)&PTR_GetRuntimeClass_00647740;
   CString::operator=((CString *)&this->field_0x5c,(char *)&g_szEmptyString);
   *unaff_FS_OFFSET = local_c;
   return this;
@@ -199,8 +200,8 @@ TControl * TControl::InitializeDialogTemplateA7WithSharedText()
 // GHIDRA_NAME TControl::InitializeDialogTemplateABWithDualTextState
 // GHIDRA_PROTO undefined InitializeDialogTemplateABWithDualTextState()
 
-TControl * __thiscall
-TControl::InitializeDialogTemplateABWithDualTextState(TControl *param_1,undefined4 param_2)
+CDialog * __thiscall
+TControl::InitializeDialogTemplateABWithDualTextState(CDialog *param_1,undefined4 param_2)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -212,15 +213,15 @@ TControl::InitializeDialogTemplateABWithDualTextState(TControl *param_1,undefine
   puStack_8 = &LAB_0062e68e;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  CDialog__CDialog(param_1,0xab,param_2);
+  CDialog::CDialog(param_1,0xab,param_2);
   local_4 = 0;
-  CString::CString((CString *)&param_1->field_0x5c);
+  CString::CString((CString *)(param_1 + 0x5c));
   local_4._0_1_ = 1;
-  CString::CString((CString *)&param_1->hasCommandTagResource);
+  CString::CString((CString *)(param_1 + 0x60));
   local_4 = CONCAT31(local_4._1_3_,2);
-  param_1->vftable = (TControlVtbl *)&PTR_LAB_00647b60;
-  CString::operator=((CString *)&param_1->field_0x5c,(char *)&g_szEmptyString);
-  CString::operator=((CString *)&param_1->hasCommandTagResource,(char *)&g_szEmptyString);
+  *(undefined ***)param_1 = &PTR_GetRuntimeClass_00647b60;
+  CString::operator=((CString *)(param_1 + 0x5c),(char *)&g_szEmptyString);
+  CString::operator=((CString *)(param_1 + 0x60),(char *)&g_szEmptyString);
   *unaff_FS_OFFSET = local_c;
   return param_1;
 }
@@ -229,8 +230,8 @@ TControl::InitializeDialogTemplateABWithDualTextState(TControl *param_1,undefine
 // GHIDRA_NAME TControl::InitializeDialogTemplateAEWithDualTextState
 // GHIDRA_PROTO undefined InitializeDialogTemplateAEWithDualTextState()
 
-TControl * __thiscall
-TControl::InitializeDialogTemplateAEWithDualTextState(TControl *param_1,undefined4 param_2)
+CDialog * __thiscall
+TControl::InitializeDialogTemplateAEWithDualTextState(CDialog *param_1,undefined4 param_2)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -242,15 +243,15 @@ TControl::InitializeDialogTemplateAEWithDualTextState(TControl *param_1,undefine
   puStack_8 = &LAB_0062e6fe;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  CDialog__CDialog(param_1,0xae,param_2);
+  CDialog::CDialog(param_1,0xae,param_2);
   local_4 = 0;
-  CString::CString((CString *)&param_1->field_0x5c);
+  CString::CString((CString *)(param_1 + 0x5c));
   local_4._0_1_ = 1;
-  CString::CString((CString *)&param_1->hasCommandTagResource);
+  CString::CString((CString *)(param_1 + 0x60));
   local_4 = CONCAT31(local_4._1_3_,2);
-  param_1->vftable = (TControlVtbl *)&PTR_LAB_00647d70;
-  CString::operator=((CString *)&param_1->field_0x5c,(char *)&g_szEmptyString);
-  CString::operator=((CString *)&param_1->hasCommandTagResource,(char *)&g_szEmptyString);
+  *(undefined ***)param_1 = &PTR_GetRuntimeClass_00647d70;
+  CString::operator=((CString *)(param_1 + 0x5c),(char *)&g_szEmptyString);
+  CString::operator=((CString *)(param_1 + 0x60),(char *)&g_szEmptyString);
   *unaff_FS_OFFSET = local_c;
   return param_1;
 }
@@ -259,7 +260,7 @@ TControl::InitializeDialogTemplateAEWithDualTextState(TControl *param_1,undefine
 // GHIDRA_NAME TControl::InitializeDialogTemplateB1WithSharedText
 // GHIDRA_PROTO undefined __thiscall InitializeDialogTemplateB1WithSharedText(void)
 
-TControl * TControl::InitializeDialogTemplateB1WithSharedText()
+TControl * __thiscall TControl::InitializeDialogTemplateB1WithSharedText(TControl *this)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -272,11 +273,11 @@ TControl * TControl::InitializeDialogTemplateB1WithSharedText()
   puStack_8 = &LAB_0062e763;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  CDialog__CDialog(this,0xb1,in_stack_00000004);
+  CDialog::CDialog((CDialog *)this,0xb1,in_stack_00000004);
   local_4 = 0;
   CString::CString((CString *)&this->field_0x5c);
   local_4 = CONCAT31(local_4._1_3_,1);
-  this->vftable = (TControlVtbl *)&PTR_LAB_00647f80;
+  this->vftable = (TControlVtbl *)&PTR_GetRuntimeClass_00647f80;
   CString::operator=((CString *)&this->field_0x5c,(char *)&g_szEmptyString);
   *unaff_FS_OFFSET = local_c;
   return this;
@@ -309,7 +310,7 @@ TControl * TControl::InitializeDialogTemplateB1WithSharedText()
    Returns:
    - this pointer. */
 
-TControl * TControl::ConstructUiWindowResourceEntryBase()
+TControl * __thiscall TControl::ConstructUiWindowResourceEntryBase(TControl *this)
 
 {
   int iVar1;
@@ -413,7 +414,7 @@ undefined4 * TControl::CreateObject(void)
 // GHIDRA_NAME TControl::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TControl::GetRuntimeClass()
+CRuntimeClass * __thiscall TControl::GetRuntimeClass(TControl *this)
 
 {
   return &classTControl;
@@ -430,7 +431,7 @@ CRuntimeClass * TControl::GetRuntimeClass()
    (e.g., map/load/quit/join/name/auto/curs/plat), indicating generic command-tag resource behavior.
     */
 
-TControl * TControl::TControl()
+TControl * __thiscall TControl::TControl(TControl *this)
 
 {
   ushort uVar1;
@@ -454,7 +455,7 @@ TControl * TControl::TControl()
 // GHIDRA_NAME TControl::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TControl * TControl::_scalar_deleting_destructor_(byte param_1)
+TControl * __thiscall TControl::_scalar_deleting_destructor_(TControl *this,byte param_1)
 
 {
   func_0x00402888();
@@ -470,7 +471,7 @@ TControl * TControl::_scalar_deleting_destructor_(byte param_1)
 
 /* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 
-void TControl::BeginMouseCaptureAndStartRepeatTimer(undefined4 *param_1)
+void __thiscall TControl::BeginMouseCaptureAndStartRepeatTimer(TControl *this,undefined4 *param_1)
 
 {
   undefined4 uVar1;
@@ -479,18 +480,18 @@ void TControl::BeginMouseCaptureAndStartRepeatTimer(undefined4 *param_1)
   
   uVar1 = *param_1;
   uVar2 = param_1[1];
-  g_McAppUiMouseCaptureControl_006A1A80 = this;
+  g_McAppMouseCaptureState_capturedControl = this;
   pHVar3 = SetCapture(*(HWND *)(*(int *)&this->field_0x50 + 0x1c));
-  CWnd__FromHandle(pHVar3);
-  _g_McAppUiMouseCaptureStartPoint_006A1A68 = uVar1;
+  CWnd::FromHandle(pHVar3);
+  _g_McAppMouseCaptureState = uVar1;
   _DAT_006a1a6c = uVar2;
-  _g_McAppUiMouseCaptureLastPoint_006A1A70 = uVar1;
+  _g_McAppMouseCaptureState_lastPoint = uVar1;
   _DAT_006a1a74 = uVar2;
-  g_McAppUiMouseCaptureCurrentPoint_006A1A78 = uVar1;
+  g_McAppMouseCaptureState_currentPoint = uVar1;
   DAT_006a1a7c = uVar2;
   (*this->vftable->QueueCityRecruitmentSupportCommandsIfDeficit)
-            (0,&g_McAppUiMouseCaptureStartPoint_006A1A68,&g_McAppUiMouseCaptureLastPoint_006A1A70,
-             &g_McAppUiMouseCaptureCurrentPoint_006A1A78,1);
+            (0,&g_McAppMouseCaptureState,&g_McAppMouseCaptureState_lastPoint,
+             &g_McAppMouseCaptureState_currentPoint,1);
   if (g_McAppUiMouseCaptureTimerId_006A1ADC == 0) {
     g_McAppUiMouseCaptureTimerId_006A1ADC =
          SetTimer(*(HWND *)(*(int *)&this->field_0x50 + 0x1c),0xef,0x11,(TIMERPROC)&LAB_00409a9d);
@@ -502,7 +503,7 @@ void TControl::BeginMouseCaptureAndStartRepeatTimer(undefined4 *param_1)
 // GHIDRA_NAME TControl::HandleEvent
 // GHIDRA_PROTO undefined __thiscall HandleEvent(int param_1)
 
-void TControl::HandleEvent(int param_1)
+void __thiscall TControl::HandleEvent(TControl *this,int param_1)
 
 {
   undefined uVar1;
@@ -589,7 +590,8 @@ TControl::SetCityProductionDialogPictureRectAndMaybeRefresh
 /* Setting prototype: void SetControlStateFlagAndMaybeRefresh(bool fEnabledState, bool fRefreshNow)
     */
 
-void TControl::SetControlStateFlagAndMaybeRefresh(bool fEnabledState, bool fRefreshNow)
+void __thiscall
+TControl::SetControlStateFlagAndMaybeRefresh(TControl *this,bool fEnabledState,bool fRefreshNow)
 
 {
   if ((fEnabledState != (bool)this->commandTagResourceByte) &&
@@ -659,7 +661,7 @@ TControl::DispatchPictureResourceCommand
 // GHIDRA_NAME TControl::PointInBoundsAndActionable
 // GHIDRA_PROTO undefined __thiscall PointInBoundsAndActionable(void)
 
-void TControl::PointInBoundsAndActionable()
+void __thiscall TControl::PointInBoundsAndActionable(TControl *this)
 
 {
   POINT *unaff_retaddr;
@@ -672,14 +674,14 @@ void TControl::PointInBoundsAndActionable()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048E980
-// GHIDRA_NAME TControl::DeserializeCityProductionQueueCommand
-// GHIDRA_PROTO undefined __thiscall DeserializeCityProductionQueueCommand(TTEView * param_1)
+// GHIDRA_NAME TControl::BuildInsetContentRect
+// GHIDRA_PROTO undefined __thiscall BuildInsetContentRect(TTEView * param_1)
 
-void TControl::DeserializeCityProductionQueueCommand(TTEView *param_1)
+void __thiscall TControl::BuildInsetContentRect(TControl *this,TTEView *param_1)
 
 {
   (*this->vftable->OrphanCallChain_C11_I88_004874b0_4a)(param_1);
-  TTEView::CRect__DeflateRect(param_1,&this->field68);
+  CRect::DeflateRect((CRect *)param_1,&this->field68);
   return;
 }
 
@@ -687,7 +689,7 @@ void TControl::DeserializeCityProductionQueueCommand(TTEView *param_1)
 // GHIDRA_NAME TControl::NoOpUiViewSlotHandler
 // GHIDRA_PROTO undefined __thiscall NoOpUiViewSlotHandler(void)
 
-void TControl::NoOpUiViewSlotHandler()
+void __thiscall TControl::NoOpUiViewSlotHandler(TControl *this)
 
 {
   return;
@@ -697,7 +699,7 @@ void TControl::NoOpUiViewSlotHandler()
 // GHIDRA_NAME TControl::ReturnZeroFromUiSlot6C
 // GHIDRA_PROTO undefined __thiscall ReturnZeroFromUiSlot6C(void)
 
-void TControl::ReturnZeroFromUiSlot6C()
+void __thiscall TControl::ReturnZeroFromUiSlot6C(TControl *this)
 
 {
   return;
@@ -707,7 +709,7 @@ void TControl::ReturnZeroFromUiSlot6C()
 // GHIDRA_NAME TControl::DestructTControlBaseState
 // GHIDRA_PROTO undefined __thiscall DestructTControlBaseState(void)
 
-void TControl::DestructTControlBaseState()
+void __thiscall TControl::DestructTControlBaseState(TControl *this)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -735,7 +737,7 @@ void TControl::DestructTControlBaseState()
 // GHIDRA_NAME TControl::FinalizeModalDialogAndRestoreOwnerFocus
 // GHIDRA_PROTO undefined __thiscall FinalizeModalDialogAndRestoreOwnerFocus(void)
 
-undefined4 TControl::FinalizeModalDialogAndRestoreOwnerFocus()
+undefined4 __thiscall TControl::FinalizeModalDialogAndRestoreOwnerFocus(TControl *this)
 
 {
   undefined4 uVar1;
@@ -749,13 +751,13 @@ undefined4 TControl::FinalizeModalDialogAndRestoreOwnerFocus()
   if (this->hasCommandTagResource != 0) {
     if ((this->field_0x24 & 0x10) != 0) {
       bVar4 = 4;
-      uVar2 = CWnd__GetStyle();
+      uVar2 = CWnd::GetStyle();
       if ((uVar2 & 0x100) != 0) {
         bVar4 = 5;
       }
-      TMovieView::TView__RunModalLoop((TMovieView *)this,bVar4);
+      CWnd::RunModalLoop((CWnd *)this,bVar4);
     }
-    CWnd__SetWindowPos(0,0,0,0,0,0x97);
+    CWnd::SetWindowPos(0,0,0,0,0,0x97);
   }
   if (this->field68 != 0) {
     EnableWindow((HWND)this->field6C,1);
@@ -821,7 +823,8 @@ TControl::LookupOrderCompatibilityMatrixValue
 // GHIDRA_NAME TControl::SetDiplomacyNationSelectionFilterAndRefreshRows
 // GHIDRA_PROTO undefined __thiscall SetDiplomacyNationSelectionFilterAndRefreshRows(short param_1)
 
-void TControl::SetDiplomacyNationSelectionFilterAndRefreshRows(short param_1)
+void __thiscall
+TControl::SetDiplomacyNationSelectionFilterAndRefreshRows(TControl *this,short param_1)
 
 {
   TControlVtbl *pTVar1;
@@ -864,7 +867,7 @@ void TControl::SetDiplomacyNationSelectionFilterAndRefreshRows(short param_1)
 // GHIDRA_NAME TControl::QueueDiplomatTwoRandomAvailableTerrainActionsCode133
 // GHIDRA_PROTO undefined __thiscall QueueDiplomatTwoRandomAvailableTerrainActionsCode133(void)
 
-void TControl::QueueDiplomatTwoRandomAvailableTerrainActionsCode133()
+void __thiscall TControl::QueueDiplomatTwoRandomAvailableTerrainActionsCode133(TControl *this)
 
 {
   char cVar1;
@@ -907,7 +910,7 @@ void TControl::QueueDiplomatTwoRandomAvailableTerrainActionsCode133()
 // GHIDRA_NAME TControl::QueueDiplomatTwoCompatibleMatrixActionsCode5A
 // GHIDRA_PROTO undefined __thiscall QueueDiplomatTwoCompatibleMatrixActionsCode5A(void)
 
-void TControl::QueueDiplomatTwoCompatibleMatrixActionsCode5A()
+void __thiscall TControl::QueueDiplomatTwoCompatibleMatrixActionsCode5A(TControl *this)
 
 {
   short sVar1;
@@ -934,7 +937,7 @@ void TControl::QueueDiplomatTwoCompatibleMatrixActionsCode5A()
 // GHIDRA_NAME TControl::QueueDiplomatWeightedTerrainActionRunCode133
 // GHIDRA_PROTO undefined __thiscall QueueDiplomatWeightedTerrainActionRunCode133(void)
 
-void TControl::QueueDiplomatWeightedTerrainActionRunCode133()
+void __thiscall TControl::QueueDiplomatWeightedTerrainActionRunCode133(TControl *this)
 
 {
   int iVar1;
@@ -966,7 +969,7 @@ void TControl::QueueDiplomatWeightedTerrainActionRunCode133()
 // GHIDRA_NAME TControl::InitializeTraderForeignMinisterOrderCandidates
 // GHIDRA_PROTO undefined __thiscall InitializeTraderForeignMinisterOrderCandidates(void)
 
-void TControl::InitializeTraderForeignMinisterOrderCandidates()
+void __thiscall TControl::InitializeTraderForeignMinisterOrderCandidates(TControl *this)
 
 {
   int iVar1;
@@ -1037,7 +1040,7 @@ void TControl::InitializeTraderForeignMinisterOrderCandidates()
 // GHIDRA_NAME TControl::QueueTraderFourRandomTerrainActionsCode133
 // GHIDRA_PROTO undefined __thiscall QueueTraderFourRandomTerrainActionsCode133(void)
 
-void TControl::QueueTraderFourRandomTerrainActionsCode133()
+void __thiscall TControl::QueueTraderFourRandomTerrainActionsCode133(TControl *this)
 
 {
   int *piVar1;
@@ -1079,96 +1082,10 @@ void TControl::QueueTraderFourRandomTerrainActionsCode133()
 // GHIDRA_NAME TControl::SetHasCommandTagResource
 // GHIDRA_PROTO undefined __thiscall SetHasCommandTagResource(undefined4 param_1)
 
-void TControl::SetHasCommandTagResource(int param_1)
+void __thiscall TControl::SetHasCommandTagResource(TControl *this,int param_1)
 
 {
   this->hasCommandTagResource = param_1;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x005B6F70
-// GHIDRA_NAME TControl::RecomputeTownAdjacentTileYieldTotals
-// GHIDRA_PROTO undefined __thiscall RecomputeTownAdjacentTileYieldTotals(void)
-
-void TControl::RecomputeTownAdjacentTileYieldTotals()
-
-{
-  char *pcVar1;
-  char cVar2;
-  short sVar3;
-  char cVar4;
-  undefined2 *puVar5;
-  short *psVar6;
-  int iVar7;
-  TMapMgr *pTVar8;
-  int iVar9;
-  short sVar10;
-  undefined4 *puVar11;
-  int local_8;
-  
-  this->field_0x4e = 0;
-  puVar11 = (undefined4 *)&this->field_0x1e;
-  for (iVar7 = 0xb; iVar7 != 0; iVar7 = iVar7 + -1) {
-    *puVar11 = 0;
-    puVar11 = puVar11 + 1;
-  }
-  puVar5 = (undefined2 *)((int)puVar11 + 2);
-  *(undefined2 *)puVar11 = 0;
-  cVar2 = *(char *)(*(int *)&g_pGlobalMapState->field_0xc + 5 + *(short *)&this->field_0x14 * 0x24);
-  local_8 = 0;
-  pTVar8 = g_pGlobalMapState;
-  do {
-    if ((short)local_8 < 6) {
-      puVar5 = (undefined2 *)
-               func_0x0040246e(CONCAT22((short)((uint)local_8 >> 0x10),
-                                        *(undefined2 *)&this->field_0x14),local_8);
-      pTVar8 = g_pGlobalMapState;
-    }
-    else {
-      puVar5 = (undefined2 *)
-               CONCAT22((short)((uint)puVar5 >> 0x10),*(undefined2 *)&this->field_0x14);
-    }
-    sVar10 = (short)puVar5;
-    if (sVar10 != -1) {
-      iVar7 = sVar10 * 0x24;
-      pcVar1 = (char *)(*(int *)&pTVar8->field_0xc + iVar7);
-      if ((((short)*(char *)(*(int *)&pTVar8->field_0xc + 4 + iVar7) == *(short *)&this->field_0x1c)
-          && (pcVar1[5] == cVar2)) || (*pcVar1 == '\x05')) {
-        iVar9 = 0;
-        do {
-          cVar4 = (*pTVar8->vftable->OrphanCallChain_C1_I29_005135a0)(puVar5,iVar9);
-          if (((short)iVar9 != 0x13) || (this->field_0x4d != '\0')) {
-            *(short *)(this->padding_65_to_67 + (short)iVar9 * 2 + -0x47) =
-                 *(short *)(this->padding_65_to_67 + (short)iVar9 * 2 + -0x47) + (short)cVar4;
-          }
-          iVar9 = iVar9 + 1;
-          pTVar8 = g_pGlobalMapState;
-        } while ((short)iVar9 < 0x17);
-        if ((*(char *)(*(int *)&g_pGlobalMapState->field_0xc + 2 + iVar7) != '\0') &&
-           (this->field_0x4d != '\0')) {
-          *(short *)&this->field_0x44 = *(short *)&this->field_0x44 + 1;
-        }
-        sVar3 = *(short *)(*(int *)&g_pGlobalMapState->field_0xc + 0x14 + iVar7);
-        pTVar8 = g_pGlobalMapState;
-        if ((sVar3 != -1) &&
-           (iVar7 = sVar3 * 0xa8,
-           *(short *)(*(int *)&g_pGlobalMapState->field_0x10 + 4 + iVar7) == sVar10)) {
-          iVar7 = iVar7 + 0x82;
-          this->field_0x4e = 1;
-          iVar9 = 10;
-          psVar6 = (short *)&this->field_0x2c;
-          do {
-            iVar7 = iVar7 + 2;
-            *psVar6 = *psVar6 + *(short *)(*(int *)&g_pGlobalMapState->field_0x10 + -2 + iVar7);
-            iVar9 = iVar9 + -1;
-            psVar6 = psVar6 + 1;
-            pTVar8 = g_pGlobalMapState;
-          } while (iVar9 != 0);
-        }
-      }
-    }
-    local_8 = local_8 + 1;
-  } while ((short)local_8 < 7);
   return;
 }
 
@@ -1176,7 +1093,7 @@ void TControl::RecomputeTownAdjacentTileYieldTotals()
 // GHIDRA_NAME TControl::UpdateSelectionRect
 // GHIDRA_PROTO void __thiscall UpdateSelectionRect(astruct_4 * this_obj)
 
-void TControl::UpdateSelectionRect(astruct_4 *this_obj)
+void __thiscall TControl::UpdateSelectionRect(TControl *this,astruct_4 *this_obj)
 
 {
   short max_short_val;
@@ -1248,31 +1165,5 @@ void TControl::UpdateSelectionRect(astruct_4 *this_obj)
   func_0x0040687f();
   *seh_chain = iStack_18;
   return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x006050D0
-// GHIDRA_NAME TControl::CDialog::CDialog
-// GHIDRA_PROTO undefined __thiscall CDialog::CDialog(uint param_1, undefined4 param_2)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Initializes base dialog object state from template ID and init parameter.
-// GHIDRA_COMMENT
-// GHIDRA_COMMENT Sets template/resource identifiers and clears per-dialog scratch fields used before modal/modeless creation.
-// GHIDRA_COMMENT_END
-
-/* Initializes base dialog object state from template ID and init parameter.
-   
-   Sets template/resource identifiers and clears per-dialog scratch fields used before
-   modal/modeless creation. */
-
-TControl * TControl::CDialog__CDialog(uint param_1, undefined4 param_2)
-
-{
-  CWnd::CWnd();
-  this->vftable = (TControlVtbl *)&PTR_LAB_0066fc2c;
-  memset(&this->field_0x3c,0,0x20);
-  *(undefined4 *)&this->field_0x50 = param_2;
-  *(uint *)&this->field_0x3c = param_1;
-  *(uint *)&this->field_0x40 = param_1 & 0xffff;
-  return this;
 }
 

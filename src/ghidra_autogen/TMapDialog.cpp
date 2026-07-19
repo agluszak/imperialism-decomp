@@ -3,34 +3,6 @@
 // Program: Imperialism.exe
 // Bucket: TMapDialog.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00512440
-// GHIDRA_NAME TMapDialog::ProjectTileIndexToWrappedScreenOffsetByScale
-// GHIDRA_PROTO undefined ProjectTileIndexToWrappedScreenOffsetByScale()
-
-void TMapDialog::ProjectTileIndexToWrappedScreenOffsetByScale
-               (short param_1,short *param_2,short *param_3,short *param_4,short param_5)
-
-{
-  uint uVar1;
-  short sVar2;
-  
-  uVar1 = (int)param_1 / 0x6c;
-  *param_3 = (short)uVar1 * 0x40 - param_2[2];
-  sVar2 = (short)((int)param_1 % 0x6c << 6) - *param_2;
-  *param_4 = sVar2;
-  if (((uVar1 & 1) != 0) && (*param_4 = sVar2 + 0x20, 0x1adf < (short)(sVar2 + 0x20))) {
-    *param_4 = sVar2 + -0x1ae0;
-  }
-  sVar2 = *param_4;
-  while (sVar2 < -0x40) {
-    *param_4 = *param_4 + 0x1b00;
-    sVar2 = *param_4;
-  }
-  *param_3 = *param_3 / param_5;
-  *param_4 = *param_4 / param_5;
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x005125A0
 // GHIDRA_NAME TMapDialog::SplitTileIndexToRowAndColumn
 // GHIDRA_PROTO undefined SplitTileIndexToRowAndColumn()
@@ -95,7 +67,7 @@ int * TMapDialog::CreateObject(void)
 // GHIDRA_NAME TMapDialog::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TMapDialog::GetRuntimeClass()
+CRuntimeClass * __thiscall TMapDialog::GetRuntimeClass(TMapDialog *this)
 
 {
   return &classTMapDialog;
@@ -105,7 +77,7 @@ CRuntimeClass * TMapDialog::GetRuntimeClass()
 // GHIDRA_NAME TMapDialog::ConstructTMapDialogBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTMapDialogBaseState(void)
 
-TMapDialog * TMapDialog::ConstructTMapDialogBaseState()
+TMapDialog * __thiscall TMapDialog::ConstructTMapDialogBaseState(TMapDialog *this)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -145,7 +117,7 @@ TMapDialog * TMapDialog::ConstructTMapDialogBaseState()
 // GHIDRA_NAME TMapDialog::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TMapDialog * TMapDialog::_scalar_deleting_destructor_(byte param_1)
+TMapDialog * __thiscall TMapDialog::_scalar_deleting_destructor_(TMapDialog *this,byte param_1)
 
 {
   func_0x0040199c();
@@ -159,7 +131,7 @@ TMapDialog * TMapDialog::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TMapDialog::Free
 // GHIDRA_PROTO undefined __thiscall Free(void)
 
-void TMapDialog::Free()
+void __thiscall TMapDialog::Free(TMapDialog *this)
 
 {
   if (*(int *)&this->field_0x350 != 0) {
@@ -183,7 +155,7 @@ void TMapDialog::Free()
 // GHIDRA_NAME TMapDialog::NoOpUiLifecycleHook
 // GHIDRA_PROTO undefined __thiscall NoOpUiLifecycleHook(void)
 
-void TMapDialog::NoOpUiLifecycleHook()
+void __thiscall TMapDialog::NoOpUiLifecycleHook(TMapDialog *this)
 
 {
   func_0x004072c5();
@@ -223,7 +195,7 @@ void TMapDialog::NoOpUiLifecycleHook()
    Returns:
    - void */
 
-void TMapDialog::OrphanRetStub_00596080()
+void __thiscall TMapDialog::OrphanRetStub_00596080(TMapDialog *this)
 
 {
   char cVar1;
@@ -380,7 +352,7 @@ void TMapDialog::OrphanRetStub_00596080()
 // GHIDRA_NAME TMapDialog::DrawHexNeighborOutlineFromTileArray
 // GHIDRA_PROTO undefined __thiscall DrawHexNeighborOutlineFromTileArray(void)
 
-void TMapDialog::DrawHexNeighborOutlineFromTileArray()
+void __thiscall TMapDialog::DrawHexNeighborOutlineFromTileArray(TMapDialog *this)
 
 {
   undefined2 extraout_var;
@@ -392,88 +364,88 @@ void TMapDialog::DrawHexNeighborOutlineFromTileArray()
   if (*unaff_retaddr != -1) {
     func_0x004056a5(CONCAT22(extraout_var,*unaff_retaddr),&this->field_0x60,&stack0xfffffff4,
                     aiStack_8,1);
-    func_0x00408d6e(aiStack_8[0],unaff_EBX);
-    func_0x00403bb6(aiStack_8[0] + 0x3f,unaff_EBX);
-    func_0x00403bb6(aiStack_8[0] + 0x3f,unaff_EBX + 0x3f);
+    thunk_SetQuickDrawTextOriginWithContextOffset(aiStack_8[0],unaff_EBX);
+    thunk_DrawCenteredGuideLineOnMapDc(aiStack_8[0] + 0x3f,unaff_EBX);
+    thunk_DrawCenteredGuideLineOnMapDc(aiStack_8[0] + 0x3f,unaff_EBX + 0x3f);
     if (unaff_retaddr[5] == -1) {
-      func_0x00408d6e(aiStack_8[0],unaff_EBX);
-      func_0x00403bb6(aiStack_8[0],unaff_EBX + 0x3f);
+      thunk_SetQuickDrawTextOriginWithContextOffset(aiStack_8[0],unaff_EBX);
+      thunk_DrawCenteredGuideLineOnMapDc(aiStack_8[0],unaff_EBX + 0x3f);
     }
     if (unaff_retaddr[1] == -1) {
-      func_0x00408d6e(aiStack_8[0] + 0x20,unaff_EBX);
-      func_0x00403bb6(aiStack_8[0] + 0x20,unaff_EBX + 0x3f);
+      thunk_SetQuickDrawTextOriginWithContextOffset(aiStack_8[0] + 0x20,unaff_EBX);
+      thunk_DrawCenteredGuideLineOnMapDc(aiStack_8[0] + 0x20,unaff_EBX + 0x3f);
     }
   }
   if (unaff_retaddr[1] != -1) {
     func_0x004056a5(unaff_retaddr[1],&this->field_0x60,&stack0xfffffff4,aiStack_8,1);
-    func_0x00408d6e(aiStack_8[0] + 0x20,unaff_EBX);
-    func_0x00403bb6(aiStack_8[0] + 0x3f,unaff_EBX);
-    func_0x00403bb6(aiStack_8[0] + 0x3f,unaff_EBX + 0x3f);
-    func_0x00403bb6(aiStack_8[0] + 0x20,unaff_EBX + 0x3f);
+    thunk_SetQuickDrawTextOriginWithContextOffset(aiStack_8[0] + 0x20,unaff_EBX);
+    thunk_DrawCenteredGuideLineOnMapDc(aiStack_8[0] + 0x3f,unaff_EBX);
+    thunk_DrawCenteredGuideLineOnMapDc(aiStack_8[0] + 0x3f,unaff_EBX + 0x3f);
+    thunk_DrawCenteredGuideLineOnMapDc(aiStack_8[0] + 0x20,unaff_EBX + 0x3f);
     if (*unaff_retaddr == -1) {
-      func_0x00408d6e(aiStack_8[0],unaff_EBX);
-      func_0x00403bb6(aiStack_8[0] + 0x20,unaff_EBX);
+      thunk_SetQuickDrawTextOriginWithContextOffset(aiStack_8[0],unaff_EBX);
+      thunk_DrawCenteredGuideLineOnMapDc(aiStack_8[0] + 0x20,unaff_EBX);
     }
     if (unaff_retaddr[2] == -1) {
-      func_0x00408d6e(aiStack_8[0],unaff_EBX + 0x3f);
-      func_0x00403bb6(aiStack_8[0] + 0x20,unaff_EBX + 0x3f);
+      thunk_SetQuickDrawTextOriginWithContextOffset(aiStack_8[0],unaff_EBX + 0x3f);
+      thunk_DrawCenteredGuideLineOnMapDc(aiStack_8[0] + 0x20,unaff_EBX + 0x3f);
     }
   }
   if (unaff_retaddr[2] != -1) {
     func_0x004056a5(unaff_retaddr[2],&this->field_0x60,&stack0xfffffff4,aiStack_8,1);
-    func_0x00408d6e(aiStack_8[0],unaff_EBX + 0x3f);
-    func_0x00403bb6(aiStack_8[0] + 0x3f,unaff_EBX + 0x3f);
-    func_0x00403bb6(aiStack_8[0] + 0x3f,unaff_EBX);
+    thunk_SetQuickDrawTextOriginWithContextOffset(aiStack_8[0],unaff_EBX + 0x3f);
+    thunk_DrawCenteredGuideLineOnMapDc(aiStack_8[0] + 0x3f,unaff_EBX + 0x3f);
+    thunk_DrawCenteredGuideLineOnMapDc(aiStack_8[0] + 0x3f,unaff_EBX);
     if (unaff_retaddr[3] == -1) {
-      func_0x00408d6e(aiStack_8[0],unaff_EBX);
-      func_0x00403bb6(aiStack_8[0],unaff_EBX + 0x3f);
+      thunk_SetQuickDrawTextOriginWithContextOffset(aiStack_8[0],unaff_EBX);
+      thunk_DrawCenteredGuideLineOnMapDc(aiStack_8[0],unaff_EBX + 0x3f);
     }
     if (unaff_retaddr[1] == -1) {
-      func_0x00408d6e(aiStack_8[0] + 0x20,unaff_EBX);
-      func_0x00403bb6(aiStack_8[0] + 0x3f,unaff_EBX);
+      thunk_SetQuickDrawTextOriginWithContextOffset(aiStack_8[0] + 0x20,unaff_EBX);
+      thunk_DrawCenteredGuideLineOnMapDc(aiStack_8[0] + 0x3f,unaff_EBX);
     }
   }
   if (unaff_retaddr[3] != -1) {
     func_0x004056a5(unaff_retaddr[3],&this->field_0x60,&stack0xfffffff4,aiStack_8,1);
-    func_0x00408d6e(aiStack_8[0] + 0x3f,unaff_EBX + 0x3f);
-    func_0x00403bb6(aiStack_8[0],unaff_EBX + 0x3f);
-    func_0x00403bb6(aiStack_8[0],unaff_EBX);
+    thunk_SetQuickDrawTextOriginWithContextOffset(aiStack_8[0] + 0x3f,unaff_EBX + 0x3f);
+    thunk_DrawCenteredGuideLineOnMapDc(aiStack_8[0],unaff_EBX + 0x3f);
+    thunk_DrawCenteredGuideLineOnMapDc(aiStack_8[0],unaff_EBX);
     if (unaff_retaddr[2] == -1) {
-      func_0x00408d6e(aiStack_8[0] + 0x3f,unaff_EBX);
-      func_0x00403bb6(aiStack_8[0] + 0x3f,unaff_EBX + 0x3f);
+      thunk_SetQuickDrawTextOriginWithContextOffset(aiStack_8[0] + 0x3f,unaff_EBX);
+      thunk_DrawCenteredGuideLineOnMapDc(aiStack_8[0] + 0x3f,unaff_EBX + 0x3f);
     }
     if (unaff_retaddr[4] == -1) {
-      func_0x00408d6e(aiStack_8[0],unaff_EBX);
-      func_0x00403bb6(aiStack_8[0] + 0x20,unaff_EBX);
+      thunk_SetQuickDrawTextOriginWithContextOffset(aiStack_8[0],unaff_EBX);
+      thunk_DrawCenteredGuideLineOnMapDc(aiStack_8[0] + 0x20,unaff_EBX);
     }
   }
   if (unaff_retaddr[4] != -1) {
     func_0x004056a5(unaff_retaddr[4],&this->field_0x60,&stack0xfffffff4,aiStack_8,1);
-    func_0x00408d6e(aiStack_8[0] + 0x20,unaff_EBX);
-    func_0x00403bb6(aiStack_8[0],unaff_EBX);
-    func_0x00403bb6(aiStack_8[0],unaff_EBX + 0x3f);
-    func_0x00403bb6(aiStack_8[0] + 0x20,unaff_EBX + 0x3f);
+    thunk_SetQuickDrawTextOriginWithContextOffset(aiStack_8[0] + 0x20,unaff_EBX);
+    thunk_DrawCenteredGuideLineOnMapDc(aiStack_8[0],unaff_EBX);
+    thunk_DrawCenteredGuideLineOnMapDc(aiStack_8[0],unaff_EBX + 0x3f);
+    thunk_DrawCenteredGuideLineOnMapDc(aiStack_8[0] + 0x20,unaff_EBX + 0x3f);
     if (unaff_retaddr[5] == -1) {
-      func_0x00408d6e(aiStack_8[0] + 0x20,unaff_EBX);
-      func_0x00403bb6(aiStack_8[0] + 0x3f,unaff_EBX);
+      thunk_SetQuickDrawTextOriginWithContextOffset(aiStack_8[0] + 0x20,unaff_EBX);
+      thunk_DrawCenteredGuideLineOnMapDc(aiStack_8[0] + 0x3f,unaff_EBX);
     }
     if (unaff_retaddr[3] == -1) {
-      func_0x00408d6e(aiStack_8[0] + 0x20,unaff_EBX + 0x3f);
-      func_0x00403bb6(aiStack_8[0] + 0x3f,unaff_EBX + 0x3f);
+      thunk_SetQuickDrawTextOriginWithContextOffset(aiStack_8[0] + 0x20,unaff_EBX + 0x3f);
+      thunk_DrawCenteredGuideLineOnMapDc(aiStack_8[0] + 0x3f,unaff_EBX + 0x3f);
     }
   }
   if (unaff_retaddr[5] != -1) {
     func_0x004056a5(unaff_retaddr[5],&this->field_0x60,&stack0xfffffff4,aiStack_8,1);
-    func_0x00408d6e(aiStack_8[0],unaff_EBX + 0x3f);
-    func_0x00403bb6(aiStack_8[0],unaff_EBX);
-    func_0x00403bb6(aiStack_8[0] + 0x3f,unaff_EBX);
+    thunk_SetQuickDrawTextOriginWithContextOffset(aiStack_8[0],unaff_EBX + 0x3f);
+    thunk_DrawCenteredGuideLineOnMapDc(aiStack_8[0],unaff_EBX);
+    thunk_DrawCenteredGuideLineOnMapDc(aiStack_8[0] + 0x3f,unaff_EBX);
     if (*unaff_retaddr == -1) {
-      func_0x00408d6e(aiStack_8[0] + 0x3f,unaff_EBX);
-      func_0x00403bb6(aiStack_8[0] + 0x3f,unaff_EBX + 0x3f);
+      thunk_SetQuickDrawTextOriginWithContextOffset(aiStack_8[0] + 0x3f,unaff_EBX);
+      thunk_DrawCenteredGuideLineOnMapDc(aiStack_8[0] + 0x3f,unaff_EBX + 0x3f);
     }
     if (unaff_retaddr[4] == -1) {
-      func_0x00408d6e(aiStack_8[0],unaff_EBX + 0x3f);
-      func_0x00403bb6(aiStack_8[0] + 0x20,unaff_EBX + 0x3f);
+      thunk_SetQuickDrawTextOriginWithContextOffset(aiStack_8[0],unaff_EBX + 0x3f);
+      thunk_DrawCenteredGuideLineOnMapDc(aiStack_8[0] + 0x20,unaff_EBX + 0x3f);
     }
   }
   func_0x00406b86(0);
@@ -484,7 +456,8 @@ void TMapDialog::DrawHexNeighborOutlineFromTileArray()
 // GHIDRA_NAME TMapDialog::UpdateMapDialogProjectedTileMarkerAndInvalidate
 // GHIDRA_PROTO undefined __thiscall UpdateMapDialogProjectedTileMarkerAndInvalidate(short param_1)
 
-void TMapDialog::UpdateMapDialogProjectedTileMarkerAndInvalidate(short param_1)
+void __thiscall
+TMapDialog::UpdateMapDialogProjectedTileMarkerAndInvalidate(TMapDialog *this,short param_1)
 
 {
   undefined4 uVar1;
@@ -531,7 +504,7 @@ TMapDialog::OrphanRetStub_005960c0
     sVar2 = sVar2 + -1;
   }
   *param_2 = sVar2;
-  func_0x00408328(param_2,param_3);
+  thunk_NormalizeWrappedMapCoord108x60(param_2,param_3);
   iVar4 = *(int *)&this->field_0x64 + param_1[1];
   uVar1 = (ushort)(iVar4 >> 0x1f);
   sVar2 = (((ushort)iVar4 ^ uVar1) - uVar1 & 0x3f ^ uVar1) - uVar1;
@@ -557,7 +530,7 @@ TMapDialog::OrphanRetStub_005960c0
 // GHIDRA_NAME TMapDialog::OrphanRetStub_005966c0
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_005966c0(undefined4 param_1)
 
-void TMapDialog::OrphanRetStub_005966c0(undefined4 param_1)
+void __thiscall TMapDialog::OrphanRetStub_005966c0(TMapDialog *this,undefined4 param_1)
 
 {
   TMapDialogVtbl *pTVar1;
@@ -582,7 +555,7 @@ void TMapDialog::OrphanRetStub_005966c0(undefined4 param_1)
 // GHIDRA_NAME TMapDialog::OrphanLeaf_NoCall_Ins02_005966e0
 // GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins02_005966e0(void)
 
-bool TMapDialog::OrphanLeaf_NoCall_Ins02_005966e0()
+bool __thiscall TMapDialog::OrphanLeaf_NoCall_Ins02_005966e0(TMapDialog *this)
 
 {
   TMapDialogVtbl *pTVar1;
@@ -608,17 +581,17 @@ bool TMapDialog::OrphanLeaf_NoCall_Ins02_005966e0()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0051AC40
-// GHIDRA_NAME TMapDialog::OrphanRetStub_00594fc0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_00594fc0(int param_1)
+// GHIDRA_NAME TMapDialog::UpdateMapViewTileMarker
+// GHIDRA_PROTO undefined __thiscall UpdateMapViewTileMarker(int param_1)
 
-void TMapDialog::OrphanRetStub_00594fc0(int param_1)
+void __thiscall TMapDialog::UpdateMapViewTileMarker(TMapDialog *this,int param_1)
 
 {
   int local_14 [5];
   
   func_0x00406c1c(param_1,&param_1,local_14);
   (*this->vftable[1].DispatchUiCommand19ToParent)
-            (local_14[0] - (int)(short)DAT_006a33b0 / 2,param_1 + -3);
+            (local_14[0] - (int)(short)g_wMapDialogViewportTileSpan / 2,param_1 + -3);
   local_14[0] = 0;
   local_14[1] = 0x1ff;
   local_14[2] = 0x1bf;
@@ -630,25 +603,25 @@ void TMapDialog::OrphanRetStub_00594fc0(int param_1)
 // GHIDRA_NAME TMapDialog::HasRenderableParentAndContent
 // GHIDRA_PROTO undefined __thiscall HasRenderableParentAndContent(void)
 
-int TMapDialog::HasRenderableParentAndContent()
+int __thiscall TMapDialog::HasRenderableParentAndContent(TMapDialog *this)
 
 {
   int local_8;
   int local_4;
   
   local_4 = ((int)(*(int *)&this->field_0x60 + (*(int *)&this->field_0x60 >> 0x1f & 0x3fU)) >> 6) +
-            (int)(short)DAT_006a33b0 / 2;
+            (int)(short)g_wMapDialogViewportTileSpan / 2;
   local_8 = ((int)(*(int *)&this->field_0x64 + (*(int *)&this->field_0x64 >> 0x1f & 0x3fU)) >> 6) +
             4;
-  func_0x00408328(&local_4,&local_8);
+  thunk_NormalizeWrappedMapCoord108x60(&local_4,&local_8);
   return local_4 + local_8 * 0x6c;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0051AD70
-// GHIDRA_NAME TMapDialog::OrphanRetStub_005966a0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_005966a0(undefined4 param_1)
+// GHIDRA_NAME TMapDialog::SetMapViewTileIndex
+// GHIDRA_PROTO undefined __thiscall SetMapViewTileIndex(undefined4 param_1)
 
-void TMapDialog::OrphanRetStub_005966a0(undefined4 param_1)
+void __thiscall TMapDialog::SetMapViewTileIndex(TMapDialog *this,undefined4 param_1)
 
 {
   TMapDialog *local_4;
@@ -660,10 +633,10 @@ void TMapDialog::OrphanRetStub_005966a0(undefined4 param_1)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0051ADC0
-// GHIDRA_NAME TMapDialog::OrphanRetStub_00596680
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_00596680(void)
+// GHIDRA_NAME TMapDialog::SetMapViewCellCoordinates
+// GHIDRA_PROTO undefined __thiscall SetMapViewCellCoordinates(void)
 
-void TMapDialog::OrphanRetStub_00596680()
+void __thiscall TMapDialog::SetMapViewCellCoordinates(TMapDialog *this)
 
 {
   (*this->vftable[1].DispatchUiMouseMoveToChildren)();
@@ -674,7 +647,8 @@ void TMapDialog::OrphanRetStub_00596680()
 // GHIDRA_NAME TMapDialog::SetMapDialogCellCoordinatesAndRefresh
 // GHIDRA_PROTO undefined __thiscall SetMapDialogCellCoordinatesAndRefresh(int param_1, undefined4 param_2)
 
-void TMapDialog::SetMapDialogCellCoordinatesAndRefresh(int param_1, undefined4 param_2)
+void __thiscall
+TMapDialog::SetMapDialogCellCoordinatesAndRefresh(TMapDialog *this,int param_1,undefined4 param_2)
 
 {
   int iVar1;
@@ -686,8 +660,8 @@ void TMapDialog::SetMapDialogCellCoordinatesAndRefresh(int param_1, undefined4 p
   undefined4 local_4;
   
   if (g_pGlobalMapState->field_0x20 != '\0') {
-    if (0x6e - (short)DAT_006a33b0 < (int)(short)param_1) {
-      param_1 = 0x6e - DAT_006a33b0;
+    if (0x6e - (short)g_wMapDialogViewportTileSpan < (int)(short)param_1) {
+      param_1 = 0x6e - g_wMapDialogViewportTileSpan;
     }
     else if ((short)param_1 < 1) {
       param_1 = 1;
@@ -728,7 +702,8 @@ void TMapDialog::SetMapDialogCellCoordinatesAndRefresh(int param_1, undefined4 p
 // GHIDRA_NAME TMapDialog::UpdateMapInteractionPreviewParityAndRenderTransientSprites
 // GHIDRA_PROTO undefined __thiscall UpdateMapInteractionPreviewParityAndRenderTransientSprites(void)
 
-void TMapDialog::UpdateMapInteractionPreviewParityAndRenderTransientSprites()
+void __thiscall
+TMapDialog::UpdateMapInteractionPreviewParityAndRenderTransientSprites(TMapDialog *this)
 
 {
   TMapDialogVtbl *pTVar1;
@@ -790,11 +765,249 @@ void TMapDialog::UpdateMapInteractionPreviewParityAndRenderTransientSprites()
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0051E1A0
-// GHIDRA_NAME TMapDialog::OrphanCallChain_C1_I20_0051e1a0
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I20_0051e1a0(void)
+// GHIDRA_FUNCTION IMPERIALISM 0x0051B1C0
+// GHIDRA_NAME TMapDialog::PopulateMapContextInfoPanelStringsByTileSelection
+// GHIDRA_PROTO undefined PopulateMapContextInfoPanelStringsByTileSelection()
 
-void TMapDialog::OrphanCallChain_C1_I20_0051e1a0()
+void __fastcall TMapDialog::PopulateMapContextInfoPanelStringsByTileSelection(int *param_1)
+
+{
+  code cVar1;
+  short sVar2;
+  int *piVar3;
+  undefined4 uVar4;
+  CString *pCVar5;
+  char *pcVar6;
+  int unaff_EBP;
+  code *unaff_ESI;
+  int iVar7;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 unaff_retaddr;
+  CString CStack_68;
+  undefined *puStack_64;
+  code *pcVar8;
+  code *pcVar9;
+  CString local_3c;
+  CString local_38;
+  CString local_34;
+  CString local_30;
+  CString local_2c [2];
+  int *local_24;
+  undefined1 uStack_20;
+  CString CStack_18;
+  undefined1 uStack_14;
+  CString CStack_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_00633ea0;
+  CStack_c.m_pchData = (char *)*unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &CStack_c;
+  local_24 = param_1;
+  CString::CString(&local_3c);
+  local_4 = 0;
+  CString::CString(&local_34);
+  local_4._0_1_ = 1;
+  CString::CString(&local_38);
+  local_4._0_1_ = 2;
+  CString::CString(local_2c);
+  local_4 = CONCAT31(local_4._1_3_,3);
+  local_30.m_pchData = *(char **)(*param_1 + 0x94);
+  piVar3 = (int *)(*(code *)local_30.m_pchData)();
+  if (piVar3 == (int *)0x0) {
+    puStack_64 = (undefined *)0x51b24b;
+    MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+    func_0x004057a4();
+  }
+  pcVar9 = (code *)&stack0xffffffc0;
+  pcVar6 = (char *)((short)unaff_retaddr * 0x24);
+  local_2c[0].m_pchData = pcVar6;
+  (*g_pSimMgr->vftable[0x10].slot_0x04)();
+  CStack_68.m_pchData = &stack0xffffffbc;
+  puStack_64 = &g_szDecimalFormat;
+  CString::Format();
+  CStack_68.m_pchData = (char *)&local_30;
+  puStack_64 = &DAT_006973cc;
+  puStack_64 = (undefined *)AssignSharedStringConcatCStrAndRef();
+  CStack_68.m_pchData = (char *)&CStack_c;
+  uStack_14 = 4;
+  AssignSharedStringConcatRefAndCStr();
+  uStack_14 = 5;
+  puStack_64 = (undefined *)0x51b2df;
+  CString::operator+=();
+  uStack_14 = 4;
+  CString::~CString(&CStack_c);
+  uStack_14 = 3;
+  CString::~CString(&local_30);
+  puStack_64 = &stack0xffffffb4;
+  pcVar8 = (code *)0x1;
+  CStack_68.m_pchData = (char *)0x51b30c;
+  (**(code **)(*piVar3 + 0x1c8))();
+  CStack_68.m_pchData = (char *)0x696e666f;
+  local_30.m_pchData = (char *)(*unaff_ESI)();
+  if ((int *)local_30.m_pchData == (int *)0x0) {
+    MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+    func_0x004057a4();
+  }
+  CString::CString(&CStack_18,(char *)&g_szEmptyString);
+  uStack_20 = 6;
+  CString::operator=((CString *)&stack0xffffffa8,&CStack_18);
+  uStack_20 = 3;
+  CString::~CString(&CStack_18);
+  if (*(short *)(pcVar6 + *(int *)&g_pGlobalMapState->field_0xc + 0x14) == -1) {
+    piVar3 = (int *)func_0x00402b03();
+    (**(code **)(*piVar3 + 0x2c))();
+    piVar3 = (int *)(*pcVar9)();
+    if (piVar3 != (int *)0x0) goto LAB_0051b843;
+    MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+    uVar4 = 0x4ab;
+  }
+  else {
+    local_2c[0].m_pchData =
+         (char *)(int)*(short *)(pcVar6 + *(int *)&g_pGlobalMapState->field_0xc + 0x14);
+    iVar7 = (int)local_2c[0].m_pchData * 0xa8;
+    if (*(short *)(*(int *)&g_pGlobalMapState->field_0x10 + 4 + iVar7) == (short)unaff_retaddr) {
+      if ((pcVar6[*(int *)&g_pGlobalMapState->field_0xc + 0x1c] & 1U) == 0) {
+        pcVar6 = s_Province_Capitol_00697398;
+      }
+      else {
+        pcVar6 = s_National_Capitol_006973b0;
+      }
+      CString::operator+=((CString *)&stack0xffffffa8,pcVar6);
+      sVar2 = 7;
+      iVar7 = iVar7 + 0x82;
+      do {
+        if (*(short *)(*(int *)&g_pGlobalMapState->field_0x10 + iVar7) != 0) {
+          CString::Format();
+          (*g_pSimMgr->vftable[0x10].slot_0x04)();
+          AssignSharedStringConcatRefAndCStr();
+          uStack_20 = 7;
+          AssignSharedStringConcatRefAndRef();
+          uStack_20 = 8;
+          AssignSharedStringConcatRefAndCStr();
+          uStack_20 = 9;
+          CString::operator+=();
+          uStack_20 = 8;
+          CString::~CString(&CStack_18);
+          uStack_20 = 7;
+          CString::~CString(&local_3c);
+          uStack_20 = 3;
+          CString::~CString(&local_38);
+        }
+        sVar2 = sVar2 + 1;
+        iVar7 = iVar7 + 2;
+      } while (sVar2 < 0x11);
+    }
+    sVar2 = 0;
+    CStack_18.m_pchData = (char *)0x0;
+    do {
+      if (CStack_18.m_pchData[unaff_EBP + *(int *)&g_pGlobalMapState->field_0xc + 0x11] != -1) {
+        (*g_pSimMgr->vftable[0x10].slot_0x04)();
+        (*g_pGlobalMapState->vftable->OrphanLeaf_NoCall_Ins14_00513610)(unaff_retaddr);
+        CString::Format();
+        AssignSharedStringConcatRefAndCStr();
+        uStack_20 = 10;
+        AssignSharedStringConcatRefAndRef();
+        uStack_20 = 0xb;
+        AssignSharedStringConcatRefAndCStr();
+        uStack_20 = 0xc;
+        CString::operator+=();
+        uStack_20 = 0xb;
+        CString::~CString(&local_38);
+        uStack_20 = 10;
+        CString::~CString(&local_3c);
+        uStack_20 = 3;
+        CString::~CString(&local_34);
+      }
+      sVar2 = sVar2 + 1;
+      CStack_18.m_pchData = CStack_18.m_pchData + 1;
+    } while (sVar2 < 2);
+    (**(code **)(*(int *)local_30.m_pchData + 0x1c8))();
+    func_0x0040918d();
+    if (((g_apTerrainTypeDescriptorTable[(char)pcVar9[*(int *)&g_pGlobalMapState->field_0xc + 4]] ==
+          (TCountry *)0x0) ||
+        (sVar2 = *(short *)&g_apTerrainTypeDescriptorTable
+                            [(char)pcVar9[*(int *)&g_pGlobalMapState->field_0xc + 4]]->field_0xe,
+        sVar2 < 100)) || (199 < sVar2)) {
+      func_0x00405245(&puStack_64);
+    }
+    else {
+      func_0x00404b97(&puStack_64);
+    }
+    uVar4 = AssignSharedStringConcatRefAndCStr(&stack0xffffffbc,&stack0xffffffa4,&DAT_00695760);
+    local_34.m_pchData._0_1_ = 0xd;
+    pCVar5 = (CString *)AssignSharedStringConcatRefAndRef(&stack0xffffffc0,uVar4,&CStack_68);
+    local_34.m_pchData._0_1_ = 0xe;
+    CString::CString(local_2c,pCVar5);
+    local_34.m_pchData._0_1_ = 0xf;
+    CString::operator=((CString *)&stack0xffffff94,local_2c);
+    local_34.m_pchData._0_1_ = 0xe;
+    CString::~CString(local_2c);
+    local_34.m_pchData._0_1_ = 0xd;
+    CString::~CString((CString *)&stack0xffffffc0);
+    local_34.m_pchData._0_1_ = 3;
+    CString::~CString((CString *)&stack0xffffffbc);
+    cVar1 = pcVar9[*(int *)&g_pGlobalMapState->field_0xc + 3];
+    if (pcVar9[*(int *)&g_pGlobalMapState->field_0xc + 4] != cVar1) {
+      sVar2 = (short)(char)cVar1;
+      if ((((char)cVar1 < '\0') || (0x17 < sVar2)) ||
+         (g_apTerrainTypeDescriptorTable[sVar2] == (TCountry *)0x0)) {
+        CString::Format(&CStack_68,&g_szDecimalFormat,(int)sVar2);
+        pCVar5 = (CString *)
+                 AssignSharedStringConcatCStrAndRef(&stack0xffffffc0,&DAT_00697394,&CStack_68);
+        local_34.m_pchData._0_1_ = 0x10;
+        CString::CString(local_2c,pCVar5);
+        local_34.m_pchData._0_1_ = 0x11;
+        CString::operator=(&CStack_68,local_2c);
+        local_34.m_pchData._0_1_ = 0x10;
+        CString::~CString(local_2c);
+        local_34.m_pchData._0_1_ = 3;
+        CString::~CString((CString *)&stack0xffffffc0);
+      }
+      else {
+        func_0x00404b97(&CStack_68);
+      }
+      uVar4 = AssignSharedStringConcatRefAndCStr
+                        (&stack0xffffffb8,&stack0xffffff94,s__formerly_of_00697380);
+      local_34.m_pchData._0_1_ = 0x12;
+      uVar4 = AssignSharedStringConcatRefAndRef(&stack0xffffffbc,uVar4,&CStack_68);
+      local_34.m_pchData._0_1_ = 0x13;
+      pCVar5 = (CString *)AssignSharedStringConcatRefAndCStr(&stack0xffffffc0,uVar4,&DAT_006973c8);
+      local_34.m_pchData._0_1_ = 0x14;
+      CString::CString(local_2c,pCVar5);
+      local_34.m_pchData._0_1_ = 0x15;
+      CString::operator=((CString *)&stack0xffffff94,local_2c);
+      local_34.m_pchData._0_1_ = 0x14;
+      CString::~CString(local_2c);
+      local_34.m_pchData._0_1_ = 0x13;
+      CString::~CString((CString *)&stack0xffffffc0);
+      local_34.m_pchData._0_1_ = 0x12;
+      CString::~CString((CString *)&stack0xffffffbc);
+      local_34.m_pchData._0_1_ = 3;
+      CString::~CString((CString *)&stack0xffffffb8);
+    }
+    piVar3 = (int *)(*pcVar8)(0x6c6f6361);
+    if (piVar3 != (int *)0x0) goto LAB_0051b843;
+    MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
+    uVar4 = 0x4a3;
+  }
+  func_0x004057a4(s_D__Ambit_Cross_UMapDlog_cpp_006973d0,uVar4);
+LAB_0051b843:
+  (**(code **)(*piVar3 + 0x1c8))(&stack0xffffff90,1);
+  CString::~CString(&CStack_68);
+  CString::~CString((CString *)&stack0xffffff8c);
+  CString::~CString((CString *)&stack0xffffff90);
+  CString::~CString((CString *)&stack0xffffff88);
+  *unaff_FS_OFFSET = unaff_ESI;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0051E1A0
+// GHIDRA_NAME TMapDialog::ResetAllTileMarkersToSentinel
+// GHIDRA_PROTO undefined __thiscall ResetAllTileMarkersToSentinel(void)
+
+void __thiscall TMapDialog::ResetAllTileMarkersToSentinel(TMapDialog *this)
 
 {
   undefined2 *puVar1;
@@ -815,10 +1028,10 @@ void TMapDialog::OrphanCallChain_C1_I20_0051e1a0()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0051E1F0
-// GHIDRA_NAME TMapDialog::OrphanLeaf_NoCall_Ins21_0051e1f0
-// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins21_0051e1f0(short param_1)
+// GHIDRA_NAME TMapDialog::ReleaseTileMarkerForTile
+// GHIDRA_PROTO undefined __thiscall ReleaseTileMarkerForTile(short param_1)
 
-void TMapDialog::OrphanLeaf_NoCall_Ins21_0051e1f0(short param_1)
+void __thiscall TMapDialog::ReleaseTileMarkerForTile(TMapDialog *this,short param_1)
 
 {
   int iVar1;
@@ -842,7 +1055,7 @@ void TMapDialog::OrphanLeaf_NoCall_Ins21_0051e1f0(short param_1)
 
 /* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 
-void TMapDialog::ApplyRectSlot110(int *param_1)
+void __thiscall TMapDialog::ApplyRectSlot110(TMapDialog *this,int *param_1)
 
 {
   TMapDialogVtbl *pTVar1;
@@ -919,13 +1132,13 @@ void TMapDialog::ApplyRectSlot110(int *param_1)
     local_4c.bottom = local_78.bottom;
     if (this->field_0x34c == '\0') {
       func_0x0040232e(local_8c);
-      func_0x00408d64(local_54,&local_9c);
+      thunk_GetActiveQuickDrawSurfaceContextAndFlags(local_54,&local_9c);
       func_0x004088aa();
-      func_0x00406f5f(*(undefined4 *)&this->field_0x350,local_9c);
-      uVar5 = func_0x0040520e(DAT_006a3450);
-      func_0x0040761c(uVar5);
-      uVar5 = func_0x0040520e(*(undefined4 *)&this->field_0x350);
-      func_0x0040761c(uVar5);
+      thunk_SetActiveQuickDrawSurfaceContext(*(undefined4 *)&this->field_0x350,local_9c);
+      uVar5 = thunk_GetSurfaceObjectAtContextOffset24(DAT_006a3450);
+      thunk_ReturnConstantTrueQuickDrawFlag(uVar5);
+      uVar5 = thunk_GetSurfaceObjectAtContextOffset24(*(undefined4 *)&this->field_0x350);
+      thunk_ReturnConstantTrueQuickDrawFlag(uVar5);
       sVar3 = _ftol();
       sVar4 = _ftol();
       local_a0 = 0x5a;
@@ -953,11 +1166,12 @@ void TMapDialog::ApplyRectSlot110(int *param_1)
       iVar13 = ((int)(iVar7 + (iVar7 >> 0x1f & 0x3fU)) >> 6) + 1 + iVar6;
       local_88 = iVar13;
       local_7c = iVar6;
-      uVar5 = func_0x0040520e(*(undefined4 *)&this->field_0x350);
+      uVar5 = thunk_GetSurfaceObjectAtContextOffset24(*(undefined4 *)&this->field_0x350);
       func_0x00405e39(uVar5);
-      uVar5 = func_0x0040520e(DAT_006a3450);
+      uVar5 = thunk_GetSurfaceObjectAtContextOffset24(DAT_006a3450);
       func_0x00405e39(uVar5);
-      uVar5 = func_0x0040520e(*(undefined4 *)(g_pStrategicMapViewSystem + 0x668));
+      uVar5 = thunk_GetSurfaceObjectAtContextOffset24
+                        (*(undefined4 *)(g_pStrategicMapViewSystem + 0x668));
       func_0x00405e39(uVar5);
       if ((short)iVar14 < (short)local_68) {
         do {
@@ -1036,16 +1250,17 @@ void TMapDialog::ApplyRectSlot110(int *param_1)
                 iVar13 = *(int *)(*(int *)&g_pGlobalMapState->field_0xc + 0x20 + iVar13);
                 if ((iVar13 != 0) &&
                    (piVar11 = (int *)func_0x004055ec(iVar13), piVar11 != (int *)0x0)) {
-                  func_0x00406f5f(DAT_006a3450,local_9c);
+                  thunk_SetActiveQuickDrawSurfaceContext(DAT_006a3450,local_9c);
                   iStack_18 = piVar11[8] + 0x40;
                   iStack_10 = piVar11[10] + 0x40;
                   iStack_1c = piVar11[7] + 0x40;
                   iStack_14 = piVar11[9] + 0x40;
-                  func_0x004030e9(&iStack_1c);
+                  thunk_ApplyRectClipRegionToGlobalClipState(&iStack_1c);
                   local_78.left = 0x40;
                   local_78.top = 0x40;
                   (**(code **)(*piVar11 + 0x2c))(&local_78);
-                  func_0x00406f5f(*(undefined4 *)&this->field_0x350,iVar14);
+                  thunk_SetActiveQuickDrawSurfaceContext(*(undefined4 *)&this->field_0x350,local_9c)
+                  ;
                   iVar6 = local_98;
                 }
               }
@@ -1058,23 +1273,23 @@ void TMapDialog::ApplyRectSlot110(int *param_1)
           iVar6 = local_7c;
         } while ((short)iVar14 < (short)local_68);
       }
-      func_0x00406f5f(DAT_006a3450,local_9c);
+      thunk_SetActiveQuickDrawSurfaceContext(DAT_006a3450,local_9c);
       CopyRect(&tStack_3c,(RECT *)*local_8c);
       tStack_3c.bottom = tStack_3c.bottom + 0x80;
       tStack_3c.right = tStack_3c.right + 0x80;
-      func_0x004030e9(&tStack_3c);
+      thunk_ApplyRectClipRegionToGlobalClipState(&tStack_3c);
       (*this->vftable[1].DispatchControlEventToChildrenAndSelf)();
       func_0x004088aa();
-      func_0x00406f5f(local_54[0],local_9c);
+      thunk_SetActiveQuickDrawSurfaceContext(local_54[0],local_9c);
       func_0x00405be1(local_8c);
     }
     OffsetRect(&local_4c,DAT_006a33b8 << 5,DAT_006a33b4 << 5);
     func_0x00405493(DAT_006a3450 + 4,&g_pActiveQuickDrawSurfaceContext->field_0x4,&local_4c,
                     &local_64,0,0);
-    uVar5 = func_0x0040520e(DAT_006a3450);
-    func_0x004024fa(uVar5);
-    uVar5 = func_0x0040520e(*(undefined4 *)&this->field_0x350);
-    func_0x004024fa(uVar5);
+    uVar5 = thunk_GetSurfaceObjectAtContextOffset24(DAT_006a3450);
+    thunk_NoOpQuickDrawLifecycleHookB(uVar5);
+    uVar5 = thunk_GetSurfaceObjectAtContextOffset24(*(undefined4 *)&this->field_0x350);
+    thunk_NoOpQuickDrawLifecycleHookB(uVar5);
     local_4 = 0xffffffff;
     func_0x00409aac();
   }
@@ -1136,7 +1351,7 @@ void TMapDialog::ApplyRectSlot110(int *param_1)
    - Civilian icon-state IDs (400/409/418 family) are composed through indirect icon/overlay draw
    paths rather than a single direct switch in this function. */
 
-void TMapDialog::RenderStrategicMapTileCell(short param_1)
+void __thiscall TMapDialog::RenderStrategicMapTileCell(TMapDialog *this,short param_1)
 
 {
   ushort uVar1;
@@ -1197,10 +1412,10 @@ void TMapDialog::RenderStrategicMapTileCell(short param_1)
   int local_44;
   RECT local_40;
   undefined4 uStack_30;
-  int iStack_20;
   int iStack_1c;
   int iStack_18;
   int iStack_14;
+  int iStack_10;
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined1 *local_4;
@@ -1220,13 +1435,13 @@ void TMapDialog::RenderStrategicMapTileCell(short param_1)
     atexit();
   }
   local_60 = *(undefined ***)&this->field_0x350;
-  local_5c = func_0x0040520e();
+  local_5c = thunk_GetSurfaceObjectAtContextOffset24();
   func_0x00405e39();
   RStack_54.right = (LONG)_cStack0000000c;
   RStack_54.bottom = (LONG)_bStack00000008;
   local_44 = RStack_54.right + 0x40;
   local_40.left = RStack_54.bottom + 0x40;
-  func_0x0040520e();
+  thunk_GetSurfaceObjectAtContextOffset24();
   iVar7 = func_0x00405e39();
   iVar14 = param_1 * 0x24;
   bVar20 = *(char *)(*(int *)&g_pGlobalMapState->field_0xc + iVar14) == '\x05';
@@ -1683,13 +1898,13 @@ LAB_0051eddf:
         pLStack_94 = (LONG *)0x51fae7;
         pHVar10 = CreateRectRgnIndirect(&RStack_54);
         pLStack_94 = (LONG *)0x51faf1;
-        CBrush::CGdiObject__Attach((CBrush *)&local_60,(int)pHVar10);
+        CGdiObject::Attach((CGdiObject *)&local_60,(int)pHVar10);
         pLStack_94 = (LONG *)0x51fafd;
         CDC::SelectClipRgn(pCVar9,(int)&local_60);
-        CGdiObject__DeleteObject();
+        CGdiObject::DeleteObject();
         local_60 = &PTR_LAB_00671054;
         uStack_c._0_1_ = 3;
-        CGdiObject__DeleteObject();
+        CGdiObject::DeleteObject();
         local_60 = (undefined **)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
         uStack_c = CONCAT31(uStack_c._1_3_,4);
         pLStack_94 = (LONG *)0x51fb36;
@@ -1699,21 +1914,21 @@ LAB_0051eddf:
         pLStack_94 = (LONG *)0x51fb4a;
         func_0x004065a0();
         pLStack_94 = (LONG *)0x51fb5a;
-        sVar6 = func_0x00405b7d();
+        sVar6 = thunk_MeasureTextExtentWithCachedQuickDrawStyle();
         iVar7 = RStack_54.left - (int)sVar6 / 2;
         if ((*(byte *)(*(int *)&g_pGlobalMapState->field_0xc + 0x1c + sVar13 * 0x24) & 1) == 0) {
           iVar7 = iVar7 + -10;
         }
         pLStack_94 = (LONG *)(iVar7 + 1);
         uStack_98 = (RECT *)0x51fb90;
-        func_0x00408d6e();
+        thunk_SetQuickDrawTextOriginWithContextOffset();
         pLStack_94 = (LONG *)0x51fb9a;
         func_0x0040330f();
         pLStack_94 = (LONG *)0x51fbaa;
         func_0x004029aa();
         uStack_98 = (RECT *)0x51fbbb;
         pLStack_94 = (LONG *)iVar7;
-        func_0x00408d6e();
+        thunk_SetQuickDrawTextOriginWithContextOffset();
         pLStack_94 = (LONG *)0x51fbc5;
         func_0x0040330f();
         pLStack_94 = (LONG *)0x51fbd5;
@@ -1740,13 +1955,13 @@ LAB_0051eddf:
         pLStack_94 = (LONG *)0x51fcad;
         pHVar10 = CreateRectRgnIndirect(&RStack_54);
         pLStack_94 = (LONG *)0x51fcb7;
-        CBrush::CGdiObject__Attach((CBrush *)&local_60,(int)pHVar10);
+        CGdiObject::Attach((CGdiObject *)&local_60,(int)pHVar10);
         pLStack_94 = (LONG *)0x51fcc3;
         CDC::SelectClipRgn(pCVar9,(int)&local_60);
-        CGdiObject__DeleteObject();
+        CGdiObject::DeleteObject();
         local_60 = &PTR_LAB_00671054;
         uStack_c._0_1_ = 7;
-        CGdiObject__DeleteObject();
+        CGdiObject::DeleteObject();
         local_60 = (undefined **)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
         uStack_c = CONCAT31(uStack_c._1_3_,8);
         pLStack_94 = (LONG *)0x51fcfc;
@@ -1756,21 +1971,21 @@ LAB_0051eddf:
         pLStack_94 = (LONG *)0x51fd10;
         func_0x004065a0();
         pLStack_94 = (LONG *)0x51fd20;
-        sVar6 = func_0x00405b7d();
+        sVar6 = thunk_MeasureTextExtentWithCachedQuickDrawStyle();
         iVar7 = RStack_54.right - (int)sVar6 / 2;
         if ((*(byte *)(*(int *)&g_pGlobalMapState->field_0xc + 0x1c + sVar13 * 0x24) & 1) == 0) {
           iVar7 = iVar7 + -10;
         }
         pLStack_94 = (LONG *)(iVar7 + 1);
         uStack_98 = (RECT *)0x51fd56;
-        func_0x00408d6e();
+        thunk_SetQuickDrawTextOriginWithContextOffset();
         pLStack_94 = (LONG *)0x51fd60;
         func_0x0040330f();
         pLStack_94 = (LONG *)0x51fd70;
         func_0x004029aa();
         uStack_98 = (RECT *)0x51fd81;
         pLStack_94 = (LONG *)iVar7;
-        func_0x00408d6e();
+        thunk_SetQuickDrawTextOriginWithContextOffset();
         pLStack_94 = (LONG *)0x51fd8b;
         func_0x0040330f();
         pLStack_94 = (LONG *)0x51fd9b;
@@ -1789,11 +2004,11 @@ LAB_0051eddf:
     if (param_1 != *(short *)&g_pGlobalMapState->field_0x22) goto LAB_0051fe9c;
     if (bVar20) {
       (**(code **)(g_pUiRuntimeContext->vftable + 0x34))();
-      iStack_20 = RStack_54.top + 0x20;
-      iStack_18 = RStack_54.top + 0x21;
       iStack_1c = RStack_54.right + 0x20;
       iStack_14 = RStack_54.right + 0x21;
-      func_0x00406546();
+      iStack_18 = RStack_54.bottom + 0x20;
+      iStack_10 = RStack_54.bottom + 0x21;
+      thunk_FillRectWithQuickDrawBrushAndContextOffset();
       goto LAB_0051fe9c;
     }
   }
@@ -1845,9 +2060,9 @@ LAB_0051fe9c:
     CString::CString((CString *)&stack0x0000000c);
     local_4._0_1_ = 9;
     func_0x00406b86();
-    func_0x00408d6e();
+    thunk_SetQuickDrawTextOriginWithContextOffset();
     pLStack_94 = (LONG *)0x51ff98;
-    CString__Format();
+    CString::Format();
     func_0x004029aa();
     local_4 = (undefined1 *)((uint)local_4._1_3_ << 8);
     CString::~CString((CString *)&stack0x0000000c);
@@ -1967,29 +2182,29 @@ TMapDialog::DrawMapDialogGuidePatternSetA_00520970
   int iVar2;
   
   if (param_3 == 0) {
-    func_0x00408d6e(param_1 + 0x18,param_2);
-    func_0x00403bb6(param_1 + 0x20,param_2 + 9);
-    func_0x00403bb6(param_1 + 0x26,param_2 + 6);
-    func_0x00403bb6(param_1 + 0x2c,param_2 + 8);
+    thunk_SetQuickDrawTextOriginWithContextOffset(param_1 + 0x18,param_2);
+    thunk_DrawCenteredGuideLineOnMapDc(param_1 + 0x20,param_2 + 9);
+    thunk_DrawCenteredGuideLineOnMapDc(param_1 + 0x26,param_2 + 6);
+    thunk_DrawCenteredGuideLineOnMapDc(param_1 + 0x2c,param_2 + 8);
     return;
   }
   if (param_3 == 1) {
-    func_0x00408d6e(param_1 + 0x16,param_2);
+    thunk_SetQuickDrawTextOriginWithContextOffset(param_1 + 0x16,param_2);
     iVar1 = param_2 + 10;
-    func_0x00403bb6(param_1 + 0x1e,iVar1);
+    thunk_DrawCenteredGuideLineOnMapDc(param_1 + 0x1e,iVar1);
     iVar2 = param_2 + 8;
   }
   else {
     if (param_3 != 2) {
       return;
     }
-    func_0x00408d6e(param_1 + 0x1a,param_2);
+    thunk_SetQuickDrawTextOriginWithContextOffset(param_1 + 0x1a,param_2);
     iVar1 = param_2 + 6;
-    func_0x00403bb6(param_1 + 0x22,iVar1);
+    thunk_DrawCenteredGuideLineOnMapDc(param_1 + 0x22,iVar1);
     iVar2 = param_2 + 4;
   }
-  func_0x00403bb6(param_1 + 0x26,iVar2);
-  func_0x00403bb6(param_1 + 0x2c,iVar1);
+  thunk_DrawCenteredGuideLineOnMapDc(param_1 + 0x26,iVar2);
+  thunk_DrawCenteredGuideLineOnMapDc(param_1 + 0x2c,iVar1);
   return;
 }
 
@@ -2003,27 +2218,27 @@ TMapDialog::DrawMapDialogGuidePatternSetB_00520a90
 
 {
   if (param_3 == 0) {
-    func_0x00408d6e(param_1 + 0x2c,param_2 + 8);
-    func_0x00403bb6(param_1 + 0x36,param_2 + 0xd);
-    func_0x00403bb6(param_1 + 0x34,param_2 + 0x14);
-    func_0x00403bb6(param_1 + 0x3a,param_2 + 0x19);
-    func_0x00403bb6(param_1 + 0x38,param_2 + 0x20);
+    thunk_SetQuickDrawTextOriginWithContextOffset(param_1 + 0x2c,param_2 + 8);
+    thunk_DrawCenteredGuideLineOnMapDc(param_1 + 0x36,param_2 + 0xd);
+    thunk_DrawCenteredGuideLineOnMapDc(param_1 + 0x34,param_2 + 0x14);
+    thunk_DrawCenteredGuideLineOnMapDc(param_1 + 0x3a,param_2 + 0x19);
+    thunk_DrawCenteredGuideLineOnMapDc(param_1 + 0x38,param_2 + 0x20);
     return;
   }
   if (param_3 == 1) {
-    func_0x00408d6e(param_1 + 0x2c,param_2 + 10);
-    func_0x00403bb6(param_1 + 0x34,param_2 + 0xf);
-    func_0x00403bb6(param_1 + 0x31,param_2 + 0x14);
-    func_0x00403bb6(param_1 + 0x38,param_2 + 0x19);
-    func_0x00403bb6(param_1 + 0x36,param_2 + 0x20);
+    thunk_SetQuickDrawTextOriginWithContextOffset(param_1 + 0x2c,param_2 + 10);
+    thunk_DrawCenteredGuideLineOnMapDc(param_1 + 0x34,param_2 + 0xf);
+    thunk_DrawCenteredGuideLineOnMapDc(param_1 + 0x31,param_2 + 0x14);
+    thunk_DrawCenteredGuideLineOnMapDc(param_1 + 0x38,param_2 + 0x19);
+    thunk_DrawCenteredGuideLineOnMapDc(param_1 + 0x36,param_2 + 0x20);
     return;
   }
   if (param_3 == 2) {
-    func_0x00408d6e(param_1 + 0x2c,param_2 + 6);
-    func_0x00403bb6(param_1 + 0x37,param_2 + 0xb);
-    func_0x00403bb6(param_1 + 0x36,param_2 + 0x13);
-    func_0x00403bb6(param_1 + 0x3c,param_2 + 0x19);
-    func_0x00403bb6(param_1 + 0x3a,param_2 + 0x20);
+    thunk_SetQuickDrawTextOriginWithContextOffset(param_1 + 0x2c,param_2 + 6);
+    thunk_DrawCenteredGuideLineOnMapDc(param_1 + 0x37,param_2 + 0xb);
+    thunk_DrawCenteredGuideLineOnMapDc(param_1 + 0x36,param_2 + 0x13);
+    thunk_DrawCenteredGuideLineOnMapDc(param_1 + 0x3c,param_2 + 0x19);
+    thunk_DrawCenteredGuideLineOnMapDc(param_1 + 0x3a,param_2 + 0x20);
   }
   return;
 }
@@ -2043,28 +2258,28 @@ TMapDialog::DrawMapDialogGuidePatternSetC_00520c10
   
   if (param_3 == 1) {
     iVar1 = param_1 + 0x36;
-    func_0x00408d6e(iVar1,param_2);
+    thunk_SetQuickDrawTextOriginWithContextOffset(iVar1,param_2);
     iVar2 = param_1 + 0x34;
-    func_0x00403bb6(iVar2,param_2 + 9);
+    thunk_DrawCenteredGuideLineOnMapDc(iVar2,param_2 + 9);
     iVar3 = param_1 + 0x38;
   }
   else if (param_3 == 2) {
     iVar1 = param_1 + 0x3a;
-    func_0x00408d6e(iVar1,param_2);
+    thunk_SetQuickDrawTextOriginWithContextOffset(iVar1,param_2);
     iVar2 = param_1 + 0x38;
-    func_0x00403bb6(iVar2,param_2 + 9);
+    thunk_DrawCenteredGuideLineOnMapDc(iVar2,param_2 + 9);
     iVar3 = param_1 + 0x3c;
   }
   else {
     iVar1 = param_1 + 0x38;
-    func_0x00408d6e(iVar1,param_2);
+    thunk_SetQuickDrawTextOriginWithContextOffset(iVar1,param_2);
     iVar2 = param_1 + 0x36;
-    func_0x00403bb6(iVar2,param_2 + 9);
+    thunk_DrawCenteredGuideLineOnMapDc(iVar2,param_2 + 9);
     iVar3 = param_1 + 0x3a;
   }
-  func_0x00403bb6(iVar3,param_2 + 0x12);
-  func_0x00403bb6(iVar2,param_2 + 0x19);
-  func_0x00403bb6(iVar1,param_2 + 0x20);
+  thunk_DrawCenteredGuideLineOnMapDc(iVar3,param_2 + 0x12);
+  thunk_DrawCenteredGuideLineOnMapDc(iVar2,param_2 + 0x19);
+  thunk_DrawCenteredGuideLineOnMapDc(iVar1,param_2 + 0x20);
   return;
 }
 
@@ -2078,17 +2293,17 @@ TMapDialog::DrawMapDialogGuidePatternSetD_00520d20
 
 {
   if (param_3 == 1) {
-    func_0x00408d6e(param_1 + 0x2c,param_2 + 10);
-    func_0x00403bb6(param_1 + 0x39,param_2);
+    thunk_SetQuickDrawTextOriginWithContextOffset(param_1 + 0x2c,param_2 + 10);
+    thunk_DrawCenteredGuideLineOnMapDc(param_1 + 0x39,param_2);
     return;
   }
   if (param_3 == 2) {
-    func_0x00408d6e(param_1 + 0x2c,param_2 + 5);
-    func_0x00403bb6(param_1 + 0x37,param_2 + -3);
+    thunk_SetQuickDrawTextOriginWithContextOffset(param_1 + 0x2c,param_2 + 5);
+    thunk_DrawCenteredGuideLineOnMapDc(param_1 + 0x37,param_2 + -3);
     return;
   }
-  func_0x00408d6e(param_1 + 0x2c,param_2 + 8);
-  func_0x00403bb6(param_1 + 0x38,param_2);
+  thunk_SetQuickDrawTextOriginWithContextOffset(param_1 + 0x2c,param_2 + 8);
+  thunk_DrawCenteredGuideLineOnMapDc(param_1 + 0x38,param_2);
   return;
 }
 
@@ -2102,33 +2317,33 @@ TMapDialog::DrawMapDialogTileGuidePatternByVariant
 
 {
   if (param_3 == 0) {
-    func_0x00408d6e(param_1 + 0x2c,param_2 + 8);
-    func_0x00403bb6(param_1 + 0x36,param_2 + 0xd);
-    func_0x00403bb6(param_1 + 0x34,param_2 + 0x14);
-    func_0x00403bb6(param_1 + 0x3a,param_2 + 0x19);
-    func_0x00403bb6(param_1 + 0x38,param_2 + 0x20);
-    func_0x00408d6e(param_1 + 0x2c,param_2 + 8);
-    func_0x00403bb6(param_1 + 0x38,param_2);
+    thunk_SetQuickDrawTextOriginWithContextOffset(param_1 + 0x2c,param_2 + 8);
+    thunk_DrawCenteredGuideLineOnMapDc(param_1 + 0x36,param_2 + 0xd);
+    thunk_DrawCenteredGuideLineOnMapDc(param_1 + 0x34,param_2 + 0x14);
+    thunk_DrawCenteredGuideLineOnMapDc(param_1 + 0x3a,param_2 + 0x19);
+    thunk_DrawCenteredGuideLineOnMapDc(param_1 + 0x38,param_2 + 0x20);
+    thunk_SetQuickDrawTextOriginWithContextOffset(param_1 + 0x2c,param_2 + 8);
+    thunk_DrawCenteredGuideLineOnMapDc(param_1 + 0x38,param_2);
     return;
   }
   if (param_3 == 1) {
-    func_0x00408d6e(param_1 + 0x2c,param_2 + 10);
-    func_0x00403bb6(param_1 + 0x34,param_2 + 0xf);
-    func_0x00403bb6(param_1 + 0x31,param_2 + 0x14);
-    func_0x00403bb6(param_1 + 0x38,param_2 + 0x19);
-    func_0x00403bb6(param_1 + 0x36,param_2 + 0x20);
-    func_0x00408d6e(param_1 + 0x2c,param_2 + 10);
-    func_0x00403bb6(param_1 + 0x39,param_2);
+    thunk_SetQuickDrawTextOriginWithContextOffset(param_1 + 0x2c,param_2 + 10);
+    thunk_DrawCenteredGuideLineOnMapDc(param_1 + 0x34,param_2 + 0xf);
+    thunk_DrawCenteredGuideLineOnMapDc(param_1 + 0x31,param_2 + 0x14);
+    thunk_DrawCenteredGuideLineOnMapDc(param_1 + 0x38,param_2 + 0x19);
+    thunk_DrawCenteredGuideLineOnMapDc(param_1 + 0x36,param_2 + 0x20);
+    thunk_SetQuickDrawTextOriginWithContextOffset(param_1 + 0x2c,param_2 + 10);
+    thunk_DrawCenteredGuideLineOnMapDc(param_1 + 0x39,param_2);
     return;
   }
   if (param_3 == 2) {
-    func_0x00408d6e(param_1 + 0x2c,param_2 + 6);
-    func_0x00403bb6(param_1 + 0x37,param_2 + 0xb);
-    func_0x00403bb6(param_1 + 0x36,param_2 + 0x13);
-    func_0x00403bb6(param_1 + 0x3c,param_2 + 0x19);
-    func_0x00403bb6(param_1 + 0x3a,param_2 + 0x20);
-    func_0x00408d6e(param_1 + 0x2c,param_2 + 5);
-    func_0x00403bb6(param_1 + 0x37,param_2 + -3);
+    thunk_SetQuickDrawTextOriginWithContextOffset(param_1 + 0x2c,param_2 + 6);
+    thunk_DrawCenteredGuideLineOnMapDc(param_1 + 0x37,param_2 + 0xb);
+    thunk_DrawCenteredGuideLineOnMapDc(param_1 + 0x36,param_2 + 0x13);
+    thunk_DrawCenteredGuideLineOnMapDc(param_1 + 0x3c,param_2 + 0x19);
+    thunk_DrawCenteredGuideLineOnMapDc(param_1 + 0x3a,param_2 + 0x20);
+    thunk_SetQuickDrawTextOriginWithContextOffset(param_1 + 0x2c,param_2 + 5);
+    thunk_DrawCenteredGuideLineOnMapDc(param_1 + 0x37,param_2 + -3);
   }
   return;
 }
@@ -2143,17 +2358,17 @@ TMapDialog::DrawMapDialogGuidePatternSetE_00520fc0
 
 {
   if (param_3 == 1) {
-    func_0x00408d6e(param_1 + 0x2c,param_2 + 0x36);
-    func_0x00403bb6(param_1 + 0x39,param_2 + 0x3e);
+    thunk_SetQuickDrawTextOriginWithContextOffset(param_1 + 0x2c,param_2 + 0x36);
+    thunk_DrawCenteredGuideLineOnMapDc(param_1 + 0x39,param_2 + 0x3e);
     return;
   }
   if (param_3 == 2) {
-    func_0x00408d6e(param_1 + 0x2c,param_2 + 0x3a);
-    func_0x00403bb6(param_1 + 0x3a,param_2 + 0x42);
+    thunk_SetQuickDrawTextOriginWithContextOffset(param_1 + 0x2c,param_2 + 0x3a);
+    thunk_DrawCenteredGuideLineOnMapDc(param_1 + 0x3a,param_2 + 0x42);
     return;
   }
-  func_0x00408d6e(param_1 + 0x2c,param_2 + 0x38);
-  func_0x00403bb6(param_1 + 0x39,param_2 + 0x40);
+  thunk_SetQuickDrawTextOriginWithContextOffset(param_1 + 0x2c,param_2 + 0x38);
+  thunk_DrawCenteredGuideLineOnMapDc(param_1 + 0x39,param_2 + 0x40);
   return;
 }
 
@@ -2171,27 +2386,27 @@ TMapDialog::DrawMapDialogGuidePatternSetF_00521090
   
   if (param_3 == 1) {
     iVar1 = param_1 + 0x36;
-    func_0x00408d6e(iVar1,param_2 + 0x20);
+    thunk_SetQuickDrawTextOriginWithContextOffset(iVar1,param_2 + 0x20);
     iVar2 = param_1 + 0x34;
-    func_0x00403bb6(iVar2,param_2 + 0x29);
-    func_0x00403bb6(param_1 + 0x38,param_2 + 0x32);
+    thunk_DrawCenteredGuideLineOnMapDc(iVar2,param_2 + 0x29);
+    thunk_DrawCenteredGuideLineOnMapDc(param_1 + 0x38,param_2 + 0x32);
   }
   else if (param_3 == 2) {
     iVar1 = param_1 + 0x3a;
-    func_0x00408d6e(iVar1,param_2 + 0x20);
+    thunk_SetQuickDrawTextOriginWithContextOffset(iVar1,param_2 + 0x20);
     iVar2 = param_1 + 0x38;
-    func_0x00403bb6(iVar2,param_2 + 0x29);
-    func_0x00403bb6(param_1 + 0x3c,param_2 + 0x32);
+    thunk_DrawCenteredGuideLineOnMapDc(iVar2,param_2 + 0x29);
+    thunk_DrawCenteredGuideLineOnMapDc(param_1 + 0x3c,param_2 + 0x32);
   }
   else {
     iVar1 = param_1 + 0x38;
-    func_0x00408d6e(iVar1,param_2 + 0x20);
+    thunk_SetQuickDrawTextOriginWithContextOffset(iVar1,param_2 + 0x20);
     iVar2 = param_1 + 0x36;
-    func_0x00403bb6(iVar2,param_2 + 0x29);
-    func_0x00403bb6(param_1 + 0x3a,param_2 + 0x32);
+    thunk_DrawCenteredGuideLineOnMapDc(iVar2,param_2 + 0x29);
+    thunk_DrawCenteredGuideLineOnMapDc(param_1 + 0x3a,param_2 + 0x32);
   }
-  func_0x00403bb6(iVar2,param_2 + 0x39);
-  func_0x00403bb6(iVar1,param_2 + 0x40);
+  thunk_DrawCenteredGuideLineOnMapDc(iVar2,param_2 + 0x39);
+  thunk_DrawCenteredGuideLineOnMapDc(iVar1,param_2 + 0x40);
   return;
 }
 
@@ -2205,27 +2420,27 @@ TMapDialog::DrawMapDialogGuidePatternSetG_005211c0
 
 {
   if (param_3 == 0) {
-    func_0x00408d6e(param_1 + 0x2c,param_2 + 0x38);
-    func_0x00403bb6(param_1 + 0x36,param_2 + 0x33);
-    func_0x00403bb6(param_1 + 0x34,param_2 + 0x2c);
-    func_0x00403bb6(param_1 + 0x3a,param_2 + 0x27);
-    func_0x00403bb6(param_1 + 0x38,param_2 + 0x20);
+    thunk_SetQuickDrawTextOriginWithContextOffset(param_1 + 0x2c,param_2 + 0x38);
+    thunk_DrawCenteredGuideLineOnMapDc(param_1 + 0x36,param_2 + 0x33);
+    thunk_DrawCenteredGuideLineOnMapDc(param_1 + 0x34,param_2 + 0x2c);
+    thunk_DrawCenteredGuideLineOnMapDc(param_1 + 0x3a,param_2 + 0x27);
+    thunk_DrawCenteredGuideLineOnMapDc(param_1 + 0x38,param_2 + 0x20);
     return;
   }
   if (param_3 == 1) {
-    func_0x00408d6e(param_1 + 0x2c,param_2 + 0x36);
-    func_0x00403bb6(param_1 + 0x34,param_2 + 0x31);
-    func_0x00403bb6(param_1 + 0x30,param_2 + 0x2c);
-    func_0x00403bb6(param_1 + 0x37,param_2 + 0x27);
-    func_0x00403bb6(param_1 + 0x36,param_2 + 0x20);
+    thunk_SetQuickDrawTextOriginWithContextOffset(param_1 + 0x2c,param_2 + 0x36);
+    thunk_DrawCenteredGuideLineOnMapDc(param_1 + 0x34,param_2 + 0x31);
+    thunk_DrawCenteredGuideLineOnMapDc(param_1 + 0x30,param_2 + 0x2c);
+    thunk_DrawCenteredGuideLineOnMapDc(param_1 + 0x37,param_2 + 0x27);
+    thunk_DrawCenteredGuideLineOnMapDc(param_1 + 0x36,param_2 + 0x20);
     return;
   }
   if (param_3 == 2) {
-    func_0x00408d6e(param_1 + 0x2c,param_2 + 0x3a);
-    func_0x00403bb6(param_1 + 0x37,param_2 + 0x35);
-    func_0x00403bb6(param_1 + 0x36,param_2 + 0x2d);
-    func_0x00403bb6(param_1 + 0x3c,param_2 + 0x27);
-    func_0x00403bb6(param_1 + 0x3a,param_2 + 0x20);
+    thunk_SetQuickDrawTextOriginWithContextOffset(param_1 + 0x2c,param_2 + 0x3a);
+    thunk_DrawCenteredGuideLineOnMapDc(param_1 + 0x37,param_2 + 0x35);
+    thunk_DrawCenteredGuideLineOnMapDc(param_1 + 0x36,param_2 + 0x2d);
+    thunk_DrawCenteredGuideLineOnMapDc(param_1 + 0x3c,param_2 + 0x27);
+    thunk_DrawCenteredGuideLineOnMapDc(param_1 + 0x3a,param_2 + 0x20);
   }
   return;
 }
@@ -2240,33 +2455,33 @@ TMapDialog::DrawMapDialogGuidePatternSetH_00521340
 
 {
   if (param_3 == 0) {
-    func_0x00408d6e(param_1 + 0x2c,param_2 + 0x38);
-    func_0x00403bb6(param_1 + 0x36,param_2 + 0x33);
-    func_0x00403bb6(param_1 + 0x34,param_2 + 0x2c);
-    func_0x00403bb6(param_1 + 0x3a,param_2 + 0x27);
-    func_0x00403bb6(param_1 + 0x38,param_2 + 0x20);
-    func_0x00408d6e(param_1 + 0x2c,param_2 + 0x38);
-    func_0x00403bb6(param_1 + 0x39,param_2 + 0x40);
+    thunk_SetQuickDrawTextOriginWithContextOffset(param_1 + 0x2c,param_2 + 0x38);
+    thunk_DrawCenteredGuideLineOnMapDc(param_1 + 0x36,param_2 + 0x33);
+    thunk_DrawCenteredGuideLineOnMapDc(param_1 + 0x34,param_2 + 0x2c);
+    thunk_DrawCenteredGuideLineOnMapDc(param_1 + 0x3a,param_2 + 0x27);
+    thunk_DrawCenteredGuideLineOnMapDc(param_1 + 0x38,param_2 + 0x20);
+    thunk_SetQuickDrawTextOriginWithContextOffset(param_1 + 0x2c,param_2 + 0x38);
+    thunk_DrawCenteredGuideLineOnMapDc(param_1 + 0x39,param_2 + 0x40);
     return;
   }
   if (param_3 == 1) {
-    func_0x00408d6e(param_1 + 0x2c,param_2 + 0x36);
-    func_0x00403bb6(param_1 + 0x34,param_2 + 0x31);
-    func_0x00403bb6(param_1 + 0x30,param_2 + 0x2c);
-    func_0x00403bb6(param_1 + 0x37,param_2 + 0x27);
-    func_0x00403bb6(param_1 + 0x36,param_2 + 0x20);
-    func_0x00408d6e(param_1 + 0x2c,param_2 + 0x36);
-    func_0x00403bb6(param_1 + 0x39,param_2 + 0x3e);
+    thunk_SetQuickDrawTextOriginWithContextOffset(param_1 + 0x2c,param_2 + 0x36);
+    thunk_DrawCenteredGuideLineOnMapDc(param_1 + 0x34,param_2 + 0x31);
+    thunk_DrawCenteredGuideLineOnMapDc(param_1 + 0x30,param_2 + 0x2c);
+    thunk_DrawCenteredGuideLineOnMapDc(param_1 + 0x37,param_2 + 0x27);
+    thunk_DrawCenteredGuideLineOnMapDc(param_1 + 0x36,param_2 + 0x20);
+    thunk_SetQuickDrawTextOriginWithContextOffset(param_1 + 0x2c,param_2 + 0x36);
+    thunk_DrawCenteredGuideLineOnMapDc(param_1 + 0x39,param_2 + 0x3e);
     return;
   }
   if (param_3 == 2) {
-    func_0x00408d6e(param_1 + 0x2c,param_2 + 0x3a);
-    func_0x00403bb6(param_1 + 0x37,param_2 + 0x35);
-    func_0x00403bb6(param_1 + 0x36,param_2 + 0x2d);
-    func_0x00403bb6(param_1 + 0x3c,param_2 + 0x27);
-    func_0x00403bb6(param_1 + 0x3a,param_2 + 0x20);
-    func_0x00408d6e(param_1 + 0x2c,param_2 + 0x3a);
-    func_0x00403bb6(param_1 + 0x3a,param_2 + 0x42);
+    thunk_SetQuickDrawTextOriginWithContextOffset(param_1 + 0x2c,param_2 + 0x3a);
+    thunk_DrawCenteredGuideLineOnMapDc(param_1 + 0x37,param_2 + 0x35);
+    thunk_DrawCenteredGuideLineOnMapDc(param_1 + 0x36,param_2 + 0x2d);
+    thunk_DrawCenteredGuideLineOnMapDc(param_1 + 0x3c,param_2 + 0x27);
+    thunk_DrawCenteredGuideLineOnMapDc(param_1 + 0x3a,param_2 + 0x20);
+    thunk_SetQuickDrawTextOriginWithContextOffset(param_1 + 0x2c,param_2 + 0x3a);
+    thunk_DrawCenteredGuideLineOnMapDc(param_1 + 0x3a,param_2 + 0x42);
   }
   return;
 }
@@ -2283,28 +2498,28 @@ TMapDialog::DrawMapDialogGuidePatternSetI_00521540
   int iVar1;
   
   if (param_3 == 0) {
-    func_0x00408d6e(param_1 + 0x18,param_2 + 0x40);
-    func_0x00403bb6(param_1 + 0x1a,param_2 + 0x3b);
-    func_0x00403bb6(param_1 + 0x24,param_2 + 0x36);
+    thunk_SetQuickDrawTextOriginWithContextOffset(param_1 + 0x18,param_2 + 0x40);
+    thunk_DrawCenteredGuideLineOnMapDc(param_1 + 0x1a,param_2 + 0x3b);
+    thunk_DrawCenteredGuideLineOnMapDc(param_1 + 0x24,param_2 + 0x36);
     iVar1 = param_2 + 0x38;
   }
   else if (param_3 == 1) {
-    func_0x00408d6e(param_1 + 0x16,param_2 + 0x3f);
-    func_0x00403bb6(param_1 + 0x18,param_2 + 0x39);
-    func_0x00403bb6(param_1 + 0x24,param_2 + 0x33);
+    thunk_SetQuickDrawTextOriginWithContextOffset(param_1 + 0x16,param_2 + 0x3f);
+    thunk_DrawCenteredGuideLineOnMapDc(param_1 + 0x18,param_2 + 0x39);
+    thunk_DrawCenteredGuideLineOnMapDc(param_1 + 0x24,param_2 + 0x33);
     iVar1 = param_2 + 0x36;
   }
   else {
     if (param_3 != 2) {
       return;
     }
-    func_0x00408d6e(param_1 + 0x1a,param_2 + 0x40);
-    func_0x00403bb6(param_1 + 0x1c,param_2 + 0x3b);
-    func_0x00403bb6(param_1 + 0x24,param_2 + 0x38);
+    thunk_SetQuickDrawTextOriginWithContextOffset(param_1 + 0x1a,param_2 + 0x40);
+    thunk_DrawCenteredGuideLineOnMapDc(param_1 + 0x1c,param_2 + 0x3b);
+    thunk_DrawCenteredGuideLineOnMapDc(param_1 + 0x24,param_2 + 0x38);
     iVar1 = param_2 + 0x3a;
   }
-  func_0x00403bb6(param_1 + 0x2a,iVar1);
-  func_0x00403bb6(param_1 + 0x2c,iVar1);
+  thunk_DrawCenteredGuideLineOnMapDc(param_1 + 0x2a,iVar1);
+  thunk_DrawCenteredGuideLineOnMapDc(param_1 + 0x2c,iVar1);
   return;
 }
 
@@ -2339,7 +2554,8 @@ TMapDialog::DrawMapDialogGuidePatternSetI_00521540
    Returns:
    - void */
 
-void TMapDialog::DrawHexEdgeConnectionGlyphsByMask(byte param_1, undefined4 param_2)
+void __thiscall
+TMapDialog::DrawHexEdgeConnectionGlyphsByMask(TMapDialog *this,byte param_1,undefined4 param_2)
 
 {
   byte bVar1;
@@ -2438,7 +2654,8 @@ void TMapDialog::DrawHexEdgeConnectionGlyphsByMask(byte param_1, undefined4 para
 // GHIDRA_NAME TMapDialog::EmitHexAdjacencyTransitionEventsByBitmask
 // GHIDRA_PROTO undefined __thiscall EmitHexAdjacencyTransitionEventsByBitmask(byte param_1, short param_2)
 
-void TMapDialog::EmitHexAdjacencyTransitionEventsByBitmask(byte param_1, short param_2)
+void __thiscall
+TMapDialog::EmitHexAdjacencyTransitionEventsByBitmask(TMapDialog *this,byte param_1,short param_2)
 
 {
   _vslot_fn *p_Var1;
@@ -2545,18 +2762,18 @@ TMapDialog::DrawMapDialogOwnershipMarkerForNation_00522000
                       (short)*(char *)(*(int *)&g_pGlobalMapState->field_0xc + 4 +
                                       in_stack_00000010 * 0x24)));
   if ((unaff_retaddr & 0x20) != 0) {
-    func_0x00408d6e(param_1 + 8,param_2 + 8);
-    func_0x00403bb6(param_1 + 0xc,param_2 + 8);
+    thunk_SetQuickDrawTextOriginWithContextOffset(param_1 + 8,param_2 + 8);
+    thunk_DrawCenteredGuideLineOnMapDc(param_1 + 0xc,param_2 + 8);
     return;
   }
   if ((unaff_retaddr & 8) != 0) {
-    func_0x00408d6e(param_1 + 8,param_2 + 0x38);
-    func_0x00403bb6(param_1 + 0xc,param_2 + 0x38);
+    thunk_SetQuickDrawTextOriginWithContextOffset(param_1 + 8,param_2 + 0x38);
+    thunk_DrawCenteredGuideLineOnMapDc(param_1 + 0xc,param_2 + 0x38);
     return;
   }
   if ((unaff_retaddr & 2) != 0) {
-    func_0x00408d6e(param_1 + 0x2c,param_2 + 0x2e);
-    func_0x00403bb6(param_1 + 0x30,param_2 + 0x2e);
+    thunk_SetQuickDrawTextOriginWithContextOffset(param_1 + 0x2c,param_2 + 0x2e);
+    thunk_DrawCenteredGuideLineOnMapDc(param_1 + 0x30,param_2 + 0x2e);
   }
   return;
 }
@@ -2620,10 +2837,10 @@ LAB_0052228e:
             (**(code **)(puVar5 + 0x34))(sVar4);
             func_0x00402e73(2,2);
             iVar2 = param_2 + 0x40;
-            func_0x00408d6e(param_1 + 0x36,iVar2);
+            thunk_SetQuickDrawTextOriginWithContextOffset(param_1 + 0x36,iVar2);
             iVar6 = param_2 + 0x36;
-            func_0x00403bb6(param_1 + 0x36,iVar6);
-            func_0x00403bb6(param_1 + 0x31,param_2 + 0x2e);
+            thunk_DrawCenteredGuideLineOnMapDc(param_1 + 0x36,iVar6);
+            thunk_DrawCenteredGuideLineOnMapDc(param_1 + 0x31,param_2 + 0x2e);
             cVar3 = (*g_pDiplomacyTurnStateManager->vftable[0x10].slot_0x04)
                               (CONCAT22((short)((uint)g_pGlobalMapState >> 0x10),
                                         (short)*(char *)(*(int *)&g_pGlobalMapState->field_0xc + 4 +
@@ -2637,14 +2854,14 @@ LAB_0052228e:
               puVar5 = g_pUiRuntimeContext->vftable;
             }
             (**(code **)(puVar5 + 0x34))(sVar4);
-            func_0x00408d6e(param_1 + 0x39,iVar2);
-            func_0x00403bb6(param_1 + 0x39,iVar6);
-            func_0x00403bb6(param_1 + 0x34,param_2 + 0x2a);
+            thunk_SetQuickDrawTextOriginWithContextOffset(param_1 + 0x39,iVar2);
+            thunk_DrawCenteredGuideLineOnMapDc(param_1 + 0x39,iVar6);
+            thunk_DrawCenteredGuideLineOnMapDc(param_1 + 0x34,param_2 + 0x2a);
             func_0x00406b86(0xffffff);
             func_0x00402e73(1,1);
-            func_0x00408d6e(param_1 + 0x38,iVar2);
-            func_0x00403bb6(param_1 + 0x38,iVar6);
-            func_0x00403bb6(param_1 + 0x33,param_2 + 0x2c);
+            thunk_SetQuickDrawTextOriginWithContextOffset(param_1 + 0x38,iVar2);
+            thunk_DrawCenteredGuideLineOnMapDc(param_1 + 0x38,iVar6);
+            thunk_DrawCenteredGuideLineOnMapDc(param_1 + 0x33,param_2 + 0x2c);
             uVar8 = extraout_EDX;
           }
         }
@@ -2671,9 +2888,9 @@ LAB_0052228e:
           (**(code **)(puVar5 + 0x34))(sVar4);
           func_0x00402e73(2,2);
           iVar2 = param_2 + 0x40;
-          func_0x00408d6e(param_1 + 0x16,iVar2);
+          thunk_SetQuickDrawTextOriginWithContextOffset(param_1 + 0x16,iVar2);
           iVar6 = param_2 + 0x38;
-          func_0x00403bb6(param_1 + 0x16,iVar6);
+          thunk_DrawCenteredGuideLineOnMapDc(param_1 + 0x16,iVar6);
           cVar3 = (*g_pDiplomacyTurnStateManager->vftable[0x10].slot_0x04)
                             (CONCAT22((short)((uint)param_1 >> 0x10),
                                       (short)*(char *)(*(int *)&g_pGlobalMapState->field_0xc + 4 +
@@ -2687,12 +2904,12 @@ LAB_0052228e:
             puVar5 = g_pUiRuntimeContext->vftable;
           }
           (**(code **)(puVar5 + 0x34))(sVar4);
-          func_0x00408d6e(param_1 + 0x1a,iVar2);
-          func_0x00403bb6(param_1 + 0x1a,iVar6);
+          thunk_SetQuickDrawTextOriginWithContextOffset(param_1 + 0x1a,iVar2);
+          thunk_DrawCenteredGuideLineOnMapDc(param_1 + 0x1a,iVar6);
           func_0x00406b86(0xffffff);
           func_0x00402e73(1,1);
-          func_0x00408d6e(param_1 + 0x18,iVar2);
-          func_0x00403bb6(param_1 + 0x18,iVar6);
+          thunk_SetQuickDrawTextOriginWithContextOffset(param_1 + 0x18,iVar2);
+          thunk_DrawCenteredGuideLineOnMapDc(param_1 + 0x18,iVar6);
           uVar8 = CONCAT22(extraout_var_03,local_8);
         }
       }
@@ -2721,9 +2938,9 @@ LAB_0052228e:
             (**(code **)(puVar5 + 0x34))(uVar8);
             func_0x00402e73(2,2);
             iVar2 = param_2 + 0x40;
-            func_0x00408d6e(param_1 + 0x16,iVar2);
+            thunk_SetQuickDrawTextOriginWithContextOffset(param_1 + 0x16,iVar2);
             iVar6 = param_2 + 0x38;
-            func_0x00403bb6(param_1 + 0x16,iVar6);
+            thunk_DrawCenteredGuideLineOnMapDc(param_1 + 0x16,iVar6);
             cVar3 = (*g_pDiplomacyTurnStateManager->vftable[0x10].slot_0x04)
                               (CONCAT22((short)((uint)g_pGlobalMapState >> 0x10),
                                         (short)*(char *)(*(int *)&g_pGlobalMapState->field_0xc + 4 +
@@ -2737,12 +2954,12 @@ LAB_0052228e:
               puVar5 = g_pUiRuntimeContext->vftable;
             }
             (**(code **)(puVar5 + 0x34))(sVar4);
-            func_0x00408d6e(param_1 + 0x19,iVar2);
-            func_0x00403bb6(param_1 + 0x19,iVar6);
+            thunk_SetQuickDrawTextOriginWithContextOffset(param_1 + 0x19,iVar2);
+            thunk_DrawCenteredGuideLineOnMapDc(param_1 + 0x19,iVar6);
             func_0x00406b86(0xffffff);
             func_0x00402e73(1,1);
-            func_0x00408d6e(param_1 + 0x18,iVar2);
-            func_0x00403bb6(param_1 + 0x18,iVar6);
+            thunk_SetQuickDrawTextOriginWithContextOffset(param_1 + 0x18,iVar2);
+            thunk_DrawCenteredGuideLineOnMapDc(param_1 + 0x18,iVar6);
           }
         }
       }
@@ -2769,9 +2986,9 @@ LAB_0052228e:
           }
           (**(code **)(puVar5 + 0x34))(sVar4);
           func_0x00402e73(2,2);
-          func_0x00408d6e(param_1 + 0x16,param_2);
+          thunk_SetQuickDrawTextOriginWithContextOffset(param_1 + 0x16,param_2);
           iVar2 = param_2 + 8;
-          func_0x00403bb6(param_1 + 0x16,iVar2);
+          thunk_DrawCenteredGuideLineOnMapDc(param_1 + 0x16,iVar2);
           cVar3 = (*g_pDiplomacyTurnStateManager->vftable[0x10].slot_0x04)
                             (CONCAT22(extraout_var,
                                       (short)*(char *)(*(int *)&g_pGlobalMapState->field_0xc + 4 +
@@ -2785,12 +3002,12 @@ LAB_0052228e:
             puVar5 = g_pUiRuntimeContext->vftable;
           }
           (**(code **)(puVar5 + 0x34))(sVar4);
-          func_0x00408d6e(param_1 + 0x1a,param_2);
-          func_0x00403bb6(param_1 + 0x1a,iVar2);
+          thunk_SetQuickDrawTextOriginWithContextOffset(param_1 + 0x1a,param_2);
+          thunk_DrawCenteredGuideLineOnMapDc(param_1 + 0x1a,iVar2);
           func_0x00406b86(0xffffff);
           func_0x00402e73(1,1);
-          func_0x00408d6e(param_1 + 0x18,param_2);
-          func_0x00403bb6(param_1 + 0x18,iVar2);
+          thunk_SetQuickDrawTextOriginWithContextOffset(param_1 + 0x18,param_2);
+          thunk_DrawCenteredGuideLineOnMapDc(param_1 + 0x18,iVar2);
         }
       }
     }
@@ -2815,9 +3032,9 @@ LAB_0052228e:
           }
           (**(code **)(puVar5 + 0x34))(sVar4);
           func_0x00402e73(2,2);
-          func_0x00408d6e(param_1 + 0x36,param_2);
+          thunk_SetQuickDrawTextOriginWithContextOffset(param_1 + 0x36,param_2);
           iVar2 = param_2 + 8;
-          func_0x00403bb6(param_1 + 0x36,iVar2);
+          thunk_DrawCenteredGuideLineOnMapDc(param_1 + 0x36,iVar2);
           cVar3 = (*g_pDiplomacyTurnStateManager->vftable[0x10].slot_0x04)
                             (CONCAT22(extraout_var_00,
                                       (short)*(char *)(*(int *)&g_pGlobalMapState->field_0xc + 4 +
@@ -2831,12 +3048,12 @@ LAB_0052228e:
             puVar5 = g_pUiRuntimeContext->vftable;
           }
           (**(code **)(puVar5 + 0x34))(sVar4);
-          func_0x00408d6e(param_1 + 0x3a,param_2);
-          func_0x00403bb6(param_1 + 0x3a,iVar2);
+          thunk_SetQuickDrawTextOriginWithContextOffset(param_1 + 0x3a,param_2);
+          thunk_DrawCenteredGuideLineOnMapDc(param_1 + 0x3a,iVar2);
           func_0x00406b86(0xffffff);
           func_0x00402e73(1,1);
-          func_0x00408d6e(param_1 + 0x38,param_2);
-          func_0x00403bb6(param_1 + 0x38,iVar2);
+          thunk_SetQuickDrawTextOriginWithContextOffset(param_1 + 0x38,param_2);
+          thunk_DrawCenteredGuideLineOnMapDc(param_1 + 0x38,iVar2);
         }
       }
     }
@@ -2860,9 +3077,9 @@ LAB_00522851:
                       ((short)*(char *)(*(int *)&g_pGlobalMapState->field_0xc + 4 + iVar6));
           }
           func_0x00402e73(2,2);
-          func_0x00408d6e(param_1 + 0x16,param_2);
+          thunk_SetQuickDrawTextOriginWithContextOffset(param_1 + 0x16,param_2);
           iVar2 = param_2 + 8;
-          func_0x00403bb6(param_1 + 0x16,iVar2);
+          thunk_DrawCenteredGuideLineOnMapDc(param_1 + 0x16,iVar2);
           cVar3 = (*g_pDiplomacyTurnStateManager->vftable[0x10].slot_0x04)
                             (CONCAT22(extraout_var_01,
                                       (short)*(char *)(*(int *)&g_pGlobalMapState->field_0xc + 4 +
@@ -2876,12 +3093,12 @@ LAB_00522851:
             puVar5 = g_pUiRuntimeContext->vftable;
           }
           (**(code **)(puVar5 + 0x34))(sVar4);
-          func_0x00408d6e(param_1 + 0x1a,param_2);
-          func_0x00403bb6(param_1 + 0x1a,iVar2);
+          thunk_SetQuickDrawTextOriginWithContextOffset(param_1 + 0x1a,param_2);
+          thunk_DrawCenteredGuideLineOnMapDc(param_1 + 0x1a,iVar2);
           func_0x00406b86(0xffffff);
           func_0x00402e73(1,1);
-          func_0x00408d6e(param_1 + 0x18,param_2);
-          func_0x00403bb6(param_1 + 0x18,iVar2);
+          thunk_SetQuickDrawTextOriginWithContextOffset(param_1 + 0x18,param_2);
+          thunk_DrawCenteredGuideLineOnMapDc(param_1 + 0x18,iVar2);
         }
       }
     }
@@ -2928,8 +3145,8 @@ TMapDialog::DrawMapDialogWrappedTileConnectionMarker_00522c10
   else if ((8 < (short)param_2) && (8 < (short)param_4)) {
     return;
   }
-  func_0x00408d6e((param_1 * 0x40) / 2 + 0x40,(param_2 + 1) * 0x40);
-  func_0x00403bb6((param_3 * 0x40) / 2 + 0x40,(param_4 + 1) * 0x40);
+  thunk_SetQuickDrawTextOriginWithContextOffset((param_1 * 0x40) / 2 + 0x40,(param_2 + 1) * 0x40);
+  thunk_DrawCenteredGuideLineOnMapDc((param_3 * 0x40) / 2 + 0x40,(param_4 + 1) * 0x40);
   return;
 }
 
@@ -2937,7 +3154,8 @@ TMapDialog::DrawMapDialogWrappedTileConnectionMarker_00522c10
 // GHIDRA_NAME TMapDialog::DrawHexNeighborConnectionMask
 // GHIDRA_PROTO undefined __thiscall DrawHexNeighborConnectionMask(byte param_1, int param_2, int param_3)
 
-void TMapDialog::DrawHexNeighborConnectionMask(byte param_1, int param_2, int param_3)
+void __thiscall
+TMapDialog::DrawHexNeighborConnectionMask(TMapDialog *this,byte param_1,int param_2,int param_3)
 
 {
   int iVar1;
@@ -2954,21 +3172,21 @@ void TMapDialog::DrawHexNeighborConnectionMask(byte param_1, int param_2, int pa
   goto LAB_00522e7a;
   if (((param_1 & 1) == 0) ||
      (*(char *)(*(int *)&g_pGlobalMapState->field_0xc + local_c * 0x24) != '\x05')) {
-    func_0x00408d6e(param_2 + 0x38,param_3);
-    func_0x00403bb6(param_2 + 0x30,param_3 + 8);
-    func_0x00403bb6(param_2 + 0x30,param_3 + 0x14);
+    thunk_SetQuickDrawTextOriginWithContextOffset(param_2 + 0x38,param_3);
+    thunk_DrawCenteredGuideLineOnMapDc(param_2 + 0x30,param_3 + 8);
+    thunk_DrawCenteredGuideLineOnMapDc(param_2 + 0x30,param_3 + 0x14);
     iVar1 = param_3 + 0x20;
 LAB_00522ddc:
-    func_0x00403bb6(param_2 + 0x38,iVar1);
+    thunk_DrawCenteredGuideLineOnMapDc(param_2 + 0x38,iVar1);
   }
   else {
-    func_0x00408d6e(param_2 + 0x2c,param_3 + 8);
+    thunk_SetQuickDrawTextOriginWithContextOffset(param_2 + 0x2c,param_3 + 8);
     iVar1 = param_2 + 0x38;
-    func_0x00403bb6(iVar1,param_3 + 0x14);
-    func_0x00403bb6(iVar1,param_3 + 0x20);
+    thunk_DrawCenteredGuideLineOnMapDc(iVar1,param_3 + 0x14);
+    thunk_DrawCenteredGuideLineOnMapDc(iVar1,param_3 + 0x20);
     if ((param_1 & 0x40) != 0) {
-      func_0x00408d6e(iVar1,param_3 + 0x14);
-      func_0x00403bb6(param_2 + 0x3c,param_3 + 8);
+      thunk_SetQuickDrawTextOriginWithContextOffset(iVar1,param_3 + 0x14);
+      thunk_DrawCenteredGuideLineOnMapDc(param_2 + 0x3c,param_3 + 8);
       iVar1 = param_3;
       goto LAB_00522ddc;
     }
@@ -2976,55 +3194,55 @@ LAB_00522ddc:
   iVar1 = param_2 + 0x38;
   if (((param_1 & 4) == 0) ||
      (*(char *)(*(int *)&g_pGlobalMapState->field_0xc + local_8 * 0x24) != '\x05')) {
-    func_0x00408d6e(iVar1,param_3 + 0x20);
-    func_0x00403bb6(param_2 + 0x3c,param_3 + 0x28);
+    thunk_SetQuickDrawTextOriginWithContextOffset(iVar1,param_3 + 0x20);
+    thunk_DrawCenteredGuideLineOnMapDc(param_2 + 0x3c,param_3 + 0x28);
     iVar2 = param_3 + 0x34;
   }
   else {
-    func_0x00408d6e(iVar1,param_3 + 0x20);
-    func_0x00403bb6(iVar1,param_3 + 0x28);
-    func_0x00403bb6(param_2 + 0x2c,param_3 + 0x38);
+    thunk_SetQuickDrawTextOriginWithContextOffset(iVar1,param_3 + 0x20);
+    thunk_DrawCenteredGuideLineOnMapDc(iVar1,param_3 + 0x28);
+    thunk_DrawCenteredGuideLineOnMapDc(param_2 + 0x2c,param_3 + 0x38);
     if ((param_1 & 0x80) == 0) goto LAB_00522e7a;
-    func_0x00408d6e(iVar1,param_3 + 0x28);
+    thunk_SetQuickDrawTextOriginWithContextOffset(iVar1,param_3 + 0x28);
     iVar2 = param_3 + 0x38;
   }
-  func_0x00403bb6(param_2 + 0x3c,iVar2);
-  func_0x00403bb6(iVar1,param_3 + 0x40);
+  thunk_DrawCenteredGuideLineOnMapDc(param_2 + 0x3c,iVar2);
+  thunk_DrawCenteredGuideLineOnMapDc(iVar1,param_3 + 0x40);
 LAB_00522e7a:
   if (((param_1 & 1) != 0) &&
      (*(char *)(*(int *)&g_pGlobalMapState->field_0xc + local_c * 0x24) == '\x05')) {
-    func_0x00408d6e(param_2 + 0x18,param_3);
+    thunk_SetQuickDrawTextOriginWithContextOffset(param_2 + 0x18,param_3);
     iVar1 = param_3 + 8;
-    func_0x00403bb6(param_2 + 0x20,iVar1);
-    func_0x00403bb6(param_2 + 0x2c,iVar1);
+    thunk_DrawCenteredGuideLineOnMapDc(param_2 + 0x20,iVar1);
+    thunk_DrawCenteredGuideLineOnMapDc(param_2 + 0x2c,iVar1);
     if ((bStack00000010 == 0) &&
        (*(char *)(*(int *)&g_pGlobalMapState->field_0xc + local_a * 0x24) == '\x05')) {
-      func_0x00408d6e(param_2 + 0x38,param_3);
-      func_0x00403bb6(param_2 + 0x30,iVar1);
-      func_0x00403bb6(param_2 + 0x2c,iVar1);
+      thunk_SetQuickDrawTextOriginWithContextOffset(param_2 + 0x38,param_3);
+      thunk_DrawCenteredGuideLineOnMapDc(param_2 + 0x30,iVar1);
+      thunk_DrawCenteredGuideLineOnMapDc(param_2 + 0x2c,iVar1);
     }
   }
   if (((param_1 & 4) != 0) &&
      (*(char *)(*(int *)&g_pGlobalMapState->field_0xc + local_8 * 0x24) == '\x05')) {
-    func_0x00408d6e(param_2 + 0x18,param_3 + 0x40);
+    thunk_SetQuickDrawTextOriginWithContextOffset(param_2 + 0x18,param_3 + 0x40);
     iVar1 = param_3 + 0x38;
-    func_0x00403bb6(param_2 + 0x20,iVar1);
-    func_0x00403bb6(param_2 + 0x2c,iVar1);
+    thunk_DrawCenteredGuideLineOnMapDc(param_2 + 0x20,iVar1);
+    thunk_DrawCenteredGuideLineOnMapDc(param_2 + 0x2c,iVar1);
     if ((bStack00000010 == 0) &&
        (*(char *)(*(int *)&g_pGlobalMapState->field_0xc + local_a * 0x24) == '\x05')) {
-      func_0x00408d6e(param_2 + 0x2c,iVar1);
-      func_0x00403bb6(param_2 + 0x30,iVar1);
-      func_0x00403bb6(param_2 + 0x38,param_3 + 0x40);
+      thunk_SetQuickDrawTextOriginWithContextOffset(param_2 + 0x2c,iVar1);
+      thunk_DrawCenteredGuideLineOnMapDc(param_2 + 0x30,iVar1);
+      thunk_DrawCenteredGuideLineOnMapDc(param_2 + 0x38,param_3 + 0x40);
     }
   }
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00523060
-// GHIDRA_NAME TMapDialog::WrapperFor_SetQuickDrawFillColor_At00523060
-// GHIDRA_PROTO undefined __thiscall WrapperFor_SetQuickDrawFillColor_At00523060(void)
+// GHIDRA_NAME TMapDialog::MapDialogSetFillColor
+// GHIDRA_PROTO undefined __thiscall MapDialogSetFillColor(void)
 
-void TMapDialog::WrapperFor_SetQuickDrawFillColor_At00523060()
+void __thiscall TMapDialog::MapDialogSetFillColor(TMapDialog *this)
 
 {
   int iVar1;
@@ -3132,23 +3350,24 @@ TMapDialog::UpdateMapOrderEntryTilePreviewSlot
   local_24 = local_2c + 0x40;
   iVar6 = 0;
   local_58 = 0;
-  func_0x00408d64(&local_34,&local_58);
+  thunk_GetActiveQuickDrawSurfaceContextAndFlags(&local_34,&local_58);
   func_0x004088aa();
-  func_0x00406f5f(*(undefined4 *)&this->field_0x350,local_58);
-  uVar3 = func_0x0040520e(DAT_006a3450);
-  func_0x0040761c(uVar3);
-  uVar3 = func_0x0040520e(*(undefined4 *)&this->field_0x350);
-  func_0x0040761c(uVar3);
-  piVar4 = (int *)func_0x0040520e(*(undefined4 *)&this->field_0x350);
+  thunk_SetActiveQuickDrawSurfaceContext(*(undefined4 *)&this->field_0x350,local_58);
+  uVar3 = thunk_GetSurfaceObjectAtContextOffset24(DAT_006a3450);
+  thunk_ReturnConstantTrueQuickDrawFlag(uVar3);
+  uVar3 = thunk_GetSurfaceObjectAtContextOffset24(*(undefined4 *)&this->field_0x350);
+  thunk_ReturnConstantTrueQuickDrawFlag(uVar3);
+  piVar4 = (int *)thunk_GetSurfaceObjectAtContextOffset24(*(undefined4 *)&this->field_0x350);
   local_4c = *(ushort *)(*piVar4 + 4) & 0x3fff;
   local_44 = func_0x00405e39(piVar4);
-  piVar4 = (int *)func_0x0040520e(DAT_006a3450);
+  piVar4 = (int *)thunk_GetSurfaceObjectAtContextOffset24(DAT_006a3450);
   uVar8 = *(ushort *)(*piVar4 + 4) & 0x3fff;
   local_50 = uVar8;
   local_48 = func_0x00405e39(piVar4);
   iVar7 = (int)(short)uVar8;
   local_48 = local_48 + (iVar7 + 1) * 0x40;
-  uVar3 = func_0x0040520e(*(undefined4 *)(g_pStrategicMapViewSystem + 0x668));
+  uVar3 = thunk_GetSurfaceObjectAtContextOffset24
+                    (*(undefined4 *)(g_pStrategicMapViewSystem + 0x668));
   func_0x00405e39(uVar3);
   do {
     sVar5 = (short)param_1;
@@ -3190,19 +3409,19 @@ TMapDialog::UpdateMapOrderEntryTilePreviewSlot
   if (iVar6 != 0) {
     piVar4 = (int *)func_0x004055ec(iVar6);
     if (piVar4 != (int *)0x0) {
-      func_0x00406f5f(DAT_006a3450,uVar3);
+      thunk_SetActiveQuickDrawSurfaceContext(DAT_006a3450,uVar3);
       iStack_3c = piVar4[7] + 0x40;
       iStack_38 = piVar4[8] + 0x40;
       local_34 = piVar4[9] + 0x40;
       local_30 = piVar4[10] + 0x40;
-      func_0x004030e9(&iStack_3c);
+      thunk_ApplyRectClipRegionToGlobalClipState(&iStack_3c);
       local_5c = 0x40;
       (**(code **)(*piVar4 + 0x2c))(&stack0xffffffa0);
-      func_0x00406f5f(*(undefined4 *)&this->field_0x350,param_1);
+      thunk_SetActiveQuickDrawSurfaceContext(*(undefined4 *)&this->field_0x350,uVar3);
     }
   }
   func_0x004088aa();
-  func_0x00406f5f(local_50,uVar3);
+  thunk_SetActiveQuickDrawSurfaceContext(local_50,uVar3);
   if ((DAT_006a33f8 & 1) == 0) {
     DAT_006a33f8 = DAT_006a33f8 | 1;
     DAT_006a3440 = 0x40;
@@ -3220,10 +3439,10 @@ TMapDialog::UpdateMapOrderEntryTilePreviewSlot
   local_24 = local_58;
   func_0x00405493(DAT_006a3450 + 4,&g_pActiveQuickDrawSurfaceContext->field_0x4,&local_2c,&local_4c,
                   0,0);
-  uVar3 = func_0x0040520e(DAT_006a3450);
-  func_0x004024fa(uVar3);
-  uVar3 = func_0x0040520e(*(undefined4 *)&this->field_0x350);
-  func_0x004024fa(uVar3);
+  uVar3 = thunk_GetSurfaceObjectAtContextOffset24(DAT_006a3450);
+  thunk_NoOpQuickDrawLifecycleHookB(uVar3);
+  uVar3 = thunk_GetSurfaceObjectAtContextOffset24(*(undefined4 *)&this->field_0x350);
+  thunk_NoOpQuickDrawLifecycleHookB(uVar3);
   return;
 }
 
@@ -3404,7 +3623,7 @@ LAB_00523a3f:
 // GHIDRA_NAME TMapDialog::VTableSlot6B
 // GHIDRA_PROTO undefined __thiscall VTableSlot6B(RECT * param_1, char param_2)
 
-void TMapDialog::VTableSlot6B(RECT *param_1, char param_2)
+void __thiscall TMapDialog::VTableSlot6B(TMapDialog *this,RECT *param_1,char param_2)
 
 {
   int iVar1;
@@ -3541,7 +3760,8 @@ void TMapDialog::VTableSlot6B(RECT *param_1, char param_2)
 // GHIDRA_NAME TMapDialog::OrphanRetStub_00596060
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_00596060(short param_1, RECT * param_2, char param_3)
 
-void TMapDialog::OrphanRetStub_00596060(short param_1, RECT *param_2, char param_3)
+void __thiscall
+TMapDialog::OrphanRetStub_00596060(TMapDialog *this,short param_1,RECT *param_2,char param_3)
 
 {
   int iVar1;
@@ -3834,7 +4054,8 @@ TMapDialog::GetTEventHandlerClassNamePointer
 // GHIDRA_NAME TMapDialog::VTableSlot97
 // GHIDRA_PROTO undefined __thiscall VTableSlot97(int param_1, int param_2, short param_3, short param_4)
 
-void TMapDialog::VTableSlot97(int param_1, int param_2, short param_3, short param_4)
+void __thiscall
+TMapDialog::VTableSlot97(TMapDialog *this,int param_1,int param_2,short param_3,short param_4)
 
 {
   undefined4 uVar1;
@@ -5103,7 +5324,7 @@ TMapDialog::Copy64x64TileBlockWithStrideAdjustment
 // GHIDRA_NAME TMapDialog::OrphanRetStub_005960e0
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_005960e0(void)
 
-void TMapDialog::OrphanRetStub_005960e0()
+void __thiscall TMapDialog::OrphanRetStub_005960e0(TMapDialog *this)
 
 {
   func_0x004056a5();

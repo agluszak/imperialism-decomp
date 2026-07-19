@@ -78,7 +78,7 @@ undefined4 * TWindow::CreateObject(void)
 // GHIDRA_NAME TWindow::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TWindow::GetRuntimeClass()
+CRuntimeClass * __thiscall TWindow::GetRuntimeClass(TWindow *this)
 
 {
   return &classTWindow;
@@ -88,7 +88,7 @@ CRuntimeClass * TWindow::GetRuntimeClass()
 // GHIDRA_NAME TWindow::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TWindow * TWindow::_scalar_deleting_destructor_(byte param_1)
+TWindow * __thiscall TWindow::_scalar_deleting_destructor_(TWindow *this,byte param_1)
 
 {
   func_0x0040362a();
@@ -102,7 +102,7 @@ TWindow * TWindow::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TWindow::SetField88And8c
 // GHIDRA_PROTO undefined __thiscall SetField88And8c(undefined4 param_1, undefined4 param_2)
 
-void TWindow::SetField88And8c(undefined4 param_1, undefined4 param_2)
+void __thiscall TWindow::SetField88And8c(TWindow *this,undefined4 param_1,undefined4 param_2)
 
 {
   *(undefined4 *)&this->field_0x88 = param_1;
@@ -114,7 +114,7 @@ void TWindow::SetField88And8c(undefined4 param_1, undefined4 param_2)
 // GHIDRA_NAME TWindow::AssertMcAppUILine2358
 // GHIDRA_PROTO undefined __thiscall AssertMcAppUILine2358(void)
 
-void TWindow::AssertMcAppUILine2358()
+void __thiscall TWindow::AssertMcAppUILine2358(TWindow *this)
 
 {
   if (g_McAppUiFlag_006A1B04 == 0) {
@@ -127,7 +127,7 @@ void TWindow::AssertMcAppUILine2358()
 // GHIDRA_NAME TWindow::OrphanCallChain_C2_I39_0048d900
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C2_I39_0048d900(char param_1, char param_2)
 
-void TWindow::OrphanCallChain_C2_I39_0048d900(char param_1, char param_2)
+void __thiscall TWindow::OrphanCallChain_C2_I39_0048d900(TWindow *this,char param_1,char param_2)
 
 {
   int iVar1;
@@ -163,7 +163,7 @@ void TWindow::OrphanCallChain_C2_I39_0048d900(char param_1, char param_2)
 // GHIDRA_NAME TWindow::IsActionable
 // GHIDRA_PROTO undefined __thiscall IsActionable(void)
 
-undefined4 TWindow::IsActionable()
+undefined4 __thiscall TWindow::IsActionable(TWindow *this)
 
 {
   if ((((*(int *)&this->field_0x98 != 0) && (g_McAppUiActiveFlag_006950AC != 0)) &&
@@ -177,7 +177,7 @@ undefined4 TWindow::IsActionable()
 // GHIDRA_NAME TWindow::SetWindowText
 // GHIDRA_PROTO undefined __thiscall SetWindowText(undefined4 * param_1)
 
-void TWindow::SetWindowText(undefined4 *param_1)
+void __thiscall TWindow::SetWindowText(TWindow *this,undefined4 *param_1)
 
 {
   CMcWindow::SetWindowTextOrDelegateToOwner(*param_1);
@@ -188,7 +188,7 @@ void TWindow::SetWindowText(undefined4 *param_1)
 // GHIDRA_NAME TWindow::GetWindowText
 // GHIDRA_PROTO undefined __thiscall GetWindowText(undefined4 param_1)
 
-void TWindow::GetWindowText(undefined4 param_1)
+void __thiscall TWindow::GetWindowText(TWindow *this,undefined4 param_1)
 
 {
   CMcWindow::GetWindowTextOrDelegateToOwner(param_1);
@@ -199,7 +199,7 @@ void TWindow::GetWindowText(undefined4 param_1)
 // GHIDRA_NAME TWindow::GetDialogBehaviorByte10
 // GHIDRA_PROTO undefined __thiscall GetDialogBehaviorByte10(void)
 
-int TWindow::GetDialogBehaviorByte10()
+int __thiscall TWindow::GetDialogBehaviorByte10(TWindow *this)
 
 {
   undefined uVar1;
@@ -216,7 +216,7 @@ int TWindow::GetDialogBehaviorByte10()
 // GHIDRA_NAME TWindow::SetField84
 // GHIDRA_PROTO undefined __thiscall SetField84(undefined1 param_1)
 
-void TWindow::SetField84(undefined1 param_1)
+void __thiscall TWindow::SetField84(TWindow *this,undefined1 param_1)
 
 {
   this->field_0x84 = param_1;
@@ -227,7 +227,7 @@ void TWindow::SetField84(undefined1 param_1)
 // GHIDRA_NAME TWindow::ExecuteViewModalStateWithPushPopChain
 // GHIDRA_PROTO undefined __thiscall ExecuteViewModalStateWithPushPopChain(void)
 
-int TWindow::ExecuteViewModalStateWithPushPopChain()
+int __thiscall TWindow::ExecuteViewModalStateWithPushPopChain(TWindow *this)
 
 {
   TWindowVtbl *pTVar1;
@@ -318,7 +318,7 @@ LAB_0048db5a:
 // GHIDRA_NAME TWindow::GetDialogBehaviorByte20
 // GHIDRA_PROTO undefined __thiscall GetDialogBehaviorByte20(void)
 
-undefined4 TWindow::GetDialogBehaviorByte20()
+undefined4 __thiscall TWindow::GetDialogBehaviorByte20(TWindow *this)
 
 {
   undefined uVar1;
@@ -335,7 +335,8 @@ undefined4 TWindow::GetDialogBehaviorByte20()
 // GHIDRA_NAME TWindow::OrphanCallChain_C2_I12_0048dc90
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C2_I12_0048dc90(undefined4 param_1, undefined4 param_2)
 
-void TWindow::OrphanCallChain_C2_I12_0048dc90(undefined4 param_1, undefined4 param_2)
+void __thiscall
+TWindow::OrphanCallChain_C2_I12_0048dc90(TWindow *this,undefined4 param_1,undefined4 param_2)
 
 {
   undefined uVar1;
@@ -352,7 +353,7 @@ void TWindow::OrphanCallChain_C2_I12_0048dc90(undefined4 param_1, undefined4 par
 // GHIDRA_NAME TWindow::GetEmbeddedDialogBehavior
 // GHIDRA_PROTO undefined __thiscall GetEmbeddedDialogBehavior(void)
 
-undefined1 * TWindow::GetEmbeddedDialogBehavior()
+undefined1 * __thiscall TWindow::GetEmbeddedDialogBehavior(TWindow *this)
 
 {
   return &this->field_0x74;
@@ -362,7 +363,7 @@ undefined1 * TWindow::GetEmbeddedDialogBehavior()
 // GHIDRA_NAME TWindow::AssertMcAppUILine2554
 // GHIDRA_PROTO undefined __thiscall AssertMcAppUILine2554(void)
 
-void TWindow::AssertMcAppUILine2554()
+void __thiscall TWindow::AssertMcAppUILine2554(TWindow *this)
 
 {
   if (g_McAppUiFlag_006A1B08 == 0) {
@@ -375,7 +376,7 @@ void TWindow::AssertMcAppUILine2554()
 // GHIDRA_NAME TWindow::DispatchEvent
 // GHIDRA_PROTO undefined __thiscall DispatchEvent(void)
 
-void TWindow::DispatchEvent()
+void __thiscall TWindow::DispatchEvent(TWindow *this)
 
 {
   (**(code **)(*(int *)&this->field_0x74 + 0x3c))();
@@ -387,7 +388,7 @@ void TWindow::DispatchEvent()
 // GHIDRA_NAME TWindow::HandleEvent
 // GHIDRA_PROTO undefined __thiscall HandleEvent(int param_1)
 
-void TWindow::HandleEvent(int param_1)
+void __thiscall TWindow::HandleEvent(TWindow *this,int param_1)
 
 {
   undefined uVar1;
@@ -415,7 +416,7 @@ void TWindow::HandleEvent(int param_1)
 // GHIDRA_NAME TWindow::SetWindowTarget
 // GHIDRA_PROTO undefined __thiscall SetWindowTarget(TWindow * param_1)
 
-void TWindow::SetWindowTarget(TWindow *param_1)
+void __thiscall TWindow::SetWindowTarget(TWindow *this,TWindow *param_1)
 
 {
   TWindowVtbl *pTVar1;
@@ -436,7 +437,7 @@ void TWindow::SetWindowTarget(TWindow *param_1)
 // GHIDRA_NAME TWindow::DispatchSlot9CToLinkedChildren
 // GHIDRA_PROTO undefined __thiscall DispatchSlot9CToLinkedChildren(void)
 
-void TWindow::DispatchSlot9CToLinkedChildren()
+void __thiscall TWindow::DispatchSlot9CToLinkedChildren(TWindow *this)
 
 {
   TWindowVtbl *pTVar1;
@@ -552,7 +553,7 @@ void TWindow::DispatchSlot9CToLinkedChildren()
 /* Resets child-selection state, notifies parent/control window with message 0x468, iterates child
    nodes calling vfunc +0xA0, then triggers vfunc +0x1CC. */
 
-void TWindow::CallVoidSlotA0()
+void __thiscall TWindow::CallVoidSlotA0(TWindow *this)
 
 {
   int iVar1;
@@ -594,10 +595,10 @@ void TWindow::CallVoidSlotA0()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048E120
-// GHIDRA_NAME TWindow::OrphanCallChain_C2_I10_0048e120
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C2_I10_0048e120(void)
+// GHIDRA_NAME TWindow::CloseAndFree
+// GHIDRA_PROTO undefined __thiscall CloseAndFree(void)
 
-void TWindow::OrphanCallChain_C2_I10_0048e120()
+void __thiscall TWindow::CloseAndFree(TWindow *this)
 
 {
   TWindowVtbl *pTVar1;
@@ -634,7 +635,7 @@ TWindow::WrapperFor_CenterWindowWithinOwnerOrWorkArea_At0048e150
 // GHIDRA_NAME TWindow::CtrlSlot95_TestPointInBoundsFromSlot128_Impl
 // GHIDRA_PROTO undefined __thiscall CtrlSlot95_TestPointInBoundsFromSlot128_Impl(void)
 
-undefined2 TWindow::CtrlSlot95_TestPointInBoundsFromSlot128_Impl()
+undefined2 __thiscall TWindow::CtrlSlot95_TestPointInBoundsFromSlot128_Impl(TWindow *this)
 
 {
   return 3;
@@ -644,7 +645,7 @@ undefined2 TWindow::CtrlSlot95_TestPointInBoundsFromSlot128_Impl()
 // GHIDRA_NAME TWindow::OrphanCallChain_C11_I88_004874b0_60
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C11_I88_004874b0_60(void)
 
-void TWindow::OrphanCallChain_C11_I88_004874b0_60()
+void __thiscall TWindow::OrphanCallChain_C11_I88_004874b0_60(TWindow *this)
 
 {
   if (g_McAppUiFlag_006A1B10 == 0) {
@@ -657,7 +658,7 @@ void TWindow::OrphanCallChain_C11_I88_004874b0_60()
 // GHIDRA_NAME TWindow::OrphanLeaf_NoCall_Ins07_004d8920
 // GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920(void)
 
-void TWindow::OrphanLeaf_NoCall_Ins07_004d8920()
+void __thiscall TWindow::OrphanLeaf_NoCall_Ins07_004d8920(TWindow *this)
 
 {
   if (g_McAppUiFlag_006A1B14 == 0) {
@@ -670,7 +671,7 @@ void TWindow::OrphanLeaf_NoCall_Ins07_004d8920()
 // GHIDRA_NAME TWindow::OrphanCallChain_C11_I88_004874b0_62
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C11_I88_004874b0_62(void)
 
-void TWindow::OrphanCallChain_C11_I88_004874b0_62()
+void __thiscall TWindow::OrphanCallChain_C11_I88_004874b0_62(TWindow *this)
 
 {
   if (g_McAppUiFlag_006A1B18 == 0) {
@@ -683,7 +684,7 @@ void TWindow::OrphanCallChain_C11_I88_004874b0_62()
 // GHIDRA_NAME TWindow::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
 
-void TWindow::GetTEventHandlerClassNamePointer()
+void __thiscall TWindow::GetTEventHandlerClassNamePointer(TWindow *this)
 
 {
   if (g_McAppUiFlag_006A1B1C == 0) {
@@ -698,7 +699,7 @@ void TWindow::GetTEventHandlerClassNamePointer()
 
 /* WARNING: Removing unreachable block (ram,0x0048e2b1) */
 
-void TWindow::Free()
+void __thiscall TWindow::Free(TWindow *this)
 
 {
   CObject *this_00;
@@ -771,7 +772,7 @@ void TWindow::Free()
 // GHIDRA_NAME TWindow::OwnerPanel
 // GHIDRA_PROTO undefined __thiscall OwnerPanel(void)
 
-TWindow * TWindow::OwnerPanel()
+TWindow * __thiscall TWindow::OwnerPanel(TWindow *this)
 
 {
   return this;
@@ -781,7 +782,7 @@ TWindow * TWindow::OwnerPanel()
 // GHIDRA_NAME TWindow::QueryOwnerContextPanel
 // GHIDRA_PROTO undefined __thiscall QueryOwnerContextPanel(void)
 
-TWindow * TWindow::QueryOwnerContextPanel()
+TWindow * __thiscall TWindow::QueryOwnerContextPanel(TWindow *this)
 
 {
   return this;
@@ -791,7 +792,7 @@ TWindow * TWindow::QueryOwnerContextPanel()
 // GHIDRA_NAME TWindow::vmethod_0078
 // GHIDRA_PROTO undefined __thiscall vmethod_0078(void)
 
-void TWindow::vmethod_0078()
+void __thiscall TWindow::vmethod_0078(TWindow *this)
 
 {
   return;
@@ -801,7 +802,7 @@ void TWindow::vmethod_0078()
 // GHIDRA_NAME TWindow::vmethod_0076
 // GHIDRA_PROTO undefined __thiscall vmethod_0076(void)
 
-void TWindow::vmethod_0076()
+void __thiscall TWindow::vmethod_0076(TWindow *this)
 
 {
   return;
@@ -811,7 +812,7 @@ void TWindow::vmethod_0076()
 // GHIDRA_NAME TWindow::DispatchVslot134WithRectAndRectPlus8_Impl
 // GHIDRA_PROTO undefined __thiscall DispatchVslot134WithRectAndRectPlus8_Impl(void)
 
-void TWindow::DispatchVslot134WithRectAndRectPlus8_Impl()
+void __thiscall TWindow::DispatchVslot134WithRectAndRectPlus8_Impl(TWindow *this)
 
 {
   return;
@@ -821,7 +822,7 @@ void TWindow::DispatchVslot134WithRectAndRectPlus8_Impl()
 // GHIDRA_NAME TWindow::CtrlSlot103_SubtractPosAndDispatchSlot19C_Impl
 // GHIDRA_PROTO undefined __thiscall CtrlSlot103_SubtractPosAndDispatchSlot19C_Impl(void)
 
-void TWindow::CtrlSlot103_SubtractPosAndDispatchSlot19C_Impl()
+void __thiscall TWindow::CtrlSlot103_SubtractPosAndDispatchSlot19C_Impl(TWindow *this)
 
 {
   return;
@@ -831,7 +832,7 @@ void TWindow::CtrlSlot103_SubtractPosAndDispatchSlot19C_Impl()
 // GHIDRA_NAME TWindow::ShallowClone
 // GHIDRA_PROTO undefined __thiscall ShallowClone(void)
 
-undefined4 TWindow::ShallowClone()
+undefined4 __thiscall TWindow::ShallowClone(TWindow *this)
 
 {
   func_0x004057a4(g_szMcAppUiHeaderPath_006943CC,0x51e);

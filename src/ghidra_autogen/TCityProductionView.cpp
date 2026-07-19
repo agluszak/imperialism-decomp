@@ -36,7 +36,7 @@ undefined4 __fastcall TCityProductionView::CreateObject(undefined4 param_1)
 // GHIDRA_NAME TCityProductionView::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TCityProductionView::GetRuntimeClass()
+CRuntimeClass * __thiscall TCityProductionView::GetRuntimeClass(TCityProductionView *this)
 
 {
   return &classTCityProductionView;
@@ -46,7 +46,8 @@ CRuntimeClass * TCityProductionView::GetRuntimeClass()
 // GHIDRA_NAME TCityProductionView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TCityProductionView * TCityProductionView::_scalar_deleting_destructor_(byte param_1)
+TCityProductionView * __thiscall
+TCityProductionView::_scalar_deleting_destructor_(TCityProductionView *this,byte param_1)
 
 {
   func_0x00405eb6();
@@ -65,7 +66,7 @@ TCityProductionView * TCityProductionView::_scalar_deleting_destructor_(byte par
 
 /* Setting prototype: void ReleaseCityBuildingControls(void) */
 
-void TCityProductionView::ReleaseCityBuildingControls()
+void __thiscall TCityProductionView::ReleaseCityBuildingControls(TCityProductionView *this)
 
 {
   undefined4 uVar1;
@@ -90,7 +91,8 @@ void TCityProductionView::ReleaseCityBuildingControls()
 // GHIDRA_NAME TCityProductionView::RenderNationHeaderDateLabelWithPeriodicRefresh
 // GHIDRA_PROTO undefined __thiscall RenderNationHeaderDateLabelWithPeriodicRefresh(void)
 
-void TCityProductionView::RenderNationHeaderDateLabelWithPeriodicRefresh()
+void __thiscall
+TCityProductionView::RenderNationHeaderDateLabelWithPeriodicRefresh(TCityProductionView *this)
 
 {
   short sVar1;
@@ -136,15 +138,17 @@ void TCityProductionView::RenderNationHeaderDateLabelWithPeriodicRefresh()
   }
   func_0x004088aa();
   (**(code **)(g_pUiRuntimeContext->vftable + 0x34))(1);
-  func_0x00408d6e(iVar4,sVar3);
+  thunk_SetQuickDrawTextOriginWithContextOffset(iVar4,sVar3);
   iVar6 = *(short *)&this->field_0xa8 * 2;
-  func_0x00403bb6(*(short *)(&g_Render_Nation_Header_Value_006961E0 + iVar6) + (short)iVar4,
-                  *(short *)(&g_Render_Nation_Header_Value_006961F8 + iVar6) + sVar3);
+  thunk_DrawCenteredGuideLineOnMapDc
+            (*(short *)(&g_Render_Nation_Header_Value_006961E0 + iVar6) + (short)iVar4,
+             *(short *)(&g_Render_Nation_Header_Value_006961F8 + iVar6) + sVar3);
   func_0x00406b86(0);
-  func_0x00408d6e(iVar4,sVar3);
+  thunk_SetQuickDrawTextOriginWithContextOffset(iVar4,sVar3);
   iVar6 = *(short *)&this->field_0xaa * 2;
-  func_0x00403bb6(*(short *)(&g_Render_Nation_Header_Value_00696210 + iVar6) + (short)iVar4,
-                  *(short *)(&g_Render_Nation_Header_Value_00696228 + iVar6) + sVar3);
+  thunk_DrawCenteredGuideLineOnMapDc
+            (*(short *)(&g_Render_Nation_Header_Value_00696210 + iVar6) + (short)iVar4,
+             *(short *)(&g_Render_Nation_Header_Value_00696228 + iVar6) + sVar3);
   return;
 }
 
@@ -198,7 +202,7 @@ LAB_004bc6b8:
     }
   }
   else if (*(int *)(&this->field_0xac + (int)puVar8 * 4) == 0) {
-    iVar7 = TCity::GetBuildingType(this->pCity,(short)puVar8);
+    iVar7 = TCity::thunk_GetCityBuildingProductionValueBySlot(this->pCity,(short)puVar8);
     uVar6 = extraout_var;
     if (((short)iVar7 == 0) &&
        (cVar2 = (*this->pCity->vftable->IsBasicResourceSlot78)(puVar8), uVar6 = extraout_var_00,
@@ -230,7 +234,8 @@ LAB_004bc6b8:
 // GHIDRA_NAME TCityProductionView::RenderViewIntoPrimaryRenderContextWithTemporaryClip
 // GHIDRA_PROTO undefined __thiscall RenderViewIntoPrimaryRenderContextWithTemporaryClip(void)
 
-void TCityProductionView::RenderViewIntoPrimaryRenderContextWithTemporaryClip()
+void __thiscall
+TCityProductionView::RenderViewIntoPrimaryRenderContextWithTemporaryClip(TCityProductionView *this)
 
 {
   TCityProductionViewVtbl *pTVar1;
@@ -263,12 +268,12 @@ void TCityProductionView::RenderViewIntoPrimaryRenderContextWithTemporaryClip()
   uStack_18 = uStack_28;
   uStack_14 = uStack_24;
   func_0x0040232e(0);
-  func_0x00408d64(local_34,&stack0xffffffc4);
-  func_0x00406f5f(g_pPrimaryRenderSurfaceContext,unaff_ESI);
-  func_0x004030e9(&uStack_20);
+  thunk_GetActiveQuickDrawSurfaceContextAndFlags(local_34,&stack0xffffffc4);
+  thunk_SetActiveQuickDrawSurfaceContext(g_pPrimaryRenderSurfaceContext,unaff_ESI);
+  thunk_ApplyRectClipRegionToGlobalClipState(&uStack_20);
   this->field_0xa6 = 1;
   (*pTVar1[0x22].GetTEventHandlerClassNamePointer)(&uStack_30);
-  func_0x00406f5f(0,unaff_EDI);
+  thunk_SetActiveQuickDrawSurfaceContext(0,unaff_EDI);
   func_0x00405be1(unaff_ESI);
   uStack_c = 0xffffffff;
   func_0x00409aac();

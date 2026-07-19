@@ -40,7 +40,7 @@ undefined4 * TDefenderMinister::CreateObject(void)
 
 /* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 
-float10 TDefenderMinister::CreateTDefenderMinisterInstance()
+float10 __thiscall TDefenderMinister::CreateTDefenderMinisterInstance(TDefenderMinister *this)
 
 {
   return (float10)_DAT_00654908;
@@ -50,7 +50,7 @@ float10 TDefenderMinister::CreateTDefenderMinisterInstance()
 // GHIDRA_NAME TDefenderMinister::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TDefenderMinister::GetRuntimeClass()
+CRuntimeClass * __thiscall TDefenderMinister::GetRuntimeClass(TDefenderMinister *this)
 
 {
   return &classTDefenderMinister;
@@ -60,7 +60,8 @@ CRuntimeClass * TDefenderMinister::GetRuntimeClass()
 // GHIDRA_NAME TDefenderMinister::ConstructTDefenderMinisterBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTDefenderMinisterBaseState(void)
 
-TDefenderMinister * TDefenderMinister::ConstructTDefenderMinisterBaseState()
+TDefenderMinister * __thiscall
+TDefenderMinister::ConstructTDefenderMinisterBaseState(TDefenderMinister *this)
 
 {
   func_0x0040433b();
@@ -73,7 +74,8 @@ TDefenderMinister * TDefenderMinister::ConstructTDefenderMinisterBaseState()
 // GHIDRA_NAME TDefenderMinister::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TDefenderMinister * TDefenderMinister::_scalar_deleting_destructor_(byte param_1)
+TDefenderMinister * __thiscall
+TDefenderMinister::_scalar_deleting_destructor_(TDefenderMinister *this,byte param_1)
 
 {
   func_0x00407270();

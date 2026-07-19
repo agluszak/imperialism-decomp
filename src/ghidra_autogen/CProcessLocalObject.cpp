@@ -4,10 +4,10 @@
 // Bucket: CProcessLocalObject.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00622AAC
-// GHIDRA_NAME CProcessLocalObject::~CProcessLocalObject
-// GHIDRA_PROTO void __thiscall CProcessLocalObject::~CProcessLocalObject(void)
+// GHIDRA_NAME CProcessLocalObject::thunk_CProcessLocalObject
+// GHIDRA_PROTO void __thiscall thunk_CProcessLocalObject(void)
 
-void CProcessLocalObject::~CProcessLocalObject()
+void __thiscall CProcessLocalObject::thunk_CProcessLocalObject(CProcessLocalObject *this)
 
 {
   ~CProcessLocalObject(this);
@@ -59,7 +59,7 @@ int CProcessLocalObject::GetData(void)
    
    Library: nafxcw retail msvc500:static */
 
-void CProcessLocalObject::~CProcessLocalObject()
+void __thiscall CProcessLocalObject::~CProcessLocalObject(CProcessLocalObject *this)
 
 {
   if (*(int *)this != 0) {
@@ -71,10 +71,10 @@ void CProcessLocalObject::~CProcessLocalObject()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006244CE
-// GHIDRA_NAME CProcessLocalObject::~CProcessLocalObject
-// GHIDRA_PROTO void __thiscall CProcessLocalObject::~CProcessLocalObject(void)
+// GHIDRA_NAME CProcessLocalObject::thunk_~CProcessLocalObject
+// GHIDRA_PROTO void __thiscall thunk_~CProcessLocalObject(void)
 
-void CProcessLocalObject::thunk__CProcessLocalObject()
+void __thiscall CProcessLocalObject::thunk__CProcessLocalObject(CProcessLocalObject *this)
 
 {
   ~CProcessLocalObject(this);

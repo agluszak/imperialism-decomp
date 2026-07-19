@@ -3,6 +3,19 @@
 // Program: Imperialism.exe
 // Bucket: TOverlayRadioButton.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00453800
+// GHIDRA_NAME TOverlayRadioButton::TOverlayRadioButton
+// GHIDRA_PROTO undefined __thiscall TOverlayRadioButton(void)
+
+TOverlayRadioButton * __thiscall TOverlayRadioButton::TOverlayRadioButton(TOverlayRadioButton *this)
+
+{
+  func_0x00409980();
+  this->vftable = &TRadioPictureButton::_vftable_;
+  *(undefined4 *)&this->field_0x98 = 0;
+  return this;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x004CAA50
 // GHIDRA_NAME TOverlayRadioButton::CreateObject
 // GHIDRA_PROTO undefined CreateObject()
@@ -37,17 +50,17 @@ undefined4 * TOverlayRadioButton::CreateObject(void)
 // GHIDRA_NAME TOverlayRadioButton::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TOverlayRadioButton::GetRuntimeClass()
+CRuntimeClass * __thiscall TOverlayRadioButton::GetRuntimeClass(TOverlayRadioButton *this)
 
 {
-  return &classRuntimeClass;
+  return &classTOverlayRadioButton;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004CAB10
-// GHIDRA_NAME TOverlayRadioButton::ConstructTOverlayRadioButtonBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTOverlayRadioButtonBaseState(void)
+// GHIDRA_NAME TOverlayRadioButton::ApplyRectSlot110
+// GHIDRA_PROTO undefined __thiscall ApplyRectSlot110(void)
 
-void TOverlayRadioButton::ConstructTOverlayRadioButtonBaseState()
+void __thiscall TOverlayRadioButton::ApplyRectSlot110(TOverlayRadioButton *this)
 
 {
   func_0x00404fe8();

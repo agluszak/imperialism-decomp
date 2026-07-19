@@ -4,14 +4,14 @@
 // Bucket: CArchive.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005E6D04
-// GHIDRA_NAME CArchive::CArchive::operator<<
-// GHIDRA_PROTO undefined __thiscall CArchive::operator<<(byte param_1)
+// GHIDRA_NAME CArchive::operator<<
+// GHIDRA_PROTO undefined __thiscall operator<<(byte param_1)
 
-CArchive * __thiscall CArchive::CArchive__operator<<(CArchive *this,byte param_1)
+CArchive * __thiscall CArchive::operator<<(CArchive *this,byte param_1)
 
 {
   if (this->m_lpBufMax < this->m_lpBufCur + 1) {
-    CArchive__Flush();
+    Flush();
   }
   *this->m_lpBufCur = param_1;
   this->m_lpBufCur = this->m_lpBufCur + 1;
@@ -19,14 +19,14 @@ CArchive * __thiscall CArchive::CArchive__operator<<(CArchive *this,byte param_1
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005E6D27
-// GHIDRA_NAME CArchive::CArchive::operator<<
-// GHIDRA_PROTO undefined __thiscall CArchive::operator<<(undefined2 param_1)
+// GHIDRA_NAME CArchive::operator<<
+// GHIDRA_PROTO undefined __thiscall operator<<(undefined2 param_1)
 
-CArchive * __thiscall CArchive::CArchive__operator<<(CArchive *this,undefined2 param_1)
+CArchive * __thiscall CArchive::operator<<(CArchive *this,undefined2 param_1)
 
 {
   if (this->m_lpBufMax < this->m_lpBufCur + 2) {
-    CArchive__Flush();
+    Flush();
   }
   *(undefined2 *)this->m_lpBufCur = param_1;
   this->m_lpBufCur = this->m_lpBufCur + 2;
@@ -34,15 +34,15 @@ CArchive * __thiscall CArchive::CArchive__operator<<(CArchive *this,undefined2 p
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005E6D4E
-// GHIDRA_NAME CArchive::CArchive::operator<<
-// GHIDRA_PROTO undefined __thiscall CArchive::operator<<(TNetMgr_GetTNetMgrClassNamePointer_0x00 * param_1)
+// GHIDRA_NAME CArchive::operator<<
+// GHIDRA_PROTO undefined __thiscall operator<<(TNetMgr_GetTNetMgrClassNamePointer_0x00 * param_1)
 
 CArchive * __thiscall
-CArchive::CArchive__operator<<(CArchive *this,TNetMgr_GetTNetMgrClassNamePointer_0x00 *param_1)
+CArchive::operator<<(CArchive *this,TNetMgr_GetTNetMgrClassNamePointer_0x00 *param_1)
 
 {
   if (this->m_lpBufMax < this->m_lpBufCur + 4) {
-    CArchive__Flush();
+    Flush();
   }
   *(TNetMgr_GetTNetMgrClassNamePointer_0x00 **)this->m_lpBufCur = param_1;
   this->m_lpBufCur = this->m_lpBufCur + 4;
@@ -50,8 +50,8 @@ CArchive::CArchive__operator<<(CArchive *this,TNetMgr_GetTNetMgrClassNamePointer
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005E6D74
-// GHIDRA_NAME CArchive::CArchive::operator>>
-// GHIDRA_PROTO undefined CArchive::operator>>()
+// GHIDRA_NAME CArchive::operator>>
+// GHIDRA_PROTO undefined operator>>()
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Library Function - Single Match
 // GHIDRA_COMMENT  public: class CArchive & __thiscall CArchive::operator>>(unsigned char &)
@@ -64,7 +64,7 @@ CArchive::CArchive__operator<<(CArchive *this,TNetMgr_GetTNetMgrClassNamePointer
    
    Library: nafxcw retail msvc500:static */
 
-CArchive * __thiscall CArchive::CArchive__operator>>(CArchive *param_1,byte *param_2)
+CArchive * __thiscall CArchive::operator>>(CArchive *param_1,byte *param_2)
 
 {
   if (param_1->m_lpBufMax < param_1->m_lpBufCur + 1) {
@@ -76,10 +76,10 @@ CArchive * __thiscall CArchive::CArchive__operator>>(CArchive *param_1,byte *par
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005E6DA3
-// GHIDRA_NAME CArchive::CArchive::operator>>
-// GHIDRA_PROTO undefined __thiscall CArchive::operator>>(undefined2 * param_1)
+// GHIDRA_NAME CArchive::operator>>
+// GHIDRA_PROTO undefined __thiscall operator>>(undefined2 * param_1)
 
-CArchive * __thiscall CArchive::CArchive__operator>>(CArchive *this,undefined2 *param_1)
+CArchive * __thiscall CArchive::operator>>(CArchive *this,undefined2 *param_1)
 
 {
   if (this->m_lpBufMax < this->m_lpBufCur + 2) {
@@ -91,10 +91,10 @@ CArchive * __thiscall CArchive::CArchive__operator>>(CArchive *this,undefined2 *
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005E6DD6
-// GHIDRA_NAME CArchive::CArchive::operator>>
-// GHIDRA_PROTO undefined __thiscall CArchive::operator>>(undefined4 * param_1)
+// GHIDRA_NAME CArchive::operator>>
+// GHIDRA_PROTO undefined __thiscall operator>>(undefined4 * param_1)
 
-CArchive * __thiscall CArchive::CArchive__operator>>(CArchive *this,undefined4 *param_1)
+CArchive * __thiscall CArchive::operator>>(CArchive *this,undefined4 *param_1)
 
 {
   if (this->m_lpBufMax < this->m_lpBufCur + 4) {
@@ -103,6 +103,80 @@ CArchive * __thiscall CArchive::CArchive__operator>>(CArchive *this,undefined4 *
   *param_1 = *(undefined4 *)this->m_lpBufCur;
   this->m_lpBufCur = this->m_lpBufCur + 4;
   return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00611BB4
+// GHIDRA_NAME CArchive::CArchive
+// GHIDRA_PROTO undefined CArchive()
+
+undefined4 * CArchive::CArchive(void)
+
+{
+  undefined4 uVar1;
+  int iVar2;
+  undefined4 uVar3;
+  undefined4 *extraout_ECX;
+  int iVar4;
+  int unaff_EBP;
+  undefined4 *unaff_FS_OFFSET;
+  
+  _EH_prolog();
+  *(undefined4 **)(unaff_EBP + -0x10) = extraout_ECX;
+  iVar2 = **(int **)(unaff_EBP + 8);
+  (**(code **)(iVar2 + 0x20))(extraout_ECX + 4);
+  uVar3 = *(undefined4 *)(unaff_EBP + 0xc);
+  uVar1 = *(undefined4 *)(unaff_EBP + 8);
+  extraout_ECX[3] = 0xffffffff;
+  extraout_ECX[5] = uVar3;
+  extraout_ECX[8] = uVar1;
+  *(undefined4 *)(unaff_EBP + -4) = 0;
+  extraout_ECX[0xe] = 0;
+  extraout_ECX[0xd] = 0;
+  *extraout_ECX = 0;
+  extraout_ECX[1] = 1;
+  if ((~(byte)uVar3 & 1) == 0) {
+    extraout_ECX[0xf] = 0x40;
+  }
+  else {
+    extraout_ECX[0xf] = 0x10;
+  }
+  uVar3 = *(undefined4 *)(unaff_EBP + 0x14);
+  extraout_ECX[6] = 1;
+  extraout_ECX[0xb] = uVar3;
+  iVar4 = *(int *)(unaff_EBP + 0x10);
+  extraout_ECX[0x10] = 0x89;
+  extraout_ECX[2] = 0;
+  if (iVar4 < 0x80) {
+    extraout_ECX[7] = 0x80;
+    extraout_ECX[0xb] = 0;
+  }
+  else {
+    extraout_ECX[7] = iVar4;
+  }
+  iVar4 = extraout_ECX[0xb];
+  *(undefined4 *)(unaff_EBP + 0x10) = extraout_ECX[7];
+  if (iVar4 == 0) {
+    iVar2 = (**(code **)(iVar2 + 0x58))(3,0,0,0);
+    extraout_ECX[2] = iVar2;
+    if (iVar2 == 0) {
+      uVar3 = operator_new(extraout_ECX[7]);
+      extraout_ECX[0xb] = uVar3;
+      extraout_ECX[6] = 0;
+    }
+    else {
+      *(undefined4 *)(unaff_EBP + 0x10) = 0;
+    }
+  }
+  iVar4 = *(int *)(unaff_EBP + 0x10) + extraout_ECX[0xb];
+  extraout_ECX[10] = iVar4;
+  iVar2 = extraout_ECX[0xb];
+  if ((*(byte *)(extraout_ECX + 5) & 1) != 0) {
+    iVar2 = iVar4;
+  }
+  uVar3 = *(undefined4 *)(unaff_EBP + -0xc);
+  extraout_ECX[9] = iVar2;
+  *unaff_FS_OFFSET = uVar3;
+  return extraout_ECX;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00611C90
@@ -157,10 +231,10 @@ void __fastcall CArchive::Abort(int param_1)
 // GHIDRA_NAME CArchive::Close
 // GHIDRA_PROTO undefined __thiscall Close(void)
 
-void CArchive::Close()
+void __thiscall CArchive::Close(CArchive *this)
 
 {
-  CArchive__Flush();
+  Flush();
   this->m_pFile = (void *)0x0;
   return;
 }
@@ -169,7 +243,7 @@ void CArchive::Close()
 // GHIDRA_NAME CArchive::Read
 // GHIDRA_PROTO undefined __thiscall Read(int param_1, uint param_2)
 
-int CArchive::Read(int param_1, uint param_2)
+int __thiscall CArchive::Read(CArchive *this,int param_1,uint param_2)
 
 {
   int iVar1;
@@ -247,7 +321,7 @@ int CArchive::Read(int param_1, uint param_2)
 // GHIDRA_NAME CArchive::Write
 // GHIDRA_PROTO undefined __thiscall Write(int param_1, uint param_2)
 
-void CArchive::Write(int param_1, uint param_2)
+void __thiscall CArchive::Write(CArchive *this,int param_1,uint param_2)
 
 {
   uint uVar1;
@@ -263,7 +337,7 @@ void CArchive::Write(int param_1, uint param_2)
     this->m_lpBufCur = this->m_lpBufCur + uVar2;
     uVar1 = param_2 - uVar2;
     if (uVar1 != 0) {
-      CArchive__Flush();
+      Flush();
       iVar3 = uVar1 - uVar1 % (uint)this->m_nBufSize;
       (**(code **)(*(int *)this->m_pFile + 0x40))(param_1 + uVar2,iVar3);
       if (this->m_bDirectBuffer != 0) {
@@ -278,11 +352,47 @@ void CArchive::Write(int param_1, uint param_2)
   return;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00611EC4
+// GHIDRA_NAME CArchive::Flush
+// GHIDRA_PROTO undefined Flush()
+
+void __fastcall CArchive::Flush(int param_1)
+
+{
+  int iVar1;
+  undefined4 uVar2;
+  
+  if ((*(byte *)(param_1 + 0x14) & 1) == 0) {
+    iVar1 = *(int *)(param_1 + 0x2c);
+    if ((iVar1 != 0) && (*(int *)(param_1 + 0x24) == iVar1)) {
+      return;
+    }
+    if (*(int *)(param_1 + 8) == 0) {
+      (**(code **)(**(int **)(param_1 + 0x20) + 0x40))(iVar1,*(int *)(param_1 + 0x24) - iVar1);
+    }
+    else {
+      (**(code **)(**(int **)(param_1 + 0x20) + 0x58))(2,*(int *)(param_1 + 0x24) - iVar1,0,0);
+      (**(code **)(**(int **)(param_1 + 0x20) + 0x58))
+                (1,*(undefined4 *)(param_1 + 0x1c),(undefined4 *)(param_1 + 0x2c),param_1 + 0x28);
+    }
+    uVar2 = *(undefined4 *)(param_1 + 0x2c);
+  }
+  else {
+    if (*(int *)(param_1 + 0x28) != *(int *)(param_1 + 0x24)) {
+      (**(code **)(**(int **)(param_1 + 0x20) + 0x30))
+                (*(int *)(param_1 + 0x24) - *(int *)(param_1 + 0x28),1);
+    }
+    uVar2 = *(undefined4 *)(param_1 + 0x28);
+  }
+  *(undefined4 *)(param_1 + 0x24) = uVar2;
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00611F3E
 // GHIDRA_NAME CArchive::FillBuffer
 // GHIDRA_PROTO undefined __thiscall FillBuffer(uint param_1)
 
-void CArchive::FillBuffer(uint param_1)
+void __thiscall CArchive::FillBuffer(CArchive *this,uint param_1)
 
 {
   byte *pbVar1;
@@ -335,15 +445,16 @@ void CArchive::FillBuffer(uint param_1)
 // GHIDRA_NAME CArchive::WriteCount
 // GHIDRA_PROTO undefined __thiscall WriteCount(TNetMgr_GetTNetMgrClassNamePointer_0x00 * param_1)
 
-void CArchive::WriteCount(TNetMgr_GetTNetMgrClassNamePointer_0x00 *param_1)
+void __thiscall
+CArchive::WriteCount(CArchive *this,TNetMgr_GetTNetMgrClassNamePointer_0x00 *param_1)
 
 {
   if (param_1 < (TNetMgr_GetTNetMgrClassNamePointer_0x00 *)0xffff) {
-    CArchive__operator<<(this,(short)param_1);
+    operator<<(this,(short)param_1);
   }
   else {
-    CArchive__operator<<(this,0xffff);
-    CArchive__operator<<(this,param_1);
+    operator<<(this,0xffff);
+    operator<<(this,param_1);
   }
   return;
 }
@@ -371,9 +482,9 @@ CArchive * __fastcall CArchive::ReadCount(CArchive *param_1)
   
   local_c = param_1;
   uStack_8 = param_1;
-  CArchive__operator>>(param_1,(undefined2 *)((int)&uStack_8 + 2));
+  operator>>(param_1,(undefined2 *)((int)&uStack_8 + 2));
   if (uStack_8._2_2_ == 0xffff) {
-    CArchive__operator>>(param_1,&local_c);
+    operator>>(param_1,&local_c);
   }
   else {
     local_c = (CArchive *)(uint)uStack_8._2_2_;
@@ -440,7 +551,7 @@ LAB_0061211b:
       *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
       return iVar2;
     }
-    CArchive__operator>>(unaff_EBP + -0x11);
+    operator>>(unaff_EBP + -0x11);
     cVar1 = *(char *)(unaff_EBP + -0x11);
     if (cVar1 == '\n') {
       uVar3 = 10;
@@ -452,7 +563,7 @@ LAB_006120dd:
       goto LAB_0061211b;
     }
     if (cVar1 == '\r') {
-      CArchive__operator>>(unaff_EBP + -0x11);
+      operator>>(unaff_EBP + -0x11);
       uVar3 = *(undefined1 *)(unaff_EBP + -0x11);
       goto LAB_006120dd;
     }
@@ -466,7 +577,7 @@ LAB_006120dd:
 // GHIDRA_NAME CArchive::ReadString
 // GHIDRA_PROTO undefined __thiscall ReadString(CString * param_1)
 
-bool CArchive::ReadString(CString *param_1)
+bool __thiscall CArchive::ReadString(CArchive *this,CString *param_1)
 
 {
   LPCSTR lpString;
@@ -474,7 +585,7 @@ bool CArchive::ReadString(CString *param_1)
   int iVar2;
   int iVar3;
   
-  CString::operator=(param_1,&DAT_006a6128);
+  CString::operator=(param_1,&afxChNil);
   lpString = (LPCSTR)CString::GetBuffer(param_1,0x80);
   while( true ) {
     iVar1 = ReadString(lpString,0xffffff80);
@@ -511,7 +622,7 @@ void __fastcall CArchive::CheckCount(int param_1)
 // GHIDRA_NAME CArchive::WriteObject
 // GHIDRA_PROTO undefined __thiscall WriteObject(int * param_1)
 
-void CArchive::WriteObject(int *param_1)
+void __thiscall CArchive::WriteObject(CArchive *this,int *param_1)
 
 {
   undefined4 *puVar1;
@@ -538,12 +649,12 @@ void CArchive::WriteObject(int *param_1)
       return;
     }
     if ((TNetMgr_GetTNetMgrClassNamePointer_0x00 *)0x7ffe < pTVar4) {
-      CArchive__operator<<(this,0x7fff);
-      CArchive__operator<<(this,pTVar4);
+      operator<<(this,0x7fff);
+      operator<<(this,pTVar4);
       return;
     }
   }
-  CArchive__operator<<(this,(short)pTVar4);
+  operator<<(this,(short)pTVar4);
   return;
 }
 
@@ -672,7 +783,7 @@ void CArchive::MapObject(void)
 // GHIDRA_NAME CArchive::WriteClass
 // GHIDRA_PROTO undefined __thiscall WriteClass(int param_1)
 
-void CArchive::WriteClass(int param_1)
+void __thiscall CArchive::WriteClass(CArchive *this,int param_1)
 
 {
   uint uVar1;
@@ -686,7 +797,7 @@ void CArchive::WriteClass(int param_1)
   puVar2 = (uint *)CMapPtrToPtr::operator[](this->m_pLoadArrayOrStoreMap,param_1);
   uVar1 = *puVar2;
   if (uVar1 == 0) {
-    CArchive__operator<<(this,0xffff);
+    operator<<(this,0xffff);
     CRuntimeClass::Store(this);
     CheckCount();
     piVar3 = (int *)CMapPtrToPtr::operator[](this->m_pLoadArrayOrStoreMap,param_1);
@@ -694,11 +805,11 @@ void CArchive::WriteClass(int param_1)
     this->m_nMapCount = this->m_nMapCount + 1;
   }
   else if (uVar1 < 0x7fff) {
-    CArchive__operator<<(this,(ushort)uVar1 | 0x8000);
+    operator<<(this,(ushort)uVar1 | 0x8000);
   }
   else {
-    CArchive__operator<<(this,0x7fff);
-    CArchive__operator<<(this,(TNetMgr_GetTNetMgrClassNamePointer_0x00 *)(uVar1 | 0x80000000));
+    operator<<(this,0x7fff);
+    operator<<(this,(TNetMgr_GetTNetMgrClassNamePointer_0x00 *)(uVar1 | 0x80000000));
   }
   return;
 }
@@ -727,9 +838,9 @@ CRuntimeClass * CArchive::ReadClass(void)
     AfxThrowNotSupportedException();
   }
   MapObject(0);
-  CArchive__operator>>(this_01,(undefined2 *)(unaff_EBP + -0xe));
+  operator>>(this_01,(undefined2 *)(unaff_EBP + -0xe));
   if (*(short *)(unaff_EBP + -0xe) == 0x7fff) {
-    CArchive__operator>>(this_01,(undefined4 *)(unaff_EBP + -0x18));
+    operator>>(this_01,(undefined4 *)(unaff_EBP + -0x18));
   }
   else {
     *(uint *)(unaff_EBP + -0x18) =

@@ -37,7 +37,7 @@ undefined4 * TSidewaysArrow::CreateObject(void)
 // GHIDRA_NAME TSidewaysArrow::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TSidewaysArrow::GetRuntimeClass()
+CRuntimeClass * __thiscall TSidewaysArrow::GetRuntimeClass(TSidewaysArrow *this)
 
 {
   return &classTSidewaysArrow;
@@ -47,7 +47,7 @@ CRuntimeClass * TSidewaysArrow::GetRuntimeClass()
 // GHIDRA_NAME TSidewaysArrow::TSidewaysArrow
 // GHIDRA_PROTO undefined __thiscall TSidewaysArrow(void)
 
-TSidewaysArrow * TSidewaysArrow::TSidewaysArrow()
+TSidewaysArrow * __thiscall TSidewaysArrow::TSidewaysArrow(TSidewaysArrow *this)
 
 {
   func_0x00403512();
@@ -60,7 +60,8 @@ TSidewaysArrow * TSidewaysArrow::TSidewaysArrow()
 // GHIDRA_NAME TSidewaysArrow::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TSidewaysArrow * TSidewaysArrow::_scalar_deleting_destructor_(byte param_1)
+TSidewaysArrow * __thiscall
+TSidewaysArrow::_scalar_deleting_destructor_(TSidewaysArrow *this,byte param_1)
 
 {
   func_0x0040201d();

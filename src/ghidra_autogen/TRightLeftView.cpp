@@ -37,7 +37,7 @@ undefined4 * TRightLeftView::CreateObject(void)
 // GHIDRA_NAME TRightLeftView::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TRightLeftView::GetRuntimeClass()
+CRuntimeClass * __thiscall TRightLeftView::GetRuntimeClass(TRightLeftView *this)
 
 {
   return &classTRightLeftView;
@@ -47,7 +47,7 @@ CRuntimeClass * TRightLeftView::GetRuntimeClass()
 // GHIDRA_NAME TRightLeftView::ConstructTRightLeftViewBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTRightLeftViewBaseState(void)
 
-TRightLeftView * TRightLeftView::ConstructTRightLeftViewBaseState()
+TRightLeftView * __thiscall TRightLeftView::ConstructTRightLeftViewBaseState(TRightLeftView *this)
 
 {
   func_0x004087fb();
@@ -60,7 +60,8 @@ TRightLeftView * TRightLeftView::ConstructTRightLeftViewBaseState()
 // GHIDRA_NAME TRightLeftView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TRightLeftView * TRightLeftView::_scalar_deleting_destructor_(byte param_1)
+TRightLeftView * __thiscall
+TRightLeftView::_scalar_deleting_destructor_(TRightLeftView *this,byte param_1)
 
 {
   func_0x00408ec7();
@@ -74,7 +75,8 @@ TRightLeftView * TRightLeftView::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TRightLeftView::DispatchPictureResourceCommand
 // GHIDRA_PROTO undefined __thiscall DispatchPictureResourceCommand(int param_1, undefined4 param_2)
 
-void TRightLeftView::DispatchPictureResourceCommand(int param_1, undefined4 param_2)
+void __thiscall
+TRightLeftView::DispatchPictureResourceCommand(TRightLeftView *this,int param_1,undefined4 param_2)
 
 {
   TRightLeftViewVtbl *pTVar1;

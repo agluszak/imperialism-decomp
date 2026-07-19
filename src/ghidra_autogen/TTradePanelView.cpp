@@ -7,7 +7,8 @@
 // GHIDRA_NAME TTradePanelView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TTradePanelView * TTradePanelView::_scalar_deleting_destructor_(byte param_1)
+TTradePanelView * __thiscall
+TTradePanelView::_scalar_deleting_destructor_(TTradePanelView *this,byte param_1)
 
 {
   func_0x00403233();
@@ -51,7 +52,7 @@ undefined4 * TTradePanelView::CreateObject(void)
 // GHIDRA_NAME TTradePanelView::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TTradePanelView::GetRuntimeClass()
+CRuntimeClass * __thiscall TTradePanelView::GetRuntimeClass(TTradePanelView *this)
 
 {
   return &classTTradePanelView;
@@ -61,7 +62,7 @@ CRuntimeClass * TTradePanelView::GetRuntimeClass()
 // GHIDRA_NAME TTradePanelView::NoOpUiLifecycleHook
 // GHIDRA_PROTO undefined __thiscall NoOpUiLifecycleHook(void)
 
-void TTradePanelView::NoOpUiLifecycleHook()
+void __thiscall TTradePanelView::NoOpUiLifecycleHook(TTradePanelView *this)
 
 {
   undefined uVar1;
@@ -134,7 +135,7 @@ void TTradePanelView::NoOpUiLifecycleHook()
 // GHIDRA_NAME TTradePanelView::ApplyRectSlot110
 // GHIDRA_PROTO undefined __thiscall ApplyRectSlot110(void)
 
-void TTradePanelView::ApplyRectSlot110()
+void __thiscall TTradePanelView::ApplyRectSlot110(TTradePanelView *this)
 
 {
   short sVar1;
@@ -218,11 +219,11 @@ void TTradePanelView::ApplyRectSlot110()
   pCStack_60 = &local_44;
   uStack_64 = 0x2b6b;
   uStack_68 = 0x4f8a4c;
-  func_0x004093cc();
+  thunk_MapUiThemeCodeToStyleFlags();
   pCStack_60 = (CString *)&local_48;
   uStack_64 = 0x2b68;
   uStack_68 = 0x4f8a5e;
-  func_0x004093cc();
+  thunk_MapUiThemeCodeToStyleFlags();
   pCStack_60 = &local_4c;
   uStack_64 = 0x2a;
   uStack_68 = 0x2733;
@@ -232,12 +233,12 @@ void TTradePanelView::ApplyRectSlot110()
   iVar3 = -iVar2;
   func_0x00409444();
   puStack_6c = (undefined1 *)(-(int)puVar5 + 0x170);
-  func_0x00408d6e(iVar3 + 0x49);
+  thunk_SetQuickDrawTextOriginWithContextOffset(iVar3 + 0x49);
   puStack_6c = &stack0xffffffa8;
   func_0x004029aa();
   func_0x00409444();
   puStack_6c = puVar4;
-  func_0x00408d6e(iVar3 + 0x48);
+  thunk_SetQuickDrawTextOriginWithContextOffset(iVar3 + 0x48);
   puStack_6c = &stack0xffffffa8;
   func_0x004029aa();
   puStack_6c = (undefined1 *)0x2b68;
@@ -252,10 +253,10 @@ void TTradePanelView::ApplyRectSlot110()
     iVar6 = CONCAT22((short)((uint)puVar5 >> 0x10),
                      *(short *)((int)&local_38.m_pchData + iVar3 * 2) - sVar1);
     func_0x00409444(pCStack_60);
-    func_0x00408d6e(iVar6 + 1,puVar4 + 1);
+    thunk_SetQuickDrawTextOriginWithContextOffset(iVar6 + 1,puVar4 + 1);
     func_0x004029aa(&uStack_64);
     func_0x00409444(unaff_EDI);
-    func_0x00408d6e(iVar6,puVar4);
+    thunk_SetQuickDrawTextOriginWithContextOffset(iVar6,puVar4);
     func_0x004029aa(&uStack_64);
     iVar3 = iVar3 + 1;
     puVar5 = local_48;
@@ -266,15 +267,15 @@ void TTradePanelView::ApplyRectSlot110()
     puStack_6c = &stack0xffffffa8;
     (*g_pSimMgr->vftable[0x10].slot_0x04)(0x2733,local_4c.m_pchData + 0x2b);
     iVar6 = CONCAT22((short)((uint)iVar6 >> 0x10),*(short *)((int)asStack_40 + iVar3) - unaff_BP);
-    sVar1 = func_0x00405b7d(&uStack_64);
+    sVar1 = thunk_MeasureTextExtentWithCachedQuickDrawStyle(&uStack_64);
     puVar4 = (undefined1 *)
              (CONCAT22((short)((uint)puVar4 >> 0x10),*(short *)((int)local_2c + iVar3) - sVar1 / 2)
              - iVar2);
     func_0x00409444(pCStack_60);
-    func_0x00408d6e(puVar4 + 1,iVar6 + 1);
+    thunk_SetQuickDrawTextOriginWithContextOffset(puVar4 + 1,iVar6 + 1);
     func_0x004029aa(&uStack_64);
     func_0x00409444(unaff_EDI);
-    func_0x00408d6e(puVar4,iVar6);
+    thunk_SetQuickDrawTextOriginWithContextOffset(puVar4,iVar6);
     func_0x004029aa(&uStack_64);
     iVar3 = iVar3 + 2;
     local_4c.m_pchData = local_4c.m_pchData + 1;
@@ -296,7 +297,7 @@ void TTradePanelView::ApplyRectSlot110()
 // GHIDRA_NAME TTradePanelView::OrphanRetStub_00430550
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_00430550(void)
 
-void TTradePanelView::OrphanRetStub_00430550()
+void __thiscall TTradePanelView::OrphanRetStub_00430550(TTradePanelView *this)
 
 {
   undefined uVar1;
@@ -315,7 +316,8 @@ void TTradePanelView::OrphanRetStub_00430550()
 // GHIDRA_NAME TTradePanelView::HandleEvent
 // GHIDRA_PROTO undefined __thiscall HandleEvent(int param_1, int param_2, undefined4 param_3)
 
-void TTradePanelView::HandleEvent(int param_1, int param_2, undefined4 param_3)
+void __thiscall
+TTradePanelView::HandleEvent(TTradePanelView *this,int param_1,int param_2,undefined4 param_3)
 
 {
   int iVar1;

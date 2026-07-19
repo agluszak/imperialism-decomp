@@ -182,7 +182,7 @@ void __thiscall CThreadSlotData::SetValue(DWORD *param_1,int param_2,int param_3
   lpTlsValue = TlsGetValue(*param_1);
   if (lpTlsValue == (TMacViewMgrVtbl *)0x0) {
 LAB_00623e14:
-    lpTlsValue = (TMacViewMgrVtbl *)CNoTrackObject::new(0x10);
+    lpTlsValue = (TMacViewMgrVtbl *)new(0x10);
     if (lpTlsValue == (TMacViewMgrVtbl *)0x0) {
       lpTlsValue = (TMacViewMgrVtbl *)0x0;
     }

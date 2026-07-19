@@ -26,7 +26,7 @@ undefined4 * TCountingStream::CreateObject(void)
 // GHIDRA_NAME TCountingStream::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TCountingStream::GetRuntimeClass()
+CRuntimeClass * __thiscall TCountingStream::GetRuntimeClass(TCountingStream *this)
 
 {
   return &classTCountingStream;
@@ -36,7 +36,7 @@ CRuntimeClass * TCountingStream::GetRuntimeClass()
 // GHIDRA_NAME TCountingStream::ConstructTCountingStreamBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTCountingStreamBaseState(void)
 
-void TCountingStream::ConstructTCountingStreamBaseState()
+void __thiscall TCountingStream::ConstructTCountingStreamBaseState(TCountingStream *this)
 
 {
   this->vftable = &_vftable_;
@@ -49,7 +49,8 @@ void TCountingStream::ConstructTCountingStreamBaseState()
 // GHIDRA_NAME TCountingStream::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TCountingStream * TCountingStream::_scalar_deleting_destructor_(byte param_1)
+TCountingStream * __thiscall
+TCountingStream::_scalar_deleting_destructor_(TCountingStream *this,byte param_1)
 
 {
   func_0x00403c1f();
@@ -63,7 +64,7 @@ TCountingStream * TCountingStream::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TCountingStream::~TCountingStream
 // GHIDRA_PROTO undefined __thiscall ~TCountingStream(void)
 
-void TCountingStream::~TCountingStream()
+void __thiscall TCountingStream::~TCountingStream(TCountingStream *this)
 
 {
   this->vftable = (TCountingStreamVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4
@@ -71,11 +72,21 @@ void TCountingStream::~TCountingStream()
   return;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00489490
+// GHIDRA_NAME TCountingStream::PrepareForUse
+// GHIDRA_PROTO undefined PrepareForUse()
+
+void TCountingStream::PrepareForUse(void)
+
+{
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x004894B0
 // GHIDRA_NAME TCountingStream::OrphanTiny_ReturnZero_00488ad0
 // GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_00488ad0(void)
 
-undefined4 TCountingStream::OrphanTiny_ReturnZero_00488ad0()
+undefined4 __thiscall TCountingStream::OrphanTiny_ReturnZero_00488ad0(TCountingStream *this)
 
 {
   return *(undefined4 *)&this->field_0x4;
@@ -85,7 +96,7 @@ undefined4 TCountingStream::OrphanTiny_ReturnZero_00488ad0()
 // GHIDRA_NAME TCountingStream::OrphanRetStub_00488e30
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_00488e30(int param_1)
 
-void TCountingStream::OrphanRetStub_00488e30(int param_1)
+void __thiscall TCountingStream::OrphanRetStub_00488e30(TCountingStream *this,int param_1)
 
 {
   if (*(int *)&this->field_0x8 < param_1) {
@@ -99,7 +110,7 @@ void TCountingStream::OrphanRetStub_00488e30(int param_1)
 // GHIDRA_NAME TCountingStream::OrphanTiny_ReturnZero_00488af0
 // GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_00488af0(void)
 
-undefined4 TCountingStream::OrphanTiny_ReturnZero_00488af0()
+undefined4 __thiscall TCountingStream::OrphanTiny_ReturnZero_00488af0(TCountingStream *this)
 
 {
   return *(undefined4 *)&this->field_0x8;
@@ -109,7 +120,7 @@ undefined4 TCountingStream::OrphanTiny_ReturnZero_00488af0()
 // GHIDRA_NAME TCountingStream::OrphanRetStub_00488e50
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_00488e50(int param_1)
 
-void TCountingStream::OrphanRetStub_00488e50(int param_1)
+void __thiscall TCountingStream::OrphanRetStub_00488e50(TCountingStream *this,int param_1)
 
 {
   if (param_1 < *(int *)&this->field_0x4) {

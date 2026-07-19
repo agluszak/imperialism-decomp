@@ -25,7 +25,7 @@ TCluster * TUberCluster::CreateObject(void)
   local_4 = 0;
   pTVar1 = (TCluster *)0x0;
   if (this != (TCluster *)0x0) {
-    TCluster::ConstructUiResourceEntryType4B0C0(this);
+    TCluster::thunk_ConstructUiResourceEntryType4B0C0(this);
     this->vftable = (TClusterVtbl *)&_vftable_;
     pTVar1 = this;
   }
@@ -37,7 +37,7 @@ TCluster * TUberCluster::CreateObject(void)
 // GHIDRA_NAME TUberCluster::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TUberCluster::GetRuntimeClass()
+CRuntimeClass * __thiscall TUberCluster::GetRuntimeClass(TUberCluster *this)
 
 {
   return &classTUberCluster;
@@ -47,10 +47,10 @@ CRuntimeClass * TUberCluster::GetRuntimeClass()
 // GHIDRA_NAME TUberCluster::ConstructTUberClusterBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTUberClusterBaseState(void)
 
-TUberCluster * TUberCluster::ConstructTUberClusterBaseState()
+TUberCluster * __thiscall TUberCluster::ConstructTUberClusterBaseState(TUberCluster *this)
 
 {
-  TCluster::ConstructUiResourceEntryType4B0C0((TCluster *)this);
+  TCluster::thunk_ConstructUiResourceEntryType4B0C0((TCluster *)this);
   this->vftable = &_vftable_;
   return this;
 }
@@ -59,7 +59,8 @@ TUberCluster * TUberCluster::ConstructTUberClusterBaseState()
 // GHIDRA_NAME TUberCluster::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TUberCluster * TUberCluster::_scalar_deleting_destructor_(byte param_1)
+TUberCluster * __thiscall
+TUberCluster::_scalar_deleting_destructor_(TUberCluster *this,byte param_1)
 
 {
   func_0x0040567d();
@@ -73,7 +74,7 @@ TUberCluster * TUberCluster::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TUberCluster::IsTradeControlAtMinimum
 // GHIDRA_PROTO undefined __thiscall IsTradeControlAtMinimum(void)
 
-undefined1 TUberCluster::IsTradeControlAtMinimum()
+undefined1 __thiscall TUberCluster::IsTradeControlAtMinimum(TUberCluster *this)
 
 {
   return 1;

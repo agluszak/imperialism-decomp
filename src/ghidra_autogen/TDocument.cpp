@@ -24,7 +24,7 @@ TDocument * __cdecl TDocument::CreateObject(void)
 // GHIDRA_NAME TDocument::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TDocument * TDocument::_scalar_deleting_destructor_(byte param_1)
+TDocument * __thiscall TDocument::_scalar_deleting_destructor_(TDocument *this,byte param_1)
 
 {
   func_0x00406226();
@@ -38,7 +38,7 @@ TDocument * TDocument::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TDocument::CreateTDocumentInstance
 // GHIDRA_PROTO undefined __thiscall CreateTDocumentInstance(void)
 
-void TDocument::CreateTDocumentInstance()
+void __thiscall TDocument::CreateTDocumentInstance(TDocument *this)
 
 {
   this->vftable = (TDocumentVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
@@ -49,7 +49,7 @@ void TDocument::CreateTDocumentInstance()
 // GHIDRA_NAME TDocument::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TDocument::GetRuntimeClass()
+CRuntimeClass * __thiscall TDocument::GetRuntimeClass(TDocument *this)
 
 {
   return &classTDocument;
@@ -59,7 +59,7 @@ CRuntimeClass * TDocument::GetRuntimeClass()
 // GHIDRA_NAME TDocument::OrphanRetStub_00486530
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_00486530(void)
 
-void TDocument::OrphanRetStub_00486530()
+void __thiscall TDocument::OrphanRetStub_00486530(TDocument *this)
 
 {
   return;
@@ -69,7 +69,7 @@ void TDocument::OrphanRetStub_00486530()
 // GHIDRA_NAME TDocument::OrphanRetStub_00486550
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_00486550(void)
 
-void TDocument::OrphanRetStub_00486550()
+void __thiscall TDocument::OrphanRetStub_00486550(TDocument *this)
 
 {
   return;

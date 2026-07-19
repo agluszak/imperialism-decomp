@@ -40,7 +40,7 @@ undefined4 * TShipAmtBar::CreateObject(void)
 // GHIDRA_NAME TShipAmtBar::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TShipAmtBar::GetRuntimeClass()
+CRuntimeClass * __thiscall TShipAmtBar::GetRuntimeClass(TShipAmtBar *this)
 
 {
   return &g_pClassDescTShipAmtBar;
@@ -50,7 +50,7 @@ CRuntimeClass * TShipAmtBar::GetRuntimeClass()
 // GHIDRA_NAME TShipAmtBar::ConstructBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructBaseState(void)
 
-TShipAmtBar * TShipAmtBar::ConstructBaseState()
+TShipAmtBar * __thiscall TShipAmtBar::ConstructBaseState(TShipAmtBar *this)
 
 {
   func_0x004064e2();
@@ -66,7 +66,7 @@ TShipAmtBar * TShipAmtBar::ConstructBaseState()
 // GHIDRA_NAME TShipAmtBar::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TShipAmtBar * TShipAmtBar::_scalar_deleting_destructor_(byte param_1)
+TShipAmtBar * __thiscall TShipAmtBar::_scalar_deleting_destructor_(TShipAmtBar *this,byte param_1)
 
 {
   func_0x004041e7();
@@ -80,7 +80,7 @@ TShipAmtBar * TShipAmtBar::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TShipAmtBar::NoOpUiLifecycleHook
 // GHIDRA_PROTO undefined __thiscall NoOpUiLifecycleHook(void)
 
-void TShipAmtBar::NoOpUiLifecycleHook()
+void __thiscall TShipAmtBar::NoOpUiLifecycleHook(TShipAmtBar *this)
 
 {
   short sVar1;
@@ -108,7 +108,7 @@ void TShipAmtBar::NoOpUiLifecycleHook()
 // GHIDRA_NAME TShipAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache
 // GHIDRA_PROTO undefined __thiscall RenderPrimarySurfaceOverlayPanelWithClipCache(void)
 
-void TShipAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache()
+void __thiscall TShipAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache(TShipAmtBar *this)
 
 {
   TShipAmtBarVtbl *pTVar1;
@@ -149,15 +149,16 @@ void TShipAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache()
       uStack_2c = uStack_3c;
       uStack_28 = uStack_38;
       uStack_24 = uStack_34;
-      func_0x004030e9(auStack_30);
+      thunk_ApplyRectClipRegionToGlobalClipState(auStack_30);
       (*pTVar1->OrphanRetStub_0059add0_4b)(auStack_20);
       (*pTVar1->OrphanTiny_ReturnZero_0048a730_4e)(&stack0xffffffb4);
       if (0 < *(short *)&this->field_0x60) {
-        func_0x00408d6e(0,1);
+        thunk_SetQuickDrawTextOriginWithContextOffset(0,1);
         (**(code **)(g_pUiRuntimeContext->vftable + 0x34))
                   (CONCAT22(extraout_var_00,*(undefined2 *)&this->field_0x66));
         func_0x00402e73(1,4);
-        func_0x00403bb6(CONCAT22(extraout_var_01,*(undefined2 *)&this->field_0x60),1);
+        thunk_DrawCenteredGuideLineOnMapDc
+                  (CONCAT22(extraout_var_01,*(undefined2 *)&this->field_0x60),1);
         func_0x004088aa();
       }
       func_0x00405be1(puVar4);

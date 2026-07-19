@@ -37,7 +37,8 @@ undefined4 * TNewTownView::CreateObject(void)
 // GHIDRA_NAME TNewTownView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TNewTownView * TNewTownView::_scalar_deleting_destructor_(byte param_1)
+TNewTownView * __thiscall
+TNewTownView::_scalar_deleting_destructor_(TNewTownView *this,byte param_1)
 
 {
   func_0x004028ce();
@@ -51,7 +52,7 @@ TNewTownView * TNewTownView::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TNewTownView::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TNewTownView::GetRuntimeClass()
+CRuntimeClass * __thiscall TNewTownView::GetRuntimeClass(TNewTownView *this)
 
 {
   return &classTNewTownView;
@@ -61,7 +62,7 @@ CRuntimeClass * TNewTownView::GetRuntimeClass()
 // GHIDRA_NAME TNewTownView::BuildCityDialogMinisterControls
 // GHIDRA_PROTO undefined __thiscall BuildCityDialogMinisterControls(int * param_1)
 
-void TNewTownView::BuildCityDialogMinisterControls(int *param_1)
+void __thiscall TNewTownView::BuildCityDialogMinisterControls(TNewTownView *this,int *param_1)
 
 {
   TNewTownViewVtbl *pTVar1;
@@ -183,7 +184,7 @@ void TNewTownView::BuildCityDialogMinisterControls(int *param_1)
 // GHIDRA_NAME TNewTownView::CallVoidSlotA0
 // GHIDRA_PROTO undefined __thiscall CallVoidSlotA0(void)
 
-void TNewTownView::CallVoidSlotA0()
+void __thiscall TNewTownView::CallVoidSlotA0(TNewTownView *this)
 
 {
   undefined uVar1;

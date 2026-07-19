@@ -37,7 +37,8 @@ undefined4 * TProxyGreatPower::CreateObject(void)
 // GHIDRA_NAME TProxyGreatPower::ReturnFalseNationStateCapabilityFlag98
 // GHIDRA_PROTO undefined __thiscall ReturnFalseNationStateCapabilityFlag98(void)
 
-undefined1 TProxyGreatPower::ReturnFalseNationStateCapabilityFlag98()
+undefined1 __thiscall
+TProxyGreatPower::ReturnFalseNationStateCapabilityFlag98(TProxyGreatPower *this)
 
 {
   return 1;
@@ -47,7 +48,8 @@ undefined1 TProxyGreatPower::ReturnFalseNationStateCapabilityFlag98()
 // GHIDRA_NAME TProxyGreatPower::ReturnFalseNationStateCapabilityFlagA0
 // GHIDRA_PROTO undefined __thiscall ReturnFalseNationStateCapabilityFlagA0(void)
 
-undefined1 TProxyGreatPower::ReturnFalseNationStateCapabilityFlagA0()
+undefined1 __thiscall
+TProxyGreatPower::ReturnFalseNationStateCapabilityFlagA0(TProxyGreatPower *this)
 
 {
   return 1;
@@ -57,7 +59,7 @@ undefined1 TProxyGreatPower::ReturnFalseNationStateCapabilityFlagA0()
 // GHIDRA_NAME TProxyGreatPower::ProcessPendingDiplomacyProposalQueue
 // GHIDRA_PROTO undefined __thiscall ProcessPendingDiplomacyProposalQueue(void)
 
-void TProxyGreatPower::ProcessPendingDiplomacyProposalQueue()
+void __thiscall TProxyGreatPower::ProcessPendingDiplomacyProposalQueue(TProxyGreatPower *this)
 
 {
                     /* WARNING: Could not recover jumptable at 0x00540902. Too many branches */
@@ -70,7 +72,8 @@ void TProxyGreatPower::ProcessPendingDiplomacyProposalQueue()
 // GHIDRA_NAME TProxyGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage
 // GHIDRA_PROTO undefined __thiscall UpdateGreatPowerPressureStateAndDispatchEscalationMessage(void)
 
-undefined1 TProxyGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage()
+undefined1 __thiscall
+TProxyGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage(TProxyGreatPower *this)
 
 {
   return 0;
@@ -80,7 +83,8 @@ undefined1 TProxyGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationM
 // GHIDRA_NAME TProxyGreatPower::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TProxyGreatPower * TProxyGreatPower::_scalar_deleting_destructor_(byte param_1)
+TProxyGreatPower * __thiscall
+TProxyGreatPower::_scalar_deleting_destructor_(TProxyGreatPower *this,byte param_1)
 
 {
   func_0x0040554c();
@@ -94,7 +98,7 @@ TProxyGreatPower * TProxyGreatPower::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TProxyGreatPower::DestructTProxyGreatPower
 // GHIDRA_PROTO undefined __thiscall DestructTProxyGreatPower(void)
 
-void TProxyGreatPower::DestructTProxyGreatPower()
+void __thiscall TProxyGreatPower::DestructTProxyGreatPower(TProxyGreatPower *this)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -119,7 +123,7 @@ void TProxyGreatPower::DestructTProxyGreatPower()
 // GHIDRA_NAME TProxyGreatPower::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TProxyGreatPower::GetRuntimeClass()
+CRuntimeClass * __thiscall TProxyGreatPower::GetRuntimeClass(TProxyGreatPower *this)
 
 {
   return &classTProxyGreatPower;
@@ -129,7 +133,7 @@ CRuntimeClass * TProxyGreatPower::GetRuntimeClass()
 // GHIDRA_NAME TProxyGreatPower::AddToNationMetricAtField10
 // GHIDRA_PROTO undefined __thiscall AddToNationMetricAtField10(int param_1)
 
-void TProxyGreatPower::AddToNationMetricAtField10(int param_1)
+void __thiscall TProxyGreatPower::AddToNationMetricAtField10(TProxyGreatPower *this,int param_1)
 
 {
   func_0x00403995(param_1);
@@ -143,7 +147,7 @@ void TProxyGreatPower::AddToNationMetricAtField10(int param_1)
 // GHIDRA_NAME TProxyGreatPower::DispatchTurnEvent2103WithNationFromRecord
 // GHIDRA_PROTO undefined __thiscall DispatchTurnEvent2103WithNationFromRecord(void)
 
-void TProxyGreatPower::DispatchTurnEvent2103WithNationFromRecord()
+void __thiscall TProxyGreatPower::DispatchTurnEvent2103WithNationFromRecord(TProxyGreatPower *this)
 
 {
   return;
@@ -153,7 +157,8 @@ void TProxyGreatPower::DispatchTurnEvent2103WithNationFromRecord()
 // GHIDRA_NAME TProxyGreatPower::RefreshGreatPowerRelationPanelsAndDispatchDeltaSummary
 // GHIDRA_PROTO undefined __thiscall RefreshGreatPowerRelationPanelsAndDispatchDeltaSummary(void)
 
-void TProxyGreatPower::RefreshGreatPowerRelationPanelsAndDispatchDeltaSummary()
+void __thiscall
+TProxyGreatPower::RefreshGreatPowerRelationPanelsAndDispatchDeltaSummary(TProxyGreatPower *this)
 
 {
   return;
@@ -201,7 +206,8 @@ TProxyGreatPower::OrphanLeaf_NoCall_Ins07_004d8920
 // GHIDRA_NAME TProxyGreatPower::QueueNationOrderManagerPayloadObject_2f
 // GHIDRA_PROTO undefined __thiscall QueueNationOrderManagerPayloadObject_2f(int * param_1)
 
-void TProxyGreatPower::QueueNationOrderManagerPayloadObject_2f(int *param_1)
+void __thiscall
+TProxyGreatPower::QueueNationOrderManagerPayloadObject_2f(TProxyGreatPower *this,int *param_1)
 
 {
   func_0x00404598(0x73746172,param_1,(int)*(short *)&this->field_0xc);
@@ -213,7 +219,7 @@ void TProxyGreatPower::QueueNationOrderManagerPayloadObject_2f(int *param_1)
 // GHIDRA_NAME TProxyGreatPower::DispatchTurnEvent11F8NoPayloadSlot2AC
 // GHIDRA_PROTO undefined __thiscall DispatchTurnEvent11F8NoPayloadSlot2AC(void)
 
-void TProxyGreatPower::DispatchTurnEvent11F8NoPayloadSlot2AC()
+void __thiscall TProxyGreatPower::DispatchTurnEvent11F8NoPayloadSlot2AC(TProxyGreatPower *this)
 
 {
   func_0x00406efb(0x6c6f7374,(int)*(short *)&this->field_0xc,0xfffffffd);
@@ -225,7 +231,8 @@ void TProxyGreatPower::DispatchTurnEvent11F8NoPayloadSlot2AC()
 // GHIDRA_NAME TProxyGreatPower::ExecuteAdvisoryPromptAndApplyActionType1
 // GHIDRA_PROTO undefined __thiscall ExecuteAdvisoryPromptAndApplyActionType1(void)
 
-undefined4 TProxyGreatPower::ExecuteAdvisoryPromptAndApplyActionType1()
+undefined4 __thiscall
+TProxyGreatPower::ExecuteAdvisoryPromptAndApplyActionType1(TProxyGreatPower *this)
 
 {
   func_0x00403b16();
@@ -239,7 +246,8 @@ undefined4 TProxyGreatPower::ExecuteAdvisoryPromptAndApplyActionType1()
 // GHIDRA_NAME TProxyGreatPower::ExecuteAdvisoryPromptAndApplyActionType2OrFallback
 // GHIDRA_PROTO undefined __thiscall ExecuteAdvisoryPromptAndApplyActionType2OrFallback(void)
 
-undefined4 TProxyGreatPower::ExecuteAdvisoryPromptAndApplyActionType2OrFallback()
+undefined4 __thiscall
+TProxyGreatPower::ExecuteAdvisoryPromptAndApplyActionType2OrFallback(TProxyGreatPower *this)
 
 {
   func_0x00403b16();

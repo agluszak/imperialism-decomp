@@ -23,7 +23,7 @@ undefined4 CArchiveException::GetErrorMessage(void)
   CString::CString((CString *)(unaff_EBP + 0x10),(CString *)(extraout_ECX + 0x10));
   *(undefined1 *)(unaff_EBP + -4) = 1;
   if (*(int *)(*(int *)(unaff_EBP + 0x10) + -8) == 0) {
-    CString__LoadStringA(0xf006);
+    CString::LoadStringA(0xf006);
   }
   AfxFormatString1(unaff_EBP + -0x10,*(int *)(extraout_ECX + 8) + 0xf1a0,
                    *(undefined4 *)(unaff_EBP + 0x10));

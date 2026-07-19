@@ -38,7 +38,7 @@ undefined4 * TUniversityView::CreateObject(void)
 // GHIDRA_NAME TUniversityView::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TUniversityView::GetRuntimeClass()
+CRuntimeClass * __thiscall TUniversityView::GetRuntimeClass(TUniversityView *this)
 
 {
   return &classTUniversityView;
@@ -48,7 +48,8 @@ CRuntimeClass * TUniversityView::GetRuntimeClass()
 // GHIDRA_NAME TUniversityView::ConstructTUniversityViewBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTUniversityViewBaseState(void)
 
-TUniversityView * TUniversityView::ConstructTUniversityViewBaseState()
+TUniversityView * __thiscall
+TUniversityView::ConstructTUniversityViewBaseState(TUniversityView *this)
 
 {
   func_0x00403328();
@@ -62,7 +63,8 @@ TUniversityView * TUniversityView::ConstructTUniversityViewBaseState()
 // GHIDRA_NAME TUniversityView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TUniversityView * TUniversityView::_scalar_deleting_destructor_(byte param_1)
+TUniversityView * __thiscall
+TUniversityView::_scalar_deleting_destructor_(TUniversityView *this,byte param_1)
 
 {
   func_0x00407027();
@@ -105,7 +107,7 @@ TUniversityView * TUniversityView::_scalar_deleting_destructor_(byte param_1)
    Special Cases:
    - Rows 6 and 7 are skipped in this pass (gated/alternate rows handled elsewhere). */
 
-void TUniversityView::OrphanRetStub_004c6fd0(int *pCityViewDialog)
+void __thiscall TUniversityView::OrphanRetStub_004c6fd0(TUniversityView *this,int *pCityViewDialog)
 
 {
   _vslot_fn *p_Var1;
@@ -142,7 +144,7 @@ void TUniversityView::OrphanRetStub_004c6fd0(int *pCityViewDialog)
   int pRecruitOrderEntry;
   
   *(undefined4 *)&this->field_0x98 = *(undefined4 *)(g_pStrategicMapViewSystem + 4);
-  func_0x00406afa();
+  thunk_BuildUiTextStyleDescriptor();
   nRecruitRowIndex = 0;
   nRecruitControlTag = 0x636c7530;
   do {
@@ -205,21 +207,21 @@ void TUniversityView::OrphanRetStub_004c6fd0(int *pCityViewDialog)
     nRecruitRowIndex = nRecruitRowIndex + 1;
     nRecruitControlTag = nRecruitControlTag + 1;
   } while (nRecruitRowIndex < 9);
-  func_0x00406afa();
+  thunk_BuildUiTextStyleDescriptor();
   p_Var1 = this->vftable->OrphanLeaf_NoCall_Ins07_004d8920;
   uVar2 = (*p_Var1)();
   pControlResource = *(int *)CONCAT31(extraout_var_00,uVar2);
   (**(code **)(pControlResource + 0xc))();
   (**(code **)(pControlResource + 0x1b4))();
   (**(code **)(pControlResource + 0x1cc))();
-  func_0x00406afa();
+  thunk_BuildUiTextStyleDescriptor();
   pRecruitOrderEntry = 0x756e6974;
   uVar2 = (*p_Var1)();
   pControlResource = *(int *)CONCAT31(extraout_var_01,uVar2);
   (**(code **)(pControlResource + 0xc))();
   (**(code **)(pControlResource + 0x1b4))();
   iStack_68 = 0x4caf91;
-  func_0x00406afa();
+  thunk_BuildUiTextStyleDescriptor();
   pControlResource = 0;
   do {
                     /* Populate two-line title text region for selected category. */
@@ -234,7 +236,7 @@ void TUniversityView::OrphanRetStub_004c6fd0(int *pCityViewDialog)
     pControlResource = pControlResource + 1;
   } while ((short)pControlResource < 2);
   iStack_68 = 0x4cb007;
-  func_0x00406afa();
+  thunk_BuildUiTextStyleDescriptor();
   pRecruitOrderEntry = 0x64657363;
   uVar2 = (*p_Var1)();
   pControlResource = *(int *)CONCAT31(extraout_var_03,uVar2);
@@ -266,7 +268,7 @@ void TUniversityView::OrphanRetStub_004c6fd0(int *pCityViewDialog)
   pcStack_70 = (code *)&stack0xffffffc4;
   puStack_6c = (undefined1 *)0x0;
   iStack_74 = 0x4cb0b6;
-  func_0x00406afa();
+  thunk_BuildUiTextStyleDescriptor();
   iStack_68 = 0x4cb0c2;
   uVar2 = (*p_Var1)();
   pControlResource = *(int *)CONCAT31(extraout_var_05,uVar2);
@@ -513,7 +515,7 @@ TUniversityView::SelectUniversityRecruitmentEntry
 // GHIDRA_NAME TUniversityView::HandleEvent
 // GHIDRA_PROTO undefined __thiscall HandleEvent(int param_1, int param_2)
 
-void TUniversityView::HandleEvent(int param_1, int param_2)
+void __thiscall TUniversityView::HandleEvent(TUniversityView *this,int param_1,int param_2)
 
 {
   TUniversityViewVtbl *pTVar1;
@@ -615,7 +617,7 @@ void TUniversityView::HandleEvent(int param_1, int param_2)
    Returns:
    - void. */
 
-void TUniversityView::OrphanRetStub_004c6fb0(int *pCityViewDialog)
+void __thiscall TUniversityView::OrphanRetStub_004c6fb0(TUniversityView *this,int *pCityViewDialog)
 
 {
   _vslot_fn *p_Var1;
@@ -654,8 +656,8 @@ void TUniversityView::OrphanRetStub_004c6fb0(int *pCityViewDialog)
   local_4 = 0;
   CString::CString((CString *)&local_44.top);
   local_4 = CONCAT31(local_4._1_3_,1);
-  func_0x004093cc();
-  func_0x004093cc();
+  thunk_MapUiThemeCodeToStyleFlags();
+  thunk_MapUiThemeCodeToStyleFlags();
   if (*(int *)&this->field_0xa8 != 0) {
     p_Var1 = this->vftable->OrphanLeaf_NoCall_Ins07_004d8920;
     puStack_60 = (undefined1 *)0x61706170;
@@ -770,7 +772,7 @@ void TUniversityView::OrphanRetStub_004c6fb0(int *pCityViewDialog)
 // GHIDRA_NAME TUniversityView::Free
 // GHIDRA_PROTO undefined __thiscall Free(void)
 
-void TUniversityView::Free()
+void __thiscall TUniversityView::Free(TUniversityView *this)
 
 {
   func_0x00408db4();
@@ -789,7 +791,7 @@ void TUniversityView::Free()
 
 /* Setting prototype: void RenderUniversityRecruitmentRequirementGrid(RECT *pClipRect) */
 
-void TUniversityView::ApplyRectSlot110(RECT *pClipRect)
+void __thiscall TUniversityView::ApplyRectSlot110(TUniversityView *this,RECT *pClipRect)
 
 {
   undefined uVar1;
@@ -873,10 +875,11 @@ void TUniversityView::ApplyRectSlot110(RECT *pClipRect)
         if (0 < nHighestRequirementLevel) {
           nRequirementLevelColumn = iStack_c * 0x19;
           do {
-            CString__Format(&stack0xffffff98,&g_szDecimalFormat,
+            CString::Format(&stack0xffffff98,&g_szDecimalFormat,
                             (int)(char)(&g_abUniversityRequirementLevelById)
                                        [iVar3 + nRequirementId * 4]);
-            func_0x00408d6e(iVar3 * 0x28 + 0x27,nRequirementLevelColumn + 0x121);
+            thunk_SetQuickDrawTextOriginWithContextOffset
+                      (iVar3 * 0x28 + 0x27,nRequirementLevelColumn + 0x121);
             func_0x004029aa(&stack0xffffff98);
             iVar3 = iVar3 + 1;
           } while (iVar3 <= nHighestRequirementLevel);

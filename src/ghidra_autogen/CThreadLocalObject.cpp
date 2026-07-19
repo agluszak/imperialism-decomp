@@ -9,7 +9,7 @@
 
 /* WARNING: Removing unreachable block (ram,0x0062401d) */
 
-int CThreadLocalObject::GetData(undefined *param_1)
+int __thiscall CThreadLocalObject::GetData(CThreadLocalObject *this,undefined *param_1)
 
 {
   undefined4 uVar1;
@@ -17,14 +17,14 @@ int CThreadLocalObject::GetData(undefined *param_1)
   int iVar3;
   
   if (*(int *)this == 0) {
-    if (DAT_006a7cc0 == (DWORD *)0x0) {
-      DAT_006a7cc0 = (DWORD *)CThreadSlotData::CThreadSlotData();
+    if (_afxThreadData == (DWORD *)0x0) {
+      _afxThreadData = (DWORD *)CThreadSlotData::CThreadSlotData();
     }
     uVar1 = CThreadSlotData::AllocSlot();
     *(undefined4 *)this = uVar1;
   }
   iVar3 = *(int *)this;
-  pvVar2 = TlsGetValue(*DAT_006a7cc0);
+  pvVar2 = TlsGetValue(*_afxThreadData);
   if ((pvVar2 == (LPVOID)0x0) || (*(int *)((int)pvVar2 + 8) <= iVar3)) {
     iVar3 = 0;
   }
@@ -60,8 +60,8 @@ undefined4 __fastcall CThreadLocalObject::GetDataNA(int *param_1)
   LPVOID pvVar2;
   
   iVar1 = *param_1;
-  if ((iVar1 != 0) && (DAT_006a7cc0 != (DWORD *)0x0)) {
-    pvVar2 = TlsGetValue(*DAT_006a7cc0);
+  if ((iVar1 != 0) && (_afxThreadData != (DWORD *)0x0)) {
+    pvVar2 = TlsGetValue(*_afxThreadData);
     if ((pvVar2 != (LPVOID)0x0) && (iVar1 < *(int *)((int)pvVar2 + 8))) {
       return *(undefined4 *)(*(int *)((int)pvVar2 + 0xc) + iVar1 * 4);
     }
@@ -71,7 +71,7 @@ undefined4 __fastcall CThreadLocalObject::GetDataNA(int *param_1)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0062409A
 // GHIDRA_NAME CThreadLocalObject::~CThreadLocalObject
-// GHIDRA_PROTO undefined CThreadLocalObject::~CThreadLocalObject()
+// GHIDRA_PROTO undefined ~CThreadLocalObject()
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Library Function - Single Match
 // GHIDRA_COMMENT  public: __thiscall CThreadLocalObject::~CThreadLocalObject(void)
@@ -87,7 +87,7 @@ undefined4 __fastcall CThreadLocalObject::GetDataNA(int *param_1)
 void __fastcall CThreadLocalObject::~CThreadLocalObject(int *param_1)
 
 {
-  if ((*param_1 != 0) && (DAT_006a7cc0 != 0)) {
+  if ((*param_1 != 0) && (_afxThreadData != 0)) {
     CThreadSlotData::FreeSlot(*param_1);
   }
   *param_1 = 0;

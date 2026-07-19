@@ -39,17 +39,32 @@ undefined4 * TAnimator::CreateObject(void)
 // GHIDRA_NAME TAnimator::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TAnimator::GetRuntimeClass()
+CRuntimeClass * __thiscall TAnimator::GetRuntimeClass(TAnimator *this)
 
 {
   return &classTAnimator;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004A0AA0
+// GHIDRA_NAME TAnimator::TAnimator
+// GHIDRA_PROTO undefined __thiscall TAnimator(void)
+
+TAnimator * __thiscall TAnimator::TAnimator(TAnimator *this)
+
+{
+  func_0x00403049();
+  this->vftable = &_vftable_;
+  *(undefined4 *)&this->field_0x2c = 0;
+  *(undefined4 *)&this->field_0x20 = 0;
+  *(undefined4 *)&this->field_0x24 = 0;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A0AD0
 // GHIDRA_NAME TAnimator::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TAnimator * TAnimator::_scalar_deleting_destructor_(byte param_1)
+TAnimator * __thiscall TAnimator::_scalar_deleting_destructor_(TAnimator *this,byte param_1)
 
 {
   func_0x0040722f();
@@ -59,11 +74,48 @@ TAnimator * TAnimator::_scalar_deleting_destructor_(byte param_1)
   return this;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x004A0B20
+// GHIDRA_NAME TAnimator::InitializeUiTransientObjectRegistry
+// GHIDRA_PROTO undefined InitializeUiTransientObjectRegistry()
+
+void __fastcall TAnimator::InitializeUiTransientObjectRegistry(int param_1)
+
+{
+  undefined4 *puVar1;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 unaff_retaddr;
+  undefined4 *puStack_c;
+  undefined1 *puStack_8;
+  undefined4 uStack_4;
+  
+  uStack_4 = 0xffffffff;
+  puStack_8 = &LAB_0062fee2;
+  puStack_c = (undefined4 *)*unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &puStack_c;
+  func_0x0040174e(0);
+  *(undefined4 *)(param_1 + 0x10) = unaff_retaddr;
+  (**(code **)(*g_pDisplayMgr + 0x2c))(param_1 + 0x20,8,&stack0xffffffe0);
+  puVar1 = (undefined4 *)operator_new(0x20);
+  if (puVar1 == (undefined4 *)0x0) {
+    puVar1 = (undefined4 *)0x0;
+  }
+  else {
+    *puVar1 = &TObject::_vftable_;
+    puStack_c = puVar1;
+    CPtrList::CPtrList((CPtrList *)(puVar1 + 1),10);
+    *puVar1 = &TList::_vftable_;
+  }
+  *(undefined4 **)(param_1 + 0x24) = puVar1;
+  *(undefined4 *)(param_1 + 0x28) = 0;
+  *unaff_FS_OFFSET = 0;
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x004A0C00
 // GHIDRA_NAME TAnimator::OrphanCallChain_C2_I13_004a0c00
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C2_I13_004a0c00(void)
 
-void TAnimator::OrphanCallChain_C2_I13_004a0c00()
+void __thiscall TAnimator::OrphanCallChain_C2_I13_004a0c00(TAnimator *this)
 
 {
   (*g_pGlobalUiRootController->vftable->Helper_Uses_AllocateAndLinkBlockHead_At004869b0)(this,1);
@@ -72,10 +124,10 @@ void TAnimator::OrphanCallChain_C2_I13_004a0c00()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A0C30
-// GHIDRA_NAME TAnimator::CanHandleCityDialogActionFalse
-// GHIDRA_PROTO undefined __thiscall CanHandleCityDialogActionFalse(int param_1)
+// GHIDRA_NAME TAnimator::DoIdle
+// GHIDRA_PROTO undefined __thiscall DoIdle(int param_1)
 
-uint TAnimator::CanHandleCityDialogActionFalse(int param_1)
+uint __thiscall TAnimator::DoIdle(TAnimator *this,int param_1)
 
 {
   char cVar1;
@@ -106,11 +158,46 @@ uint TAnimator::CanHandleCityDialogActionFalse(int param_1)
   return in_EAX & 0xffffff00;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x004A0D10
+// GHIDRA_NAME TAnimator::AddObjectToUiTransientRegistry
+// GHIDRA_PROTO undefined __thiscall AddObjectToUiTransientRegistry(void)
+
+void __thiscall TAnimator::AddObjectToUiTransientRegistry(TAnimator *this)
+
+{
+  (**(code **)(**(int **)&this->field_0x24 + 0x30))();
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004A0D30
+// GHIDRA_NAME TAnimator::FindRegisteredAnimationByTag
+// GHIDRA_PROTO undefined __thiscall FindRegisteredAnimationByTag(int param_1)
+
+int __thiscall TAnimator::FindRegisteredAnimationByTag(TAnimator *this,int param_1)
+
+{
+  int iVar1;
+  int iVar2;
+  
+  if (this != (TAnimator *)0x0) {
+    iVar1 = func_0x00401118();
+    iVar2 = func_0x00403620();
+    while ((iVar2 != 0 && (*(int *)(iVar1 + 0x18) != param_1))) {
+      iVar1 = func_0x00406d20();
+      iVar2 = func_0x00403620();
+    }
+    if ((iVar1 != 0) && (*(int *)(iVar1 + 0x18) == param_1)) {
+      return iVar1;
+    }
+  }
+  return 0;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x004A0DC0
 // GHIDRA_NAME TAnimator::Free
 // GHIDRA_PROTO undefined __thiscall Free(void)
 
-void TAnimator::Free()
+void __thiscall TAnimator::Free(TAnimator *this)
 
 {
   (*g_pGlobalUiRootController->vftable->Helper_Uses_AllocateAndLinkBlockHead_At004869b0)(this,0);
@@ -126,7 +213,7 @@ void TAnimator::Free()
 // GHIDRA_NAME TAnimator::ReadFrom
 // GHIDRA_PROTO undefined __thiscall ReadFrom(int * param_1)
 
-void TAnimator::ReadFrom(int *param_1)
+void __thiscall TAnimator::ReadFrom(TAnimator *this,int *param_1)
 
 {
   int iVar1;
@@ -145,7 +232,7 @@ void TAnimator::ReadFrom(int *param_1)
 // GHIDRA_NAME TAnimator::WriteTo
 // GHIDRA_PROTO undefined __thiscall WriteTo(int * param_1)
 
-void TAnimator::WriteTo(int *param_1)
+void __thiscall TAnimator::WriteTo(TAnimator *this,int *param_1)
 
 {
   (**(code **)(*param_1 + 0x8c))(*(undefined4 *)&this->field_0x10);
@@ -153,11 +240,50 @@ void TAnimator::WriteTo(int *param_1)
   return;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x004A0E90
+// GHIDRA_NAME TAnimator::TranslateListRectsAndDropNonIntersectingEntries
+// GHIDRA_PROTO undefined TranslateListRectsAndDropNonIntersectingEntries()
+
+void __thiscall
+TAnimator::TranslateListRectsAndDropNonIntersectingEntries(int param_1,int param_2,int param_3)
+
+{
+  CPtrList *this;
+  char cVar1;
+  int *piVar2;
+  int iVar3;
+  int *piVar4;
+  undefined1 local_10 [16];
+  
+  if (param_1 != 0) {
+    piVar2 = (int *)func_0x00401118();
+    iVar3 = func_0x00403620();
+    while (iVar3 != 0) {
+      piVar2[7] = piVar2[7] + param_2;
+      piVar2[8] = piVar2[8] + param_3;
+      piVar2[9] = piVar2[9] + param_2;
+      piVar2[10] = piVar2[10] + param_3;
+      cVar1 = func_0x0040633e(piVar2 + 7,&stack0x0000000c,local_10);
+      if (cVar1 == '\0') {
+        this = (CPtrList *)(*(int *)(param_1 + 0x24) + 4);
+        piVar4 = (int *)CPtrList::Find(this,(int)piVar2,(undefined4 *)0x0);
+        if (piVar4 != (int *)0x0) {
+          CPtrList::RemoveAt(this,piVar4);
+        }
+        (**(code **)(*piVar2 + 0x1c))();
+      }
+      piVar2 = (int *)func_0x00406d20();
+      iVar3 = func_0x00403620();
+    }
+  }
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x004A0FA0
 // GHIDRA_NAME TAnimator::RemoveUiTransientRegistryObjectByTag
 // GHIDRA_PROTO undefined __thiscall RemoveUiTransientRegistryObjectByTag(int param_1)
 
-void TAnimator::RemoveUiTransientRegistryObjectByTag(int param_1)
+void __thiscall TAnimator::RemoveUiTransientRegistryObjectByTag(TAnimator *this,int param_1)
 
 {
   CPtrList *this_00;

@@ -37,7 +37,7 @@ undefined4 * TNextTradeCommand::CreateObject(void)
 // GHIDRA_NAME TNextTradeCommand::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TNextTradeCommand::GetRuntimeClass()
+CRuntimeClass * __thiscall TNextTradeCommand::GetRuntimeClass(TNextTradeCommand *this)
 
 {
   return &classTNextTradeCommand;
@@ -47,7 +47,8 @@ CRuntimeClass * TNextTradeCommand::GetRuntimeClass()
 // GHIDRA_NAME TNextTradeCommand::ConstructTNextTradeCommandBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTNextTradeCommandBaseState(void)
 
-TNextTradeCommand * TNextTradeCommand::ConstructTNextTradeCommandBaseState()
+TNextTradeCommand * __thiscall
+TNextTradeCommand::ConstructTNextTradeCommandBaseState(TNextTradeCommand *this)
 
 {
   func_0x00403d5f();
@@ -59,7 +60,8 @@ TNextTradeCommand * TNextTradeCommand::ConstructTNextTradeCommandBaseState()
 // GHIDRA_NAME TNextTradeCommand::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TNextTradeCommand * TNextTradeCommand::_scalar_deleting_destructor_(byte param_1)
+TNextTradeCommand * __thiscall
+TNextTradeCommand::_scalar_deleting_destructor_(TNextTradeCommand *this,byte param_1)
 
 {
   func_0x00405e61();
@@ -73,7 +75,8 @@ TNextTradeCommand * TNextTradeCommand::_scalar_deleting_destructor_(byte param_1
 // GHIDRA_NAME TNextTradeCommand::DestructTNextTradeCommandAndMaybeFree_Impl
 // GHIDRA_PROTO undefined __thiscall DestructTNextTradeCommandAndMaybeFree_Impl(void)
 
-void TNextTradeCommand::DestructTNextTradeCommandAndMaybeFree_Impl()
+void __thiscall
+TNextTradeCommand::DestructTNextTradeCommandAndMaybeFree_Impl(TNextTradeCommand *this)
 
 {
   this->vftable =
@@ -85,7 +88,7 @@ void TNextTradeCommand::DestructTNextTradeCommandAndMaybeFree_Impl()
 // GHIDRA_NAME TNextTradeCommand::DoIt
 // GHIDRA_PROTO undefined __thiscall DoIt(void)
 
-void TNextTradeCommand::DoIt()
+void __thiscall TNextTradeCommand::DoIt(TNextTradeCommand *this)
 
 {
   func_0x00401ae1();
@@ -96,7 +99,7 @@ void TNextTradeCommand::DoIt()
 // GHIDRA_NAME TNextTradeCommand::CreateNextTradeCommandAndFormatPrompt
 // GHIDRA_PROTO undefined __thiscall CreateNextTradeCommandAndFormatPrompt(void)
 
-void TNextTradeCommand::CreateNextTradeCommandAndFormatPrompt()
+void __thiscall TNextTradeCommand::CreateNextTradeCommandAndFormatPrompt(TNextTradeCommand *this)
 
 {
   TNextTradeCommand_OrphanCallChain_C1_I17_00487470_0x04 *pTVar1;
@@ -167,7 +170,7 @@ void TNextTradeCommand::CreateNextTradeCommandAndFormatPrompt()
       CString::CString((CString *)&stack0xffffffdc);
       if (this[6].field_0xd == '\0') {
         CString::CString((CString *)&stack0xffffffe0);
-        CString__Format();
+        CString::Format();
         (*g_pSimMgr->vftable[0x10].slot_0x04)();
         puStack_4c = &stack0xffffffd0;
         pcStack_48 = CStack_2c.m_pchData;

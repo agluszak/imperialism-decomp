@@ -41,7 +41,7 @@ undefined4 * TDropShadowText::CreateObject(void)
 // GHIDRA_NAME TDropShadowText::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TDropShadowText::GetRuntimeClass()
+CRuntimeClass * __thiscall TDropShadowText::GetRuntimeClass(TDropShadowText *this)
 
 {
   return &classTDropShadowText;
@@ -66,7 +66,7 @@ CRuntimeClass * TDropShadowText::GetRuntimeClass()
    2. Clears option-state bytes used by selection logic.
    3. Installs selectable-option base vtable PTR_LAB_0066ce00. */
 
-TDropShadowText * TDropShadowText::TDropShadowText()
+TDropShadowText * __thiscall TDropShadowText::TDropShadowText(TDropShadowText *this)
 
 {
   func_0x0040541b();
@@ -83,7 +83,8 @@ TDropShadowText * TDropShadowText::TDropShadowText()
 // GHIDRA_NAME TDropShadowText::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TDropShadowText * TDropShadowText::_scalar_deleting_destructor_(byte param_1)
+TDropShadowText * __thiscall
+TDropShadowText::_scalar_deleting_destructor_(TDropShadowText *this,byte param_1)
 
 {
   func_0x00401ad7();
@@ -97,7 +98,7 @@ TDropShadowText * TDropShadowText::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TDropShadowText::ApplyRectSlot110
 // GHIDRA_PROTO undefined __thiscall ApplyRectSlot110(void)
 
-void TDropShadowText::ApplyRectSlot110()
+void __thiscall TDropShadowText::ApplyRectSlot110(TDropShadowText *this)
 
 {
   TDropShadowTextVtbl *pTVar1;
@@ -132,9 +133,9 @@ void TDropShadowText::ApplyRectSlot110()
   puStack_8 = (undefined1 *)0x0;
   this_00 = (CDC *)func_0x004021c6();
   pHVar2 = CreateRectRgnIndirect(&RStack_20);
-  CBrush::CGdiObject__Attach((CBrush *)&ppuStack_38,(int)pHVar2);
+  CGdiObject::Attach((CGdiObject *)&ppuStack_38,(int)pHVar2);
   CDC::SelectClipRgn(this_00,(int)&ppuStack_38);
-  CGdiObject__DeleteObject();
+  CGdiObject::DeleteObject();
   puStack_8 = (undefined1 *)0xffffffff;
   ppuStack_38 = &CBrush::_vftable_;
   func_0x00408a21();

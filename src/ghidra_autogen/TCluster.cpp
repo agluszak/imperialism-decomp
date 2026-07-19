@@ -49,7 +49,7 @@ undefined4 * TCluster::CreateObject(void)
 // GHIDRA_NAME TCluster::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TCluster::GetRuntimeClass()
+CRuntimeClass * __thiscall TCluster::GetRuntimeClass(TCluster *this)
 
 {
   return &classTCluster;
@@ -59,7 +59,7 @@ CRuntimeClass * TCluster::GetRuntimeClass()
 // GHIDRA_NAME TCluster::ConstructUiResourceEntryType4B0C0
 // GHIDRA_PROTO undefined __thiscall ConstructUiResourceEntryType4B0C0(void)
 
-TCluster * TCluster::ConstructUiResourceEntryType4B0C0()
+TCluster * __thiscall TCluster::ConstructUiResourceEntryType4B0C0(TCluster *this)
 
 {
   ushort uVar1;
@@ -85,7 +85,7 @@ TCluster * TCluster::ConstructUiResourceEntryType4B0C0()
 // GHIDRA_NAME TCluster::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TCluster * TCluster::_scalar_deleting_destructor_(byte param_1)
+TCluster * __thiscall TCluster::_scalar_deleting_destructor_(TCluster *this,byte param_1)
 
 {
   func_0x00407603();
@@ -105,7 +105,8 @@ TCluster * TCluster::_scalar_deleting_destructor_(byte param_1)
 /* Setting prototype: void DispatchPanelControlEvent(int nEventClass, void* pEventPayload, int
    nEventFlags) */
 
-void TCluster::HandleEvent(int nEventClass, void *pEventPayload, int nEventFlags)
+void __thiscall
+TCluster::HandleEvent(TCluster *this,int nEventClass,void *pEventPayload,int nEventFlags)
 
 {
   undefined uVar1;
@@ -169,7 +170,7 @@ void TCluster::HandleEvent(int nEventClass, void *pEventPayload, int nEventFlags
 // GHIDRA_NAME TCluster::OrphanTiny_GetDwordEcxOffset_84_00491770
 // GHIDRA_PROTO undefined __thiscall OrphanTiny_GetDwordEcxOffset_84_00491770(void)
 
-undefined4 TCluster::OrphanTiny_GetDwordEcxOffset_84_00491770()
+undefined4 __thiscall TCluster::OrphanTiny_GetDwordEcxOffset_84_00491770(TCluster *this)
 
 {
   return *(undefined4 *)&this->field_0x84;
@@ -179,7 +180,7 @@ undefined4 TCluster::OrphanTiny_GetDwordEcxOffset_84_00491770()
 // GHIDRA_NAME TCluster::OrphanCallChain_C2_I51_00491790
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C2_I51_00491790(int param_1)
 
-void TCluster::OrphanCallChain_C2_I51_00491790(int param_1)
+void __thiscall TCluster::OrphanCallChain_C2_I51_00491790(TCluster *this,int param_1)
 
 {
   int *piVar1;
@@ -223,7 +224,7 @@ void TCluster::OrphanCallChain_C2_I51_00491790(int param_1)
 // GHIDRA_NAME TCluster::ShallowClone_08
 // GHIDRA_PROTO undefined __thiscall ShallowClone_08(void)
 
-int TCluster::ShallowClone_08()
+int __thiscall TCluster::ShallowClone_08(TCluster *this)
 
 {
   undefined uVar1;
@@ -340,5 +341,94 @@ TCluster::InvokeDialogFactoryFromPacket
   }
   g_McAppUiActiveFlag_006950AC = iVar2;
   return piVar4;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00492670
+// GHIDRA_NAME TCluster::SerializeRecordList_0x0C_WithBlockPool_C
+// GHIDRA_PROTO undefined __thiscall SerializeRecordList_0x0C_WithBlockPool_C(CArchive * param_1)
+
+void __thiscall TCluster::SerializeRecordList_0x0C_WithBlockPool_C(TCluster *this,CArchive *param_1)
+
+{
+  int iVar1;
+  CArchive *this_00;
+  CArchive *pCVar2;
+  int iVar3;
+  int iVar4;
+  int *piVar5;
+  int iVar6;
+  
+  this_00 = param_1;
+  if ((~param_1->m_nMode & 1U) == 0) {
+    for (iVar3 = CArchive::ReadCount(); iVar3 != 0; iVar3 = iVar3 + -1) {
+      if ((~this_00->m_nMode & 1U) == 0) {
+        CArchive::Read(this_00,(int)&param_1,4);
+      }
+      else {
+        CArchive::Write(this_00,(int)&param_1,4);
+      }
+      pCVar2 = param_1;
+      iVar1 = this->padding_08_to_0b;
+      if (this->field10 == 0) {
+        iVar4 = CPlex::Create(&this->field14,this->field18,0xc);
+        iVar6 = this->field18;
+        piVar5 = (int *)(iVar4 + -8 + iVar6 * 0xc);
+        if (-1 < iVar6 + -1) {
+          do {
+            *piVar5 = this->field10;
+            this->field10 = (int)piVar5;
+            piVar5 = piVar5 + -3;
+            iVar6 = iVar6 + -1;
+          } while (iVar6 != 0);
+        }
+      }
+      piVar5 = (int *)this->field10;
+      this->field10 = *piVar5;
+      piVar5[1] = iVar1;
+      *piVar5 = 0;
+      this->field0c = this->field0c + 1;
+      piVar5[2] = 0;
+      piVar5[2] = (int)pCVar2;
+      if ((undefined4 *)this->padding_08_to_0b == (undefined4 *)0x0) {
+        this->field04 = (int)piVar5;
+      }
+      else {
+        *(undefined4 *)this->padding_08_to_0b = piVar5;
+      }
+      this->padding_08_to_0b = piVar5;
+    }
+  }
+  else {
+    CArchive::WriteCount(param_1,(TNetMgr_GetTNetMgrClassNamePointer_0x00 *)this->field0c);
+    piVar5 = (int *)this->field04;
+    if (piVar5 != (int *)0x0) {
+      do {
+        if ((~this_00->m_nMode & 1U) == 0) {
+          CArchive::Read(this_00,(int)(piVar5 + 2),4);
+        }
+        else {
+          CArchive::Write(this_00,(int)(piVar5 + 2),4);
+        }
+        piVar5 = (int *)*piVar5;
+      } while (piVar5 != (int *)0x0);
+      return;
+    }
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00492950
+// GHIDRA_NAME TCluster::WrapperFor_FreeHeapBufferIfNotNull_At00492950
+// GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At00492950(byte param_1)
+
+TCluster * __thiscall
+TCluster::WrapperFor_FreeHeapBufferIfNotNull_At00492950(TCluster *this,byte param_1)
+
+{
+  func_0x004069e7();
+  if ((param_1 & 1) != 0) {
+    operator_delete(this);
+  }
+  return this;
 }
 

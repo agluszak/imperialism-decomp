@@ -3,6 +3,38 @@
 // Program: Imperialism.exe
 // Bucket: CString.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x004B0970
+// GHIDRA_NAME CString::CString(void)
+// GHIDRA_PROTO undefined CString(void)()
+
+CString * __fastcall CString::CString_void_(CString *param_1)
+
+{
+  CString(param_1);
+  return param_1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004D6B70
+// GHIDRA_NAME CString::operator=
+// GHIDRA_PROTO undefined operator=()
+
+CString * __thiscall CString::operator=(CString *param_1,CString *param_2)
+
+{
+  operator=(param_1,param_2);
+  return param_1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005DB2F0
+// GHIDRA_NAME CString::GetLength
+// GHIDRA_PROTO undefined GetLength()
+
+undefined4 __fastcall CString::GetLength(int *param_1)
+
+{
+  return *(undefined4 *)(*param_1 + -8);
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x005FEB3B
 // GHIDRA_NAME CString::CString
 // GHIDRA_PROTO undefined CString()
@@ -133,7 +165,7 @@ undefined4 CString::Mid(void)
   CString(*(CString **)(unaff_EBP + 8),(CString *)(unaff_EBP + 0xc));
   *(undefined4 *)(unaff_EBP + -0x14) = 1;
   *(undefined1 *)(unaff_EBP + -4) = 0;
-  CString::~CString((CString *)(unaff_EBP + 0xc));
+  ~CString((CString *)(unaff_EBP + 0xc));
   uVar2 = *(undefined4 *)(unaff_EBP + 8);
   *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
   return uVar2;
@@ -180,7 +212,7 @@ undefined4 CString::Right(void)
   CString(*(CString **)(unaff_EBP + 8),(CString *)(unaff_EBP + 0xc));
   *(undefined4 *)(unaff_EBP + -0x10) = 1;
   *(undefined1 *)(unaff_EBP + -4) = 0;
-  CString::~CString((CString *)(unaff_EBP + 0xc));
+  ~CString((CString *)(unaff_EBP + 0xc));
   uVar2 = *(undefined4 *)(unaff_EBP + 8);
   *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
   return uVar2;
@@ -225,7 +257,7 @@ undefined4 CString::Left(void)
   CString(*(CString **)(unaff_EBP + 8),(CString *)(unaff_EBP + 0xc));
   *(undefined4 *)(unaff_EBP + -0x10) = 1;
   *(undefined1 *)(unaff_EBP + -4) = 0;
-  CString::~CString((CString *)(unaff_EBP + 0xc));
+  ~CString((CString *)(unaff_EBP + 0xc));
   uVar1 = *(undefined4 *)(unaff_EBP + 8);
   *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
   return uVar1;
@@ -512,6 +544,17 @@ LAB_005ff0df:
   } while( true );
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x005FF15E
+// GHIDRA_NAME CString::Format
+// GHIDRA_PROTO undefined Format()
+
+void CString::Format(undefined4 param_1,undefined4 param_2)
+
+{
+  FormatV(param_2,&stack0x0000000c);
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x005FF1BA
 // GHIDRA_NAME CString::FormatMessageA
 // GHIDRA_PROTO undefined FormatMessageA()
@@ -558,7 +601,7 @@ void CString::FormatMessageA(void)
   _EH_prolog();
   CString((CString *)(unaff_EBP + -0x14));
   *(undefined4 *)(unaff_EBP + -4) = 0;
-  CString__LoadStringA(*(undefined4 *)(unaff_EBP + 0xc));
+  LoadStringA(*(undefined4 *)(unaff_EBP + 0xc));
   *(int *)(unaff_EBP + -0x18) = unaff_EBP + 0x10;
   DVar1 = ::FormatMessageA(0x500,*(LPCVOID *)(unaff_EBP + -0x14),0,0,(LPSTR)(unaff_EBP + -0x10),0,
                            (va_list *)(unaff_EBP + -0x18));
@@ -569,7 +612,7 @@ void CString::FormatMessageA(void)
   LocalFree(*(HLOCAL *)(unaff_EBP + -0x10));
   *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
   *(undefined4 *)(unaff_EBP + -0x18) = 0;
-  CString::~CString((CString *)(unaff_EBP + -0x14));
+  ~CString((CString *)(unaff_EBP + -0x14));
   *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
   return;
 }
@@ -654,7 +697,7 @@ void __fastcall CString::TrimLeft(CString *param_1)
 // GHIDRA_NAME CString::CString
 // GHIDRA_PROTO void __thiscall CString(void)
 
-void CString::CString()
+void __thiscall CString::CString(CString *this)
 
 {
   undefined4 *puVar1;
@@ -668,7 +711,7 @@ void CString::CString()
 // GHIDRA_NAME CString::CString
 // GHIDRA_PROTO CString * __thiscall CString(CString * src_ref)
 
-CString * CString::CString(CString *src_ref)
+CString * __thiscall CString::CString(CString *this,CString *src_ref)
 
 {
   char *pcVar1;
@@ -691,7 +734,7 @@ CString * CString::CString(CString *src_ref)
 // GHIDRA_NAME CString::AllocBuffer
 // GHIDRA_PROTO void __thiscall AllocBuffer(int text_length)
 
-void CString::AllocBuffer(int text_length)
+void __thiscall CString::AllocBuffer(CString *this,int text_length)
 
 {
   undefined4 *puVar1;
@@ -734,7 +777,7 @@ void __fastcall CString::Release(int *param_1)
   LONG LVar1;
   int *piVar2;
   
-  if ((LONG *)(*param_1 + -0xc) != (LONG *)PTR_DAT_0069be08) {
+  if ((LONG *)(*param_1 + -0xc) != (LONG *)afxDataNil) {
     LVar1 = InterlockedDecrement((LONG *)(*param_1 + -0xc));
     if (LVar1 < 1) {
       operator_delete(*param_1 + -0xc);
@@ -757,7 +800,7 @@ void __fastcall CString::Empty(CString *param_1)
       Release();
       return;
     }
-    operator=(param_1,&DAT_006a6128);
+    operator=(param_1,&afxChNil);
   }
   return;
 }
@@ -766,7 +809,7 @@ void __fastcall CString::Empty(CString *param_1)
 // GHIDRA_NAME CString::CopyBeforeWrite
 // GHIDRA_PROTO void __thiscall CopyBeforeWrite(void)
 
-void CString::CopyBeforeWrite()
+void __thiscall CString::CopyBeforeWrite(CString *this)
 
 {
   char *pcVar1;
@@ -784,7 +827,7 @@ void CString::CopyBeforeWrite()
 // GHIDRA_NAME CString::AllocBeforeWrite
 // GHIDRA_PROTO void __thiscall AllocBeforeWrite(int required_capacity)
 
-void CString::AllocBeforeWrite(int required_capacity)
+void __thiscall CString::AllocBeforeWrite(CString *this,int required_capacity)
 
 {
   if ((1 < *(int *)(this->m_pchData + -0xc)) || (*(int *)(this->m_pchData + -4) < required_capacity)
@@ -797,14 +840,14 @@ void CString::AllocBeforeWrite(int required_capacity)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006058E2
 // GHIDRA_NAME CString::~CString
-// GHIDRA_PROTO void __thiscall CString::~CString(void)
+// GHIDRA_PROTO void __thiscall ~CString(void)
 
-void CString::~CString()
+void __thiscall CString::~CString(CString *this)
 
 {
   LONG LVar1;
   
-  if (this->m_pchData + -0xc != PTR_DAT_0069be08) {
+  if (this->m_pchData + -0xc != afxDataNil) {
     LVar1 = InterlockedDecrement((LONG *)(this->m_pchData + -0xc));
     if (LVar1 < 1) {
       operator_delete(this->m_pchData + -0xc);
@@ -855,7 +898,7 @@ CString::AllocCopy(int *param_1,CString *param_2,int param_3,int param_4,int par
 /* Initializes a shared-string ref from either an ANSI C-string pointer or (when high word is zero)
    a resource/string-table id in the low word. */
 
-void CString::CString(char *text_or_resource_id)
+void __thiscall CString::CString(CString *this,char *text_or_resource_id)
 
 {
   undefined4 *puVar1;
@@ -865,7 +908,7 @@ void CString::CString(char *text_or_resource_id)
   this->m_pchData = (char *)*puVar1;
   if (text_or_resource_id != (char *)0x0) {
     if ((short)((uint)text_or_resource_id >> 0x10) == 0) {
-      CString__LoadStringA((uint)text_or_resource_id & 0xffff);
+      LoadStringA((uint)text_or_resource_id & 0xffff);
       return;
     }
     if (text_or_resource_id != (char *)0x0) {
@@ -923,7 +966,7 @@ CString * __thiscall CString::CString(CString *param_1,int param_2)
 // GHIDRA_NAME CString::AssignCopy
 // GHIDRA_PROTO void __thiscall AssignCopy(int new_length, char * src_text)
 
-void CString::AssignCopy(int new_length, char *src_text)
+void __thiscall CString::AssignCopy(CString *this,int new_length,char *src_text)
 
 {
   AllocBeforeWrite(this,new_length);
@@ -946,7 +989,7 @@ CString * __thiscall CString::operator=(CString *this,CString *src_ref)
   pcVar1 = src_ref->m_pchData;
   if (this->m_pchData != pcVar1) {
     piVar2 = (astruct_29 *)(this->m_pchData + -0xc);
-    if (((piVar2->field0_0x0 < 0) && (piVar2 != (astruct_29 *)PTR_DAT_0069be08)) ||
+    if (((piVar2->field0_0x0 < 0) && (piVar2 != (astruct_29 *)afxDataNil)) ||
        (*(int *)(pcVar1 + -0xc) < 0)) {
       AssignCopy(this,*(int *)(pcVar1 + -8),pcVar1);
     }
@@ -1015,7 +1058,8 @@ CString * __thiscall CString::operator=(CString *param_1,int param_2)
 // GHIDRA_NAME CString::ConcatCopy
 // GHIDRA_PROTO void __thiscall ConcatCopy(int lhs_len, char * lhs_text, int rhs_len, char * rhs_text)
 
-void CString::ConcatCopy(int lhs_len, char *lhs_text, int rhs_len, char *rhs_text)
+void __thiscall
+CString::ConcatCopy(CString *this,int lhs_len,char *lhs_text,int rhs_len,char *rhs_text)
 
 {
   if (rhs_len + lhs_len != 0) {
@@ -1030,7 +1074,7 @@ void CString::ConcatCopy(int lhs_len, char *lhs_text, int rhs_len, char *rhs_tex
 // GHIDRA_NAME CString::ConcatInPlace
 // GHIDRA_PROTO void __thiscall ConcatInPlace(int append_len, char * append_text)
 
-void CString::ConcatInPlace(int append_len, char *append_text)
+void __thiscall CString::ConcatInPlace(CString *this,int append_len,char *append_text)
 
 {
   char *lhs_text;
@@ -1096,7 +1140,7 @@ CString * __thiscall CString::operator+=(CString *param_1,undefined4 *param_2)
 // GHIDRA_NAME CString::GetBuffer
 // GHIDRA_PROTO int __thiscall GetBuffer(int min_capacity)
 
-int CString::GetBuffer(int min_capacity)
+int __thiscall CString::GetBuffer(CString *this,int min_capacity)
 
 {
   char *pcVar1;
@@ -1120,7 +1164,7 @@ int CString::GetBuffer(int min_capacity)
 // GHIDRA_NAME CString::ReleaseBuffer
 // GHIDRA_PROTO void __thiscall ReleaseBuffer(int new_length)
 
-void CString::ReleaseBuffer(int new_length)
+void __thiscall CString::ReleaseBuffer(CString *this,int new_length)
 
 {
   CopyBeforeWrite(this);
@@ -1136,7 +1180,7 @@ void CString::ReleaseBuffer(int new_length)
 // GHIDRA_NAME CString::GetBufferSetLength
 // GHIDRA_PROTO int __thiscall GetBufferSetLength(int new_length)
 
-int CString::GetBufferSetLength(int new_length)
+int __thiscall CString::GetBufferSetLength(CString *this,int new_length)
 
 {
   GetBuffer(this,new_length);
@@ -1167,7 +1211,7 @@ void __fastcall CString::LockBuffer(CString *param_1)
 // GHIDRA_NAME CString::Find
 // GHIDRA_PROTO undefined __thiscall Find(undefined1 param_1)
 
-int CString::Find(undefined1 param_1)
+int __thiscall CString::Find(CString *this,undefined1 param_1)
 
 {
   int iVar1;
@@ -1183,14 +1227,26 @@ int CString::Find(undefined1 param_1)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00605E52
-// GHIDRA_NAME CString::CString::MakeUpper
-// GHIDRA_PROTO undefined CString::MakeUpper()
+// GHIDRA_NAME CString::MakeUpper
+// GHIDRA_PROTO undefined MakeUpper()
 
-void __fastcall CString::CString__MakeUpper(CString *param_1)
+void __fastcall CString::MakeUpper(CString *param_1)
 
 {
   CopyBeforeWrite(param_1);
   __mbsupr(param_1->m_pchData);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00605E88
+// GHIDRA_NAME CString::SetAt
+// GHIDRA_PROTO undefined SetAt()
+
+void __thiscall CString::SetAt(CString *param_1,int param_2,char param_3)
+
+{
+  CopyBeforeWrite(param_1);
+  param_1->m_pchData[param_2] = param_3;
   return;
 }
 
@@ -1227,7 +1283,7 @@ CString * __thiscall CString::_vector_deleting_destructor_(CString *param_1,byte
   CString *pCVar1;
   
   if ((param_2 & 2) == 0) {
-    CString::~CString(param_1);
+    ~CString(param_1);
     pCVar1 = param_1;
     if ((param_2 & 1) == 0) {
       return param_1;
@@ -1239,5 +1295,36 @@ CString * __thiscall CString::_vector_deleting_destructor_(CString *param_1,byte
   }
   operator_delete(pCVar1);
   return param_1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0060CE85
+// GHIDRA_NAME CString::LoadStringA
+// GHIDRA_PROTO undefined LoadStringA()
+
+bool CString::LoadStringA(undefined4 param_1)
+
+{
+  int iVar1;
+  int iVar2;
+  int iVar3;
+  char local_108 [256];
+  CString *local_8;
+  
+  iVar1 = AfxLoadString(param_1,local_108,0x100);
+  if (0x100U - iVar1 < 3) {
+    iVar2 = 0x100;
+    do {
+      iVar3 = iVar2 + 0x100;
+      iVar1 = iVar3;
+      iVar2 = GetBuffer(local_8,iVar2 + 0xff);
+      iVar1 = AfxLoadString(param_1,iVar2,iVar1);
+      iVar2 = iVar3;
+    } while (iVar3 - iVar1 < 3);
+    ReleaseBuffer(local_8,-1);
+  }
+  else {
+    operator=(local_8,local_108);
+  }
+  return 0 < iVar1;
 }
 

@@ -38,7 +38,7 @@ undefined4 * TUpDownPictureButton::CreateObject(void)
 // GHIDRA_NAME TUpDownPictureButton::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TUpDownPictureButton::GetRuntimeClass()
+CRuntimeClass * __thiscall TUpDownPictureButton::GetRuntimeClass(TUpDownPictureButton *this)
 
 {
   return &classTUpDownPictureButton;
@@ -48,7 +48,8 @@ CRuntimeClass * TUpDownPictureButton::GetRuntimeClass()
 // GHIDRA_NAME TUpDownPictureButton::TUpDownPictureButton
 // GHIDRA_PROTO undefined __thiscall TUpDownPictureButton(void)
 
-TUpDownPictureButton * TUpDownPictureButton::TUpDownPictureButton()
+TUpDownPictureButton * __thiscall
+TUpDownPictureButton::TUpDownPictureButton(TUpDownPictureButton *this)
 
 {
   func_0x00401122();
@@ -61,7 +62,8 @@ TUpDownPictureButton * TUpDownPictureButton::TUpDownPictureButton()
 // GHIDRA_NAME TUpDownPictureButton::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TUpDownPictureButton * TUpDownPictureButton::_scalar_deleting_destructor_(byte param_1)
+TUpDownPictureButton * __thiscall
+TUpDownPictureButton::_scalar_deleting_destructor_(TUpDownPictureButton *this,byte param_1)
 
 {
   func_0x00402c6b();
@@ -75,7 +77,7 @@ TUpDownPictureButton * TUpDownPictureButton::_scalar_deleting_destructor_(byte p
 // GHIDRA_NAME TUpDownPictureButton::IsSelected
 // GHIDRA_PROTO undefined __thiscall IsSelected(void)
 
-void TUpDownPictureButton::IsSelected()
+void __thiscall TUpDownPictureButton::IsSelected(TUpDownPictureButton *this)
 
 {
   undefined uVar1;

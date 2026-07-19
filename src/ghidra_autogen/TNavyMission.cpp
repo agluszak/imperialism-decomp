@@ -7,7 +7,7 @@
 // GHIDRA_NAME TNavyMission::ConstructTNavyMission
 // GHIDRA_PROTO undefined __thiscall ConstructTNavyMission(undefined4 param_1)
 
-void TNavyMission::ConstructTNavyMission(undefined4 param_1)
+void __thiscall TNavyMission::ConstructTNavyMission(TNavyMission *this,undefined4 param_1)
 
 {
   this[8] = (TNavyMission)0x2;
@@ -31,7 +31,8 @@ void TNavyMission::ConstructTNavyMission(undefined4 param_1)
 // GHIDRA_NAME TNavyMission::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TNavyMission * TNavyMission::_scalar_deleting_destructor_(byte param_1)
+TNavyMission * __thiscall
+TNavyMission::_scalar_deleting_destructor_(TNavyMission *this,byte param_1)
 
 {
   func_0x004044da();
@@ -87,14 +88,14 @@ undefined4 * TNavyMission::CreateObject(void)
 undefined ** TNavyMission::GetRuntimeClass(void)
 
 {
-  return &PTR_s_TNavyMission_00697998;
+  return &classTNavyMission;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00536FC0
 // GHIDRA_NAME TNavyMission::EnsureMissionCurrentTargetContextIsValid
 // GHIDRA_PROTO undefined __thiscall EnsureMissionCurrentTargetContextIsValid(void)
 
-uint TNavyMission::EnsureMissionCurrentTargetContextIsValid()
+uint __thiscall TNavyMission::EnsureMissionCurrentTargetContextIsValid(TNavyMission *this)
 
 {
   char cVar1;
@@ -111,5 +112,239 @@ uint TNavyMission::EnsureMissionCurrentTargetContextIsValid()
     }
   }
   return -(uint)(*(int *)(this + 0x18) != 0) & (uint)this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00537060
+// GHIDRA_NAME TNavyMission::GetActiveTargetZoneByState28
+// GHIDRA_PROTO undefined GetActiveTargetZoneByState28()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Returns budget/limit field based on mission mode at +0x28: mode0->+0x18, mode1/2->+0x14, else 0. Used by mission-order prioritizer vtables.
+// GHIDRA_COMMENT_END
+
+/* Returns budget/limit field based on mission mode at +0x28: mode0->+0x18, mode1/2->+0x14, else 0.
+   Used by mission-order prioritizer vtables. */
+
+undefined4 __fastcall TNavyMission::GetActiveTargetZoneByState28(int param_1)
+
+{
+  int iVar1;
+  
+  iVar1 = *(int *)(param_1 + 0x28);
+  if (iVar1 == 0) {
+    return *(undefined4 *)(param_1 + 0x18);
+  }
+  if ((0 < iVar1) && (iVar1 < 3)) {
+    return *(undefined4 *)(param_1 + 0x14);
+  }
+  return 0;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00537270
+// GHIDRA_NAME TNavyMission::ComputeMissionOrderMatchDeltaWithCandidateNavyOrder
+// GHIDRA_PROTO undefined ComputeMissionOrderMatchDeltaWithCandidateNavyOrder()
+
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+float10 __thiscall
+TNavyMission::ComputeMissionOrderMatchDeltaWithCandidateNavyOrder(int *param_1,int param_2)
+
+{
+  float fVar1;
+  float fVar2;
+  code *pcVar3;
+  float fVar4;
+  short sVar5;
+  int iVar6;
+  undefined4 uVar7;
+  int iVar8;
+  undefined4 uVar9;
+  float *pfVar10;
+  float *pfVar11;
+  undefined4 *puVar12;
+  float10 fVar13;
+  float local_10 [4];
+  
+  if ((char)param_1[4] != '\0') {
+    return (float10)g_Recompute_Nation_Order_LookupTable_0065A9E8;
+  }
+  if (*(int **)(param_2 + 0x2c) != param_1) {
+    puVar12 = (undefined4 *)param_1[9];
+    local_10[0] = 0.0;
+    local_10[1] = 0.0;
+    local_10[2] = 0.0;
+    local_10[3] = 0.0;
+    if (puVar12 != (undefined4 *)0x0) {
+      pcVar3 = *(code **)(*param_1 + 0xac);
+      do {
+        uVar9 = *puVar12;
+        iVar6 = (*pcVar3)();
+        if (iVar6 == 0) {
+          sVar5 = 0;
+        }
+        else {
+          uVar7 = (*pcVar3)();
+          sVar5 = func_0x00401807(uVar7);
+        }
+        if (5 < sVar5) {
+          sVar5 = 5;
+        }
+        func_0x00405272(uVar9,local_10,*(undefined4 *)(&DAT_006978c8 + sVar5 * 4));
+        puVar12 = (undefined4 *)puVar12[1];
+      } while (puVar12 != (undefined4 *)0x0);
+    }
+    iVar6 = *param_1;
+    pcVar3 = *(code **)(iVar6 + 0xac);
+    iVar8 = (*pcVar3)();
+    if (iVar8 == 0) {
+      sVar5 = 0;
+    }
+    else {
+      uVar9 = (*pcVar3)();
+      sVar5 = func_0x00401807(uVar9);
+    }
+    if (5 < sVar5) {
+      sVar5 = 5;
+    }
+    func_0x00405272(param_2,local_10,*(undefined4 *)(&DAT_006978c8 + sVar5 * 4));
+    pfVar11 = local_10;
+    iVar8 = 4;
+    pfVar10 = (float *)(param_1 + 0xb);
+    fVar4 = g_Recompute_Nation_Order_LookupTable_0065A9E8;
+    fVar1 = g_Recompute_Nation_Order_LookupTable_0065A9E8;
+    do {
+      fVar2 = *pfVar11;
+      pfVar11 = pfVar11 + 1;
+      iVar8 = iVar8 + -1;
+      fVar1 = fVar1 + *pfVar10;
+      fVar4 = fVar4 + SQRT(fVar2 * *pfVar10);
+      pfVar10 = pfVar10 + 1;
+    } while (iVar8 != 0);
+    fVar13 = (float10)(**(code **)(iVar6 + 0x68))();
+    return (float10)(fVar4 / fVar1) - fVar13;
+  }
+  puVar12 = (undefined4 *)param_1[9];
+  local_10[0] = 0.0;
+  local_10[1] = 0.0;
+  local_10[2] = 0.0;
+  local_10[3] = 0.0;
+  if (puVar12 != (undefined4 *)0x0) {
+    pcVar3 = *(code **)(*param_1 + 0xac);
+    do {
+      uVar9 = *puVar12;
+      iVar6 = (*pcVar3)();
+      if (iVar6 == 0) {
+        sVar5 = 0;
+      }
+      else {
+        uVar7 = (*pcVar3)();
+        sVar5 = func_0x00401807(uVar7);
+      }
+      if (5 < sVar5) {
+        sVar5 = 5;
+      }
+      func_0x00405272(uVar9,local_10,*(undefined4 *)(&DAT_006978c8 + sVar5 * 4));
+      puVar12 = (undefined4 *)puVar12[1];
+    } while (puVar12 != (undefined4 *)0x0);
+  }
+  iVar6 = *param_1;
+  pcVar3 = *(code **)(iVar6 + 0xac);
+  iVar8 = (*pcVar3)();
+  if (iVar8 != 0) {
+    uVar9 = (*pcVar3)();
+    func_0x00401807(uVar9);
+  }
+  func_0x004063e3();
+  func_0x0040605f(0);
+  func_0x0040605f(1);
+  func_0x0040605f(2);
+  sVar5 = func_0x0040605f(3);
+  local_10[1] = (float)(int)sVar5;
+  pfVar11 = (float *)&stack0xffffffe0;
+  iVar8 = 4;
+  pfVar10 = (float *)(param_1 + 0xb);
+  local_10[1] = g_Recompute_Nation_Order_LookupTable_0065A9E8;
+  fVar4 = g_Recompute_Nation_Order_LookupTable_0065A9E8;
+  do {
+    fVar1 = *pfVar11;
+    pfVar11 = pfVar11 + 1;
+    iVar8 = iVar8 + -1;
+    fVar4 = fVar4 + *pfVar10;
+    local_10[1] = local_10[1] + SQRT(*pfVar10 * fVar1);
+    pfVar10 = pfVar10 + 1;
+  } while (iVar8 != 0);
+  fVar13 = (float10)(**(code **)(iVar6 + 0x68))();
+  return fVar13 - (float10)local_10[1] / (float10)fVar4;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00537610
+// GHIDRA_NAME TNavyMission::ComputeMissionOrderPenaltyForCandidateAgainstTargetProfile
+// GHIDRA_PROTO undefined ComputeMissionOrderPenaltyForCandidateAgainstTargetProfile()
+
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+float10 __thiscall
+TNavyMission::ComputeMissionOrderPenaltyForCandidateAgainstTargetProfile(int *param_1,int param_2)
+
+{
+  int iVar1;
+  code *pcVar2;
+  float fVar3;
+  float fVar4;
+  float fVar5;
+  char cVar6;
+  short sVar7;
+  short sVar8;
+  int iVar9;
+  undefined4 uVar10;
+  float *pfVar11;
+  float10 fVar12;
+  
+  sVar7 = func_0x004063e3();
+  if (((float)((int)*(short *)(param_2 + 0x1c) / (int)sVar7) < _DAT_0065aa20) &&
+     (cVar6 = (**(code **)(*param_1 + 0x28))(), cVar6 == '\0')) {
+    return (float10)_DAT_0065a9c4;
+  }
+  iVar1 = *param_1;
+  pcVar2 = *(code **)(iVar1 + 0xac);
+  iVar9 = (*pcVar2)();
+  if (iVar9 != 0) {
+    uVar10 = (*pcVar2)();
+    func_0x00401807(uVar10);
+  }
+  func_0x004063e3();
+  func_0x0040605f(0);
+  func_0x0040605f(1);
+  sVar7 = func_0x0040605f(2);
+  func_0x0040605f(3);
+  pfVar11 = (float *)&stack0xffffffe0;
+  iVar9 = 4;
+  fVar3 = g_Recompute_Nation_Order_LookupTable_0065A9E8;
+  do {
+    fVar3 = fVar3 + *pfVar11;
+    pfVar11 = pfVar11 + 1;
+    iVar9 = iVar9 + -1;
+  } while (iVar9 != 0);
+  if (fVar3 != (float)g_Recompute_Nation_Order_LookupTable_0065A9F0) {
+    iVar9 = 4;
+    pfVar11 = (float *)0x14;
+    fVar5 = g_Recompute_Nation_Order_LookupTable_0065A9E8;
+    do {
+      iVar9 = iVar9 + -1;
+      fVar4 = *(float *)(&stack0xffffffcc + (int)pfVar11) / fVar3 - *pfVar11;
+      fVar5 = fVar4 * fVar4 + fVar5;
+      pfVar11 = pfVar11 + 1;
+    } while (iVar9 != 0);
+    cVar6 = (**(code **)(iVar1 + 0x28))();
+    if ((cVar6 == '\0') && (sVar8 = func_0x004063e3(), *(short *)(param_2 + 0x1c) < sVar8)) {
+      sVar8 = func_0x004063e3();
+      fVar12 = ((float10)g_Recompute_Nation_Order_LookupTable_0065AA08 -
+               (float10)((int)*(short *)(param_2 + 0x1c) / (int)sVar8)) * (float10)_DAT_0065a9bc;
+    }
+    else {
+      fVar12 = (float10)g_Recompute_Nation_Order_LookupTable_0065A9F0;
+    }
+    return -(fVar12 + (float10)fVar5 + (float10)(float)(int)sVar7);
+  }
+  return (float10)_DAT_0065a9c4;
 }
 

@@ -38,7 +38,7 @@ undefined4 * TClickZone::CreateObject(void)
 // GHIDRA_NAME TClickZone::OrphanRetStub_005723d0
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_005723d0(void)
 
-void TClickZone::OrphanRetStub_005723d0()
+void __thiscall TClickZone::OrphanRetStub_005723d0(TClickZone *this)
 
 {
   return;
@@ -48,7 +48,7 @@ void TClickZone::OrphanRetStub_005723d0()
 // GHIDRA_NAME TClickZone::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TClickZone::GetRuntimeClass()
+CRuntimeClass * __thiscall TClickZone::GetRuntimeClass(TClickZone *this)
 
 {
   return &classTClickZone;
@@ -64,7 +64,7 @@ CRuntimeClass * TClickZone::GetRuntimeClass()
 /* Derived command-tag UI entry over ConstructUiCommandTagResourceEntryBase; used by
    list/info/view/count style command-tag paths and sets +0x84 word to 7000. */
 
-TClickZone * TClickZone::ConstructUiCommandTagResourceEntry()
+TClickZone * __thiscall TClickZone::ConstructUiCommandTagResourceEntry(TClickZone *this)
 
 {
   func_0x004087fb();
@@ -77,7 +77,7 @@ TClickZone * TClickZone::ConstructUiCommandTagResourceEntry()
 // GHIDRA_NAME TClickZone::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TClickZone * TClickZone::_scalar_deleting_destructor_(byte param_1)
+TClickZone * __thiscall TClickZone::_scalar_deleting_destructor_(TClickZone *this,byte param_1)
 
 {
   func_0x00404a2f();
@@ -91,7 +91,7 @@ TClickZone * TClickZone::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TClickZone::BeginMouseCaptureAndStartRepeatTimer
 // GHIDRA_PROTO undefined __thiscall BeginMouseCaptureAndStartRepeatTimer(void)
 
-void TClickZone::BeginMouseCaptureAndStartRepeatTimer()
+void __thiscall TClickZone::BeginMouseCaptureAndStartRepeatTimer(TClickZone *this)
 
 {
   undefined4 unaff_ESI;

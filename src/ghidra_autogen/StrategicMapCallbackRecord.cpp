@@ -3,6 +3,90 @@
 // Program: Imperialism.exe
 // Bucket: StrategicMapCallbackRecord.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x004D4BF0
+// GHIDRA_NAME StrategicMapCallbackRecord::AppendPackedColorDword
+// GHIDRA_PROTO undefined __thiscall AppendPackedColorDword(uint param_1)
+
+void __thiscall
+StrategicMapCallbackRecord::AppendPackedColorDword(StrategicMapCallbackRecord *this,uint param_1)
+
+{
+  int iVar1;
+  uint uVar2;
+  uint uVar3;
+  undefined1 *puVar4;
+  int *piVar5;
+  int iVar6;
+  undefined4 uVar7;
+  uint in_stack_00000008;
+  
+  iVar1 = (in_stack_00000008 & 0xff) * 0x1010101;
+  if (*(int *)(this + 0x24) == 0) {
+    func_0x004046dd(1);
+  }
+  if (*(int *)(this + 0x28) == 0) {
+    *(undefined4 *)(this + 0x28) = 1;
+  }
+  uVar3 = **(uint **)(this + 0x20);
+  if (*(uint *)(this + 8) <= uVar3) {
+    func_0x00408b20(uVar3 + 1);
+  }
+  if (*(uint *)(this + 0xc) <= uVar3) {
+    *(uint *)(this + 0xc) = uVar3 + 1;
+  }
+  *(char *)(uVar3 + *(int *)(this + 4)) = (char)iVar1;
+  if (*(int *)(this + 0x24) == 0) {
+    func_0x004046dd(1);
+  }
+  if (*(int *)(this + 0x28) == 0) {
+    *(undefined4 *)(this + 0x28) = 1;
+  }
+  iVar6 = **(int **)(this + 0x20);
+  uVar3 = iVar6 + 1;
+  if (*(uint *)(this + 8) <= uVar3) {
+    func_0x00408b20(iVar6 + 2);
+  }
+  if (*(uint *)(this + 0xc) <= uVar3) {
+    *(int *)(this + 0xc) = iVar6 + 2;
+  }
+  *(char *)(uVar3 + *(int *)(this + 4)) = (char)((uint)iVar1 >> 8);
+  if (*(int *)(this + 0x24) == 0) {
+    func_0x004046dd(1);
+  }
+  if (*(int *)(this + 0x28) == 0) {
+    *(undefined4 *)(this + 0x28) = 1;
+  }
+  puVar4 = (undefined1 *)func_0x00404f11(**(int **)(this + 0x20) + 2);
+  *puVar4 = (char)((uint)iVar1 >> 0x10);
+  piVar5 = (int *)func_0x00403d7d(0);
+  puVar4 = (undefined1 *)func_0x00404f11(*piVar5 + 3);
+  *puVar4 = (char)((uint)iVar1 >> 0x18);
+  uVar3 = *(uint *)(this + 0x14);
+  if (*(uint *)(this + 8) <= uVar3) {
+    iVar1 = uVar3 + 1;
+    uVar2 = iVar1 * 2;
+    in_stack_00000008 = uVar2;
+    if (0x7fffffff < uVar2) {
+      in_stack_00000008 = 0x7fffffff;
+    }
+    iVar6 = _realloc(*(undefined4 *)(this + 4),uVar2);
+    if (iVar6 == 0) {
+      uVar7 = _realloc(*(undefined4 *)(this + 4),iVar1);
+      *(undefined4 *)(this + 4) = uVar7;
+      *(int *)(this + 8) = iVar1;
+    }
+    else {
+      *(int *)(this + 4) = iVar6;
+      *(uint *)(this + 8) = in_stack_00000008;
+    }
+  }
+  if (*(uint *)(this + 0xc) <= uVar3) {
+    *(uint *)(this + 0xc) = uVar3 + 1;
+  }
+  (*(code *)(uVar3 + *(int *)(this + 4)))();
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x004D4E40
 // GHIDRA_NAME StrategicMapCallbackRecord::EnsureOpcodeBufferByteAtIndex
 // GHIDRA_PROTO undefined EnsureOpcodeBufferByteAtIndex()

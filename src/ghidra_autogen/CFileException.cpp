@@ -7,7 +7,7 @@
 // GHIDRA_NAME CFileException::??_GCFile@@UAEPAXI@Z
 // GHIDRA_PROTO undefined __thiscall ??_GCFile@@UAEPAXI@Z(byte param_1)
 
-CFileException * CFileException::___GCFile__UAEPAXI_Z(byte param_1)
+CFileException * __thiscall CFileException::___GCFile__UAEPAXI_Z(CFileException *this,byte param_1)
 
 {
   CFile::~CFile();
@@ -252,41 +252,5 @@ LAB_0060bf3c:
   }
 LAB_0060bf3c:
   return 10;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00619AAC
-// GHIDRA_NAME CFileException::CMemFile::CMemFile
-// GHIDRA_PROTO undefined __thiscall CMemFile::CMemFile(undefined4 param_1)
-
-CFileException * CFileException::CMemFile__CMemFile(undefined4 param_1)
-
-{
-  CFile::CFile();
-  this->vftable = (CFileExceptionVtbl *)&CMemFileVtbl_00672f7c;
-  *(undefined4 *)&this->field_0x10 = param_1;
-  this[1].vftable = (CFileExceptionVtbl *)0x0;
-  *(undefined4 *)&this[1].field_0x4 = 0;
-  *(undefined4 *)&this[1].field_0x8 = 0;
-  *(undefined4 *)&this[1].field_0xc = 0;
-  *(undefined4 *)&this[1].field_0x10 = 1;
-  return this;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00619AF8
-// GHIDRA_NAME CFileException::CMemFile::CMemFile
-// GHIDRA_PROTO undefined __thiscall CMemFile::CMemFile(undefined4 param_1, uint param_2, int param_3)
-
-CFileException * CFileException::CMemFile__CMemFile(undefined4 param_1, uint param_2, int param_3)
-
-{
-  CFile::CFile();
-  this[1].vftable = (CFileExceptionVtbl *)0x0;
-  *(int *)&this->field_0x10 = param_3;
-  *(undefined4 *)&this[1].field_0x10 = 0;
-  this->vftable = (CFileExceptionVtbl *)&CMemFileVtbl_00672f7c;
-  *(uint *)&this[1].field_0x8 = ~-(uint)(param_3 != 0) & param_2;
-  *(undefined4 *)&this[1].field_0xc = param_1;
-  *(uint *)&this[1].field_0x4 = param_2;
-  return this;
 }
 

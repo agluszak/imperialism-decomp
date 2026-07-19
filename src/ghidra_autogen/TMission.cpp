@@ -37,7 +37,7 @@ undefined ** TMission::GetRuntimeClass(void)
 // GHIDRA_NAME TMission::ConstructTMission
 // GHIDRA_PROTO undefined __thiscall ConstructTMission(void)
 
-void TMission::ConstructTMission()
+void __thiscall TMission::ConstructTMission(TMission *this)
 
 {
   this[8] = (TMission)0x2;
@@ -51,7 +51,7 @@ void TMission::ConstructTMission()
 // GHIDRA_NAME TMission::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TMission * TMission::_scalar_deleting_destructor_(byte param_1)
+TMission * __thiscall TMission::_scalar_deleting_destructor_(TMission *this,byte param_1)
 
 {
   func_0x00405a47();
@@ -65,7 +65,7 @@ TMission * TMission::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TMission::DestructTMission
 // GHIDRA_PROTO undefined __thiscall DestructTMission(void)
 
-void TMission::DestructTMission()
+void __thiscall TMission::DestructTMission(TMission *this)
 
 {
   *(char **)this = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
@@ -125,7 +125,8 @@ void __thiscall TMission::DeserializeMissionState(int *param_1,int *param_2)
 // GHIDRA_NAME TMission::ConstructTEscortMissionForPortContext
 // GHIDRA_PROTO undefined __thiscall ConstructTEscortMissionForPortContext(undefined4 param_1)
 
-TMission * TMission::ConstructTEscortMissionForPortContext(undefined4 param_1)
+TMission * __thiscall
+TMission::ConstructTEscortMissionForPortContext(TMission *this,undefined4 param_1)
 
 {
   func_0x00406f05();
@@ -202,7 +203,7 @@ TMission::ConstructBlockadePortMissionForContext(undefined4 *param_1,int *param_
 // GHIDRA_NAME TMission::ConstructTArmyMissionWithNodeKey
 // GHIDRA_PROTO undefined __thiscall ConstructTArmyMissionWithNodeKey(undefined2 param_1)
 
-TMission * TMission::ConstructTArmyMissionWithNodeKey(undefined2 param_1)
+TMission * __thiscall TMission::ConstructTArmyMissionWithNodeKey(TMission *this,undefined2 param_1)
 
 {
   undefined4 *puVar1;

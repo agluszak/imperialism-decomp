@@ -58,7 +58,8 @@ int * TMapEditView::CreateObject(void)
 // GHIDRA_NAME TMapEditView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TMapEditView * TMapEditView::_scalar_deleting_destructor_(byte param_1)
+TMapEditView * __thiscall
+TMapEditView::_scalar_deleting_destructor_(TMapEditView *this,byte param_1)
 
 {
   func_0x00404944();
@@ -72,7 +73,7 @@ TMapEditView * TMapEditView::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TMapEditView::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TMapEditView::GetRuntimeClass()
+CRuntimeClass * __thiscall TMapEditView::GetRuntimeClass(TMapEditView *this)
 
 {
   return &classTMapEditView;
@@ -109,7 +110,7 @@ CRuntimeClass * TMapEditView::GetRuntimeClass()
    DrawStrategicMapUnitIconOverlay paths.
    - This function seeds default civilian/overlay icon variants before per-tile updates. */
 
-void TMapEditView::NoOpUiLifecycleHook(void *pMapView, int nInitToken)
+void __thiscall TMapEditView::NoOpUiLifecycleHook(TMapEditView *this,void *pMapView,int nInitToken)
 
 {
   int iVar1;
@@ -224,7 +225,7 @@ TMapEditView::HandleMapClickByInteractionMode
 // GHIDRA_NAME TMapEditView::InvokeDialogHooks1D8ThenE4
 // GHIDRA_PROTO undefined __thiscall InvokeDialogHooks1D8ThenE4(short param_1)
 
-void TMapEditView::InvokeDialogHooks1D8ThenE4(short param_1)
+void __thiscall TMapEditView::InvokeDialogHooks1D8ThenE4(TMapEditView *this,short param_1)
 
 {
   short sVar1;
@@ -282,7 +283,8 @@ void TMapEditView::InvokeDialogHooks1D8ThenE4(short param_1)
    Returns:
    - void */
 
-void TMapEditView::WrapperFor_AllocateWithFallbackHandler_At005963d0(short param_1)
+void __thiscall
+TMapEditView::WrapperFor_AllocateWithFallbackHandler_At005963d0(TMapEditView *this,short param_1)
 
 {
   ushort uVar1;
@@ -369,7 +371,8 @@ void TMapEditView::WrapperFor_AllocateWithFallbackHandler_At005963d0(short param
    Returns:
    - void */
 
-void TMapEditView::HandleMapTileClickSetOrderContextAndDispatchEvent79()
+void __thiscall
+TMapEditView::HandleMapTileClickSetOrderContextAndDispatchEvent79(TMapEditView *this)
 
 {
   char cVar1;
@@ -441,7 +444,7 @@ void TMapEditView::HandleMapTileClickSetOrderContextAndDispatchEvent79()
 // GHIDRA_NAME TMapEditView::ForwardParam
 // GHIDRA_PROTO undefined __thiscall ForwardParam(int param_1)
 
-void TMapEditView::ForwardParam(int param_1)
+void __thiscall TMapEditView::ForwardParam(TMapEditView *this,int param_1)
 
 {
   int iVar1;

@@ -7,7 +7,8 @@
 // GHIDRA_NAME TBitmapResourceLoader::EnsureBitmapResourceLoadedAndCopyRectSize
 // GHIDRA_PROTO undefined __thiscall EnsureBitmapResourceLoadedAndCopyRectSize(void)
 
-void TBitmapResourceLoader::EnsureBitmapResourceLoadedAndCopyRectSize()
+void __thiscall
+TBitmapResourceLoader::EnsureBitmapResourceLoadedAndCopyRectSize(TBitmapResourceLoader *this)
 
 {
   undefined4 uVar1;
@@ -38,7 +39,7 @@ void TBitmapResourceLoader::EnsureBitmapResourceLoadedAndCopyRectSize()
 // GHIDRA_NAME TBitmapResourceLoader::ReleaseBitmapResource
 // GHIDRA_PROTO undefined __thiscall ReleaseBitmapResource(void)
 
-void TBitmapResourceLoader::ReleaseBitmapResource()
+void __thiscall TBitmapResourceLoader::ReleaseBitmapResource(TBitmapResourceLoader *this)
 
 {
   if (*(int *)(this + 0x18) != 0) {
@@ -53,7 +54,8 @@ void TBitmapResourceLoader::ReleaseBitmapResource()
 // GHIDRA_NAME TBitmapResourceLoader::TemporarilyClearAndRestoreUiInvalidationFlag
 // GHIDRA_PROTO undefined __thiscall TemporarilyClearAndRestoreUiInvalidationFlag(void)
 
-undefined4 TBitmapResourceLoader::TemporarilyClearAndRestoreUiInvalidationFlag()
+undefined4 __thiscall
+TBitmapResourceLoader::TemporarilyClearAndRestoreUiInvalidationFlag(TBitmapResourceLoader *this)
 
 {
   func_0x004057a4(s_D__Ambit_QuickDraw_h_00695340,0x1a1);

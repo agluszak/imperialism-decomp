@@ -37,7 +37,7 @@ undefined4 * TBoycottButton::CreateObject(void)
 // GHIDRA_NAME TBoycottButton::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TBoycottButton::GetRuntimeClass()
+CRuntimeClass * __thiscall TBoycottButton::GetRuntimeClass(TBoycottButton *this)
 
 {
   return &classTBoycottButton;
@@ -47,7 +47,7 @@ CRuntimeClass * TBoycottButton::GetRuntimeClass()
 // GHIDRA_NAME TBoycottButton::ConstructTBoycottButtonBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTBoycottButtonBaseState(void)
 
-TBoycottButton * TBoycottButton::ConstructTBoycottButtonBaseState()
+TBoycottButton * __thiscall TBoycottButton::ConstructTBoycottButtonBaseState(TBoycottButton *this)
 
 {
   func_0x00402b53();
@@ -59,7 +59,8 @@ TBoycottButton * TBoycottButton::ConstructTBoycottButtonBaseState()
 // GHIDRA_NAME TBoycottButton::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TBoycottButton * TBoycottButton::_scalar_deleting_destructor_(byte param_1)
+TBoycottButton * __thiscall
+TBoycottButton::_scalar_deleting_destructor_(TBoycottButton *this,byte param_1)
 
 {
   func_0x00402824();

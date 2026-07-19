@@ -37,7 +37,7 @@ undefined4 * THotspotBehavior::CreateObject(void)
 // GHIDRA_NAME THotspotBehavior::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * THotspotBehavior::GetRuntimeClass()
+CRuntimeClass * __thiscall THotspotBehavior::GetRuntimeClass(THotspotBehavior *this)
 
 {
   return &classTHotspotBehavior;
@@ -47,7 +47,8 @@ CRuntimeClass * THotspotBehavior::GetRuntimeClass()
 // GHIDRA_NAME THotspotBehavior::ConstructTHotspotBehaviorBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTHotspotBehaviorBaseState(void)
 
-THotspotBehavior * THotspotBehavior::ConstructTHotspotBehaviorBaseState()
+THotspotBehavior * __thiscall
+THotspotBehavior::ConstructTHotspotBehaviorBaseState(THotspotBehavior *this)
 
 {
   func_0x00403602();
@@ -59,7 +60,8 @@ THotspotBehavior * THotspotBehavior::ConstructTHotspotBehaviorBaseState()
 // GHIDRA_NAME THotspotBehavior::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-THotspotBehavior * THotspotBehavior::_scalar_deleting_destructor_(byte param_1)
+THotspotBehavior * __thiscall
+THotspotBehavior::_scalar_deleting_destructor_(THotspotBehavior *this,byte param_1)
 
 {
   func_0x0040614a();
@@ -70,10 +72,10 @@ THotspotBehavior * THotspotBehavior::_scalar_deleting_destructor_(byte param_1)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B0C00
-// GHIDRA_NAME THotspotBehavior::WrapperFor_AllocateWithFallbackHandler_At004b0c00
-// GHIDRA_PROTO undefined __thiscall WrapperFor_AllocateWithFallbackHandler_At004b0c00(void)
+// GHIDRA_NAME THotspotBehavior::HotspotBehaviorSlot0E
+// GHIDRA_PROTO undefined __thiscall HotspotBehaviorSlot0E(void)
 
-uint THotspotBehavior::WrapperFor_AllocateWithFallbackHandler_At004b0c00()
+uint __thiscall THotspotBehavior::HotspotBehaviorSlot0E(THotspotBehavior *this)
 
 {
   undefined4 uVar1;

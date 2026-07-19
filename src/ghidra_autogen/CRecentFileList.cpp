@@ -49,7 +49,7 @@ undefined4 * CRecentFileList::CRecentFileList(void)
   else {
     *piVar1 = iteration_count;
     *(int **)(unaff_EBP + 0x14) = piVar1 + 1;
-    ___L_YGXPAXIHP6EX0_Z1_Z(piVar1 + 1,4,iteration_count,CString::CString);
+    CallCallbackRepeatedly(piVar1 + 1,4,iteration_count,CString::CString);
     uVar2 = *(undefined4 *)(unaff_EBP + 0x14);
   }
   src_text = *(char **)(unaff_EBP + 0xc);
@@ -317,7 +317,7 @@ void CRecentFileList::UpdateMenu(void)
           }
           bVar1 = *pbVar5;
           *(byte *)(unaff_EBP + 8) = bVar1;
-          if ((*(byte *)((int)&DAT_006a8018 + bVar1 + 1) & 4) != 0) {
+          if ((*(byte *)((int)&_mbctype + bVar1 + 1) & 4) != 0) {
             *pbVar3 = *(byte *)(unaff_EBP + 8);
             pbVar3 = pbVar3 + 1;
             pbVar5 = pbVar5 + 1;
@@ -445,7 +445,7 @@ void CRecentFileList::ReadList(void)
       src_ref = (CString *)
                 CWinApp::GetProfileStringA
                           (unaff_EBP + -0x18,*(undefined4 *)(extraout_ECX + 0xc),
-                           *(undefined4 *)(unaff_EBP + -0x10),&DAT_006a6128);
+                           *(undefined4 *)(unaff_EBP + -0x10),&afxChNil);
       *(undefined4 *)(unaff_EBP + -4) = 0;
       CString::operator=((CString *)(*(int *)(extraout_ECX + 8) + iVar4 * 4),src_ref);
       *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;

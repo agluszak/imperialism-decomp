@@ -38,6 +38,19 @@ void __thiscall CException::CException(undefined4 *param_1,undefined4 param_2)
   return;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x0060AAB8
+// GHIDRA_NAME CException::Delete
+// GHIDRA_PROTO undefined Delete()
+
+void __fastcall CException::Delete(int *param_1)
+
+{
+  if ((0 < param_1[1]) && (param_1 != (int *)0x0)) {
+    (**(code **)(*param_1 + 4))(1);
+  }
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x0060AAEB
 // GHIDRA_NAME CException::ReportError
 // GHIDRA_PROTO undefined ReportError()

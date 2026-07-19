@@ -26,7 +26,7 @@ void CWinApp::WrapperFor_WriteProfileInt_At00415510(undefined4 param_1,undefined
    Posts quit if no main window and app shutdown condition is met, then executes
    RunMfcThreadMessageLoopCore for the active app thread. */
 
-void CWinApp::Run()
+void __thiscall CWinApp::Run(CWinApp *this)
 
 {
   int iVar1;
@@ -39,6 +39,72 @@ void CWinApp::Run()
   }
   CWinThread::Run();
   return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x006055D0
+// GHIDRA_NAME CWinApp::WinHelpA
+// GHIDRA_PROTO undefined WinHelpA()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Clears local pending state and posts custom message 0x36A to active thread window before invoking thread callback +0x74.
+// GHIDRA_COMMENT_END
+
+/* Clears local pending state and posts custom message 0x36A to active thread window before invoking
+   thread callback +0x74. */
+
+void __thiscall CWinApp::WinHelpA(int param_1,undefined4 param_2,undefined4 param_3)
+
+{
+  int *piVar1;
+  
+  piVar1 = (int *)AfxGetMainWnd();
+  *(undefined4 *)(param_1 + 0x84) = 0;
+  PostMessageA((HWND)piVar1[7],0x36a,0,0);
+  (**(code **)(*piVar1 + 0x74))(param_2,param_3);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00605607
+// GHIDRA_NAME CWinApp::ProcessWndProcException
+// GHIDRA_PROTO undefined ProcessWndProcException()
+
+long CWinApp::ProcessWndProcException(CException *param_1,tagMSG *param_2)
+
+{
+  UINT UVar1;
+  int iVar2;
+  long lVar3;
+  undefined4 uVar4;
+  undefined4 uVar5;
+  
+  UVar1 = param_2->message;
+  if ((UVar1 == 1) || (UVar1 == 0xf)) {
+    lVar3 = AfxInternalProcessWndProcException(param_1,param_2);
+  }
+  else {
+    lVar3 = 0;
+    uVar4 = 0xf108;
+    if (UVar1 == 0x111) {
+      if (param_2->lParam == 0) {
+        uVar4 = 0xf109;
+      }
+      lVar3 = 1;
+    }
+    iVar2 = CObject::IsKindOf((CObject *)param_1);
+    if (iVar2 == 0) {
+      iVar2 = CObject::IsKindOf((CObject *)param_1);
+      if (iVar2 != 0) {
+        return lVar3;
+      }
+      iVar2 = *(int *)param_1;
+      uVar5 = 0x10;
+    }
+    else {
+      iVar2 = *(int *)param_1;
+      uVar5 = 0x1030;
+    }
+    (**(code **)(iVar2 + 0x18))(uVar5,uVar4);
+  }
+  return lVar3;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0060567E
@@ -112,25 +178,87 @@ void __thiscall CWinApp::DevModeChange(HANDLE param_1,LPSTR param_2)
     pvVar1 = GlobalLock(*(HGLOBAL *)((int)param_1 + 0x98));
     iVar2 = lstrcmpA((LPCSTR)((uint)*(ushort *)((int)pvVar1 + 2) + (int)pvVar1),param_2);
     if (iVar2 == 0) {
-      BVar3 = WINSPOOL.DRV::OpenPrinterA(param_2,&local_8,(LPPRINTER_DEFAULTSA)0x0);
+      BVar3 = OpenPrinterA(param_2,&local_8,(LPPRINTER_DEFAULTSA)0x0);
       if (BVar3 != 0) {
         if (*(int *)((int)param_1 + 0x94) != 0) {
           AfxGlobalFree(*(int *)((int)param_1 + 0x94));
         }
-        dwBytes = WINSPOOL.DRV::DocumentPropertiesA((HWND)0x0,local_8,param_2,(PDEVMODEA)0x0,(PDEVMODEA)0x0,0);
+        dwBytes = DocumentPropertiesA((HWND)0x0,local_8,param_2,(PDEVMODEA)0x0,(PDEVMODEA)0x0,0);
         hMem = GlobalAlloc(0x42,dwBytes);
         *(HGLOBAL *)((int)param_1 + 0x94) = hMem;
         pDevModeOutput = GlobalLock(hMem);
-        LVar4 = WINSPOOL.DRV::DocumentPropertiesA((HWND)0x0,local_8,param_2,pDevModeOutput,(PDEVMODEA)0x0,2);
+        LVar4 = DocumentPropertiesA((HWND)0x0,local_8,param_2,pDevModeOutput,(PDEVMODEA)0x0,2);
         if (LVar4 != 1) {
           AfxGlobalFree(*(undefined4 *)((int)param_1 + 0x94));
           *(undefined4 *)((int)param_1 + 0x94) = 0;
         }
-        WINSPOOL.DRV::ClosePrinter(local_8);
+        ClosePrinter(local_8);
       }
     }
   }
   return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x006067A2
+// GHIDRA_NAME CWinApp::ProcessMessageFilter
+// GHIDRA_PROTO undefined __thiscall ProcessMessageFilter(int param_1, undefined4 * param_2)
+
+undefined4 __thiscall CWinApp::ProcessMessageFilter(CWinApp *this,int param_1,undefined4 *param_2)
+
+{
+  CWinApp *pCVar1;
+  int iVar2;
+  int iVar3;
+  undefined4 *puVar4;
+  HWND hWnd;
+  undefined4 local_24 [7];
+  CWinApp *local_8;
+  
+  if (param_2 == (undefined4 *)0x0) {
+    return 0;
+  }
+  local_8 = this;
+  if (param_1 != 0) {
+    if (param_1 != 2) {
+      return 0;
+    }
+    iVar2 = CWnd::FromHandle(*param_2);
+    if (((((iVar2 != 0) && (iVar2 = CWnd::GetTopLevelFrame(), iVar2 != 0)) &&
+         (iVar3 = CFrameWnd::IsTracking(), iVar3 != 0)) &&
+        ((*(int *)(iVar2 + 0x50) != 0 && (iVar2 = AfxGetMainWnd(), *(int *)(local_8 + 0x1c) != 0))))
+       && (((param_2[1] == 0x100 && (param_2[2] == 0xd)) || (param_2[1] == 0x202)))) {
+      hWnd = *(HWND *)(iVar2 + 0x1c);
+      goto LAB_0060685d;
+    }
+  }
+  iVar2 = AfxGetMainWnd();
+  if (((0x332 < DAT_006a7d54) || (iVar2 == 0)) || (iVar3 = IsHelpKey(param_2), iVar3 == 0)) {
+    if ((((param_1 != 0) || (*(int *)(local_8 + 0x20) == 0)) || ((uint)param_2[1] < 0x100)) ||
+       ((0x108 < (uint)param_2[1] ||
+        (iVar2 = CThreadLocalObject::GetData
+                           ((CThreadLocalObject *)&_afxThreadState,_AFX_THREAD_STATE>::CreateObject)
+        , *(int *)(iVar2 + 0xbc) != 0)))) {
+      return 0;
+    }
+    *(undefined4 *)(iVar2 + 0xbc) = 1;
+    puVar4 = local_24;
+    for (iVar3 = 7; pCVar1 = local_8, iVar3 != 0; iVar3 = iVar3 + -1) {
+      *puVar4 = *param_2;
+      param_2 = param_2 + 1;
+      puVar4 = puVar4 + 1;
+    }
+    iVar3 = CWnd::IsWindowEnabled();
+    if ((iVar3 != 0) && (iVar3 = (**(code **)(*(int *)pCVar1 + 0x60))(local_24), iVar3 != 0)) {
+      *(undefined4 *)(iVar2 + 0xbc) = 0;
+      return 1;
+    }
+    *(undefined4 *)(iVar2 + 0xbc) = 0;
+    return 0;
+  }
+  hWnd = *(HWND *)(iVar2 + 0x1c);
+LAB_0060685d:
+  SendMessageA(hWnd,0x111,0xe146,0);
+  return 1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0061842F
@@ -195,7 +323,32 @@ void __fastcall CWinApp::HideApplication(int param_1)
 {
   CWnd::ShowWindow(*(CWnd **)(param_1 + 0x1c),0);
   ShowOwnedPopups(*(HWND *)(*(int *)(param_1 + 0x1c) + 0x1c),0);
-  CWnd__SetWindowPos(&DAT_006a7a10,0,0,0,0,0x13);
+  CWnd::SetWindowPos(&CWnd::wndBottom,0,0,0,0,0x13);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0061849D
+// GHIDRA_NAME CWinApp::DoWaitCursor
+// GHIDRA_PROTO undefined DoWaitCursor()
+
+void __thiscall CWinApp::DoWaitCursor(int param_1,int param_2)
+
+{
+  HCURSOR pHVar1;
+  
+  AfxLockGlobals(2);
+  *(int *)(param_1 + 0xa0) = *(int *)(param_1 + 0xa0) + param_2;
+  if (*(int *)(param_1 + 0xa0) < 1) {
+    *(undefined4 *)(param_1 + 0xa0) = 0;
+    SetCursor(*(HCURSOR *)(param_1 + 0xa4));
+  }
+  else {
+    pHVar1 = SetCursor(DAT_006a7d3c);
+    if ((0 < param_2) && (*(int *)(param_1 + 0xa0) == 1)) {
+      *(HCURSOR *)(param_1 + 0xa4) = pHVar1;
+    }
+  }
+  AfxUnlockGlobals(2);
   return;
 }
 
@@ -234,7 +387,7 @@ void CWinApp::EnableModeless(undefined4 param_1)
 // GHIDRA_NAME CWinApp::DoMessageBox
 // GHIDRA_PROTO undefined __thiscall DoMessageBox(LPCSTR param_1, uint param_2, int param_3)
 
-int CWinApp::DoMessageBox(LPCSTR param_1, uint param_2, int param_3)
+int __thiscall CWinApp::DoMessageBox(CWinApp *this,LPCSTR param_1,uint param_2,int param_3)
 
 {
   int iVar1;
@@ -278,16 +431,117 @@ int CWinApp::DoMessageBox(LPCSTR param_1, uint param_2, int param_3)
   return iVar1;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00618704
-// GHIDRA_NAME CWinApp::CWinApp::CloseAllDocuments
-// GHIDRA_PROTO undefined __thiscall CWinApp::CloseAllDocuments(void)
+// GHIDRA_FUNCTION IMPERIALISM 0x006186A4
+// GHIDRA_NAME CWinApp::SaveAllModified
+// GHIDRA_PROTO undefined SaveAllModified()
 
-void CWinApp::CWinApp__CloseAllDocuments()
+undefined4 __fastcall CWinApp::SaveAllModified(int param_1)
+
+{
+  undefined4 uVar1;
+  
+  if (*(int **)(param_1 + 0x80) != (int *)0x0) {
+                    /* WARNING: Could not recover jumptable at 0x006186b0. Too many branches */
+                    /* WARNING: Treating indirect jump as call */
+    uVar1 = (**(code **)(**(int **)(param_1 + 0x80) + 0x28))();
+    return uVar1;
+  }
+  return 1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x006186B7
+// GHIDRA_NAME CWinApp::AddToRecentFileList
+// GHIDRA_PROTO undefined __thiscall AddToRecentFileList(undefined4 param_1)
+
+void __thiscall CWinApp::AddToRecentFileList(CWinApp *this,undefined4 param_1)
+
+{
+  undefined1 local_108 [260];
+  
+  if (*(int *)(this + 0xa8) != 0) {
+    AfxFullPath(local_108,param_1);
+    (**(code **)(**(int **)(this + 0xa8) + 4))(local_108);
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x006186F2
+// GHIDRA_NAME CWinApp::OpenDocumentFile
+// GHIDRA_PROTO undefined OpenDocumentFile()
+
+void __thiscall CWinApp::OpenDocumentFile(int param_1,undefined4 param_2)
+
+{
+  (**(code **)(**(int **)(param_1 + 0x80) + 0x24))(param_2);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00618704
+// GHIDRA_NAME CWinApp::CloseAllDocuments
+// GHIDRA_PROTO undefined __thiscall CloseAllDocuments(void)
+
+void __thiscall CWinApp::CloseAllDocuments(CWinApp *this)
 
 {
   if (*(int **)(this + 0x80) != (int *)0x0) {
     (**(code **)(**(int **)(this + 0x80) + 0x2c))();
   }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0061873C
+// GHIDRA_NAME CWinApp::OnDDECommand
+// GHIDRA_PROTO undefined __thiscall OnDDECommand(void)
+
+undefined4 __thiscall CWinApp::OnDDECommand(CWinApp *this)
+
+{
+  undefined4 uVar1;
+  
+  if (*(int **)(this + 0x80) == (int *)0x0) {
+    uVar1 = 0;
+  }
+  else {
+    uVar1 = (**(code **)(**(int **)(this + 0x80) + 0x38))();
+  }
+  return uVar1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0061878F
+// GHIDRA_NAME CWinApp::AddDocTemplate
+// GHIDRA_PROTO undefined AddDocTemplate()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT App helper that ensures app->documentTemplateList exists (this+0x80) and appends provided doc-template object. Called in startup after ConstructImperialismSingleDocTemplate.
+// GHIDRA_COMMENT_END
+
+/* App helper that ensures app->documentTemplateList exists (this+0x80) and appends provided
+   doc-template object. Called in startup after ConstructImperialismSingleDocTemplate. */
+
+void CWinApp::AddDocTemplate(void)
+
+{
+  int iVar1;
+  undefined4 uVar2;
+  int extraout_ECX;
+  int unaff_EBP;
+  undefined4 *unaff_FS_OFFSET;
+  
+  _EH_prolog();
+  if (*(int *)(extraout_ECX + 0x80) == 0) {
+    iVar1 = operator_new(0x20);
+    *(int *)(unaff_EBP + -0x10) = iVar1;
+    *(undefined4 *)(unaff_EBP + -4) = 0;
+    if (iVar1 == 0) {
+      uVar2 = 0;
+    }
+    else {
+      uVar2 = CDocManager::CDocManager();
+    }
+    *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
+    *(undefined4 *)(extraout_ECX + 0x80) = uVar2;
+  }
+  (**(code **)(**(int **)(extraout_ECX + 0x80) + 0x14))(*(undefined4 *)(unaff_EBP + 8));
+  *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
   return;
 }
 
@@ -508,14 +762,14 @@ CWinApp::WriteProfileBinary
 undefined4 __fastcall CWinApp::InitApplication(int param_1)
 
 {
-  if (DAT_006a6120 != 0) {
+  if (CDocManager::pStaticDocManager != 0) {
     if (*(int *)(param_1 + 0x80) == 0) {
-      *(int *)(param_1 + 0x80) = DAT_006a6120;
+      *(int *)(param_1 + 0x80) = CDocManager::pStaticDocManager;
     }
-    DAT_006a6120 = 0;
+    CDocManager::pStaticDocManager = 0;
   }
   if (*(int **)(param_1 + 0x80) == (int *)0x0) {
-    DAT_0069bd58 = 0;
+    CDocManager::bStaticInit = 0;
   }
   else {
     (**(code **)(**(int **)(param_1 + 0x80) + 0x14))(0);
@@ -549,7 +803,7 @@ void CWinApp::~CWinApp(void)
   
   _EH_prolog();
   *(CWinThread **)(unaff_EBP + -0x10) = this;
-  *(undefined ***)this = &PTR_CWinApp__GetRuntimeClass_0066fdfc;
+  *(undefined ***)this = &PTR_GetRuntimeClass_0066fdfc;
   piVar1 = *(int **)(this + 0x80);
   *(undefined4 *)(unaff_EBP + -4) = 0;
   if (piVar1 != (int *)0x0) {
@@ -560,13 +814,13 @@ void CWinApp::~CWinApp(void)
   }
   iVar2 = AfxGetModuleState();
   if (*(char *)(iVar2 + 0x14) == '\0') {
-    if (DAT_006a6124 != (int *)0x0) {
-      (**(code **)(*DAT_006a6124 + 4))(1);
-      DAT_006a6124 = (int *)0x0;
+    if (CDocManager::pStaticList != (int *)0x0) {
+      (**(code **)(*CDocManager::pStaticList + 4))(1);
+      CDocManager::pStaticList = (int *)0x0;
     }
-    if (DAT_006a6120 != (int *)0x0) {
-      (**(code **)(*DAT_006a6120 + 4))(1);
-      DAT_006a6120 = (int *)0x0;
+    if (CDocManager::pStaticDocManager != (int *)0x0) {
+      (**(code **)(*CDocManager::pStaticDocManager + 4))(1);
+      CDocManager::pStaticDocManager = (int *)0x0;
     }
   }
   if (*(int *)(this + 0x94) != 0) {
@@ -619,6 +873,121 @@ void __fastcall CWinApp::SaveStdProfileSettings(int param_1)
     WriteProfileInt("Settings","PreviewPages",*(undefined4 *)(*(int *)(iVar1 + 4) + 0xb4));
   }
   return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00622A4F
+// GHIDRA_NAME CWinApp::ExitInstance
+// GHIDRA_PROTO undefined ExitInstance()
+
+undefined4 __fastcall CWinApp::ExitInstance(int param_1)
+
+{
+  int iVar1;
+  
+  if ((*(int *)(param_1 + 0xac) == 0) || (*(int *)(*(int *)(param_1 + 0xac) + 0x10) != 5)) {
+    iVar1 = AfxGetModuleState();
+    if (*(char *)(iVar1 + 0x14) == '\0') {
+      SaveStdProfileSettings();
+    }
+  }
+  if (*(code **)(param_1 + 0xbc) != (code *)0x0) {
+    (**(code **)(param_1 + 0xbc))();
+  }
+  return *(undefined4 *)(param_1 + 0x38);
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00622A85
+// GHIDRA_NAME CWinApp::GetRuntimeClass
+// GHIDRA_PROTO undefined GetRuntimeClass()
+
+CRuntimeClass * CWinApp::GetRuntimeClass(void)
+
+{
+  return &classRuntimeClass;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00622CB3
+// GHIDRA_NAME CWinApp::ProcessShellCommand
+// GHIDRA_PROTO undefined ProcessShellCommand()
+
+undefined4 CWinApp::ProcessShellCommand(void)
+
+{
+  int iVar1;
+  int iVar2;
+  int *extraout_ECX;
+  int unaff_EBP;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 uVar3;
+  
+  _EH_prolog();
+  iVar2 = *(int *)(unaff_EBP + 8);
+  iVar1 = *(int *)(iVar2 + 0x10);
+  *(undefined4 *)(unaff_EBP + -0x10) = 1;
+  if (iVar1 == 0) {
+    iVar2 = AfxGetModuleState();
+    iVar2 = (**(code **)(**(int **)(iVar2 + 4) + 0x14))(0xe100,0,0,0);
+    if (iVar2 == 0) {
+      OnFileNew();
+    }
+    iVar2 = extraout_ECX[7];
+  }
+  else {
+    if (iVar1 != 1) {
+      if (1 < iVar1) {
+        if (iVar1 < 4) {
+          extraout_ECX[0x1d] = 0;
+          (**(code **)(*extraout_ECX + 0x84))(*(undefined4 *)(iVar2 + 0x14));
+          extraout_ECX[0x2b] = iVar2;
+          SendMessageA(*(HWND *)(extraout_ECX[7] + 0x1c),0x111,0xe108,0);
+          extraout_ECX[0x2b] = 0;
+          *(undefined4 *)(unaff_EBP + -0x10) = 0;
+        }
+        else if (iVar1 == 4) {
+          iVar2 = extraout_ECX[0x1d];
+          extraout_ECX[0x1d] = 0;
+          extraout_ECX[0x2b] = iVar2;
+        }
+        else if (iVar1 == 5) {
+          UnregisterShellFileTypes();
+          iVar1 = Unregister();
+          if (*(int *)(iVar2 + 8) == 0) {
+            if (iVar1 == 0) {
+              uVar3 = 0xf10c;
+            }
+            else {
+              uVar3 = 0xf10b;
+            }
+            AfxMessageBox(uVar3,0,0xffffffff);
+          }
+          iVar2 = extraout_ECX[0x2b];
+          *(undefined4 *)(unaff_EBP + -0x10) = 0;
+          if (iVar2 == 0) {
+            iVar2 = operator_new(0x24);
+            *(int *)(unaff_EBP + 8) = iVar2;
+            *(undefined4 *)(unaff_EBP + -4) = 0;
+            if (iVar2 == 0) {
+              iVar2 = 0;
+            }
+            else {
+              iVar2 = CCommandLineInfo();
+            }
+            extraout_ECX[0x2b] = iVar2;
+            *(undefined4 *)(iVar2 + 0x10) = 5;
+          }
+        }
+      }
+      goto LAB_00622de8;
+    }
+    iVar2 = (**(code **)(*extraout_ECX + 0x84))(*(undefined4 *)(iVar2 + 0x14));
+  }
+  if (iVar2 == 0) {
+    *(undefined4 *)(unaff_EBP + -0x10) = 0;
+  }
+LAB_00622de8:
+  uVar3 = *(undefined4 *)(unaff_EBP + -0x10);
+  *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
+  return uVar3;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00622DFC
@@ -731,17 +1100,62 @@ LSTATUS CWinApp::DelRegTree(void)
   return LVar1;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00623006
+// GHIDRA_NAME CWinApp::EnableShellOpen
+// GHIDRA_PROTO undefined EnableShellOpen()
+
+void __fastcall CWinApp::EnableShellOpen(int param_1)
+
+{
+  ATOM AVar1;
+  
+  AVar1 = GlobalAddAtomA(*(LPCSTR *)(param_1 + 0x88));
+  *(ATOM *)(param_1 + 0xb0) = AVar1;
+  AVar1 = GlobalAddAtomA("system");
+  *(ATOM *)(param_1 + 0xb2) = AVar1;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00623050
+// GHIDRA_NAME CWinApp::UnregisterShellFileTypes
+// GHIDRA_PROTO undefined UnregisterShellFileTypes()
+
+void CWinApp::UnregisterShellFileTypes(void)
+
+{
+  CDocManager::UnregisterShellFileTypes();
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00623061
+// GHIDRA_NAME CWinApp::SetRegistryKey
+// GHIDRA_PROTO undefined __thiscall SetRegistryKey(undefined4 param_1)
+
+void __thiscall CWinApp::SetRegistryKey(CWinApp *this,undefined4 param_1)
+
+{
+  undefined4 uVar1;
+  
+  FreeHeapBlockWithAllocatorTracking(*(undefined4 *)(this + 0x7c));
+  uVar1 = __strdup(param_1);
+  *(undefined4 *)(this + 0x7c) = uVar1;
+  FreeHeapBlockWithAllocatorTracking(*(undefined4 *)(this + 0x90));
+  uVar1 = __strdup(*(undefined4 *)(this + 0x78));
+  *(undefined4 *)(this + 0x90) = uVar1;
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00623099
 // GHIDRA_NAME CWinApp::SetRegistryKey
 // GHIDRA_PROTO undefined SetRegistryKey()
 
-void __thiscall CWinApp::SetRegistryKey(void *param_1,undefined4 param_2)
+void __thiscall CWinApp::SetRegistryKey(CWinApp *param_1,undefined4 param_2)
 
 {
   undefined1 local_104 [256];
   
   AfxLoadString(param_2,local_104,0x100);
-  CWinApp__SetRegistryKey(param_1,local_104);
+  SetRegistryKey(param_1,local_104);
   return;
 }
 
@@ -868,7 +1282,7 @@ undefined4 CWinApp::GetProfileStringA(void)
   *(undefined4 *)(unaff_EBP + -0x18) = 0;
   if (iVar2 == 0) {
     if (*(int *)(unaff_EBP + 0x14) == 0) {
-      *(undefined **)(unaff_EBP + 0x14) = &DAT_006a6128;
+      *(undefined **)(unaff_EBP + 0x14) = &afxChNil;
     }
     GetPrivateProfileStringA
               (*(LPCSTR *)(unaff_EBP + 0xc),*(LPCSTR *)(unaff_EBP + 0x10),

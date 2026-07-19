@@ -37,7 +37,7 @@ undefined4 * TTownNameDialog::CreateObject(void)
 // GHIDRA_NAME TTownNameDialog::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TTownNameDialog::GetRuntimeClass()
+CRuntimeClass * __thiscall TTownNameDialog::GetRuntimeClass(TTownNameDialog *this)
 
 {
   return &classTTownNameDialog;
@@ -47,7 +47,8 @@ CRuntimeClass * TTownNameDialog::GetRuntimeClass()
 // GHIDRA_NAME TTownNameDialog::ConstructTTownNameDialogBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTTownNameDialogBaseState(void)
 
-TTownNameDialog * TTownNameDialog::ConstructTTownNameDialogBaseState()
+TTownNameDialog * __thiscall
+TTownNameDialog::ConstructTTownNameDialogBaseState(TTownNameDialog *this)
 
 {
   func_0x00403328();
@@ -59,7 +60,8 @@ TTownNameDialog * TTownNameDialog::ConstructTTownNameDialogBaseState()
 // GHIDRA_NAME TTownNameDialog::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TTownNameDialog * TTownNameDialog::_scalar_deleting_destructor_(byte param_1)
+TTownNameDialog * __thiscall
+TTownNameDialog::_scalar_deleting_destructor_(TTownNameDialog *this,byte param_1)
 
 {
   func_0x00401456();
@@ -73,7 +75,7 @@ TTownNameDialog * TTownNameDialog::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TTownNameDialog::NoOpUiLifecycleHook
 // GHIDRA_PROTO undefined __thiscall NoOpUiLifecycleHook(void)
 
-void TTownNameDialog::NoOpUiLifecycleHook()
+void __thiscall TTownNameDialog::NoOpUiLifecycleHook(TTownNameDialog *this)
 
 {
   int iVar1;
@@ -126,31 +128,23 @@ void TTownNameDialog::NoOpUiLifecycleHook()
 // GHIDRA_NAME TTownNameDialog::ApplyRectSlot110
 // GHIDRA_PROTO undefined __thiscall ApplyRectSlot110(void)
 
-void TTownNameDialog::ApplyRectSlot110()
+void __thiscall TTownNameDialog::ApplyRectSlot110(TTownNameDialog *this)
 
 {
   undefined uVar1;
   undefined3 extraout_var;
   undefined4 in_stack_00000004;
-  undefined4 *puVar2;
-  undefined4 uVar3;
   undefined4 uStack_28;
-  undefined4 *puStack_20;
-  undefined4 uStack_1c;
-  undefined4 uStack_18;
+  undefined4 auStack_18 [6];
   
   uStack_28 = in_stack_00000004;
   func_0x00404fe8();
-  uVar3 = 0x6e616d65;
   uVar1 = (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25)(0x6e616d65);
   if ((int *)CONCAT31(extraout_var,uVar1) != (int *)0x0) {
-    puVar2 = &uStack_28;
-    (**(code **)(*(int *)CONCAT31(extraout_var,uVar1) + 300))(puVar2);
+    (**(code **)(*(int *)CONCAT31(extraout_var,uVar1) + 300))(&uStack_28);
     (**(code **)(g_pUiRuntimeContext->vftable + 0x34))(0xf);
-    uStack_18 = uStack_28;
-    puStack_20 = puVar2;
-    uStack_1c = uVar3;
-    func_0x00406546(&puStack_20);
+    auStack_18[0] = uStack_28;
+    thunk_FillRectWithQuickDrawBrushAndContextOffset(auStack_18);
   }
   func_0x004010be(0x50);
   return;

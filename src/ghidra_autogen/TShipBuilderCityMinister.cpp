@@ -40,7 +40,7 @@ undefined4 * TShipBuilderCityMinister::CreateObject(void)
 // GHIDRA_NAME TShipBuilderCityMinister::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TShipBuilderCityMinister::GetRuntimeClass()
+CRuntimeClass * __thiscall TShipBuilderCityMinister::GetRuntimeClass(TShipBuilderCityMinister *this)
 
 {
   return &classTShipBuilderCityMinister;
@@ -50,7 +50,8 @@ CRuntimeClass * TShipBuilderCityMinister::GetRuntimeClass()
 // GHIDRA_NAME TShipBuilderCityMinister::ConstructTShipBuilderCityMinisterBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTShipBuilderCityMinisterBaseState(void)
 
-TShipBuilderCityMinister * TShipBuilderCityMinister::ConstructTShipBuilderCityMinisterBaseState()
+TShipBuilderCityMinister * __thiscall
+TShipBuilderCityMinister::ConstructTShipBuilderCityMinisterBaseState(TShipBuilderCityMinister *this)
 
 {
   func_0x0040433b();
@@ -66,7 +67,8 @@ TShipBuilderCityMinister * TShipBuilderCityMinister::ConstructTShipBuilderCityMi
 // GHIDRA_NAME TShipBuilderCityMinister::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TShipBuilderCityMinister * TShipBuilderCityMinister::_scalar_deleting_destructor_(byte param_1)
+TShipBuilderCityMinister * __thiscall
+TShipBuilderCityMinister::_scalar_deleting_destructor_(TShipBuilderCityMinister *this,byte param_1)
 
 {
   func_0x004051e1();

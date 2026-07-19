@@ -39,7 +39,7 @@ undefined4 * TInvadeMission::CreateObject(void)
 // GHIDRA_NAME TInvadeMission::ForwardInvadeMissionArgToBeachheadSlot90
 // GHIDRA_PROTO undefined __thiscall ForwardInvadeMissionArgToBeachheadSlot90(void)
 
-void TInvadeMission::ForwardInvadeMissionArgToBeachheadSlot90()
+void __thiscall TInvadeMission::ForwardInvadeMissionArgToBeachheadSlot90(TInvadeMission *this)
 
 {
   (**(code **)(**(int **)(this + 0x34) + 0x90))();
@@ -50,7 +50,7 @@ void TInvadeMission::ForwardInvadeMissionArgToBeachheadSlot90()
 // GHIDRA_NAME TInvadeMission::ForwardInvadeMissionArgsToBeachheadSlot84
 // GHIDRA_PROTO undefined __thiscall ForwardInvadeMissionArgsToBeachheadSlot84(void)
 
-void TInvadeMission::ForwardInvadeMissionArgsToBeachheadSlot84()
+void __thiscall TInvadeMission::ForwardInvadeMissionArgsToBeachheadSlot84(TInvadeMission *this)
 
 {
   (**(code **)(**(int **)(this + 0x34) + 0x84))();
@@ -61,7 +61,7 @@ void TInvadeMission::ForwardInvadeMissionArgsToBeachheadSlot84()
 // GHIDRA_NAME TInvadeMission::ForwardInvadeMissionArgsToBeachheadSlot8C
 // GHIDRA_PROTO undefined __thiscall ForwardInvadeMissionArgsToBeachheadSlot8C(void)
 
-void TInvadeMission::ForwardInvadeMissionArgsToBeachheadSlot8C()
+void __thiscall TInvadeMission::ForwardInvadeMissionArgsToBeachheadSlot8C(TInvadeMission *this)
 
 {
   (**(code **)(**(int **)(this + 0x34) + 0x8c))();
@@ -72,7 +72,8 @@ void TInvadeMission::ForwardInvadeMissionArgsToBeachheadSlot8C()
 // GHIDRA_NAME TInvadeMission::ComputeInvadeMissionCompositeScoreWithBeachhead
 // GHIDRA_PROTO undefined __thiscall ComputeInvadeMissionCompositeScoreWithBeachhead(void)
 
-float10 TInvadeMission::ComputeInvadeMissionCompositeScoreWithBeachhead()
+float10 __thiscall
+TInvadeMission::ComputeInvadeMissionCompositeScoreWithBeachhead(TInvadeMission *this)
 
 {
   float fVar1;
@@ -110,7 +111,8 @@ undefined ** TInvadeMission::GetRuntimeClass(void)
 // GHIDRA_NAME TInvadeMission::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TInvadeMission * TInvadeMission::_scalar_deleting_destructor_(byte param_1)
+TInvadeMission * __thiscall
+TInvadeMission::_scalar_deleting_destructor_(TInvadeMission *this,byte param_1)
 
 {
   func_0x004022fc();
@@ -124,7 +126,7 @@ TInvadeMission * TInvadeMission::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TInvadeMission::CleanupTInvadeMissionAndReleaseOwnedOrders
 // GHIDRA_PROTO undefined __thiscall CleanupTInvadeMissionAndReleaseOwnedOrders(void)
 
-void TInvadeMission::CleanupTInvadeMissionAndReleaseOwnedOrders()
+void __thiscall TInvadeMission::CleanupTInvadeMissionAndReleaseOwnedOrders(TInvadeMission *this)
 
 {
   int iVar1;
@@ -155,7 +157,8 @@ void TInvadeMission::CleanupTInvadeMissionAndReleaseOwnedOrders()
 // GHIDRA_NAME TInvadeMission::EvaluateInvadeMissionBeachheadAndQueueEligibleUnits
 // GHIDRA_PROTO undefined __thiscall EvaluateInvadeMissionBeachheadAndQueueEligibleUnits(void)
 
-uint TInvadeMission::EvaluateInvadeMissionBeachheadAndQueueEligibleUnits()
+uint __thiscall
+TInvadeMission::EvaluateInvadeMissionBeachheadAndQueueEligibleUnits(TInvadeMission *this)
 
 {
   short sVar1;
@@ -184,7 +187,7 @@ uint TInvadeMission::EvaluateInvadeMissionBeachheadAndQueueEligibleUnits()
 // GHIDRA_NAME TInvadeMission::InitializeInvadeMissionFromNationAndTargetTile
 // GHIDRA_PROTO undefined __thiscall InitializeInvadeMissionFromNationAndTargetTile(void)
 
-void TInvadeMission::InitializeInvadeMissionFromNationAndTargetTile()
+void __thiscall TInvadeMission::InitializeInvadeMissionFromNationAndTargetTile(TInvadeMission *this)
 
 {
   func_0x0040163b(*(undefined2 *)(this + 4));
@@ -201,7 +204,7 @@ void TInvadeMission::InitializeInvadeMissionFromNationAndTargetTile()
 // GHIDRA_NAME TInvadeMission::SetInvadeMissionKindTag2
 // GHIDRA_PROTO undefined __thiscall SetInvadeMissionKindTag2(void)
 
-void TInvadeMission::SetInvadeMissionKindTag2()
+void __thiscall TInvadeMission::SetInvadeMissionKindTag2(TInvadeMission *this)
 
 {
   this[8] = (TInvadeMission)0x2;
@@ -212,7 +215,7 @@ void TInvadeMission::SetInvadeMissionKindTag2()
 // GHIDRA_NAME TInvadeMission::SerializeTInvadeMission
 // GHIDRA_PROTO undefined __thiscall SerializeTInvadeMission(int * param_1)
 
-void TInvadeMission::SerializeTInvadeMission(int *param_1)
+void __thiscall TInvadeMission::SerializeTInvadeMission(TInvadeMission *this,int *param_1)
 
 {
   code *pcVar1;
@@ -229,7 +232,7 @@ void TInvadeMission::SerializeTInvadeMission(int *param_1)
 // GHIDRA_NAME TInvadeMission::AdvanceInvadeMissionCompositeHandlers
 // GHIDRA_PROTO undefined __thiscall AdvanceInvadeMissionCompositeHandlers(void)
 
-void TInvadeMission::AdvanceInvadeMissionCompositeHandlers()
+void __thiscall TInvadeMission::AdvanceInvadeMissionCompositeHandlers(TInvadeMission *this)
 
 {
   int iVar1;
@@ -248,7 +251,8 @@ void TInvadeMission::AdvanceInvadeMissionCompositeHandlers()
 
 /* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 
-float10 TInvadeMission::ComputeInvadeMissionWeightedScoreDelta(float param_1)
+float10 __thiscall
+TInvadeMission::ComputeInvadeMissionWeightedScoreDelta(TInvadeMission *this,float param_1)
 
 {
   char cVar1;
@@ -282,7 +286,7 @@ float10 TInvadeMission::ComputeInvadeMissionWeightedScoreDelta(float param_1)
 // GHIDRA_NAME TInvadeMission::ComputeInvadeMissionBeachheadScoreIfEnabled
 // GHIDRA_PROTO undefined __thiscall ComputeInvadeMissionBeachheadScoreIfEnabled(void)
 
-float10 TInvadeMission::ComputeInvadeMissionBeachheadScoreIfEnabled()
+float10 __thiscall TInvadeMission::ComputeInvadeMissionBeachheadScoreIfEnabled(TInvadeMission *this)
 
 {
   float10 fVar1;
@@ -298,7 +302,8 @@ float10 TInvadeMission::ComputeInvadeMissionBeachheadScoreIfEnabled()
 // GHIDRA_NAME TInvadeMission::SetInvadeMissionBeachheadDisabledFlag
 // GHIDRA_PROTO undefined __thiscall SetInvadeMissionBeachheadDisabledFlag(TInvadeMission param_1)
 
-void TInvadeMission::SetInvadeMissionBeachheadDisabledFlag(undefined4 param_2)
+void __thiscall
+TInvadeMission::SetInvadeMissionBeachheadDisabledFlag(TInvadeMission *this,undefined4 param_2)
 
 {
   this[0x10] = SUB41(param_2,0);

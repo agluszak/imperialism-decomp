@@ -40,7 +40,7 @@ undefined4 * TRailCityMinister::CreateObject(void)
 // GHIDRA_NAME TRailCityMinister::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TRailCityMinister::GetRuntimeClass()
+CRuntimeClass * __thiscall TRailCityMinister::GetRuntimeClass(TRailCityMinister *this)
 
 {
   return &classTRailCityMinister;
@@ -50,7 +50,8 @@ CRuntimeClass * TRailCityMinister::GetRuntimeClass()
 // GHIDRA_NAME TRailCityMinister::ConstructTRailCityMinisterBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTRailCityMinisterBaseState(void)
 
-TRailCityMinister * TRailCityMinister::ConstructTRailCityMinisterBaseState()
+TRailCityMinister * __thiscall
+TRailCityMinister::ConstructTRailCityMinisterBaseState(TRailCityMinister *this)
 
 {
   func_0x0040433b();
@@ -66,7 +67,8 @@ TRailCityMinister * TRailCityMinister::ConstructTRailCityMinisterBaseState()
 // GHIDRA_NAME TRailCityMinister::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TRailCityMinister * TRailCityMinister::_scalar_deleting_destructor_(byte param_1)
+TRailCityMinister * __thiscall
+TRailCityMinister::_scalar_deleting_destructor_(TRailCityMinister *this,byte param_1)
 
 {
   func_0x00404809();

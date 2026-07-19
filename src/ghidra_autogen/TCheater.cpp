@@ -37,7 +37,7 @@ undefined4 * TCheater::CreateObject(void)
 // GHIDRA_NAME TCheater::OrphanRetStub_004b1410
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_004b1410(void)
 
-void TCheater::OrphanRetStub_004b1410()
+void __thiscall TCheater::OrphanRetStub_004b1410(TCheater *this)
 
 {
   return;
@@ -47,7 +47,7 @@ void TCheater::OrphanRetStub_004b1410()
 // GHIDRA_NAME TCheater::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TCheater * TCheater::_scalar_deleting_destructor_(byte param_1)
+TCheater * __thiscall TCheater::_scalar_deleting_destructor_(TCheater *this,byte param_1)
 
 {
   func_0x00406a0a();
@@ -61,7 +61,7 @@ TCheater * TCheater::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TCheater::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TCheater::GetRuntimeClass()
+CRuntimeClass * __thiscall TCheater::GetRuntimeClass(TCheater *this)
 
 {
   return &classTCheater;
@@ -148,7 +148,7 @@ void __thiscall TCheater::ConstructTCheaterBaseState(int param_1,undefined4 para
 // GHIDRA_NAME TCheater::DestructTCheaterAndMaybeFree
 // GHIDRA_PROTO undefined __thiscall DestructTCheaterAndMaybeFree(void)
 
-void TCheater::DestructTCheaterAndMaybeFree()
+void __thiscall TCheater::DestructTCheaterAndMaybeFree(TCheater *this)
 
 {
   int iVar1;

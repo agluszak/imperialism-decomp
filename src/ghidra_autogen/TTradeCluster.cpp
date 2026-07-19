@@ -37,17 +37,17 @@ undefined4 * TTradeCluster::CreateObject(void)
 // GHIDRA_NAME TTradeCluster::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TTradeCluster::GetRuntimeClass()
+CRuntimeClass * __thiscall TTradeCluster::GetRuntimeClass(TTradeCluster *this)
 
 {
-  return &g_pClassDescTTradeCluster;
+  return &classTTradeCluster;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005870B0
 // GHIDRA_NAME TTradeCluster::TTradeCluster
 // GHIDRA_PROTO undefined __thiscall TTradeCluster(void)
 
-TTradeCluster * TTradeCluster::TTradeCluster()
+TTradeCluster * __thiscall TTradeCluster::TTradeCluster(TTradeCluster *this)
 
 {
   func_0x00405835();
@@ -59,7 +59,8 @@ TTradeCluster * TTradeCluster::TTradeCluster()
 // GHIDRA_NAME TTradeCluster::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TTradeCluster * TTradeCluster::_scalar_deleting_destructor_(byte param_1)
+TTradeCluster * __thiscall
+TTradeCluster::_scalar_deleting_destructor_(TTradeCluster *this,byte param_1)
 
 {
   func_0x0040113b();
@@ -73,7 +74,7 @@ TTradeCluster * TTradeCluster::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TTradeCluster::NoOpUiLifecycleHook
 // GHIDRA_PROTO undefined __thiscall NoOpUiLifecycleHook(void)
 
-void TTradeCluster::NoOpUiLifecycleHook()
+void __thiscall TTradeCluster::NoOpUiLifecycleHook(TTradeCluster *this)
 
 {
   _vslot_fn *p_Var1;
@@ -103,7 +104,7 @@ void TTradeCluster::NoOpUiLifecycleHook()
   local_13 = 0;
   uVar2 = (*p_Var1)(0x53656c6c);
   if ((int *)CONCAT31(extraout_var,uVar2) != (int *)0x0) {
-    InitializeUiTextStyleDescriptor(auStack_20,0,0xe,0x2b68,2);
+    thunk_InitializeUiTextStyleDescriptor(auStack_20,0,0xe,0x2b68,2);
     iVar9 = *(int *)CONCAT31(extraout_var,uVar2);
     (**(code **)(iVar9 + 0x1b4))(auStack_20,0);
     (**(code **)(iVar9 + 0x1c4))(0xffffffff,0);
@@ -154,7 +155,8 @@ void TTradeCluster::NoOpUiLifecycleHook()
 // GHIDRA_NAME TTradeCluster::HandleEvent
 // GHIDRA_PROTO undefined __thiscall HandleEvent(int param_1, void * param_2, int param_3)
 
-void TTradeCluster::HandleEvent(int param_1, void *param_2, int param_3)
+void __thiscall
+TTradeCluster::HandleEvent(TTradeCluster *this,int param_1,void *param_2,int param_3)
 
 {
   TTradeClusterVtbl *pTVar1;
@@ -310,7 +312,7 @@ void TTradeCluster::HandleEvent(int param_1, void *param_2, int param_3)
 // GHIDRA_NAME TTradeCluster::IsTradeControlAtMinimum
 // GHIDRA_PROTO undefined __thiscall IsTradeControlAtMinimum(void)
 
-bool TTradeCluster::IsTradeControlAtMinimum()
+bool __thiscall TTradeCluster::IsTradeControlAtMinimum(TTradeCluster *this)
 
 {
   undefined uVar1;
@@ -331,7 +333,7 @@ bool TTradeCluster::IsTradeControlAtMinimum()
 // GHIDRA_NAME TTradeCluster::QueryTradeSellControlQuantity
 // GHIDRA_PROTO undefined __thiscall QueryTradeSellControlQuantity(void)
 
-void TTradeCluster::QueryTradeSellControlQuantity()
+void __thiscall TTradeCluster::QueryTradeSellControlQuantity(TTradeCluster *this)
 
 {
   undefined uVar1;
@@ -356,7 +358,7 @@ void TTradeCluster::QueryTradeSellControlQuantity()
    Looks up control tag 'card' and returns true when control bitmap is 2111 (0x83F) or 2125 (0x84D)
    and control reports actionable state via vtable+0xEC. */
 
-undefined4 TTradeCluster::IsTradeBidControlActionable()
+undefined4 __thiscall TTradeCluster::IsTradeBidControlActionable(TTradeCluster *this)
 
 {
   undefined uVar1;
@@ -391,7 +393,7 @@ undefined4 TTradeCluster::IsTradeBidControlActionable()
    Looks up control tag 'offr' and returns true when control bitmap is 2113 (0x841) or 2127 (0x84F)
    and control reports actionable state via vtable+0xEC. */
 
-undefined4 TTradeCluster::IsTradeOfferControlActionable()
+undefined4 __thiscall TTradeCluster::IsTradeOfferControlActionable(TTradeCluster *this)
 
 {
   undefined uVar1;
@@ -426,7 +428,7 @@ undefined4 TTradeCluster::IsTradeOfferControlActionable()
    Resolves 'card' control and assigns 2112 (0x840) or 2126 (0x84E) through vtable+0x1C8 based on
    row state field (+0x1C == 0x67643020) when nation availability gate passes. */
 
-void TTradeCluster::SetTradeBidSecondaryBitmapState()
+void __thiscall TTradeCluster::SetTradeBidSecondaryBitmapState(TTradeCluster *this)
 
 {
   int iVar1;
@@ -476,7 +478,7 @@ void TTradeCluster::SetTradeBidSecondaryBitmapState()
    bitmap 2111 (0x83F).
    Then refreshes related controls 'gree', 'left', 'rght' visibility/active flags. */
 
-void TTradeCluster::SetTradeBidControlBitmapState()
+void __thiscall TTradeCluster::SetTradeBidControlBitmapState(TTradeCluster *this)
 
 {
   _vslot_fn *p_Var1;
@@ -555,7 +557,7 @@ void TTradeCluster::SetTradeBidControlBitmapState()
    bitmap 2113 (0x841).
    Then refreshes related controls 'gree', 'left', 'rght' visibility/active flags. */
 
-void TTradeCluster::SetTradeOfferControlBitmapState()
+void __thiscall TTradeCluster::SetTradeOfferControlBitmapState(TTradeCluster *this)
 
 {
   _vslot_fn *p_Var1;
@@ -627,7 +629,7 @@ void TTradeCluster::SetTradeOfferControlBitmapState()
    Resolves 'offr' control and assigns 2114 (0x842) or 2128 (0x850) through vtable+0x1C8 based on
    row state field (+0x1C == 0x67643020) when nation availability gate passes. */
 
-void TTradeCluster::SetTradeOfferSecondaryBitmapState()
+void __thiscall TTradeCluster::SetTradeOfferSecondaryBitmapState(TTradeCluster *this)
 
 {
   _vslot_fn *p_Var1;
@@ -716,7 +718,7 @@ LAB_00588133:
 // GHIDRA_NAME TTradeCluster::OrphanRetStub_00586ff0
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_00586ff0(void)
 
-void TTradeCluster::OrphanRetStub_00586ff0()
+void __thiscall TTradeCluster::OrphanRetStub_00586ff0(TTradeCluster *this)
 
 {
   _vslot_fn *p_Var1;

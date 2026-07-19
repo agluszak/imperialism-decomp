@@ -40,7 +40,8 @@ undefined4 * TAutomatedPlayDialog::CreateObject(void)
 // GHIDRA_NAME TAutomatedPlayDialog::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TAutomatedPlayDialog * TAutomatedPlayDialog::_scalar_deleting_destructor_(byte param_1)
+TAutomatedPlayDialog * __thiscall
+TAutomatedPlayDialog::_scalar_deleting_destructor_(TAutomatedPlayDialog *this,byte param_1)
 
 {
   func_0x00403e63();
@@ -54,7 +55,7 @@ TAutomatedPlayDialog * TAutomatedPlayDialog::_scalar_deleting_destructor_(byte p
 // GHIDRA_NAME TAutomatedPlayDialog::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TAutomatedPlayDialog::GetRuntimeClass()
+CRuntimeClass * __thiscall TAutomatedPlayDialog::GetRuntimeClass(TAutomatedPlayDialog *this)
 
 {
   return &classTAutomatedPlayDialog;
@@ -64,7 +65,7 @@ CRuntimeClass * TAutomatedPlayDialog::GetRuntimeClass()
 // GHIDRA_NAME TAutomatedPlayDialog::CallVoidSlotA0
 // GHIDRA_PROTO undefined __thiscall CallVoidSlotA0(void)
 
-void TAutomatedPlayDialog::CallVoidSlotA0()
+void __thiscall TAutomatedPlayDialog::CallVoidSlotA0(TAutomatedPlayDialog *this)
 
 {
   undefined uVar1;

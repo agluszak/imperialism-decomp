@@ -7,7 +7,7 @@
 // GHIDRA_NAME TTrainingOrder::CreateTTrainingOrderInstance
 // GHIDRA_PROTO undefined __thiscall CreateTTrainingOrderInstance(short param_1)
 
-void TTrainingOrder::CreateTTrainingOrderInstance(short param_1)
+void __thiscall TTrainingOrder::CreateTTrainingOrderInstance(TTrainingOrder *this,short param_1)
 
 {
   short *psVar1;
@@ -42,7 +42,7 @@ undefined4 * TTrainingOrder::CreateObject(void)
 // GHIDRA_NAME TTrainingOrder::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TTrainingOrder::GetRuntimeClass()
+CRuntimeClass * __thiscall TTrainingOrder::GetRuntimeClass(TTrainingOrder *this)
 
 {
   return &classTTrainingOrder;
@@ -52,7 +52,8 @@ CRuntimeClass * TTrainingOrder::GetRuntimeClass()
 // GHIDRA_NAME TTrainingOrder::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TTrainingOrder * TTrainingOrder::_scalar_deleting_destructor_(byte param_1)
+TTrainingOrder * __thiscall
+TTrainingOrder::_scalar_deleting_destructor_(TTrainingOrder *this,byte param_1)
 
 {
   func_0x00403701();
@@ -66,7 +67,7 @@ TTrainingOrder * TTrainingOrder::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TTrainingOrder::DestructTTrainingOrderAndMaybeFree
 // GHIDRA_PROTO undefined __thiscall DestructTTrainingOrderAndMaybeFree(void)
 
-void TTrainingOrder::DestructTTrainingOrderAndMaybeFree()
+void __thiscall TTrainingOrder::DestructTTrainingOrderAndMaybeFree(TTrainingOrder *this)
 
 {
   this->vftable = (TTrainingOrderVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
@@ -74,12 +75,11 @@ void TTrainingOrder::DestructTTrainingOrderAndMaybeFree()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B6B20
-// GHIDRA_NAME TTrainingOrder::InitializeCityProductionState_Impl_At004b6b20
-// GHIDRA_PROTO undefined __thiscall InitializeCityProductionState_Impl_At004b6b20(int param_1, undefined2 param_2)
+// GHIDRA_NAME TTrainingOrder::TrainingOrderSlot11
+// GHIDRA_PROTO undefined __thiscall TrainingOrderSlot11(int param_1, undefined2 param_2)
 
 void __thiscall
-TTrainingOrder::InitializeCityProductionState_Impl_At004b6b20
-          (TTrainingOrder *this,int param_1,undefined2 param_2)
+TTrainingOrder::TrainingOrderSlot11(TTrainingOrder *this,int param_1,undefined2 param_2)
 
 {
   int iVar1;
@@ -105,7 +105,7 @@ TTrainingOrder::InitializeCityProductionState_Impl_At004b6b20
 // GHIDRA_NAME TTrainingOrder::MaxOrder
 // GHIDRA_PROTO undefined __thiscall MaxOrder(void)
 
-int TTrainingOrder::MaxOrder()
+int __thiscall TTrainingOrder::MaxOrder(TTrainingOrder *this)
 
 {
   short sVar1;
@@ -169,7 +169,7 @@ int TTrainingOrder::MaxOrder()
 // GHIDRA_NAME TTrainingOrder::SetQuantity
 // GHIDRA_PROTO undefined __thiscall SetQuantity(short param_1)
 
-undefined4 TTrainingOrder::SetQuantity(short param_1)
+undefined4 __thiscall TTrainingOrder::SetQuantity(TTrainingOrder *this,short param_1)
 
 {
   int *piVar1;
@@ -216,7 +216,7 @@ undefined4 TTrainingOrder::SetQuantity(short param_1)
 // GHIDRA_NAME TTrainingOrder::FillOrderSheet
 // GHIDRA_PROTO undefined __thiscall FillOrderSheet(void)
 
-void TTrainingOrder::FillOrderSheet()
+void __thiscall TTrainingOrder::FillOrderSheet(TTrainingOrder *this)
 
 {
   short sStack00000004;
@@ -235,7 +235,7 @@ void TTrainingOrder::FillOrderSheet()
 // GHIDRA_NAME TTrainingOrder::CommitIfPending
 // GHIDRA_PROTO undefined __thiscall CommitIfPending(void)
 
-void TTrainingOrder::CommitIfPending()
+void __thiscall TTrainingOrder::CommitIfPending(TTrainingOrder *this)
 
 {
   short sVar1;
@@ -276,7 +276,7 @@ void TTrainingOrder::CommitIfPending()
 // GHIDRA_NAME TTrainingOrder::ResetCityOrderItemDerivedStateNoop
 // GHIDRA_PROTO undefined __thiscall ResetCityOrderItemDerivedStateNoop(void)
 
-void TTrainingOrder::ResetCityOrderItemDerivedStateNoop()
+void __thiscall TTrainingOrder::ResetCityOrderItemDerivedStateNoop(TTrainingOrder *this)
 
 {
   return;

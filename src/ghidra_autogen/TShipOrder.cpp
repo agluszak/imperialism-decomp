@@ -24,7 +24,7 @@ undefined4 * TShipOrder::CreateObject(void)
 // GHIDRA_NAME TShipOrder::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TShipOrder::GetRuntimeClass()
+CRuntimeClass * __thiscall TShipOrder::GetRuntimeClass(TShipOrder *this)
 
 {
   return &classTShipOrder;
@@ -34,7 +34,7 @@ CRuntimeClass * TShipOrder::GetRuntimeClass()
 // GHIDRA_NAME TShipOrder::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TShipOrder * TShipOrder::_scalar_deleting_destructor_(byte param_1)
+TShipOrder * __thiscall TShipOrder::_scalar_deleting_destructor_(TShipOrder *this,byte param_1)
 
 {
   func_0x0040702c();
@@ -48,7 +48,7 @@ TShipOrder * TShipOrder::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TShipOrder::DestructTShipOrderAndMaybeFree
 // GHIDRA_PROTO undefined __thiscall DestructTShipOrderAndMaybeFree(void)
 
-void TShipOrder::DestructTShipOrderAndMaybeFree()
+void __thiscall TShipOrder::DestructTShipOrderAndMaybeFree(TShipOrder *this)
 
 {
   this->vftable = (TShipOrderVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
@@ -59,7 +59,7 @@ void TShipOrder::DestructTShipOrderAndMaybeFree()
 // GHIDRA_NAME TShipOrder::CanMakeFromCityStock
 // GHIDRA_PROTO undefined __thiscall CanMakeFromCityStock(void)
 
-int TShipOrder::CanMakeFromCityStock()
+int __thiscall TShipOrder::CanMakeFromCityStock(TShipOrder *this)
 
 {
   int iVar1;
@@ -84,7 +84,7 @@ int TShipOrder::CanMakeFromCityStock()
 // GHIDRA_NAME TShipOrder::CanFillOrderSheet
 // GHIDRA_PROTO undefined __thiscall CanFillOrderSheet(void)
 
-uint TShipOrder::CanFillOrderSheet()
+uint __thiscall TShipOrder::CanFillOrderSheet(TShipOrder *this)
 
 {
   short *psVar1;
@@ -119,7 +119,7 @@ uint TShipOrder::CanFillOrderSheet()
 // GHIDRA_NAME TShipOrder::MaxOrder
 // GHIDRA_PROTO undefined __thiscall MaxOrder(void)
 
-int TShipOrder::MaxOrder()
+int __thiscall TShipOrder::MaxOrder(TShipOrder *this)
 
 {
   int in_EAX;
@@ -171,7 +171,7 @@ int TShipOrder::MaxOrder()
 // GHIDRA_NAME TShipOrder::SetQuantity
 // GHIDRA_PROTO undefined __thiscall SetQuantity(short param_1)
 
-undefined4 TShipOrder::SetQuantity(short param_1)
+undefined4 __thiscall TShipOrder::SetQuantity(TShipOrder *this,short param_1)
 
 {
   short *psVar1;
@@ -235,7 +235,7 @@ undefined4 TShipOrder::SetQuantity(short param_1)
 // GHIDRA_NAME TShipOrder::CommitIfPending
 // GHIDRA_PROTO undefined __thiscall CommitIfPending(void)
 
-void TShipOrder::CommitIfPending()
+void __thiscall TShipOrder::CommitIfPending(TShipOrder *this)
 
 {
   if ((*(short *)&this->field_0x48 != 0) && (*(short *)&this->field_0x4 != 0)) {
@@ -251,7 +251,7 @@ void TShipOrder::CommitIfPending()
 // GHIDRA_NAME TShipOrder::CommitQueuedNavyOrdersAndUpdateTierByCapability
 // GHIDRA_PROTO undefined __thiscall CommitQueuedNavyOrdersAndUpdateTierByCapability(void)
 
-void TShipOrder::CommitQueuedNavyOrdersAndUpdateTierByCapability()
+void __thiscall TShipOrder::CommitQueuedNavyOrdersAndUpdateTierByCapability(TShipOrder *this)
 
 {
   short *psVar1;
@@ -354,7 +354,7 @@ LAB_004b8b05:
 // GHIDRA_NAME TShipOrder::FillOrderSheet
 // GHIDRA_PROTO undefined __thiscall FillOrderSheet(void)
 
-void TShipOrder::FillOrderSheet()
+void __thiscall TShipOrder::FillOrderSheet(TShipOrder *this)
 
 {
   short sVar1;

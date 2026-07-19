@@ -7,7 +7,8 @@
 // GHIDRA_NAME TTwoPicSlider::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TTwoPicSlider * TTwoPicSlider::_scalar_deleting_destructor_(byte param_1)
+TTwoPicSlider * __thiscall
+TTwoPicSlider::_scalar_deleting_destructor_(TTwoPicSlider *this,byte param_1)
 
 {
   func_0x004069ab();
@@ -54,7 +55,7 @@ undefined4 * TTwoPicSlider::CreateObject(void)
 // GHIDRA_NAME TTwoPicSlider::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TTwoPicSlider::GetRuntimeClass()
+CRuntimeClass * __thiscall TTwoPicSlider::GetRuntimeClass(TTwoPicSlider *this)
 
 {
   return &classRuntimeClass;
@@ -64,7 +65,7 @@ CRuntimeClass * TTwoPicSlider::GetRuntimeClass()
 // GHIDRA_NAME TTwoPicSlider::ConstructTTwoPicSliderBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTTwoPicSliderBaseState(int param_1)
 
-void TTwoPicSlider::ConstructTTwoPicSliderBaseState(int param_1)
+void __thiscall TTwoPicSlider::ConstructTTwoPicSliderBaseState(TTwoPicSlider *this,int param_1)
 
 {
   undefined4 uVar1;
@@ -100,7 +101,7 @@ void TTwoPicSlider::ConstructTTwoPicSliderBaseState(int param_1)
 // GHIDRA_NAME TTwoPicSlider::Free
 // GHIDRA_PROTO undefined __thiscall Free(void)
 
-void TTwoPicSlider::Free()
+void __thiscall TTwoPicSlider::Free(TTwoPicSlider *this)
 
 {
   if (*(int *)&this->field_0x84 != 0) {
@@ -120,7 +121,7 @@ void TTwoPicSlider::Free()
 // GHIDRA_NAME TTwoPicSlider::ApplyRectSlot110
 // GHIDRA_PROTO undefined __thiscall ApplyRectSlot110(void)
 
-void TTwoPicSlider::ApplyRectSlot110()
+void __thiscall TTwoPicSlider::ApplyRectSlot110(TTwoPicSlider *this)
 
 {
   short sVar1;
@@ -168,16 +169,16 @@ void TTwoPicSlider::ApplyRectSlot110()
       local_4 = 0;
       (*g_pSimMgr->vftable[0x10].slot_0x04)(0x2743,0x3b,&local_20);
       func_0x0040448f(0,0xe,0x2b6c);
-      func_0x004093cc(0x2b6c,&stack0xffffffd0);
-      func_0x004093cc(0x2b67,&stack0xffffffcc);
+      thunk_MapUiThemeCodeToStyleFlags(0x2b6c,&stack0xffffffd0);
+      thunk_MapUiThemeCodeToStyleFlags(0x2b67,&stack0xffffffcc);
       iVar3 = this->field38 / 2;
-      sVar1 = func_0x00405b7d(&stack0xffffffd4);
+      sVar1 = thunk_MeasureTextExtentWithCachedQuickDrawStyle(&stack0xffffffd4);
       iVar2 = this->field34 / 2 - (int)sVar1 / 2;
       func_0x00409444(0);
-      func_0x00408d6e(iVar2 + 1,iVar3 + 5);
+      thunk_SetQuickDrawTextOriginWithContextOffset(iVar2 + 1,iVar3 + 5);
       func_0x004029aa(&stack0xffffffd4);
       func_0x00409444(0);
-      func_0x00408d6e(iVar2,iVar3 + 4);
+      thunk_SetQuickDrawTextOriginWithContextOffset(iVar2,iVar3 + 4);
       func_0x004029aa(&stack0xffffffd4);
       local_4 = 0xffffffff;
       CString::~CString(&local_20);
@@ -191,7 +192,8 @@ void TTwoPicSlider::ApplyRectSlot110()
 // GHIDRA_NAME TTwoPicSlider::DispatchPictureResourceCommand
 // GHIDRA_PROTO undefined __thiscall DispatchPictureResourceCommand(int param_1, int param_2)
 
-void TTwoPicSlider::DispatchPictureResourceCommand(int param_1, int param_2)
+void __thiscall
+TTwoPicSlider::DispatchPictureResourceCommand(TTwoPicSlider *this,int param_1,int param_2)
 
 {
   TTwoPicSliderVtbl *pTVar1;
@@ -232,8 +234,8 @@ void TTwoPicSlider::DispatchPictureResourceCommand(int param_1, int param_2)
         func_0x00406785(iVar3);
         *(short *)&g_pSimMgr->field_0x4e = (short)iVar3;
       }
-      uStack_c = 0xffffffff;
-      func_0x00408035();
+      uStack_4 = 0xffffffff;
+      thunk_DestroyScopedMapQuickDrawContext();
     }
   }
   if ((param_1 == 2) && (*(int *)&this->field_0x94 == 2)) {

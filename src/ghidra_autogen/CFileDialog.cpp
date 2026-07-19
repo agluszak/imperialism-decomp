@@ -24,70 +24,65 @@
    - Installs HandleFileDialogCustomMessages callback for dialog message routing.
    - Copies initial path/filter text when provided. */
 
-TControl * CFileDialog::CFileDialog(void)
+CDialog * CFileDialog::CFileDialog(void)
 
 {
   uint uVar1;
-  undefined4 uVar2;
-  int iVar3;
-  undefined1 *puVar4;
-  TControl *this;
+  int iVar2;
+  undefined1 *puVar3;
+  CDialog *this;
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
   
   _EH_prolog();
-  *(TControl **)(unaff_EBP + -0x10) = this;
-  TControl::CDialog__CDialog(this,0,*(undefined4 *)(unaff_EBP + 0x1c));
-  this->vftable = (TControlVtbl *)&PTR_LAB_006729c4;
+  *(CDialog **)(unaff_EBP + -0x10) = this;
+  CDialog::CDialog(this,0,*(undefined4 *)(unaff_EBP + 0x1c));
+  *(undefined ***)this = &PTR_GetRuntimeClass_006729c4;
   *(undefined4 *)(unaff_EBP + -4) = 0;
-  CString::CString((CString *)&this[1].field_0x28);
+  CString::CString((CString *)(this + 0xac));
   *(undefined1 *)(unaff_EBP + -4) = 1;
-  this->vftable = (TControlVtbl *)&PTR_LAB_006728cc;
-  memset(&this->field_0x5c,0,0x4c);
-  iVar3 = *(int *)(unaff_EBP + 8);
-  *(undefined1 *)&this[1].field6C = 0;
-  this[1].field_0x2c = 0;
-  this[3].field68 = 0;
-  *(int *)&this[1].field_0x24 = iVar3;
-  *(undefined4 *)&this->field_0x5c = 0x4c;
-  *(uint *)&this->field_0x3c = 0x7005 - (uint)(iVar3 != 0);
-  *(undefined4 *)&this[1].field_0x14 = *(undefined4 *)(unaff_EBP + 0xc);
+  *(undefined ***)this = &PTR_LAB_006728cc;
+  memset(this + 0x5c,0,0x4c);
+  iVar2 = *(int *)(unaff_EBP + 8);
+  this[0xf0] = (CDialog)0x0;
+  this[0xb0] = (CDialog)0x0;
+  *(undefined4 *)(this + 500) = 0;
+  *(int *)(this + 0xa8) = iVar2;
+  *(undefined4 *)(this + 0x5c) = 0x4c;
+  *(uint *)(this + 0x3c) = 0x7005 - (uint)(iVar2 != 0);
+  *(undefined4 *)(this + 0x98) = *(undefined4 *)(unaff_EBP + 0xc);
   uVar1 = *(uint *)(unaff_EBP + 0x14);
-  this->commandTagDefaultParam0 = (int)&this[1].field6C;
-  *(uint *)&this[1].field_0xc = *(uint *)&this[1].field_0xc | uVar1 | 0x20;
-  this->commandTagDefaultParam1 = 0x104;
-  *(undefined1 **)&this->commandTagDefaultParam2 = &this[1].field_0x2c;
-  this[1].vftable = (TControlVtbl *)0x40;
+  *(CDialog **)(this + 0x78) = this + 0xf0;
+  *(uint *)(this + 0x90) = *(uint *)(this + 0x90) | uVar1 | 0x20;
+  *(undefined4 *)(this + 0x7c) = 0x104;
+  *(CDialog **)(this + 0x80) = this + 0xb0;
+  *(undefined4 *)(this + 0x84) = 0x40;
   if (DAT_006a7d5c == 0) {
-    iVar3 = AfxHelpEnabled();
-    if (iVar3 != 0) {
-      *(uint *)&this[1].field_0xc = *(uint *)&this[1].field_0xc | 0x10;
+    iVar2 = AfxHelpEnabled();
+    if (iVar2 != 0) {
+      *(uint *)(this + 0x90) = *(uint *)(this + 0x90) | 0x10;
     }
     if (DAT_006a7d5c == 0) goto LAB_005ff559;
   }
-  this[1].field_0xe = this[1].field_0xe | 8;
-  iVar3 = AfxGetModuleState();
-  uVar2 = *(undefined4 *)(iVar3 + 0xc);
-  this->commandTagResourceByte = (char)uVar2;
-  this->padding_65_to_67[0] = (char)((uint)uVar2 >> 8);
-  this->padding_65_to_67[1] = (char)((uint)uVar2 >> 0x10);
-  this->padding_65_to_67[2] = (char)((uint)uVar2 >> 0x18);
+  this[0x92] = (CDialog)((byte)this[0x92] | 8);
+  iVar2 = AfxGetModuleState();
+  *(undefined4 *)(this + 100) = *(undefined4 *)(iVar2 + 0xc);
 LAB_005ff559:
-  iVar3 = *(int *)(unaff_EBP + 0x10);
-  *(code **)&this[1].field_0x1c = _AfxCommDlgProc;
-  if (iVar3 != 0) {
-    lstrcpynA((LPSTR)&this[1].field6C,*(LPCSTR *)(unaff_EBP + 0x10),0x104);
+  iVar2 = *(int *)(unaff_EBP + 0x10);
+  *(code **)(this + 0xa0) = _AfxCommDlgProc;
+  if (iVar2 != 0) {
+    lstrcpynA((LPSTR)(this + 0xf0),*(LPCSTR *)(unaff_EBP + 0x10),0x104);
   }
   if (*(int *)(unaff_EBP + 0x18) != 0) {
-    CString::operator=((CString *)&this[1].field_0x28,*(char **)(unaff_EBP + 0x18));
-    puVar4 = (undefined1 *)CString::GetBuffer((CString *)&this[1].field_0x28,0);
+    CString::operator=((CString *)(this + 0xac),*(char **)(unaff_EBP + 0x18));
+    puVar3 = (undefined1 *)CString::GetBuffer((CString *)(this + 0xac),0);
     while( true ) {
-      puVar4 = (undefined1 *)__mbschr(puVar4,0x7c);
-      if (puVar4 == (undefined1 *)0x0) break;
-      *puVar4 = 0;
-      puVar4 = puVar4 + 1;
+      puVar3 = (undefined1 *)__mbschr(puVar3,0x7c);
+      if (puVar3 == (undefined1 *)0x0) break;
+      *puVar3 = 0;
+      puVar3 = puVar3 + 1;
     }
-    this->field68 = *(int *)&this[1].field_0x28;
+    *(undefined4 *)(this + 0x68) = *(undefined4 *)(this + 0xac);
   }
   *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
   return this;
@@ -127,10 +122,10 @@ int __fastcall CFileDialog::DoModal(int param_1)
     *(int *)(iVar4 + 0x18) = param_1;
   }
   if (*(int *)(param_1 + 0xa8) == 0) {
-    iVar5 = COMDLG32.DLL::GetSaveFileNameA((LPOPENFILENAMEA)(param_1 + 0x5c));
+    iVar5 = GetSaveFileNameA((LPOPENFILENAMEA)(param_1 + 0x5c));
   }
   else {
-    iVar5 = COMDLG32.DLL::GetOpenFileNameA((LPOPENFILENAMEA)(param_1 + 0x5c));
+    iVar5 = GetOpenFileNameA((LPOPENFILENAMEA)(param_1 + 0x5c));
   }
   *(undefined4 *)(iVar4 + 0x18) = 0;
   if (bVar1) {
@@ -172,7 +167,7 @@ undefined4 CFileDialog::GetPathName(void)
     pHVar2 = *(HWND *)(extraout_ECX + 0x1c);
     *(undefined4 *)(unaff_EBP + -4) = 0;
     pHVar2 = GetParent(pHVar2);
-    uVar3 = CWnd__FromHandle(pHVar2);
+    uVar3 = CWnd::FromHandle(pHVar2);
     *(undefined4 *)(unaff_EBP + -0x14) = uVar3;
     iVar4 = CString::GetBuffer((CString *)(unaff_EBP + -0x10),0x104);
     LVar5 = SendMessageA(*(HWND *)(*(int *)(unaff_EBP + -0x14) + 0x1c),0x464,0x104,iVar4);
@@ -184,7 +179,7 @@ undefined4 CFileDialog::GetPathName(void)
     }
     if (*(int *)(*(int *)(unaff_EBP + -0x10) + -8) != 0) {
       pHVar2 = GetParent(*(HWND *)(extraout_ECX + 0x1c));
-      iVar4 = CWnd__FromHandle(pHVar2);
+      iVar4 = CWnd::FromHandle(pHVar2);
       lParam = CString::GetBuffer((CString *)(unaff_EBP + -0x10),0x104);
       LVar5 = SendMessageA(*(HWND *)(iVar4 + 0x1c),0x465,0x104,lParam);
       if (-1 < LVar5) {
@@ -231,7 +226,7 @@ undefined4 CFileDialog::GetFileName(void)
     pHVar3 = *(HWND *)(extraout_ECX + 0x1c);
     *(undefined4 *)(unaff_EBP + -4) = 0;
     pHVar3 = GetParent(pHVar3);
-    iVar4 = CWnd__FromHandle(pHVar3);
+    iVar4 = CWnd::FromHandle(pHVar3);
     lParam = CString::GetBuffer((CString *)(unaff_EBP + -0x10),0x104);
     LVar5 = SendMessageA(*(HWND *)(iVar4 + 0x1c),0x464,0x104,lParam);
     if (-1 < LVar5) {
@@ -439,7 +434,7 @@ undefined4 CFileDialog::GetFolderPath(void)
   pHVar2 = *(HWND *)(extraout_ECX + 0x1c);
   *(undefined4 *)(unaff_EBP + -4) = 1;
   pHVar2 = GetParent(pHVar2);
-  iVar3 = CWnd__FromHandle(pHVar2);
+  iVar3 = CWnd::FromHandle(pHVar2);
   lParam = CString::GetBuffer((CString *)(unaff_EBP + -0x10),0x104);
   LVar4 = SendMessageA(*(HWND *)(iVar3 + 0x1c),0x466,0x104,lParam);
   if (LVar4 < 0) {
@@ -467,7 +462,7 @@ void __fastcall CFileDialog::OnInitDone(int param_1)
   HWND pHVar1;
   
   pHVar1 = GetParent(*(HWND *)(param_1 + 0x1c));
-  CWnd__FromHandle(pHVar1);
+  CWnd::FromHandle(pHVar1);
   CWnd::CenterWindow(0);
   return;
 }
@@ -476,14 +471,15 @@ void __fastcall CFileDialog::OnInitDone(int param_1)
 // GHIDRA_NAME CFileDialog::OnNotify
 // GHIDRA_PROTO undefined __thiscall OnNotify(undefined4 param_1, int param_2, undefined4 * param_3)
 
-undefined4 CFileDialog::OnNotify(undefined4 param_1, int param_2, undefined4 *param_3)
+undefined4 __thiscall
+CFileDialog::OnNotify(CFileDialog *this,undefined4 param_1,int param_2,undefined4 *param_3)
 
 {
   int iVar1;
   undefined4 uVar2;
   LRESULT LVar3;
   
-  iVar1 = CWnd__OnNotify(param_1,param_2,param_3);
+  iVar1 = CWnd::OnNotify(param_1,param_2,param_3);
   if (iVar1 == 0) {
     iVar1 = *(int *)(param_2 + 8);
     if (iVar1 == -0x25f) {

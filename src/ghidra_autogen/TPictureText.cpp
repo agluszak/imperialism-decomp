@@ -37,7 +37,7 @@ undefined4 * TPictureText::CreateObject(void)
 // GHIDRA_NAME TPictureText::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TPictureText::GetRuntimeClass()
+CRuntimeClass * __thiscall TPictureText::GetRuntimeClass(TPictureText *this)
 
 {
   return &classTPictureText;
@@ -47,7 +47,7 @@ CRuntimeClass * TPictureText::GetRuntimeClass()
 // GHIDRA_NAME TPictureText::ConstructTPictureTextBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTPictureTextBaseState(void)
 
-TPictureText * TPictureText::ConstructTPictureTextBaseState()
+TPictureText * __thiscall TPictureText::ConstructTPictureTextBaseState(TPictureText *this)
 
 {
   func_0x0040541b();
@@ -59,7 +59,8 @@ TPictureText * TPictureText::ConstructTPictureTextBaseState()
 // GHIDRA_NAME TPictureText::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TPictureText * TPictureText::_scalar_deleting_destructor_(byte param_1)
+TPictureText * __thiscall
+TPictureText::_scalar_deleting_destructor_(TPictureText *this,byte param_1)
 
 {
   func_0x00407383();

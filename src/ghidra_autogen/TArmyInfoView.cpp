@@ -37,7 +37,7 @@ undefined4 * TArmyInfoView::CreateObject(void)
 // GHIDRA_NAME TArmyInfoView::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TArmyInfoView::GetRuntimeClass()
+CRuntimeClass * __thiscall TArmyInfoView::GetRuntimeClass(TArmyInfoView *this)
 
 {
   return &classTArmyInfoView;
@@ -62,7 +62,8 @@ _ConstructTArmyInfoViewBaseState__YIPAUArmyInfoViewState___Z_imperialismsrcgameT
 // GHIDRA_NAME TArmyInfoView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TArmyInfoView * TArmyInfoView::_scalar_deleting_destructor_(byte param_1)
+TArmyInfoView * __thiscall
+TArmyInfoView::_scalar_deleting_destructor_(TArmyInfoView *this,byte param_1)
 
 {
   func_0x0040865c();
@@ -76,7 +77,7 @@ TArmyInfoView * TArmyInfoView::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TArmyInfoView::IsSelected
 // GHIDRA_PROTO undefined __thiscall IsSelected(void)
 
-void TArmyInfoView::IsSelected()
+void __thiscall TArmyInfoView::IsSelected(TArmyInfoView *this)
 
 {
   undefined uVar1;
@@ -164,12 +165,12 @@ void TArmyInfoView::IsSelected()
   local_10 = 0;
   local_f = 0;
   puStack_94 = (undefined1 *)0x5916e6;
-  InitializeUiTextStyleDescriptor();
-  func_0x00406afa();
+  thunk_InitializeUiTextStyleDescriptor();
+  thunk_BuildUiTextStyleDescriptor();
   puStack_94 = (undefined1 *)0x591712;
-  InitializeUiTextStyleDescriptor();
+  thunk_InitializeUiTextStyleDescriptor();
   puStack_94 = (undefined1 *)0x59172a;
-  InitializeUiTextStyleDescriptor();
+  thunk_InitializeUiTextStyleDescriptor();
   local_68 = this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25;
   uVar1 = (*local_68)();
   if ((int *)CONCAT31(extraout_var,uVar1) == (int *)0x0) {
@@ -219,7 +220,7 @@ void TArmyInfoView::IsSelected()
   CVar8.m_pchData = local_58.m_pchData;
   do {
     if (*(int *)CVar8.m_pchData != 0) {
-      CString__Format();
+      CString::Format();
       (*g_pSimMgr->vftable[0x10].slot_0x04)();
       if (pp_Stack_bc == (_vslot_fn **)0x0) {
         AssignSharedStringConcatRefAndCStr();

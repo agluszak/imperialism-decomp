@@ -7,7 +7,8 @@
 // GHIDRA_NAME TScatteredShipsMission::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TScatteredShipsMission * TScatteredShipsMission::_scalar_deleting_destructor_(byte param_1)
+TScatteredShipsMission * __thiscall
+TScatteredShipsMission::_scalar_deleting_destructor_(TScatteredShipsMission *this,byte param_1)
 
 {
   func_0x00402a31();
@@ -154,7 +155,8 @@ undefined ** TScatteredShipsMission::GetRuntimeClass(void)
 // GHIDRA_NAME TScatteredShipsMission::RunScatteredShipsMissionStateUpdatePipeline
 // GHIDRA_PROTO undefined __thiscall RunScatteredShipsMissionStateUpdatePipeline(void)
 
-void TScatteredShipsMission::RunScatteredShipsMissionStateUpdatePipeline()
+void __thiscall
+TScatteredShipsMission::RunScatteredShipsMissionStateUpdatePipeline(TScatteredShipsMission *this)
 
 {
   int iVar1;
@@ -170,7 +172,8 @@ void TScatteredShipsMission::RunScatteredShipsMissionStateUpdatePipeline()
 // GHIDRA_NAME TScatteredShipsMission::SetScatteredShipsMissionStateByte8To3
 // GHIDRA_PROTO undefined __thiscall SetScatteredShipsMissionStateByte8To3(void)
 
-void TScatteredShipsMission::SetScatteredShipsMissionStateByte8To3()
+void __thiscall
+TScatteredShipsMission::SetScatteredShipsMissionStateByte8To3(TScatteredShipsMission *this)
 
 {
   this[8] = (TScatteredShipsMission)0x3;
@@ -181,7 +184,8 @@ void TScatteredShipsMission::SetScatteredShipsMissionStateByte8To3()
 // GHIDRA_NAME TScatteredShipsMission::ResetScatteredShipsMissionScoreField0C
 // GHIDRA_PROTO undefined __thiscall ResetScatteredShipsMissionScoreField0C(void)
 
-void TScatteredShipsMission::ResetScatteredShipsMissionScoreField0C()
+void __thiscall
+TScatteredShipsMission::ResetScatteredShipsMissionScoreField0C(TScatteredShipsMission *this)
 
 {
   *(undefined4 *)(this + 0xc) = DAT_0065a9c8;
@@ -307,114 +311,6 @@ LAB_0053be9a:
           pTVar9 = g_pMapActionContextListHead;
         }
       } while( true );
-    }
-  }
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x005503A0
-// GHIDRA_NAME TScatteredShipsMission::GetOrCreateMissionOrderEntryForNode
-// GHIDRA_PROTO void * __thiscall GetOrCreateMissionOrderEntryForNode(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Setting prototype: void* GetOrCreateMapOrderEntryForChildNode(void)
-// GHIDRA_COMMENT_END
-
-/* Setting prototype: void* GetOrCreateMapOrderEntryForChildNode(void) */
-
-void * TScatteredShipsMission::GetOrCreateMissionOrderEntryForNode()
-
-{
-  short *psVar1;
-  undefined2 uVar2;
-  int *piVar3;
-  int *piVar4;
-  int iVar5;
-  undefined4 *puVar6;
-  short sVar7;
-  int *piVar8;
-  
-  piVar8 = *(int **)(this + 0xc);
-  if ((piVar8 != (int *)0x0) && ((**(code **)(*piVar8 + 0xc))(), piVar8 != (int *)0x0)) {
-    sVar7 = 0;
-    piVar4 = (int *)piVar8[4];
-    for (piVar3 = piVar4; piVar3 != (int *)0x0; piVar3 = (int *)piVar3[1]) {
-      sVar7 = sVar7 + 1;
-    }
-    if (1 < sVar7) {
-      if (piVar4 == (int *)0x0) {
-        piVar4 = (int *)0x0;
-      }
-      else if ((TScatteredShipsMission *)*piVar4 != this) {
-        piVar4 = (int *)func_0x0040635c(this);
-      }
-      if (piVar4 != (int *)0x0) {
-        iVar5 = func_0x00406d8e(this);
-        piVar8[4] = iVar5;
-        psVar1 = (short *)((int)piVar8 +
-                          *(short *)(&DAT_00698120 + *(short *)(this + 4) * 0x24) * 2 + 0x1e);
-        *psVar1 = *psVar1 + -1;
-      }
-      if (this == (TScatteredShipsMission *)piVar8[5]) {
-        func_0x00405803();
-      }
-      func_0x004080a3(0);
-      piVar8 = (int *)0x0;
-    }
-    if (piVar8 != (int *)0x0) {
-      return piVar8;
-    }
-  }
-  puVar6 = (undefined4 *)operator_new(0x34);
-  if (puVar6 == (undefined4 *)0x0) {
-    puVar6 = (undefined4 *)0x0;
-  }
-  else {
-    uVar2 = *(undefined2 *)(this + 0x14);
-    puVar6[6] = *(undefined4 *)(this + 8);
-    *(undefined2 *)(puVar6 + 7) = uVar2;
-    puVar6[1] = 1;
-    puVar6[2] = 0;
-    puVar6[3] = 0;
-    puVar6[4] = 0;
-    puVar6[5] = 0;
-    puVar6[10] = 0;
-    puVar6[0xb] = 0;
-    *(undefined2 *)(puVar6 + 0xc) = 0xffff;
-    *puVar6 = &TTaskForce::_vftable_;
-    *(undefined4 *)((int)puVar6 + 0x1e) = 0;
-    *(undefined4 *)((int)puVar6 + 0x22) = 0;
-  }
-  if (puVar6 == (undefined4 *)0x0) {
-    MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
-    func_0x004057a4(s_D__Ambit_Cross_UNavy_cpp_006983c8,0x306);
-  }
-  func_0x004027de(this);
-  return puVar6;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00551220
-// GHIDRA_NAME TScatteredShipsMission::SetMapOrderActiveChildEntry
-// GHIDRA_PROTO void __thiscall SetMapOrderActiveChildEntry(int * pActiveChildEntry)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Setting prototype: void SetMapOrderActiveChildEntry(int * pActiveChildEntry)
-// GHIDRA_COMMENT_END
-
-/* Setting prototype: void SetMapOrderActiveChildEntry(int * pActiveChildEntry) */
-
-void __thiscall
-TScatteredShipsMission::SetMapOrderActiveChildEntry
-          (TScatteredShipsMission *this,int *pActiveChildEntry)
-
-{
-  short sVar1;
-  
-  *(int **)(this + 0xc) = pActiveChildEntry;
-  if (pActiveChildEntry != (int *)0x0) {
-    (**(code **)(*pActiveChildEntry + 0xc))();
-    *(int *)(this + 0x10) = pActiveChildEntry[1];
-    sVar1 = (short)pActiveChildEntry[2];
-    if ((((sVar1 != 0) && (sVar1 != 7)) && (sVar1 != 8)) && (sVar1 != 4)) {
-      *(undefined4 *)(this + 0x34) = 0;
     }
   }
   return;

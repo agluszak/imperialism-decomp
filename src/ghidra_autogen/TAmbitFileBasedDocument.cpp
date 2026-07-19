@@ -24,7 +24,7 @@ undefined4 * TAmbitFileBasedDocument::CreateObject(void)
 // GHIDRA_NAME TAmbitFileBasedDocument::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TAmbitFileBasedDocument::GetRuntimeClass()
+CRuntimeClass * __thiscall TAmbitFileBasedDocument::GetRuntimeClass(TAmbitFileBasedDocument *this)
 
 {
   return &classTAmbitFileBasedDocument;
@@ -34,7 +34,8 @@ CRuntimeClass * TAmbitFileBasedDocument::GetRuntimeClass()
 // GHIDRA_NAME TAmbitFileBasedDocument::ConstructTAmbitFileBasedDocumentBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTAmbitFileBasedDocumentBaseState(void)
 
-void TAmbitFileBasedDocument::ConstructTAmbitFileBasedDocumentBaseState()
+void __thiscall
+TAmbitFileBasedDocument::ConstructTAmbitFileBasedDocumentBaseState(TAmbitFileBasedDocument *this)
 
 {
   this->vftable = &_vftable_;
@@ -45,7 +46,8 @@ void TAmbitFileBasedDocument::ConstructTAmbitFileBasedDocumentBaseState()
 // GHIDRA_NAME TAmbitFileBasedDocument::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TAmbitFileBasedDocument * TAmbitFileBasedDocument::_scalar_deleting_destructor_(byte param_1)
+TAmbitFileBasedDocument * __thiscall
+TAmbitFileBasedDocument::_scalar_deleting_destructor_(TAmbitFileBasedDocument *this,byte param_1)
 
 {
   func_0x00407130();
@@ -59,7 +61,7 @@ TAmbitFileBasedDocument * TAmbitFileBasedDocument::_scalar_deleting_destructor_(
 // GHIDRA_NAME TAmbitFileBasedDocument::OrphanRetStub_0049e660
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_0049e660(void)
 
-void TAmbitFileBasedDocument::OrphanRetStub_0049e660()
+void __thiscall TAmbitFileBasedDocument::OrphanRetStub_0049e660(TAmbitFileBasedDocument *this)
 
 {
   return;
@@ -69,7 +71,7 @@ void TAmbitFileBasedDocument::OrphanRetStub_0049e660()
 // GHIDRA_NAME TAmbitFileBasedDocument::OrphanRetStub_0049e680
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_0049e680(void)
 
-void TAmbitFileBasedDocument::OrphanRetStub_0049e680()
+void __thiscall TAmbitFileBasedDocument::OrphanRetStub_0049e680(TAmbitFileBasedDocument *this)
 
 {
   return;
@@ -95,7 +97,8 @@ void TAmbitFileBasedDocument::OrphanRetStub_0049e680()
    part of the pass.
    4. Finalize post-load visual/status state. */
 
-void TAmbitFileBasedDocument::OrphanRetStub_00486530(void *pLoadContext)
+void __thiscall
+TAmbitFileBasedDocument::OrphanRetStub_00486530(TAmbitFileBasedDocument *this,void *pLoadContext)
 
 {
   code *pcVar1;
@@ -135,14 +138,14 @@ void TAmbitFileBasedDocument::OrphanRetStub_00486530(void *pLoadContext)
     local_8._0_1_ = 3;
     (*g_pSimMgr->vftable[0x10].slot_0x04)();
     func_0x004076b7(&pLoadContext);
-    func_0x004096b0();
+    thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
   }
   else {
     CString::CString((CString *)&pLoadContext);
     local_8._0_1_ = 2;
     (*g_pSimMgr->vftable[0x10].slot_0x04)();
     func_0x004076b7(&pLoadContext);
-    func_0x004096b0();
+    thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
   }
   local_8._0_1_ = 0;
   bVar2 = true;
@@ -155,7 +158,7 @@ LAB_0049e7e4:
       local_8._0_1_ = 4;
       (*g_pSimMgr->vftable[0x10].slot_0x04)();
       func_0x004076b7(&pLoadContext);
-      func_0x004096b0();
+      thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
       bVar2 = true;
       local_8._0_1_ = 0;
       CString::~CString((CString *)&pLoadContext);
@@ -225,7 +228,8 @@ LAB_0049e7e4:
    3. Persists DAT_006A3FBC and DAT_006A43E4 alongside other subsystems.
    4. Flush/finalize stream output. */
 
-void TAmbitFileBasedDocument::OrphanRetStub_00486550(void *pSaveContext)
+void __thiscall
+TAmbitFileBasedDocument::OrphanRetStub_00486550(TAmbitFileBasedDocument *this,void *pSaveContext)
 
 {
   code *pcVar1;
@@ -379,7 +383,7 @@ void TAmbitFileBasedDocument::OrphanRetStub_00486550(void *pSaveContext)
 // GHIDRA_NAME TAmbitFileBasedDocument::AssertUAmbitLine1335
 // GHIDRA_PROTO undefined __thiscall AssertUAmbitLine1335(void)
 
-void TAmbitFileBasedDocument::AssertUAmbitLine1335()
+void __thiscall TAmbitFileBasedDocument::AssertUAmbitLine1335(TAmbitFileBasedDocument *this)
 
 {
   if (DAT_006a21c4 == 0) {

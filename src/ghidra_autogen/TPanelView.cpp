@@ -7,7 +7,7 @@
 // GHIDRA_NAME TPanelView::OrphanRetStub_00430550
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_00430550(void)
 
-void TPanelView::OrphanRetStub_00430550()
+void __thiscall TPanelView::OrphanRetStub_00430550(TPanelView *this)
 
 {
   return;
@@ -47,7 +47,7 @@ undefined4 * TPanelView::CreateObject(void)
 // GHIDRA_NAME TPanelView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TPanelView * TPanelView::_scalar_deleting_destructor_(byte param_1)
+TPanelView * __thiscall TPanelView::_scalar_deleting_destructor_(TPanelView *this,byte param_1)
 
 {
   func_0x004016fe();
@@ -61,7 +61,7 @@ TPanelView * TPanelView::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TPanelView::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TPanelView::GetRuntimeClass()
+CRuntimeClass * __thiscall TPanelView::GetRuntimeClass(TPanelView *this)
 
 {
   return &classTPanelView;
@@ -71,7 +71,7 @@ CRuntimeClass * TPanelView::GetRuntimeClass()
 // GHIDRA_NAME TPanelView::NoOpUiLifecycleHook
 // GHIDRA_PROTO undefined __thiscall NoOpUiLifecycleHook(void)
 
-void TPanelView::NoOpUiLifecycleHook()
+void __thiscall TPanelView::NoOpUiLifecycleHook(TPanelView *this)
 
 {
   func_0x00406ba9();

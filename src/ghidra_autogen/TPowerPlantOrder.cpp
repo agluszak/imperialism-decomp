@@ -24,7 +24,7 @@ undefined4 * TPowerPlantOrder::CreateObject(void)
 // GHIDRA_NAME TPowerPlantOrder::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TPowerPlantOrder::GetRuntimeClass()
+CRuntimeClass * __thiscall TPowerPlantOrder::GetRuntimeClass(TPowerPlantOrder *this)
 
 {
   return &classTPowerPlantOrder;
@@ -34,7 +34,8 @@ CRuntimeClass * TPowerPlantOrder::GetRuntimeClass()
 // GHIDRA_NAME TPowerPlantOrder::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TPowerPlantOrder * TPowerPlantOrder::_scalar_deleting_destructor_(byte param_1)
+TPowerPlantOrder * __thiscall
+TPowerPlantOrder::_scalar_deleting_destructor_(TPowerPlantOrder *this,byte param_1)
 
 {
   func_0x004087b0();
@@ -48,7 +49,7 @@ TPowerPlantOrder * TPowerPlantOrder::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TPowerPlantOrder::DestructTPowerPlantOrderAndMaybeFree
 // GHIDRA_PROTO undefined __thiscall DestructTPowerPlantOrderAndMaybeFree(void)
 
-void TPowerPlantOrder::DestructTPowerPlantOrderAndMaybeFree()
+void __thiscall TPowerPlantOrder::DestructTPowerPlantOrderAndMaybeFree(TPowerPlantOrder *this)
 
 {
   this->vftable =
@@ -60,7 +61,8 @@ void TPowerPlantOrder::DestructTPowerPlantOrderAndMaybeFree()
 // GHIDRA_NAME TPowerPlantOrder::InitializeCityProductionState_Impl
 // GHIDRA_PROTO undefined __thiscall InitializeCityProductionState_Impl(int param_1)
 
-void TPowerPlantOrder::InitializeCityProductionState_Impl(int param_1)
+void __thiscall
+TPowerPlantOrder::InitializeCityProductionState_Impl(TPowerPlantOrder *this,int param_1)
 
 {
   int iVar1;
@@ -87,7 +89,7 @@ void TPowerPlantOrder::InitializeCityProductionState_Impl(int param_1)
 // GHIDRA_NAME TPowerPlantOrder::MaxOrder
 // GHIDRA_PROTO undefined __thiscall MaxOrder(void)
 
-int TPowerPlantOrder::MaxOrder()
+int __thiscall TPowerPlantOrder::MaxOrder(TPowerPlantOrder *this)
 
 {
   undefined2 uVar1;
@@ -101,7 +103,7 @@ int TPowerPlantOrder::MaxOrder()
 // GHIDRA_NAME TPowerPlantOrder::SetQuantity
 // GHIDRA_PROTO undefined __thiscall SetQuantity(short param_1)
 
-undefined4 TPowerPlantOrder::SetQuantity(short param_1)
+undefined4 __thiscall TPowerPlantOrder::SetQuantity(TPowerPlantOrder *this,short param_1)
 
 {
   short sVar1;
@@ -150,7 +152,7 @@ undefined4 TPowerPlantOrder::SetQuantity(short param_1)
 // GHIDRA_NAME TPowerPlantOrder::CommitIfPending
 // GHIDRA_PROTO undefined __thiscall CommitIfPending(void)
 
-void TPowerPlantOrder::CommitIfPending()
+void __thiscall TPowerPlantOrder::CommitIfPending(TPowerPlantOrder *this)
 
 {
   return;
@@ -160,7 +162,7 @@ void TPowerPlantOrder::CommitIfPending()
 // GHIDRA_NAME TPowerPlantOrder::ResetCityOrderItemDerivedStateNoop
 // GHIDRA_PROTO undefined __thiscall ResetCityOrderItemDerivedStateNoop(void)
 
-void TPowerPlantOrder::ResetCityOrderItemDerivedStateNoop()
+void __thiscall TPowerPlantOrder::ResetCityOrderItemDerivedStateNoop(TPowerPlantOrder *this)
 
 {
   short sVar1;
@@ -186,7 +188,7 @@ void TPowerPlantOrder::ResetCityOrderItemDerivedStateNoop()
 // GHIDRA_NAME TPowerPlantOrder::FillOrderSheet
 // GHIDRA_PROTO undefined __thiscall FillOrderSheet(int param_1)
 
-void TPowerPlantOrder::FillOrderSheet(int param_1)
+void __thiscall TPowerPlantOrder::FillOrderSheet(TPowerPlantOrder *this,int param_1)
 
 {
   (*this->vftable->InitializeCityOrderItemWorkingBuffers)(param_1);
@@ -198,7 +200,7 @@ void TPowerPlantOrder::FillOrderSheet(int param_1)
 // GHIDRA_NAME TPowerPlantOrder::WriteTo
 // GHIDRA_PROTO undefined __thiscall WriteTo(int * param_1)
 
-void TPowerPlantOrder::WriteTo(int *param_1)
+void __thiscall TPowerPlantOrder::WriteTo(TPowerPlantOrder *this,int *param_1)
 
 {
   code *pcVar1;
@@ -219,7 +221,7 @@ void TPowerPlantOrder::WriteTo(int *param_1)
 // GHIDRA_NAME TPowerPlantOrder::ReadFrom
 // GHIDRA_PROTO undefined __thiscall ReadFrom(int * param_1)
 
-void TPowerPlantOrder::ReadFrom(int *param_1)
+void __thiscall TPowerPlantOrder::ReadFrom(TPowerPlantOrder *this,int *param_1)
 
 {
   code *pcVar1;

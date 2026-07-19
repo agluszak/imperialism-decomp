@@ -101,7 +101,7 @@ undefined4 * TGPCheater::CreateObject(void)
 // GHIDRA_NAME TGPCheater::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TGPCheater * TGPCheater::_scalar_deleting_destructor_(byte param_1)
+TGPCheater * __thiscall TGPCheater::_scalar_deleting_destructor_(TGPCheater *this,byte param_1)
 
 {
   func_0x00408c97();
@@ -115,7 +115,7 @@ TGPCheater * TGPCheater::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TGPCheater::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TGPCheater::GetRuntimeClass()
+CRuntimeClass * __thiscall TGPCheater::GetRuntimeClass(TGPCheater *this)
 
 {
   return &classTGPCheater;

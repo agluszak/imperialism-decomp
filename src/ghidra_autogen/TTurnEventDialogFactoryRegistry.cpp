@@ -3,6 +3,26 @@
 // Program: Imperialism.exe
 // Bucket: TTurnEventDialogFactoryRegistry.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00491AD0
+// GHIDRA_NAME TTurnEventDialogFactoryRegistry::TTurnEventDialogFactoryRegistry
+// GHIDRA_PROTO undefined __thiscall TTurnEventDialogFactoryRegistry(void)
+
+void __thiscall
+TTurnEventDialogFactoryRegistry::TTurnEventDialogFactoryRegistry
+          (TTurnEventDialogFactoryRegistry *this)
+
+{
+  *(CObjectVtbl **)(this + 4) = &CObjectVtbl_0064b328;
+  *(undefined4 *)(this + 0x10) = 0;
+  *(undefined4 *)(this + 0x14) = 0;
+  *(undefined4 *)(this + 0xc) = 0;
+  *(undefined4 *)(this + 8) = 0;
+  *(undefined4 *)(this + 0x18) = 0;
+  *(undefined4 *)(this + 0x1c) = 10;
+  *(undefined ***)this = &_vftable_;
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00491B10
 // GHIDRA_NAME TTurnEventDialogFactoryRegistry::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined 'scalar_deleting_destructor'()
@@ -16,5 +36,40 @@ TTurnEventDialogFactoryRegistry::_scalar_deleting_destructor_(undefined4 param_1
     operator_delete(param_1);
   }
   return param_1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00491B40
+// GHIDRA_NAME TTurnEventDialogFactoryRegistry::~TTurnEventDialogFactoryRegistry
+// GHIDRA_PROTO undefined __thiscall ~TTurnEventDialogFactoryRegistry(void)
+
+void __thiscall
+TTurnEventDialogFactoryRegistry::~TTurnEventDialogFactoryRegistry
+          (TTurnEventDialogFactoryRegistry *this)
+
+{
+  undefined4 *puVar1;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  puStack_8 = &LAB_0062f2e0;
+  local_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &local_c;
+  *(CObjectVtbl **)(this + 4) = &CObjectVtbl_0064b328;
+  puVar1 = *(undefined4 **)(this + 8);
+  local_4 = 1;
+  for (; puVar1 != (undefined4 *)0x0; puVar1 = (undefined4 *)*puVar1) {
+  }
+  *(undefined4 *)(this + 0x10) = 0;
+  *(undefined4 *)(this + 0x14) = 0;
+  *(undefined4 *)(this + 0xc) = 0;
+  *(undefined4 *)(this + 8) = 0;
+  CPlex::FreeDataChain();
+  *(undefined4 *)(this + 0x18) = 0;
+  *(char **)(this + 4) = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  *(char **)this = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  *unaff_FS_OFFSET = local_c;
+  return;
 }
 

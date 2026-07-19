@@ -37,7 +37,7 @@ undefined4 * TTradeScreenPicture::CreateObject(void)
 // GHIDRA_NAME TTradeScreenPicture::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TTradeScreenPicture::GetRuntimeClass()
+CRuntimeClass * __thiscall TTradeScreenPicture::GetRuntimeClass(TTradeScreenPicture *this)
 
 {
   return &classTTradeScreenPicture;
@@ -47,7 +47,7 @@ CRuntimeClass * TTradeScreenPicture::GetRuntimeClass()
 // GHIDRA_NAME TTradeScreenPicture::TTradeScreenPicture
 // GHIDRA_PROTO undefined __thiscall TTradeScreenPicture(void)
 
-TTradeScreenPicture * TTradeScreenPicture::TTradeScreenPicture()
+TTradeScreenPicture * __thiscall TTradeScreenPicture::TTradeScreenPicture(TTradeScreenPicture *this)
 
 {
   func_0x00401122();
@@ -59,7 +59,8 @@ TTradeScreenPicture * TTradeScreenPicture::TTradeScreenPicture()
 // GHIDRA_NAME TTradeScreenPicture::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TTradeScreenPicture * TTradeScreenPicture::_scalar_deleting_destructor_(byte param_1)
+TTradeScreenPicture * __thiscall
+TTradeScreenPicture::_scalar_deleting_destructor_(TTradeScreenPicture *this,byte param_1)
 
 {
   func_0x0040826f();
@@ -73,7 +74,7 @@ TTradeScreenPicture * TTradeScreenPicture::_scalar_deleting_destructor_(byte par
 // GHIDRA_NAME TTradeScreenPicture::ApplyRectSlot110
 // GHIDRA_PROTO undefined __thiscall ApplyRectSlot110(CString param_1)
 
-void TTradeScreenPicture::ApplyRectSlot110(CString param_1)
+void __thiscall TTradeScreenPicture::ApplyRectSlot110(TTradeScreenPicture *this,CString param_1)
 
 {
   TSimMgrVtbl *pTVar1;
@@ -145,7 +146,7 @@ void TTradeScreenPicture::ApplyRectSlot110(CString param_1)
         else {
           sVar3 = func_0x00403b16();
           uVar2 = (*g_apNationStates[sVar3]->vftable->OrphanLeaf_NoCall_Ins02_004d7f20)(iVar6);
-          CString__Format(&local_4,&g_szDecimalFormat,(int)(short)CONCAT31(extraout_var_00,uVar2));
+          CString::Format(&local_4,&g_szDecimalFormat,(int)(short)CONCAT31(extraout_var_00,uVar2));
         }
         local_30 = local_30 + -5;
         iStack_28 = iStack_28 + -5;

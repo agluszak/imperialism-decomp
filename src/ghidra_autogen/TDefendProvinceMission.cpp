@@ -55,7 +55,7 @@ undefined4 * TDefendProvinceMission::CreateObject(void)
 undefined ** TDefendProvinceMission::GetRuntimeClass(void)
 
 {
-  return &PTR_s_TDefendProvinceMission_00697a58;
+  return &classTDefendProvinceMission;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0053EBE0

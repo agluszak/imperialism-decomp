@@ -7,7 +7,7 @@
 // GHIDRA_NAME TGrantsView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TGrantsView * TGrantsView::_scalar_deleting_destructor_(byte param_1)
+TGrantsView * __thiscall TGrantsView::_scalar_deleting_destructor_(TGrantsView *this,byte param_1)
 
 {
   func_0x00407680();
@@ -51,7 +51,7 @@ undefined4 * TGrantsView::CreateObject(void)
 // GHIDRA_NAME TGrantsView::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TGrantsView::GetRuntimeClass()
+CRuntimeClass * __thiscall TGrantsView::GetRuntimeClass(TGrantsView *this)
 
 {
   return &classTGrantsView;
@@ -61,7 +61,7 @@ CRuntimeClass * TGrantsView::GetRuntimeClass()
 // GHIDRA_NAME TGrantsView::NoOpUiLifecycleHook
 // GHIDRA_PROTO undefined __thiscall NoOpUiLifecycleHook(CString param_1)
 
-void TGrantsView::NoOpUiLifecycleHook(CString param_1)
+void __thiscall TGrantsView::NoOpUiLifecycleHook(TGrantsView *this,CString param_1)
 
 {
   _vslot_fn *p_Var1;
@@ -131,7 +131,7 @@ void TGrantsView::NoOpUiLifecycleHook(CString param_1)
 // GHIDRA_NAME TGrantsView::ApplyRectSlot110
 // GHIDRA_PROTO undefined __thiscall ApplyRectSlot110(void)
 
-void TGrantsView::ApplyRectSlot110()
+void __thiscall TGrantsView::ApplyRectSlot110(TGrantsView *this)
 
 {
   TSimMgrVtbl *pTVar1;
@@ -207,11 +207,11 @@ void TGrantsView::ApplyRectSlot110()
   CStack_58.m_pchData = (char *)&local_3c;
   uStack_5c = 0x2b6b;
   uStack_60 = 0x4f82c5;
-  func_0x004093cc();
+  thunk_MapUiThemeCodeToStyleFlags();
   CStack_58.m_pchData = local_40;
   uStack_5c = 0x2b68;
   uStack_60 = 0x4f82d7;
-  func_0x004093cc();
+  thunk_MapUiThemeCodeToStyleFlags();
   CStack_58.m_pchData = (char *)&local_44;
   uStack_5c = 0x21;
   uStack_60 = 0x2733;
@@ -222,12 +222,12 @@ void TGrantsView::ApplyRectSlot110()
   local_3c = iVar3;
   func_0x00409444();
   CStack_64.m_pchData = (char *)(iVar2 + 0x170);
-  func_0x00408d6e();
+  thunk_SetQuickDrawTextOriginWithContextOffset();
   CStack_64.m_pchData = &stack0xffffffb0;
   func_0x004029aa();
   func_0x00409444();
   CStack_64.m_pchData = (char *)(iVar2 + 0x16f);
-  func_0x00408d6e();
+  thunk_SetQuickDrawTextOriginWithContextOffset();
   CStack_64.m_pchData = &stack0xffffffb0;
   func_0x004029aa();
   CStack_64.m_pchData = (char *)0x2b68;
@@ -238,10 +238,10 @@ void TGrantsView::ApplyRectSlot110()
       CStack_64.m_pchData = &stack0xffffffb0;
       (*g_pSimMgr->vftable[0x10].slot_0x04)();
       func_0x00409444();
-      func_0x00408d6e();
+      thunk_SetQuickDrawTextOriginWithContextOffset();
       func_0x004029aa();
       func_0x00409444();
-      func_0x00408d6e();
+      thunk_SetQuickDrawTextOriginWithContextOffset();
       func_0x004029aa();
       iVar3 = local_3c;
     }
@@ -259,10 +259,10 @@ void TGrantsView::ApplyRectSlot110()
   local_24._0_1_ = 1;
   CString::~CString((CString *)&stack0xffffffb0);
   func_0x00409444();
-  func_0x00408d6e(iVar3 + 1);
+  thunk_SetQuickDrawTextOriginWithContextOffset(iVar3 + 1);
   func_0x004029aa();
   func_0x00409444();
-  func_0x00408d6e(iVar3);
+  thunk_SetQuickDrawTextOriginWithContextOffset(iVar3);
   func_0x004029aa();
   func_0x00406b86();
   local_24 = (uint)local_24._1_3_ << 8;
@@ -277,7 +277,7 @@ void TGrantsView::ApplyRectSlot110()
 // GHIDRA_NAME TGrantsView::OrphanRetStub_00430550
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_00430550(void)
 
-void TGrantsView::OrphanRetStub_00430550()
+void __thiscall TGrantsView::OrphanRetStub_00430550(TGrantsView *this)
 
 {
   undefined uVar1;
@@ -296,7 +296,8 @@ void TGrantsView::OrphanRetStub_00430550()
 // GHIDRA_NAME TGrantsView::HandleEvent
 // GHIDRA_PROTO undefined __thiscall HandleEvent(int param_1, int param_2, undefined4 param_3)
 
-void TGrantsView::HandleEvent(int param_1, int param_2, undefined4 param_3)
+void __thiscall
+TGrantsView::HandleEvent(TGrantsView *this,int param_1,int param_2,undefined4 param_3)
 
 {
   ushort uVar1;

@@ -42,17 +42,18 @@ undefined4 * TDropShadowNumberText::CreateObject(void)
 // GHIDRA_NAME TDropShadowNumberText::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TDropShadowNumberText::GetRuntimeClass()
+CRuntimeClass * __thiscall TDropShadowNumberText::GetRuntimeClass(TDropShadowNumberText *this)
 
 {
-  return &classRuntimeClass;
+  return &classTDropShadowNumberText;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B5910
-// GHIDRA_NAME TDropShadowNumberText::ConstructTDropShadowNumberTextBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTDropShadowNumberTextBaseState(void)
+// GHIDRA_NAME TDropShadowNumberText::TDropShadowNumberText
+// GHIDRA_PROTO undefined __thiscall TDropShadowNumberText(void)
 
-TDropShadowNumberText * TDropShadowNumberText::ConstructTDropShadowNumberTextBaseState()
+TDropShadowNumberText * __thiscall
+TDropShadowNumberText::TDropShadowNumberText(TDropShadowNumberText *this)
 
 {
   func_0x0040913d();
@@ -83,10 +84,10 @@ TDropShadowNumberText::DestructTDropShadowNumberTextAndMaybeFree
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B59B0
-// GHIDRA_NAME TDropShadowNumberText::RenderDropShadowNumberTextValue
-// GHIDRA_PROTO undefined __thiscall RenderDropShadowNumberTextValue(void)
+// GHIDRA_NAME TDropShadowNumberText::ApplyRectSlot110
+// GHIDRA_PROTO undefined __thiscall ApplyRectSlot110(void)
 
-void TDropShadowNumberText::RenderDropShadowNumberTextValue()
+void __thiscall TDropShadowNumberText::ApplyRectSlot110(TDropShadowNumberText *this)
 
 {
   TDropShadowNumberTextVtbl *pTVar1;

@@ -13,7 +13,7 @@
 /* Numeric text entry constructor. Builds on ConstructUiNumericTextEntryBase and installs
    numeric-entry vtable used across university and control panels. */
 
-TNumberText * TNumberText::TNumberText()
+TNumberText * __thiscall TNumberText::TNumberText(TNumberText *this)
 
 {
   func_0x0040913d();
@@ -26,7 +26,7 @@ TNumberText * TNumberText::TNumberText()
 // GHIDRA_NAME TNumberText::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TNumberText * TNumberText::_scalar_deleting_destructor_(byte param_1)
+TNumberText * __thiscall TNumberText::_scalar_deleting_destructor_(TNumberText *this,byte param_1)
 
 {
   func_0x00406e2e();
@@ -104,7 +104,7 @@ undefined4 * TNumberText::CreateObject(void)
 // GHIDRA_NAME TNumberText::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TNumberText::GetRuntimeClass()
+CRuntimeClass * __thiscall TNumberText::GetRuntimeClass(TNumberText *this)
 
 {
   return &classTNumberText;
@@ -139,7 +139,7 @@ TNumberText::ConstructTNumberTextBaseState
 // GHIDRA_NAME TNumberText::SetControlValue
 // GHIDRA_PROTO undefined __thiscall SetControlValue(CString param_1, undefined4 param_2)
 
-void TNumberText::SetControlValue(CString param_1, undefined4 param_2)
+void __thiscall TNumberText::SetControlValue(TNumberText *this,CString param_1,undefined4 param_2)
 
 {
   CString CVar1;
@@ -159,7 +159,7 @@ void TNumberText::SetControlValue(CString param_1, undefined4 param_2)
   local_10.m_pchData = (char *)this;
   CString::CString(&param_1);
   local_4.m_pchData = (char *)0x0;
-  CString__Format(&param_1,&g_szDecimalFormat,CVar1.m_pchData);
+  CString::Format(&param_1,&g_szDecimalFormat,CVar1.m_pchData);
   CString::CString(&local_10,&param_1);
   local_4.m_pchData._0_1_ = 1;
   (*this->vftable[0x3c].GetTEventHandlerClassNamePointer)(&local_10,param_2);
@@ -175,7 +175,7 @@ void TNumberText::SetControlValue(CString param_1, undefined4 param_2)
 // GHIDRA_NAME TNumberText::UpdateControlCachedIntFromWindowText
 // GHIDRA_PROTO undefined __thiscall UpdateControlCachedIntFromWindowText(void)
 
-undefined4 TNumberText::UpdateControlCachedIntFromWindowText()
+undefined4 __thiscall TNumberText::UpdateControlCachedIntFromWindowText(TNumberText *this)
 
 {
   undefined4 uVar1;
@@ -208,7 +208,7 @@ undefined4 TNumberText::UpdateControlCachedIntFromWindowText()
 // GHIDRA_NAME TNumberText::ShallowClone
 // GHIDRA_PROTO undefined __thiscall ShallowClone(void)
 
-int TNumberText::ShallowClone()
+int __thiscall TNumberText::ShallowClone(TNumberText *this)
 
 {
   undefined uVar1;

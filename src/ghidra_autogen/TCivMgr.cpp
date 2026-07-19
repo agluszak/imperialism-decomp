@@ -24,7 +24,7 @@ undefined4 * TCivMgr::CreateObject(void)
 // GHIDRA_NAME TCivMgr::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TCivMgr::GetRuntimeClass()
+CRuntimeClass * __thiscall TCivMgr::GetRuntimeClass(TCivMgr *this)
 
 {
   return &classTCivMgr;
@@ -34,7 +34,7 @@ CRuntimeClass * TCivMgr::GetRuntimeClass()
 // GHIDRA_NAME TCivMgr::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TCivMgr * TCivMgr::_scalar_deleting_destructor_(byte param_1)
+TCivMgr * __thiscall TCivMgr::_scalar_deleting_destructor_(TCivMgr *this,byte param_1)
 
 {
   func_0x00402f18();
@@ -73,7 +73,8 @@ TCivMgr * TCivMgr::_scalar_deleting_destructor_(byte param_1)
    Returns:
    - void */
 
-void TCivMgr::DispatchSelectedUnitToGlobalMapStateHandler(int *pUnitOrderEntry)
+void __thiscall
+TCivMgr::DispatchSelectedUnitToGlobalMapStateHandler(TCivMgr *this,int *pUnitOrderEntry)
 
 {
   if (pUnitOrderEntry != (int *)0x0) {
@@ -148,7 +149,8 @@ void TCivMgr::DispatchSelectedUnitToGlobalMapStateHandler(int *pUnitOrderEntry)
    Special Cases:
    - If no civilian for player nation exists on the tile, returns false. */
 
-bool TCivMgr::HandleCivilianTileSelectionOrReportClick(short nTileIndex, short nClickMode)
+bool __thiscall
+TCivMgr::HandleCivilianTileSelectionOrReportClick(TCivMgr *this,short nTileIndex,short nClickMode)
 
 {
   int *piVar1;
@@ -309,7 +311,7 @@ TCivMgr::HandleCivilianTileOrderAction
   case 5:
                     /* Actions 4..7 are delegated to engineer construction resolver/handler. */
     fEngineerConstructionHandled =
-         TCivMgr::HandleEngineerConstructionAction(this,nTileIndex,(short)uVar1);
+         thunk_HandleEngineerConstructionAction(this,nTileIndex,(short)uVar1);
     return fEngineerConstructionHandled;
   case 6:
                     /* Action 8 issues immediate work type 8 and pumps UI briefly for feedback. */
@@ -341,6 +343,305 @@ TCivMgr::HandleCivilianTileOrderAction
     fTileActionHandled = (bool)func_0x00403332(_nTileIndex);
   }
   return fTileActionHandled;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004D2C60
+// GHIDRA_NAME TCivMgr::SetActiveCivilianSelection
+// GHIDRA_PROTO void __thiscall SetActiveCivilianSelection(void * pSelectedCivilianOrderEntry, int nRefreshCommandPanel)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Sets active civilian selection pointer and propagates selection updates to map UI systems.
+// GHIDRA_COMMENT Algorithm:
+// GHIDRA_COMMENT 1. Store pSelectedCivilianOrderEntry at this+0x04 and invoke selector callback (+0x34).
+// GHIDRA_COMMENT 2. If selection is non-null, notify the selected order object via callback (+0x28) using entry id +0x06.
+// GHIDRA_COMMENT 3. If strategic map UI exists (g_pUiRuntimeContext+0xF0), notify it via callback (+0x1D8).
+// GHIDRA_COMMENT 4. If nRefreshCommandPanel != 0 and map UI exists, refresh the active civilian command panel.
+// GHIDRA_COMMENT Parameters:
+// GHIDRA_COMMENT - pSelectedCivilianOrderEntry: selected civilian order entry (NULL clears selection).
+// GHIDRA_COMMENT - nRefreshCommandPanel: non-zero to rebuild command buttons immediately.
+// GHIDRA_COMMENT Returns:
+// GHIDRA_COMMENT - void.
+// GHIDRA_COMMENT Special Cases:
+// GHIDRA_COMMENT - NULL selection only clears pointer/callback state and skips downstream notifications.
+// GHIDRA_COMMENT Decompiler Note:
+// GHIDRA_COMMENT - Some decompilations show nRefreshCommandPanel as unaff_retaddr; disassembly confirms it is [ESP+0xC].
+// GHIDRA_COMMENT_END
+
+/* Sets active civilian selection pointer and propagates selection updates to map UI systems.
+   Algorithm:
+   1. Store pSelectedCivilianOrderEntry at this+0x04 and invoke selector callback (+0x34).
+   2. If selection is non-null, notify the selected order object via callback (+0x28) using entry id
+   +0x06.
+   3. If strategic map UI exists (g_pUiRuntimeContext+0xF0), notify it via callback (+0x1D8).
+   4. If nRefreshCommandPanel != 0 and map UI exists, refresh the active civilian command panel.
+   Parameters:
+   - pSelectedCivilianOrderEntry: selected civilian order entry (NULL clears selection).
+   - nRefreshCommandPanel: non-zero to rebuild command buttons immediately.
+   Returns:
+   - void.
+   Special Cases:
+   - NULL selection only clears pointer/callback state and skips downstream notifications.
+   Decompiler Note:
+   - Some decompilations show nRefreshCommandPanel as unaff_retaddr; disassembly confirms it is
+   [ESP+0xC]. */
+
+void __thiscall
+TCivMgr::SetActiveCivilianSelection
+          (TCivMgr *this,void *pSelectedCivilianOrderEntry,int nRefreshCommandPanel)
+
+{
+  undefined2 extraout_var;
+  undefined2 extraout_var_00;
+  char unaff_retaddr;
+  
+  *(void **)&this->field_0x4 = pSelectedCivilianOrderEntry;
+  (*this->vftable->DispatchSelectedUnitToGlobalMapStateHandler)(pSelectedCivilianOrderEntry);
+  if (pSelectedCivilianOrderEntry != (void *)0x0) {
+    (**(code **)(*(int *)pSelectedCivilianOrderEntry + 0x28))
+              (CONCAT22(extraout_var,*(undefined2 *)((int)pSelectedCivilianOrderEntry + 6)));
+    if (*(int **)&g_pUiRuntimeContext->field_0xf0 != (int *)0x0) {
+      (**(code **)(**(int **)&g_pUiRuntimeContext->field_0xf0 + 0x1d8))
+                (CONCAT22(extraout_var_00,*(undefined2 *)((int)pSelectedCivilianOrderEntry + 6)));
+    }
+                    /* Decompiler may label this as unaff_retaddr; this is nRefreshCommandPanel from
+                       stack. */
+    if ((unaff_retaddr != '\0') && (*(int *)&g_pUiRuntimeContext->field_0xf0 != 0)) {
+      func_0x00402581(pSelectedCivilianOrderEntry);
+    }
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004D2CF0
+// GHIDRA_NAME TCivMgr::QueueImmediateCivilianCommandAndCycleSelection
+// GHIDRA_PROTO void __thiscall QueueImmediateCivilianCommandAndCycleSelection(int nCommandType)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Queues an immediate command code on the currently selected civilian and optionally cycles selection.
+// GHIDRA_COMMENT Algorithm:
+// GHIDRA_COMMENT 1. If a civilian order entry is selected, dispatch nCommandType through selected order vfunc +0x34.
+// GHIDRA_COMMENT 2. If map interaction context exists, cycle selection to the next valid unit immediately.
+// GHIDRA_COMMENT 3. Return after command dispatch/selection update.
+// GHIDRA_COMMENT Command Types:
+// GHIDRA_COMMENT - 2: Sleep (persists across rollover).
+// GHIDRA_COMMENT - 3: Next Unit marker (cleared at rollover).
+// GHIDRA_COMMENT - 4: No Orders This Turn marker (cleared at rollover).
+// GHIDRA_COMMENT Parameters:
+// GHIDRA_COMMENT - nCommandType: Immediate civilian command code.
+// GHIDRA_COMMENT Returns:
+// GHIDRA_COMMENT - None.
+// GHIDRA_COMMENT_END
+
+/* Queues an immediate command code on the currently selected civilian and optionally cycles
+   selection.
+   Algorithm:
+   1. If a civilian order entry is selected, dispatch nCommandType through selected order vfunc
+   +0x34.
+   2. If map interaction context exists, cycle selection to the next valid unit immediately.
+   3. Return after command dispatch/selection update.
+   Command Types:
+   - 2: Sleep (persists across rollover).
+   - 3: Next Unit marker (cleared at rollover).
+   - 4: No Orders This Turn marker (cleared at rollover).
+   Parameters:
+   - nCommandType: Immediate civilian command code.
+   Returns:
+   - None. */
+
+void __thiscall
+TCivMgr::QueueImmediateCivilianCommandAndCycleSelection(TCivMgr *this,int nCommandType)
+
+{
+  if (*(int **)&this->field_0x4 != (int *)0x0) {
+                    /* Dispatches command code directly to selected civilian order entry vfunc
+                       +0x34. */
+    (**(code **)(**(int **)&this->field_0x4 + 0x34))(nCommandType,0);
+  }
+  if (*(int *)&g_pUiRuntimeContext->field_0xf0 != 0) {
+                    /* Selection cycling occurs immediately when map interaction context is active.
+                        */
+    func_0x00408b93();
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004D2D30
+// GHIDRA_NAME TCivMgr::ShowDisbandCivilianConfirmationDialog
+// GHIDRA_PROTO void __thiscall ShowDisbandCivilianConfirmationDialog(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Setting prototype: void ShowDisbandCivilianConfirmationDialog(void)
+// GHIDRA_COMMENT_END
+
+/* Setting prototype: void ShowDisbandCivilianConfirmationDialog(void) */
+
+void __thiscall TCivMgr::ShowDisbandCivilianConfirmationDialog(TCivMgr *this)
+
+{
+  undefined2 uVar1;
+  char cVar2;
+  short sVar3;
+  undefined4 unaff_EDI;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 uStack_54;
+  undefined1 ***pppuStack_50;
+  undefined1 auStack_4c [4];
+  undefined *puStack_48;
+  undefined4 uStack_44;
+  undefined4 uStack_40;
+  undefined4 uStack_3c;
+  undefined4 uStack_38;
+  CString **ppCStack_34;
+  int iStack_30;
+  undefined1 *puStack_2c;
+  CString *pCStack_28;
+  CString local_1c;
+  CString local_18 [3];
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  uint local_4;
+  
+  local_c = *unaff_FS_OFFSET;
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_00631be8;
+  *unaff_FS_OFFSET = &local_c;
+  if (*(int *)&this->field_0x4 != 0) {
+    pCStack_28 = (CString *)0x4d2d60;
+    CString::CString(local_18);
+    local_4 = 0;
+    pCStack_28 = (CString *)0x4d2d71;
+    CString::CString(&local_1c);
+    pCStack_28 = local_18;
+    puStack_2c = (undefined1 *)0x3;
+    iStack_30 = 0x274d;
+    local_4 = CONCAT31(local_4._1_3_,1);
+    ppCStack_34 = (CString **)0x4d2d90;
+    (*g_pSimMgr->vftable[0x10].slot_0x04)();
+    ppCStack_34 = &pCStack_28;
+    if (*(short *)(*(int *)&this->field_0x4 + 4) == 7) {
+      uStack_38 = 5;
+    }
+    else {
+      uStack_38 = 4;
+    }
+    uStack_3c = 0x274d;
+    uStack_40 = 0x4d2db8;
+    (*g_pSimMgr->vftable[0x10].slot_0x04)();
+    uStack_40 = 1;
+    uStack_44 = 2;
+    puStack_48 = &DAT_006a2d40;
+    puStack_2c = auStack_4c;
+    pppuStack_50 = (undefined1 ***)&ppCStack_34;
+    uStack_54 = 0x4d2dd2;
+    func_0x004076b7();
+    puStack_2c = (undefined1 *)&uStack_54;
+    func_0x004076b7(&ppCStack_34);
+    cVar2 = func_0x00408670(4);
+    if (cVar2 != '\0') {
+      uVar1 = *(undefined2 *)(*(int *)&this->field_0x4 + 6);
+      if (*(short *)(*(int *)&this->field_0x4 + 4) == 7) {
+        pCStack_28 = (CString *)0x0;
+        puStack_2c = (undefined1 *)0x0;
+        iStack_30 = 0x4d2e1b;
+        sVar3 = func_0x00403b16();
+        iStack_30 = (int)sVar3;
+        ppCStack_34 = (CString **)0x4d2e2a;
+        func_0x00401474();
+      }
+      pCStack_28 = (CString *)0x4d2e32;
+      (**(code **)(**(int **)&this->field_0x4 + 0x38))();
+      if (*(int **)&g_pUiRuntimeContext->field_0xf0 != (int *)0x0) {
+        puStack_2c = (undefined1 *)0x4d2e4a;
+        pCStack_28 = (CString *)CONCAT22((short)((uint)unaff_EDI >> 0x10),uVar1);
+        (**(code **)(**(int **)&g_pUiRuntimeContext->field_0xf0 + 0x1dc))();
+      }
+      if (*(int *)&g_pUiRuntimeContext->field_0xf0 != 0) {
+        pCStack_28 = (CString *)0x4d2e5e;
+        func_0x00408b93();
+      }
+    }
+    local_4 = local_4 & 0xffffff00;
+    pCStack_28 = (CString *)0x4d2e6c;
+    CString::~CString(&local_1c);
+    local_4 = 0xffffffff;
+    pCStack_28 = (CString *)0x4d2e7d;
+    CString::~CString(local_18);
+  }
+  *unaff_FS_OFFSET = local_c;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004D2F60
+// GHIDRA_NAME TCivMgr::CanAssignCivilianOrderToTile
+// GHIDRA_PROTO undefined1 __thiscall CanAssignCivilianOrderToTile(short nTileIndex)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Validate whether the selected civilian can be assigned to the clicked tile.
+// GHIDRA_COMMENT Algorithm:
+// GHIDRA_COMMENT 1. Load tile terrain class and per-tile flags from global map state.
+// GHIDRA_COMMENT 2. Reject same-tile reassignments and blocked tiles unless engineer exceptions apply.
+// GHIDRA_COMMENT 3. For base terrain classes (<7), require exact worker-terrain class match.
+// GHIDRA_COMMENT 4. For extended classes, consult terrain descriptors and compatibility matrix.
+// GHIDRA_COMMENT 5. Permit assignment when compatibility resolves to allowed state and unit is not engineer-only blocked.
+// GHIDRA_COMMENT Parameters:
+// GHIDRA_COMMENT - nTileIndex: Target tile for assignment.
+// GHIDRA_COMMENT Returns:
+// GHIDRA_COMMENT - true when assignment is allowed; false otherwise.
+// GHIDRA_COMMENT Notes:
+// GHIDRA_COMMENT - Uses g_pTerrainTypeDescriptorTable and g_pCivilianTerrainCompatibilityMatrix for rules.
+// GHIDRA_COMMENT_END
+
+/* Validate whether the selected civilian can be assigned to the clicked tile.
+   Algorithm:
+   1. Load tile terrain class and per-tile flags from global map state.
+   2. Reject same-tile reassignments and blocked tiles unless engineer exceptions apply.
+   3. For base terrain classes (<7), require exact worker-terrain class match.
+   4. For extended classes, consult terrain descriptors and compatibility matrix.
+   5. Permit assignment when compatibility resolves to allowed state and unit is not engineer-only
+   blocked.
+   Parameters:
+   - nTileIndex: Target tile for assignment.
+   Returns:
+   - true when assignment is allowed; false otherwise.
+   Notes:
+   - Uses g_pTerrainTypeDescriptorTable and g_pCivilianTerrainCompatibilityMatrix for rules. */
+
+bool __thiscall TCivMgr::CanAssignCivilianOrderToTile(TCivMgr *this,short nTileIndex)
+
+{
+  bool fTerrainRuleAllowsUnit;
+  short nCompatibilityMatrixValue;
+  short nTileTerrainClass;
+  int nTileDataOffset;
+  int *pSelectedCivilianOrderEntry;
+  
+  nTileTerrainClass =
+       (short)*(char *)(*(int *)&g_pGlobalMapState->field_0xc + 4 + nTileIndex * 0x24);
+  nTileDataOffset = *(int *)&g_pGlobalMapState->field_0xc + nTileIndex * 0x24;
+  pSelectedCivilianOrderEntry = *(int **)&this->field_0x4;
+  if (((*(short *)((int)pSelectedCivilianOrderEntry + 6) != nTileIndex) &&
+      (*(char *)(nTileDataOffset + 0x13) != '\0')) &&
+     (((*(byte *)(nTileDataOffset + 0x1c) & 1) == 0 || ((short)pSelectedCivilianOrderEntry[1] == 4))
+     )) {
+    if (nTileTerrainClass < 7) {
+                    /* Hard gate: tile must be active/usable and cannot be same-tile reassignment
+                       unless engineer exception path applies. */
+      return nTileTerrainClass == (short)pSelectedCivilianOrderEntry[6];
+    }
+    if (*(short *)&g_apTerrainTypeDescriptorTable[nTileTerrainClass]->field_0xe == -1) {
+      nCompatibilityMatrixValue =
+           func_0x00401b8b((int)(short)pSelectedCivilianOrderEntry[6],(int)nTileTerrainClass);
+                    /* Base terrain classes (<7) require exact civilian terrain-class match. */
+      if ((nCompatibilityMatrixValue == 2) && (*(short *)(*(int *)&this->field_0x4 + 4) != 4)) {
+        return (bool)1;
+      }
+    }
+    else {
+      fTerrainRuleAllowsUnit =
+           (bool)(*g_apTerrainTypeDescriptorTable[nTileTerrainClass]->vftable->
+                   IsDiplomacyTargetClassCode200Match)((int)(short)pSelectedCivilianOrderEntry[6]);
+      if ((fTerrainRuleAllowsUnit != false) && (*(short *)(*(int *)&this->field_0x4 + 4) != 4)) {
+        return (bool)1;
+      }
+    }
+  }
+  return (bool)0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004D3A60
@@ -379,7 +680,8 @@ TCivMgr::HandleCivilianTileOrderAction
    Depot=2000, Port=3000, Fort uses g_awEngineerFortBuildCostByLevel, rail uses
    g_adwEngineerRailBuildCostByTerrainType. */
 
-bool TCivMgr::HandleEngineerConstructionAction(short nTileIndex, undefined2 param_2)
+bool __thiscall
+TCivMgr::HandleEngineerConstructionAction(TCivMgr *this,short nTileIndex,undefined2 param_2)
 
 {
   uint uVar1;
@@ -475,7 +777,8 @@ bool TCivMgr::HandleEngineerConstructionAction(short nTileIndex, undefined2 para
         pCStack_50 = (CString *)0x2;
         pTStack_54 = (TSimMgr *)&DAT_006a2d40;
         func_0x004076b7(&local_14);
-        func_0x004096b0();
+        dwSfxToken = 0x4d3eda;
+        thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
         puStack_8._0_1_ = 7;
         pCStack_38 = (CString *)0x4d3ee7;
         CString::~CString((CString *)&stack0x00000000);
@@ -533,7 +836,8 @@ bool TCivMgr::HandleEngineerConstructionAction(short nTileIndex, undefined2 para
         pCStack_50 = (CString *)0x2;
         pTStack_54 = (TSimMgr *)&DAT_006a2d40;
         func_0x004076b7(&local_14);
-        func_0x004096b0();
+        dwSfxToken = 0x4d3d35;
+        thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
         puStack_8._0_1_ = 4;
         pCStack_38 = (CString *)0x4d3d42;
         CString::~CString((CString *)&stack0x00000000);
@@ -601,7 +905,8 @@ bool TCivMgr::HandleEngineerConstructionAction(short nTileIndex, undefined2 para
         pCStack_50 = (CString *)0x2;
         pTStack_54 = (TSimMgr *)&DAT_006a2d40;
         func_0x004076b7(&local_14);
-        func_0x004096b0();
+        dwSfxToken = 0x4d3bba;
+        thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
         puStack_8._0_1_ = 1;
         pCStack_38 = (CString *)0x4d3bc8;
         CString::~CString((CString *)&stack0x00000000);
@@ -670,7 +975,8 @@ bool TCivMgr::HandleEngineerConstructionAction(short nTileIndex, undefined2 para
       pCStack_50 = (CString *)&DAT_006a2d40;
       pTStack_54 = extraout_ECX;
       func_0x004076b7();
-      func_0x004096b0();
+      dwSfxToken = 0x4d4049;
+      thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
       puStack_8._0_1_ = 10;
       pCStack_38 = (CString *)0x4d4056;
       CString::~CString((CString *)&stack0x00000000);

@@ -7,7 +7,8 @@
 // GHIDRA_NAME TTacArmyView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TTacArmyView * TTacArmyView::_scalar_deleting_destructor_(byte param_1)
+TTacArmyView * __thiscall
+TTacArmyView::_scalar_deleting_destructor_(TTacArmyView *this,byte param_1)
 
 {
   func_0x004076f3();
@@ -51,7 +52,7 @@ undefined4 * TTacArmyView::CreateObject(void)
 // GHIDRA_NAME TTacArmyView::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TTacArmyView::GetRuntimeClass()
+CRuntimeClass * __thiscall TTacArmyView::GetRuntimeClass(TTacArmyView *this)
 
 {
   return &classTTacArmyView;
@@ -63,7 +64,7 @@ CRuntimeClass * TTacArmyView::GetRuntimeClass()
 
 /* WARNING: Type propagation algorithm not settling */
 
-void TTacArmyView::ConstructTTacArmyViewBaseState()
+void __thiscall TTacArmyView::ConstructTTacArmyViewBaseState(TTacArmyView *this)
 
 {
   undefined1 *puVar1;
@@ -115,16 +116,16 @@ void TTacArmyView::ConstructTTacArmyViewBaseState()
   if (*(int *)&this->field_0x74 != 0) {
     func_0x004010e6(&this->field_0x74);
   }
-  func_0x00408d64(local_34,&local_38);
+  thunk_GetActiveQuickDrawSurfaceContextAndFlags(local_34,&local_38);
   local_34[2] = 0;
   local_34[3] = DAT_006a5448;
   local_34[1] = 0;
   local_34[4] = DAT_006a544c;
   (**(code **)(*g_pDisplayMgr + 0x2c))(puVar1,8,local_34 + 1);
   piVar7 = (int *)func_0x004047a0(iStack_8 + 0xf0a);
-  func_0x00406f5f(*(undefined4 *)puVar1,unaff_ESI);
-  uVar8 = func_0x0040520e(*(undefined4 *)puVar1);
-  func_0x0040761c(uVar8);
+  thunk_SetActiveQuickDrawSurfaceContext(*(undefined4 *)puVar1,unaff_ESI);
+  uVar8 = thunk_GetSurfaceObjectAtContextOffset24(*(undefined4 *)puVar1);
+  thunk_ReturnConstantTrueQuickDrawFlag(uVar8);
   func_0x004062d5(piVar7);
   puVar2 = (undefined4 *)*piVar7;
   if (puVar2 != (undefined4 *)0x0) {
@@ -142,9 +143,9 @@ void TTacArmyView::ConstructTTacArmyViewBaseState()
       operator_delete(puVar2);
     }
     operator_delete(piVar7);
-    uVar8 = func_0x0040520e(*(undefined4 *)puVar1);
-    func_0x004024fa(uVar8);
-    func_0x00406f5f(unaff_EBP,unaff_ESI);
+    uVar8 = thunk_GetSurfaceObjectAtContextOffset24(*(undefined4 *)puVar1);
+    thunk_NoOpQuickDrawLifecycleHookB(uVar8);
+    thunk_SetActiveQuickDrawSurfaceContext(unaff_EBP,unaff_ESI);
     if (*(char *)(iStack_4 + 0x49) != '\0') {
       iStack_8 = func_0x00401fe1(0xf0e);
       local_34[2] = DAT_006a5448 + -0x11e;
@@ -218,7 +219,7 @@ void TTacArmyView::ConstructTTacArmyViewBaseState()
 // GHIDRA_NAME TTacArmyView::ApplyRectSlot110
 // GHIDRA_PROTO undefined __thiscall ApplyRectSlot110(int * param_1)
 
-void TTacArmyView::ApplyRectSlot110(int *param_1)
+void __thiscall TTacArmyView::ApplyRectSlot110(TTacArmyView *this,int *param_1)
 
 {
   _vslot_fn *p_Var1;
@@ -249,12 +250,12 @@ void TTacArmyView::ApplyRectSlot110(int *param_1)
   local_48 = param_1[1];
   local_44 = param_1[2];
   local_40 = param_1[3];
-  func_0x00408d64(&local_54);
-  func_0x00406f5f(g_pPrimaryRenderSurfaceContext);
-  func_0x0040520e();
-  func_0x0040761c();
-  func_0x0040520e();
-  func_0x0040761c();
+  thunk_GetActiveQuickDrawSurfaceContextAndFlags(&local_54);
+  thunk_SetActiveQuickDrawSurfaceContext(g_pPrimaryRenderSurfaceContext);
+  thunk_GetSurfaceObjectAtContextOffset24();
+  thunk_ReturnConstantTrueQuickDrawFlag();
+  thunk_GetSurfaceObjectAtContextOffset24();
+  thunk_ReturnConstantTrueQuickDrawFlag();
   sVar2 = (0x1d - (short)*(undefined4 *)(*(int *)&this->field_0x60 + 0x34)) *
           *(short *)&this->field_0x88;
   *(short *)&this->field_0xd4 = sVar2;
@@ -305,28 +306,28 @@ void TTacArmyView::ApplyRectSlot110(int *param_1)
     local_4 = 0xffffffff;
     func_0x00409aac();
   }
-  func_0x00406f5f(local_54);
+  thunk_SetActiveQuickDrawSurfaceContext(local_54);
   func_0x004088aa();
   puStack_50 = &stack0xffffff94;
   func_0x00402bdf();
   func_0x00405493(g_pPrimaryRenderSurfaceContext + 4,&g_pActiveQuickDrawSurfaceContext->field_0x4,
                   &local_4c,&local_2c,0);
   (*this->vftable->DrawUiTilesAndOverlay)();
-  func_0x0040520e();
-  func_0x004024fa();
-  func_0x0040520e();
-  func_0x004024fa();
+  thunk_GetSurfaceObjectAtContextOffset24();
+  thunk_NoOpQuickDrawLifecycleHookB();
+  thunk_GetSurfaceObjectAtContextOffset24();
+  thunk_NoOpQuickDrawLifecycleHookB();
   *unaff_FS_OFFSET = uStack_c;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005AA900
-// GHIDRA_NAME TTacArmyView::OrphanRetStub_005a83c0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_005a83c0(int param_1)
+// GHIDRA_NAME TTacArmyView::DrawTacticalTileInClipRect
+// GHIDRA_PROTO undefined __thiscall DrawTacticalTileInClipRect(int param_1)
 
 /* WARNING: Type propagation algorithm not settling */
 
-void TTacArmyView::OrphanRetStub_005a83c0(int param_1)
+void __thiscall TTacArmyView::DrawTacticalTileInClipRect(TTacArmyView *this,int param_1)
 
 {
   byte bVar1;
@@ -471,17 +472,17 @@ LAB_005aaa96:
       local_108 = &stack0xfffffea0;
       iVar16 = *(int *)&this->field_0x8c / 2;
       func_0x00406b86();
-      func_0x00408d6e();
-      func_0x00403bb6();
+      thunk_SetQuickDrawTextOriginWithContextOffset();
+      thunk_DrawCenteredGuideLineOnMapDc();
       local_108 = puVar10 + iVar16 + 1;
-      func_0x00408d6e();
-      func_0x00403bb6();
+      thunk_SetQuickDrawTextOriginWithContextOffset();
+      thunk_DrawCenteredGuideLineOnMapDc();
       (**(code **)(g_pUiRuntimeContext->vftable + 0x34))();
-      uStack_10c = puVar10 + iVar16 + -1;
-      func_0x00408d6e();
-      func_0x00403bb6();
-      func_0x00408d6e();
-      func_0x00403bb6();
+      local_108 = puVar10 + iVar16 + -1;
+      thunk_SetQuickDrawTextOriginWithContextOffset();
+      thunk_DrawCenteredGuideLineOnMapDc();
+      thunk_SetQuickDrawTextOriginWithContextOffset();
+      thunk_DrawCenteredGuideLineOnMapDc();
       sVar6 = (short)local_124;
     }
   }
@@ -965,19 +966,19 @@ LAB_005abc46:
     tStack_f8.top = (LONG)(local_118 + -1);
     uStack_10c = &stack0xfffffe98;
     func_0x00406b86();
-    func_0x00406546();
+    thunk_FillRectWithQuickDrawBrushAndContextOffset();
     (**(code **)(g_pUiRuntimeContext->vftable + 0x34))();
     local_fc = local_fc + -1;
     puStack_104 = puStack_104 + -1;
     iStack_100 = iStack_100 + -1;
     tStack_f8.left = tStack_f8.left + -1;
-    func_0x00406546();
+    thunk_FillRectWithQuickDrawBrushAndContextOffset();
     (**(code **)(g_pUiRuntimeContext->vftable + 0x34))();
     iStack_100 = (*(int *)(iVar16 + 4) + 0x18) / 0x19 + (int)local_108;
-    func_0x00406546();
+    thunk_FillRectWithQuickDrawBrushAndContextOffset();
     (**(code **)(g_pUiRuntimeContext->vftable + 0x34))();
     puStack_104 = uStack_10c + (*(int *)(iVar16 + 0x34) + 0x18) / 0x19;
-    func_0x00406546();
+    thunk_FillRectWithQuickDrawBrushAndContextOffset();
     uVar3 = (*g_pGlobalMapState->vftable->GetMapImprovementTierBucketOffset)();
     puVar10 = puStack_104;
     uStack_14c = (undefined1 *)(int)(short)CONCAT31(extraout_var,uVar3);
@@ -1016,7 +1017,7 @@ LAB_005abc46:
     if (DAT_006a4758 != '\0') {
       uStack_10c = &stack0xfffffe98;
       func_0x00406b86();
-      func_0x00408d6e();
+      thunk_SetQuickDrawTextOriginWithContextOffset();
       func_0x00404fc5();
     }
     sVar6 = (short)puStack_12c;
@@ -1131,11 +1132,11 @@ LAB_005abc78:
     uStack_10c = &stack0xfffffe98;
     iVar16 = *(int *)&this->field_0x88 / 2 + local_124;
     func_0x00406b86();
-    func_0x00408d6e();
-    func_0x00403bb6();
+    thunk_SetQuickDrawTextOriginWithContextOffset();
+    thunk_DrawCenteredGuideLineOnMapDc();
     tStack_f8.right = iVar16 + -1;
-    func_0x00408d6e();
-    func_0x00403bb6();
+    thunk_SetQuickDrawTextOriginWithContextOffset();
+    thunk_DrawCenteredGuideLineOnMapDc();
     if (((tStack_f8.bottom < 2) && (*(int *)(*(int *)&this->field_0x60 + 0xc) == 0)) ||
        ((iVar16 = *(int *)&this->field_0x60, tStack_f8.bottom / 2 == *(int *)(iVar16 + 0x34) + -1 &&
         (*(int *)(iVar16 + 0xc) == 1)))) {
@@ -1147,82 +1148,11 @@ LAB_005abc78:
     else {
       (**(code **)(g_pUiRuntimeContext->vftable + 0x34))();
     }
-    func_0x00408d6e();
-    func_0x00403bb6();
-    func_0x00408d6e();
-    func_0x00403bb6();
+    thunk_SetQuickDrawTextOriginWithContextOffset();
+    thunk_DrawCenteredGuideLineOnMapDc();
+    thunk_SetQuickDrawTextOriginWithContextOffset();
+    thunk_DrawCenteredGuideLineOnMapDc();
   }
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x005ACD60
-// GHIDRA_NAME TTacArmyView::ConfigureTacticalTargetDoneRetreatAutoControls
-// GHIDRA_PROTO undefined __thiscall ConfigureTacticalTargetDoneRetreatAutoControls(int param_1)
-
-void TTacArmyView::ConfigureTacticalTargetDoneRetreatAutoControls(int param_1)
-
-{
-  _vslot_fn *p_Var1;
-  int iVar2;
-  undefined uVar3;
-  undefined3 extraout_var;
-  undefined3 extraout_var_00;
-  undefined3 extraout_var_01;
-  undefined3 extraout_var_02;
-  undefined3 extraout_var_03;
-  undefined3 extraout_var_04;
-  undefined3 extraout_var_05;
-  undefined3 extraout_var_06;
-  
-  if (param_1 == 0) {
-    p_Var1 = this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25;
-    uVar3 = (*p_Var1)(0x74617267);
-    iVar2 = *(int *)CONCAT31(extraout_var,uVar3);
-    (**(code **)(iVar2 + 0xc))();
-    (**(code **)(iVar2 + 0xa4))(0,1);
-    (**(code **)(iVar2 + 0xa8))(0,1);
-    uVar3 = (*p_Var1)(0x646f6e65);
-    iVar2 = *(int *)CONCAT31(extraout_var_00,uVar3);
-    (**(code **)(iVar2 + 0xc))();
-    (**(code **)(iVar2 + 0x1c8))(0xed4,1);
-    uVar3 = (*p_Var1)(0x72657472);
-    iVar2 = *(int *)CONCAT31(extraout_var_01,uVar3);
-    (**(code **)(iVar2 + 0xc))();
-    (**(code **)(iVar2 + 0x1c8))(0xed2,1);
-    uVar3 = (*p_Var1)(0x6175746f);
-    iVar2 = *(int *)CONCAT31(extraout_var_02,uVar3);
-    (**(code **)(iVar2 + 0xc))();
-    (**(code **)(iVar2 + 0xa4))(0,1);
-    (**(code **)(iVar2 + 0xa8))(0,1);
-    uVar3 = (*p_Var1)(0x646f6e65);
-    func_0x00407ce8(0x273d,0x2e,uVar3);
-    uVar3 = (*p_Var1)(0x72657472);
-    func_0x00407ce8(0x273d,0x2f,uVar3);
-    return;
-  }
-  p_Var1 = this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25;
-  uVar3 = (*p_Var1)(0x74617267);
-  iVar2 = *(int *)CONCAT31(extraout_var_03,uVar3);
-  (**(code **)(iVar2 + 0xc))();
-  (**(code **)(iVar2 + 0xa4))(1,1);
-  (**(code **)(iVar2 + 0xa8))(1,1);
-  uVar3 = (*p_Var1)(0x646f6e65);
-  iVar2 = *(int *)CONCAT31(extraout_var_04,uVar3);
-  (**(code **)(iVar2 + 0xc))();
-  (**(code **)(iVar2 + 0x1c8))(0xece,1);
-  uVar3 = (*p_Var1)(0x72657472);
-  iVar2 = *(int *)CONCAT31(extraout_var_05,uVar3);
-  (**(code **)(iVar2 + 0xc))();
-  (**(code **)(iVar2 + 0x1c8))(0xed0,1);
-  uVar3 = (*p_Var1)(0x6175746f);
-  iVar2 = *(int *)CONCAT31(extraout_var_06,uVar3);
-  (**(code **)(iVar2 + 0xc))();
-  (**(code **)(iVar2 + 0xa4))(1,1);
-  (**(code **)(iVar2 + 0xa8))(1,1);
-  uVar3 = (*p_Var1)(0x646f6e65);
-  func_0x00407ce8(0x273d,0x22,uVar3);
-  uVar3 = (*p_Var1)(0x72657472);
-  func_0x00407ce8(0x273d,0x23,uVar3);
   return;
 }
 

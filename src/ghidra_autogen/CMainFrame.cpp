@@ -30,7 +30,7 @@ CMainFrame * __cdecl CMainFrame::CreateObject(void)
   pCVar1 = (CMainFrame *)operator_new(0xd0);
   local_4 = 0;
   if (pCVar1 != (CMainFrame *)0x0) {
-    CFrameWnd__CFrameWnd();
+    CFrameWnd::CFrameWnd();
     *(undefined4 *)&pCVar1->field_0xbc = 0;
     *(undefined4 *)&pCVar1->field_0xcc = 1;
     pCVar1->vftable = (CMainFrameVtbl *)&PTR_LAB_006488d8;
@@ -53,11 +53,144 @@ CRuntimeClass * CMainFrame::GetRuntimeClass(void)
   return &classCMainFrame;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00484BD0
+// GHIDRA_NAME CMainFrame::GetMessageMap
+// GHIDRA_PROTO undefined GetMessageMap()
+
+undefined ** CMainFrame::GetMessageMap(void)
+
+{
+  return &TMacViewMgr_MessageMapDescriptor;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00484FB0
+// GHIDRA_NAME CMainFrame::OnMsg0464
+// GHIDRA_PROTO undefined OnMsg0464()
+
+undefined4 CMainFrame::OnMsg0464(void)
+
+{
+  func_0x004019fb();
+  return 0;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00484FD0
+// GHIDRA_NAME CMainFrame::OnStartupCommand100
+// GHIDRA_PROTO undefined OnStartupCommand100()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Command-routing thunk for startup WM_COMMAND 100.
+// GHIDRA_COMMENT Loaded through message-map entry function pointer chain: 0x0040132A -> 0x00484FD0 -> 0x004019FB -> HandleStartupCommand100.
+// GHIDRA_COMMENT Sets ECX to global app singleton (DAT_006a1348) before forwarding.
+// GHIDRA_COMMENT_END
+
+/* Command-routing thunk for startup WM_COMMAND 100.
+   Loaded through message-map entry function pointer chain: 0x0040132A -> 0x00484FD0 -> 0x004019FB
+   -> HandleStartupCommand100.
+   Sets ECX to global app singleton (DAT_006a1348) before forwarding. */
+
+void CMainFrame::OnStartupCommand100(void)
+
+{
+  func_0x004019fb();
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00484FF0
+// GHIDRA_NAME CMainFrame::OnQueryNewPalette
+// GHIDRA_PROTO undefined OnQueryNewPalette()
+
+undefined4 __fastcall CMainFrame::OnQueryNewPalette(int param_1)
+
+{
+  int iVar1;
+  undefined4 uVar2;
+  UINT UVar3;
+  HDC unaff_EBX;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 uStack_1c;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_c = *unaff_FS_OFFSET;
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_0062e8d8;
+  *unaff_FS_OFFSET = &local_c;
+  if (*(int *)(param_1 + 0xbc) == 0) {
+    *unaff_FS_OFFSET = local_c;
+    return 0;
+  }
+  CClientDC::CClientDC(param_1);
+  local_4 = 0;
+  iVar1 = CWnd::GetCurrentMessage();
+  uVar2 = CDC::SelectPalette(*(undefined4 *)(param_1 + 0xbc),*(int *)(iVar1 + 4) == 0x311);
+  UVar3 = RealizePalette(unaff_EBX);
+  CDC::SelectPalette(uVar2,1);
+  if (UVar3 == 0) {
+    CClientDC::~CClientDC();
+    *unaff_FS_OFFSET = uStack_1c;
+    return 0;
+  }
+  CClientDC::~CClientDC();
+  InvalidateRect(*(HWND *)(param_1 + 0x1c),(RECT *)0x0,1);
+  *unaff_FS_OFFSET = uStack_1c;
+  return 1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00485590
+// GHIDRA_NAME CMainFrame::OnCommand800D
+// GHIDRA_PROTO undefined OnCommand800D()
+
+void CMainFrame::OnCommand800D(void)
+
+{
+  (**(code **)(g_pUiRuntimeContext->vftable + 100))(0);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00485920
+// GHIDRA_NAME CMainFrame::HandleCustomMessage2420DispatchTurnEvent
+// GHIDRA_PROTO undefined HandleCustomMessage2420DispatchTurnEvent()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Custom message 0x2420 handler used by TMacViewMgr message map. Receives wParam event code, fetches current slot/nation via thunk_FUN_00581260, then forwards to DAT_006a21bc vfunc +0x4C (DispatchGlobalTurnEventCode). Returns 0 after dispatch.
+// GHIDRA_COMMENT_END
+
+/* Custom message 0x2420 handler used by TMacViewMgr message map. Receives wParam event code,
+   fetches current slot/nation via thunk_FUN_00581260, then forwards to DAT_006a21bc vfunc +0x4C
+   (DispatchGlobalTurnEventCode). Returns 0 after dispatch. */
+
+undefined4 CMainFrame::HandleCustomMessage2420DispatchTurnEvent(undefined4 param_1)
+
+{
+  undefined *puVar1;
+  undefined4 uVar2;
+  
+  puVar1 = g_pUiRuntimeContext->vftable;
+  uVar2 = func_0x00403b16();
+  (**(code **)(puVar1 + 0x4c))(param_1,uVar2);
+  return 0;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00485960
+// GHIDRA_NAME CMainFrame::OnMsg0BC0
+// GHIDRA_PROTO undefined OnMsg0BC0()
+
+undefined4 CMainFrame::OnMsg0BC0(undefined4 param_1,int *param_2)
+
+{
+  int iVar1;
+  
+  iVar1 = *param_2;
+  (**(code **)(iVar1 + 0xc))();
+  (**(code **)(iVar1 + 0x28))();
+  return 0;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00485990
 // GHIDRA_NAME CMainFrame::SetFieldC0AndInvalidateWindowIfChanged
 // GHIDRA_PROTO undefined __thiscall SetFieldC0AndInvalidateWindowIfChanged(int param_1)
 
-int CMainFrame::SetFieldC0AndInvalidateWindowIfChanged(int param_1)
+int __thiscall CMainFrame::SetFieldC0AndInvalidateWindowIfChanged(CMainFrame *this,int param_1)
 
 {
   int iVar1;
@@ -68,5 +201,155 @@ int CMainFrame::SetFieldC0AndInvalidateWindowIfChanged(int param_1)
     InvalidateRect(this->m_hWnd,(RECT *)0x0,1);
   }
   return iVar1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004859D0
+// GHIDRA_NAME CMainFrame::OnEraseBkgnd
+// GHIDRA_PROTO undefined OnEraseBkgnd()
+
+undefined4 __thiscall CMainFrame::OnEraseBkgnd(int param_1,void *param_2)
+
+{
+  int iVar1;
+  undefined4 uVar2;
+  int iVar3;
+  int *unaff_FS_OFFSET;
+  undefined1 auStack_24 [12];
+  int iStack_18;
+  int iStack_14;
+  int iStack_10;
+  int iStack_c;
+  undefined *puStack_8;
+  int iStack_4;
+  
+  iStack_c = *unaff_FS_OFFSET;
+  iStack_4 = 0xffffffff;
+  puStack_8 = &UNK_0062e9da;
+  *unaff_FS_OFFSET = (int)&iStack_c;
+  if (*(int *)(param_1 + 0xc0) == 0x100005f) {
+    if (*(int *)(param_1 + 0xc4) == 0) {
+      iVar1 = operator_new(0x38);
+      iStack_4 = 0;
+      if (iVar1 == 0) {
+        uVar2 = 0;
+      }
+      else {
+        uVar2 = func_0x004097b4();
+      }
+      iStack_4 = 0xffffffff;
+      *(undefined4 *)(param_1 + 0xc4) = uVar2;
+      func_0x0040158c(0x119,0);
+    }
+    GetClientRect(*(HWND *)(param_1 + 0x1c),(LPRECT)(auStack_24 + 8));
+    iVar3 = (int)((iStack_10 - iStack_18) + (iStack_10 - iStack_18 >> 0x1f & 0x7fU)) >> 7;
+    iVar1 = (int)((iStack_14 - auStack_24._8_4_) + (iStack_14 - auStack_24._8_4_ >> 0x1f & 0x7fU))
+            >> 7;
+    func_0x00406f69(param_2,0);
+    if (-1 < iVar3) {
+      iStack_4 = iVar3 + 1;
+      do {
+        if (-1 < iVar1) {
+          iVar3 = iVar1 + 1;
+          do {
+            func_0x00408cbf(param_2,&stack0xffffffd4);
+            iVar3 = iVar3 + -1;
+          } while (iVar3 != 0);
+        }
+        iStack_4 = iStack_4 + -1;
+      } while (iStack_4 != 0);
+    }
+    *unaff_FS_OFFSET = iStack_14;
+    return 1;
+  }
+  func_0x0040492b(param_2,0);
+  func_0x00405498();
+  GetClientRect(*(HWND *)(param_1 + 0x1c),(LPRECT)auStack_24);
+  FillSolidRect(param_2,(tagRECT *)auStack_24,*(ulong *)(param_1 + 0xc0));
+  *unaff_FS_OFFSET = iStack_14;
+  return 1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00485BD0
+// GHIDRA_NAME CMainFrame::OnPaint
+// GHIDRA_PROTO undefined OnPaint()
+
+void __fastcall CMainFrame::OnPaint(undefined4 param_1)
+
+{
+  CPaintDC local_54 [84];
+  
+  CPaintDC::CPaintDC(param_1);
+  CPaintDC::~CPaintDC(local_54);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00485C00
+// GHIDRA_NAME CMainFrame::OnChar
+// GHIDRA_PROTO undefined OnChar()
+
+void __fastcall CMainFrame::OnChar(CWnd *param_1)
+
+{
+  CWnd::Default(param_1);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00485C20
+// GHIDRA_NAME CMainFrame::WinHelp
+// GHIDRA_PROTO undefined WinHelp()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Sends WM_KEYDOWN(VK_F1/0x70) to active main window returned by thunk_FUN_00412A70.
+// GHIDRA_COMMENT_END
+
+/* Sends WM_KEYDOWN(VK_F1/0x70) to active main window returned by thunk_FUN_00412A70. */
+
+void CMainFrame::WinHelp(void)
+
+{
+  int iVar1;
+  
+  iVar1 = func_0x00405db2();
+  if (iVar1 != 0) {
+    iVar1 = func_0x00405db2();
+    SendMessageA(*(HWND *)(iVar1 + 0x1c),0x100,0x70,0);
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00485C60
+// GHIDRA_NAME CMainFrame::OnActivate
+// GHIDRA_PROTO undefined OnActivate()
+
+void CMainFrame::OnActivate(undefined4 param_1,undefined4 param_2,undefined4 param_3)
+
+{
+  CFrameWnd::OnActivate(param_1,param_2,param_3);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00485C90
+// GHIDRA_NAME CMainFrame::OnActivateApp
+// GHIDRA_PROTO undefined __thiscall OnActivateApp(int param_1)
+
+void __thiscall CMainFrame::OnActivateApp(CMainFrame *this,int param_1)
+
+{
+  undefined4 local_2c;
+  undefined4 local_28;
+  int local_24;
+  undefined4 local_20;
+  undefined4 local_1c;
+  
+  CWnd::Default((CWnd *)this);
+  local_2c = 0x2c;
+  GetWindowPlacementFromThisHwnd(&local_2c);
+  if ((param_1 == 0) && (local_24 != 2)) {
+    local_24 = 2;
+    local_1c = 0xfffffc18;
+    local_20 = 0xfffffc18;
+    local_28 = 3;
+    SetWindowPlacementFromThisHwnd(&local_2c);
+  }
+  return;
 }
 

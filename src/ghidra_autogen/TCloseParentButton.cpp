@@ -40,7 +40,7 @@ undefined4 * TCloseParentButton::CreateObject(void)
 // GHIDRA_NAME TCloseParentButton::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TCloseParentButton::GetRuntimeClass()
+CRuntimeClass * __thiscall TCloseParentButton::GetRuntimeClass(TCloseParentButton *this)
 
 {
   return &classTCloseParentButton;
@@ -50,7 +50,8 @@ CRuntimeClass * TCloseParentButton::GetRuntimeClass()
 // GHIDRA_NAME TCloseParentButton::ConstructTCloseParentButtonBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTCloseParentButtonBaseState(void)
 
-TCloseParentButton * TCloseParentButton::ConstructTCloseParentButtonBaseState()
+TCloseParentButton * __thiscall
+TCloseParentButton::ConstructTCloseParentButtonBaseState(TCloseParentButton *this)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -75,7 +76,8 @@ TCloseParentButton * TCloseParentButton::ConstructTCloseParentButtonBaseState()
 // GHIDRA_NAME TCloseParentButton::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TCloseParentButton * TCloseParentButton::_scalar_deleting_destructor_(byte param_1)
+TCloseParentButton * __thiscall
+TCloseParentButton::_scalar_deleting_destructor_(TCloseParentButton *this,byte param_1)
 
 {
   func_0x00406465();
@@ -89,7 +91,7 @@ TCloseParentButton * TCloseParentButton::_scalar_deleting_destructor_(byte param
 // GHIDRA_NAME TCloseParentButton::HandleEvent
 // GHIDRA_PROTO undefined __thiscall HandleEvent(int param_1)
 
-void TCloseParentButton::HandleEvent(int param_1)
+void __thiscall TCloseParentButton::HandleEvent(TCloseParentButton *this,int param_1)
 
 {
   TCloseParentButtonVtbl *pTVar1;

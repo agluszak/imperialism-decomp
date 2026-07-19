@@ -37,7 +37,8 @@ undefined4 * TItemBoyView::CreateObject(void)
 // GHIDRA_NAME TItemBoyView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TItemBoyView * TItemBoyView::_scalar_deleting_destructor_(byte param_1)
+TItemBoyView * __thiscall
+TItemBoyView::_scalar_deleting_destructor_(TItemBoyView *this,byte param_1)
 
 {
   func_0x004059bb();
@@ -51,7 +52,7 @@ TItemBoyView * TItemBoyView::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TItemBoyView::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TItemBoyView::GetRuntimeClass()
+CRuntimeClass * __thiscall TItemBoyView::GetRuntimeClass(TItemBoyView *this)
 
 {
   return &classTItemBoyView;
@@ -61,7 +62,7 @@ CRuntimeClass * TItemBoyView::GetRuntimeClass()
 // GHIDRA_NAME TItemBoyView::ApplyRectSlot110
 // GHIDRA_PROTO undefined __thiscall ApplyRectSlot110(void)
 
-void TItemBoyView::ApplyRectSlot110()
+void __thiscall TItemBoyView::ApplyRectSlot110(TItemBoyView *this)
 
 {
   int *unaff_FS_OFFSET;
@@ -99,7 +100,7 @@ void TItemBoyView::ApplyRectSlot110()
   CStack_34.m_pchData = &stack0xffffffe0;
   CStack_2c.m_pchData = (char *)(int)*(short *)(*(int *)&this->field_0x60 + 2);
   CStack_30.m_pchData = &g_szDecimalFormat;
-  CString__Format();
+  CString::Format();
   CStack_2c.m_pchData = (char *)0x4afa72;
   CString::CString(&CStack_24);
   CStack_2c.m_pchData = (char *)&CStack_24;
@@ -121,7 +122,8 @@ void TItemBoyView::ApplyRectSlot110()
 // GHIDRA_NAME TItemBoyView::DestructTItemBoyViewAndMaybeFree
 // GHIDRA_PROTO undefined __thiscall DestructTItemBoyViewAndMaybeFree(undefined4 param_1)
 
-void TItemBoyView::DestructTItemBoyViewAndMaybeFree(undefined4 param_1)
+void __thiscall
+TItemBoyView::DestructTItemBoyViewAndMaybeFree(TItemBoyView *this,undefined4 param_1)
 
 {
   int iVar1;
@@ -134,7 +136,7 @@ void TItemBoyView::DestructTItemBoyViewAndMaybeFree(undefined4 param_1)
   undefined4 local_4;
   
   func_0x0040448f(0,10,0x2b6a);
-  func_0x00408d6e(0x1a,0x14);
+  thunk_SetQuickDrawTextOriginWithContextOffset(0x1a,0x14);
   func_0x004029aa(param_1);
   psVar2 = *(short **)&this->field_0x60;
   iVar1 = (this->field34 + -0x3a) / (int)psVar2[1];

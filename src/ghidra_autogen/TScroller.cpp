@@ -37,17 +37,18 @@ undefined4 * TScroller::CreateObject(void)
 // GHIDRA_NAME TScroller::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TScroller::GetRuntimeClass()
+CRuntimeClass * __thiscall TScroller::GetRuntimeClass(TScroller *this)
 
 {
-  return &classRuntimeClass;
+  return &classTScroller;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048CBB0
-// GHIDRA_NAME TScroller::ConstructTScrollerBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTScrollerBaseState(int * param_1, int * param_2, int * param_3)
+// GHIDRA_NAME TScroller::InitializeScrollerPlacement
+// GHIDRA_PROTO undefined __thiscall InitializeScrollerPlacement(int * param_1, int * param_2, int * param_3)
 
-void TScroller::ConstructTScrollerBaseState(int *param_1, int *param_2, int *param_3)
+void __thiscall
+TScroller::InitializeScrollerPlacement(TScroller *this,int *param_1,int *param_2,int *param_3)
 
 {
   int iVar1;

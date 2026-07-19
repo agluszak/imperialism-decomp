@@ -37,7 +37,8 @@ undefined4 * TNetGameSelectPicture::CreateObject(void)
 // GHIDRA_NAME TNetGameSelectPicture::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TNetGameSelectPicture * TNetGameSelectPicture::_scalar_deleting_destructor_(byte param_1)
+TNetGameSelectPicture * __thiscall
+TNetGameSelectPicture::_scalar_deleting_destructor_(TNetGameSelectPicture *this,byte param_1)
 
 {
   func_0x00403f17();
@@ -51,7 +52,7 @@ TNetGameSelectPicture * TNetGameSelectPicture::_scalar_deleting_destructor_(byte
 // GHIDRA_NAME TNetGameSelectPicture::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TNetGameSelectPicture::GetRuntimeClass()
+CRuntimeClass * __thiscall TNetGameSelectPicture::GetRuntimeClass(TNetGameSelectPicture *this)
 
 {
   return &classTNetGameSelectPicture;
@@ -61,7 +62,7 @@ CRuntimeClass * TNetGameSelectPicture::GetRuntimeClass()
 // GHIDRA_NAME TNetGameSelectPicture::NoOpUiLifecycleHook
 // GHIDRA_PROTO undefined __thiscall NoOpUiLifecycleHook(void)
 
-void TNetGameSelectPicture::NoOpUiLifecycleHook()
+void __thiscall TNetGameSelectPicture::NoOpUiLifecycleHook(TNetGameSelectPicture *this)
 
 {
   func_0x00406ba9();
@@ -73,7 +74,8 @@ void TNetGameSelectPicture::NoOpUiLifecycleHook()
 // GHIDRA_NAME TNetGameSelectPicture::HandleEvent
 // GHIDRA_PROTO undefined __thiscall HandleEvent(int param_1, int param_2)
 
-void TNetGameSelectPicture::HandleEvent(int param_1, int param_2)
+void __thiscall
+TNetGameSelectPicture::HandleEvent(TNetGameSelectPicture *this,int param_1,int param_2)
 
 {
   int iVar1;

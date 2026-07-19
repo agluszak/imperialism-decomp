@@ -37,7 +37,8 @@ undefined4 * TSelectoText::CreateObject(void)
 // GHIDRA_NAME TSelectoText::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TSelectoText * TSelectoText::_scalar_deleting_destructor_(byte param_1)
+TSelectoText * __thiscall
+TSelectoText::_scalar_deleting_destructor_(TSelectoText *this,byte param_1)
 
 {
   func_0x00402662();
@@ -49,7 +50,7 @@ TSelectoText * TSelectoText::_scalar_deleting_destructor_(byte param_1)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0057B720
 // GHIDRA_NAME TSelectoText::CreateTSelectoTextInstance
-// GHIDRA_PROTO undefined TStaticText::~TStaticText()
+// GHIDRA_PROTO undefined CreateTSelectoTextInstance()
 
 void __fastcall TSelectoText::CreateTSelectoTextInstance(undefined4 *param_1)
 
@@ -87,7 +88,7 @@ void __fastcall TSelectoText::CreateTSelectoTextInstance(undefined4 *param_1)
 // GHIDRA_NAME TSelectoText::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TSelectoText::GetRuntimeClass()
+CRuntimeClass * __thiscall TSelectoText::GetRuntimeClass(TSelectoText *this)
 
 {
   return &classTSelectoText;
@@ -97,7 +98,7 @@ CRuntimeClass * TSelectoText::GetRuntimeClass()
 // GHIDRA_NAME TSelectoText::OrphanRetStub_0057b760
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_0057b760(void)
 
-void TSelectoText::OrphanRetStub_0057b760()
+void __thiscall TSelectoText::OrphanRetStub_0057b760(TSelectoText *this)
 
 {
   return;

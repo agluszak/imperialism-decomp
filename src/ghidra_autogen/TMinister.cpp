@@ -7,7 +7,7 @@
 // GHIDRA_NAME TMinister::WrapperFor_thunk_ConstructTMinister_At004be840
 // GHIDRA_PROTO undefined __thiscall WrapperFor_thunk_ConstructTMinister_At004be840(void)
 
-TMinister * TMinister::WrapperFor_thunk_ConstructTMinister_At004be840()
+TMinister * __thiscall TMinister::WrapperFor_thunk_ConstructTMinister_At004be840(TMinister *this)
 
 {
   func_0x0040433b();
@@ -40,7 +40,7 @@ undefined4 * TMinister::CreateObject(void)
 // GHIDRA_NAME TMinister::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TMinister::GetRuntimeClass()
+CRuntimeClass * __thiscall TMinister::GetRuntimeClass(TMinister *this)
 
 {
   return &classTMinister;
@@ -50,7 +50,7 @@ CRuntimeClass * TMinister::GetRuntimeClass()
 // GHIDRA_NAME TMinister::ConstructTMinister
 // GHIDRA_PROTO undefined __thiscall ConstructTMinister(void)
 
-void TMinister::ConstructTMinister()
+void __thiscall TMinister::ConstructTMinister(TMinister *this)
 
 {
   *(undefined2 *)&this->field_0xc = 0;
@@ -62,7 +62,7 @@ void TMinister::ConstructTMinister()
 // GHIDRA_NAME TMinister::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TMinister * TMinister::_scalar_deleting_destructor_(byte param_1)
+TMinister * __thiscall TMinister::_scalar_deleting_destructor_(TMinister *this,byte param_1)
 
 {
   func_0x0040293c();
@@ -76,7 +76,7 @@ TMinister * TMinister::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TMinister::DestructTMinister
 // GHIDRA_PROTO undefined __thiscall DestructTMinister(void)
 
-void TMinister::DestructTMinister()
+void __thiscall TMinister::DestructTMinister(TMinister *this)
 
 {
   this->vftable = (TMinisterVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
@@ -87,7 +87,7 @@ void TMinister::DestructTMinister()
 // GHIDRA_NAME TMinister::Free
 // GHIDRA_PROTO undefined __thiscall Free(void)
 
-void TMinister::Free()
+void __thiscall TMinister::Free(TMinister *this)
 
 {
   if (*(int **)&this->field_0x8 != (int *)0x0) {
@@ -104,7 +104,7 @@ void TMinister::Free()
 // GHIDRA_NAME TMinister::ReadFrom
 // GHIDRA_PROTO undefined __thiscall ReadFrom(int * param_1)
 
-void TMinister::ReadFrom(int *param_1)
+void __thiscall TMinister::ReadFrom(TMinister *this,int *param_1)
 
 {
   func_0x00403517(param_1);
@@ -116,7 +116,7 @@ void TMinister::ReadFrom(int *param_1)
 // GHIDRA_NAME TMinister::WriteTo
 // GHIDRA_PROTO undefined __thiscall WriteTo(int * param_1)
 
-void TMinister::WriteTo(int *param_1)
+void __thiscall TMinister::WriteTo(TMinister *this,int *param_1)
 
 {
   func_0x0040583a(param_1);
@@ -128,7 +128,7 @@ void TMinister::WriteTo(int *param_1)
 // GHIDRA_NAME TMinister::DispatchNationStateEventCode10
 // GHIDRA_PROTO undefined __thiscall DispatchNationStateEventCode10(short param_1)
 
-void TMinister::DispatchNationStateEventCode10(short param_1)
+void __thiscall TMinister::DispatchNationStateEventCode10(TMinister *this,short param_1)
 
 {
   (*g_apNationStates[param_1]->vftable->OrphanLeaf_NoCall_Ins02_004d7f20)(0x10);
@@ -139,7 +139,7 @@ void TMinister::DispatchNationStateEventCode10(short param_1)
 // GHIDRA_NAME TMinister::RebuildTerrainPreferenceEntriesAndAssignRanks
 // GHIDRA_PROTO undefined __thiscall RebuildTerrainPreferenceEntriesAndAssignRanks(void)
 
-void TMinister::RebuildTerrainPreferenceEntriesAndAssignRanks()
+void __thiscall TMinister::RebuildTerrainPreferenceEntriesAndAssignRanks(TMinister *this)
 
 {
   undefined uVar1;
@@ -190,7 +190,7 @@ void TMinister::RebuildTerrainPreferenceEntriesAndAssignRanks()
 // GHIDRA_NAME TMinister::MapTerrainTypeToPreferenceRank
 // GHIDRA_PROTO undefined __thiscall MapTerrainTypeToPreferenceRank(short param_1)
 
-short TMinister::MapTerrainTypeToPreferenceRank(short param_1)
+short __thiscall TMinister::MapTerrainTypeToPreferenceRank(TMinister *this,short param_1)
 
 {
   short *psVar1;
@@ -220,7 +220,7 @@ short TMinister::MapTerrainTypeToPreferenceRank(short param_1)
 // GHIDRA_NAME TMinister::MapPreferenceRankToTerrainType
 // GHIDRA_PROTO undefined __thiscall MapPreferenceRankToTerrainType(short param_1)
 
-short TMinister::MapPreferenceRankToTerrainType(short param_1)
+short __thiscall TMinister::MapPreferenceRankToTerrainType(TMinister *this,short param_1)
 
 {
   short *psVar1;
@@ -250,7 +250,7 @@ short TMinister::MapPreferenceRankToTerrainType(short param_1)
 // GHIDRA_NAME TMinister::GetPreferenceGroupRankByEntryIndex
 // GHIDRA_PROTO undefined __thiscall GetPreferenceGroupRankByEntryIndex(short param_1)
 
-undefined2 TMinister::GetPreferenceGroupRankByEntryIndex(short param_1)
+undefined2 __thiscall TMinister::GetPreferenceGroupRankByEntryIndex(TMinister *this,short param_1)
 
 {
   int iVar1;
@@ -263,7 +263,7 @@ undefined2 TMinister::GetPreferenceGroupRankByEntryIndex(short param_1)
 // GHIDRA_NAME TMinister::GetPreferenceScoreByEntryIndex
 // GHIDRA_PROTO undefined __thiscall GetPreferenceScoreByEntryIndex(short param_1)
 
-undefined2 TMinister::GetPreferenceScoreByEntryIndex(short param_1)
+undefined2 __thiscall TMinister::GetPreferenceScoreByEntryIndex(TMinister *this,short param_1)
 
 {
   int iVar1;
@@ -276,7 +276,7 @@ undefined2 TMinister::GetPreferenceScoreByEntryIndex(short param_1)
 // GHIDRA_NAME TMinister::GetPreferenceTerrainTypeByEntryIndex
 // GHIDRA_PROTO undefined __thiscall GetPreferenceTerrainTypeByEntryIndex(short param_1)
 
-undefined2 TMinister::GetPreferenceTerrainTypeByEntryIndex(short param_1)
+undefined2 __thiscall TMinister::GetPreferenceTerrainTypeByEntryIndex(TMinister *this,short param_1)
 
 {
   undefined2 *puVar1;
@@ -289,7 +289,7 @@ undefined2 TMinister::GetPreferenceTerrainTypeByEntryIndex(short param_1)
 // GHIDRA_NAME TMinister::NoOpForeignMinisterUtilityStub
 // GHIDRA_PROTO undefined __thiscall NoOpForeignMinisterUtilityStub(void)
 
-void TMinister::NoOpForeignMinisterUtilityStub()
+void __thiscall TMinister::NoOpForeignMinisterUtilityStub(TMinister *this)
 
 {
   return;

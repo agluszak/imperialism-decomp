@@ -3,6 +3,48 @@
 // Program: Imperialism.exe
 // Bucket: CTreeCtrl.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x005E5FE5
+// GHIDRA_NAME CTreeCtrl::Create
+// GHIDRA_PROTO undefined Create()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Multiple Matches With Same Base Name
+// GHIDRA_COMMENT  public: int __thiscall CAnimateCtrl::Create(unsigned long,struct tagRECT const &,class CWnd *,unsigned int)
+// GHIDRA_COMMENT  public: int __thiscall CHeaderCtrl::Create(unsigned long,struct tagRECT const &,class CWnd *,unsigned int)
+// GHIDRA_COMMENT  public: int __thiscall CHotKeyCtrl::Create(unsigned long,struct tagRECT const &,class CWnd *,unsigned int)
+// GHIDRA_COMMENT  public: int __thiscall CListCtrl::Create(unsigned long,struct tagRECT const &,class CWnd *,unsigned int)
+// GHIDRA_COMMENT   11 names - too many to list
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: nafxcw retail msvc500:static
+// GHIDRA_COMMENT_END
+
+/* Library Function - Multiple Matches With Same Base Name
+    public: int __thiscall CAnimateCtrl::Create(unsigned long,struct tagRECT const &,class CWnd
+   *,unsigned int)
+    public: int __thiscall CHeaderCtrl::Create(unsigned long,struct tagRECT const &,class CWnd
+   *,unsigned int)
+    public: int __thiscall CHotKeyCtrl::Create(unsigned long,struct tagRECT const &,class CWnd
+   *,unsigned int)
+    public: int __thiscall CListCtrl::Create(unsigned long,struct tagRECT const &,class CWnd
+   *,unsigned int)
+     11 names - too many to list
+   
+   Library: nafxcw retail msvc500:static */
+
+void __thiscall
+CTreeCtrl::Create(int *param_1,undefined4 param_2,undefined4 param_3,undefined4 param_4,
+                 undefined4 param_5)
+
+{
+  int iVar1;
+  
+  iVar1 = AfxGetModuleState();
+  if ((*(byte *)(iVar1 + 0x18) & 0x10) == 0) {
+    AfxEndDeferRegisterClass(0x10);
+  }
+  (**(code **)(*param_1 + 0x5c))("SysTreeView32",0,param_2,param_3,param_4,param_5,0);
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x005E6076
 // GHIDRA_NAME CTreeCtrl::GetItemText
 // GHIDRA_PROTO undefined GetItemText()
@@ -162,7 +204,9 @@ undefined4 __thiscall CTreeCtrl::ItemHasChildren(int param_1,undefined4 param_2)
    
    Library: nafxcw retail msvc500:static */
 
-int CTreeCtrl::SetItem(_TREEITEM *param_1, uint param_2, char *param_3, int param_4, int param_5, uint param_6, uint param_7, long param_8)
+int __thiscall
+CTreeCtrl::SetItem(CTreeCtrl *this,_TREEITEM *param_1,uint param_2,char *param_3,int param_4,
+                  int param_5,uint param_6,uint param_7,long param_8)
 
 {
   LRESULT LVar1;
@@ -226,6 +270,39 @@ CTreeCtrl::InsertItem
   return;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x005E628B
+// GHIDRA_NAME CTreeCtrl::HitTest
+// GHIDRA_PROTO _TREEITEM * __thiscall HitTest(CPoint param_1, uint * param_2)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Single Match
+// GHIDRA_COMMENT  public: struct _TREEITEM * __thiscall CTreeCtrl::HitTest(class CPoint,unsigned int *)const
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: Visual Studio 2003 Release
+// GHIDRA_COMMENT_END
+
+/* Library Function - Single Match
+    public: struct _TREEITEM * __thiscall CTreeCtrl::HitTest(class CPoint,unsigned int *)const 
+   
+   Library: Visual Studio 2003 Release */
+
+_TREEITEM * __thiscall
+CTreeCtrl::HitTest(CTreeCtrl *this,undefined4 param_2,undefined4 param_3,undefined4 *param_4)
+
+{
+  _TREEITEM *p_Var1;
+  undefined4 local_14;
+  undefined4 local_10;
+  undefined4 local_c;
+  
+  local_14 = param_2;
+  local_10 = param_3;
+  p_Var1 = (_TREEITEM *)SendMessageA(*(HWND *)(this + 0x1c),0x1111,0,(LPARAM)&local_14);
+  if (param_4 != (undefined4 *)0x0) {
+    *param_4 = local_c;
+  }
+  return p_Var1;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x005E62C1
 // GHIDRA_NAME CTreeCtrl::RemoveImageList
 // GHIDRA_PROTO undefined RemoveImageList()
@@ -243,7 +320,7 @@ void __thiscall CTreeCtrl::RemoveImageList(int param_1,WPARAM param_2)
   int iVar2;
   
   LVar1 = SendMessageA(*(HWND *)(param_1 + 0x1c),0x1108,param_2,0);
-  iVar2 = CMenu__FromHandlePermanent(LVar1);
+  iVar2 = CMenu::FromHandlePermanent(LVar1);
   if (iVar2 != 0) {
     SendMessageA(*(HWND *)(param_1 + 0x1c),0x1109,param_2,0);
   }

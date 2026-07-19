@@ -7,7 +7,7 @@
 // GHIDRA_NAME THandleStream::CreateTHandleStreamInstance
 // GHIDRA_PROTO undefined __thiscall CreateTHandleStreamInstance(int param_1)
 
-void THandleStream::CreateTHandleStreamInstance(int param_1)
+void __thiscall THandleStream::CreateTHandleStreamInstance(THandleStream *this,int param_1)
 
 {
   int iVar1;
@@ -47,7 +47,7 @@ undefined4 * THandleStream::CreateObject(void)
 // GHIDRA_NAME THandleStream::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * THandleStream::GetRuntimeClass()
+CRuntimeClass * __thiscall THandleStream::GetRuntimeClass(THandleStream *this)
 
 {
   return &classTHandleStream;
@@ -57,7 +57,7 @@ CRuntimeClass * THandleStream::GetRuntimeClass()
 // GHIDRA_NAME THandleStream::ConstructTHandleStreamBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTHandleStreamBaseState(void)
 
-void THandleStream::ConstructTHandleStreamBaseState()
+void __thiscall THandleStream::ConstructTHandleStreamBaseState(THandleStream *this)
 
 {
   this->vftable = &_vftable_;
@@ -73,7 +73,8 @@ void THandleStream::ConstructTHandleStreamBaseState()
 // GHIDRA_NAME THandleStream::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-THandleStream * THandleStream::_scalar_deleting_destructor_(byte param_1)
+THandleStream * __thiscall
+THandleStream::_scalar_deleting_destructor_(THandleStream *this,byte param_1)
 
 {
   func_0x004058c1();
@@ -87,7 +88,7 @@ THandleStream * THandleStream::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME THandleStream::~THandleStream
 // GHIDRA_PROTO undefined __thiscall ~THandleStream(void)
 
-void THandleStream::~THandleStream()
+void __thiscall THandleStream::~THandleStream(THandleStream *this)
 
 {
   this->vftable = (THandleStreamVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
@@ -98,7 +99,7 @@ void THandleStream::~THandleStream()
 // GHIDRA_NAME THandleStream::Free
 // GHIDRA_PROTO undefined __thiscall Free(void)
 
-void THandleStream::Free()
+void __thiscall THandleStream::Free(THandleStream *this)
 
 {
   THandleStreamVtbl *pTVar1;
@@ -120,7 +121,7 @@ void THandleStream::Free()
 // GHIDRA_NAME THandleStream::OrphanTiny_ReturnZero_00488ad0
 // GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_00488ad0(void)
 
-undefined4 THandleStream::OrphanTiny_ReturnZero_00488ad0()
+undefined4 __thiscall THandleStream::OrphanTiny_ReturnZero_00488ad0(THandleStream *this)
 
 {
   return *(undefined4 *)&this->field_0x8;
@@ -130,7 +131,7 @@ undefined4 THandleStream::OrphanTiny_ReturnZero_00488ad0()
 // GHIDRA_NAME THandleStream::OrphanTiny_ReturnZero_00488af0
 // GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_00488af0(void)
 
-undefined4 THandleStream::OrphanTiny_ReturnZero_00488af0()
+undefined4 __thiscall THandleStream::OrphanTiny_ReturnZero_00488af0(THandleStream *this)
 
 {
   return *(undefined4 *)&this->field_0xc;
@@ -140,7 +141,7 @@ undefined4 THandleStream::OrphanTiny_ReturnZero_00488af0()
 // GHIDRA_NAME THandleStream::OrphanLeaf_NoCall_Ins06_00489720
 // GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins06_00489720(int param_1)
 
-int THandleStream::OrphanLeaf_NoCall_Ins06_00489720(int param_1)
+int __thiscall THandleStream::OrphanLeaf_NoCall_Ins06_00489720(THandleStream *this,int param_1)
 
 {
   int iVar1;
@@ -156,7 +157,7 @@ int THandleStream::OrphanLeaf_NoCall_Ins06_00489720(int param_1)
 // GHIDRA_NAME THandleStream::OrphanRetStub_00488e30
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_00488e30(undefined4 param_1)
 
-void THandleStream::OrphanRetStub_00488e30(undefined4 param_1)
+void __thiscall THandleStream::OrphanRetStub_00488e30(THandleStream *this,undefined4 param_1)
 
 {
   *(undefined4 *)&this->field_0x8 = param_1;
@@ -167,7 +168,7 @@ void THandleStream::OrphanRetStub_00488e30(undefined4 param_1)
 // GHIDRA_NAME THandleStream::OrphanRetStub_00488e50
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_00488e50(SIZE_T param_1)
 
-void THandleStream::OrphanRetStub_00488e50(SIZE_T param_1)
+void __thiscall THandleStream::OrphanRetStub_00488e50(THandleStream *this,SIZE_T param_1)
 
 {
   GlobalReAlloc(*(HGLOBAL *)&this->field_0x4,param_1,0);
@@ -182,7 +183,7 @@ void THandleStream::OrphanRetStub_00488e50(SIZE_T param_1)
 // GHIDRA_NAME THandleStream::ReadBytes
 // GHIDRA_PROTO undefined __thiscall ReadBytes(undefined4 param_1, int param_2)
 
-void THandleStream::ReadBytes(undefined4 param_1, int param_2)
+void __thiscall THandleStream::ReadBytes(THandleStream *this,undefined4 param_1,int param_2)
 
 {
   int iVar1;
@@ -205,7 +206,8 @@ void THandleStream::ReadBytes(undefined4 param_1, int param_2)
 // GHIDRA_NAME THandleStream::OrphanRetStub_00488e70
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_00488e70(undefined4 param_1, int param_2)
 
-void THandleStream::OrphanRetStub_00488e70(undefined4 param_1, int param_2)
+void __thiscall
+THandleStream::OrphanRetStub_00488e70(THandleStream *this,undefined4 param_1,int param_2)
 
 {
   THandleStreamVtbl *pTVar1;

@@ -23,7 +23,7 @@
    
    Libraries: Visual Studio 2005 Release, Visual Studio 2008 Release */
 
-void CMapPtrToPtr::CMapPtrToPtr(TNetMgrVtbl *param_1)
+void __thiscall CMapPtrToPtr::CMapPtrToPtr(CMapPtrToPtr *this,TNetMgrVtbl *param_1)
 
 {
   *(undefined4 *)(this + 4) = 0;
@@ -40,7 +40,7 @@ void CMapPtrToPtr::CMapPtrToPtr(TNetMgrVtbl *param_1)
 // GHIDRA_NAME CMapPtrToPtr::InitHashTable
 // GHIDRA_PROTO undefined __thiscall InitHashTable(TNetMgrVtbl * param_1, int param_2)
 
-void CMapPtrToPtr::InitHashTable(TNetMgrVtbl *param_1, int param_2)
+void __thiscall CMapPtrToPtr::InitHashTable(CMapPtrToPtr *this,TNetMgrVtbl *param_1,int param_2)
 
 {
   void *_Dst;
@@ -214,7 +214,7 @@ undefined4 * __thiscall CMapPtrToPtr::GetAssocAt(int param_1,uint param_2,uint *
 /* Lookup helper for handle-map buckets: finds object entry by HWND key and returns mapped object
    pointer. */
 
-undefined4 CMapPtrToPtr::GetValueAt(uint param_1)
+undefined4 __thiscall CMapPtrToPtr::GetValueAt(CMapPtrToPtr *this,uint param_1)
 
 {
   undefined4 *puVar1;
@@ -274,7 +274,7 @@ undefined4 * __thiscall CMapPtrToPtr::operator[](CMapPtrToPtr *this,int param_1)
 // GHIDRA_NAME CMapPtrToPtr::RemoveKey
 // GHIDRA_PROTO undefined __thiscall RemoveKey(uint param_1)
 
-undefined4 CMapPtrToPtr::RemoveKey(uint param_1)
+undefined4 __thiscall CMapPtrToPtr::RemoveKey(CMapPtrToPtr *this,uint param_1)
 
 {
   int iVar1;

@@ -37,7 +37,8 @@ TInterruptusView * __cdecl TInterruptusView::CreateObject(void)
 // GHIDRA_NAME TInterruptusView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TInterruptusView * TInterruptusView::_scalar_deleting_destructor_(byte param_1)
+TInterruptusView * __thiscall
+TInterruptusView::_scalar_deleting_destructor_(TInterruptusView *this,byte param_1)
 
 {
   func_0x004064fb();
@@ -51,7 +52,7 @@ TInterruptusView * TInterruptusView::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TInterruptusView::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TInterruptusView::GetRuntimeClass()
+CRuntimeClass * __thiscall TInterruptusView::GetRuntimeClass(TInterruptusView *this)
 
 {
   return &classTInterruptusView;
@@ -61,7 +62,7 @@ CRuntimeClass * TInterruptusView::GetRuntimeClass()
 // GHIDRA_NAME TInterruptusView::ApplyRectSlot110
 // GHIDRA_PROTO undefined __thiscall ApplyRectSlot110(void)
 
-void TInterruptusView::ApplyRectSlot110()
+void __thiscall TInterruptusView::ApplyRectSlot110(TInterruptusView *this)
 
 {
   int *unaff_FS_OFFSET;
@@ -106,7 +107,7 @@ void TInterruptusView::ApplyRectSlot110()
   CStack_30.m_pchData = (char *)(int)*(short *)(*(int *)&this->field_0x60 + 2);
   CStack_34.m_pchData = &g_szDecimalFormat;
   CStack_3c.m_pchData = (char *)0x4afe24;
-  CString__Format();
+  CString::Format();
   CStack_30.m_pchData = (char *)0x4afe30;
   CString::CString(&CStack_28);
   CStack_30.m_pchData = (char *)&CStack_28;

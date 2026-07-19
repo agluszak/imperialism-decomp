@@ -7,7 +7,8 @@
 // GHIDRA_NAME TTradePageSellView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TTradePageSellView * TTradePageSellView::_scalar_deleting_destructor_(byte param_1)
+TTradePageSellView * __thiscall
+TTradePageSellView::_scalar_deleting_destructor_(TTradePageSellView *this,byte param_1)
 
 {
   func_0x004053fd();
@@ -52,7 +53,7 @@ undefined4 * TTradePageSellView::CreateObject(void)
 // GHIDRA_NAME TTradePageSellView::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TTradePageSellView::GetRuntimeClass()
+CRuntimeClass * __thiscall TTradePageSellView::GetRuntimeClass(TTradePageSellView *this)
 
 {
   return &classTTradePageSellView;
@@ -62,7 +63,8 @@ CRuntimeClass * TTradePageSellView::GetRuntimeClass()
 // GHIDRA_NAME TTradePageSellView::ConstructTTradePageSellViewBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTTradePageSellViewBaseState(short param_1)
 
-void TTradePageSellView::ConstructTTradePageSellViewBaseState(short param_1)
+void __thiscall
+TTradePageSellView::ConstructTTradePageSellViewBaseState(TTradePageSellView *this,short param_1)
 
 {
   TTradeMgrVtbl *pTVar1;
@@ -109,7 +111,7 @@ LAB_005bcdec:
     func_0x004059b6(0,0,auStack_28,0x2741);
     func_0x00408bf2(1);
     auStack_28[0] = auStack_28[0] & 0xffff0000;
-    func_0x00406afa(&stack0xffffffd0,0,0xe,0x2b6a);
+    thunk_BuildUiTextStyleDescriptor(&stack0xffffffd0,0,0xe,0x2b6a);
     func_0x00408521(&stack0xffffffd0);
     (**(code **)(**(int **)&this->field_0x7c + 0x30))(uVar5);
   }
@@ -145,7 +147,7 @@ LAB_005bcdec:
     func_0x004059b6(0,0,auStack_28,0x2741);
     func_0x00408bf2(1);
     auStack_28[0] = auStack_28[0] & 0xffff0000;
-    func_0x00406afa(&stack0xffffffd0,4,0xc,0x2b6a);
+    thunk_BuildUiTextStyleDescriptor(&stack0xffffffd0,4,0xc,0x2b6a);
     func_0x00408521(&stack0xffffffd0);
     (**(code **)(**(int **)&this->field_0x7c + 0x30))(uVar5);
     iVar7 = 0x16;
@@ -183,7 +185,8 @@ LAB_005bce9f:
 // GHIDRA_NAME TTradePageSellView::DestructTTradePageSellViewAndMaybeFree_Impl
 // GHIDRA_PROTO undefined __thiscall DestructTTradePageSellViewAndMaybeFree_Impl(void)
 
-void TTradePageSellView::DestructTTradePageSellViewAndMaybeFree_Impl()
+void __thiscall
+TTradePageSellView::DestructTTradePageSellViewAndMaybeFree_Impl(TTradePageSellView *this)
 
 {
   this->vftable =

@@ -37,7 +37,7 @@ CPtrArray * TIndexAndRankList::CreateObject(void)
 // GHIDRA_NAME TIndexAndRankList::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TIndexAndRankList::GetRuntimeClass()
+CRuntimeClass * __thiscall TIndexAndRankList::GetRuntimeClass(TIndexAndRankList *this)
 
 {
   return &classTIndexAndRankList;
@@ -47,7 +47,8 @@ CRuntimeClass * TIndexAndRankList::GetRuntimeClass()
 // GHIDRA_NAME TIndexAndRankList::ConstructTIndexAndRankList
 // GHIDRA_PROTO undefined __thiscall ConstructTIndexAndRankList(void)
 
-TIndexAndRankList * TIndexAndRankList::ConstructTIndexAndRankList()
+TIndexAndRankList * __thiscall
+TIndexAndRankList::ConstructTIndexAndRankList(TIndexAndRankList *this)
 
 {
   CPtrArray::CPtrArray((CPtrArray *)this);
@@ -59,7 +60,8 @@ TIndexAndRankList * TIndexAndRankList::ConstructTIndexAndRankList()
 // GHIDRA_NAME TIndexAndRankList::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TIndexAndRankList * TIndexAndRankList::_scalar_deleting_destructor_(byte param_1)
+TIndexAndRankList * __thiscall
+TIndexAndRankList::_scalar_deleting_destructor_(TIndexAndRankList *this,byte param_1)
 
 {
   func_0x004069f1();
@@ -71,7 +73,7 @@ TIndexAndRankList * TIndexAndRankList::_scalar_deleting_destructor_(byte param_1
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005348D0
 // GHIDRA_NAME TIndexAndRankList::DestructTIndexAndRankList
-// GHIDRA_PROTO undefined CPtrArray::~CPtrArray()
+// GHIDRA_PROTO undefined DestructTIndexAndRankList()
 
 void TIndexAndRankList::DestructTIndexAndRankList(void)
 
@@ -83,7 +85,7 @@ void TIndexAndRankList::DestructTIndexAndRankList(void)
   
   _EH_prolog();
   *(undefined4 **)(unaff_EBP + -0x10) = extraout_ECX;
-  *extraout_ECX = &_vftable_;
+  *extraout_ECX = &CPtrArray::_vftable_;
   uVar1 = extraout_ECX[1];
   *(undefined4 *)(unaff_EBP + -4) = 0;
   operator_delete(uVar1);
@@ -93,10 +95,10 @@ void TIndexAndRankList::DestructTIndexAndRankList(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00534910
-// GHIDRA_NAME TIndexAndRankList::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(int param_1, int param_2)
+// GHIDRA_NAME TIndexAndRankList::Compare
+// GHIDRA_PROTO undefined __thiscall Compare(int param_1, int param_2)
 
-int TIndexAndRankList::OrphanRetStub_0059add0(int param_1, int param_2)
+int __thiscall TIndexAndRankList::Compare(TIndexAndRankList *this,int param_1,int param_2)
 
 {
   if (*(short *)(param_1 + 2) < *(short *)(param_2 + 2)) {
@@ -105,65 +107,12 @@ int TIndexAndRankList::OrphanRetStub_0059add0(int param_1, int param_2)
   return ((*(short *)(param_1 + 2) <= *(short *)(param_2 + 2)) - 1 & 0xfffffffe) + 1;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0055B710
-// GHIDRA_NAME TIndexAndRankList::InitializeInterNationEventQueueManager
-// GHIDRA_PROTO undefined InitializeInterNationEventQueueManager()
-
-void __fastcall TIndexAndRankList::InitializeInterNationEventQueueManager(int param_1)
-
-{
-  CPtrArray *pCVar1;
-  int iVar2;
-  undefined4 *puVar3;
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 local_c;
-  undefined1 *puStack_8;
-  undefined4 local_4;
-  
-  puStack_8 = &LAB_006354f4;
-  local_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &local_c;
-  puVar3 = (undefined4 *)(param_1 + 0xef4);
-  iVar2 = 7;
-  do {
-    local_4 = 0xffffffff;
-    pCVar1 = (CPtrArray *)operator_new(0x18);
-    local_4 = 0;
-    if (pCVar1 == (CPtrArray *)0x0) {
-      pCVar1 = (CPtrArray *)0x0;
-    }
-    else {
-      CPtrArray::CPtrArray(pCVar1);
-      *(TPtrListVtbl **)pCVar1 = &TSortedPtrList::_vftable_;
-    }
-    puVar3[-8] = pCVar1;
-    *(undefined2 *)(pCVar1 + 0x14) = 0x24;
-    *puVar3 = 0;
-    puVar3 = puVar3 + 1;
-    iVar2 = iVar2 + -1;
-    local_4 = 0xffffffff;
-  } while (iVar2 != 0);
-  *(undefined4 *)(param_1 + 8) = 0;
-  pCVar1 = (CPtrArray *)operator_new(0x18);
-  local_4 = 1;
-  if (pCVar1 == (CPtrArray *)0x0) {
-    pCVar1 = (CPtrArray *)0x0;
-  }
-  else {
-    CPtrArray::CPtrArray(pCVar1);
-    *(TPtrListVtbl **)pCVar1 = &TSortedPtrList::_vftable_;
-  }
-  *(CPtrArray **)(param_1 + 0xef0) = pCVar1;
-  *(undefined2 *)(pCVar1 + 0x14) = 0x10;
-  *unaff_FS_OFFSET = local_c;
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00601BC1
 // GHIDRA_NAME TIndexAndRankList::??_GCUIntArray@@UAEPAXI@Z
 // GHIDRA_PROTO undefined __thiscall ??_GCUIntArray@@UAEPAXI@Z(byte param_1)
 
-TIndexAndRankList * TIndexAndRankList::___GCUIntArray__UAEPAXI_Z(byte param_1)
+TIndexAndRankList * __thiscall
+TIndexAndRankList::___GCUIntArray__UAEPAXI_Z(TIndexAndRankList *this,byte param_1)
 
 {
   CPtrArray::~CPtrArray();

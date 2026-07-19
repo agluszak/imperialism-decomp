@@ -37,7 +37,7 @@ undefined4 * TToggleButton::CreateObject(void)
 // GHIDRA_NAME TToggleButton::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TToggleButton::GetRuntimeClass()
+CRuntimeClass * __thiscall TToggleButton::GetRuntimeClass(TToggleButton *this)
 
 {
   return &classTToggleButton;
@@ -47,7 +47,7 @@ CRuntimeClass * TToggleButton::GetRuntimeClass()
 // GHIDRA_NAME TToggleButton::ConstructTToggleButtonBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTToggleButtonBaseState(void)
 
-TToggleButton * TToggleButton::ConstructTToggleButtonBaseState()
+TToggleButton * __thiscall TToggleButton::ConstructTToggleButtonBaseState(TToggleButton *this)
 
 {
   func_0x00401122();
@@ -59,7 +59,8 @@ TToggleButton * TToggleButton::ConstructTToggleButtonBaseState()
 // GHIDRA_NAME TToggleButton::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TToggleButton * TToggleButton::_scalar_deleting_destructor_(byte param_1)
+TToggleButton * __thiscall
+TToggleButton::_scalar_deleting_destructor_(TToggleButton *this,byte param_1)
 
 {
   func_0x00405ccc();
@@ -73,7 +74,7 @@ TToggleButton * TToggleButton::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TToggleButton::HandleEvent
 // GHIDRA_PROTO undefined __thiscall HandleEvent(int param_1, undefined4 param_2)
 
-void TToggleButton::HandleEvent(int param_1, undefined4 param_2)
+void __thiscall TToggleButton::HandleEvent(TToggleButton *this,int param_1,undefined4 param_2)
 
 {
   TToggleButtonVtbl *pTVar1;
@@ -135,7 +136,7 @@ LAB_005711e0:
 // GHIDRA_NAME TToggleButton::DispatchUiMouseMoveToChildren
 // GHIDRA_PROTO undefined __thiscall DispatchUiMouseMoveToChildren(void)
 
-undefined4 TToggleButton::DispatchUiMouseMoveToChildren()
+undefined4 __thiscall TToggleButton::DispatchUiMouseMoveToChildren(TToggleButton *this)
 
 {
   TToggleButtonVtbl *pTVar1;
@@ -164,7 +165,7 @@ undefined4 TToggleButton::DispatchUiMouseMoveToChildren()
 // GHIDRA_NAME TToggleButton::IsSelected
 // GHIDRA_PROTO undefined __thiscall IsSelected(void)
 
-void TToggleButton::IsSelected()
+void __thiscall TToggleButton::IsSelected(TToggleButton *this)
 
 {
                     /* WARNING: Could not recover jumptable at 0x00571332. Too many branches */
@@ -177,7 +178,7 @@ void TToggleButton::IsSelected()
 // GHIDRA_NAME TToggleButton::Select
 // GHIDRA_PROTO undefined __thiscall Select(char param_1, char param_2)
 
-void TToggleButton::Select(char param_1, char param_2)
+void __thiscall TToggleButton::Select(TToggleButton *this,char param_1,char param_2)
 
 {
   TToggleButtonVtbl *pTVar1;

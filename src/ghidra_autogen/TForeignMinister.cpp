@@ -40,7 +40,7 @@ undefined4 * TForeignMinister::CreateObject(void)
 // GHIDRA_NAME TForeignMinister::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TForeignMinister::GetRuntimeClass()
+CRuntimeClass * __thiscall TForeignMinister::GetRuntimeClass(TForeignMinister *this)
 
 {
   return &classTForeignMinister;
@@ -50,7 +50,7 @@ CRuntimeClass * TForeignMinister::GetRuntimeClass()
 // GHIDRA_NAME TForeignMinister::ConstructTForeignMinister
 // GHIDRA_PROTO undefined __thiscall ConstructTForeignMinister(void)
 
-TForeignMinister * TForeignMinister::ConstructTForeignMinister()
+TForeignMinister * __thiscall TForeignMinister::ConstructTForeignMinister(TForeignMinister *this)
 
 {
   int iVar1;
@@ -78,7 +78,8 @@ TForeignMinister * TForeignMinister::ConstructTForeignMinister()
 // GHIDRA_NAME TForeignMinister::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TForeignMinister * TForeignMinister::_scalar_deleting_destructor_(byte param_1)
+TForeignMinister * __thiscall
+TForeignMinister::_scalar_deleting_destructor_(TForeignMinister *this,byte param_1)
 
 {
   func_0x004085cb();
@@ -92,7 +93,7 @@ TForeignMinister * TForeignMinister::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TForeignMinister::DestructTForeignMinister
 // GHIDRA_PROTO undefined __thiscall DestructTForeignMinister(void)
 
-void TForeignMinister::DestructTForeignMinister()
+void __thiscall TForeignMinister::DestructTForeignMinister(TForeignMinister *this)
 
 {
   this->vftable =
@@ -104,7 +105,7 @@ void TForeignMinister::DestructTForeignMinister()
 // GHIDRA_NAME TForeignMinister::ReadFrom
 // GHIDRA_PROTO undefined __thiscall ReadFrom(int * param_1)
 
-void TForeignMinister::ReadFrom(int *param_1)
+void __thiscall TForeignMinister::ReadFrom(TForeignMinister *this,int *param_1)
 
 {
   undefined1 uVar1;
@@ -163,7 +164,7 @@ void TForeignMinister::ReadFrom(int *param_1)
 // GHIDRA_NAME TForeignMinister::WriteTo
 // GHIDRA_PROTO undefined __thiscall WriteTo(int * param_1)
 
-void TForeignMinister::WriteTo(int *param_1)
+void __thiscall TForeignMinister::WriteTo(TForeignMinister *this,int *param_1)
 
 {
   code *pcVar1;
@@ -267,7 +268,8 @@ void TForeignMinister::WriteTo(int *param_1)
 // GHIDRA_NAME TForeignMinister::DispatchNationStateEventCode10
 // GHIDRA_PROTO undefined __thiscall DispatchNationStateEventCode10(short param_1)
 
-int TForeignMinister::DispatchNationStateEventCode10(short param_1)
+int __thiscall
+TForeignMinister::DispatchNationStateEventCode10(TForeignMinister *this,short param_1)
 
 {
   short sVar1;
@@ -296,7 +298,7 @@ int TForeignMinister::DispatchNationStateEventCode10(short param_1)
 // GHIDRA_NAME TForeignMinister::InitializeForeignMinisterStateFlags
 // GHIDRA_PROTO undefined __thiscall InitializeForeignMinisterStateFlags(void)
 
-void TForeignMinister::InitializeForeignMinisterStateFlags()
+void __thiscall TForeignMinister::InitializeForeignMinisterStateFlags(TForeignMinister *this)
 
 {
   *(undefined4 *)&this->field_0x49 = 0x1010101;
@@ -327,7 +329,7 @@ TForeignMinister::AddToForeignMinisterCounterAtIndex
 // GHIDRA_NAME TForeignMinister::SetForeignMinisterReadyFlag14
 // GHIDRA_PROTO undefined __thiscall SetForeignMinisterReadyFlag14(void)
 
-void TForeignMinister::SetForeignMinisterReadyFlag14()
+void __thiscall TForeignMinister::SetForeignMinisterReadyFlag14(TForeignMinister *this)
 
 {
   *(undefined2 *)&this->field_0x14 = 1;
@@ -352,7 +354,8 @@ TForeignMinister::SetForeignMinisterPrimaryAndSecondaryTargets
 // GHIDRA_NAME TForeignMinister::RebuildForeignMinisterPreferenceTop4IdsFromWeights
 // GHIDRA_PROTO undefined __thiscall RebuildForeignMinisterPreferenceTop4IdsFromWeights(void)
 
-void TForeignMinister::RebuildForeignMinisterPreferenceTop4IdsFromWeights()
+void __thiscall
+TForeignMinister::RebuildForeignMinisterPreferenceTop4IdsFromWeights(TForeignMinister *this)
 
 {
   int iVar1;
@@ -446,7 +449,8 @@ LAB_0052f659:
 // GHIDRA_NAME TForeignMinister::HasAnyOptionDToFMeetingNationThreshold
 // GHIDRA_PROTO undefined __thiscall HasAnyOptionDToFMeetingNationThreshold(void)
 
-undefined4 TForeignMinister::HasAnyOptionDToFMeetingNationThreshold()
+undefined4 __thiscall
+TForeignMinister::HasAnyOptionDToFMeetingNationThreshold(TForeignMinister *this)
 
 {
   int iVar1;
@@ -472,7 +476,8 @@ undefined4 TForeignMinister::HasAnyOptionDToFMeetingNationThreshold()
 // GHIDRA_NAME TForeignMinister::DispatchForeignMinisterPrimaryAndFallbackNationActions
 // GHIDRA_PROTO undefined __thiscall DispatchForeignMinisterPrimaryAndFallbackNationActions(void)
 
-void TForeignMinister::DispatchForeignMinisterPrimaryAndFallbackNationActions()
+void __thiscall
+TForeignMinister::DispatchForeignMinisterPrimaryAndFallbackNationActions(TForeignMinister *this)
 
 {
   bool bVar1;
@@ -553,7 +558,7 @@ LAB_0052f8bf:
 // GHIDRA_NAME TForeignMinister::RunForeignMinisterVtableSlot90Base
 // GHIDRA_PROTO undefined __thiscall RunForeignMinisterVtableSlot90Base(void)
 
-void TForeignMinister::RunForeignMinisterVtableSlot90Base()
+void __thiscall TForeignMinister::RunForeignMinisterVtableSlot90Base(TForeignMinister *this)
 
 {
   TForeignMinisterVtbl *pTVar1;
@@ -589,7 +594,7 @@ LAB_0052f978:
 // GHIDRA_NAME TForeignMinister::RunForeignMinisterVtableSlot94Shared
 // GHIDRA_PROTO undefined __thiscall RunForeignMinisterVtableSlot94Shared(void)
 
-void TForeignMinister::RunForeignMinisterVtableSlot94Shared()
+void __thiscall TForeignMinister::RunForeignMinisterVtableSlot94Shared(TForeignMinister *this)
 
 {
   undefined uVar1;
@@ -720,7 +725,8 @@ TForeignMinister::RunForeignMinisterAmountDispatchShared
 // GHIDRA_NAME TForeignMinister::ResetForeignMinisterVtableSlot9CSharedState
 // GHIDRA_PROTO undefined __thiscall ResetForeignMinisterVtableSlot9CSharedState(void)
 
-void TForeignMinister::ResetForeignMinisterVtableSlot9CSharedState()
+void __thiscall
+TForeignMinister::ResetForeignMinisterVtableSlot9CSharedState(TForeignMinister *this)
 
 {
   short sVar1;
@@ -747,7 +753,8 @@ void TForeignMinister::ResetForeignMinisterVtableSlot9CSharedState()
 // GHIDRA_NAME TForeignMinister::RefreshForeignMinisterStateByLocalizationMode
 // GHIDRA_PROTO undefined __thiscall RefreshForeignMinisterStateByLocalizationMode(void)
 
-void TForeignMinister::RefreshForeignMinisterStateByLocalizationMode()
+void __thiscall
+TForeignMinister::RefreshForeignMinisterStateByLocalizationMode(TForeignMinister *this)
 
 {
   TForeignMinisterVtbl *pTVar1;
@@ -775,7 +782,8 @@ void TForeignMinister::RefreshForeignMinisterStateByLocalizationMode()
 // GHIDRA_NAME TForeignMinister::SerializeNodeMapEntries_Key32Value32_WithArchive
 // GHIDRA_PROTO undefined __thiscall SerializeNodeMapEntries_Key32Value32_WithArchive(void)
 
-void TForeignMinister::SerializeNodeMapEntries_Key32Value32_WithArchive()
+void __thiscall
+TForeignMinister::SerializeNodeMapEntries_Key32Value32_WithArchive(TForeignMinister *this)
 
 {
   return;
@@ -785,7 +793,7 @@ void TForeignMinister::SerializeNodeMapEntries_Key32Value32_WithArchive()
 // GHIDRA_NAME TForeignMinister::VTableSlot19
 // GHIDRA_PROTO undefined __thiscall VTableSlot19(void)
 
-void TForeignMinister::VTableSlot19()
+void __thiscall TForeignMinister::VTableSlot19(TForeignMinister *this)
 
 {
   return;
@@ -795,7 +803,8 @@ void TForeignMinister::VTableSlot19()
 // GHIDRA_NAME TForeignMinister::UpdateNationInteractionEnableFlagsByTerrainAndRelation
 // GHIDRA_PROTO undefined __thiscall UpdateNationInteractionEnableFlagsByTerrainAndRelation(void)
 
-void TForeignMinister::UpdateNationInteractionEnableFlagsByTerrainAndRelation()
+void __thiscall
+TForeignMinister::UpdateNationInteractionEnableFlagsByTerrainAndRelation(TForeignMinister *this)
 
 {
   bool bVar1;
@@ -841,7 +850,7 @@ void TForeignMinister::UpdateNationInteractionEnableFlagsByTerrainAndRelation()
 // GHIDRA_NAME TForeignMinister::AllocateDiplomacyAidBudgetAcrossTargets
 // GHIDRA_PROTO undefined __thiscall AllocateDiplomacyAidBudgetAcrossTargets(void)
 
-void TForeignMinister::AllocateDiplomacyAidBudgetAcrossTargets()
+void __thiscall TForeignMinister::AllocateDiplomacyAidBudgetAcrossTargets(TForeignMinister *this)
 
 {
   short sVar1;
@@ -965,7 +974,8 @@ void TForeignMinister::AllocateDiplomacyAidBudgetAcrossTargets()
 
 /* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 
-void TForeignMinister::QueueTurnEventHintActionsByNationMetricsAndCompatibility()
+void __thiscall
+TForeignMinister::QueueTurnEventHintActionsByNationMetricsAndCompatibility(TForeignMinister *this)
 
 {
   float *pfVar1;
@@ -1273,7 +1283,8 @@ TForeignMinister::EvaluateLocalizedScoreThresholdPredicateForNationValue
 // GHIDRA_NAME TForeignMinister::DispatchAction210ToFirstEligibleNationIfIdle
 // GHIDRA_PROTO undefined __thiscall DispatchAction210ToFirstEligibleNationIfIdle(void)
 
-void TForeignMinister::DispatchAction210ToFirstEligibleNationIfIdle()
+void __thiscall
+TForeignMinister::DispatchAction210ToFirstEligibleNationIfIdle(TForeignMinister *this)
 
 {
   char cVar1;
@@ -1459,7 +1470,8 @@ LAB_00530d24:
 // GHIDRA_NAME TForeignMinister::ValidateProposalSelectionAndQueueEvent1C
 // GHIDRA_PROTO undefined __thiscall ValidateProposalSelectionAndQueueEvent1C(short param_1)
 
-void TForeignMinister::ValidateProposalSelectionAndQueueEvent1C(short param_1)
+void __thiscall
+TForeignMinister::ValidateProposalSelectionAndQueueEvent1C(TForeignMinister *this,short param_1)
 
 {
   short sVar1;
@@ -1498,7 +1510,9 @@ switchD_00530fea_caseD_12d:
     case 0x130:
       cVar4 = (**(code **)(*piVar2 + 0x278))((int)sVar1);
       if (cVar4 == '\0') goto LAB_00531084;
-      func_0x00406758(0x1c,(int)*(short *)(*(int *)&this->field_0x4 + 0xc),(int)psVar5[1],0);
+      TCountry::thunk_QueueInterNationEventRecordDeduped
+                ((TCountry *)g_pInterNationEventQueueManager,0x1c,
+                 (int)*(short *)(*(int *)&this->field_0x4 + 0xc),(int)psVar5[1],'\0');
       break;
     case 0x132:
       cVar4 = (*g_pDiplomacyTurnStateManager->vftable[0xc].GetTDiplomacyMgrClassNamePointer)
@@ -1520,7 +1534,7 @@ LAB_00531084:
 // GHIDRA_NAME TForeignMinister::OrphanCallChain_C11_I88_004874b0
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C11_I88_004874b0(void)
 
-void TForeignMinister::OrphanCallChain_C11_I88_004874b0()
+void __thiscall TForeignMinister::OrphanCallChain_C11_I88_004874b0(TForeignMinister *this)
 
 {
   return;

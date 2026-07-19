@@ -58,7 +58,7 @@ void CFont::CreatePointFontIndirect(LONG *param_1,int param_2)
   LOGFONTA local_54;
   tagPOINT local_18;
   tagPOINT local_10;
-  CBrush *local_8;
+  CGdiObject *local_8;
   
   if (param_2 == 0) {
     hdc = GetDC((HWND)0x0);
@@ -84,7 +84,7 @@ void CFont::CreatePointFontIndirect(LONG *param_1,int param_2)
     ReleaseDC((HWND)0x0,hdc);
   }
   pHVar1 = CreateFontIndirectA(&local_54);
-  CBrush::CGdiObject__Attach(local_8,(int)pHVar1);
+  CGdiObject::Attach(local_8,(int)pHVar1);
   return;
 }
 

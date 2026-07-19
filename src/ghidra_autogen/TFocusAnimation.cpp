@@ -25,7 +25,8 @@ undefined4 * TFocusAnimation::CreateObject(void)
 // GHIDRA_NAME TFocusAnimation::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TFocusAnimation * TFocusAnimation::_scalar_deleting_destructor_(byte param_1)
+TFocusAnimation * __thiscall
+TFocusAnimation::_scalar_deleting_destructor_(TFocusAnimation *this,byte param_1)
 
 {
   func_0x00401ab9();
@@ -39,7 +40,7 @@ TFocusAnimation * TFocusAnimation::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TFocusAnimation::CreateTFocusAnimationInstance
 // GHIDRA_PROTO undefined __thiscall CreateTFocusAnimationInstance(void)
 
-void TFocusAnimation::CreateTFocusAnimationInstance()
+void __thiscall TFocusAnimation::CreateTFocusAnimationInstance(TFocusAnimation *this)
 
 {
   this->vftable = (TFocusAnimationVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4
@@ -51,7 +52,7 @@ void TFocusAnimation::CreateTFocusAnimationInstance()
 // GHIDRA_NAME TFocusAnimation::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TFocusAnimation::GetRuntimeClass()
+CRuntimeClass * __thiscall TFocusAnimation::GetRuntimeClass(TFocusAnimation *this)
 
 {
   return &classRuntimeClass;
@@ -61,7 +62,8 @@ CRuntimeClass * TFocusAnimation::GetRuntimeClass()
 // GHIDRA_NAME TFocusAnimation::WrapperFor_InvalidateCityDialogRectRegion_At0049f140
 // GHIDRA_PROTO undefined __thiscall WrapperFor_InvalidateCityDialogRectRegion_At0049f140(void)
 
-void TFocusAnimation::WrapperFor_InvalidateCityDialogRectRegion_At0049f140()
+void __thiscall
+TFocusAnimation::WrapperFor_InvalidateCityDialogRectRegion_At0049f140(TFocusAnimation *this)
 
 {
   int iVar1;
@@ -83,7 +85,7 @@ void TFocusAnimation::WrapperFor_InvalidateCityDialogRectRegion_At0049f140()
 // GHIDRA_NAME TFocusAnimation::VTableSlot0D
 // GHIDRA_PROTO undefined __thiscall VTableSlot0D(void)
 
-void TFocusAnimation::VTableSlot0D()
+void __thiscall TFocusAnimation::VTableSlot0D(TFocusAnimation *this)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -101,8 +103,8 @@ void TFocusAnimation::VTableSlot0D()
     (**(code **)(**(int **)&this->field_0x4 + 0xf8))();
     (**(code **)&this->vftable->field_0x2c)(&stack0xffffffd0);
     (**(code **)(**(int **)&this->field_0x4 + 0xfc))();
-    uStack_c = 0xffffffff;
-    func_0x00408035();
+    uStack_4 = 0xffffffff;
+    thunk_DestroyScopedMapQuickDrawContext();
   }
   *unaff_FS_OFFSET = uStack_c;
   return;
@@ -112,7 +114,7 @@ void TFocusAnimation::VTableSlot0D()
 // GHIDRA_NAME TFocusAnimation::RenderBattleReportInsetWithPaletteShift
 // GHIDRA_PROTO undefined __thiscall RenderBattleReportInsetWithPaletteShift(void)
 
-void TFocusAnimation::RenderBattleReportInsetWithPaletteShift()
+void __thiscall TFocusAnimation::RenderBattleReportInsetWithPaletteShift(TFocusAnimation *this)
 
 {
   TFocusAnimationVtbl *pTVar1;
@@ -124,10 +126,10 @@ void TFocusAnimation::RenderBattleReportInsetWithPaletteShift()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A0280
-// GHIDRA_NAME TFocusAnimation::Helper_Uses_BlitRectWithOptionalTransparency_At004a0280
-// GHIDRA_PROTO undefined __thiscall Helper_Uses_BlitRectWithOptionalTransparency_At004a0280(void)
+// GHIDRA_NAME TFocusAnimation::FocusAnimationSlot0E
+// GHIDRA_PROTO undefined __thiscall FocusAnimationSlot0E(void)
 
-void TFocusAnimation::Helper_Uses_BlitRectWithOptionalTransparency_At004a0280()
+void __thiscall TFocusAnimation::FocusAnimationSlot0E(TFocusAnimation *this)
 
 {
   int iVar1;

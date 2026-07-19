@@ -41,7 +41,7 @@ undefined4 * TTextLine::CreateObject(void)
 // GHIDRA_NAME TTextLine::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TTextLine::GetRuntimeClass()
+CRuntimeClass * __thiscall TTextLine::GetRuntimeClass(TTextLine *this)
 
 {
   return &classTTextLine;
@@ -51,7 +51,7 @@ CRuntimeClass * TTextLine::GetRuntimeClass()
 // GHIDRA_NAME TTextLine::ConstructTTextLineBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTTextLineBaseState(void)
 
-TTextLine * TTextLine::ConstructTTextLineBaseState()
+TTextLine * __thiscall TTextLine::ConstructTTextLineBaseState(TTextLine *this)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -78,7 +78,7 @@ TTextLine * TTextLine::ConstructTTextLineBaseState()
 // GHIDRA_NAME TTextLine::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TTextLine * TTextLine::_scalar_deleting_destructor_(byte param_1)
+TTextLine * __thiscall TTextLine::_scalar_deleting_destructor_(TTextLine *this,byte param_1)
 
 {
   func_0x004072de();
@@ -89,10 +89,10 @@ TTextLine * TTextLine::_scalar_deleting_destructor_(byte param_1)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00570500
-// GHIDRA_NAME TTextLine::OrphanRetStub_0056f460
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0056f460(undefined4 param_1, undefined4 param_2)
+// GHIDRA_NAME TTextLine::CreateLineItemView
+// GHIDRA_PROTO undefined __thiscall CreateLineItemView(undefined4 param_1, undefined4 param_2)
 
-void TTextLine::OrphanRetStub_0056f460(undefined4 param_1, undefined4 param_2)
+void __thiscall TTextLine::CreateLineItemView(TTextLine *this,undefined4 param_1,undefined4 param_2)
 
 {
   int iVar1;

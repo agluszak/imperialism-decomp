@@ -7,7 +7,8 @@
 // GHIDRA_NAME TLandSaleEvent::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TLandSaleEvent * TLandSaleEvent::_scalar_deleting_destructor_(byte param_1)
+TLandSaleEvent * __thiscall
+TLandSaleEvent::_scalar_deleting_destructor_(TLandSaleEvent *this,byte param_1)
 
 {
   func_0x00408544();
@@ -39,47 +40,61 @@ undefined4 * TLandSaleEvent::CreateObject(void)
 // GHIDRA_NAME TLandSaleEvent::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TLandSaleEvent::GetRuntimeClass()
+CRuntimeClass * __thiscall TLandSaleEvent::GetRuntimeClass(TLandSaleEvent *this)
 
 {
   return &classTLandSaleEvent;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004E6710
+// GHIDRA_NAME TLandSaleEvent::ILandSaleEvent
+// GHIDRA_PROTO undefined ILandSaleEvent()
+
+void __thiscall TLandSaleEvent::ILandSaleEvent(int param_1,undefined2 param_2,undefined2 param_3)
+
+{
+  *(undefined2 *)(param_1 + 8) = param_2;
+  *(undefined2 *)(param_1 + 10) = param_3;
+  *(undefined4 *)(param_1 + 4) = 0x6c616e64;
+  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004E6740
 // GHIDRA_NAME TLandSaleEvent::ApplyJoinEmpireMode2FinalizeNationNameState
 // GHIDRA_PROTO undefined __thiscall ApplyJoinEmpireMode2FinalizeNationNameState(void)
 
-void TLandSaleEvent::ApplyJoinEmpireMode2FinalizeNationNameState()
+void __thiscall TLandSaleEvent::ApplyJoinEmpireMode2FinalizeNationNameState(TLandSaleEvent *this)
 
 {
   TCountry *pTVar1;
   undefined1 uVar2;
-  CString *pCVar3;
+  CString CVar3;
   undefined2 extraout_var;
-  CString *pCVar4;
+  CString CVar4;
   short sVar5;
-  int *unaff_FS_OFFSET;
+  undefined4 *unaff_FS_OFFSET;
+  undefined1 *puVar6;
   undefined1 *puStack_54;
   undefined *puStack_50;
-  CString CStack_4c;
-  CString CStack_48;
-  CString CStack_44;
-  CString CStack_40;
-  CString *pCStack_3c;
+  CString *pCStack_4c;
+  CString *pCStack_48;
+  undefined4 uStack_44;
+  undefined4 uStack_40;
+  CString CStack_3c;
   CString local_24;
   CString local_20;
   CString local_1c;
   CString local_18;
   CString local_14;
   undefined1 uStack_10;
-  int iStack_c;
+  undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
   
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00632560;
-  iStack_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = (int)&iStack_c;
+  uStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &uStack_c;
   CString::CString(&local_20);
   local_4 = 0;
   CString::CString(&local_24);
@@ -95,71 +110,80 @@ void TLandSaleEvent::ApplyJoinEmpireMode2FinalizeNationNameState()
   pTVar1 = g_apTerrainTypeDescriptorTable[*(short *)&this->field_0xa];
   if (pTVar1 == (TCountry *)0x0) {
     CString::CString(&local_14,PTR_g_szEmptyString_00653300);
-    pCVar3 = &local_14;
+    CVar3.m_pchData = (char *)&local_14;
     local_4._0_1_ = 4;
     func_0x00407072();
   }
   else {
-    pCVar3 = (CString *)CONCAT22((short)((uint)pTVar1 >> 0x10),*(undefined2 *)&pTVar1->field_0xc);
-    pCStack_3c = (CString *)0x4e6800;
+    CVar3.m_pchData =
+         (char *)CONCAT22((short)((uint)pTVar1 >> 0x10),*(undefined2 *)&pTVar1->field_0xc);
+    CStack_3c.m_pchData = (char *)0x4e6800;
     local_4._0_1_ = uVar2;
-    pCStack_3c = (CString *)func_0x00405b14();
-    iStack_c = CONCAT31(iStack_c._1_3_,5);
-    CStack_40.m_pchData = (char *)0x4e680f;
+    CStack_3c.m_pchData = (char *)func_0x00405b14();
+    uStack_c = CONCAT31(uStack_c._1_3_,5);
+    uStack_40 = 0x4e680f;
     func_0x00407072();
   }
   puStack_8._0_1_ = 3;
   CString::~CString(&local_18);
   if (g_apTerrainTypeDescriptorTable[sVar5] == (TCountry *)0x0) {
-    pCStack_3c = (CString *)0x4e6839;
+    CStack_3c.m_pchData = (char *)0x4e6839;
     CString::CString(&local_18,PTR_g_szEmptyString_00653300);
-    pCVar4 = &local_18;
+    CVar4.m_pchData = (char *)&local_18;
     puStack_8._0_1_ = 6;
-    pCStack_3c = (CString *)0x4e684c;
+    CStack_3c.m_pchData = (char *)0x4e684c;
     func_0x00407072();
   }
   else {
-    pCVar4 = (CString *)
-             CONCAT22(sVar5 >> 0xf,*(undefined2 *)&g_apTerrainTypeDescriptorTable[sVar5]->field_0xc)
-    ;
-    pCStack_3c = &local_18;
-    CStack_40.m_pchData = (char *)0x4e686b;
-    CStack_40.m_pchData = (char *)func_0x00405b14();
+    CVar4.m_pchData =
+         (char *)CONCAT22(sVar5 >> 0xf,
+                          *(undefined2 *)&g_apTerrainTypeDescriptorTable[sVar5]->field_0xc);
+    CStack_3c.m_pchData = (char *)&local_18;
+    uStack_40 = 0x4e686b;
+    uStack_40 = func_0x00405b14();
     uStack_10 = 7;
-    CStack_44.m_pchData = (char *)0x4e687a;
+    uStack_44 = 0x4e687a;
     func_0x00407072();
   }
-  iStack_c = CONCAT31(iStack_c._1_3_,3);
-  pCStack_3c = (CString *)0x4e6887;
+  uStack_c = CONCAT31(uStack_c._1_3_,3);
+  CStack_3c.m_pchData = (char *)0x4e6887;
   CString::~CString(&local_1c);
-  CStack_4c.m_pchData = (char *)pCVar4;
+  pCStack_4c = (CString *)CVar4.m_pchData;
   if (g_pGlobalUiRootController[1].vftable != (TApplicationVtbl *)0x0) {
-    pCStack_3c = (CString *)CONCAT22(extraout_var,*(undefined2 *)&this->field_0x8);
-    CStack_40.m_pchData = (char *)0x4e68a1;
+    CStack_3c.m_pchData = (char *)CONCAT22(extraout_var,*(undefined2 *)&this->field_0x8);
+    uStack_40 = 0x4e68a1;
     (**(code **)((g_pGlobalUiRootController[1].vftable)->GetTEventHandlerClassNamePointer + 0x1e0))
               ();
-    CStack_4c.m_pchData = (char *)pCVar4;
+    pCStack_4c = (CString *)CVar4.m_pchData;
   }
-  pCStack_3c = &local_20;
-  CStack_40.m_pchData = (char *)0x6;
-  CStack_44.m_pchData = (char *)0x274d;
-  CStack_48.m_pchData = (char *)0x4e68bb;
+  CStack_3c.m_pchData = (char *)&local_20;
+  uStack_40 = 6;
+  uStack_44 = 0x274d;
+  pCStack_48 = (CString *)0x4e68bb;
   (*g_pSimMgr->vftable[0x10].slot_0x04)();
-  CStack_48.m_pchData = (char *)pCVar3;
+  pCStack_48 = (CString *)CVar3.m_pchData;
   puStack_54 = &stack0xffffffd0;
-  pCVar3 = (CString *)CStack_48.m_pchData;
   func_0x0040988b(g_pSimMgr);
-  CStack_48.m_pchData = (char *)0x0;
-  CStack_4c.m_pchData = (char *)0x0;
+  puVar6 = &stack0xffffffd0;
+  pCStack_48 = (CString *)0x0;
+  pCStack_4c = (CString *)0x0;
   puStack_50 = &DAT_006a2df0;
   local_24.m_pchData = (char *)&puStack_54;
-  func_0x004076b7(&stack0xffffffd0);
-  func_0x004096b0();
-  CString::~CString(&CStack_44);
-  CString::~CString(&CStack_40);
-  CString::~CString(&CStack_4c);
-  CString::~CString(&CStack_48);
-  *unaff_FS_OFFSET = (int)pCVar3;
+  func_0x004076b7(puVar6);
+  thunk_DispatchLocalizedUiMessageWithTemplateA13A0(puVar6);
+  local_1c.m_pchData._0_1_ = 2;
+  pCStack_4c = (CString *)0x4e6911;
+  CString::~CString((CString *)&stack0xffffffcc);
+  local_1c.m_pchData._0_1_ = 1;
+  pCStack_4c = (CString *)0x4e691f;
+  CString::~CString((CString *)&stack0xffffffd0);
+  local_1c.m_pchData = (char *)((uint)local_1c.m_pchData._1_3_ << 8);
+  pCStack_4c = (CString *)0x4e692d;
+  CString::~CString(&CStack_3c);
+  local_1c.m_pchData = (char *)0xffffffff;
+  pCStack_4c = (CString *)0x4e693e;
+  CString::~CString((CString *)&stack0xffffffc8);
+  *unaff_FS_OFFSET = local_24.m_pchData;
   return;
 }
 

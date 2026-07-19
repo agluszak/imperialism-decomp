@@ -3,6 +3,71 @@
 // Program: Imperialism.exe
 // Bucket: TCountry.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00406758
+// GHIDRA_NAME TCountry::thunk_QueueInterNationEventRecordDeduped
+// GHIDRA_PROTO undefined __thiscall thunk_QueueInterNationEventRecordDeduped(int param_1, int param_2, int param_3, char param_4)
+
+void __thiscall
+TCountry::thunk_QueueInterNationEventRecordDeduped
+          (TCountry *this,int param_1,int param_2,int param_3,char param_4)
+
+{
+  bool bVar1;
+  int *piVar2;
+  int iVar3;
+  int iStack_10;
+  int iStack_c;
+  int iStack_8;
+  
+  if (g_pSimMgr->field_0x7a == '\0') {
+    if ((param_4 == '\0') && (*(int *)&g_pSimMgr->field_0x44 != 0)) {
+      if (*(int *)&g_pSimMgr->field_0x44 == 1) {
+        func_0x00405bd7(param_1,param_2,param_3);
+        return;
+      }
+    }
+    else {
+      if ((param_1 < 5) || (0x15 < param_1)) {
+        bVar1 = false;
+      }
+      else {
+        bVar1 = true;
+      }
+      if (bVar1) {
+        func_0x00406bf9(param_1,param_2,param_3);
+        return;
+      }
+      piVar2 = (int *)func_0x00407919();
+      iVar3 = func_0x00409679();
+      while (iVar3 != 0) {
+        if (*piVar2 == param_1) {
+          if ((piVar2[1] == param_2) && ((piVar2[2] & 1 << ((byte)param_3 & 0x1f)) != 0)) {
+            return;
+          }
+          if ((piVar2[1] == param_3) && ((piVar2[2] & 1 << ((byte)param_2 & 0x1f)) != 0)) {
+            return;
+          }
+        }
+        piVar2 = (int *)func_0x004097dc();
+        iVar3 = func_0x00409679();
+      }
+      if (param_2 < 7) {
+        iStack_10 = param_1;
+        iStack_8 = 1 << ((byte)param_3 & 0x1f);
+        iStack_c = param_2;
+        (**(code **)(**(int **)&this[0x19].field_0x7c + 0x38))(&iStack_10);
+      }
+      if (((param_3 < 7) && (1 < param_1)) && (param_1 < 0x19)) {
+        iStack_10 = param_1;
+        iStack_8 = 1 << ((byte)param_2 & 0x1f);
+        iStack_c = param_3;
+        (**(code **)(**(int **)&this[0x19].field_0x7c + 0x38))(&iStack_10);
+      }
+    }
+  }
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x004D66A0
 // GHIDRA_NAME TCountry::CreateObject
 // GHIDRA_PROTO undefined CreateObject()
@@ -41,7 +106,7 @@ undefined4 * TCountry::CreateObject(void)
 // GHIDRA_NAME TCountry::ReturnFalseNationStateCapabilityFlag98
 // GHIDRA_PROTO undefined __thiscall ReturnFalseNationStateCapabilityFlag98(void)
 
-undefined1 TCountry::ReturnFalseNationStateCapabilityFlag98()
+undefined1 __thiscall TCountry::ReturnFalseNationStateCapabilityFlag98(TCountry *this)
 
 {
   return 0;
@@ -51,7 +116,7 @@ undefined1 TCountry::ReturnFalseNationStateCapabilityFlag98()
 // GHIDRA_NAME TCountry::ReturnFalseNationStateCapabilityFlag9C
 // GHIDRA_PROTO undefined __thiscall ReturnFalseNationStateCapabilityFlag9C(void)
 
-undefined1 TCountry::ReturnFalseNationStateCapabilityFlag9C()
+undefined1 __thiscall TCountry::ReturnFalseNationStateCapabilityFlag9C(TCountry *this)
 
 {
   return 0;
@@ -61,7 +126,7 @@ undefined1 TCountry::ReturnFalseNationStateCapabilityFlag9C()
 // GHIDRA_NAME TCountry::ReturnFalseNationStateCapabilityFlagA0
 // GHIDRA_PROTO undefined __thiscall ReturnFalseNationStateCapabilityFlagA0(void)
 
-undefined1 TCountry::ReturnFalseNationStateCapabilityFlagA0()
+undefined1 __thiscall TCountry::ReturnFalseNationStateCapabilityFlagA0(TCountry *this)
 
 {
   return 0;
@@ -71,7 +136,7 @@ undefined1 TCountry::ReturnFalseNationStateCapabilityFlagA0()
 // GHIDRA_NAME TCountry::NoOpNationSelectedRegionAndMapCellLabelHook
 // GHIDRA_PROTO undefined __thiscall NoOpNationSelectedRegionAndMapCellLabelHook(void)
 
-void TCountry::NoOpNationSelectedRegionAndMapCellLabelHook()
+void __thiscall TCountry::NoOpNationSelectedRegionAndMapCellLabelHook(TCountry *this)
 
 {
   return;
@@ -81,7 +146,7 @@ void TCountry::NoOpNationSelectedRegionAndMapCellLabelHook()
 // GHIDRA_NAME TCountry::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TCountry::GetRuntimeClass()
+CRuntimeClass * __thiscall TCountry::GetRuntimeClass(TCountry *this)
 
 {
   return &classTCountry;
@@ -91,7 +156,7 @@ CRuntimeClass * TCountry::GetRuntimeClass()
 // GHIDRA_NAME TCountry::TCountry
 // GHIDRA_PROTO undefined __thiscall TCountry(void)
 
-TCountry * TCountry::TCountry()
+TCountry * __thiscall TCountry::TCountry(TCountry *this)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -116,7 +181,7 @@ TCountry * TCountry::TCountry()
 // GHIDRA_NAME TCountry::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TCountry * TCountry::_scalar_deleting_destructor_(byte param_1)
+TCountry * __thiscall TCountry::_scalar_deleting_destructor_(TCountry *this,byte param_1)
 
 {
   func_0x00403dd7();
@@ -130,7 +195,7 @@ TCountry * TCountry::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TCountry::Free
 // GHIDRA_PROTO undefined __thiscall Free(void)
 
-void TCountry::Free()
+void __thiscall TCountry::Free(TCountry *this)
 
 {
   if (*(int **)&this->field_0x44 != (int *)0x0) {
@@ -151,7 +216,7 @@ void TCountry::Free()
 // GHIDRA_NAME TCountry::WriteTo
 // GHIDRA_PROTO undefined __thiscall WriteTo(int * param_1)
 
-void TCountry::WriteTo(int *param_1)
+void __thiscall TCountry::WriteTo(TCountry *this,int *param_1)
 
 {
   code *pcVar1;
@@ -287,7 +352,7 @@ void TCountry::WriteTo(int *param_1)
 // GHIDRA_NAME TCountry::SelectCandidateTilesWithLowGroundUnitCount_0b
 // GHIDRA_PROTO undefined __thiscall SelectCandidateTilesWithLowGroundUnitCount_0b(int * param_1)
 
-void TCountry::SelectCandidateTilesWithLowGroundUnitCount_0b(int *param_1)
+void __thiscall TCountry::SelectCandidateTilesWithLowGroundUnitCount_0b(TCountry *this,int *param_1)
 
 {
   code *pcVar1;
@@ -304,7 +369,7 @@ void TCountry::SelectCandidateTilesWithLowGroundUnitCount_0b(int *param_1)
 // GHIDRA_NAME TCountry::OrphanLeaf_NoCall_Ins06_004d87b0_0a
 // GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins06_004d87b0_0a(int * param_1)
 
-void TCountry::OrphanLeaf_NoCall_Ins06_004d87b0_0a(int *param_1)
+void __thiscall TCountry::OrphanLeaf_NoCall_Ins06_004d87b0_0a(TCountry *this,int *param_1)
 
 {
   code *pcVar1;
@@ -321,7 +386,7 @@ void TCountry::OrphanLeaf_NoCall_Ins06_004d87b0_0a(int *param_1)
 // GHIDRA_NAME TCountry::SeedRecruitAndNavyOrdersForEligibleCoastalCities
 // GHIDRA_PROTO undefined __thiscall SeedRecruitAndNavyOrdersForEligibleCoastalCities(void)
 
-void TCountry::SeedRecruitAndNavyOrdersForEligibleCoastalCities()
+void __thiscall TCountry::SeedRecruitAndNavyOrdersForEligibleCoastalCities(TCountry *this)
 
 {
   TGreatPower *pTVar1;
@@ -542,11 +607,99 @@ void TCountry::SeedRecruitAndNavyOrdersForEligibleCoastalCities()
   return;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x004D7860
+// GHIDRA_NAME TCountry::FormatOverlayTerrainLabelText
+// GHIDRA_PROTO undefined FormatOverlayTerrainLabelText()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Formats overlay label text for map overlay panels.
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Algorithm:
+// GHIDRA_COMMENT 1. If overlay context pointer is null, assigns fallback localized text.
+// GHIDRA_COMMENT 2. Otherwise resolves terrain/overlay label text for current context id.
+// GHIDRA_COMMENT 3. Writes resolved string into destination shared-string output parameter.
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Notes:
+// GHIDRA_COMMENT - Used by strategic-map overlay rendering path for per-overlay text labels.
+// GHIDRA_COMMENT_END
+
+/* Formats overlay label text for map overlay panels.
+   
+   Algorithm:
+   1. If overlay context pointer is null, assigns fallback localized text.
+   2. Otherwise resolves terrain/overlay label text for current context id.
+   3. Writes resolved string into destination shared-string output parameter.
+   
+   Notes:
+   - Used by strategic-map overlay rendering path for per-overlay text labels. */
+
+void __thiscall TCountry::FormatOverlayTerrainLabelText(char *param_1,CString *param_2)
+
+{
+  CString *src_ref;
+  undefined4 *unaff_FS_OFFSET;
+  CString local_10;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_00631ee0;
+  local_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &local_c;
+  local_10.m_pchData = param_1;
+  if (param_1 == (char *)0x0) {
+    CString::CString(&local_10,PTR_g_szEmptyString_00653300);
+    local_4 = 0;
+    CString::operator=(param_2,&local_10);
+  }
+  else {
+    src_ref = (CString *)func_0x00405b14(&local_10,*(undefined2 *)(param_1 + 0xc));
+    local_4 = 1;
+    CString::operator=(param_2,src_ref);
+  }
+  local_4 = 0xffffffff;
+  CString::~CString(&local_10);
+  *unaff_FS_OFFSET = local_c;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004D7A40
+// GHIDRA_NAME TCountry::LoadNationDisplayNameSharedRefFromField8
+// GHIDRA_PROTO undefined LoadNationDisplayNameSharedRefFromField8()
+
+void __fastcall TCountry::LoadNationDisplayNameSharedRefFromField8(int param_1)
+
+{
+  CString *src_ref;
+  int *unaff_FS_OFFSET;
+  CString CStack_18;
+  int iStack_14;
+  int local_10;
+  int local_c;
+  undefined1 *puStack_8;
+  CString *local_4;
+  
+  local_4 = (CString *)0xffffffff;
+  puStack_8 = &LAB_00631f18;
+  local_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = (int)&local_c;
+  CStack_18.m_pchData = (char *)&local_10;
+  iStack_14 = param_1 + 8;
+  local_10 = param_1;
+  src_ref = (CString *)func_0x00402a2c();
+  local_c = 0;
+  CString::operator=(local_4,src_ref);
+  local_c = -1;
+  CString::~CString(&CStack_18);
+  *unaff_FS_OFFSET = iStack_14;
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x004D7AE0
 // GHIDRA_NAME TCountry::AddToNationMetricAtField10
 // GHIDRA_PROTO undefined __thiscall AddToNationMetricAtField10(int param_1)
 
-void TCountry::AddToNationMetricAtField10(int param_1)
+void __thiscall TCountry::AddToNationMetricAtField10(TCountry *this,int param_1)
 
 {
   *(int *)&this->field_0x10 = *(int *)&this->field_0x10 + param_1;
@@ -557,7 +710,7 @@ void TCountry::AddToNationMetricAtField10(int param_1)
 // GHIDRA_NAME TCountry::ReturnFalseNationStateActionStub
 // GHIDRA_PROTO undefined __thiscall ReturnFalseNationStateActionStub(void)
 
-undefined1 TCountry::ReturnFalseNationStateActionStub()
+undefined1 __thiscall TCountry::ReturnFalseNationStateActionStub(TCountry *this)
 
 {
   return 0;
@@ -567,7 +720,8 @@ undefined1 TCountry::ReturnFalseNationStateActionStub()
 // GHIDRA_NAME TCountry::ApplyJoinEmpireModeForTargetNation
 // GHIDRA_PROTO undefined __thiscall ApplyJoinEmpireModeForTargetNation(undefined4 param_1, int param_2)
 
-void TCountry::ApplyJoinEmpireModeForTargetNation(undefined4 param_1, int param_2)
+void __thiscall
+TCountry::ApplyJoinEmpireModeForTargetNation(TCountry *this,undefined4 param_1,int param_2)
 
 {
   undefined4 in_EDX;
@@ -605,7 +759,8 @@ void TCountry::ApplyJoinEmpireModeForTargetNation(undefined4 param_1, int param_
 // GHIDRA_NAME TCountry::SetNationTransferTargetCodeAndNotifyEligiblePeers
 // GHIDRA_PROTO undefined __thiscall SetNationTransferTargetCodeAndNotifyEligiblePeers(int param_1)
 
-void TCountry::SetNationTransferTargetCodeAndNotifyEligiblePeers(int param_1)
+void __thiscall
+TCountry::SetNationTransferTargetCodeAndNotifyEligiblePeers(TCountry *this,int param_1)
 
 {
   char cVar1;
@@ -632,7 +787,7 @@ void TCountry::SetNationTransferTargetCodeAndNotifyEligiblePeers(int param_1)
 // GHIDRA_NAME TCountry::ApplyJoinEmpireMode1TargetTransition
 // GHIDRA_PROTO undefined __thiscall ApplyJoinEmpireMode1TargetTransition(int param_1)
 
-void TCountry::ApplyJoinEmpireMode1TargetTransition(int param_1)
+void __thiscall TCountry::ApplyJoinEmpireMode1TargetTransition(TCountry *this,int param_1)
 
 {
   char cVar1;
@@ -660,7 +815,7 @@ void TCountry::ApplyJoinEmpireMode1TargetTransition(int param_1)
 // GHIDRA_NAME TCountry::IsDiplomacyTargetClassCode200Match
 // GHIDRA_PROTO undefined __thiscall IsDiplomacyTargetClassCode200Match(int param_1)
 
-undefined4 TCountry::IsDiplomacyTargetClassCode200Match(int param_1)
+undefined4 __thiscall TCountry::IsDiplomacyTargetClassCode200Match(TCountry *this,int param_1)
 
 {
   int iVar1;
@@ -673,7 +828,7 @@ undefined4 TCountry::IsDiplomacyTargetClassCode200Match(int param_1)
 // GHIDRA_NAME TCountry::ApplyJoinEmpireMode2FinalizeNationNameState
 // GHIDRA_PROTO undefined __thiscall ApplyJoinEmpireMode2FinalizeNationNameState(void)
 
-void TCountry::ApplyJoinEmpireMode2FinalizeNationNameState()
+void __thiscall TCountry::ApplyJoinEmpireMode2FinalizeNationNameState(TCountry *this)
 
 {
   CString::operator=((CString *)&this->field_0x4,(CString *)&this->field_0x8);
@@ -684,7 +839,7 @@ void TCountry::ApplyJoinEmpireMode2FinalizeNationNameState()
 // GHIDRA_NAME TCountry::RemoveRegionIdFromNationOwnedRegionList
 // GHIDRA_PROTO undefined __thiscall RemoveRegionIdFromNationOwnedRegionList(void)
 
-void TCountry::RemoveRegionIdFromNationOwnedRegionList()
+void __thiscall TCountry::RemoveRegionIdFromNationOwnedRegionList(TCountry *this)
 
 {
   (*this->ownedRegionList->vftable[6].slot_0x04)();
@@ -695,7 +850,7 @@ void TCountry::RemoveRegionIdFromNationOwnedRegionList()
 // GHIDRA_NAME TCountry::AddRegionIdToNationOwnedRegionList
 // GHIDRA_PROTO undefined __thiscall AddRegionIdToNationOwnedRegionList(void)
 
-void TCountry::AddRegionIdToNationOwnedRegionList()
+void __thiscall TCountry::AddRegionIdToNationOwnedRegionList(TCountry *this)
 
 {
   (*this->ownedRegionList->vftable[2].slot_0x04)();
@@ -706,7 +861,8 @@ void TCountry::AddRegionIdToNationOwnedRegionList()
 // GHIDRA_NAME TCountry::SetNationPercentFieldByModeAndDescriptorLinks
 // GHIDRA_PROTO undefined __thiscall SetNationPercentFieldByModeAndDescriptorLinks(int param_1, int param_2)
 
-void TCountry::SetNationPercentFieldByModeAndDescriptorLinks(int param_1, int param_2)
+void __thiscall
+TCountry::SetNationPercentFieldByModeAndDescriptorLinks(TCountry *this,int param_1,int param_2)
 
 {
   short sVar1;
@@ -740,7 +896,7 @@ void TCountry::SetNationPercentFieldByModeAndDescriptorLinks(int param_1, int pa
 // GHIDRA_NAME TCountry::OrphanRetStub_004d7e90
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_004d7e90(void)
 
-void TCountry::OrphanRetStub_004d7e90()
+void __thiscall TCountry::OrphanRetStub_004d7e90(TCountry *this)
 
 {
   return;
@@ -750,7 +906,7 @@ void TCountry::OrphanRetStub_004d7e90()
 // GHIDRA_NAME TCountry::OrphanLeaf_NoCall_Ins02_004d7ee0
 // GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins02_004d7ee0(void)
 
-undefined2 TCountry::OrphanLeaf_NoCall_Ins02_004d7ee0()
+undefined2 __thiscall TCountry::OrphanLeaf_NoCall_Ins02_004d7ee0(TCountry *this)
 
 {
   return 0;
@@ -760,7 +916,7 @@ undefined2 TCountry::OrphanLeaf_NoCall_Ins02_004d7ee0()
 // GHIDRA_NAME TCountry::OrphanLeaf_NoCall_Ins02_004d7f00
 // GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins02_004d7f00(void)
 
-undefined2 TCountry::OrphanLeaf_NoCall_Ins02_004d7f00()
+undefined2 __thiscall TCountry::OrphanLeaf_NoCall_Ins02_004d7f00(TCountry *this)
 
 {
   return 0;
@@ -770,7 +926,7 @@ undefined2 TCountry::OrphanLeaf_NoCall_Ins02_004d7f00()
 // GHIDRA_NAME TCountry::GetDiplomacyExternalStateByTarget
 // GHIDRA_PROTO undefined __thiscall GetDiplomacyExternalStateByTarget(void)
 
-undefined2 TCountry::GetDiplomacyExternalStateByTarget()
+undefined2 __thiscall TCountry::GetDiplomacyExternalStateByTarget(TCountry *this)
 
 {
   return 0;
@@ -780,7 +936,7 @@ undefined2 TCountry::GetDiplomacyExternalStateByTarget()
 // GHIDRA_NAME TCountry::OrphanLeaf_NoCall_Ins02_004d7f40
 // GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins02_004d7f40(void)
 
-undefined2 TCountry::OrphanLeaf_NoCall_Ins02_004d7f40()
+undefined2 __thiscall TCountry::OrphanLeaf_NoCall_Ins02_004d7f40(TCountry *this)
 
 {
   return 0;
@@ -790,7 +946,7 @@ undefined2 TCountry::OrphanLeaf_NoCall_Ins02_004d7f40()
 // GHIDRA_NAME TCountry::ReturnFalseNationStateCapabilityFlag90
 // GHIDRA_PROTO undefined __thiscall ReturnFalseNationStateCapabilityFlag90(void)
 
-undefined1 TCountry::ReturnFalseNationStateCapabilityFlag90()
+undefined1 __thiscall TCountry::ReturnFalseNationStateCapabilityFlag90(TCountry *this)
 
 {
   return 0;
@@ -800,7 +956,7 @@ undefined1 TCountry::ReturnFalseNationStateCapabilityFlag90()
 // GHIDRA_NAME TCountry::OrphanRetStub_004d7f80
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_004d7f80(void)
 
-void TCountry::OrphanRetStub_004d7f80()
+void __thiscall TCountry::OrphanRetStub_004d7f80(TCountry *this)
 
 {
   return;
@@ -810,7 +966,7 @@ void TCountry::OrphanRetStub_004d7f80()
 // GHIDRA_NAME TCountry::OrphanRetStub_004d7fa0
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_004d7fa0(void)
 
-void TCountry::OrphanRetStub_004d7fa0()
+void __thiscall TCountry::OrphanRetStub_004d7fa0(TCountry *this)
 
 {
   return;
@@ -820,7 +976,7 @@ void TCountry::OrphanRetStub_004d7fa0()
 // GHIDRA_NAME TCountry::OrphanLeaf_NoCall_Ins02_004d7fc0
 // GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins02_004d7fc0(void)
 
-undefined1 TCountry::OrphanLeaf_NoCall_Ins02_004d7fc0()
+undefined1 __thiscall TCountry::OrphanLeaf_NoCall_Ins02_004d7fc0(TCountry *this)
 
 {
   return 0;
@@ -830,7 +986,7 @@ undefined1 TCountry::OrphanLeaf_NoCall_Ins02_004d7fc0()
 // GHIDRA_NAME TCountry::OrphanRetStub_004d7fe0
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_004d7fe0(void)
 
-void TCountry::OrphanRetStub_004d7fe0()
+void __thiscall TCountry::OrphanRetStub_004d7fe0(TCountry *this)
 
 {
   return;
@@ -840,7 +996,7 @@ void TCountry::OrphanRetStub_004d7fe0()
 // GHIDRA_NAME TCountry::PopulateSelectableEntryFlavorTextAndOrdinals
 // GHIDRA_PROTO undefined __thiscall PopulateSelectableEntryFlavorTextAndOrdinals(void)
 
-void TCountry::PopulateSelectableEntryFlavorTextAndOrdinals()
+void __thiscall TCountry::PopulateSelectableEntryFlavorTextAndOrdinals(TCountry *this)
 
 {
   short *psVar1;
@@ -958,7 +1114,7 @@ void TCountry::PopulateSelectableEntryFlavorTextAndOrdinals()
 // GHIDRA_NAME TCountry::OrphanLeaf_NoCall_Ins06_004d87b0_10
 // GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins06_004d87b0_10(void)
 
-int TCountry::OrphanLeaf_NoCall_Ins06_004d87b0_10()
+int __thiscall TCountry::OrphanLeaf_NoCall_Ins06_004d87b0_10(TCountry *this)
 
 {
   return (int)*(short *)(*(int *)&g_pGlobalMapState->field_0xc + 0x14 +
@@ -969,7 +1125,7 @@ int TCountry::OrphanLeaf_NoCall_Ins06_004d87b0_10()
 // GHIDRA_NAME TCountry::SelectCandidateTilesWithLowGroundUnitCount_11
 // GHIDRA_PROTO undefined __thiscall SelectCandidateTilesWithLowGroundUnitCount_11(void)
 
-void TCountry::SelectCandidateTilesWithLowGroundUnitCount_11()
+void __thiscall TCountry::SelectCandidateTilesWithLowGroundUnitCount_11(TCountry *this)
 
 {
   ushort uVar1;
@@ -1021,7 +1177,8 @@ void TCountry::SelectCandidateTilesWithLowGroundUnitCount_11()
 // GHIDRA_NAME TCountry::OrphanLeaf_NoCall_Ins07_004d8920
 // GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920(short param_1, undefined2 param_2)
 
-void TCountry::OrphanLeaf_NoCall_Ins07_004d8920(short param_1, undefined2 param_2)
+void __thiscall
+TCountry::OrphanLeaf_NoCall_Ins07_004d8920(TCountry *this,short param_1,undefined2 param_2)
 
 {
   if (param_1 != *(short *)&this->field_0xc) {
@@ -1034,7 +1191,8 @@ void TCountry::OrphanLeaf_NoCall_Ins07_004d8920(short param_1, undefined2 param_
 // GHIDRA_NAME TCountry::ResolveDiplomacyActionFromClickAndUpdateTarget
 // GHIDRA_PROTO undefined __thiscall ResolveDiplomacyActionFromClickAndUpdateTarget(POINT * param_1)
 
-int TCountry::ResolveDiplomacyActionFromClickAndUpdateTarget(POINT *param_1)
+int __thiscall
+TCountry::ResolveDiplomacyActionFromClickAndUpdateTarget(TCountry *this,POINT *param_1)
 
 {
   char cVar1;

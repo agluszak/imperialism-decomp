@@ -3,6 +3,23 @@
 // Program: Imperialism.exe
 // Bucket: AFX_CTL3D_THREAD.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x005E5470
+// GHIDRA_NAME _AFX_CTL3D_THREAD>::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
+
+undefined4 * _AFX_CTL3D_THREAD>::CreateObject(void)
+
+{
+  undefined4 *puVar1;
+  
+  puVar1 = (undefined4 *)new(4);
+  if (puVar1 != (undefined4 *)0x0) {
+    *puVar1 = &PTR__scalar_deleting_destructor__0067055c;
+    return puVar1;
+  }
+  return (undefined4 *)0x0;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x005E5485
 // GHIDRA_NAME _AFX_CTL3D_THREAD::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined 'scalar_deleting_destructor'()
@@ -13,7 +30,7 @@ _AFX_CTL3D_THREAD::_scalar_deleting_destructor_(undefined4 param_1,byte param_2)
 {
   ~_AFX_CTL3D_THREAD();
   if ((param_2 & 1) != 0) {
-    CNoTrackObject::delete(param_1);
+    delete(param_1);
   }
   return param_1;
 }
@@ -35,7 +52,7 @@ void _AFX_CTL3D_THREAD::~_AFX_CTL3D_THREAD(void)
   _EH_prolog();
   *(undefined4 **)(unaff_EBP + -0x10) = extraout_ECX;
   *extraout_ECX = &PTR__scalar_deleting_destructor__0067055c;
-  iVar3 = DAT_006a7d6c;
+  iVar3 = _afxCtl3dState;
   *(undefined4 *)(unaff_EBP + -4) = 0;
   if ((iVar3 != 0) && (pcVar1 = *(code **)(iVar3 + 0x18), pcVar1 != (code *)0x0)) {
     (*pcVar1)();

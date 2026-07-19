@@ -7,7 +7,7 @@
 // GHIDRA_NAME TMiniShipView::OrphanRetStub_00569d50
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_00569d50(void)
 
-void TMiniShipView::OrphanRetStub_00569d50()
+void __thiscall TMiniShipView::OrphanRetStub_00569d50(TMiniShipView *this)
 
 {
   return;
@@ -17,7 +17,8 @@ void TMiniShipView::OrphanRetStub_00569d50()
 // GHIDRA_NAME TMiniShipView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TMiniShipView * TMiniShipView::_scalar_deleting_destructor_(byte param_1)
+TMiniShipView * __thiscall
+TMiniShipView::_scalar_deleting_destructor_(TMiniShipView *this,byte param_1)
 
 {
   func_0x00404bec();
@@ -61,7 +62,7 @@ undefined4 * TMiniShipView::CreateObject(void)
 // GHIDRA_NAME TMiniShipView::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TMiniShipView::GetRuntimeClass()
+CRuntimeClass * __thiscall TMiniShipView::GetRuntimeClass(TMiniShipView *this)
 
 {
   return &classTMiniShipView;
@@ -71,7 +72,7 @@ CRuntimeClass * TMiniShipView::GetRuntimeClass()
 // GHIDRA_NAME TMiniShipView::ApplyRectSlot110
 // GHIDRA_PROTO undefined __thiscall ApplyRectSlot110(void)
 
-void TMiniShipView::ApplyRectSlot110()
+void __thiscall TMiniShipView::ApplyRectSlot110(TMiniShipView *this)
 
 {
   int iVar1;
@@ -113,7 +114,7 @@ void TMiniShipView::ApplyRectSlot110()
   uStack_10 = CONCAT31(uStack_10._1_3_,1);
   CString::~CString((CString *)&stack0xffffffa0);
   func_0x00409241(&stack0xffffff98);
-  func_0x00408d6e(10);
+  thunk_SetQuickDrawTextOriginWithContextOffset(10);
   func_0x004029aa();
   sVar3 = *(short *)(*(int *)&this->field_0x84 + 0x1c);
   sVar2 = func_0x004063e3();
@@ -139,10 +140,10 @@ void TMiniShipView::ApplyRectSlot110()
   func_0x00405493(*(int *)(g_pStrategicMapViewSystem + 0x694) + 4,
                   &g_pActiveQuickDrawSurfaceContext->field_0x4,&uStack_4c,&local_5c,0x24);
   func_0x00402bdf();
-  func_0x00408d6e(0x8b);
-  func_0x00403bb6(0x8b);
-  func_0x00403bb6(0xdd);
-  func_0x00403bb6(0xdd);
+  thunk_SetQuickDrawTextOriginWithContextOffset(0x8b);
+  thunk_DrawCenteredGuideLineOnMapDc(0x8b);
+  thunk_DrawCenteredGuideLineOnMapDc(0xdd);
+  thunk_DrawCenteredGuideLineOnMapDc(0xdd);
   if (*(int *)(*(int *)&this->field_0x84 + 0x20) != 0) {
     sVar3 = func_0x00403b16();
     aiStack_2c[0] = (int)(short)((sVar3 + 7) * 0x10);
@@ -194,7 +195,8 @@ void TMiniShipView::ApplyRectSlot110()
 // GHIDRA_NAME TMiniShipView::BeginMouseCaptureAndStartRepeatTimer
 // GHIDRA_PROTO undefined __thiscall BeginMouseCaptureAndStartRepeatTimer(undefined4 * param_1)
 
-void TMiniShipView::BeginMouseCaptureAndStartRepeatTimer(undefined4 *param_1)
+void __thiscall
+TMiniShipView::BeginMouseCaptureAndStartRepeatTimer(TMiniShipView *this,undefined4 *param_1)
 
 {
   TView *pTVar1;

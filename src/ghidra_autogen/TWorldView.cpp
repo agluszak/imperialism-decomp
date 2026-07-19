@@ -7,7 +7,7 @@
 // GHIDRA_NAME TWorldView::OrphanTiny_ReturnMinusOneWord_00519af0
 // GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnMinusOneWord_00519af0(void)
 
-undefined2 TWorldView::OrphanTiny_ReturnMinusOneWord_00519af0()
+undefined2 __thiscall TWorldView::OrphanTiny_ReturnMinusOneWord_00519af0(TWorldView *this)
 
 {
   return 0xffff;
@@ -48,10 +48,10 @@ undefined4 * TWorldView::CreateObject(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00594FC0
-// GHIDRA_NAME TWorldView::OrphanRetStub_00594fc0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_00594fc0(void)
+// GHIDRA_NAME TWorldView::UpdateMapViewTileMarker
+// GHIDRA_PROTO undefined __thiscall UpdateMapViewTileMarker(void)
 
-void TWorldView::OrphanRetStub_00594fc0()
+void __thiscall TWorldView::UpdateMapViewTileMarker(TWorldView *this)
 
 {
   return;
@@ -61,7 +61,7 @@ void TWorldView::OrphanRetStub_00594fc0()
 // GHIDRA_NAME TWorldView::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TWorldView::GetRuntimeClass()
+CRuntimeClass * __thiscall TWorldView::GetRuntimeClass(TWorldView *this)
 
 {
   return &classTWorldView;
@@ -71,7 +71,7 @@ CRuntimeClass * TWorldView::GetRuntimeClass()
 // GHIDRA_NAME TWorldView::ConstructTWorldViewBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTWorldViewBaseState(void)
 
-TWorldView * TWorldView::ConstructTWorldViewBaseState()
+TWorldView * __thiscall TWorldView::ConstructTWorldViewBaseState(TWorldView *this)
 
 {
   func_0x004064e2();
@@ -88,7 +88,7 @@ TWorldView * TWorldView::ConstructTWorldViewBaseState()
 // GHIDRA_NAME TWorldView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TWorldView * TWorldView::_scalar_deleting_destructor_(byte param_1)
+TWorldView * __thiscall TWorldView::_scalar_deleting_destructor_(TWorldView *this,byte param_1)
 
 {
   func_0x0040342c();
@@ -102,7 +102,7 @@ TWorldView * TWorldView::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TWorldView::NoOpUiLifecycleHook
 // GHIDRA_PROTO undefined __thiscall NoOpUiLifecycleHook(void)
 
-void TWorldView::NoOpUiLifecycleHook()
+void __thiscall TWorldView::NoOpUiLifecycleHook(TWorldView *this)
 
 {
   func_0x00406ba9();
@@ -113,7 +113,8 @@ void TWorldView::NoOpUiLifecycleHook()
 // GHIDRA_NAME TWorldView::HandleEvent
 // GHIDRA_PROTO undefined __thiscall HandleEvent(int param_1, undefined4 param_2, undefined4 param_3)
 
-void TWorldView::HandleEvent(int param_1, undefined4 param_2, undefined4 param_3)
+void __thiscall
+TWorldView::HandleEvent(TWorldView *this,int param_1,undefined4 param_2,undefined4 param_3)
 
 {
   undefined *puVar1;
@@ -151,7 +152,7 @@ void TWorldView::HandleEvent(int param_1, undefined4 param_2, undefined4 param_3
    This function is the keyboard entry point complementing HandleMapCommandPanelAction mouse paths.
     */
 
-void TWorldView::ForwardParam(int *pKeyEvent)
+void __thiscall TWorldView::ForwardParam(TWorldView *this,int *pKeyEvent)
 
 {
   TZone *pTVar1;
@@ -280,7 +281,8 @@ void TWorldView::ForwardParam(int *pKeyEvent)
       pCStack_44 = (CString *)&DAT_006a45c0;
       pTStack_48 = extraout_ECX_00;
       func_0x004076b7(&local_20);
-      func_0x004096b0();
+      uStack_40 = 0x59547c;
+      thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
       this_00 = &local_14;
 LAB_00595484:
       local_4 = CONCAT31(local_4._1_3_,8);
@@ -352,7 +354,8 @@ LAB_00595484:
       pTStack_48 = extraout_ECX;
       local_1c.m_pchData = (char *)&pTStack_48;
       func_0x004076b7(&stack0xffffffd8);
-      func_0x004096b0();
+      uStack_40 = 0x5952d3;
+      thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
 LAB_005952db:
       local_4._0_1_ = 3;
       CString::~CString(&local_1c);
@@ -408,7 +411,8 @@ LAB_005952db:
 /* If current hit-test index maps to a runtime cursor slot, sets mapped cursor; otherwise loads and
    sets default arrow cursor. */
 
-void TWorldView::HandleCursorHoverFallback(undefined4 param_1, undefined4 param_2)
+void __thiscall
+TWorldView::HandleCursorHoverFallback(TWorldView *this,undefined4 param_1,undefined4 param_2)
 
 {
   TWorldViewVtbl *pTVar1;
@@ -440,7 +444,7 @@ void TWorldView::HandleCursorHoverFallback(undefined4 param_1, undefined4 param_
 // GHIDRA_NAME TWorldView::HandleCursorHoverSelectionByChildHitTestAndFallback
 // GHIDRA_PROTO undefined __thiscall HandleCursorHoverSelectionByChildHitTestAndFallback(void)
 
-void TWorldView::HandleCursorHoverSelectionByChildHitTestAndFallback()
+void __thiscall TWorldView::HandleCursorHoverSelectionByChildHitTestAndFallback(TWorldView *this)
 
 {
   undefined1 *puVar1;
@@ -546,7 +550,7 @@ void TWorldView::HandleCursorHoverSelectionByChildHitTestAndFallback()
     if (*(short *)&this->field_0x6c != *(short *)&this->field_0x6e) {
       (*pTVar2[1].DispatchEvent)();
     }
-    func_0x00408035();
+    thunk_DestroyScopedMapQuickDrawContext();
     *(undefined2 *)&this->field_0x6e = *(undefined2 *)&this->field_0x6c;
     *(undefined2 *)&this->field_0x6a = *(undefined2 *)&this->field_0x68;
     *(undefined2 *)&this->field_0x72 = *(undefined2 *)puVar1;
@@ -559,7 +563,7 @@ void TWorldView::HandleCursorHoverSelectionByChildHitTestAndFallback()
 // GHIDRA_NAME TWorldView::SetFlagByteAndInvokeVslot1A4
 // GHIDRA_PROTO undefined __thiscall SetFlagByteAndInvokeVslot1A4(undefined1 param_1)
 
-void TWorldView::SetFlagByteAndInvokeVslot1A4(undefined1 param_1)
+void __thiscall TWorldView::SetFlagByteAndInvokeVslot1A4(TWorldView *this,undefined1 param_1)
 
 {
   this->field_0x74 = param_1;
@@ -571,7 +575,7 @@ void TWorldView::SetFlagByteAndInvokeVslot1A4(undefined1 param_1)
 // GHIDRA_NAME TWorldView::RenderMapContextOverlayWithScopedClipAndSurface
 // GHIDRA_PROTO undefined __thiscall RenderMapContextOverlayWithScopedClipAndSurface(void)
 
-void TWorldView::RenderMapContextOverlayWithScopedClipAndSurface()
+void __thiscall TWorldView::RenderMapContextOverlayWithScopedClipAndSurface(TWorldView *this)
 
 {
   short sVar1;
@@ -699,8 +703,8 @@ void TWorldView::RenderMapContextOverlayWithScopedClipAndSurface()
       }
     }
     func_0x00405be1(uVar6);
-    uStack_24 = 1;
-    func_0x00408035();
+    local_4._0_1_ = 1;
+    thunk_DestroyScopedMapQuickDrawContext();
   }
   local_4 = (uint)local_4._1_3_ << 8;
   func_0x00409aac();
@@ -714,7 +718,7 @@ void TWorldView::RenderMapContextOverlayWithScopedClipAndSurface()
 // GHIDRA_NAME TWorldView::OrphanTiny_ReturnZero_0048a730
 // GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(void)
 
-void TWorldView::OrphanTiny_ReturnZero_0048a730()
+void __thiscall TWorldView::OrphanTiny_ReturnZero_0048a730(TWorldView *this)
 
 {
   return;
@@ -724,7 +728,7 @@ void TWorldView::OrphanTiny_ReturnZero_0048a730()
 // GHIDRA_NAME TWorldView::VTableSlot6B
 // GHIDRA_PROTO undefined __thiscall VTableSlot6B(void)
 
-void TWorldView::VTableSlot6B()
+void __thiscall TWorldView::VTableSlot6B(TWorldView *this)
 
 {
   return;
@@ -734,7 +738,7 @@ void TWorldView::VTableSlot6B()
 // GHIDRA_NAME TWorldView::OrphanRetStub_00596060
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_00596060(void)
 
-void TWorldView::OrphanRetStub_00596060()
+void __thiscall TWorldView::OrphanRetStub_00596060(TWorldView *this)
 
 {
   return;
@@ -744,7 +748,7 @@ void TWorldView::OrphanRetStub_00596060()
 // GHIDRA_NAME TWorldView::OrphanRetStub_00596080
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_00596080(void)
 
-void TWorldView::OrphanRetStub_00596080()
+void __thiscall TWorldView::OrphanRetStub_00596080(TWorldView *this)
 
 {
   return;
@@ -754,7 +758,7 @@ void TWorldView::OrphanRetStub_00596080()
 // GHIDRA_NAME TWorldView::OrphanTiny_ReturnMinusOneWord_005960a0
 // GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnMinusOneWord_005960a0(void)
 
-undefined2 TWorldView::OrphanTiny_ReturnMinusOneWord_005960a0()
+undefined2 __thiscall TWorldView::OrphanTiny_ReturnMinusOneWord_005960a0(TWorldView *this)
 
 {
   return 0xffff;
@@ -764,7 +768,7 @@ undefined2 TWorldView::OrphanTiny_ReturnMinusOneWord_005960a0()
 // GHIDRA_NAME TWorldView::OrphanRetStub_005960c0
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_005960c0(void)
 
-void TWorldView::OrphanRetStub_005960c0()
+void __thiscall TWorldView::OrphanRetStub_005960c0(TWorldView *this)
 
 {
   return;
@@ -774,7 +778,7 @@ void TWorldView::OrphanRetStub_005960c0()
 // GHIDRA_NAME TWorldView::OrphanRetStub_005960e0
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_005960e0(void)
 
-void TWorldView::OrphanRetStub_005960e0()
+void __thiscall TWorldView::OrphanRetStub_005960e0(TWorldView *this)
 
 {
   return;
@@ -784,7 +788,7 @@ void TWorldView::OrphanRetStub_005960e0()
 // GHIDRA_NAME TWorldView::InvokeDialogHooks1D8ThenE4
 // GHIDRA_PROTO undefined __thiscall InvokeDialogHooks1D8ThenE4(void)
 
-void TWorldView::InvokeDialogHooks1D8ThenE4()
+void __thiscall TWorldView::InvokeDialogHooks1D8ThenE4(TWorldView *this)
 
 {
   TWorldViewVtbl *pTVar1;
@@ -801,16 +805,16 @@ void TWorldView::InvokeDialogHooks1D8ThenE4()
 
 /* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 
-void TWorldView::HandleMapTileClickSetOrderContextAndDispatchEvent79(short param_1)
+void __thiscall
+TWorldView::HandleMapTileClickSetOrderContextAndDispatchEvent79(TWorldView *this,short param_1)
 
 {
   TView *pTVar1;
   TWorldViewVtbl *pTVar2;
   undefined4 *puVar3;
-  int iVar4;
+  void *pvVar4;
   undefined4 uVar5;
   undefined4 *puVar6;
-  undefined2 in_stack_00000006;
   
   puVar3 = (undefined4 *)operator_new(0x14);
   puVar6 = (undefined4 *)0x0;
@@ -823,21 +827,21 @@ void TWorldView::HandleMapTileClickSetOrderContextAndDispatchEvent79(short param
     puVar6 = puVar3;
   }
   if (*(char *)(*(int *)&g_pGlobalMapState->field_0xc + param_1 * 0x24) == '\x05') {
-    iVar4 = func_0x0040318e(_param_1);
+    pvVar4 = TOcean::thunk_GetMapActionContextByTileIndex(param_1);
     pTVar1 = this->ownerContext;
     func_0x004032a1(2);
     if ((char)pTVar1[1].field34 == '\0') {
-      func_0x004019ba(pTVar1[1].field38);
+      thunk_InvalidateMapRegionForOrderEntry(pTVar1[1].field38);
     }
-    pTVar1[1].field38 = iVar4;
+    pTVar1[1].field38 = (int)pvVar4;
     if ((char)pTVar1[1].field34 == '\0') {
-      func_0x004019ba(iVar4);
+      thunk_InvalidateMapRegionForOrderEntry(pvVar4);
     }
-    if (iVar4 == 0) {
+    if (pvVar4 == (void *)0x0) {
       uVar5 = 0;
     }
     else {
-      uVar5 = func_0x0040928c(iVar4);
+      uVar5 = TOcean::thunk_EnsureSelectedTaskForceForOrderOwnerAndRefresh(pvVar4);
     }
     func_0x00408995(uVar5);
   }
@@ -855,7 +859,8 @@ void TWorldView::HandleMapTileClickSetOrderContextAndDispatchEvent79(short param
 // GHIDRA_NAME TWorldView::WrapperFor_AllocateWithFallbackHandler_At005963d0
 // GHIDRA_PROTO undefined __thiscall WrapperFor_AllocateWithFallbackHandler_At005963d0(undefined2 param_1)
 
-void TWorldView::WrapperFor_AllocateWithFallbackHandler_At005963d0(undefined2 param_1)
+void __thiscall
+TWorldView::WrapperFor_AllocateWithFallbackHandler_At005963d0(TWorldView *this,undefined2 param_1)
 
 {
   TWorldViewVtbl *pTVar1;
@@ -886,7 +891,8 @@ void TWorldView::WrapperFor_AllocateWithFallbackHandler_At005963d0(undefined2 pa
 // GHIDRA_NAME TWorldView::WrapperFor_AllocateWithFallbackHandler_At00596440
 // GHIDRA_PROTO undefined __thiscall WrapperFor_AllocateWithFallbackHandler_At00596440(undefined2 param_1)
 
-void TWorldView::WrapperFor_AllocateWithFallbackHandler_At00596440(undefined2 param_1)
+void __thiscall
+TWorldView::WrapperFor_AllocateWithFallbackHandler_At00596440(TWorldView *this,undefined2 param_1)
 
 {
   TWorldViewVtbl *pTVar1;
@@ -986,20 +992,20 @@ switchD_005964c8_default:
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00596680
-// GHIDRA_NAME TWorldView::OrphanRetStub_00596680
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_00596680(void)
+// GHIDRA_NAME TWorldView::SetMapViewCellCoordinates
+// GHIDRA_PROTO undefined __thiscall SetMapViewCellCoordinates(void)
 
-void TWorldView::OrphanRetStub_00596680()
+void __thiscall TWorldView::SetMapViewCellCoordinates(TWorldView *this)
 
 {
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005966A0
-// GHIDRA_NAME TWorldView::OrphanRetStub_005966a0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_005966a0(void)
+// GHIDRA_NAME TWorldView::SetMapViewTileIndex
+// GHIDRA_PROTO undefined __thiscall SetMapViewTileIndex(void)
 
-void TWorldView::OrphanRetStub_005966a0()
+void __thiscall TWorldView::SetMapViewTileIndex(TWorldView *this)
 
 {
   return;
@@ -1009,7 +1015,7 @@ void TWorldView::OrphanRetStub_005966a0()
 // GHIDRA_NAME TWorldView::OrphanRetStub_005966c0
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_005966c0(void)
 
-void TWorldView::OrphanRetStub_005966c0()
+void __thiscall TWorldView::OrphanRetStub_005966c0(TWorldView *this)
 
 {
   return;
@@ -1019,7 +1025,7 @@ void TWorldView::OrphanRetStub_005966c0()
 // GHIDRA_NAME TWorldView::OrphanLeaf_NoCall_Ins02_005966e0
 // GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins02_005966e0(void)
 
-undefined1 TWorldView::OrphanLeaf_NoCall_Ins02_005966e0()
+undefined1 __thiscall TWorldView::OrphanLeaf_NoCall_Ins02_005966e0(TWorldView *this)
 
 {
   return 0;
@@ -1029,7 +1035,7 @@ undefined1 TWorldView::OrphanLeaf_NoCall_Ins02_005966e0()
 // GHIDRA_NAME TWorldView::OrphanCallChain_C6_I29_00596700
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C6_I29_00596700(void)
 
-void TWorldView::OrphanCallChain_C6_I29_00596700()
+void __thiscall TWorldView::OrphanCallChain_C6_I29_00596700(TWorldView *this)
 
 {
   TWorldViewVtbl *pTVar1;

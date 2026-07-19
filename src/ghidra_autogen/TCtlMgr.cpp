@@ -47,7 +47,7 @@ undefined4 * TCtlMgr::CreateObject(void)
 // GHIDRA_NAME TCtlMgr::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TCtlMgr::GetRuntimeClass()
+CRuntimeClass * __thiscall TCtlMgr::GetRuntimeClass(TCtlMgr *this)
 
 {
   return &classTCtlMgr;

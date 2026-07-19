@@ -41,7 +41,7 @@ undefined4 * TCity::CreateObject(void)
 // GHIDRA_NAME TCity::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TCity::GetRuntimeClass()
+CRuntimeClass * __thiscall TCity::GetRuntimeClass(TCity *this)
 
 {
   return &classTCity;
@@ -51,7 +51,7 @@ CRuntimeClass * TCity::GetRuntimeClass()
 // GHIDRA_NAME TCity::TCity
 // GHIDRA_PROTO undefined __thiscall TCity(void)
 
-void TCity::TCity()
+void __thiscall TCity::TCity(TCity *this)
 
 {
   int iVar1;
@@ -80,7 +80,7 @@ void TCity::TCity()
 // GHIDRA_NAME TCity::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TCity * TCity::_scalar_deleting_destructor_(byte param_1)
+TCity * __thiscall TCity::_scalar_deleting_destructor_(TCity *this,byte param_1)
 
 {
   func_0x0040741e();
@@ -94,7 +94,7 @@ TCity * TCity::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TCity::~TCity
 // GHIDRA_PROTO undefined __thiscall ~TCity(void)
 
-void TCity::~TCity()
+void __thiscall TCity::~TCity(TCity *this)
 
 {
   this->vftable = (TCityVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
@@ -115,7 +115,7 @@ void TCity::~TCity()
    state.
    This is a core persistence load path for remembered production orders. */
 
-void TCity::ReadFrom(int *param_1)
+void __thiscall TCity::ReadFrom(TCity *this,int *param_1)
 
 {
   undefined1 uVar1;
@@ -439,7 +439,7 @@ void TCity::ReadFrom(int *param_1)
    entry/queue objects.
    This is a core persistence save path for remembered production orders. */
 
-void TCity::WriteTo(int *param_1)
+void __thiscall TCity::WriteTo(TCity *this,int *param_1)
 
 {
   code *pcVar1;
@@ -669,7 +669,7 @@ void TCity::WriteTo(int *param_1)
 // GHIDRA_NAME TCity::Free
 // GHIDRA_PROTO undefined __thiscall Free(void)
 
-void TCity::Free()
+void __thiscall TCity::Free(TCity *this)
 
 {
   void **ppvVar1;
@@ -707,7 +707,7 @@ void TCity::Free()
 // GHIDRA_NAME TCity::SetSelectedTownMarker
 // GHIDRA_PROTO undefined __thiscall SetSelectedTownMarker(undefined4 param_1)
 
-void TCity::SetSelectedTownMarker(undefined4 param_1)
+void __thiscall TCity::SetSelectedTownMarker(TCity *this,undefined4 param_1)
 
 {
   *(undefined4 *)&this->field_0xb0 = param_1;
@@ -718,7 +718,7 @@ void TCity::SetSelectedTownMarker(undefined4 param_1)
 // GHIDRA_NAME TCity::EndCityPhase
 // GHIDRA_PROTO undefined __thiscall EndCityPhase(void)
 
-void TCity::EndCityPhase()
+void __thiscall TCity::EndCityPhase(TCity *this)
 
 {
   _vslot_fn *p_Var1;
@@ -834,7 +834,7 @@ LAB_004b3d28:
 // GHIDRA_NAME TCity::PredictedNeeds
 // GHIDRA_PROTO undefined __thiscall PredictedNeeds(void)
 
-void TCity::PredictedNeeds()
+void __thiscall TCity::PredictedNeeds(TCity *this)
 
 {
   short sVar1;
@@ -869,7 +869,7 @@ void TCity::PredictedNeeds()
 // GHIDRA_NAME TCity::ProduceUnits
 // GHIDRA_PROTO undefined __thiscall ProduceUnits(void)
 
-void TCity::ProduceUnits()
+void __thiscall TCity::ProduceUnits(TCity *this)
 
 {
   short sVar1;
@@ -899,7 +899,7 @@ void TCity::ProduceUnits()
       sVar1 = *(short *)((int)*ppvVar4 + 4);
       uVar2 = *(undefined2 *)((int)*ppvVar4 + 0x48);
       if (sVar1 != 0) {
-        sVar3 = func_0x00408ed6(uVar2);
+        sVar3 = thunk_GetResourceTypeRandomDrawBlockFlag(uVar2);
         if (sVar3 == 0) {
           (**(code **)(**(int **)&this->field_0xac + 0x2c0))(1,uVar2,sVar1);
         }
@@ -939,7 +939,7 @@ void TCity::ProduceUnits()
 // GHIDRA_NAME TCity::AddPurchasedItems
 // GHIDRA_PROTO undefined __thiscall AddPurchasedItems(short * param_1)
 
-void TCity::AddPurchasedItems(short *param_1)
+void __thiscall TCity::AddPurchasedItems(TCity *this,short *param_1)
 
 {
   short sVar1;
@@ -984,7 +984,7 @@ void TCity::AddPurchasedItems(short *param_1)
 // GHIDRA_NAME TCity::AddTransportedItems
 // GHIDRA_PROTO undefined __thiscall AddTransportedItems(short * param_1)
 
-void TCity::AddTransportedItems(short *param_1)
+void __thiscall TCity::AddTransportedItems(TCity *this,short *param_1)
 
 {
   short sVar1;
@@ -1009,7 +1009,7 @@ void TCity::AddTransportedItems(short *param_1)
 // GHIDRA_NAME TCity::AddTransportedItems
 // GHIDRA_PROTO undefined __thiscall AddTransportedItems(void)
 
-void TCity::AddTransportedItems()
+void __thiscall TCity::AddTransportedItems(TCity *this)
 
 {
   word *pwVar1;
@@ -1032,7 +1032,7 @@ void TCity::AddTransportedItems()
 // GHIDRA_NAME TCity::DirectTransport
 // GHIDRA_PROTO undefined __thiscall DirectTransport(short param_1, short param_2)
 
-short TCity::DirectTransport(short param_1, short param_2)
+short __thiscall TCity::DirectTransport(TCity *this,short param_1,short param_2)
 
 {
   int iVar1;
@@ -1063,7 +1063,7 @@ short TCity::DirectTransport(short param_1, short param_2)
 
 /* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 
-void TCity::VerifyStocks()
+void __thiscall TCity::VerifyStocks(TCity *this)
 
 {
   char cVar1;
@@ -1091,7 +1091,7 @@ void TCity::VerifyStocks()
 // GHIDRA_NAME TCity::MouseTrap
 // GHIDRA_PROTO undefined __thiscall MouseTrap(void)
 
-void TCity::MouseTrap()
+void __thiscall TCity::MouseTrap(TCity *this)
 
 {
   return;
@@ -1101,7 +1101,7 @@ void TCity::MouseTrap()
 // GHIDRA_NAME TCity::OrphanLeaf_NoCall_Ins07_004b4230
 // GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004b4230(void)
 
-int TCity::OrphanLeaf_NoCall_Ins07_004b4230()
+int __thiscall TCity::OrphanLeaf_NoCall_Ins07_004b4230(TCity *this)
 
 {
   if (*(int *)&this->field_0xac != 0) {
@@ -1114,7 +1114,7 @@ int TCity::OrphanLeaf_NoCall_Ins07_004b4230()
 // GHIDRA_NAME TCity::OrphanLeaf_NoCall_Ins04_004b4260
 // GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins04_004b4260(undefined2 param_1)
 
-void TCity::OrphanLeaf_NoCall_Ins04_004b4260(undefined2 param_1)
+void __thiscall TCity::OrphanLeaf_NoCall_Ins04_004b4260(TCity *this,undefined2 param_1)
 
 {
   *(undefined2 *)(*(int *)&this->field_0xac + 0xa6) = param_1;
@@ -1125,7 +1125,7 @@ void TCity::OrphanLeaf_NoCall_Ins04_004b4260(undefined2 param_1)
 // GHIDRA_NAME TCity::GetCitySummaryRecordSlot74
 // GHIDRA_PROTO undefined __thiscall GetCitySummaryRecordSlot74(void)
 
-void TCity::GetCitySummaryRecordSlot74()
+void __thiscall TCity::GetCitySummaryRecordSlot74(TCity *this)
 
 {
   int iVar1;
@@ -1157,7 +1157,7 @@ void TCity::GetCitySummaryRecordSlot74()
 // GHIDRA_NAME TCity::AddTransportRequest
 // GHIDRA_PROTO undefined __thiscall AddTransportRequest(void)
 
-void TCity::AddTransportRequest()
+void __thiscall TCity::AddTransportRequest(TCity *this)
 
 {
   (**(code **)(**(int **)&this->field_0x274 + 0x38))(&stack0x00000004);
@@ -1168,7 +1168,7 @@ void TCity::AddTransportRequest()
 // GHIDRA_NAME TCity::MakeTown
 // GHIDRA_PROTO undefined __thiscall MakeTown(void)
 
-void TCity::MakeTown()
+void __thiscall TCity::MakeTown(TCity *this)
 
 {
   int iVar1;
@@ -1221,7 +1221,7 @@ void TCity::MakeTown()
 // GHIDRA_NAME TCity::TransferTransportRequests
 // GHIDRA_PROTO undefined __thiscall TransferTransportRequests(void)
 
-void TCity::TransferTransportRequests()
+void __thiscall TCity::TransferTransportRequests(TCity *this)
 
 {
                     /* WARNING: Could not recover jumptable at 0x004b46c8. Too many branches */
@@ -1234,7 +1234,7 @@ void TCity::TransferTransportRequests()
 // GHIDRA_NAME TCity::GetMaxBuildingCapacity
 // GHIDRA_PROTO undefined __thiscall GetMaxBuildingCapacity(short param_1)
 
-int TCity::GetMaxBuildingCapacity(short param_1)
+int __thiscall TCity::GetMaxBuildingCapacity(TCity *this,short param_1)
 
 {
   short sVar1;
@@ -1303,7 +1303,7 @@ LAB_004b4795:
 // GHIDRA_NAME TCity::GetNextBuildingLevel
 // GHIDRA_PROTO undefined __thiscall GetNextBuildingLevel(short param_1)
 
-char TCity::GetNextBuildingLevel(short param_1)
+char __thiscall TCity::GetNextBuildingLevel(TCity *this,short param_1)
 
 {
   undefined uVar1;
@@ -1335,7 +1335,7 @@ char TCity::GetNextBuildingLevel(short param_1)
 // GHIDRA_NAME TCity::WrapperFor_GetActiveNationId_At004b4940
 // GHIDRA_PROTO undefined __thiscall WrapperFor_GetActiveNationId_At004b4940(short param_1)
 
-int TCity::WrapperFor_GetActiveNationId_At004b4940(short param_1)
+int __thiscall TCity::WrapperFor_GetActiveNationId_At004b4940(TCity *this,short param_1)
 
 {
   char cVar1;
@@ -1443,7 +1443,8 @@ TCity::SetBuildingWindowState
 // GHIDRA_NAME TCity::GetBuildingWindowState
 // GHIDRA_PROTO undefined __thiscall GetBuildingWindowState(short param_1, undefined2 * param_2, undefined2 * param_3)
 
-undefined4 TCity::GetBuildingWindowState(short param_1, undefined2 *param_2, undefined2 *param_3)
+undefined4 __thiscall
+TCity::GetBuildingWindowState(TCity *this,short param_1,undefined2 *param_2,undefined2 *param_3)
 
 {
   int iVar1;
@@ -1459,7 +1460,7 @@ undefined4 TCity::GetBuildingWindowState(short param_1, undefined2 *param_2, und
 // GHIDRA_NAME TCity::IsCapacityCenter
 // GHIDRA_PROTO undefined __thiscall IsCapacityCenter(short param_1)
 
-undefined2 TCity::IsCapacityCenter(short param_1)
+undefined2 __thiscall TCity::IsCapacityCenter(TCity *this,short param_1)
 
 {
   if (((((param_1 != 0) && (param_1 != 1)) && (param_1 != 2)) && ((param_1 != 3 && (param_1 != 4))))
@@ -1496,7 +1497,7 @@ undefined2 TCity::IsCapacityCenter(short param_1)
    Returns:
    - void. */
 
-void TCity::BuildPowerPlant(char fEnableUpgrade)
+void __thiscall TCity::BuildPowerPlant(TCity *this,char fEnableUpgrade)
 
 {
   if (fEnableUpgrade == '\0') {
@@ -1539,7 +1540,7 @@ void TCity::BuildPowerPlant(char fEnableUpgrade)
    - Offset +0x1DC is a 23-entry per-city production table used by city UI and turn-processing
    logic. */
 
-int TCity::GetBuildingType(short nBuildingSlotId)
+int __thiscall TCity::GetBuildingType(TCity *this,short nBuildingSlotId)
 
 {
   int iVar1;

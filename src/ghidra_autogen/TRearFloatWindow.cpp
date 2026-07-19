@@ -37,7 +37,7 @@ undefined4 * TRearFloatWindow::CreateObject(void)
 // GHIDRA_NAME TRearFloatWindow::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TRearFloatWindow::GetRuntimeClass()
+CRuntimeClass * __thiscall TRearFloatWindow::GetRuntimeClass(TRearFloatWindow *this)
 
 {
   return &classTRearFloatWindow;
@@ -47,7 +47,8 @@ CRuntimeClass * TRearFloatWindow::GetRuntimeClass()
 // GHIDRA_NAME TRearFloatWindow::ConstructTRearFloatWindowBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTRearFloatWindowBaseState(void)
 
-TRearFloatWindow * TRearFloatWindow::ConstructTRearFloatWindowBaseState()
+TRearFloatWindow * __thiscall
+TRearFloatWindow::ConstructTRearFloatWindowBaseState(TRearFloatWindow *this)
 
 {
   func_0x004054ed();
@@ -59,7 +60,8 @@ TRearFloatWindow * TRearFloatWindow::ConstructTRearFloatWindowBaseState()
 // GHIDRA_NAME TRearFloatWindow::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TRearFloatWindow * TRearFloatWindow::_scalar_deleting_destructor_(byte param_1)
+TRearFloatWindow * __thiscall
+TRearFloatWindow::_scalar_deleting_destructor_(TRearFloatWindow *this,byte param_1)
 
 {
   func_0x00402383();

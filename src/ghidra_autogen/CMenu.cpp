@@ -59,6 +59,24 @@ void CMenu::DeleteTempMap(void)
   return;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x005E69CB
+// GHIDRA_NAME CMenu::FromHandlePermanent
+// GHIDRA_PROTO undefined FromHandlePermanent()
+
+undefined4 CMenu::FromHandlePermanent(uint param_1)
+
+{
+  CMapPtrToPtr *this;
+  undefined4 uVar1;
+  
+  this = (CMapPtrToPtr *)afxMapHMENU(0);
+  uVar1 = 0;
+  if (this != (CMapPtrToPtr *)0x0) {
+    uVar1 = CMapPtrToPtr::GetValueAt(this,param_1);
+  }
+  return uVar1;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00608762
 // GHIDRA_NAME CMenu::TrackPopupMenu
 // GHIDRA_PROTO undefined TrackPopupMenu()

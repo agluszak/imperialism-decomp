@@ -35,7 +35,7 @@ undefined4 CRuntimeClass::CreateObject(void)
 // GHIDRA_NAME CRuntimeClass::IsDerivedFrom
 // GHIDRA_PROTO undefined __thiscall IsDerivedFrom(CRuntimeClass * param_1)
 
-undefined4 CRuntimeClass::IsDerivedFrom(CRuntimeClass *param_1)
+undefined4 __thiscall CRuntimeClass::IsDerivedFrom(CRuntimeClass *this,CRuntimeClass *param_1)
 
 {
   while( true ) {
@@ -62,9 +62,9 @@ undefined4 * CRuntimeClass::Load(CArchive *param_1,uint *param_2)
   ushort local_8;
   ushort local_6;
   
-  CArchive::CArchive__operator>>(param_1,&local_8);
+  CArchive::operator>>(param_1,&local_8);
   *param_2 = (uint)local_8;
-  CArchive::CArchive__operator>>(param_1,&local_6);
+  CArchive::operator>>(param_1,&local_6);
   if (local_6 < 0x40) {
     uVar1 = CArchive::Read(param_1,(int)local_48,(uint)local_6);
     if (uVar1 == local_6) {
@@ -98,8 +98,8 @@ void __thiscall CRuntimeClass::Store(int *param_1,CArchive *param_2)
   
   uVar2 = lstrlenA((LPCSTR)*param_1);
   uVar1 = (undefined2)uVar2;
-  this = (CArchive *)CArchive::CArchive__operator<<(param_2,(short)param_1[2]);
-  CArchive::CArchive__operator<<(this,uVar1);
+  this = (CArchive *)CArchive::operator<<(param_2,(short)param_1[2]);
+  CArchive::operator<<(this,uVar1);
   CArchive::Write(param_2,*param_1,uVar2 & 0xffff);
   return;
 }

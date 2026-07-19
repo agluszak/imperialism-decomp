@@ -37,7 +37,7 @@ undefined4 * TNoHilitePicture::CreateObject(void)
 // GHIDRA_NAME TNoHilitePicture::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TNoHilitePicture::GetRuntimeClass()
+CRuntimeClass * __thiscall TNoHilitePicture::GetRuntimeClass(TNoHilitePicture *this)
 
 {
   return &classTNoHilitePicture;
@@ -55,7 +55,8 @@ CRuntimeClass * TNoHilitePicture::GetRuntimeClass()
    ConstructPictureResourceEntryBase.
    Clears extended state byte +0x90. */
 
-TNoHilitePicture * TNoHilitePicture::ConstructPictureResourceEntryType606E8()
+TNoHilitePicture * __thiscall
+TNoHilitePicture::ConstructPictureResourceEntryType606E8(TNoHilitePicture *this)
 
 {
   func_0x00401122();
@@ -68,7 +69,8 @@ TNoHilitePicture * TNoHilitePicture::ConstructPictureResourceEntryType606E8()
 // GHIDRA_NAME TNoHilitePicture::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TNoHilitePicture * TNoHilitePicture::_scalar_deleting_destructor_(byte param_1)
+TNoHilitePicture * __thiscall
+TNoHilitePicture::_scalar_deleting_destructor_(TNoHilitePicture *this,byte param_1)
 
 {
   func_0x00408e95();
@@ -82,7 +84,7 @@ TNoHilitePicture * TNoHilitePicture::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TNoHilitePicture::UniversityDialogMethod_00405623
 // GHIDRA_PROTO undefined __thiscall UniversityDialogMethod_00405623(void)
 
-void TNoHilitePicture::UniversityDialogMethod_00405623()
+void __thiscall TNoHilitePicture::UniversityDialogMethod_00405623(TNoHilitePicture *this)
 
 {
   return;

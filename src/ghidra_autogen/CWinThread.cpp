@@ -69,6 +69,19 @@ CWinThread::CreateThread(int param_1,uint param_2,undefined4 param_3,undefined4 
   return 0;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x006063B8
+// GHIDRA_NAME CWinThread::Delete
+// GHIDRA_PROTO undefined Delete()
+
+void __fastcall CWinThread::Delete(int *param_1)
+
+{
+  if ((param_1[9] != 0) && (param_1 != (int *)0x0)) {
+    (**(code **)(*param_1 + 4))(1);
+  }
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x006063CD
 // GHIDRA_NAME CWinThread::Run
 // GHIDRA_PROTO undefined Run()
@@ -125,11 +138,36 @@ void __fastcall CWinThread::Run(int *param_1)
   } while( true );
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00606451
+// GHIDRA_NAME CWinThread::IsIdleMessage
+// GHIDRA_PROTO undefined __thiscall IsIdleMessage(int param_1)
+
+undefined4 __thiscall CWinThread::IsIdleMessage(CWinThread *this,int param_1)
+
+{
+  int iVar1;
+  
+  iVar1 = *(int *)(param_1 + 4);
+  if ((iVar1 == 0x200) || (iVar1 == 0xa0)) {
+    if ((*(int *)(this + 0x5c) == *(int *)(param_1 + 0x14)) &&
+       ((*(int *)(this + 0x60) == *(int *)(param_1 + 0x18) && (iVar1 == *(int *)(this + 100))))) {
+      return 0;
+    }
+    *(undefined4 *)(this + 0x5c) = *(undefined4 *)(param_1 + 0x14);
+    *(undefined4 *)(this + 0x60) = *(undefined4 *)(param_1 + 0x18);
+    *(undefined4 *)(this + 100) = *(undefined4 *)(param_1 + 4);
+  }
+  else if ((iVar1 == 0xf) || (iVar1 == 0x118)) {
+    return 0;
+  }
+  return 1;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x006064B0
 // GHIDRA_NAME CWinThread::OnIdle
 // GHIDRA_PROTO undefined __thiscall OnIdle(int param_1)
 
-bool CWinThread::OnIdle(int param_1)
+bool __thiscall CWinThread::OnIdle(CWinThread *this,int param_1)
 
 {
   CWnd *pCVar1;
@@ -270,7 +308,7 @@ undefined4 CWinThread::PreTranslateMessage(int *param_1)
     iVar2 = CWnd::WalkPreTranslateTree(iVar2,param_1);
     if (iVar2 == 0) {
       if (piVar3 != (int *)0x0) {
-        CWnd__FromHandle(*param_1);
+        CWnd::FromHandle(*param_1);
         piVar4 = (int *)CWnd::GetTopLevelParent();
         if (piVar4 != piVar3) {
           uVar5 = (**(code **)(*piVar3 + 0x98))(param_1);
@@ -283,11 +321,63 @@ undefined4 CWinThread::PreTranslateMessage(int *param_1)
   return 1;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0062246C
-// GHIDRA_NAME CWinThread::CWinThread::CWinApp
-// GHIDRA_PROTO undefined CWinThread::CWinApp()
+// GHIDRA_FUNCTION IMPERIALISM 0x00606934
+// GHIDRA_NAME CWinThread::GetMainWnd
+// GHIDRA_PROTO undefined GetMainWnd()
 
-undefined4 * CWinThread::CWinThread__CWinApp(void)
+void __fastcall CWinThread::GetMainWnd(int param_1)
+
+{
+  HWND pHVar1;
+  
+  if ((*(int *)(param_1 + 0x20) == 0) && (*(int *)(param_1 + 0x1c) == 0)) {
+    pHVar1 = GetActiveWindow();
+    CWnd::FromHandle(pHVar1);
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0060694F
+// GHIDRA_NAME CWinThread::PumpMessage
+// GHIDRA_PROTO undefined __thiscall PumpMessage(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Core thread message pump step.
+// GHIDRA_COMMENT Calls GetMessageA, optional pre-translation hook, then TranslateMessage/DispatchMessageA unless message 0x36A is filtered.
+// GHIDRA_COMMENT_END
+
+/* Core thread message pump step.
+   Calls GetMessageA, optional pre-translation hook, then TranslateMessage/DispatchMessageA unless
+   message 0x36A is filtered. */
+
+undefined4 __thiscall CWinThread::PumpMessage(CWinThread *this)
+
+{
+  LPMSG lpMsg;
+  BOOL BVar1;
+  int iVar2;
+  undefined4 uVar3;
+  
+  lpMsg = (LPMSG)(this + 0x30);
+  BVar1 = GetMessageA(lpMsg,(HWND)0x0,0,0);
+  uVar3 = 0;
+  if (BVar1 != 0) {
+    if (*(int *)(this + 0x34) != 0x36a) {
+      iVar2 = (**(code **)(*(int *)this + 0x60))(lpMsg);
+      if (iVar2 == 0) {
+        TranslateMessage(lpMsg);
+        DispatchMessageA(lpMsg);
+      }
+    }
+    uVar3 = 1;
+  }
+  return uVar3;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0062246C
+// GHIDRA_NAME CWinThread::CWinApp
+// GHIDRA_PROTO undefined CWinApp()
+
+undefined4 * CWinThread::CWinApp(void)
 
 {
   undefined4 uVar1;
@@ -302,7 +392,7 @@ undefined4 * CWinThread::CWinThread__CWinApp(void)
   _EH_prolog();
   *(undefined4 **)(unaff_EBP + -0x10) = extraout_ECX;
   CWinThread();
-  *extraout_ECX = &PTR_CWinApp__GetRuntimeClass_0066fdfc;
+  *extraout_ECX = &PTR_GetRuntimeClass_0066fdfc;
   *(undefined4 *)(unaff_EBP + -4) = 0;
   if (*(int *)(unaff_EBP + 8) == 0) {
     extraout_ECX[0x1e] = 0;
@@ -358,7 +448,7 @@ undefined4 * CWinThread::CWinThread__CWinApp(void)
    
    Library: nafxcw retail msvc500:static */
 
-void * CWinThread::___GCWinThread__UAEPAXI_Z(uint param_1)
+void * __thiscall CWinThread::___GCWinThread__UAEPAXI_Z(CWinThread *this,uint param_1)
 
 {
   ~CWinThread(this);
@@ -381,7 +471,7 @@ undefined4 * CWinThread::CWinThread(void)
   
   _EH_prolog();
   *(undefined4 **)(unaff_EBP + -0x10) = extraout_ECX;
-  CCmdTarget__CCmdTarget();
+  CCmdTarget::CCmdTarget();
   *(undefined4 *)(unaff_EBP + -4) = 0;
   *extraout_ECX = &PTR_LAB_006704cc;
   extraout_ECX[0x13] = 0;
@@ -437,7 +527,7 @@ void __fastcall CWinThread::CommonConstruct(int param_1)
    
    Library: nafxcw retail msvc500:static */
 
-void CWinThread::~CWinThread()
+void __thiscall CWinThread::~CWinThread(CWinThread *this)
 
 {
   HANDLE hObject;

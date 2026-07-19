@@ -37,7 +37,7 @@ undefined4 * TUnitToolbarCluster::CreateObject(void)
 // GHIDRA_NAME TUnitToolbarCluster::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TUnitToolbarCluster::GetRuntimeClass()
+CRuntimeClass * __thiscall TUnitToolbarCluster::GetRuntimeClass(TUnitToolbarCluster *this)
 
 {
   return &classTUnitToolbarCluster;
@@ -47,7 +47,8 @@ CRuntimeClass * TUnitToolbarCluster::GetRuntimeClass()
 // GHIDRA_NAME TUnitToolbarCluster::ConstructTUnitToolbarClusterBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTUnitToolbarClusterBaseState(void)
 
-TUnitToolbarCluster * TUnitToolbarCluster::ConstructTUnitToolbarClusterBaseState()
+TUnitToolbarCluster * __thiscall
+TUnitToolbarCluster::ConstructTUnitToolbarClusterBaseState(TUnitToolbarCluster *this)
 
 {
   func_0x00405835();
@@ -59,7 +60,8 @@ TUnitToolbarCluster * TUnitToolbarCluster::ConstructTUnitToolbarClusterBaseState
 // GHIDRA_NAME TUnitToolbarCluster::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TUnitToolbarCluster * TUnitToolbarCluster::_scalar_deleting_destructor_(byte param_1)
+TUnitToolbarCluster * __thiscall
+TUnitToolbarCluster::_scalar_deleting_destructor_(TUnitToolbarCluster *this,byte param_1)
 
 {
   func_0x00409200();
@@ -73,7 +75,8 @@ TUnitToolbarCluster * TUnitToolbarCluster::_scalar_deleting_destructor_(byte par
 // GHIDRA_NAME TUnitToolbarCluster::HandleEvent
 // GHIDRA_PROTO undefined __thiscall HandleEvent(int param_1, void * param_2, int param_3)
 
-void TUnitToolbarCluster::HandleEvent(int param_1, void *param_2, int param_3)
+void __thiscall
+TUnitToolbarCluster::HandleEvent(TUnitToolbarCluster *this,int param_1,void *param_2,int param_3)
 
 {
   undefined uVar1;
@@ -98,7 +101,7 @@ void TUnitToolbarCluster::HandleEvent(int param_1, void *param_2, int param_3)
 // GHIDRA_NAME TUnitToolbarCluster::IsTradeControlAtMinimum
 // GHIDRA_PROTO undefined __thiscall IsTradeControlAtMinimum(void)
 
-undefined1 TUnitToolbarCluster::IsTradeControlAtMinimum()
+undefined1 __thiscall TUnitToolbarCluster::IsTradeControlAtMinimum(TUnitToolbarCluster *this)
 
 {
   return 1;
@@ -108,7 +111,8 @@ undefined1 TUnitToolbarCluster::IsTradeControlAtMinimum()
 // GHIDRA_NAME TUnitToolbarCluster::OrphanCallChain_C2_I51_00491790
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C2_I51_00491790(int param_1)
 
-void TUnitToolbarCluster::OrphanCallChain_C2_I51_00491790(int param_1)
+void __thiscall
+TUnitToolbarCluster::OrphanCallChain_C2_I51_00491790(TUnitToolbarCluster *this,int param_1)
 
 {
   undefined uVar1;

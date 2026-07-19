@@ -7,7 +7,8 @@
 // GHIDRA_NAME TMultiMessagePicture::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TMultiMessagePicture * TMultiMessagePicture::_scalar_deleting_destructor_(byte param_1)
+TMultiMessagePicture * __thiscall
+TMultiMessagePicture::_scalar_deleting_destructor_(TMultiMessagePicture *this,byte param_1)
 
 {
   func_0x004010eb();
@@ -51,7 +52,7 @@ undefined4 * TMultiMessagePicture::CreateObject(void)
 // GHIDRA_NAME TMultiMessagePicture::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TMultiMessagePicture::GetRuntimeClass()
+CRuntimeClass * __thiscall TMultiMessagePicture::GetRuntimeClass(TMultiMessagePicture *this)
 
 {
   return &classTMultiMessagePicture;

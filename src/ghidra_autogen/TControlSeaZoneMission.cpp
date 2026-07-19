@@ -7,7 +7,8 @@
 // GHIDRA_NAME TControlSeaZoneMission::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TControlSeaZoneMission * TControlSeaZoneMission::_scalar_deleting_destructor_(byte param_1)
+TControlSeaZoneMission * __thiscall
+TControlSeaZoneMission::_scalar_deleting_destructor_(TControlSeaZoneMission *this,byte param_1)
 
 {
   func_0x00405e84();
@@ -184,7 +185,8 @@ TControlSeaZoneMission::HandleControlSeaZoneMissionActionType0Or3ForTargetPort
 
 /* Setting prototype: void SetMapOrderType6AndQueue(int nOrderTarget) */
 
-void TControlSeaZoneMission::SetMapOrderType6AndQueue(int nOrderTarget)
+void __thiscall
+TControlSeaZoneMission::SetMapOrderType6AndQueue(TControlSeaZoneMission *this,int nOrderTarget)
 
 {
   int *piVar1;

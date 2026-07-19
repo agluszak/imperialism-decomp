@@ -3,11 +3,24 @@
 // Program: Imperialism.exe
 // Bucket: TScenarioChooser.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x0045AE60
+// GHIDRA_NAME TScenarioChooser::TScenarioChooser
+// GHIDRA_PROTO undefined __thiscall TScenarioChooser(void)
+
+TScenarioChooser * __thiscall TScenarioChooser::TScenarioChooser(TScenarioChooser *this)
+
+{
+  func_0x00403328();
+  this->vftable = &_vftable_;
+  return this;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x0045AE90
 // GHIDRA_NAME TScenarioChooser::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TScenarioChooser * TScenarioChooser::_scalar_deleting_destructor_(byte param_1)
+TScenarioChooser * __thiscall
+TScenarioChooser::_scalar_deleting_destructor_(TScenarioChooser *this,byte param_1)
 
 {
   func_0x00408058();
@@ -51,7 +64,7 @@ undefined4 * TScenarioChooser::CreateObject(void)
 // GHIDRA_NAME TScenarioChooser::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TScenarioChooser::GetRuntimeClass()
+CRuntimeClass * __thiscall TScenarioChooser::GetRuntimeClass(TScenarioChooser *this)
 
 {
   return &classTScenarioChooser;
@@ -61,7 +74,7 @@ CRuntimeClass * TScenarioChooser::GetRuntimeClass()
 // GHIDRA_NAME TScenarioChooser::NoOpUiLifecycleHook
 // GHIDRA_PROTO undefined __thiscall NoOpUiLifecycleHook(void)
 
-void TScenarioChooser::NoOpUiLifecycleHook()
+void __thiscall TScenarioChooser::NoOpUiLifecycleHook(TScenarioChooser *this)
 
 {
   code *pcVar1;
@@ -121,7 +134,7 @@ void TScenarioChooser::NoOpUiLifecycleHook()
   *unaff_FS_OFFSET = (int)&iStack_c;
   auStack_88[0] = 0x579ba8;
   func_0x00406ba9();
-  DAT_006a43f0 = '\0';
+  g_bMultiplayerScenarioSetupActive = '\0';
   auStack_88[0] = 0x6c697374;
   p_Stack_70 = this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25;
   *(undefined2 *)&this->field_0x114 = 0;
@@ -199,14 +212,14 @@ void TScenarioChooser::NoOpUiLifecycleHook()
   uStack_58 = 0;
   uStack_57 = 0;
   pcStack_9c = (code *)0x579d42;
-  func_0x00406afa();
+  thunk_BuildUiTextStyleDescriptor();
   pCStack_8c = (CString *)0x579d5e;
   CString::CString(&local_6c);
   pCStack_8c = (CString *)&stack0xffffff88;
   iStack_c = 2;
   pp_Stack_90 = (_vslot_fn **)0x2b6c;
   p_Stack_94 = (_vslot_fn *)0x579d75;
-  func_0x004093cc();
+  thunk_MapUiThemeCodeToStyleFlags();
   pCStack_8c = (CString *)0x6d6f7265;
   pp_Stack_90 = (_vslot_fn **)0x579d83;
   piVar6 = (int *)(*unaff_EBX)();
@@ -236,7 +249,7 @@ void TScenarioChooser::NoOpUiLifecycleHook()
   puStack_c0 = auStack_88;
   ppCStack_bc = (CString **)0x0;
   uStack_c4 = 0x579dea;
-  func_0x00406afa();
+  thunk_BuildUiTextStyleDescriptor();
   pcStack_b4 = (code *)0x73646573;
   uStack_b8 = 0x579df8;
   piVar6 = (int *)(*pcStack_9c)();
@@ -298,7 +311,7 @@ void TScenarioChooser::NoOpUiLifecycleHook()
 // GHIDRA_NAME TScenarioChooser::HandleEvent
 // GHIDRA_PROTO undefined __thiscall HandleEvent(int param_1, int param_2)
 
-void TScenarioChooser::HandleEvent(int param_1, int param_2)
+void __thiscall TScenarioChooser::HandleEvent(TScenarioChooser *this,int param_1,int param_2)
 
 {
   _vslot_fn *p_Var1;
@@ -375,7 +388,8 @@ void TScenarioChooser::HandleEvent(int param_1, int param_2)
 /* Scenario-selection scheduler helper. If g_pLocalizationTable +0x44 is active, runs
    ResetLocalUiStateAndPostTurnEvent5E5; otherwise posts turn-event code 0x5DC. */
 
-void TScenarioChooser::PostTurnEvent5DCOrResetScenarioSelectionState()
+void __thiscall
+TScenarioChooser::PostTurnEvent5DCOrResetScenarioSelectionState(TScenarioChooser *this)
 
 {
   if (*(int *)&g_pSimMgr->field_0x44 != 0) {
@@ -399,7 +413,7 @@ void TScenarioChooser::PostTurnEvent5DCOrResetScenarioSelectionState()
    - Enter-like keys (3, 0x0D): invoke virtual +0x1D0 action.
    - Escape key (0x1B): invoke virtual +0x1D4 cancel action. */
 
-void TScenarioChooser::ForwardParam(int param_1)
+void __thiscall TScenarioChooser::ForwardParam(TScenarioChooser *this,int param_1)
 
 {
   short sVar1;
@@ -430,7 +444,7 @@ void TScenarioChooser::ForwardParam(int param_1)
    - In active flow branch, writes scenario tag (`scn0 + index`) and posts turn-event code 0x5E4.
    - In fallback branch, updates selector bitmap flags and refreshes current view. */
 
-void TScenarioChooser::ApplyScenarioSelectionAndPostTurnEvent5E4()
+void __thiscall TScenarioChooser::ApplyScenarioSelectionAndPostTurnEvent5E4(TScenarioChooser *this)
 
 {
   short sVar1;
@@ -491,25 +505,27 @@ void TScenarioChooser::ApplyScenarioSelectionAndPostTurnEvent5E4()
       do {
         src_ref = (CString *)func_0x00402a2c(&stack0xffffffa0,(int)g_pGameFlowState + 0xb0);
         local_4c[0xc] = 0;
-        CString::operator=((CString *)&DAT_006a4220,src_ref);
+        CString::operator=((CString *)&g_cstrCountryNameSettingValue006A4220,src_ref);
         local_4c[0xc] = 0xffffffff;
         CString::~CString((CString *)&stack0xffffff98);
         CString::CString(&CStack_70);
         local_4c[0xc] = 1;
         func_0x00401e7e(&CStack_70,0x2742,3);
-        func_0x00407ce3(uVar4,&DAT_006a4220,0,0,0,0);
+        func_0x00407ce3(uVar4,&g_cstrCountryNameSettingValue006A4220,0,0,0,0);
         local_4c[0xe] = 0xffffffff;
         CString::~CString((CString *)&stack0xffffff98);
-        iVar3 = _mbscmp(DAT_006a4220,&g_szEmptyString);
+        iVar3 = _mbscmp(g_cstrCountryNameSettingValue006A4220,&g_szEmptyString);
       } while (iVar3 == 0);
       CString::CString((CString *)&stack0xffffff94);
       local_4c[0xe] = 2;
-      uVar4 = func_0x00409246(DAT_006a4220);
+      uVar4 = func_0x00409246(g_cstrCountryNameSettingValue006A4220);
       CString::operator+=(uVar4);
-      CString::operator+=(&DAT_006a4220);
-      CString::operator=((CString *)&DAT_006a4220,&CStack_70);
-      CString::operator=((CString *)((int)g_pGameFlowState + 0xb4),(CString *)&DAT_006a4220);
-      CString::operator=((CString *)((int)g_pGameFlowState + 0xb0),(CString *)&DAT_006a4220);
+      CString::operator+=(&g_cstrCountryNameSettingValue006A4220);
+      CString::operator=((CString *)&g_cstrCountryNameSettingValue006A4220,&CStack_70);
+      CString::operator=((CString *)((int)g_pGameFlowState + 0xb4),
+                         (CString *)&g_cstrCountryNameSettingValue006A4220);
+      CString::operator=((CString *)((int)g_pGameFlowState + 0xb0),
+                         (CString *)&g_cstrCountryNameSettingValue006A4220);
       *(undefined1 *)((int)g_pGameFlowState + 0xdc) = *(undefined1 *)(unaff_ESI + 0x68);
       *(int *)((int)g_pGameFlowState + 0xe0) = *(short *)&this->field_0x142 + 0x73636e30;
       func_0x00408715(0x5e4);
@@ -536,7 +552,7 @@ void TScenarioChooser::ApplyScenarioSelectionAndPostTurnEvent5E4()
 // GHIDRA_NAME TScenarioChooser::Free
 // GHIDRA_PROTO undefined __thiscall Free(void)
 
-void TScenarioChooser::Free()
+void __thiscall TScenarioChooser::Free(TScenarioChooser *this)
 
 {
   int *piVar1;

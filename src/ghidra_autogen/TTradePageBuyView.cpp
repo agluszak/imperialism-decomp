@@ -7,7 +7,8 @@
 // GHIDRA_NAME TTradePageBuyView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TTradePageBuyView * TTradePageBuyView::_scalar_deleting_destructor_(byte param_1)
+TTradePageBuyView * __thiscall
+TTradePageBuyView::_scalar_deleting_destructor_(TTradePageBuyView *this,byte param_1)
 
 {
   func_0x00408413();
@@ -52,7 +53,7 @@ undefined4 * TTradePageBuyView::CreateObject(void)
 // GHIDRA_NAME TTradePageBuyView::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TTradePageBuyView::GetRuntimeClass()
+CRuntimeClass * __thiscall TTradePageBuyView::GetRuntimeClass(TTradePageBuyView *this)
 
 {
   return &classTTradePageBuyView;
@@ -62,7 +63,8 @@ CRuntimeClass * TTradePageBuyView::GetRuntimeClass()
 // GHIDRA_NAME TTradePageBuyView::ConstructTTradePageBuyViewBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTTradePageBuyViewBaseState(short param_1)
 
-void TTradePageBuyView::ConstructTTradePageBuyViewBaseState(short param_1)
+void __thiscall
+TTradePageBuyView::ConstructTTradePageBuyViewBaseState(TTradePageBuyView *this,short param_1)
 
 {
   TTradeMgrVtbl *pTVar1;
@@ -114,7 +116,7 @@ LAB_005bd73a:
       local_c = 0xffffffff;
       func_0x004059b6(0,0,&stack0xffffffd0,0x2741,3);
       func_0x00408bf2(1);
-      func_0x00406afa(&stack0xffffffc8,4,0xc,0x2b6a);
+      thunk_BuildUiTextStyleDescriptor(&stack0xffffffc8,4,0xc,0x2b6a);
       func_0x00408521(&stack0xffffffc8);
       (**(code **)(**(int **)&this->field_0x7c + 0x30))(uVar4);
       do {
@@ -154,7 +156,8 @@ LAB_005bd863:
 // GHIDRA_NAME TTradePageBuyView::DestructTTradePageBuyViewAndMaybeFree_Impl
 // GHIDRA_PROTO undefined __thiscall DestructTTradePageBuyViewAndMaybeFree_Impl(void)
 
-void TTradePageBuyView::DestructTTradePageBuyViewAndMaybeFree_Impl()
+void __thiscall
+TTradePageBuyView::DestructTTradePageBuyViewAndMaybeFree_Impl(TTradePageBuyView *this)
 
 {
   this->vftable =

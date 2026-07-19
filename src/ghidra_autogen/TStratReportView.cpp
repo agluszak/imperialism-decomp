@@ -37,10 +37,10 @@ undefined4 * TStratReportView::CreateObject(void)
 // GHIDRA_NAME TStratReportView::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TStratReportView::GetRuntimeClass()
+CRuntimeClass * __thiscall TStratReportView::GetRuntimeClass(TStratReportView *this)
 
 {
-  return &classRuntimeClass;
+  return &classTStratReportView;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058E3C0
@@ -62,7 +62,8 @@ _ConstructTStratReportViewBaseState__YIPAUStratReportViewState___Z_imperialismsr
 // GHIDRA_NAME TStratReportView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TStratReportView * TStratReportView::_scalar_deleting_destructor_(byte param_1)
+TStratReportView * __thiscall
+TStratReportView::_scalar_deleting_destructor_(TStratReportView *this,byte param_1)
 
 {
   func_0x0040309e();

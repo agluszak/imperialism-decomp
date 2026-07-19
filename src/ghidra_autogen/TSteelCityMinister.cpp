@@ -40,7 +40,7 @@ undefined4 * TSteelCityMinister::CreateObject(void)
 // GHIDRA_NAME TSteelCityMinister::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TSteelCityMinister::GetRuntimeClass()
+CRuntimeClass * __thiscall TSteelCityMinister::GetRuntimeClass(TSteelCityMinister *this)
 
 {
   return &classTSteelCityMinister;
@@ -50,7 +50,8 @@ CRuntimeClass * TSteelCityMinister::GetRuntimeClass()
 // GHIDRA_NAME TSteelCityMinister::ConstructTSteelCityMinisterBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTSteelCityMinisterBaseState(void)
 
-TSteelCityMinister * TSteelCityMinister::ConstructTSteelCityMinisterBaseState()
+TSteelCityMinister * __thiscall
+TSteelCityMinister::ConstructTSteelCityMinisterBaseState(TSteelCityMinister *this)
 
 {
   func_0x0040433b();
@@ -66,7 +67,8 @@ TSteelCityMinister * TSteelCityMinister::ConstructTSteelCityMinisterBaseState()
 // GHIDRA_NAME TSteelCityMinister::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TSteelCityMinister * TSteelCityMinister::_scalar_deleting_destructor_(byte param_1)
+TSteelCityMinister * __thiscall
+TSteelCityMinister::_scalar_deleting_destructor_(TSteelCityMinister *this,byte param_1)
 
 {
   func_0x00407c8e();

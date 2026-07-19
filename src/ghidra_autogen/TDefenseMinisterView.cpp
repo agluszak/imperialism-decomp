@@ -37,7 +37,7 @@ undefined4 * TDefenseMinisterView::CreateObject(void)
 // GHIDRA_NAME TDefenseMinisterView::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TDefenseMinisterView::GetRuntimeClass()
+CRuntimeClass * __thiscall TDefenseMinisterView::GetRuntimeClass(TDefenseMinisterView *this)
 
 {
   return &classTDefenseMinisterView;
@@ -47,7 +47,8 @@ CRuntimeClass * TDefenseMinisterView::GetRuntimeClass()
 // GHIDRA_NAME TDefenseMinisterView::ConstructTDefenseMinisterViewBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTDefenseMinisterViewBaseState(void)
 
-TDefenseMinisterView * TDefenseMinisterView::ConstructTDefenseMinisterViewBaseState()
+TDefenseMinisterView * __thiscall
+TDefenseMinisterView::ConstructTDefenseMinisterViewBaseState(TDefenseMinisterView *this)
 
 {
   func_0x004064e2();
@@ -60,7 +61,8 @@ TDefenseMinisterView * TDefenseMinisterView::ConstructTDefenseMinisterViewBaseSt
 // GHIDRA_NAME TDefenseMinisterView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TDefenseMinisterView * TDefenseMinisterView::_scalar_deleting_destructor_(byte param_1)
+TDefenseMinisterView * __thiscall
+TDefenseMinisterView::_scalar_deleting_destructor_(TDefenseMinisterView *this,byte param_1)
 
 {
   func_0x004099f3();
@@ -88,7 +90,8 @@ TDefenseMinisterView::HandleEvent
   undefined3 extraout_var_00;
   undefined4 unaff_ESI;
   undefined4 *unaff_FS_OFFSET;
-  undefined1 auStack_30 [4];
+  undefined1 *puVar6;
+  char acStack_30 [4];
   undefined *puStack_2c;
   undefined4 uStack_28;
   undefined4 uStack_24;
@@ -97,10 +100,10 @@ TDefenseMinisterView::HandleEvent
   CString *pCStack_18;
   undefined4 local_c;
   undefined1 *puStack_8;
-  undefined1 *local_4;
+  CString local_4;
   
   local_c = *unaff_FS_OFFSET;
-  local_4 = (undefined1 *)0xffffffff;
+  local_4.m_pchData = (char *)0xffffffff;
   puStack_8 = &LAB_00632a68;
   *unaff_FS_OFFSET = &local_c;
   iVar1 = *(int *)(param_2 + 0x1c);
@@ -117,18 +120,19 @@ TDefenseMinisterView::HandleEvent
         pCStack_18 = &param_3;
         iStack_1c = 0x12;
         iStack_20 = 0x273d;
-        local_4 = (undefined1 *)0x0;
+        local_4.m_pchData = (char *)0x0;
         uStack_24 = 0x4f34c6;
         (*g_pSimMgr->vftable[0x10].slot_0x04)();
         uStack_24 = 0;
         uStack_28 = 1;
         puStack_2c = &DAT_006a2fc0;
-        local_4 = auStack_30;
+        local_4.m_pchData = acStack_30;
+        puVar6 = (undefined1 *)register0x00000010;
         func_0x004076b7(&stack0x00000000);
-        func_0x004096b0();
-        uStack_24 = 0xffffffff;
-        CString::~CString((CString *)&stack0xffffffec);
-        *unaff_FS_OFFSET = puStack_2c;
+        thunk_DispatchLocalizedUiMessageWithTemplateA13A0(puVar6);
+        uStack_28 = 0x4f34fc;
+        CString::~CString(&local_4);
+        *unaff_FS_OFFSET = iStack_1c;
         return;
       }
       if (g_pSimMgr->field_0x14 == '\0') {

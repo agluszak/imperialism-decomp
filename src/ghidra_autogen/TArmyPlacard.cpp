@@ -38,7 +38,7 @@ undefined4 * TArmyPlacard::CreateObject(void)
 // GHIDRA_NAME TArmyPlacard::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TArmyPlacard::GetRuntimeClass()
+CRuntimeClass * __thiscall TArmyPlacard::GetRuntimeClass(TArmyPlacard *this)
 
 {
   return &classTArmyPlacard;
@@ -48,7 +48,7 @@ CRuntimeClass * TArmyPlacard::GetRuntimeClass()
 // GHIDRA_NAME TArmyPlacard::TArmyPlacard
 // GHIDRA_PROTO undefined __thiscall TArmyPlacard(void)
 
-TArmyPlacard * TArmyPlacard::TArmyPlacard()
+TArmyPlacard * __thiscall TArmyPlacard::TArmyPlacard(TArmyPlacard *this)
 
 {
   func_0x00401122();
@@ -61,7 +61,8 @@ TArmyPlacard * TArmyPlacard::TArmyPlacard()
 // GHIDRA_NAME TArmyPlacard::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TArmyPlacard * TArmyPlacard::_scalar_deleting_destructor_(byte param_1)
+TArmyPlacard * __thiscall
+TArmyPlacard::_scalar_deleting_destructor_(TArmyPlacard *this,byte param_1)
 
 {
   func_0x00407054();
@@ -75,7 +76,7 @@ TArmyPlacard * TArmyPlacard::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TArmyPlacard::SetValue
 // GHIDRA_PROTO undefined __thiscall SetValue(short param_1)
 
-void TArmyPlacard::SetValue(short param_1)
+void __thiscall TArmyPlacard::SetValue(TArmyPlacard *this,short param_1)
 
 {
   TArmyPlacardVtbl *pTVar1;
@@ -105,7 +106,7 @@ void TArmyPlacard::SetValue(short param_1)
 // GHIDRA_NAME TArmyPlacard::ApplyRectSlot110
 // GHIDRA_PROTO undefined __thiscall ApplyRectSlot110(void)
 
-void TArmyPlacard::ApplyRectSlot110()
+void __thiscall TArmyPlacard::ApplyRectSlot110(TArmyPlacard *this)
 
 {
   short sVar1;
@@ -127,13 +128,14 @@ void TArmyPlacard::ApplyRectSlot110()
   func_0x00404fe8(in_stack_00000004);
   if (*(short *)&this->field_0x90 != 0) {
     func_0x0040448f(0,10,0x2b67);
-    CString__Format(&stack0xffffffec,&g_szDecimalFormat,(int)*(short *)&this->field_0x90);
-    sVar1 = func_0x00405b7d(&stack0xffffffec);
-    func_0x00408d6e((short)this->field34 - sVar1,(short)this->field38 + -2);
+    CString::Format(&stack0xffffffec,&g_szDecimalFormat,(int)*(short *)&this->field_0x90);
+    sVar1 = thunk_MeasureTextExtentWithCachedQuickDrawStyle(&stack0xffffffec);
+    thunk_SetQuickDrawTextOriginWithContextOffset
+              ((short)this->field34 - sVar1,(short)this->field38 + -2);
     func_0x004029aa(&stack0xffffffec);
     func_0x0040448f(0,10,0x2b6c);
-    func_0x00408d6e(CONCAT22(extraout_var,(short)this->field34 - sVar1) + -1,
-                    (short)this->field38 + -3);
+    thunk_SetQuickDrawTextOriginWithContextOffset
+              (CONCAT22(extraout_var,(short)this->field34 - sVar1) + -1,(short)this->field38 + -3);
     func_0x004029aa(&stack0xffffffec);
   }
   puStack_8 = (undefined1 *)0xffffffff;
@@ -146,7 +148,7 @@ void TArmyPlacard::ApplyRectSlot110()
 // GHIDRA_NAME TArmyPlacard::HandleEvent
 // GHIDRA_PROTO undefined __thiscall HandleEvent(int param_1)
 
-void TArmyPlacard::HandleEvent(int param_1)
+void __thiscall TArmyPlacard::HandleEvent(TArmyPlacard *this,int param_1)
 
 {
   undefined4 uVar1;

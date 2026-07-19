@@ -29,7 +29,7 @@ undefined4 * TCivUnit::CreateObject(void)
 // GHIDRA_NAME TCivUnit::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TCivUnit::GetRuntimeClass()
+CRuntimeClass * __thiscall TCivUnit::GetRuntimeClass(TCivUnit *this)
 
 {
   return &classTCivUnit;
@@ -39,7 +39,7 @@ CRuntimeClass * TCivUnit::GetRuntimeClass()
 // GHIDRA_NAME TCivUnit::TCivUnit
 // GHIDRA_PROTO undefined __thiscall TCivUnit(void)
 
-void TCivUnit::TCivUnit()
+void __thiscall TCivUnit::TCivUnit(TCivUnit *this)
 
 {
   this->vftable = &_vftable_;
@@ -55,7 +55,7 @@ void TCivUnit::TCivUnit()
 // GHIDRA_NAME TCivUnit::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TCivUnit * TCivUnit::_scalar_deleting_destructor_(byte param_1)
+TCivUnit * __thiscall TCivUnit::_scalar_deleting_destructor_(TCivUnit *this,byte param_1)
 
 {
   func_0x00405a24();
@@ -118,7 +118,8 @@ TCivUnit::InitializeCivWorkOrderState
           (TCivUnit *this,int nOrderType,int pOwnerContext,int nOrderOwnerNationId)
 
 {
-  func_0x00402eeb(nOrderType,pOwnerContext,nOrderOwnerNationId,0);
+  TUnit::thunk_RegisterUnitOrderWithOwnerManager
+            ((TUnit *)this,(short)nOrderType,(short)pOwnerContext);
   *(undefined2 *)&this->field_0x24 = 0;
   *(undefined2 *)&this->field_0x26 = 0xffff;
   return;
@@ -156,7 +157,7 @@ TCivUnit::InitializeCivWorkOrderState
    - bool true when click handling should treat this unit as idle/basic selection.
    - bool false when caller should route into active-order/report handling. */
 
-bool TCivUnit::IsInIdleSelectionState(void *pCivilianOrderEntry)
+bool __thiscall TCivUnit::IsInIdleSelectionState(TCivUnit *this,void *pCivilianOrderEntry)
 
 {
   int iVar1;
@@ -201,7 +202,7 @@ bool TCivUnit::IsInIdleSelectionState(void *pCivilianOrderEntry)
    Returns:
    - void */
 
-void TCivUnit::SetOrderModeSlot34(int nOrderType, short nTargetTileIndex)
+void __thiscall TCivUnit::SetOrderModeSlot34(TCivUnit *this,int nOrderType,short nTargetTileIndex)
 
 {
   short anOrderDurationByType [14];
@@ -264,7 +265,7 @@ void TCivUnit::SetOrderModeSlot34(int nOrderType, short nTargetTileIndex)
    - Productive orders persist multi-turn until countdown completion.
    - Sleep persists across turns by explicit bypass path. */
 
-void TCivUnit::DispatchSlot2C(int *pCivUnitOrderState)
+void __thiscall TCivUnit::DispatchSlot2C(TCivUnit *this,int *pCivUnitOrderState)
 
 {
                     /* Order type 2 (Sleep) bypasses rollover clear and remains active. */
@@ -322,7 +323,7 @@ void TCivUnit::DispatchSlot2C(int *pCivUnitOrderState)
    Returns:
    - void. */
 
-void TCivUnit::ReadFrom(int *pArchiveStream)
+void __thiscall TCivUnit::ReadFrom(TCivUnit *this,int *pArchiveStream)
 
 {
   func_0x00405ed4(pArchiveStream);
@@ -361,7 +362,7 @@ void TCivUnit::ReadFrom(int *pArchiveStream)
    Returns:
    - void. */
 
-void TCivUnit::WriteTo(int *pArchiveStream)
+void __thiscall TCivUnit::WriteTo(TCivUnit *this,int *pArchiveStream)
 
 {
   func_0x004043ea(pArchiveStream);
@@ -394,7 +395,7 @@ void TCivUnit::WriteTo(int *pArchiveStream)
    Persistence significance:
    - This controls when/where a unit becomes attached to a concrete map tile. */
 
-void TCivUnit::OrphanRetStub_005c2610(short param_1)
+void __thiscall TCivUnit::OrphanRetStub_005c2610(TCivUnit *this,short param_1)
 
 {
   undefined4 uVar1;
@@ -435,7 +436,7 @@ void TCivUnit::OrphanRetStub_005c2610(short param_1)
 // GHIDRA_NAME TCivUnit::DetachUnitOrderFromOwnerAndReset
 // GHIDRA_PROTO undefined __thiscall DetachUnitOrderFromOwnerAndReset(void)
 
-void TCivUnit::DetachUnitOrderFromOwnerAndReset()
+void __thiscall TCivUnit::DetachUnitOrderFromOwnerAndReset(TCivUnit *this)
 
 {
   (*this->vftable->OrphanRetStub_005c2610)(0xffffffff);
@@ -473,7 +474,8 @@ void TCivUnit::DetachUnitOrderFromOwnerAndReset()
    Returns:
    - void. */
 
-void TCivUnit::ResetCivWorkOrderAndRefreshCounters(int *pCivUnitOrderState)
+void __thiscall
+TCivUnit::ResetCivWorkOrderAndRefreshCounters(TCivUnit *this,int *pCivUnitOrderState)
 
 {
   TCivUnitVtbl *pTVar1;

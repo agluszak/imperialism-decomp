@@ -3,34 +3,11 @@
 // Program: Imperialism.exe
 // Bucket: TaskList.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x005AEB90
-// GHIDRA_NAME TaskList::ConstructTaskListBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTaskListBaseState(void)
-
-TaskList * TaskList::ConstructTaskListBaseState()
-
-{
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 local_c;
-  undefined1 *puStack_8;
-  undefined4 local_4;
-  
-  puStack_8 = &LAB_00638908;
-  local_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &local_c;
-  *(undefined ***)this = &TObject::_vftable_;
-  local_4 = 0;
-  CPtrList::CPtrList((CPtrList *)(this + 4),10);
-  *(TTaskListVtbl **)this = &TTaskList::_vftable_;
-  *unaff_FS_OFFSET = local_c;
-  return this;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x005AEC30
 // GHIDRA_NAME TaskList::WrapperFor_DestructCPtrListBaseState_At005aec30
 // GHIDRA_PROTO undefined __thiscall WrapperFor_DestructCPtrListBaseState_At005aec30(void)
 
-void TaskList::WrapperFor_DestructCPtrListBaseState_At005aec30()
+void __thiscall TaskList::WrapperFor_DestructCPtrListBaseState_At005aec30(TaskList *this)
 
 {
   undefined4 *unaff_FS_OFFSET;

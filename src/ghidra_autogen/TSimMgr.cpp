@@ -3,17 +3,6 @@
 // Program: Imperialism.exe
 // Bucket: TSimMgr.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0047CD60
-// GHIDRA_NAME TSimMgr::ApplyMciPlaybackRangeFromAudioManager
-// GHIDRA_PROTO undefined __thiscall ApplyMciPlaybackRangeFromAudioManager(undefined4 param_1)
-
-void TSimMgr::ApplyMciPlaybackRangeFromAudioManager(undefined4 param_1)
-
-{
-  func_0x0040641a(param_1,this->vftable);
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00544FF0
 // GHIDRA_NAME TSimMgr::ValidateAndPrepareGameFlowNameForDispatch
 // GHIDRA_PROTO undefined __thiscall ValidateAndPrepareGameFlowNameForDispatch(void)
@@ -23,7 +12,7 @@ void TSimMgr::ApplyMciPlaybackRangeFromAudioManager(undefined4 param_1)
 
 /* Validates/normalizes game-flow name state and marks localization mode for subsequent dispatch. */
 
-undefined4 TSimMgr::ValidateAndPrepareGameFlowNameForDispatch()
+undefined4 __thiscall TSimMgr::ValidateAndPrepareGameFlowNameForDispatch(TSimMgr *this)
 
 {
   char cVar1;
@@ -76,7 +65,7 @@ undefined4 TSimMgr::ValidateAndPrepareGameFlowNameForDispatch()
 // GHIDRA_NAME TSimMgr::EmitTurnEventEAnd9SessionContextPackets
 // GHIDRA_PROTO undefined __thiscall EmitTurnEventEAnd9SessionContextPackets(int param_1)
 
-void TSimMgr::EmitTurnEventEAnd9SessionContextPackets(int param_1)
+void __thiscall TSimMgr::EmitTurnEventEAnd9SessionContextPackets(TSimMgr *this,int param_1)
 
 {
   char cVar1;
@@ -249,31 +238,6 @@ void TSimMgr::EmitTurnEventEAnd9SessionContextPackets(int param_1)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0055CD00
-// GHIDRA_NAME TSimMgr::QueueInterNationEventType11
-// GHIDRA_PROTO undefined QueueInterNationEventType11()
-
-void __thiscall
-TSimMgr::QueueInterNationEventType11(int param_1,undefined4 param_2,undefined4 param_3,char param_4)
-
-{
-  undefined4 local_10;
-  undefined4 local_c;
-  undefined4 local_8;
-  
-  if (g_pSimMgr->field_0x7a == '\0') {
-    if ((param_4 == '\0') && (*(int *)&g_pSimMgr->field_0x44 != 0)) {
-      func_0x004070f4(param_2,param_3);
-      return;
-    }
-    local_8 = param_3;
-    local_c = param_2;
-    local_10 = 0x11;
-    (**(code **)(**(int **)(param_1 + 0xef0) + 0x38))(&local_10);
-  }
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x0057B940
 // GHIDRA_NAME TSimMgr::CreateObject
 // GHIDRA_PROTO undefined CreateObject()
@@ -307,7 +271,7 @@ undefined4 __fastcall TSimMgr::CreateObject(undefined4 param_1)
 // GHIDRA_NAME TSimMgr::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TSimMgr::GetRuntimeClass()
+CRuntimeClass * __thiscall TSimMgr::GetRuntimeClass(TSimMgr *this)
 
 {
   return &classTSimMgr;
@@ -325,7 +289,7 @@ CRuntimeClass * TSimMgr::GetRuntimeClass()
    [this+0x0C]=1, [this+0x10]=1. This establishes initial state consumed by
    AdvanceGlobalTurnStateMachine (vfunc slot +0x4C). */
 
-TSimMgr * TSimMgr::ConstructTurnFlowStateManagerVtable00662a58()
+TSimMgr * __thiscall TSimMgr::ConstructTurnFlowStateManagerVtable00662a58(TSimMgr *this)
 
 {
   undefined2 *puVar1;
@@ -348,7 +312,7 @@ TSimMgr * TSimMgr::ConstructTurnFlowStateManagerVtable00662a58()
   iVar4 = 0;
   local_4 = 0;
   local_10 = this;
-  ___L_YGXPAXIHP6EX0_Z1_Z(this_00,4,0x17,&SUB_00404642);
+  CallCallbackRepeatedly(this_00,4,0x17,&SUB_00404642);
   this->vftable = &_vftable_;
   local_4._0_1_ = 1;
   *(undefined4 *)&this->field_0x4 = 1;
@@ -393,7 +357,7 @@ TSimMgr * TSimMgr::ConstructTurnFlowStateManagerVtable00662a58()
 // GHIDRA_NAME TSimMgr::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TSimMgr * TSimMgr::_scalar_deleting_destructor_(byte param_1)
+TSimMgr * __thiscall TSimMgr::_scalar_deleting_destructor_(TSimMgr *this,byte param_1)
 
 {
   func_0x00406479();
@@ -407,7 +371,7 @@ TSimMgr * TSimMgr::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TSimMgr::InitializeTurnFlowStateDefaults
 // GHIDRA_PROTO undefined __thiscall InitializeTurnFlowStateDefaults(void)
 
-void TSimMgr::InitializeTurnFlowStateDefaults()
+void __thiscall TSimMgr::InitializeTurnFlowStateDefaults(TSimMgr *this)
 
 {
   undefined1 local_118 [280];
@@ -472,7 +436,7 @@ void TSimMgr::InitializeTurnFlowStateDefaults()
    Notes:
    - This is the teardown counterpart of RebuildGlobalOrderManagersAndCapabilityState. */
 
-void TSimMgr::Free()
+void __thiscall TSimMgr::Free(TSimMgr *this)
 
 {
   TCountry **ppTVar1;
@@ -550,7 +514,7 @@ void TSimMgr::Free()
 // GHIDRA_NAME TSimMgr::ReadFrom
 // GHIDRA_PROTO undefined __thiscall ReadFrom(int * param_1)
 
-void TSimMgr::ReadFrom(int *param_1)
+void __thiscall TSimMgr::ReadFrom(TSimMgr *this,int *param_1)
 
 {
   ushort uVar1;
@@ -724,7 +688,7 @@ void TSimMgr::ReadFrom(int *param_1)
 // GHIDRA_NAME TSimMgr::WriteTo
 // GHIDRA_PROTO undefined __thiscall WriteTo(int * param_1)
 
-void TSimMgr::WriteTo(int *param_1)
+void __thiscall TSimMgr::WriteTo(TSimMgr *this,int *param_1)
 
 {
   code *pcVar1;
@@ -771,7 +735,7 @@ void TSimMgr::WriteTo(int *param_1)
 // GHIDRA_NAME TSimMgr::NoOpVirtualStub_0057c390
 // GHIDRA_PROTO undefined __thiscall NoOpVirtualStub_0057c390(void)
 
-void TSimMgr::NoOpVirtualStub_0057c390()
+void __thiscall TSimMgr::NoOpVirtualStub_0057c390(TSimMgr *this)
 
 {
   return;
@@ -803,7 +767,8 @@ void TSimMgr::NoOpVirtualStub_0057c390()
    
    Used by RebuildNationStateSlotsAndAvailability via vtable +0x2C dispatch. */
 
-void TSimMgr::RebuildPrimaryNationStateForSlot(CString param_1, char param_2)
+void __thiscall
+TSimMgr::RebuildPrimaryNationStateForSlot(TSimMgr *this,CString param_1,char param_2)
 
 {
   short sVar1;
@@ -890,7 +855,7 @@ void TSimMgr::RebuildPrimaryNationStateForSlot(CString param_1, char param_2)
       }
       CStack_4.m_pchData = (char *)0xffffffff;
       func_0x00409291(CVar4.m_pchData,1);
-      cVar3 = DAT_006a43f0;
+      cVar3 = g_bMultiplayerScenarioSetupActive;
       g_apNationStates[iVar10] = pTVar5;
       g_apTerrainTypeDescriptorTable[iVar10] = (TCountry *)pTVar5;
       if (cVar3 == '\0') {
@@ -936,7 +901,7 @@ void TSimMgr::RebuildPrimaryNationStateForSlot(CString param_1, char param_2)
       func_0x0040584e(CVar4.m_pchData,2,*(undefined2 *)(&this->field_0xe8 + iVar10 * 2),
                       CONCAT22(uVar8,*(undefined2 *)(&this->field_0xf6 + iVar10 * 2)),
                       CONCAT22(uVar7,*(undefined2 *)(&this->field_0x104 + iVar10 * 2)));
-      cVar3 = DAT_006a43f0;
+      cVar3 = g_bMultiplayerScenarioSetupActive;
       g_apNationStates[iVar10] = pTVar5;
       g_apTerrainTypeDescriptorTable[iVar10] = (TCountry *)pTVar5;
       if (cVar3 == '\0') {
@@ -997,11 +962,11 @@ LAB_0057ce9d:
   CStack_4.m_pchData = (char *)0xffffffff;
   func_0x00409291(CVar4.m_pchData,1);
   g_apTerrainTypeDescriptorTable[iVar10] = (TCountry *)g_apNationStates[iVar10];
-  if (DAT_006a43f0 == '\0') {
+  if (g_bMultiplayerScenarioSetupActive == '\0') {
     *(short *)&this->field_0x2e = sVar9;
     func_0x00404804();
   }
-  if (DAT_006a43f0 == '\0') {
+  if (g_bMultiplayerScenarioSetupActive == '\0') {
     if (*(int *)&this->field_0x44 != 0) {
       *(undefined1 *)((int)g_pGameFlowState + 0x68) = 0;
     }
@@ -1022,12 +987,12 @@ LAB_0057ce9d:
 LAB_0057d286:
   if (sVar9 == *(short *)&this->field_0x2e) {
     if (*(int *)&this->field_0x44 == 0) {
-      CString::CString((CString *)&param_2,(CString *)&DAT_006a4220);
+      CString::CString((CString *)&param_2,(CString *)&g_cstrCountryNameSettingValue006A4220);
       CStack_4.m_pchData = (char *)0xc;
       func_0x0040308f(&param_2);
       CStack_4.m_pchData = (char *)0xffffffff;
       CString::~CString((CString *)&param_2);
-      CString::CString((CString *)&param_2,(CString *)&DAT_006a4220);
+      CString::CString((CString *)&param_2,(CString *)&g_cstrCountryNameSettingValue006A4220);
       CStack_4.m_pchData = (char *)0xd;
       CString::operator=((CString *)&g_apTerrainTypeDescriptorTable[iVar10]->field_0x8,
                          (CString *)&param_2);
@@ -1075,7 +1040,7 @@ LAB_0057d286:
    
    Used by RebuildNationStateSlotsAndAvailability via vtable +0x30 dispatch. */
 
-void TSimMgr::RebuildSecondaryNationStateForSlot(undefined4 param_1)
+void __thiscall TSimMgr::RebuildSecondaryNationStateForSlot(TSimMgr *this,undefined4 param_1)
 
 {
   undefined2 uVar1;
@@ -1120,7 +1085,7 @@ void TSimMgr::RebuildSecondaryNationStateForSlot(undefined4 param_1)
         }
         uStack_4 = 0xffffffff;
         func_0x0040401b(param_1);
-        cVar4 = DAT_006a43f0;
+        cVar4 = g_bMultiplayerScenarioSetupActive;
         g_apSecondaryNationStateSlots[iVar9] = pTVar6;
         g_apTerrainTypeDescriptorTable[iVar9] = (TCountry *)pTVar6;
         if (cVar4 == '\0') {
@@ -1185,7 +1150,7 @@ LAB_0057d6fe:
 // GHIDRA_NAME TSimMgr::ApplyScenarioVariantSeedForNationSetup
 // GHIDRA_PROTO undefined __thiscall ApplyScenarioVariantSeedForNationSetup(void)
 
-void TSimMgr::ApplyScenarioVariantSeedForNationSetup()
+void __thiscall TSimMgr::ApplyScenarioVariantSeedForNationSetup(TSimMgr *this)
 
 {
   uint uVar1;
@@ -1200,7 +1165,7 @@ void TSimMgr::ApplyScenarioVariantSeedForNationSetup()
 // GHIDRA_NAME TSimMgr::GetTurnFlowStateCounter2C
 // GHIDRA_PROTO undefined __thiscall GetTurnFlowStateCounter2C(void)
 
-undefined2 TSimMgr::GetTurnFlowStateCounter2C()
+undefined2 __thiscall TSimMgr::GetTurnFlowStateCounter2C(TSimMgr *this)
 
 {
   return *(undefined2 *)&this->field_0x2c;
@@ -1210,7 +1175,7 @@ undefined2 TSimMgr::GetTurnFlowStateCounter2C()
 // GHIDRA_NAME TSimMgr::CopyScenarioNationSetupIntoFlowState
 // GHIDRA_PROTO undefined __thiscall CopyScenarioNationSetupIntoFlowState(undefined1 * param_1)
 
-void TSimMgr::CopyScenarioNationSetupIntoFlowState(undefined1 *param_1)
+void __thiscall TSimMgr::CopyScenarioNationSetupIntoFlowState(TSimMgr *this,undefined1 *param_1)
 
 {
   undefined2 *puVar1;
@@ -1240,7 +1205,7 @@ void TSimMgr::CopyScenarioNationSetupIntoFlowState(undefined1 *param_1)
 // GHIDRA_NAME TSimMgr::IncrementTurnFlowStateCounter2C
 // GHIDRA_PROTO undefined __thiscall IncrementTurnFlowStateCounter2C(void)
 
-void TSimMgr::IncrementTurnFlowStateCounter2C()
+void __thiscall TSimMgr::IncrementTurnFlowStateCounter2C(TSimMgr *this)
 
 {
   *(short *)&this->field_0x2c = *(short *)&this->field_0x2c + 1;
@@ -1251,7 +1216,7 @@ void TSimMgr::IncrementTurnFlowStateCounter2C()
 // GHIDRA_NAME TSimMgr::PostMainWindowCommand100ForTurnFlow
 // GHIDRA_PROTO undefined __thiscall PostMainWindowCommand100ForTurnFlow(void)
 
-void TSimMgr::PostMainWindowCommand100ForTurnFlow()
+void __thiscall TSimMgr::PostMainWindowCommand100ForTurnFlow(TSimMgr *this)
 
 {
   func_0x00403fdf();
@@ -1262,7 +1227,7 @@ void TSimMgr::PostMainWindowCommand100ForTurnFlow()
 // GHIDRA_NAME TSimMgr::SetGlobalTurnStateCodeIfAllowed
 // GHIDRA_PROTO undefined __thiscall SetGlobalTurnStateCodeIfAllowed(undefined4 param_1)
 
-void TSimMgr::SetGlobalTurnStateCodeIfAllowed(undefined4 param_1)
+void __thiscall TSimMgr::SetGlobalTurnStateCodeIfAllowed(TSimMgr *this,undefined4 param_1)
 
 {
   short sVar1;
@@ -1353,7 +1318,7 @@ LAB_0057d9dd:
    Known strong anchor:
    - Calls Thunk_RebuildNationStateSlotsAndAvailability in the state-3 branch. */
 
-void TSimMgr::AdvanceGlobalTurnStateMachine(astruct_24 *ctx)
+void __thiscall TSimMgr::AdvanceGlobalTurnStateMachine(TSimMgr *this,astruct_24 *ctx)
 
 {
   TGreatPowerVtbl *pTVar1;
@@ -1400,7 +1365,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine(astruct_24 *ctx)
   switch(*(undefined4 *)&this->field_0x4) {
   case 1:
     *(undefined4 *)&this->field_0x4 = 3;
-    if (DAT_006a43c0 == '\0') {
+    if (g_bTurnFlowBootstrapComplete == '\0') {
       (**(code **)(g_pUiRuntimeContext->vftable + 0x4c))();
       break;
     }
@@ -1413,12 +1378,12 @@ void TSimMgr::AdvanceGlobalTurnStateMachine(astruct_24 *ctx)
       pTVar1 = (*ctx_ptr)->vftable;
       (*pTVar1->ConstructTTaskBaseState)();
       ok = (*pTVar1->ReturnFalseNationStateCapabilityFlagA0)();
-      if ((ok == '\0') && (DAT_006a43f0 == '\0')) {
+      if ((ok == '\0') && (g_bMultiplayerScenarioSetupActive == '\0')) {
         func_0x0040108c();
       }
       ctx_ptr = ctx_ptr + 1;
     } while ((int)ctx_ptr < 0x6a438c);
-    if (DAT_006a43f0 == '\0') {
+    if (g_bMultiplayerScenarioSetupActive == '\0') {
       if (*(short *)&this->field_0x114 == 0) {
         if (*(int *)&this->field_0x44 == 0) {
           func_0x0040993f();
@@ -1446,7 +1411,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine(astruct_24 *ctx)
       func_0x00404cd2();
       func_0x00405704();
     }
-    if (DAT_006a43f0 != '\0') break;
+    if (g_bMultiplayerScenarioSetupActive != '\0') break;
     func_0x00404bba();
     if ((*(int *)&g_pSimMgr->field_0x40 < 2) || (*(short *)&this->field_0x114 != 0))
     goto LAB_0057e8c5;
@@ -1470,7 +1435,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine(astruct_24 *ctx)
       seh_state._0_1_ = 1;
       func_0x00401e7e();
       func_0x004076b7(&stack0xffffffdc);
-      ok = func_0x004096b0();
+      ok = thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
       seh_state = (uint)seh_state._1_3_ << 8;
       if (ok == '\0') {
         CString::~CString(&ctx_stack);
@@ -1979,7 +1944,7 @@ switchD_0057dad8_caseD_18:
 // GHIDRA_NAME TSimMgr::IsTurnFlowPhaseOutsideRange4To5
 // GHIDRA_PROTO undefined __thiscall IsTurnFlowPhaseOutsideRange4To5(void)
 
-int TSimMgr::IsTurnFlowPhaseOutsideRange4To5()
+int __thiscall TSimMgr::IsTurnFlowPhaseOutsideRange4To5(TSimMgr *this)
 
 {
   int iVar1;
@@ -1997,7 +1962,7 @@ int TSimMgr::IsTurnFlowPhaseOutsideRange4To5()
 // GHIDRA_NAME TSimMgr::RefreshEligibleNationTurnPhaseHandlers
 // GHIDRA_PROTO undefined __thiscall RefreshEligibleNationTurnPhaseHandlers(void)
 
-void TSimMgr::RefreshEligibleNationTurnPhaseHandlers()
+void __thiscall TSimMgr::RefreshEligibleNationTurnPhaseHandlers(TSimMgr *this)
 
 {
   TCountry *pTVar1;
@@ -2032,7 +1997,7 @@ void TSimMgr::RefreshEligibleNationTurnPhaseHandlers()
 // GHIDRA_NAME TSimMgr::DispatchEligibleNationTurnCallback158
 // GHIDRA_PROTO undefined __thiscall DispatchEligibleNationTurnCallback158(void)
 
-void TSimMgr::DispatchEligibleNationTurnCallback158()
+void __thiscall TSimMgr::DispatchEligibleNationTurnCallback158(TSimMgr *this)
 
 {
   TCountry *pTVar1;
@@ -2092,7 +2057,7 @@ void TSimMgr::DispatchEligibleNationTurnCallback158()
    Returns:
    - void. */
 
-void TSimMgr::RefreshMapSystemsAndPrepareOrderExecution(int *pTurnContext)
+void __thiscall TSimMgr::RefreshMapSystemsAndPrepareOrderExecution(TSimMgr *this,int *pTurnContext)
 
 {
   short nBucketIndex;
@@ -2145,7 +2110,7 @@ void TSimMgr::RefreshMapSystemsAndPrepareOrderExecution(int *pTurnContext)
 // GHIDRA_NAME TSimMgr::DispatchTurnEvent2134AndRefreshNationPanels
 // GHIDRA_PROTO undefined __thiscall DispatchTurnEvent2134AndRefreshNationPanels(void)
 
-void TSimMgr::DispatchTurnEvent2134AndRefreshNationPanels()
+void __thiscall TSimMgr::DispatchTurnEvent2134AndRefreshNationPanels(TSimMgr *this)
 
 {
   TGreatPower **ppTVar1;
@@ -2175,7 +2140,7 @@ void TSimMgr::DispatchTurnEvent2134AndRefreshNationPanels()
 // GHIDRA_NAME TSimMgr::OrphanTiny_ReturnZero_0057f490
 // GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0057f490(void)
 
-undefined4 TSimMgr::OrphanTiny_ReturnZero_0057f490()
+undefined4 __thiscall TSimMgr::OrphanTiny_ReturnZero_0057f490(TSimMgr *this)
 
 {
   return 0;
@@ -2185,7 +2150,7 @@ undefined4 TSimMgr::OrphanTiny_ReturnZero_0057f490()
 // GHIDRA_NAME TSimMgr::OrphanLeaf_NoCall_Ins05_0057f4b0
 // GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins05_0057f4b0(uint param_1)
 
-void TSimMgr::OrphanLeaf_NoCall_Ins05_0057f4b0(uint param_1)
+void __thiscall TSimMgr::OrphanLeaf_NoCall_Ins05_0057f4b0(TSimMgr *this,uint param_1)
 
 {
   *(uint *)&this->field_0x3c = *(uint *)&this->field_0x3c | param_1;
@@ -2196,7 +2161,7 @@ void TSimMgr::OrphanLeaf_NoCall_Ins05_0057f4b0(uint param_1)
 // GHIDRA_NAME TSimMgr::OrphanLeaf_NoCall_Ins15_0057f4f0
 // GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins15_0057f4f0(void)
 
-undefined1 TSimMgr::OrphanLeaf_NoCall_Ins15_0057f4f0()
+undefined1 __thiscall TSimMgr::OrphanLeaf_NoCall_Ins15_0057f4f0(TSimMgr *this)
 
 {
   TGreatPower **ppTVar1;
@@ -2215,7 +2180,7 @@ undefined1 TSimMgr::OrphanLeaf_NoCall_Ins15_0057f4f0()
 // GHIDRA_NAME TSimMgr::OrphanLeaf_NoCall_Ins10_0057f530
 // GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins10_0057f530(void)
 
-void TSimMgr::OrphanLeaf_NoCall_Ins10_0057f530()
+void __thiscall TSimMgr::OrphanLeaf_NoCall_Ins10_0057f530(TSimMgr *this)
 
 {
   TGreatPower **ppTVar1;
@@ -2234,7 +2199,8 @@ void TSimMgr::OrphanLeaf_NoCall_Ins10_0057f530()
 // GHIDRA_NAME TSimMgr::FormatSignedIntWithSingleThousandsSeparator
 // GHIDRA_PROTO undefined __thiscall FormatSignedIntWithSingleThousandsSeparator(CString param_1, CString param_2)
 
-void TSimMgr::FormatSignedIntWithSingleThousandsSeparator(CString param_1, CString param_2)
+void __thiscall
+TSimMgr::FormatSignedIntWithSingleThousandsSeparator(TSimMgr *this,CString param_1,CString param_2)
 
 {
   CString this_00;
@@ -2343,7 +2309,7 @@ void TSimMgr::FormatSignedIntWithSingleThousandsSeparator(CString param_1, CStri
 // GHIDRA_NAME TSimMgr::FormatSharedStringFromBracketExpression
 // GHIDRA_PROTO undefined __thiscall FormatSharedStringFromBracketExpression(int param_1)
 
-void TSimMgr::FormatSharedStringFromBracketExpression(int param_1)
+void __thiscall TSimMgr::FormatSharedStringFromBracketExpression(TSimMgr *this,int param_1)
 
 {
   int iVar1;
@@ -2369,7 +2335,7 @@ void TSimMgr::FormatSharedStringFromBracketExpression(int param_1)
   CString::CString(&local_14);
   CStack_20.m_pchData = (char *)param_1;
   local_4 = CONCAT31(local_4._1_3_,1);
-  CString__Format(&local_14,&g_szDecimalFormat);
+  CString::Format(&local_14,&g_szDecimalFormat);
   iVar1 = param_1 % 10;
   if (iVar1 == 1) {
     uVar2 = -(uint)(param_1 != 0xb) & 0xfffffffd;
@@ -2403,7 +2369,7 @@ LAB_0057f984:
 // GHIDRA_NAME TSimMgr::GetStringPrelude
 // GHIDRA_PROTO undefined __thiscall GetStringPrelude(void)
 
-void TSimMgr::GetStringPrelude()
+void __thiscall TSimMgr::GetStringPrelude(TSimMgr *this)
 
 {
   (*this->vftable[0x10].slot_0x04)(0x2711);
@@ -2414,7 +2380,7 @@ void TSimMgr::GetStringPrelude()
 // GHIDRA_NAME TSimMgr::OrphanCallChain_C2_I07_0057fec0
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C2_I07_0057fec0(void)
 
-void TSimMgr::OrphanCallChain_C2_I07_0057fec0()
+void __thiscall TSimMgr::OrphanCallChain_C2_I07_0057fec0(TSimMgr *this)
 
 {
   undefined4 uVar1;
@@ -2428,7 +2394,7 @@ void TSimMgr::OrphanCallChain_C2_I07_0057fec0()
 // GHIDRA_NAME TSimMgr::AppendByteToResizableBuffer
 // GHIDRA_PROTO undefined __thiscall AppendByteToResizableBuffer(undefined1 param_1)
 
-void TSimMgr::AppendByteToResizableBuffer(undefined1 param_1)
+void __thiscall TSimMgr::AppendByteToResizableBuffer(TSimMgr *this,undefined1 param_1)
 
 {
   int iVar1;
@@ -2488,7 +2454,8 @@ TSimMgr::LoadUiStringByCodeGroupAndOffset
 // GHIDRA_NAME TSimMgr::FormatDiplomacyNoticeTextByPolicyOrGrantCode
 // GHIDRA_PROTO undefined __thiscall FormatDiplomacyNoticeTextByPolicyOrGrantCode(CString * param_1, short * param_2)
 
-CString * TSimMgr::FormatDiplomacyNoticeTextByPolicyOrGrantCode(CString *param_1, short *param_2)
+CString * __thiscall
+TSimMgr::FormatDiplomacyNoticeTextByPolicyOrGrantCode(TSimMgr *this,CString *param_1,short *param_2)
 
 {
   undefined4 uVar1;
@@ -2626,7 +2593,7 @@ CString * TSimMgr::FormatDiplomacyNoticeTextByPolicyOrGrantCode(CString *param_1
 switchD_00580a7a_default:
     CString::CString(&local_a0);
     puStack_8._0_1_ = 0x22;
-    CString__Format(&local_a0,&g_szDecimalFormat,iVar3);
+    CString::Format(&local_a0,&g_szDecimalFormat,iVar3);
     uVar1 = AssignSharedStringConcatCStrAndRef
                       (&CStack_34,s_TViewMgr__ShowDiplomacyNotices__00698c3c,&local_a8);
     puStack_8._0_1_ = 0x23;
@@ -2786,11 +2753,82 @@ LAB_00580f40:
   return unaff_retaddr;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00581300
+// GHIDRA_NAME TSimMgr::RemoveNationSlotAndNotifyPeers
+// GHIDRA_PROTO undefined RemoveNationSlotAndNotifyPeers()
+
+void __thiscall TSimMgr::RemoveNationSlotAndNotifyPeers(int param_1,undefined4 param_2)
+
+{
+  TCountry *pTVar1;
+  int iVar2;
+  short sVar3;
+  int iVar4;
+  TGreatPower **ppTVar5;
+  
+  iVar2 = (int)(short)param_2;
+  iVar4 = 0;
+  ppTVar5 = g_apNationStates;
+  do {
+    if (((iVar4 != iVar2) && (sVar3 = (short)iVar4, sVar3 != -1)) &&
+       (pTVar1 = g_apTerrainTypeDescriptorTable[sVar3], pTVar1 != (TCountry *)0x0)) {
+      if ((sVar3 < 7) && (pTVar1 != (TCountry *)0x0)) {
+        if ((99 < *(short *)&pTVar1->field_0xe) && (*(short *)&pTVar1->field_0xe < 200))
+        goto LAB_00581351;
+      }
+      (*(*ppTVar5)->vftable->SetNationPercentFieldByModeAndDescriptorLinks)(iVar2,500);
+    }
+LAB_00581351:
+    ppTVar5 = ppTVar5 + 1;
+    iVar4 = iVar4 + 1;
+    if (0x6a438b < (int)ppTVar5) {
+      if (g_apNationStates[iVar2] != (TGreatPower *)0x0) {
+        (*g_apNationStates[iVar2]->vftable->ApplyJoinEmpireModeForTargetNation)();
+      }
+      g_apNationStates[iVar2] = (TGreatPower *)0x0;
+      g_apTerrainTypeDescriptorTable[iVar2] = (TCountry *)0x0;
+      *(undefined1 *)(param_1 + 0x15 + iVar2) = 0;
+      *(int *)(param_1 + 0x30) = *(int *)(param_1 + 0x30) + -1;
+      func_0x00401672(param_2);
+      return;
+    }
+  } while( true );
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00581B20
+// GHIDRA_NAME TSimMgr::LoadNormalizedCredentialName
+// GHIDRA_PROTO undefined LoadNormalizedCredentialName()
+
+CString * __thiscall
+TSimMgr::LoadNormalizedCredentialName(int param_1,undefined4 param_2,short param_3)
+
+{
+  CString *pCVar1;
+  uint unaff_ESI;
+  uint *unaff_FS_OFFSET;
+  uint local_c;
+  undefined1 *puStack_8;
+  CString *local_4;
+  
+  local_4 = (CString *)0xffffffff;
+  puStack_8 = &LAB_006373cb;
+  local_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = (uint)&local_c;
+  func_0x00402a2c(&param_3,param_1 + 0x7c + param_3 * 4);
+  pCVar1 = local_4;
+  local_c = 1;
+  CString::CString(local_4,(CString *)&stack0x00000000);
+  local_c = local_c & 0xffffff00;
+  CString::~CString((CString *)&stack0x00000000);
+  *unaff_FS_OFFSET = unaff_ESI;
+  return pCVar1;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00593A10
 // GHIDRA_NAME TSimMgr::SetOutputDevice
 // GHIDRA_PROTO void __thiscall SetOutputDevice(int this_ptr)
 
-void TSimMgr::SetOutputDevice(int this_ptr)
+void __thiscall TSimMgr::SetOutputDevice(TSimMgr *this,int this_ptr)
 
 {
   char ok;

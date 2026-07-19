@@ -37,7 +37,7 @@ undefined4 * TTradePolicyCluster::CreateObject(void)
 // GHIDRA_NAME TTradePolicyCluster::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TTradePolicyCluster::GetRuntimeClass()
+CRuntimeClass * __thiscall TTradePolicyCluster::GetRuntimeClass(TTradePolicyCluster *this)
 
 {
   return &classTTradePolicyCluster;
@@ -47,7 +47,8 @@ CRuntimeClass * TTradePolicyCluster::GetRuntimeClass()
 // GHIDRA_NAME TTradePolicyCluster::ConstructTTradePolicyClusterBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTTradePolicyClusterBaseState(void)
 
-TTradePolicyCluster * TTradePolicyCluster::ConstructTTradePolicyClusterBaseState()
+TTradePolicyCluster * __thiscall
+TTradePolicyCluster::ConstructTTradePolicyClusterBaseState(TTradePolicyCluster *this)
 
 {
   func_0x00405835();
@@ -59,7 +60,8 @@ TTradePolicyCluster * TTradePolicyCluster::ConstructTTradePolicyClusterBaseState
 // GHIDRA_NAME TTradePolicyCluster::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TTradePolicyCluster * TTradePolicyCluster::_scalar_deleting_destructor_(byte param_1)
+TTradePolicyCluster * __thiscall
+TTradePolicyCluster::_scalar_deleting_destructor_(TTradePolicyCluster *this,byte param_1)
 
 {
   func_0x00404b56();
@@ -73,7 +75,8 @@ TTradePolicyCluster * TTradePolicyCluster::_scalar_deleting_destructor_(byte par
 // GHIDRA_NAME TTradePolicyCluster::HandleEvent
 // GHIDRA_PROTO undefined __thiscall HandleEvent(int param_1, void * param_2, int param_3)
 
-void TTradePolicyCluster::HandleEvent(int param_1, void *param_2, int param_3)
+void __thiscall
+TTradePolicyCluster::HandleEvent(TTradePolicyCluster *this,int param_1,void *param_2,int param_3)
 
 {
   TTradePolicyClusterVtbl *pTVar1;

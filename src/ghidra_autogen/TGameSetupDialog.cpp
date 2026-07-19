@@ -40,7 +40,8 @@ undefined4 * TGameSetupDialog::CreateObject(void)
 // GHIDRA_NAME TGameSetupDialog::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TGameSetupDialog * TGameSetupDialog::_scalar_deleting_destructor_(byte param_1)
+TGameSetupDialog * __thiscall
+TGameSetupDialog::_scalar_deleting_destructor_(TGameSetupDialog *this,byte param_1)
 
 {
   func_0x00404453();
@@ -54,7 +55,7 @@ TGameSetupDialog * TGameSetupDialog::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TGameSetupDialog::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TGameSetupDialog::GetRuntimeClass()
+CRuntimeClass * __thiscall TGameSetupDialog::GetRuntimeClass(TGameSetupDialog *this)
 
 {
   return &classTGameSetupDialog;
@@ -64,7 +65,7 @@ CRuntimeClass * TGameSetupDialog::GetRuntimeClass()
 // GHIDRA_NAME TGameSetupDialog::OrphanRetStub_005b2860
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_005b2860(void)
 
-void TGameSetupDialog::OrphanRetStub_005b2860()
+void __thiscall TGameSetupDialog::OrphanRetStub_005b2860(TGameSetupDialog *this)
 
 {
   return;

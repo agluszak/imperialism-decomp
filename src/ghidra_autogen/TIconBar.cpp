@@ -37,7 +37,7 @@ undefined4 * TIconBar::CreateObject(void)
 // GHIDRA_NAME TIconBar::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TIconBar::GetRuntimeClass()
+CRuntimeClass * __thiscall TIconBar::GetRuntimeClass(TIconBar *this)
 
 {
   return &classTIconBar;
@@ -47,7 +47,7 @@ CRuntimeClass * TIconBar::GetRuntimeClass()
 // GHIDRA_NAME TIconBar::ConstructTIconBarBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTIconBarBaseState(void)
 
-TIconBar * TIconBar::ConstructTIconBarBaseState()
+TIconBar * __thiscall TIconBar::ConstructTIconBarBaseState(TIconBar *this)
 
 {
   func_0x00403328();
@@ -59,7 +59,7 @@ TIconBar * TIconBar::ConstructTIconBarBaseState()
 // GHIDRA_NAME TIconBar::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TIconBar * TIconBar::_scalar_deleting_destructor_(byte param_1)
+TIconBar * __thiscall TIconBar::_scalar_deleting_destructor_(TIconBar *this,byte param_1)
 
 {
   func_0x0040715d();
@@ -73,7 +73,7 @@ TIconBar * TIconBar::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TIconBar::SetPictureResourceIdAndRefresh
 // GHIDRA_PROTO undefined __thiscall SetPictureResourceIdAndRefresh(short param_1, bool param_2)
 
-void TIconBar::SetPictureResourceIdAndRefresh(short param_1, bool param_2)
+void __thiscall TIconBar::SetPictureResourceIdAndRefresh(TIconBar *this,short param_1,bool param_2)
 
 {
   undefined2 in_stack_00000006;
@@ -88,7 +88,7 @@ void TIconBar::SetPictureResourceIdAndRefresh(short param_1, bool param_2)
 // GHIDRA_NAME TIconBar::OrphanTiny_SetWordEcxOffset_96_005060f0
 // GHIDRA_PROTO undefined __thiscall OrphanTiny_SetWordEcxOffset_96_005060f0(undefined2 param_1)
 
-void TIconBar::OrphanTiny_SetWordEcxOffset_96_005060f0(undefined2 param_1)
+void __thiscall TIconBar::OrphanTiny_SetWordEcxOffset_96_005060f0(TIconBar *this,undefined2 param_1)
 
 {
   *(undefined2 *)&this->field_0x96 = param_1;
@@ -99,7 +99,7 @@ void TIconBar::OrphanTiny_SetWordEcxOffset_96_005060f0(undefined2 param_1)
 // GHIDRA_NAME TIconBar::OrphanCallChain_C2_I15_00506110
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C2_I15_00506110(char param_1)
 
-void TIconBar::OrphanCallChain_C2_I15_00506110(char param_1)
+void __thiscall TIconBar::OrphanCallChain_C2_I15_00506110(TIconBar *this,char param_1)
 
 {
   TIconBarVtbl *pTVar1;
@@ -117,7 +117,7 @@ void TIconBar::OrphanCallChain_C2_I15_00506110(char param_1)
 // GHIDRA_NAME TIconBar::ApplyRectSlot110
 // GHIDRA_PROTO undefined __thiscall ApplyRectSlot110(void)
 
-void TIconBar::ApplyRectSlot110()
+void __thiscall TIconBar::ApplyRectSlot110(TIconBar *this)
 
 {
   short sVar1;

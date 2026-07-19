@@ -37,7 +37,7 @@ undefined4 * TCivReport::CreateObject(void)
 // GHIDRA_NAME TCivReport::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TCivReport::GetRuntimeClass()
+CRuntimeClass * __thiscall TCivReport::GetRuntimeClass(TCivReport *this)
 
 {
   return &classTCivReport;
@@ -62,7 +62,7 @@ _ConstructTCivReportBaseState__YIPAUCivReportState___Z_imperialismsrcgameTCivRep
 // GHIDRA_NAME TCivReport::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TCivReport * TCivReport::_scalar_deleting_destructor_(byte param_1)
+TCivReport * __thiscall TCivReport::_scalar_deleting_destructor_(TCivReport *this,byte param_1)
 
 {
   func_0x00408297();
@@ -76,7 +76,7 @@ TCivReport * TCivReport::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TCivReport::IsSelected
 // GHIDRA_PROTO undefined __thiscall IsSelected(int param_1)
 
-void TCivReport::IsSelected(int param_1)
+void __thiscall TCivReport::IsSelected(TCivReport *this,int param_1)
 
 {
   code *pcVar1;
@@ -264,7 +264,7 @@ void TCivReport::IsSelected(int param_1)
           iVar4 = *(int *)&g_pGlobalMapState->field_0xc + (int)sVar8;
           sVar3 = (short)*(char *)(iVar4 + 0x11 + iVar7);
           CStack_8c.m_pchData = (char *)CONCAT22((short)((uint)iVar4 >> 0x10),sVar3);
-          if ((sVar3 != -1) && ((&DAT_006963e8)[sVar3] != '\0')) {
+          if ((sVar3 != -1) && ((&g_abResourceTypeMiniCivMentionFlag)[sVar3] != '\0')) {
             ppCStack_88 = (CString **)&pcStack_74;
             if (sVar8 != 0) {
               ppCStack_88 = (CString **)&stack0xffffffa8;
@@ -367,7 +367,7 @@ void TCivReport::IsSelected(int param_1)
     (*g_pSimMgr->vftable[0x10].slot_0x04)();
     CStack_94.m_pchData = (char *)(*(short *)(param_1 + 0x24) * 3);
     CStack_98.m_pchData = &g_szDecimalFormat;
-    CString__Format(&CStack_80);
+    CString::Format(&CStack_80);
     CStack_94.m_pchData = CStack_80.m_pchData;
     CStack_98.m_pchData = CStack_7c.m_pchData;
     func_0x0040988b(g_pSimMgr,&pcStack_74);
@@ -401,7 +401,7 @@ void TCivReport::IsSelected(int param_1)
     else {
       uVar9 = 0xc;
     }
-    func_0x00406afa(&stack0xffffffa4,0,uVar9,0x2b6a);
+    thunk_BuildUiTextStyleDescriptor(&stack0xffffffa4,0,uVar9,0x2b6a);
     piVar5 = (int *)(*pcVar1)(iVar7 + 0x74746c30);
     iVar4 = *piVar5;
     (**(code **)(iVar4 + 0xc))();

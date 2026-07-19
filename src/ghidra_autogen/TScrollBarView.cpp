@@ -7,7 +7,8 @@
 // GHIDRA_NAME TScrollBarView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TScrollBarView * TScrollBarView::_scalar_deleting_destructor_(byte param_1)
+TScrollBarView * __thiscall
+TScrollBarView::_scalar_deleting_destructor_(TScrollBarView *this,byte param_1)
 
 {
   func_0x004045b6();
@@ -51,7 +52,7 @@ undefined4 * TScrollBarView::CreateObject(void)
 // GHIDRA_NAME TScrollBarView::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TScrollBarView::GetRuntimeClass()
+CRuntimeClass * __thiscall TScrollBarView::GetRuntimeClass(TScrollBarView *this)
 
 {
   return &classTScrollBarView;
@@ -164,7 +165,7 @@ TScrollBarView::ConstructTScrollBarViewBaseState
 // GHIDRA_NAME TScrollBarView::Free
 // GHIDRA_PROTO undefined __thiscall Free(void)
 
-void TScrollBarView::Free()
+void __thiscall TScrollBarView::Free(TScrollBarView *this)
 
 {
   if (*(int *)&this->field_0x90 != 0) {
@@ -178,7 +179,7 @@ void TScrollBarView::Free()
 // GHIDRA_NAME TScrollBarView::NoOpUiLifecycleHook
 // GHIDRA_PROTO undefined __thiscall NoOpUiLifecycleHook(void)
 
-void TScrollBarView::NoOpUiLifecycleHook()
+void __thiscall TScrollBarView::NoOpUiLifecycleHook(TScrollBarView *this)
 
 {
   func_0x00406ba9();
@@ -195,7 +196,7 @@ void TScrollBarView::NoOpUiLifecycleHook()
 // GHIDRA_NAME TScrollBarView::HandleEvent
 // GHIDRA_PROTO undefined __thiscall HandleEvent(int param_1, int param_2)
 
-void TScrollBarView::HandleEvent(int param_1, int param_2)
+void __thiscall TScrollBarView::HandleEvent(TScrollBarView *this,int param_1,int param_2)
 
 {
   undefined4 in_stack_0000000c;
@@ -220,7 +221,8 @@ LAB_005747fc:
 // GHIDRA_NAME TScrollBarView::BeginMouseCaptureAndStartRepeatTimer
 // GHIDRA_PROTO undefined __thiscall BeginMouseCaptureAndStartRepeatTimer(POINT * param_1)
 
-void TScrollBarView::BeginMouseCaptureAndStartRepeatTimer(POINT *param_1)
+void __thiscall
+TScrollBarView::BeginMouseCaptureAndStartRepeatTimer(TScrollBarView *this,POINT *param_1)
 
 {
   int iVar1;
@@ -255,7 +257,7 @@ void TScrollBarView::BeginMouseCaptureAndStartRepeatTimer(POINT *param_1)
 // GHIDRA_NAME TScrollBarView::ApplyRectSlot110
 // GHIDRA_PROTO undefined __thiscall ApplyRectSlot110(LONG * param_1)
 
-void TScrollBarView::ApplyRectSlot110(LONG *param_1)
+void __thiscall TScrollBarView::ApplyRectSlot110(TScrollBarView *this,LONG *param_1)
 
 {
   int iVar1;
@@ -344,7 +346,8 @@ void TScrollBarView::ApplyRectSlot110(LONG *param_1)
 // GHIDRA_NAME TScrollBarView::DispatchPictureResourceCommand
 // GHIDRA_PROTO undefined __thiscall DispatchPictureResourceCommand(int param_1, int param_2)
 
-void TScrollBarView::DispatchPictureResourceCommand(int param_1, int param_2)
+void __thiscall
+TScrollBarView::DispatchPictureResourceCommand(TScrollBarView *this,int param_1,int param_2)
 
 {
   int *piVar1;

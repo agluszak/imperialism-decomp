@@ -37,7 +37,8 @@ undefined4 * TCommandHandler::CreateObject(void)
 // GHIDRA_NAME TCommandHandler::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TCommandHandler * TCommandHandler::_scalar_deleting_destructor_(byte param_1)
+TCommandHandler * __thiscall
+TCommandHandler::_scalar_deleting_destructor_(TCommandHandler *this,byte param_1)
 
 {
   func_0x00408bc5();
@@ -51,7 +52,7 @@ TCommandHandler * TCommandHandler::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TCommandHandler::CreateTCommandHandlerInstance
 // GHIDRA_PROTO undefined __thiscall CreateTCommandHandlerInstance(void)
 
-void TCommandHandler::CreateTCommandHandlerInstance()
+void __thiscall TCommandHandler::CreateTCommandHandlerInstance(TCommandHandler *this)
 
 {
   this->vftable = (TCommandHandlerVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4
@@ -63,7 +64,7 @@ void TCommandHandler::CreateTCommandHandlerInstance()
 // GHIDRA_NAME TCommandHandler::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TCommandHandler::GetRuntimeClass()
+CRuntimeClass * __thiscall TCommandHandler::GetRuntimeClass(TCommandHandler *this)
 
 {
   return &classTCommandHandler;
@@ -73,7 +74,8 @@ CRuntimeClass * TCommandHandler::GetRuntimeClass()
 // GHIDRA_NAME TCommandHandler::ConstructTCommandHandlerBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTCommandHandlerBaseState(int * param_1)
 
-void TCommandHandler::ConstructTCommandHandlerBaseState(int *param_1)
+void __thiscall
+TCommandHandler::ConstructTCommandHandlerBaseState(TCommandHandler *this,int *param_1)
 
 {
   int iVar1;

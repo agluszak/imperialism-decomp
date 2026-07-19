@@ -39,7 +39,8 @@ undefined4 * TNapoleonMinister::CreateObject(void)
 
 /* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 
-float10 TNapoleonMinister::CreateTNapoleonMinisterInstance(char param_1)
+float10 __thiscall
+TNapoleonMinister::CreateTNapoleonMinisterInstance(TNapoleonMinister *this,char param_1)
 
 {
   if (param_1 != '\0') {
@@ -52,7 +53,7 @@ float10 TNapoleonMinister::CreateTNapoleonMinisterInstance(char param_1)
 // GHIDRA_NAME TNapoleonMinister::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TNapoleonMinister::GetRuntimeClass()
+CRuntimeClass * __thiscall TNapoleonMinister::GetRuntimeClass(TNapoleonMinister *this)
 
 {
   return &classTNapoleonMinister;
@@ -62,7 +63,8 @@ CRuntimeClass * TNapoleonMinister::GetRuntimeClass()
 // GHIDRA_NAME TNapoleonMinister::ConstructTNapoleonMinisterBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTNapoleonMinisterBaseState(void)
 
-TNapoleonMinister * TNapoleonMinister::ConstructTNapoleonMinisterBaseState()
+TNapoleonMinister * __thiscall
+TNapoleonMinister::ConstructTNapoleonMinisterBaseState(TNapoleonMinister *this)
 
 {
   func_0x0040433b();
@@ -75,7 +77,8 @@ TNapoleonMinister * TNapoleonMinister::ConstructTNapoleonMinisterBaseState()
 // GHIDRA_NAME TNapoleonMinister::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TNapoleonMinister * TNapoleonMinister::_scalar_deleting_destructor_(byte param_1)
+TNapoleonMinister * __thiscall
+TNapoleonMinister::_scalar_deleting_destructor_(TNapoleonMinister *this,byte param_1)
 
 {
   func_0x00404f57();

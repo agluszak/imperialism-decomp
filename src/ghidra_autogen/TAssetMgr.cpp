@@ -4,10 +4,10 @@
 // Bucket: TAssetMgr.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005DF1D0
-// GHIDRA_NAME TAssetMgr::CreateTAssetMgrInstance
-// GHIDRA_PROTO undefined CreateTAssetMgrInstance()
+// GHIDRA_NAME TAssetMgr::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
 
-undefined4 * TAssetMgr::CreateTAssetMgrInstance(void)
+undefined4 * TAssetMgr::CreateObject(void)
 
 {
   undefined4 *puVar1;
@@ -26,7 +26,7 @@ undefined4 * TAssetMgr::CreateTAssetMgrInstance(void)
   if (puVar1 != (undefined4 *)0x0) {
     *puVar1 = &TObject::_vftable_;
     local_4 = 1;
-    ___L_YGXPAXIHP6EX0_Z1_Z(puVar1 + 8,4,0xd,&SUB_00404642);
+    CallCallbackRepeatedly(puVar1 + 8,4,0xd,&SUB_00404642);
     *puVar1 = &_vftable_;
     puVar2 = puVar1;
   }
@@ -38,7 +38,7 @@ undefined4 * TAssetMgr::CreateTAssetMgrInstance(void)
 // GHIDRA_NAME TAssetMgr::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TAssetMgr::GetRuntimeClass()
+CRuntimeClass * __thiscall TAssetMgr::GetRuntimeClass(TAssetMgr *this)
 
 {
   return &classTAssetMgr;
@@ -48,7 +48,7 @@ CRuntimeClass * TAssetMgr::GetRuntimeClass()
 // GHIDRA_NAME TAssetMgr::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TAssetMgr * TAssetMgr::_scalar_deleting_destructor_(byte param_1)
+TAssetMgr * __thiscall TAssetMgr::_scalar_deleting_destructor_(TAssetMgr *this,byte param_1)
 
 {
   func_0x0040477d();
@@ -62,7 +62,7 @@ TAssetMgr * TAssetMgr::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TAssetMgr::WrapperFor_InvokeCallbackNTimesWithSehGuard_At005df330
 // GHIDRA_PROTO undefined __thiscall WrapperFor_InvokeCallbackNTimesWithSehGuard_At005df330(void)
 
-void TAssetMgr::WrapperFor_InvokeCallbackNTimesWithSehGuard_At005df330()
+void __thiscall TAssetMgr::WrapperFor_InvokeCallbackNTimesWithSehGuard_At005df330(TAssetMgr *this)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -84,7 +84,7 @@ void TAssetMgr::WrapperFor_InvokeCallbackNTimesWithSehGuard_At005df330()
 // GHIDRA_NAME TAssetMgr::ResolveTurnEventDialogNodeByMessageContext
 // GHIDRA_PROTO undefined __thiscall ResolveTurnEventDialogNodeByMessageContext(void)
 
-void TAssetMgr::ResolveTurnEventDialogNodeByMessageContext()
+void __thiscall TAssetMgr::ResolveTurnEventDialogNodeByMessageContext(TAssetMgr *this)
 
 {
   (**(code **)(*g_pTurnEventDialogFactoryRegistry + 0x28))();
@@ -95,7 +95,7 @@ void TAssetMgr::ResolveTurnEventDialogNodeByMessageContext()
 // GHIDRA_NAME TAssetMgr::NoOpRuntimeUiCallback_005df3f0
 // GHIDRA_PROTO undefined __thiscall NoOpRuntimeUiCallback_005df3f0(void)
 
-void TAssetMgr::NoOpRuntimeUiCallback_005df3f0()
+void __thiscall TAssetMgr::NoOpRuntimeUiCallback_005df3f0(TAssetMgr *this)
 
 {
   return;
@@ -105,9 +105,148 @@ void TAssetMgr::NoOpRuntimeUiCallback_005df3f0()
 // GHIDRA_NAME TAssetMgr::NoOpRuntimeUiCallback_005df410
 // GHIDRA_PROTO undefined __thiscall NoOpRuntimeUiCallback_005df410(void)
 
-void TAssetMgr::NoOpRuntimeUiCallback_005df410()
+void __thiscall TAssetMgr::NoOpRuntimeUiCallback_005df410(TAssetMgr *this)
 
 {
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005DF430
+// GHIDRA_NAME TAssetMgr::LoadTableResourceStreamByName
+// GHIDRA_PROTO undefined LoadTableResourceStreamByName()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Loads a TABLE resource stream by name from the game data module and returns an object used by GetResourceStreamSize / ReadResourceStreamIntoBufferAndAdvance.
+// GHIDRA_COMMENT_END
+
+/* Loads a TABLE resource stream by name from the game data module and returns an object used by
+   GetResourceStreamSize / ReadResourceStreamIntoBufferAndAdvance. */
+
+int * TAssetMgr::LoadTableResourceStreamByName(CString param_1)
+
+{
+  HMODULE hModule;
+  HRSRC hResInfo;
+  HGLOBAL hResData;
+  CMemFile *this;
+  LPVOID pvVar1;
+  DWORD DVar2;
+  int iVar3;
+  int *piVar4;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 uVar5;
+  undefined **local_20 [2];
+  undefined4 local_18;
+  undefined4 local_14;
+  CString local_10;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  int local_4;
+  
+  puStack_8 = &LAB_0063a67c;
+  local_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &local_c;
+  piVar4 = (int *)0x0;
+  local_4 = 0;
+  hModule = LoadLibraryA(*(LPCSTR *)(g_pImperialismApp + 0xd4));
+  hResInfo = FindResourceA(hModule,param_1.m_pchData,s_TABLE_0069b7b0);
+  if (hResInfo == (HRSRC)0x0) {
+    iVar3 = operator_new(0x10);
+    local_4._0_1_ = 2;
+    if (iVar3 != 0) {
+      piVar4 = (int *)CFile::CFile();
+    }
+    local_4._0_1_ = 0;
+    CException::CException();
+    local_4._0_1_ = 3;
+    CString::CString(&local_10);
+    local_4._0_1_ = 4;
+    local_20[0] = &PTR_GetCFileExceptionRuntimeClass_00672234;
+    local_18 = 0;
+    local_14 = 0xffffffff;
+    CString::operator=(&local_10,(char *)0x0);
+    local_4 = CONCAT31(local_4._1_3_,5);
+    iVar3 = (**(code **)(*piVar4 + 0x28))(param_1.m_pchData,2,local_20);
+    if ((iVar3 == 0) && (DAT_006a5d20 == 0)) {
+      func_0x004057a4(s_D__Ambit_WAssetMgr_cpp_0069b794,0xce);
+    }
+    local_20[0] = &PTR_GetCFileExceptionRuntimeClass_00672234;
+    local_4 = CONCAT31(local_4._1_3_,6);
+    CString::~CString(&local_10);
+    local_20[0] = (undefined **)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  }
+  else {
+    hResData = LoadResource(hModule,hResInfo);
+    this = (CMemFile *)operator_new(0x28);
+    local_4._0_1_ = 1;
+    if (this != (CMemFile *)0x0) {
+      piVar4 = (int *)CMemFile::CMemFile(this,0x400);
+    }
+    local_4 = (uint)local_4._1_3_ << 8;
+    pvVar1 = LockResource(hResData);
+    uVar5 = 0;
+    DVar2 = SizeofResource(hModule,hResInfo);
+    CMemFile__Attach(pvVar1,DVar2,uVar5);
+  }
+  local_4 = 0xffffffff;
+  CString::~CString(&param_1);
+  *unaff_FS_OFFSET = local_c;
+  return piVar4;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005DF6D0
+// GHIDRA_NAME TAssetMgr::ReleaseResourceStreamIfNotNull
+// GHIDRA_PROTO undefined ReleaseResourceStreamIfNotNull()
+
+void TAssetMgr::ReleaseResourceStreamIfNotNull(int *param_1)
+
+{
+  if (param_1 != (int *)0x0) {
+    (**(code **)(*param_1 + 4))(1);
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005DF700
+// GHIDRA_NAME TAssetMgr::ReadResourceStreamIntoBufferAndAdvance
+// GHIDRA_PROTO undefined ReadResourceStreamIntoBufferAndAdvance()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Reads bytes from a resource stream object into caller buffer via vfunc +0x3C and updates the caller's write pointer/out cursor.
+// GHIDRA_COMMENT_END
+
+/* Reads bytes from a resource stream object into caller buffer via vfunc +0x3C and updates the
+   caller's write pointer/out cursor. */
+
+undefined4
+TAssetMgr::ReadResourceStreamIntoBufferAndAdvance
+          (int *param_1,undefined4 param_2,undefined4 *param_3)
+
+{
+  undefined4 uVar1;
+  
+  uVar1 = (**(code **)(*param_1 + 0x3c))(param_2,*param_3);
+  *param_3 = uVar1;
+  return 0;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005DF730
+// GHIDRA_NAME TAssetMgr::InvokeVtableSlot30OnTargetObject
+// GHIDRA_PROTO undefined InvokeVtableSlot30OnTargetObject()
+
+void TAssetMgr::InvokeVtableSlot30OnTargetObject(int *param_1,undefined4 param_2)
+
+{
+  (**(code **)(*param_1 + 0x30))(param_2,0);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005DF760
+// GHIDRA_NAME TAssetMgr::GetResourceStreamSize
+// GHIDRA_PROTO undefined GetResourceStreamSize()
+
+void TAssetMgr::GetResourceStreamSize(int *param_1)
+
+{
+  (**(code **)(*param_1 + 0x38))();
   return;
 }
 
@@ -115,7 +254,7 @@ void TAssetMgr::NoOpRuntimeUiCallback_005df410()
 // GHIDRA_NAME TAssetMgr::NoOpRuntimeUiCallback_005df780
 // GHIDRA_PROTO undefined __thiscall NoOpRuntimeUiCallback_005df780(void)
 
-void TAssetMgr::NoOpRuntimeUiCallback_005df780()
+void __thiscall TAssetMgr::NoOpRuntimeUiCallback_005df780(TAssetMgr *this)
 
 {
   return;
@@ -177,5 +316,136 @@ LAB_005dfce3:
   CString::~CString(&local_4);
   *unaff_FS_OFFSET = local_14;
   return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005DFD70
+// GHIDRA_NAME TAssetMgr::BuildScenarioPathForModeAndIndex
+// GHIDRA_PROTO undefined BuildScenarioPathForModeAndIndex()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Builds a save/scenario path string from index + mode selector (scenario/autosave/manual variant), writing a composed shared-string path for downstream file operations.
+// GHIDRA_COMMENT_END
+
+/* Builds a save/scenario path string from index + mode selector (scenario/autosave/manual variant),
+   writing a composed shared-string path for downstream file operations. */
+
+void TAssetMgr::BuildScenarioPathForModeAndIndex(CString param_1,int param_2,CString *param_3)
+
+{
+  CString *pCVar1;
+  undefined4 *unaff_FS_OFFSET;
+  char *text;
+  CString local_14;
+  CString local_10;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  int local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_0063a768;
+  local_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &local_c;
+  CString::CString(&local_14);
+  local_4 = 0;
+  CString::Format(&local_14,&g_szDecimalFormat,param_1.m_pchData);
+  pCVar1 = (CString *)AssignSharedStringConcatCStrAndRef(&local_10,s_Scenario_s_0069b7ec,&local_14);
+  local_4._0_1_ = 1;
+  CString::CString(&param_1,pCVar1);
+  pCVar1 = param_3;
+  local_4._0_1_ = 2;
+  CString::operator=(param_3,&param_1);
+  local_4._0_1_ = 1;
+  CString::~CString(&param_1);
+  local_4 = (uint)local_4._1_3_ << 8;
+  CString::~CString(&local_10);
+  if (param_2 == 0) {
+    text = &DAT_0069b7d4;
+  }
+  else if (param_2 == 1) {
+    text = &DAT_0069b7dc;
+  }
+  else {
+    if (param_2 != 2) goto LAB_005dfe2e;
+    text = &DAT_0069b7e4;
+  }
+  CString::operator+=(pCVar1,text);
+LAB_005dfe2e:
+  local_4 = 0xffffffff;
+  CString::~CString(&local_14);
+  *unaff_FS_OFFSET = local_c;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005E0030
+// GHIDRA_NAME TAssetMgr::SaveMainDocumentToPathAndMarkSaved
+// GHIDRA_PROTO undefined SaveMainDocumentToPathAndMarkSaved()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Shows a save-status UI path (including '__saved' marker text) under MFC temp-map lock and returns acceptance/result flag from UI callback vfunc +0xA0.
+// GHIDRA_COMMENT_END
+
+/* Shows a save-status UI path (including '__saved' marker text) under MFC temp-map lock and returns
+   acceptance/result flag from UI callback vfunc +0xA0. */
+
+undefined1 TAssetMgr::SaveMainDocumentToPathAndMarkSaved(CString param_1)
+
+{
+  code *pcVar1;
+  undefined1 uVar2;
+  CWinThread *pCVar3;
+  int *piVar4;
+  int iVar5;
+  undefined4 *unaff_FS_OFFSET;
+  CString CVar6;
+  undefined4 uStack_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  uStack_c = *unaff_FS_OFFSET;
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_0063a7e0;
+  *unaff_FS_OFFSET = &uStack_c;
+  CString::CString(&param_1,(CString *)param_1.m_pchData);
+  local_4 = 0;
+  pCVar3 = AfxGetThread();
+  if (pCVar3 == (CWinThread *)0x0) {
+    piVar4 = (int *)0x0;
+  }
+  else {
+    pCVar3 = AfxGetThread();
+    piVar4 = (int *)(**(code **)(*(int *)pCVar3 + 0x7c))();
+  }
+  (**(code **)(*piVar4 + 0xc))();
+  iVar5 = CFrameWnd::GetActiveView();
+  piVar4 = *(int **)(iVar5 + 0x3c);
+  AfxGetModuleState();
+  CCmdTarget::BeginWaitCursor();
+  iVar5 = *piVar4;
+  pcVar1 = *(code **)(iVar5 + 0x5c);
+  local_4 = CONCAT31(local_4._1_3_,1);
+  CVar6.m_pchData = param_1.m_pchData;
+  (*pcVar1)(param_1.m_pchData,0);
+  uVar2 = (**(code **)(iVar5 + 0xa0))(piVar4[8],1);
+  (*pcVar1)(s___saved_0069b848,0);
+  AfxGetModuleState();
+  CCmdTarget::EndWaitCursor();
+  CString::~CString((CString *)&stack0xffffffec);
+  *unaff_FS_OFFSET = CVar6.m_pchData;
+  return uVar2;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005E0150
+// GHIDRA_NAME TAssetMgr::OpenMainDocumentFromPathAndMarkLoaded
+// GHIDRA_PROTO undefined OpenMainDocumentFromPathAndMarkLoaded()
+
+undefined4 TAssetMgr::OpenMainDocumentFromPathAndMarkLoaded(undefined4 *param_1)
+
+{
+  int *piVar1;
+  
+  piVar1 = (int *)(**(code **)(*g_pImperialismApp + 0x84))(*param_1);
+  if (piVar1 == (int *)0x0) {
+    return 0;
+  }
+  (**(code **)(*piVar1 + 0x5c))(s___loaded_0069b854,0);
+  return 1;
 }
 

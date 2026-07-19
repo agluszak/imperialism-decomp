@@ -7,7 +7,8 @@
 // GHIDRA_NAME TAmbitApplication::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TAmbitApplication * TAmbitApplication::_scalar_deleting_destructor_(byte param_1)
+TAmbitApplication * __thiscall
+TAmbitApplication::_scalar_deleting_destructor_(TAmbitApplication *this,byte param_1)
 
 {
   func_0x00404bb0();
@@ -15,6 +16,16 @@ TAmbitApplication * TAmbitApplication::_scalar_deleting_destructor_(byte param_1
     operator_delete(this);
   }
   return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00414770
+// GHIDRA_NAME TAmbitApplication::DoSetupMenus
+// GHIDRA_PROTO undefined __thiscall DoSetupMenus(void)
+
+void __thiscall TAmbitApplication::DoSetupMenus(TAmbitApplication *this)
+
+{
+  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0049DE40
@@ -51,9 +62,83 @@ undefined4 * TAmbitApplication::CreateObject(void)
 // GHIDRA_NAME TAmbitApplication::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TAmbitApplication::GetRuntimeClass()
+CRuntimeClass * __thiscall TAmbitApplication::GetRuntimeClass(TAmbitApplication *this)
 
 {
   return &classTAmbitApplication;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0049E320
+// GHIDRA_NAME TAmbitApplication::HandleCursor
+// GHIDRA_PROTO undefined __thiscall HandleCursor(int param_1, int param_2)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Mouse-move handler that applies edge autoscroll only for selected turn-event states; otherwise forwards to base handler.
+// GHIDRA_COMMENT_END
+
+/* Mouse-move handler that applies edge autoscroll only for selected turn-event states; otherwise
+   forwards to base handler. */
+
+void __thiscall TAmbitApplication::HandleCursor(TAmbitApplication *this,int param_1,int param_2)
+
+{
+  short sVar1;
+  int iVar2;
+  int iVar3;
+  byte bVar4;
+  undefined4 in_stack_0000000c;
+  int local_8;
+  int local_4;
+  
+  iVar3 = func_0x004026bc();
+  if (((iVar3 == 0) && (*(int *)&this->field_0x48 != 0)) &&
+     ((sVar1 = *(short *)&g_pUiRuntimeContext->field_0x4, sVar1 == 0x7dd ||
+      ((((sVar1 == 0x3b8 || (sVar1 == 0xed8)) || (sVar1 == 0xf3c)) || (sVar1 == 0x3c0)))))) {
+    iVar3 = func_0x004026bc();
+    if (iVar3 == 0) {
+      local_8 = param_1;
+      local_4 = param_2;
+      (**(code **)(**(int **)(g_pDisplayMgr + 4) + 0x144))(&local_8);
+      if ((-200 < local_8) && (-200 < local_4)) {
+        iVar3 = *(int *)(*(int *)(g_pDisplayMgr + 4) + 0x34);
+        if ((local_8 < iVar3 + 200) &&
+           (iVar2 = *(int *)(*(int *)(g_pDisplayMgr + 4) + 0x38), local_4 < iVar2 + 200)) {
+          bVar4 = 0;
+          if (local_8 < 5) {
+            bVar4 = 8;
+          }
+          else if (iVar3 + -4 <= local_8) {
+            bVar4 = 4;
+          }
+          if (local_4 < 5) {
+            bVar4 = bVar4 | 1;
+          }
+          else if (iVar2 + -4 <= local_4) {
+            bVar4 = bVar4 | 2;
+          }
+          if (bVar4 != 0) {
+            iVar3 = func_0x004092d7();
+            if ((iVar3 < g_lastEdgeAutoScrollTick16) || (g_lastEdgeAutoScrollTick16 + 3 < iVar3)) {
+              g_lastEdgeAutoScrollTick16 = iVar3;
+              (**(code **)(**(int **)&this->field_0x48 + 0x1d0))(bVar4);
+              return;
+            }
+          }
+        }
+      }
+    }
+  }
+  func_0x00405551(param_1,param_2,in_stack_0000000c);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0049E4E0
+// GHIDRA_NAME TAmbitApplication::CloseAndFreeWindow
+// GHIDRA_PROTO undefined __thiscall CloseAndFreeWindow(int * param_1)
+
+void __thiscall TAmbitApplication::CloseAndFreeWindow(TAmbitApplication *this,int *param_1)
+
+{
+  (**(code **)(*param_1 + 0x1d0))();
+  return;
 }
 

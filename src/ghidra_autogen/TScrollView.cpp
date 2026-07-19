@@ -7,7 +7,7 @@
 // GHIDRA_NAME TScrollView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TScrollView * TScrollView::_scalar_deleting_destructor_(byte param_1)
+TScrollView * __thiscall TScrollView::_scalar_deleting_destructor_(TScrollView *this,byte param_1)
 
 {
   func_0x00404223();
@@ -51,7 +51,7 @@ undefined4 * TScrollView::CreateObject(void)
 // GHIDRA_NAME TScrollView::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TScrollView::GetRuntimeClass()
+CRuntimeClass * __thiscall TScrollView::GetRuntimeClass(TScrollView *this)
 
 {
   return &classTScrollView;
@@ -73,7 +73,7 @@ void TScrollView::ConstructTScrollViewBaseState
 // GHIDRA_NAME TScrollView::NoOpUiLifecycleHook
 // GHIDRA_PROTO undefined __thiscall NoOpUiLifecycleHook(void)
 
-void TScrollView::NoOpUiLifecycleHook()
+void __thiscall TScrollView::NoOpUiLifecycleHook(TScrollView *this)
 
 {
   int iVar1;
@@ -114,6 +114,35 @@ void TScrollView::NoOpUiLifecycleHook()
   return;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x005741E0
+// GHIDRA_NAME TScrollView::SyncBoundedValueAndToggleControlStates
+// GHIDRA_PROTO undefined SyncBoundedValueAndToggleControlStates()
+
+void __fastcall TScrollView::SyncBoundedValueAndToggleControlStates(int param_1)
+
+{
+  int iVar1;
+  int local_8 [2];
+  
+  local_8[0] = (*(int **)(param_1 + 0x60))[9];
+  local_8[1] = 0;
+  (**(code **)(**(int **)(param_1 + 0x60) + 0xf0))(local_8,1);
+  iVar1 = *(int *)(param_1 + 100);
+  *(short *)(iVar1 + 0x8c) = *(short *)(iVar1 + 0x88);
+  if (*(short *)(iVar1 + 0x8a) < *(short *)(iVar1 + 0x88)) {
+    *(short *)(iVar1 + 0x8c) = *(short *)(iVar1 + 0x8a);
+  }
+  iVar1 = *(int *)(*(int *)(param_1 + 0x60) + 0x38);
+  if (iVar1 != *(int *)(param_1 + 0x38) && -1 < iVar1 - *(int *)(param_1 + 0x38)) {
+    (**(code **)(**(int **)(param_1 + 100) + 0xa4))(1);
+    (**(code **)(**(int **)(param_1 + 100) + 0xa8))(1,1);
+    return;
+  }
+  (**(code **)(**(int **)(param_1 + 100) + 0xa4))(0,1);
+  (**(code **)(**(int **)(param_1 + 100) + 0xa8))(0,1);
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x005742B0
 // GHIDRA_NAME TScrollView::PaintVisibleChildrenIntersectingClipRect
 // GHIDRA_PROTO undefined __thiscall PaintVisibleChildrenIntersectingClipRect(undefined4 param_1, TDropShadowText * param_2)
@@ -148,11 +177,11 @@ TScrollView::PaintVisibleChildrenIntersectingClipRect
         (*pTVar1->VTableSlot57)(&RStack_20.top);
         puStack_8 = (undefined1 *)0x0;
         pHVar4 = CreateRectRgnIndirect(&RStack_20);
-        CBrush::CGdiObject__Attach((CBrush *)&stack0xffffffd8,(int)pHVar4);
+        CGdiObject::Attach((CGdiObject *)&stack0xffffffd8,(int)pHVar4);
         CDC::SelectClipRgn(param_1,(int)&stack0xffffffd8);
-        CGdiObject__DeleteObject();
+        CGdiObject::DeleteObject();
         puStack_8 = (undefined1 *)0x1;
-        CGdiObject__DeleteObject();
+        CGdiObject::DeleteObject();
         puStack_8 = (undefined1 *)0x2;
         func_0x00406ef1(unaff_retaddr,param_1);
         uStack_4 = 0xffffffff;

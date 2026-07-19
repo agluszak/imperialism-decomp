@@ -38,7 +38,7 @@ undefined4 * T2PictureButton::CreateObject(void)
 // GHIDRA_NAME T2PictureButton::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * T2PictureButton::GetRuntimeClass()
+CRuntimeClass * __thiscall T2PictureButton::GetRuntimeClass(T2PictureButton *this)
 
 {
   return &classT2PictureButton;
@@ -54,7 +54,8 @@ CRuntimeClass * T2PictureButton::GetRuntimeClass()
 /* Derived picture entry used by BuildTurnEventDialogUiByCode battle-tab sequence (tag evidence
    includes batt/ttab path with event-id sequence 0x101B..0x101F). */
 
-T2PictureButton * T2PictureButton::ConstructUiBattleTabPictureEntry()
+T2PictureButton * __thiscall
+T2PictureButton::ConstructUiBattleTabPictureEntry(T2PictureButton *this)
 
 {
   func_0x00401122();
@@ -67,7 +68,8 @@ T2PictureButton * T2PictureButton::ConstructUiBattleTabPictureEntry()
 // GHIDRA_NAME T2PictureButton::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-T2PictureButton * T2PictureButton::_scalar_deleting_destructor_(byte param_1)
+T2PictureButton * __thiscall
+T2PictureButton::_scalar_deleting_destructor_(T2PictureButton *this,byte param_1)
 
 {
   func_0x0040250e();
@@ -81,7 +83,7 @@ T2PictureButton * T2PictureButton::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME T2PictureButton::OrphanCallChain_C3_I43_00570c30
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C3_I43_00570c30(char param_1)
 
-void T2PictureButton::OrphanCallChain_C3_I43_00570c30(char param_1)
+void __thiscall T2PictureButton::OrphanCallChain_C3_I43_00570c30(T2PictureButton *this,char param_1)
 
 {
   short sVar1;

@@ -39,7 +39,7 @@ undefined4 * TInfoBarBehavior::CreateObject(void)
 // GHIDRA_NAME TInfoBarBehavior::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TInfoBarBehavior::GetRuntimeClass()
+CRuntimeClass * __thiscall TInfoBarBehavior::GetRuntimeClass(TInfoBarBehavior *this)
 
 {
   return &classTInfoBarBehavior;
@@ -49,7 +49,8 @@ CRuntimeClass * TInfoBarBehavior::GetRuntimeClass()
 // GHIDRA_NAME TInfoBarBehavior::ConstructTInfoBarBehaviorBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTInfoBarBehaviorBaseState(void)
 
-TInfoBarBehavior * TInfoBarBehavior::ConstructTInfoBarBehaviorBaseState()
+TInfoBarBehavior * __thiscall
+TInfoBarBehavior::ConstructTInfoBarBehaviorBaseState(TInfoBarBehavior *this)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -73,7 +74,8 @@ TInfoBarBehavior * TInfoBarBehavior::ConstructTInfoBarBehaviorBaseState()
 // GHIDRA_NAME TInfoBarBehavior::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TInfoBarBehavior * TInfoBarBehavior::_scalar_deleting_destructor_(byte param_1)
+TInfoBarBehavior * __thiscall
+TInfoBarBehavior::_scalar_deleting_destructor_(TInfoBarBehavior *this,byte param_1)
 
 {
   func_0x00407595();
@@ -138,7 +140,7 @@ TInfoBarBehavior::InitializeInfoBarTagEntryWithOptionalDummyChild
 // GHIDRA_NAME TInfoBarBehavior::RefreshInfoBarCursorPanelRegionClip
 // GHIDRA_PROTO undefined __thiscall RefreshInfoBarCursorPanelRegionClip(void)
 
-uint TInfoBarBehavior::RefreshInfoBarCursorPanelRegionClip()
+uint __thiscall TInfoBarBehavior::RefreshInfoBarCursorPanelRegionClip(TInfoBarBehavior *this)
 
 {
   uint uVar1;

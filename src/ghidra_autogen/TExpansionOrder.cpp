@@ -25,7 +25,7 @@ undefined4 * TExpansionOrder::CreateObject(void)
 // GHIDRA_NAME TExpansionOrder::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TExpansionOrder::GetRuntimeClass()
+CRuntimeClass * __thiscall TExpansionOrder::GetRuntimeClass(TExpansionOrder *this)
 
 {
   return &classTExpansionOrder;
@@ -35,7 +35,8 @@ CRuntimeClass * TExpansionOrder::GetRuntimeClass()
 // GHIDRA_NAME TExpansionOrder::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TExpansionOrder * TExpansionOrder::_scalar_deleting_destructor_(byte param_1)
+TExpansionOrder * __thiscall
+TExpansionOrder::_scalar_deleting_destructor_(TExpansionOrder *this,byte param_1)
 
 {
   func_0x004059ca();
@@ -49,7 +50,7 @@ TExpansionOrder * TExpansionOrder::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TExpansionOrder::DestructTExpansionOrderAndMaybeFree
 // GHIDRA_PROTO undefined __thiscall DestructTExpansionOrderAndMaybeFree(void)
 
-void TExpansionOrder::DestructTExpansionOrderAndMaybeFree()
+void __thiscall TExpansionOrder::DestructTExpansionOrderAndMaybeFree(TExpansionOrder *this)
 
 {
   this->vftable = (TExpansionOrderVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4
@@ -58,11 +59,11 @@ void TExpansionOrder::DestructTExpansionOrderAndMaybeFree()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B9010
-// GHIDRA_NAME TExpansionOrder::InitializeCityProductionState_Impl_At004b9010
-// GHIDRA_PROTO undefined __thiscall InitializeCityProductionState_Impl_At004b9010(int param_1, undefined2 param_2, undefined2 param_3, undefined2 param_4, undefined2 param_5)
+// GHIDRA_NAME TExpansionOrder::ExpansionOrderSlot12
+// GHIDRA_PROTO undefined __thiscall ExpansionOrderSlot12(int param_1, undefined2 param_2, undefined2 param_3, undefined2 param_4, undefined2 param_5)
 
 void __thiscall
-TExpansionOrder::InitializeCityProductionState_Impl_At004b9010
+TExpansionOrder::ExpansionOrderSlot12
           (TExpansionOrder *this,int param_1,undefined2 param_2,undefined2 param_3,
           undefined2 param_4,undefined2 param_5)
 
@@ -103,7 +104,7 @@ TExpansionOrder::InitializeCityProductionState_Impl_At004b9010
    Writes final slot value into city +0x1DC and updates mirror/delta table at +0x1FC.
    Used in command paths that do not require the slot 14 special branch. */
 
-void TExpansionOrder::CommitIfPending()
+void __thiscall TExpansionOrder::CommitIfPending(TExpansionOrder *this)
 
 {
   short *psVar1;
@@ -156,7 +157,7 @@ LAB_004b9154:
 // GHIDRA_NAME TExpansionOrder::MaxOrder
 // GHIDRA_PROTO undefined __thiscall MaxOrder(void)
 
-uint TExpansionOrder::MaxOrder()
+uint __thiscall TExpansionOrder::MaxOrder(TExpansionOrder *this)
 
 {
   short sVar1;
@@ -185,7 +186,7 @@ uint TExpansionOrder::MaxOrder()
 // GHIDRA_NAME TExpansionOrder::SetQuantity
 // GHIDRA_PROTO undefined __thiscall SetQuantity(short param_1)
 
-undefined4 TExpansionOrder::SetQuantity(short param_1)
+undefined4 __thiscall TExpansionOrder::SetQuantity(TExpansionOrder *this,short param_1)
 
 {
   short *psVar1;
@@ -228,7 +229,7 @@ undefined4 TExpansionOrder::SetQuantity(short param_1)
 // GHIDRA_NAME TExpansionOrder::FillOrderSheet
 // GHIDRA_PROTO undefined __thiscall FillOrderSheet(void)
 
-void TExpansionOrder::FillOrderSheet()
+void __thiscall TExpansionOrder::FillOrderSheet(TExpansionOrder *this)
 
 {
   undefined2 uStack00000004;

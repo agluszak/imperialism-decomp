@@ -36,7 +36,7 @@ undefined4 * TTaskForce::CreateObject(void)
 // GHIDRA_NAME TTaskForce::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TTaskForce::GetRuntimeClass()
+CRuntimeClass * __thiscall TTaskForce::GetRuntimeClass(TTaskForce *this)
 
 {
   return &classTTaskForce;
@@ -46,7 +46,8 @@ CRuntimeClass * TTaskForce::GetRuntimeClass()
 // GHIDRA_NAME TTaskForce::ConstructTTaskForce
 // GHIDRA_PROTO undefined __thiscall ConstructTTaskForce(undefined4 param_1, undefined2 param_2)
 
-void TTaskForce::ConstructTTaskForce(undefined4 param_1, undefined2 param_2)
+void __thiscall
+TTaskForce::ConstructTTaskForce(TTaskForce *this,undefined4 param_1,undefined2 param_2)
 
 {
   *(undefined4 *)&this->field_0x18 = param_1;
@@ -69,7 +70,7 @@ void TTaskForce::ConstructTTaskForce(undefined4 param_1, undefined2 param_2)
 // GHIDRA_NAME TTaskForce::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TTaskForce * TTaskForce::_scalar_deleting_destructor_(byte param_1)
+TTaskForce * __thiscall TTaskForce::_scalar_deleting_destructor_(TTaskForce *this,byte param_1)
 
 {
   func_0x004064d8();
@@ -88,7 +89,7 @@ TTaskForce * TTaskForce::_scalar_deleting_destructor_(byte param_1)
 
 /* Setting prototype: void DeleteMapOrderEntryAndUnlink(int* pMapOrderEntry) */
 
-void TTaskForce::Free(int *pMapOrderEntry)
+void __thiscall TTaskForce::Free(TTaskForce *this,int *pMapOrderEntry)
 
 {
   int iVar1;
@@ -145,7 +146,7 @@ void TTaskForce::Free(int *pMapOrderEntry)
 // GHIDRA_NAME TTaskForce::WriteTo
 // GHIDRA_PROTO undefined __thiscall WriteTo(int * param_1)
 
-void TTaskForce::WriteTo(int *param_1)
+void __thiscall TTaskForce::WriteTo(TTaskForce *this,int *param_1)
 
 {
   code *pcVar1;
@@ -237,7 +238,7 @@ void TTaskForce::WriteTo(int *param_1)
 // GHIDRA_NAME TTaskForce::ReadFrom
 // GHIDRA_PROTO undefined __thiscall ReadFrom(int * param_1)
 
-void TTaskForce::ReadFrom(int *param_1)
+void __thiscall TTaskForce::ReadFrom(TTaskForce *this,int *param_1)
 
 {
   code *pcVar1;
@@ -358,7 +359,7 @@ void TTaskForce::ReadFrom(int *param_1)
 
 /* Setting prototype: void RequeueMapOrderEntry(int* pMapOrderEntry) */
 
-void TTaskForce::RequeueMapOrderEntry(int *pMapOrderEntry)
+void __thiscall TTaskForce::RequeueMapOrderEntry(TTaskForce *this,int *pMapOrderEntry)
 
 {
   int *piVar1;

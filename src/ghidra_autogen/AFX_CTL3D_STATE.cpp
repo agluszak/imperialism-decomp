@@ -3,6 +3,23 @@
 // Program: Imperialism.exe
 // Bucket: AFX_CTL3D_STATE.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x005E5440
+// GHIDRA_NAME _AFX_CTL3D_STATE>::CreateObject
+// GHIDRA_PROTO undefined CreateObject()
+
+undefined4 * _AFX_CTL3D_STATE>::CreateObject(void)
+
+{
+  undefined4 *puVar1;
+  
+  puVar1 = (undefined4 *)new(0x30);
+  if (puVar1 != (undefined4 *)0x0) {
+    *puVar1 = &PTR__scalar_deleting_destructor__00670554;
+    return puVar1;
+  }
+  return (undefined4 *)0x0;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x005E5455
 // GHIDRA_NAME _AFX_CTL3D_STATE::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined 'scalar_deleting_destructor'()
@@ -13,7 +30,7 @@ _AFX_CTL3D_STATE::_scalar_deleting_destructor_(undefined4 param_1,byte param_2)
 {
   ~_AFX_CTL3D_STATE();
   if ((param_2 & 1) != 0) {
-    CNoTrackObject::delete(param_1);
+    delete(param_1);
   }
   return param_1;
 }

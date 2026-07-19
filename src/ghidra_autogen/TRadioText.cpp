@@ -7,7 +7,7 @@
 // GHIDRA_NAME TRadioText::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TRadioText * TRadioText::_scalar_deleting_destructor_(byte param_1)
+TRadioText * __thiscall TRadioText::_scalar_deleting_destructor_(TRadioText *this,byte param_1)
 
 {
   func_0x0040688e();
@@ -56,7 +56,7 @@ undefined4 * TRadioText::CreateObject(void)
 // GHIDRA_NAME TRadioText::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TRadioText::GetRuntimeClass()
+CRuntimeClass * __thiscall TRadioText::GetRuntimeClass(TRadioText *this)
 
 {
   return &classTRadioText;
@@ -66,7 +66,7 @@ CRuntimeClass * TRadioText::GetRuntimeClass()
 // GHIDRA_NAME TRadioText::NoOpUiLifecycleHook
 // GHIDRA_PROTO undefined __thiscall NoOpUiLifecycleHook(void)
 
-void TRadioText::NoOpUiLifecycleHook()
+void __thiscall TRadioText::NoOpUiLifecycleHook(TRadioText *this)
 
 {
   func_0x00406ba9();
@@ -77,7 +77,7 @@ void TRadioText::NoOpUiLifecycleHook()
 // GHIDRA_NAME TRadioText::ApplyRectSlot110
 // GHIDRA_PROTO undefined __thiscall ApplyRectSlot110(void)
 
-void TRadioText::ApplyRectSlot110()
+void __thiscall TRadioText::ApplyRectSlot110(TRadioText *this)
 
 {
   TView *pTVar1;
@@ -98,7 +98,7 @@ void TRadioText::ApplyRectSlot110()
       uVar3 = CONCAT22(extraout_var_00,(short)pTVar1[1].field2c);
     }
     func_0x00407ae5(uVar3,1);
-    func_0x00406546(&stack0xffffffe8);
+    thunk_FillRectWithQuickDrawBrushAndContextOffset(&stack0xffffffe8);
     func_0x00409444(uVar2);
   }
   func_0x0040991c(in_stack_00000004);
@@ -109,7 +109,7 @@ void TRadioText::ApplyRectSlot110()
 // GHIDRA_NAME TRadioText::OrphanCallChain_C3_I13_00579580
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C3_I13_00579580(void)
 
-void TRadioText::OrphanCallChain_C3_I13_00579580()
+void __thiscall TRadioText::OrphanCallChain_C3_I13_00579580(TRadioText *this)
 
 {
   TRadioTextVtbl *pTVar1;

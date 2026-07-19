@@ -38,7 +38,7 @@ undefined4 * TEvent::CreateObject(void)
 // GHIDRA_NAME TEvent::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TEvent::GetRuntimeClass()
+CRuntimeClass * __thiscall TEvent::GetRuntimeClass(TEvent *this)
 
 {
   return &classTEvent;
@@ -48,7 +48,7 @@ CRuntimeClass * TEvent::GetRuntimeClass()
 // GHIDRA_NAME TEvent::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TEvent * TEvent::_scalar_deleting_destructor_(byte param_1)
+TEvent * __thiscall TEvent::_scalar_deleting_destructor_(TEvent *this,byte param_1)
 
 {
   func_0x0040734c();

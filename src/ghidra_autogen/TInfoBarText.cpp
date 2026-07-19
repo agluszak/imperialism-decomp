@@ -7,7 +7,8 @@
 // GHIDRA_NAME TInfoBarText::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TInfoBarText * TInfoBarText::_scalar_deleting_destructor_(byte param_1)
+TInfoBarText * __thiscall
+TInfoBarText::_scalar_deleting_destructor_(TInfoBarText *this,byte param_1)
 
 {
   func_0x00402766();
@@ -60,17 +61,17 @@ undefined4 * TInfoBarText::CreateObject(void)
 // GHIDRA_NAME TInfoBarText::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TInfoBarText::GetRuntimeClass()
+CRuntimeClass * __thiscall TInfoBarText::GetRuntimeClass(TInfoBarText *this)
 
 {
   return &classTInfoBarText;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B66B0
-// GHIDRA_NAME TInfoBarText::SerializeRecordList_0x0C_WithBlockPool_A
-// GHIDRA_PROTO undefined __thiscall SerializeRecordList_0x0C_WithBlockPool_A(RECT * param_1)
+// GHIDRA_NAME TInfoBarText::SetTextAndLayoutRect
+// GHIDRA_PROTO undefined __thiscall SetTextAndLayoutRect(RECT * param_1)
 
-void TInfoBarText::SerializeRecordList_0x0C_WithBlockPool_A(RECT *param_1)
+void __thiscall TInfoBarText::SetTextAndLayoutRect(TInfoBarText *this,RECT *param_1)
 
 {
   TInfoBarTextVtbl *pTVar1;
@@ -102,10 +103,10 @@ void TInfoBarText::SerializeRecordList_0x0C_WithBlockPool_A(RECT *param_1)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B6770
-// GHIDRA_NAME TInfoBarText::DestructTInfoBarTextAndMaybeFree
-// GHIDRA_PROTO undefined __thiscall DestructTInfoBarTextAndMaybeFree(void)
+// GHIDRA_NAME TInfoBarText::ClearTextAndLayoutRect
+// GHIDRA_PROTO undefined __thiscall ClearTextAndLayoutRect(void)
 
-void TInfoBarText::DestructTInfoBarTextAndMaybeFree()
+void __thiscall TInfoBarText::ClearTextAndLayoutRect(TInfoBarText *this)
 
 {
   TInfoBarTextVtbl *pTVar1;
@@ -136,7 +137,7 @@ void TInfoBarText::DestructTInfoBarTextAndMaybeFree()
 // GHIDRA_NAME TInfoBarText::Dump
 // GHIDRA_PROTO undefined __thiscall Dump(void)
 
-void TInfoBarText::Dump()
+void __thiscall TInfoBarText::Dump(TInfoBarText *this)
 
 {
   (*this->vftable->InitializeMapHintTextStyleAndThemeFlags)(0x2b6c,0x2b67);
@@ -144,10 +145,10 @@ void TInfoBarText::Dump()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B6840
-// GHIDRA_NAME TInfoBarText::AssertValid
-// GHIDRA_PROTO undefined __thiscall AssertValid(void)
+// GHIDRA_NAME TInfoBarText::InitializeMapHintTextStyleAndThemeFlags
+// GHIDRA_PROTO undefined __thiscall InitializeMapHintTextStyleAndThemeFlags(void)
 
-void TInfoBarText::AssertValid()
+void __thiscall TInfoBarText::InitializeMapHintTextStyleAndThemeFlags(TInfoBarText *this)
 
 {
   TInfoBarTextVtbl *pTVar1;
@@ -162,7 +163,7 @@ void TInfoBarText::AssertValid()
   local_5 = 0;
   local_4 = 0;
   local_3 = 0;
-  func_0x00406afa(&local_c,0,0xc);
+  thunk_BuildUiTextStyleDescriptor(&local_c,0,0xc);
   pTVar1 = this->vftable;
   (*pTVar1->ConstructTMapKeyBaseState_Impl)(&local_c,0);
   (*pTVar1->OrphanCallChain_C1_I09_0048ff70)(0xffffffff,0);
@@ -170,9 +171,9 @@ void TInfoBarText::AssertValid()
   *(undefined4 *)&this->field_0xa8 = 0;
   *(undefined4 *)&this->field_0xac = 0;
   *(undefined4 *)&this->field_0xb0 = 0;
-  func_0x004093cc(local_c,&stack0xffffffe0);
+  thunk_MapUiThemeCodeToStyleFlags(local_c,&stack0xffffffe0);
   *(undefined4 *)&this->field_0x98 = unaff_EDI;
-  func_0x004093cc();
+  thunk_MapUiThemeCodeToStyleFlags();
   *(undefined4 *)&this->field_0x9c = unaff_EDI;
   this->field_0xa0 = 1;
   return;
@@ -182,7 +183,7 @@ void TInfoBarText::AssertValid()
 // GHIDRA_NAME TInfoBarText::Free
 // GHIDRA_PROTO undefined __thiscall Free(void)
 
-void TInfoBarText::Free()
+void __thiscall TInfoBarText::Free(TInfoBarText *this)
 
 {
   if ((TInfoBarText *)g_pCursorControlPanel == this) {

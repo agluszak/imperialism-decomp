@@ -38,7 +38,7 @@ undefined4 * TDealBookPicture::CreateObject(void)
 // GHIDRA_NAME TDealBookPicture::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TDealBookPicture::GetRuntimeClass()
+CRuntimeClass * __thiscall TDealBookPicture::GetRuntimeClass(TDealBookPicture *this)
 
 {
   return &classTDealBookPicture;
@@ -48,7 +48,8 @@ CRuntimeClass * TDealBookPicture::GetRuntimeClass()
 // GHIDRA_NAME TDealBookPicture::ConstructTDealBookPictureBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTDealBookPictureBaseState(void)
 
-TDealBookPicture * TDealBookPicture::ConstructTDealBookPictureBaseState()
+TDealBookPicture * __thiscall
+TDealBookPicture::ConstructTDealBookPictureBaseState(TDealBookPicture *this)
 
 {
   func_0x00401122();
@@ -62,7 +63,8 @@ TDealBookPicture * TDealBookPicture::ConstructTDealBookPictureBaseState()
 // GHIDRA_NAME TDealBookPicture::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TDealBookPicture * TDealBookPicture::_scalar_deleting_destructor_(byte param_1)
+TDealBookPicture * __thiscall
+TDealBookPicture::_scalar_deleting_destructor_(TDealBookPicture *this,byte param_1)
 
 {
   func_0x00405434();
@@ -210,7 +212,7 @@ TDealBookPicture::UpdateDealBookResourceSelectionAndToggleControls
 // GHIDRA_NAME TDealBookPicture::BuildSelectedNationOrderCapabilityRows
 // GHIDRA_PROTO undefined __thiscall BuildSelectedNationOrderCapabilityRows(void)
 
-void TDealBookPicture::BuildSelectedNationOrderCapabilityRows()
+void __thiscall TDealBookPicture::BuildSelectedNationOrderCapabilityRows(TDealBookPicture *this)
 
 {
   short sVar1;
@@ -432,7 +434,7 @@ LAB_005bb355:
     func_0x004059b6(0,0x3c);
     (*g_pSimMgr->vftable[0x10].slot_0x04)(0x2741,7,&CStack_5c);
     func_0x00402e87(&local_68);
-    func_0x00406afa(&uStack_3c,0,0xe,0x2b67);
+    thunk_BuildUiTextStyleDescriptor(&uStack_3c,0,0xe,0x2b67);
     func_0x00408521(&uStack_3c);
     func_0x00408bf2(1);
     (**(code **)(**(int **)&this->field_0x9c + 0x1a0))(uVar5);
@@ -580,7 +582,7 @@ LAB_005bb355:
 // GHIDRA_NAME TDealBookPicture::HandleEvent
 // GHIDRA_PROTO undefined __thiscall HandleEvent(int param_1, int param_2)
 
-void TDealBookPicture::HandleEvent(int param_1, int param_2)
+void __thiscall TDealBookPicture::HandleEvent(TDealBookPicture *this,int param_1,int param_2)
 
 {
   _vslot_fn *p_Var1;
@@ -708,7 +710,7 @@ void TDealBookPicture::HandleEvent(int param_1, int param_2)
       atStack_4c[0].bottom._0_1_ = 3;
       CString::CString(&CStack_94);
       atStack_4c[0].bottom._0_1_ = 4;
-      CString__Format(&CStack_94,&g_szDecimalFormat,
+      CString::Format(&CStack_94,&g_szDecimalFormat,
                       (short)((int)((int)*(short *)&g_pSimMgr->field_0x2c +
                                    ((int)*(short *)&g_pSimMgr->field_0x2c >> 0x1f & 3U)) >> 2) +
                       0x717);

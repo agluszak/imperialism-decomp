@@ -4,10 +4,10 @@
 // Bucket: TNavyTacUnit.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0059ED60
-// GHIDRA_NAME TNavyTacUnit::ConstructTNavyPlayerBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTNavyPlayerBaseState(void)
+// GHIDRA_NAME TNavyTacUnit::GetSourceTaskForce
+// GHIDRA_PROTO undefined __thiscall GetSourceTaskForce(void)
 
-undefined4 TNavyTacUnit::ConstructTNavyPlayerBaseState()
+undefined4 __thiscall TNavyTacUnit::GetSourceTaskForce(TNavyTacUnit *this)
 
 {
   return *(undefined4 *)&this->field_0x34;
@@ -17,7 +17,8 @@ undefined4 TNavyTacUnit::ConstructTNavyPlayerBaseState()
 // GHIDRA_NAME TNavyTacUnit::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TNavyTacUnit * TNavyTacUnit::_scalar_deleting_destructor_(byte param_1)
+TNavyTacUnit * __thiscall
+TNavyTacUnit::_scalar_deleting_destructor_(TNavyTacUnit *this,byte param_1)
 
 {
   func_0x00403d46();
@@ -48,27 +49,27 @@ undefined4 * TNavyTacUnit::CreateObject(void)
 // GHIDRA_NAME TNavyTacUnit::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TNavyTacUnit::GetRuntimeClass()
+CRuntimeClass * __thiscall TNavyTacUnit::GetRuntimeClass(TNavyTacUnit *this)
 
 {
   return &classTNavyTacUnit;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005A6310
-// GHIDRA_NAME TNavyTacUnit::OrphanTiny_ReturnZero_005a5d40
-// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_005a5d40(void)
+// GHIDRA_NAME TNavyTacUnit::GetBaseActionPoints
+// GHIDRA_PROTO undefined __thiscall GetBaseActionPoints(void)
 
-undefined4 TNavyTacUnit::OrphanTiny_ReturnZero_005a5d40()
+undefined4 __thiscall TNavyTacUnit::GetBaseActionPoints(TNavyTacUnit *this)
 
 {
   return *(undefined4 *)&this->field_0x3c;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005A6330
-// GHIDRA_NAME TNavyTacUnit::OrphanTiny_ReturnZero_005a5d60
-// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_005a5d60(void)
+// GHIDRA_NAME TNavyTacUnit::GetUnitRange
+// GHIDRA_PROTO undefined __thiscall GetUnitRange(void)
 
-int TNavyTacUnit::OrphanTiny_ReturnZero_005a5d60()
+int __thiscall TNavyTacUnit::GetUnitRange(TNavyTacUnit *this)
 
 {
   short sVar1;
@@ -81,7 +82,7 @@ int TNavyTacUnit::OrphanTiny_ReturnZero_005a5d60()
 // GHIDRA_NAME TNavyTacUnit::OrphanLeaf_NoCall_Ins02_005a5d80
 // GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins02_005a5d80(void)
 
-float10 TNavyTacUnit::OrphanLeaf_NoCall_Ins02_005a5d80()
+float10 __thiscall TNavyTacUnit::OrphanLeaf_NoCall_Ins02_005a5d80(TNavyTacUnit *this)
 
 {
   return (float10)*(float *)(&DAT_00669d48 + *(int *)&this->field_0xc * 4);
@@ -91,7 +92,7 @@ float10 TNavyTacUnit::OrphanLeaf_NoCall_Ins02_005a5d80()
 // GHIDRA_NAME TNavyTacUnit::OrphanLeaf_NoCall_Ins02_005a5da0
 // GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins02_005a5da0(void)
 
-float10 TNavyTacUnit::OrphanLeaf_NoCall_Ins02_005a5da0()
+float10 __thiscall TNavyTacUnit::OrphanLeaf_NoCall_Ins02_005a5da0(TNavyTacUnit *this)
 
 {
   return (float10)*(float *)(&DAT_00669d28 + *(int *)&this->field_0xc * 4);

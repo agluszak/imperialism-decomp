@@ -40,7 +40,8 @@ undefined4 * TRailheadDialog::CreateObject(void)
 // GHIDRA_NAME TRailheadDialog::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TRailheadDialog * TRailheadDialog::_scalar_deleting_destructor_(byte param_1)
+TRailheadDialog * __thiscall
+TRailheadDialog::_scalar_deleting_destructor_(TRailheadDialog *this,byte param_1)
 
 {
   func_0x004026df();
@@ -54,7 +55,7 @@ TRailheadDialog * TRailheadDialog::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TRailheadDialog::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TRailheadDialog::GetRuntimeClass()
+CRuntimeClass * __thiscall TRailheadDialog::GetRuntimeClass(TRailheadDialog *this)
 
 {
   return &classTRailheadDialog;
@@ -66,7 +67,8 @@ CRuntimeClass * TRailheadDialog::GetRuntimeClass()
 
 /* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 
-void TRailheadDialog::ConstructTRailheadDialogBaseState(int param_1)
+void __thiscall
+TRailheadDialog::ConstructTRailheadDialogBaseState(TRailheadDialog *this,int param_1)
 
 {
   int iVar1;
@@ -125,7 +127,7 @@ void TRailheadDialog::ConstructTRailheadDialogBaseState(int param_1)
 // GHIDRA_NAME TRailheadDialog::VTableSlot69
 // GHIDRA_PROTO undefined __thiscall VTableSlot69(int param_1)
 
-void TRailheadDialog::VTableSlot69(int param_1)
+void __thiscall TRailheadDialog::VTableSlot69(TRailheadDialog *this,int param_1)
 
 {
   undefined uVar1;

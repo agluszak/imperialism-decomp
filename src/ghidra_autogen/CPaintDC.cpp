@@ -49,7 +49,7 @@ CDC * CPaintDC::CPaintDC(void)
    
    Library: nafxcw retail msvc500:static */
 
-void * CPaintDC::_scalar_deleting_destructor_(uint param_1)
+void * __thiscall CPaintDC::_scalar_deleting_destructor_(CPaintDC *this,uint param_1)
 
 {
   ~CPaintDC(this);
@@ -74,7 +74,7 @@ void * CPaintDC::_scalar_deleting_destructor_(uint param_1)
    
    Library: nafxcw retail msvc500:static */
 
-void CPaintDC::~CPaintDC()
+void __thiscall CPaintDC::~CPaintDC(CPaintDC *this)
 
 {
   undefined4 *extraout_ECX;

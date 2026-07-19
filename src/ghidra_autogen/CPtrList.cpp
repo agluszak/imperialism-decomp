@@ -7,7 +7,7 @@
 // GHIDRA_NAME CPtrList::CPtrList
 // GHIDRA_PROTO undefined __thiscall CPtrList(undefined4 param_1)
 
-void CPtrList::CPtrList(int param_1)
+void __thiscall CPtrList::CPtrList(CPtrList *this,int param_1)
 
 {
   this->m_nCount = 0;
@@ -24,7 +24,7 @@ void CPtrList::CPtrList(int param_1)
 // GHIDRA_NAME CPtrList::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-CPtrList * CPtrList::_scalar_deleting_destructor_(byte param_1)
+CPtrList * __thiscall CPtrList::_scalar_deleting_destructor_(CPtrList *this,byte param_1)
 
 {
   ~CPtrList();
@@ -51,7 +51,7 @@ CPtrList * CPtrList::_scalar_deleting_destructor_(byte param_1)
    
    Library: nafxcw retail msvc500:static */
 
-void CPtrList::RemoveAll()
+void __thiscall CPtrList::RemoveAll(CPtrList *this)
 
 {
   this->m_nCount = 0;
@@ -90,7 +90,7 @@ void CPtrList::~CPtrList(void)
 // GHIDRA_NAME CPtrList::NewNode
 // GHIDRA_PROTO undefined __thiscall NewNode(undefined4 param_1, undefined4 param_2)
 
-void CPtrList::NewNode(undefined4 param_1, undefined4 param_2)
+void __thiscall CPtrList::NewNode(CPtrList *this,undefined4 param_1,undefined4 param_2)
 
 {
   int iVar1;
@@ -123,7 +123,7 @@ void CPtrList::NewNode(undefined4 param_1, undefined4 param_2)
 // GHIDRA_NAME CPtrList::FreeNode
 // GHIDRA_PROTO undefined __thiscall FreeNode(undefined4 * param_1)
 
-void CPtrList::FreeNode(undefined4 *param_1)
+void __thiscall CPtrList::FreeNode(CPtrList *this,undefined4 *param_1)
 
 {
   int *piVar1;
@@ -155,7 +155,7 @@ void CPtrList::FreeNode(undefined4 *param_1)
    
    Library: nafxcw retail msvc500:static */
 
-void CPtrList::AddHead(undefined4 param_1)
+void __thiscall CPtrList::AddHead(CPtrList *this,undefined4 param_1)
 
 {
   void *pvVar1;
@@ -187,7 +187,7 @@ void CPtrList::AddHead(undefined4 param_1)
    
    Library: nafxcw retail msvc500:static */
 
-void CPtrList::AddTail(undefined4 param_1)
+void __thiscall CPtrList::AddTail(CPtrList *this,undefined4 param_1)
 
 {
   void *pvVar1;
@@ -310,7 +310,7 @@ void __thiscall CPtrList::InsertAfter(CPtrList *param_1,int *param_2,undefined4 
 // GHIDRA_NAME CPtrList::RemoveAt
 // GHIDRA_PROTO undefined __thiscall RemoveAt(int * param_1)
 
-void CPtrList::RemoveAt(int *param_1)
+void __thiscall CPtrList::RemoveAt(CPtrList *this,int *param_1)
 
 {
   if (param_1 == this->m_pNodeHead) {
@@ -333,7 +333,7 @@ void CPtrList::RemoveAt(int *param_1)
 // GHIDRA_NAME CPtrList::FindIndex
 // GHIDRA_PROTO undefined __thiscall FindIndex(int param_1)
 
-undefined4 * CPtrList::FindIndex(int param_1)
+undefined4 * __thiscall CPtrList::FindIndex(CPtrList *this,int param_1)
 
 {
   undefined4 *puVar1;
@@ -354,7 +354,7 @@ undefined4 * CPtrList::FindIndex(int param_1)
 // GHIDRA_NAME CPtrList::Find
 // GHIDRA_PROTO undefined __thiscall Find(int param_1, undefined4 * param_2)
 
-undefined4 * CPtrList::Find(int param_1, undefined4 *param_2)
+undefined4 * __thiscall CPtrList::Find(CPtrList *this,int param_1,undefined4 *param_2)
 
 {
   if (param_2 != (undefined4 *)0x0) goto LAB_006021e3;
@@ -374,7 +374,7 @@ LAB_006021e3:
 // GHIDRA_NAME CPtrList::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * CPtrList::GetRuntimeClass()
+CRuntimeClass * __thiscall CPtrList::GetRuntimeClass(CPtrList *this)
 
 {
   return &classRuntimeClass;

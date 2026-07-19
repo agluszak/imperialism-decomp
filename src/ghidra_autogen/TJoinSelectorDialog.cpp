@@ -7,7 +7,8 @@
 // GHIDRA_NAME TJoinSelectorDialog::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TJoinSelectorDialog * TJoinSelectorDialog::_scalar_deleting_destructor_(byte param_1)
+TJoinSelectorDialog * __thiscall
+TJoinSelectorDialog::_scalar_deleting_destructor_(TJoinSelectorDialog *this,byte param_1)
 
 {
   func_0x00404aa2();
@@ -51,7 +52,7 @@ undefined4 * TJoinSelectorDialog::CreateObject(void)
 // GHIDRA_NAME TJoinSelectorDialog::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TJoinSelectorDialog::GetRuntimeClass()
+CRuntimeClass * __thiscall TJoinSelectorDialog::GetRuntimeClass(TJoinSelectorDialog *this)
 
 {
   return &classTJoinSelectorDialog;
@@ -61,7 +62,7 @@ CRuntimeClass * TJoinSelectorDialog::GetRuntimeClass()
 // GHIDRA_NAME TJoinSelectorDialog::NoOpUiLifecycleHook
 // GHIDRA_PROTO undefined __thiscall NoOpUiLifecycleHook(void)
 
-void TJoinSelectorDialog::NoOpUiLifecycleHook()
+void __thiscall TJoinSelectorDialog::NoOpUiLifecycleHook(TJoinSelectorDialog *this)
 
 {
   _vslot_fn *p_Var1;
@@ -117,7 +118,7 @@ void TJoinSelectorDialog::NoOpUiLifecycleHook()
 // GHIDRA_NAME TJoinSelectorDialog::HandleEvent
 // GHIDRA_PROTO undefined __thiscall HandleEvent(int param_1, int param_2)
 
-void TJoinSelectorDialog::HandleEvent(int param_1, int param_2)
+void __thiscall TJoinSelectorDialog::HandleEvent(TJoinSelectorDialog *this,int param_1,int param_2)
 
 {
   int iVar1;

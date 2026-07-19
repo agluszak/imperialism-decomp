@@ -55,17 +55,59 @@ int * TCitySiteView::CreateObject(void)
 // GHIDRA_NAME TCitySiteView::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TCitySiteView::GetRuntimeClass()
+CRuntimeClass * __thiscall TCitySiteView::GetRuntimeClass(TCitySiteView *this)
 
 {
   return &classTCitySiteView;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0051BEB0
+// GHIDRA_NAME TCitySiteView::TCitySiteView
+// GHIDRA_PROTO undefined __thiscall TCitySiteView(void)
+
+TCitySiteView * __thiscall TCitySiteView::TCitySiteView(TCitySiteView *this)
+
+{
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 local_18;
+  undefined4 local_14;
+  TCitySiteView *local_10;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_00633f58;
+  local_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &local_c;
+  local_10 = this;
+  func_0x004037ab();
+  *(undefined4 *)&this->field_0x60 = 0;
+  this->field_0x34c = 0;
+  *(undefined4 *)&this->field_0x35c = 0;
+  this->vftable = (TCitySiteViewVtbl *)&TMapDialog::_vftable_;
+  *(undefined4 *)&this->field_0x64 = 0;
+  local_4 = 0;
+  func_0x00406c1c(CONCAT22((short)((uint)&local_14 >> 0x10),
+                           *(undefined2 *)&g_pGlobalMapState->field_0x6),&local_18,&local_14);
+  (*this->vftable->OrphanRetStub_00596680)(local_14,local_18);
+  *(undefined2 *)&this->field_0x354 = 0;
+  *(undefined2 *)&this->field_0x356 = 0xffff;
+  this->field_0x358 = 0;
+  *(undefined2 *)&this->field_0x76 = 1;
+  *(undefined2 *)&this->field_0x78 = 0x40;
+  this->field_0x360 = 0;
+  this->vftable = &_vftable_;
+  *unaff_FS_OFFSET = local_14;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0051BFA0
 // GHIDRA_NAME TCitySiteView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TCitySiteView * TCitySiteView::_scalar_deleting_destructor_(byte param_1)
+TCitySiteView * __thiscall
+TCitySiteView::_scalar_deleting_destructor_(TCitySiteView *this,byte param_1)
 
 {
   func_0x00401280();
@@ -79,7 +121,7 @@ TCitySiteView * TCitySiteView::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TCitySiteView::NoOpUiLifecycleHook
 // GHIDRA_PROTO undefined __thiscall NoOpUiLifecycleHook(void)
 
-void TCitySiteView::NoOpUiLifecycleHook()
+void __thiscall TCitySiteView::NoOpUiLifecycleHook(TCitySiteView *this)
 
 {
   short sVar1;
@@ -120,7 +162,7 @@ void TCitySiteView::NoOpUiLifecycleHook()
         *(int *)&this->field_0x368 = (int)(short)iStack_28;
       }
       local_10[0] = local_10[0] + -5;
-      iStack_28 = iStack_28 + (3 - DAT_006a33b0);
+      iStack_28 = iStack_28 + (3 - g_wMapDialogViewportTileSpan);
       if (*(int *)&this->field_0x374 < (int)(short)local_10[0]) {
         *(int *)&this->field_0x374 = (int)(short)local_10[0];
       }
@@ -143,10 +185,10 @@ void TCitySiteView::NoOpUiLifecycleHook()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0051C2A0
-// GHIDRA_NAME TCitySiteView::OrphanRetStub_005966a0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_005966a0(undefined4 param_1)
+// GHIDRA_NAME TCitySiteView::SetMapViewTileIndex
+// GHIDRA_PROTO undefined __thiscall SetMapViewTileIndex(undefined4 param_1)
 
-void TCitySiteView::OrphanRetStub_005966a0(undefined4 param_1)
+void __thiscall TCitySiteView::SetMapViewTileIndex(TCitySiteView *this,undefined4 param_1)
 
 {
   TCitySiteView *pTStack_4;
@@ -158,10 +200,10 @@ void TCitySiteView::OrphanRetStub_005966a0(undefined4 param_1)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0051C2F0
-// GHIDRA_NAME TCitySiteView::OrphanRetStub_00596680
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_00596680(void)
+// GHIDRA_NAME TCitySiteView::SetMapViewCellCoordinates
+// GHIDRA_PROTO undefined __thiscall SetMapViewCellCoordinates(void)
 
-void TCitySiteView::OrphanRetStub_00596680()
+void __thiscall TCitySiteView::SetMapViewCellCoordinates(TCitySiteView *this)
 
 {
   (*this->vftable->ReleaseRuntimeSelectionOwnerAndDestroyObject)();
@@ -219,7 +261,7 @@ TCitySiteView::SetMapDialogCellCoordinatesAndRefresh
    Returns:
    - void */
 
-void TCitySiteView::OrphanRetStub_00596080()
+void __thiscall TCitySiteView::OrphanRetStub_00596080(TCitySiteView *this)
 
 {
   char cVar1;
@@ -346,7 +388,7 @@ void TCitySiteView::OrphanRetStub_00596080()
 // GHIDRA_NAME TCitySiteView::HandleMapClickByInteractionMode
 // GHIDRA_PROTO undefined __thiscall HandleMapClickByInteractionMode(void)
 
-void TCitySiteView::HandleMapClickByInteractionMode()
+void __thiscall TCitySiteView::HandleMapClickByInteractionMode(TCitySiteView *this)
 
 {
   TMapMgrVtbl *pTVar1;

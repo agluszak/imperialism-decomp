@@ -7,7 +7,8 @@
 // GHIDRA_NAME TMiniShipLine::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TMiniShipLine * TMiniShipLine::_scalar_deleting_destructor_(byte param_1)
+TMiniShipLine * __thiscall
+TMiniShipLine::_scalar_deleting_destructor_(TMiniShipLine *this,byte param_1)
 
 {
   func_0x004041ba();
@@ -51,17 +52,18 @@ undefined4 * TMiniShipLine::CreateObject(void)
 // GHIDRA_NAME TMiniShipLine::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TMiniShipLine::GetRuntimeClass()
+CRuntimeClass * __thiscall TMiniShipLine::GetRuntimeClass(TMiniShipLine *this)
 
 {
   return &classTMiniShipLine;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00569C80
-// GHIDRA_NAME TMiniShipLine::OrphanRetStub_0056f460
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0056f460(undefined4 param_1, undefined4 param_2)
+// GHIDRA_NAME TMiniShipLine::CreateLineItemView
+// GHIDRA_PROTO undefined __thiscall CreateLineItemView(undefined4 param_1, undefined4 param_2)
 
-void TMiniShipLine::OrphanRetStub_0056f460(undefined4 param_1, undefined4 param_2)
+void __thiscall
+TMiniShipLine::CreateLineItemView(TMiniShipLine *this,undefined4 param_1,undefined4 param_2)
 
 {
   undefined4 uVar1;

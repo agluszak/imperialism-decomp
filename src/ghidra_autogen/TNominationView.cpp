@@ -7,7 +7,7 @@
 // GHIDRA_NAME TNominationView::OrphanRetStub_004305c0
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_004305c0(void)
 
-void TNominationView::OrphanRetStub_004305c0()
+void __thiscall TNominationView::OrphanRetStub_004305c0(TNominationView *this)
 
 {
   return;
@@ -17,7 +17,8 @@ void TNominationView::OrphanRetStub_004305c0()
 // GHIDRA_NAME TNominationView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TNominationView * TNominationView::_scalar_deleting_destructor_(byte param_1)
+TNominationView * __thiscall
+TNominationView::_scalar_deleting_destructor_(TNominationView *this,byte param_1)
 
 {
   func_0x00408e4f();
@@ -61,7 +62,7 @@ undefined4 * TNominationView::CreateObject(void)
 // GHIDRA_NAME TNominationView::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TNominationView::GetRuntimeClass()
+CRuntimeClass * __thiscall TNominationView::GetRuntimeClass(TNominationView *this)
 
 {
   return &classTNominationView;
@@ -71,7 +72,7 @@ CRuntimeClass * TNominationView::GetRuntimeClass()
 // GHIDRA_NAME TNominationView::NoOpUiLifecycleHook
 // GHIDRA_PROTO undefined __thiscall NoOpUiLifecycleHook(void)
 
-void TNominationView::NoOpUiLifecycleHook()
+void __thiscall TNominationView::NoOpUiLifecycleHook(TNominationView *this)
 
 {
   _vslot_fn *p_Var1;
@@ -139,7 +140,7 @@ void TNominationView::NoOpUiLifecycleHook()
   puStack_4c = &stack0xffffffd8;
   uStack_48 = 0;
   uStack_50 = 0x4fb802;
-  func_0x00406afa();
+  thunk_BuildUiTextStyleDescriptor();
   puStack_44 = &stack0xffffffd8;
   uStack_40 = 1;
   uStack_48 = 0x4fb814;
@@ -163,7 +164,7 @@ void TNominationView::NoOpUiLifecycleHook()
   acStack_68[1] = -0x48;
   acStack_68[2] = 'O';
   acStack_68[3] = '\0';
-  func_0x00406afa();
+  thunk_BuildUiTextStyleDescriptor();
   puStack_5c = &uStack_40;
   uStack_58 = 1;
   uStack_60 = 0x4fb85d;
@@ -211,7 +212,7 @@ void TNominationView::NoOpUiLifecycleHook()
 // GHIDRA_NAME TNominationView::HandleEvent
 // GHIDRA_PROTO undefined __thiscall HandleEvent(int param_1)
 
-void TNominationView::HandleEvent(int param_1)
+void __thiscall TNominationView::HandleEvent(TNominationView *this,int param_1)
 
 {
   if (param_1 == 10) {

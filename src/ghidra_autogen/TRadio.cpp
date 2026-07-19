@@ -48,10 +48,10 @@ undefined4 * TRadio::CreateObject(void)
 // GHIDRA_NAME TRadio::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TRadio::GetRuntimeClass()
+CRuntimeClass * __thiscall TRadio::GetRuntimeClass(TRadio *this)
 
 {
-  return &classRuntimeClass;
+  return &classTRadio;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048F080

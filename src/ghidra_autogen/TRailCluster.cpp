@@ -38,17 +38,17 @@ undefined4 * TRailCluster::CreateObject(void)
 // GHIDRA_NAME TRailCluster::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TRailCluster::GetRuntimeClass()
+CRuntimeClass * __thiscall TRailCluster::GetRuntimeClass(TRailCluster *this)
 
 {
-  return &g_pClassDescTRailCluster;
+  return &classTRailCluster;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00589720
 // GHIDRA_NAME TRailCluster::TRailCluster
 // GHIDRA_PROTO undefined __thiscall TRailCluster(void)
 
-TRailCluster * TRailCluster::TRailCluster()
+TRailCluster * __thiscall TRailCluster::TRailCluster(TRailCluster *this)
 
 {
   func_0x00405835();
@@ -62,7 +62,8 @@ TRailCluster * TRailCluster::TRailCluster()
 // GHIDRA_NAME TRailCluster::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TRailCluster * TRailCluster::_scalar_deleting_destructor_(byte param_1)
+TRailCluster * __thiscall
+TRailCluster::_scalar_deleting_destructor_(TRailCluster *this,byte param_1)
 
 {
   func_0x00403841();
@@ -76,7 +77,7 @@ TRailCluster * TRailCluster::_scalar_deleting_destructor_(byte param_1)
 // GHIDRA_NAME TRailCluster::NoOpUiLifecycleHook
 // GHIDRA_PROTO undefined __thiscall NoOpUiLifecycleHook(short param_1)
 
-void TRailCluster::NoOpUiLifecycleHook(short param_1)
+void __thiscall TRailCluster::NoOpUiLifecycleHook(TRailCluster *this,short param_1)
 
 {
   uint uVar1;
@@ -99,7 +100,7 @@ void TRailCluster::NoOpUiLifecycleHook(short param_1)
   if (uVar1 < 0x706f7076) {
     if (uVar1 == 0x706f7075) {
       *(undefined2 *)&this->field_0x8e = 1;
-      iVar3 = TCity::GetBuildingType(this_00,0xf);
+      iVar3 = TCity::thunk_GetCityBuildingProductionValueBySlot(this_00,0xf);
       *(short *)&this->field_0x8c = (short)iVar3;
       sVar2 = 0x3c;
     }
@@ -148,7 +149,7 @@ void TRailCluster::NoOpUiLifecycleHook(short param_1)
 // GHIDRA_NAME TRailCluster::OrphanRetStub_00586ff0
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_00586ff0(void)
 
-void TRailCluster::OrphanRetStub_00586ff0()
+void __thiscall TRailCluster::OrphanRetStub_00586ff0(TRailCluster *this)
 
 {
   (*this->vftable->UpdateTradeMoveControlsFromScaledDrag)();
@@ -159,7 +160,8 @@ void TRailCluster::OrphanRetStub_00586ff0()
 // GHIDRA_NAME TRailCluster::UpdateTradeMoveControlsFromScaledDrag
 // GHIDRA_PROTO undefined __thiscall UpdateTradeMoveControlsFromScaledDrag(short param_1, char param_2)
 
-void TRailCluster::UpdateTradeMoveControlsFromScaledDrag(short param_1, char param_2)
+void __thiscall
+TRailCluster::UpdateTradeMoveControlsFromScaledDrag(TRailCluster *this,short param_1,char param_2)
 
 {
   _vslot_fn *p_Var1;
@@ -242,7 +244,7 @@ void TRailCluster::UpdateTradeMoveControlsFromScaledDrag(short param_1, char par
 // GHIDRA_NAME TRailCluster::UpdateTradeBarFromSelectedMetricRatio_A
 // GHIDRA_PROTO undefined __thiscall UpdateTradeBarFromSelectedMetricRatio_A(void)
 
-void TRailCluster::UpdateTradeBarFromSelectedMetricRatio_A()
+void __thiscall TRailCluster::UpdateTradeBarFromSelectedMetricRatio_A(TRailCluster *this)
 
 {
   int iVar1;
@@ -269,7 +271,7 @@ void TRailCluster::UpdateTradeBarFromSelectedMetricRatio_A()
 // GHIDRA_NAME TRailCluster::HandleEvent
 // GHIDRA_PROTO undefined __thiscall HandleEvent(int param_1, void * param_2, int param_3)
 
-void TRailCluster::HandleEvent(int param_1, void *param_2, int param_3)
+void __thiscall TRailCluster::HandleEvent(TRailCluster *this,int param_1,void *param_2,int param_3)
 
 {
   TRailClusterVtbl *pTVar1;
