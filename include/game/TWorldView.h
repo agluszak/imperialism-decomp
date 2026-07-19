@@ -17,9 +17,18 @@ public:
   unsigned short field6c;
   unsigned short field6e;
   short hoverRegionBand70;
-  // UNRESOLVED_FIELD_ATTRIBUTION: 0x72 stores the previous hoverRegionBand70 at
-  // 0x5958b0, but 0x5964b0 also bumps it as a click-cycle counter wrapping 1..4.
-  short clickCycleCounter72;
+  // +0x72 active region-band index (1..4) the map cursor is currently rendered for --
+  // one coherent field with a single meaning that two handlers cooperatively maintain
+  // (an earlier note wrongly read the two accesses as unrelated). The hover handler
+  // (HandleCursorHoverSelectionByChildHitTestAndFallback 0x5958b0) writes the hovered
+  // band here and reads it to skip a redundant cursor re-render when neither the cell
+  // (field6c/field6e) nor the band changed. The click handler
+  // (HandleMapClickByInteractionMode 0x5964b0) advances it 1..4 to cycle the tile's
+  // action interpretation, which also invalidates the hover dedup so the cursor
+  // refreshes on the next mouse-move. Both uses read/write [this+0x72] as one word
+  // (verified: same receiver, same offset), and the click's explicit 1..4 wrap fixes
+  // the field's domain.
+  short activeRegionBand72;
   // Written by SetFlagByteAndInvokeVslot1A4 (this+0x74=flagByte), read as a byte gate by
   // TMapDialog::RenderMapDialogTerrainOverlayFrameByTileOwner (selects the overlay style:
   // 0 = terrain-frame overlay, nonzero = the alternate palette-index blit).
