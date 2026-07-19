@@ -149,6 +149,37 @@ The mutating target is retired; `just in-stack-audit` is read-only. Real repairs
 happen in source (the 214) or as verified per-function ABI fixes (the ~5), not
 as a bulk pass.
 
+## 2026-07-19 (seventh): source-model signature projection (PR #92, committed)
+
+The sound successor to the retracted `fix-in-stack-params`. Diagnosis (PR #91,
+`docs/reference/source-signature-import.md`) established that the MSVC500 PDB
+carries **no** argument-list type records the modern cvdump can read, so the PDB
+import can converge names/returns but never parameter lists — the 214
+source-owned `in_stack` functions are a projection gap, not an importer bug.
+
+`tools/ghidra/apply_source_signatures.py` (`just apply-source-signatures
+--apply`, wired into `ghidra-apply-source-full`) projects the **source model's**
+C++ prototype onto each source-owned (`FUNCTION`) and reviewed-library
+(`LIBRARY`) function that still has `in_stack`:
+
+- Complete signature via `replaceParameters(DYNAMIC_STORAGE_FORMAL_PARAMS)` with
+  the convention from source (method ⇒ `__thiscall`, free ⇒ `__cdecl`); Ghidra
+  auto-generates `this`. A leaked `undefined` return keeps the DB's inferred
+  return (source is not authoritative for a placeholder).
+- **flushCache + re-decompile + verify**: kept only if the `in_stack` set clears;
+  otherwise reverted to the exact pre-projection signature and queued with the
+  residual offsets. It NEVER infers a parameter from an `in_stack` slot and never
+  appends — the two bugs that made the old fixer unsound.
+
+Applied on the clean #91 DB: **163 converged** (verified cleared), **53 queued**
+(`dynamic_storage_insufficient` — packed sub-dword args, sret hidden pointers,
+and spurious high-offset locals that a formal-param projection cannot bind), **0**
+unparsable/apply_error (strict passes). The 53 residuals are the standing
+evidence queue (`build-msvc500/evidence/source_signature_queue.csv`) — explained,
+not a backlog. `just in-stack-audit` is retained as the final read-only
+diagnostic in the full flow; `packed`/`sret` binding via `CUSTOM_STORAGE` is a
+deliberate follow-up, not part of this pass.
+
 ## Committed mutations (already in the current .gzf, newest first)
 
 From `git log --follow -- vendor/ghidra/exports/Imperialism.gzf`:

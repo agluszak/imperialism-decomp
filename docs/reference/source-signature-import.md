@@ -105,3 +105,58 @@ PR #91 is diagnosis only — no committed DB change (the fresh import ran in the
 live project for observation; the vendored `.gzf` stays at the clean #90 state).
 `signature_probe.py` is retained; it becomes the basis of the
 `source-signature-audit` / convergence check in PR #92.
+
+## PR #92: the source-model signature projector (enforcement)
+
+`tools/ghidra/apply_source_signatures.py` (`just apply-source-signatures
+--apply`) implements the projection the diagnosis called for, and is wired into
+`ghidra-apply-source-full` (after `ghidra-apply-source`, before the audit +
+export). It is **source-authoritative** and **verify-and-revert**:
+
+1. Candidates = every source marker (`FUNCTION`) and reviewed library identity
+   (`LIBRARY`) that carries a prototype and still decompiles with `in_stack_*`.
+2. Parse the C++ declaration head → `(cc, return, [param types])`. The
+   convention comes from source; when the declaration omits it the C++ ABI fixes
+   it (method ⇒ `__thiscall`, free function ⇒ `__cdecl`). A leaked `undefined`
+   return is treated as "keep the DB's inferred return" — source is not
+   authoritative for a Ghidra placeholder, and the params (not the return) clear
+   the `in_stack`.
+3. Apply a COMPLETE signature via
+   `replaceParameters(DYNAMIC_STORAGE_FORMAL_PARAMS)` (Ghidra auto-generates
+   `this`), **flush the decompiler cache**, and re-decompile.
+4. **Keep only if the `in_stack` set actually clears.** Anything that does not
+   converge is reverted to its exact pre-projection signature and queued with the
+   residual offsets, never left with a guessed signature. `--strict` fails only
+   on `unparsable_prototype` / `apply_error`; the classified structural queue is
+   the honest evidence, not a failure.
+
+This is the sound successor to the retired `fix-in-stack-params --apply`
+(see `ghidra-db-mutations.md`): it never infers a parameter from an `in_stack`
+slot, it replaces the *complete* signature instead of appending, it flushes the
+cache, and it verifies every edit by fresh decompilation.
+
+### Result (clean #91 DB → projected)
+
+| outcome | count | meaning |
+|---|---|---|
+| **converged** | **163** | signature projected, `in_stack` verified cleared |
+| **queued (structural)** | **53** | reverted; `dynamic_storage_insufficient` with the residual offsets |
+| unparsable / apply_error | **0** | strict passes |
+
+All 53 residuals are `DYNAMIC_STORAGE`-insoluble by construction — the three
+taxonomy categories that a formal-param projection cannot bind:
+
+- **packed sub-dword args** (two `short`s in one dword; second read at `@0x6`) —
+  the dominant case. Needs `CUSTOM_STORAGE` at the packed offset, deliberately
+  out of scope here ("bulk-fix the plain params, queue the rest").
+- **sret hidden pointer** (by-value struct return shifts the real args up one
+  slot, e.g. `TView::TransformPointViaSlot138` → `CPoint`, residual `@0x8`).
+- **spurious high-offset locals** the decompiler surfaced as `in_stack` on a
+  zero/low-arity function (`TMapMaker::ReindexContiguousCityRegionIds` `@0x14`,
+  `__chsize_lk` `@0x1008` — a 4 KB local buffer, not a parameter).
+
+The 53 are the standing evidence queue in
+`build-msvc500/evidence/source_signature_queue.csv`; they are *explained*, not
+*unexplained*. The remaining source-owned `in_stack` therefore carries an
+understood reason apiece — the diagnosis goal ("not zero, but every one
+explained") is met, and the count is no longer a manual backlog.

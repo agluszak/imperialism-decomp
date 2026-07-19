@@ -50,6 +50,7 @@ module|tools.ghidra.propagate_virtual_method_names|just:propagate-virtual-method
 module|tools.ghidra.vtable_struct_check|just:ghidra-vtable-struct-check|Check Ghidra vtable struct field names
 module|tools.ghidra.in_stack_audit|just:in-stack-audit|Read-only audit of in_stack_* locals (classify, not patch)
 module|tools.ghidra.signature_probe|direct|Read-only per-address DB signature + in_stack capture (source-signature diagnosis)
+module|tools.ghidra.apply_source_signatures|just:apply-source-signatures|Project source-model C++ prototypes onto source-owned functions (verify-and-revert; PDB can't carry arg types)
 module|tools.ghidra.dump_message_maps|just:dump-message-maps|Enumerate MFC message maps: message->handler->port-status per class
 module|tools.ghidra.apply_mfc_datatypes|just:apply-mfc-datatypes|Apply MFC datatypes into Ghidra
 module|tools.ghidra.apply_mfc_rtti|just:apply-mfc-rtti|Apply MFC RTTI into Ghidra
