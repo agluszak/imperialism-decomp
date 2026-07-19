@@ -12583,7 +12583,7 @@
     },
     {
       "address": "0x4d8cc0",
-      "matching": 0.4217391304347826,
+      "matching": 0.4329004329004329,
       "name": "TGreatPower::InitializeNationStateRuntimeSubsystems",
       "type": 1
     },
@@ -12595,7 +12595,7 @@
     },
     {
       "address": "0x4d92e0",
-      "matching": 0.4299923488905891,
+      "matching": 0.43239113827349124,
       "name": "TGreatPower::ReadFrom",
       "type": 1
     },
@@ -13347,34 +13347,33 @@
     },
     {
       "address": "0x4e0590",
-      "effective": true,
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::ComputeMinisterSkillFloatSlot88",
       "type": 1
     },
     {
       "address": "0x4e05d0",
-      "effective": true,
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::ComputeMinisterSkillFloatSlot89",
       "type": 1
     },
     {
       "address": "0x4e0610",
-      "matching": 1.0,
+      "effective": true,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::ComputeMinisterSkillFloatSlot8A",
       "type": 1
     },
     {
       "address": "0x4e0650",
-      "matching": 1.0,
+      "effective": true,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::ComputeMinisterSkillFloatSlot8B",
       "type": 1
     },
     {
       "address": "0x4e0690",
-      "effective": true,
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::ComputeMinisterSkillFloatSlot8C",
       "type": 1
     },
@@ -13392,7 +13391,7 @@
     },
     {
       "address": "0x4e0770",
-      "matching": 1.0,
+      "matching": 0.6666666666666666,
       "name": "TGreatPower::ComputeNationRuntimeAdvisoryMetricCase6",
       "type": 1
     },
@@ -14343,7 +14342,7 @@
     },
     {
       "address": "0x4ec160",
-      "matching": 0.18181818181818182,
+      "matching": 0.3181818181818182,
       "name": "TDefenseMinister::InitializeBaseOrderArrayMetrics",
       "type": 1
     },
@@ -19102,7 +19101,7 @@
     },
     {
       "address": "0x52f130",
-      "matching": 0.391304347826087,
+      "matching": 0.5106382978723404,
       "name": "TForeignMinister::InitializeStateAndCounters",
       "type": 1
     },
@@ -21936,7 +21935,7 @@
     },
     {
       "address": "0x545940",
-      "matching": 0.41389337641357027,
+      "matching": 0.41375968992248063,
       "name": "TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine",
       "type": 1
     },
@@ -22933,13 +22932,13 @@
     },
     {
       "address": "0x553b10",
-      "matching": 0.41379310344827586,
+      "matching": 0.4827586206896552,
       "name": "TTaskForce::HasNoMapOrderEntryChildrenQueued",
       "type": 1
     },
     {
       "address": "0x553b50",
-      "matching": 0.5454545454545454,
+      "matching": 0.5818181818181818,
       "name": "TTaskForce::HasActiveMapOrderEntryChildren",
       "type": 1
     },
@@ -22994,7 +22993,7 @@
     },
     {
       "address": "0x554590",
-      "matching": 0.5822784810126582,
+      "matching": 0.5569620253164557,
       "name": "TTaskForce::CanQueueMapOrderForProvinceContext",
       "type": 1
     },
@@ -23301,7 +23300,7 @@
     },
     {
       "address": "0x5578a0",
-      "matching": 0.44594594594594594,
+      "matching": 0.44324324324324327,
       "name": "TNavyMgr::ResolveMapOrderChainsForTurnPhase",
       "type": 1
     },
@@ -23313,7 +23312,7 @@
     },
     {
       "address": "0x557f10",
-      "matching": 0.20535714285714285,
+      "matching": 0.20558659217877095,
       "name": "TNavyMgr::SelectEligibleMapOrderInteractionForNationAndContext",
       "type": 1
     },
@@ -23350,13 +23349,13 @@
     {
       "address": "0x55a020",
       "matching": 0.6557377049180327,
-      "name": "TToolBarCluster::TryHandleMapContextAction",
+      "name": "TNavyMgr::TryHandleMapContextAction",
       "type": 1
     },
     {
       "address": "0x55a160",
       "matching": 0.41604010025062654,
-      "name": "TToolBarCluster::TryQueueMapOrderFromTileAction",
+      "name": "TNavyMgr::TryQueueMapOrderFromTileAction",
       "type": 1
     },
     {
@@ -30309,7 +30308,7 @@
     },
     {
       "address": "0x5a39a0",
-      "matching": 0.7286821705426356,
+      "matching": 0.9545454545454546,
       "name": "ComputeHexTileDistanceFromIndices",
       "type": 1
     },
@@ -32414,7 +32413,7 @@
     },
     {
       "address": "0x5ba0e0",
-      "matching": 0.8181818181818182,
+      "matching": 1.0,
       "name": "TTradeMgr::ComputeAverageProposalWeightDeltaAcrossCategoryRows",
       "type": 1
     },

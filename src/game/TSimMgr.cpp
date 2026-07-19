@@ -193,7 +193,7 @@ void TSimMgr::Free() {
     g_pCityOrderCapabilityState = nullptr;
   }
   if (g_pInterNationEventQueueManager != nullptr) {
-    reinterpret_cast<TNewsMgr*>(g_pInterNationEventQueueManager)->Free();
+    g_pInterNationEventQueueManager->Free();
     g_pInterNationEventQueueManager = nullptr;
   }
   if (g_pSelectedCivilianOrderState != nullptr) {

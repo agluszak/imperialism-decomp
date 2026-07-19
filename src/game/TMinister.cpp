@@ -27,7 +27,7 @@ struct MinisterTerrainPreferenceEntry {
 IMPLEMENT_DYNCREATE(TMinister, TObject)
 
 // FUNCTION: IMPERIALISM 0x0052eb80
-TMinister::TMinister() : ownerContextAt04(0), field_8(0), skillIndexC(0) {}
+TMinister::TMinister() : ownerContextAt04(nullptr), field_8(0), skillIndexC(0) {}
 
 // SYNTHETIC: IMPERIALISM 0x0052eba0
 // TMinister::`scalar deleting destructor'
@@ -36,7 +36,7 @@ TMinister::TMinister() : ownerContextAt04(0), field_8(0), skillIndexC(0) {}
 TMinister::~TMinister() {}
 
 // FUNCTION: IMPERIALISM 0x0052ebf0
-void TMinister::InitializeBaseOrderArray(undefined4 ownerContext) {
+void TMinister::InitializeBaseOrderArray(TGreatPower* ownerContext) {
   this->ownerContextAt04 = ownerContext;
   this->field_8 = new TMinisterBaseOrderArray();
 }

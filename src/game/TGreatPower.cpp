@@ -244,7 +244,7 @@ void TGreatPower::InitializeNationStateRuntimeSubsystems(int arg1, int arg2) {
 
   if (this->diplomacyEligibilityA0 != 0) {
     TForeignMinister* foreignMinister = new TForeignMinister();
-    foreignMinister->InitializeStateAndCounters();
+    foreignMinister->InitializeStateAndCounters(this);
     this->foreignMinister = foreignMinister;
 
     TCityInteriorMinister* interiorMinister = new TCityInteriorMinister();
@@ -252,7 +252,7 @@ void TGreatPower::InitializeNationStateRuntimeSubsystems(int arg1, int arg2) {
     this->interiorMinister = interiorMinister;
 
     TDefenseMinister* defenseMinister = new TDefenseMinister();
-    defenseMinister->InitializeBaseOrderArrayMetrics();
+    defenseMinister->InitializeBaseOrderArrayMetrics(this);
     this->defenseMinister = defenseMinister;
   }
 
@@ -456,7 +456,7 @@ void TGreatPower::ReadFrom(TStream* stream) {
       TMinister* foreignMinister = this->foreignMinister;
       if (foreignMinister == 0) {
         TForeignMinister* created = new TForeignMinister();
-        created->InitializeStateAndCounters();
+        created->InitializeStateAndCounters(this);
         this->foreignMinister = created;
         foreignMinister = created;
       }
@@ -492,7 +492,7 @@ void TGreatPower::ReadFrom(TStream* stream) {
       TMinister* defenseMinister = this->defenseMinister;
       if (defenseMinister == 0) {
         TDefenseMinister* created = new TDefenseMinister();
-        created->InitializeBaseOrderArrayMetrics();
+        created->InitializeBaseOrderArrayMetrics(this);
         this->defenseMinister = created;
         defenseMinister = created;
       }

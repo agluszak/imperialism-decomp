@@ -50,8 +50,8 @@ TForeignMinister::TForeignMinister() : TMinister() {
 // TForeignMinister::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x0052f130
-void TForeignMinister::InitializeStateAndCounters() {
-  this->InitializeBaseOrderArray(0);
+void TForeignMinister::InitializeStateAndCounters(TGreatPower* owner) {
+  this->InitializeBaseOrderArray(owner);
   char* raw = reinterpret_cast<char*>(this);
   *reinterpret_cast<short*>(raw + 0x10) = kPrimaryNationUnset;
   *reinterpret_cast<short*>(raw + 0x12) = 0;
@@ -89,7 +89,7 @@ void TForeignMinister::InitializeForeignMinisterStateFlags() {
   // Seven-byte fill of flags49 (bytes 0x49-0x4f) with 0x01; MSVC inlines this memset as
   // a 0x01010101 dword + word + byte store.
   memset(this->flags49, 1, 7);
-  TGreatPower* ownerGP = reinterpret_cast<TGreatPower*>(this->ownerContextAt04);
+  TGreatPower* ownerGP = this->ownerContextAt04;
   this->capabilityFlag16 = 0;
   if (ownerGP->treasuryValue10 < 0) {
     this->capabilityFlag14 = 1;
@@ -119,13 +119,13 @@ void TForeignMinister::MinisterSlot21() {}
 // FUNCTION: IMPERIALISM 0x0052f730
 int TForeignMinister::HasAnyOptionDToFMeetingNationThreshold() {
   // The original reloads the owner (this->ownerContextAt04) once per comparison.
-  TGreatPower* gp = reinterpret_cast<TGreatPower*>(this->ownerContextAt04);
+  TGreatPower* gp = this->ownerContextAt04;
   short cap = gp->tradeCapacity;
   if (gp->GetDiplomacyExternalStateByTarget(0xd) < cap) {
-    gp = reinterpret_cast<TGreatPower*>(this->ownerContextAt04);
+    gp = this->ownerContextAt04;
     cap = gp->tradeCapacity;
     if (gp->GetDiplomacyExternalStateByTarget(0xe) < cap) {
-      gp = reinterpret_cast<TGreatPower*>(this->ownerContextAt04);
+      gp = this->ownerContextAt04;
       cap = gp->tradeCapacity;
       if (gp->GetDiplomacyExternalStateByTarget(0xf) < cap) {
         return 0;
@@ -138,7 +138,7 @@ int TForeignMinister::HasAnyOptionDToFMeetingNationThreshold() {
 // FUNCTION: IMPERIALISM 0x0052f7b0
 void TForeignMinister::Call8C() {
   char* raw = reinterpret_cast<char*>(this);
-  TGreatPower* owner = reinterpret_cast<TGreatPower*>(this->ownerContextAt04);
+  TGreatPower* owner = this->ownerContextAt04;
 
   if (*reinterpret_cast<short*>(raw + 0x10) != kPrimaryNationUnset) {
     TSortedByRelationshipList* relationshipList =
@@ -186,7 +186,7 @@ void TForeignMinister::Call8C() {
 void TForeignMinister::Call90() {
   this->InitializeForeignMinisterStateFlags();
   char* raw = reinterpret_cast<char*>(this);
-  TGreatPower* owner = reinterpret_cast<TGreatPower*>(this->ownerContextAt04);
+  TGreatPower* owner = this->ownerContextAt04;
   int skipMissionSlot1A = 0;
   if (*reinterpret_cast<short*>(raw + 0x18) < *reinterpret_cast<short*>(raw + 0x1a)) {
     if (this->HasAnyOptionDToFMeetingNationThreshold() == 0) {
@@ -207,7 +207,7 @@ void TForeignMinister::Call90() {
 
 // FUNCTION: IMPERIALISM 0x0052f9d0
 void TForeignMinister::Call94() {
-  TGreatPower* owner = reinterpret_cast<TGreatPower*>(this->ownerContextAt04);
+  TGreatPower* owner = this->ownerContextAt04;
   short nationSlot = owner->nationSlot;
   static const short kOrderKinds[] = {0, 1, 2, 3, 4, 5, 6};
   int loopCount =
@@ -256,7 +256,7 @@ void TForeignMinister::Call94() {
 void TForeignMinister::DispatchProposalSlot98(int arg1, int arg2, int arg3, int targetNation) {
   (void)arg1;
   char* raw = reinterpret_cast<char*>(this);
-  TGreatPower* owner = reinterpret_cast<TGreatPower*>(this->ownerContextAt04);
+  TGreatPower* owner = this->ownerContextAt04;
   unsigned int dispatchAmount = static_cast<unsigned int>(arg3);
   short targetNationSlot = static_cast<short>(targetNation);
 
@@ -301,7 +301,7 @@ void TForeignMinister::RecomputeOrderStateSlot9C() {
   *reinterpret_cast<short*>(raw + 0x12) = 0;
   *reinterpret_cast<short*>(raw + 0x14) = 0;
   *reinterpret_cast<short*>(raw + 0x10) = kPrimaryNationUnset;
-  TGreatPower* owner = reinterpret_cast<TGreatPower*>(this->ownerContextAt04);
+  TGreatPower* owner = this->ownerContextAt04;
   if (owner->GetDiplomacyCounterA2() == 0) {
     *reinterpret_cast<short*>(raw + 0x18) =
         static_cast<short>(*reinterpret_cast<short*>(raw + 0x18) + 1);
@@ -335,7 +335,7 @@ void TForeignMinister::MinisterSlot19() {}
 
 // FUNCTION: IMPERIALISM 0x0052fdc0
 void TForeignMinister::UpdateNationInteractionEnableFlagsByTerrainAndRelation() {
-  TGreatPower* owner = reinterpret_cast<TGreatPower*>(this->ownerContextAt04);
+  TGreatPower* owner = this->ownerContextAt04;
   bool matched = false;
   short terrainSlot = 7;
   do {
@@ -382,7 +382,7 @@ char TForeignMinister::EvaluateLocalizedScoreThresholdPredicateForNationValue(in
   int thresholdB = thresholds[difficulty + 5];
   char result = 0;
 
-  TGreatPower* ownerGP = reinterpret_cast<TGreatPower*>(this->ownerContextAt04);
+  TGreatPower* ownerGP = this->ownerContextAt04;
   char linked = g_pGlobalMapState->AreNationsBorderLinked(ownerGP->nationSlot, nationCode);
   if (linked == 0) {
     if (thresholdB < ownerGP->SumNavyOrderPriorityForNationSlot86()) {
@@ -411,14 +411,14 @@ void TForeignMinister::DispatchAction210ToFirstEligibleNationIfIdle() {
   // The original reloads the owning great power (this->ownerContextAt04) at each use
   // rather than caching it; access it inline so the same reload codegen is emitted.
   for (int nationSlot = 0; nationSlot < 7; ++nationSlot) {
-    if (reinterpret_cast<TGreatPower*>(this->ownerContextAt04)->HasActiveCandidateNationSlots() !=
+    if (this->ownerContextAt04->HasActiveCandidateNationSlots() !=
         0) {
       return;
     }
-    if (nationSlot != reinterpret_cast<TGreatPower*>(this->ownerContextAt04)->nationSlot &&
+    if (nationSlot != this->ownerContextAt04->nationSlot &&
         g_pSimMgr->IsNationSlotEligibleForEventProcessing(nationSlot) != 0 &&
         this->EvaluateLocalizedScoreThresholdPredicateForNationValue(nationSlot) != 0) {
-      reinterpret_cast<TGreatPower*>(this->ownerContextAt04)
+      this->ownerContextAt04
           ->SetCandidateNationFlagAndPortZoneState(nationSlot);
     }
   }
@@ -429,7 +429,7 @@ void TForeignMinister::MinisterSlot1B() {}
 
 // FUNCTION: IMPERIALISM 0x00530fa0
 void TForeignMinister::ValidateProposalSelectionAndQueueEvent1C(short queueIndex) {
-  TGreatPower* gp = reinterpret_cast<TGreatPower*>(this->ownerContextAt04);
+  TGreatPower* gp = this->ownerContextAt04;
   char valid = 0;
   short* record =
       static_cast<short*>(gp->proposalQueue->GetPtrListEntryByOneBasedIndex(queueIndex));

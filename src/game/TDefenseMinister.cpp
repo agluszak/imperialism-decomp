@@ -32,8 +32,8 @@ TDefenseMinister::TDefenseMinister() : TMinister() {}
 TDefenseMinister::~TDefenseMinister() {}
 
 // FUNCTION: IMPERIALISM 0x004ec160
-void TDefenseMinister::InitializeBaseOrderArrayMetrics() {
-  this->InitializeBaseOrderArray(0);
+void TDefenseMinister::InitializeBaseOrderArrayMetrics(TGreatPower* owner) {
+  this->InitializeBaseOrderArray(owner);
   char* raw = reinterpret_cast<char*>(this);
   *reinterpret_cast<short*>(raw + 0x10) = 0;
   *reinterpret_cast<short*>(raw + 0x12) = 0;

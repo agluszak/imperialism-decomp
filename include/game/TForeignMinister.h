@@ -9,7 +9,7 @@ class TStream;
 class TForeignMinister : public TMinister {
 public:
   TForeignMinister();
-  void InitializeStateAndCounters();
+  void InitializeStateAndCounters(TGreatPower* owner);
 
   DECLARE_DYNCREATE(TForeignMinister)
   void WriteTo(TStream* stream) override;

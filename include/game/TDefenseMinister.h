@@ -15,7 +15,7 @@ public:
   // slot 0x0a (byte 0x28) MinisterSlot0A overridden below (body 0x4ec3d0)
   // slots 0x0b-0x11 inherited from TMinister unchanged
   TDefenseMinister();
-  void InitializeBaseOrderArrayMetrics();
+  void InitializeBaseOrderArrayMetrics(TGreatPower* owner);
 
   DECLARE_DYNCREATE(TDefenseMinister)
   void WriteTo(TStream* stream) override;                          // 5 (0x4ec1d0)

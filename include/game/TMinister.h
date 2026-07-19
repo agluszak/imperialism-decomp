@@ -6,6 +6,7 @@
 #include "game/TIndexAndRankList.h"
 
 class TStream;
+class TGreatPower;
 
 #include "game/TObject.h"
 
@@ -14,7 +15,7 @@ class TStream;
 class TMinister : public TObject {
 public:
   TMinister();
-  void InitializeBaseOrderArray(undefined4 ownerContext);
+  void InitializeBaseOrderArray(TGreatPower* ownerContext);
   virtual ~TMinister() override; // slot 1 — body @ 0x0052ebd0 (DestructTMinister)
 
   DECLARE_DYNCREATE(TMinister)
@@ -35,7 +36,7 @@ public:
   // Orig TMinister vtable (0x659c00) ends at slot 17 (0x44); slots 0x48-0x54 are NULL.
   // Slots 0x48+ are introduced per derived minister (e.g. TDefenseMinister, TInteriorMinister).
 
-  int ownerContextAt04;       // +0x4 — great-power back-pointer from InitializeBaseOrderArray
+  TGreatPower* ownerContextAt04; // +0x4 — great-power back-pointer from InitializeBaseOrderArray
   TIndexAndRankList* field_8; // +0x8 — minister order array (vtable 0x659c58)
   short skillIndexC;          // +0xC
   unsigned char pad0e[0x10 - 0x0E];
