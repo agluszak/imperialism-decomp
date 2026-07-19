@@ -20,7 +20,8 @@ IMPLEMENT_DYNCREATE(TAnimator, TEventHandler)
 // field-defaults helper out-of-line) and does not touch field28; the recompile emits
 // the real base-ctor call instead -- the usual accepted ctor-inlining divergence.
 // FUNCTION: IMPERIALISM 0x004a0aa0
-TAnimator::TAnimator() : TEventHandler(), renderSurfaceContext(0), registryList24(0), field2c(0) {}
+TAnimator::TAnimator()
+    : TEventHandler(), renderSurfaceContext(0), registryList24(0), mapUberPicture2c(0) {}
 
 // SYNTHETIC: IMPERIALISM 0x004a0ad0
 // TAnimator::`scalar deleting destructor'
@@ -84,7 +85,7 @@ void TAnimator::Free() {
 
 // FUNCTION: IMPERIALISM 0x004a0e10
 void TAnimator::ReadFrom(TStream* stream) {
-  field2c = 0;
+  mapUberPicture2c = 0;
   field10 = 0x7fffffff;
   field10 = stream->streamSlot50();
   TObject::ReadFrom(stream);

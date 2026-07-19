@@ -11,7 +11,9 @@
 #include "game/TTaskForce.h"
 #include "game/TViewMgr.h"
 #include "game/global_data_tables.h"
+#include "game/ui_control_tags.h"
 #include "game/ui_invalidation_guard.h"
+#include "game/ui_text_label_helpers_decls.h"
 
 // SYNTHETIC: IMPERIALISM 0x00596900
 // TMapUberPicture::CreateObject
@@ -31,7 +33,48 @@ TMapUberPicture::TMapUberPicture()
 TMapUberPicture::~TMapUberPicture() {}
 
 // FUNCTION: IMPERIALISM 0x00596a80
-void TMapUberPicture::NoOpUiLifecycleHook(int arg) {}
+void TMapUberPicture::NoOpUiLifecycleHook(int arg) {
+  TOffLimitsPicture::NoOpUiLifecycleHook(arg);
+
+  static_cast<TAmbitApplication*>(g_pGlobalUiRootController)->edgeScrollTarget48 = this;
+
+  subview2A8 = static_cast<TMapUberPicture*>(ResolveControlByTag(kControlTagGold));
+  subview2A8->AssertValid();
+
+  TView* alternateMapDialog = ResolveControlByTag(0x444f4f47); // 'DOOG'
+  if (alternateMapDialog != nullptr) {
+    goodGoldTagControlA4 = alternateMapDialog;
+    alternateMapDialog->AssertValid();
+  }
+
+  subviewAc = subview2A8;
+  categoryPages[0] = ResolveControlByTag(0x75636976); // 'uciv'
+  categoryPages[1] = ResolveControlByTag(0x7561726d); // 'uarm'
+  categoryPages[2] = ResolveControlByTag(0x756e6176); // 'unav'
+  categoryPages[3] = nullptr;
+
+  RECT mapBounds;
+  subview2A8->QueryBounds(&mapBounds);
+  RECT mapRegionBounds = mapBounds;
+  RgnHandle mapRegion = NewRgn();
+  RectRgn(mapRegion, &mapRegionBounds);
+  ForwardCopyRgn(mapRegion);
+  DisposeRgn(mapRegion);
+
+  g_pUiRuntimeContext->mapUberPictureF0 = this;
+  g_pUiAnimator->mapUberPicture2c = this;
+  g_pActiveMapOrderContext->EnsureSelectedTaskForceForOrderOwnerAndRefresh(nullptr);
+  g_pActiveMapOrderContext->RefreshMapActionContextNationOverlaysAndOrderRanks();
+
+  unsigned char multiplayerSessionActive = g_pSimMgr->field44 != 0;
+  if (multiplayerSessionActive != 0) {
+    TView* sendControl = ResolveControlByTag(0x73656e64); // 'send'
+    sendControl->AssertValid();
+    sendControl->SetState(1, 0);
+    sendControl->SetEnabled(1, 0);
+    LoadUiStringByGroupAndIndexToControlObject(0x2742, 0xe, sendControl);
+  }
+}
 
 // Clears every global backref to the map picture (view-manager slot, animator slot, app
 // root's edge-scroll/active-content) before the shared clip-region teardown; the original
@@ -43,7 +86,7 @@ void TMapUberPicture::Free() {
     g_pUiRuntimeContext->mapUberPictureF0 = 0;
   }
   if (g_pUiAnimator != 0) {
-    g_pUiAnimator->field2c = 0;
+    g_pUiAnimator->mapUberPicture2c = 0;
   }
   static_cast<TAmbitApplication*>(g_pGlobalUiRootController)->edgeScrollTarget48 = 0;
   g_pGlobalUiRootController->field28 = 0;
