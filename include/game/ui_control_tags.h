@@ -151,4 +151,5 @@ const unsigned int kControlTagPreviewMap = 0x706d6170u;   // 'pmap'
 const unsigned int kControlTagTbr2 = 0x74627232u; // 'tbr2' — secondary toolbar
 const unsigned int kControlTagTop = 0x746f7020u;  // 'top ' — top picture
 const unsigned int kControlTagTitl = 0x7469746cu; // 'titl' — title text
+const unsigned int kControlTagTex0 = 0x74657830u; // 'tex0' — first of 7 sequential text lines (tex0-tex6)
 const unsigned int kControlTagScvw = 0x73637677u; // 'scvw' — scroll view
