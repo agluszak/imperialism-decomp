@@ -6,7 +6,6 @@
 #include "game/mfc.h"
 #include "game/UiRuntimeContext.h"
 #include "game/quickdraw_guards.h"
-#include "game/ui_widget_thunks.h"
 #include "game/global_data_tables.h"
 #include "game/CDib.h"
 #include "game/TQuickDrawSurfaceContext.h"

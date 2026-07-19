@@ -12,7 +12,6 @@
 #include "game/quickdraw_rendering.h"
 #include "game/TQuickDrawSurfaceContext.h"
 #include "game/mfc.h"
-#include "game/ui_widget_thunks.h"
 #include <new>
 #include "game/CString.h"
 

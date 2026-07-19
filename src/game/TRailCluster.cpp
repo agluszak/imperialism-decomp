@@ -7,7 +7,6 @@
 #include "game/ui_invalidation_guard.h"
 #include "game/TCity.h"
 #include "game/TGreatPower.h"
-#include "game/ui_widget_thunks.h"
 #include "game/mfc.h"
 #include "game/UiRuntimeContext.h"
 #include "game/quickdraw_guards.h"
