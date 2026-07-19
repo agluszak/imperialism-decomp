@@ -7145,13 +7145,13 @@
     {
       "address": "0x49d900",
       "matching": 0.2222222222222222,
-      "name": "TAdorner::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d900",
+      "name": "TAdorner::AdornerSlot0A",
       "type": 1
     },
     {
       "address": "0x49d930",
       "matching": 0.2222222222222222,
-      "name": "TAdorner::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d930",
+      "name": "TAdorner::AdornerSlot0B",
       "type": 1
     },
     {
@@ -7169,19 +7169,19 @@
     {
       "address": "0x49d9c0",
       "matching": 0.2222222222222222,
-      "name": "TAdorner::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d9c0",
+      "name": "TAdorner::AdornerSlot0C",
       "type": 1
     },
     {
       "address": "0x49d9f0",
       "matching": 0.2222222222222222,
-      "name": "TAdorner::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d9f0",
+      "name": "TAdorner::AdornerSlot0D",
       "type": 1
     },
     {
       "address": "0x49da20",
       "matching": 0.2222222222222222,
-      "name": "TAdorner::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049da20",
+      "name": "TAdorner::AdornerSlot0E",
       "type": 1
     },
     {
@@ -15677,7 +15677,7 @@
     {
       "address": "0x4ff1c0",
       "matching": 0.2,
-      "name": "TColorFill::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d9c0",
+      "name": "TColorFill::AdornerSlot0C",
       "type": 1
     },
     {

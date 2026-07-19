@@ -1361,13 +1361,13 @@ address|name|symbol|size|type|prototype|provenance
 49d790|TDialogView::GetRuntimeClass||6|function|undefined GetTDialogViewClassNamePointer()|rtti
 49d880|TDialogView::EnsureField48Buffer||20|function|undefined ConstructTDialogViewBaseState()|
 49d8b0|TDialogView::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
-49d900|TAdorner::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d900||22|function|undefined WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d900(void)|
-49d930|TAdorner::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d930||22|function|undefined WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d930(void)|
+49d900|TAdorner::AdornerSlot0A||22|function|undefined WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d900(void)|
+49d930|TAdorner::AdornerSlot0B||22|function|undefined WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d930(void)|
 49d960|TAdorner::ReadFrom||22|function|undefined WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d960(void)|
 49d990|TAdorner::WriteTo||22|function|undefined WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d990(void)|
-49d9c0|TAdorner::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d9c0||22|function|undefined WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d9c0(void)|
-49d9f0|TAdorner::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d9f0||22|function|undefined WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d9f0(void)|
-49da20|TAdorner::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049da20||22|function|undefined WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049da20(void)|
+49d9c0|TAdorner::AdornerSlot0C||22|function|undefined WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d9c0(void)|
+49d9f0|TAdorner::AdornerSlot0D||22|function|undefined WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d9f0(void)|
+49da20|TAdorner::AdornerSlot0E||22|function|undefined WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049da20(void)|
 49da50|TAdorner::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049da50||22|function|undefined WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049da50(void)|
 49da80|TAdorner::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049da80||24|function|undefined WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049da80(void)|
 49dab0|TAdorner::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
@@ -2943,7 +2943,7 @@ address|name|symbol|size|type|prototype|provenance
 4ff150|TColorFill::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4ff180|TColorFill::CreateTColorFillInstance||7|function|undefined CreateTColorFillInstance()|
 4ff1a0|TColorFill::GetRuntimeClass||6|function|undefined GetTColorFillClassNamePointer()|rtti
-4ff1c0|TColorFill::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d9c0||30|function|undefined AssertUDisplayMgrLine730(void)|
+4ff1c0|TColorFill::AdornerSlot0C||30|function|undefined AssertUDisplayMgrLine730(void)|
 4ff1f0|TGWorldPeeker::CreateObject|?CreateObject@TGWorldPeeker@@SGPAVCObject@@XZ|107|function|undefined CreateObject()|rtti
 4ff280|TGWorldPeeker::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4ff2d0|TGWorldPeeker::GetRuntimeClass||6|function|undefined GetTGWorldPeekerClassNamePointer()|rtti
