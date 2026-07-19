@@ -99,7 +99,7 @@ internals/repair tools, not sanctioned workflows. `refresh-inventory` is
 inventory-only (`sync_exports --inventory-only`); the full decompile/type
 snapshot is the separate optional `just export-ghidra-evidence`.
 
-## 2026-07-19 (fifth): strict convergence + in_stack migration finish (committed)
+## 2026-07-19 (fifth): strict convergence + in_stack migration (in_stack part RETRACTED — see below)
 
 The 27 residual DuplicateName conflicts are eliminated: stale non-primary labels
 whose simple name equals the target (often an already-qualified secondary like
@@ -112,12 +112,42 @@ namespaces owning source-claimed functions under a different class than the
 model (6 residual stale namespaces flagged, e.g. TNetMgr x2 — small repair
 queue for ghidra-rename-class).
 
-`fix-in-stack-params --apply` ran iteratively (261 -> 151 -> 136 -> 127 -> 112
-functions across five passes — committing params changes decompilation and
-exposes new in_stack reads, so the fixpoint is asymptotic, not one-shot). The
-migration is NOT complete: ~112 functions remain and the convergence behaviour
-needs investigation before the target can be retired. The target stays, with
-its doc corrected to describe the iterative reality.
+**RETRACTED (2026-07-19, sixth):** the `fix-in-stack-params --apply` work in this
+entry was UNSOUND and has been reverted. It appended each `in_stack_*` slot as a
+formal parameter via `Function.addParameter(ParameterImpl(None, dtype, offset,
+program))`. For a function without custom variable storage Ghidra IGNORES the
+supplied stack offset and lets the calling convention place the parameter — so
+the flagged slot never bound, and each pass appended another bogus parameter.
+That (plus never flushing the decompiler cache between edits) produced the
+spurious 261 -> 151 -> 136 -> 127 -> 112 "convergence": an artifact of the tool,
+not real parameter recovery. On the clean DB the count is back to the original
+**261** — the passes fixed nothing.
+
+**De-pollution:** restored the pre-`in_stack` `.gzf` (commit f4f51048 / PR #88,
+LFS oid a973690b…), deleted the polluted live program, re-ran the sound
+`ghidra-apply-source --apply --strict` (redoes names + the code-based label
+cleanup: 27 stale labels dropped, failed=0), confirmed a converged strict
+dry-run (primary_exact=7205, pending=0, failed=0), and re-exported. The strict
+label-cleanup + broader-audit code from the fifth entry is retained (it is
+sound); only the parameter appends are gone.
+
+**Reframed as a classification problem, not a migration backlog.** The read-only
+`just in-stack-audit` (`tools/ghidra/in_stack_audit.py`) classifies the 261:
+  - **214 source-owned** — the real prototype already lives in the C++
+    declaration (the audit prints it, e.g. `ImperialismCommandLineInfo::ParseParam`
+    -> `(LPCSTR, BOOL, BOOL)`); the DB just lags. Fix = PDB import via
+    `ghidra-apply-source-full`, never a DB param append (the next import
+    overwrites it).
+  - **6 library** — prototype from the reviewed identity / PDB.
+  - **41 unported**, of which **36 have unknown calling convention** (one carries
+    the INT_MAX unknown-purge sentinel) — broken ABI analysis, not missing
+    params; repair the convention/boundary. Only **~5** have clean callee-cleaned
+    evidence and are genuine complete-signature (`updateFunction(DYNAMIC_STORAGE_
+    FORMAL_PARAMS)`) candidates.
+
+The mutating target is retired; `just in-stack-audit` is read-only. Real repairs
+happen in source (the 214) or as verified per-function ABI fixes (the ~5), not
+as a bulk pass.
 
 ## Committed mutations (already in the current .gzf, newest first)
 
