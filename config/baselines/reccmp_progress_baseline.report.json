@@ -22372,7 +22372,7 @@
     },
     {
       "address": "0x54eaf0",
-      "matching": 0.13333333333333333,
+      "matching": 1.0,
       "name": "TMadnessButton::NoOpUiLifecycleHook",
       "type": 1
     },
@@ -24164,7 +24164,7 @@
     },
     {
       "address": "0x5649a0",
-      "matching": 0.08,
+      "matching": 0.6153846153846154,
       "name": "TMilitaryPageView::NoOpUiLifecycleHook",
       "type": 1
     },
@@ -24308,7 +24308,7 @@
     },
     {
       "address": "0x565f50",
-      "matching": 0.2,
+      "matching": 1.0,
       "name": "TOceanDialog::NoOpUiLifecycleHook",
       "type": 1
     },
@@ -26417,7 +26417,7 @@
     },
     {
       "address": "0x579490",
-      "matching": 0.4,
+      "matching": 1.0,
       "name": "TRadioText::NoOpUiLifecycleHook",
       "type": 1
     },
@@ -26585,7 +26585,7 @@
     },
     {
       "address": "0x57b620",
-      "matching": 0.1,
+      "matching": 1.0,
       "name": "TGameScorePicture::HandleEvent",
       "type": 1
     },
@@ -27362,7 +27362,7 @@
     },
     {
       "address": "0x584500",
-      "matching": 0.3333333333333333,
+      "matching": 1.0,
       "name": "TTradeOrderPicture::NoOpUiLifecycleHook",
       "type": 1
     },
@@ -31058,7 +31058,7 @@
     },
     {
       "address": "0x5ad650",
-      "matching": 0.06896551724137931,
+      "matching": 1.0,
       "name": "TTacticalAdiosPicture::HandleEvent",
       "type": 1
     },
@@ -38983,7 +38983,7 @@
     },
     {
       "address": "0x6091d9",
-      "matching": 1.0,
+      "matching": 0.9787234042553191,
       "name": "CWnd::OnNotify",
       "type": 1
     },

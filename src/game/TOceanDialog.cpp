@@ -34,7 +34,9 @@ TOceanDialog::~TOceanDialog() {}
 
 // FUNCTION: IMPERIALISM 0x00565f50
 void TOceanDialog::NoOpUiLifecycleHook(int arg) {
-  (void)arg;
+  TWorldView::NoOpUiLifecycleHook(arg);
+  projectionScale76 = 4;
+  previewSquareRadius78 = 0x10;
 }
 
 // Computes the viewport-space bounding rectangle of every strategic tile whose owner tag

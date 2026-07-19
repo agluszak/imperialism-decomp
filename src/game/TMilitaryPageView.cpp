@@ -1,4 +1,9 @@
 #include "game/TMilitaryPageView.h"
+
+#include "game/CString.h"
+#include "game/global_data_tables.h"
+#include "game/ui_control_tags.h"
+#include "game/ui_text_label_helpers_decls.h"
 // SYNTHETIC: IMPERIALISM 0x00564860
 // TMilitaryPageView::CreateObject
 
@@ -16,6 +21,11 @@ TMilitaryPageView::~TMilitaryPageView() {}
 
 // FUNCTION: IMPERIALISM 0x005649a0
 void TMilitaryPageView::NoOpUiLifecycleHook(int arg) {
+  TPageView::NoOpUiLifecycleHook(arg);
+  TView* okControl = ownerContext->ResolveControlByTag(kControlTagOkay);
+  LoadUiStringByGroupAndIndexToControlObject(0x2730, 0x22, okControl);
+  CString empty(g_szEmptyString);
+  SetControlHoverHelpText(empty, this);
 }
 
 // FUNCTION: IMPERIALISM 0x00564bf0

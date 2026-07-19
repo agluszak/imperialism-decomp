@@ -16,6 +16,8 @@ TTradeOrderPicture::~TTradeOrderPicture() {}
 
 // FUNCTION: IMPERIALISM 0x00584500
 void TTradeOrderPicture::NoOpUiLifecycleHook(int arg) {
+  (void)arg;
+  SetState(1, 0);
 }
 
 // FUNCTION: IMPERIALISM 0x00584520
