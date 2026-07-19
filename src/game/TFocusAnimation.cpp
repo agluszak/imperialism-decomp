@@ -47,12 +47,12 @@ void TFocusAnimation::VTableSlot0D() {
 // FUNCTION: IMPERIALISM 0x004a0250
 undefined TFocusAnimation::RenderBattleReportInsetWithPaletteShift() {
   RenderBattleReportViewSurfaceSpriteWithResourceHandle();
-  Helper_Uses_BlitRectWithOptionalTransparency_At004a0280();
+  FocusAnimationSlot0E();
   return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004a0280
-void TFocusAnimation::Helper_Uses_BlitRectWithOptionalTransparency_At004a0280() {
+void TFocusAnimation::FocusAnimationSlot0E() {
   TQuickDrawSurfaceContext* srcContext =
       *reinterpret_cast<TQuickDrawSurfaceContext**>(g_pUiAnimator + 0x20);
 

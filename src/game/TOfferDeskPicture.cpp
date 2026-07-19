@@ -165,8 +165,7 @@ void TOfferDeskPicture::RefreshSelectedNationOrderCompatibilityInfo() {
                              static_cast<LPCSTR>(strTargetNation));
     } else {
       short dominant = static_cast<short>(
-          g_pDiplomacyTurnStateManager->WrapperFor_IsNationSlotEligibleForEventProcessingAt413250(
-              targetNationSlot92));
+          g_pDiplomacyTurnStateManager->IsNationSlotEligibleForEventProcessing(targetNationSlot92));
       {
         strDominantName = g_pSimMgr->LoadNormalizedCredentialName(dominant);
       }

@@ -23,7 +23,7 @@ address|name|symbol|size|type|prototype|provenance
 412d70|DestroyImperialismAppSingletonGlobal||10|function|undefined DestroyImperialismAppSingletonGlobal()|
 412d90|ShowOutOfMemoryErrorNewHandler||23|function|int __cdecl ShowOutOfMemoryErrorNewHandler(size_t)|
 412dc0|InitializeImperialismApplicationInstance||1161|function|undefined InitializeImperialismApplicationInstance()|
-413250|TDiplomacyMgr::WrapperFor_IsNationSlotEligibleForEventProcessingAt413250||233|function|undefined WrapperFor_IsNationSlotEligibleForEventProcessing_At00413250()|
+413250|TDiplomacyMgr::IsNationSlotEligibleForEventProcessing||233|function|undefined WrapperFor_IsNationSlotEligibleForEventProcessing_At00413250()|
 413380|CObject::operator delete|??3CObject@@SGXPAX@Z|16|function|void __stdcall operator delete(void * p)|
 4133a0|OrphanCallChain_C1_I08_004133a0||20|function|undefined OrphanCallChain_C1_I08_004133a0()|
 4133d0|ImperialismCommandLineInfo::ParseParam||299|function|void __thiscall ParseParam(char const *,int,int)|
@@ -1343,7 +1343,7 @@ address|name|symbol|size|type|prototype|provenance
 49cbf0|TBackdropWindow::~TBackdropWindow||21|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At0049cbc0_Impl()|
 49cc20|OrphanVtableAssignStub_0049cc20||6|function|undefined OrphanVtableAssignStub_0049cc20()|
 49cc40|SetCachedShowSplashFlag||10|function|void SetCachedShowSplashFlag(BOOL showSplash)|
-49cc60|WrapperFor_AllocateWithFallbackHandler_At0049cc60||1|function|undefined WrapperFor_AllocateWithFallbackHandler_At0049cc60()|
+49cc60|Function_0049cc60||1|function|undefined WrapperFor_AllocateWithFallbackHandler_At0049cc60()|
 49cca0|CreateGlobalBackdropWindowWithDefaultBmp3B6||243|function|undefined InitializeGlobalBackdropWindowWithDefaultBmp3B6()|
 49cdf0|RefreshBackdropOnInputMessages||123|function|undefined RefreshBackdropOnInputMessages()|
 49ce90|TBackdropWindow::InitializeDefaultBackdropWindowFromBmp3B6||138|function|undefined InitializeDefaultBackdropWindowFromBmp3B6()|
@@ -1441,7 +1441,7 @@ address|name|symbol|size|type|prototype|provenance
 4a0140|TFocusAnimation::WrapperFor_InvalidateCityDialogRectRegion_At0049f140||51|function|undefined ConstructTFocusAnimationBaseState()|
 4a0190|TFocusAnimation::VTableSlot0D||138|function|undefined DestructTFocusAnimationAndMaybeFree()|
 4a0250|TFocusAnimation::RenderBattleReportInsetWithPaletteShift||19|function|undefined RenderBattleReportInsetWithPaletteShift(void)|
-4a0280|TFocusAnimation::Helper_Uses_BlitRectWithOptionalTransparency_At004a0280||274|function|undefined Helper_Uses_BlitRectWithOptionalTransparency_At004a0280(void)|
+4a0280|TFocusAnimation::FocusAnimationSlot0E||274|function|undefined Helper_Uses_BlitRectWithOptionalTransparency_At004a0280(void)|
 4a03f0|TTransFocusAnimation::CreateObject|?CreateObject@TTransFocusAnimation@@SGPAVCObject@@XZ|36|function|TTransFocusAnimation * __cdecl CreateObject(void)|rtti
 4a0430|TTransFocusAnimation::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4a0460|TTransFocusAnimation::CreateTTransFocusAnimationInstance||7|function|undefined CreateTTransFocusAnimationInstance()|
@@ -3055,7 +3055,7 @@ address|name|symbol|size|type|prototype|provenance
 5065b0|TIconSlider::OrphanCallChain_C2_I15_005065b0||44|function|undefined OrphanCallChain_C2_I15_005065b0(void)|
 5065f0|TIconSlider::DispatchUiMouseMoveToChildren||117|function|undefined SetForeignMinisterReadyFlag14(int * param_1, undefined4 param_2, undefined4 param_3)|
 506690|TIconSlider::ApplyRectSlot110||27|function|undefined OrphanTiny_ReturnZero_0048a730(void)|
-5066c0|TIconSlider::Helper_Uses_WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At00495c_At005066c0||61|function|undefined Helper_Uses_WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At00495c_At005066c0(void)|
+5066c0|TIconSlider::IconSliderResolveBmpResource||61|function|undefined Helper_Uses_WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At00495c_At005066c0(void)|
 506710|TIconSlider::OrphanCallChain_C1_I36_00506710||98|function|undefined OrphanCallChain_C1_I36_00506710(LPRECT param_1)|
 5067a0|TIconSlider::DispatchPictureResourceCommand||444|function|undefined UpdateIconBarOffsetAndRecomputeClipRegion()|
 5069d0|TOrderView::CreateObject|?CreateObject@TOrderView@@SGPAVCObject@@XZ|107|function|undefined CreateObject()|rtti
@@ -3381,7 +3381,7 @@ address|name|symbol|size|type|prototype|provenance
 5220f0|TMapDialog::RenderMapDialogDiplomacyNeighborRelationHints||2267|function|undefined RenderMapDialogDiplomacyNeighborRelationHints()|
 522c10|TMapDialog::DrawMapDialogWrappedTileConnectionMarker_00522c10||171|function|undefined DrawMapDialogWrappedTileConnectionMarker_00522c10()|
 522cf0|TMapDialog::DrawHexNeighborConnectionMask||692|function|undefined DrawHexNeighborConnectionMask()|
-523060|TMapDialog::WrapperFor_SetQuickDrawFillColor_At00523060||201|function|undefined WrapperFor_SetQuickDrawFillColor_At00523060(void)|
+523060|TMapDialog::MapDialogSetFillColor||201|function|undefined WrapperFor_SetQuickDrawFillColor_At00523060(void)|
 523170|TMapDialog::UpdateMapOrderEntryTilePreviewSlot||948|function|undefined UpdateMapOrderEntryTilePreviewSlot()|
 523640|TMapDialog::OrphanTiny_ReturnZero_0048a730||1044|function|undefined RenderMapOrderEntryTilePreview()|
 523b70|TMapDialog::VTableSlot6B||910|function|undefined RenderTacticalStackCountIndicatorAndUnitBadge()|

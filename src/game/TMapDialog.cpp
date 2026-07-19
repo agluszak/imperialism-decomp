@@ -989,7 +989,7 @@ tail:
 }
 
 // FUNCTION: IMPERIALISM 0x00523060
-undefined TMapDialog::WrapperFor_SetQuickDrawFillColor_At00523060() {
+undefined TMapDialog::MapDialogSetFillColor() {
   return 0;
 }
 

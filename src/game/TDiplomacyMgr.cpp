@@ -65,7 +65,7 @@ short DecodeTerrainDescriptorNationSlotForAdjacency(int terrainRecord) {
 } // namespace
 
 // FUNCTION: IMPERIALISM 0x00413250
-int TDiplomacyMgr::WrapperFor_IsNationSlotEligibleForEventProcessingAt413250(int nationSlot) {
+int TDiplomacyMgr::IsNationSlotEligibleForEventProcessing(int nationSlot) {
   return g_pSimMgr->IsNationSlotEligibleForEventProcessing(static_cast<short>(nationSlot));
 }
 // SYNTHETIC: IMPERIALISM 0x004ee650
