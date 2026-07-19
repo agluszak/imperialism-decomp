@@ -317,7 +317,7 @@ void TCivDescription::ApplyRectSlot110(RECT* rectBuffer) {
     // Original calls 0x5c4470 (three-arg apply), then reads the class name via the
     // TSimMgr GetString virtual, and passes each mapped color to 0x4950a0 — the
     // previous port dropped both color arguments.
-    ApplyUiTextStyleAndSyncColor(0, 0xc, 0x2b68);
+    ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 0xc, 0x2b68);
     MapUiThemeCodeToStyleFlags(0x2b6c, &stylePrimary);
     MapUiThemeCodeToStyleFlags(0x2b67, &styleSecondary);
     g_pSimMgr->GetString(0x2718, selectedClass, &localizedTextRef);
@@ -327,10 +327,10 @@ void TCivDescription::ApplyRectSlot110(RECT* rectBuffer) {
 
     SetQuickDrawColorAndSyncGlobals(styleSecondary);
     SetQuickDrawTextOriginWithContextOffset(static_cast<short>(textOriginX + 1), 0x47);
-    DrawTextWithCachedStyle(&localizedTextRef);
+    DrawTextWithCachedQuickDrawStyleState(&localizedTextRef);
     SetQuickDrawColorAndSyncGlobals(stylePrimary);
     SetQuickDrawTextOriginWithContextOffset(textOriginX, 0x46);
-    DrawTextWithCachedStyle(&localizedTextRef);
+    DrawTextWithCachedQuickDrawStyleState(&localizedTextRef);
   }
 }
 

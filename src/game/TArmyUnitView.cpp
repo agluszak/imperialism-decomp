@@ -27,15 +27,15 @@ void TArmyUnitView::ApplyRectSlot110(RECT* rectBuffer) {
   CString unitTypeName;
   CString descriptor;
 
-  ApplyUiTextStyleAndSyncColor(0, 0xc, 0);
+  ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 0xc, 0);
   SetQuickDrawColorAndSyncGlobals(0x1c474b);
   unitTypeName = *reinterpret_cast<CString*>(context + 0x24);
   SetQuickDrawTextOriginWithContextOffset(0x40, 0x10);
-  DrawTextWithCachedStyle(&unitTypeName);
+  DrawTextWithCachedQuickDrawStyleState(&unitTypeName);
 
   // Localized unit descriptor: string group 0x2746 substituting a literal 7 for the
   // special-cased unit-type 0xe, otherwise group 0x272c substituting the unit-type code.
-  ApplyUiTextStyleAndSyncColor(2, 9, 0);
+  ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(2, 9, 0);
   SetQuickDrawColorAndSyncGlobals(0x1c474b);
   int unitTypeCode = *reinterpret_cast<int*>(context + 8);
   if (unitTypeCode == 0xe) {
@@ -44,7 +44,7 @@ void TArmyUnitView::ApplyRectSlot110(RECT* rectBuffer) {
     g_pSimMgr->GetString(0x272c, unitTypeCode, &descriptor);
   }
   SetQuickDrawTextOriginWithContextOffset(0x40, 0x1f);
-  DrawTextWithCachedStyle(&descriptor);
+  DrawTextWithCachedQuickDrawStyleState(&descriptor);
   SetQuickDrawFillColor(0);
 
   short level = *reinterpret_cast<short*>(context + 0x34);

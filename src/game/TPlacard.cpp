@@ -54,7 +54,7 @@ bool TPlacard::IsSelected(short value, bool refreshNow) {
 void TPlacard::ApplyRectSlot110(RECT* rectBuffer) {
   (void)rectBuffer;
   TPicture::ApplyRectSlot110(nullptr);
-  ApplyUiTextStyleAndSyncColor(0, 10, 0x2b6c);
+  ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 10, 0x2b6c);
   if (glyph90 < 10) {
     SetQuickDrawTextOriginWithContextOffset(frameWidth34 / 2 - 2, 0);
   } else if (glyph90 < 100) {

@@ -37,7 +37,7 @@ void TNumberedItem::ApplyRectSlot110(RECT* rectBuffer) {
                                    &dstRect, 0x24, 0);
 
   UpdatePaletteIndexWithDefaultFallback(0x13);
-  ApplyUiTextStyleAndSyncColor(0, 9, 0x2b67);
+  ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 9, 0x2b67);
   short x;
   short y = static_cast<short>(frameHeight38) - 5;
   if (badgeCountAe < 10) {
@@ -50,5 +50,5 @@ void TNumberedItem::ApplyRectSlot110(RECT* rectBuffer) {
   SetQuickDrawTextOriginWithContextOffset(x, y);
   CString countText;
   countText.Format(g_szDecimalFormat, static_cast<int>(badgeCountAe));
-  DrawTextWithCachedStyle(&countText);
+  DrawTextWithCachedQuickDrawStyleState(&countText);
 }

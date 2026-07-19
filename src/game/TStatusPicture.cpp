@@ -33,10 +33,10 @@ void TStatusPicture::ApplyRectSlot110(RECT* rectBuffer) {
 
   CString title;
   g_pSimMgr->GetString(0x2757, static_cast<short>(comparisonMode90) + 8, &title);
-  ApplyUiTextStyleAndSyncColor(0, 0xe, 0x2b6a);
+  ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 0xe, 0x2b6a);
   short titleWidth = MeasureTextExtentWithCachedQuickDrawStyle(&title);
   SetQuickDrawTextOriginWithContextOffset(0x140 - titleWidth / 2, 0x3c);
-  DrawTextWithCachedStyle(&title);
+  DrawTextWithCachedQuickDrawStyleState(&title);
 
   int rowY = 100;
   for (int i = 0; i < 7; ++i, rowY += 0x37) {
@@ -45,9 +45,9 @@ void TStatusPicture::ApplyRectSlot110(RECT* rectBuffer) {
     }
     CString label;
     g_apNationStates[pictureIds_b0[i]]->FormatOverlayTerrainLabelText(&label);
-    ApplyUiTextStyleAndSyncColor(0, 0xc, 0x2b6a);
+    ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 0xc, 0x2b6a);
     SetQuickDrawTextOriginWithContextOffset(0x9a, rowY - 8);
-    DrawTextWithCachedStyle(&label);
+    DrawTextWithCachedQuickDrawStyleState(&label);
 
     // Horizontal score bar for this row: filled once in fill color 0, then re-filled one
     // pixel up/left in the nation's turn-event palette color for a 1px drop-shadow effect.
