@@ -54,7 +54,7 @@ GENERATED_PREFIXES = (
     "src/autogen/",
     "src/ghidra_autogen/",
     "include/ghidra_autogen/",
-)
+)  # legacy paths: kept so a stale checkout's leftovers still trip the integrity check
 MANUAL_CPP_PREFIXES = ("src/", "include/")
 MARKER_RE = re.compile(
     r"^[+-].*//\s*(FUNCTION|SYNTHETIC|TEMPLATE|LIBRARY|GLOBAL|VTABLE|NOOP):",

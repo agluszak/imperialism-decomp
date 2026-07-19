@@ -83,15 +83,16 @@ _require-ghidra-install:
   : "${GHIDRA_INSTALL_DIR:?Set GHIDRA_INSTALL_DIR in .env}"
 
 # ---------------------------------------------------------------------------
-# sync — regenerate derived artifacts (symbols.csv, stubs, ownership, autogen).
+# sync — regenerate derived artifacts (symbols.csv, ownership).
 # The three canonical playbooks live in docs/workflows.md.
 # ---------------------------------------------------------------------------
 
-# MUTATES: Ghidra DB, config/symbols.csv, config/thunk_map.csv, src/+include/ghidra_autogen/.
-# Push source names into the DB, re-export symbols/autogen, prune ILT rows, refresh the
-# thunk map, normalize autogen, then gate. The DB is modified (push-names --apply), so
-# `just export-project` must follow before committing — or run `just db-resync` instead.
-[doc('MUTATES: Ghidra DB, symbols.csv, thunk_map.csv, ghidra_autogen/. Re-export pipeline; follow with export-project')]
+# MUTATES: Ghidra DB, config/symbols.csv.
+# Push source names into the DB, re-export symbols, prune ILT rows, then gate. The DB
+# is modified (push-names --apply), so `just export-project` must follow before
+# committing — or run `just db-resync` instead. Decompiled reference bodies go to
+# {{build_dir}}/evidence/ghidra-export/ (uncommitted evidence, not source).
+[doc('MUTATES: Ghidra DB, symbols.csv. Re-export pipeline; follow with export-project')]
 [group('sync')]
 sync-ghidra: _require-ghidra-install
   uv run python -m tools.ghidra.daemon stop --quiet
@@ -105,8 +106,6 @@ sync-ghidra: _require-ghidra-install
     --ghidra-program-name "{{GHIDRA_PROGRAM_NAME}}" \
     --name-overrides "{{name_overrides}}"
   just prune-ilt-thunks
-  just dump-thunk-map
-  just normalize-autogen
   just symbols-anchor-gate
   just symbols-integrity-gate
   just vtable-collision-gate
@@ -158,46 +157,6 @@ generate:
     --name-overrides "{{name_overrides}}" \
     --ownership-csv "{{function_ownership}}"
 
-# MUTATES: the target .cpp and config/function_ownership.csv.
-# Promote a ghidra_autogen body into manual source.
-[doc('MUTATES: target .cpp + function_ownership.csv. Promote a ghidra_autogen body into manual source')]
-[group('sync')]
-promote target_cpp *args:
-  uv run python -m tools.workflow.promote_from_autogen \
-    --target-cpp "{{target_cpp}}" \
-    --ownership-csv "{{function_ownership}}" \
-    {{args}}
-
-# MUTATES: the target .cpp and config/function_ownership.csv.
-[group('sync')]
-promote-range target_cpp start end:
-  uv run python -m tools.workflow.promote_from_autogen \
-    --target-cpp "{{target_cpp}}" \
-    --ownership-csv "{{function_ownership}}" \
-    --range "{{start}}:{{end}}"
-
-# MUTATES: src/ghidra_autogen/ (reference-only files).
-# Normalize src/ghidra_autogen so promoted bodies read against real symbols and
-# real C++ member signatures: resolve jmp-thunk/alias names, then reshape
-# `__thiscall Cls::Method(Cls *this, ...)` heads into `Cls::Method(...)`.
-[doc('MUTATES: src/ghidra_autogen/ (reference-only). Resolve thunk names + reshape thiscall heads')]
-[group('sync')]
-normalize-autogen *args:
-  just _resolve-autogen-thunks {{args}}
-  just _reshape-autogen-signatures {{args}}
-
-# Rewrite Ghidra jmp-thunk / alias names in src/ghidra_autogen to the real names
-# (driven by config/thunk_map.csv). Pass --check to fail without writing.
-[private]
-_resolve-autogen-thunks *args:
-  uv run python -m tools.workflow.resolve_autogen_thunks {{args}}
-
-# Reshape Ghidra `__thiscall Cls::Method(Cls *this, ...)` definition heads in
-# src/ghidra_autogen into real C++ member definitions `Cls::Method(...)`.
-[private]
-_reshape-autogen-signatures *args:
-  uv run python -m tools.workflow.reshape_autogen_signatures {{args}}
-
 # MUTATES: config/symbols.csv.
 # Drop incremental-link `jmp` thunk rows (linker artifacts) from config/symbols.csv.
 # reccmp auto-detects unannotated jmp thunks and excludes them from the report.
@@ -205,15 +164,6 @@ _reshape-autogen-signatures *args:
 [group('sync')]
 prune-ilt-thunks *args:
   uv run python -m tools.workflow.prune_ilt_thunks {{args}}
-
-# MUTATES: config/thunk_map.csv (DB itself is read-only here).
-# Dump the Ghidra thunk-name -> real-name map to config/thunk_map.csv so offline
-# body promotion (promote/promote-range, normalize-autogen) can resolve
-# jmp-thunk/alias call names without a live Ghidra connection. Idempotent.
-[doc('MUTATES: thunk_map.csv. Dump the Ghidra thunk-name -> real-name map')]
-[group('sync')]
-dump-thunk-map *args: _require-ghidra-install
-  uv run python -m tools.ghidra.dump_thunk_map {{args}}
 
 # ---------------------------------------------------------------------------
 # build — compile, lint, run.
@@ -246,6 +196,7 @@ lint flags="":
   uv run python -m tools.source_index --gen-dir "{{lint_build_dir}}/generated"
   uv run python -m tools.stubgen \
     --output-dir "{{lint_build_dir}}/generated/stubs" \
+    --chunk-prefix lint_stubs_part \
     --annotation-kind none \
     --name-overrides "{{name_overrides}}" \
     --ownership-csv "{{function_ownership}}"
@@ -683,6 +634,20 @@ ghidra-function-slice *args: _require-ghidra-install
 ghidra-decompile *args: _require-ghidra-install
   uv run python -m tools.ghidra.query decompile {{args}}
 
+# Read-only porting seed: decompile the target into an evidence draft the agent
+# copies/repairs from by hand. Writes {{build_dir}}/evidence/decomp/<addr>.cpp and
+# never touches source or ownership metadata (the replacement for the retired
+# promote-from-autogen source mutation).
+[doc('Seed a port: decompile 0xADDR into build evidence (read-only, never edits source)')]
+[group('ghidra-inspect')]
+seed-function addr: _require-ghidra-install
+  #!/usr/bin/env bash
+  set -euo pipefail
+  mkdir -p "{{build_dir}}/evidence/decomp"
+  out="{{build_dir}}/evidence/decomp/{{addr}}.cpp"
+  uv run python -m tools.ghidra.query decompile {{addr}} > "$out"
+  echo "seeded $out ($(wc -l < "$out") lines) — copy/repair by hand; this file is evidence, not source"
+
 # One-stop function status from the config CSVs + reccmp baseline (no Ghidra / no build,
 # instant): curated name/size/proto, ownership, autogen body location, current match %.
 # `just func-status 0xADDR [0xADDR ...]`.
@@ -1038,21 +1003,6 @@ generated-marker-gate:
 ilt-ossification-gate:
   uv run python -m tools.workflow.check_ilt_ossification
 
-# Offline gate (no Ghidra): the Ghidra export must not contradict source. Flags
-# source-owned addresses whose src/ghidra_autogen GHIDRA_NAME sits in a different
-# class namespace than config/symbols.csv, and stale autogen class buckets. Ratchet
-# against config/ghidra_name_drift_baseline.csv (the shrink-only convergence queue,
-# e.g. the retired DB name TSoundChannelNode vs source TLongintList @ 0x650a08).
-[group('gates')]
-ghidra-name-drift-gate:
-  uv run python -m tools.workflow.check_ghidra_name_drift
-
-# MUTATES: config/ghidra_name_drift_baseline.csv. Ratchet down after a DB re-sync
-# (push-source-names / db-resync) converges the autogen toward source.
-[group('gates')]
-ghidra-name-drift-gate-update:
-  uv run python -m tools.workflow.check_ghidra_name_drift --write-baseline
-
 # MUTATES: config/ilt_ossification_baseline.csv. Ratchet down after migrating a thunk
 # or renaming a WrapperFor_/_At body. Never run to silence a new offender.
 [group('gates')]
@@ -1224,7 +1174,6 @@ source-gates:
   just marker-gate
   just generated-marker-gate
   just ilt-ossification-gate
-  just ghidra-name-drift-gate
   just vtable-annotation-gate
   just vtable-collision-gate
   just synthetic-gate

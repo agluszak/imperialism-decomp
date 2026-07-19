@@ -8,6 +8,8 @@ build-*/
 # Stubs/indexes are generated into the build dir; a stale committed-era copy here
 # would double-register reccmp markers.
 src/autogen/
+src/ghidra_autogen/
+include/ghidra_autogen/
 out/
 tmp_decomp/
 *.obj

@@ -63,12 +63,18 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--decomp-output-dir",
-        default=os.getenv("DECOMP_OUTPUT_DIR", str(repo_root / "src" / "ghidra_autogen")),
+        default=os.getenv(
+            "DECOMP_OUTPUT_DIR",
+            str(repo_root / "build-msvc500" / "evidence" / "ghidra-export" / "src"),
+        ),
         help="Output directory for split decompiled function bodies",
     )
     parser.add_argument(
         "--types-output-dir",
-        default=os.getenv("TYPES_OUTPUT_DIR", str(repo_root / "include" / "ghidra_autogen")),
+        default=os.getenv(
+            "TYPES_OUTPUT_DIR",
+            str(repo_root / "build-msvc500" / "evidence" / "ghidra-export" / "include"),
+        ),
         help="Output directory for split datatype headers",
     )
     parser.add_argument(

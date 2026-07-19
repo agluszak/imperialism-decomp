@@ -87,11 +87,10 @@ just agent-finish             # machine-derived summary / PR body from the recei
 ## 2. After editing markers / ownership
 
 Whenever you add, remove, or move a `// FUNCTION:` / `// STUB:` / `// SYNTHETIC:` /
-`// LIBRARY:` marker (including `just promote`):
+`// LIBRARY:` marker:
 
 ```sh
 just build          # regenerates build inputs (source index + stubs) automatically
-just build
 ```
 
 There is no separate sequence to remember: generation reconciles

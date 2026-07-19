@@ -61,22 +61,19 @@ Two config-file readers replace the by-hand grep-across-CSVs dance:
    high-impact non-trivial bodies over tiny thunks (`just port-candidates`).
    The `agent-start` receipt already confirms it is a real body, not a `jmp`
    trampoline.
-2. **Promote** the Ghidra text. Promotion copies the decompiled body out of
-   `src/ghidra_autogen/<Class>.cpp` into your manual file with the `// FUNCTION:` marker
-   attached, and removes the address from stub ownership so there's one owned impl.
-   - `just promote src/game/<Class>.cpp --address 0x005d6b70` — raw autogen copy of one
-     function. The address is the original-binary offset (the autogen marker). It appends
-     the block (marker + raw `__thiscall` body) to `<Class>.cpp`; you then shape it.
-   - `just promote-range src/game/<Class>.cpp 0xLOW 0xHIGH` — bulk-promote every owned
-     function in an address range (a whole class slice) in one pass.
-   - Targeting: the file should be the owning class's `src/game/<Class>.cpp` (Hard Rule 7).
-     If the autogen reads against `jmp`-thunk/alias names, run `just normalize-autogen`
-     first so the promoted body references real symbols.
-   - After a bulk promote, if `just decomplint` reports `function_out_of_order`:
+2. **Seed** the port. `just seed-function 0xADDR` decompiles the target into
+   `build-msvc500/evidence/decomp/0xADDR.cpp` — a read-only draft you copy the useful
+   parts out of and repair by hand into the owning `src/game/<Class>.cpp` with the
+   `// FUNCTION:` marker attached (one owned impl per address). The draft is evidence,
+   never source: nothing edits your files or ownership metadata for you.
+   - Thunk/alias callee names in the draft resolve live from the DB (the decompiler
+     chases ILT thunks to real targets).
+   - Targeting: the file must be the owning class's `src/game/<Class>.cpp` (Hard Rule 7).
+   - If `just decomplint` reports `function_out_of_order` after adding several bodies:
      `uv run python -m tools.workflow.reorder_marked_functions <file.cpp>`.
-   - **Promote-to-unblock is allowed and encouraged:** if the target calls a sibling/base
-     method or another class's function that's still a stub, promote *that* too (into its
-     own owning `<Class>.cpp`) so the call is real. Promoting a callee adds/moves a marker
+   - **Seed-to-unblock is allowed and encouraged:** if the target calls a sibling/base
+     method or another class's function that's still a stub, port *that* too (into its
+     own owning `<Class>.cpp`) so the call is real. Adding/moving a marker
      → the next `just build` regenerates the stub surface automatically.
 3. **Shape pass** — make it compile-safe C++ that preserves the original control
    flow:
