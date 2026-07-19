@@ -66,6 +66,24 @@ raw-inventory refresh is now `just refresh-inventory`; class *datatype* renames
 remain the `just ghidra-rename-class` repair tool until PDB-driven type import
 lands (the known gap the audit reports).
 
+## 2026-07-19 (third): PDB-driven type/signature import wired into apply-source-full (committed)
+
+`just ghidra-apply-source-full` now includes reccmp's PDB importer
+(`just import-ghidra`) as the class-synchronization step the spec called for: it
+imports game-owned class datatypes, inheritance, field layouts, full typed
+function signatures, and vftables from the recomp PDB into the DB (this run:
+9125 successes, 1748 functions changed, vftables imported, zero missing types;
+29 benign failures). The retired hand-curated `apply-source-datatypes` (3-class
+spec importer) and `push-library-override-names` (absorbed as an apply-source
+name source: reviewed identities now beat inventory names) are deleted.
+
+**Ordering matters and is encoded in the recipe:** the PDB import names entities
+from the generated data sources (inventory names), so it must run BEFORE the
+apply-source name pass — source-declaration names win last. The first run used
+the wrong order and the import reverted 1642 source names; re-applying restored
+them (primary_exact 6504 -> 8185; 27 residual DuplicateName conflicts from
+pre-existing plain-name labels at the same addresses).
+
 ## Committed mutations (already in the current .gzf, newest first)
 
 From `git log --follow -- vendor/ghidra/exports/Imperialism.gzf`:
@@ -91,8 +109,8 @@ From `git log --follow -- vendor/ghidra/exports/Imperialism.gzf`:
 
 Most of these are *derived* mutations (names/types pushed from source or from
 imports) and are reproducible on a new DB via the standard pipeline:
-`just push-names --apply` + `just import-ghidra` + the apply_* tools
-(`apply_mfc_datatypes`, `apply_mfc_rtti`, `apply_source_datatypes`).
+`just ghidra-apply-source-full` (build -> PDB import -> source-name apply -> export)
+plus the MFC appliers (`apply_mfc_datatypes`, `apply_mfc_rtti`).
 
 ## 2026-07-02: gap-repair mutation committed (two bugs found and fixed)
 

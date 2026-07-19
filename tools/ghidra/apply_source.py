@@ -12,6 +12,9 @@ automatically). It derives everything from the two canonical inputs:
   2. **The raw inventory** (config/original_entities.csv): fallback advisory
      names for claimed addresses whose declaration could not be parsed, and for
      curated-but-unported rows.
+  3. **Reviewed library identities** (config/reviewed_library_identities.csv):
+     reviewed name beats the advisory inventory name (same precedence as the
+     generated symbols overlay).
 
 Applied to the DB (dry-run by default; --apply writes and saves):
   - function names + class namespaces (decided against the PRIMARY entity —
@@ -23,9 +26,10 @@ Applied to the DB (dry-run by default; --apply writes and saves):
 After --apply, run `just export-project` so the vendored .gzf carries the
 result (`just ghidra-apply-source-full` chains build -> apply -> export).
 
-Known gap (repair tool: `just ghidra-rename-class`): class *datatype* renames
-and PDB-driven struct/inheritance import are not yet applied here; the audit at
-the end reports class namespaces whose datatype name diverges from source.
+Class datatypes/inheritance/signatures come from the recomp PDB via the
+`just import-ghidra` step of `ghidra-apply-source-full` (reccmp's PDB importer);
+the audit at the end reports class namespaces whose datatype name still diverges
+from source (repair tool: `just ghidra-rename-class`).
 """
 
 from __future__ import annotations
@@ -43,6 +47,7 @@ from tools.source_index import MarkerClaim, scan_marker_claims
 
 REPO_ROOT = repo_root_from_file(__file__, levels_up=2)
 INVENTORY = REPO_ROOT / "config" / "original_entities.csv"
+REVIEWED = REPO_ROOT / "config" / "reviewed_library_identities.csv"
 
 _VTABLE_RE = re.compile(r"//\s*VTABLE\s*:\s*(\w+)\s+(?:0x)?([0-9a-fA-F]+)", re.IGNORECASE)
 _CLASS_DECL_RE = re.compile(r"^\s*(?:class|struct)\s+([A-Za-z_]\w*)")
@@ -126,11 +131,11 @@ def source_vtables(repo_root: Path, target: str) -> dict[int, str]:
     return out
 
 
-def inventory_names() -> dict[int, str]:
+def _names_from(path: Path) -> dict[int, str]:
     out: dict[int, str] = {}
-    if not INVENTORY.is_file():
+    if not path.is_file():
         return out
-    _fields, rows = read_pipe_table(INVENTORY)
+    _fields, rows = read_pipe_table(path)
     for row in rows:
         name = (row.get("name") or "").strip()
         addr_text = (row.get("address") or "").strip()
@@ -141,6 +146,14 @@ def inventory_names() -> dict[int, str]:
         except ValueError:
             continue
     return out
+
+
+def inventory_names() -> dict[int, str]:
+    return _names_from(INVENTORY)
+
+
+def reviewed_names() -> dict[int, str]:
+    return _names_from(REVIEWED)
 
 
 def parse_args() -> argparse.Namespace:
@@ -157,13 +170,14 @@ def main() -> int:
     derived = source_names(REPO_ROOT, args.target)
     vtables = source_vtables(REPO_ROOT, args.target)
     fallback = inventory_names()
-    # Source wins; inventory names fill claimed-or-curated addresses source
-    # could not name (unparsable decls, curated-but-unported rows).
+    reviewed = reviewed_names()
+    # Precedence: source declaration > reviewed identity > inventory advisory.
     wanted: dict[int, str] = dict(fallback)
+    wanted.update(reviewed)
     wanted.update(derived)
     print(
-        f"source-derived names: {len(derived)}; inventory fallback: {len(fallback)}; "
-        f"vtable annotations: {len(vtables)}"
+        f"source-derived names: {len(derived)}; reviewed identities: {len(reviewed)}; "
+        f"inventory fallback: {len(fallback)}; vtable annotations: {len(vtables)}"
     )
 
     project = ghidra_env.open_project()
