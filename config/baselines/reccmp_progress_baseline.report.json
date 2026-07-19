@@ -7943,8 +7943,8 @@
     },
     {
       "address": "0x4a1100",
-      "matching": 0.25,
-      "name": "TBitmapResourceLoader::TemporarilyClearAndRestoreUiInvalidationFlag",
+      "matching": 1.0,
+      "name": "TBitmapResourceLoader::ReportUnimplementedResourceVirtualSlot02",
       "type": 1
     },
     {
@@ -45210,6 +45210,6 @@
       "type": 5
     }
   ],
-  "file": "Imperialism.exe.gog-original",
+  "file": "Imperialism.exe",
   "format": 1
 }
