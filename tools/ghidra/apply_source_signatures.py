@@ -536,9 +536,11 @@ def run(program, args, model):
                 r = "opaque_by_value_return" if ret_q == "opaque_by_value" else f"unresolved_return:{ret_str}"
                 queued.append((addr, claim.name, r, claim.prototype))
                 continue
-            if ret_dt.getLength() > 4 and "*" not in ret_str:
-                queued.append((addr, claim.name, "sret_by_value_return", claim.prototype))
-                continue
+            # By-value struct return > 4 bytes: PROJECT it — Ghidra models the
+            # MSVC sret ABI itself (auto __return_storage_ptr__, params shift) once
+            # the return type has its real size (class-model work). Verification
+            # decides; a 4-byte non-trivial class (CString) that really uses sret
+            # is caught by the re-decompile and queued honestly.
         param_dts = []
         bad = None
         for t in param_strs:
@@ -969,9 +971,11 @@ def run_divergent(program, args, model):
                 r = "opaque_by_value_return" if ret_q == "opaque_by_value" else f"unresolved_return:{ret_str}"
                 queued.append((addr, claim.name, r, claim.prototype))
                 continue
-            if ret_dt.getLength() > 4 and "*" not in ret_str:
-                queued.append((addr, claim.name, "sret_by_value_return", claim.prototype))
-                continue
+            # By-value struct return > 4 bytes: PROJECT it — Ghidra models the
+            # MSVC sret ABI itself (auto __return_storage_ptr__, params shift) once
+            # the return type has its real size (class-model work). Verification
+            # decides; a 4-byte non-trivial class (CString) that really uses sret
+            # is caught by the re-decompile and queued honestly.
 
         if not args.apply:
             projected.append((addr, claim.name, "would_project", exp_n))
@@ -1143,7 +1147,7 @@ def main() -> int:
     mode = "APPLIED" if args.apply else "DRY RUN"
     print(f"[{mode}] source-owned in_stack functions: "
           f"converged={len(converged)} queued={len(queued)} (applied={applied})")
-    print(f"  queue -> {out}")
+    print(f"  queue -> {args.queue_out}")
     print("  queued by reason: " + ", ".join(f"{k}={v}" for k, v in sorted(reasons.items())))
     if args.strict and queued:
         # Strict gate: only the "could not verify / errored" reasons fail
