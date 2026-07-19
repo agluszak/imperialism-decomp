@@ -10,7 +10,15 @@ from __future__ import annotations
 
 import unittest
 
-from tools.workflow.check_ghidra_name_drift import class_of, find_drift, keys_for
+import tempfile
+from pathlib import Path
+
+from tools.workflow.check_ghidra_name_drift import (
+    class_of,
+    find_drift,
+    find_override_drift,
+    keys_for,
+)
 
 
 class TestClassOf(unittest.TestCase):
@@ -65,6 +73,39 @@ class TestFindDrift(unittest.TestCase):
         keys = keys_for(class_drift, stale)
         self.assertIn("fn|004c6740|TSoundChannelNode", keys)
         self.assertIn("bucket|TSoundChannelNode", keys)
+
+
+class TestOverrideDrift(unittest.TestCase):
+    """A stale function_name_overrides row is applied after the curated merge and
+    reverts a curated rename — the 0x413250 IsNationSlotEligibleForEventProcessing case."""
+
+    def _run(self, overrides_text: str, symbols: dict[str, str]):
+        with tempfile.TemporaryDirectory() as td:
+            repo = Path(td)
+            (repo / "config").mkdir()
+            (repo / "config" / "function_name_overrides.csv").write_text(
+                overrides_text, encoding="utf-8"
+            )
+            return find_override_drift(repo, symbols)
+
+    def test_stale_override_flagged(self):
+        symbols = {"00413250": "TDiplomacyMgr::IsNationSlotEligibleForEventProcessing"}
+        overrides = ("address|name|prototype\n"
+                     "0x00413250|TDiplomacyMgr::WrapperFor_IsNationSlotEligibleForEventProcessingAt413250|x\n")
+        drift = self._run(overrides, symbols)
+        self.assertEqual(len(drift), 1)
+        self.assertEqual(drift[0][0], "00413250")
+
+    def test_matching_override_ok(self):
+        symbols = {"00413250": "TDiplomacyMgr::IsNationSlotEligibleForEventProcessing"}
+        overrides = ("address|name|prototype\n"
+                     "0x00413250|TDiplomacyMgr::IsNationSlotEligibleForEventProcessing|x\n")
+        self.assertEqual(self._run(overrides, symbols), [])
+
+    def test_override_for_uncurated_address_ok(self):
+        # An override for an address not in symbols.csv is fine (nothing to contradict).
+        overrides = "address|name|prototype\n0x00999999|Foo::Bar|x\n"
+        self.assertEqual(self._run(overrides, {}), [])
 
 
 if __name__ == "__main__":
