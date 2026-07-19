@@ -116,10 +116,11 @@ def load_artifacts(repo_root: Path, args):
     with open(repo_root / args.audit, newline="") as fh:
         for row in csv.DictReader(fh):
             verdicts[row["name"]] = row["verdict"]
-    return model, lay["layouts"], lay.get("external_bases", {}), verdicts
+    return (model, lay["layouts"], lay.get("external_bases", {}),
+            lay.get("mfc_values", {}), verdicts)
 
 
-def run(program, args, model, layouts, ext_bases, verdicts):
+def run(program, args, model, layouts, ext_bases, verdicts, mfc_values=None):
     from ghidra.program.model.data import (
         ArrayDataType, CategoryPath, DataTypeConflictHandler, PointerDataType,
         StructureDataType, Undefined1DataType,
@@ -184,6 +185,36 @@ def run(program, args, model, layouts, ext_bases, verdicts):
     commit = False
     replaced = created = 0
     try:
+        # Phase 0: MFC value types (CPoint/CRect/CSize/...) at their measured
+        # sizes with measured field offsets. Projected FIRST so game fields typed
+        # with them resolve at the correct size; replaces the 1-byte stubs that
+        # blocked sret detection and by-value projection.
+        for vt, vlay in sorted((mfc_values or {}).items()):
+            if vlay.get("size") is None:
+                continue
+            s = StructureDataType(CategoryPath.ROOT, vt, vlay["size"], dtm)
+            for fname, fl in sorted(vlay.get("fields", {}).items(),
+                                    key=lambda kv: kv[1]["offset"]):
+                fdt = None
+                if fl["size"] == 4:
+                    fdt = named.get("long") or named.get("int")
+                    if fname.endswith("pchData"):
+                        from ghidra.program.model.data import CharDataType
+                        fdt = PointerDataType(CharDataType.dataType, dtm)
+                if fdt is None or fdt.getLength() != fl["size"]:
+                    fdt = (Undefined1DataType.dataType if fl["size"] == 1 else
+                           ArrayDataType(Undefined1DataType.dataType, fl["size"], 1, dtm))
+                s.replaceAtOffset(fl["offset"], fdt, fl["size"], fname, None)
+            existing = named.get(vt)
+            if existing is not None and existing.getClass().getSimpleName() in (
+                    "StructureDB", "StructureDataType"):
+                new_dt = dtm.replaceDataType(existing, s, True)
+                replaced += 1
+            else:
+                new_dt = dtm.addDataType(s, DataTypeConflictHandler.REPLACE_HANDLER)
+                created += 1
+            named[vt] = new_dt
+
         # Phase A: sized shells (replace stubs so references rewrite).
         shells = {}
         for qn, (size, _c, _n) in plans.items():
@@ -258,13 +289,13 @@ def main() -> int:
     args = p.parse_args()
 
     repo_root = repo_root_from_file(__file__, levels_up=2)
-    model, layouts, ext_bases, verdicts = load_artifacts(repo_root, args)
+    model, layouts, ext_bases, mfc_values, verdicts = load_artifacts(repo_root, args)
 
     project = ghidra_env.open_project()
     consumer = program = None
     try:
         consumer, program = ghidra_env.open_program(project, writable=bool(args.apply))
-        result = run(program, args, model, layouts, ext_bases, verdicts)
+        result = run(program, args, model, layouts, ext_bases, verdicts, mfc_values)
     finally:
         if program is not None:
             program.release(consumer)

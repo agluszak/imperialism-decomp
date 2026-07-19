@@ -39,6 +39,17 @@ _DOCKER_IMAGE = "imperialism-msvc500:latest"
 # packing stays the VC5 default /Zp8 exactly as the real build.
 _CL_FLAGS = ["/nologo", "/GX", "/GR-"]
 
+# MFC value types used by value in game signatures, with their public API fields
+# and canonical type spellings (semantic surface; offsets/sizes are measured,
+# never assumed — the spelling is only used when it matches the measured size).
+MFC_VALUE_TYPES = {
+    "CPoint": {"x": "long", "y": "long"},
+    "CSize": {"cx": "long", "cy": "long"},
+    "CRect": {"left": "long", "top": "long", "right": "long", "bottom": "long"},
+    "CTime": {"m_time": "long"},
+    "CString": {"m_pchData": "char *"},
+}
+
 
 def _sanitize(qn: str) -> str:
     return re.sub(r"[^A-Za-z0-9_]", "_", qn)
@@ -113,6 +124,22 @@ def generate_oracle_tu(model: dict, repo_root: Path) -> tuple[str, dict]:
         lines.append("}")
         dumpers.append("dump_external_bases")
 
+    # MFC VALUE types passed/returned by value in game signatures (CPoint args,
+    # CPoint/CString returns, ...). The field-name list is the public MFC API
+    # surface (semantic knowledge, like the AST supplies for game records); every
+    # offset/size is still measured by the real VC5 compiler. Sizing these clears
+    # the 1-byte stubs that blocked sret detection and by-value projection.
+    lines.append("static void dump_mfc_values(void) {")
+    for vt, fields in sorted(MFC_VALUE_TYPES.items()):
+        lines.append(f'    printf("MFCVALUE|{vt}|%u\\n", (unsigned)sizeof({vt}));')
+        for fname in fields:
+            lines.append(
+                f'    printf("MFCFIELD|{vt}|{fname}|%u|%u\\n", '
+                f"(unsigned)((char*)&(({vt}*)16)->{fname} - (char*)16), "
+                f"(unsigned)sizeof((({vt}*)16)->{fname}));")
+    lines.append("}")
+    dumpers.append("dump_mfc_values")
+
     # Keep each caller small — VC5 copes better with many small functions than one
     # giant main().
     lines.append("")
@@ -161,11 +188,12 @@ def run_oracle(cpp: str, repo_root: Path, keep_dir: Path | None = None) -> str:
     return proc.stdout
 
 
-def parse_oracle_output(raw: str) -> tuple[dict, dict]:
+def parse_oracle_output(raw: str) -> tuple[dict, dict, dict]:
     """stdout -> ({qualified: {size, bases:{type:off}, fields:{name:{offset,size}}}},
-    {external_base: size})."""
+    {external_base: size}, {mfc_value: {size, fields:{name:{offset,size}}}})."""
     out: dict = {}
     ext: dict = {}
+    mfc: dict = {}
     for line in raw.splitlines():
         parts = line.strip().split("|")  # pipe-split-ok: oracle exe stdout protocol, not a config table
         if parts[0] == "RECORD" and len(parts) == 3:
@@ -179,7 +207,13 @@ def parse_oracle_output(raw: str) -> tuple[dict, dict]:
             out[parts[1]]["fields"][parts[2]] = {"offset": int(parts[3]), "size": int(parts[4])}
         elif parts[0] == "EXTBASE" and len(parts) == 3:
             ext[parts[1]] = int(parts[2])
-    return out, ext
+        elif parts[0] == "MFCVALUE" and len(parts) == 3:
+            mfc.setdefault(parts[1], {"size": None, "fields": {}})
+            mfc[parts[1]]["size"] = int(parts[2])
+        elif parts[0] == "MFCFIELD" and len(parts) == 5:
+            mfc.setdefault(parts[1], {"size": None, "fields": {}})
+            mfc[parts[1]]["fields"][parts[2]] = {"offset": int(parts[3]), "size": int(parts[4])}
+    return out, ext, mfc
 
 
 def main() -> int:
@@ -205,17 +239,17 @@ def main() -> int:
         return 0
 
     raw = run_oracle(cpp, repo_root, keep_dir=Path(args.keep_work) if args.keep_work else None)
-    layout, ext_bases = parse_oracle_output(raw)
+    layout, ext_bases, mfc_values = parse_oracle_output(raw)
     out = Path(args.out)
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(json.dumps({"layouts": layout, "external_bases": ext_bases,
-                               "skipped": skipped},
+                               "mfc_values": mfc_values, "skipped": skipped},
                               indent=1, sort_keys=True) + "\n", encoding="utf-8")
 
     n_fields = sum(len(v["fields"]) for v in layout.values())
     missing = sorted(set(model) - set(layout))
     print(f"layout oracle: {len(layout)}/{len(model)} records, {n_fields} field offsets, "
-          f"{len(ext_bases)} external base sizes -> {out}")
+          f"{len(ext_bases)} external base sizes, {len(mfc_values)} MFC value types -> {out}")
     if missing:
         print(f"  MISSING from oracle output ({len(missing)}): {missing[:10]}{'...' if len(missing) > 10 else ''}")
     return 0

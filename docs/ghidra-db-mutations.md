@@ -363,6 +363,33 @@ projections; blocked records live in
 `build-msvc500/evidence/class_model_queue.csv` until their source declarations
 are fixed (exact size deltas in the class-model audit).
 
+## 2026-07-19 (fourteenth): MFC value types + sret attempt-and-verify (PR #102, committed DB change)
+
+The last fake-by-value blockers were the MFC VALUE types (`CPoint`/`CRect`/
+`CSize`/`CTime` — 1-byte stubs or missing). The layout oracle now measures them
+like everything else (MFCVALUE/MFCFIELD lines: field names are the public MFC API
+surface, every offset/size measured by real VC5 — CPoint=8 {x@0,y@4}, CRect=16,
+CSize=8), and `apply-class-model` projects them FIRST so game fields typed with
+them resolve at the correct size. Applied: 438 game records re-projected
+idempotently + the 5 MFC value types (441 replaced, 2 created).
+
+The signature projector's `sret_by_value_return` gate is retired: a >4-byte
+by-value return is now ATTEMPTED (Ghidra models the MSVC sret ABI itself once the
+return type is really sized) and per-function verification decides. Result:
+**14 signatures projected** that were blocked on CPoint — all the
+`OnLButtonDown(uint, CPoint)`-family message handlers (game + MFC library rows).
+Two honest residuals remain queued: `ReadOrCreateRegistryStringValueWithFallback`
+(CString return — a 4-byte non-trivial class MSVC returns via sret but Ghidra's
+size-based auto-sret cannot model) and `TView::TransformPointViaSlot138` (the
+attempt did not rebind in_stack@0x8 under __thiscall; rolled back, needs explicit
+CUSTOM_STORAGE sret lowering).
+
+Datatype hygiene reached the acceptance target: **by-value opaque uses 0
+(committed=0, queued=0)** — no signature anywhere uses a fake by-value class and
+no backlog remains. Type resolution: opaque_by_value 15 → 0, opaque_pointee
+101 → 33, exact_complete 3797 → 3863; structural converged 3854 → 3868.
+Exported → `85a1e55b…`.
+
 ## Committed mutations (already in the current .gzf, newest first)
 
 From `git log --follow -- vendor/ghidra/exports/Imperialism.gzf`:

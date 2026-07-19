@@ -127,11 +127,17 @@ class OracleParseTest(unittest.TestCase):
     def test_roundtrip(self):
         raw = ("RECORD|TFoo|24\nBASE|TFoo|TBase|0\nFIELD|TFoo|x|8|4\n"
                "EXTBASE|CView|0x0\nEXTBASE|CWnd|64\nnoise line\n")
-        out, ext = parse_oracle_output(raw.replace("0x0", "84"))
+        out, ext, mfc = parse_oracle_output(raw.replace("0x0", "84"))
         self.assertEqual(out["TFoo"]["size"], 24)
         self.assertEqual(out["TFoo"]["bases"], {"TBase": 0})
         self.assertEqual(out["TFoo"]["fields"]["x"], {"offset": 8, "size": 4})
         self.assertEqual(ext, {"CView": 84, "CWnd": 64})
+        self.assertEqual(mfc, {})
+
+    def test_mfc_value_lines(self):
+        out, ext, mfc = parse_oracle_output("MFCVALUE|CPoint|8\nMFCFIELD|CPoint|x|0|4\nMFCFIELD|CPoint|y|4|4\n")
+        self.assertEqual(mfc["CPoint"]["size"], 8)
+        self.assertEqual(mfc["CPoint"]["fields"]["y"], {"offset": 4, "size": 4})
 
 
 if __name__ == "__main__":
