@@ -1,4 +1,5 @@
 #include "game/TShip.h"
+#include "game/navy_order.h"
 
 #include "game/TAdmiral.h"
 #include "game/TZone.h"

@@ -6,6 +6,7 @@
 #include "game/TMinor.h"
 #include "game/TOcean.h"
 #include "game/TShip.h"
+#include "game/navy_order.h"
 #include "game/TSimMgr.h"
 #include "game/TStream.h"
 #include "game/TZone.h"

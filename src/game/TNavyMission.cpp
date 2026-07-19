@@ -7,16 +7,13 @@
 #include "game/TList.h"
 #include "game/TZone.h"
 #include "game/TShip.h"
+#include "game/navy_order.h"
 #include "game/TDiplomacyMgr.h"
 #include "game/TTaskForce.h"
 #include "game/global_data_tables.h"
 
 IMPLEMENT_SERIAL(TNavyMission, TMission, 1)
 
-// Not-yet-recovered free functions this file calls into (generic stub
-// signature per the autogen stub definition; real signature applied via a
-// typed cast at each call site so the linker resolves the correct symbol).
-extern undefined4 GetNavyPrimaryOrderNodeByIndex(void);
 
 // Swaps float byte order (Big-Endian <-> Little-Endian)
 static inline float SwapFloat(float val) {
@@ -163,9 +160,7 @@ void TNavyMission::WriteTo(TStream* stream) {
     stream->WriteBytesSlot78(&swapped, 4);
   }
 
-  // orderList24 payloads are TShip nodes in this class (see TShip class recovery);
-  // TMapOrderChildLinkNode::payload is typed TTaskForce* for the (more common)
-  // army-mission usage of this shared node type.
+  // orderList24 payloads are TShip primary-order nodes (serialized by roster index).
   for (TMapOrderChildLinkNode* node = orderList24; node != nullptr; node = node->next) {
     int idx = static_cast<TShip*>(node->payload)->GetIndexInPrimaryOrderList();
     stream->WriteCountSlot88(idx);
@@ -218,12 +213,11 @@ char TNavyMission::ReturnFalseSlot98() {
 
 // FUNCTION: IMPERIALISM 0x00536780
 void TNavyMission::NoOpSlot84(void* a, int b) {
-  TTaskForce* item = static_cast<TTaskForce*>(a);
-  TMission*& owner = *reinterpret_cast<TMission**>(reinterpret_cast<char*>(item) + 0x2c);
-  if (owner != nullptr) {
-    owner->NoOpSlot8C(a, b);
+  TShip* item = static_cast<TShip*>(a);
+  if (item->missionBacklink2c != nullptr) {
+    item->missionBacklink2c->NoOpSlot8C(a, b);
   }
-  owner = this;
+  item->missionBacklink2c = this;
   TMapOrderChildLinkNode* node = orderList24->CreateLinkedOrderNode(item);
   orderList24 = node;
   if (static_cast<char>(b) != 0) {
@@ -234,7 +228,7 @@ void TNavyMission::NoOpSlot84(void* a, int b) {
 // FUNCTION: IMPERIALISM 0x005367d0
 void TNavyMission::NoOpSlot8C(void* a, int b) {
   (void)b;
-  TTaskForce* item = static_cast<TTaskForce*>(a);
+  TShip* item = static_cast<TShip*>(a);
   if (orderList24 != nullptr) {
     if (orderList24->payload == item) {
       orderList24 = orderList24->DeleteMapOrderChildLinkAndReturnNext();
@@ -242,7 +236,7 @@ void TNavyMission::NoOpSlot8C(void* a, int b) {
       orderList24->next->RemoveLinkedOrderNodeByValueRecursive(item);
     }
   }
-  *reinterpret_cast<int*>(reinterpret_cast<char*>(item) + 0x2c) = 0;
+  item->missionBacklink2c = nullptr;
   if (navyField1c == reinterpret_cast<int>(a)) {
     navyField1c = 0;
   }
@@ -362,7 +356,7 @@ void TNavyMission::QueueMissionOrdersByPriorityForContext(int pContextAnchor,
   // callee here (verified via the 0x403e77 ILT thunk row) is the already-ported
   // TTaskForce::CalculateMissionOrderPriorityScore (0x5501b0).
   for (TMapOrderChildLinkNode* node = orderList24; node != nullptr; node = node->next) {
-    int score = static_cast<TTaskForce*>(node->payload)->CalculateMissionOrderPriorityScore(3);
+    int score = static_cast<TShip*>(node->payload)->CalculateMissionOrderPriorityScore(3);
     if (maxScore < score) {
       topOrder = node->payload;
       maxScore = score;
@@ -408,9 +402,9 @@ LAB_0053711a:
     TMapOrderChildLinkNode* node =
         orderList24->FindNodeMatching(static_cast<TObject*>(orderObj));
     node->active = 1;
-    TTaskForce* entry = static_cast<TTaskForce*>(orderObj)->GetOrCreateMissionOrderEntryForNode();
+    TTaskForce* entry = static_cast<TShip*>(orderObj)->GetOrCreateMissionOrderEntryForNode();
 
-    if (static_cast<TTaskForce*>(orderObj)->attachment == pContextAnchor) {
+    if (static_cast<TShip*>(orderObj)->field08 == reinterpret_cast<TZone*>(pContextAnchor)) {
       entry->SetMapOrderType9AndQueue();
     } else {
       entry->PromoteMapOrderChainAndQueue(reinterpret_cast<TZone*>(pContextAnchor));
@@ -423,10 +417,11 @@ void TNavyMission::ConsolidateMissionOrderEntriesByTargetAndQueue(int* pContextA
   for (TMapOrderChildLinkNode* node = orderList24; node != nullptr; node = node->next) {
     if (node->active == 0) {
       node->active = 1;
-      TTaskForce* entry = static_cast<TTaskForce*>(node->payload)->GetOrCreateMissionOrderEntryForNode();
+      TTaskForce* entry = static_cast<TShip*>(node->payload)->GetOrCreateMissionOrderEntryForNode();
       for (TMapOrderChildLinkNode* other = orderList24; other != nullptr; other = other->next) {
-        if (other->active == 0 && static_cast<TTaskForce*>(other->payload)->attachment == entry->contextAnchor) {
-          static_cast<TTaskForce*>(other->payload)->RemoveNode(entry);
+        if (other->active == 0 && reinterpret_cast<int>(static_cast<TShip*>(other->payload)->field08) ==
+                                      entry->contextAnchor) {
+          static_cast<TShip*>(other->payload)->RemoveNode(entry);
           other->active = 1;
         }
       }
@@ -447,7 +442,7 @@ float TNavyMission::ReturnZeroFloatSlot74(void* candidate) {
   }
   TShip* orderNode = static_cast<TShip*>(candidate);
   float profile[4];
-  if (orderNode->field2c == this) {
+  if (orderNode->missionBacklink2c == this) {
     profile[0] = 0.0f;
     profile[1] = 0.0f;
     profile[2] = 0.0f;

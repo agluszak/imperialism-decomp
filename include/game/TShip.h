@@ -5,24 +5,31 @@
 
 class TAdmiral;
 class TGreatPower;
+class TMission;
 class TStream;
 class TTaskForce;
 class TZone;
 struct CRuntimeClass;
 
-// Navy primary-order list node (global head g_pNavyPrimaryOrderListHead @ 0x6A3EDC).
-// TShip() prepends to the intrusive doubly-linked list; SumNavyOrderPriorityForNation
-// walks nextOlder24.
+// Navy primary-order node ("ship" in the original architecture -- the Mac oracle's
+// TShip carries the full naval-unit API; the Windows port has so far recovered its
+// order/roster/serialization face). Every instance lives on the global roster list
+// (head g_pNavyPrimaryOrderListHead @ 0x6A3EDC): TShip() prepends itself and
+// Free() unlinks. A ship can additionally be queued as a child order node under a
+// TTaskForce entry (ownerOrderEntry0c + the entry's childOrderList /
+// TNavyMission::orderList24 link cells -- TMapOrderChildLinkNode payloads are
+// TShip* in both lists).
 // VTABLE: IMPERIALISM 0x0065c438
 class TShip : public TObject {
 public:
   short resourceType04;
   short pad06;
   TZone* field08;
-  // Parent map-order entry this primary-order node is queued under (same +0xc "owner"
-  // slot TTaskForce::owner models; TShip::PruneOrPromoteOrderNodeWhenChildCostDepleted
-  // walks its childOrderList/activeChildEntry, and TAdmiral's backlink helpers read it).
+  // Parent map-order entry this node is queued under (cleared by RemoveNode /
+  // the entry-side prune paths).
   TTaskForce* ownerOrderEntry0c;
+  // Cache of the owner entry's packed order_type/order_strength dword, written by
+  // SetOwnerOrderEntryAndCacheType from entry+0x04.
   int quantityFlag10;
   short ownerNationSlot14;
   CString displayName18;
@@ -33,7 +40,10 @@ public:
   TAdmiral* admiralBacklink20;
   TShip* nextOlder24;
   TShip* prevNewer28;
-  void* field2c;
+  // Owning mission backlink: TNavyMission slot-0x84 attach writes `this` mission
+  // here, slot-0x8C detach nulls it (TGreatPower's assignment scan checks it for
+  // "unassigned").
+  TMission* missionBacklink2c;
   short field30;
   unsigned char pad32[2];
   int field34;
@@ -46,79 +56,72 @@ public:
   void ReadFrom(TStream* stream) override;
   void Free() override;
 
-  // Per-category (0-3) priority-contribution percentage for this order node,
-  // used by callers that accumulate a 4-component category vector (see e.g.
-  // TControlSeaZoneMission::NoOpSlot3C). Sibling of ComputeOrderNodeCompositeEconomicScore
-  // (same lookup tables, different blend per category). Thin wrapper over the
-  // receiver-agnostic ComputeNavyOrderPriorityContributionPercentByCategory
-  // free function -- the same body is also called on a plain TTaskForce*
-  // (TNavyMission::ReturnZeroSlot2C), so the shared logic takes values, not `this`.
+  // Per-category (0-3) priority-contribution percentage for this order node, used
+  // by callers that accumulate a 4-component category vector. Sibling of
+  // ComputeOrderNodeCompositeEconomicScore (same lookup tables, different blend
+  // per category). 0x54ff00; every call site walks ship nodes (the primary
+  // roster or an orderList24/childOrderList chain).
   short ComputeNavyOrderPriorityContributionPercentByCategory(int category);
-  // Per-resourceType-04 normalization base (the "stock cap" field of the
-  // shared per-resource-type descriptor table, TNavyOrderResourceDescriptor).
-  // Thin wrapper, same receiver-agnostic reasoning as above.
+  // Per-resourceType04 normalization base (the "stock cap" field of the shared
+  // per-resource-type descriptor table); inline wrapper over the by-resource-type
+  // lookup, never emitted out of line.
   short GetNavyOrderNormalizationBaseByNationType();
   // 0x00550b60 — composite economic score of this order node (quantity + descriptor
-  // weights, normalized by the task-force weight). Real __thiscall (reads
-  // [ecx+4]/[ecx+0x30]; the SumNavyOrderPriority loops call it with ecx = node).
+  // weights, normalized by the task-force weight).
   int ComputeOrderNodeCompositeEconomicScore();
-  // Position of `this` in the primary navy order list, counted from
-  // g_pNavyPrimaryOrderListHead (used when serializing orderList24 nodes by index).
+  // Position of `this` in the primary navy order roster, counted from
+  // g_pNavyPrimaryOrderListHead (used when serializing orderList24 nodes by index;
+  // Mac oracle: TShip::GetIndex).
   int GetIndexInPrimaryOrderList();
   // BFS zone-graph "hop" distance from this ship's own zone (field08) to
   // `otherZone`, blended against this resource type's descriptorWeight column
-  // (g_NavyOrderResourceDescriptorTable[resourceType04].descriptorWeight).
+  // (Mac oracle: TShip::GetTurnDistanceTo(TZone*)).
   short ComputeOrderNodeDistanceQuotientByDescriptorWord24(TZone* otherZone);
   // 0x005509c0 -- marks this node depleted (stockLevel1c = -666) and re-prunes the
-  // owning order entry's child list (same body TTaskForce::PruneInactiveTaskForceOrderHead
-  // runs on itself, minus the return flag); with no owner it just Free()s this node.
+  // owning order entry's child list; with no owner it just Free()s this node.
   void PruneOrPromoteOrderNodeWhenChildCostDepleted();
+
+  // Per-resourceType04 descriptor-table reads (0x550510 / 0x550820).
+  short GetOrderNodeDescriptorWord20ByResourceType();
+  short GetOrderNodeDescriptorWord0CByResourceType();
+  // Node-score family (0x550840 / 0x550aa0): descriptor-blended scores of this
+  // order node's strength/stock.
+  int ComputeOrderNodeDerivedScoreFromQuantityAndWord18();
+  int ComputeMapOrderEntryHeuristicScore();
+  // 0x00550f80 -- stockLevel1c -= decrement (battle losses commit path).
+  void DecrementRequiredCount(short decrement);
+  // 0x005501b0 -- 4-category priority score of this order node against score
+  // profile `nScoreProfileId` (same descriptor/divisor tables as the per-category
+  // contribution scorer).
+  int CalculateMissionOrderPriorityScore(int nScoreProfileId);
+  // 0x00550370 -- caps-at-499 adjustment of field30 (the roster-wide strength/
+  // tiebreak stat TTechMgr's capability sweep and the navy-order transfer paths
+  // bump per ship).
+  void AdjustMapOrderNodeStatCapped499(short delta);
+  // 0x005503a0 -- returns this ship's owner entry, unless the owner has other
+  // children too (then this ship is split off it: unlinked from the owner's
+  // childOrderList, bucket counter decremented, active child recomputed) or there
+  // is no owner; in both of those cases a fresh TTaskForce entry is created around
+  // this ship (zone context = field08, nation = ownerNationSlot14) and returned.
+  TTaskForce* GetOrCreateMissionOrderEntryForNode();
+  // 0x00550670 -- priority compare between two ships: admiral field_10 first,
+  // then resourceType04, then field30/100 buckets, then stockLevel1c; returns the
+  // preferred node. With preferUnassignedFlag, an admiral-assigned receiver loses
+  // to the candidate outright (and vice versa).
+  TShip* SelectPreferredMapOrderEntryByPriorityRules(TShip* candidate, int preferUnassignedFlag);
+  // 0x00550ff0 -- detaches this ship from its owner entry's childOrderList
+  // (decrementing the owner's per-resource-type bucket counter and recomputing its
+  // preferred active child), then re-attaches it under `newOwnerEntry` when given.
+  void RemoveNode(TTaskForce* newOwnerEntry);
+  // 0x00551100 -- hands this ship order node to `nation` (naval capture): detaches
+  // it from its owner entry (unless already that nation's), notifies/detaches the
+  // owning mission via its slot-0x8C when the mission belongs to another nation,
+  // then writes ownerNationSlot14.
+  void ReassignOrderNodeNationAndRebindParentCounters(short nation);
+  // 0x00551220 -- sets ownerOrderEntry0c and caches the entry's packed
+  // order_type/order_strength dword into quantityFlag10; entry kinds outside
+  // {0,4,7,8} also zero field34.
+  void SetOwnerOrderEntryAndCacheType(TTaskForce* newEntry);
 };
 
 ASSERT_SIZE(TShip, 0x38);
-
-extern "C" TShip* g_pNavyPrimaryOrderListHead;
-
-TShip* GetNavyPrimaryOrderListHead(void);
-// Walks g_pNavyPrimaryOrderListHead's nextOlder24 chain `index` steps (stopping early at
-// the list's end); returns the node reached.
-TShip* GetNavyPrimaryOrderNodeByIndex(short index);
-// Cumulative-weight roll-table search: subtracts weightTable[0], [1], ... from `roll`
-// until it drops to <= 0, returning the index reached (same shape as the inlined
-// DAT_0065c25e/DAT_0065c264 walks in AccumulateRandomizedNavyOrderResourceDeltasByNationAndOwner).
-int FindCumulativeWeightBucketIndex(short* weightTable, short roll);
-short GetIndustryActionCostWeightByResourceType(short resourceType);
-short GetResourceDescriptorWeightWord0ByType(short resourceType);
-// 0x004e04b0 / 0x004e0460 moved to TGreatPower::SumNavyOrderPriorityForNation[AndNodeType]
-// — both bodies compare the ship owner tag against [ecx+0xc] (real __thiscall methods).
-
-// Walks the primary navy order list for `nation`'s eligible port-owner ships (owner
-// matches, the order's zone is a port zone, and the ship's normalization base doesn't
-// exceed its stock), accumulates a 4-category priority vector (categories 0..2 scaled
-// by stockLevel1c/normalizationBase, category 3 unscaled), then scores the vector's
-// divergence from g_NavyOrderDistributionCategoryWeights_00697978's target percentages
-// (same divergence-score shape as TNavyMission's NormalizeFourComponentNavyVector).
-// Returns 0 if the vector sums to zero. 0x53b800.
-float ComputeNavyOrderDistributionScoreForNation(short nation);
-
-// Shared navy-order-priority helper (0x54ff00): reads the per-resourceType
-// TNavyOrderResourceDescriptor and blends it with the caller's own
-// stock/tiebreak field. Called both on TShip nodes (the primary navy order
-// list, via TShip::ComputeNavyOrderPriorityContributionPercentByCategory) and
-// on plain TTaskForce nodes (TNavyMission::ReturnZeroSlot2C's orderList24
-// chain) -- the original dispatches 0x54ff00 __thiscall on BOTH receiver types,
-// which share the read offsets (+0x04 resource/order type, +0x1c
-// stock/required-count, +0x30 a tiebreak/context field). It is modelled as a
-// TShip method; the one TTaskForce call site keeps the original's receiver pun.
-short GetNavyOrderNormalizationBaseByResourceType(short resourceType);
-void __cdecl AccumulateNavyOrderCategoryVectorWithScale(TShip* orderNode, float* vector,
-                                                        float scale);
-
-// Per-category (0..3) normalized cost percent for a resource type, over the same
-// divisor + TNavyOrderResourceDescriptor tables as the helper above but a distinct
-// per-category blend. Used by the AI city/industry development selectors.
-int GetNormalizedIndustryActionResourceCostPercent(int nCategory, short nResourceType);
-
-TShip* CreateNavyPrimaryOrderNodeAndAssignDisplayName(short resourceType, TZone* portZoneContext,
-                                                      int nationSlot, char* displayNameOverride);
-void __fastcall RegenerateNavyPrimaryOrderDisplayNameUntilUnique(TShip* shipNode);

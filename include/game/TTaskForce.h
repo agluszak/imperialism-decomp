@@ -12,7 +12,6 @@ class CString;
 class TZone;
 class TShip;
 
-
 // The former TMapOrderEntryOwnerContext placeholder struct (this comment block
 // used to sit here) is gone: bd 1uj.16.1 resolved FindOrCreateChildOrderLink's
 // receiver to be TTaskForce itself (the parent order entry), not a distinct
@@ -79,7 +78,7 @@ public:
   // SelectPreferredMapOrderEntryByPriorityRules over childOrderList -- the
   // same role this plays for TAdmiral's primary-order owner and for a child's
   // `owner->activeChildEntry` (former TMapOrderEntryOwnerContext::active_node).
-  TTaskForce* activeChildEntry; // +0x14
+  TShip* activeChildEntry; // +0x14
   // Copied from the source order node's own +0x08 field when this entry is
   // created (GetOrCreateMissionOrderEntryForNode, 0x5503a0); compared against
   // sibling nodes' own +0x08 field by ConsolidateMissionOrderEntriesByTarget-
@@ -125,38 +124,19 @@ public:
   // 0x005539c0 — recomputes this task force's per-order selection flags for the active
   // nation's current orders (`mode` selects the pass; the caller passes 0).
   void RefreshTaskForceSelectionFlagsForCurrentNationOrders(int mode);
-  void DecrementRequiredCount(short decrement);
   // 0x00553fe0 — frees the head child order node when defeated (required_count <= 0),
   // prunes remaining defeated children, rebinds childOrderList/activeChildEntry;
   // returns 1 (marking this entry eliminated) when no child survives.
   char PruneInactiveTaskForceOrderHead();
-  // 0x00551100 — hands this order node to `nation` and rebinds the parent counters
-  // (naval capture path).
-  void ReassignOrderNodeNationAndRebindParentCounters(short nation);
-  // Adds delta to tiebreak_strength, capped at 499.
-  void AdjustMapOrderNodeStatCapped499(short delta); // 0x550370
   // Real target is the packed order_type/order_strength dword, not an owner pointer
   // despite the Ghidra-guessed name; only known caller (MissionSlot44's mode-1 branch)
   // passes 0, resetting both fields to a fresh-order state.
   void ResetOrderTypeAndStrengthDword(int packedValue); // 0x552f60
-  TTaskForce* SelectPreferredMapOrderEntryByPriorityRules(TTaskForce* candidate,
-                                                          int compareAttachedFlag);
   // 0x554660 -- drops inactive children (owner cleared, bucket counter decremented,
   // node unlinked+freed), refolds activeChildEntry, then moves this entry to the head
   // of g_pNavyOrderManager's queue (or Free()s it when no children survive) and
   // finalizes through g_pActiveMapOrderContext.
   void RequeueMapOrderEntry();
-  // If `owner` already exists and it has exactly one child (this node itself), reuses
-  // `owner` directly as this node's own order entry. Otherwise detaches `this` from a
-  // shared owner (if any -- same unlink/rebind sequence as RemoveNode, just expressed
-  // without RemoveNode's head-vs-mid-chain branch since RemoveLinkedOrderNodeByValueRecursive
-  // already self-checks its receiver) and builds a fresh dedicated TTaskForce entry
-  // wrapping just `this`, seeded from this node's own +0x08/+0x14 fields (attachment /
-  // the TShip-shaped required_count slot -- bd 1uj.16).
-  TTaskForce* GetOrCreateMissionOrderEntryForNode(); // 0x5503a0
-  // `self` is the caller's own order entry, re-attached as `this` child's new owner
-  // (see the RemoveNode body for the exact unlink/rebind sequence).
-  void RemoveNode(TTaskForce* self);
 
   // Null-safe (returns true on null `this`). Sums 4 consecutive shorts spanning
   // pad_1e, attached_entity's two halves, and pad_24 -- the original reads this whole
@@ -214,16 +194,12 @@ public:
   // (g_NavyOrderResourceDescriptorTable[order_type]) plus required_count. Used by the
   // order-selection cluster to rank candidate task-force order entries.
   // Simplified single-term variant of ComputeMapOrderEntryHeuristicScore. 0x550840.
-  int ComputeOrderNodeDerivedScoreFromQuantityAndWord18();
-  int ComputeMapOrderEntryHeuristicScore(); // 0x550aa0
 
   // Weighted 4-category priority score for the given score profile: sums each
   // category's ComputeNavyOrderPriorityContributionPercentByCategory contribution
   // (over this entry's order_type/required_count/tiebreak_strength) scaled by the
   // profile's per-category weight row in g_Populate_Beachhead_Mission_LookupTable
   // (4 shorts per profile). Called by TScatteredShipsMission::QueueMissionOrders-
-  // ByPriorityForContext with profile 3 to pick the top child order entry.
-  int CalculateMissionOrderPriorityScore(int nScoreProfileId); // 0x5501b0
 
   // Number of childOrderList entries; null-safe on `this` (returns 0), matching a call
   // site that invokes it without checking for a null receiver first.
@@ -311,9 +287,7 @@ public:
 
   // Low word of this order's resource-type enabledFlagOrBucketOffset column (same field
   // RemoveNode reads as a bucket_offset).
-  short GetOrderNodeDescriptorWord20ByResourceType(); // 0x550510
   // This order's resource-type calculateWeight column.
-  short GetOrderNodeDescriptorWord0CByResourceType(); // 0x550820
 
   // Marks every active childOrderList entry's order node (payload+0x34 -- same
   // out-of-bounds write documented on FindOrCreateChildOrderLink) with a 1-or-2
@@ -337,13 +311,6 @@ public:
   // callers (e.g. a manager's own Free()) invoke it on a possibly-null queue head
   // without checking first, matching the original's `test esi,esi; jz` guard.
   void DestroyNavyOrderAndChildren(); // 0x556820
-
-  // Sets owner (was misread as "active child entry"); when newEntry is
-  // non-null it AssertValid()s newEntry, copies newEntry's packed
-  // order_type/order_strength dword into this entry's dual-purpose +0x10 slot,
-  // and clears the +0x34 overrun word unless newEntry's kind is 0/4/7/8. The
-  // bd 1uj.16 target cluster only ever calls it with nullptr.
-  void SetMapOrderActiveChildEntry(TTaskForce* newEntry); // 0x551220
 
   // Folds SelectPreferredMapOrderEntryByPriorityRules over childOrderList into
   // activeChildEntry (bd 1uj.16 target cluster).
@@ -414,9 +381,9 @@ public:
   // node->owner = this, then calls this->AssertValid() (CObject virtual, slot
   // 0xc) and copies this entry's own packed order_type/order_strength dword and
   // attachment-kind gate onto `node` -- the same fields/gate
-  // SetMapOrderActiveChildEntry applies, just with `this` playing the role of
+  // TShip::SetOwnerOrderEntryAndCacheType applies, just with `this` playing the role of
   // that method's `newEntry` parameter (bd 1uj.16.1).
-  void FindOrCreateChildOrderLink(TTaskForce* node); // 0x553bc0
+  void FindOrCreateChildOrderLink(TShip* node); // 0x553bc0
 };
 
 ASSERT_SIZE(TTaskForce, 0x34);

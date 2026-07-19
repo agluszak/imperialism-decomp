@@ -4,9 +4,11 @@
 #include "game/TGreatPower.h"
 #include "game/TSimMgr.h"
 #include "game/TStream.h"
+#include "game/TShip.h"
 #include "game/TTaskForce.h"
 #include "game/TZone.h"
 #include "game/global_data_tables.h"
+#include "game/navy_order.h"
 
 IMPLEMENT_SERIAL(TScatteredShipsMission, TNavyMission, 1)
 
@@ -142,12 +144,8 @@ void TScatteredShipsMission::MissionSlot44() {
       for (TMapOrderChildLinkNode* candidate = best->next; candidate != nullptr;
            candidate = candidate->next) {
         if (candidate->active == 0) {
-          // Both reads are the same genuine cross-type pun of TTaskForce::attachment (the
-          // "order/entry kind tag") as a TZone* -- the same dual-purpose pattern already
-          // documented on the adjacent `owner` field (PromoteMapOrderChainAndQueue reads
-          // it as TZone* too).
-          TZone* candidateZone = reinterpret_cast<TZone*>(static_cast<TTaskForce*>(candidate->payload)->attachment);
-          TZone* bestZone = reinterpret_cast<TZone*>(static_cast<TTaskForce*>(best->payload)->attachment);
+          TZone* candidateZone = static_cast<TShip*>(candidate->payload)->field08;
+          TZone* bestZone = static_cast<TShip*>(best->payload)->field08;
           short candidateDistance =
               candidateZone->GetCachedMapActionContextDistanceOrRecompute(current);
           short bestDistance = bestZone->GetCachedMapActionContextDistanceOrRecompute(current);
@@ -158,11 +156,11 @@ void TScatteredShipsMission::MissionSlot44() {
       }
 
       best->active = 1;
-      TTaskForce* target = static_cast<TTaskForce*>(best->payload);
+      TShip* target = static_cast<TShip*>(best->payload);
       if (target == nullptr) {
         return;
       }
-      if (reinterpret_cast<TZone*>(target->attachment) != current) {
+      if (target->field08 != current) {
         target->GetOrCreateMissionOrderEntryForNode()->PromoteMapOrderChainAndQueue(current);
       }
     }

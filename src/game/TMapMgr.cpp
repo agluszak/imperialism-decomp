@@ -22,6 +22,7 @@
 #include "game/TOcean.h"
 #include "game/TZone.h"
 #include "game/TShip.h"
+#include "game/navy_order.h"
 #include "game/TCity.h"
 #include "game/TDiplomacyMgr.h"
 #include "game/ImperialismApp.h"

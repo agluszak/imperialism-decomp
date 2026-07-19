@@ -1,9 +1,9 @@
 #include "game/TNavyTacUnit.h"
 
-#include "game/TTaskForce.h"
+#include "game/TShip.h"
 
 // FUNCTION: IMPERIALISM 0x0059ed60
-TTaskForce* TNavyTacUnit::GetSourceTaskForce() {
+TShip* TNavyTacUnit::GetSourceTaskForce() {
   return sourceTaskForce34;
 }
 

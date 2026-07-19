@@ -21,6 +21,7 @@
 #include "game/UiRuntimeContext.h"
 #include "game/TStream.h"
 #include "game/TShip.h"
+#include "game/navy_order.h"
 #include "game/TTaskForce.h"
 
 undefined4 SelectBestSeedTileForNationFromCostField(void);

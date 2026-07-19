@@ -5,6 +5,7 @@
 #include "game/TMilitaryUnit.h"
 #include "game/TMission.h"
 #include "game/TShip.h"
+#include "game/navy_order.h"
 #include "game/global_data_tables.h"
 
 namespace {
@@ -79,7 +80,7 @@ void TGreatPower::AssignTrackedEntryActionsByProfileToOrdersOrUnits() {
       float bestShipScore = 0.0f;
       for (TShip* shipNode = GetNavyPrimaryOrderListHead(); shipNode != nullptr;
            shipNode = shipNode->nextOlder24) {
-        if (shipNode->ownerNationSlot14 == nationSlot && shipNode->field2c == nullptr) {
+        if (shipNode->ownerNationSlot14 == nationSlot && shipNode->missionBacklink2c == nullptr) {
           float score = bestNavy->ReturnZeroFloatSlot7C(shipNode, weightFractions);
           if (bestShip == nullptr || bestShipScore < score) {
             bestShipScore = score;

@@ -21,6 +21,7 @@
 #include "game/TMilitaryUnit.h"
 #include "game/TStream.h"
 #include "game/TShip.h"
+#include "game/navy_order.h"
 #include "game/TUnit.h"
 #include "game/TZone.h"
 #include "game/nation_slot_eligibility.h"

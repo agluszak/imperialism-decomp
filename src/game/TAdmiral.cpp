@@ -2,6 +2,7 @@
 
 #include "game/mapped_flavor_text.h"
 #include "game/TShip.h"
+#include "game/navy_order.h"
 #include "game/TTaskForce.h"
 #include "game/global_data_tables.h"
 #include "game/TMinor.h"
@@ -61,9 +62,9 @@ static inline void RecomputeMapOrderOwnerActiveSelection(TTaskForce* ownerContex
   }
   ownerContext->activeChildEntry = 0;
   for (TMapOrderChildLinkNode* link = ownerContext->childOrderList; link != 0; link = link->next) {
-    TTaskForce* activeEntry = ownerContext->activeChildEntry;
+    TShip* activeEntry = ownerContext->activeChildEntry;
     ownerContext->activeChildEntry =
-        static_cast<TTaskForce*>(link->payload)->SelectPreferredMapOrderEntryByPriorityRules(activeEntry, 0);
+        static_cast<TShip*>(link->payload)->SelectPreferredMapOrderEntryByPriorityRules(activeEntry, 0);
   }
 }
 
@@ -104,12 +105,7 @@ void TAdmiral::SelectNavyPrimaryOrderByNationAndRecomputePreferredChild() {
   TShip* best = 0;
   for (TShip* node = g_pNavyPrimaryOrderListHead; node != 0; node = node->nextOlder24) {
     if (node->ownerNationSlot14 == this->terrainType) {
-      // The original dispatches TTaskForce's 0x550670 __thiscall on the TShip-shaped
-      // primary-order node (shared +0x04/+0x1c/+0x30 prefix -- same receiver pun the
-      // GetNavyOrderNormalizationBaseByResourceType comment documents).
-      best = reinterpret_cast<TShip*>(
-          reinterpret_cast<TTaskForce*>(node)->SelectPreferredMapOrderEntryByPriorityRules(
-              reinterpret_cast<TTaskForce*>(best), 1));
+      best = node->SelectPreferredMapOrderEntryByPriorityRules(best, 1);
     }
   }
 
