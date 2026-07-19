@@ -1050,9 +1050,9 @@ undefined TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nati
     textEntry->InitializeTextEntryBaseAndOptionalStringResource(panel, &layoutAnchor, &layoutHeight,
                                                                 5, 5, -1, 0);
 
-    TControlPictureRectState styleDescriptor;
+    TUiTextStyleDescriptor styleDescriptor;
     BuildUiTextStyleDescriptor(&styleDescriptor, 0, 0xa, 0x2b67);
-    textEntry->SetCityProductionDialogPictureRectAndMaybeRefresh(&styleDescriptor, 0);
+    textEntry->SetTextStyleAndMaybeRefresh(&styleDescriptor, 0);
     textEntry->SetTextThemeCodeAndMaybeRefresh(0, 0);
     textEntry->controlTag = kTagDetailText;
 
@@ -1372,9 +1372,9 @@ undefined TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nati
   textEntry->InitializeTextEntryBaseAndOptionalStringResource(panel, &textPos, &textHeight, 5, 5,
                                                               -1, 0);
 
-  TControlPictureRectState styleDescriptor;
+  TUiTextStyleDescriptor styleDescriptor;
   BuildUiTextStyleDescriptor(&styleDescriptor, 0, 0xa, 0x2b67);
-  textEntry->SetCityProductionDialogPictureRectAndMaybeRefresh(&styleDescriptor, 0);
+  textEntry->SetTextStyleAndMaybeRefresh(&styleDescriptor, 0);
   textEntry->SetTextThemeCodeAndMaybeRefresh(0, 0);
   textEntry->controlTag = kTagDetailText;
 
@@ -1390,7 +1390,7 @@ undefined TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nati
     int valueAnchor = 0x32;
     valueEntry->InitializeTextEntryBaseAndOptionalStringResource(panel, &valuePos, &valueHeight, 5,
                                                                  5, -1, 0);
-    valueEntry->SetCityProductionDialogPictureRectAndMaybeRefresh(&styleDescriptor, 0);
+    valueEntry->SetTextStyleAndMaybeRefresh(&styleDescriptor, 0);
     valueEntry->SetTextThemeCodeAndMaybeRefresh(0, 0);
     valueEntry->controlTag = kTagDetailValue;
   }

@@ -29,7 +29,7 @@ TGreatPower* GetActiveNationState(void);
 int GetTradeSummarySelectionTagByIndex(short index);
 
 struct NationState;
-struct TControlPictureRectState;
+struct TUiTextStyleDescriptor;
 struct TQuickDrawSurfaceContext;
 struct TCdAudioDevice;
 class TArmyMgr;
@@ -284,7 +284,7 @@ extern int g_bQuickDrawStrokePairDirty;
 extern CRgn* g_pGlobalClipRegionHandleObject;
 extern int g_Quick_Draw_Color_State_006950FC;
 extern CFont* g_pQuickDrawCachedUiFont;
-extern TControlPictureRectState g_QuickDrawCachedFontPreset;
+extern TUiTextStyleDescriptor g_QuickDrawCachedFontPreset;
 extern unsigned char g_bQuickDrawCachedFontDirty;
 extern char g_szQuickDrawFontFaceSystem[];
 extern char g_szQuickDrawFontFaceBookAntiqua[];
@@ -295,7 +295,7 @@ extern const char* const g_apszQuickDrawFontFaceNames[5];
 // SetQuickDrawFillColor, read as COLORREF by the paint paths; the original PDB labels
 // those 4 bytes g_uQuickDrawCurrentColor — it's the same field, not a separate global).
 extern CFont* g_pQuickDrawCachedMeasureFont;                  // 0x6a1d48
-extern TControlPictureRectState g_QuickDrawMeasureFontPreset; // 0x6a1d4c
+extern TUiTextStyleDescriptor g_QuickDrawMeasureFontPreset; // 0x6a1d4c
 extern unsigned char g_bQuickDrawMeasureFontDirty;            // 0x6a1d56
 extern int g_uQuickDrawStrokeColor;
 extern int g_nQuickDrawOriginX;
@@ -865,7 +865,7 @@ extern int g_adwCivilianWorkOrderCostByClass[16];
 
 // TControl.cpp — UI resource entry default text-style/command-param block (also
 // TMyStaticText.cpp/TStaticText.cpp).
-extern TControlPictureRectState g_UiResourceEntryDefaultTextStyle;
+extern TUiTextStyleDescriptor g_UiResourceEntryDefaultTextStyle;
 
 // TControlSeaZoneMission.cpp / TDefendProvinceMission.cpp / TNavyMission.cpp —
 // defend-province / mission priority-vector normalization constants.

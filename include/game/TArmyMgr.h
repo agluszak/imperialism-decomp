@@ -7,7 +7,7 @@
 class TStream;
 class TSortedList;
 class TArmyStack;
-struct TControlPictureRectState;
+struct TUiTextStyleDescriptor;
 
 // 0x268-byte by-value POD record stored in TArmyMgr::mapContextActionRecordList04.
 // Field evidence from the battle-report layout hook (0x4acb60): the first bytes are a
@@ -250,14 +250,14 @@ public:
                                                         int ownerNationCodeInt);
   void BuildMapHintOverlayTextAndDispatchUiMessages(short cityRecordIndex);
 
-  // Fills styleC/styleD (both real TControlPictureRectState locals in the caller) with a
+  // Fills styleC/styleD (both real TUiTextStyleDescriptor locals in the caller) with a
   // localized order-context summary for cityRecordIndex; returns false when there's no
   // summary to show. 0x004a5ec0, __thiscall, 1580 bytes. TODO: port body -- out of scope
   // for BuildMapHintOverlayTextAndDispatchUiMessages, which only needs a real,
   // correctly-typed call site.
   bool BuildMapOrderContextSummaryStringForNation(short cityRecordIndex,
-                                                  TControlPictureRectState* styleC,
-                                                  TControlPictureRectState* styleD);
+                                                  TUiTextStyleDescriptor* styleC,
+                                                  TUiTextStyleDescriptor* styleD);
 
   // Called from RefreshMapOrderBattleSideSnapshot's type-5 (ship-order) tail with a
   // side's requiredCountByte (nation slot) and the resolved city index. 0x004a6ef0,

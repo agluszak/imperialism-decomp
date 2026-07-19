@@ -34,9 +34,9 @@ const unsigned int kEndControlTagReselect = 0x52655374u;    // mode 0x17
 const unsigned int kEndControlTagReselectAlt = 0x53636f72u; // mode 0x16
 
 void ApplyCouncilCandidateTextStyle(TStaticText* textControl,
-                                    const TControlPictureRectState* style) {
-  textControl->SetCityProductionDialogPictureRectAndMaybeRefresh(
-      const_cast<TControlPictureRectState*>(style), 0);
+                                    const TUiTextStyleDescriptor* style) {
+  textControl->SetTextStyleAndMaybeRefresh(
+      const_cast<TUiTextStyleDescriptor*>(style), 0);
 }
 
 void RefreshCouncilCandidateNameText(TView* hostPanel, unsigned int controlTag, short nationSlot) {
@@ -188,11 +188,11 @@ void TCouncilView::InitializeDiplomacyCouncilViewControlsAndTicker() {
   TView* hostPanel = this;
   char* panelState = reinterpret_cast<char*>(this);
 
-  TControlPictureRectState councilTextStyle;
-  councilTextStyle.mode = 0;
-  councilTextStyle.flag2 = 0;
-  councilTextStyle.pointSize = 0;
-  councilTextStyle.styleRef6 = 0;
+  TUiTextStyleDescriptor councilTextStyle;
+  councilTextStyle.fontFamily = 0;
+  councilTextStyle.fontStyleFlags = 0;
+  councilTextStyle.fontSize = 0;
+  councilTextStyle.textColor = 0;
   BuildUiTextStyleDescriptor(&councilTextStyle, 0, 0xe, 0x2b6a);
 
   *reinterpret_cast<short*>(panelState + 0x24c8) = 0;

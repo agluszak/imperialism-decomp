@@ -20,8 +20,8 @@ TAlwaysPictureButton::~TAlwaysPictureButton() {}
 
 // FUNCTION: IMPERIALISM 0x00570a70
 void TAlwaysPictureButton::SetControlStateFlagAndMaybeRefresh(bool enabledState, bool refreshNow) {
-  if (static_cast<unsigned char>(enabledState) != this->commandTagResourceByte) {
-    this->commandTagResourceByte = enabledState;
+  if (static_cast<unsigned char>(enabledState) != this->controlState64) {
+    this->controlState64 = enabledState;
     short pictureId;
     if (enabledState == 0) {
       pictureId = this->glyphBase84 + 100;

@@ -15,7 +15,7 @@ IMPLEMENT_DYNCREATE(TTextLine, TLineData)
 TTextLine::TTextLine() : TLineData() {
   // Only styleRef6 is zero-initialized here; mode/flag2/pointSize stay garbage until
   // SetTextLineRowBoundsAndStyle's BuildUiTextStyleDescriptor call fills them in.
-  styleDescriptor14.styleRef6 = 0;
+  styleDescriptor14.textColor = 0;
 }
 
 // SYNTHETIC: IMPERIALISM 0x00570310
@@ -37,7 +37,7 @@ void TTextLine::SetTextLineRowBoundsAndStyle(short rowArg, short colArg, int* bo
 }
 
 // FUNCTION: IMPERIALISM 0x00570440
-void TTextLine::SetTextLineStyleDescriptor(const TControlPictureRectState* descriptor) {
+void TTextLine::SetTextLineStyleDescriptor(const TUiTextStyleDescriptor* descriptor) {
   styleDescriptor14 = *descriptor;
 }
 

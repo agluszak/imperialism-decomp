@@ -115,8 +115,8 @@ public:
   // slot 0x6a AssertCityProductionGlobalStateInitialized inherited unchanged (0x429470)
   // slot 0x6b NoOpUiViewSlotHandler inherited unchanged (0x48e9c0)
   // slot 0x6c OrphanRetStub_00487a00 inherited unchanged (0x48e9e0)
-  // slot 0x6d SetCityProductionDialogPictureRectAndMaybeRefresh inherited unchanged (0x48e7d0)
-  // slot 0x6e SetControlPictureEntryAndMaybeRefresh inherited unchanged (0x48e7a0)
+  // slot 0x6d SetTextStyleAndMaybeRefresh inherited unchanged (0x48e7d0)
+  // slot 0x6e SetTextColorAndMaybeRefresh inherited unchanged (0x48e7a0)
   // slot 0x6f LogUnhandledDialogMethodAndReturnFalse inherited unchanged (0x4294a0)
   // slot 0x70 SetControlStateFlagAndMaybeRefresh inherited unchanged (0x48e810)
   // slot 0x71 SetTextThemeCodeAndMaybeRefresh inherited unchanged (0x48ff70)
@@ -134,7 +134,7 @@ public:
                                                 int themeCode); // slot 0x78 0x5b62e0
   // styleDescriptor points at the packed text-style record built by BuildUiTextStyleDescriptor;
   // its styleRef6 is also cached in the deluxe-text slice at +0x98.
-  virtual void ApplyTextStyleDescriptorAndMaybeRefresh(TControlPictureRectState* styleDescriptor,
+  virtual void ApplyTextStyleDescriptorAndMaybeRefresh(TUiTextStyleDescriptor* styleDescriptor,
                                                        int refreshFlag); // slot 0x79 0x5b62a0
   virtual void BuildCityViewProductionControls_Impl(short codeGroup,
                                                     short stringIndex); // slot 0x7a 0x5b64e0
@@ -161,10 +161,10 @@ public:
   TDeluxeText();
 
   // Mac-style second-phase init: forwards to TTEView::ConstructTTEViewBaseState with the
-  // fixed (0, ..., 5, 5, ..., 0, 1) filler args, copies style->styleRef6 into
+  // fixed (0, ..., 5, 5, ..., 0, 1) filler args, copies style->textColor into
   // cursorThemeCode98, and clears the selected flag via the slot-0x76 virtual.
   // 0x5b5ff0, __thiscall, RET 0x18.
   void ConstructTDeluxeTextBaseState(TView* panel, int* offsetLayout, int* sizeLayout,
-                                     RECT* insetRect, TControlPictureRectState* style,
+                                     RECT* insetRect, TUiTextStyleDescriptor* style,
                                      short styleWord90);
 };

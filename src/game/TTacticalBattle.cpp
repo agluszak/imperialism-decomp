@@ -1237,8 +1237,8 @@ void TTacticalBattle::EvaluateTacticalSideStateAndShowBattleSummaryDialog() {
 
   g_pSfxPlaybackSystem->RequestAudioPresetChangeWithDeferredApply(localSideWon != 0 ? 9 : 10, 0);
 
-  TControlPictureRectState styleDescriptor;
-  styleDescriptor.styleRef6 = 0;
+  TUiTextStyleDescriptor styleDescriptor;
+  styleDescriptor.textColor = 0;
   TurnEventDialogNode* dialog = static_cast<TurnEventDialogNode*>(
       g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(0xeed));
 
@@ -1261,7 +1261,7 @@ void TTacticalBattle::EvaluateTacticalSideStateAndShowBattleSummaryDialog() {
     CString titleText;
     g_pSimMgr->GetString(0x273d, titleMessageIndex, &titleText);
     BuildUiTextStyleDescriptor(&styleDescriptor, 0, 0xc, 0x2b67);
-    titleControl->SetCityProductionDialogPictureRectAndMaybeRefresh(&styleDescriptor, 0);
+    titleControl->SetTextStyleAndMaybeRefresh(&styleDescriptor, 0);
     titleControl->AssignTextSharedRefIfChangedAndMaybeInvalidate(&titleText, 0);
   }
 
@@ -1282,7 +1282,7 @@ void TTacticalBattle::EvaluateTacticalSideStateAndShowBattleSummaryDialog() {
                            static_cast<const char*>(cityName),
                            static_cast<const char*>(siteOwnerLabel));
     BuildUiTextStyleDescriptor(&styleDescriptor, 0, 0xa, 0x2b67);
-    locationControl->SetCityProductionDialogPictureRectAndMaybeRefresh(&styleDescriptor, 0);
+    locationControl->SetTextStyleAndMaybeRefresh(&styleDescriptor, 0);
     locationControl->AssignTextSharedRefIfChangedAndMaybeInvalidate(&locationText, 1);
   }
 

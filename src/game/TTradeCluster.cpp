@@ -105,7 +105,7 @@ void TTradeCluster::NoOpUiLifecycleHook(int styleSeed) {
   TAmtBar* sellControl = reinterpret_cast<TAmtBar*>(this->ResolveControlByTag(kControlTagSell));
   if (sellControl != 0) {
     int styleDescriptor[5];
-    InitializeUiTextStyleDescriptor(reinterpret_cast<TControlPictureRectState*>(styleDescriptor), 0,
+    InitializeUiTextStyleDescriptor(reinterpret_cast<TUiTextStyleDescriptor*>(styleDescriptor), 0,
                                     0xe, 0x2b68, 2);
     sellControl->ApplyStyleDescriptor(styleDescriptor, 0);
     sellControl->SetStyleState(-1, 0);

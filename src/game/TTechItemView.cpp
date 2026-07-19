@@ -51,7 +51,7 @@ void TTechItemView::ConstructTTechItemViewBaseState(TView* panel, int* offsetLay
   int shadowStyleFlags = 0;
   MapUiThemeCodeToStyleFlags(0x2b6a, &titleStyleFlags);
   MapUiThemeCodeToStyleFlags(0x2b68, &shadowStyleFlags);
-  TControlPictureRectState textStyle;
+  TUiTextStyleDescriptor textStyle;
   BuildUiTextStyleDescriptor(&textStyle, 0, 0xc, 0x2b6a);
   CRect zeroRect(0, 0, 0, 0);
 
