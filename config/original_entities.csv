@@ -3420,9 +3420,9 @@ address|name|symbol|size|type|prototype|provenance
 527ed0|TMapMaker::GetDeactivateVetoCode||493|function|undefined TryAssignCellTypeWithDirectionalConstraints()|
 528140|TMapMaker::OwnerPanel||499|function|undefined TryPlaceType1CoarseCellWithAdjacencyRules()|
 5283c0|TMapMaker::ForwardParam||533|function|undefined TryPlaceType3CoarseCellWithAdjacencyRules()|
-528670|TMapMaker::DoIdle||202|function|undefined BalanceGrowthBudgetAcrossPrimaryAndSecondaryBands()|
-528780|TMapMaker::GetCityDialogValueDword10||222|function|undefined SpreadType6CellsAcrossCoarseRowSegments()|
-5288a0|TMapMaker::SetCityDialogValueDword10||698|function|undefined SpreadType6CellsWithSecondaryNeighborPass()|
+528670|TMapMaker::CreateDeserts||202|function|undefined BalanceGrowthBudgetAcrossPrimaryAndSecondaryBands()|
+528780|TMapMaker::TundraBand||222|function|undefined SpreadType6CellsAcrossCoarseRowSegments()|
+5288a0|TMapMaker::DesertBand||698|function|undefined SpreadType6CellsWithSecondaryNeighborPass()|
 528c10|GetNeighborTileIndexOnMap108x60||145|function|undefined GetNeighborTileIndexOnMap108x60()|
 528ce0|TMapMaker::GetAdjacentRegionGridCell||125|function|int __thiscall GetAdjacentRegionGridCell(int cell, int direction)|
 697498|g_coarseHexColOffsetEvenRow_00697498|||global||

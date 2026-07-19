@@ -18678,20 +18678,20 @@
     },
     {
       "address": "0x528670",
-      "matching": 0.025,
-      "name": "TMapMaker::DoIdle",
+      "matching": 0.5844155844155844,
+      "name": "TMapMaker::CreateDeserts",
       "type": 1
     },
     {
       "address": "0x528780",
-      "matching": 0.045454545454545456,
-      "name": "TMapMaker::RandomlyMarkEmptyRegionTilesByChance",
+      "matching": 0.8554913294797688,
+      "name": "TMapMaker::TundraBand",
       "type": 1
     },
     {
       "address": "0x5288a0",
-      "matching": 0.017316017316017316,
-      "name": "TMapMaker::RandomlyMarkEmptyRegionTilesAndNeighborsByChance",
+      "matching": 0.40969162995594716,
+      "name": "TMapMaker::DesertBand",
       "type": 1
     },
     {
@@ -38980,7 +38980,7 @@
     },
     {
       "address": "0x6091d9",
-      "matching": 0.9787234042553191,
+      "matching": 1.0,
       "name": "CWnd::OnNotify",
       "type": 1
     },
