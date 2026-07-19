@@ -1,16 +1,11 @@
 address|name|symbol|size|type|prototype|provenance
 401122|thunk_TPictureButton::TPictureButton|||global||
-40257c|thunk_GetCityBuildingProductionValueBySlot||5|function|int __thiscall thunk_GetCityBuildingProductionValueBySlot(short nBuildingSlotId)|
 4028d8|thunk_InitializeCityInteriorMinister||5|function|undefined thunk_InitializeCityInteriorMinister()|
 403b16|UiRuntimeContext::GetActiveNationId|||global||
 403f71|thunk_WrapperFor_InvalidateCityDialogRectRegion_At004f6d90||5|function|undefined thunk_WrapperFor_InvalidateCityDialogRectRegion_At004f6d90()|
-4042c8|thunk_ConstructUiResourceEntryType4B0C0||5|function|undefined thunk_ConstructUiResourceEntryType4B0C0()|
 404d9f|thunk_GetCityDialogValueDwordC|||global||
-405c72|thunk_DestructEngineerDialogBaseState||5|function|void __thiscall thunk_DestructEngineerDialogBaseState(void)|
-4067c1|thunk_DestructCityDialogSharedBaseState||5|function|undefined thunk_DestructCityDialogSharedBaseState()|
 406ccb|thunk_HandleEngineerConstructionAction||5|function|bool __thiscall thunk_HandleEngineerConstructionAction(short nTileIndex, undefined2 param_2)|
 409205|UiRuntimeContext::MapTurnEventCodeToPaletteIndex|||global||
-409980|TCivilianButton::thunk_ConstructUiClickablePictureResourceEntry||5|function|undefined thunk_ConstructUiClickablePictureResourceEntry()|
 4125d0|WrapperFor_ftol_At004125d0||30|function|undefined WrapperFor_ftol_At004125d0()|
 412600|InvokeCallbackForRecordRangeWithStride||42|function|undefined InvokeCallbackForRecordRangeWithStride()|
 412640|OrphanCallChain_C5_I60_00412640||173|function|undefined OrphanCallChain_C5_I60_00412640()|

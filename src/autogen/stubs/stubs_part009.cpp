@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name thunk_GetCityBuildingProductionValueBySlot
-// ghidra_proto int __thiscall thunk_GetCityBuildingProductionValueBySlot(short nBuildingSlotId)
-// ILT thunk 0x0040257c - unannotated on purpose (see ILT_THUNK_RANGE)
-undefined4 thunk_GetCityBuildingProductionValueBySlot(void)
-{
-  return 0;
-}
-
 // ghidra_name thunk_InitializeCityInteriorMinister
 // ghidra_proto undefined thunk_InitializeCityInteriorMinister()
 // ILT thunk 0x004028d8 - unannotated on purpose (see ILT_THUNK_RANGE)
@@ -27,42 +19,10 @@ undefined4 thunk_WrapperFor_InvalidateCityDialogRectRegion_At004f6d90(void)
   return 0;
 }
 
-// ghidra_name thunk_ConstructUiResourceEntryType4B0C0
-// ghidra_proto undefined thunk_ConstructUiResourceEntryType4B0C0()
-// ILT thunk 0x004042c8 - unannotated on purpose (see ILT_THUNK_RANGE)
-undefined4 thunk_ConstructUiResourceEntryType4B0C0(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_DestructEngineerDialogBaseState
-// ghidra_proto void __thiscall thunk_DestructEngineerDialogBaseState(void)
-// ILT thunk 0x00405c72 - unannotated on purpose (see ILT_THUNK_RANGE)
-undefined4 thunk_DestructEngineerDialogBaseState(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_DestructCityDialogSharedBaseState
-// ghidra_proto undefined thunk_DestructCityDialogSharedBaseState()
-// ILT thunk 0x004067c1 - unannotated on purpose (see ILT_THUNK_RANGE)
-undefined4 thunk_DestructCityDialogSharedBaseState(void)
-{
-  return 0;
-}
-
 // ghidra_name thunk_HandleEngineerConstructionAction
 // ghidra_proto bool __thiscall thunk_HandleEngineerConstructionAction(short nTileIndex, undefined2 param_2)
 // ILT thunk 0x00406ccb - unannotated on purpose (see ILT_THUNK_RANGE)
 undefined4 thunk_HandleEngineerConstructionAction(void)
-{
-  return 0;
-}
-
-// ghidra_name TCivilianButton::thunk_ConstructUiClickablePictureResourceEntry
-// ghidra_proto undefined thunk_ConstructUiClickablePictureResourceEntry()
-// ILT thunk 0x00409980 - unannotated on purpose (see ILT_THUNK_RANGE)
-undefined4 thunk_ConstructUiClickablePictureResourceEntry(void)
 {
   return 0;
 }
