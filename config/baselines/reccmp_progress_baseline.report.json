@@ -18643,7 +18643,7 @@
     },
     {
       "address": "0x5275a0",
-      "matching": 0.018018018018018018,
+      "matching": 0.3783783783783784,
       "name": "TMapMaker::MapGenPassSlot0E",
       "type": 1
     },
@@ -23983,7 +23983,7 @@
     },
     {
       "address": "0x5621b0",
-      "matching": 0.0,
+      "matching": 1.0,
       "name": "ResetPortZoneGlobalContextCounters",
       "type": 1
     },
@@ -45214,6 +45214,6 @@
       "type": 5
     }
   ],
-  "file": "Imperialism.exe",
+  "file": "Imperialism.exe.gog-original",
   "format": 1
 }
