@@ -365,9 +365,27 @@ free-function stub or fake calling-convention cast back to unblock a commit.
   body. Do not pick one caller's type and force the others to `reinterpret_cast`.
 - **Type pointer-bearing fields as typed pointers** (`TEventHandler* targetHandler`, not
   `int field10`) and update the init helper's argument to match, so call sites pass real
-  objects via implicit upcast with no cast. Exception: a single offset reused as both an
-  `int` and a pointer in different methods must stay `int`/raw — do not force a pointer
-  type onto a dual-purpose slot.
+  objects via implicit upcast with no cast.
+- **"Dual-use" / "dual-purpose" / "same slot used as X and Y" is NEVER a final
+  explanation — it is a mandatory investigation trigger.** A purported dual-use field is
+  an *unresolved modelling defect* until proven otherwise; the label usually hides a wrong
+  receiver/class attribution, a wrong offset from a wrong base/derived layout, two adjacent
+  fields/arrays read as one region, one identifier domain given two descriptions, or two
+  concrete classes merged into one. Until resolved, keep the slot **opaque and explicitly
+  unresolved** (raw `int`/`void*` is fine as a *provisional* state, tagged
+  `// UNRESOLVED_FIELD_ATTRIBUTION:` with the conflicting readings and evidence addresses) —
+  never write prose calling it intentional dual use, and never leave `reinterpret_cast<int>`
+  of a pointer into a member as the "answer". A field is a *legitimate* variant only when
+  ALL eight hold: (1) same concrete object (same ctor/vtable/allocation shape for both
+  access families); (2) same physical offset confirmed from raw instructions, not decompiler
+  names; (3) class layout agrees with the MSVC500 layout oracle; (4) every writer
+  inventoried; (5) every reader inventoried (width + signedness); (6) representation control
+  is explicit (a discriminator field, proven-disjoint lifetimes, or proven per-instance
+  role); (7) no simpler explanation survives (wrong receiver, derived-field ownership,
+  adjacent/packed fields, and shared index domains all ruled out); (8) the final model is an
+  explicit `union` / variant payload / separate record type / discriminator-keyed typed
+  accessors — **not** a raw `int` plus scattered casts. Without all eight the status stays
+  `unresolved_field_attribution`. (Enforced by `just dual-use-gate`.)
 - **Renames and pointer↔pointer / int-as-int narrowing are codegen-neutral and safe.**
   reccmp pairs by address and these casts compile to nothing, so aligning a C++ identifier
   to the curated `original_entities.csv` name (reuse it — don't invent a third) and tightening types
