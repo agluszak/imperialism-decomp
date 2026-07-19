@@ -13,6 +13,7 @@
 // decompile), now modeled as a real TZonePrimaryNeighborStretch member.
 
 #include "game/TControlSeaZoneMission.h"
+#include "game/TAutoGreatPower.h"
 #include "game/TDiplomacyMgr.h"
 #include "game/TGlobalMapState.h"
 #include "game/TGreatPower.h"
@@ -92,7 +93,8 @@ TMission* TControlSeaZoneMission::GetReplacementSlot48() {
   }
 
   if (!foundCoverage) {
-    TGreatPower* nationState = g_apNationStates[nationId04];
+    // See TAttackProvinceMission::Free: the tail AI state block is TAutoGreatPower-only.
+    TAutoGreatPower* nationState = static_cast<TAutoGreatPower*>(g_apNationStates[nationId04]);
     nationState->AssertValid();
     short contextOrdinal = targetZone18->GetContextOrdinalOrInvalid();
     nationState->SetByteFlagAtOffsetAF0ByIndex(contextOrdinal, 0);

@@ -33,4 +33,18 @@ public:
   virtual short InteriorSlot1D(int arg);  // 0x1d 0x4be150 — returns arg
   virtual short InteriorSlot1E(int arg);  // 0x1e 0x4be170 — returns arg
   virtual void InteriorSlot1F(int arg);   // 0x1f 0x4be190 — no-op
+
+  // Own fields at +0x10..+0x28 (RTTI m_nObjectSize proves this block is
+  // TInteriorMinister-only, distinct from TForeignMinister's own +0x10..+0x48 block --
+  // see TMinister.h). capabilityFlag14/16 at +0x14/+0x16 coincide in offset (not
+  // identity) with TForeignMinister's fields of the same name; every
+  // TCityInteriorMinister-family constructor (TSteelCityMinister, ...) sets both to 1.
+  short field10;          // +0x10 — set from MinisterSlot12's arg2 (0x4be450)
+  short field12;          // +0x12 — set from MinisterSlot12's arg1
+  short capabilityFlag14; // +0x14
+  short capabilityFlag16; // +0x16
+  // +0x18..0x25 — 7-entry short table, byte-swapped per-pair on ReadFrom (0x4be290);
+  // semantic contents not yet recovered.
+  short trailingTable[7];
+  unsigned char pad26[0x28 - 0x26];
 };

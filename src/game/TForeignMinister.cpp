@@ -40,10 +40,10 @@ TForeignMinister::TForeignMinister() : TMinister() {
     block[i] = 0;
   }
   *reinterpret_cast<unsigned short*>(raw + 0x7c) = 0;
-  *reinterpret_cast<unsigned short*>(raw + 0x16) = 0;
-  raw[0x48] = 0;
-  *reinterpret_cast<short*>(raw + 0x1a) = 5;
-  *reinterpret_cast<short*>(raw + 0x1c) = 2;
+  capabilityFlag16 = 0;
+  field48 = 0;
+  field1a = 5;
+  field1c = 2;
 }
 
 // SYNTHETIC: IMPERIALISM 0x0052f0e0
@@ -411,15 +411,13 @@ void TForeignMinister::DispatchAction210ToFirstEligibleNationIfIdle() {
   // The original reloads the owning great power (this->ownerContextAt04) at each use
   // rather than caching it; access it inline so the same reload codegen is emitted.
   for (int nationSlot = 0; nationSlot < 7; ++nationSlot) {
-    if (this->ownerContextAt04->HasActiveCandidateNationSlots() !=
-        0) {
+    if (this->ownerContextAt04->HasActiveCandidateNationSlots() != 0) {
       return;
     }
     if (nationSlot != this->ownerContextAt04->nationSlot &&
         g_pSimMgr->IsNationSlotEligibleForEventProcessing(nationSlot) != 0 &&
         this->EvaluateLocalizedScoreThresholdPredicateForNationValue(nationSlot) != 0) {
-      this->ownerContextAt04
-          ->SetCandidateNationFlagAndPortZoneState(nationSlot);
+      this->ownerContextAt04->SetCandidateNationFlagAndPortZoneState(nationSlot);
     }
   }
 }

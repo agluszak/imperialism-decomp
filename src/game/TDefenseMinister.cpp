@@ -4,6 +4,7 @@
 
 #include "game/CIterator.h"
 #include "game/mfc.h"
+#include "game/TAutoGreatPower.h"
 #include "game/TGreatPower.h"
 #include "game/TStream.h"
 #include "game/TMission.h"
@@ -136,7 +137,8 @@ void TDefenseMinister::MinisterSlot12() {}
 
 // FUNCTION: IMPERIALISM 0x004ec4c0
 void TDefenseMinister::Call4C() {
-  TGreatPower* owner = reinterpret_cast<TGreatPower*>(this->ownerContextAt04);
+  // See TAttackProvinceMission::Free: the tail AI state block is TAutoGreatPower-only.
+  TAutoGreatPower* owner = reinterpret_cast<TAutoGreatPower*>(this->ownerContextAt04);
   owner->AssertValid();
   CIterator missionCursor(owner->missionQueue);
   TMission* mission = static_cast<TMission*>(missionCursor.Reset());

@@ -26,6 +26,7 @@
 #include "game/TNavyMgr.h"
 #include "game/TNewsMgr.h"
 #include "game/TMinor.h"
+#include "game/TAutoGreatPower.h"
 #include "game/TRemoteGreatPower.h"
 #include "game/TProxyGreatPower.h"
 #include "game/TClientGreatPower.h"
@@ -618,7 +619,10 @@ void TSimMgr::RebuildPrimaryNationStateForSlot(int slotIndex, char activate) {
       g_apTerrainTypeDescriptorTable[slotIndex]->identitySharedString1 =
           g_pGameFlowState->nationDisplayNameSlots[slotIndex];
     } else if (sVar1 == 2) {
-      TGreatPower* pTVar5 = new TGreatPower();
+      // Real allocation is operator_new(0xb70) followed by TAutoGreatPower::TAutoGreatPower()
+      // (ctor thunk 0x407a31 -> 0x4e6b50) -- this slot is genuinely a TAutoGreatPower, not a
+      // bare TGreatPower (whose object size is 0x964, too small for the tail AI state block).
+      TAutoGreatPower* pTVar5 = new TAutoGreatPower();
       pTVar5->InitializeNationMinisterSubsystemsByPolicyIds(
           slotIndex, 2, scenarioSetupRows1[slotIndex], scenarioSetupRows2[slotIndex],
           scenarioSetupRows3[slotIndex]);
