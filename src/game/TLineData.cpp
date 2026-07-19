@@ -22,11 +22,13 @@ void TLineData::SetLineDataRowAndBounds(short rowArg, short colArg, int* bounds)
   field06 = rowArg;
 }
 
+// FUNCTION: IMPERIALISM 0x0056f460
 void TLineData::CreateLineItemView(TView* panel, int* offsetLayout) {
   (void)panel;
   (void)offsetLayout;
 }
 
+// FUNCTION: IMPERIALISM 0x0056f480
 undefined TLineData::OrphanRetStub_0056f480() {
   return 0;
 }

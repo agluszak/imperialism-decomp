@@ -22,7 +22,7 @@ AGENTS guardrail + [[model-real-classes-not-callconv-casts]].
 - Big-vtable classes (TGreatPower = 178 slots) self-dispatch to sibling slots on
   `this`; declare the **whole slot range** as real virtuals in one structural pass
   (bodies may temporarily delegate) so sibling calls resolve to real virtuals. Verify
-  ownership against `config/function_ownership.csv` first — no-op slot bodies live in
+  the owning marker first (`just func-status`) — no-op slot bodies live in
   their owning class files. See [[next-tgreatpower-vtable-scope]].
 - The slot macro arg / `// slot 0xNN` comments are **decimal** (slot 0xb0 = index 176).
 
@@ -80,8 +80,8 @@ auto-resolves the thunk to the real function **only if the thunk address has no 
 `symbols.csv` entry**. A named thunk row (`thunk_Foo`) makes reccmp compare
 `call thunk_Foo` vs your `call Foo` as a literal symbol mismatch (caps the caller ~93%);
 a row-less thunk resolves to 100% for free. Fix: **port the real target into its correct
-file** (real body, `// FUNCTION:` marker, `sync-ownership`), delete the thunk's rows from
-both `config/symbols.csv` and `config/thunk_map.csv`, then call the real function
+file** (real body, `// FUNCTION:` marker), delete the thunk's rows from
+both `config/original_entities.csv` and `config/thunk_map.csv`, then call the real function
 directly — never declare the thunk with a typed signature and `reinterpret_cast` it, and
 never whitelist a stub in `tools/stubgen.py` (both are banned hacks). Took
 `TView::Refresh` 93%→100% (QuickDraw DC family). Watch conventions: MFC `CDC::FromHandle`
@@ -118,7 +118,7 @@ unoverridden virtual.
 
 
 A statically-linked MFC vtable address (e.g. CObject's `??_7CObject@@6B@` at
-0x66fec4) that only has a name-typed `global` row in `config/symbols.csv` classifies
+0x66fec4) that only has a name-typed `global` row in `config/original_entities.csv` classifies
 the original-side reloc as DATA while the recomp side is VTABLE — reccmp then counts
 a diff line in *every* destructor that stores it (the ubiquitous
 `mov [ecx], offset CObject::vftable` tail of inlined base dtors). Fix: give the csv
@@ -303,7 +303,7 @@ slots) — this is flagged as follow-up work, not patched piecemeal per function
     timestamp + a few debug-dir bytes) — MSVC 5.0's linker predates `/OPT:ICF` and does
     no identical-COMDAT folding. `/OPT:NOICF` is a no-op here; do not reach for it.
     (b) **Root cause: dozens of identical trivial stubs are ambiguous to pair**, and the
-    orig-side rows are mislabelled in `config/symbols.csv` (e.g. 0x606c4e = a 6-byte
+    orig-side rows are mislabelled in `config/original_entities.csv` (e.g. 0x606c4e = a 6-byte
     `return 1` is named `TTechStorePage::CloseCityDialogChildrenAndReleaseSelf`; it is
     really `CCmdTarget::IsInvokeAllowed`). reccmp then can't map orig↔recomp for those
     slots and picks a wrong name.
@@ -345,7 +345,7 @@ ground truth because it is built from real nafxcw.lib. Method that worked for CI
    and confirm orig and recomp vtables are the **same length** — if recomp is longer
    (extra OCC/OLE tail), the class can't reach 100% and it's a structural divergence, not a
    naming bug.
-4. Emit one `config/msvc500_library_overrides.csv` row per red slot
+4. Emit one `config/reviewed_library_identities.csv` row per red slot
    (`addr|CView::Name|<recomp mangled symbol>|<prototype>|nafxcw|<obj>|evidence`); take the
    mangled symbol verbatim from the recomp PDB, never hand-mangle. `just regen-stubs` applies
    them. These are shared nafxcw functions, so the rows also fix every other CView-family

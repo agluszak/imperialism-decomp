@@ -30,7 +30,7 @@ def class_slug(class_name: str) -> str:
 
 def load_symbols(repo_root: Path) -> list[dict[str, str]]:
     out: list[dict[str, str]] = []
-    for row in read_pipe_rows(repo_root / "config" / "symbols.csv"):
+    for row in read_pipe_rows(repo_root / "config" / "original_entities.csv"):
         addr = normalize_hex(row.get("address") or "")
         name = (row.get("name") or "").strip()
         if addr and name:
@@ -40,7 +40,8 @@ def load_symbols(repo_root: Path) -> list[dict[str, str]]:
 
 def load_autogen_index(repo_root: Path) -> list[dict[str, str]]:
     out: list[dict[str, str]] = []
-    index = repo_root / "src" / "ghidra_autogen" / "index.csv"
+    index = (repo_root / "build-msvc500" / "evidence" / "ghidra-export"
+             / "src" / "index.csv")
     if not index.exists():
         return out
     for row in read_pipe_rows(index):

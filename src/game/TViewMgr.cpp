@@ -2201,3 +2201,6 @@ char TViewMgr::DispatchGameStateEventIfLocalizedPromptAccepted(int actionTag) {
   }
   return accepted;
 }
+
+// SYNTHETIC: IMPERIALISM 0x005d5040
+// TViewMgr::GetRuntimeClass

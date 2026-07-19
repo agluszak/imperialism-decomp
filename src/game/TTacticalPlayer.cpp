@@ -6,25 +6,31 @@
 #include "game/TTacticalUnit.h"
 #include "game/global_data_tables.h"
 
+// FUNCTION: IMPERIALISM 0x0059ad70
 void TTacticalPlayer::StartBattle() {}
 
 // True no-op in the original (bare ret); TArmyPlayer's override is the per-tick
 // battle pump.
+// FUNCTION: IMPERIALISM 0x0059ad90
 void TTacticalPlayer::AdvanceTacticalTurnPulse() {}
 
+// FUNCTION: IMPERIALISM 0x0059adb0
 void TTacticalPlayer::NoOpTacticalPlayerHook0C(int unused) {
   (void)unused;
 }
 
+// FUNCTION: IMPERIALISM 0x0059add0
 void TTacticalPlayer::CommitTacticalResultsToSourceUnits(int unused) {
   (void)unused;
 }
 
+// FUNCTION: IMPERIALISM 0x0059adf0
 unsigned char TTacticalPlayer::AlwaysTrueTacticalPredicate10(TTacticalUnit* unit) {
   (void)unit;
   return 1;
 }
 
+// FUNCTION: IMPERIALISM 0x0059ae10
 void TTacticalPlayer::ProceedAfterBattleIntroAccepted() {}
 // SYNTHETIC: IMPERIALISM 0x0059ad40
 // TTacticalPlayer::CreateObject

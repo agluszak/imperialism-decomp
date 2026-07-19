@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Warn when a committed reccmp baseline snapshot may not reflect the working tree.
 
-`func_status`/`port_candidates` read `config/reccmp_progress_baseline.report.json` —
+`func_status`/`port_candidates` read `config/baselines/reccmp_progress_baseline.report.json` —
 a snapshot written by `just stats-baseline-update` — with no signal that it might be
 stale relative to uncommitted edits. This is a cheap, advisory `git status` check
 shared by both callers; it is not a correctness gate.
@@ -14,7 +14,7 @@ from pathlib import Path
 
 from tools.common.repo import dirty_tracked_paths
 
-WATCH_PATHS = ["src", "include", "config/symbols.csv", "config/function_ownership.csv"]
+WATCH_PATHS = ["src", "include", "config/original_entities.csv"]
 
 
 def warn_if_baseline_stale(repo_root: Path) -> None:

@@ -4,7 +4,6 @@
 from __future__ import annotations
 
 import argparse
-import csv
 import os
 import re
 import sys
@@ -13,22 +12,7 @@ from pathlib import Path
 
 import pyghidra
 from tools.common import ghidra_env
-from tools.common.name_overrides import (
-    DEFAULT_NAME_OVERRIDES_CSV,
-    parse_name_overrides,
-    resolve_name_overrides_path,
-)
-from tools.common.pipe_csv import read_pipe_table
 from tools.common.repo import repo_root_from_file, resolve_repo_path
-from tools.ghidra.merge_curated_symbols import (
-    apply_function_names_to_symbols_txt,
-    collect_source_vtable_addresses,
-    function_names_from_symbols_rows,
-    load_curated_symbols,
-    merge_curated_symbols_csv,
-    write_symbols_csv,
-)
-
 REPO_CONFIG_PATH = "ghidra.toml"
 WS_RE = re.compile(r"\s")
 
@@ -59,17 +43,32 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--output-dir",
         default=os.getenv("OUTPUT_DIR", str(repo_root / "config")),
-        help="Output directory for symbols.ghidra.txt and symbols.csv",
+        help="Output directory for symbols.ghidra.txt and original_entities.csv",
     )
     parser.add_argument(
         "--decomp-output-dir",
-        default=os.getenv("DECOMP_OUTPUT_DIR", str(repo_root / "src" / "ghidra_autogen")),
+        default=os.getenv(
+            "DECOMP_OUTPUT_DIR",
+            str(repo_root / "build-msvc500" / "evidence" / "ghidra-export" / "src"),
+        ),
         help="Output directory for split decompiled function bodies",
     )
     parser.add_argument(
         "--types-output-dir",
-        default=os.getenv("TYPES_OUTPUT_DIR", str(repo_root / "include" / "ghidra_autogen")),
+        default=os.getenv(
+            "TYPES_OUTPUT_DIR",
+            str(repo_root / "build-msvc500" / "evidence" / "ghidra-export" / "include"),
+        ),
         help="Output directory for split datatype headers",
+    )
+    parser.add_argument(
+        "--inventory-only",
+        action="store_true",
+        help=(
+            "Export only symbols.ghidra.txt + original_entities.csv (the raw "
+            "inventory); skip the expensive decompiled-body and type-header "
+            "evidence snapshot."
+        ),
     )
     parser.add_argument(
         "--decomp-max-functions-per-file",
@@ -78,14 +77,9 @@ def parse_args() -> argparse.Namespace:
         help="Maximum number of functions per generated decompiled .cpp file",
     )
     parser.add_argument(
-        "--name-overrides",
-        default=os.getenv("NAME_OVERRIDES", str(repo_root / DEFAULT_NAME_OVERRIDES_CSV)),
-        help="Optional pipe-delimited file: address|name|prototype",
-    )
-    parser.add_argument(
-        "--no-preserve-curated-symbols",
+        "--no-preserve-curated-symbols",  # retired: refresh is always wholesale now
         action="store_true",
-        help="Replace config/symbols.csv wholesale from Ghidra (breaks reccmp pairing).",
+        help="Replace config/original_entities.csv wholesale from Ghidra (breaks reccmp pairing).",
     )
     return parser.parse_args()
 
@@ -104,113 +98,6 @@ def read_repo_config(repo_root: Path) -> dict:
         raise FileNotFoundError(f"Missing {config_path}")
     with config_path.open("rb") as fd:
         return tomllib.load(fd)
-
-
-def apply_overrides_to_symbols_csv(path: Path, overrides: dict[int, tuple[str, str]]) -> tuple[int, int]:
-    if not path.is_file() or not overrides:
-        return (0, 0)
-
-    fieldnames, rows = read_pipe_table(path)
-
-    renamed_count = 0
-    proto_count = 0
-    for row in rows:
-        row_type = (row.get("type") or "").strip().lower()
-        if row_type != "function":
-            continue
-        addr_text = (row.get("address") or "").strip()
-        if not addr_text:
-            continue
-        addr = int(addr_text, 16)
-        override = overrides.get(addr)
-        if override is None:
-            continue
-        if override[0] and row.get("name", "") != override[0]:
-            row["name"] = override[0]
-            renamed_count += 1
-        if "prototype" in row and override[1] and row.get("prototype", "") != override[1]:
-            row["prototype"] = override[1]
-            proto_count += 1
-
-    with path.open("w", encoding="utf-8", newline="") as fd:
-        writer = csv.DictWriter(fd, fieldnames=fieldnames, delimiter="|", lineterminator="\n")
-        writer.writeheader()
-        writer.writerows(rows)
-    return (renamed_count, proto_count)
-
-
-def apply_overrides_to_symbols_txt(path: Path, overrides: dict[int, tuple[str, str]]) -> tuple[int, int]:
-    if not path.is_file() or not overrides:
-        return (0, 0)
-
-    lines = path.read_text(encoding="utf-8", errors="ignore").splitlines()
-    output: list[str] = []
-    renamed_count = 0
-    skipped_whitespace = 0
-
-    for line in lines:
-        stripped = line.strip()
-        if not stripped:
-            output.append(line)
-            continue
-        parts = stripped.split()
-        if len(parts) < 3:
-            output.append(line)
-            continue
-        name, addr_text, kind = parts[0], parts[1], parts[2]
-        if kind.lower() != "f":
-            output.append(line)
-            continue
-        try:
-            addr = int(addr_text, 16)
-        except ValueError:
-            output.append(line)
-            continue
-        override = overrides.get(addr)
-        if override is None or not override[0]:
-            output.append(line)
-            continue
-        new_name = override[0]
-        if WS_RE.search(new_name):
-            skipped_whitespace += 1
-            output.append(line)
-            continue
-        output.append(f"{new_name} {addr_text} {kind}")
-        if new_name != name:
-            renamed_count += 1
-
-    path.write_text("\n".join(output) + "\n", encoding="utf-8")
-    return (renamed_count, skipped_whitespace)
-
-
-def apply_overrides_to_index_csv(path: Path, overrides: dict[int, tuple[str, str]]) -> tuple[int, int]:
-    if not path.is_file() or not overrides:
-        return (0, 0)
-
-    fieldnames, rows = read_pipe_table(path)
-
-    renamed_count = 0
-    proto_count = 0
-    for row in rows:
-        addr_text = (row.get("address") or "").strip()
-        if not addr_text:
-            continue
-        addr = int(addr_text, 16)
-        override = overrides.get(addr)
-        if override is None:
-            continue
-        if override[0] and row.get("name", "") != override[0]:
-            row["name"] = override[0]
-            renamed_count += 1
-        if "prototype" in row and override[1] and row.get("prototype", "") != override[1]:
-            row["prototype"] = override[1]
-            proto_count += 1
-
-    with path.open("w", encoding="utf-8", newline="") as fd:
-        writer = csv.DictWriter(fd, fieldnames=fieldnames, delimiter="|", lineterminator="\n")
-        writer.writeheader()
-        writer.writerows(rows)
-    return (renamed_count, proto_count)
 
 
 def main() -> int:
@@ -238,7 +125,6 @@ def main() -> int:
         output_dir = resolve_repo_path(repo_root, args.output_dir)
         decomp_output_dir = resolve_repo_path(repo_root, args.decomp_output_dir)
         types_output_dir = resolve_repo_path(repo_root, args.types_output_dir)
-        name_overrides_path = resolve_name_overrides_path(repo_root, args.name_overrides)
         max_per_file = (
             args.decomp_max_functions_per_file
             if args.decomp_max_functions_per_file is not None
@@ -252,8 +138,7 @@ def main() -> int:
         types_output_dir.mkdir(parents=True, exist_ok=True)
 
         symbols_txt = output_dir / "symbols.ghidra.txt"
-        symbols_csv = output_dir / "symbols.csv"
-        curated_fieldnames, curated_by_addr = load_curated_symbols(symbols_csv)
+        symbols_csv = output_dir / "original_entities.csv"
         script_path = Path(__file__).resolve().parent / "SyncExports_Ghidra.py"
         if not script_path.is_file():
             raise FileNotFoundError(f"Missing script: {script_path}")
@@ -266,6 +151,7 @@ def main() -> int:
             str(max_per_file),
             expected_version,
             expected_release,
+            "inventory-only" if args.inventory_only else "full",
         ]
 
         pyghidra.start(install_dir=ghidra_install_dir)
@@ -303,62 +189,10 @@ def main() -> int:
                 program.release(consumer)
             project.close()
 
-        if curated_by_addr and not args.no_preserve_curated_symbols:
-            fieldnames, exported_rows = read_pipe_table(symbols_csv)
-            if not fieldnames:
-                fieldnames = curated_fieldnames
-            merged_rows, merge_stats = merge_curated_symbols_csv(
-                fieldnames,
-                exported_rows,
-                curated_by_addr,
-                collect_source_vtable_addresses(repo_root),
-            )
-            write_symbols_csv(symbols_csv, fieldnames, merged_rows)
-            renamed_txt = apply_function_names_to_symbols_txt(
-                symbols_txt, function_names_from_symbols_rows(merged_rows)
-            )
-            print(
-                "Preserved curated symbols.csv rows: "
-                f"names {merge_stats.preserved_names}, "
-                f"symbols {merge_stats.preserved_symbols}, "
-                f"prototypes {merge_stats.preserved_prototypes}, "
-                f"function types {merge_stats.preserved_function_types}, "
-                f"new {merge_stats.new_from_export}, "
-                f"retained orphans {merge_stats.retained_orphans}, "
-                f"dropped VTABLE-collision rows {merge_stats.dropped_vtable_collisions}, "
-                f"symbols.txt names {renamed_txt}"
-            )
-        elif curated_by_addr and args.no_preserve_curated_symbols:
-            print(
-                "WARNING: --no-preserve-curated-symbols left Ghidra export in place; "
-                "reccmp pairing may regress until symbols.csv is repaired."
-            )
+        # Wholesale refresh: the exported inventory replaces original_entities.csv
+        # outright. Curated knowledge lives in source (markers/decls) and in the DB
+        # (via ghidra-apply-source), never merged back here.
 
-        overrides = parse_name_overrides(name_overrides_path)
-        if overrides:
-            renamed_csv, proto_csv = apply_overrides_to_symbols_csv(symbols_csv, overrides)
-            renamed_txt, skipped_txt = apply_overrides_to_symbols_txt(symbols_txt, overrides)
-            renamed_idx, proto_idx = apply_overrides_to_index_csv(
-                decomp_output_dir / "index.csv", overrides
-            )
-            print(
-                "Applied name overrides from {}: csv names {}, csv prototypes {}, "
-                "symbols.txt names {}, index names {}, index prototypes {}{}".format(
-                    name_overrides_path,
-                    renamed_csv,
-                    proto_csv,
-                    renamed_txt,
-                    renamed_idx,
-                    proto_idx,
-                    (
-                        ", symbols.txt skipped (whitespace names) {}".format(skipped_txt)
-                        if skipped_txt
-                        else ""
-                    ),
-                )
-            )
-        else:
-            print(f"No name overrides applied (missing/empty): {name_overrides_path}")
 
         print("Done.")
         print(f"  {symbols_txt}")

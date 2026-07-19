@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
-"""Tests for the reviewed MSVC500 library-identity override layer.
+"""Tests for the reviewed library-identity layer.
 
-Covers the applier (tools.mfc.apply_library_overrides) and the semantic gate
+Covers the loader (tools.mfc.reviewed_identities), the generation-time overlay
+(tools.generate_symbols), and the exact-consistency gate
 (tools.workflow.check_library_identity), including the rand regression pin.
 """
 
@@ -11,13 +12,8 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from tools.mfc.apply_library_overrides import (
-    apply_markers,
-    apply_symbols,
-    load_overrides,
-    render_marker_file,
-)
-from tools.mfc.apply_msvc500_library_region import SourceMarker
+from tools.generate_symbols import generate
+from tools.mfc.reviewed_identities import load_overrides
 from tools.workflow.check_library_identity import check_override, prototype_declares_name
 
 RAND_ROW = (
@@ -69,70 +65,53 @@ class ApplySymbolsTests(unittest.TestCase):
             "address|name|symbol|size|type|prototype|provenance\n" + body,
         )
 
-    def test_rewrites_invented_name(self) -> None:
-        symbols = self._symbols(
+    def _repo(self, inventory_body: str) -> Path:
+        """A minimal repo tree: inventory + reviewed file + empty src/include."""
+        repo = self.tmp / "repo"
+        (repo / "config").mkdir(parents=True, exist_ok=True)
+        (repo / "src").mkdir(exist_ok=True)
+        (repo / "include").mkdir(exist_ok=True)
+        _write(repo / "config" / "original_entities.csv",
+               "address|name|symbol|size|type|prototype|provenance\n" + inventory_body)
+        _write(repo / "config" / "reviewed_library_identities.csv",
+               f"{HEADER}\n{RAND_ROW}\n")
+        return repo
+
+    def test_overlay_rewrites_invented_name(self) -> None:
+        repo = self._repo(
             "5e83f0|GenerateThreadLocalRandom15||45|function|"
             "undefined GenerateThreadLocalRandom15()|\n"
         )
-        changes, changed = apply_symbols(symbols, self.overrides)
-        self.assertTrue(changed)
-        row = _row(symbols, 0x5E83F0)
+        out = generate(repo, "IMPERIALISM", "config/original_entities.csv",
+                       repo / "gen")
+        row = _row(out, 0x5E83F0)
         self.assertEqual(row["name"], "rand")
         self.assertEqual(row["symbol"], "_rand")
         self.assertEqual(row["prototype"], "int __cdecl rand(void)")
-        self.assertEqual(row["provenance"], "msvc500_library_override")
+        # The committed inventory itself is untouched (raw; never merged).
+        inv_row = _row(repo / "config" / "original_entities.csv", 0x5E83F0)
+        self.assertEqual(inv_row["name"], "GenerateThreadLocalRandom15")
 
-    def test_adds_missing_row(self) -> None:
-        symbols = self._symbols("400000|other||4|function|undefined other()|\n")
-        _changes, changed = apply_symbols(symbols, self.overrides)
-        self.assertTrue(changed)
-        self.assertIsNotNone(_row(symbols, 0x5E83F0))
+    def test_overlay_adds_missing_row(self) -> None:
+        repo = self._repo("400000|other||4|function|undefined other()|\n")
+        out = generate(repo, "IMPERIALISM", "config/original_entities.csv",
+                       repo / "gen")
+        row = _row(out, 0x5E83F0)
+        self.assertIsNotNone(row)
+        self.assertEqual(row["provenance"], "reviewed_library_identity")
 
-    def test_idempotent(self) -> None:
-        symbols = self._symbols(
+    def test_overlay_is_idempotent(self) -> None:
+        repo = self._repo(
             "5e83f0|GenerateThreadLocalRandom15||45|function|"
             "undefined GenerateThreadLocalRandom15()|\n"
         )
-        apply_symbols(symbols, self.overrides)
-        changes, changed = apply_symbols(symbols, self.overrides)
-        self.assertFalse(changed)
-        self.assertEqual(changes, [])
+        out1 = generate(repo, "IMPERIALISM", "config/original_entities.csv",
+                        repo / "gen")
+        first = out1.read_text(encoding="utf-8")
+        out2 = generate(repo, "IMPERIALISM", "config/original_entities.csv",
+                        repo / "gen")
+        self.assertEqual(first, out2.read_text(encoding="utf-8"))
 
-
-class ApplyMarkersTests(unittest.TestCase):
-    def setUp(self) -> None:
-        self.tmp = Path(tempfile.mkdtemp())
-        self.overrides = load_overrides(
-            _write(self.tmp / "ov.csv", f"{HEADER}\n{RAND_ROW}\n")
-        )
-        self.marker_path = self.tmp / "library_msvc500_overrides.cpp"
-        self.marker_rel = "src/game/library_msvc500_overrides.cpp"
-
-    def test_adds_marker_when_absent(self) -> None:
-        changes, changed = apply_markers(
-            self.marker_path, self.overrides, {}, marker_rel=self.marker_rel, target="IMPERIALISM"
-        )
-        self.assertTrue(changed)
-        text = self.marker_path.read_text()
-        self.assertIn("// LIBRARY: IMPERIALISM 0x005e83f0", text)
-        self.assertIn("// _rand", text)
-
-    def test_skips_when_library_marker_elsewhere(self) -> None:
-        existing = {0x5E83F0: SourceMarker(kind="LIBRARY", path="src/game/library_msvc500_fid.cpp")}
-        changes, changed = apply_markers(
-            self.marker_path, self.overrides, existing,
-            marker_rel=self.marker_rel, target="IMPERIALISM",
-        )
-        # No new marker file content for this address (metadata-only override).
-        self.assertNotIn("0x005e83f0", self.marker_path.read_text())
-
-    def test_conflict_with_function_marker_raises(self) -> None:
-        existing = {0x5E83F0: SourceMarker(kind="FUNCTION", path="src/game/Foo.cpp")}
-        with self.assertRaises(SystemExit):
-            apply_markers(
-                self.marker_path, self.overrides, existing,
-                marker_rel=self.marker_rel, target="IMPERIALISM",
-            )
 
 
 class GateTests(unittest.TestCase):

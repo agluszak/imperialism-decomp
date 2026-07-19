@@ -36,7 +36,7 @@ from capstone import x86
 from tools.binary.body_hash import bodies_equivalent
 from tools.binary.pe import OriginalImage, load_symbol_names, load_symbol_sizes
 
-# Curated slot-0 identities (config/symbols.csv names). CObject's inherited
+# Curated slot-0 identities (config/original_entities.csv names). CObject's inherited
 # GetRuntimeClass on a template vtable is the "no own CRuntimeClass" tell.
 _TEMPLATE_SLOT0_MARK = "CObject::GetRuntimeClass"
 _CONCRETE_MARKS = ("CPtrList::", "CObList::", "CObArray::", "CStringList::",

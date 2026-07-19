@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Prune incremental-link (ILT) `jmp` thunk rows from config/symbols.csv.
+"""Prune incremental-link (ILT) `jmp` thunk rows from config/original_entities.csv.
 
 The original Imperialism.exe was linked incrementally, so the start of .text
 (0x401000..) is a dense table of 5-byte `jmp <real body>` stubs. These are
@@ -32,7 +32,7 @@ Two further junk-row classes are pruned under the same keep-rules (3)+(4):
   * function rows whose address is not inside .text at all (data-section
     "functions", GOG `.patch`-section code, one-past-section-end artifacts).
 
-Run after `just sync-ghidra` regenerates config/symbols.csv (sync-ghidra does
+Run after `just sync-ghidra` regenerates config/original_entities.csv (sync-ghidra does
 this automatically).
 """
 
@@ -55,7 +55,7 @@ MARKER_RE = re.compile(
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--symbols-csv", default="config/symbols.csv")
+    parser.add_argument("--symbols-csv", default="config/original_entities.csv")
     parser.add_argument(
         "--original-exe",
         default=None,

@@ -112,3 +112,6 @@ char TMovieView::DispatchUiMouseMoveToChildren(CPoint* point, int arg2, int arg3
   }
   return TPicture::DispatchUiMouseMoveToChildren(point, arg2, arg3, arg4);
 }
+
+// SYNTHETIC: IMPERIALISM 0x005e2210
+// TMovieView::GetRuntimeClass

@@ -84,3 +84,6 @@ void TStratReportView::ApplyRectSlot110(RECT* rectBuffer) {
     }
   }
 }
+
+// SYNTHETIC: IMPERIALISM 0x0058e3a0
+// TStratReportView::GetRuntimeClass

@@ -36,10 +36,10 @@ _MARKER_RE = re.compile(r"(?:FUNCTION|STUB|SYNTHETIC|LIBRARY): IMPERIALISM 0x([0
 
 
 def _load_symbols() -> dict[int, tuple[str, str]]:
-  """addr -> (curated name, prototype) from config/symbols.csv."""
+  """addr -> (curated name, prototype) from config/original_entities.csv."""
   table: dict[int, tuple[str, str]] = {}
   try:
-    with open("config/symbols.csv", encoding="utf-8", errors="replace") as fh:
+    with open("config/original_entities.csv", encoding="utf-8", errors="replace") as fh:
       for line in fh:
         parts = line.rstrip("\n").split("|")  # pipe-split-ok: symbols.csv is headerless
         if len(parts) >= 6:
@@ -54,9 +54,10 @@ def _load_symbols() -> dict[int, tuple[str, str]]:
 
 
 def _load_owners() -> dict[int, str]:
-  """addr -> 'path:line' for every marker in manual source and autogen stubs."""
+  """addr -> 'path:line' for every marker in manual source and generated stubs."""
   owners: dict[int, str] = {}
-  for pattern in ("src/game/*.cpp", "include/game/*.h", "src/autogen/stubs/*.cpp"):
+  for pattern in ("src/game/*.cpp", "include/game/*.h",
+                  "build-msvc500/generated/stubs/*.cpp"):
     for path in glob.glob(pattern):
       try:
         with open(path, encoding="utf-8", errors="replace") as fh:
@@ -73,7 +74,7 @@ def _owner_str(addr: int, owners: dict[int, str]) -> str:
   where = owners.get(addr)
   if where is None:
     return "UNOWNED"
-  if "/autogen/stubs/" in where:
+  if "/generated/stubs/" in where:
     return f"STUB ({where})"
   return where
 

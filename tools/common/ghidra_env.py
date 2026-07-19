@@ -5,7 +5,7 @@ Centralizes what every Ghidra tool used to copy-paste: resolving the vendored
 project/program env, enforcing that the installed Ghidra and pyghidra runtime match
 what the repo expects (`ghidra.toml`), starting pyghidra, and opening the project /
 program. Routing every tool through here means the version check runs eagerly on
-*any* Ghidra command, not only `just sync-ghidra`.
+*any* Ghidra command.
 
 Typical read-only use:
 

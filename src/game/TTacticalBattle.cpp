@@ -33,15 +33,6 @@ extern "C" int __cdecl rand(void);
 
 using turn_event_dialog::TurnEventDialogNode;
 
-void TTacticalBattle::DeployTacticalUnitToTile(TTacticalUnit* unit, int tileIndex) {
-  (void)unit;
-  (void)tileIndex;
-}
-
-undefined TTacticalBattle::CreateTTacticalBattleInstance(int) {
-  return 0;
-}
-
 // Non-virtual action helpers dispatched above.
 
 // Turn-order comparator (see the header note on the AX/short return).
@@ -73,6 +64,17 @@ short __cdecl CompareTacticalUnitsForTurnOrder(void* a, void* b, void* context) 
 }
 // SYNTHETIC: IMPERIALISM 0x0059f6d0
 // TTacticalBattle::CreateObject
+
+// FUNCTION: IMPERIALISM 0x0059f710
+void TTacticalBattle::DeployTacticalUnitToTile(TTacticalUnit* unit, int tileIndex) {
+  (void)unit;
+  (void)tileIndex;
+}
+
+// FUNCTION: IMPERIALISM 0x0059f730
+undefined TTacticalBattle::CreateTTacticalBattleInstance(int) {
+  return 0;
+}
 
 // SYNTHETIC: IMPERIALISM 0x0059f750
 // TTacticalBattle::GetRuntimeClass

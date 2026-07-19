@@ -213,7 +213,7 @@ reccmp pairs by **name** (stripping C-linkage underscore); values are irrelevant
 - To convert a `g_vtbl<Class>` manual-vptr-write ctor into a real polymorphic ctor:
   make it `class X : public Base` with a `// VTABLE:` annotation and real `override`s,
   write a plain ctor with NO manual vptr line, delete the `g_vtbl<Class>` global, and
-  **delete the `g_vtbl<Class>` row from `config/symbols.csv`** — that last step is what
+  **delete the `g_vtbl<Class>` row from `config/original_entities.csv`** — that last step is what
   makes it pair (otherwise DATA-vs-VTABLE mismatch). Caveat: only matches originals
   whose single vptr write is at the top of the derived body. See commit f6a0588 and
   AGENTS construction rules 1–2.
@@ -244,7 +244,7 @@ listing's FSTP slots (Ghidra's decompile of float-heavy code is garbage). See
 - **Batch compare exists — never loop single `just compare` calls.** `just compare
   0xA 0xB 0xC`, `just compare --file src/game/X.cpp`, and `just compare-class X` all
   run reccmp once with `--json` (one PDB parse for any number of functions).
-- `just sync-ownership` is **deletion-reconciling** (and `just regen-stubs` runs it
+- (historical) `just sync-ownership` was **deletion-reconciling** (and stub regen ran it
   automatically): `marker_sync` rows whose marker disappeared are pruned; curated notes
   (e.g. `mfc_runtime_macro`) are never pruned. If a deleted function's stub still fails
   to regenerate, check for a leftover curated row. See

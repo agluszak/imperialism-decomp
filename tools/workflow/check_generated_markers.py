@@ -34,7 +34,7 @@ BANNED_SUBSTRINGS = (
 )
 
 # A genuine machine-generated file (e.g. src/game/library_msvc500_oracle.cpp, produced
-# by tools/mfc/apply_library_oracle.py) legitimately carries a "do not hand-edit" banner.
+# by the retired oracle applier) legitimately carried a "do not hand-edit" banner.
 # Those are tool-owned by an *active* workflow, unlike the retired recover-class DECLS
 # claim stamped on hand-owned headers, so exempt any file that opens with a real
 # auto-generation banner.

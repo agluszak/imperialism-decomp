@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
-"""Gate: synthetic symbol names in source comments must match config/symbols.csv.
+"""Gate: synthetic symbol names in source comments must match config/original_entities.csv.
 
 A ``// SYNTHETIC: IMPERIALISM 0x...`` marker is immediately followed by a
 ``// Name`` comment giving the symbol the marker claims. This gate confirms
 the next line is such a comment and that the name matches the row in
-config/symbols.csv for that address. Drift here means reccmp's
+config/original_entities.csv for that address. Drift here means reccmp's
 ``ScalarDeletingDestructor`` (or other synthetic) entity is being claimed by a
 marker that does not match the symbol the address resolves to, which is
 confusing for both tooling and humans.
@@ -44,7 +44,7 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
         "--symbols-csv",
-        default=str(repo_root / "config" / "symbols.csv"),
+        default=str(repo_root / "config" / "original_entities.csv"),
         help="Path to symbols.csv (pipe-delimited).",
     )
     parser.add_argument(
@@ -103,7 +103,7 @@ def main() -> int:
             expected_name = symbols.get(offset_norm)
             if expected_name is None:
                 violations.append(
-                    f"{rel}:{idx + 1}: Address 0x{offset_norm} has no entry in config/symbols.csv"
+                    f"{rel}:{idx + 1}: Address 0x{offset_norm} has no entry in config/original_entities.csv"
                 )
             elif comment_name != expected_name:
                 violations.append(

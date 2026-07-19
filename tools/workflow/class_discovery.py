@@ -16,10 +16,6 @@ from pathlib import Path
 
 from tools.common.pipe_csv import read_pipe_rows
 from tools.common.repo import repo_root_from_file, resolve_repo_path
-from tools.workflow.function_ownership import (
-    DEFAULT_FUNCTION_OWNERSHIP_CSV,
-    load_function_ownership,
-)
 
 CONFIDENCE_RANK = {"low": 1, "medium": 2, "high": 3}
 RANK_TO_CONFIDENCE = {v: k for k, v in CONFIDENCE_RANK.items()}
@@ -409,13 +405,8 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--symbols-csv",
-        default=str(repo_root / "config" / "symbols.csv"),
+        default=str(repo_root / "config" / "original_entities.csv"),
         help="Pipe-delimited symbols.csv used for class anchor addresses.",
-    )
-    parser.add_argument(
-        "--ownership-csv",
-        default=str(repo_root / DEFAULT_FUNCTION_OWNERSHIP_CSV),
-        help="Function ownership CSV used to exclude already-owned manual addresses from candidate output.",
     )
     parser.add_argument(
         "--classes",
@@ -456,8 +447,6 @@ def main() -> int:
     symbols_csv = resolve_repo_path(repo_root, args.symbols_csv)
     if not symbols_csv.is_file():
         raise SystemExit(f"symbols CSV not found: {symbols_csv}")
-    ownership_csv = resolve_repo_path(repo_root, args.ownership_csv)
-
     classes = parse_classes(args.classes)
     slug = class_slug(classes)
     base_out_dir = Path(args.out_dir)
@@ -482,20 +471,14 @@ def main() -> int:
     if not all_anchor_addrs:
         print("[warn] no class anchor addresses found in symbols.csv")
     excluded_manual_addresses: set[int] = set()
-    if not args.include_owned_candidates and ownership_csv.is_file():
-        ownership_rows = load_function_ownership(ownership_csv)
-        excluded_manual_addresses = {
-            address
-            for address, row in ownership_rows.items()
-            if row.ownership.strip().lower() != "autogen"
-        }
+    if not args.include_owned_candidates:
+        from tools.source_model import claimed_addresses
+
+        excluded_manual_addresses = claimed_addresses(project_root, "IMPERIALISM")
         print(
-            "[info] excluding manually owned addresses from candidates:",
+            "[info] excluding source-marker-claimed addresses from candidates:",
             len(excluded_manual_addresses),
-            f"(source: {ownership_csv})",
         )
-    elif not args.include_owned_candidates and not ownership_csv.is_file():
-        print(f"[warn] ownership CSV not found; no address exclusion: {ownership_csv}")
 
     lane_paths = {
         "callers_strict": run_dir / "infer_callers_strict.csv",

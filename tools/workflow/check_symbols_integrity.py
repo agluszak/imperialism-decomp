@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Structural integrity gate for config/symbols.csv.
+"""Structural integrity gate for config/original_entities.csv.
 
 Catches the failure modes that silently corrupt downstream tooling (every consumer
 uses csv.DictReader, which trusts line 1 to be the header):
@@ -38,7 +38,7 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "--symbols-csv",
-        default="config/symbols.csv",
+        default="config/original_entities.csv",
         help="Pipe-delimited symbols table to verify.",
     )
     parser.add_argument(

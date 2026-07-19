@@ -87,47 +87,47 @@ just agent-finish             # machine-derived summary / PR body from the recei
 ## 2. After editing markers / ownership
 
 Whenever you add, remove, or move a `// FUNCTION:` / `// STUB:` / `// SYNTHETIC:` /
-`// LIBRARY:` marker (including `just promote`):
+`// LIBRARY:` marker:
 
 ```sh
-just regen-stubs    # runs sync-ownership + symbols-integrity-gate first, then stubgen
-just build
+just build          # regenerates build inputs (source index + stubs) automatically
 ```
 
-There is no separate sequence to remember: `regen-stubs` reconciles
-`config/function_ownership.csv` from source markers (deletion-reconciling;
-curated notes like `mfc_runtime_macro` are never pruned) and verifies
-`config/symbols.csv` integrity before regenerating `src/autogen/stubs/`.
+There is no separate sequence to remember: markers in source ARE the ownership
+authority — generation scans them directly; nothing else needs syncing.
 
 ## 3. Full Ghidra DB resync
 
-After any Ghidra DB mutation (`repair-code-gaps --apply`, datatype appliers,
-manual edits in the Ghidra GUI) — or when you want a clean re-export:
+After meaningful source-model changes (new classes, renames, vtable
+annotations), mirror the model into the analysis workspace:
 
 ```sh
-just db-resync
+just ghidra-apply-source            # dry-run: what would change
+just ghidra-apply-source-full      # build -> apply --apply -> export-project
 ```
 
-This is the whole ledger procedure from `docs/ghidra-db-mutations.md` in one
-command: `tooling-check` → `sync-ghidra` (push names → export symbols/autogen →
-prune ILT rows → thunk map → normalize autogen → symbol gates) → `regen-stubs` →
-`build` → `detect` → `gates` → `stats` → `export-project` (refreshes the vendored
-`.gzf`). If any step fails, fix forward and re-run; never commit a partial resync.
+This is the ONE source->Ghidra operation: names from source declarations
+(inventory names as fallback), class namespaces, `Class::'vftable'` labels, and
+a datatype-drift audit. There is no automated Ghidra->source path — discoveries
+in Ghidra are evidence you port into source by hand.
 
-To only refresh exports without the build/gate tail, `just sync-ghidra` still
-exists — but the DB is modified by its push-names step, so `just export-project`
-must run before committing either way.
+After an intentional DB *boundary* mutation (`repair-code-gaps --apply`,
+function-bounds fixes), refresh the raw inventory wholesale:
+
+```sh
+just refresh-inventory   # prune ILT -> export original_entities.csv -> gates
+just export-project      # persist the .gzf before committing
+```
 
 ## Name and ownership state — who owns what
 
 | State | File | Written by |
 |---|---|---|
-| Curated names/prototypes (top authority) | `config/function_name_overrides.csv` | hand-edited |
-| Exported symbol table (reccmp entity list) | `config/symbols.csv` | `sync-ghidra` (curated names preserved by merge) |
-| Address ownership (stub suppression) | `config/function_ownership.csv` | `regen-stubs`/`sync-ownership` from source markers |
-| Provisional names, disassembly ground truth | vendored Ghidra DB | `push-names`, DB-mutating targets (`ghidra-db` group) |
+| Raw entity inventory (reccmp entity list) | `config/original_entities.csv` (advisory names; wholesale refresh) | overlay generated to `build-msvc500/generated/symbols.csv` by `just generate` |
+| Address ownership (stub suppression) | source markers (scanned at build time) | `just generate` (runs inside `just build`) |
+| Provisional names, disassembly ground truth | vendored Ghidra DB | `ghidra-apply-source`, DB-mutating targets (`ghidra-db` group) |
 
 Renamed targets (old names remain as aliases): `stats-commit` →
-`stats-baseline-update`, `full-sync-build` → `db-resync`. `just session-loop` is
+`stats-baseline-update`. `just session-loop` is
 now read-only; ignore-list rewriting requires `--refresh-ignore` or
 `just generate-ignores` (Hard Rule 11).

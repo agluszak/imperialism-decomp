@@ -15,9 +15,10 @@ library-shaped targets) library-identify, writing everything into
 build-msvc500/agent-task.json.
 
 `agent-check` inspects the actual git diff and derives the workflow from it:
-markers changed -> regen-stubs; generated files edited without marker changes ->
-hard error; touched C++ -> format-check; then build, detect, batch compare of every
-touched address, triage for below-100% functions, gates, tests, stats.
+build inputs (source index + stubs) are always regenerated (cheap, no committed
+churn); generated/config files edited without marker changes -> hard error; touched
+C++ -> format-check; then build, detect, batch compare of every touched address,
+triage for below-100% functions, gates, tests, stats.
 
 `agent-finish` renders the receipt + diff into a summary suitable for a PR body.
 The receipt is guidance for the agent and reviewers — CI recomputes the checks
@@ -53,7 +54,7 @@ GENERATED_PREFIXES = (
     "src/autogen/",
     "src/ghidra_autogen/",
     "include/ghidra_autogen/",
-)
+)  # legacy paths: kept so a stale checkout's leftovers still trip the integrity check
 MANUAL_CPP_PREFIXES = ("src/", "include/")
 MARKER_RE = re.compile(
     r"^[+-].*//\s*(FUNCTION|SYNTHETIC|TEMPLATE|LIBRARY|GLOBAL|VTABLE|NOOP):",
@@ -104,32 +105,32 @@ def _parse_scores(text: str) -> dict[str, float]:
 
 
 def _ownership_row(addr: str, source: str = "") -> dict:
-    """Ownership row for addr from config/function_ownership.csv (optionally from a
-    given git revision's copy)."""
-    import io
-    import tempfile
+    """Marker-derived ownership for addr (optionally from a git revision's tree).
 
-    from tools.common.pipe_csv import read_pipe_rows
-
+    Source markers are the only claim authority; for a revision, `git grep` finds
+    the marker without checking anything out.
+    """
+    addr_int = int(addr, 16)
     if source:
-        content = _git("show", f"{source}:config/function_ownership.csv")
-        with tempfile.NamedTemporaryFile("w", suffix=".csv", delete=False) as fh:
-            fh.write(content)
-            path = Path(fh.name)
-    else:
-        path = REPO_ROOT / "config" / "function_ownership.csv"
-        if not path.is_file():
+        pattern = (r"//[[:space:]]*\(FUNCTION\|STUB\|TEMPLATE\|SYNTHETIC\|LIBRARY\):"
+                   r"[[:space:]]*IMPERIALISM[[:space:]]\+\(0x\)\?0*"
+                   + format(addr_int, "x"))
+        out = _run(["git", "grep", "-i", "-l", "-e", pattern, source, "--",
+                    "src", "include"]).stdout.strip()
+        if not out:
             return {}
-    key = addr.removeprefix("0x").lstrip("0") or "0"
-    try:
-        for row in read_pipe_rows(path):
-            row_addr = (row.get("address") or "").strip().lower().removeprefix("0x").lstrip("0") or "0"
-            if row_addr == key:
-                return row
-    finally:
-        if source:
-            path.unlink(missing_ok=True)
-    return {}
+        first = out.splitlines()[0]
+        path = first.split(":", 1)[1] if ":" in first else first
+        return {"address": format(addr_int, "x"), "target_cpp": path,
+                "ownership": "manual", "note": f"marker in {source}"}
+    from tools.source_model import ownership_kind, ownership_view
+
+    claim = ownership_view(REPO_ROOT).get(addr_int)
+    if claim is None:
+        return {}
+    return {"address": format(addr_int, "x"), "target_cpp": claim.file,
+            "ownership": ownership_kind(claim.kind),
+            "note": f"marker {claim.kind} at {claim.file}:{claim.line}"}
 
 
 # ---------------------------------------------------------------------------
@@ -344,7 +345,7 @@ def cmd_start(args: argparse.Namespace) -> int:
             stub_callees[addr] = sorted({
                 line.strip()
                 for line in proc.stdout.splitlines()
-                if "autogen/stubs" in line
+                if "generated/stubs" in line
             })
 
     # 7. Initial compare (score signal — nonzero exit for <100% is expected).
@@ -384,7 +385,6 @@ def cmd_start(args: argparse.Namespace) -> int:
             "ILT thunks are never modeled — resolve to the real target",
         ],
         "allowed_generated_mutations": [
-            "src/autogen/stubs/** + config/function_ownership.csv via `just regen-stubs` only",
             "config/*_baseline.* via their `just *-update` targets only (policy baselines need ALLOW_POLICY_BASELINE_UPDATE=1)",
         ],
     }
@@ -415,23 +415,11 @@ def cmd_check(args: argparse.Namespace) -> int:
     results: dict = {}
     failures: list[str] = []
 
-    # Marker-aware stub regeneration.
+    # Generated build inputs are disposable — always regenerate (cheap, no
+    # committed churn; `just generate` also rejects stale legacy generated trees).
     diff_text = _git("diff", base, "--", "src", "include") + "\n" + _git("diff", "--", "src", "include")
-    markers_changed = any(MARKER_RE.match(l) for l in diff_text.splitlines())
-    from tools.workflow.check_generated_integrity import generated_violations
-    violations = generated_violations(base)
-    if violations:
-        print("[agent-check] FAILED: generated paths changed without any marker "
-              "change — never hand-edit these; revert and use the owning tool:")
-        for p in violations[:10]:
-            print(f"  - {p}")
-        return 2
-    if markers_changed:
-        if _step("regen-stubs", ["just", "regen-stubs"], results).returncode != 0:
-            failures.append("regen-stubs")
-    else:
-        print("[agent-check] no marker changes — skipping stub regeneration "
-              "(running it anyway would only churn generated files)")
+    if _step("generate", ["just", "generate"], results).returncode != 0:
+        failures.append("generate")
 
     # Format check on touched manual C++.
     cpp = [p for p in paths
@@ -478,7 +466,7 @@ def cmd_check(args: argparse.Namespace) -> int:
     task["check"] = {
         "checked_utc": _now(),
         "paths": paths,
-        "markers_changed": markers_changed,
+        "markers_changed": any(MARKER_RE.match(l2) for l2 in diff_text.splitlines()),
         "scores": scores,
         "failures": failures,
         "results": {k: {kk: vv for kk, vv in v.items() if kk != "tail"} | (

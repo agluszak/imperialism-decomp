@@ -20,37 +20,18 @@ The single source of truth is `ghidra.toml` in the repository root:
 
 ## Usage
 
-```bash
-uv run python -m tools.ghidra.sync_exports \
-  --ghidra-install-dir /path/to/ghidra_12.1_PUBLIC \
-  --ghidra-project-dir /path/to/ghidra/projects \
-  --ghidra-project-name imperialism-decomp \
-  --ghidra-program-name Imperialism.exe \
-  --output-dir config \
-  --decomp-output-dir src/ghidra_autogen \
-  --types-output-dir include/ghidra_autogen \
-  --decomp-max-functions-per-file 250 \
-  --name-overrides config/function_name_overrides.csv
-```
+Normal entrypoints are the just targets, not the module directly:
 
-Outputs:
-
-- `config/symbols.ghidra.txt`
-- `config/symbols.csv`
-- `src/ghidra_autogen/*.cpp` (+ manifest/index)
-- `include/ghidra_autogen/*.h` (+ manifest/index)
-
-Function exports in `src/ghidra_autogen/*.cpp` include:
-
-- decompiler C output (or explicit decompilation-failed marker)
-- `GHIDRA_NAME` / `GHIDRA_PROTO`
-- `GHIDRA_COMMENT` and `GHIDRA_REPEATABLE_COMMENT` blocks from function comments
-
-If `config/function_name_overrides.csv` exists, `sync_exports.py` reapplies overrides after export to:
-
-- `config/symbols.csv`
-- `config/symbols.ghidra.txt` (function names only; whitespace names are skipped)
-- `src/ghidra_autogen/index.csv`
+- `just refresh-inventory` — wholesale raw-inventory refresh
+  (`sync_exports --inventory-only`): writes `config/symbols.ghidra.txt` and
+  `config/original_entities.csv` and nothing else. Curated knowledge lives in
+  source and the DB; nothing is merged back into the export.
+- `just export-ghidra-evidence` — optional full snapshot of decompiled bodies +
+  type headers into `build-msvc500/evidence/ghidra-export/` (uncommitted
+  evidence, never source).
+- `just ghidra-apply-source[-full]` — the ONE source→DB direction: names from
+  the central source model (tools.source_model), PDB-driven types/signatures
+  via reccmp's importer, `Class::'vftable'` labels, then `export-project`.
 
 ## Read-only inspection daemon
 
@@ -77,8 +58,8 @@ just ghidra-daemon-stop     # stop it and release the project lock
 
 The daemon holds the exclusive project lock, so **every other project open evicts it
 automatically**: `ghidra_env.open_project()` asks a running daemon to shut down and waits
-for the lock before opening. That covers the mutating tools (`sync-ghidra`, `apply-*`,
-`export-project`, `db-resync`, …) and the remaining one-shot read tools alike — re-warm
+for the lock before opening. That covers the mutating tools (`ghidra-apply-source`,
+`refresh-inventory`, `apply-*`, `export-project`, …) and the one-shot read tools alike — re-warm
 with `just ghidra-daemon` afterwards. The daemon itself binds its socket only *after* its
 own project open completes, so it never evicts itself during startup, and a visible socket
 always belongs to a ready daemon. Socket/pid/log live at `.ghidra-query.sock` /
@@ -97,14 +78,16 @@ running daemon like any other open.
 
 Two companion helpers need no Ghidra at all (pure config-file readers, instant):
 
-- `just func-status 0xADDR` — one-stop function summary (curated name/size/prototype,
-  ownership, autogen body location, current reccmp match %) from the config CSVs + baseline
+- `just func-status 0xADDR` — one-stop function summary (inventory name/size/prototype,
+  marker-derived ownership, evidence body location, current reccmp match %) from the model + baseline
   report, instead of grepping four files by hand.
 - `just port-candidates [--range LO HI] [--min-size N] [--max-score PCT]` — rank the biggest
   weakly-matched functions to pick the next porting target.
 
 ## Notes
 
-- Exported `ghidra_autogen` trees are regenerated and stale generated files are removed.
-- `src/ghidra_autogen` is snapshot/reference output; manual edits should go to non-autogen source files.
-- `src/ghidra_autogen` uses `GHIDRA_FUNCTION` metadata comments (not `FUNCTION/STUB`) so reccmp annotations come only from compilable source files.
+- The evidence export (bodies/types) is uncommitted build output under
+  `build-msvc500/evidence/ghidra-export/`; it uses `GHIDRA_FUNCTION` metadata
+  comments (not `FUNCTION/STUB`) so reccmp annotations come only from source.
+- There is no automated Ghidra→source path: discoveries in Ghidra are evidence
+  you port into manual source by hand (`just seed-function 0xADDR`).

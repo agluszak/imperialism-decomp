@@ -49,7 +49,7 @@ See `.cursor/rules/commit-workflow.mdc` for regression thresholds and failure ha
 ## Export-sync sequence (run whenever markers/ownership change)
 
 ```sh
-just regen-stubs      # reconciles ownership CSV + checks symbols.csv, then regenerates stubs
+just generate         # regenerates build inputs (source index + stubs) — also runs inside `just build`
 just build
 ```
 
@@ -67,7 +67,7 @@ just build
     (`config/datacmp_baseline.csv`) may not regress; `just datacmp` stays the raw
     report.
   - `stub-count-gate` — the autogen stub count (`src/autogen/stubs/_manifest.json`)
-    may not rise. A rise is the sync-ownership prune-trap tell (see the
+    may not rise. A rise is the un-claiming tell (see the
     `sync-pipeline` skill): real marker-less owners got re-stubbed.
   - `class-size-gate` — `ASSERT_SIZE` vs the RTTI oracle, strict; known mismatches
     live in `config/class_size_allowlist.txt`, each citing a bead.
@@ -112,7 +112,7 @@ local/gitignored and commit only `reccmp-project.yml`.
      no comment/blank line between).
    - Check for duplicate address ownership (one impl per address; no duplicate
      `// FUNCTION` across manual files and stubs).
-   - Re-run `just regen-stubs` + `just detect`.
+   - Re-run `just build` + `just detect`.
 2. **`Dropped duplicate address ...`** — the same address is still annotated in a stub
    shard or another manual file.
 3. **Compare name looks like a sentence/comment** — a comment line sits between the
@@ -132,11 +132,11 @@ local/gitignored and commit only `reccmp-project.yml`.
    `build-msvc500/reccmp-build.yml` is stale/missing (e.g. after `rm -rf build-msvc500/`).
    Run `just detect` to repopulate it, then re-run the reccmp tool.
 7. **`just vtable` shows *all* (or hundreds of) vtables "not matching", each failing at
-   the same slot 0x04** — the scalar-deleting-destructor names in `config/symbols.csv`
+   the same slot 0x04** — the scalar-deleting-destructor names in `config/original_entities.csv`
    drifted from the form the recomp PDB emits. They must read
    `` <Class>::`scalar deleting destructor' `` (backticks, spaces) to pair; a regen can
    rewrite them to `'scalar_deleting_destructor'` or `Destruct<Class>AndMaybeFree`, which
-   never pair. Diff `config/symbols.csv` against the last-good commit and restore the
+   never pair. Diff `config/original_entities.csv` against the last-good commit and restore the
    scalar-dtor name field per address (commit 22efcd3c restored the whole file from its
    parent after the 5b715e03 regen broke 272/272 vtables and dropped 369 aligned funcs).
    The same regen-induced name drift also shows up as a large `just stats` alignment drop.

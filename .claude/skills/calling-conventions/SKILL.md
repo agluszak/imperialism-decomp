@@ -75,7 +75,7 @@ who sets `ecx`/`edx`, who cleans the stack. See [[cdecl-thiscall-mislabel]],
 - **An empty `ret N` body still encodes its arg count.** A no-op base virtual compiled
   as `RET 0x4` takes one stack arg; don't read the empty body as "no params". Correct
   the arity on the **base declaration and every override** (headers + defs) plus the
-  `symbols.csv`/`function_name_overrides.csv` rows, or the `override` macro silently
+  inventory rows, or the `override` macro silently
   desyncs the slot (§14). (Fixed across TEventHandler + TEditText/TMapMaker, `0x48a710`.)
 
 ### "Same free-function name, different receiver class" — make the shared logic receiver-agnostic

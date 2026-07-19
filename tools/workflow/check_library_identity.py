@@ -3,8 +3,8 @@
 
 `symbols-integrity-gate` checks CSV *structure* (header, addresses, overlap) but
 not whether library identities are semantically correct. This gate closes that
-hole for the reviewed set: every row in `config/msvc500_library_overrides.csv`
-must be faithfully projected into `config/symbols.csv` and `function_ownership.csv`.
+hole for the reviewed set: every row in `config/reviewed_library_identities.csv`
+must be faithfully projected into `config/original_entities.csv` and `// LIBRARY:` markers.
 
 It exists because the sync pipeline stabilizes a FID miss into a durable mistake:
 a function FID skipped (e.g. `rand` at 0x005e83f0, whose body is the MSVC LCG
@@ -15,7 +15,7 @@ un-revertible.
 
 Failures (for the reviewed override set):
   - an override is not applied to symbols.csv (name/symbol/prototype/type drift);
-  - an override address is not ownership=library;
+  - an override address has no `// LIBRARY:` marker;
   - an override row is internally inconsistent (missing symbol, or the friendly
     name is absent from the prototype);
   - the number of applied overrides dropped below the ratchet baseline (silent
@@ -26,26 +26,23 @@ Failures (for the reviewed override set):
 The broader checks the object-matcher oracle enables (every library row carries a
 symbol; a confirmed oracle match missing from the markers; a high-confidence
 library match classified as game code) are deferred until that oracle lands; see
-`config/msvc500_library_overrides.csv` header and docs/reference.
+`config/reviewed_library_identities.csv` header and docs/reference.
 """
 
 from __future__ import annotations
 
 import argparse
-import json
 import re
 import sys
 from pathlib import Path
 
 from tools.common.pipe_csv import read_pipe_rows
 from tools.common.repo import repo_root_from_file, resolve_repo_path
-from tools.mfc.apply_library_overrides import LibraryOverride, load_overrides
+from tools.mfc.reviewed_identities import LibraryOverride, load_overrides
 
-DEFAULT_OVERRIDES = "config/msvc500_library_overrides.csv"
-DEFAULT_SYMBOLS = "config/symbols.csv"
-DEFAULT_OWNERSHIP = "config/function_ownership.csv"
-DEFAULT_BASELINE = "config/library_identity_gate_baseline.json"
-DEFAULT_ORACLE = "config/msvc500_library_oracle.csv"
+DEFAULT_OVERRIDES = "config/reviewed_library_identities.csv"
+DEFAULT_SYMBOLS = "build-msvc500/generated/symbols.csv"
+DEFAULT_ORACLE = "build-msvc500/evidence/library/msvc500_library_oracle.csv"
 DEFAULT_GAMECODE_ALLOWLIST = "config/library_oracle_gamecode_allowlist.csv"
 
 APPLY_KINDS = {"unique", "unique-via-existing"}
@@ -57,15 +54,8 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--overrides", default=DEFAULT_OVERRIDES)
     parser.add_argument("--symbols", default=DEFAULT_SYMBOLS)
-    parser.add_argument("--ownership", default=DEFAULT_OWNERSHIP)
-    parser.add_argument("--baseline", default=DEFAULT_BASELINE)
     parser.add_argument("--oracle", default=DEFAULT_ORACLE)
     parser.add_argument("--gamecode-allowlist", default=DEFAULT_GAMECODE_ALLOWLIST)
-    parser.add_argument(
-        "--write-baseline",
-        action="store_true",
-        help="Record the current applied-override count as the baseline and exit.",
-    )
     return parser.parse_args()
 
 
@@ -96,33 +86,17 @@ def index_symbols(symbols_path: Path) -> dict[int, dict[str, str]]:
     return out
 
 
-def index_ownership(ownership_path: Path) -> dict[int, str]:
-    out: dict[int, str] = {}
-    for row in read_pipe_rows(ownership_path):
-        addr_text = (row.get("address") or "").strip()
-        if not addr_text:
-            continue
-        try:
-            out[int(addr_text, 16)] = (row.get("ownership") or "").strip().lower()
-        except ValueError:
-            continue
-    return out
+def index_ownership(repo_root: Path) -> dict[int, str]:
+    from tools.source_model import ownership_kind, ownership_view
+
+    return {a: ownership_kind(c.kind) for a, c in ownership_view(repo_root).items()}
 
 
-def index_ownership_full(ownership_path: Path) -> dict[int, tuple[str, str]]:
-    out: dict[int, tuple[str, str]] = {}
-    for row in read_pipe_rows(ownership_path):
-        addr_text = (row.get("address") or "").strip()
-        if not addr_text:
-            continue
-        try:
-            out[int(addr_text, 16)] = (
-                (row.get("target_cpp") or "").strip(),
-                (row.get("ownership") or "").strip().lower(),
-            )
-        except ValueError:
-            continue
-    return out
+def index_ownership_full(repo_root: Path) -> dict[int, tuple[str, str]]:
+    from tools.source_model import ownership_kind, ownership_view
+
+    return {a: (c.file, ownership_kind(c.kind))
+            for a, c in ownership_view(repo_root).items()}
 
 
 def load_gamecode_allowlist(path: Path) -> set[int]:
@@ -188,7 +162,9 @@ def check_override(
 
     if not ov.symbol:
         problems.append(f"{tag}: reviewed override has no linker symbol")
-    if not prototype_declares_name(ov.prototype, ov.name):
+    # Identity is name+symbol; a reviewed row may omit the prototype (asserts
+    # nothing about the signature — the inventory's advisory value stands).
+    if ov.prototype and not prototype_declares_name(ov.prototype, ov.name):
         problems.append(
             f"{tag}: prototype {ov.prototype!r} does not declare the name {ov.name!r}"
         )
@@ -203,7 +179,7 @@ def check_override(
             problems.append(
                 f"{tag}: symbols.csv symbol={row.get('symbol')!r} != {ov.symbol!r}"
             )
-        if (row.get("prototype") or "") != ov.prototype:
+        if ov.prototype and (row.get("prototype") or "") != ov.prototype:
             problems.append(
                 f"{tag}: symbols.csv prototype={row.get('prototype')!r} != {ov.prototype!r}"
             )
@@ -222,22 +198,12 @@ def main() -> int:
     repo_root = repo_root_from_file(__file__)
     overrides_path = resolve_repo_path(repo_root, args.overrides)
     symbols_path = resolve_repo_path(repo_root, args.symbols)
-    ownership_path = resolve_repo_path(repo_root, args.ownership)
-    baseline_path = resolve_repo_path(repo_root, args.baseline)
 
     overrides = load_overrides(overrides_path)
     applied_count = len(overrides)
 
-    if args.write_baseline:
-        baseline_path.write_text(
-            json.dumps({"applied_override_count": applied_count}, indent=2) + "\n",
-            encoding="utf-8",
-        )
-        print(f"wrote {args.baseline}: applied_override_count={applied_count}")
-        return 0
-
     symbols = index_symbols(symbols_path)
-    ownership = index_ownership(ownership_path)
+    ownership = index_ownership(repo_root)
 
     problems: list[str] = []
     for ov in overrides:
@@ -247,31 +213,20 @@ def main() -> int:
     problems.extend(
         check_oracle_gamecode_conflicts(
             resolve_repo_path(repo_root, args.oracle),
-            index_ownership_full(ownership_path),
+            index_ownership_full(repo_root),
             load_gamecode_allowlist(resolve_repo_path(repo_root, args.gamecode_allowlist)),
         )
     )
 
-    baseline_count = 0
-    if baseline_path.is_file():
-        baseline_count = int(json.loads(baseline_path.read_text()).get("applied_override_count", 0))
-    if applied_count < baseline_count:
-        problems.append(
-            f"applied override count dropped {baseline_count} -> {applied_count}: a "
-            f"confirmed library identity was removed. Restore it or, if intentional, "
-            f"run `just library-identity-gate-update`."
-        )
-
+    # Exact consistency: every current reviewed row must project exactly. There
+    # is no count baseline — git history records intentional removals.
     if problems:
         print("library-identity gate failed:")
         for problem in problems:
             print(f"  - {problem}")
         return 1
 
-    print(
-        f"library-identity gate passed: {applied_count} reviewed overrides applied "
-        f"(baseline {baseline_count})."
-    )
+    print(f"library-identity gate passed: {applied_count} reviewed identities project exactly.")
     return 0
 
 

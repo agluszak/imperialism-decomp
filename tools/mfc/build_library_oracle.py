@@ -10,16 +10,16 @@ that linker-assigned addresses don't matter:
   1. Extract every external function from every object member (tools.mfc.coff).
   2. Mask the bytes covered by each function's relocations (call/jmp targets,
      absolute data refs) and trim trailing alignment padding -> a normal form.
-  3. For each executable function (config/symbols.csv), read its bytes, mask at a
+  3. For each executable function (config/original_entities.csv), read its bytes, mask at a
      candidate's relocation offsets, and compare. An exact-size, exact-masked
      match is a confident identity independent of where the linker placed things.
 
 Duplicate normal forms (byte-identical library functions) are resolved with
 secondary evidence — the symbol the address already carries — before falling back
-to a review queue. Output: config/msvc500_library_oracle.csv with
+to a review queue. Output: build-msvc500/evidence/library/msvc500_library_oracle.csv with
 address|name|symbol|prototype|library|member|match_kind|confidence|candidate_count.
 
-Unique matches are safe to apply automatically (see apply_library_oracle.py);
+Unique matches: accept by copying into config/reviewed_library_identities.csv;
 ambiguous rows stay a review queue rather than receiving an invented name.
 """
 
@@ -44,9 +44,8 @@ DEFAULT_LIBS = [
     ("libcmt", "vendor/msvc500/lib/libcmt.lib"),
     ("nafxcw", "vendor/msvc500/lib/nafxcw.lib"),
 ]
-DEFAULT_SYMBOLS = "config/symbols.csv"
-DEFAULT_OWNERSHIP = "config/function_ownership.csv"
-DEFAULT_OUT = "config/msvc500_library_oracle.csv"
+DEFAULT_SYMBOLS = "config/original_entities.csv"
+DEFAULT_OUT = "build-msvc500/evidence/library/msvc500_library_oracle.csv"
 
 # Below this size a full masked match is not discriminative enough to trust
 # blindly (many tiny thunks share a normal form); such matches are still recorded
@@ -134,7 +133,6 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--binary", default=None, help="Original executable (default: $ORIGINAL_BINARY or orig/Imperialism.exe)")
     parser.add_argument("--symbols", default=DEFAULT_SYMBOLS)
-    parser.add_argument("--ownership", default=DEFAULT_OWNERSHIP)
     parser.add_argument("--out", default=DEFAULT_OUT)
     parser.add_argument("--lib", action="append", default=[], help="extra family=path lib")
     parser.add_argument("--quiet", action="store_true")

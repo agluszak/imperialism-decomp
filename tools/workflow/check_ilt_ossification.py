@@ -22,7 +22,7 @@ This gate flags any identifier in manual source (``src/game``, ``include/game``)
 - begins with ``WrapperFor_``, or
 - ends with ``_At<8 hex digits>``,
 outside of comments. It is a **ratchet**: existing offenders are grandfathered by
-``config/ilt_ossification_baseline.csv`` (keyed by file + identifier, so line moves
+``config/baselines/ilt_ossification_baseline.csv`` (keyed by file + identifier, so line moves
 don't matter); a NEW offender fails the gate, and clearing an offender lets you
 ``--write-baseline`` to shrink the queue. The goal is a strictly-decreasing baseline.
 
@@ -40,7 +40,7 @@ from tools.common.file_scan import iter_files
 from tools.common.repo import normalize_repo_relative_path, repo_root_from_file
 
 DEFAULT_PATHS = ("include/game", "src/game")
-DEFAULT_BASELINE = "config/ilt_ossification_baseline.csv"
+DEFAULT_BASELINE = "config/baselines/ilt_ossification_baseline.csv"
 
 IDENT_RE = re.compile(r"[A-Za-z_]\w*")
 _AT_SUFFIX_RE = re.compile(r"_At[0-9A-Fa-f]{8}$")

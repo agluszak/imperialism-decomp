@@ -6,13 +6,10 @@ target := "IMPERIALISM"
 build_dir := "build-msvc500"
 docker_image := "imperialism-msvc500"
 lint_build_dir := "build-clang"
-lint_docker_image := "imperialism-clang-mingw"
 cmake_flags := "-DCMAKE_BUILD_TYPE=RelWithDebInfo -DIMPERIALISM_LINK_MFC=ON -DIMPERIALISM_MATCH_FLAGS_CSV=/Oy,/Ob1"
-name_overrides := "config/function_name_overrides.csv"
-function_ownership := "config/function_ownership.csv"
-vtable_gate_baseline := "config/vtable_gate_baseline.csv"
-construction_gate_baseline := "config/construction_gate_baseline.csv"
-tgreatpower_gate_baseline := "config/tgreatpower_gate_baseline.csv"
+vtable_gate_baseline := "config/baselines/vtable_gate_baseline.csv"
+construction_gate_baseline := "config/baselines/construction_gate_baseline.csv"
+tgreatpower_gate_baseline := "config/baselines/tgreatpower_gate_baseline.csv"
 class_discovery_classes := "TGreatPower,TAutoGreatPower"
 
 # The Ghidra project is vendored in-repo; only GHIDRA_INSTALL_DIR is machine-specific (.env).
@@ -32,8 +29,6 @@ macos_dump := env_var_or_default("MACOS_IMPERIALISM_DUMP", "")
 macos_workspace := env_var_or_default("MACOS_CODEWARRIOR_WORKSPACE", justfile_directory() / "vendor/macos_codewarrior")
 
 # Transitional aliases for renamed targets (see docs/workflows.md).
-alias stats-commit := stats-baseline-update
-alias full-sync-build := db-resync
 
 default:
   @just --list
@@ -52,7 +47,7 @@ agent-start mode +addrs:
   uv run python -m tools.workflow.agent_task start {{mode}} {{addrs}}
 
 # Diff-aware verification: derives the right steps from the actual git diff
-# (markers changed -> regen-stubs; generated files hand-edited -> hard error),
+# (marker changes always regenerate build inputs; hand-edited generated files -> hard error),
 # then format-check on touched C++, build, detect, batch compare + triage of every
 # touched address, gates, tests, stats. Reruns are cheap — fix forward and rerun.
 [doc('Verify the current diff: regen/format/build/compare/triage/gates/tests/stats')]
@@ -83,140 +78,101 @@ _require-ghidra-install:
   : "${GHIDRA_INSTALL_DIR:?Set GHIDRA_INSTALL_DIR in .env}"
 
 # ---------------------------------------------------------------------------
-# sync — regenerate derived artifacts (symbols.csv, stubs, ownership, autogen).
+# sync — regenerate derived artifacts (original_entities.csv).
 # The three canonical playbooks live in docs/workflows.md.
 # ---------------------------------------------------------------------------
 
-# MUTATES: Ghidra DB, config/symbols.csv, config/thunk_map.csv, src/+include/ghidra_autogen/.
-# Push source names into the DB, re-export symbols/autogen, prune ILT rows, refresh the
-# thunk map, normalize autogen, then gate. The DB is modified (push-names --apply), so
-# `just export-project` must follow before committing — or run `just db-resync` instead.
-[doc('MUTATES: Ghidra DB, symbols.csv, thunk_map.csv, ghidra_autogen/. Re-export pipeline; follow with export-project')]
+# MUTATES: Ghidra DB (--apply). The ONE sanctioned source->Ghidra operation:
+# derives names from source markers + C++ declarations (inventory names as
+# fallback), applies function names/namespaces (primary-aware), labels, and
+# `Class::'vftable'` labels from // VTABLE: annotations, then audits datatype
+# drift. Dry-run by default. There is no automated Ghidra->source path.
+[doc('MUTATES: Ghidra DB (--apply). One-way apply of the source model; dry-run default')]
 [group('sync')]
-sync-ghidra: _require-ghidra-install
+ghidra-apply-source *args: _require-ghidra-install
   uv run python -m tools.ghidra.daemon stop --quiet
-  just push-names --apply --include-library-symbols --library-start 0x005e539c --library-end 0x00626c7d
-  just push-library-override-names --apply --quiet
+  uv run python -m tools.ghidra.apply_source {{args}}
+
+# The full one-command operation: build (fresh PDB/inputs), apply the source
+# model to the DB, export the vendored .gzf.
+# Order matters: the PDB import names entities from the generated data sources
+# (inventory names), so the source-declaration name pass must run AFTER it —
+# source names win last.
+[doc('MUTATES: Ghidra DB + vendored .gzf. build -> import -> names -> decl-index -> in_stack/divergent/packed signature projection -> audits -> export')]
+[group('sync')]
+ghidra-apply-source-full:
+  just build
+  just import-ghidra
+  just ghidra-apply-source --apply --quiet --strict
+  just ghidra-apply-source --quiet --strict
+  just clang-decl-index
+  just apply-source-signatures --apply --strict
+  just project-divergent-signatures --apply --strict
+  just project-packed-signatures --apply --strict
+  just in-stack-audit
+  just structural-signature-audit
+  just export-project
+
+# MUTATES: Ghidra DB (prune), config/original_entities.csv (WHOLESALE refresh).
+# Intentional raw-inventory refresh from the DB after boundary analysis
+# (gap repair, function-bounds fixes). Replaces the file outright — curated
+# knowledge must already live in source / the DB (ghidra-apply-source first).
+[doc('MUTATES: original_entities.csv (wholesale) + Ghidra DB (ILT prune). Refresh the raw inventory')]
+[group('sync')]
+refresh-inventory: _require-ghidra-install
+  uv run python -m tools.ghidra.daemon stop --quiet
   just prune-ilt-db-functions --apply --quiet
+  uv run python -m tools.ghidra.sync_exports \
+    --inventory-only \
+    --ghidra-install-dir "$GHIDRA_INSTALL_DIR" \
+    --ghidra-project-dir "{{GHIDRA_PROJECT_DIR}}" \
+    --ghidra-project-name "{{GHIDRA_PROJECT_NAME}}" \
+    --ghidra-program-name "{{GHIDRA_PROGRAM_NAME}}"
+  just prune-ilt-thunks
+  just symbols-anchor-gate
+  just symbols-integrity-gate
+  just vtable-collision-gate
+  @echo "refresh-inventory done. Run 'just export-project' before committing."
+
+# Optional full Ghidra evidence snapshot (decompiled bodies + type headers) into
+# {{build_dir}}/evidence/ghidra-export/. Read-only over committed state.
+[doc('Full decompile/type evidence snapshot into build evidence (read-only, slow)')]
+[group('ghidra-inspect')]
+export-ghidra-evidence: _require-ghidra-install
+  uv run python -m tools.ghidra.daemon stop --quiet
   uv run python -m tools.ghidra.sync_exports \
     --ghidra-install-dir "$GHIDRA_INSTALL_DIR" \
     --ghidra-project-dir "{{GHIDRA_PROJECT_DIR}}" \
     --ghidra-project-name "{{GHIDRA_PROJECT_NAME}}" \
-    --ghidra-program-name "{{GHIDRA_PROGRAM_NAME}}" \
-    --name-overrides "{{name_overrides}}"
-  just prune-ilt-thunks
-  just dump-thunk-map
-  just normalize-autogen
-  just symbols-anchor-gate
-  just symbols-integrity-gate
-  just vtable-collision-gate
-  @echo "sync-ghidra done. The Ghidra DB was modified; run 'just export-project' before committing (or use 'just db-resync' for the full pipeline)."
+    --ghidra-program-name "{{GHIDRA_PROGRAM_NAME}}"
 
-# MUTATES: everything sync-ghidra touches + ownership/stubs + build tree + vendored .gzf.
-# The one-command full resync (docs/ghidra-db-mutations.md procedure): sync-ghidra ->
-# ownership/stubs -> build -> gates -> stats -> export-project. Replaces full-sync-build.
-[doc('MUTATES: all sync outputs + Ghidra DB + vendored .gzf. One-command full resync incl. build/gates/stats/export')]
-[group('sync')]
-db-resync:
-  just tooling-check
-  just sync-ghidra
-  just regen-stubs
-  just push-source-names --apply --quiet
-  just build
-  just detect
-  just gates
-  just stats
-  just export-project
+# Generate the build inputs (source index + linkable stubs) into <build_dir>/generated.
+# Read-only over committed state: scans source markers directly (no sync step, no
+# committed mutation), so "edit markers -> build" is always safe. `just build` runs it.
+[doc('Generate build inputs (source index + stubs) into build-msvc500/generated')]
+[group('build')]
+generate:
+  @for d in src/autogen src/ghidra_autogen include/ghidra_autogen; do test ! -e "$d" || { echo "stale $d exists — generated trees live in the build dir now; delete it to avoid stale-scan corruption" >&2; exit 1; }; done
+  uv run python -m tools.generate --gen-dir "{{build_dir}}/generated"
 
-# MUTATES: config/function_ownership.csv.
-# Reconcile config/function_ownership.csv with source markers (src/ + include/).
-# Deletion-reconciling by default: marker_sync rows whose marker disappeared AND whose
-# file/header no longer mentions the address are pruned (a stale row silently
-# suppresses stub regeneration). Curated notes (e.g. mfc_runtime_macro) are never
-# pruned. Pass --no-prune-missing-manual through the module directly to skip pruning.
-[doc('MUTATES: function_ownership.csv. Reconcile ownership rows with source markers')]
-[group('sync')]
-sync-ownership:
-  uv run python -m tools.workflow.sync_function_ownership \
-    --target "{{target}}" \
-    --ownership-csv "{{function_ownership}}"
-
-# MUTATES: src/autogen/stubs/ (+ runs sync-ownership first, which rewrites ownership CSV).
-# Regenerate linkable stubs for unowned addresses. Runs sync-ownership and the
-# symbols.csv/function_ownership.csv integrity checks first, so
-# "edit markers -> regen-stubs -> build" is safe.
-[doc('MUTATES: src/autogen/stubs/. Regenerate stubs (runs sync-ownership + symbols-integrity-gate + ownership-integrity-gate first)')]
-[group('sync')]
-regen-stubs: apply-library-overrides apply-library-oracle sync-ownership symbols-integrity-gate ownership-integrity-gate
-  uv run python -m tools.stubgen \
-    --name-overrides "{{name_overrides}}" \
-    --ownership-csv "{{function_ownership}}"
-
-# MUTATES: the target .cpp and config/function_ownership.csv.
-# Promote a ghidra_autogen body into manual source.
-[doc('MUTATES: target .cpp + function_ownership.csv. Promote a ghidra_autogen body into manual source')]
-[group('sync')]
-promote target_cpp *args:
-  uv run python -m tools.workflow.promote_from_autogen \
-    --target-cpp "{{target_cpp}}" \
-    --ownership-csv "{{function_ownership}}" \
-    {{args}}
-
-# MUTATES: the target .cpp and config/function_ownership.csv.
-[group('sync')]
-promote-range target_cpp start end:
-  uv run python -m tools.workflow.promote_from_autogen \
-    --target-cpp "{{target_cpp}}" \
-    --ownership-csv "{{function_ownership}}" \
-    --range "{{start}}:{{end}}"
-
-# MUTATES: src/ghidra_autogen/ (reference-only files).
-# Normalize src/ghidra_autogen so promoted bodies read against real symbols and
-# real C++ member signatures: resolve jmp-thunk/alias names, then reshape
-# `__thiscall Cls::Method(Cls *this, ...)` heads into `Cls::Method(...)`.
-[doc('MUTATES: src/ghidra_autogen/ (reference-only). Resolve thunk names + reshape thiscall heads')]
-[group('sync')]
-normalize-autogen *args:
-  just _resolve-autogen-thunks {{args}}
-  just _reshape-autogen-signatures {{args}}
-
-# Rewrite Ghidra jmp-thunk / alias names in src/ghidra_autogen to the real names
-# (driven by config/thunk_map.csv). Pass --check to fail without writing.
-[private]
-_resolve-autogen-thunks *args:
-  uv run python -m tools.workflow.resolve_autogen_thunks {{args}}
-
-# Reshape Ghidra `__thiscall Cls::Method(Cls *this, ...)` definition heads in
-# src/ghidra_autogen into real C++ member definitions `Cls::Method(...)`.
-[private]
-_reshape-autogen-signatures *args:
-  uv run python -m tools.workflow.reshape_autogen_signatures {{args}}
-
-# MUTATES: config/symbols.csv.
-# Drop incremental-link `jmp` thunk rows (linker artifacts) from config/symbols.csv.
+# MUTATES: config/original_entities.csv.
+# Drop incremental-link `jmp` thunk rows (linker artifacts) from config/original_entities.csv.
 # reccmp auto-detects unannotated jmp thunks and excludes them from the report.
-[doc('MUTATES: symbols.csv. Drop ILT jmp-thunk function rows (linker artifacts)')]
+[private]
+[doc('MUTATES: original_entities.csv. Drop ILT jmp-thunk function rows (linker artifacts)')]
 [group('sync')]
 prune-ilt-thunks *args:
   uv run python -m tools.workflow.prune_ilt_thunks {{args}}
-
-# MUTATES: config/thunk_map.csv (DB itself is read-only here).
-# Dump the Ghidra thunk-name -> real-name map to config/thunk_map.csv so offline
-# body promotion (promote/promote-range, normalize-autogen) can resolve
-# jmp-thunk/alias call names without a live Ghidra connection. Idempotent.
-[doc('MUTATES: thunk_map.csv. Dump the Ghidra thunk-name -> real-name map')]
-[group('sync')]
-dump-thunk-map *args: _require-ghidra-install
-  uv run python -m tools.ghidra.dump_thunk_map {{args}}
 
 # ---------------------------------------------------------------------------
 # build — compile, lint, run.
 # ---------------------------------------------------------------------------
 
-[doc('Docker MSVC500 build into build-msvc500/ (runs vtable-gate first)')]
+[doc('Docker MSVC500 build into build-msvc500/ (runs vtable-gate + generate first)')]
 [group('build')]
 build:
   just vtable-gate
+  just generate
   mkdir -p "{{build_dir}}"
   docker run --rm --network none \
     -e CMAKE_FLAGS="{{cmake_flags}}" \
@@ -236,6 +192,8 @@ detect:
 [group('build')]
 lint flags="":
   mkdir -p "{{lint_build_dir}}"
+  uv run python -m tools.generate --gen-dir "{{lint_build_dir}}/generated" \
+    --chunk-prefix lint_stubs_part --annotation-kind none
   docker run --rm --network none \
     -e CMAKE_FLAGS="{{flags}}" \
     -e LINT=1 \
@@ -670,6 +628,20 @@ ghidra-function-slice *args: _require-ghidra-install
 ghidra-decompile *args: _require-ghidra-install
   uv run python -m tools.ghidra.query decompile {{args}}
 
+# Read-only porting seed: decompile the target into an evidence draft the agent
+# copies/repairs from by hand. Writes {{build_dir}}/evidence/decomp/<addr>.cpp and
+# never touches source or ownership metadata (the replacement for the retired
+# promote-from-autogen source mutation).
+[doc('Seed a port: decompile 0xADDR into build evidence (read-only, never edits source)')]
+[group('ghidra-inspect')]
+seed-function addr: _require-ghidra-install
+  #!/usr/bin/env bash
+  set -euo pipefail
+  mkdir -p "{{build_dir}}/evidence/decomp"
+  out="{{build_dir}}/evidence/decomp/{{addr}}.cpp"
+  uv run python -m tools.ghidra.query decompile {{addr}} > "$out"
+  echo "seeded $out ($(wc -l < "$out") lines) — copy/repair by hand; this file is evidence, not source"
+
 # One-stop function status from the config CSVs + reccmp baseline (no Ghidra / no build,
 # instant): curated name/size/proto, ownership, autogen body location, current match %.
 # `just func-status 0xADDR [0xADDR ...]`.
@@ -739,7 +711,7 @@ ghidra-decomp-check *args: _require-ghidra-install
   uv run python -m tools.ghidra.decomp_check {{args}}
 
 # Classify functions as ecx_this (likely __thiscall) / no_ecx (likely cdecl) / empty (thunk).
-# Pass addresses, or pipe addresses to --stdin (e.g. from config/symbols.csv __cdecl rows).
+# Pass addresses, or pipe addresses to --stdin (e.g. from config/original_entities.csv __cdecl rows).
 # One-shot (NOT daemon-routed): --stdin addresses can't reach the daemon process. Running it
 # evicts a warm daemon; re-warm with `just ghidra-daemon` afterwards.
 [doc('Classify functions: ecx_this (thiscall) / no_ecx (cdecl) / empty (thunk)')]
@@ -786,35 +758,8 @@ export-project *args: _require-ghidra-install
   uv run python -m tools.ghidra.export_project {{args}}
 
 # MUTATES: Ghidra DB (with --apply).
-# Push source-owned names into the Ghidra DB so the export below already carries
-# them (names converge instead of churning). Source-owned addresses only; dry-run
-# by default — pass --apply to write + save the DB.
-[doc('MUTATES: Ghidra DB (--apply). Push source-owned names into the DB so exports converge')]
-[group('ghidra-db')]
-push-names *args: _require-ghidra-install
-  uv run python -m tools.ghidra.push_names_to_ghidra {{args}}
-
-# MUTATES: Ghidra DB (with --apply).
-# Push reviewed library override names (config/msvc500_library_overrides.csv)
-# directly into the DB, including label-only + out-of-range addresses push-names
-# skips, so the exported .gzf carries them. Dry-run by default; --apply writes.
-[doc('MUTATES: Ghidra DB (--apply). Push reviewed library override names into the DB')]
-[group('ghidra-db')]
-push-library-override-names *args: _require-ghidra-install
-  uv run python -m tools.ghidra.push_library_override_names {{args}}
-
-# MUTATES: Ghidra DB (with --apply).
-# Mirror ALL curated config/symbols.csv names into the DB (source is authoritative):
-# game class methods, RTTI/global descriptors, etc. that push-names (overrides-only)
-# never pushes. Run after regen-stubs (symbols.csv final). Dry-run by default.
-[doc('MUTATES: Ghidra DB (--apply). Mirror curated symbols.csv names into the DB')]
-[group('ghidra-db')]
-push-source-names *args: _require-ghidra-install
-  uv run python -m tools.ghidra.push_source_names_to_ghidra {{args}}
-
-# MUTATES: Ghidra DB (with --apply).
 # Define real functions Ghidra never created (vtable slot targets, ILT jmp
-# targets, symbols.csv rows). Dry-run by default; --apply writes + saves the DB.
+# targets, inventory rows). Dry-run by default; --apply writes + saves the DB.
 # See docs/ghidra-db-mutations.md before applying.
 [doc('MUTATES: Ghidra DB (--apply). Define real functions Ghidra never created')]
 [group('ghidra-db')]
@@ -833,47 +778,122 @@ fix-function-bounds *args: _require-ghidra-install
 # MUTATES: Ghidra DB (with --apply).
 # Remove Function entities sitting on ILT jmp thunks (they block reccmp's thunk
 # auto-resolution and collapse vtable matching). The DB-side counterpart of
-# prune-ilt-thunks; sync-ghidra runs it automatically before the export.
-[doc('MUTATES: Ghidra DB (--apply). Remove Function entities on ILT jmp thunks (runs inside sync-ghidra)')]
+# prune-ilt-thunks; refresh-inventory runs it automatically before the export.
+[private]
+[doc('MUTATES: Ghidra DB (--apply). Remove Function entities on ILT jmp thunks (runs inside refresh-inventory)')]
 [group('ghidra-db')]
 prune-ilt-db-functions *args: _require-ghidra-install
   uv run python -m tools.ghidra.prune_ilt_db_functions {{args}}
 
-# MUTATES: Ghidra DB (with --apply).
-# One-time Ghidra cleanup: commit Ghidra's `in_stack_*` stack args as real function
-# parameters in the DB, so after `just sync-ghidra` + autogen regen no `in_stack_*`
-# reads remain anywhere. Read-only by default; pass --apply to write (then sync-ghidra).
-[doc('MUTATES: Ghidra DB (--apply). Commit in_stack_* args as real parameters')]
+# READ-ONLY audit of Ghidra `in_stack_*` locals (unbound positive-stack reads).
+# These are EVIDENCE (missing param OR wrong convention/boundary/purge/varargs),
+# not a param oracle — classifies each into source-owned / library / unported
+# buckets with the ABI evidence needed to repair the RIGHT fact. Writes
+# build-msvc500/evidence/in_stack_audit.csv. (Replaces the retired unsound
+# `fix-in-stack-params --apply`, whose addParameter appended params at
+# convention-chosen offsets, not the detected slot — see the module docstring.)
+[doc('Audit Ghidra in_stack_* locals (read-only): classify each with ABI evidence')]
+[group('ghidra-inspect')]
+in-stack-audit *args: _require-ghidra-install
+  uv run python -m tools.ghidra.in_stack_audit {{args}}
+
+# MUTATES: Ghidra DB (with --apply). Projects source-model C++ prototypes onto
+# source-owned functions whose DB signature is weaker than the declaration (the
+# MSVC500 PDB carries no arg types, so PDB import can't — see PR #91). Applies a
+# COMPLETE signature via replaceParameters(DYNAMIC_STORAGE_FORMAL_PARAMS) with the
+# convention from source (method=>__thiscall, free=>__cdecl), flushes the cache,
+# re-decompiles, and KEEPS ONLY functions whose in_stack actually clears —
+# reverting + queueing the rest (sret / packed-short / spurious) with evidence.
+# --strict fails only on unparsable/apply_error (the classified queue is honest).
+# Writes build-msvc500/evidence/source_signature_queue.csv.
+[private]
 [group('ghidra-db')]
-fix-in-stack-params *args: _require-ghidra-install
-  uv run python -m tools.ghidra.fix_in_stack_params {{args}}
+apply-source-signatures *args: _require-ghidra-install
+  uv run python -m tools.ghidra.daemon stop --quiet
+  uv run python -m tools.ghidra.apply_source_signatures {{args}}
+
+# MUTATES: Ghidra DB (with --apply). Source-DRIVEN projection: applies source
+# signatures to claims the DB left incomplete/short (cc=unknown / 0 params / missing
+# trailing params) regardless of whether they show in_stack — the majority that the
+# in_stack-triggered apply-source-signatures never reaches. Per-function transaction,
+# commit ONLY on full convergence (no in_stack introduced + structural signature
+# match), rollback + queue everything else. Needs the decl index (clang-decl-index).
+[private]
+[group('ghidra-db')]
+project-divergent-signatures *args: _require-ghidra-install
+  uv run python -m tools.ghidra.daemon stop --quiet
+  uv run python -m tools.ghidra.apply_source_signatures --project-divergent {{args}}
+
+# MUTATES: Ghidra DB (with --apply). Recovers PACKED sub-dword parameter frames (two
+# shorts in one dword, byte+short, ...) via CUSTOM_STORAGE: MSVC500 packs adjacent
+# sub-dword args, which DYNAMIC_STORAGE dword-aligns and leaves an unbound in_stack
+# read. Models the args tight-packed from 0x4 (this in ECX for __thiscall) and commits
+# ONLY on a fully clean re-decompile — the packing is the hypothesis, the empty
+# in_stack is the proof. Everything else rolls back.
+[private]
+[group('ghidra-db')]
+project-packed-signatures *args: _require-ghidra-install
+  uv run python -m tools.ghidra.daemon stop --quiet
+  uv run python -m tools.ghidra.apply_source_signatures --project-packed {{args}}
+
+# READ-ONLY static audit of the source->Ghidra signature projection: parses every
+# source-owned C++ prototype and reports which resolve cleanly vs which are queued
+# for a structural reason detectable without mutating (unparsable / unresolved
+# type / sret by-value return). Does NOT verify convergence (that needs --apply);
+# for the full picture run `apply-source-signatures --apply`. --strict fails on
+# unparsable prototypes (a source-hygiene lint).
+[doc('Static audit of source-model signature projection (read-only; no DB write)')]
+[group('ghidra-inspect')]
+source-signature-audit *args: _require-ghidra-install
+  uv run python -m tools.ghidra.apply_source_signatures {{args}}
+
+# Build the Clang-AST declaration index (qualified name -> kind/static/types) from a
+# real clang parse of the game headers with the vendored MSVC500/MFC includes. Gives
+# the projector authoritative static-vs-instance-vs-namespace facts a definition head
+# cannot show. Writes build-msvc500/generated/decl_index.json. Needs host clang++
+# and the vendored headers (`just vendor-msvc500-headers`).
+[doc('Generate the Clang-AST declaration index (entity kind + types) for the projector')]
+[group('sync')]
+clang-decl-index *args:
+  uv run python -m tools.clang_ast_index {{args}}
+
+# READ-ONLY structural convergence audit: for EVERY source/reviewed claim (not just
+# functions showing in_stack), compare the expected logical signature (source model +
+# clang decl index) against the DB signature and classify the gap (converged /
+# db_signature_incomplete / convention_mismatch / this_presence_mismatch /
+# param_count_mismatch), with per-row type-resolution quality (exact / canonical_alias
+# / generic_pointer_fallback / ambiguous_simple_name / unresolved). No DB write.
+# Writes build-msvc500/evidence/signature_convergence.csv.
+[doc('READ-ONLY: audit every source signature vs the DB, structurally (no DB write)')]
+[group('ghidra-inspect')]
+structural-signature-audit *args: _require-ghidra-install
+  uv run python -m tools.ghidra.apply_source_signatures --structural-audit {{args}}
 
 # MUTATES: Ghidra DB (with --apply).
-[group('ghidra-db')]
-apply-source-datatypes *args: _require-ghidra-install
-  uv run python -m tools.ghidra.apply_source_datatypes {{args}}
-
-# MUTATES: Ghidra DB (with --apply).
+[private]
 [group('ghidra-db')]
 apply-mfc-datatypes *args: _require-ghidra-install
   uv run python -m tools.ghidra.apply_mfc_datatypes {{args}}
 
 # MUTATES: Ghidra DB (with --apply).
+[private]
 [group('ghidra-db')]
 apply-mfc-rtti *args: _require-ghidra-install
   uv run python -m tools.ghidra.apply_mfc_rtti {{args}}
 
 # MUTATES: Ghidra DB (with --apply).
+[private]
 [group('ghidra-db')]
 apply-fidb *args: _require-ghidra-install
   uv run python -m tools.ghidra.apply_fidb {{args}}
 
 # MUTATES: Ghidra DB (with --apply).
 # Atomically re-attribute a class in the DB: namespace + functions + datatypes +
-# vtable-struct + vtable label, in one transaction (push-source-names only does
+# vtable-struct + vtable label, in one transaction (ghidra-apply-source only does
 # function/label names, so a datatype-level junk name survives it). Dry-run by default.
 #   just ghidra-rename-class TSoundChannelNode TLongintList --vtable 0x650a08 [--apply]
 [doc('MUTATES: Ghidra DB (--apply). Atomically rename a class: namespace+datatypes+vtable')]
+[private]
 [group('ghidra-db')]
 ghidra-rename-class old new *args: _require-ghidra-install
   uv run python -m tools.ghidra.rename_class {{old}} {{new}} {{args}}
@@ -882,17 +902,20 @@ ghidra-rename-class old new *args: _require-ghidra-install
 # Name + expand a class's <Class>Vtbl struct from its recovered header slot map so
 # virtual dispatches through that class decompile as obj->vftable->Method(...).
 [doc('MUTATES: Ghidra DB (--apply). Name + expand the <Class>Vtbl struct slots')]
+[private]
 [group('ghidra-db')]
 name-vtable-slots *args: _require-ghidra-install
   uv run python -m tools.ghidra.name_vtable_slots {{args}}
 
 # MUTATES: Ghidra DB (with --apply).
+[private]
 [group('ghidra-db')]
 propagate-virtual-method-names *args: _require-ghidra-install
   uv run python -m tools.ghidra.propagate_virtual_method_names {{args}}
 
 # MUTATES: Ghidra DB.
 # Import source annotations into the Ghidra DB via reccmp-ghidra-import.
+[private]
 [group('ghidra-db')]
 import-ghidra *args: _require-ghidra-install
   file_in_project="{{GHIDRA_PROGRAM_NAME}}"; \
@@ -926,7 +949,6 @@ precommit:
 [group('gates')]
 gates:
   just source-gates
-  just generated-integrity-gate
   just vtable
   just datacmp-gate
   just decomplint
@@ -936,8 +958,8 @@ gates:
 tooling-check:
   uv run python -m tools.workflow.check_tooling_surface
 
-# Autogen stub count vs baseline (ratchet down). A rise is the sync-ownership
-# prune-trap tell: real marker-less owners re-stubbed, breaking vtables.
+# Generated stub count vs baseline (ratchet down). A rise is the un-claiming
+# tell: a real owner lost its marker and would be re-stubbed, breaking vtables.
 [group('gates')]
 stub-count-gate:
   uv run python -m tools.workflow.check_stub_count
@@ -958,7 +980,7 @@ datacmp-gate:
 # bodies need a // FUNCTION marker or a `// NOOP: verified empty in original 0xADDR`.
 [group('gates')]
 noop-gate:
-  uv run python -m tools.workflow.check_empty_bodies --baseline config/empty_body_baseline.csv
+  uv run python -m tools.workflow.check_empty_bodies --baseline config/baselines/empty_body_baseline.csv
 
 # Report every empty-body finding (audit mode of the noop gate).
 # `just noop-audit [--kind empty_but_big|empty_unmarked|empty_unresolved]`
@@ -993,14 +1015,14 @@ vtable-abi-audit *args:
   uv run python -m tools.workflow.vtable_abi_audit {{args}}
 
 # Ratchet gate over the ABI audit: fails on NEW proven declaration conflicts
-# (address+class not in config/vtable_abi_gate_baseline.csv and not covered by a
+# (address+class not in config/baselines/vtable_abi_gate_baseline.csv and not covered by a
 # reviewed config/vtable_signature_overrides.csv row). Pure source + static
 # evidence; no Ghidra needed.
 [group('gates')]
 vtable-abi-gate:
   uv run python -m tools.workflow.vtable_abi_audit --gate
 
-# MUTATES: config/vtable_abi_gate_baseline.csv. Refresh after fixing conflicts.
+# MUTATES: config/baselines/vtable_abi_gate_baseline.csv. Refresh after fixing conflicts.
 [group('gates')]
 vtable-abi-gate-update:
   uv run python -m tools.workflow.vtable_abi_audit --write-baseline
@@ -1020,27 +1042,12 @@ generated-marker-gate:
 # Ratchet gate against ILT/thunk-name ossification in manual source: rejects NEW
 # identifiers that start with thunk_/ILT_/WrapperFor_ or end with _At<8hex> (calls
 # via linker thunks; history-encoded body names). Existing debt is grandfathered in
-# config/ilt_ossification_baseline.csv — a finite, shrink-only migration queue.
+# config/baselines/ilt_ossification_baseline.csv — a finite, shrink-only migration queue.
 [group('gates')]
 ilt-ossification-gate:
   uv run python -m tools.workflow.check_ilt_ossification
 
-# Offline gate (no Ghidra): the Ghidra export must not contradict source. Flags
-# source-owned addresses whose src/ghidra_autogen GHIDRA_NAME sits in a different
-# class namespace than config/symbols.csv, and stale autogen class buckets. Ratchet
-# against config/ghidra_name_drift_baseline.csv (the shrink-only convergence queue,
-# e.g. the retired DB name TSoundChannelNode vs source TLongintList @ 0x650a08).
-[group('gates')]
-ghidra-name-drift-gate:
-  uv run python -m tools.workflow.check_ghidra_name_drift
-
-# MUTATES: config/ghidra_name_drift_baseline.csv. Ratchet down after a DB re-sync
-# (push-source-names / db-resync) converges the autogen toward source.
-[group('gates')]
-ghidra-name-drift-gate-update:
-  uv run python -m tools.workflow.check_ghidra_name_drift --write-baseline
-
-# MUTATES: config/ilt_ossification_baseline.csv. Ratchet down after migrating a thunk
+# MUTATES: config/baselines/ilt_ossification_baseline.csv. Ratchet down after migrating a thunk
 # or renaming a WrapperFor_/_At body. Never run to silence a new offender.
 [group('gates')]
 ilt-ossification-gate-update:
@@ -1053,9 +1060,9 @@ ilt-ossification-gate-update:
 vtable-annotation-gate:
   uv run python -m tools.workflow.check_vtable_annotations --paths src include
 
-# Ensure no symbols.csv DATA row or `// GLOBAL:` marker collides with a `// VTABLE:`
+# Ensure no inventory DATA row or `// GLOBAL:` marker collides with a `// VTABLE:`
 # address (which would make reccmp drop the vtable entity as a duplicate).
-[doc('No symbols.csv DATA row or // GLOBAL: marker may collide with a // VTABLE: address')]
+[doc('No inventory DATA row or // GLOBAL: marker may collide with a // VTABLE: address')]
 [group('gates')]
 vtable-collision-gate:
   uv run python -m tools.workflow.check_vtable_address_collisions --paths src include
@@ -1065,7 +1072,7 @@ vtable-collision-gate:
 synthetic-gate:
   uv run python -m tools.workflow.check_synthetic_names --paths src include
 
-# Structural integrity of config/symbols.csv: header row exactly at line 1, no
+# Structural integrity of config/original_entities.csv: header row exactly at line 1, no
 # duplicate headers, parseable hex addresses, no duplicate addresses, no two
 # function rows claiming overlapping byte ranges. (Every consumer is a DictReader
 # that silently degrades when the header is misplaced.)
@@ -1074,28 +1081,14 @@ synthetic-gate:
 symbols-integrity-gate:
   uv run python -m tools.workflow.check_symbols_integrity
 
-# Structural integrity of config/function_ownership.csv: same DictReader-safety
-# checks as symbols-integrity-gate, applied to the file most directly implicated
-# in the "curated suppression note silently pruned" incident class.
-[doc('function_ownership.csv structural integrity: header at line 1, parseable + unique addresses')]
-[group('gates')]
-ownership-integrity-gate:
-  uv run python -m tools.workflow.check_function_ownership_integrity
-
 # Semantic gate for reviewed MSVC500 library identities: every row in
-# config/msvc500_library_overrides.csv must be faithfully applied to symbols.csv
+# config/reviewed_library_identities.csv must be faithfully projected (overlay+markers)
 # (name/symbol/prototype/type) + ownership=library, and the applied count must not
 # fall below the ratchet baseline. Pins e.g. 0x005e83f0 = rand/_rand permanently.
 [doc('Semantic library-identity gate: reviewed overrides applied + ownership=library + ratchet')]
 [group('gates')]
 library-identity-gate:
   uv run python -m tools.workflow.check_library_identity
-
-[doc('MUTATES config/library_identity_gate_baseline.json: record current applied-override count')]
-[group('baseline-update')]
-library-identity-gate-update:
-  @test "${ALLOW_POLICY_BASELINE_UPDATE:-}" = "1" || { echo "REFUSED: this rewrites an architecture-policy baseline (blessing new debt)."; echo "If a human approved the exception, rerun with ALLOW_POLICY_BASELINE_UPDATE=1."; exit 2; }
-  uv run python -m tools.workflow.check_library_identity --write-baseline
 
 # Sanity-check a few reccmp-critical symbols.csv rows after Ghidra export.
 [group('gates')]
@@ -1191,19 +1184,12 @@ boundary-gate:
 agent-rules-gate:
   uv run python -m tools.workflow.check_agent_rules
 
-# Generated dirs (src/autogen, src/ghidra_autogen, include/ghidra_autogen) and
-# function_ownership.csv may only change alongside marker/curated-input changes
-# that justify regeneration — never by hand (Hard Rule 7). agent-check applies
-# the same rule locally; CI runs it with --no-worktree against the merge base.
-[group('gates')]
-generated-integrity-gate *args:
-  uv run python -m tools.workflow.check_generated_integrity {{args}}
-
 # The binary-free gate subset CI runs on every PR (no docker/wine/original exe:
 # excludes vtable, datacmp-gate, decomplint, lint). Keep in sync with `gates`.
 [doc('Source-only gate subset (what CI enforces; no built binary needed)')]
 [group('gates')]
 source-gates:
+  just generate
   just tooling-check
   just vtable-gate
   just antipattern-gate
@@ -1211,12 +1197,10 @@ source-gates:
   just marker-gate
   just generated-marker-gate
   just ilt-ossification-gate
-  just ghidra-name-drift-gate
   just vtable-annotation-gate
   just vtable-collision-gate
   just synthetic-gate
   just symbols-integrity-gate
-  just ownership-integrity-gate
   just library-identity-gate
   just global-location-gate
   just manual-cruntimeclass-gate
@@ -1259,7 +1243,7 @@ format-check *paths:
 # baseline-update — targets that REWRITE committed baselines/configs.
 # ---------------------------------------------------------------------------
 
-# MUTATES: config/reccmp_progress_baseline.json. (Was `stats-commit`.)
+# MUTATES: config/baselines/reccmp_progress_baseline.json.
 [group('baseline-update')]
 stats-baseline-update:
   uv run python -m tools.reccmp.progress_stats --target "{{target}}" --build-dir "{{build_dir}}" --detect-recompiled --commit-baseline
@@ -1269,46 +1253,46 @@ stats-baseline-update:
 tooling-surface-update:
   uv run python -m tools.workflow.check_tooling_surface --write
 
-# MUTATES: config/vtable_gate_baseline.csv.
+# MUTATES: config/baselines/vtable_gate_baseline.csv.
 [group('baseline-update')]
 vtable-gate-update:
   @test "${ALLOW_POLICY_BASELINE_UPDATE:-}" = "1" || { echo "REFUSED: this rewrites an architecture-policy baseline (blessing new debt)."; echo "If a human approved the exception, rerun with ALLOW_POLICY_BASELINE_UPDATE=1."; exit 2; }
   uv run python -m tools.workflow.check_no_raw_vtable_calls --baseline "{{vtable_gate_baseline}}" --write-baseline
 
-# MUTATES: config/construction_gate_baseline.csv.
+# MUTATES: config/baselines/construction_gate_baseline.csv.
 [group('baseline-update')]
 antipattern-gate-update:
   @test "${ALLOW_POLICY_BASELINE_UPDATE:-}" = "1" || { echo "REFUSED: this rewrites an architecture-policy baseline (blessing new debt)."; echo "If a human approved the exception, rerun with ALLOW_POLICY_BASELINE_UPDATE=1."; exit 2; }
   uv run python -m tools.workflow.check_construction_antipatterns --baseline "{{construction_gate_baseline}}" --write-baseline
 
-# MUTATES: config/tgreatpower_gate_baseline.csv.
+# MUTATES: config/baselines/tgreatpower_gate_baseline.csv.
 [group('baseline-update')]
 tgreatpower-gate-update:
   @test "${ALLOW_POLICY_BASELINE_UPDATE:-}" = "1" || { echo "REFUSED: this rewrites an architecture-policy baseline (blessing new debt)."; echo "If a human approved the exception, rerun with ALLOW_POLICY_BASELINE_UPDATE=1."; exit 2; }
   uv run python -m tools.workflow.check_tgreatpower_hygiene --baseline "{{tgreatpower_gate_baseline}}" --write-baseline
 
-# MUTATES: config/stub_count_baseline.json.
+# MUTATES: config/baselines/stub_count_baseline.json.
 [group('baseline-update')]
 stub-count-gate-update:
   @test "${ALLOW_POLICY_BASELINE_UPDATE:-}" = "1" || { echo "REFUSED: this rewrites an architecture-policy baseline (blessing new debt)."; echo "If a human approved the exception, rerun with ALLOW_POLICY_BASELINE_UPDATE=1."; exit 2; }
   uv run python -m tools.workflow.check_stub_count --write-baseline
 
-# MUTATES: config/boundary_baseline.json.
+# MUTATES: config/baselines/boundary_baseline.json.
 [group('baseline-update')]
 boundary-gate-update:
   @test "${ALLOW_POLICY_BASELINE_UPDATE:-}" = "1" || { echo "REFUSED: this rewrites an architecture-policy baseline (blessing new debt)."; echo "If a human approved the exception, rerun with ALLOW_POLICY_BASELINE_UPDATE=1."; exit 2; }
   uv run python -m tools.workflow.check_boundary_ratchet --write-baseline
 
-# MUTATES: config/datacmp_baseline.csv.
+# MUTATES: config/baselines/datacmp_baseline.csv.
 [group('baseline-update')]
 datacmp-gate-update:
   uv run python -m tools.workflow.check_datacmp_baseline --target "{{target}}" --build-dir "{{build_dir}}" --write-baseline
 
-# MUTATES: config/empty_body_baseline.csv.
+# MUTATES: config/baselines/empty_body_baseline.csv.
 [group('baseline-update')]
 noop-gate-update:
   @test "${ALLOW_POLICY_BASELINE_UPDATE:-}" = "1" || { echo "REFUSED: this rewrites an architecture-policy baseline (blessing new debt)."; echo "If a human approved the exception, rerun with ALLOW_POLICY_BASELINE_UPDATE=1."; exit 2; }
-  uv run python -m tools.workflow.check_empty_bodies --write-baseline config/empty_body_baseline.csv
+  uv run python -m tools.workflow.check_empty_bodies --write-baseline config/baselines/empty_body_baseline.csv
 
 # MUTATES: reccmp-project.yml ignore lists (Hard Rule 14).
 [group('baseline-update')]
@@ -1320,58 +1304,34 @@ generate-ignores:
 # ---------------------------------------------------------------------------
 
 # MUTATES: source files under src/game + include/game.
+[private]
 [group('rewrite')]
 annotate-globals:
   uv run python -m tools.workflow.annotate_globals_from_symbols --paths src/game include/game --write
 
-# MUTATES: headers under include/game.
-[group('rewrite')]
-annotate-vtables:
-  uv run python -m tools.workflow.annotate_vtables_from_symbols --paths include/game --write
-
-# MUTATES: source files under src/game + include/game.
-[group('rewrite')]
-annotate-strings:
-  uv run python -m tools.workflow.annotate_strings_from_symbols --paths src/game include/game --write
-
 # MUTATES: reccmp markers in src/ + include/.
+[private]
 [group('rewrite')]
 normalize-markers:
   uv run python -m tools.workflow.normalize_reccmp_markers --paths src include --write
 
-# MUTATES: config/symbols.csv + `// SYNTHETIC:` comments (with --apply).
+# MUTATES: config/original_entities.csv + `// SYNTHETIC:` comments (with --apply).
 # Canonicalize scalar-deleting-destructor spellings to the MSVC500-mangled form.
 # Pass --dry-run to preview. `just synthetic-gate` is the mechanical check.
 [doc('MUTATES: symbols.csv + // SYNTHETIC: comments. Canonicalize scalar-dtor spellings')]
+[private]
 [group('rewrite')]
 correct-scalar-dtors *args:
   uv run python -m tools.workflow.correct_scalar_dtors {{args}}
 
-# MUTATES: config/symbols.csv + stub manifest (with --write).
+# MUTATES: config/original_entities.csv + stub manifest (with --write).
 # Dry-run-first vtable repair planner. Applies only deterministic fixes with --write:
 # manifest slot promotion, scalar-dtor spelling cleanup, and safe ILT thunk pruning.
-[doc('MUTATES (--write): symbols.csv + stub manifest. Dry-run-first vtable repair planner')]
+[private]
+[doc('MUTATES (--write): original_entities.csv. Dry-run-first vtable repair planner')]
 [group('rewrite')]
 vtable-autofix *args:
   uv run python -m tools.workflow.vtable_autofix {{args}}
-
-# MUTATES: source + config/function_ownership.csv (with --apply).
-[group('rewrite')]
-mfc-runtime-macros *args:
-  uv run python -m tools.workflow.mfc_runtime_macros {{args}}
-
-# MUTATES: config (library region rows).
-[group('rewrite')]
-apply-msvc500-library-region *args:
-  uv run python -m tools.mfc.apply_msvc500_library_region {{args}}
-
-# MUTATES: config/symbols.csv + src/game/library_msvc500_overrides.cpp.
-# Project reviewed library-identity overrides (config/msvc500_library_overrides.csv)
-# onto the derived artifacts. Idempotent; runs automatically inside regen-stubs.
-# Reviewed overrides win over FID for confirmed CRT/MFC functions FID missed (rand).
-[group('rewrite')]
-apply-library-overrides *args:
-  uv run python -m tools.mfc.apply_library_overrides {{args}}
 
 # Diagnostic: aggregate every identity signal for one address (symbols, ownership,
 # reviewed override, cached FID match, object-matcher oracle) into a verdict.
@@ -1381,20 +1341,12 @@ apply-library-overrides *args:
 library-identify address:
   uv run python -m tools.mfc.library_identify "{{address}}"
 
-# MUTATES: config/msvc500_library_oracle.csv. Rebuild the relocation-masked object
+# Rebuild the relocation-masked object-matcher report into build evidence (uncommitted).
 # identity oracle by matching the original executable against the vendored
 # libcmt.lib/nafxcw.lib COFF members. Needs the original binary (ORIGINAL_BINARY).
 [group('rewrite')]
 build-library-oracle *args:
   uv run python -m tools.mfc.build_library_oracle {{args}}
-
-# MUTATES: config/symbols.csv + src/game/library_msvc500_oracle.cpp + review CSV.
-# Project confident, unique oracle matches into the derived artifacts (upgrade
-# library symbols/prototypes; convert unowned FID-missed CRT/MFC funcs to library).
-# Idempotent; runs automatically inside regen-stubs. Precedence: override > oracle.
-[group('rewrite')]
-apply-library-oracle *args:
-  uv run python -m tools.mfc.apply_library_oracle {{args}}
 
 # MUTATES: the given paths (clang-format).
 [group('rewrite')]
@@ -1410,8 +1362,7 @@ class-discovery classes='':
   discovery_classes="{{class_discovery_classes}}"; \
   if [[ -n "{{classes}}" ]]; then discovery_classes="{{classes}}"; fi; \
   uv run python -m tools.workflow.class_discovery \
-    --classes "$discovery_classes" \
-    --ownership-csv "{{function_ownership}}"
+    --classes "$discovery_classes"
 
 [group('recovery')]
 slice-discovery class address:
@@ -1439,11 +1390,6 @@ mac-evidence-check:
 [group('setup')]
 docker-build:
   docker build --network host -t "{{docker_image}}" -f docker/msvc500/Dockerfile docker/msvc500
-
-# Build the lint image (clang + MinGW-w64 i686). One-time / on Dockerfile change.
-[group('setup')]
-build-lint-image:
-  docker build --network host -t "{{lint_docker_image}}" -f docker/clang-mingw/Dockerfile docker/clang-mingw
 
 [group('setup')]
 bootstrap-reccmp:

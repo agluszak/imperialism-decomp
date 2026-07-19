@@ -2,8 +2,8 @@
 """One-stop status for a function address (no Ghidra / no build — instant).
 
 Joins the four scattered sources you otherwise grep by hand every time you look at a
-function: config/symbols.csv (curated name/size/prototype), config/function_ownership.csv
-(who owns it and how it was paired), src/ghidra_autogen/index.csv (the reference body's
+function: config/original_entities.csv (curated name/size/prototype), source markers
+(marker-derived ownership), the Ghidra evidence export index (the reference body's
 location + export status), and the reccmp baseline report (current match %).
 
 usage:
@@ -21,10 +21,10 @@ from tools.common.pipe_csv import read_pipe_rows
 from tools.common.report_score import effective_matching
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
-SYMBOLS_CSV = REPO_ROOT / "config" / "symbols.csv"
-OWNERSHIP_CSV = REPO_ROOT / "config" / "function_ownership.csv"
-AUTOGEN_INDEX = REPO_ROOT / "src" / "ghidra_autogen" / "index.csv"
-BASELINE_REPORT = REPO_ROOT / "config" / "reccmp_progress_baseline.report.json"
+SYMBOLS_CSV = REPO_ROOT / "config" / "original_entities.csv"
+AUTOGEN_INDEX = (REPO_ROOT / "build-msvc500" / "evidence" / "ghidra-export"
+                 / "src" / "index.csv")
+BASELINE_REPORT = REPO_ROOT / "config" / "baselines" / "reccmp_progress_baseline.report.json"
 
 
 def _index_by_address(path: Path) -> dict[str, dict[str, str]]:
@@ -61,8 +61,15 @@ def main() -> int:
 
     warn_if_baseline_stale(REPO_ROOT)
 
+    from tools.source_model import ownership_kind, ownership_view
+
     symbols = _index_by_address(SYMBOLS_CSV)
-    ownership = _index_by_address(OWNERSHIP_CSV)
+    ownership = {
+        f"{a:x}": {"ownership": ownership_kind(c.kind),
+                   "target_cpp": c.file,
+                   "note": f"marker {c.kind} at {c.file}:{c.line}"}
+        for a, c in ownership_view(REPO_ROOT).items()
+    }
     autogen = _index_by_address(AUTOGEN_INDEX)
     scores = _scores()
 
@@ -87,7 +94,7 @@ def main() -> int:
             note = f" note={own['note']}" if own.get("note") else ""
             print(f"  ownership   : {own.get('ownership', '')} -> {own.get('target_cpp', '')}{note}")
         else:
-            print("  ownership   : (stub / unowned — lives in src/autogen/stubs)")
+            print("  ownership   : (stub / unowned — generated into build-msvc500/generated/stubs)")
 
         ag = autogen.get(key)
         if ag:

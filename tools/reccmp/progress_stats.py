@@ -62,7 +62,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--no-run", action="store_true", help="Parse existing report files only.")
     parser.add_argument(
         "--baseline-file",
-        default=str(repo_root / "config" / "reccmp_progress_baseline.json"),
+        default=str(repo_root / "config" / "baselines" / "reccmp_progress_baseline.json"),
         help="Committed baseline JSON. Relative paths resolve from the repo root.",
     )
     parser.add_argument("--commit-baseline", action="store_true", help="Overwrite the baseline.")

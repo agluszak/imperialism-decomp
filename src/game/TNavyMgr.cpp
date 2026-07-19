@@ -252,38 +252,6 @@ TNavyMgr::TNavyMgr() : orderListHead04(0), field08(-1), field0c(nullptr) {}
 // FUNCTION: IMPERIALISM 0x005565f0
 TNavyMgr::~TNavyMgr() {}
 
-void TNavyMgr::Free() {}
-
-void TNavyMgr::WriteTo(TStream* stream) {
-  (void)stream;
-}
-
-void TNavyMgr::ReadFrom(TStream* stream) {
-  (void)stream;
-}
-
-static void RemoveMatchingSecondaryOrders(short nationSlot) {
-  int* node = reinterpret_cast<int*>(g_pNavySecondaryOrderListHead);
-  while (node != 0) {
-    int* nextNode = reinterpret_cast<int*>(node[5]);
-    if (static_cast<short>(node[1]) == nationSlot) {
-      reinterpret_cast<TObject*>(node)->Free();
-    }
-    node = nextNode;
-  }
-}
-
-static void RemoveMatchingTaskForceOrders(TNavyMgr* navyManager, short nationSlot) {
-  int* node = reinterpret_cast<int*>(navyManager->orderListHead04);
-  while (node != 0) {
-    int* nextNode = reinterpret_cast<int*>(node[0xb]);
-    if (static_cast<short>(node[7]) == nationSlot) {
-      reinterpret_cast<TObject*>(node)->Free();
-    }
-    node = nextNode;
-  }
-}
-
 // Seeds the three navy order-type ranking tables with the identity permutation, then
 // selection-sorts each by descending descriptor weight (resolve / calculate-mission /
 // navy-priority). The weight columns are read as dwords from the descriptor table, matching
@@ -329,6 +297,14 @@ void InitializeNavyOrderPriorityTables() {
       }
     }
   }
+}
+
+// FUNCTION: IMPERIALISM 0x005567a0
+void TNavyMgr::Free() {}
+
+// FUNCTION: IMPERIALISM 0x005568c0
+void TNavyMgr::WriteTo(TStream* stream) {
+  (void)stream;
 }
 
 // FUNCTION: IMPERIALISM 0x005568f0
@@ -383,6 +359,33 @@ void TNavyMgr::SerializeNavyOrderListsByNation(TStream* stream, short nationFilt
     if (nationFilter == -1 || nationFilter == order2->required_count) {
       order2->WriteTo(stream);
     }
+  }
+}
+
+// FUNCTION: IMPERIALISM 0x00556aa0
+void TNavyMgr::ReadFrom(TStream* stream) {
+  (void)stream;
+}
+
+static void RemoveMatchingSecondaryOrders(short nationSlot) {
+  int* node = reinterpret_cast<int*>(g_pNavySecondaryOrderListHead);
+  while (node != 0) {
+    int* nextNode = reinterpret_cast<int*>(node[5]);
+    if (static_cast<short>(node[1]) == nationSlot) {
+      reinterpret_cast<TObject*>(node)->Free();
+    }
+    node = nextNode;
+  }
+}
+
+static void RemoveMatchingTaskForceOrders(TNavyMgr* navyManager, short nationSlot) {
+  int* node = reinterpret_cast<int*>(navyManager->orderListHead04);
+  while (node != 0) {
+    int* nextNode = reinterpret_cast<int*>(node[0xb]);
+    if (static_cast<short>(node[7]) == nationSlot) {
+      reinterpret_cast<TObject*>(node)->Free();
+    }
+    node = nextNode;
   }
 }
 

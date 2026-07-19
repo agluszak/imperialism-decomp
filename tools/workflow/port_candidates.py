@@ -2,8 +2,8 @@
 """Rank porting candidates: the biggest functions that are not yet well matched.
 
 Pure config-file reader (no Ghidra / no build) — instant. Answers "what big, low-scoring
-functions should I port next?" by joining config/symbols.csv (size), the reccmp baseline
-report (per-function match %), and config/function_ownership.csv (owned vs stub).
+functions should I port next?" by joining config/original_entities.csv (size), the reccmp baseline
+report (per-function match %), and source markers (owned vs stub).
 
 usage:
   port_candidates [--range LO HI] [--min-size N] [--max-score PCT] [--limit N]
@@ -27,9 +27,8 @@ from tools.common.pipe_csv import read_pipe_rows
 from tools.common.report_score import effective_matching
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
-SYMBOLS_CSV = REPO_ROOT / "config" / "symbols.csv"
-OWNERSHIP_CSV = REPO_ROOT / "config" / "function_ownership.csv"
-BASELINE_REPORT = REPO_ROOT / "config" / "reccmp_progress_baseline.report.json"
+SYMBOLS_CSV = REPO_ROOT / "config" / "original_entities.csv"
+BASELINE_REPORT = REPO_ROOT / "config" / "baselines" / "reccmp_progress_baseline.report.json"
 
 
 def _parse_int(value: str) -> int:
@@ -55,18 +54,10 @@ def _load_symbols() -> dict[int, tuple[str, int, str]]:
 
 
 def _load_ownership() -> dict[int, tuple[str, str]]:
-    out: dict[int, tuple[str, str]] = {}
-    if not OWNERSHIP_CSV.is_file():
-        return out
-    for row in read_pipe_rows(OWNERSHIP_CSV):
-        try:
-            out[int(row.get("address") or "", 16)] = (
-                (row.get("target_cpp") or "").strip(),
-                (row.get("ownership") or "").strip(),
-            )
-        except ValueError:
-            continue
-    return out
+    from tools.source_model import ownership_kind, ownership_view
+
+    return {a: (c.file, ownership_kind(c.kind))
+            for a, c in ownership_view(REPO_ROOT).items()}
 
 
 def _load_scores() -> dict[int, float]:

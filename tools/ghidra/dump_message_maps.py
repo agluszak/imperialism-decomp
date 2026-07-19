@@ -51,8 +51,6 @@ IMAGE_BASE = 0x400000
 CODE_LO, CODE_HI = 0x401000, 0x640000
 DATA_LO, DATA_HI = 0x630000, 0x6B0000
 
-OWNERSHIP_CSV = "config/function_ownership.csv"
-
 # Common window messages for readable output; everything else is annotated by band.
 WM_NAMES = {
     0x0001: "WM_CREATE", 0x0002: "WM_DESTROY", 0x0005: "WM_SIZE", 0x0006: "WM_ACTIVATE",
@@ -84,17 +82,11 @@ def msg_name(msg: int) -> str:
 
 
 def load_ownership() -> dict[int, str]:
-    owners: dict[int, str] = {}
-    path = OWNERSHIP_CSV
-    if not os.path.exists(path):
-        return owners
-    with open(path, newline="") as fh:
-        for row in csv.DictReader(fh, delimiter="|"):
-            try:
-                owners[int(row["address"], 16)] = row["target_cpp"]
-            except (KeyError, ValueError):
-                continue
-    return owners
+    from pathlib import Path
+
+    from tools.source_model import ownership_view
+
+    return {a: c.file for a, c in ownership_view(Path.cwd()).items()}
 
 
 def main() -> int:

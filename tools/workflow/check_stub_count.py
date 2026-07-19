@@ -1,18 +1,20 @@
 #!/usr/bin/env python3
-"""Gate the autogen stub count against a checked-in baseline (ratchet down).
+"""Gate the generated stub count against a checked-in baseline (ratchet down).
 
-A RISING stub count after `just regen-stubs` is the tell for the
-sync-ownership prune trap: marker-less-but-real ownership rows (DYNCREATE
-GetRuntimeClass bodies, scalar deleting destructors, name-paired methods) got
-pruned and re-stubbed, which silently breaks vtables. Restore such rows with
-note=name_paired_no_marker instead of committing the regression.
+Stubs are build artifacts now — this gate computes the stub set the generator
+would emit (tools.stubgen.compute_stub_rows: symbols.csv function-kind rows minus
+source-claimed addresses) instead of reading committed files, so it needs no
+build and can never disagree with generation.
 
-Reads stub_count from src/autogen/stubs/_manifest.json (written by stubgen):
-  - count > baseline  -> FAIL (new stubs appeared; find what got re-stubbed)
+A RISING stub count is the tell for accidental un-claiming: a real marker-less
+owner (DYNCREATE GetRuntimeClass bodies, scalar deleting destructors, name-paired
+methods) lost its claim and would be re-stubbed, which silently breaks vtables.
+
+  - count > baseline  -> FAIL (new stubs appeared; find what got un-claimed)
   - count < baseline  -> PASS + reminder to ratchet the baseline down
   - count == baseline -> PASS
 
-`--write-baseline` records the current count (config/stub_count_baseline.json).
+`--write-baseline` records the current count (config/baselines/stub_count_baseline.json).
 """
 
 from __future__ import annotations
@@ -21,18 +23,15 @@ import argparse
 import json
 
 from tools.common.repo import repo_root_from_file, resolve_repo_path
+from tools.stubgen import compute_stub_rows
 
 
 def parse_args() -> argparse.Namespace:
     repo_root = repo_root_from_file(__file__)
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
-        "--manifest",
-        default=str(repo_root / "src" / "autogen" / "stubs" / "_manifest.json"),
-    )
-    parser.add_argument(
         "--baseline",
-        default=str(repo_root / "config" / "stub_count_baseline.json"),
+        default=str(repo_root / "config" / "baselines" / "stub_count_baseline.json"),
     )
     parser.add_argument(
         "--write-baseline",
@@ -47,11 +46,10 @@ def compare_counts(current: int, baseline: int) -> tuple[int, str]:
     if current > baseline:
         return 1, (
             f"Stub-count gate FAILED: {baseline} -> {current} (+{current - baseline}).\n"
-            "New autogen stubs appeared. If you didn't add symbols.csv rows on purpose,\n"
-            "this is the sync-ownership prune trap: real marker-less owners (DYNCREATE\n"
-            "GetRuntimeClass, scalar deleting dtors) were pruned and re-stubbed.\n"
-            "Diff config/function_ownership.csv and restore pruned rows with\n"
-            "note=name_paired_no_marker; do not commit around this failure."
+            "New stubs would be generated. If you didn't add symbols.csv rows on\n"
+            "purpose, a real marker-less owner (DYNCREATE GetRuntimeClass, scalar\n"
+            "deleting dtor, name-paired method) lost its claim and would be re-stubbed.\n"
+            "Add the missing marker/claim; do not commit around this failure."
         )
     if current < baseline:
         return 0, (
@@ -64,10 +62,9 @@ def compare_counts(current: int, baseline: int) -> tuple[int, str]:
 def main() -> int:
     args = parse_args()
     repo_root = repo_root_from_file(__file__)
-    manifest_path = resolve_repo_path(repo_root, args.manifest)
     baseline_path = resolve_repo_path(repo_root, args.baseline)
 
-    current = int(json.loads(manifest_path.read_text())["stub_count"])
+    current = len(compute_stub_rows(repo_root))
 
     if args.write_baseline:
         baseline_path.write_text(json.dumps({"stub_count": current}, indent=2) + "\n")

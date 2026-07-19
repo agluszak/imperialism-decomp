@@ -37,7 +37,7 @@ Modes:
   report (default)   human-readable ranked report for the named classes (or all)
   --json             machine-readable findings
   --gate             exit 1 on proven conflicts absent from the ratchet baseline
-  --write-baseline   refresh config/vtable_abi_gate_baseline.csv
+  --write-baseline   refresh config/baselines/vtable_abi_gate_baseline.csv
   --doc FILE         write the ranked markdown report
 """
 
@@ -55,7 +55,7 @@ from tools.common.repo import repo_root_from_file
 
 EVIDENCE_PATH = "config/vtable_abi_evidence.json"
 OVERRIDES_PATH = "config/vtable_signature_overrides.csv"
-BASELINE_PATH = "config/vtable_abi_gate_baseline.csv"
+BASELINE_PATH = "config/baselines/vtable_abi_gate_baseline.csv"
 
 # ------------------------------------------------------------------------- #
 # Declaration harvesting (source ground truth for the CURRENT C++ model)

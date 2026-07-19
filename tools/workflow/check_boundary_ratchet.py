@@ -15,7 +15,7 @@ calling-convention guardrail retires these; new ones are forbidden.
   count < baseline  -> PASS + reminder to ratchet the baseline down
   count == baseline -> PASS
 
-`--write-baseline` records the current counts (config/boundary_baseline.json);
+`--write-baseline` records the current counts (config/baselines/boundary_baseline.json);
 the just target guards it behind ALLOW_POLICY_BASELINE_UPDATE like every other
 architecture-policy baseline.
 """
@@ -70,7 +70,7 @@ def main() -> int:
     repo_root = repo_root_from_file(__file__)
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
-        "--baseline", default=str(repo_root / "config" / "boundary_baseline.json")
+        "--baseline", default=str(repo_root / "config" / "baselines" / "boundary_baseline.json")
     )
     parser.add_argument("--write-baseline", action="store_true")
     parser.add_argument("--verbose", action="store_true", help="Print every counted item")

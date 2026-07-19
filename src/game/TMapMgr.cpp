@@ -362,10 +362,6 @@ void TMapMgr::AllocateAndResetTerrainAndCityScoreTables() {
   }
 }
 
-undefined TMapMgr::LoadPoliticalMapRegionSubtypeTableFromResourceStream() {
-  return 0;
-}
-
 // Builds (or loads) the whole per-session map state. Three entry modes: replay
 // (TSimMgr field112 set) reloads the political tables and refreshes tiles in place;
 // scenario (stateFlag114 set) loads the fixed map table (returning 0 on failure);
@@ -496,6 +492,11 @@ char TMapMgr::BuildOrLoadGlobalMapStateForSession(const char* mapStreamName, cha
     mapMaker->Free();
   }
   return 1;
+}
+
+// FUNCTION: IMPERIALISM 0x0050f200
+undefined TMapMgr::LoadPoliticalMapRegionSubtypeTableFromResourceStream() {
+  return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x0050f6b0
@@ -2454,12 +2455,14 @@ void TMapMgr::FloodFillTileRegionMarker(short nTileIndex, short nOwnerNationId) 
   g_nNextRegionMarkerId = static_cast<short>(g_nNextRegionMarkerId) + 1;
 }
 
+// FUNCTION: IMPERIALISM 0x005145b0
 int TMapMgr::QueueDepotConstructionOrder(short nTileIndex, short nNationId) {
   (void)nTileIndex;
   (void)nNationId;
   return 0;
 }
 
+// FUNCTION: IMPERIALISM 0x005147d0
 void TMapMgr::QueuePortConstructionOrder(short nTileIndex, short nNationId) {
   (void)nTileIndex;
   (void)nNationId;

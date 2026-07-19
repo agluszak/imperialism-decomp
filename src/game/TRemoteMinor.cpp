@@ -27,6 +27,7 @@ void TRemoteMinor::ApplyIndexedResourceDeltaAndAdjustNationTotals(int resourceIn
 
 // SYNTHETIC: IMPERIALISM 0x00541cd0
 // TRemoteMinor::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x00541d00
 TRemoteMinor::~TRemoteMinor() {}
 
 TRemoteMinor::TRemoteMinor() : TMinor() {}

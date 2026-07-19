@@ -25,13 +25,12 @@ from pathlib import Path
 from tools.common.hexutil import parse_hex_address
 from tools.common.pipe_csv import read_pipe_rows
 from tools.common.repo import repo_root_from_file, resolve_repo_path
-from tools.mfc.apply_library_overrides import load_overrides
+from tools.mfc.reviewed_identities import load_overrides
 
-DEFAULT_SYMBOLS = "config/symbols.csv"
-DEFAULT_OWNERSHIP = "config/function_ownership.csv"
-DEFAULT_OVERRIDES = "config/msvc500_library_overrides.csv"
+DEFAULT_SYMBOLS = "config/original_entities.csv"
+DEFAULT_OVERRIDES = "config/reviewed_library_identities.csv"
 DEFAULT_FID_MATCHES = "tmp_decomp/msvc500_fid_matches.csv"
-DEFAULT_ORACLE = "config/msvc500_library_oracle.csv"
+DEFAULT_ORACLE = "build-msvc500/evidence/library/msvc500_library_oracle.csv"
 
 # The dense MFC/CRT library region (apply_msvc500_library_region defaults).
 LIBRARY_RANGE = (0x005E539C, 0x00626C7D)
@@ -41,7 +40,6 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("address", help="Function address, e.g. 0x005e83f0")
     parser.add_argument("--symbols", default=DEFAULT_SYMBOLS)
-    parser.add_argument("--ownership", default=DEFAULT_OWNERSHIP)
     parser.add_argument("--overrides", default=DEFAULT_OVERRIDES)
     parser.add_argument("--fid-matches", default=DEFAULT_FID_MATCHES)
     parser.add_argument("--oracle", default=DEFAULT_ORACLE)
@@ -85,7 +83,12 @@ def main() -> int:
     address = parse_hex_address(args.address)
 
     symbols_row = _row_for_address(resolve_repo_path(repo_root, args.symbols), address)
-    ownership_row = _row_for_address(resolve_repo_path(repo_root, args.ownership), address)
+    from tools.source_model import ownership_kind, ownership_view
+
+    claim = ownership_view(repo_root).get(address)
+    ownership_row = (
+        {"ownership": ownership_kind(claim.kind), "target_cpp": claim.file} if claim else None
+    )
     fid_row = _fid_row(resolve_repo_path(repo_root, args.fid_matches), address)
     oracle_row = _row_for_address(resolve_repo_path(repo_root, args.oracle), address)
 
@@ -123,7 +126,7 @@ def main() -> int:
               f"candidates={oracle_row.get('candidate_count', '?')}]")
     else:
         print("Object matcher:      not available "
-              "(config/msvc500_library_oracle.csv not built yet)")
+              "(build-msvc500/evidence/library/msvc500_library_oracle.csv not built yet)")
 
     if override is not None:
         print()
@@ -149,7 +152,7 @@ def main() -> int:
         verdict = (
             "not identified as library. If the body is CRT/MFC-shaped (LCG, ctype, "
             "string/mem helper, MFC macro), do NOT invent a game name — add a "
-            "reviewed override to config/msvc500_library_overrides.csv."
+            "reviewed override to config/reviewed_library_identities.csv."
         )
     print(f"Verdict:             {verdict}")
     return 0

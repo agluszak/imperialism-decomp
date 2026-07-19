@@ -37,13 +37,24 @@ else()
     )
 endif()
 
-file(
-    GLOB IMPERIALISM_AUTOGEN_STUB_SOURCES
-    CONFIGURE_DEPENDS
-    "${CMAKE_CURRENT_SOURCE_DIR}/src/autogen/stubs/*.cpp"
+# Generated build inputs (stubs) live in the build tree, not the source tree.
+# `just build` / `just lint` regenerate them (tools.source_index + tools.stubgen)
+# before invoking CMake, so every build compiles inputs derived from the current
+# source markers — never a stale committed snapshot.
+set(IMPERIALISM_GENERATED_DIR
+    "${CMAKE_BINARY_DIR}/generated"
+    CACHE PATH "Generated build inputs (stubs)")
+
+file(GLOB IMPERIALISM_AUTOGEN_STUB_SOURCES CONFIGURE_DEPENDS
+    "${IMPERIALISM_GENERATED_DIR}/stubs/*.cpp"
 )
 if(IMPERIALISM_AUTOGEN_STUB_SOURCES)
     target_sources(Imperialism PRIVATE ${IMPERIALISM_AUTOGEN_STUB_SOURCES})
+elseif(NOT IMPERIALISM_LINT_COMPILE_ONLY)
+    message(FATAL_ERROR
+        "No generated stubs in ${IMPERIALISM_GENERATED_DIR}/stubs — run "
+        "'just generate' (or 'just build', which runs it) so the link surface "
+        "is complete.")
 endif()
 
 if(WIN32 AND NOT IMPERIALISM_LINT_COMPILE_ONLY)

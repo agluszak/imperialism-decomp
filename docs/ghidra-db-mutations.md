@@ -5,7 +5,7 @@ planned to be replaced with a newer DB in a separate folder. Everything below is
 the record of what has mutated the DB, so the still-wanted mutations can be
 re-run against the new database.
 
-## 2026-07-19: `ghidra-rename-class` tool + a blocked full convergence (recorded, not yet committed)
+## 2026-07-19: `ghidra-rename-class` tool + full autogen convergence (committed)
 
 Added `just ghidra-rename-class OLD NEW --vtable 0xADDR --apply`
 (`tools/ghidra/rename_class.py`) — the atomic class re-attribution the ledger's
@@ -16,16 +16,287 @@ construction-site references automatically), the vtable-struct datatype, the
 `TSoundChannelNode` → `TLongintList` case (vtable 0x650a08): after `--apply` the DB had
 zero `TSoundChannelNode` remnants.
 
-**The full convergence is deliberately NOT committed yet**, because exporting it and
-regenerating `src/ghidra_autogen` via `sync_exports` surfaced a deeper problem: the
-vendored DB is ~1000 function names behind source, and `sync_exports` writes DB names
-*back* into `config/symbols.csv` (its curated-merge still lost curated renames — e.g.
-0x413250 reverted from source `TDiplomacyMgr::IsNationSlotEligibleForEventProcessing`
-to the DB's stale `WrapperFor_...At413250`). Regenerating the autogen therefore
-reflects an un-converged DB and corrupts the authoritative source. Converging the whole
-DB to source first (push hardened to stop skipping, iterated to zero drift) is a
-prerequisite for a clean autogen regen — tracked as the next pass; the
-`ghidra-name-drift-gate` baseline is the queue.
+**Convergence landed.** After clearing the 3 stale overrides (below), a single clean
+`sync_exports` regenerated `src/ghidra_autogen` + `include/ghidra_autogen` from the live
+DB and `just export-project` re-wrote the vendored `.gzf` so it matches. Verified:
+`TSoundChannelNode.cpp` is gone with zero remnants; 0x4c6740 is `TLongintList::InsertLast`
+and 0x413250 stayed `TDiplomacyMgr::IsNationSlotEligibleForEventProcessing` (the overrides
+fix held). `config/symbols.csv`/`symbols.ghidra.txt` were kept at HEAD (authoritative
+curation; the export's +2033 uncurated rows dropped). `ghidra-name-drift-gate` baseline
+shrank 222 → 56 (166 drifts resolved, TSoundChannelNode among them).
+
+**CORRECTION (same day):** an earlier version of this note claimed the DB was "~1000
+names behind" and that `sync_exports`'s curated-merge reverted curated names. Both were
+wrong. The DB *is* converged (0x413250 is `IsNationSlotEligibleForEventProcessing` in
+the DB), and `merge_curated_symbols_csv` provably preserves curated names. The reversion
+had two real, small causes: (1) a `sync_exports` run of mine timed out *after* it
+overwrote `symbols.csv` with the raw DB export but *before* the curated merge, and a
+second run then read that half-written file as "curated"; and (2) `sync_exports` applies
+`config/function_name_overrides.csv` *after* the curated merge, and exactly **3** stale
+override rows there still forced pre-rename names (0x413250, 0x60a60a, 0x556410),
+reverting them. Fixed by removing those 3 stale rows and adding an
+override-vs-symbols.csv consistency check to `ghidra-name-drift-gate` (hard invariant:
+an override may never contradict the authoritative symbols.csv).
+
+**Drift-gate false-positive fixed in the same pass.** The re-export surfaced 6 MFC
+template-instantiation buckets (`CList_long_long`, `CArray_void_void`,
+`CMap_WORD_WORD_CacheRecord_CacheRecord`, …) as "stale". They were not drift: the autogen
+bucket *filename* sanitizes template syntax (`<`,`,`→`_`, `*`,`>` dropped) while
+`symbols.csv` keeps it (`CList<long,long>::Serialize`), so the gate's string compare never
+matched an owned template class. Added `sanitize_stem()` to normalize before the ownership
+check (+ regression tests) so owned template buckets are no longer falsely flagged.
+
+## 2026-07-19 (second): `ghidra-apply-source` — the one-way source→DB operation (committed)
+
+The bidirectional sync pipeline is retired. `just ghidra-apply-source`
+(`tools/ghidra/apply_source.py`) is now the ONE sanctioned mutation path from the
+source model into the DB: qualified names parsed from the C++ declarations under
+`// FUNCTION:` markers (SYNTHETIC/TEMPLATE/LIBRARY claims use their convention
+comment line; raw-inventory names as fallback), primary-aware function
+renames/namespaces, labels, and `Class::'vftable'` labels from `// VTABLE:`
+annotations, ending with a datatype-drift audit. First applied run:
+primary_exact=6566, set_fn=1642 (source-declaration names replacing stale DB
+names, e.g. `ImperialismApp::InitInstance` over
+`InitializeImperialismApplicationInstance`), set_label=3, vtable_labels=48,
+failed=1 (pre-existing `_fprintf` duplicate). Exported to the vendored .gzf.
+
+Retired: `sync-ghidra`, `db-resync`, `push-names`, `push-source-names` (modules
+deleted; the primary-aware push loop lives inside apply_source). The wholesale
+raw-inventory refresh is now `just refresh-inventory`; class *datatype* renames
+remain the `just ghidra-rename-class` repair tool until PDB-driven type import
+lands (the known gap the audit reports).
+
+## 2026-07-19 (third): PDB-driven type/signature import wired into apply-source-full (committed)
+
+`just ghidra-apply-source-full` now includes reccmp's PDB importer
+(`just import-ghidra`) as the class-synchronization step the spec called for: it
+imports game-owned class datatypes, inheritance, field layouts, full typed
+function signatures, and vftables from the recomp PDB into the DB (this run:
+9125 successes, 1748 functions changed, vftables imported, zero missing types;
+29 benign failures). The retired hand-curated `apply-source-datatypes` (3-class
+spec importer) and `push-library-override-names` (absorbed as an apply-source
+name source: reviewed identities now beat inventory names) are deleted.
+
+**Ordering matters and is encoded in the recipe:** the PDB import names entities
+from the generated data sources (inventory names), so it must run BEFORE the
+apply-source name pass — source-declaration names win last. The first run used
+the wrong order and the import reverted 1642 source names; re-applying restored
+them (primary_exact 6504 -> 8185; 27 residual DuplicateName conflicts from
+pre-existing plain-name labels at the same addresses).
+
+## 2026-07-19 (fourth): model-driven apply + consolidation epilogue (committed)
+
+`ghidra-apply-source` now derives everything from the central source model
+(tools.source_model): claims-only application (no re-push of DB-derived
+inventory names for unclaimed addresses), free-function names first-class
+(the old parser required `::`), 1057 `// GLOBAL:` labels, and reviewed library
+identities as LIBRARY claims. Applied: set_fn=60 (free-function convergence),
+set_label=5, primary_exact=7113, 27 residual duplicate-label conflicts.
+
+The granular source→DB targets (`import-ghidra`, `name-vtable-slots`,
+`propagate-virtual-method-names`, `ghidra-rename-class`) are `[private]` —
+internals/repair tools, not sanctioned workflows. `refresh-inventory` is
+inventory-only (`sync_exports --inventory-only`); the full decompile/type
+snapshot is the separate optional `just export-ghidra-evidence`.
+
+## 2026-07-19 (fifth): strict convergence + in_stack migration (in_stack part RETRACTED — see below)
+
+The 27 residual DuplicateName conflicts are eliminated: stale non-primary labels
+whose simple name equals the target (often an already-qualified secondary like
+`CMcWindow::OnQueryNewPalette` beside a Global primary) are deleted before the
+namespace move; 26 stale labels dropped, 26 functions converged, failed=0.
+`ghidra-apply-source-full` is now STRICT: it fails on any apply failure and
+requires a converged second dry-run (zero pending, zero failures) — verified:
+primary_exact=7205, pending=0, failed=0. The apply audit also reports DB class
+namespaces owning source-claimed functions under a different class than the
+model (6 residual stale namespaces flagged, e.g. TNetMgr x2 — small repair
+queue for ghidra-rename-class).
+
+**RETRACTED (2026-07-19, sixth):** the `fix-in-stack-params --apply` work in this
+entry was UNSOUND and has been reverted. It appended each `in_stack_*` slot as a
+formal parameter via `Function.addParameter(ParameterImpl(None, dtype, offset,
+program))`. For a function without custom variable storage Ghidra IGNORES the
+supplied stack offset and lets the calling convention place the parameter — so
+the flagged slot never bound, and each pass appended another bogus parameter.
+That (plus never flushing the decompiler cache between edits) produced the
+spurious 261 -> 151 -> 136 -> 127 -> 112 "convergence": an artifact of the tool,
+not real parameter recovery. On the clean DB the count is back to the original
+**261** — the passes fixed nothing.
+
+**De-pollution:** restored the pre-`in_stack` `.gzf` (commit f4f51048 / PR #88,
+LFS oid a973690b…), deleted the polluted live program, re-ran the sound
+`ghidra-apply-source --apply --strict` (redoes names + the code-based label
+cleanup: 27 stale labels dropped, failed=0), confirmed a converged strict
+dry-run (primary_exact=7205, pending=0, failed=0), and re-exported. The strict
+label-cleanup + broader-audit code from the fifth entry is retained (it is
+sound); only the parameter appends are gone.
+
+**Reframed as a classification problem, not a migration backlog.** The read-only
+`just in-stack-audit` (`tools/ghidra/in_stack_audit.py`) classifies the 261:
+  - **214 source-owned** — the real prototype already lives in the C++
+    declaration (the audit prints it, e.g. `ImperialismCommandLineInfo::ParseParam`
+    -> `(LPCSTR, BOOL, BOOL)`); the DB just lags. Fix = PDB import via
+    `ghidra-apply-source-full`, never a DB param append (the next import
+    overwrites it).
+  - **6 library** — prototype from the reviewed identity / PDB.
+  - **41 unported**, of which **36 have unknown calling convention** (one carries
+    the INT_MAX unknown-purge sentinel) — broken ABI analysis, not missing
+    params; repair the convention/boundary. Only **~5** have clean callee-cleaned
+    evidence and are genuine complete-signature (`updateFunction(DYNAMIC_STORAGE_
+    FORMAL_PARAMS)`) candidates.
+
+The mutating target is retired; `just in-stack-audit` is read-only. Real repairs
+happen in source (the 214) or as verified per-function ABI fixes (the ~5), not
+as a bulk pass.
+
+## 2026-07-19 (seventh): source-model signature projection (PR #92, committed)
+
+The sound successor to the retracted `fix-in-stack-params`. Diagnosis (PR #91,
+`docs/reference/source-signature-import.md`) established that the MSVC500 PDB
+carries **no** argument-list type records the modern cvdump can read, so the PDB
+import can converge names/returns but never parameter lists — the 214
+source-owned `in_stack` functions are a projection gap, not an importer bug.
+
+`tools/ghidra/apply_source_signatures.py` (`just apply-source-signatures
+--apply`, wired into `ghidra-apply-source-full`) projects the **source model's**
+C++ prototype onto each source-owned (`FUNCTION`) and reviewed-library
+(`LIBRARY`) function that still has `in_stack`:
+
+- Complete signature via `replaceParameters(DYNAMIC_STORAGE_FORMAL_PARAMS)` with
+  the convention from source (method ⇒ `__thiscall`, free ⇒ `__cdecl`); Ghidra
+  auto-generates `this`. A leaked `undefined` return keeps the DB's inferred
+  return (source is not authoritative for a placeholder).
+- **flushCache + re-decompile + verify**, then classify into one of three
+  buckets. It NEVER infers a parameter from an `in_stack` slot and never appends —
+  the two bugs that made the old fixer unsound:
+  - **converged** — no `in_stack` left; keep.
+  - **params_bound_residual** — the flagged offsets are bound (params correct) but
+    a residual `in_stack` remains at a *different* offset (a sub-dword read inside
+    a bound slot); keep the binding, log the residual (reverting would restore a
+    weaker signature).
+  - **dynamic_storage_insufficient** — a flagged offset stayed unbound; revert to
+    the exact prior signature.
+
+Applied on the clean #91 DB: **152 converged** + **11 params_bound_residual**
+(163 signatures kept, verified) + **53 reverted** (`dynamic_storage_insufficient`
+— packed sub-dword args, sret hidden pointers, spurious high-offset locals), **0**
+unparsable/apply_error (strict passes). The **64** queued
+(`build-msvc500/evidence/source_signature_queue.csv`) are the standing evidence —
+explained, not a backlog — so every source-owned function that still decompiles
+with `in_stack` has an understood reason. `just in-stack-audit` is retained as the
+final read-only diagnostic in the full flow; `packed`/`sret` binding via
+`CUSTOM_STORAGE` is a deliberate follow-up, not part of this pass.
+
+## 2026-07-19 (eighth): signature projection made transactionally safe (PR #94, NO DB change)
+
+Hardening of the projector; **the committed `.gzf` is unchanged** (the DB
+mutations are identical, only the safety/classification of the *apply path* is).
+
+- **Per-function transactions replace the manual restore.** Each projection now
+  runs in its own `startTransaction`/`endTransaction`; on reject the transaction is
+  ABORTED, and Ghidra's rollback is the exact-restore mechanism. The old
+  `_restore()` rebuilt the signature by hand, ignored `hasCustomVariableStorage()`
+  and every saved storage object, and swallowed exceptions — so a reverted
+  custom-storage function would NOT have been restored, while the outer transaction
+  still committed and the queue still reported it "reverted". Verified live: a
+  reverted function (`TOcean::EnsurePortZoneForTile`, DB `__stdcall`/2-param vs
+  source 1-param method) is byte-for-byte its prior signature after rollback.
+- **Audit of the prior committed DB (the concern the restore flaw raised):** on the
+  clean #91 base, **0 of 4064** projection candidates (FUNCTION + LIBRARY with a
+  prototype) had `hasCustomVariableStorage()`. Since every candidate already used
+  dynamic storage, the old `_restore` reproduced the original exactly for all 53
+  reverted functions — **the seventh-entry `.gzf` (`d7103d46…`) was NOT corrupted**,
+  no restore/replay needed.
+- **Distinct outcome states** (previously conflated): `missing_function` (address
+  has no DB function), `decompile_failed:before`/`:after` (a `None` decompile ≠ an
+  empty `in_stack` set), `apply_error`. The `_HARD_FAIL_REASONS` (unparsable /
+  apply_error / decompile_failed) fail `--strict`; the structural buckets do not.
+- **Verifier caveat made explicit** (and a known classification gap documented):
+  `in_stack` clearing is NECESSARY, not SUFFICIENT — it does not prove the
+  convention / member-vs-static kind / param types are correct. The entity-kind →
+  convention classification is punctuation-based (a `static` member or a
+  namespace-qualified free function whose out-of-class definition head omits
+  `static` is read as an instance method → `__thiscall`). A structural,
+  compiler-backed convergence check is the follow-up; today `in_stack` is a
+  projection trigger + weak verifier. New live-Ghidra smoke test covers the
+  rollback primitive; pure-Python tests cover parse / entity-kind / bucket logic.
+
+## 2026-07-19 (ninth): source-DRIVEN signature projection (PR #96, committed DB change)
+
+The PR #95 structural audit showed the source→DB gap was far larger than the 64
+in_stack queue: ~1936 claims sat at `cc=unknown`/0 params (Ghidra never resolved
+them; they produce no `in_stack`, so the in_stack-triggered projector never saw
+them), plus ~294 arity mismatches. This projects that gap.
+
+`just project-divergent-signatures --apply` (a mode of `apply_source_signatures`,
+`run_divergent`) applies source signatures to the safe, high-value candidates —
+db_signature_incomplete and param_count with source arity > DB arity and matching
+convention — regardless of `in_stack`. Acceptance is STRICTER than the in_stack
+path (those functions have no in_stack to clear, so clearing proves nothing):
+per-function transaction, commit ONLY on FULL convergence — the re-decompile has
+no `in_stack` (the source signature didn't introduce a frame the binary
+contradicts) AND the resulting DB logical signature structurally matches expected
+(convention + arity + this). Everything else rolls back (transaction abort) and is
+queued. Convention_mismatch and DB-over-declared (source arity < DB) are excluded
+as delicate / handled elsewhere.
+
+Applied on the committed #92 base (`d7103d46…`): **projected=1740** (fully
+converged, verified), **queued=277** (unresolved_param=177 — a source type we
+cannot size; introduced_in_stack=87 — source/binary disagree, e.g. sret/packed/
+under-declaration; sret_by_value_return=3; decompile_failed=9; structural_mismatch=1),
+0 apply_error (strict passes). Re-exported → `5ccd1088…`.
+
+Structural convergence over all 4064 claims moved **converged 1813 → 3701**
+(db_signature_incomplete 1936 → 255, param_count_mismatch 294 → 87) — 45% → 91%.
+No regressions (the projector only touches incomplete/short functions and only
+commits full convergence, so a converged function cannot become non-converged).
+The 277 queue is the input to the ABI-exception lowering follow-up (sret / packed
+CUSTOM_STORAGE / type modeling for the 177 unresolved). Wired into
+`ghidra-apply-source-full` after the in_stack projection.
+
+## 2026-07-19 (tenth): constructor-prototype parse fix + missing typedefs (PR #97, committed DB change)
+
+Diagnosing the divergent queue's 177 `unresolved_param` revealed most were not
+missing types but a PARSER bug: `parse_prototype` took the LAST balanced paren
+group as the arg list, so a constructor with a member-initializer list
+(`TFoo::TFoo(args) : TBase(...), field(0)`) parsed its args as the init-list tail
+(`) : TBase(`). Fixed to take the FIRST balanced group (nested parens in a
+function-pointer parameter handled by a depth counter); added the genuinely-missing
+pointer-sized typedefs (`RgnHandle`, `LPCTSTR`/`LPTSTR`, `LPCREATESTRUCT`,
+`TSortedListCompareFunc`, window/dialog procs, …) to the pointer-alias set.
+
+Re-running `project-divergent-signatures --apply` on the #96 base (`5ccd1088…`):
+`unresolved_param` 177 → 6, **projected=37** more, 0 apply_error. Re-exported →
+`6b841b63…`. The structural audit moved **converged 3701 → 3871** (95%),
+`db_signature_incomplete` 255 → 87, type-resolution `unresolved` 201 → 15 — a mix
+of 37 real new projections and ~133 constructors that were always converged but
+mis-measured by the same parse bug (the audit shares `parse_prototype`), so the
+true convergence was always higher than #96 reported. The remaining queue (87
+`introduced_in_stack`, 3 sret, 6 unresolved, 8 decompile timeouts) is the genuine
+ABI-exception set — sret needs correct return-type SIZES first (e.g. `CPoint` is a
+1-byte DB placeholder; MSVC returns non-trivial small structs via a hidden pointer
+Ghidra won't model until the type is sized), so type modeling precedes the
+sret/packed CUSTOM_STORAGE lowering.
+
+## 2026-07-19 (eleventh): verified packed sub-dword CUSTOM_STORAGE (PR #98, committed DB change)
+
+The dominant `introduced_in_stack` residue (50 @0x6, 20 @0xa, …) is the packed
+sub-dword case: MSVC500 packs adjacent short/byte args into one dword, which
+DYNAMIC_STORAGE dword-aligns, leaving the packed read unbound.
+`just project-packed-signatures --apply` (`run_packed`) models the arguments
+tight-packed from 0x4 (`this` in ECX for __thiscall) via CUSTOM_STORAGE and commits
+ONLY on a fully clean re-decompile — the packing is the hypothesis, the empty
+in_stack the proof; a wrong packing rolls back (`packing_mismatch`).
+
+On the #97 base (`6b841b63…`): **projected=11** (verified), queued=45
+(packing_mismatch=43 — the tight-packing model doesn't fit the real layout, e.g.
+3+ mixed sub-dword args; decompile_failed=2). Re-exported → `6c413c42…`. Also fixed
+`_db_logical` to treat a `this`-named param as the receiver whether Ghidra models it
+auto (DYNAMIC_STORAGE) or explicit-in-ECX (CUSTOM_STORAGE) — without it the audit
+mis-counted the packed functions' explicit `this` as a parameter. Structural audit:
+converged 3871 → 3876 (the 11 packed clear their in_stack; the audit measures the
+signature match). The 43 packing_mismatch need per-function packing analysis (a
+richer packing model than tight-consecutive) — future work.
 
 ## Committed mutations (already in the current .gzf, newest first)
 
@@ -52,8 +323,8 @@ From `git log --follow -- vendor/ghidra/exports/Imperialism.gzf`:
 
 Most of these are *derived* mutations (names/types pushed from source or from
 imports) and are reproducible on a new DB via the standard pipeline:
-`just push-names --apply` + `just import-ghidra` + the apply_* tools
-(`apply_mfc_datatypes`, `apply_mfc_rtti`, `apply_source_datatypes`).
+`just ghidra-apply-source-full` (build -> PDB import -> source-name apply -> export)
+plus the MFC appliers (`apply_mfc_datatypes`, `apply_mfc_rtti`).
 
 ## 2026-07-02: gap-repair mutation committed (two bugs found and fixed)
 
