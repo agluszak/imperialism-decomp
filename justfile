@@ -1166,6 +1166,13 @@ synthetic-gate:
 symbols-integrity-gate:
   uv run python -m tools.workflow.check_symbols_integrity
 
+# Reject generated build inputs and retired generated source trees in a PR's diff. CI supplies
+# the merge base and --no-worktree so only committed branch changes are inspected.
+[doc('Reject generated artifacts relative to a merge base')]
+[group('gates')]
+generated-integrity-gate *args:
+  uv run python -m tools.workflow.check_generated_integrity {{args}}
+
 # Semantic gate for reviewed MSVC500 library identities: every row in
 # config/reviewed_library_identities.csv must be faithfully projected (overlay+markers)
 # (name/symbol/prototype/type) + ownership=library, and the applied count must not
@@ -1498,4 +1505,3 @@ vendor-msvc500-headers *args:
 [group('setup')]
 vendor-directx-headers *args:
   uv run python -m tools.workflow.vendor_directx_headers {{args}}
-
