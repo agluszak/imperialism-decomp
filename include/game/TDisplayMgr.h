@@ -26,12 +26,12 @@ public:
                                                        short bitDepth,
                                                        RECT* bounds); // slot 0x0b 0x4feab0
   virtual void EnsurePrimaryRenderSurfaceContextAllocated();          // slot 0x0c 0x4feb80
-  virtual undefined DisplayMgrSlot0D();                               // slot 0x0d 0x4febd0
-  virtual undefined DisplayMgrSlot0E();                               // slot 0x0e 0x4fed00
+  virtual undefined DisplayMgrSlot0D(int unusedArg);                  // slot 0x0d 0x4febd0
+  virtual undefined DisplayMgrSlot0E(int unusedArg);                  // slot 0x0e 0x4fed00
   virtual undefined OrphanRetStub_004fed50(char param_1);             // slot 0x0f 0x4fed50
   virtual undefined AssertUDisplayMgrLines614And616(char param_1);    // slot 0x10 0x4fed70
   virtual undefined AssertUDisplayMgrLine471();                       // slot 0x11 0x4fec20
-  virtual undefined AssertUDisplayMgrLine495();                       // slot 0x12 0x4fec50
+  virtual undefined AssertUDisplayMgrLine495(int unusedArg);          // slot 0x12 0x4fec50
   // slot 0x13 0x4fec80 — forwards (message, messageStoreRef) to the TViewMgr
   // RunControlStringProvider dispatch.
   virtual void DispatchDisplayManagerControlStringMessage(CString message,

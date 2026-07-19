@@ -2731,8 +2731,8 @@ address|name|symbol|size|type|prototype|provenance
 4ef590|TDiplomacyMgr::IsNationPairRelationTurnStampOutOfDate||76|function|undefined HasWarRelationTurnStampOutOfDate()|
 4ef600|HasAnyWarRelationForNation||49|function|undefined HasAnyWarRelationForNation()|
 4ef650|TDiplomacyMgr::HasAnyWarRelationTurnStampOutOfDateForNation||49|function|undefined HasAnyWarRelationTurnStampOutOfDateForNation()|
-4ef6a0|IsNationSlotInPrimaryGroupA||24|function|undefined IsNationSlotInPrimaryGroupA()|
-4ef6d0|IsNationSlotInPrimaryGroupB||24|function|undefined IsNationSlotInPrimaryGroupB()|
+4ef6a0|IsNationSlotInPrimaryGroupA||24|function|char IsNationSlotInPrimaryGroupA(int nationSlot, int unusedArg)|
+4ef6d0|IsNationSlotInPrimaryGroupB||24|function|char IsNationSlotInPrimaryGroupB(int nationSlot, int unusedArg)|
 4ef700|TDiplomacyMgr::ValidateDiplomacyActionTypeAgainstTargetAndSetRejectCode||1000|function|undefined ValidateDiplomacyActionTypeAgainstTargetAndSetRejectCode()|
 4efc30|TDiplomacyMgr::HasAllianceGuardSlot60||90|function|undefined HasAsymmetricWarRelationForPrimaryNation()|
 4efcb0|TDiplomacyMgr::SetStandingScoreSlot28||302|function|undefined SetNationPairDiplomacyStandingScoreClampedAndNotifyMinors()|
@@ -2753,7 +2753,7 @@ address|name|symbol|size|type|prototype|provenance
 4f1760|RecomputeNationComparativePowerMetrics||415|function|undefined RecomputeNationComparativePowerMetrics()|
 4f1970|HasState300LinkBetweenNationPair||56|function|undefined HasState300LinkBetweenNationPair()|
 4f19c0|TDiplomacyMgr::GetNationPairDiplomacyStandingTierCode||140|function|undefined GetNationPairDiplomacyStandingTierCode()|
-4f1a80|TDiplomacyMgr::ShowRelationCodeNoticeForNationPairIfRelevant||73|function|undefined ShowRelationCodeNoticeForNationPairIfRelevant()|
+4f1a80|TDiplomacyMgr::ShowRelationCodeNoticeForNationPairIfRelevant||73|function|void ShowRelationCodeNoticeForNationPairIfRelevant(int sourceNation, int targetNation, int unusedArg)|
 4f1b10|TDiplomacyMgr::GetNationPairDiplomacyRelationCode||32|function|undefined GetNationPairDiplomacyRelationCode()|
 4f1b40|TDiplomacyMgr::SetNationPairDiplomacyRelationCodeFinal||25|function|undefined SetNationPairDiplomacyRelationWithFinalFlag()|
 4f1b70|TDiplomacyMgr::SetNationPairDiplomacyRelationCode||718|function|undefined SetNationPairDiplomacyRelationAndApplySideEffects()|
@@ -2928,11 +2928,11 @@ address|name|symbol|size|type|prototype|provenance
 4feab0|TDisplayMgr::InitializeBitmapSurfaceContextWithRetry||87|function|undefined InitializeBitmapSurfaceContextWithRetry(int *outContext, short bitDepth, RECT *bounds)|
 4feb50|TDisplayMgr::FreeQuickDrawSurfaceContextSlot||26|function|void WrapperFor_FreeHeapBufferIfNotNull_At004feb50(int * field)|
 4feb80|TDisplayMgr::EnsurePrimaryRenderSurfaceContextAllocated||62|function|undefined EnsurePrimaryRenderSurfaceContextAllocated()|
-4febd0|TDisplayMgr::DisplayMgrSlot0D||50|function|undefined WrapperFor_thunk_NoOpCallback_00498ca0_At004febd0(void)|
+4febd0|TDisplayMgr::DisplayMgrSlot0D||50|function|undefined DisplayMgrSlot0D(int unusedArg)|
 4fec20|TDisplayMgr::AssertUDisplayMgrLine471||28|function|undefined AssertUDisplayMgrLine471()|
-4fec50|TDisplayMgr::AssertUDisplayMgrLine495||30|function|undefined AssertUDisplayMgrLine495()|
+4fec50|TDisplayMgr::AssertUDisplayMgrLine495||30|function|undefined AssertUDisplayMgrLine495(int unusedArg)|
 4fec80|TDisplayMgr::DispatchDisplayManagerControlStringMessage||96|function|undefined DispatchDisplayManagerControlStringMessage()|
-4fed00|TDisplayMgr::DisplayMgrSlot0E||57|function|undefined WrapperFor_thunk_NoOpCallback_00498ca0_At004fed00(void)|
+4fed00|TDisplayMgr::DisplayMgrSlot0E||57|function|undefined DisplayMgrSlot0E(int unusedArg)|
 4fed50|TDisplayMgr::OrphanRetStub_004fed50||3|function|undefined OrphanRetStub_004fed50(void)|
 4fed70|TDisplayMgr::AssertUDisplayMgrLines614And616||57|function|undefined AssertUDisplayMgrLines614And616()|
 4fedc0|TDisplayMgr::LoadMainViewClipSnapshotIntoQuickDrawState||387|function|undefined LoadMainViewClipSnapshotIntoQuickDrawState()|

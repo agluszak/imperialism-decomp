@@ -267,13 +267,15 @@ char TDiplomacyMgr::HasAnyWarRelationTurnStampOutOfDateForNation(int sourceNatio
 }
 
 // FUNCTION: IMPERIALISM 0x004ef6a0
-char TDiplomacyMgr::IsNationSlotInPrimaryGroupA(int nationSlot) {
+char TDiplomacyMgr::IsNationSlotInPrimaryGroupA(int nationSlot, int unusedArg) {
+  (void)unusedArg;
   (void)nationSlot;
   return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004ef6d0
-char TDiplomacyMgr::IsNationSlotInPrimaryGroupB(int nationSlot) {
+char TDiplomacyMgr::IsNationSlotInPrimaryGroupB(int nationSlot, int unusedArg) {
+  (void)unusedArg;
   (void)nationSlot;
   return 0;
 }
@@ -1158,9 +1160,10 @@ int TDiplomacyMgr::GetNationPairDiplomacyStandingTierCode(int sourceNationSlot,
 
 // FUNCTION: IMPERIALISM 0x004f1a80
 void TDiplomacyMgr::ShowRelationCodeNoticeForNationPairIfRelevant(int sourceNation,
-                                                                  int targetNation) {
+                                                                  int targetNation, int unusedArg) {
   (void)sourceNation;
   (void)targetNation;
+  (void)unusedArg;
 }
 
 // FUNCTION: IMPERIALISM 0x004f1b10
