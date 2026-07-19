@@ -125,8 +125,11 @@ public:
 
   TShipFractionCluster();
 
-  // Original object size is 0x98 (CRuntimeClass m_nObjectSize); the source class ended at 0x88. Trailing 16 byte(s) not yet semantically recovered — declared so sizeof and the recomp's allocation size match the original.
-  int field88;
+  // Original object size is 0x98 (CRuntimeClass m_nObjectSize); the source class ended at 0x88.
+  // field88 is a quantity/count read by TShipPlacard::ApplyRectSlot110 (this->ownerContext+0x88)
+  // as a short. Trailing 12 byte(s) beyond it not yet semantically recovered.
+  short field88;
+  short pad8a;
   int field8c;
   int field90;
   int field94;

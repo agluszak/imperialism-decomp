@@ -18128,7 +18128,7 @@
     },
     {
       "address": "0x51bcc0",
-      "matching": 0.05,
+      "matching": 0.7428571428571429,
       "name": "TTownNameDialog::ApplyRectSlot110",
       "type": 1
     },
@@ -24500,7 +24500,7 @@
     },
     {
       "address": "0x5692f0",
-      "matching": 0.027777777777777776,
+      "matching": 1.0,
       "name": "TShipPlacard::ApplyRectSlot110",
       "type": 1
     },
