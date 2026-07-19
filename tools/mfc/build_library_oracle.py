@@ -16,7 +16,7 @@ that linker-assigned addresses don't matter:
 
 Duplicate normal forms (byte-identical library functions) are resolved with
 secondary evidence — the symbol the address already carries — before falling back
-to a review queue. Output: config/msvc500_library_oracle.csv with
+to a review queue. Output: build-msvc500/evidence/library/msvc500_library_oracle.csv with
 address|name|symbol|prototype|library|member|match_kind|confidence|candidate_count.
 
 Unique matches are safe to apply automatically (see apply_library_oracle.py);
@@ -45,7 +45,7 @@ DEFAULT_LIBS = [
     ("nafxcw", "vendor/msvc500/lib/nafxcw.lib"),
 ]
 DEFAULT_SYMBOLS = "config/original_entities.csv"
-DEFAULT_OUT = "config/msvc500_library_oracle.csv"
+DEFAULT_OUT = "build-msvc500/evidence/library/msvc500_library_oracle.csv"
 
 # Below this size a full masked match is not discriminative enough to trust
 # blindly (many tiny thunks share a normal form); such matches are still recorded

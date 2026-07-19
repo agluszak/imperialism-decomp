@@ -37,18 +37,19 @@ with no `_rand` symbol and no library ownership — forever.
 
 The **reviewed override layer** fixes such rows durably:
 
-- Add a row to `config/msvc500_library_overrides.csv`
-  (`address|name|symbol|prototype|library_family|object_member|evidence`).
-- `just apply-library-overrides` (idempotent)
-  projects it into the inventory (name/symbol/prototype, `provenance=msvc500_library_override`)
-  and ensures a `// LIBRARY:` marker (in `library_msvc500_overrides.cpp`) so
+- Add a row to `config/reviewed_library_identities.csv`
+  (`address|name|symbol|prototype|library_family|object_member|evidence`) — the ONE
+  reviewed identity table (hand overrides + accepted object-matcher results).
+- `just apply-library-overrides` (idempotent) ensures a `// LIBRARY:` marker (in
+  `library_msvc500_overrides.cpp`); the name/symbol/prototype projection happens as
+  a generation-time overlay (tools/generate_symbols.py) so
   ownership derives from the markers directly. It only adds a marker where none
   exists, so prototype-only corrections on already-owned FID rows don't duplicate.
 - Precedence: **reviewed override > FID > existing curated > provisional Ghidra**.
   The FID apply defers override addresses, so a manual FID re-run can't clobber them.
-- `just library-identity-gate` (in `just gates`) pins every override into the inventory
-  + `ownership=library` and ratchets the applied count — regressing rand back to a
-  descriptive name fails the gate.
+- `just library-identity-gate` (in `just gates`) pins every reviewed row into the
+  generated overlay + a LIBRARY marker — regressing rand back to a descriptive
+  name fails the gate.
 
 **Before behaviourally naming any MSVC/MFC-range or CRT-shaped function, run
 `just library-identify 0xADDR`.** It aggregates symbols/ownership/override/FID/oracle
@@ -63,8 +64,9 @@ object members, masks each function's relocation fields (call/jmp targets, absol
 data refs) and trims alignment padding to a normal form, then matches every
 executable function's bytes against it. An exact-size, exact-masked match is a
 confident identity regardless of where the linker placed anything. Output:
-`config/msvc500_library_oracle.csv`
-(`address|name|symbol|prototype|library|member|match_kind|confidence|candidate_count`).
+`build-msvc500/evidence/library/msvc500_library_oracle.csv` (uncommitted report;
+`address|name|symbol|prototype|library|member|match_kind|confidence|candidate_count`).
+Accepting a match = copying it into `config/reviewed_library_identities.csv`.
 
 `just apply-library-oracle` (idempotent) projects the
 confident, unique matches: it **upgrades the exact decorated `symbol` + prototype**

@@ -25,7 +25,7 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "--baseline",
-        default=str(repo_root / "config" / "tgreatpower_gate_baseline.csv"),
+        default=str(repo_root / "config" / "baselines" / "tgreatpower_gate_baseline.csv"),
         help="CSV file with baseline per-file pattern counts.",
     )
     parser.add_argument(

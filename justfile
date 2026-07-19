@@ -8,9 +8,9 @@ docker_image := "imperialism-msvc500"
 lint_build_dir := "build-clang"
 lint_docker_image := "imperialism-clang-mingw"
 cmake_flags := "-DCMAKE_BUILD_TYPE=RelWithDebInfo -DIMPERIALISM_LINK_MFC=ON -DIMPERIALISM_MATCH_FLAGS_CSV=/Oy,/Ob1"
-vtable_gate_baseline := "config/vtable_gate_baseline.csv"
-construction_gate_baseline := "config/construction_gate_baseline.csv"
-tgreatpower_gate_baseline := "config/tgreatpower_gate_baseline.csv"
+vtable_gate_baseline := "config/baselines/vtable_gate_baseline.csv"
+construction_gate_baseline := "config/baselines/construction_gate_baseline.csv"
+tgreatpower_gate_baseline := "config/baselines/tgreatpower_gate_baseline.csv"
 class_discovery_classes := "TGreatPower,TAutoGreatPower"
 
 # The Ghidra project is vendored in-repo; only GHIDRA_INSTALL_DIR is machine-specific (.env).
@@ -741,7 +741,7 @@ export-project *args: _require-ghidra-install
   uv run python -m tools.ghidra.export_project {{args}}
 
 # MUTATES: Ghidra DB (with --apply).
-# Push reviewed library override names (config/msvc500_library_overrides.csv)
+# Push reviewed library override names (config/reviewed_library_identities.csv)
 # directly into the DB, including label-only + out-of-range addresses push-names
 # skips, so the exported .gzf carries them. Dry-run by default; --apply writes.
 [doc('MUTATES: Ghidra DB (--apply). Push reviewed library override names into the DB')]
@@ -895,7 +895,7 @@ datacmp-gate:
 # bodies need a // FUNCTION marker or a `// NOOP: verified empty in original 0xADDR`.
 [group('gates')]
 noop-gate:
-  uv run python -m tools.workflow.check_empty_bodies --baseline config/empty_body_baseline.csv
+  uv run python -m tools.workflow.check_empty_bodies --baseline config/baselines/empty_body_baseline.csv
 
 # Report every empty-body finding (audit mode of the noop gate).
 # `just noop-audit [--kind empty_but_big|empty_unmarked|empty_unresolved]`
@@ -930,14 +930,14 @@ vtable-abi-audit *args:
   uv run python -m tools.workflow.vtable_abi_audit {{args}}
 
 # Ratchet gate over the ABI audit: fails on NEW proven declaration conflicts
-# (address+class not in config/vtable_abi_gate_baseline.csv and not covered by a
+# (address+class not in config/baselines/vtable_abi_gate_baseline.csv and not covered by a
 # reviewed config/vtable_signature_overrides.csv row). Pure source + static
 # evidence; no Ghidra needed.
 [group('gates')]
 vtable-abi-gate:
   uv run python -m tools.workflow.vtable_abi_audit --gate
 
-# MUTATES: config/vtable_abi_gate_baseline.csv. Refresh after fixing conflicts.
+# MUTATES: config/baselines/vtable_abi_gate_baseline.csv. Refresh after fixing conflicts.
 [group('gates')]
 vtable-abi-gate-update:
   uv run python -m tools.workflow.vtable_abi_audit --write-baseline
@@ -957,12 +957,12 @@ generated-marker-gate:
 # Ratchet gate against ILT/thunk-name ossification in manual source: rejects NEW
 # identifiers that start with thunk_/ILT_/WrapperFor_ or end with _At<8hex> (calls
 # via linker thunks; history-encoded body names). Existing debt is grandfathered in
-# config/ilt_ossification_baseline.csv — a finite, shrink-only migration queue.
+# config/baselines/ilt_ossification_baseline.csv — a finite, shrink-only migration queue.
 [group('gates')]
 ilt-ossification-gate:
   uv run python -m tools.workflow.check_ilt_ossification
 
-# MUTATES: config/ilt_ossification_baseline.csv. Ratchet down after migrating a thunk
+# MUTATES: config/baselines/ilt_ossification_baseline.csv. Ratchet down after migrating a thunk
 # or renaming a WrapperFor_/_At body. Never run to silence a new offender.
 [group('gates')]
 ilt-ossification-gate-update:
@@ -997,7 +997,7 @@ symbols-integrity-gate:
   uv run python -m tools.workflow.check_symbols_integrity
 
 # Semantic gate for reviewed MSVC500 library identities: every row in
-# config/msvc500_library_overrides.csv must be faithfully applied to symbols.csv
+# config/reviewed_library_identities.csv must be faithfully projected (overlay+markers)
 # (name/symbol/prototype/type) + ownership=library, and the applied count must not
 # fall below the ratchet baseline. Pins e.g. 0x005e83f0 = rand/_rand permanently.
 [doc('Semantic library-identity gate: reviewed overrides applied + ownership=library + ratchet')]
@@ -1005,7 +1005,7 @@ symbols-integrity-gate:
 library-identity-gate:
   uv run python -m tools.workflow.check_library_identity
 
-[doc('MUTATES config/library_identity_gate_baseline.json: record current applied-override count')]
+[doc('MUTATES config/baselines/library_identity_gate_baseline.json: record current applied-override count')]
 [group('baseline-update')]
 library-identity-gate-update:
   @test "${ALLOW_POLICY_BASELINE_UPDATE:-}" = "1" || { echo "REFUSED: this rewrites an architecture-policy baseline (blessing new debt)."; echo "If a human approved the exception, rerun with ALLOW_POLICY_BASELINE_UPDATE=1."; exit 2; }
@@ -1118,6 +1118,7 @@ generated-integrity-gate *args:
 [doc('Source-only gate subset (what CI enforces; no built binary needed)')]
 [group('gates')]
 source-gates:
+  just generate
   just tooling-check
   just vtable-gate
   just antipattern-gate
@@ -1171,7 +1172,7 @@ format-check *paths:
 # baseline-update — targets that REWRITE committed baselines/configs.
 # ---------------------------------------------------------------------------
 
-# MUTATES: config/reccmp_progress_baseline.json. (Was `stats-commit`.)
+# MUTATES: config/baselines/reccmp_progress_baseline.json. (Was `stats-commit`.)
 [group('baseline-update')]
 stats-baseline-update:
   uv run python -m tools.reccmp.progress_stats --target "{{target}}" --build-dir "{{build_dir}}" --detect-recompiled --commit-baseline
@@ -1181,19 +1182,19 @@ stats-baseline-update:
 tooling-surface-update:
   uv run python -m tools.workflow.check_tooling_surface --write
 
-# MUTATES: config/vtable_gate_baseline.csv.
+# MUTATES: config/baselines/vtable_gate_baseline.csv.
 [group('baseline-update')]
 vtable-gate-update:
   @test "${ALLOW_POLICY_BASELINE_UPDATE:-}" = "1" || { echo "REFUSED: this rewrites an architecture-policy baseline (blessing new debt)."; echo "If a human approved the exception, rerun with ALLOW_POLICY_BASELINE_UPDATE=1."; exit 2; }
   uv run python -m tools.workflow.check_no_raw_vtable_calls --baseline "{{vtable_gate_baseline}}" --write-baseline
 
-# MUTATES: config/construction_gate_baseline.csv.
+# MUTATES: config/baselines/construction_gate_baseline.csv.
 [group('baseline-update')]
 antipattern-gate-update:
   @test "${ALLOW_POLICY_BASELINE_UPDATE:-}" = "1" || { echo "REFUSED: this rewrites an architecture-policy baseline (blessing new debt)."; echo "If a human approved the exception, rerun with ALLOW_POLICY_BASELINE_UPDATE=1."; exit 2; }
   uv run python -m tools.workflow.check_construction_antipatterns --baseline "{{construction_gate_baseline}}" --write-baseline
 
-# MUTATES: config/tgreatpower_gate_baseline.csv.
+# MUTATES: config/baselines/tgreatpower_gate_baseline.csv.
 [group('baseline-update')]
 tgreatpower-gate-update:
   @test "${ALLOW_POLICY_BASELINE_UPDATE:-}" = "1" || { echo "REFUSED: this rewrites an architecture-policy baseline (blessing new debt)."; echo "If a human approved the exception, rerun with ALLOW_POLICY_BASELINE_UPDATE=1."; exit 2; }
@@ -1216,11 +1217,11 @@ boundary-gate-update:
 datacmp-gate-update:
   uv run python -m tools.workflow.check_datacmp_baseline --target "{{target}}" --build-dir "{{build_dir}}" --write-baseline
 
-# MUTATES: config/empty_body_baseline.csv.
+# MUTATES: config/baselines/empty_body_baseline.csv.
 [group('baseline-update')]
 noop-gate-update:
   @test "${ALLOW_POLICY_BASELINE_UPDATE:-}" = "1" || { echo "REFUSED: this rewrites an architecture-policy baseline (blessing new debt)."; echo "If a human approved the exception, rerun with ALLOW_POLICY_BASELINE_UPDATE=1."; exit 2; }
-  uv run python -m tools.workflow.check_empty_bodies --write-baseline config/empty_body_baseline.csv
+  uv run python -m tools.workflow.check_empty_bodies --write-baseline config/baselines/empty_body_baseline.csv
 
 # MUTATES: reccmp-project.yml ignore lists (Hard Rule 14).
 [group('baseline-update')]
@@ -1278,7 +1279,7 @@ apply-msvc500-library-region *args:
   uv run python -m tools.mfc.apply_msvc500_library_region {{args}}
 
 # MUTATES: config/original_entities.csv + src/game/library_msvc500_overrides.cpp.
-# Project reviewed library-identity overrides (config/msvc500_library_overrides.csv)
+# Project reviewed library identities (config/reviewed_library_identities.csv)
 # onto the derived artifacts. Idempotent.
 # Reviewed overrides win over FID for confirmed CRT/MFC functions FID missed (rand).
 [group('rewrite')]
@@ -1293,7 +1294,7 @@ apply-library-overrides *args:
 library-identify address:
   uv run python -m tools.mfc.library_identify "{{address}}"
 
-# MUTATES: config/msvc500_library_oracle.csv. Rebuild the relocation-masked object
+# Rebuild the relocation-masked object-matcher report into build evidence (uncommitted).
 # identity oracle by matching the original executable against the vendored
 # libcmt.lib/nafxcw.lib COFF members. Needs the original binary (ORIGINAL_BINARY).
 [group('rewrite')]

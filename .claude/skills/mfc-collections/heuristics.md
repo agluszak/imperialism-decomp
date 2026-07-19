@@ -168,7 +168,7 @@ SYNTHETIC + empty message map. Four traps that each cost a wrong first attempt:
 
 2. **Plain-CDialog subclasses can't reach 100% until `CDialog::DoModal` is a named library
    function.** Their inherited slot 0xc0 references it, but if 0x6051b9 is an unnamed placeholder
-   the recomp's COMDAT copies don't pair. Add it to `msvc500_library_overrides.csv`
+   the recomp's COMDAT copies don't pair. Add it to `reviewed_library_identities.csv`
    (`?DoModal@CDialog@@UAEHXZ`, nafxcw/dlgcore.obj) — fixes all of them at once. Then retire the
    freed `DoModal_6051b9` stub: its game callers become real `dialog.DoModal()`.
 

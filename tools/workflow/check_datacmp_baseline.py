@@ -5,7 +5,7 @@
 and recompiled binaries but always exits 0, so data regressions only surface
 when someone reads the output. This wraps it in the standard ratchet: parse
 the report into per-variable fingerprints (status + number of differing-byte
-detail lines) and compare against config/datacmp_baseline.csv:
+detail lines) and compare against config/baselines/datacmp_baseline.csv:
 
   - a variable not in the baseline           -> FAIL (new data mismatch)
   - status worsened or diff-line count grew  -> FAIL (regressed global)
@@ -126,7 +126,7 @@ def main() -> int:
     parser.add_argument("--target", default="IMPERIALISM")
     parser.add_argument("--build-dir", default=str(repo_root / "build-msvc500"))
     parser.add_argument(
-        "--baseline", default=str(repo_root / "config" / "datacmp_baseline.csv")
+        "--baseline", default=str(repo_root / "config" / "baselines" / "datacmp_baseline.csv")
     )
     parser.add_argument("--report-file", default="", help="Parse this saved output instead of running datacmp")
     parser.add_argument("--write-baseline", action="store_true")

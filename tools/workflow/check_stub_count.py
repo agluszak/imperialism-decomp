@@ -14,7 +14,7 @@ methods) lost its claim and would be re-stubbed, which silently breaks vtables.
   - count < baseline  -> PASS + reminder to ratchet the baseline down
   - count == baseline -> PASS
 
-`--write-baseline` records the current count (config/stub_count_baseline.json).
+`--write-baseline` records the current count (config/baselines/stub_count_baseline.json).
 """
 
 from __future__ import annotations
@@ -31,7 +31,7 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
         "--baseline",
-        default=str(repo_root / "config" / "stub_count_baseline.json"),
+        default=str(repo_root / "config" / "baselines" / "stub_count_baseline.json"),
     )
     parser.add_argument(
         "--write-baseline",
