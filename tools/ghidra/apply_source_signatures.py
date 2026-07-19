@@ -361,12 +361,27 @@ class TypeResolver:
         # name -> DataType cache for named lookups, plus a same-simple-name count so
         # we can flag ambiguous resolutions (two datatypes from different categories
         # sharing a name — a lossy pick, not a semantic match).
+        #
+        # One name collision is NOT ambiguous and must not count as one: a Win32
+        # function-pointer typedef (e.g. WNDPROC) and Ghidra's own auto-generated
+        # `.../functions/WNDPROC` FunctionDefinitionDataType, which is the typedef's
+        # pointee signature, not a usable parameter type on its own (you can't
+        # declare a parameter of that bare function-definition "type" in C++; only
+        # the typedef/pointer form appears in real signatures). Prefer the
+        # non-FunctionDefinition datatype for the name and drop the function
+        # definition from the ambiguity count entirely.
+        from ghidra.program.model.data import FunctionDefinition
+        by_name: dict[str, list] = {}
+        for dt in self.dtm.getAllDataTypes():
+            by_name.setdefault(dt.getName(), []).append(dt)
         self._named: dict[str, object] = {}
         self._name_count: dict[str, int] = {}
-        for dt in self.dtm.getAllDataTypes():
-            nm = dt.getName()
-            self._named.setdefault(nm, dt)
-            self._name_count[nm] = self._name_count.get(nm, 0) + 1
+        for nm, candidates in by_name.items():
+            usable = [dt for dt in candidates if not isinstance(dt, FunctionDefinition)]
+            if not usable:
+                usable = candidates  # every candidate is a bare function definition
+            self._named[nm] = usable[0]
+            self._name_count[nm] = len(usable)
 
     @staticmethod
     def is_opaque(dt) -> bool:
