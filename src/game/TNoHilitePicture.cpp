@@ -8,7 +8,9 @@
 IMPLEMENT_DYNCREATE(TNoHilitePicture, TPicture)
 
 // FUNCTION: IMPERIALISM 0x00572b30
-TNoHilitePicture::TNoHilitePicture() : TPicture() { field90 = 0; }
+TNoHilitePicture::TNoHilitePicture() : TPicture() {
+  field90 = 0;
+}
 
 // SYNTHETIC: IMPERIALISM 0x00572b60
 // TNoHilitePicture::`scalar deleting destructor'

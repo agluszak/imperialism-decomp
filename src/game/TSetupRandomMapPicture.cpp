@@ -49,9 +49,12 @@ TSetupRandomMapPicture::~TSetupRandomMapPicture() {}
 
 // FUNCTION: IMPERIALISM 0x00576fe0
 void TSetupRandomMapPicture::RecheckCountryName() {
-  if (countryControlReadyA4 == 0 && g_pSimMgr->field44 == 0) {
-    TEditText* countryControl = static_cast<TEditText*>(ResolveControlByTag(kControlTagCoun));
-    countryControl->AssertValid();
+  if (countryControlReadyA4 == 0) {
+    bool sessionInactive = g_pSimMgr->field44 == 0;
+    if (sessionInactive) {
+      TEditText* countryControl = static_cast<TEditText*>(ResolveControlByTag(kControlTagCoun));
+      countryControl->AssertValid();
+    }
   }
 }
 
