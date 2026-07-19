@@ -1,11 +1,14 @@
 #include "game/TDealBookPicture.h"
 
+#include "game/TDropShadowText.h"
 #include "game/TSimMgr.h"
+#include "game/TSoundPlayer.h"
 #include "game/TStaticText.h"
 #include "game/TTradePageBuyView.h"
 #include "game/TTradePageSellView.h"
 #include "game/global_data_tables.h"
 #include "game/ui_invalidation_guard.h"
+#include "game/ui_text_label_helpers_decls.h"
 
 void LoadUiStringAndDispatchSharedMessageCommand(short group, short index, TView* control);
 void AssignSharedStringToControlState(CString sharedString, TView* control);
@@ -24,6 +27,72 @@ TDealBookPicture::TDealBookPicture() : TPicture(), field90(8), fieldB2(0) {}
 // SYNTHETIC: IMPERIALISM 0x005bac00
 // TDealBookPicture::`scalar deleting destructor'
 TDealBookPicture::~TDealBookPicture() {}
+
+// FUNCTION: IMPERIALISM 0x005bac50
+void TDealBookPicture::RefreshHudNationTitleControlsAndTheme(int themeCode) {
+  // Nation title control ('loot').
+  TView* lootControl = this->ResolveControlByTag(0x746f6f6c);
+  lootControl->AssertValid();
+  // NOTE: 'loot' also invokes slot 0x73 (no args) and slot 0x74 (active nation id) on its
+  // own (unrecovered) control class -- neither matches a modeled type yet, so they are
+  // omitted pending recovery of the nation-title control class.
+  g_pSimMgr->GetActiveNationId();
+  lootControl->RefreshControl();
+
+  // Re-cache the six commodity sub-controls. field98 is a dual-use slot: it holds the
+  // 'guob' control pointer here but is read back as a short picture id by
+  // RefreshTradeSelectionHeaderAndNationOfferBidLines (SetPictureResourceIdAndRefresh), so
+  // per the type-modeling guardrail it stays int and takes a raw pointer cast here.
+  this->field98 = reinterpret_cast<int>(this->ResolveControlByTag(0x626f7567));           // 'guob'
+  this->field9c = this->ResolveControlByTag(0x736f6c64);                                  // 'dlos'
+  this->buyView = static_cast<TTradePageBuyView*>(this->ResolveControlByTag(0x74626f75)); // 'uobt'
+  this->sellView =
+      static_cast<TTradePageSellView*>(this->ResolveControlByTag(0x74736f6c)); // 'lost'
+  this->fieldAC = reinterpret_cast<TTradePageBuyView*>(this->field98);
+  this->fieldA8 = static_cast<TTradePageSellView*>(this->field9c);
+
+  // 'mark' toggle + label reload.
+  TView* markControl = this->ResolveControlByTag(0x6d61726b); // 'mark'
+  if (markControl == nullptr) {
+    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUTradeViews_0069AA94, 0x129);
+  }
+  markControl->SetState(1, 0);
+  LoadUiStringByGroupAndIndexToControlObject(0x2741, 6, this->ResolveControlByTag(0x6d61726b));
+  markControl->SetState(0, 0);
+  LoadUiStringByGroupAndIndexToControlObject(0x2741, 7, this->ResolveControlByTag(0x74616273));
+
+  this->initializedFlagB1 = 0;
+  this->UpdateDealBookResourceSelectionAndToggleControls(0, static_cast<short>(themeCode));
+  g_pSfxPlaybackSystem->PlaySoundEffect(0x13ee, 0, 1);
+
+  // 'titL' title label.
+  TStaticText* titLControl = static_cast<TStaticText*>(this->ResolveControlByTag(0x7469744c));
+  titLControl->AssertValid();
+  titLControl->LoadUiStringAndDispatchViaVslot1C8(0x2740, 0x19, 0);
+  RECT titLBounds;
+  titLControl->QueryBounds(&titLBounds);
+  RECT titLInval;
+  CopyRect(&titLInval, &titLBounds);
+  this->InvalidateCityDialogRectRegion(&titLInval, 1);
+
+  // 'rtil' subtitle label.
+  TStaticText* rtilControl = static_cast<TStaticText*>(this->ResolveControlByTag(0x7274696c));
+  rtilControl->AssertValid();
+  rtilControl->LoadUiStringAndDispatchViaVslot1C8(0x2740, 0x1a, 0);
+  RECT rtilBounds;
+  rtilControl->QueryBounds(&rtilBounds);
+  RECT rtilInval;
+  CopyRect(&rtilInval, &rtilBounds);
+  this->InvalidateCityDialogRectRegion(&rtilInval, 1);
+  rtilControl->SetEnabled(1, 1);
+  ApplyUiTextStyleAndThemeFlags(reinterpret_cast<TDropShadowText*>(rtilControl), 0, 0x12, 0x2b6b,
+                                0x2b6c);
+
+  // 'rocl'/'rocr' resource buttons.
+  LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2730, 0xc, 0x6c636f72); // 'rocl'
+  LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2730, 0xb, 0x72636f72); // 'rocr'
+}
 
 // FUNCTION: IMPERIALISM 0x005baf70
 void TDealBookPicture::UpdateDealBookResourceSelectionAndToggleControls(int nResourceIndex,

@@ -230,9 +230,4 @@ void TControl::SetHasCommandTagResource(int value) {
   hasCommandTagResource = value;
 }
 
-// FUNCTION: IMPERIALISM 0x005bac50
-void TControl::RefreshHudNationTitleControlsAndTheme(int themeCode) {
-  (void)themeCode;
-}
-
 TControl::~TControl() {}

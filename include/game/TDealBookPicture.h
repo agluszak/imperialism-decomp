@@ -172,6 +172,13 @@ public:
   // recomputing field92 from the wider of the two trade pages' field_0x60, reapplying the
   // dialog's own picture resource, and flipping the "already initialized" flag.
   void RefreshTradeSelectionHeaderAndNationOfferBidLines();
+  // 0x5bac50 -- re-caches the six commodity sub-controls (guob/dlos/uobt/lost) into
+  // field98..fieldAC, resets the 'mark'/'tabs' labels and the initialized flag, refreshes
+  // the nation title ('loot'), reapplies this dialog's slot-0x73 theme, plays the refresh
+  // sfx, and rebuilds the 'titL'/'rtil' title/subtitle labels + 'rocl'/'rocr' buttons.
+  // (Ghidra mis-attributed this to TControl; it is contiguous with this class's methods
+  // and uses its exact field layout + slot 0x73.)
+  void RefreshHudNationTitleControlsAndTheme(int themeCode);
 };
 
 ASSERT_SIZE(TDealBookPicture, 0xb4);
