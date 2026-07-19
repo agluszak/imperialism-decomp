@@ -15,6 +15,6 @@ THotspotBehavior::THotspotBehavior() : TBehavior() {}
 THotspotBehavior::~THotspotBehavior() {}
 
 // FUNCTION: IMPERIALISM 0x004b0c00
-undefined THotspotBehavior::WrapperFor_AllocateWithFallbackHandler_At004b0c00() {
+undefined THotspotBehavior::HotspotBehaviorSlot0E() {
   return 0;
 }

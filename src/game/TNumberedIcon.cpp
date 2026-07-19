@@ -18,7 +18,7 @@ TNumberedIcon::~TNumberedIcon() {}
 void TNumberedIcon::NoOpUiLifecycleHook(int arg) {}
 
 // FUNCTION: IMPERIALISM 0x00507570
-undefined TNumberedIcon::Helper_Uses_ConstructTMyNumberTextBaseState_At00507570() {
+undefined TNumberedIcon::NumberedIconSlot77() {
   return 0;
 }
 

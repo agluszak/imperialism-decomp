@@ -86,8 +86,7 @@ public:
   // instead. Returns whether any eligible pairing was ever found.
   virtual bool UpdateDualLinkedEntryMetersAndBlinkState(TArmyStack* stack1,
                                                         TArmyStack* stack2); // slot 0x11 0x4a3830
-  virtual undefined
-  WrapperFor_IsNationSlotEligibleForEventProcessing_At004a3bc0(); // slot 0x12 0x4a3bc0
+  virtual undefined ArmyMgrSlot12();                                         // slot 0x12 0x4a3bc0
   // Ground truth (RET 0x8, 2 stack args) proves the previous 1-arg declaration was a
   // poison-pill arity mismatch. actionKind selects between the slot-0x14/0x15 dispatch
   // (1/4 -> SelectMovableUnitOnCurrentTileAndPlaySfx, 7 -> CommitCityActionGateCostIfAffordable)

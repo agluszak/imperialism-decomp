@@ -1738,7 +1738,7 @@ void TViewMgr::UiRuntimeSlot108() {
 
 // FUNCTION: IMPERIALISM 0x005dc160
 void TViewMgr::InvokeStrategicMapViewMethod6C() {
-  g_pStrategicMapViewSystem->WrapperFor_CallObjectOffset24Vslot54IfPresent_At0050d950();
+  g_pStrategicMapViewSystem->MacViewMgrSlot1B();
 }
 
 // FUNCTION: IMPERIALISM 0x005dc180

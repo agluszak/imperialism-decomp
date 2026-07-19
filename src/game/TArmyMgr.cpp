@@ -107,7 +107,7 @@ void TArmyMgr::ReleaseThreeLinkedObjectsAndResetTerrainDescriptorFlags() {
   this->activeBattleView3a4 = nullptr;
 
   this->IterateLinkedListCursorAndClearPerTileByte0F();
-  this->WrapperFor_IsNationSlotEligibleForEventProcessing_At004a3bc0();
+  this->ArmyMgrSlot12();
 
   if (this->needsTerrainRefreshFlag39a != 0) {
     g_pStrategicMapViewSystem->RebuildNationClipRegionsAndDispatchMapEvent();
@@ -726,7 +726,7 @@ bool TArmyMgr::UpdateDualLinkedEntryMetersAndBlinkState(TArmyStack* stack1, TArm
 }
 
 // FUNCTION: IMPERIALISM 0x004a3bc0
-undefined TArmyMgr::WrapperFor_IsNationSlotEligibleForEventProcessing_At004a3bc0() {
+undefined TArmyMgr::ArmyMgrSlot12() {
   for (int tileIndex = 0; tileIndex < 0x180; ++tileIndex) {
     short cachedOwner = this->perTileOwnerNationCodeCache1c[tileIndex];
     signed char currentOwner = g_pGlobalMapState->cityScoreTable[tileIndex].ownerNationCode00;
