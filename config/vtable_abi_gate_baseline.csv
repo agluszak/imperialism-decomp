@@ -38,10 +38,6 @@ address|class|slot|summary
 0x00570c30|T2PictureButton|0x1d0|declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x8
 0x00570de0|TPictureRadioButton|0x1d4|declared 1 stack dword(s) -> expected RET 0x4, binary shows RET 0x8
 0x00570ea0|TPictureRadioButton|0x1d8|declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
-0x00571e00|TCzechBox|0x1d4|declared 1 stack dword(s) -> expected RET 0x4, binary shows RET 0x8
-0x00571e00|TMadnessButton|0x1d4|declared 1 stack dword(s) -> expected RET 0x4, binary shows RET 0x8
-0x00571e40|TCzechBox|0x1dc|declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
-0x00571e40|TMadnessButton|0x1dc|declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
 0x00586ab0|TProductionCluster|0x1d4|declared 2 stack dword(s) -> expected RET 0x8, binary shows RET 0x4
 0x00587980|TTradeCluster|0x1d8|declared 2 stack dword(s) -> expected RET 0x8, binary shows plain RET
 0x00588f60|TIndustryCluster|0x1d8|declared 2 stack dword(s) -> expected RET 0x8, binary shows plain RET
