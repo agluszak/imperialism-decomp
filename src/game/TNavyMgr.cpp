@@ -633,9 +633,8 @@ void RevalidateAndRequeueMapOrdersForTurn() {
           node = node->next;
         } while (node != 0);
       }
-      // contextAnchor is the entry's owning map-order context here -- the +0x18 `owner`
-      // tagged-payload slot (see the UNRESOLVED_FIELD_ATTRIBUTION note in TTaskForce.h),
-      // read here as a TZone*.
+      // contextAnchor (+0x18) is the entry's owning map-action context TZone* (see
+      // TTaskForce.h); slot 0x54 is TZone::QueryPortZoneCapability.
       if (entry->contextAnchor->QueryPortZoneCapability()) {
         entry->attachment = 7;
         entry->RebuildMapOrderEntryChildren();
