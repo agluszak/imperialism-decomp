@@ -176,7 +176,7 @@ void TMapMaker::GenerateMapFromTuningStringAndApplyScenarioOverrides(
         g_pActiveRandomMapSetupPicture006A4268->SpinYourGlobe();
       }
       RunMapGenerationAttempt();
-      retryAttempt = HasMapGenerationFailed();
+      retryAttempt = ErrorCheck();
       if (retryAttempt != 0) {
         retryAttempt = 1;
       } else if (ValidateAllColumnsHaveAssignedRegionClass() == 0) {
@@ -1521,12 +1521,35 @@ int TMapMaker::GetCityRegionIdAtTileIndex(int tileIndex) {
 }
 
 // FUNCTION: IMPERIALISM 0x0052e840
-char TMapMaker::HasMapGenerationFailed() {
-  return 0;
+char TMapMaker::ErrorCheck() {
+  EraseZones(0);
+  char failed = 0;
+  signed char* cell = &regionClassGrid10[0][0];
+  int remaining = 0x195;
+  do {
+    if (*cell == -1) {
+      *cell = 100;
+      failed = 1;
+    } else if (*cell == -9) {
+      *cell = -1;
+    }
+    ++cell;
+    --remaining;
+  } while (remaining != 0);
+  return failed;
 }
 
 // FUNCTION: IMPERIALISM 0x0052e890
-void TMapMaker::MarkTileRegionAndVisitHexNeighbors(short tileIndex) {}
+void TMapMaker::EraseZones(long coarseIndex) {
+  regionClassGrid10[0][coarseIndex] = -9;
+  int direction;
+  for (direction = 0; direction < 6; ++direction) {
+    int neighbor = GetAdjacentRegionGridCell(coarseIndex, direction);
+    if (neighbor != -1 && regionClassGrid10[0][neighbor] == -1) {
+      EraseZones(neighbor);
+    }
+  }
+}
 
 // FUNCTION: IMPERIALISM 0x0052e900
 void TMapMaker::HandleCityProductionNoOp() {}
