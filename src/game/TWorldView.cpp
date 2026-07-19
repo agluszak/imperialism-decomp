@@ -347,16 +347,12 @@ void TWorldView::HandleMapClickByInteractionMode(short nTileIndex, int nInputFla
   // (TArmyMgr), civilian-order (TCivMgr) and navy/map-order (g_pNavyOrderManager) handlers
   // in a mode-specific order. A handler that consumes the click either refreshes this view
   // or advances the owner's selection cycle; every call bumps the 1..4 click-cycle counter.
-  // g_pNavyOrderManager's map-order handlers carry a TToolBarCluster:: symbol name (a Ghidra
-  // mis-attribution -- their receiver is the navy/map-order manager at 0x6a43e4); the cast
-  // reaches them until they are reattributed.
   char handled;
   switch (static_cast<TMapUberPicture*>(ownerContext)->activeUnitCategoryIndex96) {
   case 0:
     if (g_pMapContextActionManager->HandleMapClickByComputedCursorState(nTileIndex, nInputFlags) !=
             0 ||
-        reinterpret_cast<TToolBarCluster*>(g_pNavyOrderManager)
-                ->TryHandleMapContextAction(nTileIndex, nInputFlags) != 0) {
+        g_pNavyOrderManager->TryHandleMapContextAction(nTileIndex, nInputFlags) != 0) {
       goto refresh;
     }
     handled = g_pSelectedCivilianOrderState->HandleCivilianTileOrderAction(nTileIndex, nInputFlags);
@@ -366,8 +362,7 @@ void TWorldView::HandleMapClickByInteractionMode(short nTileIndex, int nInputFla
             0 ||
         g_pSelectedCivilianOrderState->HandleCivilianTileSelectionOrReportClick(nTileIndex,
                                                                                 nInputFlags) != 0 ||
-        reinterpret_cast<TToolBarCluster*>(g_pNavyOrderManager)
-                ->TryHandleMapContextAction(nTileIndex, nInputFlags) != 0) {
+        g_pNavyOrderManager->TryHandleMapContextAction(nTileIndex, nInputFlags) != 0) {
       goto refresh;
     }
     handled =
@@ -380,16 +375,15 @@ void TWorldView::HandleMapClickByInteractionMode(short nTileIndex, int nInputFla
                                                                                 nInputFlags) != 0) {
       goto refresh;
     }
-    handled = static_cast<char>(reinterpret_cast<TToolBarCluster*>(g_pNavyOrderManager)
-                                    ->TryQueueMapOrderFromTileAction(nTileIndex, nInputFlags));
+    handled = static_cast<char>(
+        g_pNavyOrderManager->TryQueueMapOrderFromTileAction(nTileIndex, nInputFlags));
     goto cycle;
   case 3:
     if (g_pMapContextActionManager->HandleMapClickByComputedCursorState(nTileIndex, nInputFlags) ==
             0 &&
         g_pSelectedCivilianOrderState->HandleCivilianTileSelectionOrReportClick(nTileIndex,
                                                                                 nInputFlags) == 0) {
-      reinterpret_cast<TToolBarCluster*>(g_pNavyOrderManager)
-          ->TryHandleMapContextAction(nTileIndex, nInputFlags);
+      g_pNavyOrderManager->TryHandleMapContextAction(nTileIndex, nInputFlags);
     }
     goto tail;
   default:

@@ -6,6 +6,9 @@
 #include "game/TCountry.h"
 #include "game/TGreatPower.h"
 #include "game/TMapMgr.h"
+#include "game/TMapUberPicture.h"
+#include "game/TViewMgr.h"
+#include "game/map_overlay_geometry.h"
 #include "game/TOcean.h"
 #include "game/TShip.h"
 #include "game/navy_order.h"
@@ -24,6 +27,10 @@
 #include "game/map_order_battle_snapshot.h"
 
 extern "C" int __cdecl rand(void);
+
+// 0x00563360 -- __stdcall free resolver (defined in TMapMgr.cpp); used by the
+// reattributed TryQueueMapOrderFromTileAction below.
+TGlobalMapCityScoreRecord* __stdcall GetProvinceByTileIndex(short nTileIndex);
 
 extern "C" TShip* g_pNavyPrimaryOrderListHead;
 extern "C" TAdmiral* g_pNavySecondaryOrderListHead;
@@ -74,7 +81,8 @@ float SumMapOrderChildPowerAtOrAboveTier(TMapOrderChildLinkNode* head, int minTi
 int CountMapOrderChildrenAtOrAboveTier(TMapOrderChildLinkNode* head, int minTier) {
   int count = 0;
   for (TMapOrderChildLinkNode* node = head; node != nullptr; node = node->next) {
-    if (g_NavyOrderResourceDescriptorTable[static_cast<TShip*>(node->payload)->resourceType04].priorityTier >= minTier) {
+    if (g_NavyOrderResourceDescriptorTable[static_cast<TShip*>(node->payload)->resourceType04]
+            .priorityTier >= minTier) {
       ++count;
     }
   }
@@ -107,8 +115,9 @@ void ApplyMapOrderConflictAttrition(TMapOrderChildLinkNode* head, int currentCou
       ++selected;
       int roll = static_cast<int>(rand()) % 100 + static_cast<int>(rand()) % 100 + 100;
       TShip* child = static_cast<TShip*>(node->payload);
-      float delta = 0.5f + g_NavyOrderResourceDescriptorTable[child->resourceType04].taskForceWeight *
-                               (roll * 0.005f) * favorRatio * -0.01f;
+      float delta =
+          0.5f + g_NavyOrderResourceDescriptorTable[child->resourceType04].taskForceWeight *
+                     (roll * 0.005f) * favorRatio * -0.01f;
       child->stockLevel1c = static_cast<short>(child->stockLevel1c - static_cast<short>(delta));
     }
   }
@@ -601,9 +610,10 @@ void RevalidateAndRequeueMapOrdersForTurn() {
         TMapOrderChildLinkNode* node = entry->childOrderList;
         if (node != 0) {
           do {
-            node->active =
-                static_cast<TShip*>(node->payload)->stockLevel1c <
-                g_NavyOrderResourceDescriptorTable[static_cast<TShip*>(node->payload)->resourceType04].stockCap;
+            node->active = static_cast<TShip*>(node->payload)->stockLevel1c <
+                           g_NavyOrderResourceDescriptorTable[static_cast<TShip*>(node->payload)
+                                                                  ->resourceType04]
+                               .stockCap;
             node = node->next;
           } while (node != 0);
         }
@@ -639,9 +649,10 @@ void RevalidateAndRequeueMapOrdersForTurn() {
             node = node->next;
           } else {
             static_cast<TShip*>(node->payload)->SetOwnerOrderEntryAndCacheType(0);
-            short bucketIndex =
-                static_cast<short>(g_NavyOrderResourceDescriptorTable[static_cast<TShip*>(node->payload)->resourceType04]
-                                       .enabledFlagOrBucketOffset);
+            short bucketIndex = static_cast<short>(
+                g_NavyOrderResourceDescriptorTable[static_cast<TShip*>(node->payload)
+                                                       ->resourceType04]
+                    .enabledFlagOrBucketOffset);
             short* bucketCounter = reinterpret_cast<short*>(entry->pad_1e) + bucketIndex;
             --*bucketCounter;
             if (node == entry->childOrderList) {
@@ -652,8 +663,9 @@ void RevalidateAndRequeueMapOrdersForTurn() {
         }
         entry->activeChildEntry = 0;
         for (node = entry->childOrderList; node != 0; node = node->next) {
-          entry->activeChildEntry = static_cast<TShip*>(node->payload)->SelectPreferredMapOrderEntryByPriorityRules(
-              entry->activeChildEntry, 0);
+          entry->activeChildEntry =
+              static_cast<TShip*>(node->payload)
+                  ->SelectPreferredMapOrderEntryByPriorityRules(entry->activeChildEntry, 0);
         }
         entry->AssertValid();
         if (g_pNavyOrderManager->MoveMapOrderEntryToQueueHeadIfValid(entry)) {
@@ -896,9 +908,9 @@ TTaskForce* TNavyMgr::UpdateType7NavyOrderChildSelectionByChanceThreshold(short 
   if (entry != nullptr) {
     for (TMapOrderChildLinkNode* node = entry->childOrderList; node != nullptr; node = node->next) {
       TShip* child = static_cast<TShip*>(node->payload);
-      bool notSelected =
-          child->stockLevel1c < g_NavyOrderResourceDescriptorTable[child->resourceType04].stockCap ||
-          chancePercent <= rand() % 100;
+      bool notSelected = child->stockLevel1c <
+                             g_NavyOrderResourceDescriptorTable[child->resourceType04].stockCap ||
+                         chancePercent <= rand() % 100;
       node->active = notSelected ? 0 : 1;
     }
   }
@@ -935,7 +947,8 @@ char TNavyMgr::SelectEligibleMapOrderInteractionForNationAndContext(
          node = node->next) {
       TShip* child = static_cast<TShip*>(node->payload);
       char active = 1;
-      if (child->stockLevel1c < g_NavyOrderResourceDescriptorTable[child->resourceType04].stockCap ||
+      if (child->stockLevel1c <
+              g_NavyOrderResourceDescriptorTable[child->resourceType04].stockCap ||
           static_cast<int>(priorityRatio) <= static_cast<int>(rand()) % 100) {
         active = 0;
       }
@@ -984,7 +997,8 @@ char TNavyMgr::SelectEligibleMapOrderInteractionForNationAndContext(
     for (TMapOrderChildLinkNode* node = entry->childOrderList; node != nullptr; node = node->next) {
       if (node->active != 0) {
         ratingSum +=
-            g_NavyOrderResourceDescriptorTable[static_cast<TShip*>(node->payload)->resourceType04].descriptorWeight;
+            g_NavyOrderResourceDescriptorTable[static_cast<TShip*>(node->payload)->resourceType04]
+                .descriptorWeight;
         ++activeCount;
       }
     }
@@ -1111,8 +1125,8 @@ void TNavyMgr::ProcessNationMapOrderInteractionsAndApplyOutcomes(short mode) {
         // (the same AdjustMapOrderNodeStatCapped499 pattern the conflict resolver uses).
         if (orderEntry != nullptr) {
           if (orderEntry->activeChildEntry != nullptr) {
-            orderEntry->activeChildEntry->field30 = static_cast<short>(
-                orderEntry->activeChildEntry->field30 + transferredCount);
+            orderEntry->activeChildEntry->field30 =
+                static_cast<short>(orderEntry->activeChildEntry->field30 + transferredCount);
             if (orderEntry->activeChildEntry->field30 > 499) {
               orderEntry->activeChildEntry->field30 = 499;
             }
@@ -1121,8 +1135,9 @@ void TNavyMgr::ProcessNationMapOrderInteractionsAndApplyOutcomes(short mode) {
           if (childCount > 0) {
             for (TMapOrderChildLinkNode* node = orderEntry->childOrderList; node != nullptr;
                  node = node->next) {
-              static_cast<TShip*>(node->payload)->field30 = static_cast<short>(
-                  static_cast<TShip*>(node->payload)->field30 + (transferredCount * 3) / childCount);
+              static_cast<TShip*>(node->payload)->field30 =
+                  static_cast<short>(static_cast<TShip*>(node->payload)->field30 +
+                                     (transferredCount * 3) / childCount);
               if (static_cast<TShip*>(node->payload)->field30 > 499) {
                 static_cast<TShip*>(node->payload)->field30 = 499;
               }
@@ -1153,14 +1168,18 @@ void TNavyMgr::ResolveMapOrderPairConflictStep(TTaskForce* leftEntry, TTaskForce
   int maxTier = 1;
   for (TMapOrderChildLinkNode* node = leftEntry->childOrderList; node != nullptr;
        node = node->next) {
-    int tier = g_NavyOrderResourceDescriptorTable[static_cast<TShip*>(node->payload)->resourceType04].priorityTier;
+    int tier =
+        g_NavyOrderResourceDescriptorTable[static_cast<TShip*>(node->payload)->resourceType04]
+            .priorityTier;
     if (tier > maxTier) {
       maxTier = tier;
     }
   }
   for (TMapOrderChildLinkNode* rightNode = rightEntry->childOrderList; rightNode != nullptr;
        rightNode = rightNode->next) {
-    int tier = g_NavyOrderResourceDescriptorTable[static_cast<TShip*>(rightNode->payload)->resourceType04].priorityTier;
+    int tier =
+        g_NavyOrderResourceDescriptorTable[static_cast<TShip*>(rightNode->payload)->resourceType04]
+            .priorityTier;
     if (tier > maxTier) {
       maxTier = tier;
     }
@@ -1293,8 +1312,8 @@ void TNavyMgr::ResolveMapOrderPairConflictStep(TTaskForce* leftEntry, TTaskForce
     if (winnerCount > 0) {
       for (TMapOrderChildLinkNode* node = winner->childOrderList; node != nullptr;
            node = node->next) {
-        static_cast<TShip*>(node->payload)->AdjustMapOrderNodeStatCapped499(
-            static_cast<short>((bump * 3) / winnerCount));
+        static_cast<TShip*>(node->payload)
+            ->AdjustMapOrderNodeStatCapped499(static_cast<short>((bump * 3) / winnerCount));
       }
     }
     loser->eliminatedFlag26 = 1;
@@ -1305,4 +1324,162 @@ void TNavyMgr::ResolveMapOrderPairConflictStep(TTaskForce* leftEntry, TTaskForce
   RefreshMapOrderBattleSideSnapshot(&snapshot, 1,
                                     rightEntry->childOrderList != nullptr ? rightEntry : nullptr);
   g_pMapContextActionManager->AppendMapContextActionRecordAndResetWorkingFields(&snapshot, 0);
+}
+
+// FUNCTION: IMPERIALISM 0x0055a020
+bool TNavyMgr::TryHandleMapContextAction(short nTileIndex, int nInputFlags) {
+  int actionCode = GetMapContextActionCode(nTileIndex, nInputFlags);
+  if (actionCode == 0) {
+    return false;
+  }
+  TMapUberPicture* mapUberPicture = g_pUiRuntimeContext->mapUberPictureF0;
+  switch (actionCode) {
+  case 9: {
+    TZone* zone = g_pActiveMapOrderContext->GetLinkedZoneForSeaTile(nTileIndex);
+    mapUberPicture->SetActiveMapOrderEntry(zone);
+    return true;
+  }
+  case 2:
+  case 3:
+  case 4:
+  case 5:
+  case 6:
+  case 7:
+  case 8: {
+    TZone* zone = g_pActiveMapOrderContext->GetLinkedZoneForSeaTile(nTileIndex);
+    mapUberPicture->OpenMapContextActionDialogByType(zone, actionCode - 2,
+                                                     g_pCachedMapActionContext);
+    return true;
+  }
+  case 11: {
+    TTaskForce* entry = this->orderListHead04;
+    while (entry != 0 && entry->tiebreak_strength != nTileIndex) {
+      entry = entry->queue_next;
+    }
+    mapUberPicture->OpenMapEntryOrderDialog(entry);
+    return true;
+  }
+  case 10: {
+    g_pUiRuntimeContext->HandleTurnEventDialogFactorySlotF0(GetActiveMapOrderEntry());
+    return true;
+  }
+  default:
+    return false;
+  }
+}
+
+// Queues a map order for a clicked tile when immediate context handling does not consume
+// the click: resolves a command id (action-context path for sea tiles, province-context
+// path otherwise) off the active map-order entry, then dispatches by command id, setting
+// the entry's order kind + target context and running the rebuild/queue/finalize pipeline.
+// FUNCTION: IMPERIALISM 0x0055a160
+int TNavyMgr::TryQueueMapOrderFromTileAction(short nTileIndex, int nInputFlags) {
+  // A context-only action consumes the click without any queue mutation.
+  if (TryHandleMapContextAction(nTileIndex, nInputFlags) != 0) {
+    return 0;
+  }
+  TTaskForce* entry = GetActiveMapOrderEntry();
+  int commandId;
+  if (entry == nullptr) {
+    commandId = 0;
+  } else if (g_pGlobalMapState->terrainStateTable[nTileIndex].terrainType00 == 5) {
+    TZone* ctx = g_pActiveMapOrderContext->GetLinkedZoneForSeaTile(nTileIndex);
+    bool queueable;
+    if (ctx == nullptr) {
+      queueable = false;
+    } else if (entry->HasActiveMapOrderEntryChildren() == 0) {
+      short dist = reinterpret_cast<TZone*>(entry->contextAnchor)
+                       ->GetCachedMapActionContextDistanceOrRecompute(ctx);
+      queueable = dist <= static_cast<short>(entry->GetMinActionThresholdFromEntryChildren());
+    } else {
+      queueable = false;
+    }
+    commandId = queueable ? entry->ResolveMapOrderCommandFromActionContext(ctx) : 1;
+  } else {
+    void* province = GetProvinceByTileIndex(nTileIndex);
+    commandId = (entry->CanQueueMapOrderForProvinceContext(province) == 0)
+                    ? 1
+                    : entry->ResolveMapOrderCommandFromProvinceContext(province);
+  }
+  if (commandId == 0) {
+    return 0;
+  }
+  entry = GetActiveMapOrderEntry();
+  switch (commandId) {
+  case 0x0a:
+    g_pUiRuntimeContext->HandleTurnEventDialogFactorySlotF0(entry);
+    break;
+  case 0x0c:
+    entry->attachment = 3;
+    entry->RebuildMapOrderEntryChildren();
+    if (g_pNavyOrderManager->MoveMapOrderEntryToQueueHeadIfValid(entry)) {
+      g_pActiveMapOrderContext->FinalizeQueuedMapOrderEntry(entry);
+      return 1;
+    }
+    break;
+  case 0x0d: {
+    TZone* ctx = g_pActiveMapOrderContext->GetLinkedZoneForSeaTile(nTileIndex);
+    entry->attachment = 1;
+    entry->owner = reinterpret_cast<TTaskForce*>(ctx);
+    entry->RebuildMapOrderEntryChildren();
+    if (g_pNavyOrderManager->MoveMapOrderEntryToQueueHeadIfValid(entry)) {
+      g_pActiveMapOrderContext->FinalizeQueuedMapOrderEntry(entry);
+      return 1;
+    }
+    break;
+  }
+  case 0x0e: {
+    TZone* ctx = g_pActiveMapOrderContext->GetLinkedZoneForSeaTile(nTileIndex);
+    entry->attachment = 6;
+    entry->owner = reinterpret_cast<TTaskForce*>(ctx);
+    entry->RebuildMapOrderEntryChildren();
+    if (g_pNavyOrderManager->MoveMapOrderEntryToQueueHeadIfValid(entry)) {
+      g_pActiveMapOrderContext->FinalizeQueuedMapOrderEntry(entry);
+      return 1;
+    }
+    break;
+  }
+  case 0x0f: {
+    TZone* ctx = g_pActiveMapOrderContext->GetLinkedZoneForSeaTile(nTileIndex);
+    entry->attachment = 1;
+    entry->owner = reinterpret_cast<TTaskForce*>(ctx);
+    entry->RebuildMapOrderEntryChildren();
+    bool alreadyQueued = false;
+    for (TTaskForce* node = g_pNavyOrderManager->orderListHead04; node != nullptr;
+         node = node->queue_next) {
+      if (node == entry) {
+        alreadyQueued = true;
+        break;
+      }
+    }
+    bool committed;
+    if (alreadyQueued) {
+      committed = true;
+    } else if (entry->GetMapOrderEntryChildCount() < 1) {
+      entry->Free();
+      committed = false;
+    } else {
+      entry->RelinkMapOrderQueueNodeBetween(nullptr, g_pNavyOrderManager->orderListHead04);
+      g_pNavyOrderManager->orderListHead04 = entry;
+      committed = true;
+    }
+    if (committed) {
+      g_pActiveMapOrderContext->FinalizeQueuedMapOrderEntry(entry);
+      return 1;
+    }
+    break;
+  }
+  case 0x10:
+    entry->attachment = 5;
+    entry->owner = reinterpret_cast<TTaskForce*>(GetProvinceByTileIndex(nTileIndex));
+    entry->RebuildMapOrderEntryChildren();
+    if (g_pNavyOrderManager->MoveMapOrderEntryToQueueHeadIfValid(entry)) {
+      g_pActiveMapOrderContext->FinalizeQueuedMapOrderEntry(entry);
+      return 1;
+    }
+    break;
+  default:
+    return 0;
+  }
+  return 1;
 }

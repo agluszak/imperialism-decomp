@@ -138,6 +138,20 @@ public:
   // active map-order context's overlays.
   void ResolveMapOrderChainsForTurnPhase(); // 0x5578a0
 
+  // 0x0055a020 -- resolves and executes a context-sensitive map click action against this
+  // manager's active map-order state (dialogs for actions 2..8, set-active-entry for 9,
+  // UI-runtime slot 0xf0 for 10, entry-order dialog for 11 which walks orderListHead04).
+  // Returns true if the click was consumed. Ghidra's `int` prototype is a mislabel --
+  // callers store the result in a `char fHandled` and test `!= '\0'`, and the real codegen
+  // only ever sets/tests AL. Not virtual -- called directly (via an ILT thunk) from
+  // TWorldView::HandleMapClickByInteractionMode and from TryQueueMapOrderFromTileAction.
+  bool TryHandleMapContextAction(short nTileIndex, int nInputFlags);
+  // 0x0055a160 -- when a click is not consumed by immediate context handling, resolves a
+  // map-order command from the active entry's tile-action/province context and runs the
+  // set-type + rebuild/queue/finalize pipeline. Receiver at every call site is
+  // g_pNavyOrderManager (this manager).
+  int TryQueueMapOrderFromTileAction(short nTileIndex, int nInputFlags);
+
   TNavyMgr();
 };
 

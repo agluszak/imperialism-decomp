@@ -140,20 +140,4 @@ public:
   // the same object independently, corroborating this.
 
   TToolBarCluster();
-
-  // Resolves and executes a context-sensitive map click action for the active map-order
-  // manager (dialogs for actions 2..8, set-active-entry for 9, UI-runtime slot 0xf0 for
-  // 10, entry-order dialog for 11). Returns true if the click was consumed. Ghidra's
-  // `int` prototype is a mislabel -- callers (e.g. TWorldView::HandleMapClickByInteraction-
-  // Mode's ground truth) store the result in a `char fHandled` and test `!= '\0'`, and the
-  // real codegen only ever sets/tests AL (`mov al,1` / `xor al,al`), matching a bool
-  // return. Not virtual -- called directly (via an ILT thunk) from TWorldView::
-  // HandleMapClickByInteractionMode and from TryQueueMapOrderFromTileAction. 0x0055a020.
-  bool TryHandleMapContextAction(short nTileIndex, int nInputFlags);
-  // 0x0055a160 -- when a click is not consumed by immediate context handling, resolves a
-  // map-order command from the active entry's tile-action/province context and runs the
-  // set-type + rebuild/queue/finalize pipeline. Receiver at every call site is the
-  // navy/map-order manager (g_pNavyOrderManager); Ghidra's TToolBarCluster:: prefix is a
-  // mis-attribution kept here alongside TryHandleMapContextAction.
-  int TryQueueMapOrderFromTileAction(short nTileIndex, int nInputFlags);
 };
