@@ -123,10 +123,8 @@ public:
   // slot 0x72 OrphanCallChain_C2_I51_00491790 inherited unchanged (0x491790)
   // slot 0x73 IsTradeControlAtMinimum inherited unchanged (0x5714e0)
   virtual void ApplyMoveValue(int value); // slot 0x74 0x586ff0
-  short metricSlotAt88;
-  short pad_8a;
-  short valueAt8c;
-  short valueAt8e;
+
+  // No own fields: RTTI proves TAmtBarCluster is exactly TUberCluster's size (0x88).
   TAmtBarCluster();
   DECLARE_DYNCREATE(TAmtBarCluster)
 };

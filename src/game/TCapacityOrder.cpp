@@ -34,11 +34,18 @@ static void ZeroTrackingSlots(TCapacityOrder* order) {
   *reinterpret_cast<short*>(blockCursor) = 0;
 }
 
-TCapacityOrder::TCapacityOrder(TCity* city)
-    : quantityField04(0), cityField08(city),
-      summaryField0c(city != 0 ? city->productionSummary1d8 : 0), field3e(0), field40(0),
-      field44(0), resourceTypeIndex48(0), field4c(0), trackingIndex4e(0), trackingIndex50(0),
-      field52(0) {
+TCapacityOrder::TCapacityOrder(TCity* city) : TItemOrder() {
+  quantityField04 = 0;
+  cityField08 = city;
+  summaryField0c = city != 0 ? city->productionSummary1d8 : 0;
+  field3e = 0;
+  field40 = 0;
+  accumulatedValue = 0;
+  resourceTypeIndex48 = 0;
+  field4c = 0;
+  field4e = 0;
+  field50 = 0;
+  buildingSlot = 0;
   ZeroTrackingSlots(this);
 }
 
@@ -220,13 +227,13 @@ undefined TCapacityOrder::CapacityOrderSlot12(TCity* city, short resourceType,
   this->resourceTypeIndex48 = resourceType;
   this->quantityField04 = 0;
   ZeroTrackingSlots(this);
-  this->field44 = 0;
-  this->trackingIndex4e = trackingIndex4eInit;
+  this->accumulatedValue = 0;
+  this->field4e = trackingIndex4eInit;
   this->field40 = 0;
   this->field3e = 0;
   this->field4c = 0;
-  this->trackingIndex50 = trackingIndex50Init;
-  this->field52 = field52Init;
+  this->field50 = trackingIndex50Init;
+  this->buildingSlot = field52Init;
   return 0;
 }
 
@@ -275,8 +282,8 @@ undefined TCapacityOrder::CommitIfPending() {
 apply_done:
   this->field4c = 0;
   this->quantityField04 = 0;
-  this->trackingSlots10[this->trackingIndex4e] = 0;
-  this->trackingSlots10[this->trackingIndex50] = 0;
+  this->trackingSlots10[this->field4e] = 0;
+  this->trackingSlots10[this->field50] = 0;
   this->field3e = 0;
   return 0;
 }

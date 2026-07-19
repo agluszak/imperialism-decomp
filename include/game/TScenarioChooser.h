@@ -127,4 +127,10 @@ public:
   virtual undefined PostTurnEvent5DCOrResetScenarioSelectionState(); // slot 0x75 0x57a2d0
 
   TScenarioChooser();
+
+  // Own fields at +0x94..+0x160 (RTTI m_nObjectSize 0x160 vs TNoHilitePicture's 0x94).
+  // Ctor (0x45ae60) only chains the base ctor and installs the vtable -- nothing here
+  // is written at construction, so this block is still fully unrecovered scenario-
+  // selection state (every override in TScenarioChooser.cpp is currently a stub).
+  unsigned char scenarioChooserState94[0x160 - 0x94];
 };

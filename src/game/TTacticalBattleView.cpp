@@ -860,7 +860,7 @@ TTacticalBattleView::TTacticalBattleView() : TView() {
   tacticalBattle60 = 0;
   battlefieldSurface64 = 0;
   viewOriginX78 = 0;
-  fieldD0 = 0;
+  toolbarD0 = 0;
   unitSpriteAtlasSurface68 = 0;
   fortLevelAtlasSurface6C = 0;
   tileScratchSurface70 = 0;

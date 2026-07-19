@@ -26,7 +26,8 @@ public:
   int fieldAtA4;
   int fieldAtA8;
   int fieldAtAc;
-  unsigned char turnNavTail[0x1e4 - 0xb0];
+  // RTTI proves TGameWindow is exactly TWindow (0xa0) + these 16 bytes (0xb0 total) --
+  // no further tail block exists.
 
   TGameWindow();
 };

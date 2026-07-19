@@ -31,16 +31,9 @@ public:
   bool CanFillOrderSheet(OrderSheet* orderSheet);
   static TCapacityOrder* NewForCity(TCity* city);
 
-  short quantityField04;
-  TCity* cityField08;
-  class TPopulationMgr* summaryField0c;
-  short trackingSlots10[0x17];
-  short field3e;
-  short field40;
-  int field44;
-  short resourceTypeIndex48;
-  short field4c;
-  short trackingIndex4e;
-  short trackingIndex50;
-  short field52;
+  // No own fields: RTTI proves TCapacityOrder is exactly TItemOrder's size (0x54).
+  // quantityField04/cityField08/summaryField0c/trackingSlots10/field3e/field40 are
+  // TProductionOrder's own fields (accumulatedValue is field44/resourceTypeIndex48 is
+  // shared too); field4c/trackingIndex4e(=field4e)/trackingIndex50(=field50)/field52
+  // (=buildingSlot) are TItemOrder's own fields -- use the inherited names directly.
 };

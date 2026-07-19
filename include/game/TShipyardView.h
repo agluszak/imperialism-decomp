@@ -134,4 +134,10 @@ public:
   virtual void InitializeCityViewActionButtons();                           // slot 0x7c 0x4c8d70
 
   TShipyardView();
+
+  // Own fields at +0xa0..+0xcc (RTTI m_nObjectSize 0xcc vs TBuildingView's 0xa0).
+  // CreateObject (0x4c8200) only re-zeroes inherited TBuildingView::field94/field98
+  // and installs the vtable -- nothing new is written in this range at construction,
+  // so it's still fully unrecovered shipyard-view state.
+  unsigned char shipyardViewStateA0[0xcc - 0xa0];
 };

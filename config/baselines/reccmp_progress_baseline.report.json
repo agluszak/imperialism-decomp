@@ -1150,7 +1150,7 @@
     },
     {
       "address": "0x4538a0",
-      "matching": 0.5045643153526971,
+      "matching": 0.5047487321346242,
       "name": "InitializeGameSetupScreenControlsAndModeTags",
       "type": 1
     },
@@ -9762,7 +9762,7 @@
     },
     {
       "address": "0x4b5b40",
-      "matching": 0.36363636363636365,
+      "matching": 0.42424242424242425,
       "name": "TPopulationMgr::CreateObject",
       "type": 1
     },
@@ -10218,7 +10218,7 @@
     },
     {
       "address": "0x4b8c90",
-      "matching": 0.35294117647058826,
+      "matching": 0.4117647058823529,
       "name": "TCapacityOrder::CreateObject",
       "type": 1
     },
@@ -11299,7 +11299,7 @@
     },
     {
       "address": "0x4c71f0",
-      "matching": 0.5454545454545454,
+      "matching": 0.5818181818181818,
       "name": "TWarehouseView::CreateObject",
       "type": 1
     },
@@ -11371,7 +11371,7 @@
     },
     {
       "address": "0x4c8200",
-      "matching": 0.5357142857142857,
+      "matching": 0.5714285714285714,
       "name": "TShipyardView::CreateObject",
       "type": 1
     },
@@ -16085,7 +16085,7 @@
     },
     {
       "address": "0x4ffb30",
-      "matching": 0.47619047619047616,
+      "matching": 0.5079365079365079,
       "name": "TGameWindow::CreateObject",
       "type": 1
     },
@@ -16729,7 +16729,7 @@
     },
     {
       "address": "0x507700",
-      "matching": 0.5357142857142857,
+      "matching": 0.5714285714285714,
       "name": "TNumberedItem::CreateObject",
       "type": 1
     },
@@ -16753,7 +16753,7 @@
     },
     {
       "address": "0x5078a0",
-      "matching": 0.6595744680851063,
+      "matching": 0.6808510638297872,
       "name": "TNumberedItem::ApplyRectSlot110",
       "type": 1
     },
@@ -24184,7 +24184,7 @@
     },
     {
       "address": "0x564c30",
-      "matching": 0.45454545454545453,
+      "matching": 0.48484848484848486,
       "name": "TNavyRoster::CreateObject",
       "type": 1
     },
@@ -24196,7 +24196,7 @@
     },
     {
       "address": "0x564d20",
-      "matching": 0.5454545454545454,
+      "matching": 0.9333333333333333,
       "name": "TNavyRoster::TNavyRoster",
       "type": 1
     },
@@ -26101,7 +26101,7 @@
     },
     {
       "address": "0x575280",
-      "matching": 0.96,
+      "matching": 1.0,
       "name": "THighScoresPicture::CreateObject",
       "type": 1
     },
@@ -26491,7 +26491,7 @@
     },
     {
       "address": "0x579ae0",
-      "matching": 0.4489795918367347,
+      "matching": 0.4897959183673469,
       "name": "TScenarioChooser::CreateObject",
       "type": 1
     },
@@ -27743,7 +27743,7 @@
     },
     {
       "address": "0x586c40",
-      "matching": 0.4489795918367347,
+      "matching": 0.4897959183673469,
       "name": "TAmtBarCluster::CreateObject",
       "type": 1
     },
@@ -28169,7 +28169,7 @@
     },
     {
       "address": "0x58aaa0",
-      "matching": 0.4838709677419355,
+      "matching": 0.5161290322580645,
       "name": "TShipAmtBar::CreateObject",
       "type": 1
     },
@@ -28181,7 +28181,7 @@
     },
     {
       "address": "0x58ab60",
-      "matching": 0.6,
+      "matching": 0.9166666666666666,
       "name": "TShipAmtBar::TShipAmtBar",
       "type": 1
     },
@@ -28193,7 +28193,7 @@
     },
     {
       "address": "0x58abf0",
-      "matching": 0.8771929824561403,
+      "matching": 0.9122807017543859,
       "name": "TShipAmtBar::NoOpUiLifecycleHook",
       "type": 1
     },
@@ -30885,7 +30885,7 @@
     },
     {
       "address": "0x5a9cf0",
-      "matching": 0.4489795918367347,
+      "matching": 0.4897959183673469,
       "name": "TTacArmyView::CreateObject",
       "type": 1
     },
@@ -30897,7 +30897,7 @@
     },
     {
       "address": "0x5a9d90",
-      "matching": 0.622792937399679,
+      "matching": 0.6260032102728732,
       "name": "TTacArmyView::ConstructTTacArmyViewBaseState",
       "type": 1
     },
@@ -32546,7 +32546,7 @@
     },
     {
       "address": "0x5baf70",
-      "matching": 0.0,
+      "matching": 0.48205128205128206,
       "name": "TDealBookPicture::UpdateDealBookResourceSelectionAndToggleControls",
       "type": 1
     },
@@ -38978,7 +38978,7 @@
     },
     {
       "address": "0x6091d9",
-      "matching": 0.9787234042553191,
+      "matching": 1.0,
       "name": "CWnd::OnNotify",
       "type": 1
     },
