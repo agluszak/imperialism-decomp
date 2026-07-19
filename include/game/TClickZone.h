@@ -123,4 +123,7 @@ public:
   virtual undefined OrphanRetStub_005723d0(); // slot 0x71 0x5723d0
 
   TClickZone();
+
+  // Original object size is 0x88 (CRuntimeClass m_nObjectSize); the source class ended at 0x84. Trailing 4 byte(s) not yet semantically recovered — declared so sizeof and the recomp's allocation size match the original.
+  int field84;
 };

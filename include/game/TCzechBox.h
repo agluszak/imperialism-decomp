@@ -133,4 +133,7 @@ public:
                                                     undefined4 param_2); // slot 0x78 0x571e80
 
   TCzechBox();
+
+  // Original object size is 0x98 (CRuntimeClass m_nObjectSize); the source class ended at 0x94. Trailing 4 byte(s) not yet semantically recovered — declared so sizeof and the recomp's allocation size match the original.
+  int field94;
 };

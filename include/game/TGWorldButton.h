@@ -122,4 +122,8 @@ public:
                                                   bool fRefreshNow) override; // slot 0x70 0x572200
 
   TGWorldButton();
+
+  // Original object size is 0x8c (CRuntimeClass m_nObjectSize); the source class ended at 0x84. Trailing 8 byte(s) not yet semantically recovered — declared so sizeof and the recomp's allocation size match the original.
+  int field84;
+  int field88;
 };

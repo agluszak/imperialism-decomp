@@ -22,4 +22,7 @@ public:
   virtual undefined OrphanLeaf_NoCall_Ins04_005adc30(int); // slot 0x0a 0x5adc30
 
   TTask();
+
+  // Original object size is 0x8 (CRuntimeClass m_nObjectSize); the source class ended at 0x4. Trailing 4 byte(s) not yet semantically recovered — declared so sizeof and the recomp's allocation size match the original.
+  int field04;
 };

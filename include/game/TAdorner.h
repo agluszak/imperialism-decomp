@@ -32,4 +32,12 @@ public:
       int unusedArg); // slot 0x10 0x49da80
 
   TAdorner();
+
+  // Original object size is 0xc: CRuntimeClass m_nObjectSize = 0xc and
+  // CreateObject (0x49d650) allocates via operator_new(0xc). The two dwords at
+  // +4/+8 are not yet semantically recovered (TAdorner's own ReadFrom/WriteTo
+  // do not touch them); declared so sizeof(TAdorner) — and the recomp's
+  // allocation size — matches the original binary.
+  int field04;
+  int field08;
 };

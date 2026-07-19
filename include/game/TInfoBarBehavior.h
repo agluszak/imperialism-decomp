@@ -30,4 +30,10 @@ public:
   CString field10;
 
   TInfoBarBehavior();
+
+  // Original object size is 0x24 (CRuntimeClass m_nObjectSize); the source class ended at 0x14. Trailing 16 byte(s) not yet semantically recovered — declared so sizeof and the recomp's allocation size match the original.
+  int field14;
+  int field18;
+  int field1c;
+  int field20;
 };

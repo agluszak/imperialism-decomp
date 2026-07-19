@@ -28,4 +28,9 @@ public:
   virtual void OrphanRetStub_0059add0(void* pCommandQueue);                // slot 0x0f 0x5ae4b0
 
   TCityTask();
+
+  // Original object size is 0x14 (CRuntimeClass m_nObjectSize); the source class ended at 0x8. Trailing 12 byte(s) not yet semantically recovered — declared so sizeof and the recomp's allocation size match the original.
+  int field08;
+  int field0c;
+  int field10;
 };

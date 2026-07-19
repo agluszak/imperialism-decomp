@@ -129,4 +129,7 @@ public:
   // slot 0x78 OrphanCallChain_C3_I23_00571e80 inherited unchanged (0x571e80)
 
   TMadnessButton();
+
+  // Original object size is 0x9c (CRuntimeClass m_nObjectSize); the source class ended at 0x98. Trailing 4 byte(s) not yet semantically recovered — declared so sizeof and the recomp's allocation size match the original.
+  int field98;
 };

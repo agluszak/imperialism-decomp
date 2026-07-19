@@ -123,4 +123,7 @@ public:
   virtual undefined OrphanRetStub_00569d50(); // slot 0x71 0x569d50
 
   TMiniShipView();
+
+  // Original object size is 0x88 (CRuntimeClass m_nObjectSize); the source class ended at 0x84. Trailing 4 byte(s) not yet semantically recovered — declared so sizeof and the recomp's allocation size match the original.
+  int field84;
 };

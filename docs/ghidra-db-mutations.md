@@ -390,6 +390,35 @@ no backlog remains. Type resolution: opaque_by_value 15 → 0, opaque_pointee
 101 → 33, exact_complete 3797 → 3863; structural converged 3854 → 3868.
 Exported → `85a1e55b…`.
 
+## 2026-07-19 (fifteenth): source class-size campaign — 72 classes verified (PR #103, committed DB + SOURCE change)
+
+The class-model audit's `source_incomplete` queue is a SOURCE defect list: a class
+whose sizeof is short compiles a wrong allocation size into the recomp
+(`operator_new(sizeof(T))` immediates), diverging from the original binary. The
+mechanical campaign: for each incomplete class with delta ≤ 28, append honest
+unknown trailing fields (`int fieldNN;` named by offset + evidence comment citing
+`m_nObjectSize`), exactly the codebase's existing pad-field convention.
+
+The oracle re-run is the physical verifier, and it caught two real cascade bugs:
+(1) editing a base AND its derived class in one pass double-counts the delta —
+detected as new `source_oversized`, trimmed, converged over three iterations;
+(2) a genuine mis-attribution: `TDeluxeText.field94/field95/padding96` belong to
+the base `TTEView` (RTTI proves sizeof(TTEView)=0x98, and TDeluxeText's remaining
+fields then land exactly on their offset-suffixed names — `cursorThemeCode98`@0x98).
+Moved to the base; inherited member access keeps all call sites compiling.
+
+Result: **verified 312 → 384** (+72 classes), incomplete 83 → 11 (only >28-byte
+deltas needing real recovery), oversized back to the pre-existing 13.
+`just build` green over the 64 edited headers; **reccmp stats: 76 functions
+improved, 0 regressions, +1 at 100%** — the corrected allocation immediates match
+the original binary. class-size-gate passes (0 mismatches). Baseline updated.
+
+`apply-class-model --apply` then projected the newly-verified: **projected
+438 → 510** (blocked 96 → 24). Exported → `697ee1cc…`. Remaining queue: 11
+incomplete (large deltas: TCityInteriorMinister-family +380, THighScoresPicture
++360, TScenarioChooser +204, …) and 13 oversized (TGreatPower family −0x208,
+TMinister −0x38, …) — per-class investigations, each with its exact delta.
+
 ## Committed mutations (already in the current .gzf, newest first)
 
 From `git log --follow -- vendor/ghidra/exports/Imperialism.gzf`:

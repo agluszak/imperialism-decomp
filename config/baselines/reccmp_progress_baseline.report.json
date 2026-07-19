@@ -1054,7 +1054,7 @@
     },
     {
       "address": "0x43dbc0",
-      "matching": 0.4972375690607735,
+      "matching": 0.5220720967124337,
       "name": "InitializeArmyNavyReportViewsAndCommandTags",
       "type": 1
     },
@@ -1150,7 +1150,7 @@
     },
     {
       "address": "0x4538a0",
-      "matching": 0.5043798985707699,
+      "matching": 0.5045643153526971,
       "name": "InitializeGameSetupScreenControlsAndModeTags",
       "type": 1
     },
@@ -1361,7 +1361,7 @@
     },
     {
       "address": "0x45e0b0",
-      "matching": 0.5423005070723246,
+      "matching": 0.5428342674139311,
       "name": "BuildTurnEventDialogResourcesForEvent8FC",
       "type": 1
     },
@@ -2870,7 +2870,7 @@
     },
     {
       "address": "0x484af0",
-      "matching": 0.5172413793103449,
+      "matching": 0.5517241379310345,
       "name": "CMainFrame::CreateObject",
       "type": 1
     },
@@ -3068,7 +3068,7 @@
     },
     {
       "address": "0x485fb0",
-      "matching": 0.4489795918367347,
+      "matching": 0.4897959183673469,
       "name": "TTEView::CreateObject",
       "type": 1
     },
@@ -7325,7 +7325,7 @@
     },
     {
       "address": "0x49d650",
-      "matching": 0.4074074074074074,
+      "matching": 0.4444444444444444,
       "name": "TAdorner::CreateObject",
       "type": 1
     },
@@ -7607,7 +7607,7 @@
     },
     {
       "address": "0x49f450",
-      "matching": 0.36363636363636365,
+      "matching": 0.42424242424242425,
       "name": "TCivAnimation::CreateObject",
       "type": 1
     },
@@ -8411,7 +8411,7 @@
     },
     {
       "address": "0x4a8770",
-      "matching": 0.44,
+      "matching": 0.48,
       "name": "TGarrisonView::CreateObject",
       "type": 1
     },
@@ -8447,7 +8447,7 @@
     },
     {
       "address": "0x4a8ca0",
-      "matching": 0.4489795918367347,
+      "matching": 0.4897959183673469,
       "name": "TArmyUnitLine::CreateObject",
       "type": 1
     },
@@ -8603,7 +8603,7 @@
     },
     {
       "address": "0x4aa450",
-      "matching": 0.44,
+      "matching": 0.48,
       "name": "TSuperArmyRoster::CreateObject",
       "type": 1
     },
@@ -8639,7 +8639,7 @@
     },
     {
       "address": "0x4aa890",
-      "matching": 0.4489795918367347,
+      "matching": 0.4897959183673469,
       "name": "TMiniArmyLine::CreateObject",
       "type": 1
     },
@@ -8939,7 +8939,7 @@
     },
     {
       "address": "0x4ae9d0",
-      "matching": 0.5357142857142857,
+      "matching": 0.5714285714285714,
       "name": "TBattleDetailBook::CreateObject",
       "type": 1
     },
@@ -8981,7 +8981,7 @@
     },
     {
       "address": "0x4aefd0",
-      "matching": 0.4489795918367347,
+      "matching": 0.4897959183673469,
       "name": "TNavyBoyView::CreateObject",
       "type": 1
     },
@@ -9005,7 +9005,7 @@
     },
     {
       "address": "0x4af6a0",
-      "matching": 0.4489795918367347,
+      "matching": 0.4897959183673469,
       "name": "TMerchantBoyView::CreateObject",
       "type": 1
     },
@@ -9029,7 +9029,7 @@
     },
     {
       "address": "0x4af910",
-      "matching": 0.4489795918367347,
+      "matching": 0.4897959183673469,
       "name": "TItemBoyView::CreateObject",
       "type": 1
     },
@@ -9053,7 +9053,7 @@
     },
     {
       "address": "0x4afcc0",
-      "matching": 0.4489795918367347,
+      "matching": 0.4897959183673469,
       "name": "TInterruptusView::CreateObject",
       "type": 1
     },
@@ -9077,7 +9077,7 @@
     },
     {
       "address": "0x4aff60",
-      "matching": 0.4489795918367347,
+      "matching": 0.4897959183673469,
       "name": "TBatRepDetLine::CreateObject",
       "type": 1
     },
@@ -9107,7 +9107,7 @@
     },
     {
       "address": "0x4b0630",
-      "matching": 0.5454545454545454,
+      "matching": 0.5818181818181818,
       "name": "TBattleUnitsView::CreateObject",
       "type": 1
     },
@@ -9161,7 +9161,7 @@
     },
     {
       "address": "0x4b0c90",
-      "matching": 0.4230769230769231,
+      "matching": 0.46153846153846156,
       "name": "TInfoBarBehavior::CreateObject",
       "type": 1
     },
@@ -9228,7 +9228,7 @@
     },
     {
       "address": "0x4b13a0",
-      "matching": 0.4489795918367347,
+      "matching": 0.4897959183673469,
       "name": "TCheater::CreateObject",
       "type": 1
     },
@@ -9264,7 +9264,7 @@
     },
     {
       "address": "0x4b1880",
-      "matching": 0.4489795918367347,
+      "matching": 0.4897959183673469,
       "name": "TTechCheater::CreateObject",
       "type": 1
     },
@@ -9288,7 +9288,7 @@
     },
     {
       "address": "0x4b19b0",
-      "matching": 0.4489795918367347,
+      "matching": 0.4897959183673469,
       "name": "TGPCheater::CreateObject",
       "type": 1
     },
@@ -9318,7 +9318,7 @@
     },
     {
       "address": "0x4b20d0",
-      "matching": 0.2702702702702703,
+      "matching": 0.32432432432432434,
       "name": "TLaborPool::CreateObject",
       "type": 1
     },
@@ -10440,7 +10440,7 @@
     },
     {
       "address": "0x4bcf40",
-      "matching": 0.4,
+      "matching": 0.43636363636363634,
       "name": "TRailheadDialog::CreateObject",
       "type": 1
     },
@@ -10470,7 +10470,7 @@
     },
     {
       "address": "0x4bd300",
-      "matching": 0.4489795918367347,
+      "matching": 0.4897959183673469,
       "name": "TTransportView::CreateObject",
       "type": 1
     },
@@ -10500,7 +10500,7 @@
     },
     {
       "address": "0x4bd7a0",
-      "matching": 0.4489795918367347,
+      "matching": 0.4897959183673469,
       "name": "TNewTownView::CreateObject",
       "type": 1
     },
@@ -11514,7 +11514,7 @@
     },
     {
       "address": "0x4caba0",
-      "matching": 0.5357142857142857,
+      "matching": 0.5714285714285714,
       "name": "TUniversityView::CreateObject",
       "type": 1
     },
@@ -11761,7 +11761,7 @@
     },
     {
       "address": "0x4ce480",
-      "matching": 0.4489795918367347,
+      "matching": 0.4897959183673469,
       "name": "TBuildingExpansionView::CreateObject",
       "type": 1
     },
@@ -11797,7 +11797,7 @@
     },
     {
       "address": "0x4cece0",
-      "matching": 0.5357142857142857,
+      "matching": 0.5714285714285714,
       "name": "TArmoryView::CreateObject",
       "type": 1
     },
@@ -11905,7 +11905,7 @@
     },
     {
       "address": "0x4d1760",
-      "matching": 0.4489795918367347,
+      "matching": 0.4897959183673469,
       "name": "TPlaceCityDialog::CreateObject",
       "type": 1
     },
@@ -13890,7 +13890,7 @@
     },
     {
       "address": "0x4e6a70",
-      "matching": 0.5454545454545454,
+      "matching": 0.5818181818181818,
       "name": "TAutoGreatPower::CreateObject",
       "type": 1
     },
@@ -14984,7 +14984,7 @@
     },
     {
       "address": "0x4f2bb0",
-      "matching": 0.5454545454545454,
+      "matching": 0.5818181818181818,
       "name": "TMinisterView::CreateObject",
       "type": 1
     },
@@ -15045,7 +15045,7 @@
     },
     {
       "address": "0x4f2f20",
-      "matching": 0.5454545454545454,
+      "matching": 0.5818181818181818,
       "name": "TForeignMinisterView::CreateObject",
       "type": 1
     },
@@ -15087,7 +15087,7 @@
     },
     {
       "address": "0x4f3240",
-      "matching": 0.5454545454545454,
+      "matching": 0.5818181818181818,
       "name": "TDefenseMinisterView::CreateObject",
       "type": 1
     },
@@ -15117,7 +15117,7 @@
     },
     {
       "address": "0x4f35e0",
-      "matching": 0.5454545454545454,
+      "matching": 0.5818181818181818,
       "name": "TInteriorMinisterView::CreateObject",
       "type": 1
     },
@@ -15958,7 +15958,7 @@
     },
     {
       "address": "0x4ff0c0",
-      "matching": 0.41509433962264153,
+      "matching": 0.4528301886792453,
       "name": "TColorFill::CreateObject",
       "type": 1
     },
@@ -15988,7 +15988,7 @@
     },
     {
       "address": "0x4ff1f0",
-      "matching": 0.5454545454545454,
+      "matching": 0.5818181818181818,
       "name": "TGWorldPeeker::CreateObject",
       "type": 1
     },
@@ -16330,7 +16330,7 @@
     },
     {
       "address": "0x503bd0",
-      "matching": 0.5357142857142857,
+      "matching": 0.5714285714285714,
       "name": "THelpPicture::CreateObject",
       "type": 1
     },
@@ -16642,7 +16642,7 @@
     },
     {
       "address": "0x5069d0",
-      "matching": 0.5454545454545454,
+      "matching": 0.5818181818181818,
       "name": "TOrderView::CreateObject",
       "type": 1
     },
@@ -18195,7 +18195,7 @@
     },
     {
       "address": "0x51cab0",
-      "matching": 0.26373626373626374,
+      "matching": 0.2857142857142857,
       "name": "TMapEditView::CreateObject",
       "type": 1
     },
@@ -19323,7 +19323,7 @@
     },
     {
       "address": "0x531b30",
-      "matching": 0.14814814814814814,
+      "matching": 0.18518518518518517,
       "name": "TBillForeignMinister::CreateObject",
       "type": 1
     },
@@ -22181,7 +22181,7 @@
     },
     {
       "address": "0x54bd20",
-      "matching": 0.7245989304812834,
+      "matching": 0.7272727272727273,
       "name": "TMultiplayerMgr::ReplaceNationStateForSlotAndRefreshStatus",
       "type": 1
     },
@@ -22277,7 +22277,7 @@
     },
     {
       "address": "0x54d650",
-      "matching": 0.4489795918367347,
+      "matching": 0.4897959183673469,
       "name": "TLoungeDialog::CreateObject",
       "type": 1
     },
@@ -22361,7 +22361,7 @@
     },
     {
       "address": "0x54ea30",
-      "matching": 0.5454545454545454,
+      "matching": 0.5818181818181818,
       "name": "TMadnessButton::CreateObject",
       "type": 1
     },
@@ -24141,7 +24141,7 @@
     },
     {
       "address": "0x564860",
-      "matching": 0.5454545454545454,
+      "matching": 0.5818181818181818,
       "name": "TMilitaryPageView::CreateObject",
       "type": 1
     },
@@ -24225,7 +24225,7 @@
     },
     {
       "address": "0x565030",
-      "matching": 0.4489795918367347,
+      "matching": 0.4897959183673469,
       "name": "TShipLine::CreateObject",
       "type": 1
     },
@@ -24249,7 +24249,7 @@
     },
     {
       "address": "0x565400",
-      "matching": 0.4489795918367347,
+      "matching": 0.4897959183673469,
       "name": "TShipView::CreateObject",
       "type": 1
     },
@@ -24447,7 +24447,7 @@
     },
     {
       "address": "0x568cd0",
-      "matching": 0.4489795918367347,
+      "matching": 0.4897959183673469,
       "name": "TShipFractionCluster::CreateObject",
       "type": 1
     },
@@ -24549,7 +24549,7 @@
     },
     {
       "address": "0x5697d0",
-      "matching": 0.5357142857142857,
+      "matching": 0.5714285714285714,
       "name": "TSuperNavyRoster::CreateObject",
       "type": 1
     },
@@ -24579,7 +24579,7 @@
     },
     {
       "address": "0x569bb0",
-      "matching": 0.4489795918367347,
+      "matching": 0.4897959183673469,
       "name": "TMiniShipLine::CreateObject",
       "type": 1
     },
@@ -24609,7 +24609,7 @@
     },
     {
       "address": "0x569dc0",
-      "matching": 0.4489795918367347,
+      "matching": 0.4897959183673469,
       "name": "TMiniShipView::CreateObject",
       "type": 1
     },
@@ -24633,7 +24633,7 @@
     },
     {
       "address": "0x56a510",
-      "matching": 0.4489795918367347,
+      "matching": 0.4897959183673469,
       "name": "TGamePreferencesPicture::CreateObject",
       "type": 1
     },
@@ -24933,7 +24933,7 @@
     },
     {
       "address": "0x56f4a0",
-      "matching": 0.5357142857142857,
+      "matching": 0.5714285714285714,
       "name": "TBook::CreateObject",
       "type": 1
     },
@@ -24963,7 +24963,7 @@
     },
     {
       "address": "0x56f7b0",
-      "matching": 0.4489795918367347,
+      "matching": 0.4897959183673469,
       "name": "TPageCorner::CreateObject",
       "type": 1
     },
@@ -25053,7 +25053,7 @@
     },
     {
       "address": "0x570030",
-      "matching": 0.36363636363636365,
+      "matching": 0.42424242424242425,
       "name": "TPictureLine::CreateObject",
       "type": 1
     },
@@ -25437,7 +25437,7 @@
     },
     {
       "address": "0x571930",
-      "matching": 0.5263157894736842,
+      "matching": 0.5614035087719298,
       "name": "TOnOffRadioButton::CreateObject",
       "type": 1
     },
@@ -25473,7 +25473,7 @@
     },
     {
       "address": "0x571b60",
-      "matching": 0.5357142857142857,
+      "matching": 0.5714285714285714,
       "name": "TCzechBox::CreateObject",
       "type": 1
     },
@@ -25545,7 +25545,7 @@
     },
     {
       "address": "0x571ed0",
-      "matching": 0.4489795918367347,
+      "matching": 0.4897959183673469,
       "name": "TColorKeyButton::CreateObject",
       "type": 1
     },
@@ -25581,7 +25581,7 @@
     },
     {
       "address": "0x572080",
-      "matching": 0.5454545454545454,
+      "matching": 0.5818181818181818,
       "name": "TGWorldButton::CreateObject",
       "type": 1
     },
@@ -25617,7 +25617,7 @@
     },
     {
       "address": "0x572350",
-      "matching": 0.44,
+      "matching": 0.48,
       "name": "TClickZone::CreateObject",
       "type": 1
     },
@@ -25749,7 +25749,7 @@
     },
     {
       "address": "0x572d20",
-      "matching": 0.5357142857142857,
+      "matching": 0.5714285714285714,
       "name": "TColorKeyPicture::CreateObject",
       "type": 1
     },
@@ -28252,7 +28252,7 @@
     },
     {
       "address": "0x58b340",
-      "matching": 0.48,
+      "matching": 0.52,
       "name": "TCivilianButton::CreateObject",
       "type": 1
     },
@@ -30440,7 +30440,7 @@
     },
     {
       "address": "0x5a5480",
-      "matching": 0.24390243902439024,
+      "matching": 0.2926829268292683,
       "name": "TNavyBattle::CreateObject",
       "type": 1
     },
@@ -30716,7 +30716,7 @@
     },
     {
       "address": "0x5a82b0",
-      "matching": 0.9583333333333334,
+      "matching": 1.0,
       "name": "TTacticalBattleView::CreateObject",
       "type": 1
     },
@@ -31016,7 +31016,7 @@
     },
     {
       "address": "0x5ad2e0",
-      "matching": 0.5454545454545454,
+      "matching": 0.5818181818181818,
       "name": "TTacMapUberPicture::CreateObject",
       "type": 1
     },
@@ -31088,7 +31088,7 @@
     },
     {
       "address": "0x5adb40",
-      "matching": 0.36363636363636365,
+      "matching": 0.42424242424242425,
       "name": "TTask::CreateObject",
       "type": 1
     },
@@ -31124,7 +31124,7 @@
     },
     {
       "address": "0x5adcd0",
-      "matching": 0.36363636363636365,
+      "matching": 0.42424242424242425,
       "name": "TCityTask::CreateObject",
       "type": 1
     },
@@ -31208,7 +31208,7 @@
     },
     {
       "address": "0x5ae650",
-      "matching": 0.36363636363636365,
+      "matching": 0.42424242424242425,
       "name": "TShipBuildingTask::CreateObject",
       "type": 1
     },
@@ -31730,7 +31730,7 @@
     },
     {
       "address": "0x5b4760",
-      "matching": 0.6428571428571429,
+      "matching": 0.6785714285714286,
       "name": "TSpecialQuitPicture::CreateObject",
       "type": 1
     },
@@ -32653,7 +32653,7 @@
     },
     {
       "address": "0x5bd1f0",
-      "matching": 0.4489795918367347,
+      "matching": 0.4897959183673469,
       "name": "TTradeOfferNationView::CreateObject",
       "type": 1
     },
@@ -32719,7 +32719,7 @@
     },
     {
       "address": "0x5bdb40",
-      "matching": 0.4489795918367347,
+      "matching": 0.4897959183673469,
       "name": "TTradeBidNationView::CreateObject",
       "type": 1
     },
@@ -32737,7 +32737,7 @@
     },
     {
       "address": "0x5bde30",
-      "matching": 0.5357142857142857,
+      "matching": 0.5714285714285714,
       "name": "TTradeBookView::CreateObject",
       "type": 1
     },
@@ -32845,7 +32845,7 @@
     },
     {
       "address": "0x5c0cf0",
-      "matching": 0.4489795918367347,
+      "matching": 0.4897959183673469,
       "name": "TDealLine::CreateObject",
       "type": 1
     },
@@ -32875,7 +32875,7 @@
     },
     {
       "address": "0x5c1430",
-      "matching": 0.4489795918367347,
+      "matching": 0.4897959183673469,
       "name": "TCommodityLine::CreateObject",
       "type": 1
     },
@@ -32905,7 +32905,7 @@
     },
     {
       "address": "0x5c1870",
-      "matching": 0.4489795918367347,
+      "matching": 0.4897959183673469,
       "name": "TTradeTotalsLine::CreateObject",
       "type": 1
     },
@@ -32935,7 +32935,7 @@
     },
     {
       "address": "0x5c1a80",
-      "matching": 0.4489795918367347,
+      "matching": 0.4897959183673469,
       "name": "TTradeTotalsView::CreateObject",
       "type": 1
     },
