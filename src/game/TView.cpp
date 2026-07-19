@@ -6,7 +6,7 @@
 #include "game/TInfoBarText.h"
 #include "game/TDialogBehavior.h"
 #include "game/TWindow.h"
-#include "game/ui_resource_pool.h"
+#include "game/ui_resource_builder.h"
 #include "game/global_data_tables.h"
 #include "game/ScopedMapQuickDrawContext.h"
 #include "game/quickdraw_rendering.h"
@@ -19,7 +19,7 @@
 extern "C" CRuntimeClass PTR_s_TView_006495a0;
 
 // UI-resource context helpers 0x426fa0-0x4270e0: original TU is this TView region
-// (0x4272xx methods follow); they operate on g_pUiResourceContext from ui_resource_pool.h.
+// (0x4272xx methods follow); they operate on g_pUiResourceContext from ui_resource_builder.h.
 // FUNCTION: IMPERIALISM 0x00426fa0
 void __cdecl SetUiResourceContextFlagsAndMetrics(short nField9C, short nStyleType,
                                                  unsigned char f70, unsigned char f6f,
