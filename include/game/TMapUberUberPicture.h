@@ -122,7 +122,7 @@ public:
   // slot 0x71 ResetPictureResourceEntry inherited unchanged (0x48f520)
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
   // slot 0x73 ForwardCombineOptionalSourceRegionIntoDestinationAndUpdateBox inherited unchanged (0x573940)
-  virtual undefined AutoScrollByEdgeMask(short edgeMask); // slot 0x74 0x45d2a0
+  virtual void AutoScrollByEdgeMask(short edgeMask); // slot 0x74 0x45d2a0
 
   TMapUberUberPicture();
 };

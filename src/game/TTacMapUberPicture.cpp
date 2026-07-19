@@ -1,13 +1,13 @@
 #include "game/TTacMapUberPicture.h"
 
+#include "game/TTacticalBattleView.h"
+#include "game/ui_control_tags.h"
+
 // FUNCTION: IMPERIALISM 0x0045d3b0
-undefined TTacMapUberPicture::AutoScrollByEdgeMask(short edgeMask) {
-  // Real body forwards param1 to field94's own vtable slot 0x6b when field94 != 0 (ground
-  // truth: `mov ecx,[this+0x94]; test ecx,ecx; jz ret; ... call [eax+0x1ac]`), but field94's
-  // receiver class isn't recovered yet -- left as the pre-existing stub rather than fake the
-  // dispatch (Hard Rule 12).
-  (void)edgeMask;
-  return 0;
+void TTacMapUberPicture::AutoScrollByEdgeMask(short edgeMask) {
+  if (tacticalBattleView94 != nullptr) {
+    tacticalBattleView94->AdjustTacticalUnitVerticalOffsetAndRefreshMarker(edgeMask);
+  }
 }
 
 // SYNTHETIC: IMPERIALISM 0x0045d3e0
@@ -21,10 +21,14 @@ TTacMapUberPicture::~TTacMapUberPicture() {}
 
 IMPLEMENT_DYNCREATE(TTacMapUberPicture, TMapUberUberPicture)
 
-TTacMapUberPicture::TTacMapUberPicture() {}
+TTacMapUberPicture::TTacMapUberPicture() : tacticalBattleView94(nullptr) {}
 
 // FUNCTION: IMPERIALISM 0x005ad3a0
-void TTacMapUberPicture::NoOpUiLifecycleHook(int arg) {}
+void TTacMapUberPicture::NoOpUiLifecycleHook(int arg) {
+  TMapUberUberPicture::NoOpUiLifecycleHook(arg);
+  tacticalBattleView94 = static_cast<TTacticalBattleView*>(ResolveControlByTag(kControlTagGold));
+  tacticalBattleView94->AssertValid();
+}
 
 // FUNCTION: IMPERIALISM 0x005ad3f0
 void TTacMapUberPicture::ForwardParam(int param) {}

@@ -9,13 +9,13 @@ module|tools.workflow.annotate_globals_from_symbols|just:annotate-globals|Global
 module|tools.migrations.annotate_vtables_from_symbols|direct|Vtable annotation pass (completed migration; run via uv)
 module|tools.migrations.annotate_strings_from_symbols|direct|String annotation pass (completed migration; run via uv)
 module|tools.workflow.check_no_raw_vtable_calls|just:vtable-gate|Raw-vtable policy gate
+module|tools.workflow.check_dual_use|just:dual-use-gate|Reject unresolved dual-use field modelling claims
 module|tools.workflow.check_vtable_annotations|just:vtable-annotation-gate|Vtable annotation adjacency gate
 module|tools.workflow.check_vtable_address_collisions|just:vtable-collision-gate|Vtable/data address collision gate
 module|tools.workflow.check_synthetic_names|just:synthetic-gate|Synthetic symbol/source name agreement gate
 module|tools.workflow.check_symbols_anchors|just:symbols-anchor-gate|Sanity-check reccmp-critical original_entities.csv rows after an inventory refresh
 module|tools.workflow.normalize_reccmp_markers|just:normalize-markers|Marker normalization utility
 module|tools.workflow.check_marker_hygiene|just:marker-gate|Marker hygiene gate (Hard Rules 3 and 4)
-module|tools.workflow.check_dual_use|just:dual-use-gate|Reject "dual-use" hand-waving + raw pointer<->int member storage; shrink-only baseline
 module|tools.workflow.check_generated_markers|just:generated-marker-gate|Reject stale recover-class generated-decl markers in manual source
 module|tools.workflow.check_ilt_ossification|just:ilt-ossification-gate|Ratchet gate against ILT/thunk-name ossification in manual source
 module|tools.workflow.check_construction_antipatterns|just:antipattern-gate|Real-C++-construction anti-pattern gate
