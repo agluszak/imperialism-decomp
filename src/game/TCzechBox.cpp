@@ -15,10 +15,18 @@ TCzechBox::TCzechBox() {}
 TCzechBox::~TCzechBox() {}
 
 // FUNCTION: IMPERIALISM 0x00571cb0
-void TCzechBox::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {}
+void TCzechBox::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+  if (commandId == 0x21) {
+    OrphanCallChain_C2_I16_00571e40(1);
+  }
+  TUpDownPictureButton::HandleEvent(commandId, sourceHandler, event);
+}
 
 // FUNCTION: IMPERIALISM 0x00571cf0
-void TCzechBox::NoOpUiLifecycleHook(int arg) {}
+void TCzechBox::NoOpUiLifecycleHook(int arg) {
+  (void)arg;
+  hasCommandTagResource = 4;
+}
 
 // FUNCTION: IMPERIALISM 0x00571d10
 void TCzechBox::SetControlStateFlagAndMaybeRefresh(bool fEnabledState, bool fRefreshNow) {}

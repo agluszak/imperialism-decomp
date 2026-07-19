@@ -34,10 +34,20 @@ undefined TArmyCheckBox::VTableSlot73(char param_1) {
 void TArmyCheckBox::ApplyRectSlot110(RECT* rectBuffer) {}
 
 // FUNCTION: IMPERIALISM 0x004aa280
-void TArmyCheckBox::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {}
+void TArmyCheckBox::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+  if (commandId == 0x21) {
+    if ((GetAsyncKeyState(0x11) & 0x8000) != 0 || field84 != 0) {
+      OrphanCallChain_C2_I16_004aa3a0(1);
+    }
+  }
+  TControl::HandleEvent(commandId, sourceHandler, event);
+}
 
 // FUNCTION: IMPERIALISM 0x004aa2f0
-void TArmyCheckBox::NoOpUiLifecycleHook(int arg) {}
+void TArmyCheckBox::NoOpUiLifecycleHook(int arg) {
+  (void)arg;
+  hasCommandTagResource = 4;
+}
 
 // FUNCTION: IMPERIALISM 0x004aa310
 void TArmyCheckBox::SetControlStateFlagAndMaybeRefresh(bool fEnabledState, bool fRefreshNow) {}
@@ -53,7 +63,8 @@ undefined TArmyCheckBox::SetArmyUnitLineActiveFlagAndNotify() {
 }
 
 // FUNCTION: IMPERIALISM 0x004aa3a0
-undefined TArmyCheckBox::OrphanCallChain_C2_I16_004aa3a0() {
+undefined TArmyCheckBox::OrphanCallChain_C2_I16_004aa3a0(int unused) {
+  (void)unused;
   return 0;
 }
 

@@ -125,16 +125,17 @@ public:
   virtual undefined OrphanLeaf_NoCall_Ins02_004aa340();                       // slot 0x71 0x4aa340
   virtual undefined SetArmyUnitLineActiveFlagAndNotify();                     // slot 0x72 0x4aa360
   virtual undefined VTableSlot73(char param_1);                               // slot 0x73 0x4aa030
-  virtual undefined OrphanCallChain_C2_I16_004aa3a0();                        // slot 0x74 0x4aa3a0
+  virtual undefined OrphanCallChain_C2_I16_004aa3a0(int unused); // slot 0x74 0x4aa3a0
   virtual undefined OrphanCallChain_C3_I23_004aa3e0(char param_1,
                                                     undefined4 param_2); // slot 0x75 0x4aa3e0
   virtual undefined OrphanCallChain_C1_I05_004aa430();                   // slot 0x76 0x4aa430
   // TControl's own slice ends at 0x84 (RTTI oracle: sizeof(TControl) == 0x84);
   // sizeof(TArmyCheckBox) == 0x94, adding one 0x10-byte region. The real ctor
   // (0x4a9fe0) only ever writes field88/field90 (its 6th/7th real stack params --
-  // Ghidra's own signature undercounts the real param count as 5); pad84/pad8c are
-  // left as unconfirmed padding.
-  int pad84;
+  // Ghidra's own signature undercounts the real param count as 5); pad8c is left
+  // as unconfirmed padding. field84 is read as a byte flag in HandleEvent (0x4aa280)
+  // guarding whether Ctrl-click toggles the checkbox; not yet observed written.
+  int field84;
   int field88;
   int pad8c;
   int field90;

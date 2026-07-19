@@ -8556,13 +8556,13 @@
     },
     {
       "address": "0x4aa280",
-      "matching": 0.07142857142857142,
+      "matching": 0.8888888888888888,
       "name": "TArmyCheckBox::HandleEvent",
       "type": 1
     },
     {
       "address": "0x4aa2f0",
-      "matching": 0.6666666666666666,
+      "matching": 1.0,
       "name": "TArmyCheckBox::NoOpUiLifecycleHook",
       "type": 1
     },
@@ -8586,7 +8586,7 @@
     },
     {
       "address": "0x4aa3a0",
-      "matching": 0.0,
+      "matching": 0.1111111111111111,
       "name": "TArmyCheckBox::OrphanCallChain_C2_I16_004aa3a0",
       "type": 1
     },
@@ -15332,7 +15332,7 @@
     },
     {
       "address": "0x4f6bd0",
-      "matching": 0.2248995983935743,
+      "matching": 0.242914979757085,
       "name": "TDiplomacyMapView::BlitDiplomacyMapEventPaletteMaskToSurface",
       "type": 1
     },
@@ -15404,7 +15404,7 @@
     },
     {
       "address": "0x4f79e0",
-      "matching": 0.2,
+      "matching": 1.0,
       "name": "TPanelView::NoOpUiLifecycleHook",
       "type": 1
     },
@@ -16991,7 +16991,7 @@
     },
     {
       "address": "0x50bea0",
-      "matching": 0.21081326669695594,
+      "matching": 0.21263062244434347,
       "name": "TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets",
       "type": 1
     },
@@ -21935,7 +21935,7 @@
     },
     {
       "address": "0x545940",
-      "matching": 0.41518578352180935,
+      "matching": 0.4261712439418417,
       "name": "TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine",
       "type": 1
     },
@@ -25497,13 +25497,13 @@
     },
     {
       "address": "0x571cb0",
-      "matching": 0.1,
+      "matching": 1.0,
       "name": "TCzechBox::HandleEvent",
       "type": 1
     },
     {
       "address": "0x571cf0",
-      "matching": 0.6666666666666666,
+      "matching": 1.0,
       "name": "TCzechBox::NoOpUiLifecycleHook",
       "type": 1
     },
@@ -30327,7 +30327,7 @@
     },
     {
       "address": "0x5a3d30",
-      "matching": 0.8163265306122449,
+      "matching": 0.8104956268221575,
       "name": "TTacticalBattle::IsTacticalTargetTileReachableForAction",
       "type": 1
     },
@@ -30849,7 +30849,7 @@
     },
     {
       "address": "0x5a9240",
-      "matching": 0.563855421686747,
+      "matching": 0.5397590361445783,
       "name": "TTacticalBattleView::AnimateTacticalUnitMoveBetweenTiles",
       "type": 1
     },
@@ -30939,7 +30939,7 @@
     },
     {
       "address": "0x5ac840",
-      "matching": 0.028985507246376812,
+      "matching": 0.7577639751552795,
       "name": "TTacticalToolbar::NoOpUiLifecycleHook",
       "type": 1
     },
@@ -31005,7 +31005,7 @@
     },
     {
       "address": "0x5ad180",
-      "matching": 0.16666666666666666,
+      "matching": 1.0,
       "name": "TTacNavyToolbar::NoOpUiLifecycleHook",
       "type": 1
     },
@@ -31569,7 +31569,7 @@
     },
     {
       "address": "0x5b2970",
-      "matching": 0.2222222222222222,
+      "matching": 1.0,
       "name": "TMapEditCluster::HandleEvent",
       "type": 1
     },
@@ -45211,6 +45211,6 @@
       "type": 5
     }
   ],
-  "file": "Imperialism.exe",
+  "file": "Imperialism.exe.gog-original",
   "format": 1
 }
