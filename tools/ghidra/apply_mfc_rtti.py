@@ -338,11 +338,6 @@ def run(program, args) -> dict:
         """A Ghidra-generated data label safe to replace with a class-scoped name."""
         return name.startswith(("PTR_", "DAT_", "s_", "CRuntimeClass_", "u_"))
 
-    def is_propagatable(method_name: str) -> bool:
-        if not method_name or is_auto_name(method_name) or method_name.startswith("thunk_"):
-            return False
-        return _PROVISIONAL.search(method_name) is None
-
     def get_or_make_class(name: str):
         existing = st.getNamespace(name, None)
         if existing is not None:
@@ -391,8 +386,6 @@ def run(program, args) -> dict:
         "named_desc": 0,
         "classes": 0,
         "vtables": 0,
-        "slots_renamed": 0,
-        "skipped_named": 0,
         "vtbl_structs": 0,
         "vtbl_structs_replaced": 0,
         "class_structs": 0,
@@ -495,42 +488,16 @@ def run(program, args) -> dict:
             except Exception as exc:  # noqa: BLE001
                 changes.append(f"  !! vftable {cls}@0x{vt:08x} failed: {exc}")
 
-        base_addr = by_name.get(base_nm) if base_nm else None
-        base_vt = descriptor_to_vtable(base_addr) if base_addr else None
-        if base_vt is None:
-            continue
-        # Walk shared slot range; rename anonymous overrides after the base virtual.
-        for slot in range(256):
-            der = vtable_target(vt, slot)
-            base_t = vtable_target(base_vt, slot)
-            if der is None and base_t is None:
-                # both ran out — stop when neither has a slot
-                if slot > 0:
-                    break
-                continue
-            if der is None or base_t is None or der == base_t:
-                continue  # null/inherited/out-of-range — nothing to name
-            base_fn = real_function(base_t)
-            der_fn = real_function(der)
-            if base_fn is None or der_fn is None:
-                continue
-            base_method = base_fn.getName().split("::")[-1]
-            if not is_propagatable(base_method):
-                continue  # base slot unnamed or provisional — nothing to propagate
-
-            new_name = f"{base_method}"
-            if args.apply:
-                try:
-                    der_fn.setParentNamespace(get_or_make_class(cls))
-                    der_fn.setName(new_name, SourceType.USER_DEFINED)
-                except Exception as exc:  # noqa: BLE001
-                    changes.append(f"  !! rename 0x{der:08x}->{cls}::{new_name} failed: {exc}")
-                    continue
-            stats["slots_renamed"] += 1
-            if args.verbose or not args.apply:
-                changes.append(
-                    f"    slot 0x{slot*4:02x}: override 0x{der:08x} -> {cls}::{new_name}"
-                )
+        # Virtual-method-identity propagation down the RTTI base chain (rename an
+        # anonymous derived override to match its base slot's name) is NOT done
+        # here. `tools/ghidra/propagate_virtual_method_names.py` (`just
+        # propagate-virtual-method-names`) is the canonical, dedicated owner of
+        # that job — this pass used to carry its own inline copy of the same
+        # slot-walk-and-rename logic, a second tool independently authoring the
+        # same function names with no conflict detection between them. Run the
+        # dedicated tool (before or after this one; neither depends on the
+        # other's output) rather than reintroducing a duplicate here. See
+        # docs/reference/apply-mfc-rtti-ownership.md.
 
     if args.apply:
         remove_stale_runtime_class_duplicate()
@@ -1488,8 +1455,9 @@ def main() -> int:
             print(line)
         print(
             f"\n[{mode}] descriptors={s['descriptors']} typed={s['typed']} "
-            f"named_desc={s['named_desc']} classes={s['classes']} vtables={s['vtables']} "
-            f"overrides_renamed={s['slots_renamed']} skipped_already_named={s['skipped_named']}\n"
+            f"named_desc={s['named_desc']} classes={s['classes']} vtables={s['vtables']}\n"
+            f"          (virtual-override name propagation: run "
+            f"`just propagate-virtual-method-names` separately)\n"
             f"          vtbl_structs={s['vtbl_structs']} class_structs={s['class_structs']} "
             f"ctors_named={s['ctors_named']} this_typed={s['this_typed']}\n"
             f"          vtbl_replaced={s['vtbl_structs_replaced']} "
