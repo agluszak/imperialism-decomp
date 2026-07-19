@@ -46,7 +46,7 @@ void TArmyCheckBox::HandleEvent(int commandId, TEventHandler* sourceHandler, TEv
 // FUNCTION: IMPERIALISM 0x004aa2f0
 void TArmyCheckBox::NoOpUiLifecycleHook(int arg) {
   (void)arg;
-  hasCommandTagResource = 4;
+  frameStyle60 = 4;
 }
 
 // FUNCTION: IMPERIALISM 0x004aa310

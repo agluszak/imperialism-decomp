@@ -25,7 +25,7 @@ void TCzechBox::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent*
 // FUNCTION: IMPERIALISM 0x00571cf0
 void TCzechBox::NoOpUiLifecycleHook(int arg) {
   (void)arg;
-  hasCommandTagResource = 4;
+  frameStyle60 = 4;
 }
 
 // FUNCTION: IMPERIALISM 0x00571d10

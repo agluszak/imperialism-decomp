@@ -35,7 +35,7 @@ void TTacticalToolbar::NoOpUiLifecycleHook(int arg) {
   LoadUiStringByGroupAndIndexToControlObject(0x273d, 0x20, helpControl);
   TView* targControl = ResolveControlByTag(kControlTagTarg);
   LoadUiStringByGroupAndIndexToControlObject(0x273d, 0x21, targControl);
-  TView* doneControl = ResolveControlByTag(kControlTagDone);
+  TView* doneControl = ResolveControlByTag(kTagDone);
   LoadUiStringByGroupAndIndexToControlObject(0x273d, 0x22, doneControl);
   TView* retrControl = ResolveControlByTag(kControlTagRetr);
   LoadUiStringByGroupAndIndexToControlObject(0x273d, 0x23, retrControl);
@@ -43,9 +43,9 @@ void TTacticalToolbar::NoOpUiLifecycleHook(int arg) {
   LoadUiStringByGroupAndIndexToControlObject(0x273d, 0x24, autoControl);
 
   CString empty1(g_szEmptyString);
-  ApplySharedStringToControlState(empty1, ownerContext);
+  SetControlHoverHelpText(empty1, ownerContext);
   CString empty2(g_szEmptyString);
-  ApplySharedStringToControlState(empty2, this);
+  SetControlHoverHelpText(empty2, this);
 }
 
 // Draws each side's xp progress bar (bar width = qualityLevel * 11, +5 rounding bump
