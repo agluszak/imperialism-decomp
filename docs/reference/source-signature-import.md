@@ -171,3 +171,49 @@ apiece — the diagnosis goal ("not zero, but every one explained") is met, and 
 count is no longer a manual backlog. (A tiny number of functions flip `in_stack`
 on/off with surrounding DB state — decompiler context-sensitivity, not a missing
 param; those are caught by `in-stack-audit`, not projected.)
+
+## PR #95: authoritative entity kinds + structural convergence audit (read-only)
+
+Two follow-on gaps from the projector's verifier: (a) the entity-kind → convention
+classification was punctuation-based, so a `static` member or a namespace-scoped
+free function was read as an instance method (`__thiscall`) when it is really
+`__cdecl`; (b) projection is *symptom-driven* — it only visits functions that
+decompile with `in_stack`, so a function the DB never resolved (`cc=unknown`,
+0 params) that produces no `in_stack` is invisible to it.
+
+**Clang-AST declaration index** (`tools/clang_ast_index.py`, `just clang-decl-index`).
+A real clang parse of the game headers (umbrella TU, vendored MSVC500/MFC includes,
+clang-cl `/TP` mode) yields `qualified_name -> [DeclInfo(kind, is_static, ret,
+params, has_this)]` for ~14.6k names (9213 instance methods, 1396 ctors, 700 dtors,
+**534 static methods**, **41 namespace functions**, 4646 free functions). The
+projector consults it (`resolve_entity_kind`, matched on qualified name + arity for
+overloads) and falls back to the punctuation guess only when a name is absent —
+true of free functions defined only in a `.cpp`, where punctuation is already right.
+It corrects the convention for **12** source-owned functions that are `static`
+methods (e.g. `TMapMgr::ComputeHexNeighborTileIndices`); none currently have
+`in_stack`, so this changes no projection today — it is defensive correctness and
+the input to the audit below.
+
+**Structural convergence audit** (`just structural-signature-audit`, READ-ONLY). For
+EVERY FUNCTION/LIBRARY claim — not just those showing `in_stack` — it compares the
+expected logical signature (source model + decl index) against the DB signature and
+classifies the gap. On the clean #91 DB, over **4064** claims:
+
+| category | count | meaning |
+|---|---|---|
+| converged | 1813 | DB convention + this-presence + arity match source |
+| **db_signature_incomplete** | **1936** | DB `cc=unknown` / 0 params — Ghidra never resolved it (invisible to the in_stack projector) |
+| param_count_mismatch | 294 | arity differs (either direction) |
+| convention_mismatch | 21 | DB convention disagrees with source |
+
+Type resolution quality is recorded per row (logical vs ABI-storage convergence are
+separate concerns): exact=3674, unresolved=204 (a non-pointer type we cannot size),
+generic_pointer_fallback=110 (pointee unknown — ABI-size only), ambiguous_simple_name=67
+(same simple name shared by several datatypes), canonical_alias=9. Only `exact` /
+`canonical_alias` count as *semantic* convergence; the pointer fallback counts only as
+*ABI-storage* convergence.
+
+This audit is the measurement, not the repair — it is wired as a read-only final stage
+of `ghidra-apply-source-full` and changes no DB. Projecting the ~2000 divergent
+signatures (the `db_signature_incomplete` majority plus the arity/convention cases),
+with per-function verify-and-commit as in PR #94, is the DB-changing follow-up.

@@ -58,9 +58,12 @@ import argparse
 import re
 from pathlib import Path
 
+from tools.clang_ast_index import load_compact_index
 from tools.common import ghidra_env
 from tools.common.repo import repo_root_from_file
 from tools.source_model import build_model
+
+_DEFAULT_DECL_INDEX = "build-msvc500/generated/decl_index.json"
 
 # Per-function decompile timeout (seconds). Kept at 20 so the projected set matches
 # the committed DB: a handful of giant init functions exceed it and are reported as
@@ -217,7 +220,33 @@ def default_convention(entity_kind: str) -> str:
     """The MSVC x86 convention implied by a source declaration lacking one."""
     if entity_kind in ("constructor", "destructor", "instance_method"):
         return "__thiscall"
-    return "__cdecl"  # static_method, free_function
+    return "__cdecl"  # static_method, free_function, namespace_function
+
+
+def resolve_entity_kind(decl_index, qualified_name: str, n_params: int,
+                        fallback: str) -> str:
+    """Authoritative entity kind from the Clang AST index, else the fallback.
+
+    The index (from `tools.clang_ast_index`) knows the facts a definition head
+    cannot show — `static` and class-vs-namespace scope. Match by qualified name;
+    for overloads (several decls share a name) disambiguate on parameter count,
+    preferring an exact arity match. Returns `fallback` (the punctuation guess)
+    when the name is absent — true of free functions defined only in a .cpp, where
+    the punctuation answer is already correct.
+    """
+    if not decl_index:
+        return fallback
+    decls = decl_index.get(qualified_name)
+    if not decls:
+        return fallback
+    if len(decls) == 1:
+        return decls[0].kind
+    exact = [d for d in decls if len(d.params) == n_params]
+    if len(exact) == 1:
+        return exact[0].kind
+    # Ambiguous overload set — if they all agree on kind, use it; else fall back.
+    kinds = {d.kind for d in (exact or decls)}
+    return next(iter(kinds)) if len(kinds) == 1 else fallback
 
 
 def _split_params(argstr: str) -> list[str] | None:
@@ -298,52 +327,61 @@ class TypeResolver:
             "float": FloatDataType(), "double": DoubleDataType(),
             "wchar_t": WideCharDataType(), "longlong": LongLongDataType(),
         }
-        # name -> DataType cache for named lookups
+        # name -> DataType cache for named lookups, plus a same-simple-name count so
+        # we can flag ambiguous resolutions (two datatypes from different categories
+        # sharing a name — a lossy pick, not a semantic match).
         self._named: dict[str, object] = {}
+        self._name_count: dict[str, int] = {}
         for dt in self.dtm.getAllDataTypes():
-            self._named.setdefault(dt.getName(), dt)
+            nm = dt.getName()
+            self._named.setdefault(nm, dt)
+            self._name_count[nm] = self._name_count.get(nm, 0) + 1
 
     def resolve(self, text: str):
-        """Return a DataType for the C++ type string, or None.
+        """DataType for the C++ type string, or None (see resolve_quality)."""
+        return self.resolve_quality(text)[0]
 
-        A pointer's pointee is irrelevant to stack-frame layout (all pointers are
-        4 bytes on x86), so an unresolved *pointer* type falls back to a generic
-        pointer rather than failing — that still binds the parameter at the right
-        slot/size, which is what clears the `in_stack`. Only a non-pointer type we
-        cannot size at all returns None (queued).
+    def resolve_quality(self, text: str):
+        """Return (DataType|None, quality). Quality grades how trustworthy the pick is:
+
+          exact                  — a primitive or a uniquely-named datatype match
+          canonical_alias        — a known MFC/Win32 typedef modelled as its ABI shape
+          generic_pointer_fallback — unresolved pointee typed as void* (ABI-size only)
+          ambiguous_simple_name  — several datatypes share the simple name; first wins
+          unresolved             — a non-pointer type we cannot size at all (None dt)
+
+        A pointer's pointee is irrelevant to stack-frame layout, so an unresolved
+        *pointer* still binds at the right slot/size — good enough for ABI storage
+        convergence, but only `exact`/`canonical_alias` count as *semantic*
+        convergence.
         """
         text = text.replace("const", " ").replace("volatile", " ")
-        # Drop C++ elaborated-type-specifier keywords ("class CWnd" -> "CWnd").
         text = re.sub(r"\b(class|struct|union|enum)\b", " ", text).strip()
         ptr = 0
         while text.endswith("*") or text.endswith("&"):
             ptr += 1
             text = text[:-1].strip()
         key = text.replace(" ", "").lower()
-        # MFC/Win32 typedefs Ghidra's DTM may not carry; each is pointer-sized.
+        quality = "exact"
         if key in _POINTER_ALIASES:
             base = self._prim["void"]
             ptr += 1
+            quality = "canonical_alias"
+        elif key in _PRIMITIVES:
+            base = self._prim.get(_PRIMITIVES[key])
         else:
-            base = None
-            if key in _PRIMITIVES:
-                base = self._prim.get(_PRIMITIVES[key])
-            if base is None:
-                base = self._named.get(text)
-            if base is None:
-                # last-ditch: exact-name search ignoring namespace
-                for dt in self.dtm.getAllDataTypes():
-                    if dt.getName() == text:
-                        base = dt
-                        break
+            base = self._named.get(text)
+            if base is not None and self._name_count.get(text, 1) > 1:
+                quality = "ambiguous_simple_name"
             if base is None:
                 if ptr > 0:
                     base = self._prim["void"]  # generic pointer to unknown pointee
+                    quality = "generic_pointer_fallback"
                 else:
-                    return None
+                    return None, "unresolved"
         for _ in range(ptr):
             base = self.dtm.getPointer(base)
-        return base
+        return base, quality
 
 
 # Queue reasons that mean "the tool or the data is broken" — a hard failure under
@@ -393,6 +431,8 @@ def run(program, args, model):
     monitor = pyghidra.task_monitor()
     resolver = TypeResolver(program)
 
+    decl_index = getattr(args, "_decl_index", None)
+
     addrs = [int(a, 16) for a in args.addrs] if args.addrs else None
 
     converged, queued, applied = [], [], 0
@@ -428,8 +468,12 @@ def run(program, args, model):
             continue
         cc, ret_str, param_strs, entity_kind = parsed
         # Source is authoritative for the convention; when the declaration omits
-        # one the C++ ABI fixes it from the entity kind (see default_convention).
+        # one the C++ ABI fixes it from the entity kind. Prefer the Clang AST index
+        # (it knows static/namespace facts a definition head can't show) over the
+        # punctuation guess (see resolve_entity_kind / default_convention).
         if not cc:
+            entity_kind = resolve_entity_kind(
+                decl_index, claim.name, len(param_strs), entity_kind)
             cc = default_convention(entity_kind)
         # A leaked `undefined` return is a Ghidra placeholder, not authoritative —
         # keep the DB's inferred return (ret_dt=None) and project only the params.
@@ -497,16 +541,142 @@ def run(program, args, model):
     return converged, queued, applied
 
 
+def _db_logical(fn):
+    """(cc, n_explicit_params, has_this, [param_abi_sizes]) for a DB function.
+
+    `this` and other auto-params (e.g. sret `__return_storage_ptr`) are excluded
+    from the explicit count; `has_this` is true when the convention is __thiscall
+    or an auto `this` param is present.
+    """
+    cc = fn.getCallingConventionName() or ""
+    explicit, sizes, has_this = 0, [], cc == "__thiscall"
+    for p in fn.getParameters():
+        if p.isAutoParameter():
+            if p.getName() == "this":
+                has_this = True
+            continue
+        explicit += 1
+        dt = p.getDataType()
+        sizes.append(dt.getLength() if dt else 0)
+    return cc, explicit, has_this, sizes
+
+
+def structural_audit(program, model, args):
+    """Read-only: compare every claim's EXPECTED logical signature (source model +
+    Clang AST index) against the DB's ACTUAL signature, and classify the gap.
+
+    Unlike the projector this is source-driven, not in_stack-triggered: it visits
+    every FUNCTION/LIBRARY claim, so it surfaces functions the DB never resolved
+    (cc=unknown / 0 params) that produce no in_stack and are therefore invisible to
+    the projector. Logical convergence (convention, this-presence, arity) and ABI
+    storage (param sizes) are reported separately, along with the worst type
+    resolution quality on the row.
+    """
+    fm = program.getFunctionManager()
+    af = program.getAddressFactory().getDefaultAddressSpace()
+    resolver = TypeResolver(program)
+    decl_index = getattr(args, "_decl_index", None)
+
+    _QUALITY_RANK = {"exact": 0, "canonical_alias": 1, "generic_pointer_fallback": 2,
+                     "ambiguous_simple_name": 3, "unresolved": 4}
+    rows = []
+    for addr, claim in sorted(model.functions.items()):
+        if claim.kind not in ("FUNCTION", "LIBRARY") or not claim.prototype:
+            continue
+        fn = fm.getFunctionAt(af.getAddress(addr))
+        if fn is None:
+            rows.append((addr, claim.name, "missing_function", "", ""))
+            continue
+        parsed = parse_prototype(claim.prototype)
+        if parsed is None:
+            rows.append((addr, claim.name, "unparsable_prototype", "", ""))
+            continue
+        cc, ret_str, param_strs, punct_kind = parsed
+        entity_kind = resolve_entity_kind(decl_index, claim.name, len(param_strs), punct_kind)
+        exp_cc = cc or default_convention(entity_kind)
+        exp_this = entity_kind in ("constructor", "destructor", "instance_method")
+        exp_n = len(param_strs)
+        worst = "exact"
+        for t in param_strs:
+            _dt, q = resolver.resolve_quality(t)
+            if _QUALITY_RANK[q] > _QUALITY_RANK[worst]:
+                worst = q
+
+        db_cc, db_n, db_this, _sizes = _db_logical(fn)
+        # Classify the LOGICAL gap (worst-first).
+        if db_cc in ("", "unknown", "default") or (db_n == 0 and exp_n > 0):
+            cat = "db_signature_incomplete"
+        elif db_cc != exp_cc:
+            cat = "convention_mismatch"
+        elif db_this != exp_this:
+            cat = "this_presence_mismatch"
+        elif db_n != exp_n:
+            cat = "param_count_mismatch"
+        else:
+            cat = "converged"
+        detail = f"exp[{exp_cc},this={exp_this},n={exp_n}] db[{db_cc},this={db_this},n={db_n}]"
+        rows.append((addr, claim.name, cat, worst, detail))
+    return rows
+
+
+def _write_audit(rows, out_path):
+    out = Path(out_path)
+    out.parent.mkdir(parents=True, exist_ok=True)
+    lines = ["address|name|category|type_resolution|detail"]
+    for addr, name, cat, q, detail in sorted(rows):
+        lines.append(f"0x{addr:08x}|{name}|{cat}|{q}|{detail}")
+    out.write_text("\n".join(lines) + "\n", encoding="utf-8")
+
+
 def main() -> int:
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("--apply", action="store_true", help="Project + verify (default: dry-run).")
     p.add_argument("--strict", action="store_true", help="Exit nonzero if any non-queued source row is non-converged.")
     p.add_argument("--addrs", nargs="+", help="Restrict to these addresses (hex).")
     p.add_argument("--queue-out", default="build-msvc500/evidence/source_signature_queue.csv")
+    p.add_argument("--structural-audit", action="store_true",
+                   help="READ-ONLY: compare every claim's expected signature (source + "
+                        "index) to the DB and classify the gap. No projection, no DB write.")
+    p.add_argument("--audit-out", default="build-msvc500/evidence/signature_convergence.csv")
+    p.add_argument("--decl-index", default=_DEFAULT_DECL_INDEX,
+                   help="Clang-AST declaration index for authoritative entity kinds "
+                        "(generate with `just clang-decl-index`). Punctuation fallback if absent.")
     args = p.parse_args()
 
     repo_root = repo_root_from_file(__file__, levels_up=2)
     model = build_model(repo_root, "IMPERIALISM")
+
+    index_path = Path(args.decl_index)
+    if not index_path.is_absolute():
+        index_path = repo_root / index_path
+    if index_path.exists():
+        args._decl_index = load_compact_index(index_path)
+        print(f"decl index: {len(args._decl_index)} names from {index_path}")
+    else:
+        args._decl_index = None
+        print(f"decl index: {index_path} absent — punctuation entity-kind fallback")
+
+    if args.structural_audit:
+        project = ghidra_env.open_project()
+        consumer = program = None
+        try:
+            consumer, program = ghidra_env.open_program(project, writable=False)
+            rows = structural_audit(program, model, args)
+        finally:
+            if program is not None:
+                program.release(consumer)
+            project.close()
+        _write_audit(rows, args.audit_out)
+        cats: dict = {}
+        quals: dict = {}
+        for _a, _n, cat, q, _d in rows:
+            cats[cat] = cats.get(cat, 0) + 1
+            if q:
+                quals[q] = quals.get(q, 0) + 1
+        print(f"[STRUCTURAL AUDIT] {len(rows)} claims -> {args.audit_out}")
+        print("  by category: " + ", ".join(f"{k}={v}" for k, v in sorted(cats.items())))
+        print("  worst type resolution: " + ", ".join(f"{k}={v}" for k, v in sorted(quals.items())))
+        return 0
 
     project = ghidra_env.open_project()
     consumer = program = None
