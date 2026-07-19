@@ -83,6 +83,24 @@ class ParsePrototypeTest(unittest.TestCase):
     def test_unparsable_returns_none(self):
         self.assertIsNone(parse_prototype("not a prototype at all"))
 
+    def test_ctor_with_member_init_list_ignores_init_list(self):
+        # Regression: the LAST-paren-group parse grabbed the init list, yielding
+        # junk args like ") : TView(". Use the first balanced group.
+        _cc, ret, params, kind = parse_prototype("TMapPreviewView::TMapPreviewView() : TView()")
+        self.assertEqual(ret, "void")
+        self.assertEqual(params, [])
+        self.assertEqual(kind, "constructor")
+
+    def test_ctor_with_args_and_init_list(self):
+        _cc, _ret, params, kind = parse_prototype(
+            "TPictureButton::TPictureButton(TView* parent, int id) : TPicture(parent), field60(0)")
+        self.assertEqual(params, ["TView*", "int"])
+        self.assertEqual(kind, "constructor")
+
+    def test_function_pointer_param_kept_balanced(self):
+        _cc, _ret, params, _k = parse_prototype("TFoo::TFoo(int (*cb)(int), TView* v) : TBase()")
+        self.assertEqual(params, ["int (*cb)(int)", "TView*"])
+
 
 class EntityKindClassificationTest(unittest.TestCase):
     """Static/namespace classification — the convention-selection surface.
