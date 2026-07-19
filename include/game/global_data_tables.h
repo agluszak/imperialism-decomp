@@ -1062,6 +1062,7 @@ extern int g_mapGenHillsQuota_006a38c0;
 extern int g_mapGenForestQuota_006a38f8;
 extern int g_mapGenSwampQuota_006a38e0;
 extern int g_mapGenRiverCount_006a38e4;
+extern const int g_riverConnectionTypeByDirectionPair_00697568[6][6];
 extern int g_regionSeedGridCols_006a38f0;
 
 // One-shot assert-suppression flags for the UMapper overlay-segment passes (0x006a3910 for the
