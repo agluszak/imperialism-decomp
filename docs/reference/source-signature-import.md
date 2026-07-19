@@ -137,26 +137,37 @@ cache, and it verifies every edit by fresh decompilation.
 
 ### Result (clean #91 DB → projected)
 
-| outcome | count | meaning |
-|---|---|---|
-| **converged** | **163** | signature projected, `in_stack` verified cleared |
-| **queued (structural)** | **53** | reverted; `dynamic_storage_insufficient` with the residual offsets |
-| unparsable / apply_error | **0** | strict passes |
+Every processed function lands in exactly one bucket; the projection is applied
+(kept in the DB) for the first two and reverted for the third:
 
-All 53 residuals are `DYNAMIC_STORAGE`-insoluble by construction — the three
-taxonomy categories that a formal-param projection cannot bind:
+| bucket | count | kept? | meaning |
+|---|---|---|---|
+| **converged** | **152** | yes | projected; the re-decompile has NO `in_stack` left |
+| **params_bound_residual** | **11** | yes | every originally-flagged offset now bound (params correct), but a residual `in_stack` remains at a *different* offset — logged, not silently "converged" |
+| **dynamic_storage_insufficient** | **53** | no (reverted) | an originally-flagged offset stayed unbound; reverted to the exact prior signature |
+| unparsable / apply_error | **0** | — | strict passes |
 
-- **packed sub-dword args** (two `short`s in one dword; second read at `@0x6`) —
-  the dominant case. Needs `CUSTOM_STORAGE` at the packed offset, deliberately
-  out of scope here ("bulk-fix the plain params, queue the rest").
-- **sret hidden pointer** (by-value struct return shifts the real args up one
-  slot, e.g. `TView::TransformPointViaSlot138` → `CPoint`, residual `@0x8`).
-- **spurious high-offset locals** the decompiler surfaced as `in_stack` on a
-  zero/low-arity function (`TMapMaker::ReindexContiguousCityRegionIds` `@0x14`,
-  `__chsize_lk` `@0x1008` — a 4 KB local buffer, not a parameter).
+163 signatures are kept in the DB (152 + 11); 53 are reverted. The **64** queued
+(`build-msvc500/evidence/source_signature_queue.csv`) are the standing evidence —
+*explained*, not *unexplained*:
 
-The 53 are the standing evidence queue in
-`build-msvc500/evidence/source_signature_queue.csv`; they are *explained*, not
-*unexplained*. The remaining source-owned `in_stack` therefore carries an
-understood reason apiece — the diagnosis goal ("not zero, but every one
-explained") is met, and the count is no longer a manual backlog.
+- **`dynamic_storage_insufficient` (53)** — `DYNAMIC_STORAGE`-insoluble frames a
+  formal-param projection cannot bind: **packed sub-dword args** (two `short`s in
+  one dword, second read at `@0x6` — the dominant case; needs `CUSTOM_STORAGE`,
+  deliberately out of scope: "bulk-fix the plain params, queue the rest"),
+  **sret hidden pointers** (by-value struct return shifts the real args up a slot,
+  e.g. `TView::TransformPointViaSlot138` → `CPoint`, residual `@0x8`), and
+  **spurious high-offset locals** (`TMapMaker::ReindexContiguousCityRegionIds`
+  `@0x14`, `__chsize_lk` `@0x1008` — a 4 KB local buffer, not a parameter).
+- **`params_bound_residual` (11)** — the parameters ARE bound correctly (e.g.
+  `ImperialismCommandLineInfo::ParseParam` gets all three source params), but the
+  decompiler still shows a sub-dword read *inside* an already-bound slot (`@0x9`,
+  `@0xd`). Reverting would restore a weaker signature, so the binding is kept and
+  the residual is logged instead — the honest classification that keeps the queue
+  accounting for every function that still decompiles with `in_stack`.
+
+The remaining source-owned `in_stack` therefore carries an understood reason
+apiece — the diagnosis goal ("not zero, but every one explained") is met, and the
+count is no longer a manual backlog. (A tiny number of functions flip `in_stack`
+on/off with surrounding DB state — decompiler context-sensitivity, not a missing
+param; those are caught by `in-stack-audit`, not projected.)
