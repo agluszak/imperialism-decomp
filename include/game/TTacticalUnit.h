@@ -51,8 +51,15 @@ public:
   short pad26;            // +0x26
   int actionPoints28;     // +0x28 remaining action points (seeded from GetBaseActionPoints)
   int aiStateCode2c;      // +0x2c AI stance code (indexes the 0x699500 weight rows)
-  // +0x30 dual-purpose slot: a current-attack-target TTacticalUnit* in the "targ" command
-  // path, but read as an int stat elsewhere (TTacArmyView bar width) — kept int/raw.
+  // UNRESOLVED_FIELD_ATTRIBUTION: +0x30 has two binary-confirmed but incompatible readings
+  // on this same class, and no discriminator/lifetime split has been proven, so it stays
+  // raw int pending resolution (do NOT relabel this "dual-purpose"):
+  //   - pointer: HandleTacticalCommandTag_targ reads AND writes [unit+0x30] as the current
+  //     attack-target TTacticalUnit* (0x005a3f42 read, 0x005a4101 write on selectedUnit1c).
+  //   - scalar: TTacArmyView draws it as a 0-499 strength/ammo bar width
+  //     (barRect.right += (occupant->field30 + 0x18) / 0x19), which a pointer value cannot be.
+  // One reading is a defect (likely a wrong offset/target field in the targ path, or a
+  // phase where the bar is not drawn); resolve before typing this as either.
   int field30;
 
   // NOOP: verified empty in original (trivial inline ctor: both concrete branches

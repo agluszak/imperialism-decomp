@@ -1758,7 +1758,9 @@ void TTacticalBattle::HandleTacticalCommandTag_targ() {
   if (selected == NULL || battleView8 == NULL) {
     return;
   }
-  // field30 is a dual-purpose slot (see TTacticalUnit.h); here it carries the target unit.
+  // UNRESOLVED_FIELD_ATTRIBUTION: +0x30 is read/written here as a target pointer but rendered
+  // as a scalar bar elsewhere (see TTacticalUnit.h). This cast matches the binary (0x005a3f42)
+  // but one reading is a defect; keep the cast localized until the attribution is resolved.
   TTacticalUnit* marker = reinterpret_cast<TTacticalUnit*>(selected->field30);
   TList* list = (&tacticalPlayer14)[selected->side20 == 0]->unitList4;
 
