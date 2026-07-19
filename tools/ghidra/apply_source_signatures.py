@@ -565,17 +565,20 @@ def run(program, args, model):
 def _db_logical(fn):
     """(cc, n_explicit_params, has_this, [param_abi_sizes]) for a DB function.
 
-    `this` and other auto-params (e.g. sret `__return_storage_ptr`) are excluded
-    from the explicit count; `has_this` is true when the convention is __thiscall
-    or an auto `this` param is present.
+    The receiver and other implicit params are excluded from the explicit count:
+    `this` (whether Ghidra models it as an auto param under DYNAMIC_STORAGE or as an
+    explicit ECX param under CUSTOM_STORAGE — a packed frame uses the latter) and
+    auto params such as the sret `__return_storage_ptr`. `has_this` is true when the
+    convention is __thiscall or a `this` param is present.
     """
     cc = fn.getCallingConventionName() or ""
     explicit, sizes, has_this = 0, [], cc == "__thiscall"
     for p in fn.getParameters():
-        if p.isAutoParameter():
-            if p.getName() == "this":
-                has_this = True
+        if p.getName() == "this":
+            has_this = True
             continue
+        if p.isAutoParameter():
+            continue  # sret __return_storage_ptr and other compiler-inserted params
         explicit += 1
         dt = p.getDataType()
         sizes.append(dt.getLength() if dt else 0)
@@ -656,6 +659,137 @@ def _write_queue(queued, out_path):
     for addr, name, reason, proto in sorted(queued):
         lines.append(f"0x{addr:08x}|{name}|{reason}|{proto}".replace("\n", " "))
     out.write_text("\n".join(lines) + "\n", encoding="utf-8")
+
+
+def _packed_param_impls(program, resolver, param_strs, cc, this_type):
+    """Build CUSTOM_STORAGE ParameterImpls that TIGHT-PACK the stack arguments.
+
+    MSVC500 packs adjacent sub-dword arguments (two shorts, a byte + short, …) into
+    one dword rather than giving each its own 4-byte slot. DYNAMIC_STORAGE always
+    dword-aligns, so the packed read (e.g. the 2nd short at 0x6) is left unbound and
+    surfaces as `in_stack`. Here each parameter is placed at `prev_offset + prev_size`
+    from 0x4 (the first stack arg; `this` for __thiscall is in ECX, not on stack).
+    Returns (impls, None) or (None, reason) if a type won't resolve. The caller
+    VERIFIES by re-decompile — a wrong packing simply fails to clear the in_stack
+    and is rolled back, so this never commits an unverified layout.
+    """
+    from ghidra.program.model.listing import ParameterImpl, VariableStorage
+    stack = program.getAddressFactory().getStackSpace()
+    impls = []
+    if cc == "__thiscall":
+        ecx = program.getRegister("ECX")
+        impls.append(ParameterImpl("this", this_type, VariableStorage(program, ecx), program))
+    off = 0x4
+    for i, t in enumerate(param_strs):
+        dt = resolver.resolve(t)
+        if dt is None:
+            return None, f"unresolved_param:{t}"
+        size = dt.getLength()
+        if size <= 0:
+            return None, f"bad_size:{t}"
+        store = VariableStorage(program, stack.getAddress(off), size)
+        impls.append(ParameterImpl(f"a{i}", dt, store, program))
+        off += size
+    return impls, None
+
+
+def run_packed(program, args, model):
+    """Recover PACKED sub-dword parameter frames via verified CUSTOM_STORAGE.
+
+    Targets exactly the dominant `introduced_in_stack` residue from the
+    source-driven pass: functions whose source parameters are sub-dword
+    (short/char/bool) and whose DYNAMIC_STORAGE projection left a packed read
+    unbound. Models the arguments tight-packed from 0x4 (`this` in ECX for
+    __thiscall) and commits ONLY if the re-decompile is fully clean — the packing
+    is the hypothesis, the empty in_stack is the proof. Everything else rolls back.
+    Only functions whose source params are ALL sub-dword are attempted (packing an
+    int/pointer arg tightly would just reproduce the dword-aligned layout).
+    """
+    from ghidra.program.model.listing import Function
+    from ghidra.program.model.symbol import SourceType
+    import pyghidra
+
+    fm = program.getFunctionManager()
+    af = program.getAddressFactory().getDefaultAddressSpace()
+    ifc = _decompiler(program)
+    monitor = pyghidra.task_monitor()
+    resolver = TypeResolver(program)
+    decl_index = getattr(args, "_decl_index", None)
+    addrs = [int(a, 16) for a in args.addrs] if args.addrs else None
+
+    projected, queued = [], []
+    for addr, claim in sorted(model.functions.items()):
+        if claim.kind not in ("FUNCTION", "LIBRARY") or not claim.prototype:
+            continue
+        if addrs is not None and addr not in addrs:
+            continue
+        fn = fm.getFunctionAt(af.getAddress(addr))
+        if fn is None:
+            continue
+        parsed = parse_prototype(claim.prototype)
+        if parsed is None:
+            continue
+        cc, ret_str, param_strs, punct_kind = parsed
+        if not param_strs:
+            continue
+        entity_kind = resolve_entity_kind(decl_index, claim.name, len(param_strs), punct_kind)
+        exp_cc = cc or default_convention(entity_kind)
+        if exp_cc not in ("__thiscall", "__cdecl", "__stdcall"):
+            continue
+        # Only attempt when at least one param is sub-dword AND all are <= 4 bytes
+        # scalars (packing only matters for sub-dword args; a struct/vararg is out).
+        sizes = []
+        ok = True
+        for t in param_strs:
+            dt = resolver.resolve(t)
+            if dt is None or dt.getLength() <= 0 or dt.getLength() > 4:
+                ok = False
+                break
+            sizes.append(dt.getLength())
+        if not ok or all(s == 4 for s in sizes):
+            continue  # nothing sub-dword to pack
+
+        before = _decompile_in_stack(ifc, fn, monitor)
+        if before is None or not before:
+            continue  # only functions that currently show in_stack are candidates
+
+        this_type = resolver.resolve(claim.name.split("::", 1)[0] + "*") if "::" in claim.name else None
+        impls, err = _packed_param_impls(program, resolver, param_strs, exp_cc, this_type)
+        if err:
+            queued.append((addr, claim.name, err, claim.prototype))
+            continue
+
+        ftx = program.startTransaction(f"pack 0x{addr:08x}")
+        commit, reason = False, None
+        try:
+            fn.setCallingConvention(exp_cc)
+            ret_dt = None if _is_placeholder_return(ret_str) else resolver.resolve(ret_str)
+            if ret_dt is not None and not (ret_dt.getLength() > 4 and "*" not in ret_str):
+                fn.setReturnType(ret_dt, SourceType.USER_DEFINED)
+            fn.setCustomVariableStorage(True)
+            fn.replaceParameters(
+                Function.FunctionUpdateType.CUSTOM_STORAGE, True, SourceType.USER_DEFINED, *impls)
+            ifc.flushCache()
+            after = _decompile_in_stack(ifc, fn, monitor)
+            if after is None:
+                reason = "decompile_failed:after"
+            elif after:
+                reason = "packing_mismatch:" + ",".join(hex(o) for o in sorted(after))
+            else:
+                commit = True
+        except Exception as exc:  # noqa: BLE001
+            reason = f"apply_error:{type(exc).__name__}"
+        finally:
+            program.endTransaction(ftx, commit)
+
+        if commit:
+            projected.append((addr, claim.name, "packed", len(param_strs)))
+        else:
+            queued.append((addr, claim.name, reason, claim.prototype))
+
+    if args.apply:
+        program.save("project packed signatures", pyghidra.task_monitor())
+    return projected, queued
 
 
 def run_divergent(program, args, model):
@@ -786,6 +920,10 @@ def main() -> int:
                    help="Source-DRIVEN projection: apply source signatures to claims the DB "
                         "left incomplete/short (not just in_stack ones). Commit on FULL "
                         "convergence only. Combine with --apply to write; MUTATES the DB.")
+    p.add_argument("--project-packed", action="store_true",
+                   help="Recover PACKED sub-dword parameter frames via verified CUSTOM_STORAGE "
+                        "(two shorts in one dword, etc.). Commit only on a fully clean "
+                        "re-decompile. Combine with --apply to write; MUTATES the DB.")
     p.add_argument("--audit-out", default="build-msvc500/evidence/signature_convergence.csv")
     p.add_argument("--decl-index", default=_DEFAULT_DECL_INDEX,
                    help="Clang-AST declaration index for authoritative entity kinds "
@@ -827,12 +965,14 @@ def main() -> int:
         print("  worst type resolution: " + ", ".join(f"{k}={v}" for k, v in sorted(quals.items())))
         return 0
 
-    if args.project_divergent:
+    if args.project_divergent or args.project_packed:
+        which = run_packed if args.project_packed else run_divergent
+        label = "packed CUSTOM_STORAGE" if args.project_packed else "source-driven projection"
         project = ghidra_env.open_project()
         consumer = program = None
         try:
             consumer, program = ghidra_env.open_program(project, writable=bool(args.apply))
-            projected, queued = run_divergent(program, args, model)
+            projected, queued = which(program, args, model)
         finally:
             if program is not None:
                 program.release(consumer)
@@ -842,7 +982,7 @@ def main() -> int:
         for _a, _n, r, _p in queued:
             reasons[r.split(":", 1)[0]] = reasons.get(r.split(":", 1)[0], 0) + 1
         mode = "APPLIED" if args.apply else "DRY RUN"
-        print(f"[{mode}] source-driven projection: projected={len(projected)} queued={len(queued)}")
+        print(f"[{mode}] {label}: projected={len(projected)} queued={len(queued)}")
         print(f"  queue -> {args.queue_out}")
         print("  queued by reason: " + ", ".join(f"{k}={v}" for k, v in sorted(reasons.items())))
         if args.strict:

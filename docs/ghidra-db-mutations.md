@@ -278,6 +278,26 @@ ABI-exception set — sret needs correct return-type SIZES first (e.g. `CPoint` 
 Ghidra won't model until the type is sized), so type modeling precedes the
 sret/packed CUSTOM_STORAGE lowering.
 
+## 2026-07-19 (eleventh): verified packed sub-dword CUSTOM_STORAGE (PR #98, committed DB change)
+
+The dominant `introduced_in_stack` residue (50 @0x6, 20 @0xa, …) is the packed
+sub-dword case: MSVC500 packs adjacent short/byte args into one dword, which
+DYNAMIC_STORAGE dword-aligns, leaving the packed read unbound.
+`just project-packed-signatures --apply` (`run_packed`) models the arguments
+tight-packed from 0x4 (`this` in ECX for __thiscall) via CUSTOM_STORAGE and commits
+ONLY on a fully clean re-decompile — the packing is the hypothesis, the empty
+in_stack the proof; a wrong packing rolls back (`packing_mismatch`).
+
+On the #97 base (`6b841b63…`): **projected=11** (verified), queued=45
+(packing_mismatch=43 — the tight-packing model doesn't fit the real layout, e.g.
+3+ mixed sub-dword args; decompile_failed=2). Re-exported → `6c413c42…`. Also fixed
+`_db_logical` to treat a `this`-named param as the receiver whether Ghidra models it
+auto (DYNAMIC_STORAGE) or explicit-in-ECX (CUSTOM_STORAGE) — without it the audit
+mis-counted the packed functions' explicit `this` as a parameter. Structural audit:
+converged 3871 → 3876 (the 11 packed clear their in_stack; the audit measures the
+signature match). The 43 packing_mismatch need per-function packing analysis (a
+richer packing model than tight-consecutive) — future work.
+
 ## Committed mutations (already in the current .gzf, newest first)
 
 From `git log --follow -- vendor/ghidra/exports/Imperialism.gzf`:
