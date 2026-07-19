@@ -1510,9 +1510,9 @@ char TGreatPower::BuildGreatPowerMapContextTriggeredNationEventMessages(CString*
               g_pDiplomacyTurnStateManager->HasPolicyWithNationSlot44(this->nationSlot,
                                                                       candidate) != 0) {
             unsigned char candidateMask = static_cast<unsigned char>(1 << candidate);
-            if ((contextEntry->field10 & candidateMask) != 0) {
+            if ((contextEntry->nationKeyMask10 & candidateMask) != 0) {
               unsigned char selfMask = static_cast<unsigned char>(1 << this->nationSlot);
-              if ((contextEntry->field10 & selfMask) == 0) {
+              if ((contextEntry->nationKeyMask10 & selfMask) == 0) {
                 CString zoneName;
                 contextEntry->AssignZoneDisplayNameToOutputRef(&zoneName);
                 *outMessageText += "\n     " + zoneName;
@@ -3426,7 +3426,7 @@ int TGreatPower::CountMapActionContextNodesWithNationBit(void) {
   TZone* node = g_pMapActionContextListHead;
   if (node != 0) {
     do {
-      if ((node->field10 & (1 << (this->nationSlot & 0x1f))) != 0) {
+      if ((node->nationKeyMask10 & (1 << (this->nationSlot & 0x1f))) != 0) {
         ++count;
       }
       node = node->prev18;

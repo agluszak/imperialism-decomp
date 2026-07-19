@@ -211,7 +211,7 @@ void TControlSeaZoneMission::NoOpSlot9C(void* pMapOrderEntry) {
   }
 
   TZone* entryContext = reinterpret_cast<TZone*>(mapOrderEntry->contextAnchor);
-  if ((entryContext->field10 & nationBitmask) == 0 && firstMatchContext != nullptr) {
+  if ((entryContext->nationKeyMask10 & nationBitmask) == 0 && firstMatchContext != nullptr) {
     mapOrderEntry->SetMapOrderType6AndQueue(reinterpret_cast<int>(firstMatchContext));
     return;
   }

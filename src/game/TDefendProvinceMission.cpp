@@ -40,7 +40,7 @@ TDefendProvinceMission::~TDefendProvinceMission() {}
 
 // True if tileIndex is the home region of its own owner nation, or has an adjacent
 // region owned by a different valid nation, or is claimed (secondaryNeighbors array
-// entry) by some other map-action-context zone whose field10 mask has a bit set outside
+// entry) by some other map-action-context zone whose nationKeyMask10 mask has a bit set outside
 // the owner's own bit.
 // FUNCTION: IMPERIALISM 0x005359e0
 int IsMapTileCompatibleWithCurrentTerrainOrActionContext(int tileIndex) {
@@ -63,7 +63,7 @@ int IsMapTileCompatibleWithCurrentTerrainOrActionContext(int tileIndex) {
     return 0;
   }
   unsigned char excludeOwnerMask = static_cast<unsigned char>((1 << (primaryOwner & 0x1f)) ^ 0x7f);
-  while ((zone->field10 & excludeOwnerMask) == 0 ||
+  while ((zone->nationKeyMask10 & excludeOwnerMask) == 0 ||
          !zone->ContainsCityStatePointerInZoneArrayByCityIndex(static_cast<short>(tileIndex))) {
     zone = zone->prev18;
     if (zone == nullptr) {

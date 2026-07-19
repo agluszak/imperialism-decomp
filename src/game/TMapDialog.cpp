@@ -63,7 +63,7 @@ IMPLEMENT_DYNCREATE(TMapDialog, TWorldView)
 
 // Zero the marker/overlay state, center the view on the map's current tile (splitting
 // g_pGlobalMapState->field6 into row/col and dispatching the coordinate update virtually —
-// the vptr is already TMapDialog's), then seed the scroll/zoom words (field78 = 0x40 tile
+// the vptr is already TMapDialog's), then seed the scroll/zoom words (previewSquareRadius78 = 0x40 tile
 // pixel size). The split writes only the low words of the two locals, so they are ints whose
 // addresses pass as short* (the high words are dead), matching the original stack reads.
 // FUNCTION: IMPERIALISM 0x00519b50
@@ -80,8 +80,8 @@ TMapDialog::TMapDialog() : TWorldView() {
   field354 = 0;
   field356 = -1;
   field358 = 0;
-  field76 = 1;
-  field78 = 0x40;
+  projectionScale76 = 1;
+  previewSquareRadius78 = 0x40;
   field360 = 0;
 }
 
@@ -1059,7 +1059,7 @@ void TMapDialog::RenderMapDialogTerrainOverlayFrameByTileOwner(short tileIndex, 
     return;
   }
 
-  if (field74 == 0) {
+  if (overlayFlagByte74 == 0) {
     short terrainFrameIndex = static_cast<short>(tileRecord[0x10]);
     if (terrainFrameIndex == -1) {
       return;

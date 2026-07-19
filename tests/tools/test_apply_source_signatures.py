@@ -13,9 +13,29 @@ from tools.ghidra.apply_source_signatures import (
     _classify_projection,
     _is_placeholder_return,
     _param_type_only,
+    _queue_out_for_mode,
+    classify_convergence,
     default_convention,
     parse_prototype,
+    select_named_datatype,
 )
+
+
+def _exp(cc="__cdecl", n_params=0, has_this=False, param_sizes=(), has_varargs=False,
+        ret_size=None):
+    return {
+        "cc": cc, "n_params": n_params, "has_this": has_this,
+        "param_sizes": list(param_sizes), "has_varargs": has_varargs, "ret_size": ret_size,
+    }
+
+
+def _db(cc="__cdecl", n_params=0, has_this=False, param_sizes=(), has_varargs=False,
+        has_sret=False, custom_storage=False, ret_size=None):
+    return {
+        "cc": cc, "n_params": n_params, "has_this": has_this,
+        "param_sizes": list(param_sizes), "has_varargs": has_varargs,
+        "has_sret": has_sret, "custom_storage": custom_storage, "ret_size": ret_size,
+    }
 
 
 class ParsePrototypeTest(unittest.TestCase):
@@ -51,6 +71,28 @@ class ParsePrototypeTest(unittest.TestCase):
         self.assertEqual(ret, "unsigned short")
         self.assertEqual(params, ["short", "int"])
         self.assertEqual(kind, "free_function")
+
+    def test_callback_macro_normalizes_to_stdcall_and_strips_from_return(self):
+        # Regression: a real Win32 timer-proc declaration
+        # (include/game/TMouseCaptureState.h) leaked "VOID CALLBACK" into the
+        # return-type text as an unresolvable weak type, because nothing
+        # recognized CALLBACK as a __stdcall synonym.
+        cc, ret, params, kind = parse_prototype(
+            "VOID CALLBACK NotifyThing(HWND hwnd, UINT message, UINT timerId, DWORD dwTime)")
+        self.assertEqual(cc, "__stdcall")
+        self.assertEqual(ret, "VOID")
+        self.assertEqual(kind, "free_function")
+
+    def test_callback_macro_lowercase_void(self):
+        cc, ret, _params, _kind = parse_prototype(
+            "void CALLBACK DispatchThing(HWND hwnd, UINT msg)")
+        self.assertEqual(cc, "__stdcall")
+        self.assertEqual(ret, "void")
+
+    def test_winapi_apientry_pascal_all_normalize_to_stdcall(self):
+        for macro in ("WINAPI", "APIENTRY", "PASCAL"):
+            cc, _ret, _params, _kind = parse_prototype(f"void {macro} Foo(int a)")
+            self.assertEqual(cc, "__stdcall", macro)
 
     def test_void_param_list_is_empty(self):
         _cc, _ret, params, _k = parse_prototype("void TView::Draw(void)")
@@ -100,6 +142,28 @@ class ParsePrototypeTest(unittest.TestCase):
     def test_function_pointer_param_kept_balanced(self):
         _cc, _ret, params, _k = parse_prototype("TFoo::TFoo(int (*cb)(int), TView* v) : TBase()")
         self.assertEqual(params, ["int (*cb)(int)", "TView*"])
+
+    def test_dunder_inline_stripped_from_return_type(self):
+        # Regression: real declaration (include/game/TOcean.h) -- `\binline\b`
+        # doesn't match inside "__inline" (no word boundary before "inline"
+        # when it's preceded by underscores, themselves word characters), so
+        # the qualifier leaked into the return type as "__inline TZone*".
+        _cc, ret, params, kind = parse_prototype(
+            "__inline TZone* GetMapActionContextEntryByNationCodeOffset17(short nationCode)")
+        self.assertEqual(ret, "TZone*")
+        self.assertEqual(params, ["short"])
+        self.assertEqual(kind, "free_function")
+
+    def test_qualified_enum_param_with_no_name_keeps_whole_type(self):
+        # Regression: a real MFC prototype (CDocTemplate::GetDocString) has a
+        # nameless `enum CDocTemplate::DocStringIndex` parameter. The old
+        # trailing-identifier regex only captured the last segment
+        # ("DocStringIndex"), mistaking it for a parameter name and truncating
+        # the type to the bogus, empty-after-cleanup "enum CDocTemplate::".
+        _cc, _ret, params, _k = parse_prototype(
+            "public: virtual int __thiscall CDocTemplate::GetDocString("
+            "class CString &, enum CDocTemplate::DocStringIndex) const")
+        self.assertEqual(params, ["class CString &", "enum CDocTemplate::DocStringIndex"])
 
 
 class EntityKindClassificationTest(unittest.TestCase):
@@ -216,6 +280,25 @@ class ParamTypeOnlyTest(unittest.TestCase):
     def test_bare_keyword(self):
         self.assertEqual(_param_type_only("int"), "int")
 
+    def test_array_param_decays_to_pointer(self):
+        self.assertEqual(_param_type_only("int arr[4]"), "int*")
+
+    def test_postfix_const_pointer_array_param_decays(self):
+        # real bug: TMapMgr::SeedRecruitSearchVisitedStateFromMilitaryUnitCandidates
+        self.assertEqual(
+            _param_type_only("class TMilitaryUnit* const candidates[6]"),
+            "class TMilitaryUnit* const*",
+        )
+
+    def test_postfix_const_pointer_without_array_keeps_name_dropped(self):
+        self.assertEqual(
+            _param_type_only("class TMilitaryUnit* const candidate"),
+            "class TMilitaryUnit* const",
+        )
+
+    def test_prefix_const_still_needs_completion_word(self):
+        self.assertEqual(_param_type_only("class CPoint"), "class CPoint")
+
 
 class PlaceholderReturnTest(unittest.TestCase):
     def test_placeholders(self):
@@ -225,6 +308,208 @@ class PlaceholderReturnTest(unittest.TestCase):
     def test_real_types_are_not_placeholders(self):
         for t in ("void", "int", "CPoint", "unsigned short"):
             self.assertFalse(_is_placeholder_return(t), t)
+
+
+class ClassifyConvergenceTest(unittest.TestCase):
+    """The three-tier structural convergence classifier (Task 4): logical (cc/this/
+    arity/varargs) -> abi_storage (param+return sizes, sret) -> semantic (real type
+    identity, not just pointer-sized ABI compatibility). Each tier only evaluates
+    once every earlier tier converged."""
+
+    def test_fully_semantically_converged(self):
+        exp = _exp(cc="__thiscall", n_params=1, has_this=True, param_sizes=[4], ret_size=4)
+        db = _db(cc="__thiscall", n_params=1, has_this=True, param_sizes=[4], ret_size=4)
+        result = classify_convergence(exp, db, "exact_complete", "exact_complete")
+        self.assertEqual(result["logical"], "logical_converged")
+        self.assertEqual(result["abi"], "abi_storage_converged")
+        self.assertEqual(result["semantic"], "semantically_converged")
+
+    def test_db_cc_unknown_is_distinct_from_incomplete(self):
+        # CC never resolved at all -- distinct bucket from "CC known, arity short".
+        exp = _exp(n_params=2)
+        db = _db(cc="unknown", n_params=0)
+        result = classify_convergence(exp, db, "exact_complete", None)
+        self.assertEqual(result["logical"], "db_cc_unknown")
+        self.assertIsNone(result["abi"])
+        self.assertIsNone(result["semantic"])
+
+    def test_known_cc_short_arity_is_signature_incomplete(self):
+        # CC IS known, but DB shows 0 explicit params where source expects some --
+        # a genuinely different situation from cc_unknown (Ghidra has a plausible
+        # convention already; it's just missing the parameter list).
+        exp = _exp(cc="__cdecl", n_params=2)
+        db = _db(cc="__cdecl", n_params=0)
+        result = classify_convergence(exp, db, "exact_complete", None)
+        self.assertEqual(result["logical"], "db_signature_incomplete")
+
+    def test_known_cc_zero_params_both_sides_is_not_incomplete(self):
+        # The "known-CC/zero-parameter" case Task 4 calls out: both sides genuinely
+        # agree on zero explicit params -- must NOT be misclassified as incomplete.
+        exp = _exp(cc="__cdecl", n_params=0)
+        db = _db(cc="__cdecl", n_params=0)
+        result = classify_convergence(exp, db, "exact_complete", None)
+        self.assertEqual(result["logical"], "logical_converged")
+
+    def test_convention_mismatch(self):
+        exp = _exp(cc="__thiscall", has_this=True)
+        db = _db(cc="__cdecl", has_this=False)
+        result = classify_convergence(exp, db, "exact_complete", None)
+        self.assertEqual(result["logical"], "convention_mismatch")
+
+    def test_this_presence_mismatch(self):
+        exp = _exp(cc="__cdecl", has_this=True)
+        db = _db(cc="__cdecl", has_this=False)
+        result = classify_convergence(exp, db, "exact_complete", None)
+        self.assertEqual(result["logical"], "this_presence_mismatch")
+
+    def test_param_count_mismatch(self):
+        exp = _exp(cc="__cdecl", n_params=2)
+        db = _db(cc="__cdecl", n_params=1)
+        result = classify_convergence(exp, db, "exact_complete", None)
+        self.assertEqual(result["logical"], "param_count_mismatch")
+
+    def test_varargs_mismatch(self):
+        exp = _exp(cc="__cdecl", has_varargs=True)
+        db = _db(cc="__cdecl", has_varargs=False)
+        result = classify_convergence(exp, db, "exact_complete", None)
+        self.assertEqual(result["logical"], "varargs_mismatch")
+
+    def test_abi_param_size_mismatch_blocks_semantic_tier(self):
+        exp = _exp(cc="__cdecl", n_params=1, param_sizes=[4])
+        db = _db(cc="__cdecl", n_params=1, param_sizes=[2])
+        result = classify_convergence(exp, db, "exact_complete", None)
+        self.assertEqual(result["logical"], "logical_converged")
+        self.assertTrue(result["abi"].startswith("abi_storage_mismatch:"))
+        self.assertIn("param0:exp=4,db=2", result["abi"])
+        self.assertIsNone(result["semantic"])
+
+    def test_abi_return_size_mismatch(self):
+        exp = _exp(cc="__cdecl", ret_size=8)
+        db = _db(cc="__cdecl", ret_size=4)
+        result = classify_convergence(exp, db, "exact_complete", "exact_complete")
+        self.assertTrue(result["abi"].startswith("abi_storage_mismatch:"))
+        self.assertIn("return:exp=8,db=4", result["abi"])
+
+    def test_sret_expected_but_db_has_none(self):
+        # A by-value return > 4 bytes should have an sret auto-param in the DB.
+        exp = _exp(cc="__cdecl", ret_size=12)
+        db = _db(cc="__cdecl", ret_size=12, has_sret=False)
+        result = classify_convergence(exp, db, "exact_complete", "exact_complete")
+        self.assertTrue(result["abi"].startswith("abi_storage_mismatch:"))
+        self.assertIn("sret_mismatch:exp=True,db=False", result["abi"])
+
+    def test_sret_expected_and_present_converges(self):
+        exp = _exp(cc="__cdecl", ret_size=12)
+        db = _db(cc="__cdecl", ret_size=12, has_sret=True)
+        result = classify_convergence(exp, db, "exact_complete", "exact_complete")
+        self.assertEqual(result["abi"], "abi_storage_converged")
+
+    def test_placeholder_return_skips_abi_return_check(self):
+        # ret_size=None means "not authoritative" (a placeholder return or an
+        # unresolved source type) -- must not falsely fail the ABI tier.
+        exp = _exp(cc="__cdecl", ret_size=None)
+        db = _db(cc="__cdecl", ret_size=4, has_sret=False)
+        result = classify_convergence(exp, db, "exact_complete", None)
+        self.assertEqual(result["abi"], "abi_storage_converged")
+
+    def test_weak_param_type_blocks_semantic_tier_only(self):
+        # ABI-compatible (both 4 bytes) but the param's resolved type is only a
+        # generic void* stand-in, not a real semantic match.
+        exp = _exp(cc="__cdecl", n_params=1, param_sizes=[4])
+        db = _db(cc="__cdecl", n_params=1, param_sizes=[4])
+        result = classify_convergence(exp, db, "generic_pointer_fallback", None)
+        self.assertEqual(result["logical"], "logical_converged")
+        self.assertEqual(result["abi"], "abi_storage_converged")
+        self.assertEqual(result["semantic"], "weak_type_resolution:generic_pointer_fallback")
+
+    def test_weak_return_type_also_blocks_semantic_tier(self):
+        exp = _exp(cc="__cdecl", ret_size=4)
+        db = _db(cc="__cdecl", ret_size=4)
+        result = classify_convergence(exp, db, "exact_complete", "opaque_pointee")
+        self.assertEqual(result["semantic"], "weak_type_resolution:opaque_pointee")
+
+    def test_canonical_alias_counts_as_semantic(self):
+        # canonical_alias (a known MFC/Win32 typedef) is semantic, not just ABI.
+        exp = _exp(cc="__cdecl", n_params=1, param_sizes=[4])
+        db = _db(cc="__cdecl", n_params=1, param_sizes=[4])
+        result = classify_convergence(exp, db, "canonical_alias", None)
+        self.assertEqual(result["semantic"], "semantically_converged")
+
+
+class QueueOutForModeTest(unittest.TestCase):
+    """Each projector mode gets its own default queue file -- the fix for the
+    silent last-writer-wins collision (all three used to share one filename with
+    no --queue-out override in any `just` recipe)."""
+
+    class _Args:
+        def __init__(self, queue_out=None):
+            self.queue_out = queue_out
+
+    def test_default_paths_are_distinct_per_mode(self):
+        paths = {mode: _queue_out_for_mode(self._Args(), mode)
+                 for mode in ("in_stack", "divergent", "packed")}
+        self.assertEqual(len(set(paths.values())), 3, paths)
+
+    def test_explicit_override_wins_for_every_mode(self):
+        args = self._Args(queue_out="/tmp/shared_queue.csv")
+        for mode in ("in_stack", "divergent", "packed"):
+            self.assertEqual(_queue_out_for_mode(args, mode), "/tmp/shared_queue.csv")
+
+
+class SelectNamedDatatypeTest(unittest.TestCase):
+    """The simple-name ambiguity resolver (Task 3): excludes two disposable-
+    placeholder categories (bare FunctionDefinitions, /Demangler stubs) from the
+    ambiguity count before flagging a real collision. Regression coverage for the
+    live bug found applying CDataExchange/CView: a pre-existing empty
+    `/Demangler/CView` stub had been silently "winning" the lookup (count=1) until
+    a real `/CView` was added, at which point naive counting would have flagged
+    `ambiguous_simple_name` for a real-definition-vs-disposable-stub pair."""
+
+    def test_single_candidate_is_unambiguous(self):
+        idx, count = select_named_datatype([(False, "/")])
+        self.assertEqual((idx, count), (0, 1))
+
+    def test_demangler_stub_excluded_when_real_definition_exists(self):
+        # order matches the live case: root struct added after the stub existed
+        candidates = [(False, "/Demangler"), (False, "/")]
+        idx, count = select_named_datatype(candidates)
+        self.assertEqual(idx, 1)  # picks the real (non-stub) one
+        self.assertEqual(count, 1)  # not ambiguous
+
+    def test_demangler_stub_excluded_regardless_of_order(self):
+        candidates = [(False, "/"), (False, "/Demangler")]
+        idx, count = select_named_datatype(candidates)
+        self.assertEqual(idx, 0)
+        self.assertEqual(count, 1)
+
+    def test_two_real_definitions_are_genuinely_ambiguous(self):
+        candidates = [(False, "/"), (False, "/MFC/library")]
+        idx, count = select_named_datatype(candidates)
+        self.assertEqual(count, 2)  # a real ambiguity, not excluded
+
+    def test_bare_function_definition_excluded_when_real_type_exists(self):
+        # e.g. WNDPROC typedef (real) vs .../functions/WNDPROC (bare FunctionDefinition)
+        candidates = [(True, "/functions"), (False, "/")]
+        idx, count = select_named_datatype(candidates)
+        self.assertEqual(idx, 1)
+        self.assertEqual(count, 1)
+
+    def test_every_candidate_a_function_definition_falls_back_to_all(self):
+        candidates = [(True, "/functions"), (True, "/functions")]
+        idx, count = select_named_datatype(candidates)
+        self.assertEqual(count, 2)
+
+    def test_every_candidate_a_demangler_stub_falls_back_to_all(self):
+        candidates = [(False, "/Demangler"), (False, "/Demangler")]
+        idx, count = select_named_datatype(candidates)
+        self.assertEqual(count, 2)
+
+    def test_both_exclusions_combined(self):
+        # bare FunctionDefinition, Demangler stub, and one real definition
+        candidates = [(True, "/functions"), (False, "/Demangler"), (False, "/")]
+        idx, count = select_named_datatype(candidates)
+        self.assertEqual(idx, 2)
+        self.assertEqual(count, 1)
 
 
 if __name__ == "__main__":

@@ -1012,7 +1012,7 @@ void TAutoGreatPower::SelectAndQueueAdvisoryMapMissionsCase16(void) {
           if (n != nationSlot &&
               g_pDiplomacyTurnStateManager->IsNationPairAtWar(nationSlot, static_cast<short>(n)) !=
                   0 &&
-              (zone->field10 & static_cast<unsigned char>(1 << n)) != 0) {
+              (zone->nationKeyMask10 & static_cast<unsigned char>(1 << n)) != 0) {
             portZoneStateFlags[contextOrdinal] = 1;
             QueueMapActionMissionFromCandidateAndMarkState(kMissionTypeDefendProvince, -1, zone,
                                                            -1);
