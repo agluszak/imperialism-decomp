@@ -51,8 +51,8 @@ public:
                                                       int targetNation);       // 18 (0x48)
   virtual char HasAnyWarRelationForNation(int sourceNation);                   // 19 (0x4c)
   virtual char HasAnyWarRelationTurnStampOutOfDateForNation(int sourceNation); // 20 (0x50)
-  virtual char IsNationSlotInPrimaryGroupA(int nationSlot);                    // 21 (0x54)
-  virtual char IsNationSlotInPrimaryGroupB(int nationSlot);                    // 22 (0x58)
+  virtual char IsNationSlotInPrimaryGroupA(int nationSlot, int unusedArg);     // 21 (0x54)
+  virtual char IsNationSlotInPrimaryGroupB(int nationSlot, int unusedArg);     // 22 (0x58)
   virtual char
   ValidateDiplomacyActionTypeAgainstTargetAndSetRejectCode(int sourceNation, int targetNation,
                                                            int actionCode);          // 23 (0x5c)
@@ -60,8 +60,8 @@ public:
   virtual char HasState300LinkBetweenNationPair(int sourceNation, int targetNation); // 25 (0x64)
   virtual int GetNationPairDiplomacyStandingTierCode(int sourceNation,
                                                      int targetNation); // 26 (0x68)
-  virtual void ShowRelationCodeNoticeForNationPairIfRelevant(int sourceNation,
-                                                             int targetNation); // 27 (0x6c)
+  virtual void ShowRelationCodeNoticeForNationPairIfRelevant(int sourceNation, int targetNation,
+                                                             int unusedArg); // 27 (0x6c)
   virtual short GetNationPairDiplomacyRelationCode(short sourceNation,
                                                    short targetNation); // 28 (0x70)
   virtual void SetNationPairDiplomacyRelationCode(int sourceNation, int targetNation,
