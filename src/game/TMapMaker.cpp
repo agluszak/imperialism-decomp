@@ -948,7 +948,7 @@ void TMapMaker::MapGenPassSlot0F() {
     }
   }
 
-  DoIdle();
+  CreateDeserts();
 
   bool urgentFlag = false;
   while (forestQuota > 0) {
@@ -1125,19 +1125,142 @@ int TMapMaker::ForwardParam(int tileIndex, int retryBudget, int featureType) {
 }
 
 // FUNCTION: IMPERIALISM 0x00528670
-char TMapMaker::DoIdle() {
-  return 0;
+void TMapMaker::CreateDeserts() {
+  int remaining = 250;
+  int chanceStep = 5;
+  int upperRow = 0;
+  int lowerRow = 59;
+  int chance = 120;
+
+  while (chance > 90 && remaining > 0) {
+    remaining -= TundraBand(upperRow, chance);
+    remaining -= TundraBand(lowerRow, chance);
+    ++upperRow;
+    --lowerRow;
+    chance -= 5;
+  }
+
+  if (remaining > 0) {
+    int row = 25;
+    while (row > 4 && remaining > 0) {
+      int neighborChance = (abs(chanceStep - 7) + 12) * 5;
+      remaining -= DesertBand(row, neighborChance);
+      remaining -= DesertBand(chanceStep + 30, neighborChance);
+      chanceStep += 2;
+      row -= 2;
+    }
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x00528780
-int TMapMaker::RandomlyMarkEmptyRegionTilesByChance(int coarseIndex, int percentChance) {
-  return 0;
+int TMapMaker::TundraBand(int row, int percentChance) {
+  char* tile = mapTileGrid08 + row * 0xf30;
+  int column = 0;
+  while (*tile != 5 && column < 0x6c) {
+    tile += 0x24;
+    ++column;
+  }
+  if (column == 0x6c) {
+    return 0;
+  }
+
+  int marked = 0;
+  int ringState = 0;
+  int remaining = 0x6b;
+  do {
+    ++column;
+    tile += 0x24;
+    if (column == 0x6c) {
+      column = 0;
+    }
+    if (ringState == 0 && *tile != 5) {
+      ringState = 1;
+    }
+    if (ringState == 1) {
+      if (*tile == 0) {
+        g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
+        if (static_cast<int>((g_mapGenLcgState_006a38e8 >> 12 & 0x7fff) % 100) < percentChance) {
+          *tile = 6;
+          tile[0x13] = 12;
+          ++marked;
+        }
+      } else if (*tile == 5) {
+        ringState = 0;
+      }
+    } else if (ringState == 2 && *tile == 5) {
+      ringState = 0;
+    }
+    --remaining;
+  } while (remaining != 0);
+  return marked;
 }
 
 // FUNCTION: IMPERIALISM 0x005288a0
-int TMapMaker::RandomlyMarkEmptyRegionTilesAndNeighborsByChance(int coarseIndex,
-                                                                int percentChance) {
-  return 0;
+int TMapMaker::DesertBand(int row, int percentChance) {
+  char* tile = mapTileGrid08 + row * 0xf30;
+  int column = 0;
+  while (*tile != 5 && column < 0x6c) {
+    tile += 0x24;
+    ++column;
+  }
+  if (column == 0x6c) {
+    return 0;
+  }
+
+  int marked = 0;
+  int ringState = 0;
+  int remaining = 0x6b;
+  do {
+    ++column;
+    tile += 0x24;
+    if (column == 0x6c) {
+      column = 0;
+    }
+    if (ringState == 0 && *tile != 5) {
+      ringState = 1;
+    }
+    if (ringState == 1) {
+      if (*tile == 0) {
+        g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
+        if (static_cast<int>((g_mapGenLcgState_006a38e8 >> 12 & 0x7fff) % 100) < percentChance) {
+          int tileIndex = column + row * 0x6c;
+          *tile = 6;
+          tile[0x13] = 11;
+          ++marked;
+
+          int neighbor = ComputeHexAdjacentFullGridTileIndex(tileIndex, 5);
+          char* neighborTile = mapTileGrid08 + neighbor * 0x24;
+          if (*neighborTile == 0) {
+            g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
+            if (static_cast<int>((g_mapGenLcgState_006a38e8 >> 12 & 0x7fff) % 100) <
+                percentChance) {
+              *neighborTile = 6;
+              tile[0x13] = 11;
+              ++marked;
+            }
+          }
+
+          neighbor = ComputeHexAdjacentFullGridTileIndex(tileIndex, 3);
+          neighborTile = mapTileGrid08 + neighbor * 0x24;
+          if (*neighborTile == 0) {
+            g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
+            if (static_cast<int>((g_mapGenLcgState_006a38e8 >> 12 & 0x7fff) % 100) <
+                percentChance) {
+              *neighborTile = 6;
+              tile[0x13] = 11;
+              ++marked;
+            }
+          }
+        }
+      } else if (*tile == 5) {
+        ringState = 0;
+      }
+    } else if (ringState == 2 && *tile == 5) {
+      ringState = 0;
+    }
+    --remaining;
+  } while (remaining != 0);
+  return marked;
 }
 
 // FUNCTION: IMPERIALISM 0x00528ce0

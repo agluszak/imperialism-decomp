@@ -80,18 +80,18 @@ public:
   virtual int ForwardParam(int tileIndex, int retryBudget, int featureType);
   // Verified 0 stack args from the caller (0x527730 calls it with no pushes) -- the
   // header's previous 1-arg form was wrong. slot 19 / 0x4c
-  virtual char DoIdle();
+  virtual void CreateDeserts();
   // Walks the city-region tile ring starting at `coarseIndex`, converting empty tiles
   // ('\0') to '6' with probability `percentChance`/100; returns the number marked.
   // Verified RET 0x8 (2 stack int args, int return) -- the previous 0-arg
   // `GetCityDialogValueDword10()` was templated off TView's real slot-20 virtual and
   // does not describe this slot. slot 20 / 0x50
-  virtual int RandomlyMarkEmptyRegionTilesByChance(int coarseIndex, int percentChance);
+  virtual int TundraBand(int row, int percentChance);
   // Same city-region ring probabilistic marking as slot 0x50 but also marks a hex
   // neighbour of each converted tile. Verified RET 0x8 (2 stack int args, int return) --
   // the previous 1-arg `SetCityDialogValueDword10(int)` was templated off TView's real
   // slot-21 virtual and does not describe this slot. slot 21 / 0x54
-  virtual int RandomlyMarkEmptyRegionTilesAndNeighborsByChance(int coarseIndex, int percentChance);
+  virtual int DesertBand(int row, int percentChance);
   // Verified RET 0xc (3 stack args), from both Ghidra's own (correct) signature
   // recovery and the self-recursive call inside the callee itself -- the header's
   // previous 0-arg `TView*`-returning form was templated off TView's real
