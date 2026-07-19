@@ -16958,7 +16958,7 @@
     },
     {
       "address": "0x50b640",
-      "matching": 0.45647058823529413,
+      "matching": 0.47086247086247085,
       "name": "TMacViewMgr::RenderTurnEventPalettePreviewSurfaceAndProgress",
       "type": 1
     },
@@ -45214,6 +45214,6 @@
       "type": 5
     }
   ],
-  "file": "Imperialism.exe",
+  "file": "Imperialism.exe.gog-original",
   "format": 1
 }
