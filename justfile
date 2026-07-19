@@ -716,6 +716,14 @@ ghidra-datatype-audit *args: _require-ghidra-install
 dedupe-ambiguous-datatypes *args: _require-ghidra-install
   uv run python -m tools.ghidra.dedupe_ambiguous_datatypes {{args}}
 
+# READ-ONLY: cross-check no_rtti class-model records against original-binary
+# evidence (operator new immediates, ctor/dtor max-offset scans, derived-class
+# zero-own-field chains). Writes build-msvc500/evidence/no_rtti_class_audit.csv.
+[doc('READ-ONLY: audit no_rtti class-model records against original-binary evidence')]
+[group('ghidra-inspect')]
+no-rtti-class-audit *args: _require-ghidra-install
+  uv run python -m tools.ghidra.no_rtti_class_audit {{args}}
+
 # Decompile benchmark gate: must-keep patterns for curated Ghidra typing work.
 # Pass --strict to also fail on missing should-improve patterns.
 [doc('Decompile benchmark gate for curated Ghidra typing work')]
@@ -902,6 +910,14 @@ layout-oracle *args:
 [group('ghidra-inspect')]
 class-model-audit *args:
   uv run python -m tools.class_model_audit {{args}}
+
+# READ-ONLY: measures semantic field-name/type quality per class (weak fieldXX/
+# padXX names, void*, undefined placeholders) and ranks classes by active weak
+# bytes x code-reference weight. Writes build-msvc500/evidence/class_field_coverage.csv.
+[doc('READ-ONLY: semantic field-quality report ranking classes by weak-byte impact')]
+[group('ghidra-inspect')]
+class-field-coverage *args:
+  uv run python -m tools.class_field_coverage {{args}}
 
 # MUTATES: Ghidra DB (with --apply). Projects the VERIFIED class model into the DB:
 # sized structures replace the 1-byte stubs (references rewrite), game bases are

@@ -123,3 +123,5 @@ module|tools.workflow.mfc_collection_audit|just:mfc-collection-audit|Embedded-MF
 module|tools.workflow.template_alias_check|just:template-alias-check|Re-verify template_aliases.csv rows: same name + normalized-body equivalence
 module|tools.workflow.template_emission_matrix|just:template-emission-matrix|Template-emission compiler matrix: compile probe TUs per /Ob-TU cell, inventory CList COMDATs
 module|tools.ghidra.dedupe_ambiguous_datatypes|just:dedupe-ambiguous-datatypes|Remove /Demangler duplicate datatypes that make TypeResolver simple-name lookups ambiguous
+module|tools.class_field_coverage|just:class-field-coverage|Semantic field-quality report ranking classes by weak-byte x reference-weight
+module|tools.ghidra.no_rtti_class_audit|just:no-rtti-class-audit|Cross-check no_rtti class records against original-binary evidence (operator new, ctor/dtor offsets)
