@@ -38,7 +38,7 @@ void TTacticalUnit::ConstructTTacticalUnitBaseState() {
   state1c = 0;
   actionPoints28 = GetBaseActionPoints();
   aiStateCode2c = 0;
-  field30 = 0;
+  attackTarget30 = NULL;
 }
 
 // FUNCTION: IMPERIALISM 0x005a5e70

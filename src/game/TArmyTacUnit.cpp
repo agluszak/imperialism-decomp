@@ -22,7 +22,7 @@ void TArmyTacUnit::ConstructTArmyTacUnitBaseState(TMilitaryUnit* source) {
   state1c = 0;
   actionPoints28 = GetBaseActionPoints();
   aiStateCode2c = 0;
-  field30 = 0;
+  attackTarget30 = NULL;
   strength4 = source->field_34;
   morale34 = source->field_34;
   qualityLevel10 = static_cast<short>(source->field_38 / 100);

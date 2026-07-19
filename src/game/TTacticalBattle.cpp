@@ -1758,10 +1758,7 @@ void TTacticalBattle::HandleTacticalCommandTag_targ() {
   if (selected == NULL || battleView8 == NULL) {
     return;
   }
-  // UNRESOLVED_FIELD_ATTRIBUTION: +0x30 is read/written here as a target pointer but rendered
-  // as a scalar bar elsewhere (see TTacticalUnit.h). This cast matches the binary (0x005a3f42)
-  // but one reading is a defect; keep the cast localized until the attribution is resolved.
-  TTacticalUnit* marker = reinterpret_cast<TTacticalUnit*>(selected->field30);
+  TTacticalUnit* marker = selected->attackTarget30;
   TList* list = (&tacticalPlayer14)[selected->side20 == 0]->unitList4;
 
   // Locate the current target's ordinal in the opposing list (0 if it is gone).
@@ -1830,10 +1827,7 @@ void TTacticalBattle::HandleTacticalCommandTag_targ() {
     cursor = next;
   } while (cursor != position && result == NULL);
 
-  // UNRESOLVED_FIELD_ATTRIBUTION: writes the new target into +0x30 (see TTacticalUnit.h); this
-  // pointer-as-int store matches the binary (0x005a4101) but conflicts with the scalar bar
-  // reading -- keep localized until the attribution is resolved.
-  selectedUnit1c->field30 = reinterpret_cast<int>(result);
+  selectedUnit1c->attackTarget30 = result;
   if (result == NULL) {
     g_pSfxPlaybackSystem->PlaySoundEffect(0x1b5a, 0, 1);
   }
