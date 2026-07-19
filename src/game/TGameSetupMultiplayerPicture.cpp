@@ -43,8 +43,7 @@ void TGameSetupMultiplayerPicture::NoOpUiLifecycleHook(int arg) {
     if (iter.MoreSubViews()) {
       do {
         child->AssertValid();
-        ApplyUiTextStyleAndThemeFlags(static_cast<TDropShadowText*>(child), 0, 0xc, 0x2b6c,
-                                      0x2b6a);
+        ApplyUiTextStyleAndThemeFlags(static_cast<TDropShadowText*>(child), 0, 0xc, 0x2b6c, 0x2b6a);
         child = iter.NextSubView();
       } while (iter.MoreSubViews());
     }
@@ -54,11 +53,11 @@ void TGameSetupMultiplayerPicture::NoOpUiLifecycleHook(int arg) {
 
   TInfoBarText* cursControl = static_cast<TInfoBarText*>(ResolveControlByTag(kControlTagCurs));
   cursControl->AssertValid();
-  TControlPictureRectState styleDescriptor;
-  styleDescriptor.mode = 0;
-  styleDescriptor.flag2 = 0;
-  styleDescriptor.pointSize = 0;
-  styleDescriptor.styleRef6 = 0;
+  TUiTextStyleDescriptor styleDescriptor;
+  styleDescriptor.fontFamily = 0;
+  styleDescriptor.fontStyleFlags = 0;
+  styleDescriptor.fontSize = 0;
+  styleDescriptor.textColor = 0;
   BuildUiTextStyleDescriptor(&styleDescriptor, 0, 0xe, 0x2b6c);
   cursControl->ApplyTextStyleDescriptorAndMaybeRefresh(&styleDescriptor, 1);
   cursControl->InitializeMapHintTextStyleAndThemeFlags(0x2b6b, 0x2b6c);
@@ -81,4 +80,5 @@ void TGameSetupMultiplayerPicture::NoOpUiLifecycleHook(int arg) {
 }
 
 // FUNCTION: IMPERIALISM 0x00576230
-void TGameSetupMultiplayerPicture::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) { }
+void TGameSetupMultiplayerPicture::HandleEvent(int commandId, TEventHandler* sourceHandler,
+                                               TEvent* event) {}

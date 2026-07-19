@@ -853,21 +853,23 @@ TStaticText* ApplyControlThemeStyleAndOptionalCaption(TStaticText* control, int 
 }
 
 // FUNCTION: IMPERIALISM 0x005c4180
-TStaticText* ConfigureUiControlStyleValueAndCaptionFromStringResource(
-    TStaticText* control, int unused2, int pointSize, int themeCode, int themeCode2,
-    int stringResourceGroup, short stringResourceIndex) {
+TStaticText* ConfigureUiControlStyleValueAndCaptionFromStringResource(TStaticText* control,
+                                                                      int unused2, int pointSize,
+                                                                      int themeCode, int themeCode2,
+                                                                      int stringResourceGroup,
+                                                                      short stringResourceIndex) {
   (void)unused2;
   CString caption;
   g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&caption, stringResourceGroup,
-                                                                   stringResourceIndex);
+                                                                  stringResourceIndex);
   control->AssertValid();
-  TControlPictureRectState styleDescriptor;
-  styleDescriptor.mode = 0;
-  styleDescriptor.flag2 = 0;
-  styleDescriptor.pointSize = 0;
-  styleDescriptor.styleRef6 = 0;
+  TUiTextStyleDescriptor styleDescriptor;
+  styleDescriptor.fontFamily = 0;
+  styleDescriptor.fontStyleFlags = 0;
+  styleDescriptor.fontSize = 0;
+  styleDescriptor.textColor = 0;
   BuildUiTextStyleDescriptor(&styleDescriptor, 0, pointSize, themeCode);
-  control->SetCityProductionDialogPictureRectAndMaybeRefresh(&styleDescriptor, 0);
+  control->SetTextStyleAndMaybeRefresh(&styleDescriptor, 0);
   control->SetTextThemeCodeAndMaybeRefresh(static_cast<short>(themeCode2), 0);
   if (static_cast<LPCSTR>(caption) != 0) {
     control->AssignTextSharedRefIfChangedAndMaybeInvalidate(&caption, 0);
