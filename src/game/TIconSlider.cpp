@@ -17,7 +17,24 @@ TIconSlider::TIconSlider()
 TIconSlider::~TIconSlider() {}
 
 // FUNCTION: IMPERIALISM 0x00506480
-void TIconSlider::NoOpUiLifecycleHook(int arg) {}
+void TIconSlider::NoOpUiLifecycleHook(int arg) {
+  TIconBar::NoOpUiLifecycleHook(arg);
+
+  fieldA0 = CreateBitmapResourceLoaderHandle(0x3eb);
+  RECT rect;
+  CopyRect(&rect, &(*fieldA0)->bitmapRect);
+
+  int width = rect.right - rect.left;
+  int height = rect.bottom - rect.top;
+  fieldB4 = 0;
+  fieldA4 = 0;
+  fieldA8 = 0;
+  fieldAc = width;
+  fieldB8 = static_cast<short>(height);
+  fieldBA = static_cast<short>(width);
+  fieldB6 = static_cast<short>(frameWidth34 - width);
+  fieldB0 = height;
+}
 
 // FUNCTION: IMPERIALISM 0x00506560
 undefined TIconSlider::OrphanLeaf_NoCall_Ins04_00506560(short param_1) {

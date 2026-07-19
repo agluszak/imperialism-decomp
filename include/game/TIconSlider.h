@@ -1,6 +1,7 @@
 #pragma once
 
 #include "compat.h"
+#include "game/TAnimation.h"
 #include "game/TIconBar.h"
 #include "game/mfc.h"
 
@@ -25,14 +26,15 @@ public:
   // pad_bc, which the ctor never touches (RTTI oracle confirms sizeof(TIconSlider) ==
   // 0xbc, 4 bytes past field_b6).
   short field9c;
-  int fieldA0;
+  TBitmapResourceLoader** fieldA0;
   int fieldA4;
   int fieldA8;
   int fieldAc;
   int fieldB0;
   short fieldB4;
   short fieldB6;
-  unsigned char padB8[4];
+  short fieldB8;
+  short fieldBA;
 
   TIconSlider();
 };
