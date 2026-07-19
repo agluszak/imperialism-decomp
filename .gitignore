@@ -5,6 +5,9 @@ assets/
 # Build artifacts
 build/
 build-*/
+# Stubs/indexes are generated into the build dir; a stale committed-era copy here
+# would double-register reccmp markers.
+src/autogen/
 out/
 tmp_decomp/
 *.obj

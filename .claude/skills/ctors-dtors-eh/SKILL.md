@@ -134,7 +134,7 @@ naturally (WaveLoadDescriptor in TSoundResourceManager, 0x49c290/0x49c430).
     no uniquely-pairable out-of-line copy for one `: Base() { oneField = 0; }` ctor while
     emitting them for its siblings. Per the TNextMoveCommand precedent, revert just that
     marker (restore the markerless `{}` body) rather than faking it, AND manually delete
-    the stale `config/function_ownership.csv` row — `just regen-stubs` reports
+    the stale `config/function_ownership.csv` row — `just sync-ownership` reports
     "Pruned ... 0" and does not auto-remove it; the stub count only rises back after the
     manual delete + re-regen.
 
@@ -155,7 +155,7 @@ a trivial destructor (`just ghidra-decompile` shows a ~7-byte `this->vftable = &
 return;`), then (1) add `// FUNCTION: IMPERIALISM 0xADDR` to the manual `~Class()` body,
 (2) rename the symbols.csv row `ADDR|Class::~Class|??1Class@@UAE@XZ|...`, (3) give the scalar
 deleting destructor its own `??_GClass@@UAEPAXI@Z` mangled name in the same file, (4)
-`just regen-stubs` to drop the placeholder stub and claim the address. TTacticalPlayer's dtor
+rebuild to drop the placeholder stub and claim the address. TTacticalPlayer's dtor
 at 0x59ae60 masqueraded as `CreateTTacticalPlayerInstance`; claiming it took both the dtor and
 its scalar-deleting sibling to 100% (+2 aligned).
 

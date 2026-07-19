@@ -148,7 +148,7 @@ class StubCountGateTests(unittest.TestCase):
     def test_rise_fails(self) -> None:
         code, message = compare_counts(2300, 2204)
         self.assertEqual(code, 1)
-        self.assertIn("prune trap", message)
+        self.assertIn("lost its claim", message)
 
     def test_drop_passes_with_ratchet_hint(self) -> None:
         code, message = compare_counts(2100, 2204)

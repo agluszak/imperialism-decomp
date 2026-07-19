@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 """Generated-artifact integrity: no hand-edits under generated directories.
 
-Files under src/autogen/, src/ghidra_autogen/, include/ghidra_autogen/ and
+Files under src/ghidra_autogen/, include/ghidra_autogen/ and
 config/function_ownership.csv are tool output. A diff may only touch them when it
 also changes at least one `// FUNCTION:`-family marker in manual src/include —
-that is the signal that `just regen-stubs` (or the sync pipeline) legitimately
+that is the signal that the sync pipeline legitimately
 re-derived them. Generated churn with no marker change means someone hand-edited
 tool output (Hard Rule 7).
 
@@ -25,7 +25,6 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parents[2]
 
 GENERATED_VIA_TOOLS = (
-    "src/autogen/",
     "src/ghidra_autogen/",
     "include/ghidra_autogen/",
     "config/function_ownership.csv",
@@ -86,7 +85,7 @@ def main() -> int:
         for p in bad:
             print(f"  - {p}")
         print("Never hand-edit generated files; revert them and drive the change "
-              "through markers + `just regen-stubs` (or the sync pipeline).")
+              "through markers + the sync pipeline.")
         return 1
     print(f"Generated-artifact integrity OK vs {base[:10]}.")
     return 0

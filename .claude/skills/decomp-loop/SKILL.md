@@ -77,7 +77,7 @@ Two config-file readers replace the by-hand grep-across-CSVs dance:
    - **Promote-to-unblock is allowed and encouraged:** if the target calls a sibling/base
      method or another class's function that's still a stub, promote *that* too (into its
      own owning `<Class>.cpp`) so the call is real. Promoting a callee adds/moves a marker
-     → that's exactly when you must re-run regen-stubs (see step 4).
+     → the next `just build` regenerates the stub surface automatically.
 3. **Shape pass** — make it compile-safe C++ that preserves the original control
    flow:
    - keep call order, branching shape, and fail-and-continue behavior from Ghidra;
@@ -94,10 +94,10 @@ Two config-file readers replace the by-hand grep-across-CSVs dance:
      yields a tiny exe with a stale PDB and makes reccmp crash with
      `InvalidVirtualAddressError`. After deleting `build-msvc500/`, run `just detect`
      before any reccmp tool (else "missing recompiled_path").
-   - `just regen-stubs` — **only when you added, removed, or moved
+   - `just build` regenerates stubs automatically — **markers added, removed, or moved
      a `// FUNCTION` marker, or changed ownership** (e.g. you promoted a new function).
      For a pure body or signature edit on an already-owned function, **skip these**:
-     `regen-stubs` can downgrade hand-typed stub signatures back to generic
+     regeneration can downgrade hand-typed stub signatures back to generic
      `undefined ()` and break the link for unrelated files.
 5. **Compare** the touched function: `just compare 0xADDR --verbose`. If it is
    below 100%, run `just triage 0xADDR` first — it buckets every mismatched line
@@ -108,7 +108,7 @@ Two config-file readers replace the by-hand grep-across-CSVs dance:
    `short`/`int` widths, hidden stack args, struct-return-via-hidden-pointer, and return
    contracts when they reflect the real shape. **Stop there.**
 7. **Verify: `just agent-check`.** It derives the right steps from your actual git
-   diff — regen-stubs only when markers changed (hard error if generated files were
+   diff — build inputs always regenerate (hard error if generated files were
    hand-edited), format-check on the touched paths, build, detect, batch compare +
    triage of every touched address, gates, tests, stats — and records everything in
    the task receipt. Targeted `just gates` / `just stats` runs are fine mid-loop.
@@ -129,7 +129,7 @@ Two config-file readers replace the by-hand grep-across-CSVs dance:
   no comment or blank line between them.
 - One owned implementation per address; no duplicate `// FUNCTION` for one address
   across manual files and stubs.
-- Whenever you edit markers/ownership: `just regen-stubs` →
+- Whenever you edit markers/ownership: `just build` (stubs regenerate inside it) →
   `just build`.
 - Both rules above are enforced mechanically by `just marker-gate` (part of
   `just gates`). Run `just gates` before committing.
@@ -151,7 +151,7 @@ The correct fix when the original does `CALL <ilt-thunk>` → real target:
 
 1. **Port the real target into its owning file** (find it via `config/function_ownership.csv`
    neighbors — sibling addresses reveal the right `<Class>.cpp`/module file), with a real
-   body, `// FUNCTION:` marker, and real signature; `just regen-stubs`.
+   body, `// FUNCTION:` marker, and real signature; the next build drops the stub.
 2. **Retire the thunk completely.** reccmp auto-resolves `CALL <thunk>` → real target
    **only if the thunk has no named `config/symbols.csv` row.** A named `thunk_Foo` row
    makes reccmp compare `call thunk_Foo` vs your `call Foo` as a literal mismatch (caps the

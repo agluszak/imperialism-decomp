@@ -27,8 +27,8 @@ just agent-start port 0xADDR   # investigation front door: refuses stale bases,
 just advice 0xADDR             # the 5-10 most relevant active rules for this target
                                # (from config/agent_rules.yml); `just advice --diff`
                                # selects by the current working diff instead
-just agent-check               # diff-aware verification: regen-stubs iff markers
-                               # changed (hard error on hand-edited generated files),
+just agent-check               # diff-aware verification: regenerates build inputs
+                               # (hard error on hand-edited generated files),
                                # format-check on touched paths, build, detect,
                                # compare+triage of every touched address, gates, tests
 just agent-finish              # PR title + body from the receipt (build-msvc500/pr-body.md)
@@ -51,7 +51,7 @@ never set it to make a red gate go away (see the gate-chasing guardrail).
 - **`quality-control`** — build, reccmp detect/compare/stats, gates,
   formatting, and reccmp pairing-failure diagnosis.
 - **`sync-pipeline`** — the derived-artifact pipeline: symbols.csv, function
-  ownership, autogen stubs, name overrides, `regen-stubs`/`db-resync`, and the
+  ownership, generated stubs, name overrides, `just generate`/`db-resync`, and the
   resync failure→fix taxonomy (junk thunk rows, type flips, size clamps).
 - **`class-recovery`** — class/vtable reconstruction, slice/class discovery,
   Mac-evidence oracle use, and real-virtual dispatch on recovered classes.
@@ -154,17 +154,17 @@ target). They need a built binary + reccmp DB. Details in the `quality-control` 
 
 1. No inline assembly. (enforced by `just antipattern-gate`)
 2. Use `just` targets for normal workflow (`tooling-check`, `build`, `detect`,
-   `compare`, `stats`, `promote`, `sync-ownership`, `regen-stubs`). Do not run raw
+   `compare`, `stats`, `sync-ownership`, `generate`). Do not run raw
    `docker` or `uv run reccmp-*` when a `just` target exists; if no target exists,
    keep the direct command minimal and add a target afterward.
 3. `// FUNCTION: IMPERIALISM 0x...` must be immediately followed by the function
    declaration — no comment or blank line between them. (enforced by `just marker-gate`)
 4. One owned implementation per address in manual source; no duplicate `// FUNCTION`
    for the same address across manual files and stubs. (enforced by `just marker-gate`)
-5. After editing markers/ownership, run `just regen-stubs` (it runs `sync-ownership`
-   and the symbols.csv integrity check first) → `just build`, and `just gates` before
-   committing (raw-vtable + construction anti-pattern + marker-hygiene gates; run
-   `just format-check <touched paths>` separately on files you edited).
+5. After editing markers/ownership, just run `just build` — it regenerates the build
+   inputs (source index + stubs) from current markers automatically — and `just gates`
+   before committing (raw-vtable + construction anti-pattern + marker-hygiene gates;
+   run `just format-check <touched paths>` separately on files you edited).
 6. Treat Ghidra class/method/field names as **provisional** —
    they may be auto-generated placeholders, even entirely random. reccmp pairs by the
    `// FUNCTION:` address marker, not by name, so drive matching and field naming from
@@ -279,7 +279,8 @@ Step 3 is **forbidden**. Fix forward or stop and report; never fix backward.
 
 1. **Build/link** — missing symbol: promote/own the callee as a real method, or use a
    genuine LIBRARY symbol (`operator new` at `0x606f73`, not a fake
-   `AllocateWithFallbackHandler` stub). Wrong owner: `just regen-stubs`.
+   `AllocateWithFallbackHandler` stub). Wrong owner: fix the marker; stubs
+   regenerate on the next build.
 2. **Duplicate marker** — one address, one owner; move `// FUNCTION:` to the class that
    owns the method, sync ownership, regen stubs. Do not delete the manual method.
 3. **`just vtable Class`** — first `new T()` in manual code can expose a pre-existing

@@ -54,9 +54,10 @@ def _load_symbols() -> dict[int, tuple[str, str]]:
 
 
 def _load_owners() -> dict[int, str]:
-  """addr -> 'path:line' for every marker in manual source and autogen stubs."""
+  """addr -> 'path:line' for every marker in manual source and generated stubs."""
   owners: dict[int, str] = {}
-  for pattern in ("src/game/*.cpp", "include/game/*.h", "src/autogen/stubs/*.cpp"):
+  for pattern in ("src/game/*.cpp", "include/game/*.h",
+                  "build-msvc500/generated/stubs/*.cpp"):
     for path in glob.glob(pattern):
       try:
         with open(path, encoding="utf-8", errors="replace") as fh:
@@ -73,7 +74,7 @@ def _owner_str(addr: int, owners: dict[int, str]) -> str:
   where = owners.get(addr)
   if where is None:
     return "UNOWNED"
-  if "/autogen/stubs/" in where:
+  if "/generated/stubs/" in where:
     return f"STUB ({where})"
   return where
 

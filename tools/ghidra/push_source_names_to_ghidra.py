@@ -17,7 +17,7 @@ Names Ghidra cannot store as symbols (spaces/backticks -- e.g. `scalar deleting
 destructor' spellings) are reported and skipped. Idempotent: rows whose name
 already matches the DB are left untouched.
 
-Run it after `regen-stubs` (so symbols.csv is final) and before `export-project`.
+Run it when symbols.csv is final and before `export-project`.
 Read-only by default; --apply writes and saves the DB.
 """
 

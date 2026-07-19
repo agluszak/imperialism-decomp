@@ -59,7 +59,7 @@ the derived class.
 |---|---|
 | **Scalar deleting dtor** (often slot 0x04): recomp `` `scalar deleting destructor' `` shows `no orig` | Pair via SYNTHETIC: set the orig addr's `config/symbols.csv` name to ``Class::`scalar deleting destructor'``, replace any hand-written `*AndMaybeFree` bridge with a `// SYNTHETIC: …` marker. Needs a polymorphic class. See `ctors-dtors-eh` (scalar deleting destructors) and [[synthetic-scalar-deleting-dtor]]. |
 | **Missing override**: orig slot → a class-specific addr, recomp → the inherited base function | Declare an `override` with the base's exact signature/name, give it the real body + `// FUNCTION:` marker at the orig addr. |
-| **Stub-in-slot**: recomp slot → an empty provisional virtual, while a real function exists as a stub at the orig addr | Promote: make the virtual method own the stub's address (move the `// FUNCTION:` marker onto the method, write an honest body), then `just regen-stubs` to drop the stub. |
+| **Stub-in-slot**: recomp slot → an empty provisional virtual, while a real function exists as a stub at the orig addr | Promote: make the virtual method own the stub's address (move the `// FUNCTION:` marker onto the method, write an honest body), then rebuild (`just build`) to drop the stub. |
 | **Imported thunk**: orig slot → an ILT `jmp` thunk addr (`0x40xxxx`), recomp → the direct target | reccmp auto-resolves jmp thunks *unless the thunk is annotated as a function*. Un-import it. See below + [[imported-thunks-block-vtable-resolution]]. |
 | **Unowned base slot**: recomp slot has `no orig` and a tiny return-0 body matches an orphan stub (`OrphanTiny_ReturnZero_*`) | Claim the orig addr: add the `// FUNCTION:` marker to the base method (only if bodies genuinely match). |
 
@@ -81,7 +81,7 @@ but only when the thunk address is **not** claimed as a function on our side. To
 
 ## Verify loop
 
-After each fix: `just regen-stubs` → `just build` → `just detect`
+After each fix: `just build` (stubs regenerate inside it) → `just detect`
 → `just vtable <Class>` (expect `100% match`). Then run `just gates` — the full
 mechanical source-policy chain (marker/vtable-annotation/vtable-collision hygiene,
 symbols/ownership integrity, construction anti-patterns, decomplint ordering, and
@@ -106,7 +106,7 @@ comparison reads the freshly built `Imperialism.exe`/`.pdb`.
 1. **Linker Errors for External/QuickDraw Helpers**: When promoting functions, you may encounter linkage failures (e.g., `unresolved external symbol`) for external helpers (like `IsPointInsideHitRegion`). To resolve:
    - Wrap declarations in `extern "C"` blocks.
    - Match implementation signatures exactly (e.g., using `int*` instead of `void` if the wrapper/helper expects a pointer).
-   - If stubgen generates colliding dummy stubs for them, port the real callee or fix ownership (`just regen-stubs`) — do **not** add entries to the `tools/stubgen.py` whitelist; that fakes a signature without a real body and is an explicit anti-pattern (see the decomp-loop skill).
+   - If stubgen generates colliding dummy stubs for them, port the real callee or fix ownership (markers; stubs regenerate on build) — do **not** add entries to the `tools/stubgen.py` whitelist; that fakes a signature without a real body and is an explicit anti-pattern (see the decomp-loop skill).
 2. **Substring Filter Collisions**: The `reccmp-vtable` filter (e.g., `--filter "TView::"`) matches case-insensitively. This can cause unexpected classes to be included in the comparison (e.g., `"TView::"` matches `TCombatReportView` because `t` + `View::` matches `tview::`). Analyze the output carefully to identify which class is the actual mismatch.
 3. **Override Signatures**: Ensure derived overrides match the base class virtual signature exactly. Mismatched signatures can cause MSVC to treat them as new virtual functions (shifting the vtable layout) rather than overrides.
 

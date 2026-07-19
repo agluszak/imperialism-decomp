@@ -239,7 +239,7 @@ def apply_plans(repo_root: Path, plans: list[FixPlan], verify: bool) -> int:
         rc = rc or _run_just(repo_root, "prune-ilt-thunks")
     if rc != 0 or not verify:
         return rc
-    for target in ("sync-ownership", "regen-stubs", "build", "detect"):
+    for target in ("sync-ownership", "build", "detect"):
         rc = rc or _run_just(repo_root, target)
         if rc:
             return rc
@@ -280,7 +280,7 @@ def parse_args() -> argparse.Namespace:
         "--max-rounds",
         type=int,
         default=0,
-        help="When --write is set, repeat autofix → sync-ownership → regen-stubs → build "
+        help="When --write is set, repeat autofix → sync-ownership → build "
         "and stop when the aggregate not-matching vtable count stabilizes or rounds "
         "are exhausted. 0 disables the loop (single pass). Implies --all when no "
         "class filter is given.",
@@ -344,7 +344,7 @@ def main() -> int:
 
         rc = apply_plans(repo_root, plans, verify=args.verify or bool(args.max_rounds))
         if args.max_rounds:
-            for target in ("sync-ownership", "regen-stubs", "build"):
+            for target in ("sync-ownership", "build"):
                 rc = rc or _run_just(repo_root, target)
                 if rc:
                     return rc

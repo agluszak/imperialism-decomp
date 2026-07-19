@@ -1,19 +1,26 @@
 #!/usr/bin/env python3
-"""Generate linkable function stubs from config/symbols.csv.
+"""Generate linkable function stubs into the build directory.
 
-By default this writes chunked sources under `src/autogen/stubs/` to avoid
-old MSVC line/debug section limits with very large single translation units.
+Stubs are disposable build inputs, not source: they are regenerated on every
+`just build` from `config/symbols.csv` minus the addresses claimed by manual
+source markers (via tools.source_index) and by curated ownership rows. Nothing
+under the output directory is committed.
+
+Default output: build-msvc500/generated/stubs/ (compiled via CMake's
+IMPERIALISM_GENERATED_DIR glob). Chunking is deterministic (address order,
+fixed chunk size) — there is no committed state to keep diff-stable.
+
+`--annotation-kind none` emits stubs without reccmp markers, for secondary
+builds (lint) whose output must not double-register marker addresses.
 """
 
 from __future__ import annotations
 
 import argparse
-import bisect
 import json
 import re
 from pathlib import Path
 
-from tools.common.hexutil import parse_hex_address
 from tools.common.name_overrides import (
     DEFAULT_NAME_OVERRIDES_CSV,
     parse_name_overrides,
@@ -21,17 +28,27 @@ from tools.common.name_overrides import (
 )
 from tools.common.pipe_csv import read_pipe_rows
 from tools.common.repo import repo_root_from_file, resolve_repo_path
-
+from tools.source_index import claimed_addresses
 from tools.workflow.function_ownership import (
     DEFAULT_FUNCTION_OWNERSHIP_CSV,
-    FunctionOwnership,
-    function_marker_regex,
     load_function_ownership,
 )
 
+DEFAULT_OUTPUT_DIR = "build-msvc500/generated/stubs"
+
+STUBBED_ROW_TYPES = {"function", "template", "synthetic", "library", "stub"}
+
+# Incremental-link (ILT) jmp-thunk table of the original binary: 5-byte `jmp target`
+# linker stubs, never real functions. Legacy manual code still links against a few of
+# these via the legacy free-function extern-thunk pattern, so their stub DEFINITIONS must
+# exist — but they must NOT carry a `// FUNCTION:` annotation: an entity at a thunk
+# address blocks reccmp's automatic thunk-to-target resolution (it broke 364/379
+# vtable comparisons when annotated).
+ILT_THUNK_RANGE = range(0x401000, 0x409AB6)
+
 
 def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser()
+    parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--target", default="IMPERIALISM")
     parser.add_argument("--symbols-csv", default="config/symbols.csv")
     parser.add_argument(
@@ -42,12 +59,12 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--ownership-csv",
         default=DEFAULT_FUNCTION_OWNERSHIP_CSV,
-        help="Optional ownership map (address|target_cpp|ownership|note).",
+        help="Curated ownership rows (read-only; suppresses stubs at owned addresses).",
     )
     parser.add_argument(
         "--output-dir",
-        default="src/autogen/stubs",
-        help="Directory for generated stub chunks (default: src/autogen/stubs)",
+        default=DEFAULT_OUTPUT_DIR,
+        help="Directory for generated stub chunks (default: {})".format(DEFAULT_OUTPUT_DIR),
     )
     parser.add_argument(
         "--max-functions-per-file",
@@ -55,7 +72,6 @@ def parse_args() -> argparse.Namespace:
         default=500,
         help="Maximum generated stubs per .cpp chunk file (default: 500)",
     )
-    parser.add_argument("--source-dir", default="src")
     parser.add_argument(
         "--use-prototypes",
         action="store_true",
@@ -67,98 +83,13 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--annotation-kind",
         default="FUNCTION",
-        choices=("STUB", "FUNCTION"),
-        help="Annotation marker to emit for generated stubs.",
+        choices=("STUB", "FUNCTION", "none"),
+        help=(
+            "Annotation marker to emit for generated stubs; 'none' emits no reccmp "
+            "markers (secondary/lint builds)."
+        ),
     )
     return parser.parse_args()
-
-
-def path_in_dir(path: Path, directory: Path) -> bool:
-    try:
-        path.resolve().relative_to(directory.resolve())
-        return True
-    except ValueError:
-        return False
-
-
-def load_old_generated_cpp_files(manifest_path: Path) -> list[str]:
-    if not manifest_path.is_file():
-        return []
-    try:
-        payload = json.loads(manifest_path.read_text(encoding="utf-8"))
-        files = payload.get("generated_cpp_files", [])
-        if isinstance(files, list):
-            return [str(x) for x in files]
-    except Exception:
-        pass
-    return []
-
-
-def clean_old_outputs(output_dir: Path, manifest_path: Path) -> None:
-    old_relpaths = load_old_generated_cpp_files(manifest_path)
-    for relpath in old_relpaths:
-        full = output_dir / relpath
-        if full.is_file():
-            full.unlink()
-    for path in sorted(output_dir.rglob("*"), reverse=True):
-        if path.is_dir():
-            try:
-                path.rmdir()
-            except OSError:
-                pass
-
-
-def read_existing_assignments(output_dir: Path, target: str) -> dict[int, str]:
-    assignments: dict[int, str] = {}
-    annotation_re = function_marker_regex(target)
-
-    manifest_path = output_dir / "_manifest.json"
-    files_to_read: list[Path] = []
-    if manifest_path.is_file():
-        try:
-            payload = json.loads(manifest_path.read_text(encoding="utf-8"))
-            files = payload.get("generated_cpp_files", [])
-            if isinstance(files, list):
-                files_to_read = [output_dir / x for x in files]
-        except Exception:
-            pass
-
-    if not files_to_read:
-        files_to_read = sorted(output_dir.glob("stubs_part*.cpp"))
-
-    for path in files_to_read:
-        if not path.is_file():
-            continue
-        try:
-            text = path.read_text(encoding="utf-8", errors="ignore")
-            for match in annotation_re.finditer(text):
-                addr = int(match.group(1), 16)
-                assignments[addr] = path.name
-        except OSError:
-            continue
-    return assignments
-
-
-def collect_defined_addresses(target: str, source_dir: Path, output_dir: Path) -> set[int]:
-    annotation_re = function_marker_regex(target)
-    addresses: set[int] = set()
-    if not source_dir.is_dir():
-        return addresses
-
-    legacy_single_file = output_dir.parent / "stubs.cpp"
-    for path in source_dir.rglob("*.cpp"):
-        # Ignore generated stub chunks, they should not suppress regeneration.
-        if path_in_dir(path, output_dir):
-            continue
-        if path.resolve() == legacy_single_file.resolve():
-            continue
-        try:
-            text = path.read_text(encoding="utf-8", errors="ignore")
-        except OSError:
-            continue
-        for match in annotation_re.finditer(text):
-            addresses.add(int(match.group(1), 16))
-    return addresses
 
 
 def sanitize_identifier(name: str, addr: int) -> str:
@@ -224,16 +155,55 @@ def signature_returns_void(signature: str) -> bool:
     return head.startswith("void ")
 
 
-def parse_rows(csv_path: Path) -> list[dict[str, str]]:
-    return read_pipe_rows(csv_path)
+def compute_stub_rows(
+    repo_root: Path,
+    target: str = "IMPERIALISM",
+    symbols_csv: str = "config/symbols.csv",
+    ownership_csv: str = DEFAULT_FUNCTION_OWNERSHIP_CSV,
+    name_overrides: str | None = DEFAULT_NAME_OVERRIDES_CSV,
+) -> list[tuple[int, str, str]]:
+    """The stub set: symbols function-kind rows minus source-claimed addresses.
 
+    Claims come from manual-source markers (scanned directly — no sync step) and
+    from curated ownership rows. Shared by stub generation and the stub-count gate
+    so the gate can never disagree with what generation would emit.
+    """
+    csv_path = resolve_repo_path(repo_root, symbols_csv)
+    if not csv_path.is_file():
+        raise SystemExit("Missing symbols CSV: {}".format(csv_path))
 
-def collect_owned_manual_addresses(entries: dict[int, FunctionOwnership]) -> set[int]:
-    owned: set[int] = set()
-    for address, entry in entries.items():
-        if entry.ownership.strip().lower() != "autogen":
-            owned.add(address)
-    return owned
+    claimed = claimed_addresses(repo_root, target)
+    ownership_path = resolve_repo_path(repo_root, ownership_csv)
+    for address in load_function_ownership(ownership_path):
+        claimed.add(address)
+
+    overrides = {}
+    if name_overrides:
+        overrides_path = resolve_name_overrides_path(repo_root, name_overrides)
+        overrides = parse_name_overrides(overrides_path)
+
+    rows: list[tuple[int, str, str]] = []
+    for row in read_pipe_rows(csv_path):
+        row_type = (row.get("type") or "").strip().lower()
+        if row_type not in STUBBED_ROW_TYPES:
+            continue
+        address_text = (row.get("address") or "").strip()
+        if not address_text:
+            continue
+        address = int(address_text, 16)
+        if address in claimed:
+            continue
+        name = (row.get("name") or "").strip()
+        prototype = sanitize_prototype((row.get("prototype") or "").strip())
+        override = overrides.get(address)
+        if override is not None:
+            if override[0]:
+                name = override[0]
+            if override[1]:
+                prototype = override[1]
+        rows.append((address, name, prototype))
+    rows.sort(key=lambda r: r[0])
+    return rows
 
 
 def chunked_rows(
@@ -245,15 +215,6 @@ def chunked_rows(
     for i in range(0, len(rows), max_functions_per_file):
         chunks.append(rows[i : i + max_functions_per_file])
     return chunks
-
-
-# Incremental-link (ILT) jmp-thunk table of the original binary: 5-byte `jmp target`
-# linker stubs, never real functions. Legacy manual code still links against a few of
-# these via the legacy free-function extern-thunk pattern, so their stub DEFINITIONS must
-# exist — but they must NOT carry a `// FUNCTION:` annotation: an entity at a thunk
-# address blocks reccmp's automatic thunk-to-target resolution (it broke 364/379
-# vtable comparisons when annotated).
-ILT_THUNK_RANGE = range(0x401000, 0x409AB6)
 
 
 def render_chunk(
@@ -279,7 +240,9 @@ def render_chunk(
             out.append("// ghidra_name {}\n".format(name))
         if prototype:
             out.append("// ghidra_proto {}\n".format(prototype))
-        if address in ILT_THUNK_RANGE:
+        if annotation_kind == "none":
+            pass
+        elif address in ILT_THUNK_RANGE:
             out.append(
                 "// ILT thunk 0x{:08x} - unannotated on purpose (see ILT_THUNK_RANGE)\n".format(
                     address
@@ -297,143 +260,78 @@ def render_chunk(
     return "".join(out)
 
 
+def clean_output_dir(output_dir: Path) -> None:
+    if not output_dir.is_dir():
+        return
+    for path in output_dir.glob("*.cpp"):
+        path.unlink()
+    manifest = output_dir / "_manifest.json"
+    if manifest.is_file():
+        manifest.unlink()
+
+
 def main() -> int:
     args = parse_args()
     repo_root = repo_root_from_file(__file__, levels_up=1)
-    target = args.target
-    csv_path = resolve_repo_path(repo_root, args.symbols_csv)
     output_dir = resolve_repo_path(repo_root, args.output_dir)
-    source_dir = resolve_repo_path(repo_root, args.source_dir)
-    ownership_path = resolve_repo_path(repo_root, args.ownership_csv)
 
-    overrides_path = resolve_name_overrides_path(repo_root, args.name_overrides)
+    # Stubs are build artifacts — refuse to write them into the source tree.
+    src_dir = (repo_root / "src").resolve()
+    try:
+        output_dir.resolve().relative_to(src_dir)
+        raise SystemExit(
+            "Refusing to write generated stubs under src/ ({}). Stubs are build "
+            "artifacts; use a build directory (default: {}).".format(
+                output_dir, DEFAULT_OUTPUT_DIR
+            )
+        )
+    except ValueError:
+        pass
 
-    if not csv_path.is_file():
-        raise SystemExit("Missing symbols CSV: {}".format(csv_path))
-
-    defined_addresses = collect_defined_addresses(
-        target=target, source_dir=source_dir, output_dir=output_dir
+    function_rows = compute_stub_rows(
+        repo_root,
+        target=args.target,
+        symbols_csv=args.symbols_csv,
+        ownership_csv=args.ownership_csv,
+        name_overrides=args.name_overrides,
     )
-    ownership_entries = load_function_ownership(ownership_path)
-    owned_manual_addresses = collect_owned_manual_addresses(ownership_entries)
-    rows = parse_rows(csv_path)
-    overrides = parse_name_overrides(overrides_path)
 
-    function_rows: list[tuple[int, str, str]] = []
-    for row in rows:
-        row_type = (row.get("type") or "").strip().lower()
-        if row_type not in {"function", "template", "synthetic", "library", "stub"}:
-            continue
-        address_text = (row.get("address") or "").strip()
-        if not address_text:
-            continue
-        address = int(address_text, 16)
-        if address in defined_addresses:
-            continue
-        if address in owned_manual_addresses:
-            continue
-        name = (row.get("name") or "").strip()
-        prototype = sanitize_prototype((row.get("prototype") or "").strip())
-        override = overrides.get(address)
-        if override is not None:
-            if override[0]:
-                name = override[0]
-            if override[1]:
-                prototype = override[1]
-        function_rows.append((address, name, prototype))
-
-    function_rows.sort(key=lambda r: r[0])
     output_dir.mkdir(parents=True, exist_ok=True)
-    manifest_path = output_dir / "_manifest.json"
-
-    existing_assignments = read_existing_assignments(output_dir, target)
-
-    clean_old_outputs(output_dir=output_dir, manifest_path=manifest_path)
-    output_dir.mkdir(parents=True, exist_ok=True)
+    clean_output_dir(output_dir)
 
     seen_idents: set[str] = set()
     generated_files: list[str] = []
-
-    if existing_assignments:
-        sorted_assigned_addrs = sorted(existing_assignments.keys())
-        assigned_chunks: dict[str, list[tuple[int, str, str]]] = {}
-        for address, name, prototype in function_rows:
-            if address in existing_assignments:
-                fname = existing_assignments[address]
-            else:
-                idx = bisect.bisect_right(sorted_assigned_addrs, address)
-                if idx == 0:
-                    ref_addr = sorted_assigned_addrs[0]
-                else:
-                    ref_addr = sorted_assigned_addrs[idx - 1]
-                fname = existing_assignments[ref_addr]
-            if fname not in assigned_chunks:
-                assigned_chunks[fname] = []
-            assigned_chunks[fname].append((address, name, prototype))
-
-        for fname in sorted(assigned_chunks.keys()):
-            chunk = assigned_chunks[fname]
-            chunk.sort(key=lambda r: r[0])
-            out_file = output_dir / fname
-            out_file.write_text(
-                render_chunk(
-                    chunk_rows=chunk,
-                    seen_idents=seen_idents,
-                    target=target,
-                    annotation_kind=args.annotation_kind,
-                    use_prototypes=args.use_prototypes,
-                ),
-                encoding="utf-8",
-            )
-            generated_files.append(fname)
-    else:
-        chunks = chunked_rows(function_rows, args.max_functions_per_file)
-        for idx, chunk in enumerate(chunks, start=1):
-            relpath = "stubs_part{:03d}.cpp".format(idx)
-            out_file = output_dir / relpath
-            out_file.write_text(
-                render_chunk(
-                    chunk_rows=chunk,
-                    seen_idents=seen_idents,
-                    target=target,
-                    annotation_kind=args.annotation_kind,
-                    use_prototypes=args.use_prototypes,
-                ),
-                encoding="utf-8",
-            )
-            generated_files.append(relpath)
+    for idx, chunk in enumerate(chunked_rows(function_rows, args.max_functions_per_file), start=1):
+        relpath = "stubs_part{:03d}.cpp".format(idx)
+        (output_dir / relpath).write_text(
+            render_chunk(
+                chunk_rows=chunk,
+                seen_idents=seen_idents,
+                target=args.target,
+                annotation_kind=args.annotation_kind,
+                use_prototypes=args.use_prototypes,
+            ),
+            encoding="utf-8",
+        )
+        generated_files.append(relpath)
 
     manifest_payload = {
         "generated_cpp_files": generated_files,
         "chunk_count": len(generated_files),
         "stub_count": len(function_rows),
-        "target": target,
+        "target": args.target,
         "max_functions_per_file": args.max_functions_per_file,
     }
-    manifest_path.write_text(
+    (output_dir / "_manifest.json").write_text(
         json.dumps(manifest_payload, indent=2, sort_keys=True) + "\n",
         encoding="utf-8",
     )
-
-    legacy_single_file = output_dir.parent / "stubs.cpp"
-    if legacy_single_file.is_file():
-        legacy_single_file.unlink()
 
     print(
         "Wrote {} chunk file(s) in {} ({} stubs)".format(
             len(generated_files), output_dir, len(function_rows)
         )
     )
-    if overrides:
-        print("Applied {} name override(s) ({})".format(len(overrides), overrides_path))
-    elif overrides_path:
-        print("No name overrides applied ({})".format(overrides_path))
-    if ownership_entries:
-        print(
-            "Skipped {} address(es) due to ownership map ({})".format(
-                len(owned_manual_addresses), ownership_path
-            )
-        )
     return 0
 
 

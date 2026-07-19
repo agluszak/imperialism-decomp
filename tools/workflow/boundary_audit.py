@@ -2,7 +2,7 @@
 """Manual/autogen boundary audit: every autogen stub referenced from manual code.
 
 Joins, per autogen stub symbol:
-  * stub name + original address (from src/autogen/stubs markers)
+  * stub name + original address (computed from the generated stub surface)
   * every reference from manual sources (src/game, include/game), split into
     ordinary calls, address-takes, extern re-declarations, and typedef casts
   * caller (file) count
@@ -52,11 +52,6 @@ from tools.common.file_scan import is_excluded_scan_path
 from tools.common.repo import repo_root_from_file
 from tools.common.symbols import functions_by_name
 
-STUB_ENTRY_RE = re.compile(
-    r"// FUNCTION: IMPERIALISM (?P<addr>0x[0-9a-fA-F]{8})\s*\n"
-    r"(?P<proto>[^\n{;]*?\b(?P<name>[A-Za-z_]\w*)\s*\([^)\n]*\))\s*\n?\s*\{",
-)
-
 # ILT thunk range for Imperialism.exe: the .text ILT jump tables live below the
 # first real function bodies. Thunks are also 6-byte JMPs; Ghidra size confirms.
 ILT_NAME_RE = re.compile(r"^(thunk_|ILT_)")
@@ -93,14 +88,28 @@ class Boundary:
 
 
 def collect_stubs(repo_root: Path) -> dict[str, Boundary]:
+    """Compute the stub surface in-process (stubs are disposable build artifacts,
+    so derive the identifiers the generator would emit instead of reading files)."""
+    from tools.stubgen import (
+        ILT_THUNK_RANGE,
+        compute_stub_rows,
+        dedupe_identifier,
+        function_name_from_prototype,
+        sanitize_identifier,
+    )
+
     out: dict[str, Boundary] = {}
-    for path in sorted((repo_root / "src" / "autogen" / "stubs").glob("*.cpp")):
-        text = path.read_text(encoding="utf-8", errors="replace")
-        for m in STUB_ENTRY_RE.finditer(text):
-            name = m.group("name")
-            out.setdefault(
-                name, Boundary(name=name, address=int(m.group("addr"), 16), stub_file=path.name)
-            )
+    seen: set[str] = set()
+    for address, name, prototype in compute_stub_rows(repo_root):
+        raw_name = function_name_from_prototype(prototype) or name or "sub_{:08X}".format(address)
+        ident = sanitize_identifier(raw_name, address)
+        ident = dedupe_identifier(ident, address, seen)
+        # ILT jmp-thunk stubs carry no reccmp marker and were never part of the
+        # boundary surface; their manual references are the ilt-ossification
+        # gate's queue, not boundary debt.
+        if address in ILT_THUNK_RANGE:
+            continue
+        out.setdefault(ident, Boundary(name=ident, address=address, stub_file="(generated)"))
     return out
 
 

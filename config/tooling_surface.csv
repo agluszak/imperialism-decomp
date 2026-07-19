@@ -1,6 +1,7 @@
 kind|entry|source|note
 module|tools.ghidra.sync_exports|just:sync-ghidra|Primary Ghidra export entrypoint
-module|tools.stubgen|just:regen-stubs|Autogen stubs regeneration
+module|tools.stubgen|just:generate|Generated build-input stubs (build dir)
+module|tools.source_index|just:generate|Source-marker index (build-dir artifact)
 module|tools.workflow.sync_function_ownership|just:sync-ownership|Marker to ownership sync
 module|tools.workflow.annotate_globals_from_symbols|just:annotate-globals|Global annotation pass
 module|tools.workflow.annotate_vtables_from_symbols|just:annotate-vtables|Vtable annotation pass
@@ -107,7 +108,7 @@ module|tools.reccmp.stackcmp_triage|just:stackcmp-triage|Batch stackcmp over nea
 module|tools.ghidra.func_sig|dependency:tools.ghidra.query_registry|func-sig query command (cc/params/RET-imm)
 module|tools.ghidra.field_xrefs|dependency:tools.ghidra.query_registry|field-xrefs query command (this+offset accesses per class)
 module|tools.ghidra.string_refs_oracle|dependency:tools.ghidra.query_registry|string-oracle query command (self-naming port targets)
-module|tools.workflow.check_stub_count|just:stub-count-gate|Autogen stub count ratchet (prune-trap tell)
+module|tools.workflow.check_stub_count|just:stub-count-gate|Generated stub count ratchet (un-claiming tell)
 module|tools.workflow.boundary_audit|just:boundary-audit|Manual/autogen boundary report (stub refs classified for porting)
 module|tools.workflow.check_boundary_ratchet|just:boundary-gate|Boundary ratchet: manual->stub refs + fn-ptr casts must not rise
 module|tools.workflow.check_datacmp_baseline|just:datacmp-gate|Global-data drift ratchet over reccmp-datacmp
