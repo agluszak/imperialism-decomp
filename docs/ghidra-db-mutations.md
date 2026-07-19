@@ -187,6 +187,40 @@ with `in_stack` has an understood reason. `just in-stack-audit` is retained as t
 final read-only diagnostic in the full flow; `packed`/`sret` binding via
 `CUSTOM_STORAGE` is a deliberate follow-up, not part of this pass.
 
+## 2026-07-19 (eighth): signature projection made transactionally safe (PR #94, NO DB change)
+
+Hardening of the projector; **the committed `.gzf` is unchanged** (the DB
+mutations are identical, only the safety/classification of the *apply path* is).
+
+- **Per-function transactions replace the manual restore.** Each projection now
+  runs in its own `startTransaction`/`endTransaction`; on reject the transaction is
+  ABORTED, and Ghidra's rollback is the exact-restore mechanism. The old
+  `_restore()` rebuilt the signature by hand, ignored `hasCustomVariableStorage()`
+  and every saved storage object, and swallowed exceptions — so a reverted
+  custom-storage function would NOT have been restored, while the outer transaction
+  still committed and the queue still reported it "reverted". Verified live: a
+  reverted function (`TOcean::EnsurePortZoneForTile`, DB `__stdcall`/2-param vs
+  source 1-param method) is byte-for-byte its prior signature after rollback.
+- **Audit of the prior committed DB (the concern the restore flaw raised):** on the
+  clean #91 base, **0 of 4064** projection candidates (FUNCTION + LIBRARY with a
+  prototype) had `hasCustomVariableStorage()`. Since every candidate already used
+  dynamic storage, the old `_restore` reproduced the original exactly for all 53
+  reverted functions — **the seventh-entry `.gzf` (`d7103d46…`) was NOT corrupted**,
+  no restore/replay needed.
+- **Distinct outcome states** (previously conflated): `missing_function` (address
+  has no DB function), `decompile_failed:before`/`:after` (a `None` decompile ≠ an
+  empty `in_stack` set), `apply_error`. The `_HARD_FAIL_REASONS` (unparsable /
+  apply_error / decompile_failed) fail `--strict`; the structural buckets do not.
+- **Verifier caveat made explicit** (and a known classification gap documented):
+  `in_stack` clearing is NECESSARY, not SUFFICIENT — it does not prove the
+  convention / member-vs-static kind / param types are correct. The entity-kind →
+  convention classification is punctuation-based (a `static` member or a
+  namespace-qualified free function whose out-of-class definition head omits
+  `static` is read as an instance method → `__thiscall`). A structural,
+  compiler-backed convergence check is the follow-up; today `in_stack` is a
+  projection trigger + weak verifier. New live-Ghidra smoke test covers the
+  rollback primitive; pure-Python tests cover parse / entity-kind / bucket logic.
+
 ## Committed mutations (already in the current .gzf, newest first)
 
 From `git log --follow -- vendor/ghidra/exports/Imperialism.gzf`:

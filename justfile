@@ -98,7 +98,7 @@ ghidra-apply-source *args: _require-ghidra-install
 # Order matters: the PDB import names entities from the generated data sources
 # (inventory names), so the source-declaration name pass must run AFTER it —
 # source names win last.
-[doc('MUTATES: Ghidra DB + vendored .gzf. build -> import-ghidra -> ghidra-apply-source --apply -> export-project')]
+[doc('MUTATES: Ghidra DB + vendored .gzf. build -> import-ghidra -> apply-source names -> project source signatures -> in-stack audit -> export')]
 [group('sync')]
 ghidra-apply-source-full:
   just build
