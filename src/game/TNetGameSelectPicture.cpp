@@ -1,5 +1,8 @@
 #include "game/TNetGameSelectPicture.h"
 
+#include "game/TMultiplayerMgr.h"
+#include "game/global_data_tables.h"
+
 // SYNTHETIC: IMPERIALISM 0x00576b20
 // TNetGameSelectPicture::`scalar deleting destructor'
 TNetGameSelectPicture::~TNetGameSelectPicture() {}
@@ -15,6 +18,8 @@ TNetGameSelectPicture::TNetGameSelectPicture() {}
 
 // FUNCTION: IMPERIALISM 0x00576b90
 void TNetGameSelectPicture::NoOpUiLifecycleHook(int arg) {
+  TView::NoOpUiLifecycleHook(arg);
+  g_pGameFlowState->InitializeRuntimeSelectionCredentialsFromProviderAndConnect(this);
 }
 
 // FUNCTION: IMPERIALISM 0x00576bc0

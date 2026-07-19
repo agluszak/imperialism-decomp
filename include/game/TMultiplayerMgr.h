@@ -169,6 +169,18 @@ public:
   // Clear the active lobby context, rebuild the seven nation-status rows, post
   // setup event 0x5e5, and clear the queue synchronization word.
   unsigned char ResetLocalUiStateAndPostTurnEvent5E5(); // 0x545660
+  // Uninstall this manager as the app's cohandler, clear the DirectPlay runtime
+  // selection buffer (if a session exists), reset the phase tag to 'nada' and the
+  // lobby dialog view, and post setup event 0x5dc.
+  unsigned char ResetGameFlowStateAndPostTurnEvent5DC(); // 0x544f30
+  // Forwards to TNetMgr's DirectPlay session-open path with this manager's
+  // gameNameString as the copy-out buffer.
+  void ValidateGameFlowNameAndSelectionContext(int protocolValue, int flag); // 0x544fc0
+  // Stashes the lobby dialog `provider`, sets its 'name' field's caption to the
+  // normalized local player name, and clears its 'pass' field's caption. Returns the
+  // DirectPlay session finalize stub's result (always true).
+  unsigned char
+  InitializeRuntimeSelectionCredentialsFromProviderAndConnect(TView* provider); // 0x545110
   // Genuinely empty in the shipped binary (single `RET 4`); called by
   // TArmyMgr::CreateTacticalBattleViewAndInitializeBattleSetup with the new battle view,
   // discarding both the argument and the (unset) return value. 0x54c660, __thiscall.

@@ -16,6 +16,7 @@ public:
   void* field88; // 0x88
   int field8C;   // 0x8c
   short field90; // 0x90
+  short field92; // 0x92
 
   TStaticText();
   virtual ~TStaticText() override;

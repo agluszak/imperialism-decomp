@@ -155,6 +155,7 @@ struct TurnEvent15Packet : NetMessage {
 #include "game/TControl.h"
 #include "game/TDeluxeText.h"
 #include "game/TDropShadowText.h"
+#include "game/TEditText.h"
 #include "game/TNewsMgr.h"
 #include "game/TLanguageMgr.h"
 #include "game/TLoungeDialog.h"
@@ -167,6 +168,7 @@ struct TurnEvent15Packet : NetMessage {
 #include "game/TTextPictureButton.h"
 #include "game/quickdraw_rendering.h"
 #include "game/turn_event_dialog_provisional.h"
+#include "game/ui_control_tags.h"
 #include "game/ui_invalidation_guard.h"
 #include "game/ui_text_label_helpers_decls.h"
 #include <cstdlib>
@@ -702,6 +704,46 @@ struct TurnEvent2BPresenceMaskPacket : TimelyMessageHeader {
 };
 
 void LoadUiStringAndDispatchSharedMessageCommand(short group, short index, TView* control);
+
+// FUNCTION: IMPERIALISM 0x00544f30
+unsigned char TMultiplayerMgr::ResetGameFlowStateAndPostTurnEvent5DC() {
+  lobbyDialogView40 = 0;
+  g_pGlobalUiRootController->InstallCohandler(g_pGameFlowState, 0);
+  g_pSimMgr->field44 = 0;
+  if (g_pNetMgr006a6014 != 0) {
+    g_pNetMgr006a6014->ResetRuntimeSelectionRecordBufferAndReturnTrue();
+  }
+  sessionPhaseTag = 0x6e616461; // 'nada'
+  lobbyDialogView40 = 0;
+  g_pGlobalUiRootController->PostTurnEventCodeMessage2420(0x5dc);
+  return 1;
+}
+
+// FUNCTION: IMPERIALISM 0x00544fc0
+void TMultiplayerMgr::ValidateGameFlowNameAndSelectionContext(int protocolValue, int flag) {
+  g_pNetMgr006a6014->OpenRuntimeSelectionSourceByIndexAndCopyPath(
+      protocolValue, flag, static_cast<LPCSTR>(gameNameString));
+}
+
+// FUNCTION: IMPERIALISM 0x00545110
+unsigned char TMultiplayerMgr::InitializeRuntimeSelectionCredentialsFromProviderAndConnect(
+    TView* provider) {
+  ReturnTrueRuntimeCredentialInitStub();
+  lobbyDialogView40 = provider;
+
+  TEditText* nameControl = static_cast<TEditText*>(provider->ResolveControlByTag(kControlTagName));
+  nameControl->AssertValid();
+  CString normalizedPlayerName =
+      g_pLanguageMgr->NormalizeRuntimeCredentialNameToken(&playerNameString);
+  nameControl->InitDialogWindowAndSyncTitleIfChanged(&normalizedPlayerName, 0);
+
+  TEditText* passControl = static_cast<TEditText*>(provider->ResolveControlByTag(kControlTagPass));
+  passControl->AssertValid();
+  CString emptyCaption(g_szEmptyString);
+  passControl->InitDialogWindowAndSyncTitleIfChanged(&emptyCaption, 0);
+
+  return g_pNetMgr006a6014->ReturnTrueRuntimeCredentialFinalizeStub();
+}
 
 // FUNCTION: IMPERIALISM 0x00545660
 unsigned char TMultiplayerMgr::ResetLocalUiStateAndPostTurnEvent5E5() {

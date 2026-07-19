@@ -5,11 +5,71 @@
 // FUNCTION: IMPERIALISM 0x0047f7f0
 RuntimeSelectionRecord::~RuntimeSelectionRecord() {}
 
+// FUNCTION: IMPERIALISM 0x0047f810
+static BOOL FAR PASCAL ForwardEnumSessionToCallbackTable(LPGUID sessionGuid, LPSTR sessionName,
+                                                          DWORD majorVersion, DWORD minorVersion,
+                                                          LPVOID context) {
+  TWNetSessionManager* mgr = static_cast<TWNetSessionManager*>(context);
+  return mgr->enumCallbackTable00->onEnumSession(sessionGuid, sessionName, majorVersion,
+                                                 minorVersion);
+}
+
 // FUNCTION: IMPERIALISM 0x0047fd30
 unsigned char TWNetSessionManager::DestroyPlayerAndStoreResult(DWORD idPlayer) {
   long destroyResult = this->directPlayInterface04->DestroyPlayer(idPlayer);
   this->lastErrorCode0c = destroyResult;
   return destroyResult >= 0;
+}
+
+static void ClearRuntimeSelectionRecordArray() {
+  for (int index = 0; index < g_RuntimeSelectionRecords006a15e0.GetSize(); ++index) {
+    delete g_RuntimeSelectionRecords006a15e0[index];
+  }
+  g_RuntimeSelectionRecords006a15e0.RemoveAll();
+}
+
+// FUNCTION: IMPERIALISM 0x0047fe50
+unsigned char TWNetSessionManager::OpenRuntimeSelectionSourceWithOptionalSeed(
+    const GUID* sessionEntry, int flag) {
+  (void)flag;
+  if (sessionEntry != 0) {
+    if (directPlayInterface04 != 0) {
+      directPlayInterface04->Close();
+      directPlayInterface04->Release();
+      directPlayInterface04 = 0;
+    }
+  }
+  if (directPlayInterface04 != 0) {
+    return 1;
+  }
+
+  IDirectPlay* createdInterface = 0;
+  if (sessionEntry != 0) {
+    GUID seededGuid = *sessionEntry;
+    lastErrorCode0c = DirectPlayCreate(&seededGuid, &createdInterface, 0);
+  } else {
+    ClearRuntimeSelectionRecordArray();
+    g_RuntimeSelectionRecords006a15e0.SetSize(0, -1);
+    lastErrorCode0c = DirectPlayEnumerate(ForwardEnumSessionToCallbackTable, this);
+    if (lastErrorCode0c >= 0) {
+      // enumCallbackTable00 is always null in the retail binary (see its comment) --
+      // this indirect call is unreached but ported to match the original shape.
+      if (enumCallbackTable00->onEnumerationComplete(&createdInterface) == 0) {
+        return static_cast<unsigned char>(lastErrorCode0c >= 0);
+      }
+    }
+  }
+
+  if (lastErrorCode0c >= 0 && createdInterface != 0) {
+    lastErrorCode0c = createdInterface->QueryInterface(IID_IDirectPlay2,
+                                                        reinterpret_cast<void**>(&directPlayInterface04));
+  }
+  if (createdInterface != 0) {
+    createdInterface->Release();
+  }
+
+  ClearRuntimeSelectionRecordArray();
+  return static_cast<unsigned char>(lastErrorCode0c >= 0);
 }
 
 // FUNCTION: IMPERIALISM 0x00480400

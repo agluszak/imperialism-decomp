@@ -18,6 +18,9 @@
 
 IMPLEMENT_DYNCREATE(TNetMgr, TObject)
 
+// SYNTHETIC: IMPERIALISM 0x005e33c0
+// TNetMgr::GetRuntimeClass
+
 // FUNCTION: IMPERIALISM 0x005e33e0
 TNetMgr::TNetMgr() : TObject() {}
 
@@ -212,6 +215,12 @@ static const char* LookupDirectPlayErrorDetailText(int errorCode) {
   return 0;
 }
 
+// FUNCTION: IMPERIALISM 0x005e34d0
+unsigned char TNetMgr::ResetRuntimeSelectionRecordBufferAndReturnTrue() {
+  g_NetworkSessionManager006a5f60.ResetRuntimeSelectionRecordBuffer();
+  return 1;
+}
+
 // FUNCTION: IMPERIALISM 0x005e34f0
 void TNetMgr::HandleError(int errorCode) {
   CString message(kDirectPlayErrorTitle);
@@ -228,6 +237,23 @@ void TNetMgr::HandleError(int errorCode) {
     TemporarilyClearAndRestoreUiInvalidationFlag();
   }
 }
+
+// FUNCTION: IMPERIALISM 0x005e3a60
+unsigned char TNetMgr::OpenRuntimeSelectionSourceByIndexAndCopyPath(int index, int flag,
+                                                                     const char* seed) {
+  (void)flag;
+  strncpy(g_RuntimeSelectionSourceSeedBuffer_006a5fe8, seed, 0x20);
+  const GUID* sessionGuid = static_cast<const GUID*>(g_WNetSerializedPtrArrayA006a5f10[index]);
+  unsigned char result =
+      g_NetworkSessionManager006a5f60.OpenRuntimeSelectionSourceWithOptionalSeed(sessionGuid, 0);
+  if (result == 0) {
+    HandleError(g_NetworkSessionManager006a5f60.lastErrorCode0c);
+  }
+  return result;
+}
+
+// FUNCTION: IMPERIALISM 0x005e3c00
+unsigned char TNetMgr::ReturnTrueRuntimeCredentialFinalizeStub() { return 1; }
 
 // FUNCTION: IMPERIALISM 0x005e3d40
 unsigned char TNetMgr::Send(NetMessage* message, unsigned char queueOnly) {
@@ -323,6 +349,3 @@ int TNetMgr::ProbeNationReachabilityAndMarkAwolBitmask() {
   }
   return awolBitmask;
 }
-
-// SYNTHETIC: IMPERIALISM 0x005e33c0
-// TNetMgr::GetRuntimeClass
