@@ -22,13 +22,29 @@ Verification is the classifier; every function ends in exactly one bucket:
     classification.
   - **sret / unknown_cc / unresolved / unparsable** — queued before any edit.
 
-A guessed signature is never left in place; the only signatures kept are ones a
-fresh decompile confirms bound the flagged parameters.
+  - **missing_function / decompile_failed / unparsable / sret / unresolved** —
+    queued before or instead of an edit; the first three are distinct states, not
+    conflated (a `None` decompile ≠ an empty in_stack set ≠ a missing DB function).
+
+A guessed signature is never left in place. Each projection runs in its OWN Ghidra
+transaction: accept → commit, reject → **rollback** (the exact-restore mechanism —
+no hand-rebuilt signature, so a "reverted" function is byte-for-byte its prior
+self, and a partial/errored edit cannot leak). `--strict` fails only on the
+"could-not-verify / errored" reasons (`_HARD_FAIL_REASONS`).
+
+CAVEAT — in_stack clearing is NECESSARY, not SUFFICIENT. That a projection made
+the flagged offsets disappear proves the frame changed to bind them; it does NOT
+prove the convention, member/static classification, parameter count/types, or
+return are semantically correct — a wrong signature can bind the same offsets by
+laying out a different frame. In particular the entity-kind (=> convention)
+classification is punctuation-based and cannot see `static`/namespace facts absent
+from the out-of-class definition head (see parse_prototype). A structural,
+compiler-backed convergence check (source vs DB logical signature + ABI storage)
+is the follow-up; today `in_stack` is a projection trigger + a weak verifier.
 
   just apply-source-signatures            # dry-run: report what would change
-  just apply-source-signatures --apply    # project + verify + revert non-converged
-  just source-signature-audit --strict    # read-only convergence gate (nonzero on
-                                           # any un-queued non-converged source row)
+  just apply-source-signatures --apply    # project + verify (per-function tx)
+  just source-signature-audit --strict    # read-only convergence gate
 
 Applies a COMPLETE signature via `replaceParameters(DYNAMIC_STORAGE_FORMAL_PARAMS)`
 after setting the calling convention (Ghidra auto-generates `this`). Never infers
@@ -45,6 +61,12 @@ from pathlib import Path
 from tools.common import ghidra_env
 from tools.common.repo import repo_root_from_file
 from tools.source_model import build_model
+
+# Per-function decompile timeout (seconds). Kept at 20 so the projected set matches
+# the committed DB: a handful of giant init functions exceed it and are reported as
+# `decompile_failed:before` (skipped, as they were pre-projection). Raising it to
+# project them is a DB-CHANGING follow-up, not part of this no-DB-change pass.
+_DECOMPILE_BUDGET_S = 20
 
 _CC_RE = re.compile(r"\b(__cdecl|__stdcall|__thiscall|__fastcall)\b")
 _PRIMITIVES = {
@@ -91,7 +113,12 @@ def _in_stack_offsets(hf) -> set[int]:
 
 
 def _decompile_in_stack(ifc, fn, monitor) -> set[int] | None:
-    res = ifc.decompileFunction(fn, 20, monitor)
+    """Positive-offset in_stack set for `fn`, or None if the decompile FAILED.
+
+    None (decompile did not complete) is distinct from an empty set (decompiled
+    cleanly, no in_stack) — the caller must not conflate them.
+    """
+    res = ifc.decompileFunction(fn, _DECOMPILE_BUDGET_S, monitor)
     if not res.decompileCompleted():
         return None
     return _in_stack_offsets(res.getHighFunction())
@@ -111,14 +138,27 @@ def _is_placeholder_return(ret_str: str) -> bool:
 
 
 def parse_prototype(proto: str):
-    """(cc_or_None, return_str, [param_type_str,...], is_method) from a decl head.
+    """(cc_or_None, return_str, [param_type_str,...], entity_kind) from a decl head.
 
     Returns None if the prototype cannot be parsed cleanly (queued upstream).
-    `is_method` (name contained `::`) lets the caller default the calling
-    convention when source carries no explicit one (method -> __thiscall,
-    free function -> __cdecl).
+    `entity_kind` is a best-effort classification used to default the calling
+    convention when source carries no explicit one:
+
+      constructor / destructor / instance_method -> __thiscall
+      static_method / free_function              -> __cdecl
+
+    LIMITATION (tracked for the structured source-model work): the out-of-class
+    definition head this parser sees does not repeat the `static` keyword, and a
+    bare `Ns::fn` is indistinguishable from `Class::method` without a declaration
+    index. So a static member function, or a namespace-qualified free function,
+    whose marker prototype lacks an explicit `static`/convention is classified
+    `instance_method` (=> __thiscall) here. `static` IS honoured when the
+    prototype carries it (e.g. an MFC reviewed identity). A wrong convention that
+    still happens to bind the flagged offsets is exactly why in_stack clearing is
+    NOT sufficient proof of correctness — see the module docstring.
     """
     proto = proto.strip()
+    has_static = bool(re.search(r"\bstatic\b", proto))
     # Strip MSVC declaration qualifiers that are not part of the type
     # (access specifiers, virtual/static/inline). MFC reviewed prototypes carry
     # these, e.g. "public: virtual void __thiscall CDocTemplate::InitialUpdateFrame".
@@ -136,8 +176,9 @@ def parse_prototype(proto: str):
     argstr = proto[open_i + 1:close_i].strip()
     # Return type = head minus the trailing qualified-name (Class::method).
     tokens = head.rsplit("::", 1)
-    is_method = len(tokens) == 2
-    if is_method:
+    is_qualified = len(tokens) == 2
+    entity_kind = "free_function"
+    if is_qualified:
         # tokens[0] = "RetType... Class"; the class name is its last space token,
         # the return type is everything before that.
         left_parts = tokens[0].split()
@@ -145,21 +186,38 @@ def parse_prototype(proto: str):
         ret = " ".join(left_parts[:-1]).strip()
         meth = tokens[1].strip()
         # For ctors/dtors there is no return type -> void.
-        is_ctor_dtor = meth == cls or meth == "~" + cls or meth.startswith("~")
-        if not ret or is_ctor_dtor:
+        is_dtor = meth.startswith("~")
+        is_ctor = meth == cls
+        if not ret or is_ctor or is_dtor:
             ret = "void"
+        if is_dtor:
+            entity_kind = "destructor"
+        elif is_ctor:
+            entity_kind = "constructor"
+        elif has_static:
+            entity_kind = "static_method"
+        else:
+            entity_kind = "instance_method"
     else:
         name_m = re.search(r"[A-Za-z_][A-Za-z0-9_]*\s*$", head)
         ret = head[:name_m.start()].strip() if name_m else "void"
         if not ret:
             ret = "void"
+        entity_kind = "static_method" if has_static else "free_function"
     if argstr in ("", "void"):
         params: list[str] = []
     else:
         params = _split_params(argstr)
         if params is None:
             return None
-    return cc, ret, params, is_method
+    return cc, ret, params, entity_kind
+
+
+def default_convention(entity_kind: str) -> str:
+    """The MSVC x86 convention implied by a source declaration lacking one."""
+    if entity_kind in ("constructor", "destructor", "instance_method"):
+        return "__thiscall"
+    return "__cdecl"  # static_method, free_function
 
 
 def _split_params(argstr: str) -> list[str] | None:
@@ -288,14 +346,39 @@ class TypeResolver:
         return base
 
 
-def _snapshot(fn):
-    """Enough to restore a function's signature if projection fails to converge."""
-    return {
-        "cc": fn.getCallingConventionName(),
-        "ret": fn.getReturnType(),
-        "custom": fn.hasCustomVariableStorage(),
-        "params": [(p.getName(), p.getDataType(), p.getVariableStorage()) for p in fn.getParameters()],
-    }
+# Queue reasons that mean "the tool or the data is broken" — a hard failure under
+# --strict. Everything else is a classified, EXPLAINED state, not a failure:
+#   - missing_function     — the address has no standalone DB function (inlined/folded)
+#   - decompile_failed:*   — the decompiler timed out (giant init functions exceed the
+#                            per-function budget); a pre-existing limitation, not a
+#                            projection error. Reported, and the DB is untouched
+#                            (before-failure) or rolled back (after-failure).
+#   - sret / unresolved / dynamic_storage_insufficient / params_bound_residual — the
+#                            honest structural queue.
+_HARD_FAIL_REASONS = ("unparsable_prototype", "apply_error")
+
+
+def _classify_projection(before, after):
+    """Decide the outcome of a projection from the before/after in_stack sets.
+
+    Returns (commit: bool, reason: str|None). `commit` True keeps the DB edit;
+    False triggers a transaction ROLLBACK (the exact restore). `reason` is the
+    queue reason (None only for a clean converge). `after is None` means the
+    verifying decompile FAILED — we must not keep an unverifiable signature.
+    """
+    if after is None:
+        return False, "decompile_failed:after"
+    original_still = sorted(before & after)
+    if original_still:
+        # Projection did not bind the offsets it was meant to — DYNAMIC_STORAGE-
+        # insoluble (packed sub-dword args, sret, wrong boundary). Reject.
+        return False, "dynamic_storage_insufficient:" + ",".join(hex(o) for o in original_still)
+    if after:
+        # Flagged offsets bound (params correct) but a residual remains at a
+        # DIFFERENT offset (sub-dword read inside a bound slot, or a spurious
+        # local). Keep the correct binding, log the residual.
+        return True, "params_bound_residual:" + ",".join(hex(o) for o in sorted(after))
+    return True, None  # fully converged
 
 
 def run(program, args, model):
@@ -310,161 +393,108 @@ def run(program, args, model):
     monitor = pyghidra.task_monitor()
     resolver = TypeResolver(program)
 
-    # Candidate set: source-owned functions with unbound in_stack.
-    if args.addrs:
-        addrs = [int(a, 16) for a in args.addrs]
-    else:
-        addrs = None
+    addrs = [int(a, 16) for a in args.addrs] if args.addrs else None
 
     converged, queued, applied = [], [], 0
-    txid = program.startTransaction("apply source signatures") if args.apply else None
-    try:
-        targets = []
-        for addr, claim in sorted(model.functions.items()):
-            # Source markers (FUNCTION) and reviewed library identities (LIBRARY)
-            # both carry an authoritative prototype the PDB can't project. Other
-            # kinds (STUB/TEMPLATE/SYNTHETIC) are not signature sources.
-            if claim.kind not in ("FUNCTION", "LIBRARY"):
-                continue
-            if not claim.prototype:
-                continue
-            if addrs is not None and addr not in addrs:
-                continue
-            fn = fm.getFunctionAt(af.getAddress(addr))
-            if fn is None:
-                continue
-            targets.append((addr, claim, fn))
 
-        for addr, claim, fn in targets:
-            before = _decompile_in_stack(ifc, fn, monitor)
-            if not before:
-                continue  # no in_stack (already fine) or decomp failed
-            parsed = parse_prototype(claim.prototype)
-            if parsed is None:
-                queued.append((addr, claim.name, "unparsable_prototype", claim.prototype))
-                continue
-            cc, ret_str, param_strs, is_method = parsed
-            # Source is authoritative for the convention. When the declaration
-            # carries no explicit one, the C++ ABI fixes it: a non-static method
-            # is __thiscall, a free function is __cdecl. (Ghidra's own "unknown"
-            # is exactly the state that leaves the frame unplaced -> in_stack.)
-            if not cc:
-                cc = "__thiscall" if is_method else "__cdecl"
-            # `undefined`/`undefinedN` in a source head is a Ghidra placeholder that
-            # leaked into the declaration — source is NOT authoritative for it. Keep
-            # the DB's inferred return type (ret_dt=None => don't touch it) and still
-            # project the params (they, not the return, clear the in_stack).
-            if _is_placeholder_return(ret_str):
-                ret_dt = None
-            else:
-                ret_dt = resolver.resolve(ret_str)
-                if ret_dt is None:
-                    queued.append((addr, claim.name, f"unresolved_return:{ret_str}", claim.prototype))
-                    continue
-                # by-value struct return > 4 bytes -> sret hidden pointer; queue.
-                if ret_dt.getLength() > 4 and "*" not in ret_str:
-                    queued.append((addr, claim.name, "sret_by_value_return", claim.prototype))
-                    continue
-            param_dts = []
-            bad = None
-            for t in param_strs:
-                dt = resolver.resolve(t)
-                if dt is None:
-                    bad = t
-                    break
-                param_dts.append(dt)
-            if bad is not None:
-                queued.append((addr, claim.name, f"unresolved_param:{bad}", claim.prototype))
-                continue
+    # Candidate set: source markers (FUNCTION) and reviewed library identities
+    # (LIBRARY) with a prototype. A missing DB function is recorded distinctly.
+    targets = []
+    for addr, claim in sorted(model.functions.items()):
+        if claim.kind not in ("FUNCTION", "LIBRARY"):
+            continue
+        if not claim.prototype:
+            continue
+        if addrs is not None and addr not in addrs:
+            continue
+        fn = fm.getFunctionAt(af.getAddress(addr))
+        if fn is None:
+            queued.append((addr, claim.name, "missing_function", claim.prototype))
+            continue
+        targets.append((addr, claim, fn))
 
-            if not args.apply:
-                converged.append((addr, claim.name, "would_project", len(param_dts)))
+    for addr, claim, fn in targets:
+        before = _decompile_in_stack(ifc, fn, monitor)
+        if before is None:
+            # Decompile failed BEFORE we touched anything — cannot assess. Distinct
+            # from an empty set (a genuinely clean function, which we skip).
+            queued.append((addr, claim.name, "decompile_failed:before", claim.prototype))
+            continue
+        if not before:
+            continue  # no in_stack — genuinely fine, nothing to project
+        parsed = parse_prototype(claim.prototype)
+        if parsed is None:
+            queued.append((addr, claim.name, "unparsable_prototype", claim.prototype))
+            continue
+        cc, ret_str, param_strs, entity_kind = parsed
+        # Source is authoritative for the convention; when the declaration omits
+        # one the C++ ABI fixes it from the entity kind (see default_convention).
+        if not cc:
+            cc = default_convention(entity_kind)
+        # A leaked `undefined` return is a Ghidra placeholder, not authoritative —
+        # keep the DB's inferred return (ret_dt=None) and project only the params.
+        if _is_placeholder_return(ret_str):
+            ret_dt = None
+        else:
+            ret_dt = resolver.resolve(ret_str)
+            if ret_dt is None:
+                queued.append((addr, claim.name, f"unresolved_return:{ret_str}", claim.prototype))
                 continue
-
-            snap = _snapshot(fn)
-            try:
-                if fn.hasCustomVariableStorage():
-                    fn.replaceParameters(
-                        Function.FunctionUpdateType.DYNAMIC_STORAGE_ALL_PARAMS, True,
-                        SourceType.USER_DEFINED,
-                        *[p for p in fn.getParameters() if p.getName() != "this"])
-                if ret_dt is not None:
-                    fn.setReturnType(ret_dt, SourceType.USER_DEFINED)
-                if cc:
-                    fn.setCallingConvention(cc)
-                impls = [ParameterImpl(f"a{i}", dt, program) for i, dt in enumerate(param_dts)]
-                fn.replaceParameters(
-                    Function.FunctionUpdateType.DYNAMIC_STORAGE_FORMAL_PARAMS, True,
-                    SourceType.USER_DEFINED, *impls)
-            except Exception as exc:  # noqa: BLE001
-                queued.append((addr, claim.name, f"apply_error:{type(exc).__name__}", claim.prototype))
-                _restore(fn, snap)
+            if ret_dt.getLength() > 4 and "*" not in ret_str:
+                queued.append((addr, claim.name, "sret_by_value_return", claim.prototype))
                 continue
+        param_dts = []
+        bad = None
+        for t in param_strs:
+            dt = resolver.resolve(t)
+            if dt is None:
+                bad = t
+                break
+            param_dts.append(dt)
+        if bad is not None:
+            queued.append((addr, claim.name, f"unresolved_param:{bad}", claim.prototype))
+            continue
 
+        if not args.apply:
+            converged.append((addr, claim.name, "would_project", len(param_dts)))
+            continue
+
+        # Per-function transaction: commit on accept, ROLLBACK on reject. Ghidra's
+        # transaction rollback IS the exact-restore mechanism — no hand-rebuilt
+        # signature, so a function classified "reverted" is byte-for-byte its prior
+        # self, including custom storage, and a partial/failed edit cannot leak.
+        ftx = program.startTransaction(f"project 0x{addr:08x}")
+        commit = False
+        reason = None
+        try:
+            if ret_dt is not None:
+                fn.setReturnType(ret_dt, SourceType.USER_DEFINED)
+            fn.setCallingConvention(cc)
+            impls = [ParameterImpl(f"a{i}", dt, program) for i, dt in enumerate(param_dts)]
+            fn.replaceParameters(
+                Function.FunctionUpdateType.DYNAMIC_STORAGE_FORMAL_PARAMS, True,
+                SourceType.USER_DEFINED, *impls)
             ifc.flushCache()
             after = _decompile_in_stack(ifc, fn, monitor)
-            after = after if after is not None else before
-            original_still = sorted(before & after)   # originally-flagged offsets left unbound
-            if original_still:
-                # The projection did not bind the missing-parameter offsets it was
-                # meant to — the frame is DYNAMIC_STORAGE-insoluble (packed sub-dword
-                # args, sret, or a wrong boundary). Revert to the exact prior
-                # signature and queue: keeping a signature that didn't help is worse
-                # than an honest classification.
-                _restore(fn, snap)
-                queued.append((addr, claim.name,
-                               "dynamic_storage_insufficient:" + ",".join(hex(o) for o in original_still),
-                               claim.prototype))
-            elif after:
-                # Every originally-flagged offset is now bound (the parameters are
-                # correct), but a residual in_stack remains at a DIFFERENT offset —
-                # a sub-dword read inside an already-bound param slot, or a spurious
-                # local. KEEP the (correct) parameter binding — reverting it would
-                # restore a weaker signature — but log the residual so the queue
-                # still accounts for every function that decompiles with in_stack.
-                applied += 1
-                queued.append((addr, claim.name,
-                               "params_bound_residual:" + ",".join(hex(o) for o in sorted(after)),
-                               claim.prototype))
-            else:
-                converged.append((addr, claim.name, "projected", len(param_dts)))
-                applied += 1
+            commit, reason = _classify_projection(before, after)
+        except Exception as exc:  # noqa: BLE001
+            commit, reason = False, f"apply_error:{type(exc).__name__}"
+        finally:
+            program.endTransaction(ftx, commit)  # commit=False => exact DB rollback
 
-        if args.apply and txid is not None:
-            program.endTransaction(txid, True)
-            txid = None
-            program.save("apply source signatures", pyghidra.task_monitor())
-    finally:
-        if txid is not None:
-            program.endTransaction(txid, False)
+        if commit and reason is None:
+            converged.append((addr, claim.name, "projected", len(param_dts)))
+            applied += 1
+        elif commit:  # params_bound_residual — kept, but logged
+            applied += 1
+            queued.append((addr, claim.name, reason, claim.prototype))
+        else:
+            queued.append((addr, claim.name, reason, claim.prototype))
+
+    if args.apply:
+        program.save("apply source signatures", pyghidra.task_monitor())
 
     return converged, queued, applied
-
-
-def _restore(fn, snap):
-    """Return a non-converged function to its EXACT pre-projection signature.
-
-    Must fully undo the projection — including the convention, even when the
-    original was `unknown`/empty (we set a default one during the attempt). A
-    partial restore would leave a residual mutation on a function we report as
-    reverted. Convention is set BEFORE params so DYNAMIC_STORAGE re-derives the
-    original storage under the original convention.
-    """
-    from ghidra.program.model.listing import Function, ParameterImpl
-    from ghidra.program.model.symbol import SourceType
-    try:
-        fn.setReturnType(snap["ret"], SourceType.USER_DEFINED)
-        try:
-            fn.setCallingConvention(snap["cc"] or Function.UNKNOWN_CALLING_CONVENTION_STRING)
-        except Exception:  # noqa: BLE001
-            pass
-        impls = [ParameterImpl(n, dt, fn.getProgram()) for n, dt, _st in snap["params"]
-                 if n != "this"]
-        fn.replaceParameters(
-            Function.FunctionUpdateType.DYNAMIC_STORAGE_FORMAL_PARAMS, True,
-            SourceType.USER_DEFINED, *impls)
-    except Exception:  # noqa: BLE001
-        pass
 
 
 def main() -> int:
@@ -504,10 +534,11 @@ def main() -> int:
     print(f"  queue -> {out}")
     print("  queued by reason: " + ", ".join(f"{k}={v}" for k, v in sorted(reasons.items())))
     if args.strict and queued:
-        # Strict gate: only unexplained (unparsable / apply_error) rows fail; the
-        # classified sub-categories (sret, packed, unknown_cc, unresolved) are the
+        # Strict gate: only the "could not verify / errored" reasons fail
+        # (_HARD_FAIL_REASONS). The classified structural sub-categories (sret,
+        # packed, unresolved, params_bound_residual, missing_function) are the
         # honest queue, not failures.
-        hard = [q for q in queued if q[2].split(":", 1)[0] in ("unparsable_prototype", "apply_error")]
+        hard = [q for q in queued if q[2].split(":", 1)[0] in _HARD_FAIL_REASONS]
         if hard:
             print(f"strict: {len(hard)} unexplained projection failure(s):")
             for a, n, r, _ in hard[:10]:
