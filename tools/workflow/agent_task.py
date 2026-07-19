@@ -123,7 +123,7 @@ def _ownership_row(addr: str, source: str = "") -> dict:
         path = first.split(":", 1)[1] if ":" in first else first
         return {"address": format(addr_int, "x"), "target_cpp": path,
                 "ownership": "manual", "note": f"marker in {source}"}
-    from tools.source_index import ownership_kind, ownership_view
+    from tools.source_model import ownership_kind, ownership_view
 
     claim = ownership_view(REPO_ROOT).get(addr_int)
     if claim is None:
@@ -416,16 +416,8 @@ def cmd_check(args: argparse.Namespace) -> int:
     failures: list[str] = []
 
     # Generated build inputs are disposable — always regenerate (cheap, no
-    # committed churn). Hand-edits to the remaining tool-owned config still fail.
+    # committed churn; `just generate` also rejects stale legacy generated trees).
     diff_text = _git("diff", base, "--", "src", "include") + "\n" + _git("diff", "--", "src", "include")
-    from tools.workflow.check_generated_integrity import generated_violations
-    violations = generated_violations(base)
-    if violations:
-        print("[agent-check] FAILED: generated paths changed without any marker "
-              "change — never hand-edit these; revert and use the owning tool:")
-        for p in violations[:10]:
-            print(f"  - {p}")
-        return 2
     if _step("generate", ["just", "generate"], results).returncode != 0:
         failures.append("generate")
 

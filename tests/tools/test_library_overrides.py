@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
-"""Tests for the reviewed MSVC500 library-identity override layer.
+"""Tests for the reviewed library-identity layer.
 
-Covers the applier (tools.mfc.apply_library_overrides) and the semantic gate
+Covers the loader (tools.mfc.reviewed_identities), the generation-time overlay
+(tools.generate_symbols), and the exact-consistency gate
 (tools.workflow.check_library_identity), including the rand regression pin.
 """
 
@@ -12,12 +13,7 @@ import unittest
 from pathlib import Path
 
 from tools.generate_symbols import generate
-from tools.mfc.apply_library_overrides import (
-    apply_markers,
-    load_overrides,
-    render_marker_file,
-)
-from tools.mfc.apply_msvc500_library_region import SourceMarker
+from tools.mfc.reviewed_identities import load_overrides
 from tools.workflow.check_library_identity import check_override, prototype_declares_name
 
 RAND_ROW = (
@@ -116,41 +112,6 @@ class ApplySymbolsTests(unittest.TestCase):
                         repo / "gen")
         self.assertEqual(first, out2.read_text(encoding="utf-8"))
 
-
-class ApplyMarkersTests(unittest.TestCase):
-    def setUp(self) -> None:
-        self.tmp = Path(tempfile.mkdtemp())
-        self.overrides = load_overrides(
-            _write(self.tmp / "ov.csv", f"{HEADER}\n{RAND_ROW}\n")
-        )
-        self.marker_path = self.tmp / "library_msvc500_overrides.cpp"
-        self.marker_rel = "src/game/library_msvc500_overrides.cpp"
-
-    def test_adds_marker_when_absent(self) -> None:
-        changes, changed = apply_markers(
-            self.marker_path, self.overrides, {}, marker_rel=self.marker_rel, target="IMPERIALISM"
-        )
-        self.assertTrue(changed)
-        text = self.marker_path.read_text()
-        self.assertIn("// LIBRARY: IMPERIALISM 0x005e83f0", text)
-        self.assertIn("// _rand", text)
-
-    def test_skips_when_library_marker_elsewhere(self) -> None:
-        existing = {0x5E83F0: SourceMarker(kind="LIBRARY", path="src/game/library_msvc500_fid.cpp")}
-        changes, changed = apply_markers(
-            self.marker_path, self.overrides, existing,
-            marker_rel=self.marker_rel, target="IMPERIALISM",
-        )
-        # No new marker file content for this address (metadata-only override).
-        self.assertNotIn("0x005e83f0", self.marker_path.read_text())
-
-    def test_conflict_with_function_marker_raises(self) -> None:
-        existing = {0x5E83F0: SourceMarker(kind="FUNCTION", path="src/game/Foo.cpp")}
-        with self.assertRaises(SystemExit):
-            apply_markers(
-                self.marker_path, self.overrides, existing,
-                marker_rel=self.marker_rel, target="IMPERIALISM",
-            )
 
 
 class GateTests(unittest.TestCase):

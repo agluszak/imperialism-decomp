@@ -3,7 +3,7 @@
 
 Stubs are disposable build inputs, not source: they are regenerated on every
 `just build` from `config/original_entities.csv` minus the addresses claimed by manual
-source markers (via tools.source_index). Nothing under the output directory is
+source markers (via tools.source_model). Nothing under the output directory is
 committed.
 
 Default output: build-msvc500/generated/stubs/ (compiled via CMake's
@@ -21,9 +21,9 @@ import json
 import re
 from pathlib import Path
 
-from tools.common.pipe_csv import read_pipe_rows
 from tools.common.repo import repo_root_from_file, resolve_repo_path
-from tools.source_index import claimed_addresses
+from tools.generate_symbols import generate_rows
+from tools.source_model import build_model
 
 DEFAULT_OUTPUT_DIR = "build-msvc500/generated/stubs"
 
@@ -151,20 +151,20 @@ def compute_stub_rows(
     target: str = "IMPERIALISM",
     symbols_csv: str = "config/original_entities.csv",
 ) -> list[tuple[int, str, str]]:
-    """The stub set: symbols function-kind rows minus source-claimed addresses.
+    """The stub set: generated-symbol function rows minus source-claimed addresses.
 
-    Claims come from manual-source markers, scanned directly — no sync step and
-    no ownership ledger. Shared by stub generation and the stub-count gate so the
-    gate can never disagree with what generation would emit.
+    Both inputs come from the central source model (tools.source_model) and the
+    generated overlay (tools.generate_symbols) — one implementation, so the
+    stub-count gate can never disagree with what generation would emit.
     """
-    csv_path = resolve_repo_path(repo_root, symbols_csv)
-    if not csv_path.is_file():
-        raise SystemExit("Missing symbols CSV: {}".format(csv_path))
-
-    claimed = claimed_addresses(repo_root, target)
+    model = build_model(repo_root, target)
+    claimed = set(model.functions)
+    _fields, overlay_rows, _stats = generate_rows(
+        repo_root, target, inventory=symbols_csv, model=model
+    )
 
     rows: list[tuple[int, str, str]] = []
-    for row in read_pipe_rows(csv_path):
+    for row in overlay_rows:
         row_type = (row.get("type") or "").strip().lower()
         if row_type not in STUBBED_ROW_TYPES:
             continue

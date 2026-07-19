@@ -84,7 +84,7 @@ def msg_name(msg: int) -> str:
 def load_ownership() -> dict[int, str]:
     from pathlib import Path
 
-    from tools.source_index import ownership_view
+    from tools.source_model import ownership_view
 
     return {a: c.file for a, c in ownership_view(Path.cwd()).items()}
 

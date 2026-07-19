@@ -41,6 +41,6 @@ def functions_by_name(repo_root: Path) -> dict[str, tuple[int, int]]:
 
 def ownership_by_address(repo_root: Path) -> dict[int, str]:
     """address -> ownership ('manual'/'library') derived from source markers."""
-    from tools.source_index import ownership_kind, ownership_view
+    from tools.source_model import ownership_kind, ownership_view
 
     return {a: ownership_kind(c.kind) for a, c in ownership_view(repo_root).items()}

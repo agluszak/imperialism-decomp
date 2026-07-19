@@ -472,7 +472,7 @@ def main() -> int:
         print("[warn] no class anchor addresses found in symbols.csv")
     excluded_manual_addresses: set[int] = set()
     if not args.include_owned_candidates:
-        from tools.source_index import claimed_addresses
+        from tools.source_model import claimed_addresses
 
         excluded_manual_addresses = claimed_addresses(project_root, "IMPERIALISM")
         print(

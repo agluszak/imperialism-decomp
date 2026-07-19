@@ -40,16 +40,14 @@ The **reviewed override layer** fixes such rows durably:
 - Add a row to `config/reviewed_library_identities.csv`
   (`address|name|symbol|prototype|library_family|object_member|evidence`) — the ONE
   reviewed identity table (hand overrides + accepted object-matcher results).
-- `just apply-library-overrides` (idempotent) ensures a `// LIBRARY:` marker (in
-  `library_msvc500_overrides.cpp`); the name/symbol/prototype projection happens as
-  a generation-time overlay (tools/generate_symbols.py) so
-  ownership derives from the markers directly. It only adds a marker where none
-  exists, so prototype-only corrections on already-owned FID rows don't duplicate.
+- Every reviewed row IS a LIBRARY claim in the central source model — no marker
+  file, no applier. The generation-time overlay (tools/generate_symbols.py)
+  projects name/symbol/prototype into the generated symbols table.
 - Precedence: **reviewed override > FID > existing curated > provisional Ghidra**.
   The FID apply defers override addresses, so a manual FID re-run can't clobber them.
-- `just library-identity-gate` (in `just gates`) pins every reviewed row into the
-  generated overlay + a LIBRARY marker — regressing rand back to a descriptive
-  name fails the gate.
+- `just library-identity-gate` (in `just gates`) requires every reviewed row to
+  project EXACTLY (no count baseline; git history records intentional removals) —
+  regressing rand back to a descriptive name fails the gate.
 
 **Before behaviourally naming any MSVC/MFC-range or CRT-shaped function, run
 `just library-identify 0xADDR`.** It aggregates symbols/ownership/override/FID/oracle
@@ -68,10 +66,8 @@ confident identity regardless of where the linker placed anything. Output:
 `address|name|symbol|prototype|library|member|match_kind|confidence|candidate_count`).
 Accepting a match = copying it into `config/reviewed_library_identities.csv`.
 
-`just apply-library-oracle` (idempotent) projects the
-confident, unique matches: it **upgrades the exact decorated `symbol` + prototype**
-on already-library rows, and **converts unowned FID-missed functions** (in the dense
-range, large enough, invented name unreferenced in source) to library ownership.
+Accepting a confident unique match = adding its row to
+`config/reviewed_library_identities.csv` (the model + overlay do the rest).
 Guards that keep it safe:
 - Bodies shared across multiple executable addresses (empty ctors/dtors, trivial
   thunks) are demoted to `duplicate-body/review` — byte matching can't disambiguate
@@ -154,5 +150,5 @@ dense range).
 `ghidra-apply-source --apply` writes source-derived names into the DB
 before the export so names stop churning. Unpushable names (backticks/spaces,
 e.g. `` CFrameWnd::`scalar deleting dtor' ``) are counted as skipped, not errors.
-Durable renames go in `config/function_name_overrides.csv` — never hand-edit the
+Durable renames go in manual source (the model derives everything) — never hand-edit the
 export output. The overrides table is retired; original_entities.csv is the single store.

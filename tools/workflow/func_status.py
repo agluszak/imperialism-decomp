@@ -61,7 +61,7 @@ def main() -> int:
 
     warn_if_baseline_stale(REPO_ROOT)
 
-    from tools.source_index import ownership_kind, ownership_view
+    from tools.source_model import ownership_kind, ownership_view
 
     symbols = _index_by_address(SYMBOLS_CSV)
     ownership = {

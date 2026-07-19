@@ -201,7 +201,7 @@ the same string if no better display name exists.
    - `symbol`: exact FID/decorated linker name when available.
    - `name`: friendly display/match name.
    - `type`: keep the existing `function` value; library ownership is represented by
-     `// LIBRARY` markers and `config/function_ownership.csv`.
+     `// LIBRARY` markers / reviewed library identities (the model).
 3. Preserve existing source-curated `name` values for library rows when they are
    friendlier than the FID decorated name.
 4. Keep pushing friendly names to Ghidra, not decorated names, unless the decorated

@@ -146,7 +146,7 @@ def _is_ilt_addr(addr: str) -> bool:
 
 def _ilt_target_is_claimed(repo_root: Path, ilt_addr: str) -> bool:
     """True when the ILT thunk address is claimed by a source marker."""
-    from tools.source_index import claimed_addresses
+    from tools.source_model import claimed_addresses
 
     return int(normalize_hex(ilt_addr), 16) in claimed_addresses(repo_root, "IMPERIALISM")
 

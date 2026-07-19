@@ -25,7 +25,7 @@ from pathlib import Path
 from tools.common.hexutil import parse_hex_address
 from tools.common.pipe_csv import read_pipe_rows
 from tools.common.repo import repo_root_from_file, resolve_repo_path
-from tools.mfc.apply_library_overrides import load_overrides
+from tools.mfc.reviewed_identities import load_overrides
 
 DEFAULT_SYMBOLS = "config/original_entities.csv"
 DEFAULT_OVERRIDES = "config/reviewed_library_identities.csv"
@@ -83,7 +83,7 @@ def main() -> int:
     address = parse_hex_address(args.address)
 
     symbols_row = _row_for_address(resolve_repo_path(repo_root, args.symbols), address)
-    from tools.source_index import ownership_kind, ownership_view
+    from tools.source_model import ownership_kind, ownership_view
 
     claim = ownership_view(repo_root).get(address)
     ownership_row = (

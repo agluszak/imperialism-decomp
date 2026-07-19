@@ -2,11 +2,11 @@ kind|entry|source|note
 module|tools.ghidra.sync_exports|just:refresh-inventory|Wholesale raw-inventory refresh from the DB
 module|tools.ghidra.apply_source|just:ghidra-apply-source|One-way source model -> Ghidra DB
 module|tools.stubgen|just:generate|Generated build-input stubs (build dir)
-module|tools.source_index|just:generate|Source-marker index (build-dir artifact)
+module|tools.source_model|just:generate|The central source model (single scan/parse authority)
 module|tools.generate_symbols|just:generate|Raw-inventory + source overlay -> generated symbols.csv
 module|tools.workflow.annotate_globals_from_symbols|just:annotate-globals|Global annotation pass
-module|tools.workflow.annotate_vtables_from_symbols|just:annotate-vtables|Vtable annotation pass
-module|tools.workflow.annotate_strings_from_symbols|just:annotate-strings|String annotation pass
+module|tools.migrations.annotate_vtables_from_symbols|direct|Vtable annotation pass (completed migration; run via uv)
+module|tools.migrations.annotate_strings_from_symbols|direct|String annotation pass (completed migration; run via uv)
 module|tools.workflow.check_no_raw_vtable_calls|just:vtable-gate|Raw-vtable policy gate
 module|tools.workflow.check_vtable_annotations|just:vtable-annotation-gate|Vtable annotation adjacency gate
 module|tools.workflow.check_vtable_address_collisions|just:vtable-collision-gate|Vtable/data address collision gate
@@ -52,12 +52,11 @@ module|tools.ghidra.dump_message_maps|just:dump-message-maps|Enumerate MFC messa
 module|tools.ghidra.apply_mfc_datatypes|just:apply-mfc-datatypes|Apply MFC datatypes into Ghidra
 module|tools.ghidra.apply_mfc_rtti|just:apply-mfc-rtti|Apply MFC RTTI into Ghidra
 module|tools.ghidra.apply_fidb|just:apply-fidb|Attach/query/apply an MSVC/MFC Function ID database into Ghidra
-module|tools.mfc.apply_msvc500_library_region|just:apply-msvc500-library-region|Generate/apply bounded MSVC500 FID LIBRARY ownership and symbol names
 module|tools.ghidra.datatype_audit|just:ghidra-datatype-audit|Audit Ghidra datatype state
 module|tools.ghidra.restore_project|just:restore-project|Recreate the live Ghidra project from the vendored .gzf
 module|tools.ghidra.export_project|just:export-project|Repack the live Ghidra project into the vendored .gzf
 module|tools.workflow.prune_ilt_thunks|just:prune-ilt-thunks|Prune unannotated ILT jmp thunks from the reccmp report
-module|tools.workflow.mfc_runtime_macros|just:mfc-runtime-macros|Apply MFC runtime macro annotations to recovered classes
+module|tools.migrations.mfc_runtime_macros|direct|Apply MFC runtime macro annotations to recovered classes (completed migration; run via uv)
 module|tools.workflow.pe_resources|just:resource-check|Check rebuilt PE resources for required UI assets
 module|tools.ghidra.class_owner_probe|just:class-owner-probe|Probe likely class owner for an address
 module|tools.ghidra.function_slice|query:function-slice|Read-only Ghidra function slice report (callers/callees/field offsets)
@@ -109,12 +108,9 @@ module|tools.workflow.check_typedef_ghidra_args|just:typedef-args-audit|Typedef-
 module|tools.workflow.gen_compile_commands|just:gen-compile-commands|Rewrite lint compile_commands.json for host clangd
 module|tools.common.reccmp_report|dependency:tools.reccmp.compare_batch|Shared full-report runner (reccmp-reccmp --json, diet or full)
 module|tools.common.symbols|dependency:tools.reccmp.triage|Shared symbols.csv / function_ownership.csv loaders
-module|tools.mfc.apply_library_overrides|just:apply-library-overrides|Project reviewed library-identity overrides onto symbols.csv + LIBRARY markers
 module|tools.mfc.library_identify|just:library-identify|Per-address library-identity diagnostic (symbols/ownership/override/FID/oracle verdict)
 module|tools.workflow.check_library_identity|just:library-identity-gate|Semantic gate: reviewed library overrides applied + ownership=library + ratchet
-module|tools.mfc.apply_library_oracle|just:apply-library-oracle|Project confident oracle matches into symbols.csv + LIBRARY markers (upgrade/convert)
 module|tools.mfc.build_library_oracle|just:build-library-oracle|Relocation-masked object matcher: match exe functions to libcmt/nafxcw COFF members
-module|tools.workflow.check_generated_integrity|just:generated-integrity-gate|No hand-edits under generated dirs (shared with agent-check + CI)
 module|tools.workflow.mfc_collection_audit|just:mfc-collection-audit|Embedded-MFC-collection audit: identity, offsets, block size, duplicate-COMDAT twins
 module|tools.workflow.template_alias_check|just:template-alias-check|Re-verify template_aliases.csv rows: same name + normalized-body equivalence
 module|tools.workflow.template_emission_matrix|just:template-emission-matrix|Template-emission compiler matrix: compile probe TUs per /Ob-TU cell, inventory CList COMDATs

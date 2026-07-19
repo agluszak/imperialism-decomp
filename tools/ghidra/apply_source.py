@@ -5,16 +5,14 @@ The single sanctioned mutation path from the source model into Ghidra (the DB is
 an analysis workspace and downstream projection; nothing flows back
 automatically). It derives everything from the two canonical inputs:
 
-  1. **Source markers** (tools.source_index): every claimed address. For
-     `// FUNCTION:` claims the qualified name is parsed from the C++ definition
-     that follows the marker; `// SYNTHETIC:`/`// TEMPLATE:`/`// LIBRARY:`
-     claims take the name from the convention comment line under the marker.
+  1. **The source model** (tools.source_model — the single scanner/parser):
+     marker claims with names parsed from the C++ declarations, reviewed
+     library identities as LIBRARY claims, `// VTABLE:` classes, and
+     `// GLOBAL:` names.
   2. **The raw inventory** (config/original_entities.csv): fallback advisory
-     names for claimed addresses whose declaration could not be parsed, and for
-     curated-but-unported rows.
-  3. **Reviewed library identities** (config/reviewed_library_identities.csv):
-     reviewed name beats the advisory inventory name (same precedence as the
-     generated symbols overlay).
+     names ONLY for claimed addresses whose source spelling could not be
+     parsed. Unclaimed addresses are never touched — source has no opinion on
+     them, so nothing DB-derived is re-applied to the DB.
 
 Applied to the DB (dry-run by default; --apply writes and saves):
   - function names + class namespaces (decided against the PRIMARY entity —
@@ -35,27 +33,17 @@ from source (repair tool: `just ghidra-rename-class`).
 from __future__ import annotations
 
 import argparse
-import re
-from pathlib import Path
 
 import pyghidra
 
 from tools.common import ghidra_env
 from tools.common.pipe_csv import read_pipe_table
 from tools.common.repo import repo_root_from_file
-from tools.source_index import MarkerClaim, scan_marker_claims
+from tools.source_model import build_model
 
 REPO_ROOT = repo_root_from_file(__file__, levels_up=2)
 INVENTORY = REPO_ROOT / "config" / "original_entities.csv"
 REVIEWED = REPO_ROOT / "config" / "reviewed_library_identities.csv"
-
-_VTABLE_RE = re.compile(r"//\s*VTABLE\s*:\s*(\w+)\s+(?:0x)?([0-9a-fA-F]+)", re.IGNORECASE)
-_CLASS_DECL_RE = re.compile(r"^\s*(?:class|struct)\s+([A-Za-z_]\w*)")
-# Out-of-line definition/declaration head: `Ret Class::Method(...)` or `Ret Name(...)`.
-_DEF_RE = re.compile(
-    r"^[\w:<>*&~\s]*?\b((?:[A-Za-z_]\w*::)+~?[A-Za-z_]\w*|[A-Za-z_]\w*)\s*\("
-)
-_NAME_COMMENT_RE = re.compile(r"^//\s*((?:[A-Za-z_]\w*::)*~?[A-Za-z_]\w*)\s*$")
 
 
 def split_qualified(qualified: str) -> tuple[list[str], str]:
@@ -63,97 +51,16 @@ def split_qualified(qualified: str) -> tuple[list[str], str]:
     return parts[:-1], parts[-1]
 
 
-def name_from_claim(claim: MarkerClaim, lines: list[str]) -> str | None:
-    """Source-derived qualified name for a marker claim, or None if unparsable."""
-    idx = claim.line - 1  # 0-based marker line
-    if claim.kind == "FUNCTION":
-        # The declaration is the next non-empty line (Hard Rule 3).
-        for j in range(idx + 1, min(idx + 3, len(lines))):
-            line = lines[j].strip()
-            if not line:
-                continue
-            m = _DEF_RE.match(line)
-            if m and "::" in m.group(1):
-                return m.group(1)
-            return None
-        return None
-    # SYNTHETIC/TEMPLATE/LIBRARY: convention puts the name (or mangled symbol)
-    # on the comment line directly under the marker. Only plain qualified
-    # identifiers are usable as Ghidra names.
-    if idx + 1 < len(lines):
-        m = _NAME_COMMENT_RE.match(lines[idx + 1].strip())
-        if m:
-            return m.group(1)
-    return None
 
 
-def source_names(repo_root: Path, target: str) -> dict[int, str]:
-    """addr -> qualified name derived from manual source (markers + decls)."""
-    out: dict[int, str] = {}
-    cache: dict[str, list[str]] = {}
-    for claim in scan_marker_claims(repo_root, target):
-        if claim.file not in cache:
-            try:
-                cache[claim.file] = (repo_root / claim.file).read_text(
-                    encoding="utf-8", errors="ignore"
-                ).splitlines()
-            except OSError:
-                cache[claim.file] = []
-        name = name_from_claim(claim, cache[claim.file])
-        if name:
-            out.setdefault(claim.address, name)
-    return out
 
 
-def source_vtables(repo_root: Path, target: str) -> dict[int, str]:
-    """vtable addr -> owning class name, from // VTABLE: annotations."""
-    from tools.common.file_scan import is_generated_source_path, iter_files
-
-    out: dict[int, str] = {}
-    for path in iter_files([str(repo_root / "src"), str(repo_root / "include")]):
-        if is_generated_source_path(path):
-            continue
-        try:
-            lines = path.read_text(encoding="utf-8", errors="ignore").splitlines()
-        except OSError:
-            continue
-        for i, line in enumerate(lines):
-            m = _VTABLE_RE.search(line)
-            if not m or m.group(1).upper() != target.upper():
-                continue
-            addr = int(m.group(2), 16)
-            # The annotated class declaration follows within a few lines.
-            for j in range(i + 1, min(i + 6, len(lines))):
-                cm = _CLASS_DECL_RE.match(lines[j])
-                if cm:
-                    out.setdefault(addr, cm.group(1))
-                    break
-    return out
 
 
-def _names_from(path: Path) -> dict[int, str]:
-    out: dict[int, str] = {}
-    if not path.is_file():
-        return out
-    _fields, rows = read_pipe_table(path)
-    for row in rows:
-        name = (row.get("name") or "").strip()
-        addr_text = (row.get("address") or "").strip()
-        if not name or not addr_text:
-            continue
-        try:
-            out[int(addr_text, 16)] = name
-        except ValueError:
-            continue
-    return out
 
 
-def inventory_names() -> dict[int, str]:
-    return _names_from(INVENTORY)
 
 
-def reviewed_names() -> dict[int, str]:
-    return _names_from(REVIEWED)
 
 
 def parse_args() -> argparse.Namespace:
@@ -167,17 +74,40 @@ def parse_args() -> argparse.Namespace:
 def main() -> int:
     args = parse_args()
 
-    derived = source_names(REPO_ROOT, args.target)
-    vtables = source_vtables(REPO_ROOT, args.target)
-    fallback = inventory_names()
-    reviewed = reviewed_names()
-    # Precedence: source declaration > reviewed identity > inventory advisory.
-    wanted: dict[int, str] = dict(fallback)
-    wanted.update(reviewed)
-    wanted.update(derived)
+    model = build_model(REPO_ROOT, args.target)
+    vtables = model.vtables
+    # Claimed entities only: source spelling when parsed, reviewed name for
+    # reviewed claims, inventory advisory ONLY as fallback for claimed
+    # addresses whose spelling could not be parsed. Unclaimed addresses are
+    # never pushed — the DB's own analysis stands.
+    inventory = {}
+    inv_path = REPO_ROOT / "config" / "original_entities.csv"
+    if inv_path.is_file():
+        _f, inv_rows = read_pipe_table(inv_path)
+        for row in inv_rows:
+            n = (row.get("name") or "").strip()
+            a = (row.get("address") or "").strip()
+            if n and a:
+                try:
+                    inventory[int(a, 16)] = n
+                except ValueError:
+                    pass
+    wanted: dict[int, str] = {}
+    derived = fallback = 0
+    for addr, claim in model.functions.items():
+        if claim.name:
+            wanted[addr] = claim.name
+            derived += 1
+        elif addr in inventory:
+            wanted[addr] = inventory[addr]
+            fallback += 1
+    # Source globals get labels too.
+    for addr, gname in model.globals.items():
+        wanted.setdefault(addr, gname)
     print(
-        f"source-derived names: {len(derived)}; reviewed identities: {len(reviewed)}; "
-        f"inventory fallback: {len(fallback)}; vtable annotations: {len(vtables)}"
+        f"claims: {len(model.functions)} (named from source/reviewed: {derived}, "
+        f"inventory fallback: {fallback}); globals: {len(model.globals)}; "
+        f"vtable annotations: {len(vtables)}"
     )
 
     project = ghidra_env.open_project()
