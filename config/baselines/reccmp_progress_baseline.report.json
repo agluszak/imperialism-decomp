@@ -16958,7 +16958,7 @@
     },
     {
       "address": "0x50b640",
-      "matching": 0.45647058823529413,
+      "matching": 0.47086247086247085,
       "name": "TMacViewMgr::RenderTurnEventPalettePreviewSurfaceAndProgress",
       "type": 1
     },
@@ -38981,7 +38981,7 @@
     },
     {
       "address": "0x6091d9",
-      "matching": 1.0,
+      "matching": 0.9787234042553191,
       "name": "CWnd::OnNotify",
       "type": 1
     },

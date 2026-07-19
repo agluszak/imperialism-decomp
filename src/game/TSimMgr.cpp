@@ -488,7 +488,7 @@ void TSimMgr::RebuildMapContextAndGlobalMapState(int arg1, const char* arg2, int
 
   if (g_bMultiplayerScenarioSetupActive == 0) {
     g_pGlobalMapState->hexNeighborWrapHorizontally20 = static_cast<char>(arg3);
-    g_pGlobalMapState->BuildOrLoadGlobalMapStateForSession(arg2, nullptr);
+    g_pGlobalMapState->BuildOrLoadGlobalMapStateForSession(nullptr, const_cast<char*>(arg2));
   } else {
     g_pGlobalMapState->AllocateAndResetTerrainAndCityScoreTables();
   }
