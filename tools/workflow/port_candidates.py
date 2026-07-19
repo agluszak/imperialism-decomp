@@ -2,7 +2,7 @@
 """Rank porting candidates: the biggest functions that are not yet well matched.
 
 Pure config-file reader (no Ghidra / no build) — instant. Answers "what big, low-scoring
-functions should I port next?" by joining config/symbols.csv (size), the reccmp baseline
+functions should I port next?" by joining config/original_entities.csv (size), the reccmp baseline
 report (per-function match %), and source markers (owned vs stub).
 
 usage:
@@ -27,7 +27,7 @@ from tools.common.pipe_csv import read_pipe_rows
 from tools.common.report_score import effective_matching
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
-SYMBOLS_CSV = REPO_ROOT / "config" / "symbols.csv"
+SYMBOLS_CSV = REPO_ROOT / "config" / "original_entities.csv"
 BASELINE_REPORT = REPO_ROOT / "config" / "reccmp_progress_baseline.report.json"
 
 

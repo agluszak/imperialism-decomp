@@ -15,7 +15,7 @@ from tools.reccmp.symbol_buckets import classify_name, parse_function_symbols, p
 def parse_args() -> argparse.Namespace:
     repo_root = repo_root_from_file(__file__)
     parser = argparse.ArgumentParser()
-    parser.add_argument("--symbols-csv", default=str(repo_root / "config" / "symbols.csv"))
+    parser.add_argument("--symbols-csv", default=str(repo_root / "config" / "original_entities.csv"))
     parser.add_argument(
         "--report-json",
         default=str(repo_root / "build-msvc500" / "reccmp_report.json"),

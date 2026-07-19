@@ -113,7 +113,7 @@ Rules of thumb:
   ```
 - **Classify calling convention** — `ecx_this` (likely `__thiscall`) / `no_ecx`
   (likely `__cdecl`) / `empty` (thunk). Pass addresses or pipe `__cdecl` rows from
-  `config/symbols.csv` to `--stdin`:
+  `config/original_entities.csv` to `--stdin`:
   ```sh
   just scan-cdecl-thiscall 0x004dc540
   ```

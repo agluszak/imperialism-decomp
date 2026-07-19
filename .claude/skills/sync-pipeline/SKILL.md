@@ -1,6 +1,6 @@
 ---
 name: sync-pipeline
-description: Own the derived-artifact pipeline for the Imperialism decomp — symbols.csv, function ownership, generated stubs, name overrides, and the Ghidra DB resync (just generate / sync-ghidra / db-resync). Use when editing markers changes ownership, when running or debugging a resync, when symbols.csv rows look wrong (type flips, junk thunk rows, size clamps), when stubs collide or go missing at link time, or when deciding where a curated name belongs.
+description: Own the derived-artifact pipeline for the Imperialism decomp — the raw entity inventory (original_entities.csv), generated stubs + symbols overlay, and the Ghidra DB resync (just generate / sync-ghidra / db-resync). Use when editing markers changes ownership, when running or debugging a resync, when inventory rows look wrong (type flips, junk thunk rows, size clamps), when stubs collide or go missing at link time, or when deciding where a curated name belongs.
 ---
 
 # Sync pipeline
@@ -13,17 +13,17 @@ mutation ledger + re-run procedure in `docs/ghidra-db-mutations.md`.
 
 | State | Owner (edit this) | Derived (never hand-edit) |
 |---|---|---|
-| Function names/prototypes (curated) | `config/function_name_overrides.csv` | names in symbols.csv, stubs, Ghidra DB |
+| Function names/prototypes (curated) | manual source decls + `config/original_entities.csv` rows | generated symbols.csv, stubs, Ghidra DB |
 | Address ownership / stub suppression | `// FUNCTION:`-family markers in source | (scanned directly at build time — no ledger) |
 | Curated stub suppression w/o marker | ownership rows with a curated note (below) | — |
-| Symbol table for reccmp | Ghidra DB (via `sync-ghidra` merge) | `config/symbols.csv` (curated name/proto/type survive the merge) |
-| Vtable identity | `// VTABLE:` annotation + real inheritance | any symbols.csv row at that address is a bug (merge drops them) |
+| Symbol table for reccmp | `config/original_entities.csv` + source overlay | `build-msvc500/generated/symbols.csv` (disposable; `just generate`) |
+| Vtable identity | `// VTABLE:` annotation + real inheritance | inventory rows at those addresses are dropped by the overlay |
 | Reference decompiles | Ghidra DB | `just seed-function` / sync-ghidra evidence export (build dir, uncommitted) |
-| Linkable stubs | symbols.csv + source markers + ownership | `build-msvc500/generated/stubs/` (build artifact) |
-| Confirmed CRT/MFC library identity (reviewed) | `config/msvc500_library_overrides.csv` | symbols.csv name/symbol/proto + `src/game/library_msvc500_overrides.cpp` marker |
-| CRT/MFC identity (object-matcher oracle) | `libcmt.lib`/`nafxcw.lib` via `just build-library-oracle` | `config/msvc500_library_oracle.csv` + symbols.csv + `src/game/library_msvc500_oracle.cpp` marker |
+| Linkable stubs | original_entities.csv + source markers | `build-msvc500/generated/stubs/` (build artifact) |
+| Confirmed CRT/MFC library identity (reviewed) | `config/msvc500_library_overrides.csv` | inventory name/symbol/proto + `src/game/library_msvc500_overrides.cpp` marker |
+| CRT/MFC identity (object-matcher oracle) | `libcmt.lib`/`nafxcw.lib` via `just build-library-oracle` | `config/msvc500_library_oracle.csv` + inventory + `src/game/library_msvc500_oracle.cpp` marker |
 
-Surgical symbols.csv edits are allowed (deleting junk rows); a full resync
+Surgical inventory edits are allowed (deleting junk rows); a full resync
 re-derives the file, and the merge preserves curated values by address.
 
 ## Library identity (a FID miss is NOT game code)
@@ -40,13 +40,13 @@ The **reviewed override layer** fixes such rows durably:
 - Add a row to `config/msvc500_library_overrides.csv`
   (`address|name|symbol|prototype|library_family|object_member|evidence`).
 - `just apply-library-overrides` (idempotent; runs inside `db-resync`)
-  projects it into symbols.csv (name/symbol/prototype, `provenance=msvc500_library_override`)
+  projects it into the inventory (name/symbol/prototype, `provenance=msvc500_library_override`)
   and ensures a `// LIBRARY:` marker (in `library_msvc500_overrides.cpp`) so
   ownership derives from the markers directly. It only adds a marker where none
   exists, so prototype-only corrections on already-owned FID rows don't duplicate.
 - Precedence: **reviewed override > FID > existing curated > provisional Ghidra**.
   The FID apply defers override addresses, so a manual FID re-run can't clobber them.
-- `just library-identity-gate` (in `just gates`) pins every override into symbols.csv
+- `just library-identity-gate` (in `just gates`) pins every override into the inventory
   + `ownership=library` and ratchets the applied count — regressing rand back to a
   descriptive name fails the gate.
 
@@ -115,7 +115,7 @@ dense range).
 ## Junk taxonomy (what a resync used to re-introduce; now auto-cleaned)
 
 1. **ILT-range rows/entities (0x401000–0x409ab5 jmp table).** ANY reccmp entity
-   at a jmp-thunk address — a DB Function, a symbols.csv `function` row, or even
+   at a jmp-thunk address — a DB Function, an inventory `function` row, or even
    a bare `global` label row — blocks reccmp's thunk auto-resolution and mass-drops
    scores (~400 fns in attempt 1; 238 fns via label rows on 2026-07-02).
    Auto-cleaned by `prune-ilt-db-functions` (DB side, inside sync-ghidra) and
@@ -129,7 +129,7 @@ dense range).
    stubs as labels; the merge preserves a curated `function` row over a bare
    label export row so stubgen keeps emitting the link-required stub. Watch the
    `function types N` count in the merge summary.
-4. **Degenerate sizes.** A symbols.csv `function` row with a tiny `size` (1 byte,
+4. **Degenerate sizes.** An inventory `function` row with a tiny `size` (1 byte,
    or a switch case-body pseudo-function) clamps reccmp's compare window → a
    byte-identical port scores ~0–26%. Fix the DB (remove the degenerate function
    AND its label — a leftover label re-exports as a blocking `global` row) or
@@ -144,7 +144,7 @@ dense range).
 | One fn 100→0 after resync | `size=1`/tiny row clamping the window | see Junk taxonomy #4 |
 | `just vtable` collapses (~all classes) | rows at VTABLE addrs, or scalar-dtor name drift | `vtable-collision-gate` lists them; see quality-control skill #7 |
 | Stubs regenerate at name-paired addresses | ownership row pruned (was `marker_sync`) | re-add with a curated note (`name_paired_no_marker`) — `just stub-count-gate` fails on any stub-count rise, which is the mechanical tell for this trap |
-| Stats show +N original-only globals after resync | junk label rows imported into symbols.csv | prune (ILT auto; islands by hand) |
+| Stats show +N original-only globals after resync | junk label rows imported into the inventory | prune (ILT auto; islands by hand) |
 
 ## Name convergence
 
@@ -152,4 +152,4 @@ dense range).
 before the export so names stop churning. Unpushable names (backticks/spaces,
 e.g. `` CFrameWnd::`scalar deleting dtor' ``) are counted as skipped, not errors.
 Durable renames go in `config/function_name_overrides.csv` — never hand-edit the
-export output; the overrides win in symbols.csv, stubs, and the DB push.
+export output. The overrides table is retired; original_entities.csv is the single store.

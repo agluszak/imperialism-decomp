@@ -405,7 +405,7 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--symbols-csv",
-        default=str(repo_root / "config" / "symbols.csv"),
+        default=str(repo_root / "config" / "original_entities.csv"),
         help="Pipe-delimited symbols.csv used for class anchor addresses.",
     )
     parser.add_argument(

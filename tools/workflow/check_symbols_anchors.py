@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Fail when config/symbols.csv drifts off known-good anchor rows."""
+"""Fail when config/original_entities.csv drifts off known-good anchor rows."""
 
 from __future__ import annotations
 
@@ -14,7 +14,7 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "--symbols-csv",
-        default="config/symbols.csv",
+        default="config/original_entities.csv",
         help="Pipe-delimited symbols table to verify.",
     )
     parser.add_argument(

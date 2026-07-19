@@ -4,7 +4,7 @@
 The turn_event_dialog_factory builders (bd 1uj.51) are long repetitive
 widget-construction sequences that Ghidra's decompiler degenerates on. This tool
 reads the ORIGINAL binary directly, resolves ILT thunks, names call targets from
-config/symbols.csv, extracts the eventCode compare-tree (cmp/je, cmp/jne and
+config/original_entities.csv, extracts the eventCode compare-tree (cmp/je, cmp/jne and
 sub/dec ladders), and prints per-case call sequences with pushed arguments
 (4-char control tags decoded, e.g. 0x57494e44 -> 'WIND').
 

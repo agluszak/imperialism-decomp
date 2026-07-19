@@ -120,7 +120,7 @@ must run before committing either way.
 | State | File | Written by |
 |---|---|---|
 | Curated names/prototypes (top authority) | `config/function_name_overrides.csv` | hand-edited |
-| Exported symbol table (reccmp entity list) | `config/symbols.csv` | `sync-ghidra` (curated names preserved by merge) |
+| Raw entity inventory (reccmp entity list) | `config/original_entities.csv` (advisory names; wholesale refresh) | overlay generated to `build-msvc500/generated/symbols.csv` by `just generate` |
 | Address ownership (stub suppression) | source markers (scanned at build time) | `just generate` (runs inside `just build`) |
 | Provisional names, disassembly ground truth | vendored Ghidra DB | `push-names`, DB-mutating targets (`ghidra-db` group) |
 

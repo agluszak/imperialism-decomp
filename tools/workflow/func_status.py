@@ -2,7 +2,7 @@
 """One-stop status for a function address (no Ghidra / no build — instant).
 
 Joins the four scattered sources you otherwise grep by hand every time you look at a
-function: config/symbols.csv (curated name/size/prototype), source markers
+function: config/original_entities.csv (curated name/size/prototype), source markers
 (marker-derived ownership), the Ghidra evidence export index (the reference body's
 location + export status), and the reccmp baseline report (current match %).
 
@@ -21,7 +21,7 @@ from tools.common.pipe_csv import read_pipe_rows
 from tools.common.report_score import effective_matching
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
-SYMBOLS_CSV = REPO_ROOT / "config" / "symbols.csv"
+SYMBOLS_CSV = REPO_ROOT / "config" / "original_entities.csv"
 AUTOGEN_INDEX = (REPO_ROOT / "build-msvc500" / "evidence" / "ghidra-export"
                  / "src" / "index.csv")
 BASELINE_REPORT = REPO_ROOT / "config" / "reccmp_progress_baseline.report.json"

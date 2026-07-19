@@ -9,7 +9,7 @@ instantiations. Every alias row must carry machine-checkable evidence, which
 this tool re-verifies on each run:
 
 - addresses parse, alias != canonical, no duplicate alias rows;
-- both addresses are known functions in config/symbols.csv;
+- both addresses are known functions in config/original_entities.csv;
 - the normalized instruction structure of alias and canonical is IDENTICAL
   modulo relocations (tools.binary.body_hash) -- same layout, same shape,
   differing only in call targets / EH refs / data addresses.

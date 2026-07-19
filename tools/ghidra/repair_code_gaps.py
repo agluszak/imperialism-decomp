@@ -5,7 +5,7 @@ Candidate function starts come from evidence the binary itself provides:
   1. every `// VTABLE: IMPERIALISM 0xADDR` table's slot dwords, resolved through
      JMP thunk chains (a vtable slot always points at a real function start);
   2. every ILT jmp-thunk target in the 0x401000-0x409ab5 linker table;
-  3. every `function`-typed config/symbols.csv row with no Ghidra function.
+  3. every `function`-typed config/original_entities.csv row with no Ghidra function.
 
 For each candidate inside an executable block that is neither a defined function
 nor inside an existing function's body: disassemble the target first (a raw gap
@@ -150,7 +150,7 @@ def main() -> int:
                 a += 1
 
         # 3) symbols.csv function rows
-        symbols_path = resolve_repo_path(repo_root, "config/symbols.csv")
+        symbols_path = resolve_repo_path(repo_root, "config/original_entities.csv")
         for row in read_pipe_rows(symbols_path):
             if (row.get("type") or "").strip().lower() != "function":
                 continue

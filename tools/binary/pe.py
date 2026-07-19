@@ -87,9 +87,9 @@ class OriginalImage:
 
 
 def load_symbol_names() -> dict[int, str]:
-    """addr -> curated name from config/symbols.csv."""
+    """addr -> curated name from config/original_entities.csv."""
     names: dict[int, str] = {}
-    with open(REPO_ROOT / "config" / "symbols.csv", newline="") as f:
+    with open(REPO_ROOT / "config" / "original_entities.csv", newline="") as f:
         for row in csv.reader(f, delimiter="|"):
             if len(row) >= 2 and row[0] and re.fullmatch(r"[0-9a-fA-F]+", row[0]):
                 names[int(row[0], 16)] = row[1]
@@ -97,9 +97,9 @@ def load_symbol_names() -> dict[int, str]:
 
 
 def load_symbol_sizes() -> dict[int, int]:
-    """addr -> size (bytes) from config/symbols.csv function rows."""
+    """addr -> size (bytes) from config/original_entities.csv function rows."""
     sizes: dict[int, int] = {}
-    with open(REPO_ROOT / "config" / "symbols.csv", newline="") as f:
+    with open(REPO_ROOT / "config" / "original_entities.csv", newline="") as f:
         for row in csv.reader(f, delimiter="|"):
             if (
                 len(row) >= 5

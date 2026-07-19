@@ -132,11 +132,11 @@ local/gitignored and commit only `reccmp-project.yml`.
    `build-msvc500/reccmp-build.yml` is stale/missing (e.g. after `rm -rf build-msvc500/`).
    Run `just detect` to repopulate it, then re-run the reccmp tool.
 7. **`just vtable` shows *all* (or hundreds of) vtables "not matching", each failing at
-   the same slot 0x04** — the scalar-deleting-destructor names in `config/symbols.csv`
+   the same slot 0x04** — the scalar-deleting-destructor names in `config/original_entities.csv`
    drifted from the form the recomp PDB emits. They must read
    `` <Class>::`scalar deleting destructor' `` (backticks, spaces) to pair; a regen can
    rewrite them to `'scalar_deleting_destructor'` or `Destruct<Class>AndMaybeFree`, which
-   never pair. Diff `config/symbols.csv` against the last-good commit and restore the
+   never pair. Diff `config/original_entities.csv` against the last-good commit and restore the
    scalar-dtor name field per address (commit 22efcd3c restored the whole file from its
    parent after the 5b715e03 regen broke 272/272 vtables and dropped 369 aligned funcs).
    The same regen-induced name drift also shows up as a large `just stats` alignment drop.

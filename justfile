@@ -8,7 +8,6 @@ docker_image := "imperialism-msvc500"
 lint_build_dir := "build-clang"
 lint_docker_image := "imperialism-clang-mingw"
 cmake_flags := "-DCMAKE_BUILD_TYPE=RelWithDebInfo -DIMPERIALISM_LINK_MFC=ON -DIMPERIALISM_MATCH_FLAGS_CSV=/Oy,/Ob1"
-name_overrides := "config/function_name_overrides.csv"
 vtable_gate_baseline := "config/vtable_gate_baseline.csv"
 construction_gate_baseline := "config/construction_gate_baseline.csv"
 tgreatpower_gate_baseline := "config/tgreatpower_gate_baseline.csv"
@@ -82,16 +81,16 @@ _require-ghidra-install:
   : "${GHIDRA_INSTALL_DIR:?Set GHIDRA_INSTALL_DIR in .env}"
 
 # ---------------------------------------------------------------------------
-# sync — regenerate derived artifacts (symbols.csv, ownership).
+# sync — regenerate derived artifacts (original_entities.csv).
 # The three canonical playbooks live in docs/workflows.md.
 # ---------------------------------------------------------------------------
 
-# MUTATES: Ghidra DB, config/symbols.csv.
+# MUTATES: Ghidra DB, config/original_entities.csv (wholesale refresh).
 # Push source names into the DB, re-export symbols, prune ILT rows, then gate. The DB
 # is modified (push-names --apply), so `just export-project` must follow before
 # committing — or run `just db-resync` instead. Decompiled reference bodies go to
 # {{build_dir}}/evidence/ghidra-export/ (uncommitted evidence, not source).
-[doc('MUTATES: Ghidra DB, symbols.csv. Re-export pipeline; follow with export-project')]
+[doc('MUTATES: Ghidra DB, original_entities.csv. Re-export pipeline; follow with export-project')]
 [group('sync')]
 sync-ghidra: _require-ghidra-install
   uv run python -m tools.ghidra.daemon stop --quiet
@@ -102,8 +101,7 @@ sync-ghidra: _require-ghidra-install
     --ghidra-install-dir "$GHIDRA_INSTALL_DIR" \
     --ghidra-project-dir "{{GHIDRA_PROJECT_DIR}}" \
     --ghidra-project-name "{{GHIDRA_PROJECT_NAME}}" \
-    --ghidra-program-name "{{GHIDRA_PROGRAM_NAME}}" \
-    --name-overrides "{{name_overrides}}"
+    --ghidra-program-name "{{GHIDRA_PROGRAM_NAME}}"
   just prune-ilt-thunks
   just symbols-anchor-gate
   just symbols-integrity-gate
@@ -136,14 +134,14 @@ db-resync:
 generate:
   @test ! -e src/autogen || { echo "stale src/autogen exists — stubs are build artifacts now (generated into {{build_dir}}/generated/stubs); delete src/autogen to avoid duplicate reccmp markers" >&2; exit 1; }
   uv run python -m tools.source_index --gen-dir "{{build_dir}}/generated"
+  uv run python -m tools.generate_symbols --gen-dir "{{build_dir}}/generated"
   uv run python -m tools.stubgen \
-    --output-dir "{{build_dir}}/generated/stubs" \
-    --name-overrides "{{name_overrides}}"
+    --output-dir "{{build_dir}}/generated/stubs"
 
-# MUTATES: config/symbols.csv.
-# Drop incremental-link `jmp` thunk rows (linker artifacts) from config/symbols.csv.
+# MUTATES: config/original_entities.csv.
+# Drop incremental-link `jmp` thunk rows (linker artifacts) from config/original_entities.csv.
 # reccmp auto-detects unannotated jmp thunks and excludes them from the report.
-[doc('MUTATES: symbols.csv. Drop ILT jmp-thunk function rows (linker artifacts)')]
+[doc('MUTATES: original_entities.csv. Drop ILT jmp-thunk function rows (linker artifacts)')]
 [group('sync')]
 prune-ilt-thunks *args:
   uv run python -m tools.workflow.prune_ilt_thunks {{args}}
@@ -180,8 +178,7 @@ lint flags="":
   uv run python -m tools.stubgen \
     --output-dir "{{lint_build_dir}}/generated/stubs" \
     --chunk-prefix lint_stubs_part \
-    --annotation-kind none \
-    --name-overrides "{{name_overrides}}"
+    --annotation-kind none
   docker run --rm --network none \
     -e CMAKE_FLAGS="{{flags}}" \
     -e LINT=1 \
@@ -699,7 +696,7 @@ ghidra-decomp-check *args: _require-ghidra-install
   uv run python -m tools.ghidra.decomp_check {{args}}
 
 # Classify functions as ecx_this (likely __thiscall) / no_ecx (likely cdecl) / empty (thunk).
-# Pass addresses, or pipe addresses to --stdin (e.g. from config/symbols.csv __cdecl rows).
+# Pass addresses, or pipe addresses to --stdin (e.g. from config/original_entities.csv __cdecl rows).
 # One-shot (NOT daemon-routed): --stdin addresses can't reach the daemon process. Running it
 # evicts a warm daemon; re-warm with `just ghidra-daemon` afterwards.
 [doc('Classify functions: ecx_this (thiscall) / no_ecx (cdecl) / empty (thunk)')]
@@ -764,17 +761,17 @@ push-library-override-names *args: _require-ghidra-install
   uv run python -m tools.ghidra.push_library_override_names {{args}}
 
 # MUTATES: Ghidra DB (with --apply).
-# Mirror ALL curated config/symbols.csv names into the DB (source is authoritative):
+# Mirror ALL curated config/original_entities.csv names into the DB (source is authoritative):
 # game class methods, RTTI/global descriptors, etc. that push-names (overrides-only)
-# never pushes. Run after a resync (symbols.csv final). Dry-run by default.
-[doc('MUTATES: Ghidra DB (--apply). Mirror curated symbols.csv names into the DB')]
+# never pushes. Run after a resync (inventory final). Dry-run by default.
+[doc('MUTATES: Ghidra DB (--apply). Mirror curated inventory names into the DB')]
 [group('ghidra-db')]
 push-source-names *args: _require-ghidra-install
   uv run python -m tools.ghidra.push_source_names_to_ghidra {{args}}
 
 # MUTATES: Ghidra DB (with --apply).
 # Define real functions Ghidra never created (vtable slot targets, ILT jmp
-# targets, symbols.csv rows). Dry-run by default; --apply writes + saves the DB.
+# targets, inventory rows). Dry-run by default; --apply writes + saves the DB.
 # See docs/ghidra-db-mutations.md before applying.
 [doc('MUTATES: Ghidra DB (--apply). Define real functions Ghidra never created')]
 [group('ghidra-db')]
@@ -998,9 +995,9 @@ ilt-ossification-gate-update:
 vtable-annotation-gate:
   uv run python -m tools.workflow.check_vtable_annotations --paths src include
 
-# Ensure no symbols.csv DATA row or `// GLOBAL:` marker collides with a `// VTABLE:`
+# Ensure no inventory DATA row or `// GLOBAL:` marker collides with a `// VTABLE:`
 # address (which would make reccmp drop the vtable entity as a duplicate).
-[doc('No symbols.csv DATA row or // GLOBAL: marker may collide with a // VTABLE: address')]
+[doc('No inventory DATA row or // GLOBAL: marker may collide with a // VTABLE: address')]
 [group('gates')]
 vtable-collision-gate:
   uv run python -m tools.workflow.check_vtable_address_collisions --paths src include
@@ -1010,7 +1007,7 @@ vtable-collision-gate:
 synthetic-gate:
   uv run python -m tools.workflow.check_synthetic_names --paths src include
 
-# Structural integrity of config/symbols.csv: header row exactly at line 1, no
+# Structural integrity of config/original_entities.csv: header row exactly at line 1, no
 # duplicate headers, parseable hex addresses, no duplicate addresses, no two
 # function rows claiming overlapping byte ranges. (Every consumer is a DictReader
 # that silently degrades when the header is misplaced.)
@@ -1274,7 +1271,7 @@ annotate-strings:
 normalize-markers:
   uv run python -m tools.workflow.normalize_reccmp_markers --paths src include --write
 
-# MUTATES: config/symbols.csv + `// SYNTHETIC:` comments (with --apply).
+# MUTATES: config/original_entities.csv + `// SYNTHETIC:` comments (with --apply).
 # Canonicalize scalar-deleting-destructor spellings to the MSVC500-mangled form.
 # Pass --dry-run to preview. `just synthetic-gate` is the mechanical check.
 [doc('MUTATES: symbols.csv + // SYNTHETIC: comments. Canonicalize scalar-dtor spellings')]
@@ -1282,7 +1279,7 @@ normalize-markers:
 correct-scalar-dtors *args:
   uv run python -m tools.workflow.correct_scalar_dtors {{args}}
 
-# MUTATES: config/symbols.csv + stub manifest (with --write).
+# MUTATES: config/original_entities.csv + stub manifest (with --write).
 # Dry-run-first vtable repair planner. Applies only deterministic fixes with --write:
 # manifest slot promotion, scalar-dtor spelling cleanup, and safe ILT thunk pruning.
 [doc('MUTATES (--write): symbols.csv + stub manifest. Dry-run-first vtable repair planner')]
@@ -1300,7 +1297,7 @@ mfc-runtime-macros *args:
 apply-msvc500-library-region *args:
   uv run python -m tools.mfc.apply_msvc500_library_region {{args}}
 
-# MUTATES: config/symbols.csv + src/game/library_msvc500_overrides.cpp.
+# MUTATES: config/original_entities.csv + src/game/library_msvc500_overrides.cpp.
 # Project reviewed library-identity overrides (config/msvc500_library_overrides.csv)
 # onto the derived artifacts. Idempotent; runs inside db-resync.
 # Reviewed overrides win over FID for confirmed CRT/MFC functions FID missed (rand).
@@ -1323,7 +1320,7 @@ library-identify address:
 build-library-oracle *args:
   uv run python -m tools.mfc.build_library_oracle {{args}}
 
-# MUTATES: config/symbols.csv + src/game/library_msvc500_oracle.cpp + review CSV.
+# MUTATES: config/original_entities.csv + src/game/library_msvc500_oracle.cpp + review CSV.
 # Project confident, unique oracle matches into the derived artifacts (upgrade
 # library symbols/prototypes; convert unowned FID-missed CRT/MFC funcs to library).
 # Idempotent; runs inside db-resync. Precedence: override > oracle.

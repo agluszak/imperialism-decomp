@@ -36,10 +36,10 @@ _MARKER_RE = re.compile(r"(?:FUNCTION|STUB|SYNTHETIC|LIBRARY): IMPERIALISM 0x([0
 
 
 def _load_symbols() -> dict[int, tuple[str, str]]:
-  """addr -> (curated name, prototype) from config/symbols.csv."""
+  """addr -> (curated name, prototype) from config/original_entities.csv."""
   table: dict[int, tuple[str, str]] = {}
   try:
-    with open("config/symbols.csv", encoding="utf-8", errors="replace") as fh:
+    with open("config/original_entities.csv", encoding="utf-8", errors="replace") as fh:
       for line in fh:
         parts = line.rstrip("\n").split("|")  # pipe-split-ok: symbols.csv is headerless
         if len(parts) >= 6:

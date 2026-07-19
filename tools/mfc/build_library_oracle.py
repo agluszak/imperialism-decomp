@@ -10,7 +10,7 @@ that linker-assigned addresses don't matter:
   1. Extract every external function from every object member (tools.mfc.coff).
   2. Mask the bytes covered by each function's relocations (call/jmp targets,
      absolute data refs) and trim trailing alignment padding -> a normal form.
-  3. For each executable function (config/symbols.csv), read its bytes, mask at a
+  3. For each executable function (config/original_entities.csv), read its bytes, mask at a
      candidate's relocation offsets, and compare. An exact-size, exact-masked
      match is a confident identity independent of where the linker placed things.
 
@@ -44,7 +44,7 @@ DEFAULT_LIBS = [
     ("libcmt", "vendor/msvc500/lib/libcmt.lib"),
     ("nafxcw", "vendor/msvc500/lib/nafxcw.lib"),
 ]
-DEFAULT_SYMBOLS = "config/symbols.csv"
+DEFAULT_SYMBOLS = "config/original_entities.csv"
 DEFAULT_OUT = "config/msvc500_library_oracle.csv"
 
 # Below this size a full masked match is not discriminative enough to trust

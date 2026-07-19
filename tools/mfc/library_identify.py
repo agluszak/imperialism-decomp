@@ -27,7 +27,7 @@ from tools.common.pipe_csv import read_pipe_rows
 from tools.common.repo import repo_root_from_file, resolve_repo_path
 from tools.mfc.apply_library_overrides import load_overrides
 
-DEFAULT_SYMBOLS = "config/symbols.csv"
+DEFAULT_SYMBOLS = "config/original_entities.csv"
 DEFAULT_OVERRIDES = "config/msvc500_library_overrides.csv"
 DEFAULT_FID_MATCHES = "tmp_decomp/msvc500_fid_matches.csv"
 DEFAULT_ORACLE = "config/msvc500_library_oracle.csv"
