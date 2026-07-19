@@ -1183,6 +1183,12 @@ short g_anCapabilityPriorityRangePairs[53] = {
     55, 56, 60, 56, 60, 56, 60, 61, 65, 61, 65, 66, 70, 66, 70, 0,  0};
 // GLOBAL: IMPERIALISM 0x006a601c
 int DAT_006a601c = 0;
+// GLOBAL: IMPERIALISM 0x006a5fc8
+char g_JoinGameSeedBuffer_006a5fc8[0x20];
+// GLOBAL: IMPERIALISM 0x006a6008
+CString g_JoinGamePlayerNameStaging_006a6008;
+// GLOBAL: IMPERIALISM 0x006a600c
+int g_JoinGamePlayerDataTag_006a600c = 0;
 
 // InitInstance asset-path literals (LoadLanguageResourcesFromIrgFiles,
 // EnsurePictWvDataGobLoadedBySlot).

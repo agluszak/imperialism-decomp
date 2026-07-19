@@ -5,6 +5,7 @@
 
 #include "game/CString.h"
 #include "game/NetMessage.h"
+#include "game/TView.h"
 #include "game/TViewMgr.h"
 #include "game/TWNetSessionManager.h"
 #include "game/global_data_tables.h"
@@ -238,6 +239,16 @@ void TNetMgr::HandleError(int errorCode) {
   }
 }
 
+// FUNCTION: IMPERIALISM 0x005e39a0
+unsigned char
+TNetMgr::ResetRuntimeProtocolOptionsAndRebuildSelectionSource(TView* provider) {
+  for (int index = 0; index < g_WNetSerializedPtrArrayA006a5f10.GetSize(); ++index) {
+    delete static_cast<RuntimeSelectionRecord*>(g_WNetSerializedPtrArrayA006a5f10[index]);
+  }
+  g_WNetSerializedPtrArrayA006a5f10.RemoveAll();
+  return g_NetworkSessionManager006a5f60.RebuildRuntimeSelectionSource(provider);
+}
+
 // FUNCTION: IMPERIALISM 0x005e3a60
 unsigned char TNetMgr::OpenRuntimeSelectionSourceByIndexAndCopyPath(int index, int flag,
                                                                      const char* seed) {
@@ -252,8 +263,60 @@ unsigned char TNetMgr::OpenRuntimeSelectionSourceByIndexAndCopyPath(int index, i
   return result;
 }
 
+// Real IDirectPlay2::EnumPlayers callback for OpenJoinGameRuntimeSelectionAndStartSession:
+// the retail body resolves each enumerated player's role via an unmodeled helper and,
+// for the host player, records its DPID; otherwise poses the localized error dialog.
+// TODO(class-recovery): the role-resolution helper isn't recovered yet.
+static BOOL FAR PASCAL RecordHostPlayerIdDuringEnumeration(DPID dpId, DWORD dwPlayerType,
+                                                           LPCDPNAME lpName, DWORD dwFlags,
+                                                           LPVOID lpContext) {
+  (void)dpId;
+  (void)dwPlayerType;
+  (void)lpName;
+  (void)dwFlags;
+  (void)lpContext;
+  return 0;
+}
+
 // FUNCTION: IMPERIALISM 0x005e3c00
 unsigned char TNetMgr::ReturnTrueRuntimeCredentialFinalizeStub() { return 1; }
+
+// FUNCTION: IMPERIALISM 0x005e3c20
+unsigned char TNetMgr::OpenJoinGameRuntimeSelectionAndStartSession(int selectionTag,
+                                                                    CString* outGameName,
+                                                                    const char* seed) {
+  strncpy(g_JoinGameSeedBuffer_006a5fc8, seed, 0x20);
+  g_JoinGamePlayerNameStaging_006a6008 = *outGameName;
+
+  if (!g_NetworkSessionManager006a5f60.OpenRuntimeSelectionSourceWithUserChoice()) {
+    return 0;
+  }
+  *outGameName = g_JoinGamePlayerNameStaging_006a6008;
+
+  LPSTR shortName = g_JoinGamePlayerNameStaging_006a6008.GetBuffer(1);
+  DPID localPlayerId;
+  unsigned char createResult =
+      g_NetworkSessionManager006a5f60.CreatePlayerAndStoreResult(&localPlayerId, shortName);
+  g_JoinGamePlayerNameStaging_006a6008.ReleaseBuffer(-1);
+  if (!createResult) {
+    return 0;
+  }
+
+  g_NetworkDefaultNationId006a5fc0 = localPlayerId;
+  if (!g_NetworkSessionManager006a5f60.SetLocalPlayerDataAndStoreResult(
+          &g_JoinGamePlayerDataTag_006a600c, sizeof(g_JoinGamePlayerDataTag_006a600c))) {
+    return 0;
+  }
+
+  g_NetworkBroadcastNationId006a5fc4 = 0;
+  long enumResult = g_NetworkSessionManager006a5f60.directPlayInterface04->EnumPlayers(
+      0, RecordHostPlayerIdDuringEnumeration, &g_NetworkSessionManager006a5f60, 0x10);
+  g_NetworkSessionManager006a5f60.lastErrorCode0c = enumResult;
+  if (enumResult < 0) {
+    return 0;
+  }
+  return g_NetworkBroadcastNationId006a5fc4 != 0;
+}
 
 // FUNCTION: IMPERIALISM 0x005e3d40
 unsigned char TNetMgr::Send(NetMessage* message, unsigned char queueOnly) {

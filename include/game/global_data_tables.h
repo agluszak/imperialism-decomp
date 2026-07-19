@@ -381,6 +381,15 @@ extern TMultiplayerMgr* g_pGameFlowState;
 extern int g_NetworkDefaultNationId006a5fc0;
 extern int g_NetworkBroadcastNationId006a5fc4;
 extern int DAT_006a601c;
+// Seed-text buffer for TNetMgr::OpenJoinGameRuntimeSelectionAndStartSession's
+// strncpy'd "seed" argument.
+extern char g_JoinGameSeedBuffer_006a5fc8[0x20];
+// Staging CString round-tripped through the local player's DPNAME during
+// OpenJoinGameRuntimeSelectionAndStartSession.
+extern CString g_JoinGamePlayerNameStaging_006a6008;
+// 4-byte SetPlayerData payload written for the local player after CreatePlayer
+// succeeds; never observed read back anywhere in the binary.
+extern int g_JoinGamePlayerDataTag_006a600c;
 // City-order capability rule-table pointer slots written into TTechMgr+0x264 as tech
 // unlocks are applied (default at construction, alternates for tech ids 0x0b/0x16).
 // 26 (start, end) capability-priority range pairs (see the .cpp note).

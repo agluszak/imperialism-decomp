@@ -14,6 +14,18 @@ static BOOL FAR PASCAL ForwardEnumSessionToCallbackTable(LPGUID sessionGuid, LPS
                                                  minorVersion);
 }
 
+// FUNCTION: IMPERIALISM 0x0047fcb0
+unsigned char TWNetSessionManager::CreatePlayerAndStoreResult(LPDPID idOut, LPSTR shortName) {
+  DPNAME name;
+  name.dwSize = sizeof(DPNAME);
+  name.dwFlags = 0;
+  name.lpszShortNameA = shortName;
+  name.lpszLongNameA = 0;
+  long createResult = directPlayInterface04->CreatePlayer(idOut, &name, 0, 0, 0, 0);
+  lastErrorCode0c = createResult;
+  return createResult >= 0;
+}
+
 // FUNCTION: IMPERIALISM 0x0047fd30
 unsigned char TWNetSessionManager::DestroyPlayerAndStoreResult(DWORD idPlayer) {
   long destroyResult = this->directPlayInterface04->DestroyPlayer(idPlayer);
@@ -26,6 +38,15 @@ static void ClearRuntimeSelectionRecordArray() {
     delete g_RuntimeSelectionRecords006a15e0[index];
   }
   g_RuntimeSelectionRecords006a15e0.RemoveAll();
+}
+
+// FUNCTION: IMPERIALISM 0x0047fd90
+unsigned char TWNetSessionManager::RebuildRuntimeSelectionSource(TView* provider) {
+  (void)provider;
+  // TODO(class-recovery): re-enumerates DirectPlay service providers into
+  // g_WNetSerializedPtrArrayA006a5f10 -- same unmodeled enumeration territory as
+  // OpenRuntimeSelectionSourceWithUserChoice.
+  return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x0047fe50
@@ -70,6 +91,15 @@ unsigned char TWNetSessionManager::OpenRuntimeSelectionSourceWithOptionalSeed(
 
   ClearRuntimeSelectionRecordArray();
   return static_cast<unsigned char>(lastErrorCode0c >= 0);
+}
+
+// FUNCTION: IMPERIALISM 0x00480150
+unsigned char TWNetSessionManager::OpenRuntimeSelectionSourceWithUserChoice() {
+  // TODO(class-recovery): the retail body drives enumCallbackTable00 (see its
+  // comment -- no writer located yet) plus AfxGetMainWnd()-backed message-box
+  // progress UI and IDirectPlay2::EnumSessions. Ported as an honest stub rather
+  // than guessed until that table's owner is recovered.
+  return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x00480400
@@ -143,4 +173,11 @@ int TWNetSessionManager::TryReceiveNetworkPacketIntoResizableBuffer(DWORD* fromI
     return 0;
   }
   return receiveResult >= 0;
+}
+
+// FUNCTION: IMPERIALISM 0x00480990
+unsigned char TWNetSessionManager::SetLocalPlayerDataAndStoreResult(LPVOID data, DWORD size) {
+  long setResult = directPlayInterface04->SetPlayerData(localPlayerId60, data, size, DPSET_LOCAL);
+  lastErrorCode0c = setResult;
+  return setResult >= 0;
 }
