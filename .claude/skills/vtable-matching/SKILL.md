@@ -97,7 +97,7 @@ comparison reads the freshly built `Imperialism.exe`/`.pdb`.
 - Slot correctness is body-independent — promote real functions with honest bodies, do
   not fabricate code to chase the slot (AGENTS rules 6 & 11).
 - Keep `config/original_entities.csv` edits surgical; it is wholesale-replaced by `just refresh-inventory`, so
-  durable renames belong in Ghidra / `config/function_name_overrides.csv`.
+  durable renames belong in manual source (ghidra-apply-source projects them).
 - Model real virtuals/overrides, not `VCall_*` facades or `__thiscall` reinterpret_casts,
   when occupying a slot (the calling-convention guardrail in `AGENTS.md`).
 

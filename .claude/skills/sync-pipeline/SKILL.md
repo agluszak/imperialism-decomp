@@ -150,5 +150,5 @@ dense range).
 `ghidra-apply-source --apply` writes source-derived names into the DB
 before the export so names stop churning. Unpushable names (backticks/spaces,
 e.g. `` CFrameWnd::`scalar deleting dtor' ``) are counted as skipped, not errors.
-Durable renames go in `config/function_name_overrides.csv` — never hand-edit the
+Durable renames go in manual source (the model derives everything) — never hand-edit the
 export output. The overrides table is retired; original_entities.csv is the single store.

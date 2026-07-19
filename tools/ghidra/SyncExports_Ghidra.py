@@ -628,12 +628,16 @@ types_dir = require_nonempty(get_arg(3, None), "types_output_dir")
 max_per_file = int(get_arg(4, str(DEFAULT_MAX_FUNCTIONS_PER_FILE)))
 expected_version = get_arg(5, DEFAULT_EXPECTED_GHIDRA_VERSION)
 expected_release = get_arg(6, DEFAULT_EXPECTED_GHIDRA_RELEASE)
+export_mode = get_arg(7, "full")  # full | inventory-only
 
 enforce_ghidra_version(expected_version, expected_release)
 
 export_user_symbols(symbols_txt)
 export_reccmp_csv(symbols_csv)
-export_decompiled_bodies(decomp_dir, max_per_file)
-export_type_headers(types_dir)
+if export_mode != "inventory-only":
+    export_decompiled_bodies(decomp_dir, max_per_file)
+    export_type_headers(types_dir)
+else:
+    print("inventory-only export: skipped decompiled bodies and type headers.")
 
 print("Unified export finished.")

@@ -62,6 +62,15 @@ def parse_args() -> argparse.Namespace:
         help="Output directory for split datatype headers",
     )
     parser.add_argument(
+        "--inventory-only",
+        action="store_true",
+        help=(
+            "Export only symbols.ghidra.txt + original_entities.csv (the raw "
+            "inventory); skip the expensive decompiled-body and type-header "
+            "evidence snapshot."
+        ),
+    )
+    parser.add_argument(
         "--decomp-max-functions-per-file",
         type=int,
         default=None,
@@ -142,6 +151,7 @@ def main() -> int:
             str(max_per_file),
             expected_version,
             expected_release,
+            "inventory-only" if args.inventory_only else "full",
         ]
 
         pyghidra.start(install_dir=ghidra_install_dir)

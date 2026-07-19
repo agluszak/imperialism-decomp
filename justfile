@@ -6,7 +6,6 @@ target := "IMPERIALISM"
 build_dir := "build-msvc500"
 docker_image := "imperialism-msvc500"
 lint_build_dir := "build-clang"
-lint_docker_image := "imperialism-clang-mingw"
 cmake_flags := "-DCMAKE_BUILD_TYPE=RelWithDebInfo -DIMPERIALISM_LINK_MFC=ON -DIMPERIALISM_MATCH_FLAGS_CSV=/Oy,/Ob1"
 vtable_gate_baseline := "config/baselines/vtable_gate_baseline.csv"
 construction_gate_baseline := "config/baselines/construction_gate_baseline.csv"
@@ -30,7 +29,6 @@ macos_dump := env_var_or_default("MACOS_IMPERIALISM_DUMP", "")
 macos_workspace := env_var_or_default("MACOS_CODEWARRIOR_WORKSPACE", justfile_directory() / "vendor/macos_codewarrior")
 
 # Transitional aliases for renamed targets (see docs/workflows.md).
-alias stats-commit := stats-baseline-update
 
 default:
   @just --list
@@ -118,11 +116,24 @@ refresh-inventory: _require-ghidra-install
   uv run python -m tools.ghidra.daemon stop --quiet
   just prune-ilt-db-functions --apply --quiet
   uv run python -m tools.ghidra.sync_exports \
+    --inventory-only \
     --ghidra-install-dir "$GHIDRA_INSTALL_DIR" \
     --ghidra-project-dir "{{GHIDRA_PROJECT_DIR}}" \
     --ghidra-project-name "{{GHIDRA_PROJECT_NAME}}" \
     --ghidra-program-name "{{GHIDRA_PROGRAM_NAME}}"
   just prune-ilt-thunks
+
+# Optional full Ghidra evidence snapshot (decompiled bodies + type headers) into
+# {{build_dir}}/evidence/ghidra-export/. Read-only over committed state.
+[doc('Full decompile/type evidence snapshot into build evidence (read-only, slow)')]
+[group('ghidra-inspect')]
+export-ghidra-evidence: _require-ghidra-install
+  uv run python -m tools.ghidra.daemon stop --quiet
+  uv run python -m tools.ghidra.sync_exports \
+    --ghidra-install-dir "$GHIDRA_INSTALL_DIR" \
+    --ghidra-project-dir "{{GHIDRA_PROJECT_DIR}}" \
+    --ghidra-project-name "{{GHIDRA_PROJECT_NAME}}" \
+    --ghidra-program-name "{{GHIDRA_PROGRAM_NAME}}"
   just symbols-anchor-gate
   just symbols-integrity-gate
   just vtable-collision-gate
@@ -134,7 +145,7 @@ refresh-inventory: _require-ghidra-install
 [doc('Generate build inputs (source index + stubs) into build-msvc500/generated')]
 [group('build')]
 generate:
-  @test ! -e src/autogen || { echo "stale src/autogen exists — stubs are build artifacts now (generated into {{build_dir}}/generated/stubs); delete src/autogen to avoid duplicate reccmp markers" >&2; exit 1; }
+  @for d in src/autogen src/ghidra_autogen include/ghidra_autogen; do test ! -e "$d" || { echo "stale $d exists — generated trees live in the build dir now; delete it to avoid stale-scan corruption" >&2; exit 1; }; done
   uv run python -m tools.source_model --gen-dir "{{build_dir}}/generated"
   uv run python -m tools.generate_symbols --gen-dir "{{build_dir}}/generated"
   uv run python -m tools.stubgen \
@@ -801,6 +812,7 @@ apply-fidb *args: _require-ghidra-install
 # function/label names, so a datatype-level junk name survives it). Dry-run by default.
 #   just ghidra-rename-class TSoundChannelNode TLongintList --vtable 0x650a08 [--apply]
 [doc('MUTATES: Ghidra DB (--apply). Atomically rename a class: namespace+datatypes+vtable')]
+[private]
 [group('ghidra-db')]
 ghidra-rename-class old new *args: _require-ghidra-install
   uv run python -m tools.ghidra.rename_class {{old}} {{new}} {{args}}
@@ -809,17 +821,20 @@ ghidra-rename-class old new *args: _require-ghidra-install
 # Name + expand a class's <Class>Vtbl struct from its recovered header slot map so
 # virtual dispatches through that class decompile as obj->vftable->Method(...).
 [doc('MUTATES: Ghidra DB (--apply). Name + expand the <Class>Vtbl struct slots')]
+[private]
 [group('ghidra-db')]
 name-vtable-slots *args: _require-ghidra-install
   uv run python -m tools.ghidra.name_vtable_slots {{args}}
 
 # MUTATES: Ghidra DB (with --apply).
+[private]
 [group('ghidra-db')]
 propagate-virtual-method-names *args: _require-ghidra-install
   uv run python -m tools.ghidra.propagate_virtual_method_names {{args}}
 
 # MUTATES: Ghidra DB.
 # Import source annotations into the Ghidra DB via reccmp-ghidra-import.
+[private]
 [group('ghidra-db')]
 import-ghidra *args: _require-ghidra-install
   file_in_project="{{GHIDRA_PROGRAM_NAME}}"; \
@@ -853,7 +868,6 @@ precommit:
 [group('gates')]
 gates:
   just source-gates
-  just generated-integrity-gate
   just vtable
   just datacmp-gate
   just decomplint
@@ -1089,14 +1103,6 @@ boundary-gate:
 agent-rules-gate:
   uv run python -m tools.workflow.check_agent_rules
 
-# Legacy generated dirs (src/autogen, src/ghidra_autogen, include/ghidra_autogen)
-# may only change alongside marker/curated-input changes that justify
-# regeneration — never by hand (Hard Rule 7). agent-check applies the same rule
-# locally; CI runs it with --no-worktree against the merge base.
-[group('gates')]
-generated-integrity-gate *args:
-  uv run python -m tools.workflow.check_generated_integrity {{args}}
-
 # The binary-free gate subset CI runs on every PR (no docker/wine/original exe:
 # excludes vtable, datacmp-gate, decomplint, lint). Keep in sync with `gates`.
 [doc('Source-only gate subset (what CI enforces; no built binary needed)')]
@@ -1156,7 +1162,7 @@ format-check *paths:
 # baseline-update — targets that REWRITE committed baselines/configs.
 # ---------------------------------------------------------------------------
 
-# MUTATES: config/baselines/reccmp_progress_baseline.json. (Was `stats-commit`.)
+# MUTATES: config/baselines/reccmp_progress_baseline.json.
 [group('baseline-update')]
 stats-baseline-update:
   uv run python -m tools.reccmp.progress_stats --target "{{target}}" --build-dir "{{build_dir}}" --detect-recompiled --commit-baseline
@@ -1217,21 +1223,13 @@ generate-ignores:
 # ---------------------------------------------------------------------------
 
 # MUTATES: source files under src/game + include/game.
+[private]
 [group('rewrite')]
 annotate-globals:
   uv run python -m tools.workflow.annotate_globals_from_symbols --paths src/game include/game --write
 
-# MUTATES: headers under include/game.
-[group('rewrite')]
-annotate-vtables:
-  uv run python -m tools.workflow.annotate_vtables_from_symbols --paths include/game --write
-
-# MUTATES: source files under src/game + include/game.
-[group('rewrite')]
-annotate-strings:
-  uv run python -m tools.workflow.annotate_strings_from_symbols --paths src/game include/game --write
-
 # MUTATES: reccmp markers in src/ + include/.
+[private]
 [group('rewrite')]
 normalize-markers:
   uv run python -m tools.workflow.normalize_reccmp_markers --paths src include --write
@@ -1240,6 +1238,7 @@ normalize-markers:
 # Canonicalize scalar-deleting-destructor spellings to the MSVC500-mangled form.
 # Pass --dry-run to preview. `just synthetic-gate` is the mechanical check.
 [doc('MUTATES: symbols.csv + // SYNTHETIC: comments. Canonicalize scalar-dtor spellings')]
+[private]
 [group('rewrite')]
 correct-scalar-dtors *args:
   uv run python -m tools.workflow.correct_scalar_dtors {{args}}
@@ -1251,11 +1250,6 @@ correct-scalar-dtors *args:
 [group('rewrite')]
 vtable-autofix *args:
   uv run python -m tools.workflow.vtable_autofix {{args}}
-
-# MUTATES: source + symbols.csv (with --apply); claims via SYNTHETIC markers.
-[group('rewrite')]
-mfc-runtime-macros *args:
-  uv run python -m tools.workflow.mfc_runtime_macros {{args}}
 
 # Diagnostic: aggregate every identity signal for one address (symbols, ownership,
 # reviewed override, cached FID match, object-matcher oracle) into a verdict.
@@ -1314,11 +1308,6 @@ mac-evidence-check:
 [group('setup')]
 docker-build:
   docker build --network host -t "{{docker_image}}" -f docker/msvc500/Dockerfile docker/msvc500
-
-# Build the lint image (clang + MinGW-w64 i686). One-time / on Dockerfile change.
-[group('setup')]
-build-lint-image:
-  docker build --network host -t "{{lint_docker_image}}" -f docker/clang-mingw/Dockerfile docker/clang-mingw
 
 [group('setup')]
 bootstrap-reccmp:

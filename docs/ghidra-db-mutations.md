@@ -84,6 +84,21 @@ the wrong order and the import reverted 1642 source names; re-applying restored
 them (primary_exact 6504 -> 8185; 27 residual DuplicateName conflicts from
 pre-existing plain-name labels at the same addresses).
 
+## 2026-07-19 (fourth): model-driven apply + consolidation epilogue (committed)
+
+`ghidra-apply-source` now derives everything from the central source model
+(tools.source_model): claims-only application (no re-push of DB-derived
+inventory names for unclaimed addresses), free-function names first-class
+(the old parser required `::`), 1057 `// GLOBAL:` labels, and reviewed library
+identities as LIBRARY claims. Applied: set_fn=60 (free-function convergence),
+set_label=5, primary_exact=7113, 27 residual duplicate-label conflicts.
+
+The granular source→DB targets (`import-ghidra`, `name-vtable-slots`,
+`propagate-virtual-method-names`, `ghidra-rename-class`) are `[private]` —
+internals/repair tools, not sanctioned workflows. `refresh-inventory` is
+inventory-only (`sync_exports --inventory-only`); the full decompile/type
+snapshot is the separate optional `just export-ghidra-evidence`.
+
 ## Committed mutations (already in the current .gzf, newest first)
 
 From `git log --follow -- vendor/ghidra/exports/Imperialism.gzf`:
