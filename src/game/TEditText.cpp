@@ -49,10 +49,16 @@ void TEditText::CallVoidSlotA0() {
 
 // FUNCTION: IMPERIALISM 0x004906a0
 void TEditText::ApplyRectSlot110(RECT* rectBuffer) {
-  (void)rectBuffer;
-  // The retail body dispatches on DispatchSlot9CToLinkedChildren() to choose between the
-  // live-edit-window path and TStaticText::ApplyRectSlot110(rectBuffer). The dialog-creation
-  // dependency below is still unported, so this body remains incomplete.
+  // The retail body calls DispatchSlot9CToLinkedChildren() (which lazily constructs the
+  // live-edit CWnd into field_94 the first time this control paints) and falls back to
+  // the static text draw only while that CWnd doesn't exist yet. DispatchSlot9CToLinkedChildren
+  // itself is still a stub (pending the real CWnd/dialog-template machinery), so field_94
+  // never gets constructed here -- this always takes the static-text fallback for now, which
+  // is still strictly better than drawing nothing.
+  DispatchSlot9CToLinkedChildren();
+  if (field_94 == nullptr) {
+    TStaticText::ApplyRectSlot110(rectBuffer);
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x004906d0

@@ -5638,7 +5638,7 @@
     },
     {
       "address": "0x4906a0",
-      "matching": 0.16666666666666666,
+      "matching": 0.6666666666666666,
       "name": "TEditText::ApplyRectSlot110",
       "type": 1
     },
@@ -8826,7 +8826,7 @@
     },
     {
       "address": "0x4ac880",
-      "matching": 0.046511627906976744,
+      "matching": 0.64,
       "name": "TGWorldPartView::ApplyRectSlot110",
       "type": 1
     },
@@ -11937,7 +11937,7 @@
     },
     {
       "address": "0x4d1e40",
-      "matching": 0.4,
+      "matching": 1.0,
       "name": "TPlaceCityDialog::ApplyRectSlot110",
       "type": 1
     },
@@ -24884,7 +24884,7 @@
     },
     {
       "address": "0x56f190",
-      "matching": 0.4,
+      "matching": 1.0,
       "name": "TCreditsPicture::ApplyRectSlot110",
       "type": 1
     },
@@ -25742,7 +25742,7 @@
     },
     {
       "address": "0x572d00",
-      "matching": 0.4,
+      "matching": 1.0,
       "name": "TBackgroundPicture::ApplyRectSlot110",
       "type": 1
     },
@@ -25916,7 +25916,7 @@
     },
     {
       "address": "0x573aa0",
-      "matching": 0.4,
+      "matching": 1.0,
       "name": "TSliderPicture::ApplyRectSlot110",
       "type": 1
     },
