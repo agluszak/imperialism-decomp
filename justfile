@@ -98,7 +98,9 @@ ghidra-apply-source *args: _require-ghidra-install
 # Order matters: the PDB import names entities from the generated data sources
 # (inventory names), so the source-declaration name pass must run AFTER it —
 # source names win last.
-[doc('MUTATES: Ghidra DB + vendored .gzf. build -> import -> names -> decl-index -> in_stack/divergent/packed signature projection -> audits -> export')]
+# Class projection runs BEFORE signature projection so the signature projector
+# resolves parameter types against real layouts instead of 1-byte placeholders.
+[doc('MUTATES: Ghidra DB + vendored .gzf. build -> import -> names -> type model -> class projection -> signature projection -> audits -> export')]
 [group('sync')]
 ghidra-apply-source-full:
   just build
@@ -106,6 +108,8 @@ ghidra-apply-source-full:
   just ghidra-apply-source --apply --quiet --strict
   just ghidra-apply-source --quiet --strict
   just clang-decl-index
+  just generate-type-model
+  just apply-class-model --apply
   just apply-source-signatures --apply --strict
   just project-divergent-signatures --apply --strict
   just project-packed-signatures --apply --strict
@@ -890,6 +894,19 @@ layout-oracle *args:
 [group('ghidra-inspect')]
 class-model-audit *args:
   uv run python -m tools.class_model_audit {{args}}
+
+# MUTATES: Ghidra DB (with --apply). Projects the VERIFIED class model into the DB:
+# sized structures replace the 1-byte stubs (references rewrite), game bases are
+# flattened at oracle offsets, MFC bases placed as single components, fields at
+# exact oracle offsets (semantic type only when it matches the oracle size —
+# physical truth wins), vptr at 0 for polymorphic roots. Only audit-verdict
+# verified/no_rtti records project; source_incomplete/source_oversized stay
+# blocked. Single transaction, verify-then-commit.
+[private]
+[group('ghidra-db')]
+apply-class-model *args: _require-ghidra-install
+  uv run python -m tools.ghidra.daemon stop --quiet
+  uv run python -m tools.ghidra.apply_class_model {{args}}
 
 # READ-ONLY structural convergence audit: for EVERY source/reviewed claim (not just
 # functions showing in_stack), compare the expected logical signature (source model +
