@@ -9263,7 +9263,7 @@
     },
     {
       "address": "0x4b4310",
-      "matching": 0.8842105263157894,
+      "matching": 1.0,
       "name": "ComputeAverageWeightWord0TimesTenFromResourceCounts",
       "type": 1
     },
@@ -9401,7 +9401,7 @@
     },
     {
       "address": "0x4b5140",
-      "matching": 0.0,
+      "matching": 1.0,
       "name": "TProductionOrder::ResetCityOrderItemDerivedStateNoop",
       "type": 1
     },
@@ -9473,7 +9473,7 @@
     },
     {
       "address": "0x4b5620",
-      "matching": 0.0,
+      "matching": 1.0,
       "name": "TItemOrder::ResetCityOrderItemDerivedStateNoop",
       "type": 1
     },
@@ -9683,7 +9683,7 @@
     },
     {
       "address": "0x4b6f00",
-      "matching": 0.0,
+      "matching": 1.0,
       "name": "TTrainingOrder::ResetCityOrderItemDerivedStateNoop",
       "type": 1
     },
@@ -9755,7 +9755,7 @@
     },
     {
       "address": "0x4b79f0",
-      "matching": 0.36363636363636365,
+      "matching": 0.42424242424242425,
       "name": "TPowerPlantOrder::CreateObject",
       "type": 1
     },
@@ -9797,7 +9797,7 @@
     },
     {
       "address": "0x4b7c40",
-      "matching": 0.0,
+      "matching": 1.0,
       "name": "TPowerPlantOrder::ResetCityOrderItemDerivedStateNoop",
       "type": 1
     },
@@ -9863,7 +9863,7 @@
     },
     {
       "address": "0x4b80a0",
-      "matching": 0.0,
+      "matching": 1.0,
       "name": "TFoodProcessingOrder::ResetCityOrderItemDerivedStateNoop",
       "type": 1
     },
@@ -9911,7 +9911,7 @@
     },
     {
       "address": "0x4b8420",
-      "matching": 0.0,
+      "matching": 1.0,
       "name": "TPopGrowthOrder::ResetCityOrderItemDerivedStateNoop",
       "type": 1
     },
@@ -12656,7 +12656,7 @@
     },
     {
       "address": "0x4dd430",
-      "matching": 0.5142857142857142,
+      "matching": 0.5714285714285714,
       "name": "TGreatPower::ComputeRemainingDiplomacyAidBudget",
       "type": 1
     },
@@ -12998,7 +12998,7 @@
     },
     {
       "address": "0x4dfd30",
-      "matching": 0.5806451612903226,
+      "matching": 0.5740740740740741,
       "name": "TGreatPower::SetHomeCityTileAndDisplayName",
       "type": 1
     },
@@ -13088,7 +13088,8 @@
     },
     {
       "address": "0x4e0590",
-      "matching": 1.0,
+      "effective": true,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::OrphanRetStub_004d7fa0_88",
       "type": 1
     },
@@ -16673,7 +16674,7 @@
     },
     {
       "address": "0x50bea0",
-      "matching": 0.2044525215810995,
+      "matching": 0.21263062244434347,
       "name": "TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets",
       "type": 1
     },
@@ -17131,7 +17132,7 @@
     },
     {
       "address": "0x5136a0",
-      "matching": 1.0,
+      "matching": 0.8888888888888888,
       "name": "TMapMgr::OrphanLeaf_NoCall_Ins35_005136a0",
       "type": 1
     },
@@ -32400,7 +32401,7 @@
     },
     {
       "address": "0x5bf930",
-      "matching": 0.7411083540115798,
+      "matching": 0.7890818858560794,
       "name": "RefreshSelectedNationOrderCompatibilityInfo",
       "type": 1
     },
