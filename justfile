@@ -111,6 +111,7 @@ ghidra-apply-source-full:
   just project-packed-signatures --apply --strict
   just in-stack-audit
   just structural-signature-audit
+  just datatype-hygiene-audit
   just export-project
 
 # MUTATES: Ghidra DB (prune), config/original_entities.csv (WHOLESALE refresh).
@@ -868,6 +869,17 @@ clang-decl-index *args:
 [group('ghidra-inspect')]
 structural-signature-audit *args: _require-ghidra-install
   uv run python -m tools.ghidra.apply_source_signatures --structural-audit {{args}}
+
+# READ-ONLY datatype-hygiene audit: report by-value uses of OPAQUE (empty/1-byte
+# stub) custom types in source signatures, and flag any already COMMITTED in the DB
+# (a wrong ABI — the projector believed a placeholder's size). `--strict` fails on
+# any committed by-value opaque use. Pointer/reference uses of a stub are fine.
+# The guard the class-model work must drive to zero. Writes
+# build-msvc500/evidence/datatype_hygiene.csv.
+[doc('READ-ONLY: flag by-value uses of empty/1-byte stub types in signatures (no DB write)')]
+[group('ghidra-inspect')]
+datatype-hygiene-audit *args: _require-ghidra-install
+  uv run python -m tools.ghidra.apply_source_signatures --datatype-audit {{args}}
 
 # MUTATES: Ghidra DB (with --apply).
 [private]

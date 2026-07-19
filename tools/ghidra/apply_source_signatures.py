@@ -332,6 +332,16 @@ def _param_type_only(param: str) -> str | None:
     return head       # trailing identifier is the parameter name; drop it
 
 
+# Type-resolution quality, worst-ranked last. Only exact_complete / canonical_alias
+# are SEMANTIC convergence; the pointer grades are ABI-storage only; opaque_by_value
+# and unresolved are non-resolutions the projector must NOT commit.
+_QUALITY_RANK = {
+    "exact_complete": 0, "canonical_alias": 1, "opaque_pointee": 2,
+    "generic_pointer_fallback": 3, "ambiguous_simple_name": 4,
+    "opaque_by_value": 5, "unresolved": 6,
+}
+
+
 class TypeResolver:
     def __init__(self, program):
         self.dtm = program.getDataTypeManager()
@@ -358,6 +368,17 @@ class TypeResolver:
             self._named.setdefault(nm, dt)
             self._name_count[nm] = self._name_count.get(nm, 0) + 1
 
+    @staticmethod
+    def is_opaque(dt) -> bool:
+        """A structure with no fields / <=1 byte — a placeholder that does NOT carry a
+        real layout. Safe behind a pointer (4 bytes regardless), unsafe by value: it
+        would make the projector allocate 1 byte for a real object, or bypass the
+        `size > 4` sret detection on a by-value return."""
+        from ghidra.program.model.data import Structure, Union
+        if isinstance(dt, (Structure, Union)):
+            return dt.getNumComponents() == 0 or dt.getLength() <= 1
+        return False
+
     def resolve(self, text: str):
         """DataType for the C++ type string, or None (see resolve_quality)."""
         return self.resolve_quality(text)[0]
@@ -365,16 +386,19 @@ class TypeResolver:
     def resolve_quality(self, text: str):
         """Return (DataType|None, quality). Quality grades how trustworthy the pick is:
 
-          exact                  — a primitive or a uniquely-named datatype match
-          canonical_alias        — a known MFC/Win32 typedef modelled as its ABI shape
+          exact_complete          — a primitive or a uniquely-named type with a real size
+          canonical_alias         — a known MFC/Win32 typedef modelled as its ABI shape
+          opaque_pointee          — an empty/1-byte stub struct, but used behind */& so
+                                    only its (pointer) storage matters
           generic_pointer_fallback — unresolved pointee typed as void* (ABI-size only)
-          ambiguous_simple_name  — several datatypes share the simple name; first wins
-          unresolved             — a non-pointer type we cannot size at all (None dt)
+          ambiguous_simple_name   — several datatypes share the simple name; first wins
+          unresolved              — cannot resolve/size at all (None dt)
 
-        A pointer's pointee is irrelevant to stack-frame layout, so an unresolved
-        *pointer* still binds at the right slot/size — good enough for ABI storage
-        convergence, but only `exact`/`canonical_alias` count as *semantic*
-        convergence.
+        Only `exact_complete` / `canonical_alias` count as SEMANTIC convergence; the
+        pointer grades count only as ABI-STORAGE convergence. A by-value use of an
+        opaque stub returns (None, 'opaque_by_value') — the projector must NOT allocate
+        a placeholder-sized slot for a real object; it queues instead. (Behind a
+        pointer the same stub is fine.)
         """
         text = text.replace("const", " ").replace("volatile", " ")
         text = re.sub(r"\b(class|struct|union|enum)\b", " ", text).strip()
@@ -383,7 +407,7 @@ class TypeResolver:
             ptr += 1
             text = text[:-1].strip()
         key = text.replace(" ", "").lower()
-        quality = "exact"
+        quality = "exact_complete"
         if key in _POINTER_ALIASES:
             base = self._prim["void"]
             ptr += 1
@@ -394,6 +418,12 @@ class TypeResolver:
             base = self._named.get(text)
             if base is not None and self._name_count.get(text, 1) > 1:
                 quality = "ambiguous_simple_name"
+            if base is not None and self.is_opaque(base):
+                # Empty/1-byte stub: usable only behind a pointer.
+                if ptr > 0:
+                    quality = "opaque_pointee"
+                else:
+                    return None, "opaque_by_value"
             if base is None:
                 if ptr > 0:
                     base = self._prim["void"]  # generic pointer to unknown pointee
@@ -501,9 +531,10 @@ def run(program, args, model):
         if _is_placeholder_return(ret_str):
             ret_dt = None
         else:
-            ret_dt = resolver.resolve(ret_str)
+            ret_dt, ret_q = resolver.resolve_quality(ret_str)
             if ret_dt is None:
-                queued.append((addr, claim.name, f"unresolved_return:{ret_str}", claim.prototype))
+                r = "opaque_by_value_return" if ret_q == "opaque_by_value" else f"unresolved_return:{ret_str}"
+                queued.append((addr, claim.name, r, claim.prototype))
                 continue
             if ret_dt.getLength() > 4 and "*" not in ret_str:
                 queued.append((addr, claim.name, "sret_by_value_return", claim.prototype))
@@ -511,13 +542,13 @@ def run(program, args, model):
         param_dts = []
         bad = None
         for t in param_strs:
-            dt = resolver.resolve(t)
+            dt, q = resolver.resolve_quality(t)
             if dt is None:
-                bad = t
+                bad = "opaque_by_value_param:" + t if q == "opaque_by_value" else "unresolved_param:" + t
                 break
             param_dts.append(dt)
         if bad is not None:
-            queued.append((addr, claim.name, f"unresolved_param:{bad}", claim.prototype))
+            queued.append((addr, claim.name, bad, claim.prototype))
             continue
 
         if not args.apply:
@@ -601,8 +632,6 @@ def structural_audit(program, model, args):
     resolver = TypeResolver(program)
     decl_index = getattr(args, "_decl_index", None)
 
-    _QUALITY_RANK = {"exact": 0, "canonical_alias": 1, "generic_pointer_fallback": 2,
-                     "ambiguous_simple_name": 3, "unresolved": 4}
     rows = []
     for addr, claim in sorted(model.functions.items()):
         if claim.kind not in ("FUNCTION", "LIBRARY") or not claim.prototype:
@@ -620,7 +649,7 @@ def structural_audit(program, model, args):
         exp_cc = cc or default_convention(entity_kind)
         exp_this = entity_kind in ("constructor", "destructor", "instance_method")
         exp_n = len(param_strs)
-        worst = "exact"
+        worst = "exact_complete"
         for t in param_strs:
             _dt, q = resolver.resolve_quality(t)
             if _QUALITY_RANK[q] > _QUALITY_RANK[worst]:
@@ -641,6 +670,69 @@ def structural_audit(program, model, args):
         detail = f"exp[{exp_cc},this={exp_this},n={exp_n}] db[{db_cc},this={db_this},n={db_n}]"
         rows.append((addr, claim.name, cat, worst, detail))
     return rows
+
+
+def datatype_hygiene_audit(program, model, args):
+    """Read-only: find by-value uses of OPAQUE (empty/1-byte stub) custom types.
+
+    Two views, because they answer different questions:
+      - `committed`: the DB's ACTUAL signature carries an opaque struct BY VALUE
+        (a real object modelled as 1 byte / a return that bypasses sret sizing).
+        This is a wrong ABI already in the DB — the --strict hard failure.
+      - `source_would_project`: the SOURCE prototype uses an opaque type by value;
+        such a claim is (correctly) NOT projected — informational, the backlog the
+        class-model work must clear so these signatures can finally be applied.
+
+    Pointer/reference uses of an opaque type are fine (4 bytes regardless).
+    Returns (rows, n_committed).
+    """
+    fm = program.getFunctionManager()
+    af = program.getAddressFactory().getDefaultAddressSpace()
+    resolver = TypeResolver(program)
+
+    def db_opaque_byval(fn):
+        """List of 'return'/'param:name' where the DB type is an opaque struct by
+        value (return types and explicit non-auto params; pointers are excluded
+        because a Ghidra pointer datatype is never itself the opaque struct)."""
+        hits = []
+        rt = fn.getReturnType()
+        if TypeResolver.is_opaque(rt):
+            hits.append(f"return:{rt.getName()}")
+        for p in fn.getParameters():
+            if p.isAutoParameter() or p.getName() == "this":
+                continue
+            dt = p.getDataType()
+            if TypeResolver.is_opaque(dt):
+                hits.append(f"param:{p.getName()}:{dt.getName()}")
+        return hits
+
+    def src_opaque_byval(type_str):
+        if "*" in type_str or "&" in type_str or _is_placeholder_return(type_str):
+            return False
+        _dt, q = resolver.resolve_quality(type_str)
+        return q == "opaque_by_value"
+
+    rows = []
+    committed = 0
+    for addr, claim in sorted(model.functions.items()):
+        if claim.kind not in ("FUNCTION", "LIBRARY") or not claim.prototype:
+            continue
+        parsed = parse_prototype(claim.prototype)
+        if parsed is None:
+            continue
+        _cc, ret_str, param_strs, _pk = parsed
+        fn = fm.getFunctionAt(af.getAddress(addr))
+        db_hits = db_opaque_byval(fn) if fn is not None else []
+        src_hits = [f"return:{ret_str}"] if src_opaque_byval(ret_str) else []
+        src_hits += [f"param:{t}" for t in param_strs if src_opaque_byval(t)]
+        if not db_hits and not src_hits:
+            continue
+        if db_hits:
+            committed += 1
+            rows.append((addr, claim.name, "committed", "; ".join(db_hits)))
+        else:
+            rows.append((addr, claim.name, "source_would_project", "; ".join(src_hits)))
+    return rows, committed
 
 
 def _write_audit(rows, out_path):
@@ -844,26 +936,42 @@ def run_divergent(program, args, model):
         db_cc, db_n, db_this, _ = _db_logical(fn)
         incomplete = db_cc in ("", "unknown", "default") or (db_n == 0 and exp_n > 0)
         short = (db_cc == exp_cc and db_this == exp_this and exp_n > db_n)
-        if not (incomplete or short):
+        # Arity/cc can already match yet a param/return be a WRONG opaque-by-value
+        # type (Ghidra typed a scalar arg as a game class by value). The arity check
+        # misses those; catch them so the correct source types get projected.
+        db_opaque = any(TypeResolver.is_opaque(p.getDataType())
+                        for p in fn.getParameters()
+                        if not p.isAutoParameter() and p.getName() != "this") \
+            or TypeResolver.is_opaque(fn.getReturnType())
+        if not (incomplete or short or db_opaque):
             continue  # not a broad-projection candidate
-        if exp_n == 0 and not incomplete:
+        if exp_n == 0 and not incomplete and not db_opaque:
             continue
 
-        # Resolve every parameter type; a non-pointer we cannot size => queue.
+        # Resolve every parameter type; a non-pointer we cannot size => queue. An
+        # opaque (empty/1-byte stub) by-value type resolves to None here so we never
+        # commit a placeholder-sized slot for a real object — it queues distinctly.
         param_dts, bad = [], None
         for t in param_strs:
-            dt = resolver.resolve(t)
+            dt, q = resolver.resolve_quality(t)
             if dt is None:
-                bad = t
+                bad = ("opaque_by_value_param:" if q == "opaque_by_value" else "unresolved_param:") + t
                 break
             param_dts.append(dt)
         if bad is not None:
-            queued.append((addr, claim.name, f"unresolved_param:{bad}", claim.prototype))
+            queued.append((addr, claim.name, bad, claim.prototype))
             continue
-        ret_dt = None if _is_placeholder_return(ret_str) else resolver.resolve(ret_str)
-        if ret_dt is not None and ret_dt.getLength() > 4 and "*" not in ret_str:
-            queued.append((addr, claim.name, "sret_by_value_return", claim.prototype))
-            continue
+        if _is_placeholder_return(ret_str):
+            ret_dt = None
+        else:
+            ret_dt, ret_q = resolver.resolve_quality(ret_str)
+            if ret_dt is None:
+                r = "opaque_by_value_return" if ret_q == "opaque_by_value" else f"unresolved_return:{ret_str}"
+                queued.append((addr, claim.name, r, claim.prototype))
+                continue
+            if ret_dt.getLength() > 4 and "*" not in ret_str:
+                queued.append((addr, claim.name, "sret_by_value_return", claim.prototype))
+                continue
 
         if not args.apply:
             projected.append((addr, claim.name, "would_project", exp_n))
@@ -916,6 +1024,9 @@ def main() -> int:
     p.add_argument("--structural-audit", action="store_true",
                    help="READ-ONLY: compare every claim's expected signature (source + "
                         "index) to the DB and classify the gap. No projection, no DB write.")
+    p.add_argument("--datatype-audit", action="store_true",
+                   help="READ-ONLY: report by-value uses of opaque (empty/1-byte stub) custom "
+                        "types; --strict fails if any is COMMITTED in the DB (a wrong ABI).")
     p.add_argument("--project-divergent", action="store_true",
                    help="Source-DRIVEN projection: apply source signatures to claims the DB "
                         "left incomplete/short (not just in_stack ones). Commit on FULL "
@@ -963,6 +1074,28 @@ def main() -> int:
         print(f"[STRUCTURAL AUDIT] {len(rows)} claims -> {args.audit_out}")
         print("  by category: " + ", ".join(f"{k}={v}" for k, v in sorted(cats.items())))
         print("  worst type resolution: " + ", ".join(f"{k}={v}" for k, v in sorted(quals.items())))
+        return 0
+
+    if args.datatype_audit:
+        project = ghidra_env.open_project()
+        consumer = program = None
+        try:
+            consumer, program = ghidra_env.open_program(project, writable=False)
+            rows, committed = datatype_hygiene_audit(program, model, args)
+        finally:
+            if program is not None:
+                program.release(consumer)
+            project.close()
+        _write_audit([(a, n, s, "", u) for a, n, s, u in rows],
+                     args.audit_out.replace("signature_convergence", "datatype_hygiene"))
+        print(f"[DATATYPE HYGIENE] by-value opaque uses: {len(rows)} "
+              f"(committed={committed}, queued={len(rows) - committed})")
+        for a, n, s, u in rows:
+            if s == "committed":
+                print(f"    COMMITTED 0x{a:08x} {n}: {u}")
+        if args.strict and committed:
+            print(f"strict: {committed} committed by-value opaque signature(s) — wrong ABI")
+            return 1
         return 0
 
     if args.project_divergent or args.project_packed:

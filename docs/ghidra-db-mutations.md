@@ -298,6 +298,43 @@ converged 3871 → 3876 (the 11 packed clear their in_stack; the audit measures 
 signature match). The 43 packing_mismatch need per-function packing analysis (a
 richer packing model than tight-consecutive) — future work.
 
+## 2026-07-19 (twelfth): datatype hygiene — opaque by-value stub correctness (PR #99, committed DB change)
+
+Custom class types are represented in the DB as empty/1-byte stub structures (from
+old `apply_mfc_rtti` root-stub creation and Ghidra's own inference). `TypeResolver`
+indexed them by simple name and graded any unique match `exact`, so a by-value use
+of a stub made the projector believe a real object was 1 byte — a WRONG ABI: a
+by-value param allocated 1 byte, or a by-value return bypassing the `size > 4` sret
+detection. A DB-based audit found **17 committed signatures using a stub by value**
+(e.g. `CMcWindow::OnLButtonDown(uint, CPoint)` with `CPoint` = 1 byte instead of 8).
+
+Fixes:
+- `TypeResolver.resolve_quality` never grades an opaque (0-field / <=1-byte) struct
+  `exact`; a by-value use returns `(None, opaque_by_value)` so the projector QUEUES
+  it (distinct `opaque_by_value_param/return`) rather than committing a placeholder
+  size. Behind a `*`/`&` the same stub is fine (`opaque_pointee`, 4 bytes). New
+  quality ladder: exact_complete / canonical_alias / opaque_pointee /
+  generic_pointer_fallback / ambiguous_simple_name / opaque_by_value / unresolved.
+- `apply_mfc_rtti.datatype_for_mac_arg` no longer creates canonical root stubs for
+  unknown pointees — uses `void*` (no fake sized type to mistake for a class).
+- New `just datatype-hygiene-audit` (`--datatype-audit`): reports committed by-value
+  opaque uses (the wrong ABI) and source signatures that would (backlog). `--strict`
+  fails on any committed; wired report-only into `ghidra-apply-source-full`.
+- `run_divergent` also treats a DB opaque-by-value type as a candidate (arity can
+  match yet a scalar arg be typed as a game class by value).
+
+Correction (per the plan): restored the pre-divergent base (`d7103d46…`, the #95
+DB) and replayed divergent+packed with the fixed resolver — the 14 divergent-
+introduced opaque-by-value params now queue; the extended candidate condition fixed
+`TMapOrderChildLinkNode::SetChainActiveFlag`. Committed by-value opaque **17 → 1**
+(`TInvadeMission::SetFlag10FromArgSlot94`, a pre-existing Ghidra type error whose
+source under-declares, so it can't be auto-projected — a class-model residual).
+Re-exported → `ec63a5e3…`. Structural convergence 3871 → 3856: the drop is
+CORRECT — 15 signatures that were falsely converged with a 1-byte stub are removed;
+they await real class layouts. This is the datatype-hygiene prerequisite to the
+compiler-backed class-model work (the durable fix that sizes CPoint/CRect/game
+classes and drives committed opaque-by-value to 0).
+
 ## Committed mutations (already in the current .gzf, newest first)
 
 From `git log --follow -- vendor/ghidra/exports/Imperialism.gzf`:
