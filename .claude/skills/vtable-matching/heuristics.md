@@ -22,7 +22,7 @@ AGENTS guardrail + [[model-real-classes-not-callconv-casts]].
 - Big-vtable classes (TGreatPower = 178 slots) self-dispatch to sibling slots on
   `this`; declare the **whole slot range** as real virtuals in one structural pass
   (bodies may temporarily delegate) so sibling calls resolve to real virtuals. Verify
-  ownership against `config/function_ownership.csv` first — no-op slot bodies live in
+  the owning marker first (`just func-status`) — no-op slot bodies live in
   their owning class files. See [[next-tgreatpower-vtable-scope]].
 - The slot macro arg / `// slot 0xNN` comments are **decimal** (slot 0xb0 = index 176).
 
@@ -80,7 +80,7 @@ auto-resolves the thunk to the real function **only if the thunk address has no 
 `symbols.csv` entry**. A named thunk row (`thunk_Foo`) makes reccmp compare
 `call thunk_Foo` vs your `call Foo` as a literal symbol mismatch (caps the caller ~93%);
 a row-less thunk resolves to 100% for free. Fix: **port the real target into its correct
-file** (real body, `// FUNCTION:` marker, `sync-ownership`), delete the thunk's rows from
+file** (real body, `// FUNCTION:` marker), delete the thunk's rows from
 both `config/symbols.csv` and `config/thunk_map.csv`, then call the real function
 directly — never declare the thunk with a typed signature and `reinterpret_cast` it, and
 never whitelist a stub in `tools/stubgen.py` (both are banned hacks). Took

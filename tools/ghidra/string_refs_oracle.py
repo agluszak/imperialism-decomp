@@ -3,7 +3,7 @@
 
 Iterates every defined string in the binary, maps its references to containing
 functions, and reports functions with no manual owner (per
-config/function_ownership.csv) together with the strings they reference. A
+source markers) together with the strings they reference. A
 function that is the ONLY referencer of a distinctive literal ("Cannot load
 tariff table %d") is a self-naming port target; the strings also make good
 `// STRING:` annotations once ported.

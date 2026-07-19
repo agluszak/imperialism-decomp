@@ -14,7 +14,7 @@ mutation ledger + re-run procedure in `docs/ghidra-db-mutations.md`.
 | State | Owner (edit this) | Derived (never hand-edit) |
 |---|---|---|
 | Function names/prototypes (curated) | `config/function_name_overrides.csv` | names in symbols.csv, stubs, Ghidra DB |
-| Address ownership / stub suppression | `// FUNCTION:`-family markers in source | `config/function_ownership.csv` (`marker_sync` rows) |
+| Address ownership / stub suppression | `// FUNCTION:`-family markers in source | (scanned directly at build time — no ledger) |
 | Curated stub suppression w/o marker | ownership rows with a curated note (below) | — |
 | Symbol table for reccmp | Ghidra DB (via `sync-ghidra` merge) | `config/symbols.csv` (curated name/proto/type survive the merge) |
 | Vtable identity | `// VTABLE:` annotation + real inheritance | any symbols.csv row at that address is a bug (merge drops them) |
@@ -42,7 +42,7 @@ The **reviewed override layer** fixes such rows durably:
 - `just apply-library-overrides` (idempotent; runs inside `db-resync`)
   projects it into symbols.csv (name/symbol/prototype, `provenance=msvc500_library_override`)
   and ensures a `// LIBRARY:` marker (in `library_msvc500_overrides.cpp`) so
-  `sync-ownership` sets `ownership=library`. It only adds a marker where none
+  ownership derives from the markers directly. It only adds a marker where none
   exists, so prototype-only corrections on already-owned FID rows don't duplicate.
 - Precedence: **reviewed override > FID > existing curated > provisional Ghidra**.
   The FID apply defers override addresses, so a manual FID re-run can't clobber them.
@@ -90,7 +90,7 @@ dense range).
 
 - **`just build`** — after any marker add/remove/move; it regenerates the build
   inputs (source index + stubs) from current markers automatically.
-  Runs `sync-ownership` (deletion-reconciling) + `symbols-integrity-gate` first,
+  Runs `symbols-integrity-gate` first,
   then stubgen. Then `just build`.
 - **`just db-resync`** — the full resync after any Ghidra DB mutation:
   `tooling-check` → `sync-ghidra` (push-names → prune ILT DB entities → export →

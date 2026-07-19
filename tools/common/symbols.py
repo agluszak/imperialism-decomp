@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Shared loaders for config/symbols.csv and config/function_ownership.csv.
+"""Shared loaders for config/symbols.csv and marker-derived ownership.
 
 Half a dozen tools re-implemented "read symbols.csv into a dict" with slightly
 different shapes (name→addr, addr→name, functions-only, with/without sizes).
@@ -40,11 +40,7 @@ def functions_by_name(repo_root: Path) -> dict[str, tuple[int, int]]:
 
 
 def ownership_by_address(repo_root: Path) -> dict[int, str]:
-    """address -> ownership ('manual'/'library'/'stub') from function_ownership.csv."""
-    out: dict[int, str] = {}
-    for row in read_pipe_rows(repo_root / "config" / "function_ownership.csv"):
-        try:
-            out[int(row["address"], 16)] = row.get("ownership") or ""
-        except ValueError:
-            continue
-    return out
+    """address -> ownership ('manual'/'library') derived from source markers."""
+    from tools.source_index import ownership_kind, ownership_view
+
+    return {a: ownership_kind(c.kind) for a, c in ownership_view(repo_root).items()}

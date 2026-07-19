@@ -15,7 +15,7 @@ Precedence (highest first): reviewed override > FID match > existing curated
 identity > provisional Ghidra identity. This tool owns the top tier: it writes
 name/symbol/prototype/provenance into `config/symbols.csv` (the curated merge in
 `sync-ghidra` preserves those columns by address) and ensures a `// LIBRARY:`
-marker exists so `sync-ownership` derives `ownership=library`.
+marker exists (markers are the ownership authority).
 
 A marker is only *added* when no `// LIBRARY:` marker already exists for the
 address anywhere in the source tree, so overrides that merely correct a rotten
@@ -190,7 +190,7 @@ def render_marker_file(
         "// Reviewed MSVC500 library-identity overrides"
         " (config/msvc500_library_overrides.csv):",
         "// confirmed CRT/MFC library functions FID missed. Ownership derives from",
-        "// these // LIBRARY: markers via sync-ownership. Edit the CSV, not this file.",
+        "// these // LIBRARY: markers. Edit the CSV, not this file.",
         "",
         "#if 0",
     ]

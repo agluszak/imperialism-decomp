@@ -1,5 +1,6 @@
 #include "game/TNewGameCommand.h"
 
+// FUNCTION: IMPERIALISM 0x0049ddb0
 void TNewGameCommand::DoIt() {}
 
 // SYNTHETIC: IMPERIALISM 0x0049ddd0

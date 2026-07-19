@@ -182,3 +182,6 @@ undefined TTransFocusAnimation::RenderBattleReportInsetWithPaletteShift(POINT* o
 
   return 0;
 }
+
+// SYNTHETIC: IMPERIALISM 0x004a0480
+// TTransFocusAnimation::GetRuntimeClass

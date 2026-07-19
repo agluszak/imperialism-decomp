@@ -146,7 +146,7 @@ both of which look like progress but block real recovery:
 
 The correct fix when the original does `CALL <ilt-thunk>` → real target:
 
-1. **Port the real target into its owning file** (find it via `config/function_ownership.csv`
+1. **Port the real target into its owning file** (find it via `just func-status`
    neighbors — sibling addresses reveal the right `<Class>.cpp`/module file), with a real
    body, `// FUNCTION:` marker, and real signature; the next build drops the stub.
 2. **Retire the thunk completely.** reccmp auto-resolves `CALL <thunk>` → real target

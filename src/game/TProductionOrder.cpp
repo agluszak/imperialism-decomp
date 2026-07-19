@@ -19,25 +19,32 @@ IMPLEMENT_DYNCREATE(TProductionOrder, TObject)
 // TProductionOrder::`scalar deleting destructor'
 TProductionOrder::~TProductionOrder() {}
 
+// FUNCTION: IMPERIALISM 0x004b4f70
 undefined TProductionOrder::InitializeBasicCityOrderContext(int param_1, undefined2 param_2) {
   return 0;
 }
 
+// FUNCTION: IMPERIALISM 0x004b4fe0
 void TProductionOrder::WriteTo(TStream* stream) {}
 
+// FUNCTION: IMPERIALISM 0x004b5060
 void TProductionOrder::ReadFrom(TStream* stream) {}
 
+// FUNCTION: IMPERIALISM 0x004b50e0
 short TProductionOrder::MaxOrder() {
   return 0;
 }
 
+// FUNCTION: IMPERIALISM 0x004b5100
 bool TProductionOrder::SetQuantity(short param_1) {
   return 0;
 }
 
 // NOOP: verified empty in original 0x004b5140
+// FUNCTION: IMPERIALISM 0x004b5140
 void TProductionOrder::ResetCityOrderItemDerivedStateNoop() {}
 
+// FUNCTION: IMPERIALISM 0x004b5160
 undefined TProductionOrder::CommitIfPending() {
   return 0;
 }

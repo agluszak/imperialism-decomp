@@ -34,3 +34,6 @@ void TFuzzySet::Free() {
   }
   delete this;
 }
+
+// SYNTHETIC: IMPERIALISM 0x004ff700
+// TFuzzySet::`scalar deleting destructor'

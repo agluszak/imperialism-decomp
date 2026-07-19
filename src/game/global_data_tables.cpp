@@ -1341,6 +1341,9 @@ CList<void*, void*> g_WNetPendingPacketList006a5f40(10);
 // TEMPLATE: IMPERIALISM 0x005e4610
 // ?Serialize@?$CList@PAXPAX@@UAEXAAVCArchive@@@Z
 
+// TEMPLATE: IMPERIALISM 0x005e4830
+// ?Serialize@?$CArray@PAXPAX@@UAEXAAVCArchive@@@Z
+
 // TEMPLATE: IMPERIALISM 0x005e4a30
 // ??_G?$CList@PAXPAX@@UAEPAXI@Z
 

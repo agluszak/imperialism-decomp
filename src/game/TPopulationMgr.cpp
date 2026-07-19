@@ -13,55 +13,69 @@ TPopulationMgr::TPopulationMgr() {}
 // TPopulationMgr::`scalar deleting destructor'
 TPopulationMgr::~TPopulationMgr() {}
 
+// FUNCTION: IMPERIALISM 0x004b5d10
 undefined TPopulationMgr::OrphanLeaf_NoCall_Ins09_004b5d10(int param_1, int param_2) {
   return 0;
 }
 
+// FUNCTION: IMPERIALISM 0x004b5d50
 undefined TPopulationMgr::OrphanLeaf_NoCall_Ins20_004b5d50(short param_1) {
   return 0;
 }
 
+// FUNCTION: IMPERIALISM 0x004b5dc0
 undefined TPopulationMgr::OrphanLeaf_NoCall_Ins47_004b5dc0(short param_1, short param_2,
                                                            short param_3) {
   return 0;
 }
 
+// FUNCTION: IMPERIALISM 0x004b5e80
 undefined TPopulationMgr::OrphanCallChain_C2_I24_004b5e80() {
   return 0;
 }
 
+// FUNCTION: IMPERIALISM 0x004b5ed0
 undefined TPopulationMgr::PopulationMgrSlot0E() {
   return 0;
 }
 
+// FUNCTION: IMPERIALISM 0x004b6260
 undefined TPopulationMgr::OrphanLeaf_NoCall_Ins111_004b6260(short* param_1, ushort* param_2) {
   return 0;
 }
 
+// FUNCTION: IMPERIALISM 0x004b63e0
 undefined TPopulationMgr::OrphanLeaf_NoCall_Ins50_004b63e0() {
   return 0;
 }
 
+// FUNCTION: IMPERIALISM 0x004b64c0
 undefined TPopulationMgr::OrphanLeaf_NoCall_Ins63_004b64c0() {
   return 0;
 }
 
+// FUNCTION: IMPERIALISM 0x004b65b0
 undefined TPopulationMgr::OrphanCallChain_C2_I61_004b65b0() {
   return 0;
 }
 
+// FUNCTION: IMPERIALISM 0x004b66a0
 undefined TPopulationMgr::OrphanLeaf_NoCall_Ins87_004b66a0(short param_1, short param_2) {
   return 0;
 }
 
+// FUNCTION: IMPERIALISM 0x004b67e0
 undefined TPopulationMgr::OrphanLeaf_NoCall_Ins26_004b67e0(short param_1, short param_2) {
   return 0;
 }
 
+// FUNCTION: IMPERIALISM 0x004b6850
 void TPopulationMgr::WriteTo(TStream* stream) {}
 
+// FUNCTION: IMPERIALISM 0x004b68f0
 void TPopulationMgr::ReadFrom(TStream* stream) {}
 
+// FUNCTION: IMPERIALISM 0x004b6990
 void TPopulationMgr::Free() {}
 
 short* TPopulationMgr::GetSummaryArraySlot50() {

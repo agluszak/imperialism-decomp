@@ -9,7 +9,6 @@ lint_build_dir := "build-clang"
 lint_docker_image := "imperialism-clang-mingw"
 cmake_flags := "-DCMAKE_BUILD_TYPE=RelWithDebInfo -DIMPERIALISM_LINK_MFC=ON -DIMPERIALISM_MATCH_FLAGS_CSV=/Oy,/Ob1"
 name_overrides := "config/function_name_overrides.csv"
-function_ownership := "config/function_ownership.csv"
 vtable_gate_baseline := "config/vtable_gate_baseline.csv"
 construction_gate_baseline := "config/construction_gate_baseline.csv"
 tgreatpower_gate_baseline := "config/tgreatpower_gate_baseline.csv"
@@ -121,28 +120,13 @@ db-resync:
   just sync-ghidra
   just apply-library-overrides
   just apply-library-oracle
-  just sync-ownership
   just symbols-integrity-gate
-  just ownership-integrity-gate
   just push-source-names --apply --quiet
   just build
   just detect
   just gates
   just stats
   just export-project
-
-# MUTATES: config/function_ownership.csv.
-# Reconcile config/function_ownership.csv with source markers (src/ + include/).
-# Deletion-reconciling by default: marker_sync rows whose marker disappeared AND whose
-# file/header no longer mentions the address are pruned (a stale row silently
-# suppresses stub regeneration). Curated notes (e.g. mfc_runtime_macro) are never
-# pruned. Pass --no-prune-missing-manual through the module directly to skip pruning.
-[doc('MUTATES: function_ownership.csv. Reconcile ownership rows with source markers')]
-[group('sync')]
-sync-ownership:
-  uv run python -m tools.workflow.sync_function_ownership \
-    --target "{{target}}" \
-    --ownership-csv "{{function_ownership}}"
 
 # Generate the build inputs (source index + linkable stubs) into <build_dir>/generated.
 # Read-only over committed state: scans source markers directly (no sync step, no
@@ -154,8 +138,7 @@ generate:
   uv run python -m tools.source_index --gen-dir "{{build_dir}}/generated"
   uv run python -m tools.stubgen \
     --output-dir "{{build_dir}}/generated/stubs" \
-    --name-overrides "{{name_overrides}}" \
-    --ownership-csv "{{function_ownership}}"
+    --name-overrides "{{name_overrides}}"
 
 # MUTATES: config/symbols.csv.
 # Drop incremental-link `jmp` thunk rows (linker artifacts) from config/symbols.csv.
@@ -198,8 +181,7 @@ lint flags="":
     --output-dir "{{lint_build_dir}}/generated/stubs" \
     --chunk-prefix lint_stubs_part \
     --annotation-kind none \
-    --name-overrides "{{name_overrides}}" \
-    --ownership-csv "{{function_ownership}}"
+    --name-overrides "{{name_overrides}}"
   docker run --rm --network none \
     -e CMAKE_FLAGS="{{flags}}" \
     -e LINT=1 \
@@ -914,8 +896,8 @@ gates:
 tooling-check:
   uv run python -m tools.workflow.check_tooling_surface
 
-# Autogen stub count vs baseline (ratchet down). A rise is the sync-ownership
-# prune-trap tell: real marker-less owners re-stubbed, breaking vtables.
+# Generated stub count vs baseline (ratchet down). A rise is the un-claiming
+# tell: a real owner lost its marker and would be re-stubbed, breaking vtables.
 [group('gates')]
 stub-count-gate:
   uv run python -m tools.workflow.check_stub_count
@@ -1037,14 +1019,6 @@ synthetic-gate:
 symbols-integrity-gate:
   uv run python -m tools.workflow.check_symbols_integrity
 
-# Structural integrity of config/function_ownership.csv: same DictReader-safety
-# checks as symbols-integrity-gate, applied to the file most directly implicated
-# in the "curated suppression note silently pruned" incident class.
-[doc('function_ownership.csv structural integrity: header at line 1, parseable + unique addresses')]
-[group('gates')]
-ownership-integrity-gate:
-  uv run python -m tools.workflow.check_function_ownership_integrity
-
 # Semantic gate for reviewed MSVC500 library identities: every row in
 # config/msvc500_library_overrides.csv must be faithfully applied to symbols.csv
 # (name/symbol/prototype/type) + ownership=library, and the applied count must not
@@ -1154,10 +1128,10 @@ boundary-gate:
 agent-rules-gate:
   uv run python -m tools.workflow.check_agent_rules
 
-# Generated dirs (src/autogen, src/ghidra_autogen, include/ghidra_autogen) and
-# function_ownership.csv may only change alongside marker/curated-input changes
-# that justify regeneration — never by hand (Hard Rule 7). agent-check applies
-# the same rule locally; CI runs it with --no-worktree against the merge base.
+# Legacy generated dirs (src/autogen, src/ghidra_autogen, include/ghidra_autogen)
+# may only change alongside marker/curated-input changes that justify
+# regeneration — never by hand (Hard Rule 7). agent-check applies the same rule
+# locally; CI runs it with --no-worktree against the merge base.
 [group('gates')]
 generated-integrity-gate *args:
   uv run python -m tools.workflow.check_generated_integrity {{args}}
@@ -1178,7 +1152,6 @@ source-gates:
   just vtable-collision-gate
   just synthetic-gate
   just symbols-integrity-gate
-  just ownership-integrity-gate
   just library-identity-gate
   just global-location-gate
   just manual-cruntimeclass-gate
@@ -1317,7 +1290,7 @@ correct-scalar-dtors *args:
 vtable-autofix *args:
   uv run python -m tools.workflow.vtable_autofix {{args}}
 
-# MUTATES: source + config/function_ownership.csv (with --apply).
+# MUTATES: source + symbols.csv (with --apply); claims via SYNTHETIC markers.
 [group('rewrite')]
 mfc-runtime-macros *args:
   uv run python -m tools.workflow.mfc_runtime_macros {{args}}
@@ -1372,8 +1345,7 @@ class-discovery classes='':
   discovery_classes="{{class_discovery_classes}}"; \
   if [[ -n "{{classes}}" ]]; then discovery_classes="{{classes}}"; fi; \
   uv run python -m tools.workflow.class_discovery \
-    --classes "$discovery_classes" \
-    --ownership-csv "{{function_ownership}}"
+    --classes "$discovery_classes"
 
 [group('recovery')]
 slice-discovery class address:

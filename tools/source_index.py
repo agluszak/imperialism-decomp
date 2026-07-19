@@ -24,8 +24,8 @@ from dataclasses import dataclass
 from pathlib import Path
 
 from tools.common.file_scan import iter_files, is_generated_source_path
+from tools.common.markers import function_marker_regex
 from tools.common.repo import repo_root_from_file, resolve_repo_path
-from tools.workflow.function_ownership import function_marker_regex
 
 DEFAULT_GEN_DIR = "build-msvc500/generated"
 SOURCE_INDEX_NAME = "source_index.json"
@@ -79,6 +79,23 @@ def find_duplicate_claims(claims: list[MarkerClaim]) -> dict[int, list[MarkerCla
 def claimed_addresses(repo_root: Path, target: str) -> set[int]:
     """The set of addresses claimed by any function-kind marker in manual source."""
     return {c.address for c in scan_marker_claims(repo_root, target)}
+
+
+def ownership_kind(kind: str) -> str:
+    """Map a marker kind to the coarse ownership bucket the old ledger used."""
+    return "library" if kind == "LIBRARY" else "manual"
+
+
+def ownership_view(repo_root: Path, target: str = "IMPERIALISM") -> dict[int, MarkerClaim]:
+    """addr -> claim, the marker-derived replacement for the retired ownership CSV.
+
+    The claim's `file` is the owning source file (what the ledger called
+    `target_cpp`) and `ownership_kind(claim.kind)` is the manual/library bucket.
+    """
+    out: dict[int, MarkerClaim] = {}
+    for c in scan_marker_claims(repo_root, target):
+        out.setdefault(c.address, c)
+    return out
 
 
 def build_index(repo_root: Path, target: str) -> dict:

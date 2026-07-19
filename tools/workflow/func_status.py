@@ -2,8 +2,8 @@
 """One-stop status for a function address (no Ghidra / no build — instant).
 
 Joins the four scattered sources you otherwise grep by hand every time you look at a
-function: config/symbols.csv (curated name/size/prototype), config/function_ownership.csv
-(who owns it and how it was paired), the Ghidra evidence export index (the reference body's
+function: config/symbols.csv (curated name/size/prototype), source markers
+(marker-derived ownership), the Ghidra evidence export index (the reference body's
 location + export status), and the reccmp baseline report (current match %).
 
 usage:
@@ -22,7 +22,6 @@ from tools.common.report_score import effective_matching
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 SYMBOLS_CSV = REPO_ROOT / "config" / "symbols.csv"
-OWNERSHIP_CSV = REPO_ROOT / "config" / "function_ownership.csv"
 AUTOGEN_INDEX = (REPO_ROOT / "build-msvc500" / "evidence" / "ghidra-export"
                  / "src" / "index.csv")
 BASELINE_REPORT = REPO_ROOT / "config" / "reccmp_progress_baseline.report.json"
@@ -62,8 +61,15 @@ def main() -> int:
 
     warn_if_baseline_stale(REPO_ROOT)
 
+    from tools.source_index import ownership_kind, ownership_view
+
     symbols = _index_by_address(SYMBOLS_CSV)
-    ownership = _index_by_address(OWNERSHIP_CSV)
+    ownership = {
+        f"{a:x}": {"ownership": ownership_kind(c.kind),
+                   "target_cpp": c.file,
+                   "note": f"marker {c.kind} at {c.file}:{c.line}"}
+        for a, c in ownership_view(REPO_ROOT).items()
+    }
     autogen = _index_by_address(AUTOGEN_INDEX)
     scores = _scores()
 

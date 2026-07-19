@@ -1,5 +1,6 @@
 #include "game/TPoseMessageDialog.h"
 
+// FUNCTION: IMPERIALISM 0x0054aff0
 void TPoseMessageDialog::DoIt() {}
 
 // SYNTHETIC: IMPERIALISM 0x0054b010

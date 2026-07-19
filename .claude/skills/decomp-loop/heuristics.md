@@ -244,7 +244,7 @@ listing's FSTP slots (Ghidra's decompile of float-heavy code is garbage). See
 - **Batch compare exists — never loop single `just compare` calls.** `just compare
   0xA 0xB 0xC`, `just compare --file src/game/X.cpp`, and `just compare-class X` all
   run reccmp once with `--json` (one PDB parse for any number of functions).
-- `just sync-ownership` is **deletion-reconciling** (and `just regen-stubs` runs it
+- (historical) `just sync-ownership` was **deletion-reconciling** (and stub regen ran it
   automatically): `marker_sync` rows whose marker disappeared are pruned; curated notes
   (e.g. `mfc_runtime_macro`) are never pruned. If a deleted function's stub still fails
   to regenerate, check for a leftover curated row. See

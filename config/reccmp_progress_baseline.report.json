@@ -11645,6 +11645,12 @@
       "type": 1
     },
     {
+      "address": "0x4d0810",
+      "matching": 0.0023837902264600714,
+      "name": "TEngineerDialog::BuildCityViewProductionControls",
+      "type": 1
+    },
+    {
       "address": "0x4d1760",
       "matching": 0.4489795918367347,
       "name": "TPlaceCityDialog::CreateObject",
@@ -30325,6 +30331,12 @@
       "type": 1
     },
     {
+      "address": "0x5a6560",
+      "matching": 0.2222222222222222,
+      "name": "TNextMoveCommand::ConstructTNextMoveCommandBaseState",
+      "type": 1
+    },
+    {
       "address": "0x5a6590",
       "matching": 0.9090909090909091,
       "name": "TNextMoveCommand::`scalar deleting destructor'",
@@ -31780,6 +31792,36 @@
       "address": "0x5b6e60",
       "matching": 0.36,
       "name": "TTown::WriteTo",
+      "type": 1
+    },
+    {
+      "address": "0x5b6f70",
+      "matching": 0.03508771929824561,
+      "name": "TTown::RecomputeTownAdjacentTileYieldTotals",
+      "type": 1
+    },
+    {
+      "address": "0x5b7140",
+      "matching": 0.024844720496894408,
+      "name": "TTown::RecomputeTownAdjacentResourceSupplyTotals",
+      "type": 1
+    },
+    {
+      "address": "0x5b73e0",
+      "matching": 0.04,
+      "name": "TTown::RecomputeTownAdjacentUniversityWeightedTotals",
+      "type": 1
+    },
+    {
+      "address": "0x5b7570",
+      "matching": 0.02197802197802198,
+      "name": "TTown::IncrementProductionDerivedCountersWithTurnParityRules",
+      "type": 1
+    },
+    {
+      "address": "0x5b77e0",
+      "matching": 0.06451612903225806,
+      "name": "TTown::OrphanLeaf_NoCall_Ins29_005b77e0",
       "type": 1
     },
     {
@@ -34404,6 +34446,12 @@
       "type": 1
     },
     {
+      "address": "0x5e4830",
+      "matching": 1.0,
+      "name": "CArray<void *,void *>::Serialize",
+      "type": 1
+    },
+    {
       "address": "0x5e4a60",
       "matching": 0.0,
       "name": "TNetMgr::WrapperFor_FreeHeapBufferIfNotNull_At005e4a60",
@@ -34473,6 +34521,24 @@
       "address": "0x5e5140",
       "matching": 1.0,
       "name": "TSoundPlayer::ForwardActionToVslotB4WithFlag1",
+      "type": 1
+    },
+    {
+      "address": "0x5e5170",
+      "matching": 0.5,
+      "name": "TSoundPlayer::ReturnConstantZero_005e5170",
+      "type": 1
+    },
+    {
+      "address": "0x5e5190",
+      "matching": 0.5,
+      "name": "TSoundPlayer::ReturnConstantZero_005e5190",
+      "type": 1
+    },
+    {
+      "address": "0x5e51b0",
+      "matching": 0.3333333333333333,
+      "name": "TSoundPlayer::VTableSlot31",
       "type": 1
     },
     {
@@ -38521,7 +38587,7 @@
     },
     {
       "address": "0x6091d9",
-      "matching": 1.0,
+      "matching": 0.9787234042553191,
       "name": "CWnd::OnNotify",
       "type": 1
     },
