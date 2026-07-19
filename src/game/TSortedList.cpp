@@ -12,9 +12,6 @@ IMPLEMENT_DYNCREATE(TSortedList, TObject)
 // SYNTHETIC: IMPERIALISM 0x00487a90
 // TSortedList::CreateObject
 
-// Not-yet-recovered free functions this file calls into.
-extern "C" int __cdecl rand(void);
-
 // Default-compare trampoline whose address Sort() passes as the comparator: adapts the
 // three-arg __cdecl comparator shape onto the virtual Compare of the list supplied as
 // context. (Ghidra: OrphanCallChain_C1_I08_00487a60.)

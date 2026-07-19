@@ -1,6 +1,8 @@
 #include "game/TProvinceDesirabilityList.h"
 #include "game/mfc.h"
 
+#include <stdlib.h>
+
 // SYNTHETIC: IMPERIALISM 0x004d6570
 // TProvinceDesirabilityList::GetRuntimeClass
 
@@ -15,9 +17,6 @@ TProvinceDesirabilityList::TProvinceDesirabilityList() {}
 // Destructors are compiler-generated (implicit) from real inheritance.
 // SYNTHETIC: IMPERIALISM 0x004d65c0
 // TProvinceDesirabilityList::`scalar deleting destructor'
-
-// Not-yet-recovered free functions this file calls into.
-extern "C" int __cdecl rand(void);
 
 // FUNCTION: IMPERIALISM 0x004d6610
 void TProvinceDesirabilityList::InitializeProvinceRecordSize() {

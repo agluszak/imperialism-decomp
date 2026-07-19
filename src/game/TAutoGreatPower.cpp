@@ -33,8 +33,6 @@
 #include "game/TMilitaryUnit.h"
 #include "game/TProvinceDesirabilityList.h"
 
-extern "C" int __cdecl rand(void);
-
 // Real body ported in TMission.cpp (0x00535940).
 TMission* __cdecl FindFirstTrackedHandlerMatchingModeAndShortKey(TSortedList* list, int kind,
                                                                  short key, int mode);

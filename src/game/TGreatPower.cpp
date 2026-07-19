@@ -63,7 +63,6 @@
 // the callsite). Retire each by porting the real body.
 undefined4 BuildCityInfluenceLevelMap(void); // 0x004dbbb0
 undefined4 RebuildMinorNationDispositionLookupTables(void);
-extern "C" int __cdecl rand(void);
 
 // Real body ported at 0x005b7f50 (file end, ascending-address order). Genuine __stdcall
 // predicate: returns 1 when the resource index is in [13,16].
@@ -1992,8 +1991,7 @@ void TGreatPower::AssignFallbackNationsToUnfilledDiplomacyNeedSlots(void) {
     bool foundFallbackNation = false;
     int fallbackNationSlot = -1;
     while (!foundFallbackNation) {
-      fallbackNationSlot =
-          static_cast<int>(reinterpret_cast<unsigned int(__cdecl*)(void)>(rand)() % 7);
+      fallbackNationSlot = rand() % 7;
       if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(fallbackNationSlot) != 0 &&
           g_pDiplomacyTurnStateManager->HasPolicyWithNationSlot44(fallbackNationSlot,
                                                                   this->nationSlot) == 0 &&

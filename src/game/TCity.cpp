@@ -1,6 +1,8 @@
 #include "game/TCity.h"
 #include "game/navy_order.h"
 
+#include <stdlib.h>
+
 #include "game/TGreatPower.h"
 #include "game/TProductionOrder.h"
 #include "game/TShipOrder.h"
@@ -11,8 +13,6 @@
 #include "game/mfc.h"
 #include "game/ui_invalidation_guard.h"
 #include "game/TShip.h" // GetResourceDescriptorWeightWord0ByType
-
-extern "C" int __cdecl rand(void);
 
 static const char kUCityCppPath[] = "D:\\Ambit\\Cross\\UCity.cpp";
 static const unsigned int kAddrClassDescTCity = 0x0064f338;

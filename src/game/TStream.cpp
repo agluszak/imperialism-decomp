@@ -1,7 +1,8 @@
+#include <string.h>
+
 #include "game/TStream.h"
 #include "game/CString.h"
 
-extern "C" unsigned int __cdecl strlen(const char* s);
 #if defined(_MSC_VER)
 #pragma intrinsic(strlen)
 #endif

@@ -1,5 +1,7 @@
 #include "game/TNavyMgr.h"
 
+#include <stdlib.h>
+
 #include "game/TAdmiral.h"
 #include "game/TArmyMgr.h"
 #include "game/TCity.h"
@@ -25,8 +27,6 @@
 #include "game/ui_invalidation_guard.h"
 #include "game/localization_text_helpers.h"
 #include "game/map_order_battle_snapshot.h"
-
-extern "C" int __cdecl rand(void);
 
 // 0x00563360 -- __stdcall free resolver (defined in TMapMgr.cpp); used by the
 // reattributed TryQueueMapOrderFromTileAction below.
