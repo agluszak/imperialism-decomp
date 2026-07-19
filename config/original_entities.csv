@@ -3474,8 +3474,8 @@ address|name|symbol|size|type|prototype|provenance
 52e310|ReallocateRouteRecordBufferByCountStride18||38|function|undefined ReallocateRouteRecordBufferByCountStride18()|
 52e350|RebuildUMapperRouteRecordsAndActiveMapRects||881|function|undefined RebuildUMapperRouteRecordsAndActiveMapRects()|
 52e7b0|AllocateRouteNodeStateBufferByCount||104|function|undefined AllocateRouteNodeStateBufferByCount()|
-52e840|TMapMaker::HasMapGenerationFailed||52|function|char __thiscall HasMapGenerationFailed(void)|
-52e890|TMapMaker::GetCityDialogFlagByte4||80|function|undefined MarkRouteNodePendingAndActivateUnvisitedNeighbors()|
+52e840|TMapMaker::ErrorCheck||52|function|char __thiscall ErrorCheck(void)|
+52e890|TMapMaker::EraseZones||80|function|undefined MarkRouteNodePendingAndActivateUnvisitedNeighbors()|
 52e900|TMapMaker::HandleCityProductionNoOp||105|function|undefined 'scalar_deleting_destructor'(void)|
 52e990|AreRoutePointPairsEqual||33|function|undefined AreRoutePointPairsEqual()|
 52eb00|WrapperFor_ftol_At0052eb00||30|function|undefined WrapperFor_ftol_At0052eb00()|
