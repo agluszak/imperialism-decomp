@@ -438,9 +438,9 @@ char TZone::HasSecondaryNeighborWithNationTag(short nationTag) {
     // Inlined bounds-guarded stretch element access, as in the original.
     void* const* entrySlot =
         (entryIndex < entryCount) ? this->secondaryNeighbors.Data() + entryIndex : 0;
-    // secondaryNeighbors entries are TGlobalMapCityScoreRecord* under the documented
-    // stretch pun (see FindMapActionContextContainingNodeByIndex); byte 0 of the
-    // record is its ownerNationCode00.
+    // Read unconditionally as a TGlobalMapCityScoreRecord* (see TZone.h's
+    // UNRESOLVED_FIELD_ATTRIBUTION note on secondaryNeighbors -- this reader has no
+    // port-zone guard); byte 0 of the record is its ownerNationCode00.
     const void* record = *entrySlot;
     short entryNationTag = *static_cast<const signed char*>(record);
     if (entryNationTag == nationTag) {
@@ -462,8 +462,8 @@ char TZone::IsZoneMaskOrArrayEntryPresentForKey(short key) {
   }
   for (unsigned int entryIndex = 0; entryIndex < entryCount; ++entryIndex) {
     // Inlined bounds-guarded stretch element access, as in the original (mirrors
-    // HasSecondaryNeighborWithNationTag). Entries are TGlobalMapCityScoreRecord* under
-    // the documented stretch pun; byte 0 of the record is its ownerNationCode00.
+    // HasSecondaryNeighborWithNationTag; same UNRESOLVED_FIELD_ATTRIBUTION caveat in
+    // TZone.h -- no port-zone guard). Byte 0 of the record is its ownerNationCode00.
     void* const* entrySlot =
         (entryIndex < entryCount) ? this->secondaryNeighbors.Data() + entryIndex : 0;
     const void* record = *entrySlot;
@@ -556,7 +556,9 @@ void TZone::GenerateMapActionContextDisplayNameAndHeadline(void* usedCityFlags,
   if (providedName == 0) {
     int chosenCity = -1;
     // With a used-city bitmap and secondary neighbours, try to feature a random adjacent
-    // city that has not been used yet. The secondary list holds city score records here.
+    // city that has not been used yet. Reads the entry unconditionally as a
+    // TGlobalMapCityScoreRecord* -- see TZone.h's UNRESOLVED_FIELD_ATTRIBUTION note on
+    // secondaryNeighbors (this reader has no port-zone guard either).
     if (usedCity != 0 && secondaryNeighbors.Count() != 0) {
       g_zoneStatusCodePrngSeed_006a5aec = g_zoneStatusCodePrngSeed_006a5aec * 0x15a4e35 + 1;
       unsigned int pick = (g_zoneStatusCodePrngSeed_006a5aec >> 0xc & 0x7fff) %

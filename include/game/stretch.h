@@ -58,9 +58,13 @@ public:
       if (doubledCapacity > 0x7fffffffU) {
         doubledCapacity = 0x7fffffffU;
       }
-      void* grownBuffer = realloc(data, (index + 1) * 8);
+      // Byte sizes below must track sizeof(T), not a hardcoded pointer width: every
+      // current instantiation (TZone*, void*) happens to be 4 bytes on this target, but
+      // the Mac oracle also shows stretch<char>/stretch<short> instantiations, and a
+      // hardcoded *8/*4 would silently under/over-allocate for those element sizes.
+      void* grownBuffer = realloc(data, static_cast<size_t>(index + 1) * sizeof(T) * 2);
       if (grownBuffer == 0) {
-        data = static_cast<T*>(realloc(data, (index + 1) * 4));
+        data = static_cast<T*>(realloc(data, static_cast<size_t>(index + 1) * sizeof(T)));
         capacity = index + 1;
       } else {
         data = static_cast<T*>(grownBuffer);
