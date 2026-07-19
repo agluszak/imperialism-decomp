@@ -213,6 +213,14 @@ generic_pointer_fallback=110 (pointee unknown — ABI-size only), ambiguous_simp
 `canonical_alias` count as *semantic* convergence; the pointer fallback counts only as
 *ABI-storage* convergence.
 
+Update: `ambiguous_simple_name` is now **0** (`just dedupe-ambiguous-datatypes --apply`
+removed the `/Demangler/{CCmdTarget,CDC,CFrameWnd,CWnd,"CWnd *"}` placeholder structs
+Ghidra's demangler analyzer had left duplicating the canonical root MFC classes, and
+`TypeResolver.__init__` now excludes bare `FunctionDefinition` datatypes from the
+by-simple-name ambiguity count — a Win32 callback typedef like `WNDPROC` and Ghidra's
+auto-generated `.../functions/WNDPROC` pointee-signature companion are not a real
+collision, since the latter is never itself a usable parameter type).
+
 This audit is the measurement, not the repair — it is wired as a read-only final stage
 of `ghidra-apply-source-full` and changes no DB. Projecting the ~2000 divergent
 signatures (the `db_signature_incomplete` majority plus the arity/convention cases),
