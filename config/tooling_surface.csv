@@ -9,6 +9,7 @@ module|tools.workflow.annotate_globals_from_symbols|just:annotate-globals|Global
 module|tools.migrations.annotate_vtables_from_symbols|direct|Vtable annotation pass (completed migration; run via uv)
 module|tools.migrations.annotate_strings_from_symbols|direct|String annotation pass (completed migration; run via uv)
 module|tools.workflow.check_no_raw_vtable_calls|just:vtable-gate|Raw-vtable policy gate
+module|tools.workflow.check_dual_use|just:dual-use-gate|Reject unresolved dual-use field modelling claims
 module|tools.workflow.check_vtable_annotations|just:vtable-annotation-gate|Vtable annotation adjacency gate
 module|tools.workflow.check_vtable_address_collisions|just:vtable-collision-gate|Vtable/data address collision gate
 module|tools.workflow.check_synthetic_names|just:synthetic-gate|Synthetic symbol/source name agreement gate
@@ -78,6 +79,7 @@ module|tools.ghidra.raw_disasm|query:raw-disasm|Capstone raw-byte disassembly by
 module|tools.ghidra.rtti_class_oracle|just:rtti-oracle|Walk MFC CRuntimeClass descriptors: names, sizes, bases, CreateObject
 module|tools.ghidra.search_whole_binary|query:search|Whole-binary text/dword search for handler hunting
 module|tools.workflow.check_symbols_integrity|just:symbols-integrity-gate|Structural integrity of config/original_entities.csv
+module|tools.workflow.check_generated_integrity|just:generated-integrity-gate|Reject generated artifacts committed relative to a merge base
 module|tools.ghidra.linear_disasm|query:linear-disasm|Linear disassembly by address ignoring Ghidra function boundaries
 module|tools.workflow.check_class_sizes|just:class-size-check|Modeled class sizes vs RTTI oracle object_size
 module|tools.ghidra.repair_code_gaps|just:repair-code-gaps|Create missing Ghidra functions at vtable/ILT/symbols targets

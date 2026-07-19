@@ -7,6 +7,8 @@
 class TTaskForce;
 class TZone;
 class TMiniMapView;
+class TMapDialog;
+class TOceanDialog;
 
 // VTABLE: IMPERIALISM 0x00668f08
 class TMapUberPicture : public TMapUberUberPicture {
@@ -128,9 +130,9 @@ public:
   // slot 0x71 ResetPictureResourceEntry inherited unchanged (0x48f520)
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
   // slot 0x73 ForwardCombineOptionalSourceRegionIntoDestinationAndUpdateBox inherited unchanged (0x573940)
-  virtual undefined AutoScrollByEdgeMask(short edgeMask) override; // slot 0x74 0x5977a0
-  virtual undefined RefreshAfterSelectionChange();                 // slot 0x75 0x598950
-  virtual void InvalidateTileMarkerChain(short tileIndex);         // slot 0x76 0x598870
+  virtual void AutoScrollByEdgeMask(short edgeMask) override; // slot 0x74 0x5977a0
+  virtual undefined RefreshAfterSelectionChange();            // slot 0x75 0x598950
+  virtual void InvalidateTileMarkerChain(short tileIndex);    // slot 0x76 0x598870
   // Ground truth (RET 0x4) proves the previous 0-arg declaration was a poison-pill:
   // forwards entryIndex to subviewAc's NotifySubviewOfSelectedTile, then (only before
   // entering overlay mode) syncs subview2A8's trade-tool enabled state to the same value.
@@ -176,24 +178,18 @@ public:
   TZone* orderEntryContext98;
   int field_0x9c;
   int field_0xa0;
-  // 'GOOD'/'GOLD'-tag sub-control resolved by NoOpUiLifecycleHook (not yet ported);
-  // SetActiveMapOrderEntry calls InvalidateMapRegionForOrderEntry on it,
-  // EnterMapInteractionOverlayMode calls its real TView::CaptureLayoutF0, and also its
-  // own slot-0x1f4 virtual (beyond TView's own vtable range -- CreateToolWindow_00599CF0's
-  // real signature turned out to be a 0-arg/undefined-return TMapUberPicture slot, not the
-  // receiver of this call, so goodGoldTagControlA4's concrete further-derived class is
-  // still unrecovered and this dispatch stays a documented gap).
-  // Typed generically as TView* since its further-derived concrete class isn't
-  // recovered.
-  TView* goodGoldTagControlA4;
-  // A second TMapUberPicture subview (EnterMapInteractionOverlayMode's own
-  // slot-0x76/InvalidateTileMarkerChain evidence), copied into subviewAc once entering
-  // overlay mode.
-  TMapUberPicture* subview2A8;
-  // Subview forwarded entryIndex/commandCode by NotifySubviewOfSelectedTile and
-  // InvalidateTileMarkerAndRefreshLinkedControl via slot 0x76 (InvalidateTileMarkerChain) -- same
-  // TMapUberPicture-family vtable prefix evidence as categoryPages[] below.
-  TMapUberPicture* subviewAc;
+  // Optional 'DOOG' child used by the 0x7dd dual-map factory. Its factory constructs a
+  // TOceanDialog, and AutoScrollByEdgeMask calls ApplyDirectionalNudgeAndRefreshDisplay
+  // directly when that child is active.
+  TOceanDialog* goodGoldTagControlA4;
+  // The 'DLOG' child. Event 0x3b8 constructs a TCitySiteView (a TMapDialog subclass),
+  // while event 0x7dd constructs TMapDialog directly. The slot-0xa4 dispatch in
+  // AutoScrollByEdgeMask resolves to
+  // TMapDialog::UpdateMapInteractionPreviewParityAndRenderTransientSprites.
+  TMapDialog* subview2A8;
+  // Active strategic-map dialog; initialized from subview2A8 and restored to it when
+  // leaving the alternate ocean-map mode.
+  TMapDialog* subviewAc;
   // 0xb0..0xbf: per-category ('uciv'/'uarm'/'unav'/unused) sub-controls resolved by
   // NoOpUiLifecycleHook via ResolveControlByTag. NOT a homogeneous TMapUberPicture array
   // (that was the old theory): bd 4yz's evidence disproves it two ways. (a) TCivMgr's

@@ -146,9 +146,9 @@ TDiplomacyMapView::TDiplomacyMapView() : TPicture() {
   regionAt9c = 0;
   legendSurfaceModeAt524 = 6;
   stateFlagAtB8 = 0;
-  // Slot 5 of TViewMgr::cursorTable (0x14 + 5*4 = 0x28), reused here as a plain flag rather
-  // than a cursor handle -- matches the established this-codebase pattern of dual-purpose
-  // slots (see e.g. TSimMgr::preferenceValues[0] / TWorldView::overlayFlagByte74).
+  // cursorTable is a shared void* scratch array; slot 5 (0x14 + 5*4 = 0x28) holds a plain
+  // flag value (1) here. That is consistent with the array's void* element typing -- each
+  // consumer interprets its own slot -- not one field carrying two overlaid meanings.
   g_pUiRuntimeContext->cursorTable[5] = reinterpret_cast<void*>(1);
 }
 

@@ -1,11 +1,15 @@
 #include "game/TDealBookPicture.h"
 
+#include "game/TDropShadowText.h"
 #include "game/TSimMgr.h"
+#include "game/TSoundPlayer.h"
 #include "game/TStaticText.h"
+#include "game/TToolBarCluster.h"
 #include "game/TTradePageBuyView.h"
 #include "game/TTradePageSellView.h"
 #include "game/global_data_tables.h"
 #include "game/ui_invalidation_guard.h"
+#include "game/ui_text_label_helpers_decls.h"
 
 void LoadUiStringAndDispatchSharedMessageCommand(short group, short index, TView* control);
 void AssignSharedStringToControlState(CString sharedString, TView* control);
@@ -24,6 +28,69 @@ TDealBookPicture::TDealBookPicture() : TPicture(), field90(8), fieldB2(0) {}
 // SYNTHETIC: IMPERIALISM 0x005bac00
 // TDealBookPicture::`scalar deleting destructor'
 TDealBookPicture::~TDealBookPicture() {}
+
+// FUNCTION: IMPERIALISM 0x005bac50
+void TDealBookPicture::RefreshHudNationTitleControlsAndTheme(int themeCode) {
+  // Toolbar cluster ('tool'): refresh the turn-order status panel and re-derive its
+  // nation/treasury text for the active nation.
+  TToolBarCluster* toolControl =
+      static_cast<TToolBarCluster*>(this->ResolveControlByTag(0x746f6f6c));
+  toolControl->AssertValid();
+  toolControl->RefreshTurnOrderStatusPanelTextsAndControls();
+  toolControl->UpdateControlTagTreaTextFromNationAndMapContext(g_pSimMgr->GetActiveNationId());
+  toolControl->RefreshControl();
+
+  // Re-cache the six commodity sub-controls.
+  this->field98 = this->ResolveControlByTag(0x626f7567);                                  // 'guob'
+  this->field9c = this->ResolveControlByTag(0x736f6c64);                                  // 'dlos'
+  this->buyView = static_cast<TTradePageBuyView*>(this->ResolveControlByTag(0x74626f75)); // 'uobt'
+  this->sellView =
+      static_cast<TTradePageSellView*>(this->ResolveControlByTag(0x74736f6c)); // 'lost'
+  this->fieldAC = static_cast<TTradePageBuyView*>(this->field98);
+  this->fieldA8 = static_cast<TTradePageSellView*>(this->field9c);
+
+  // 'mark' toggle + label reload.
+  TView* markControl = this->ResolveControlByTag(0x6d61726b); // 'mark'
+  if (markControl == nullptr) {
+    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUTradeViews_0069AA94, 0x129);
+  }
+  markControl->SetState(1, 0);
+  LoadUiStringByGroupAndIndexToControlObject(0x2741, 6, this->ResolveControlByTag(0x6d61726b));
+  markControl->SetState(0, 0);
+  LoadUiStringByGroupAndIndexToControlObject(0x2741, 7, this->ResolveControlByTag(0x74616273));
+
+  this->initializedFlagB1 = 0;
+  this->UpdateDealBookResourceSelectionAndToggleControls(0, static_cast<short>(themeCode));
+  g_pSfxPlaybackSystem->PlaySoundEffect(0x13ee, 0, 1);
+
+  // 'titL' title label.
+  TStaticText* titLControl = static_cast<TStaticText*>(this->ResolveControlByTag(0x7469744c));
+  titLControl->AssertValid();
+  titLControl->LoadUiStringAndDispatchViaVslot1C8(0x2740, 0x19, 0);
+  RECT titLBounds;
+  titLControl->QueryBounds(&titLBounds);
+  RECT titLInval;
+  CopyRect(&titLInval, &titLBounds);
+  this->InvalidateCityDialogRectRegion(&titLInval, 1);
+
+  // 'rtil' subtitle label.
+  TStaticText* rtilControl = static_cast<TStaticText*>(this->ResolveControlByTag(0x7274696c));
+  rtilControl->AssertValid();
+  rtilControl->LoadUiStringAndDispatchViaVslot1C8(0x2740, 0x1a, 0);
+  RECT rtilBounds;
+  rtilControl->QueryBounds(&rtilBounds);
+  RECT rtilInval;
+  CopyRect(&rtilInval, &rtilBounds);
+  this->InvalidateCityDialogRectRegion(&rtilInval, 1);
+  rtilControl->SetEnabled(1, 1);
+  ApplyUiTextStyleAndThemeFlags(reinterpret_cast<TDropShadowText*>(rtilControl), 0, 0x12, 0x2b6b,
+                                0x2b6c);
+
+  // 'rocl'/'rocr' resource buttons.
+  LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2730, 0xc, 0x6c636f72); // 'rocl'
+  LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2730, 0xb, 0x72636f72); // 'rocr'
+}
 
 // FUNCTION: IMPERIALISM 0x005baf70
 void TDealBookPicture::UpdateDealBookResourceSelectionAndToggleControls(int nResourceIndex,
@@ -156,12 +223,12 @@ void TDealBookPicture::RefreshTradeSelectionHeaderAndNationOfferBidLines() {
     LoadUiStringAndDispatchSharedMessageCommand(0x2740, 4, tabsControl2);
   }
 
-  // NOTE: the receiver for the first CaptureLayoutF0 call below is not yet confirmed
-  // (field9c reuse is a placeholder pending compare/triage evidence).
+  // Capture the four commodity sub-views' layouts (the original caches all four distinct
+  // views -- field98/field9c and the buy/sell pages -- not buyView twice).
   int captureBuffer1[2] = {1000, 1000};
-  field9c->CaptureLayoutF0(captureBuffer1, 1);
+  field98->CaptureLayoutF0(captureBuffer1, 1);
   int captureBuffer2[2] = {1000, 1000};
-  buyView->CaptureLayoutF0(captureBuffer2, 1);
+  field9c->CaptureLayoutF0(captureBuffer2, 1);
   int captureBuffer3[2] = {0x41, 0x59};
   sellView->CaptureLayoutF0(captureBuffer3, 1);
   int captureBuffer4[2] = {0x13a, 0x59};
@@ -175,6 +242,12 @@ void TDealBookPicture::RefreshTradeSelectionHeaderAndNationOfferBidLines() {
     field92 = fieldA8->field_0x60 - 1;
   }
 
-  SetPictureResourceIdAndRefresh(field98, 1);
+  // Reapply the dialog's own picture and re-run the selection toggle. field98 is a control
+  // pointer (the 'guob' sub-control cached by RefreshHudNationTitleControlsAndTheme), NOT the
+  // bitmap id -- SetPictureResourceIdAndRefresh's arg is a bitmap resource id (a stack local
+  // in the original; field90 is this dialog's selection/picture field). initializedFlagB1 is
+  // flipped as part of the trailing UpdateDealBook call.
+  SetPictureResourceIdAndRefresh(field90, 1);
   initializedFlagB1 = initializedFlagB1 == 0;
+  UpdateDealBookResourceSelectionAndToggleControls(0, field90);
 }

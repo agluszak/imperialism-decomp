@@ -634,8 +634,9 @@ void RevalidateAndRequeueMapOrdersForTurn() {
           node = node->next;
         } while (node != 0);
       }
-      // contextAnchor is the entry's owning map-order context here (the same
-      // dual-purpose +0x18 slot TControlSeaZoneMission reinterprets as TZone*).
+      // contextAnchor is the entry's owning map-order context here -- the +0x18 `owner`
+      // tagged-payload slot (see the UNRESOLVED_FIELD_ATTRIBUTION note in TTaskForce.h),
+      // read here as a TZone*.
       if (reinterpret_cast<TZone*>(entry->contextAnchor)->QueryPortZoneCapability()) {
         entry->attachment = 7;
         entry->RebuildMapOrderEntryChildren();
@@ -1159,6 +1160,85 @@ void TNavyMgr::ProcessNationMapOrderInteractionsAndApplyOutcomes(short mode) {
   }
 }
 
+// FUNCTION: IMPERIALISM 0x00559dd0
+unsigned short TNavyMgr::GetMapContextActionLabelTokenByActionCode(short nTileIndex,
+                                                                   int nInputFlags) {
+  return static_cast<unsigned short>(
+      g_awMapContextActionLabelTokenByCommand[GetMapContextActionCode(nTileIndex, nInputFlags)]);
+}
+
+// FUNCTION: IMPERIALISM 0x00559e00
+unsigned short TNavyMgr::GetMapContextActionLabelToken(short nTileIndex, int nInputFlags) {
+  int actionCode = GetMapContextActionCode(nTileIndex, nInputFlags);
+  if (actionCode != 0) {
+    return g_awMapContextActionLabelTokenByCommand[actionCode];
+  }
+
+  TTaskForce* entry = GetActiveMapOrderEntry();
+  if (entry == nullptr) {
+    return g_awMapContextActionLabelTokenByCommand[0];
+  }
+
+  if (g_pGlobalMapState->terrainStateTable[nTileIndex].terrainType00 == 5) {
+    TZone* context = g_pActiveMapOrderContext->GetLinkedZoneForSeaTile(nTileIndex);
+    bool canResolve = false;
+    if (context != nullptr && entry->HasNoMapOrderEntryChildrenQueued() == 0) {
+      bool hasActiveChild = false;
+      for (TMapOrderChildLinkNode* node = entry->childOrderList; node != nullptr;
+           node = node->next) {
+        if (node->active != 0) {
+          hasActiveChild = true;
+          break;
+        }
+      }
+      if (hasActiveChild) {
+        unsigned short minimumWeight = 10000;
+        for (TMapOrderChildLinkNode* node = entry->childOrderList; node != nullptr;
+             node = node->next) {
+          if (node->active != 0) {
+            TShip* ship = static_cast<TShip*>(node->payload);
+            short weight =
+                g_NavyOrderResourceDescriptorTable[ship->resourceType04].descriptorWeight;
+            if (weight < static_cast<short>(minimumWeight)) {
+              minimumWeight = static_cast<unsigned short>(weight);
+            }
+          }
+        }
+        short threshold = minimumWeight != 10000 ? static_cast<short>(minimumWeight) : 0;
+        short distance = reinterpret_cast<TZone*>(entry->contextAnchor)
+                             ->GetCachedMapActionContextDistanceOrRecompute(context);
+        canResolve = distance <= threshold;
+      }
+    }
+    if (canResolve) {
+      actionCode = entry->ResolveMapOrderCommandFromActionContext(context);
+      return g_awMapContextActionLabelTokenByCommand[actionCode];
+    }
+  } else {
+    TGlobalMapCityScoreRecord* province = GetProvinceByTileIndex(nTileIndex);
+    bool canResolve = false;
+    if (province != nullptr) {
+      short* queuedCounts = reinterpret_cast<short*>(&entry->pad_1e[0]);
+      if (queuedCounts[0] + queuedCounts[1] + queuedCounts[2] + queuedCounts[3] != 0) {
+        for (TMapOrderChildLinkNode* node = entry->childOrderList; node != nullptr;
+             node = node->next) {
+          if (node->active != 0) {
+            canResolve = province->padA0 != 0;
+            break;
+          }
+        }
+      }
+    }
+    if (canResolve) {
+      char relationOutOfDate = g_pDiplomacyTurnStateManager->IsNationPairRelationTurnStampOutOfDate(
+          entry->required_count, province->ownerNationCode00);
+      return g_awMapContextActionLabelTokenByCommand[relationOutOfDate != 0 ? 16 : 1];
+    }
+  }
+
+  return g_awMapContextActionLabelTokenByCommand[1];
+}
+
 // FUNCTION: IMPERIALISM 0x0055a020
 bool TNavyMgr::TryHandleMapContextAction(short nTileIndex, int nInputFlags) {
   int actionCode = GetMapContextActionCode(nTileIndex, nInputFlags);
@@ -1348,9 +1428,9 @@ void TNavyMgr::ResolveMapOrderPairConflictStep(TTaskForce* leftEntry, TTaskForce
 
   // Per-attachment "convergence tolerance" the winning-tier ratio must clear for that side
   // to be judged to have genuinely won the tier (the real {1.1,0.95,0.8} float table,
-  // indexed by the packed order_type/order_strength dword at +0x04 -- a single offset
-  // reused as two shorts elsewhere and as one combined int here, matching the
-  // type-modeling guardrail's dual-purpose-offset exception).
+  // indexed by the (order_type, order_strength) short pair at +0x04/+0x06 read together as
+  // one dword index here -- two adjacent shorts read as a bulk index, one meaning per short,
+  // not one slot with two overlaid types).
   static const float kTierConvergenceThreshold[3] = {1.1f, 0.95f, 0.8f};
   float leftThreshold = kTierConvergenceThreshold[*reinterpret_cast<int*>(&leftEntry->order_type)];
   float rightThreshold =

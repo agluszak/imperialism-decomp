@@ -93,6 +93,50 @@ just build
 - `just normalize-markers` — reformat `// FUNCTION` / reccmp markers (cosmetic;
   `marker-gate` is the policy check).
 
+## Never revert architecture to pass a gate (fix forward)
+
+When `just gates`, `just vtable`, `just build`, or a pre-commit check fails **after**
+you have promoted real C++ shape (typed fields, real methods, `new T()`, typed
+singleton globals), **never undo that work to make verification pass.** Regressing from
+real methods back to `extern undefined4` + `reinterpret_cast` at the callsite is
+strictly worse than a failing gate — it is a source-model corruption (construction Hard
+Rule 11). This is the `AGENTS.md` "gate-chasing guardrail" in operational form.
+
+The failure mode to avoid: port real shape → a gate fails → revert the real shape to
+stubs so the gate passes. **That revert is forbidden.** Fix forward, in order:
+
+1. **Build/link** — missing symbol: promote/own the callee as a real method, or use a
+   genuine LIBRARY symbol (`operator new` at `0x606f73`, not a fake
+   `AllocateWithFallbackHandler` stub). Wrong owner: fix the marker; stubs regenerate on
+   the next build.
+2. **Duplicate marker** — one address, one owner; move `// FUNCTION:` to the class that
+   owns the method, sync ownership, regen stubs. Do not delete the manual method.
+3. **`just vtable Class`** — the first `new T()` in manual code can expose a pre-existing
+   class-model gap. Fix slot ownership / imports / missing overrides on that class; do
+   **not** stop constructing the class and do **not** re-stub callsites.
+4. **`antipattern-gate`** — prefer `new T()` over explicit `operator new` + placement;
+   prefer real inheritance over bridge thunks. Do not replace `new T()` with stub dispatch.
+
+If none of these resolves the gate **without** architectural regression, **stop and
+report** what failed, what you tried, and what class-model work remains. A blocked
+commit with correct source beats a passing commit with reverted stubs.
+
+**Callee classification — pick once, do not flip-flop:**
+
+| Evidence | Correct model | Forbidden rollback |
+|----------|---------------|--------------------|
+| `mov ecx, …` / callee uses `[ecx+off]` | Real `__thiscall` method on owning class; `obj->Method()` | `reinterpret_cast` to `__thiscall*` on `undefined4` stub |
+| Vtable dispatch | Real `virtual` on recovered class | Raw `vftable[i]` or `VCall_*` facade |
+| `0x606f73` / `AllocateWithFallbackHandler` in listing | `new T()` (MFC `operator new` LIBRARY in `mfc_heap_library.cpp`) | `new char[n]` + stub ctor cast |
+| `// LIBRARY:` in repo | Link against MFC; no stub definition | Add a fake `undefined4` stub |
+| Genuine `__cdecl` free function, no `this` | Port the real callee when feasible; the legacy `extern undefined4` + typed-cast-at-callsite form is a bridge being retired, not a porting approach | — |
+
+The legacy typedef-cast form applies **only** to genuine free-function thunks. It does
+not permit re-stubbing a callee you already verified is `__thiscall` on a recoverable
+class because a gate failed. Promotion is one-way: once a callsite uses
+`g_pX->Method(...)` or `new TNetMgr()`, do not put the free-function stub or fake
+calling-convention cast back to unblock a commit.
+
 ## reccmp specifics
 
 reccmp is installed from a pinned fork commit in `pyproject.toml` (no local checkout

@@ -51,9 +51,12 @@ public:
   short pad26;            // +0x26
   int actionPoints28;     // +0x28 remaining action points (seeded from GetBaseActionPoints)
   int aiStateCode2c;      // +0x2c AI stance code (indexes the 0x699500 weight rows)
-  // +0x30 dual-purpose slot: a current-attack-target TTacticalUnit* in the "targ" command
-  // path, but read as an int stat elsewhere (TTacArmyView bar width) — kept int/raw.
-  int field30;
+  // +0x30 current attack-target unit (in the opposing side's list). Read and written by
+  // HandleTacticalCommandTag_targ (0x005a3f42 read, 0x005a4101 write on selectedUnit1c),
+  // which looks the value up in the opposing unit list and stores the newly cycled target.
+  // (The earlier "0-499 bar" scalar reading was a wrong-offset mismodel: TTacArmyView's
+  // second stat bar reads [occupant+0x34] = TArmyTacUnit::morale34, not +0x30.)
+  TTacticalUnit* attackTarget30;
 
   // NOOP: verified empty in original (trivial inline ctor: both concrete branches
   // inline construction as a bare vptr store, so the base ctor must stay empty and

@@ -4,9 +4,8 @@
 #include "game/global_data_tables.h"
 
 // FUNCTION: IMPERIALISM 0x0045d2a0
-undefined TMapUberUberPicture::AutoScrollByEdgeMask(short edgeMask) {
+void TMapUberUberPicture::AutoScrollByEdgeMask(short edgeMask) {
   (void)edgeMask;
-  return 0;
 }
 
 // SYNTHETIC: IMPERIALISM 0x0045d2c0

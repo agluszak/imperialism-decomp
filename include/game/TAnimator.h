@@ -7,6 +7,7 @@
 // Forward declarations for types referenced by generated signatures.
 class TAnimation;
 class TList;
+class TMapUberPicture;
 class TStream;
 struct TQuickDrawSurfaceContext;
 
@@ -84,7 +85,7 @@ public:
   TQuickDrawSurfaceContext* renderSurfaceContext; // +0x20
   TList* registryList24;                          // +0x24 transient-animation registry
   int field28;                                    // +0x28
-  int field2c;                                    // +0x2c
+  TMapUberPicture* mapUberPicture2c;              // +0x2c active strategic-map root
 
   TAnimator();
 };

@@ -135,7 +135,7 @@ void TArmyBattle::ReadFrom(TStream* stream) {
     record->state1c = 0;
     record->actionPoints28 = record->GetBaseActionPoints();
     record->aiStateCode2c = 0;
-    record->field30 = 0;
+    record->attackTarget30 = NULL;
     record->strength4 = sourceUnit->field_34;
     record->morale34 = sourceUnit->field_34;
     record->qualityLevel10 = static_cast<short>(sourceUnit->field_38 / 100);

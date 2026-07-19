@@ -1758,8 +1758,7 @@ void TTacticalBattle::HandleTacticalCommandTag_targ() {
   if (selected == NULL || battleView8 == NULL) {
     return;
   }
-  // field30 is a dual-purpose slot (see TTacticalUnit.h); here it carries the target unit.
-  TTacticalUnit* marker = reinterpret_cast<TTacticalUnit*>(selected->field30);
+  TTacticalUnit* marker = selected->attackTarget30;
   TList* list = (&tacticalPlayer14)[selected->side20 == 0]->unitList4;
 
   // Locate the current target's ordinal in the opposing list (0 if it is gone).
@@ -1828,7 +1827,7 @@ void TTacticalBattle::HandleTacticalCommandTag_targ() {
     cursor = next;
   } while (cursor != position && result == NULL);
 
-  selectedUnit1c->field30 = reinterpret_cast<int>(result);
+  selectedUnit1c->attackTarget30 = result;
   if (result == NULL) {
     g_pSfxPlaybackSystem->PlaySoundEffect(0x1b5a, 0, 1);
   }

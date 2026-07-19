@@ -671,6 +671,10 @@ float g_TileHeatmapNeighborDiffusionFactor = 0.2f;
 double g_MapPreviewScaleX6A3410;
 // GLOBAL: IMPERIALISM 0x006a33d0
 double g_MapPreviewScaleY6A33D0;
+// GLOBAL: IMPERIALISM 0x006a3360
+extern double g_mapCellRowScale_006a3360;
+// GLOBAL: IMPERIALISM 0x006a3388
+extern double g_mapCellColumnScale_006a3388;
 
 // Two more 1/64 (0.015625) scale-factor doubles reset to default by the same defaults-table
 // initializers (0x49c0c0 / 0x49c0f0); g_ScaleDefault6A1FC0 is scaled by
@@ -761,6 +765,13 @@ short g_DAT_006966d0_Value_006966D0[16] = {0};
 // GLOBAL: IMPERIALISM 0x00696678
 short g_civilianTileOrderCursorTokenTable[12] = {0,    1008, 0,    1004, 1003, 1002,
                                                  1018, 1019, 1001, 1003, 1011, 1025};
+
+// Cursor resource ids selected by TArmyMgr's two map cursor state classifiers.
+// GLOBAL: IMPERIALISM 0x00695668
+short g_mapCursorTokenByStateIndex_00695668[12] = {0, 0, 1000, 0, 0, 0, 1011, 1011, 1010, 0, 0, 0};
+// GLOBAL: IMPERIALISM 0x00695680
+short g_civilianMapCursorTokenByStateIndex_00695680[12] = {0,    1008, 1000, 1005, 1006, 1007,
+                                                           1011, 1011, 1010, 0,    0,    0};
 
 // Per-unit-type tactical category code (short table at 0x695528, 30 unit types + 2
 // pad); category 0 counts as garrison strength in TGreatPower slot 0x11 (0x004d87e0),

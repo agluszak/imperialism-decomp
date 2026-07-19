@@ -55,9 +55,31 @@ a modeling error, and the fix removes casts rather than relocating them.
 - **Type pointer-bearing fields as typed pointers.** `TEventHandler* targetHandler` (not
   `int field10`) plus a typed init-helper argument lets call sites pass real objects by
   implicit upcast with zero casts.
-- **But a dual-purpose offset stays raw.** `TEventHandler+0x18` is a resource-owner pointer
-  in some methods and an `int` block-pool count in `TView::SerializeRecordList` — keep it
-  `int`/raw and accept the localized casts; don't break one reading to purify the other.
+- **"Dual-use" is a defect label, not an explanation — investigate, never rationalize.**
+  When one offset appears to be a pointer in method A and an `int` in method B, the default
+  is that *something is mismodelled*, not that the game intentionally overlays two meanings.
+  In order of likelihood: (1) wrong receiver/class attribution on A or B; (2) wrong offset
+  because the base or derived layout is wrong; (3) two adjacent fields/arrays scanned as one
+  flat region; (4) one identifier domain (e.g. a tile index feeding parallel tables) given
+  two different prose descriptions; (5) two distinct concrete classes merged into one; only
+  (6) a genuine variant field controlled by a discriminator or per-instance role. Rule out
+  1–5 from the raw listing (`just ghidra-listing`), the writer/reader inventory (`just
+  xrefs`, `just field-xrefs`), and the layout oracle before ever concluding (6). While
+  unresolved, keep the slot raw and mark it `// UNRESOLVED_FIELD_ATTRIBUTION:` with both
+  readings + evidence addresses — **do not** write "dual-use"/"dual-purpose" prose and do not
+  leave `reinterpret_cast<int>(ptr)` in a member store as the model. A *proven* variant
+  (all eight criteria in AGENTS.md's type-modeling guardrail) is expressed as a real
+  `union` / variant payload / separate record type / discriminator-keyed accessors, e.g.
+  `union { TZone* zone; TGlobalMapCityScoreRecord* city; } target;` beside its `int
+  attachment` discriminator — never a raw `int` + scattered casts. `just dual-use-gate`
+  rejects the terminology and the pointer↔int member stores.
+  - *Worked correction:* `TDealBookPicture::field98` was called an `int` "picture id" that
+    was also a control pointer. It is neither dual-use nor an id: it is the `'guob'` sub-
+    control pointer (a `TView*`), cached in RefreshHud and read as a `CaptureLayoutF0` view
+    receiver in RefreshTradeSelection; the `SetPictureResourceIdAndRefresh` call that looked
+    like it consumed it actually takes a separate bitmap-id local (the callee forwards to
+    `LoadBmpResourceByIdCached`). Retyping to `TView*` removed every cast and improved the
+    match — the "dual-use" story was masking a plain mismodel.
 - **Renames and pointer↔pointer / int-as-int narrowing are codegen-neutral — verify and
   proceed fearlessly.** reccmp pairs by address and these casts emit no bytes, so `just
   compare <addr>` should be byte-identical. Use this to align `vmethodNN` identifiers to
@@ -171,9 +193,13 @@ codegen shapes fall out (g_wMapDialogViewportTileSpan 0x6a33b0: 0x51adf0 dword r
 *(ex decomp-loop note 119)*
 
 
-When a byte/word region has both a dynamic-index reader (array walk) and named per-offset
-readers, the union "both views" answer is wrong modeling — always. Determine the single
-true model and migrate every accessor to it: the named flags usually turn out to be
+This is the opposite situation from a genuine *discriminated variant* field (one slot whose
+value's TYPE is chosen by a discriminator — e.g. `MapContextActionRecord::tileOrObject08`
+keyed by `actionType04`, modeled as a `union`; see the dual-use rule above). Here there is no
+discriminator: different code just *reads the same bytes two ways*, which means one reading is
+the true model (almost always an array) and the union "both views" answer is wrong — always.
+Determine the single true model and migrate every accessor to it: the named flags usually turn
+out to be
 specific indices of the array (TTechMgr::OrderCapRow's fort/recruit "flags" were
 techStatusByTechId[0x0b/0x16/0x13...]; TGlobalMapCityScoreRecord's stage1/stage2
 "counters" were resourceDevelopmentCounts82[1..8]). Before merging, verify every access

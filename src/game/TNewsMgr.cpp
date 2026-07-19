@@ -407,11 +407,11 @@ void TNewsMgr::CreateEventStories(int nation, int* majorCursor, int* minorCursor
       int wantId;
       if (record->actionType04 == 0 || record->actionType04 == 3 || record->actionType04 == 4) {
         story->parmKind[0] = 3;
-        story->parmValue[0] = record->tileOrObject08;
+        story->parmValue[0] = record->tileOrObject08.tileIndex;
         wantId = (record->participantIndex02 != 0) - 0x1a;
       } else {
         short ordinalValue =
-            reinterpret_cast<TZone*>(record->tileOrObject08)->GetContextOrdinalOrInvalid();
+            static_cast<TZone*>(record->tileOrObject08.object)->GetContextOrdinalOrInvalid();
         story->parmValue[0] = ordinalValue;
         story->parmKind[0] = 4;
         wantId = -0x1b - (record->actionType04 != 1);

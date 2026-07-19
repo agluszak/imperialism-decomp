@@ -1,0 +1,4 @@
+path|offender
+src/game/TEngineerDialog.cpp|int2ptr:BlitQuickDrawSurfaces(reinterpret_cast<TQuickDrawBlitSurface*>(this->field60 + 4),
+src/game/TEngineerDialog.cpp|int2ptr:BlitQuickDrawSurfaces(reinterpret_cast<TQuickDrawBlitSurface*>(this->field64 + 4),
+src/game/TEngineerDialog.cpp|int2ptr:BlitQuickDrawSurfaces(reinterpret_cast<TQuickDrawBlitSurface*>(this->field68 + 4),

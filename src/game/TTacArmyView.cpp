@@ -8,6 +8,7 @@
 #include "game/TAnimator.h"
 #include "game/TViewMgr.h"
 #include "game/TArmyBattle.h"
+#include "game/TArmyTacUnit.h"
 #include "game/TDisplayMgr.h"
 #include "game/TPicture.h"
 #include "game/TQuickDrawSurfaceContext.h"
@@ -563,17 +564,19 @@ undefined TTacArmyView::DrawTacticalTileInClipRect(int tileIndex, RECT* clipRect
     barRect.bottom = y - 1;
     SetQuickDrawFillColor(0);
     FillRectWithQuickDrawBrushAndContextOffset(&barRect);
-    g_pUiRuntimeContext->ApplyTurnEventPaletteColorByEventCode(0);
+    g_pUiRuntimeContext->ApplyTurnEventPaletteColorByEventCode(0x33);
     barRect.left -= 1;
     barRect.right -= 1;
     barRect.top -= 1;
     barRect.bottom -= 1;
     FillRectWithQuickDrawBrushAndContextOffset(&barRect);
-    g_pUiRuntimeContext->ApplyTurnEventPaletteColorByEventCode(0);
+    g_pUiRuntimeContext->ApplyTurnEventPaletteColorByEventCode(6);
     barRect.right = barRect.left + (occupant->strength4 + 0x18) / 0x19;
     FillRectWithQuickDrawBrushAndContextOffset(&barRect);
-    g_pUiRuntimeContext->ApplyTurnEventPaletteColorByEventCode(0);
-    barRect.right = barRect.left + (occupant->field30 + 0x18) / 0x19;
+    g_pUiRuntimeContext->ApplyTurnEventPaletteColorByEventCode(0x34);
+    // Second stat bar reads the derived unit's morale at +0x34 (army occupants are
+    // TArmyTacUnit); the base TTacticalUnit's +0x30 is the attack-target pointer, not a bar.
+    barRect.right = barRect.left + (static_cast<TArmyTacUnit*>(occupant)->morale34 + 0x18) / 0x19;
     FillRectWithQuickDrawBrushAndContextOffset(&barRect);
 
     short tierOffset = g_pGlobalMapState->GetMapImprovementTierBucketOffset(0);

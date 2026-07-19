@@ -1158,6 +1158,21 @@ generated-marker-gate:
 # identifiers that start with thunk_/ILT_/WrapperFor_ or end with _At<8hex> (calls
 # via linker thunks; history-encoded body names). Existing debt is grandfathered in
 # config/baselines/ilt_ossification_baseline.csv — a finite, shrink-only migration queue.
+# Rejects "dual-use"/"dual-purpose"/"reused as" hand-waving and raw pointer<->int member
+# storage (reinterpret_cast<int>(ptr), int-member->class-pointer casts). A purported dual-use
+# field is an unresolved modelling defect: prove one model (union/record/accessors) or mark it
+# // UNRESOLVED_FIELD_ATTRIBUTION: with both readings + evidence. Existing debt grandfathered in
+# config/baselines/dual_use_baseline.csv (shrink-only migration queue).
+[group('gates')]
+dual-use-gate:
+  uv run python -m tools.workflow.check_dual_use
+
+# MUTATES: config/baselines/dual_use_baseline.csv. Ratchet down after resolving a field's
+# attribution. Never run to silence a new offender.
+[group('gates')]
+dual-use-gate-update:
+  uv run python -m tools.workflow.check_dual_use --write-baseline
+
 [group('gates')]
 ilt-ossification-gate:
   uv run python -m tools.workflow.check_ilt_ossification
@@ -1195,6 +1210,13 @@ synthetic-gate:
 [group('gates')]
 symbols-integrity-gate:
   uv run python -m tools.workflow.check_symbols_integrity
+
+# Reject generated build inputs and retired generated source trees in a PR's diff. CI supplies
+# the merge base and --no-worktree so only committed branch changes are inspected.
+[doc('Reject generated artifacts relative to a merge base')]
+[group('gates')]
+generated-integrity-gate *args:
+  uv run python -m tools.workflow.check_generated_integrity {{args}}
 
 # Semantic gate for reviewed MSVC500 library identities: every row in
 # config/reviewed_library_identities.csv must be faithfully projected (overlay+markers)
@@ -1311,6 +1333,7 @@ source-gates:
   just tgreatpower-gate
   just marker-gate
   just generated-marker-gate
+  just dual-use-gate
   just ilt-ossification-gate
   just vtable-annotation-gate
   just vtable-collision-gate
@@ -1527,4 +1550,3 @@ vendor-msvc500-headers *args:
 [group('setup')]
 vendor-directx-headers *args:
   uv run python -m tools.workflow.vendor_directx_headers {{args}}
-

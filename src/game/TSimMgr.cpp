@@ -26,6 +26,7 @@
 #include "game/TNavyMgr.h"
 #include "game/TNewsMgr.h"
 #include "game/TMinor.h"
+#include "game/TMilitaryUnit.h"
 #include "game/TAutoGreatPower.h"
 #include "game/TRemoteGreatPower.h"
 #include "game/TProxyGreatPower.h"
@@ -684,8 +685,55 @@ void TSimMgr::RebuildPrimaryNationStateForSlot(int slotIndex, char activate) {
 
 // FUNCTION: IMPERIALISM 0x0057d520
 void TSimMgr::RebuildSecondaryNationStateForSlot(int slotIndex) {
-  // TODO: promote body @ 0x0057d520
-  (void)slotIndex;
+  short nationSlot = static_cast<short>(slotIndex);
+  if (nationSlot < 7) {
+    g_apSecondaryNationStateSlots[nationSlot] = nullptr;
+    return;
+  }
+
+  int nationIndex = nationSlot;
+  if (nationIndex >= field34 + 7) {
+    if (g_apSecondaryNationStateSlots[nationIndex] != nullptr) {
+      g_apSecondaryNationStateSlots[nationIndex]->Free();
+    }
+    g_apSecondaryNationStateSlots[nationIndex] = nullptr;
+    g_apTerrainTypeDescriptorTable[nationIndex] = nullptr;
+    return;
+  }
+
+  if (g_apSecondaryNationStateSlots[nationIndex] != nullptr) {
+    g_apSecondaryNationStateSlots[nationIndex]->Free();
+  }
+  g_apSecondaryNationStateSlots[nationIndex] = nullptr;
+  g_apTerrainTypeDescriptorTable[nationIndex] = nullptr;
+
+  TMinor* minor;
+  if (field44 == 2) {
+    minor = new TRemoteMinor();
+  } else {
+    minor = new TMinor();
+  }
+  minor->InitializeSecondaryNationStateAndSelectHomeTile(nationSlot);
+
+  g_apSecondaryNationStateSlots[nationIndex] = minor;
+  g_apTerrainTypeDescriptorTable[nationIndex] = minor;
+
+  if (field44 != 2 && g_bMultiplayerScenarioSetupActive == 0) {
+    minor->SeedInitialMilitaryAndNavyOrdersForOwnedRegions();
+
+    short cityRecordIndex =
+        g_pGlobalMapState->terrainStateTable[static_cast<short>(minor->homeRegionIndex)]
+            .cityRecordIndex;
+    int remainingOrders = 2;
+    do {
+      TMilitaryUnit* order = new TMilitaryUnit();
+      order->InitializeRecruitOrderState(2, cityRecordIndex, nationSlot, 0);
+      order->SetOrderModeSlot34(2, -1);
+      --remainingOrders;
+    } while (remainingOrders != 0);
+
+    minor->AssignDisplayNamesToUnnamedMilitaryUnits();
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x0057d830

@@ -451,15 +451,18 @@ public:
   // on a hit returns the parallel entry at [i+12] (see TMultiplayerMgr's
   // CityRedrawInvalidateTurnEventPacket, which already splits this same 24-entry array
   // into adjacentRegionIds0A[12]/adjacentRegionIds22[12] for wire serialization). Returns
-  // -1 if not found. Kept as one raw array (not two named fields) because
-  // RedistributeUnitOrderQueueToRandomAdjacentRegion (0x4a35e0) scans all 24 entries as one
-  // flat, -1-terminated list -- a genuinely dual-purpose layout.
+  // -1 if not found. Kept as one raw 24-entry array (not split into two named 12-entry
+  // fields) because RedistributeUnitOrderQueueToRandomAdjacentRegion (0x4a35e0) scans all 24
+  // as one flat, -1-terminated list. The [0..11]/[12..23] split (region id / parallel
+  // linked-region id) is a consumer-side interpretation of adjacent slots, not overlapping
+  // storage -- each slot has one meaning.
   virtual short FindLinkedRegionIdForAdjacentRegion(int cityRecordIndex,
                                                     int regionId); // slot 0x2f 0x516090
   // If nationSlotParam < 7, marks that nation's capital-tile city (found via
   // g_apTerrainTypeDescriptorTable[nationSlotParam]->homeRegionIndex used as a
-  // terrainStateTable index -- same dual-use pattern flagged on
-  // TGlobalMapCityScoreRecord::cityTileIndex04) as developmentStage 2. param_2 is unused
+  // terrainStateTable index -- one index into tables keyed by the same tile/region domain
+  // (cf. TGlobalMapCityScoreRecord::cityTileIndex04), not a re-typed slot) as
+  // developmentStage 2. param_2 is unused
   // by this body but the original callee epilogue pops 8 bytes (2 stack args), matching
   // slot 0x2f's signature.
   virtual void SetCapitalCityDevelopmentStageIfValidNationSlot(int nationSlotParam,

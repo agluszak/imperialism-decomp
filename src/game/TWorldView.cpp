@@ -13,6 +13,7 @@
 #include "game/TNavyMgr.h"
 #include "game/TOcean.h"
 #include "game/TToolBarCluster.h"
+#include "game/TViewMgr.h"
 #include "game/ScopedMapQuickDrawContext.h"
 #include "game/TTaskForce.h"
 #include "game/global_data_tables.h"
@@ -72,7 +73,118 @@ void TWorldView::HandleCursorHoverFallback(CPoint* point, RgnHandle hitArg) {
 // FUNCTION: IMPERIALISM 0x005958b0
 void TWorldView::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* point,
                                                                      RgnHandle hitArg) {
-  TView::HandleCursorHoverSelectionByChildHitTestAndFallback(point, hitArg);
+  (void)hitArg;
+
+  short cursorToken = -1;
+  short tileRow = 0;
+  unsigned short tileColumn = 0;
+  short* hoverBand = &hoverRegionBand70;
+  ComputeWrappedMapCellAndRegionBandFromScreenCoord(reinterpret_cast<int>(point), &tileRow,
+                                                    &tileColumn, hoverBand);
+  field6c = static_cast<unsigned short>(
+      ComputeStridedRecordAddress6C(static_cast<int>(tileRow), static_cast<int>(tileColumn)));
+
+  if (field6c == field6e && *hoverBand == clickCycleCounter72) {
+    return;
+  }
+
+  short tileIndex = static_cast<short>(field6c);
+  field68 =
+      static_cast<unsigned short>(g_pGlobalMapState->terrainStateTable[tileIndex].cityRecordIndex);
+  short interactionMode = static_cast<TMapUberPicture*>(ownerContext)->activeUnitCategoryIndex96;
+
+  switch (interactionMode) {
+  case 0:
+    cursorToken = static_cast<short>(
+        g_pMapContextActionManager->LookupMapCursorTokenByStateIndex(tileIndex, *hoverBand));
+    if (cursorToken == 0) {
+      cursorToken = static_cast<short>(
+          g_pNavyOrderManager->GetMapContextActionLabelTokenByActionCode(tileIndex, *hoverBand));
+    }
+    if (cursorToken == 0) {
+      cursorToken = static_cast<short>(
+          g_pSelectedCivilianOrderState->LookupCivilianTileOrderCursorTokenByActionIndex(
+              tileIndex, *hoverBand));
+    }
+    break;
+
+  case 1:
+    cursorToken = static_cast<short>(
+        g_pMapContextActionManager->LookupMapCursorTokenByStateIndex(tileIndex, *hoverBand));
+    if (cursorToken == 0) {
+      cursorToken = static_cast<short>(
+          g_pSelectedCivilianOrderState->ResolveCivilianTileSelectionOrReportActionCode(
+              tileIndex, *hoverBand));
+    }
+    if (cursorToken == 0) {
+      cursorToken = static_cast<short>(
+          g_pNavyOrderManager->GetMapContextActionLabelTokenByActionCode(tileIndex, *hoverBand));
+    }
+    if (cursorToken == 0) {
+      cursorToken =
+          static_cast<short>(g_pMapContextActionManager->LookupCivilianMapCursorTokenByStateIndex(
+              tileIndex, *hoverBand));
+    }
+    break;
+
+  case 2:
+    cursorToken = static_cast<short>(
+        g_pMapContextActionManager->LookupMapCursorTokenByStateIndex(tileIndex, *hoverBand));
+    if (cursorToken == 0) {
+      cursorToken = static_cast<short>(
+          g_pSelectedCivilianOrderState->ResolveCivilianTileSelectionOrReportActionCode(
+              tileIndex, *hoverBand));
+    }
+    if (cursorToken == 0) {
+      cursorToken = static_cast<short>(
+          g_pNavyOrderManager->GetMapContextActionLabelToken(tileIndex, *hoverBand));
+    }
+    break;
+
+  case 4:
+    if (g_pGlobalMapState->terrainStateTable[tileIndex].recruitSearchVisited0e == 0) {
+      cursorToken = 0x3eb;
+    }
+    break;
+
+  default:
+    cursorToken = static_cast<short>(
+        g_pMapContextActionManager->LookupMapCursorTokenByStateIndex(tileIndex, *hoverBand));
+    if (cursorToken == 0) {
+      cursorToken = static_cast<short>(
+          g_pSelectedCivilianOrderState->ResolveCivilianTileSelectionOrReportActionCode(
+              tileIndex, *hoverBand));
+    }
+    if (cursorToken == 0) {
+      cursorToken = static_cast<short>(
+          g_pNavyOrderManager->GetMapContextActionLabelTokenByActionCode(tileIndex, *hoverBand));
+    }
+    break;
+  }
+
+  if (cursorToken == 0x3e7 || cursorToken == 0) {
+    cursorToken = -1;
+  }
+  field4e = static_cast<unsigned short>(cursorToken);
+
+  HCURSOR cursor;
+  if (cursorToken == -1) {
+    cursor = LoadCursorA(0, MAKEINTRESOURCEA(0x7f00));
+  } else {
+    cursor = static_cast<HCURSOR>(g_pUiRuntimeContext->cursorTable[cursorToken - 1000]);
+  }
+  SetCursor(cursor);
+
+  {
+    ScopedMapQuickDrawContext scopedContext(this);
+    if (field6c != field6e) {
+      RenderStrategicTileSelectionAndNeighborHighlights();
+    }
+  }
+
+  field6e = field6c;
+  field6a = field68;
+  clickCycleCounter72 = *hoverBand;
 }
 
 // FUNCTION: IMPERIALISM 0x00595c40

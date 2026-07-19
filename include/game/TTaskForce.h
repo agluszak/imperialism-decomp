@@ -16,10 +16,12 @@ class TShip;
 // used to sit here) is gone: bd 1uj.16.1 resolved FindOrCreateChildOrderLink's
 // receiver to be TTaskForce itself (the parent order entry), not a distinct
 // manager class -- see the `owner` field comment below and FindOrCreateChildOrderLink's
-// own declaration. `owner` remains genuinely dual-purpose (TTaskForce::
-// PromoteMapOrderChainAndQueue instead reads it as TZone*, per bd 1uj.47.2 --
-// see that method's body for the local reinterpret_cast), consistent with the
-// type-modeling guardrail's "opaque/polymorphic slot" exception.
+// own declaration. UNRESOLVED_FIELD_ATTRIBUTION: `owner` (+0x18) is a tagged payload keyed by
+// `attachment`, not a plain TTaskForce* -- PromoteMapOrderChainAndQueue reads it as TZone*
+// (bd 1uj.47.2), attachment 1 propagates it as a raw value, attachment 5 as a target-city
+// record. The final model is a discriminator-keyed union/accessors once every writer and
+// receiver is inventoried; kept raw with per-site casts until then (do not call it
+// "dual-purpose").
 
 // Map-order queue entry (0x34 bytes). RTTI-confirmed real name TTaskForce
 // (CRuntimeClass chain: TTaskForce -> TObject -> CObject; see
@@ -230,8 +232,8 @@ public:
 
   // Immediate/deferred execution effects for a resolved queue entry
   // (ResolveMapOrderChainsForTurnPhase's tail passes): no-op once already eliminated.
-  // Type 1 propagates `owner` (reused as a raw assignment-target value) into every
-  // active child's own attachment field. Type 5 sets the target city's owner-flag bit
+  // Type 1 propagates the raw `owner` payload value into every active child's own
+  // attachment field. Type 5 sets the target city's owner-flag bit
   // for this entry's nation and, in single-player mode, invalidates that city's redraw.
   // Type 8 advances every active child's required_count by a quarter-step toward its
   // resource-type's stockCap. Any other type asserts once, then (except type 1) marks
@@ -345,8 +347,9 @@ public:
   void PromoteMapOrderChainAndQueue(TZone* pContextAnchor); // 0x5533f0
 
   // bd 1uj.16.2/1uj.16.5 target: sibling of SetMapOrderType9AndQueue for map-order kind
-  // 6 (port-zone blockade orders) -- stores `nOrderTarget` into the dual-purpose `owner`
-  // slot (same pun PromoteMapOrderChainAndQueue uses for `contextAnchor`), sets
+  // 6 (port-zone blockade orders) -- stores `nOrderTarget` into the `owner` tagged-payload
+  // slot (see the owner UNRESOLVED_FIELD_ATTRIBUTION note; same slot PromoteMapOrderChainAndQueue
+  // writes as `contextAnchor`), sets
   // attachment=6, then the identical free-inactive-children / recompute /
   // self-Free-or-queue tail as SetMapOrderType9AndQueue. Ghidra/symbols.csv mis-attribute
   // this to TControlSeaZoneMission, but its body only ever reads TTaskForce's own field

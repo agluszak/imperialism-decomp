@@ -15,12 +15,23 @@ struct TControlPictureRectState;
 // tileOrObject08 is interpreted (0/3/4 -> index into g_pGlobalMapState's stride-0xa8
 // table; otherwise a pointer whose short at +0xc is the map cell). The +0x258 tail is
 // the report-marker placement state stamped by that hook.
+// +0x08 tagged payload of MapContextActionRecord, discriminated by actionType04: a
+// tile/record index for actionType04 in {0,3,4} (index into g_pGlobalMapState's stride-0xa8
+// table), otherwise a map-object pointer (its short at +0xc is the map cell / a TZone*).
+// All members alias the same 4 bytes, so accessing the right one is codegen-identical to the
+// old raw int while making the discriminated intent explicit.
+union MapContextTarget {
+  int tileIndex; // actionType04 in {0,3,4}
+  void* object;  // otherwise: a map object / TZone* (readers cast per actionType04)
+  int raw;       // untyped 4-byte payload (e.g. copied into a news-story parm)
+};
+
 struct MapContextActionRecord {
   unsigned char nationIds[2];       // +0x00
   unsigned char participantIndex02; // +0x02
   unsigned char pad03;              // +0x03
   int actionType04;                 // +0x04 (0..4; 2 widens the marker sprite code)
-  int tileOrObject08;               // +0x08 (dual-purpose per actionType04 -- keep int)
+  MapContextTarget tileOrObject08;  // +0x08 (tagged by actionType04 -- see MapContextTarget)
   unsigned char pad0c[0x258 - 0x0c];
   int markerPixelX258;         // +0x258
   int markerPixelY25c;         // +0x25c
@@ -213,6 +224,13 @@ public:
   // classes on the g_pMapContextActionManager singleton (e.g. the map-interaction-mode
   // and province-cycling handlers).
   void SetActiveProvinceSelection(short tileIndex);
+
+  // Cursor-resource lookups for the two map-click state classifiers. Both are real
+  // __thiscall members on the global army/map-context manager; their bodies only use
+  // global state, but every caller loads this manager into ECX.
+  unsigned short LookupMapCursorTokenByStateIndex(short tileIndex, short mode); // 0x4a4930
+  unsigned short LookupCivilianMapCursorTokenByStateIndex(short tileIndex,
+                                                          short mode); // 0x4a4aa0
 
   // Civilian-order counterpart of the free-function ComputeMapCursorStateIndex (this one
   // genuinely reads/writes `this`, e.g. pendingMapActionIndex). 0x004a4c80, 641 bytes.

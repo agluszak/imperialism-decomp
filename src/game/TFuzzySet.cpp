@@ -13,6 +13,9 @@ IMPLEMENT_DYNCREATE(TFuzzySet, TObject)
 // TFuzzySet::TFuzzySet
 TFuzzySet::TFuzzySet() {}
 
+// SYNTHETIC: IMPERIALISM 0x004ff700
+// TFuzzySet::`scalar deleting destructor'
+
 // Complete-object destructor tail, called from the scalar deleting destructor
 // at 0x4ff700. Ghidra had named this DestructTFuzzySetAndMaybeFree_Impl.
 // SYNTHETIC: IMPERIALISM 0x004ff730
@@ -35,5 +38,7 @@ void TFuzzySet::Free() {
   delete this;
 }
 
-// SYNTHETIC: IMPERIALISM 0x004ff700
-// TFuzzySet::`scalar deleting destructor'
+// AllocateAndAppendRecord (0x4ff7d0) is defined in its own TU
+// (TFuzzySet_AllocateAndAppendRecord.cpp) to keep it out of this file's PDB line
+// table, which otherwise crosses its symbol with the adjacent Free() and makes reccmp
+// mis-pair both.
