@@ -1,5 +1,11 @@
 #include "game/TCreditsPicture.h"
 
+#include "game/TDeluxeText.h"
+#include "game/TSoundPlayer.h"
+#include "game/global_data_tables.h"
+#include "game/quickdraw_rendering.h"
+#include "game/ui_control_tags.h"
+
 // FUNCTION: IMPERIALISM 0x0043d9f0
 undefined TCreditsPicture::OrphanRetStub_0043d9f0() {
   return 0;
@@ -20,6 +26,29 @@ TCreditsPicture::TCreditsPicture() {}
 
 // FUNCTION: IMPERIALISM 0x0056ee50
 void TCreditsPicture::NoOpUiLifecycleHook(int arg) {
+  TPicture::NoOpUiLifecycleHook(arg);
+
+  g_pSfxPlaybackSystem->ResetDualAudioCuePools();
+  g_pSfxPlaybackSystem->PushCueToDualAudioCuePools(0xc);
+  g_pSfxPlaybackSystem->SelectAndScheduleRandomAudioCue();
+
+  TDeluxeText* line1 = static_cast<TDeluxeText*>(ResolveControlByTag(kControlTagCred));
+  line1->QueryStepValue();
+  TUiTextStyleDescriptor style;
+  InitializeUiTextStyleDescriptor(&style, 0, 0xc, 0x2b68, 3);
+  int cursorTheme;
+  MapUiThemeCodeToStyleFlags(0x2b6b, &cursorTheme);
+  line1->SetTextFromUiStringResourceId(0xfb0);
+  line1->ApplyTextStyleDescriptorAndMaybeRefresh(&style, 1);
+  line1->cursorThemeCode9c = cursorTheme;
+  line1->fieldA0 = 0;
+
+  TDeluxeText* line2 = static_cast<TDeluxeText*>(ResolveControlByTag(kControlTagCre2));
+  line2->QueryStepValue();
+  line2->SetTextFromUiStringResourceId(0xfb1);
+  line2->ApplyTextStyleDescriptorAndMaybeRefresh(&style, 1);
+  line2->cursorThemeCode9c = cursorTheme;
+  line2->fieldA0 = 0;
 }
 
 // FUNCTION: IMPERIALISM 0x0056efc0

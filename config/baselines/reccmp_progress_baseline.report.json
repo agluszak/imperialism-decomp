@@ -16991,7 +16991,7 @@
     },
     {
       "address": "0x50bea0",
-      "matching": 0.21172194457064972,
+      "matching": 0.21263062244434347,
       "name": "TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets",
       "type": 1
     },
@@ -21934,7 +21934,7 @@
     },
     {
       "address": "0x545940",
-      "matching": 0.4261712439418417,
+      "matching": 0.41389337641357027,
       "name": "TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine",
       "type": 1
     },
@@ -24872,7 +24872,7 @@
     },
     {
       "address": "0x56ee50",
-      "matching": 0.023529411764705882,
+      "matching": 0.6878980891719745,
       "name": "TCreditsPicture::NoOpUiLifecycleHook",
       "type": 1
     },
@@ -28107,7 +28107,7 @@
     },
     {
       "address": "0x58a020",
-      "matching": 0.47715736040609136,
+      "matching": 0.45685279187817257,
       "name": "TRailAmtBar::NoOpUiLifecycleHook",
       "type": 1
     },
@@ -30218,7 +30218,7 @@
     },
     {
       "address": "0x5a1ee0",
-      "matching": 0.6763925729442971,
+      "matching": 0.6737400530503979,
       "name": "TTacticalBattle::EvaluateAndResolveTacticalActionAgainstTileOccupant",
       "type": 1
     },
@@ -30326,7 +30326,7 @@
     },
     {
       "address": "0x5a3d30",
-      "matching": 0.8163265306122449,
+      "matching": 0.8104956268221575,
       "name": "TTacticalBattle::IsTacticalTargetTileReachableForAction",
       "type": 1
     },
@@ -30848,7 +30848,7 @@
     },
     {
       "address": "0x5a9240",
-      "matching": 0.5397590361445783,
+      "matching": 0.5533980582524272,
       "name": "TTacticalBattleView::AnimateTacticalUnitMoveBetweenTiles",
       "type": 1
     },

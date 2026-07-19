@@ -153,4 +153,6 @@ const unsigned int kControlTagTop = 0x746f7020u;  // 'top ' — top picture
 const unsigned int kControlTagTitl = 0x7469746cu; // 'titl' — title text
 const unsigned int kControlTagTex0 = 0x74657830u; // 'tex0' — first of 7 sequential text lines (tex0-tex6)
 const unsigned int kControlTagScr0 = 0x73637230u; // 'scr0' — first of 7 sequential score-row labels (scr0-scr6)
+const unsigned int kControlTagCred = 0x63726564u; // 'cred' — credits text line 1
+const unsigned int kControlTagCre2 = 0x63726532u; // 'cre2' — credits text line 2
 const unsigned int kControlTagScvw = 0x73637677u; // 'scvw' — scroll view
