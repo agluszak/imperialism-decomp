@@ -1809,6 +1809,11 @@ const int g_coarseHexRowOffset_006974b0[6] = {-1, 0, 1, 1, 0, -1};
 // GLOBAL: IMPERIALISM 0x006974c8
 const int g_coarseHexColOffsetOddRow_006974c8[6] = {0, 1, 0, -1, -1, -1};
 
+// GLOBAL: IMPERIALISM 0x00697568
+const int g_riverConnectionTypeByDirectionPair_00697568[6][6] = {
+    {0, 0, 1, 2, 3, 0}, {0, 0, 0, 4, 5, 6}, {1, 0, 0, 0, 7, 8},
+    {2, 4, 0, 0, 0, 9}, {3, 5, 7, 0, 0, 0}, {0, 6, 8, 9, 0, 0}};
+
 // GLOBAL: IMPERIALISM 0x00696e40
 const unsigned short g_hexDirectionBitMasks_00696e40[6] = {1, 2, 4, 8, 16, 32};
 
