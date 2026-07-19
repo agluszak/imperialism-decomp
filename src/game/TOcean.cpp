@@ -59,7 +59,8 @@ void TZone::HandleKeyDown(int key_id) {
   unsigned int slotCount = static_cast<unsigned int>(secondaryNeighbors.GetSize());
 
   if ((nationKeyMask10 & (1U << ((unsigned char)key_id & 0x1f))) == 0) {
-    nationKeyMask10 = static_cast<unsigned short>(nationKeyMask10 | (1U << ((unsigned char)key_id & 0x1f)));
+    nationKeyMask10 =
+        static_cast<unsigned short>(nationKeyMask10 | (1U << ((unsigned char)key_id & 0x1f)));
     sVarSlotId = g_pSimMgr->GetActiveNationId();
 
     if ((nationKeyMask10 & (1U << ((unsigned char)sVarSlotId & 0x1f))) == 0) {
@@ -270,8 +271,9 @@ void TOcean::RefreshMapActionContextNationOverlaysAndOrderRanks() {
   for (TShip* shipNode = GetNavyPrimaryOrderListHead(); shipNode != 0;
        shipNode = shipNode->nextOlder24) {
     TZone* orderZone = shipNode->field08;
-    orderZone->nationKeyMask10 = static_cast<unsigned short>(
-        orderZone->nationKeyMask10 | (1 << static_cast<unsigned char>(shipNode->ownerNationSlot14)));
+    orderZone->nationKeyMask10 =
+        static_cast<unsigned short>(orderZone->nationKeyMask10 |
+                                    (1 << static_cast<unsigned char>(shipNode->ownerNationSlot14)));
   }
 
   // 3) Reset overlay tile states across the whole map: nation-overlay states (7..0xd)
@@ -332,17 +334,16 @@ void TOcean::RefreshMapActionContextNationOverlaysAndOrderRanks() {
     if (isTaskForceEntry == 0) {
       continue;
     }
-    int cityIndex = GetCityIndexFromCityStatePointer(
-        reinterpret_cast<TGlobalMapCityScoreRecord*>(rankEntry->owner));
+    int cityIndex = GetCityIndexFromCityStatePointer(rankEntry->owner.asCityTarget);
     if (static_cast<short>(g_pGlobalMapState->cityScoreTable[cityIndex].ownerNationCode00) !=
         g_pSimMgr->GetActiveNationId()) {
       continue;
     }
-    // contextAnchor's pointee varies by producer (see TTaskForce.h); this entry kind
-    // stores the anchoring map-action context TZone*.
-    short coastalTile = reinterpret_cast<TZone*>(rankEntry->contextAnchor)
-                            ->FindBestCoastalTileForContextAndCityStateByHeuristic(
-                                reinterpret_cast<int>(rankEntry->owner));
+    // contextAnchor is the anchoring map-action context TZone*; owner.raw is the kind-5
+    // city-target record passed through as the heuristic's opaque second argument.
+    short coastalTile =
+        rankEntry->contextAnchor->FindBestCoastalTileForContextAndCityStateByHeuristic(
+            rankEntry->owner.raw);
     if (coastalTile == -1) {
       continue;
     }
@@ -509,7 +510,8 @@ void TOcean::EnsurePortZoneForTile(short nTileIndex) {
   signed char seaTileClass = terrainTable[bestSeaTile].tileActionClass16;
   if (seaTileClass == 3 || seaTileClass == 0xe) {
     linkedContext = TZone::GetFirstPortZone();
-    while (linkedContext != 0 && static_cast<short>(linkedContext->tileOrTerrainId0c) != bestSeaTile &&
+    while (linkedContext != 0 &&
+           static_cast<short>(linkedContext->tileOrTerrainId0c) != bestSeaTile &&
            linkedContext->activeTileIndex20 != bestSeaTile &&
            static_cast<TPortZone*>(linkedContext)->field48 != bestSeaTile) {
       linkedContext = linkedContext->GetNextPortZone();
@@ -554,7 +556,8 @@ void TOcean::RemovePortZoneByTile(short nTileIndex) {
     zone = zone->prev18;
   }
   while (zone != 0) {
-    if (static_cast<short>(zone->tileOrTerrainId0c) == nTileIndex || zone->activeTileIndex20 == nTileIndex ||
+    if (static_cast<short>(zone->tileOrTerrainId0c) == nTileIndex ||
+        zone->activeTileIndex20 == nTileIndex ||
         static_cast<TPortZone*>(zone)->field48 == nTileIndex) {
       zone->Free();
       return;
@@ -582,15 +585,14 @@ void TOcean::FinalizeQueuedMapOrderEntry(TTaskForce* entry) {
 
   // contextAnchor (+0x18) is the entry's owning map-order zone (see the TZone casts in
   // TNavyMgr/TToolBarCluster); slot 0x58 is TZone::SetMapOrderUiFlag.
-  TZone* zone = reinterpret_cast<TZone*>(entry->contextAnchor);
+  TZone* zone = entry->contextAnchor;
   short nation = g_pSimMgr->GetActiveNationId();
   if (nation == -1) {
     nation = g_pSimMgr->GetActiveNationId();
   }
   int hasPendingNode = 0;
   if ((zone->nationKeyMask10 & static_cast<unsigned char>(1 << (nation & 0x1f))) != 0) {
-    for (TShip* node = GetNavyPrimaryOrderListHead(); node != nullptr;
-         node = node->nextOlder24) {
+    for (TShip* node = GetNavyPrimaryOrderListHead(); node != nullptr; node = node->nextOlder24) {
       if (node->field08 == zone && node->ownerNationSlot14 == nation &&
           node->ownerOrderEntry0c == nullptr) {
         hasPendingNode = 1;
@@ -641,7 +643,7 @@ TTaskForce* TOcean::EnsureSelectedTaskForceForOrderOwnerAndRefresh(TZone* pMapOr
   // If a different context zone is now selected, drop the cached task force's per-nation
   // order nodes; and if the new context is null, free and forget the cached task force.
   if (selectedTaskForce14 != nullptr &&
-      selectedTaskForce14->contextAnchor != reinterpret_cast<int>(pMapOrderContextZone)) {
+      selectedTaskForce14->contextAnchor != pMapOrderContextZone) {
     selectedTaskForce14->RemoveTaskForceOrderNodesByNationAndClearSelectionState(
         g_pSimMgr->GetActiveNationId(), pMapOrderContextZone);
     if (pMapOrderContextZone == nullptr) {
