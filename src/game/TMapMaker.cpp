@@ -1142,9 +1142,29 @@ int TMapMaker::RandomlyMarkEmptyRegionTilesAndNeighborsByChance(int coarseIndex,
 
 // FUNCTION: IMPERIALISM 0x00528ce0
 int TMapMaker::GetAdjacentRegionGridCell(int cell, int direction) {
-  (void)cell;
-  (void)direction;
-  return 0;
+  int column = cell % 0x1b;
+  int row = cell / 0x1b;
+  if ((row & 1) == 0) {
+    column += g_coarseHexColOffsetEvenRow_00697498[direction];
+  } else {
+    column += g_coarseHexColOffsetOddRow_006974c8[direction];
+  }
+  row += g_coarseHexRowOffset_006974b0[direction];
+
+  if (column < 0) {
+    column += 0x1b;
+  } else if (column >= 0x1b) {
+    column -= 0x1b;
+  }
+
+  if (row < 0 || row > 0x3c) {
+    return -1;
+  }
+  int neighbor = column + row * 0x1b;
+  if (neighbor < 0 || neighbor >= 0x195) {
+    return -1;
+  }
+  return neighbor;
 }
 
 // Two-pass ownership smoothing over the full-resolution generation grid (rows 1..58

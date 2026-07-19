@@ -3425,6 +3425,9 @@ address|name|symbol|size|type|prototype|provenance
 5288a0|TMapMaker::SetCityDialogValueDword10||698|function|undefined SpreadType6CellsWithSecondaryNeighborPass()|
 528c10|GetNeighborTileIndexOnMap108x60||145|function|undefined GetNeighborTileIndexOnMap108x60()|
 528ce0|TMapMaker::GetAdjacentRegionGridCell||125|function|int __thiscall GetAdjacentRegionGridCell(int cell, int direction)|
+697498|g_coarseHexColOffsetEvenRow_00697498|||global||
+6974b0|g_coarseHexRowOffset_006974b0|||global||
+6974c8|g_coarseHexColOffsetOddRow_006974c8|||global||
 528e50|TMapMaker::vmethod_0017||940|function|undefined SmoothCityRegionOwnershipByNeighborSampling()|
 5292f0|TMapMaker::MapGenPassSlot1E||166|function|void __thiscall MapGenPassSlot1E(void)|
 5293d0|RandomizeRegionTemplateBanksForMismatchedNeighborClasses||470|function|undefined RandomizeRegionTemplateBanksForMismatchedNeighborClasses()|
