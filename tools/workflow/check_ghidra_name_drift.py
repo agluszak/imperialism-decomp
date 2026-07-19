@@ -35,6 +35,7 @@ from tools.common.repo import repo_root_from_file
 
 SYMBOLS = "config/symbols.csv"
 AUTOGEN_DIR = "src/ghidra_autogen"
+NAME_OVERRIDES = "config/function_name_overrides.csv"
 DEFAULT_BASELINE = "config/ghidra_name_drift_baseline.csv"
 
 _FUNC_RE = re.compile(r"//\s*GHIDRA_FUNCTION\s+IMPERIALISM\s+0x([0-9A-Fa-f]+)")
@@ -101,6 +102,31 @@ def find_drift(symbols: dict[str, str], autogen: list[tuple[str, str, str]]):
     return class_drift, stale_buckets
 
 
+def find_override_drift(repo: Path, symbols: dict[str, str]) -> list[tuple[str, str, str]]:
+    """Override entries that contradict symbols.csv, i.e. would revert a curated name.
+
+    `config/function_name_overrides.csv` is applied to the Ghidra export *after* the
+    curated-symbols merge, so a stale override entry silently reverts a rename that was
+    made in symbols.csv/source (the TDiplomacyMgr::IsNationSlotEligibleForEventProcessing
+    -> WrapperFor_...At413250 reversion). symbols.csv is authoritative: an override at a
+    curated address must match it (or not exist). This is a hard invariant, not ratcheted.
+    """
+    path = repo / NAME_OVERRIDES
+    if not path.is_file():
+        return []
+    out: list[tuple[str, str, str]] = []
+    for row in read_pipe_rows(path):
+        raw = (row.get("address") or "").strip()
+        if not re.fullmatch(r"(?:0x)?[0-9a-fA-F]+", raw):
+            continue
+        addr = norm_addr(raw)
+        oname = (row.get("name") or "").strip()
+        curated = symbols.get(addr)
+        if curated and oname and curated != oname:
+            out.append((addr, curated, oname))
+    return out
+
+
 def read_baseline(path: Path) -> set[str]:
     if not path.is_file():
         return set()
@@ -129,6 +155,7 @@ def main() -> int:
     autogen = load_autogen(repo)
     class_drift, stale_buckets = find_drift(symbols, autogen)
     keys = keys_for(class_drift, stale_buckets)
+    override_drift = find_override_drift(repo, symbols)
 
     baseline_path = Path(args.baseline)
     if args.write_baseline:
@@ -157,6 +184,15 @@ def main() -> int:
                 print(f"    - 0x{a}: symbols.csv={e!r} but autogen={g!r}")
             else:
                 print(f"    - stale class bucket: {k.split('|', 1)[1]}")
+        return 1
+
+    # Override drift is a HARD invariant (not ratcheted): a stale function_name_overrides
+    # row is applied after the curated merge and silently reverts a curated rename.
+    if override_drift:
+        print("ghidra-name-drift gate failed: config/function_name_overrides.csv contradicts "
+              "symbols.csv (a stale override would revert a curated rename on the next sync).")
+        for a, curated, oname in override_drift:
+            print(f"    - 0x{a}: symbols.csv={curated!r} but override={oname!r}")
         return 1
 
     print("ghidra-name-drift gate passed (no new divergence).")

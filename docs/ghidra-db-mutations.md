@@ -16,16 +16,21 @@ construction-site references automatically), the vtable-struct datatype, the
 `TSoundChannelNode` → `TLongintList` case (vtable 0x650a08): after `--apply` the DB had
 zero `TSoundChannelNode` remnants.
 
-**The full convergence is deliberately NOT committed yet**, because exporting it and
-regenerating `src/ghidra_autogen` via `sync_exports` surfaced a deeper problem: the
-vendored DB is ~1000 function names behind source, and `sync_exports` writes DB names
-*back* into `config/symbols.csv` (its curated-merge still lost curated renames — e.g.
-0x413250 reverted from source `TDiplomacyMgr::IsNationSlotEligibleForEventProcessing`
-to the DB's stale `WrapperFor_...At413250`). Regenerating the autogen therefore
-reflects an un-converged DB and corrupts the authoritative source. Converging the whole
-DB to source first (push hardened to stop skipping, iterated to zero drift) is a
-prerequisite for a clean autogen regen — tracked as the next pass; the
-`ghidra-name-drift-gate` baseline is the queue.
+**CORRECTION (same day):** an earlier version of this note claimed the DB was "~1000
+names behind" and that `sync_exports`'s curated-merge reverted curated names. Both were
+wrong. The DB *is* converged (0x413250 is `IsNationSlotEligibleForEventProcessing` in
+the DB), and `merge_curated_symbols_csv` provably preserves curated names. The reversion
+had two real, small causes: (1) a `sync_exports` run of mine timed out *after* it
+overwrote `symbols.csv` with the raw DB export but *before* the curated merge, and a
+second run then read that half-written file as "curated"; and (2) `sync_exports` applies
+`config/function_name_overrides.csv` *after* the curated merge, and exactly **3** stale
+override rows there still forced pre-rename names (0x413250, 0x60a60a, 0x556410),
+reverting them. Fixed by removing those 3 stale rows and adding an
+override-vs-symbols.csv consistency check to `ghidra-name-drift-gate` (hard invariant:
+an override may never contradict the authoritative symbols.csv). With that cleared, a
+single clean `sync_exports` run + keeping `symbols.csv` curated at HEAD converges the
+autogen (`TSoundChannelNode.cpp` disappears) without corrupting source — the remaining
+mechanical step.
 
 ## Committed mutations (already in the current .gzf, newest first)
 
