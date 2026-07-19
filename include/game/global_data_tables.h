@@ -1026,6 +1026,9 @@ extern "C" MappedFlavorTextNationVariantEntry g_MappedFlavorTextNationVariantTab
 class SeapointStretch;
 class SeaSegmentStretch;
 extern SeapointStretch g_seapointQuadTable_006a3478;
+// Scratch remap from pre-existing city-region id to compact id. The load-map form of
+// TMapMaker::MapGenFinalizePassSlot19 clears all 256 entries to -1 before populating it.
+extern int g_cityRegionIdRemapTable_006a3498[0x100];
 extern SeaSegmentStretch g_regionBorderLinkTable_006a3900;
 
 // Hex-neighbour offset tables (offset-coordinate grid; even/odd rows shift columns

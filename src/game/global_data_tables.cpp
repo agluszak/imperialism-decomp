@@ -1785,6 +1785,8 @@ int g_nUiInvalidationAssertFlagLine495 = 0;
 // 0x006a3900 are untracked scratch tables). The per-tile-edge Seapoint quads are matched
 // into region-border SeaSegments that MergeSmallCityRegionsAndCompactIds consumes. ---
 SeapointStretch g_seapointQuadTable_006a3478;
+// GLOBAL: IMPERIALISM 0x006a3498
+int g_cityRegionIdRemapTable_006a3498[0x100];
 SeaSegmentStretch g_regionBorderLinkTable_006a3900;
 
 // Per tech-item slot, the purchase cost applied/refunded against a nation's field-0x10

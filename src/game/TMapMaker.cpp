@@ -8,6 +8,7 @@
 #include "game/TMapMgr.h"
 #include "game/TSetupRandomMapPicture.h"
 #include "game/global_data_tables.h"
+#include "game/sea_geometry.h"
 
 // Same hex-neighbor math as TMapMgr::ComputeHexNeighborTileIndices, but over
 // TMapMaker's own full-resolution generation grid (mapTileGrid08, 108x60, stride
@@ -1225,7 +1226,46 @@ int TMapMaker::GetFineGridCellBasePointerFromCoarseIndex(int coarseIndex) {
 
 // FUNCTION: IMPERIALISM 0x00529f60
 void TMapMaker::MapGenFinalizePassSlot19(int mode) {
-  (void)mode;
+  if (static_cast<unsigned char>(mode) != 0) {
+    int i;
+    cityRegionCount2a4 = 0;
+    for (i = 0; i < 0x100; ++i) {
+      g_cityRegionIdRemapTable_006a3498[i] = -1;
+    }
+
+    int tileOffset;
+    for (tileOffset = 0; tileOffset < 0x38f40; tileOffset += 0x24) {
+      char* tile = mapTileGrid08 + tileOffset;
+      int oldRegionId = -1;
+      if (tileOffset >= 0 && tile[0] == 5) {
+        oldRegionId = static_cast<signed char>(tile[4]) - 0x17;
+      }
+      if (oldRegionId > -1) {
+        if (g_cityRegionIdRemapTable_006a3498[oldRegionId] == -1) {
+          g_cityRegionIdRemapTable_006a3498[oldRegionId] = cityRegionCount2a4++;
+        }
+        tile[4] = static_cast<char>(g_cityRegionIdRemapTable_006a3498[oldRegionId] + 0x17);
+      }
+    }
+  } else {
+    GenerateCityRegionIdsBySeedAndNeighborPropagation();
+  }
+
+  if (g_pActiveRandomMapSetupPicture006A4268 != 0) {
+    g_pActiveRandomMapSetupPicture006A4268->SpinYourGlobe();
+  }
+  BuildCityRegionBorderOverlaySegments();
+  if (g_pActiveRandomMapSetupPicture006A4268 != 0) {
+    g_pActiveRandomMapSetupPicture006A4268->SpinYourGlobe();
+  }
+  BuildOverlaySpanRecordsFromQuadBorderLinks();
+  if (g_pActiveRandomMapSetupPicture006A4268 != 0) {
+    g_pActiveRandomMapSetupPicture006A4268->SpinYourGlobe();
+  }
+  MergeSmallCityRegionsAndCompactIds();
+  if (g_pActiveRandomMapSetupPicture006A4268 != 0) {
+    g_pActiveRandomMapSetupPicture006A4268->SpinYourGlobe();
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x0052a670
