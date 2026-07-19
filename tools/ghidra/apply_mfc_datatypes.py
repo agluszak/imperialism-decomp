@@ -33,6 +33,16 @@ DEFAULT_CLASSES = (
     "CWnd",
     "CDataExchange",
     "CView",
+    "CFile",
+    "COleDataObject",
+    "CGdiObject",
+    "CFont",
+    "CScrollBar",
+    "CCommandLineInfo",
+    "CDumpContext",
+    "CException",
+    "CMenu",
+    "CWinThread",
 )
 
 
@@ -197,6 +207,132 @@ MFC_MODELS: dict[str, ClassSpec] = {
         fields=(
             FieldSpec(0x00, "cwnd", "CWnd", 0x3C),
             FieldSpec(0x3C, "m_pDocument", "void *", 4),
+        ),
+    ),
+    # The following 8 were driven by weak_pointer_type_inventory.py's
+    # canonical_mfc_type_exists bucket (docs/reference/apply-mfc-rtti-ownership.md-
+    # adjacent follow-up work) — each layout measured from the vendored MFC 4.2
+    # header, not guessed. CPrintInfo and CTypeLibCache remain unmodeled: neither
+    # has a real definition anywhere in the vendored header subset (only a
+    # forward declaration), so staying opaque is honest, not a defect;
+    # CPreviewView is deferred (needs CSize/CScrollView first, for a single
+    # occurrence).
+    #
+    # afx.h:1154-1256 — CFile derives CObject; three scalar/CString fields.
+    "CFile": ClassSpec(
+        name="CFile",
+        size=0x10,
+        dependencies=("CObject", "CString"),
+        fields=(
+            FieldSpec(0x00, "cobject", "CObject", 4),
+            FieldSpec(0x04, "m_hFile", "int", 4),            # UINT
+            FieldSpec(0x08, "m_bCloseOnDelete", "int", 4),   # BOOL
+            FieldSpec(0x0C, "m_strFileName", "CString", 4),
+        ),
+    ),
+    # afxole.h:148-189 — COleDataObject is NOT CObject-derived (no vfptr); a
+    # plain 4-field wrapper around IDataObject.
+    "COleDataObject": ClassSpec(
+        name="COleDataObject",
+        size=0x10,
+        fields=(
+            FieldSpec(0x00, "m_lpDataObject", "void *", 4),   # LPDATAOBJECT
+            FieldSpec(0x04, "m_lpEnumerator", "void *", 4),   # LPENUMFORMATETC
+            FieldSpec(0x08, "m_bClipboard", "int", 4),        # BOOL
+            FieldSpec(0x0C, "m_bAutoRelease", "int", 4),      # BOOL
+        ),
+    ),
+    # afxwin.h:343-377 — CGdiObject derives CObject; one HGDIOBJ handle field.
+    # Modeled as a dependency of CFont (below), which adds no fields of its own.
+    "CGdiObject": ClassSpec(
+        name="CGdiObject",
+        size=0x08,
+        dependencies=("CObject",),
+        fields=(
+            FieldSpec(0x00, "cobject", "CObject", 4),
+            FieldSpec(0x04, "m_hObject", "void *", 4),  # HGDIOBJ
+        ),
+    ),
+    # afxwin.h:451-479 — CFont adds no fields over CGdiObject.
+    "CFont": ClassSpec(
+        name="CFont",
+        size=0x08,
+        dependencies=("CGdiObject",),
+        fields=(
+            FieldSpec(0x00, "cgdiobject", "CGdiObject", 8),
+        ),
+    ),
+    # afxwin.h:3041-3066 — CScrollBar adds no fields over CWnd.
+    "CScrollBar": ClassSpec(
+        name="CScrollBar",
+        size=0x3C,
+        dependencies=("CWnd",),
+        fields=(
+            FieldSpec(0x00, "cwnd", "CWnd", 0x3C),
+        ),
+    ),
+    # afxwin.h:3921-3956 — CCommandLineInfo derives CObject; 4 scalar fields
+    # followed by 4 CString fields (release build; no _DEBUG-only members).
+    "CCommandLineInfo": ClassSpec(
+        name="CCommandLineInfo",
+        size=0x24,
+        dependencies=("CObject", "CString"),
+        fields=(
+            FieldSpec(0x00, "cobject", "CObject", 4),
+            FieldSpec(0x04, "m_bShowSplash", "int", 4),      # BOOL
+            FieldSpec(0x08, "m_bRunEmbedded", "int", 4),     # BOOL
+            FieldSpec(0x0C, "m_bRunAutomated", "int", 4),    # BOOL
+            FieldSpec(0x10, "m_nShellCommand", "int", 4),    # enum
+            FieldSpec(0x14, "m_strFileName", "CString", 4),
+            FieldSpec(0x18, "m_strPrinterName", "CString", 4),
+            FieldSpec(0x1C, "m_strDriverName", "CString", 4),
+            FieldSpec(0x20, "m_strPortName", "CString", 4),
+        ),
+    ),
+    # afx.h:1834-1875 — CDumpContext is NOT CObject-derived; 2 fields.
+    "CDumpContext": ClassSpec(
+        name="CDumpContext",
+        size=0x08,
+        dependencies=("CFile",),
+        fields=(
+            FieldSpec(0x00, "m_nDepth", "int", 4),
+            FieldSpec(0x04, "m_pFile", "CFile *", 4),
+        ),
+    ),
+    # afx.h:823-849 — CException derives CObject; one BOOL field (release
+    # build; m_bReadyForDelete is _DEBUG-only).
+    "CException": ClassSpec(
+        name="CException",
+        size=0x08,
+        dependencies=("CObject",),
+        fields=(
+            FieldSpec(0x00, "cobject", "CObject", 4),
+            FieldSpec(0x04, "m_bAutoDelete", "int", 4),  # BOOL
+        ),
+    ),
+    # afxwin.h:1077-1097 — CMenu derives CObject; one HMENU handle field.
+    "CMenu": ClassSpec(
+        name="CMenu",
+        size=0x08,
+        dependencies=("CObject",),
+        fields=(
+            FieldSpec(0x00, "cobject", "CObject", 4),
+            FieldSpec(0x04, "m_hMenu", "void *", 4),  # HMENU
+        ),
+    ),
+    # afxwin.h:3776-3835 — CWinThread derives CCmdTarget; 5 scalar/pointer
+    # fields (release build; m_nDisablePumpCount is _DEBUG-only).
+    "CWinThread": ClassSpec(
+        name="CWinThread",
+        size=0x30,
+        dependencies=("CCmdTarget", "CWnd"),
+        fields=(
+            FieldSpec(0x00, "ccmdTarget", "CCmdTarget", 0x1C),
+            FieldSpec(0x1C, "m_pMainWnd", "CWnd *", 4),
+            FieldSpec(0x20, "m_pActiveWnd", "CWnd *", 4),
+            FieldSpec(0x24, "m_bAutoDelete", "int", 4),  # BOOL
+            FieldSpec(0x28, "m_hThread", "void *", 4),   # HANDLE
+            FieldSpec(0x2C, "m_nThreadID", "int", 4),    # DWORD
         ),
     ),
 }

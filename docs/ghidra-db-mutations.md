@@ -5,7 +5,43 @@ planned to be replaced with a newer DB in a separate folder. Everything below is
 the record of what has mutated the DB, so the still-wanted mutations can be
 re-run against the new database.
 
-## 2026-07-19 (latest): CDataExchange/CView added to the MFC datatype pack; TypeResolver stub-exclusion fix
+## 2026-07-19 (latest): 8 more verified MFC layouts, driven by the weak-pointer-type inventory
+
+Follow-up to the CDataExchange/CView entry directly below: ran
+`just weak-pointer-type-inventory` again and worked through its
+`canonical_mfc_type_exists` bucket (12 distinct types) one by one against the
+vendored `vendor/msvc500/headers/mfc/include/*.h`. Eight had a real, findable,
+publicly-documented layout and were added to `MFC_MODELS`: `CFile` (afx.h:1154,
+derives CObject, 3 fields), `COleDataObject` (afxole.h:148, NOT CObject-derived,
+4 fields), `CGdiObject` (afxwin.h:343, derives CObject, 1 field — added as
+`CFont`'s dependency), `CFont` (afxwin.h:451, derives CGdiObject, no own
+fields), `CScrollBar` (afxwin.h:3041, derives CWnd, no own fields),
+`CCommandLineInfo` (afxwin.h:3921, derives CObject, 8 fields),
+`CDumpContext` (afx.h:1834, NOT CObject-derived, 2 fields), `CException`
+(afx.h:823, derives CObject, 1 field — release build, `m_bReadyForDelete` is
+`_DEBUG`-only and excluded), `CMenu` (afxwin.h:1077, derives CObject, 1 field),
+`CWinThread` (afxwin.h:3776, derives CCmdTarget, 5 fields — release build,
+`m_nDisablePumpCount` is `_DEBUG`-only and excluded).
+
+Three were left unmodeled, correctly:
+`CPrintInfo` and `CTypeLibCache` have no real definition anywhere in the
+vendored header subset (only a `class CPrintInfo;`/`class CTypeLibCache;`
+forward declaration) — staying opaque is honest, not a defect, given what
+evidence is actually available. `CPreviewView` (derives `CScrollView` derives
+`CView`, plus a by-value `CDC` member and several `CSize` fields) was deferred:
+correct but requires modeling `CScrollView` and `CSize` first, for a single
+call-site occurrence — logged as a future candidate, not attempted this pass.
+
+Applied via `just apply-mfc-datatypes --apply` (21 total datatypes now, up from
+13) and persisted with `just export-project`. Verified live, no new
+`ambiguous_simple_name` (the fix below continues to hold for all 8 additions —
+none collided with a pre-existing `/Demangler` stub):
+`opaque_pointee` 11 -> 3, `generic_pointer_fallback` 51 -> 39,
+`exact_complete` +20, `semantically_converged` +19
+(`just structural-signature-audit`); `weak_pointer_type_inventory.csv` distinct
+types 48 -> 39.
+
+## 2026-07-19: CDataExchange/CView added to the MFC datatype pack; TypeResolver stub-exclusion fix
 
 `tools/ghidra/apply_mfc_datatypes.py`'s `MFC_MODELS` gained two verified layouts
 (measured from the vendored `vendor/msvc500/headers/mfc/include/afxwin.h`, not
