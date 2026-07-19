@@ -176,6 +176,11 @@ public:
   // each city-region border edge (single edges + 3-region triple junctions). 0x0052c1a0.
   void BuildCityRegionBorderOverlaySegments();
 
+  // Match the per-edge overlay points into the region-border segment table. Although the
+  // body only touches global scratch tables, its sole retail caller loads this into ECX.
+  // 0x0052cae0.
+  void BuildOverlaySpanRecordsFromQuadBorderLinks();
+
   // Compacts city-region ids into a contiguous range, propagating labels across same-region
   // hex neighbours; writes tile[4] = newId + 0x17 and updates cityRegionCount2a4. 0x0052d1f0.
   void ReindexContiguousCityRegionIds();

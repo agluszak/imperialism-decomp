@@ -8,6 +8,7 @@
 #include "game/TMapMgr.h"
 #include "game/TSetupRandomMapPicture.h"
 #include "game/global_data_tables.h"
+#include "game/sea_geometry.h"
 
 // Same hex-neighbor math as TMapMgr::ComputeHexNeighborTileIndices, but over
 // TMapMaker's own full-resolution generation grid (mapTileGrid08, 108x60, stride
@@ -1201,7 +1202,35 @@ void TMapMaker::SmoothCityRegionOwnershipByNeighborSampling() {
 }
 
 // FUNCTION: IMPERIALISM 0x005292f0
-void TMapMaker::MapGenPassSlot1E() {}
+void TMapMaker::MapGenPassSlot1E() {
+  int coarseIndex;
+  for (coarseIndex = 0; coarseIndex < 0x17a; ++coarseIndex) {
+    unsigned short baseClass =
+        static_cast<unsigned short>(static_cast<signed char>(regionClassGrid10[0][coarseIndex]));
+
+    GetAdjacentRegionGridCell(coarseIndex, 0);
+    GetAdjacentRegionGridCell(coarseIndex, 5);
+
+    int neighbor = GetAdjacentRegionGridCell(coarseIndex, 1);
+    unsigned short class1 =
+        static_cast<unsigned short>(static_cast<signed char>(regionClassGrid10[0][neighbor]));
+    neighbor = GetAdjacentRegionGridCell(coarseIndex, 2);
+    unsigned short class2 =
+        static_cast<unsigned short>(static_cast<signed char>(regionClassGrid10[0][neighbor]));
+    neighbor = GetAdjacentRegionGridCell(coarseIndex, 3);
+    unsigned short class3 =
+        static_cast<unsigned short>(static_cast<signed char>(regionClassGrid10[0][neighbor]));
+    GetAdjacentRegionGridCell(coarseIndex, 4);
+
+    RandomizeRegionTemplateBanksForMismatchedNeighborClasses(coarseIndex, baseClass, class1, class3,
+                                                             class2);
+  }
+
+  if (g_pActiveRandomMapSetupPicture006A4268 != 0) {
+    g_pActiveRandomMapSetupPicture006A4268->SpinYourGlobe();
+  }
+  SmoothCityRegionOwnershipByNeighborSampling();
+}
 
 // FUNCTION: IMPERIALISM 0x005296a0
 void TMapMaker::CopyRegionTemplateBankWithRandomVariant(int coarseIndex, int arg2, int arg3,
@@ -1225,7 +1254,46 @@ int TMapMaker::GetFineGridCellBasePointerFromCoarseIndex(int coarseIndex) {
 
 // FUNCTION: IMPERIALISM 0x00529f60
 void TMapMaker::MapGenFinalizePassSlot19(int mode) {
-  (void)mode;
+  if (static_cast<unsigned char>(mode) != 0) {
+    int i;
+    cityRegionCount2a4 = 0;
+    for (i = 0; i < 0x100; ++i) {
+      g_cityRegionIdRemapTable_006a3498[i] = -1;
+    }
+
+    int tileOffset;
+    for (tileOffset = 0; tileOffset < 0x38f40; tileOffset += 0x24) {
+      char* tile = mapTileGrid08 + tileOffset;
+      int oldRegionId = -1;
+      if (tileOffset >= 0 && tile[0] == 5) {
+        oldRegionId = static_cast<signed char>(tile[4]) - 0x17;
+      }
+      if (oldRegionId > -1) {
+        if (g_cityRegionIdRemapTable_006a3498[oldRegionId] == -1) {
+          g_cityRegionIdRemapTable_006a3498[oldRegionId] = cityRegionCount2a4++;
+        }
+        tile[4] = static_cast<char>(g_cityRegionIdRemapTable_006a3498[oldRegionId] + 0x17);
+      }
+    }
+  } else {
+    GenerateCityRegionIdsBySeedAndNeighborPropagation();
+  }
+
+  if (g_pActiveRandomMapSetupPicture006A4268 != 0) {
+    g_pActiveRandomMapSetupPicture006A4268->SpinYourGlobe();
+  }
+  BuildCityRegionBorderOverlaySegments();
+  if (g_pActiveRandomMapSetupPicture006A4268 != 0) {
+    g_pActiveRandomMapSetupPicture006A4268->SpinYourGlobe();
+  }
+  BuildOverlaySpanRecordsFromQuadBorderLinks();
+  if (g_pActiveRandomMapSetupPicture006A4268 != 0) {
+    g_pActiveRandomMapSetupPicture006A4268->SpinYourGlobe();
+  }
+  MergeSmallCityRegionsAndCompactIds();
+  if (g_pActiveRandomMapSetupPicture006A4268 != 0) {
+    g_pActiveRandomMapSetupPicture006A4268->SpinYourGlobe();
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x0052a670

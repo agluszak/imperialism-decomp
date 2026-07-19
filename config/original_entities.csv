@@ -3434,6 +3434,7 @@ address|name|symbol|size|type|prototype|provenance
 529960|RotateMapColumnsByPeakCityTileDensity||636|function|undefined RotateMapColumnsByPeakCityTileDensity()|
 529d90|OrphanDeadLeaf_NoRefs_00529d90||358|function|undefined OrphanDeadLeaf_NoRefs_00529d90()|
 529f60|TMapMaker::MapGenFinalizePassSlot19||247|function|void __thiscall MapGenFinalizePassSlot19(int mode)|
+6a3498|g_cityRegionIdRemapTable_006a3498|||global||
 52a0a0|OrphanDeadLeaf_NoRefs_0052a0a0||143|function|undefined OrphanDeadLeaf_NoRefs_0052a0a0()|
 52a160|GenerateCityRegionIdsBySeedAndNeighborPropagation||940|function|undefined GenerateCityRegionIdsBySeedAndNeighborPropagation()|
 52a670|GetCityRegionIdAtTileIndex||45|function|undefined GetCityRegionIdAtTileIndex()|
@@ -3458,7 +3459,7 @@ address|name|symbol|size|type|prototype|provenance
 52c990|ConvertTileIndexToOverlayCoord216BySide||77|function|undefined ConvertTileIndexToOverlayCoord216BySide()|
 52ca00|DetachAndResetOverlayQuadRecordArrayBuffer||15|function|undefined DetachAndResetOverlayQuadRecordArrayBuffer()|
 52ca20|EmitOverlaySegmentFromTileEdgeSorted||132|function|undefined EmitOverlaySegmentFromTileEdgeSorted()|
-52cae0|BuildOverlaySpanRecordsFromQuadBorderLinks||1073|function|undefined BuildOverlaySpanRecordsFromQuadBorderLinks()|
+52cae0|TMapMaker::BuildOverlaySpanRecordsFromQuadBorderLinks||1073|function|void __thiscall BuildOverlaySpanRecordsFromQuadBorderLinks()|
 52d030|ComputeWrappedOverlayCoordDeltaMetric||123|function|undefined ComputeWrappedOverlayCoordDeltaMetric()|
 52d0d0|ReserveOverlayQuadRecordArrayCapacity||90|function|undefined ReserveOverlayQuadRecordArrayCapacity()|
 52d150|GetOrCreateOverlayQuadRecordByIndex||115|function|undefined GetOrCreateOverlayQuadRecordByIndex()|
