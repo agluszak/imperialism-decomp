@@ -133,7 +133,8 @@ void TDisplayMgr::EnsurePrimaryRenderSurfaceContextAllocated() {
 }
 
 // FUNCTION: IMPERIALISM 0x004febd0
-undefined TDisplayMgr::DisplayMgrSlot0D() {
+undefined TDisplayMgr::DisplayMgrSlot0D(int unusedArg) {
+  (void)unusedArg;
   if (dialogActiveFlag != 0 && activeDialog != 0) {
     activeDialog->RefreshCityProductionViewStateFromContext(0);
   }
@@ -151,7 +152,8 @@ undefined TDisplayMgr::AssertUDisplayMgrLine471() {
 }
 
 // FUNCTION: IMPERIALISM 0x004fec50
-undefined TDisplayMgr::AssertUDisplayMgrLine495() {
+undefined TDisplayMgr::AssertUDisplayMgrLine495(int unusedArg) {
+  (void)unusedArg;
   if (g_nUiInvalidationAssertFlagLine495 == 0) {
     TemporarilyClearAndRestoreUiInvalidationFlag(kSourceFileUDisplayMgr, 0x1ef);
   }
@@ -166,7 +168,8 @@ void TDisplayMgr::DispatchDisplayManagerControlStringMessage(CString message,
 }
 
 // FUNCTION: IMPERIALISM 0x004fed00
-undefined TDisplayMgr::DisplayMgrSlot0E() {
+undefined TDisplayMgr::DisplayMgrSlot0E(int unusedArg) {
+  (void)unusedArg;
   if (dialogActiveFlag != 0 && activeDialog != 0) {
     activeDialog->InvalidateOffsetRegionUsingChildClipRect(0);
     activeDialog->InvokeSlot13C();
