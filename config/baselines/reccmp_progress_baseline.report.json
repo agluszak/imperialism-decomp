@@ -1222,8 +1222,8 @@
     },
     {
       "address": "0x45ada0",
-      "matching": 0.6666666666666666,
-      "name": "THighScoresPicture::UniversityDialogMethod_00405623",
+      "matching": 1.0,
+      "name": "THighScoresPicture::NoOpUiVirtualSlot73",
       "type": 1
     },
     {
@@ -8952,7 +8952,7 @@
     },
     {
       "address": "0x4aea90",
-      "matching": 0.08,
+      "matching": 1.0,
       "name": "TBattleDetailBook::HandleEvent",
       "type": 1
     },
@@ -15548,7 +15548,7 @@
     },
     {
       "address": "0x4f9300",
-      "matching": 0.09523809523809523,
+      "matching": 0.95,
       "name": "TOffersPanelView::HandleEvent",
       "type": 1
     },
@@ -15656,7 +15656,7 @@
     },
     {
       "address": "0x4fb990",
-      "matching": 0.13333333333333333,
+      "matching": 1.0,
       "name": "TNominationView::HandleEvent",
       "type": 1
     },
@@ -16991,7 +16991,7 @@
     },
     {
       "address": "0x50bea0",
-      "matching": 0.20263516583371194,
+      "matching": 0.20899591094956838,
       "name": "TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets",
       "type": 1
     },
@@ -21934,7 +21934,7 @@
     },
     {
       "address": "0x545940",
-      "matching": 0.38170652876535227,
+      "matching": 0.3804137039431157,
       "name": "TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine",
       "type": 1
     },
@@ -25712,8 +25712,8 @@
     },
     {
       "address": "0x572bb0",
-      "matching": 0.6666666666666666,
-      "name": "TNoHilitePicture::UniversityDialogMethod_00405623",
+      "matching": 1.0,
+      "name": "TNoHilitePicture::NoOpUiVirtualSlot73",
       "type": 1
     },
     {
@@ -26123,7 +26123,7 @@
     },
     {
       "address": "0x575770",
-      "matching": 0.14285714285714285,
+      "matching": 1.0,
       "name": "THighScoresPicture::HandleEvent",
       "type": 1
     },
@@ -27494,7 +27494,7 @@
     },
     {
       "address": "0x584d30",
-      "matching": 0.08333333333333333,
+      "matching": 1.0,
       "name": "TCloseParentButton::HandleEvent",
       "type": 1
     },
@@ -30296,7 +30296,7 @@
     },
     {
       "address": "0x5a3810",
-      "matching": 0.7107438016528925,
+      "matching": 0.8571428571428571,
       "name": "TTacticalBattle::ComputeRallyStrengthAndQueueTacticalRallyCommand",
       "type": 1
     },
@@ -30848,7 +30848,7 @@
     },
     {
       "address": "0x5a9240",
-      "matching": 0.5304136253041363,
+      "matching": 0.5533980582524272,
       "name": "TTacticalBattleView::AnimateTacticalUnitMoveBetweenTiles",
       "type": 1
     },
@@ -45210,6 +45210,6 @@
       "type": 5
     }
   ],
-  "file": "Imperialism.exe",
+  "file": "Imperialism.exe.gog-original",
   "format": 1
 }

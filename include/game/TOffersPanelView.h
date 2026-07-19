@@ -116,8 +116,9 @@ public:
   // slot 0x68 OrphanRetStub_00430550 inherited unchanged (0x430550)
   virtual undefined RunDiplomacyNegotiationPopupAndAwaitResponse(); // slot 0x69 0x4f9450
   // TPanelView's slice ends at 0x64; RTTI oracle confirms sizeof(TOffersPanelView) == 0x70.
-  // The ctor (0x4f8f70) zeroes field68 and field6c; field64 is unconfirmed padding.
-  int pad64;   // +0x64
+  // The ctor (0x4f8f70) zeroes field68 and field6c. field64 is written by HandleEvent
+  // (0x4f9300) with the accept/reject-hotspot's controlTag (four-char 'acce'/'reje').
+  int lastNegotiationResponseTag64; // +0x64
   int field68; // +0x68
   int field6c; // +0x6c
 
