@@ -6,6 +6,7 @@
 
 #include "game/TAmtBar.h"
 #include "game/TShipAmtBar.h"
+#include "game/TShipOrder.h"
 #include "game/global_data_tables.h"
 #include "game/ui_invalidation_guard.h"
 #include "game/quickdraw_rendering.h"
@@ -26,7 +27,12 @@ IMPLEMENT_DYNCREATE(TShipAmtBar, TAmtBar)
 // TShipAmtBar::CreateObject
 
 // FUNCTION: IMPERIALISM 0x0058ab60
-TShipAmtBar::TShipAmtBar() : TIndustryAmtBar(), selectedShipOrder(0) {}
+TShipAmtBar::TShipAmtBar() : TIndustryAmtBar() {
+  rangeOrMaxValue = 0;
+  stepOrCurrentValue = 0;
+  auxValueA = 0;
+  auxValueB = 0;
+}
 
 // Destructors are compiler-generated (implicit) from real inheritance.
 // SYNTHETIC: IMPERIALISM 0x0058aba0
@@ -36,7 +42,7 @@ TShipAmtBar::TShipAmtBar() : TIndustryAmtBar(), selectedShipOrder(0) {}
 void TShipAmtBar::NoOpUiLifecycleHook(int arg) {
   TGreatPower* nationState = GetActiveNationState();
   TCity* cityState = nationState != 0 ? nationState->GetCityState() : 0;
-  selectedShipOrder = cityState->shipOrderSlots[0];
+  selectedMetricRecord = cityState->shipOrderSlots[0];
   short productionCap = cityState->productionSummary1d8->stockLevel1c;
   stepOrCurrentValue = (short)this->frameWidth34;
   auxValueA = productionCap;

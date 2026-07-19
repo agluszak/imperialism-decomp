@@ -61,5 +61,11 @@ public:
   short extraAt1e;                              // +0x1e
   short fieldAt20;                              // +0x20 — snapshotted by the turn-event-0x2c packet
 
+  // +0x24..+0x50 (padding to align the declared fields to a 4-byte boundary, then RTTI
+  // m_nObjectSize proves 0x50 total). CreateObject (0x4b5b40) only allocates and
+  // installs the vtable; every override past the ctor is currently a stub, so this
+  // tail is still fully unrecovered.
+  unsigned char pad24[0x50 - 0x24];
+
   TPopulationMgr();
 };

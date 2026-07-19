@@ -7,6 +7,7 @@
 class astruct_13;
 class TTacticalBattle;
 class TTacticalUnit;
+class TTacticalToolbar;
 
 // VTABLE: IMPERIALISM 0x0066a380
 class TTacticalBattleView : public TView {
@@ -168,7 +169,9 @@ public:
   RECT moveAnimSpriteSrcRectAC;          // +0xac sprite-sheet source rect
   struct TQuickDrawSurfaceContext* unitSpriteScratchSurfaceBC; // +0xbc 2x3-cell scratch
   RECT moveAnimScreenRectC0;                                   // +0xc0 on-screen animation rect
-  int fieldD0; // +0xd0 zeroed by ctor; use unobserved
+  // +0xd0 zeroed by ctor; the only subclass (TTacArmyView, 0x5a9d90) resolves the
+  // 'tool' control here and stores it as a TTacticalToolbar*.
+  TTacticalToolbar* toolbarD0;
 
   TTacticalBattleView();
 
@@ -193,6 +196,9 @@ public:
   // tiles; indexes an unrecovered 20-short table. 0x5aa670.
   short ComputeTacticalUnitSpriteOrientationIndexByAdjacentType1Occupancy(int tileIndex);
 
-  // Original object size is 0xd8 (CRuntimeClass m_nObjectSize); the source class ended at 0xd4. Trailing 4 byte(s) not yet semantically recovered — declared so sizeof and the recomp's allocation size match the original.
-  int fieldd4;
+  // +0xd4 -- never touched by this class's own ctor; the only subclass (TTacArmyView,
+  // 0x5a9d90) writes a battlefield x-origin offset here as a short. +0xd6 is still
+  // unconfirmed padding.
+  short battlefieldOriginOffsetXD4;
+  unsigned char padD6[2];
 };

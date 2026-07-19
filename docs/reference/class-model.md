@@ -52,10 +52,13 @@ step never silently chooses a model. Current verdicts over 534 records:
 
 | verdict | count | meaning |
 |---|---|---|
-| **verified** | **396** | source declaration reproduces the original object size under the original compiler — safe to project |
-| source_incomplete | 6 | oracle < binary: the source class is missing trailing fields; finish the declaration to unblock |
-| source_oversized | 6 | oracle > binary: the source declares MORE than the original object — modelling errors to fix |
+| **verified** | **408** | source declaration reproduces the original object size under the original compiler — safe to project |
+| source_incomplete | 0 | oracle < binary: the source class is missing trailing fields; finish the declaration to unblock |
+| source_oversized | 0 | oracle > binary: the source declares MORE than the original object — modelling errors to fix |
 | no_rtti | 126 | no CRuntimeClass in the binary; oracle-only evidence, projectable with the caveat recorded |
+
+Every class with `CRuntimeClass` evidence is `verified` — the size-mismatch queue
+that used to block `apply-class-model` for a subset of records is empty.
 
 Evidence CSV: `build-msvc500/evidence/class_model_audit.csv`.
 
@@ -115,3 +118,33 @@ auto-unblocks its projection on the next `generate-type-model` +
 `apply-class-model` run, and the oracle re-run physically verifies each edit
 (as it caught the cascade double-counts and the TDeluxeText→TTEView
 mis-attribution during the delta≤28 campaign).
+
+**Final dozen (5 incomplete UI/view classes, 6 oversized, 1 UI stub) — all now
+verified.** Two distinct bug shapes:
+
+- *Genuinely unrecovered UI state* (`THighScoresPicture` +360, `TScenarioChooser`
+  +204, `TPopulationMgr` +44, `TShipyardView` +44, `TWarehouseView` +100): ctor
+  ground truth showed nothing but a vtable install (or re-zeroing an inherited
+  field), so the gap is closed with an honest byte-array pad and an evidence
+  comment, per the established campaign pattern — no fabricated fields.
+  `TNavyRoster` (+72) was the one exception with real evidence: its ctor
+  (0x564d20, previously an empty stub) zeroes six dwords in its own block, now
+  named fields with the stub body filled in to match.
+- *Base-field duplication* (`TAmtBarCluster` −8, `TCapacityOrder` −80,
+  `TNumberedItem` −172, `TGameWindow` −308, `TTacArmyView` −8, `TShipAmtBar`
+  −4): a derived class re-declared bytes that already belonged to an inherited
+  base field at the same offset — sometimes an entire already-correct base
+  (`TNumberedItem`'s `pad0[0xac]` duplicated all of `TMegaPicture`;
+  `TCapacityOrder` duplicated nearly every field already on `TProductionOrder`/
+  `TItemOrder`), sometimes one coincidentally-reused slot (`TShipAmtBar`'s
+  `selectedShipOrder` was the same offset as inherited `TIndustryAmtBar::
+  selectedMetricRecord`; `TTacArmyView`'s `toolbarD0`/`battlefieldOriginOffsetXD4`
+  were actually `TTacticalBattleView`'s own fields, retyped/renamed there from
+  opaque `int fieldD0`/`fieldd4` once ground truth resolved their real type).
+  Fixed by deleting the duplicate declaration and using the inherited field
+  (retyped to match real usage where the existing base type was wrong, e.g.
+  `TProductionOrder::summaryField0c` from `void*` to `TPopulationMgr*`).
+
+Audit is now 408/408 `CRuntimeClass`-evidenced records `verified`, 0
+`source_incomplete`/`source_oversized` — the size-mismatch queue that used to
+gate `apply-class-model` is empty.
