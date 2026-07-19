@@ -3,6 +3,8 @@
 #include "game/TView.h"
 #include "game/mfc.h"
 
+class TControl;
+
 // VTABLE: IMPERIALISM 0x00640b50
 class TTradeBookView : public TView {
 public:
@@ -114,11 +116,15 @@ public:
 
   TTradeBookView();
 
-  // Original object size is 0x78 (CRuntimeClass m_nObjectSize); the source class ended at 0x60. Trailing 24 byte(s) not yet semantically recovered — declared so sizeof and the recomp's allocation size match the original.
-  int field60;
-  int field64;
-  int field68;
-  int field6c;
+  // Pager buttons (prev/next page controls) whose enabled/selected state is refreshed by
+  // UpdatePagerButtonStatesAndRefreshPanels; field70 is the total page count and field74 the
+  // current page index.
+  TControl* field60;
+  TControl* field64;
+  TControl* field68;
+  TControl* field6c;
   int field70;
   int field74;
+
+  void UpdatePagerButtonStatesAndRefreshPanels(int page);
 };

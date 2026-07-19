@@ -32761,14 +32761,14 @@
     },
     {
       "address": "0x5be370",
-      "matching": 0.06060606060606061,
+      "matching": 1.0,
       "name": "TTradeBookView::HandleEvent",
       "type": 1
     },
     {
       "address": "0x5be3e0",
-      "matching": 0.0,
-      "name": "UpdatePagerButtonStatesAndRefreshPanels",
+      "matching": 0.5048543689320388,
+      "name": "TTradeBookView::UpdatePagerButtonStatesAndRefreshPanels",
       "type": 1
     },
     {
@@ -38983,7 +38983,7 @@
     },
     {
       "address": "0x6091d9",
-      "matching": 0.9787234042553191,
+      "matching": 1.0,
       "name": "CWnd::OnNotify",
       "type": 1
     },
