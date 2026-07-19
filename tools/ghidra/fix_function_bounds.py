@@ -11,7 +11,7 @@ For each address passed on the command line: if a function exists there with a
 <= 1-byte body, disassemble the entry (following instruction flow) and recompute
 the body via CreateFunctionCmd.fixupFunctionBody, which preserves the function's
 name/namespace and only fixes the extent. Dry-run by default; pass --apply to
-write + save. After an --apply run: `just export-project` then `just sync-ghidra`
+write + save. After an --apply run: `just export-project` then `just refresh-inventory`
 so symbols.csv picks up the real sizes.
 
 usage:
@@ -93,7 +93,7 @@ def main() -> int:
         print(f"fixed: {len(fixed)}  skipped: {len(skipped)}  still-bad: {len(still_bad)}")
         if fixed:
             program.getDomainFile().save(pyghidra.task_monitor())
-            print("saved program — now run `just export-project` and `just sync-ghidra`")
+            print("saved program — now run `just export-project` and `just refresh-inventory`")
         return 1 if still_bad else 0
     finally:
         program.release(consumer)

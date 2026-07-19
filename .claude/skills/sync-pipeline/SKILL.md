@@ -1,6 +1,6 @@
 ---
 name: sync-pipeline
-description: Own the derived-artifact pipeline for the Imperialism decomp — the raw entity inventory (original_entities.csv), generated stubs + symbols overlay, and the Ghidra DB resync (just generate / sync-ghidra / db-resync). Use when editing markers changes ownership, when running or debugging a resync, when inventory rows look wrong (type flips, junk thunk rows, size clamps), when stubs collide or go missing at link time, or when deciding where a curated name belongs.
+description: Own the derived-artifact pipeline for the Imperialism decomp — the raw entity inventory (original_entities.csv), generated stubs + symbols overlay, and the Ghidra DB flows (just generate / ghidra-apply-source / refresh-inventory). Use when editing markers changes ownership, when running or debugging a resync, when inventory rows look wrong (type flips, junk thunk rows, size clamps), when stubs collide or go missing at link time, or when deciding where a curated name belongs.
 ---
 
 # Sync pipeline
@@ -18,7 +18,7 @@ mutation ledger + re-run procedure in `docs/ghidra-db-mutations.md`.
 | Curated stub suppression w/o marker | ownership rows with a curated note (below) | — |
 | Symbol table for reccmp | `config/original_entities.csv` + source overlay | `build-msvc500/generated/symbols.csv` (disposable; `just generate`) |
 | Vtable identity | `// VTABLE:` annotation + real inheritance | inventory rows at those addresses are dropped by the overlay |
-| Reference decompiles | Ghidra DB | `just seed-function` / sync-ghidra evidence export (build dir, uncommitted) |
+| Reference decompiles | Ghidra DB | `just seed-function` / refresh evidence export (build dir, uncommitted) |
 | Linkable stubs | original_entities.csv + source markers | `build-msvc500/generated/stubs/` (build artifact) |
 | Confirmed CRT/MFC library identity (reviewed) | `config/msvc500_library_overrides.csv` | inventory name/symbol/proto + `src/game/library_msvc500_overrides.cpp` marker |
 | CRT/MFC identity (object-matcher oracle) | `libcmt.lib`/`nafxcw.lib` via `just build-library-oracle` | `config/msvc500_library_oracle.csv` + inventory + `src/game/library_msvc500_oracle.cpp` marker |
@@ -39,7 +39,7 @@ The **reviewed override layer** fixes such rows durably:
 
 - Add a row to `config/msvc500_library_overrides.csv`
   (`address|name|symbol|prototype|library_family|object_member|evidence`).
-- `just apply-library-overrides` (idempotent; runs inside `db-resync`)
+- `just apply-library-overrides` (idempotent)
   projects it into the inventory (name/symbol/prototype, `provenance=msvc500_library_override`)
   and ensures a `// LIBRARY:` marker (in `library_msvc500_overrides.cpp`) so
   ownership derives from the markers directly. It only adds a marker where none
@@ -66,7 +66,7 @@ confident identity regardless of where the linker placed anything. Output:
 `config/msvc500_library_oracle.csv`
 (`address|name|symbol|prototype|library|member|match_kind|confidence|candidate_count`).
 
-`just apply-library-oracle` (idempotent; runs inside `db-resync`) projects the
+`just apply-library-oracle` (idempotent) projects the
 confident, unique matches: it **upgrades the exact decorated `symbol` + prototype**
 on already-library rows, and **converts unowned FID-missed functions** (in the dense
 range, large enough, invented name unreferenced in source) to library ownership.
@@ -83,7 +83,7 @@ Guards that keep it safe:
 
 Precedence: **reviewed override > object-match > FID > curated game identity >
 provisional Ghidra**. Library names/prototypes converge into the Ghidra DB on the
-next `db-resync` (`sync-ghidra` runs `push-names --include-library-symbols` over the
+next refresh (`ghidra-apply-source` pushes names over the
 dense range).
 
 ## The two commands
@@ -92,11 +92,12 @@ dense range).
   inputs (source index + stubs) from current markers automatically.
   Runs `symbols-integrity-gate` first,
   then stubgen. Then `just build`.
-- **`just db-resync`** — the full resync after any Ghidra DB mutation:
-  `tooling-check` → `sync-ghidra` (push-names → prune ILT DB entities → export →
+- **`just ghidra-apply-source-full`** — after meaningful source-model changes:
+  `build` → apply the source model → `export-project`. **`just refresh-inventory`**
+  — after intentional DB boundary mutations (prune ILT DB entities → export →
   prune ILT csv rows → thunk map → normalize autogen → symbol gates) →
   ownership sync → `build` → `detect` → `gates` → `stats` → `export-project`.
-  `sync-ghidra` alone still mutates the DB (push-names), so `export-project`
+  `ghidra-apply-source --apply` alone mutates the DB, so `export-project`
   must follow it before committing either way.
 
 ## Ownership notes semantics
@@ -118,7 +119,7 @@ dense range).
    at a jmp-thunk address — a DB Function, an inventory `function` row, or even
    a bare `global` label row — blocks reccmp's thunk auto-resolution and mass-drops
    scores (~400 fns in attempt 1; 238 fns via label rows on 2026-07-02).
-   Auto-cleaned by `prune-ilt-db-functions` (DB side, inside sync-ghidra) and
+   Auto-cleaned by `prune-ilt-db-functions` (DB side, inside refresh-inventory) and
    `prune-ilt-thunks` (csv side, any row type). Keep-rules: address claimed by a
    manual marker, or name referenced by manual source (those stubs must keep
    linking; Ghidra `_00ADDR` name suffixes are stripped before matching).
@@ -140,7 +141,7 @@ dense range).
 | Symptom | Cause | Fix |
 |---|---|---|
 | Link: unresolved `thunk_*` externals | referenced thunk row lost `function` type or was pruned | merge preserves curated function rows (check `function types` stat); keep-rule matches bare + `_00ADDR`-suffixed names |
-| Mass score drops, `thunk_*` fns 100→0 | entity rows (any type) at jmp-thunk addresses | `just prune-ilt-thunks` (runs in sync-ghidra); for non-ILT jmp islands, remove the DB function+label |
+| Mass score drops, `thunk_*` fns 100→0 | entity rows (any type) at jmp-thunk addresses | `just prune-ilt-thunks` (runs in refresh-inventory); for non-ILT jmp islands, remove the DB function+label |
 | One fn 100→0 after resync | `size=1`/tiny row clamping the window | see Junk taxonomy #4 |
 | `just vtable` collapses (~all classes) | rows at VTABLE addrs, or scalar-dtor name drift | `vtable-collision-gate` lists them; see quality-control skill #7 |
 | Stubs regenerate at name-paired addresses | ownership row pruned (was `marker_sync`) | re-add with a curated note (`name_paired_no_marker`) — `just stub-count-gate` fails on any stub-count rise, which is the mechanical tell for this trap |
@@ -148,7 +149,7 @@ dense range).
 
 ## Name convergence
 
-`push-names --apply` (inside sync-ghidra) writes source-owned names into the DB
+`ghidra-apply-source --apply` writes source-derived names into the DB
 before the export so names stop churning. Unpushable names (backticks/spaces,
 e.g. `` CFrameWnd::`scalar deleting dtor' ``) are counted as skipped, not errors.
 Durable renames go in `config/function_name_overrides.csv` — never hand-edit the

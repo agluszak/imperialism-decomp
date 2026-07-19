@@ -46,6 +46,26 @@ bucket *filename* sanitizes template syntax (`<`,`,`→`_`, `*`,`>` dropped) whi
 matched an owned template class. Added `sanitize_stem()` to normalize before the ownership
 check (+ regression tests) so owned template buckets are no longer falsely flagged.
 
+## 2026-07-19 (second): `ghidra-apply-source` — the one-way source→DB operation (committed)
+
+The bidirectional sync pipeline is retired. `just ghidra-apply-source`
+(`tools/ghidra/apply_source.py`) is now the ONE sanctioned mutation path from the
+source model into the DB: qualified names parsed from the C++ declarations under
+`// FUNCTION:` markers (SYNTHETIC/TEMPLATE/LIBRARY claims use their convention
+comment line; raw-inventory names as fallback), primary-aware function
+renames/namespaces, labels, and `Class::'vftable'` labels from `// VTABLE:`
+annotations, ending with a datatype-drift audit. First applied run:
+primary_exact=6566, set_fn=1642 (source-declaration names replacing stale DB
+names, e.g. `ImperialismApp::InitInstance` over
+`InitializeImperialismApplicationInstance`), set_label=3, vtable_labels=48,
+failed=1 (pre-existing `_fprintf` duplicate). Exported to the vendored .gzf.
+
+Retired: `sync-ghidra`, `db-resync`, `push-names`, `push-source-names` (modules
+deleted; the primary-aware push loop lives inside apply_source). The wholesale
+raw-inventory refresh is now `just refresh-inventory`; class *datatype* renames
+remain the `just ghidra-rename-class` repair tool until PDB-driven type import
+lands (the known gap the audit reports).
+
 ## Committed mutations (already in the current .gzf, newest first)
 
 From `git log --follow -- vendor/ghidra/exports/Imperialism.gzf`:

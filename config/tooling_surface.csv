@@ -1,5 +1,6 @@
 kind|entry|source|note
-module|tools.ghidra.sync_exports|just:sync-ghidra|Primary Ghidra export entrypoint
+module|tools.ghidra.sync_exports|just:refresh-inventory|Wholesale raw-inventory refresh from the DB
+module|tools.ghidra.apply_source|just:ghidra-apply-source|One-way source model -> Ghidra DB
 module|tools.stubgen|just:generate|Generated build-input stubs (build dir)
 module|tools.source_index|just:generate|Source-marker index (build-dir artifact)
 module|tools.generate_symbols|just:generate|Raw-inventory + source overlay -> generated symbols.csv
@@ -66,9 +67,7 @@ module|tools.common.ghidra_env|dependency:tools.ghidra.listing_one|Shared pyghid
 module|tools.reccmp.core_impact_ranking|dependency:tools.reccmp.session_loop|Imported by session loop
 module|tools.workflow.impk_compat|dependency:tools.workflow.class_discovery|In-repo class-discovery evidence CLI (formerly external impk)
 file|tools/ghidra/SyncExports_Ghidra.py|dependency:tools.ghidra.sync_exports|PyGhidra script used by sync wrapper
-module|tools.ghidra.push_names_to_ghidra|just:push-names|Stage 3: push source-owned curated names into the Ghidra DB so sync-ghidra converges names
 module|tools.ghidra.push_library_override_names|just:push-library-override-names|Push reviewed library override names into the Ghidra DB (label-only + out-of-range addresses push-names skips)
-module|tools.ghidra.push_source_names_to_ghidra|just:push-source-names|Mirror all curated symbols.csv names into the Ghidra DB (source-authoritative; game methods/globals push-names never pushes)
 module|tools.workflow.vtable_autofix|just:vtable-autofix|Dry-run-first planner/applicator for deterministic vtable pairing fixes
 module|tools.ghidra.raw_disasm|query:raw-disasm|Capstone raw-byte disassembly bypassing the Ghidra instruction DB
 module|tools.ghidra.rtti_class_oracle|just:rtti-oracle|Walk MFC CRuntimeClass descriptors: names, sizes, bases, CreateObject

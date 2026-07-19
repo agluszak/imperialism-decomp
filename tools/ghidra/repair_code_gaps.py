@@ -15,7 +15,7 @@ CreateFunctionCmd. Any function that still ends up 1-byte after disassembling
 is removed again and reported rather than left corrupting reccmp's compare
 window. Dry-run by default; pass --apply to write + save the program. After an
 --apply run: `just export-project` to refresh the LFS archive and
-`just sync-ghidra` so symbols.csv picks up real names/sizes for the new
+`just refresh-inventory` so the inventory picks up real names/sizes for the new
 functions (sizes bound reccmp's compare windows).
 
 Also REPORTS (never deletes) suspicious case-body pseudo-functions: defined
@@ -222,7 +222,7 @@ def main() -> int:
 
         if created:
             program.getDomainFile().save(pyghidra.task_monitor())
-            print("saved program — now run `just export-project` and `just sync-ghidra`")
+            print("saved program — now run `just export-project` and `just refresh-inventory`")
         return 0
     finally:
         program.release(consumer)

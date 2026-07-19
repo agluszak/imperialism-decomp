@@ -148,12 +148,12 @@ different project, invoke the module directly with the env override, e.g.
 
 ## Sync with the source tree
 
-- `just sync-ghidra` / `just db-resync` — forward: export Ghidra
+- `just ghidra-apply-source` / `just refresh-inventory` — forward: apply source / export Ghidra
   names/protos/types/globals into `config/` + build-evidence artifacts.
   Ownership of that pipeline (curated-merge semantics, junk cleanup, name
   convergence, failure→fix) lives in the **`sync-pipeline` skill** — read it
-  before running or debugging a resync. Prefer `just db-resync` for the full
-  chain; `sync-ghidra` alone still mutates the DB (push-names), so
+  before running or debugging a refresh. Prefer `just ghidra-apply-source-full`
+  for the full chain; `ghidra-apply-source --apply` alone mutates the DB, so
   `just export-project` must follow before committing.
 - `just import-ghidra` — reverse: push our recovered names/signatures/types back
   into Ghidra (via the reccmp fork). Conventions you model in source propagate to

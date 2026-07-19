@@ -323,7 +323,7 @@ def main() -> int:
             )
         if rows and args.sample < len(rows):
             print(f"... {len(rows) - args.sample} more rows in {out_path}")
-        print("Re-run with --apply to commit FID labels/bookmarks, then `just sync-ghidra` to export.")
+        print("Re-run with --apply to commit FID labels/bookmarks, then `just refresh-inventory` to export.")
         return 0
     finally:
         if txid is not None:

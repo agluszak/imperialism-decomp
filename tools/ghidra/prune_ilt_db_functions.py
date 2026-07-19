@@ -10,7 +10,7 @@ functions lost 100% in the 2026-07 gap-repair attempt; the fix then was manual
 ``FunctionManager.removeFunction`` surgery — see docs/ghidra-db-mutations.md).
 
 ``just prune-ilt-thunks`` cleans the symbols.csv side; this tool cleans the DB
-side. ``just sync-ghidra`` runs it with --apply before the export so a resync
+side. ``just refresh-inventory`` runs it with --apply before the export so a refresh
 can never re-introduce the entities.
 
 Only functions whose entry lies inside the exe-derived contiguous ILT region
@@ -131,7 +131,7 @@ def main() -> int:
             + (f", kept {result['kept_non_jmp']} non-jmp entries" if result["kept_non_jmp"] else "")
         )
         if not args.apply and result["candidates"]:
-            print("Re-run with --apply to remove them (sync-ghidra does this automatically).")
+            print("Re-run with --apply to remove them (refresh-inventory does this automatically).")
         return 0
     finally:
         if txid is not None:
