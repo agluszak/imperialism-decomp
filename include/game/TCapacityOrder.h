@@ -15,10 +15,9 @@ public:
   ~TCapacityOrder() override;
 
   undefined CommitIfPending() override; // slot 0x0d 0x4b8dd0
-  virtual undefined
-  InitializeCityProductionState_Impl_At004b8d50(TCity* city, short resourceType,
-                                                short trackingIndex4e, short trackingIndex50,
-                                                short field52); // slot 0x12 0x4b8d50
+  virtual undefined CapacityOrderSlot12(TCity* city, short resourceType, short trackingIndex4e,
+                                        short trackingIndex50,
+                                        short field52); // slot 0x12 0x4b8d50
 
   explicit TCapacityOrder(TCity* city);
   short ComputeCapacityOrderMaxQuantity();

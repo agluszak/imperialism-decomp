@@ -125,9 +125,8 @@ public:
   // slot 0x71 OrphanTiny_GetDwordEcxOffset_84_00491770 inherited unchanged (0x491770)
   // slot 0x72 OrphanCallChain_C2_I51_00491790 inherited unchanged (0x491790)
   virtual undefined UpdateTacticalCurrentUnitControlAndDialogLabel(
-      TTacticalUnit* unit) override; // slot 0x73 0x5ad0d0
-  virtual undefined
-  WrapperFor_InvalidateCityDialogRectRegion_At005acc90(int param_1) override; // slot 0x74 0x5ad0f0
+      TTacticalUnit* unit) override;                             // slot 0x73 0x5ad0d0
+  virtual undefined TacticalToolbarSlot74(int param_1) override; // slot 0x74 0x5ad0f0
 
   TTacNavyToolbar();
 };

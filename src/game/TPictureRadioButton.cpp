@@ -15,12 +15,12 @@ TPictureRadioButton::TPictureRadioButton() {}
 TPictureRadioButton::~TPictureRadioButton() {}
 
 // FUNCTION: IMPERIALISM 0x00570de0
-undefined TPictureRadioButton::WrapperFor_thunk_SetUiControlVisibleFlagAndMaybeRefreshWindow_At00570de0(char param_1) {
+undefined TPictureRadioButton::PictureRadioButtonSlot75(char param_1) {
   return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x00570ea0
-undefined TPictureRadioButton::WrapperFor_CopyOffset10PointPairToOutOrZero_At00570ea0() {
+undefined TPictureRadioButton::PictureRadioButtonSlot76() {
   return 0;
 }
 

@@ -17,8 +17,8 @@ TExpansionOrder::TExpansionOrder() {}
 TExpansionOrder::~TExpansionOrder() {}
 
 // FUNCTION: IMPERIALISM 0x004b9010
-undefined TExpansionOrder::InitializeCityProductionState_Impl_At004b9010(
-    int param_1, undefined2 param_2, undefined2 param_3, undefined2 param_4, undefined2 param_5) {
+undefined TExpansionOrder::ExpansionOrderSlot12(int param_1, undefined2 param_2, undefined2 param_3,
+                                                undefined2 param_4, undefined2 param_5) {
   return 0;
 }
 

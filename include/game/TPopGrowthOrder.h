@@ -17,16 +17,16 @@ public:
   // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
   // slot 0x0a InitializeBasicCityOrderContext inherited unchanged (0x4b4f70)
-  virtual bool SetQuantity(short param_1) override;                // slot 0x0b 0x4b8230
+  virtual bool SetQuantity(short param_1) override; // slot 0x0b 0x4b8230
   virtual short MaxOrder() override;                // slot 0x0c 0x4b81b0
   virtual undefined CommitIfPending() override;     // slot 0x0d 0x4b82f0
   virtual undefined
   ResetCityOrderItemDerivedStateNoop(const char* name) override; // slot 0x0e 0x4b8420
   // slot 0x0f Produce inherited unchanged (0x4b5180)
   virtual void FillOrderSheet(OrderSheet* orderSheet,
-                              short quantity) override;  // slot 0x10 0x4b8440
+                              short quantity) override; // slot 0x10 0x4b8440
   // Field-initialization body for the manual-alloc construction path (mirrors
-  // TCapacityOrder's InitializeCityProductionState_Impl_At004b8d50 at the analogous
+  // TCapacityOrder's CapacityOrderSlot12 at the analogous
   // sibling slot): sets quantityField04/cityField08/summaryField0c from `city`, zeroes
   // trackingSlots10/field3e/field40/accumulatedValue, and seeds resourceTypeIndex48 = 1.
   // No current caller in ported code (manual or autogen); kept as a virtual at its

@@ -964,7 +964,7 @@ void TTacticalBattleView::InvalidateTacticalHexTileRect(int tileIndex) {
 }
 
 // FUNCTION: IMPERIALISM 0x005a8900
-undefined TTacticalBattleView::WrapperFor_InvalidateCityDialogRectRegion_At005a8900(int param_1) {
+undefined TTacticalBattleView::TacticalBattleViewSlot68(int param_1) {
   return 0;
 }
 

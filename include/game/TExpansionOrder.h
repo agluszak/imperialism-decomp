@@ -24,11 +24,10 @@ public:
   // slot 0x0f Produce inherited unchanged (0x4b5180)
   virtual void FillOrderSheet(OrderSheet* orderSheet,
                               short quantity) override; // slot 0x10 0x4b9360
-  // slot 0x11 InitializeCityProductionState_Impl_At004b5290 inherited unchanged (0x4b5290)
-  virtual undefined
-  InitializeCityProductionState_Impl_At004b9010(int param_1, undefined2 param_2, undefined2 param_3,
-                                                undefined2 param_4,
-                                                undefined2 param_5); // slot 0x12 0x4b9010
+  // slot 0x11 ItemOrderSlot11 inherited unchanged (0x4b5290)
+  virtual undefined ExpansionOrderSlot12(int param_1, undefined2 param_2, undefined2 param_3,
+                                         undefined2 param_4,
+                                         undefined2 param_5); // slot 0x12 0x4b9010
 
   TExpansionOrder();
 };

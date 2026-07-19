@@ -2526,7 +2526,7 @@ short TMapMgr::FindReachableRecruitSpawnTileWithVisitedReset(short startTileInde
 }
 
 // FUNCTION: IMPERIALISM 0x00514dc0
-void TMapMgr::WrapperFor_IsValidSecondaryNationHomeTileCandidate_At00514dc0(short nationTag) {
+void TMapMgr::MapMgrSlot1F(short nationTag) {
   field9 = 1;
   for (int tileIndex = 0; tileIndex < 0x1950; ++tileIndex) {
     TTerrainStateRecordView* tile = &terrainStateTable[tileIndex];
@@ -2683,8 +2683,7 @@ void TMapMgr::SeedRecruitSearchVisitedStateFromMilitaryUnitCandidates(
 }
 
 // FUNCTION: IMPERIALISM 0x00515330
-void TMapMgr::WrapperFor_LookupOrderCompatibilityMatrixValue_At00515330(
-    TCivUnit* pCivilianOrderEntry) {
+void TMapMgr::MapMgrSlot23(TCivUnit* pCivilianOrderEntry) {
   field9 = 1;
   short nationTag = pCivilianOrderEntry->field_18;
   unsigned char eligibleGateFlags[24] = {0};
@@ -2722,8 +2721,7 @@ void TMapMgr::WrapperFor_LookupOrderCompatibilityMatrixValue_At00515330(
 }
 
 // FUNCTION: IMPERIALISM 0x00515460
-void TMapMgr::WrapperFor_LookupOrderCompatibilityMatrixValue_At00515460(
-    TCivUnit* pCivilianOrderEntry) {
+void TMapMgr::MapMgrSlot24(TCivUnit* pCivilianOrderEntry) {
   short nationTag = pCivilianOrderEntry->field_18;
   bool recruitTierFlagIsTwo =
       (g_pCityOrderCapabilityState->orderCapRows277[nationTag].techStatusByTechId[0x13] == 2);

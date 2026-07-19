@@ -54,15 +54,15 @@ public:
                                                    int arg5); // slot 0x15 0x50d360
   // RET 0xc = 3 dwords (Ghidra recovered only 1); trailing args RET-derived.
   virtual undefined OrphanCallChain_C9_I49_0050d5b0(int param_1, int arg2,
-                                                    int arg3);             // slot 0x16 0x50d5b0
-  virtual void OrphanLeaf_NoCall_Ins06_0050d8d0();                         // slot 0x17 0x50d8d0
-  virtual void OrphanLeaf_NoCall_Ins06_0050d8f0(short param_1);            // slot 0x18 0x50d8f0
-  virtual void OrphanCallChain_C1_I10_0050d920();                          // slot 0x19 0x50d920
-  virtual undefined RenderOffscreenBitmapGridStripAndRestoreContext();     // slot 0x1a 0x50a9f0
-  virtual void WrapperFor_CallObjectOffset24Vslot54IfPresent_At0050d950(); // slot 0x1b 0x50d950
-  virtual undefined RenderTurnEventPalettePreviewSurfaceAndProgress();     // slot 0x1c 0x50b640
-  virtual undefined RebuildMapTileNeighborHighlightPolygonsForAllTiles();  // slot 0x1d 0x50b9e0
-  virtual undefined RebuildNationClipRegionsAndDispatchMapEvent();         // slot 0x1e 0x50bad0
+                                                    int arg3);            // slot 0x16 0x50d5b0
+  virtual void OrphanLeaf_NoCall_Ins06_0050d8d0();                        // slot 0x17 0x50d8d0
+  virtual void OrphanLeaf_NoCall_Ins06_0050d8f0(short param_1);           // slot 0x18 0x50d8f0
+  virtual void OrphanCallChain_C1_I10_0050d920();                         // slot 0x19 0x50d920
+  virtual undefined RenderOffscreenBitmapGridStripAndRestoreContext();    // slot 0x1a 0x50a9f0
+  virtual void MacViewMgrSlot1B();                                        // slot 0x1b 0x50d950
+  virtual undefined RenderTurnEventPalettePreviewSurfaceAndProgress();    // slot 0x1c 0x50b640
+  virtual undefined RebuildMapTileNeighborHighlightPolygonsForAllTiles(); // slot 0x1d 0x50b9e0
+  virtual undefined RebuildNationClipRegionsAndDispatchMapEvent();        // slot 0x1e 0x50bad0
   virtual undefined BlitMapOverlayGlyphStrip32x24SkipMask10(TBitmapSurfaceNode** dstSurface,
                                                             short param_2, short param_3,
                                                             short param_4); // slot 0x1f 0x50da80
@@ -81,9 +81,8 @@ public:
   // RET 0x8 = 2 dwords. arg1 is the (transformed) hit-test point, arg2 the region-slot
   // index — the previous 1-arg `(short)` form mis-attributed the region index to arg1 and
   // dropped the point (caller 0x4f5e00 dispatches slot 0x90 with (&localPoint, index)).
-  virtual undefined
-  WrapperFor_IsPointInsideHitRegion_At0050d6c0(CPoint* point,
-                                               short regionIndex); // slot 0x24 0x50d6c0
+  virtual undefined MacViewMgrSlot24(CPoint* point,
+                                     short regionIndex); // slot 0x24 0x50d6c0
   virtual void
   EnsureClipRegionWrapperAtSlotAndMergeSourceRegion(undefined4 param_1,
                                                     short param_2); // slot 0x25 0x50d680

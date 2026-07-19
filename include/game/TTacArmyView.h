@@ -110,7 +110,7 @@ public:
   // slot 0x65 AssertMcAppUILine1914 inherited unchanged (0x48c7a0)
   // slot 0x66 AssertMcAppUILine1922 inherited unchanged (0x48c7d0)
   // slot 0x67 CtrlSlot103_SubtractPosAndDispatchSlot19C_Impl inherited unchanged (0x48bac0)
-  // slot 0x68 WrapperFor_InvalidateCityDialogRectRegion_At005a8900 inherited unchanged (0x5a8900)
+  // slot 0x68 TacticalBattleViewSlot68 inherited unchanged (0x5a8900)
   // slot 0x69 WrapperFor_InvalidateCityDialogRectRegion_At005a89a0 inherited unchanged (0x5a89a0)
   // slot 0x6a OrphanLeaf_NoCall_Ins59_005a89f0 inherited unchanged (0x5a89f0)
   // slot 0x6b AdjustTacticalUnitVerticalOffsetAndRefreshMarker inherited unchanged (0x5a8be0)

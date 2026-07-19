@@ -28,10 +28,9 @@ public:
   // slot 0x0f Produce inherited unchanged (0x4b5180)
   virtual void FillOrderSheet(OrderSheet* orderSheet,
                               short quantity) override; // slot 0x10 0x4b5510
-  virtual undefined
-  InitializeCityProductionState_Impl_At004b5290(int param_1, undefined2 param_2, undefined2 param_3,
-                                                undefined2 param_4,
-                                                undefined2 param_5); // slot 0x11 0x4b5290
+  virtual undefined ItemOrderSlot11(int param_1, undefined2 param_2, undefined2 param_3,
+                                    undefined2 param_4,
+                                    undefined2 param_5); // slot 0x11 0x4b5290
   // TItemOrder is 0x54 bytes vs. TProductionOrder's 0x4c (RTTI), adding four shorts
   // (0x4c..0x54), all written by the slot-0x11 init
   // InitializeCityProductionState_Impl (0x004b5290). Unlike TUnitOrder (whose 0x4c is

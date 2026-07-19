@@ -14,10 +14,8 @@ IMPLEMENT_DYNCREATE(TItemOrder, TProductionOrder)
 TItemOrder::~TItemOrder() {}
 
 // FUNCTION: IMPERIALISM 0x004b5290
-undefined TItemOrder::InitializeCityProductionState_Impl_At004b5290(int param_1, undefined2 param_2,
-                                                                    undefined2 param_3,
-                                                                    undefined2 param_4,
-                                                                    undefined2 param_5) {
+undefined TItemOrder::ItemOrderSlot11(int param_1, undefined2 param_2, undefined2 param_3,
+                                      undefined2 param_4, undefined2 param_5) {
   return 0;
 }
 

@@ -467,8 +467,8 @@ int TDiplomacyMapView::ResolveDiplomacyActionFromClickAndUpdateTarget(CPoint* cl
   int* terrainDescriptors = reinterpret_cast<int*>(kAddrTerrainTypeDescriptorTable);
   do {
     if (*terrainDescriptors != 0) {
-      char hit = g_pStrategicMapViewSystem->WrapperFor_IsPointInsideHitRegion_At0050d6c0(
-          &localPoint, static_cast<short>(terrainIndex));
+      char hit = g_pStrategicMapViewSystem->MacViewMgrSlot24(&localPoint,
+                                                             static_cast<short>(terrainIndex));
       if (hit != 0) {
         break;
       }
@@ -527,8 +527,8 @@ void TDiplomacyMapView::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoi
   bool hit = false;
   do {
     if (terrainDescriptors[static_cast<short>(hitIndex)] != 0) {
-      char regionHit = g_pStrategicMapViewSystem->WrapperFor_IsPointInsideHitRegion_At0050d6c0(
-          &localPoint, static_cast<short>(hitIndex));
+      char regionHit =
+          g_pStrategicMapViewSystem->MacViewMgrSlot24(&localPoint, static_cast<short>(hitIndex));
       if (regionHit != 0) {
         hit = true;
         break;
