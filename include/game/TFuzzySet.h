@@ -26,6 +26,9 @@ public:
   // Resets the set to empty: zeroes the member count and nulls all 10 member slots. 0x4ff750
   void Clear();
 
+  // Allocates a 4-value TFuzzyVar leaf, fills its values, and appends it to m_members. 0x4ff7d0
+  void AllocateAndAppendRecord(int value0, int value1, int value2, int value3);
+
 private:
   int m_memberCount;      // field_0x4 — not zeroed by the ctor; caller-managed
   TObject* m_members[10]; // field_0x8..field_0x2c

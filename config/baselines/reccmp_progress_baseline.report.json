@@ -16015,7 +16015,7 @@
     },
     {
       "address": "0x4ff460",
-      "matching": 0.42424242424242425,
+      "matching": 1.0,
       "name": "TFuzzyVar::CreateObject",
       "type": 1
     },
@@ -16081,8 +16081,8 @@
     },
     {
       "address": "0x4ff7d0",
-      "matching": 0.6129032258064516,
-      "name": "TFuzzyVar::AllocateAndAppendRecord",
+      "matching": 1.0,
+      "name": "TFuzzySet::AllocateAndAppendRecord",
       "type": 1
     },
     {
@@ -45214,6 +45214,6 @@
       "type": 5
     }
   ],
-  "file": "Imperialism.exe.gog-original",
+  "file": "Imperialism.exe",
   "format": 1
 }
