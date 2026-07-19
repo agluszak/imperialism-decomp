@@ -16005,7 +16005,7 @@
     },
     {
       "address": "0x4ff2f0",
-      "matching": 0.046511627906976744,
+      "matching": 0.3870967741935484,
       "name": "TGWorldPeeker::ApplyRectSlot110",
       "type": 1
     },
@@ -25592,7 +25592,7 @@
     },
     {
       "address": "0x572130",
-      "matching": 0.9333333333333333,
+      "matching": 1.0,
       "name": "TGWorldButton::TGWorldButton",
       "type": 1
     },
@@ -25604,13 +25604,13 @@
     },
     {
       "address": "0x572200",
-      "matching": 0.07692307692307693,
+      "matching": 0.88,
       "name": "TGWorldButton::SetControlStateFlagAndMaybeRefresh",
       "type": 1
     },
     {
       "address": "0x572270",
-      "matching": 0.0392156862745098,
+      "matching": 0.5054945054945055,
       "name": "TGWorldButton::ApplyRectSlot110",
       "type": 1
     },
