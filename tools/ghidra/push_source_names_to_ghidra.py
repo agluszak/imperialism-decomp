@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
-"""Push ALL curated names from config/symbols.csv into the live Ghidra DB.
+"""Push ALL curated names from config/original_entities.csv into the live Ghidra DB.
 
-Source is authoritative: `push-names` deliberately pushes only
-function_name_overrides.csv (never the bulk of symbols.csv) "so a push can never
-revert a newer Ghidra DB name", which left ~700 curated names -- game class
+Source is authoritative: the retired `push-names` overrides channel deliberately
+never pushed the bulk of symbols.csv, which left ~700 curated names -- game class
 methods (`ImperialismApp::GetMessageMap`), RTTI/global descriptors
 (`TScroller::classTScroller`), etc. -- present in source/symbols.csv but stale in
 the DB / exported .gzf (the DB kept Ghidra placeholders like
@@ -33,7 +32,7 @@ from tools.common.pipe_csv import read_pipe_table
 from tools.common.repo import repo_root_from_file
 
 REPO_ROOT = repo_root_from_file(__file__, levels_up=2)
-SYMBOLS = REPO_ROOT / "config" / "symbols.csv"
+SYMBOLS = REPO_ROOT / "config" / "original_entities.csv"
 
 
 def split_qualified(qualified: str) -> tuple[list[str], str]:
@@ -43,7 +42,7 @@ def split_qualified(qualified: str) -> tuple[list[str], str]:
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
-        description="Mirror curated config/symbols.csv names into the Ghidra DB."
+        description="Mirror curated config/original_entities.csv names into the Ghidra DB."
     )
     parser.add_argument("--apply", action="store_true", help="Write and save the DB (default: dry-run).")
     parser.add_argument("--quiet", action="store_true", help="Only print the summary line.")

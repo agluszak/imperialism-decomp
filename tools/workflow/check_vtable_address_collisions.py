@@ -9,7 +9,7 @@ silently never pairs and `reccmp-vtable <Class>` shows nothing.
 
 Two ways that second claim sneaks in, both gated here:
 
-1. ANY row in `config/symbols.csv` whose address equals a `// VTABLE:` address --
+1. ANY row in `config/original_entities.csv` whose address equals a `// VTABLE:` address --
    including rows typed `vtable` themselves. reccmp ingests symbols.csv as ORIG-image
    entities *after* the source markers, so any row here overwrites the `name` attribute
    the `// VTABLE:` marker + class declaration already derived correctly. In practice
@@ -67,7 +67,7 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--symbols-csv",
-        default=str(repo_root / "config" / "symbols.csv"),
+        default=str(repo_root / "config" / "original_entities.csv"),
         help="Path to symbols.csv (pipe-delimited).",
     )
     return parser.parse_args()

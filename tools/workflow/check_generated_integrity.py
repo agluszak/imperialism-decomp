@@ -33,8 +33,7 @@ MARKER_RE = re.compile(
 )
 # Marker-bearing manual sources plus the curated tables the sync pipeline reads;
 # a change to any of these legitimises regenerated output.
-REGEN_INPUT_PREFIXES = ("src/", "include/", "config/symbols.csv",
-                       "config/name_overrides")
+REGEN_INPUT_PREFIXES = ("src/", "include/", "config/original_entities.csv")
 
 
 def _git(*args: str) -> str:

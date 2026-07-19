@@ -6,7 +6,7 @@ Joins, per autogen stub symbol:
   * every reference from manual sources (src/game, include/game), split into
     ordinary calls, address-takes, extern re-declarations, and typedef casts
   * caller (file) count
-  * original function size (config/symbols.csv)
+  * original function size (config/original_entities.csv)
   * optionally — with GHIDRA_INSTALL_DIR set — Ghidra calling convention,
     parameter count, and the RET-imm purge bytes (binary ground truth)
 

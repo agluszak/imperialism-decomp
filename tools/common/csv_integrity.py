@@ -3,7 +3,7 @@
 
 Every consumer of these files reads them with `csv.DictReader`/`read_pipe_rows`,
 which both trust line 1 to be the header. That assumption has broken silently
-before: a resort once moved `config/symbols.csv`'s header to EOF and broke vtable
+before: a resort once moved `config/original_entities.csv`'s header to EOF and broke vtable
 resolution for 364/379 vtables with no error anywhere. `check_pipe_csv_structure`
 centralizes the fix (header-at-line-1, no duplicate header, every row hex-address
 parseable with enough columns, no duplicate address) so each CSV's integrity gate

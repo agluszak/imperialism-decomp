@@ -4,7 +4,7 @@
 `symbols-integrity-gate` checks CSV *structure* (header, addresses, overlap) but
 not whether library identities are semantically correct. This gate closes that
 hole for the reviewed set: every row in `config/msvc500_library_overrides.csv`
-must be faithfully projected into `config/symbols.csv` and `// LIBRARY:` markers.
+must be faithfully projected into `config/original_entities.csv` and `// LIBRARY:` markers.
 
 It exists because the sync pipeline stabilizes a FID miss into a durable mistake:
 a function FID skipped (e.g. `rand` at 0x005e83f0, whose body is the MSVC LCG
@@ -42,7 +42,7 @@ from tools.common.repo import repo_root_from_file, resolve_repo_path
 from tools.mfc.apply_library_overrides import LibraryOverride, load_overrides
 
 DEFAULT_OVERRIDES = "config/msvc500_library_overrides.csv"
-DEFAULT_SYMBOLS = "config/symbols.csv"
+DEFAULT_SYMBOLS = "config/original_entities.csv"
 DEFAULT_BASELINE = "config/library_identity_gate_baseline.json"
 DEFAULT_ORACLE = "config/msvc500_library_oracle.csv"
 DEFAULT_GAMECODE_ALLOWLIST = "config/library_oracle_gamecode_allowlist.csv"

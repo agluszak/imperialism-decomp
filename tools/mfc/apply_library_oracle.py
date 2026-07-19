@@ -50,7 +50,7 @@ from tools.mfc.apply_msvc500_library_region import (
 )
 
 DEFAULT_ORACLE = "config/msvc500_library_oracle.csv"
-DEFAULT_SYMBOLS = "config/symbols.csv"
+DEFAULT_SYMBOLS = "config/original_entities.csv"
 DEFAULT_OVERRIDES = "config/msvc500_library_overrides.csv"
 DEFAULT_MARKERS = "src/game/library_msvc500_oracle.cpp"
 DEFAULT_REVIEW = "config/msvc500_library_oracle_review.csv"

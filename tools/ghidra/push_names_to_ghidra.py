@@ -13,8 +13,8 @@ leaving Ghidra-only addresses untouched. The next export then already produces t
 matching name, so `sync-ghidra` converges instead of churning.
 
 Canonical names are the *explicitly curated* source names — the manifest
-curated.slots (`Class::method`) and config/function_name_overrides.csv (the
-latter wins). It deliberately does NOT push the bulk of config/symbols.csv: those
+curated.slots (`Class::method`) and (formerly) the retired overrides table (the
+latter wins). It deliberately does NOT push the bulk of config/original_entities.csv: those
 names are mostly just the previous Ghidra export, so pushing them back would be a
 no-op at best and a revert of newer DB names at worst. Backtick/synthetic names
 (scalar deleting destructors) and non-identifier names are skipped.
@@ -35,13 +35,11 @@ import re
 import pyghidra
 
 from tools.common import ghidra_env
-from tools.common.name_overrides import parse_name_overrides, resolve_name_overrides_path
 from tools.common.pipe_csv import normalize_hex, read_pipe_rows
 from tools.common.repo import repo_root_from_file
 
 REPO_ROOT = repo_root_from_file(__file__)
-NAME_OVERRIDES_PATH = resolve_name_overrides_path(REPO_ROOT, None)
-SYMBOLS_PATH = REPO_ROOT / "config" / "symbols.csv"
+SYMBOLS_PATH = REPO_ROOT / "config" / "original_entities.csv"
 DEFAULT_LIBRARY_START = 0x005E539C
 DEFAULT_LIBRARY_END = 0x00626C7D
 
@@ -86,17 +84,10 @@ def owned_addresses(kind: str = "manual") -> set[int]:
 
 
 def canonical_names(owned: set[int]) -> dict[int, str]:
-    """address -> explicitly-curated source name, from function_name_overrides.csv.
-
-    The bulk of symbols.csv is NOT a curation signal (it is mostly the previous
-    export) and is intentionally excluded so a push can never revert a newer
-    Ghidra DB name.
-    """
-    names: dict[int, str] = {}
-    for addr, (name, _proto) in parse_name_overrides(NAME_OVERRIDES_PATH).items():
-        if addr in owned and name:
-            names[addr] = name
-    return names
+    """Retired channel: the overrides table is gone; source names are pushed by
+    push_source_names (symbols.csv is authoritative). Kept as an empty map so the
+    library-symbol channel below still works standalone."""
+    return {}
 
 
 def library_symbol_names(owned: set[int], *, start: int, end: int) -> dict[int, str]:

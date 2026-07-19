@@ -78,7 +78,7 @@ def parse_args() -> argparse.Namespace:
         default=str(repo_root / "tmp_decomp" / "cobject_backbone_scan.json"),
         help="JSON scan with CRuntimeClass descriptor-chain evidence.",
     )
-    parser.add_argument("--symbols-csv", default=str(repo_root / "config" / "symbols.csv"))
+    parser.add_argument("--symbols-csv", default=str(repo_root / "config" / "original_entities.csv"))
     parser.add_argument(
         "--classes",
         default="",

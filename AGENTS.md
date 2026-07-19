@@ -50,7 +50,7 @@ never set it to make a red gate go away (see the gate-chasing guardrail).
   dump, cdecl/thiscall scan) and the interactive function-documentation methodology.
 - **`quality-control`** — build, reccmp detect/compare/stats, gates,
   formatting, and reccmp pairing-failure diagnosis.
-- **`sync-pipeline`** — the derived-artifact pipeline: symbols.csv, function
+- **`sync-pipeline`** — the derived-artifact pipeline: the raw entity inventory, function
   ownership, generated stubs, name overrides, `just generate`/`db-resync`, and the
   resync failure→fix taxonomy (junk thunk rows, type flips, size clamps).
 - **`class-recovery`** — class/vtable reconstruction, slice/class discovery,
@@ -245,7 +245,7 @@ examples, and rationale: `docs/reference/construction.md`.
    inheritance. Placement-new is only for genuine placement semantics (pools, explicit
    reconstruction into a buffer). *(enforced by `just antipattern-gate`)*
 10. **Scalar deleting destructors (`??_G`/`??_E`) are compiler-generated** — claim them
-   with `// SYNTHETIC` + an exact backtick name in `config/symbols.csv`; never
+   with `// SYNTHETIC` + an exact backtick name in `config/original_entities.csv`; never
    hand-write a `Destruct*AndMaybeFree` bridge. Requires a genuinely polymorphic class.
 11. **Retire temporary scaffolding** (`Construct*AtThis`, `VCall_*Runtime`,
     `*AndMaybeFree`) as classes become understood; name any unavoidable bridge as
@@ -352,7 +352,7 @@ free-function stub or fake calling-convention cast back to unblock a commit.
   underlying type is mismodelled.
 - **Never borrow a type from a neighbouring signature.** A parameter labelled `TEvent*`
   on one method does not make the object passed there a `TEvent`. Confirm the object's
-  real class first (its constructor/vtable, `config/recovered_globals.csv`, `symbols.csv`,
+  real class first (its constructor/vtable, `config/recovered_globals.csv`, `original_entities.csv`,
   or the Mac oracle) before typing or casting. Distinct classes that merely share a layout
   region or a slot are *not* interchangeable — `PostCommand(TCommand*)` vs
   `PostAnEvent(TEvent*)` in the Mac evidence proves `TCommand` ≠ `TEvent`, so a
@@ -370,7 +370,7 @@ free-function stub or fake calling-convention cast back to unblock a commit.
   type onto a dual-purpose slot.
 - **Renames and pointer↔pointer / int-as-int narrowing are codegen-neutral and safe.**
   reccmp pairs by address and these casts compile to nothing, so aligning a C++ identifier
-  to the curated `symbols.csv` name (reuse it — don't invent a third) and tightening types
+  to the curated `original_entities.csv` name (reuse it — don't invent a third) and tightening types
   cannot regress a score; confirm with `just compare <addr>`. Update an override's
   signature in lockstep with the base, or it silently stops overriding (`override` fails to
   compile, or a new vtable slot is created).

@@ -44,7 +44,7 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "--symbols-csv",
-        default=str(repo_root / "config" / "symbols.csv"),
+        default=str(repo_root / "config" / "original_entities.csv"),
         help="Path to symbols.csv (pipe-delimited).",
     )
     parser.add_argument(

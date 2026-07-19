@@ -213,7 +213,7 @@ reccmp pairs by **name** (stripping C-linkage underscore); values are irrelevant
 - To convert a `g_vtbl<Class>` manual-vptr-write ctor into a real polymorphic ctor:
   make it `class X : public Base` with a `// VTABLE:` annotation and real `override`s,
   write a plain ctor with NO manual vptr line, delete the `g_vtbl<Class>` global, and
-  **delete the `g_vtbl<Class>` row from `config/symbols.csv`** — that last step is what
+  **delete the `g_vtbl<Class>` row from `config/original_entities.csv`** — that last step is what
   makes it pair (otherwise DATA-vs-VTABLE mismatch). Caveat: only matches originals
   whose single vptr write is at the top of the derived body. See commit f6a0588 and
   AGENTS construction rules 1–2.

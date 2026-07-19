@@ -150,9 +150,9 @@ The correct fix when the original does `CALL <ilt-thunk>` → real target:
    neighbors — sibling addresses reveal the right `<Class>.cpp`/module file), with a real
    body, `// FUNCTION:` marker, and real signature; the next build drops the stub.
 2. **Retire the thunk completely.** reccmp auto-resolves `CALL <thunk>` → real target
-   **only if the thunk has no named `config/symbols.csv` row.** A named `thunk_Foo` row
+   **only if the thunk has no named `config/original_entities.csv` row.** A named `thunk_Foo` row
    makes reccmp compare `call thunk_Foo` vs your `call Foo` as a literal mismatch (caps the
-   caller ~93%). Delete the thunk's rows from **both** `config/symbols.csv` and
+   caller ~93%). Delete the thunk's rows from **both** `config/original_entities.csv` and
    `config/thunk_map.csv`; the stub regenerates away and the caller hits 100%.
 3. **Call the real function directly** from a normal header-declared prototype. Watch the
    convention: MFC `PASCAL`/`WINAPI` helpers (e.g. `CDC::FromHandle`) are `__stdcall`

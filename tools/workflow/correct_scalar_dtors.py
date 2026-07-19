@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Normalize scalar-deleting-destructor rows in config/symbols.csv and source comments.
+"""Normalize scalar-deleting-destructor rows in config/original_entities.csv and source comments.
 
 MSVC500 mangles the compiler-generated scalar deleting destructor as
 ``Class::`scalar deleting destructor'``. Ghidra imports frequently lose the
@@ -54,7 +54,7 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
         "--symbols-csv",
-        default=str(repo_root / "config" / "symbols.csv"),
+        default=str(repo_root / "config" / "original_entities.csv"),
         help="Path to symbols.csv (pipe-delimited).",
     )
     parser.add_argument(

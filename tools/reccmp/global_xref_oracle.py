@@ -11,7 +11,7 @@ original .data/.rdata addresses for globals the source already models — the
 missing piece is only the ``// GLOBAL:`` annotation.
 
 Output: a pipe CSV of candidates ranked by vote count, with conflict and
-already-known status. Feed accepted rows to config/symbols.csv (type=global)
+already-known status. Feed accepted rows to config/original_entities.csv (type=global)
 and `just annotate-globals` (tools/workflow/annotate_globals_from_symbols.py),
 which inserts the markers above the matching declarations in
 src/game/global_data_tables.cpp.

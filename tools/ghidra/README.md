@@ -30,7 +30,6 @@ uv run python -m tools.ghidra.sync_exports \
   --decomp-output-dir src/ghidra_autogen \
   --types-output-dir include/ghidra_autogen \
   --decomp-max-functions-per-file 250 \
-  --name-overrides config/function_name_overrides.csv
 ```
 
 Outputs:
@@ -46,7 +45,7 @@ Function exports in `src/ghidra_autogen/*.cpp` include:
 - `GHIDRA_NAME` / `GHIDRA_PROTO`
 - `GHIDRA_COMMENT` and `GHIDRA_REPEATABLE_COMMENT` blocks from function comments
 
-If `config/function_name_overrides.csv` exists, `sync_exports.py` reapplies overrides after export to:
+The retired name-overrides table no longer exists; `config/symbols.csv` is the single curated name store.
 
 - `config/symbols.csv`
 - `config/symbols.ghidra.txt` (function names only; whitespace names are skipped)

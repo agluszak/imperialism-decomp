@@ -2,6 +2,7 @@ kind|entry|source|note
 module|tools.ghidra.sync_exports|just:sync-ghidra|Primary Ghidra export entrypoint
 module|tools.stubgen|just:generate|Generated build-input stubs (build dir)
 module|tools.source_index|just:generate|Source-marker index (build-dir artifact)
+module|tools.generate_symbols|just:generate|Raw-inventory + source overlay -> generated symbols.csv
 module|tools.workflow.annotate_globals_from_symbols|just:annotate-globals|Global annotation pass
 module|tools.workflow.annotate_vtables_from_symbols|just:annotate-vtables|Vtable annotation pass
 module|tools.workflow.annotate_strings_from_symbols|just:annotate-strings|String annotation pass

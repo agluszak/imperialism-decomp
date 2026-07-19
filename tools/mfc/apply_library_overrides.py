@@ -13,7 +13,7 @@ projection step. This module is that step. It is idempotent and safe to re-run.
 
 Precedence (highest first): reviewed override > FID match > existing curated
 identity > provisional Ghidra identity. This tool owns the top tier: it writes
-name/symbol/prototype/provenance into `config/symbols.csv` (the curated merge in
+name/symbol/prototype/provenance into `config/original_entities.csv` (the curated merge in
 `sync-ghidra` preserves those columns by address) and ensures a `// LIBRARY:`
 marker exists (markers are the ownership authority).
 
@@ -43,7 +43,7 @@ from tools.mfc.apply_msvc500_library_region import (
 )
 
 DEFAULT_OVERRIDES = "config/msvc500_library_overrides.csv"
-DEFAULT_SYMBOLS = "config/symbols.csv"
+DEFAULT_SYMBOLS = "config/original_entities.csv"
 DEFAULT_MARKERS = "src/game/library_msvc500_overrides.cpp"
 PROVENANCE = "msvc500_library_override"
 

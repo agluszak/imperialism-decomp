@@ -2,7 +2,7 @@
 """Generate linkable function stubs into the build directory.
 
 Stubs are disposable build inputs, not source: they are regenerated on every
-`just build` from `config/symbols.csv` minus the addresses claimed by manual
+`just build` from `config/original_entities.csv` minus the addresses claimed by manual
 source markers (via tools.source_index). Nothing under the output directory is
 committed.
 
@@ -21,11 +21,6 @@ import json
 import re
 from pathlib import Path
 
-from tools.common.name_overrides import (
-    DEFAULT_NAME_OVERRIDES_CSV,
-    parse_name_overrides,
-    resolve_name_overrides_path,
-)
 from tools.common.pipe_csv import read_pipe_rows
 from tools.common.repo import repo_root_from_file, resolve_repo_path
 from tools.source_index import claimed_addresses
@@ -46,12 +41,7 @@ ILT_THUNK_RANGE = range(0x401000, 0x409AB6)
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--target", default="IMPERIALISM")
-    parser.add_argument("--symbols-csv", default="config/symbols.csv")
-    parser.add_argument(
-        "--name-overrides",
-        default=DEFAULT_NAME_OVERRIDES_CSV,
-        help="Optional pipe-delimited file: address|name|prototype",
-    )
+    parser.add_argument("--symbols-csv", default="config/original_entities.csv")
     parser.add_argument(
         "--output-dir",
         default=DEFAULT_OUTPUT_DIR,
@@ -159,8 +149,7 @@ def signature_returns_void(signature: str) -> bool:
 def compute_stub_rows(
     repo_root: Path,
     target: str = "IMPERIALISM",
-    symbols_csv: str = "config/symbols.csv",
-    name_overrides: str | None = DEFAULT_NAME_OVERRIDES_CSV,
+    symbols_csv: str = "config/original_entities.csv",
 ) -> list[tuple[int, str, str]]:
     """The stub set: symbols function-kind rows minus source-claimed addresses.
 
@@ -173,11 +162,6 @@ def compute_stub_rows(
         raise SystemExit("Missing symbols CSV: {}".format(csv_path))
 
     claimed = claimed_addresses(repo_root, target)
-
-    overrides = {}
-    if name_overrides:
-        overrides_path = resolve_name_overrides_path(repo_root, name_overrides)
-        overrides = parse_name_overrides(overrides_path)
 
     rows: list[tuple[int, str, str]] = []
     for row in read_pipe_rows(csv_path):
@@ -192,12 +176,6 @@ def compute_stub_rows(
             continue
         name = (row.get("name") or "").strip()
         prototype = sanitize_prototype((row.get("prototype") or "").strip())
-        override = overrides.get(address)
-        if override is not None:
-            if override[0]:
-                name = override[0]
-            if override[1]:
-                prototype = override[1]
         rows.append((address, name, prototype))
     rows.sort(key=lambda r: r[0])
     return rows
@@ -289,7 +267,6 @@ def main() -> int:
         repo_root,
         target=args.target,
         symbols_csv=args.symbols_csv,
-        name_overrides=args.name_overrides,
     )
 
     output_dir.mkdir(parents=True, exist_ok=True)
