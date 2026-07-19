@@ -79,7 +79,8 @@ int __cdecl TouchSessionActiveNationId(void) {
 
 // FUNCTION: IMPERIALISM 0x005621b0
 void __cdecl ResetPortZoneGlobalContextCounters(void) {
-  reinterpret_cast<void(__cdecl*)()>(0x005621b0)();
+  g_nMapActionContextCount = 0;
+  g_nMapActionContextDistanceCacheSizedFor = -1;
 }
 // SYNTHETIC: IMPERIALISM 0x0057b940
 // TSimMgr::CreateObject

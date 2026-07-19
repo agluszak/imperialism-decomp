@@ -827,7 +827,71 @@ char TMapMaker::TryMergeRegionGroupWithNeighbors(int cellIndex, int classIndex) 
 }
 
 // FUNCTION: IMPERIALISM 0x005275a0
-void TMapMaker::MapGenPassSlot0E() {}
+void TMapMaker::MapGenPassSlot0E() {
+  int cityRecordIndex = 0;
+  int coarseIndex;
+  for (coarseIndex = 0; coarseIndex < 0x195; ++coarseIndex) {
+    signed char regionClass = regionClassGrid10[coarseIndex / 0x1b][coarseIndex % 0x1b];
+    signed char ownerNation;
+    signed char terrainType;
+    short linkedCityRecord;
+
+    if (regionClass == -1 || regionClass == 100) {
+      ownerNation = -1;
+      terrainType = 5;
+      linkedCityRecord = -1;
+    } else {
+      ownerNation = regionClass;
+      terrainType = 0;
+      linkedCityRecord = static_cast<short>(cityRecordIndex);
+      ++cityRecordIndex;
+      cityScoreTable0c[linkedCityRecord].ownerNationCode00 = ownerNation;
+      cityScoreTable0c[linkedCityRecord].regionClassA3 =
+          static_cast<signed char>(cityRegionIds200[static_cast<short>(ownerNation)]);
+    }
+
+    int coarseRow = coarseIndex / 0x1b;
+    int coarseColumn = coarseIndex % 0x1b;
+    TTerrainStateRecordView* tile = reinterpret_cast<TTerrainStateRecordView*>(mapTileGrid08) +
+                                    (coarseRow * 4 * 108 + coarseColumn * 4);
+    if ((coarseRow & 1) != 0) {
+      tile -= 2;
+    }
+
+    if ((coarseRow & 1) != 0 && coarseColumn == 0) {
+      tile += 2;
+      int block;
+      for (block = 0; block < 4; ++block) {
+        int column;
+        for (column = 0; column < 2; ++column) {
+          tile->ownerNationTag04 = ownerNation;
+          tile->terrainType00 = terrainType;
+          tile->cityRecordIndex = linkedCityRecord;
+          ++tile;
+        }
+        tile += 104;
+        for (column = 0; column < 2; ++column) {
+          tile->ownerNationTag04 = ownerNation;
+          tile->terrainType00 = terrainType;
+          tile->cityRecordIndex = linkedCityRecord;
+          ++tile;
+        }
+      }
+    } else {
+      int row;
+      for (row = 0; row < 4; ++row) {
+        int column;
+        for (column = 0; column < 4; ++column) {
+          tile->ownerNationTag04 = ownerNation;
+          tile->terrainType00 = terrainType;
+          tile->cityRecordIndex = linkedCityRecord;
+          ++tile;
+        }
+        tile += 104;
+      }
+    }
+  }
+}
 
 // Lays mountain-range-shaped features (ForwardParam) up to g_mapGenMountainQuota_
 // 006a3470 tiles, then spreads hills (terrain 2) around each laid tile with a 40%
