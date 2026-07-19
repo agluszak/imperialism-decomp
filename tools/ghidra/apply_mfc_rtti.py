@@ -547,6 +547,7 @@ def run(program, args) -> dict:
             StructureDataType as _SDT,
             Undefined1DataType,
             Undefined4DataType,
+            VoidDataType,
         )
         from ghidra.program.model.listing import ParameterImpl, ReturnParameterImpl
         from java.util import ArrayList
@@ -665,8 +666,14 @@ def run(program, args) -> dict:
                 if dt is None:
                     if pointer_depth == 0:
                         return None
-                    dt = _SDT(CategoryPath.ROOT, base, 0)
-                    dt = dtm.addDataType(dt, DataTypeConflictHandler.DEFAULT_HANDLER)
+                    # Unknown pointee: use void* rather than creating an empty root
+                    # stub named `base`. A canonical 1-byte stub would be indexed by
+                    # simple name and mistaken for a complete class by the signature
+                    # projector's TypeResolver (making a real by-value object look
+                    # 1 byte, or bypassing sret detection). A real layout comes from
+                    # the class-model pass; until then void* keeps the (pointer) ABI
+                    # correct without inventing a fake sized type.
+                    dt = VoidDataType.dataType
             if pointer_depth:
                 for _ in range(pointer_depth):
                     dt = PointerDataType(dt, dtm)

@@ -179,6 +179,22 @@ class ClassifyProjectionTest(unittest.TestCase):
         self.assertEqual(reason, "decompile_failed:after")
 
 
+class QualityRankTest(unittest.TestCase):
+    def test_rank_covers_every_grade_resolve_quality_emits(self):
+        from tools.ghidra.apply_source_signatures import _QUALITY_RANK
+        # Every grade resolve_quality can return must be rankable, or the structural
+        # audit KeyErrors. Keep this list in sync with resolve_quality's returns.
+        for grade in ("exact_complete", "canonical_alias", "opaque_pointee",
+                      "generic_pointer_fallback", "ambiguous_simple_name",
+                      "opaque_by_value", "unresolved"):
+            self.assertIn(grade, _QUALITY_RANK, grade)
+
+    def test_opaque_by_value_ranks_worse_than_pointer_grades(self):
+        from tools.ghidra.apply_source_signatures import _QUALITY_RANK
+        self.assertGreater(_QUALITY_RANK["opaque_by_value"], _QUALITY_RANK["opaque_pointee"])
+        self.assertGreater(_QUALITY_RANK["opaque_by_value"], _QUALITY_RANK["exact_complete"])
+
+
 class ParamTypeOnlyTest(unittest.TestCase):
     def test_named_scalar_drops_name(self):
         self.assertEqual(_param_type_only("short nPictureId"), "short")
