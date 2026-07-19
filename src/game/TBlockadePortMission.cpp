@@ -8,6 +8,7 @@
 // own override (RecomputeAndClearMissionScoreUsingPortZoneContextAverageVariantB).
 
 #include "game/TArmyPlayer.h"
+#include "game/TAutoGreatPower.h"
 #include "game/TBlockadePortMission.h"
 #include "game/TDiplomacyMgr.h"
 #include "game/TGreatPower.h"
@@ -79,15 +80,19 @@ void TBlockadePortMission::Call30() {
 }
 
 // Same overall shape as TControlSeaZoneMission::GetReplacementSlot48, but the coverage
-// check here indexes this nation's per-context byte gate array (this+0x8a0, same region
-// SetByteFlagAtOffsetAF0ByIndex writes) by portZoneContext3c's owner-nation-code ordinal,
-// instead of scanning g_apTerrainTypeDescriptorTable.
+// check here indexes this nation's candidateNationFlags (a genuine in-bounds TGreatPower
+// field at +0x8a0, unrelated to the AI-only tail block SetByteFlagAtOffsetAF0ByIndex
+// writes at +0xaf0) by portZoneContext3c's owner-nation-code ordinal, instead of scanning
+// g_apTerrainTypeDescriptorTable.
 // FUNCTION: IMPERIALISM 0x0053adf0
 TMission* TBlockadePortMission::GetReplacementSlot48() {
-  TGreatPower* nation = g_apNationStates[nationId04];
+  // SetByteFlagAtOffsetAF0ByIndex touches the AI-only tail state block, which lives only
+  // on TAutoGreatPower (see TAttackProvinceMission::Free); missions are AI-only, so
+  // g_apNationStates[nationId04] here is genuinely a TAutoGreatPower.
+  TAutoGreatPower* nation = static_cast<TAutoGreatPower*>(g_apNationStates[nationId04]);
   nation->AssertValid();
   short ownerCode = portZoneContext3c->GetPortZoneOwnerNationCodeFromMissionField48();
-  bool hasCoverage = *(reinterpret_cast<char*>(nation) + 0x8a0 + ownerCode) != 0;
+  bool hasCoverage = nation->candidateNationFlags[ownerCode] != 0;
 
   if (!hasCoverage) {
     short contextOrdinal = portZoneContext3c->GetContextOrdinalOrInvalid();

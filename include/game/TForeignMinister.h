@@ -55,6 +55,21 @@ public:
   virtual void DispatchProposalSlot98(int arg1, int arg2, int arg3, int targetNation);
   virtual void RecomputeOrderStateSlot9C();
 
+  // Own fields at +0x10..+0x48 (moved from TMinister -- RTTI m_nObjectSize proves this
+  // block is TForeignMinister-only, not shared base state; see TMinister.h).
+  short field10;          // +0x10 — primary target (SetForeignMinisterPrimaryAndSecondaryTargets)
+  short field12;          // +0x12 — secondary target
+  short capabilityFlag14; // +0x14
+  short capabilityFlag16; // +0x16
+  unsigned char pad18[0x1a - 0x18]; // +0x18..0x19 — still unrecovered
+  short field1a;                    // +0x1a — ctor seeds 5 (0x52f070)
+  short field1c;                    // +0x1c — ctor seeds 2 (0x52f070)
+  short counters1e[3]; // +0x1e..0x23 — per-index counter array (AddToForeignMinisterCounterAtIndex)
+  short capabilityFlag24;
+  short capabilityFlag26;
+  short capabilityFlag28;
+  unsigned char pad2a[0x48 - 0x2A];
+
   unsigned char field48;    // +0x48 — cleared by the constructor
   unsigned char flags49[7]; // +0x49..0x4f — seeded to 1 by InitializeForeignMinisterStateFlags
   unsigned char foreignState50[0x80 - 0x50]; // +0x50..0x7f — remaining unrecovered state

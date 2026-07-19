@@ -105,15 +105,7 @@ TG_LAYOUT_ASSERT(TGreatPower_Offset_diplomacyPolicyByNation_0xB2,
 TG_LAYOUT_ASSERT(TGreatPower_Offset_aidAllocationMatrix_0x280,
                  offsetof(TGreatPower, aidAllocationMatrix) == 0x280);
 TG_LAYOUT_ASSERT(TGreatPower_Offset_city_0x894, offsetof(TGreatPower, city) == 0x894);
-TG_LAYOUT_ASSERT(TGreatPower_Size_AtLeast_0x964, sizeof(TGreatPower) >= 0x964);
-TG_LAYOUT_ASSERT(TGreatPower_Offset_actionMetricByQuarter_0x964,
-                 offsetof(TGreatPower, actionMetricByQuarter) == 0x964);
-TG_LAYOUT_ASSERT(TGreatPower_Offset_mapNodeStateFlags_0x970,
-                 offsetof(TGreatPower, mapNodeStateFlags) == 0x970);
-TG_LAYOUT_ASSERT(TGreatPower_Offset_portZoneStateFlags_0xAF0,
-                 offsetof(TGreatPower, portZoneStateFlags) == 0xAF0);
-TG_LAYOUT_ASSERT(TGreatPower_Offset_missionQueue_0xB60,
-                 offsetof(TGreatPower, missionQueue) == 0xB60);
+TG_LAYOUT_ASSERT(TGreatPower_Size_Exactly_0x964, sizeof(TGreatPower) == 0x964);
 #undef TG_LAYOUT_ASSERT
 
 // SYNTHETIC: IMPERIALISM 0x004d8950
@@ -132,7 +124,7 @@ TGreatPower::TGreatPower()
       proposalQueue(0), city(0), townMarkerList(0), trackedObjectList(0), scenarioInitFlag(0),
       diplomacyBudgetBase(0), escalationCounter(0), pendingCommitmentCost(0), pressureCounter(0),
       field900(0), turnSummaryQueue(0), missionNodeQueue(0), field910(0), aidAllocationTotal(0),
-      pendingAidTotal(0), missionQueue(0) {
+      pendingAidTotal(0) {
   // TCountry base scalars (identity strings constructed by the TCountry ctor).
   this->nationSlot = 0;
   this->encodedNationSlot = 0;
@@ -4378,101 +4370,6 @@ void TGreatPower::InitializeNationMinisterSubsystemsByPolicyIds(int arg1, int ar
   (void)arg5;
 }
 
-// FUNCTION: IMPERIALISM 0x004e83d0
-void TGreatPower::QueueMapActionMissionsForPortZoneCandidates() {
-  TLongintList* regionList = this->ownedRegionList;
-  int regionCount = regionList->GetSize();
-
-  for (int i = 1; i <= regionCount; i++) {
-    int regionId = regionList->At(i);
-    bool unavailable = g_pGlobalMapState->IsNodeTypeLinkUnavailableAndNoActiveMapActionContext(
-        regionId, this->nationSlot);
-    this->mapNodeStateFlags[regionId] = (unavailable == false);
-    QueueMapActionMissionFromCandidateAndMarkState(kMissionTypeDefendProvince, regionId, 0, -1);
-  }
-
-  TZone* portZone = g_pActiveMapOrderContext->FindFirstPortZoneContextByNation(this->nationSlot);
-
-  if (portZone->PrimaryZoneHeapCapacity() == 0) {
-    void* resized = realloc(portZone->PrimaryZoneHeapData(), 8);
-    if (resized == 0) {
-      resized = realloc(portZone->PrimaryZoneHeapData(), 4);
-      portZone->PrimaryZoneHeapData() = static_cast<TZone**>(resized);
-      portZone->PrimaryZoneHeapCapacity() = 1;
-    } else {
-      portZone->PrimaryZoneHeapData() = static_cast<TZone**>(resized);
-      portZone->PrimaryZoneHeapCapacity() = 2;
-    }
-  }
-
-  if (portZone->PrimaryZoneHeapSize() == 0) {
-    portZone->PrimaryZoneHeapSize() = 1;
-  }
-
-  TZone** heapData = portZone->PrimaryZoneHeapData();
-  TZone* firstEntry = *heapData;
-
-  short index = (firstEntry != 0) ? *(short*)((char*)firstEntry + 0x14) : -1;
-  this->portZoneStateFlags[index] = 1;
-  QueueMapActionMissionFromCandidateAndMarkState(kMissionTypeDefendProvince, -1, firstEntry, -1);
-
-  index = (portZone != 0) ? *(short*)((char*)portZone + 0x14) : -1;
-  this->portZoneStateFlags[index] = 1;
-  QueueMapActionMissionFromCandidateAndMarkState(kMissionTypeDefendProvince, -1, portZone, -1);
-
-  QueueMapActionMissionFromCandidateAndMarkState(kMissionTypeBlockadePort, -1, 0, -1);
-}
-
-// FUNCTION: IMPERIALISM 0x004e8540
-void TGreatPower::QueueMapActionMissionFromCandidateAndMarkState(eMissionType arg1, int arg2,
-                                                                 TZone* portZoneContext, int arg4) {
-  const unsigned char kNodeStateAvailable = 1;
-  const unsigned char kNodeStateQueued = 2;
-
-  if (arg2 != -1 && this->mapNodeStateFlags[arg2] != kNodeStateAvailable) {
-    return;
-  }
-
-  if ((portZoneContext != 0) && (arg4 == -1)) {
-    short index = g_pMapActionContextListHead->GetContextOrdinalOrInvalid();
-    if (this->portZoneStateFlags[index] != kNodeStateAvailable) {
-      return;
-    }
-  }
-
-  eMissionType missionKind = arg1;
-  if ((portZoneContext != 0) && (arg2 == -1) && (arg4 == -1) &&
-      (arg1 != kMissionTypeBlockadePort)) {
-    missionKind = kMissionTypeDefendProvince;
-    arg4 = -1;
-  }
-
-  TMission* missionObj = CreateMissionObjectByKindAndNodeContext(
-      this->nationSlot, missionKind, arg2, reinterpret_cast<int>(portZoneContext), arg4);
-  if (missionObj == 0) {
-    GAME_FAIL_NIL_POINTER();
-    TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UCountryAuto.cpp", 0x5ed);
-  }
-
-  TSortedList* missionQueue = this->missionQueue;
-  missionQueue->AddTail(missionObj);
-
-  if (arg2 != -1) {
-    this->mapNodeStateFlags[arg2] = kNodeStateQueued;
-  }
-  if (portZoneContext != 0) {
-    // portZoneContext is a tagged parameter in the original: -1 selects the active
-    // context ordinal, other non-null values double as a map-node index below.
-    if (portZoneContext == reinterpret_cast<TZone*>(-1)) {
-      short index = g_pMapActionContextListHead->GetContextOrdinalOrInvalid();
-      this->portZoneStateFlags[index] = kNodeStateQueued;
-    }
-    if (portZoneContext != reinterpret_cast<TZone*>(-1)) {
-      this->mapNodeStateFlags[reinterpret_cast<int>(portZoneContext)] = kNodeStateQueued;
-    }
-  }
-}
-
 // FUNCTION: IMPERIALISM 0x004e8750
 float TGreatPower::ComputeAdvisoryMapNodeScoreFactorByCaseMetric(int metricCase, int cityIndex,
                                                                  TZone* zone,
@@ -4563,24 +4460,6 @@ float TGreatPower::ComputeAdvisoryMapNodeScoreFactorByCaseMetric(int metricCase,
   }
   return result;
 }
-// Sets mapNodeStateFlags[provinceIndex] to `value`, except when value == 1 and the
-// province's map-action-context link is unavailable for this nation, in which case it's
-// forced to 0 -- the same gate/array QueueMapActionMissionsForPortZoneCandidates above
-// already uses directly.
-// FUNCTION: IMPERIALISM 0x004e8b50
-void TGreatPower::SetMapStateByteFlag970WithRuntimeGate(int provinceIndex, int value) {
-  if (value == 1 && g_pGlobalMapState->IsNodeTypeLinkUnavailableAndNoActiveMapActionContext(
-                        provinceIndex, nationSlot)) {
-    value = 0;
-  }
-  mapNodeStateFlags[provinceIndex] = static_cast<unsigned char>(value);
-}
-
-// FUNCTION: IMPERIALISM 0x004e8bf0
-void TGreatPower::SetByteFlagAtOffsetAF0ByIndex(int contextOrdinal, char value) {
-  *(reinterpret_cast<char*>(this) + 0xaf0 + contextOrdinal) = value;
-}
-
 // FUNCTION: IMPERIALISM 0x004e8c20
 float TGreatPower::ComputeAdvisoryMapNodeCompositeScore(int cityRecordIndex, int mode) {
   return ComputeAdvisoryMapNodeCompositeScoreByMode(cityRecordIndex, mode, -1);
@@ -4717,208 +4596,6 @@ float TGreatPower::ComputeMapActionContextCompositeScoreForNation(TZone* zone) {
   }
 
   return compositeScore;
-}
-
-// FUNCTION: IMPERIALISM 0x004e92b0
-void TGreatPower::PopulateCase16AdvisoryMapNodeCandidateState() {
-  int orderTypes[4];
-  orderTypes[0] = 2;
-  orderTypes[1] = 3;
-  orderTypes[2] = 4;
-  orderTypes[3] = 6;
-
-  // Reset the transient (value 1) candidate flags; sticky values survive.
-  int i;
-  for (i = 0; i < 0x180; ++i) {
-    if (mapNodeStateFlags[i] == 1) {
-      mapNodeStateFlags[i] = 0;
-    }
-  }
-
-  // Mark candidate regions from every flagged great power's owned regions, plus (for
-  // eligible slots) the minors whose capability rows decode to that slot.
-  int slot;
-  for (slot = 0; slot < 7; ++slot) {
-    if (g_apNationStates[slot] != 0 && candidateNationFlags[slot] != 0) {
-      int j;
-      for (j = 1; j <= g_apNationStates[slot]->ownedRegionList->GetSize(); ++j) {
-        int region = g_apNationStates[slot]->ownedRegionList->At(j);
-        if (mapNodeStateFlags[region] == 0) {
-          char markValue = 1;
-          if (g_pGlobalMapState->IsNodeTypeLinkUnavailableAndNoActiveMapActionContext(
-                  region, this->nationSlot) != 0) {
-            markValue = 0;
-          }
-          mapNodeStateFlags[region] = markValue;
-        }
-      }
-      if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(slot) != 0) {
-        int minorIndex;
-        for (minorIndex = 0; minorIndex < 9; ++minorIndex) {
-          if (g_apMinorNationCapabilityObjects[minorIndex]->IsEncodedNationSlotMinus200Equal(
-                  slot) != 0) {
-            int m;
-            for (m = 1;
-                 m <= g_apMinorNationCapabilityObjects[minorIndex]->ownedRegionList->GetSize();
-                 ++m) {
-              int minorRegion =
-                  g_apMinorNationCapabilityObjects[minorIndex]->ownedRegionList->At(m);
-              if (mapNodeStateFlags[minorRegion] == 0) {
-                char markValue = 1;
-                if (g_pGlobalMapState->IsNodeTypeLinkUnavailableAndNoActiveMapActionContext(
-                        minorRegion, this->nationSlot) != 0) {
-                  markValue = 0;
-                }
-                mapNodeStateFlags[minorRegion] = markValue;
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-
-  // Same marking for every flagged minor's own regions.
-  int minorSlot;
-  for (minorSlot = 0; minorSlot < 16; ++minorSlot) {
-    if (candidateNationFlags[7 + minorSlot] != 0) {
-      int j;
-      for (j = 1; j <= g_apSecondaryNationStateSlots[7 + minorSlot]->ownedRegionList->GetSize();
-           ++j) {
-        int region = g_apSecondaryNationStateSlots[7 + minorSlot]->ownedRegionList->At(j);
-        if (mapNodeStateFlags[region] == 0) {
-          char markValue = 1;
-          if (g_pGlobalMapState->IsNodeTypeLinkUnavailableAndNoActiveMapActionContext(
-                  region, this->nationSlot) != 0) {
-            markValue = 0;
-          }
-          mapNodeStateFlags[region] = markValue;
-        }
-      }
-    }
-  }
-
-  if (g_pDiplomacyTurnStateManager->HasAnyWarRelationForNation(this->nationSlot) != 0) {
-    // At war: purge the interior minister's queues for each advisory order type.
-    int t;
-    for (t = 0; t < 4; ++t) {
-      interiorMinister->InteriorSlot1F(orderTypes[t]);
-    }
-    return;
-  }
-
-  CString nationText;
-  CString turnText;
-  CString preludeText;
-  FormatOverlayTerrainLabelText(&nationText);
-  turnText.Format(g_szDecimalFormat, static_cast<short>(g_pSimMgr->quarterGateTick2c / 4));
-
-  int t;
-  for (t = 0; t < 4; ++t) {
-    g_pSimMgr->GetStringPrelude(static_cast<short>(orderTypes[t]), &preludeText);
-    if (interiorMinister->InteriorSlot1E(orderTypes[t]) >= 5) {
-      TProvinceDesirabilityList* candidates = new TProvinceDesirabilityList();
-      candidates->InitializeProvinceRecordSize();
-
-      int rec;
-      for (rec = 0; rec < 0x180; ++rec) {
-        short owner = g_pGlobalMapState->cityScoreTable[rec].ownerNationCode00;
-        if (owner == -1) {
-          continue;
-        }
-        if (g_pDiplomacyTurnStateManager->GetNationPairDiplomacyRelationCode(this->nationSlot,
-                                                                             owner) == 2) {
-          continue;
-        }
-        if (g_apTerrainTypeDescriptorTable[owner]->encodedNationSlot >= 200) {
-          if (g_pDiplomacyTurnStateManager->GetNationPairDiplomacyRelationCode(
-                  this->nationSlot,
-                  g_apTerrainTypeDescriptorTable[owner]->DecodeOwnerNationSlot()) == 2) {
-            continue;
-          }
-        }
-        if (mapNodeStateFlags[rec] != 0) {
-          continue;
-        }
-        if (((1 << orderTypes[t]) &
-             g_pGlobalMapState->cityScoreTable[rec].resourcePresenceMaskA2) == 0) {
-          continue;
-        }
-
-        short score = g_pDiplomacyTurnStateManager
-                          ->relationStandingScoreMatrix79c[this->nationSlot * 0x17 + owner];
-        int linkBonus;
-        int nodeBuffer[12];
-        if (g_pGlobalMapState->HasDirectOrFallbackLinkedNodeType(rec, this->nationSlot, 1) != 0) {
-          linkBonus = 0;
-        } else if (g_pGlobalMapState->CollectSecondDegreeLinksWithMinorNationFallback(
-                       rec, this->nationSlot, nodeBuffer, 1) != 0) {
-          linkBonus = 0x14;
-        } else if (g_pActiveMapOrderContext->FindMapActionContextContainingNodeByIndex(rec) != 0) {
-          linkBonus = 0x28;
-        } else {
-          continue;
-        }
-        score = static_cast<short>(score + linkBonus);
-
-        struct ProvinceCandidateRecord {
-          short regionIndex;
-          short score;
-        } candidate;
-        candidate.regionIndex = static_cast<short>(rec);
-        candidate.score = score;
-        if (owner < 7 && g_pSimMgr->IsNationSlotEligibleForEventProcessing(owner) != 0) {
-          candidate.score = static_cast<short>(candidate.score + 0x14);
-        }
-        candidates->InsertCopiedRecordSortedByComparator(&candidate);
-      }
-
-      // Flag the top one or two candidates.
-      if (candidates->GetSize() != 0) {
-        short* topRecord = static_cast<short*>(candidates->GetPtrListEntryByOneBasedIndex(1));
-        int topRegion = topRecord[0];
-        if (mapNodeStateFlags[topRegion] == 0) {
-          char markValue = 1;
-          if (g_pGlobalMapState->IsNodeTypeLinkUnavailableAndNoActiveMapActionContext(
-                  topRegion, this->nationSlot) != 0) {
-            markValue = 0;
-          }
-          mapNodeStateFlags[topRegion] = markValue;
-        }
-        if (candidates->GetSize() >= 2) {
-          short* secondRecord = static_cast<short*>(candidates->GetPtrListEntryByOneBasedIndex(2));
-          int secondRegion = secondRecord[0];
-          if (mapNodeStateFlags[secondRegion] == 0) {
-            char markValue = 1;
-            if (g_pGlobalMapState->IsNodeTypeLinkUnavailableAndNoActiveMapActionContext(
-                    secondRegion, this->nationSlot) != 0) {
-              markValue = 0;
-            }
-            mapNodeStateFlags[secondRegion] = markValue;
-          }
-        }
-      }
-      if (candidates != 0) {
-        candidates->ReleasePtrList();
-      }
-    }
-  }
-}
-
-// For every unassigned (ownerMission40 == nullptr) non-naval (GetUnitMovementClassId() ==
-// 0) unit in militaryUnitList44, finds the queued mission (kind 3, keyed by the unit's own
-// tileIndex06) in missionQueue and adopts the unit into it (AdoptUnitSlot80).
-// FUNCTION: IMPERIALISM 0x004eafa0
-void TGreatPower::SeedTrackedEntryAssignmentsFromEligibleUnits() {
-  CIterator iter(militaryUnitList44);
-  for (TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(iter.Reset()); iter.More();
-       unit = static_cast<TMilitaryUnit*>(iter.Advance())) {
-    if (unit->ownerMission40 == nullptr && unit->GetUnitMovementClassId() == 0) {
-      TMission* handler =
-          FindFirstTrackedHandlerMatchingModeAndShortKey(missionQueue, 3, unit->tileIndex06, 0);
-      handler->AdoptUnitSlot80(unit, 1);
-    }
-  }
 }
 
 // FUNCTION: IMPERIALISM 0x00582630

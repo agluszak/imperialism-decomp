@@ -37,26 +37,17 @@ public:
   // Slots 0x48+ are introduced per derived minister (e.g. TDefenseMinister, TInteriorMinister).
 
   TGreatPower* ownerContextAt04; // +0x4 — great-power back-pointer from InitializeBaseOrderArray
-  TIndexAndRankList* field_8; // +0x8 — minister order array (vtable 0x659c58)
-  short skillIndexC;          // +0xC
+  TIndexAndRankList* field_8;    // +0x8 — minister order array (vtable 0x659c58)
+  short skillIndexC;             // +0xC
   unsigned char pad0e[0x10 - 0x0E];
-  short
-      field10; // +0x10 — foreign-minister primary target (SetForeignMinisterPrimaryAndSecondaryTargets)
-  short field12; // +0x12 — foreign-minister secondary target
-  // +0x14/+0x16 — every TCityInteriorMinister-family constructor (TSteelCityMinister,
-  // TShipBuilderCityMinister, TEvenCityMinister, ...) sets both to 1; no differentiating
-  // value observed across ministers, semantic beyond "capability flag pair" unconfirmed.
-  short capabilityFlag14;
-  short capabilityFlag16;
-  unsigned char pad18[0x1e - 0x18];
-  short counters1e[3]; // +0x1e..0x23 — per-index counter array (AddToForeignMinisterCounterAtIndex)
-  short capabilityFlag24;
-  short capabilityFlag26;
-  short capabilityFlag28;
-  // Base occupies 0x00..0x48: derived ministers introduce their own state at 0x48
-  // (ConstructTForeignMinister @ 0x52f070 first writes derived fields at [this+0x48];
-  // TDefenseMinister slots 0x48-0x60, TCityInteriorMinister shares 0x48-0x50). The
-  // 0x2A..0x48 region is unrecovered base padding — without it derived `operator new`
-  // sizes (TForeignMinister 0x80, etc.) come out 0x1C bytes short.
-  unsigned char pad2a[0x48 - 0x2A];
+  // Object ends here at 0x10 (== CRuntimeClass::m_nObjectSize for TMinister). Every
+  // field previously declared here (field10/field12/capabilityFlag14../counters1e/...)
+  // was independently re-verified per derived class: TForeignMinister uses them via its
+  // own real virtual overrides (AddToForeignMinisterCounterAtIndex 0x52f4f0,
+  // SetForeignMinisterPrimaryAndSecondaryTargets 0x52f540) and TInteriorMinister/
+  // TCityInteriorMinister-family write the *same relative offsets* (0x14/0x16, ctor
+  // evidence e.g. TSteelCityMinister::TSteelCityMinister 0x4c59e0) for their own
+  // unrelated capability-flag pair — two distinct derived-class field blocks that
+  // happen to share layout, not one shared base block. See TForeignMinister.h and
+  // TInteriorMinister.h for the per-class fields now declared there.
 };

@@ -32,11 +32,17 @@ TInteriorMinister::TInteriorMinister() : TMinister() {}
 // FUNCTION: IMPERIALISM 0x004be290
 void TInteriorMinister::ReadFrom(TStream* stream) {
   TMinister::ReadFrom(stream);
-  stream->ReadBytes(reinterpret_cast<char*>(this) + 0x10, 2);
-  stream->ReadBytes(reinterpret_cast<char*>(this) + 0x12, 2);
-  stream->ReadBytes(reinterpret_cast<char*>(this) + 0x14, 2);
-  stream->ReadBytes(reinterpret_cast<char*>(this) + 0x16, 2);
-  stream->ReadBytes(reinterpret_cast<char*>(this) + 0x18, 0x2c);
+  stream->ReadBytes(&field10, 2);
+  stream->ReadBytes(&field12, 2);
+  stream->ReadBytes(&capabilityFlag14, 2);
+  stream->ReadBytes(&capabilityFlag16, 2);
+  unsigned char* table = reinterpret_cast<unsigned char*>(trailingTable);
+  stream->ReadBytes(table, sizeof(trailingTable));
+  for (int i = 0; i < 7; ++i) {
+    unsigned char lo = table[i * 2];
+    table[i * 2] = table[i * 2 + 1];
+    table[i * 2 + 1] = lo;
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x004be320

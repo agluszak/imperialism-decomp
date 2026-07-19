@@ -4,6 +4,7 @@
 
 #include "game/TAttackProvinceMission.h"
 #include "game/CIterator.h"
+#include "game/TAutoGreatPower.h"
 #include "game/TDiplomacyMgr.h"
 #include "game/TGlobalMapState.h"
 #include "game/TGreatPower.h"
@@ -71,7 +72,12 @@ void TAttackProvinceMission::ReadFrom(TStream* stream) {
 
 // FUNCTION: IMPERIALISM 0x0053d890
 void TAttackProvinceMission::Free() {
-  TGreatPower* nationState = g_apNationStates[nationId04];
+  // The AI-only tail state block (mapNodeStateFlags/portZoneStateFlags/...) that
+  // SetMapStateByteFlag970WithRuntimeGate touches lives only on TAutoGreatPower (RTTI
+  // object size proves the other GreatPower subclasses have no room for it); missions
+  // are an AI-only game mechanic, so g_apNationStates[nationId04] here is genuinely a
+  // TAutoGreatPower.
+  TAutoGreatPower* nationState = static_cast<TAutoGreatPower*>(g_apNationStates[nationId04]);
   nationState->AssertValid();
 
   nationState->SetMapStateByteFlag970WithRuntimeGate(targetProvince30, 0);

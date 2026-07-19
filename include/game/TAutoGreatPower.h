@@ -6,8 +6,6 @@
 class TAutoGreatPower : public TGreatPower {
 public:
   DECLARE_DYNCREATE(TAutoGreatPower)
-  // `missionQueue` (the whole 0x964+ tail block is TAutoGreatPower-only data that is
-  // still declared on TGreatPower; see worklog 2026-06-10).
 
   TAutoGreatPower();
   ~TAutoGreatPower() override;
@@ -109,6 +107,52 @@ public:
   // slot 0xb3 — 0x004ea990.
   virtual undefined IterateLinkedListCursorAndRelinkNodeOwners_004ea990();
 
-  // Original object size is 0xb70 (CRuntimeClass m_nObjectSize); the source class ended at 0xb6c. Trailing 4 byte(s) not yet semantically recovered — declared so sizeof and the recomp's allocation size match the original.
+  // 0x4eb8b0 — repeatedly assigns the highest-priority tracked mission's action to a
+  // matching order/unit. Resets every missionQueue entry (ReturnFalseSlot98), then loops:
+  // (1) pick the best-scoring TNavyMission (ReturnZeroSlot5C identity filter — army
+  // entries return null there); if found, build its 9-category weight profile
+  // (ReturnZeroSlot2C) and pair it with the best same-nation, unassigned
+  // (field2c == nullptr) TShip primary-order node (ReturnZeroFloatSlot7C), dispatching
+  // via NoOpSlot84 and restarting. (2) Otherwise pick the best-scoring TArmyMission
+  // (ReturnZeroSlot58 identity filter, with a state08/marker11 tie-break against a
+  // runner-up candidate), build its weight profile, and pair it with the best unassigned
+  // (ownerMission40 == nullptr) militaryUnitList44 unit (ReturnZeroFloatSlot78),
+  // dispatching via AdoptUnitSlot80 and restarting. Stops when neither pass finds a
+  // candidate to act on.
+  void AssignTrackedEntryActionsByProfileToOrdersOrUnits();
+
+  void QueueMapActionMissionFromCandidateAndMarkState(eMissionType arg1, int arg2,
+                                                      TZone* portZoneContext, int arg4);
+  // For every unassigned (ownerMission40 == nullptr) non-naval (GetUnitMovementClassId()
+  // == 0) unit in militaryUnitList44, finds the queued mission (kind 3, keyed by the
+  // unit's own tileIndex06) in missionQueue and adopts the unit into it. 0x4eafa0.
+  void SeedTrackedEntryAssignmentsFromEligibleUnits();
+  void QueueMapActionMissionsForPortZoneCandidates();
+  // Case-16 advisory pass: resets transient candidate flags, re-marks candidate regions
+  // from flagged nations'/minors' owned-region lists, and (when not at war) scores and
+  // flags the top provinces per advisory order type {2,3,4,6}. 0x4e92b0, __thiscall.
+  void PopulateCase16AdvisoryMapNodeCandidateState();
+  // Writes `value` into portZoneStateFlags[contextOrdinal] (`contextOrdinal` is a
+  // TZone::GetContextOrdinalOrInvalid() result). Called from
+  // TControlSeaZoneMission::GetReplacementSlot48's terrain-coverage-not-found path
+  // (0x5389a9) to clear this nation's flag for the target port zone's context ordinal.
+  void SetByteFlagAtOffsetAF0ByIndex(int contextOrdinal, char value); // 0x4e8bf0
+  // Sets mapNodeStateFlags[provinceIndex] to `value`, except when value == 1 and the
+  // province's map-action-context link is unavailable (no active context for this
+  // nation), in which case it's forced to 0 instead. Same gate/array
+  // QueueMapActionMissionsForPortZoneCandidates already uses directly. 0x4e8b50.
+  void SetMapStateByteFlag970WithRuntimeGate(int provinceIndex, int value);
+
+  // Tail AI-state block: moved here from TGreatPower (RTTI m_nObjectSize proves this
+  // data is TAutoGreatPower-only -- see the comment at the end of TGreatPower's field
+  // list). Object ends at 0x964 (base TGreatPower) + this block; original object size
+  // is 0xb70 (CRuntimeClass m_nObjectSize), so the trailing 4 bytes below are still not
+  // semantically recovered.
+  short actionMetricByQuarter[6];
+  unsigned char mapNodeStateFlags[0x180];
+  unsigned char portZoneStateFlags[0x70];
+  TSortedList* missionQueue;
+  float floatB64;
+  float floatB68;
   int fieldb6c;
 };

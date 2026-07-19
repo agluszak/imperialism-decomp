@@ -32,7 +32,11 @@ void TCityInteriorMinister::InteriorSlot1F(int arg) {
 IMPLEMENT_DYNCREATE(TCityInteriorMinister, TInteriorMinister)
 
 // FUNCTION: IMPERIALISM 0x004be840
-TCityInteriorMinister::TCityInteriorMinister() : TInteriorMinister() {}
+TCityInteriorMinister::TCityInteriorMinister() : TInteriorMinister() {
+  field18c = 0;
+  capabilityFlag14 = 1;
+  capabilityFlag16 = 1;
+}
 
 // SYNTHETIC: IMPERIALISM 0x004be880
 // TCityInteriorMinister::`scalar deleting destructor'

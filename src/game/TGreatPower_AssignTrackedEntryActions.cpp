@@ -1,6 +1,7 @@
 #include "game/TGreatPower_internal.h"
 
 #include "game/CIterator.h"
+#include "game/TAutoGreatPower.h"
 #include "game/TGreatPower.h"
 #include "game/TMilitaryUnit.h"
 #include "game/TMission.h"
@@ -22,7 +23,7 @@ inline float ComputeMissionRemainingPriorityScore(TMission* mission) {
 } // namespace
 
 // FUNCTION: IMPERIALISM 0x004eb8b0
-void TGreatPower::AssignTrackedEntryActionsByProfileToOrdersOrUnits() {
+void TAutoGreatPower::AssignTrackedEntryActionsByProfileToOrdersOrUnits() {
   {
     CIterator resetIter(missionQueue);
     for (TMission* entry = static_cast<TMission*>(resetIter.Reset()); resetIter.More();
