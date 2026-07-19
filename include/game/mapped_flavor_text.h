@@ -30,8 +30,9 @@ char* __cdecl AppendInterNationEventSummaryTextEntry_Impl(TSimMgr* sim, const ch
 
 // Template expander: writes `input` into `out`, substituting each `[N]` bracket with the
 // N-th variadic string argument (or, for `[Nx]` with a trailing letter, the news-table
-// mapped form of that argument). `ctx` is unused. 0x0057fef0.
-void scanBracketExpressions(void* ctx, void* out, const char* input, ...);
+// mapped form of that argument). `ctx` is always g_pSimMgr at every call site but unused
+// in the body. 0x0057fef0.
+void scanBracketExpressions(TSimMgr* ctx, CString* out, const char* input, ...);
 
 // 0x580060: load the (groupA, indexA) template and expand it into `out`; bracket
 // digit [0] re-expands pair A, [1] expands (groupB, indexB), and a trailing lowercase

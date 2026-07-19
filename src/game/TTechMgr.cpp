@@ -24,7 +24,7 @@
 #include "game/TTaskForce.h"
 #include "game/TUnitOrder.h"
 #include "game/TViewMgr.h"
-#include "game/localization_text_helpers.h"
+#include "game/mapped_flavor_text.h"
 
 #include "game/TMultiplayerMgr.h"
 #include "game/TSimMgr.h"

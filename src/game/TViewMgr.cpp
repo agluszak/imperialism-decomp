@@ -37,7 +37,6 @@
 #include "game/turn_flow_cooldown.h" // IsTurnCooldownCounterActiveOrResetFlag
 #include "game/ui_invalidation_guard.h"
 #include "game/TMultiplayerMgr.h"
-#include "game/localization_text_helpers.h"
 #include "game/TCluster.h"
 #include "game/TDiplomacyMapView.h"
 #include "game/TModalMessageCommand.h"

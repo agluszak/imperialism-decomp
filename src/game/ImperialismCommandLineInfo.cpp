@@ -23,7 +23,7 @@ void ImperialismCommandLineInfo::ParseParam(LPCSTR pszParam, BOOL bFlag, BOOL bL
   if (bFlag && EqualsCommandToken(upper, g_szCmdSwitchLangQuit_00694254)) {
     m_bQuitAfterLanguageScan2c = 1;
     m_bShowSetupDialog30 = 1;
-  } else if (bFlag && EqualsCommandToken(upper, g_szCmdSwitchLang_00694250)) {
+  } else if (bFlag && EqualsCommandToken(upper, g_szLiteralL_00694250)) {
     m_bShowSetupDialog30 = 1;
   } else if (bFlag && upper[0] == 'L') {
     *m_pLanguageName24 = pszParam + 1; // language name keeps its original case

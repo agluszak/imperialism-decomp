@@ -18,7 +18,7 @@
 #include "game/mfc.h"
 #include "game/TAutoResolutionDialog.h"
 #include "game/TModalTemplateDialog.h"
-#include "game/localization_text_helpers.h"
+#include "game/mapped_flavor_text.h"
 #include "game/quickdraw_regions.h"
 
 #include <io.h>  // CRT _findfirst/_findnext/_findclose (LIBRARY 0x5e7ae0/0x5e7c10/0x5e7d30)

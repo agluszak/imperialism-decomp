@@ -4,8 +4,8 @@
 #include "game/TCountry.h"
 #include "game/TSimMgr.h"
 #include "game/TView.h"
-#include "game/global_data_tables.h"        // g_pSimMgr, g_apTerrainTypeDescriptorTable
-#include "game/localization_text_helpers.h" // scanBracketExpressions
+#include "game/global_data_tables.h" // g_pSimMgr, g_apTerrainTypeDescriptorTable
+#include "game/mapped_flavor_text.h"
 #include "game/quickdraw_rendering.h"
 
 // SYNTHETIC: IMPERIALISM 0x00430900
