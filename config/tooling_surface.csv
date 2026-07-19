@@ -45,6 +45,7 @@ module|tools.ghidra.decomp_check|just:ghidra-decomp-check|Ghidra decompile bench
 module|tools.ghidra.scan_cdecl_thiscall|just:scan-cdecl-thiscall|Classify __cdecl vs __thiscall by ECX use
 module|tools.ghidra.vtable_dump|query:vtable-dump|Dump a class vtable slot->function map
 module|tools.ghidra.name_vtable_slots|just:name-vtable-slots|Name and expand Ghidra vtable structs from recovered source slots
+module|tools.ghidra.rename_class|just:ghidra-rename-class|Atomically rename a DB class: namespace + functions + datatypes + vtable label
 module|tools.ghidra.vtable_slots|just:class-vtable-dump|Read-only vtable slot evidence dump to JSON (inspection only)
 module|tools.ghidra.propagate_virtual_method_names|just:propagate-virtual-method-names|Propagate virtual method identities parent-first
 module|tools.ghidra.vtable_struct_check|just:ghidra-vtable-struct-check|Check Ghidra vtable struct field names

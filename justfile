@@ -869,6 +869,16 @@ apply-fidb *args: _require-ghidra-install
   uv run python -m tools.ghidra.apply_fidb {{args}}
 
 # MUTATES: Ghidra DB (with --apply).
+# Atomically re-attribute a class in the DB: namespace + functions + datatypes +
+# vtable-struct + vtable label, in one transaction (push-source-names only does
+# function/label names, so a datatype-level junk name survives it). Dry-run by default.
+#   just ghidra-rename-class TSoundChannelNode TLongintList --vtable 0x650a08 [--apply]
+[doc('MUTATES: Ghidra DB (--apply). Atomically rename a class: namespace+datatypes+vtable')]
+[group('ghidra-db')]
+ghidra-rename-class old new *args: _require-ghidra-install
+  uv run python -m tools.ghidra.rename_class {{old}} {{new}} {{args}}
+
+# MUTATES: Ghidra DB (with --apply).
 # Name + expand a class's <Class>Vtbl struct from its recovered header slot map so
 # virtual dispatches through that class decompile as obj->vftable->Method(...).
 [doc('MUTATES: Ghidra DB (--apply). Name + expand the <Class>Vtbl struct slots')]

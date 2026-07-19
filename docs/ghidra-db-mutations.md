@@ -5,13 +5,35 @@ planned to be replaced with a newer DB in a separate folder. Everything below is
 the record of what has mutated the DB, so the still-wanted mutations can be
 re-run against the new database.
 
+## 2026-07-19: `ghidra-rename-class` tool + a blocked full convergence (recorded, not yet committed)
+
+Added `just ghidra-rename-class OLD NEW --vtable 0xADDR --apply`
+(`tools/ghidra/rename_class.py`) — the atomic class re-attribution the ledger's
+"class renames should be atomic" note called for. It migrates, in one transaction: the
+function namespace, the class datatype (Ghidra rewrites applied `&_vftable_`
+construction-site references automatically), the vtable-struct datatype, the
+`::'vftable'` label, and removes the emptied namespace. Verified end-to-end against the
+`TSoundChannelNode` → `TLongintList` case (vtable 0x650a08): after `--apply` the DB had
+zero `TSoundChannelNode` remnants.
+
+**The full convergence is deliberately NOT committed yet**, because exporting it and
+regenerating `src/ghidra_autogen` via `sync_exports` surfaced a deeper problem: the
+vendored DB is ~1000 function names behind source, and `sync_exports` writes DB names
+*back* into `config/symbols.csv` (its curated-merge still lost curated renames — e.g.
+0x413250 reverted from source `TDiplomacyMgr::IsNationSlotEligibleForEventProcessing`
+to the DB's stale `WrapperFor_...At413250`). Regenerating the autogen therefore
+reflects an un-converged DB and corrupts the authoritative source. Converging the whole
+DB to source first (push hardened to stop skipping, iterated to zero drift) is a
+prerequisite for a clean autogen regen — tracked as the next pass; the
+`ghidra-name-drift-gate` baseline is the queue.
+
 ## Committed mutations (already in the current .gzf, newest first)
 
 From `git log --follow -- vendor/ghidra/exports/Imperialism.gzf`:
 
 | commit | what it did to the DB |
 |---|---|
-| (this change) | `just push-source-names --apply`: mirrored current source function/label names into the DB (set_fn=948, set_label=145, already=7106, 0 failed), then `just export-project`. Fixes accumulated DB↔source name drift — e.g. 0x514dc0 now decompiles as the source name `MapMgrSlot1F` instead of the stale `WrapperFor_IsValidSecondary…_At00514dc0`. Function/label names only; placeholder *class datatypes* (e.g. DB `TSoundChannelNode` = source `TLongintList` @ vtable 0x650a08) are NOT touched by this tool and remain a separate datatype-import follow-up. |
+| (prev change) | `just push-source-names --apply`: mirrored current source function/label names into the DB (set_fn=948, set_label=145, already=7106, 0 failed), then `just export-project`. Fixes accumulated DB↔source name drift — e.g. 0x514dc0 now decompiles as the source name `MapMgrSlot1F` instead of the stale `WrapperFor_IsValidSecondary…_At00514dc0`. Function/label names only; placeholder *class datatypes* (e.g. DB `TSoundChannelNode` = source `TLongintList` @ vtable 0x650a08) are NOT touched by this tool and remain a separate datatype-import follow-up. |
 | 3170d5a2 | Propagate Ghidra virtual method names |
 | 05dcd197 | Regenerate ghidra_autogen folder (DB names/types refresh) |
 | 4a1e94a4 | Regenerate ghidra_autogen folder |
