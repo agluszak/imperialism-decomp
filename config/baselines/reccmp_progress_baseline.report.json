@@ -25460,7 +25460,7 @@
     },
     {
       "address": "0x571a80",
-      "matching": 0.0392156862745098,
+      "matching": 1.0,
       "name": "TOnOffRadioButton::HandleEvent",
       "type": 1
     },
@@ -38983,7 +38983,7 @@
     },
     {
       "address": "0x6091d9",
-      "matching": 0.9787234042553191,
+      "matching": 1.0,
       "name": "CWnd::OnNotify",
       "type": 1
     },
