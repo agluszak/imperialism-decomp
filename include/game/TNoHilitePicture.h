@@ -121,7 +121,7 @@ public:
   // slot 0x70 SetControlStateFlagAndMaybeRefresh inherited unchanged (0x48e810)
   // slot 0x71 ResetPictureResourceEntry inherited unchanged (0x48f520)
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
-  virtual undefined UniversityDialogMethod_00405623(); // slot 0x73 0x572bb0
+  virtual void NoOpUiVirtualSlot73(); // slot 0x73 0x572bb0
   unsigned char field90; // +0x90
 
   TNoHilitePicture();

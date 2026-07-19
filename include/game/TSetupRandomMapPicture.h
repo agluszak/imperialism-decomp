@@ -122,7 +122,7 @@ public:
   // slot 0x70 SetControlStateFlagAndMaybeRefresh inherited unchanged (0x48e810)
   // slot 0x71 ResetPictureResourceEntry inherited unchanged (0x48f520)
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
-  // slot 0x73 UniversityDialogMethod_00405623 inherited unchanged (0x572bb0)
+  // slot 0x73 NoOpUiVirtualSlot73 inherited unchanged (0x572bb0)
   virtual void StartGame();  // slot 0x74 0x577e40
   virtual void ExitScreen(); // slot 0x75 0x5781f0
 

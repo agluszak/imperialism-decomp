@@ -121,7 +121,7 @@ public:
   // slot 0x70 SetControlStateFlagAndMaybeRefresh inherited unchanged (0x48e810)
   // slot 0x71 ResetPictureResourceEntry inherited unchanged (0x48f520)
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x573430)
-  // slot 0x73 UniversityDialogMethod_00405623 inherited unchanged (0x572bb0)
+  // slot 0x73 NoOpUiVirtualSlot73 inherited unchanged (0x572bb0)
   // slot 0x74 OrphanCallChain_C1_I14_005736c0 inherited unchanged (0x5736c0)
   // slot 0x75 OrphanCallChain_C1_I08_00573690 inherited unchanged (0x573690)
   virtual undefined OrphanCallChain_C1_I10_005076d0(short param_1); // slot 0x76 0x5076d0
