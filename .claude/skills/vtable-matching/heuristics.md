@@ -431,3 +431,27 @@ the mapping from behavior, then optionally cross-check the name exists in the Ma
     partial-port artifact, not a real short param.
 
   *(ex decomp-loop list-note 99)*
+
+- **vtable-abi baseline fixes: match the callee family, and know when a slot is genuinely
+  un-fixable.** `just vtable-abi-audit` flags slots whose declared stack-arg count (the C++
+  signature's dword count) disagrees with the binary RET immediate. Most are trivial: an
+  orphan/stub override declared `()` that the binary ends `RET 0x4` just needs one added
+  param — model the arg from a caller if one exists, else an opaque `int`/`undefined4` (the
+  body ignores it, dispatch is type-erased). Always verify the *whole override chain*
+  (base + every override) shares the RET immediate before editing; the base is often
+  un-flagged yet identical, so fix its declaration in lockstep (C++ `override` forces one
+  signature). Cleared this way in one session: Animation slot 0x2c (`POINT* offset`),
+  production-order slot 0x0e (dropped a phantom `const char*`, ported the two non-stub
+  bodies), TGreatPower orphan slot 0xfc, InfoBar-text slot 0x7f, TTask slot 0x0a,
+  TTacticalBattle slot 0x12, TCzechBox slots 0x75/0x77 — 32 baseline rows.
+  **The un-fixable case:** when only *some* overrides of a slot return a value (or take an
+  arg) while the base and siblings do not, the original binary is internally inconsistent
+  and no single C++ signature matches both sides — changing the base to cover the outlier
+  regresses the base's own body. Example left as a permanent baseline residual:
+  `DispatchSlot9CToLinkedChildren` (slot 0x27, ~180 TView-hierarchy classes) — only
+  TEditText's override 0x4907a0 returns `this->field_94` (a `CMcWindow*`) that 2 callers
+  consume; TView (0x48c820) and TWindow (0x48de00) end plain `ret` with no deliberate
+  return. Declaring the hierarchy `CMcWindow*` would force a bogus `return` into the base
+  impls. Same shape appears when one caller pushes an arg a plain-`ret` callee ignores
+  (production-order 0x4b5620's lone TGreatPower caller): match the many callee definitions,
+  accept the one caller's ~1pp loss, don't contort the signature.
