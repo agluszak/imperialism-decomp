@@ -9568,6 +9568,12 @@
       "type": 1
     },
     {
+      "address": "0x4b5ed0",
+      "matching": 0.008264462809917356,
+      "name": "TPopulationMgr::PopulationMgrSlot0E",
+      "type": 1
+    },
+    {
       "address": "0x4b6260",
       "matching": 0.017699115044247787,
       "name": "TPopulationMgr::OrphanLeaf_NoCall_Ins111_004b6260",
@@ -43118,7 +43124,7 @@
     },
     {
       "address": "0x64f9b0",
-      "matching": 0.9523809523809523,
+      "matching": 1.0,
       "name": "TPopulationMgr::`vftable'",
       "type": 5
     },
