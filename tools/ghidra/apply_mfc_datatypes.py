@@ -31,6 +31,8 @@ DEFAULT_CLASSES = (
     "CDC",
     "CCmdTarget",
     "CWnd",
+    "CDataExchange",
+    "CView",
 )
 
 
@@ -161,6 +163,40 @@ MFC_MODELS: dict[str, ClassSpec] = {
             FieldSpec(0x30, "m_pDropTarget", "void *", 4),
             FieldSpec(0x34, "m_pCtrlCont", "void *", 4),
             FieldSpec(0x38, "m_pCtrlSite", "void *", 4),
+        ),
+    ),
+    # Layout verified against the vendored MFC 4.2 header
+    # (vendor/msvc500/headers/mfc/include/afxwin.h:1224-1245) — a small, fixed,
+    # publicly-documented DDX/DDV context struct with only 4 scalar/pointer
+    # members, not a game class. Was previously an empty/opaque Ghidra stub
+    # (TypeResolver's `opaque_pointee` grade), the single largest weak-pointer
+    # bucket in the structural signature audit: ~23 `DoDataExchange(CDataExchange*)`
+    # overrides across the MFC dialog-template classes all graded opaque_pointee
+    # purely because this ONE type had no real size/fields, even though every
+    # signature was already logically/ABI converged (the pointer's own 4 bytes
+    # were always correct — only the SEMANTIC type-identity grade was weak).
+    "CDataExchange": ClassSpec(
+        name="CDataExchange",
+        size=0x10,
+        dependencies=("CWnd",),
+        fields=(
+            FieldSpec(0x00, "m_bSaveAndValidate", "int", 4),   # BOOL
+            FieldSpec(0x04, "m_pDlgWnd", "CWnd *", 4),
+            FieldSpec(0x08, "m_hWndLastControl", "void *", 4),  # HWND
+            FieldSpec(0x0C, "m_bEditLastControl", "int", 4),   # BOOL
+        ),
+    ),
+    # afxwin.h:3536-3612 — CView adds exactly one field (m_pDocument) over its
+    # CWnd base; every other member in the header is a method/virtual, not
+    # storage. m_pDocument is modelled as `void *` (CDocument's own layout is
+    # out of scope here — only CView's SIZE needs to stop being opaque).
+    "CView": ClassSpec(
+        name="CView",
+        size=0x40,
+        dependencies=("CWnd",),
+        fields=(
+            FieldSpec(0x00, "cwnd", "CWnd", 0x3C),
+            FieldSpec(0x3C, "m_pDocument", "void *", 4),
         ),
     ),
 }

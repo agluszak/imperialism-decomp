@@ -49,7 +49,13 @@ is the follow-up; today `in_stack` is a projection trigger + a weak verifier.
 Applies a COMPLETE signature via `replaceParameters(DYNAMIC_STORAGE_FORMAL_PARAMS)`
 after setting the calling convention (Ghidra auto-generates `this`). Never infers
 a parameter from `in_stack_*`; every parameter comes from the C++ declaration.
-Writes the queue to build-msvc500/evidence/source_signature_queue.csv.
+
+Each of the three projector modes (in_stack / --project-divergent / --project-packed)
+writes its OWN queue file by default (source_signature_queue_{in_stack,divergent,
+packed}.csv under build-msvc500/evidence/) so a full `ghidra-apply-source-full` run
+never has one mode's evidence overwrite another's — see `_QUEUE_OUT_BY_MODE`.
+`tools/ghidra/signature_evidence_union.py` merges all three (plus in_stack_audit.csv
+and datatype_hygiene.csv) into one address-keyed view.
 """
 
 from __future__ import annotations
@@ -93,6 +99,16 @@ _POINTER_ALIASES = {
     "lpcreatestruct", "lpcreatestructa", "lprect", "lppoint", "lpsize", "lpmsg",
     "tsortedlistcomparefunc", "tlistcomparefunc",  # function-pointer typedefs
     "farproc", "wndproc", "dlgproc", "hookproc", "timerproc",
+}
+# Project-local scalar typedefs (include/game/nation_domain_types.h) — pure C++
+# source constructs Ghidra has zero visibility into (no compiler type info exists
+# for a game-source `typedef short NationSlot;`; it can only ever be `unresolved`
+# without this table). Each maps to its real underlying primitive; resolved the
+# same way as _POINTER_ALIASES (a known alias to a real ABI shape), grade
+# `canonical_alias`. Keep in sync with nation_domain_types.h if it grows.
+_SCALAR_TYPEDEF_ALIASES = {
+    "nationslot": "short", "proposalcode": "short", "grantentry": "short",
+    "needtype": "short", "relationdelta": "short",
 }
 
 
@@ -342,6 +358,44 @@ _QUALITY_RANK = {
 }
 
 
+def select_named_datatype(candidates: list[tuple[bool, str]]) -> tuple[int, int]:
+    """Pure: which same-simple-name candidate TypeResolver should use, and the
+    resulting ambiguity count.
+
+    `candidates` is each same-named datatype's (is_function_definition,
+    category_path) in `dtm.getAllDataTypes()` order. Returns (chosen_index,
+    effective_count) — `effective_count > 1` is what `resolve_quality` grades
+    `ambiguous_simple_name`.
+
+    Two exclusions are applied, each only when it would NOT remove every
+    candidate (an empty result falls back to the full candidate list):
+
+      1. Bare FunctionDefinition datatypes (a Win32 function-pointer typedef's
+         pointee signature, e.g. WNDPROC's `.../functions/WNDPROC` — not a usable
+         parameter type on its own; only the typedef/pointer form appears in real
+         signatures).
+      2. `/Demangler/<Name>` stubs — the C++ Demangler analyzer's own
+         auto-generated placeholder (typically empty/opaque), left behind
+         whenever no real datatype existed under that simple name yet. Once a
+         real (non-stub) candidate exists, the stub is not a genuine second
+         definition, just an un-cleaned-up shadow (confirmed live: adding
+         CDataExchange/CView's real MFC layout via apply_mfc_datatypes.py exposed
+         a pre-existing empty `/Demangler/CView` 1-byte stub that had been
+         silently "winning" the simple-name lookup before either existed).
+
+    Both exclusions apply the SAME principle (a known-disposable placeholder
+    category is not a genuine competing definition) and must not be conflated:
+    a real ambiguity between two GENUINE non-stub datatypes still counts.
+    """
+    usable = [i for i, (is_fd, _cat) in enumerate(candidates) if not is_fd]
+    if not usable:
+        usable = list(range(len(candidates)))  # every candidate is a bare function def
+    non_stub = [i for i in usable if not candidates[i][1].startswith("/Demangler")]
+    if non_stub:
+        usable = non_stub
+    return usable[0], len(usable)
+
+
 class TypeResolver:
     def __init__(self, program):
         self.dtm = program.getDataTypeManager()
@@ -360,16 +414,10 @@ class TypeResolver:
         }
         # name -> DataType cache for named lookups, plus a same-simple-name count so
         # we can flag ambiguous resolutions (two datatypes from different categories
-        # sharing a name — a lossy pick, not a semantic match).
-        #
-        # One name collision is NOT ambiguous and must not count as one: a Win32
-        # function-pointer typedef (e.g. WNDPROC) and Ghidra's own auto-generated
-        # `.../functions/WNDPROC` FunctionDefinitionDataType, which is the typedef's
-        # pointee signature, not a usable parameter type on its own (you can't
-        # declare a parameter of that bare function-definition "type" in C++; only
-        # the typedef/pointer form appears in real signatures). Prefer the
-        # non-FunctionDefinition datatype for the name and drop the function
-        # definition from the ambiguity count entirely.
+        # sharing a name — a lossy pick, not a semantic match). Selection logic is
+        # the pure `select_named_datatype` (see its docstring for the two
+        # disposable-placeholder exclusions it applies before flagging a real
+        # ambiguity).
         from ghidra.program.model.data import FunctionDefinition
         by_name: dict[str, list] = {}
         for dt in self.dtm.getAllDataTypes():
@@ -377,11 +425,11 @@ class TypeResolver:
         self._named: dict[str, object] = {}
         self._name_count: dict[str, int] = {}
         for nm, candidates in by_name.items():
-            usable = [dt for dt in candidates if not isinstance(dt, FunctionDefinition)]
-            if not usable:
-                usable = candidates  # every candidate is a bare function definition
-            self._named[nm] = usable[0]
-            self._name_count[nm] = len(usable)
+            meta = [(isinstance(dt, FunctionDefinition), str(dt.getCategoryPath()))
+                    for dt in candidates]
+            idx, count = select_named_datatype(meta)
+            self._named[nm] = candidates[idx]
+            self._name_count[nm] = count
 
     @staticmethod
     def is_opaque(dt) -> bool:
@@ -429,6 +477,9 @@ class TypeResolver:
             quality = "canonical_alias"
         elif key in _PRIMITIVES:
             base = self._prim.get(_PRIMITIVES[key])
+        elif ptr == 0 and key in _SCALAR_TYPEDEF_ALIASES:
+            base = self._prim.get(_SCALAR_TYPEDEF_ALIASES[key])
+            quality = "canonical_alias"
         else:
             base = self._named.get(text)
             if base is not None and self._name_count.get(text, 1) > 1:
@@ -506,7 +557,7 @@ def run(program, args, model):
     # Candidate set: source markers (FUNCTION) and reviewed library identities
     # (LIBRARY) with a prototype. A missing DB function is recorded distinctly.
     targets = []
-    for addr, claim in sorted(model.functions.items()):
+    for addr, claim in sorted(model.functions.items(), reverse=getattr(args, "reverse", False)):
         if claim.kind not in ("FUNCTION", "LIBRARY"):
             continue
         if not claim.prototype:
@@ -594,6 +645,14 @@ def run(program, args, model):
             commit, reason = False, f"apply_error:{type(exc).__name__}"
         finally:
             program.endTransaction(ftx, commit)  # commit=False => exact DB rollback
+            # The pre-endTransaction flushCache() above forced the IN-TRANSACTION
+            # mutation to be visible for the verifying re-decompile; on a ROLLBACK
+            # the decompiler cache can still be holding results computed against
+            # that since-reverted state. Flush again now that the DB is back to its
+            # committed (or truly-committed) state, so the NEXT candidate's
+            # before-decompile can't read stale post-mutation results left over
+            # from this one.
+            ifc.flushCache()
 
         if commit and reason is None:
             converged.append((addr, claim.name, "projected", len(param_dts)))
@@ -633,16 +692,135 @@ def _db_logical(fn):
     return cc, explicit, has_this, sizes
 
 
+def _db_signature_full(fn):
+    """Richer DB-side ABI facts for the structural audit only (read-only path).
+
+    Extends `_db_logical` with the axes Task-4 convergence needs: varargs state,
+    whether an sret (`__return_storage_ptr__` auto param) is present, whether the
+    function uses CUSTOM_STORAGE (a packed/manual layout vs. DYNAMIC_STORAGE), and
+    the DB return type's ABI size. Kept separate from `_db_logical` so the
+    DB-mutating projector paths (`run`/`run_divergent`/`run_packed`) are untouched —
+    only the read-only `structural_audit` uses this.
+    """
+    cc = fn.getCallingConventionName() or ""
+    explicit, sizes, has_this, has_sret = 0, [], cc == "__thiscall", False
+    for p in fn.getParameters():
+        if p.getName() == "this":
+            has_this = True
+            continue
+        if p.isAutoParameter():
+            if p.getName() == "__return_storage_ptr__":
+                has_sret = True
+            continue
+        explicit += 1
+        dt = p.getDataType()
+        sizes.append(dt.getLength() if dt else 0)
+    ret_dt = fn.getReturnType()
+    ret_size = ret_dt.getLength() if ret_dt is not None else None
+    has_varargs = bool(fn.hasVarArgs())
+    custom_storage = bool(fn.hasCustomVariableStorage())
+    return {
+        "cc": cc, "n_params": explicit, "has_this": has_this, "param_sizes": sizes,
+        "has_varargs": has_varargs, "has_sret": has_sret,
+        "custom_storage": custom_storage, "ret_size": ret_size,
+    }
+
+
+# Type-resolution grades that count as genuinely SEMANTIC (not just ABI-storage
+# compatible pointer voodoo) — see TypeResolver.resolve_quality's docstring.
+_SEMANTIC_GRADES = {"exact_complete", "canonical_alias"}
+
+
+def classify_convergence(exp, db, worst_quality, ret_quality):
+    """Pure three-tier structural convergence classification.
+
+    `exp` / `db` are plain dicts with the same shape:
+      cc, n_params, has_this, param_sizes (list[int|None]), has_varargs,
+      ret_size (int|None; None means "not authoritative" — a placeholder return
+      or an unresolved source type, which SKIPS the ABI/semantic return check
+      rather than falsely failing it), has_sret (db only), custom_storage (db only).
+
+    Returns a dict with THREE separate outcome strings, each either a fixed
+    "*_converged" sentinel or a reason the tier failed. A tier is only evaluated
+    once every earlier tier converged — `None` means "not reached, blocked by an
+    earlier-tier gap", not "passed".
+
+      logical:  calling convention, this-presence, explicit arity, varargs state.
+                (The DB-signature-incompleteness cases are split: `db_cc_unknown`
+                — Ghidra never resolved a convention at all — vs.
+                `db_signature_incomplete` — a KNOWN convention but zero explicit
+                params where the source expects some. These used to be one
+                bucket; a human triaging the report needs to know which.)
+      abi:      per-parameter and return ABI sizes, and whether the return's
+                sret-ness (size > 4, by-value) matches whether the DB actually
+                modelled an sret auto-parameter.
+      semantic: whether every resolved type (params + return) is a REAL semantic
+                match (exact_complete/canonical_alias), not merely a pointer-sized
+                stand-in (opaque_pointee/generic_pointer_fallback) that happens to
+                have the right ABI storage but says nothing about true identity.
+    """
+    result = {"logical": None, "abi": None, "semantic": None}
+
+    if db["cc"] in ("", "unknown", "default"):
+        result["logical"] = "db_cc_unknown"
+        return result
+    if db["n_params"] == 0 and exp["n_params"] > 0:
+        result["logical"] = "db_signature_incomplete"
+        return result
+    if db["cc"] != exp["cc"]:
+        result["logical"] = "convention_mismatch"
+        return result
+    if db["has_this"] != exp["has_this"]:
+        result["logical"] = "this_presence_mismatch"
+        return result
+    if db["n_params"] != exp["n_params"]:
+        result["logical"] = "param_count_mismatch"
+        return result
+    if bool(db.get("has_varargs")) != bool(exp.get("has_varargs")):
+        result["logical"] = "varargs_mismatch"
+        return result
+    result["logical"] = "logical_converged"
+
+    abi_gaps = []
+    for i, (e, d) in enumerate(zip(exp["param_sizes"], db["param_sizes"])):
+        if e is not None and d is not None and e != d:
+            abi_gaps.append(f"param{i}:exp={e},db={d}")
+    exp_ret = exp.get("ret_size")
+    db_ret = db.get("ret_size")
+    if exp_ret is not None and db_ret is not None and exp_ret != db_ret:
+        abi_gaps.append(f"return:exp={exp_ret},db={db_ret}")
+    if exp_ret is not None:
+        expected_sret = exp_ret > 4
+        if expected_sret != bool(db.get("has_sret")):
+            abi_gaps.append(f"sret_mismatch:exp={expected_sret},db={bool(db.get('has_sret'))}")
+    if abi_gaps:
+        result["abi"] = "abi_storage_mismatch:" + ";".join(abi_gaps)
+        return result
+    result["abi"] = "abi_storage_converged"
+
+    weak = [q for q in (worst_quality, ret_quality) if q is not None and q not in _SEMANTIC_GRADES]
+    if weak:
+        result["semantic"] = "weak_type_resolution:" + ",".join(sorted(set(weak)))
+        return result
+    result["semantic"] = "semantically_converged"
+    return result
+
+
 def structural_audit(program, model, args):
-    """Read-only: compare every claim's EXPECTED logical signature (source model +
-    Clang AST index) against the DB's ACTUAL signature, and classify the gap.
+    """Read-only: compare every claim's EXPECTED signature (source model + Clang AST
+    index) against the DB's ACTUAL signature, and classify the gap on THREE separate
+    tiers — see `classify_convergence`'s docstring for what each tier means.
 
     Unlike the projector this is source-driven, not in_stack-triggered: it visits
     every FUNCTION/LIBRARY claim, so it surfaces functions the DB never resolved
     (cc=unknown / 0 params) that produce no in_stack and are therefore invisible to
-    the projector. Logical convergence (convention, this-presence, arity) and ABI
-    storage (param sizes) are reported separately, along with the worst type
-    resolution quality on the row.
+    the projector.
+
+    `type_resolution` is the worst grade across params AND the return type — an
+    earlier version only checked params, silently treating an unresolvable return
+    type as if it didn't exist. A placeholder return (`undefined*`, a leaked Ghidra
+    guess) is excluded from the return-type check, matching the projector's own
+    "not authoritative" treatment of placeholders.
     """
     fm = program.getFunctionManager()
     af = program.getAddressFactory().getDefaultAddressSpace()
@@ -655,37 +833,57 @@ def structural_audit(program, model, args):
             continue
         fn = fm.getFunctionAt(af.getAddress(addr))
         if fn is None:
-            rows.append((addr, claim.name, "missing_function", "", ""))
+            rows.append((addr, claim.name, "missing_function", "", "", None, None, None))
             continue
         parsed = parse_prototype(claim.prototype)
         if parsed is None:
-            rows.append((addr, claim.name, "unparsable_prototype", "", ""))
+            rows.append((addr, claim.name, "unparsable_prototype", "", "", None, None, None))
             continue
         cc, ret_str, param_strs, punct_kind = parsed
+        exp_varargs = bool(param_strs) and param_strs[-1].strip() == "..."
+        if exp_varargs:
+            param_strs = param_strs[:-1]
         entity_kind = resolve_entity_kind(decl_index, claim.name, len(param_strs), punct_kind)
         exp_cc = cc or default_convention(entity_kind)
         exp_this = entity_kind in ("constructor", "destructor", "instance_method")
         exp_n = len(param_strs)
         worst = "exact_complete"
+        exp_param_sizes = []
         for t in param_strs:
-            _dt, q = resolver.resolve_quality(t)
+            dt, q = resolver.resolve_quality(t)
             if _QUALITY_RANK[q] > _QUALITY_RANK[worst]:
                 worst = q
+            exp_param_sizes.append(dt.getLength() if dt is not None else None)
 
-        db_cc, db_n, db_this, _sizes = _db_logical(fn)
-        # Classify the LOGICAL gap (worst-first).
-        if db_cc in ("", "unknown", "default") or (db_n == 0 and exp_n > 0):
-            cat = "db_signature_incomplete"
-        elif db_cc != exp_cc:
-            cat = "convention_mismatch"
-        elif db_this != exp_this:
-            cat = "this_presence_mismatch"
-        elif db_n != exp_n:
-            cat = "param_count_mismatch"
-        else:
-            cat = "converged"
-        detail = f"exp[{exp_cc},this={exp_this},n={exp_n}] db[{db_cc},this={db_this},n={db_n}]"
-        rows.append((addr, claim.name, cat, worst, detail))
+        # The return type's resolvability feeds `worst` too — a placeholder return
+        # (Ghidra's own guess, not authoritative) is excluded, matching the
+        # projector's `_is_placeholder_return` treatment.
+        ret_quality = None
+        exp_ret_size = None
+        if not _is_placeholder_return(ret_str):
+            ret_dt, ret_quality = resolver.resolve_quality(ret_str)
+            if _QUALITY_RANK[ret_quality] > _QUALITY_RANK[worst]:
+                worst = ret_quality
+            exp_ret_size = ret_dt.getLength() if ret_dt is not None else None
+
+        db = _db_signature_full(fn)
+        exp = {
+            "cc": exp_cc, "n_params": exp_n, "has_this": exp_this,
+            "param_sizes": exp_param_sizes, "has_varargs": exp_varargs,
+            "ret_size": exp_ret_size,
+        }
+        conv = classify_convergence(exp, db, worst, ret_quality)
+        # `cat` is the LOGICAL-tier outcome (the pre-existing ladder, with
+        # db_signature_incomplete now split into db_cc_unknown/db_signature_incomplete
+        # — see classify_convergence's docstring); the ABI/semantic tiers are
+        # reported in their own columns rather than folded into one summary bucket.
+        cat = conv["logical"]
+        detail = (f"exp[{exp_cc},this={exp_this},n={exp_n},varargs={exp_varargs}] "
+                  f"db[{db['cc']},this={db['has_this']},n={db['n_params']},"
+                  f"varargs={db['has_varargs']},sret={db['has_sret']},"
+                  f"custom_storage={db['custom_storage']}]")
+        rows.append((addr, claim.name, cat, worst, detail,
+                     conv["logical"], conv["abi"], conv["semantic"]))
     return rows
 
 
@@ -761,6 +959,19 @@ def _write_audit(rows, out_path):
     out.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
 
+def _write_structural_audit(rows, out_path):
+    """Writer for `structural_audit`'s 8-tuple rows (adds the 3-tier convergence
+    columns to the base address|name|category|type_resolution|detail schema)."""
+    out = Path(out_path)
+    out.parent.mkdir(parents=True, exist_ok=True)
+    lines = ["address|name|category|type_resolution|detail|logical|abi_storage|semantic"]
+    for addr, name, cat, q, detail, logical, abi, semantic in sorted(rows):
+        lines.append(
+            f"0x{addr:08x}|{name}|{cat}|{q}|{detail}|"
+            f"{logical or ''}|{abi or ''}|{semantic or ''}")
+    out.write_text("\n".join(lines) + "\n", encoding="utf-8")
+
+
 def _write_queue(queued, out_path):
     out = Path(out_path)
     out.parent.mkdir(parents=True, exist_ok=True)
@@ -768,6 +979,31 @@ def _write_queue(queued, out_path):
     for addr, name, reason, proto in sorted(queued):
         lines.append(f"0x{addr:08x}|{name}|{reason}|{proto}".replace("\n", " "))
     out.write_text("\n".join(lines) + "\n", encoding="utf-8")
+
+
+# Each of the three projector modes gets its OWN default queue file — they used to
+# all share one path (`source_signature_queue.csv`) with no `--queue-out` override
+# in any `just` recipe, so `ghidra-apply-source-full` (which runs all three in
+# sequence) silently clobbered the in-stack and divergent evidence with the
+# packed-mode run's, the last writer. `tools/ghidra/signature_evidence_union.py`
+# reads all three of these (plus in_stack_audit.csv / datatype_hygiene.csv) to
+# build one keyed-by-address view that nothing can clobber.
+_QUEUE_OUT_BY_MODE = {
+    "in_stack": "build-msvc500/evidence/source_signature_queue_in_stack.csv",
+    "divergent": "build-msvc500/evidence/source_signature_queue_divergent.csv",
+    "packed": "build-msvc500/evidence/source_signature_queue_packed.csv",
+}
+
+
+def _queue_out_for_mode(args, mode: str) -> str:
+    """Resolve the queue CSV path for `mode` ('in_stack'/'divergent'/'packed').
+
+    An explicit `--queue-out` is honoured verbatim for every mode (e.g. a caller
+    that wants every mode's queue in one shared tmpdir path); otherwise each mode
+    gets its own default file so a full pipeline run can never have one mode's
+    queue silently overwrite another's.
+    """
+    return args.queue_out if args.queue_out else _QUEUE_OUT_BY_MODE[mode]
 
 
 def _packed_param_impls(program, resolver, param_strs, cc, this_type):
@@ -827,7 +1063,7 @@ def run_packed(program, args, model):
     addrs = [int(a, 16) for a in args.addrs] if args.addrs else None
 
     projected, queued = [], []
-    for addr, claim in sorted(model.functions.items()):
+    for addr, claim in sorted(model.functions.items(), reverse=getattr(args, "reverse", False)):
         if claim.kind not in ("FUNCTION", "LIBRARY") or not claim.prototype:
             continue
         if addrs is not None and addr not in addrs:
@@ -890,6 +1126,9 @@ def run_packed(program, args, model):
             reason = f"apply_error:{type(exc).__name__}"
         finally:
             program.endTransaction(ftx, commit)
+            # See the matching comment in run(): flush again post-rollback so a
+            # stale in-transaction decompile can't leak into the next candidate.
+            ifc.flushCache()
 
         if commit:
             projected.append((addr, claim.name, "packed", len(param_strs)))
@@ -933,7 +1172,7 @@ def run_divergent(program, args, model):
     addrs = [int(a, 16) for a in args.addrs] if args.addrs else None
 
     projected, queued = [], []
-    for addr, claim in sorted(model.functions.items()):
+    for addr, claim in sorted(model.functions.items(), reverse=getattr(args, "reverse", False)):
         if claim.kind not in ("FUNCTION", "LIBRARY") or not claim.prototype:
             continue
         if addrs is not None and addr not in addrs:
@@ -1023,6 +1262,9 @@ def run_divergent(program, args, model):
             reason = f"apply_error:{type(exc).__name__}"
         finally:
             program.endTransaction(ftx, commit)
+            # See the matching comment in run(): flush again post-rollback so a
+            # stale in-transaction decompile can't leak into the next candidate.
+            ifc.flushCache()
 
         if commit:
             projected.append((addr, claim.name, "projected", exp_n))
@@ -1039,7 +1281,18 @@ def main() -> int:
     p.add_argument("--apply", action="store_true", help="Project + verify (default: dry-run).")
     p.add_argument("--strict", action="store_true", help="Exit nonzero if any non-queued source row is non-converged.")
     p.add_argument("--addrs", nargs="+", help="Restrict to these addresses (hex).")
-    p.add_argument("--queue-out", default="build-msvc500/evidence/source_signature_queue.csv")
+    p.add_argument("--reverse", action="store_true",
+                   help="Process candidates in descending address order instead of "
+                        "ascending. Determinism check: a clean DB projected in each "
+                        "order must accept the same address set and land the same "
+                        "final signatures (no candidate's outcome may depend on "
+                        "another candidate having been processed first).")
+    # Per-mode default (in-stack / divergent / packed each get their own file — see
+    # _queue_out_for_mode) unless the caller passes an explicit override, which is
+    # honoured verbatim for all modes (e.g. a test pointing every mode at one tmpdir).
+    p.add_argument("--queue-out", default=None,
+                   help="Override the queue CSV path (default: a mode-specific path "
+                        "under build-msvc500/evidence/ — see _queue_out_for_mode).")
     p.add_argument("--structural-audit", action="store_true",
                    help="READ-ONLY: compare every claim's expected signature (source + "
                         "index) to the DB and classify the gap. No projection, no DB write.")
@@ -1083,16 +1336,26 @@ def main() -> int:
             if program is not None:
                 program.release(consumer)
             project.close()
-        _write_audit(rows, args.audit_out)
+        _write_structural_audit(rows, args.audit_out)
         cats: dict = {}
         quals: dict = {}
-        for _a, _n, cat, q, _d in rows:
+        abis: dict = {}
+        sems: dict = {}
+        for _a, _n, cat, q, _d, _logical, abi, semantic in rows:
             cats[cat] = cats.get(cat, 0) + 1
             if q:
                 quals[q] = quals.get(q, 0) + 1
+            if abi:
+                abis[abi.split(":", 1)[0]] = abis.get(abi.split(":", 1)[0], 0) + 1
+            if semantic:
+                sems[semantic.split(":", 1)[0]] = sems.get(semantic.split(":", 1)[0], 0) + 1
         print(f"[STRUCTURAL AUDIT] {len(rows)} claims -> {args.audit_out}")
-        print("  by category: " + ", ".join(f"{k}={v}" for k, v in sorted(cats.items())))
+        print("  logical tier: " + ", ".join(f"{k}={v}" for k, v in sorted(cats.items())))
         print("  worst type resolution: " + ", ".join(f"{k}={v}" for k, v in sorted(quals.items())))
+        print("  abi_storage tier (of logically-converged): "
+              + ", ".join(f"{k}={v}" for k, v in sorted(abis.items())))
+        print("  semantic tier (of abi-converged): "
+              + ", ".join(f"{k}={v}" for k, v in sorted(sems.items())))
         return 0
 
     if args.datatype_audit:
@@ -1119,7 +1382,9 @@ def main() -> int:
 
     if args.project_divergent or args.project_packed:
         which = run_packed if args.project_packed else run_divergent
+        mode_key = "packed" if args.project_packed else "divergent"
         label = "packed CUSTOM_STORAGE" if args.project_packed else "source-driven projection"
+        queue_out = _queue_out_for_mode(args, mode_key)
         project = ghidra_env.open_project()
         consumer = program = None
         try:
@@ -1129,13 +1394,13 @@ def main() -> int:
             if program is not None:
                 program.release(consumer)
             project.close()
-        _write_queue(queued, args.queue_out)
+        _write_queue(queued, queue_out)
         reasons: dict = {}
         for _a, _n, r, _p in queued:
             reasons[r.split(":", 1)[0]] = reasons.get(r.split(":", 1)[0], 0) + 1
         mode = "APPLIED" if args.apply else "DRY RUN"
         print(f"[{mode}] {label}: projected={len(projected)} queued={len(queued)}")
-        print(f"  queue -> {args.queue_out}")
+        print(f"  queue -> {queue_out}")
         print("  queued by reason: " + ", ".join(f"{k}={v}" for k, v in sorted(reasons.items())))
         if args.strict:
             hard = [q for q in queued if q[2].split(":", 1)[0] in _HARD_FAIL_REASONS]
@@ -1144,6 +1409,7 @@ def main() -> int:
                 return 1
         return 0
 
+    queue_out = _queue_out_for_mode(args, "in_stack")
     project = ghidra_env.open_project()
     consumer = program = None
     try:
@@ -1154,7 +1420,7 @@ def main() -> int:
             program.release(consumer)
         project.close()
 
-    _write_queue(queued, args.queue_out)
+    _write_queue(queued, queue_out)
 
     reasons: dict[str, int] = {}
     for _a, _n, r, _p in queued:
@@ -1162,7 +1428,7 @@ def main() -> int:
     mode = "APPLIED" if args.apply else "DRY RUN"
     print(f"[{mode}] source-owned in_stack functions: "
           f"converged={len(converged)} queued={len(queued)} (applied={applied})")
-    print(f"  queue -> {args.queue_out}")
+    print(f"  queue -> {queue_out}")
     print("  queued by reason: " + ", ".join(f"{k}={v}" for k, v in sorted(reasons.items())))
     if args.strict and queued:
         # Strict gate: only the "could not verify / errored" reasons fail

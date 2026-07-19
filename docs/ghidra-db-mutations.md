@@ -5,7 +5,60 @@ planned to be replaced with a newer DB in a separate folder. Everything below is
 the record of what has mutated the DB, so the still-wanted mutations can be
 re-run against the new database.
 
-## 2026-07-19 (latest): `apply_mfc_rtti` stops creating class-layout datatypes (code change, no DB re-apply)
+## 2026-07-19 (latest): CDataExchange/CView added to the MFC datatype pack; TypeResolver stub-exclusion fix
+
+`tools/ghidra/apply_mfc_datatypes.py`'s `MFC_MODELS` gained two verified layouts
+(measured from the vendored `vendor/msvc500/headers/mfc/include/afxwin.h`, not
+guessed): `CDataExchange` (0x10 bytes, 4 fields, afxwin.h:1224-1245) and `CView`
+(0x40 bytes, one field beyond its CWnd base, afxwin.h:3536-3612). Applied via
+`just apply-mfc-datatypes --apply` and persisted with `just export-project`.
+
+This was the single largest `opaque_pointee` bucket in the structural signature
+audit: ~23 `DoDataExchange(CDataExchange*)` overrides across every MFC dialog-
+template class were graded opaque_pointee purely because `CDataExchange` had no
+real size/fields in the DB, even though every one of those signatures was
+already logically/ABI converged — only the semantic type-identity grade was
+weak. Verified live: `opaque_pointee` 39 -> 11, `exact_complete` +23,
+`semantically_converged` +23 (`just structural-signature-audit`).
+
+Applying `CView` for the first time exposed a PRE-EXISTING, previously-invisible
+bug: a stale `/Demangler/CView` 1-byte stub (the C++ Demangler analyzer's own
+auto-generated placeholder) had been silently "winning" `TypeResolver`'s
+simple-name lookup because no real `/CView` existed yet to collide with it.
+Once the real datatype was added, naive name-collision counting would have
+flagged `ambiguous_simple_name` for a real-definition-vs-disposable-stub pair —
+violating the "ambiguous_simple_name stays zero" invariant the 67-dedup work
+(commit `409a6aa5`) established. Fixed at the RESOLVER level, not by deleting
+the DB stub (the existing `dedupe_ambiguous_datatypes.py` refused to remove it:
+a `/Demangler/CView *` pointer with no root counterpart of its own still
+references it, so cascading the deletion needed more care than this pass
+wanted to risk): `TypeResolver.__init__`'s simple-name selection is now the pure
+`select_named_datatype()`, which excludes `/Demangler/*` stub candidates from
+the ambiguity count the same way it already excluded bare `FunctionDefinition`
+candidates (a Win32 function-pointer typedef's pointee signature) — two
+instances of the same principle (a known-disposable placeholder category is not
+a genuine competing definition), not two unrelated special cases.
+
+Also added `_SCALAR_TYPEDEF_ALIASES` to `TypeResolver`: five project-local
+scalar typedefs (`include/game/nation_domain_types.h`: `NationSlot`,
+`ProposalCode`, `GrantEntry`, `NeedType`, `RelationDelta`, all `typedef short`)
+are pure C++ source constructs Ghidra has zero visibility into — they resolved
+`unresolved` with no table entry mapping them to their real underlying
+primitive. `unresolved` 16 -> 12 live.
+
+New read-only `tools/ghidra/weak_pointer_type_inventory.py` (`just
+weak-pointer-type-inventory`) builds a distinct-type inventory over every
+remaining `opaque_pointee` / `generic_pointer_fallback` / `unresolved` grade
+(48 distinct types after the fixes above) and classifies each as
+`canonical_game_class_exists` / `canonical_mfc_type_exists` /
+`typedef_or_namespace_spelling_mismatch` / `missing_external_opaque_type` /
+`stale_duplicate` / `genuinely_unknown` — the remaining backlog (12
+`canonical_mfc_type_exists`, e.g. `CFile`/`CFont`/`CScrollBar`/`COleDataObject`/
+`CPrintInfo`, are further MFC_MODELS candidates; 12 `missing_external_opaque_type`
+like `CREATESTRUCT`/`WAVEFORMATEX` are correctly-opaque Win32/CRT types needing
+no further work; 24 `genuinely_unknown` are real class-recovery gaps).
+
+## 2026-07-19: `apply_mfc_rtti` stops creating class-layout datatypes (code change, no DB re-apply)
 
 `apply_mfc_rtti.py` had two code paths (`ensure_class_struct`'s "no preserved
 root struct" branch and `ensure_root_class_dt_for_curated`) that independently
