@@ -1202,7 +1202,35 @@ void TMapMaker::SmoothCityRegionOwnershipByNeighborSampling() {
 }
 
 // FUNCTION: IMPERIALISM 0x005292f0
-void TMapMaker::MapGenPassSlot1E() {}
+void TMapMaker::MapGenPassSlot1E() {
+  int coarseIndex;
+  for (coarseIndex = 0; coarseIndex < 0x17a; ++coarseIndex) {
+    unsigned short baseClass =
+        static_cast<unsigned short>(static_cast<signed char>(regionClassGrid10[0][coarseIndex]));
+
+    GetAdjacentRegionGridCell(coarseIndex, 0);
+    GetAdjacentRegionGridCell(coarseIndex, 5);
+
+    int neighbor = GetAdjacentRegionGridCell(coarseIndex, 1);
+    unsigned short class1 =
+        static_cast<unsigned short>(static_cast<signed char>(regionClassGrid10[0][neighbor]));
+    neighbor = GetAdjacentRegionGridCell(coarseIndex, 2);
+    unsigned short class2 =
+        static_cast<unsigned short>(static_cast<signed char>(regionClassGrid10[0][neighbor]));
+    neighbor = GetAdjacentRegionGridCell(coarseIndex, 3);
+    unsigned short class3 =
+        static_cast<unsigned short>(static_cast<signed char>(regionClassGrid10[0][neighbor]));
+    GetAdjacentRegionGridCell(coarseIndex, 4);
+
+    RandomizeRegionTemplateBanksForMismatchedNeighborClasses(coarseIndex, baseClass, class1, class3,
+                                                             class2);
+  }
+
+  if (g_pActiveRandomMapSetupPicture006A4268 != 0) {
+    g_pActiveRandomMapSetupPicture006A4268->SpinYourGlobe();
+  }
+  SmoothCityRegionOwnershipByNeighborSampling();
+}
 
 // FUNCTION: IMPERIALISM 0x005296a0
 void TMapMaker::CopyRegionTemplateBankWithRandomVariant(int coarseIndex, int arg2, int arg3,
