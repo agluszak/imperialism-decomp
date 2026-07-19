@@ -1,6 +1,7 @@
 #include "game/TViewMgr.h"
 #include "game/TC2TemplateDialog.h"
 
+#include "game/TDealBookPicture.h"
 #include "game/TModuleLibraryCacheTableStateB.h"
 
 #include "game/turn_event_dialog_provisional.h"
@@ -1530,8 +1531,9 @@ void TViewMgr::HandleTurnEventVtableSlot64RefreshMainHudTitles(int) {
     CString titleString;
     g_pSimMgr->CopyScenarioNationSetupIntoFlowState(&titleString);
     titleControl->EnableAndProcessFlag(titleString);
-    titleControl->RefreshHudNationTitleControlsAndTheme(0x2b6c);
   }
+  // 0x5bac50 is invoked on the 'main' deal-book control (the binary's receiver), not 'titL'.
+  static_cast<TDealBookPicture*>(mainControl)->RefreshHudNationTitleControlsAndTheme(0x2b6c);
 }
 
 // FUNCTION: IMPERIALISM 0x005da360
