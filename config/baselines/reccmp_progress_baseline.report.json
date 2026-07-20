@@ -700,7 +700,7 @@
     },
     {
       "address": "0x430250",
-      "matching": 0.7058823529411765,
+      "matching": 0.8235294117647058,
       "name": "TBook::TBook",
       "type": 1
     },
@@ -934,7 +934,7 @@
     },
     {
       "address": "0x4357b0",
-      "matching": 0.09363117870722433,
+      "matching": 0.09386882129277567,
       "name": "BuildTurnEventDialogUiByCode",
       "type": 1
     },
@@ -1054,7 +1054,7 @@
     },
     {
       "address": "0x43dbc0",
-      "matching": 0.5220720967124337,
+      "matching": 0.5224003063289755,
       "name": "InitializeArmyNavyReportViewsAndCommandTags",
       "type": 1
     },
@@ -1102,7 +1102,7 @@
     },
     {
       "address": "0x44a810",
-      "matching": 0.5769669327251995,
+      "matching": 0.5838084378563284,
       "name": "BuildTurnEventDialogResources_2508",
       "type": 1
     },
@@ -1150,7 +1150,7 @@
     },
     {
       "address": "0x4538a0",
-      "matching": 0.5047487321346242,
+      "matching": 0.5049331489165514,
       "name": "InitializeGameSetupScreenControlsAndModeTags",
       "type": 1
     },
@@ -1355,13 +1355,13 @@
     },
     {
       "address": "0x45d520",
-      "matching": 0.5489913544668588,
+      "matching": 0.5518731988472623,
       "name": "BuildTurnEventDialogResourcesForEvent898",
       "type": 1
     },
     {
       "address": "0x45e0b0",
-      "matching": 0.5428342674139311,
+      "matching": 0.5439017880971444,
       "name": "BuildTurnEventDialogResourcesForEvent8FC",
       "type": 1
     },
@@ -1385,7 +1385,7 @@
     },
     {
       "address": "0x4601b0",
-      "matching": 0.631537413013846,
+      "matching": 0.6324700480665758,
       "name": "InitializeTradeScreenBitmapControls",
       "type": 1
     },
@@ -11480,7 +11480,7 @@
     },
     {
       "address": "0x4c9e30",
-      "matching": 0.9,
+      "matching": 1.0,
       "name": "TBuildingConstructionView::TBuildingConstructionView",
       "type": 1
     },
@@ -11925,7 +11925,7 @@
     },
     {
       "address": "0x4d1800",
-      "matching": 0.8571428571428571,
+      "matching": 1.0,
       "name": "TPlaceCityDialog::TPlaceCityDialog",
       "type": 1
     },
@@ -15201,7 +15201,7 @@
     },
     {
       "address": "0x4f3b80",
-      "matching": 0.9090909090909091,
+      "matching": 0.9318181818181818,
       "name": "TDiplomacyMapView::TDiplomacyMapView",
       "type": 1
     },
@@ -15309,7 +15309,7 @@
     },
     {
       "address": "0x4f64c0",
-      "matching": 0.6135458167330677,
+      "matching": 0.6294820717131474,
       "name": "TDiplomacyMapView::RebuildDiplomacyLegendPaletteMode4AndBlit",
       "type": 1
     },
@@ -15327,19 +15327,19 @@
     },
     {
       "address": "0x4f6840",
-      "matching": 0.6037735849056604,
+      "matching": 0.610062893081761,
       "name": "TDiplomacyMapView::RebuildDiplomacyLegendPaletteMode1AndBlit",
       "type": 1
     },
     {
       "address": "0x4f6b10",
-      "matching": 0.4358974358974359,
+      "matching": 0.5128205128205128,
       "name": "TDiplomacyMapView::BuildTurnEventMonochromeMaskBuffers",
       "type": 1
     },
     {
       "address": "0x4f6bd0",
-      "matching": 0.2248995983935743,
+      "matching": 0.23293172690763053,
       "name": "TDiplomacyMapView::BlitDiplomacyMapEventPaletteMaskToSurface",
       "type": 1
     },
@@ -16962,7 +16962,7 @@
     },
     {
       "address": "0x50b640",
-      "matching": 0.47086247086247085,
+      "matching": 0.4755244755244755,
       "name": "TMacViewMgr::RenderTurnEventPalettePreviewSurfaceAndProgress",
       "type": 1
     },
@@ -24429,7 +24429,7 @@
     },
     {
       "address": "0x568bc0",
-      "matching": 0.8571428571428571,
+      "matching": 1.0,
       "name": "TDisappearingButton::TDisappearingButton",
       "type": 1
     },
@@ -25143,7 +25143,8 @@
     },
     {
       "address": "0x5707f0",
-      "matching": 0.75,
+      "effective": true,
+      "matching": 0.875,
       "name": "TPictureButton::TPictureButton",
       "type": 1
     },
@@ -25299,7 +25300,7 @@
     },
     {
       "address": "0x5710f0",
-      "matching": 0.8571428571428571,
+      "matching": 1.0,
       "name": "TToggleButton::TToggleButton",
       "type": 1
     },
@@ -25377,7 +25378,8 @@
     },
     {
       "address": "0x5715a0",
-      "matching": 0.75,
+      "effective": true,
+      "matching": 0.875,
       "name": "TUpDownPictureButton::TUpDownPictureButton",
       "type": 1
     },
@@ -25707,7 +25709,7 @@
     },
     {
       "address": "0x572b30",
-      "matching": 0.875,
+      "matching": 1.0,
       "name": "TNoHilitePicture::TNoHilitePicture",
       "type": 1
     },
@@ -25863,7 +25865,8 @@
     },
     {
       "address": "0x5737d0",
-      "matching": 0.75,
+      "effective": true,
+      "matching": 0.875,
       "name": "TOffLimitsPicture::TOffLimitsPicture",
       "type": 1
     },
@@ -26388,7 +26391,7 @@
     },
     {
       "address": "0x5789e0",
-      "matching": 0.6744186046511628,
+      "matching": 0.6976744186046512,
       "name": "TMapPreviewView::BeginMouseCaptureAndStartRepeatTimer",
       "type": 1
     },
@@ -26400,13 +26403,13 @@
     },
     {
       "address": "0x578c10",
-      "matching": 0.7127532777115614,
+      "matching": 0.7365911799761621,
       "name": "TMapPreviewView::TakeSatellitePhoto",
       "type": 1
     },
     {
       "address": "0x579270",
-      "matching": 0.45098039215686275,
+      "matching": 0.46078431372549017,
       "name": "TMapPreviewView::EnhancePhoto",
       "type": 1
     },
@@ -27175,7 +27178,8 @@
     },
     {
       "address": "0x583970",
-      "matching": 0.75,
+      "effective": true,
+      "matching": 0.875,
       "name": "TArrowsControl::TArrowsControl",
       "type": 1
     },
@@ -27357,7 +27361,7 @@
     },
     {
       "address": "0x584480",
-      "matching": 0.8571428571428571,
+      "matching": 1.0,
       "name": "TTradeOrderPicture::TTradeOrderPicture",
       "type": 1
     },
@@ -28306,7 +28310,7 @@
     },
     {
       "address": "0x58b660",
-      "matching": 0.8571428571428571,
+      "matching": 1.0,
       "name": "THQButton::THQButton",
       "type": 1
     },
@@ -28360,7 +28364,7 @@
     },
     {
       "address": "0x58ba10",
-      "matching": 0.875,
+      "matching": 1.0,
       "name": "TPlacard::TPlacard",
       "type": 1
     },
@@ -28402,7 +28406,7 @@
     },
     {
       "address": "0x58bed0",
-      "matching": 0.875,
+      "matching": 1.0,
       "name": "TArmyPlacard::TArmyPlacard",
       "type": 1
     },
@@ -28499,7 +28503,7 @@
     },
     {
       "address": "0x58c8d0",
-      "matching": 0.8571428571428571,
+      "matching": 1.0,
       "name": "TCombatReportView::TCombatReportView",
       "type": 1
     },
@@ -28703,7 +28707,7 @@
     },
     {
       "address": "0x590c30",
-      "matching": 0.8571428571428571,
+      "matching": 1.0,
       "name": "TCivReport::TCivReport",
       "type": 1
     },
@@ -28733,7 +28737,7 @@
     },
     {
       "address": "0x5915a0",
-      "matching": 0.8571428571428571,
+      "matching": 1.0,
       "name": "TArmyInfoView::TArmyInfoView",
       "type": 1
     },
@@ -28763,7 +28767,7 @@
     },
     {
       "address": "0x591e70",
-      "matching": 0.75,
+      "matching": 0.8333333333333334,
       "name": "TTransportPicture::TTransportPicture",
       "type": 1
     },
@@ -28805,7 +28809,7 @@
     },
     {
       "address": "0x592900",
-      "matching": 0.8571428571428571,
+      "matching": 1.0,
       "name": "TWarningView::TWarningView",
       "type": 1
     },
@@ -31737,7 +31741,7 @@
     },
     {
       "address": "0x5b4760",
-      "matching": 0.6785714285714286,
+      "matching": 0.7142857142857143,
       "name": "TSpecialQuitPicture::CreateObject",
       "type": 1
     },
@@ -32504,7 +32508,7 @@
     },
     {
       "address": "0x5ba720",
-      "matching": 0.8571428571428571,
+      "matching": 1.0,
       "name": "TTradeScreenPicture::TTradeScreenPicture",
       "type": 1
     },
@@ -32534,7 +32538,8 @@
     },
     {
       "address": "0x5babc0",
-      "matching": 0.6666666666666666,
+      "effective": true,
+      "matching": 0.7777777777777778,
       "name": "TDealBookPicture::TDealBookPicture",
       "type": 1
     },
@@ -32792,7 +32797,8 @@
     },
     {
       "address": "0x5be570",
-      "matching": 0.8181818181818182,
+      "effective": true,
+      "matching": 0.9090909090909091,
       "name": "TOfferDeskPicture::TOfferDeskPicture",
       "type": 1
     },
@@ -33680,13 +33686,13 @@
     },
     {
       "address": "0x5d5750",
-      "matching": 0.8571428571428571,
+      "matching": 1.0,
       "name": "TViewMgr::ApplyTurnEventPaletteColorByEventCode",
       "type": 1
     },
     {
       "address": "0x5d5780",
-      "matching": 0.8571428571428571,
+      "matching": 1.0,
       "name": "TViewMgr::UpdatePaletteIndexFromTurnEventCode",
       "type": 1
     },
@@ -34556,7 +34562,7 @@
     },
     {
       "address": "0x5e2230",
-      "matching": 0.9722222222222222,
+      "matching": 1.0,
       "name": "TMovieView::TMovieView",
       "type": 1
     },

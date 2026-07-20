@@ -1,9 +1,6 @@
 address|name|symbol|size|type|prototype|provenance
-401122|thunk_TPictureButton::TPictureButton|||global||
 4028d8|thunk_InitializeCityInteriorMinister||5|function|undefined thunk_InitializeCityInteriorMinister()|
-404d9f|thunk_GetCityDialogValueDwordC|||global||
 406ccb|thunk_HandleEngineerConstructionAction||5|function|bool __thiscall thunk_HandleEngineerConstructionAction(short nTileIndex, undefined2 param_2)|
-409205|UiRuntimeContext::MapTurnEventCodeToPaletteIndex|||global||
 4125d0|WrapperFor_ftol_At004125d0||30|function|undefined WrapperFor_ftol_At004125d0()|
 412600|InvokeCallbackForRecordRangeWithStride||42|function|undefined InvokeCallbackForRecordRangeWithStride()|
 412640|OrphanCallChain_C5_I60_00412640||173|function|undefined OrphanCallChain_C5_I60_00412640()|
