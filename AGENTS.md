@@ -48,8 +48,8 @@ never set it to make a red gate go away (see the gate-chasing guardrail).
   legacy note-number resolution table.
 - **`ghidra`** — inspect `Imperialism.exe` via pyghidra (listing, decompile, vtable
   dump, cdecl/thiscall scan) and the interactive function-documentation methodology.
-- **`quality-control`** — build, reccmp detect/compare/stats, gates,
-  formatting, and reccmp pairing-failure diagnosis.
+- **`quality-control`** — build, reccmp detect/compare/stats, structured semantic
+  diagnosis, gates, formatting, and reccmp pairing-failure diagnosis.
 - **`sync-pipeline`** — the derived-artifact pipeline: the raw entity inventory, function
   ownership, generated stubs, `just generate`/`ghidra-apply-source`, and the
   resync failure→fix taxonomy (junk thunk rows, type flips, size clamps).
@@ -140,13 +140,21 @@ target). They need a built binary + reccmp DB. Details in the `quality-control` 
 
 - `just precommit` — the whole pre-commit sequence in one command: `build` +
   `gates` + `test` (tooling unit tests) + `stats`.
+- `just install-reccmp-merge-driver` — one-time local setup for generated progress
+  baselines. On a baseline conflict, the driver keeps a valid side and tracked hooks
+  rebuild/regenerate both baseline files after the merge/rebase completes, leaving
+  reviewable unstaged changes rather than a hand-merged JSON artifact.
 - `just gates` — the mechanical source-policy gates: `decomplint` plus the ratchet
   gates (`datacmp-gate`, `stub-count-gate`, `class-size-gate`, `noop-gate`), each
   with a `just <gate>-update` baseline target.
-- `just triage 0xADDR` / `just triage --file src/game/X.cpp` — classify every
-  mismatched diff line of a below-100% function into actionable buckets with the
-  standard next action per bucket. Run this before reading a raw `just compare`
-  diff by eye.
+- `just triage 0xADDR` / `just triage --file src/game/X.cpp` — consume reccmp's
+  structured semantic result and add Imperialism-specific advice. Run this before
+  reading a raw `just compare` diff. The four statuses are authoritative:
+  `exact` needs no work; `effective` is a completed proof whose reasons describe
+  safe compiler variation; `mismatch` is the first trusted machine-level divergence;
+  `inconclusive` means reccmp could not prove either outcome and is **not** evidence
+  that the source is wrong. Triage never derives safety or operand meaning by parsing
+  rendered assembly.
 - `just vtable [Name]` (vtable correctness), `just datacmp [-a]` (global data values),
   `just roadmap` (symbol locations of functions/vtables/data), `just stackcmp 0xADDR`
   + `just stackcmp-triage` (stack layout of near-matching functions).
@@ -254,6 +262,11 @@ examples, and rationale: `docs/reference/construction.md`.
     source is not permission to revert to stubs — see the gate-chasing guardrail below.
 13. **Evidence required for inheritance** — base edges need constructor/destructor
     sequencing, vtable layout, prefix-layout, or Mac-symbol evidence; never names alone.
+14. **Treat reccmp's structured comparison as semantic ground truth.** Never infer
+    that register-shaped or reordered rendered diffs are safe by eye or with regexes.
+    Only a `mismatch` is actionable source-recovery evidence. An `effective` result is
+    already proved harmless; an `inconclusive` result requires verifier/metadata/
+    alignment investigation and must never be presented as proof of a source defect.
 
 ## Gate-chasing guardrail (never revert architecture to pass verification)
 
@@ -357,12 +370,15 @@ If gates fail or stats regress for reasons unrelated to your edit, stop and repo
 rather than committing around the failure. See `.cursor/rules/commit-workflow.mdc`.
 Never revert promoted real C++ to pass gates — see the **Gate-chasing guardrail** above.
 
-**Score wobble is not a regression.** Growing a TU or linking new code elsewhere can
+**Raw score wobble is not a regression.** Growing a TU or linking new code elsewhere can
 flip commutative-FP operand order (100%→43% on untouched FP leaves), cause sub-1pp
 register-allocation wobble in neighbouring functions, and re-pair nearby LIBRARY
 functions — all in code you never touched. These phantom drops are not regressions:
 never revert real structure, relocate globals, or contort the design to defend the old
-score. Accept the delta and `just stats-baseline-update` (full pattern: the
+score. Check `just triage`: `effective` confirms the variation is semantically harmless;
+only `mismatch` supplies actionable source evidence, while `inconclusive` calls for
+analysis/metadata work rather than source contortions. Accept proven-safe deltas and
+`just stats-baseline-update` (full pattern: the
 `fp-matching` and `data-modeling` skills' wobble notes).
 
 - Do not add routine execution entries to `docs/worklog.md`; keep `docs/worklog.md`

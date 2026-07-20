@@ -22,6 +22,11 @@ TSteelCityMinister::TSteelCityMinister() : TCityInteriorMinister() {
 // SYNTHETIC: IMPERIALISM 0x004c5a20
 // TSteelCityMinister::`scalar deleting destructor'
 
+// FUNCTION: IMPERIALISM 0x004c5a70
+void TSteelCityMinister::InitializeCityInteriorState(TGreatPower* owner) {
+  TCityInteriorMinister::InitializeCityInteriorState(owner);
+}
+
 // FUNCTION: IMPERIALISM 0x004c5a90
 void TSteelCityMinister::CityInteriorSlot20() {}
 // SYNTHETIC: IMPERIALISM 0x004c5c00
@@ -40,6 +45,11 @@ TShipBuilderCityMinister::TShipBuilderCityMinister() : TCityInteriorMinister() {
 
 // SYNTHETIC: IMPERIALISM 0x004c5d20
 // TShipBuilderCityMinister::`scalar deleting destructor'
+
+// FUNCTION: IMPERIALISM 0x004c5d70
+void TShipBuilderCityMinister::InitializeCityInteriorState(TGreatPower* owner) {
+  TCityInteriorMinister::InitializeCityInteriorState(owner);
+}
 
 // FUNCTION: IMPERIALISM 0x004c5d90
 void TShipBuilderCityMinister::CityInteriorSlot20() {}
@@ -60,6 +70,11 @@ TEvenCityMinister::TEvenCityMinister() : TCityInteriorMinister() {
 // SYNTHETIC: IMPERIALISM 0x004c6020
 // TEvenCityMinister::`scalar deleting destructor'
 
+// FUNCTION: IMPERIALISM 0x004c6070
+void TEvenCityMinister::InitializeCityInteriorState(TGreatPower* owner) {
+  TCityInteriorMinister::InitializeCityInteriorState(owner);
+}
+
 // FUNCTION: IMPERIALISM 0x004c6090
 void TEvenCityMinister::CityInteriorSlot20() {}
 // SYNTHETIC: IMPERIALISM 0x004c6210
@@ -78,6 +93,11 @@ TRailCityMinister::TRailCityMinister() : TCityInteriorMinister() {
 
 // SYNTHETIC: IMPERIALISM 0x004c6330
 // TRailCityMinister::`scalar deleting destructor'
+
+// FUNCTION: IMPERIALISM 0x004c6380
+void TRailCityMinister::InitializeCityInteriorState(TGreatPower* owner) {
+  TCityInteriorMinister::InitializeCityInteriorState(owner);
+}
 
 // FUNCTION: IMPERIALISM 0x004c63a0
 void TRailCityMinister::CityInteriorSlot20() {}

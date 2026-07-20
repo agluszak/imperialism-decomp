@@ -109,6 +109,19 @@ do not add local `typedef ...Fn` + `reinterpret_cast` vtable casts in gameplay c
    construction, no `__thiscall` reinterpret_cast, retire bridge helpers) are enforced
    by `just antipattern-gate`. Run `just gates` before committing a recovery change.
 
+## Structured reccmp evidence for class work
+
+Run `just triage` before treating a raw diff as layout evidence. A trusted
+`memory_address` mismatch with the same non-stack base and different displacement is
+a strong prompt to inspect receiver class layout, field declaration order, padding,
+construction, and `ASSERT_SIZE`; it does not by itself name the field. An EBP/ESP base
+is stack-layout evidence instead, so route it to `just stackcmp`. A `call_argument`
+on ECX can expose a wrong receiver attribution, but confirm the caller's ECX source.
+
+Do not use safe or uncertain results as class evidence: `effective` with
+`frame_slot_layout` or `register_allocation` was proved harmless, and
+`inconclusive` means reccmp established no source defect.
+
 ## C++-inheritance migration (EH-framed base destructors)
 
 To match EH-framed base destructors (e.g. `CObArray::~` `0x601bdd`, `CPtrList::~`

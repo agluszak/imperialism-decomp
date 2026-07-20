@@ -4,9 +4,9 @@
 from __future__ import annotations
 
 import argparse
-import json
 from pathlib import Path
 
+from tools.common.function_baseline import load_function_baseline
 from tools.common.reccmp_report import run_report
 from tools.common.repo import repo_root_from_file, resolve_repo_path
 from tools.common.report_score import effective_matching
@@ -14,7 +14,7 @@ from tools.ui_codegen import load_recipes
 
 
 EPSILON = 1e-4
-DEFAULT_BASELINE = "config/baselines/reccmp_progress_baseline.report.json"
+DEFAULT_BASELINE = "config/baselines/reccmp_progress_baseline.functions.csv"
 
 
 def _scores(rows: list[dict]) -> dict[int, float]:
@@ -27,8 +27,13 @@ def _scores(rows: list[dict]) -> dict[int, float]:
 
 
 def _baseline_scores(path: Path) -> dict[int, float]:
-    data = json.loads(path.read_text(encoding="utf-8"))
-    return _scores(data.get("data", []))
+    functions = load_function_baseline(path)
+    if functions is None:
+        raise FileNotFoundError(path)
+    return {
+        int(address, 16): float(function["m"])
+        for address, function in functions.items()
+    }
 
 
 def check_scores(

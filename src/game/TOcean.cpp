@@ -354,6 +354,11 @@ void TOcean::RefreshMapActionContextNationOverlaysAndOrderRanks() {
   }
 }
 
+// FUNCTION: IMPERIALISM 0x00563300
+TZone* TOcean::GetMapActionContextEntryByNationCodeOffset17(short nationCode) {
+  return &contextArray[nationCode - 0x17];
+}
+
 // FUNCTION: IMPERIALISM 0x005633b0
 TZone* TOcean::GetLinkedZoneForSeaTile(short seaTileIndex) {
   TTerrainStateRecordView& terrainRecord = g_pGlobalMapState->terrainStateTable[seaTileIndex];
@@ -365,7 +370,7 @@ TZone* TOcean::GetLinkedZoneForSeaTile(short seaTileIndex) {
   if (nationCode < 0x17) {
     return 0;
   }
-  return GetMapActionContextEntryByNationCodeOffset17(static_cast<short>(nationCode));
+  return &contextArray[static_cast<short>(nationCode) - 0x17];
 }
 
 // Walks the g_pMapActionContextListHead chain (via prev18) for the first TPortZone

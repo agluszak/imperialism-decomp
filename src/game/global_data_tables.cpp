@@ -513,6 +513,8 @@ const int kTradeSellPropagationTags[17] = {
 };
 
 // Industry action cost weight tables
+// GLOBAL: IMPERIALISM 0x00650758
+float g_AiDevelopmentResourceBudgetScale_00650758 = 1000.0f;
 // GLOBAL: IMPERIALISM 0x00695b50
 short g_industryActionCostWeightResCode09[16] = {0, 4, 7, 5, 8, 6, 6, 6, 4, 8, 0, 2, 0, 0, 0, 0};
 // GLOBAL: IMPERIALISM 0x00695b70
@@ -527,6 +529,28 @@ short g_industryActionCostWeightResCode03[16] = {0,  0,  0,  0,  0, 10, 0, 10,
                                                  10, 20, 20, 20, 0, 0,  0, 0};
 // GLOBAL: IMPERIALISM 0x00695bf0
 short g_industryActionCostWeightResCode0C[16] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 20, 20, 0, 0};
+
+// Per-city-action metric/cost profiles used by the AI development planner.
+// GLOBAL: IMPERIALISM 0x00695cd2
+AiCityActionCostProfile g_aiCityActionCostProfiles[30] = {
+    {-1, 0, -1, 0, 0, 1, 1},      {16, 1, -1, 0, 200, 1, 2},   {16, 1, -1, 0, 500, 1, 3},
+    {16, 1, -1, 0, 1000, 2, 4},   {16, 1, 5, 1, 100, 1, 5},    {16, 1, 5, 1, 500, 2, 6},
+    {16, 2, 5, 1, 1000, 2, 7},    {16, 2, -1, 0, 1000, 2, 8},  {-1, 0, -1, 0, 0, 1, 9},
+    {16, 2, -1, 0, 3000, 1, 10},  {16, 2, -1, 0, 3000, 1, 11}, {16, 2, -1, 0, 4000, 2, 12},
+    {16, 2, 5, 1, 2000, 1, 13},   {16, 2, 5, 1, 3500, 2, 14},  {16, 4, 5, 1, 5000, 2, 15},
+    {16, 4, -1, 0, 5000, 2, 16},  {-1, 0, -1, 0, 0, 1, 17},    {16, 4, -1, 0, 5000, 2, 18},
+    {16, 4, -1, 0, 5000, 2, 19},  {16, 4, -1, 0, 7000, 2, 20}, {16, 4, 12, 4, 5000, 2, 21},
+    {16, 10, 12, 4, 9000, 2, 22}, {16, 6, 12, 4, 5000, 2, 23}, {16, 8, -1, 0, 9000, 2, 24},
+    {16, 2, -1, 0, 5000, 4, 25},  {16, 2, -1, 0, 7000, 4, 26}, {16, 3, -1, 0, 9000, 4, 27},
+    {-1, 0, -1, 0, 0, 4, 28},     {-1, 0, -1, 0, 0, 4, 29},    {-1, 0, -1, 0, 0, 4, 0},
+};
+
+// GLOBAL: IMPERIALISM 0x006967d4
+short g_cachedAiCityActionNationSlot_006967d4 = -1;
+// GLOBAL: IMPERIALISM 0x006967d8
+short g_cachedAiCityActionTurnTick_006967d8 = -1;
+// GLOBAL: IMPERIALISM 0x006a2ea0
+float g_cachedAiCityActionContextBias[3] = {0.0f, 0.0f, 0.0f};
 
 // GLOBAL: IMPERIALISM 0x00696198
 short g_anCityBuildingSlotCoords[36] = {200, 235, 340, 300, 281, 184, 340, 266, 87, 286, 230, 310,
@@ -686,6 +710,10 @@ extern const double g_MissionScoreOneConstant_006545d8 = 1.0;
 // 0.0 (double) threshold used by the same function's score-positivity checks.
 // GLOBAL: IMPERIALISM 0x006545f0
 extern const double g_MissionScoreZeroThreshold_006545f0 = 0.0;
+// Competing missions of the same class must beat the next entry's value/cost ratio by
+// ten percent before consuming that class from the available mask (0x4eb6b0).
+// GLOBAL: IMPERIALISM 0x006545f8
+extern const double g_MissionEligibilityRatioMargin_006545f8 = 1.1;
 
 // Weighting factor (0.2) applied to each adjacent region's score when diffusing the
 // strategic heatmap (RecomputeTileStrategicScoreHeatmap 0x518130).
@@ -3207,3 +3235,16 @@ short g_creditsPlaybackActive_006a4084 = 0;
 short g_offerDeskSelectionIndexTable_00668568[8] = {0};
 // GLOBAL: IMPERIALISM 0x006a3020
 int g_diplomacyPopupLayoutPosition_006a3020[2] = {0};
+
+// Per-strength-tier probability-split table for BuildMapOrderContextSummaryStringForNation's
+// per-garrisoned-unit resource roll: each 3-short half sums to 100. The first half picks a
+// 0-2 "point cost" for the unit; the second half picks how that cost gets bucketed (the
+// unit's own movement class, a fixed "misc" bucket, or a uniform random bucket). Indexed by
+// the function's winning strength tier (unclamped, matching the original -- tiers beyond
+// row 5 read past this table in the original too). table[tier]+3 is the second half (at
+// original address 0x0064c5de, 6 bytes/3 shorts into this same row-major table).
+// GLOBAL: IMPERIALISM 0x0064c5d8
+short g_MapOrderResourceRollWeightTable_0064c5d8[6][6] = {
+    {50, 20, 30, 40, 30, 30}, {50, 20, 30, 50, 30, 20}, {40, 35, 25, 55, 30, 15},
+    {30, 50, 20, 65, 20, 15}, {20, 65, 15, 70, 20, 10}, {10, 80, 10, 80, 10, 10},
+};

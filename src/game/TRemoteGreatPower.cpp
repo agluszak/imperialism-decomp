@@ -11,28 +11,22 @@ char TRemoteGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessag
 }
 
 // FUNCTION: IMPERIALISM 0x00541880
-void TRemoteGreatPower::RefreshGreatPowerRelationPanelsAndDispatchDeltaSummary(void) {
-}
+void TRemoteGreatPower::RefreshGreatPowerRelationPanelsAndDispatchDeltaSummary(void) {}
 
 // FUNCTION: IMPERIALISM 0x005418a0
-void TRemoteGreatPower::NotifyCitySlot2C(void) {
-}
+void TRemoteGreatPower::NotifyCitySlot2C(void) {}
 
 // FUNCTION: IMPERIALISM 0x005418c0
-void TRemoteGreatPower::OrphanRetStub_004dcc30(void) {
-}
+void TRemoteGreatPower::OrphanRetStub_004dcc30(void) {}
 
 // FUNCTION: IMPERIALISM 0x005418e0
-void TRemoteGreatPower::OrphanRetStub_005418e0(void) {
-}
+void TRemoteGreatPower::OrphanRetStub_005418e0(void) {}
 
 // FUNCTION: IMPERIALISM 0x00541900
-void TRemoteGreatPower::SortTrackedOrdersByTypePriority(void) {
-}
+void TRemoteGreatPower::SortTrackedOrdersByTypePriority(void) {}
 
 // FUNCTION: IMPERIALISM 0x00541920
-void TRemoteGreatPower::ClearDiplomacyState1c6Block(void) {
-}
+void TRemoteGreatPower::ClearDiplomacyState1c6Block(void) {}
 
 // FUNCTION: IMPERIALISM 0x00541940
 void TRemoteGreatPower::ClearDiplomacyState1c6ForTarget(short targetSlot) {
@@ -40,24 +34,19 @@ void TRemoteGreatPower::ClearDiplomacyState1c6ForTarget(short targetSlot) {
 }
 
 // FUNCTION: IMPERIALISM 0x00541960
-void TRemoteGreatPower::BeginTurnDiplomacyPrePassSlot1c8(void) {
-}
+void TRemoteGreatPower::BeginTurnDiplomacyPrePassSlot1c8(void) {}
 
 // FUNCTION: IMPERIALISM 0x00541980
-void TRemoteGreatPower::ApplyTurnDiplomacyStateSlot1e0(void) {
-}
+void TRemoteGreatPower::ApplyTurnDiplomacyStateSlot1e0(void) {}
 
 // FUNCTION: IMPERIALISM 0x005419a0
-void TRemoteGreatPower::ResetNationDiplomacyProposalQueue(void) {
-}
+void TRemoteGreatPower::ResetNationDiplomacyProposalQueue(void) {}
 
 // FUNCTION: IMPERIALISM 0x005419c0
-void TRemoteGreatPower::ReleaseProposalQueueSlot7F(void) {
-}
+void TRemoteGreatPower::ReleaseProposalQueueSlot7F(void) {}
 
 // FUNCTION: IMPERIALISM 0x005419e0
-void TRemoteGreatPower::ProcessPendingDiplomacyProposalQueue(void) {
-}
+void TRemoteGreatPower::ProcessPendingDiplomacyProposalQueue(void) {}
 
 // FUNCTION: IMPERIALISM 0x00541a00
 void TRemoteGreatPower::SetCandidateNationFlagAndPortZoneState(int targetNation) {
@@ -70,12 +59,11 @@ void TRemoteGreatPower::CallSlotA8(int targetNation) {
 }
 
 // FUNCTION: IMPERIALISM 0x00541a40
-void TRemoteGreatPower::NoOpTailStateHookSlot2B4(void) {
-}
+void TRemoteGreatPower::NoOpTailStateHookSlot2B4(void) {}
 
 // FUNCTION: IMPERIALISM 0x00541a60
-void TRemoteGreatPower::NoOpTailStateHookSlot2B8(int arg) {
-  (void)arg;
+void TRemoteGreatPower::RefreshTrackedEntriesAndReplanAiDevelopment(int unused) {
+  (void)unused;
 }
 
 // SYNTHETIC: IMPERIALISM 0x00541a80
@@ -98,5 +86,4 @@ void TRemoteGreatPower::NoOpNationSelectedRegionAndMapCellLabelHook(int arg1, in
 }
 
 // FUNCTION: IMPERIALISM 0x00541be0
-void TRemoteGreatPower::DispatchTurnEvent11F8NoPayloadSlot2AC(void) {
-}
+void TRemoteGreatPower::DispatchTurnEvent11F8NoPayloadSlot2AC(void) {}

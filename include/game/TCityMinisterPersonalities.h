@@ -7,6 +7,7 @@ class TSteelCityMinister : public TCityInteriorMinister {
 public:
   DECLARE_DYNCREATE(TSteelCityMinister)
   TSteelCityMinister();
+  void InitializeCityInteriorState(TGreatPower* owner);
   void CityInteriorSlot20() override; // slot 0x20 (byte 0x80) priority preset
 };
 
@@ -15,6 +16,7 @@ class TShipBuilderCityMinister : public TCityInteriorMinister {
 public:
   DECLARE_DYNCREATE(TShipBuilderCityMinister)
   TShipBuilderCityMinister();
+  void InitializeCityInteriorState(TGreatPower* owner);
   void CityInteriorSlot20() override; // slot 0x20 (byte 0x80) priority preset
 };
 
@@ -23,6 +25,7 @@ class TEvenCityMinister : public TCityInteriorMinister {
 public:
   DECLARE_DYNCREATE(TEvenCityMinister)
   TEvenCityMinister();
+  void InitializeCityInteriorState(TGreatPower* owner);
   void CityInteriorSlot20() override; // slot 0x20 (byte 0x80) priority preset
 };
 
@@ -31,5 +34,6 @@ class TRailCityMinister : public TCityInteriorMinister {
 public:
   DECLARE_DYNCREATE(TRailCityMinister)
   TRailCityMinister();
+  void InitializeCityInteriorState(TGreatPower* owner);
   void CityInteriorSlot20() override; // slot 0x20 (byte 0x80) priority preset
 };

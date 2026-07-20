@@ -394,9 +394,9 @@ compare *args:
   set -euo pipefail
   args=({{args}})
   if [[ ${#args[@]} -eq 0 ]]; then
-    (cd "{{build_dir}}" && uv run reccmp-reccmp --target "{{target}}")
+    (cd "{{build_dir}}" && PYTHONPATH=.. uv run python -m tools.reccmp.compare_cli --target "{{target}}")
   elif [[ ${#args[@]} -eq 1 && "${args[0]}" != "--file" ]]; then
-    (cd "{{build_dir}}" && uv run reccmp-reccmp --target "{{target}}" --verbose "${args[0]}")
+    (cd "{{build_dir}}" && PYTHONPATH=.. uv run python -m tools.reccmp.compare_cli --target "{{target}}" --verbose "${args[0]}")
   else
     uv run python -m tools.reccmp.compare_batch --target "{{target}}" --build-dir "{{build_dir}}" {{args}}
   fi
@@ -475,9 +475,9 @@ addr *args:
 stackcmp addr *args:
   (cd "{{build_dir}}" && uv run reccmp-stackcmp --target "{{target}}" {{args}} "{{addr}}")
 
-# Classify every mismatched diff line of a below-100% function into actionable
-# buckets (field_offset / stack_layout / call_target / missing_annotation /
-# constant / reg_alloc / codegen). `just triage 0xADDR [...]` or `--file SRC.cpp`.
+# Interpret reccmp's trusted semantic proof or first structured machine-level
+# divergence with Imperialism-specific source/layout advice.
+# `just triage 0xADDR [...]` or `--file SRC.cpp`.
 [group('compare')]
 triage *args:
   uv run python -m tools.reccmp.triage --target "{{target}}" --build-dir "{{build_dir}}" {{args}}
@@ -1410,7 +1410,7 @@ format-check *paths:
 # baseline-update — targets that REWRITE committed baselines/configs.
 # ---------------------------------------------------------------------------
 
-# MUTATES: config/baselines/reccmp_progress_baseline.json.
+# MUTATES: the aggregate JSON and per-function CSV reccmp progress baselines.
 [group('baseline-update')]
 stats-baseline-update:
   uv run python -m tools.reccmp.progress_stats --target "{{target}}" --build-dir "{{build_dir}}" --detect-recompiled --commit-baseline
@@ -1581,6 +1581,11 @@ docker-build:
 bootstrap-reccmp:
   : "${ORIGINAL_BINARY:?Set ORIGINAL_BINARY in .env}"
   uv run reccmp-project create --originals "$ORIGINAL_BINARY" --scm
+
+[doc('Install the local generated-reccmp-baseline merge driver (tracked hooks regenerate after conflicts)')]
+[group('setup')]
+install-reccmp-merge-driver:
+  uv run python -m tools.workflow.reccmp_baseline_merge install
 
 # Generate ./compile_commands.json (clang-lint flavor, host paths) for clangd/LSP
 # navigation. Not for matching questions — the reccmp build is MSVC500. The lint

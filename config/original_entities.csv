@@ -1961,7 +1961,7 @@ address|name|symbol|size|type|prototype|provenance
 4be650|OrphanCallChain_C2_I17_004be650||37|function|undefined OrphanCallChain_C2_I17_004be650()|
 4be690|OrphanCallChain_C1_I13_004be690||38|function|undefined OrphanCallChain_C1_I13_004be690()|
 4be6d0|TInteriorMinister::NoOpForeignMinisterUtilityStub||3|function|undefined OrphanRetStub_004be6d0(void)|
-4be6f0|PlanAiDevelopmentActionsFromResourcePools_Impl_At004be6f0||9|function|undefined PlanAiDevelopmentActionsFromResourcePools_Impl_At004be6f0()|
+4be6f0|TCityInteriorMinister::GetAiDevelopmentResourceBudgetScale||9|function|float GetAiDevelopmentResourceBudgetScale(int* resourcePools)|
 4be710|TCityInteriorMinister::CreateObject|?CreateObject@TCityInteriorMinister@@SGPAVCObject@@XZ|126|function|undefined CreateObject()|rtti
 4be7b0|TCityInteriorMinister::VTableSlot1D||15|function|undefined 'scalar_deleting_destructor'(void)|
 4be7d0|TCityInteriorMinister::CreateTInteriorMinisterInstance||15|function|undefined GetTEventHandlerClassNamePointer(void)|
@@ -2025,7 +2025,7 @@ address|name|symbol|size|type|prototype|provenance
 4c4c4c|OrphanCallChain_C1_I20_004c4c4c||65|function|undefined OrphanCallChain_C1_I20_004c4c4c()|
 4c4d40|OrphanCallChain_C2_I72_004c4d40||219|function|undefined OrphanCallChain_C2_I72_004c4d40()|
 4c4e60|OrphanCallChain_C3_I79_004c4e60||229|function|undefined OrphanCallChain_C3_I79_004c4e60()|
-4c4f90|PlanAiDevelopmentActionsFromResourcePools_Impl||49|function|undefined PlanAiDevelopmentActionsFromResourcePools_Impl()|
+4c4f90|TCityInteriorMinister::GetAverageDevelopmentOrderAllocation||49|function|int GetAverageDevelopmentOrderAllocation(void)|
 4c4fe0|OrphanCallChain_C4_I151_004c4fe0||471|function|undefined OrphanCallChain_C4_I151_004c4fe0()|
 4c5240|BuildFrogCityTerrainCountsAndOverlayStats||930|function|undefined BuildFrogCityTerrainCountsAndOverlayStats()|
 4c56e0|TryApplyCityOrderCapabilitySelectionBySlot||427|function|undefined TryApplyCityOrderCapabilitySelectionBySlot()|
@@ -2034,28 +2034,28 @@ address|name|symbol|size|type|prototype|provenance
 4c59e0|TSteelCityMinister::ConstructTSteelCityMinisterBaseState||43|function|undefined ConstructTSteelCityMinisterBaseState()|
 4c5a20|TSteelCityMinister::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4c5a50|DestructTSteelCityMinisterAndMaybeFree_Impl||7|function|undefined DestructTSteelCityMinisterAndMaybeFree_Impl()|
-4c5a70|WrapperFor_thunk_InitializeCityInteriorMinister_At004c5a70||13|function|undefined WrapperFor_thunk_InitializeCityInteriorMinister_At004c5a70()|
+4c5a70|TSteelCityMinister::InitializeCityInteriorState||13|function|void __thiscall InitializeCityInteriorState(TGreatPower * owner)|
 4c5a90|ConfigureCityInteriorMinisterPriorityPreset_004c5a90||285|function|undefined ConfigureCityInteriorMinisterPriorityPreset_004c5a90()|
 4c5c00|TShipBuilderCityMinister::CreateObject|?CreateObject@TShipBuilderCityMinister@@SGPAVCObject@@XZ|132|function|undefined CreateObject()|rtti
 4c5cc0|TShipBuilderCityMinister::GetRuntimeClass||6|function|undefined GetTShipBuilderCityMinisterClassNamePointer()|rtti
 4c5ce0|TShipBuilderCityMinister::ConstructTShipBuilderCityMinisterBaseState||47|function|undefined ConstructTShipBuilderCityMinisterBaseState()|
 4c5d20|TShipBuilderCityMinister::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4c5d50|DestructTShipBuilderCityMinisterAndMaybeFree_Impl||7|function|undefined DestructTShipBuilderCityMinisterAndMaybeFree_Impl()|
-4c5d70|WrapperFor_thunk_InitializeCityInteriorMinister_At004c5d70||13|function|undefined WrapperFor_thunk_InitializeCityInteriorMinister_At004c5d70()|
+4c5d70|TShipBuilderCityMinister::InitializeCityInteriorState||13|function|void __thiscall InitializeCityInteriorState(TGreatPower * owner)|
 4c5d90|ConfigureCityInteriorMinisterPriorityPreset_004c5d90||285|function|undefined ConfigureCityInteriorMinisterPriorityPreset_004c5d90()|
 4c5f00|TEvenCityMinister::CreateObject|?CreateObject@TEvenCityMinister@@SGPAVCObject@@XZ|132|function|undefined CreateObject()|rtti
 4c5fc0|TEvenCityMinister::GetRuntimeClass||6|function|undefined GetTEvenCityMinisterClassNamePointer()|rtti
 4c5fe0|TEvenCityMinister::ConstructTEvenCityMinisterBaseState||47|function|undefined ConstructTEvenCityMinisterBaseState()|
 4c6020|TEvenCityMinister::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4c6050|DestructTEvenCityMinisterAndMaybeFree_Impl||7|function|undefined DestructTEvenCityMinisterAndMaybeFree_Impl()|
-4c6070|WrapperFor_thunk_InitializeCityInteriorMinister_At004c6070||13|function|undefined WrapperFor_thunk_InitializeCityInteriorMinister_At004c6070()|
+4c6070|TEvenCityMinister::InitializeCityInteriorState||13|function|void __thiscall InitializeCityInteriorState(TGreatPower * owner)|
 4c6090|ConfigureCityInteriorMinisterPriorityPreset_004c6090||295|function|undefined ConfigureCityInteriorMinisterPriorityPreset_004c6090()|
 4c6210|TRailCityMinister::CreateObject|?CreateObject@TRailCityMinister@@SGPAVCObject@@XZ|130|function|undefined CreateObject()|rtti
 4c62d0|TRailCityMinister::GetRuntimeClass||6|function|undefined GetTRailCityMinisterClassNamePointer()|rtti
 4c62f0|TRailCityMinister::ConstructTRailCityMinisterBaseState||45|function|undefined ConstructTRailCityMinisterBaseState()|
 4c6330|TRailCityMinister::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4c6360|DestructTRailCityMinisterAndMaybeFree_Impl||7|function|undefined DestructTRailCityMinisterAndMaybeFree_Impl()|
-4c6380|WrapperFor_thunk_InitializeCityInteriorMinister_At004c6380||13|function|undefined WrapperFor_thunk_InitializeCityInteriorMinister_At004c6380()|
+4c6380|TRailCityMinister::InitializeCityInteriorState||13|function|void __thiscall InitializeCityInteriorState(TGreatPower * owner)|
 4c63a0|ConfigureCityInteriorMinisterPriorityPreset_004c63a0||315|function|undefined ConfigureCityInteriorMinisterPriorityPreset_004c63a0()|
 4c65d0|CList<long,long>::Serialize|?Serialize@?$CList@JJ@@UAEXAAVCArchive@@@Z|280|function|undefined Serialize(CArchive &)|template
 4c6740|TLongintList::InsertLast||125|function|void __thiscall InsertLast(int value)|
@@ -2343,7 +2343,7 @@ address|name|symbol|size|type|prototype|provenance
 4d89d0|TGreatPower::GetRuntimeClass||6|function|CRuntimeClass * __thiscall GetRuntimeClass()|rtti
 4d89f0|TGreatPower::TGreatPower||355|function|undefined TGreatPower()|
 4d8bc0|TGreatPower::SelectCandidateTilesWithLowGroundUnitCount_ad||1|function|undefined SelectCandidateTilesWithLowGroundUnitCount(void)|
-4d8be0|TGreatPower::OrphanLeaf_NoCall_Ins07_004d8920_ae||3|function|undefined OrphanLeaf_NoCall_Ins07_004d8920(void)|
+4d8be0|TGreatPower::RefreshTrackedEntriesAndReplanAiDevelopment||3|function|void RefreshTrackedEntriesAndReplanAiDevelopment(int unused)|
 4d8c00|TGreatPower::GetDiplomacyCounterA2||8|function|undefined GetDiplomacyCounterA2()|
 4d8c20|TGreatPower::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4d8c50|TGreatPower::~TGreatPower||80|function|undefined ~TGreatPower()|
@@ -2368,7 +2368,7 @@ address|name|symbol|size|type|prototype|provenance
 4db380|TGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage||867|function|undefined UpdateGreatPowerPressureStateAndDispatchEscalationMessage()|
 4db7d0|TGreatPower::UpdateOrderEntryAvailabilityByConnectedRegionMask||581|function|undefined UpdateOrderEntryAvailabilityByConnectedRegionMask()|
 4dbac0|TGreatPower::MarkConnectedOwnedRegionsInMaskRecursive||192|function|undefined MarkConnectedOwnedRegionsInMaskRecursive()|
-4dbbb0|TDeluxeText::BuildCityInfluenceLevelMap||274|function|char * __thiscall BuildCityInfluenceLevelMap(void)|
+4dbbb0|TGreatPower::BuildCityInfluenceLevelMap||274|function|char* BuildCityInfluenceLevelMap(void)|
 4dbd20|TGreatPower::RebuildNationResourceYieldCountersAndDevelopmentTargets||379|function|undefined RebuildNationResourceYieldCountersAndDevelopmentTargets()|
 4dbf00|TGreatPower::AdvanceOwnedRegionDevelopmentCountersAndDispatchEvents||1007|function|undefined AdvanceOwnedRegionDevelopmentCountersAndDispatchEvents()|
 4dc3f0|TGreatPower::OrphanRetStub_004d7e90_4f||58|function|undefined OrphanRetStub_004d7e90(void)|
@@ -2572,7 +2572,7 @@ address|name|symbol|size|type|prototype|provenance
 4e6b50|TAutoGreatPower::TAutoGreatPower||28|function|void __thiscall TAutoGreatPower(void)|
 4e6b80|TAutoGreatPower::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4e6bb0|TAutoGreatPower::~TAutoGreatPower||80|function|undefined ~TAutoGreatPower()|
-4e6c20|InitializeNationMinisterSubsystemsByPolicyIds||1160|function|undefined InitializeNationMinisterSubsystemsByPolicyIds()|
+4e6c20|TAutoGreatPower::InitializeNationMinisterSubsystemsByPolicyIds||1160|function|void __thiscall InitializeNationMinisterSubsystemsByPolicyIds(int nationSlot, int nationInitializationMode, short cityMinisterPolicyId, short foreignMinisterPolicyId, short defenseMinisterPolicyId)|
 4e7230|TAutoGreatPower::Free||107|function|undefined Free()|
 4e72c0|TGreatPower::InitializeMapActionCandidateStateAndQueueMission||235|function|undefined InitializeMapActionCandidateStateAndQueueMission()|
 4e73f0|TGreatPower::SerializeGreatPowerTailStateToMessage||212|function|undefined SerializeGreatPowerTailStateToMessage()|
@@ -2624,19 +2624,19 @@ address|name|symbol|size|type|prototype|provenance
 4ea450|TAutoGreatPower::BuildGreatPowerTurnMessageSummaryAndDispatch||1|function|undefined VTableIndex177_Provisional()|
 4ea470|TGreatPower::RebuildNationResourceYieldsAndRollField134Into136||33|function|undefined RebuildNationResourceYieldsAndRollField134Into136()|
 4ea5e0|WrapperFor_ftol_At004ea5e0||30|function|undefined WrapperFor_ftol_At004ea5e0()|
-4ea610|ComputeAiIndustryActionCostFromSlot||188|function|undefined ComputeAiIndustryActionCostFromSlot()|
-4ea700|ComputeAiCityActionCostFromSlotAndMode||232|function|undefined ComputeAiCityActionCostFromSlotAndMode()|
-4ea830|GetCachedAiCityActionContextBias||269|function|undefined GetCachedAiCityActionContextBias()|
+4ea610|TAutoGreatPower::ComputeAiIndustryActionCostFromSlot||188|function|float ComputeAiIndustryActionCostFromSlot(short industrySlot)|
+4ea700|TAutoGreatPower::ComputeAiCityActionCostFromSlotAndMode||232|function|float ComputeAiCityActionCostFromSlotAndMode(short actionSlot, char skipContextBias)|
+4ea830|TAutoGreatPower::GetCachedAiCityActionContextBias||269|function|float GetCachedAiCityActionContextBias(short selector)|
 4ea990|TAutoGreatPower::IterateLinkedListCursorAndRelinkNodeOwners_004ea990||97|function|undefined IterateLinkedListCursorAndRelinkNodeOwners_004ea990()|
 4eaa20|TAutoGreatPower::SelectCandidateTilesWithLowGroundUnitCount_ad||866|function|undefined RecomputeNationTerrainCompatibilityAndDiplomacyMetrics()|
-4eae70|TAutoGreatPower::OrphanLeaf_NoCall_Ins07_004d8920||239|function|undefined RefreshTrackedEntriesAndReplanAiDevelopment(void)|
+4eae70|TAutoGreatPower::RefreshTrackedEntriesAndReplanAiDevelopment||239|function|void RefreshTrackedEntriesAndReplanAiDevelopment(int unused)|
 4eafa0|SeedTrackedEntryAssignmentsFromEligibleUnits||124|function|undefined SeedTrackedEntryAssignmentsFromEligibleUnits()|
 4eb040|IterateLinkedListCursorEntries_004eb040||74|function|undefined IterateLinkedListCursorEntries_004eb040()|
 4eb0d0|TAutoGreatPower::PruneInvalidTrackedEntriesAndNotifyOwner||131|function|undefined PruneInvalidTrackedEntriesAndNotifyOwner(void)|
-4eb190|PlanAiDevelopmentActionsFromResourcePools||853|function|undefined PlanAiDevelopmentActionsFromResourcePools()|
+4eb190|TAutoGreatPower::PlanAiDevelopmentActionsFromResourcePools||853|function|void PlanAiDevelopmentActionsFromResourcePools(int unused)|
 4eb5d0|OrphanCallChain_C4_I75_004eb5d0||172|function|undefined OrphanCallChain_C4_I75_004eb5d0()|
-4eb6b0|UpdateTrackedEntryEligibilityByClassMaskAndRatio||393|function|undefined UpdateTrackedEntryEligibilityByClassMaskAndRatio()|
-4eb8b0|AssignTrackedEntryActionsByProfileToOrdersOrUnits||1212|function|undefined AssignTrackedEntryActionsByProfileToOrdersOrUnits()|
+4eb6b0|TAutoGreatPower::UpdateTrackedEntryEligibilityByClassMaskAndRatio||393|function|void UpdateTrackedEntryEligibilityByClassMaskAndRatio(int unused)|
+4eb8b0|TAutoGreatPower::AssignTrackedEntryActionsByProfileToOrdersOrUnits||1212|function|void AssignTrackedEntryActionsByProfileToOrdersOrUnits(int unused)|
 4ebff0|WrapperFor_ftol_At004ebff0||30|function|undefined WrapperFor_ftol_At004ebff0()|
 4ec020|TDefenseMinister::CreateObject|?CreateObject@TDefenseMinister@@SGPAVCObject@@XZ|83|function|undefined CreateObject()|rtti
 4ec0a0|TDefenseMinister::CreateTDefenseMinisterInstance||9|function|undefined CreateTDefenseMinisterInstance()|
@@ -3661,8 +3661,8 @@ address|name|symbol|size|type|prototype|provenance
 5358a0|TMission::DeserializeMissionState||125|function|void __thiscall DeserializeMissionState(TStream* stream)|
 535940|FindFirstTrackedHandlerMatchingModeAndShortKey||123|function|undefined FindFirstTrackedHandlerMatchingModeAndShortKey()|
 5359e0|IsMapTileCompatibleWithCurrentTerrainOrActionContext||210|function|undefined IsMapTileCompatibleWithCurrentTerrainOrActionContext()|
-535b00|SelectBestCityDevelopmentFromResourcePools||899|function|undefined SelectBestCityDevelopmentFromResourcePools()|
-535f80|CompareMissionOrderEntriesByMovementClassThenEfficiency||197|function|undefined CompareMissionOrderEntriesByMovementClassThenEfficiency()|
+535b00|SelectBestCityDevelopmentFromResourcePools||899|function|bool SelectBestCityDevelopmentFromResourcePools(short nationSlot, int* resourcePools, TMilitaryUnit** bestUnitByType, char* selectedIsIndustry, char* selectedIsUpgrade, int* selectedSlot, int unused, float* selectedWeightedCost)|
+535f80|CompareMissionOrderEntriesByMovementClassThenEfficiency||197|function|short __cdecl CompareMissionOrderEntriesByMovementClassThenEfficiency(void* a, void* b, void* reverseOrder)|
 536090|CompareMissionOrderEntriesByPriorityScore||153|function|undefined CompareMissionOrderEntriesByPriorityScore()|
 536290|WrapperFor_ftol_At00536290||30|function|undefined WrapperFor_ftol_At00536290()|
 5362c0|ComputeDistributionSimilarityScoreFromVectorAndReferenceProfile||145|function|undefined ComputeDistributionSimilarityScoreFromVectorAndReferenceProfile()|
@@ -3921,7 +3921,7 @@ address|name|symbol|size|type|prototype|provenance
 541a00|TRemoteGreatPower::OrphanLeaf_NoCall_Ins02_004d7ee0||3|function|undefined OrphanLeaf_NoCall_Ins02_004d7ee0(void)|
 541a20|TRemoteGreatPower::ApplyMinorNationCapabilityActionType6||3|function|undefined OrphanLeaf_NoCall_Ins07_004d8920(void)|
 541a40|TRemoteGreatPower::SelectCandidateTilesWithLowGroundUnitCount_ad||1|function|undefined SelectCandidateTilesWithLowGroundUnitCount(void)|
-541a60|TRemoteGreatPower::OrphanLeaf_NoCall_Ins07_004d8920||3|function|undefined OrphanLeaf_NoCall_Ins07_004d8920(void)|
+541a60|TRemoteGreatPower::RefreshTrackedEntriesAndReplanAiDevelopment||3|function|void RefreshTrackedEntriesAndReplanAiDevelopment(int unused)|
 541a80|TRemoteGreatPower::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 541ab0|TRemoteGreatPower::DestructTRemoteGreatPower||80|function|undefined DestructTRemoteGreatPower()|
 541b20|TRemoteGreatPower::GetRuntimeClass||6|function|undefined GetTRemoteGreatPowerClassNamePointer()|rtti
@@ -5963,7 +5963,7 @@ address|name|symbol|size|type|prototype|provenance
 5c3530|GetUnitTypeStatPercent||49|function|undefined GetUnitTypeStatPercent()|
 5c3580|GetNormalizedCityActionResourceCostPercent||48|function|undefined GetNormalizedCityActionResourceCostPercent()|
 5c35c0|TMilitaryUnit::ResolveEraCapabilityFallbackSlot||103|function|short ResolveEraCapabilityFallbackSlot()|
-5c3650|WrapperFor_ResolveEraCapabilityFallbackSlot_At005c3650||13|function|undefined WrapperFor_ResolveEraCapabilityFallbackSlot_At005c3650()|
+5c3650|TMilitaryUnit::HasEraCapabilityFallbackSlot||13|function|bool HasEraCapabilityFallbackSlot(void)|
 5c3670|TMilitaryUnit::ApplyEraCapabilityCostAndSetSelection||357|function|bool ApplyEraCapabilityCostAndSetSelection()|
 5c3840|WrapperFor_ResolveEraCapabilityFallbackSlot_At005c3840||113|function|undefined WrapperFor_ResolveEraCapabilityFallbackSlot_At005c3840()|
 5c38e0|FindMilitaryUnitByIdAcrossTerrainDescriptors||133|function|undefined InitializeBattleSetupArmyStacksAndPopulateSelectionState_Impl()|
@@ -7323,7 +7323,7 @@ address|name|symbol|size|type|prototype|provenance
 6108fe|CSingleDocTemplate::SetDefaultTitle|?SetDefaultTitle@CSingleDocTemplate@@UAEXPAVCDocument@@@Z|103|function|public: virtual void __thiscall CSingleDocTemplate::SetDefaultTitle(class CDocument *)|msvc500_library_override
 610965|GetCDocumentMessageMap||6|function|undefined GetCDocumentMessageMap()|
 61096b|CDocument::CDocument|??0CDocument@@QAE@XZ|100|function|public: __thiscall CDocument::CDocument(void)|msvc500_library_override
-6109cf|DestructCDocumentBaseStateAndMaybeFree||28|function|undefined DestructCDocumentBaseStateAndMaybeFree()|
+6109cf|CDocument::`scalar deleting destructor'||28|function|undefined ScalarDeletingDestructor()|
 6109eb|CDocument::DestructCDocumentBaseState|??1CDocument@@UAE@XZ|108|function|public: virtual __thiscall CDocument::~CDocument(void)|msvc500_library_oracle
 610a57|CDocument::OnFinalRelease|?OnFinalRelease@CDocument@@UAEXXZ|8|function|public: virtual void __thiscall CDocument::OnFinalRelease(void)|msvc500_library_override
 610a5f|CDocument::DisconnectViews|?DisconnectViews@CDocument@@QAEXXZ|33|function|public: void __thiscall CDocument::DisconnectViews(void)|msvc500_library_oracle
@@ -7401,7 +7401,7 @@ address|name|symbol|size|type|prototype|provenance
 6128ec|CDC::SelectStockObject|?SelectStockObject@CDC@@UAEPAVCGdiObject@@H@Z|69|function|public: virtual class CGdiObject * __thiscall CDC::SelectStockObject(int)|msvc500_library_oracle
 612931|SelectObject||83|function|undefined SelectObject()|
 612984|CDC::SelectObject|?SelectObject@CDC@@QAEPAVCBrush@@PAV2@@Z|83|function|undefined SelectObject_612984()|
-6129d7|CDC::SelectObject|?SelectObject@CDC@@QAEPAVCBrush@@PAV2@@Z|83|function|undefined SelectObject_6129d7()|
+6129d7|CDC::SelectObject|?SelectObject@CDC@@QAEPAVCPen@@PAV2@@Z|83|function|public: class CPen * __thiscall CDC::SelectObject(class CPen *)|msvc500_library_oracle
 612a2a|CDC::SelectClipRgn|CDC::SelectClipRgn|78|function|undefined ?SelectClipRgn@CDC@@QAEHPAVCRgn@@@Z@00612a2a()|
 612a78|CDC::SelectPalette||16|function|undefined SelectPalette()|
 612a88|TOceanDialog::SelectPaletteThenLookupHandleMapEntryWithCreate||18|function|undefined SelectPaletteThenLookupHandleMapEntryWithCreate()|
@@ -7422,12 +7422,12 @@ address|name|symbol|size|type|prototype|provenance
 612e42|CDC::ScaleWindowExt|?ScaleWindowExt@CDC@@UAE?AVCSize@@HHHH@Z|88|function|undefined ?ScaleWindowExt@CDC@@UAE?AVCSize@@HHHH@Z@00612e42()|
 612e9a|CDC::GetClipBox|?GetClipBox@CDC@@UBEHPAUtagRECT@@@Z|16|function|public: virtual int __thiscall CDC::GetClipBox(struct tagRECT *) const|msvc500_library_oracle
 612eaa|CDC::SelectClipRgn|?SelectClipRgn@CDC@@QAEHPAVCRgn@@@Z|78|function|undefined SelectClipRegionOnPrimaryAndSecondaryDc()|
-612ef8|CDC::IntersectClipRect|CDC::IntersectClipRect|74|function|undefined ?IntersectClipRect@CDC@@QAEHHHHH@Z@00612ef8()|
-612f42|CDC::ExcludeClipRect|CDC::ExcludeClipRect|76|function|undefined ?ExcludeClipRect@CDC@@QAEHPBUtagRECT@@@Z@00612f42()|
-612f8e|CDC::IntersectClipRect|CDC::IntersectClipRect|74|function|undefined ?IntersectClipRect@CDC@@QAEHHHHH@Z@00612f8e()|
+612ef8|CDC::IntersectClipRect|?IntersectClipRect@CDC@@QAEHHHHH@Z|74|function|public: int __thiscall CDC::IntersectClipRect(int, int, int, int)|msvc500_library_oracle
+612f42|CDC::ExcludeClipRect|?ExcludeClipRect@CDC@@QAEHHHHH@Z|76|function|public: int __thiscall CDC::ExcludeClipRect(int, int, int, int)|msvc500_library_oracle
+612f8e|CDC::IntersectClipRect|?IntersectClipRect@CDC@@QAEHPBUtagRECT@@@Z|74|function|public: int __thiscall CDC::IntersectClipRect(struct tagRECT const *)|msvc500_library_oracle
 612fd8|CDC::IntersectClipRect|CDC::IntersectClipRect|76|function|undefined ?IntersectClipRect@CDC@@QAEHPBUtagRECT@@@Z@00612fd8()|
-613024|CDC::OffsetClipRgn|CDC::OffsetClipRgn|62|function|undefined ?OffsetClipRgn@CDC@@QAEHUtagSIZE@@@Z@00613024()|
-613062|CDC::OffsetClipRgn|CDC::OffsetClipRgn|62|function|undefined ?OffsetClipRgn@CDC@@QAEHUtagSIZE@@@Z@00613062()|
+613024|CDC::OffsetClipRgn|?OffsetClipRgn@CDC@@QAEHHH@Z|62|function|public: int __thiscall CDC::OffsetClipRgn(int, int)|msvc500_library_oracle
+613062|CDC::OffsetClipRgn|?OffsetClipRgn@CDC@@QAEHUtagSIZE@@@Z|62|function|public: int __thiscall CDC::OffsetClipRgn(struct tagSIZE)|msvc500_library_oracle
 6130a0|CDC::OffsetWindowOrg|?OffsetWindowOrg@CDC@@QAE?AVCPoint@@HH@Z|76|function|undefined ?OffsetViewportOrg@CDC@@UAE?AVCPoint@@HH@Z@006130a0()|
 6130ec|LineTo|?LineTo@CDC@@QAEHHH@Z|53|function|int __thiscall ?LineTo@CDC@@QAEHHH@Z@006130ec(int param_1, int param_2)|msvc500_library_oracle
 613121|CDC::SetTextAlign|?SetTextAlign@CDC@@QAEII@Z|52|function|public: unsigned int __thiscall CDC::SetTextAlign(unsigned int)|msvc500_library_oracle
@@ -7593,8 +7593,8 @@ address|name|symbol|size|type|prototype|provenance
 618bc6|DDX_Text|?DDX_Text@@YGXPAVCDataExchange@@HAAF@Z|59|function|void __stdcall DDX_Text(class CDataExchange *, int, short &)|msvc500_library_oracle
 618c01|DDX_Text|?DDX_Text@@YGXPAVCDataExchange@@HAAJ@Z|47|function|undefined DDX_Text_618c01()|
 618c30|DDX_Text|?DDX_Text@@YGXPAVCDataExchange@@HAAK@Z|47|function|undefined DDX_Text_618c30()|
-618c5f|DDX_Text|?DDX_Text@@YGXPAVCDataExchange@@HAAJ@Z|47|function|undefined DDX_Text_618c5f()|
-618c8e|DDX_Text|?DDX_Text@@YGXPAVCDataExchange@@HAAK@Z|47|function|undefined DDX_Text_618c8e()|
+618c5f|DDX_Text|?DDX_Text@@YGXPAVCDataExchange@@HAAH@Z|47|function|void __stdcall DDX_Text(class CDataExchange *, int, int &)|msvc500_library_oracle
+618c8e|DDX_Text|?DDX_Text@@YGXPAVCDataExchange@@HAAI@Z|47|function|void __stdcall DDX_Text(class CDataExchange *, int, unsigned int &)|msvc500_library_oracle
 618cbd|DDX_Text|?DDX_Text@@YGXPAVCDataExchange@@HAAVCString@@@Z|82|function|void __stdcall DDX_Text(class CDataExchange *, int, class CString &)|msvc500_library_oracle
 618d0f|DDX_Check|?DDX_Check@@YGXPAVCDataExchange@@HAAH@Z|82|function|void __stdcall DDX_Check(class CDataExchange *, int, int &)|msvc500_library_override
 618d61|DDX_Radio|?DDX_Radio@@YGXPAVCDataExchange@@HAAH@Z|145|function|void __stdcall DDX_Radio(class CDataExchange *, int, int &)|msvc500_library_oracle
@@ -7779,11 +7779,11 @@ address|name|symbol|size|type|prototype|provenance
 621112|CDumpContext::operator<<|??6CDumpContext@@QAEAAV0@E@Z|50|function|public: class CDumpContext & __thiscall CDumpContext::operator<<(unsigned char)|msvc500_library_oracle
 621144|CDumpContext::operator<<|??6CDumpContext@@QAEAAV0@G@Z|50|function|public: class CDumpContext & __thiscall CDumpContext::operator<<(unsigned short)|msvc500_library_oracle
 621176|CDumpContext::operator<<|??6CDumpContext@@QAEAAV0@H@Z|48|function|undefined ??6CDumpContext@@QAEAAV0@H@Z()|
-6211a6|CDumpContext::operator<<|??6CDumpContext@@QAEAAV0@H@Z|48|function|undefined ??6CDumpContext@@QAEAAV0@H@Z()|
-6211d6|CDumpContext::operator<<|??6CDumpContext@@QAEAAV0@H@Z|48|function|undefined ??6CDumpContext@@QAEAAV0@H@Z()|
-621206|CDumpContext::operator<<|??6CDumpContext@@QAEAAV0@H@Z|48|function|undefined ??6CDumpContext@@QAEAAV0@H@Z()|
+6211a6|CDumpContext::operator<<|??6CDumpContext@@QAEAAV0@I@Z|48|function|public: class CDumpContext & __thiscall CDumpContext::operator<<(unsigned int)|msvc500_library_oracle
+6211d6|CDumpContext::operator<<|??6CDumpContext@@QAEAAV0@J@Z|48|function|public: class CDumpContext & __thiscall CDumpContext::operator<<(long)|msvc500_library_oracle
+621206|CDumpContext::operator<<|??6CDumpContext@@QAEAAV0@K@Z|48|function|public: class CDumpContext & __thiscall CDumpContext::operator<<(unsigned long)|msvc500_library_oracle
 621236|CDumpContext::operator<<|??6CDumpContext@@QAEAAV0@PBVCObject@@@Z|37|function|public: class CDumpContext & __thiscall CDumpContext::operator<<(class CObject const *)|msvc500_library_oracle
-621267|CDumpContext::operator<<|??6CDumpContext@@QAEAAV0@H@Z|48|function|undefined ??6CDumpContext@@QAEAAV0@H@Z()|
+621267|CDumpContext::operator<<|??6CDumpContext@@QAEAAV0@ABVCObject@@@Z|48|function|public: class CDumpContext & __thiscall CDumpContext::operator<<(class CObject const &)|msvc500_library_oracle
 621297|CDumpContext::HexDump|?HexDump@CDumpContext@@QAEXPBDPAEHH@Z|147|function|public: void __thiscall CDumpContext::HexDump(char const *, unsigned char *, int, int)|msvc500_library_oracle
 62132a|CDumpContext::operator<<|??6CDumpContext@@QAEAAV0@PBG@Z|74|function|public: class CDumpContext & __thiscall CDumpContext::operator<<(unsigned short const *)|msvc500_library_oracle
 622442|CDialog::GetRuntimeClass|?GetRuntimeClass@CDialog@@UBEPAUCRuntimeClass@@XZ||function|public: virtual struct CRuntimeClass * __thiscall CDialog::GetRuntimeClass(void)const|msvc500_library_override

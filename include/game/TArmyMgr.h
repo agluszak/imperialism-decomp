@@ -249,14 +249,48 @@ public:
                                                         int ownerNationCodeInt);
   void BuildMapHintOverlayTextAndDispatchUiMessages(short cityRecordIndex);
 
-  // Fills styleC/styleD (both real TUiTextStyleDescriptor locals in the caller) with a
-  // localized order-context summary for cityRecordIndex; returns false when there's no
-  // summary to show. 0x004a5ec0, __thiscall, 1580 bytes. TODO: port body -- out of scope
-  // for BuildMapHintOverlayTextAndDispatchUiMessages, which only needs a real,
-  // correctly-typed call site.
+  // Builds two localized summary strings for cityRecordIndex's garrison/order state;
+  // returns false when there's nothing to show (both outputs untouched in that case).
+  // 0x004a5ec0, __thiscall, 1580 bytes.
+  //
+  // The previous 2-arg `TUiTextStyleDescriptor*` signature was never verified against
+  // the callee's body and is wrong: the caller (BuildMapHintOverlayTextAndDispatchUi-
+  // Messages) constructs FOUR TUiTextStyleDescriptor locals (styleA-D) via
+  // InitializeUiTextStyleDescriptor/BuildUiTextStyleDescriptor, but the raw disassembly
+  // of the call site (0x4a67b1, ILT thunk 0x408c79) pushes the addresses of two
+  // separately-constructed CString locals (real `CString::CString()` calls at
+  // 0x4a678c/0x4a679a), not styleC/styleD -- those two TUiTextStyleDescriptor locals are
+  // consumed later, in the still-unported widget-dispatch tail of the caller.
+  //
+  // outDefenderSummary: "<leading unit/admiral name or city name>" -- Phase 1 scans
+  // cityScoreTable[cityRecordIndex]'s adjacent regions (adjacentRegionIds0A[0..
+  // adjacentRegionCount08)) owned by the active nation (TMapMgr::
+  // ResolveTileOwnerNationCodeNormalized == TSimMgr::GetActiveNationId), and over their
+  // stationedUnitChain98 picks the highest-scoring TMilitaryUnit with orderType > 0x1a
+  // (score = field_38/100 + 1); ties keep the first found. If no adjacent region is
+  // owned (or none qualifies), falls back to the region's own city display name
+  // (TMapMgr::AssignCityRecordDisplayName). Phase 2 separately scans
+  // g_pNavyPrimaryOrderListHead for a TShip owned by the active nation whose zone
+  // (field08) contains cityRecordIndex (TZone::ContainsCityStatePointerInZoneArrayBy-
+  // CityIndex), reducing over TShip::SelectPreferredMapOrderEntryByPriorityRules; if
+  // found, its admiral (admiralBacklink20) can override outDefenderSummary with
+  // "Adm. <name>" when the admiral's field_10/100+1 score beats Phase 1's, or (only if
+  // Phase 1 found nothing at all -- zero adjacent regions) falls back to the ship's own
+  // displayName18.
+  //
+  // outGarrisonSummary: a comma-separated "<count> <resource type name>" list (or a
+  // "nothing garrisoned" fallback) built from cityScoreTable[cityRecordIndex]'s
+  // stationedUnitChain98: each unit rolls twice against a per-strength-tier probability
+  // table (g_MapOrderResourceRollWeightTable, keyed by Phase 1/2's winning score) seeded
+  // from cityRecordIndex+TSimMgr::GetTurnTickSlot3C()+GetActiveNationId(): the first roll
+  // picks a 0-2 "point cost", the second picks which of 11 buckets that cost lands in
+  // (the unit's own GetUnitMovementClassId(), a fixed "misc" bucket, or a uniform 0-9
+  // roll) -- singular/plural localized names come from string group 0x2726 (offset i vs
+  // i+11). Returns false only when Phase 1/2 found nothing at all (bestScore == -1, i.e.
+  // zero adjacent regions AND no owned ship in zone).
   bool BuildMapOrderContextSummaryStringForNation(short cityRecordIndex,
-                                                  TUiTextStyleDescriptor* styleC,
-                                                  TUiTextStyleDescriptor* styleD);
+                                                  CString* outDefenderSummary,
+                                                  CString* outGarrisonSummary);
 
   // Called from RefreshMapOrderBattleSideSnapshot's type-5 (ship-order) tail. 0x004a6ef0,
   // 897 bytes.

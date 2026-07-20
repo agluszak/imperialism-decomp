@@ -23,7 +23,8 @@ inline float ComputeMissionRemainingPriorityScore(TMission* mission) {
 } // namespace
 
 // FUNCTION: IMPERIALISM 0x004eb8b0
-void TAutoGreatPower::AssignTrackedEntryActionsByProfileToOrdersOrUnits() {
+void TAutoGreatPower::AssignTrackedEntryActionsByProfileToOrdersOrUnits(int unused) {
+  (void)unused;
   {
     CIterator resetIter(missionQueue);
     for (TMission* entry = static_cast<TMission*>(resetIter.Reset()); resetIter.More();

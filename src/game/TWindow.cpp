@@ -281,17 +281,16 @@ void TWindow::CloseAndFree() {
 }
 
 // FUNCTION: IMPERIALISM 0x0048e150
-undefined TWindow::WrapperFor_CenterWindowWithinOwnerOrWorkArea_At0048e150(char param_1,
-                                                                           char param_2,
-                                                                           int unusedArg3) {
+undefined TWindow::CenterWindowOrPositionWithinWorkArea(char centerX, char centerY,
+                                                        int unusedArg3) {
   if (nativeWindow50 != 0) {
     nativeWindow50->CenterWindow(0);
     return 0;
   }
-  if (param_1 != 0) {
+  if (centerX != 0) {
     ownerLocalX = (0x280 - frameWidth34) / 2;
   }
-  if (param_2 != 0) {
+  if (centerY != 0) {
     ownerLocalY = (0x1e0 - frameHeight38) / 2;
   }
   return 0;

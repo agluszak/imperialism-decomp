@@ -4,7 +4,7 @@
 // CDocument::DestructCDocumentBaseState
 
 // SYNTHETIC: IMPERIALISM 0x006109cf
-// DestructCDocumentBaseStateAndMaybeFree
+// CDocument::`scalar deleting destructor'
 
 // LIBRARY: IMPERIALISM 0x00610a5f
 // CDocument::DisconnectViews

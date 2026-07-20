@@ -2,8 +2,8 @@
 """Rank porting candidates: the biggest functions that are not yet well matched.
 
 Pure config-file reader (no Ghidra / no build) — instant. Answers "what big, low-scoring
-functions should I port next?" by joining config/original_entities.csv (size), the reccmp baseline
-report (per-function match %), and source markers (owned vs stub).
+functions should I port next?" by joining config/original_entities.csv (size), the compact
+reccmp function baseline (per-function match %), and source markers (owned vs stub).
 
 usage:
   port_candidates [--range LO HI] [--min-size N] [--max-score PCT] [--limit N]
@@ -19,16 +19,17 @@ examples:
 from __future__ import annotations
 
 import argparse
-import json
 from pathlib import Path
 
 from tools.common.baseline_staleness import warn_if_baseline_stale
+from tools.common.function_baseline import load_function_baseline
 from tools.common.pipe_csv import read_pipe_rows
-from tools.common.report_score import effective_matching
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 SYMBOLS_CSV = REPO_ROOT / "config" / "original_entities.csv"
-BASELINE_REPORT = REPO_ROOT / "config" / "baselines" / "reccmp_progress_baseline.report.json"
+FUNCTION_BASELINE = (
+    REPO_ROOT / "config" / "baselines" / "reccmp_progress_baseline.functions.csv"
+)
 
 
 def _parse_int(value: str) -> int:
@@ -62,15 +63,12 @@ def _load_ownership() -> dict[int, tuple[str, str]]:
 
 def _load_scores() -> dict[int, float]:
     out: dict[int, float] = {}
-    if not BASELINE_REPORT.is_file():
+    functions = load_function_baseline(FUNCTION_BASELINE)
+    if functions is None:
         return out
-    data = json.loads(BASELINE_REPORT.read_text(encoding="utf-8")).get("data", [])
-    for entry in data:
-        addr = entry.get("address")
-        if not addr:
-            continue
+    for address, entry in functions.items():
         try:
-            out[int(addr, 16)] = effective_matching(entry)
+            out[int(address, 16)] = float(entry["m"])
         except (ValueError, TypeError):
             continue
     return out

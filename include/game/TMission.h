@@ -116,3 +116,9 @@ ASSERT_SIZE(TMission, 0x14);
 // (a TZone) for the navy missions; nodeKey/keyArg carry province or amassing keys.
 TMission* CreateMissionObjectByKindAndNodeContext(int sourceNation, eMissionType missionKind,
                                                   int nodeKey, int contextArg, int keyArg);
+
+// Three-way ordering used by TAutoGreatPower's mission-eligibility pass. The opaque
+// callback signature is the one required by TSortedList; both entries are TMission
+// objects and a non-null context reverses the ordering.
+short __cdecl CompareMissionOrderEntriesByMovementClassThenEfficiency(void* a, void* b,
+                                                                      void* reverseOrder);

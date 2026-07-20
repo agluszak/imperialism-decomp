@@ -26,10 +26,9 @@ public:
   void CallSlotA8(int targetNation) override;
   void DispatchTurnEvent11F8NoPayloadSlot2AC(void) override;
   void NoOpTailStateHookSlot2B4(void) override;
-  void NoOpTailStateHookSlot2B8(int arg) override;
+  void RefreshTrackedEntriesAndReplanAiDevelopment(int unused) override;
   char UpdateGreatPowerPressureStateAndDispatchEscalationMessage(void) override;
   virtual void OrphanRetStub_005418e0(void);
 
   TRemoteGreatPower();
 };
-

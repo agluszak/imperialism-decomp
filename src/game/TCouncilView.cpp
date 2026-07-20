@@ -23,10 +23,6 @@
 #include "game/ui_control_tags.h"
 #include "game/ui_text_label_helpers_decls.h"
 
-// Free-function region-invalidate wrapper (ILT target 0x004f6d90); the base class
-// TDiplomacyMapView calls it through this same thunk-cast at four sites.
-undefined4 Function_004f6d90(void);
-
 namespace {
 const short kCouncilCoatOfArmsPictureBase = 0x1105;
 const short kCouncilTickerIntervalMapMode = 0x2710;
@@ -169,7 +165,7 @@ void TCouncilView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEve
       tagIndex += 1;
     } while (reinterpret_cast<int>(tagTable) < reinterpret_cast<int>(g_councilControlTagTable + 6));
     if (tagIndex < 6) {
-      reinterpret_cast<void(__stdcall*)(int)>(Function_004f6d90)(tagIndex);
+      this->ChangeSelectedActionTopic(tagIndex);
       return;
     }
   } else {
