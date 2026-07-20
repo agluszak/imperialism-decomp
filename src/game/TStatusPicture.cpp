@@ -6,8 +6,11 @@
 #include "game/TSoundPlayer.h"
 #include "game/TViewMgr.h"
 #include "game/UiRuntimeContext.h"
+#include "game/TDiplomacyMgr.h"
 #include "game/global_data_tables.h"
 #include "game/quickdraw_rendering.h"
+#include "game/ui_control_tags.h"
+#include "game/ui_text_label_helpers_decls.h"
 
 // SYNTHETIC: IMPERIALISM 0x0043d870
 // TStatusPicture::`scalar deleting destructor'
@@ -25,11 +28,29 @@ TStatusPicture::TStatusPicture() {}
 // FUNCTION: IMPERIALISM 0x00593f20
 void TStatusPicture::NoOpUiLifecycleHook(int arg) {
   TPicture::NoOpUiLifecycleHook(arg);
-  // The original then allocates a per-nation picture-widget descriptor array (0x90 bytes),
-  // resolves seven 'pic0'-'pic6' controls to own it, inlines the same per-nation average
-  // computation seen in HandleEvent/RecomputeNationComparisonValuesAndNormalizeScale's
-  // case 3 to seed values94/pictureIds_b0, sorts them (SortSevenEntriesAndUpdatePictureWidgets),
-  // and resolves+configures a 'curs' cursor-hint control -- not yet ported.
+
+  // The original also allocates seven new TPictureButton children here (one per eligible
+  // nation slot, 'pic0'-'pic6') via operator new + InitializePictureEntryBaseAndRefresh
+  // with a per-row layout buffer that isn't precisely reconstructed -- left unmodeled to
+  // avoid guessing the layout values.
+
+  for (unsigned int tabIndex = 0; tabIndex < 10; ++tabIndex) {
+    TView* tabControl = ResolveControlByTag(0x74616230u + tabIndex); // 'tab0'-'tab9'
+    LoadUiStringByGroupAndIndexToControlObject(0x2757, static_cast<short>(tabIndex + 9),
+                                               tabControl);
+  }
+  LoadUiStringByGroupAndIndexToControlObject(0x2730, 0xd, ResolveControlByTag(kControlTagMain));
+  LoadUiStringByGroupAndIndexToControlObject(0x2730, 0xd, ResolveControlByTag(kControlTagEnd));
+  LoadUiStringByGroupAndIndexToControlObject(0x2730, 3, ResolveControlByTag(kControlTagQuer));
+
+  comparisonMode90 = 0;
+  RefreshControl();
+  g_pDiplomacyTurnStateManager->RecomputeNationComparativePowerMetrics();
+
+  // The original then inlines a per-nation average computation (distinct from
+  // RecomputeNationComparisonValuesAndNormalizeScale's case 3: sums 4 dip[0x1824+i*0x10]
+  // dwords and divides by 10, rather than multiplying by 3) to seed values94/
+  // pictureIds_b0, and resolves+configures a 'curs' cursor-hint control -- not yet ported.
 }
 
 // FUNCTION: IMPERIALISM 0x005942f0
