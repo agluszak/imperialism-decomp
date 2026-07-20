@@ -24,7 +24,12 @@ Build, measurement, gates, and regression diagnosis. Obey the Command Policy in
   disassembled or verified.
 - `just triage 0xADDR` (or `--file src/game/X.cpp`) — **run this before reading a raw
   compare diff by eye.** Multiple addresses are analyzed in one fresh, filtered
-  reccmp process. It consumes `entity["comparison"]` from reccmp's report;
+  reccmp process. Targeted analysis loads conservatively resolved PDB object modules
+  and reuses the fingerprinted `.reccmp-cache` beside the PDB. Parsed PDB, markers,
+  and prepared entity state may be cached; semantic proof results never are. The
+  cache invalidates when relevant binaries, PDB, source/data, config, or analyzer
+  code changes; use reccmp's `--no-cache` only for cache-independent diagnosis. It
+  consumes `entity["comparison"]` from reccmp's report;
   it does not classify rendered instruction text. `exact` needs no work,
   `effective` lists the proof transformations that are safe to ignore, `mismatch`
   reports the first trusted observable divergence with structured operand facts,

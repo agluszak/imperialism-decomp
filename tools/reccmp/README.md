@@ -12,7 +12,10 @@ Primary workflow uses `just` wrappers:
 
 `just compare 0xA 0xB` and `just triage 0xA 0xB` pass those addresses into
 reccmp before comparison. They parse the PDB once and do not build a full-corpus
-report. `just addr` uses the same fresh targeted path in both address spaces.
+report. Targeted runs load only conservatively resolved PDB object modules and reuse
+validated parsed-analysis state in `build-msvc500/.reccmp-cache`; comparison and proof
+results are always recomputed. `just addr` uses the same targeted path in both address
+spaces.
 
 `just stats-baseline-update` writes two reviewable snapshots:
 
