@@ -155,12 +155,11 @@ targets:
       - CPtrList::NewNode
       - CScrollView::DoMouseWheel
       - CThreadLocalObject
+      - CWinApp::CWinApp
       - CWinApp::CallField80VirtualSlot38OrReturnFalse_0061873c
       - CWinApp::CloseAllDocuments_618704
       - CWinApp::DoMessageBox
-      - CWinApp::ProcessMessageFilter
       - CWinApp::WrapperFor_WriteProfileInt_At00415510
-      - CWinThread::CWinApp
       - CWinThread::CWinThread
       - CWnd::AttachControlSite_607673
       - CWnd::CWnd
@@ -1453,7 +1452,6 @@ targets:
       - WrapperFor_GetOrCreateCWndFromHandle_At00606934
       - WrapperFor_GetOrCreateCrtThreadDataFromTls_At00415000
       - WrapperFor_GetOrCreateCrtThreadDataFromTls_At005e7d30
-      - WrapperFor_GetOrCreateCrtThreadDataFromTls_At005eada0
       - WrapperFor_GetOrCreateCrtThreadDataFromTls_At005eadb0
       - WrapperFor_GetOrCreateCrtThreadDataFromTls_At005f4eb0
       - WrapperFor_GetOrCreateCrtThreadDataFromTls_At005f9b20
@@ -1795,6 +1793,7 @@ targets:
       - WrapperFor_thunk_UpdateTextEntrySharedStringIfChanged_At005b64a0
       - WrapperFor_thunk_WrapperFor_InvalidateCityDialogRectRegion_At004f6d90_At004f7040
       - WritePaletteChunkToMmioFromPaletteHandle
+      - _errno
       - afxMapHDC
       - afxMapHIMAGELIST
       - afxMapHIMAGELIST_60d058

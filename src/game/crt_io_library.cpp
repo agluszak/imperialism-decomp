@@ -22,7 +22,7 @@
 // ConvertFileTimeToLocalEpochSeconds
 
 // LIBRARY: IMPERIALISM 0x005eada0
-// WrapperFor_GetOrCreateCrtThreadDataFromTls_At005eada0
+// _errno
 
 // LIBRARY: IMPERIALISM 0x005edcc0
 // ConvertBrokenDownLocalTimeToEpochSeconds

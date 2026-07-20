@@ -1402,7 +1402,7 @@
 // ?PreTranslateMessage@CWinThread@@UAEHPAUtagMSG@@@Z
 
 // LIBRARY: IMPERIALISM 0x00606725
-// AfxInternalProcessWndProcException
+// CWinThread::ProcessWndProcException
 
 // LIBRARY: IMPERIALISM 0x0060674a
 // ?_AfxMsgFilterHook@@YGJHIJ@Z
