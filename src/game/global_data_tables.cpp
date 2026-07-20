@@ -3123,3 +3123,6 @@ char s_Data_scores_dat_0069b7fc[] = "Data\\scores.dat";
 // 0x508f30).
 // GLOBAL: IMPERIALISM 0x00658640
 extern const float g_HexHighlightScreenScale_00658640 = -0.3125f;
+
+// GLOBAL: IMPERIALISM 0x006a4084
+short g_creditsPlaybackActive_006a4084 = 0;

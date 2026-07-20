@@ -1,6 +1,8 @@
 #include "game/TCreditsPicture.h"
 
+#include "game/TControl.h"
 #include "game/TDeluxeText.h"
+#include "game/TSimMgr.h"
 #include "game/TSoundPlayer.h"
 #include "game/global_data_tables.h"
 #include "game/quickdraw_rendering.h"
@@ -52,7 +54,40 @@ void TCreditsPicture::NoOpUiLifecycleHook(int arg) {
 }
 
 // FUNCTION: IMPERIALISM 0x0056efc0
-void TCreditsPicture::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) { }
+void TCreditsPicture::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+  if (commandId == 0xa && sourceHandler == this) {
+    if (g_creditsPlaybackActive_006a4084 != 0) {
+      g_pSimMgr->PostMainWindowCommand100ForTurnFlow();
+      g_creditsPlaybackActive_006a4084 = 0;
+      g_pSfxPlaybackSystem->ResetDualAudioCuePools();
+      g_pSfxPlaybackSystem->PushCueToDualAudioCuePools(2);
+      g_pSfxPlaybackSystem->PushCueToDualAudioCuePools(3);
+      g_pSfxPlaybackSystem->SelectAndScheduleRandomAudioCue();
+    } else {
+      g_creditsPlaybackActive_006a4084 = 1;
+
+      int cursorTheme;
+      MapUiThemeCodeToStyleFlags(0x2b6b, &cursorTheme);
+      TUiTextStyleDescriptor style;
+      InitializeUiTextStyleDescriptor(&style, 0, 0xc, 0x2b68, 3);
+
+      TDeluxeText* line1 = static_cast<TDeluxeText*>(ResolveControlByTag(kControlTagCred));
+      line1->QueryStepValue();
+      line1->SetTextFromUiStringResourceId(0xfb2);
+      line1->ApplyTextStyleDescriptorAndMaybeRefresh(&style, 1);
+      line1->cursorThemeCode9c = cursorTheme;
+      line1->fieldA0 = 1;
+
+      TDeluxeText* line2 = static_cast<TDeluxeText*>(ResolveControlByTag(kControlTagCre2));
+      line2->QueryStepValue();
+      line2->SetTextFromUiStringResourceId(0xfb3);
+      line2->ApplyTextStyleDescriptorAndMaybeRefresh(&style, 1);
+      line2->cursorThemeCode9c = cursorTheme;
+      line2->fieldA0 = 1;
+    }
+  }
+  TControl::HandleEvent(commandId, sourceHandler, event);
+}
 
 // FUNCTION: IMPERIALISM 0x0056f190
 void TCreditsPicture::ApplyRectSlot110(RECT* rectBuffer) {

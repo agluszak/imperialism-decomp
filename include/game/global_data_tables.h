@@ -1709,3 +1709,4 @@ extern char s_mcflavor_0069b630[];
 extern char s_mcflavor_0069b638[];
 extern char s_mcflavor_0069b640[];
 extern char s_Data_scores_dat_0069b7fc[];
+extern short g_creditsPlaybackActive_006a4084;
