@@ -17829,7 +17829,7 @@
     },
     {
       "address": "0x5178f0",
-      "matching": 0.3260340632603406,
+      "matching": 0.3446601941747573,
       "name": "TMapMgr::ComputeRepresentativeTileIndexForTerrainTypeWithWrapBias",
       "type": 1
     },
@@ -17932,7 +17932,7 @@
     },
     {
       "address": "0x518d90",
-      "matching": 0.0,
+      "matching": 0.41297935103244837,
       "name": "TMapMgr::MarkDirectionalMapOverlayFlagsForNationOrders",
       "type": 1
     },
