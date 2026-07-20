@@ -5236,7 +5236,7 @@
     {
       "address": "0x48e150",
       "matching": 0.9310344827586207,
-      "name": "TWindow::WrapperFor_CenterWindowWithinOwnerOrWorkArea_At0048e150",
+      "name": "TWindow::CenterWindowOrPositionWithinWorkArea",
       "type": 1
     },
     {
@@ -32343,7 +32343,7 @@
     },
     {
       "address": "0x5b94d0",
-      "matching": 0.37735849056603776,
+      "matching": 0.4945652173913043,
       "name": "TTradeMgr::DispatchProposalAmountSlot60",
       "type": 1
     },

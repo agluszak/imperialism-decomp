@@ -127,14 +127,15 @@ public:
   // dispatches it to the behavior's owner. 0x48dc90.
   virtual undefined NotifyDialogBehaviorCommandArmed(undefined4 commandCode,
                                                      undefined4 flag); // slot 0x6d 0x48dc90
-  virtual TDialogBehavior* GetEmbeddedDialogBehavior();                  // slot 0x6e 0x48dcc0
-  virtual void AssertMcAppUILine2554();                                  // slot 0x6f 0x48dce0
+  virtual TDialogBehavior* GetEmbeddedDialogBehavior();                // slot 0x6e 0x48dcc0
+  virtual void AssertMcAppUILine2554();                                // slot 0x6f 0x48dce0
   // Switching notifies the previous and new targets through TEventHandler slots.
   virtual void SetWindowTarget(TEventHandler* target); // slot 0x70 0x48ddc0
-  virtual undefined
-  WrapperFor_CenterWindowWithinOwnerOrWorkArea_At0048e150(char param_1, char param_2,
-                                                          int unusedArg3); // slot 0x71 0x48e150
-  virtual void AssertMcAppUILine2358(int unusedArg);                       // slot 0x72 0x48d8d0
+  // Centers the real MFC CWnd (CenterWindow) when one is attached; otherwise computes
+  // ownerLocalX/Y directly against the fixed 0x280x0x1e0 work area, per flag.
+  virtual undefined CenterWindowOrPositionWithinWorkArea(char centerX, char centerY,
+                                                         int unusedArg3); // slot 0x71 0x48e150
+  virtual void AssertMcAppUILine2358(int unusedArg);                      // slot 0x72 0x48d8d0
   virtual undefined OrphanCallChain_C2_I39_0048d900(char param_1,
                                                     char param_2); // slot 0x73 0x48d900
   // MacApp TWindow::CloseAndFree(): Close (slot 0x28) then Free (slot 0x07).
