@@ -168,10 +168,7 @@ void ComposeAndDispatchTurnSummaryLocalizedMessage() {
   }
 
   CString versionText;
-  // The original calls the currently-unowned 212-byte
-  // TAssetMgr::FormatVersionStringFromVersionResource(&versionText) here -- not yet
-  // ported, so versionText stays empty.
-  (void)versionText;
+  g_pUiViewManager->FormatVersionStringFromVersionResource(&versionText);
 
   if (strcmp(g_szEmptyString, static_cast<LPCSTR>(versionText)) != 0) {
     if (strcmp(g_szEmptyString, static_cast<LPCSTR>(summary)) != 0) {

@@ -16994,7 +16994,7 @@
     },
     {
       "address": "0x50bea0",
-      "matching": 0.20990458882326216,
+      "matching": 0.21081326669695594,
       "name": "TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets",
       "type": 1
     },
@@ -17458,7 +17458,7 @@
     },
     {
       "address": "0x5136a0",
-      "matching": 0.8888888888888888,
+      "matching": 1.0,
       "name": "TMapMgr::SetCivilianDevelopmentClassNibble",
       "type": 1
     },
@@ -21937,7 +21937,7 @@
     },
     {
       "address": "0x545940",
-      "matching": 0.41906300484652664,
+      "matching": 0.4166666666666667,
       "name": "TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine",
       "type": 1
     },
@@ -23434,7 +23434,7 @@
     },
     {
       "address": "0x55bc10",
-      "matching": 0.6735537190082644,
+      "matching": 0.5643153526970954,
       "name": "TNewsMgr::CreateNewspaper",
       "type": 1
     },
@@ -29217,7 +29217,7 @@
     },
     {
       "address": "0x597020",
-      "matching": 0.30809399477806787,
+      "matching": 0.3049095607235142,
       "name": "ComposeAndDispatchTurnSummaryLocalizedMessage",
       "type": 1
     },
@@ -34420,8 +34420,8 @@
     },
     {
       "address": "0x5e0590",
-      "matching": 0.0,
-      "name": "FormatVersionStringFromVersionResource",
+      "matching": 0.3225806451612903,
+      "name": "TAssetMgr::FormatVersionStringFromVersionResource",
       "type": 1
     },
     {
