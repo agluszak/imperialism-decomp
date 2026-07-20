@@ -183,6 +183,8 @@ public:
   void SpawnTacticalUiMarkerAtUnitTile();                          // 0x5a9bb0
   // Maps a screen point to a clamped hex (row, col) on this battle's grid. 0x5a86d0.
   void ConvertScreenPointToHexGridCoordClamped(POINT* screenPoint, int* outRow, int* outCol);
+  // Validates the full local `{0,0,width,height}` bounds through TView's slot 0x32.
+  void SyncStatusPanelBounds();       // 0x5a8790
   void TriggerTacticalUiUpdate2711(); // 0x5a9cc0
   // Writes the on-screen RECT of a bare hex tile (no unit growth). 0x5a87d0.
   void ComputeTacticalHexTileScreenRect(RECT* rectOut, int tileIndex);

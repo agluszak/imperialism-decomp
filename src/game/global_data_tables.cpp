@@ -1094,6 +1094,10 @@ short g_Rebuild_Primary_Nation_Value_00653570[6][0x17] = {0};
 // (TViewMgr::BuildAndShowTurnOverlayByMode tail, 0x5d67fc).
 // GLOBAL: IMPERIALISM 0x0066f050
 char* g_pNationInfoEmptyText_0066f050 = g_szEmptyString;
+// GLOBAL: IMPERIALISM 0x0066f058
+short g_anAbilityStatusPictureIndex_0066F058[29] = {0,  1,  3,  2,  7,  5,  6,  9,  10, 4,
+                                                    8,  16, 12, 19, 22, 11, 17, 13, 14, 21,
+                                                    15, 18, 26, 20, 23, 28, 24, 25, 27};
 
 // Season-dependent sfx offset word: the nation-info modal plays sfx 0xbb8 + this value
 // for overlay mode 5 (0x5d61f0).
@@ -1301,6 +1305,8 @@ extern "C" const char s_SourcePathUNavy_006983C8[] = "D:\\Ambit\\Cross\\UNavy.cp
 extern "C" const char s_SourcePathUTacViews_00699FF4[] = "D:\\Ambit\\Cross\\UTacViews.cpp";
 // GLOBAL: IMPERIALISM 0x0069b740
 extern "C" const char s_SourcePathUViewMgrMore_0069B740[] = "D:\\Ambit\\Cross\\UViewMgr.more.cpp";
+// GLOBAL: IMPERIALISM 0x00696c58
+extern "C" const char s_SourcePathUHelpMgr_00696C58[] = "D:\\Ambit\\Cross\\UHelpMgr.cpp";
 // GLOBAL: IMPERIALISM 0x0069573c
 extern "C" const char s_SourcePathUArmyMgr_0069573C[] = "D:\\Ambit\\Cross\\UArmyMgr.cpp";
 extern "C" const char s_SourcePathUCityViews_00696650[] = "D:\\Ambit\\Cross\\UCityViews.cpp";

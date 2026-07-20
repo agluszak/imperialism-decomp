@@ -16,10 +16,14 @@
 #include "game/TQuickDrawSurfaceContext.h"
 #include "game/mfc.h"
 
-extern "C" short g_Render_Nation_Header_Value_006961E0[12] = {0};
-extern "C" short g_Render_Nation_Header_Value_006961F8[12] = {0};
-extern "C" short g_Render_Nation_Header_Value_00696210[12] = {0};
-extern "C" short g_Render_Nation_Header_Value_00696228[12] = {0};
+extern "C" short g_Render_Nation_Header_Value_006961E0[12] = {0, 1,  2,  2,  2,  1,
+                                                              0, -2, -2, -2, -2, -1};
+extern "C" short g_Render_Nation_Header_Value_006961F8[12] = {-2, -2, -1, 1,  2,  2,
+                                                              2,  2,  0,  -1, -2, -2};
+extern "C" short g_Render_Nation_Header_Value_00696210[12] = {0, 2,  3,  3,  2,  2,
+                                                              0, -2, -3, -3, -2, -1};
+extern "C" short g_Render_Nation_Header_Value_00696228[12] = {-3, -2, 0, 2,  3,  4,
+                                                              3,  3,  0, -1, -3, -3};
 
 // SYNTHETIC: IMPERIALISM 0x004ba240
 // TCityProductionView::CreateObject

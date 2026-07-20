@@ -965,6 +965,12 @@ void TTacticalBattleView::ConvertScreenPointToHexGridCoordClamped(POINT* screenP
   }
 }
 
+// FUNCTION: IMPERIALISM 0x005a8790
+void TTacticalBattleView::SyncStatusPanelBounds() {
+  RECT bounds = {0, 0, frameWidth34, frameHeight38};
+  ValidateControlRectIfWindowActive(&bounds);
+}
+
 // FUNCTION: IMPERIALISM 0x005a87d0
 void TTacticalBattleView::ComputeTacticalHexTileScreenRect(RECT* rectOut, int tileIndex) {
   int row = tileIndex / tileColumnsPerRow80;

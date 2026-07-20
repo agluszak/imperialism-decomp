@@ -45,6 +45,7 @@
 #include "game/TModalMessageCommand.h"
 #include "game/TApplication.h"
 #include "game/TSuperCivRoster.h"
+#include "game/TTacticalBattleView.h"
 #include "game/TScrollView.h" // nation-info modal overflow scroll wrapper
 #include "game/TStaticText.h"
 #include "game/mapped_flavor_text.h" // BuildUiMessageTextFromBracketTemplate / scanBracketExpressions
@@ -1438,18 +1439,24 @@ void TViewMgr::UiRuntimeSlot84(int) {
 
 // FUNCTION: IMPERIALISM 0x005d8980
 void TViewMgr::UiRuntimeSlot88(int abilityIndex) {
-  CString queryText;
-  CString statusText;
   TView* activeDialog = g_pDisplayMgr->activeDialog;
-  TControl* mainControl =
-      static_cast<TControl*>(activeDialog->ResolveControlByTag(kControlTagMain));
+  TUiTextStyleDescriptor style;
+  char* styleRefBytes = reinterpret_cast<char*>(&style.textColor);
+  styleRefBytes[0] = 0;
+  styleRefBytes[1] = 0;
+  styleRefBytes[2] = 0;
+  styleRefBytes[3] = 0;
+  CString statusText;
+  CString prefix;
+  TPicture* mainControl =
+      static_cast<TPicture*>(activeDialog->ResolveControlByTag(kControlTagMain));
   mainControl->AssertValid();
 
   TControl* queryControl =
       static_cast<TControl*>(activeDialog->ResolveControlByTag(kControlTagQuer));
   if (queryControl != 0) {
-    g_pSimMgr->GetString(0x2730, 2, &queryText);
-    queryControl->SetHoverHelpText(queryText);
+    g_pSimMgr->GetString(0x2730, 2, &statusText);
+    SetControlHoverHelpText(statusText, queryControl);
   }
 
   TControl* toolControl =
@@ -1464,10 +1471,13 @@ void TViewMgr::UiRuntimeSlot88(int abilityIndex) {
   g_pCursorControlPanel->AssertValid();
   g_pCursorControlPanel->InitializeMapHintTextStyleAndThemeFlags(0x2b6c, 0x2b67);
 
+  short pictureResourceId = static_cast<short>(
+      g_anAbilityStatusPictureIndex_0066F058[static_cast<short>(abilityIndex)] + 0x897);
+  mainControl->SetPictureResourceIdAndRefresh(pictureResourceId, true);
+
   TDeluxeText* textControl =
       static_cast<TDeluxeText*>(activeDialog->ResolveControlByTag(kControlTagText));
   textControl->AssertValid();
-  CString prefix;
   g_pSimMgr->GetString(0x274e, abilityIndex - 1, &prefix);
   g_pSimMgr->GetString(0x2712, abilityIndex, &statusText);
   statusText += '\r';
@@ -1475,11 +1485,10 @@ void TViewMgr::UiRuntimeSlot88(int abilityIndex) {
   statusText += prefix;
   textControl->SetTextAndMaybeRefresh(&statusText, 1);
 
-  TUiTextStyleDescriptor style;
   BuildUiTextStyleDescriptor(&style, 0, 0xc, 0x2b6b);
   textControl->SetTextStyleAndMaybeRefresh(&style, 0);
   textControl->SetTextAlignmentAndMaybeRefresh(-2, 0);
-  mainControl->InvokeSlot13C();
+  activeDialog->InvokeSlot13C();
 }
 
 // FUNCTION: IMPERIALISM 0x005d8c40
@@ -1495,18 +1504,22 @@ void TViewMgr::UiRuntimeSlot9C(int pageIndex) {
 
 // FUNCTION: IMPERIALISM 0x005d8cc0
 void TViewMgr::UiRuntimeSlotA0() {
-  CTemporaryRegion temporaryRegion;
   TView* activeDialog = g_pDisplayMgr->activeDialog;
-  TView* goldControl = activeDialog->ResolveControlByTag(kControlTagGold);
+  CTemporaryRegion temporaryRegion;
+  TTacticalBattleView* goldControl =
+      static_cast<TTacticalBattleView*>(activeDialog->ResolveControlByTag(kControlTagGold));
   goldControl->AssertValid();
-
-  RECT bounds;
-  goldControl->QueryBounds(&bounds);
-  RectRgn(temporaryRegion.tempRgn, &bounds);
+  goldControl->SyncStatusPanelBounds();
 
   turn_event_dialog::GoldSinglePayloadControl* owner =
       static_cast<turn_event_dialog::GoldSinglePayloadControl*>(goldControl->ownerContext);
   owner->AssertValid();
+
+  RECT bounds;
+  goldControl->QueryBounds(&bounds);
+  RECT regionBounds = bounds;
+  RectRgn(temporaryRegion.tempRgn, &regionBounds);
+
   owner->ApplyPayload(temporaryRegion.tempRgn);
 }
 
@@ -1996,7 +2009,9 @@ void TViewMgr::UiRuntimeSlotE0(int nationSlot, int unused) {
     node->RefreshTurnEventDialog();
     node->Close();
     node->Free();
+    return;
   }
+  g_pHelpMgr->EnsureMapActionContextViewAndBuildDefaultTileMenu(nationSlot);
 }
 
 // FUNCTION: IMPERIALISM 0x005dd220
@@ -2053,14 +2068,22 @@ void TViewMgr::HandleTurnEventDialogFactorySlotF0(TTaskForce* activeMapOrderEntr
 
 // FUNCTION: IMPERIALISM 0x005dd770
 void TViewMgr::UiRuntimeSlotE8(void* selection) {
+  // Only the +2 city-record index is established for this opaque event payload.
+  struct TurnEventMapSelection {
+    short unresolved0;
+    short cityRecordIndex2;
+  };
+  TurnEventMapSelection* mapSelection = static_cast<TurnEventMapSelection*>(selection);
+
   GoldCommitControl* activeGold = static_cast<GoldCommitControl*>(
       g_pDisplayMgr->activeDialog->ResolveControlByTag(kControlTagGold));
   if (activeGold == 0) {
     MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgrMore_0069B740, 0x1c5);
   }
+  short cityRecordIndex = mapSelection->cityRecordIndex2;
   activeGold->NotifyGoldControlOfTurnEventCode(
-      static_cast<short>(reinterpret_cast<int*>(selection)[0]));
+      g_pGlobalMapState->cityScoreTable[cityRecordIndex].cityTileIndex04);
 
   TurnEventDialogNode* node = static_cast<TurnEventDialogNode*>(
       g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(0xf0a));
