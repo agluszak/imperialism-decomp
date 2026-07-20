@@ -67,8 +67,7 @@ void TLoungeDialog::NoOpUiLifecycleHook(int arg) {
 
   if (!g_pGameFlowState->IsSpecialNationDialogModeActive()) {
     LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2742, 9, 0x636e636cu); // 'clnc'
-    // TODO: also calls g_pGameFlowState->ResetNationStatusSlotsAndInitializeNameControls(this)
-    // here (0x5454b0, 325 bytes, unclaimed) -- not yet ported.
+    g_pGameFlowState->ResetNationStatusSlotsAndInitializeNameControls(this);
     if (g_pSimMgr->field44 == 1) {
       g_pGameFlowState->SetDialogModeTagInitAndInvokeNoOpHook();
       RefreshMapAndMessageControlsForCurrentContext();

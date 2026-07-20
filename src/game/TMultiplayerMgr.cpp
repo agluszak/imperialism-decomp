@@ -428,6 +428,40 @@ void TMultiplayerMgr::EmitTurnEvent10ForFlaggedNationSlots() {
   }
 }
 
+// FUNCTION: IMPERIALISM 0x005454b0
+unsigned char TMultiplayerMgr::ResetNationStatusSlotsAndInitializeNameControls(TView* panel) {
+  lobbyDialogView40 = panel;
+  CString loadedString;
+  for (int i = 0; i < kNationSlotCount; ++i) {
+    nationSessionIds[i] = 0;
+    nationStatusTags[i] = 0x756e6173; // 'unas'
+    g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&loadedString, 0x2759, 1);
+    TStaticText* nameControl =
+        static_cast<TStaticText*>(panel->ResolveControlByTag(0x6e616d30u + i)); // 'nam0'-'nam6'
+    nameControl->AssertValid();
+    nameControl->AssignTextSharedRefIfChangedAndMaybeInvalidate(&loadedString, 1);
+  }
+
+  TView* okayControl = panel->ResolveControlByTag(0x6f6b6179u); // 'okay'
+  okayControl->AssertValid();
+  okayControl->SetEnabled(0, 0);
+
+  if (g_pSimMgr->field44 == 2) {
+    TurnEvent3Mode18Packet packet;
+    packet.packetTag = 0x74696d65; // 'time'
+    packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
+    packet.eventCode = 0;
+    packet.fromNetworkId = 0;
+    packet.toNetworkId = 0;
+    packet.eventCode = 0xd;
+    packet.toNetworkId = -1;
+    packet.messageLength = 0;
+    packet.messageLength = 0x18;
+    g_pNetMgr006a6014->Send(&packet, 0);
+  }
+  return 1;
+}
+
 // FUNCTION: IMPERIALISM 0x00544e30
 char TMultiplayerMgr::DoIdle(int action) {
   (void)action;

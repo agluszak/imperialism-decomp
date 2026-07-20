@@ -154,6 +154,11 @@ public:
   // caller (TLoungeDialog) passes the same string for both.
   void DispatchTurnEventCode9WithTwoTextTokens(int reasonCode, int field1CValue,
                                                const char* senderText, const char* messageText);
+  // 0x5454b0. Records `panel` as lobbyDialogView40, resets nationSessionIds[]/nationStatusTags[]
+  // for all 7 slots, restamps each 'nam0'-'nam6' control from GetString(0x2759, 1) (index is a
+  // literal 1 for every slot, not looped), resets the 'okay' control, and -- only when
+  // g_pSimMgr->field44 == 2 -- broadcasts a minimal event-0xd "time" packet. Always returns 1.
+  unsigned char ResetNationStatusSlotsAndInitializeNameControls(TView* panel);
   void CreateAndSendTurnEvent11_MapOffsetAndFlags(unsigned char flagByte, int mapOffsetSelector,
                                                   int absoluteOffset, short shortA,
                                                   short shortB);       // 0x5493c0
