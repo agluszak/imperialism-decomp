@@ -11631,7 +11631,7 @@
     },
     {
       "address": "0x4cc550",
-      "matching": 0.6837606837606838,
+      "matching": 0.6495726495726496,
       "name": "TPurchaseCluster::SetCityViewValueControlAmount",
       "type": 1
     },
@@ -15294,7 +15294,7 @@
     },
     {
       "address": "0x4f6170",
-      "matching": 0.5764705882352941,
+      "matching": 0.5705882352941176,
       "name": "TDiplomacyMapView::RenderDiplomacyLegendSurfaceAndPresent",
       "type": 1
     },
@@ -15342,8 +15342,8 @@
     },
     {
       "address": "0x4f6d90",
-      "matching": 0.0,
-      "name": "Function_004f6d90",
+      "matching": 0.7412587412587412,
+      "name": "TDiplomacyMapView::ChangeSelectedActionTopic",
       "type": 1
     },
     {
@@ -15360,7 +15360,7 @@
     },
     {
       "address": "0x4f70c0",
-      "matching": 0.5423728813559322,
+      "matching": 0.5483870967741935,
       "name": "TDiplomacyMapView::HandleEvent",
       "type": 1
     },
@@ -15684,7 +15684,7 @@
     },
     {
       "address": "0x4fbd60",
-      "matching": 0.64,
+      "matching": 0.5569620253164557,
       "name": "TCouncilView::HandleEvent",
       "type": 1
     },
@@ -16995,7 +16995,7 @@
     },
     {
       "address": "0x50bea0",
-      "matching": 0.21172194457064972,
+      "matching": 0.21263062244434347,
       "name": "TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets",
       "type": 1
     },
@@ -18432,7 +18432,8 @@
     },
     {
       "address": "0x522c10",
-      "matching": 1.0,
+      "effective": true,
+      "matching": 0.9848484848484849,
       "name": "TMapDialog::DrawMapDialogWrappedTileConnectionMarker_00522c10",
       "type": 1
     },
@@ -30219,7 +30220,7 @@
     },
     {
       "address": "0x5a1ee0",
-      "matching": 0.6763925729442971,
+      "matching": 0.6737400530503979,
       "name": "TTacticalBattle::EvaluateAndResolveTacticalActionAgainstTileOccupant",
       "type": 1
     },
@@ -30327,7 +30328,7 @@
     },
     {
       "address": "0x5a3d30",
-      "matching": 0.8163265306122449,
+      "matching": 0.8104956268221575,
       "name": "TTacticalBattle::IsTacticalTargetTileReachableForAction",
       "type": 1
     },
@@ -30699,7 +30700,7 @@
     },
     {
       "address": "0x5a6940",
-      "matching": 0.8360655737704918,
+      "matching": 0.819672131147541,
       "name": "ClipSrcRectToBoundsAndOffsetDstRect",
       "type": 1
     },
@@ -30843,7 +30844,7 @@
     },
     {
       "address": "0x5a9240",
-      "matching": 0.5533980582524272,
+      "matching": 0.5397590361445783,
       "name": "TTacticalBattleView::AnimateTacticalUnitMoveBetweenTiles",
       "type": 1
     },
@@ -32818,7 +32819,7 @@
     },
     {
       "address": "0x5bf930",
-      "matching": 0.7775020678246485,
+      "matching": 0.7956989247311828,
       "name": "TOfferDeskPicture::RefreshSelectedNationOrderCompatibilityInfo",
       "type": 1
     },

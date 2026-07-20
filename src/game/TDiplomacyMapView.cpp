@@ -27,6 +27,7 @@
 #include "game/TMilitaryUnit.h"
 #include "game/TViewMgr.h"
 #include "game/TSimMgr.h"
+#include "game/TPanelView.h"
 #include "game/ui_text_label_helpers_decls.h"
 
 // Defined below in address order (0x4d5d30).
@@ -37,7 +38,6 @@ void __cdecl BuildDiplomacyOverlayHitMaskOpcodeStream(DiplomacyMaskBufferRun* ru
 undefined4 FrameRegionOnHdcAndReleaseBrushState(void);
 undefined4 MapTurnEventCodeToPaletteIndex(void);
 undefined4 BlitMonochromeMaskBytePatternToSurface(void);
-undefined4 Function_004f6d90(void);
 undefined4 RunDiplomacyWaitSheetPopupAndAwaitResponse(void);
 
 namespace {
@@ -1168,17 +1168,105 @@ void TDiplomacyMapView::BlitDiplomacyMapEventPaletteMaskToSurface(short maskInde
   packedRun->AppendPackedColorDword(reinterpret_cast<int>(surface->GetBlitSurface()), packedColor);
 }
 
+// Selects a minister action topic: repositions the old/new topic buttons via
+// CaptureLayoutF0, toggles the 'batl'/'batr' bracket TPicture controls around the new
+// selection (and their picture-resource id, 5001/5002 at the ends, 5003-5007 or the
+// mode-6 override 8410 in between), refreshes the picture-dependent interaction mode via
+// a fixed topic->mode table, and invalidates the map region.
+// FUNCTION: IMPERIALISM 0x004f6d90
+void TDiplomacyMapView::ChangeSelectedActionTopic(int topicIndex) {
+  int newTopic = topicIndex;
+  if (g_pSimMgr->mode == 6) {
+    if (newTopic == 2 || newTopic == 3) {
+      return;
+    }
+    if (newTopic == 1) {
+      newTopic = 5;
+    }
+  }
+
+  if (stateFlagAtB8 == newTopic) {
+    return;
+  }
+
+  int layoutPosition[2] = {0x39, 0x320};
+  actionButtonsA0[stateFlagAtB8]->CaptureLayoutF0(layoutPosition, 1);
+  layoutPosition[1] = 0x162;
+  actionButtonsA0[newTopic]->CaptureLayoutF0(layoutPosition, 1);
+
+  TPicture* batlControl = static_cast<TPicture*>(this->ResolveControlByTag(kControlTagBatl));
+  batlControl->AssertValid();
+  TPicture* batrControl = static_cast<TPicture*>(this->ResolveControlByTag(kControlTagBatr));
+  batrControl->AssertValid();
+
+  if (newTopic == 0 || newTopic == 4) {
+    batlControl->SetEnabled(1, 1);
+    batrControl->SetEnabled(0, 1);
+    if (newTopic == 0) {
+      batlControl->SetPictureResourceIdAndRefresh(0x1389, 1);
+    } else {
+      batlControl->SetPictureResourceIdAndRefresh(0x138a, 1);
+    }
+  } else {
+    batlControl->SetEnabled(0, 1);
+    batrControl->SetEnabled(1, 1);
+    if (g_pSimMgr->mode == 6) {
+      batrControl->SetPictureResourceIdAndRefresh(0x20da, 1);
+    } else {
+      batrControl->SetPictureResourceIdAndRefresh(static_cast<short>(newTopic + 0x138a), 1);
+    }
+  }
+
+  this->InvokeSlot13C();
+  stateFlagAtB8 = newTopic;
+
+  switch (newTopic) {
+  case 0:
+    interactionModeAt94 = 0;
+    break;
+  case 1:
+    interactionModeAt94 = 4;
+    break;
+  case 2:
+    interactionModeAt94 = 1;
+    break;
+  case 3:
+    interactionModeAt94 = 2;
+    break;
+  case 4:
+    interactionModeAt94 = 5;
+    break;
+  case 5:
+    interactionModeAt94 = 0;
+    break;
+  }
+
+  // All 6 action-topic buttons are TPanelView-family siblings (TInfoPanelView,
+  // TTreatiesView, TGrantsView, TTradePanelView, TCouncilPanelView, TOffersPanelView),
+  // not TControl -- verified by the zero pushed args at this call in the raw
+  // disassembly, matching TPanelView's slot 0x68 stub rather than TControl's 5-arg
+  // DispatchPictureResourceCommand at the same vtable byte offset.
+  static_cast<TPanelView*>(actionButtonsA0[newTopic])->OrphanRetStub_00430550();
+
+  if (selectedTerrainIndexAt90 != frameRegionSelectorAt98) {
+    frameRegionSelectorAt98 = selectedTerrainIndexAt90;
+    legendSurfaceModeAt524 = 6;
+  }
+
+  InvalidateCityDialogRectRegion(reinterpret_cast<RECT*>(&mapOriginPixelX514), 1);
+}
+
 // FUNCTION: IMPERIALISM 0x004f7040
 void TDiplomacyMapView::InvalidateAndRunChildWaitSheet(void* arg1, void* arg2, void* arg3,
                                                        void* arg4) {
-  reinterpret_cast<void(__stdcall*)(int)>(Function_004f6d90)(5);
+  ChangeSelectedActionTopic(5);
   reinterpret_cast<void(__fastcall*)(void*, int, void*, void*, void*, void*)>(
       RunDiplomacyWaitSheetPopupAndAwaitResponse)(actionButtonsA0[5], 0, arg1, arg2, arg3, arg4);
 }
 
 // FUNCTION: IMPERIALISM 0x004f7080
 void TDiplomacyMapView::InvalidateAndForwardTabSwitchToChild(void* arg1, void* arg2, void* arg3) {
-  reinterpret_cast<void(__stdcall*)(int)>(Function_004f6d90)(5);
+  ChangeSelectedActionTopic(5);
   static_cast<TControl*>(actionButtonsA0[5])->BuildInsetContentRect(reinterpret_cast<RECT*>(arg1));
 }
 
@@ -1195,7 +1283,7 @@ void TDiplomacyMapView::HandleEvent(int commandId, TEventHandler* panelEvent, TE
       tabIndex += 1;
     } while (reinterpret_cast<unsigned int>(tagTable) < 0x696990);
     if (tabIndex < 6) {
-      reinterpret_cast<void(__stdcall*)(int)>(Function_004f6d90)(tabIndex);
+      ChangeSelectedActionTopic(tabIndex);
       return;
     }
   } else {
