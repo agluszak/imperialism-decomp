@@ -11,6 +11,7 @@
 #include "game/TStaticText.h"
 #include "game/TTaskForce.h"
 #include "game/TViewMgr.h"
+#include "game/TWindow.h"
 #include "game/TZone.h"
 #include "game/global_data_tables.h"
 #include "game/map_overlay_geometry.h"
@@ -373,7 +374,14 @@ void TToolBarCluster::SehCleanup_ReleaseTwoTempSharedStringRefs(int unusedArg) {
 }
 // FUNCTION: IMPERIALISM 0x005dc560
 void DispatchUiRuntimeMessage102CAndRefreshActiveView() {
-  TView* node = g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(0x102c);
+  // Turn-event dialog roots resolved by message context are TWindow-derived popups (several
+  // other ResolveTurnEventDialogNodeByMessageContext callers already cast to TWindow*, e.g.
+  // TLanguageMgr.cpp/TViewMgr.cpp) -- confirmed here by arity: TWindow::
+  // ExecuteViewModalStateWithPushPopChain() takes zero args, matching this callsite's bare
+  // `call [edi+0x1ac]` exactly, whereas the byte-coincident TControl::NoOpUiViewSlotHandler
+  // takes two.
+  TWindow* node = static_cast<TWindow*>(
+      g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(0x102c));
   if (node == nullptr) {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgr_0069B6BC, 0xf6c);
@@ -381,12 +389,7 @@ void DispatchUiRuntimeMessage102CAndRefreshActiveView() {
   POINT placement;
   g_pUiRuntimeContext->ComputeTurnEventDialogPlacementByCode(node, &placement);
   node->CaptureLayoutF0(reinterpret_cast<int*>(&placement), 0);
-  // TODO: dispatches through node's own vtable slot 0x1ac (word slot 0x6b) with no args --
-  // that byte offset coincides with TControl::NoOpUiViewSlotHandler(int, int) elsewhere, but
-  // that method takes 2 args while this callsite passes none, so node is NOT a TControl at
-  // this slot (same "shared offset, different class" trap as elsewhere this session). node's
-  // concrete class beyond TView (whose own declared extent tops out at slot 0x67, just short
-  // of this slot) is unresolved, so this call is left unmodeled.
+  node->ExecuteViewModalStateWithPushPopChain();
   node->CallVoidSlotA0();
   node->Free();
 }
