@@ -129,4 +129,9 @@ public:
   // NoOpUiLifecycleHook.
   TView* field90;
   TView* field94;
+
+  // Enables/disables field90 ('lcor')/field94 ('rcor') based on `rowCount` (the 'page'
+  // control's own frameStyle60 high word) versus its low word and controlState64
+  // (visible row count). 0x56f6c0, __thiscall, 1 arg.
+  void UpdatePagedListNavigationButtonState(int rowCount);
 };

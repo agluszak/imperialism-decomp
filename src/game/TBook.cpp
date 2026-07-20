@@ -34,13 +34,47 @@ void TBook::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* eve
       TView* pageControl = ResolveControlByTag(tag);
       if (pageControl != nullptr) {
         pageControl->QueryStepValue();
-        // For the rcor/lcor tag branches, the original also reads pageControl's own
-        // +0x62/+0x64 short fields and calls the currently-unowned 185-byte
-        // UpdatePagedListNavigationButtonState (0x56f6c0) with a
-        // (field62, field64 +/- field62) pair -- pageControl's concrete class (and those
-        // two fields) is unresolved, so that adjustment is left unmodeled.
+        if (sourceHandler->controlTag == kControlTagRcor ||
+            sourceHandler->controlTag == kControlTagLcor) {
+          // pageControl is a TControl: frameStyle60 is read here packed (its high word is
+          // the page-list row count), matching TControl's own documented "packs two
+          // values" comment.
+          TControl* pageControlTyped = static_cast<TControl*>(pageControl);
+          short rowCount = static_cast<short>(pageControlTyped->frameStyle60 >> 16);
+          short visibleCount = static_cast<short>(pageControlTyped->controlState64);
+          if (sourceHandler->controlTag == kControlTagRcor) {
+            pageControlTyped->ReturnZeroFromUiSlot6C(visibleCount + rowCount);
+          } else {
+            pageControlTyped->ReturnZeroFromUiSlot6C(rowCount - visibleCount);
+          }
+          UpdatePagedListNavigationButtonState(rowCount);
+        }
       }
     }
   }
   TPicture::HandleEvent(commandId, sourceHandler, event);
+}
+
+// FUNCTION: IMPERIALISM 0x0056f6c0
+void TBook::UpdatePagedListNavigationButtonState(int rowCount) {
+  TControl* pageControl = static_cast<TControl*>(ResolveControlByTag(0x70616765u /* 'page' */));
+  pageControl->AssertValid();
+
+  if (rowCount == 1) {
+    field90->SetState(0, 0);
+    field90->SetEnabled(0, 1);
+  } else {
+    field90->SetState(1, 0);
+    field90->SetEnabled(1, 1);
+  }
+
+  short lowWord = static_cast<short>(pageControl->frameStyle60);
+  short visibleCount = static_cast<short>(pageControl->controlState64);
+  if (visibleCount + rowCount <= lowWord) {
+    field94->SetState(0, 0);
+    field94->SetEnabled(0, 1);
+  } else {
+    field94->SetState(1, 0);
+    field94->SetEnabled(1, 1);
+  }
 }
