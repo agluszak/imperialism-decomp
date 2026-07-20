@@ -15545,7 +15545,7 @@
     },
     {
       "address": "0x4f8ff0",
-      "matching": 0.10476190476190476,
+      "matching": 0.45768025078369906,
       "name": "TOffersPanelView::NoOpUiLifecycleHook",
       "type": 1
     },
@@ -21937,7 +21937,7 @@
     },
     {
       "address": "0x545940",
-      "matching": 0.41777059773828756,
+      "matching": 0.41906300484652664,
       "name": "TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine",
       "type": 1
     },
@@ -30815,7 +30815,7 @@
     },
     {
       "address": "0x5a8ac0",
-      "matching": 0.6867469879518072,
+      "matching": 0.6086956521739131,
       "name": "TTacticalBattleView::CenterViewportAroundGridIndexAndSnap",
       "type": 1
     },
@@ -32824,7 +32824,7 @@
     },
     {
       "address": "0x5bf930",
-      "matching": 0.7477253928866832,
+      "matching": 0.7775020678246485,
       "name": "TOfferDeskPicture::RefreshSelectedNationOrderCompatibilityInfo",
       "type": 1
     },
@@ -38986,7 +38986,7 @@
     },
     {
       "address": "0x6091d9",
-      "matching": 1.0,
+      "matching": 0.9787234042553191,
       "name": "CWnd::OnNotify",
       "type": 1
     },

@@ -120,8 +120,8 @@ public:
   // (0x4f9300) with the accept/reject-hotspot's controlTag (four-char 'acce'/'reje').
   int lastNegotiationResponseTag64; // +0x64
   // The 'acce'/'reje' hotspot controls, resolved by NoOpUiLifecycleHook.
-  class TView* field68; // +0x68
-  class TView* field6c; // +0x6c
+  class TStaticText* field68; // +0x68
+  class TStaticText* field6c; // +0x6c
 
   TOffersPanelView();
 };

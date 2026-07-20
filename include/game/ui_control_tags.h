@@ -47,6 +47,7 @@ const unsigned int kControlTagZmOt = 0x5a6d4f74u;  // 'ZmOt' — map zoom-out ho
 const unsigned int kControlTagSend = 0x73656e64u;  // 'send' — end-turn hotspot
 const unsigned int kControlTagAgr2 = 0x61677232u;  // 'agr2' — last of 3 aggression-level buttons
 const unsigned int kControlTagShip = 0x73686970u;  // 'ship' — ship-fraction icon control
+const unsigned int kControlTagProp = 0x70726f70u;  // 'prop' — offer-desk proposal text
 const unsigned int kControlTagSale = 0x73616c65u;  // 'sale' — quit-picture sale-summary text
 const unsigned int kControlTagShow = 0x73686f77u;  // 'show' — quit-picture show-summary button
 const unsigned int kControlTagRequ = 0x72657175u;  // 'requ' — quit-picture "request" control

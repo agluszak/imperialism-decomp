@@ -1,6 +1,11 @@
 #include "game/TOffersPanelView.h"
 
+#include "game/TDeluxeText.h"
+#include "game/TSimMgr.h"
+#include "game/global_data_tables.h"
+#include "game/quickdraw_rendering.h"
 #include "game/ui_control_tags.h"
+#include "game/ui_text_label_helpers_decls.h"
 // SYNTHETIC: IMPERIALISM 0x004f8ec0
 // TOffersPanelView::CreateObject
 
@@ -18,20 +23,45 @@ TOffersPanelView::~TOffersPanelView() {}
 
 // FUNCTION: IMPERIALISM 0x004f8ff0
 void TOffersPanelView::NoOpUiLifecycleHook(int arg) {
-  // The original also builds a text-style descriptor (theme 0x2b68) here before the base
-  // call, unused by anything modeled below -- left unmodeled.
   TPanelView::NoOpUiLifecycleHook(arg);
 
   m_panelData = ownerContext;
-  field68 = ResolveControlByTag(kControlTagAcce);
+  field68 = static_cast<TStaticText*>(ResolveControlByTag(kControlTagAcce));
   field68->AssertValid();
-  field6c = ResolveControlByTag(kControlTagReje);
+  field6c = static_cast<TStaticText*>(ResolveControlByTag(kControlTagReje));
   field6c->AssertValid();
+  field68->field92 = 0x1388;
+  field6c->field92 = 0x1388;
 
-  // The original then sets field68/field6c's own +0x92 short field to 0x1388, and resolves
-  // 'prop'/'text' controls whose vtable slot 0x1e4 is beyond TStaticText's declared extent
-  // (a genuinely unrecovered sibling class) to apply further templated text -- left
-  // unmodeled.
+  TUiTextStyleDescriptor sharedStyle;
+  BuildUiTextStyleDescriptor(&sharedStyle, 0, 0, 0x2b68);
+
+  // 'prop'/'text' are TDeluxeText controls (see the TDeluxeText class-recovery note in
+  // TSpecialQuitPicture.cpp): their vtable slots 0x1e4/0x1c4 match
+  // ApplyTextStyleDescriptorAndMaybeRefresh/SetTextThemeCodeAndMaybeRefresh exactly.
+  TDeluxeText* propControl = static_cast<TDeluxeText*>(ResolveControlByTag(kControlTagProp));
+  propControl->AssertValid();
+  propControl->ApplyTextStyleDescriptorAndMaybeRefresh(&sharedStyle, 0);
+  propControl->cursorThemeCode9c = sharedStyle.textColor;
+  propControl->fieldA0 = 1;
+  propControl->SetTextThemeCodeAndMaybeRefresh(1, 0);
+
+  TDeluxeText* textControl = static_cast<TDeluxeText*>(ResolveControlByTag(kControlTagText));
+  textControl->AssertValid();
+  textControl->ApplyTextStyleDescriptorAndMaybeRefresh(&sharedStyle, 0);
+  textControl->cursorThemeCode9c = sharedStyle.textColor;
+  textControl->fieldA0 = 1;
+  textControl->SetTextThemeCodeAndMaybeRefresh(1, 0);
+
+  CString acceHint;
+  g_pSimMgr->GetString(0x274a, 6, &acceHint);
+  SetControlHoverHelpText(acceHint, field68);
+  CString rejeHint;
+  g_pSimMgr->GetString(0x274a, 7, &rejeHint);
+  SetControlHoverHelpText(rejeHint, field6c);
+
+  // The original then constructs an empty-string CString (0x6a13a0) and applies it via a
+  // further call on textControl -- not yet decoded, left unmodeled.
 }
 
 // FUNCTION: IMPERIALISM 0x004f9300
