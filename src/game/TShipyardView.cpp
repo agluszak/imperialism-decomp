@@ -1,8 +1,10 @@
 #include "game/TShipyardView.h"
 
 #include "game/TControl.h"
+#include "game/TStaticText.h"
 #include "game/bitmap_descriptor_helpers.h"
 #include "game/global_data_tables.h"
+#include "game/quickdraw_rendering.h"
 
 // SYNTHETIC: IMPERIALISM 0x004c8200
 // TShipyardView::CreateObject
@@ -35,11 +37,12 @@ undefined TShipyardView::OrphanRetStub_004c6fd0() {
   fieldB4 = 0;
   iconSurfaceB8 = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0x264f);
 
-  for (int i = 0; i < 8; ++i) {
-    TControl* slotButton = static_cast<TControl*>(ResolveControlByTag(0x62757430u + i)); // 'but0'-'but7'
+  for (int slotIndex = 0; slotIndex < 8; ++slotIndex) {
+    TControl* slotButton =
+        static_cast<TControl*>(ResolveControlByTag(0x62757430u + slotIndex)); // 'but0'-'but7'
     slotButton->SetEnabled(0, 1);
     slotButton->SetState(0, 1);
-    buildQueueSlotValues[i] = 0;
+    buildQueueSlotValues[slotIndex] = 0;
 
     TControl* plusButton = static_cast<TControl*>(slotButton->ResolveControlByTag(0x706c7573u)); // 'plus'
     plusButton->AssertValid();
@@ -50,12 +53,49 @@ undefined TShipyardView::OrphanRetStub_004c6fd0() {
     minusButton->SetState(0, 0);
   }
 
-  // The original then restyles the panel title ('titl'), two 'fix0'/'fix1' labels, and
-  // the 'snam'/'desc' text fields via BuildUiTextStyleDescriptor +
-  // SetTextStyleAndMaybeRefresh/LoadUiStringAndDispatchViaVslot1C8 (string group 0x2736),
-  // zeroes fieldA0/fieldA2, calls InitializeCityViewActionButtons(buildQueueSlotValues[0]),
-  // then resolves the 'sele' control (AssertValid, a slot-0x1c8 call with tag 'but0'), and
-  // finally this->vtbl[0x1d8]() -- not yet ported.
+  // 14-byte style buffer: the 10-byte descriptor plus 4 explicitly zeroed tail bytes (the
+  // original zeroes them once before the first Build call) -- same idiom as
+  // TBattleReportView::NoOpUiLifecycleHook.
+  struct {
+    TUiTextStyleDescriptor desc;
+    unsigned char tail[4];
+  } style;
+  style.tail[0] = 0;
+  style.tail[1] = 0;
+  style.tail[2] = 0;
+  style.tail[3] = 0;
+
+  BuildUiTextStyleDescriptor(&style.desc, 0, 0xa, 0x2b6b);
+  TStaticText* title = static_cast<TStaticText*>(ResolveControlByTag(0x7469746cu)); // 'titl'
+  title->AssertValid();
+  title->SetTextStyleAndMaybeRefresh(&style.desc, 1);
+  title->LoadUiStringAndDispatchViaVslot1C8(0x2736, 0xe, 1);
+
+  BuildUiTextStyleDescriptor(&style.desc, 0, 0xa, 0x2b6b);
+  for (int i = 0; i < 2; ++i) {
+    TStaticText* fixedLabel = static_cast<TStaticText*>(ResolveControlByTag(0x66697830u + i)); // 'fix0'/'fix1'
+    fixedLabel->AssertValid();
+    fixedLabel->SetTextStyleAndMaybeRefresh(&style.desc, 1);
+    fixedLabel->LoadUiStringAndDispatchViaVslot1C8(0x2736, static_cast<short>(i + 0xf), 1);
+  }
+
+  BuildUiTextStyleDescriptor(&style.desc, 0, 0xc, 0x2b6b);
+  TControl* shipName = static_cast<TControl*>(ResolveControlByTag(0x736e616du)); // 'snam'
+  shipName->AssertValid();
+  shipName->SetTextStyleAndMaybeRefresh(&style.desc, 1);
+
+  BuildUiTextStyleDescriptor(&style.desc, 0, 0xa, 0x2b6b);
+  TControl* description = static_cast<TControl*>(ResolveControlByTag(0x64657363u)); // 'desc'
+  description->AssertValid();
+  description->SetTextStyleAndMaybeRefresh(&style.desc, 1);
+
+  fieldA0 = 0;
+  fieldA2 = 0;
+  InitializeCityViewActionButtons(buildQueueSlotValues[0]);
+
+  // The original then resolves the 'sele' control (AssertValid, a slot-0x1c8 call with tag
+  // 'but0' -- receiver class/arity unresolved), and finally this->vtbl[0x1d8]() -- not yet
+  // ported.
   return 0;
 }
 
