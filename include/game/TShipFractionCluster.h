@@ -127,7 +127,8 @@ public:
 
   // Original object size is 0x98 (CRuntimeClass m_nObjectSize); the source class ended at 0x88. Trailing 16 byte(s) not yet semantically recovered — declared so sizeof and the recomp's allocation size match the original.
   int field88;
-  int field8c;
+  // The 'main'-tagged control on OwnerPanel(), resolved by NoOpUiLifecycleHook.
+  class TView* field8c;
   int field90;
   int field94;
 };
