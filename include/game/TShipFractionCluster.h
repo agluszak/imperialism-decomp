@@ -1,6 +1,7 @@
 #pragma once
 
 #include "game/TCluster.h"
+#include "game/TStaticText.h"
 #include "game/mfc.h"
 
 // VTABLE: IMPERIALISM 0x00642f88
@@ -125,10 +126,21 @@ public:
 
   TShipFractionCluster();
 
-  // Original object size is 0x98 (CRuntimeClass m_nObjectSize); the source class ended at 0x88. Trailing 16 byte(s) not yet semantically recovered — declared so sizeof and the recomp's allocation size match the original.
-  int field88;
+  void UpdateIndustryCapabilityControlStateAndValue(int p1, int p2);
+
+  // Original object size is 0x98 (CRuntimeClass m_nObjectSize); the source class ended at
+  // 0x88. Enabled/disabled state gate for the ship/arrow controls, set by
+  // UpdateIndustryCapabilityControlStateAndValue; a real `short` (the original writes/reads
+  // it with 16-bit instructions throughout).
+  short field88;
+  short pad8a;
   // The 'main'-tagged control on OwnerPanel(), resolved by NoOpUiLifecycleHook.
   class TView* field8c;
-  int field90;
-  int field94;
+  // The 'arro' control, resolved by NoOpUiLifecycleHook; a TStaticText-family control
+  // (confirmed by UpdateIndustryCapabilityControlStateAndValue's slot 0x1c4
+  // SetTextThemeCodeAndMaybeRefresh call on it).
+  TStaticText* field90;
+  // Theme code applied to field90; a real `short` (16-bit reads/writes throughout).
+  short field94;
+  short pad96;
 };

@@ -31,6 +31,9 @@ void __cdecl ApplyUiTextStyleAndThemeFlags(TDropShadowText* control, int unused,
 void LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(short group, short index,
                                                            unsigned int controlTag);
 
+void LoadUiStringByGroupAndIndexToGlobalControlTag(short group, short index,
+                                                   unsigned int controlTag);
+
 class TView;
 
 // 0x5c4ab0: resolve `controlTag` on the active dialog, assert it, then apply the

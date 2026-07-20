@@ -24,9 +24,20 @@ TMapKey::TMapKey() {}
 // FUNCTION: IMPERIALISM 0x004fcac0
 void TMapKey::NoOpUiLifecycleHook(int arg) {
   TPicture::NoOpUiLifecycleHook(arg);
-  // The original then builds a large table of legend-icon rects (magic-number coordinates)
-  // relative to ownerContext's own frame, and resolves/configures the legend controls from
-  // it -- not yet ported.
+  // TODO: the original then loops over all 23 g_apTerrainTypeDescriptorTable entries
+  // (kTerrainTypeDescriptorTableCount), for each one: gets its label (GetString(0x275d,2)
+  // for a null descriptor, else descriptor->FormatOverlayTerrainLabelText -- 0x405245/
+  // 0x4d7860), allocates a real `new TDeluxeText()` (operator_new(0xa4) + the standard
+  // TStaticText/TTEView/TDeluxeText layered ctor chain, matching the established
+  // ConstructTDeluxeTextBaseState(owner, offset[2], size[2], &rect, &style, -2) pattern used
+  // elsewhere e.g. TTechItemView.cpp), and positions it from two 8-entry x/y coordinate
+  // tables (stack literals at 0x4fcaef-0x4fcb88) offset by (this->ownerLocalX +
+  // ownerContext->ownerLocalX, this->ownerLocalY + ownerContext->ownerLocalY - 0xf). The
+  // Ghidra decompile of 0x4fcac0 mis-resolves several stack slots as aliased/reused
+  // (local_84, local_88.m_pchData) across the multiple esp-adjusting calls in the setup
+  // block (0x605797/0x4093cc/0x402a7c), so the exact origin of the per-iteration base
+  // offsets needs re-deriving from the raw disassembly rather than trusted from the
+  // decompiler output -- left unmodeled pending that pass.
 }
 
 // FUNCTION: IMPERIALISM 0x004fcf80
