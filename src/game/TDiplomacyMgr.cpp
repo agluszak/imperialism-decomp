@@ -102,12 +102,12 @@ void TDiplomacyMgr::InitializeTDiplomacyTurnStateManagerDefaults() {
   register int zero = 0;
 
   short* relationCode = relationCodeMatrix04;
-  unsigned char* pendingPolicyCode = pendingPolicyCodeMatrix304;
+  signed char* pendingPolicyCode = pendingPolicyCodeMatrix304;
   int pairCount = kDiplomacyPairMatrixEntries;
 
   do {
     *relationCode = static_cast<short>(zero);
-    *pendingPolicyCode = 0xff;
+    *pendingPolicyCode = -1;
     ++relationCode;
     ++pendingPolicyCode;
     --pairCount;
@@ -907,7 +907,7 @@ void TDiplomacyMgr::RebuildDiplomacyStandingAndInfluenceMatrices(char forceOrMod
     }
 
     ++totalOwnedCount;
-    pendingPolicyCodeMatrix304[tileIndex] = 0xff;
+    pendingPolicyCodeMatrix304[tileIndex] = -1;
     bool topSideWins =
         (ownerNationCode == topNationSlot) ||
         g_apTerrainTypeDescriptorTable[ownerNationCode]->IsEncodedNationSlotMinus200Equal(
@@ -919,11 +919,11 @@ void TDiplomacyMgr::RebuildDiplomacyStandingAndInfluenceMatrices(char forceOrMod
              secondNationSlot));
     if (topSideWins) {
       ++topSideCount;
-      pendingPolicyCodeMatrix304[tileIndex] = static_cast<unsigned char>(topNationSlot);
+      pendingPolicyCodeMatrix304[tileIndex] = static_cast<signed char>(topNationSlot);
       pendingPolicyTierMatrix484[tileIndex] = 0;
     } else if (secondSideWins) {
       ++secondSideCount;
-      pendingPolicyCodeMatrix304[tileIndex] = static_cast<unsigned char>(secondNationSlot);
+      pendingPolicyCodeMatrix304[tileIndex] = static_cast<signed char>(secondNationSlot);
       pendingPolicyTierMatrix484[tileIndex] = 0;
     } else {
       short threshold = relationCodeMatrix04[tileIndex];
@@ -931,7 +931,7 @@ void TDiplomacyMgr::RebuildDiplomacyStandingAndInfluenceMatrices(char forceOrMod
       if (topScore < secondScore) {
         if (threshold <= secondScore - topScore) {
           ++secondSideCount;
-          pendingPolicyCodeMatrix304[tileIndex] = static_cast<unsigned char>(secondNationSlot);
+          pendingPolicyCodeMatrix304[tileIndex] = static_cast<signed char>(secondNationSlot);
           delta = static_cast<short>((secondScore - topScore) - threshold);
           pendingPolicyTierMatrix484[tileIndex] = delta;
           if (maxResidual < delta) {
@@ -940,7 +940,7 @@ void TDiplomacyMgr::RebuildDiplomacyStandingAndInfluenceMatrices(char forceOrMod
         }
       } else if (topScore - secondScore >= threshold) {
         ++topSideCount;
-        pendingPolicyCodeMatrix304[tileIndex] = static_cast<unsigned char>(topNationSlot);
+        pendingPolicyCodeMatrix304[tileIndex] = static_cast<signed char>(topNationSlot);
         delta = static_cast<short>((topScore - secondScore) - threshold);
         pendingPolicyTierMatrix484[tileIndex] = delta;
         if (maxResidual < delta) {

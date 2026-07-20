@@ -153,16 +153,16 @@ public:
   RecenterTextFromMeasuredWidthAndMaybeInvalidate(char refreshNow); // slot 0x7e 0x5b63e0
   // field94/field95/padding96 moved to the base TTEView (its RTTI object size is
   // 0x98; TDeluxeText's own fields start at 0x98 — see TTEView.h).
-  int cursorThemeCode98;      // +0x98
-  int cursorThemeCode9c;      // +0x9c
-  unsigned char fieldA0;      // +0xa0
+  int textColor98;            // +0x98
+  int shadowTextColor9C;      // +0x9c
+  bool dropShadowEnabledA0;   // +0xa0
   unsigned char paddingA1[3]; // +0xa1
 
   TDeluxeText();
 
   // Mac-style second-phase init: forwards to TTEView::ConstructTTEViewBaseState with the
   // fixed (0, ..., 5, 5, ..., 0, 1) filler args, copies style->textColor into
-  // cursorThemeCode98, and clears the selected flag via the slot-0x76 virtual.
+  // textColor98, and clears the selected flag via the slot-0x76 virtual.
   // 0x5b5ff0, __thiscall, RET 0x18.
   void ConstructTDeluxeTextBaseState(TView* panel, int* offsetLayout, int* sizeLayout,
                                      RECT* insetRect, TUiTextStyleDescriptor* style,

@@ -86,9 +86,9 @@ public:
   // 0x4d — gates child traversal for renderability/hover hit-tests
   // (HasRenderableParentAndContent requires it before childList44 counts).
   bool childHitTestFlag4d;
-  unsigned short field4e;
+  unsigned short cursorId4e;
   CWnd* nativeWindow50; // 0x50 — host window (MFC CWnd; HWND via m_hWnd)
-  unsigned short field54;
+  unsigned short helpState54;
   unsigned char padding_56_to_57[0x02];
   CString hoverHelpText58;
   int hoverHelpEnabled5c;
@@ -118,7 +118,7 @@ public:
   virtual void Close();                                                         // 0x28 0x48c890
   virtual void SetEnabled(int enabledState, int refreshFlag);                   // 0x29 0x48b1c0
   virtual void SetState(int state, int refreshFlag);                            // 0x2a 0x48b070
-  virtual unsigned short GetField4E();                                          // 0x2b 0x427200
+  virtual unsigned short GetCursorID();                                         // 0x2b 0x427200
   virtual void HandleCursorHoverFallback(CPoint* point, RgnHandle hitArg);      // 0x2c
   virtual void NoOpClipRegionSlot2D(int arg1, int arg2);                        // 0x2d 0x48c1c0
   virtual void RefreshCityProductionViewStateFromContext(RgnHandle clipRegion); // 0x2e 0x48c1e0
@@ -179,7 +179,7 @@ public:
   virtual char PointInBoundsAndActionable(CPoint* point);        // 0x5b 0x48c6d0
   virtual void AttachChildControl(class TView* child, int flag); // 0x5c 0x48abe0
   virtual void DetachChildFromOwnerList(class TView* child);
-  virtual unsigned short GetField54();
+  virtual unsigned short GetHelpState();
   virtual char TestPointInBounds(CPoint* point);
   virtual void ReturnFromUiSlot60(int arg);
   virtual void ReturnFromUiSlot61(int arg);

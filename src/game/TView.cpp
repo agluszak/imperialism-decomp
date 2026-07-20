@@ -61,8 +61,8 @@ TUiStyleRef::TUiStyleRef(int value) {
 }
 
 // FUNCTION: IMPERIALISM 0x00427200
-unsigned short TView::GetField4E() {
-  return field4e;
+unsigned short TView::GetCursorID() {
+  return cursorId4e;
 }
 extern "C" {
 void* AssertQuickDrawFlag6A1DCCNonZero(int index);
@@ -167,8 +167,9 @@ IMPLEMENT_DYNCREATE(TView, TEventHandler)
 // FUNCTION: IMPERIALISM 0x0048a8e0
 TView::TView()
     : TEventHandler(), ownerContext(0), absoluteX(0), absoluteY(0), controlValue3c(0),
-      childList44(0), stylePayload48(0), inputGateFlag4c(1), childHitTestFlag4d(1), field4e(0xffff),
-      nativeWindow50(0), field54(1), hoverHelpText58(), hoverHelpEnabled5c(0) {}
+      childList44(0), stylePayload48(0), inputGateFlag4c(1), childHitTestFlag4d(1),
+      cursorId4e(0xffff), nativeWindow50(0), helpState54(1), hoverHelpText58(),
+      hoverHelpEnabled5c(0) {}
 
 // SYNTHETIC: IMPERIALISM 0x0048a9a0
 // TView::`scalar deleting destructor'
@@ -690,7 +691,7 @@ void TView::CopyViewStateFromSource(TView* source) {
   childList44 = 0;
   stylePayload48 = 0;
   controlValue3c = source->controlValue3c;
-  field54 = source->field54;
+  helpState54 = source->helpState54;
   ownerLocalX = source->ownerLocalX;
   ownerLocalY = source->ownerLocalY;
   absoluteX = source->absoluteX;
@@ -788,10 +789,10 @@ void TView::HandleCursorHoverFallback(CPoint* point, RgnHandle hitArg) {
       g_pCursorControlPanel->SetTextAndLayoutRect(hoverHelpText58, &parentRect);
     }
   }
-  if (GetField4E() != 0xffff) {
+  if (GetCursorID() != 0xffff) {
     CPoint transformedPoint = TransformPointViaSlot138(point);
     if (PtInRgn(&transformedPoint, hitArg)) {
-      void* ptr = AssertQuickDrawFlag6A1DCCNonZero(GetField4E());
+      void* ptr = AssertQuickDrawFlag6A1DCCNonZero(GetCursorID());
       AssertQuickDrawFlag6A1DC8NonZero(*reinterpret_cast<void**>(ptr));
       return;
     }
@@ -941,8 +942,8 @@ void TView::PropagateUiResourceContextRecursive(CWnd* nativeWindow) {
 }
 
 // FUNCTION: IMPERIALISM 0x0048c970
-unsigned short TView::GetField54() {
-  return field54;
+unsigned short TView::GetHelpState() {
+  return helpState54;
 }
 // FUNCTION: IMPERIALISM 0x0048c990
 char TView::TestPointInBounds(CPoint* point) {

@@ -419,6 +419,7 @@ extern const unsigned char g_MapContextStaticTable_00695428[0x20];
 extern char* g_pBattleReportSharedText_0064dc30;
 extern char* g_pMiniCivSharedText_0064cb18;
 extern char* g_pShipFractionSharedText_0065c830;
+extern char* g_pDiplomacyPanelEmptyText_00654ec8;
 extern char* g_pStatusPictureMainSharedText_00668b88;
 extern char* g_pLoungeLocalPlayerNameSharedText_0065c160;
 extern int g_lastEdgeAutoScrollTick16;
@@ -558,7 +559,7 @@ extern int g_nIdleMeAnimationNextRegistryTag; // 0x00695934
 extern TMacViewMgr* g_pStrategicMapViewSystem;
 extern TViewMgr* g_pUiRuntimeContext;
 extern "C" int g_diplomacyActionButtonTagTable_00696960[6];
-extern "C" int g_councilControlTagTable[6];
+extern "C" unsigned int g_councilControlTagTable[6];
 extern "C" int g_defaultDropShadowTextColor;
 extern TAssetMgr* g_pUiViewManager;
 extern TLanguageMgr* g_pLanguageMgr;

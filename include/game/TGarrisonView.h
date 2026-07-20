@@ -118,8 +118,11 @@ public:
   // slot 0x6d ResetPageLayout inherited unchanged (0x56ff90)
 
   TGarrisonView();
+  void StuffValues(short tileIndex);
 
-  // Original object size is 0x90 (CRuntimeClass m_nObjectSize); the source class ended at 0x88. Trailing 8 byte(s) not yet semantically recovered — declared so sizeof and the recomp's allocation size match the original.
-  int field88;
-  int field8c;
+  // No Windows access lands in +0x88. StuffValues stores the selected map tile as a word
+  // at +0x8c; Close uses it to find the corresponding army-stack list.
+  unsigned char padding88[4];
+  short selectedTileIndex8C;
+  unsigned char padding8E[2];
 };

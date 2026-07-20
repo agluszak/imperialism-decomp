@@ -27,7 +27,7 @@ void TTransportPicture::HandleEvent(int commandId, TEventHandler* sourceHandler,
   if (commandId >= 100 && commandId <= 0x65) {
     short nationId = g_pSimMgr->GetActiveNationId();
     TGreatPower* nation = g_apNationStates[nationId];
-    int metricSlot = static_cast<int>(unknown92);
+    int metricSlot = static_cast<int>(resourceMetricSlot92);
     short metricA = 0;
     short metricB = 0;
     char* nationBytes = reinterpret_cast<char*>(nation);

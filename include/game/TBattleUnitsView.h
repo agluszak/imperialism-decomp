@@ -1,6 +1,8 @@
 #pragma once
 
 #include "game/TMilitaryPageView.h"
+
+struct BattleRecord;
 #include "game/mfc.h"
 
 // VTABLE: IMPERIALISM 0x00640940
@@ -118,7 +120,7 @@ public:
   // slot 0x6d ResetPageLayout inherited unchanged (0x56ff90)
 
   TBattleUnitsView();
+  void StuffValues(BattleRecord* battleRecord, int participantIndex);
 
-  // Original object size is 0x8c (CRuntimeClass m_nObjectSize); the source class ended at 0x88. Trailing 4 byte(s) not yet semantically recovered — declared so sizeof and the recomp's allocation size match the original.
-  int field88;
+  TQuickDrawSurfaceContext* secondaryUnitAtlas88;
 };

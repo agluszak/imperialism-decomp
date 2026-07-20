@@ -43,15 +43,15 @@ void TCreditsPicture::DoPostCreate(int arg) {
   MapUiThemeCodeToStyleFlags(0x2b6b, &cursorTheme);
   line1->SetTextFromUiStringResourceId(0xfb0);
   line1->ApplyTextStyleDescriptorAndMaybeRefresh(&style, 1);
-  line1->cursorThemeCode9c = cursorTheme;
-  line1->fieldA0 = 0;
+  line1->shadowTextColor9C = cursorTheme;
+  line1->dropShadowEnabledA0 = false;
 
   TDeluxeText* line2 = static_cast<TDeluxeText*>(ResolveControlByTag(kControlTagCre2));
   line2->QueryStepValue();
   line2->SetTextFromUiStringResourceId(0xfb1);
   line2->ApplyTextStyleDescriptorAndMaybeRefresh(&style, 1);
-  line2->cursorThemeCode9c = cursorTheme;
-  line2->fieldA0 = 0;
+  line2->shadowTextColor9C = cursorTheme;
+  line2->dropShadowEnabledA0 = false;
 }
 
 // FUNCTION: IMPERIALISM 0x0056efc0
@@ -76,15 +76,15 @@ void TCreditsPicture::HandleEvent(int commandId, TEventHandler* sourceHandler, T
       line1->QueryStepValue();
       line1->SetTextFromUiStringResourceId(0xfb2);
       line1->ApplyTextStyleDescriptorAndMaybeRefresh(&style, 1);
-      line1->cursorThemeCode9c = cursorTheme;
-      line1->fieldA0 = 1;
+      line1->shadowTextColor9C = cursorTheme;
+      line1->dropShadowEnabledA0 = true;
 
       TDeluxeText* line2 = static_cast<TDeluxeText*>(ResolveControlByTag(kControlTagCre2));
       line2->QueryStepValue();
       line2->SetTextFromUiStringResourceId(0xfb3);
       line2->ApplyTextStyleDescriptorAndMaybeRefresh(&style, 1);
-      line2->cursorThemeCode9c = cursorTheme;
-      line2->fieldA0 = 1;
+      line2->shadowTextColor9C = cursorTheme;
+      line2->dropShadowEnabledA0 = true;
     }
   }
   TControl::HandleEvent(commandId, sourceHandler, event);

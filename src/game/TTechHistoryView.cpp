@@ -48,7 +48,7 @@ void TTechHistoryView::ConstructTTechHistoryViewBaseState(short techId) {
   int size[2] = {scrollView->frameWidth34 - 0x19, frameHeight38};
   CRect zeroRect(0, 0, 0, 0);
   descText->ConstructTDeluxeTextBaseState(scrollView, offset, size, &zeroRect, &style, -2);
-  descText->cursorThemeCode98 = mainStyle;
+  descText->textColor98 = mainStyle;
   descText->SetTextFromUiStringResourceId(static_cast<short>(techId + 0x8fc));
 
   int measuredWidth = descText->MeasureCurrentTextWidthInLayoutRect();

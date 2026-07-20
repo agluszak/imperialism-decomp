@@ -7,8 +7,8 @@ class TMapUberPicture;
 
 // A small world-map thumbnail with a highlighted viewport-marker box (see
 // ApplyRectSlot110/DispatchPictureResourceCommand). Constructed by
-// TMapUberPicture::CreateToolWindow_00599CF0 (0x599cf0), which stores the new instance
-// into the owner's field_0xc0.
+// TMapUberPicture::DisplayMiniMap (0x599cf0), which stores the new instance
+// into the owner's miniMapViewC0.
 // VTABLE: IMPERIALISM 0x00669170
 class TMiniMapView : public TControl {
 public:
@@ -128,7 +128,7 @@ public:
   // slot 0x6f LogUnhandledDialogMethodAndReturnFalse inherited unchanged (0x4294a0)
   // slot 0x70 SetControlStateFlagAndMaybeRefresh inherited unchanged (0x48e810)
   // TControl ends at 0x84; this object's own slice runs 0x84-0x9f (object size 0xa0).
-  // Owning TMapUberPicture backref -- set by CreateToolWindow_00599CF0 right after
+  // Owning TMapUberPicture backref -- set by DisplayMiniMap right after
   // construction (not by the ctor itself; ctor leaves it untouched).
   TMapUberPicture* ownerPicture84;
   // Tile-column/row scroll offset on the strategic map (ApplyRectSlot110/
@@ -140,7 +140,7 @@ public:
   int markerBoxX90;
   int markerBoxY94;
   // Viewport-marker-box size; ctor default is (*0x6a460c, 8), later resized to (0x20,
-  // 0x1c) by CreateToolWindow_00599CF0's refresh path.
+  // 0x1c) by DisplayMiniMap's refresh path.
   int markerBoxWidth98;
   int markerBoxHeight9c;
 

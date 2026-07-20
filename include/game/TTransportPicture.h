@@ -8,7 +8,7 @@ struct CRuntimeClass;
 class TTransportPicture : public TPicture {
 public:
   short gaugeMetricId90;
-  short unknown92;
+  short resourceMetricSlot92;
   short splitValue94;
   short splitValue96;
   short splitLimit98;

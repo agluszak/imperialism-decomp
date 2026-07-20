@@ -1,6 +1,9 @@
 #pragma once
 
 #include "game/TPicture.h"
+
+class TDeluxeText;
+struct HelpSetRecord;
 #include "game/mfc.h"
 
 // VTABLE: IMPERIALISM 0x00657080
@@ -129,7 +132,8 @@ public:
 
   THelpPicture();
 
-  // Original object size is 0x98 (CRuntimeClass m_nObjectSize); the source class ended at 0x90. Trailing 8 byte(s) not yet semantically recovered — declared so sizeof and the recomp's allocation size match the original.
-  int field90;
-  int field94;
+  // The list-navigation methods read HelpSetRecord word fields through +0x90. DoPostCreate
+  // allocates a TDeluxeText, stores it at +0x94, and attaches it to the 'swin' control.
+  HelpSetRecord* currentHelpSet90;
+  TDeluxeText* topicListText94;
 };

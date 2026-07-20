@@ -140,7 +140,7 @@ public:
   DispatchSelectedTileToSubviewsAndSyncTradeToolState(short entryIndex); // slot 0x77 0x5988c0
   // Ground truth (RET 0x4) proves the previous 0-arg declaration was a poison-pill arity
   // mismatch. Forwards param to subviewAc's InvalidateTileMarkerChain, then refreshes
-  // field_0xc0 if present.
+  // miniMapViewC0 if present.
   virtual undefined InvalidateTileMarkerAndRefreshLinkedControl(short param); // slot 0x78 0x598990
   // TMiniMapView::DispatchPictureResourceCommand's own ground truth calls this slot as
   // ownerPicture84->vtable[0x1e4](tileX, tileY) with 2 explicit int args (clamped tile
@@ -156,8 +156,8 @@ public:
   // thiscall, 0 explicit args; the caller-visible "return value" is just SetTrade-
   // ToolSubcontrolEnabledStateByFlag's incidental EAX forwarded through, not a distinct
   // result of this function's own.
-  virtual undefined CreateToolWindow_00599CF0();               // slot 0x7d 0x599cf0
-  virtual undefined SwapToolInfoSubviewAndRefreshClipRegion(); // slot 0x7e 0x599fd0
+  virtual void DisplayMiniMap(); // slot 0x7d 0x599cf0
+  virtual void RemoveMiniMap();  // slot 0x7e 0x599fd0
   // Ground truth (RET 0x4) proves the previous 0-arg declaration was a poison-pill: real
   // signature takes the enabled-state flag applied to the 'seas'/'year'/'trea'/'tree'
   // trade-tool subcontrols.
@@ -176,8 +176,10 @@ public:
   // TTaskForce: its CreateTaskForceFromNavyOrders... factory produces the task force
   // panel shown for it (SetActiveMapOrderEntry/RefreshMapOrderEntryPanel).
   TZone* orderEntryContext98;
-  int field_0x9c;
-  int field_0xa0;
+  // Windows field-xrefs find only the constructor's zero writes at +0x9c/+0xa0.
+  // Preserve the storage explicitly until a reader or writer establishes semantics.
+  int unresolvedZero9C;
+  int unresolvedZeroA0;
   // Optional 'DOOG' child used by the 0x7dd dual-map factory. Its factory constructs a
   // TOceanDialog, and AutoScrollByEdgeMask calls ApplyDirectionalNudgeAndRefreshDisplay
   // directly when that child is active.
@@ -212,10 +214,10 @@ public:
   // static_cast<TCivToolbar*> at the specific call site instead of typing the whole array
   // to one caller's concrete class.
   TView* categoryPages[4];
-  // The mini-map tool-window created by CreateToolWindow_00599CF0 (0x599cf0), which
+  // The mini-map tool-window created by DisplayMiniMap (0x599cf0), which
   // allocates a TMiniMapView (vtable 0x669170, size 0xa0), sets its owner backref, and
   // stores the result here.
-  TMiniMapView* field_0xc0;
+  TMiniMapView* miniMapViewC0;
 
   TMapUberPicture();
 
@@ -228,10 +230,10 @@ public:
   // moved here rather than left mis-attributed (see also TWorldView.cpp's own
   // independent caveat about the same object).
   void SetMapInteractionMode(short nMode);
-  // Refreshes the mini-map tool window (field_0xc0) if it exists. Null-receiver-safe:
+  // Refreshes the mini-map tool window if it exists. Null-receiver-safe:
   // call sites invoke this on a possibly-null ownerContext. 0x00599fa0, __thiscall,
   // 0 args.
-  void RefreshMiniMapIfPresent();
+  void InvalidateMiniMap();
   // Refreshes the 4 order-quota slider controls ("0slc".."3slc") from
   // orderEntryContext98, or clears them if it's null. 0x00597810, __thiscall, 1 arg.
   void RefreshMapOrderEntryPanel(TTaskForce* pMapOrderEntry);

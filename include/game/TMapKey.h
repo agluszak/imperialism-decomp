@@ -124,7 +124,7 @@ public:
   // Legend/hint overlay render mode selector. TMapKey::ApplyRectSlot110 (0x4fcf80)
   // switches on this to pick one of the RenderMapHintOverlayMode* label passes.
   short viewMode90; // 0x90
-  short field92;    // 0x92
+  unsigned char padding92[2];
 
   TMapKey();
 

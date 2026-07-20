@@ -2,6 +2,7 @@
 
 #include "game/TDiplomacyMapView.h"
 #include "game/TEventHandler.h"
+#include "game/TCluster.h"
 #include "game/TSimMgr.h"
 #include "game/global_data_tables.h"
 #include "game/quickdraw_rendering.h"
@@ -87,15 +88,18 @@ void TTreatiesView::ApplyRectSlot110(RECT* rectBuffer) {
 }
 
 // FUNCTION: IMPERIALISM 0x004f7f10
-undefined TTreatiesView::OrphanRetStub_00430550() {
-  return 0;
+void TTreatiesView::Setup() {
+  TCluster* scrollCluster = static_cast<TCluster*>(ResolveControlByTag(0x7363726f)); // 'scro'
+  SetControlHoverHelpText(CString(g_pDiplomacyPanelEmptyText_00654ec8), scrollCluster);
+  scrollCluster->SetSelectedChildTagAndRefresh(0x73637235); // 'scr5'
+  diplomacyMapView60->actionCodeBC = 0xe;
 }
 
 // FUNCTION: IMPERIALISM 0x004f7f80
 void TTreatiesView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId == 0xc) {
     unsigned int tag = sourceHandler->controlTag;
-    TDiplomacyMapView* mapView = static_cast<TDiplomacyMapView*>(m_panelData);
+    TDiplomacyMapView* mapView = diplomacyMapView60;
     if (tag < kControlTagScr0 + 5) {
       mapView->actionCodeBC = (tag - kControlTagScr0) + 2;
     } else {
