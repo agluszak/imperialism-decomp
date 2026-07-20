@@ -80,13 +80,9 @@ public:
   // TNavyMgr::DeserializeNavyOrderListsByNation).
   void RefreshMapActionContextNationOverlaysAndOrderRanks();
 
-  // __inline: the original inlines this pointer calc at its call sites (e.g.
-  // TZone::ResolvePortZoneOwnerContextAndDispatch) while keeping the standalone copy
-  // at 0x00563300, so it must be inline-visible to match.
-  // FUNCTION: IMPERIALISM 0x00563300
-  __inline TZone* GetMapActionContextEntryByNationCodeOffset17(short nationCode) {
-    return &this->contextArray[nationCode - 0x17];
-  }
+  // The original keeps this standalone copy and calls it from four sites; other sites
+  // inline the same typed contextArray lookup directly.
+  TZone* GetMapActionContextEntryByNationCodeOffset17(short nationCode);
 
   // Resolves port-zone or per-nation map-action context for a sea/coastal tile. 0x5633b0.
   TZone* GetLinkedZoneForSeaTile(short seaTileIndex);

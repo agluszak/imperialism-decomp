@@ -267,6 +267,36 @@ TMission* __cdecl FindFirstTrackedHandlerMatchingModeAndShortKey(TSortedList* li
   return nullptr;
 }
 
+// Orders missions first by their signed state byte, then by cached value per unit-cost
+// score. A non-null callback context reverses both comparisons.
+// FUNCTION: IMPERIALISM 0x00535f80
+short __cdecl CompareMissionOrderEntriesByMovementClassThenEfficiency(void* a, void* b,
+                                                                      void* reverseOrder) {
+  TMission* missionA = static_cast<TMission*>(a);
+  TMission* missionB = static_cast<TMission*>(b);
+  missionA->AssertValid();
+  missionB->AssertValid();
+
+  short greaterResult = (reverseOrder != nullptr) ? 1 : -1;
+  short lesserResult = (reverseOrder != nullptr) ? -1 : 1;
+  if (static_cast<char>(missionB->state08) < static_cast<char>(missionA->state08)) {
+    return greaterResult;
+  }
+  if (static_cast<char>(missionA->state08) < static_cast<char>(missionB->state08)) {
+    return lesserResult;
+  }
+
+  float ratioA = missionA->value0c / missionA->ReturnZeroFloatSlot6C();
+  float ratioB = missionB->value0c / missionB->ReturnZeroFloatSlot6C();
+  if (ratioA < ratioB) {
+    return greaterResult;
+  }
+  if (ratioB < ratioA) {
+    return lesserResult;
+  }
+  return 0;
+}
+
 // qsort-style comparator: descending order by a "remaining priority" score --
 // (1.0 - ReturnZeroFloatSlot68()) scaled by value0c (multiplied when that difference is
 // >= 0, divided when negative). AssertValid() is invoked on both sides first (the

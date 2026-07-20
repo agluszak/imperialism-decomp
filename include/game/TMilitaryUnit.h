@@ -86,6 +86,7 @@ public:
   // types 0x18/0x19/0x1b/0x1c to type+1), gated on the owner nation's ability rows;
   // -1 when no upgrade applies. 0x5c35c0.
   short ResolveEraCapabilityFallbackSlot();
+  bool HasEraCapabilityFallbackSlot();
   // Pays the upgrade's resource/cash costs from the owner nation's stock counters and
   // treasury (fails without changing anything if any cost is unaffordable), then sets
   // the unit's type to the upgraded id. 0x5c3670.

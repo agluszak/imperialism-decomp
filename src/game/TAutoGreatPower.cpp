@@ -1,9 +1,14 @@
 #include "decomp_types.h"
 #include <stdlib.h>
+#include <string.h>
 #include "game/navy_order.h"
 
 #include "game/TAutoGreatPower.h"
 
+#include "game/TCityMinisterPersonalities.h"
+#include "game/TDefenseMinisterPersonalities.h"
+#include "game/TForeignMinisterPersonalities.h"
+#include "game/TList.h"
 #include "game/TOcean.h"
 #include "game/TSortedByRelationshipList.h"
 #include "game/nation_stream_serialization.h"
@@ -13,6 +18,8 @@
 #include "game/TSortedList.h"
 #include "game/nation_slot_eligibility.h"
 #include "game/TSimMgr.h"
+#include "game/TTechMgr.h"
+#include "game/TTradeMgr.h"
 #include "game/TMinister.h"
 #include "game/TForeignMinister.h"
 #include "game/TCityInteriorMinister.h"
@@ -66,6 +73,124 @@ TAutoGreatPower::TAutoGreatPower() : TGreatPower() {
 
 // SYNTHETIC: IMPERIALISM 0x004e6bb0
 // TAutoGreatPower::~TAutoGreatPower
+
+// FUNCTION: IMPERIALISM 0x004e6c20
+void TAutoGreatPower::InitializeNationMinisterSubsystemsByPolicyIds(int nationSlot,
+                                                                    int nationInitializationMode,
+                                                                    short cityMinisterPolicyId,
+                                                                    short foreignMinisterPolicyId,
+                                                                    short defenseMinisterPolicyId) {
+  InitializeNationStateRuntimeSubsystems(nationSlot, nationInitializationMode);
+  treasuryValue10 = 10000;
+  memset(actionMetricByQuarter, 0, sizeof(actionMetricByQuarter));
+
+  switch (defenseMinisterPolicyId) {
+  case 0: {
+    TNapoleonMinister* minister = new TNapoleonMinister();
+    minister->InitializeOrderArrayPreset50_0_10_50(this);
+    defenseMinister = minister;
+    break;
+  }
+  case 1: {
+    TBismarckMinister* minister = new TBismarckMinister();
+    minister->InitializeOrderArrayPreset10_10_10_50(this);
+    defenseMinister = minister;
+    break;
+  }
+  case 2: {
+    TPirateMinister* minister = new TPirateMinister();
+    minister->InitializeOrderArrayPreset15_20_50_75(this);
+    defenseMinister = minister;
+    break;
+  }
+  case 3: {
+    TDefenderMinister* minister = new TDefenderMinister();
+    minister->InitializeOrderArrayPreset20_10_10_50(this);
+    defenseMinister = minister;
+    break;
+  }
+  case 4: {
+    TBullyMinister* minister = new TBullyMinister();
+    minister->InitializeOrderArrayPreset25_10_20_50(this);
+    defenseMinister = minister;
+    break;
+  }
+  }
+
+  switch (foreignMinisterPolicyId) {
+  case 0: {
+    TArmsForeignMinister* minister = new TArmsForeignMinister();
+    minister->InitializeStateAndCounters(this);
+    foreignMinister = minister;
+    break;
+  }
+  case 1: {
+    TTraderForeignMinister* minister = new TTraderForeignMinister();
+    minister->InitializeStateAndCounters(this);
+    foreignMinister = minister;
+    break;
+  }
+  case 2: {
+    TTextileForeignMinister* minister = new TTextileForeignMinister();
+    minister->InitializeStateAndCounters(this);
+    foreignMinister = minister;
+    break;
+  }
+  case 3: {
+    TDiplomatForeignMinister* minister = new TDiplomatForeignMinister();
+    minister->InitializeStateAndCounters(this);
+    foreignMinister = minister;
+    break;
+  }
+  case 4: {
+    TBillForeignMinister* minister = new TBillForeignMinister();
+    minister->InitializeStateAndCounters(this);
+    foreignMinister = minister;
+    break;
+  }
+  case 5: {
+    TTedForeignMinister* minister = new TTedForeignMinister();
+    minister->InitializeStateAndCounters(this);
+    foreignMinister = minister;
+    break;
+  }
+  }
+
+  switch (cityMinisterPolicyId) {
+  case 0: {
+    TSteelCityMinister* minister = new TSteelCityMinister();
+    minister->InitializeCityInteriorState(this);
+    interiorMinister = minister;
+    minister->MinisterSlot12(1, 2);
+    break;
+  }
+  case 1: {
+    TRailCityMinister* minister = new TRailCityMinister();
+    minister->InitializeCityInteriorState(this);
+    interiorMinister = minister;
+    minister->MinisterSlot12(1, 2);
+    break;
+  }
+  case 2: {
+    TShipBuilderCityMinister* minister = new TShipBuilderCityMinister();
+    minister->InitializeCityInteriorState(this);
+    interiorMinister = minister;
+    minister->MinisterSlot12(1, 2);
+    break;
+  }
+  case 3: {
+    TEvenCityMinister* minister = new TEvenCityMinister();
+    minister->InitializeCityInteriorState(this);
+    interiorMinister = minister;
+    minister->MinisterSlot12(1, 2);
+    break;
+  }
+  }
+
+  memset(mapNodeStateFlags, 0, sizeof(mapNodeStateFlags));
+  memset(portZoneStateFlags, 0, sizeof(portZoneStateFlags));
+  missionQueue = new TList();
+}
 
 // FUNCTION: IMPERIALISM 0x004e7230
 void TAutoGreatPower::Free(void) {
@@ -1211,6 +1336,75 @@ void TAutoGreatPower::RebuildNationResourceYieldCountersAndDevelopmentTargets(vo
   this->needCurrentByType[0x14] = static_cast<short>(this->needCurrentByType[0x14] + carryValue);
 }
 
+// FUNCTION: IMPERIALISM 0x004ea610
+float TAutoGreatPower::ComputeAiIndustryActionCostFromSlot(short industrySlot) {
+  int cost = g_pNationInteractionStateManager->QueryProposalWeightSlot4C(0x0b) *
+             g_industryActionCostWeightResCode0B[industrySlot];
+  cost += g_pNationInteractionStateManager->QueryProposalWeightSlot4C(0x08) *
+          g_industryActionCostWeightResCode08[industrySlot];
+  cost += g_pNationInteractionStateManager->QueryProposalWeightSlot4C(0x09) *
+          g_industryActionCostWeightResCode09[industrySlot];
+  cost += g_pNationInteractionStateManager->QueryProposalWeightSlot4C(0x0c) *
+          g_industryActionCostWeightResCode0C[industrySlot];
+  cost += g_pNationInteractionStateManager->QueryProposalWeightSlot4C(0x10) *
+          g_industryActionCostWeightResCode10[industrySlot];
+  cost += g_pNationInteractionStateManager->QueryProposalWeightSlot4C(0x03) *
+          g_industryActionCostWeightResCode03[industrySlot];
+  return static_cast<float>(cost);
+}
+
+// FUNCTION: IMPERIALISM 0x004ea700
+float TAutoGreatPower::ComputeAiCityActionCostFromSlotAndMode(short actionSlot,
+                                                              char skipContextBias) {
+  AiCityActionCostProfile& profile = g_aiCityActionCostProfiles[actionSlot];
+  short capabilityLevel = needCurrentByType[5];
+  float cost = static_cast<float>(profile.baseCost);
+
+  if (profile.primaryMetricCode != -1 &&
+      (profile.primaryMetricCode != 5 || capabilityLevel < profile.primaryMetricMultiplier)) {
+    cost += static_cast<float>(
+        g_pNationInteractionStateManager->QueryProposalWeightSlot4C(profile.primaryMetricCode) *
+        profile.primaryMetricMultiplier);
+  }
+  if (profile.secondaryMetricCode != -1 &&
+      (profile.secondaryMetricCode != 5 || capabilityLevel < profile.secondaryMetricMultiplier)) {
+    cost += static_cast<float>(
+        g_pNationInteractionStateManager->QueryProposalWeightSlot4C(profile.secondaryMetricCode) *
+        profile.secondaryMetricMultiplier);
+  }
+  if (skipContextBias == 0) {
+    cost += GetCachedAiCityActionContextBias(profile.contextBiasSelector);
+  }
+  return cost;
+}
+
+// FUNCTION: IMPERIALISM 0x004ea830
+float TAutoGreatPower::GetCachedAiCityActionContextBias(short selector) {
+  int cacheIndex;
+  if (selector == 1) {
+    cacheIndex = 0;
+  } else if (selector == 2) {
+    cacheIndex = 1;
+  } else {
+    cacheIndex = 2;
+  }
+
+  if (g_cachedAiCityActionTurnTick_006967d8 != g_pSimMgr->GetTurnTickSlot3C()) {
+    int base = g_pNationInteractionStateManager->QueryProposalWeightSlot4C(0x0d) +
+               g_pNationInteractionStateManager->QueryProposalWeightSlot4C(0x0e) +
+               g_pNationInteractionStateManager->QueryProposalWeightSlot4C(0x07);
+    int middle = g_pNationInteractionStateManager->QueryProposalWeightSlot4C(0x0a) + 100;
+    int tail = g_pNationInteractionStateManager->QueryProposalWeightSlot4C(0x0a) * 2 + 1000;
+    g_cachedAiCityActionContextBias[0] = static_cast<float>(base);
+    g_cachedAiCityActionContextBias[1] = static_cast<float>(base + middle);
+    g_cachedAiCityActionContextBias[2] = static_cast<float>(base + middle + tail);
+    g_cachedAiCityActionNationSlot_006967d4 = nationSlot;
+    g_cachedAiCityActionTurnTick_006967d8 = g_pSimMgr->GetTurnTickSlot3C();
+  }
+
+  return g_cachedAiCityActionContextBias[cacheIndex];
+}
+
 // FUNCTION: IMPERIALISM 0x004ea990
 undefined TAutoGreatPower::IterateLinkedListCursorAndRelinkNodeOwners_004ea990() {
   return 0;
@@ -1220,8 +1414,32 @@ undefined TAutoGreatPower::IterateLinkedListCursorAndRelinkNodeOwners_004ea990()
 void TAutoGreatPower::NoOpTailStateHookSlot2B4(void) {}
 
 // FUNCTION: IMPERIALISM 0x004eae70
-void TAutoGreatPower::NoOpTailStateHookSlot2B8(int arg) {
-  (void)arg;
+void TAutoGreatPower::RefreshTrackedEntriesAndReplanAiDevelopment(int unused) {
+  (void)unused;
+  if (city == nullptr) {
+    return;
+  }
+
+  CIterator unitIter(militaryUnitList44);
+  for (TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(unitIter.Reset()); unitIter.More();
+       unit = static_cast<TMilitaryUnit*>(unitIter.Advance())) {
+    if (unit->ownerMission40 == nullptr && unit->GetUnitMovementClassId() == 0) {
+      TMission* mission =
+          FindFirstTrackedHandlerMatchingModeAndShortKey(missionQueue, 3, unit->tileIndex06, 0);
+      mission->AdoptUnitSlot80(unit, 1);
+    }
+  }
+
+  CIterator missionIter(missionQueue);
+  for (TMission* mission = static_cast<TMission*>(missionIter.Reset()); missionIter.More();
+       mission = static_cast<TMission*>(missionIter.Advance())) {
+    mission->RefreshSlot40();
+  }
+
+  PruneInvalidTrackedEntriesAndNotifyOwner();
+  UpdateTrackedEntryEligibilityByClassMaskAndRatio(0);
+  AssignTrackedEntryActionsByProfileToOrdersOrUnits(0);
+  PlanAiDevelopmentActionsFromResourcePools(0);
 }
 
 // For every unassigned (ownerMission40 == nullptr) non-naval (GetUnitMovementClassId() ==
@@ -1266,5 +1484,276 @@ void TAutoGreatPower::PruneInvalidTrackedEntriesAndNotifyOwner(void) {
       this->missionQueue->AddTail(replacement);
     }
   }
+}
+
+// FUNCTION: IMPERIALISM 0x004eb190
+void TAutoGreatPower::PlanAiDevelopmentActionsFromResourcePools(int unused) {
+  (void)unused;
+  if (this == 0) {
+    return;
+  }
+  if (city == 0) {
+    return;
+  }
+
+  int resourcePools[9] = {0};
+  TMilitaryUnit* bestUnitByType[30] = {0};
+
+  CIterator unitIter(militaryUnitList44);
+  for (TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(unitIter.Reset()); unitIter.More();
+       unit = static_cast<TMilitaryUnit*>(unitIter.Advance())) {
+    if (unit->HasEraCapabilityFallbackSlot()) {
+      int qualityLevel = unit->field_38 / 100;
+      short unitType = unit->orderType;
+      if (bestUnitByType[unitType] == 0 ||
+          bestUnitByType[unitType]->field_38 / 100 < qualityLevel) {
+        bestUnitByType[unitType] = unit;
+      }
+    }
+  }
+
+  CIterator missionIter(missionQueue);
+  for (TMission* mission = static_cast<TMission*>(missionIter.Reset()); missionIter.More();
+       mission = static_cast<TMission*>(missionIter.Advance())) {
+    mission->AssertValid();
+    if (mission->flag10 == 0) {
+      mission->ReturnZeroSlot2C(resourcePools + 1, 1);
+    }
+  }
+
+  interiorMinister->AssertValid();
+  int averageAllocation = interiorMinister->GetAverageDevelopmentOrderAllocation();
+  int cityActionLimit = averageAllocation + 2;
+  int industryActionLimit = averageAllocation / 2 + 1;
+  float developmentBudget =
+      interiorMinister->GetAiDevelopmentResourceBudgetScale(resourcePools + 1);
+  int industryActionCount = 0;
+  int cityActionCount = 0;
+
+  for (int iteration = 0; iteration < 99; ++iteration) {
+    int selectedSlot = -1;
+    char selectedIsIndustry;
+    char selectedIsUpgrade;
+    float selectedWeightedCost;
+    if (!SelectBestCityDevelopmentFromResourcePools(nationSlot, resourcePools, bestUnitByType,
+                                                    &selectedIsIndustry, &selectedIsUpgrade,
+                                                    &selectedSlot, 0, &selectedWeightedCost)) {
+      return;
+    }
+
+    bool applyAction;
+    if (selectedIsIndustry != 0) {
+      applyAction = industryActionCount++ < industryActionLimit;
+    } else {
+      applyAction = cityActionCount++ < cityActionLimit;
+    }
+    if (industryActionCount > industryActionLimit && cityActionCount > cityActionLimit) {
+      return;
+    }
+
+    if (selectedIsIndustry != 0) {
+      if (applyAction) {
+        interiorMinister->InteriorSlot1B(static_cast<short>(selectedSlot));
+      }
+
+      int actionCost = g_pNationInteractionStateManager->QueryProposalWeightSlot4C(0x0b) *
+                       g_industryActionCostWeightResCode0B[selectedSlot];
+      actionCost += g_pNationInteractionStateManager->QueryProposalWeightSlot4C(0x08) *
+                    g_industryActionCostWeightResCode08[selectedSlot];
+      actionCost += g_pNationInteractionStateManager->QueryProposalWeightSlot4C(0x09) *
+                    g_industryActionCostWeightResCode09[selectedSlot];
+      actionCost += g_pNationInteractionStateManager->QueryProposalWeightSlot4C(0x10) *
+                    g_industryActionCostWeightResCode10[selectedSlot];
+      actionCost += g_pNationInteractionStateManager->QueryProposalWeightSlot4C(0x0c) *
+                    g_industryActionCostWeightResCode0C[selectedSlot];
+      actionCost += g_pNationInteractionStateManager->QueryProposalWeightSlot4C(0x03) *
+                    g_industryActionCostWeightResCode03[selectedSlot];
+      developmentBudget -= static_cast<float>(actionCost);
+
+      for (int resourceIndex = 0; resourceIndex < 4; ++resourceIndex) {
+        resourcePools[5 + resourceIndex] -= GetNormalizedIndustryActionResourceCostPercent(
+            resourceIndex, static_cast<short>(selectedSlot));
+      }
+    } else {
+      if (applyAction) {
+        interiorMinister->InteriorSlot1C(static_cast<short>(selectedSlot));
+      }
+      developmentBudget -=
+          ComputeAiCityActionCostFromSlotAndMode(static_cast<short>(selectedSlot), 0);
+      for (int resourceIndex = 0; resourceIndex < 5; ++resourceIndex) {
+        resourcePools[resourceIndex] -= GetNormalizedCityActionResourceCostPercent(
+            static_cast<short>(selectedSlot), static_cast<short>(resourceIndex));
+      }
+    }
+  }
+}
+
+// FUNCTION: IMPERIALISM 0x004eb6b0
+void TAutoGreatPower::UpdateTrackedEntryEligibilityByClassMaskAndRatio(int unused) {
+  (void)unused;
+  missionQueue->SortBy(&CompareMissionOrderEntriesByMovementClassThenEfficiency, this);
+
+  TMission* nextByClass[4] = {nullptr, nullptr, nullptr, nullptr};
+  int availableClassMask = 3;
+  {
+    CIterator candidateIter(missionQueue);
+    for (TMission* mission = static_cast<TMission*>(candidateIter.Reset()); candidateIter.More();
+         mission = static_cast<TMission*>(candidateIter.Advance())) {
+      int classMask = static_cast<char>(mission->marker11);
+      if (mission->flag10 == 0 && classMask != 0) {
+        nextByClass[classMask] = mission;
+      }
+    }
+  }
+
+  CIterator missionIter(missionQueue);
+  for (TMission* mission = static_cast<TMission*>(missionIter.Reset()); missionIter.More();
+       mission = static_cast<TMission*>(missionIter.Advance())) {
+    int classMask = static_cast<char>(mission->marker11);
+    if (nextByClass[classMask] == mission) {
+      nextByClass[classMask] = nullptr;
+    }
+
+    unsigned char eligible =
+        classMask == 0 || (classMask & availableClassMask) == classMask || mission->state08 != 0;
+    if (eligible && (classMask & 1) != 0 && !mission->ReturnFalseSlot50()) {
+      eligible = 0;
+    }
+    if (eligible && classMask != 0) {
+      TMission* nextMission = nextByClass[classMask];
+      if (nextMission != nullptr &&
+          mission->value0c / mission->ReturnZeroFloatSlot6C() <
+              (nextMission->value0c / nextMission->ReturnZeroFloatSlot6C()) *
+                  g_MissionEligibilityRatioMargin_006545f8) {
+        eligible = 0;
+      } else {
+        availableClassMask &= ~classMask;
+      }
+    }
+    mission->SetFlag10FromArgSlot94(!eligible);
+  }
+}
+
+// FUNCTION: IMPERIALISM 0x00535b00
+bool SelectBestCityDevelopmentFromResourcePools(short nationSlot, int* resourcePools,
+                                                TMilitaryUnit** bestUnitByType,
+                                                char* selectedIsIndustry, char* selectedIsUpgrade,
+                                                int* selectedSlot, int unused,
+                                                float* selectedWeightedCost) {
+  (void)unused;
+  *selectedSlot = -1;
+  int resourceIndex = 0;
+  while (resourceIndex < 9 && resourcePools[resourceIndex] <= 0) {
+    ++resourceIndex;
+  }
+  if (resourceIndex >= 9) {
+    return false;
+  }
+
+  float bestScore = 0.0f;
+  for (short actionSlot = 0; actionSlot < 30; ++actionSlot) {
+    if (g_pCityOrderCapabilityState->abilityActiveRows395[nationSlot]
+            .abilityActiveById[actionSlot] == 0) {
+      continue;
+    }
+    short category = GetCityActionCategoryCodeBySlot(actionSlot);
+    if (category == 0 || category == 9) {
+      continue;
+    }
+
+    float weightedCost = 0.0f;
+    for (short poolIndex = 0; poolIndex < 5; ++poolIndex) {
+      if (resourcePools[poolIndex] > 0) {
+        weightedCost +=
+            static_cast<float>(GetNormalizedCityActionResourceCostPercent(actionSlot, poolIndex) *
+                               resourcePools[poolIndex]);
+      }
+    }
+    float score = weightedCost / static_cast<TAutoGreatPower*>(g_apNationStates[nationSlot])
+                                     ->ComputeAiCityActionCostFromSlotAndMode(actionSlot, 0);
+    if (score > bestScore) {
+      bestScore = score;
+      *selectedSlot = actionSlot;
+      *selectedIsIndustry = 0;
+      *selectedIsUpgrade = 0;
+      if (selectedWeightedCost != 0) {
+        *selectedWeightedCost = weightedCost;
+      }
+    }
+  }
+
+  for (short unitType = 0; unitType < 30; ++unitType) {
+    short category = GetCityActionCategoryCodeBySlot(unitType);
+    if (category == 0 || category == 9 || bestUnitByType[unitType] == 0) {
+      continue;
+    }
+
+    short upgradeSlot = bestUnitByType[unitType]->ResolveEraCapabilityFallbackSlot();
+    float weightedCost = 0.0f;
+    for (short poolIndex = 0; poolIndex < 5; ++poolIndex) {
+      if (resourcePools[poolIndex] > 0) {
+        int costDelta = GetNormalizedCityActionResourceCostPercent(upgradeSlot, poolIndex) -
+                        GetNormalizedCityActionResourceCostPercent(unitType, poolIndex);
+        weightedCost += static_cast<float>(costDelta * resourcePools[poolIndex]);
+      }
+    }
+    int qualityMultiplier = (bestUnitByType[unitType]->field_38 / 100 + 10) / 10;
+    weightedCost *= static_cast<float>(qualityMultiplier);
+    float score = weightedCost / static_cast<TAutoGreatPower*>(g_apNationStates[nationSlot])
+                                     ->ComputeAiCityActionCostFromSlotAndMode(upgradeSlot, 1);
+    if (score > bestScore) {
+      bestScore = score;
+      *selectedSlot = upgradeSlot;
+      *selectedIsIndustry = 0;
+      *selectedIsUpgrade = 1;
+      if (selectedWeightedCost != 0) {
+        *selectedWeightedCost = weightedCost;
+      }
+    }
+  }
+
+  for (short industryClass = 0; industryClass < 4; ++industryClass) {
+    short industrySlot = GetEnabledIndustryCapabilitySlotByClass(industryClass);
+    if (industrySlot <= 0) {
+      continue;
+    }
+
+    float weightedCost = 0.0f;
+    for (int poolIndex = 0; poolIndex < 4; ++poolIndex) {
+      if (resourcePools[5 + poolIndex] > 0) {
+        weightedCost += static_cast<float>(
+            GetNormalizedIndustryActionResourceCostPercent(poolIndex, industrySlot) *
+            resourcePools[5 + poolIndex]);
+      }
+    }
+    float score = weightedCost / static_cast<TAutoGreatPower*>(g_apNationStates[nationSlot])
+                                     ->ComputeAiIndustryActionCostFromSlot(industrySlot);
+    if (score > bestScore) {
+      bestScore = score;
+      *selectedSlot = industrySlot;
+      *selectedIsIndustry = 1;
+      *selectedIsUpgrade = 0;
+      if (selectedWeightedCost != 0) {
+        *selectedWeightedCost = weightedCost;
+      }
+    }
+  }
+
+  if (*selectedSlot < 0) {
+    return false;
+  }
+
+  if (*selectedIsIndustry != 0) {
+    for (int poolIndex = 0; poolIndex < 4; ++poolIndex) {
+      resourcePools[5 + poolIndex] -= GetNormalizedIndustryActionResourceCostPercent(
+          poolIndex, static_cast<short>(*selectedSlot));
+    }
+  } else {
+    for (short poolIndex = 0; poolIndex < 5; ++poolIndex) {
+      resourcePools[poolIndex] -=
+          GetNormalizedCityActionResourceCostPercent(static_cast<short>(*selectedSlot), poolIndex);
+    }
+  }
+  return true;
 }
 TAutoGreatPower::~TAutoGreatPower() {}

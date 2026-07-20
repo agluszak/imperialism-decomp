@@ -204,6 +204,11 @@ short TMilitaryUnit::ResolveEraCapabilityFallbackSlot() {
   return candidate;
 }
 
+// FUNCTION: IMPERIALISM 0x005c3650
+bool TMilitaryUnit::HasEraCapabilityFallbackSlot() {
+  return ResolveEraCapabilityFallbackSlot() != -1;
+}
+
 // FUNCTION: IMPERIALISM 0x005c3670
 bool TMilitaryUnit::ApplyEraCapabilityCostAndSetSelection() {
   if (ResolveEraCapabilityFallbackSlot() == -1) {

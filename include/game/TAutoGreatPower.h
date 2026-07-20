@@ -9,6 +9,10 @@ public:
 
   TAutoGreatPower();
   ~TAutoGreatPower() override;
+  void InitializeNationMinisterSubsystemsByPolicyIds(int nationSlot, int nationInitializationMode,
+                                                     short cityMinisterPolicyId,
+                                                     short foreignMinisterPolicyId,
+                                                     short defenseMinisterPolicyId);
   // Destructor real body 0x004e6bb0; scalar deleting destructor 0x004e6b80
   // (both paired via symbols.csv names).
 
@@ -52,7 +56,7 @@ public:
   void PruneInvalidTrackedEntriesAndNotifyOwner(void) override;
   // slots 0xad/0xae — 0x004eaa20/0x004eae70: AI turn tail hooks.
   void NoOpTailStateHookSlot2B4(void) override;
-  void NoOpTailStateHookSlot2B8(int arg) override;
+  void RefreshTrackedEntriesAndReplanAiDevelopment(int unused) override;
   // slot 0x36 — 0x004e7550: forward to slots 0x4d/0x4e when city exists.
   void RefreshGreatPowerRelationPanelsAndDispatchDeltaSummary(void) override;
   // slot 0x67 — 0x004e7680: need assignment with capability caps / escalation roll.
@@ -119,7 +123,18 @@ public:
   // (ownerMission40 == nullptr) militaryUnitList44 unit (ReturnZeroFloatSlot78),
   // dispatching via AdoptUnitSlot80 and restarting. Stops when neither pass finds a
   // candidate to act on.
-  void AssignTrackedEntryActionsByProfileToOrdersOrUnits();
+  void AssignTrackedEntryActionsByProfileToOrdersOrUnits(int unused);
+
+  // Sorts the mission queue, then marks entries whose class requirements cannot be
+  // satisfied by the remaining class mask or whose value/cost ratio loses to the next
+  // entry of the same class. 0x4eb6b0.
+  void UpdateTrackedEntryEligibilityByClassMaskAndRatio(int unused);
+
+  // Chooses and applies city/industry development actions while resource pools remain.
+  void PlanAiDevelopmentActionsFromResourcePools(int unused);
+  float ComputeAiIndustryActionCostFromSlot(short industrySlot);
+  float ComputeAiCityActionCostFromSlotAndMode(short actionSlot, char skipContextBias);
+  float GetCachedAiCityActionContextBias(short selector);
 
   void QueueMapActionMissionFromCandidateAndMarkState(eMissionType arg1, int arg2,
                                                       TZone* portZoneContext, int arg4);
@@ -156,3 +171,9 @@ public:
   float floatB68;
   int fieldb6c;
 };
+
+bool SelectBestCityDevelopmentFromResourcePools(short nationSlot, int* resourcePools,
+                                                TMilitaryUnit** bestUnitByType,
+                                                char* selectedIsIndustry, char* selectedIsUpgrade,
+                                                int* selectedSlot, int unused,
+                                                float* selectedWeightedCost);

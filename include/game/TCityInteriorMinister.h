@@ -108,6 +108,8 @@ public:
   // array to the owning great power, allocates the tracked-list members and the city-policy
   // TFuzzySet, and seeds the fuzzy set with four policy curves.
   void InitializeCityInteriorState(TGreatPower* owner);
+  float GetAiDevelopmentResourceBudgetScale(int* resourcePools);
+  int GetAverageDevelopmentOrderAllocation();
 
   DECLARE_DYNCREATE(TCityInteriorMinister)
   void WriteTo(TStream* stream) override;  // slot 0x14
