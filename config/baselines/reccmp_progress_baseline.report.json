@@ -12911,7 +12911,7 @@
     },
     {
       "address": "0x4dd430",
-      "matching": 0.5714285714285714,
+      "matching": 0.5142857142857142,
       "name": "TGreatPower::ComputeRemainingDiplomacyAidBudget",
       "type": 1
     },
@@ -13343,7 +13343,8 @@
     },
     {
       "address": "0x4e0590",
-      "matching": 1.0,
+      "effective": true,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::ComputeMinisterSkillFloatSlot88",
       "type": 1
     },
@@ -13355,26 +13356,27 @@
     },
     {
       "address": "0x4e0610",
-      "effective": true,
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::ComputeMinisterSkillFloatSlot8A",
       "type": 1
     },
     {
       "address": "0x4e0650",
-      "matching": 1.0,
+      "effective": true,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::ComputeMinisterSkillFloatSlot8B",
       "type": 1
     },
     {
       "address": "0x4e0690",
-      "matching": 1.0,
+      "effective": true,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::ComputeMinisterSkillFloatSlot8C",
       "type": 1
     },
     {
       "address": "0x4e06d0",
-      "matching": 0.7619047619047619,
+      "matching": 0.8095238095238095,
       "name": "TGreatPower::SumCommodityRecordAccumulatedValues",
       "type": 1
     },
@@ -13398,13 +13400,13 @@
     },
     {
       "address": "0x4e0890",
-      "matching": 0.2828282828282828,
+      "matching": 0.26262626262626265,
       "name": "TGreatPower::GetScoreFactorSlot23C",
       "type": 1
     },
     {
       "address": "0x4e09a0",
-      "matching": 0.5542168674698795,
+      "matching": 0.5783132530120482,
       "name": "TGreatPower::GetScoreFactorSlot240",
       "type": 1
     },
@@ -14337,7 +14339,7 @@
     },
     {
       "address": "0x4ec160",
-      "matching": 0.3181818181818182,
+      "matching": 1.0,
       "name": "TDefenseMinister::InitializeBaseOrderArrayMetrics",
       "type": 1
     },
@@ -14427,8 +14429,8 @@
     },
     {
       "address": "0x4ed560",
-      "matching": 0.0,
-      "name": "InitializeMinisterOrderArrayPreset_50_0_10_50",
+      "matching": 1.0,
+      "name": "TDefenseMinister::InitializeOrderArrayPreset50_0_10_50",
       "type": 1
     },
     {
@@ -14469,8 +14471,8 @@
     },
     {
       "address": "0x4ed890",
-      "matching": 0.0,
-      "name": "InitializeMinisterOrderArrayPreset_10_10_10_50",
+      "matching": 1.0,
+      "name": "TDefenseMinister::InitializeOrderArrayPreset10_10_10_50",
       "type": 1
     },
     {
@@ -14511,8 +14513,8 @@
     },
     {
       "address": "0x4edb80",
-      "matching": 0.0,
-      "name": "InitializeMinisterOrderArrayPreset_15_20_50_75",
+      "matching": 1.0,
+      "name": "TDefenseMinister::InitializeOrderArrayPreset15_20_50_75",
       "type": 1
     },
     {
@@ -14553,8 +14555,8 @@
     },
     {
       "address": "0x4ede60",
-      "matching": 0.0,
-      "name": "InitializeMinisterOrderArrayPreset_20_10_10_50",
+      "matching": 1.0,
+      "name": "TDefenseMinister::InitializeOrderArrayPreset20_10_10_50",
       "type": 1
     },
     {
@@ -14595,8 +14597,8 @@
     },
     {
       "address": "0x4ee150",
-      "matching": 0.0,
-      "name": "InitializeMinisterOrderArrayPreset_25_10_20_50",
+      "matching": 1.0,
+      "name": "TDefenseMinister::InitializeOrderArrayPreset25_10_20_50",
       "type": 1
     },
     {

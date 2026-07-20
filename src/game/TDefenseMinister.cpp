@@ -35,21 +35,16 @@ TDefenseMinister::~TDefenseMinister() {}
 // FUNCTION: IMPERIALISM 0x004ec160
 void TDefenseMinister::InitializeBaseOrderArrayMetrics(TGreatPower* owner) {
   this->InitializeBaseOrderArray(owner);
-  char* raw = reinterpret_cast<char*>(this);
-  *reinterpret_cast<short*>(raw + 0x10) = 0;
-  *reinterpret_cast<short*>(raw + 0x12) = 0;
-  *reinterpret_cast<short*>(raw + 0x8c) = 0;
-  *reinterpret_cast<short*>(raw + 0x8e) = 0;
-  *reinterpret_cast<short*>(raw + 0x90) = 0;
-  *reinterpret_cast<short*>(raw + 0x92) = 0;
-  short* cursor = reinterpret_cast<short*>(raw + 0x14);
-  int remaining = 0x1e;
-  do {
-    cursor[0x1e] = 0;
-    *cursor = 0;
-    ++cursor;
-    --remaining;
-  } while (remaining != 0);
+  field10 = 0;
+  field12 = 0;
+  thresholdA = 0;
+  thresholdB = 0;
+  thresholdC = 0;
+  thresholdD = 0;
+  for (int i = 0; i < 0x1e; ++i) {
+    orderWeightTableB[i] = 0;
+    orderWeightTableA[i] = 0;
+  }
 }
 
 // Slot 5 override (0x4ec1d0): serialize defense-minister order-array metrics.
@@ -57,10 +52,9 @@ void TDefenseMinister::InitializeBaseOrderArrayMetrics(TGreatPower* owner) {
 // FUNCTION: IMPERIALISM 0x004ec1d0
 void TDefenseMinister::WriteTo(TStream* stream) {
   TMinister::WriteTo(stream);
-  char* raw = reinterpret_cast<char*>(this);
-  stream->WriteBytesSlot78(raw + 0x10, 2);
-  stream->WriteBytesSlot78(raw + 0x12, 2);
-  short* cursor = reinterpret_cast<short*>(raw + 0x14);
+  stream->WriteBytesSlot78(&field10, 2);
+  stream->WriteBytesSlot78(&field12, 2);
+  short* cursor = orderWeightTableA;
   int remaining = 0x1e;
   do {
     unsigned int stackWord = static_cast<unsigned int>(*cursor);
@@ -72,7 +66,7 @@ void TDefenseMinister::WriteTo(TStream* stream) {
     cursor = cursor + 1;
     remaining = remaining - 1;
   } while (remaining != 0);
-  cursor = reinterpret_cast<short*>(raw + 0x50);
+  cursor = orderWeightTableB;
   remaining = 0x1e;
   do {
     unsigned int stackWord = static_cast<unsigned int>(*cursor);
@@ -84,10 +78,10 @@ void TDefenseMinister::WriteTo(TStream* stream) {
     cursor = cursor + 1;
     remaining = remaining - 1;
   } while (remaining != 0);
-  stream->WriteBytesSlot78(raw + 0x8c, 2);
-  stream->WriteBytesSlot78(raw + 0x8e, 2);
-  stream->WriteBytesSlot78(raw + 0x90, 2);
-  stream->WriteBytesSlot78(raw + 0x92, 2);
+  stream->WriteBytesSlot78(&thresholdA, 2);
+  stream->WriteBytesSlot78(&thresholdB, 2);
+  stream->WriteBytesSlot78(&thresholdC, 2);
+  stream->WriteBytesSlot78(&thresholdD, 2);
 }
 
 // Slot 6 override (0x4ec2f0): deserialize defense-minister order-array metrics.
@@ -95,11 +89,10 @@ void TDefenseMinister::WriteTo(TStream* stream) {
 // FUNCTION: IMPERIALISM 0x004ec2f0
 void TDefenseMinister::ReadFrom(TStream* stream) {
   TMinister::ReadFrom(stream);
-  char* raw = reinterpret_cast<char*>(this);
-  stream->ReadBytes(raw + 0x10, 2);
-  stream->ReadBytes(raw + 0x12, 2);
-  stream->ReadBytes(raw + 0x14, 0x3c);
-  unsigned char* pairCursor = reinterpret_cast<unsigned char*>(raw + 0x14);
+  stream->ReadBytes(&field10, 2);
+  stream->ReadBytes(&field12, 2);
+  stream->ReadBytes(orderWeightTableA, 0x3c);
+  unsigned char* pairCursor = reinterpret_cast<unsigned char*>(orderWeightTableA);
   int pairCount = 0x1e;
   do {
     unsigned char highByte = pairCursor[0];
@@ -108,8 +101,8 @@ void TDefenseMinister::ReadFrom(TStream* stream) {
     pairCursor = pairCursor + 2;
     pairCount = pairCount - 1;
   } while (pairCount != 0);
-  stream->ReadBytes(raw + 0x50, 0x3c);
-  pairCursor = reinterpret_cast<unsigned char*>(raw + 0x50);
+  stream->ReadBytes(orderWeightTableB, 0x3c);
+  pairCursor = reinterpret_cast<unsigned char*>(orderWeightTableB);
   pairCount = 0x1e;
   do {
     unsigned char highByte = pairCursor[0];
@@ -118,10 +111,10 @@ void TDefenseMinister::ReadFrom(TStream* stream) {
     pairCursor = pairCursor + 2;
     pairCount = pairCount - 1;
   } while (pairCount != 0);
-  stream->ReadBytes(raw + 0x8c, 2);
-  stream->ReadBytes(raw + 0x8e, 2);
-  stream->ReadBytes(raw + 0x90, 2);
-  stream->ReadBytes(raw + 0x92, 2);
+  stream->ReadBytes(&thresholdA, 2);
+  stream->ReadBytes(&thresholdB, 2);
+  stream->ReadBytes(&thresholdC, 2);
+  stream->ReadBytes(&thresholdD, 2);
 }
 
 // Slot 10 override (0x4ec3d0).
@@ -168,4 +161,121 @@ undefined TDefenseMinister::BuildStrategicTilePriorityHeatmap() {
 // FUNCTION: IMPERIALISM 0x004ed050
 undefined TDefenseMinister::BuildHexAreaTileIndexListIntoAllocatedBuffer(char) {
   return 0;
+}
+
+// Five personality-specific order-array initializers (0x4ed560/0x4ed890/0x4edb80/
+// 0x4ede60/0x4ee150) called from TNapoleonMinister/TBismarckMinister/TPirateMinister/
+// TDefenderMinister/TBullyMinister's own construction. Each duplicates
+// InitializeBaseOrderArrayMetrics's zeroing prefix inline (the original has no shared
+// call between them -- every one of the six addresses inlines its own copy), then
+// seeds its own thresholdA-D quad and orderWeightTableB[2]/[4]/[7] prefix.
+
+// FUNCTION: IMPERIALISM 0x004ed560
+void TDefenseMinister::InitializeOrderArrayPreset50_0_10_50(TGreatPower* owner) {
+  this->InitializeBaseOrderArray(owner);
+  field10 = 0;
+  field12 = 0;
+  thresholdA = 0;
+  thresholdB = 0;
+  thresholdC = 0;
+  thresholdD = 0;
+  for (int i = 0; i < 0x1e; ++i) {
+    orderWeightTableB[i] = 0;
+    orderWeightTableA[i] = 0;
+  }
+  thresholdC = 10;
+  thresholdA = 0x32;
+  thresholdB = 0;
+  orderWeightTableB[2] = 0x23;
+  orderWeightTableB[7] = 0x37;
+  orderWeightTableB[4] = 0x5a;
+  thresholdD = 0x32;
+}
+
+// FUNCTION: IMPERIALISM 0x004ed890
+void TDefenseMinister::InitializeOrderArrayPreset10_10_10_50(TGreatPower* owner) {
+  this->InitializeBaseOrderArray(owner);
+  field10 = 0;
+  field12 = 0;
+  thresholdA = 0;
+  thresholdB = 0;
+  thresholdC = 0;
+  thresholdD = 0;
+  for (int i = 0; i < 0x1e; ++i) {
+    orderWeightTableB[i] = 0;
+    orderWeightTableA[i] = 0;
+  }
+  orderWeightTableB[2] = 0x23;
+  thresholdA = 10;
+  thresholdB = 10;
+  thresholdC = 10;
+  orderWeightTableB[7] = 0x37;
+  orderWeightTableB[4] = 0x5a;
+  thresholdD = 0x32;
+}
+
+// FUNCTION: IMPERIALISM 0x004edb80
+void TDefenseMinister::InitializeOrderArrayPreset15_20_50_75(TGreatPower* owner) {
+  this->InitializeBaseOrderArray(owner);
+  field10 = 0;
+  field12 = 0;
+  thresholdA = 0;
+  thresholdB = 0;
+  thresholdC = 0;
+  thresholdD = 0;
+  for (int i = 0; i < 0x1e; ++i) {
+    orderWeightTableB[i] = 0;
+    orderWeightTableA[i] = 0;
+  }
+  thresholdA = 0xf;
+  thresholdB = 0x14;
+  thresholdC = 0x32;
+  orderWeightTableB[2] = 0x4b;
+  orderWeightTableB[7] = 100;
+  orderWeightTableB[4] = 0x6e;
+  thresholdD = 0x4b;
+}
+
+// FUNCTION: IMPERIALISM 0x004ede60
+void TDefenseMinister::InitializeOrderArrayPreset20_10_10_50(TGreatPower* owner) {
+  this->InitializeBaseOrderArray(owner);
+  field10 = 0;
+  field12 = 0;
+  thresholdA = 0;
+  thresholdB = 0;
+  thresholdC = 0;
+  thresholdD = 0;
+  for (int i = 0; i < 0x1e; ++i) {
+    orderWeightTableB[i] = 0;
+    orderWeightTableA[i] = 0;
+  }
+  thresholdA = 0x14;
+  thresholdB = 10;
+  thresholdC = 10;
+  orderWeightTableB[2] = 0x4b;
+  orderWeightTableB[7] = 100;
+  orderWeightTableB[4] = 0x6e;
+  thresholdD = 0x32;
+}
+
+// FUNCTION: IMPERIALISM 0x004ee150
+void TDefenseMinister::InitializeOrderArrayPreset25_10_20_50(TGreatPower* owner) {
+  this->InitializeBaseOrderArray(owner);
+  field10 = 0;
+  field12 = 0;
+  thresholdA = 0;
+  thresholdB = 0;
+  thresholdC = 0;
+  thresholdD = 0;
+  for (int i = 0; i < 0x1e; ++i) {
+    orderWeightTableB[i] = 0;
+    orderWeightTableA[i] = 0;
+  }
+  thresholdA = 0x19;
+  thresholdB = 10;
+  thresholdC = 0x14;
+  orderWeightTableB[2] = 0x23;
+  orderWeightTableB[7] = 0x37;
+  orderWeightTableB[4] = 0x5a;
+  thresholdD = 0x32;
 }
