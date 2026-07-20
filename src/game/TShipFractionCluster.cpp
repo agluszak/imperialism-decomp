@@ -1,5 +1,7 @@
 #include "game/TShipFractionCluster.h"
 
+#include "game/TOcean.h"
+#include "game/TTaskForce.h"
 #include "game/TTechMgr.h"
 #include "game/global_data_tables.h"
 #include "game/ui_control_tags.h"
@@ -49,6 +51,32 @@ void TShipFractionCluster::NoOpUiLifecycleHook(int arg) {
 
 // FUNCTION: IMPERIALISM 0x00568eb0
 void TShipFractionCluster::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+  if (commandId == 0x64) {
+    if (field94 < field88) {
+      field94 = static_cast<short>(field94 + 1);
+      field90->SetTextThemeCodeAndMaybeRefresh(field94, 1);
+      SelectTaskForceOrderForActiveNationClass(1);
+    }
+  } else if (commandId == 0x65) {
+    if (field94 > 0) {
+      field94 = static_cast<short>(field94 - 1);
+      field90->SetTextThemeCodeAndMaybeRefresh(field94, 1);
+      SelectTaskForceOrderForActiveNationClass(0);
+    }
+  } else {
+    TCluster::HandleEvent(commandId, sourceHandler, event);
+  }
+}
+
+// Shared tail for the increment/decrement handlers above: reselects this cluster's task
+// force order entry for the active nation class and notifies field8c's selection listener.
+void TShipFractionCluster::SelectTaskForceOrderForActiveNationClass(char activeFlag) {
+  g_pActiveMapOrderContext->selectedTaskForce14->SetTaskForceOrderSelectionByNationClassAndFlag(
+      static_cast<short>(controlTag - 0x7330), activeFlag);
+  // TODO: the original then calls field8c's own vtable slot 0x1b0 with an arg read from a
+  // sub-object at field8c+0xa0 (NotifyTaskForceSelectionListenerByWord62, 0x599a20) --
+  // field8c's concrete class beyond TView isn't confirmed, so this notify step is left
+  // unmodeled rather than guessing a type for the +0xa0 field.
 }
 
 // The original names this via a stale/reused symbol ("TToolBarCluster::..."); confirmed as

@@ -127,6 +127,7 @@ public:
   TShipFractionCluster();
 
   void UpdateIndustryCapabilityControlStateAndValue(int p1, int p2);
+  void SelectTaskForceOrderForActiveNationClass(char activeFlag);
 
   // Original object size is 0x98 (CRuntimeClass m_nObjectSize); the source class ended at
   // 0x88. Enabled/disabled state gate for the ship/arrow controls, set by
