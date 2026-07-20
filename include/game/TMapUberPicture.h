@@ -235,6 +235,11 @@ public:
   // Refreshes the 4 order-quota slider controls ("0slc".."3slc") from
   // orderEntryContext98, or clears them if it's null. 0x00597810, __thiscall, 1 arg.
   void RefreshMapOrderEntryPanel(TTaskForce* pMapOrderEntry);
+  // Leaves the alternate zoomed-out ("ZmOt") map mode: asserts/retags the zoom-out control
+  // ('controlOverride' when non-null, else resolved by tag 'ZmOt') back to 'ZmIn', clears
+  // invalidationFlag94, and restores subviewAc to goodGoldTagControlA4. 0x00599b90,
+  // __thiscall, 1 arg (a TView* override for the zoom control, or null to resolve it).
+  void CommitPendingUiModeChangeAndRefreshViews(TView* controlOverride);
   // Sets orderEntryContext98 (invalidating the old/new map regions around the write),
   // then calls RefreshMapOrderEntryPanel. 0x00597950, __thiscall, 1 arg.
   void SetActiveMapOrderEntry(TZone* pMapOrderContextZone);

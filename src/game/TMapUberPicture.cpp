@@ -152,8 +152,7 @@ void TMapUberPicture::HandleEvent(int commandId, TEventHandler* sourceHandler, T
       return;
     }
     if (tag == kControlTagZmOt) {
-      // Original calls the currently-unowned 263-byte
-      // CommitPendingUiModeChangeAndRefreshViews (0x599b90) here -- not yet ported.
+      CommitPendingUiModeChangeAndRefreshViews(this);
       return;
     } else if (tag == kControlTagZmIn) {
       EnterMapInteractionOverlayMode(0);
@@ -410,6 +409,31 @@ void TMapUberPicture::EnterMapInteractionOverlayMode(int param1) {
     this->field_0xc0->markerBoxY94 =
         this->field_0xc0->frameHeight38 / 2 - this->field_0xc0->markerBoxHeight9c - 2;
     this->field_0xc0->RefreshControl();
+  }
+}
+
+// FUNCTION: IMPERIALISM 0x00599b90
+void TMapUberPicture::CommitPendingUiModeChangeAndRefreshViews(TView* controlOverride) {
+  if (invalidationFlag94 != 0) {
+    if (g_pUiAnimator != nullptr) {
+      // The original also calls g_pUiAnimator->registryList24's own vtable slot 0x54 here
+      // (CallObjectOffset24Vslot54IfPresent) -- TList's real slot at that byte offset is
+      // unresolved, so left unmodeled.
+    }
+    TView* zoomControl =
+        (controlOverride != nullptr) ? controlOverride : ResolveControlByTag(kControlTagZmOt);
+    zoomControl->AssertValid();
+    if (zoomControl != nullptr) {
+      zoomControl->controlTag = kControlTagZmIn;
+    }
+    invalidationFlag94 = 0;
+    // The original also dispatches subview2A8/goodGoldTagControlA4's own vtable slots
+    // 0x288/0x1d8/0xf0 here (beyond either class's currently-declared extent), then writes
+    // goodGoldTagControlA4's raw pointer value into subviewAc -- but goodGoldTagControlA4
+    // is TOceanDialog* (TWorldView-derived) while subviewAc is declared TMapDialog*, an
+    // unrelated type per the existing class hierarchy, so that assignment is left
+    // unmodeled pending resolution of the mismatch, along with refreshing field_0xc0's
+    // rect cache.
   }
 }
 
