@@ -37,8 +37,8 @@ undefined TCzechBox::OrphanCallChain_C4_I45_00571d40(char param_1) {
 }
 
 // FUNCTION: IMPERIALISM 0x00571de0
-undefined TCzechBox::OrphanLeaf_NoCall_Ins02_00571de0() {
-  return 0;
+unsigned char TCzechBox::GetCheckedStateByte() {
+  return static_cast<unsigned char>(checkedStateByte94);
 }
 
 // FUNCTION: IMPERIALISM 0x00571e00

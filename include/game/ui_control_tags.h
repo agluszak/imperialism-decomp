@@ -210,3 +210,7 @@ const unsigned int kControlTagTsol = 0x74736f6cu; // 'tsol' — trade-book contr
 const unsigned int kControlTagRtil = 0x7274696cu; // 'rtil' — trade-book season/year label
 const unsigned int kControlTagTitL = 0x7469744cu; // 'titL' — trade-book title (uppercase-L variant, distinct from kControlTagTitl)
 const unsigned int kControlTagDisp = 0x64697370u; // 'disp' — minister-view display/help sub-picture
+const unsigned int kControlTagOpta = 0x6f707461u; // 'opta' — first of 26 sequential game-preferences checkboxes (opta-opt+0x19)
+const unsigned int kControlTagMusi = 0x6d757369u; // 'musi' — music-volume scrollbar
+const unsigned int kControlTagSoun = 0x736f756eu; // 'soun' — sound-effects-volume scrollbar
+const unsigned int kControlTagOpca = 0x6f706361u; // 'opca' — auto-resolution-mode checkbox
