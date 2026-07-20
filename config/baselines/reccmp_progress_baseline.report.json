@@ -15005,8 +15005,8 @@
     },
     {
       "address": "0x4f2ce0",
-      "matching": 0.3333333333333333,
-      "name": "TMinisterView::OrphanLeaf_NoCall_Ins04_004f2ce0",
+      "matching": 0.8888888888888888,
+      "name": "TMinisterView::SetAuxNationStateSlot",
       "type": 1
     },
     {
@@ -15024,19 +15024,19 @@
     {
       "address": "0x4f2ea0",
       "matching": 1.0,
-      "name": "TMinisterView::OrphanLeaf_NoCall_Ins03_004f2ea0",
+      "name": "TMinisterView::NotifyWindowStatusTick",
       "type": 1
     },
     {
       "address": "0x4f2ec0",
-      "matching": 0.2,
-      "name": "TMinisterView::OrphanCallChain_C2_I08_004f2ec0",
+      "matching": 1.0,
+      "name": "TMinisterView::ShowMinisterHelpDialog",
       "type": 1
     },
     {
       "address": "0x4f2ef0",
-      "matching": 0.18181818181818182,
-      "name": "TMinisterView::OrphanCallChain_C1_I09_004f2ef0",
+      "matching": 0.8421052631578947,
+      "name": "TMinisterView::FreeDisplayHelpControl",
       "type": 1
     },
     {
@@ -21925,7 +21925,7 @@
     },
     {
       "address": "0x545940",
-      "matching": 0.3862938419266203,
+      "matching": 0.3850008081461128,
       "name": "TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine",
       "type": 1
     },
@@ -30837,7 +30837,7 @@
     },
     {
       "address": "0x5a9240",
-      "matching": 0.5397590361445783,
+      "matching": 0.5304136253041363,
       "name": "TTacticalBattleView::AnimateTacticalUnitMoveBetweenTiles",
       "type": 1
     },
@@ -32812,7 +32812,7 @@
     },
     {
       "address": "0x5bf930",
-      "matching": 0.7956989247311828,
+      "matching": 0.7477253928866832,
       "name": "TOfferDeskPicture::RefreshSelectedNationOrderCompatibilityInfo",
       "type": 1
     },

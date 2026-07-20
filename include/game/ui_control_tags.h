@@ -209,3 +209,4 @@ const unsigned int kControlTagTbou = 0x74626f75u; // 'tbou' — trade-book contr
 const unsigned int kControlTagTsol = 0x74736f6cu; // 'tsol' — trade-book control region
 const unsigned int kControlTagRtil = 0x7274696cu; // 'rtil' — trade-book season/year label
 const unsigned int kControlTagTitL = 0x7469744cu; // 'titL' — trade-book title (uppercase-L variant, distinct from kControlTagTitl)
+const unsigned int kControlTagDisp = 0x64697370u; // 'disp' — minister-view display/help sub-picture
