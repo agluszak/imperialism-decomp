@@ -4,6 +4,7 @@
 #include "game/TSimMgr.h"
 #include "game/global_data_tables.h"
 #include "game/quickdraw_rendering.h"
+#include "game/ui_text_label_helpers_decls.h"
 
 // SYNTHETIC: IMPERIALISM 0x004303d0
 // TGrantsView::`scalar deleting destructor'

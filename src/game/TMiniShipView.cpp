@@ -8,6 +8,7 @@
 #include "game/global_data_tables.h"
 #include "game/navy_order.h"
 #include "game/quickdraw_rendering.h"
+#include "game/ui_text_label_helpers_decls.h"
 
 // FUNCTION: IMPERIALISM 0x00569d50
 undefined TMiniShipView::OrphanRetStub_00569d50() {

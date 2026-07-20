@@ -5,6 +5,7 @@
 #include "game/TShipFractionCluster.h"
 #include "game/global_data_tables.h"
 #include "game/quickdraw_rendering.h"
+#include "game/ui_text_label_helpers_decls.h"
 
 // SYNTHETIC: IMPERIALISM 0x005691d0
 // TShipPlacard::CreateObject

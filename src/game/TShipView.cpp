@@ -7,6 +7,7 @@
 #include "game/global_data_tables.h"
 #include "game/navy_order.h"
 #include "game/quickdraw_rendering.h"
+#include "game/ui_text_label_helpers_decls.h"
 
 // SYNTHETIC: IMPERIALISM 0x005653b0
 // TShipView::`scalar deleting destructor'
