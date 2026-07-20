@@ -166,7 +166,7 @@ undefined TWindow::GetDialogBehaviorByte20() {
 }
 
 // FUNCTION: IMPERIALISM 0x0048dc90
-undefined TWindow::OrphanCallChain_C2_I12_0048dc90(undefined4 param_1, undefined4 param_2) {
+undefined TWindow::NotifyDialogBehaviorCommandArmed(undefined4 param_1, undefined4 param_2) {
   TDialogBehavior* behavior = GetEmbeddedDialogBehavior();
   if (behavior != 0) {
     behavior->OrphanCallChain_C1_I13_00487430(param_1, param_2);

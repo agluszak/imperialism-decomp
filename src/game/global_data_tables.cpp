@@ -1548,6 +1548,8 @@ CString g_cstrTechCapabilityMessageStore;
 // localized-message dispatch.
 // GLOBAL: IMPERIALISM 0x006a5be0
 CString g_cstrUiPromptMessageStore;
+// GLOBAL: IMPERIALISM 0x006a4048
+CString g_cstrQueryFloaterMessageStore;
 // GLOBAL: IMPERIALISM 0x006a2fc0
 CString g_cstrDiplomacyNoticeMessageStore;
 
