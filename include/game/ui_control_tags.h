@@ -42,6 +42,10 @@ const unsigned int kControlTagRaro = 0x7261726fu; // 'raro' — purchase-amount 
 // TToolBarCluster::HandleEvent compares against these exact byte values.
 const unsigned int kControlTagFlagCaps = 0x466c6167u; // 'Flag'
 const unsigned int kControlTagDoneCaps = 0x444f4e45u; // 'DONE'
+const unsigned int kControlTagZmIn = 0x5a6d496eu;  // 'ZmIn' — map zoom-in hotspot
+const unsigned int kControlTagZmOt = 0x5a6d4f74u;  // 'ZmOt' — map zoom-out hotspot
+const unsigned int kControlTagSend = 0x73656e64u;  // 'send' — end-turn hotspot
+const unsigned int kControlTagAgr2 = 0x61677232u;  // 'agr2' — last of 3 aggression-level buttons
 const unsigned int kControlTagProt = 0x70726f74u; // 'prot' — network protocol option field
 const unsigned int kControlTagPro0 = 0x70726f30u; // 'pro0' — default protocol option tag
 const unsigned int kControlTagPass = 0x70617373u; // 'pass' — password edit field

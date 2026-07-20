@@ -1501,6 +1501,8 @@ CString g_cstrArmyOrderMessageStore;
 CString g_cstrNationComparisonMessageStore;
 // GLOBAL: IMPERIALISM 0x006a3d08
 CString g_cstrNationAwolMessageStore;
+// GLOBAL: IMPERIALISM 0x006a45c0
+CString g_cstrMapModeMessageStore;
 // GLOBAL: IMPERIALISM 0x006a57c8
 CString g_cstrTechCapabilityMessageStore;
 // Message-store slot the TViewMgr prompt helpers (0x5de990/0x5deb40) pass to the

@@ -7,6 +7,7 @@
 #include "game/TCivMgr.h"
 #include "game/TMapDialog.h"
 #include "game/TMiniMapView.h"
+#include "game/TMultiplayerMgr.h"
 #include "game/TOcean.h"
 #include "game/TOceanDialog.h"
 #include "game/TSimMgr.h"
@@ -141,7 +142,54 @@ void TMapUberPicture::SetMapInteractionMode(short nMode) {
 }
 
 // FUNCTION: IMPERIALISM 0x00597340
-void TMapUberPicture::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {}
+void TMapUberPicture::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+  if (commandId == 10) {
+    bool ctrlHeld = (GetAsyncKeyState(VK_CONTROL) & 0x8000) != 0;
+    unsigned int tag = sourceHandler->controlTag;
+    if (ctrlHeld && (tag == kControlTagZmIn || tag == kControlTagZmOt)) {
+      // Original calls the currently-unowned 639-byte
+      // ComposeAndDispatchTurnSummaryLocalizedMessage (0x597020) here -- not yet ported.
+      return;
+    }
+    if (tag == kControlTagZmOt) {
+      // Original calls the currently-unowned 263-byte
+      // CommitPendingUiModeChangeAndRefreshViews (0x599b90) here -- not yet ported.
+      return;
+    } else if (tag == kControlTagZmIn) {
+      EnterMapInteractionOverlayMode(0);
+      return;
+    } else if (tag == kControlTagCanc) {
+      if (g_pSimMgr->field44 != 0) {
+        CString msg;
+        g_pSimMgr->GetString(0x2742, 0x25, &msg);
+        g_pUiRuntimeContext->DispatchLocalizedUiMessageWithTemplateA13A0(msg,
+                                                                         &g_cstrMapModeMessageStore,
+                                                                         0, 0);
+      }
+      return;
+    } else if (tag == kControlTagSend) {
+      if ((GetAsyncKeyState(VK_CONTROL) & 0x8000) != 0) {
+        if (g_pGameFlowState->fieldF4 == 0) {
+          g_pSimMgr->SetGlobalTurnStateCodeIfAllowed(0x72);
+        }
+        // else: falls through with no further action in the original.
+        return;
+      }
+      // Original calls the currently-unowned 611-byte
+      // RefreshPoseMessageDialogNationSelectionControls (0x54b1b0) here -- not yet ported.
+      return;
+    }
+  } else if (commandId == 0xc) {
+    unsigned int tag = sourceHandler->controlTag;
+    if (tag >= kControlTagAgr0 && tag <= kControlTagAgr2) {
+      TTaskForce* taskForce = g_pActiveMapOrderContext->selectedTaskForce14;
+      if (taskForce != nullptr) {
+        taskForce->ResetOrderTypeAndStrengthDword(static_cast<int>(tag - kControlTagAgr0));
+      }
+    }
+  }
+  TControl::HandleEvent(commandId, sourceHandler, event);
+}
 
 // FUNCTION: IMPERIALISM 0x00597600
 void TMapUberPicture::vmethod_0017(int param) {}
