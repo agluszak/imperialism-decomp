@@ -67,15 +67,15 @@ public:
   virtual void HandleTurnEventDialogFactorySlot7C(int eventCode); // 0x7c 0x5d6f10
   virtual void HandleTurnEventDialogFactorySlot80(int eventCode); // 0x80 0x5d6fd0
   virtual void UiRuntimeSlot84(int eventCode);                    // 0x84
-  virtual void UiRuntimeSlot88(int abilityIndex);                 // 0x88 body 0x5d8980 (ret 4)
+  virtual void UiRuntimeSlot88(int abilityIndex);                 // 0x88 0x5d8980 (ret 4)
   virtual void UiRuntimeSlot8C(int arg);                          // 0x8c
   virtual char RequestDiplomacyDecisionSlot90(int sourceNation, int targetNation,
                                               int proposalCode); // 0x90
   virtual char RequestDecisionSlot94(int sourceNation, int arg1, int arg2,
                                      int promptCode); // 0x94
-  virtual void DispatchDecisionSlot98(int sourceNation, int arg2, int arg3,
+  virtual void DispatchDecisionSlot98(int sourceNation, int arg1, int arg2, int arg3,
                                       int targetNation);                // 0x98
-  virtual void UiRuntimeSlot9C();                                       // 0x9c
+  virtual void UiRuntimeSlot9C(int pageIndex = 0);                      // 0x9c
   virtual void UiRuntimeSlotA0();                                       // 0xa0
   virtual void UiRuntimeSlotA4(int payload, TEventHandler* waitTarget); // 0xa4
   virtual void UiRuntimeSlotA8(int eventCode);                          // 0xa8
@@ -86,7 +86,7 @@ public:
   // imperialism-decomp-kdm.
   virtual void InvokeStrategicMapViewMethod5C();             // 0xac 0x5d7f70
   virtual void InvokeStrategicMapViewMethod60(short param1); // 0xb0 0x5d7f90
-  virtual void UiRuntimeSlotB4();                            // 0xb4
+  virtual bool UiRuntimeSlotB4(void* payload);               // 0xb4
   // Opens factory dialog 0x2405, seeds its 'GOLD' trade-summary child with the three
   // caller args, places/refreshes it, then forwards the refresh result to the child
   // (0x5dc430).
@@ -102,12 +102,12 @@ public:
   // code, then resolves+shows+refreshes the 0x546 factory dialog's own 'GOLD' child
   // (0x5dcf20).
   virtual void HandleTurnEventDialogFactorySlotD8(int eventCode); // 0xd8
-  virtual int ShowConstructionOptionsDialog();                    // 0xdc
-  virtual void UiRuntimeSlotE0();                                 // 0xe0
+  virtual int ShowConstructionOptionsDialog(int dialogValue = 0); // 0xdc
+  virtual void UiRuntimeSlotE0(int nationSlot, int unused = 0);   // 0xe0
   // Opens factory dialog 0x1c52, places it, and sets the 'GOLD'->'name' text from a
   // localized string code (0x5dd220).
   virtual void HandleTurnEventDialogFactorySlotE4(int stringCode); // 0xe4
-  virtual void UiRuntimeSlotE8();                                  // 0xe8
+  virtual void UiRuntimeSlotE8(void* selection);                   // 0xe8
   // Refreshes the 0xdac factory dialog's 'page' roster for a tile-selection map click
   // (0x5dd900); reached from TArmyToolbar's map-tile-selection handler.
   virtual void HandleTurnEventDialogFactorySlotEC(int mapSelection); // 0xec
@@ -144,13 +144,6 @@ public:
   }
 
   int MapTurnEventCodeToPaletteIndex(int eventCode);
-
-  // 0x5d7090 / 0x5d7100 — turn-event 0x7D8: dispatch the event via slot 0x4C, then resolve the
-  // active dialog's 'main' control (a TDiplomacyMapView) and forward the tab-switch to its child.
-  // The 0x7100 variant early-outs while the turn-cooldown counter is active and finishes through
-  // the direct InvalidateAndRunChildWaitSheet path instead of the slot-0x79 virtual.
-  void DispatchTurnEvent7D8AndUpdateMainViewSelection(void* a1, void* a2, void* a3);
-  char DispatchTurnEvent7D8IfTurnFlowIdle(void* a1, void* a2, void* a3, void* a4);
 
   // 0x5ddd20 — opens the civilian ledger (TSuperCivRoster) inside factory dialog
   // 0xdac, runs it modally via the show/refresh chain, then applies the selected

@@ -7332,14 +7332,14 @@ address|name|symbol|size|type|prototype|provenance
 610a9e|CDocument::OnChangedViewList|?OnChangedViewList@CDocument@@UAEXXZ|28|function|public: virtual void __thiscall CDocument::OnChangedViewList(void)|msvc500_library_oracle
 610aba|CDocument::UpdateFrameCounts|?UpdateFrameCounts@CDocument@@UAEXXZ|259|function|public: virtual void __thiscall CDocument::UpdateFrameCounts(void)|msvc500_library_oracle
 610bbd|CDocument::CanCloseFrame|?CanCloseFrame@CDocument@@UAEHPAVCFrameWnd@@@Z|75|function|public: virtual int __thiscall CDocument::CanCloseFrame(class CFrameWnd *)|msvc500_library_oracle
-610c08|NoOpVirtualStub_00610c08||3|function|undefined NoOpVirtualStub_00610c08()|
+610c08|CDocument::PreCloseFrame||3|function|void PreCloseFrame(CFrameWnd * pFrame)|mfc-library-slot-identity
 610c0b|CDocument::SetPathName|?SetPathName@CDocument@@UAEXPBDH@Z|124|function|public: virtual void __thiscall CDocument::SetPathName(char const *, int)|msvc500_library_oracle
 610c87|CDocument::OnFileClose|?OnFileClose@CDocument@@IAEXXZ|27|function|protected: void __thiscall CDocument::OnFileClose(void)|msvc500_library_oracle
 610cb7|CDocument::DoFileSave|?DoFileSave@CDocument@@UAEHXZ|46|function|public: virtual int __thiscall CDocument::DoFileSave(void)|msvc500_library_oracle
 610ce5|CDocument::DoSave|?DoSave@CDocument@@UAEHPBDH@Z|378|function|undefined DoSaveDocumentWithPromptAndReplace()|
 610e6f|CDocument::SaveModified|?SaveModified@CDocument@@UAEHXZ|277|function|public: virtual int __thiscall CDocument::SaveModified(void)|msvc500_library_oracle
-610f84|ReturnZeroStub_00610f84||3|function|undefined ReturnZeroStub_00610f84()|
-610f87|ReturnZeroStub_00610f87||3|function|undefined ReturnZeroStub_00610f87()|
+610f84|CDocument::GetDefaultMenu||3|function|HMENU GetDefaultMenu()|mfc-library-slot-identity
+610f87|CDocument::GetDefaultAccelerator||3|function|HACCEL GetDefaultAccelerator()|mfc-library-slot-identity
 610f8a|CDocument::ReportSaveLoadException|?ReportSaveLoadException@CDocument@@UAEXPBDPAVCException@@HI@Z|368|function|public: virtual void __thiscall CDocument::ReportSaveLoadException(char const *, class CException *, int, unsigned int)|msvc500_library_oracle
 6110fa|CMirrorFile::Open|?Open@CMirrorFile@@UAEHPBDIPAVCFileException@@@Z|455|function|public: virtual int __thiscall CMirrorFile::Open(char const *, unsigned int, class CFileException *)|msvc500_library_oracle
 6112c1|CMirrorFile::Abort|?Abort@CMirrorFile@@UAEXXZ|25|function|public: virtual void __thiscall CMirrorFile::Abort(void)|msvc500_library_oracle
@@ -7352,7 +7352,7 @@ address|name|symbol|size|type|prototype|provenance
 611443|CDocument::OnOpenDocument|?OnOpenDocument@CDocument@@UAEHPBD@Z|347|function|undefined OnOpenDocument()|
 61160e|CDocument::OnSaveDocument|?OnSaveDocument@CDocument@@UAEHPBD@Z|316|function|undefined OnSaveDocument()|
 6117b5|CDocument::OnCloseDocument|?OnCloseDocument@CDocument@@UAEXXZ|90|function|public: virtual void __thiscall CDocument::OnCloseDocument(void)|msvc500_library_oracle
-61180f|NoOpVirtualStub_0061180f||1|function|undefined NoOpVirtualStub_0061180f()|
+61180f|CDocument::OnIdle||1|function|void OnIdle()|mfc-library-slot-identity
 611810|CDocument::AddView|?AddView@CDocument@@QAEXPAVCView@@@Z|32|function|public: void __thiscall CDocument::AddView(class CView *)|msvc500_library_oracle
 611830|CDocument::RemoveView|?RemoveView@CDocument@@QAEXPAVCView@@@Z|47|function|public: void __thiscall CDocument::RemoveView(class CView *)|msvc500_library_oracle
 61185f|CDocument::GetFirstViewPosition|?GetFirstViewPosition@CDocument@@UBEPAU__POSITION@@XZ||function|public: virtual struct __POSITION * __thiscall CDocument::GetFirstViewPosition(void)const|msvc500_library_override
@@ -7923,12 +7923,9 @@ address|name|symbol|size|type|prototype|provenance
 63e070|ImperialismApp_MessageMapEntries|||global||
 63e0b8|ImperialismApp_OnCommand8016_MsgEntry|||global||
 63e1f0|ImperialismApp_OnCommand100_MsgEntry|||global||
-63e328|CAmbitDocument::vftable|||global||
 63e7f8|CAmbitDocument::classRuntimeClass|||global||
-645f40|CUserException::vftable|||global||
 646fb0|CArray<RuntimeSelectionRecord*,RuntimeSelectionRecord*>::`vftable'|??_7?$CArray@PAURuntimeSelectionRecord@@PAU1@@@6B@||global||template
 6481c8|CIncludeView::classRuntimeClass|||global||
-648524|CFrameWnd::vftable|||global||
 648628|CMainFrame::classCMainFrame|||global|Ghidra: TMacViewMgr_RuntimeClass; m_lpszClassName=CMainFrame|
 648640|TMacViewMgr_MessageMapDescriptor|||global||
 648648|TMacViewMgr_MessageMapEntries|||global||
@@ -7967,8 +7964,6 @@ address|name|symbol|size|type|prototype|provenance
 6496a8|TNumberText::classTNumberText|||global||
 6496c0|TCluster::classTCluster|||global||
 6496d8|TFloatWindow::classTFloatWindow|||global||
-649e74|CMcWindow::vftable|||global||
-64b35c|CMcWindow::vftable|||global||
 64b5d0|CMcWindow::classCMcWindow|||global||
 64b8f0|g_Reset_Quick_Draw_Value_0064B8F0|||global||
 64b8f4|g_Reset_Quick_Draw_Value_0064B8F4|||global||
@@ -8130,7 +8125,6 @@ address|name|symbol|size|type|prototype|provenance
 655038|TMapKey::classTMapKey|||global||
 655050|TFrameRadioView::classTFrameRadioView|||global||
 655068|TScoreGraph::classTScoreGraph|||global||
-655944|CMcWindow::vftable|||global||
 656600|TDisplayMgr::classTDisplayMgr|||global||
 656618|TColorFill::classTColorFill|||global||
 656630|TGWorldPeeker::classTGWorldPeeker|||global||
@@ -8138,15 +8132,12 @@ address|name|symbol|size|type|prototype|provenance
 656958|TFuzzySet::classTFuzzySet|||global||
 656a30|TGameWindow::classTGameWindow|||global||
 656a48|TDlgWindow::classTDlgWindow|||global||
-656d04|CMcWindow::vftable|||global||
 656f68|THelpMgr::classTHelpMgr|||global||
 656f80|THelpPicture::classTHelpPicture|||global||
 656f98|THelpWindow::classTHelpWindow|||global||
 656fb0|TTerrainHelpWindow::classTTerrainHelpWindow|||global||
 656fc8|TTerrainHelpPicture::classTTerrainHelpPicture|||global||
 656fe0|TLonelyTileView::classTLonelyTileView|||global||
-6572dc|CMcWindow::vftable|||global||
-65751c|CMcWindow::vftable|||global||
 657970|TIconBar::classTIconBar|||global||
 657988|TIconSlider::classTIconSlider|||global||
 6579a0|TOrderView::classTOrderView|||global||
@@ -8154,12 +8145,9 @@ address|name|symbol|size|type|prototype|provenance
 6579d0|TNumberedItem::classTNumberedItem|||global||
 658560|TLanguageMgr::classTLanguageMgr|||global||
 658610|TMacViewMgr::classTMacViewMgr|||global||
-6586e0|g_vtblStrategicMapViewSystem_DrawUnitIcon|||global||
-6586e4|g_vtblStrategicMapViewSystem_DrawUnitIconOverlay|||global||
 658720|g_abResourceTypeAlwaysQualifies|||global||
 658738|g_abGateFlagQualifies|||global||
 658788|TMapMgr::classTMapMgr|||global||
-6588f0|g_aMapImprovementOrderVtable|||global||
 658964|g_anMapActionClassToImprovementOpIndex|||global||
 658998|TMapDialog::classTMapDialog|||global||
 6589b0|TTerrainInfoDialog::classTTerrainInfoDialog|||global||
@@ -8178,22 +8166,16 @@ address|name|symbol|size|type|prototype|provenance
 659b40|TSortByPriceList::classTSortByPriceList|||global||
 659b58|TIndexAndRankList::classTIndexAndRankList|||global||
 65a468|g_MissionDefaultScore_0065a468|||global||
-65a650|g_vtblMissionOrderPrioritizerDefendProvince|||global||
-65a7e8|g_vtblMissionOrderPrioritizerNavy|||global||
 65a9e8|g_Recompute_Nation_Order_LookupTable_0065A9E8|||global||
 65a9f0|g_Recompute_Nation_Order_LookupTable_0065A9F0|||global||
 65a9f8|g_Recompute_Nation_Order_LookupTable_0065A9F8|||global||
 65aa00|g_Recompute_Nation_Order_LookupTable_0065AA00|||global||
 65aa08|g_Recompute_Nation_Order_LookupTable_0065AA08|||global||
-65ab58|g_vtblMissionOrderPrioritizerBeachhead|||global||
-65ac30|g_vtblMissionOrderPrioritizerBlockadePort|||global||
-65ad08|g_vtblMissionOrderPrioritizerArmy|||global||
 65afc0|TProxyGreatPower::classTProxyGreatPower|||global||
 65afd8|THostGreatPower::classTHostGreatPower|||global||
 65aff0|TClientGreatPower::classTClientGreatPower|||global||
 65b008|TRemoteGreatPower::classTRemoteGreatPower|||global||
 65b020|TRemoteMinor::classTRemoteMinor|||global||
-65be50|g_apfnMapOrderUiDispatchHandlersBackup|||global||
 65bf60|TCancelGameOptionsCommand::classTCancelGameOptionsCommand|||global||
 65bf78|TMultiplayerMgr::classTMultiplayerMgr|||global||
 65bf90|TPoseMessageDialog::classTPoseMessageDialog|||global||
@@ -8211,7 +8193,6 @@ address|name|symbol|size|type|prototype|provenance
 65c600|TZone::classTZone|||global||
 65c618|TPortZone::classTPortZone|||global||
 65c630|TOcean::classTOcean|||global||
-65c7e4|TPortZone::vftable|||global||
 65c838|TMilitaryPageView::classTMilitaryPageView|||global||
 65c850|TNavyRoster::classTNavyRoster|||global||
 65c868|TShipLine::classTShipLine|||global||
@@ -8316,9 +8297,7 @@ address|name|symbol|size|type|prototype|provenance
 663148|TArmyInfoView::classTArmyInfoView|||global||
 663160|TTransportPicture::classTTransportPicture|||global||
 663178|TWarningView::classTWarningView|||global||
-667238|'vftable'|||global||
 667638|'vftable'|||global||
-6676f8|'vftable'|||global||
 668a18|TSoundPlayer::classTSoundPlayer|||global||
 668b90|TStatusPicture::classTStatusPicture|||global||
 668c10|TWorldView::classTWorldView|||global||
@@ -8397,10 +8376,8 @@ address|name|symbol|size|type|prototype|provenance
 66ed40|TUnit::classTUnit|||global||
 66ed58|TCivUnit::classTCivUnit|||global||
 66ed70|TMilitaryUnit::classRuntimeClass|||global||
-66ee80|g_pvtblCivUnitOrderState|||global||
 66eea0|g_vtblMilitaryUnitOrderState|||global||
 66f0b8|TViewMgr::classTViewMgr|||global||
-66f16c|g_TViewMgrTurnEventDispatchTable|||global||
 66f2a8|TModalMessageCommand::classTModalMessageCommand|||global||
 66f4c0|TAssetMgr::classTAssetMgr|||global||
 66f6e8|TMovieView::classTMovieView|||global||

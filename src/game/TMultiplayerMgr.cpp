@@ -1606,7 +1606,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     }
     short sourceNation = nationAction->sourceNation1C;
     if (sourceNation != g_pSimMgr->GetActiveNationId()) {
-      g_pUiRuntimeContext->DispatchDecisionSlot98(sourceNation, nationAction->param1E, 0, 0);
+      g_pUiRuntimeContext->DispatchDecisionSlot98(sourceNation, nationAction->param1E, 0, 0, 0);
       return 1;
     }
     unsigned char stillTearingDown = g_pSimMgr->field44 == 2;
@@ -1614,7 +1614,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
       return 1;
     }
     g_pUiRuntimeContext->DispatchDecisionSlot98(sourceNation, nationAction->param1E,
-                                                nationAction->param20, nationAction->param22);
+                                                nationAction->param20, nationAction->param22, 0);
     break;
   }
   case 0x1b: {

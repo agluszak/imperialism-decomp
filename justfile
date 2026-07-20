@@ -119,21 +119,24 @@ ghidra-apply-source-full:
   just signature-evidence-union --strict
   just export-project
 
-# MUTATES: Ghidra DB (prune), config/original_entities.csv (WHOLESALE refresh).
+# MUTATES: Ghidra DB (prune), config/original_entities.csv (curated refresh).
 # Intentional raw-inventory refresh from the DB after boundary analysis
-# (gap repair, function-bounds fixes). Replaces the file outright — curated
-# knowledge must already live in source / the DB (ghidra-apply-source first).
-[doc('MUTATES: original_entities.csv (wholesale) + Ghidra DB (ILT prune). Refresh the raw inventory')]
+# (gap repair, function-bounds fixes). Preserves curated names, prototypes, and
+# link-required function types while importing new DB entities.
+[doc('MUTATES: original_entities.csv (curated merge) + Ghidra DB boundary repair. Refresh the raw inventory')]
 [group('sync')]
-refresh-inventory: _require-ghidra-install
+refresh-inventory *args: _require-ghidra-install
   uv run python -m tools.ghidra.daemon stop --quiet
   just prune-ilt-db-functions --apply --quiet
+  just ghidra-apply-source --apply --quiet --strict --prune-vtable-interiors-only --demote-embedded-functions-only
+  just ghidra-apply-source --quiet --strict --prune-vtable-interiors-only --demote-embedded-functions-only
   uv run python -m tools.ghidra.sync_exports \
     --inventory-only \
     --ghidra-install-dir "$GHIDRA_INSTALL_DIR" \
     --ghidra-project-dir "{{GHIDRA_PROJECT_DIR}}" \
     --ghidra-project-name "{{GHIDRA_PROJECT_NAME}}" \
-    --ghidra-program-name "{{GHIDRA_PROGRAM_NAME}}"
+    --ghidra-program-name "{{GHIDRA_PROGRAM_NAME}}" \
+    {{args}}
   just prune-ilt-thunks
   just symbols-anchor-gate
   just symbols-integrity-gate

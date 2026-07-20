@@ -9,9 +9,11 @@ beyond those raw facts is overlaid at generation time:
   1. rows at `// VTABLE:`-annotated addresses are dropped — the C++ vtable
      emission owns those addresses, and a raw `'vftable'` row at one breaks
      reccmp's vtable pairing;
-  2. `config/reviewed_library_identities.csv` rows overlay name/symbol/prototype
+  2. rows strictly inside `config/verified_vtable_extents.csv` ranges are dropped;
+     they are stale entity boundaries in an already verified pointer run;
+  3. `config/reviewed_library_identities.csv` rows overlay name/symbol/prototype
      (prototype only when reviewed non-empty) and add rows the inventory lacks;
-  3. source-derived names/prototypes (parsed from the C++ declarations under
+  4. source-derived names/prototypes (parsed from the C++ declarations under
      markers by tools.source_model) overlay claimed addresses — a signature
      corrected in C++ mechanically reaches the generated table. Precedence:
      source declaration > reviewed identity > inventory advisory.
@@ -29,6 +31,7 @@ from pathlib import Path
 
 from tools.common.pipe_csv import read_pipe_table
 from tools.common.repo import repo_root_from_file, resolve_repo_path
+from tools.common.vtable_extents import containing_vtable_extent, load_verified_vtable_extents
 from tools.ghidra.merge_curated_symbols import write_symbols_csv
 from tools.source_model import build_model, reviewed_identities
 
@@ -47,6 +50,7 @@ def generate_rows(repo_root: Path, target: str = "IMPERIALISM",
     if model is None:
         model = build_model(repo_root, target)
     vtables = model.vtables
+    extents = load_verified_vtable_extents(repo_root / "config" / "verified_vtable_extents.csv")
     reviewed = {c.address: c for c in reviewed_identities(repo_root)}
     # Source-derived spellings: only FUNCTION-kind claims are name-authoritative
     # (a real parsed C++ declaration). SYNTHETIC/TEMPLATE/LIBRARY convention
@@ -57,7 +61,7 @@ def generate_rows(repo_root: Path, target: str = "IMPERIALISM",
                     and c.kind == "FUNCTION" and c.name}
 
     kept: list[dict] = []
-    stats = {"dropped": 0, "reviewed": 0, "source": 0, "added": 0}
+    stats = {"dropped": 0, "dropped_interior": 0, "reviewed": 0, "source": 0, "added": 0}
     seen: set[int] = set()
     for row in rows:
         addr_text = (row.get("address") or "").strip()
@@ -68,6 +72,9 @@ def generate_rows(repo_root: Path, target: str = "IMPERIALISM",
             continue
         if addr in vtables:
             stats["dropped"] += 1
+            continue
+        if containing_vtable_extent(addr, extents) is not None:
+            stats["dropped_interior"] += 1
             continue
         rv = reviewed.get(addr)
         if rv is not None:
@@ -98,7 +105,7 @@ def generate_rows(repo_root: Path, target: str = "IMPERIALISM",
         kept.append(row)
 
     for addr, rv in sorted(reviewed.items()):
-        if addr in seen or addr in vtables:
+        if addr in seen or addr in vtables or containing_vtable_extent(addr, extents) is not None:
             continue
         kept.append({
             "address": format(addr, "x"),
@@ -120,7 +127,8 @@ def generate(repo_root: Path, target: str, inventory: str, gen_dir: Path) -> Pat
     write_symbols_csv(out, fieldnames, kept)
     print(
         f"Wrote {out} ({len(kept)} rows; dropped {stats['dropped']} at source-VTABLE "
-        f"addresses; reviewed overlay: {stats['reviewed']} updated, {stats['added']} "
+        f"addresses and {stats['dropped_interior']} inside verified vtable extents; "
+        f"reviewed overlay: {stats['reviewed']} updated, {stats['added']} "
         f"added; source-declaration overlay: {stats['source']} updated)"
     )
     return out

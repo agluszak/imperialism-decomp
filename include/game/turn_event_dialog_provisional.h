@@ -73,6 +73,39 @@ struct GoldFactoryPanel : public TControl {
   virtual void NotifyDialogOwner(TViewMgr* viewMgr);             // slot 0x73 byte 0x1cc
 };
 
+// Concrete siblings used by TViewMgr's modal-dispatch slots. They share the
+// TView/TControl prefix but interpret later slots differently, so keeping them
+// separate avoids assigning one caller's signature to every 'GOLD' control.
+struct MainActionControl : public TControl {
+  virtual void mainAction71();
+  virtual void mainAction72();
+  virtual void InvokeMainAction(void* arg1, void* arg2, void* arg3, void* arg4,
+                                void* arg5); // slot 0x73 byte 0x1cc
+};
+
+struct GoldSinglePayloadControl : public TControl {
+  virtual void goldPayload71();
+  virtual void goldPayload72();
+  virtual void ApplyPayload(void* payload); // slot 0x73 byte 0x1cc
+};
+
+struct ThreeFlagDialogNode : public TView {
+  virtual void ShowTurnEventDialog(int flag); // slot 0x68 byte 0x1a0
+  virtual void dialog69();
+  virtual void dialog6a();
+  virtual int RefreshTurnEventDialog(); // slot 0x6b byte 0x1ac
+  virtual void dialog6c();
+  virtual void dialog6d();
+  virtual void dialog6e();
+  virtual void dialog6f();
+  virtual void dialog70();
+  virtual void ConfigureDialogFlags(int a, int b, int c); // slot 0x71 byte 0x1c4
+};
+
+struct GoldDialogValueControl : public TView {
+  virtual void ApplyDialogValue(void* value); // slot 0x68 byte 0x1a0
+};
+
 // The 'GOLD' child of the factory dialogs opened by HandleTurnEventDialogFactorySlot78
 // dispatches a zero-argument commit through byte 0x1a0 — a different subclass family
 // than TurnEventDialogNode (whose 0x1a0 is ShowTurnEventDialog(int)) and than TControl

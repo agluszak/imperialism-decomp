@@ -94,7 +94,8 @@ def main() -> int:
     write_symbols_csv(symbols_path, fieldnames, rows)
     print(
         f"Wrote {symbols_path} ({len(rows)} rows; dropped {stats['dropped']} at "
-        f"source-VTABLE addresses; reviewed overlay: {stats['reviewed']} updated, "
+        f"source-VTABLE addresses and {stats['dropped_interior']} inside verified "
+        f"vtable extents; reviewed overlay: {stats['reviewed']} updated, "
         f"{stats['added']} added; source-declaration overlay: {stats['source']} updated)"
     )
 

@@ -2198,7 +2198,7 @@ char TGreatPower::TryDispatchNationActionViaUiContextOrFallback(int arg1, int ar
                                                                 int arg4) {
   if (this->IsDiplomacyState1C6UnsetAndCounterPositiveForTarget(static_cast<short>(arg4)) != 0) {
     TViewMgr* uiRuntimeContext = g_pUiRuntimeContext;
-    uiRuntimeContext->DispatchDecisionSlot98(this->nationSlot, arg2, arg3, arg4);
+    uiRuntimeContext->DispatchDecisionSlot98(this->nationSlot, arg1, arg2, arg3, arg4);
     return 1;
   }
 

@@ -32,6 +32,8 @@
 #include "game/TInfoBarText.h"
 #include "game/TCouncilTickerAnimation.h"
 #include "game/TCouncilView.h"
+#include "game/CTemporaryRegion.h"
+#include "game/TNewspaperView.h"
 #include "game/TToolBarCluster.h"
 #include "game/TPicture.h"
 #include "game/nation_slot_eligibility.h"
@@ -110,6 +112,9 @@ HCURSOR LoadTurnEventCursorByResourceIdOffset1000(int cursorResourceId);
 // real CreateObject address is unknown; leaving this class's DYNCREATE CreateObject
 // unclaimed rather than reinstating the wrong pairing.
 IMPLEMENT_DYNCREATE(TViewMgr, TObject)
+
+// SYNTHETIC: IMPERIALISM 0x005d5040
+// TViewMgr::GetRuntimeClass
 
 // FUNCTION: IMPERIALISM 0x005d5060
 TViewMgr::TViewMgr() : TObject() {
@@ -920,26 +925,32 @@ void TViewMgr::HandleTurnEventDialogFactorySlot80(int eventCode) {
 }
 
 // FUNCTION: IMPERIALISM 0x005d7090
-void TViewMgr::DispatchTurnEvent7D8AndUpdateMainViewSelection(void* a1, void* a2, void* a3) {
+char TViewMgr::RequestDiplomacyDecisionSlot90(int sourceNation, int targetNation,
+                                              int proposalCode) {
   TView* activeDialog = g_pDisplayMgr->activeDialog;
-  DispatchTurnEventSlot4C(0x7d8, reinterpret_cast<int>(a1));
+  DispatchTurnEventSlot4C(0x7d8, sourceNation);
   TDiplomacyMapView* mainView =
       static_cast<TDiplomacyMapView*>(activeDialog->ResolveControlByTag(kControlTagMain));
   mainView->AssertValid();
-  mainView->InvalidateAndForwardTabSwitchToChild(a1, a2, a3);
+  mainView->InvalidateAndForwardTabSwitchToChild(reinterpret_cast<void*>(sourceNation),
+                                                 reinterpret_cast<void*>(targetNation),
+                                                 reinterpret_cast<void*>(proposalCode));
+  return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x005d7100
-char TViewMgr::DispatchTurnEvent7D8IfTurnFlowIdle(void* a1, void* a2, void* a3, void* a4) {
+char TViewMgr::RequestDecisionSlot94(int sourceNation, int arg1, int arg2, int promptCode) {
   if (IsTurnCooldownCounterActiveOrResetFlag()) {
     return 1;
   }
   TView* activeDialog = g_pDisplayMgr->activeDialog;
-  DispatchTurnEventSlot4C(0x7d8, reinterpret_cast<int>(a1));
+  DispatchTurnEventSlot4C(0x7d8, sourceNation);
   TDiplomacyMapView* mainView =
       static_cast<TDiplomacyMapView*>(activeDialog->ResolveControlByTag(kControlTagMain));
   mainView->AssertValid();
-  mainView->InvalidateAndRunChildWaitSheet(a1, a2, a3, a4);
+  mainView->InvalidateAndRunChildWaitSheet(
+      reinterpret_cast<void*>(sourceNation), reinterpret_cast<void*>(arg1),
+      reinterpret_cast<void*>(arg2), reinterpret_cast<void*>(promptCode));
   // The original's non-cooldown path leaves AL from the (void) child call; the trailing
   // xor al,al this emits is the sole residual diff (InvalidateAndRunChildWaitSheet is void,
   // so its incidental AL cannot be tail-returned without regressing 0x4f7040's own match).
@@ -1084,6 +1095,24 @@ void DispatchPostTurnStateUpdatesTail() {
   g_pHelpMgr->HandlePostPendingEventActivationNoOp(g_pUiRuntimeContext->currentTurnEventCode);
 }
 } // namespace
+
+// FUNCTION: IMPERIALISM 0x005d71b0
+void TViewMgr::DispatchDecisionSlot98(int sourceNation, int arg1, int arg2, int arg3,
+                                      int targetNation) {
+  TView* activeDialog = g_pDisplayMgr->activeDialog;
+  turn_event_dialog::MainActionControl* mainControl =
+      static_cast<turn_event_dialog::MainActionControl*>(
+          activeDialog->ResolveControlByTag(kControlTagMain));
+  mainControl->AssertValid();
+  if (mainControl == 0) {
+    MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgr_0069B6BC, 0x5c7);
+  }
+  mainControl->InvokeMainAction(reinterpret_cast<void*>(sourceNation),
+                                reinterpret_cast<void*>(arg1), reinterpret_cast<void*>(arg2),
+                                reinterpret_cast<void*>(arg3),
+                                reinterpret_cast<void*>(targetNation));
+}
 
 // FUNCTION: IMPERIALISM 0x005d7240
 void TViewMgr::DispatchTurnEventSlot4C(short eventCode, int payload) {
@@ -1340,8 +1369,6 @@ void TViewMgr::InvokeStrategicMapViewMethod60(short param1) {
   g_pStrategicMapViewSystem->OrphanLeaf_NoCall_Ins06_0050d8f0(param1);
 }
 
-void TViewMgr::UiRuntimeSlotB4() {}
-
 // FUNCTION: IMPERIALISM 0x005d7fc0
 void TViewMgr::UiRuntimeSlot50(int payload) {
   (void)payload;
@@ -1409,36 +1436,79 @@ void TViewMgr::UiRuntimeSlot84(int) {
   }
 }
 
+// FUNCTION: IMPERIALISM 0x005d8980
 void TViewMgr::UiRuntimeSlot88(int abilityIndex) {
-  (void)abilityIndex;
+  CString queryText;
+  CString statusText;
+  TView* activeDialog = g_pDisplayMgr->activeDialog;
+  TControl* mainControl =
+      static_cast<TControl*>(activeDialog->ResolveControlByTag(kControlTagMain));
+  mainControl->AssertValid();
+
+  TControl* queryControl =
+      static_cast<TControl*>(activeDialog->ResolveControlByTag(kControlTagQuer));
+  if (queryControl != 0) {
+    g_pSimMgr->GetString(0x2730, 2, &queryText);
+    queryControl->SetHoverHelpText(queryText);
+  }
+
+  TControl* toolControl =
+      static_cast<TControl*>(activeDialog->ResolveControlByTag(kControlTagTool));
+  toolControl->AssertValid();
+  TToolBarCluster* toolbar = static_cast<TToolBarCluster*>(toolControl);
+  toolbar->UpdateControlTagTreaTextFromNationAndMapContext(g_pSimMgr->GetActiveNationId());
+  toolbar->RefreshTurnOrderStatusPanelTextsAndControls();
+
+  g_pCursorControlPanel =
+      static_cast<TInfoBarText*>(activeDialog->ResolveControlByTag(kControlTagCurs));
+  g_pCursorControlPanel->AssertValid();
+  g_pCursorControlPanel->InitializeMapHintTextStyleAndThemeFlags(0x2b6c, 0x2b67);
+
+  TDeluxeText* textControl =
+      static_cast<TDeluxeText*>(activeDialog->ResolveControlByTag(kControlTagText));
+  textControl->AssertValid();
+  CString prefix;
+  g_pSimMgr->GetString(0x274e, abilityIndex - 1, &prefix);
+  g_pSimMgr->GetString(0x2712, abilityIndex, &statusText);
+  statusText += '\r';
+  statusText += '\r';
+  statusText += prefix;
+  textControl->SetTextAndMaybeRefresh(&statusText, 1);
+
+  TUiTextStyleDescriptor style;
+  BuildUiTextStyleDescriptor(&style, 0, 0xc, 0x2b6b);
+  textControl->SetTextStyleAndMaybeRefresh(&style, 0);
+  textControl->SetTextAlignmentAndMaybeRefresh(-2, 0);
+  mainControl->InvokeSlot13C();
 }
 
-char TViewMgr::RequestDiplomacyDecisionSlot90(int sourceNation, int targetNation,
-                                              int proposalCode) {
-  (void)sourceNation;
-  (void)targetNation;
-  (void)proposalCode;
-  return 0;
+// FUNCTION: IMPERIALISM 0x005d8c40
+void TViewMgr::UiRuntimeSlot9C(int pageIndex) {
+  TView* activeDialog = g_pDisplayMgr->activeDialog;
+  TNewspaperView* mainControl =
+      static_cast<TNewspaperView*>(activeDialog->ResolveControlByTag(kControlTagMain));
+  mainControl->AssertValid();
+  g_pSfxPlaybackSystem->PlaySoundEffect(0x14b4, 0, 1);
+  mainControl->BuildInterNationEventSummaryRowsForAdvisorDialog(pageIndex);
+  activeDialog->InvokeSlot13C();
 }
 
-char TViewMgr::RequestDecisionSlot94(int sourceNation, int arg1, int arg2, int promptCode) {
-  (void)sourceNation;
-  (void)arg1;
-  (void)arg2;
-  (void)promptCode;
-  return 0;
+// FUNCTION: IMPERIALISM 0x005d8cc0
+void TViewMgr::UiRuntimeSlotA0() {
+  CTemporaryRegion temporaryRegion;
+  TView* activeDialog = g_pDisplayMgr->activeDialog;
+  TView* goldControl = activeDialog->ResolveControlByTag(kControlTagGold);
+  goldControl->AssertValid();
+
+  RECT bounds;
+  goldControl->QueryBounds(&bounds);
+  RectRgn(temporaryRegion.tempRgn, &bounds);
+
+  turn_event_dialog::GoldSinglePayloadControl* owner =
+      static_cast<turn_event_dialog::GoldSinglePayloadControl*>(goldControl->ownerContext);
+  owner->AssertValid();
+  owner->ApplyPayload(temporaryRegion.tempRgn);
 }
-
-void TViewMgr::DispatchDecisionSlot98(int sourceNation, int arg2, int arg3, int targetNation) {
-  (void)sourceNation;
-  (void)arg2;
-  (void)arg3;
-  (void)targetNation;
-}
-
-void TViewMgr::UiRuntimeSlot9C() {}
-
-void TViewMgr::UiRuntimeSlotA0() {}
 
 // FUNCTION: IMPERIALISM 0x005d8dd0
 void TViewMgr::UiRuntimeSlot5C(int) {
@@ -1830,6 +1900,34 @@ void TViewMgr::HandleTurnEventVtableSlot2CInitializeHotKeyDialog() {
   }
 }
 
+// FUNCTION: IMPERIALISM 0x005dcdf0
+bool TViewMgr::UiRuntimeSlotB4(void* payload) {
+  turn_event_dialog::ThreeFlagDialogNode* node =
+      static_cast<turn_event_dialog::ThreeFlagDialogNode*>(
+          g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(0x3b9));
+  if (node == 0) {
+    MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgrMore_0069B740, 0xbe);
+  }
+  turn_event_dialog::GoldSinglePayloadControl* gold =
+      static_cast<turn_event_dialog::GoldSinglePayloadControl*>(
+          node->ResolveControlByTag(kControlTagGold));
+  if (gold == 0) {
+    MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgrMore_0069B740, 0xc0);
+  }
+  gold->ApplyPayload(payload);
+  node->ConfigureDialogFlags(1, 1, 1);
+  POINT placement;
+  ComputeTurnEventDialogPlacementByCode(node, &placement);
+  node->CaptureLayoutF0(reinterpret_cast<int*>(&placement), 0);
+  node->ShowTurnEventDialog(1);
+  int result = node->RefreshTurnEventDialog();
+  node->Close();
+  node->Free();
+  return result != static_cast<int>(kControlTagCncl);
+}
+
 // FUNCTION: IMPERIALISM 0x005dcf20
 void TViewMgr::HandleTurnEventDialogFactorySlotD8(int) {
   GoldCommitControl* rootGold = static_cast<GoldCommitControl*>(
@@ -1863,12 +1961,43 @@ void TViewMgr::HandleTurnEventDialogFactorySlotD8(int) {
   node->Free();
 }
 
-int TViewMgr::ShowConstructionOptionsDialog() {
-  return 0;
+// FUNCTION: IMPERIALISM 0x005dd0a0
+int TViewMgr::ShowConstructionOptionsDialog(int dialogValue) {
+  TurnEventDialogNode* node = static_cast<TurnEventDialogNode*>(
+      g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(0x1c20));
+  if (node == 0) {
+    MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgrMore_0069B740, 0x100);
+  }
+  turn_event_dialog::GoldDialogValueControl* gold =
+      static_cast<turn_event_dialog::GoldDialogValueControl*>(
+          node->ResolveControlByTag(kControlTagGold));
+  gold->ApplyDialogValue(reinterpret_cast<void*>(dialogValue));
+  POINT placement;
+  ComputeTurnEventDialogPlacementByCode(node, &placement);
+  node->CaptureLayoutF0(reinterpret_cast<int*>(&placement), 0);
+  node->ShowTurnEventDialog(1);
+  int result = node->RefreshTurnEventDialog();
+  node->Close();
+  node->Free();
+  return result;
 }
 
-void TViewMgr::UiRuntimeSlotE0() {}
-void TViewMgr::UiRuntimeSlotE8() {}
+// FUNCTION: IMPERIALISM 0x005dd180
+void TViewMgr::UiRuntimeSlotE0(int nationSlot, int unused) {
+  (void)unused;
+  if (static_cast<short>(nationSlot) == g_pGlobalMapState->pendingRiverMouthTile22) {
+    TurnEventDialogNode* node = static_cast<TurnEventDialogNode*>(
+        g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(0x24f9));
+    if (node == 0) {
+      MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+      TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgrMore_0069B740, 0x11e);
+    }
+    node->RefreshTurnEventDialog();
+    node->Close();
+    node->Free();
+  }
+}
 
 // FUNCTION: IMPERIALISM 0x005dd220
 void TViewMgr::HandleTurnEventDialogFactorySlotE4(int stringCode) {
@@ -1917,6 +2046,40 @@ void TViewMgr::HandleTurnEventDialogFactorySlotF0(TTaskForce* activeMapOrderEntr
   POINT placement;
   ComputeTurnEventDialogPlacementByCode(node, &placement);
   node->CaptureLayoutF0(reinterpret_cast<int*>(&placement), 0);
+  node->RefreshTurnEventDialog();
+  node->Close();
+  node->Free();
+}
+
+// FUNCTION: IMPERIALISM 0x005dd770
+void TViewMgr::UiRuntimeSlotE8(void* selection) {
+  GoldCommitControl* activeGold = static_cast<GoldCommitControl*>(
+      g_pDisplayMgr->activeDialog->ResolveControlByTag(kControlTagGold));
+  if (activeGold == 0) {
+    MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgrMore_0069B740, 0x1c5);
+  }
+  activeGold->NotifyGoldControlOfTurnEventCode(
+      static_cast<short>(reinterpret_cast<int*>(selection)[0]));
+
+  TurnEventDialogNode* node = static_cast<TurnEventDialogNode*>(
+      g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(0xf0a));
+  if (node == 0) {
+    MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgrMore_0069B740, 0x1c9);
+  }
+  turn_event_dialog::GoldDialogValueControl* gold =
+      static_cast<turn_event_dialog::GoldDialogValueControl*>(
+          node->ResolveControlByTag(kControlTagGold));
+  if (gold == 0) {
+    MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgrMore_0069B740, 0x1ca);
+  }
+  gold->ApplyDialogValue(selection);
+  POINT placement;
+  ComputeTurnEventDialogPlacementByCode(node, &placement);
+  node->CaptureLayoutF0(reinterpret_cast<int*>(&placement), 0);
+  node->ShowTurnEventDialog(1);
   node->RefreshTurnEventDialog();
   node->Close();
   node->Free();
@@ -2206,6 +2369,3 @@ char TViewMgr::DispatchGameStateEventIfLocalizedPromptAccepted(int actionTag) {
   }
   return accepted;
 }
-
-// SYNTHETIC: IMPERIALISM 0x005d5040
-// TViewMgr::GetRuntimeClass
