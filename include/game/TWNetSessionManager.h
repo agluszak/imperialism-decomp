@@ -74,6 +74,13 @@ public:
   // IDirectPlay2 into directPlayInterface04 and the runtime-selection list is reset.
   unsigned char OpenRuntimeSelectionSourceWithOptionalSeed(const GUID* sessionEntry,
                                                            int flag); // 0x47fe50
+  // Reopens the session with no seed (OpenRuntimeSelectionSourceWithOptionalSeed(null,0)),
+  // then rebuilds a DPSESSIONDESC2-shaped record inline in pad10 (dwSize=0x50, a second
+  // dword=0x40) and re-enumerates via two more COM-interface vtable dispatches on
+  // enumCallbackTable00/directPlayLobby08 whose exact call shape isn't resolved yet.
+  // TODO: real body -- the pad10 DPSESSIONDESC2 promotion and the two remaining vtable
+  // calls need dedicated COM-interface class-recovery work before this can be ported.
+  unsigned char OpenRuntimeSelectionSourceFromCurrentContext(); // 0x480030
   // IDirectPlay2::CreatePlayer wrapper: builds a DPNAME from shortName (dwSize=16,
   // dwFlags=0, lpszShortNameA=shortName, lpszLongNameA=0) and stores the HRESULT in
   // lastErrorCode0c. Returns SUCCEEDED(result).

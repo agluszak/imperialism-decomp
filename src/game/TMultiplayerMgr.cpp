@@ -2,6 +2,7 @@
 #include "game/TMultiplayerMgr.h"
 
 #include <string.h>
+#include <time.h>
 
 #include "decomp_types.h"
 #include "game/CString.h"
@@ -285,7 +286,8 @@ void TMultiplayerMgr::WriteTo(TStream* stream) {
 }
 
 // FUNCTION: IMPERIALISM 0x005430c0
-void TMultiplayerMgr::EnableDiplomacyQueueRoutingAndSetContextField44(void* nContext, char fEnable) {
+void TMultiplayerMgr::EnableDiplomacyQueueRoutingAndSetContextField44(void* nContext,
+                                                                      char fEnable) {
   processPrimaryEventQueue = 1;
   processSecondaryEventQueue = 1;
   if (fEnable != '\0') {
@@ -755,14 +757,36 @@ unsigned char TMultiplayerMgr::ResetGameFlowStateAndPostTurnEvent5DC() {
 }
 
 // FUNCTION: IMPERIALISM 0x00544fc0
-void TMultiplayerMgr::ValidateGameFlowNameAndSelectionContext(int protocolValue, int flag) {
-  g_pNetMgr006a6014->OpenRuntimeSelectionSourceByIndexAndCopyPath(
+unsigned char TMultiplayerMgr::ValidateGameFlowNameAndSelectionContext(int protocolValue,
+                                                                       int flag) {
+  return g_pNetMgr006a6014->OpenRuntimeSelectionSourceByIndexAndCopyPath(
       protocolValue, flag, static_cast<LPCSTR>(gameNameString));
 }
 
+// FUNCTION: IMPERIALISM 0x00544ff0
+unsigned char TMultiplayerMgr::ValidateAndPrepareGameFlowNameForDispatch() {
+  CString gameName = gameNameString;
+  SaveSettingValueFromPointerByKey(&gameName, "GameName");
+
+  int now;
+  do {
+    now = static_cast<int>(time(0));
+    queueSyncDword = now;
+  } while (now == 0);
+
+  unsigned char opened = g_pNetMgr006a6014->OpenRuntimeSelectionSourceAndApplyActiveNationState(
+      static_cast<LPCSTR>(gameName), static_cast<LPCSTR>(playerNameString), g_szEmptyString);
+  if (opened) {
+    lobbyDialogView40 = nullptr;
+    g_pSimMgr->field44 = 1;
+    return 1;
+  }
+  return 0;
+}
+
 // FUNCTION: IMPERIALISM 0x00545110
-unsigned char TMultiplayerMgr::InitializeRuntimeSelectionCredentialsFromProviderAndConnect(
-    TView* provider) {
+unsigned char
+TMultiplayerMgr::InitializeRuntimeSelectionCredentialsFromProviderAndConnect(TView* provider) {
   ReturnTrueRuntimeCredentialInitStub();
   lobbyDialogView40 = provider;
 
