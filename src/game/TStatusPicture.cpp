@@ -29,10 +29,23 @@ TStatusPicture::TStatusPicture() {}
 void TStatusPicture::NoOpUiLifecycleHook(int arg) {
   TPicture::NoOpUiLifecycleHook(arg);
 
-  // The original also allocates seven new TPictureButton children here (one per eligible
-  // nation slot, 'pic0'-'pic6') via operator new + InitializePictureEntryBaseAndRefresh
-  // with a per-row layout buffer that isn't precisely reconstructed -- left unmodeled to
-  // avoid guessing the layout values.
+  // One TPicture child per eligible nation slot ('pic0'-'pic6'); the picture tag only
+  // advances on rows that actually get a child (ineligible rows are skipped without
+  // consuming a tag), matching the original's separate row/tag counters.
+  unsigned int pictureTag = 0x70696330u; // 'pic0'
+  int rowY = 0x50;
+  for (unsigned int nationSlot = 0; nationSlot < 7; ++nationSlot) {
+    if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(static_cast<short>(nationSlot)) != 0) {
+      TPicture* picture = new TPicture();
+      int offsetLayout[2] = {0x71, rowY};
+      int sizeLayout[2] = {0x23, 0x34};
+      picture->InitializePictureEntryBaseAndRefresh(
+          this, offsetLayout, sizeLayout, 5, 5, static_cast<short>(nationSlot + 0x10d7));
+      picture->controlTag = pictureTag;
+      rowY += 0x37;
+      ++pictureTag;
+    }
+  }
 
   for (unsigned int tabIndex = 0; tabIndex < 10; ++tabIndex) {
     TView* tabControl = ResolveControlByTag(0x74616230u + tabIndex); // 'tab0'-'tab9'
