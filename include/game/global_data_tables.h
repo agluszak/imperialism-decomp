@@ -475,6 +475,10 @@ extern char g_szCountryNameProfileKey00698AE0[];
 }
 
 // Typed C++ linkage — see typed-recovered-globals.mdc (not inside extern "C").
+// Per-resourceType04 index into TShipView::ApplyRectSlot110's 8-entry order-status
+// string pool (GetString group 0x2760, one status line per naval order state);
+// -1 = no status line for that resource type.
+extern const int g_ShipOrderStatusStringIndexByResourceType_0065c7f8[14];
 extern TInfoBarText* g_pCursorControlPanel;
 extern CString g_cstrControlStringMessageStore;
 extern TTradeMgr* g_pNationInteractionStateManager;
@@ -1103,6 +1107,7 @@ extern int DAT_006a3914;
 
 // Map-context flavor-text string pool (see global_data_tables.cpp).
 extern char s_szSpaceSeparator_00695794[];
+extern char s_szAdmiralPrefix_0069578c[];
 extern char s_mcflavor_00696674[];
 extern char s_mcflavor_00696d10[];
 extern char s_mcflavor_00697238[];

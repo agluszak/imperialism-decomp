@@ -2,6 +2,7 @@
 
 #include "compat.h"
 #include "game/TControl.h"
+#include "game/TQuickDrawSurfaceContext.h"
 #include "game/mfc.h"
 
 // VTABLE: IMPERIALISM 0x0064cec0
@@ -125,7 +126,7 @@ public:
   virtual undefined OrphanLeaf_NoCall_Ins02_004aa340();                       // slot 0x71 0x4aa340
   virtual undefined SetArmyUnitLineActiveFlagAndNotify();                     // slot 0x72 0x4aa360
   virtual undefined VTableSlot73(char param_1);                               // slot 0x73 0x4aa030
-  virtual undefined OrphanCallChain_C2_I16_004aa3a0(int unused); // slot 0x74 0x4aa3a0
+  virtual undefined OrphanCallChain_C2_I16_004aa3a0(int unused);              // slot 0x74 0x4aa3a0
   virtual undefined OrphanCallChain_C3_I23_004aa3e0(char param_1,
                                                     undefined4 param_2); // slot 0x75 0x4aa3e0
   virtual undefined OrphanCallChain_C1_I05_004aa430();                   // slot 0x76 0x4aa430
@@ -136,18 +137,24 @@ public:
   // as unconfirmed padding. field84 is read as a byte flag in HandleEvent (0x4aa280)
   // guarding whether Ctrl-click toggles the checkbox; not yet observed written.
   int field84;
+  // Horizontal pixel offset added to the paint rect's left/right when blitting from
+  // surfaceContext90 (ApplyRectSlot110, 0x4aa100).
   int field88;
   int pad8c;
-  int field90;
+  // A second QuickDraw surface (icon strip) this checkbox blits its check-glyph from,
+  // read at +0x4 (blit surface) and +0x20 (backing CDib, for the negative-height DIB
+  // vertical-flip adjustment) -- the exact same TQuickDrawSurfaceContext shape used by
+  // g_pActiveQuickDrawSurfaceContext elsewhere in ApplyRectSlot110.
+  TQuickDrawSurfaceContext* surfaceContext90;
 
   TArmyCheckBox();
   // Real ctor (0x4a9fe0): forwards panel/offsetLayout/sizeLayout to the already-ported
   // TView::InitializeUiResourceEntryFrameAndParent (uiResourceContext=null,
   // layoutParam6/7=4, attachFlag=0), then stores its own two trailing args into
-  // field90/field88. unused1/unused2 (the 4th/5th real stack params) are never read
-  // by this ctor.
+  // surfaceContext90/field88. unused1/unused2 (the 4th/5th real stack params) are never
+  // read by this ctor.
   TArmyCheckBox(TView* panel, int* offsetLayout, int* sizeLayout, int unused1, int unused2,
-                int field90Value, int field88Value);
+                TQuickDrawSurfaceContext* surfaceContext90Value, int field88Value);
 };
 
 ASSERT_SIZE(TArmyCheckBox, 0x94);

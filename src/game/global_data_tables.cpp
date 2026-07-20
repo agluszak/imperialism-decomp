@@ -1428,6 +1428,16 @@ extern "C" void* g_pActiveCityDialogLegendSelectionOwner = 0;
 // 4-byte flag (written as a dword by TStatusButton::HandleEvent); BOOL-style int.
 int g_bCityDialogLegendSelectionInitialized = 0;
 
+// Per-resourceType04 index into TShipView::ApplyRectSlot110's 8-entry order-status
+// string pool (GetString group 0x2760); -1 = no status line for that resource type
+// (verified via `just ghidra-read-data 0x65c7f8 dword 14`; the table ends there --
+// the next dword looks like unrelated pointer data, matching
+// g_NavyOrderResourceDescriptorTable's 14-entry resourceType04 domain).
+// GLOBAL: IMPERIALISM 0x0065c7f8
+const int g_ShipOrderStatusStringIndexByResourceType_0065c7f8[14] = {
+    -1, -1, -1, 0, 1, -1, -1, 2, 3, 4, -1, 5, 6, 7,
+};
+
 // GLOBAL: IMPERIALISM 0x006a590c
 TInfoBarText* g_pCursorControlPanel = nullptr;
 
@@ -1882,6 +1892,10 @@ int g_mapActionContextDisplayNameCacheStep_006984bc = 7;
 // Empty content: reccmp pairs by the // GLOBAL address marker, not by value. ===
 // GLOBAL: IMPERIALISM 0x00695794
 char s_szSpaceSeparator_00695794[] = " ";
+// "Adm. " prefix for the assigned-admiral name line (TShipView::ApplyRectSlot110,
+// 0x5654e0).
+// GLOBAL: IMPERIALISM 0x0069578c
+char s_szAdmiralPrefix_0069578c[] = "Adm. ";
 // GLOBAL: IMPERIALISM 0x00696674
 char s_mcflavor_00696674[] = "";
 // GLOBAL: IMPERIALISM 0x00696d10

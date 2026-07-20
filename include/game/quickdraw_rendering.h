@@ -52,9 +52,11 @@ TStaticText* ApplyControlThemeStyleAndOptionalCaption(TStaticText* control, int 
 // 0x5c4180 -- same shape as ApplyControlThemeStyleAndOptionalCaption, but the caption
 // text is loaded from a string-table resource (group/index) via
 // g_pModuleLibraryCacheState instead of being passed as a literal pointer.
-TStaticText* ConfigureUiControlStyleValueAndCaptionFromStringResource(
-    TStaticText* control, int unused2, int pointSize, int themeCode, int themeCode2,
-    int stringResourceGroup, short stringResourceIndex);
+TStaticText* ConfigureUiControlStyleValueAndCaptionFromStringResource(TStaticText* control,
+                                                                      int unused2, int pointSize,
+                                                                      int themeCode, int themeCode2,
+                                                                      int stringResourceGroup,
+                                                                      short stringResourceIndex);
 
 // If paletteIndex is the sentinel -1 (as a short), resolves it from the default
 // cached bitmap resource's palette instead. 0x004951e0
@@ -68,6 +70,11 @@ void InitializeUiTextStyleDescriptorAndApplyQuickDraw(short face, short pointSiz
 // local compatible DC if none active), and returns the text width via
 // GetTextExtentPoint32A. Ported in quickdraw_rendering.cpp.
 short __cdecl MeasureTextExtentWithCachedQuickDrawStyle(const CString* text);
+
+// Shrinks *text (dropping trailing characters and appending "...") until it fits
+// within maxWidth; empties the string outright if that would leave under 5
+// characters. 0x005d4c60
+void TruncateTextToFitWidthWithEllipsis(CString* text, short maxWidth);
 
 // Cached-style text draw leaf (0x494a90): rebuilds/selects the cached measure-font into
 // the active QuickDraw CDC, applies the current QuickDraw text color, then draws at the

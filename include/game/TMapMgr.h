@@ -566,10 +566,11 @@ public:
   // g_anMapImprovementSpriteClassByOrderType[param_1]*64, +0x480 unless param_3.
   virtual short GetMapImprovementSpriteBaseOffset(short param_1, char param_2,
                                                   char param_3); // slot 0x45 0x517780
-  // Looks up the improvement sprite base offset for civUnit's own order type/idle state via
-  // the slot above, but discards the result -- same vestigial pattern as
-  // ApplyUnitMovementClassForTileIfValid.
-  virtual void ApplyMapImprovementSelectionState(class TCivUnit* civUnit); // slot 0x46 0x517710
+  // Looks up and returns the improvement sprite base offset for civUnit's own order
+  // type/idle state via the slot above. TMiniCivView::ApplyRectSlot110 (0x4ac000) is a
+  // real external caller that consumes the returned short (AX) to position an icon-strip
+  // blit rect, so despite the name this is a getter, not a pure state mutator.
+  virtual short ApplyMapImprovementSelectionState(class TCivUnit* civUnit); // slot 0x46 0x517710
   // Real signature has 2 stack slots (RET 8); the second is never read -- same pattern as
   // GetMapImprovementOffsetByTownTransportLink above.
   virtual int GetMapImprovementTileOffsetFromClass(char classCode,

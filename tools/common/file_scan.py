@@ -7,7 +7,6 @@ import re
 from pathlib import Path
 from typing import Iterable
 
-
 CPP_HEADER_PATTERNS = ("*.cpp", "*.cc", "*.cxx", "*.h", "*.hpp", "*.hh", "*.hxx")
 
 # Nested git worktrees created by the Agent tool's isolation:"worktree" option live
