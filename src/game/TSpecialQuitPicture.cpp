@@ -1,8 +1,10 @@
 #include "game/TSpecialQuitPicture.h"
 
 #include "game/ImperialismApp.h"
+#include "game/TDeluxeText.h"
 #include "game/TSimMgr.h"
 #include "game/global_data_tables.h"
+#include "game/quickdraw_rendering.h"
 #include "game/ui_control_tags.h"
 
 // FUNCTION: IMPERIALISM 0x0045acb0
@@ -25,13 +27,38 @@ IMPLEMENT_DYNCREATE(TSpecialQuitPicture, TPicture)
 void TSpecialQuitPicture::NoOpUiLifecycleHook(int arg) {
   TPicture::NoOpUiLifecycleHook(arg);
 
-  TView* saleControl = ResolveControlByTag(kControlTagSale);
+  // 'sale'/'shot'/'equi'/'titl' are TDeluxeText controls (verified via class-vtable-dump:
+  // TDeluxeText is the class that introduces real virtuals at byte offsets 0x1d8-0x1f8,
+  // beyond TStaticText's declared extent -- ApplyControlThemeStyleAndOptionalCaption's own
+  // TStaticText* parameter accepts them via the real inheritance chain).
+  TDeluxeText* saleControl = static_cast<TDeluxeText*>(ResolveControlByTag(kControlTagSale));
   saleControl->AssertValid();
-  // The original then calls saleControl's own vtable slots 0x1dc/0x1e0/0x12c with
-  // templated string/rect arguments, and resolves further 'quit'/'titl' controls with the
-  // same pattern -- saleControl's concrete class introduces virtuals beyond TStaticText's
-  // own declared extent (those slots are null in TStaticText's real vtable), so it is
-  // unresolved; left unmodeled.
+  saleControl->SetTextFromUiStringResourceId(0x4e20);
+  saleControl->BuildAndApplyTextStyleDescriptor(0, 0x18, 0x2b6c);
+  RECT saleBounds;
+  saleControl->QueryBounds(&saleBounds);
+  saleBounds.right = 0x28;
+  saleBounds.bottom = 0x11;
+  saleControl->ApplyBounds(&saleBounds, 1);
+
+  TDeluxeText* shotControl = static_cast<TDeluxeText*>(ResolveControlByTag(kControlTagShot));
+  shotControl->AssertValid();
+  CString shotCaption;
+  g_pSimMgr->GetString(0x274c, 0x18, &shotCaption);
+  ApplyControlThemeStyleAndOptionalCaption(shotControl, 0, 0xc, 0x2b6c, 1,
+                                           static_cast<const char*>(shotCaption));
+
+  TDeluxeText* equiControl = static_cast<TDeluxeText*>(ResolveControlByTag(kControlTagEqui));
+  equiControl->AssertValid();
+  CString equiCaption;
+  g_pSimMgr->GetString(0x2737, 9, &equiCaption);
+  ApplyControlThemeStyleAndOptionalCaption(equiControl, 0, 0xc, 0x2b6c, 1,
+                                           static_cast<const char*>(equiCaption));
+
+  TDeluxeText* titlControl = static_cast<TDeluxeText*>(ResolveControlByTag(kControlTagTitl));
+  titlControl->AssertValid();
+  titlControl->BuildAndApplyTextStyleDescriptor(0, 0xe, 0x2b6c);
+  titlControl->SetTextThemeCodeAndMaybeRefresh(1, 1);
 }
 
 // FUNCTION: IMPERIALISM 0x005b4a10
@@ -47,24 +74,23 @@ void TSpecialQuitPicture::HandleEvent(int commandId, TEventHandler* sourceHandle
       ResolveControlByTag(kControlTagRequ)->SetEnabled(0, 1);
       ResolveControlByTag(kControlTagShot)->SetEnabled(0, 1);
       ResolveControlByTag(kControlTagEqui)->SetEnabled(0, 1);
-      TView* titlControl = ResolveControlByTag(kControlTagTitl);
+      TDeluxeText* titlControl = static_cast<TDeluxeText*>(ResolveControlByTag(kControlTagTitl));
       titlControl->AssertValid();
       titlControl->SetEnabled(1, 1);
       field90 = 1;
       SetPictureResourceIdAndRefresh(0x3e9, 1);
-      // The original then loads a templated string (group 0x1770, index 0) and applies it
-      // to titlControl via its own vtable slot 0x1f0 -- beyond TStaticText's declared
-      // extent (a genuinely unrecovered sibling class, same as NoOpUiLifecycleHook's
-      // saleControl), left unmodeled.
+      CString titlText0;
+      g_pSimMgr->GetString(0x1770, 0, &titlText0);
+      titlControl->UpdateTextEntrySharedString(&titlText0);
     } else if (field90 > 0) {
       ++field90;
       if (field90 < 10) {
         SetPictureResourceIdAndRefresh(static_cast<short>(field90 + 0x3e8), 1);
-        TView* titlControl = ResolveControlByTag(kControlTagTitl);
+        TDeluxeText* titlControl = static_cast<TDeluxeText*>(ResolveControlByTag(kControlTagTitl));
         titlControl->AssertValid();
-        // The original then loads a templated string (group 0x1770, index field90-1) and
-        // applies it to titlControl via vtable slot 0x1f0 -- same unresolved-class gap as
-        // above, left unmodeled.
+        CString titlTextN;
+        g_pSimMgr->GetString(0x1770, static_cast<short>(field90 - 1), &titlTextN);
+        titlControl->UpdateTextEntrySharedString(&titlTextN);
       } else {
         field90 = 0;
         SetPictureResourceIdAndRefresh(0x4e20, 1);

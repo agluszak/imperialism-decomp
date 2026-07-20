@@ -31745,13 +31745,13 @@
     },
     {
       "address": "0x5b4810",
-      "matching": 0.08955223880597014,
+      "matching": 0.8032786885245902,
       "name": "TSpecialQuitPicture::NoOpUiLifecycleHook",
       "type": 1
     },
     {
       "address": "0x5b4a10",
-      "matching": 0.6408839779005525,
+      "matching": 0.7450980392156863,
       "name": "TSpecialQuitPicture::HandleEvent",
       "type": 1
     },
