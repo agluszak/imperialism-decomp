@@ -220,11 +220,11 @@ void TLoadSavePicture::RefreshSlotPreviewFromSaveFile(short slotMode) {
   unsigned char slotMetadata[0x20];
   fread(slotMetadata, 1, 0x20, file);
   fread(tileOwnerTagTable, 1, 0x1950, file);
-  // Four more header fields, whose exact semantics beyond the pendingNationByte assignment
-  // below aren't confirmed yet: a 2-byte value, two single bytes, and a trailing 0x20-byte
-  // record.
-  unsigned char twoByteField[2];
-  fread(twoByteField, 1, 2, file);
+  // Turn number (year = turnNumber + 0x717, used below) and three more header fields, whose
+  // exact semantics beyond turnNumber and the pendingNationByte assignment aren't confirmed
+  // yet: two single bytes and a trailing 0x20-byte record.
+  short turnNumber;
+  fread(&turnNumber, 1, 2, file);
   unsigned char oneByteFieldA;
   fread(&oneByteFieldA, 1, 1, file);
   unsigned char pendingNationByte;
@@ -241,9 +241,19 @@ void TLoadSavePicture::RefreshSlotPreviewFromSaveFile(short slotMode) {
   mapControl->EnhancePhoto();
   mapControl->RefreshControl();
 
-  // The original then resolves an 'info' text control and formats a multi-part summary
-  // string (turn/date info combined via several CString helpers at 0x605bfb/0x605b87/
-  // 0x605b21) from the header fields read above -- not yet decoded.
+  TStaticText* infoControl = static_cast<TStaticText*>(ResolveControlByTag(0x696e666fu)); // 'info'
+  infoControl->AssertValid();
+
+  CString yearText;
+  yearText.Format(g_szDecimalFormat, turnNumber + 0x717);
+  CString slotNationName;
+  g_pSimMgr->GetString(0x2737, oneByteFieldA + 0xd, &slotNationName);
+  CString infoText = yearText + ", " + slotNationName;
+  infoControl->AssignTextSharedRefIfChangedAndMaybeInvalidate(&infoText, 0);
+
+  RECT infoBounds;
+  infoControl->QueryBounds(&infoBounds);
+  InvalidateCityDialogRectRegion(&infoBounds, 1);
 }
 
 namespace {
