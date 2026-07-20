@@ -34295,7 +34295,7 @@
     },
     {
       "address": "0x5df430",
-      "matching": 0.034482758620689655,
+      "matching": 0.7168141592920354,
       "name": "TAssetMgr::LoadTableResourceStreamByName",
       "type": 1
     },
@@ -38981,7 +38981,7 @@
     },
     {
       "address": "0x6091d9",
-      "matching": 0.9787234042553191,
+      "matching": 1.0,
       "name": "CWnd::OnNotify",
       "type": 1
     },
@@ -41260,6 +41260,48 @@
       "type": 1
     },
     {
+      "address": "0x619aac",
+      "matching": 0.9333333333333333,
+      "name": "CMemFile::CMemFile(unsigned int)",
+      "type": 1
+    },
+    {
+      "address": "0x619af8",
+      "matching": 0.95,
+      "name": "CMemFile::CMemFile(unsigned char *, unsigned int, unsigned int)",
+      "type": 1
+    },
+    {
+      "address": "0x619b34",
+      "matching": 1.0,
+      "name": "CMemFile::Attach",
+      "type": 1
+    },
+    {
+      "address": "0x619b71",
+      "matching": 0.9615384615384616,
+      "name": "CMemFile::~CMemFile",
+      "type": 1
+    },
+    {
+      "address": "0x619bca",
+      "matching": 1.0,
+      "name": "CMemFile::Realloc",
+      "type": 1
+    },
+    {
+      "address": "0x619c12",
+      "matching": 1.0,
+      "name": "CMemFile::GrowFile",
+      "type": 1
+    },
+    {
+      "address": "0x619c6b",
+      "matching": 1.0,
+      "name": "CMemFile::SetLength",
+      "type": 1
+    },
+    {
       "address": "0x619ca0",
       "matching": 0.4,
       "name": "CopyIntoStreamBufferFromSourceWithClamp_00619ca0",
@@ -41272,9 +41314,33 @@
       "type": 1
     },
     {
+      "address": "0x619ccf",
+      "matching": 1.0,
+      "name": "CMemFile::Write",
+      "type": 1
+    },
+    {
+      "address": "0x619d11",
+      "matching": 1.0,
+      "name": "CMemFile::Seek",
+      "type": 1
+    },
+    {
+      "address": "0x619d58",
+      "matching": 1.0,
+      "name": "CMemFile::Close",
+      "type": 1
+    },
+    {
       "address": "0x619d82",
       "matching": 0.0,
       "name": "DispatchVirtualSlot54_NoArgs",
+      "type": 1
+    },
+    {
+      "address": "0x619d9f",
+      "matching": 1.0,
+      "name": "CMemFile::GetBufferPtr",
       "type": 1
     },
     {
