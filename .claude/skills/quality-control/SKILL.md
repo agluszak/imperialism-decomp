@@ -187,6 +187,11 @@ cannot override a proof or manufacture an actionable mismatch. Raw similarity re
 useful for progress and local context, but it is not semantic classification: inspect
 the formatted diff only after triage reports `mismatch`.
 
+`commutative_order` also covers reassociated integer-add reductions when no
+intermediate flags are consumed. If triage proves such a reduction effective, retain
+the natural typed source expression; do not permute operands or split statements to
+chase VC5's chosen load order.
+
 ## Known reccmp failure modes
 
 1. **`Failed to find a match at address 0x...`**

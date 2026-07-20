@@ -161,6 +161,9 @@ target). They need a built binary + reccmp DB. Details in the `quality-control` 
   `inconclusive` means reccmp could not prove either outcome and is **not** evidence
   that the source is wrong. Triage never derives safety or operand meaning by parsing
   rendered assembly.
+  `commutative_order` includes reassociated integer-add reductions when no
+  intermediate flags are observed; keep the natural typed expression instead of
+  permuting operands to chase VC5's load schedule.
 - `just vtable [Name]` (vtable correctness), `just datacmp [-a]` (global data values),
   `just roadmap` (symbol locations of functions/vtables/data), `just stackcmp 0xADDR`
   + `just stackcmp-triage` (stack layout of near-matching functions).
