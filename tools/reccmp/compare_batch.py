@@ -56,7 +56,9 @@ def main() -> int:
         return 2
     wanted_set = set(wanted)
 
-    rows = run_report(args.target, args.build_dir, diet=True)
+    rows = run_report(
+        args.target, args.build_dir, diet=True, orig_addresses=wanted_set
+    )
     by_addr = {norm(r["address"]): r for r in rows}
 
     passed = failed = missing = 0

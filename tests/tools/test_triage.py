@@ -238,6 +238,10 @@ class TriageReportTests(unittest.TestCase):
                 with redirect_stdout(io.StringIO()):
                     self.assertEqual(main(), 0)
             run_report_mock.assert_called_once()
+            self.assertEqual(run_report_mock.call_args.kwargs["diet"], True)
+            self.assertEqual(
+                run_report_mock.call_args.kwargs["orig_addresses"], [0x401000]
+            )
 
 
 if __name__ == "__main__":

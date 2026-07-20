@@ -148,8 +148,14 @@ target). They need a built binary + reccmp DB. Details in the `quality-control` 
   gates (`datacmp-gate`, `stub-count-gate`, `class-size-gate`, `noop-gate`), each
   with a `just <gate>-update` baseline target.
 - `just triage 0xADDR` / `just triage --file src/game/X.cpp` — consume reccmp's
-  structured semantic result and add Imperialism-specific advice. Run this before
-  reading a raw `just compare` diff. The four statuses are authoritative:
+  structured semantic result and add Imperialism-specific advice. Address and file
+  requests are filtered inside reccmp and analyzed together in one fresh process;
+  reccmp loads only the required PDB object modules when it can prove the mapping,
+  and its fingerprinted `.reccmp-cache` beside the PDB accelerates repeat queries.
+  The cache contains parsed analysis only, never proof results, and invalidates on
+  binary, PDB, source-marker, data-source, config, or analyzer changes. Never loop
+  over single-address invocations. Run this before reading a raw
+  `just compare` diff. The four statuses are authoritative:
   `exact` needs no work; `effective` is a completed proof whose reasons describe
   safe compiler variation; `mismatch` is the first trusted machine-level divergence;
   `inconclusive` means reccmp could not prove either outcome and is **not** evidence

@@ -20,9 +20,16 @@ Build, measurement, gates, and regression diagnosis. Obey the Command Policy in
   single compares):** `just compare 0xA 0xB 0xC ...` scores several addresses at
   once; `just compare --file src/game/X.cpp` scores every `// FUNCTION:` marker in
   a file; `just compare-class X` is shorthand for the latter. All three run reccmp
-  once with `--json` (seconds total, vs ~10s of PDB parsing per single compare).
+  once with an address-filtered JSON report; unrelated functions are not
+  disassembled or verified.
 - `just triage 0xADDR` (or `--file src/game/X.cpp`) — **run this before reading a raw
-  compare diff by eye.** It consumes `entity["comparison"]` from reccmp's report;
+  compare diff by eye.** Multiple addresses are analyzed in one fresh, filtered
+  reccmp process. Targeted analysis loads conservatively resolved PDB object modules
+  and reuses the fingerprinted `.reccmp-cache` beside the PDB. Parsed PDB, markers,
+  and prepared entity state may be cached; semantic proof results never are. The
+  cache invalidates when relevant binaries, PDB, source/data, config, or analyzer
+  code changes; use reccmp's `--no-cache` only for cache-independent diagnosis. It
+  consumes `entity["comparison"]` from reccmp's report;
   it does not classify rendered instruction text. `exact` needs no work,
   `effective` lists the proof transformations that are safe to ignore, `mismatch`
   reports the first trusted observable divergence with structured operand facts,

@@ -452,8 +452,14 @@ def cmd_check(args: argparse.Namespace) -> int:
                      tolerate=True)
         scores = _parse_scores(proc.stdout)
         below = [a for a, s in scores.items() if s < 100.0]
-        for addr in sorted(below)[: args.max_triage]:
-            _step(f"triage {addr}", ["just", "triage", addr], results, tolerate=True)
+        triage_addrs = sorted(below)[: args.max_triage]
+        if triage_addrs:
+            _step(
+                "triage-touched",
+                ["just", "triage", *triage_addrs],
+                results,
+                tolerate=True,
+            )
 
     # Gates, tests, stats.
     if _step("gates", ["just", "gates"], results).returncode != 0:

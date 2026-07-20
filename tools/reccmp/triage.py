@@ -366,7 +366,12 @@ def main() -> int:
         data = (
             _load_report(Path(args.report_json))
             if args.report_json
-            else run_report(args.target, Path(args.build_dir))
+            else run_report(
+                args.target,
+                Path(args.build_dir),
+                diet=True,
+                orig_addresses=wanted,
+            )
         )
     except (ValueError, KeyError, json.JSONDecodeError) as error:
         print(f"triage: {error}", file=sys.stderr)

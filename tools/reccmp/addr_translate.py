@@ -8,44 +8,29 @@ the two (by marker); this surfaces that pairing as a one-line lookup:
     just addr 0x491cc0            # orig -> recomp + name + match %
     just addr 0x448cd0            # recomp -> orig (direction auto-detected)
 
-Runs `reccmp-reccmp --json` once (~4s over all ~9600 functions; same approach as
-tools.reccmp.compare_batch) and caches the result next to the build until the
-recomp binary/PDB changes, so repeat lookups are instant.
+Runs one fresh, address-filtered reccmp comparison. Each query is checked in
+both address spaces in the same process, with original-address matches taking
+precedence when a numeric address exists in both images.
 """
 
 from __future__ import annotations
 
 import argparse
-import json
 from pathlib import Path
 
 from tools.common.reccmp_report import run_report
 from tools.common.report_score import effective_matching
 
-CACHE_NAME = "reccmp_addr_cache.json"
-
-
-def _build_stamp(build_dir: Path) -> float:
-    stamp = 0.0
-    for pattern in ("*.exe", "*.pdb", "*.EXE", "*.PDB"):
-        for path in build_dir.glob(pattern):
-            stamp = max(stamp, path.stat().st_mtime)
-    return stamp
-
-
-def load_entities(target: str, build_dir: Path) -> list[dict]:
-    cache_path = build_dir / CACHE_NAME
-    stamp = _build_stamp(build_dir)
-    if cache_path.is_file():
-        try:
-            cached = json.loads(cache_path.read_text(encoding="utf-8"))
-            if cached.get("stamp") == stamp:
-                return cached["data"]
-        except (json.JSONDecodeError, KeyError):
-            pass
-    data = run_report(target, build_dir)
-    cache_path.write_text(json.dumps({"stamp": stamp, "data": data}), encoding="utf-8")
-    return data
+def load_entities(
+    target: str, build_dir: Path, queries: list[int]
+) -> list[dict]:
+    return run_report(
+        target,
+        build_dir,
+        diet=True,
+        orig_addresses=queries,
+        recomp_addresses=queries,
+    )
 
 
 def norm_hex(value: str | None) -> int | None:
@@ -64,7 +49,8 @@ def main() -> int:
     ap.add_argument("addrs", nargs="+", help="hex addresses, original or recomp")
     args = ap.parse_args()
 
-    entities = load_entities(args.target, args.build_dir)
+    queries = [int(raw, 16) for raw in args.addrs]
+    entities = load_entities(args.target, args.build_dir, queries)
     by_orig: dict[int, dict] = {}
     by_recomp: dict[int, dict] = {}
     for ent in entities:
@@ -76,8 +62,7 @@ def main() -> int:
             by_recomp[recomp] = ent
 
     rc = 0
-    for raw in args.addrs:
-        query = int(raw, 16)
+    for query in queries:
         ent = by_orig.get(query)
         direction = "orig->recomp"
         if ent is None:
