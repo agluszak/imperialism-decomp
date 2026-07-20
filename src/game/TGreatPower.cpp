@@ -59,9 +59,7 @@
 #include "game/ui_invalidation_guard.h"
 #include "game/UiRuntimeContext.h"
 
-// Autogen-stub externs (Hard Rule 9: generic thunk declaration + typed cast at
-// the callsite). Retire each by porting the real body.
-undefined4 BuildCityInfluenceLevelMap(void); // 0x004dbbb0
+// Remaining autogen-stub extern. Retire by porting the real body.
 undefined4 RebuildMinorNationDispositionLookupTables(void);
 
 // Real body ported at 0x005b7f50 (file end, ascending-address order). Genuine __stdcall
@@ -185,8 +183,8 @@ TGreatPower::TGreatPower(int arg1, int arg2) {
 void TGreatPower::NoOpTailStateHookSlot2B4(void) {}
 
 // FUNCTION: IMPERIALISM 0x004d8be0
-void TGreatPower::NoOpTailStateHookSlot2B8(int arg) {
-  (void)arg;
+void TGreatPower::RefreshTrackedEntriesAndReplanAiDevelopment(int unused) {
+  (void)unused;
 }
 
 // SYNTHETIC: IMPERIALISM 0x004d8c20
@@ -1164,6 +1162,38 @@ void TGreatPower::MarkConnectedOwnedRegionsFrom(unsigned char* regionMap, short 
   } while (nextRegion != 0 && regionMap[nextRegion] == 0);
 }
 
+// FUNCTION: IMPERIALISM 0x004dbbb0
+char* TGreatPower::BuildCityInfluenceLevelMap() {
+  BuildTransportLinkedInfluenceMap(nullptr);
+
+  char* influenceByTile = new char[0x1950];
+  memset(influenceByTile, 0, 0x1950);
+
+  CIterator townIter(townMarkerList);
+  for (TTown* town = static_cast<TTown*>(townIter.Reset()); townIter.More();
+       town = static_cast<TTown*>(townIter.Advance())) {
+    if (town != nullptr && town->transportLinkedFlag4c != 0) {
+      char influence = static_cast<char>((town->enabledFlag4d != 0) + 1);
+      influenceByTile[town->regionId14] = influence;
+
+      short neighbors[6];
+      TMapMgr::ComputeHexNeighborTileIndices(town->regionId14, neighbors,
+                                             g_pGlobalMapState->hexNeighborWrapHorizontally20);
+      for (int direction = 0; direction < 6; ++direction) {
+        short neighbor = neighbors[direction];
+        if (neighbor != -1) {
+          TTerrainStateRecordView& tile = g_pGlobalMapState->terrainStateTable[neighbor];
+          if ((static_cast<short>(tile.ownerNationTag04) == nationSlot || tile.gateFlag == 0) &&
+              influenceByTile[neighbor] < influence) {
+            influenceByTile[neighbor] = influence;
+          }
+        }
+      }
+    }
+  }
+  return influenceByTile;
+}
+
 // FUNCTION: IMPERIALISM 0x004dbd20
 void TGreatPower::RebuildNationResourceYieldCountersAndDevelopmentTargets(void) {
   const int kMapRegionSlotCount = 0x1950;
@@ -1172,8 +1202,7 @@ void TGreatPower::RebuildNationResourceYieldCountersAndDevelopmentTargets(void) 
   short* developmentByType = &this->needCurrentByType[7]; // +0x11c overlays this runtime array.
   short* targetNeedByType = this->needTargetByType;
   short& controlledRegionCount = this->needCurrentByType[0x13]; // +0x134
-  // 0x004dbbb0 is still an autogen stub; Hard Rule 9 thunk call until ported.
-  char* influenceByRegion = reinterpret_cast<char*>(BuildCityInfluenceLevelMap());
+  char* influenceByRegion = BuildCityInfluenceLevelMap();
   TMapMgr* globalMapState = g_pGlobalMapState;
   int regionIndex = 0;
 

@@ -441,6 +441,21 @@ extern short g_industryActionCostWeightResCode10[16];
 extern short g_industryActionCostWeightResCode0B[16];
 extern short g_industryActionCostWeightResCode03[16];
 extern short g_industryActionCostWeightResCode0C[16];
+struct AiCityActionCostProfile {
+  short primaryMetricCode;
+  short primaryMetricMultiplier;
+  short secondaryMetricCode;
+  short secondaryMetricMultiplier;
+  short baseCost;
+  short contextBiasSelector;
+  short actionId;
+};
+ASSERT_SIZE(AiCityActionCostProfile, 14);
+extern AiCityActionCostProfile g_aiCityActionCostProfiles[30];
+extern float g_AiDevelopmentResourceBudgetScale_00650758;
+extern short g_cachedAiCityActionNationSlot_006967d4;
+extern short g_cachedAiCityActionTurnTick_006967d8;
+extern float g_cachedAiCityActionContextBias[3];
 // 17 (x,y) anchor points used to build the 16 city-building hover/hit-test rects (each a
 // fixed 10x10 box at its anchor, except slots 10-11 which span between two consecutive
 // anchors), plus a trailing (1,0) pair with no known consumer that shares this data blob.

@@ -7,6 +7,14 @@
 #include "game/mfc.h"
 #include "game/ui_invalidation_guard.h"
 
+// FUNCTION: IMPERIALISM 0x004be6f0
+float TCityInteriorMinister::GetAiDevelopmentResourceBudgetScale(int* resourcePools) {
+  (void)resourcePools;
+  return g_AiDevelopmentResourceBudgetScale_00650758;
+}
+// SYNTHETIC: IMPERIALISM 0x004be710
+// TCityInteriorMinister::CreateObject
+
 // NOTE: The city-policy virtual run (slots 0x58-0xd4) — production rebalancing, command
 // queueing, home-tile selection, neighbor-bucket rebuilds — is promoted here as a real
 // virtual override layout owning the original addresses (previously return-0 autogen
@@ -28,8 +36,6 @@ short TCityInteriorMinister::InteriorSlot1E(int arg) {
 void TCityInteriorMinister::InteriorSlot1F(int arg) {
   orderTypeTable158[arg] = 0;
 }
-// SYNTHETIC: IMPERIALISM 0x004be710
-// TCityInteriorMinister::CreateObject
 
 // SYNTHETIC: IMPERIALISM 0x004be820
 // TCityInteriorMinister::GetRuntimeClass
@@ -332,6 +338,15 @@ undefined TCityInteriorMinister::CityMinisterSlot44() {
 // FUNCTION: IMPERIALISM 0x004c4e60
 undefined TCityInteriorMinister::CityMinisterSlot45() {
   return 0;
+}
+
+// FUNCTION: IMPERIALISM 0x004c4f90
+int TCityInteriorMinister::GetAverageDevelopmentOrderAllocation() {
+  short total = 0;
+  for (int index = 0; index < 16; ++index) {
+    total = static_cast<short>(total + orderShortTableBA[index]);
+  }
+  return total / 10;
 }
 
 // FUNCTION: IMPERIALISM 0x004c4fe0

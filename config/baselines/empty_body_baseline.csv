@@ -26,7 +26,7 @@ src/game/TArmyMgr.cpp|3|0|1|0
 src/game/TArmyPlacard.cpp|0|0|1|0
 src/game/TArmyStack.cpp|3|0|0|0
 src/game/TArmyUnitLine.cpp|1|0|0|0
-src/game/TAutoGreatPower.cpp|2|1|0|0
+src/game/TAutoGreatPower.cpp|1|1|0|0
 src/game/TAutomatedPlayDialog.cpp|1|0|1|0
 src/game/TBatRepDetLine.cpp|1|0|1|0
 src/game/TBattleDetailBook.cpp|0|0|1|0

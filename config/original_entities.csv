@@ -1961,7 +1961,7 @@ address|name|symbol|size|type|prototype|provenance
 4be650|OrphanCallChain_C2_I17_004be650||37|function|undefined OrphanCallChain_C2_I17_004be650()|
 4be690|OrphanCallChain_C1_I13_004be690||38|function|undefined OrphanCallChain_C1_I13_004be690()|
 4be6d0|TInteriorMinister::NoOpForeignMinisterUtilityStub||3|function|undefined OrphanRetStub_004be6d0(void)|
-4be6f0|PlanAiDevelopmentActionsFromResourcePools_Impl_At004be6f0||9|function|undefined PlanAiDevelopmentActionsFromResourcePools_Impl_At004be6f0()|
+4be6f0|TCityInteriorMinister::GetAiDevelopmentResourceBudgetScale||9|function|float GetAiDevelopmentResourceBudgetScale(int* resourcePools)|
 4be710|TCityInteriorMinister::CreateObject|?CreateObject@TCityInteriorMinister@@SGPAVCObject@@XZ|126|function|undefined CreateObject()|rtti
 4be7b0|TCityInteriorMinister::VTableSlot1D||15|function|undefined 'scalar_deleting_destructor'(void)|
 4be7d0|TCityInteriorMinister::CreateTInteriorMinisterInstance||15|function|undefined GetTEventHandlerClassNamePointer(void)|
@@ -2025,7 +2025,7 @@ address|name|symbol|size|type|prototype|provenance
 4c4c4c|OrphanCallChain_C1_I20_004c4c4c||65|function|undefined OrphanCallChain_C1_I20_004c4c4c()|
 4c4d40|OrphanCallChain_C2_I72_004c4d40||219|function|undefined OrphanCallChain_C2_I72_004c4d40()|
 4c4e60|OrphanCallChain_C3_I79_004c4e60||229|function|undefined OrphanCallChain_C3_I79_004c4e60()|
-4c4f90|PlanAiDevelopmentActionsFromResourcePools_Impl||49|function|undefined PlanAiDevelopmentActionsFromResourcePools_Impl()|
+4c4f90|TCityInteriorMinister::GetAverageDevelopmentOrderAllocation||49|function|int GetAverageDevelopmentOrderAllocation(void)|
 4c4fe0|OrphanCallChain_C4_I151_004c4fe0||471|function|undefined OrphanCallChain_C4_I151_004c4fe0()|
 4c5240|BuildFrogCityTerrainCountsAndOverlayStats||930|function|undefined BuildFrogCityTerrainCountsAndOverlayStats()|
 4c56e0|TryApplyCityOrderCapabilitySelectionBySlot||427|function|undefined TryApplyCityOrderCapabilitySelectionBySlot()|
@@ -2343,7 +2343,7 @@ address|name|symbol|size|type|prototype|provenance
 4d89d0|TGreatPower::GetRuntimeClass||6|function|CRuntimeClass * __thiscall GetRuntimeClass()|rtti
 4d89f0|TGreatPower::TGreatPower||355|function|undefined TGreatPower()|
 4d8bc0|TGreatPower::SelectCandidateTilesWithLowGroundUnitCount_ad||1|function|undefined SelectCandidateTilesWithLowGroundUnitCount(void)|
-4d8be0|TGreatPower::OrphanLeaf_NoCall_Ins07_004d8920_ae||3|function|undefined OrphanLeaf_NoCall_Ins07_004d8920(void)|
+4d8be0|TGreatPower::RefreshTrackedEntriesAndReplanAiDevelopment||3|function|void RefreshTrackedEntriesAndReplanAiDevelopment(int unused)|
 4d8c00|TGreatPower::GetDiplomacyCounterA2||8|function|undefined GetDiplomacyCounterA2()|
 4d8c20|TGreatPower::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4d8c50|TGreatPower::~TGreatPower||80|function|undefined ~TGreatPower()|
@@ -2368,7 +2368,7 @@ address|name|symbol|size|type|prototype|provenance
 4db380|TGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage||867|function|undefined UpdateGreatPowerPressureStateAndDispatchEscalationMessage()|
 4db7d0|TGreatPower::UpdateOrderEntryAvailabilityByConnectedRegionMask||581|function|undefined UpdateOrderEntryAvailabilityByConnectedRegionMask()|
 4dbac0|TGreatPower::MarkConnectedOwnedRegionsInMaskRecursive||192|function|undefined MarkConnectedOwnedRegionsInMaskRecursive()|
-4dbbb0|TDeluxeText::BuildCityInfluenceLevelMap||274|function|char * __thiscall BuildCityInfluenceLevelMap(void)|
+4dbbb0|TGreatPower::BuildCityInfluenceLevelMap||274|function|char* BuildCityInfluenceLevelMap(void)|
 4dbd20|TGreatPower::RebuildNationResourceYieldCountersAndDevelopmentTargets||379|function|undefined RebuildNationResourceYieldCountersAndDevelopmentTargets()|
 4dbf00|TGreatPower::AdvanceOwnedRegionDevelopmentCountersAndDispatchEvents||1007|function|undefined AdvanceOwnedRegionDevelopmentCountersAndDispatchEvents()|
 4dc3f0|TGreatPower::OrphanRetStub_004d7e90_4f||58|function|undefined OrphanRetStub_004d7e90(void)|
@@ -2624,16 +2624,16 @@ address|name|symbol|size|type|prototype|provenance
 4ea450|TAutoGreatPower::BuildGreatPowerTurnMessageSummaryAndDispatch||1|function|undefined VTableIndex177_Provisional()|
 4ea470|TGreatPower::RebuildNationResourceYieldsAndRollField134Into136||33|function|undefined RebuildNationResourceYieldsAndRollField134Into136()|
 4ea5e0|WrapperFor_ftol_At004ea5e0||30|function|undefined WrapperFor_ftol_At004ea5e0()|
-4ea610|ComputeAiIndustryActionCostFromSlot||188|function|undefined ComputeAiIndustryActionCostFromSlot()|
-4ea700|ComputeAiCityActionCostFromSlotAndMode||232|function|undefined ComputeAiCityActionCostFromSlotAndMode()|
-4ea830|GetCachedAiCityActionContextBias||269|function|undefined GetCachedAiCityActionContextBias()|
+4ea610|TAutoGreatPower::ComputeAiIndustryActionCostFromSlot||188|function|float ComputeAiIndustryActionCostFromSlot(short industrySlot)|
+4ea700|TAutoGreatPower::ComputeAiCityActionCostFromSlotAndMode||232|function|float ComputeAiCityActionCostFromSlotAndMode(short actionSlot, char skipContextBias)|
+4ea830|TAutoGreatPower::GetCachedAiCityActionContextBias||269|function|float GetCachedAiCityActionContextBias(short selector)|
 4ea990|TAutoGreatPower::IterateLinkedListCursorAndRelinkNodeOwners_004ea990||97|function|undefined IterateLinkedListCursorAndRelinkNodeOwners_004ea990()|
 4eaa20|TAutoGreatPower::SelectCandidateTilesWithLowGroundUnitCount_ad||866|function|undefined RecomputeNationTerrainCompatibilityAndDiplomacyMetrics()|
-4eae70|TAutoGreatPower::OrphanLeaf_NoCall_Ins07_004d8920||239|function|undefined RefreshTrackedEntriesAndReplanAiDevelopment(void)|
+4eae70|TAutoGreatPower::RefreshTrackedEntriesAndReplanAiDevelopment||239|function|void RefreshTrackedEntriesAndReplanAiDevelopment(int unused)|
 4eafa0|SeedTrackedEntryAssignmentsFromEligibleUnits||124|function|undefined SeedTrackedEntryAssignmentsFromEligibleUnits()|
 4eb040|IterateLinkedListCursorEntries_004eb040||74|function|undefined IterateLinkedListCursorEntries_004eb040()|
 4eb0d0|TAutoGreatPower::PruneInvalidTrackedEntriesAndNotifyOwner||131|function|undefined PruneInvalidTrackedEntriesAndNotifyOwner(void)|
-4eb190|PlanAiDevelopmentActionsFromResourcePools||853|function|undefined PlanAiDevelopmentActionsFromResourcePools()|
+4eb190|TAutoGreatPower::PlanAiDevelopmentActionsFromResourcePools||853|function|void PlanAiDevelopmentActionsFromResourcePools(int unused)|
 4eb5d0|OrphanCallChain_C4_I75_004eb5d0||172|function|undefined OrphanCallChain_C4_I75_004eb5d0()|
 4eb6b0|TAutoGreatPower::UpdateTrackedEntryEligibilityByClassMaskAndRatio||393|function|void UpdateTrackedEntryEligibilityByClassMaskAndRatio(int unused)|
 4eb8b0|TAutoGreatPower::AssignTrackedEntryActionsByProfileToOrdersOrUnits||1212|function|void AssignTrackedEntryActionsByProfileToOrdersOrUnits(int unused)|
@@ -3661,7 +3661,7 @@ address|name|symbol|size|type|prototype|provenance
 5358a0|TMission::DeserializeMissionState||125|function|void __thiscall DeserializeMissionState(TStream* stream)|
 535940|FindFirstTrackedHandlerMatchingModeAndShortKey||123|function|undefined FindFirstTrackedHandlerMatchingModeAndShortKey()|
 5359e0|IsMapTileCompatibleWithCurrentTerrainOrActionContext||210|function|undefined IsMapTileCompatibleWithCurrentTerrainOrActionContext()|
-535b00|SelectBestCityDevelopmentFromResourcePools||899|function|undefined SelectBestCityDevelopmentFromResourcePools()|
+535b00|SelectBestCityDevelopmentFromResourcePools||899|function|bool SelectBestCityDevelopmentFromResourcePools(short nationSlot, int* resourcePools, TMilitaryUnit** bestUnitByType, char* selectedIsIndustry, char* selectedIsUpgrade, int* selectedSlot, int unused, float* selectedWeightedCost)|
 535f80|CompareMissionOrderEntriesByMovementClassThenEfficiency||197|function|short __cdecl CompareMissionOrderEntriesByMovementClassThenEfficiency(void* a, void* b, void* reverseOrder)|
 536090|CompareMissionOrderEntriesByPriorityScore||153|function|undefined CompareMissionOrderEntriesByPriorityScore()|
 536290|WrapperFor_ftol_At00536290||30|function|undefined WrapperFor_ftol_At00536290()|
@@ -3921,7 +3921,7 @@ address|name|symbol|size|type|prototype|provenance
 541a00|TRemoteGreatPower::OrphanLeaf_NoCall_Ins02_004d7ee0||3|function|undefined OrphanLeaf_NoCall_Ins02_004d7ee0(void)|
 541a20|TRemoteGreatPower::ApplyMinorNationCapabilityActionType6||3|function|undefined OrphanLeaf_NoCall_Ins07_004d8920(void)|
 541a40|TRemoteGreatPower::SelectCandidateTilesWithLowGroundUnitCount_ad||1|function|undefined SelectCandidateTilesWithLowGroundUnitCount(void)|
-541a60|TRemoteGreatPower::OrphanLeaf_NoCall_Ins07_004d8920||3|function|undefined OrphanLeaf_NoCall_Ins07_004d8920(void)|
+541a60|TRemoteGreatPower::RefreshTrackedEntriesAndReplanAiDevelopment||3|function|void RefreshTrackedEntriesAndReplanAiDevelopment(int unused)|
 541a80|TRemoteGreatPower::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 541ab0|TRemoteGreatPower::DestructTRemoteGreatPower||80|function|undefined DestructTRemoteGreatPower()|
 541b20|TRemoteGreatPower::GetRuntimeClass||6|function|undefined GetTRemoteGreatPowerClassNamePointer()|rtti
@@ -5963,7 +5963,7 @@ address|name|symbol|size|type|prototype|provenance
 5c3530|GetUnitTypeStatPercent||49|function|undefined GetUnitTypeStatPercent()|
 5c3580|GetNormalizedCityActionResourceCostPercent||48|function|undefined GetNormalizedCityActionResourceCostPercent()|
 5c35c0|TMilitaryUnit::ResolveEraCapabilityFallbackSlot||103|function|short ResolveEraCapabilityFallbackSlot()|
-5c3650|WrapperFor_ResolveEraCapabilityFallbackSlot_At005c3650||13|function|undefined WrapperFor_ResolveEraCapabilityFallbackSlot_At005c3650()|
+5c3650|TMilitaryUnit::HasEraCapabilityFallbackSlot||13|function|bool HasEraCapabilityFallbackSlot(void)|
 5c3670|TMilitaryUnit::ApplyEraCapabilityCostAndSetSelection||357|function|bool ApplyEraCapabilityCostAndSetSelection()|
 5c3840|WrapperFor_ResolveEraCapabilityFallbackSlot_At005c3840||113|function|undefined WrapperFor_ResolveEraCapabilityFallbackSlot_At005c3840()|
 5c38e0|FindMilitaryUnitByIdAcrossTerrainDescriptors||133|function|undefined InitializeBattleSetupArmyStacksAndPopulateSelectionState_Impl()|

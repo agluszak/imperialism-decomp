@@ -108,6 +108,10 @@ public:
   // first eligible neighbor tail-iterated).
   virtual void MarkConnectedOwnedRegionsFrom(unsigned char* regionMap, short regionId);
 
+  // Builds a per-tile strength map around transport-linked towns. The caller owns the
+  // returned 0x1950-byte allocation. 0x4dbbb0.
+  char* BuildCityInfluenceLevelMap();
+
   // ---- turn-event message dispatch ----
   virtual void RefreshGreatPowerRelationPanelsAndDispatchDeltaSummary(void);
   virtual void NotifyCitySlot2C(void);
@@ -327,7 +331,7 @@ public:
   // commodity records 8..0xc.
   virtual int SumCommodityRecordAccumulatedValues(void);
   virtual void NoOpTailStateHookSlot2B4(void);
-  virtual void NoOpTailStateHookSlot2B8(int arg);
+  virtual void RefreshTrackedEntriesAndReplanAiDevelopment(int unused);
   // slot 0xaf — body 0x004db380 returns a char (1 on the hard-alert dispatch path,
   // 0 otherwise); the case-0xb join-empire loop tests that result.
   virtual char UpdateGreatPowerPressureStateAndDispatchEscalationMessage(void);
