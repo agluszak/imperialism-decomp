@@ -4,7 +4,7 @@
 Joins the four scattered sources you otherwise grep by hand every time you look at a
 function: config/original_entities.csv (curated name/size/prototype), source markers
 (marker-derived ownership), the Ghidra evidence export index (the reference body's
-location + export status), and the reccmp baseline report (current match %).
+location + export status), and the compact reccmp function baseline (current match %).
 
 usage:
   func_status 0xADDR [0xADDR ...]
@@ -12,19 +12,20 @@ usage:
 
 from __future__ import annotations
 
-import json
 import sys
 from pathlib import Path
 
 from tools.common.baseline_staleness import warn_if_baseline_stale
+from tools.common.function_baseline import load_function_baseline
 from tools.common.pipe_csv import read_pipe_rows
-from tools.common.report_score import effective_matching
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 SYMBOLS_CSV = REPO_ROOT / "config" / "original_entities.csv"
 AUTOGEN_INDEX = (REPO_ROOT / "build-msvc500" / "evidence" / "ghidra-export"
                  / "src" / "index.csv")
-BASELINE_REPORT = REPO_ROOT / "config" / "baselines" / "reccmp_progress_baseline.report.json"
+FUNCTION_BASELINE = (
+    REPO_ROOT / "config" / "baselines" / "reccmp_progress_baseline.functions.csv"
+)
 
 
 def _index_by_address(path: Path) -> dict[str, dict[str, str]]:
@@ -44,12 +45,12 @@ def _norm(addr_int: int) -> str:
 
 def _scores() -> dict[str, float]:
     out: dict[str, float] = {}
-    if not BASELINE_REPORT.is_file():
+    functions = load_function_baseline(FUNCTION_BASELINE)
+    if functions is None:
         return out
-    for entry in json.loads(BASELINE_REPORT.read_text(encoding="utf-8")).get("data", []):
-        addr = entry.get("address")
-        if addr:
-            out[addr.lower().replace("0x", "").lstrip("0") or "0"] = effective_matching(entry)
+    for address, entry in functions.items():
+        key = address.lower().removeprefix("0x").lstrip("0") or "0"
+        out[key] = float(entry["m"])
     return out
 
 
@@ -101,9 +102,9 @@ def main() -> int:
             print(f"  autogen body: {ag.get('file', '')} (status={ag.get('status', '')})")
 
         if key in scores:
-            print(f"  reccmp score: {scores[key] * 100:.2f}%  (baseline report)")
+            print(f"  reccmp score: {scores[key] * 100:.2f}%  (function baseline)")
         else:
-            print("  reccmp score: (not in baseline report)")
+            print("  reccmp score: (not in function baseline)")
     return 0
 
 

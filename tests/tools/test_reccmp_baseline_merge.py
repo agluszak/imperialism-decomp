@@ -40,7 +40,7 @@ class ReccmpBaselineMergeTests(unittest.TestCase):
     @patch("tools.workflow.reccmp_baseline_merge.pending_path")
     def test_merge_driver_marks_expected_baseline(self, pending) -> None:
         pending.return_value = self.marker
-        path = "config/baselines/reccmp_progress_baseline.json"
+        path = "config/baselines/reccmp_progress_baseline.functions.csv"
         self.assertEqual(run_merge_driver(self.root, path), 0)
         self.assertEqual(self.marker.read_text(encoding="utf-8"), f"{path}\n")
 

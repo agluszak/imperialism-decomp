@@ -1381,7 +1381,7 @@ format-check *paths:
 # baseline-update — targets that REWRITE committed baselines/configs.
 # ---------------------------------------------------------------------------
 
-# MUTATES: config/baselines/reccmp_progress_baseline.json.
+# MUTATES: the aggregate JSON and per-function CSV reccmp progress baselines.
 [group('baseline-update')]
 stats-baseline-update:
   uv run python -m tools.reccmp.progress_stats --target "{{target}}" --build-dir "{{build_dir}}" --detect-recompiled --commit-baseline

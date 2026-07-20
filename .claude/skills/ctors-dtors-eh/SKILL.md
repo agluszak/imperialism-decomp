@@ -174,7 +174,7 @@ reccmp pairs to another class's dtor). Net for TModalDialogBase: +2 (two dtors r
 −15 aligned (≈10 sibling vtables + some folded no-op leaves). **Keep the base dtor out-of-line**
 and accept that the one derived dtor stays ~83% (it emits a `call` to the base dtor instead of
 inlining it). A single +100% is never worth breaking 10 sibling vtables. Diagnose which funcs
-regressed by diffing `config/reccmp_progress_baseline.report.json` (per-function `matching`)
+regressed by diffing `config/baselines/reccmp_progress_baseline.functions.csv`
 against a fresh `reccmp-reccmp --json` capture — aggregate stats alone won't tell you WHAT fell.
 
 ### POD-only constructors: body assignments in observed store order, not init lists

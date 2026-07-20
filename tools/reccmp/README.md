@@ -10,6 +10,15 @@ Primary workflow uses `just` wrappers:
 4. `just stats-baseline-update` (update the committed progress baseline after accepting changes)
 5. `just session-loop` (read-only ranking; pass `--refresh-ignore` to also rewrite ignore lists)
 
+`just stats-baseline-update` writes two reviewable snapshots:
+
+- `config/baselines/reccmp_progress_baseline.json` — aggregate counts and ratios.
+- `config/baselines/reccmp_progress_baseline.functions.csv` — only the per-function
+  address, effective score, and name needed by regression checks and candidate tools.
+
+The full structured `build-msvc500/reccmp_report.json` is disposable live evidence
+for triage; it is not committed as a baseline.
+
 Bootstrap project metadata once:
 
 ```bash
