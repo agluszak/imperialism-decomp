@@ -4374,8 +4374,14 @@ int TGreatPower::SumDiplomacyGrantEntriesMaskedToValueBits() {
 // FUNCTION: IMPERIALISM 0x004e6c20
 void TGreatPower::InitializeNationMinisterSubsystemsByPolicyIds(int arg1, int arg2, short arg3,
                                                                 short arg4, short arg5) {
-  // TODO: promote body @ 0x004e6c20 — creates defense/foreign minister objects
-  // via switch on policy IDs, stores at +0x94/+0x98/+0x9c
+  // TODO: promote body @ 0x004e6c20 (1160 bytes, 3 jump-table switches over policy
+  // IDs) -- creates defense/foreign/city-interior minister objects, stores at
+  // +0x94/+0x98/+0x9c. Most callees are now real: every personality's
+  // ConstructTXMinisterBaseState (Napoleon/Bismarck/Pirate/Defender/Bully/Ted/Bill/
+  // Diplomat/Textile/Trader/Arms) and all five TDefenseMinister order-array presets
+  // (InitializeOrderArrayPreset*, TDefenseMinister.cpp) are ported. Remaining blockers:
+  // the WrapperFor_thunk_InitializeCityInteriorMinister_At* stubs (city-minister-family
+  // construction, called from the same switch) still need investigation.
   (void)arg1;
   (void)arg2;
   (void)arg3;
