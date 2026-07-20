@@ -126,6 +126,8 @@ int g_lastEdgeAutoScrollTick16 = 0;
 int g_nSaveFormatVersion = -1;
 // GLOBAL: IMPERIALISM 0x006a3ee0
 int g_UnknownMapOrderExecutionGuard_006a3ee0 = 0;
+// GLOBAL: IMPERIALISM 0x006a30b4
+int g_colorFillAssertGuard_006a30b4 = 0;
 // Upper-cased command-line switch literal matched by
 // ImperialismCommandLineInfo::ParseParam (0x4133d0). Linker-pooled with the same "L"
 // literal used as a flavor-text syllable in map_context_flavor_builders.cpp -- named

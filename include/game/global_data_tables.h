@@ -415,6 +415,10 @@ extern int g_nSaveFormatVersion;
 // Gates the assert-messagebox in TTaskForce::ApplyMapOrderTypeExecutionEffects's default
 // (unhandled attachment/kind) case; not yet recovered beyond that one read site.
 extern int g_UnknownMapOrderExecutionGuard_006a3ee0;
+// Guards the nil-pointer assert in TColorFill::AdornerSlot0C (0x004ff1c0, TColorFill.cpp);
+// no write site found anywhere in ported source, so this may be a debug/never-reached
+// assertion path in the retail build rather than a genuine run-once flag.
+extern int g_colorFillAssertGuard_006a30b4;
 extern char g_szLiteralL_00694250[];
 extern char g_szCmdSwitchLangQuit_00694254[];
 extern ImperialismApp* g_pImperialismApp;
