@@ -5,6 +5,8 @@
 #include "game/TMapPreviewView.h"
 #include "game/TMultiplayerMgr.h"
 #include "game/TSimMgr.h"
+#include "game/TSoundPlayer.h"
+#include "game/TViewMgr.h"
 #include "game/global_data_tables.h"
 #include "game/ui_control_tags.h"
 
@@ -31,10 +33,43 @@ void TScenarioChooser::NoOpUiLifecycleHook(int arg) {
 
 // FUNCTION: IMPERIALISM 0x0057a050
 void TScenarioChooser::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
-  // The original dispatches on commandId (4, 'pick', 0xa, 0x14, ...) against
-  // sourceHandler's own +0x1060/+0x1064/+0x1068 fields (an unresolved receiver class) and
-  // scenarioChooserState94's opaque layout before reaching this common tail in every path
-  // -- not yet ported.
+  if (commandId == 4) {
+    g_pSfxPlaybackSystem->PlaySoundEffect(0x1b58, 0, 1);
+    // g_pUiRuntimeContext->cursorTable[26]: (0x7c - 0x14) / sizeof(void*).
+    SetCursor(static_cast<HCURSOR>(g_pUiRuntimeContext->cursorTable[26]));
+    // sourceHandler's own +0x1068 field indexes this->scenarioChooserState94 (reinterpreted
+    // as a short array at +0x94) to select a scenario index passed to
+    // LoadScenarioMetadataByIndexIntoUiControlCore -- sourceHandler's receiver class is
+    // unresolved, so not yet ported.
+    SetCursor(LoadCursorA(nullptr, IDC_ARROW));
+  } else if (commandId == 0x7069636b) { // 'pick'
+    TMapPreviewView* mapPreview = static_cast<TMapPreviewView*>(ResolveControlByTag(0x706d6170u)); // 'pmap'
+    mapPreview->AssertValid();
+    if (nationStateCodesByMapSelection144[mapPreview->pendingNation6C] != -1 &&
+        mapPreview->pendingNation6C != mapPreview->selectedNation68) {
+      g_pSfxPlaybackSystem->PlaySoundEffect(0x1b58, 0, 1);
+      mapPreview->selectedNation68 = mapPreview->pendingNation6C;
+      mapPreview->EnhancePhoto();
+      mapPreview->RefreshControl();
+      // The original then resolves the 'desc' control and calls its own slot-0x1f4 virtual
+      // with this->field118/field134 (per-nation description tables inside
+      // scenarioChooserState94) indexed by pendingNation6C -- the 'desc' control's receiver
+      // class is unresolved, so not yet ported.
+    }
+  } else if (commandId == 0xa) {
+    if (sourceHandler->controlTag == 0x73746172u) { // 'star'
+      ApplyScenarioSelectionAndPostTurnEvent5E4();
+    }
+  } else if (commandId == 0xd) {
+    if (sourceHandler->controlTag == 0x6d6f7265u) { // 'more'
+      // Scrolls the 'list' child by one page (clamped) -- not yet ported (unresolved
+      // list-widget receiver class with fields at +0x38/+0x1060/+0x1064/+0x106c).
+    }
+  } else if (commandId == 0x14) {
+    if (sourceHandler->controlTag == 0x65786974u) { // 'exit'
+      PostTurnEvent5DCOrResetScenarioSelectionState();
+    }
+  }
   TControl::HandleEvent(commandId, sourceHandler, event);
 }
 
