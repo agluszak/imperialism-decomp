@@ -1,12 +1,6 @@
 {
   "data": [
     {
-      "address": "0x406ccb",
-      "matching": 0.0,
-      "name": "thunk_HandleEngineerConstructionAction",
-      "type": 1
-    },
-    {
       "address": "0x412600",
       "matching": 0.0,
       "name": "InvokeCallbackForRecordRangeWithStride",
@@ -1161,12 +1155,6 @@
       "type": 1
     },
     {
-      "address": "0x457aee",
-      "matching": 0.0,
-      "name": "thunk_BuildMainStatsScoreboardAndDoneUiResourceTree",
-      "type": 1
-    },
-    {
       "address": "0x457af2",
       "matching": 0.0013477088948787063,
       "name": "BuildMainStatsScoreboardAndDoneUiResourceTree",
@@ -1176,12 +1164,6 @@
       "address": "0x458ced",
       "matching": 0.0,
       "name": "AllocateAndConstructTViewDerivedState_00458ced",
-      "type": 1
-    },
-    {
-      "address": "0x458d10",
-      "matching": 0.0,
-      "name": "thunk_InitializeOrderStateUiResourceTreeAndControlEntries",
       "type": 1
     },
     {
@@ -1405,12 +1387,6 @@
       "address": "0x474ac5",
       "matching": 0.0012970168612191958,
       "name": "BuildUniversityDialogControls",
-      "type": 1
-    },
-    {
-      "address": "0x475f80",
-      "matching": 0.0,
-      "name": "thunk_BuildUniversityRecruitmentRows",
       "type": 1
     },
     {
@@ -34912,12 +34888,6 @@
       "type": 1
     },
     {
-      "address": "0x5e4dc0",
-      "matching": 0.0,
-      "name": "thunk_ReleaseRuntimeSelectionPeersAndResetOwner_Impl_At005e4dc0",
-      "type": 1
-    },
-    {
       "address": "0x5e4de0",
       "matching": 0.25,
       "name": "InitStub_ResetAndOpenCdAudioDeviceHandle_At005e4de0",
@@ -35551,12 +35521,6 @@
       "address": "0x5e711d",
       "matching": 0.8,
       "name": "CArchiveStream::CArchiveStream",
-      "type": 1
-    },
-    {
-      "address": "0x5e716d",
-      "matching": 0.0,
-      "name": "thunk_NoOpRuntimeCallback_005e717b",
       "type": 1
     },
     {
@@ -37420,12 +37384,6 @@
       "type": 1
     },
     {
-      "address": "0x5ff429",
-      "matching": 0.0,
-      "name": "thunk_GetThisField10Value",
-      "type": 1
-    },
-    {
       "address": "0x5ff432",
       "matching": 0.0,
       "name": "GetThisField10Value",
@@ -37834,18 +37792,6 @@
       "type": 1
     },
     {
-      "address": "0x604bcd",
-      "matching": 0.0,
-      "name": "thunk_NoOpPaddingStub_00604c3c",
-      "type": 1
-    },
-    {
-      "address": "0x604c32",
-      "matching": 0.0,
-      "name": "thunk_NoOpPaddingStub_00604c3c_00604C32",
-      "type": 1
-    },
-    {
       "address": "0x604c3c",
       "matching": 0.0,
       "name": "NoOpPaddingStub_00604c3c",
@@ -38017,12 +37963,6 @@
       "address": "0x605613",
       "matching": 0.0,
       "name": "HandleWndProcExceptionWithNodeTypeDispatch_00605613",
-      "type": 1
-    },
-    {
-      "address": "0x60564e",
-      "matching": 0.0,
-      "name": "thunk_DispatchVirtualSlot18OnImplicitObject",
       "type": 1
     },
     {
@@ -40222,12 +40162,6 @@
       "type": 1
     },
     {
-      "address": "0x612878",
-      "matching": 0.0,
-      "name": "thunk_CallDcCallbackIfPrimaryHdcDiffers",
-      "type": 1
-    },
-    {
       "address": "0x61287e",
       "matching": 0.125,
       "name": "CallDcCallbackIfPrimaryHdcDiffers",
@@ -40564,12 +40498,6 @@
       "type": 1
     },
     {
-      "address": "0x613e36",
-      "matching": 0.0,
-      "name": "thunk_NoOpVirtualStub_00613e44",
-      "type": 1
-    },
-    {
       "address": "0x613e44",
       "matching": 0.0,
       "name": "NoOpVirtualStub_00613e44",
@@ -40741,12 +40669,6 @@
       "address": "0x61441e",
       "matching": 1.0,
       "name": "_AfxChildWindowFromPoint",
-      "type": 1
-    },
-    {
-      "address": "0x6145e3",
-      "matching": 0.0,
-      "name": "thunk_ReturnOneStub_006145f5",
       "type": 1
     },
     {
@@ -41080,12 +41002,6 @@
       "type": 1
     },
     {
-      "address": "0x61874f",
-      "matching": 0.0,
-      "name": "thunk_NoOpVirtualStub_00618753",
-      "type": 1
-    },
-    {
       "address": "0x618753",
       "matching": 0.0,
       "name": "NoOpVirtualStub_00618753",
@@ -41389,12 +41305,6 @@
       "address": "0x619ca0",
       "matching": 0.4,
       "name": "CopyIntoStreamBufferFromSourceWithClamp_00619ca0",
-      "type": 1
-    },
-    {
-      "address": "0x619ca6",
-      "matching": 0.0,
-      "name": "thunk_NoOpVirtualStub_00619cca",
       "type": 1
     },
     {
@@ -42250,12 +42160,6 @@
       "type": 1
     },
     {
-      "address": "0x622aa2",
-      "matching": 0.0,
-      "name": "thunk_thunk_CProcessLocalObject_At00622aa2",
-      "type": 1
-    },
-    {
       "address": "0x622b58",
       "matching": 0.95,
       "name": "CWinThread::CWinThread(void)",
@@ -42613,12 +42517,6 @@
       "address": "0x6244b7",
       "matching": 0.6666666666666666,
       "name": "NoOpPaddingStub_006244b7",
-      "type": 1
-    },
-    {
-      "address": "0x6244c4",
-      "matching": 0.0,
-      "name": "thunk_thunk_CProcessLocalObject_at_006244ce_At006244c4",
       "type": 1
     },
     {
