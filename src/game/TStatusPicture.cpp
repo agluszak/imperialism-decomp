@@ -3,6 +3,7 @@
 #include "game/TCity.h"
 #include "game/TGreatPower.h"
 #include "game/TSimMgr.h"
+#include "game/TSoundPlayer.h"
 #include "game/TViewMgr.h"
 #include "game/UiRuntimeContext.h"
 #include "game/global_data_tables.h"
@@ -25,7 +26,31 @@ TStatusPicture::TStatusPicture() {}
 void TStatusPicture::NoOpUiLifecycleHook(int arg) {}
 
 // FUNCTION: IMPERIALISM 0x005942f0
-void TStatusPicture::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {}
+void TStatusPicture::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+  if (commandId == 10) {
+    unsigned int tag = sourceHandler->controlTag;
+    if (tag >= 0x74616230u /* 'tab0' */ && tag <= 0x74616239u /* 'tab9' */) {
+      int newIndex = static_cast<int>(tag - 0x74616230u);
+      if (newIndex != comparisonMode90) {
+        TView* newTab = ResolveControlByTag(0x74616230u + newIndex);
+        newTab->AssertValid();
+        newTab->SetEnabled(0, 1);
+        static_cast<TView*>(sourceHandler)->AssertValid();
+        static_cast<TView*>(sourceHandler)->SetEnabled(1, 1);
+        g_pSfxPlaybackSystem->PlaySoundEffect(0x13f0, 0, 1);
+        comparisonMode90 = newIndex;
+        // The original then recomputes the seven nation-comparison values via an inlined
+        // per-nation average distinct from RecomputeNationComparisonValuesAndNormalizeScale
+        // (dip[0x1824+i*0x10] summed over 4 dwords, divided by 10) before refreshing --
+        // not yet ported.
+      } else {
+        // Already-selected tab: re-clicking replays a shift-modified secondary action
+        // (checks 'tab1'/'tab2' + VK_SHIFT) -- not yet ported.
+      }
+    }
+  }
+  TPicture::HandleEvent(commandId, sourceHandler, event);
+}
 
 // FUNCTION: IMPERIALISM 0x00594540
 void TStatusPicture::ApplyRectSlot110(RECT* rectBuffer) {

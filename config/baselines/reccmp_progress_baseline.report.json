@@ -28940,7 +28940,7 @@
     },
     {
       "address": "0x5942f0",
-      "matching": 0.014084507042253521,
+      "matching": 0.28,
       "name": "TStatusPicture::HandleEvent",
       "type": 1
     },
@@ -38987,7 +38987,7 @@
     },
     {
       "address": "0x6091d9",
-      "matching": 1.0,
+      "matching": 0.9787234042553191,
       "name": "CWnd::OnNotify",
       "type": 1
     },
