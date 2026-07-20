@@ -807,6 +807,7 @@ extern "C" const char s_SourcePathUViewMgrMore_0069B740[];
 // Assert source-path string for the UArmyMgr TU.
 extern "C" const char s_SourcePathUArmyMgr_0069573C[];
 extern "C" const char s_SourcePathUCityViews_00696650[];
+extern "C" const char s_SourcePathUArmyViews_00695858[];
 // Assert source-path string for the USuperMap TU (TMapUberPicture family).
 extern "C" const char s_SourcePathUSuperMap_0069943C[];
 // Assert source-path string for the UTradeViews TU (TOfferDeskPicture family).

@@ -1,16 +1,21 @@
 #include "game/TArmyUnitView.h"
 
+#include "game/TAssetMgr.h"
+#include "game/TDialogBehavior.h"
 #include "game/TDisplayMgr.h"
+#include "game/TEditText.h"
 #include "game/TMapUberPicture.h"
 #include "game/TMilitaryUnit.h"
 #include "game/TQuickDrawSurfaceContext.h"
 #include "game/TSimMgr.h"
 #include "game/TStaticText.h"
 #include "game/TViewMgr.h"
+#include "game/TWindow.h"
 #include "game/global_data_tables.h"
 #include "game/mfc.h"
 #include "game/quickdraw_rendering.h"
 #include "game/ui_control_tags.h"
+#include "game/ui_invalidation_guard.h"
 #include "game/ui_text_label_helpers_decls.h"
 // SYNTHETIC: IMPERIALISM 0x004a9450
 // TArmyUnitView::CreateObject
@@ -147,8 +152,51 @@ void TArmyUnitView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEv
           msg, &g_cstrArmyOrderMessageStore, 2, 0);
     }
   } else if (sourceHandler->controlTag == kControlTagName) {
-    // Original calls HandleCrossUArmyViewsNameCommand (0x4a9ca0, 498 bytes, unowned
-    // stub shared with TShipView::HandleEvent) here -- not yet ported.
+    HandleCrossUArmyViewsNameCommand();
   }
   TView::HandleEvent(commandId, sourceHandler, event);
+}
+
+// TArmyUnitView-only despite the generic Ghidra symbol name (0x4a9ca0) -- confirmed by the
+// caller: TShipView::HandleEvent's 'name' branch actually calls a different function
+// (RunEngineerOrderNameEditDialogAndApply, 0x565a40), not this one, so there is no
+// cross-class field60 ambiguity to resolve here. Runs the unit-rename dialog: seeds an edit
+// box with field60's current name, runs it modally, and (unless cancelled) commits the
+// typed text back into field60->name24.
+// FUNCTION: IMPERIALISM 0x004a9ca0
+void TArmyUnitView::HandleCrossUArmyViewsNameCommand() {
+  TWindow* node = static_cast<TWindow*>(
+      g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(0xdb4));
+  if (node == nullptr) {
+    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUArmyViews_00695858, 0x204);
+  }
+
+  TUiTextStyleDescriptor style;
+  BuildUiTextStyleDescriptor(&style, 0, 0xc, 0x2b6a);
+
+  TStaticText* titleControl = static_cast<TStaticText*>(node->ResolveControlByTag(kControlTagTitl));
+  titleControl->AssertValid();
+  titleControl->LoadUiStringAndDispatchViaVslot1C8(0x2746, 1, 1);
+  titleControl->textStyle78 = style;
+
+  TEditText* nameControl = static_cast<TEditText*>(node->ResolveControlByTag(kControlTagName));
+  nameControl->AssertValid();
+  nameControl->field_9c = 0x18;
+  CString editedName;
+  editedName = field60->name24;
+  nameControl->InitDialogWindowAndSyncTitleIfChanged(&editedName, 1);
+  nameControl->textStyle78 = style;
+
+  node->SetField84(1);
+  TDialogBehavior* behavior = node->GetEmbeddedDialogBehavior();
+  if (behavior != nullptr) {
+    behavior->defaultCommandCode = 0x6f6b6179; // 'okay'
+  }
+  int modalResult = node->ExecuteViewModalStateWithPushPopChain();
+  nameControl->GetCurrentText(&editedName);
+  if (modalResult != 0x636e636c /* 'cncl' */) {
+    field60->name24 = editedName;
+  }
+  RefreshControl();
 }

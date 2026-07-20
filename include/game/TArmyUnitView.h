@@ -115,5 +115,8 @@ public:
   // match TMilitaryUnit::field_8/name24/field_34/field_38 exactly.
   class TMilitaryUnit* field60; // +0x60
 
+  // Non-virtual: runs the rename dialog for field60 in response to the 'name' command.
+  void HandleCrossUArmyViewsNameCommand();
+
   TArmyUnitView();
 };

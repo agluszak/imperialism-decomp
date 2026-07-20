@@ -59,8 +59,11 @@ void TShipView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent*
       }
     }
   } else if (sourceHandler->controlTag == kControlTagName) {
-    // Original calls HandleCrossUArmyViewsNameCommand (0x4a9ca0, 498 bytes, unowned
-    // stub shared with TArmyUnitView::HandleEvent) here -- not yet ported.
+    // TODO: calls RunEngineerOrderNameEditDialogAndApply (0x565a40, 461 bytes, unowned) --
+    // NOT the same function as TArmyUnitView::HandleCrossUArmyViewsNameCommand (0x4a9ca0)
+    // despite the near-identical byte size and shared surrounding code shape; confirmed by
+    // resolving each callsite's own callee thunk independently (0x4092ff here vs 0x403986
+    // there). Not yet ported.
   }
   TEventHandler::HandleEvent(commandId, sourceHandler, event);
 }
