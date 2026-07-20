@@ -1,5 +1,8 @@
 #include "game/TSpecialQuitPicture.h"
 
+#include "game/ImperialismApp.h"
+#include "game/TSimMgr.h"
+#include "game/global_data_tables.h"
 #include "game/ui_control_tags.h"
 
 // FUNCTION: IMPERIALISM 0x0045acb0
@@ -32,4 +35,48 @@ void TSpecialQuitPicture::NoOpUiLifecycleHook(int arg) {
 }
 
 // FUNCTION: IMPERIALISM 0x005b4a10
-void TSpecialQuitPicture::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {}
+void TSpecialQuitPicture::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+  if (commandId == 10) {
+    if (sourceHandler->controlTag == kControlTagQuit) {
+      PostWmCloseToMainThreadWindow();
+    }
+    if (sourceHandler->controlTag == kControlTagShow) {
+      ResolveControlByTag(kControlTagQuit)->SetState(0, 1);
+      ResolveControlByTag(kControlTagShow)->SetState(0, 1);
+      ResolveControlByTag(kControlTagSale)->SetEnabled(0, 1);
+      ResolveControlByTag(kControlTagRequ)->SetEnabled(0, 1);
+      ResolveControlByTag(kControlTagShot)->SetEnabled(0, 1);
+      ResolveControlByTag(kControlTagEqui)->SetEnabled(0, 1);
+      TView* titlControl = ResolveControlByTag(kControlTagTitl);
+      titlControl->AssertValid();
+      titlControl->SetEnabled(1, 1);
+      field90 = 1;
+      SetPictureResourceIdAndRefresh(0x3e9, 1);
+      // The original then loads a templated string (group 0x1770, index 0) and applies it
+      // to titlControl via its own vtable slot 0x1f0 -- beyond TStaticText's declared
+      // extent (a genuinely unrecovered sibling class, same as NoOpUiLifecycleHook's
+      // saleControl), left unmodeled.
+    } else if (field90 > 0) {
+      ++field90;
+      if (field90 < 10) {
+        SetPictureResourceIdAndRefresh(static_cast<short>(field90 + 0x3e8), 1);
+        TView* titlControl = ResolveControlByTag(kControlTagTitl);
+        titlControl->AssertValid();
+        // The original then loads a templated string (group 0x1770, index field90-1) and
+        // applies it to titlControl via vtable slot 0x1f0 -- same unresolved-class gap as
+        // above, left unmodeled.
+      } else {
+        field90 = 0;
+        SetPictureResourceIdAndRefresh(0x4e20, 1);
+        ResolveControlByTag(kControlTagQuit)->SetState(1, 1);
+        ResolveControlByTag(kControlTagShow)->SetState(1, 1);
+        ResolveControlByTag(kControlTagSale)->SetEnabled(1, 1);
+        ResolveControlByTag(kControlTagRequ)->SetEnabled(1, 1);
+        ResolveControlByTag(kControlTagShot)->SetEnabled(1, 1);
+        ResolveControlByTag(kControlTagEqui)->SetEnabled(1, 1);
+        ResolveControlByTag(kControlTagTitl)->SetEnabled(0, 1);
+      }
+    }
+  }
+  TPicture::HandleEvent(commandId, sourceHandler, event);
+}
