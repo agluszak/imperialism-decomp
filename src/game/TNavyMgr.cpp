@@ -220,8 +220,7 @@ void RefreshMapOrderBattleSideSnapshot(MapOrderBattleSnapshot* snapshot, int sid
 // Formats "<count><sep><commodity name>" into `out`: fetches the commodity's
 // localized name (singular string group 0x2716 for count < 2, plural 0x271a
 // otherwise) into `out`, then, for a non-negative count, prefixes the decimal count
-// and the shared separator string. The concat/format helpers Ghidra names
-// AssignSharedStringConcat*/_Format_CString are MFC CString operator+/Format.
+// and the shared separator string using the real MFC CString::Format and operator+.
 // FUNCTION: IMPERIALISM 0x00550c20
 void FormatLocalizedCommodityCountLabelByIndex(CString* out, unsigned int commodityCode,
                                                short count) {

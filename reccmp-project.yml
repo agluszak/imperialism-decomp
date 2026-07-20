@@ -196,7 +196,6 @@ targets:
       - CreateWaveFileAndWriteFmtFactChunks
       - CrtThreadExitWithTlsCleanup
       - CrtThreadStartWithTlsInitAndCleanup
-      - DecrementSharedStringRefCountAndFree
       - Delete
       - DeleteField24ObjectIfPresent_006063b8
       - DeleteFileOrReportLastError
