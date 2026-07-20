@@ -3,6 +3,8 @@
 #include "game/TBuildingView.h"
 #include "game/mfc.h"
 
+class TEditText;
+
 // VTABLE: IMPERIALISM 0x00652b10
 class TArmoryView : public TBuildingView {
 public:
@@ -132,8 +134,13 @@ public:
 
   TArmoryView();
 
-  // Original object size is 0xac (CRuntimeClass m_nObjectSize); the source class ended at 0xa0. Trailing 12 byte(s) not yet semantically recovered — declared so sizeof and the recomp's allocation size match the original.
+  // Original object size is 0xac (CRuntimeClass m_nObjectSize); the source class ended at 0xa0.
   int fielda0;
-  int fielda4;
-  int fielda8;
+  // 0xa4 -- selected production-row index (0..8), set from the 'rec0'..'rec8'/'sele' tab
+  // controls in HandleEvent; a 16-bit store in the original (0x4cf350), not a full int.
+  short selectedRowIndexA4;
+  char pad_a6[2];
+  // 0xa8 -- a step-adjustable numeric edit widget (matches TEditText::SetControlValue's
+  // real body, 0x4906f0); HandleEvent's '+'/'-' buttons read/write its field04 directly.
+  TEditText* stepEntryA8;
 };
