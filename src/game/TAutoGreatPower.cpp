@@ -1390,4 +1390,50 @@ void TAutoGreatPower::PruneInvalidTrackedEntriesAndNotifyOwner(void) {
     }
   }
 }
+
+// FUNCTION: IMPERIALISM 0x004eb6b0
+void TAutoGreatPower::UpdateTrackedEntryEligibilityByClassMaskAndRatio(int unused) {
+  (void)unused;
+  missionQueue->SortBy(&CompareMissionOrderEntriesByMovementClassThenEfficiency, this);
+
+  TMission* nextByClass[4] = {nullptr, nullptr, nullptr, nullptr};
+  int availableClassMask = 3;
+  {
+    CIterator candidateIter(missionQueue);
+    for (TMission* mission = static_cast<TMission*>(candidateIter.Reset()); candidateIter.More();
+         mission = static_cast<TMission*>(candidateIter.Advance())) {
+      int classMask = static_cast<char>(mission->marker11);
+      if (mission->flag10 == 0 && classMask != 0) {
+        nextByClass[classMask] = mission;
+      }
+    }
+  }
+
+  CIterator missionIter(missionQueue);
+  for (TMission* mission = static_cast<TMission*>(missionIter.Reset()); missionIter.More();
+       mission = static_cast<TMission*>(missionIter.Advance())) {
+    int classMask = static_cast<char>(mission->marker11);
+    if (nextByClass[classMask] == mission) {
+      nextByClass[classMask] = nullptr;
+    }
+
+    unsigned char eligible =
+        classMask == 0 || (classMask & availableClassMask) == classMask || mission->state08 != 0;
+    if (eligible && (classMask & 1) != 0 && !mission->ReturnFalseSlot50()) {
+      eligible = 0;
+    }
+    if (eligible && classMask != 0) {
+      TMission* nextMission = nextByClass[classMask];
+      if (nextMission != nullptr &&
+          mission->value0c / mission->ReturnZeroFloatSlot6C() <
+              (nextMission->value0c / nextMission->ReturnZeroFloatSlot6C()) *
+                  g_MissionEligibilityRatioMargin_006545f8) {
+        eligible = 0;
+      } else {
+        availableClassMask &= ~classMask;
+      }
+    }
+    mission->SetFlag10FromArgSlot94(!eligible);
+  }
+}
 TAutoGreatPower::~TAutoGreatPower() {}

@@ -2635,8 +2635,8 @@ address|name|symbol|size|type|prototype|provenance
 4eb0d0|TAutoGreatPower::PruneInvalidTrackedEntriesAndNotifyOwner||131|function|undefined PruneInvalidTrackedEntriesAndNotifyOwner(void)|
 4eb190|PlanAiDevelopmentActionsFromResourcePools||853|function|undefined PlanAiDevelopmentActionsFromResourcePools()|
 4eb5d0|OrphanCallChain_C4_I75_004eb5d0||172|function|undefined OrphanCallChain_C4_I75_004eb5d0()|
-4eb6b0|UpdateTrackedEntryEligibilityByClassMaskAndRatio||393|function|undefined UpdateTrackedEntryEligibilityByClassMaskAndRatio()|
-4eb8b0|AssignTrackedEntryActionsByProfileToOrdersOrUnits||1212|function|undefined AssignTrackedEntryActionsByProfileToOrdersOrUnits()|
+4eb6b0|TAutoGreatPower::UpdateTrackedEntryEligibilityByClassMaskAndRatio||393|function|void UpdateTrackedEntryEligibilityByClassMaskAndRatio(int unused)|
+4eb8b0|TAutoGreatPower::AssignTrackedEntryActionsByProfileToOrdersOrUnits||1212|function|void AssignTrackedEntryActionsByProfileToOrdersOrUnits(int unused)|
 4ebff0|WrapperFor_ftol_At004ebff0||30|function|undefined WrapperFor_ftol_At004ebff0()|
 4ec020|TDefenseMinister::CreateObject|?CreateObject@TDefenseMinister@@SGPAVCObject@@XZ|83|function|undefined CreateObject()|rtti
 4ec0a0|TDefenseMinister::CreateTDefenseMinisterInstance||9|function|undefined CreateTDefenseMinisterInstance()|
@@ -3662,7 +3662,7 @@ address|name|symbol|size|type|prototype|provenance
 535940|FindFirstTrackedHandlerMatchingModeAndShortKey||123|function|undefined FindFirstTrackedHandlerMatchingModeAndShortKey()|
 5359e0|IsMapTileCompatibleWithCurrentTerrainOrActionContext||210|function|undefined IsMapTileCompatibleWithCurrentTerrainOrActionContext()|
 535b00|SelectBestCityDevelopmentFromResourcePools||899|function|undefined SelectBestCityDevelopmentFromResourcePools()|
-535f80|CompareMissionOrderEntriesByMovementClassThenEfficiency||197|function|undefined CompareMissionOrderEntriesByMovementClassThenEfficiency()|
+535f80|CompareMissionOrderEntriesByMovementClassThenEfficiency||197|function|short __cdecl CompareMissionOrderEntriesByMovementClassThenEfficiency(void* a, void* b, void* reverseOrder)|
 536090|CompareMissionOrderEntriesByPriorityScore||153|function|undefined CompareMissionOrderEntriesByPriorityScore()|
 536290|WrapperFor_ftol_At00536290||30|function|undefined WrapperFor_ftol_At00536290()|
 5362c0|ComputeDistributionSimilarityScoreFromVectorAndReferenceProfile||145|function|undefined ComputeDistributionSimilarityScoreFromVectorAndReferenceProfile()|

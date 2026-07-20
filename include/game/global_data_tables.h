@@ -1009,6 +1009,7 @@ extern const double g_BullyWeightHigh_00654918;
 extern const float g_UnreferencedConstant_006545d4;
 extern const double g_MissionScoreOneConstant_006545d8;
 extern const double g_MissionScoreZeroThreshold_006545f0;
+extern const double g_MissionEligibilityRatioMargin_006545f8;
 extern const float g_HexHighlightScreenScale_00658640;
 extern float g_TileHeatmapNeighborDiffusionFactor;
 extern double g_MapPreviewScaleX6A3410;

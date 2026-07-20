@@ -686,6 +686,10 @@ extern const double g_MissionScoreOneConstant_006545d8 = 1.0;
 // 0.0 (double) threshold used by the same function's score-positivity checks.
 // GLOBAL: IMPERIALISM 0x006545f0
 extern const double g_MissionScoreZeroThreshold_006545f0 = 0.0;
+// Competing missions of the same class must beat the next entry's value/cost ratio by
+// ten percent before consuming that class from the available mask (0x4eb6b0).
+// GLOBAL: IMPERIALISM 0x006545f8
+extern const double g_MissionEligibilityRatioMargin_006545f8 = 1.1;
 
 // Weighting factor (0.2) applied to each adjacent region's score when diffusing the
 // strategic heatmap (RecomputeTileStrategicScoreHeatmap 0x518130).

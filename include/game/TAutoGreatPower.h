@@ -123,7 +123,12 @@ public:
   // (ownerMission40 == nullptr) militaryUnitList44 unit (ReturnZeroFloatSlot78),
   // dispatching via AdoptUnitSlot80 and restarting. Stops when neither pass finds a
   // candidate to act on.
-  void AssignTrackedEntryActionsByProfileToOrdersOrUnits();
+  void AssignTrackedEntryActionsByProfileToOrdersOrUnits(int unused);
+
+  // Sorts the mission queue, then marks entries whose class requirements cannot be
+  // satisfied by the remaining class mask or whose value/cost ratio loses to the next
+  // entry of the same class. 0x4eb6b0.
+  void UpdateTrackedEntryEligibilityByClassMaskAndRatio(int unused);
 
   void QueueMapActionMissionFromCandidateAndMarkState(eMissionType arg1, int arg2,
                                                       TZone* portZoneContext, int arg4);
