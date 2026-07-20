@@ -164,7 +164,12 @@ target). They need a built binary + reccmp DB. Details in the `quality-control` 
   `commutative_order` includes reassociated integer-add reductions when no
   intermediate flags are observed; keep the natural typed expression instead of
   permuting operands to chase VC5's load schedule.
-- `just vtable [Name]` (vtable correctness), `just datacmp [-a]` (global data values),
+- `just vtable [Name]` (vtable correctness). An oversized warning reports the
+  candidate/original slot counts, the first original null slot, the size trigger,
+  and the entity imposing an address boundary. `boundary` with no null can be a
+  stale interior annotation; a named adjacent dispatch table can be a real model
+  boundary; `null` identifies a concrete original tail. Do not treat these cases as
+  interchangeable. `just datacmp [-a]` (global data values),
   `just roadmap` (symbol locations of functions/vtables/data), `just stackcmp 0xADDR`
   + `just stackcmp-triage` (stack layout of near-matching functions).
 
