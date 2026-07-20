@@ -1167,9 +1167,6 @@ const unsigned int g_tradeCommodityRowTagTable[17] = {
     0x72733620, 0x6d613020, 0x6d613120, 0x6d613220, 0x6d613320, 0x6d613420,
     0x6d613520, 0x67643020, 0x67643120, 0x67643220, 0x67643320};
 
-// GLOBAL: IMPERIALISM 0x0066db50
-CString g_cstrTradeTotalsBalanceSubstitution0066DB50;
-
 // GLOBAL: IMPERIALISM 0x006a58c8
 int g_defaultDropShadowTextColor = 0;
 // GLOBAL: IMPERIALISM 0x006a5fc0
@@ -1331,6 +1328,9 @@ extern "C" const char s_Chunk_00698C0C[] = "Chunk";
 TUiTextStyleDescriptor g_UiResourceEntryDefaultTextStyle = {0, 0, 0, 0};
 
 } // extern "C"
+
+// GLOBAL: IMPERIALISM 0x0066db50
+const char* g_cstrTradeTotalsBalanceSubstitution0066DB50 = g_szEmptyString;
 
 #include "game/TWNetSessionManager.h"
 

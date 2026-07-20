@@ -482,11 +482,13 @@ extern CString g_cstrCountryNameSettingValue006A4220;
 extern TSetupRandomMapPicture* g_pActiveRandomMapSetupPicture006A4268;
 extern "C" short g_nationMetricSlotDispatchOrder006d810[0x11];
 extern "C" const unsigned int g_tradeCommodityRowTagTable[17];
-// Shared CString substitution value read by TTradeTotalsView::ApplyRectSlot110
-// (0x5c1bd0) as the sole scanBracketExpressions() argument for its "balance" row
-// template (GetString group 0x2740 idx 0x1b). Not yet pinned to a writer; declared
-// so the read site is a real global instead of a raw address literal.
-extern CString g_cstrTradeTotalsBalanceSubstitution0066DB50;
+// Shared substitution value read by TTradeTotalsView::ApplyRectSlot110 (0x5c1bd0) as
+// the sole scanBracketExpressions() argument for its "balance" row template (GetString
+// group 0x2740 idx 0x1b). The original's raw bytes are a compile-time-constant pointer
+// to an empty string (not a deferred-construction CString), so this is modeled as a
+// plain pointer aliasing the shared g_szEmptyString buffer, matching the
+// g_pszEmptyTextRef_00669db8 idiom. Not yet pinned to a writer if one exists.
+extern const char* g_cstrTradeTotalsBalanceSubstitution0066DB50;
 extern GlobalViewportRectDefaultsRecord g_globalViewportRectDefaultsRecord;
 extern GlobalViewportRectDefaultsRecord* g_pGlobalViewportRectDefaultsRecord;
 extern TWNetSessionManager g_NetworkSessionManager006a5f60;

@@ -108,7 +108,7 @@ void TTradeTotalsView::ApplyRectSlot110(RECT* rectBuffer) {
   g_pSimMgr->GetString(0x2740, 0x1b, &strB);
   g_pSimMgr->FormatIntegerString(nation->diplomacyBudgetBase / 100, &strC);
   scanBracketExpressions(g_pSimMgr, &strA, static_cast<LPCSTR>(strB),
-                         static_cast<LPCSTR>(g_cstrTradeTotalsBalanceSubstitution0066DB50));
+                         g_cstrTradeTotalsBalanceSubstitution0066DB50);
 
   y += 0xc;
   SetQuickDrawTextOriginWithContextOffset(8, y);
