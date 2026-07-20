@@ -59,7 +59,7 @@ void TRemoteGreatPower::CallSlotA8(int targetNation) {
 }
 
 // FUNCTION: IMPERIALISM 0x00541a40
-void TRemoteGreatPower::NoOpTailStateHookSlot2B4(void) {}
+void TRemoteGreatPower::RecomputeAiExpansionAndMissionPressureScores(void) {}
 
 // FUNCTION: IMPERIALISM 0x00541a60
 void TRemoteGreatPower::RefreshTrackedEntriesAndReplanAiDevelopment(int unused) {

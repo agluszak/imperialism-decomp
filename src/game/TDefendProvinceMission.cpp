@@ -43,7 +43,7 @@ TDefendProvinceMission::~TDefendProvinceMission() {}
 // entry) by some other map-action-context zone whose nationKeyMask10 mask has a bit set outside
 // the owner's own bit.
 // FUNCTION: IMPERIALISM 0x005359e0
-int IsMapTileCompatibleWithCurrentTerrainOrActionContext(int tileIndex) {
+char IsMapTileCompatibleWithCurrentTerrainOrActionContext(int tileIndex) {
   TGlobalMapCityScoreRecord& record = g_pGlobalMapState->cityScoreTable[tileIndex];
   signed char primaryOwner = record.ownerNationCode00;
   if (g_apTerrainTypeDescriptorTable[primaryOwner]->GetHomeRegionCityRecordIndex() == tileIndex) {
@@ -323,11 +323,11 @@ void TDefendProvinceMission::ResetValue0CToZero() {
 
 // FUNCTION: IMPERIALISM 0x0053edf0
 void TDefendProvinceMission::NoOpSlot3C() {
-  // See TAttackProvinceMission::Free: floatB64/floatB68 are TAutoGreatPower-only.
+  // These AI pressure scores live in TAutoGreatPower's derived-only tail.
   TAutoGreatPower* nationState = static_cast<TAutoGreatPower*>(g_apNationStates[nationId04]);
   nationState->AssertValid();
 
-  float fStack_c = nationState->floatB68;
+  float fStack_c = nationState->averageUnitDivergencePerOwnedRegionB68;
   static const double* const p_neg_one_0065A9F0 = reinterpret_cast<const double*>(0x0065a9f0);
   static const float* const p_1_0_0065A9B8 = reinterpret_cast<const float*>(0x0065a9b8);
 
@@ -363,7 +363,7 @@ void TDefendProvinceMission::NoOpSlot3C() {
   }
 
   char hasWar = g_pDiplomacyTurnStateManager->HasAnyWarRelationForNation(nationId04);
-  float unaff_EBX = nationState->floatB64 + fStack_c;
+  float unaff_EBX = nationState->expansionPressurePerCompatibleRegionB64 + fStack_c;
 
   if (hasWar != 0) {
     float crossScore = ComputeCrossNationSupportVectorScore(field_14);

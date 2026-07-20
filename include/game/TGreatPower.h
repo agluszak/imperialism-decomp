@@ -330,7 +330,7 @@ public:
   // slot 0xac — body 0x004e06d0: sums the accumulated value (+0x44) of city
   // commodity records 8..0xc.
   virtual int SumCommodityRecordAccumulatedValues(void);
-  virtual void NoOpTailStateHookSlot2B4(void);
+  virtual void RecomputeAiExpansionAndMissionPressureScores(void);
   virtual void RefreshTrackedEntriesAndReplanAiDevelopment(int unused);
   // slot 0xaf — body 0x004db380 returns a char (1 on the hard-alert dispatch path,
   // 0 otherwise); the case-0xb join-empire loop tests that result.

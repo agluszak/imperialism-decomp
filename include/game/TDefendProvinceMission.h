@@ -41,4 +41,6 @@ public:
   void PropagateTargetTileToLinkedUnitsIfDifferent(short newTile);
 };
 
+char IsMapTileCompatibleWithCurrentTerrainOrActionContext(int tileIndex);
+
 ASSERT_SIZE(TDefendProvinceMission, 0x30);

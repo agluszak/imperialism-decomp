@@ -699,6 +699,8 @@ extern const double g_BullyWeightLow_00654910 = 0.7;
 // GLOBAL: IMPERIALISM 0x00654918
 extern const double g_BullyWeightHigh_00654918 = 0.8;
 
+// GLOBAL: IMPERIALISM 0x006545c8
+extern const double g_AiPressureUnsetSentinel_006545c8 = -1.0;
 // GLOBAL: IMPERIALISM 0x006545d0
 extern const float g_MissionDefaultScore_006545d0 = 0.0f;
 // Orphaned neighbor constant (no known reader yet) sitting between the two named
@@ -707,6 +709,10 @@ extern const float g_MissionDefaultScore_006545d0 = 0.0f;
 extern const float g_UnreferencedConstant_006545d4 = -1.0f;
 // GLOBAL: IMPERIALISM 0x006545d8
 extern const double g_MissionScoreOneConstant_006545d8 = 1.0;
+// GLOBAL: IMPERIALISM 0x006545e0
+extern const float g_AiPressureRatioCap_006545e0 = 1.0f;
+// GLOBAL: IMPERIALISM 0x006545e8
+extern const double g_AiPressureMidpointScale_006545e8 = 0.5;
 // 0.0 (double) threshold used by the same function's score-positivity checks.
 // GLOBAL: IMPERIALISM 0x006545f0
 extern const double g_MissionScoreZeroThreshold_006545f0 = 0.0;
@@ -714,6 +720,9 @@ extern const double g_MissionScoreZeroThreshold_006545f0 = 0.0;
 // ten percent before consuming that class from the available mask (0x4eb6b0).
 // GLOBAL: IMPERIALISM 0x006545f8
 extern const double g_MissionEligibilityRatioMargin_006545f8 = 1.1;
+
+// GLOBAL: IMPERIALISM 0x006543e8
+extern const float g_AiPressurePeerScale_006543e8 = 1.1f;
 
 // Weighting factor (0.2) applied to each adjacent region's score when diffusing the
 // strategic heatmap (RecomputeTileStrategicScoreHeatmap 0x518130).

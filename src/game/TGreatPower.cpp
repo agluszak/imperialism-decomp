@@ -180,7 +180,7 @@ TGreatPower::TGreatPower(int arg1, int arg2) {
 }
 
 // FUNCTION: IMPERIALISM 0x004d8bc0
-void TGreatPower::NoOpTailStateHookSlot2B4(void) {}
+void TGreatPower::RecomputeAiExpansionAndMissionPressureScores(void) {}
 
 // FUNCTION: IMPERIALISM 0x004d8be0
 void TGreatPower::RefreshTrackedEntriesAndReplanAiDevelopment(int unused) {

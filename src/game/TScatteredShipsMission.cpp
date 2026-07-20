@@ -1,7 +1,7 @@
 // TScatteredShipsMission implementations.
 
 #include "game/TScatteredShipsMission.h"
-#include "game/TGreatPower.h"
+#include "game/TAutoGreatPower.h"
 #include "game/TSimMgr.h"
 #include "game/TStream.h"
 #include "game/TShip.h"
@@ -68,14 +68,14 @@ void TScatteredShipsMission::ResetValue0CToZero() {
 }
 
 // Spreads the fixed g_Populate_Beachhead_Mission_LookupTable_00697958 percentages across
-// resourceWeights2c[4], scaled by (1 + this mission's nation's navy-pressure field at +0xb6c,
-// region not otherwise recovered yet). AssertValid()s the nation first (same CObject virtual
-// slot 0xc dispatch used elsewhere in this file family).
+// resourceWeights2c[4], scaled by (1 + this mission's nation's active-mission pressure).
+// AssertValid()s the nation first (same CObject virtual slot 0xc dispatch used elsewhere in
+// this file family).
 // FUNCTION: IMPERIALISM 0x0053bc40
 void TScatteredShipsMission::NoOpSlot3C() {
-  TGreatPower* nation = g_apNationStates[nationId04];
+  TAutoGreatPower* nation = static_cast<TAutoGreatPower*>(g_apNationStates[nationId04]);
   nation->AssertValid();
-  float navyPressure = *reinterpret_cast<float*>(reinterpret_cast<char*>(nation) + 0xb6c);
+  float navyPressure = nation->activeMissionPressureAverageB6c;
   float scale = (navyPressure + 1.0f) * 0.01f;
 
   const unsigned short* lookupTable = g_Populate_Beachhead_Mission_LookupTable_00697958;

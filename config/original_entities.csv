@@ -2342,7 +2342,7 @@ address|name|symbol|size|type|prototype|provenance
 4d8950|TGreatPower::CreateObject|?CreateObject@TGreatPower@@SGPAVCObject@@XZ|90|function|undefined CreateObject()|rtti
 4d89d0|TGreatPower::GetRuntimeClass||6|function|CRuntimeClass * __thiscall GetRuntimeClass()|rtti
 4d89f0|TGreatPower::TGreatPower||355|function|undefined TGreatPower()|
-4d8bc0|TGreatPower::SelectCandidateTilesWithLowGroundUnitCount_ad||1|function|undefined SelectCandidateTilesWithLowGroundUnitCount(void)|
+4d8bc0|TGreatPower::RecomputeAiExpansionAndMissionPressureScores||1|function|void RecomputeAiExpansionAndMissionPressureScores(void)|
 4d8be0|TGreatPower::RefreshTrackedEntriesAndReplanAiDevelopment||3|function|void RefreshTrackedEntriesAndReplanAiDevelopment(int unused)|
 4d8c00|TGreatPower::GetDiplomacyCounterA2||8|function|undefined GetDiplomacyCounterA2()|
 4d8c20|TGreatPower::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
@@ -2628,7 +2628,7 @@ address|name|symbol|size|type|prototype|provenance
 4ea700|TAutoGreatPower::ComputeAiCityActionCostFromSlotAndMode||232|function|float ComputeAiCityActionCostFromSlotAndMode(short actionSlot, char skipContextBias)|
 4ea830|TAutoGreatPower::GetCachedAiCityActionContextBias||269|function|float GetCachedAiCityActionContextBias(short selector)|
 4ea990|TAutoGreatPower::IterateLinkedListCursorAndRelinkNodeOwners_004ea990||97|function|undefined IterateLinkedListCursorAndRelinkNodeOwners_004ea990()|
-4eaa20|TAutoGreatPower::SelectCandidateTilesWithLowGroundUnitCount_ad||866|function|undefined RecomputeNationTerrainCompatibilityAndDiplomacyMetrics()|
+4eaa20|TAutoGreatPower::RecomputeAiExpansionAndMissionPressureScores||866|function|void RecomputeAiExpansionAndMissionPressureScores(void)|
 4eae70|TAutoGreatPower::RefreshTrackedEntriesAndReplanAiDevelopment||239|function|void RefreshTrackedEntriesAndReplanAiDevelopment(int unused)|
 4eafa0|SeedTrackedEntryAssignmentsFromEligibleUnits||124|function|undefined SeedTrackedEntryAssignmentsFromEligibleUnits()|
 4eb040|IterateLinkedListCursorEntries_004eb040||74|function|undefined IterateLinkedListCursorEntries_004eb040()|
@@ -3660,7 +3660,7 @@ address|name|symbol|size|type|prototype|provenance
 535820|TMission::SerializeMissionState||86|function|void __thiscall SerializeMissionState(TStream* stream)|
 5358a0|TMission::DeserializeMissionState||125|function|void __thiscall DeserializeMissionState(TStream* stream)|
 535940|FindFirstTrackedHandlerMatchingModeAndShortKey||123|function|undefined FindFirstTrackedHandlerMatchingModeAndShortKey()|
-5359e0|IsMapTileCompatibleWithCurrentTerrainOrActionContext||210|function|undefined IsMapTileCompatibleWithCurrentTerrainOrActionContext()|
+5359e0|IsMapTileCompatibleWithCurrentTerrainOrActionContext||210|function|char IsMapTileCompatibleWithCurrentTerrainOrActionContext(int tileIndex)|
 535b00|SelectBestCityDevelopmentFromResourcePools||899|function|bool SelectBestCityDevelopmentFromResourcePools(short nationSlot, int* resourcePools, TMilitaryUnit** bestUnitByType, char* selectedIsIndustry, char* selectedIsUpgrade, int* selectedSlot, int unused, float* selectedWeightedCost)|
 535f80|CompareMissionOrderEntriesByMovementClassThenEfficiency||197|function|short __cdecl CompareMissionOrderEntriesByMovementClassThenEfficiency(void* a, void* b, void* reverseOrder)|
 536090|CompareMissionOrderEntriesByPriorityScore||153|function|undefined CompareMissionOrderEntriesByPriorityScore()|
@@ -3920,7 +3920,7 @@ address|name|symbol|size|type|prototype|provenance
 5419e0|TRemoteGreatPower::ProcessPendingDiplomacyProposalQueue||8|function|undefined DispatchRemoteGreatPowerCallbackSlot1CC()|
 541a00|TRemoteGreatPower::OrphanLeaf_NoCall_Ins02_004d7ee0||3|function|undefined OrphanLeaf_NoCall_Ins02_004d7ee0(void)|
 541a20|TRemoteGreatPower::ApplyMinorNationCapabilityActionType6||3|function|undefined OrphanLeaf_NoCall_Ins07_004d8920(void)|
-541a40|TRemoteGreatPower::SelectCandidateTilesWithLowGroundUnitCount_ad||1|function|undefined SelectCandidateTilesWithLowGroundUnitCount(void)|
+541a40|TRemoteGreatPower::RecomputeAiExpansionAndMissionPressureScores||1|function|void RecomputeAiExpansionAndMissionPressureScores(void)|
 541a60|TRemoteGreatPower::RefreshTrackedEntriesAndReplanAiDevelopment||3|function|void RefreshTrackedEntriesAndReplanAiDevelopment(int unused)|
 541a80|TRemoteGreatPower::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 541ab0|TRemoteGreatPower::DestructTRemoteGreatPower||80|function|undefined DestructTRemoteGreatPower()|

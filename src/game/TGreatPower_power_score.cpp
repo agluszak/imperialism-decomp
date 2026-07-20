@@ -89,8 +89,7 @@ float TruncatedScoreFactorToFloat(float score) {
 //     the combined vector the same way into g_afNationCombinedUnitDivergence_006a3b50.
 //  4. Scales the mobile-unit score by the nation's military-power-to-navy-order-cost
 //     ratio (capped at 1.0) into g_afNationWeightedMilitaryOrderScore_006a3b20.
-// A second pass then triggers the (no-op) NoOpTailStateHookSlot2B4 callback on every
-// eligible nation.
+// A second pass lets each eligible nation consume the completed cross-nation cache set.
 // FUNCTION: IMPERIALISM 0x0053fe30
 void RecomputeNationOrderPriorityMetrics() {
   for (short nationIdx = 0; nationIdx < 7; ++nationIdx) {
@@ -213,7 +212,7 @@ void RecomputeNationOrderPriorityMetrics() {
 
   for (short finalNationIdx = 0; finalNationIdx < 7; ++finalNationIdx) {
     if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(finalNationIdx)) {
-      g_apNationStates[finalNationIdx]->NoOpTailStateHookSlot2B4();
+      g_apNationStates[finalNationIdx]->RecomputeAiExpansionAndMissionPressureScores();
     }
   }
 }
