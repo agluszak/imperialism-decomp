@@ -1,6 +1,11 @@
 #include "game/TCityInteriorMinister.h"
 
+#include "game/TFuzzySet.h"
+#include "game/TList.h"
+#include "game/TLongintList.h"
+#include "game/global_data_tables.h"
 #include "game/mfc.h"
+#include "game/ui_invalidation_guard.h"
 
 // NOTE: The city-policy virtual run (slots 0x58-0xd4) — production rebalancing, command
 // queueing, home-tile selection, neighbor-bucket rebuilds — is promoted here as a real
@@ -11,17 +16,17 @@
 
 // FUNCTION: IMPERIALISM 0x004be7b0
 short TCityInteriorMinister::InteriorSlot1D(int arg) {
-  return *reinterpret_cast<short*>(reinterpret_cast<char*>(this) + 0x12a + arg * 2);
+  return orderTypeTable12A[arg];
 }
 
 // FUNCTION: IMPERIALISM 0x004be7d0
 short TCityInteriorMinister::InteriorSlot1E(int arg) {
-  return *reinterpret_cast<short*>(reinterpret_cast<char*>(this) + 0x158 + arg * 2);
+  return orderTypeTable158[arg];
 }
 
 // FUNCTION: IMPERIALISM 0x004be7f0
 void TCityInteriorMinister::InteriorSlot1F(int arg) {
-  *reinterpret_cast<short*>(reinterpret_cast<char*>(this) + 0x158 + arg * 2) = 0;
+  orderTypeTable158[arg] = 0;
 }
 // SYNTHETIC: IMPERIALISM 0x004be710
 // TCityInteriorMinister::CreateObject
@@ -33,7 +38,7 @@ IMPLEMENT_DYNCREATE(TCityInteriorMinister, TInteriorMinister)
 
 // FUNCTION: IMPERIALISM 0x004be840
 TCityInteriorMinister::TCityInteriorMinister() : TInteriorMinister() {
-  field18c = 0;
+  orderList18c = 0;
   capabilityFlag14 = 1;
   capabilityFlag16 = 1;
 }
@@ -42,9 +47,66 @@ TCityInteriorMinister::TCityInteriorMinister() : TInteriorMinister() {
 // TCityInteriorMinister::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x004be8d0
-void TCityInteriorMinister::InitializeCityInteriorState() {
-  reinterpret_cast<void(__cdecl*)(TCityInteriorMinister*)>(thunk_InitializeCityInteriorMinister)(
-      this);
+void TCityInteriorMinister::InitializeCityInteriorState(TGreatPower* owner) {
+  InitializeBaseOrderArray(owner);
+
+  field10 = 0;
+  field12 = 0;
+  trailingTable[0] = 0;
+  trailingTable[1] = 0;
+  trailingTable[2] = 0;
+  trailingTable[3] = 0;
+  trailingTable[4] = 0;
+  trailingTable[5] = 0;
+  trailingTable[6] = 0;
+  field32 = 0;
+  field36 = -1;
+  field38 = -1;
+  field3a = 50;
+
+  list28 = new TLongintList();
+  list2c = new TLongintList();
+  field30 = 1;
+
+  orderList18c = new TList();
+  if (orderList18c == 0) {
+    MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUCityMinister_006964B0, 0x288);
+  }
+
+  CityInteriorSlot20();
+
+  field3c = -1;
+  field3e = 0;
+
+  for (short i = 0; i < 23; ++i) {
+    orderTypeTableFC[i] = 0;
+    orderTypeTable12A[i] = 0;
+    orderTypeTable158[i] = 0;
+  }
+  for (short j = 0; j < 30; ++j) {
+    orderMetricTable40[j] = 0;
+  }
+  fieldB8 = 0;
+  for (short k = 0; k < 16; ++k) {
+    orderShortTableBA[k] = 0;
+    orderShortTableDC[k] = 0;
+  }
+
+  field34 = 0;
+  fieldDA = 0;
+  field186 = 0;
+
+  list190 = new TLongintList();
+
+  cityPolicyFuzzySet = new TFuzzySet();
+  cityPolicyFuzzySet->Clear();
+  cityPolicyFuzzySet->AllocateAndAppendRecord(0xccbebc20, 0xc7c35000, 0xc69c4000, 0xc61c4000);
+  cityPolicyFuzzySet->AllocateAndAppendRecord(0xc66a6000, 0xc59c4000, 0xc59c4000, 0x447a0000);
+  cityPolicyFuzzySet->AllocateAndAppendRecord(0, 0x459c4000, 0x461c4000, 0x466a6000);
+  cityPolicyFuzzySet->AllocateAndAppendRecord(0x461c4000, 0x469c4000, 0x49742400, 0x4e6e6b28);
+
+  field1c2 = 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004becd0
