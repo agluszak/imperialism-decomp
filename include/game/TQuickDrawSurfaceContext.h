@@ -42,22 +42,26 @@ struct TBitmapSurfaceNode {
   void* pixelBits;
   short stride;
   // pad06: alignment filler after `stride`, matching the sibling TQuickDrawBlitSurface's
-  // pad06 at the same {pixelBits, stride, pad} layout (see above); no observed read/write
-  // beyond InitializeBitmapSurfaceNode's whole-struct memset(0).
+  // pad06 at the same {pixelBits, stride, pad} layout (see above); never written by the
+  // constructor (0x00495d00).
   short pad06;
   int field08;
   int field0c;
-  // pixelWidth10/pixelHeight14: InitializeBitmapSurfaceNode (bitmap_descriptor_helpers.cpp)
-  // sets these from the backing CDib's biWidth / abs(biHeight), and
-  // InitializeBitmapDescriptorNodeFromResourceSurfaceImpl reads them straight into
-  // descriptor->clipRect.right/bottom.
+  // pixelWidth10/pixelHeight14: the constructor (0x00495d00) sets these from the backing
+  // CDib's dimensions (CDib::CopyBitmapDimensionsToPoint). Note the descriptor init at
+  // 0x495eb0 re-derives clipRect.right/bottom from the same CDib call rather than reading
+  // these cached fields.
   int pixelWidth10;
   int pixelHeight14;
-  // requestedHeight18: set to the raw `height` parameter passed into
-  // InitializeBitmapSurfaceNode, distinct from pixelHeight14's DIB-derived abs(biHeight) --
-  // no observed read site.
-  int requestedHeight18;
-  CDib* dib;
+  // bitDepth18: the constructor (0x00495d00) stores the low 16 bits of its third argument
+  // (the bit-depth passed to `new CDib(width, height, bitDepth)`) here via a 16-bit write
+  // `MOV word ptr [ESI+0x18], BX` -- so this is a `short`, not the DIB-derived height. The
+  // legacy name "requestedHeight18" was wrong: BX holds arg3 (bitDepth), not the height. No
+  // observed read site.
+  short bitDepth18;                                        // +0x18
+  short pad1a;                                             // +0x1a alignment filler before `dib`
+  CDib* dib;                                               // +0x1c
+  TBitmapSurfaceNode(int width, int height, int bitDepth); // 0x00495d00
 };
 ASSERT_SIZE(TBitmapSurfaceNode, 0x20);
 

@@ -29,6 +29,7 @@
 #include "game/nation_slot_eligibility.h" // IsNationSlotEligibleForEventProcessing
 #include "game/quickdraw_rendering.h"     // BuildUiTextStyleDescriptor
 #include "game/ui_invalidation_guard.h"
+#include "game/ui_text_label_helpers_decls.h"
 
 // SYNTHETIC: IMPERIALISM 0x004a1810
 // TArmyMgr::CreateObject

@@ -6,6 +6,17 @@
 // Forward declarations for types referenced by generated signatures.
 class TStream;
 
+// A base class for pluggable draw/layout/hit-test decorations (Mac naming: an "adorner"
+// attaches optional rendering behavior to a host view/control without subclassing it).
+// No owner has been recovered yet in ported source -- there are currently zero `new
+// TAdorner`/`new TColorFill` call sites and zero other references to either class anywhere
+// in this codebase, so nothing here has been shown to actually attach or use one. The one
+// piece of hard evidence is TColorFill's slot 0x0c assert string (0x00696b44,
+// "D:\Ambit\Cross\UDisplayMgr.cpp", the same original source file TDisplayMgr.cpp already
+// models via its own kSourceFileUDisplayMgr constant) -- both classes were compiled from
+// that same cross-platform source file, which is at least circumstantial evidence
+// TDisplayMgr is the eventual owner, though no owning field/attacher has been found to
+// confirm it.
 // VTABLE: IMPERIALISM 0x0064bdd0
 class TAdorner : public TObject {
 public:
@@ -19,25 +30,34 @@ public:
   // slot 0x07 Free inherited unchanged (0x4798b0)
   // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
+  // Slots 0x0a-0x10: base-class placeholder default for every adorner draw/layout/hit-test
+  // hook. All seven share one real body (not a no-op stub, despite the generic slot names):
+  // pulse the global UI-invalidation flag off and back to its prior value via
+  // SetGlobalUiInvalidationFlagAndReturnPrevious(0) / (previous) -- the same no-op
+  // refresh-barrier idiom TDialogView::EnsureField48Buffer uses for its own vtable-slot
+  // override (see TAdorner.cpp). Kept as generic slot names rather than guessed
+  // draw/layout/hit-test roles: nothing in ported source calls any of them yet to establish
+  // which is which, and the base class's own body gives no clue since it's identical seven
+  // times over.
   virtual undefined AdornerSlot0A(int unusedArg);                  // slot 0x0a 0x49d900
   virtual undefined AdornerSlot0B(int unusedArg);                  // slot 0x0b 0x49d930
   virtual undefined AdornerSlot0C(int unusedArg1, int unusedArg2); // slot 0x0c 0x49d9c0
   virtual undefined AdornerSlot0D(int unusedArg1, int unusedArg2, int unusedArg3,
                                   int unusedArg4); // slot 0x0d 0x49d9f0
   virtual undefined AdornerSlot0E(int unusedArg);  // slot 0x0e 0x49da20
-  virtual undefined WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049da50(
-      int unusedArg1, int unusedArg2, int unusedArg3,
-      int unusedArg4); // slot 0x0f 0x49da50
-  virtual undefined WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049da80(
-      int unusedArg); // slot 0x10 0x49da80
+  virtual undefined AdornerSlot0F(int unusedArg1, int unusedArg2, int unusedArg3,
+                                  int unusedArg4); // slot 0x0f 0x49da50
+  virtual undefined AdornerSlot10(int unusedArg);  // slot 0x10 0x49da80
 
   TAdorner();
 
   // Original object size is 0xc: CRuntimeClass m_nObjectSize = 0xc and
-  // CreateObject (0x49d650) allocates via operator_new(0xc). The two dwords at
-  // +4/+8 are not yet semantically recovered (TAdorner's own ReadFrom/WriteTo
-  // do not touch them); declared so sizeof(TAdorner) — and the recomp's
-  // allocation size — matches the original binary.
+  // CreateObject (0x49d650) allocates via operator_new(0xc). UNRESOLVED_FIELD_ATTRIBUTION:
+  // neither dword is touched by ReadFrom/WriteTo/the ctor, or by any of the seven
+  // AdornerSlot* overrides -- with no owner/attacher recovered yet (see class comment
+  // above), there is no evidence available to type or name these two dwords. Declared raw
+  // so sizeof(TAdorner) and the recomp's allocation size match the original binary; revisit
+  // once an owner is found.
   int field04;
   int field08;
 };

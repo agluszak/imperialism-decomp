@@ -7,7 +7,7 @@
 
 IMPLEMENT_DYNCREATE(TUpDownView, TControl)
 
-#include "game/startup_helpers.h"
+#include "game/TAmbitApplication.h"
 
 // FUNCTION: IMPERIALISM 0x00583d50
 TUpDownView::TUpDownView() : TControl(), timingDword84(0) {}

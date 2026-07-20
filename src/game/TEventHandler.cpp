@@ -10,7 +10,7 @@
 #include "game/TView.h"
 #include "game/TApplication.h"
 #include "game/global_data_tables.h"
-#include "game/startup_helpers.h"
+#include "game/TAmbitApplication.h"
 #include "game/ui_invalidation_guard.h"
 #include <string.h>
 

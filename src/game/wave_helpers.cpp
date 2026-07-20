@@ -1,20 +1,10 @@
 #include "game/wave_helpers.h"
 
-#include "game/global_data_tables.h"
 #include <stdio.h>
 
-// FUNCTION: IMPERIALISM 0x0047cdd0
-int __stdcall ApplyAuxOutputVolumeFromScalar(int scalar) {
-  return SetAuxOutputVolumeFromScalar(scalar);
-}
-
-// DirectX SDK sample wave.c module (see wave_helpers.h). The three functions below are
-// the read-side helpers used by TSoundResourceManager's wave loaders.
-
 // FUNCTION: IMPERIALISM 0x005e0780
-UINT OpenWaveMmioReadFmtChunkAndAllocateHeader(char* pszFileName, HMMIO* phmmio,
-                                               WAVEFORMATEX** ppwfx, MMCKINFO* pckInRIFF,
-                                               MMIOINFO* pmmioInfo) {
+UINT WaveOpenFile(char* pszFileName, HMMIO* phmmio, WAVEFORMATEX** ppwfx, MMCKINFO* pckInRIFF,
+                  MMIOINFO* pmmioInfo) {
   HMMIO hmmio;
   UINT result;
   MMCKINFO ckIn;
@@ -83,8 +73,7 @@ ErrorReadingWave:
 }
 
 // FUNCTION: IMPERIALISM 0x005e09f0
-UINT ReadMmioBytesToBufferAndUpdateChunkRemaining(HMMIO hmmio, UINT cbRead, HPSTR pbDest,
-                                                  MMCKINFO* pckIn, UINT* pcbActualRead) {
+UINT WaveReadFile(HMMIO hmmio, UINT cbRead, HPSTR pbDest, MMCKINFO* pckIn, UINT* pcbActualRead) {
   MMIOINFO mmioinfoIn;
   UINT cT;
   UINT result;
@@ -120,9 +109,8 @@ UINT ReadMmioBytesToBufferAndUpdateChunkRemaining(HMMIO hmmio, UINT cbRead, HPST
 }
 
 // FUNCTION: IMPERIALISM 0x005e0b50
-UINT CreateWaveFileAndWriteFmtFactChunks(char* pszFileName, HMMIO* phmmioOut,
-                                         WAVEFORMATEX* pwfxDest, MMCKINFO* pckOut,
-                                         MMCKINFO* pckOutRIFF) {
+UINT WaveCreateFile(char* pszFileName, HMMIO* phmmioOut, WAVEFORMATEX* pwfxDest, MMCKINFO* pckOut,
+                    MMCKINFO* pckOutRIFF) {
   DWORD dwFactChunk;
   UINT result;
   MMCKINFO ckOutFact;
@@ -199,9 +187,8 @@ int CopyMmioChunkByFourCCViaGlobalBuffer(HMMIO hmmioIn, HMMIO hmmioOut, MMCKINFO
 }
 
 // FUNCTION: IMPERIALISM 0x005e10c0
-UINT LoadWaveDataAndFormatFromFilePath(char* pszFileName, DWORD* pcbSize, DWORD* pcSamples,
-                                       WAVEFORMATEX** ppwfx, unsigned char** ppbData,
-                                       MMIOINFO* pmmioInfo) {
+UINT WaveLoadFile(char* pszFileName, DWORD* pcbSize, DWORD* pcSamples, WAVEFORMATEX** ppwfx,
+                  unsigned char** ppbData, MMIOINFO* pmmioInfo) {
   HMMIO hmmio;
   UINT result;
   UINT cbActualRead;
@@ -211,8 +198,7 @@ UINT LoadWaveDataAndFormatFromFilePath(char* pszFileName, DWORD* pcbSize, DWORD*
   *ppbData = 0;
   *ppwfx = 0;
   *pcbSize = 0;
-  result =
-      OpenWaveMmioReadFmtChunkAndAllocateHeader(pszFileName, &hmmio, ppwfx, &ckInRIFF, pmmioInfo);
+  result = WaveOpenFile(pszFileName, &hmmio, ppwfx, &ckInRIFF, pmmioInfo);
   if (result == 0) {
     mmioSeek(hmmio, ckInRIFF.dwDataOffset + sizeof(FOURCC), SEEK_SET);
     ckIn.ckid = mmioFOURCC('d', 'a', 't', 'a');
@@ -222,8 +208,7 @@ UINT LoadWaveDataAndFormatFromFilePath(char* pszFileName, DWORD* pcbSize, DWORD*
       if (*ppbData == 0) {
         result = ER_MEM;
       } else {
-        result = ReadMmioBytesToBufferAndUpdateChunkRemaining(hmmio, ckIn.cksize, (HPSTR)*ppbData,
-                                                              &ckIn, &cbActualRead);
+        result = WaveReadFile(hmmio, ckIn.cksize, (HPSTR)*ppbData, &ckIn, &cbActualRead);
         if (result == 0) {
           *pcbSize = cbActualRead;
           goto CloseAndReturn;
@@ -244,56 +229,4 @@ CloseAndReturn:
     mmioClose(hmmio, 0);
   }
   return result;
-}
-
-// FUNCTION: IMPERIALISM 0x005e1500
-int __stdcall SetAuxOutputVolumeFromScalar(int scalar) {
-  if (g_nAuxOutputDeviceIndex == -1) {
-    return 0;
-  }
-  auxSetVolume(g_nAuxOutputDeviceIndex, (scalar << 16) + scalar);
-  return 1;
-}
-
-// FUNCTION: IMPERIALISM 0x005e1590
-bool __stdcall SetAuxOutputVolumeAcrossCompatibleDevices(int level) {
-  MMRESULT result = 0;
-  UINT numDevs = auxGetNumDevs();
-  UINT deviceId = 0;
-  if (0 < static_cast<int>(numDevs)) {
-    tagAUXCAPSA caps;
-    do {
-      result = auxGetDevCapsA(deviceId, &caps, sizeof(tagAUXCAPSA));
-      unsigned short pidLow = caps.wPid & 7;
-      if (pidLow == 1 || pidLow == 2) {
-        auxSetVolume(deviceId, level * 0x2000200);
-      }
-      ++deviceId;
-    } while (static_cast<int>(deviceId) < static_cast<int>(numDevs));
-  }
-  return result == 0;
-}
-
-// FUNCTION: IMPERIALISM 0x005e1620
-int __stdcall GetAuxOutputVolumeFromFirstCompatibleDevice(unsigned int* outVolume) {
-  tagAUXCAPSA caps;
-  DWORD volume;
-  UINT deviceId = 0;
-  UINT numDevs = auxGetNumDevs();
-  if (static_cast<int>(numDevs) < 1) {
-    return 0;
-  }
-  do {
-    MMRESULT result = auxGetDevCapsA(deviceId, &caps, 0x30);
-    auxGetVolume(deviceId, &volume);
-    if ((static_cast<unsigned char>(caps.wPid) & 7) == 1) {
-      if (result == 0) {
-        *outVolume = (volume >> 9) & 0x7f;
-        return 1;
-      }
-      *outVolume = 0;
-    }
-    ++deviceId;
-  } while (static_cast<int>(deviceId) < static_cast<int>(numDevs));
-  return 0;
 }

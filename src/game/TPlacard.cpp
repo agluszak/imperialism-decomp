@@ -3,6 +3,7 @@
 #include "game/TControl.h"
 #include "game/ui_invalidation_guard.h"
 #include "game/quickdraw_rendering.h"
+#include "game/ui_text_label_helpers_decls.h"
 // SYNTHETIC: IMPERIALISM 0x0058b960
 // TPlacard::CreateObject
 // SYNTHETIC: IMPERIALISM 0x0058b9f0

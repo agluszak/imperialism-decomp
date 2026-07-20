@@ -19,7 +19,6 @@ class TInfoBarText;
 #include "game/sea_geometry.h"
 #include "game/app_init_globals.h"
 #include "game/UiRuntimeContext.h"
-#include "game/startup_helpers.h"
 #include "game/TNetMgr.h"
 #include "game/TTurnEventDialogFactoryRegistry.h"
 #include "game/TCountry.h"
@@ -127,10 +126,14 @@ int g_lastEdgeAutoScrollTick16 = 0;
 int g_nSaveFormatVersion = -1;
 // GLOBAL: IMPERIALISM 0x006a3ee0
 int g_UnknownMapOrderExecutionGuard_006a3ee0 = 0;
-// Upper-cased command-line switch literals matched by
-// ImperialismCommandLineInfo::ParseParam (0x4133d0).
+// GLOBAL: IMPERIALISM 0x006a30b4
+int g_colorFillAssertGuard_006a30b4 = 0;
+// Upper-cased command-line switch literal matched by
+// ImperialismCommandLineInfo::ParseParam (0x4133d0). Linker-pooled with the same "L"
+// literal used as a flavor-text syllable in map_context_flavor_builders.cpp -- named
+// after the literal value, not either consumer, since neither owns the address.
 // GLOBAL: IMPERIALISM 0x00694250
-char g_szCmdSwitchLang_00694250[] = "L";
+char g_szLiteralL_00694250[] = "L";
 // GLOBAL: IMPERIALISM 0x00694254
 char g_szCmdSwitchLangQuit_00694254[] = "L!";
 // The MFC application singleton (&theApp), cached by InitInstance (0x412dc0).
@@ -1756,12 +1759,18 @@ char g_szImpSaveExtension_00698708[] = ".imp";
 char g_szMultiplayerSavePrefix_00698710[] = "mult";
 // GLOBAL: IMPERIALISM 0x00698718
 char g_szSingleSlotSavePrefix_00698718[] = "slot";
+// fopen mode string (TLoadSavePicture.cpp). Linker-pooled with the same "rb" literal used
+// as a flavor-text syllable in map_context_flavor_builders.cpp -- named after the literal
+// value, not either consumer, since neither owns the address.
 // GLOBAL: IMPERIALISM 0x00698720
-char g_szSaveFileReadBinaryMode_00698720[] = "rb";
+char g_szLiteralRb_00698720[] = "rb";
 // GLOBAL: IMPERIALISM 0x00698724
 char g_szSaveDirectoryPrefix_00698724[] = "Save/";
+// Autosave-slot display label (TLoadSavePicture.cpp). Linker-pooled with the same "A"
+// literal used as a flavor-text syllable in map_context_flavor_builders.cpp -- named after
+// the literal value, not either consumer, since neither owns the address.
 // GLOBAL: IMPERIALISM 0x0069872c
-char g_szAutosaveSlotLabel_0069872C[] = "A";
+char g_szLiteralA_0069872C[] = "A";
 // GLOBAL: IMPERIALISM 0x0069b848
 char g_szSavedDocumentMarker_0069B848[] = "__saved";
 // GLOBAL: IMPERIALISM 0x0069b854

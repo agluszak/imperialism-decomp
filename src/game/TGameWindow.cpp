@@ -14,7 +14,7 @@
 #include "game/global_data_tables.h"
 #include "game/mfc.h"
 #include "game/TApplication.h"
-#include "game/startup_helpers.h"
+#include "game/TDisplayMgr.h"
 #include "game/ui_control_tags.h"
 
 

@@ -14,7 +14,7 @@
 #include "game/TQuickDrawSurfaceContext.h"
 #include "game/global_data_tables.h"
 #include "game/quickdraw_rendering.h"
-#include "game/startup_helpers.h"
+#include "game/TAmbitApplication.h"
 #include "game/ui_control_tags.h"
 
 // No-op bracket hooks around the modal one-time-animation wait (retail build leaves these empty).

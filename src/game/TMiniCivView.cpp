@@ -7,7 +7,7 @@
 #include "game/TQuickDrawSurfaceContext.h"
 #include "game/TSimMgr.h"
 #include "game/global_data_tables.h"
-#include "game/localization_text_helpers.h"
+#include "game/mapped_flavor_text.h"
 #include "game/quickdraw_rendering.h"
 #include "game/ui_text_label_helpers_decls.h"
 

@@ -101,8 +101,7 @@ int TSoundResourceManager::UpdateLocalizationAudioSlot(int slot) {
 // FUNCTION: IMPERIALISM 0x0049c290
 int TSoundResourceManager::LoadWaveFileByPathAndBuildBuffer(char* filePath, int slot) {
   WaveLoadDescriptor desc;
-  LoadWaveDataAndFormatFromFilePath(filePath, &desc.cbWaveSize, &desc.cSamples, &desc.pwfx,
-                                    &desc.pbWaveData, 0);
+  WaveLoadFile(filePath, &desc.cbWaveSize, &desc.cSamples, &desc.pwfx, &desc.pbWaveData, 0);
   return ReadWaveDataAndFormatViaLoaderWithRetry(&desc, slot);
 }
 
@@ -123,8 +122,8 @@ int TSoundResourceManager::LoadWaveResourceByNumericIdAndBuildBuffer(unsigned in
       GlobalFreePtr(desc.pbWaveData);
     }
     desc.pbWaveData = 0;
-    failed = LoadWaveDataAndFormatFromFilePath(filePath, &desc.cbWaveSize, &desc.cSamples,
-                                               &desc.pwfx, &desc.pbWaveData, 0);
+    failed =
+        WaveLoadFile(filePath, &desc.cbWaveSize, &desc.cSamples, &desc.pwfx, &desc.pbWaveData, 0);
     fileName.ReleaseBuffer(-1);
   }
   if (failed != 0) {
@@ -147,8 +146,8 @@ int TSoundResourceManager::LoadWaveResourceByNumericIdAndBuildBuffer(unsigned in
     mmioInfo.pchBuffer = (HPSTR)LoadResource(module, resInfo);
     mmioInfo.fccIOProc = mmioFOURCC('M', 'E', 'M', ' ');
     mmioInfo.cchBuffer = SizeofResource(module, resInfo);
-    failed = LoadWaveDataAndFormatFromFilePath(0, &desc.cbWaveSize, &desc.cSamples, &desc.pwfx,
-                                               &desc.pbWaveData, &mmioInfo);
+    failed =
+        WaveLoadFile(0, &desc.cbWaveSize, &desc.cSamples, &desc.pwfx, &desc.pbWaveData, &mmioInfo);
     if (failed != 0) {
       return 0;
     }

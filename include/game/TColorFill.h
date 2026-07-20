@@ -18,6 +18,9 @@ public:
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
   // slot 0x0a AdornerSlot0A inherited unchanged (0x49d900)
   // slot 0x0b AdornerSlot0B inherited unchanged (0x49d930)
+  // Real override, not a no-op: a nil-pointer assert guarded by a private static flag (see
+  // TColorFill.cpp) -- the base class's shared invalidation-flag-pulse default does not
+  // apply here.
   virtual undefined AdornerSlot0C(int unusedArg1, int unusedArg2) override; // slot 0x0c 0x4ff1c0
   // slot 0x0d AdornerSlot0D inherited unchanged (0x49d9f0)
   // slot 0x0e AdornerSlot0E inherited unchanged (0x49da20)

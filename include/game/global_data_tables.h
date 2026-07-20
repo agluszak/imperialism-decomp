@@ -13,7 +13,6 @@
 #include <afxtempl.h>
 #include "game/app_init_globals.h"
 #include "game/TCountry.h"
-#include "game/startup_helpers.h"
 #include "game/TDisplayMgr.h"
 #include "game/quickdraw_regions.h"
 #include "game/TGreatPower.h"
@@ -422,7 +421,11 @@ extern int g_nSaveFormatVersion;
 // Gates the assert-messagebox in TTaskForce::ApplyMapOrderTypeExecutionEffects's default
 // (unhandled attachment/kind) case; not yet recovered beyond that one read site.
 extern int g_UnknownMapOrderExecutionGuard_006a3ee0;
-extern char g_szCmdSwitchLang_00694250[];
+// Guards the nil-pointer assert in TColorFill::AdornerSlot0C (0x004ff1c0, TColorFill.cpp);
+// no write site found anywhere in ported source, so this may be a debug/never-reached
+// assertion path in the retail build rather than a genuine run-once flag.
+extern int g_colorFillAssertGuard_006a30b4;
+extern char g_szLiteralL_00694250[];
 extern char g_szCmdSwitchLangQuit_00694254[];
 extern ImperialismApp* g_pImperialismApp;
 extern int DAT_006a1350;
@@ -743,9 +746,9 @@ extern int g_localizationAudioSlotCursor_006a60f8;
 extern char g_szImpSaveExtension_00698708[];
 extern char g_szMultiplayerSavePrefix_00698710[];
 extern char g_szSingleSlotSavePrefix_00698718[];
-extern char g_szSaveFileReadBinaryMode_00698720[];
+extern char g_szLiteralRb_00698720[];
 extern char g_szSaveDirectoryPrefix_00698724[];
-extern char g_szAutosaveSlotLabel_0069872C[];
+extern char g_szLiteralA_0069872C[];
 extern char g_szSavedDocumentMarker_0069B848[];
 extern char g_szLoadedDocumentMarker_0069B854[];
 extern const char* const g_pszSingleSlotSavePrefix_0065DDD0;  // "slot" @ 0x65ddd0

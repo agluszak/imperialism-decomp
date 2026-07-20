@@ -37,7 +37,6 @@
 #include "game/turn_flow_cooldown.h" // IsTurnCooldownCounterActiveOrResetFlag
 #include "game/ui_invalidation_guard.h"
 #include "game/TMultiplayerMgr.h"
-#include "game/localization_text_helpers.h"
 #include "game/TCluster.h"
 #include "game/TDiplomacyMapView.h"
 #include "game/TModalMessageCommand.h"
@@ -69,7 +68,6 @@ undefined4 HandleTurnEvent8FC_RebuildPageTabsAndTitles(void);
 // The display/GWorld manager (g_pDisplayMgr @ 0x6a2158); its activeDialog (+0x04) field
 // holds the active main TView used as the dispatch root for turn-event UI refreshes.
 
-#include "game/startup_helpers.h"
 #include "game/CIncludeView.h"
 
 // The former RunNationInfoModalAndReturnNonCancel / NoOpUiRuntimeCallback_005db2f0 /

@@ -73,3 +73,8 @@ public:
 };
 
 // g_pDisplayMgr and UDisplayMgr font globals — see game/global_data_tables.h.
+
+struct GlobalViewportRectDefaultsRecord;
+
+// 0x00497230 — lazily seeds default 640x480 viewport rect globals.
+GlobalViewportRectDefaultsRecord** InitializeGlobalRectDefaultsIfUninitialized();
