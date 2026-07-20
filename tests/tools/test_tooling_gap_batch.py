@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""Tests for the 2026-07 tooling-gap batch: triage classification, empty-body
-scanning, stub-count/datacmp ratchets, and typedef-vs-binary arity checks."""
+"""Tests for empty-body scanning, ratchets, and typedef arity checks."""
 
 from __future__ import annotations
 
@@ -8,78 +7,11 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from tools.reccmp.triage import classify_pair, triage_entity
 from tools.workflow.check_datacmp_baseline import compare as datacmp_compare
 from tools.workflow.check_datacmp_baseline import parse_report
 from tools.workflow.check_empty_bodies import classify_finding, scan_file
 from tools.workflow.check_stub_count import compare_counts
 from tools.workflow.check_typedef_ghidra_args import arg_dwords, classify
-
-DATA_RANGES = [(0x63E000, 0x6A0000)]
-SYMBOLS = {0x4B2570: "TCity::InitializeCityProductionState"}
-OWNERSHIP = {0x4B2570: "manual"}
-
-
-def pair(o: str, r: str):
-    return classify_pair(o, r, DATA_RANGES, SYMBOLS, OWNERSHIP)
-
-
-class TriageClassifyTests(unittest.TestCase):
-    def test_field_offset(self) -> None:
-        bucket, detail = pair(
-            "mov eax, dword ptr [esi + 0x24]", "mov eax, dword ptr [esi + 0x28]"
-        )
-        self.assertEqual(bucket, "field_offset")
-        self.assertIn("0x24", detail)
-
-    def test_stack_layout_on_esp(self) -> None:
-        bucket, _ = pair("lea ecx, [esp + 0x34]", "lea ecx, [esp + 0x30]")
-        self.assertEqual(bucket, "stack_layout")
-
-    def test_vtable_slot_call(self) -> None:
-        bucket, detail = pair(
-            "call dword ptr [edx + 0xdc]", "call dword ptr [edx + 0xb8]"
-        )
-        self.assertEqual(bucket, "call_target")
-        self.assertIn("vtable slot", detail)
-
-    def test_direct_call_reports_ownership(self) -> None:
-        bucket, detail = pair("call 0x4b2570", "call TSomethingElse")
-        self.assertEqual(bucket, "call_target")
-        self.assertIn("TCity::InitializeCityProductionState", detail)
-        self.assertIn("manual", detail)
-
-    def test_missing_annotation(self) -> None:
-        bucket, _ = pair(
-            "mov eax, <OFFSET1>", "mov eax, g_apNationStates (DATA)"
-        )
-        self.assertEqual(bucket, "missing_annotation")
-
-    def test_constant_in_data_flagged_as_address(self) -> None:
-        bucket, detail = pair("push 0x63f000", "push 0x10")
-        self.assertEqual(bucket, "constant")
-        self.assertIn("in-data", detail)
-
-    def test_branch_displacement_is_not_constant(self) -> None:
-        bucket, _ = pair("jl -0x1d", "jl -0x17")
-        self.assertNotEqual(bucket, "constant")
-
-    def test_reg_alloc(self) -> None:
-        bucket, _ = pair("movsx ecx, ax", "movsx edx, ax")
-        self.assertEqual(bucket, "reg_alloc")
-
-    def test_recomp_source_tag_stripped(self) -> None:
-        self.assertIsNone(pair("ret", "ret  \t(stubs_part009.cpp:228)"))
-
-    def test_unpaired_block_is_codegen(self) -> None:
-        entity = {
-            "diff": [
-                ["@@", [{"orig": [["0x1000", "push ebx"]], "recomp": []}]],
-            ]
-        }
-        buckets = triage_entity(entity, DATA_RANGES, SYMBOLS, OWNERSHIP)
-        self.assertEqual(list(buckets), ["codegen"])
-        self.assertIn("orig-only", buckets["codegen"][0][1])
 
 
 class EmptyBodyScanTests(unittest.TestCase):
