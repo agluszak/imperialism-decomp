@@ -170,4 +170,5 @@ const unsigned int kControlTagAgr0 = 0x61677230u; // 'agr0' — first of 3 aggre
 const unsigned int kControlTagBomb = 0x626f6d62u; // 'bomb' — bombard hotspot
 const unsigned int kControlTagDfnd = 0x64666e64u; // 'dfnd' — defend hotspot
 const unsigned int kControlTagNext = 0x6e657874u; // 'next' — next-selection hotspot
+const unsigned int kControlTagExpa = 0x65787061u; // 'expa' — expand-industry hotspot
 const unsigned int kControlTagScvw = 0x73637677u; // 'scvw' — scroll view

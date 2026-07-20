@@ -11673,7 +11673,7 @@
     },
     {
       "address": "0x4ccf30",
-      "matching": 0.0,
+      "matching": 0.33962264150943394,
       "name": "TIndustryView::HandleEvent",
       "type": 1
     },
@@ -16992,7 +16992,7 @@
     },
     {
       "address": "0x50bea0",
-      "matching": 0.20536119945479328,
+      "matching": 0.21263062244434347,
       "name": "TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets",
       "type": 1
     },
@@ -21935,7 +21935,7 @@
     },
     {
       "address": "0x545940",
-      "matching": 0.4261712439418417,
+      "matching": 0.3804137039431157,
       "name": "TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine",
       "type": 1
     },
@@ -30849,7 +30849,7 @@
     },
     {
       "address": "0x5a9240",
-      "matching": 0.5533980582524272,
+      "matching": 0.563855421686747,
       "name": "TTacticalBattleView::AnimateTacticalUnitMoveBetweenTiles",
       "type": 1
     },
@@ -32822,7 +32822,7 @@
     },
     {
       "address": "0x5bf930",
-      "matching": 0.7775020678246485,
+      "matching": 0.7907361455748553,
       "name": "TOfferDeskPicture::RefreshSelectedNationOrderCompatibilityInfo",
       "type": 1
     },

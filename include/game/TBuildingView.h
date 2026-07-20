@@ -136,9 +136,11 @@ public:
   // confirms sizeof(TBuildingView) == 0xa0. The ctor (0x4c6eb0) only writes field94;
   // field98 is a base-declared slot that some derived ctors init (e.g. TShipyardView)
   // while TBuildingView's own ctor leaves it untouched; 0x9c is unconfirmed padding.
-  int field94; // +0x94
-  int field98; // +0x98
-  int pad9c;   // +0x9c
+  int field94;   // +0x94
+  int field98;   // +0x98
+  short field9c; // +0x9c
+  short field9e; // +0x9e -- read by TIndustryView::HandleEvent as the 3rd arg to
+                 // TViewMgr::HandleTurnEventDialogFactorySlotB8
 
   TBuildingView();
 };
