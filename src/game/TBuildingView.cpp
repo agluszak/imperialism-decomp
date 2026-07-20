@@ -19,7 +19,7 @@ TBuildingView::~TBuildingView() {}
 // FUNCTION: IMPERIALISM 0x004c6f30
 undefined TBuildingView::ApplyCityViewSelectionPayloadAndRefreshControls(int payload,
                                                                          unsigned char flag9c,
-                                                                         int field98Value,
+                                                                         void* field98Value,
                                                                          short field9eValue) {
   field94 = payload;
   field9c = flag9c;

@@ -1,4 +1,9 @@
 #include "game/TShipyardView.h"
+
+#include "game/TControl.h"
+#include "game/bitmap_descriptor_helpers.h"
+#include "game/global_data_tables.h"
+
 // SYNTHETIC: IMPERIALISM 0x004c8200
 // TShipyardView::CreateObject
 
@@ -20,8 +25,37 @@ TShipyardView::~TShipyardView() {}
 // FUNCTION: IMPERIALISM 0x004c8340
 void TShipyardView::Free() {}
 
+// Rebuilds the 8-slot ship-build queue UI: caches the strategic-map view system's
+// active-view pointer and a bitmap surface for resource id 0x264f, then for each of
+// eight 'but0'-'but7' queue-slot buttons clears its cached value and resets the
+// button plus its embedded 'plus'/'minu' stepper controls to the disabled/off state.
 // FUNCTION: IMPERIALISM 0x004c8390
 undefined TShipyardView::OrphanRetStub_004c6fd0() {
+  field98 = g_pStrategicMapViewSystem->field04;
+  fieldB4 = 0;
+  iconSurfaceB8 = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0x264f);
+
+  for (int i = 0; i < 8; ++i) {
+    TControl* slotButton = static_cast<TControl*>(ResolveControlByTag(0x62757430u + i)); // 'but0'-'but7'
+    slotButton->SetEnabled(0, 1);
+    slotButton->SetState(0, 1);
+    buildQueueSlotValues[i] = 0;
+
+    TControl* plusButton = static_cast<TControl*>(slotButton->ResolveControlByTag(0x706c7573u)); // 'plus'
+    plusButton->AssertValid();
+    plusButton->SetState(0, 0);
+
+    TControl* minusButton = static_cast<TControl*>(slotButton->ResolveControlByTag(0x6d696e75u)); // 'minu'
+    minusButton->AssertValid();
+    minusButton->SetState(0, 0);
+  }
+
+  // The original then restyles the panel title ('titl'), two 'fix0'/'fix1' labels, and
+  // the 'snam'/'desc' text fields via BuildUiTextStyleDescriptor +
+  // SetTextStyleAndMaybeRefresh/LoadUiStringAndDispatchViaVslot1C8 (string group 0x2736),
+  // zeroes fieldA0/fieldA2, calls InitializeCityViewActionButtons(buildQueueSlotValues[0]),
+  // then resolves the 'sele' control (AssertValid, a slot-0x1c8 call with tag 'but0'), and
+  // finally this->vtbl[0x1d8]() -- not yet ported.
   return 0;
 }
 
@@ -40,7 +74,7 @@ void TShipyardView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEv
 }
 
 // FUNCTION: IMPERIALISM 0x004c8d70
-void TShipyardView::InitializeCityViewActionButtons() {}
+void TShipyardView::InitializeCityViewActionButtons(short arg1) {}
 
 // FUNCTION: IMPERIALISM 0x004c9150
 void TShipyardView::ApplyRectSlot110(RECT* rectBuffer) {}

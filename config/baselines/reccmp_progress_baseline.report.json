@@ -11402,7 +11402,7 @@
     },
     {
       "address": "0x4c8390",
-      "matching": 0.0049261083743842365,
+      "matching": 0.15384615384615385,
       "name": "TShipyardView::OrphanRetStub_004c6fd0",
       "type": 1
     },
@@ -11432,7 +11432,7 @@
     },
     {
       "address": "0x4c8d70",
-      "matching": 0.0,
+      "matching": 0.009708737864077669,
       "name": "TShipyardView::InitializeCityViewActionButtons",
       "type": 1
     },
@@ -38987,7 +38987,7 @@
     },
     {
       "address": "0x6091d9",
-      "matching": 0.9787234042553191,
+      "matching": 1.0,
       "name": "CWnd::OnNotify",
       "type": 1
     },

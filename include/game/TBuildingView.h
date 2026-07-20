@@ -124,7 +124,7 @@ public:
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
   // slot 0x73 NoOpUiVirtualSlot73 inherited unchanged (0x572bb0)
   virtual undefined
-  ApplyCityViewSelectionPayloadAndRefreshControls(int arg1, unsigned char arg2, int arg3,
+  ApplyCityViewSelectionPayloadAndRefreshControls(int arg1, unsigned char arg2, void* arg3,
                                                   short arg4); // slot 0x74 0x4c6f30
   virtual undefined OrphanRetStub_004c6fd0();                  // slot 0x75 0x4c6fd0
   virtual undefined OrphanRetStub_004c6fb0();                  // slot 0x76 0x4c6fb0
@@ -136,8 +136,13 @@ public:
   // confirms sizeof(TBuildingView) == 0xa0. The ctor (0x4c6eb0) only writes field94;
   // field98 is a base-declared slot that some derived ctors init (e.g. TShipyardView)
   // while TBuildingView's own ctor leaves it untouched; 0x9c is unconfirmed padding.
+  // UNRESOLVED_FIELD_ATTRIBUTION: ApplyCityViewSelectionPayloadAndRefreshControls's arg3
+  // (an int with no traceable direct call site) and TShipyardView::OrphanRetStub_004c6fd0
+  // (a definite TView*, g_pStrategicMapViewSystem->field04) both write this slot with
+  // apparently different concrete types -- kept opaque as void* per the
+  // opaque/polymorphic-slot convention rather than guessing one caller's type.
   int field94;   // +0x94
-  int field98;   // +0x98
+  void* field98; // +0x98
   short field9c; // +0x9c
   short field9e; // +0x9e -- read by TIndustryView::HandleEvent as the 3rd arg to
                  // TViewMgr::HandleTurnEventDialogFactorySlotB8

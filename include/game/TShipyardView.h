@@ -3,6 +3,8 @@
 #include "game/TBuildingView.h"
 #include "game/mfc.h"
 
+struct TQuickDrawSurfaceContext;
+
 // VTABLE: IMPERIALISM 0x00651b30
 class TShipyardView : public TBuildingView {
 public:
@@ -131,7 +133,10 @@ public:
   virtual undefined OrphanCallChain_C1_I15_004c9d20(int param_1);           // slot 0x79 0x4c9d20
   virtual void __fastcall RefreshCityViewStatusPanel(int* pCityViewDialog); // slot 0x7a 0x4c9a60
   virtual undefined BuildIndustryActionCostSummaryTextByActionIndex();      // slot 0x7b 0x4c97c0
-  virtual void InitializeCityViewActionButtons();                           // slot 0x7c 0x4c8d70
+  // RET-imm evidence (RET 0x4) shows this takes one stack arg -- the imported 0-arg
+  // Ghidra prototype undercounted it; OrphanRetStub_004c6fd0 passes
+  // buildQueueSlotValues[0] (sign-extended) as the sole argument.
+  virtual void InitializeCityViewActionButtons(short arg1); // slot 0x7c 0x4c8d70
 
   TShipyardView();
 
@@ -139,5 +144,10 @@ public:
   // CreateObject (0x4c8200) only re-zeroes inherited TBuildingView::field94/field98
   // and installs the vtable -- nothing new is written in this range at construction,
   // so it's still fully unrecovered shipyard-view state.
-  unsigned char shipyardViewStateA0[0xcc - 0xa0];
+  short fieldA0;                  // +0xa0 -- zeroed by OrphanRetStub_004c6fd0's tail
+  short fieldA2;                  // +0xa2 -- zeroed by OrphanRetStub_004c6fd0's tail
+  short buildQueueSlotValues[8];  // +0xa4..+0xb3 -- one per 'but0'-'but7' queue slot
+  int fieldB4;                    // +0xb4
+  TQuickDrawSurfaceContext* iconSurfaceB8; // +0xb8 -- LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0x264f)
+  unsigned char shipyardViewStateBc[0xcc - 0xbc]; // +0xbc..+0xcc -- still unrecovered
 };
