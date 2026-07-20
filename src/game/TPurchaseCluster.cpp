@@ -1,6 +1,7 @@
 #include "game/TPurchaseCluster.h"
 
 #include "game/TAmtBar.h"
+#include "game/TBuildingView.h"
 #include "game/TEventHandler.h"
 #include "game/global_data_tables.h"
 #include "game/ui_control_tags.h"
@@ -70,11 +71,12 @@ void TPurchaseCluster::SetCityViewValueControlAmount(short nValue, char redrawFl
   RECT copiedBounds;
   CopyRect(&copiedBounds, &bounds);
   ownerContext->InvalidateCityDialogRectRegion(&copiedBounds, 1);
-  // TODO: dispatches through ownerContext's own vtable slot 0x1d8 (word slot 0x76) with no
-  // args -- that byte offset coincides with TWindow::GetWindowText(CString*) elsewhere, but
-  // that method takes one arg while this callsite passes none, so ownerContext is NOT a
-  // TWindow at this slot (same "shared offset, different class" trap as elsewhere this
-  // session). Its concrete class is unresolved, so this final refresh call is left unmodeled.
+  // ownerContext is a TBuildingView (TArmoryView/TUniversityView/TShipyardView, the city-view
+  // dialogs that host a TPurchaseCluster): confirmed by arity -- TBuildingView::
+  // OrphanRetStub_004c6fb0() at slot 0x76 (byte 0x1d8) takes zero args, matching this
+  // callsite exactly, unlike the byte-coincident TWindow::GetWindowText(CString*) which
+  // takes one.
+  static_cast<TBuildingView*>(ownerContext)->OrphanRetStub_004c6fb0();
 }
 
 // FUNCTION: IMPERIALISM 0x004cc640
