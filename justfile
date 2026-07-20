@@ -1534,6 +1534,11 @@ bootstrap-reccmp:
   : "${ORIGINAL_BINARY:?Set ORIGINAL_BINARY in .env}"
   uv run reccmp-project create --originals "$ORIGINAL_BINARY" --scm
 
+[doc('Install the local generated-reccmp-baseline merge driver (tracked hooks regenerate after conflicts)')]
+[group('setup')]
+install-reccmp-merge-driver:
+  uv run python -m tools.workflow.reccmp_baseline_merge install
+
 # Generate ./compile_commands.json (clang-lint flavor, host paths) for clangd/LSP
 # navigation. Not for matching questions — the reccmp build is MSVC500. The lint
 # *build* may fail (advisory); the database comes from the CMake configure step.

@@ -245,6 +245,9 @@ run_just_docker docker-build
 log "bd init"
 bd init || echo "WARN: bd init failed; issue tracking unavailable" >&2
 
+log "install-reccmp-merge-driver"
+just install-reccmp-merge-driver
+
 log "tooling-check"
 just tooling-check
 

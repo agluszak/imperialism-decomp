@@ -1,0 +1,8 @@
+#!/bin/sh
+
+# A rebase may invoke the generated-baseline merge driver several times. Refresh
+# once, after the complete rewrite, and ignore ordinary commit --amend operations.
+if [ "${1:-}" = "rebase" ] && command -v uv >/dev/null 2>&1 \
+  && [ -f tools/workflow/reccmp_baseline_merge.py ]; then
+  uv run python -m tools.workflow.reccmp_baseline_merge refresh --event post-rewrite
+fi
