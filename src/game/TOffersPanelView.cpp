@@ -17,7 +17,22 @@ TOffersPanelView::TOffersPanelView() : TPanelView(), field68(0), field6c(0) {}
 TOffersPanelView::~TOffersPanelView() {}
 
 // FUNCTION: IMPERIALISM 0x004f8ff0
-void TOffersPanelView::NoOpUiLifecycleHook(int arg) {}
+void TOffersPanelView::NoOpUiLifecycleHook(int arg) {
+  // The original also builds a text-style descriptor (theme 0x2b68) here before the base
+  // call, unused by anything modeled below -- left unmodeled.
+  TPanelView::NoOpUiLifecycleHook(arg);
+
+  m_panelData = ownerContext;
+  field68 = ResolveControlByTag(kControlTagAcce);
+  field68->AssertValid();
+  field6c = ResolveControlByTag(kControlTagReje);
+  field6c->AssertValid();
+
+  // The original then sets field68/field6c's own +0x92 short field to 0x1388, and resolves
+  // 'prop'/'text' controls whose vtable slot 0x1e4 is beyond TStaticText's declared extent
+  // (a genuinely unrecovered sibling class) to apply further templated text -- left
+  // unmodeled.
+}
 
 // FUNCTION: IMPERIALISM 0x004f9300
 void TOffersPanelView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
