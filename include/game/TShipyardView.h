@@ -138,6 +138,20 @@ public:
   // Own fields at +0xa0..+0xcc (RTTI m_nObjectSize 0xcc vs TBuildingView's 0xa0).
   // CreateObject (0x4c8200) only re-zeroes inherited TBuildingView::field94/field98
   // and installs the vtable -- nothing new is written in this range at construction,
-  // so it's still fully unrecovered shipyard-view state.
-  unsigned char shipyardViewStateA0[0xcc - 0xa0];
+  // so it's still fully unrecovered shipyard-view state except for the pieces
+  // ApplyRectSlot110 (0x4c9150) proves the shape of below.
+  //
+  // +0xa0 selectedRequirementRow: index into requirementResourceTypeByRow[], selects
+  //   which resource's requirement grid is displayed.
+  // +0xa4 requirementResourceTypeByRow[]: resource-type id per row, read at
+  //   selectedRequirementRow; true extent unconfirmed (only a single indexed read is
+  //   observed) so it's sized to exactly fill the gap up to the next confirmed field.
+  // +0xbc commoditySpriteIds[4] / +0xc4 commodityRequiredAmounts[4]: parallel arrays
+  //   for the "commodities in production" icon strip (loop bound proven: 4 slots,
+  //   -1 = empty).
+  short selectedRequirementRow;           // +0xa0
+  unsigned char unknownA2[2];             // +0xa2 unrecovered
+  short requirementResourceTypeByRow[12]; // +0xa4 (extent unconfirmed, see above)
+  short commoditySpriteIds[4];            // +0xbc
+  short commodityRequiredAmounts[4];      // +0xc4
 };

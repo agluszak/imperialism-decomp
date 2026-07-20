@@ -1,4 +1,6 @@
 #include "game/TPlaceCityDialog.h"
+
+#include "game/TPicture.h"
 // SYNTHETIC: IMPERIALISM 0x004d1760
 // TPlaceCityDialog::CreateObject
 
@@ -20,7 +22,9 @@ undefined TPlaceCityDialog::BuildCityViewResourceRows() {
 }
 
 // FUNCTION: IMPERIALISM 0x004d1e40
-void TPlaceCityDialog::ApplyRectSlot110(RECT* rectBuffer) {}
+void TPlaceCityDialog::ApplyRectSlot110(RECT* rectBuffer) {
+  TPicture::ApplyRectSlot110(rectBuffer);
+}
 
 // FUNCTION: IMPERIALISM 0x004d1e60
 void TPlaceCityDialog::CallVoidSlotA0() {

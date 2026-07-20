@@ -1,5 +1,9 @@
 #include "game/TGWorldPartView.h"
 
+#include "game/global_data_tables.h"
+#include "game/quickdraw_rendering.h"
+#include "game/TQuickDrawSurfaceContext.h"
+
 // SYNTHETIC: IMPERIALISM 0x0045b030
 // TGWorldPartView::`scalar deleting destructor'
 TGWorldPartView::~TGWorldPartView() {}
@@ -17,7 +21,18 @@ TGWorldPartView::TGWorldPartView() : TView() {
 }
 
 // FUNCTION: IMPERIALISM 0x004ac880
-void TGWorldPartView::ApplyRectSlot110(RECT* rectBuffer) {}
+void TGWorldPartView::ApplyRectSlot110(RECT* rectBuffer) {
+  (void)rectBuffer;
+  if (sourceSurface60 != 0) {
+    RECT destRect;
+    QueryContentBounds(&destRect);
+    UpdatePaletteIndexWithDefaultFallback(0x10);
+    BlitRectWithOptionalTransparency(sourceSurface60->GetBlitSurface(),
+                                     g_pActiveQuickDrawSurfaceContext->GetBlitSurface(),
+                                     &sourceRect64, &destRect, 0x24, 0);
+    UpdatePaletteIndexWithDefaultFallback(0x13);
+  }
+}
 
 // FUNCTION: IMPERIALISM 0x00577df0
 void TGWorldPartView::SetSourceRectFromGridCell(int column, int row) {

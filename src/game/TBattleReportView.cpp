@@ -2,12 +2,15 @@
 
 #include <string.h>
 
+#include "game/CDib.h"
 #include "game/TAnimator.h"
 #include "game/TArmyMgr.h"
 #include "game/TControl.h"
 #include "game/TInfoBarText.h"
 #include "game/TIdleMeAnimation.h"
+#include "game/TMacViewMgr.h"
 #include "game/TMapMgr.h"
+#include "game/TQuickDrawSurfaceContext.h"
 #include "game/TSimMgr.h"
 #include "game/TSoundPlayer.h"
 #include "game/TSortedPtrList.h"
@@ -285,6 +288,55 @@ void TBattleReportView::BeginMouseCaptureAndStartRepeatTimer(CPoint* point, int 
 // FUNCTION: IMPERIALISM 0x004ade00
 void TBattleReportView::ApplyRectSlot110(RECT* rectBuffer) {
   TDiplomacyMapView::ApplyRectSlot110(rectBuffer);
+  RenderMapContextActionMarkers(rectBuffer);
+}
+
+// FUNCTION: IMPERIALISM 0x004ade30
+void TBattleReportView::RenderMapContextActionMarkers(RECT* rectBuffer) {
+  (void)rectBuffer; // ignored stack arg threaded through by the caller
+
+  int count = g_pMapContextActionManager->mapContextActionRecordList04->GetSize();
+  int boundary = (selectedReportIndex24c8 == 0) ? 1 : 0;
+  int ordinal = count;
+  if (ordinal >= boundary) {
+    do {
+      int index = (ordinal == 0) ? selectedReportIndex24c8 : ordinal;
+      MapContextActionRecord* record = static_cast<MapContextActionRecord*>(
+          g_pMapContextActionManager->mapContextActionRecordList04->GetPtrListEntryByOneBasedIndex(
+              index));
+
+      if (selectedReportIndex24c8 != ordinal && record->placedFlag260 != 0) {
+        RECT destRect;
+        destRect.left = record->markerPixelX258;
+        destRect.top = record->markerPixelY25c;
+        destRect.right = destRect.left + 0x12;
+        destRect.bottom = destRect.top + 0x12;
+
+        CDib* activeDib = g_pActiveQuickDrawSurfaceContext->surfaceDib;
+        if (activeDib != 0) {
+          int surfaceHeight = activeDib->m_pInfoHeader->bmiHeader.biHeight;
+          if (surfaceHeight < 1) {
+            surfaceHeight = -surfaceHeight;
+          }
+          OffsetRect(&destRect, 0, (surfaceHeight - destRect.top) - destRect.bottom);
+        }
+
+        int spriteX = (record->markerSpriteCode262 + (ordinal == 0 ? 1 : 0)) * 0x12;
+        RECT srcRect;
+        srcRect.left = spriteX;
+        srcRect.top = 0;
+        srcRect.right = spriteX + 0x12;
+        srcRect.bottom = 0x12;
+
+        UpdatePaletteIndexWithDefaultFallback(0x10);
+        BlitRectWithOptionalTransparency(g_pStrategicMapViewSystem->atlas694[3]->GetBlitSurface(),
+                                         g_pActiveQuickDrawSurfaceContext->GetBlitSurface(),
+                                         &srcRect, &destRect, 0x24, 0);
+        UpdatePaletteIndexWithDefaultFallback(0x13);
+      }
+      ordinal--;
+    } while (ordinal >= boundary);
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x004adfc0

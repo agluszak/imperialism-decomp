@@ -4356,6 +4356,21 @@ int TGreatPower::RecomputeNationComparativePowerMetrics_Impl() {
   return sum / count;
 }
 
+// Sums the encoded diplomacyGrantByNation entries (masking off the top 2 flag bits),
+// skipping the 0xffff "no grant" sentinel. Used by the grants/aid screen's "Total"
+// row (TGrantsView::ApplyRectSlot110).
+// FUNCTION: IMPERIALISM 0x004e3620
+int TGreatPower::SumDiplomacyGrantEntriesMaskedToValueBits() {
+  int total = 0;
+  for (int i = 0; i < 0x17; ++i) {
+    unsigned short entry = static_cast<unsigned short>(diplomacyGrantByNation[i]);
+    if (entry != 0xffff) {
+      total += entry & 0x3fff;
+    }
+  }
+  return total;
+}
+
 // FUNCTION: IMPERIALISM 0x004e6c20
 void TGreatPower::InitializeNationMinisterSubsystemsByPolicyIds(int arg1, int arg2, short arg3,
                                                                 short arg4, short arg5) {

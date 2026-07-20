@@ -15,7 +15,9 @@ IMPLEMENT_DYNCREATE(TRadioText, TDropShadowText)
 TRadioText::TRadioText() : TDropShadowText() {}
 
 // FUNCTION: IMPERIALISM 0x00579490
-void TRadioText::NoOpUiLifecycleHook(int arg) {}
+void TRadioText::NoOpUiLifecycleHook(int arg) {
+  TView::NoOpUiLifecycleHook(arg);
+}
 
 // FUNCTION: IMPERIALISM 0x005794b0
 void TRadioText::ApplyRectSlot110(RECT* rectBuffer) {

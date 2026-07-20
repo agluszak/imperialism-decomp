@@ -90,7 +90,7 @@ def build_annotation_index(src_root: Path, target: str) -> dict[int, list[Locati
     rx = re.compile(ANNOT_RE_TEMPLATE.format(target=re.escape(target)))
     out: dict[int, list[Location]] = {}
     for cpp in src_root.rglob("*.cpp"):
-        if is_excluded_scan_path(cpp):
+        if is_excluded_scan_path(cpp, roots=[src_root]):
             continue
         try:
             text = cpp.read_text(encoding="utf-8", errors="ignore")

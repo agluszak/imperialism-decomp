@@ -47,6 +47,11 @@ void UpdatePaletteIndexWithDefaultFallback(unsigned int paletteIndex);
 // GetTextExtentPoint32A. Ported in quickdraw_rendering.cpp.
 short __cdecl MeasureTextExtentWithCachedQuickDrawStyle(const CString* text);
 
+// Shrinks *text (dropping trailing characters and appending "...") until it fits
+// within maxWidth; empties the string outright if that would leave under 5
+// characters. 0x005d4c60
+void TruncateTextToFitWidthWithEllipsis(CString* text, short maxWidth);
+
 // Cached-style text draw leaf (0x494a90): rebuilds/selects the cached measure-font into
 // the active QuickDraw CDC, applies the current QuickDraw text color, then draws at the
 // resolved origin cached by SetQuickDrawTextOriginWithContextOffset.

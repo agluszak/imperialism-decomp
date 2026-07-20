@@ -70,6 +70,13 @@ public:
   // powers 0..6 (text only), then minors 7..22 (text + palette-selected flag icons).
   // presentRect is an ignored stack arg the original threads through.
   void RenderTerrainAndMinorNationLegendLabels(RECT* presentRect);
+  // 0x4f4ec0 -- called unconditionally from ApplyRectSlot110 for interactionModeAt94 in
+  // {1,2,4}: for every terrain-descriptor slot whose hit rect intersects presentRect,
+  // draws a diplomacy-compatibility highlight (LookupOrderCompatibilityMatrixValue) into
+  // nationAnchorRects3A4, a mode-specific status icon into nationTextHitRectsC4 (need/
+  // grant level for mode 1, relation tier for mode 2, policy level for mode 4), and an
+  // optional colony-boycott overlay. presentRect is only read, never threaded onward.
+  void RenderDiplomacyMatrixRowStatusIcons(RECT* presentRect);
 
 protected:
   // 0x90 — compared against a terrain-descriptor index in

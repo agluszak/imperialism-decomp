@@ -841,6 +841,10 @@ unsigned char g_abUniversityRequirementLevelById[24][4] = {
     {0, 2, 4, 6}, {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0},
     {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}, {1, 2, 3, 4},
     {1, 2, 3, 4}, {1, 2, 3, 4}, {1, 2, 3, 4}, {0, 1, 2, 3}, {0, 1, 2, 3}, {0, 0, 0, 0}};
+// GLOBAL: IMPERIALISM 0x00651030
+int g_UniversityRequirementResourceTypeTable[30] = {3,  4,  21, 22, -1, -1, -1, -1, 0,  17,
+                                                    18, -1, 2,  -1, -1, -1, -1, -1, -1, -1,
+                                                    1,  20, -1, -1, 19, -1, -1, -1, -1, -1};
 // Per-resourceType "requires tiered nibble" boolean flag table. Read by the same function
 // above; only nonzero-ness is consumed there.
 unsigned char g_abResourceTypeUsesHighNibbleFlag[24] = {0, 0, 0, 1, 1, 0, 1, 0, 0, 0, 0, 0,
@@ -1332,6 +1336,9 @@ TUiTextStyleDescriptor g_UiResourceEntryDefaultTextStyle = {0, 0, 0, 0};
 
 } // extern "C"
 
+// GLOBAL: IMPERIALISM 0x0066db50
+const char* g_cstrTradeTotalsBalanceSubstitution0066DB50 = g_szEmptyString;
+
 #include "game/TWNetSessionManager.h"
 
 // UGameWindow/dialog-factory widget build stack. The list element type is TView*: its
@@ -1427,6 +1434,16 @@ extern "C" void* g_pActiveCityDialogLegendSelectionOwner = 0;
 // GLOBAL: IMPERIALISM 0x006a44b4
 // 4-byte flag (written as a dword by TStatusButton::HandleEvent); BOOL-style int.
 int g_bCityDialogLegendSelectionInitialized = 0;
+
+// Per-resourceType04 index into TShipView::ApplyRectSlot110's 8-entry order-status
+// string pool (GetString group 0x2760); -1 = no status line for that resource type
+// (verified via `just ghidra-read-data 0x65c7f8 dword 14`; the table ends there --
+// the next dword looks like unrelated pointer data, matching
+// g_NavyOrderResourceDescriptorTable's 14-entry resourceType04 domain).
+// GLOBAL: IMPERIALISM 0x0065c7f8
+const int g_ShipOrderStatusStringIndexByResourceType_0065c7f8[14] = {
+    -1, -1, -1, 0, 1, -1, -1, 2, 3, 4, -1, 5, 6, 7,
+};
 
 // GLOBAL: IMPERIALISM 0x006a590c
 TInfoBarText* g_pCursorControlPanel = nullptr;
@@ -1888,6 +1905,14 @@ int g_mapActionContextDisplayNameCacheStep_006984bc = 7;
 // Empty content: reccmp pairs by the // GLOBAL address marker, not by value. ===
 // GLOBAL: IMPERIALISM 0x00695794
 char s_szSpaceSeparator_00695794[] = " ";
+// "Adm. " prefix for the assigned-admiral name line (TShipView::ApplyRectSlot110,
+// 0x5654e0).
+// GLOBAL: IMPERIALISM 0x0069578c
+char s_szAdmiralPrefix_0069578c[] = "Adm. ";
+// "<label>:" separator between the council-panel's nation-name/label column and its
+// value column (TCouncilPanelView::ApplyRectSlot110, 0x4fb030).
+// GLOBAL: IMPERIALISM 0x00696b10
+char s_szColonSeparator_00696b10[] = ":";
 // GLOBAL: IMPERIALISM 0x00696674
 char s_mcflavor_00696674[] = "";
 // GLOBAL: IMPERIALISM 0x00696d10

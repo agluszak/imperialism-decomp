@@ -20,6 +20,7 @@
 #include "game/TInfoBarText.h"
 #include "game/ui_control_tags.h"
 #include "game/TCountry.h"
+#include "game/TGreatPower.h"
 #include "game/TMilitaryUnit.h"
 #include "game/TViewMgr.h"
 #include "game/TSimMgr.h"
@@ -341,8 +342,40 @@ void TDiplomacyMapView::BuildDiplomacyNationOverlayGeometryAndHitMasks() {
 
 // FUNCTION: IMPERIALISM 0x004f48c0
 void TDiplomacyMapView::ApplyRectSlot110(RECT* rectBuffer) {
-  TPicture::ApplyRectSlot110(rectBuffer);
+  // Constructed and destroyed here (EH state 0 while alive) but never touched in the
+  // body -- a dead local in the original, kept for the exact EH/codegen shape.
+  CString unusedScratch;
+
+  if (interactionModeAt94 == 1) {
+    RebuildDiplomacyLegendPaletteMode1AndBlit(frameRegionSelectorAt98, rectBuffer);
+  } else if (interactionModeAt94 == 2) {
+    RenderDiplomacyLegendSurfaceAndPresent(rectBuffer);
+  } else if (interactionModeAt94 == 4) {
+    RebuildDiplomacyLegendPaletteMode4AndBlit(frameRegionSelectorAt98, rectBuffer);
+  } else {
+    RenderDiplomacyLegendSurfaceAndPresent(rectBuffer);
+  }
+
+  SetQuickDrawFillColor(0xffffff);
+  RgnHandle frameRegion = g_pStrategicMapViewSystem->GetClipRegionSlotByIndex(
+      static_cast<short>(frameRegionSelectorAt98));
+  // 0x497860 is a genuine __cdecl free function (ret 0, all args on the stack); this
+  // call site's disassembly pushes exactly one argument (unlike the 3-arg cast used at
+  // the RenderDiplomacyLegendSurfaceAndPresent call site above) -- only the arg/return
+  // types are adjusted here, the convention is not faked.
+  reinterpret_cast<void(__cdecl*)(void*)>(FrameRegionOnHdcAndReleaseBrushState)(frameRegion);
+  SetQuickDrawFillColor(0);
+
+  if (interactionModeAt94 == 5) {
+    RenderDiplomacyPendingPolicyIconsAndFrames();
+  }
+  RenderDiplomacyMatrixRowStatusIcons(rectBuffer);
 }
+
+// Relation-percentage -> icon-row lookup for interactionModeAt94 == 2 (0x00696950).
+namespace {
+const short kRelationTierThresholds[7] = {95, 90, 75, 50, 25, 0, 300};
+} // namespace
 
 // FUNCTION: IMPERIALISM 0x004f4a30
 void TDiplomacyMapView::RenderTerrainAndMinorNationLegendLabels(RECT* presentRect) {
@@ -432,6 +465,128 @@ void TDiplomacyMapView::RenderTerrainAndMinorNationLegendLabels(RECT* presentRec
     // (WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6, 0x498e00) and a
     // CDC::SelectPalette over a local rendering-context struct that is not yet recovered;
     // the label text matches, the flag-palette bracket is left for that recovery.
+  }
+}
+
+// FUNCTION: IMPERIALISM 0x004f4ec0
+void TDiplomacyMapView::RenderDiplomacyMatrixRowStatusIcons(RECT* presentRect) {
+  if (interactionModeAt94 != 1 && interactionModeAt94 != 4 && interactionModeAt94 != 2) {
+    return;
+  }
+
+  RECT presentRectCopy = *presentRect;
+  for (short terrainIndex = 0; terrainIndex < 0x17; ++terrainIndex) {
+    if (g_apTerrainTypeDescriptorTable[terrainIndex] == 0) {
+      continue;
+    }
+
+    RECT* hitRect = &nationTextHitRectsC4[terrainIndex];
+    RECT intersection;
+    if (SectRect(&presentRectCopy, hitRect, &intersection) == 0) {
+      continue;
+    }
+
+    bool boycottFlag = false;    // bVar3
+    bool offsetOverlayX = false; // bVar4
+    short iconOffset = -1;       // sVar9
+
+    short compatValue = g_pDiplomacyTurnStateManager->LookupOrderCompatibilityMatrixValue(
+        frameRegionSelectorAt98, terrainIndex);
+    if (compatValue != 0) {
+      short compatIconX = static_cast<short>((compatValue + 0x16) * 0x10);
+      RECT compatSrcRect = {compatIconX, 0, static_cast<int>(compatIconX + 0x10), 0x10};
+      UpdatePaletteIndexWithDefaultFallback(0x10);
+      SetQuickDrawFillColor(0);
+      BlitRectWithOptionalTransparency(g_pStrategicMapViewSystem->atlas694[2]->GetBlitSurface(),
+                                       g_pActiveQuickDrawSurfaceContext->GetBlitSurface(),
+                                       &compatSrcRect, &nationAnchorRects3A4[terrainIndex], 0x24,
+                                       0);
+      UpdatePaletteIndexWithDefaultFallback(0x13);
+    }
+
+    if (interactionModeAt94 == 1) {
+      if (g_pDiplomacyTurnStateManager->IsPrimaryNationSlotIndex(frameRegionSelectorAt98)) {
+        short need =
+            g_apNationStates[frameRegionSelectorAt98]->diplomacyGrantByNation[terrainIndex];
+        if (need == 1000) {
+          iconOffset = 0xd0;
+        } else if (need == 3000) {
+          iconOffset = 0xe0;
+        } else if (need == 5000) {
+          iconOffset = 0xf0;
+        } else if (need == 10000) {
+          iconOffset = 0x100;
+        } else if (need == 0x43e8) {
+          iconOffset = 0x110;
+        } else if (need == 0x4bb8) {
+          iconOffset = 0x120;
+        } else if (need == 0x5388) {
+          iconOffset = 0x130;
+        } else if (need == 0x6710) {
+          iconOffset = 0x140;
+        }
+      }
+    } else if (interactionModeAt94 == 2) {
+      short relation =
+          g_apTerrainTypeDescriptorTable[frameRegionSelectorAt98]->needLevelByNation[terrainIndex];
+      boycottFlag =
+          (frameRegionSelectorAt98 < 7) &&
+          (g_apNationStates[frameRegionSelectorAt98]->colonyBoycottFlags[terrainIndex] != 0);
+      if (relation != 100) {
+        for (short tier = 0; tier < 7; ++tier) {
+          if (kRelationTierThresholds[tier] == relation) {
+            iconOffset = static_cast<short>((tier + 5) * 0x10);
+          }
+        }
+        if (boycottFlag) {
+          if (relation == 300) {
+            iconOffset = 0x190;
+            boycottFlag = false;
+          } else {
+            offsetOverlayX = true;
+          }
+        }
+      }
+    } else { // interactionModeAt94 == 4
+      if (g_pDiplomacyTurnStateManager->IsPrimaryNationSlotIndex(frameRegionSelectorAt98)) {
+        short need =
+            g_apNationStates[frameRegionSelectorAt98]->diplomacyPolicyByNation[terrainIndex];
+        if (need == 0x133) {
+          iconOffset = 0x150;
+        } else if (need == 0x134) {
+          iconOffset = 0x160;
+        }
+        // UNRESOLVED: for every other `need` value the original indexes a
+        // ~0x133-entry table (`asStackY_2c6[need] << 4`) that Ghidra renders as a
+        // stack-relative read far outside this function's own frame -- almost
+        // certainly a global lookup table it failed to recognize as such. Left
+        // unmapped (no icon drawn) pending recovery of that table's real address.
+      }
+    }
+
+    if (iconOffset != -1) {
+      RECT iconSrcRect = {iconOffset, 0, static_cast<int>(iconOffset + 0x10), 0x10};
+      UpdatePaletteIndexWithDefaultFallback(0x10);
+      SetQuickDrawFillColor(0);
+      BlitRectWithOptionalTransparency(g_pStrategicMapViewSystem->atlas694[2]->GetBlitSurface(),
+                                       g_pActiveQuickDrawSurfaceContext->GetBlitSurface(),
+                                       &iconSrcRect, hitRect, 0x24, 0);
+      UpdatePaletteIndexWithDefaultFallback(0x13);
+    }
+
+    if (boycottFlag) {
+      RECT boycottSrcRect = {0xc0, 0, 0xd0, 0x10};
+      RECT boycottDstRect = *hitRect;
+      if (offsetOverlayX) {
+        OffsetRect(&boycottDstRect, 0x10, 0);
+      }
+      UpdatePaletteIndexWithDefaultFallback(0x10);
+      SetQuickDrawFillColor(0);
+      BlitRectWithOptionalTransparency(g_pStrategicMapViewSystem->atlas694[2]->GetBlitSurface(),
+                                       g_pActiveQuickDrawSurfaceContext->GetBlitSurface(),
+                                       &boycottSrcRect, &boycottDstRect, 0x24, 0);
+      UpdatePaletteIndexWithDefaultFallback(0x13);
+    }
   }
 }
 

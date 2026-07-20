@@ -7,7 +7,6 @@ import re
 from pathlib import Path
 from typing import Iterable
 
-
 CPP_HEADER_PATTERNS = ("*.cpp", "*.cc", "*.cxx", "*.h", "*.hpp", "*.hh", "*.hxx")
 
 # Nested git worktrees created by the Agent tool's isolation:"worktree" option live
@@ -16,13 +15,29 @@ CPP_HEADER_PATTERNS = ("*.cpp", "*.cc", "*.cxx", "*.h", "*.hpp", "*.hh", "*.hxx"
 # descends into them registers every marker address twice, corrupting duplicate-address
 # dedup (see bd imperialism-decomp-idi). Bounded roots (src/, include/) never reach them,
 # but exclude defensively so a scan rooted at the repo root stays correct too.
+#
+# Caveat: when the SCAN ITSELF is rooted inside a `.claude/worktrees/<id>/` checkout
+# (an agent doing its own work isolated in such a worktree, as opposed to a scan from
+# a normal checkout recursing INTO a nested one), every resolved path's ABSOLUTE
+# ancestry already contains ".claude" harmlessly — that is not the duplicate-checkout
+# case this guard exists for. `is_excluded_scan_path` takes the scan roots so it can
+# check only path components found AFTER a root (i.e. genuinely reached via
+# recursion), not the root's own ancestry; falls back to whole-path checking when no
+# roots are given (back-compat for callers that check a single path in isolation).
 _EXCLUDED_PATH_PARTS = (".claude",)
 
 
-def is_excluded_scan_path(path: Path) -> bool:
+def is_excluded_scan_path(path: Path, roots: Iterable[Path] = ()) -> bool:
     """True for paths under runtime-state dirs (e.g. .claude/worktrees/) that must never
     be treated as canonical source during a repo-wide scan."""
-    return any(part in _EXCLUDED_PATH_PARTS for part in path.parts)
+    resolved = path.resolve()
+    for root in roots:
+        try:
+            rel_parts = resolved.relative_to(root.resolve()).parts
+        except ValueError:
+            continue
+        return any(part in _EXCLUDED_PATH_PARTS for part in rel_parts)
+    return any(part in _EXCLUDED_PATH_PARTS for part in resolved.parts)
 
 # Hand-owned headers carry a marked, auto-generated reference block (inserted by a
 # now-retired generator) inside them. Its slot table embeds raw provisional Ghidra
@@ -44,20 +59,27 @@ def strip_generated_blocks(text: str) -> str:
 
 
 def iter_files(paths: Iterable[str], patterns: Iterable[str] = CPP_HEADER_PATTERNS) -> list[Path]:
-    files: list[Path] = []
+    # Track which caller-supplied root each file came from, so exclusion is checked
+    # relative to that root (see is_excluded_scan_path) rather than against the full
+    # absolute path -- the caller's own checkout may legitimately sit under a
+    # `.claude/worktrees/<id>/` directory.
+    files: list[tuple[Path, Path]] = []
+    roots: list[Path] = []
     for item in paths:
         path = Path(item)
         if path.is_file():
-            files.append(path)
+            files.append((path, path.parent))
             continue
         if path.is_dir():
+            roots.append(path)
             for pattern in patterns:
-                files.extend(sorted(path.rglob(pattern)))
+                for found in sorted(path.rglob(pattern)):
+                    files.append((found, path))
 
     seen: set[Path] = set()
     ordered: list[Path] = []
-    for path in sorted(files):
-        if is_excluded_scan_path(path):
+    for path, root in sorted(files, key=lambda pair: pair[0]):
+        if is_excluded_scan_path(path, [root]):
             continue
         resolved = path.resolve()
         if resolved in seen:

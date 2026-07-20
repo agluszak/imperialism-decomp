@@ -132,8 +132,14 @@ public:
 
   TUniversityView();
 
-  // Original object size is 0xac (CRuntimeClass m_nObjectSize); the source class ended at 0xa0. Trailing 12 byte(s) not yet semantically recovered — declared so sizeof and the recomp's allocation size match the original.
+  // Original object size is 0xac (CRuntimeClass m_nObjectSize); the source class ended
+  // at 0xa0. fielda0 has no observed accesses in any ported method (true padding so
+  // far). fielda4 evidence (ApplyRectSlot110, HandleEvent): always accessed as a
+  // 16-bit word -- selects which requirement-recruitment category/page is shown
+  // (index into the row-selection table + GetMapImprovementSpriteBaseOffset arg) --
+  // so it's a short, not int; the 2 trailing bytes are unconfirmed padding.
   int fielda0;
-  int fielda4;
+  short fielda4;
+  unsigned char pada6[2];
   int fielda8;
 };

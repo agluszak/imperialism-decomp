@@ -1,4 +1,6 @@
 #include "game/TSliderPicture.h"
+
+#include "game/TPicture.h"
 // SYNTHETIC: IMPERIALISM 0x00573970
 // TSliderPicture::CreateObject
 
@@ -16,4 +18,5 @@ TSliderPicture::~TSliderPicture() {}
 
 // FUNCTION: IMPERIALISM 0x00573aa0
 void TSliderPicture::ApplyRectSlot110(RECT* rectBuffer) {
+  TPicture::ApplyRectSlot110(rectBuffer);
 }

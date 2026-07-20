@@ -3,6 +3,8 @@
 #include "game/TControl.h"
 #include "game/mfc.h"
 
+class TShip;
+
 // VTABLE: IMPERIALISM 0x0065db68
 class TMiniShipView : public TControl {
 public:
@@ -125,5 +127,9 @@ public:
   TMiniShipView();
 
   // Original object size is 0x88 (CRuntimeClass m_nObjectSize); the source class ended at 0x84. Trailing 4 byte(s) not yet semantically recovered — declared so sizeof and the recomp's allocation size match the original.
-  int field84;
+  // The order node this row represents: ApplyRectSlot110 (0x569eb0) reads
+  // resourceType04 (+4), displayName18 (+0x18), stockLevel1c (+0x1c),
+  // admiralBacklink20 (+0x20), and ownerOrderEntry0c (+0xc) through this
+  // pointer, matching TShip's layout exactly (same shape as TShipView::shipNode60).
+  TShip* shipNode84;
 };

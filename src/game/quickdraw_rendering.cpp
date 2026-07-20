@@ -704,3 +704,25 @@ void FillRectWithQuickDrawBrushAndContextOffset(RECT* rect) {
     FillRect(dc->GetSafeHdc(), &fillRect, static_cast<HBRUSH>(brush.GetSafeHandle()));
   }
 }
+
+// FUNCTION: IMPERIALISM 0x005d4c60
+void TruncateTextToFitWidthWithEllipsis(CString* text, short maxWidth) {
+  // Shrinks *text one character at a time, appending "...", until it (plus the
+  // ellipsis) measures within maxWidth -- the reusable form of the loop
+  // TMiniArmyView::ApplyRectSlot110 (0x4aaeb0) inlines by hand for its own name
+  // label. Bails out to an empty string if truncation would leave fewer than 5
+  // characters.
+  if (MeasureTextExtentWithCachedQuickDrawStyle(text) > maxWidth) {
+    CString truncated;
+    do {
+      truncated = text->Mid(0, text->GetLength() - 1);
+      *text = truncated;
+      truncated += "...";
+    } while (MeasureTextExtentWithCachedQuickDrawStyle(&truncated) > maxWidth &&
+             text->GetLength() > 4);
+    if (text->GetLength() < 5) {
+      *text = g_szEmptyString;
+    }
+    *text = truncated;
+  }
+}

@@ -113,6 +113,10 @@ public:
 
   TNavyBoyView();
 
-  // Original object size is 0x64 (CRuntimeClass m_nObjectSize); the source class ended at 0x60. Trailing 4 byte(s) not yet semantically recovered — declared so sizeof and the recomp's allocation size match the original.
-  int field60;
+  // Unrecovered context object read by ApplyRectSlot110: +0 ship "kind" id (short,
+  // indexes both a 14-slot localized class-name table and
+  // GetResourceDescriptorWord14ByType's per-kind level divisor), +2 veterancy level
+  // (short), +4 ship/unit name (raw c-string). Raw storage until the real pointee
+  // class is identified (same pattern as TArmyBoyView::field60).
+  void* field60; // +0x60
 };

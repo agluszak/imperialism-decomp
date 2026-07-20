@@ -101,9 +101,14 @@ const unsigned int kAddrTurnStateSeedHi = 0x006a5b5c;
 
 HCURSOR LoadTurnEventCursorByResourceIdOffset1000(int cursorResourceId);
 
-// SYNTHETIC: IMPERIALISM 0x005d4c60
-// TViewMgr::CreateObject
-
+// The RTTI/CRuntimeClass oracle previously assigned TViewMgr::CreateObject to
+// 0x005d4c60, but that address's real body (verified via `just ghidra-listing`
+// and `just ghidra-decompile`) is a CString truncate-with-ellipsis text helper --
+// no `operator new` call, no vtable store, just MeasureTextExtentWithCachedQuick-
+// DrawStyle + CString::Mid + string concatenation. It is now ported for real as
+// TruncateTextToFitWidthWithEllipsis (quickdraw_rendering.cpp, 0x5d4c60). TViewMgr's
+// real CreateObject address is unknown; leaving this class's DYNCREATE CreateObject
+// unclaimed rather than reinstating the wrong pairing.
 IMPLEMENT_DYNCREATE(TViewMgr, TObject)
 
 // FUNCTION: IMPERIALISM 0x005d5060
