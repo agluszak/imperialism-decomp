@@ -1441,12 +1441,100 @@ void TArmyMgr::AppendMapContextActionRecordAndResetWorkingFields(MapOrderBattleS
 void TArmyMgr::TrimExcessNavyOrderSupportAndRebuildOrderBuffer(char requiredCountByte,
                                                                int cityIndex,
                                                                MapOrderBattleSnapshot* snapshot) {
-  // TODO: port body -- 897 bytes. See the declaration in TArmyMgr.h for the traced
-  // algorithm (TMilitaryUnit-based random eviction against a weighted-cost budget,
-  // then a MapOrderBattleSideChildRecord array rebuild) and the one open question
-  // (the requiredCountByte/snapshot->requiredCountByte[0] comparison gating the
-  // scratch TList allocation).
-  (void)requiredCountByte;
-  (void)cityIndex;
-  (void)snapshot;
+  // requiredCountByte carries TTaskForce::required_count, which every navy-order reader
+  // treats as the entry's owning nation slot (RemoveMatchingTaskForceOrders above) --
+  // used below as a g_apNationStates index. `side` is recovered implicitly by comparing
+  // this byte against snapshot->requiredCountByte[0]: side 0's own call always matches
+  // trivially (side = 0); side 1's call only diverges -- and only then runs the trim --
+  // when the two sides' nation slots differ.
+  int side = (requiredCountByte != snapshot->requiredCountByte[0]) ? 1 : 0;
+
+  TList* scratchList = new TList();
+
+  int budget = 0;
+  TCountry* nation = g_apNationStates[requiredCountByte];
+  CIterator unitIter(nation->militaryUnitList44);
+  for (TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(unitIter.Reset()); unitIter.More();
+       unit = static_cast<TMilitaryUnit*>(unitIter.Advance())) {
+    if (unit->field_C == cityIndex &&
+        !g_pGlobalMapState->TileHasMovementClassId(unit->tileIndex06, cityIndex)) {
+      scratchList->AddTail(unit);
+      budget += unit->GetUnitTypeCostPoints();
+    }
+  }
+
+  budget -= g_pNavyOrderManager->ComputeAggregateWeightedChildCostForMatchingType5NavyOrders(
+      requiredCountByte, &g_pGlobalMapState->cityScoreTable[cityIndex], 0);
+
+  if (budget > 0) {
+    int evictedCount = 0;
+    do {
+      if (scratchList->GetCount() == 0) {
+        break;
+      }
+      int ordinal = rand() % scratchList->GetCount() + 1;
+      TMilitaryUnit* evicted = static_cast<TMilitaryUnit*>(scratchList->GetEntryByOrdinal(ordinal));
+      POSITION pos = scratchList->listState.Find(evicted);
+      if (pos != nullptr) {
+        scratchList->listState.RemoveAt(pos);
+      }
+      budget -= evicted->GetUnitTypeCostPoints();
+      ++evictedCount;
+      evicted->field_34 = static_cast<short>(0xffaa);
+    } while (budget > 0);
+
+    int oldCount = snapshot->childCount[side];
+    MapOrderBattleSideChildRecord* oldRecords = snapshot->childRecords[side];
+    int newCount = oldCount + evictedCount;
+    snapshot->childCount[side] = static_cast<short>(newCount);
+
+    // Original never frees oldRecords here -- reproduced as-is (see the analogous
+    // acknowledged leak elsewhere in this file).
+    MapOrderBattleSideChildRecord* newRecords = nullptr;
+    if (newCount > 0) {
+      newRecords = new MapOrderBattleSideChildRecord[newCount];
+      for (int i = 0; i < newCount; ++i) {
+        newRecords[i].nameBuffer[0] = 0;
+      }
+    }
+    snapshot->childRecords[side] = newRecords;
+    memcpy(newRecords, oldRecords, oldCount * sizeof(MapOrderBattleSideChildRecord));
+
+    if (evictedCount != 0) {
+      int recordIndex = oldCount;
+      for (int pass = 0; pass < evictedCount; ++pass) {
+        CIterator evictedIter(nation->militaryUnitList44);
+        for (TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(evictedIter.Reset());
+             evictedIter.More(); unit = static_cast<TMilitaryUnit*>(evictedIter.Advance())) {
+          if (unit->field_34 == static_cast<short>(0xffaa)) {
+            unit->field_34 = 0;
+            MapOrderBattleSideChildRecord& rec = newRecords[recordIndex];
+            ++recordIndex;
+            rec.resourceType = unit->orderType;
+            rec.stockOrRequired = static_cast<short>(0xffaa);
+            rec.nameBuffer[0] = 0;
+            CString unitName = unit->name24;
+            LPCSTR unitNameChars = static_cast<LPCSTR>(unitName);
+            for (int c = 0; c < 0x20; ++c) {
+              char ch = unitNameChars[c];
+              rec.nameBuffer[c] = ch;
+              if (ch == '\0') {
+                break;
+              }
+            }
+            // Sentinel matching RefreshMapOrderBattleSideSnapshot's "yvan"/navy marker
+            // (0x6e617679) -- this side stamps the army equivalent instead of the real
+            // evicted-unit pointer.
+            rec.childPtr = reinterpret_cast<void*>(0x61726d79);
+            rec.strengthBucket = static_cast<short>(unit->field_38 / 100);
+            unit->DetachUnitOrderFromOwnerAndReset();
+            unit->Free();
+          }
+        }
+      }
+    }
+  }
+
+  scratchList->RemoveAll();
+  scratchList->Free();
 }
