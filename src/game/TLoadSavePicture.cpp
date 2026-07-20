@@ -61,9 +61,7 @@ void TLoadSavePicture::HandleEvent(int commandId, TEventHandler* sourceHandler, 
         newSlotControl->QueryBounds(&newBounds);
         InvalidateCityDialogRectRegion(&newBounds, 1);
         selectedSlot92 = newSlot;
-        // The original then calls the currently-misnamed 1173-byte helper at 0x4047d7(newSlot)
-        // (symbols.csv's guessed name for it is stale/wrong, per Hard Rule 6) -- not yet
-        // decoded.
+        RefreshSlotPreviewFromSaveFile(newSlot);
       }
       // The original also handles the loadModeFlag90==0 case (constructs a new ~0xa0-byte
       // object via an unrecovered class before the same selectedSlot92=0xa1 tail) -- not
@@ -85,7 +83,7 @@ void TLoadSavePicture::HandleEvent(int commandId, TEventHandler* sourceHandler, 
         InvalidateCityDialogRectRegion(&oldBounds, 1);
       }
       selectedSlot92 = 0xa1;
-      // The original then calls the same misnamed 0x4047d7(0xa1) -- not yet decoded.
+      RefreshSlotPreviewFromSaveFile(0xa1);
     }
   } else if (commandId == 0xa && sourceHandler->controlTag == kControlTagOkay) {
     HandleSaveGameSlotSelectionAndPromptFlow();
@@ -203,6 +201,18 @@ void __cdecl BuildSavePathStringForMode(CString* out, int saveMode, char* label)
   *out += prefix;
   *out += slotText;
   *out += g_pszImpSaveExtension_0065DDD8;
+}
+
+// FUNCTION: IMPERIALISM 0x0056c740
+void TLoadSavePicture::RefreshSlotPreviewFromSaveFile(short slotMode) {
+  CString path;
+  BuildSavePathStringForMode(&path, slotMode, 0);
+  if (!TryGetFileMetadataForPath(&path)) {
+    return;
+  }
+  // The original then allocates a 0x1950-byte save-header buffer, reads it via a custom
+  // stream reader (0x5e9100/0x5e9440/0x5e9010), and rebuilds the 'map ' preview control
+  // (TakeSatellitePhoto-style repaint) and related slot fields from it -- not yet decoded.
 }
 
 namespace {

@@ -125,6 +125,11 @@ public:
   virtual undefined HandleSaveGameSlotSelectionAndPromptFlow();  // slot 0x73 0x56d2a0
   virtual undefined HandleTurnFlowStateTickOrPostTurnEvent5DC(); // slot 0x74 0x56d190
 
+  // 0x56c740, RET 4 (non-virtual). Builds the slot's save path (same recipe as
+  // BuildSavePathStringForMode) and, when the file exists, reloads its header into a
+  // 0x1950-byte buffer and rebuilds the 'map ' preview control from it.
+  void RefreshSlotPreviewFromSaveFile(short slotMode);
+
   // 0 = save picture, nonzero = load picture (the builder writes it, the prompt flow
   // 0x56d2a0 branches on it).
   unsigned char loadModeFlag90; // +0x90
