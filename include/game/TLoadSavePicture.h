@@ -130,8 +130,11 @@ public:
   unsigned char loadModeFlag90; // +0x90
   unsigned char pad91;
   short selectedSlot92; // +0x92 — currently selected save slot (-1 = none)
-  // +0x94..0xa8 — unrecovered tail (RTTI m_nObjectSize 0xa8).
-  unsigned char pad94[0xa8 - 0x94];
+  unsigned char pad94[0x9e - 0x94];
+  // Passed by address to TControl::SetTextStyleAndMaybeRefresh (byte offset 0x1b4, slot
+  // 0x6d) on the previously-selected slot control in HandleEvent's commandId==0xd branch;
+  // exactly fills the tail to ASSERT_SIZE's 0xa8 (0x9e + sizeof(TUiTextStyleDescriptor)).
+  TUiTextStyleDescriptor styleAt9e;
 
   TLoadSavePicture();
 };

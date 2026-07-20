@@ -36,10 +36,30 @@ void TLoadSavePicture::NoOpUiLifecycleHook(int arg) {
 
 // FUNCTION: IMPERIALISM 0x0056cd10
 void TLoadSavePicture::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
-  // The original also handles commandId==0xd (a slot-tab-index switch spanning
-  // selectedSlot92/loadModeFlag90, InvalidateCityDialogRectRegion, and further per-slot
-  // control refreshes) here -- not yet ported. The original never calls a base-class
-  // HandleEvent in any path, so none is modeled here either.
+  // The original never calls a base-class HandleEvent in any path, so none is modeled here
+  // either.
+  if (commandId == 0xd) {
+    short newSlot = static_cast<short>(sourceHandler->controlTag - 0x736c7430u /* 'slt0' */);
+    if (newSlot != selectedSlot92) {
+      if (loadModeFlag90 != 0) {
+        if (selectedSlot92 != -1 && selectedSlot92 != 0xa1) {
+          TControl* oldSlotControl = static_cast<TControl*>(
+              ResolveControlByTag(0x736c7430u + selectedSlot92));
+          oldSlotControl->AssertValid();
+          oldSlotControl->SetTextStyleAndMaybeRefresh(&styleAt9e, 0);
+          // The original then queries oldSlotControl's bounds, unions them with the new
+          // slot control's bounds via a GDI import, and invalidates the combined region --
+          // not yet decoded, left unmodeled.
+        }
+        // The original then resolves/refreshes the new slot control and updates
+        // selectedSlot92 -- not yet decoded.
+      }
+      // The original also handles the loadModeFlag90==0 case (a different control
+      // refresh path) -- not yet decoded.
+    }
+    // The original also handles re-clicking the already-selected slot (newSlot ==
+    // selectedSlot92) -- not yet decoded.
+  }
   if (commandId == 0xa && sourceHandler->controlTag == kControlTagOkay) {
     HandleSaveGameSlotSelectionAndPromptFlow();
   }
