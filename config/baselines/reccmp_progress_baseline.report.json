@@ -8051,7 +8051,7 @@
     },
     {
       "address": "0x4a2900",
-      "matching": 0.13374805598755832,
+      "matching": 0.13063763608087092,
       "name": "BuildArmyContextActionRecordsAndDispatchLabel",
       "type": 1
     },
@@ -11456,7 +11456,7 @@
     },
     {
       "address": "0x4c9150",
-      "matching": 0.005847953216374269,
+      "matching": 0.4590690208667737,
       "name": "TShipyardView::ApplyRectSlot110",
       "type": 1
     },
@@ -11600,7 +11600,7 @@
     },
     {
       "address": "0x4cbf70",
-      "matching": 0.009950248756218905,
+      "matching": 0.2701298701298701,
       "name": "TUniversityView::ApplyRectSlot110",
       "type": 1
     },
@@ -13399,7 +13399,7 @@
     },
     {
       "address": "0x4e06d0",
-      "matching": 0.7619047619047619,
+      "matching": 0.8095238095238095,
       "name": "TGreatPower::SumCommodityRecordAccumulatedValues",
       "type": 1
     },
@@ -15846,7 +15846,7 @@
     },
     {
       "address": "0x4fe390",
-      "matching": 0.015625,
+      "matching": 0.41295546558704455,
       "name": "TScoreGraph::ApplyRectSlot110",
       "type": 1
     },
@@ -16560,7 +16560,7 @@
     },
     {
       "address": "0x5060c0",
-      "matching": 0.2222222222222222,
+      "matching": 1.0,
       "name": "TIconBar::SetPictureResourceIdAndRefresh",
       "type": 1
     },
@@ -16578,7 +16578,7 @@
     },
     {
       "address": "0x506150",
-      "matching": 0.024691358024691357,
+      "matching": 0.5316455696202531,
       "name": "TIconBar::ApplyRectSlot110",
       "type": 1
     },
@@ -16638,7 +16638,7 @@
     },
     {
       "address": "0x506690",
-      "matching": 0.18181818181818182,
+      "matching": 1.0,
       "name": "TIconSlider::ApplyRectSlot110",
       "type": 1
     },
@@ -16838,7 +16838,7 @@
     },
     {
       "address": "0x508800",
-      "matching": 0.6461538461538462,
+      "matching": 0.7230769230769231,
       "name": "TLanguageMgr::BuildNewsTableDimensions",
       "type": 1
     },
@@ -17012,7 +17012,7 @@
     },
     {
       "address": "0x50bea0",
-      "matching": 0.21444797819173103,
+      "matching": 0.20990458882326216,
       "name": "TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets",
       "type": 1
     },
@@ -17674,7 +17674,7 @@
     },
     {
       "address": "0x515b10",
-      "matching": 0.3378995433789954,
+      "matching": 0.3167420814479638,
       "name": "TMapMgr::MarkSeedNeighborTilesUnavailableByCapabilityMaskProfileB",
       "type": 1
     },
@@ -18449,8 +18449,7 @@
     },
     {
       "address": "0x522c10",
-      "effective": true,
-      "matching": 0.9848484848484849,
+      "matching": 1.0,
       "name": "TMapDialog::DrawMapDialogWrappedTileConnectionMarker_00522c10",
       "type": 1
     },
@@ -18900,13 +18899,13 @@
     },
     {
       "address": "0x52cae0",
-      "matching": 0.2976,
+      "matching": 0.3054662379421222,
       "name": "TMapMaker::BuildOverlaySpanRecordsFromQuadBorderLinks",
       "type": 1
     },
     {
       "address": "0x52d030",
-      "matching": 1.0,
+      "matching": 0.7766990291262136,
       "name": "Seapoint::WrappedDeltaMetric",
       "type": 1
     },
@@ -18924,7 +18923,7 @@
     },
     {
       "address": "0x52d1f0",
-      "matching": 0.2784090909090909,
+      "matching": 0.2621082621082621,
       "name": "TMapMaker::ReindexContiguousCityRegionIds",
       "type": 1
     },
@@ -20852,7 +20851,7 @@
     },
     {
       "address": "0x53ceb0",
-      "matching": 0.4479166666666667,
+      "matching": 0.450261780104712,
       "name": "TArmyMission::ReturnZeroFloatSlot68",
       "type": 1
     },
@@ -21956,7 +21955,7 @@
     },
     {
       "address": "0x545940",
-      "matching": 0.41518578352180935,
+      "matching": 0.41389337641357027,
       "name": "TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine",
       "type": 1
     },
@@ -22520,7 +22519,7 @@
     },
     {
       "address": "0x5501b0",
-      "matching": 0.5327102803738317,
+      "matching": 0.5420560747663551,
       "name": "TShip::CalculateMissionOrderPriorityScore",
       "type": 1
     },
@@ -22953,13 +22952,13 @@
     },
     {
       "address": "0x553b10",
-      "matching": 0.41379310344827586,
+      "matching": 0.4827586206896552,
       "name": "TTaskForce::HasNoMapOrderEntryChildrenQueued",
       "type": 1
     },
     {
       "address": "0x553b50",
-      "matching": 0.5454545454545454,
+      "matching": 0.5818181818181818,
       "name": "TTaskForce::HasActiveMapOrderEntryChildren",
       "type": 1
     },
@@ -25704,7 +25703,7 @@
     },
     {
       "address": "0x572790",
-      "matching": 0.01680672268907563,
+      "matching": 0.5344827586206896,
       "name": "TTextPictureButton::ApplyRectSlot110",
       "type": 1
     },
@@ -26499,7 +26498,7 @@
     },
     {
       "address": "0x5798a0",
-      "matching": 0.5673076923076923,
+      "matching": 0.5865384615384616,
       "name": "TRadioTextCluster::AddItem",
       "type": 1
     },
@@ -32435,7 +32434,7 @@
     },
     {
       "address": "0x5ba0e0",
-      "matching": 1.0,
+      "matching": 0.8181818181818182,
       "name": "TTradeMgr::ComputeAverageProposalWeightDeltaAcrossCategoryRows",
       "type": 1
     },
@@ -32843,7 +32842,7 @@
     },
     {
       "address": "0x5bf930",
-      "matching": 0.7758478081058726,
+      "matching": 0.7543424317617866,
       "name": "TOfferDeskPicture::RefreshSelectedNationOrderCompatibilityInfo",
       "type": 1
     },

@@ -6,6 +6,7 @@
 #include "game/navy_order.h"
 #include "game/quickdraw_regions.h"
 #include "game/quickdraw_rendering.h"
+#include "game/ui_text_label_helpers_decls.h"
 // SYNTHETIC: IMPERIALISM 0x004c8200
 // TShipyardView::CreateObject
 
