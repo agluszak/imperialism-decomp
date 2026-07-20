@@ -87,6 +87,9 @@ public:
   // Checks for a pending "save/cli_*.imp" client save file (resumable multiplayer
   // session). `this` is unused; callers dispatch through g_pUiViewManager. 0x5e02f0.
   unsigned char HasPendingClientSaveFile();
+  // Deletes every "save/cli_*.imp" legacy client save file, returning the count
+  // removed. `this` is unused; callers dispatch through g_pUiViewManager. 0x5e0340.
+  int DeleteLegacyCliSaveImpFiles();
   // Loads the module's RT_VERSION resource and formats "(v. major.minor[.build[.revision]])"
   // into *out from its VS_FIXEDFILEINFO dwFileVersionMS/dwFileVersionLS fields (raw offsets
   // into the loaded resource block, matching the original's direct FindResource/

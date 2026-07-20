@@ -95,6 +95,17 @@ TWNetSessionManager::OpenRuntimeSelectionSourceWithOptionalSeed(const GUID* sess
   return static_cast<unsigned char>(lastErrorCode0c >= 0);
 }
 
+// FUNCTION: IMPERIALISM 0x00480030
+unsigned char TWNetSessionManager::OpenRuntimeSelectionSourceFromCurrentContext() {
+  // TODO(class-recovery): the retail body reopens the session with no seed, rebuilds a
+  // DPSESSIONDESC2-shaped record inline in pad10 (dwSize=0x50, a second dword=0x40 --
+  // pad10 wants promoting to a typed struct once this is modeled), and dispatches two
+  // more COM-interface vtable calls through enumCallbackTable00/directPlayLobby08 whose
+  // exact interface shape isn't recovered yet. Ported as an honest stub rather than
+  // guessed, matching OpenRuntimeSelectionSourceWithUserChoice's precedent below.
+  return static_cast<unsigned char>(OpenRuntimeSelectionSourceWithOptionalSeed(nullptr, 0));
+}
+
 // FUNCTION: IMPERIALISM 0x00480150
 unsigned char TWNetSessionManager::OpenRuntimeSelectionSourceWithUserChoice() {
   // TODO(class-recovery): the retail body drives enumCallbackTable00 (see its

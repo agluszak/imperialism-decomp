@@ -83,7 +83,7 @@ public:
   TMultiplayerSlotHandle nationStatusControlSlots[4]; // +0x20
   // +0x40 — the active lobby dialog view when one is open; the code-9 receive path
   // checks IsKindOf(RUNTIME_CLASS(TLoungeDialog)) before using it as the lounge.
-  TView* lobbyDialogView40;               // +0x40
+  TView* lobbyDialogView40; // +0x40
   // +0x44 — child handler for queue routing. Opaque: TLoungeDialog::NoOpUiLifecycleHook
   // passes `this` (a TView-derived dialog) as the sole non-zero writer seen so far.
   void* diplomacyQueueContext;
@@ -190,7 +190,13 @@ public:
   unsigned char ResetGameFlowStateAndPostTurnEvent5DC(); // 0x544f30
   // Forwards to TNetMgr's DirectPlay session-open path with this manager's
   // gameNameString as the copy-out buffer.
-  void ValidateGameFlowNameAndSelectionContext(int protocolValue, int flag); // 0x544fc0
+  unsigned char ValidateGameFlowNameAndSelectionContext(int protocolValue,
+                                                        int flag); // 0x544fc0
+  // Snapshots gameNameString into a temp, saves it under the "GameName" setting key,
+  // stamps queueSyncDword with the current time (retried until nonzero), opens the
+  // DirectPlay session via TNetMgr with playerNameString as the local player's short
+  // name, and on success clears the lobby dialog view and marks the sim mode active.
+  unsigned char ValidateAndPrepareGameFlowNameForDispatch(); // 0x544ff0
   // Stashes the lobby dialog `provider`, sets its 'name' field's caption to the
   // normalized local player name, and clears its 'pass' field's caption. Returns the
   // DirectPlay session finalize stub's result (always true).

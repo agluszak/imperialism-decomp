@@ -272,6 +272,35 @@ unsigned char TNetMgr::OpenRuntimeSelectionSourceByIndexAndCopyPath(int index, i
   return result;
 }
 
+// FUNCTION: IMPERIALISM 0x005e3ad0
+unsigned char TNetMgr::OpenRuntimeSelectionSourceAndApplyActiveNationState(
+    const char* seedPath, const char* localPlayerName, const char* emptyOrSeed) {
+  strncpy(g_JoinGameSeedBuffer_006a5fc8, emptyOrSeed, 0x20);
+  strncpy(g_RuntimeSelectionSourceSeedBuffer_006a5fe8, seedPath, 0x20);
+
+  unsigned char opened =
+      g_NetworkSessionManager006a5f60.OpenRuntimeSelectionSourceFromCurrentContext();
+  unsigned char result = 0;
+  if (opened) {
+    CString localName(localPlayerName);
+    DPID nationId;
+    unsigned char created = g_NetworkSessionManager006a5f60.CreatePlayerAndStoreResult(
+        &nationId, localName.GetBuffer(1));
+    localName.ReleaseBuffer(-1);
+    if (created) {
+      g_NetworkDefaultNationId006a5fc0 = nationId;
+      g_NetworkBroadcastNationId006a5fc4 = nationId;
+      result = g_NetworkSessionManager006a5f60.SetLocalPlayerDataAndStoreResult(
+          &g_JoinGamePlayerDataTag_006a600c, 4);
+      if (result) {
+        return result;
+      }
+    }
+  }
+  HandleError(g_NetworkSessionManager006a5f60.lastErrorCode0c);
+  return result;
+}
+
 // Real IDirectPlay2::EnumPlayers callback for OpenJoinGameRuntimeSelectionAndStartSession:
 // the retail body resolves each enumerated player's role via an unmodeled helper and,
 // for the host player, records its DPID; otherwise poses the localized error dialog.
