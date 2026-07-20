@@ -1,7 +1,5 @@
 #include "game/bitmap_descriptor_helpers.h"
 
-#include <string.h>
-
 #include "game/CDib.h"
 #include "game/TAnimation.h"
 #include "game/TDisplayMgr.h"
@@ -55,72 +53,6 @@ static void ResetBitmapSurfaceContextDescriptor(TBitmapSurfaceContextDescriptor*
   descriptor->debugSourcePath = kQuickDrawDebugSourcePath;
 }
 
-static TBitmapSurfaceNode* InitializeBitmapSurfaceNode(int width, int height, int bitDepth) {
-  TBitmapSurfaceNode* node =
-      static_cast<TBitmapSurfaceNode*>(::operator new(sizeof(TBitmapSurfaceNode)));
-  memset(node, 0, sizeof(TBitmapSurfaceNode));
-
-  node->dib = new CDib(width, height, bitDepth);
-  if (node->dib == nullptr) {
-    ::operator delete(node);
-    return nullptr;
-  }
-
-  if (g_pModuleLibraryCacheState != nullptr) {
-    CDib* paletteDib = g_pModuleLibraryCacheState->LoadBmpResourceByIdCached(0x3b6);
-    if (paletteDib != nullptr && paletteDib->m_pInfoHeader != nullptr &&
-        node->dib->m_pInfoHeader != nullptr &&
-        paletteDib->m_paletteCount == node->dib->m_paletteCount) {
-      memcpy(node->dib->m_colorTablePixels, paletteDib->m_colorTablePixels,
-             node->dib->m_paletteCount * sizeof(RGBQUAD));
-    }
-  }
-
-  node->dib->BuildPaletteFromRgbQuadBuffer();
-  node->dib->EnsureDibSectionCreated(nullptr);
-
-  node->pixelBits = node->dib->m_dibBits;
-  if (node->dib->m_pInfoHeader != nullptr) {
-    const int rowBits = node->dib->m_pInfoHeader->bmiHeader.biWidth *
-                        node->dib->m_pInfoHeader->bmiHeader.biBitCount;
-    node->stride = static_cast<short>(((rowBits + 31) / 32) * 4);
-    node->pixelWidth10 = node->dib->m_pInfoHeader->bmiHeader.biWidth;
-    node->pixelHeight14 = abs(node->dib->m_pInfoHeader->bmiHeader.biHeight);
-  } else {
-    node->pixelWidth10 = width;
-    node->pixelHeight14 = height;
-  }
-  node->requestedHeight18 = height;
-  return node;
-}
-
-static bool
-InitializeBitmapDescriptorNodeFromResourceSurfaceImpl(TBitmapSurfaceContextDescriptor* descriptor,
-                                                      int width, int height, int bitDepth) {
-  TBitmapSurfaceNode** surfaceNodeSlot =
-      static_cast<TBitmapSurfaceNode**>(::operator new(sizeof(TBitmapSurfaceNode*)));
-  *surfaceNodeSlot = nullptr;
-  descriptor->SetSurfaceNodeSlot(surfaceNodeSlot);
-
-  TBitmapSurfaceNode* node = InitializeBitmapSurfaceNode(width, height, bitDepth);
-  *surfaceNodeSlot = node;
-  if (node == nullptr || node->pixelBits == nullptr) {
-    return false;
-  }
-
-  // Original (0x495eb0): +0x4 = dib bits pointer, +0x8 = (biWidth + 3) & ~3 as a
-  // 16-bit stride, clip rect = the dib's width/height, +0x20 = the CDib itself.
-  descriptor->blitSurface.pixelBits = node->dib->m_dibBits;
-  descriptor->blitSurface.stride =
-      static_cast<short>((node->dib->m_pInfoHeader->bmiHeader.biWidth + 3) & ~3);
-  descriptor->clipRect.left = 0;
-  descriptor->clipRect.top = 0;
-  descriptor->clipRect.right = node->pixelWidth10;
-  descriptor->clipRect.bottom = node->pixelHeight14;
-  descriptor->surfaceDib = node->dib;
-  return true;
-}
-
 } // namespace
 
 // FUNCTION: IMPERIALISM 0x00495c40
@@ -141,18 +73,27 @@ void BlitBitmapResourceLoaderToActiveDc(TBitmapResourceLoader** handle, RECT* bo
   StretchDibitsFromCdibToDc(loader->bitmapResource, dcTarget, bounds->left, bounds->top);
 }
 
-// MISATTRIBUTION (7.5%, unported): 0x00495d00 is NOT this free-function initializer. The
-// raw listing is a __thiscall method (MOV ESI,ECX) with an EH prologue that `new`s a
-// 0x38-byte object (PUSH 0x38; CALL operator new 0x606f73), initializes it from its stack
-// args and returns it -- 212 bytes, no callers found. The `TBitmapSurfaceNode* node` first
-// param is bogus (it is really ECX=this). Needs receiver-class + 0x38-object recovery and a
-// full port; kept as a placeholder forwarder so the address stays owned meanwhile.
+// Constructor of the QuickDraw bitmap-surface node: `new`s a backing CDib(width, height,
+// bitDepth), seeds its color table from the module cache's shared default LOGPALETTE, builds
+// the palette + DIB section, and caches the pixel bits / dword-aligned stride / dimensions.
+// Real __thiscall ctor (returns `this`); reached as `new TBitmapSurfaceNode(...)` from
+// TBitmapSurfaceContextDescriptor::InitializeSurfaceNode (0x495eb0). The +0x18 field stores
+// the low 16 bits of `bitDepth` (a 16-bit write), not a height.
 // FUNCTION: IMPERIALISM 0x00495d00
-TBitmapSurfaceNode* InitializeBitmapSurfaceFromResourceDescriptor(TBitmapSurfaceNode* node,
-                                                                  int width, int height,
-                                                                  int bitDepth) {
-  (void)node;
-  return InitializeBitmapSurfaceNode(width, height, bitDepth);
+TBitmapSurfaceNode::TBitmapSurfaceNode(int width, int height, int bitDepth) {
+  dib = new CDib(width, height, bitDepth);
+  dib->CopyRgbQuadTableFrom(g_pModuleLibraryCacheState->ResolveDefaultLogPalette());
+  dib->BuildPaletteFromRgbQuadBuffer();
+  dib->EnsureDibSectionCreated(nullptr);
+  pixelBits = dib->m_dibBits;
+  stride = static_cast<short>((dib->m_pInfoHeader->bmiHeader.biWidth + 3) & ~3);
+  CPoint dims;
+  CPoint* d = dib->CopyBitmapDimensionsToPoint(&dims);
+  field08 = 0;
+  bitDepth18 = static_cast<short>(bitDepth);
+  field0c = 0;
+  pixelWidth10 = d->x;
+  pixelHeight14 = d->y;
 }
 
 // FUNCTION: IMPERIALISM 0x00495e20
@@ -162,7 +103,25 @@ void TBitmapSurfaceContextDescriptor::Reset() {
 
 // FUNCTION: IMPERIALISM 0x00495eb0
 bool TBitmapSurfaceContextDescriptor::InitializeSurfaceNode(int width, int height, int bitDepth) {
-  return InitializeBitmapDescriptorNodeFromResourceSurfaceImpl(this, width, height, bitDepth);
+  SetSurfaceNodeSlot(
+      static_cast<TBitmapSurfaceNode**>(::operator new(sizeof(TBitmapSurfaceNode*))));
+  *GetSurfaceNodeSlot() = new TBitmapSurfaceNode(width, height, bitDepth);
+
+  // Original (0x495eb0): +0x4 = dib bits pointer, +0x8 = (biWidth + 3) & ~3 as a 16-bit
+  // stride, clip rect = the CDib's own width/height (re-read through
+  // CopyBitmapDimensionsToPoint, not the cached node fields), +0x20 = the CDib itself. The
+  // node is re-read through the slot each time (no cached local), matching the original.
+  blitSurface.pixelBits = (*GetSurfaceNodeSlot())->dib->m_dibBits;
+  blitSurface.stride =
+      static_cast<short>(((*GetSurfaceNodeSlot())->dib->m_pInfoHeader->bmiHeader.biWidth + 3) & ~3);
+  CPoint dims;
+  CPoint* d = (*GetSurfaceNodeSlot())->dib->CopyBitmapDimensionsToPoint(&dims);
+  clipRect.left = 0;
+  clipRect.top = 0;
+  clipRect.right = d->x;
+  clipRect.bottom = d->y;
+  surfaceDib = (*GetSurfaceNodeSlot())->dib;
+  return *GetSurfaceNodeSlot() != nullptr;
 }
 
 // FUNCTION: IMPERIALISM 0x00495fd0

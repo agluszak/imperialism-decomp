@@ -45,18 +45,6 @@ TModuleLibraryCacheTableStateB::~TModuleLibraryCacheTableStateB() {
     m_primaryModule = NULL;
   }
 }
-
-// Compiler-emitted destructors for the two embedded CMap<> members above (m_tableA,
-// m_tableB); MSVC500 instantiates and calls these automatically as part of
-// ~TModuleLibraryCacheTableStateB(), so there is no source body to write (mfc-collections
-// skill: "let MSVC instantiate them from the real member type"). bd 1uj.44 (junk-named
-// non-RTTI state classes): these previously carried invented vtable-address-suffixed
-// placeholder class names (TModuleLibraryCacheTableStateA_0064BA68 /
-// TModuleLibraryCacheTableStateB_0064BA80) with hand-written stub bodies.
-// TEMPLATE: IMPERIALISM 0x0049ae30
-// ??1?$CMap@GGPAUCacheRecord@@PAU1@@@UAE@XZ
-
-// TEMPLATE: IMPERIALISM 0x0049b270
 // ??1?$CMap@PAXPAXPAUCacheRecord@@PAU1@@@UAE@XZ
 
 // FUNCTION: IMPERIALISM 0x004992a0
@@ -114,6 +102,11 @@ void TModuleLibraryCacheTableStateB::LoadUiStringResourceByGroupAndIndex(CString
     CString empty(g_szEmptyString);
     *out = empty;
   }
+}
+
+// FUNCTION: IMPERIALISM 0x004995a0
+LOGPALETTE* TModuleLibraryCacheTableStateB::ResolveDefaultLogPalette() {
+  return EnsureDefaultDibPalette()->m_pLogPalette;
 }
 
 // FUNCTION: IMPERIALISM 0x004995c0
@@ -296,3 +289,15 @@ void TModuleLibraryCacheTableStateB::ReleaseRecordByHandle(void* handle) {
     delete record;
   }
 }
+
+// Compiler-emitted destructors for the two embedded CMap<> members above (m_tableA,
+// m_tableB); MSVC500 instantiates and calls these automatically as part of
+// ~TModuleLibraryCacheTableStateB(), so there is no source body to write (mfc-collections
+// skill: "let MSVC instantiate them from the real member type"). bd 1uj.44 (junk-named
+// non-RTTI state classes): these previously carried invented vtable-address-suffixed
+// placeholder class names (TModuleLibraryCacheTableStateA_0064BA68 /
+// TModuleLibraryCacheTableStateB_0064BA80) with hand-written stub bodies.
+// TEMPLATE: IMPERIALISM 0x0049ae30
+// ??1?$CMap@GGPAUCacheRecord@@PAU1@@@UAE@XZ
+
+// TEMPLATE: IMPERIALISM 0x0049b270

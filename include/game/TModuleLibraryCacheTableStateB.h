@@ -70,6 +70,13 @@ public:
   // Lazily build and return the shared palette from backdrop bitmap 0x3b6. 0x004995c0
   CDibPal* EnsureDefaultDibPalette();
 
+  // Resolve the shared default LOGPALETTE build buffer:
+  // EnsureDefaultDibPalette()->m_pLogPalette. Real __thiscall at 0x004995a0 (Ghidra's
+  // "TMacViewMgr::WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At004995a0"; the
+  // ECX receiver is really this cache, not a TMacViewMgr). Used when seeding a new CDib's
+  // color table.
+  LOGPALETTE* ResolveDefaultLogPalette(); // 0x004995a0
+
   // Build an indexed 8-bit CDib fallback and cache it by resource id. 0x00499b40
   CDib* BuildIndexedBmpResourceById(short bmpId, int width, int height, int patternMode);
 
