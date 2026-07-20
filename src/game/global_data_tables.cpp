@@ -467,6 +467,9 @@ TQuickDrawSurfaceContext g_defaultQuickDrawSurfaceSentinel;
 // SetActiveQuickDrawSurfaceContext and would otherwise restore a null context.
 // GLOBAL: IMPERIALISM 0x006950f8
 TQuickDrawSurfaceContext* g_pActiveQuickDrawSurfaceContextHead = &g_defaultQuickDrawSurfaceSentinel;
+// Zero in the raw .data image; the CRT static-init ctor 0x494040
+// (TQuickDrawClipStateInitializer in quickdraw_rendering.cpp) seeds it with
+// &g_defaultQuickDrawSurfaceSentinel before WinMain.
 // GLOBAL: IMPERIALISM 0x006a1d60
 TQuickDrawSurfaceContext* g_pActiveQuickDrawSurfaceContext = 0;
 // GLOBAL: IMPERIALISM 0x006a30a8

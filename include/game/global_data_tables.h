@@ -284,9 +284,9 @@ extern short g_Reset_Quick_Draw_State_006A1D10;
 extern int g_nQuickDrawStrokeStylePrimary;
 extern int g_nQuickDrawStrokeStyleSecondary;
 extern int g_bQuickDrawStrokePairDirty;
-// The cached QuickDraw clip region — a heap CRgn built by the static-init ctor at
-// 0x494040 (unported; see quickdraw_rendering.cpp's lazy stand-in). GetClip seeds
-// from it; SetClip (0x495a30) copies a RgnHandle's region into it.
+// The cached QuickDraw clip region — a heap CRgn built by the CRT static-init ctor
+// at 0x494040 (ported in quickdraw_rendering.cpp as TQuickDrawClipStateInitializer).
+// GetClip seeds from it; SetClip (0x495a30) copies a RgnHandle's region into it.
 extern CRgn* g_pGlobalClipRegionHandleObject;
 extern int g_Quick_Draw_Color_State_006950FC;
 extern CFont* g_pQuickDrawCachedUiFont;

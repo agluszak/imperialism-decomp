@@ -46,6 +46,12 @@
 #include "game/TCivToolbar.h"
 #include "game/TColorKeyPicture.h"
 #include "game/TCombatReportView.h"
+#include "game/TCzechBox.h"
+#include "game/TGamePreferencesPicture.h"
+#include "game/TLoadSavePicture.h"
+#include "game/TMadnessButton.h"
+#include "game/TNoHiliteText.h"
+#include "game/TTwoPicSlider.h"
 #include "game/TEngineerDialog.h"
 #include "game/TGarrisonView.h"
 #include "game/TMapDialog.h"
@@ -461,6 +467,356 @@ TView* __cdecl BuildTurnEventDialogUiByCode(CWnd* pHostWindow, int nEventCode) {
     PopUiResourcePoolNode(kControlTagCanc);
     PopUiResourcePoolNode(kControlTagGold);
   } break;
+
+  case 0x5de: {
+    // Load/Save-game screen (posted by TGameSetupPicture::HandleEvent when the 'load'
+    // menu button is clicked; g_nSaveFormatVersion is set to -2 first). A 640x480
+    // 'view'/'base' TView holds the 'pict'/'main' TLoadSavePicture backdrop, on which
+    // sit eight save-slot labels ('slt0'-'slt7' TNoHiliteText, two columns of four),
+    // a cancel click zone ('cncl' TClickZone), a 'plat' TPicture plate parenting the
+    // OK button ('okay' TUpDownPictureButton), the map preview ('map ' TMapPreviewView)
+    // and an info label ('info' TStaticText), an 'otto' TControl and the cursor info
+    // text ('curs' TInfoBarText). Shares the 0x1036 teardown/return tail (0x43bc09):
+    // pop 'curs'/'main'/'base' and return g_pUiResourceHead. Slots are emitted in the
+    // original's body order (slt0,1,3,2,7,6,5,4), not numeric order.
+    TView* base = new TView();
+    RegisterUiResourceEntry(0x76696577 /* 'view' */, kControlTagBase, base, 0, 0, 0x280, 0x1e0, 0,
+                            1, 0, 0);
+    SetUiResourceStateFlags(1, 1);
+    ClearUiResourceContext();
+
+    TLoadSavePicture* backdrop = new TLoadSavePicture();
+    RegisterUiResourceEntry(kControlTagPict, kControlTagMain, backdrop, 0, 0, 0x280, 0x1e0, 0, 1,
+                            kControlTagBase, 0);
+    SetUiResourceStateFlags(1, 1);
+    SetUiResourceLayoutValues(0xa, 0, 0, 0, 0);
+    SetUiResourceContextPictureId(0x11a8);
+    ClearUiResourceContext();
+
+    TNoHiliteText* slot0 = new TNoHiliteText();
+    RegisterUiResourceEntry(kControlTagStat, 0x736c7430 /* 'slt0' */, slot0, 0x48, 0x122, 0xe1,
+                            0x15, 1, 1, kControlTagMain, 0);
+    SetUiResourceStateFlags(1, 1);
+    SetUiResourceLayoutValues(0xd, 0, 0, 0, 0);
+    BindUiResourceTextAndStyle(0x3e9, 0x10, g_szUiPlaceholderStaticText_00694354, 0, 0, 0, 0, 0);
+    ClearUiResourceContext();
+    PopUiResourcePoolNode(0x736c7430 /* 'slt0' */);
+
+    TNoHiliteText* slot1 = new TNoHiliteText();
+    RegisterUiResourceEntry(kControlTagStat, 0x736c7431 /* 'slt1' */, slot1, 0x48, 0x146, 0xe1,
+                            0x15, 1, 1, kControlTagMain, 0);
+    SetUiResourceStateFlags(1, 1);
+    SetUiResourceLayoutValues(0xd, 0, 0, 0, 0);
+    BindUiResourceTextAndStyle(0x3e9, 0x10, g_szUiPlaceholderStaticText_00694354, 0, 0, 0, 0, 0);
+    ClearUiResourceContext();
+    PopUiResourcePoolNode(0x736c7431 /* 'slt1' */);
+
+    TNoHiliteText* slot3 = new TNoHiliteText();
+    RegisterUiResourceEntry(kControlTagStat, 0x736c7433 /* 'slt3' */, slot3, 0x49, 0x18a, 0xe1,
+                            0x15, 1, 1, kControlTagMain, 0);
+    SetUiResourceStateFlags(1, 1);
+    SetUiResourceLayoutValues(0xd, 0, 0, 0, 0);
+    BindUiResourceTextAndStyle(0x3e9, 0x10, g_szUiPlaceholderStaticText_00694354, 0, 0, 0, 0, 0);
+    ClearUiResourceContext();
+    PopUiResourcePoolNode(0x736c7433 /* 'slt3' */);
+
+    TNoHiliteText* slot2 = new TNoHiliteText();
+    RegisterUiResourceEntry(kControlTagStat, 0x736c7432 /* 'slt2' */, slot2, 0x49, 0x168, 0xe1,
+                            0x15, 1, 1, kControlTagMain, 0);
+    SetUiResourceStateFlags(1, 1);
+    SetUiResourceLayoutValues(0xd, 0, 0, 0, 0);
+    BindUiResourceTextAndStyle(0x3e9, 0x10, g_szUiPlaceholderStaticText_00694354, 0, 0, 0, 0, 0);
+    ClearUiResourceContext();
+    PopUiResourcePoolNode(0x736c7432 /* 'slt2' */);
+
+    TNoHiliteText* slot7 = new TNoHiliteText();
+    RegisterUiResourceEntry(kControlTagStat, 0x736c7437 /* 'slt7' */, slot7, 0x15a, 0x18a, 0xe1,
+                            0x15, 1, 1, kControlTagMain, 0);
+    SetUiResourceStateFlags(1, 1);
+    SetUiResourceLayoutValues(0xd, 0, 0, 0, 0);
+    BindUiResourceTextAndStyle(0x3e9, 0x10, g_szUiPlaceholderStaticText_00694354, 0, 0, 0, 0, 0);
+    ClearUiResourceContext();
+    PopUiResourcePoolNode(0x736c7437 /* 'slt7' */);
+
+    TNoHiliteText* slot6 = new TNoHiliteText();
+    RegisterUiResourceEntry(kControlTagStat, 0x736c7436 /* 'slt6' */, slot6, 0x15a, 0x168, 0xe1,
+                            0x15, 1, 1, kControlTagMain, 0);
+    SetUiResourceStateFlags(1, 1);
+    SetUiResourceLayoutValues(0xd, 0, 0, 0, 0);
+    BindUiResourceTextAndStyle(0x3e9, 0x10, g_szUiPlaceholderStaticText_00694354, 0, 0, 0, 0, 0);
+    ClearUiResourceContext();
+    PopUiResourcePoolNode(0x736c7436 /* 'slt6' */);
+
+    TNoHiliteText* slot5 = new TNoHiliteText();
+    RegisterUiResourceEntry(kControlTagStat, 0x736c7435 /* 'slt5' */, slot5, 0x159, 0x146, 0xe1,
+                            0x15, 1, 1, kControlTagMain, 0);
+    SetUiResourceStateFlags(1, 1);
+    SetUiResourceLayoutValues(0xd, 0, 0, 0, 0);
+    BindUiResourceTextAndStyle(0x3e9, 0x10, g_szUiPlaceholderStaticText_00694354, 0, 0, 0, 0, 0);
+    ClearUiResourceContext();
+    PopUiResourcePoolNode(0x736c7435 /* 'slt5' */);
+
+    TNoHiliteText* slot4 = new TNoHiliteText();
+    RegisterUiResourceEntry(kControlTagStat, 0x736c7434 /* 'slt4' */, slot4, 0x159, 0x122, 0xe1,
+                            0x15, 1, 1, kControlTagMain, 0);
+    SetUiResourceStateFlags(1, 1);
+    SetUiResourceLayoutValues(0xd, 0, 0, 0, 0);
+    BindUiResourceTextAndStyle(0x3e9, 0x10, g_szUiPlaceholderStaticText_00694354, 0, 0, 0, 0, 0);
+    ClearUiResourceContext();
+    PopUiResourcePoolNode(0x736c7434 /* 'slt4' */);
+
+    TClickZone* cancelZone = new TClickZone();
+    RegisterUiResourceEntry(kControlTagCntl, 0x636e636c /* 'cncl' */, cancelZone, 2, 0xdd, 0x43,
+                            0xfc, 1, 0, kControlTagMain, 0);
+    SetUiResourceStateFlags(1, 1);
+    SetUiResourceLayoutValues(0x14, 0, 0, 0, 0);
+    ClearUiResourceContext();
+    PopUiResourcePoolNode(0x636e636c /* 'cncl' */);
+
+    TPicture* plate = new TPicture();
+    RegisterUiResourceEntry(kControlTagPict, 0x706c6174 /* 'plat' */, plate, 0x122, 1, 0x15e, 0xff,
+                            0, 0, kControlTagMain, 0);
+    SetUiResourceStateFlags(1, 1);
+    SetUiResourceLayoutValues(0xa, 0, 0, 0, 0);
+    SetUiResourceContextPictureId(0x11a9);
+    ClearUiResourceContext();
+
+    TUpDownPictureButton* okayButton = new TUpDownPictureButton();
+    RegisterUiResourceEntry(kControlTagPict, kControlTagOkay, okayButton, 0xe9, 0xcd, 0x60, 0x1e, 1,
+                            1, 0x706c6174 /* 'plat' */, 0);
+    SetUiResourceStateFlags(1, 1);
+    SetUiResourceLayoutValues(0xa, 0, 0, 0, 0);
+    SetUiResourceContextPictureId(0x11aa);
+    ClearUiResourceContext();
+    PopUiResourcePoolNode(kControlTagOkay);
+
+    TMapPreviewView* mapPreview = new TMapPreviewView();
+    RegisterUiResourceEntry(0x76696577 /* 'view' */, kControlTagMapP, mapPreview, 0xc, 0xd, 0x144,
+                            0xb4, 0, 1, 0x706c6174 /* 'plat' */, 0);
+    SetUiResourceStateFlags(1, 1);
+    ClearUiResourceContext();
+    PopUiResourcePoolNode(kControlTagMapP);
+
+    TStaticText* infoText = new TStaticText();
+    RegisterUiResourceEntry(kControlTagStat, kControlTagInfo, infoText, 0x14, 0xc5, 0xcd, 0x2b, 0,
+                            1, 0x706c6174 /* 'plat' */, 0);
+    SetUiResourceStateFlags(1, 1);
+    SetUiResourceLayoutValues(0xd, 0, 0, 0, 0);
+    BindUiResourceTextAndStyle(0x3e9, 0x10, g_szUiPlaceholderStaticText_00694354, 0, 0, 0, 0, 0);
+    ClearUiResourceContext();
+    PopUiResourcePoolNode(kControlTagInfo);
+    PopUiResourcePoolNode(0x706c6174 /* 'plat' */);
+
+    TControl* ottoControl = new TControl();
+    RegisterUiResourceEntry(kControlTagCntl, 0x6f74746f /* 'otto' */, ottoControl, 0x47, 0x50, 0xbc,
+                            0x31, 1, 0, kControlTagMain, 0);
+    SetUiResourceStateFlags(1, 1);
+    SetUiResourceLayoutValues(0x14, 0, 0, 0, 0);
+    ClearUiResourceContext();
+    PopUiResourcePoolNode(0x6f74746f /* 'otto' */);
+
+    TInfoBarText* cursorText = new TInfoBarText();
+    RegisterUiResourceEntry(kControlTagTevw, kControlTagCurs, cursorText, 0x31, 0x13, 0xc9, 0x1e, 0,
+                            1, kControlTagMain, 0);
+    SetUiResourceStateFlags(1, 0);
+    ClearUiResourceContext();
+    PopUiResourcePoolNode(kControlTagCurs);
+    PopUiResourcePoolNode(kControlTagMain);
+    PopUiResourcePoolNode(kControlTagBase);
+    if (g_pUiResourceHead != 0) {
+      g_pUiResourceHead->PropagateUiResourceContextRecursive(pHostWindow);
+    }
+    return g_pUiResourceHead;
+  }
+
+  case 0x1036: {
+    // Preferences screen (posted by TGameSetupPicture::HandleEvent when the 'pref'
+    // menu button is clicked). A 640x480 'view'/'base' TView holds the 'pict'/'main'
+    // TGamePreferencesPicture backdrop, on which sit: two AI/watch check boxes
+    // ('optc'/'optd' TCzechBox), the flag-madness toggle ('opte' TMadnessButton),
+    // the sound/music volume sliders ('soun'/'musi' TTwoPicSlider), a help
+    // question-mark button ('quer' TPictureButton in the 'tbr2' TToolBarCluster),
+    // five caption labels ('txta'-'txte' TDeluxeText), an auto-save yes/no radio
+    // pair ('yess'/'nooo' TRadioText in the 'opca' TRadioTextCluster) with its
+    // caption ('tpca' TDeluxeText), the OK button ('okay' TPictureButton in the
+    // 'tool' TToolBarCluster) and a cursor-tracking info text ('curs' TInfoBarText).
+    // Unlike the 'wind'-rooted cases this one has its own teardown/return tail
+    // (original 0x43bc09): it pops 'curs'/'main'/'base' and returns g_pUiResourceHead.
+    TView* base = new TView();
+    RegisterUiResourceEntry(0x76696577 /* 'view' */, kControlTagBase, base, 0, 0, 0x280, 0x1e0, 0,
+                            1, 0, 0);
+    SetUiResourceStateFlags(1, 1);
+    ClearUiResourceContext();
+
+    TGamePreferencesPicture* backdrop = new TGamePreferencesPicture();
+    RegisterUiResourceEntry(kControlTagPict, kControlTagMain, backdrop, 0, 0, 0x280, 0x1e0, 0, 1,
+                            kControlTagBase, 0);
+    SetUiResourceStateFlags(1, 1);
+    SetUiResourceLayoutValues(0xa, 0, 0, 0, 0);
+    SetUiResourceContextPictureId(0x1035);
+    ClearUiResourceContext();
+
+    TCzechBox* watchAiCheck = new TCzechBox();
+    RegisterUiResourceEntry(kControlTagPict, 0x6f707463 /* 'optc' */, watchAiCheck, 0x36, 0x127,
+                            0x66, 0x5b, 1, 1, kControlTagMain, 0);
+    SetUiResourceStateFlags(1, 1);
+    SetUiResourceLayoutValues(0xa, 0, 0, 0, 0);
+    SetUiResourceContextPictureId(0x103a);
+    ClearUiResourceContext();
+    PopUiResourcePoolNode(0x6f707463 /* 'optc' */);
+
+    TCzechBox* autoResolveCheck = new TCzechBox();
+    RegisterUiResourceEntry(kControlTagPict, 0x6f707464 /* 'optd' */, autoResolveCheck, 0xc2, 0x127,
+                            0x66, 0x5b, 1, 1, kControlTagMain, 0);
+    SetUiResourceStateFlags(1, 1);
+    SetUiResourceLayoutValues(0xa, 0, 0, 0, 0);
+    SetUiResourceContextPictureId(0x103c);
+    ClearUiResourceContext();
+    PopUiResourcePoolNode(0x6f707464 /* 'optd' */);
+
+    TMadnessButton* madnessToggle = new TMadnessButton();
+    RegisterUiResourceEntry(kControlTagPict, 0x6f707465 /* 'opte' */, madnessToggle, 0x186, 0x9c,
+                            0xa0, 0xa0, 1, 1, kControlTagMain, 0);
+    SetUiResourceStateFlags(1, 1);
+    SetUiResourceLayoutValues(0xa, 0, 0, 0, 0);
+    SetUiResourceContextPictureId(0x103e);
+    ClearUiResourceContext();
+    PopUiResourcePoolNode(0x6f707465 /* 'opte' */);
+
+    TTwoPicSlider* soundSlider = new TTwoPicSlider();
+    RegisterUiResourceEntry(kControlTagCntl, 0x736f756e /* 'soun' */, soundSlider, 0x36, 0x5c, 0x66,
+                            0x5b, 1, 1, kControlTagMain, 0);
+    SetUiResourceStateFlags(1, 1);
+    SetUiResourceLayoutValues(0x14, 0, 0, 0, 0);
+    ClearUiResourceContext();
+    PopUiResourcePoolNode(0x736f756e /* 'soun' */);
+
+    TTwoPicSlider* musicSlider = new TTwoPicSlider();
+    RegisterUiResourceEntry(kControlTagCntl, 0x6d757369 /* 'musi' */, musicSlider, 0xc2, 0x5c, 0x66,
+                            0x5b, 1, 1, kControlTagMain, 0);
+    SetUiResourceStateFlags(1, 1);
+    SetUiResourceLayoutValues(0x14, 0, 0, 0, 0);
+    ClearUiResourceContext();
+    PopUiResourcePoolNode(0x6d757369 /* 'musi' */);
+
+    TToolBarCluster* helpToolbar = new TToolBarCluster();
+    RegisterUiResourceEntry(kControlTagClus, 0x74627232 /* 'tbr2' */, helpToolbar, 0x25a, 0x24,
+                            0x28, 0x2e, 0, 1, kControlTagMain, 0);
+    SetUiResourceStateFlags(1, 1);
+    SetUiResourceLayoutValues(5, 0, 0, 0, 0);
+    SetUiResourceContextStringCode(0x20202020);
+    ClearUiResourceContext();
+
+    TPictureButton* helpButton = new TPictureButton();
+    RegisterUiResourceEntry(kControlTagPict, kControlTagQuer, helpButton, 6, 3, 0x16, 0x26, 1, 0,
+                            0x74627232 /* 'tbr2' */, 0);
+    SetUiResourceStateFlags(1, 1);
+    SetUiResourceLayoutValues(0xa, 0, 0, 0, 0);
+    SetUiResourceContextPictureId(0x1031);
+    ClearUiResourceContext();
+    PopUiResourcePoolNode(kControlTagQuer);
+    PopUiResourcePoolNode(0x74627232 /* 'tbr2' */);
+
+    TDeluxeText* labelB = new TDeluxeText();
+    RegisterUiResourceEntry(kControlTagTevw, 0x74787462 /* 'txtb' */, labelB, 0xc5, 0xc1, 0x60,
+                            0x2f, 0, 1, kControlTagMain, 0);
+    SetUiResourceStateFlags(1, 0);
+    ClearUiResourceContext();
+    PopUiResourcePoolNode(0x74787462 /* 'txtb' */);
+
+    TDeluxeText* labelA = new TDeluxeText();
+    RegisterUiResourceEntry(kControlTagTevw, 0x74787461 /* 'txta' */, labelA, 0x39, 0xc1, 0x60,
+                            0x2f, 0, 1, kControlTagMain, 0);
+    SetUiResourceStateFlags(1, 0);
+    ClearUiResourceContext();
+    PopUiResourcePoolNode(0x74787461 /* 'txta' */);
+
+    TDeluxeText* labelC = new TDeluxeText();
+    RegisterUiResourceEntry(kControlTagTevw, 0x74787463 /* 'txtc' */, labelC, 0x39, 0x18c, 0x60,
+                            0x2f, 0, 1, kControlTagMain, 0);
+    SetUiResourceStateFlags(1, 0);
+    ClearUiResourceContext();
+    PopUiResourcePoolNode(0x74787463 /* 'txtc' */);
+
+    TDeluxeText* labelD = new TDeluxeText();
+    RegisterUiResourceEntry(kControlTagTevw, 0x74787464 /* 'txtd' */, labelD, 0xc5, 0x18c, 0x60,
+                            0x2f, 0, 1, kControlTagMain, 0);
+    SetUiResourceStateFlags(1, 0);
+    ClearUiResourceContext();
+    PopUiResourcePoolNode(0x74787464 /* 'txtd' */);
+
+    TDeluxeText* labelE = new TDeluxeText();
+    RegisterUiResourceEntry(kControlTagTevw, 0x74787465 /* 'txte' */, labelE, 0x1a7, 0x142, 0x60,
+                            0x2f, 0, 1, kControlTagMain, 0);
+    SetUiResourceStateFlags(1, 0);
+    ClearUiResourceContext();
+    PopUiResourcePoolNode(0x74787465 /* 'txte' */);
+
+    TRadioTextCluster* autoSaveCluster = new TRadioTextCluster();
+    RegisterUiResourceEntry(kControlTagClus, 0x6f706361 /* 'opca' */, autoSaveCluster, 0x172, 0x1ad,
+                            0xc3, 0x14, 0, 0, kControlTagMain, 0);
+    SetUiResourceStateFlags(1, 1);
+    SetUiResourceLayoutValues(0xd, 0, 0, 0, 0);
+    SetUiResourceContextStringCode(0x20202020);
+    ClearUiResourceContext();
+
+    TRadioText* autoSaveYes = new TRadioText();
+    RegisterUiResourceEntry(kControlTagStat, 0x79657373 /* 'yess' */, autoSaveYes, 2, 2, 0x5f, 0x10,
+                            1, 1, 0x6f706361 /* 'opca' */, 0);
+    SetUiResourceStateFlags(1, 1);
+    SetUiResourceLayoutValues(0xd, 0, 0, 0, 0);
+    BindUiResourceTextAndStyle(0x514, -1, g_szEmptyString, 0, 0, 0, 0xffffff, 1);
+    ClearUiResourceContext();
+    PopUiResourcePoolNode(0x79657373 /* 'yess' */);
+
+    TRadioText* autoSaveNo = new TRadioText();
+    RegisterUiResourceEntry(kControlTagStat, 0x6e6f6f6f /* 'nooo' */, autoSaveNo, 0x62, 2, 0x5f,
+                            0x10, 1, 1, 0x6f706361 /* 'opca' */, 0);
+    SetUiResourceStateFlags(1, 1);
+    SetUiResourceLayoutValues(0xd, 0, 0, 0, 0);
+    BindUiResourceTextAndStyle(0x514, -1, g_szEmptyString, 0, 0, 0, 0xffffff, 1);
+    ClearUiResourceContext();
+    PopUiResourcePoolNode(0x6e6f6f6f /* 'nooo' */);
+    PopUiResourcePoolNode(0x6f706361 /* 'opca' */);
+
+    TDeluxeText* autoSaveCaption = new TDeluxeText();
+    RegisterUiResourceEntry(kControlTagTevw, 0x74706361 /* 'tpca' */, autoSaveCaption, 0x172, 0x17c,
+                            0xc3, 0x2f, 0, 0, kControlTagMain, 0);
+    SetUiResourceStateFlags(1, 0);
+    ClearUiResourceContext();
+    PopUiResourcePoolNode(0x74706361 /* 'tpca' */);
+
+    TToolBarCluster* okayToolbar = new TToolBarCluster();
+    RegisterUiResourceEntry(kControlTagClus, kControlTagTool, okayToolbar, 3, 6, 0x40, 0x5b, 0, 1,
+                            kControlTagMain, 0);
+    SetUiResourceStateFlags(1, 1);
+    SetUiResourceLayoutValues(5, 0, 0, 0, 0);
+    SetUiResourceContextStringCode(0x20202020);
+    ClearUiResourceContext();
+
+    TPictureButton* okayButton = new TPictureButton();
+    RegisterUiResourceEntry(kControlTagPict, kControlTagOkay, okayButton, 5, 0x20, 0x1f, 0x33, 1, 0,
+                            kControlTagTool, 0);
+    SetUiResourceStateFlags(1, 1);
+    SetUiResourceLayoutValues(0xa, 0, 0, 0, 0);
+    SetUiResourceContextPictureId(0x1032);
+    ClearUiResourceContext();
+    PopUiResourcePoolNode(kControlTagOkay);
+    PopUiResourcePoolNode(kControlTagTool);
+
+    TInfoBarText* cursorText = new TInfoBarText();
+    RegisterUiResourceEntry(kControlTagTevw, kControlTagCurs, cursorText, 0x182, 5, 0xc9, 0x1e, 0,
+                            1, kControlTagMain, 0);
+    SetUiResourceStateFlags(1, 0);
+    ClearUiResourceContext();
+    PopUiResourcePoolNode(kControlTagCurs);
+    PopUiResourcePoolNode(kControlTagMain);
+    PopUiResourcePoolNode(kControlTagBase);
+    if (g_pUiResourceHead != 0) {
+      g_pUiResourceHead->PropagateUiResourceContextRecursive(pHostWindow);
+    }
+    return g_pUiResourceHead;
+  }
 
   case 0x7d2:
     return BuildTurnOrderNavigationWindow(0, 0x28, 0x280, 0x1e0, 4);
