@@ -5,9 +5,11 @@
 #include "game/TTechMgr.h"
 #include "game/TTextPictureButton.h"
 #include "game/TUpDownPictureButton.h"
+#include "game/TViewMgr.h"
 #include "game/global_data_tables.h"
 #include "game/mapped_flavor_text.h"
 #include "game/quickdraw_rendering.h"
+#include "game/ui_control_tags.h"
 #include "game/ui_text_label_helpers_decls.h"
 
 // SYNTHETIC: IMPERIALISM 0x005b1200
@@ -154,7 +156,47 @@ void TTechItemView::ConstructTTechItemViewBaseState(TView* panel, int* offsetLay
 
 // FUNCTION: IMPERIALISM 0x005b1e20
 void TTechItemView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
-  // The original dispatches a large per-tag command table here (822 bytes) -- not yet
-  // ported.
+  if (commandId == 10) {
+    if (sourceHandler->controlTag == kControlTagPurc) {
+      TTextPictureButton* purchaseButton = static_cast<TTextPictureButton*>(sourceHandler);
+      TTechMgr* techMgr = g_pCityOrderCapabilityState;
+      if (techMgr->orderCapRows277[nationSlot60].techStatusByTechId[techId64] == 0) {
+        short activeNationId = g_pSimMgr->GetActiveNationId();
+        int availableBudget = g_apNationStates[activeNationId]->ComputeAvailableDiplomacyBudget();
+        if (g_anTechItemResearchCostByTechId[techId64] > availableBudget) {
+          CString msg;
+          g_pSimMgr->GetString(0x2745, 3, &msg);
+          g_pUiRuntimeContext->DispatchLocalizedUiMessageWithTemplateA13A0(
+              msg, &g_cstrTechItemMessageStore, 2, 0);
+        } else {
+          CString label;
+          g_pSimMgr->GetString(0x274f, 3, &label);
+          techMgr->ApplyTechItemPurchaseCostAndState(techId64, nationSlot60);
+          purchaseButton->buttonText = label;
+          purchaseButton->RefreshControl();
+          LoadUiStringAndDispatchSharedMessageCommand(0x274f, 0xa, purchaseButton);
+        }
+      } else {
+        techMgr->RefundTechItemPurchaseCostAndClearState(techId64, nationSlot60);
+        CString label;
+        g_pSimMgr->FormatIntegerString(g_anTechItemResearchCostByTechId[techId64], &label);
+        purchaseButton->buttonText = label;
+        purchaseButton->RefreshControl();
+        LoadUiStringAndDispatchSharedMessageCommand(0x274f, 9, purchaseButton);
+      }
+    } else if (sourceHandler->controlTag == kControlTagDesc) {
+      // TODO: resolves the turn-event dialog node for message context 0x942 (a TWindow,
+      // per this session's established dialog-node pattern), restyles its 'DLOG' child via
+      // TTechHistoryView::ConstructTTechHistoryViewBaseState(techId64) -- a real,
+      // currently-unowned 633-byte constructor (0x5b22c0) -- then runs the dialog modally
+      // through the same TWindow sequence already ported elsewhere this session
+      // (ComputeTurnEventDialogPlacementByCode, CaptureLayoutF0, SetField84(1),
+      // GetEmbeddedDialogBehavior()->defaultCommandCode='okay',
+      // ExecuteViewModalStateWithPushPopChain, CallVoidSlotA0, Free). Left unmodeled because
+      // wiring the ConstructTTechHistoryViewBaseState call requires giving it a real curated
+      // signature in original_entities.csv first (its current auto-generated stub signature
+      // is a bare no-arg placeholder) -- a separate curation step, not a guess.
+    }
+  }
   TView::HandleEvent(commandId, sourceHandler, event);
 }

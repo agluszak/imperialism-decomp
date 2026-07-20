@@ -721,6 +721,7 @@ extern CString g_cstrGreatPowerPressureMessage; // @ 0x6a2df0
 // messageStoreRef argument (0x005d5b00 callsites).
 extern CString g_cstrArmyOrderMessageStore;        // @ 0x6a2318
 extern CString g_cstrNationComparisonMessageStore; // @ 0x6a3180
+extern CString g_cstrTechItemMessageStore;         // @ 0x6a5820
 extern CString g_cstrNationAwolMessageStore;       // @ 0x6a3d08
 extern CString g_cstrMapModeMessageStore;          // @ 0x6a45c0
 extern CString g_cstrTechCapabilityMessageStore;   // @ 0x6a57c8
