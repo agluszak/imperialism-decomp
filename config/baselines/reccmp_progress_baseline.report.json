@@ -22909,7 +22909,7 @@
     },
     {
       "address": "0x5539c0",
-      "matching": 0.046511627906976744,
+      "matching": 1.0,
       "name": "TTaskForce::RefreshTaskForceSelectionFlagsForCurrentNationOrders",
       "type": 1
     },
@@ -22921,13 +22921,13 @@
     },
     {
       "address": "0x553b10",
-      "matching": 0.6206896551724138,
+      "matching": 0.4827586206896552,
       "name": "TTaskForce::HasNoMapOrderEntryChildrenQueued",
       "type": 1
     },
     {
       "address": "0x553b50",
-      "matching": 0.5454545454545454,
+      "matching": 0.5818181818181818,
       "name": "TTaskForce::HasActiveMapOrderEntryChildren",
       "type": 1
     },
@@ -22982,7 +22982,7 @@
     },
     {
       "address": "0x554590",
-      "matching": 0.6075949367088608,
+      "matching": 0.5569620253164557,
       "name": "TTaskForce::CanQueueMapOrderForProvinceContext",
       "type": 1
     },
