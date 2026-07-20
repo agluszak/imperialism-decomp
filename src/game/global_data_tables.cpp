@@ -3207,3 +3207,16 @@ short g_creditsPlaybackActive_006a4084 = 0;
 short g_offerDeskSelectionIndexTable_00668568[8] = {0};
 // GLOBAL: IMPERIALISM 0x006a3020
 int g_diplomacyPopupLayoutPosition_006a3020[2] = {0};
+
+// Per-strength-tier probability-split table for BuildMapOrderContextSummaryStringForNation's
+// per-garrisoned-unit resource roll: each 3-short half sums to 100. The first half picks a
+// 0-2 "point cost" for the unit; the second half picks how that cost gets bucketed (the
+// unit's own movement class, a fixed "misc" bucket, or a uniform random bucket). Indexed by
+// the function's winning strength tier (unclamped, matching the original -- tiers beyond
+// row 5 read past this table in the original too). table[tier]+3 is the second half (at
+// original address 0x0064c5de, 6 bytes/3 shorts into this same row-major table).
+// GLOBAL: IMPERIALISM 0x0064c5d8
+short g_MapOrderResourceRollWeightTable_0064c5d8[6][6] = {
+    {50, 20, 30, 40, 30, 30}, {50, 20, 30, 50, 30, 20}, {40, 35, 25, 55, 30, 15},
+    {30, 50, 20, 65, 20, 15}, {20, 65, 15, 70, 20, 10}, {10, 80, 10, 80, 10, 10},
+};
