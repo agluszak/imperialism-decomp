@@ -122,7 +122,7 @@ public:
                                                   bool fRefreshNow) override; // slot 0x70 0x571ff0
   // slot 0x71 ResetPictureResourceEntry inherited unchanged (0x48f520)
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x573040)
-  // slot 0x73 UniversityDialogMethod_00405623 inherited unchanged (0x572bb0)
+  // slot 0x73 NoOpUiVirtualSlot73 inherited unchanged (0x572bb0)
   virtual undefined OrphanCallChain_C1_I05_00572060(); // slot 0x74 0x572060
 
   TColorKeyButton();

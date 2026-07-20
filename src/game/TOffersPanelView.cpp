@@ -1,4 +1,6 @@
 #include "game/TOffersPanelView.h"
+
+#include "game/ui_control_tags.h"
 // SYNTHETIC: IMPERIALISM 0x004f8ec0
 // TOffersPanelView::CreateObject
 
@@ -18,7 +20,14 @@ TOffersPanelView::~TOffersPanelView() {}
 void TOffersPanelView::NoOpUiLifecycleHook(int arg) {}
 
 // FUNCTION: IMPERIALISM 0x004f9300
-void TOffersPanelView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {}
+void TOffersPanelView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+  int tag = sourceHandler->controlTag;
+  if (commandId == 5 ||
+      (commandId == 0xa && (tag == kControlTagAcce || tag == kControlTagReje))) {
+    lastNegotiationResponseTag64 = tag;
+  }
+  TEventHandler::HandleEvent(commandId, sourceHandler, event);
+}
 
 // FUNCTION: IMPERIALISM 0x004f9350
 void TOffersPanelView::ForwardParam(int param) {}

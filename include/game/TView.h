@@ -88,8 +88,8 @@ public:
   CWnd* nativeWindow50; // 0x50 — host window (MFC CWnd; HWND via m_hWnd)
   unsigned short field54;
   unsigned char padding_56_to_57[0x02];
-  CString sharedStringRef;
-  int field5c;
+  CString hoverHelpText58;
+  int hoverHelpEnabled5c;
 
   TView();
   void InitializeUiResourceEntryFrameAndParent(TView* uiResourceContext, TView* panel,
@@ -97,7 +97,7 @@ public:
                                                int layoutParam7, int attachFlag);
   void InvalidateCityDialogRectRegion(RECT* rect, int flag);
   void CopyViewStateFromSource(TView* source);
-  void EnableAndProcessFlag(CString sharedString);
+  void SetHoverHelpText(CString sharedString);
   void PropagateUiResourceContextRecursive(CWnd* nativeWindow);
 
   // Base-slot overrides (vtable bodies differ from TEventHandler's).

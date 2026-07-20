@@ -223,8 +223,8 @@ void TBattleReportView::NoOpUiLifecycleHook(int arg) {
   g_pCursorControlPanel->SetTextThemeCodeAndMaybeRefresh(1, 1);
   g_pCursorControlPanel->InitializeMapHintTextStyleAndThemeFlags(0x2b67, 0x2b6c);
 
-  ApplySharedStringToControlState(g_pBattleReportSharedText_0064dc30,
-                                  ResolveControlByTag(0x6d61696e)); // 'main'
+  SetControlHoverHelpText(g_pBattleReportSharedText_0064dc30,
+                          ResolveControlByTag(0x6d61696e)); // 'main'
   LoadUiStringByGroupAndIndexToControlObject(0x273d, 0x16, ResolveControlByTag(0x6661646d));
   LoadUiStringByGroupAndIndexToControlObject(0x273d, 0x16, ResolveControlByTag(0x66736870));
   LoadUiStringByGroupAndIndexToControlObject(0x273d, 0x16, ResolveControlByTag(0x66666c67));

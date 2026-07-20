@@ -407,7 +407,7 @@ extern const unsigned char g_MapContextStaticTable_00695448[0x20];
 extern const unsigned char g_MapContextStaticTable_00695428[0x20];
 // Pointer to the current battle-report shared text (points at g_szEmptyString until
 // something retargets it); both 0x4acb60 and 0x4af0b0 wrap it in a CString for
-// ApplySharedStringToControlState.
+// SetControlHoverHelpText.
 extern char* g_pBattleReportSharedText_0064dc30;
 extern char* g_pMiniCivSharedText_0064cb18;
 extern int g_lastEdgeAutoScrollTick16;

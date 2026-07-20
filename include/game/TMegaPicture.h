@@ -122,7 +122,7 @@ public:
   // slot 0x71 ResetPictureResourceEntry inherited unchanged (0x48f520)
   virtual void SetPictureResourceIdAndRefresh(short nPictureId,
                                               bool fRefreshNow) override; // slot 0x72 0x573430
-  // slot 0x73 UniversityDialogMethod_00405623 inherited unchanged (0x572bb0)
+  // slot 0x73 NoOpUiVirtualSlot73 inherited unchanged (0x572bb0)
   virtual undefined OrphanCallChain_C1_I14_005736c0(ushort param_1, char param_2,
                                                     char param_3); // slot 0x74 0x5736c0
   virtual undefined OrphanCallChain_C1_I08_00573690(undefined2 param_1,

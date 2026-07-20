@@ -15,10 +15,11 @@
 
 // Draws the hex-cell border-highlight polygon for a tile: computes the tile's isometric
 // screen position, then emits a QDFrameRect segment for each hex edge whose neighbor either
-// has a different owner (owner != compareValue on both sides of the edge) or forms a
-// type-5 (ocean) pairing. Neighbor tile indices [0..5] come from ComputeHexNeighborTileIndices.
-// Called from TMacViewMgr's map-highlight pass. terrainStateTable owner is the +0x14 short,
-// terrain type is the +0x00 byte (== 5 for ocean); both indexed by the 0x24-byte tile record.
+// has a different city/region (cityRecordIndex != compareValue on both sides of the edge)
+// or forms a type-5 (ocean) pairing. Neighbor tile indices [0..5] come from
+// ComputeHexNeighborTileIndices. Called from TMacViewMgr's map-highlight pass. Reads the
+// typed TTerrainStateRecordView fields cityRecordIndex (+0x14) and terrainType00 (+0x00,
+// == 5 for ocean) directly, instead of the former raw `terrain + n*0x24 + off` casts.
 // FUNCTION: IMPERIALISM 0x00508f30
 void BuildHexNeighborHighlightPolygonForTile(short tileId, int compareValue) {
   short neighborTiles[6];
@@ -35,7 +36,7 @@ void BuildHexNeighborHighlightPolygonForTile(short tileId, int compareValue) {
   int rightX = baseX + 5;
   int bottomY = baseY + 5;
 
-  unsigned char* terrain = reinterpret_cast<unsigned char*>(g_pGlobalMapState->terrainStateTable);
+  TTerrainStateRecordView* terrain = g_pGlobalMapState->terrainStateTable;
 
   RECT edgeTop = {baseX, baseY, rightX, bottomY};
   QDFrameRect(&edgeTop);
@@ -49,49 +50,46 @@ void BuildHexNeighborHighlightPolygonForTile(short tileId, int compareValue) {
   RECT edgeCornerBR = {rightX, baseY, baseX + 6, baseY + 1};
   RECT edgeCornerTR = {baseX + 4, baseY, rightX, baseY + 1};
 
-#define TERRAIN_OWNER(n) (*reinterpret_cast<short*>(terrain + (n) * 0x24 + 0x14))
-#define TERRAIN_TYPE(n) (*reinterpret_cast<char*>(terrain + (n) * 0x24))
-
   if (neighborTiles[1] != -1 && neighborTiles[2] != -1 &&
-      TERRAIN_OWNER(neighborTiles[1]) != compareValue &&
-      TERRAIN_OWNER(neighborTiles[2]) == compareValue) {
+      terrain[neighborTiles[1]].cityRecordIndex != compareValue &&
+      terrain[neighborTiles[2]].cityRecordIndex == compareValue) {
     QDFrameRect(&edgeLowerRight);
   }
-  if (neighborTiles[4] != -1 && neighborTiles[3] != -1 && TERRAIN_TYPE(neighborTiles[4]) == 5 &&
-      TERRAIN_TYPE(neighborTiles[3]) == 5) {
+  if (neighborTiles[4] != -1 && neighborTiles[3] != -1 &&
+      terrain[neighborTiles[4]].terrainType00 == 5 &&
+      terrain[neighborTiles[3]].terrainType00 == 5) {
     QDFrameRect(&edgeUpperLeft);
   }
   if (neighborTiles[0] != -1 && neighborTiles[1] != -1 &&
-      TERRAIN_OWNER(neighborTiles[1]) != compareValue &&
-      TERRAIN_OWNER(neighborTiles[0]) == compareValue) {
+      terrain[neighborTiles[1]].cityRecordIndex != compareValue &&
+      terrain[neighborTiles[0]].cityRecordIndex == compareValue) {
     QDFrameRect(&edgeCornerBR);
   }
   if (neighborTiles[4] != -1) {
-    if (neighborTiles[5] != -1 && TERRAIN_TYPE(neighborTiles[4]) == 5 &&
-        TERRAIN_TYPE(neighborTiles[5]) == 5) {
+    if (neighborTiles[5] != -1 && terrain[neighborTiles[4]].terrainType00 == 5 &&
+        terrain[neighborTiles[5]].terrainType00 == 5) {
       QDFrameRect(&edgeCornerTL);
     }
-    if (neighborTiles[3] != -1 && TERRAIN_OWNER(neighborTiles[4]) != compareValue &&
-        TERRAIN_OWNER(neighborTiles[3]) == compareValue) {
+    if (neighborTiles[3] != -1 && terrain[neighborTiles[4]].cityRecordIndex != compareValue &&
+        terrain[neighborTiles[3]].cityRecordIndex == compareValue) {
       QDFrameRect(&edgeLowerLeft);
     }
   }
-  if (neighborTiles[1] != -1 && neighborTiles[2] != -1 && TERRAIN_TYPE(neighborTiles[1]) == 5 &&
-      TERRAIN_TYPE(neighborTiles[2]) == 5) {
+  if (neighborTiles[1] != -1 && neighborTiles[2] != -1 &&
+      terrain[neighborTiles[1]].terrainType00 == 5 &&
+      terrain[neighborTiles[2]].terrainType00 == 5) {
     QDFrameRect(&edgeUpperRight);
   }
   if (neighborTiles[4] != -1 && neighborTiles[5] != -1 &&
-      TERRAIN_OWNER(neighborTiles[4]) != compareValue &&
-      TERRAIN_OWNER(neighborTiles[5]) == compareValue) {
+      terrain[neighborTiles[4]].cityRecordIndex != compareValue &&
+      terrain[neighborTiles[5]].cityRecordIndex == compareValue) {
     QDFrameRect(&edgeCornerBL);
   }
-  if (neighborTiles[1] != -1 && neighborTiles[0] != -1 && TERRAIN_TYPE(neighborTiles[1]) == 5 &&
-      TERRAIN_TYPE(neighborTiles[0]) == 5) {
+  if (neighborTiles[1] != -1 && neighborTiles[0] != -1 &&
+      terrain[neighborTiles[1]].terrainType00 == 5 &&
+      terrain[neighborTiles[0]].terrainType00 == 5) {
     QDFrameRect(&edgeCornerTR);
   }
-
-#undef TERRAIN_OWNER
-#undef TERRAIN_TYPE
 }
 
 // FUNCTION: IMPERIALISM 0x00528c10
@@ -217,26 +215,4 @@ void ComputeWrappedIsometricScreenOffsetFromTile(int tileIndex, int* outScreenXY
   int halfTileXOffset = (row & 1) == 0 ? tileScale / 2 : 0;
   outScreenXY[1] = (row - originRow) * tileScale;
   outScreenXY[0] = (((tileIndex - originCol) + 0x6c) % 0x6c) * tileScale - halfTileXOffset;
-}
-
-// FUNCTION: IMPERIALISM 0x005A39A0
-int ComputeHexTileDistanceFromIndices(int tileIndexA, int tileIndexB) {
-  unsigned int rowA = static_cast<unsigned int>(tileIndexA / 0x1d);
-  int colA = (rowA & 1U) + (tileIndexA % 0x1d) * 2;
-  unsigned int rowB = static_cast<unsigned int>(tileIndexB / 0x1d);
-  int colB = (rowB & 1U) + (tileIndexB % 0x1d) * 2;
-
-  if (colB < colA) {
-    colB = colA * 2 - colB;
-  }
-  if (static_cast<int>(rowB) < static_cast<int>(rowA)) {
-    rowB = rowA * 2 - rowB;
-  }
-
-  int rowDelta = static_cast<int>(rowB - rowA);
-  colA = (colB - rowDelta) - colA;
-  if (0 < colA) {
-    return colA / 2 + rowDelta;
-  }
-  return rowDelta;
 }

@@ -124,7 +124,7 @@ void TTwoPicSlider::ApplyRectSlot110(RECT* rectBuffer) {
       int textMainColor = 0;
 
       g_pSimMgr->GetString(0x2743, 0x3b, &statusText);
-      ApplyUiTextStyleAndSyncColor(0, 0xe, 0x2b6c);
+      ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 0xe, 0x2b6c);
       MapUiThemeCodeToStyleFlags(0x2b6c, &textShadowColor);
       MapUiThemeCodeToStyleFlags(0x2b67, &textMainColor);
 
@@ -135,11 +135,11 @@ void TTwoPicSlider::ApplyRectSlot110(RECT* rectBuffer) {
       SetQuickDrawColorAndSyncGlobals(textMainColor);
       SetQuickDrawTextOriginWithContextOffset(static_cast<short>(textLeft + 1),
                                               static_cast<short>(textCenterY + 5));
-      DrawTextWithCachedStyle(&statusText);
+      DrawTextWithCachedQuickDrawStyleState(&statusText);
 
       SetQuickDrawColorAndSyncGlobals(textShadowColor);
       SetQuickDrawTextOriginWithContextOffset(textLeft, static_cast<short>(textCenterY + 4));
-      DrawTextWithCachedStyle(&statusText);
+      DrawTextWithCachedQuickDrawStyleState(&statusText);
     }
   }
 }

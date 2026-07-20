@@ -30,7 +30,7 @@ void TMiniCivView::ConstructTMiniCivViewBaseState(TView* panel, int* offsetLayou
   InitializeUiResourceEntryFrameAndParent(0, panel, offsetLayout, sizeLayout, 5, 5, 0);
   civUnit84 = civUnit;
   frameStyle60 = 0x22;
-  ApplySharedStringToControlState(g_pMiniCivSharedText_0064cb18, this);
+  SetControlHoverHelpText(g_pMiniCivSharedText_0064cb18, this);
 
   CString assembled;
   CString textA;

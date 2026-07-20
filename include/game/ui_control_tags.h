@@ -73,6 +73,8 @@ const unsigned int kControlTagGame = 0x67616d65u; // 'game' — join-selector ga
 const unsigned int kControlTagHist = 0x68697374u; // 'hist' — historical names option
 const unsigned int kControlTagKeyP = 0x6b657920u; // 'key ' — map-key hotspot
 const unsigned int kControlTagAuto = 0x6175746fu; // 'auto' — all-AutoGP label
+const unsigned int kControlTagAcce = 0x61636365u; // 'acce' — accept-offer hotspot
+const unsigned int kControlTagReje = 0x72656a65u; // 'reje' — reject-offer hotspot
 const unsigned int kControlTagCanc = 0x63616e63u; // 'canc' — cancel hotspot (upper)
 const unsigned int kControlTagCncl = 0x636e636cu; // 'cncl' — cancel hotspot (lower)
 const unsigned int kControlTagGlob = 0x676c6f62u; // 'glob' — globe picture
@@ -135,6 +137,7 @@ const unsigned int kTagNada = 0x6e616461; // 'nada' — sentinel: no option sele
 const unsigned int kControlTagTarg = 0x74617267u; // 'targ' — tactical target button
 const unsigned int kControlTagRetr = 0x72657472u; // 'retr' — tactical retreat button
 const unsigned int kControlTagCurr = 0x63757272u; // 'curr' — tactical current-unit portrait
+const unsigned int kControlTagHelp = 0x68656c70u; // 'help' — tactical toolbar help button
 
 // Battle-intro ('hola') dialog tags
 const unsigned int kControlTagAttackerCoat = 0x61636f61u; // 'acoa'

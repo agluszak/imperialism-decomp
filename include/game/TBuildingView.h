@@ -122,7 +122,7 @@ public:
   // slot 0x70 SetControlStateFlagAndMaybeRefresh inherited unchanged (0x48e810)
   // slot 0x71 ResetPictureResourceEntry inherited unchanged (0x48f520)
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
-  // slot 0x73 UniversityDialogMethod_00405623 inherited unchanged (0x572bb0)
+  // slot 0x73 NoOpUiVirtualSlot73 inherited unchanged (0x572bb0)
   virtual undefined
   ApplyCityViewSelectionPayloadAndRefreshControls(int arg1, unsigned char arg2, int arg3,
                                                   short arg4); // slot 0x74 0x4c6f30

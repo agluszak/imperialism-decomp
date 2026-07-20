@@ -96,7 +96,7 @@ void TTransFocusAnimation::BlitTransientSurfaceToPrimaryRenderContextWithClip() 
 
   ClipRect(&destinationRect);
   ResetQuickDrawStrokeState();
-  UpdatePaletteIndexWithFallback(0x13);
+  UpdatePaletteIndexWithDefaultFallback(0x13);
   SetQuickDrawFillColorFromPaletteIndex(0);
 
   CDib* primaryDib = g_pPrimaryRenderSurfaceContext->surfaceDib;
@@ -165,7 +165,7 @@ undefined TTransFocusAnimation::RenderBattleReportInsetWithPaletteShift(POINT* o
     overlayRect.right = overlayRect.left + width;
     overlayRect.top = 0;
     overlayRect.bottom = height;
-    UpdatePaletteIndexWithFallback(0x10);
+    UpdatePaletteIndexWithDefaultFallback(0x10);
     BlitQuickDrawSurfaces(insetBitmapSurface->GetBlitSurface(), animatorTarget->GetBlitSurface(),
                           &overlayRect, &clipRect, 0x24);
   }

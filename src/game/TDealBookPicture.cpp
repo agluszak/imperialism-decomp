@@ -12,7 +12,7 @@
 #include "game/ui_text_label_helpers_decls.h"
 
 void LoadUiStringAndDispatchSharedMessageCommand(short group, short index, TView* control);
-void AssignSharedStringToControlState(CString sharedString, TView* control);
+void SetControlHoverHelpTextAltEntry(CString sharedString, TView* control);
 
 // SYNTHETIC: IMPERIALISM 0x005bab00
 // TDealBookPicture::CreateObject
@@ -142,7 +142,7 @@ void TDealBookPicture::UpdateDealBookResourceSelectionAndToggleControls(int nRes
     leftCtrl->SetState(0, 1);
     label = g_szEmptyString;
   }
-  AssignSharedStringToControlState(label, leftCtrl);
+  SetControlHoverHelpTextAltEntry(label, leftCtrl);
 
   short refRow = this->field92;
   if (this->field94 != refRow && refRow != 0) {
@@ -154,7 +154,7 @@ void TDealBookPicture::UpdateDealBookResourceSelectionAndToggleControls(int nRes
     rightCtrl->SetState(0, 1);
     label = g_szEmptyString;
   }
-  AssignSharedStringToControlState(label, rightCtrl);
+  SetControlHoverHelpTextAltEntry(label, rightCtrl);
 }
 
 // FUNCTION: IMPERIALISM 0x005bb2e0

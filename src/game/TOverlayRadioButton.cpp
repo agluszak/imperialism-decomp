@@ -28,7 +28,7 @@ TOverlayRadioButton::~TOverlayRadioButton() {}
 void TOverlayRadioButton::ApplyRectSlot110(RECT* rectBuffer) {
   TPicture::ApplyRectSlot110(rectBuffer);
   if (overlaySurfaceContext98 != 0) {
-    UpdatePaletteIndexWithFallback(0x10);
+    UpdatePaletteIndexWithDefaultFallback(0x10);
     BlitQuickDrawSurfaces(overlaySurfaceContext98->GetBlitSurface(),
                           g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &overlaySrcRect9c,
                           &overlayDstRectAc, 0x24);

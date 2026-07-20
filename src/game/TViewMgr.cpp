@@ -1021,7 +1021,7 @@ void RefreshTradClusterPictureAndHintText() {
 
   CString hintText;
   g_pSimMgr->GetString(0x2730, 0, &hintText);
-  tradControl->EnableAndProcessFlag(hintText);
+  tradControl->SetHoverHelpText(hintText);
 }
 
 void RefreshTaggedControlWithLocalizedString(unsigned int controlTag, short stringCode,
@@ -1033,7 +1033,7 @@ void RefreshTaggedControlWithLocalizedString(unsigned int controlTag, short stri
   control->AssertValid();
   CString localizedText;
   g_pSimMgr->GetString(stringCode, stringIndex, &localizedText);
-  control->EnableAndProcessFlag(localizedText);
+  control->SetHoverHelpText(localizedText);
 }
 
 void ApplyThemeToTaggedTextControl(unsigned int controlTag, int styleWidth, int stylePrimary,
@@ -1061,7 +1061,7 @@ void RefreshQuerControlLayoutAndClearText() {
   querControl->AssertValid();
   int layoutCaptureBuffer = 0;
   querControl->CaptureLayoutF0(&layoutCaptureBuffer, 0);
-  querControl->EnableAndProcessFlag(g_szEmptyString);
+  querControl->SetHoverHelpText(g_szEmptyString);
 }
 
 } // namespace turn_event_ui_refresh
@@ -1312,7 +1312,7 @@ void TViewMgr::UiRuntimeSlotA8(int) {
     cityControl->AssertValid();
     cityControl->SetState(0, 0);
     cityControl->SwitchActiveChildAndNotify(nullptr);
-    cityControl->EnableAndProcessFlag(g_szEmptyString);
+    cityControl->SetHoverHelpText(g_szEmptyString);
   }
 
   turn_event_ui_refresh::RefreshToolBarClusterByTag(kControlTagBpot);
@@ -1321,7 +1321,7 @@ void TViewMgr::UiRuntimeSlotA8(int) {
   TControl* querControl = static_cast<TControl*>(mainView->ResolveControlByTag(kControlTagQuer));
   if (querControl != nullptr) {
     querControl->AssertValid();
-    querControl->EnableAndProcessFlag(g_szEmptyString);
+    querControl->SetHoverHelpText(g_szEmptyString);
   }
 }
 
@@ -1364,7 +1364,7 @@ void TViewMgr::UiRuntimeSlot6C(int) {
     diplControl->AssertValid();
     diplControl->SetState(0, 0);
     diplControl->SwitchActiveChildAndNotify(nullptr);
-    diplControl->EnableAndProcessFlag(g_szEmptyString);
+    diplControl->SetHoverHelpText(g_szEmptyString);
   }
 
   turn_event_ui_refresh::RefreshToolBarClusterByTag(kControlTagBpot);
@@ -1373,7 +1373,7 @@ void TViewMgr::UiRuntimeSlot6C(int) {
   TControl* querControl = static_cast<TControl*>(mainView->ResolveControlByTag(kControlTagQuer));
   if (querControl != nullptr) {
     querControl->AssertValid();
-    querControl->EnableAndProcessFlag(g_szEmptyString);
+    querControl->SetHoverHelpText(g_szEmptyString);
   }
 
   if (diplControl != nullptr) {
@@ -1391,7 +1391,7 @@ void TViewMgr::UiRuntimeSlot84(int) {
     tranControl->AssertValid();
     tranControl->SetState(0, 0);
     tranControl->SwitchActiveChildAndNotify(nullptr);
-    tranControl->EnableAndProcessFlag(g_szEmptyString);
+    tranControl->SetHoverHelpText(g_szEmptyString);
   }
 
   turn_event_ui_refresh::RefreshToolBarClusterByTag(kControlTagBpot);
@@ -1400,7 +1400,7 @@ void TViewMgr::UiRuntimeSlot84(int) {
   TControl* querControl = turn_event_ui_refresh::ResolveMainTaggedControl(kControlTagQuer);
   if (querControl != nullptr) {
     querControl->AssertValid();
-    querControl->EnableAndProcessFlag(g_szEmptyString);
+    querControl->SetHoverHelpText(g_szEmptyString);
   }
 }
 
@@ -1446,7 +1446,7 @@ void TViewMgr::UiRuntimeSlot5C(int) {
   TControl* textControl = turn_event_ui_refresh::ResolveMainTaggedControl(kControlTagText);
   if (textControl != nullptr) {
     textControl->AssertValid();
-    textControl->EnableAndProcessFlag(g_szEmptyString);
+    textControl->SetHoverHelpText(g_szEmptyString);
   }
 
   const short activeNationId = g_pSimMgr->GetActiveNationId();
@@ -1499,7 +1499,7 @@ void TViewMgr::HandleTurnEventVtableSlot60ActivateMainDialog(int) {
   g_pCursorControlPanel->InitializeMapHintTextStyleAndThemeFlags(0x2b6c, 0x2b67);
 
   CString emptyTitle(g_szEmptyString);
-  ApplySharedStringToControlState(emptyTitle, mainControl);
+  SetControlHoverHelpText(emptyTitle, mainControl);
 }
 
 // FUNCTION: IMPERIALISM 0x005da180
@@ -1514,7 +1514,7 @@ void TViewMgr::HandleTurnEventVtableSlot64RefreshMainHudTitles(int) {
   TView* mainControl = static_cast<TView*>(mainView->ResolveControlByTag(kControlTagMain));
   mainControl->AssertValid();
   CString emptyTitle(g_szEmptyString);
-  ApplySharedStringToControlState(emptyTitle, mainControl);
+  SetControlHoverHelpText(emptyTitle, mainControl);
 
   TView* queryControl = mainControl->ResolveControlByTag(kControlTagQuer);
   LoadUiStringByGroupAndIndexToControlObject(0x2730, 3, queryControl);
@@ -1528,7 +1528,7 @@ void TViewMgr::HandleTurnEventVtableSlot64RefreshMainHudTitles(int) {
         ->InitializeMapHintTextStyleAndThemeFlags(0x2b6c, 0x2b6b);
     CString titleString;
     g_pSimMgr->CopyScenarioNationSetupIntoFlowState(&titleString);
-    titleControl->EnableAndProcessFlag(titleString);
+    titleControl->SetHoverHelpText(titleString);
   }
   // 0x5bac50 is invoked on the 'main' deal-book control (the binary's receiver), not 'titL'.
   static_cast<TDealBookPicture*>(mainControl)->RefreshHudNationTitleControlsAndTheme(0x2b6c);
@@ -1626,7 +1626,7 @@ void RefreshMainMenuButtonLabel(TView* mainView, unsigned int controlTag, short 
   }
   CString label;
   g_pSimMgr->GetString(codeGroup, stringIndex, &label);
-  control->EnableAndProcessFlag(label);
+  control->SetHoverHelpText(label);
 }
 } // namespace
 
@@ -1695,7 +1695,7 @@ void TViewMgr::UiRuntimeSlotF8() {
   TControl* mainControl = static_cast<TControl*>(mainView->ResolveControlByTag(kControlTagMain));
   mainControl->AssertValid();
   CString emptyString(g_szEmptyString);
-  mainControl->EnableAndProcessFlag(emptyString);
+  mainControl->SetHoverHelpText(emptyString);
 
   RefreshMainMenuButtonLabel(mainView, kControlTagRand, 0x2737, 0, 0xdf0);
   RefreshMainMenuButtonLabel(mainView, kControlTagLoad, 0x2737, 1, 0xdf9);

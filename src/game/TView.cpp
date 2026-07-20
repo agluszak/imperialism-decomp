@@ -6,7 +6,7 @@
 #include "game/TInfoBarText.h"
 #include "game/TDialogBehavior.h"
 #include "game/TWindow.h"
-#include "game/ui_resource_pool.h"
+#include "game/ui_resource_builder.h"
 #include "game/global_data_tables.h"
 #include "game/ScopedMapQuickDrawContext.h"
 #include "game/quickdraw_rendering.h"
@@ -19,7 +19,7 @@
 extern "C" CRuntimeClass PTR_s_TView_006495a0;
 
 // UI-resource context helpers 0x426fa0-0x4270e0: original TU is this TView region
-// (0x4272xx methods follow); they operate on g_pUiResourceContext from ui_resource_pool.h.
+// (0x4272xx methods follow); they operate on g_pUiResourceContext from ui_resource_builder.h.
 // FUNCTION: IMPERIALISM 0x00426fa0
 void __cdecl SetUiResourceContextFlagsAndMetrics(short nField9C, short nStyleType,
                                                  unsigned char f70, unsigned char f6f,
@@ -170,7 +170,7 @@ IMPLEMENT_DYNCREATE(TView, TEventHandler)
 TView::TView()
     : TEventHandler(), ownerContext(0), absoluteX(0), absoluteY(0), controlValue3c(0),
       childList44(0), stylePayload48(0), inputGateFlag4c(1), childHitTestFlag4d(1), field4e(0xffff),
-      nativeWindow50(0), field54(1), sharedStringRef(), field5c(0) {}
+      nativeWindow50(0), field54(1), hoverHelpText58(), hoverHelpEnabled5c(0) {}
 
 // SYNTHETIC: IMPERIALISM 0x0048a9a0
 // TView::`scalar deleting destructor'
@@ -720,7 +720,7 @@ TObject* TView::ShallowClone() {
 
 // FUNCTION: IMPERIALISM 0x0048c000
 char TView::EvaluateControlInputGate() {
-  if (field5c == 0) {
+  if (hoverHelpEnabled5c == 0) {
     if ((char)inputGateFlag4c != 0 && GetBoolSlot28() != 0) {
       return 1;
     }
@@ -774,20 +774,20 @@ void TView::RefreshCityProductionViewStateFromContext(RgnHandle clipRegion) {
 }
 
 // FUNCTION: IMPERIALISM 0x0048c220
-void TView::EnableAndProcessFlag(CString sharedString) {
-  field5c = 1;
-  sharedStringRef = sharedString;
+void TView::SetHoverHelpText(CString sharedString) {
+  hoverHelpEnabled5c = 1;
+  hoverHelpText58 = sharedString;
 }
 
 // FUNCTION: IMPERIALISM 0x0048c250
 void TView::HandleCursorHoverFallback(CPoint* point, RgnHandle hitArg) {
-  if (field5c != 0) {
+  if (hoverHelpEnabled5c != 0) {
     RECT rect;
     BuildRectFromSlot158(&rect);
     RECT parentRect;
     CopyRect(&parentRect, &rect);
     if (g_pCursorControlPanel != nullptr) {
-      g_pCursorControlPanel->SetTextAndLayoutRect(sharedStringRef, &parentRect);
+      g_pCursorControlPanel->SetTextAndLayoutRect(hoverHelpText58, &parentRect);
     }
   }
   if (GetField4E() != 0xffff) {

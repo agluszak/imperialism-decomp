@@ -21,4 +21,7 @@ IMPLEMENT_DYNCREATE(TPanelView, TView)
 TPanelView::TPanelView() : TView(), m_panelData(0) {}
 
 // FUNCTION: IMPERIALISM 0x004f79e0
-void TPanelView::NoOpUiLifecycleHook(int arg) {}
+void TPanelView::NoOpUiLifecycleHook(int arg) {
+  TView::NoOpUiLifecycleHook(arg);
+  m_panelData = ownerContext;
+}

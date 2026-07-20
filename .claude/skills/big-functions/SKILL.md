@@ -64,7 +64,7 @@ a listing ending without an epilogue continues in the next "function"). Per widg
 → tag/field stores → slots 0xa4/0xa8 = `SetEnabled`/`SetState` → style bytes + rect →
 per-class tail call (slot 0x1c8 on pictures, `BindUiResourceTextAndStyle` 0x41b490 on text)
 → `g_pUiResourceContext = 0` (+ `RemoveTail` when the widget takes no children).
-Out-of-line variants are real functions in `ui_resource_pool.cpp` (0x41b210/0x41b3a0/
+Out-of-line variants are real functions in `ui_resource_builder.cpp` (0x41b210/0x41b3a0/
 0x41b450/0x41b490). First param is the `CWnd*` host; the event-code check is
 `(short)nEventCode != 0xNNN → return 0`. Gotcha: MSVC schedules argument pushes early —
 match pushes to callee-consumed counts, not adjacency to the nearest call.

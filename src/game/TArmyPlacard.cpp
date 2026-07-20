@@ -52,7 +52,7 @@ void TArmyPlacard::ApplyRectSlot110(RECT* rectBuffer) {
   if (this->glyph90 != 0) {
     // Original (0x58bfe0): style (0, 10, 0x2b67) for the main pass and
     // (0, 10, 0x2b6c) for the offset shadow pass.
-    ApplyUiTextStyleAndSyncColor(0, 10, 0x2b67);
+    ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 10, 0x2b67);
     countText.Format(g_szDecimalFormat, static_cast<int>(this->glyph90));
 
     short textWidth = MeasureTextExtentWithCachedQuickDrawStyle(&countText);
@@ -60,12 +60,12 @@ void TArmyPlacard::ApplyRectSlot110(RECT* rectBuffer) {
     short textY = static_cast<short>(frameHeight38 - 2);
 
     SetQuickDrawTextOriginWithContextOffset(textX, textY);
-    DrawTextWithCachedStyle(&countText);
+    DrawTextWithCachedQuickDrawStyleState(&countText);
 
-    ApplyUiTextStyleAndSyncColor(0, 10, 0x2b6c);
+    ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 10, 0x2b6c);
     SetQuickDrawTextOriginWithContextOffset(static_cast<short>(textX - 1),
                                             static_cast<short>(textY - 1));
-    DrawTextWithCachedStyle(&countText);
+    DrawTextWithCachedQuickDrawStyleState(&countText);
   }
 }
 
