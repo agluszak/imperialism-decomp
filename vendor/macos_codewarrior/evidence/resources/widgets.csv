@@ -1,0 +1,2043 @@
+resource_file,view_id,view_id_hex,view_name,offset,depth,parent_offset,parent_tag,type_code,class_name,tag,x,y,width,height
+Armory.rsrc,9208,0x23f8,Armory 3,0x026f,0,,,pict,TArmoryView,DLOG,0,0,370,410
+Armory.rsrc,9208,0x23f8,Armory 3,0x02da,1,0x026f,DLOG,stat,,unit,28,60,150,19
+Armory.rsrc,9208,0x23f8,Armory 3,0x0340,1,0x026f,DLOG,clus,,sele,200,50,165,346
+Armory.rsrc,9208,0x23f8,Armory 3,0x03a2,2,0x0340,sele,clus,,clu4,91,92,64,76
+Armory.rsrc,9208,0x23f8,Armory 3,0x0404,3,0x03a2,clu4,pict,,num4,24,56,18,20
+Armory.rsrc,9208,0x23f8,Armory 3,0x0512,3,0x03a2,clu4,pict,TUpDownPictureButton,minu,3,56,20,20
+Armory.rsrc,9208,0x23f8,Armory 3,0x0586,3,0x03a2,clu4,pict,TUpDownPictureButton,plus,42,56,20,20
+Armory.rsrc,9208,0x23f8,Armory 3,0x05fa,2,0x0340,sele,pict,TRadioPictureButton,civ4,94,92,60,56
+Armory.rsrc,9208,0x23f8,Armory 3,0x066d,2,0x0340,sele,clus,,clu6,91,260,64,76
+Armory.rsrc,9208,0x23f8,Armory 3,0x06cf,3,0x066d,clu6,pict,,num6,24,56,18,20
+Armory.rsrc,9208,0x23f8,Armory 3,0x07a7,3,0x066d,clu6,pict,TUpDownPictureButton,minu,3,56,20,20
+Armory.rsrc,9208,0x23f8,Armory 3,0x081b,3,0x066d,clu6,pict,TUpDownPictureButton,plus,42,56,20,20
+Armory.rsrc,9208,0x23f8,Armory 3,0x088f,2,0x0340,sele,pict,TRadioPictureButton,civ6,94,260,60,56
+Armory.rsrc,9208,0x23f8,Armory 3,0x0902,2,0x0340,sele,clus,,clu3,91,8,64,76
+Armory.rsrc,9208,0x23f8,Armory 3,0x0964,3,0x0902,clu3,pict,,num3,24,56,18,20
+Armory.rsrc,9208,0x23f8,Armory 3,0x0a3c,3,0x0902,clu3,pict,TUpDownPictureButton,minu,3,56,20,20
+Armory.rsrc,9208,0x23f8,Armory 3,0x0ab0,3,0x0902,clu3,pict,TUpDownPictureButton,plus,42,56,20,20
+Armory.rsrc,9208,0x23f8,Armory 3,0x0b24,2,0x0340,sele,pict,TRadioPictureButton,civ3,94,9,60,56
+Armory.rsrc,9208,0x23f8,Armory 3,0x0b97,2,0x0340,sele,clus,,clu5,91,176,64,76
+Armory.rsrc,9208,0x23f8,Armory 3,0x0bf9,3,0x0b97,clu5,pict,,num5,24,56,18,20
+Armory.rsrc,9208,0x23f8,Armory 3,0x0cd1,3,0x0b97,clu5,pict,TUpDownPictureButton,minu,3,56,20,20
+Armory.rsrc,9208,0x23f8,Armory 3,0x0d45,3,0x0b97,clu5,pict,TUpDownPictureButton,plus,42,56,20,20
+Armory.rsrc,9208,0x23f8,Armory 3,0x0db9,2,0x0340,sele,pict,TRadioPictureButton,civ5,94,176,60,56
+Armory.rsrc,9208,0x23f8,Armory 3,0x0e2c,2,0x0340,sele,clus,,clu2,12,176,64,76
+Armory.rsrc,9208,0x23f8,Armory 3,0x0e8e,3,0x0e2c,clu2,pict,,num2,24,56,18,20
+Armory.rsrc,9208,0x23f8,Armory 3,0x0f66,3,0x0e2c,clu2,pict,TUpDownPictureButton,minu,3,56,20,20
+Armory.rsrc,9208,0x23f8,Armory 3,0x0fda,3,0x0e2c,clu2,pict,TUpDownPictureButton,plus,42,56,20,20
+Armory.rsrc,9208,0x23f8,Armory 3,0x104e,2,0x0340,sele,pict,TRadioPictureButton,civ2,15,176,60,56
+Armory.rsrc,9208,0x23f8,Armory 3,0x10c1,2,0x0340,sele,clus,,clu7,12,260,64,76
+Armory.rsrc,9208,0x23f8,Armory 3,0x1123,3,0x10c1,clu7,pict,,num7,24,56,18,20
+Armory.rsrc,9208,0x23f8,Armory 3,0x11fb,3,0x10c1,clu7,pict,TUpDownPictureButton,minu,3,56,20,20
+Armory.rsrc,9208,0x23f8,Armory 3,0x126f,3,0x10c1,clu7,pict,TUpDownPictureButton,plus,42,56,20,20
+Armory.rsrc,9208,0x23f8,Armory 3,0x12e3,2,0x0340,sele,pict,TRadioPictureButton,civ7,15,260,60,56
+Armory.rsrc,9208,0x23f8,Armory 3,0x1356,2,0x0340,sele,clus,,clu1,12,92,64,76
+Armory.rsrc,9208,0x23f8,Armory 3,0x13b8,3,0x1356,clu1,pict,,num1,24,56,18,20
+Armory.rsrc,9208,0x23f8,Armory 3,0x1490,3,0x1356,clu1,pict,TUpDownPictureButton,minu,3,56,20,20
+Armory.rsrc,9208,0x23f8,Armory 3,0x1504,3,0x1356,clu1,pict,TUpDownPictureButton,plus,42,56,20,20
+Armory.rsrc,9208,0x23f8,Armory 3,0x1578,2,0x0340,sele,pict,TRadioPictureButton,civ1,15,92,60,56
+Armory.rsrc,9208,0x23f8,Armory 3,0x15eb,2,0x0340,sele,clus,,clu0,12,8,64,76
+Armory.rsrc,9208,0x23f8,Armory 3,0x164d,3,0x15eb,clu0,pict,,num0,24,56,18,20
+Armory.rsrc,9208,0x23f8,Armory 3,0x1725,3,0x15eb,clu0,pict,TUpDownPictureButton,minu,3,56,20,20
+Armory.rsrc,9208,0x23f8,Armory 3,0x1799,3,0x15eb,clu0,pict,TUpDownPictureButton,plus,42,56,20,20
+Armory.rsrc,9208,0x23f8,Armory 3,0x180d,2,0x0340,sele,pict,TRadioPictureButton,civ0,15,8,60,56
+Armory.rsrc,9208,0x23f8,Armory 3,0x1880,1,0x026f,DLOG,pict,,plaq,14,80,179,183
+Armory.rsrc,9208,0x23f8,Armory 3,0x1bb0,2,0x1880,plaq,stat,,cost,3,84,73,16
+Armory.rsrc,9208,0x23f8,Armory 3,0x1c16,2,0x1880,plaq,stat,,avai,3,133,73,16
+Armory.rsrc,9208,0x23f8,Armory 3,0x1cf4,2,0x1880,plaq,stat,,cos3,127,96,51,16
+Armory.rsrc,9208,0x23f8,Armory 3,0x1d5a,2,0x1880,plaq,stat,,ava3,126,147,51,16
+Armory.rsrc,9208,0x23f8,Armory 3,0x1dc0,2,0x1880,plaq,stat,,sta3,75,62,36,18
+Armory.rsrc,9208,0x23f8,Armory 3,0x1f16,2,0x1880,plaq,stat,,lab0,3,5,71,18
+Armory.rsrc,9208,0x23f8,Armory 3,0x1f7c,2,0x1880,plaq,stat,,lab1,3,24,71,18
+Armory.rsrc,9208,0x23f8,Armory 3,0x1fe2,2,0x1880,plaq,stat,,lab2,3,43,71,18
+Armory.rsrc,9208,0x23f8,Armory 3,0x2048,2,0x1880,plaq,stat,,lab3,3,62,71,18
+Armory.rsrc,9208,0x23f8,Armory 3,0x20ae,1,0x026f,DLOG,stat,,desc,17,273,170,106
+Armory.rsrc,9208,0x23f8,Armory 3,0x2114,1,0x026f,DLOG,stat,,titl,102,9,158,33
+Citydlog.rsrc,9200,0x23f0,Textile Mill,0x026f,0,,,pict,TIndustryView,DLOG,0,0,270,120
+Citydlog.rsrc,9200,0x23f0,Textile Mill,0x02dc,1,0x026f,DLOG,view,,equa,16,49,235,32
+Citydlog.rsrc,9200,0x23f0,Textile Mill,0x0320,1,0x026f,DLOG,stat,,labV,64,71,14,14
+Citydlog.rsrc,9200,0x23f0,Textile Mill,0x0386,1,0x026f,DLOG,clus,TIndustryCluster,fabr,19,87,239,36
+Citydlog.rsrc,9200,0x23f0,Textile Mill,0x03f8,2,0x0386,fabr,pict,TSidewaysArrow,left,49,4,13,13
+Citydlog.rsrc,9200,0x23f0,Textile Mill,0x0466,2,0x0386,fabr,pict,TSidewaysArrow,rght,212,4,13,13
+Citydlog.rsrc,9200,0x23f0,Textile Mill,0x054c,2,0x0386,fabr,view,TIndustryAmtBar,bar ,62,8,150,6
+Citydlog.rsrc,9200,0x23f0,Textile Mill,0x059f,1,0x026f,DLOG,pict,TUpDownPictureButton,expa,196,9,61,24
+Citydlog.rsrc,9200,0x23f0,Textile Mill,0x0613,1,0x026f,DLOG,pict,,flag,137,6,53,29
+Citydlog.rsrc,9200,0x23f0,Textile Mill,0x0673,1,0x026f,DLOG,stat,,or  ,126,59,30,15
+Citydlog.rsrc,9200,0x23f0,Textile Mill,0x06d9,1,0x026f,DLOG,stat,,name,19,7,117,16
+Citydlog.rsrc,9200,0x23f0,Textile Mill,0x073f,1,0x026f,DLOG,stat,,capT,19,21,117,16
+Citydlog.rsrc,9200,0x23f0,Textile Mill,0x07a5,1,0x026f,DLOG,stat,,cott,119,71,14,14
+Citydlog.rsrc,9200,0x23f0,Textile Mill,0x080b,1,0x026f,DLOG,stat,,wool,196,71,14,14
+Citydlog.rsrc,9201,0x23f1,Clothing Factory,0x026f,0,,,pict,TIndustryView,DLOG,0,0,270,120
+Citydlog.rsrc,9201,0x23f1,Clothing Factory,0x02dc,1,0x026f,DLOG,view,,equa,16,49,235,32
+Citydlog.rsrc,9201,0x23f1,Clothing Factory,0x0320,1,0x026f,DLOG,stat,,labV,88,71,14,14
+Citydlog.rsrc,9201,0x23f1,Clothing Factory,0x0386,1,0x026f,DLOG,clus,TIndustryCluster,clot,19,87,239,36
+Citydlog.rsrc,9201,0x23f1,Clothing Factory,0x03f8,2,0x0386,clot,pict,TSidewaysArrow,left,49,3,13,13
+Citydlog.rsrc,9201,0x23f1,Clothing Factory,0x0466,2,0x0386,clot,pict,TSidewaysArrow,rght,212,3,13,13
+Citydlog.rsrc,9201,0x23f1,Clothing Factory,0x054c,2,0x0386,clot,view,TIndustryAmtBar,bar ,62,8,150,6
+Citydlog.rsrc,9201,0x23f1,Clothing Factory,0x059f,1,0x026f,DLOG,pict,TUpDownPictureButton,expa,196,9,61,24
+Citydlog.rsrc,9201,0x23f1,Clothing Factory,0x0613,1,0x026f,DLOG,pict,,flag,137,6,53,29
+Citydlog.rsrc,9201,0x23f1,Clothing Factory,0x0673,1,0x026f,DLOG,stat,,name,19,7,117,16
+Citydlog.rsrc,9201,0x23f1,Clothing Factory,0x06d9,1,0x026f,DLOG,stat,,capT,19,21,117,16
+Citydlog.rsrc,9201,0x23f1,Clothing Factory,0x073f,1,0x026f,DLOG,stat,,fabr,155,71,14,14
+Citydlog.rsrc,9202,0x23f2,Steel Mill,0x026f,0,,,pict,TIndustryView,DLOG,0,0,270,120
+Citydlog.rsrc,9202,0x23f2,Steel Mill,0x02dc,1,0x026f,DLOG,view,,equa,16,49,235,32
+Citydlog.rsrc,9202,0x23f2,Steel Mill,0x0320,1,0x026f,DLOG,stat,,labV,75,76,14,14
+Citydlog.rsrc,9202,0x23f2,Steel Mill,0x0386,1,0x026f,DLOG,clus,TIndustryCluster,stee,19,87,239,36
+Citydlog.rsrc,9202,0x23f2,Steel Mill,0x03f8,2,0x0386,stee,pict,TSidewaysArrow,left,49,4,13,13
+Citydlog.rsrc,9202,0x23f2,Steel Mill,0x0466,2,0x0386,stee,pict,TSidewaysArrow,rght,212,4,13,13
+Citydlog.rsrc,9202,0x23f2,Steel Mill,0x054c,2,0x0386,stee,view,TIndustryAmtBar,bar ,62,8,150,6
+Citydlog.rsrc,9202,0x23f2,Steel Mill,0x059f,1,0x026f,DLOG,pict,TUpDownPictureButton,expa,196,9,61,24
+Citydlog.rsrc,9202,0x23f2,Steel Mill,0x0613,1,0x026f,DLOG,pict,,flag,137,6,53,29
+Citydlog.rsrc,9202,0x23f2,Steel Mill,0x0673,1,0x026f,DLOG,stat,,name,19,7,117,16
+Citydlog.rsrc,9202,0x23f2,Steel Mill,0x06d9,1,0x026f,DLOG,stat,,capT,19,21,117,16
+Citydlog.rsrc,9202,0x23f2,Steel Mill,0x073f,1,0x026f,DLOG,stat,,coal,126,76,14,14
+Citydlog.rsrc,9202,0x23f2,Steel Mill,0x07a5,1,0x026f,DLOG,stat,,iron,170,76,14,14
+Citydlog.rsrc,9203,0x23f3,Metalwerks,0x026f,0,,,pict,TIndustryView,DLOG,0,0,270,160
+Citydlog.rsrc,9203,0x23f3,Metalwerks,0x02dc,1,0x026f,DLOG,view,,equa,16,49,235,32
+Citydlog.rsrc,9203,0x23f3,Metalwerks,0x0320,1,0x026f,DLOG,stat,,labV,64,71,14,14
+Citydlog.rsrc,9203,0x23f3,Metalwerks,0x0386,1,0x026f,DLOG,clus,TIndustryCluster,hard,19,92,239,36
+Citydlog.rsrc,9203,0x23f3,Metalwerks,0x03f8,2,0x0386,hard,pict,TSidewaysArrow,left,49,8,13,13
+Citydlog.rsrc,9203,0x23f3,Metalwerks,0x0466,2,0x0386,hard,pict,TSidewaysArrow,rght,212,8,13,13
+Citydlog.rsrc,9203,0x23f3,Metalwerks,0x054c,2,0x0386,hard,view,TIndustryAmtBar,bar ,62,12,150,6
+Citydlog.rsrc,9203,0x23f3,Metalwerks,0x059f,1,0x026f,DLOG,clus,TIndustryCluster,arma,19,122,239,36
+Citydlog.rsrc,9203,0x23f3,Metalwerks,0x0611,2,0x059f,arma,pict,TSidewaysArrow,left,49,8,13,13
+Citydlog.rsrc,9203,0x23f3,Metalwerks,0x067f,2,0x059f,arma,pict,TSidewaysArrow,rght,212,8,13,13
+Citydlog.rsrc,9203,0x23f3,Metalwerks,0x0765,2,0x059f,arma,view,TIndustryAmtBar,bar ,62,12,150,6
+Citydlog.rsrc,9203,0x23f3,Metalwerks,0x07b8,1,0x026f,DLOG,pict,TUpDownPictureButton,expa,196,9,61,24
+Citydlog.rsrc,9203,0x23f3,Metalwerks,0x082c,1,0x026f,DLOG,pict,,flag,137,6,53,29
+Citydlog.rsrc,9203,0x23f3,Metalwerks,0x088c,1,0x026f,DLOG,stat,,or  ,188,59,30,15
+Citydlog.rsrc,9203,0x23f3,Metalwerks,0x08f2,1,0x026f,DLOG,stat,,name,19,7,117,16
+Citydlog.rsrc,9203,0x23f3,Metalwerks,0x0958,1,0x026f,DLOG,stat,,capT,19,21,117,16
+Citydlog.rsrc,9203,0x23f3,Metalwerks,0x09be,1,0x026f,DLOG,stat,,stee,124,71,14,14
+Citydlog.rsrc,9204,0x23f4,Lumberyard,0x026f,0,,,pict,TIndustryView,DLOG,0,0,270,160
+Citydlog.rsrc,9204,0x23f4,Lumberyard,0x02dc,1,0x026f,DLOG,view,,equa,16,49,235,32
+Citydlog.rsrc,9204,0x23f4,Lumberyard,0x0320,1,0x026f,DLOG,stat,,labV,63,71,14,14
+Citydlog.rsrc,9204,0x23f4,Lumberyard,0x0386,1,0x026f,DLOG,clus,TIndustryCluster,lumb,19,92,239,36
+Citydlog.rsrc,9204,0x23f4,Lumberyard,0x03f8,2,0x0386,lumb,pict,TSidewaysArrow,left,49,8,13,13
+Citydlog.rsrc,9204,0x23f4,Lumberyard,0x0466,2,0x0386,lumb,pict,TSidewaysArrow,rght,212,8,13,13
+Citydlog.rsrc,9204,0x23f4,Lumberyard,0x054c,2,0x0386,lumb,view,TIndustryAmtBar,bar ,62,12,150,6
+Citydlog.rsrc,9204,0x23f4,Lumberyard,0x059f,1,0x026f,DLOG,clus,TIndustryCluster,pape,19,122,239,36
+Citydlog.rsrc,9204,0x23f4,Lumberyard,0x0611,2,0x059f,pape,pict,TSidewaysArrow,left,49,8,13,13
+Citydlog.rsrc,9204,0x23f4,Lumberyard,0x067f,2,0x059f,pape,pict,TSidewaysArrow,rght,212,8,13,13
+Citydlog.rsrc,9204,0x23f4,Lumberyard,0x0765,2,0x059f,pape,view,TIndustryAmtBar,bar ,62,12,150,6
+Citydlog.rsrc,9204,0x23f4,Lumberyard,0x07b8,1,0x026f,DLOG,pict,TUpDownPictureButton,expa,196,9,61,24
+Citydlog.rsrc,9204,0x23f4,Lumberyard,0x082c,1,0x026f,DLOG,pict,,flag,137,6,53,29
+Citydlog.rsrc,9204,0x23f4,Lumberyard,0x088c,1,0x026f,DLOG,stat,,or  ,190,54,30,15
+Citydlog.rsrc,9204,0x23f4,Lumberyard,0x08f2,1,0x026f,DLOG,stat,,name,19,7,117,16
+Citydlog.rsrc,9204,0x23f4,Lumberyard,0x0958,1,0x026f,DLOG,stat,,capT,19,21,117,16
+Citydlog.rsrc,9204,0x23f4,Lumberyard,0x09be,1,0x026f,DLOG,stat,,timb,121,71,14,14
+Citydlog.rsrc,9205,0x23f5,Furniture Factory,0x026f,0,,,pict,TIndustryView,DLOG,0,0,270,120
+Citydlog.rsrc,9205,0x23f5,Furniture Factory,0x02dc,1,0x026f,DLOG,view,,equa,16,49,235,32
+Citydlog.rsrc,9205,0x23f5,Furniture Factory,0x0320,1,0x026f,DLOG,stat,,labV,85,71,14,14
+Citydlog.rsrc,9205,0x23f5,Furniture Factory,0x0386,1,0x026f,DLOG,clus,TIndustryCluster,furn,19,87,239,36
+Citydlog.rsrc,9205,0x23f5,Furniture Factory,0x03f8,2,0x0386,furn,pict,TSidewaysArrow,left,49,4,13,13
+Citydlog.rsrc,9205,0x23f5,Furniture Factory,0x0466,2,0x0386,furn,pict,TSidewaysArrow,rght,212,4,13,13
+Citydlog.rsrc,9205,0x23f5,Furniture Factory,0x054c,2,0x0386,furn,view,TIndustryAmtBar,bar ,62,8,150,6
+Citydlog.rsrc,9205,0x23f5,Furniture Factory,0x059f,1,0x026f,DLOG,pict,TUpDownPictureButton,expa,196,9,61,24
+Citydlog.rsrc,9205,0x23f5,Furniture Factory,0x0613,1,0x026f,DLOG,pict,,flag,137,6,53,29
+Citydlog.rsrc,9205,0x23f5,Furniture Factory,0x0673,1,0x026f,DLOG,stat,,name,19,7,117,16
+Citydlog.rsrc,9205,0x23f5,Furniture Factory,0x06d9,1,0x026f,DLOG,stat,,capT,19,21,117,16
+Citydlog.rsrc,9205,0x23f5,Furniture Factory,0x073f,1,0x026f,DLOG,stat,,lumb,150,71,14,14
+Citydlog.rsrc,9206,0x23f6,Oil Refinery,0x026f,0,,,pict,TIndustryView,DLOG,0,0,270,120
+Citydlog.rsrc,9206,0x23f6,Oil Refinery,0x02dc,1,0x026f,DLOG,view,,equa,16,49,235,32
+Citydlog.rsrc,9206,0x23f6,Oil Refinery,0x0320,1,0x026f,DLOG,stat,,labV,86,71,14,14
+Citydlog.rsrc,9206,0x23f6,Oil Refinery,0x0386,1,0x026f,DLOG,clus,TIndustryCluster,fuel,19,87,239,36
+Citydlog.rsrc,9206,0x23f6,Oil Refinery,0x03f8,2,0x0386,fuel,pict,TSidewaysArrow,left,49,4,13,13
+Citydlog.rsrc,9206,0x23f6,Oil Refinery,0x0466,2,0x0386,fuel,pict,TSidewaysArrow,rght,212,4,13,13
+Citydlog.rsrc,9206,0x23f6,Oil Refinery,0x054c,2,0x0386,fuel,view,TIndustryAmtBar,bar ,62,8,150,6
+Citydlog.rsrc,9206,0x23f6,Oil Refinery,0x059f,1,0x026f,DLOG,pict,TUpDownPictureButton,expa,196,9,61,24
+Citydlog.rsrc,9206,0x23f6,Oil Refinery,0x0613,1,0x026f,DLOG,pict,,flag,137,6,53,29
+Citydlog.rsrc,9206,0x23f6,Oil Refinery,0x0673,1,0x026f,DLOG,stat,,name,19,7,117,16
+Citydlog.rsrc,9206,0x23f6,Oil Refinery,0x06d9,1,0x026f,DLOG,stat,,capT,19,21,117,16
+Citydlog.rsrc,9206,0x23f6,Oil Refinery,0x073f,1,0x026f,DLOG,stat,,oil ,153,71,14,14
+Citydlog.rsrc,9209,0x23f9,School,0x026f,0,,,pict,TTradeSchoolView,DLOG,0,0,270,270
+Citydlog.rsrc,9209,0x23f9,School,0x02df,1,0x026f,DLOG,clus,TRailCluster,trai,20,152,239,36
+Citydlog.rsrc,9209,0x23f9,School,0x034d,2,0x02df,trai,pict,TSidewaysArrow,left,49,4,13,13
+Citydlog.rsrc,9209,0x23f9,School,0x03bb,2,0x02df,trai,pict,TSidewaysArrow,rght,212,4,13,13
+Citydlog.rsrc,9209,0x23f9,School,0x04a1,2,0x02df,trai,view,TRailAmtBar,bar ,62,8,150,6
+Citydlog.rsrc,9209,0x23f9,School,0x04f0,1,0x026f,DLOG,clus,TRailCluster,prof,20,233,239,36
+Citydlog.rsrc,9209,0x23f9,School,0x055e,2,0x04f0,prof,pict,TSidewaysArrow,left,49,4,13,13
+Citydlog.rsrc,9209,0x23f9,School,0x05cc,2,0x04f0,prof,pict,TSidewaysArrow,rght,212,4,13,13
+Citydlog.rsrc,9209,0x23f9,School,0x06b2,2,0x04f0,prof,view,TRailAmtBar,bar ,62,8,150,6
+Citydlog.rsrc,9209,0x23f9,School,0x0701,1,0x026f,DLOG,stat,,cos1,147,118,44,17
+Citydlog.rsrc,9209,0x23f9,School,0x0767,1,0x026f,DLOG,stat,,cos2,150,200,44,17
+Citydlog.rsrc,9209,0x23f9,School,0x07cd,1,0x026f,DLOG,stat,,name,52,13,166,26
+Citydlog.rsrc,9209,0x23f9,School,0x0833,1,0x026f,DLOG,view,,equ1,8,57,56,32
+Citydlog.rsrc,9209,0x23f9,School,0x0877,1,0x026f,DLOG,view,,equ2,68,57,75,32
+Citydlog.rsrc,9209,0x23f9,School,0x08bb,1,0x026f,DLOG,view,,equ3,149,57,111,32
+Citydlog.rsrc,9209,0x23f9,School,0x08ff,1,0x026f,DLOG,stat,,pap1,116,136,14,14
+Citydlog.rsrc,9209,0x23f9,School,0x0965,1,0x026f,DLOG,stat,,pap2,127,218,14,14
+Citydlog.rsrc,9209,0x23f9,School,0x09cb,1,0x026f,DLOG,stat,,untV,59,136,14,14
+Citydlog.rsrc,9209,0x23f9,School,0x0a31,1,0x026f,DLOG,stat,,traV,59,218,14,14
+Citydlog.rsrc,9209,0x23f9,School,0x0a97,1,0x026f,DLOG,stat,,mon1,189,136,14,14
+Citydlog.rsrc,9209,0x23f9,School,0x0afd,1,0x026f,DLOG,stat,,mon2,189,218,14,14
+Citydlog.rsrc,9209,0x23f9,School,0x0b63,1,0x026f,DLOG,view,,equ4,24,110,224,32
+Citydlog.rsrc,9209,0x23f9,School,0x0ba7,1,0x026f,DLOG,view,,equ5,24,192,224,32
+Citydlog.rsrc,9211,0x23fb,Power Plant,0x026f,0,,,pict,TIndustryView,DLOG,0,0,270,120
+Citydlog.rsrc,9211,0x23fb,Power Plant,0x02dc,1,0x026f,DLOG,view,,equa,16,44,235,32
+Citydlog.rsrc,9211,0x23fb,Power Plant,0x0320,1,0x026f,DLOG,clus,TRailCluster,powe,19,81,239,36
+Citydlog.rsrc,9211,0x23fb,Power Plant,0x038e,2,0x0320,powe,pict,TSidewaysArrow,left,49,10,13,13
+Citydlog.rsrc,9211,0x23fb,Power Plant,0x03fc,2,0x0320,powe,pict,TSidewaysArrow,rght,212,10,13,13
+Citydlog.rsrc,9211,0x23fb,Power Plant,0x04e2,2,0x0320,powe,view,TRailAmtBar,bar ,62,14,150,6
+Citydlog.rsrc,9211,0x23fb,Power Plant,0x0531,1,0x026f,DLOG,stat,,name,19,7,117,16
+Citydlog.rsrc,9211,0x23fb,Power Plant,0x0597,1,0x026f,DLOG,stat,,fuel,45,66,14,14
+Citydlog.rsrc,9212,0x23fc,Cannery,0x026f,0,,,pict,TIndustryView,DLOG,0,0,270,160
+Citydlog.rsrc,9212,0x23fc,Cannery,0x02dc,1,0x026f,DLOG,view,,equa,16,49,235,60
+Citydlog.rsrc,9212,0x23fc,Cannery,0x0320,1,0x026f,DLOG,stat,,labV,55,85,14,14
+Citydlog.rsrc,9212,0x23fc,Cannery,0x0386,1,0x026f,DLOG,clus,TRailCluster,food,20,121,239,36
+Citydlog.rsrc,9212,0x23fc,Cannery,0x03f4,2,0x0386,food,pict,TSidewaysArrow,left,49,10,13,13
+Citydlog.rsrc,9212,0x23fc,Cannery,0x0462,2,0x0386,food,pict,TSidewaysArrow,rght,212,10,13,13
+Citydlog.rsrc,9212,0x23fc,Cannery,0x0548,2,0x0386,food,view,TRailAmtBar,bar ,62,14,150,6
+Citydlog.rsrc,9212,0x23fc,Cannery,0x0597,1,0x026f,DLOG,stat,,or  ,172,69,30,15
+Citydlog.rsrc,9212,0x23fc,Cannery,0x05fd,1,0x026f,DLOG,stat,,name,19,7,117,16
+Citydlog.rsrc,9212,0x23fc,Cannery,0x0663,1,0x026f,DLOG,stat,,prod,147,85,14,14
+Citydlog.rsrc,9212,0x23fc,Cannery,0x06c9,1,0x026f,DLOG,stat,,grai,100,85,14,14
+Citydlog.rsrc,9212,0x23fc,Cannery,0x072f,1,0x026f,DLOG,stat,,fish,196,103,14,14
+Citydlog.rsrc,9213,0x23fd,Warehouse,0x0080,0,,,pict,TWarehouseView,DLOG,0,0,176,300
+Citydlog.rsrc,9213,0x23fd,Warehouse,0x0a18,1,0x0080,DLOG,stat,,name,5,7,165,16
+Citydlog.rsrc,9214,0x23fe,Railyard,0x026f,0,,,pict,TIndustryView,DLOG,0,0,270,120
+Citydlog.rsrc,9214,0x23fe,Railyard,0x02dc,1,0x026f,DLOG,view,,equa,16,49,235,32
+Citydlog.rsrc,9214,0x23fe,Railyard,0x0320,1,0x026f,DLOG,stat,,labV,72,68,14,14
+Citydlog.rsrc,9214,0x23fe,Railyard,0x0386,1,0x026f,DLOG,clus,TRailCluster,rail,19,87,239,36
+Citydlog.rsrc,9214,0x23fe,Railyard,0x03f4,2,0x0386,rail,pict,TSidewaysArrow,left,49,4,13,13
+Citydlog.rsrc,9214,0x23fe,Railyard,0x0462,2,0x0386,rail,pict,TSidewaysArrow,rght,211,4,13,13
+Citydlog.rsrc,9214,0x23fe,Railyard,0x0548,2,0x0386,rail,view,TRailAmtBar,bar ,62,8,150,6
+Citydlog.rsrc,9214,0x23fe,Railyard,0x0597,1,0x026f,DLOG,stat,,name,19,7,117,16
+Citydlog.rsrc,9214,0x23fe,Railyard,0x05fd,1,0x026f,DLOG,stat,,stee,124,68,14,14
+Citydlog.rsrc,9214,0x23fe,Railyard,0x0663,1,0x026f,DLOG,stat,,lumb,174,68,14,14
+Citydlog.rsrc,9215,0x23ff,Pop growth,0x026f,0,,,pict,TIndustryView,DLOG,0,0,270,120
+Citydlog.rsrc,9215,0x23ff,Pop growth,0x02dc,1,0x026f,DLOG,stat,,capT,19,20,117,16
+Citydlog.rsrc,9215,0x23ff,Pop growth,0x0342,1,0x026f,DLOG,view,,equa,17,48,235,32
+Citydlog.rsrc,9215,0x23ff,Pop growth,0x0386,1,0x026f,DLOG,stat,,food,73,71,14,14
+Citydlog.rsrc,9215,0x23ff,Pop growth,0x03ec,1,0x026f,DLOG,clus,TRailCluster,popu,25,85,239,36
+Citydlog.rsrc,9215,0x23ff,Pop growth,0x045a,2,0x03ec,popu,pict,TSidewaysArrow,left,49,4,13,13
+Citydlog.rsrc,9215,0x23ff,Pop growth,0x04c8,2,0x03ec,popu,pict,TSidewaysArrow,rght,212,4,13,13
+Citydlog.rsrc,9215,0x23ff,Pop growth,0x05ae,2,0x03ec,popu,view,TRailAmtBar,bar ,62,8,150,6
+Citydlog.rsrc,9215,0x23ff,Pop growth,0x05fd,1,0x026f,DLOG,stat,,name,19,6,117,16
+Citydlog.rsrc,9215,0x23ff,Pop growth,0x0663,1,0x026f,DLOG,stat,,clot,124,71,14,14
+Citydlog.rsrc,9215,0x23ff,Pop growth,0x06c9,1,0x026f,DLOG,stat,,furn,165,71,14,14
+Citydlog.rsrc,9215,0x23ff,Pop growth,0x072f,1,0x026f,DLOG,stat,,prov,136,20,124,16
+Citydlog.rsrc,9220,0x2404,Generic Creator,0x029e,0,,,pict,TBuildingConstructionView,DLOG,0,0,320,320
+Citydlog.rsrc,9220,0x2404,Generic Creator,0x0317,1,0x029e,DLOG,pict,TUpDownPictureButton,okay,246,289,61,24
+Citydlog.rsrc,9220,0x2404,Generic Creator,0x038b,1,0x029e,DLOG,pict,TUpDownPictureButton,cncl,13,289,61,23
+Citydlog.rsrc,9220,0x2404,Generic Creator,0x03ff,1,0x029e,DLOG,stat,,tex1,20,194,281,36
+Citydlog.rsrc,9220,0x2404,Generic Creator,0x0465,1,0x029e,DLOG,stat,,tex2,19,257,282,30
+Citydlog.rsrc,9220,0x2404,Generic Creator,0x04cb,1,0x029e,DLOG,stat,,warn,226,283,84,32
+Citydlog.rsrc,9220,0x2404,Generic Creator,0x0567,1,0x029e,DLOG,stat,,name,14,6,290,15
+Citydlog.rsrc,9220,0x2404,Generic Creator,0x05cd,1,0x029e,DLOG,stat,,cost,227,47,86,35
+Citydlog.rsrc,9220,0x2404,Generic Creator,0x0633,1,0x029e,DLOG,stat,,capT,14,19,290,15
+Citydlog.rsrc,9220,0x2404,Generic Creator,0x0699,1,0x029e,DLOG,stat,,or  ,205,235,30,15
+Citydlog.rsrc,9220,0x2404,Generic Creator,0x06ff,1,0x029e,DLOG,stat,,buck,227,92,86,35
+Citydlog.rsrc,9221,0x2405,Generic expander,0x029e,0,,,pict,TBuildingExpansionView,DLOG,0,0,320,225
+Citydlog.rsrc,9221,0x2405,Generic expander,0x0314,1,0x029e,DLOG,pict,TUpDownPictureButton,okay,243,194,61,24
+Citydlog.rsrc,9221,0x2405,Generic expander,0x0388,1,0x029e,DLOG,pict,TUpDownPictureButton,cncl,18,194,61,23
+Citydlog.rsrc,9221,0x2405,Generic expander,0x03fc,1,0x029e,DLOG,stat,,name,14,6,290,15
+Citydlog.rsrc,9221,0x2405,Generic expander,0x0462,1,0x029e,DLOG,stat,,capT,14,19,290,15
+Citydlog.rsrc,9221,0x2405,Generic expander,0x04c8,1,0x029e,DLOG,stat,,cost,227,47,86,35
+Citydlog.rsrc,9221,0x2405,Generic expander,0x052e,1,0x029e,DLOG,stat,,warn,231,190,84,32
+Citymain.rsrc,2011,0x07db,City Screen,0x0004,0,,,view,,base,0,0,2000,2000
+Citymain.rsrc,2011,0x07db,City Screen,0x0048,1,0x0004,base,pict,TCityProductionView,main,0,0,640,480
+Citymain.rsrc,2011,0x07db,City Screen,0x00f1,2,0x0048,main,pict,TPlacard,labP,6,110,39,35
+Citymain.rsrc,2011,0x07db,City Screen,0x0159,2,0x0048,main,pict,TPlacard,untr,6,149,39,35
+Citymain.rsrc,2011,0x07db,City Screen,0x01c1,2,0x0048,main,pict,TPlacard,trai,6,189,39,35
+Citymain.rsrc,2011,0x07db,City Screen,0x0229,2,0x0048,main,pict,TPlacard,prof,6,229,39,35
+Citymain.rsrc,2011,0x07db,City Screen,0x0291,2,0x0048,main,pict,TPlacard,powe,6,269,39,35
+Citymain.rsrc,2011,0x07db,City Screen,0x02f9,2,0x0048,main,pict,TPlacard,sick,6,349,39,35
+Citymain.rsrc,2011,0x07db,City Screen,0x0361,2,0x0048,main,pict,TPlacard,dead,6,389,39,35
+Citymain.rsrc,2011,0x07db,City Screen,0x03c9,2,0x0048,main,pict,TPlacard,prod,595,149,39,35
+Citymain.rsrc,2011,0x07db,City Screen,0x0431,2,0x0048,main,pict,TPlacard,grai,595,110,39,35
+Citymain.rsrc,2011,0x07db,City Screen,0x0499,2,0x0048,main,pict,TPlacard,meat,595,189,39,80
+Citymain.rsrc,2011,0x07db,City Screen,0x0501,2,0x0048,main,pict,TPlacard,clot,595,318,39,35
+Citymain.rsrc,2011,0x07db,City Screen,0x0569,2,0x0048,main,pict,TPlacard,hard,595,395,39,35
+Citymain.rsrc,2011,0x07db,City Screen,0x05d1,2,0x0048,main,pict,TPlacard,furn,595,357,39,35
+Citymain.rsrc,2011,0x07db,City Screen,0x0639,2,0x0048,main,clus,TToolBarCluster,tool,7,6,228,67
+Citymain.rsrc,2011,0x07db,City Screen,0x06aa,3,0x0639,tool,pict,TPictureButton,end ,5,27,27,37
+Citymain.rsrc,2011,0x07db,City Screen,0x0718,3,0x0639,tool,stat,TDropShadowText,seas,44,4,94,17
+Citymain.rsrc,2011,0x07db,City Screen,0x078d,3,0x0639,tool,stat,TDropShadowText,trea,141,4,75,17
+Citymain.rsrc,2011,0x07db,City Screen,0x0802,2,0x0048,main,clus,TToolBarCluster,topB,267,5,105,26
+Citymain.rsrc,2011,0x07db,City Screen,0x0873,3,0x0802,topB,pict,TUpDownPictureButton,tran,3,3,14,18
+Citymain.rsrc,2011,0x07db,City Screen,0x08e7,3,0x0802,topB,pict,TUpDownPictureButton,city,31,3,14,18
+Citymain.rsrc,2011,0x07db,City Screen,0x095b,3,0x0802,topB,pict,TUpDownPictureButton,trad,59,3,14,18
+Citymain.rsrc,2011,0x07db,City Screen,0x09cf,3,0x0802,topB,pict,TUpDownPictureButton,dipl,88,3,14,18
+Citymain.rsrc,2011,0x07db,City Screen,0x0a43,2,0x0048,main,clus,TToolBarCluster,tbr2,600,31,30,44
+Citymain.rsrc,2011,0x07db,City Screen,0x0ab4,3,0x0a43,tbr2,pict,TPictureButton,quer,0,2,27,37
+Citymain.rsrc,2011,0x07db,City Screen,0x0b22,2,0x0048,main,tevw,TInfoBarText,curs,386,5,201,30
+Diplo.rsrc,1351,0x0547,Battle Report-Diplomacy Style,0x0004,0,,,view,,base,0,0,640,480
+Diplo.rsrc,1351,0x0547,Battle Report-Diplomacy Style,0x0048,1,0x0004,base,view,,base,0,0,640,480
+Diplo.rsrc,1351,0x0547,Battle Report-Diplomacy Style,0x008c,2,0x0048,base,pict,TBattleReportView,main,0,0,640,480
+Diplo.rsrc,1351,0x0547,Battle Report-Diplomacy Style,0x0133,3,0x008c,main,tevw,TInfoBarText,curs,434,7,201,21
+Diplo.rsrc,1351,0x0547,Battle Report-Diplomacy Style,0x01d1,3,0x008c,main,pict,TUpDownPictureButton,prev,294,381,22,22
+Diplo.rsrc,1351,0x0547,Battle Report-Diplomacy Style,0x0245,3,0x008c,main,pict,TUpDownPictureButton,next,325,381,22,22
+Diplo.rsrc,1351,0x0547,Battle Report-Diplomacy Style,0x02b9,3,0x008c,main,pict,TPictureButton,okay,8,38,31,51
+Diplo.rsrc,1351,0x0547,Battle Report-Diplomacy Style,0x0327,3,0x008c,main,pict,TUpDownPictureButton,info,294,412,53,57
+Diplo.rsrc,1351,0x0547,Battle Report-Diplomacy Style,0x039b,3,0x008c,main,stat,TMyStaticText,resu,24,360,286,20
+Diplo.rsrc,1351,0x0547,Battle Report-Diplomacy Style,0x040e,3,0x008c,main,pict,,fflg,28,382,26,20
+Diplo.rsrc,1351,0x0547,Battle Report-Diplomacy Style,0x046e,3,0x008c,main,stat,TMyStaticText,fadm,63,382,224,22
+Diplo.rsrc,1351,0x0547,Battle Report-Diplomacy Style,0x04e1,3,0x008c,main,pict,,eflg,358,382,26,20
+Diplo.rsrc,1351,0x0547,Battle Report-Diplomacy Style,0x0541,3,0x008c,main,stat,TMyStaticText,eadm,391,382,239,23
+Diplo.rsrc,1351,0x0547,Battle Report-Diplomacy Style,0x05b4,3,0x008c,main,stat,TMyStaticText,loca,331,360,288,20
+Diplo.rsrc,1351,0x0547,Battle Report-Diplomacy Style,0x0627,3,0x008c,main,stat,TMyStaticText,fshp,29,407,257,65
+Diplo.rsrc,1351,0x0547,Battle Report-Diplomacy Style,0x069a,3,0x008c,main,stat,TMyStaticText,eshp,357,407,272,65
+Diplo.rsrc,1351,0x0547,Battle Report-Diplomacy Style,0x070d,3,0x008c,main,clus,TToolBarCluster,tbr2,602,37,40,46
+Diplo.rsrc,1351,0x0547,Battle Report-Diplomacy Style,0x077e,4,0x070d,tbr2,pict,TPictureButton,quer,6,3,22,37
+Diplo.rsrc,1352,0x0548,Detail Battle Report,0x0080,0,,,pict,TBattleDetailBook,DLOG,0,0,480,431
+Diplo.rsrc,1352,0x0548,Detail Battle Report,0x00f1,1,0x0080,DLOG,pict,TPageCorner,lcor,12,387,37,35
+Diplo.rsrc,1352,0x0548,Detail Battle Report,0x015c,1,0x0080,DLOG,pict,TPageCorner,rcor,431,387,40,35
+Diplo.rsrc,1352,0x0548,Detail Battle Report,0x01c7,1,0x0080,DLOG,pict,TPictureButton,okay,27,9,33,32
+Diplo.rsrc,1352,0x0548,Detail Battle Report,0x0235,1,0x0080,DLOG,pict,,flgR,408,10,64,86
+Diplo.rsrc,1352,0x0548,Detail Battle Report,0x0295,1,0x0080,DLOG,pict,,flgL,174,10,64,86
+Diplo.rsrc,1352,0x0548,Detail Battle Report,0x02f5,1,0x0080,DLOG,stat,TDropShadowText,natL,26,40,158,38
+Diplo.rsrc,1352,0x0548,Detail Battle Report,0x036a,1,0x0080,DLOG,stat,TDropShadowText,natR,257,40,157,36
+Diplo.rsrc,1352,0x0548,Detail Battle Report,0x03df,1,0x0080,DLOG,view,TBattleUnitsView,page,14,94,227,320
+Diplo.rsrc,1352,0x0548,Detail Battle Report,0x0433,1,0x0080,DLOG,view,TBattleUnitsView,pagf,243,94,231,319
+Diplo.rsrc,2008,0x07d8,Diplomacy map,0x0004,0,,,view,,base,0,0,2000,2000
+Diplo.rsrc,2008,0x07d8,Diplomacy map,0x0048,1,0x0004,base,pict,TDiplomacyMapView,main,0,0,640,480
+Diplo.rsrc,2008,0x07d8,Diplomacy map,0x00ef,2,0x0048,main,view,TInfoPanelView,info,57,354,518,122
+Diplo.rsrc,2008,0x07d8,Diplomacy map,0x0141,3,0x00ef,info,pict,TMapKey,mkey,268,3,241,117
+Diplo.rsrc,2008,0x07d8,Diplomacy map,0x01a8,3,0x00ef,info,clus,,clus,238,4,36,117
+Diplo.rsrc,2008,0x07d8,Diplomacy map,0x020a,4,0x01a8,clus,pict,TRadioPictureButton,ovr2,6,94,25,25
+Diplo.rsrc,2008,0x07d8,Diplomacy map,0x027d,4,0x01a8,clus,pict,TRadioPictureButton,ovr0,6,-1,25,45
+Diplo.rsrc,2008,0x07d8,Diplomacy map,0x02f0,4,0x01a8,clus,pict,TRadioPictureButton,ovr4,6,44,25,25
+Diplo.rsrc,2008,0x07d8,Diplomacy map,0x0363,4,0x01a8,clus,pict,TRadioPictureButton,ovr1,6,69,25,25
+Diplo.rsrc,2008,0x07d8,Diplomacy map,0x03d6,2,0x0048,main,view,TGrantsView,gran,57,800,518,122
+Diplo.rsrc,2008,0x07d8,Diplomacy map,0x0425,3,0x03d6,gran,pict,,    ,306,3,135,15
+Diplo.rsrc,2008,0x07d8,Diplomacy map,0x0485,3,0x03d6,gran,clus,,docs,6,45,510,60
+Diplo.rsrc,2008,0x07d8,Diplomacy map,0x04e7,4,0x0485,docs,pict,TRadioPictureButton,doc7,462,8,42,55
+Diplo.rsrc,2008,0x07d8,Diplomacy map,0x055a,4,0x0485,docs,pict,TRadioPictureButton,doc6,418,8,42,55
+Diplo.rsrc,2008,0x07d8,Diplomacy map,0x05cd,4,0x0485,docs,pict,TRadioPictureButton,doc5,326,8,42,55
+Diplo.rsrc,2008,0x07d8,Diplomacy map,0x0640,4,0x0485,docs,pict,TRadioPictureButton,doc4,282,8,42,55
+Diplo.rsrc,2008,0x07d8,Diplomacy map,0x06b3,4,0x0485,docs,pict,TRadioPictureButton,doc3,189,8,42,55
+Diplo.rsrc,2008,0x07d8,Diplomacy map,0x0726,4,0x0485,docs,pict,TRadioPictureButton,doc2,145,8,42,55
+Diplo.rsrc,2008,0x07d8,Diplomacy map,0x0799,4,0x0485,docs,pict,TRadioPictureButton,doc1,52,8,42,55
+Diplo.rsrc,2008,0x07d8,Diplomacy map,0x080c,4,0x0485,docs,pict,TRadioPictureButton,doc0,8,8,42,55
+Diplo.rsrc,2008,0x07d8,Diplomacy map,0x087f,2,0x0048,main,view,TTreatiesView,trty,57,800,518,122
+Diplo.rsrc,2008,0x07d8,Diplomacy map,0x08d0,3,0x087f,trty,clus,,scro,14,14,484,99
+Diplo.rsrc,2008,0x07d8,Diplomacy map,0x0932,4,0x08d0,scro,pict,TRadioPictureButton,scr6,341,2,75,36
+Diplo.rsrc,2008,0x07d8,Diplomacy map,0x09a5,4,0x08d0,scro,pict,TRadioPictureButton,scr5,222,2,75,36
+Diplo.rsrc,2008,0x07d8,Diplomacy map,0x0a18,4,0x08d0,scro,pict,TRadioPictureButton,scr3,26,5,75,36
+Diplo.rsrc,2008,0x07d8,Diplomacy map,0x0a8b,4,0x08d0,scro,pict,TRadioPictureButton,scr4,26,57,75,36
+Diplo.rsrc,2008,0x07d8,Diplomacy map,0x0afe,4,0x08d0,scro,pict,TRadioPictureButton,scr2,171,57,75,36
+Diplo.rsrc,2008,0x07d8,Diplomacy map,0x0b71,4,0x08d0,scro,pict,TRadioPictureButton,scr1,280,57,75,36
+Diplo.rsrc,2008,0x07d8,Diplomacy map,0x0be4,4,0x08d0,scro,pict,TRadioPictureButton,scr0,385,57,75,36
+Diplo.rsrc,2008,0x07d8,Diplomacy map,0x0c57,2,0x0048,main,view,TTradePanelView,trad,57,800,518,122
+Diplo.rsrc,2008,0x07d8,Diplomacy map,0x0caa,3,0x0c57,trad,clus,,clus,6,8,506,110
+Diplo.rsrc,2008,0x07d8,Diplomacy map,0x0d0c,4,0x0caa,clus,pict,TRadioPictureButton,traa,5,18,43,50
+Diplo.rsrc,2008,0x07d8,Diplomacy map,0x0d7f,4,0x0caa,clus,pict,TRadioPictureButton,trab,56,29,43,60
+Diplo.rsrc,2008,0x07d8,Diplomacy map,0x0df2,4,0x0caa,clus,pict,TRadioPictureButton,trac,107,18,43,50
+Diplo.rsrc,2008,0x07d8,Diplomacy map,0x0e65,4,0x0caa,clus,pict,TRadioPictureButton,trad,158,29,43,60
+Diplo.rsrc,2008,0x07d8,Diplomacy map,0x0ed8,4,0x0caa,clus,pict,TRadioPictureButton,trae,209,18,43,50
+Diplo.rsrc,2008,0x07d8,Diplomacy map,0x0f4b,4,0x0caa,clus,pict,TRadioPictureButton,traf,260,29,43,60
+Diplo.rsrc,2008,0x07d8,Diplomacy map,0x0fbe,4,0x0caa,clus,pict,TRadioPictureButton,trag,358,33,43,44
+Diplo.rsrc,2008,0x07d8,Diplomacy map,0x1031,4,0x0caa,clus,pict,TRadioPictureButton,link,451,33,52,44
+Diplo.rsrc,2008,0x07d8,Diplomacy map,0x10a4,2,0x0048,main,view,TOffersPanelView,offr,57,800,518,122
+Diplo.rsrc,2008,0x07d8,Diplomacy map,0x10f8,3,0x10a4,offr,clus,,shee,8,7,502,108
+Diplo.rsrc,2008,0x07d8,Diplomacy map,0x115a,4,0x10f8,shee,tevw,TDeluxeText,prop,113,12,291,92
+Diplo.rsrc,2008,0x07d8,Diplomacy map,0x11f7,4,0x10f8,shee,pict,TUpDownPictureButton,reje,12,26,75,70
+Diplo.rsrc,2008,0x07d8,Diplomacy map,0x126b,4,0x10f8,shee,pict,TUpDownPictureButton,acce,423,26,75,70
+Diplo.rsrc,2008,0x07d8,Diplomacy map,0x12df,3,0x10a4,offr,clus,,wait,8,7,502,108
+Diplo.rsrc,2008,0x07d8,Diplomacy map,0x1341,4,0x12df,wait,tevw,TDeluxeText,text,113,12,291,92
+Diplo.rsrc,2008,0x07d8,Diplomacy map,0x13de,2,0x0048,main,clus,TToolBarCluster,too2,608,39,23,39
+Diplo.rsrc,2008,0x07d8,Diplomacy map,0x144f,3,0x13de,too2,pict,TPictureButton,quer,0,0,23,39
+Diplo.rsrc,2008,0x07d8,Diplomacy map,0x14bd,2,0x0048,main,pict,,ltab,17,355,40,120
+Diplo.rsrc,2008,0x07d8,Diplomacy map,0x151d,2,0x0048,main,pict,,rtab,578,355,40,120
+Diplo.rsrc,2008,0x07d8,Diplomacy map,0x157d,2,0x0048,main,cntl,TClickZone,inft,16,372,39,42
+Diplo.rsrc,2008,0x07d8,Diplomacy map,0x15e5,2,0x0048,main,cntl,TClickZone,cout,15,416,39,42
+Diplo.rsrc,2008,0x07d8,Diplomacy map,0x164d,2,0x0048,main,cntl,TClickZone,trtt,589,359,28,37
+Diplo.rsrc,2008,0x07d8,Diplomacy map,0x16b5,2,0x0048,main,cntl,TClickZone,grat,589,396,28,37
+Diplo.rsrc,2008,0x07d8,Diplomacy map,0x171d,2,0x0048,main,cntl,TClickZone,trat,589,433,28,37
+Diplo.rsrc,2008,0x07d8,Diplomacy map,0x1785,2,0x0048,main,view,TCouncilPanelView,coun,57,800,518,122
+Diplo.rsrc,2008,0x07d8,Diplomacy map,0x17da,2,0x0048,main,clus,TToolBarCluster,too3,3,32,37,62
+Diplo.rsrc,2008,0x07d8,Diplomacy map,0x184b,3,0x17da,too3,pict,TPictureButton,end ,5,6,30,52
+Diplo.rsrc,2008,0x07d8,Diplomacy map,0x18b9,2,0x0048,main,clus,TToolBarCluster,topB,267,5,105,26
+Diplo.rsrc,2008,0x07d8,Diplomacy map,0x192a,3,0x18b9,topB,pict,TUpDownPictureButton,tran,3,3,14,18
+Diplo.rsrc,2008,0x07d8,Diplomacy map,0x199e,3,0x18b9,topB,pict,TUpDownPictureButton,city,31,3,14,18
+Diplo.rsrc,2008,0x07d8,Diplomacy map,0x1a12,3,0x18b9,topB,pict,TUpDownPictureButton,trad,59,3,14,18
+Diplo.rsrc,2008,0x07d8,Diplomacy map,0x1a86,3,0x18b9,topB,pict,TUpDownPictureButton,dipl,88,3,14,18
+Diplo.rsrc,2008,0x07d8,Diplomacy map,0x1afa,2,0x0048,main,tevw,TInfoBarText,curs,396,5,201,30
+Diplo.rsrc,2008,0x07d8,Diplomacy map,0x1b98,2,0x0048,main,clus,TToolBarCluster,tool,3,6,218,29
+Diplo.rsrc,2008,0x07d8,Diplomacy map,0x1c09,3,0x1b98,tool,stat,TDropShadowText,seas,44,4,94,17
+Diplo.rsrc,2008,0x07d8,Diplomacy map,0x1c7e,3,0x1b98,tool,stat,TDropShadowText,trea,141,4,75,17
+Diplo.rsrc,2016,0x07e0,Council of Govs,0x0004,0,,,view,,base,0,0,2000,2000
+Diplo.rsrc,2016,0x07e0,Council of Govs,0x0048,1,0x0004,base,pict,TCouncilView,main,0,0,640,480
+Diplo.rsrc,2016,0x07e0,Council of Govs,0x00ea,2,0x0048,main,clus,TToolBarCluster,tool,3,6,38,88
+Diplo.rsrc,2016,0x07e0,Council of Govs,0x015b,3,0x00ea,tool,pict,TPictureButton,end ,5,32,31,51
+Diplo.rsrc,2016,0x07e0,Council of Govs,0x01c9,2,0x0048,main,clus,TToolBarCluster,tbr2,608,39,23,39
+Diplo.rsrc,2016,0x07e0,Council of Govs,0x023a,3,0x01c9,tbr2,pict,TPictureButton,quer,0,0,23,39
+Diplo.rsrc,2016,0x07e0,Council of Govs,0x02a8,2,0x0048,main,stat,,ttl0,239,372,162,16
+Diplo.rsrc,2016,0x07e0,Council of Govs,0x030e,2,0x0048,main,stat,,ttl1,239,400,162,16
+Diplo.rsrc,2016,0x07e0,Council of Govs,0x0374,2,0x0048,main,stat,,ttl2,239,425,162,16
+Diplo.rsrc,2016,0x07e0,Council of Govs,0x03da,2,0x0048,main,stat,,ttl3,239,450,162,16
+Diplo.rsrc,2016,0x07e0,Council of Govs,0x0440,2,0x0048,main,stat,,can0,22,366,139,18
+Diplo.rsrc,2016,0x07e0,Council of Govs,0x04a6,2,0x0048,main,stat,,can1,470,366,139,18
+Diplo.rsrc,2016,0x07e0,Council of Govs,0x050c,2,0x0048,main,stat,,num0,192,372,38,16
+Diplo.rsrc,2016,0x07e0,Council of Govs,0x0572,2,0x0048,main,stat,,num1,192,400,38,16
+Diplo.rsrc,2016,0x07e0,Council of Govs,0x05d8,2,0x0048,main,stat,,num2,192,425,38,16
+Diplo.rsrc,2016,0x07e0,Council of Govs,0x063e,2,0x0048,main,stat,,num3,192,450,38,16
+Diplo.rsrc,2016,0x07e0,Council of Govs,0x06a4,2,0x0048,main,stat,TDropShadowText,sco0,120,402,54,39
+Diplo.rsrc,2016,0x07e0,Council of Govs,0x0719,2,0x0048,main,stat,,num7,408,450,38,16
+Diplo.rsrc,2016,0x07e0,Council of Govs,0x077f,2,0x0048,main,stat,,num6,408,425,38,16
+Diplo.rsrc,2016,0x07e0,Council of Govs,0x07e5,2,0x0048,main,stat,,num5,408,400,38,16
+Diplo.rsrc,2016,0x07e0,Council of Govs,0x084b,2,0x0048,main,stat,,num4,408,372,38,16
+Diplo.rsrc,2016,0x07e0,Council of Govs,0x08b1,2,0x0048,main,pict,TNoHilitePicture,coa0,64,385,56,84
+Diplo.rsrc,2016,0x07e0,Council of Govs,0x0921,2,0x0048,main,pict,TNoHilitePicture,coa1,511,385,56,84
+Diplo.rsrc,2016,0x07e0,Council of Govs,0x0991,2,0x0048,main,stat,TDropShadowText,titl,48,6,338,30
+Diplo.rsrc,2016,0x07e0,Council of Govs,0x0a06,2,0x0048,main,tevw,TInfoBarText,curs,396,5,201,30
+Diplo.rsrc,2016,0x07e0,Council of Govs,0x0aa4,2,0x0048,main,stat,TDropShadowText,sco1,455,402,54,39
+Diplo.rsrc,2017,0x07e1,Council Nomination,0x0004,0,,,view,,base,0,0,2000,2000
+Diplo.rsrc,2017,0x07e1,Council Nomination,0x0048,1,0x0004,base,pict,TNominationView,main,0,0,640,480
+Diplo.rsrc,2017,0x07e1,Council Nomination,0x00ed,2,0x0048,main,stat,,coun,208,59,227,36
+Diplo.rsrc,2017,0x07e1,Council Nomination,0x0153,2,0x0048,main,stat,,titl,207,102,227,36
+Diplo.rsrc,2017,0x07e1,Council Nomination,0x01b9,2,0x0048,main,stat,,can0,207,146,227,36
+Diplo.rsrc,2017,0x07e1,Council Nomination,0x021f,2,0x0048,main,stat,,can1,207,190,227,36
+FlagView.rsrc,8450,0x2102,Diplo Offer Desk,0x0004,0,,,view,,base,0,0,2000,2000
+FlagView.rsrc,8450,0x2102,Diplo Offer Desk,0x0048,1,0x0004,base,pict,TDiploDeskPicture,main,0,0,640,480
+FlagView.rsrc,8450,0x2102,Diplo Offer Desk,0x00b9,2,0x0048,main,clus,TToolBarCluster,tool,0,0,236,34
+FlagView.rsrc,8450,0x2102,Diplo Offer Desk,0x012a,3,0x00b9,tool,stat,TDropShadowText,seas,44,7,94,17
+FlagView.rsrc,8450,0x2102,Diplo Offer Desk,0x019f,3,0x00b9,tool,stat,TDropShadowText,trea,141,7,75,17
+FlagView.rsrc,8450,0x2102,Diplo Offer Desk,0x0214,2,0x0048,main,pict,,wait,55,105,220,290
+FlagView.rsrc,8450,0x2102,Diplo Offer Desk,0x0274,3,0x0214,wait,stat,TMyStaticText,text,42,59,145,92
+FlagView.rsrc,8450,0x2102,Diplo Offer Desk,0x02e7,2,0x0048,main,clus,,shee,55,105,213,283
+FlagView.rsrc,8450,0x2102,Diplo Offer Desk,0x0349,3,0x02e7,shee,pict,TPictureButton,acce,140,213,69,65
+FlagView.rsrc,8450,0x2102,Diplo Offer Desk,0x03b7,3,0x02e7,shee,pict,TPictureButton,reje,18,217,71,68
+FlagView.rsrc,8450,0x2102,Diplo Offer Desk,0x0425,3,0x02e7,shee,stat,TMyStaticText,prop,18,59,183,120
+FlagView.rsrc,8450,0x2102,Diplo Offer Desk,0x0498,2,0x0048,main,clus,TToolBarCluster,tba2,608,39,30,40
+FlagView.rsrc,8450,0x2102,Diplo Offer Desk,0x0509,3,0x0498,tba2,pict,TPictureButton,quer,0,0,23,39
+FlagView.rsrc,8450,0x2102,Diplo Offer Desk,0x0577,2,0x0048,main,tevw,TInfoBarText,curs,245,7,365,21
+FlagView.rsrc,8451,0x2103,New newspaper,0x0004,0,,,view,,base,0,0,2000,2000
+FlagView.rsrc,8451,0x2103,New newspaper,0x0048,1,0x0004,base,pict,TNewspaperView,main,0,0,640,480
+FlagView.rsrc,8451,0x2103,New newspaper,0x00b6,2,0x0048,main,clus,TToolBarCluster,tool,0,0,47,49
+FlagView.rsrc,8451,0x2103,New newspaper,0x0127,3,0x00b6,tool,pict,TPictureButton,end ,23,15,22,33
+FlagView.rsrc,8451,0x2103,New newspaper,0x0195,2,0x0048,main,clus,TToolBarCluster,tbr2,592,15,73,36
+FlagView.rsrc,8451,0x2103,New newspaper,0x0206,3,0x0195,tbr2,pict,TPictureButton,quer,0,0,22,33
+FlagView.rsrc,8451,0x2103,New newspaper,0x0274,2,0x0048,main,stat,,date,500,54,116,16
+FlagView.rsrc,8451,0x2103,New newspaper,0x02da,2,0x0048,main,stat,,spec,20,54,116,16
+FlagView.rsrc,8451,0x2103,New newspaper,0x0340,1,0x0004,base,pict,,over,0,475,640,5
+FlagView.rsrc,8500,0x2134,Offer Sheet Screen,0x0004,0,,,view,,base,0,0,640,480
+FlagView.rsrc,8500,0x2134,Offer Sheet Screen,0x0048,1,0x0004,base,pict,TOfferDeskPicture,main,0,0,640,480
+FlagView.rsrc,8500,0x2134,Offer Sheet Screen,0x00b9,2,0x0048,main,clus,TToolBarCluster,tool,3,6,237,40
+FlagView.rsrc,8500,0x2134,Offer Sheet Screen,0x012a,3,0x00b9,tool,stat,TDropShadowText,seas,44,1,94,17
+FlagView.rsrc,8500,0x2134,Offer Sheet Screen,0x019f,3,0x00b9,tool,stat,TDropShadowText,trea,141,1,75,17
+FlagView.rsrc,8500,0x2134,Offer Sheet Screen,0x0214,2,0x0048,main,cntl,TDealTabControl,tabs,558,45,31,423
+FlagView.rsrc,8500,0x2134,Offer Sheet Screen,0x0281,2,0x0048,main,clus,,shee,45,128,510,313
+FlagView.rsrc,8500,0x2134,Offer Sheet Screen,0x041e,3,0x0281,shee,clus,TUberCluster,clus,30,221,33,17
+FlagView.rsrc,8500,0x2134,Offer Sheet Screen,0x048c,4,0x041e,clus,pict,TToggleButton,nomo,9,4,18,11
+FlagView.rsrc,8500,0x2134,Offer Sheet Screen,0x04f9,3,0x0281,shee,pict,TPictureButton,reje,23,246,57,57
+FlagView.rsrc,8500,0x2134,Offer Sheet Screen,0x0567,3,0x0281,shee,pict,TPictureButton,acce,152,246,57,57
+FlagView.rsrc,8500,0x2134,Offer Sheet Screen,0x05d5,3,0x0281,shee,stat,TMyStaticText,offe,21,126,181,69
+FlagView.rsrc,8500,0x2134,Offer Sheet Screen,0x0648,3,0x0281,shee,stat,TMyStaticText,purT,12,200,100,19
+FlagView.rsrc,8500,0x2134,Offer Sheet Screen,0x06bb,3,0x0281,shee,stat,TMyStaticText,noof,63,224,145,14
+FlagView.rsrc,8500,0x2134,Offer Sheet Screen,0x072e,3,0x0281,shee,stat,TMyStaticText,unit,157,200,58,20
+FlagView.rsrc,8500,0x2134,Offer Sheet Screen,0x07a1,3,0x0281,shee,pict,TColorKeyPicture,icon,97,68,32,24
+FlagView.rsrc,8500,0x2134,Offer Sheet Screen,0x0811,3,0x0281,shee,view,,mPic,398,253,59,30
+FlagView.rsrc,8500,0x2134,Offer Sheet Screen,0x0855,3,0x0281,shee,stat,TDropShadowText,info,349,4,153,249
+FlagView.rsrc,8500,0x2134,Offer Sheet Screen,0x08ca,2,0x0048,main,pict,,wait,2045,128,225,313
+FlagView.rsrc,8500,0x2134,Offer Sheet Screen,0x092a,3,0x08ca,wait,stat,TMyStaticText,text,40,134,145,92
+FlagView.rsrc,8500,0x2134,Offer Sheet Screen,0x099d,3,0x08ca,wait,pict,TColorKeyPicture,icow,97,68,32,24
+FlagView.rsrc,8500,0x2134,Offer Sheet Screen,0x0a0d,2,0x0048,main,view,TTradeBookView,book,2000,45,499,426
+FlagView.rsrc,8500,0x2134,Offer Sheet Screen,0x0a5f,3,0x0a0d,book,stat,TDropShadowText,titL,43,9,157,21
+FlagView.rsrc,8500,0x2134,Offer Sheet Screen,0x0ad4,3,0x0a0d,book,stat,TDropShadowText,rtil,271,9,199,20
+FlagView.rsrc,8500,0x2134,Offer Sheet Screen,0x0b49,3,0x0a0d,book,cntl,TClickZone,done,5,5,37,28
+FlagView.rsrc,8500,0x2134,Offer Sheet Screen,0x0bb1,3,0x0a0d,book,pict,TColorKeyPicture,lcor,-1,392,38,34
+FlagView.rsrc,8500,0x2134,Offer Sheet Screen,0x0c21,3,0x0a0d,book,pict,TColorKeyPicture,rcor,462,390,41,36
+FlagView.rsrc,8500,0x2134,Offer Sheet Screen,0x0c91,3,0x0a0d,book,view,TTradePageBuyView,tbou,256,44,240,340
+FlagView.rsrc,8500,0x2134,Offer Sheet Screen,0x0ce6,3,0x0a0d,book,view,TTradePageSellView,tsol,7,44,240,340
+FlagView.rsrc,8500,0x2134,Offer Sheet Screen,0x0d3c,3,0x0a0d,book,view,,list,438,31,46,357
+FlagView.rsrc,8500,0x2134,Offer Sheet Screen,0x0d80,2,0x0048,main,tevw,TInfoBarText,curs,273,7,318,25
+FlagView.rsrc,8500,0x2134,Offer Sheet Screen,0x0e1e,2,0x0048,main,clus,TToolBarCluster,tbr2,608,39,30,40
+FlagView.rsrc,8500,0x2134,Offer Sheet Screen,0x0e8f,3,0x0e1e,tbr2,pict,TPictureButton,quer,0,0,23,39
+FlagView.rsrc,8500,0x2134,Offer Sheet Screen,0x0efd,2,0x0048,main,pict,TPictureButton,ForM,225,48,87,116
+FlagView.rsrc,8800,0x2260,Deal Book,0x0004,0,,,view,,base,0,0,2000,2000
+FlagView.rsrc,8800,0x2260,Deal Book,0x0048,1,0x0004,base,view,,base,0,0,2000,2000
+FlagView.rsrc,8800,0x2260,Deal Book,0x008c,2,0x0048,base,view,,base,0,0,2000,2000
+FlagView.rsrc,8800,0x2260,Deal Book,0x00d0,3,0x008c,base,pict,TDealBookPicture,main,0,0,640,480
+FlagView.rsrc,8800,0x2260,Deal Book,0x0140,4,0x00d0,main,clus,TToolBarCluster,tool,3,6,237,90
+FlagView.rsrc,8800,0x2260,Deal Book,0x01b1,5,0x0140,tool,pict,TPictureButton,end ,5,32,30,51
+FlagView.rsrc,8800,0x2260,Deal Book,0x021f,5,0x0140,tool,stat,TDropShadowText,seas,44,1,94,17
+FlagView.rsrc,8800,0x2260,Deal Book,0x0294,5,0x0140,tool,stat,TDropShadowText,trea,141,1,75,17
+FlagView.rsrc,8800,0x2260,Deal Book,0x0309,4,0x00d0,main,pict,TColorKeyPicture,rcor,520,435,41,36
+FlagView.rsrc,8800,0x2260,Deal Book,0x0379,4,0x00d0,main,pict,TColorKeyPicture,lcor,57,437,38,34
+FlagView.rsrc,8800,0x2260,Deal Book,0x03e9,4,0x00d0,main,view,TPageView,sold,65,89,240,340
+FlagView.rsrc,8800,0x2260,Deal Book,0x0436,4,0x00d0,main,view,TPageView,boug,314,89,240,340
+FlagView.rsrc,8800,0x2260,Deal Book,0x0483,4,0x00d0,main,stat,TDropShadowText,titL,101,54,157,22
+FlagView.rsrc,8800,0x2260,Deal Book,0x04f8,4,0x00d0,main,cntl,TDealTabControl,tabs,558,45,31,423
+FlagView.rsrc,8800,0x2260,Deal Book,0x0565,4,0x00d0,main,view,TTradePageSellView,tsol,1000,90,240,340
+FlagView.rsrc,8800,0x2260,Deal Book,0x05bb,4,0x00d0,main,view,TTradePageBuyView,tbou,1000,90,240,340
+FlagView.rsrc,8800,0x2260,Deal Book,0x0610,4,0x00d0,main,stat,TDropShadowText,rtil,329,54,199,22
+FlagView.rsrc,8800,0x2260,Deal Book,0x0685,4,0x00d0,main,pict,TPictureButton,mark,8,136,40,53
+FlagView.rsrc,8800,0x2260,Deal Book,0x06f3,4,0x00d0,main,clus,TToolbarCluster,tbr2,608,40,22,37
+FlagView.rsrc,8800,0x2260,Deal Book,0x0764,5,0x06f3,tbr2,pict,TPictureButton,quer,0,0,22,37
+FlagView.rsrc,8800,0x2260,Deal Book,0x07d2,1,0x0004,base,tevw,TInfoBarText,curs,245,7,365,21
+Linger.rsrc,200,0x00c8,MA - IDClipWindow,0x00f9,0,,,view,TDeskScrapView,CLIP,0,0,500,500
+Linger.rsrc,300,0x012c,MA - kDialogTEViewID,0x0004,0,,,tevw,TDialogTEView,    ,0,0,0,0
+Linger.rsrc,900,0x0384,Debug Flags Window,0x0004,0,,,wind,,DGOW,312,50,508,192
+Linger.rsrc,900,0x0384,Debug Flags Window,0x0083,1,0x0004,DGOW,view,TDebugFlagsView,DGOV,0,0,512,192
+Linger.rsrc,900,0x0384,Debug Flags Window,0x00d6,2,0x0083,DGOV,clus,,VW02,176,32,192,56
+Linger.rsrc,900,0x0384,Debug Flags Window,0x01fe,2,0x0083,DGOV,clus,,VW05,16,96,128,88
+Linger.rsrc,900,0x0384,Debug Flags Window,0x03ec,2,0x0083,DGOV,clus,,VW18,384,32,112,56
+Linger.rsrc,900,0x0384,Debug Flags Window,0x0514,2,0x0083,DGOV,clus,,VW10,160,96,336,88
+Linger.rsrc,900,0x0384,Debug Flags Window,0x07c8,2,0x0083,DGOV,clus,,VW01,16,32,144,56
+Linger.rsrc,900,0x0384,Debug Flags Window,0x08f0,2,0x0083,DGOV,stat,,VW03,16,8,480,16
+Linger.rsrc,901,0x0385,debug - Initialize PerfMon,0x00fb,0,,,stat,,VW02,16,40,64,16
+Linger.rsrc,901,0x0385,debug - Initialize PerfMon,0x0213,0,,,stat,,VW04,176,40,112,16
+Linger.rsrc,901,0x0385,debug - Initialize PerfMon,0x032b,0,,,clus,,VW06,16,72,176,64
+Linger.rsrc,901,0x0385,debug - Initialize PerfMon,0x03f0,1,0x032b,VW06,stat,,VW08,16,16,80,16
+Linger.rsrc,901,0x0385,debug - Initialize PerfMon,0x0456,1,0x032b,VW06,edit,,acrs,96,16,32,16
+Linger.rsrc,901,0x0385,debug - Initialize PerfMon,0x04fc,0,,,clus,,VW11,208,72,320,64
+Linger.rsrc,901,0x0385,debug - Initialize PerfMon,0x05c1,1,0x04fc,VW11,stat,,VW13,224,16,48,16
+Linger.rsrc,901,0x0385,debug - Initialize PerfMon,0x06d9,1,0x04fc,VW11,stat,,VW15,16,16,64,16
+Linger.rsrc,901,0x0385,debug - Initialize PerfMon,0x073f,1,0x04fc,VW11,edit,,rmnm,80,16,128,16
+Linger.rsrc,901,0x0385,debug - Initialize PerfMon,0x07e5,0,,,clus,,xxxx,16,152,256,88
+Linger.rsrc,901,0x0385,debug - Initialize PerfMon,0x08aa,1,0x07e5,xxxx,stat,,VW20,16,16,80,16
+Linger.rsrc,901,0x0385,debug - Initialize PerfMon,0x0910,1,0x07e5,xxxx,stat,,VW21,16,40,64,16
+Linger.rsrc,901,0x0385,debug - Initialize PerfMon,0x0976,1,0x07e5,xxxx,stat,,VW22,96,16,32,16
+Linger.rsrc,901,0x0385,debug - Initialize PerfMon,0x09dc,1,0x07e5,xxxx,stat,,VW23,176,16,16,16
+Linger.rsrc,901,0x0385,debug - Initialize PerfMon,0x0d8c,0,,,stat,,VW01,16,8,256,16
+Linger.rsrc,950,0x03b6,About Box,0x02a8,0,,,pict,TNoHilitePicture,okay,0,0,550,350
+Linger.rsrc,954,0x03ba,Planet Seed Dialog & So Much More,0x0080,0,,,pict,,DLOG,0,0,252,177
+Linger.rsrc,954,0x03ba,Planet Seed Dialog & So Much More,0x00e0,1,0x0080,DLOG,clus,TRadioTextCluster,1or2,39,110,175,20
+Linger.rsrc,954,0x03ba,Planet Seed Dialog & So Much More,0x0153,2,0x00e0,1or2,stat,TRadioText,one1,2,2,85,16
+Linger.rsrc,954,0x03ba,Planet Seed Dialog & So Much More,0x01c3,2,0x00e0,1or2,stat,TRadioText,two2,88,2,85,16
+Linger.rsrc,954,0x03ba,Planet Seed Dialog & So Much More,0x0233,1,0x0080,DLOG,stat,,inst,37,22,182,55
+Linger.rsrc,954,0x03ba,Planet Seed Dialog & So Much More,0x0299,1,0x0080,DLOG,edit,,plan,40,79,175,23
+Linger.rsrc,954,0x03ba,Planet Seed Dialog & So Much More,0x033e,1,0x0080,DLOG,pict,TUpDownPictureButton,okay,158,138,61,24
+Linger.rsrc,954,0x03ba,Planet Seed Dialog & So Much More,0x03b2,1,0x0080,DLOG,pict,TUpDownPictureButton,canc,33,138,61,24
+Linger.rsrc,1000,0x03e8,test - modal message-offscreen test,0x00b8,0,,,pict,,pict,0,0,600,440
+Linger.rsrc,1000,0x03e8,test - modal message-offscreen test,0x0118,1,0x00b8,pict,clus,,clus,70,195,72,136
+Linger.rsrc,1000,0x03e8,test - modal message-offscreen test,0x017a,2,0x0118,clus,pict,,cott,21,12,32,24
+Linger.rsrc,1000,0x03e8,test - modal message-offscreen test,0x01da,2,0x0118,clus,pict,,wool,21,50,32,24
+Linger.rsrc,1000,0x03e8,test - modal message-offscreen test,0x023a,2,0x0118,clus,pict,,timb,21,92,32,24
+Linger.rsrc,1000,0x03e8,test - modal message-offscreen test,0x029a,1,0x00b8,pict,stat,,Text,159,32,344,17
+Linger.rsrc,1000,0x03e8,test - modal message-offscreen test,0x0300,1,0x00b8,pict,pict,TClosePicture,okok,409,338,80,21
+Linger.rsrc,1000,0x03e8,test - modal message-offscreen test,0x036d,1,0x00b8,pict,edit,,eddy,161,75,66,22
+Linger.rsrc,1000,0x03e8,test - modal message-offscreen test,0x0474,0,,,pict,,banr,159,123,343,35
+Linger.rsrc,1002,0x03ea,MA - kDefaultViewID,0x0004,0,,,view,,DFLT,0,0,414,134
+Linger.rsrc,1003,0x03eb,test - Show GP Stockpiles,0x0004,0,,,wind,,WIND,15,44,530,430
+Linger.rsrc,1003,0x03eb,test - Show GP Stockpiles,0x030b,1,0x0004,WIND,stat,,    ,9,228,52,15
+Linger.rsrc,1003,0x03eb,test - Show GP Stockpiles,0x0371,1,0x0004,WIND,stat,,    ,9,245,52,15
+Linger.rsrc,1003,0x03eb,test - Show GP Stockpiles,0x03d7,1,0x0004,WIND,stat,,    ,9,267,52,15
+Linger.rsrc,1003,0x03eb,test - Show GP Stockpiles,0x043d,1,0x0004,WIND,stat,,VW12,9,20,67,16
+Linger.rsrc,1003,0x03eb,test - Show GP Stockpiles,0x04a3,1,0x0004,WIND,stat,,VW11,9,39,67,16
+Linger.rsrc,1003,0x03eb,test - Show GP Stockpiles,0x0509,1,0x0004,WIND,stat,,VW10,9,58,67,16
+Linger.rsrc,1003,0x03eb,test - Show GP Stockpiles,0x056f,1,0x0004,WIND,stat,,VW09,9,77,67,16
+Linger.rsrc,1003,0x03eb,test - Show GP Stockpiles,0x05d5,1,0x0004,WIND,stat,,VW08,9,96,67,16
+Linger.rsrc,1003,0x03eb,test - Show GP Stockpiles,0x063b,1,0x0004,WIND,stat,,VW07,9,115,67,16
+Linger.rsrc,1003,0x03eb,test - Show GP Stockpiles,0x06a1,1,0x0004,WIND,stat,,VW06,9,153,67,16
+Linger.rsrc,1003,0x03eb,test - Show GP Stockpiles,0x0707,1,0x0004,WIND,stat,,VW05,9,172,67,16
+Linger.rsrc,1003,0x03eb,test - Show GP Stockpiles,0x076d,1,0x0004,WIND,stat,,VW04,9,209,67,16
+Linger.rsrc,1003,0x03eb,test - Show GP Stockpiles,0x07d3,1,0x0004,WIND,stat,,VW21,9,134,67,16
+Linger.rsrc,1003,0x03eb,test - Show GP Stockpiles,0x0839,1,0x0004,WIND,stat,,VW18,9,286,52,15
+Linger.rsrc,1003,0x03eb,test - Show GP Stockpiles,0x089f,1,0x0004,WIND,stat,,VW19,9,305,52,15
+Linger.rsrc,1003,0x03eb,test - Show GP Stockpiles,0x0905,1,0x0004,WIND,stat,,VW20,9,324,52,15
+Linger.rsrc,1003,0x03eb,test - Show GP Stockpiles,0x096b,1,0x0004,WIND,clus,,GP0 ,125,4,43,458
+Linger.rsrc,1003,0x03eb,test - Show GP Stockpiles,0x19cb,1,0x0004,WIND,stat,,VW18,9,363,67,15
+Linger.rsrc,1003,0x03eb,test - Show GP Stockpiles,0x1a31,1,0x0004,WIND,stat,,VW19,9,382,63,14
+Linger.rsrc,1003,0x03eb,test - Show GP Stockpiles,0x1a97,1,0x0004,WIND,stat,,VW20,9,399,70,15
+Linger.rsrc,1003,0x03eb,test - Show GP Stockpiles,0x1afd,1,0x0004,WIND,stat,,VW22,9,419,52,13
+Linger.rsrc,1003,0x03eb,test - Show GP Stockpiles,0x1b63,1,0x0004,WIND,clus,,GP1 ,169,4,41,456
+Linger.rsrc,1003,0x03eb,test - Show GP Stockpiles,0x2bc3,1,0x0004,WIND,clus,,GP2 ,213,4,41,456
+Linger.rsrc,1003,0x03eb,test - Show GP Stockpiles,0x3c23,1,0x0004,WIND,clus,,GP3 ,257,4,41,455
+Linger.rsrc,1003,0x03eb,test - Show GP Stockpiles,0x4c83,1,0x0004,WIND,clus,,GP4 ,301,4,41,454
+Linger.rsrc,1003,0x03eb,test - Show GP Stockpiles,0x5ce3,1,0x0004,WIND,clus,,GP5 ,345,4,41,452
+Linger.rsrc,1003,0x03eb,test - Show GP Stockpiles,0x6d43,1,0x0004,WIND,clus,,GP6 ,389,4,41,451
+Linger.rsrc,1003,0x03eb,test - Show GP Stockpiles,0x7da3,1,0x0004,WIND,clus,,Cost,82,4,41,459
+Linger.rsrc,1003,0x03eb,test - Show GP Stockpiles,0x8d51,1,0x0004,WIND,stat,,    ,435,229,52,15
+Linger.rsrc,1003,0x03eb,test - Show GP Stockpiles,0x8db7,1,0x0004,WIND,stat,,    ,435,246,52,15
+Linger.rsrc,1003,0x03eb,test - Show GP Stockpiles,0x8e1d,1,0x0004,WIND,stat,,    ,435,268,52,15
+Linger.rsrc,1003,0x03eb,test - Show GP Stockpiles,0x8e83,1,0x0004,WIND,stat,,VW12,435,20,67,16
+Linger.rsrc,1003,0x03eb,test - Show GP Stockpiles,0x8ee9,1,0x0004,WIND,stat,,VW11,435,39,67,16
+Linger.rsrc,1003,0x03eb,test - Show GP Stockpiles,0x8f4f,1,0x0004,WIND,stat,,VW10,435,58,67,16
+Linger.rsrc,1003,0x03eb,test - Show GP Stockpiles,0x8fb5,1,0x0004,WIND,stat,,VW09,435,77,67,16
+Linger.rsrc,1003,0x03eb,test - Show GP Stockpiles,0x901b,1,0x0004,WIND,stat,,VW08,435,96,67,16
+Linger.rsrc,1003,0x03eb,test - Show GP Stockpiles,0x9081,1,0x0004,WIND,stat,,VW07,435,115,67,16
+Linger.rsrc,1003,0x03eb,test - Show GP Stockpiles,0x90e7,1,0x0004,WIND,stat,,VW06,435,153,67,16
+Linger.rsrc,1003,0x03eb,test - Show GP Stockpiles,0x914d,1,0x0004,WIND,stat,,VW05,435,172,67,16
+Linger.rsrc,1003,0x03eb,test - Show GP Stockpiles,0x91b3,1,0x0004,WIND,stat,,VW04,435,210,67,16
+Linger.rsrc,1003,0x03eb,test - Show GP Stockpiles,0x9219,1,0x0004,WIND,stat,,VW21,435,134,67,16
+Linger.rsrc,1003,0x03eb,test - Show GP Stockpiles,0x927f,1,0x0004,WIND,stat,,VW18,435,287,52,15
+Linger.rsrc,1003,0x03eb,test - Show GP Stockpiles,0x92e5,1,0x0004,WIND,stat,,VW19,435,306,52,15
+Linger.rsrc,1003,0x03eb,test - Show GP Stockpiles,0x934b,1,0x0004,WIND,stat,,VW20,435,325,52,15
+Linger.rsrc,1003,0x03eb,test - Show GP Stockpiles,0x93b1,1,0x0004,WIND,stat,,VW18,435,363,67,15
+Linger.rsrc,1003,0x03eb,test - Show GP Stockpiles,0x9417,1,0x0004,WIND,stat,,VW19,435,382,63,14
+Linger.rsrc,1003,0x03eb,test - Show GP Stockpiles,0x947d,1,0x0004,WIND,stat,,VW22,435,419,52,13
+Linger.rsrc,1003,0x03eb,test - Show GP Stockpiles,0x94e3,1,0x0004,WIND,stat,,VW20,435,399,70,15
+Linger.rsrc,1003,0x03eb,test - Show GP Stockpiles,0x9549,1,0x0004,WIND,stat,,VW22,9,440,68,18
+Linger.rsrc,1003,0x03eb,test - Show GP Stockpiles,0x95af,1,0x0004,WIND,stat,,VW22,436,440,68,18
+Linger.rsrc,1003,0x03eb,test - Show GP Stockpiles,0x9615,1,0x0004,WIND,stat,,VW05,9,191,67,16
+Linger.rsrc,1003,0x03eb,test - Show GP Stockpiles,0x967b,1,0x0004,WIND,stat,,VW05,435,191,67,16
+Linger.rsrc,1009,0x03f1,test - cGPRelationshipTable,0x0333,0,,,clus,,GP0 ,112,28,41,150
+Linger.rsrc,1009,0x03f1,test - cGPRelationshipTable,0x0873,0,,,clus,,GP1 ,183,28,41,150
+Linger.rsrc,1009,0x03f1,test - cGPRelationshipTable,0x0db3,0,,,clus,,GP2 ,254,28,41,150
+Linger.rsrc,1009,0x03f1,test - cGPRelationshipTable,0x12f3,0,,,clus,,GP3 ,325,28,41,150
+Linger.rsrc,1009,0x03f1,test - cGPRelationshipTable,0x1833,0,,,clus,,GP4 ,396,28,41,150
+Linger.rsrc,1009,0x03f1,test - cGPRelationshipTable,0x1d73,0,,,clus,,GP5 ,467,28,41,150
+Linger.rsrc,1009,0x03f1,test - cGPRelationshipTable,0x22b3,0,,,clus,,GP6 ,538,28,41,150
+Linger.rsrc,1009,0x03f1,test - cGPRelationshipTable,0x2855,0,,,clus,,hori,95,2,507,23
+Linger.rsrc,1009,0x03f1,test - cGPRelationshipTable,0x28b7,1,0x2855,hori,stat,,nam0,2,8,75,14
+Linger.rsrc,1009,0x03f1,test - cGPRelationshipTable,0x291d,1,0x2855,hori,stat,,nam1,74,8,75,14
+Linger.rsrc,1009,0x03f1,test - cGPRelationshipTable,0x2983,1,0x2855,hori,stat,,nam2,145,8,75,14
+Linger.rsrc,1009,0x03f1,test - cGPRelationshipTable,0x29e9,1,0x2855,hori,stat,,nam3,216,8,75,14
+Linger.rsrc,1009,0x03f1,test - cGPRelationshipTable,0x2a4f,1,0x2855,hori,stat,,nam4,285,8,75,14
+Linger.rsrc,1009,0x03f1,test - cGPRelationshipTable,0x2ab5,1,0x2855,hori,stat,,nam5,356,8,75,14
+Linger.rsrc,1009,0x03f1,test - cGPRelationshipTable,0x2b1b,1,0x2855,hori,stat,,nam6,430,8,75,14
+Linger.rsrc,1009,0x03f1,test - cGPRelationshipTable,0x2b81,0,,,clus,,vert,1,32,105,145
+Linger.rsrc,1009,0x03f1,test - cGPRelationshipTable,0x2be3,1,0x2b81,vert,stat,,nam0,2,9,101,16
+Linger.rsrc,1009,0x03f1,test - cGPRelationshipTable,0x2c49,1,0x2b81,vert,stat,,nam1,2,28,101,16
+Linger.rsrc,1009,0x03f1,test - cGPRelationshipTable,0x2caf,1,0x2b81,vert,stat,,nam2,2,47,101,16
+Linger.rsrc,1009,0x03f1,test - cGPRelationshipTable,0x2d15,1,0x2b81,vert,stat,,nam3,2,66,101,16
+Linger.rsrc,1009,0x03f1,test - cGPRelationshipTable,0x2d7b,1,0x2b81,vert,stat,,nam4,2,85,101,16
+Linger.rsrc,1009,0x03f1,test - cGPRelationshipTable,0x2de1,1,0x2b81,vert,stat,,nam5,2,104,101,16
+Linger.rsrc,1009,0x03f1,test - cGPRelationshipTable,0x2e47,1,0x2b81,vert,stat,,nam6,2,123,101,16
+Linger.rsrc,1012,0x03f4,test - cMinorsRelationshipTable,0x0338,0,,,clus,,m7  ,65,22,41,150
+Linger.rsrc,1012,0x03f4,test - cMinorsRelationshipTable,0x0878,0,,,clus,,m8  ,131,22,41,150
+Linger.rsrc,1012,0x03f4,test - cMinorsRelationshipTable,0x0db8,0,,,clus,,m9  ,197,22,41,150
+Linger.rsrc,1012,0x03f4,test - cMinorsRelationshipTable,0x12f8,0,,,clus,,m10 ,263,22,41,150
+Linger.rsrc,1012,0x03f4,test - cMinorsRelationshipTable,0x1838,0,,,clus,,m11 ,329,22,41,150
+Linger.rsrc,1012,0x03f4,test - cMinorsRelationshipTable,0x1d78,0,,,clus,,m12 ,395,22,41,150
+Linger.rsrc,1012,0x03f4,test - cMinorsRelationshipTable,0x22b8,0,,,clus,,m13 ,461,22,41,150
+Linger.rsrc,1012,0x03f4,test - cMinorsRelationshipTable,0x27f8,0,,,clus,,m14 ,527,22,41,150
+Linger.rsrc,1012,0x03f4,test - cMinorsRelationshipTable,0x2d38,0,,,clus,,m15 ,63,206,41,150
+Linger.rsrc,1012,0x03f4,test - cMinorsRelationshipTable,0x3278,0,,,clus,,m16 ,129,206,41,150
+Linger.rsrc,1012,0x03f4,test - cMinorsRelationshipTable,0x37b8,0,,,clus,,m17 ,195,206,41,150
+Linger.rsrc,1012,0x03f4,test - cMinorsRelationshipTable,0x3cf8,0,,,clus,,m18 ,261,206,41,150
+Linger.rsrc,1012,0x03f4,test - cMinorsRelationshipTable,0x4238,0,,,clus,,m19 ,327,206,41,150
+Linger.rsrc,1012,0x03f4,test - cMinorsRelationshipTable,0x4778,0,,,clus,,m20 ,393,206,41,150
+Linger.rsrc,1012,0x03f4,test - cMinorsRelationshipTable,0x4cb8,0,,,clus,,m21 ,459,206,41,150
+Linger.rsrc,1012,0x03f4,test - cMinorsRelationshipTable,0x51f8,0,,,clus,,m22 ,525,206,41,150
+Linger.rsrc,1012,0x03f4,test - cMinorsRelationshipTable,0x5738,0,,,clus,,row1,3,29,84,145
+Linger.rsrc,1012,0x03f4,test - cMinorsRelationshipTable,0x579a,1,0x5738,row1,stat,,nam0,2,9,80,16
+Linger.rsrc,1012,0x03f4,test - cMinorsRelationshipTable,0x5800,1,0x5738,row1,stat,,nam1,2,28,80,16
+Linger.rsrc,1012,0x03f4,test - cMinorsRelationshipTable,0x5866,1,0x5738,row1,stat,,nam2,2,47,80,16
+Linger.rsrc,1012,0x03f4,test - cMinorsRelationshipTable,0x58cc,1,0x5738,row1,stat,,nam3,2,66,80,16
+Linger.rsrc,1012,0x03f4,test - cMinorsRelationshipTable,0x5932,1,0x5738,row1,stat,,nam4,2,85,80,16
+Linger.rsrc,1012,0x03f4,test - cMinorsRelationshipTable,0x5998,1,0x5738,row1,stat,,nam5,2,104,80,16
+Linger.rsrc,1012,0x03f4,test - cMinorsRelationshipTable,0x59fe,1,0x5738,row1,stat,,nam6,2,123,80,16
+Linger.rsrc,1012,0x03f4,test - cMinorsRelationshipTable,0x5a64,0,,,clus,,row2,3,211,84,145
+Linger.rsrc,1012,0x03f4,test - cMinorsRelationshipTable,0x5ac6,1,0x5a64,row2,stat,,nam0,2,9,80,16
+Linger.rsrc,1012,0x03f4,test - cMinorsRelationshipTable,0x5b2c,1,0x5a64,row2,stat,,nam1,2,28,80,16
+Linger.rsrc,1012,0x03f4,test - cMinorsRelationshipTable,0x5b92,1,0x5a64,row2,stat,,nam2,2,47,80,16
+Linger.rsrc,1012,0x03f4,test - cMinorsRelationshipTable,0x5bf8,1,0x5a64,row2,stat,,nam3,2,66,80,16
+Linger.rsrc,1012,0x03f4,test - cMinorsRelationshipTable,0x5c5e,1,0x5a64,row2,stat,,nam4,2,85,80,16
+Linger.rsrc,1012,0x03f4,test - cMinorsRelationshipTable,0x5cc4,1,0x5a64,row2,stat,,nam5,2,104,80,16
+Linger.rsrc,1012,0x03f4,test - cMinorsRelationshipTable,0x5d2a,1,0x5a64,row2,stat,,nam6,2,123,80,16
+Linger.rsrc,1012,0x03f4,test - cMinorsRelationshipTable,0x5d90,0,,,clus,,col2,66,179,529,24
+Linger.rsrc,1012,0x03f4,test - cMinorsRelationshipTable,0x5df2,1,0x5d90,col2,stat,,nam0,-21,8,66,14
+Linger.rsrc,1012,0x03f4,test - cMinorsRelationshipTable,0x5e58,1,0x5d90,col2,stat,,nam1,46,8,66,14
+Linger.rsrc,1012,0x03f4,test - cMinorsRelationshipTable,0x5ebe,1,0x5d90,col2,stat,,nam2,113,8,66,14
+Linger.rsrc,1012,0x03f4,test - cMinorsRelationshipTable,0x5f24,1,0x5d90,col2,stat,,nam3,180,8,66,14
+Linger.rsrc,1012,0x03f4,test - cMinorsRelationshipTable,0x5f8a,1,0x5d90,col2,stat,,nam4,247,8,66,14
+Linger.rsrc,1012,0x03f4,test - cMinorsRelationshipTable,0x5ff0,1,0x5d90,col2,stat,,nam5,314,8,66,14
+Linger.rsrc,1012,0x03f4,test - cMinorsRelationshipTable,0x6056,1,0x5d90,col2,stat,,nam6,381,8,66,14
+Linger.rsrc,1012,0x03f4,test - cMinorsRelationshipTable,0x60bc,1,0x5d90,col2,stat,,nam7,446,8,66,14
+Linger.rsrc,1012,0x03f4,test - cMinorsRelationshipTable,0x6122,0,,,clus,,col1,66,-3,529,24
+Linger.rsrc,1012,0x03f4,test - cMinorsRelationshipTable,0x6184,1,0x6122,col1,stat,,nam0,-21,8,66,14
+Linger.rsrc,1012,0x03f4,test - cMinorsRelationshipTable,0x61ea,1,0x6122,col1,stat,,nam1,46,8,66,14
+Linger.rsrc,1012,0x03f4,test - cMinorsRelationshipTable,0x6250,1,0x6122,col1,stat,,nam2,113,8,66,14
+Linger.rsrc,1012,0x03f4,test - cMinorsRelationshipTable,0x62b6,1,0x6122,col1,stat,,nam3,180,8,66,14
+Linger.rsrc,1012,0x03f4,test - cMinorsRelationshipTable,0x631c,1,0x6122,col1,stat,,nam4,247,8,66,14
+Linger.rsrc,1012,0x03f4,test - cMinorsRelationshipTable,0x6382,1,0x6122,col1,stat,,nam5,314,8,66,14
+Linger.rsrc,1012,0x03f4,test - cMinorsRelationshipTable,0x63e8,1,0x6122,col1,stat,,nam6,381,8,66,14
+Linger.rsrc,1012,0x03f4,test - cMinorsRelationshipTable,0x644e,1,0x6122,col1,stat,,nam7,446,8,66,14
+Linger.rsrc,1014,0x03f6,test - MinorStockpiles,0x0004,0,,,wind,,WIND,44,51,530,360
+Linger.rsrc,1014,0x03f6,test - MinorStockpiles,0x0310,1,0x0004,WIND,clus,,m7  ,125,4,43,170
+Linger.rsrc,1014,0x03f6,test - MinorStockpiles,0x0902,1,0x0004,WIND,clus,,m8  ,169,4,42,169
+Linger.rsrc,1014,0x03f6,test - MinorStockpiles,0x0ef4,1,0x0004,WIND,clus,,m9  ,213,4,42,168
+Linger.rsrc,1014,0x03f6,test - MinorStockpiles,0x14e6,1,0x0004,WIND,clus,,m10 ,257,4,41,168
+Linger.rsrc,1014,0x03f6,test - MinorStockpiles,0x1ad8,1,0x0004,WIND,clus,,m11 ,301,4,41,169
+Linger.rsrc,1014,0x03f6,test - MinorStockpiles,0x20ca,1,0x0004,WIND,clus,,m12 ,345,4,41,167
+Linger.rsrc,1014,0x03f6,test - MinorStockpiles,0x26bc,1,0x0004,WIND,clus,,m13 ,389,4,41,169
+Linger.rsrc,1014,0x03f6,test - MinorStockpiles,0x2cae,1,0x0004,WIND,clus,,Cost,82,4,43,153
+Linger.rsrc,1014,0x03f6,test - MinorStockpiles,0x31ee,1,0x0004,WIND,clus,,m14 ,82,182,41,170
+Linger.rsrc,1014,0x03f6,test - MinorStockpiles,0x37e0,1,0x0004,WIND,clus,,m15 ,125,182,41,170
+Linger.rsrc,1014,0x03f6,test - MinorStockpiles,0x3dd2,1,0x0004,WIND,clus,,m16 ,169,182,41,170
+Linger.rsrc,1014,0x03f6,test - MinorStockpiles,0x43c4,1,0x0004,WIND,clus,,m17 ,213,182,41,170
+Linger.rsrc,1014,0x03f6,test - MinorStockpiles,0x49b6,1,0x0004,WIND,clus,,m18 ,257,182,41,170
+Linger.rsrc,1014,0x03f6,test - MinorStockpiles,0x4fa8,1,0x0004,WIND,clus,,m19 ,301,182,41,170
+Linger.rsrc,1014,0x03f6,test - MinorStockpiles,0x559a,1,0x0004,WIND,clus,,m20 ,345,182,41,170
+Linger.rsrc,1014,0x03f6,test - MinorStockpiles,0x5b8c,1,0x0004,WIND,clus,,m21 ,389,182,41,170
+Linger.rsrc,1014,0x03f6,test - MinorStockpiles,0x617e,1,0x0004,WIND,clus,,m22 ,436,182,41,170
+Linger.rsrc,1014,0x03f6,test - MinorStockpiles,0x6770,1,0x0004,WIND,stat,,VW22,9,155,68,18
+Linger.rsrc,1014,0x03f6,test - MinorStockpiles,0x67d6,1,0x0004,WIND,stat,,VW22,9,331,68,18
+Linger.rsrc,1014,0x03f6,test - MinorStockpiles,0x683c,1,0x0004,WIND,stat,,VW08,10,21,67,16
+Linger.rsrc,1014,0x03f6,test - MinorStockpiles,0x68a2,1,0x0004,WIND,stat,,VW07,10,40,67,16
+Linger.rsrc,1014,0x03f6,test - MinorStockpiles,0x6908,1,0x0004,WIND,stat,,VW21,10,59,67,16
+Linger.rsrc,1014,0x03f6,test - MinorStockpiles,0x696e,1,0x0004,WIND,stat,,VW06,10,78,67,16
+Linger.rsrc,1014,0x03f6,test - MinorStockpiles,0x69d4,1,0x0004,WIND,stat,,VW05,10,97,67,16
+Linger.rsrc,1014,0x03f6,test - MinorStockpiles,0x6a3a,1,0x0004,WIND,stat,,VW04,10,116,67,16
+Linger.rsrc,1014,0x03f6,test - MinorStockpiles,0x6aa0,1,0x0004,WIND,stat,,    ,10,135,52,15
+Linger.rsrc,1014,0x03f6,test - MinorStockpiles,0x6b06,1,0x0004,WIND,stat,,VW08,6,196,67,16
+Linger.rsrc,1014,0x03f6,test - MinorStockpiles,0x6b6c,1,0x0004,WIND,stat,,VW07,6,215,67,16
+Linger.rsrc,1014,0x03f6,test - MinorStockpiles,0x6bd2,1,0x0004,WIND,stat,,VW21,6,234,67,16
+Linger.rsrc,1014,0x03f6,test - MinorStockpiles,0x6c38,1,0x0004,WIND,stat,,VW06,6,253,67,16
+Linger.rsrc,1014,0x03f6,test - MinorStockpiles,0x6c9e,1,0x0004,WIND,stat,,VW05,6,272,67,16
+Linger.rsrc,1014,0x03f6,test - MinorStockpiles,0x6d04,1,0x0004,WIND,stat,,VW04,6,291,67,16
+Linger.rsrc,1014,0x03f6,test - MinorStockpiles,0x6d6a,1,0x0004,WIND,stat,,    ,6,310,52,15
+Linger.rsrc,1015,0x03f7,test - MinorTradeBids,0x0004,0,,,wind,,WIND,46,40,530,420
+Linger.rsrc,1015,0x03f7,test - MinorTradeBids,0x0310,1,0x0004,WIND,stat,,    ,9,165,52,15
+Linger.rsrc,1015,0x03f7,test - MinorTradeBids,0x0376,1,0x0004,WIND,stat,,VW08,9,18,67,16
+Linger.rsrc,1015,0x03f7,test - MinorTradeBids,0x03dc,1,0x0004,WIND,stat,,VW07,9,37,67,16
+Linger.rsrc,1015,0x03f7,test - MinorTradeBids,0x0442,1,0x0004,WIND,stat,,VW06,9,75,67,16
+Linger.rsrc,1015,0x03f7,test - MinorTradeBids,0x04a8,1,0x0004,WIND,stat,,VW05,9,94,67,16
+Linger.rsrc,1015,0x03f7,test - MinorTradeBids,0x050e,1,0x0004,WIND,stat,,VW04,9,113,67,16
+Linger.rsrc,1015,0x03f7,test - MinorTradeBids,0x0574,1,0x0004,WIND,stat,,VW21,9,56,67,16
+Linger.rsrc,1015,0x03f7,test - MinorTradeBids,0x05da,1,0x0004,WIND,clus,,m7  ,125,4,43,277
+Linger.rsrc,1015,0x03f7,test - MinorTradeBids,0x0f46,1,0x0004,WIND,stat,,VW18,9,192,67,15
+Linger.rsrc,1015,0x03f7,test - MinorTradeBids,0x0fac,1,0x0004,WIND,stat,,VW19,9,211,63,14
+Linger.rsrc,1015,0x03f7,test - MinorTradeBids,0x1012,1,0x0004,WIND,stat,,VW20,9,228,70,15
+Linger.rsrc,1015,0x03f7,test - MinorTradeBids,0x1078,1,0x0004,WIND,stat,,VW22,9,248,52,13
+Linger.rsrc,1015,0x03f7,test - MinorTradeBids,0x10de,1,0x0004,WIND,clus,,m8  ,169,4,43,277
+Linger.rsrc,1015,0x03f7,test - MinorTradeBids,0x1a4a,1,0x0004,WIND,clus,,m9  ,213,4,43,277
+Linger.rsrc,1015,0x03f7,test - MinorTradeBids,0x23b6,1,0x0004,WIND,clus,,m10 ,257,4,43,277
+Linger.rsrc,1015,0x03f7,test - MinorTradeBids,0x2d22,1,0x0004,WIND,clus,,m11 ,301,4,43,277
+Linger.rsrc,1015,0x03f7,test - MinorTradeBids,0x368e,1,0x0004,WIND,clus,,m12 ,345,4,43,277
+Linger.rsrc,1015,0x03f7,test - MinorTradeBids,0x3ffa,1,0x0004,WIND,clus,,m13 ,389,4,43,277
+Linger.rsrc,1015,0x03f7,test - MinorTradeBids,0x4966,1,0x0004,WIND,clus,,Cost,82,4,39,264
+Linger.rsrc,1015,0x03f7,test - MinorTradeBids,0x5220,1,0x0004,WIND,stat,,    ,435,167,52,15
+Linger.rsrc,1015,0x03f7,test - MinorTradeBids,0x5286,1,0x0004,WIND,stat,,VW08,435,20,67,16
+Linger.rsrc,1015,0x03f7,test - MinorTradeBids,0x52ec,1,0x0004,WIND,stat,,VW07,435,39,67,16
+Linger.rsrc,1015,0x03f7,test - MinorTradeBids,0x5352,1,0x0004,WIND,stat,,VW06,435,77,67,16
+Linger.rsrc,1015,0x03f7,test - MinorTradeBids,0x53b8,1,0x0004,WIND,stat,,VW05,435,96,67,16
+Linger.rsrc,1015,0x03f7,test - MinorTradeBids,0x541e,1,0x0004,WIND,stat,,VW04,435,115,67,16
+Linger.rsrc,1015,0x03f7,test - MinorTradeBids,0x5484,1,0x0004,WIND,stat,,VW21,435,58,67,16
+Linger.rsrc,1015,0x03f7,test - MinorTradeBids,0x54ea,1,0x0004,WIND,stat,,VW18,435,194,67,15
+Linger.rsrc,1015,0x03f7,test - MinorTradeBids,0x5550,1,0x0004,WIND,stat,,VW19,435,213,63,14
+Linger.rsrc,1015,0x03f7,test - MinorTradeBids,0x55b6,1,0x0004,WIND,stat,,VW22,435,250,52,13
+Linger.rsrc,1015,0x03f7,test - MinorTradeBids,0x561c,1,0x0004,WIND,stat,,VW20,435,230,70,15
+Linger.rsrc,1015,0x03f7,test - MinorTradeBids,0x5682,1,0x0004,WIND,stat,,VW22,5,269,68,18
+Linger.rsrc,1015,0x03f7,test - MinorTradeBids,0x56e8,1,0x0004,WIND,stat,,VW22,436,271,68,18
+Linger.rsrc,1015,0x03f7,test - MinorTradeBids,0x574e,1,0x0004,WIND,stat,,    ,9,445,52,15
+Linger.rsrc,1015,0x03f7,test - MinorTradeBids,0x57b4,1,0x0004,WIND,stat,,VW08,9,305,67,16
+Linger.rsrc,1015,0x03f7,test - MinorTradeBids,0x581a,1,0x0004,WIND,stat,,VW07,9,324,67,16
+Linger.rsrc,1015,0x03f7,test - MinorTradeBids,0x5880,1,0x0004,WIND,stat,,VW06,9,362,67,16
+Linger.rsrc,1015,0x03f7,test - MinorTradeBids,0x58e6,1,0x0004,WIND,stat,,VW05,9,381,67,16
+Linger.rsrc,1015,0x03f7,test - MinorTradeBids,0x594c,1,0x0004,WIND,stat,,VW04,9,426,67,16
+Linger.rsrc,1015,0x03f7,test - MinorTradeBids,0x59b2,1,0x0004,WIND,stat,,VW21,9,343,67,16
+Linger.rsrc,1015,0x03f7,test - MinorTradeBids,0x5a18,1,0x0004,WIND,stat,,VW18,9,474,67,15
+Linger.rsrc,1015,0x03f7,test - MinorTradeBids,0x5a7e,1,0x0004,WIND,stat,,VW19,9,493,63,14
+Linger.rsrc,1015,0x03f7,test - MinorTradeBids,0x5ae4,1,0x0004,WIND,stat,,VW22,9,530,52,13
+Linger.rsrc,1015,0x03f7,test - MinorTradeBids,0x5b4a,1,0x0004,WIND,stat,,VW22,9,551,68,18
+Linger.rsrc,1015,0x03f7,test - MinorTradeBids,0x5bb0,1,0x0004,WIND,clus,,m14 ,82,291,43,277
+Linger.rsrc,1015,0x03f7,test - MinorTradeBids,0x651c,1,0x0004,WIND,clus,,m15 ,125,291,43,277
+Linger.rsrc,1015,0x03f7,test - MinorTradeBids,0x6e88,1,0x0004,WIND,clus,,m16 ,169,291,43,277
+Linger.rsrc,1015,0x03f7,test - MinorTradeBids,0x77f4,1,0x0004,WIND,clus,,m17 ,213,291,43,277
+Linger.rsrc,1015,0x03f7,test - MinorTradeBids,0x8160,1,0x0004,WIND,clus,,m18 ,257,291,43,277
+Linger.rsrc,1015,0x03f7,test - MinorTradeBids,0x8acc,1,0x0004,WIND,clus,,m19 ,301,291,43,277
+Linger.rsrc,1015,0x03f7,test - MinorTradeBids,0x9438,1,0x0004,WIND,clus,,m20 ,345,291,43,277
+Linger.rsrc,1015,0x03f7,test - MinorTradeBids,0x9da4,1,0x0004,WIND,clus,,m21 ,389,291,43,277
+Linger.rsrc,1015,0x03f7,test - MinorTradeBids,0xa710,1,0x0004,WIND,clus,,m22 ,436,291,43,277
+Linger.rsrc,1015,0x03f7,test - MinorTradeBids,0xb07c,1,0x0004,WIND,stat,,VW20,9,513,70,15
+Linger.rsrc,1015,0x03f7,test - MinorTradeBids,0xb0e2,1,0x0004,WIND,stat,,VW04,435,135,67,16
+Linger.rsrc,1015,0x03f7,test - MinorTradeBids,0xb148,1,0x0004,WIND,stat,,VW04,6,136,67,16
+Linger.rsrc,1015,0x03f7,test - MinorTradeBids,0xb1ae,1,0x0004,WIND,stat,,VW05,9,402,67,16
+Linger.rsrc,1024,0x0400,test - cMinorsTreatyTable,0x0332,0,,,clus,,m7  ,88,22,41,150
+Linger.rsrc,1024,0x0400,test - cMinorsTreatyTable,0x0872,0,,,clus,,m8  ,154,22,41,150
+Linger.rsrc,1024,0x0400,test - cMinorsTreatyTable,0x0db2,0,,,clus,,m9  ,220,22,41,150
+Linger.rsrc,1024,0x0400,test - cMinorsTreatyTable,0x12f2,0,,,clus,,m10 ,286,22,41,150
+Linger.rsrc,1024,0x0400,test - cMinorsTreatyTable,0x1832,0,,,clus,,m11 ,352,22,41,150
+Linger.rsrc,1024,0x0400,test - cMinorsTreatyTable,0x1d72,0,,,clus,,m12 ,418,22,41,150
+Linger.rsrc,1024,0x0400,test - cMinorsTreatyTable,0x22b2,0,,,clus,,m13 ,484,22,41,150
+Linger.rsrc,1024,0x0400,test - cMinorsTreatyTable,0x27f2,0,,,clus,,m14 ,550,22,41,150
+Linger.rsrc,1024,0x0400,test - cMinorsTreatyTable,0x2d32,0,,,clus,,m15 ,86,206,41,150
+Linger.rsrc,1024,0x0400,test - cMinorsTreatyTable,0x3272,0,,,clus,,m16 ,152,206,41,150
+Linger.rsrc,1024,0x0400,test - cMinorsTreatyTable,0x37b2,0,,,clus,,m17 ,218,206,41,150
+Linger.rsrc,1024,0x0400,test - cMinorsTreatyTable,0x3cf2,0,,,clus,,m18 ,284,206,41,150
+Linger.rsrc,1024,0x0400,test - cMinorsTreatyTable,0x4232,0,,,clus,,m19 ,350,206,41,150
+Linger.rsrc,1024,0x0400,test - cMinorsTreatyTable,0x4772,0,,,clus,,m20 ,416,206,41,150
+Linger.rsrc,1024,0x0400,test - cMinorsTreatyTable,0x4cb2,0,,,clus,,m21 ,482,206,41,150
+Linger.rsrc,1024,0x0400,test - cMinorsTreatyTable,0x51f2,0,,,clus,,m22 ,548,206,41,150
+Linger.rsrc,1024,0x0400,test - cMinorsTreatyTable,0x5732,0,,,clus,,row1,3,29,84,145
+Linger.rsrc,1024,0x0400,test - cMinorsTreatyTable,0x5794,1,0x5732,row1,stat,,nam0,2,9,80,16
+Linger.rsrc,1024,0x0400,test - cMinorsTreatyTable,0x57fa,1,0x5732,row1,stat,,nam1,2,28,80,16
+Linger.rsrc,1024,0x0400,test - cMinorsTreatyTable,0x5860,1,0x5732,row1,stat,,nam2,2,47,80,16
+Linger.rsrc,1024,0x0400,test - cMinorsTreatyTable,0x58c6,1,0x5732,row1,stat,,nam3,2,66,80,16
+Linger.rsrc,1024,0x0400,test - cMinorsTreatyTable,0x592c,1,0x5732,row1,stat,,nam4,2,85,80,16
+Linger.rsrc,1024,0x0400,test - cMinorsTreatyTable,0x5992,1,0x5732,row1,stat,,nam5,2,104,80,16
+Linger.rsrc,1024,0x0400,test - cMinorsTreatyTable,0x59f8,1,0x5732,row1,stat,,nam6,2,123,80,16
+Linger.rsrc,1024,0x0400,test - cMinorsTreatyTable,0x5a5e,0,,,clus,,row2,3,211,84,145
+Linger.rsrc,1024,0x0400,test - cMinorsTreatyTable,0x5ac0,1,0x5a5e,row2,stat,,nam0,2,9,80,16
+Linger.rsrc,1024,0x0400,test - cMinorsTreatyTable,0x5b26,1,0x5a5e,row2,stat,,nam1,2,28,80,16
+Linger.rsrc,1024,0x0400,test - cMinorsTreatyTable,0x5b8c,1,0x5a5e,row2,stat,,nam2,2,47,80,16
+Linger.rsrc,1024,0x0400,test - cMinorsTreatyTable,0x5bf2,1,0x5a5e,row2,stat,,nam3,2,66,80,16
+Linger.rsrc,1024,0x0400,test - cMinorsTreatyTable,0x5c58,1,0x5a5e,row2,stat,,nam4,2,85,80,16
+Linger.rsrc,1024,0x0400,test - cMinorsTreatyTable,0x5cbe,1,0x5a5e,row2,stat,,nam5,2,104,80,16
+Linger.rsrc,1024,0x0400,test - cMinorsTreatyTable,0x5d24,1,0x5a5e,row2,stat,,nam6,2,123,80,16
+Linger.rsrc,1024,0x0400,test - cMinorsTreatyTable,0x5d8a,0,,,clus,,col2,66,179,529,24
+Linger.rsrc,1024,0x0400,test - cMinorsTreatyTable,0x5dec,1,0x5d8a,col2,stat,,nam0,2,8,66,14
+Linger.rsrc,1024,0x0400,test - cMinorsTreatyTable,0x5e52,1,0x5d8a,col2,stat,,nam1,69,8,66,14
+Linger.rsrc,1024,0x0400,test - cMinorsTreatyTable,0x5eb8,1,0x5d8a,col2,stat,,nam2,136,8,66,14
+Linger.rsrc,1024,0x0400,test - cMinorsTreatyTable,0x5f1e,1,0x5d8a,col2,stat,,nam3,203,8,66,14
+Linger.rsrc,1024,0x0400,test - cMinorsTreatyTable,0x5f84,1,0x5d8a,col2,stat,,nam4,270,8,66,14
+Linger.rsrc,1024,0x0400,test - cMinorsTreatyTable,0x5fea,1,0x5d8a,col2,stat,,nam5,337,8,66,14
+Linger.rsrc,1024,0x0400,test - cMinorsTreatyTable,0x6050,1,0x5d8a,col2,stat,,nam6,404,8,66,14
+Linger.rsrc,1024,0x0400,test - cMinorsTreatyTable,0x60b6,1,0x5d8a,col2,stat,,nam7,469,8,66,14
+Linger.rsrc,1024,0x0400,test - cMinorsTreatyTable,0x611c,0,,,clus,,col1,66,-3,529,24
+Linger.rsrc,1024,0x0400,test - cMinorsTreatyTable,0x617e,1,0x611c,col1,stat,,nam0,2,8,66,14
+Linger.rsrc,1024,0x0400,test - cMinorsTreatyTable,0x61e4,1,0x611c,col1,stat,,nam1,69,8,66,14
+Linger.rsrc,1024,0x0400,test - cMinorsTreatyTable,0x624a,1,0x611c,col1,stat,,nam2,136,8,66,14
+Linger.rsrc,1024,0x0400,test - cMinorsTreatyTable,0x62b0,1,0x611c,col1,stat,,nam3,203,8,66,14
+Linger.rsrc,1024,0x0400,test - cMinorsTreatyTable,0x6316,1,0x611c,col1,stat,,nam4,270,8,66,14
+Linger.rsrc,1024,0x0400,test - cMinorsTreatyTable,0x637c,1,0x611c,col1,stat,,nam5,337,8,66,14
+Linger.rsrc,1024,0x0400,test - cMinorsTreatyTable,0x63e2,1,0x611c,col1,stat,,nam6,404,8,66,14
+Linger.rsrc,1024,0x0400,test - cMinorsTreatyTable,0x6448,1,0x611c,col1,stat,,nam7,469,8,66,14
+Linger.rsrc,1024,0x0400,test - cMinorsTreatyTable,0x64ae,0,,,stat,,    ,21,364,456,22
+Linger.rsrc,1025,0x0401,test - cGP Treaty Table,0x032f,0,,,clus,,GP0 ,112,34,41,150
+Linger.rsrc,1025,0x0401,test - cGP Treaty Table,0x086f,0,,,clus,,GP1 ,183,34,41,150
+Linger.rsrc,1025,0x0401,test - cGP Treaty Table,0x0daf,0,,,clus,,GP2 ,254,34,41,150
+Linger.rsrc,1025,0x0401,test - cGP Treaty Table,0x12ef,0,,,clus,,GP3 ,325,34,41,150
+Linger.rsrc,1025,0x0401,test - cGP Treaty Table,0x182f,0,,,clus,,GP4 ,396,34,41,150
+Linger.rsrc,1025,0x0401,test - cGP Treaty Table,0x1d6f,0,,,clus,,GP5 ,467,34,41,150
+Linger.rsrc,1025,0x0401,test - cGP Treaty Table,0x22af,0,,,clus,,GP6 ,538,34,41,150
+Linger.rsrc,1025,0x0401,test - cGP Treaty Table,0x27ef,0,,,clus,,hori,95,8,507,23
+Linger.rsrc,1025,0x0401,test - cGP Treaty Table,0x2851,1,0x27ef,hori,stat,,nam0,2,8,75,14
+Linger.rsrc,1025,0x0401,test - cGP Treaty Table,0x28b7,1,0x27ef,hori,stat,,nam1,74,8,75,14
+Linger.rsrc,1025,0x0401,test - cGP Treaty Table,0x291d,1,0x27ef,hori,stat,,nam2,145,8,75,14
+Linger.rsrc,1025,0x0401,test - cGP Treaty Table,0x2983,1,0x27ef,hori,stat,,nam3,216,8,75,14
+Linger.rsrc,1025,0x0401,test - cGP Treaty Table,0x29e9,1,0x27ef,hori,stat,,nam4,285,8,75,14
+Linger.rsrc,1025,0x0401,test - cGP Treaty Table,0x2a4f,1,0x27ef,hori,stat,,nam5,356,8,75,14
+Linger.rsrc,1025,0x0401,test - cGP Treaty Table,0x2ab5,1,0x27ef,hori,stat,,nam6,430,8,75,14
+Linger.rsrc,1025,0x0401,test - cGP Treaty Table,0x2b1b,0,,,clus,,vert,1,38,105,145
+Linger.rsrc,1025,0x0401,test - cGP Treaty Table,0x2b7d,1,0x2b1b,vert,stat,,nam0,2,9,101,16
+Linger.rsrc,1025,0x0401,test - cGP Treaty Table,0x2be3,1,0x2b1b,vert,stat,,nam1,2,28,101,16
+Linger.rsrc,1025,0x0401,test - cGP Treaty Table,0x2c49,1,0x2b1b,vert,stat,,nam2,2,47,101,16
+Linger.rsrc,1025,0x0401,test - cGP Treaty Table,0x2caf,1,0x2b1b,vert,stat,,nam3,2,66,101,16
+Linger.rsrc,1025,0x0401,test - cGP Treaty Table,0x2d15,1,0x2b1b,vert,stat,,nam4,2,85,101,16
+Linger.rsrc,1025,0x0401,test - cGP Treaty Table,0x2d7b,1,0x2b1b,vert,stat,,nam5,2,104,101,16
+Linger.rsrc,1025,0x0401,test - cGP Treaty Table,0x2de1,1,0x2b1b,vert,stat,,nam6,2,123,101,16
+Linger.rsrc,1025,0x0401,test - cGP Treaty Table,0x2f18,0,,,stat,,    ,5,186,454,26
+Linger.rsrc,1026,0x0402,test - Automated turns,0x0405,0,,,stat,,    ,29,27,216,21
+Linger.rsrc,1050,0x041a,GWorld Menu,0x03f8,0,,,clus,,clus,18,50,250,42
+Linger.rsrc,1060,0x0424,GWorld Peeker,0x02a5,0,,,view,TGWorldPeeker,DLOG,0,0,325,143
+Linger.rsrc,1502,0x05de,Load / Save,0x0004,0,,,view,,base,0,0,640,480
+Linger.rsrc,1502,0x05de,Load / Save,0x0048,1,0x0004,base,pict,TLoadSavePicture,main,0,0,640,480
+Linger.rsrc,1502,0x05de,Load / Save,0x00b8,2,0x0048,main,stat,TNoHiliteText,slt0,72,290,225,21
+Linger.rsrc,1502,0x05de,Load / Save,0x012b,2,0x0048,main,stat,TNoHiliteText,slt1,72,326,225,21
+Linger.rsrc,1502,0x05de,Load / Save,0x019e,2,0x0048,main,stat,TNoHiliteText,slt3,73,394,225,21
+Linger.rsrc,1502,0x05de,Load / Save,0x0211,2,0x0048,main,stat,TNoHiliteText,slt2,73,360,225,21
+Linger.rsrc,1502,0x05de,Load / Save,0x0284,2,0x0048,main,stat,TNoHiliteText,slt7,346,394,225,21
+Linger.rsrc,1502,0x05de,Load / Save,0x02f7,2,0x0048,main,stat,TNoHiliteText,slt6,346,360,225,21
+Linger.rsrc,1502,0x05de,Load / Save,0x036a,2,0x0048,main,stat,TNoHiliteText,slt5,345,326,225,21
+Linger.rsrc,1502,0x05de,Load / Save,0x03dd,2,0x0048,main,stat,TNoHiliteText,slt4,345,290,225,21
+Linger.rsrc,1502,0x05de,Load / Save,0x0450,2,0x0048,main,cntl,TClickZone,cncl,2,221,67,252
+Linger.rsrc,1502,0x05de,Load / Save,0x04b8,2,0x0048,main,pict,,plat,290,1,350,255
+Linger.rsrc,1502,0x05de,Load / Save,0x0518,3,0x04b8,plat,pict,TUpDownPictureButton,okay,233,205,96,30
+Linger.rsrc,1502,0x05de,Load / Save,0x058c,3,0x04b8,plat,view,TMapPreviewView,map ,12,13,324,180
+Linger.rsrc,1502,0x05de,Load / Save,0x05df,3,0x04b8,plat,stat,,info,20,197,205,43
+Linger.rsrc,1502,0x05de,Load / Save,0x0645,2,0x0048,main,cntl,,otto,71,80,188,49
+Linger.rsrc,1502,0x05de,Load / Save,0x06a3,2,0x0048,main,tevw,TInfoBarText,curs,49,19,201,30
+Linger.rsrc,2001,0x07d1,Sphere window,0x0004,0,,,wind,TGameWindow,WIND,5,50,600,400
+Linger.rsrc,2002,0x07d2,moveable main window,0x0004,0,,,wind,TGameWindow,WIND,0,40,640,480
+Linger.rsrc,2005,0x07d5,test - Diplomacy Notices,0x0320,0,,,pict,,    ,0,0,600,800
+Linger.rsrc,2020,0x07e4,Minister Message,0x0080,0,,,pict,,DLOG,0,0,390,282
+Linger.rsrc,2020,0x07e4,Minister Message,0x00e0,1,0x0080,DLOG,stat,,titl,111,33,170,95
+Linger.rsrc,2020,0x07e4,Minister Message,0x0146,1,0x0080,DLOG,pict,TUpDownPictureButton,okay,310,248,61,24
+Linger.rsrc,2020,0x07e4,Minister Message,0x01ba,1,0x0080,DLOG,pict,TUpDownPictureButton,cncl,17,248,61,24
+Linger.rsrc,2020,0x07e4,Minister Message,0x022e,1,0x0080,DLOG,pict,,coat,295,12,84,125
+Linger.rsrc,2020,0x07e4,Minister Message,0x028e,1,0x0080,DLOG,tevw,TDeluxeText,info,17,160,354,84
+Linger.rsrc,2021,0x07e5,Really End Turn?,0x0080,0,,,pict,TWarningView,DLOG,0,0,390,282
+Linger.rsrc,2021,0x07e5,Really End Turn?,0x00ec,1,0x0080,DLOG,stat,,msg1,238,45,133,37
+Linger.rsrc,2021,0x07e5,Really End Turn?,0x0152,1,0x0080,DLOG,pict,TUpDownPictureButton,pic1,206,45,25,25
+Linger.rsrc,2021,0x07e5,Really End Turn?,0x01c6,1,0x0080,DLOG,pict,TUpDownPictureButton,pic2,206,93,25,25
+Linger.rsrc,2021,0x07e5,Really End Turn?,0x023a,1,0x0080,DLOG,stat,,msg2,238,93,133,37
+Linger.rsrc,2021,0x07e5,Really End Turn?,0x02a0,1,0x0080,DLOG,pict,TUpDownPictureButton,pic4,206,188,25,25
+Linger.rsrc,2021,0x07e5,Really End Turn?,0x0314,1,0x0080,DLOG,stat,,msg4,238,188,133,37
+Linger.rsrc,2021,0x07e5,Really End Turn?,0x037a,1,0x0080,DLOG,pict,TUpDownPictureButton,pic3,206,140,25,25
+Linger.rsrc,2021,0x07e5,Really End Turn?,0x03ee,1,0x0080,DLOG,stat,,msg3,238,140,133,37
+Linger.rsrc,2021,0x07e5,Really End Turn?,0x0454,1,0x0080,DLOG,pict,TUpDownPictureButton,pic5,206,236,24,24
+Linger.rsrc,2021,0x07e5,Really End Turn?,0x04c8,1,0x0080,DLOG,stat,,msg5,238,236,133,37
+Linger.rsrc,2021,0x07e5,Really End Turn?,0x052e,1,0x0080,DLOG,stat,,titl,207,17,169,25
+Linger.rsrc,2050,0x0802,Minimap,0x0004,0,,,fwnd,TMiniMapWindow,mapW,329,31,216,121
+Linger.rsrc,2050,0x0802,Minimap,0x0062,1,0x0004,mapW,view,TMiniMapView,mini,0,0,216,121
+Linger.rsrc,3000,0x0bb8,Help Msg,0x008b,0,,,pict,THelpPicture,DLOG,0,0,390,315
+Linger.rsrc,3000,0x0bb8,Help Msg,0x00f7,1,0x008b,DLOG,view,TScrollView,swin,21,146,363,163
+Linger.rsrc,3000,0x0bb8,Help Msg,0x0146,1,0x008b,DLOG,stat,TNoHiliteText,nam1,15,187,244,15
+Linger.rsrc,3000,0x0bb8,Help Msg,0x01b9,1,0x008b,DLOG,stat,TNoHiliteText,nam2,15,204,244,15
+Linger.rsrc,3000,0x0bb8,Help Msg,0x022c,1,0x008b,DLOG,stat,TNoHiliteText,nam3,15,221,244,15
+Linger.rsrc,3000,0x0bb8,Help Msg,0x029f,1,0x008b,DLOG,stat,TNoHiliteText,nam4,15,238,361,15
+Linger.rsrc,3000,0x0bb8,Help Msg,0x0312,1,0x008b,DLOG,stat,TNoHiliteText,nam5,15,255,361,15
+Linger.rsrc,3000,0x0bb8,Help Msg,0x0385,1,0x008b,DLOG,stat,TNoHiliteText,prev,265,187,110,15
+Linger.rsrc,3000,0x0bb8,Help Msg,0x03f8,1,0x008b,DLOG,stat,TNoHiliteText,next,265,204,110,15
+Linger.rsrc,3000,0x0bb8,Help Msg,0x046b,1,0x008b,DLOG,stat,TNoHiliteText,more,265,221,110,15
+Linger.rsrc,3000,0x0bb8,Help Msg,0x04de,1,0x008b,DLOG,stat,,titl,105,14,181,62
+Linger.rsrc,3000,0x0bb8,Help Msg,0x0544,1,0x008b,DLOG,stat,TNoHiliteText,togl,104,123,182,15
+Linger.rsrc,3000,0x0bb8,Help Msg,0x05b7,1,0x008b,DLOG,pict,,coat,295,12,84,125
+Linger.rsrc,3000,0x0bb8,Help Msg,0x0617,1,0x008b,DLOG,stat,,subj,105,81,181,31
+Linger.rsrc,3005,0x0bbd,Terrain Help,0x0092,0,,,pict,TTerrainHelpPicture,DLOG,0,0,390,300
+Linger.rsrc,3005,0x0bbd,Terrain Help,0x0105,1,0x0092,DLOG,tevw,TDeluxeText,info,9,91,373,57
+Linger.rsrc,3005,0x0bbd,Terrain Help,0x01a2,1,0x0092,DLOG,stat,,titl,85,11,219,45
+Linger.rsrc,3005,0x0bbd,Terrain Help,0x0208,1,0x0092,DLOG,stat,TNoHiliteText,i00a,14,178,180,15
+Linger.rsrc,3005,0x0bbd,Terrain Help,0x027b,1,0x0092,DLOG,stat,TNoHiliteText,i00b,14,195,180,15
+Linger.rsrc,3005,0x0bbd,Terrain Help,0x02ee,1,0x0092,DLOG,stat,TNoHiliteText,i00c,14,212,180,15
+Linger.rsrc,3005,0x0bbd,Terrain Help,0x0361,1,0x0092,DLOG,stat,TNoHiliteText,i00d,14,229,180,15
+Linger.rsrc,3005,0x0bbd,Terrain Help,0x03d4,1,0x0092,DLOG,stat,TNoHiliteText,i00e,14,246,180,15
+Linger.rsrc,3005,0x0bbd,Terrain Help,0x0447,1,0x0092,DLOG,stat,TNoHiliteText,i00f,14,263,180,15
+Linger.rsrc,3005,0x0bbd,Terrain Help,0x04ba,1,0x0092,DLOG,stat,TNoHiliteText,i00g,198,178,180,15
+Linger.rsrc,3005,0x0bbd,Terrain Help,0x052d,1,0x0092,DLOG,stat,TNoHiliteText,i00h,198,195,180,15
+Linger.rsrc,3005,0x0bbd,Terrain Help,0x05a0,1,0x0092,DLOG,stat,TNoHiliteText,i00i,198,212,180,15
+Linger.rsrc,3005,0x0bbd,Terrain Help,0x0613,1,0x0092,DLOG,stat,TNoHiliteText,i00j,198,229,180,15
+Linger.rsrc,3005,0x0bbd,Terrain Help,0x0686,1,0x0092,DLOG,stat,TNoHiliteText,i00k,198,246,180,15
+Linger.rsrc,3005,0x0bbd,Terrain Help,0x06f9,1,0x0092,DLOG,stat,TNoHiliteText,i00l,198,263,180,15
+Linger.rsrc,3005,0x0bbd,Terrain Help,0x076c,1,0x0092,DLOG,view,TLonelyTileView,tile,11,12,64,64
+Linger.rsrc,3005,0x0bbd,Terrain Help,0x07bf,1,0x0092,DLOG,view,TLonelyTileView,til2,315,12,64,64
+Linger.rsrc,3005,0x0bbd,Terrain Help,0x0812,1,0x0092,DLOG,stat,,item,85,57,219,20
+Linger.rsrc,4122,0x101a,Query Floater,0x0080,0,,,pict,TQueryFloater,DLOG,0,0,250,375
+Linger.rsrc,4122,0x101a,Query Floater,0x00ed,1,0x0080,DLOG,pict,TPictureButton,advi,113,65,97,37
+Linger.rsrc,4122,0x101a,Query Floater,0x015b,1,0x0080,DLOG,pict,T2PictureButton,oref,11,150,65,27
+Linger.rsrc,4122,0x101a,Query Floater,0x01ca,1,0x0080,DLOG,pict,T2PictureButton,news,11,187,65,27
+Linger.rsrc,4122,0x101a,Query Floater,0x0239,1,0x0080,DLOG,pict,T2PictureButton,deal,11,224,65,27
+Linger.rsrc,4122,0x101a,Query Floater,0x02a8,1,0x0080,DLOG,pict,T2PictureButton,batt,11,261,65,27
+Linger.rsrc,4122,0x101a,Query Floater,0x0317,1,0x0080,DLOG,pict,T2PictureButton,char,12,298,65,27
+Linger.rsrc,4122,0x101a,Query Floater,0x0386,1,0x0080,DLOG,pict,TPictureButton,cncl,10,335,65,27
+Linger.rsrc,4122,0x101a,Query Floater,0x03f4,1,0x0080,DLOG,stat,,titl,101,22,126,16
+Linger.rsrc,4122,0x101a,Query Floater,0x045a,1,0x0080,DLOG,stat,,tex0,91,156,144,15
+Linger.rsrc,4122,0x101a,Query Floater,0x04c0,1,0x0080,DLOG,stat,,tex1,91,192,144,15
+Linger.rsrc,4122,0x101a,Query Floater,0x0526,1,0x0080,DLOG,stat,,tex2,91,230,144,15
+Linger.rsrc,4122,0x101a,Query Floater,0x058c,1,0x0080,DLOG,stat,,tex3,91,266,144,15
+Linger.rsrc,4122,0x101a,Query Floater,0x05f2,1,0x0080,DLOG,stat,,tex4,91,304,144,15
+Linger.rsrc,4122,0x101a,Query Floater,0x0658,1,0x0080,DLOG,stat,,tex5,91,340,144,15
+Linger.rsrc,4122,0x101a,Query Floater,0x06be,1,0x0080,DLOG,stat,,tex6,89,115,144,15
+Linger.rsrc,4140,0x102c,Flag button,0x0080,0,,,pict,TFlagOptionsPicture,DLOG,0,0,250,375
+Linger.rsrc,4140,0x102c,Flag button,0x00f3,1,0x0080,DLOG,stat,TDropShadowText,txt0,98,22,129,15
+Linger.rsrc,4140,0x102c,Flag button,0x0168,1,0x0080,DLOG,stat,TDropShadowText,txt1,104,109,116,18
+Linger.rsrc,4140,0x102c,Flag button,0x01dd,1,0x0080,DLOG,stat,TDropShadowText,txt2,85,193,119,18
+Linger.rsrc,4140,0x102c,Flag button,0x0252,1,0x0080,DLOG,stat,TDropShadowText,txt3,85,154,144,19
+Linger.rsrc,4140,0x102c,Flag button,0x02c7,1,0x0080,DLOG,stat,TDropShadowText,txt4,85,231,138,17
+Linger.rsrc,4140,0x102c,Flag button,0x033c,1,0x0080,DLOG,stat,TDropShadowText,txt5,85,268,124,15
+Linger.rsrc,4140,0x102c,Flag button,0x03b1,1,0x0080,DLOG,stat,TDropShadowText,txt6,85,303,126,18
+Linger.rsrc,4140,0x102c,Flag button,0x0426,1,0x0080,DLOG,pict,TPictureButton,save,112,65,97,37
+Linger.rsrc,4140,0x102c,Flag button,0x0494,1,0x0080,DLOG,pict,TPictureButton,newg,10,149,65,27
+Linger.rsrc,4140,0x102c,Flag button,0x0502,1,0x0080,DLOG,pict,TPictureButton,load,10,186,65,27
+Linger.rsrc,4140,0x102c,Flag button,0x0570,1,0x0080,DLOG,pict,TPictureButton,pref,10,223,65,27
+Linger.rsrc,4140,0x102c,Flag button,0x05de,1,0x0080,DLOG,pict,TPictureButton,cred,10,260,65,27
+Linger.rsrc,4140,0x102c,Flag button,0x064c,1,0x0080,DLOG,pict,TPictureButton,quit,10,297,65,27
+Linger.rsrc,4140,0x102c,Flag button,0x06ba,1,0x0080,DLOG,pict,TPictureButton,cncl,11,335,65,27
+Linger.rsrc,4140,0x102c,Flag button,0x0728,1,0x0080,DLOG,stat,TDropShadowText,txt7,84,340,126,18
+Linger.rsrc,4150,0x1036,Game preferences,0x0004,0,,,view,,base,0,0,640,480
+Linger.rsrc,4150,0x1036,Game preferences,0x0048,1,0x0004,base,pict,TGamePreferencesPicture,main,0,0,640,480
+Linger.rsrc,4150,0x1036,Game preferences,0x00bf,2,0x0048,main,pict,TCzechBox,optc,54,295,102,91
+Linger.rsrc,4150,0x1036,Game preferences,0x0128,2,0x0048,main,pict,TCzechBox,optd,194,295,102,91
+Linger.rsrc,4150,0x1036,Game preferences,0x0191,2,0x0048,main,pict,TMadnessButton,opte,390,156,160,160
+Linger.rsrc,4150,0x1036,Game preferences,0x01ff,2,0x0048,main,cntl,TTwoPicSlider,soun,54,92,102,91
+Linger.rsrc,4150,0x1036,Game preferences,0x026a,2,0x0048,main,cntl,TTwoPicSlider,musi,194,92,102,91
+Linger.rsrc,4150,0x1036,Game preferences,0x02d5,2,0x0048,main,clus,TToolBarCluster,tbr2,602,36,40,46
+Linger.rsrc,4150,0x1036,Game preferences,0x0346,3,0x02d5,tbr2,pict,TPictureButton,quer,6,3,22,38
+Linger.rsrc,4150,0x1036,Game preferences,0x03b4,2,0x0048,main,tevw,TDeluxeText,txtb,197,193,96,47
+Linger.rsrc,4150,0x1036,Game preferences,0x0451,2,0x0048,main,tevw,TDeluxeText,txta,57,193,96,47
+Linger.rsrc,4150,0x1036,Game preferences,0x04ee,2,0x0048,main,tevw,TDeluxeText,txtc,57,396,96,47
+Linger.rsrc,4150,0x1036,Game preferences,0x058b,2,0x0048,main,tevw,TDeluxeText,txtd,197,396,96,47
+Linger.rsrc,4150,0x1036,Game preferences,0x0628,2,0x0048,main,tevw,TDeluxeText,txte,423,322,96,47
+Linger.rsrc,4150,0x1036,Game preferences,0x06c5,2,0x0048,main,clus,TRadioTextCluster,opca,370,429,195,20
+Linger.rsrc,4150,0x1036,Game preferences,0x0738,3,0x06c5,opca,stat,TRadioText,yess,2,2,95,16
+Linger.rsrc,4150,0x1036,Game preferences,0x07a8,3,0x06c5,opca,stat,TRadioText,nooo,98,2,95,16
+Linger.rsrc,4150,0x1036,Game preferences,0x0818,2,0x0048,main,tevw,TDeluxeText,tpca,370,380,195,47
+Linger.rsrc,4150,0x1036,Game preferences,0x08b5,2,0x0048,main,clus,TToolBarCluster,tool,3,6,64,91
+Linger.rsrc,4150,0x1036,Game preferences,0x0926,3,0x08b5,tool,pict,TPictureButton,okay,5,32,31,51
+Linger.rsrc,4150,0x1036,Game preferences,0x0994,2,0x0048,main,tevw,TInfoBarText,curs,386,5,201,30
+Linger.rsrc,4175,0x104f,Credits,0x0004,0,,,view,,base,0,0,2000,2000
+Linger.rsrc,4175,0x104f,Credits,0x0048,1,0x0004,base,pict,TCreditsPicture,main,0,0,640,480
+Linger.rsrc,4175,0x104f,Credits,0x00b7,2,0x0048,main,tevw,TDeluxeText,cred,36,19,257,428
+Linger.rsrc,4175,0x104f,Credits,0x0154,2,0x0048,main,tevw,TDeluxeText,cre2,326,19,290,428
+Linger.rsrc,4300,0x10cc,Game status,0x0004,0,,,view,,base,0,0,2000,2000
+Linger.rsrc,4300,0x10cc,Game status,0x0048,1,0x0004,base,pict,TStatusPicture,main,0,0,640,480
+Linger.rsrc,4300,0x10cc,Game status,0x00b6,2,0x0048,main,clus,TToolBarCluster,tool,3,6,64,91
+Linger.rsrc,4300,0x10cc,Game status,0x0127,3,0x00b6,tool,pict,TPictureButton,end ,5,32,31,51
+Linger.rsrc,4300,0x10cc,Game status,0x0195,2,0x0048,main,tevw,TInfoBarText,curs,386,5,201,30
+Linger.rsrc,4300,0x10cc,Game status,0x0233,2,0x0048,main,pict,TNoHilitePicture,tab0,13,134,60,56
+Linger.rsrc,4300,0x10cc,Game status,0x02a3,2,0x0048,main,pict,TNoHilitePicture,tab1,13,190,60,56
+Linger.rsrc,4300,0x10cc,Game status,0x0313,2,0x0048,main,pict,TNoHilitePicture,tab2,13,245,60,56
+Linger.rsrc,4300,0x10cc,Game status,0x0383,2,0x0048,main,pict,TNoHilitePicture,tab3,13,300,60,56
+Linger.rsrc,4300,0x10cc,Game status,0x03f3,2,0x0048,main,pict,TNoHilitePicture,tab4,13,356,60,56
+Linger.rsrc,4300,0x10cc,Game status,0x0463,2,0x0048,main,pict,TNoHilitePicture,tab5,567,134,60,56
+Linger.rsrc,4300,0x10cc,Game status,0x04d3,2,0x0048,main,pict,TNoHilitePicture,tab6,567,190,60,56
+Linger.rsrc,4300,0x10cc,Game status,0x0543,2,0x0048,main,pict,TNoHilitePicture,tab7,567,245,60,56
+Linger.rsrc,4300,0x10cc,Game status,0x05b3,2,0x0048,main,pict,TNoHilitePicture,tab8,567,300,60,56
+Linger.rsrc,4300,0x10cc,Game status,0x0623,2,0x0048,main,pict,TNoHilitePicture,tab9,567,356,60,56
+Linger.rsrc,4300,0x10cc,Game status,0x0693,2,0x0048,main,clus,TToolBarCluster,tbr2,602,36,40,46
+Linger.rsrc,4300,0x10cc,Game status,0x0704,3,0x0693,tbr2,pict,TPictureButton,quer,6,3,22,38
+Linger.rsrc,4600,0x11f8,Opening Cinematic,0x0004,0,,,view,,base,0,0,2000,2000
+Linger.rsrc,4600,0x11f8,Opening Cinematic,0x0048,1,0x0004,base,pict,,main,0,0,640,480
+Linger.rsrc,4600,0x11f8,Opening Cinematic,0x00de,2,0x0048,main,pict,TMovieView,movi,200,100,284,232
+Linger.rsrc,8155,0x1fdb,test - Naval Battle,0x0332,0,,,clus,,beta,376,6,209,389
+Linger.rsrc,8155,0x1fdb,test - Naval Battle,0x0445,1,0x0332,beta,stat,,    ,11,19,115,16
+Linger.rsrc,8155,0x1fdb,test - Naval Battle,0x04ab,1,0x0332,beta,stat,,    ,11,37,115,16
+Linger.rsrc,8155,0x1fdb,test - Naval Battle,0x05c2,1,0x0332,beta,stat,,    ,11,55,115,16
+Linger.rsrc,8155,0x1fdb,test - Naval Battle,0x06d9,1,0x0332,beta,stat,,    ,11,73,115,16
+Linger.rsrc,8155,0x1fdb,test - Naval Battle,0x07f0,1,0x0332,beta,stat,,    ,11,91,115,16
+Linger.rsrc,8155,0x1fdb,test - Naval Battle,0x0907,1,0x0332,beta,stat,,    ,11,109,115,16
+Linger.rsrc,8155,0x1fdb,test - Naval Battle,0x0a1e,1,0x0332,beta,stat,,    ,11,127,115,16
+Linger.rsrc,8155,0x1fdb,test - Naval Battle,0x0b35,1,0x0332,beta,stat,,    ,11,145,115,16
+Linger.rsrc,8155,0x1fdb,test - Naval Battle,0x0f10,1,0x0332,beta,stat,,    ,10,235,115,16
+Linger.rsrc,8155,0x1fdb,test - Naval Battle,0x0f76,1,0x0332,beta,stat,,    ,10,217,115,16
+Linger.rsrc,8155,0x1fdb,test - Naval Battle,0x0fdc,1,0x0332,beta,stat,,    ,10,199,115,16
+Linger.rsrc,8155,0x1fdb,test - Naval Battle,0x1042,1,0x0332,beta,stat,,    ,10,181,115,16
+Linger.rsrc,8155,0x1fdb,test - Naval Battle,0x10a8,1,0x0332,beta,stat,,    ,10,163,115,16
+Linger.rsrc,8155,0x1fdb,test - Naval Battle,0x11bf,1,0x0332,beta,clus,,tact,3,256,99,77
+Linger.rsrc,8155,0x1fdb,test - Naval Battle,0x134a,1,0x0332,beta,clus,,targ,105,256,99,77
+Linger.rsrc,8155,0x1fdb,test - Naval Battle,0x14d5,1,0x0332,beta,stat,,name,5,336,191,15
+Linger.rsrc,8155,0x1fdb,test - Naval Battle,0x174e,1,0x0332,beta,stat,,    ,4,349,50,12
+Linger.rsrc,8155,0x1fdb,test - Naval Battle,0x17b4,1,0x0332,beta,stat,,    ,4,367,50,12
+Linger.rsrc,8155,0x1fdb,test - Naval Battle,0x181a,1,0x0332,beta,stat,,    ,93,349,50,12
+Linger.rsrc,8155,0x1fdb,test - Naval Battle,0x1880,0,,,clus,,alph,16,6,209,389
+Linger.rsrc,8155,0x1fdb,test - Naval Battle,0x1993,1,0x1880,alph,stat,,    ,11,19,115,16
+Linger.rsrc,8155,0x1fdb,test - Naval Battle,0x19f9,1,0x1880,alph,stat,,    ,11,37,115,16
+Linger.rsrc,8155,0x1fdb,test - Naval Battle,0x1b10,1,0x1880,alph,stat,,    ,11,55,115,16
+Linger.rsrc,8155,0x1fdb,test - Naval Battle,0x1c27,1,0x1880,alph,stat,,    ,11,73,115,16
+Linger.rsrc,8155,0x1fdb,test - Naval Battle,0x1d3e,1,0x1880,alph,stat,,    ,11,91,115,16
+Linger.rsrc,8155,0x1fdb,test - Naval Battle,0x1e55,1,0x1880,alph,stat,,    ,11,109,115,16
+Linger.rsrc,8155,0x1fdb,test - Naval Battle,0x1f6c,1,0x1880,alph,stat,,    ,11,127,115,16
+Linger.rsrc,8155,0x1fdb,test - Naval Battle,0x2083,1,0x1880,alph,stat,,    ,11,145,115,16
+Linger.rsrc,8155,0x1fdb,test - Naval Battle,0x245e,1,0x1880,alph,stat,,    ,10,235,115,16
+Linger.rsrc,8155,0x1fdb,test - Naval Battle,0x24c4,1,0x1880,alph,stat,,    ,10,217,115,16
+Linger.rsrc,8155,0x1fdb,test - Naval Battle,0x252a,1,0x1880,alph,stat,,    ,10,199,115,16
+Linger.rsrc,8155,0x1fdb,test - Naval Battle,0x2590,1,0x1880,alph,stat,,    ,10,181,115,16
+Linger.rsrc,8155,0x1fdb,test - Naval Battle,0x25f6,1,0x1880,alph,stat,,    ,10,163,115,16
+Linger.rsrc,8155,0x1fdb,test - Naval Battle,0x270d,1,0x1880,alph,clus,,tact,3,256,99,77
+Linger.rsrc,8155,0x1fdb,test - Naval Battle,0x2898,1,0x1880,alph,clus,,targ,105,256,99,77
+Linger.rsrc,8155,0x1fdb,test - Naval Battle,0x2a23,1,0x1880,alph,stat,,name,5,336,191,15
+Linger.rsrc,8155,0x1fdb,test - Naval Battle,0x2c9c,1,0x1880,alph,stat,,    ,4,349,50,12
+Linger.rsrc,8155,0x1fdb,test - Naval Battle,0x2d02,1,0x1880,alph,stat,,    ,4,367,50,12
+Linger.rsrc,8155,0x1fdb,test - Naval Battle,0x2d68,1,0x1880,alph,stat,,    ,93,349,50,12
+Linger.rsrc,8155,0x1fdb,test - Naval Battle,0x2dce,0,,,stat,,rang,263,62,73,16
+Linger.rsrc,8155,0x1fdb,test - Naval Battle,0x2f05,0,,,stat,,resu,241,92,122,197
+Linger.rsrc,9285,0x2445,Brick court,0x0080,0,,,pict,TChupacabra,DLOG,0,0,328,426
+Linger.rsrc,9285,0x2445,Brick court,0x00eb,1,0x0080,DLOG,stat,,scor,153,9,166,19
+Linger.rsrc,15001,0x3a99,Cheaty Mission Snooper,0x015b,0,,,view,TMissionSnooperView,main,0,0,1000,1000
+Linger.rsrc,15001,0x3a99,Cheaty Mission Snooper,0x01b2,1,0x015b,main,stat,,gplb,41,6,306,15
+Linger.rsrc,15001,0x3a99,Cheaty Mission Snooper,0x0218,1,0x015b,main,stat,,gpfo,45,24,976,54
+Linger.rsrc,15001,0x3a99,Cheaty Mission Snooper,0x027e,1,0x015b,main,pict,TUpDownPictureButton,gp--,7,6,13,13
+Linger.rsrc,15001,0x3a99,Cheaty Mission Snooper,0x02f2,1,0x015b,main,pict,TUpDownPictureButton,gp++,22,6,13,13
+Linger.rsrc,15001,0x3a99,Cheaty Mission Snooper,0x0366,1,0x015b,main,stat,,milb,161,84,374,16
+Linger.rsrc,15001,0x3a99,Cheaty Mission Snooper,0x03cc,1,0x015b,main,pict,TUpDownPictureButton,mi--,127,84,13,13
+Linger.rsrc,15001,0x3a99,Cheaty Mission Snooper,0x0440,1,0x015b,main,pict,TUpDownPictureButton,mi++,142,84,13,13
+Linger.rsrc,15001,0x3a99,Cheaty Mission Snooper,0x04b4,1,0x015b,main,pict,TUpDownPictureButton,list,84,76,35,26
+Linger.rsrc,15001,0x3a99,Cheaty Mission Snooper,0x0528,1,0x015b,main,tevw,,text,5,103,997,1004
+Linger.rsrc,15001,0x3a99,Cheaty Mission Snooper,0x05ba,1,0x015b,main,pict,TUpDownPictureButton,bild,45,77,38,25
+Linger.rsrc,15001,0x3a99,Cheaty Mission Snooper,0x062e,1,0x015b,main,pict,TUpDownPictureButton,army,5,24,37,35
+Linger.rsrc,15001,0x3a99,Cheaty Mission Snooper,0x06a2,1,0x015b,main,pict,TUpDownPictureButton,navy,3,60,39,38
+MapView.rsrc,1350,0x0546,CombatReport 2,0x026f,0,,,pict,TCombatReportView,DLOG,0,0,230,360
+MapView.rsrc,1350,0x0546,CombatReport 2,0x02e0,1,0x026f,DLOG,pict,TUpDownPictureButton,next,157,335,69,19
+MapView.rsrc,1350,0x0546,CombatReport 2,0x0354,1,0x026f,DLOG,pict,TUpDownPictureButton,end ,3,336,69,19
+MapView.rsrc,1350,0x0546,CombatReport 2,0x03c8,1,0x026f,DLOG,pict,,port,4,4,222,151
+MapView.rsrc,1350,0x0546,CombatReport 2,0x0428,1,0x026f,DLOG,pict,TColorKeyPicture,pgup,4,310,24,20
+MapView.rsrc,1350,0x0546,CombatReport 2,0x0498,1,0x026f,DLOG,pict,TColorKeyPicture,pgdn,202,310,23,20
+MapView.rsrc,1350,0x0546,CombatReport 2,0x0508,1,0x026f,DLOG,stat,,page,68,313,90,16
+MapView.rsrc,1350,0x0546,CombatReport 2,0x056e,1,0x026f,DLOG,stat,,titl,6,164,217,23
+MapView.rsrc,1350,0x0546,CombatReport 2,0x05d4,1,0x026f,DLOG,stat,,repo,7,191,214,62
+MapView.rsrc,1350,0x0546,CombatReport 2,0x063a,1,0x026f,DLOG,stat,,orde,53,298,119,14
+MapView.rsrc,1350,0x0546,CombatReport 2,0x06a0,1,0x026f,DLOG,stat,,loss,57,254,112,42
+MapView.rsrc,2013,0x07dd,Combined Map,0x0004,0,,,view,,base,0,0,2000,2000
+MapView.rsrc,2013,0x07dd,Combined Map,0x0048,1,0x0004,base,pict,TMapUberPicture,main,0,0,640,480
+MapView.rsrc,2013,0x07dd,Combined Map,0x00ed,2,0x0048,main,view,TMapDialog,DLOG,5,27,512,448
+MapView.rsrc,2013,0x07dd,Combined Map,0x013b,2,0x0048,main,view,TOceanDialog,DOOG,1001,27,512,448
+MapView.rsrc,2013,0x07dd,Combined Map,0x018b,2,0x0048,main,clus,TToolBarCluster,tool,517,0,123,480
+MapView.rsrc,2013,0x07dd,Combined Map,0x01fc,3,0x018b,tool,pict,TPictureButton,Flag,62,8,25,35
+MapView.rsrc,2013,0x07dd,Combined Map,0x026a,3,0x018b,tool,pict,TUpDownPictureButton,mmap,33,8,25,35
+MapView.rsrc,2013,0x07dd,Combined Map,0x02de,3,0x018b,tool,pict,TPictureButton,quer,91,8,25,35
+MapView.rsrc,2013,0x07dd,Combined Map,0x034c,3,0x018b,tool,pict,TUpDownPictureButton,trad,62,119,25,25
+MapView.rsrc,2013,0x07dd,Combined Map,0x03c0,3,0x018b,tool,pict,TUpDownPictureButton,tran,4,119,25,25
+MapView.rsrc,2013,0x07dd,Combined Map,0x0434,3,0x018b,tool,pict,TUpDownPictureButton,city,33,119,25,25
+MapView.rsrc,2013,0x07dd,Combined Map,0x04a8,3,0x018b,tool,pict,TUpDownPictureButton,dipl,91,119,25,25
+MapView.rsrc,2013,0x07dd,Combined Map,0x051c,3,0x018b,tool,clus,TNavyToolbarCluster,unav,128,144,123,308
+MapView.rsrc,2013,0x07dd,Combined Map,0x0591,4,0x051c,unav,pict,TNoHilitePicture,back,4,34,112,269
+MapView.rsrc,2013,0x07dd,Combined Map,0x0601,4,0x051c,unav,pict,TUpDownPictureButton,dfnd,91,9,25,25
+MapView.rsrc,2013,0x07dd,Combined Map,0x0675,4,0x051c,unav,pict,TUpDownPictureButton,done,62,9,25,25
+MapView.rsrc,2013,0x07dd,Combined Map,0x06e9,4,0x051c,unav,pict,TUpDownPictureButton,bomb,4,9,25,25
+MapView.rsrc,2013,0x07dd,Combined Map,0x075d,4,0x051c,unav,pict,TUpDownPictureButton,next,33,9,25,25
+MapView.rsrc,2013,0x07dd,Combined Map,0x07d1,4,0x051c,unav,clus,TShipFractionCluster,cls0,4,72,113,57
+MapView.rsrc,2013,0x07dd,Combined Map,0x0847,5,0x07d1,cls0,pict,TShipPlacard,ship,0,0,100,57
+MapView.rsrc,2013,0x07dd,Combined Map,0x08b3,5,0x07d1,cls0,cntl,TNumberedArrowButton,arro,100,0,11,41
+MapView.rsrc,2013,0x07dd,Combined Map,0x0925,4,0x051c,unav,clus,TShipFractionCluster,cls1,4,129,113,57
+MapView.rsrc,2013,0x07dd,Combined Map,0x099b,5,0x0925,cls1,pict,TShipPlacard,ship,0,0,100,57
+MapView.rsrc,2013,0x07dd,Combined Map,0x0a07,5,0x0925,cls1,cntl,TNumberedArrowButton,arro,100,0,11,41
+MapView.rsrc,2013,0x07dd,Combined Map,0x0a79,4,0x051c,unav,clus,TShipFractionCluster,cls2,4,187,113,57
+MapView.rsrc,2013,0x07dd,Combined Map,0x0aef,5,0x0a79,cls2,pict,TShipPlacard,ship,0,0,100,57
+MapView.rsrc,2013,0x07dd,Combined Map,0x0b5b,5,0x0a79,cls2,cntl,TNumberedArrowButton,arro,100,0,11,41
+MapView.rsrc,2013,0x07dd,Combined Map,0x0bcd,4,0x051c,unav,clus,TShipFractionCluster,cls3,4,244,113,57
+MapView.rsrc,2013,0x07dd,Combined Map,0x0c43,5,0x0bcd,cls3,pict,TShipPlacard,ship,0,0,100,57
+MapView.rsrc,2013,0x07dd,Combined Map,0x0caf,5,0x0bcd,cls3,cntl,TNumberedArrowButton,arro,100,0,11,41
+MapView.rsrc,2013,0x07dd,Combined Map,0x0d21,4,0x051c,unav,pict,TRadioPictureButton,agr0,4,43,35,25
+MapView.rsrc,2013,0x07dd,Combined Map,0x0d94,4,0x051c,unav,pict,TRadioPictureButton,agr1,43,43,34,25
+MapView.rsrc,2013,0x07dd,Combined Map,0x0e07,4,0x051c,unav,pict,TRadioPictureButton,agr2,81,43,35,25
+MapView.rsrc,2013,0x07dd,Combined Map,0x0e7a,3,0x018b,tool,clus,TArmyToolbar,uarm,128,146,120,307
+MapView.rsrc,2013,0x07dd,Combined Map,0x0ee8,4,0x0e7a,uarm,cntl,TNumberedArrowButton,arr0,46,36,11,41
+MapView.rsrc,2013,0x07dd,Combined Map,0x0f5a,4,0x0e7a,uarm,cntl,TNumberedArrowButton,arr1,46,89,11,41
+MapView.rsrc,2013,0x07dd,Combined Map,0x0fcc,4,0x0e7a,uarm,cntl,TNumberedArrowButton,arr2,46,142,11,41
+MapView.rsrc,2013,0x07dd,Combined Map,0x103e,4,0x0e7a,uarm,cntl,TNumberedArrowButton,arr3,46,195,11,41
+MapView.rsrc,2013,0x07dd,Combined Map,0x10b0,4,0x0e7a,uarm,cntl,TNumberedArrowButton,arr4,104,36,11,41
+MapView.rsrc,2013,0x07dd,Combined Map,0x1122,4,0x0e7a,uarm,cntl,TNumberedArrowButton,arr5,104,89,11,41
+MapView.rsrc,2013,0x07dd,Combined Map,0x1194,4,0x0e7a,uarm,cntl,TNumberedArrowButton,arr6,104,142,11,41
+MapView.rsrc,2013,0x07dd,Combined Map,0x1206,4,0x0e7a,uarm,cntl,TNumberedArrowButton,arr7,104,195,11,41
+MapView.rsrc,2013,0x07dd,Combined Map,0x1278,4,0x0e7a,uarm,cntl,TNumberedArrowButton,arr8,46,248,11,41
+MapView.rsrc,2013,0x07dd,Combined Map,0x12ea,4,0x0e7a,uarm,cntl,TNumberedArrowButton,arr9,104,248,11,41
+MapView.rsrc,2013,0x07dd,Combined Map,0x135c,4,0x0e7a,uarm,pict,TUpDownPictureButton,dfnd,91,7,25,25
+MapView.rsrc,2013,0x07dd,Combined Map,0x13d0,4,0x0e7a,uarm,pict,TUpDownPictureButton,done,62,7,25,25
+MapView.rsrc,2013,0x07dd,Combined Map,0x1444,4,0x0e7a,uarm,pict,TUpDownPictureButton,garr,4,7,25,25
+MapView.rsrc,2013,0x07dd,Combined Map,0x14b8,4,0x0e7a,uarm,pict,TUpDownPictureButton,latr,33,7,25,25
+MapView.rsrc,2013,0x07dd,Combined Map,0x152c,4,0x0e7a,uarm,pict,TArmyPlacard,pic0,4,36,42,53
+MapView.rsrc,2013,0x07dd,Combined Map,0x1598,4,0x0e7a,uarm,pict,TArmyPlacard,pic1,4,89,42,53
+MapView.rsrc,2013,0x07dd,Combined Map,0x1604,4,0x0e7a,uarm,pict,TArmyPlacard,pic2,4,142,42,53
+MapView.rsrc,2013,0x07dd,Combined Map,0x1670,4,0x0e7a,uarm,pict,TArmyPlacard,pic3,4,195,42,53
+MapView.rsrc,2013,0x07dd,Combined Map,0x16dc,4,0x0e7a,uarm,pict,TArmyPlacard,pic4,57,36,47,53
+MapView.rsrc,2013,0x07dd,Combined Map,0x1748,4,0x0e7a,uarm,pict,TArmyPlacard,pic5,57,89,47,53
+MapView.rsrc,2013,0x07dd,Combined Map,0x17b4,4,0x0e7a,uarm,pict,TArmyPlacard,pic6,57,142,47,53
+MapView.rsrc,2013,0x07dd,Combined Map,0x1820,4,0x0e7a,uarm,pict,TArmyPlacard,pic7,57,195,47,53
+MapView.rsrc,2013,0x07dd,Combined Map,0x188c,4,0x0e7a,uarm,pict,TArmyPlacard,pic8,4,248,42,53
+MapView.rsrc,2013,0x07dd,Combined Map,0x18f8,4,0x0e7a,uarm,pict,TArmyPlacard,pic9,57,248,47,53
+MapView.rsrc,2013,0x07dd,Combined Map,0x1964,3,0x018b,tool,pict,TPictureButton,DONE,4,453,112,19
+MapView.rsrc,2013,0x07dd,Combined Map,0x19d2,3,0x018b,tool,clus,TCivToolbar,uciv,128,143,126,306
+MapView.rsrc,2013,0x07dd,Combined Map,0x1a3f,4,0x19d2,uciv,pict,TNoHilitePicture,unit,33,39,54,68
+MapView.rsrc,2013,0x07dd,Combined Map,0x1aaf,4,0x19d2,uciv,view,TCivDescription,back,0,39,123,260
+MapView.rsrc,2013,0x07dd,Combined Map,0x1b02,4,0x19d2,uciv,pict,TUpDownPictureButton,dfnd,91,10,25,25
+MapView.rsrc,2013,0x07dd,Combined Map,0x1b76,4,0x19d2,uciv,pict,TUpDownPictureButton,done,62,10,25,25
+MapView.rsrc,2013,0x07dd,Combined Map,0x1bea,4,0x19d2,uciv,pict,TUpDownPictureButton,garr,4,10,25,25
+MapView.rsrc,2013,0x07dd,Combined Map,0x1c5e,4,0x19d2,uciv,pict,TUpDownPictureButton,latr,33,10,25,25
+MapView.rsrc,2013,0x07dd,Combined Map,0x1cd2,3,0x018b,tool,clus,,ocea,1,5,29,40
+MapView.rsrc,2013,0x07dd,Combined Map,0x1d34,4,0x1cd2,ocea,pict,TPictureButton,ZmOt,3,3,25,35
+MapView.rsrc,2013,0x07dd,Combined Map,0x1da2,2,0x0048,main,clus,TToolBarCluster,tbr1,3,6,179,19
+MapView.rsrc,2013,0x07dd,Combined Map,0x1e13,3,0x1da2,tbr1,stat,TDropShadowText,seas,2,1,94,17
+MapView.rsrc,2013,0x07dd,Combined Map,0x1e88,3,0x1da2,tbr1,stat,TDropShadowText,trea,99,1,75,17
+MapView.rsrc,2013,0x07dd,Combined Map,0x1efd,2,0x0048,main,tevw,TInfoBarText,curs,240,5,275,21
+MapView.rsrc,2013,0x07dd,Combined Map,0x1f9b,2,0x0048,main,pict,TUpDownPictureButton,send,220,10,19,11
+MapView.rsrc,3012,0x0bc4,Civilian info,0x0004,0,,,wind,,main,171,135,300,200
+MapView.rsrc,3012,0x0bc4,Civilian info,0x0083,1,0x0004,main,pict,TCivReport,DLOG,0,0,300,200
+MapView.rsrc,3012,0x0bc4,Civilian info,0x00ed,2,0x0083,DLOG,stat,,ttl0,13,12,278,19
+MapView.rsrc,3012,0x0bc4,Civilian info,0x0153,2,0x0083,DLOG,pict,TPictureButton,okay,198,136,60,35
+MapView.rsrc,3012,0x0bc4,Civilian info,0x01c1,2,0x0083,DLOG,pict,TPictureButton,canc,46,136,60,35
+MapView.rsrc,3012,0x0bc4,Civilian info,0x022f,2,0x0083,DLOG,tevw,TDeluxeText,info,7,44,287,91
+MapView.rsrc,3012,0x0bc4,Civilian info,0x02cc,2,0x0083,DLOG,stat,,ttl1,10,173,131,17
+MapView.rsrc,3012,0x0bc4,Civilian info,0x0332,2,0x0083,DLOG,stat,,ttl2,164,173,130,17
+MapView.rsrc,3100,0x0c1c,Friendly army report,0x0080,0,,,pict,TArmyInfoView,DLOG,0,0,350,250
+MapView.rsrc,3100,0x0c1c,Friendly army report,0x00ed,1,0x0080,DLOG,stat,,titl,12,27,326,23
+MapView.rsrc,3100,0x0c1c,Friendly army report,0x0153,1,0x0080,DLOG,stat,,whom,16,107,150,87
+MapView.rsrc,3100,0x0c1c,Friendly army report,0x01b9,1,0x0080,DLOG,stat,,lab3,184,84,146,18
+MapView.rsrc,3100,0x0c1c,Friendly army report,0x021f,1,0x0080,DLOG,stat,,ords,197,108,133,69
+MapView.rsrc,3100,0x0c1c,Friendly army report,0x0285,1,0x0080,DLOG,pict,TUpDownPictureButton,canc,187,213,61,23
+MapView.rsrc,3100,0x0c1c,Friendly army report,0x02f9,1,0x0080,DLOG,pict,TUpDownPictureButton,okay,268,213,61,24
+MapView.rsrc,3100,0x0c1c,Friendly army report,0x036d,1,0x0080,DLOG,stat,,lab2,17,84,146,18
+MapView.rsrc,3100,0x0c1c,Friendly army report,0x03d3,1,0x0080,DLOG,stat,,gene,15,201,151,27
+MapView.rsrc,3500,0x0dac,Garrison,0x026f,0,,,pict,TBook,DLOG,0,0,480,400
+MapView.rsrc,3500,0x0dac,Garrison,0x02d4,1,0x026f,DLOG,view,TGarrisonView,page,13,46,458,310
+MapView.rsrc,3500,0x0dac,Garrison,0x0325,1,0x026f,DLOG,pict,TPageCorner,lcor,12,356,41,36
+MapView.rsrc,3500,0x0dac,Garrison,0x0390,1,0x026f,DLOG,pict,TPageCorner,rcor,431,356,41,36
+MapView.rsrc,3500,0x0dac,Garrison,0x03fb,1,0x026f,DLOG,pict,TPictureButton,okay,28,11,29,29
+MapView.rsrc,3508,0x0db4,Name unit,0x0080,0,,,pict,,DLOG,0,0,260,100
+MapView.rsrc,3508,0x0db4,Name unit,0x00e0,1,0x0080,DLOG,pict,TUpDownPictureButton,cncl,16,68,61,23
+MapView.rsrc,3508,0x0db4,Name unit,0x0154,1,0x0080,DLOG,pict,TUpDownPictureButton,okay,185,67,61,24
+MapView.rsrc,3508,0x0db4,Name unit,0x01c8,1,0x0080,DLOG,edit,,name,25,35,204,25
+MapView.rsrc,3508,0x0db4,Name unit,0x02a3,1,0x0080,DLOG,stat,,titl,28,12,201,15
+MapView.rsrc,7200,0x1c20,Engineer Build Menu,0x026f,0,,,view,TEngineerDialog,DLOG,0,1,328,70
+MapView.rsrc,7200,0x1c20,Engineer Build Menu,0x02c2,1,0x026f,DLOG,stat,,titl,40,4,240,16
+MapView.rsrc,9460,0x24f4,Army Maker,0x026f,0,,,pict,,    ,0,0,600,300
+MapView.rsrc,9460,0x24f4,Army Maker,0x0380,0,,,stat,,nama,10,24,110,15
+MapView.rsrc,9460,0x24f4,Army Maker,0x03e6,0,,,stat,,namb,10,47,110,15
+MapView.rsrc,9460,0x24f4,Army Maker,0x04fd,0,,,stat,,namc,10,70,110,15
+MapView.rsrc,9460,0x24f4,Army Maker,0x06c5,0,,,stat,,namd,10,93,110,15
+MapView.rsrc,9460,0x24f4,Army Maker,0x072b,0,,,stat,,namg,10,162,110,15
+MapView.rsrc,9460,0x24f4,Army Maker,0x08f3,0,,,stat,,namh,10,185,110,15
+MapView.rsrc,9460,0x24f4,Army Maker,0x0959,0,,,stat,,namf,10,139,110,15
+MapView.rsrc,9460,0x24f4,Army Maker,0x0b21,0,,,stat,,name,10,116,110,15
+MapView.rsrc,9460,0x24f4,Army Maker,0x0b87,0,,,stat,,nami,192,25,110,15
+MapView.rsrc,9460,0x24f4,Army Maker,0x0d4f,0,,,stat,,namj,192,48,110,15
+MapView.rsrc,9460,0x24f4,Army Maker,0x0db5,0,,,stat,,namk,192,71,110,15
+MapView.rsrc,9460,0x24f4,Army Maker,0x0f7d,0,,,stat,,naml,192,94,110,15
+MapView.rsrc,9460,0x24f4,Army Maker,0x0fe3,0,,,stat,,namm,192,117,110,15
+MapView.rsrc,9460,0x24f4,Army Maker,0x11ab,0,,,stat,,namn,192,140,110,15
+MapView.rsrc,9460,0x24f4,Army Maker,0x1211,0,,,stat,,namo,192,163,110,15
+MapView.rsrc,9460,0x24f4,Army Maker,0x13d9,0,,,stat,,namp,192,186,110,15
+MapView.rsrc,9460,0x24f4,Army Maker,0x143f,0,,,stat,,namq,367,25,110,15
+MapView.rsrc,9460,0x24f4,Army Maker,0x1607,0,,,stat,,namr,367,48,110,15
+MapView.rsrc,9460,0x24f4,Army Maker,0x166d,0,,,stat,,nams,367,71,110,15
+MapView.rsrc,9460,0x24f4,Army Maker,0x1835,0,,,stat,,namt,367,94,110,15
+MapView.rsrc,9460,0x24f4,Army Maker,0x189b,0,,,stat,,namu,367,117,110,15
+MapView.rsrc,9460,0x24f4,Army Maker,0x1a63,0,,,stat,,namv,367,140,110,15
+MapView.rsrc,9460,0x24f4,Army Maker,0x1ac9,0,,,stat,,namw,367,163,110,15
+MapView.rsrc,9460,0x24f4,Army Maker,0x1c91,0,,,stat,,namy,10,208,110,15
+MapView.rsrc,9460,0x24f4,Army Maker,0x1cf7,0,,,pict,TUpDownPictureButton,    ,450,239,61,24
+MapView.rsrc,9460,0x24f4,Army Maker,0x1e1c,0,,,stat,,namx,367,186,110,15
+MapView.rsrc,9460,0x24f4,Army Maker,0x1e82,0,,,stat,,namz,191,209,110,15
+MapView.rsrc,9460,0x24f4,Army Maker,0x1f99,0,,,stat,,namx,367,209,110,15
+MapView.rsrc,9460,0x24f4,Army Maker,0x20b0,0,,,stat,,nam{,10,231,110,15
+MapView.rsrc,9460,0x24f4,Army Maker,0x21c7,0,,,stat,,nam|,191,232,110,15
+MapView.rsrc,9460,0x24f4,Army Maker,0x22de,0,,,stat,,nam~,191,256,110,15
+MapView.rsrc,9460,0x24f4,Army Maker,0x23f5,0,,,stat,,nam},9,257,110,15
+MapView.rsrc,9462,0x24f6,Navy Maker II,0x026f,0,,,pict,,    ,0,0,600,300
+MapView.rsrc,9462,0x24f6,Navy Maker II,0x0380,0,,,stat,,namd,215,37,110,15
+MapView.rsrc,9462,0x24f6,Navy Maker II,0x03e6,0,,,stat,,name,215,60,110,15
+MapView.rsrc,9462,0x24f6,Navy Maker II,0x04fd,0,,,stat,,namh,215,83,110,15
+MapView.rsrc,9462,0x24f6,Navy Maker II,0x06c5,0,,,stat,,nami,215,106,110,15
+MapView.rsrc,9462,0x24f6,Navy Maker II,0x072b,0,,,stat,,namm,215,175,110,15
+MapView.rsrc,9462,0x24f6,Navy Maker II,0x0842,0,,,stat,,naml,215,152,110,15
+MapView.rsrc,9462,0x24f6,Navy Maker II,0x0a0a,0,,,stat,,namj,215,129,110,15
+MapView.rsrc,9462,0x24f6,Navy Maker II,0x0a70,0,,,pict,TUpDownPictureButton,    ,287,240,61,24
+MapView.rsrc,9465,0x24f9,Terrain Info Window /h,0x026f,0,,,pict,,DLOG,0,0,280,259
+MapView.rsrc,9465,0x24f9,Terrain Info Window /h,0x02cf,1,0x026f,DLOG,pict,TUpDownPictureButton,    ,198,221,61,24
+MapView.rsrc,9470,0x24fe,Civilian Maker,0x026f,0,,,pict,,DLOG,0,0,256,400
+MapView.rsrc,9470,0x24fe,Civilian Maker,0x02cf,1,0x026f,DLOG,stat,,titl,0,9,256,27
+MapView.rsrc,9470,0x24fe,Civilian Maker,0x0335,1,0x026f,DLOG,clus,,type,31,44,181,190
+MapView.rsrc,9470,0x24fe,Civilian Maker,0x0774,1,0x026f,DLOG,clus,,owne,33,241,177,98
+MapView.rsrc,9474,0x2502,Friendly Fleet Report,0x0080,0,,,pict,,DLOG,0,0,350,250
+MapView.rsrc,9474,0x2502,Friendly Fleet Report,0x00e0,1,0x0080,DLOG,stat,,titl,12,10,326,23
+MapView.rsrc,9474,0x2502,Friendly Fleet Report,0x0146,1,0x0080,DLOG,stat,,lab1,20,35,307,14
+MapView.rsrc,9474,0x2502,Friendly Fleet Report,0x01ac,1,0x0080,DLOG,stat,,whom,16,107,150,87
+MapView.rsrc,9474,0x2502,Friendly Fleet Report,0x0212,1,0x0080,DLOG,stat,,lab3,184,84,146,18
+MapView.rsrc,9474,0x2502,Friendly Fleet Report,0x0278,1,0x0080,DLOG,stat,,ords,197,108,135,50
+MapView.rsrc,9474,0x2502,Friendly Fleet Report,0x02de,1,0x0080,DLOG,stat,,agro,198,167,131,30
+MapView.rsrc,9474,0x2502,Friendly Fleet Report,0x0344,1,0x0080,DLOG,pict,TUpDownPictureButton,canc,187,213,61,23
+MapView.rsrc,9474,0x2502,Friendly Fleet Report,0x03b8,1,0x0080,DLOG,pict,TUpDownPictureButton,okay,268,213,61,24
+MapView.rsrc,9474,0x2502,Friendly Fleet Report,0x042c,1,0x0080,DLOG,stat,,lab2,17,84,146,18
+MapView.rsrc,9474,0x2502,Friendly Fleet Report,0x0492,1,0x0080,DLOG,stat,,adam,15,201,151,27
+MapView.rsrc,9474,0x2502,Friendly Fleet Report,0x04f8,1,0x0080,DLOG,stat,,zone,11,50,328,17
+MapView.rsrc,9475,0x2503,Enemy Fleet Report,0x0080,0,,,pict,,DLOG,0,0,350,250
+MapView.rsrc,9475,0x2503,Enemy Fleet Report,0x00e0,1,0x0080,DLOG,stat,,titl,5,10,340,25
+MapView.rsrc,9475,0x2503,Enemy Fleet Report,0x0146,1,0x0080,DLOG,stat,,gpee,5,48,340,16
+MapView.rsrc,9475,0x2503,Enemy Fleet Report,0x01ac,1,0x0080,DLOG,stat,,lab1,5,34,340,15
+MapView.rsrc,9475,0x2503,Enemy Fleet Report,0x0212,1,0x0080,DLOG,pict,TUpDownPictureButton,okay,275,216,61,24
+MapView.rsrc,9475,0x2503,Enemy Fleet Report,0x0286,1,0x0080,DLOG,stat,,ship,15,133,320,67
+MapView.rsrc,9475,0x2503,Enemy Fleet Report,0x02ec,1,0x0080,DLOG,stat,,zone,5,79,340,19
+MapView.rsrc,9475,0x2503,Enemy Fleet Report,0x0352,1,0x0080,DLOG,stat,,lab2,5,66,340,13
+MapView.rsrc,9475,0x2503,Enemy Fleet Report,0x03b8,1,0x0080,DLOG,stat,,adam,18,225,265,13
+MapView.rsrc,9475,0x2503,Enemy Fleet Report,0x041e,0,,,stat,,lab3,5,112,340,18
+MapView.rsrc,9475,0x2503,Enemy Fleet Report,0x0484,0,,,stat,,lab4,23,210,244,13
+MapView.rsrc,9476,0x2504,Navy Maker,0x0080,0,,,pict,,DLOG,0,0,200,330
+MapView.rsrc,9476,0x2504,Navy Maker,0x00e0,1,0x0080,DLOG,stat,,titl,0,9,200,26
+MapView.rsrc,9476,0x2504,Navy Maker,0x0146,1,0x0080,DLOG,clus,,type,3,44,185,182
+MapView.rsrc,9476,0x2504,Navy Maker,0x0685,1,0x0080,DLOG,stat,,    ,23,263,49,15
+MapView.rsrc,9476,0x2504,Navy Maker,0x06eb,1,0x0080,DLOG,stat,,    ,23,289,49,15
+MapView.rsrc,9477,0x2505,Merchant interception report,0x0080,0,,,pict,,DLOG,0,0,350,275
+MapView.rsrc,9477,0x2505,Merchant interception report,0x00e0,1,0x0080,DLOG,stat,,titl,41,10,267,26
+MapView.rsrc,9477,0x2505,Merchant interception report,0x0146,1,0x0080,DLOG,stat,,miss,181,105,158,16
+MapView.rsrc,9477,0x2505,Merchant interception report,0x01ac,1,0x0080,DLOG,stat,,lab1,180,88,159,12
+MapView.rsrc,9477,0x2505,Merchant interception report,0x0212,1,0x0080,DLOG,pict,TUpDownPictureButton,okay,275,240,61,24
+MapView.rsrc,9477,0x2505,Merchant interception report,0x0286,1,0x0080,DLOG,stat,,vess,190,191,140,43
+MapView.rsrc,9477,0x2505,Merchant interception report,0x02ec,1,0x0080,DLOG,stat,,zone,16,50,322,19
+MapView.rsrc,9477,0x2505,Merchant interception report,0x0352,1,0x0080,DLOG,stat,,lab2,145,35,53,12
+MapView.rsrc,9477,0x2505,Merchant interception report,0x03b8,1,0x0080,DLOG,stat,,adam,182,143,152,26
+MapView.rsrc,9477,0x2505,Merchant interception report,0x041e,0,,,stat,,lab1,183,125,154,16
+MapView.rsrc,9477,0x2505,Merchant interception report,0x0484,0,,,stat,,lab1,177,174,166,15
+MapView.rsrc,9477,0x2505,Merchant interception report,0x04ea,0,,,stat,,lab1,7,89,166,15
+MapView.rsrc,9477,0x2505,Merchant interception report,0x0550,0,,,stat,,ownr,41,104,97,16
+MapView.rsrc,9477,0x2505,Merchant interception report,0x05b6,0,,,stat,,lab1,7,122,166,15
+MapView.rsrc,9477,0x2505,Merchant interception report,0x061c,0,,,stat,,gpee,41,141,97,16
+MapView.rsrc,9477,0x2505,Merchant interception report,0x0682,0,,,stat,,lab1,7,158,166,15
+MapView.rsrc,9477,0x2505,Merchant interception report,0x06e8,0,,,stat,,dest,41,174,97,16
+MapView.rsrc,9477,0x2505,Merchant interception report,0x074e,0,,,stat,,what,9,192,161,29
+MapView.rsrc,9477,0x2505,Merchant interception report,0x07b4,0,,,stat,,siez,21,219,138,36
+MapView.rsrc,9478,0x2506,Navy Roster,0x026f,0,,,pict,TBook,DLOG,0,0,480,400
+MapView.rsrc,9478,0x2506,Navy Roster,0x02d4,1,0x026f,DLOG,pict,TPictureButton,okay,26,11,29,29
+MapView.rsrc,9478,0x2506,Navy Roster,0x0342,1,0x026f,DLOG,view,TNavyRoster,page,13,46,458,310
+MapView.rsrc,9478,0x2506,Navy Roster,0x0391,1,0x026f,DLOG,pict,TColorKeyPicture,lcor,12,356,41,36
+MapView.rsrc,9478,0x2506,Navy Roster,0x0401,1,0x026f,DLOG,pict,TColorKeyPicture,rcor,432,356,41,36
+Minister.rsrc,8900,0x22c4,Foreign Minister Dlog,0x0090,0,,,view,TForeignMinisterView,DLOG,0,0,415,330
+Minister.rsrc,8900,0x22c4,Foreign Minister Dlog,0x00e8,1,0x0090,DLOG,pict,TBackgroundPicture,back,0,0,415,330
+Minister.rsrc,8900,0x22c4,Foreign Minister Dlog,0x015a,2,0x00e8,back,pict,TPictureButton,okay,332,298,61,24
+Minister.rsrc,8900,0x22c4,Foreign Minister Dlog,0x01c8,2,0x00e8,back,cntl,,deal,225,184,37,99
+Minister.rsrc,8900,0x22c4,Foreign Minister Dlog,0x0226,2,0x00e8,back,cntl,,merc,264,187,26,96
+Minister.rsrc,8900,0x22c4,Foreign Minister Dlog,0x0284,2,0x00e8,back,cntl,,expo,326,39,28,113
+Minister.rsrc,8900,0x22c4,Foreign Minister Dlog,0x02e2,2,0x00e8,back,cntl,,recc,355,37,28,116
+Minister.rsrc,8900,0x22c4,Foreign Minister Dlog,0x0340,2,0x00e8,back,cntl,,pric,361,191,23,94
+Minister.rsrc,8900,0x22c4,Foreign Minister Dlog,0x039e,2,0x00e8,back,cntl,,glob,236,54,63,74
+Minister.rsrc,8930,0x22e2,FM Recco Book,0x0080,0,,,pict,TForeignNotesView,DLOG,0,0,334,267
+Minister.rsrc,8930,0x22e2,FM Recco Book,0x00f1,1,0x0080,DLOG,pict,TColorKeyPicture,lcor,8,236,29,26
+Minister.rsrc,8930,0x22e2,FM Recco Book,0x0161,1,0x0080,DLOG,pict,TColorKeyPicture,rcor,299,237,29,25
+Minister.rsrc,8940,0x22ec,MerMar Book,0x0080,0,,,pict,TMerchantMarineView,DLOG,0,0,334,267
+Minister.rsrc,8940,0x22ec,MerMar Book,0x00f3,1,0x0080,DLOG,pict,TColorKeyPicture,lcor,8,236,29,26
+Minister.rsrc,8940,0x22ec,MerMar Book,0x0163,1,0x0080,DLOG,pict,TColorKeyPicture,rcor,299,237,29,25
+Minister.rsrc,8950,0x22f6,Mini Deal Book,0x0080,0,,,pict,TMiniDealBookView,DLOG,0,0,334,267
+Minister.rsrc,8950,0x22f6,Mini Deal Book,0x00f1,1,0x0080,DLOG,pict,TColorKeyPicture,lcor,8,236,29,26
+Minister.rsrc,8950,0x22f6,Mini Deal Book,0x0161,1,0x0080,DLOG,pict,TColorKeyPicture,rcor,299,237,29,25
+Minister.rsrc,8960,0x2300,Exports Book,0x0080,0,,,pict,TExportsView,DLOG,0,0,334,267
+Minister.rsrc,8960,0x2300,Exports Book,0x00ec,1,0x0080,DLOG,pict,TColorKeyPicture,lcor,8,235,29,26
+Minister.rsrc,8960,0x2300,Exports Book,0x015c,1,0x0080,DLOG,pict,TColorKeyPicture,rcor,299,237,29,25
+Minister.rsrc,8970,0x230a,Escorts Book - Can We kill this?,0x0080,0,,,pict,TEscortBookView,DLOG,0,0,344,273
+Minister.rsrc,8970,0x230a,Escorts Book - Can We kill this?,0x00ef,1,0x0080,DLOG,pict,TColorKeyPicture,lcor,7,243,29,26
+Minister.rsrc,8970,0x230a,Escorts Book - Can We kill this?,0x015f,1,0x0080,DLOG,pict,TColorKeyPicture,rcor,311,244,29,25
+Minister.rsrc,8990,0x231e,Price History Book,0x0080,0,,,pict,TBookView,DLOG,0,0,334,267
+Minister.rsrc,8990,0x231e,Price History Book,0x00e9,1,0x0080,DLOG,pict,TColorKeyPicture,lcor,8,235,29,26
+Minister.rsrc,8990,0x231e,Price History Book,0x0159,1,0x0080,DLOG,pict,TColorKeyPicture,rcor,299,237,29,25
+Minister.rsrc,9480,0x2508,Minister Reward,0x0080,0,,,pict,,DLOG,0,0,390,282
+Minister.rsrc,9480,0x2508,Minister Reward,0x00e0,1,0x0080,DLOG,pict,TUpDownPictureButton,okay,310,248,61,23
+Minister.rsrc,9480,0x2508,Minister Reward,0x0154,1,0x0080,DLOG,pict,,rewa,112,18,167,109
+Minister.rsrc,9480,0x2508,Minister Reward,0x01b4,1,0x0080,DLOG,pict,,coat,295,12,84,125
+Minister.rsrc,9480,0x2508,Minister Reward,0x0214,1,0x0080,DLOG,tevw,TDeluxeText,info,17,160,354,84
+Minister.rsrc,9600,0x2580,Defense Minister shelf,0x0090,0,,,view,TDefenseMinisterView,DLOG,0,0,415,330
+Minister.rsrc,9600,0x2580,Defense Minister shelf,0x00e8,1,0x0090,DLOG,pict,TBackgroundPicture,back,0,0,415,330
+Minister.rsrc,9600,0x2580,Defense Minister shelf,0x015a,2,0x00e8,back,pict,TPictureButton,okay,332,298,61,24
+Minister.rsrc,9600,0x2580,Defense Minister shelf,0x01c8,2,0x00e8,back,cntl,,recc,355,38,28,115
+Minister.rsrc,9600,0x2580,Defense Minister shelf,0x0226,2,0x00e8,back,cntl,,unit,362,192,23,93
+Minister.rsrc,9600,0x2580,Defense Minister shelf,0x0284,2,0x00e8,back,cntl,,cann,283,221,74,65
+Minister.rsrc,9610,0x258a,DM Recco Book,0x0080,0,,,pict,TDefenseNotesView,DLOG,0,0,334,267
+Minister.rsrc,9610,0x258a,DM Recco Book,0x00f1,1,0x0080,DLOG,pict,TColorKeyPicture,lcor,8,235,29,26
+Minister.rsrc,9610,0x258a,DM Recco Book,0x0161,1,0x0080,DLOG,pict,TColorKeyPicture,rcor,299,237,29,25
+Minister.rsrc,9700,0x25e4,Interior Minister shelf,0x0090,0,,,view,TInteriorMinisterView,DLOG,0,0,415,330
+Minister.rsrc,9700,0x25e4,Interior Minister shelf,0x00e9,1,0x0090,DLOG,pict,TBackgroundPicture,back,0,0,415,330
+Minister.rsrc,9700,0x25e4,Interior Minister shelf,0x015b,2,0x00e9,back,pict,TPictureButton,okay,332,298,61,24
+Minister.rsrc,9700,0x25e4,Interior Minister shelf,0x01c9,2,0x00e9,back,cntl,,recc,355,38,28,115
+Minister.rsrc,9700,0x25e4,Interior Minister shelf,0x0227,2,0x00e9,back,cntl,,trea,326,38,28,115
+Minister.rsrc,9700,0x25e4,Interior Minister shelf,0x0285,2,0x00e9,back,cntl,,tran,231,62,87,91
+Minister.rsrc,9710,0x25ee,IM Recco book,0x0080,0,,,pict,TInteriorNotesView,DLOG,0,0,334,267
+Minister.rsrc,9710,0x25ee,IM Recco book,0x00f2,1,0x0080,DLOG,pict,TColorKeyPicture,lcor,8,235,29,26
+Minister.rsrc,9710,0x25ee,IM Recco book,0x0162,1,0x0080,DLOG,pict,TColorKeyPicture,rcor,300,237,29,25
+Minister.rsrc,9720,0x25f8,Treasuries Book,0x0080,0,,,pict,TTreasuriesView,DLOG,0,0,334,267
+Minister.rsrc,9720,0x25f8,Treasuries Book,0x00ef,1,0x0080,DLOG,pict,TColorKeyPicture,lcor,8,236,29,26
+Minister.rsrc,9720,0x25f8,Treasuries Book,0x015f,1,0x0080,DLOG,pict,TColorKeyPicture,rcor,299,237,29,25
+Multiplayer.rsrc,1507,0x05e3,kMultiplayerPickGameDialog,0x0080,0,,,pict,TJoinSelectorDialog,DLOG,0,0,307,324
+Multiplayer.rsrc,1507,0x05e3,kMultiplayerPickGameDialog,0x00f3,1,0x0080,DLOG,stat,,tnam,18,18,270,18
+Multiplayer.rsrc,1507,0x05e3,kMultiplayerPickGameDialog,0x0159,1,0x0080,DLOG,edit,,name,18,39,270,21
+Multiplayer.rsrc,1507,0x05e3,kMultiplayerPickGameDialog,0x01fe,1,0x0080,DLOG,stat,,tgam,18,76,270,18
+Multiplayer.rsrc,1507,0x05e3,kMultiplayerPickGameDialog,0x0264,1,0x0080,DLOG,clus,TRadioTextCluster,game,18,97,270,181
+Multiplayer.rsrc,1507,0x05e3,kMultiplayerPickGameDialog,0x02d7,1,0x0080,DLOG,pict,TUpDownPictureButton,okay,210,287,61,24
+Multiplayer.rsrc,1507,0x05e3,kMultiplayerPickGameDialog,0x034b,1,0x0080,DLOG,pict,TUpDownPictureButton,canc,36,287,61,24
+Multiplayer.rsrc,1508,0x05e4,kGameSetupNetGameOptionsView,0x0004,0,,,view,,base,0,0,640,480
+Multiplayer.rsrc,1508,0x05e4,kGameSetupNetGameOptionsView,0x0048,1,0x0004,base,pict,TLoungeDialog,main,0,0,640,480
+Multiplayer.rsrc,1508,0x05e4,kGameSetupNetGameOptionsView,0x00eb,2,0x0048,main,pict,TTextPictureButton,okay,323,415,213,36
+Multiplayer.rsrc,1508,0x05e4,kGameSetupNetGameOptionsView,0x015d,2,0x0048,main,stat,,mess,333,425,192,19
+Multiplayer.rsrc,1508,0x05e4,kGameSetupNetGameOptionsView,0x01c3,2,0x0048,main,pict,TNoHilitePicture,rad0,289,298,25,36
+Multiplayer.rsrc,1508,0x05e4,kGameSetupNetGameOptionsView,0x0233,2,0x0048,main,pict,TNoHilitePicture,rad1,289,337,25,36
+Multiplayer.rsrc,1508,0x05e4,kGameSetupNetGameOptionsView,0x02a3,2,0x0048,main,pict,TNoHilitePicture,rad2,289,376,25,36
+Multiplayer.rsrc,1508,0x05e4,kGameSetupNetGameOptionsView,0x0313,2,0x0048,main,pict,TNoHilitePicture,rad3,289,415,25,36
+Multiplayer.rsrc,1508,0x05e4,kGameSetupNetGameOptionsView,0x0383,2,0x0048,main,pict,TNoHilitePicture,rad4,511,298,25,36
+Multiplayer.rsrc,1508,0x05e4,kGameSetupNetGameOptionsView,0x03f3,2,0x0048,main,pict,TNoHilitePicture,rad5,511,337,25,36
+Multiplayer.rsrc,1508,0x05e4,kGameSetupNetGameOptionsView,0x0463,2,0x0048,main,pict,TNoHilitePicture,rad6,511,376,25,36
+Multiplayer.rsrc,1508,0x05e4,kGameSetupNetGameOptionsView,0x04d3,2,0x0048,main,pict,TNoHilitePicture,pik0,108,307,26,20
+Multiplayer.rsrc,1508,0x05e4,kGameSetupNetGameOptionsView,0x0543,2,0x0048,main,pict,TNoHilitePicture,pik1,108,345,26,20
+Multiplayer.rsrc,1508,0x05e4,kGameSetupNetGameOptionsView,0x05b3,2,0x0048,main,pict,TNoHilitePicture,pik2,108,384,26,20
+Multiplayer.rsrc,1508,0x05e4,kGameSetupNetGameOptionsView,0x0623,2,0x0048,main,pict,TNoHilitePicture,pik3,108,422,26,20
+Multiplayer.rsrc,1508,0x05e4,kGameSetupNetGameOptionsView,0x0693,2,0x0048,main,pict,TNoHilitePicture,pik4,329,307,26,20
+Multiplayer.rsrc,1508,0x05e4,kGameSetupNetGameOptionsView,0x0703,2,0x0048,main,pict,TNoHilitePicture,pik5,329,345,26,20
+Multiplayer.rsrc,1508,0x05e4,kGameSetupNetGameOptionsView,0x0773,2,0x0048,main,pict,TNoHilitePicture,pik6,329,384,26,20
+Multiplayer.rsrc,1508,0x05e4,kGameSetupNetGameOptionsView,0x07e3,2,0x0048,main,stat,TDropShadowText,nam0,136,310,142,18
+Multiplayer.rsrc,1508,0x05e4,kGameSetupNetGameOptionsView,0x0858,2,0x0048,main,stat,TDropShadowText,nam1,136,349,142,19
+Multiplayer.rsrc,1508,0x05e4,kGameSetupNetGameOptionsView,0x08cd,2,0x0048,main,stat,TDropShadowText,nam2,136,388,144,18
+Multiplayer.rsrc,1508,0x05e4,kGameSetupNetGameOptionsView,0x0942,2,0x0048,main,stat,TDropShadowText,nam3,136,427,145,19
+Multiplayer.rsrc,1508,0x05e4,kGameSetupNetGameOptionsView,0x09b7,2,0x0048,main,stat,TDropShadowText,nam4,358,309,147,20
+Multiplayer.rsrc,1508,0x05e4,kGameSetupNetGameOptionsView,0x0a2c,2,0x0048,main,stat,TDropShadowText,nam5,358,348,146,19
+Multiplayer.rsrc,1508,0x05e4,kGameSetupNetGameOptionsView,0x0aa1,2,0x0048,main,stat,TDropShadowText,nam6,358,387,146,19
+Multiplayer.rsrc,1508,0x05e4,kGameSetupNetGameOptionsView,0x0b16,2,0x0048,main,stat,TDropShadowText,tnam,304,202,319,17
+Multiplayer.rsrc,1508,0x05e4,kGameSetupNetGameOptionsView,0x0b8b,2,0x0048,main,view,TMapPreviewView,map ,302,14,324,180
+Multiplayer.rsrc,1508,0x05e4,kGameSetupNetGameOptionsView,0x0bde,2,0x0048,main,cntl,,send,230,204,55,60
+Multiplayer.rsrc,1508,0x05e4,kGameSetupNetGameOptionsView,0x0c3c,2,0x0048,main,pict,,coat,223,69,63,94
+Multiplayer.rsrc,1508,0x05e4,kGameSetupNetGameOptionsView,0x0c9c,2,0x0048,main,cntl,,cncl,40,55,152,225
+Multiplayer.rsrc,1508,0x05e4,kGameSetupNetGameOptionsView,0x0cfa,2,0x0048,main,cntl,,canc,40,278,55,86
+Multiplayer.rsrc,1508,0x05e4,kGameSetupNetGameOptionsView,0x0d58,2,0x0048,main,cntl,,jedi,0,396,76,47
+Multiplayer.rsrc,1508,0x05e4,kGameSetupNetGameOptionsView,0x0db6,2,0x0048,main,tevw,TInfoBarText,labl,33,26,234,18
+Multiplayer.rsrc,1510,0x05e6,kMultiplayerMessageSendWindow,0x0080,0,,,pict,,DLOG,0,0,336,123
+Multiplayer.rsrc,1510,0x05e6,kMultiplayerMessageSendWindow,0x00e0,1,0x0080,DLOG,pict,TUpDownPictureButton,okay,249,89,61,24
+Multiplayer.rsrc,1510,0x05e6,kMultiplayerMessageSendWindow,0x0154,1,0x0080,DLOG,pict,TUpDownPictureButton,cncl,26,90,61,24
+Multiplayer.rsrc,1510,0x05e6,kMultiplayerMessageSendWindow,0x01c8,1,0x0080,DLOG,edit,,mesg,7,8,322,50
+Multiplayer.rsrc,1510,0x05e6,kMultiplayerMessageSendWindow,0x02a3,1,0x0080,DLOG,pict,TMadnessButton,box0,29,62,29,22
+Multiplayer.rsrc,1510,0x05e6,kMultiplayerMessageSendWindow,0x0311,1,0x0080,DLOG,pict,TMadnessButton,box1,70,62,29,22
+Multiplayer.rsrc,1510,0x05e6,kMultiplayerMessageSendWindow,0x037f,1,0x0080,DLOG,pict,TMadnessButton,box2,111,62,29,22
+Multiplayer.rsrc,1510,0x05e6,kMultiplayerMessageSendWindow,0x03ed,1,0x0080,DLOG,pict,TMadnessButton,box3,152,62,29,22
+Multiplayer.rsrc,1510,0x05e6,kMultiplayerMessageSendWindow,0x045b,1,0x0080,DLOG,pict,TMadnessButton,box4,193,62,29,22
+Multiplayer.rsrc,1510,0x05e6,kMultiplayerMessageSendWindow,0x04c9,1,0x0080,DLOG,pict,TMadnessButton,box5,234,62,29,22
+Multiplayer.rsrc,1510,0x05e6,kMultiplayerMessageSendWindow,0x0537,1,0x0080,DLOG,pict,TMadnessButton,box6,275,62,29,22
+Shipyard.rsrc,9207,0x23f7,Shipyard 3,0x026f,0,,,pict,TShipyardView,DLOG,0,0,370,410
+Shipyard.rsrc,9207,0x23f7,Shipyard 3,0x02dc,1,0x026f,DLOG,clus,,sele,0,230,370,180
+Shipyard.rsrc,9207,0x23f7,Shipyard 3,0x033e,2,0x02dc,sele,pict,TOverlayRadioButton,but0,8,12,89,78
+Shipyard.rsrc,9207,0x23f7,Shipyard 3,0x03b1,2,0x02dc,sele,clus,,clu0,12,70,83,22
+Shipyard.rsrc,9207,0x23f7,Shipyard 3,0x048b,3,0x03b1,clu0,pict,TUpDownPictureButton,minu,0,0,20,20
+Shipyard.rsrc,9207,0x23f7,Shipyard 3,0x04ff,3,0x03b1,clu0,pict,TUpDownPictureButton,plus,60,0,20,20
+Shipyard.rsrc,9207,0x23f7,Shipyard 3,0x0573,2,0x02dc,sele,pict,TOverlayRadioButton,but1,97,12,89,78
+Shipyard.rsrc,9207,0x23f7,Shipyard 3,0x05e6,2,0x02dc,sele,clus,,clu1,101,70,80,22
+Shipyard.rsrc,9207,0x23f7,Shipyard 3,0x06c0,3,0x05e6,clu1,pict,TUpDownPictureButton,minu,0,0,20,20
+Shipyard.rsrc,9207,0x23f7,Shipyard 3,0x0734,3,0x05e6,clu1,pict,TUpDownPictureButton,plus,60,0,20,20
+Shipyard.rsrc,9207,0x23f7,Shipyard 3,0x07a8,2,0x02dc,sele,pict,TOverlayRadioButton,but2,186,12,89,78
+Shipyard.rsrc,9207,0x23f7,Shipyard 3,0x081b,2,0x02dc,sele,clus,,clu2,189,70,80,22
+Shipyard.rsrc,9207,0x23f7,Shipyard 3,0x08f5,3,0x081b,clu2,pict,TUpDownPictureButton,minu,0,0,20,20
+Shipyard.rsrc,9207,0x23f7,Shipyard 3,0x0969,3,0x081b,clu2,pict,TUpDownPictureButton,plus,60,0,20,20
+Shipyard.rsrc,9207,0x23f7,Shipyard 3,0x09dd,2,0x02dc,sele,pict,TOverlayRadioButton,but3,275,12,89,78
+Shipyard.rsrc,9207,0x23f7,Shipyard 3,0x0a50,2,0x02dc,sele,clus,,clu3,276,70,80,22
+Shipyard.rsrc,9207,0x23f7,Shipyard 3,0x0b2a,3,0x0a50,clu3,pict,TUpDownPictureButton,minu,0,0,20,20
+Shipyard.rsrc,9207,0x23f7,Shipyard 3,0x0b9e,3,0x0a50,clu3,pict,TUpDownPictureButton,plus,60,0,20,20
+Shipyard.rsrc,9207,0x23f7,Shipyard 3,0x0c12,2,0x02dc,sele,pict,TOverlayRadioButton,but4,8,90,89,78
+Shipyard.rsrc,9207,0x23f7,Shipyard 3,0x0c85,2,0x02dc,sele,clus,,clu4,12,148,80,22
+Shipyard.rsrc,9207,0x23f7,Shipyard 3,0x0d5f,3,0x0c85,clu4,pict,TUpDownPictureButton,minu,0,0,20,20
+Shipyard.rsrc,9207,0x23f7,Shipyard 3,0x0dd3,3,0x0c85,clu4,pict,TUpDownPictureButton,plus,60,0,20,20
+Shipyard.rsrc,9207,0x23f7,Shipyard 3,0x0e47,2,0x02dc,sele,pict,TOverlayRadioButton,but5,97,90,89,78
+Shipyard.rsrc,9207,0x23f7,Shipyard 3,0x0eba,2,0x02dc,sele,clus,,clu5,101,148,80,22
+Shipyard.rsrc,9207,0x23f7,Shipyard 3,0x0f94,3,0x0eba,clu5,pict,TUpDownPictureButton,minu,0,0,20,20
+Shipyard.rsrc,9207,0x23f7,Shipyard 3,0x1008,3,0x0eba,clu5,pict,TUpDownPictureButton,plus,60,0,20,20
+Shipyard.rsrc,9207,0x23f7,Shipyard 3,0x107c,2,0x02dc,sele,pict,TOverlayRadioButton,but6,186,90,89,78
+Shipyard.rsrc,9207,0x23f7,Shipyard 3,0x10ef,2,0x02dc,sele,clus,,clu6,189,148,80,22
+Shipyard.rsrc,9207,0x23f7,Shipyard 3,0x11c9,3,0x10ef,clu6,pict,TUpDownPictureButton,minu,0,0,20,20
+Shipyard.rsrc,9207,0x23f7,Shipyard 3,0x123d,3,0x10ef,clu6,pict,TUpDownPictureButton,plus,60,0,20,20
+Shipyard.rsrc,9207,0x23f7,Shipyard 3,0x12b1,2,0x02dc,sele,pict,TOverlayRadioButton,but7,275,90,89,78
+Shipyard.rsrc,9207,0x23f7,Shipyard 3,0x1324,2,0x02dc,sele,clus,,clu7,276,148,80,22
+Shipyard.rsrc,9207,0x23f7,Shipyard 3,0x13fe,3,0x1324,clu7,pict,TUpDownPictureButton,minu,0,0,20,20
+Shipyard.rsrc,9207,0x23f7,Shipyard 3,0x1472,3,0x1324,clu7,pict,TUpDownPictureButton,plus,60,0,20,20
+Shipyard.rsrc,9207,0x23f7,Shipyard 3,0x14e6,1,0x026f,DLOG,stat,,snam,105,55,165,19
+Shipyard.rsrc,9207,0x23f7,Shipyard 3,0x154c,1,0x026f,DLOG,stat,,fix0,25,132,44,14
+Shipyard.rsrc,9207,0x23f7,Shipyard 3,0x15b2,1,0x026f,DLOG,stat,,fix1,23,183,80,17
+Shipyard.rsrc,9207,0x23f7,Shipyard 3,0x1618,1,0x026f,DLOG,stat,,desc,207,125,135,104
+Shipyard.rsrc,9207,0x23f7,Shipyard 3,0x167e,1,0x026f,DLOG,stat,,titl,84,11,200,30
+Shipyard.rsrc,9207,0x23f7,Shipyard 3,0x16e4,1,0x026f,DLOG,pict,,spic,231,74,86,45
+Startup.rsrc,951,0x03b7,test - Game Setup Dialog,0x0401,0,,,clus,,GP0 ,13,9,183,131
+Startup.rsrc,951,0x03b7,test - Game Setup Dialog,0x0623,0,,,clus,,GP1 ,203,9,183,131
+Startup.rsrc,951,0x03b7,test - Game Setup Dialog,0x0845,0,,,clus,,GP2 ,394,9,183,131
+Startup.rsrc,951,0x03b7,test - Game Setup Dialog,0x0a67,0,,,clus,,GP3 ,13,149,183,131
+Startup.rsrc,951,0x03b7,test - Game Setup Dialog,0x0c89,0,,,clus,,GP6 ,13,285,183,131
+Startup.rsrc,951,0x03b7,test - Game Setup Dialog,0x0eab,0,,,clus,,GP4 ,204,149,183,131
+Startup.rsrc,951,0x03b7,test - Game Setup Dialog,0x10cd,0,,,clus,,GP5 ,396,149,183,131
+Startup.rsrc,952,0x03b8,City Site selector,0x0004,0,,,view,,base,0,0,2000,2000
+Startup.rsrc,952,0x03b8,City Site selector,0x0048,1,0x0004,base,pict,TMapUberPicture,main,0,0,640,480
+Startup.rsrc,952,0x03b8,City Site selector,0x00ed,2,0x0048,main,clus,TToolBarCluster,tool,517,0,123,480
+Startup.rsrc,952,0x03b8,City Site selector,0x015e,3,0x00ed,tool,pict,TPictureButton,quer,91,8,26,36
+Startup.rsrc,952,0x03b8,City Site selector,0x01cc,3,0x00ed,tool,pict,TPictureButton,canc,4,8,83,36
+Startup.rsrc,952,0x03b8,City Site selector,0x023a,2,0x0048,main,view,TCitySiteView,DLOG,5,27,512,448
+Startup.rsrc,952,0x03b8,City Site selector,0x028b,2,0x0048,main,pict,TUpDownPictureButton,send,220,10,19,11
+Startup.rsrc,952,0x03b8,City Site selector,0x02ff,2,0x0048,main,tevw,TInfoBarText,curs,240,5,275,21
+Startup.rsrc,953,0x03b9,New City Dialog,0x026f,0,,,pict,TPlaceCityDialog,DLOG,0,0,328,175
+Startup.rsrc,953,0x03b9,New City Dialog,0x02df,1,0x026f,DLOG,stat,,titl,46,17,238,26
+Startup.rsrc,953,0x03b9,New City Dialog,0x0345,1,0x026f,DLOG,pict,TUpDownPictureButton,okay,255,142,61,24
+Startup.rsrc,953,0x03b9,New City Dialog,0x03b9,1,0x026f,DLOG,pict,TUpDownPictureButton,cncl,13,142,61,23
+Startup.rsrc,953,0x03b9,New City Dialog,0x042d,1,0x026f,DLOG,stat,,    ,17,92,168,14
+Startup.rsrc,953,0x03b9,New City Dialog,0x0493,1,0x026f,DLOG,stat,,sust,14,59,299,29
+Startup.rsrc,960,0x03c0,Map editor,0x0004,0,,,view,,base,0,0,2000,2000
+Startup.rsrc,960,0x03c0,Map editor,0x0048,1,0x0004,base,pict,TMapUberPicture,main,0,0,640,480
+Startup.rsrc,960,0x03c0,Map editor,0x00ed,2,0x0048,main,clus,TToolBarCluster,tool,517,0,123,480
+Startup.rsrc,960,0x03c0,Map editor,0x015e,3,0x00ed,tool,clus,TMapEditCluster,econ,4,123,115,351
+Startup.rsrc,960,0x03c0,Map editor,0x05fb,4,0x015e,econ,stat,,pron,36,185,73,16
+Startup.rsrc,960,0x03c0,Map editor,0x0661,4,0x015e,econ,pict,,done,3,324,61,24
+Startup.rsrc,960,0x03c0,Map editor,0x0724,4,0x015e,econ,pict,,load,3,301,61,24
+Startup.rsrc,960,0x03c0,Map editor,0x0784,4,0x015e,econ,pict,,save,3,278,61,24
+Startup.rsrc,960,0x03c0,Map editor,0x07e4,4,0x015e,econ,stat,,    ,69,282,38,66
+Startup.rsrc,960,0x03c0,Map editor,0x1006,2,0x0048,main,view,TMapEditView,DLOG,5,27,512,448
+Startup.rsrc,965,0x03c5,Province editor,0x0080,0,,,pict,,DLOG,0,0,250,175
+Startup.rsrc,965,0x03c5,Province editor,0x00e0,1,0x0080,DLOG,edit,,name,39,33,174,23
+Startup.rsrc,965,0x03c5,Province editor,0x0185,1,0x0080,DLOG,pict,TUpDownPictureButton,okay,158,138,61,24
+Startup.rsrc,965,0x03c5,Province editor,0x01f9,1,0x0080,DLOG,stat,,    ,38,10,156,18
+Startup.rsrc,965,0x03c5,Province editor,0x0310,1,0x0080,DLOG,stat,,    ,10,58,48,18
+Startup.rsrc,965,0x03c5,Province editor,0x0376,1,0x0080,DLOG,clus,,type,68,66,114,54
+Startup.rsrc,966,0x03c6,Verb Form Dialog,0x0080,0,,,pict,,DLOG,0,0,330,175
+Startup.rsrc,966,0x03c6,Verb Form Dialog,0x00e0,1,0x0080,DLOG,stat,,ques,12,14,301,33
+Startup.rsrc,966,0x03c6,Verb Form Dialog,0x0146,1,0x0080,DLOG,clus,TRadioTextCluster,form,18,52,290,85
+Startup.rsrc,966,0x03c6,Verb Form Dialog,0x01b9,1,0x0080,DLOG,pict,TUpDownPictureButton,okay,255,139,61,24
+Startup.rsrc,1500,0x05dc,kGameSetupMainView,0x0004,0,,,view,,base,0,0,2000,2000
+Startup.rsrc,1500,0x05dc,kGameSetupMainView,0x0048,1,0x0004,base,pict,TGameSetupPicture,main,0,0,640,480
+Startup.rsrc,1500,0x05dc,kGameSetupMainView,0x00ef,2,0x0048,main,cntl,,load,61,111,137,84
+Startup.rsrc,1500,0x05dc,kGameSetupMainView,0x014d,2,0x0048,main,cntl,,rand,14,209,138,171
+Startup.rsrc,1500,0x05dc,kGameSetupMainView,0x01ab,2,0x0048,main,cntl,,mult,458,258,143,140
+Startup.rsrc,1500,0x05dc,kGameSetupMainView,0x0209,2,0x0048,main,cntl,,high,448,113,164,78
+Startup.rsrc,1500,0x05dc,kGameSetupMainView,0x0267,2,0x0048,main,cntl,,scen,1,397,156,72
+Startup.rsrc,1500,0x05dc,kGameSetupMainView,0x02c5,2,0x0048,main,tevw,TInfoBarText,curs,180,424,274,52
+Startup.rsrc,1500,0x05dc,kGameSetupMainView,0x0363,2,0x0048,main,cntl,,quit,221,102,195,195
+Startup.rsrc,1500,0x05dc,kGameSetupMainView,0x03c1,2,0x0048,main,cntl,,pref,540,399,100,73
+Startup.rsrc,1501,0x05dd,kGameSetupRandomView,0x0004,0,,,view,,base,0,0,2000,2000
+Startup.rsrc,1501,0x05dd,kGameSetupRandomView,0x0048,1,0x0004,base,pict,TSetupRandomMapPicture,main,0,0,640,480
+Startup.rsrc,1501,0x05dd,kGameSetupRandomView,0x00f4,2,0x0048,main,tevw,TInfoBarText,hot!,36,22,238,27
+Startup.rsrc,1501,0x05dd,kGameSetupRandomView,0x0192,2,0x0048,main,clus,,stuf,288,4,345,466
+Startup.rsrc,1501,0x05dd,kGameSetupRandomView,0x01f4,3,0x0192,stuf,view,TMapPreviewView,map ,14,10,324,180
+Startup.rsrc,1501,0x05dd,kGameSetupRandomView,0x0247,3,0x0192,stuf,stat,TDropShadowText,tcou,66,230,144,16
+Startup.rsrc,1501,0x05dd,kGameSetupRandomView,0x02bc,3,0x0192,stuf,view,TGWorldPartView,flag,25,225,32,24
+Startup.rsrc,1501,0x05dd,kGameSetupRandomView,0x030f,3,0x0192,stuf,edit,,coun,23,249,306,22
+Startup.rsrc,1501,0x05dd,kGameSetupRandomView,0x03b4,3,0x0192,stuf,pict,TUpDownPictureButton,okay,128,418,96,30
+Startup.rsrc,1501,0x05dd,kGameSetupRandomView,0x0428,3,0x0192,stuf,clus,TRadioTextCluster,diff,25,298,302,84
+Startup.rsrc,1501,0x05dd,kGameSetupRandomView,0x049b,4,0x0428,diff,stat,TRadioText,dif0,2,2,298,16
+Startup.rsrc,1501,0x05dd,kGameSetupRandomView,0x050b,4,0x0428,diff,stat,TRadioText,dif1,2,18,298,16
+Startup.rsrc,1501,0x05dd,kGameSetupRandomView,0x057b,4,0x0428,diff,stat,TRadioText,dif2,2,34,298,16
+Startup.rsrc,1501,0x05dd,kGameSetupRandomView,0x05eb,4,0x0428,diff,stat,TRadioText,dif3,2,50,298,16
+Startup.rsrc,1501,0x05dd,kGameSetupRandomView,0x065b,4,0x0428,diff,stat,TRadioText,dif4,2,66,298,16
+Startup.rsrc,1501,0x05dd,kGameSetupRandomView,0x06cb,3,0x0192,stuf,stat,TDropShadowText,dift,26,278,159,18
+Startup.rsrc,1501,0x05dd,kGameSetupRandomView,0x0740,3,0x0192,stuf,stat,TDropShadowText,tnam,26,392,63,16
+Startup.rsrc,1501,0x05dd,kGameSetupRandomView,0x07b5,3,0x0192,stuf,clus,TRadioTextCluster,name,91,390,235,20
+Startup.rsrc,1501,0x05dd,kGameSetupRandomView,0x0828,4,0x07b5,name,stat,TRadioText,hist,2,2,115,16
+Startup.rsrc,1501,0x05dd,kGameSetupRandomView,0x0898,4,0x07b5,name,stat,TRadioText,rand,118,2,115,16
+Startup.rsrc,1501,0x05dd,kGameSetupRandomView,0x0908,2,0x0048,main,cntl,,key ,265,281,14,14
+Startup.rsrc,1501,0x05dd,kGameSetupRandomView,0x0966,2,0x0048,main,stat,,auto,217,66,65,41
+Startup.rsrc,1501,0x05dd,kGameSetupRandomView,0x09cc,2,0x0048,main,cntl,,canc,42,55,146,78
+Startup.rsrc,1501,0x05dd,kGameSetupRandomView,0x0a2a,2,0x0048,main,cntl,,cncl,42,133,104,234
+Startup.rsrc,1501,0x05dd,kGameSetupRandomView,0x0a88,2,0x0048,main,pict,,coat,173,333,70,94
+Startup.rsrc,1501,0x05dd,kGameSetupRandomView,0x0ae8,2,0x0048,main,pict,TNoHilitePicture,glob,147,134,128,128
+Startup.rsrc,1503,0x05df,kGameSetupScenarioView,0x0004,0,,,view,,base,0,0,2000,2000
+Startup.rsrc,1503,0x05df,kGameSetupScenarioView,0x0048,1,0x0004,base,view,,base,0,0,2000,2000
+Startup.rsrc,1503,0x05df,kGameSetupScenarioView,0x008c,2,0x0048,base,pict,TScenarioChooser,main,0,0,640,480
+Startup.rsrc,1503,0x05df,kGameSetupScenarioView,0x0132,3,0x008c,main,view,TMapPreviewView,pmap,302,14,324,180
+Startup.rsrc,1503,0x05df,kGameSetupScenarioView,0x0185,3,0x008c,main,pict,TUpDownPictureButton,star,416,422,96,30
+Startup.rsrc,1503,0x05df,kGameSetupScenarioView,0x01f9,3,0x008c,main,tevw,TDeluxeText,cdes,309,230,310,185
+Startup.rsrc,1503,0x05df,kGameSetupScenarioView,0x0296,3,0x008c,main,tevw,TDeluxeText,sdes,48,230,228,222
+Startup.rsrc,1503,0x05df,kGameSetupScenarioView,0x0333,3,0x008c,main,view,TTextList,list,39,61,244,110
+Startup.rsrc,1503,0x05df,kGameSetupScenarioView,0x0380,3,0x008c,main,cntl,TClickZone,exit,0,62,37,240
+Startup.rsrc,1503,0x05df,kGameSetupScenarioView,0x03e8,3,0x008c,main,tevw,TInfoBarText,curs,50,17,214,30
+Startup.rsrc,1503,0x05df,kGameSetupScenarioView,0x0486,3,0x008c,main,stat,TDropShadowText,more,40,176,242,20
+Startup.rsrc,1504,0x05e0,High Score,0x0004,0,,,view,,base,0,0,2000,2000
+Startup.rsrc,1504,0x05e0,High Score,0x0048,1,0x0004,base,view,,base,0,0,2000,2000
+Startup.rsrc,1504,0x05e0,High Score,0x008c,2,0x0048,base,pict,THighScoresPicture,main,0,0,640,480
+Startup.rsrc,1504,0x05e0,High Score,0x0134,3,0x008c,main,stat,,labl,27,68,234,18
+Startup.rsrc,1506,0x05e2,kGameSetupNetworkSelectView,0x0004,0,,,view,,base,0,0,2000,2000
+Startup.rsrc,1506,0x05e2,kGameSetupNetworkSelectView,0x0048,1,0x0004,base,pict,TNetSelectPicture,main,0,0,640,480
+Startup.rsrc,1506,0x05e2,kGameSetupNetworkSelectView,0x00ef,2,0x0048,main,pict,TPictureButton,okay,545,444,75,36
+Startup.rsrc,1506,0x05e2,kGameSetupNetworkSelectView,0x015d,2,0x0048,main,pict,TPictureButton,cncl,21,444,75,36
+Startup.rsrc,1506,0x05e2,kGameSetupNetworkSelectView,0x01cb,2,0x0048,main,stat,TMyStaticText,txt0,264,171,138,18
+Startup.rsrc,1506,0x05e2,kGameSetupNetworkSelectView,0x023e,2,0x0048,main,stat,TMyStaticText,txt1,263,206,140,15
+Startup.rsrc,1506,0x05e2,kGameSetupNetworkSelectView,0x02b1,2,0x0048,main,stat,TMyStaticText,txt2,264,237,143,17
+Startup.rsrc,1506,0x05e2,kGameSetupNetworkSelectView,0x0324,2,0x0048,main,stat,TMyStaticText,txt3,264,270,139,16
+Startup.rsrc,1506,0x05e2,kGameSetupNetworkSelectView,0x0397,2,0x0048,main,clus,,prot,222,104,48,208
+Startup.rsrc,1506,0x05e2,kGameSetupNetworkSelectView,0x03f9,3,0x0397,prot,pict,TRadioPictureButton,rad0,8,61,31,27
+Startup.rsrc,1506,0x05e2,kGameSetupNetworkSelectView,0x046c,3,0x0397,prot,pict,TRadioPictureButton,rad1,7,97,32,24
+Startup.rsrc,1506,0x05e2,kGameSetupNetworkSelectView,0x04df,3,0x0397,prot,pict,TRadioPictureButton,rad2,7,128,32,26
+Startup.rsrc,1506,0x05e2,kGameSetupNetworkSelectView,0x0552,3,0x0397,prot,pict,TRadioPictureButton,rad3,6,161,32,26
+Startup.rsrc,1506,0x05e2,kGameSetupNetworkSelectView,0x05c5,2,0x0048,main,pict,TUpDownPictureButton,set0,413,170,30,24
+Startup.rsrc,1506,0x05e2,kGameSetupNetworkSelectView,0x0639,2,0x0048,main,pict,TUpDownPictureButton,set1,412,201,30,24
+Startup.rsrc,1506,0x05e2,kGameSetupNetworkSelectView,0x06ad,2,0x0048,main,pict,TUpDownPictureButton,set2,414,234,30,24
+Startup.rsrc,1506,0x05e2,kGameSetupNetworkSelectView,0x0721,2,0x0048,main,pict,TUpDownPictureButton,set3,412,265,30,24
+Startup.rsrc,1506,0x05e2,kGameSetupNetworkSelectView,0x0795,2,0x0048,main,stat,,tgam,21,101,98,19
+Startup.rsrc,1506,0x05e2,kGameSetupNetworkSelectView,0x07fb,2,0x0048,main,edit,,game,41,122,289,22
+Startup.rsrc,1506,0x05e2,kGameSetupNetworkSelectView,0x08a0,2,0x0048,main,tevw,TInfoBarText,labl,21,67,200,21
+Startup.rsrc,1509,0x05e5,kGameSetupMainViewMP,0x0004,0,,,view,,base,0,0,2000,2000
+Startup.rsrc,1509,0x05e5,kGameSetupMainViewMP,0x0048,1,0x0004,base,pict,TGameSetupMultiplayerPicture,main,0,0,640,480
+Startup.rsrc,1509,0x05e5,kGameSetupMainViewMP,0x00fa,2,0x0048,main,cntl,,load,464,80,147,86
+Startup.rsrc,1509,0x05e5,kGameSetupMainViewMP,0x0158,2,0x0048,main,cntl,,rand,442,218,138,171
+Startup.rsrc,1509,0x05e5,kGameSetupMainViewMP,0x01b6,2,0x0048,main,cntl,,mult,12,79,130,186
+Startup.rsrc,1509,0x05e5,kGameSetupMainViewMP,0x0214,2,0x0048,main,cntl,,scen,296,406,156,72
+Startup.rsrc,1509,0x05e5,kGameSetupMainViewMP,0x0272,2,0x0048,main,tevw,TInfoBarText,curs,34,18,233,33
+Startup.rsrc,1509,0x05e5,kGameSetupMainViewMP,0x0310,2,0x0048,main,stat,TDropShadowText,name,245,381,165,19
+Startup.rsrc,1509,0x05e5,kGameSetupMainViewMP,0x0385,2,0x0048,main,clus,TRadioTextCluster,prot,163,88,256,175
+Startup.rsrc,1509,0x05e5,kGameSetupMainViewMP,0x03f8,2,0x0048,main,cntl,,join,29,282,160,152
+Startup.rsrc,1509,0x05e5,kGameSetupMainViewMP,0x0456,2,0x0048,main,cntl,,spit,390,256,33,53
+Startup.rsrc,1515,0x05eb,Game Score,0x0004,0,,,view,,base,0,0,2000,2000
+Startup.rsrc,1515,0x05eb,Game Score,0x0048,1,0x0004,base,view,,base,0,0,2000,2000
+Startup.rsrc,1515,0x05eb,Game Score,0x008c,2,0x0048,base,pict,TGameScorePicture,main,0,0,640,480
+Startup.rsrc,1515,0x05eb,Game Score,0x0133,3,0x008c,main,stat,TDropShadowText,scra,118,165,120,16
+Startup.rsrc,1515,0x05eb,Game Score,0x01a8,3,0x008c,main,stat,TDropShadowText,scrb,118,219,120,16
+Startup.rsrc,1515,0x05eb,Game Score,0x021d,3,0x008c,main,stat,TDropShadowText,scrc,118,273,120,16
+Startup.rsrc,1515,0x05eb,Game Score,0x0292,3,0x008c,main,stat,TDropShadowText,scrd,118,309,120,48
+Startup.rsrc,1515,0x05eb,Game Score,0x0307,3,0x008c,main,stat,TDropShadowText,scre,416,165,120,16
+Startup.rsrc,1515,0x05eb,Game Score,0x037c,3,0x008c,main,stat,TDropShadowText,scrf,416,219,120,16
+Startup.rsrc,1515,0x05eb,Game Score,0x03f1,3,0x008c,main,stat,TDropShadowText,scrg,416,265,120,32
+Startup.rsrc,1515,0x05eb,Game Score,0x0466,3,0x008c,main,stat,TDropShadowText,scrh,416,329,120,32
+Startup.rsrc,1515,0x05eb,Game Score,0x04db,3,0x008c,main,stat,TDropShadowText,scri,118,383,120,16
+Startup.rsrc,1515,0x05eb,Game Score,0x0550,3,0x008c,main,stat,TDropShadowText,scrj,344,381,120,16
+Startup.rsrc,1515,0x05eb,Game Score,0x05c5,3,0x008c,main,stat,TDropShadowText,scrk,344,406,120,16
+Startup.rsrc,1515,0x05eb,Game Score,0x063a,3,0x008c,main,stat,TDropShadowText,scrl,346,440,120,24
+Startup.rsrc,1515,0x05eb,Game Score,0x06af,3,0x008c,main,stat,TDropShadowText,numa,233,165,73,16
+Startup.rsrc,1515,0x05eb,Game Score,0x0724,3,0x008c,main,stat,TDropShadowText,numb,233,219,73,16
+Startup.rsrc,1515,0x05eb,Game Score,0x0799,3,0x008c,main,stat,TDropShadowText,numc,233,273,73,16
+Startup.rsrc,1515,0x05eb,Game Score,0x080e,3,0x008c,main,stat,TDropShadowText,numd,234,325,73,16
+Startup.rsrc,1515,0x05eb,Game Score,0x0883,3,0x008c,main,stat,TDropShadowText,numi,233,383,73,16
+Startup.rsrc,1515,0x05eb,Game Score,0x08f8,3,0x008c,main,stat,TDropShadowText,nume,531,165,73,16
+Startup.rsrc,1515,0x05eb,Game Score,0x096d,3,0x008c,main,stat,TDropShadowText,numf,531,219,73,16
+Startup.rsrc,1515,0x05eb,Game Score,0x09e2,3,0x008c,main,stat,TDropShadowText,numg,531,273,73,16
+Startup.rsrc,1515,0x05eb,Game Score,0x0a57,3,0x008c,main,stat,TDropShadowText,numh,531,337,73,16
+Startup.rsrc,1515,0x05eb,Game Score,0x0acc,3,0x008c,main,stat,TDropShadowText,numj,531,381,73,16
+Startup.rsrc,1515,0x05eb,Game Score,0x0b41,3,0x008c,main,stat,TDropShadowText,numk,532,405,73,16
+Startup.rsrc,1515,0x05eb,Game Score,0x0bb6,3,0x008c,main,stat,TDropShadowText,numl,532,440,73,24
+Startup.rsrc,1515,0x05eb,Game Score,0x0c2b,3,0x008c,main,stat,TDropShadowText,vict,130,44,396,72
+Startup.rsrc,1515,0x05eb,Game Score,0x0ca0,3,0x008c,main,stat,TDropShadowText,ptfr,118,127,120,16
+Startup.rsrc,1515,0x05eb,Game Score,0x0d15,3,0x008c,main,pict,TPictureButton,done,7,38,31,52
+Startup.rsrc,20000,0x4e20,Special Demo Quit,0x0004,0,,,view,,base,0,0,2000,2000
+Startup.rsrc,20000,0x4e20,Special Demo Quit,0x0048,1,0x0004,base,view,,base,0,0,2000,2000
+Startup.rsrc,20000,0x4e20,Special Demo Quit,0x008c,2,0x0048,base,pict,TSpecialQuitPicture,main,0,0,640,480
+Startup.rsrc,20000,0x4e20,Special Demo Quit,0x0135,3,0x008c,main,tevw,TDeluxeText,sale,7,6,398,379
+Startup.rsrc,20000,0x4e20,Special Demo Quit,0x01d2,3,0x008c,main,pict,TPictureButton,show,74,400,97,37
+Startup.rsrc,20000,0x4e20,Special Demo Quit,0x0240,3,0x008c,main,pict,TPictureButton,quit,483,399,97,37
+Startup.rsrc,20000,0x4e20,Special Demo Quit,0x02ae,3,0x008c,main,tevw,TDeluxeText,requ,412,255,210,130
+Startup.rsrc,20000,0x4e20,Special Demo Quit,0x034b,3,0x008c,main,stat,,tsho,51,446,138,23
+Startup.rsrc,20000,0x4e20,Special Demo Quit,0x03b1,3,0x008c,main,stat,,tqui,459,445,138,23
+Startup.rsrc,20000,0x4e20,Special Demo Quit,0x0417,3,0x008c,main,tevw,TDeluxeText,titl,132,6,375,37
+Tactical.rsrc,3800,0x0ed8,Tactical View,0x0004,0,,,view,,base,0,0,2000,2000
+Tactical.rsrc,3800,0x0ed8,Tactical View,0x0048,1,0x0004,base,pict,TTacMapUberPicture,main,0,0,640,480
+Tactical.rsrc,3800,0x0ed8,Tactical View,0x00f0,2,0x0048,main,tevw,TInfoBarText,curs,221,4,360,20
+Tactical.rsrc,3800,0x0ed8,Tactical View,0x018e,2,0x0048,main,view,TTacArmyView,DLOG,5,25,575,450
+Tactical.rsrc,3800,0x0ed8,Tactical View,0x01de,2,0x0048,main,clus,TTacticalToolbar,tool,583,0,55,479
+Tactical.rsrc,3800,0x0ed8,Tactical View,0x0250,3,0x01de,tool,pict,TUpDownPictureButton,help,9,8,35,44
+Tactical.rsrc,3800,0x0ed8,Tactical View,0x02c4,3,0x01de,tool,pict,TUpDownPictureButton,targ,9,151,35,34
+Tactical.rsrc,3800,0x0ed8,Tactical View,0x0338,3,0x01de,tool,pict,TUpDownPictureButton,done,9,186,35,34
+Tactical.rsrc,3800,0x0ed8,Tactical View,0x03ac,3,0x01de,tool,pict,TUpDownPictureButton,retr,9,221,35,34
+Tactical.rsrc,3800,0x0ed8,Tactical View,0x0420,3,0x01de,tool,pict,,coat,0,63,52,72
+Tactical.rsrc,3800,0x0ed8,Tactical View,0x0480,3,0x01de,tool,pict,,curr,2,291,50,50
+Tactical.rsrc,3800,0x0ed8,Tactical View,0x04e0,3,0x01de,tool,pict,TPictureButton,auto,2,412,50,62
+Tactical.rsrc,3800,0x0ed8,Tactical View,0x054e,3,0x01de,tool,pict,,tpic,2,356,50,50
+Tactical.rsrc,3821,0x0eed,Victory or Loss!!!,0x0080,0,,,pict,TTacticalAdiosPicture,DLOG,0,0,235,350
+Tactical.rsrc,3821,0x0eed,Victory or Loss!!!,0x00f5,1,0x0080,DLOG,pict,TUpDownPictureButton,okay,87,314,61,24
+Tactical.rsrc,3821,0x0eed,Victory or Loss!!!,0x0169,1,0x0080,DLOG,tevw,TDeluxeText,info,13,201,210,112
+Tactical.rsrc,3821,0x0eed,Victory or Loss!!!,0x0206,1,0x0080,DLOG,stat,TMyStaticText,titl,7,163,221,19
+Tactical.rsrc,3821,0x0eed,Victory or Loss!!!,0x0279,1,0x0080,DLOG,stat,TMyStaticText,loca,7,182,221,19
+Tactical.rsrc,3865,0x0f19,Tac Deploy Choice,0x0080,0,,,pict,TTacticalHolaPicture,DLOG,0,0,442,297
+Tactical.rsrc,3865,0x0f19,Tac Deploy Choice,0x00f4,1,0x0080,DLOG,view,TMapPreviewView,pmap,59,5,324,180
+Tactical.rsrc,3865,0x0f19,Tac Deploy Choice,0x0147,1,0x0080,DLOG,pict,TUpDownPictureButton,okay,369,261,61,24
+Tactical.rsrc,3865,0x0f19,Tac Deploy Choice,0x01bb,1,0x0080,DLOG,tevw,TDeluxeText,info,12,197,417,59
+Tactical.rsrc,3865,0x0f19,Tac Deploy Choice,0x0258,1,0x0080,DLOG,stat,TMyStaticText,titl,7,163,221,19
+Tactical.rsrc,3865,0x0f19,Tac Deploy Choice,0x02cb,1,0x0080,DLOG,stat,TMyStaticText,loca,7,182,221,19
+Tactical.rsrc,3865,0x0f19,Tac Deploy Choice,0x033e,1,0x0080,DLOG,pict,TUpDownPictureButton,cncl,12,261,61,24
+Tactical.rsrc,3865,0x0f19,Tac Deploy Choice,0x03b2,1,0x0080,DLOG,pict,,acoa,3,18,52,72
+Tactical.rsrc,3865,0x0f19,Tac Deploy Choice,0x0412,1,0x0080,DLOG,pict,,dcoa,385,18,52,72
+Tech.rsrc,2200,0x0898,Technology Advance,0x0004,0,,,view,,base,0,0,2000,2000
+Tech.rsrc,2200,0x0898,Technology Advance,0x0048,1,0x0004,base,pict,,main,0,0,640,480
+Tech.rsrc,2200,0x0898,Technology Advance,0x00de,2,0x0048,main,stat,,text,305,335,296,122
+Tech.rsrc,2200,0x0898,Technology Advance,0x0144,2,0x0048,main,clus,TToolBarCluster,tool,3,6,237,90
+Tech.rsrc,2200,0x0898,Technology Advance,0x01b5,3,0x0144,tool,pict,TPictureButton,end ,5,32,31,51
+Tech.rsrc,2200,0x0898,Technology Advance,0x0223,3,0x0144,tool,stat,TDropShadowText,seas,44,1,94,17
+Tech.rsrc,2200,0x0898,Technology Advance,0x0298,3,0x0144,tool,stat,TDropShadowText,trea,141,1,75,17
+Tech.rsrc,2200,0x0898,Technology Advance,0x030d,2,0x0048,main,tevw,TInfoBarText,curs,247,7,341,17
+Tech.rsrc,2200,0x0898,Technology Advance,0x03ab,2,0x0048,main,pict,,patc,584,35,52,72
+TechStore.rsrc,2300,0x08fc,Tech Store,0x0004,0,,,view,,base,0,0,2000,2000
+TechStore.rsrc,2300,0x08fc,Tech Store,0x0048,1,0x0004,base,pict,TBook,main,0,0,640,480
+TechStore.rsrc,2300,0x08fc,Tech Store,0x00e3,2,0x0048,main,clus,TToolBarCluster,tool,7,6,225,84
+TechStore.rsrc,2300,0x08fc,Tech Store,0x0154,3,0x00e3,tool,pict,TPictureButton,end ,1,32,30,50
+TechStore.rsrc,2300,0x08fc,Tech Store,0x01c2,3,0x00e3,tool,stat,TDropShadowText,seas,44,4,94,17
+TechStore.rsrc,2300,0x08fc,Tech Store,0x0237,3,0x00e3,tool,stat,TDropShadowText,trea,141,4,75,17
+TechStore.rsrc,2300,0x08fc,Tech Store,0x02ac,2,0x0048,main,clus,TToolBarCluster,topB,267,5,105,26
+TechStore.rsrc,2300,0x08fc,Tech Store,0x031d,3,0x02ac,topB,pict,TUpDownPictureButton,tran,3,3,14,18
+TechStore.rsrc,2300,0x08fc,Tech Store,0x0391,3,0x02ac,topB,pict,TUpDownPictureButton,city,31,3,14,18
+TechStore.rsrc,2300,0x08fc,Tech Store,0x0405,3,0x02ac,topB,pict,TUpDownPictureButton,trad,59,3,14,18
+TechStore.rsrc,2300,0x08fc,Tech Store,0x0479,3,0x02ac,topB,pict,TUpDownPictureButton,dipl,88,3,14,18
+TechStore.rsrc,2300,0x08fc,Tech Store,0x04ed,2,0x0048,main,clus,TToolBarCluster,tbr2,600,31,30,48
+TechStore.rsrc,2300,0x08fc,Tech Store,0x055e,3,0x04ed,tbr2,pict,TPictureButton,quer,8,9,22,38
+TechStore.rsrc,2300,0x08fc,Tech Store,0x05cc,2,0x0048,main,view,TTechStorePage,page,38,64,562,378
+TechStore.rsrc,2300,0x08fc,Tech Store,0x061e,2,0x0048,main,pict,TNoHilitePicture,lcor,17,445,32,30
+TechStore.rsrc,2300,0x08fc,Tech Store,0x068e,2,0x0048,main,pict,TNoHilitePicture,rcor,590,445,32,30
+TechStore.rsrc,2300,0x08fc,Tech Store,0x06fe,2,0x0048,main,stat,TDropShadowText,ttl1,67,40,128,16
+TechStore.rsrc,2300,0x08fc,Tech Store,0x0773,2,0x0048,main,stat,TDropShadowText,ttl2,240,40,128,16
+TechStore.rsrc,2300,0x08fc,Tech Store,0x07e8,2,0x0048,main,stat,TDropShadowText,ttl3,392,40,128,16
+TechStore.rsrc,2300,0x08fc,Tech Store,0x085d,2,0x0048,main,tevw,TInfoBarText,curs,386,5,201,30
+TechStore.rsrc,2370,0x0942,history,0x0080,0,,,view,TTechHistoryView,DLOG,0,0,360,295
+TechStore.rsrc,2370,0x0942,history,0x00d4,1,0x0080,DLOG,pict,,top ,0,0,360,295
+TechStore.rsrc,2370,0x0942,history,0x0134,2,0x00d4,top ,stat,TDropShadowText,titl,81,19,264,32
+TechStore.rsrc,2370,0x0942,history,0x01a9,2,0x00d4,top ,pict,,pict,10,10,60,60
+TechStore.rsrc,2370,0x0942,history,0x0209,2,0x00d4,top ,view,TScrollView,scvw,9,76,342,175
+TechStore.rsrc,2370,0x0942,history,0x0258,2,0x00d4,top ,pict,TUpDownPictureButton,okay,281,260,61,24
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x0004,0,,,view,,base,0,0,2000,2000
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x0048,1,0x0004,base,pict,TTradeScreenPicture,main,0,0,640,480
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x00f1,2,0x0048,main,clus,TToolBarCluster,tbr2,600,31,30,44
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x0162,3,0x00f1,tbr2,pict,TPictureButton,quer,0,2,27,37
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x01d0,2,0x0048,main,pict,,cott,5,149,42,24
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x0230,2,0x0048,main,pict,,wool,5,191,42,24
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x0290,2,0x0048,main,pict,,food,593,189,42,24
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x02f0,2,0x0048,main,view,,mPic,596,106,35,26
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x0334,2,0x0048,main,clus,TToolBarCluster,tool,7,6,228,67
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x03a5,3,0x0334,tool,pict,TPictureButton,end ,5,27,27,37
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x0413,3,0x0334,tool,stat,TDropShadowText,seas,44,4,94,17
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x0488,3,0x0334,tool,stat,TDropShadowText,trea,141,4,75,17
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x058a,2,0x0048,main,clus,TTradeCluster,gd0 ,51,98,519,20
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x06ea,3,0x058a,gd0 ,pict,TTradeOrderPicture,card,82,0,17,20
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x075c,3,0x058a,gd0 ,pict,TTradeOrderPicture,offr,163,0,17,20
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x07ce,3,0x058a,gd0 ,pict,TSidewaysArrow,left,383,5,16,10
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x083c,3,0x058a,gd0 ,pict,TSidewaysArrow,rght,498,5,15,11
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x08aa,3,0x058a,gd0 ,pict,TSliderPicture,gree,399,6,100,7
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x0918,3,0x058a,gd0 ,view,TTraderAmtBar,bar ,399,7,100,7
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x0969,2,0x0048,main,clus,TTradeCluster,gd1 ,51,118,519,20
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x0ac9,3,0x0969,gd1 ,pict,TTradeOrderPicture,card,82,0,17,20
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x0b3b,3,0x0969,gd1 ,pict,TTradeOrderPicture,offr,163,0,17,20
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x0bad,3,0x0969,gd1 ,pict,TSliderPicture,gree,399,6,100,7
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x0c1b,3,0x0969,gd1 ,pict,TSidewaysArrow,left,383,5,16,10
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x0c89,3,0x0969,gd1 ,pict,TSidewaysArrow,rght,498,5,15,11
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x0cf7,3,0x0969,gd1 ,view,TTraderAmtBar,bar ,399,7,100,7
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x0d48,2,0x0048,main,clus,TTradeCluster,gd2 ,51,138,519,20
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x0ea8,3,0x0d48,gd2 ,pict,TTradeOrderPicture,card,82,0,16,18
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x0f1a,3,0x0d48,gd2 ,pict,TTradeOrderPicture,offr,163,0,14,19
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x0f8c,3,0x0d48,gd2 ,pict,TSliderPicture,gree,399,6,100,7
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x0ffa,3,0x0d48,gd2 ,pict,TSidewaysArrow,left,383,5,16,10
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x1068,3,0x0d48,gd2 ,pict,TSidewaysArrow,rght,498,5,15,11
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x10d6,3,0x0d48,gd2 ,view,TTraderAmtBar,bar ,399,7,100,7
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x1127,2,0x0048,main,clus,TTradeCluster,gd3 ,51,158,519,20
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x1287,3,0x1127,gd3 ,pict,TTradeOrderPicture,card,82,0,16,18
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x12f9,3,0x1127,gd3 ,pict,TTradeOrderPicture,offr,163,0,14,19
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x136b,3,0x1127,gd3 ,pict,TSliderPicture,gree,399,6,100,7
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x13d9,3,0x1127,gd3 ,pict,TSidewaysArrow,left,383,5,16,10
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x1447,3,0x1127,gd3 ,pict,TSidewaysArrow,rght,498,5,15,11
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x14b5,3,0x1127,gd3 ,view,TTraderAmtBar,bar ,399,7,100,7
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x1506,2,0x0048,main,clus,TTradeCluster,ma2 ,51,218,519,20
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x1666,3,0x1506,ma2 ,pict,TTradeOrderPicture,card,82,0,16,18
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x16d8,3,0x1506,ma2 ,pict,TTradeOrderPicture,offr,163,0,14,19
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x174a,3,0x1506,ma2 ,pict,TSidewaysArrow,left,383,5,16,10
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x17b8,3,0x1506,ma2 ,pict,TSliderPicture,gree,399,6,100,7
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x1826,3,0x1506,ma2 ,pict,TSidewaysArrow,rght,498,5,15,11
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x1894,3,0x1506,ma2 ,view,TTraderAmtBar,bar ,399,7,100,7
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x18e5,2,0x0048,main,clus,TTradeCluster,ma3 ,51,238,519,20
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x1a45,3,0x18e5,ma3 ,pict,TTradeOrderPicture,card,82,0,16,18
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x1ab7,3,0x18e5,ma3 ,pict,TTradeOrderPicture,offr,163,0,14,19
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x1b29,3,0x18e5,ma3 ,pict,TSidewaysArrow,left,383,5,16,10
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x1b97,3,0x18e5,ma3 ,pict,TSliderPicture,gree,399,6,100,7
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x1c05,3,0x18e5,ma3 ,pict,TSidewaysArrow,rght,498,5,15,11
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x1c73,3,0x18e5,ma3 ,view,TTraderAmtBar,bar ,399,7,100,7
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x1cc4,2,0x0048,main,clus,TTradeCluster,ma1 ,51,198,519,20
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x1e24,3,0x1cc4,ma1 ,pict,TTradeOrderPicture,card,82,0,16,18
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x1e96,3,0x1cc4,ma1 ,pict,TTradeOrderPicture,offr,163,0,14,19
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x1f08,3,0x1cc4,ma1 ,pict,TSidewaysArrow,left,383,5,16,10
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x1f76,3,0x1cc4,ma1 ,pict,TSliderPicture,gree,399,6,100,7
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x1fe4,3,0x1cc4,ma1 ,pict,TSidewaysArrow,rght,498,5,15,11
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x2052,3,0x1cc4,ma1 ,view,TTraderAmtBar,bar ,399,7,100,7
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x20a3,2,0x0048,main,clus,TTradeCluster,ma0 ,51,178,519,20
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x2203,3,0x20a3,ma0 ,pict,TTradeOrderPicture,card,82,0,16,18
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x2275,3,0x20a3,ma0 ,pict,TTradeOrderPicture,offr,163,0,14,19
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x22e7,3,0x20a3,ma0 ,pict,TSidewaysArrow,left,383,5,16,10
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x2355,3,0x20a3,ma0 ,pict,TSliderPicture,gree,399,6,100,7
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x23c3,3,0x20a3,ma0 ,pict,TSidewaysArrow,rght,498,5,15,11
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x2431,3,0x20a3,ma0 ,view,TTraderAmtBar,bar ,399,7,100,7
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x2482,2,0x0048,main,clus,TTradeCluster,rs5 ,51,378,519,20
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x25e2,3,0x2482,rs5 ,pict,TTradeOrderPicture,card,82,0,16,18
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x2654,3,0x2482,rs5 ,pict,TTradeOrderPicture,offr,163,0,14,19
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x26c6,3,0x2482,rs5 ,pict,TSidewaysArrow,left,383,5,16,10
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x2734,3,0x2482,rs5 ,pict,TSliderPicture,gree,399,6,100,7
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x27a2,3,0x2482,rs5 ,pict,TSidewaysArrow,rght,498,5,15,11
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x2810,3,0x2482,rs5 ,view,TTraderAmtBar,bar ,399,7,100,7
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x2861,2,0x0048,main,clus,TTradeCluster,rs6 ,51,398,519,20
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x29c1,3,0x2861,rs6 ,pict,TTradeOrderPicture,card,82,0,16,18
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x2a33,3,0x2861,rs6 ,pict,TTradeOrderPicture,offr,163,0,14,19
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x2aa5,3,0x2861,rs6 ,pict,TSidewaysArrow,left,383,5,16,10
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x2b13,3,0x2861,rs6 ,pict,TSliderPicture,gree,399,6,100,7
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x2b81,3,0x2861,rs6 ,pict,TSidewaysArrow,rght,498,5,15,11
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x2bef,3,0x2861,rs6 ,view,TTraderAmtBar,bar ,399,7,100,7
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x2c40,2,0x0048,main,clus,TTradeCluster,rs4 ,51,358,519,20
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x2da0,3,0x2c40,rs4 ,pict,TTradeOrderPicture,card,82,0,16,18
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x2e12,3,0x2c40,rs4 ,pict,TTradeOrderPicture,offr,163,0,14,19
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x2e84,3,0x2c40,rs4 ,pict,TSidewaysArrow,left,383,5,16,10
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x2ef2,3,0x2c40,rs4 ,pict,TSliderPicture,gree,399,6,100,7
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x2f60,3,0x2c40,rs4 ,pict,TSidewaysArrow,rght,498,5,15,11
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x2fce,3,0x2c40,rs4 ,view,TTraderAmtBar,bar ,399,7,100,7
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x301f,2,0x0048,main,clus,TTradeCluster,rs3 ,51,338,519,20
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x317f,3,0x301f,rs3 ,pict,TTradeOrderPicture,card,82,0,16,18
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x31f1,3,0x301f,rs3 ,pict,TTradeOrderPicture,offr,163,0,14,19
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x3263,3,0x301f,rs3 ,pict,TSidewaysArrow,left,383,5,16,10
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x32d1,3,0x301f,rs3 ,pict,TSliderPicture,gree,399,6,100,7
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x333f,3,0x301f,rs3 ,pict,TSidewaysArrow,rght,498,5,15,11
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x33ad,3,0x301f,rs3 ,view,TTraderAmtBar,bar ,399,7,100,7
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x33fe,2,0x0048,main,clus,TTradeCluster,rs2 ,51,318,519,20
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x355e,3,0x33fe,rs2 ,pict,TTradeOrderPicture,card,82,0,16,18
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x35d0,3,0x33fe,rs2 ,pict,TTradeOrderPicture,offr,163,0,14,19
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x3642,3,0x33fe,rs2 ,pict,TSidewaysArrow,left,383,5,16,10
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x36b0,3,0x33fe,rs2 ,pict,TSliderPicture,gree,399,6,100,7
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x371e,3,0x33fe,rs2 ,pict,TSidewaysArrow,rght,498,5,15,11
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x378c,3,0x33fe,rs2 ,view,TTraderAmtBar,bar ,399,7,100,7
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x37dd,2,0x0048,main,clus,TTradeCluster,rs1 ,51,298,519,20
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x393d,3,0x37dd,rs1 ,pict,TTradeOrderPicture,card,82,0,16,18
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x39af,3,0x37dd,rs1 ,pict,TTradeOrderPicture,offr,163,0,14,19
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x3a21,3,0x37dd,rs1 ,pict,TSidewaysArrow,left,383,5,16,10
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x3a8f,3,0x37dd,rs1 ,pict,TSliderPicture,gree,399,6,100,7
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x3afd,3,0x37dd,rs1 ,pict,TSidewaysArrow,rght,498,5,15,11
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x3b6b,3,0x37dd,rs1 ,view,TTraderAmtBar,bar ,399,7,100,7
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x3bbc,2,0x0048,main,clus,TTradeCluster,rs0 ,51,278,519,20
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x3d1c,3,0x3bbc,rs0 ,pict,TTradeOrderPicture,card,82,0,16,18
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x3d8e,3,0x3bbc,rs0 ,pict,TTradeOrderPicture,offr,163,0,14,19
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x3e00,3,0x3bbc,rs0 ,pict,TSidewaysArrow,left,383,5,16,10
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x3e6e,3,0x3bbc,rs0 ,pict,TSliderPicture,gree,399,6,100,7
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x3edc,3,0x3bbc,rs0 ,pict,TSidewaysArrow,rght,498,5,15,11
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x3f4a,3,0x3bbc,rs0 ,view,TTraderAmtBar,bar ,399,7,100,7
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x3f9b,2,0x0048,main,clus,TTradeCluster,ma4 ,51,258,519,20
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x40fb,3,0x3f9b,ma4 ,pict,TTradeOrderPicture,card,82,0,16,18
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x416d,3,0x3f9b,ma4 ,pict,TTradeOrderPicture,offr,163,0,14,19
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x41df,3,0x3f9b,ma4 ,pict,TSidewaysArrow,left,383,5,16,10
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x424d,3,0x3f9b,ma4 ,pict,TSliderPicture,gree,399,6,100,7
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x42bb,3,0x3f9b,ma4 ,pict,TSidewaysArrow,rght,498,5,15,11
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x4329,3,0x3f9b,ma4 ,view,TTraderAmtBar,bar ,399,7,100,7
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x437a,2,0x0048,main,clus,TTradeCluster,ma5 ,51,418,519,20
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x44da,3,0x437a,ma5 ,pict,TTradeOrderPicture,card,82,0,16,18
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x454c,3,0x437a,ma5 ,pict,TTradeOrderPicture,offr,163,0,14,19
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x45be,3,0x437a,ma5 ,pict,TSidewaysArrow,left,383,5,16,10
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x462c,3,0x437a,ma5 ,pict,TSliderPicture,gree,399,6,100,7
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x469a,3,0x437a,ma5 ,pict,TSidewaysArrow,rght,498,5,15,11
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x4708,3,0x437a,ma5 ,view,TTraderAmtBar,bar ,399,7,100,7
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x4759,2,0x0048,main,stat,TDropShadowText,topT,54,37,533,20
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x47ce,2,0x0048,main,stat,TDropShadowText,comT,48,73,90,23
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x4843,2,0x0048,main,stat,TDropShadowText,ordT,138,73,90,23
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x48b8,2,0x0048,main,stat,,priT,240,73,67,23
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x491e,2,0x0048,main,stat,,avaT,310,73,72,21
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x4984,2,0x0048,main,stat,,qtyT,386,73,181,21
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x49ea,2,0x0048,main,clus,TToolBarCluster,topB,267,5,105,26
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x4a5b,3,0x49ea,topB,pict,TUpDownPictureButton,tran,3,3,14,18
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x4acf,3,0x49ea,topB,pict,TUpDownPictureButton,city,31,3,14,18
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x4b43,3,0x49ea,topB,pict,TUpDownPictureButton,trad,59,3,14,18
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x4bb7,3,0x49ea,topB,pict,TUpDownPictureButton,dipl,88,3,14,18
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x4c2b,2,0x0048,main,tevw,TInfoBarText,curs,386,5,201,30
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x4cc9,2,0x0048,main,pict,,timb,5,231,42,24
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x4d29,2,0x0048,main,pict,,coal,5,272,42,24
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x4d89,2,0x0048,main,pict,,iron,5,316,42,24
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x4de9,2,0x0048,main,pict,,oil ,5,356,42,24
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x4e49,2,0x0048,main,pict,,fabr,593,230,42,24
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x4ea9,2,0x0048,main,pict,,lumb,593,274,42,24
+Trade.rsrc,2009,0x07d9,trade chalk & hooks,0x4f09,2,0x0048,main,pict,,stee,593,312,42,24
+Trade.rsrc,2010,0x07da,trade board w/oil,0x0004,0,,,view,,base,0,0,2000,2000
+Trade.rsrc,2010,0x07da,trade board w/oil,0x0048,1,0x0004,base,view,,base,0,0,2000,2000
+Trade.rsrc,2010,0x07da,trade board w/oil,0x008c,2,0x0048,base,pict,TTradeScreenPicture,main,0,0,640,480
+Trade.rsrc,2010,0x07da,trade board w/oil,0x0135,3,0x008c,main,clus,TToolBarCluster,tbr2,600,31,30,43
+Trade.rsrc,2010,0x07da,trade board w/oil,0x01a6,4,0x0135,tbr2,pict,TPictureButton,quer,0,2,27,37
+Trade.rsrc,2010,0x07da,trade board w/oil,0x0214,3,0x008c,main,clus,TTradeCluster,gd0 ,51,98,519,20
+Trade.rsrc,2010,0x07da,trade board w/oil,0x0374,4,0x0214,gd0 ,pict,TTradeOrderPicture,card,82,0,17,20
+Trade.rsrc,2010,0x07da,trade board w/oil,0x03e6,4,0x0214,gd0 ,pict,TTradeOrderPicture,offr,163,0,17,20
+Trade.rsrc,2010,0x07da,trade board w/oil,0x0458,4,0x0214,gd0 ,pict,TSidewaysArrow,left,383,5,16,10
+Trade.rsrc,2010,0x07da,trade board w/oil,0x04c6,4,0x0214,gd0 ,pict,TSidewaysArrow,rght,498,5,15,11
+Trade.rsrc,2010,0x07da,trade board w/oil,0x0534,4,0x0214,gd0 ,pict,TSliderPicture,gree,399,6,100,7
+Trade.rsrc,2010,0x07da,trade board w/oil,0x05a2,4,0x0214,gd0 ,view,TTraderAmtBar,bar ,399,7,100,7
+Trade.rsrc,2010,0x07da,trade board w/oil,0x05f3,3,0x008c,main,clus,TTradeCluster,gd1 ,51,118,519,20
+Trade.rsrc,2010,0x07da,trade board w/oil,0x0753,4,0x05f3,gd1 ,pict,TTradeOrderPicture,card,82,0,17,20
+Trade.rsrc,2010,0x07da,trade board w/oil,0x07c5,4,0x05f3,gd1 ,pict,TTradeOrderPicture,offr,163,0,17,20
+Trade.rsrc,2010,0x07da,trade board w/oil,0x0837,4,0x05f3,gd1 ,pict,TSliderPicture,gree,399,6,100,7
+Trade.rsrc,2010,0x07da,trade board w/oil,0x08a5,4,0x05f3,gd1 ,pict,TSidewaysArrow,left,383,5,16,10
+Trade.rsrc,2010,0x07da,trade board w/oil,0x0913,4,0x05f3,gd1 ,pict,TSidewaysArrow,rght,498,5,15,11
+Trade.rsrc,2010,0x07da,trade board w/oil,0x0981,4,0x05f3,gd1 ,view,TTraderAmtBar,bar ,399,7,100,7
+Trade.rsrc,2010,0x07da,trade board w/oil,0x09d2,3,0x008c,main,clus,TTradeCluster,gd2 ,51,138,519,20
+Trade.rsrc,2010,0x07da,trade board w/oil,0x0b32,4,0x09d2,gd2 ,pict,TTradeOrderPicture,card,82,0,16,18
+Trade.rsrc,2010,0x07da,trade board w/oil,0x0ba4,4,0x09d2,gd2 ,pict,TTradeOrderPicture,offr,163,0,14,19
+Trade.rsrc,2010,0x07da,trade board w/oil,0x0c16,4,0x09d2,gd2 ,pict,TSliderPicture,gree,399,6,100,7
+Trade.rsrc,2010,0x07da,trade board w/oil,0x0c84,4,0x09d2,gd2 ,pict,TSidewaysArrow,left,383,5,16,10
+Trade.rsrc,2010,0x07da,trade board w/oil,0x0cf2,4,0x09d2,gd2 ,pict,TSidewaysArrow,rght,498,5,15,11
+Trade.rsrc,2010,0x07da,trade board w/oil,0x0d60,4,0x09d2,gd2 ,view,TTraderAmtBar,bar ,399,7,100,7
+Trade.rsrc,2010,0x07da,trade board w/oil,0x0db1,3,0x008c,main,clus,TTradeCluster,gd3 ,51,158,519,20
+Trade.rsrc,2010,0x07da,trade board w/oil,0x0f11,4,0x0db1,gd3 ,pict,TTradeOrderPicture,card,82,0,16,18
+Trade.rsrc,2010,0x07da,trade board w/oil,0x0f83,4,0x0db1,gd3 ,pict,TTradeOrderPicture,offr,163,0,14,19
+Trade.rsrc,2010,0x07da,trade board w/oil,0x0ff5,4,0x0db1,gd3 ,pict,TSliderPicture,gree,399,6,100,7
+Trade.rsrc,2010,0x07da,trade board w/oil,0x1063,4,0x0db1,gd3 ,pict,TSidewaysArrow,left,383,5,16,10
+Trade.rsrc,2010,0x07da,trade board w/oil,0x10d1,4,0x0db1,gd3 ,pict,TSidewaysArrow,rght,498,5,15,11
+Trade.rsrc,2010,0x07da,trade board w/oil,0x113f,4,0x0db1,gd3 ,view,TTraderAmtBar,bar ,399,7,100,7
+Trade.rsrc,2010,0x07da,trade board w/oil,0x1190,3,0x008c,main,clus,TTradeCluster,ma2 ,51,218,519,20
+Trade.rsrc,2010,0x07da,trade board w/oil,0x12f0,4,0x1190,ma2 ,pict,TTradeOrderPicture,card,82,0,16,18
+Trade.rsrc,2010,0x07da,trade board w/oil,0x1362,4,0x1190,ma2 ,pict,TTradeOrderPicture,offr,163,0,14,19
+Trade.rsrc,2010,0x07da,trade board w/oil,0x13d4,4,0x1190,ma2 ,pict,TSidewaysArrow,left,383,5,16,10
+Trade.rsrc,2010,0x07da,trade board w/oil,0x1442,4,0x1190,ma2 ,pict,TSliderPicture,gree,399,6,100,7
+Trade.rsrc,2010,0x07da,trade board w/oil,0x14b0,4,0x1190,ma2 ,pict,TSidewaysArrow,rght,498,5,15,11
+Trade.rsrc,2010,0x07da,trade board w/oil,0x151e,4,0x1190,ma2 ,view,TTraderAmtBar,bar ,399,7,100,7
+Trade.rsrc,2010,0x07da,trade board w/oil,0x156f,3,0x008c,main,clus,TTradeCluster,ma3 ,51,238,519,20
+Trade.rsrc,2010,0x07da,trade board w/oil,0x16cf,4,0x156f,ma3 ,pict,TTradeOrderPicture,card,82,0,16,18
+Trade.rsrc,2010,0x07da,trade board w/oil,0x1741,4,0x156f,ma3 ,pict,TTradeOrderPicture,offr,163,0,14,19
+Trade.rsrc,2010,0x07da,trade board w/oil,0x17b3,4,0x156f,ma3 ,pict,TSidewaysArrow,left,383,5,16,10
+Trade.rsrc,2010,0x07da,trade board w/oil,0x1821,4,0x156f,ma3 ,pict,TSliderPicture,gree,399,6,100,7
+Trade.rsrc,2010,0x07da,trade board w/oil,0x188f,4,0x156f,ma3 ,pict,TSidewaysArrow,rght,498,5,15,11
+Trade.rsrc,2010,0x07da,trade board w/oil,0x18fd,4,0x156f,ma3 ,view,TTraderAmtBar,bar ,399,7,100,7
+Trade.rsrc,2010,0x07da,trade board w/oil,0x194e,3,0x008c,main,clus,TTradeCluster,ma1 ,51,198,519,20
+Trade.rsrc,2010,0x07da,trade board w/oil,0x1aae,4,0x194e,ma1 ,pict,TTradeOrderPicture,card,82,0,16,18
+Trade.rsrc,2010,0x07da,trade board w/oil,0x1b20,4,0x194e,ma1 ,pict,TTradeOrderPicture,offr,163,0,14,19
+Trade.rsrc,2010,0x07da,trade board w/oil,0x1b92,4,0x194e,ma1 ,pict,TSidewaysArrow,left,383,5,16,10
+Trade.rsrc,2010,0x07da,trade board w/oil,0x1c00,4,0x194e,ma1 ,pict,TSliderPicture,gree,399,6,100,7
+Trade.rsrc,2010,0x07da,trade board w/oil,0x1c6e,4,0x194e,ma1 ,pict,TSidewaysArrow,rght,498,5,15,11
+Trade.rsrc,2010,0x07da,trade board w/oil,0x1cdc,4,0x194e,ma1 ,view,TTraderAmtBar,bar ,399,7,100,7
+Trade.rsrc,2010,0x07da,trade board w/oil,0x1d2d,3,0x008c,main,clus,TTradeCluster,ma0 ,51,178,519,20
+Trade.rsrc,2010,0x07da,trade board w/oil,0x1e8d,4,0x1d2d,ma0 ,pict,TTradeOrderPicture,card,82,0,16,18
+Trade.rsrc,2010,0x07da,trade board w/oil,0x1eff,4,0x1d2d,ma0 ,pict,TTradeOrderPicture,offr,163,0,14,19
+Trade.rsrc,2010,0x07da,trade board w/oil,0x1f71,4,0x1d2d,ma0 ,pict,TSidewaysArrow,left,383,5,16,10
+Trade.rsrc,2010,0x07da,trade board w/oil,0x1fdf,4,0x1d2d,ma0 ,pict,TSliderPicture,gree,399,6,100,7
+Trade.rsrc,2010,0x07da,trade board w/oil,0x204d,4,0x1d2d,ma0 ,pict,TSidewaysArrow,rght,498,5,15,11
+Trade.rsrc,2010,0x07da,trade board w/oil,0x20bb,4,0x1d2d,ma0 ,view,TTraderAmtBar,bar ,399,7,100,7
+Trade.rsrc,2010,0x07da,trade board w/oil,0x210c,3,0x008c,main,clus,TTradeCluster,rs4 ,51,378,519,20
+Trade.rsrc,2010,0x07da,trade board w/oil,0x226c,4,0x210c,rs4 ,pict,TTradeOrderPicture,card,82,0,16,18
+Trade.rsrc,2010,0x07da,trade board w/oil,0x22de,4,0x210c,rs4 ,pict,TTradeOrderPicture,offr,163,0,14,19
+Trade.rsrc,2010,0x07da,trade board w/oil,0x2350,4,0x210c,rs4 ,pict,TSidewaysArrow,left,383,5,16,10
+Trade.rsrc,2010,0x07da,trade board w/oil,0x23be,4,0x210c,rs4 ,pict,TSliderPicture,gree,399,6,100,7
+Trade.rsrc,2010,0x07da,trade board w/oil,0x242c,4,0x210c,rs4 ,pict,TSidewaysArrow,rght,498,5,15,11
+Trade.rsrc,2010,0x07da,trade board w/oil,0x249a,4,0x210c,rs4 ,view,TTraderAmtBar,bar ,399,7,100,7
+Trade.rsrc,2010,0x07da,trade board w/oil,0x24eb,3,0x008c,main,clus,TTradeCluster,rs5 ,51,398,519,20
+Trade.rsrc,2010,0x07da,trade board w/oil,0x264b,4,0x24eb,rs5 ,pict,TTradeOrderPicture,card,82,0,16,18
+Trade.rsrc,2010,0x07da,trade board w/oil,0x26bd,4,0x24eb,rs5 ,pict,TTradeOrderPicture,offr,163,0,14,19
+Trade.rsrc,2010,0x07da,trade board w/oil,0x272f,4,0x24eb,rs5 ,pict,TSidewaysArrow,left,383,5,16,10
+Trade.rsrc,2010,0x07da,trade board w/oil,0x279d,4,0x24eb,rs5 ,pict,TSliderPicture,gree,399,6,100,7
+Trade.rsrc,2010,0x07da,trade board w/oil,0x280b,4,0x24eb,rs5 ,pict,TSidewaysArrow,rght,498,5,15,11
+Trade.rsrc,2010,0x07da,trade board w/oil,0x2879,4,0x24eb,rs5 ,view,TTraderAmtBar,bar ,399,7,100,7
+Trade.rsrc,2010,0x07da,trade board w/oil,0x28ca,3,0x008c,main,clus,TTradeCluster,rs3 ,51,358,519,20
+Trade.rsrc,2010,0x07da,trade board w/oil,0x2a2a,4,0x28ca,rs3 ,pict,TTradeOrderPicture,card,82,0,16,18
+Trade.rsrc,2010,0x07da,trade board w/oil,0x2a9c,4,0x28ca,rs3 ,pict,TTradeOrderPicture,offr,163,0,14,19
+Trade.rsrc,2010,0x07da,trade board w/oil,0x2b0e,4,0x28ca,rs3 ,pict,TSidewaysArrow,left,383,5,16,10
+Trade.rsrc,2010,0x07da,trade board w/oil,0x2b7c,4,0x28ca,rs3 ,pict,TSliderPicture,gree,399,6,100,7
+Trade.rsrc,2010,0x07da,trade board w/oil,0x2bea,4,0x28ca,rs3 ,pict,TSidewaysArrow,rght,498,5,15,11
+Trade.rsrc,2010,0x07da,trade board w/oil,0x2c58,4,0x28ca,rs3 ,view,TTraderAmtBar,bar ,399,7,100,7
+Trade.rsrc,2010,0x07da,trade board w/oil,0x2ca9,3,0x008c,main,clus,TTradeCluster,rs2 ,51,338,519,20
+Trade.rsrc,2010,0x07da,trade board w/oil,0x2e09,4,0x2ca9,rs2 ,pict,TTradeOrderPicture,card,82,0,16,18
+Trade.rsrc,2010,0x07da,trade board w/oil,0x2e7b,4,0x2ca9,rs2 ,pict,TTradeOrderPicture,offr,163,0,14,19
+Trade.rsrc,2010,0x07da,trade board w/oil,0x2eed,4,0x2ca9,rs2 ,pict,TSidewaysArrow,left,383,5,16,10
+Trade.rsrc,2010,0x07da,trade board w/oil,0x2f5b,4,0x2ca9,rs2 ,pict,TSliderPicture,gree,399,6,100,7
+Trade.rsrc,2010,0x07da,trade board w/oil,0x2fc9,4,0x2ca9,rs2 ,pict,TSidewaysArrow,rght,498,5,15,11
+Trade.rsrc,2010,0x07da,trade board w/oil,0x3037,4,0x2ca9,rs2 ,view,TTraderAmtBar,bar ,399,7,100,7
+Trade.rsrc,2010,0x07da,trade board w/oil,0x3088,3,0x008c,main,clus,TTradeCluster,rs1 ,51,318,519,20
+Trade.rsrc,2010,0x07da,trade board w/oil,0x31e8,4,0x3088,rs1 ,pict,TTradeOrderPicture,card,82,0,16,18
+Trade.rsrc,2010,0x07da,trade board w/oil,0x325a,4,0x3088,rs1 ,pict,TTradeOrderPicture,offr,163,0,14,19
+Trade.rsrc,2010,0x07da,trade board w/oil,0x32cc,4,0x3088,rs1 ,pict,TSidewaysArrow,left,383,5,16,10
+Trade.rsrc,2010,0x07da,trade board w/oil,0x333a,4,0x3088,rs1 ,pict,TSliderPicture,gree,399,6,100,7
+Trade.rsrc,2010,0x07da,trade board w/oil,0x33a8,4,0x3088,rs1 ,pict,TSidewaysArrow,rght,498,5,15,11
+Trade.rsrc,2010,0x07da,trade board w/oil,0x3416,4,0x3088,rs1 ,view,TTraderAmtBar,bar ,399,7,100,7
+Trade.rsrc,2010,0x07da,trade board w/oil,0x3467,3,0x008c,main,clus,TTradeCluster,rs0 ,51,298,519,20
+Trade.rsrc,2010,0x07da,trade board w/oil,0x35c7,4,0x3467,rs0 ,pict,TTradeOrderPicture,card,82,0,16,18
+Trade.rsrc,2010,0x07da,trade board w/oil,0x3639,4,0x3467,rs0 ,pict,TTradeOrderPicture,offr,163,0,14,19
+Trade.rsrc,2010,0x07da,trade board w/oil,0x36ab,4,0x3467,rs0 ,pict,TSidewaysArrow,left,383,5,16,10
+Trade.rsrc,2010,0x07da,trade board w/oil,0x3719,4,0x3467,rs0 ,pict,TSliderPicture,gree,399,6,100,7
+Trade.rsrc,2010,0x07da,trade board w/oil,0x3787,4,0x3467,rs0 ,pict,TSidewaysArrow,rght,498,5,15,11
+Trade.rsrc,2010,0x07da,trade board w/oil,0x37f5,4,0x3467,rs0 ,view,TTraderAmtBar,bar ,399,7,100,7
+Trade.rsrc,2010,0x07da,trade board w/oil,0x3846,3,0x008c,main,clus,TTradeCluster,ma5 ,51,278,519,20
+Trade.rsrc,2010,0x07da,trade board w/oil,0x39a6,4,0x3846,ma5 ,pict,TTradeOrderPicture,card,82,0,16,18
+Trade.rsrc,2010,0x07da,trade board w/oil,0x3a18,4,0x3846,ma5 ,pict,TTradeOrderPicture,offr,163,0,14,19
+Trade.rsrc,2010,0x07da,trade board w/oil,0x3a8a,4,0x3846,ma5 ,pict,TSidewaysArrow,left,383,5,16,10
+Trade.rsrc,2010,0x07da,trade board w/oil,0x3af8,4,0x3846,ma5 ,pict,TSliderPicture,gree,399,6,100,7
+Trade.rsrc,2010,0x07da,trade board w/oil,0x3b66,4,0x3846,ma5 ,pict,TSidewaysArrow,rght,498,5,15,11
+Trade.rsrc,2010,0x07da,trade board w/oil,0x3bd4,4,0x3846,ma5 ,view,TTraderAmtBar,bar ,399,7,100,7
+Trade.rsrc,2010,0x07da,trade board w/oil,0x3c25,3,0x008c,main,clus,TTradeCluster,ma4 ,51,258,519,20
+Trade.rsrc,2010,0x07da,trade board w/oil,0x3d85,4,0x3c25,ma4 ,pict,TTradeOrderPicture,card,82,0,16,18
+Trade.rsrc,2010,0x07da,trade board w/oil,0x3df7,4,0x3c25,ma4 ,pict,TTradeOrderPicture,offr,163,0,14,19
+Trade.rsrc,2010,0x07da,trade board w/oil,0x3e69,4,0x3c25,ma4 ,pict,TSidewaysArrow,left,383,5,16,10
+Trade.rsrc,2010,0x07da,trade board w/oil,0x3ed7,4,0x3c25,ma4 ,pict,TSliderPicture,gree,399,6,100,7
+Trade.rsrc,2010,0x07da,trade board w/oil,0x3f45,4,0x3c25,ma4 ,pict,TSidewaysArrow,rght,498,5,15,11
+Trade.rsrc,2010,0x07da,trade board w/oil,0x3fb3,4,0x3c25,ma4 ,view,TTraderAmtBar,bar ,399,7,100,7
+Trade.rsrc,2010,0x07da,trade board w/oil,0x4004,3,0x008c,main,clus,TTradeCluster,rs6 ,51,418,519,20
+Trade.rsrc,2010,0x07da,trade board w/oil,0x4164,4,0x4004,rs6 ,pict,TTradeOrderPicture,card,82,0,16,18
+Trade.rsrc,2010,0x07da,trade board w/oil,0x41d6,4,0x4004,rs6 ,pict,TTradeOrderPicture,offr,163,0,14,19
+Trade.rsrc,2010,0x07da,trade board w/oil,0x4248,4,0x4004,rs6 ,pict,TSidewaysArrow,left,383,5,16,10
+Trade.rsrc,2010,0x07da,trade board w/oil,0x42b6,4,0x4004,rs6 ,pict,TSliderPicture,gree,399,6,100,7
+Trade.rsrc,2010,0x07da,trade board w/oil,0x4324,4,0x4004,rs6 ,pict,TSidewaysArrow,rght,498,5,15,11
+Trade.rsrc,2010,0x07da,trade board w/oil,0x4392,4,0x4004,rs6 ,view,TTraderAmtBar,bar ,399,7,100,7
+Trade.rsrc,2010,0x07da,trade board w/oil,0x43e3,3,0x008c,main,stat,TDropShadowText,topT,54,37,533,20
+Trade.rsrc,2010,0x07da,trade board w/oil,0x4458,3,0x008c,main,stat,TDropShadowText,comT,48,73,90,23
+Trade.rsrc,2010,0x07da,trade board w/oil,0x44cd,3,0x008c,main,stat,TDropShadowText,ordT,138,73,90,23
+Trade.rsrc,2010,0x07da,trade board w/oil,0x4542,3,0x008c,main,stat,,priT,240,73,67,23
+Trade.rsrc,2010,0x07da,trade board w/oil,0x45a8,3,0x008c,main,stat,,avaT,310,73,72,21
+Trade.rsrc,2010,0x07da,trade board w/oil,0x460e,3,0x008c,main,stat,,qtyT,386,73,181,21
+Trade.rsrc,2010,0x07da,trade board w/oil,0x4674,3,0x008c,main,clus,TToolBarCluster,tool,7,6,228,67
+Trade.rsrc,2010,0x07da,trade board w/oil,0x46e5,4,0x4674,tool,pict,TPictureButton,end ,5,27,27,37
+Trade.rsrc,2010,0x07da,trade board w/oil,0x4753,4,0x4674,tool,stat,TDropShadowText,seas,44,4,94,17
+Trade.rsrc,2010,0x07da,trade board w/oil,0x47c8,4,0x4674,tool,stat,TDropShadowText,trea,141,4,75,17
+Trade.rsrc,2010,0x07da,trade board w/oil,0x483d,3,0x008c,main,view,,mPic,596,106,35,26
+Trade.rsrc,2010,0x07da,trade board w/oil,0x490e,3,0x008c,main,pict,,cott,5,149,42,24
+Trade.rsrc,2010,0x07da,trade board w/oil,0x496e,3,0x008c,main,pict,,wool,5,191,42,24
+Trade.rsrc,2010,0x07da,trade board w/oil,0x49ce,3,0x008c,main,pict,,food,593,189,42,24
+Trade.rsrc,2010,0x07da,trade board w/oil,0x4a2e,3,0x008c,main,pict,,timb,5,231,42,24
+Trade.rsrc,2010,0x07da,trade board w/oil,0x4a8e,3,0x008c,main,pict,,coal,5,272,42,24
+Trade.rsrc,2010,0x07da,trade board w/oil,0x4aee,3,0x008c,main,pict,,iron,5,316,42,24
+Trade.rsrc,2010,0x07da,trade board w/oil,0x4b4e,3,0x008c,main,pict,,oil ,5,356,42,24
+Trade.rsrc,2010,0x07da,trade board w/oil,0x4bae,3,0x008c,main,pict,,fabr,593,230,42,24
+Trade.rsrc,2010,0x07da,trade board w/oil,0x4c0e,3,0x008c,main,pict,,lumb,593,274,42,24
+Trade.rsrc,2010,0x07da,trade board w/oil,0x4c6e,3,0x008c,main,pict,,stee,593,312,42,24
+Trade.rsrc,2010,0x07da,trade board w/oil,0x4cce,2,0x0048,base,clus,TToolBarCluster,topB,267,5,105,26
+Trade.rsrc,2010,0x07da,trade board w/oil,0x4d3f,3,0x4cce,topB,pict,TUpDownPictureButton,tran,3,3,14,18
+Trade.rsrc,2010,0x07da,trade board w/oil,0x4db3,3,0x4cce,topB,pict,TUpDownPictureButton,city,31,3,14,18
+Trade.rsrc,2010,0x07da,trade board w/oil,0x4e27,3,0x4cce,topB,pict,TUpDownPictureButton,trad,59,3,14,18
+Trade.rsrc,2010,0x07da,trade board w/oil,0x4e9b,3,0x4cce,topB,pict,TUpDownPictureButton,dipl,88,3,14,18
+Trade.rsrc,2010,0x07da,trade board w/oil,0x4f0f,1,0x0004,base,tevw,TInfoBarText,curs,386,5,201,30
+Transport.rsrc,2014,0x07de,Transport Wide Desk,0x0004,0,,,view,,base,0,0,2000,2000
+Transport.rsrc,2014,0x07de,Transport Wide Desk,0x0048,1,0x0004,base,pict,,main,0,0,640,480
+Transport.rsrc,2014,0x07de,Transport Wide Desk,0x00a8,2,0x0048,main,clus,TToolBarCluster,topB,267,5,105,26
+Transport.rsrc,2014,0x07de,Transport Wide Desk,0x0119,3,0x00a8,topB,pict,TUpDownPictureButton,tran,3,3,14,18
+Transport.rsrc,2014,0x07de,Transport Wide Desk,0x018d,3,0x00a8,topB,pict,TUpDownPictureButton,city,31,3,14,18
+Transport.rsrc,2014,0x07de,Transport Wide Desk,0x0201,3,0x00a8,topB,pict,TUpDownPictureButton,trad,59,3,14,18
+Transport.rsrc,2014,0x07de,Transport Wide Desk,0x0275,3,0x00a8,topB,pict,TUpDownPictureButton,dipl,88,3,14,18
+Transport.rsrc,2014,0x07de,Transport Wide Desk,0x02e9,2,0x0048,main,clus,TToolBarCluster,tbr2,599,36,40,46
+Transport.rsrc,2014,0x07de,Transport Wide Desk,0x035a,3,0x02e9,tbr2,pict,TPictureButton,quer,6,3,25,38
+Transport.rsrc,2014,0x07de,Transport Wide Desk,0x03c8,2,0x0048,main,clus,TToolBarCluster,tool,3,6,218,88
+Transport.rsrc,2014,0x07de,Transport Wide Desk,0x0439,3,0x03c8,tool,pict,TPictureButton,end ,5,32,31,51
+Transport.rsrc,2014,0x07de,Transport Wide Desk,0x04a7,3,0x03c8,tool,stat,TDropShadowText,seas,44,4,94,17
+Transport.rsrc,2014,0x07de,Transport Wide Desk,0x051c,3,0x03c8,tool,stat,TDropShadowText,trea,141,4,75,17
+Transport.rsrc,2014,0x07de,Transport Wide Desk,0x0591,2,0x0048,main,pict,TTransportPicture,tota,325,397,224,30
+Transport.rsrc,2014,0x07de,Transport Wide Desk,0x0602,2,0x0048,main,pict,TTransportPicture,fish,70,118,224,30
+Transport.rsrc,2014,0x07de,Transport Wide Desk,0x0673,3,0x0602,fish,pict,TSidewaysArrow,left,85,8,11,12
+Transport.rsrc,2014,0x07de,Transport Wide Desk,0x06e1,3,0x0602,fish,pict,TSidewaysArrow,rght,211,8,11,12
+Transport.rsrc,2014,0x07de,Transport Wide Desk,0x074f,2,0x0048,main,pict,TTransportPicture,prod,70,149,224,30
+Transport.rsrc,2014,0x07de,Transport Wide Desk,0x07c0,3,0x074f,prod,pict,TSidewaysArrow,left,85,8,11,12
+Transport.rsrc,2014,0x07de,Transport Wide Desk,0x082e,3,0x074f,prod,pict,TSidewaysArrow,rght,211,8,11,12
+Transport.rsrc,2014,0x07de,Transport Wide Desk,0x089c,2,0x0048,main,pict,TTransportPicture,grai,70,180,224,30
+Transport.rsrc,2014,0x07de,Transport Wide Desk,0x090d,3,0x089c,grai,pict,TSidewaysArrow,left,85,8,11,12
+Transport.rsrc,2014,0x07de,Transport Wide Desk,0x097b,3,0x089c,grai,pict,TSidewaysArrow,rght,211,8,11,12
+Transport.rsrc,2014,0x07de,Transport Wide Desk,0x09e9,2,0x0048,main,pict,TTransportPicture,timb,70,211,224,30
+Transport.rsrc,2014,0x07de,Transport Wide Desk,0x0a5a,3,0x09e9,timb,pict,TSidewaysArrow,left,85,8,11,12
+Transport.rsrc,2014,0x07de,Transport Wide Desk,0x0ac8,3,0x09e9,timb,pict,TSidewaysArrow,rght,211,8,11,12
+Transport.rsrc,2014,0x07de,Transport Wide Desk,0x0b36,2,0x0048,main,pict,TTransportPicture,lumb,70,242,224,30
+Transport.rsrc,2014,0x07de,Transport Wide Desk,0x0ba7,3,0x0b36,lumb,pict,TSidewaysArrow,left,85,8,11,12
+Transport.rsrc,2014,0x07de,Transport Wide Desk,0x0c15,3,0x0b36,lumb,pict,TSidewaysArrow,rght,211,8,11,12
+Transport.rsrc,2014,0x07de,Transport Wide Desk,0x0c83,2,0x0048,main,pict,TTransportPicture,furn,70,273,224,30
+Transport.rsrc,2014,0x07de,Transport Wide Desk,0x0cf4,3,0x0c83,furn,pict,TSidewaysArrow,left,85,8,11,12
+Transport.rsrc,2014,0x07de,Transport Wide Desk,0x0d62,3,0x0c83,furn,pict,TSidewaysArrow,rght,211,8,11,12
+Transport.rsrc,2014,0x07de,Transport Wide Desk,0x0dd0,2,0x0048,main,pict,TTransportPicture,coal,70,304,224,30
+Transport.rsrc,2014,0x07de,Transport Wide Desk,0x0e41,3,0x0dd0,coal,pict,TSidewaysArrow,left,85,8,11,12
+Transport.rsrc,2014,0x07de,Transport Wide Desk,0x0eaf,3,0x0dd0,coal,pict,TSidewaysArrow,rght,211,8,11,12
+Transport.rsrc,2014,0x07de,Transport Wide Desk,0x0f1d,2,0x0048,main,pict,TTransportPicture,iron,70,335,224,30
+Transport.rsrc,2014,0x07de,Transport Wide Desk,0x0f8e,3,0x0f1d,iron,pict,TSidewaysArrow,left,85,8,11,12
+Transport.rsrc,2014,0x07de,Transport Wide Desk,0x0ffc,3,0x0f1d,iron,pict,TSidewaysArrow,rght,211,8,11,12
+Transport.rsrc,2014,0x07de,Transport Wide Desk,0x106a,2,0x0048,main,pict,TTransportPicture,stee,70,367,224,30
+Transport.rsrc,2014,0x07de,Transport Wide Desk,0x10db,3,0x106a,stee,pict,TSidewaysArrow,left,85,8,11,12
+Transport.rsrc,2014,0x07de,Transport Wide Desk,0x1149,3,0x106a,stee,pict,TSidewaysArrow,rght,211,8,11,12
+Transport.rsrc,2014,0x07de,Transport Wide Desk,0x11b7,2,0x0048,main,pict,TTransportPicture,hard,70,397,224,30
+Transport.rsrc,2014,0x07de,Transport Wide Desk,0x1228,3,0x11b7,hard,pict,TSidewaysArrow,left,85,8,11,12
+Transport.rsrc,2014,0x07de,Transport Wide Desk,0x1296,3,0x11b7,hard,pict,TSidewaysArrow,rght,211,8,11,12
+Transport.rsrc,2014,0x07de,Transport Wide Desk,0x1304,2,0x0048,main,pict,TTransportPicture,cott,325,118,224,30
+Transport.rsrc,2014,0x07de,Transport Wide Desk,0x1375,3,0x1304,cott,pict,TSidewaysArrow,left,81,8,11,12
+Transport.rsrc,2014,0x07de,Transport Wide Desk,0x13e3,3,0x1304,cott,pict,TSidewaysArrow,rght,207,8,11,12
+Transport.rsrc,2014,0x07de,Transport Wide Desk,0x1451,2,0x0048,main,pict,TTransportPicture,fabr,325,149,224,30
+Transport.rsrc,2014,0x07de,Transport Wide Desk,0x14c2,3,0x1451,fabr,pict,TSidewaysArrow,left,81,8,11,12
+Transport.rsrc,2014,0x07de,Transport Wide Desk,0x1530,3,0x1451,fabr,pict,TSidewaysArrow,rght,207,8,11,12
+Transport.rsrc,2014,0x07de,Transport Wide Desk,0x159e,2,0x0048,main,pict,TTransportPicture,clot,325,180,224,30
+Transport.rsrc,2014,0x07de,Transport Wide Desk,0x160f,3,0x159e,clot,pict,TSidewaysArrow,left,81,8,11,12
+Transport.rsrc,2014,0x07de,Transport Wide Desk,0x167d,3,0x159e,clot,pict,TSidewaysArrow,rght,207,8,11,12
+Transport.rsrc,2014,0x07de,Transport Wide Desk,0x16eb,2,0x0048,main,pict,TTransportPicture,oil ,325,211,224,30
+Transport.rsrc,2014,0x07de,Transport Wide Desk,0x175c,3,0x16eb,oil ,pict,TSidewaysArrow,left,81,8,11,12
+Transport.rsrc,2014,0x07de,Transport Wide Desk,0x17ca,3,0x16eb,oil ,pict,TSidewaysArrow,rght,207,8,11,12
+Transport.rsrc,2014,0x07de,Transport Wide Desk,0x1838,2,0x0048,main,pict,TTransportPicture,fuel,325,242,224,30
+Transport.rsrc,2014,0x07de,Transport Wide Desk,0x18a9,3,0x1838,fuel,pict,TSidewaysArrow,left,81,8,11,12
+Transport.rsrc,2014,0x07de,Transport Wide Desk,0x1917,3,0x1838,fuel,pict,TSidewaysArrow,rght,207,8,11,12
+Transport.rsrc,2014,0x07de,Transport Wide Desk,0x1985,2,0x0048,main,pict,TTransportPicture,hors,325,273,224,30
+Transport.rsrc,2014,0x07de,Transport Wide Desk,0x19f6,3,0x1985,hors,pict,TSidewaysArrow,left,81,8,11,12
+Transport.rsrc,2014,0x07de,Transport Wide Desk,0x1a64,3,0x1985,hors,pict,TSidewaysArrow,rght,207,8,11,12
+Transport.rsrc,2014,0x07de,Transport Wide Desk,0x1ad2,2,0x0048,main,pict,TTransportPicture,gold,325,304,224,30
+Transport.rsrc,2014,0x07de,Transport Wide Desk,0x1b43,3,0x1ad2,gold,pict,TSidewaysArrow,left,81,8,11,12
+Transport.rsrc,2014,0x07de,Transport Wide Desk,0x1bb1,3,0x1ad2,gold,pict,TSidewaysArrow,rght,207,8,11,12
+Transport.rsrc,2014,0x07de,Transport Wide Desk,0x1c1f,2,0x0048,main,pict,TTransportPicture,gems,325,335,224,30
+Transport.rsrc,2014,0x07de,Transport Wide Desk,0x1c90,3,0x1c1f,gems,pict,TSidewaysArrow,left,81,8,11,12
+Transport.rsrc,2014,0x07de,Transport Wide Desk,0x1cfe,3,0x1c1f,gems,pict,TSidewaysArrow,rght,207,8,11,12
+Transport.rsrc,2014,0x07de,Transport Wide Desk,0x1d6c,2,0x0048,main,stat,TDropShadowText,titL,163,81,136,20
+Transport.rsrc,2014,0x07de,Transport Wide Desk,0x1de1,2,0x0048,main,stat,TDropShadowText,titR,325,81,151,21
+Transport.rsrc,2014,0x07de,Transport Wide Desk,0x1e56,2,0x0048,main,tevw,TInfoBarText,curs,401,4,219,30
+Transport.rsrc,3901,0x0f3d,kShowUnitHistoryView,0x0004,0,,,view,,base,0,0,2000,2000
+Transport.rsrc,3901,0x0f3d,kShowUnitHistoryView,0x0048,1,0x0004,base,pict,,main,0,0,640,480
+Transport.rsrc,3901,0x0f3d,kShowUnitHistoryView,0x00a8,2,0x0048,main,clus,TToolBarCluster,tool,542,42,96,430
+Transport.rsrc,3901,0x0f3d,kShowUnitHistoryView,0x0119,3,0x00a8,tool,pict,TPictureButton,end ,31,371,56,56
+Transport.rsrc,3901,0x0f3d,kShowUnitHistoryView,0x0187,3,0x00a8,tool,pict,TNoHilitePicture,tree,23,43,50,50
+Transport.rsrc,3901,0x0f3d,kShowUnitHistoryView,0x02ce,3,0x00a8,tool,stat,TMyStaticText,trea,10,95,75,17
+Transport.rsrc,3901,0x0f3d,kShowUnitHistoryView,0x0341,2,0x0048,main,stat,,txtA,36,135,235,28
+Transport.rsrc,3901,0x0f3d,kShowUnitHistoryView,0x03a7,2,0x0048,main,stat,,txtB,36,166,235,28
+Transport.rsrc,3901,0x0f3d,kShowUnitHistoryView,0x040d,2,0x0048,main,stat,,txtC,36,197,235,28
+Transport.rsrc,3901,0x0f3d,kShowUnitHistoryView,0x0473,2,0x0048,main,stat,,txtD,36,228,235,28
+Transport.rsrc,3901,0x0f3d,kShowUnitHistoryView,0x04d9,2,0x0048,main,stat,,txtE,36,259,235,28
+Transport.rsrc,3901,0x0f3d,kShowUnitHistoryView,0x053f,2,0x0048,main,stat,,txtJ,36,414,235,28
+Transport.rsrc,3901,0x0f3d,kShowUnitHistoryView,0x05a5,2,0x0048,main,stat,,txtI,36,383,235,28
+Transport.rsrc,3901,0x0f3d,kShowUnitHistoryView,0x060b,2,0x0048,main,stat,,txtH,36,352,235,28
+Transport.rsrc,3901,0x0f3d,kShowUnitHistoryView,0x0671,2,0x0048,main,stat,,txtG,36,321,235,28
+Transport.rsrc,3901,0x0f3d,kShowUnitHistoryView,0x06d7,2,0x0048,main,stat,,txtF,36,290,235,28
+Transport.rsrc,3901,0x0f3d,kShowUnitHistoryView,0x073d,2,0x0048,main,stat,,txtK,292,135,235,28
+Transport.rsrc,3901,0x0f3d,kShowUnitHistoryView,0x07a3,2,0x0048,main,stat,,txtL,292,166,235,28
+Transport.rsrc,3901,0x0f3d,kShowUnitHistoryView,0x0809,2,0x0048,main,stat,,txtM,292,197,235,28
+Transport.rsrc,3901,0x0f3d,kShowUnitHistoryView,0x086f,2,0x0048,main,stat,,txtN,292,228,235,28
+Transport.rsrc,3901,0x0f3d,kShowUnitHistoryView,0x08d5,2,0x0048,main,stat,,txtO,292,259,235,28
+Transport.rsrc,3901,0x0f3d,kShowUnitHistoryView,0x093b,2,0x0048,main,stat,,txtP,292,290,235,28
+Transport.rsrc,3901,0x0f3d,kShowUnitHistoryView,0x09a1,2,0x0048,main,stat,,txtQ,292,321,235,28
+Transport.rsrc,3901,0x0f3d,kShowUnitHistoryView,0x0a07,2,0x0048,main,stat,,txtR,292,352,235,28
+Transport.rsrc,3901,0x0f3d,kShowUnitHistoryView,0x0a6d,2,0x0048,main,stat,,txtS,292,383,235,28
+Transport.rsrc,3901,0x0f3d,kShowUnitHistoryView,0x0ad3,2,0x0048,main,stat,,txtT,292,414,235,28
+Transport.rsrc,3901,0x0f3d,kShowUnitHistoryView,0x0b39,2,0x0048,main,tevw,TInfoBarText,curs,274,5,301,27
+Univ.rsrc,9210,0x23fa,University,0x026f,0,,,pict,TUniversityView,DLOG,0,0,370,410
+Univ.rsrc,9210,0x23fa,University,0x03ce,1,0x026f,DLOG,stat,,fix1,16,206,73,14
+Univ.rsrc,9210,0x23fa,University,0x0434,1,0x026f,DLOG,stat,,fix0,16,162,73,14
+Univ.rsrc,9210,0x23fa,University,0x049a,1,0x026f,DLOG,stat,,fix2,63,254,36,26
+Univ.rsrc,9210,0x23fa,University,0x0500,1,0x026f,DLOG,stat,,cash,123,182,62,13
+Univ.rsrc,9210,0x23fa,University,0x0566,1,0x026f,DLOG,stat,,desc,15,82,110,77
+Univ.rsrc,9210,0x23fa,University,0x05cc,1,0x026f,DLOG,stat,,trea,120,224,64,14
+Univ.rsrc,9210,0x23fa,University,0x0632,1,0x026f,DLOG,stat,,titl,105,12,161,30
+Univ.rsrc,9210,0x23fa,University,0x0698,1,0x026f,DLOG,stat,,unit,28,60,153,16
+Univ.rsrc,9210,0x23fa,University,0x06fe,1,0x026f,DLOG,clus,,sele,204,49,162,355
+Univ.rsrc,9210,0x23fa,University,0x0760,2,0x06fe,sele,clus,,clu0,11,67,61,25
+Univ.rsrc,9210,0x23fa,University,0x07c2,3,0x0760,clu0,pict,,num0,21,0,18,20
+Univ.rsrc,9210,0x23fa,University,0x08d0,3,0x0760,clu0,pict,TUpDownPictureButton,minu,0,0,20,20
+Univ.rsrc,9210,0x23fa,University,0x0944,3,0x0760,clu0,pict,TUpDownPictureButton,plus,40,0,20,20
+Univ.rsrc,9210,0x23fa,University,0x09b8,2,0x06fe,sele,pict,TRadioPictureButton,civ0,9,7,64,60
+Univ.rsrc,9210,0x23fa,University,0x0a2b,2,0x06fe,sele,pict,TRadioPictureButton,civ1,88,7,64,60
+Univ.rsrc,9210,0x23fa,University,0x0a9e,2,0x06fe,sele,clus,,clu1,90,67,61,25
+Univ.rsrc,9210,0x23fa,University,0x0b00,3,0x0a9e,clu1,pict,,num1,21,0,18,20
+Univ.rsrc,9210,0x23fa,University,0x0c0e,3,0x0a9e,clu1,pict,TUpDownPictureButton,minu,0,0,20,20
+Univ.rsrc,9210,0x23fa,University,0x0c82,3,0x0a9e,clu1,pict,TUpDownPictureButton,plus,40,0,20,20
+Univ.rsrc,9210,0x23fa,University,0x0cf6,2,0x06fe,sele,pict,TRadioPictureButton,civ2,9,91,64,60
+Univ.rsrc,9210,0x23fa,University,0x0d69,2,0x06fe,sele,clus,,clu2,11,151,61,25
+Univ.rsrc,9210,0x23fa,University,0x0dcb,3,0x0d69,clu2,pict,,num2,21,0,18,20
+Univ.rsrc,9210,0x23fa,University,0x0ed9,3,0x0d69,clu2,pict,TUpDownPictureButton,minu,0,0,20,20
+Univ.rsrc,9210,0x23fa,University,0x0f4d,3,0x0d69,clu2,pict,TUpDownPictureButton,plus,40,0,20,20
+Univ.rsrc,9210,0x23fa,University,0x0fc1,2,0x06fe,sele,pict,TRadioPictureButton,civ3,88,91,64,60
+Univ.rsrc,9210,0x23fa,University,0x1034,2,0x06fe,sele,clus,,clu3,90,151,61,25
+Univ.rsrc,9210,0x23fa,University,0x1096,3,0x1034,clu3,pict,,num3,21,0,18,20
+Univ.rsrc,9210,0x23fa,University,0x11a4,3,0x1034,clu3,pict,TUpDownPictureButton,minu,0,0,20,20
+Univ.rsrc,9210,0x23fa,University,0x1218,3,0x1034,clu3,pict,TUpDownPictureButton,plus,40,0,20,20
+Univ.rsrc,9210,0x23fa,University,0x128c,2,0x06fe,sele,clus,,clu4,11,235,61,25
+Univ.rsrc,9210,0x23fa,University,0x12ee,3,0x128c,clu4,pict,,num4,21,0,18,20
+Univ.rsrc,9210,0x23fa,University,0x13fc,3,0x128c,clu4,pict,TUpDownPictureButton,minu,0,0,20,20
+Univ.rsrc,9210,0x23fa,University,0x1470,3,0x128c,clu4,pict,TUpDownPictureButton,plus,40,0,20,20
+Univ.rsrc,9210,0x23fa,University,0x14e4,2,0x06fe,sele,pict,TRadioPictureButton,civ4,9,175,64,60
+Univ.rsrc,9210,0x23fa,University,0x1557,2,0x06fe,sele,pict,TRadioPictureButton,civ8,88,259,64,60
+Univ.rsrc,9210,0x23fa,University,0x15ca,2,0x06fe,sele,clus,,clu8,90,319,61,25
+Univ.rsrc,9210,0x23fa,University,0x162c,3,0x15ca,clu8,pict,,num8,21,0,18,20
+Univ.rsrc,9210,0x23fa,University,0x173a,3,0x15ca,clu8,pict,TUpDownPictureButton,minu,0,0,20,20
+Univ.rsrc,9210,0x23fa,University,0x17ae,3,0x15ca,clu8,pict,TUpDownPictureButton,plus,40,0,20,20
+Univ.rsrc,9210,0x23fa,University,0x1822,2,0x06fe,sele,clus,,clu5,90,235,61,25
+Univ.rsrc,9210,0x23fa,University,0x1884,3,0x1822,clu5,pict,,num5,21,0,18,20
+Univ.rsrc,9210,0x23fa,University,0x1992,3,0x1822,clu5,pict,TUpDownPictureButton,minu,0,0,20,20
+Univ.rsrc,9210,0x23fa,University,0x1a06,3,0x1822,clu5,pict,TUpDownPictureButton,plus,40,0,20,20
+Univ.rsrc,9210,0x23fa,University,0x1a7a,2,0x06fe,sele,pict,TRadioPictureButton,civ5,88,175,64,60
+Univ.rsrc,9210,0x23fa,University,0x1bdd,1,0x026f,DLOG,stat,,fix3,101,254,36,26
+Univ.rsrc,9210,0x23fa,University,0x1c43,1,0x026f,DLOG,stat,,fix4,141,254,36,26

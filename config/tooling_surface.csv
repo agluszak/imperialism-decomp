@@ -31,6 +31,7 @@ module|tools.workflow.vendor_directx_headers|just:vendor-directx-headers|Mirror 
 module|tools.workflow.class_discovery|just:class-discovery|Read-only class/vtable discovery pipeline
 module|tools.workflow.slice_discovery|just:slice-discovery|Local vertical-slice evidence report
 module|tools.workflow.macos_evidence|just:mac-evidence|Persistent Mac CodeWarrior evidence extraction and validation
+module|tools.workflow.macos_resource_evidence|just:mac-resource-evidence|Deterministic metadata oracle for retail Mac UI resources
 module|tools.reccmp.progress_stats|just:stats/stats-baseline-update|Progress stats baseline compare/update
 module|tools.reccmp.library_inventory|just:inventory|Library/wrapper inventory
 module|tools.reccmp.generate_ignore_functions|just:generate-ignores|Ignore-function update
