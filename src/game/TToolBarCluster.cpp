@@ -2,6 +2,7 @@
 
 #include "game/TApplication.h"
 #include "game/TArmyMgr.h"
+#include "game/TAssetMgr.h"
 #include "game/TGlobalMapState.h"
 #include "game/TMapUberPicture.h"
 #include "game/TNavyMgr.h"
@@ -15,10 +16,17 @@
 #include "game/map_overlay_geometry.h"
 #include "game/mapped_flavor_text.h"
 #include "game/ui_control_tags.h"
+#include "game/ui_invalidation_guard.h"
 
 struct TGlobalMapCityScoreRecord;
 // 0x00563360 -- __stdcall free resolver (defined in TMapMgr.cpp).
 TGlobalMapCityScoreRecord* __stdcall GetProvinceByTileIndex(short nTileIndex);
+
+// Resolves the turn-event dialog node for message context 0x102c (the "capabilities" dialog),
+// computes its placement, and refreshes it. Standalone helper (no `this`) -- matches the
+// original's own free-function shape. Defined below at its real address (0x5dc560), after
+// this class's own methods.
+void DispatchUiRuntimeMessage102CAndRefreshActiveView();
 
 // Builds the 16 per-slot hover/hit-test rects consumed by
 // TToolBarCluster::HandleCityBuildingHoverSelection from a table of 17 (x,y) anchor points.
@@ -266,6 +274,9 @@ TToolBarCluster::TToolBarCluster() {}
 // TToolBarCluster::`scalar deleting destructor'
 TToolBarCluster::~TToolBarCluster() {}
 
+// Resolves the turn-event dialog node for message context 0x102c (the "capabilities" dialog),
+// computes its placement, and refreshes it. Standalone helper (no `this`) -- matches the
+
 // FUNCTION: IMPERIALISM 0x00584ea0
 void TToolBarCluster::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   TCluster::HandleEvent(commandId, sourceHandler, event);
@@ -280,8 +291,7 @@ void TToolBarCluster::HandleEvent(int commandId, TEventHandler* sourceHandler, T
       // Original tail-calls into the shared 499-byte HandleCrossUSmallViewsCommandTagDispatch
       // (0x584f27, unowned) for every tag above 'Flag' -- not yet ported.
     } else if (tag == kControlTagFlagCaps) {
-      // Original calls g_pUiRuntimeContext->DispatchUiRuntimeMessage102CAndRefreshActiveView()
-      // (0x5dc560, 125 bytes, unowned) here -- not yet ported.
+      DispatchUiRuntimeMessage102CAndRefreshActiveView();
     } else if (tag == kControlTagDoneCaps) {
       g_pSimMgr->PostMainWindowCommand100ForTurnFlow();
     }
@@ -360,4 +370,23 @@ void TToolBarCluster::SehCleanup_ReleaseTwoTempSharedStringRefs(int unusedArg) {
   (void)unusedArg;
   CString unused1;
   CString unused2;
+}
+// FUNCTION: IMPERIALISM 0x005dc560
+void DispatchUiRuntimeMessage102CAndRefreshActiveView() {
+  TView* node = g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(0x102c);
+  if (node == nullptr) {
+    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgr_0069B6BC, 0xf6c);
+  }
+  POINT placement;
+  g_pUiRuntimeContext->ComputeTurnEventDialogPlacementByCode(node, &placement);
+  node->CaptureLayoutF0(reinterpret_cast<int*>(&placement), 0);
+  // TODO: dispatches through node's own vtable slot 0x1ac (word slot 0x6b) with no args --
+  // that byte offset coincides with TControl::NoOpUiViewSlotHandler(int, int) elsewhere, but
+  // that method takes 2 args while this callsite passes none, so node is NOT a TControl at
+  // this slot (same "shared offset, different class" trap as elsewhere this session). node's
+  // concrete class beyond TView (whose own declared extent tops out at slot 0x67, just short
+  // of this slot) is unresolved, so this call is left unmodeled.
+  node->CallVoidSlotA0();
+  node->Free();
 }
