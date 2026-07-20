@@ -204,3 +204,4 @@ const unsigned int kControlTagCann = 0x63616e6eu; // 'cann' — defense-minister
 const unsigned int kControlTagTab0 = 0x74616230u; // 'tab0' — first of 7 sequential score-graph nation tabs (tab0-tab6)
 const unsigned int kControlTagHdr0 = 0x68647230u; // 'hdr0' — first of 5 sequential game-info header labels (hdr0-hdr4)
 const unsigned int kControlTagTxta = 0x74787461u; // 'txta' — first of 14 sequential game-info text lines (txta-txtn)
+const unsigned int kControlTagLoca = 0x6c6f6361u; // 'loca' — location text
