@@ -232,5 +232,5 @@ const unsigned int kControlTagTrat = 0x74726174u; // 'trat' — diplomacy-map "t
 const unsigned int kControlTagCout = 0x636f7574u; // 'cout' — diplomacy-map "council" button hover-text variant
 const unsigned int kControlTagEndSpace = 0x656e6420u; // 'end ' — diplomacy-map end-turn popup child
 const unsigned int kControlTagTopB = 0x746f7042u;     // 'topB' — diplomacy-map top-banner popup child
-const unsigned int kControlTagBatl = 0x6c746162u; // 'batl' — action-topic selection bracket (left)
-const unsigned int kControlTagBatr = 0x72746162u; // 'batr' — action-topic selection bracket (right)
+const unsigned int kControlTagLtab = 0x6c746162u; // 'ltab' — action-topic selection bracket (left)
+const unsigned int kControlTagRtab = 0x72746162u; // 'rtab' — action-topic selection bracket (right)
