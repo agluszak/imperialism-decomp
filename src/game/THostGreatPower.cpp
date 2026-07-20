@@ -32,7 +32,7 @@ void THostGreatPower::WriteTo(TStream* stream) {
 
 // FUNCTION: IMPERIALISM 0x00541080
 char THostGreatPower::TryDispatchNationActionViaUiContextOrFallback(int arg1, int arg2, int arg3,
-                                                                  int arg4) {
+                                                                    int arg4) {
   (void)arg1;
   (void)arg2;
   (void)arg3;
@@ -41,9 +41,7 @@ char THostGreatPower::TryDispatchNationActionViaUiContextOrFallback(int arg1, in
 }
 
 // FUNCTION: IMPERIALISM 0x005410f0
-void THostGreatPower::ProcessPendingDiplomacyProposalQueue(void) {
-}
+void THostGreatPower::ProcessPendingDiplomacyProposalQueue(void) {}
 
 // FUNCTION: IMPERIALISM 0x00541170
-void THostGreatPower::DispatchTurnEvent11F8NoPayloadSlot2AC(void) {
-}
+void THostGreatPower::HandleNationLost(void) {}

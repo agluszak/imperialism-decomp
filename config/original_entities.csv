@@ -2363,7 +2363,7 @@ address|name|symbol|size|type|prototype|provenance
 4dab00|TGreatPower::NoOpNationQueuedOrderHook||1|function|undefined NoOpNationQueuedOrderHook(void)|
 4dab20|ExecuteNationPendingActionStateMachine||661|function|undefined ExecuteNationPendingActionStateMachine()|
 4dae70|TGreatPower::HasQueuedCivWorkOrderType7||97|function|undefined HasQueuedCivWorkOrderType7()|
-4daf00|TGreatPower::DispatchTurnEvent11F8NoPayloadSlot2AC||19|function|undefined DispatchTurnEvent11F8NoPayloadSlot2AC()|
+4daf00|TGreatPower::HandleNationLost||19|function|void HandleNationLost()|
 4daf30|TGreatPower::CompileGreatPowerRelationshipDeltaLinesAndDispatchMessage||879|function|undefined CompileGreatPowerRelationshipDeltaLinesAndDispatchMessage()|
 4db380|TGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage||867|function|undefined UpdateGreatPowerPressureStateAndDispatchEscalationMessage()|
 4db7d0|TGreatPower::UpdateOrderEntryAvailabilityByConnectedRegionMask||581|function|undefined UpdateOrderEntryAvailabilityByConnectedRegionMask()|
@@ -2576,7 +2576,7 @@ address|name|symbol|size|type|prototype|provenance
 4e7230|TAutoGreatPower::Free||107|function|undefined Free()|
 4e72c0|TGreatPower::InitializeMapActionCandidateStateAndQueueMission||235|function|undefined InitializeMapActionCandidateStateAndQueueMission()|
 4e73f0|TGreatPower::SerializeGreatPowerTailStateToMessage||212|function|undefined SerializeGreatPowerTailStateToMessage()|
-4e7510|TAutoGreatPower::DispatchTurnEvent11F8NoPayloadSlot2AC||46|function|undefined DispatchTurnEvent11F8NoPayloadSlot2AC()|
+4e7510|TAutoGreatPower::HandleNationLost||46|function|void HandleNationLost()|
 4e7550|TAutoGreatPower::RefreshGreatPowerRelationPanelsAndDispatchDeltaSummary||33|function|void __thiscall RefreshGreatPowerRelationPanelsAndDispatchDeltaSummary()|
 4e7590|TAutoGreatPower::GetTEventHandlerClassNamePointer_38||22|function|undefined OrphanLeaf_NoCall_Ins07_004e7590(void)|
 4e75c0|TAutoGreatPower::OrphanCallChain_C4_I28_004e75c0||72|function|undefined OrphanCallChain_C4_I28_004e75c0(void)|
@@ -3878,7 +3878,7 @@ address|name|symbol|size|type|prototype|provenance
 540ba0|TProxyGreatPower::ReturnFalseNationStateActionStub||90|function|undefined TryDispatchNationActionViaTurnEventOrFallback()|
 540c20|TProxyGreatPower::OrphanLeaf_NoCall_Ins07_004d8920||61|function|undefined OrphanLeaf_NoCall_Ins07_004d8920(undefined4 param_1, undefined4 param_2)|
 540c70|TProxyGreatPower::QueueNationOrderManagerPayloadObject_2f||38|function|undefined DispatchTurnEvent31StarPayloadForNationAndReleaseObject()|
-540cb0|TProxyGreatPower::DispatchTurnEvent11F8NoPayloadSlot2AC||44|function|undefined HandleNationLostEventAndReplaceNationStateForSlot()|
+540cb0|TProxyGreatPower::HandleNationLost||44|function|void HandleNationLost()|
 540cf0|TProxyGreatPower::ExecuteAdvisoryPromptAndApplyActionType1||145|function|undefined EmitTurnEvent1DCommand69ForCurrentNationSlot()|
 540dc0|TProxyGreatPower::ExecuteAdvisoryPromptAndApplyActionType2OrFallback||153|function|undefined EmitTurnEvent1DCommand61ForCurrentNationSlot()|
 540e90|THostGreatPower::CreateObject|?CreateObject@THostGreatPower@@SGPAVCObject@@XZ|110|function|undefined CreateObject()|rtti
@@ -3890,7 +3890,7 @@ address|name|symbol|size|type|prototype|provenance
 541040|THostGreatPower::WriteTo||35|function|undefined UpdateHostGreatPowerStatePathBAndSetLossFlag()|
 541080|TGreatPower::TryDispatchNationActionViaUiThenTurnEvent||77|function|undefined TryDispatchNationActionViaUiThenTurnEvent()|
 5410f0|TGreatPower::ProcessPendingDiplomacyThenDispatchTurnEvent29A||88|function|undefined ProcessPendingDiplomacyThenDispatchTurnEvent29A()|
-541170|THostGreatPower::DispatchTurnEvent11F8NoPayloadSlot2AC||140|function|undefined HandleHostGreatPowerLostStateAndNotifyOrEndSession()|
+541170|THostGreatPower::HandleNationLost||140|function|void HandleNationLost()|
 541230|TClientGreatPower::CreateObject|?CreateObject@TClientGreatPower@@SGPAVCObject@@XZ|83|function|undefined CreateObject()|rtti
 5412b0|TClientGreatPower::ReturnFalseNationStateCapabilityFlag98||3|function|undefined ReturnTrueNationStateCapabilityFlag98Alt()|
 5412d0|TClientGreatPower::ReturnFalseNationStateCapabilityFlagA0||3|function|undefined ReturnFalseNationStateCapabilityFlagA0Alt()|
@@ -3902,7 +3902,7 @@ address|name|symbol|size|type|prototype|provenance
 5414f0|TClientGreatPower::ProcessPendingDiplomacyProposalQueue||149|function|undefined QueueTimeEmitPacketAndDispatchTurnEvent29A()|
 5415c0|TClientGreatPower::ExecuteAdvisoryPromptAndApplyActionType2OrFallback||181|function|undefined ApplyClientGreatPowerCommand61AndEmitTurnEvent1E()|
 5416b0|TClientGreatPower::CheckTransitionSlot27C||168|function|undefined CheckTransitionSlot27C()|
-541790|TClientGreatPower::DispatchTurnEvent11F8NoPayloadSlot2AC||24|function|undefined DispatchLoseEventForClientGreatPowerSlot()|
+541790|TClientGreatPower::HandleNationLost||24|function|void HandleNationLost()|
 5417c0|TRemoteGreatPower::CreateObject|?CreateObject@TRemoteGreatPower@@SGPAVCObject@@XZ|83|function|undefined CreateObject()|rtti
 541840|TRemoteGreatPower::ReturnFalseNationStateCapabilityFlagA0||3|function|undefined ReturnTrueNationStateCapabilityFlagA0Alt()|
 541860|TRemoteGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage||3|function|undefined ReturnFalseRemoteGreatPowerCapabilityStub()|
@@ -3926,7 +3926,7 @@ address|name|symbol|size|type|prototype|provenance
 541ab0|TRemoteGreatPower::DestructTRemoteGreatPower||80|function|undefined DestructTRemoteGreatPower()|
 541b20|TRemoteGreatPower::GetRuntimeClass||6|function|undefined GetTRemoteGreatPowerClassNamePointer()|rtti
 541b40|TRemoteGreatPower::SetNationSelectedRegionAndMapCellLabel||127|function|void SetNationSelectedRegionAndMapCellLabel(short selectedRegion, char * mapCellLabel)|
-541be0|TRemoteGreatPower::DispatchTurnEvent11F8NoPayloadSlot2AC||17|function|undefined RemoveRemoteGreatPowerNationSlotAndNotifyPeers()|
+541be0|TRemoteGreatPower::HandleNationLost||17|function|void HandleNationLost()|
 541c10|TRemoteMinor::CreateObject|?CreateObject@TRemoteMinor@@SGPAVCObject@@XZ|83|function|undefined CreateObject()|rtti
 541c90|TRemoteMinor::ShouldDispatchImmediatelySlot28||3|function|undefined ShouldDispatchImmediatelySlot28()|
 541cb0|TRemoteMinor::ApplyIndexedResourceDeltaAndAdjustNationTotals||3|function|undefined ApplyIndexedResourceDeltaAndAdjustNationTotals()|

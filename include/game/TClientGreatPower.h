@@ -24,8 +24,7 @@ public:
   // slot 0xa0 — 0x005415c0: client command 0x61 wrapper around slot 0x280 logic.
   int PropagateWarTransitionSlot280(int targetNation, int sourceNation, int mode) override;
   // slot 0xab — 0x00541790
-  void DispatchTurnEvent11F8NoPayloadSlot2AC(void) override;
+  void HandleNationLost(void) override;
 
   TClientGreatPower();
 };
-

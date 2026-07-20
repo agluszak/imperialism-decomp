@@ -1897,7 +1897,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
       return 1;
     }
     case 0x6c6f7365: // 'lose' - the named nation lost
-      g_apNationStates[gameState->value1C]->DispatchTurnEvent11F8NoPayloadSlot2AC();
+      g_apNationStates[gameState->value1C]->HandleNationLost();
       return 1;
     case 0x666f6666: { // 'foff' - seat refused: show string[value1C], post the cancel command
       CString messageFoff;

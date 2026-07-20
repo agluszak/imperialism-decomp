@@ -2,6 +2,7 @@
 
 #include "game/global_data_tables.h"
 #include "game/TMapMgr.h"
+#include "game/TSimMgr.h"
 
 // FUNCTION: IMPERIALISM 0x00541840
 char TRemoteGreatPower::ShouldDispatchImmediatelySlot28(void) {
@@ -93,4 +94,6 @@ void TRemoteGreatPower::SetNationSelectedRegionAndMapCellLabel(short selectedReg
 }
 
 // FUNCTION: IMPERIALISM 0x00541be0
-void TRemoteGreatPower::DispatchTurnEvent11F8NoPayloadSlot2AC(void) {}
+void TRemoteGreatPower::HandleNationLost(void) {
+  g_pSimMgr->RemoveNationSlotAndNotifyPeers(nationSlot);
+}

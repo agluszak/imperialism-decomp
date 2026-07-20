@@ -2114,7 +2114,7 @@ address|matching|name
 0x4dab00|1.0|TGreatPower::NoOpNationQueuedOrderHook
 0x4dab20|0.5535248041775457|TGreatPower::ExecuteNationPendingActionStateMachine
 0x4dae70|0.8433734939759037|TGreatPower::HasTrackedOrderOfType7
-0x4daf00|0.2857142857142857|TGreatPower::DispatchTurnEvent11F8NoPayloadSlot2AC
+0x4daf00|0.2857142857142857|TGreatPower::HandleNationLost
 0x4daf30|0.22686567164179106|TGreatPower::CompileGreatPowerRelationshipDeltaLinesAndDispatchMessage
 0x4db380|0.6099585062240664|TGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage
 0x4db7d0|0.7043010752688172|TGreatPower::BuildTransportLinkedInfluenceMap
@@ -2325,7 +2325,7 @@ address|matching|name
 0x4e7230|1.0|TAutoGreatPower::Free
 0x4e72c0|0.4277456647398844|TAutoGreatPower::ReadFrom
 0x4e73f0|0.5324675324675324|TAutoGreatPower::WriteTo
-0x4e7510|0.37037037037037035|TAutoGreatPower::DispatchTurnEvent11F8NoPayloadSlot2AC
+0x4e7510|0.37037037037037035|TAutoGreatPower::HandleNationLost
 0x4e7550|1.0|TAutoGreatPower::RefreshGreatPowerRelationPanelsAndDispatchDeltaSummary
 0x4e7590|1.0|TAutoGreatPower::OrphanRetStub_004dcc30
 0x4e75c0|0.06666666666666667|TAutoGreatPower::OrphanCallChain_C4_I28_004e75c0
@@ -3553,7 +3553,7 @@ address|matching|name
 0x540ba0|0.04878048780487805|TProxyGreatPower::TryDispatchNationActionViaUiContextOrFallback
 0x540c20|0.08|TProxyGreatPower::ResetDiplomacyLevelForNationSlot12
 0x540c70|0.14285714285714285|TProxyGreatPower::AddNodeToMissionNodeQueue
-0x540cb0|0.13333333333333333|TProxyGreatPower::DispatchTurnEvent11F8NoPayloadSlot2AC
+0x540cb0|0.13333333333333333|TProxyGreatPower::HandleNationLost
 0x540cf0|0.10810810810810811|TProxyGreatPower::CheckTransitionSlot27C
 0x540dc0|0.10256410256410256|TProxyGreatPower::PropagateWarTransitionSlot280
 0x540e90|0.5818181818181818|THostGreatPower::CreateObject
@@ -3565,7 +3565,7 @@ address|matching|name
 0x541040|0.125|THostGreatPower::WriteTo
 0x541080|0.05128205128205128|THostGreatPower::TryDispatchNationActionViaUiContextOrFallback
 0x5410f0|0.06060606060606061|THostGreatPower::ProcessPendingDiplomacyProposalQueue
-0x541170|0.037037037037037035|THostGreatPower::DispatchTurnEvent11F8NoPayloadSlot2AC
+0x541170|0.037037037037037035|THostGreatPower::HandleNationLost
 0x541230|0.4897959183673469|TClientGreatPower::CreateObject
 0x5412b0|0.5|TClientGreatPower::ReturnFalseNationStateCapabilityFlag98
 0x5412d0|1.0|TClientGreatPower::ShouldDispatchImmediatelySlot28
@@ -3577,7 +3577,7 @@ address|matching|name
 0x5414f0|0.0|TClientGreatPower::ProcessPendingDiplomacyProposalQueue
 0x5415c0|0.14285714285714285|TClientGreatPower::PropagateWarTransitionSlot280
 0x5416b0|0.6746987951807228|TClientGreatPower::CheckTransitionSlot27C
-0x541790|0.25|TClientGreatPower::DispatchTurnEvent11F8NoPayloadSlot2AC
+0x541790|0.25|TClientGreatPower::HandleNationLost
 0x5417c0|0.4897959183673469|TRemoteGreatPower::CreateObject
 0x541840|0.5|TRemoteGreatPower::ShouldDispatchImmediatelySlot28
 0x541860|1.0|TRemoteGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage
@@ -3601,7 +3601,7 @@ address|matching|name
 0x541ab0|0.08695652173913043|TRemoteGreatPower::DestructTRemoteGreatPower
 0x541b20|1.0|TRemoteGreatPower::GetRuntimeClass
 0x541b40|1.0|TRemoteGreatPower::SetNationSelectedRegionAndMapCellLabel
-0x541be0|0.3333333333333333|TRemoteGreatPower::DispatchTurnEvent11F8NoPayloadSlot2AC
+0x541be0|1.0|TRemoteGreatPower::HandleNationLost
 0x541c10|0.4897959183673469|TRemoteMinor::CreateObject
 0x541c90|1.0|TRemoteMinor::ShouldDispatchImmediatelySlot28
 0x541cb0|1.0|TRemoteMinor::ApplyIndexedResourceDeltaAndAdjustNationTotals

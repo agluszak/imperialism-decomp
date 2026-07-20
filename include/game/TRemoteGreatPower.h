@@ -24,7 +24,7 @@ public:
   void ProcessPendingDiplomacyProposalQueue(void) override;
   void SetCandidateNationFlagAndPortZoneState(int targetNation) override;
   void CallSlotA8(int targetNation) override;
-  void DispatchTurnEvent11F8NoPayloadSlot2AC(void) override;
+  void HandleNationLost(void) override;
   void RecomputeAiExpansionAndMissionPressureScores(void) override;
   void RefreshTrackedEntriesAndReplanAiDevelopment(int unused) override;
   char UpdateGreatPowerPressureStateAndDispatchEscalationMessage(void) override;

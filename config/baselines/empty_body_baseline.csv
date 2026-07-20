@@ -170,7 +170,7 @@ src/game/TQueryFloater.cpp|0|0|1|0
 src/game/TRailCluster.cpp|0|0|1|0
 src/game/TRailheadDialog.cpp|0|0|1|0
 src/game/TRelationshipDialog.cpp|1|0|1|0
-src/game/TRemoteGreatPower.cpp|1|0|1|0
+src/game/TRemoteGreatPower.cpp|0|0|1|0
 src/game/TScenarioChooser.cpp|2|0|0|0
 src/game/TScoreGraph.cpp|0|0|1|0
 src/game/TSelectoText.cpp|0|0|1|0

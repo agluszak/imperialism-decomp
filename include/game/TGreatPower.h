@@ -322,9 +322,9 @@ public:
   // slot 0x2a8 — body 0x004e27b0: mode-dispatched diplomacy slot action (mode 6 ->
   // slot 0xa8, etc.). TDiplomacyMgr notifies relation-code changes here.
   virtual void DispatchNationDiplomacySlotActionByMode(int targetNationSlot, int mode);
-  // slot 0x2ac — base body is the 0x0040389b thunk: dispatch turn event 0x11f8 with no
-  // payload. TAutoGreatPower overrides it (0x004e7510) with the 'lost' game-state event.
-  virtual void DispatchTurnEvent11F8NoPayloadSlot2AC(void);
+  // slot 0x2ac — handles this nation leaving play. The base dispatches turn event
+  // 0x11f8; network and AI nation types override the transition behavior.
+  virtual void HandleNationLost(void);
   // slot 0xac — body 0x004e06d0: sums the accumulated value (+0x44) of city
   // commodity records 8..0xc.
   virtual int SumCommodityRecordAccumulatedValues(void);

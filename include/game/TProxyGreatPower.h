@@ -183,7 +183,7 @@ public:
   // slot 0xa8 ApplyMinorNationCapabilityActionType6 inherited unchanged (0x4e2630)
   // slot 0xa9 ApplyMinorNationCapabilityActionType4 inherited unchanged (0x4e2720)
   // slot 0xaa DispatchNationDiplomacySlotActionByMode inherited unchanged (0x4e27b0)
-  virtual void DispatchTurnEvent11F8NoPayloadSlot2AC() override; // slot 0xab 0x540cb0
+  virtual void HandleNationLost() override; // slot 0xab 0x540cb0
   // slot 0xac SumNationRuntimeFiveBucketValue44 inherited unchanged (0x4e06d0)
   // slot 0xad SelectCandidateTilesWithLowGroundUnitCount_ad inherited unchanged (0x4d8bc0)
   // slot 0xae OrphanLeaf_NoCall_Ins07_004d8920 inherited unchanged (0x4d8be0)

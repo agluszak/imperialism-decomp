@@ -21,7 +21,9 @@ char TProxyGreatPower::ShouldDispatchImmediatelySlot28(void) {
 void TProxyGreatPower::ProcessPendingDiplomacyProposalQueue() {}
 
 // FUNCTION: IMPERIALISM 0x00540920
-char TProxyGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage() { return 0; }
+char TProxyGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage() {
+  return 0;
+}
 
 // SYNTHETIC: IMPERIALISM 0x00540940
 // TProxyGreatPower::`scalar deleting destructor'
@@ -86,7 +88,7 @@ void TProxyGreatPower::ResetDiplomacyLevelForNationSlot12(NationSlot nationSlot,
 void TProxyGreatPower::AddNodeToMissionNodeQueue(void* node) {}
 
 // FUNCTION: IMPERIALISM 0x00540cb0
-void TProxyGreatPower::DispatchTurnEvent11F8NoPayloadSlot2AC() {}
+void TProxyGreatPower::HandleNationLost() {}
 
 // FUNCTION: IMPERIALISM 0x00540cf0
 int TProxyGreatPower::CheckTransitionSlot27C(int targetNation, int sourceNation) {

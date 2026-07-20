@@ -17,7 +17,7 @@ public:
                                                      int arg4) override;
   char ReturnFalseNationStateCapabilityFlag9C(void) override;
   void ProcessPendingDiplomacyProposalQueue(void) override;
-  void DispatchTurnEvent11F8NoPayloadSlot2AC(void) override;
+  void HandleNationLost(void) override;
 
   THostGreatPower();
 

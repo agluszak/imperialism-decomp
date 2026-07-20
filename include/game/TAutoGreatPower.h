@@ -64,7 +64,7 @@ public:
   // slot 0x9f — 0x004e7cc0: war-transition propagation across eligible allied nations.
   int CheckTransitionSlot27C(int targetNation, int sourceNation) override;
   // slot 0xab — 0x004e7510: 'lost' game-state event when redraw is enabled.
-  void DispatchTurnEvent11F8NoPayloadSlot2AC(void) override;
+  void HandleNationLost(void) override;
   // slot 0x18 — 0x004ea1c0: also drop the matching mission and map-node flag.
   void RemoveRegionIdFromNationOwnedRegionList(int regionId) override;
   // slot 0x22 — 0x004e79d0: forward to the foreign minister or queue a tracked entry.
