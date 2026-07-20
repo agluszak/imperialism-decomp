@@ -118,6 +118,10 @@ char* g_pBattleReportSharedText_0064dc30 = g_szEmptyString;
 char* g_pMiniCivSharedText_0064cb18 = g_szEmptyString;
 // GLOBAL: IMPERIALISM 0x0065c830
 char* g_pShipFractionSharedText_0065c830 = g_szEmptyString;
+// Local player's display name, read by TLoungeDialog::NoOpUiLifecycleHook when posting the
+// lobby-chat "connected" announcement (LobbyChatEvent9Packet's sender/message text).
+// GLOBAL: IMPERIALISM 0x0065c160
+char* g_pLoungeLocalPlayerNameSharedText_0065c160 = g_szEmptyString;
 // GLOBAL: IMPERIALISM 0x00668b88
 char* g_pStatusPictureMainSharedText_00668b88 = g_szEmptyString;
 // GLOBAL: IMPERIALISM 0x00695448

@@ -295,6 +295,23 @@ void TMultiplayerMgr::EnableDiplomacyQueueRoutingAndSetContextField44(void* nCon
   diplomacyQueueContext = 0;
 }
 
+// FUNCTION: IMPERIALISM 0x0054b4c0
+void TMultiplayerMgr::DispatchTurnEventCode9WithTwoTextTokens(int reasonCode, int field1CValue,
+                                                              const char* senderText,
+                                                              const char* messageText) {
+  LobbyChatEvent9Packet packet;
+  packet.eventCode = 9;
+  packet.fromNetworkId = 0;
+  packet.toNetworkId = 0;
+  packet.messageLength = sizeof(packet);
+  packet.InitializeEmitEventHeaderWithActiveNation();
+  packet.nationSlot18 = static_cast<unsigned char>(reasonCode);
+  packet.field1C = field1CValue;
+  strcpy(packet.senderName, senderText);
+  strcpy(packet.messageText, messageText);
+  g_pNetMgr006a6014->Send(&packet, 0);
+}
+
 // FUNCTION: IMPERIALISM 0x00543120
 void TMultiplayerMgr::ConfigureTurnResumeStateAndNationMask(int pendingNationSlot,
                                                             int activeNationSlot) {

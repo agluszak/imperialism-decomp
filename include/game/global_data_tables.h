@@ -414,6 +414,7 @@ extern char* g_pBattleReportSharedText_0064dc30;
 extern char* g_pMiniCivSharedText_0064cb18;
 extern char* g_pShipFractionSharedText_0065c830;
 extern char* g_pStatusPictureMainSharedText_00668b88;
+extern char* g_pLoungeLocalPlayerNameSharedText_0065c160;
 extern int g_lastEdgeAutoScrollTick16;
 extern int g_nSaveFormatVersion;
 // Gates the assert-messagebox in TTaskForce::ApplyMapOrderTypeExecutionEffects's default

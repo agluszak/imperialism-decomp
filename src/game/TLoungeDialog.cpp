@@ -67,14 +67,14 @@ void TLoungeDialog::NoOpUiLifecycleHook(int arg) {
 
   if (!g_pGameFlowState->IsSpecialNationDialogModeActive()) {
     LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2742, 9, 0x636e636cu); // 'clnc'
-    // The original also calls g_pGameFlowState->ResetNationStatusSlotsAndInitializeNameControls(this)
+    // TODO: also calls g_pGameFlowState->ResetNationStatusSlotsAndInitializeNameControls(this)
     // here (0x5454b0, 325 bytes, unclaimed) -- not yet ported.
     if (g_pSimMgr->field44 == 1) {
       g_pGameFlowState->SetDialogModeTagInitAndInvokeNoOpHook();
       RefreshMapAndMessageControlsForCurrentContext();
-      // The original also calls g_pGameFlowState->DispatchTurnEventCode9WithTwoTextTokens(-0xd, 0,
-      // g_pRandomOpponentNameOrSimilarStringPtr_0065c160, ...) here (0x54b4c0, 180 bytes,
-      // unclaimed) -- not yet ported.
+      g_pGameFlowState->DispatchTurnEventCode9WithTwoTextTokens(
+          -0xd, 0, g_pLoungeLocalPlayerNameSharedText_0065c160,
+          g_pLoungeLocalPlayerNameSharedText_0065c160);
       g_pGameFlowState->EmitTurnEventEAnd9SessionContextPackets(nullptr);
     }
   } else {

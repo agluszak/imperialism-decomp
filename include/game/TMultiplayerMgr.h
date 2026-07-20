@@ -146,6 +146,14 @@ public:
   void AppendNodeToTurnEventLinkedListAt6C(int node);
   // 0x5430c0 — enable both diplomacy queue-processing flags and set the routing context.
   void EnableDiplomacyQueueRoutingAndSetContextField44(void* nContext, char fEnable);
+  // 0x54b4c0, RET 0x10 (4 stack args). Builds and sends a LobbyChatEvent9Packet: reasonCode
+  // becomes nationSlot18 (the field's original comment names it for the AWOL use case; this
+  // caller uses it as a generic status/reason byte instead), field1CValue becomes field1C,
+  // senderText copies into senderName, and messageText copies into messageText (both
+  // unbounded strcpy, matching the original's raw REP MOVSD/MOVSB copy). The only known
+  // caller (TLoungeDialog) passes the same string for both.
+  void DispatchTurnEventCode9WithTwoTextTokens(int reasonCode, int field1CValue,
+                                               const char* senderText, const char* messageText);
   void CreateAndSendTurnEvent11_MapOffsetAndFlags(unsigned char flagByte, int mapOffsetSelector,
                                                   int absoluteOffset, short shortA,
                                                   short shortB);       // 0x5493c0
