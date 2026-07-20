@@ -63,10 +63,31 @@ void TLoadSavePicture::HandleEvent(int commandId, TEventHandler* sourceHandler, 
         InvalidateCityDialogRectRegion(&newBounds, 1);
         selectedSlot92 = newSlot;
         RefreshSlotPreviewFromSaveFile(newSlot);
+      } else if (newSlot == -1) {
+        // Enter "rename" mode: swap the clicked slot's static text label for a live edit
+        // box seeded with its current text.
+        TStaticText* slotControl = static_cast<TStaticText*>(sourceHandler);
+        slotControl->SetEnabled(0, 1);
+        CString slotText;
+        slotControl->AssignSharedStringFromField84(&slotText);
+
+        TEditText* editControl = new TEditText();
+        int offsetLayout[2] = {slotControl->ownerLocalX, slotControl->ownerLocalY};
+        int sizeLayout[2] = {slotControl->frameWidth34, slotControl->frameHeight38};
+        editControl->InitializeTextEntryBaseAndOptionalStringResource(this, offsetLayout,
+                                                                       sizeLayout, 5, 5, -1, 0);
+        editControl->field_9c = 0x1f; // max character count
+        editControl->SetControlValue(1);
+
+        editControl->SetTextStyleAndMaybeRefresh(&styleAt9e, 0);
+        editControl->InitDialogWindowAndSyncTitleIfChanged(&slotText, 0);
+        editControl->Refresh();
+        editControl->ActivateCityProductionViewIfAllowed();
+        editControl->SetEditSelectionAndScrollCaret(0, static_cast<short>(slotText.GetLength()),
+                                                     0);
+        editControl->controlTag = 0x736c6f74u; // 'slot'
+        g_pUiRuntimeContext->UpdatePaletteIndexFromTurnEventCode(0x10);
       }
-      // The original also handles the loadModeFlag90==0 case (constructs a new ~0xa0-byte
-      // object via an unrecovered class before the same selectedSlot92=0xa1 tail) -- not
-      // yet decoded.
     }
     reachedCommonTail = true;
   } else if (commandId == 0x14) {
