@@ -16,27 +16,29 @@ CPP_HEADER_PATTERNS = ("*.cpp", "*.cc", "*.cxx", "*.h", "*.hpp", "*.hh", "*.hxx"
 # descends into them registers every marker address twice, corrupting duplicate-address
 # dedup (see bd imperialism-decomp-idi). Bounded roots (src/, include/) never reach them,
 # but exclude defensively so a scan rooted at the repo root stays correct too.
+#
+# Caveat: when the SCAN ITSELF is rooted inside a `.claude/worktrees/<id>/` checkout
+# (an agent doing its own work isolated in such a worktree, as opposed to a scan from
+# a normal checkout recursing INTO a nested one), every resolved path's ABSOLUTE
+# ancestry already contains ".claude" harmlessly — that is not the duplicate-checkout
+# case this guard exists for. `is_excluded_scan_path` takes the scan roots so it can
+# check only path components found AFTER a root (i.e. genuinely reached via
+# recursion), not the root's own ancestry; falls back to whole-path checking when no
+# roots are given (back-compat for callers that check a single path in isolation).
 _EXCLUDED_PATH_PARTS = (".claude",)
 
-# This module's own location tells us whether the whole toolchain is itself running
-# from inside a nested worktree (an agent operating out of .claude/worktrees/<id>/).
-# In that case every one of *our own* source paths necessarily contains '.claude' as
-# an ancestor segment, and a naive "any part matches" exclusion would blank out the
-# entire scan (see bd imperialism-decomp-idi follow-up: 0 marker claims found from
-# inside an isolated worktree). Only exclude '.claude' segments that appear *beyond*
-# our own root -- i.e. genuinely nested worktrees encountered while scanning -- not
-# ones inherited from where our own root happens to live.
-_SELF_ROOT_PARTS = Path(__file__).resolve().parents[2].parts
 
-
-def is_excluded_scan_path(path: Path) -> bool:
+def is_excluded_scan_path(path: Path, roots: Iterable[Path] = ()) -> bool:
     """True for paths under runtime-state dirs (e.g. .claude/worktrees/) that must never
     be treated as canonical source during a repo-wide scan."""
-    parts = path.resolve().parts
-    self_len = len(_SELF_ROOT_PARTS)
-    if parts[:self_len] == _SELF_ROOT_PARTS:
-        parts = parts[self_len:]
-    return any(part in _EXCLUDED_PATH_PARTS for part in parts)
+    resolved = path.resolve()
+    for root in roots:
+        try:
+            rel_parts = resolved.relative_to(root.resolve()).parts
+        except ValueError:
+            continue
+        return any(part in _EXCLUDED_PATH_PARTS for part in rel_parts)
+    return any(part in _EXCLUDED_PATH_PARTS for part in resolved.parts)
 
 # Hand-owned headers carry a marked, auto-generated reference block (inserted by a
 # now-retired generator) inside them. Its slot table embeds raw provisional Ghidra
@@ -59,19 +61,21 @@ def strip_generated_blocks(text: str) -> str:
 
 def iter_files(paths: Iterable[str], patterns: Iterable[str] = CPP_HEADER_PATTERNS) -> list[Path]:
     files: list[Path] = []
+    roots: list[Path] = []
     for item in paths:
         path = Path(item)
         if path.is_file():
             files.append(path)
             continue
         if path.is_dir():
+            roots.append(path)
             for pattern in patterns:
                 files.extend(sorted(path.rglob(pattern)))
 
     seen: set[Path] = set()
     ordered: list[Path] = []
     for path in sorted(files):
-        if is_excluded_scan_path(path):
+        if is_excluded_scan_path(path, roots):
             continue
         resolved = path.resolve()
         if resolved in seen:

@@ -1,4 +1,7 @@
 #include "game/TOffLimitsPicture.h"
+
+#include "game/ScopedMapQuickDrawContext.h"
+
 // SYNTHETIC: IMPERIALISM 0x00573710
 // TOffLimitsPicture::CreateObject
 
@@ -22,7 +25,13 @@ void TOffLimitsPicture::NoOpUiLifecycleHook(int arg) {
 }
 
 // FUNCTION: IMPERIALISM 0x00573890
-void TOffLimitsPicture::ApplyRectSlot110(RECT* rectBuffer) {}
+void TOffLimitsPicture::ApplyRectSlot110(RECT* rectBuffer) {
+  if (ownClipRegion90 != nullptr) {
+    GetActiveQuickDrawDc()->SelectClipRgn(&(*ownClipRegion90)->rgn, RGN_DIFF);
+    TPicture::ApplyRectSlot110(rectBuffer);
+    GetActiveQuickDrawDc()->SelectClipRgn(0, RGN_COPY);
+  }
+}
 
 // FUNCTION: IMPERIALISM 0x00573900
 void TOffLimitsPicture::Free() {
@@ -32,8 +41,7 @@ void TOffLimitsPicture::Free() {
 }
 
 // FUNCTION: IMPERIALISM 0x00573940
-undefined TOffLimitsPicture::ForwardCopyRgn(
-    RgnHandle srcRegion) {
+undefined TOffLimitsPicture::ForwardCopyRgn(RgnHandle srcRegion) {
   CopyRgn(srcRegion, ownClipRegion90);
   return 0;
 }

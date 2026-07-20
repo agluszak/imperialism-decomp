@@ -113,6 +113,10 @@ public:
 
   TTradeTotalsView();
 
-  // Original object size is 0x64 (CRuntimeClass m_nObjectSize); the source class ended at 0x60. Trailing 4 byte(s) not yet semantically recovered — declared so sizeof and the recomp's allocation size match the original.
-  int field60;
+  // Original object size is 0x64 (CRuntimeClass m_nObjectSize); the source class ended
+  // at 0x60. The low short of the trailing 4 bytes is this row's nation slot (0..6),
+  // read throughout ApplyRectSlot110 to index g_apNationStates[]; the high short is
+  // still unobserved.
+  short nationSlot60;
+  short field62;
 };
