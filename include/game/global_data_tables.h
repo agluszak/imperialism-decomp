@@ -911,6 +911,13 @@ extern const float g_NavyOrderDistanceDecayWeightTable_006978c8[6];
 
 // TMapMgr.cpp — per-resourceType requirement level table (0x513610).
 extern unsigned char g_abUniversityRequirementLevelById[24][4];
+// TUniversityView.cpp — TUniversityView::ApplyRectSlot110 (0x4cbf70) reads
+// table[row + fielda4*4] (row 0-4, only the low 16 bits used, -1 = empty slot) to pick
+// which resource's requirement row to draw for the selected recruitment category
+// (fielda4). Real category boundaries/count not otherwise recovered; declared to the
+// extent read (30 dwords @ 0x651030, raw-read from the binary since this region was
+// previously unclaimed).
+extern int g_UniversityRequirementResourceTypeTable[30];
 extern unsigned char g_abResourceTypeUsesHighNibbleFlag[24];
 // TMapMgr.cpp — per-resourceType capability-category code, compared for equality against
 // a caller-supplied category code by FindMaxResourceCapabilityValueForTile (0x513720).

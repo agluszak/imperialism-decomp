@@ -136,9 +136,14 @@ public:
   // confirms sizeof(TBuildingView) == 0xa0. The ctor (0x4c6eb0) only writes field94;
   // field98 is a base-declared slot that some derived ctors init (e.g. TShipyardView)
   // while TBuildingView's own ctor leaves it untouched; 0x9c is unconfirmed padding.
-  int field94; // +0x94
-  int field98; // +0x98
-  int pad9c;   // +0x9c
+  // field94 evidence: TShipyardView::ApplyRectSlot110 (0x4c9150) reads
+  // *(short*)(field94 + 0xb6 + resourceType*2) -- a per-resource-type stock/quantity
+  // array on some still-unrecovered city/civ-description object -- so this is a
+  // pointer, not a scalar; typed as short* (not the unresolved struct*) since only
+  // that one short-array region is confirmed so far.
+  short* field94; // +0x94
+  int field98;    // +0x98
+  int pad9c;      // +0x9c
 
   TBuildingView();
 };

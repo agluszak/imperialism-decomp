@@ -118,7 +118,7 @@ def manual_sources(repo_root: Path):
         for path in sorted(base.rglob("*")):
             if path.suffix not in (".cpp", ".h"):
                 continue
-            if is_excluded_scan_path(path):
+            if is_excluded_scan_path(path, roots=[repo_root]):
                 continue
             yield path
 

@@ -841,6 +841,10 @@ unsigned char g_abUniversityRequirementLevelById[24][4] = {
     {0, 2, 4, 6}, {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0},
     {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}, {1, 2, 3, 4},
     {1, 2, 3, 4}, {1, 2, 3, 4}, {1, 2, 3, 4}, {0, 1, 2, 3}, {0, 1, 2, 3}, {0, 0, 0, 0}};
+// GLOBAL: IMPERIALISM 0x00651030
+int g_UniversityRequirementResourceTypeTable[30] = {3,  4,  21, 22, -1, -1, -1, -1, 0,  17,
+                                                    18, -1, 2,  -1, -1, -1, -1, -1, -1, -1,
+                                                    1,  20, -1, -1, 19, -1, -1, -1, -1, -1};
 // Per-resourceType "requires tiered nibble" boolean flag table. Read by the same function
 // above; only nonzero-ness is consumed there.
 unsigned char g_abResourceTypeUsesHighNibbleFlag[24] = {0, 0, 0, 1, 1, 0, 1, 0, 0, 0, 0, 0,

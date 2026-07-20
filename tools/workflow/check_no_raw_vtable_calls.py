@@ -63,7 +63,7 @@ def collect_files(repo_root: Path, roots: list[str]) -> list[Path]:
                 files.append(root)
             continue
         for path in root.rglob("*"):
-            if is_excluded_scan_path(path):
+            if is_excluded_scan_path(path, roots=[root]):
                 continue
             if not (path.is_file() and path.suffix.lower() in DEFAULT_EXTENSIONS):
                 continue

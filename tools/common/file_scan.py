@@ -59,22 +59,27 @@ def strip_generated_blocks(text: str) -> str:
 
 
 def iter_files(paths: Iterable[str], patterns: Iterable[str] = CPP_HEADER_PATTERNS) -> list[Path]:
-    files: list[Path] = []
+    # Track which caller-supplied root each file came from, so exclusion is checked
+    # relative to that root (see is_excluded_scan_path) rather than against the full
+    # absolute path -- the caller's own checkout may legitimately sit under a
+    # `.claude/worktrees/<id>/` directory.
+    files: list[tuple[Path, Path]] = []
     roots: list[Path] = []
     for item in paths:
         path = Path(item)
         if path.is_file():
-            files.append(path)
+            files.append((path, path.parent))
             continue
         if path.is_dir():
             roots.append(path)
             for pattern in patterns:
-                files.extend(sorted(path.rglob(pattern)))
+                for found in sorted(path.rglob(pattern)):
+                    files.append((found, path))
 
     seen: set[Path] = set()
     ordered: list[Path] = []
-    for path in sorted(files):
-        if is_excluded_scan_path(path, roots):
+    for path, root in sorted(files, key=lambda pair: pair[0]):
+        if is_excluded_scan_path(path, [root]):
             continue
         resolved = path.resolve()
         if resolved in seen:

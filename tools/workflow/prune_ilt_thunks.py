@@ -124,7 +124,7 @@ def collect_claimed_addresses(repo_root: Path) -> set[int]:
         for f in glob.glob(str(repo_root / pattern), recursive=True):
             if "autogen" in f:
                 continue
-            if is_excluded_scan_path(Path(f)):
+            if is_excluded_scan_path(Path(f), roots=[repo_root]):
                 continue
             text = Path(f).read_text(errors="ignore")
             for m in MARKER_RE.finditer(text):
@@ -138,7 +138,7 @@ def collect_manual_text(repo_root: Path) -> str:
         for f in glob.glob(str(repo_root / pattern), recursive=True):
             if "autogen" in f:
                 continue
-            if is_excluded_scan_path(Path(f)):
+            if is_excluded_scan_path(Path(f), roots=[repo_root]):
                 continue
             chunks.append(Path(f).read_text(errors="ignore"))
     return "\n".join(chunks)

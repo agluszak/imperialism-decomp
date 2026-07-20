@@ -99,7 +99,7 @@ def collect_typedefs(root: Path):
     by_name: dict[str, set[tuple[str, str, str]]] = defaultdict(set)
     files_of: dict[str, set[str]] = defaultdict(set)
     for path in sorted(root.rglob("*.cpp")):
-        if is_excluded_scan_path(path):
+        if is_excluded_scan_path(path, roots=[root]):
             continue
         text = path.read_text(encoding="utf-8", errors="replace")
         for m in TYPEDEF_RE.finditer(text):

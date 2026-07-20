@@ -1,4 +1,7 @@
 #include "game/TTextPictureButton.h"
+
+#include "game/ScopedMapQuickDrawContext.h"
+#include "game/quickdraw_rendering.h"
 // SYNTHETIC: IMPERIALISM 0x005724e0
 // TTextPictureButton::CreateObject
 
@@ -28,5 +31,39 @@ void TTextPictureButton::InitializeTextPictureButtonAndTextStyle(TView* panel, i
   themeCode9C = themeCodeC;
 }
 
+// Draws the button label twice, offset by one pixel down-right for a drop-shadow/
+// embossed look at themeCode9C, then again at the caret position (no offset) at
+// themeCode9A. Both passes center the text in the button's frame, nudged by 1px when
+// the button is pressed (controlState64 != 0, TControl's mode byte).
 // FUNCTION: IMPERIALISM 0x00572790
-void TTextPictureButton::ApplyRectSlot110(RECT* rectBuffer) {}
+void TTextPictureButton::ApplyRectSlot110(RECT* rectBuffer) {
+  TPicture::ApplyRectSlot110(rectBuffer);
+  int pressedOffset = (controlState64 != 0) ? 1 : 0;
+
+  ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, pointSize98, themeCode9C);
+  int shadowColor;
+  MapUiThemeCodeToStyleFlags(themeCode9C, &shadowColor);
+  SetQuickDrawColorAndSyncGlobals(shadowColor);
+
+  short textWidth = MeasureTextExtentWithCachedQuickDrawStyle(&buttonText);
+  int halfTextWidth = textWidth / 2;
+
+  CDC* activeDc = GetActiveQuickDrawDc();
+  SIZE extent;
+  GetTextExtentPointA(activeDc->GetSafeHdc(), (LPCSTR)buttonText, buttonText.GetLength(), &extent);
+  int quarterHeight = extent.cy / 4;
+
+  SetQuickDrawTextOriginWithContextOffset(
+      static_cast<short>(frameWidth34 / 2 - halfTextWidth + 1 + pressedOffset),
+      static_cast<short>(frameHeight38 / 2 + quarterHeight + 1 + pressedOffset));
+  DrawTextWithCachedQuickDrawStyleState(&buttonText);
+
+  int textColor;
+  MapUiThemeCodeToStyleFlags(themeCode9A, &textColor);
+  SetQuickDrawColorAndSyncGlobals(textColor);
+
+  SetQuickDrawTextOriginWithContextOffset(
+      static_cast<short>(frameWidth34 / 2 - halfTextWidth + pressedOffset),
+      static_cast<short>(frameHeight38 / 2 + quarterHeight + pressedOffset));
+  DrawTextWithCachedQuickDrawStyleState(&buttonText);
+}
