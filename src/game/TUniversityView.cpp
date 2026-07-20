@@ -1,4 +1,7 @@
 #include "game/TUniversityView.h"
+
+#include "game/TCluster.h"
+
 // SYNTHETIC: IMPERIALISM 0x004caba0
 // TUniversityView::CreateObject
 
@@ -37,13 +40,15 @@ void TUniversityView::HandleEvent(int commandId, TEventHandler* sourceHandler, T
       selectedRecruitmentIndexA4 = index;
       SelectUniversityRecruitmentEntry(index);
 
-      // The original then resolves the 'sele' control (AssertValid, a slot-0x1c8 call with
-      // tag 'civ0'+index -- same unresolved receiver class as
-      // TShipyardView::OrphanRetStub_004c6fd0's 'sele' tail) and dispatches to the real
-      // receiver at field94[index+0x22] (field94's pointee class is unresolved -- see
-      // RefreshCityViewProductionDetails, 0x4cfbd0, 1748 bytes) which drives a 'num0'+index
-      // control's embedded 'numb' widget and a final invalidate/refresh sequence -- not yet
-      // ported.
+      // 'sele' is a TCluster (see TShipyardView::OrphanRetStub_004c6fd0's identical tail).
+      TCluster* sele = static_cast<TCluster*>(ResolveControlByTag(0x73656c65u)); // 'sele'
+      sele->AssertValid();
+      sele->SetControlClassAndRefresh(0x63697630 + index); // 'civ0'+index
+
+      // The original then dispatches to the real receiver at field94[index+0x22] (field94's
+      // pointee class is unresolved -- see RefreshCityViewProductionDetails, 0x4cfbd0, 1748
+      // bytes) which drives a 'num0'+index control's embedded 'numb' widget and a final
+      // invalidate/refresh sequence -- not yet ported.
     }
   }
   TControl::HandleEvent(commandId, sourceHandler, event);
