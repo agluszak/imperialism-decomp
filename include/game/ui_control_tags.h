@@ -200,3 +200,4 @@ const unsigned int kControlTagExpo = 0x6578706fu; // 'expo' — foreign-minister
 const unsigned int kControlTagDeal = 0x6465616cu; // 'deal' — foreign-minister "deal" button
 const unsigned int kControlTagMerc = 0x6d657263u; // 'merc' — foreign-minister "mercenaries" button
 const unsigned int kControlTagPric = 0x70726963u; // 'pric' — foreign-minister "price" button
+const unsigned int kControlTagCann = 0x63616e6eu; // 'cann' — defense-minister "cannon"/war-declaration button

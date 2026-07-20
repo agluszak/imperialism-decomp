@@ -8268,8 +8268,8 @@
     },
     {
       "address": "0x4a6d40",
-      "matching": 0.045454545454545456,
-      "name": "ScanMapContextActionEntriesForCodeMatch",
+      "matching": 0.38202247191011235,
+      "name": "TArmyMgr::ScanMapContextActionEntriesForCodeMatch",
       "type": 1
     },
     {
@@ -15131,7 +15131,7 @@
     },
     {
       "address": "0x4f3370",
-      "matching": 0.014184397163120567,
+      "matching": 0.41198501872659177,
       "name": "TDefenseMinisterView::HandleEvent",
       "type": 1
     },
@@ -17012,7 +17012,7 @@
     },
     {
       "address": "0x50bea0",
-      "matching": 0.20263516583371194,
+      "matching": 0.20899591094956838,
       "name": "TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets",
       "type": 1
     },
@@ -17476,7 +17476,7 @@
     },
     {
       "address": "0x5136a0",
-      "matching": 1.0,
+      "matching": 0.8888888888888888,
       "name": "TMapMgr::SetCivilianDevelopmentClassNibble",
       "type": 1
     },
@@ -17674,7 +17674,7 @@
     },
     {
       "address": "0x515b10",
-      "matching": 0.3378995433789954,
+      "matching": 0.3167420814479638,
       "name": "TMapMgr::MarkSeedNeighborTilesUnavailableByCapabilityMaskProfileB",
       "type": 1
     },
@@ -18449,8 +18449,7 @@
     },
     {
       "address": "0x522c10",
-      "effective": true,
-      "matching": 0.9848484848484849,
+      "matching": 1.0,
       "name": "TMapDialog::DrawMapDialogWrappedTileConnectionMarker_00522c10",
       "type": 1
     },
@@ -21956,7 +21955,7 @@
     },
     {
       "address": "0x545940",
-      "matching": 0.43141056713523995,
+      "matching": 0.43011795120374857,
       "name": "TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine",
       "type": 1
     },
@@ -28986,7 +28985,7 @@
     },
     {
       "address": "0x594900",
-      "matching": 0.47058823529411764,
+      "matching": 0.4086687306501548,
       "name": "TStatusPicture::RecomputeNationComparisonValuesAndNormalizeScale",
       "type": 1
     },
@@ -32855,7 +32854,7 @@
     },
     {
       "address": "0x5bf930",
-      "matching": 0.7758478081058726,
+      "matching": 0.7543424317617866,
       "name": "TOfferDeskPicture::RefreshSelectedNationOrderCompatibilityInfo",
       "type": 1
     },
