@@ -132,7 +132,12 @@ public:
   // Ctor (0x45ae60) only chains the base ctor and installs the vtable -- nothing here
   // is written at construction, so most of this block is still unrecovered scenario-
   // selection state.
-  unsigned char scenarioChooserState94[0x142 - 0x94];
+  unsigned char scenarioChooserState94[0x118 - 0x94];
+  // Per-nation-slot description text + length, passed to the 'desc' TDeluxeText's
+  // SetTextEntryFromChars(textChars, textLength) in HandleEvent's 'pick' branch, indexed
+  // by TMapPreviewView::pendingNation6C.
+  const char* nationDescriptionTextByMapSelection118[(0x134 - 0x118) / 4];
+  short nationDescriptionLengthByMapSelection134[(0x142 - 0x134) / 2];
   // Selected scenario index (-1 = none); read by ApplyScenarioSelectionAndPostTurnEvent5E4
   // and PostTurnEvent5DCOrResetScenarioSelectionState. -1 also short-circuits the whole
   // apply flow.

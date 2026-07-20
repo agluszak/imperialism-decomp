@@ -2,6 +2,7 @@
 
 #include "game/TAmbitApplication.h"
 #include "game/TAssetMgr.h"
+#include "game/TDeluxeText.h"
 #include "game/TMapPreviewView.h"
 #include "game/TMultiplayerMgr.h"
 #include "game/TSimMgr.h"
@@ -51,10 +52,10 @@ void TScenarioChooser::HandleEvent(int commandId, TEventHandler* sourceHandler, 
       mapPreview->selectedNation68 = mapPreview->pendingNation6C;
       mapPreview->EnhancePhoto();
       mapPreview->RefreshControl();
-      // The original then resolves the 'desc' control and calls its own slot-0x1f4 virtual
-      // with this->field118/field134 (per-nation description tables inside
-      // scenarioChooserState94) indexed by pendingNation6C -- the 'desc' control's receiver
-      // class is unresolved, so not yet ported.
+      TDeluxeText* descControl = static_cast<TDeluxeText*>(ResolveControlByTag(0x64657363u)); // 'desc'
+      descControl->SetTextEntryFromChars(
+          nationDescriptionTextByMapSelection118[mapPreview->pendingNation6C],
+          nationDescriptionLengthByMapSelection134[mapPreview->pendingNation6C]);
     }
   } else if (commandId == 0xa) {
     if (sourceHandler->controlTag == 0x73746172u) { // 'star'
