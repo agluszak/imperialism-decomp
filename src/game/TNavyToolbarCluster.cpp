@@ -63,12 +63,11 @@ void TNavyToolbarCluster::HandleEvent(int commandId, TEventHandler* sourceHandle
         // header declaration is a stale 0-arg placeholder). That populate method (already
         // claimed as a stub in TSuperNavyRoster.cpp, 0x00 score) is itself a genuinely large
         // second function: iterates g_pMapActionContextListHead's TZone list matching
-        // per-zone map orders and builds a linked list of `new TMiniShipLine()` row widgets
-        // (a real vtable name, TMiniShipLine, not yet a header/class in this codebase).
-        // Both this constructor and PopulateNavyOrderPageEntriesByMapContext are
-        // independent big-function ports; left unmodeled here rather than faked (blocked by
-        // the noop gate) -- the next step is recovering the TMiniShipLine class shape before
-        // either function can be safely written.
+        // per-zone map orders and builds a linked list of `TMiniShipLine` row widgets --
+        // TMiniShipLine::CreateLineItemView is now ported (62.92%), so this class-recovery
+        // dependency is resolved. Both this constructor and
+        // PopulateNavyOrderPageEntriesByMapContext remain independent big-function ports;
+        // left unmodeled here rather than faked (blocked by the noop gate).
         break;
       default:
         break;
