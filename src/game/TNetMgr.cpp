@@ -240,18 +240,22 @@ void TNetMgr::HandleError(int errorCode) {
 }
 
 // FUNCTION: IMPERIALISM 0x005e39a0
-unsigned char
-TNetMgr::ResetRuntimeProtocolOptionsAndRebuildSelectionSource(TView* provider) {
+unsigned char TNetMgr::ResetRuntimeProtocolOptionsAndRebuildSelectionSource(TView* provider) {
+  // TODO(class-recovery): the retail body leads with
+  // provider->ResolveControlByTag('prot')->AssertValid() into a scratch global
+  // (0x6a6010, cleared again at the end) before this cleanup -- not modeled yet, so
+  // `provider` still goes unused here. RebuildRuntimeSelectionSource itself takes no
+  // argument (Ghidra-verified: bare RET).
   for (int index = 0; index < g_WNetSerializedPtrArrayA006a5f10.GetSize(); ++index) {
     delete static_cast<RuntimeSelectionRecord*>(g_WNetSerializedPtrArrayA006a5f10[index]);
   }
   g_WNetSerializedPtrArrayA006a5f10.RemoveAll();
-  return g_NetworkSessionManager006a5f60.RebuildRuntimeSelectionSource(provider);
+  return g_NetworkSessionManager006a5f60.RebuildRuntimeSelectionSource();
 }
 
 // FUNCTION: IMPERIALISM 0x005e3a60
 unsigned char TNetMgr::OpenRuntimeSelectionSourceByIndexAndCopyPath(int index, int flag,
-                                                                     const char* seed) {
+                                                                    const char* seed) {
   (void)flag;
   strncpy(g_RuntimeSelectionSourceSeedBuffer_006a5fe8, seed, 0x20);
   const GUID* sessionGuid = static_cast<const GUID*>(g_WNetSerializedPtrArrayA006a5f10[index]);
@@ -279,12 +283,14 @@ static BOOL FAR PASCAL RecordHostPlayerIdDuringEnumeration(DPID dpId, DWORD dwPl
 }
 
 // FUNCTION: IMPERIALISM 0x005e3c00
-unsigned char TNetMgr::ReturnTrueRuntimeCredentialFinalizeStub() { return 1; }
+unsigned char TNetMgr::ReturnTrueRuntimeCredentialFinalizeStub() {
+  return 1;
+}
 
 // FUNCTION: IMPERIALISM 0x005e3c20
 unsigned char TNetMgr::OpenJoinGameRuntimeSelectionAndStartSession(int selectionTag,
-                                                                    CString* outGameName,
-                                                                    const char* seed) {
+                                                                   CString* outGameName,
+                                                                   const char* seed) {
   strncpy(g_JoinGameSeedBuffer_006a5fc8, seed, 0x20);
   g_JoinGamePlayerNameStaging_006a6008 = *outGameName;
 

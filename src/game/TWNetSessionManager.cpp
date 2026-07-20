@@ -7,8 +7,8 @@ RuntimeSelectionRecord::~RuntimeSelectionRecord() {}
 
 // FUNCTION: IMPERIALISM 0x0047f810
 static BOOL FAR PASCAL ForwardEnumSessionToCallbackTable(LPGUID sessionGuid, LPSTR sessionName,
-                                                          DWORD majorVersion, DWORD minorVersion,
-                                                          LPVOID context) {
+                                                         DWORD majorVersion, DWORD minorVersion,
+                                                         LPVOID context) {
   TWNetSessionManager* mgr = static_cast<TWNetSessionManager*>(context);
   return mgr->enumCallbackTable00->onEnumSession(sessionGuid, sessionName, majorVersion,
                                                  minorVersion);
@@ -41,17 +41,19 @@ static void ClearRuntimeSelectionRecordArray() {
 }
 
 // FUNCTION: IMPERIALISM 0x0047fd90
-unsigned char TWNetSessionManager::RebuildRuntimeSelectionSource(TView* provider) {
-  (void)provider;
-  // TODO(class-recovery): re-enumerates DirectPlay service providers into
-  // g_WNetSerializedPtrArrayA006a5f10 -- same unmodeled enumeration territory as
-  // OpenRuntimeSelectionSourceWithUserChoice.
-  return 0;
+unsigned char TWNetSessionManager::RebuildRuntimeSelectionSource() {
+  for (int index = 0; index < g_RuntimeSelectionRecords006a15e0.GetSize(); ++index) {
+    delete g_RuntimeSelectionRecords006a15e0[index];
+  }
+  g_RuntimeSelectionRecords006a15e0.RemoveAll();
+  lastErrorCode0c = DirectPlayEnumerate(ForwardEnumSessionToCallbackTable, this);
+  return static_cast<unsigned char>(lastErrorCode0c == 0);
 }
 
 // FUNCTION: IMPERIALISM 0x0047fe50
-unsigned char TWNetSessionManager::OpenRuntimeSelectionSourceWithOptionalSeed(
-    const GUID* sessionEntry, int flag) {
+unsigned char
+TWNetSessionManager::OpenRuntimeSelectionSourceWithOptionalSeed(const GUID* sessionEntry,
+                                                                int flag) {
   (void)flag;
   if (sessionEntry != 0) {
     if (directPlayInterface04 != 0) {
@@ -82,8 +84,8 @@ unsigned char TWNetSessionManager::OpenRuntimeSelectionSourceWithOptionalSeed(
   }
 
   if (lastErrorCode0c >= 0 && createdInterface != 0) {
-    lastErrorCode0c = createdInterface->QueryInterface(IID_IDirectPlay2,
-                                                        reinterpret_cast<void**>(&directPlayInterface04));
+    lastErrorCode0c = createdInterface->QueryInterface(
+        IID_IDirectPlay2, reinterpret_cast<void**>(&directPlayInterface04));
   }
   if (createdInterface != 0) {
     createdInterface->Release();
