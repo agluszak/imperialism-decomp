@@ -1546,6 +1546,8 @@ CString g_cstrTechCapabilityMessageStore;
 // localized-message dispatch.
 // GLOBAL: IMPERIALISM 0x006a5be0
 CString g_cstrUiPromptMessageStore;
+// GLOBAL: IMPERIALISM 0x006a2fc0
+CString g_cstrDiplomacyNoticeMessageStore;
 
 // Last turn tick for which ShowTurnAlertsForActiveNation (0x502b60) ran; the alert
 // pass is skipped until the tick advances.
