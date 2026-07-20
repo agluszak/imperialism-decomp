@@ -17373,7 +17373,7 @@
     },
     {
       "address": "0x512930",
-      "matching": 0.25622775800711745,
+      "matching": 0.26334519572953735,
       "name": "BuildHexAreaTileIndexList",
       "type": 1
     },
@@ -17451,7 +17451,7 @@
     },
     {
       "address": "0x5136a0",
-      "matching": 0.8888888888888888,
+      "matching": 1.0,
       "name": "TMapMgr::SetCivilianDevelopmentClassNibble",
       "type": 1
     },
@@ -17649,7 +17649,7 @@
     },
     {
       "address": "0x515b10",
-      "matching": 0.3167420814479638,
+      "matching": 0.3378995433789954,
       "name": "TMapMgr::MarkSeedNeighborTilesUnavailableByCapabilityMaskProfileB",
       "type": 1
     },
@@ -17920,7 +17920,7 @@
     },
     {
       "address": "0x518bd0",
-      "matching": 0.01652892561983471,
+      "matching": 0.6108786610878661,
       "name": "TMapMgr::MarkAdjacentHexOrderDirectionAndSelectTile",
       "type": 1
     },
