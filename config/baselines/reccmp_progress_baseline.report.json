@@ -30180,7 +30180,7 @@
     },
     {
       "address": "0x5a1520",
-      "matching": 0.48148148148148145,
+      "matching": 0.5259259259259259,
       "name": "TTacticalBattle::MoveTacticalUnitTowardTile",
       "type": 1
     },
@@ -31746,7 +31746,7 @@
     },
     {
       "address": "0x5b4810",
-      "matching": 0.01652892561983471,
+      "matching": 0.08955223880597014,
       "name": "TSpecialQuitPicture::NoOpUiLifecycleHook",
       "type": 1
     },
@@ -32825,7 +32825,7 @@
     },
     {
       "address": "0x5bf930",
-      "matching": 0.7890818858560794,
+      "matching": 0.7411083540115798,
       "name": "TOfferDeskPicture::RefreshSelectedNationOrderCompatibilityInfo",
       "type": 1
     },
