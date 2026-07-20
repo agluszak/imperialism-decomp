@@ -2034,28 +2034,28 @@ address|name|symbol|size|type|prototype|provenance
 4c59e0|TSteelCityMinister::ConstructTSteelCityMinisterBaseState||43|function|undefined ConstructTSteelCityMinisterBaseState()|
 4c5a20|TSteelCityMinister::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4c5a50|DestructTSteelCityMinisterAndMaybeFree_Impl||7|function|undefined DestructTSteelCityMinisterAndMaybeFree_Impl()|
-4c5a70|WrapperFor_thunk_InitializeCityInteriorMinister_At004c5a70||13|function|undefined WrapperFor_thunk_InitializeCityInteriorMinister_At004c5a70()|
+4c5a70|TSteelCityMinister::InitializeCityInteriorState||13|function|void __thiscall InitializeCityInteriorState(TGreatPower * owner)|
 4c5a90|ConfigureCityInteriorMinisterPriorityPreset_004c5a90||285|function|undefined ConfigureCityInteriorMinisterPriorityPreset_004c5a90()|
 4c5c00|TShipBuilderCityMinister::CreateObject|?CreateObject@TShipBuilderCityMinister@@SGPAVCObject@@XZ|132|function|undefined CreateObject()|rtti
 4c5cc0|TShipBuilderCityMinister::GetRuntimeClass||6|function|undefined GetTShipBuilderCityMinisterClassNamePointer()|rtti
 4c5ce0|TShipBuilderCityMinister::ConstructTShipBuilderCityMinisterBaseState||47|function|undefined ConstructTShipBuilderCityMinisterBaseState()|
 4c5d20|TShipBuilderCityMinister::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4c5d50|DestructTShipBuilderCityMinisterAndMaybeFree_Impl||7|function|undefined DestructTShipBuilderCityMinisterAndMaybeFree_Impl()|
-4c5d70|WrapperFor_thunk_InitializeCityInteriorMinister_At004c5d70||13|function|undefined WrapperFor_thunk_InitializeCityInteriorMinister_At004c5d70()|
+4c5d70|TShipBuilderCityMinister::InitializeCityInteriorState||13|function|void __thiscall InitializeCityInteriorState(TGreatPower * owner)|
 4c5d90|ConfigureCityInteriorMinisterPriorityPreset_004c5d90||285|function|undefined ConfigureCityInteriorMinisterPriorityPreset_004c5d90()|
 4c5f00|TEvenCityMinister::CreateObject|?CreateObject@TEvenCityMinister@@SGPAVCObject@@XZ|132|function|undefined CreateObject()|rtti
 4c5fc0|TEvenCityMinister::GetRuntimeClass||6|function|undefined GetTEvenCityMinisterClassNamePointer()|rtti
 4c5fe0|TEvenCityMinister::ConstructTEvenCityMinisterBaseState||47|function|undefined ConstructTEvenCityMinisterBaseState()|
 4c6020|TEvenCityMinister::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4c6050|DestructTEvenCityMinisterAndMaybeFree_Impl||7|function|undefined DestructTEvenCityMinisterAndMaybeFree_Impl()|
-4c6070|WrapperFor_thunk_InitializeCityInteriorMinister_At004c6070||13|function|undefined WrapperFor_thunk_InitializeCityInteriorMinister_At004c6070()|
+4c6070|TEvenCityMinister::InitializeCityInteriorState||13|function|void __thiscall InitializeCityInteriorState(TGreatPower * owner)|
 4c6090|ConfigureCityInteriorMinisterPriorityPreset_004c6090||295|function|undefined ConfigureCityInteriorMinisterPriorityPreset_004c6090()|
 4c6210|TRailCityMinister::CreateObject|?CreateObject@TRailCityMinister@@SGPAVCObject@@XZ|130|function|undefined CreateObject()|rtti
 4c62d0|TRailCityMinister::GetRuntimeClass||6|function|undefined GetTRailCityMinisterClassNamePointer()|rtti
 4c62f0|TRailCityMinister::ConstructTRailCityMinisterBaseState||45|function|undefined ConstructTRailCityMinisterBaseState()|
 4c6330|TRailCityMinister::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4c6360|DestructTRailCityMinisterAndMaybeFree_Impl||7|function|undefined DestructTRailCityMinisterAndMaybeFree_Impl()|
-4c6380|WrapperFor_thunk_InitializeCityInteriorMinister_At004c6380||13|function|undefined WrapperFor_thunk_InitializeCityInteriorMinister_At004c6380()|
+4c6380|TRailCityMinister::InitializeCityInteriorState||13|function|void __thiscall InitializeCityInteriorState(TGreatPower * owner)|
 4c63a0|ConfigureCityInteriorMinisterPriorityPreset_004c63a0||315|function|undefined ConfigureCityInteriorMinisterPriorityPreset_004c63a0()|
 4c65d0|CList<long,long>::Serialize|?Serialize@?$CList@JJ@@UAEXAAVCArchive@@@Z|280|function|undefined Serialize(CArchive &)|template
 4c6740|TLongintList::InsertLast||125|function|void __thiscall InsertLast(int value)|
@@ -2572,7 +2572,7 @@ address|name|symbol|size|type|prototype|provenance
 4e6b50|TAutoGreatPower::TAutoGreatPower||28|function|void __thiscall TAutoGreatPower(void)|
 4e6b80|TAutoGreatPower::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4e6bb0|TAutoGreatPower::~TAutoGreatPower||80|function|undefined ~TAutoGreatPower()|
-4e6c20|InitializeNationMinisterSubsystemsByPolicyIds||1160|function|undefined InitializeNationMinisterSubsystemsByPolicyIds()|
+4e6c20|TAutoGreatPower::InitializeNationMinisterSubsystemsByPolicyIds||1160|function|void __thiscall InitializeNationMinisterSubsystemsByPolicyIds(int nationSlot, int nationInitializationMode, short cityMinisterPolicyId, short foreignMinisterPolicyId, short defenseMinisterPolicyId)|
 4e7230|TAutoGreatPower::Free||107|function|undefined Free()|
 4e72c0|TGreatPower::InitializeMapActionCandidateStateAndQueueMission||235|function|undefined InitializeMapActionCandidateStateAndQueueMission()|
 4e73f0|TGreatPower::SerializeGreatPowerTailStateToMessage||212|function|undefined SerializeGreatPowerTailStateToMessage()|

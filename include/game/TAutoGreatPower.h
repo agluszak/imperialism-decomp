@@ -9,6 +9,10 @@ public:
 
   TAutoGreatPower();
   ~TAutoGreatPower() override;
+  void InitializeNationMinisterSubsystemsByPolicyIds(int nationSlot, int nationInitializationMode,
+                                                     short cityMinisterPolicyId,
+                                                     short foreignMinisterPolicyId,
+                                                     short defenseMinisterPolicyId);
   // Destructor real body 0x004e6bb0; scalar deleting destructor 0x004e6b80
   // (both paired via symbols.csv names).
 

@@ -486,8 +486,6 @@ public:
   int SumNavyOrderPriorityForNationAndNodeType(TZone* zone);
   int SumNavyOrderPriorityForNation();
   void InitializeNationStateRuntimeSubsystems(int arg1, int arg2);
-  void InitializeNationMinisterSubsystemsByPolicyIds(int arg1, int arg2, short arg3, short arg4,
-                                                     short arg5);
 
   void HandleTurnInstruction_Civi_DeserializeAndCreateWorkOrder(void* pInstructionRaw);
   void QueueInterNationEventType0FForNationPairContext(short targetNationSlot,

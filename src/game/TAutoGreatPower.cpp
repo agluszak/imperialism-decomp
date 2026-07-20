@@ -1,9 +1,14 @@
 #include "decomp_types.h"
 #include <stdlib.h>
+#include <string.h>
 #include "game/navy_order.h"
 
 #include "game/TAutoGreatPower.h"
 
+#include "game/TCityMinisterPersonalities.h"
+#include "game/TDefenseMinisterPersonalities.h"
+#include "game/TForeignMinisterPersonalities.h"
+#include "game/TList.h"
 #include "game/TOcean.h"
 #include "game/TSortedByRelationshipList.h"
 #include "game/nation_stream_serialization.h"
@@ -66,6 +71,124 @@ TAutoGreatPower::TAutoGreatPower() : TGreatPower() {
 
 // SYNTHETIC: IMPERIALISM 0x004e6bb0
 // TAutoGreatPower::~TAutoGreatPower
+
+// FUNCTION: IMPERIALISM 0x004e6c20
+void TAutoGreatPower::InitializeNationMinisterSubsystemsByPolicyIds(int nationSlot,
+                                                                    int nationInitializationMode,
+                                                                    short cityMinisterPolicyId,
+                                                                    short foreignMinisterPolicyId,
+                                                                    short defenseMinisterPolicyId) {
+  InitializeNationStateRuntimeSubsystems(nationSlot, nationInitializationMode);
+  treasuryValue10 = 10000;
+  memset(actionMetricByQuarter, 0, sizeof(actionMetricByQuarter));
+
+  switch (defenseMinisterPolicyId) {
+  case 0: {
+    TNapoleonMinister* minister = new TNapoleonMinister();
+    minister->InitializeOrderArrayPreset50_0_10_50(this);
+    defenseMinister = minister;
+    break;
+  }
+  case 1: {
+    TBismarckMinister* minister = new TBismarckMinister();
+    minister->InitializeOrderArrayPreset10_10_10_50(this);
+    defenseMinister = minister;
+    break;
+  }
+  case 2: {
+    TPirateMinister* minister = new TPirateMinister();
+    minister->InitializeOrderArrayPreset15_20_50_75(this);
+    defenseMinister = minister;
+    break;
+  }
+  case 3: {
+    TDefenderMinister* minister = new TDefenderMinister();
+    minister->InitializeOrderArrayPreset20_10_10_50(this);
+    defenseMinister = minister;
+    break;
+  }
+  case 4: {
+    TBullyMinister* minister = new TBullyMinister();
+    minister->InitializeOrderArrayPreset25_10_20_50(this);
+    defenseMinister = minister;
+    break;
+  }
+  }
+
+  switch (foreignMinisterPolicyId) {
+  case 0: {
+    TArmsForeignMinister* minister = new TArmsForeignMinister();
+    minister->InitializeStateAndCounters(this);
+    foreignMinister = minister;
+    break;
+  }
+  case 1: {
+    TTraderForeignMinister* minister = new TTraderForeignMinister();
+    minister->InitializeStateAndCounters(this);
+    foreignMinister = minister;
+    break;
+  }
+  case 2: {
+    TTextileForeignMinister* minister = new TTextileForeignMinister();
+    minister->InitializeStateAndCounters(this);
+    foreignMinister = minister;
+    break;
+  }
+  case 3: {
+    TDiplomatForeignMinister* minister = new TDiplomatForeignMinister();
+    minister->InitializeStateAndCounters(this);
+    foreignMinister = minister;
+    break;
+  }
+  case 4: {
+    TBillForeignMinister* minister = new TBillForeignMinister();
+    minister->InitializeStateAndCounters(this);
+    foreignMinister = minister;
+    break;
+  }
+  case 5: {
+    TTedForeignMinister* minister = new TTedForeignMinister();
+    minister->InitializeStateAndCounters(this);
+    foreignMinister = minister;
+    break;
+  }
+  }
+
+  switch (cityMinisterPolicyId) {
+  case 0: {
+    TSteelCityMinister* minister = new TSteelCityMinister();
+    minister->InitializeCityInteriorState(this);
+    interiorMinister = minister;
+    minister->MinisterSlot12(1, 2);
+    break;
+  }
+  case 1: {
+    TRailCityMinister* minister = new TRailCityMinister();
+    minister->InitializeCityInteriorState(this);
+    interiorMinister = minister;
+    minister->MinisterSlot12(1, 2);
+    break;
+  }
+  case 2: {
+    TShipBuilderCityMinister* minister = new TShipBuilderCityMinister();
+    minister->InitializeCityInteriorState(this);
+    interiorMinister = minister;
+    minister->MinisterSlot12(1, 2);
+    break;
+  }
+  case 3: {
+    TEvenCityMinister* minister = new TEvenCityMinister();
+    minister->InitializeCityInteriorState(this);
+    interiorMinister = minister;
+    minister->MinisterSlot12(1, 2);
+    break;
+  }
+  }
+
+  memset(mapNodeStateFlags, 0, sizeof(mapNodeStateFlags));
+  memset(portZoneStateFlags, 0, sizeof(portZoneStateFlags));
+  missionQueue = new TList();
+}
 
 // FUNCTION: IMPERIALISM 0x004e7230
 void TAutoGreatPower::Free(void) {
