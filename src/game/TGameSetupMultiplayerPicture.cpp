@@ -98,7 +98,8 @@ void TGameSetupMultiplayerPicture::HandleEvent(int commandId, TEventHandler* sou
   if (commandId == 0x14 || commandId == 0xa || commandId == 0x22 || commandId == 0xd) {
     unsigned int tag = static_cast<unsigned int>(sourceHandler->controlTag);
 
-    if (tag == kControlTagJoin) {
+    if (tag == kControlTagLoad || tag == kControlTagJoin || tag == kControlTagRand ||
+        tag == kControlTagScen) {
       TRadioTextCluster* protControl =
           static_cast<TRadioTextCluster*>(ResolveControlByTag(kControlTagProt));
       protControl->AssertValid();

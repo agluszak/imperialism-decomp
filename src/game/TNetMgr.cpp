@@ -2,6 +2,7 @@
 #include "game/TSimMgr.h"
 #include "game/TMultiplayerMgr.h"
 #include "game/TGreatPower.h"
+#include "game/TRadioTextCluster.h"
 
 #include "game/CString.h"
 #include "game/NetMessage.h"
@@ -242,19 +243,18 @@ void TNetMgr::HandleError(int errorCode) {
 // Scratch slot holding the resolved 'prot' control for the duration of
 // ResetRuntimeProtocolOptionsAndRebuildSelectionSource; set on entry, cleared on exit.
 // No other reader found yet.
-static TView* g_pActiveNetProtocolControlView; // 0x6a6010
-
 // FUNCTION: IMPERIALISM 0x005e39a0
 unsigned char TNetMgr::ResetRuntimeProtocolOptionsAndRebuildSelectionSource(TView* provider) {
-  g_pActiveNetProtocolControlView = provider->ResolveControlByTag(0x70726f74); // 'prot'
-  g_pActiveNetProtocolControlView->AssertValid();
+  g_NetworkSessionManager006a5f60.activeProtocolControlB0 =
+      static_cast<TRadioTextCluster*>(provider->ResolveControlByTag(0x70726f74)); // 'prot'
+  g_NetworkSessionManager006a5f60.activeProtocolControlB0->AssertValid();
 
   for (int index = 0; index < g_WNetSerializedPtrArrayA006a5f10.GetSize(); ++index) {
     delete static_cast<RuntimeSelectionRecord*>(g_WNetSerializedPtrArrayA006a5f10[index]);
   }
   g_WNetSerializedPtrArrayA006a5f10.RemoveAll();
   unsigned char result = g_NetworkSessionManager006a5f60.RebuildRuntimeSelectionSource();
-  g_pActiveNetProtocolControlView = 0;
+  g_NetworkSessionManager006a5f60.activeProtocolControlB0 = 0;
   return result;
 }
 
@@ -262,7 +262,7 @@ unsigned char TNetMgr::ResetRuntimeProtocolOptionsAndRebuildSelectionSource(TVie
 unsigned char TNetMgr::OpenRuntimeSelectionSourceByIndexAndCopyPath(int index, int flag,
                                                                     const char* seed) {
   (void)flag;
-  strncpy(g_RuntimeSelectionSourceSeedBuffer_006a5fe8, seed, 0x20);
+  strncpy(g_NetworkSessionManager006a5f60.runtimeSelectionSeed88, seed, 0x20);
   const GUID* sessionGuid = static_cast<const GUID*>(g_WNetSerializedPtrArrayA006a5f10[index]);
   unsigned char result =
       g_NetworkSessionManager006a5f60.OpenRuntimeSelectionSourceWithOptionalSeed(sessionGuid, 0);
@@ -275,8 +275,8 @@ unsigned char TNetMgr::OpenRuntimeSelectionSourceByIndexAndCopyPath(int index, i
 // FUNCTION: IMPERIALISM 0x005e3ad0
 unsigned char TNetMgr::OpenRuntimeSelectionSourceAndApplyActiveNationState(
     const char* seedPath, const char* localPlayerName, const char* emptyOrSeed) {
-  strncpy(g_JoinGameSeedBuffer_006a5fc8, emptyOrSeed, 0x20);
-  strncpy(g_RuntimeSelectionSourceSeedBuffer_006a5fe8, seedPath, 0x20);
+  strncpy(g_NetworkSessionManager006a5f60.joinGameSeed68, emptyOrSeed, 0x20);
+  strncpy(g_NetworkSessionManager006a5f60.runtimeSelectionSeed88, seedPath, 0x20);
 
   unsigned char opened =
       g_NetworkSessionManager006a5f60.OpenRuntimeSelectionSourceFromCurrentContext();
@@ -288,10 +288,10 @@ unsigned char TNetMgr::OpenRuntimeSelectionSourceAndApplyActiveNationState(
         &nationId, localName.GetBuffer(1));
     localName.ReleaseBuffer(-1);
     if (created) {
-      g_NetworkDefaultNationId006a5fc0 = nationId;
-      g_NetworkBroadcastNationId006a5fc4 = nationId;
+      g_NetworkSessionManager006a5f60.localPlayerId60 = nationId;
+      g_NetworkSessionManager006a5f60.broadcastPlayerId64 = nationId;
       result = g_NetworkSessionManager006a5f60.SetLocalPlayerDataAndStoreResult(
-          &g_JoinGamePlayerDataTag_006a600c, 4);
+          &g_NetworkSessionManager006a5f60.joinGamePlayerDataTagAC, 4);
       if (result) {
         return result;
       }
@@ -325,53 +325,54 @@ unsigned char TNetMgr::ReturnTrueRuntimeCredentialFinalizeStub() {
 unsigned char TNetMgr::OpenJoinGameRuntimeSelectionAndStartSession(int selectionTag,
                                                                    CString* outGameName,
                                                                    const char* seed) {
-  strncpy(g_JoinGameSeedBuffer_006a5fc8, seed, 0x20);
-  g_JoinGamePlayerNameStaging_006a6008 = *outGameName;
+  strncpy(g_NetworkSessionManager006a5f60.joinGameSeed68, seed, 0x20);
+  g_NetworkSessionManager006a5f60.joinGamePlayerNameA8 = *outGameName;
 
   if (!g_NetworkSessionManager006a5f60.OpenRuntimeSelectionSourceWithUserChoice()) {
     return 0;
   }
-  *outGameName = g_JoinGamePlayerNameStaging_006a6008;
+  *outGameName = g_NetworkSessionManager006a5f60.joinGamePlayerNameA8;
 
-  LPSTR shortName = g_JoinGamePlayerNameStaging_006a6008.GetBuffer(1);
+  LPSTR shortName = g_NetworkSessionManager006a5f60.joinGamePlayerNameA8.GetBuffer(1);
   DPID localPlayerId;
   unsigned char createResult =
       g_NetworkSessionManager006a5f60.CreatePlayerAndStoreResult(&localPlayerId, shortName);
-  g_JoinGamePlayerNameStaging_006a6008.ReleaseBuffer(-1);
+  g_NetworkSessionManager006a5f60.joinGamePlayerNameA8.ReleaseBuffer(-1);
   if (!createResult) {
     return 0;
   }
 
-  g_NetworkDefaultNationId006a5fc0 = localPlayerId;
+  g_NetworkSessionManager006a5f60.localPlayerId60 = localPlayerId;
   if (!g_NetworkSessionManager006a5f60.SetLocalPlayerDataAndStoreResult(
-          &g_JoinGamePlayerDataTag_006a600c, sizeof(g_JoinGamePlayerDataTag_006a600c))) {
+          &g_NetworkSessionManager006a5f60.joinGamePlayerDataTagAC,
+          sizeof(g_NetworkSessionManager006a5f60.joinGamePlayerDataTagAC))) {
     return 0;
   }
 
-  g_NetworkBroadcastNationId006a5fc4 = 0;
+  g_NetworkSessionManager006a5f60.broadcastPlayerId64 = 0;
   long enumResult = g_NetworkSessionManager006a5f60.directPlayInterface04->EnumPlayers(
       0, RecordHostPlayerIdDuringEnumeration, &g_NetworkSessionManager006a5f60, 0x10);
   g_NetworkSessionManager006a5f60.lastErrorCode0c = enumResult;
   if (enumResult < 0) {
     return 0;
   }
-  return g_NetworkBroadcastNationId006a5fc4 != 0;
+  return g_NetworkSessionManager006a5f60.broadcastPlayerId64 != 0;
 }
 
 // FUNCTION: IMPERIALISM 0x005e3d40
 unsigned char TNetMgr::Send(NetMessage* message, unsigned char queueOnly) {
   unsigned int sizeBytes = static_cast<unsigned int>(message->messageLength);
-  message->fromNetworkId = g_NetworkDefaultNationId006a5fc0;
+  message->fromNetworkId = g_NetworkSessionManager006a5f60.localPlayerId60;
   int nationId = message->toNetworkId;
   if (message->toNetworkId == -1) {
-    nationId = g_NetworkBroadcastNationId006a5fc4;
+    nationId = g_NetworkSessionManager006a5f60.broadcastPlayerId64;
   }
 
-  if (queueOnly != 0 || nationId == g_NetworkDefaultNationId006a5fc0) {
+  if (queueOnly != 0 || nationId == g_NetworkSessionManager006a5f60.localPlayerId60) {
     void* heapCopy = GlobalAlloc(0, static_cast<DWORD>(sizeBytes));
     memcpy(heapCopy, message, sizeBytes);
     g_WNetPendingPacketList006a5f40.AddTail(heapCopy);
-    if (nationId == g_NetworkDefaultNationId006a5fc0) {
+    if (nationId == g_NetworkSessionManager006a5f60.localPlayerId60) {
       return 1;
     }
   }
@@ -390,7 +391,7 @@ void TNetMgr::ResetTurnEventQueueRuntimeRecordBuffer() {
 
 // FUNCTION: IMPERIALISM 0x005e4280
 int GetSessionActiveNationId() {
-  return g_NetworkDefaultNationId006a5fc0;
+  return g_NetworkSessionManager006a5f60.localPlayerId60;
 }
 
 // Empty session-phase-tag-changed hook (RET 4); invoked when TMultiplayerMgr sets the
@@ -402,7 +403,7 @@ void TNetMgr::NoOpDialogModeTagChangedHook(int arg) {
 
 // FUNCTION: IMPERIALISM 0x005e42c0
 void TNetMgr::NotifyIfNationMatchesSessionActiveNation(int nationId) {
-  if (nationId == g_NetworkDefaultNationId006a5fc0) {
+  if (nationId == g_NetworkSessionManager006a5f60.localPlayerId60) {
     g_NetworkSessionManager006a5f60.DestroyPlayerAndStoreResult(nationId);
   }
 }
@@ -437,10 +438,10 @@ int TNetMgr::ProbeNationReachabilityAndMarkAwolBitmask() {
         awolBitmask += 1 << slot;
       } else {
         probe.DestinateToGP(slot);
-        probe.fromNetworkId = g_NetworkDefaultNationId006a5fc0;
+        probe.fromNetworkId = g_NetworkSessionManager006a5f60.localPlayerId60;
         int destination = probe.toNetworkId;
         if (destination == -1) {
-          destination = g_NetworkBroadcastNationId006a5fc4;
+          destination = g_NetworkSessionManager006a5f60.broadcastPlayerId64;
         }
         if (g_NetworkSessionManager006a5f60.TrySendNetworkPacket(destination, &probe,
                                                                  probe.messageLength) == 0) {

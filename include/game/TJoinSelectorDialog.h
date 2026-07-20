@@ -3,6 +3,8 @@
 #include "game/TNoHilitePicture.h"
 #include "game/mfc.h"
 
+struct RuntimeSelectionRecord;
+
 // VTABLE: IMPERIALISM 0x006435e8
 class TJoinSelectorDialog : public TNoHilitePicture {
 public:
@@ -125,4 +127,6 @@ public:
   // slot 0x73 NoOpUiVirtualSlot73 inherited unchanged (0x572bb0)
 
   TJoinSelectorDialog();
+  void AddJoinableGameOptionEntry(const char* label, RuntimeSelectionRecord* record);
+  RuntimeSelectionRecord* GetSelectedJoinableGame();
 };

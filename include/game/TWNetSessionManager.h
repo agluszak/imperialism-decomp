@@ -12,50 +12,70 @@
 #include <dplay.h>
 
 class TView;
+class TRadioTextCluster;
 
 // One heap-owned entry in the DirectPlay runtime-selection list. The first four
 // dwords are the payload returned by the selection dialog; the trailing CString is
 // the displayed label (AppendRuntimeSelectionRecordEntry, 0x0047f8b0).
 struct RuntimeSelectionRecord {
-  int payload[4];
+  GUID providerGuid;
   CString label;
 
   ~RuntimeSelectionRecord();
 };
 
-// Raw callback/dispatch table used by two DirectPlay session-discovery paths:
-// OpenRuntimeSelectionSourceWithOptionalSeed's DirectPlayEnumerateA branch calls
-// slot 0 (LPDPENUMDPCALLBACKA shape: GUID*, name, majorVer, minorVer) per
-// enumerated service provider and slot 7 (byte 0x1c) once done;
-// OpenRuntimeSelectionSourceWithUserChoice dereferences further slots (at least
-// byte 0x10 and 0x20) unconditionally. No writer of this table has been located
-// yet (static value is null, no ctor/init path found) despite
-// OpenRuntimeSelectionSourceWithUserChoice being the primary interactive
-// host/join path, not obviously dead code -- flagged as an open class-recovery
-// question rather than asserted either way.
-struct DirectPlayEnumerationCallbackTable {
-  BOOL(FAR PASCAL* onEnumSession)(LPGUID sessionGuid, LPSTR sessionName, DWORD majorVersion,
-                                  DWORD minorVersion);
-  void* unusedSlots1To2[2];
-  void* slot4;
-  void* unusedSlot5;
-  void* slot6;
-  int(FAR PASCAL* onEnumerationComplete)(void* resultBuffer);
-  void* slot8;
+// DirectPlay.cpp base state. The retail WNetMgr constructor first installs the base
+// vtable at 0x0066f9c0, initializes +0x04/+0x08, constructs the derived CString at
+// +0xa8, and finally installs the derived vtable at 0x0066f9f0.
+IMPERIALISM_BEGIN_INTENTIONAL_NON_VIRTUAL_DTOR
+// VTABLE: IMPERIALISM 0x0066f9c0
+class TDirectPlaySessionManagerBase {
+public:
+  TDirectPlaySessionManagerBase() : directPlayInterface04(0), directPlayLobby08(0) {}
+
+  virtual BOOL OnEnumerateServiceProvider(LPGUID providerGuid, LPSTR providerName,
+                                          DWORD majorVersion, DWORD minorVersion);
+  virtual BOOL OnDirectPlayAssertion111(void* arg1, void* arg2, void* arg3, void* arg4);
+  virtual BOOL OnEnumerateJoinableSession(const DPSESSIONDESC2* sessionDescription, DWORD* timeout,
+                                          DWORD flags);
+  virtual void InitializeSessionDescription();
+  virtual void ResetSessionDescription();
+  virtual BOOL GetRuntimeSelectionAuxStatus(void* value);
+  virtual BOOL ApplyCtrlScrollAcceleration(int* value);
+  virtual BOOL SelectRuntimeProvider(GUID* providerGuid);
+  virtual BOOL ShowJoinGameSelectionDialogAndCaptureChoice(GUID* selectedSessionGuid);
+
+  IDirectPlay2* directPlayInterface04;
+  IUnknown* directPlayLobby08;
+  int lastErrorCode0c;
+  DPSESSIONDESC2 sessionDescription10;
+  int localPlayerId60;
+  int broadcastPlayerId64;
+  char joinGameSeed68[0x20];
+  char runtimeSelectionSeed88[0x20];
 };
+ASSERT_SIZE(TDirectPlaySessionManagerBase, 0xa8);
 
 // DirectPlay session manager from the original D:\Ambit\DirectPlay.cpp TU (assert helpers
 // 0x47fb20/0x47fb50/0x480820 name it). Lives as a global object embedded at fixed address
 // 0x006a5f60 (not a pointer-to-object); the original loads `MOV ECX, 0x6a5f60` directly.
 // The class name is provisional (no Mac counterpart — the Mac build used NetSprocket).
-class TWNetSessionManager {
+// VTABLE: IMPERIALISM 0x0066f9f0
+class TWNetSessionManager : public TDirectPlaySessionManagerBase {
 public:
-  DirectPlayEnumerationCallbackTable* enumCallbackTable00;
-  IDirectPlay2* directPlayInterface04;
-  IUnknown* directPlayLobby08;
-  int lastErrorCode0c;
-  unsigned char pad10[0x60 - 0x10];
-  int localPlayerId60;
+  CString joinGamePlayerNameA8;
+  int joinGamePlayerDataTagAC;
+  TRadioTextCluster* activeProtocolControlB0;
+
+  TWNetSessionManager();
+  virtual BOOL OnEnumerateServiceProvider(LPGUID providerGuid, LPSTR providerName,
+                                          DWORD majorVersion, DWORD minorVersion) override;
+  virtual BOOL OnEnumerateJoinableSession(const DPSESSIONDESC2* sessionDescription, DWORD* timeout,
+                                          DWORD flags) override;
+  virtual void InitializeSessionDescription() override;
+  virtual void ResetSessionDescription() override;
+  virtual BOOL ShowJoinGameSelectionDialogAndCaptureChoice(
+      GUID* selectedSessionGuid) override; // slot 0x08 0x5e30c0
 
   // Returns nonzero on success (original callers test the full EAX).
   int TrySendNetworkPacket(int nationId, void* packet, unsigned int byteCount);
@@ -69,17 +89,14 @@ public:
   // 0), no-op success. Otherwise closes any open session, then either creates a
   // fresh IDirectPlay bound to sessionEntry's GUID (DirectPlayCreate, ordinal 1 of
   // DPLAYX.DLL) or, when sessionEntry is null, enumerates providers
-  // (DirectPlayEnumerateA, ordinal 2) via enumCallbackTable00 -- see that field's
-  // comment. Either way the resulting IDirectPlay is QueryInterface'd up to
+  // (DirectPlayEnumerateA, ordinal 2) through this object's virtual provider callback.
+  // Either way the resulting IDirectPlay is QueryInterface'd up to
   // IDirectPlay2 into directPlayInterface04 and the runtime-selection list is reset.
   unsigned char OpenRuntimeSelectionSourceWithOptionalSeed(const GUID* sessionEntry,
                                                            int flag); // 0x47fe50
   // Reopens the session with no seed (OpenRuntimeSelectionSourceWithOptionalSeed(null,0)),
-  // then rebuilds a DPSESSIONDESC2-shaped record inline in pad10 (dwSize=0x50, a second
-  // dword=0x40) and re-enumerates via two more COM-interface vtable dispatches on
-  // enumCallbackTable00/directPlayLobby08 whose exact call shape isn't resolved yet.
-  // TODO: real body -- the pad10 DPSESSIONDESC2 promotion and the two remaining vtable
-  // calls need dedicated COM-interface class-recovery work before this can be ported.
+  // then rebuilds sessionDescription10, lets the derived slot populate its application
+  // identity, and opens it as a newly created DirectPlay session.
   unsigned char OpenRuntimeSelectionSourceFromCurrentContext(); // 0x480030
   // IDirectPlay2::CreatePlayer wrapper: builds a DPNAME from shortName (dwSize=16,
   // dwFlags=0, lpszShortNameA=shortName, lpszLongNameA=0) and stores the HRESULT in
@@ -90,8 +107,7 @@ public:
   // SUCCEEDED(result).
   unsigned char SetLocalPlayerDataAndStoreResult(LPVOID data, DWORD size); // 0x480990
   // Presents the "choose a session to join" flow (DirectPlayCreate(NULL),
-  // AfxMessageBox-backed progress UI, EnumSessions, and dispatch through
-  // enumCallbackTable00 -- see that field's comment) and leaves directPlayInterface04
+  // AfxMessageBox-backed progress UI and EnumSessions, and leaves directPlayInterface04
   // bound to the chosen session on success. The callback-table dispatch and
   // AfxGetMainWnd()/message-box progress-UI plumbing aren't modeled yet, so this
   // remains structurally incomplete; always reports failure until that's done.
@@ -103,6 +119,5 @@ public:
   // its own `provider` here.
   unsigned char RebuildRuntimeSelectionSource(); // 0x47fd90
 };
-
-// 0x4804c0: adds 500 to *value and returns 1 when Ctrl is held, else 0.
-int __stdcall ApplyCtrlScrollAccelerationToListStep(int* value);
+ASSERT_SIZE(TWNetSessionManager, 0xb4);
+IMPERIALISM_END_INTENTIONAL_NON_VIRTUAL_DTOR

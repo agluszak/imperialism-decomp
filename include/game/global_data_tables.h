@@ -385,18 +385,7 @@ extern TMultiplayerMgr* g_pGameFlowState;
 // The pending-packet queue and its two serialization siblings are file-scope MFC template
 // statics (see the typed C++ section below); the previous six raw queue globals were the
 // members of the CList at 0x6a5f40.
-extern int g_NetworkDefaultNationId006a5fc0;
-extern int g_NetworkBroadcastNationId006a5fc4;
 extern int DAT_006a601c;
-// Seed-text buffer for TNetMgr::OpenJoinGameRuntimeSelectionAndStartSession's
-// strncpy'd "seed" argument.
-extern char g_JoinGameSeedBuffer_006a5fc8[0x20];
-// Staging CString round-tripped through the local player's DPNAME during
-// OpenJoinGameRuntimeSelectionAndStartSession.
-extern CString g_JoinGamePlayerNameStaging_006a6008;
-// 4-byte SetPlayerData payload written for the local player after CreatePlayer
-// succeeds; never observed read back anywhere in the binary.
-extern int g_JoinGamePlayerDataTag_006a600c;
 // City-order capability rule-table pointer slots written into TTechMgr+0x264 as tech
 // unlocks are applied (default at construction, alternates for tech ids 0x0b/0x16).
 // 26 (start, end) capability-priority range pairs (see the .cpp note).
@@ -521,10 +510,7 @@ extern const char* g_cstrTradeTotalsBalanceSubstitution0066DB50;
 extern GlobalViewportRectDefaultsRecord g_globalViewportRectDefaultsRecord;
 extern GlobalViewportRectDefaultsRecord* g_pGlobalViewportRectDefaultsRecord;
 extern TWNetSessionManager g_NetworkSessionManager006a5f60;
-// Seed buffer for the DirectPlay session-open path (TNetMgr::
-// OpenRuntimeSelectionSourceByIndexAndCopyPath strncpy's the caller's seed here,
-// truncated to 31 chars + NUL).
-extern char g_RuntimeSelectionSourceSeedBuffer_006a5fe8[0x20];
+extern const GUID g_ImperialismDirectPlayApplicationGuid0066f968;
 extern CArray<RuntimeSelectionRecord*, RuntimeSelectionRecord*> g_RuntimeSelectionRecords006a15e0;
 // Global TNetMgr (0x6a6014), created by TMultiplayerMgr session init.
 extern TNetMgr* g_pNetMgr006a6014;
@@ -540,8 +526,9 @@ extern TNetMgr* g_pNetMgr006a6014;
 // the factory bodies read at 0x6a13e8 is this object's m_pNodeTail (i.e. GetTail()).
 extern CList<TView*, TView*> g_UiWidgetBuildStack006a13e0;
 extern CArray<void*, void*> g_WNetSerializedPtrArrayA006a5f10;
-extern CArray<void*, void*> g_WNetSerializedPtrArrayB006a5f28;
+extern CArray<RuntimeSelectionRecord*, RuntimeSelectionRecord*> g_WNetSerializedPtrArrayB006a5f28;
 extern CList<void*, void*> g_WNetPendingPacketList006a5f40;
+extern CString g_WNetJoinGameMessageStore006a5ed8;
 extern TTechMgr* g_pCityOrderCapabilityState;
 extern TSoundResourceManager g_soundResourceManager;
 // CD-audio MCI device singleton (see game/cd_audio.h).
