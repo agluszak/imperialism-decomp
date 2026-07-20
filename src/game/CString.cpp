@@ -5,11 +5,10 @@
 #include <stdlib.h>
 #include <string.h>
 
-extern "C" unsigned char g_MbcsCharTypeTable_006A8018[512] = {0};
-extern "C" int g_fMbcsEnabledForStringCompare_006A811C = 0;
-
 // LIBRARY: IMPERIALISM 0x00605791
-// GetSharedEmptyStringRef
+// GetSharedEmptyStringRef -- a trivial `mov eax,const; ret` trampoline (returns the shared
+// empty CStringData). Ambiguous in the object-matcher oracle (239 byte-identical strcore.obj
+// candidates at this size); kept as a hedged description, not a reviewed exact symbol.
 
 // LIBRARY: IMPERIALISM 0x00605797
 // CString::CString
@@ -21,7 +20,7 @@ extern "C" int g_fMbcsEnabledForStringCompare_006A811C = 0;
 // CString::AllocBuffer
 
 // LIBRARY: IMPERIALISM 0x0060584a
-// DecrementSharedStringRefCountAndFree
+// CString::Release(CStringData*) -- protected static overload
 
 // LIBRARY: IMPERIALISM 0x0060586d
 // CString::Empty
@@ -51,13 +50,13 @@ extern "C" int g_fMbcsEnabledForStringCompare_006A811C = 0;
 // CString::ConcatCopy
 
 // LIBRARY: IMPERIALISM 0x00605b21
-// AssignSharedStringConcatRefAndRef
+// operator+(const CString&, const CString&)
 
 // LIBRARY: IMPERIALISM 0x00605b87
-// AssignSharedStringConcatRefAndCStr
+// operator+(const CString&, const char*)
 
 // LIBRARY: IMPERIALISM 0x00605bfb
-// AssignSharedStringConcatCStrAndRef
+// operator+(const char*, const CString&)
 
 // LIBRARY: IMPERIALISM 0x00605c6f
 // CString::ConcatInPlace
