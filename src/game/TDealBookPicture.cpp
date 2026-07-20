@@ -163,7 +163,11 @@ undefined TDealBookPicture::BuildSelectedNationOrderCapabilityRows() {
 }
 
 // FUNCTION: IMPERIALISM 0x005bbc30
-void TDealBookPicture::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {}
+void TDealBookPicture::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+  // The original dispatches a large per-tag command table here (934 bytes) -- not yet
+  // ported.
+  TControl::HandleEvent(commandId, sourceHandler, event);
+}
 
 // FUNCTION: IMPERIALISM 0x005bc0d0
 void TDealBookPicture::RefreshTradeSelectionHeaderAndNationOfferBidLines() {

@@ -153,4 +153,8 @@ void TTechItemView::ConstructTTechItemViewBaseState(TView* panel, int* offsetLay
 }
 
 // FUNCTION: IMPERIALISM 0x005b1e20
-void TTechItemView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {}
+void TTechItemView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+  // The original dispatches a large per-tag command table here (822 bytes) -- not yet
+  // ported.
+  TView::HandleEvent(commandId, sourceHandler, event);
+}

@@ -31506,7 +31506,7 @@
     },
     {
       "address": "0x5b1e20",
-      "matching": 0.00851063829787234,
+      "matching": 0.04132231404958678,
       "name": "TTechItemView::HandleEvent",
       "type": 1
     },
@@ -32561,7 +32561,7 @@
     },
     {
       "address": "0x5bbc30",
-      "matching": 0.007547169811320755,
+      "matching": 0.03676470588235294,
       "name": "TDealBookPicture::HandleEvent",
       "type": 1
     },
