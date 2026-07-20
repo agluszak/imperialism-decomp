@@ -8,7 +8,17 @@
 #include "game/global_data_tables.h"
 #include "game/mfc.h"
 
-undefined4 SetPictureResourceIdAndRefresh_Impl(void);
+// Scratch (width, height) pair the SetPictureResourceIdAndRefresh fallback path builds
+// and immediately discards (the original never reads it back either -- confirmed via
+// the raw listing: no instruction between this call and the function's return
+// references the buffer again).
+struct PictureFallbackSizeScratch {
+  int width;
+  int height;
+
+  void Set(int newWidth, int newHeight);
+};
+
 // SYNTHETIC: IMPERIALISM 0x0048eeb0
 // TPicture::CreateObject
 
@@ -127,14 +137,20 @@ void TPicture::SetPictureResourceIdAndRefresh(short nPictureId, bool fRefreshNow
     this->field8C = g_pModuleLibraryCacheState->LoadBmpResourceByIdCached(nPictureId);
   }
   if (this->field8C == 0) {
-    reinterpret_cast<void(__cdecl*)(int, int)>(SetPictureResourceIdAndRefresh_Impl)(
-        this->frameWidth34, this->frameHeight38);
+    PictureFallbackSizeScratch sizeScratch;
+    sizeScratch.Set(this->frameWidth34, this->frameHeight38);
     this->field8C = g_pModuleLibraryCacheState->BuildIndexedBmpResourceById(
         nPictureId, this->frameWidth34, this->frameHeight38, 0);
   }
   if (fRefreshNow) {
     this->RefreshControl();
   }
+}
+
+// FUNCTION: IMPERIALISM 0x0048f610
+void PictureFallbackSizeScratch::Set(int newWidth, int newHeight) {
+  width = newWidth;
+  height = newHeight;
 }
 
 // FUNCTION: IMPERIALISM 0x0048f640

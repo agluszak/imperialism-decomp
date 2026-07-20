@@ -5476,14 +5476,14 @@
     },
     {
       "address": "0x48f570",
-      "matching": 0.8354430379746836,
+      "matching": 0.7654320987654321,
       "name": "TPicture::SetPictureResourceIdAndRefresh",
       "type": 1
     },
     {
       "address": "0x48f610",
-      "matching": 0.0,
-      "name": "SetPictureResourceIdAndRefresh_Impl",
+      "matching": 0.36363636363636365,
+      "name": "PictureFallbackSizeScratch::Set",
       "type": 1
     },
     {
@@ -13355,8 +13355,7 @@
     },
     {
       "address": "0x4e05d0",
-      "effective": true,
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::ComputeMinisterSkillFloatSlot89",
       "type": 1
     },
@@ -13412,7 +13411,7 @@
     },
     {
       "address": "0x4e09a0",
-      "matching": 0.5783132530120482,
+      "matching": 0.5542168674698795,
       "name": "TGreatPower::GetScoreFactorSlot240",
       "type": 1
     },
@@ -39793,6 +39792,12 @@
       "address": "0x610965",
       "matching": 0.5,
       "name": "GetCDocumentMessageMap",
+      "type": 1
+    },
+    {
+      "address": "0x6109cf",
+      "matching": 1.0,
+      "name": "CDocument::`scalar deleting destructor'",
       "type": 1
     },
     {

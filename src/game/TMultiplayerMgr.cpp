@@ -242,7 +242,7 @@ undefined TMultiplayerMgr::InitializeMultiplayerManagerForSessionContext(int ses
 
   TNetMgr* queueStorage = new TNetMgr();
   g_pNetMgr006a6014 = queueStorage;
-  reinterpret_cast<void (*)()>(NoOpInitializeGlobalTurnEventQueueManager)();
+  NoOpInitializeGlobalTurnEventQueueManager();
 
   CString loadedString;
   g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&loadedString, 0x2759, 1);

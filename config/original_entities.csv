@@ -7323,7 +7323,7 @@ address|name|symbol|size|type|prototype|provenance
 6108fe|CSingleDocTemplate::SetDefaultTitle|?SetDefaultTitle@CSingleDocTemplate@@UAEXPAVCDocument@@@Z|103|function|public: virtual void __thiscall CSingleDocTemplate::SetDefaultTitle(class CDocument *)|msvc500_library_override
 610965|GetCDocumentMessageMap||6|function|undefined GetCDocumentMessageMap()|
 61096b|CDocument::CDocument|??0CDocument@@QAE@XZ|100|function|public: __thiscall CDocument::CDocument(void)|msvc500_library_override
-6109cf|DestructCDocumentBaseStateAndMaybeFree||28|function|undefined DestructCDocumentBaseStateAndMaybeFree()|
+6109cf|CDocument::`scalar deleting destructor'||28|function|undefined ScalarDeletingDestructor()|
 6109eb|CDocument::DestructCDocumentBaseState|??1CDocument@@UAE@XZ|108|function|public: virtual __thiscall CDocument::~CDocument(void)|msvc500_library_oracle
 610a57|CDocument::OnFinalRelease|?OnFinalRelease@CDocument@@UAEXXZ|8|function|public: virtual void __thiscall CDocument::OnFinalRelease(void)|msvc500_library_override
 610a5f|CDocument::DisconnectViews|?DisconnectViews@CDocument@@QAEXXZ|33|function|public: void __thiscall CDocument::DisconnectViews(void)|msvc500_library_oracle
