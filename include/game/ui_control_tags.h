@@ -15,6 +15,7 @@ const unsigned int kControlTagScen = 0x7363656eu; // 'scen' — main-menu scenar
 const unsigned int kControlTagQuit = 0x71756974u; // 'quit' — main-menu quit button
 const unsigned int kControlTagPref = 0x70726566u; // 'pref' — main-menu preferences button
 const unsigned int kControlTagMain = 0x6d61696eu; // 'main' — council ticker panel
+const unsigned int kControlTagValu = 0x76616c75u; // 'valu' — purchase-cluster numeric value control
 const unsigned int kControlTagQuer = 0x71756572u; // 'quer'
 const unsigned int kControlTagCity = 0x63697479u; // 'city'
 const unsigned int kControlTagDipl = 0x6469706cu; // 'dipl'

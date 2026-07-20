@@ -1,7 +1,9 @@
 #include "game/TPurchaseCluster.h"
 
 #include "game/TEventHandler.h"
+#include "game/global_data_tables.h"
 #include "game/ui_control_tags.h"
+#include "game/ui_invalidation_guard.h"
 // SYNTHETIC: IMPERIALISM 0x004cc300
 // TPurchaseCluster::CreateObject
 
@@ -43,8 +45,20 @@ void TPurchaseCluster::HandleEvent(int commandId, TEventHandler* sourceHandler, 
 }
 
 // FUNCTION: IMPERIALISM 0x004cc550
-void __fastcall TPurchaseCluster::SetCityViewValueControlAmount(int* pCityViewDialog,
-                                                                short nValue) {}
+void TPurchaseCluster::SetCityViewValueControlAmount(short nValue, char redrawFlag) {
+  TView* valueControl = ResolveControlByTag(kControlTagValu);
+  if (valueControl == nullptr) {
+    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUCityViews_00696650, 0x781);
+  }
+  // TODO: dispatches through valueControl's own vtable slot 0x1e4 with (nValue, 0) --
+  // byte-offset 0x1e4 coincides with TDeluxeText::ApplyTextStyleDescriptorAndMaybeRefresh
+  // elsewhere, but that method takes a style-descriptor pointer, not a plain value, so
+  // valueControl is NOT a TDeluxeText despite the matching offset (same "same slot,
+  // different class" trap flagged repeatedly this session). Its concrete class is
+  // unresolved, so the value-set call and the conditional redraw tail (invalidate rect +
+  // refresh via ownerContext's own slot 0x1d8) are left unmodeled rather than guessed.
+}
 
 // FUNCTION: IMPERIALISM 0x004cc640
 undefined TPurchaseCluster::UpdateCityViewValueControl() {
