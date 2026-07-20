@@ -30753,7 +30753,7 @@
     },
     {
       "address": "0x5a84d0",
-      "matching": 0.05714285714285714,
+      "matching": 0.6388888888888888,
       "name": "TTacticalBattleView::NoOpUiLifecycleHook",
       "type": 1
     },
@@ -30915,7 +30915,7 @@
     },
     {
       "address": "0x5aa7d0",
-      "matching": 0.5798816568047337,
+      "matching": 0.5443786982248521,
       "name": "TTacticalBattleView::ComputeTacticalUnitSpriteDrawRectAndApplyFacingOffset",
       "type": 1
     },
@@ -38984,7 +38984,7 @@
     },
     {
       "address": "0x6091d9",
-      "matching": 1.0,
+      "matching": 0.9787234042553191,
       "name": "CWnd::OnNotify",
       "type": 1
     },
