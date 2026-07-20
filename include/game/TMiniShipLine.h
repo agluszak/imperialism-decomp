@@ -3,6 +3,8 @@
 #include "game/TLineData.h"
 #include "game/mfc.h"
 
+class TShip;
+
 // VTABLE: IMPERIALISM 0x0065db28
 class TMiniShipLine : public TLineData {
 public:
@@ -22,5 +24,5 @@ public:
   TMiniShipLine();
 
   // Original object size is 0x14 (CRuntimeClass m_nObjectSize); the source class ended at 0x10. Trailing 4 byte(s) not yet semantically recovered — declared so sizeof and the recomp's allocation size match the original.
-  int field10;
+  TShip* field10;
 };

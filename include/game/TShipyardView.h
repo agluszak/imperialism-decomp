@@ -152,7 +152,7 @@ public:
   // commoditySpriteIds[4]/commodityRequiredAmounts[4] at +0xbc/+0xc4 (loop bound proven:
   // 4 slots, -1 = empty).
   short selectedRequirementRow;      // +0xa0
-  unsigned char unknownA2[2];        // +0xa2 unrecovered
+  short unknownA2;                   // +0xa2 unrecovered (written 0 in ApplyRectSlot110's init path)
   short buildQueueSlotValues[8];     // +0xa4..+0xb3 -- AKA requirementResourceTypeByRow
   int fieldB4;                       // +0xb4
   TQuickDrawSurfaceContext* iconSurfaceB8; // +0xb8 -- LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0x264f)

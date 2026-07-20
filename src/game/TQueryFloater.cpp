@@ -3,6 +3,7 @@
 #include "game/TStaticText.h"
 #include "game/quickdraw_rendering.h"
 #include "game/ui_control_tags.h"
+#include "game/ui_text_label_helpers_decls.h"
 
 // SYNTHETIC: IMPERIALISM 0x0043d6a0
 // TQueryFloater::`scalar deleting destructor'

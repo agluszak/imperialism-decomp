@@ -46,7 +46,7 @@ void TLoadSavePicture::RefreshSlotPreviewFromSaveFile(short slotMode) {
   }
 
   char* tileOwnerTagTable = new char[0x1950];
-  FILE* file = fopen(path, g_szSaveFileReadBinaryMode_00698720);
+  FILE* file = fopen(path, g_szLiteralRb_00698720);
   char headerSkip[0xc];
   fread(headerSkip, 1, 0xc, file);
   // 0x20-byte scratch record (likely per-slot metadata -- unconfirmed field layout).

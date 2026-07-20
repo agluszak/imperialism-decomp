@@ -94,8 +94,8 @@ undefined TShipyardView::OrphanRetStub_004c6fd0() {
   description->AssertValid();
   description->SetTextStyleAndMaybeRefresh(&style.desc, 1);
 
-  fieldA0 = 0;
-  fieldA2 = 0;
+  selectedRequirementRow = 0;
+  unknownA2 = 0;
   InitializeCityViewActionButtons(buildQueueSlotValues[0]);
 
   // 'sele' is a TCluster (confirmed by cross-referencing turn_event_dialog_factory.cpp,

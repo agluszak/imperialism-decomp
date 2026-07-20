@@ -40,7 +40,7 @@ void TIndustryView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEv
       FailNilPointerWithAssert("D:\\Ambit\\Cross\\UCityViews.cpp", 0x84c);
     }
 
-    g_pUiRuntimeContext->HandleTurnEventDialogFactorySlotB8(field9e, field94, (int)mainControl);
+    g_pUiRuntimeContext->HandleTurnEventDialogFactorySlotB8(field9e, (int)field94, (int)mainControl);
 
     TView* owner2 = OwnerPanel();
     static_cast<TWindow*>(owner2)->nativeWindow50->EnableWindow(wasDisabled);
