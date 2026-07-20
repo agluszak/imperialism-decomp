@@ -1761,3 +1761,4 @@ extern short g_offerDeskSelectionIndexTable_00668568[8];
 // reads exactly buffer[0]/buffer[1] as ownerLocalX/ownerLocalY.
 extern int g_diplomacyPopupLayoutPosition_006a3020[2];
 extern "C" const char s_SourcePathUDiplomacyViews_00696AE0[];
+extern short g_MapOrderResourceRollWeightTable_0064c5d8[6][6];
