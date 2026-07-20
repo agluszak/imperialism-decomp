@@ -892,7 +892,7 @@ char TGreatPower::HasTrackedOrderOfType7(void) {
 
 // FUNCTION: IMPERIALISM 0x004daf00
 void TGreatPower::HandleNationLost(void) {
-  return;
+  g_pUiRuntimeContext->DispatchTurnEventSlot4C(0x11f8, 0);
 }
 
 // FUNCTION: IMPERIALISM 0x004daf30

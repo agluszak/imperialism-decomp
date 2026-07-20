@@ -96,7 +96,7 @@ src/game/THandleStream.cpp|4|0|0|0
 src/game/THelpMgr.cpp|3|0|1|0
 src/game/THelpPicture.cpp|2|0|1|0
 src/game/THighScoresPicture.cpp|1|0|0|0
-src/game/THostGreatPower.cpp|4|0|1|0
+src/game/THostGreatPower.cpp|1|0|0|0
 src/game/TIconSlider.cpp|1|0|0|0
 src/game/TIndustryCluster.cpp|0|0|1|0
 src/game/TInfoBarPictureText.cpp|0|0|1|0

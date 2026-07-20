@@ -2114,7 +2114,7 @@ address|matching|name
 0x4dab00|1.0|TGreatPower::NoOpNationQueuedOrderHook
 0x4dab20|0.5535248041775457|TGreatPower::ExecuteNationPendingActionStateMachine
 0x4dae70|0.8433734939759037|TGreatPower::HasTrackedOrderOfType7
-0x4daf00|0.2857142857142857|TGreatPower::HandleNationLost
+0x4daf00|1.0|TGreatPower::HandleNationLost
 0x4daf30|0.22686567164179106|TGreatPower::CompileGreatPowerRelationshipDeltaLinesAndDispatchMessage
 0x4db380|0.6099585062240664|TGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage
 0x4db7d0|0.7043010752688172|TGreatPower::BuildTransportLinkedInfluenceMap
@@ -3561,11 +3561,11 @@ address|matching|name
 0x540f40|0.9090909090909091|THostGreatPower::`scalar deleting destructor'
 0x540f70|0.08695652173913043|THostGreatPower::DestructTHostGreatPower
 0x540fe0|1.0|THostGreatPower::GetRuntimeClass
-0x541000|0.1111111111111111|THostGreatPower::ReadFrom
-0x541040|0.125|THostGreatPower::WriteTo
+0x541000|1.0|THostGreatPower::ReadFrom
+0x541040|1.0|THostGreatPower::WriteTo
 0x541080|0.05128205128205128|THostGreatPower::TryDispatchNationActionViaUiContextOrFallback
 0x5410f0|0.06060606060606061|THostGreatPower::ProcessPendingDiplomacyProposalQueue
-0x541170|0.037037037037037035|THostGreatPower::HandleNationLost
+0x541170|1.0|THostGreatPower::HandleNationLost
 0x541230|0.4897959183673469|TClientGreatPower::CreateObject
 0x5412b0|0.5|TClientGreatPower::ReturnFalseNationStateCapabilityFlag98
 0x5412d0|1.0|TClientGreatPower::ShouldDispatchImmediatelySlot28

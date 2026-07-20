@@ -21,8 +21,8 @@ public:
 
   THostGreatPower();
 
-  // Original object size is 0x968 (CRuntimeClass m_nObjectSize); the source class ended
-  // at 0x964. Trailing 4 byte(s) not yet semantically recovered — declared so sizeof and
-  // the recomp's allocation size match the original.
-  int field964;
+  // +0x964 — serialized from save format 0x3d onward. The host sends the tagged
+  // nation-loss event only once, then sets this byte.
+  unsigned char nationLostEventDispatched;
+  unsigned char pad965[3];
 };

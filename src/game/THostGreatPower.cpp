@@ -1,6 +1,10 @@
 #include "game/THostGreatPower.h"
 
+#include "game/global_data_tables.h"
+#include "game/TMultiplayerMgr.h"
+#include "game/TSimMgr.h"
 #include "game/TStream.h"
+#include "game/TViewMgr.h"
 
 // FUNCTION: IMPERIALISM 0x00540f20
 char THostGreatPower::ReturnFalseNationStateCapabilityFlag9C(void) {
@@ -18,16 +22,20 @@ THostGreatPower::~THostGreatPower() {}
 
 IMPLEMENT_DYNCREATE(THostGreatPower, TGreatPower)
 
-THostGreatPower::THostGreatPower() {}
+THostGreatPower::THostGreatPower() : nationLostEventDispatched(0) {}
 
 // FUNCTION: IMPERIALISM 0x00541000
 void THostGreatPower::ReadFrom(TStream* stream) {
-  (void)stream;
+  TGreatPower::ReadFrom(stream);
+  if (g_nSaveFormatVersion >= 0x3d) {
+    stream->ReadBytes(&nationLostEventDispatched, 1);
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x00541040
 void THostGreatPower::WriteTo(TStream* stream) {
-  (void)stream;
+  TGreatPower::WriteTo(stream);
+  stream->WriteBytesSlot78(&nationLostEventDispatched, 1);
 }
 
 // FUNCTION: IMPERIALISM 0x00541080
@@ -44,4 +52,28 @@ char THostGreatPower::TryDispatchNationActionViaUiContextOrFallback(int arg1, in
 void THostGreatPower::ProcessPendingDiplomacyProposalQueue(void) {}
 
 // FUNCTION: IMPERIALISM 0x00541170
-void THostGreatPower::HandleNationLost(void) {}
+void THostGreatPower::HandleNationLost(void) {
+  if (nationLostEventDispatched == 0) {
+    g_pGameFlowState->DispatchTaggedGameStateEvent1F20(0x6c6f7374, nationSlot | 0xff00, -3);
+    nationLostEventDispatched = 1;
+  }
+
+  short eligibleOtherNationCount = 0;
+  int nationIndex = 0;
+  TGreatPower** nation = g_apNationStates;
+  do {
+    if (nationIndex != nationSlot &&
+        g_pSimMgr->IsNationSlotEligibleForEventProcessing(static_cast<short>(nationIndex)) != 0 &&
+        (*nation)->diplomacyEligibilityA0 != 0) {
+      ++eligibleOtherNationCount;
+    }
+    ++nation;
+    ++nationIndex;
+  } while (reinterpret_cast<int>(nation) < reinterpret_cast<int>(&g_apNationStates_End));
+
+  if (eligibleOtherNationCount == 0) {
+    TGreatPower::HandleNationLost();
+    return;
+  }
+  g_pSimMgr->PostMainWindowCommand100ForTurnFlow();
+}
