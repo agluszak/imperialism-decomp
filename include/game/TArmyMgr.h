@@ -238,9 +238,8 @@ public:
   // 0x004a5080, 1407 bytes, __thiscall, 1 arg (cityRecordIndex), returns bool; signature
   // verified via the HandleMapClickByCivilianCursorState callsite disassembly.
   bool ValidateOrderPlacementPrerequisitesForSelectedTile(short cityRecordIndex);
-  // 0x004a5760, 656 bytes, __thiscall, 1 arg (tileIndex). TODO stub body (builds
-  // directional order-overlay controls from the tile's adjacent-region list; not yet
-  // ported).
+  // 0x004a5760, 656 bytes, __thiscall, 1 arg (tileIndex). Builds directional
+  // order-overlay controls from the tile's adjacent-region list.
   void SetActiveProvinceAndBuildDirectionalOrderOverlays(short tileIndex);
   // 0x004a5b10, 243 bytes, __thiscall, 3 args (ourStack, enemyStack, ownerNationCodeInt).
   // Called from TryCreateTacticalBattleViewForTileArmies when a real tactical battle
@@ -260,45 +259,44 @@ public:
                                                   TUiTextStyleDescriptor* styleD);
 
   // Called from RefreshMapOrderBattleSideSnapshot's type-5 (ship-order) tail. 0x004a6ef0,
-  // 897 bytes. TODO: port body.
+  // 897 bytes.
   //
-  // Investigation update: the header's current 2-param signature is INCOMPLETE. RET 0xc
-  // (3 dwords) proves a 3rd stack argument; the original binary's caller defers a `PUSH
-  // <snapshot>` across an intervening __thiscall call to GetCityIndexFromCityStatePointer
-  // (a compiler scheduling artifact, not a logic dependency), so the C++ caller in
-  // TNavyMgr.cpp's RefreshMapOrderBattleSideSnapshot must ALSO pass its own `snapshot`
-  // (MapOrderBattleSnapshot*, map_order_battle_snapshot.h) as a 3rd argument. Real
-  // signature (push order, first-pushed = last param):
-  //   TrimExcessNavyOrderSupportAndRebuildOrderBuffer(char requiredCountByte, int
-  //       cityIndex, MapOrderBattleSnapshot* snapshot)
-  // The entry code reads `*(char*)snapshot` (== snapshot->requiredCountByte[0]) and
-  // compares it against `requiredCountByte`: only when they differ (side 1's call, when
-  // the two sides' bytes differ) does it allocate the scratch TList below; otherwise the
-  // list pointer is left null. The exact reason a mismatch gates the whole trim pass
-  // isn't nailed down yet -- verify against RefreshMapOrderBattleSideSnapshot's own two
-  // call sites (side 0 and side 1) before writing this branch.
+  // requiredCountByte carries TTaskForce::required_count, which every navy-order reader
+  // treats as the entry's owning nation slot (see RemoveMatchingTaskForceOrders in
+  // TNavyMgr.cpp) -- used as a g_apNationStates index. The function has no explicit
+  // `side` parameter; it recovers `side` implicitly by comparing requiredCountByte
+  // against snapshot->requiredCountByte[0]: side 0's own call always matches trivially
+  // (side = 0), while side 1's call only diverges -- and only then runs the trim pass --
+  // when the two sides' nation-slot bytes differ.
   //
-  // All other fields are now identified:
+  // Body:
   //  - Allocates a scratch `TList` (0x20 bytes, already-recovered class), CIterator-walks
-  //    g_apNationStates[nationSlot]'s order list (TCountry::militaryUnitList44, a
+  //    g_apNationStates[requiredCountByte]'s order list (TCountry::militaryUnitList44, a
   //    TSortedList* of TMilitaryUnit*), and AddTail()s every entry whose tileIndex06
   //    isn't a movement-class tile (TileHasMovementClassId) for cityIndex when its
-  //    field_C == cityIndex, summing GetUnitTypeCostPoints per entry.
-  //  - Subtracts ComputeAggregateWeightedChildCostForMatchingType5NavyOrders(this,
-  //    &g_pGlobalMapState->cityScoreTable[cityIndex], 0) from that sum; if the remainder
-  //    is positive, randomly evicts entries from the TList (rand() % GetCount() + 1 via
-  //    GetEntryByOrdinal) until the remainder is <= 0, each time looking the evicted
-  //    TMilitaryUnit* up in a CPtrList via CPtrList::Find/RemoveAt, re-subtracting its
-  //    GetUnitTypeCostPoints, and stamping TUnit::field_34 to 0xffaa as a scratch
-  //    "evicted" marker (field_34 is otherwise a persisted strength scalar -- reused here
-  //    since the unit is about to be destroyed).
+  //    field_C == cityIndex, summing GetUnitTypeCostPoints per entry into a budget.
+  //  - Subtracts g_pNavyOrderManager->ComputeAggregateWeightedChildCostForMatchingType5NavyOrders(
+  //    requiredCountByte, &g_pGlobalMapState->cityScoreTable[cityIndex], 0) from that
+  //    budget; if the remainder is positive, randomly evicts entries from the TList
+  //    (rand() % GetCount() + 1 via GetEntryByOrdinal) until the remainder is <= 0, each
+  //    time looking the evicted TMilitaryUnit* up in the TList's underlying CPtrList via
+  //    CPtrList::Find/RemoveAt, re-subtracting its GetUnitTypeCostPoints, and stamping
+  //    TUnit::field_34 to 0xffaa as a scratch "evicted" marker (field_34 is otherwise a
+  //    persisted strength scalar -- reused here since the unit is about to be destroyed).
   //  - Grows snapshot->childRecords[side] (MapOrderBattleSideChildRecord array,
-  //    map_order_battle_snapshot.h) by snapshot->childCount[side], reallocating via
-  //    operator new, copying the old records, zero-filling the tail, then for each
-  //    marked-evicted TMilitaryUnit: DetachUnitOrderFromOwnerAndReset() + Free() it, and
-  //    appends one new MapOrderBattleSideChildRecord (resourceType = the unit's
-  //    orderType, stockOrRequired = 0xffaa, nameBuffer = the unit's name24 clamped to
-  //    0x20 chars, strengthBucket = the unit's field_38 / 100).
+  //    map_order_battle_snapshot.h) by the evicted count, reallocating via operator new,
+  //    copying the old records over the front, zero-filling every new record's
+  //    nameBuffer[0] (including the copied-over front, harmlessly overwritten by the
+  //    copy), then re-scanning the whole militaryUnitList44 once per evicted unit
+  //    (an original redundancy -- only the first pass finds any 0xffaa-marked entries,
+  //    since the marker is cleared as each is processed, but every pass rescans from the
+  //    head) appending one new MapOrderBattleSideChildRecord per marked-evicted
+  //    TMilitaryUnit (resourceType = orderType, stockOrRequired = 0xffaa, nameBuffer =
+  //    name24 clamped to 0x20 chars, childPtr = the army-side sentinel 0x61726d79
+  //    ("army", mirroring RefreshMapOrderBattleSideSnapshot's "navy" sentinel, not the
+  //    real pointer, strengthBucket = field_38 / 100) before DetachUnitOrderFromOwnerAndReset()
+  //    + Free()ing the evicted unit. The old childRecords array is never freed here --
+  //    reproduced as a faithful leak, matching this file's other acknowledged leaks.
   void TrimExcessNavyOrderSupportAndRebuildOrderBuffer(char requiredCountByte, int cityIndex,
                                                        struct MapOrderBattleSnapshot* snapshot);
 
