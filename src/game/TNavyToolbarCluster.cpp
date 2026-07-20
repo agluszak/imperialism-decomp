@@ -54,9 +54,21 @@ void TNavyToolbarCluster::HandleEvent(int commandId, TEventHandler* sourceHandle
         if ((GetAsyncKeyState(0x11) & 0x8000) == 0) {
           g_pUiRuntimeContext->HandleTurnEventDialogFactorySlotF0(GetActiveMapOrderEntry());
         }
-        // Ctrl+'bomb' should run a map-order page-selection dialog (0x5dd450, 635 bytes,
-        // dynamic TSuperNavyRoster construction + dialog scaffolding) -- not yet ported;
-        // left as a gap rather than a phantom empty stub (blocked by the noop gate).
+        // TODO: Ctrl+'bomb' should run a map-order page-selection dialog (0x5dd450, 635
+        // bytes). Decoded structure: resolves the turn-event dialog node for message
+        // context 0x2506, constructs a `new TSuperNavyRoster()` (already a real class,
+        // TSuperNavyRoster.h -- field84/field88 already declared and match this
+        // constructor's own writes), and calls its slot 0x1b8
+        // PopulateNavyOrderPageEntriesByMapContext(int, int*) with 2 real args (its current
+        // header declaration is a stale 0-arg placeholder). That populate method (already
+        // claimed as a stub in TSuperNavyRoster.cpp, 0x00 score) is itself a genuinely large
+        // second function: iterates g_pMapActionContextListHead's TZone list matching
+        // per-zone map orders and builds a linked list of `new TMiniShipLine()` row widgets
+        // (a real vtable name, TMiniShipLine, not yet a header/class in this codebase).
+        // Both this constructor and PopulateNavyOrderPageEntriesByMapContext are
+        // independent big-function ports; left unmodeled here rather than faked (blocked by
+        // the noop gate) -- the next step is recovering the TMiniShipLine class shape before
+        // either function can be safely written.
         break;
       default:
         break;
