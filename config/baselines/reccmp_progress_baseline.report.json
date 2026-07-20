@@ -8027,7 +8027,7 @@
     },
     {
       "address": "0x4a2900",
-      "matching": 0.13063763608087092,
+      "matching": 0.13374805598755832,
       "name": "BuildArmyContextActionRecordsAndDispatchLabel",
       "type": 1
     },
@@ -8262,7 +8262,7 @@
     },
     {
       "address": "0x4a6ef0",
-      "matching": 0.0,
+      "matching": 0.0070921985815602835,
       "name": "TArmyMgr::TrimExcessNavyOrderSupportAndRebuildOrderBuffer",
       "type": 1
     },
@@ -17483,7 +17483,7 @@
     },
     {
       "address": "0x513ca0",
-      "matching": 0.47297297297297297,
+      "matching": 0.6305084745762712,
       "name": "TMapMgr::HasReachableSeaTileOutsideActiveType3Or4DiplomaticMask",
       "type": 1
     },
@@ -17657,7 +17657,7 @@
     },
     {
       "address": "0x515b10",
-      "matching": 0.3167420814479638,
+      "matching": 0.3378995433789954,
       "name": "TMapMgr::MarkSeedNeighborTilesUnavailableByCapabilityMaskProfileB",
       "type": 1
     },
@@ -17934,7 +17934,7 @@
     },
     {
       "address": "0x518d90",
-      "matching": 0.0,
+      "matching": 0.41297935103244837,
       "name": "TMapMgr::MarkDirectionalMapOverlayFlagsForNationOrders",
       "type": 1
     },
@@ -21932,7 +21932,7 @@
     },
     {
       "address": "0x545940",
-      "matching": 0.3862938419266203,
+      "matching": 0.43011795120374857,
       "name": "TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine",
       "type": 1
     },
@@ -22406,7 +22406,7 @@
     },
     {
       "address": "0x54f340",
-      "matching": 0.37410071942446044,
+      "matching": 0.35714285714285715,
       "name": "RefreshMapOrderBattleSideSnapshot",
       "type": 1
     },
@@ -38974,7 +38974,7 @@
     },
     {
       "address": "0x6091d9",
-      "matching": 1.0,
+      "matching": 0.9787234042553191,
       "name": "CWnd::OnNotify",
       "type": 1
     },
