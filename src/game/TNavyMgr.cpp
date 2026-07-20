@@ -213,7 +213,7 @@ void RefreshMapOrderBattleSideSnapshot(MapOrderBattleSnapshot* snapshot, int sid
   if (entry != nullptr && entry->attachment == 5) {
     int cityIndex = GetCityIndexFromCityStatePointer(entry->owner.asCityTarget);
     g_pMapContextActionManager->TrimExcessNavyOrderSupportAndRebuildOrderBuffer(
-        snapshot->requiredCountByte[side], cityIndex);
+        snapshot->requiredCountByte[side], cityIndex, snapshot);
   }
 }
 
