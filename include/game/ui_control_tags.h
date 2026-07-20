@@ -202,3 +202,5 @@ const unsigned int kControlTagMerc = 0x6d657263u; // 'merc' — foreign-minister
 const unsigned int kControlTagPric = 0x70726963u; // 'pric' — foreign-minister "price" button
 const unsigned int kControlTagCann = 0x63616e6eu; // 'cann' — defense-minister "cannon"/war-declaration button
 const unsigned int kControlTagTab0 = 0x74616230u; // 'tab0' — first of 7 sequential score-graph nation tabs (tab0-tab6)
+const unsigned int kControlTagHdr0 = 0x68647230u; // 'hdr0' — first of 5 sequential game-info header labels (hdr0-hdr4)
+const unsigned int kControlTagTxta = 0x74787461u; // 'txta' — first of 14 sequential game-info text lines (txta-txtn)
