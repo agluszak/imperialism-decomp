@@ -1090,7 +1090,7 @@ void TTaskForce::SetTaskForceOrderSelectionByNationClassAndFlag(short nationClas
 }
 
 // FUNCTION: IMPERIALISM 0x005549a0
-void TTaskForce::SetTaskForceOrderSelectionByNodeId(TTaskForce* targetOrderObject,
+void TTaskForce::SetTaskForceOrderSelectionByNodeId(TObject* targetOrderObject,
                                                     char activeFlag) {
   TMapOrderChildLinkNode* node;
   if (childOrderList == nullptr) {
