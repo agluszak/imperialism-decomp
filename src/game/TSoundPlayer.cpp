@@ -169,9 +169,7 @@ void TSoundPlayer::SelectAndScheduleRandomAudioCue() {
 }
 
 // FUNCTION: IMPERIALISM 0x00593920
-void TSoundPlayer::RequestAudioPresetChangeWithDeferredApply(int presetId, int flag) {
-  // TODO(verify): the asm tests only the low byte of `flag` -- original param was
-  // likely char/BOOL.
+void TSoundPlayer::RequestAudioPresetChangeWithDeferredApply(int presetId, bool flag) {
   if (g_pSimMgr->preferenceValues[3] == 0) {
     return;
   }
