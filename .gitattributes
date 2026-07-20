@@ -7,4 +7,4 @@ vendor/msvc500/lib/*.lib filter=lfs diff=lfs merge=lfs -text
 # These are generated as one unit. The local driver keeps a valid side during
 # integration, then tracked hooks rebuild and regenerate both files for review.
 config/baselines/reccmp_progress_baseline.json merge=reccmp-baseline
-config/baselines/reccmp_progress_baseline.report.json merge=reccmp-baseline
+config/baselines/reccmp_progress_baseline.functions.csv merge=reccmp-baseline

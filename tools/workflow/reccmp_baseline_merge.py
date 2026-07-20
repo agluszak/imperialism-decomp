@@ -18,7 +18,7 @@ from typing import Callable, Sequence
 BASELINE_PATHS = frozenset(
     {
         "config/baselines/reccmp_progress_baseline.json",
-        "config/baselines/reccmp_progress_baseline.report.json",
+        "config/baselines/reccmp_progress_baseline.functions.csv",
     }
 )
 PENDING_NAME = "reccmp-baseline-refresh.pending"
