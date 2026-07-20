@@ -24,6 +24,7 @@
 #include "game/TForeignMinister.h"
 #include "game/TCityInteriorMinister.h"
 #include "game/TDefenseMinister.h"
+#include "game/TDefendProvinceMission.h"
 #include "game/TStream.h"
 #include "game/TMission.h"
 #include "game/TMinor.h"
@@ -268,7 +269,7 @@ void TAutoGreatPower::WriteTo(TStream* stream) {
 }
 
 // FUNCTION: IMPERIALISM 0x004e7510
-void TAutoGreatPower::DispatchTurnEvent11F8NoPayloadSlot2AC(void) {
+void TAutoGreatPower::HandleNationLost(void) {
   if (g_pSimMgr->redrawEnabled != 0) {
     g_pGameFlowState->DispatchTaggedGameStateEvent1F20(0x6c6f7374, this->nationSlot, -3);
   }
@@ -1411,7 +1412,132 @@ undefined TAutoGreatPower::IterateLinkedListCursorAndRelinkNodeOwners_004ea990()
 }
 
 // FUNCTION: IMPERIALISM 0x004eaa20
-void TAutoGreatPower::NoOpTailStateHookSlot2B4(void) {}
+void TAutoGreatPower::RecomputeAiExpansionAndMissionPressureScores(void) {
+  int totalRegionCount = 0;
+  int compatibleRegionCount = 0;
+  int activeMissionCount = 0;
+
+  int regionOrdinal;
+  for (regionOrdinal = 1; regionOrdinal <= ownedRegionList->GetSize(); ++regionOrdinal) {
+    int regionId = ownedRegionList->At(regionOrdinal);
+    if (IsMapTileCompatibleWithCurrentTerrainOrActionContext(regionId) != 0) {
+      ++compatibleRegionCount;
+    }
+    ++totalRegionCount;
+  }
+
+  TMinor** minorCursor = g_apNationAuxRuntimeStateSlots;
+  do {
+    if (*minorCursor != 0 && (*minorCursor)->IsEncodedNationSlotMinus200Equal(nationSlot)) {
+      for (regionOrdinal = 1; regionOrdinal <= (*minorCursor)->ownedRegionList->GetSize();
+           ++regionOrdinal) {
+        int regionId = (*minorCursor)->ownedRegionList->At(regionOrdinal);
+        if (IsMapTileCompatibleWithCurrentTerrainOrActionContext(regionId) != 0) {
+          ++compatibleRegionCount;
+        }
+        ++totalRegionCount;
+      }
+    }
+    ++minorCursor;
+  } while (minorCursor < g_apNationAuxRuntimeStateSlots + 16);
+
+  CIterator missionIterator(missionQueue);
+  TMission* mission = static_cast<TMission*>(missionIterator.Reset());
+  while (missionIterator.More()) {
+    mission->AssertValid();
+    if (mission->ReturnFalseSlot60() != 0) {
+      ++activeMissionCount;
+    }
+    mission = static_cast<TMission*>(missionIterator.Advance());
+  }
+
+  float ownUnitDivergence = g_afNationCombinedUnitDivergence_006a3b50[nationSlot] -
+                            g_afNationMobileUnitDivergence_006a3ae0[nationSlot];
+  averageUnitDivergencePerOwnedRegionB68 = ownUnitDivergence / static_cast<float>(totalRegionCount);
+
+  float maximumAdjustedMilitaryScore = 0.0f;
+  float maximumAdjustedMissionScore = 0.0f;
+  float maximumRawMilitaryScore = 0.0f;
+  float minimumPeerCombinedDivergence = -1.0f;
+  float minimumPeerOrderQueueDivergence = -1.0f;
+
+  int peerNation;
+  for (peerNation = 0; peerNation < 7; ++peerNation) {
+    if (peerNation == nationSlot || g_apNationStates[peerNation] == 0) {
+      continue;
+    }
+
+    float peerCombinedDivergence = g_afNationCombinedUnitDivergence_006a3b50[peerNation];
+    if (peerCombinedDivergence < minimumPeerCombinedDivergence ||
+        minimumPeerCombinedDivergence == g_AiPressureUnsetSentinel_006545c8) {
+      minimumPeerCombinedDivergence = peerCombinedDivergence;
+    }
+
+    float peerOrderQueueDivergence = g_afNationOrderQueueDivergence_006a3a88[peerNation];
+    if (peerOrderQueueDivergence < minimumPeerOrderQueueDivergence ||
+        minimumPeerOrderQueueDivergence == g_AiPressureUnsetSentinel_006545c8) {
+      minimumPeerOrderQueueDivergence = peerOrderQueueDivergence;
+    }
+
+    float militaryScore;
+    if (g_pGlobalMapState->TMapMaker_CheckTerrainTypePairReachabilityByRegionClassMask(
+            nationSlot, static_cast<short>(peerNation))) {
+      militaryScore = g_afNationMobileUnitScore_006a3b88[peerNation];
+    } else {
+      militaryScore = g_afNationWeightedMilitaryOrderScore_006a3b20[peerNation];
+    }
+
+    if (militaryScore > maximumRawMilitaryScore) {
+      maximumRawMilitaryScore = militaryScore;
+    }
+
+    float missionScore = g_afNationOrderQueueDivergenceMirror_006a3ac0[peerNation];
+    if (g_pDiplomacyTurnStateManager
+            ->relationStandingScoreMatrix79c[nationSlot * 0x17 + peerNation] >= 100) {
+      maximumAdjustedMilitaryScore =
+          static_cast<float>(defenseMinister->GetPersonalityWeightByFlag(1) * militaryScore);
+      missionScore =
+          static_cast<float>(defenseMinister->GetPersonalityWeightByFlag(0) * missionScore);
+    }
+
+    if (militaryScore > maximumAdjustedMilitaryScore) {
+      maximumAdjustedMilitaryScore = militaryScore;
+    }
+    if (missionScore > maximumAdjustedMissionScore) {
+      maximumAdjustedMissionScore = missionScore;
+    }
+  }
+
+  float militaryRatio =
+      maximumRawMilitaryScore / (g_afNationMobileUnitDivergence_006a3ae0[nationSlot] +
+                                 averageUnitDivergencePerOwnedRegionB68);
+  if (militaryRatio > g_MissionScoreOneConstant_006545d8) {
+    militaryRatio = g_AiPressureRatioCap_006545e0;
+  }
+
+  float peerScaledMilitaryScore = (militaryRatio - g_AiPressureUnsetSentinel_006545c8) *
+                                  g_AiPressureMidpointScale_006545e8 *
+                                  g_AiPressurePeerScale_006543e8 * minimumPeerCombinedDivergence;
+  if (peerScaledMilitaryScore > maximumAdjustedMilitaryScore) {
+    maximumAdjustedMilitaryScore = peerScaledMilitaryScore;
+  }
+
+  float expansionPressure = maximumAdjustedMilitaryScore - ownUnitDivergence;
+  if (expansionPressure < g_MissionScoreZeroThreshold_006545f0) {
+    expansionPressure = g_MissionDefaultScore_006545d0;
+  }
+  if (compatibleRegionCount != 0) {
+    expansionPressure /= static_cast<float>(compatibleRegionCount);
+  }
+  expansionPressurePerCompatibleRegionB64 = expansionPressure;
+
+  if (activeMissionCount == 0) {
+    activeMissionPressureAverageB6c = maximumAdjustedMissionScore;
+  } else {
+    activeMissionPressureAverageB6c =
+        maximumAdjustedMissionScore / static_cast<float>(activeMissionCount);
+  }
+}
 
 // FUNCTION: IMPERIALISM 0x004eae70
 void TAutoGreatPower::RefreshTrackedEntriesAndReplanAiDevelopment(int unused) {

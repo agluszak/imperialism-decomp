@@ -1,5 +1,9 @@
 #include "game/TRemoteGreatPower.h"
 
+#include "game/global_data_tables.h"
+#include "game/TMapMgr.h"
+#include "game/TSimMgr.h"
+
 // FUNCTION: IMPERIALISM 0x00541840
 char TRemoteGreatPower::ShouldDispatchImmediatelySlot28(void) {
   return 0;
@@ -59,7 +63,7 @@ void TRemoteGreatPower::CallSlotA8(int targetNation) {
 }
 
 // FUNCTION: IMPERIALISM 0x00541a40
-void TRemoteGreatPower::NoOpTailStateHookSlot2B4(void) {}
+void TRemoteGreatPower::RecomputeAiExpansionAndMissionPressureScores(void) {}
 
 // FUNCTION: IMPERIALISM 0x00541a60
 void TRemoteGreatPower::RefreshTrackedEntriesAndReplanAiDevelopment(int unused) {
@@ -80,10 +84,16 @@ IMPLEMENT_DYNCREATE(TRemoteGreatPower, TGreatPower)
 TRemoteGreatPower::TRemoteGreatPower() {}
 
 // FUNCTION: IMPERIALISM 0x00541b40
-void TRemoteGreatPower::NoOpNationSelectedRegionAndMapCellLabelHook(int arg1, int arg2) {
-  (void)arg1;
-  (void)arg2;
+void TRemoteGreatPower::SetNationSelectedRegionAndMapCellLabel(short selectedRegion,
+                                                               char* mapCellLabel) {
+  homeRegionIndex = selectedRegion;
+  CString label(mapCellLabel);
+  short cityRecordIndex =
+      g_pGlobalMapState->terrainStateTable[static_cast<short>(homeRegionIndex)].cityRecordIndex;
+  g_pGlobalMapState->SetGlobalMapCellSharedLabel(cityRecordIndex, &label);
 }
 
 // FUNCTION: IMPERIALISM 0x00541be0
-void TRemoteGreatPower::DispatchTurnEvent11F8NoPayloadSlot2AC(void) {}
+void TRemoteGreatPower::HandleNationLost(void) {
+  g_pSimMgr->RemoveNationSlotAndNotifyPeers(nationSlot);
+}

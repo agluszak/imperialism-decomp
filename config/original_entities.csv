@@ -2290,7 +2290,7 @@ address|name|symbol|size|type|prototype|provenance
 4d6730|TCountry::ReturnFalseNationStateCapabilityFlag98||3|function|undefined ReturnFalseNationStateCapabilityFlag98()|
 4d6750|TCountry::ReturnFalseNationStateCapabilityFlag9C||3|function|undefined ReturnFalseNationStateCapabilityFlag9C()|
 4d6770|TCountry::ReturnFalseNationStateCapabilityFlagA0||3|function|undefined ReturnFalseNationStateCapabilityFlagA0()|
-4d6790|TCountry::NoOpNationSelectedRegionAndMapCellLabelHook||3|function|undefined NoOpNationSelectedRegionAndMapCellLabelHook(void)|
+4d6790|TCountry::SetNationSelectedRegionAndMapCellLabel||3|function|void SetNationSelectedRegionAndMapCellLabel(short selectedRegion, char * mapCellLabel)|
 4d67b0|TCountry::GetRuntimeClass||6|function|undefined GetTCountryClassNamePointer()|rtti
 4d67d0|TCountry::TCountry||88|function|void __thiscall TCountry(void)|
 4d6850|TCountry::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
@@ -2342,7 +2342,7 @@ address|name|symbol|size|type|prototype|provenance
 4d8950|TGreatPower::CreateObject|?CreateObject@TGreatPower@@SGPAVCObject@@XZ|90|function|undefined CreateObject()|rtti
 4d89d0|TGreatPower::GetRuntimeClass||6|function|CRuntimeClass * __thiscall GetRuntimeClass()|rtti
 4d89f0|TGreatPower::TGreatPower||355|function|undefined TGreatPower()|
-4d8bc0|TGreatPower::SelectCandidateTilesWithLowGroundUnitCount_ad||1|function|undefined SelectCandidateTilesWithLowGroundUnitCount(void)|
+4d8bc0|TGreatPower::RecomputeAiExpansionAndMissionPressureScores||1|function|void RecomputeAiExpansionAndMissionPressureScores(void)|
 4d8be0|TGreatPower::RefreshTrackedEntriesAndReplanAiDevelopment||3|function|void RefreshTrackedEntriesAndReplanAiDevelopment(int unused)|
 4d8c00|TGreatPower::GetDiplomacyCounterA2||8|function|undefined GetDiplomacyCounterA2()|
 4d8c20|TGreatPower::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
@@ -2363,7 +2363,7 @@ address|name|symbol|size|type|prototype|provenance
 4dab00|TGreatPower::NoOpNationQueuedOrderHook||1|function|undefined NoOpNationQueuedOrderHook(void)|
 4dab20|ExecuteNationPendingActionStateMachine||661|function|undefined ExecuteNationPendingActionStateMachine()|
 4dae70|TGreatPower::HasQueuedCivWorkOrderType7||97|function|undefined HasQueuedCivWorkOrderType7()|
-4daf00|TGreatPower::DispatchTurnEvent11F8NoPayloadSlot2AC||19|function|undefined DispatchTurnEvent11F8NoPayloadSlot2AC()|
+4daf00|TGreatPower::HandleNationLost||19|function|void HandleNationLost()|
 4daf30|TGreatPower::CompileGreatPowerRelationshipDeltaLinesAndDispatchMessage||879|function|undefined CompileGreatPowerRelationshipDeltaLinesAndDispatchMessage()|
 4db380|TGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage||867|function|undefined UpdateGreatPowerPressureStateAndDispatchEscalationMessage()|
 4db7d0|TGreatPower::UpdateOrderEntryAvailabilityByConnectedRegionMask||581|function|undefined UpdateOrderEntryAvailabilityByConnectedRegionMask()|
@@ -2379,7 +2379,7 @@ address|name|symbol|size|type|prototype|provenance
 4dc840|TGreatPower::BuildGreatPowerEligibleNationEventMessagesFromLinkedList||325|function|char __thiscall BuildGreatPowerEligibleNationEventMessagesFromLinkedList(CString * outMessageText)|
 4dc9f0|TGreatPower::RefreshGreatPowerRelationPanelsAndDispatchDeltaSummary||67|function|undefined RefreshGreatPowerRelationPanelsAndDispatchDeltaSummary()|
 4dca60|TGreatPower::OrphanRetStub_0059add0||16|function|undefined OrphanRetStub_0059add0(void)|
-4dca80|TGreatPower::SelectCandidateTilesWithLowGroundUnitCount_3f||3|function|undefined SelectCandidateTilesWithLowGroundUnitCount(void)|
+4dca80|TGreatPower::AbsorbCityNeedVectorSlotFC||3|function|void AbsorbCityNeedVectorSlotFC(short* needVector)|
 4dcaa0|TGreatPower::OrphanLeaf_NoCall_Ins07_004d8920_40||306|function|undefined OrphanLeaf_NoCall_Ins07_004d8920(void)|
 4dcc30|TGreatPower::GetTEventHandlerClassNamePointer_38||1|function|undefined GetTEventHandlerClassNamePointer(void)|
 4dcc50|TGreatPower::ApplyDiplomacyState222ToCityStockAndClear||51|function|void ApplyDiplomacyState222ToCityStockAndClear()|
@@ -2576,7 +2576,7 @@ address|name|symbol|size|type|prototype|provenance
 4e7230|TAutoGreatPower::Free||107|function|undefined Free()|
 4e72c0|TGreatPower::InitializeMapActionCandidateStateAndQueueMission||235|function|undefined InitializeMapActionCandidateStateAndQueueMission()|
 4e73f0|TGreatPower::SerializeGreatPowerTailStateToMessage||212|function|undefined SerializeGreatPowerTailStateToMessage()|
-4e7510|TAutoGreatPower::DispatchTurnEvent11F8NoPayloadSlot2AC||46|function|undefined DispatchTurnEvent11F8NoPayloadSlot2AC()|
+4e7510|TAutoGreatPower::HandleNationLost||46|function|void HandleNationLost()|
 4e7550|TAutoGreatPower::RefreshGreatPowerRelationPanelsAndDispatchDeltaSummary||33|function|void __thiscall RefreshGreatPowerRelationPanelsAndDispatchDeltaSummary()|
 4e7590|TAutoGreatPower::GetTEventHandlerClassNamePointer_38||22|function|undefined OrphanLeaf_NoCall_Ins07_004e7590(void)|
 4e75c0|TAutoGreatPower::OrphanCallChain_C4_I28_004e75c0||72|function|undefined OrphanCallChain_C4_I28_004e75c0(void)|
@@ -2628,7 +2628,7 @@ address|name|symbol|size|type|prototype|provenance
 4ea700|TAutoGreatPower::ComputeAiCityActionCostFromSlotAndMode||232|function|float ComputeAiCityActionCostFromSlotAndMode(short actionSlot, char skipContextBias)|
 4ea830|TAutoGreatPower::GetCachedAiCityActionContextBias||269|function|float GetCachedAiCityActionContextBias(short selector)|
 4ea990|TAutoGreatPower::IterateLinkedListCursorAndRelinkNodeOwners_004ea990||97|function|undefined IterateLinkedListCursorAndRelinkNodeOwners_004ea990()|
-4eaa20|TAutoGreatPower::SelectCandidateTilesWithLowGroundUnitCount_ad||866|function|undefined RecomputeNationTerrainCompatibilityAndDiplomacyMetrics()|
+4eaa20|TAutoGreatPower::RecomputeAiExpansionAndMissionPressureScores||866|function|void RecomputeAiExpansionAndMissionPressureScores(void)|
 4eae70|TAutoGreatPower::RefreshTrackedEntriesAndReplanAiDevelopment||239|function|void RefreshTrackedEntriesAndReplanAiDevelopment(int unused)|
 4eafa0|SeedTrackedEntryAssignmentsFromEligibleUnits||124|function|undefined SeedTrackedEntryAssignmentsFromEligibleUnits()|
 4eb040|IterateLinkedListCursorEntries_004eb040||74|function|undefined IterateLinkedListCursorEntries_004eb040()|
@@ -3660,7 +3660,7 @@ address|name|symbol|size|type|prototype|provenance
 535820|TMission::SerializeMissionState||86|function|void __thiscall SerializeMissionState(TStream* stream)|
 5358a0|TMission::DeserializeMissionState||125|function|void __thiscall DeserializeMissionState(TStream* stream)|
 535940|FindFirstTrackedHandlerMatchingModeAndShortKey||123|function|undefined FindFirstTrackedHandlerMatchingModeAndShortKey()|
-5359e0|IsMapTileCompatibleWithCurrentTerrainOrActionContext||210|function|undefined IsMapTileCompatibleWithCurrentTerrainOrActionContext()|
+5359e0|IsMapTileCompatibleWithCurrentTerrainOrActionContext||210|function|char IsMapTileCompatibleWithCurrentTerrainOrActionContext(int tileIndex)|
 535b00|SelectBestCityDevelopmentFromResourcePools||899|function|bool SelectBestCityDevelopmentFromResourcePools(short nationSlot, int* resourcePools, TMilitaryUnit** bestUnitByType, char* selectedIsIndustry, char* selectedIsUpgrade, int* selectedSlot, int unused, float* selectedWeightedCost)|
 535f80|CompareMissionOrderEntriesByMovementClassThenEfficiency||197|function|short __cdecl CompareMissionOrderEntriesByMovementClassThenEfficiency(void* a, void* b, void* reverseOrder)|
 536090|CompareMissionOrderEntriesByPriorityScore||153|function|undefined CompareMissionOrderEntriesByPriorityScore()|
@@ -3878,7 +3878,7 @@ address|name|symbol|size|type|prototype|provenance
 540ba0|TProxyGreatPower::ReturnFalseNationStateActionStub||90|function|undefined TryDispatchNationActionViaTurnEventOrFallback()|
 540c20|TProxyGreatPower::OrphanLeaf_NoCall_Ins07_004d8920||61|function|undefined OrphanLeaf_NoCall_Ins07_004d8920(undefined4 param_1, undefined4 param_2)|
 540c70|TProxyGreatPower::QueueNationOrderManagerPayloadObject_2f||38|function|undefined DispatchTurnEvent31StarPayloadForNationAndReleaseObject()|
-540cb0|TProxyGreatPower::DispatchTurnEvent11F8NoPayloadSlot2AC||44|function|undefined HandleNationLostEventAndReplaceNationStateForSlot()|
+540cb0|TProxyGreatPower::HandleNationLost||44|function|void HandleNationLost()|
 540cf0|TProxyGreatPower::ExecuteAdvisoryPromptAndApplyActionType1||145|function|undefined EmitTurnEvent1DCommand69ForCurrentNationSlot()|
 540dc0|TProxyGreatPower::ExecuteAdvisoryPromptAndApplyActionType2OrFallback||153|function|undefined EmitTurnEvent1DCommand61ForCurrentNationSlot()|
 540e90|THostGreatPower::CreateObject|?CreateObject@THostGreatPower@@SGPAVCObject@@XZ|110|function|undefined CreateObject()|rtti
@@ -3890,7 +3890,7 @@ address|name|symbol|size|type|prototype|provenance
 541040|THostGreatPower::WriteTo||35|function|undefined UpdateHostGreatPowerStatePathBAndSetLossFlag()|
 541080|TGreatPower::TryDispatchNationActionViaUiThenTurnEvent||77|function|undefined TryDispatchNationActionViaUiThenTurnEvent()|
 5410f0|TGreatPower::ProcessPendingDiplomacyThenDispatchTurnEvent29A||88|function|undefined ProcessPendingDiplomacyThenDispatchTurnEvent29A()|
-541170|THostGreatPower::DispatchTurnEvent11F8NoPayloadSlot2AC||140|function|undefined HandleHostGreatPowerLostStateAndNotifyOrEndSession()|
+541170|THostGreatPower::HandleNationLost||140|function|void HandleNationLost()|
 541230|TClientGreatPower::CreateObject|?CreateObject@TClientGreatPower@@SGPAVCObject@@XZ|83|function|undefined CreateObject()|rtti
 5412b0|TClientGreatPower::ReturnFalseNationStateCapabilityFlag98||3|function|undefined ReturnTrueNationStateCapabilityFlag98Alt()|
 5412d0|TClientGreatPower::ReturnFalseNationStateCapabilityFlagA0||3|function|undefined ReturnFalseNationStateCapabilityFlagA0Alt()|
@@ -3902,7 +3902,7 @@ address|name|symbol|size|type|prototype|provenance
 5414f0|TClientGreatPower::ProcessPendingDiplomacyProposalQueue||149|function|undefined QueueTimeEmitPacketAndDispatchTurnEvent29A()|
 5415c0|TClientGreatPower::ExecuteAdvisoryPromptAndApplyActionType2OrFallback||181|function|undefined ApplyClientGreatPowerCommand61AndEmitTurnEvent1E()|
 5416b0|TClientGreatPower::CheckTransitionSlot27C||168|function|undefined CheckTransitionSlot27C()|
-541790|TClientGreatPower::DispatchTurnEvent11F8NoPayloadSlot2AC||24|function|undefined DispatchLoseEventForClientGreatPowerSlot()|
+541790|TClientGreatPower::HandleNationLost||24|function|void HandleNationLost()|
 5417c0|TRemoteGreatPower::CreateObject|?CreateObject@TRemoteGreatPower@@SGPAVCObject@@XZ|83|function|undefined CreateObject()|rtti
 541840|TRemoteGreatPower::ReturnFalseNationStateCapabilityFlagA0||3|function|undefined ReturnTrueNationStateCapabilityFlagA0Alt()|
 541860|TRemoteGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage||3|function|undefined ReturnFalseRemoteGreatPowerCapabilityStub()|
@@ -3920,20 +3920,20 @@ address|name|symbol|size|type|prototype|provenance
 5419e0|TRemoteGreatPower::ProcessPendingDiplomacyProposalQueue||8|function|undefined DispatchRemoteGreatPowerCallbackSlot1CC()|
 541a00|TRemoteGreatPower::OrphanLeaf_NoCall_Ins02_004d7ee0||3|function|undefined OrphanLeaf_NoCall_Ins02_004d7ee0(void)|
 541a20|TRemoteGreatPower::ApplyMinorNationCapabilityActionType6||3|function|undefined OrphanLeaf_NoCall_Ins07_004d8920(void)|
-541a40|TRemoteGreatPower::SelectCandidateTilesWithLowGroundUnitCount_ad||1|function|undefined SelectCandidateTilesWithLowGroundUnitCount(void)|
+541a40|TRemoteGreatPower::RecomputeAiExpansionAndMissionPressureScores||1|function|void RecomputeAiExpansionAndMissionPressureScores(void)|
 541a60|TRemoteGreatPower::RefreshTrackedEntriesAndReplanAiDevelopment||3|function|void RefreshTrackedEntriesAndReplanAiDevelopment(int unused)|
 541a80|TRemoteGreatPower::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 541ab0|TRemoteGreatPower::DestructTRemoteGreatPower||80|function|undefined DestructTRemoteGreatPower()|
 541b20|TRemoteGreatPower::GetRuntimeClass||6|function|undefined GetTRemoteGreatPowerClassNamePointer()|rtti
-541b40|TRemoteGreatPower::NoOpNationSelectedRegionAndMapCellLabelHook||127|function|undefined SetNationSelectedRegionAndMapCellLabel(short param_1, char * param_2)|
-541be0|TRemoteGreatPower::DispatchTurnEvent11F8NoPayloadSlot2AC||17|function|undefined RemoveRemoteGreatPowerNationSlotAndNotifyPeers()|
+541b40|TRemoteGreatPower::SetNationSelectedRegionAndMapCellLabel||127|function|void SetNationSelectedRegionAndMapCellLabel(short selectedRegion, char * mapCellLabel)|
+541be0|TRemoteGreatPower::HandleNationLost||17|function|void HandleNationLost()|
 541c10|TRemoteMinor::CreateObject|?CreateObject@TRemoteMinor@@SGPAVCObject@@XZ|83|function|undefined CreateObject()|rtti
 541c90|TRemoteMinor::ShouldDispatchImmediatelySlot28||3|function|undefined ShouldDispatchImmediatelySlot28()|
 541cb0|TRemoteMinor::ApplyIndexedResourceDeltaAndAdjustNationTotals||3|function|undefined ApplyIndexedResourceDeltaAndAdjustNationTotals()|
 541cd0|TRemoteMinor::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 541d00|TRemoteMinor::~TRemoteMinor||80|function|undefined ~TRemoteMinor()|
 541d70|TRemoteMinor::GetRuntimeClass|?GetRuntimeClass@TRemoteMinor@@UBEPAUCRuntimeClass@@XZ|6|function|undefined GetRuntimeClass()|rtti
-541d90|TRemoteMinor::SetNationSelectedRegionAndMapCellLabelAlt||127|function|undefined SetNationSelectedRegionAndMapCellLabelAlt(void)|
+541d90|TRemoteMinor::SetNationSelectedRegionAndMapCellLabel||127|function|void SetNationSelectedRegionAndMapCellLabel(short selectedRegion, char * mapCellLabel)|
 541f60|WrapperFor_ftol_At00541f60||30|function|undefined WrapperFor_ftol_At00541f60()|
 5420a0|SetEventPayloadNationIdFromSlotIndex||20|function|undefined SetEventPayloadNationIdFromSlotIndex()|
 5420d0|SetEventPayloadNationIdFromSlotIndexWithSentinelHandling||51|function|undefined SetEventPayloadNationIdFromSlotIndexWithSentinelHandling()|

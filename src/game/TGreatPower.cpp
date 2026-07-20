@@ -180,7 +180,7 @@ TGreatPower::TGreatPower(int arg1, int arg2) {
 }
 
 // FUNCTION: IMPERIALISM 0x004d8bc0
-void TGreatPower::NoOpTailStateHookSlot2B4(void) {}
+void TGreatPower::RecomputeAiExpansionAndMissionPressureScores(void) {}
 
 // FUNCTION: IMPERIALISM 0x004d8be0
 void TGreatPower::RefreshTrackedEntriesAndReplanAiDevelopment(int unused) {
@@ -891,8 +891,8 @@ char TGreatPower::HasTrackedOrderOfType7(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x004daf00
-void TGreatPower::DispatchTurnEvent11F8NoPayloadSlot2AC(void) {
-  return;
+void TGreatPower::HandleNationLost(void) {
+  g_pUiRuntimeContext->DispatchTurnEventSlot4C(0x11f8, 0);
 }
 
 // FUNCTION: IMPERIALISM 0x004daf30
@@ -1616,7 +1616,9 @@ void TGreatPower::NotifyCitySlot2C(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x004dca80
-void TGreatPower::OrphanRetStub_004dca80(int) {}
+void TGreatPower::AbsorbCityNeedVectorSlotFC(short* needVector) {
+  (void)needVector;
+}
 
 // FUNCTION: IMPERIALISM 0x004dcaa0
 unsigned int TGreatPower::GetEffectiveDiplomacyCounterA2ForCode(int proposalCode) {
@@ -4659,8 +4661,6 @@ void TGreatPower::HandleTurnInstruction_Civi_DeserializeAndCreateWorkOrder(void*
   orderObject->InitializeCivWorkOrderState(workOrderType, ownerNationSlot,
                                            static_cast<int>(cityOwnerTag));
 }
-
-void TGreatPower::AbsorbCityNeedVectorSlotFC(short*) {}
 
 // Ghidra mislabels this 0x005b7f50 leaf "ApplyIndexedResourceDeltaAndAdjustNationTotals_Impl";
 // the body is a pure range predicate (no resource delta, no nation totals), renamed by

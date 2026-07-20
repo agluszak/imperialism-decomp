@@ -956,8 +956,8 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     for (int dirSlot = 0; dirSlot < 0x17; ++dirSlot) {
       if (dirSlot != g_pSimMgr->GetActiveNationId() &&
           g_apTerrainTypeDescriptorTable[dirSlot]->ShouldDispatchImmediatelySlot28() != 0) {
-        g_apTerrainTypeDescriptorTable[dirSlot]->NoOpNationSelectedRegionAndMapCellLabelHook(
-            directory->homeRegionBySlot[dirSlot], (int)directory->cityNameBySlot[dirSlot]);
+        g_apTerrainTypeDescriptorTable[dirSlot]->SetNationSelectedRegionAndMapCellLabel(
+            directory->homeRegionBySlot[dirSlot], directory->cityNameBySlot[dirSlot]);
         {
           CString nationName(directory->nationNameBySlot[dirSlot]);
           g_apTerrainTypeDescriptorTable[dirSlot]->SetNationDisplayNameAndLocalizationSlotRef(
@@ -1897,7 +1897,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
       return 1;
     }
     case 0x6c6f7365: // 'lose' - the named nation lost
-      g_apNationStates[gameState->value1C]->DispatchTurnEvent11F8NoPayloadSlot2AC();
+      g_apNationStates[gameState->value1C]->HandleNationLost();
       return 1;
     case 0x666f6666: { // 'foff' - seat refused: show string[value1C], post the cancel command
       CString messageFoff;

@@ -1012,6 +1012,7 @@ extern const double g_MissionScoreOneConstant_0065a470;
 // but distinct address instances read by 0x4eb8b0's inline scoring, plus a third 0.0
 // (double) threshold used for the score-positivity checks there.
 extern const float g_MissionDefaultScore_006545d0;
+extern const double g_AiPressureUnsetSentinel_006545c8;
 extern const float g_DefenseMinisterWeightZero_006548E0;
 extern const double g_MinisterWeightHalf_006548E8;
 extern const double g_MinisterWeightOne_006548F0;
@@ -1023,6 +1024,9 @@ extern const double g_BullyWeightHigh_00654918;
 
 extern const float g_UnreferencedConstant_006545d4;
 extern const double g_MissionScoreOneConstant_006545d8;
+extern const float g_AiPressureRatioCap_006545e0;
+extern const double g_AiPressureMidpointScale_006545e8;
+extern const float g_AiPressurePeerScale_006543e8;
 extern const double g_MissionScoreZeroThreshold_006545f0;
 extern const double g_MissionEligibilityRatioMargin_006545f8;
 extern const float g_HexHighlightScreenScale_00658640;

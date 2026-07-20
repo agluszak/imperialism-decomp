@@ -334,7 +334,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
         continue;
       }
       TGreatPower* activeNation = g_apNationStates[activeNationSlot];
-      activeNation->DispatchTurnEvent11F8NoPayloadSlot2AC();
+      activeNation->HandleNationLost();
       actionNeeded = 1;
     }
     if (actionNeeded == 0) {
@@ -583,7 +583,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
         const short encoded = localizationNationState->encodedNationSlot;
         if (encoded > 99 && encoded < 200) {
           TGreatPower* activeNation = g_apNationStates[activeNationSlot];
-          activeNation->DispatchTurnEvent11F8NoPayloadSlot2AC();
+          activeNation->HandleNationLost();
           actionNeeded = 1;
         }
       }

@@ -13,7 +13,7 @@ public:
   void ApplyIndexedResourceDeltaAndAdjustNationTotals(int resourceIndex, int delta,
                                                       int multiplier) override;
   char ShouldDispatchImmediatelySlot28(void) override;
-  void NoOpNationSelectedRegionAndMapCellLabelHook(int arg1, int arg2) override;
+  void SetNationSelectedRegionAndMapCellLabel(short selectedRegion, char* mapCellLabel) override;
 
 protected:
   ~TRemoteMinor() override;

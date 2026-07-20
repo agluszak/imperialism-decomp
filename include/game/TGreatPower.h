@@ -134,11 +134,9 @@ public:
   virtual void DispatchGreatPowerQuarterlyStatusMessageLevel2(CString* message);
   virtual void DispatchGreatPowerQuarterlyStatusMessageLevel1(CString* message);
   virtual void DispatchGreatPowerQuarterlyStatusMessageLevel0(CString* message);
-  // slot 0xfc — placeholder in the original table; city callers use the direct helper
-  // below (`AbsorbCityNeedVectorSlotFC`), not virtual dispatch. Body is a bare `ret 4`:
-  // it takes one stack dword (proven by RET 0x4) and ignores it; no vtable call site
-  // exists to pin the argument's type, so it is modeled as an opaque dword.
-  virtual void OrphanRetStub_004dca80(int);
+  // slot 0x3f / vtable offset 0xfc — TCity::PredictedNeeds passes its 23-entry
+  // city-stock vector here. The base implementation is a bare `ret 4`.
+  virtual void AbsorbCityNeedVectorSlotFC(short* needVector);
   // slot 0x40 — body 0x004dcaa0: effective diplomacyCounterA2 for a proposal code,
   // reduced by 2 when the interaction manager maps the code into an active minister
   // capability category (4/5/3), or by 1 for the code-3 special case.
@@ -324,13 +322,13 @@ public:
   // slot 0x2a8 — body 0x004e27b0: mode-dispatched diplomacy slot action (mode 6 ->
   // slot 0xa8, etc.). TDiplomacyMgr notifies relation-code changes here.
   virtual void DispatchNationDiplomacySlotActionByMode(int targetNationSlot, int mode);
-  // slot 0x2ac — base body is the 0x0040389b thunk: dispatch turn event 0x11f8 with no
-  // payload. TAutoGreatPower overrides it (0x004e7510) with the 'lost' game-state event.
-  virtual void DispatchTurnEvent11F8NoPayloadSlot2AC(void);
+  // slot 0x2ac — handles this nation leaving play. The base dispatches turn event
+  // 0x11f8; network and AI nation types override the transition behavior.
+  virtual void HandleNationLost(void);
   // slot 0xac — body 0x004e06d0: sums the accumulated value (+0x44) of city
   // commodity records 8..0xc.
   virtual int SumCommodityRecordAccumulatedValues(void);
-  virtual void NoOpTailStateHookSlot2B4(void);
+  virtual void RecomputeAiExpansionAndMissionPressureScores(void);
   virtual void RefreshTrackedEntriesAndReplanAiDevelopment(int unused);
   // slot 0xaf — body 0x004db380 returns a char (1 on the hard-alert dispatch path,
   // 0 otherwise); the case-0xb join-empire loop tests that result.
@@ -455,7 +453,6 @@ public:
   void CompileGreatPowerRelationshipDeltaLinesAndDispatchMessage(void);
   void ReleaseTrackedObjectsByMapOwnerAndUnassignedEntries(int ownerClass);
   bool ExecuteAdvisoryPromptAndApplyActionType1(int arg1, int arg2);
-  void AbsorbCityNeedVectorSlotFC(short* needVector);
   void RevokeDiplomacyGrantForTargetAndAdjustInfluence(int arg1);
   // 0x004e3620 — sums the encoded diplomacyGrantByNation entries (masking off the
   // top 2 flag bits), skipping the 0xffff "no grant" sentinel. Used by the grants/aid

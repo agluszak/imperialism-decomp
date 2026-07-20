@@ -26,7 +26,7 @@ src/game/TArmyMgr.cpp|3|0|1|0
 src/game/TArmyPlacard.cpp|0|0|1|0
 src/game/TArmyStack.cpp|3|0|0|0
 src/game/TArmyUnitLine.cpp|1|0|0|0
-src/game/TAutoGreatPower.cpp|1|1|0|0
+src/game/TAutoGreatPower.cpp|0|1|0|0
 src/game/TAutomatedPlayDialog.cpp|1|0|1|0
 src/game/TBatRepDetLine.cpp|1|0|1|0
 src/game/TBattleDetailBook.cpp|0|0|1|0
@@ -76,7 +76,7 @@ src/game/TDiplomacyMgr.cpp|2|0|2|0
 src/game/TDisappearingButton.cpp|1|0|0|0
 src/game/TDocument.cpp|0|0|1|0
 src/game/TDropShadowTextBehavior.cpp|1|0|0|0
-src/game/TEditText.cpp|2|0|0|0
+src/game/TEditText.cpp|1|0|0|0
 src/game/TExpansionOrder.cpp|0|0|1|0
 src/game/TFileBasedDocument.cpp|0|0|1|0
 src/game/TFileStream.cpp|3|0|0|0
@@ -92,12 +92,11 @@ src/game/TGamePreferencesPicture.cpp|1|0|1|0
 src/game/TGameSetupDialog.cpp|0|0|1|0
 src/game/TGarrisonView.cpp|1|0|0|0
 src/game/TGrantsView.cpp|1|0|1|0
-src/game/TGreatPower.cpp|0|0|1|0
 src/game/THandleStream.cpp|4|0|0|0
 src/game/THelpMgr.cpp|3|0|1|0
 src/game/THelpPicture.cpp|2|0|1|0
 src/game/THighScoresPicture.cpp|1|0|0|0
-src/game/THostGreatPower.cpp|4|0|1|0
+src/game/THostGreatPower.cpp|1|0|0|0
 src/game/TIconSlider.cpp|1|0|0|0
 src/game/TIndustryCluster.cpp|0|0|1|0
 src/game/TInfoBarPictureText.cpp|0|0|1|0
@@ -171,8 +170,7 @@ src/game/TQueryFloater.cpp|0|0|1|0
 src/game/TRailCluster.cpp|0|0|1|0
 src/game/TRailheadDialog.cpp|0|0|1|0
 src/game/TRelationshipDialog.cpp|1|0|1|0
-src/game/TRemoteGreatPower.cpp|2|0|1|0
-src/game/TRemoteMinor.cpp|1|0|0|0
+src/game/TRemoteGreatPower.cpp|0|0|1|0
 src/game/TScenarioChooser.cpp|2|0|0|0
 src/game/TScoreGraph.cpp|0|0|1|0
 src/game/TSelectoText.cpp|0|0|1|0
