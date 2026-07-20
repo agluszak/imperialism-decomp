@@ -12,6 +12,7 @@
 #include "game/TViewMgr.h"
 #include "game/mapped_flavor_text.h"
 #include "game/TMultiplayerMgr.h"
+#include "game/ui_control_tags.h"
 
 // SYNTHETIC: IMPERIALISM 0x0043da40
 // TLoadSavePicture::`scalar deleting destructor'
@@ -30,7 +31,15 @@ TLoadSavePicture::TLoadSavePicture() {}
 void TLoadSavePicture::NoOpUiLifecycleHook(int arg) {}
 
 // FUNCTION: IMPERIALISM 0x0056cd10
-void TLoadSavePicture::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {}
+void TLoadSavePicture::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+  // The original also handles commandId==0xd (a slot-tab-index switch spanning
+  // selectedSlot92/loadModeFlag90, InvalidateCityDialogRectRegion, and further per-slot
+  // control refreshes) here -- not yet ported. The original never calls a base-class
+  // HandleEvent in any path, so none is modeled here either.
+  if (commandId == 0xa && sourceHandler->controlTag == kControlTagOkay) {
+    HandleSaveGameSlotSelectionAndPromptFlow();
+  }
+}
 
 // FUNCTION: IMPERIALISM 0x0056d190
 undefined TLoadSavePicture::HandleTurnFlowStateTickOrPostTurnEvent5DC() {
