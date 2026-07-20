@@ -15160,7 +15160,7 @@
     },
     {
       "address": "0x4f3710",
-      "matching": 0.023529411764705882,
+      "matching": 0.5534591194968553,
       "name": "TInteriorMinisterView::HandleEvent",
       "type": 1
     },
@@ -17011,7 +17011,7 @@
     },
     {
       "address": "0x50bea0",
-      "matching": 0.21081326669695594,
+      "matching": 0.20536119945479328,
       "name": "TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets",
       "type": 1
     },
@@ -30866,7 +30866,7 @@
     },
     {
       "address": "0x5a9090",
-      "matching": 0.8805970149253731,
+      "matching": 0.8208955223880597,
       "name": "TTacticalBattleView::PlayTacticalTileEffect",
       "type": 1
     },
@@ -30878,7 +30878,7 @@
     },
     {
       "address": "0x5a9240",
-      "matching": 0.5397590361445783,
+      "matching": 0.5304136253041363,
       "name": "TTacticalBattleView::AnimateTacticalUnitMoveBetweenTiles",
       "type": 1
     },
@@ -32853,7 +32853,7 @@
     },
     {
       "address": "0x5bf930",
-      "matching": 0.7956989247311828,
+      "matching": 0.7477253928866832,
       "name": "TOfferDeskPicture::RefreshSelectedNationOrderCompatibilityInfo",
       "type": 1
     },

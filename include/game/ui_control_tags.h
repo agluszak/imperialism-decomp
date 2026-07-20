@@ -195,3 +195,4 @@ const unsigned int kControlTagExpa = 0x65787061u; // 'expa' — expand-industry 
 const unsigned int kControlTagChec = 0x63686563u; // 'chec' — ship-check hotspot
 const unsigned int kControlTagCls0 = 0x636c7330u; // 'cls0' — first of the per-resource-type class sliders
 const unsigned int kControlTagScvw = 0x73637677u; // 'scvw' — scroll view
+const unsigned int kControlTagRecc = 0x72656363u; // 'recc' — interior-minister "reconstruction" button
