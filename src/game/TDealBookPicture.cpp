@@ -190,9 +190,22 @@ void TDealBookPicture::HandleEvent(int commandId, TEventHandler* sourceHandler, 
                              static_cast<LPCSTR>(categoryName));
       titLControl->AssignTextSharedRefIfChangedAndMaybeInvalidate(&composedTitle, 0);
     }
+  } else if (commandId == 0xa) {
+    unsigned int tag = sourceHandler->controlTag;
+    if (tag == 0x6c636f72u) { // 'lcor'
+      if (field94 > 0) {
+        UpdateDealBookResourceSelectionAndToggleControls(field94 - 1, field90);
+      }
+    } else if (tag == 0x72636f72u) { // 'rcor'
+      if (field94 < field92) {
+        UpdateDealBookResourceSelectionAndToggleControls(field94 + 1, field90);
+      }
+    } else if (tag == 0x6d61726bu) { // 'mark'
+      if (initializedFlagB1 != 0) {
+        RefreshTradeSelectionHeaderAndNationOfferBidLines();
+      }
+    }
   }
-  // The original also dispatches a large per-tag command table below commandId 0x2af8
-  // (934 bytes total) -- not yet ported.
   TControl::HandleEvent(commandId, sourceHandler, event);
 }
 
