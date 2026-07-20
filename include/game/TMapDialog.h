@@ -27,26 +27,26 @@ public:
   TMapDialogTileMarker tileMarkers7c[90]; // +0x7c .. +0x34c
   // Suppress-tile-marker-rerender gate: ApplyRectSlot110 (0x51e260) only blits the marker
   // overlay into quickDrawSurface350 while this is 0. Zeroed by the ctor.
-  unsigned char field34c; // +0x34c
+  bool suppressMarkerOverlay34C; // +0x34c
   unsigned char pad34d[3];
   // Released (set to null) by Free(); read by RenderMapDialogTerrainOverlayFrameByTileOwner as
   // the source surface for tile-owner/terrain-frame blits.
   TQuickDrawSurfaceContext* quickDrawSurface350;
-  short field354;         // +0x354 zeroed by the ctor; no confirmed reader yet
-  short field356;         // +0x356 ctor-init 0xffff (tile-index "none" sentinel idiom)
-  unsigned char field358; // +0x358 zeroed by the ctor; no confirmed reader yet
+  short unresolvedWord354;    // +0x354 zeroed by the ctor; no confirmed reader yet
+  short selectedTileIndex356; // +0x356 ctor-init 0xffff (tile-index "none" sentinel)
+  bool unresolvedFlag358;     // +0x358 zeroed by the ctor; no confirmed reader yet
   unsigned char pad359[3];
-  void* field35c; // released (set to null) by Free(); no other confirmed reader.
+  TObject* overlayObject35C; // Free() dispatches TObject::Free virtually, then clears it.
   // Per-tile debug/text-overlay gate read by RenderStrategicMapTileCell (0x51eb40). Zeroed
   // by the ctor.
-  unsigned char field360; // +0x360
+  bool tileDebugOverlayEnabled360; // +0x360
   unsigned char pad361[3];
 
   DECLARE_DYNCREATE(TMapDialog)
   TMapDialog();
   virtual ~TMapDialog() override;
 
-  void Free() override; // slot 0x07 — 0x00519c90: release quickDrawSurface350/field35c.
+  void Free() override; // slot 0x07 — 0x00519c90: release both owned resources.
 
   void ApplyRectSlot110(RECT* rectBuffer) override;
 

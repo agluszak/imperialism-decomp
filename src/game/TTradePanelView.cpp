@@ -1,6 +1,8 @@
 #include "game/TTradePanelView.h"
 
 #include "game/CString.h"
+#include "game/TCluster.h"
+#include "game/TDiplomacyMapView.h"
 #include "game/TSimMgr.h"
 #include "game/global_data_tables.h"
 #include "game/quickdraw_rendering.h"
@@ -87,8 +89,12 @@ void TTradePanelView::ApplyRectSlot110(RECT* rectBuffer) {
 }
 
 // FUNCTION: IMPERIALISM 0x004f8d50
-undefined TTradePanelView::OrphanRetStub_00430550() {
-  return 0;
+void TTradePanelView::Setup() {
+  TCluster* tradeCluster = static_cast<TCluster*>(ResolveControlByTag(0x636c7573)); // 'clus'
+  SetControlHoverHelpText(CString(g_pDiplomacyPanelEmptyText_00654ec8), tradeCluster);
+  tradeCluster->SetSelectedChildTagAndRefresh(0x74726161); // 'traa'
+  diplomacyMapView60->selectedGrantRowC0 = 0;
+  diplomacyMapView60->actionCodeBC = 9;
 }
 
 // FUNCTION: IMPERIALISM 0x004f8dd0

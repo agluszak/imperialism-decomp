@@ -1693,8 +1693,8 @@ void TViewMgr::UiRuntimeSlotF8() {
 
   int mappedStyleFlags = 0;
   MapUiThemeCodeToStyleFlags(0x2b6b, &mappedStyleFlags);
-  g_pCursorControlPanel->cursorThemeCode9c = mappedStyleFlags;
-  g_pCursorControlPanel->fieldA0 = 1;
+  g_pCursorControlPanel->shadowTextColor9C = mappedStyleFlags;
+  g_pCursorControlPanel->dropShadowEnabledA0 = true;
 
   // 'main' (council ticker) is not null-checked in the original, unlike the buttons below.
   TControl* mainControl = static_cast<TControl*>(mainView->ResolveControlByTag(kControlTagMain));

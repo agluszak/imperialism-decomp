@@ -23,11 +23,11 @@ public:
 
   // Rebuilds the council candidate name/coat-of-arms controls and (re)starts the vote
   // ticker. Non-virtual; called from HandleEvent's "star" branch with ecx = this. Its
-  // receiver is confirmed to be a TCouncilView (writes councilNationCount24c8 / +0x528).
+  // receiver is confirmed to be a TCouncilView (writes councilNationCount24c8 / visibleVoteTier528).
   // 0x4fc2e0, __thiscall.
   void InitializeDiplomacyCouncilViewControlsAndTicker();
 
-  short councilNationCount24c8; // +0x24c8 — compared (+2) against field528 on hover
+  short councilNationCount24c8; // +0x24c8 — compared (+2) against visibleVoteTier528 on hover
   short tickerSlots24ca[10];    // +0x24ca — zeroed by the slot-0x37 rebuild
   short pad24de;
 };

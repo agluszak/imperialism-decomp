@@ -122,16 +122,16 @@ public:
   // slot 0x70 SetControlStateFlagAndMaybeRefresh inherited unchanged (0x48e810)
   // slot 0x71 ResetPictureResourceEntry inherited unchanged (0x48f520)
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
-  virtual undefined OrphanRetStub_0045acb0(); // slot 0x73 0x45acb0
+  virtual void Hilite(); // slot 0x73 0x45acb0
 
   // NOOP: verified empty in original 0x00458dcb (trivial inline ctor: the builder
   // expansion site emits only the base ctor call + vtbl install)
   TSpecialQuitPicture() {}
 
   // Original object size is 0x94 (CRuntimeClass m_nObjectSize); the source class ended at
-  // 0x90. HandleEvent reads/writes field90 exclusively via 16-bit `ax`/`word ptr` accesses
+  // 0x90. HandleEvent reads/writes quitAnimationFrame90 exclusively via 16-bit `ax`/`word ptr` accesses
   // (both the `= 1` init and the increment/compare/decrement loop), so it's a short, not
   // an int; padA2 keeps sizeof at 0x94.
-  short field90;
+  short quitAnimationFrame90;
   short padA2;
 };

@@ -120,10 +120,12 @@ public:
   // slot 0x6e SetTextColorAndMaybeRefresh inherited unchanged (0x48e7a0)
   // slot 0x6f LogUnhandledDialogMethodAndReturnFalse inherited unchanged (0x4294a0)
   // slot 0x70 SetControlStateFlagAndMaybeRefresh inherited unchanged (0x48e810)
-  virtual undefined OrphanRetStub_005723d0(); // slot 0x71 0x5723d0
+  virtual void Hilite(); // slot 0x71 0x5723d0
 
   TClickZone();
 
-  // Original object size is 0x88 (CRuntimeClass m_nObjectSize); the source class ended at 0x84. Trailing 4 byte(s) not yet semantically recovered — declared so sizeof and the recomp's allocation size match the original.
-  int field84;
+  // The constructor stores sound id 0x1b58 as a word; DoMouseCommand passes it to the
+  // sound player before delegating to the base mouse handler.
+  short clickSoundId84;
+  unsigned char padding86[2];
 };

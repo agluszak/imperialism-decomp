@@ -382,8 +382,8 @@ void TDiplomacyMapView::InitializeDiplomacyMinisterActionControlsAndLabels() {
   }
 
   TInfoPanelView* infoActionButton = static_cast<TInfoPanelView*>(actionButtonsA0[0]);
-  infoActionButton->OrphanLeaf_NoCall_Ins97_004fae00(activeNationC2);
-  infoActionButton->OrphanRetStub_00430550();
+  infoActionButton->SetInfoCountry(activeNationC2);
+  infoActionButton->Setup();
 
   for (short i = 0; i < 6; ++i) {
     TView* hoverControl = ResolveControlByTag(g_councilControlTagTable[i]);
@@ -435,7 +435,7 @@ void TDiplomacyMapView::ApplyRectSlot110(RECT* rectBuffer) {
   SetQuickDrawFillColor(0);
 
   if (interactionModeAt94 == 5) {
-    RenderDiplomacyPendingPolicyIconsAndFrames();
+    DrawVoteNuggets();
   }
   RenderDiplomacyMatrixRowStatusIcons(rectBuffer);
 }
@@ -1246,7 +1246,7 @@ void TDiplomacyMapView::ChangeSelectedActionTopic(int topicIndex) {
   // not TControl -- verified by the zero pushed args at this call in the raw
   // disassembly, matching TPanelView's slot 0x68 stub rather than TControl's 5-arg
   // DispatchPictureResourceCommand at the same vtable byte offset.
-  static_cast<TPanelView*>(actionButtonsA0[newTopic])->OrphanRetStub_00430550();
+  static_cast<TPanelView*>(actionButtonsA0[newTopic])->Setup();
 
   if (selectedTerrainIndexAt90 != frameRegionSelectorAt98) {
     frameRegionSelectorAt98 = selectedTerrainIndexAt90;
@@ -1287,7 +1287,7 @@ void TDiplomacyMapView::HandleEvent(int commandId, TEventHandler* panelEvent, TE
       return;
     }
   } else {
-    reinterpret_cast<TControl*>(this)->TControl::HandleEvent(commandId, panelEvent, extra);
+    TControl::HandleEvent(commandId, panelEvent, extra);
   }
 }
 
@@ -1299,24 +1299,21 @@ void TDiplomacyMapView::ForwardParam(int param) {
   }
   // Non-virtual call to TEventHandler::ForwardParam's body (orig routes through the
   // ILT thunk at 0x401d61 -> 0x48a380); the qualified call forces static dispatch.
-  reinterpret_cast<TEventHandler*>(this)->TEventHandler::ForwardParam(param);
+  TEventHandler::ForwardParam(param);
 }
 
 // FUNCTION: IMPERIALISM 0x004f71a0
-void TDiplomacyMapView::RenderDiplomacyPendingPolicyIconsAndFrames() {
+void TDiplomacyMapView::DrawVoteNuggets() {
   ResetQuickDrawStrokeState();
   UpdatePaletteIndexWithDefaultFallback(0x10);
 
-  char* self = reinterpret_cast<char*>(this);
-  short selectedTier = *reinterpret_cast<short*>(self + 0x528);
+  short selectedTier = visibleVoteTier528;
   int policyIndex = 0;
   do {
-    char* manager = reinterpret_cast<char*>(g_pDiplomacyTurnStateManager);
-    short tierValue = *reinterpret_cast<short*>(manager + 0x484 + policyIndex * 2);
-    int iconCode = *reinterpret_cast<signed char*>(manager + 0x304 + policyIndex);
-    if (*reinterpret_cast<char*>(self + 0x52c + policyIndex) != 0 && iconCode != -1 &&
-        tierValue <= selectedTier) {
-      RECT* iconRect = reinterpret_cast<RECT*>(self + 0x6ac + policyIndex * 0x10);
+    short tierValue = g_pDiplomacyTurnStateManager->pendingPolicyTierMatrix484[policyIndex];
+    int iconCode = g_pDiplomacyTurnStateManager->pendingPolicyCodeMatrix304[policyIndex];
+    if (tileHasOwnerFlags52C[policyIndex] && iconCode != -1 && tierValue <= selectedTier) {
+      RECT* iconRect = &tileMarkerRects6AC[policyIndex];
       short iconX = g_pGlobalMapState->QueryIconStripXSlot110(iconCode);
 
       RECT srcRect;

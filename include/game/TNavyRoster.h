@@ -1,6 +1,8 @@
 #pragma once
 
 #include "game/TMilitaryPageView.h"
+
+class TTaskForce;
 #include "game/mfc.h"
 
 // VTABLE: IMPERIALISM 0x0065cbd0
@@ -116,19 +118,14 @@ public:
   // slot 0x6b BuildPageLayout inherited unchanged (0x56fc80)
   // slot 0x6c ShowPage inherited unchanged (0x56fdb0)
   // slot 0x6d ResetPageLayout inherited unchanged (0x56ff90)
-  virtual undefined InitializePagedListLineDataControlsAndHeaderBitmap(); // slot 0x6e 0x564dc0
+  virtual void StuffValues(TTaskForce* taskForce); // slot 0x6e 0x564dc0
 
   TNavyRoster();
 
-  // Own fields at +0x88..+0xd0 (RTTI m_nObjectSize 0xd0 vs TMilitaryPageView's 0x88).
-  // CreateObject (0x564c30) zeroes six dwords here (offsets 0x88/0x8c/0x90/0x94/0x98/
-  // 0x9c) in addition to re-initializing the inherited TMilitaryPageView::field84;
-  // semantic meaning not yet recovered beyond "zeroed at construction".
-  int field88;
-  int field8c;
-  int field90;
-  int field94;
-  int field98;
-  int field9c;
-  unsigned char pada0[0xd0 - 0xa0];
+  // StuffValues stores its task-force argument, resolves 'cls0'..'cls3' as a real
+  // contiguous TView* array, and then builds one line per linked task-force entry.
+  TTaskForce* taskForce88;
+  int unresolvedZero8C; // constructor-only zero dword
+  TView* classControls90[4];
+  unsigned char paddingA0[0xd0 - 0xa0];
 };

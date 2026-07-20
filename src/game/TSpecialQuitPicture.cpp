@@ -9,9 +9,7 @@
 #include "game/ui_text_label_helpers_decls.h"
 
 // FUNCTION: IMPERIALISM 0x0045acb0
-undefined TSpecialQuitPicture::OrphanRetStub_0045acb0() {
-  return 0;
-}
+void TSpecialQuitPicture::Hilite() {}
 
 // SYNTHETIC: IMPERIALISM 0x0045acd0
 // TSpecialQuitPicture::`scalar deleting destructor'
@@ -79,20 +77,20 @@ void TSpecialQuitPicture::HandleEvent(int commandId, TEventHandler* sourceHandle
       TDeluxeText* titlControl = static_cast<TDeluxeText*>(ResolveControlByTag(kControlTagTitl));
       titlControl->AssertValid();
       titlControl->SetEnabled(1, 1);
-      field90 = 1;
+      quitAnimationFrame90 = 1;
       SetPictureResourceIdAndRefresh(0x3e9, 1);
       g_pSimMgr->GetString(0x1770, 0, &titlText);
       titlControl->UpdateTextEntrySharedString(&titlText);
-    } else if (field90 > 0) {
-      ++field90;
-      if (field90 < 10) {
-        SetPictureResourceIdAndRefresh(static_cast<short>(field90 + 0x3e8), 1);
+    } else if (quitAnimationFrame90 > 0) {
+      ++quitAnimationFrame90;
+      if (quitAnimationFrame90 < 10) {
+        SetPictureResourceIdAndRefresh(static_cast<short>(quitAnimationFrame90 + 0x3e8), 1);
         TDeluxeText* titlControl = static_cast<TDeluxeText*>(ResolveControlByTag(kControlTagTitl));
         titlControl->AssertValid();
-        g_pSimMgr->GetString(0x1770, static_cast<short>(field90 - 1), &titlText);
+        g_pSimMgr->GetString(0x1770, static_cast<short>(quitAnimationFrame90 - 1), &titlText);
         titlControl->UpdateTextEntrySharedString(&titlText);
       } else {
-        field90 = 0;
+        quitAnimationFrame90 = 0;
         SetPictureResourceIdAndRefresh(0x4e20, 1);
         ResolveControlByTag(kControlTagQuit)->SetState(1, 1);
         ResolveControlByTag(kControlTagShow)->SetState(1, 1);

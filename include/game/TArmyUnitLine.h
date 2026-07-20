@@ -3,6 +3,8 @@
 #include "game/TLineData.h"
 #include "game/mfc.h"
 
+class TMilitaryUnit;
+
 // VTABLE: IMPERIALISM 0x0064ce80
 class TArmyUnitLine : public TLineData {
 public:
@@ -21,6 +23,9 @@ public:
 
   TArmyUnitLine();
 
-  // Original object size is 0x14 (CRuntimeClass m_nObjectSize); the source class ended at 0x10. Trailing 4 byte(s) not yet semantically recovered — declared so sizeof and the recomp's allocation size match the original.
-  int field10;
+  // StuffValues installs the represented stationed-unit node here before adding
+  // the line to the page's ordered-entry list.
+  TMilitaryUnit* militaryUnit10;
 };
+
+ASSERT_SIZE(TArmyUnitLine, 0x14);

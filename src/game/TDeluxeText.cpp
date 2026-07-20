@@ -7,7 +7,8 @@
 #include "game/ui_text_label_helpers_decls.h"
 
 // FUNCTION: IMPERIALISM 0x00430950
-TDeluxeText::TDeluxeText() : TTEView(), cursorThemeCode98(0), cursorThemeCode9c(0), fieldA0(0) {}
+TDeluxeText::TDeluxeText()
+    : TTEView(), textColor98(0), shadowTextColor9C(0), dropShadowEnabledA0(false) {}
 
 // SYNTHETIC: IMPERIALISM 0x004309e0
 // TDeluxeText::`scalar deleting destructor'
@@ -26,7 +27,7 @@ void TDeluxeText::ConstructTDeluxeTextBaseState(TView* panel, int* offsetLayout,
                                                 short styleWord90) {
   ConstructTTEViewBaseState(0, panel, offsetLayout, sizeLayout, 5, 5, insetRect, style, styleWord90,
                             0, 1);
-  cursorThemeCode98 = style->textColor;
+  textColor98 = style->textColor;
   SetSelectedFlagAndState(0);
 }
 
@@ -55,8 +56,8 @@ void TDeluxeText::ApplyRectSlot110(RECT* rectBuffer) {
   (void)rectBuffer;
   CString textBuffer;
   CopyTextTo(&textBuffer);
-  if (fieldA0 != 0) {
-    SetQuickDrawColorAndSyncGlobals(cursorThemeCode9c);
+  if (dropShadowEnabledA0) {
+    SetQuickDrawColorAndSyncGlobals(shadowTextColor9C);
     RECT shadowRect;
     BuildInsetContentRect(&shadowRect);
     OffsetRect(&shadowRect, 1, 1);
@@ -64,14 +65,14 @@ void TDeluxeText::ApplyRectSlot110(RECT* rectBuffer) {
   }
   RECT mainRect;
   BuildInsetContentRect(&mainRect);
-  SetQuickDrawColorAndSyncGlobals(cursorThemeCode98);
+  SetQuickDrawColorAndSyncGlobals(textColor98);
   DrawTextAligned((LPCSTR)textBuffer, textBuffer.GetLength(), &mainRect, textAlignmentCode);
 }
 
 // FUNCTION: IMPERIALISM 0x005b62a0
 void TDeluxeText::ApplyTextStyleDescriptorAndMaybeRefresh(TUiTextStyleDescriptor* styleDescriptor,
                                                           int refreshFlag) {
-  cursorThemeCode98 = styleDescriptor->textColor;
+  textColor98 = styleDescriptor->textColor;
   SetTextStyleAndMaybeRefresh(styleDescriptor, static_cast<char>(refreshFlag));
 }
 

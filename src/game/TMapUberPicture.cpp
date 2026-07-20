@@ -36,7 +36,8 @@ IMPLEMENT_DYNCREATE(TMapUberPicture, TMapUberUberPicture)
 // FUNCTION: IMPERIALISM 0x005969e0
 TMapUberPicture::TMapUberPicture()
     : invalidationFlag94(1), activeUnitCategoryIndex96(3), orderEntryContext98(nullptr),
-      field_0x9c(0), field_0xa0(0), goodGoldTagControlA4(nullptr), field_0xc0(nullptr) {}
+      unresolvedZero9C(0), unresolvedZeroA0(0), goodGoldTagControlA4(nullptr),
+      miniMapViewC0(nullptr) {}
 
 // SYNTHETIC: IMPERIALISM 0x00596a30
 // TMapUberPicture::`scalar deleting destructor'
@@ -245,8 +246,8 @@ void TMapUberPicture::AutoScrollByEdgeMask(short edgeMask) {
     goodGoldTagControlA4->ApplyDirectionalNudgeAndRefreshDisplay(
         static_cast<unsigned char>(edgeMask));
   }
-  if (field_0xc0 != nullptr) {
-    field_0xc0->RefreshControl();
+  if (miniMapViewC0 != nullptr) {
+    miniMapViewC0->RefreshControl();
   }
 }
 
@@ -379,8 +380,8 @@ undefined TMapUberPicture::RefreshAfterSelectionChange() {
 // FUNCTION: IMPERIALISM 0x00598990
 undefined TMapUberPicture::InvalidateTileMarkerAndRefreshLinkedControl(short param) {
   this->subviewAc->UpdateMapDialogTileRowColumnMarkerAndInvalidate(param);
-  if (this->field_0xc0 != nullptr) {
-    this->field_0xc0->RefreshControl();
+  if (this->miniMapViewC0 != nullptr) {
+    this->miniMapViewC0->RefreshControl();
   }
   return 0;
 }
@@ -442,14 +443,14 @@ void TMapUberPicture::EnterMapInteractionOverlayMode(TView* controlOverride) {
   this->subview2A8->CaptureLayoutF0(g_MapUberModeSecondaryLayoutScratch_006a45b8, 1);
   this->subviewAc = this->subview2A8;
 
-  if (this->field_0xc0 != nullptr) {
-    this->field_0xc0->markerBoxWidth98 = g_defaultMarkerBoxWidth_006a460c;
-    this->field_0xc0->markerBoxHeight9c = 8;
-    this->field_0xc0->markerBoxX90 =
-        this->field_0xc0->frameWidth34 / 2 - this->field_0xc0->markerBoxWidth98 - 2;
-    this->field_0xc0->markerBoxY94 =
-        this->field_0xc0->frameHeight38 / 2 - this->field_0xc0->markerBoxHeight9c - 2;
-    this->field_0xc0->RefreshControl();
+  if (this->miniMapViewC0 != nullptr) {
+    this->miniMapViewC0->markerBoxWidth98 = g_defaultMarkerBoxWidth_006a460c;
+    this->miniMapViewC0->markerBoxHeight9c = 8;
+    this->miniMapViewC0->markerBoxX90 =
+        this->miniMapViewC0->frameWidth34 / 2 - this->miniMapViewC0->markerBoxWidth98 - 2;
+    this->miniMapViewC0->markerBoxY94 =
+        this->miniMapViewC0->frameHeight38 / 2 - this->miniMapViewC0->markerBoxHeight9c - 2;
+    this->miniMapViewC0->RefreshControl();
   }
 }
 
@@ -473,13 +474,13 @@ void TMapUberPicture::CommitPendingUiModeChangeAndRefreshViews(TView* controlOve
     // goodGoldTagControlA4's raw pointer value into subviewAc -- but goodGoldTagControlA4
     // is TOceanDialog* (TWorldView-derived) while subviewAc is declared TMapDialog*, an
     // unrelated type per the existing class hierarchy, so that assignment is left
-    // unmodeled pending resolution of the mismatch, along with refreshing field_0xc0's
+    // unmodeled pending resolution of the mismatch, along with refreshing miniMapViewC0's
     // rect cache.
   }
 }
 
 // FUNCTION: IMPERIALISM 0x00599cf0
-undefined TMapUberPicture::CreateToolWindow_00599CF0() {
+void TMapUberPicture::DisplayMiniMap() {
   TView* toolControl = this->ResolveControlByTag(0x746f6f6c); // "tool"
   if (toolControl == nullptr) {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
@@ -497,7 +498,7 @@ undefined TMapUberPicture::CreateToolWindow_00599CF0() {
   miniMap->markerBoxY94 = miniMap->frameHeight38 / 2 - miniMap->markerBoxHeight9c;
   miniMap->RefreshControl();
   miniMap->SetState(1, 0);
-  this->field_0xc0 = miniMap;
+  this->miniMapViewC0 = miniMap;
 
   RECT toolRect;
   toolRect.left = toolControl->ownerLocalX;
@@ -510,30 +511,63 @@ undefined TMapUberPicture::CreateToolWindow_00599CF0() {
   DisposeRgn(region);
 
   if (this->invalidationFlag94 == 0) {
-    this->field_0xc0->markerBoxWidth98 = 0x20;
-    this->field_0xc0->markerBoxHeight9c = 0x1c;
-    this->field_0xc0->markerBoxX90 =
-        this->field_0xc0->frameWidth34 / 2 - this->field_0xc0->markerBoxWidth98 - 2;
-    this->field_0xc0->markerBoxY94 =
-        this->field_0xc0->frameHeight38 / 2 - this->field_0xc0->markerBoxHeight9c - 2;
-    this->field_0xc0->RefreshControl();
+    this->miniMapViewC0->markerBoxWidth98 = 0x20;
+    this->miniMapViewC0->markerBoxHeight9c = 0x1c;
+    this->miniMapViewC0->markerBoxX90 =
+        this->miniMapViewC0->frameWidth34 / 2 - this->miniMapViewC0->markerBoxWidth98 - 2;
+    this->miniMapViewC0->markerBoxY94 =
+        this->miniMapViewC0->frameHeight38 / 2 - this->miniMapViewC0->markerBoxHeight9c - 2;
+    this->miniMapViewC0->RefreshControl();
   }
 
-  return this->SetTradeToolSubcontrolEnabledStateByFlag(0);
+  this->SetTradeToolSubcontrolEnabledStateByFlag(0);
 }
 
 // FUNCTION: IMPERIALISM 0x00599fa0
-void TMapUberPicture::RefreshMiniMapIfPresent() {
+void TMapUberPicture::InvalidateMiniMap() {
   // The original null-checks the receiver: call sites invoke this on a possibly-null
   // ownerContext without guarding it.
-  if (this != 0 && field_0xc0 != 0) {
-    field_0xc0->RefreshControl();
+  if (this != 0 && miniMapViewC0 != 0) {
+    miniMapViewC0->RefreshControl();
   }
 }
 
 // FUNCTION: IMPERIALISM 0x00599fd0
-undefined TMapUberPicture::SwapToolInfoSubviewAndRefreshClipRegion() {
-  return 0;
+void TMapUberPicture::RemoveMiniMap() {
+  TView* toolControl = ResolveControlByTag(0x746f6f6c); // 'tool'
+  if (toolControl == nullptr) {
+    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUSuperMap_0069943C, 0xa97);
+  }
+
+  RECT mapBounds;
+  subviewAc->QueryBounds(&mapBounds);
+  RgnHandle mapRegion = NewRgn();
+  RectRgn(mapRegion, &mapBounds);
+  ForwardCopyRgn(mapRegion);
+  DisposeRgn(mapRegion);
+
+  RECT toolRect;
+  toolRect.left = toolControl->ownerLocalX + 5;
+  toolRect.top = toolControl->ownerLocalY + 0x37;
+  toolRect.right = toolControl->ownerLocalX + 0x76;
+  toolRect.bottom = toolControl->ownerLocalY + 0x78;
+  InvalidateCityDialogRectRegion(&toolRect, 1);
+
+  if (miniMapViewC0 != nullptr) {
+    miniMapViewC0->Free();
+  }
+  miniMapViewC0 = nullptr;
+
+  TPicture* miniMapButton =
+      static_cast<TPicture*>(toolControl->ResolveControlByTag(0x696e666f)); // 'info'
+  if (miniMapButton == nullptr) {
+    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUSuperMap_0069943C, 0xab4);
+  }
+  miniMapButton->SetPictureResourceIdAndRefresh(0x41a, true);
+  miniMapButton->controlTag = 0x6d6d6170; // 'mmap'
+  SetTradeToolSubcontrolEnabledStateByFlag(true);
 }
 
 // FUNCTION: IMPERIALISM 0x0059a180

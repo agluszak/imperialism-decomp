@@ -25,7 +25,6 @@ TOffersPanelView::~TOffersPanelView() {}
 void TOffersPanelView::DoPostCreate(int arg) {
   TPanelView::DoPostCreate(arg);
 
-  m_panelData = ownerContext;
   acceptText = static_cast<TStaticText*>(ResolveControlByTag(kControlTagAcce));
   acceptText->AssertValid();
   rejectText = static_cast<TStaticText*>(ResolveControlByTag(kControlTagReje));
@@ -42,15 +41,15 @@ void TOffersPanelView::DoPostCreate(int arg) {
   TDeluxeText* propControl = static_cast<TDeluxeText*>(ResolveControlByTag(kControlTagProp));
   propControl->AssertValid();
   propControl->ApplyTextStyleDescriptorAndMaybeRefresh(&sharedStyle, 0);
-  propControl->cursorThemeCode9c = sharedStyle.textColor;
-  propControl->fieldA0 = 1;
+  propControl->shadowTextColor9C = sharedStyle.textColor;
+  propControl->dropShadowEnabledA0 = true;
   propControl->SetTextAlignmentAndMaybeRefresh(1, 0);
 
   TDeluxeText* textControl = static_cast<TDeluxeText*>(ResolveControlByTag(kControlTagText));
   textControl->AssertValid();
   textControl->ApplyTextStyleDescriptorAndMaybeRefresh(&sharedStyle, 0);
-  textControl->cursorThemeCode9c = sharedStyle.textColor;
-  textControl->fieldA0 = 1;
+  textControl->shadowTextColor9C = sharedStyle.textColor;
+  textControl->dropShadowEnabledA0 = true;
   textControl->SetTextAlignmentAndMaybeRefresh(1, 0);
 
   CString acceHint;

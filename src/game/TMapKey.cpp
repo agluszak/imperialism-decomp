@@ -70,8 +70,8 @@ void TMapKey::DoPostCreate(int arg) {
     legendText->SetEnabled(0, 0);
     legendText->controlTag = 0x6e616d30 + i; // 'nam0'-'nam6'
     legendText->RecenterTextFromMeasuredWidthAndMaybeInvalidate(0);
-    legendText->cursorThemeCode9c = shadowStyleFlags;
-    legendText->fieldA0 = 1;
+    legendText->shadowTextColor9C = shadowStyleFlags;
+    legendText->dropShadowEnabledA0 = true;
     legendText->ApplyTextStyleDescriptorAndMaybeRefresh(&style, 1);
   }
 }

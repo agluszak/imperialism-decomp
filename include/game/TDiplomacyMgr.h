@@ -118,7 +118,7 @@ public:
   }
 
   short relationCodeMatrix04[kDiplomacyPairMatrixEntries];
-  unsigned char pendingPolicyCodeMatrix304[kDiplomacyPairMatrixEntries];
+  signed char pendingPolicyCodeMatrix304[kDiplomacyPairMatrixEntries];
   short pendingPolicyTierMatrix484[kDiplomacyPairMatrixEntries];
   short selectedSourceNationSlot784;
   short selectedTargetNationSlot786;
