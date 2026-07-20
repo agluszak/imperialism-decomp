@@ -2,8 +2,12 @@
 #include "game/THighScoresPicture.h"
 
 #include "game/TApplication.h"
+#include "game/TAssetMgr.h"
 #include "game/TSoundPlayer.h"
 #include "game/global_data_tables.h"
+
+#include <stdio.h>
+#include <string.h>
 
 // FUNCTION: IMPERIALISM 0x0045ada0
 void THighScoresPicture::NoOpUiVirtualSlot73() {}
@@ -20,7 +24,28 @@ THighScoresPicture::~THighScoresPicture() {}
 IMPLEMENT_DYNCREATE(THighScoresPicture, TNoHilitePicture)
 
 // FUNCTION: IMPERIALISM 0x00575320
-void THighScoresPicture::NoOpUiLifecycleHook(int arg) {}
+void THighScoresPicture::NoOpUiLifecycleHook(int arg) {
+  TNoHilitePicture::NoOpUiLifecycleHook(arg);
+
+  g_pSfxPlaybackSystem->ResetDualAudioCuePools();
+  g_pSfxPlaybackSystem->PushCueToDualAudioCuePools(0xb);
+  g_pSfxPlaybackSystem->SelectAndScheduleRandomAudioCue();
+
+  CString path;
+  AssignScoresDatPathToSharedString(&path);
+  FILE* file = fopen(path, "rb");
+  if (file == 0) {
+    memset(scoreValues94, 0, sizeof(scoreValues94));
+  } else {
+    for (int i = 0; i < 10; ++i) {
+      if (fread(&scoreValues94[i], 4, 1, file) == 0) {
+        scoreValues94[i] = 0;
+      }
+      fread(scoreRecordsBc[i], 0x20, 1, file);
+    }
+    fclose(file);
+  }
+}
 
 // FUNCTION: IMPERIALISM 0x00575460
 void THighScoresPicture::ApplyRectSlot110(RECT* rectBuffer) {}
