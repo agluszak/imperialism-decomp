@@ -21,21 +21,6 @@
 // real global g_nationMetricSlotDispatchOrder006d810.)
 static short kNationMetricCategoryPresetValues[0x11];
 
-typedef void(__fastcall* MinorSlot80Fn)(TMinor* self, int unusedEdx, int arg1, int arg2, int arg3);
-typedef void(__fastcall* MinorSlot6CFn)(TMinor* self, int unusedEdx, int arg);
-
-static void CallMinorSlot80(TMinor* self, int arg1, int arg2, int arg3) {
-  MinorSlot80Fn slotFn =
-      reinterpret_cast<MinorSlot80Fn>(reinterpret_cast<int*>(*reinterpret_cast<int**>(self))[0x20]);
-  slotFn(self, 0, arg1, arg2, arg3);
-}
-
-static void CallMinorSlot6C(TMinor* self, int arg) {
-  MinorSlot6CFn slotFn =
-      reinterpret_cast<MinorSlot6CFn>(reinterpret_cast<int*>(*reinterpret_cast<int**>(self))[0x1b]);
-  slotFn(self, 0, arg);
-}
-
 // SYNTHETIC: IMPERIALISM 0x005b79d0
 // TTradeMgr::CreateObject
 
@@ -836,15 +821,14 @@ void TTradeMgr::DispatchProposalAmountSlot60(short ownerNation, int sourceContex
     }
   } else {
     int ownerIndex = static_cast<int>(ownerSlot);
-    CallMinorSlot80(static_cast<TMinor*>(g_apTerrainTypeDescriptorTable[ownerIndex]), targetNation,
-                    amount, maxAmount);
-    CallMinorSlot80(
-        static_cast<TMinor*>(g_apTerrainTypeDescriptorTable[static_cast<short>(sourceContext)]),
-        targetNation, -amount, ownerNation);
+    static_cast<TMinor*>(g_apTerrainTypeDescriptorTable[ownerIndex])
+        ->ApplyIndexedResourceDeltaAndAdjustNationTotals(targetNation, amount, maxAmount);
+    static_cast<TMinor*>(g_apTerrainTypeDescriptorTable[static_cast<short>(sourceContext)])
+        ->ApplyIndexedResourceDeltaAndAdjustNationTotals(targetNation, -amount, ownerNation);
     if (g_pDiplomacyTurnStateManager->HasFlag84ForNationSlot84(maxAmount) != 0) {
       if (g_pDiplomacyTurnStateManager->HasFlag84ForNationSlot84(ownerNation) == 0) {
-        CallMinorSlot6C(static_cast<TMinor*>(g_apTerrainTypeDescriptorTable[sourceContext]),
-                        amount);
+        static_cast<TMinor*>(g_apTerrainTypeDescriptorTable[sourceContext])
+            ->DecrementDiplomacyCounterA2ByValue(amount);
       }
     }
     short relationBump = g_pDiplomacyTurnStateManager->LookupOrderCompatibilityMatrixValue(
