@@ -6,6 +6,7 @@
 #include "game/ui_invalidation_guard.h"
 #include "game/quickdraw_rendering.h"
 #include "game/mfc.h"
+#include "game/ui_text_label_helpers_decls.h"
 
 // SYNTHETIC: IMPERIALISM 0x0045af30
 // TTextList::`scalar deleting destructor'
@@ -34,7 +35,7 @@ void TTextList::ApplyRectSlot110(RECT* rectBuffer) {
   MapUiThemeCodeToStyleFlags(0x2b6c, &styleFlags1);
   MapUiThemeCodeToStyleFlags(0x2b6a, &styleFlags2);
 
-  ApplyUiTextStyleAndSyncColor(0, 0xe, 0x2b6c);
+  ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 0xe, 0x2b6c);
 
   short currentY = 0;
   if (itemHeight + currentY < frameHeight38) {
@@ -63,11 +64,11 @@ void TTextList::ApplyRectSlot110(RECT* rectBuffer) {
       SetQuickDrawColorAndSyncGlobals(styleFlags2);
       SetQuickDrawTextOriginWithContextOffset(static_cast<short>(textX + 1),
                                               static_cast<short>(currentY + 12));
-      DrawTextWithCachedStyle(&tempString);
+      DrawTextWithCachedQuickDrawStyleState(&tempString);
 
       SetQuickDrawColorAndSyncGlobals(styleFlags1);
       SetQuickDrawTextOriginWithContextOffset(textX, static_cast<short>(currentY + 11));
-      DrawTextWithCachedStyle(&tempString);
+      DrawTextWithCachedQuickDrawStyleState(&tempString);
 
       currentY += itemHeight;
       idx++;

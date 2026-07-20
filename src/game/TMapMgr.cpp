@@ -3227,13 +3227,12 @@ short TMapMgr::GetMapImprovementTierBucketOffset(short tier) {
 }
 
 // FUNCTION: IMPERIALISM 0x00517710
-void TMapMgr::ApplyMapImprovementSelectionState(TCivUnit* civUnit) {
+short TMapMgr::ApplyMapImprovementSelectionState(TCivUnit* civUnit) {
   if (civUnit->field_1C != 0) {
-    GetMapImprovementSpriteBaseOffset(civUnit->orderType, 1, 0);
-  } else {
-    char idleState = static_cast<char>(civUnit->IsInIdleSelectionState());
-    GetMapImprovementSpriteBaseOffset(civUnit->orderType, 0, idleState);
+    return GetMapImprovementSpriteBaseOffset(civUnit->orderType, 1, 0);
   }
+  char idleState = static_cast<char>(civUnit->IsInIdleSelectionState());
+  return GetMapImprovementSpriteBaseOffset(civUnit->orderType, 0, idleState);
 }
 
 // FUNCTION: IMPERIALISM 0x00517780

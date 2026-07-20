@@ -113,6 +113,10 @@ public:
 
   TTradeBidNationView();
 
-  // Original object size is 0x64 (CRuntimeClass m_nObjectSize); the source class ended at 0x60. Trailing 4 byte(s) not yet semantically recovered — declared so sizeof and the recomp's allocation size match the original.
-  int field60;
+  // Original object size is 0x64 (CRuntimeClass m_nObjectSize); the source class ended
+  // at 0x60. The trailing 4 bytes split into two shorts: +0x60 is still unobserved,
+  // +0x62 is read repeatedly by ApplyRectSlot110 as this row's nation slot index
+  // (0..6, passed to g_apNationStates[] and LoadNormalizedCredentialName).
+  short field60;
+  short nationSlot62;
 };

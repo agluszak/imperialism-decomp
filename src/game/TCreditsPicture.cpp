@@ -91,4 +91,5 @@ void TCreditsPicture::HandleEvent(int commandId, TEventHandler* sourceHandler, T
 
 // FUNCTION: IMPERIALISM 0x0056f190
 void TCreditsPicture::ApplyRectSlot110(RECT* rectBuffer) {
+  TPicture::ApplyRectSlot110(rectBuffer);
 }

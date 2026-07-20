@@ -1,10 +1,6 @@
 address|name|symbol|size|type|prototype|provenance
-401122|thunk_TPictureButton::TPictureButton|||global||
 4028d8|thunk_InitializeCityInteriorMinister||5|function|undefined thunk_InitializeCityInteriorMinister()|
-403b16|UiRuntimeContext::GetActiveNationId|||global||
-404d9f|thunk_GetCityDialogValueDwordC|||global||
 406ccb|thunk_HandleEngineerConstructionAction||5|function|bool __thiscall thunk_HandleEngineerConstructionAction(short nTileIndex, undefined2 param_2)|
-409205|UiRuntimeContext::MapTurnEventCodeToPaletteIndex|||global||
 4125d0|WrapperFor_ftol_At004125d0||30|function|undefined WrapperFor_ftol_At004125d0()|
 412600|InvokeCallbackForRecordRangeWithStride||42|function|undefined InvokeCallbackForRecordRangeWithStride()|
 412640|OrphanCallChain_C5_I60_00412640||173|function|undefined OrphanCallChain_C5_I60_00412640()|
@@ -427,7 +423,6 @@ address|name|symbol|size|type|prototype|provenance
 47f620|WrapperFor_UpdateCursorHelperWindowVisibilityFromControllerState_At0047f620||11|function|undefined WrapperFor_UpdateCursorHelperWindowVisibilityFromControllerState_At0047f620()|
 47f710|InitializeRuntimeSelectionRecordArrayStateAndRegisterAtExit||24|function|undefined InitializeRuntimeSelectionRecordArrayStateAndRegisterAtExit()|
 47f740|DestroyRuntimeSelectionRecordArrayStateAtExit||5|function|undefined DestroyRuntimeSelectionRecordArrayStateAtExit()|
-47f745|thunk_DestructRuntimeSelectionRecordArrayStateAndRestoreBaseRuntimeClass|||global||
 47f7f0|ReleaseSharedStringRefOnly_0047f7f0||8|function|undefined ReleaseSharedStringRefOnly_0047f7f0()|
 47f810|OrphanCallChain_C1_I12_0047f810||31|function|undefined OrphanCallChain_C1_I12_0047f810()|
 47f870|OrphanCallChain_C2_I17_0047f870||44|function|undefined OrphanCallChain_C2_I17_0047f870()|
@@ -950,7 +945,6 @@ address|name|symbol|size|type|prototype|provenance
 48d220|TWindow::GetRuntimeClass||6|function|undefined GetTWindowClassNamePointer()|rtti
 48d240|InitializeViewModalStateNodeBlockChainHeadAndRegisterAtExit||26|function|undefined InitializeViewModalStateNodeBlockChainHeadAndRegisterAtExit()|
 48d270|DestroyViewModalStateNodeBlockChainAtExit||5|function|undefined DestroyViewModalStateNodeBlockChainAtExit()|
-48d275|thunk_DestructViewModalStateNodeBlockChainAndRestoreBaseRuntimeClass|||global||
 48d4a0|InitializeTWindowUnlinkDestructState_006A1A40_AndRegisterAtExit||26|function|undefined InitializeTWindowUnlinkDestructState_006A1A40_AndRegisterAtExit()|
 48d4d0|DestroyTWindowUnlinkDestructState_006A1A40_AtExitOnce||26|function|undefined DestroyTWindowUnlinkDestructState_006A1A40_AtExitOnce()|
 48d500|TControl::ConstructUiWindowResourceEntryBase||256|function|undefined ConstructUiWindowResourceEntryBase()|
@@ -1330,7 +1324,6 @@ address|name|symbol|size|type|prototype|provenance
 49c720|TSoundResourceManager::ReadWaveDataAndFormatViaLoaderWithRetry||225|function|int ReadWaveDataAndFormatViaLoaderWithRetry(WaveLoadDescriptor* desc, int slot)|
 49c850|TSoundResourceManager::SetChannelVolumesUntilAccepted||61|function|int SetChannelVolumesUntilAccepted(int volume)|
 49c8e0|ClearDirectSoundInitPendingAndResetState_Impl||80|function|undefined ClearDirectSoundInitPendingAndResetState_Impl()|
-49c950|thunk_InitializeDirectSoundDeviceAndChannels|||global||
 49c970|InitializeDirectSoundDeviceAndChannels||161|function|undefined InitializeDirectSoundDeviceAndChannels()|
 49ca50|ReleaseRuntimeSelectionPeersAndResetOwner_Impl||80|function|undefined ReleaseRuntimeSelectionPeersAndResetOwner_Impl()|
 49cac0|ResetGlobalPair6A1FD0And6A1FD4||13|function|undefined ResetGlobalPair6A1FD0And6A1FD4()|
@@ -2645,7 +2638,6 @@ address|name|symbol|size|type|prototype|provenance
 4eb5d0|OrphanCallChain_C4_I75_004eb5d0||172|function|undefined OrphanCallChain_C4_I75_004eb5d0()|
 4eb6b0|UpdateTrackedEntryEligibilityByClassMaskAndRatio||393|function|undefined UpdateTrackedEntryEligibilityByClassMaskAndRatio()|
 4eb8b0|AssignTrackedEntryActionsByProfileToOrdersOrUnits||1212|function|undefined AssignTrackedEntryActionsByProfileToOrdersOrUnits()|
-4ebea0|thunk_thunk_PruneInvalidTrackedEntriesAndNotifyOwner|||global||
 4ebff0|WrapperFor_ftol_At004ebff0||30|function|undefined WrapperFor_ftol_At004ebff0()|
 4ec020|TDefenseMinister::CreateObject|?CreateObject@TDefenseMinister@@SGPAVCObject@@XZ|83|function|undefined CreateObject()|rtti
 4ec0a0|TDefenseMinister::CreateTDefenseMinisterInstance||9|function|undefined CreateTDefenseMinisterInstance()|
@@ -6276,7 +6268,6 @@ address|name|symbol|size|type|prototype|provenance
 5e4d80|WrapperFor_AppendPointerToGlobalVectorAsStatus_At005e4d80||40|function|undefined WrapperFor_AppendPointerToGlobalVectorAsStatus_At005e4d80()|
 5e4dc0|thunk_ReleaseRuntimeSelectionPeersAndResetOwner_Impl_At005e4dc0||10|function|undefined thunk_ReleaseRuntimeSelectionPeersAndResetOwner_Impl_At005e4dc0()|
 5e4de0|InitStub_ResetAndOpenCdAudioDeviceHandle_At005e4de0||24|function|undefined InitStub_ResetAndOpenCdAudioDeviceHandle_At005e4de0()|
-5e4e15|thunk_SendMciCommand804IfDeviceOpenAndClearHandle|||global||
 5e4e70|TSoundPlayer::InitializeSoundSubsystemAndAllocateChannelLists||192|function|undefined InitializeSoundSubsystemAndAllocateChannelLists()|
 5e4f60|TSoundPlayer::ReturnConstantTrue_SoundPredicate||3|function|undefined ReturnConstantTrue_SoundPredicate()|
 5e4f80|TSoundPlayer::RequestDirectSoundInitIfAllowed||22|function|undefined RequestDirectSoundInitIfAllowed()|

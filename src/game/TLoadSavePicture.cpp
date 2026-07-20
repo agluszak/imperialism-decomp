@@ -276,7 +276,7 @@ void __cdecl BuildSavePathStringForMode(CString* out, int saveMode, char* label)
   }
   CString slotText;
   if (saveMode == 0xa1) {
-    CString autosaveLabel(g_szAutosaveSlotLabel_0069872C);
+    CString autosaveLabel(g_szLiteralA_0069872C);
     slotText = autosaveLabel;
   } else {
     slotText.Format(g_szDecimalFormat, saveMode);
@@ -294,7 +294,7 @@ void __cdecl BuildSavePathStringForMode(CString* out, int saveMode, char* label)
 int __cdecl ReadScenarioIndexFromSaveHeader(const char* path) {
   SaveFileHeader header;
   int result = -3;
-  FILE* file = fopen(path, g_szSaveFileReadBinaryMode_00698720);
+  FILE* file = fopen(path, g_szLiteralRb_00698720);
   if (fread(&header, 1, 0xc, file) == 0xc) {
     result = header.scenarioIndex;
   }
@@ -345,7 +345,7 @@ void __cdecl SaveGameWithModeAndOptionalLabel(int mode, char* label) {
   {
     CString slotText;
     if (mode == 0xa1) {
-      CString autosaveLabel(g_szAutosaveSlotLabel_0069872C);
+      CString autosaveLabel(g_szLiteralA_0069872C);
       slotText = autosaveLabel;
     } else {
       slotText.Format(g_szDecimalFormat, mode);
@@ -372,7 +372,7 @@ void __cdecl SaveGameWithModeAndOptionalLabel(int mode, char* label) {
       {
         CString autosaveSlotText;
         {
-          CString autosaveLabel(g_szAutosaveSlotLabel_0069872C);
+          CString autosaveLabel(g_szLiteralA_0069872C);
           autosaveSlotText = autosaveLabel;
         }
         {
@@ -386,7 +386,7 @@ void __cdecl SaveGameWithModeAndOptionalLabel(int mode, char* label) {
       if (TryGetFileMetadataForPath(&savePath)) {
         SaveFileHeader header;
         int scenarioIndex = -3;
-        FILE* file = fopen(savePath, g_szSaveFileReadBinaryMode_00698720);
+        FILE* file = fopen(savePath, g_szLiteralRb_00698720);
         if (fread(&header, 1, 0xc, file) == 0xc) {
           scenarioIndex = header.scenarioIndex;
         }
@@ -418,7 +418,7 @@ unsigned char __cdecl BuildSaveSlotPathAndProbeMetadata(int slot, const char* la
   {
     CString slotText;
     if (slot == 0xa1) {
-      CString autosaveLabel(g_szAutosaveSlotLabel_0069872C);
+      CString autosaveLabel(g_szLiteralA_0069872C);
       slotText = autosaveLabel;
     } else {
       slotText.Format(g_szDecimalFormat, slot);

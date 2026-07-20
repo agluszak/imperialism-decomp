@@ -25,6 +25,7 @@
 #include "game/quickdraw_rendering.h"
 #include "game/mfc.h"
 #include "game/TEvent.h"
+#include "game/ui_text_label_helpers_decls.h"
 
 // Bid/Offer picture-button bitmap states (enabled / row-selected variants).
 const short kTradeBitmapBidStateA = 0x083f;

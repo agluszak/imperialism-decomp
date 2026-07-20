@@ -453,6 +453,10 @@ public:
   bool ExecuteAdvisoryPromptAndApplyActionType1(int arg1, int arg2);
   void AbsorbCityNeedVectorSlotFC(short* needVector);
   void RevokeDiplomacyGrantForTargetAndAdjustInfluence(int arg1);
+  // 0x004e3620 — sums the encoded diplomacyGrantByNation entries (masking off the
+  // top 2 flag bits), skipping the 0xffff "no grant" sentinel. Used by the grants/aid
+  // screen's "Total" row (TGrantsView::ApplyRectSlot110).
+  int SumDiplomacyGrantEntriesMaskedToValueBits();
   // 0x004e9060 — composite advisory score for the nation selected from
   // candidateNationFlags (or from the diplomacy standing list when no flag is set):
   // product of metric factors 5*7*2*4 for (zone, selected nation). `zone` is the

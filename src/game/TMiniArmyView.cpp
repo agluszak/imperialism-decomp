@@ -50,7 +50,7 @@ void TMiniArmyView::ApplyRectSlot110(RECT* rectBuffer) {
     displayName = truncated;
   }
   SetQuickDrawTextOriginWithContextOffset(0xa, 0xc);
-  DrawTextWithCachedStyle(&displayName);
+  DrawTextWithCachedQuickDrawStyleState(&displayName);
 
   short level = field84->field_34;
   short sVar1 = level / 0x19 + 1;

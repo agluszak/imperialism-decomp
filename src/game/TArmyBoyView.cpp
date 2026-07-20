@@ -4,6 +4,7 @@
 #include "game/TSimMgr.h"
 #include "game/global_data_tables.h"
 #include "game/quickdraw_rendering.h"
+#include "game/ui_text_label_helpers_decls.h"
 
 // SYNTHETIC: IMPERIALISM 0x004aeb50
 // TArmyBoyView::`scalar deleting destructor'
@@ -24,11 +25,11 @@ void TArmyBoyView::ApplyRectSlot110(RECT* rectBuffer) {
   char* context = static_cast<char*>(field60);
   short level = *reinterpret_cast<short*>(context + 2);
 
-  ApplyUiTextStyleAndSyncColor(0, 0xc, 0);
+  ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 0xc, 0);
   SetQuickDrawColorAndSyncGlobals(0x1c474b);
   SetQuickDrawTextOriginWithContextOffset(0x40, 0x17);
   CString nameString(context + 4);
-  DrawTextWithCachedStyle(&nameString);
+  DrawTextWithCachedQuickDrawStyleState(&nameString);
   SetQuickDrawFillColor(0);
 
   short sVar1 = level / 0x19 + 1;
@@ -43,12 +44,12 @@ void TArmyBoyView::ApplyRectSlot110(RECT* rectBuffer) {
   if (level < 1) {
     // Untrained unit: draw the localized "in training" string centered. String group
     // 0x273c, index 0x20 for the sentinel level -86 (fresh recruit) else 0x1f.
-    ApplyUiTextStyleAndSyncColor(1, 0xc, 0x2b67);
+    ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(1, 0xc, 0x2b67);
     CString trainingText;
     g_pSimMgr->GetString(0x273c, (level == -86) ? 0x20 : 0x1f, &trainingText);
     short trainingWidth = MeasureTextExtentWithCachedQuickDrawStyle(&trainingText);
     SetQuickDrawTextOriginWithContextOffset(0x6a - trainingWidth / 2, 0x26);
-    DrawTextWithCachedStyle(&trainingText);
+    DrawTextWithCachedQuickDrawStyleState(&trainingText);
   } else {
     // The blit source surface is a per-level icon strip cached on TMacViewMgr; that
     // field isn't recovered yet, so it's read via a raw offset like the rest of this

@@ -56,7 +56,7 @@ def count_fn_ptr_casts(repo_root: Path) -> tuple[int, list[str]]:
     detail: list[str] = []
     for base in (repo_root / "src" / "game", repo_root / "include" / "game"):
         for path in sorted(base.rglob("*")):
-            if path.suffix not in (".cpp", ".h") or is_excluded_scan_path(path):
+            if path.suffix not in (".cpp", ".h") or is_excluded_scan_path(path, roots=[repo_root]):
                 continue
             text = path.read_text(encoding="utf-8", errors="replace")
             n = len(TYPEDEF_RE.findall(text)) + len(INLINE_FN_PTR_CAST_RE.findall(text))

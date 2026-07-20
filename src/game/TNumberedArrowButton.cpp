@@ -9,6 +9,7 @@
 #include "game/UiRuntimeContext.h"
 #include "game/quickdraw_guards.h"
 #include "game/mfc.h"
+#include "game/ui_text_label_helpers_decls.h"
 #include <new>
 
 // SYNTHETIC: IMPERIALISM 0x0058c1e0
@@ -70,7 +71,7 @@ void TNumberedArrowButton::ApplyRectSlot110(RECT* rectBuffer) {
                         g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &srcRect, &dstRect,
                         0x24);
   UpdatePaletteIndexWithDefaultFallback(0x13);
-  ApplyUiTextStyleAndSyncColor(0, 10, 0x2b67);
+  ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 10, 0x2b67);
   SetQuickDrawTextOriginWithContextOffset(7, 0);
   RefreshControl();
 }

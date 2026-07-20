@@ -25,7 +25,7 @@
 #include "game/CString.h"
 #include "game/global_data_tables.h"
 #include "game/ui_invalidation_guard.h"
-#include "game/localization_text_helpers.h"
+#include "game/mapped_flavor_text.h"
 #include "game/map_order_battle_snapshot.h"
 
 // 0x00563360 -- __stdcall free resolver (defined in TMapMgr.cpp); used by the

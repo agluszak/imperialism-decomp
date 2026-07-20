@@ -13,6 +13,7 @@
 #include "game/mapped_flavor_text.h"
 #include "game/quickdraw_rendering.h"
 #include "game/ui_control_tags.h"
+#include "game/ui_text_label_helpers_decls.h"
 
 #include <string.h>
 
@@ -224,8 +225,7 @@ void TTerrainHelpPicture::HighlightSelectedMenuItemAndRefreshDetailText(int sele
   for (int i = 0; i < 12; i++) {
     TStaticText* itemPane =
         static_cast<TStaticText*>(ResolveControlByTag(0x69303061 /* 'i00a' */ + i));
-    itemPane->SetTextStyleAndMaybeRefresh(
-        (selectedIndex == i) ? &highlightStyle : &normalStyle, 1);
+    itemPane->SetTextStyleAndMaybeRefresh((selectedIndex == i) ? &highlightStyle : &normalStyle, 1);
   }
 
   CString detailText;

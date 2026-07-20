@@ -1,5 +1,7 @@
 #pragma once
 
+#include "game/hex_tile_distance.h"
+
 // Free geometry helpers for the UMapper overlay grid (0xd8=216-wide doubled-column grid over the
 // 0x6c=108-wide hex tile map).
 
@@ -22,8 +24,6 @@ void WrapExtendedMapXCoordinateInPlace(int* x);
 
 // Converts a hex tile index to its overlay-grid coordinate for the given edge side.
 int ConvertTileIndexToOverlayCoord216BySide(int tileIndex, char side); // 0x0052c990
-
-int ComputeHexTileDistanceFromIndices(int tileIndexA, int tileIndexB);
 
 // Maps a clicked tile to a map-context action code used by the map-order handlers. See the
 // .cpp for the per-class breakdown. 0x00559a70.

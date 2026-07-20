@@ -31,6 +31,7 @@
 #include "game/global_data_tables.h"
 #include "game/ui_control_tags.h"
 #include "game/global_data_tables.h"
+#include "game/ui_text_label_helpers_decls.h"
 
 using turn_event_dialog::TurnEventDialogNode;
 
@@ -1229,8 +1230,10 @@ void TTacticalBattle::EvaluateTacticalSideStateAndShowBattleSummaryDialog() {
 
   unsigned char localIsSide0Player = tacticalPlayer14->IsTacticalControllerOwnedByActiveNation();
   unsigned char localSideWon;
-  if ((battleOutcomeCode44 == 1 && tacticalPlayer14->IsTacticalControllerOwnedByActiveNation() != 0) ||
-      (battleOutcomeCode44 == 2 && tacticalPlayer18->IsTacticalControllerOwnedByActiveNation() != 0)) {
+  if ((battleOutcomeCode44 == 1 &&
+       tacticalPlayer14->IsTacticalControllerOwnedByActiveNation() != 0) ||
+      (battleOutcomeCode44 == 2 &&
+       tacticalPlayer18->IsTacticalControllerOwnedByActiveNation() != 0)) {
     localSideWon = 1;
   } else {
     localSideWon = 0;

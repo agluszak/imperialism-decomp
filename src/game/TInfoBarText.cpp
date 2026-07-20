@@ -4,6 +4,7 @@
 
 #include "game/global_data_tables.h"
 #include "game/quickdraw_rendering.h"
+#include "game/ui_text_label_helpers_decls.h"
 
 // SYNTHETIC: IMPERIALISM 0x004293c0
 // TInfoBarText::`scalar deleting destructor'

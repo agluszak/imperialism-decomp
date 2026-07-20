@@ -13,7 +13,6 @@
 #include <afxtempl.h>
 #include "game/app_init_globals.h"
 #include "game/TCountry.h"
-#include "game/startup_helpers.h"
 #include "game/TDisplayMgr.h"
 #include "game/quickdraw_regions.h"
 #include "game/TGreatPower.h"
@@ -148,6 +147,12 @@ short GetResourceDescriptorWord18ByType(short resourceType);
 short GetResourceDescriptorWeightWord1ByType(short resourceType);
 short GetResourceDescriptorWord20ByType(short resourceType);
 short GetResourceDescriptorWord08ByTypeOffset(short resourceType, short subslot);
+
+// Formats "<count><sep><commodity name>" into `out` (defined in TNavyMgr.cpp; see
+// there for the full field note). commodityCode selects the localized name;
+// count < 0 suppresses the numeric prefix entirely.
+void FormatLocalizedCommodityCountLabelByIndex(CString* out, unsigned int commodityCode,
+                                               short count);
 
 // Per-unit-type military stat records (7 shorts per type, record base 0x695cd2):
 // column 0 = category flag (0x10 = counted toward power/cost), column 1 = power/cost
@@ -295,9 +300,9 @@ extern const char* const g_apszQuickDrawFontFaceNames[5];
 // cluster above. The preset's styleRef6 field IS the current text color (written by
 // SetQuickDrawFillColor, read as COLORREF by the paint paths; the original PDB labels
 // those 4 bytes g_uQuickDrawCurrentColor — it's the same field, not a separate global).
-extern CFont* g_pQuickDrawCachedMeasureFont;                  // 0x6a1d48
+extern CFont* g_pQuickDrawCachedMeasureFont;                // 0x6a1d48
 extern TUiTextStyleDescriptor g_QuickDrawMeasureFontPreset; // 0x6a1d4c
-extern unsigned char g_bQuickDrawMeasureFontDirty;            // 0x6a1d56
+extern unsigned char g_bQuickDrawMeasureFontDirty;          // 0x6a1d56
 extern int g_uQuickDrawStrokeColor;
 extern int g_nQuickDrawOriginX;
 extern int g_nQuickDrawOriginY;
@@ -421,7 +426,11 @@ extern int g_nSaveFormatVersion;
 // Gates the assert-messagebox in TTaskForce::ApplyMapOrderTypeExecutionEffects's default
 // (unhandled attachment/kind) case; not yet recovered beyond that one read site.
 extern int g_UnknownMapOrderExecutionGuard_006a3ee0;
-extern char g_szCmdSwitchLang_00694250[];
+// Guards the nil-pointer assert in TColorFill::AdornerSlot0C (0x004ff1c0, TColorFill.cpp);
+// no write site found anywhere in ported source, so this may be a debug/never-reached
+// assertion path in the retail build rather than a genuine run-once flag.
+extern int g_colorFillAssertGuard_006a30b4;
+extern char g_szLiteralL_00694250[];
 extern char g_szCmdSwitchLangQuit_00694254[];
 extern ImperialismApp* g_pImperialismApp;
 extern int DAT_006a1350;
@@ -474,6 +483,10 @@ extern char g_szCountryNameProfileKey00698AE0[];
 }
 
 // Typed C++ linkage — see typed-recovered-globals.mdc (not inside extern "C").
+// Per-resourceType04 index into TShipView::ApplyRectSlot110's 8-entry order-status
+// string pool (GetString group 0x2760, one status line per naval order state);
+// -1 = no status line for that resource type.
+extern const int g_ShipOrderStatusStringIndexByResourceType_0065c7f8[14];
 extern TInfoBarText* g_pCursorControlPanel;
 extern CString g_cstrControlStringMessageStore;
 extern TTradeMgr* g_pNationInteractionStateManager;
@@ -481,6 +494,13 @@ extern CString g_cstrCountryNameSettingValue006A4220;
 extern TSetupRandomMapPicture* g_pActiveRandomMapSetupPicture006A4268;
 extern "C" short g_nationMetricSlotDispatchOrder006d810[0x11];
 extern "C" const unsigned int g_tradeCommodityRowTagTable[17];
+// Shared substitution value read by TTradeTotalsView::ApplyRectSlot110 (0x5c1bd0) as
+// the sole scanBracketExpressions() argument for its "balance" row template (GetString
+// group 0x2740 idx 0x1b). The original's raw bytes are a compile-time-constant pointer
+// to an empty string (not a deferred-construction CString), so this is modeled as a
+// plain pointer aliasing the shared g_szEmptyString buffer, matching the
+// g_pszEmptyTextRef_00669db8 idiom. Not yet pinned to a writer if one exists.
+extern const char* g_cstrTradeTotalsBalanceSubstitution0066DB50;
 extern GlobalViewportRectDefaultsRecord g_globalViewportRectDefaultsRecord;
 extern GlobalViewportRectDefaultsRecord* g_pGlobalViewportRectDefaultsRecord;
 extern TWNetSessionManager g_NetworkSessionManager006a5f60;
@@ -733,9 +753,9 @@ extern int g_localizationAudioSlotCursor_006a60f8;
 extern char g_szImpSaveExtension_00698708[];
 extern char g_szMultiplayerSavePrefix_00698710[];
 extern char g_szSingleSlotSavePrefix_00698718[];
-extern char g_szSaveFileReadBinaryMode_00698720[];
+extern char g_szLiteralRb_00698720[];
 extern char g_szSaveDirectoryPrefix_00698724[];
-extern char g_szAutosaveSlotLabel_0069872C[];
+extern char g_szLiteralA_0069872C[];
 extern char g_szSavedDocumentMarker_0069B848[];
 extern char g_szLoadedDocumentMarker_0069B854[];
 extern const char* const g_pszSingleSlotSavePrefix_0065DDD0;  // "slot" @ 0x65ddd0
@@ -901,6 +921,13 @@ extern const float g_NavyOrderDistanceDecayWeightTable_006978c8[6];
 
 // TMapMgr.cpp — per-resourceType requirement level table (0x513610).
 extern unsigned char g_abUniversityRequirementLevelById[24][4];
+// TUniversityView.cpp — TUniversityView::ApplyRectSlot110 (0x4cbf70) reads
+// table[row + fielda4*4] (row 0-4, only the low 16 bits used, -1 = empty slot) to pick
+// which resource's requirement row to draw for the selected recruitment category
+// (fielda4). Real category boundaries/count not otherwise recovered; declared to the
+// extent read (30 dwords @ 0x651030, raw-read from the binary since this region was
+// previously unclaimed).
+extern int g_UniversityRequirementResourceTypeTable[30];
 extern unsigned char g_abResourceTypeUsesHighNibbleFlag[24];
 // TMapMgr.cpp — per-resourceType capability-category code, compared for equality against
 // a caller-supplied category code by FindMaxResourceCapabilityValueForTile (0x513720).
@@ -1100,6 +1127,8 @@ extern int DAT_006a3914;
 
 // Map-context flavor-text string pool (see global_data_tables.cpp).
 extern char s_szSpaceSeparator_00695794[];
+extern char s_szAdmiralPrefix_0069578c[];
+extern char s_szColonSeparator_00696b10[];
 extern char s_mcflavor_00696674[];
 extern char s_mcflavor_00696d10[];
 extern char s_mcflavor_00697238[];

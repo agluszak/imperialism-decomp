@@ -17,7 +17,7 @@
 #include "game/TQuickDrawSurfaceContext.h"
 #include "game/global_data_tables.h"
 #include "game/quickdraw_rendering.h"
-#include "game/startup_helpers.h"
+#include "game/TAmbitApplication.h"
 #include "game/ui_control_tags.h"
 
 // No-op bracket hooks around the modal one-time-animation wait (retail build leaves these empty).
@@ -26,6 +26,27 @@ void NoOpModalAnimWaitBracketHookA_00498c60(void) {}
 
 // FUNCTION: IMPERIALISM 0x00498c80
 void NoOpModalAnimWaitBracketHookB_00498c80(void) {}
+
+// FUNCTION: IMPERIALISM 0x005a6940
+BOOL __stdcall ClipSrcRectToBoundsAndOffsetDstRect(RECT* bounds, RECT* dstRect, RECT* srcRect) {
+  if (srcRect->top < bounds->top) {
+    dstRect->top += bounds->top - srcRect->top;
+    srcRect->top = bounds->top;
+  }
+  if (bounds->bottom < srcRect->bottom) {
+    dstRect->bottom += bounds->bottom - srcRect->bottom;
+    srcRect->bottom = bounds->bottom;
+  }
+  if (srcRect->left < bounds->left) {
+    dstRect->left += bounds->left - srcRect->left;
+    srcRect->left = bounds->left;
+  }
+  if (bounds->right < srcRect->right) {
+    dstRect->right += bounds->right - srcRect->right;
+    srcRect->right = bounds->right;
+  }
+  return srcRect->left < srcRect->right && srcRect->top < srcRect->bottom;
+}
 
 // Fills the tactical unit sprite facing-offset table ([unit type][orientation][side] pixel
 // deltas applied by ComputeTacticalUnitSpriteDrawRectAndApplyFacingOffset for units on a
@@ -1324,6 +1345,30 @@ void TTacticalBattleView::DrawUiTilesAndOverlay() {
 
   InvalidateCityDialogRectRegion(&moveAnimScreenRectC0, 1);
   moveAnimUnitOffsetXA4 = -1;
+}
+
+// FUNCTION: IMPERIALISM 0x005a99e0
+void __stdcall DrawHexSelectionOutlineSegments(RECT* rect) {
+  rect->right -= 1;
+  rect->bottom -= 1;
+  SetQuickDrawTextOriginWithContextOffset(static_cast<short>(rect->left),
+                                          static_cast<short>(rect->top + 6));
+  DrawCenteredGuideLineOnMapDc(static_cast<short>(rect->left), static_cast<short>(rect->top));
+  DrawCenteredGuideLineOnMapDc(static_cast<short>(rect->left + 6), static_cast<short>(rect->top));
+  SetQuickDrawTextOriginWithContextOffset(static_cast<short>(rect->right - 6),
+                                          static_cast<short>(rect->top));
+  DrawCenteredGuideLineOnMapDc(static_cast<short>(rect->right), static_cast<short>(rect->top));
+  DrawCenteredGuideLineOnMapDc(static_cast<short>(rect->right), static_cast<short>(rect->top + 6));
+  SetQuickDrawTextOriginWithContextOffset(static_cast<short>(rect->right),
+                                          static_cast<short>(rect->bottom - 6));
+  DrawCenteredGuideLineOnMapDc(static_cast<short>(rect->right), static_cast<short>(rect->bottom));
+  DrawCenteredGuideLineOnMapDc(static_cast<short>(rect->right - 6),
+                               static_cast<short>(rect->bottom));
+  SetQuickDrawTextOriginWithContextOffset(static_cast<short>(rect->left + 6),
+                                          static_cast<short>(rect->bottom));
+  DrawCenteredGuideLineOnMapDc(static_cast<short>(rect->left), static_cast<short>(rect->bottom));
+  DrawCenteredGuideLineOnMapDc(static_cast<short>(rect->left),
+                               static_cast<short>(rect->bottom - 6));
 }
 
 // Promoted tactical-UI helpers (called from the TTacticalBattle command handlers).

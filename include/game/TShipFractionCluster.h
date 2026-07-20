@@ -132,7 +132,9 @@ public:
   // Original object size is 0x98 (CRuntimeClass m_nObjectSize); the source class ended at
   // 0x88. Enabled/disabled state gate for the ship/arrow controls, set by
   // UpdateIndustryCapabilityControlStateAndValue; a real `short` (the original writes/reads
-  // it with 16-bit instructions throughout).
+  // it with 16-bit instructions throughout) -- also cross-confirmed by
+  // TShipPlacard::ApplyRectSlot110, which reads a sibling's field88 (via
+  // this->ownerContext+0x88) as a short quantity/count.
   short field88;
   short pad8a;
   // The 'main'-tagged control on OwnerPanel(), resolved by NoOpUiLifecycleHook.

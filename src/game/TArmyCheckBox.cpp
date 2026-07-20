@@ -1,5 +1,9 @@
 #include "game/TArmyCheckBox.h"
 
+#include "game/CDib.h"
+#include "game/global_data_tables.h"
+#include "game/quickdraw_rendering.h"
+
 // SYNTHETIC: IMPERIALISM 0x004a9400
 // TArmyCheckBox::`scalar deleting destructor'
 TArmyCheckBox::~TArmyCheckBox() {}
@@ -15,12 +19,13 @@ TArmyCheckBox::TArmyCheckBox() {}
 
 // FUNCTION: IMPERIALISM 0x004a9fe0
 TArmyCheckBox::TArmyCheckBox(TView* panel, int* offsetLayout, int* sizeLayout, int unused1,
-                             int unused2, int field90Value, int field88Value)
+                             int unused2, TQuickDrawSurfaceContext* surfaceContext90Value,
+                             int field88Value)
     : TControl() {
   (void)unused1;
   (void)unused2;
   InitializeUiResourceEntryFrameAndParent(nullptr, panel, offsetLayout, sizeLayout, 4, 4, 0);
-  field90 = field90Value;
+  surfaceContext90 = surfaceContext90Value;
   field88 = field88Value;
 }
 
@@ -31,7 +36,49 @@ undefined TArmyCheckBox::VTableSlot73(char param_1) {
 }
 
 // FUNCTION: IMPERIALISM 0x004aa100
-void TArmyCheckBox::ApplyRectSlot110(RECT* rectBuffer) {}
+void TArmyCheckBox::ApplyRectSlot110(RECT* rectBuffer) {
+  RECT contentRect;
+  contentRect.left = rectBuffer->left;
+  contentRect.top = rectBuffer->top;
+  contentRect.right = rectBuffer->right;
+  contentRect.bottom = rectBuffer->bottom;
+
+  if (surfaceContext90 != 0) {
+    ResetQuickDrawStrokeState();
+
+    RECT srcRect;
+    srcRect.left = rectBuffer->left + field88;
+    srcRect.right = rectBuffer->right + field88;
+    srcRect.bottom = rectBuffer->bottom - 1;
+    srcRect.top = rectBuffer->top;
+
+    UpdatePaletteIndexWithDefaultFallback(0x10);
+    SetQuickDrawFillColor(0);
+
+    // Both source and destination rects get flipped for a negative-height
+    // (bottom-up) backing DIB -- the same idiom, applied to two different
+    // surfaces (surfaceContext90's icon strip, then the active draw surface).
+    if (surfaceContext90->surfaceDib != 0) {
+      int height = surfaceContext90->surfaceDib->m_pInfoHeader->bmiHeader.biHeight;
+      if (height < 1) {
+        height = -height;
+      }
+      OffsetRect(&srcRect, 0, height - srcRect.top - srcRect.bottom);
+    }
+    if (g_pActiveQuickDrawSurfaceContext->surfaceDib != 0) {
+      int height = g_pActiveQuickDrawSurfaceContext->surfaceDib->m_pInfoHeader->bmiHeader.biHeight;
+      if (height < 1) {
+        height = -height;
+      }
+      OffsetRect(&contentRect, 0, height - contentRect.top - contentRect.bottom);
+    }
+
+    BlitRectWithOptionalTransparency(surfaceContext90->GetBlitSurface(),
+                                     g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &srcRect,
+                                     &contentRect, 0x24, 0);
+    UpdatePaletteIndexWithDefaultFallback(0x13);
+  }
+}
 
 // FUNCTION: IMPERIALISM 0x004aa280
 void TArmyCheckBox::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {

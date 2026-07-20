@@ -1,4 +1,6 @@
 #include "game/TBackgroundPicture.h"
+
+#include "game/TPicture.h"
 // SYNTHETIC: IMPERIALISM 0x00572bd0
 // TBackgroundPicture::CreateObject
 
@@ -16,4 +18,5 @@ TBackgroundPicture::~TBackgroundPicture() {}
 
 // FUNCTION: IMPERIALISM 0x00572d00
 void TBackgroundPicture::ApplyRectSlot110(RECT* rectBuffer) {
+  TPicture::ApplyRectSlot110(rectBuffer);
 }

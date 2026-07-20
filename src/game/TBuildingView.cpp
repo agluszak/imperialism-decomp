@@ -17,7 +17,7 @@ TBuildingView::TBuildingView() : TNoHilitePicture() {
 TBuildingView::~TBuildingView() {}
 
 // FUNCTION: IMPERIALISM 0x004c6f30
-undefined TBuildingView::ApplyCityViewSelectionPayloadAndRefreshControls(int payload,
+undefined TBuildingView::ApplyCityViewSelectionPayloadAndRefreshControls(short* payload,
                                                                          unsigned char flag9c,
                                                                          void* field98Value,
                                                                          short field9eValue) {

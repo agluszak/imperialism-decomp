@@ -142,12 +142,20 @@ public:
 
   // Own fields at +0xa0..+0xcc (RTTI m_nObjectSize 0xcc vs TBuildingView's 0xa0).
   // CreateObject (0x4c8200) only re-zeroes inherited TBuildingView::field94/field98
-  // and installs the vtable -- nothing new is written in this range at construction,
-  // so it's still fully unrecovered shipyard-view state.
-  short fieldA0;                  // +0xa0 -- zeroed by OrphanRetStub_004c6fd0's tail
-  short fieldA2;                  // +0xa2 -- zeroed by OrphanRetStub_004c6fd0's tail
-  short buildQueueSlotValues[8];  // +0xa4..+0xb3 -- one per 'but0'-'but7' queue slot
-  int fieldB4;                    // +0xb4
+  // and installs the vtable -- nothing new is written in this range at construction.
+  // Two functions independently prove this range's shape and agree once reconciled:
+  // OrphanRetStub_004c6fd0 (0x4c8390) zeroes an 8-element array per 'but0'-'but7'
+  // build-queue slot at +0xa4, then writes an int and a surface pointer at +0xb4/+0xb8;
+  // ApplyRectSlot110 (0x4c9150) reads that same +0xa4 array indexed by
+  // selectedRequirementRow (0-7, matching the 8 build-queue slots) as the row's resource
+  // type -- one array, two roles, not a conflict. ApplyRectSlot110 also proves
+  // commoditySpriteIds[4]/commodityRequiredAmounts[4] at +0xbc/+0xc4 (loop bound proven:
+  // 4 slots, -1 = empty).
+  short selectedRequirementRow;      // +0xa0
+  unsigned char unknownA2[2];        // +0xa2 unrecovered
+  short buildQueueSlotValues[8];     // +0xa4..+0xb3 -- AKA requirementResourceTypeByRow
+  int fieldB4;                       // +0xb4
   TQuickDrawSurfaceContext* iconSurfaceB8; // +0xb8 -- LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0x264f)
-  unsigned char shipyardViewStateBc[0xcc - 0xbc]; // +0xbc..+0xcc -- still unrecovered
+  short commoditySpriteIds[4];       // +0xbc
+  short commodityRequiredAmounts[4]; // +0xc4
 };

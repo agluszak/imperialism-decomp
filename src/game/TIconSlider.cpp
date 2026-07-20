@@ -60,8 +60,13 @@ char TIconSlider::DispatchUiMouseMoveToChildren(CPoint* point, int arg2, int arg
   return 0;
 }
 
+// Draws the inherited tick strip, then lets the slider resolve/refresh its thumb
+// bitmap resource (slot 0x78, IconSliderResolveBmpResource).
 // FUNCTION: IMPERIALISM 0x00506690
-void TIconSlider::ApplyRectSlot110(RECT* rectBuffer) {}
+void TIconSlider::ApplyRectSlot110(RECT* rectBuffer) {
+  TIconBar::ApplyRectSlot110(rectBuffer);
+  IconSliderResolveBmpResource();
+}
 
 // FUNCTION: IMPERIALISM 0x005066c0
 undefined TIconSlider::IconSliderResolveBmpResource() {

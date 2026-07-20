@@ -64,9 +64,10 @@ void RectRgn(RgnHandle rgn, RECT* rect) {
 // clip region, then let the real DC clip (or a CPaintDC's paint rect) win.
 // FUNCTION: IMPERIALISM 0x00495920
 void GetClip(RgnHandle rgn) {
+  // Reads the static-initialized global (0x494040 CRT init sets it) directly; GetSafeHandle
+  // on the possibly-null pointer reproduces the original's inline `test/je/[+4]` null-guard.
   ::CombineRgn(static_cast<HRGN>((*rgn)->rgn.m_hObject),
-               static_cast<HRGN>(EnsureGlobalClipRegionHandleObject()->GetSafeHandle()), 0,
-               RGN_COPY);
+               static_cast<HRGN>(g_pGlobalClipRegionHandleObject->GetSafeHandle()), 0, RGN_COPY);
   CDC* dc = g_pQuickDrawMemoryDc;
   if (dc == 0) {
     dc = g_pScopedMapQuickDrawDcHandleObject;
@@ -93,8 +94,10 @@ void GetClip(RgnHandle rgn) {
 // &(*rgn)->rgn == NULL).
 // FUNCTION: IMPERIALISM 0x00495a30
 void SetClip(RgnHandle rgn) {
-  ::CombineRgn(static_cast<HRGN>(EnsureGlobalClipRegionHandleObject()->m_hObject),
-               (HRGN)(*rgn)->rgn, 0, RGN_COPY);
+  // Direct read of the static-initialized global (no null-guard on it, matching the
+  // original -- the 0x494040 CRT init guarantees it is set before any SetClip call).
+  ::CombineRgn(static_cast<HRGN>(g_pGlobalClipRegionHandleObject->m_hObject), (HRGN)(*rgn)->rgn, 0,
+               RGN_COPY);
 }
 
 // ClipRect: vestigial in the Windows port — builds a rect region and immediately

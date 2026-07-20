@@ -43,12 +43,12 @@ void TStratReportView::ApplyRectSlot110(RECT* rectBuffer) {
 
   g_pGlobalMapState->AssignCityRecordDisplayName(battleOutcome->location, &locationName);
   lineBuffer = "Battle of " + locationName;
-  DrawTextWithCachedStyle(&lineBuffer);
+  DrawTextWithCachedQuickDrawStyleState(&lineBuffer);
 
   g_apTerrainTypeDescriptorTable[battleOutcome->winnerId]->FormatOverlayTerrainLabelText(&sideName);
   lineBuffer = "Winner: " + sideName;
   SetQuickDrawTextOriginWithContextOffset(0xc, 0x50);
-  DrawTextWithCachedStyle(&lineBuffer);
+  DrawTextWithCachedQuickDrawStyleState(&lineBuffer);
 
   int y = 0x60;
   int i;
@@ -59,7 +59,7 @@ void TStratReportView::ApplyRectSlot110(RECT* rectBuffer) {
       countText.Format(g_szDecimalFormat, battleOutcome->winnerCounts[i]);
       lineBuffer = countText + " " + sideName;
       SetQuickDrawTextOriginWithContextOffset(0xc, (short)y);
-      DrawTextWithCachedStyle(&lineBuffer);
+      DrawTextWithCachedQuickDrawStyleState(&lineBuffer);
       y += 0x10;
     }
   }
@@ -69,7 +69,7 @@ void TStratReportView::ApplyRectSlot110(RECT* rectBuffer) {
   g_apTerrainTypeDescriptorTable[battleOutcome->loserId]->FormatOverlayTerrainLabelText(&sideName);
   lineBuffer = "Loser: " + sideName;
   SetQuickDrawTextOriginWithContextOffset(0xc, (short)y);
-  DrawTextWithCachedStyle(&lineBuffer);
+  DrawTextWithCachedQuickDrawStyleState(&lineBuffer);
   y += 0x10;
 
   SetQuickDrawTextFace(0);
@@ -79,7 +79,7 @@ void TStratReportView::ApplyRectSlot110(RECT* rectBuffer) {
       countText.Format(g_szDecimalFormat, battleOutcome->loserCounts[i]);
       lineBuffer = countText + " " + sideName;
       SetQuickDrawTextOriginWithContextOffset(0xc, (short)y);
-      DrawTextWithCachedStyle(&lineBuffer);
+      DrawTextWithCachedQuickDrawStyleState(&lineBuffer);
       y += 0x10;
     }
   }

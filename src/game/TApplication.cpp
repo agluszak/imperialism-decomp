@@ -5,9 +5,9 @@
 #include "game/global_data_tables.h"
 
 #include "game/CIncludeView.h"
+#include "game/ImperialismApp.h"
 #include "game/TEventHandler.h"
 #include "game/mfc.h"
-#include "game/startup_helpers.h"
 
 // FUNCTION: IMPERIALISM 0x00414720
 void TApplication::PostTurnEventCodeMessage2420(short eventCode) {

@@ -20,7 +20,6 @@ class TInfoBarText;
 #include "game/sea_geometry.h"
 #include "game/app_init_globals.h"
 #include "game/UiRuntimeContext.h"
-#include "game/startup_helpers.h"
 #include "game/TNetMgr.h"
 #include "game/TTurnEventDialogFactoryRegistry.h"
 #include "game/TCountry.h"
@@ -136,10 +135,14 @@ int g_lastEdgeAutoScrollTick16 = 0;
 int g_nSaveFormatVersion = -1;
 // GLOBAL: IMPERIALISM 0x006a3ee0
 int g_UnknownMapOrderExecutionGuard_006a3ee0 = 0;
-// Upper-cased command-line switch literals matched by
-// ImperialismCommandLineInfo::ParseParam (0x4133d0).
+// GLOBAL: IMPERIALISM 0x006a30b4
+int g_colorFillAssertGuard_006a30b4 = 0;
+// Upper-cased command-line switch literal matched by
+// ImperialismCommandLineInfo::ParseParam (0x4133d0). Linker-pooled with the same "L"
+// literal used as a flavor-text syllable in map_context_flavor_builders.cpp -- named
+// after the literal value, not either consumer, since neither owns the address.
 // GLOBAL: IMPERIALISM 0x00694250
-char g_szCmdSwitchLang_00694250[] = "L";
+char g_szLiteralL_00694250[] = "L";
 // GLOBAL: IMPERIALISM 0x00694254
 char g_szCmdSwitchLangQuit_00694254[] = "L!";
 // The MFC application singleton (&theApp), cached by InitInstance (0x412dc0).
@@ -851,6 +854,10 @@ unsigned char g_abUniversityRequirementLevelById[24][4] = {
     {0, 2, 4, 6}, {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0},
     {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}, {1, 2, 3, 4},
     {1, 2, 3, 4}, {1, 2, 3, 4}, {1, 2, 3, 4}, {0, 1, 2, 3}, {0, 1, 2, 3}, {0, 0, 0, 0}};
+// GLOBAL: IMPERIALISM 0x00651030
+int g_UniversityRequirementResourceTypeTable[30] = {3,  4,  21, 22, -1, -1, -1, -1, 0,  17,
+                                                    18, -1, 2,  -1, -1, -1, -1, -1, -1, -1,
+                                                    1,  20, -1, -1, 19, -1, -1, -1, -1, -1};
 // Per-resourceType "requires tiered nibble" boolean flag table. Read by the same function
 // above; only nonzero-ness is consumed there.
 unsigned char g_abResourceTypeUsesHighNibbleFlag[24] = {0, 0, 0, 1, 1, 0, 1, 0, 0, 0, 0, 0,
@@ -1345,6 +1352,9 @@ TUiTextStyleDescriptor g_UiResourceEntryDefaultTextStyle = {0, 0, 0, 0};
 
 } // extern "C"
 
+// GLOBAL: IMPERIALISM 0x0066db50
+const char* g_cstrTradeTotalsBalanceSubstitution0066DB50 = g_szEmptyString;
+
 #include "game/TWNetSessionManager.h"
 
 // UGameWindow/dialog-factory widget build stack. The list element type is TView*: its
@@ -1440,6 +1450,16 @@ extern "C" void* g_pActiveCityDialogLegendSelectionOwner = 0;
 // GLOBAL: IMPERIALISM 0x006a44b4
 // 4-byte flag (written as a dword by TStatusButton::HandleEvent); BOOL-style int.
 int g_bCityDialogLegendSelectionInitialized = 0;
+
+// Per-resourceType04 index into TShipView::ApplyRectSlot110's 8-entry order-status
+// string pool (GetString group 0x2760); -1 = no status line for that resource type
+// (verified via `just ghidra-read-data 0x65c7f8 dword 14`; the table ends there --
+// the next dword looks like unrelated pointer data, matching
+// g_NavyOrderResourceDescriptorTable's 14-entry resourceType04 domain).
+// GLOBAL: IMPERIALISM 0x0065c7f8
+const int g_ShipOrderStatusStringIndexByResourceType_0065c7f8[14] = {
+    -1, -1, -1, 0, 1, -1, -1, 2, 3, 4, -1, 5, 6, 7,
+};
 
 // GLOBAL: IMPERIALISM 0x006a590c
 TInfoBarText* g_pCursorControlPanel = nullptr;
@@ -1763,12 +1783,18 @@ char g_szImpSaveExtension_00698708[] = ".imp";
 char g_szMultiplayerSavePrefix_00698710[] = "mult";
 // GLOBAL: IMPERIALISM 0x00698718
 char g_szSingleSlotSavePrefix_00698718[] = "slot";
+// fopen mode string (TLoadSavePicture.cpp). Linker-pooled with the same "rb" literal used
+// as a flavor-text syllable in map_context_flavor_builders.cpp -- named after the literal
+// value, not either consumer, since neither owns the address.
 // GLOBAL: IMPERIALISM 0x00698720
-char g_szSaveFileReadBinaryMode_00698720[] = "rb";
+char g_szLiteralRb_00698720[] = "rb";
 // GLOBAL: IMPERIALISM 0x00698724
 char g_szSaveDirectoryPrefix_00698724[] = "Save/";
+// Autosave-slot display label (TLoadSavePicture.cpp). Linker-pooled with the same "A"
+// literal used as a flavor-text syllable in map_context_flavor_builders.cpp -- named after
+// the literal value, not either consumer, since neither owns the address.
 // GLOBAL: IMPERIALISM 0x0069872c
-char g_szAutosaveSlotLabel_0069872C[] = "A";
+char g_szLiteralA_0069872C[] = "A";
 // GLOBAL: IMPERIALISM 0x0069b848
 char g_szSavedDocumentMarker_0069B848[] = "__saved";
 // GLOBAL: IMPERIALISM 0x0069b854
@@ -1899,6 +1925,14 @@ int g_mapActionContextDisplayNameCacheStep_006984bc = 7;
 // Empty content: reccmp pairs by the // GLOBAL address marker, not by value. ===
 // GLOBAL: IMPERIALISM 0x00695794
 char s_szSpaceSeparator_00695794[] = " ";
+// "Adm. " prefix for the assigned-admiral name line (TShipView::ApplyRectSlot110,
+// 0x5654e0).
+// GLOBAL: IMPERIALISM 0x0069578c
+char s_szAdmiralPrefix_0069578c[] = "Adm. ";
+// "<label>:" separator between the council-panel's nation-name/label column and its
+// value column (TCouncilPanelView::ApplyRectSlot110, 0x4fb030).
+// GLOBAL: IMPERIALISM 0x00696b10
+char s_szColonSeparator_00696b10[] = ":";
 // GLOBAL: IMPERIALISM 0x00696674
 char s_mcflavor_00696674[] = "";
 // GLOBAL: IMPERIALISM 0x00696d10

@@ -25,7 +25,7 @@
 #include "game/global_data_tables.h"
 #include "game/mapped_flavor_text.h"
 #include "game/ScopedMapQuickDrawContext.h"
-#include "game/startup_helpers.h"
+#include "game/TAmbitApplication.h"
 #include "game/ui_control_tags.h"
 #include "game/ui_text_label_helpers_decls.h"
 
@@ -50,9 +50,12 @@ TSetupRandomMapPicture::~TSetupRandomMapPicture() {}
 
 // FUNCTION: IMPERIALISM 0x00576fe0
 void TSetupRandomMapPicture::RecheckCountryName() {
-  if (countryControlReadyA4 == 0 && g_pSimMgr->field44 == 0) {
-    TEditText* countryControl = static_cast<TEditText*>(ResolveControlByTag(kControlTagCoun));
-    countryControl->AssertValid();
+  if (countryControlReadyA4 == 0) {
+    bool sessionInactive = g_pSimMgr->field44 == 0;
+    if (sessionInactive) {
+      TEditText* countryControl = static_cast<TEditText*>(ResolveControlByTag(kControlTagCoun));
+      countryControl->AssertValid();
+    }
   }
 }
 

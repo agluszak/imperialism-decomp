@@ -3,6 +3,8 @@
 #include "game/TControl.h"
 #include "game/mfc.h"
 
+struct TQuickDrawSurfaceContext;
+
 // VTABLE: IMPERIALISM 0x0065ff60
 class TGWorldButton : public TControl {
 public:
@@ -123,7 +125,12 @@ public:
 
   TGWorldButton();
 
-  // Original object size is 0x8c (CRuntimeClass m_nObjectSize); the source class ended at 0x84. Trailing 8 byte(s) not yet semantically recovered — declared so sizeof and the recomp's allocation size match the original.
-  int field84;
-  int field88;
+  // Source-strip column offset (in pixels): shifted by +/-frameWidth34 on each
+  // SetControlStateFlagAndMaybeRefresh toggle to select the enabled/disabled frame
+  // of a horizontal sprite strip. Zeroed by the ctor.
+  short field84;
+  short pad86;
+  // Source surface holding the sprite strip; ApplyRectSlot110 blits the
+  // {field84, 0, field84+frameWidth34, frameHeight38} slice from it.
+  TQuickDrawSurfaceContext* field88;
 };

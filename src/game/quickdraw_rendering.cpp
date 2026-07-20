@@ -705,47 +705,24 @@ void FillRectWithQuickDrawBrushAndContextOffset(RECT* rect) {
   }
 }
 
-// FUNCTION: IMPERIALISM 0x005a6940
-BOOL __stdcall ClipSrcRectToBoundsAndOffsetDstRect(RECT* bounds, RECT* dstRect, RECT* srcRect) {
-  if (srcRect->top < bounds->top) {
-    dstRect->top += bounds->top - srcRect->top;
-    srcRect->top = bounds->top;
+// FUNCTION: IMPERIALISM 0x005d4c60
+void TruncateTextToFitWidthWithEllipsis(CString* text, short maxWidth) {
+  // Shrinks *text one character at a time, appending "...", until it (plus the
+  // ellipsis) measures within maxWidth -- the reusable form of the loop
+  // TMiniArmyView::ApplyRectSlot110 (0x4aaeb0) inlines by hand for its own name
+  // label. Bails out to an empty string if truncation would leave fewer than 5
+  // characters.
+  if (MeasureTextExtentWithCachedQuickDrawStyle(text) > maxWidth) {
+    CString truncated;
+    do {
+      truncated = text->Mid(0, text->GetLength() - 1);
+      *text = truncated;
+      truncated += "...";
+    } while (MeasureTextExtentWithCachedQuickDrawStyle(&truncated) > maxWidth &&
+             text->GetLength() > 4);
+    if (text->GetLength() < 5) {
+      *text = g_szEmptyString;
+    }
+    *text = truncated;
   }
-  if (bounds->bottom < srcRect->bottom) {
-    dstRect->bottom += bounds->bottom - srcRect->bottom;
-    srcRect->bottom = bounds->bottom;
-  }
-  if (srcRect->left < bounds->left) {
-    dstRect->left += bounds->left - srcRect->left;
-    srcRect->left = bounds->left;
-  }
-  if (bounds->right < srcRect->right) {
-    dstRect->right += bounds->right - srcRect->right;
-    srcRect->right = bounds->right;
-  }
-  return srcRect->left < srcRect->right && srcRect->top < srcRect->bottom;
-}
-
-// FUNCTION: IMPERIALISM 0x005a99e0
-void __stdcall DrawHexSelectionOutlineSegments(RECT* rect) {
-  rect->right -= 1;
-  rect->bottom -= 1;
-  SetQuickDrawTextOriginWithContextOffset(static_cast<short>(rect->left),
-                                          static_cast<short>(rect->top + 6));
-  DrawCenteredGuideLineOnMapDc(static_cast<short>(rect->left), static_cast<short>(rect->top));
-  DrawCenteredGuideLineOnMapDc(static_cast<short>(rect->left + 6), static_cast<short>(rect->top));
-  SetQuickDrawTextOriginWithContextOffset(static_cast<short>(rect->right - 6),
-                                          static_cast<short>(rect->top));
-  DrawCenteredGuideLineOnMapDc(static_cast<short>(rect->right), static_cast<short>(rect->top));
-  DrawCenteredGuideLineOnMapDc(static_cast<short>(rect->right), static_cast<short>(rect->top + 6));
-  SetQuickDrawTextOriginWithContextOffset(static_cast<short>(rect->right),
-                                          static_cast<short>(rect->bottom - 6));
-  DrawCenteredGuideLineOnMapDc(static_cast<short>(rect->right), static_cast<short>(rect->bottom));
-  DrawCenteredGuideLineOnMapDc(static_cast<short>(rect->right - 6),
-                               static_cast<short>(rect->bottom));
-  SetQuickDrawTextOriginWithContextOffset(static_cast<short>(rect->left + 6),
-                                          static_cast<short>(rect->bottom));
-  DrawCenteredGuideLineOnMapDc(static_cast<short>(rect->left), static_cast<short>(rect->bottom));
-  DrawCenteredGuideLineOnMapDc(static_cast<short>(rect->left),
-                               static_cast<short>(rect->bottom - 6));
 }

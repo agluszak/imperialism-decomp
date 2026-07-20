@@ -5,6 +5,41 @@
 class TDropShadowText;
 class TStaticText;
 class TView;
+struct TUiTextStyleDescriptor;
+
+// --- Text-style / control-theme helpers (implemented in ui_text_label_helpers.cpp) ---
+// Relocated here from quickdraw_rendering.h: these operate on the packed
+// TUiTextStyleDescriptor text-style record and the 0x5c40xx control-theme path, not on
+// the QuickDraw surface/font engine. (The font-engine consumers
+// CreateFontFromPresetAndAttachRegionHandle / UpdateGlobalFontPresetAndRebuildCachedFontIfDirty
+// stay in quickdraw_rendering.h with their own forward-decl.)
+
+void MapUiThemeCodeToStyleFlags(short themeCode, int* outStyleFlags);
+void BuildUiTextStyleDescriptor(TUiTextStyleDescriptor* styleDescriptor, int unused, int arg2,
+                                int themeCode);
+void InitializeUiTextStyleDescriptor(TUiTextStyleDescriptor* styleDescriptor, short face,
+                                     short pointSize, int themeCode, short font);
+
+// 0x5c4020 -- asserts the text control, applies a theme style descriptor built from
+// themeCode (BuildUiTextStyleDescriptor inline-expanded in the original), sets the
+// text theme code, and optionally assigns a caption string. Returns the control.
+// unused2 is always 0 at every known call site.
+TStaticText* ApplyControlThemeStyleAndOptionalCaption(TStaticText* control, int unused2,
+                                                      int pointSize, int themeCode, int themeCode2,
+                                                      const char* caption);
+
+// 0x5c4180 -- same shape as ApplyControlThemeStyleAndOptionalCaption, but the caption
+// text is loaded from a string-table resource (group/index) via
+// g_pModuleLibraryCacheState instead of being passed as a literal pointer.
+TStaticText* ConfigureUiControlStyleValueAndCaptionFromStringResource(TStaticText* control,
+                                                                      int unused2, int pointSize,
+                                                                      int themeCode, int themeCode2,
+                                                                      int stringResourceGroup,
+                                                                      short stringResourceIndex);
+
+void ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(int unused, int styleWidth, int themeCode);
+void InitializeUiTextStyleDescriptorAndApplyQuickDraw(short face, short pointSize, int themeCode,
+                                                      short font);
 
 // 0x5c49d0 / 0x5c4a40: set a control's cursor hover-help text -- both forward `text`
 // (by value) to TView::SetHoverHelpText, which stores it in hoverHelpText58 and sets

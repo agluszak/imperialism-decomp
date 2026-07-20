@@ -2,10 +2,12 @@
 
 #include "game/TView.h"
 
-// Shared helpers for the turn-event dialog factory builders (turn_event_dialog_factory.cpp
-// and the per-screen builder functions). They operate on the global widget build stack
-// (g_UiWidgetBuildStack006a13e0) and the g_pUiResourceHead/g_pUiResourceContext pair —
-// see include/game/global_data_tables.h.
+// Global-state UI resource/widget builder (was misnamed "ui_resource_pool"): the
+// push-widget / attach-to-stack-tail / configure-layout+tags+state / clear-context
+// vocabulary used by the turn-event dialog factory (turn_event_dialog_factory.cpp) and the
+// per-screen builder functions. Operates on the global widget build stack
+// (g_UiWidgetBuildStack006a13e0) and the g_pUiResourceHead/g_pUiResourceContext pair — see
+// include/game/global_data_tables.h. It is a builder, not a pool.
 
 // 4-byte by-value style-ref wrapper (bd 1uj.51.2): constructed in place on the stack as
 // BindUiResourceTextAndStyle's styleRef argument. Factory-builder call sites convert an

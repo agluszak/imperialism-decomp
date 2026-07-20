@@ -113,6 +113,12 @@ public:
 
   TTradeOfferNationView();
 
-  // Original object size is 0x64 (CRuntimeClass m_nObjectSize); the source class ended at 0x60. Trailing 4 byte(s) not yet semantically recovered — declared so sizeof and the recomp's allocation size match the original.
-  int field60;
+  // Original object size is 0x64 (CRuntimeClass m_nObjectSize); the source class ended
+  // at 0x60. The trailing 4 bytes split into two shorts, both read by ApplyRectSlot110:
+  // +0x60 indexes g_pNationInteractionStateManager->categoryRows[] (a trade-category
+  // row) and is the rosterSlot arg to AllocateAndPopulateLinkedValueCollectionFromRosterFilter;
+  // +0x62 indexes categoryRows[].cells18[] (a per-nation cell) and is this row's own
+  // nation slot (passed to LoadNormalizedCredentialName / the filterValue arg).
+  short categorySlot60;
+  short nationSlot62;
 };

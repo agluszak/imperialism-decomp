@@ -113,6 +113,18 @@ public:
 
   TItemBoyView();
 
-  // Original object size is 0x64 (CRuntimeClass m_nObjectSize); the source class ended at 0x60. Trailing 4 byte(s) not yet semantically recovered — declared so sizeof and the recomp's allocation size match the original.
-  int field60;
+  // Draws `header` at a fixed origin, then blits a horizontal row of item-kind icons
+  // (icon strip cached at *(g_pStrategicMapViewSystem + 0x674) + 4, distinct from the
+  // Army/Navy boy views' +0x694 strip) using this->frameWidth34 (inherited from
+  // TView) and the context's item count to lay out each icon's width. Non-virtual
+  // helper called only from ApplyRectSlot110; real name unrecovered (Ghidra's
+  // provisional name for 0x4afb60 follows its usual scalar-deleting-destructor
+  // template, but this is a plain paint helper, not a destructor -- verified from
+  // the raw listing).
+  void DrawItemHeaderAndIconRows(CString* header);
+
+  // Unrecovered context object read by ApplyRectSlot110/DrawItemHeaderAndIconRows:
+  // +0 item "kind" id (short), +2 item count (short). Raw storage until the real
+  // pointee class is identified (same pattern as TArmyBoyView::field60).
+  void* field60; // +0x60
 };

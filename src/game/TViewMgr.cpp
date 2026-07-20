@@ -38,7 +38,6 @@
 #include "game/turn_flow_cooldown.h" // IsTurnCooldownCounterActiveOrResetFlag
 #include "game/ui_invalidation_guard.h"
 #include "game/TMultiplayerMgr.h"
-#include "game/localization_text_helpers.h"
 #include "game/TCluster.h"
 #include "game/TDiplomacyMapView.h"
 #include "game/TModalMessageCommand.h"
@@ -69,7 +68,6 @@ undefined4 HandleTurnEvent8FC_RebuildPageTabsAndTitles(void);
 // The display/GWorld manager (g_pDisplayMgr @ 0x6a2158); its activeDialog (+0x04) field
 // holds the active main TView used as the dispatch root for turn-event UI refreshes.
 
-#include "game/startup_helpers.h"
 #include "game/CIncludeView.h"
 
 // The former RunNationInfoModalAndReturnNonCancel / NoOpUiRuntimeCallback_005db2f0 /
@@ -103,9 +101,14 @@ const unsigned int kAddrTurnStateSeedHi = 0x006a5b5c;
 
 HCURSOR LoadTurnEventCursorByResourceIdOffset1000(int cursorResourceId);
 
-// SYNTHETIC: IMPERIALISM 0x005d4c60
-// TViewMgr::CreateObject
-
+// The RTTI/CRuntimeClass oracle previously assigned TViewMgr::CreateObject to
+// 0x005d4c60, but that address's real body (verified via `just ghidra-listing`
+// and `just ghidra-decompile`) is a CString truncate-with-ellipsis text helper --
+// no `operator new` call, no vtable store, just MeasureTextExtentWithCachedQuick-
+// DrawStyle + CString::Mid + string concatenation. It is now ported for real as
+// TruncateTextToFitWidthWithEllipsis (quickdraw_rendering.cpp, 0x5d4c60). TViewMgr's
+// real CreateObject address is unknown; leaving this class's DYNCREATE CreateObject
+// unclaimed rather than reinstating the wrong pairing.
 IMPLEMENT_DYNCREATE(TViewMgr, TObject)
 
 // FUNCTION: IMPERIALISM 0x005d5060

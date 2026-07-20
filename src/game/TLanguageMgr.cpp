@@ -21,7 +21,6 @@ const char kPreplutPath[] = "preplut.";
 const char kReadTextMode[] = "rt";
 } // namespace
 
-const char* GetDataDirectoryPathLiteral();
 // SYNTHETIC: IMPERIALISM 0x00507bc0
 // TLanguageMgr::CreateObject
 
