@@ -37,6 +37,71 @@ void TLoadSavePicture::NoOpUiLifecycleHook(int arg) {
   // not yet ported.
 }
 
+// FUNCTION: IMPERIALISM 0x0056c740
+void TLoadSavePicture::RefreshSlotPreviewFromSaveFile(short slotMode) {
+  CString path;
+  BuildSavePathStringForMode(&path, slotMode, 0);
+  if (!TryGetFileMetadataForPath(&path)) {
+    return;
+  }
+
+  char* tileOwnerTagTable = new char[0x1950];
+  FILE* file = fopen(path, g_szSaveFileReadBinaryMode_00698720);
+  char headerSkip[0xc];
+  fread(headerSkip, 1, 0xc, file);
+  // 0x20-byte scratch record (likely per-slot metadata -- unconfirmed field layout).
+  unsigned char slotMetadata[0x20];
+  fread(slotMetadata, 1, 0x20, file);
+  fread(tileOwnerTagTable, 1, 0x1950, file);
+  // Turn number (year = turnNumber + 0x717, used below) and three more header fields, whose
+  // exact semantics beyond turnNumber and the pendingNationByte assignment aren't confirmed
+  // yet: two single bytes and a trailing 0x20-byte record.
+  short turnNumber;
+  fread(&turnNumber, 1, 2, file);
+  unsigned char oneByteFieldA;
+  fread(&oneByteFieldA, 1, 1, file);
+  unsigned char pendingNationByte;
+  fread(&pendingNationByte, 1, 1, file);
+  unsigned char trailingRecord[0x20];
+  fread(trailingRecord, 1, 0x20, file);
+  fclose(file);
+
+  TMapPreviewView* mapControl = static_cast<TMapPreviewView*>(ResolveControlByTag(kControlTagMapP));
+  mapControl->AssertValid();
+  mapControl->SetEnabled(1, 1);
+  mapControl->TakeSatellitePhoto(tileOwnerTagTable);
+  mapControl->selectedNation68 = pendingNationByte;
+  mapControl->EnhancePhoto();
+  mapControl->RefreshControl();
+
+  TStaticText* infoControl = static_cast<TStaticText*>(ResolveControlByTag(0x696e666fu)); // 'info'
+  infoControl->AssertValid();
+
+  CString yearText;
+  yearText.Format(g_szDecimalFormat, turnNumber + 0x717);
+  CString slotNationName;
+  g_pSimMgr->GetString(0x2737, oneByteFieldA + 0xd, &slotNationName);
+  CString infoText = yearText + ", " + slotNationName;
+  infoControl->AssignTextSharedRefIfChangedAndMaybeInvalidate(&infoText, 0);
+
+  RECT infoBounds;
+  infoControl->QueryBounds(&infoBounds);
+  InvalidateCityDialogRectRegion(&infoBounds, 1);
+}
+
+namespace {
+
+// Save-file header record: both header readers reserve the full 0x40 bytes on the stack
+// (sub esp,0x40 at 0x56d7d4 / the 0x48 local area at 0x56da65) but only fread the first
+// 0xc bytes to reach scenarioIndex.
+struct SaveFileHeader {
+  unsigned char pad0[8];
+  int scenarioIndex; // +0x08
+  unsigned char pad0C[0x40 - 0xc];
+};
+
+} // namespace
+
 // FUNCTION: IMPERIALISM 0x0056cd10
 void TLoadSavePicture::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   // The original never calls a base-class HandleEvent in any path, so none is modeled here
@@ -224,71 +289,6 @@ void __cdecl BuildSavePathStringForMode(CString* out, int saveMode, char* label)
   *out += slotText;
   *out += g_pszImpSaveExtension_0065DDD8;
 }
-
-// FUNCTION: IMPERIALISM 0x0056c740
-void TLoadSavePicture::RefreshSlotPreviewFromSaveFile(short slotMode) {
-  CString path;
-  BuildSavePathStringForMode(&path, slotMode, 0);
-  if (!TryGetFileMetadataForPath(&path)) {
-    return;
-  }
-
-  char* tileOwnerTagTable = new char[0x1950];
-  FILE* file = fopen(path, g_szSaveFileReadBinaryMode_00698720);
-  char headerSkip[0xc];
-  fread(headerSkip, 1, 0xc, file);
-  // 0x20-byte scratch record (likely per-slot metadata -- unconfirmed field layout).
-  unsigned char slotMetadata[0x20];
-  fread(slotMetadata, 1, 0x20, file);
-  fread(tileOwnerTagTable, 1, 0x1950, file);
-  // Turn number (year = turnNumber + 0x717, used below) and three more header fields, whose
-  // exact semantics beyond turnNumber and the pendingNationByte assignment aren't confirmed
-  // yet: two single bytes and a trailing 0x20-byte record.
-  short turnNumber;
-  fread(&turnNumber, 1, 2, file);
-  unsigned char oneByteFieldA;
-  fread(&oneByteFieldA, 1, 1, file);
-  unsigned char pendingNationByte;
-  fread(&pendingNationByte, 1, 1, file);
-  unsigned char trailingRecord[0x20];
-  fread(trailingRecord, 1, 0x20, file);
-  fclose(file);
-
-  TMapPreviewView* mapControl = static_cast<TMapPreviewView*>(ResolveControlByTag(kControlTagMapP));
-  mapControl->AssertValid();
-  mapControl->SetEnabled(1, 1);
-  mapControl->TakeSatellitePhoto(tileOwnerTagTable);
-  mapControl->selectedNation68 = pendingNationByte;
-  mapControl->EnhancePhoto();
-  mapControl->RefreshControl();
-
-  TStaticText* infoControl = static_cast<TStaticText*>(ResolveControlByTag(0x696e666fu)); // 'info'
-  infoControl->AssertValid();
-
-  CString yearText;
-  yearText.Format(g_szDecimalFormat, turnNumber + 0x717);
-  CString slotNationName;
-  g_pSimMgr->GetString(0x2737, oneByteFieldA + 0xd, &slotNationName);
-  CString infoText = yearText + ", " + slotNationName;
-  infoControl->AssignTextSharedRefIfChangedAndMaybeInvalidate(&infoText, 0);
-
-  RECT infoBounds;
-  infoControl->QueryBounds(&infoBounds);
-  InvalidateCityDialogRectRegion(&infoBounds, 1);
-}
-
-namespace {
-
-// Save-file header record: both header readers reserve the full 0x40 bytes on the stack
-// (sub esp,0x40 at 0x56d7d4 / the 0x48 local area at 0x56da65) but only fread the first
-// 0xc bytes to reach scenarioIndex.
-struct SaveFileHeader {
-  unsigned char pad0[8];
-  int scenarioIndex; // +0x08
-  unsigned char pad0C[0x40 - 0xc];
-};
-
-} // namespace
 
 // FUNCTION: IMPERIALISM 0x0056d7d0
 int __cdecl ReadScenarioIndexFromSaveHeader(const char* path) {

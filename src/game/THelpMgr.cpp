@@ -187,19 +187,6 @@ void THelpMgr::SelectAndActivatePendingEventForCurrentView() {
   }
 }
 
-// FUNCTION: IMPERIALISM 0x00503370
-void THelpMgr::SelectAndActivatePendingEventTypeOffsetFrom1A0B(int idx) {
-  short targetContextId = static_cast<short>(idx + 0x1a0b);
-  for (int index = 1; index <= GetSortedPtrListEntryCount(indexList); ++index) {
-    HelpSetRecord* record =
-        static_cast<HelpSetRecord*>(indexList->GetPtrListEntryByOneBasedIndex(index));
-    if (record->contextId == targetContextId) {
-      ActivatePendingEventAndRefreshView(record);
-      return;
-    }
-  }
-}
-
 // FUNCTION: IMPERIALISM 0x005011a0
 void THelpMgr::HandlePostDispatchTurnStateEventUpdates() {
   const short nationId = g_pSimMgr->GetActiveNationId();
@@ -749,6 +736,19 @@ char THelpMgr::HandlePendingEventActivationByCode(short eventCode) {
     ReleasePendingHelpDialogView(&pendingDialogView8);
   }
   return activateCandidate;
+}
+
+// FUNCTION: IMPERIALISM 0x00503370
+void THelpMgr::SelectAndActivatePendingEventTypeOffsetFrom1A0B(int idx) {
+  short targetContextId = static_cast<short>(idx + 0x1a0b);
+  for (int index = 1; index <= GetSortedPtrListEntryCount(indexList); ++index) {
+    HelpSetRecord* record =
+        static_cast<HelpSetRecord*>(indexList->GetPtrListEntryByOneBasedIndex(index));
+    if (record->contextId == targetContextId) {
+      ActivatePendingEventAndRefreshView(record);
+      return;
+    }
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x005033e0

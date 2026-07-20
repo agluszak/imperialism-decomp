@@ -29,26 +29,27 @@ void TBook::NoOpUiLifecycleHook(int arg) {
 // FUNCTION: IMPERIALISM 0x0056f5e0
 void TBook::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId == 10) {
-    // Tag family 'page'..'pagf': one control per page-list row.
+    // Tag family 'page'..'pagf': one control per page-list row. Each tag's control is
+    // handled independently -- the row-count refresh below runs once per tag (up to
+    // twice), seeded from THAT tag's own control, not a single re-resolved 'page'
+    // control after the loop.
     for (unsigned int tag = 0x70616765u; tag <= 0x70616766u; ++tag) {
       TControl* pageControl = static_cast<TControl*>(ResolveControlByTag(tag));
       if (pageControl != nullptr) {
         pageControl->AssertValid();
-        if (sourceHandler->controlTag == kControlTagRcor ||
-            sourceHandler->controlTag == kControlTagLcor) {
-          // frameStyle60 is packed (its high word is the page-list row count, matching
-          // TControl's own documented "packs two values" comment). The visible-count read
-          // is 16 bits wide starting at controlState64 -- wider than controlState64 alone,
-          // so it also picks up the adjacent padding byte (both already-declared fields,
-          // no new cast needed).
-          short rowCount = static_cast<short>(pageControl->frameStyle60 >> 16);
-          short visibleCount = static_cast<short>(
-              pageControl->controlState64 | (pageControl->padding_65_to_67[0] << 8));
-          if (sourceHandler->controlTag == kControlTagRcor) {
-            pageControl->ReturnZeroFromUiSlot6C(visibleCount + rowCount);
-          } else {
-            pageControl->ReturnZeroFromUiSlot6C(rowCount - visibleCount);
-          }
+        // frameStyle60 is packed (its high word is the page-list row count, matching
+        // TControl's own documented "packs two values" comment). The visible-count read
+        // is 16 bits wide starting at controlState64 -- wider than controlState64 alone,
+        // so it also picks up the adjacent padding byte (both already-declared fields,
+        // no new cast needed).
+        short rowCount = static_cast<short>(pageControl->frameStyle60 >> 16);
+        short visibleCount = static_cast<short>(
+            pageControl->controlState64 | (pageControl->padding_65_to_67[0] << 8));
+        if (sourceHandler->controlTag == kControlTagRcor) {
+          pageControl->ReturnZeroFromUiSlot6C(visibleCount + rowCount);
+          UpdatePagedListNavigationButtonState(rowCount);
+        } else if (sourceHandler->controlTag == kControlTagLcor) {
+          pageControl->ReturnZeroFromUiSlot6C(rowCount - visibleCount);
           UpdatePagedListNavigationButtonState(rowCount);
         }
       }

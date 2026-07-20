@@ -12,6 +12,9 @@
 #include "game/global_data_tables.h"
 #include "game/ui_control_tags.h"
 
+// FUNCTION: IMPERIALISM 0x0045ae60
+TScenarioChooser::TScenarioChooser() {}
+
 // SYNTHETIC: IMPERIALISM 0x0045ae90
 // TScenarioChooser::`scalar deleting destructor'
 TScenarioChooser::~TScenarioChooser() {}
@@ -22,9 +25,6 @@ TScenarioChooser::~TScenarioChooser() {}
 // TScenarioChooser::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TScenarioChooser, TNoHilitePicture)
-
-// FUNCTION: IMPERIALISM 0x0045ae60
-TScenarioChooser::TScenarioChooser() {}
 
 // FUNCTION: IMPERIALISM 0x00579b80
 void TScenarioChooser::NoOpUiLifecycleHook(int arg) {
@@ -92,17 +92,6 @@ undefined TScenarioChooser::PostTurnEvent5DCOrResetScenarioSelectionState() {
 // FUNCTION: IMPERIALISM 0x0057a310
 void TScenarioChooser::ForwardParam(int param) {}
 
-// FUNCTION: IMPERIALISM 0x0057a6e0
-void TScenarioChooser::LoadScenarioMetadataByIndexIntoUiControlCore(short scenarioIndex) {
-  selectedScenarioIndex142 = scenarioIndex;
-  CString path;
-  g_pUiViewManager->BuildScenarioPathForModeAndIndex(scenarioIndex, 0, &path);
-  // The original then opens that scenario metadata file (a '#'-delimited text format, not
-  // the binary save-slot layout used elsewhere in this codebase) via a 0x1950-byte read
-  // buffer and fgetc-driven parser, and rebuilds several dialog controls from the parsed
-  // fields -- not yet decoded.
-}
-
 // Per-scenario-index language/campaign tag consumed by TAssetMgr::EnsurePictWvDataGobLoadedBySlot.
 static const int kScenarioLanguageTagByIndex[15] = {1, 3, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0};
 
@@ -140,6 +129,17 @@ undefined TScenarioChooser::ApplyScenarioSelectionAndPostTurnEvent5E4() {
     g_pSimMgr->PostMainWindowCommand100ForTurnFlow();
   }
   return 0;
+}
+
+// FUNCTION: IMPERIALISM 0x0057a6e0
+void TScenarioChooser::LoadScenarioMetadataByIndexIntoUiControlCore(short scenarioIndex) {
+  selectedScenarioIndex142 = scenarioIndex;
+  CString path;
+  g_pUiViewManager->BuildScenarioPathForModeAndIndex(scenarioIndex, 0, &path);
+  // The original then opens that scenario metadata file (a '#'-delimited text format, not
+  // the binary save-slot layout used elsewhere in this codebase) via a 0x1950-byte read
+  // buffer and fgetc-driven parser, and rebuilds several dialog controls from the parsed
+  // fields -- not yet decoded.
 }
 
 // FUNCTION: IMPERIALISM 0x0057ab30
