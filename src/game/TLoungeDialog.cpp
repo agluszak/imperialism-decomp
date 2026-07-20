@@ -5,6 +5,7 @@
 #include "game/TMapPreviewView.h"
 #include "game/TModuleLibraryCacheTableStateB.h"
 #include "game/TMultiplayerMgr.h"
+#include "game/TSimMgr.h"
 #include "game/TStaticText.h"
 #include "game/TInfoBarText.h"
 #include "game/global_data_tables.h"
@@ -64,11 +65,30 @@ void TLoungeDialog::NoOpUiLifecycleHook(int arg) {
   LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2742, 0xd, 0x746e616du); // 'tnam'
   LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2742, 0xe, 0x73656e64u); // 'send'
 
-  // The original then branches on g_pGameFlowState->IsSpecialNationDialogModeActive(): the
-  // non-special path loads 'clnc' and, when g_pSimMgr->field44 == 1, does further
-  // multiplayer-connect setup and a ChatWindowLine post; the special path loads 'clnc'/
-  // 'busy' conditionally on the pending nation slot and posts more chat lines -- not yet
-  // decoded.
+  if (!g_pGameFlowState->IsSpecialNationDialogModeActive()) {
+    LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2742, 9, 0x636e636cu); // 'clnc'
+    // The original also calls g_pGameFlowState->ResetNationStatusSlotsAndInitializeNameControls(this)
+    // here (0x5454b0, 325 bytes, unclaimed) -- not yet ported.
+    if (g_pSimMgr->field44 == 1) {
+      g_pGameFlowState->SetDialogModeTagInitAndInvokeNoOpHook();
+      RefreshMapAndMessageControlsForCurrentContext();
+      // The original also calls g_pGameFlowState->DispatchTurnEventCode9WithTwoTextTokens(-0xd, 0,
+      // g_pRandomOpponentNameOrSimilarStringPtr_0065c160, ...) here (0x54b4c0, 180 bytes,
+      // unclaimed) -- not yet ported.
+      g_pGameFlowState->EmitTurnEventEAnd9SessionContextPackets(nullptr);
+    }
+  } else {
+    // The special-nation-dialog path loads 'clnc'/'busy' conditionally on
+    // GetNationStatusCodeForSlotOrActiveNation(-1) and posts more chat lines -- not yet
+    // decoded.
+  }
+
+  LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2742, 0xc, 0x6d657373u); // 'mess'
+  field94 = -1;
+  DoIdle(1);
+
+  // The original then re-checks IsSpecialNationDialogModeActive() and does further
+  // nation-status-code-derived control setup -- not yet decoded.
 }
 
 // FUNCTION: IMPERIALISM 0x0054db40
