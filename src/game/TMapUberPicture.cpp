@@ -6,7 +6,9 @@
 #include "game/TArmyMgr.h"
 #include "game/TCivMgr.h"
 #include "game/TMapDialog.h"
+#include "game/TMapMgr.h"
 #include "game/TMiniMapView.h"
+#include "game/TAssetMgr.h"
 #include "game/TMultiplayerMgr.h"
 #include "game/TOcean.h"
 #include "game/TOceanDialog.h"
@@ -14,9 +16,14 @@
 #include "game/TTaskForce.h"
 #include "game/TViewMgr.h"
 #include "game/global_data_tables.h"
+#include "game/mapped_flavor_text.h"
 #include "game/ui_control_tags.h"
 #include "game/ui_invalidation_guard.h"
 #include "game/ui_text_label_helpers_decls.h"
+
+// 0x597020 -- composes and dispatches the turn-summary message (scenario tag line +
+// multiplayer game-name line + build version), defined below.
+void ComposeAndDispatchTurnSummaryLocalizedMessage();
 
 // SYNTHETIC: IMPERIALISM 0x00596900
 // TMapUberPicture::CreateObject
@@ -141,14 +148,52 @@ void TMapUberPicture::SetMapInteractionMode(short nMode) {
   }
 }
 
+// FUNCTION: IMPERIALISM 0x00597020
+void ComposeAndDispatchTurnSummaryLocalizedMessage() {
+  CString summary;
+  CString tempMsg;
+
+  if (strcmp(g_szEmptyString, static_cast<LPCSTR>(g_pGlobalMapState->scenarioTagText1c)) != 0) {
+    g_pSimMgr->GetString(0x273f, 1, &tempMsg);
+    scanBracketExpressions(g_pSimMgr, &summary, static_cast<LPCSTR>(tempMsg),
+                           static_cast<LPCSTR>(g_pGlobalMapState->scenarioTagText1c));
+  }
+
+  if (g_pSimMgr->field44 != 0) {
+    CString sectionMsg;
+    g_pSimMgr->GetString(0x2742, 0x24, &tempMsg);
+    scanBracketExpressions(g_pSimMgr, &sectionMsg, static_cast<LPCSTR>(tempMsg),
+                           static_cast<LPCSTR>(g_pGameFlowState->gameNameString));
+    summary += sectionMsg;
+  }
+
+  CString versionText;
+  // The original calls the currently-unowned 212-byte
+  // TAssetMgr::FormatVersionStringFromVersionResource(&versionText) here -- not yet
+  // ported, so versionText stays empty.
+  (void)versionText;
+
+  if (strcmp(g_szEmptyString, static_cast<LPCSTR>(versionText)) != 0) {
+    if (strcmp(g_szEmptyString, static_cast<LPCSTR>(summary)) != 0) {
+      summary = summary + s_szDoubleNewline_00699438;
+    }
+    summary += versionText;
+  }
+
+  if (strcmp(g_szEmptyString, static_cast<LPCSTR>(summary)) != 0) {
+    g_pUiRuntimeContext->DispatchLocalizedUiMessageWithTemplateA13A0(summary,
+                                                                     &g_cstrMapModeMessageStore, 0,
+                                                                     0);
+  }
+}
+
 // FUNCTION: IMPERIALISM 0x00597340
 void TMapUberPicture::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId == 10) {
     bool ctrlHeld = (GetAsyncKeyState(VK_CONTROL) & 0x8000) != 0;
     unsigned int tag = sourceHandler->controlTag;
     if (ctrlHeld && (tag == kControlTagZmIn || tag == kControlTagZmOt)) {
-      // Original calls the currently-unowned 639-byte
-      // ComposeAndDispatchTurnSummaryLocalizedMessage (0x597020) here -- not yet ported.
+      ComposeAndDispatchTurnSummaryLocalizedMessage();
       return;
     }
     if (tag == kControlTagZmOt) {
