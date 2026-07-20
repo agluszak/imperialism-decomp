@@ -23,6 +23,22 @@ struct TCdAudioDevice {
 };
 // g_cdAudioDevice (0x006a60bc) is declared in game/global_data_tables.h.
 
+// Thin forwarder (0x0047cdd0) -- doubles scalar into both aux-volume channel words and
+// applies it via SetAuxOutputVolumeFromScalar.
+int __stdcall ApplyAuxOutputVolumeFromScalar(int scalar);
+
+// Aux-output (CD-audio line) volume: g_nAuxOutputDeviceIndex (global_data_tables.h) holds
+// the probed aux device index (-1 = none found; set by the still-unported
+// ProbeAuxOutputDeviceIndexByPidMask, 0x005e1430, which sits in this same address cluster
+// between WaveLoadFile's end and these functions -- part of this module, not wave.c).
+// 0x005e1500 -- duplicates dwVolume into both channel words and calls winmm auxSetVolume.
+int __stdcall SetAuxOutputVolumeFromScalar(int scalar);
+// 0x005e1590 -- sets volume on every aux device whose wPid&7 is 1 or 2; returns whether the
+// last auxGetDevCaps call succeeded.
+bool __stdcall SetAuxOutputVolumeAcrossCompatibleDevices(int level);
+// 0x005e1620 -- reads volume (>>9 & 0x7f) from the first aux device whose wPid&7==1.
+int __stdcall GetAuxOutputVolumeFromFirstCompatibleDevice(unsigned int* outVolume);
+
 // 0x005e1850 — issue the MCI_SET (TMSF) + MCI_PLAY (from/to) command sequence for a track.
 void __stdcall SetMciPlaybackRangeByTrackIndexAndDevice(int trackIndex, MCIDEVICEID device);
 

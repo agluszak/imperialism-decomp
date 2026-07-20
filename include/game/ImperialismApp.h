@@ -4,6 +4,8 @@
 #include "decomp_types.h"
 #include "game/mfc.h"
 
+class CIncludeView;
+
 // The Imperialism MFC application object (the global `theApp`, CWinApp singleton at
 // DAT_006a1210, cached in g_pImperialismApp by InitInstance). Constructed by the CRT
 // static-init bootstrap (0x00412d40); its vtable at 0x0063e2d0 drives
@@ -82,3 +84,27 @@ extern ImperialismApp theApp;
 int __cdecl ShowOutOfMemoryErrorNewHandler(size_t allocationSize);
 
 void PostWmCloseToMainThreadWindow(); // 0x004146d0
+
+// Opens (creating as needed) HKEY_CURRENT_USER\Software\<company>\<product> and returns the
+// final HKEY, or nullptr if any step fails. Caller owns the returned HKEY (RegCloseKey). No
+// live caller found (zero Ghidra xrefs). 0x00412640
+HKEY OpenOrCreateCompanyProductRegistryKey(LPCSTR company, LPCSTR product);
+
+// Reads HKEY_CURRENT_USER\Software\<company>\<product>\<section>, value <valueName>,
+// returning it as a CString; falls back to defaultValue if any registry step fails or the
+// value isn't present. No live caller found (zero Ghidra xrefs). 0x00412840
+CString ReadOrCreateRegistryStringValueWithFallback(LPCSTR company, LPCSTR product, LPCSTR section,
+                                                    LPCSTR valueName, LPCSTR defaultValue);
+
+// 0x00412a70 — the main thread's CWinThread::m_pMainWnd (the SDI CMainFrame), via its real
+// CFrameWnd::GetActiveView(). Always a CIncludeView in this app (the only registered
+// document-template view class).
+CIncludeView* GetMainViewHostFromActiveThread();
+
+// 0x00414850 — the on-disk data directory prefix literal. Real caller: TLanguageMgr's table
+// loaders.
+const char* GetDataDirectoryPathLiteral();
+
+// 0x00415760 — the low-disk-space startup gate: warns and asks to continue if free space on
+// the Windows install volume drops below 25 MB.
+BOOL WarnLowDiskSpaceAndConfirmContinue();

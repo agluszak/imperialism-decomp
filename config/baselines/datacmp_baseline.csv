@@ -27,7 +27,7 @@ g_apszQuickDrawFontFaceNames|0x695108|WARN|15
 g_awEngineerFortBuildCostByLevel|0x65318a|WARN|16
 g_awTileSpriteVariantOffsetTable3b|0x697000|WARN|16
 g_nationMetricSlotDispatchOrder006d810|0x66d810|WARN|36
-g_pActiveQuickDrawSurfaceContextHead|0x6950f8|WARN|5
+g_pActiveQuickDrawSurfaceContextHead|0x6950f8|WARN|3
 g_pRegistryAppKey_0063E03C|0x63e03c|WARN|3
 g_pRegistryAutoResKey_0063E048|0x63e048|WARN|3
 g_pRegistryCompanyKey_0063E038|0x63e038|WARN|3
@@ -40,13 +40,13 @@ g_pszEmptyTextPointer_00656f60|0x656f60|WARN|3
 g_pszImpSaveExtension_0065DDD8|0x65ddd8|WARN|3
 g_pszMultiplayerSavePrefix_0065DDD4|0x65ddd4|WARN|3
 g_pszSingleSlotSavePrefix_0065DDD0|0x65ddd0|WARN|3
-g_szAutosaveSlotLabel_0069872C|0x69872c|WARN|4
 g_szDecimalFormat|0x69430c|WARN|4
 g_szFmtPort_006972a0|0x6972a0|WARN|4
 g_szFmtRail_00697294|0x697294|WARN|4
 g_szFmtYear_00697248|0x697248|WARN|4
+g_szLiteralA_0069872C|0x69872c|WARN|4
+g_szLiteralRb_00698720|0x698720|WARN|4
 g_szLoadedDocumentMarker_0069B854|0x69b854|WARN|4
-g_szSaveFileReadBinaryMode_00698720|0x698720|WARN|4
 g_szUiAvailableLabel_00694AD8|0x694ad8|WARN|4
 g_szUiBlockadeLabel_00694744|0x694744|WARN|4
 g_szUiCommodityLabel_00694AEC|0x694aec|WARN|4

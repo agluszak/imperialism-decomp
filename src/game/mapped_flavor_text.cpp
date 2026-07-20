@@ -15,9 +15,9 @@ CString BuildSharedStringFromMappedFlavorTextIndex(short variantIndex) {
 }
 
 // FUNCTION: IMPERIALISM 0x0057fef0
-void scanBracketExpressions(void* ctx, void* out, const char* input, ...) {
+void scanBracketExpressions(TSimMgr* ctx, CString* out, const char* input, ...) {
   (void)ctx;
-  CString* result = static_cast<CString*>(out);
+  CString* result = out;
   const char* const* args = &input + 1; // first variadic argument
   *result = CString(g_szEmptyString);
 

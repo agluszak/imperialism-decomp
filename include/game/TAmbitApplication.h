@@ -8,6 +8,10 @@ class TMapUberUberPicture;
 class TStream;
 class TWindow;
 
+// 0x00493250 — GetTickCount() / 16; the game's coarse UI tick unit, used broadly across
+// unrelated view classes for edge-scroll and animation timing.
+unsigned int GetTickCountDiv16();
+
 // Ambit-specific application subclass (size 0x54, base TApplication = 0x48) — the
 // game-side UI root controller (g_pGlobalUiRootController), created by
 // ImperialismApp::InitInstance. Mirrors MacApp's TAmbitApplication: it owns the manager

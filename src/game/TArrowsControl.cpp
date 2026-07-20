@@ -7,7 +7,7 @@
 
 IMPLEMENT_DYNCREATE(TArrowsControl, TPicture)
 
-#include "game/startup_helpers.h"
+#include "game/TAmbitApplication.h"
 
 // FUNCTION: IMPERIALISM 0x00583970
 TArrowsControl::TArrowsControl() : TPicture(), timingDword90(0) {}

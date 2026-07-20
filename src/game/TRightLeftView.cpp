@@ -12,7 +12,7 @@ IMPLEMENT_DYNCREATE(TRightLeftView, TControl)
 // TRightLeftView::`scalar deleting destructor'
 TRightLeftView::~TRightLeftView() {}
 
-#include "game/startup_helpers.h"
+#include "game/TAmbitApplication.h"
 
 // FUNCTION: IMPERIALISM 0x00583f30
 TRightLeftView::TRightLeftView() : TControl(), timingDword84(0) {}

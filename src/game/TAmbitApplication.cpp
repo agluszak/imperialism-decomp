@@ -16,7 +16,6 @@
 #include "game/TWindow.h"
 #include "game/app_init_globals.h"
 #include "game/global_data_tables.h"
-#include "game/startup_helpers.h"
 
 // SYNTHETIC: IMPERIALISM 0x004135f0
 // TAmbitApplication::`scalar deleting destructor'
@@ -26,6 +25,16 @@ TAmbitApplication::~TAmbitApplication() {}
 // menu bar to rebuild). Tentative attribution; the slot is a bare RET in the original.
 // FUNCTION: IMPERIALISM 0x00414770
 void TAmbitApplication::DoSetupMenus() {}
+
+// FUNCTION: IMPERIALISM 0x00493250
+unsigned int GetTickCountDiv16() {
+  return GetTickCount() >> 4;
+}
+
+// FUNCTION: IMPERIALISM 0x0049cc40
+void SetCachedShowSplashFlag(BOOL showSplash) {
+  g_cachedShowSplashFlag = showSplash;
+}
 
 TAmbitApplication::TAmbitApplication() : TApplication() {
   edgeScrollTarget48 = 0;

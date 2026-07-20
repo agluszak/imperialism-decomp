@@ -18,7 +18,7 @@ TSidewaysArrow::TSidewaysArrow() : TUpDownPictureButton() {
   repeatDeadlineTick = 0;
 }
 
-#include "game/startup_helpers.h"
+#include "game/TAmbitApplication.h"
 
 // FUNCTION: IMPERIALISM 0x00583bd0
 void TSidewaysArrow::DispatchPictureResourceCommand(int eventType, void* eventSender,
