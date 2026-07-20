@@ -23,7 +23,13 @@ undefined TUniversityView::OrphanRetStub_004c6fd0() {
 void TUniversityView::SelectUniversityRecruitmentEntry(short nRecruitmentEntryIndex) {}
 
 // FUNCTION: IMPERIALISM 0x004cb8a0
-void TUniversityView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {}
+void TUniversityView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+  // The original dispatches on field94's real receiver class via a lookup keyed by
+  // field94+0xe4+idx*4 -- its only assignment site, RefreshCityViewProductionDetails
+  // (0x4cfbd0, 1748 bytes), is itself unported, so the receiver class is unresolved here
+  // too -- not yet ported.
+  TControl::HandleEvent(commandId, sourceHandler, event);
+}
 
 // FUNCTION: IMPERIALISM 0x004cbb20
 undefined TUniversityView::OrphanRetStub_004c6fb0() {

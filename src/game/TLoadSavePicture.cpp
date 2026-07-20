@@ -28,7 +28,11 @@ IMPLEMENT_DYNCREATE(TLoadSavePicture, TPicture)
 TLoadSavePicture::TLoadSavePicture() {}
 
 // FUNCTION: IMPERIALISM 0x0056bcc0
-void TLoadSavePicture::NoOpUiLifecycleHook(int arg) {}
+void TLoadSavePicture::NoOpUiLifecycleHook(int arg) {
+  TPicture::NoOpUiLifecycleHook(arg);
+  // The original then sets up the load/save dialog's slot-list controls (2136 bytes) --
+  // not yet ported.
+}
 
 // FUNCTION: IMPERIALISM 0x0056cd10
 void TLoadSavePicture::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
