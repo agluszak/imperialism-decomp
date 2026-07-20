@@ -7,6 +7,7 @@
 #include "game/TAssetMgr.h"
 #include "game/mapped_flavor_text.h"
 
+#include "game/CIterator.h"
 #include "game/CString.h"
 #include "game/TArmyMgr.h"
 #include "game/TCivMgr.h"
@@ -3829,26 +3830,78 @@ const unsigned char kGateFlagScoreBucket[15] = {0, 0, 0, 0, 1, 1, 2, 2, 2, 3, 4,
 
 // FUNCTION: IMPERIALISM 0x00518d90
 void TMapMgr::MarkDirectionalMapOverlayFlagsForNationOrders() {
-  // Real prefix: clears perTileVisitedFlag0f across all 0x1950 tiles (the same body as
-  // the standalone ClearPerTileByte0FForAllMapTiles, inlined here in the original).
-  ClearPerTileByte0FForAllMapTiles();
+  // Real prefix: clears perTileVisitedFlag0f across all 0x1950 tiles. Same body as the
+  // standalone ClearPerTileByte0FForAllMapTiles (0x515db0), duplicated inline here to
+  // match the original, which inlines it rather than sharing one out-of-line call.
+  for (int tileIndex = 0; tileIndex < kGlobalMapTileCount; ++tileIndex) {
+    terrainStateTable[tileIndex].perTileVisitedFlag0f = 0;
+  }
 
-  // TODO: port the rest of the body (510 bytes total). Declared for real (see
-  // TMapMgr.h) so TArmyMgr::SetActiveProvinceAndBuildDirectionalOrderOverlays gets a
-  // correctly-typed call site (bd imperialism-decomp-1uj.61). Reconnaissance from the
-  // raw listing for the remaining tail:
-  //  - Walks g_apNationStates[GetActiveNationId()]->militaryUnitList44 via CIterator
-  //    (Reset/More/Advance).
-  //  - Per order with tileIndex06 != -1: checks g_pDiplomacyTurnStateManager's vtable
-  //    slot 8.0x04 (a TDiplomacyMgrVtbl war-state query, args built from
-  //    tileOwnershipTable-relative bytes) and two unrecovered geometry helpers
-  //    (0x40907f, 0x408b8e) to derive a target tile index in [0, 0x194f].
-  //  - On success, stamps perTileVisitedFlag0f with a direction-overlay code
-  //    ((sVar3+3)%6 + 1, or +7 when the diplomacy check was true) and, when
-  //    g_pUiRuntimeContext->mapUberPictureF0 is set, forwards the tile through its
-  //    slot-0x76 virtual (InvalidateTileMarkerChain).
-  // Left unported -- 0x40907f/0x408b8e and the TDiplomacyMgrVtbl slot layout are
-  // genuine class-recovery gaps, not a modeling choice.
+  // Per active-nation order (TUnit::field_C is the order's own city-record index;
+  // tileIndex06 is read as the "stationed province id" for this unit type, per
+  // TMilitaryUnit.h -- both are city-record indices, not raw map tiles, resolving the
+  // earlier "unrecovered geometry helper" TODO): mark the hex-adjacent tile in the
+  // direction from the order's city toward the stationed province with a
+  // war/peace-coded direction overlay. Same computation as the real, separately-
+  // addressed sibling MarkAdjacentHexOrderDirectionAndSelectTile (0x518bd0) -- the
+  // original inlines it at both call sites rather than sharing one out-of-line body,
+  // so it is duplicated here rather than called, to match that shape.
+  short activeNationId = g_pSimMgr->GetActiveNationId();
+  CIterator cursor(g_apNationStates[activeNationId]->militaryUnitList44);
+  TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(cursor.Reset());
+  while (cursor.More()) {
+    if (unit->field_C != -1) {
+      char atWar = g_pDiplomacyTurnStateManager->IsNationPairAtWar(
+          activeNationId, cityScoreTable[unit->field_C].ownerNationCode00);
+
+      short anchorTile = cityScoreTable[unit->field_C].cityTileIndex04;
+      short direction = GetHexDirectionBetweenTiles(
+          anchorTile, cityScoreTable[unit->tileIndex06].cityTileIndex04);
+
+      int row = anchorTile / 0x6c;
+      int col = anchorTile % 0x6c;
+
+      short hexAreaX = static_cast<short>(
+          row % 2 + col * 2 +
+          g_Build_Hex_Area_LookupTable_00696E70[direction < 0    ? direction + 6
+                                                : direction <= 5 ? direction
+                                                                 : direction - 6]);
+      short hexAreaY = static_cast<short>(
+          g_Build_Hex_Area_LookupTable_00696E80[direction < 0    ? direction + 6
+                                                : direction <= 5 ? direction
+                                                                 : direction - 6] +
+          row);
+
+      if (hexAreaX > 0xd7) {
+        hexAreaX -= 0xd9;
+      } else if (hexAreaX < 0) {
+        hexAreaX += 0xd8;
+      }
+
+      if (hexAreaY < 0) {
+        hexAreaY = 0;
+      } else if (hexAreaY > 0x3b) {
+        hexAreaY = 0x3b;
+      }
+
+      short finalTileIndex = static_cast<short>(hexAreaX / 2 + hexAreaY * 0x6c);
+      if (finalTileIndex < 0 || finalTileIndex >= 0x1950) {
+        finalTileIndex = -1;
+      }
+
+      if (finalTileIndex != -1) {
+        signed char directionCode = static_cast<signed char>((direction + 3) % 6 + 1);
+        if (atWar != 0) {
+          directionCode += 6;
+        }
+        terrainStateTable[finalTileIndex].perTileVisitedFlag0f = directionCode;
+        if (g_pUiRuntimeContext->mapUberPictureF0 != nullptr) {
+          g_pUiRuntimeContext->mapUberPictureF0->InvalidateTileMarkerChain(finalTileIndex);
+        }
+      }
+    }
+    unit = static_cast<TMilitaryUnit*>(cursor.Advance());
+  }
 }
 
 // Sum the developer purchase cost of the two edge resources on a tile: for each real

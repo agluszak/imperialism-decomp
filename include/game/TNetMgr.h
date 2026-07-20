@@ -68,6 +68,16 @@ public:
   unsigned char OpenRuntimeSelectionSourceByIndexAndCopyPath(int index, int flag,
                                                              const char* seed); // 0x5e3a60
 
+  // Stages seedPath/emptyOrSeed into the shared session-name buffers, opens the
+  // session via g_NetworkSessionManager006a5f60's current context, creates the local
+  // player (short name = localPlayerName), tags the default/broadcast nation ids from
+  // the new player's DPID, and sets the small player-data payload. Poses the DirectPlay
+  // error dialog and returns 0 on any failed step.
+  unsigned char
+  OpenRuntimeSelectionSourceAndApplyActiveNationState(const char* seedPath,
+                                                      const char* localPlayerName,
+                                                      const char* emptyOrSeed); // 0x5e3ad0
+
   // Joins the game named by outGameName's current value (staged into a static
   // player-name buffer), lets the user pick the session
   // (OpenRuntimeSelectionSourceWithUserChoice), creates the local player, tags the
