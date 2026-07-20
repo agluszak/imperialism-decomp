@@ -15,7 +15,20 @@ TCitySiteView::TCitySiteView() {}
 TCitySiteView::~TCitySiteView() {}
 
 // FUNCTION: IMPERIALISM 0x0051bff0
-void TCitySiteView::NoOpUiLifecycleHook(int arg) {}
+void TCitySiteView::NoOpUiLifecycleHook(int arg) {
+  TMapDialog::NoOpUiLifecycleHook(arg);
+
+  minColBound368 = 1000;
+  maxColBound36c = -1000;
+  minRowBound370 = 1000;
+  maxRowBound374 = -1000;
+
+  // The original also writes two TMapDialog-inherited short fields at +0x76/+0x78 (not yet
+  // declared -- outside TCitySiteView's own +0x364 region), resolves the active document's
+  // 'GLOG'/'main' controls via a doc-mapping global, and computes further per-nation tile
+  // bounds (TSimMgr::GetActiveNationId, a per-nation table at 0x6a43d4) before dispatching
+  // through vtable slot 0x1f8 (beyond TView's declared extent) -- left unmodeled.
+}
 
 // FUNCTION: IMPERIALISM 0x0051c2a0
 void TCitySiteView::SetMapViewTileIndex(int arg1) {
