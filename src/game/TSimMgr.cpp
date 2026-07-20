@@ -2,6 +2,8 @@
 #include "game/TSimMgr.h"
 
 #include <cstring>
+#include <ctime>
+#include <stdlib.h>
 
 #include "decomp_types.h"
 #include "game/ImperialismApp.h"
@@ -894,37 +896,91 @@ unsigned char TSimMgr::TestTurnFlowStatusFlagMask(unsigned int mask) {
   return 0;
 }
 
-// TODO: port the "all active nations ready" scan over g_apNationStates.
-
 // FUNCTION: IMPERIALISM 0x0057f4f0
 int TSimMgr::AreAllActiveNationsReady() {
-  return 0;
+  for (TGreatPower** nation = g_apNationStates; nation < (TGreatPower**)&g_apNationStates_End;
+       ++nation) {
+    if ((*nation)->field904 == 0) {
+      return 0;
+    }
+  }
+  return 1;
 }
 
-// TODO: port clearing of the per-nation ready flags.
-
 // FUNCTION: IMPERIALISM 0x0057f530
-void TSimMgr::ClearActiveNationReadyFlags() {}
-
-// TODO: port signed-integer formatting with thousands separators.
+void TSimMgr::ClearActiveNationReadyFlags() {
+  TGreatPower** nation = g_apNationStates;
+  do {
+    if ((*nation)->diplomacyEligibilityA0 != 0) {
+      (*nation)->field904 = 0;
+    }
+    ++nation;
+  } while (nation < (TGreatPower**)&g_apNationStates_End);
+}
 
 // FUNCTION: IMPERIALISM 0x0057f5b0
-void TSimMgr::FormatIntegerString(int, CString*) {}
+void TSimMgr::FormatIntegerString(int value, CString* destString) {
+  CString thousandsSep(",");
 
-// TODO: port the shared-string-from-bracket-expression formatter.
+  int absValue = value;
+  if (value < 0) {
+    absValue = abs(value);
+  }
+
+  char* buf = destString->GetBuffer(0x11);
+  _itoa(absValue, buf, 10);
+  destString->ReleaseBuffer(-1);
+
+  int len = destString->GetLength();
+  if (len > 6) {
+    CString last6 = destString->Right(6);
+    CString firstRest = destString->Left(len - 6);
+    *destString = firstRest + thousandsSep + last6;
+  }
+  if (len > 3) {
+    CString last3 = destString->Right(3);
+    CString firstRest = destString->Left(len - 3);
+    *destString = firstRest + thousandsSep + last3;
+  }
+  *destString = '$' + *destString;
+  if (value < 0) {
+    *destString = '-' + *destString;
+  }
+}
 
 // FUNCTION: IMPERIALISM 0x0057f8f0
-void TSimMgr::FormatOrdinalString(int, CString*) {}
+void TSimMgr::FormatOrdinalString(int value, CString* destString) {
+  CString numberStr;
+  numberStr.Format(g_szDecimalFormat, value);
+
+  // English ordinal suffix selection (1st/2nd/3rd/Nth, with the 11/12/13 exceptions).
+  int suffixCode;
+  int remainder = value % 10;
+  if (remainder == 1 && value != 11) {
+    suffixCode = 0;
+  } else if (remainder == 2 && value != 12) {
+    suffixCode = 1;
+  } else if (remainder == 3 && value != 13) {
+    suffixCode = 2;
+  } else {
+    suffixCode = 3;
+  }
+
+  CString suffixTemplate;
+  g_pSimMgr->GetString(0x275f, suffixCode, &suffixTemplate);
+  scanBracketExpressions(this, destString, static_cast<LPCSTR>(suffixTemplate),
+                         static_cast<LPCSTR>(numberStr));
+}
 
 // FUNCTION: IMPERIALISM 0x0057fe90
 void TSimMgr::GetStringPrelude(short offset, CString* destString) {
   GetString(0x2711, offset, destString);
 }
 
-// TODO: port reseeding of the thread-local RNG from the wall clock.
-
 // FUNCTION: IMPERIALISM 0x0057fec0
-void TSimMgr::ReseedThreadLocalRandom() {}
+void TSimMgr::ReseedThreadLocalRandom() {
+  srand(static_cast<unsigned int>(time(0)));
+}
 
 // FUNCTION: IMPERIALISM 0x00580760
 void TSimMgr::GetString(short codeGroup, short offset, CString* destString) {

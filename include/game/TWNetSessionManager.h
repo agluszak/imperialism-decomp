@@ -73,7 +73,7 @@ public:
   // comment. Either way the resulting IDirectPlay is QueryInterface'd up to
   // IDirectPlay2 into directPlayInterface04 and the runtime-selection list is reset.
   unsigned char OpenRuntimeSelectionSourceWithOptionalSeed(const GUID* sessionEntry,
-                                                            int flag); // 0x47fe50
+                                                           int flag); // 0x47fe50
   // IDirectPlay2::CreatePlayer wrapper: builds a DPNAME from shortName (dwSize=16,
   // dwFlags=0, lpszShortNameA=shortName, lpszLongNameA=0) and stores the HRESULT in
   // lastErrorCode0c. Returns SUCCEEDED(result).
@@ -89,10 +89,12 @@ public:
   // AfxGetMainWnd()/message-box progress-UI plumbing aren't modeled yet, so this
   // remains structurally incomplete; always reports failure until that's done.
   unsigned char OpenRuntimeSelectionSourceWithUserChoice(); // 0x480150
-  // Rebuilds g_WNetSerializedPtrArrayA006a5f10 by re-enumerating available DirectPlay
-  // service providers for `provider`. Not modeled yet (same DirectPlay-enumeration
-  // territory as OpenRuntimeSelectionSourceWithUserChoice); always reports failure.
-  unsigned char RebuildRuntimeSelectionSource(TView* provider); // 0x47fd90
+  // Clears g_RuntimeSelectionRecords006a15e0 and re-issues DirectPlayEnumerateA
+  // (ordinal 2) via ForwardEnumSessionToCallbackTable/this, storing the HRESULT in
+  // lastErrorCode0c. Returns SUCCEEDED(result). Ghidra-verified: takes no explicit
+  // stack argument (bare RET, no ret-n cleanup) -- TNetMgr's caller does not forward
+  // its own `provider` here.
+  unsigned char RebuildRuntimeSelectionSource(); // 0x47fd90
 };
 
 // 0x4804c0: adds 500 to *value and returns 1 when Ctrl is held, else 0.

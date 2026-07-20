@@ -18,9 +18,9 @@ IMPLEMENT_DYNCREATE(TStream, TObject)
 // MFC-style serialization foundation: compiled favor-size in the original.
 
 // ---------------------------------------------------------------------------
-// Placeholder defaults (honest empty bodies; real shared/primitive bodies are
-// ported in a follow-up). These make TStream concrete so the typed accessors
-// below — and the concrete stream subclasses — can be instantiated.
+// Genuine no-op bodies in the original (the base class is never streamed through
+// directly). These make TStream concrete so the typed accessors below — and the
+// concrete stream subclasses — can be instantiated.
 // ---------------------------------------------------------------------------
 TStream::TStream() {}
 TStream::~TStream() {}
@@ -165,7 +165,7 @@ void TStream::streamSlot2c(int) {}
 void TStream::streamSlot34(int) {}
 
 // FUNCTION: IMPERIALISM 0x00488e70
-void TStream::WriteBytesSlot78(void*, int) {} // TODO: primitive (subclass overrides)
+void TStream::WriteBytesSlot78(void*, int) {} // primitive; concrete subclass overrides
 
 // FUNCTION: IMPERIALISM 0x00488e90
 void TStream::streamSlot7c(unsigned char value) {

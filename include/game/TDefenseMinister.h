@@ -17,6 +17,20 @@ public:
   TDefenseMinister();
   void InitializeBaseOrderArrayMetrics(TGreatPower* owner);
 
+  // Five personality-specific order-array initializers (0x4ed560/0x4ed890/0x4edb80/
+  // 0x4ede60/0x4ee150), one per TDefenseMinister-derived personality's construction
+  // (Napoleon/Bismarck/Pirate/Defender/Bully). Each is its own compiled address (not a
+  // shared parameterized call in the original -- likely inlined at each personality's
+  // ctor call site from one small source helper), so each gets its own real method here
+  // per Hard Rule 4. All five zero the same base-order-array region as
+  // InitializeBaseOrderArrayMetrics, then seed their own orderWeightTableB prefix and
+  // threshold quad.
+  void InitializeOrderArrayPreset50_0_10_50(TGreatPower* owner);  // 0x4ed560
+  void InitializeOrderArrayPreset10_10_10_50(TGreatPower* owner); // 0x4ed890
+  void InitializeOrderArrayPreset15_20_50_75(TGreatPower* owner); // 0x4edb80
+  void InitializeOrderArrayPreset20_10_10_50(TGreatPower* owner); // 0x4ede60
+  void InitializeOrderArrayPreset25_10_20_50(TGreatPower* owner); // 0x4ee150
+
   DECLARE_DYNCREATE(TDefenseMinister)
   void WriteTo(TStream* stream) override;                          // 5 (0x4ec1d0)
   void ReadFrom(TStream* stream) override;                         // 6 (0x4ec2f0)
@@ -35,12 +49,22 @@ public:
   // between a pair on the conditional personalities). slot 0x60 (0x4ec0a0)
   virtual double GetPersonalityWeightByFlag(char flag);
 
-  // +0x10..0x48 -- own block (RTTI m_nObjectSize proves this range is
-  // TDefenseMinister-only, not shared TMinister base state; see TMinister.h). Ctor
-  // (0x4ec0e0) writes nothing here beyond the vtable, so it's still raw/unrecovered.
-  unsigned char state10[0x48 - 0x10];
-  // Derived state 0x48..0x94 (sizeof = 0x94, from `new TDefenseMinister()` @ 0x4d976f
-  // pushing 0x94 to operator new). Fields unrecovered; raw storage keeps the object the
-  // correct size so callers' `operator new` size matches.
-  unsigned char defenseState48[0x94 - 0x48];
+  // +0x10..0x94 -- own block (RTTI m_nObjectSize proves this range is TDefenseMinister-
+  // only, not shared TMinister base state; see TMinister.h). Fully recovered from
+  // WriteTo/ReadFrom's byte-for-byte (de)serialization order (0x4ec1d0/0x4ec2f0) and the
+  // five personality initializers below: two parallel 30-entry short tables (orig writes
+  // orderWeightTableA/B via a shared zero-loop that indexes both 0x1e apart) plus a
+  // 4-short threshold quad, exactly filling the object to its 0x94 size (`new
+  // TDefenseMinister()` @ 0x4d976f pushes 0x94). Semantic role of each not yet pinned
+  // down beyond "per-order/policy-type weight tables + summary thresholds".
+  short field10;
+  short field12;
+  short orderWeightTableA[0x1e]; // +0x14..0x50
+  short orderWeightTableB[0x1e]; // +0x50..0x8c
+  short thresholdA;              // +0x8c
+  short thresholdB;              // +0x8e
+  short thresholdC;              // +0x90
+  short thresholdD;              // +0x92
 };
+
+ASSERT_SIZE(TDefenseMinister, 0x94);

@@ -74,14 +74,12 @@ public:
   // local player id as the default nation id, sets a small player-data payload, and
   // enumerates existing players to resolve the broadcast nation id. Copies the
   // chosen name back into *outGameName. Returns success.
-  unsigned char OpenJoinGameRuntimeSelectionAndStartSession(int selectionTag,
-                                                             CString* outGameName,
-                                                             const char* seed); // 0x5e3c20
+  unsigned char OpenJoinGameRuntimeSelectionAndStartSession(int selectionTag, CString* outGameName,
+                                                            const char* seed); // 0x5e3c20
 
-  // Rebuilds the enumerated-protocol selection list (g_WNetSerializedPtrArrayA006a5f10)
-  // for `provider` via TWNetSessionManager::RebuildRuntimeSelectionSource. That
-  // callee's own DirectPlay enumeration isn't modeled yet, so this remains
-  // structurally incomplete pending it.
+  // Resolves provider's 'prot' control (asserting it valid), rebuilds the enumerated-
+  // protocol selection list (g_WNetSerializedPtrArrayA006a5f10) and re-enumerates via
+  // TWNetSessionManager::RebuildRuntimeSelectionSource (takes no argument).
   unsigned char ResetRuntimeProtocolOptionsAndRebuildSelectionSource(TView* provider); // 0x5e39a0
 
   // Map a DirectPlay error HRESULT to detail text and pose the localized error dialog.
