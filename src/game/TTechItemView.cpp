@@ -1,11 +1,15 @@
 #include "game/TTechItemView.h"
 
+#include "game/TAssetMgr.h"
 #include "game/TDeluxeText.h"
+#include "game/TDialogBehavior.h"
 #include "game/TSimMgr.h"
+#include "game/TTechHistoryView.h"
 #include "game/TTechMgr.h"
 #include "game/TTextPictureButton.h"
 #include "game/TUpDownPictureButton.h"
 #include "game/TViewMgr.h"
+#include "game/TWindow.h"
 #include "game/global_data_tables.h"
 #include "game/mapped_flavor_text.h"
 #include "game/quickdraw_rendering.h"
@@ -185,17 +189,30 @@ void TTechItemView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEv
         LoadUiStringAndDispatchSharedMessageCommand(0x274f, 9, purchaseButton);
       }
     } else if (sourceHandler->controlTag == kControlTagDesc) {
-      // TODO: resolves the turn-event dialog node for message context 0x942 (a TWindow,
-      // per this session's established dialog-node pattern), restyles its 'DLOG' child via
-      // TTechHistoryView::ConstructTTechHistoryViewBaseState(techId64) -- a real,
-      // currently-unowned 633-byte constructor (0x5b22c0) -- then runs the dialog modally
-      // through the same TWindow sequence already ported elsewhere this session
-      // (ComputeTurnEventDialogPlacementByCode, CaptureLayoutF0, SetField84(1),
-      // GetEmbeddedDialogBehavior()->defaultCommandCode='okay',
-      // ExecuteViewModalStateWithPushPopChain, CallVoidSlotA0, Free). Left unmodeled because
-      // wiring the ConstructTTechHistoryViewBaseState call requires giving it a real curated
-      // signature in original_entities.csv first (its current auto-generated stub signature
-      // is a bare no-arg placeholder) -- a separate curation step, not a guess.
+      // Turn-event dialog root for the tech-history popup (a TWindow, per this session's
+      // established dialog-node pattern). Its 'DLOG' child is restyled via
+      // TTechHistoryView::ConstructTTechHistoryViewBaseState; the rest of the modal sequence
+      // matches the pattern already ported elsewhere this session
+      // (DispatchUiRuntimeMessage102CAndRefreshActiveView, TArmyUnitView::
+      // HandleCrossUArmyViewsNameCommand).
+      TWindow* node =
+          static_cast<TWindow*>(g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(0x942));
+      TTechHistoryView* historyView =
+          static_cast<TTechHistoryView*>(node->ResolveControlByTag(kControlTagGold /* 'DLOG' */));
+      historyView->AssertValid();
+      historyView->ConstructTTechHistoryViewBaseState(static_cast<short>(techId64));
+
+      POINT placement;
+      g_pUiRuntimeContext->ComputeTurnEventDialogPlacementByCode(node, &placement);
+      historyView->CaptureLayoutF0(reinterpret_cast<int*>(&placement), 0);
+      node->SetField84(1);
+      TDialogBehavior* behavior = node->GetEmbeddedDialogBehavior();
+      if (behavior != nullptr) {
+        behavior->defaultCommandCode = 0x6f6b6179; // 'okay'
+      }
+      node->ExecuteViewModalStateWithPushPopChain();
+      node->CallVoidSlotA0();
+      node->Free();
     }
   }
   TView::HandleEvent(commandId, sourceHandler, event);
