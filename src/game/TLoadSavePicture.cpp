@@ -10,6 +10,7 @@
 #include "game/TAssetMgr.h"
 #include "game/TEditText.h"
 #include "game/TEventHandler.h"
+#include "game/TMapPreviewView.h"
 #include "game/TSoundPlayer.h"
 #include "game/TViewMgr.h"
 #include "game/mapped_flavor_text.h"
@@ -210,9 +211,39 @@ void TLoadSavePicture::RefreshSlotPreviewFromSaveFile(short slotMode) {
   if (!TryGetFileMetadataForPath(&path)) {
     return;
   }
-  // The original then allocates a 0x1950-byte save-header buffer, reads it via a custom
-  // stream reader (0x5e9100/0x5e9440/0x5e9010), and rebuilds the 'map ' preview control
-  // (TakeSatellitePhoto-style repaint) and related slot fields from it -- not yet decoded.
+
+  char* tileOwnerTagTable = new char[0x1950];
+  FILE* file = fopen(path, g_szSaveFileReadBinaryMode_00698720);
+  char headerSkip[0xc];
+  fread(headerSkip, 1, 0xc, file);
+  // 0x20-byte scratch record (likely per-slot metadata -- unconfirmed field layout).
+  unsigned char slotMetadata[0x20];
+  fread(slotMetadata, 1, 0x20, file);
+  fread(tileOwnerTagTable, 1, 0x1950, file);
+  // Four more header fields, whose exact semantics beyond the pendingNationByte assignment
+  // below aren't confirmed yet: a 2-byte value, two single bytes, and a trailing 0x20-byte
+  // record.
+  unsigned char twoByteField[2];
+  fread(twoByteField, 1, 2, file);
+  unsigned char oneByteFieldA;
+  fread(&oneByteFieldA, 1, 1, file);
+  unsigned char pendingNationByte;
+  fread(&pendingNationByte, 1, 1, file);
+  unsigned char trailingRecord[0x20];
+  fread(trailingRecord, 1, 0x20, file);
+  fclose(file);
+
+  TMapPreviewView* mapControl = static_cast<TMapPreviewView*>(ResolveControlByTag(kControlTagMapP));
+  mapControl->AssertValid();
+  mapControl->SetEnabled(1, 1);
+  mapControl->TakeSatellitePhoto(tileOwnerTagTable);
+  mapControl->selectedNation68 = pendingNationByte;
+  mapControl->EnhancePhoto();
+  mapControl->RefreshControl();
+
+  // The original then resolves an 'info' text control and formats a multi-part summary
+  // string (turn/date info combined via several CString helpers at 0x605bfb/0x605b87/
+  // 0x605b21) from the header fields read above -- not yet decoded.
 }
 
 namespace {

@@ -24743,7 +24743,7 @@
     },
     {
       "address": "0x56c740",
-      "matching": 0.06997084548104957,
+      "matching": 0.20361990950226244,
       "name": "TLoadSavePicture::RefreshSlotPreviewFromSaveFile",
       "type": 1
     },
@@ -38992,7 +38992,7 @@
     },
     {
       "address": "0x6091d9",
-      "matching": 0.9787234042553191,
+      "matching": 1.0,
       "name": "CWnd::OnNotify",
       "type": 1
     },
