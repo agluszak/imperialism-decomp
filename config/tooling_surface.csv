@@ -32,6 +32,7 @@ module|tools.workflow.class_discovery|just:class-discovery|Read-only class/vtabl
 module|tools.workflow.slice_discovery|just:slice-discovery|Local vertical-slice evidence report
 module|tools.workflow.macos_evidence|just:mac-evidence|Persistent Mac CodeWarrior evidence extraction and validation
 module|tools.reccmp.progress_stats|just:stats/stats-baseline-update|Progress stats baseline compare/update
+module|tools.workflow.reccmp_baseline_merge|just:install-reccmp-merge-driver|Generated baseline merge driver and post-integration refresh
 module|tools.reccmp.library_inventory|just:inventory|Library/wrapper inventory
 module|tools.reccmp.generate_ignore_functions|just:generate-ignores|Ignore-function update
 module|tools.reccmp.session_loop|just:session-loop|Top-impact session queue

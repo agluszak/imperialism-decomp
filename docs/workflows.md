@@ -20,6 +20,7 @@ from an existing checkout, or from the templates):
 cp ../imperialism-decomp/.env .              # or: cp .env.example .env and edit
 cp ../imperialism-decomp/reccmp-user.yml .   # machine path to the original binary
 just restore-project                          # recreate the live Ghidra project from vendor/ghidra/exports/*.gzf
+just install-reccmp-merge-driver              # one-time local Git config; shared by worktrees
 just tooling-check                            # verify the tooling surface
 just build && just detect && just stats       # first build + reccmp pairing; stats should show no baseline drift
 ```
@@ -41,6 +42,13 @@ Notes:
 - `core.hooksPath` (→ `.beads/hooks`) is shared git config, not per-worktree, so
   Beads hooks/`bd prime` work as-is in a new worktree without re-running
   `bd init`.
+- The reccmp baseline driver config is also shared by worktrees. `.gitattributes`
+  routes conflicts in the two generated progress baselines through that driver; it
+  preserves a valid side and marks regeneration pending. The tracked post-merge,
+  post-rewrite, and post-commit hooks then run `just build` plus
+  `just stats-baseline-update` once the integrated tree is complete. The regenerated
+  files remain unstaged for review. Set `IMPERIALISM_SKIP_RECCMP_BASELINE_REFRESH=1`
+  to defer an expensive refresh; the pending marker remains for the next hook run.
 
 ## 1. Daily port loop (no marker/ownership changes)
 

@@ -76,6 +76,7 @@ just restore-project                # recreate the live Ghidra project from the 
 just docker-build                   # build the imperialism-msvc500 image (one-time)
 just bootstrap-reccmp               # generate reccmp-user.yml (gitignored, no template committed)
 bd init                             # wire up the local Beads DB + git hooks (.beads/hooks)
+just install-reccmp-merge-driver    # auto-regenerate conflicting progress baselines after merges/rebases
 just tooling-check                  # verify the tooling surface
 just build && just detect && just stats   # first build + reccmp pairing; stats should show no baseline drift
 ```

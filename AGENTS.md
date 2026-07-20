@@ -140,6 +140,10 @@ target). They need a built binary + reccmp DB. Details in the `quality-control` 
 
 - `just precommit` — the whole pre-commit sequence in one command: `build` +
   `gates` + `test` (tooling unit tests) + `stats`.
+- `just install-reccmp-merge-driver` — one-time local setup for generated progress
+  baselines. On a baseline conflict, the driver keeps a valid side and tracked hooks
+  rebuild/regenerate both baseline files after the merge/rebase completes, leaving
+  reviewable unstaged changes rather than a hand-merged JSON artifact.
 - `just gates` — the mechanical source-policy gates: `decomplint` plus the ratchet
   gates (`datacmp-gate`, `stub-count-gate`, `class-size-gate`, `noop-gate`), each
   with a `just <gate>-update` baseline target.
