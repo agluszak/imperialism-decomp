@@ -16712,7 +16712,7 @@
     },
     {
       "address": "0x5074e0",
-      "matching": 0.05714285714285714,
+      "matching": 0.64,
       "name": "TNumberedIcon::NoOpUiLifecycleHook",
       "type": 1
     },
@@ -25836,14 +25836,14 @@
     },
     {
       "address": "0x573690",
-      "matching": 0.2,
-      "name": "TMegaPicture::OrphanCallChain_C1_I08_00573690",
+      "matching": 1.0,
+      "name": "TMegaPicture::AssignFlags98AndMaybeRefresh",
       "type": 1
     },
     {
       "address": "0x5736c0",
-      "matching": 0.125,
-      "name": "TMegaPicture::OrphanCallChain_C1_I14_005736c0",
+      "matching": 1.0,
+      "name": "TMegaPicture::ClearOrSubtractFlags98AndMaybeRefresh",
       "type": 1
     },
     {

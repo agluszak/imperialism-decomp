@@ -15,7 +15,14 @@ TNumberedIcon::TNumberedIcon() : TMegaPicture(), fieldAc(0) {}
 TNumberedIcon::~TNumberedIcon() {}
 
 // FUNCTION: IMPERIALISM 0x005074e0
-void TNumberedIcon::NoOpUiLifecycleHook(int arg) {}
+void TNumberedIcon::NoOpUiLifecycleHook(int arg) {
+  TMegaPicture::NoOpUiLifecycleHook(arg);
+  AssignFlags98AndMaybeRefresh(5, 1);
+  NumberedIconSlot77();
+  // The original then, when fieldAc is set, builds a RECT from frameWidth34/frameHeight38
+  // (each offset by -0x10 for two of the four fields; the remaining two aren't resolved)
+  // and calls fieldAc->ApplyBounds(&rect, 1) -- left unmodeled pending the full rect shape.
+}
 
 // FUNCTION: IMPERIALISM 0x00507570
 undefined TNumberedIcon::NumberedIconSlot77() {

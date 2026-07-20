@@ -122,13 +122,13 @@ public:
   // slot 0x71 ResetPictureResourceEntry inherited unchanged (0x48f520)
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x573430)
   // slot 0x73 NoOpUiVirtualSlot73 inherited unchanged (0x572bb0)
-  // slot 0x74 OrphanCallChain_C1_I14_005736c0 inherited unchanged (0x5736c0)
-  // slot 0x75 OrphanCallChain_C1_I08_00573690 inherited unchanged (0x573690)
+  // slot 0x74 ClearOrSubtractFlags98AndMaybeRefresh inherited unchanged (0x5736c0)
+  // slot 0x75 AssignFlags98AndMaybeRefresh inherited unchanged (0x573690)
   virtual undefined OrphanCallChain_C1_I10_005076d0(short param_1); // slot 0x76 0x5076d0
   virtual undefined NumberedIconSlot77();                           // slot 0x77 0x507570
-  // TMegaPicture ends exactly at 0xac (ASSERT_SIZE); zeroed by the ctor, no other
-  // reader/writer found yet.
-  int fieldAc; // +0xac
+  // TMegaPicture ends exactly at 0xac (ASSERT_SIZE); zeroed by the ctor. NoOpUiLifecycleHook
+  // dereferences it through a vtable (ApplyBounds, slot 0x5a) when non-null.
+  class TView* fieldAc; // +0xac
 
   TNumberedIcon();
 };
