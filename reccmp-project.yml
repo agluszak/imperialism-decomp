@@ -1799,6 +1799,9 @@ targets:
       - afxMapHWND
       - memcmp
       - thunk_ApplyMciPlaybackRangeFromAudioManager
+      - thunk_BuildMainStatsScoreboardAndDoneUiResourceTree
+      - thunk_BuildUniversityRecruitmentRows
+      - thunk_CallDcCallbackIfPrimaryHdcDiffers
       - thunk_ClearAndFreeAllPtrListRecords
       - thunk_CloneCityDialogExtendedStateToNewInstance
       - thunk_CloneEngineerDialogStateToNewInstance
@@ -1817,6 +1820,7 @@ targets:
       - thunk_DestructTProductionOrderAndMaybeFree_At004053a8
       - thunk_DestructTPtrListMaybeFree
       - thunk_DestructTTextLineAndMaybeFree_At004029b9
+      - thunk_DispatchVirtualSlot18OnImplicitObject
       - thunk_ForwardMciStatusCommand814IgnoreFailure
       - thunk_FreeNestedPointerTableRowsAndResetDimensions
       - thunk_FreePointerIfNotNull
@@ -1824,12 +1828,21 @@ targets:
       - thunk_GetCityIndexFromCityStatePointer
       - thunk_GetNewsMgrEntryArrayBaseAtOffset2C
       - thunk_GetTNewspaperViewClassNamePointer
+      - thunk_GetThisField10Value
+      - thunk_HandleEngineerConstructionAction
       - thunk_HandleNationStateCommandX78AndForwardToChild
       - thunk_InitializeDirectSoundDeviceAndChannels
+      - thunk_InitializeOrderStateUiResourceTreeAndControlEntries
       - thunk_LoadPaletteChunkFromMmioAndRegisterPaletteHandle
       - thunk_LoadWaveDataAndFormatFromFilePath_At00402bb2
       - thunk_LoadWaveResourceByNumericIdAndBuildBuffer
       - thunk_MCIWndCreateA
+      - thunk_NoOpPaddingStub_00604c3c
+      - thunk_NoOpPaddingStub_00604c3c_00604C32
+      - thunk_NoOpRuntimeCallback_005e717b
+      - thunk_NoOpVirtualStub_00613e44
+      - thunk_NoOpVirtualStub_00618753
+      - thunk_NoOpVirtualStub_00619cca
       - thunk_OpenWaveMmioReadFmtChunkAndAllocateHeader_At00401645
       - thunk_OrphanTail_FreeFourSavedPointersAndReturnTrue
       - thunk_OrphanTiny_ReturnMinusOneWord_00519af0_At00401e9c
@@ -1840,9 +1853,11 @@ targets:
       - thunk_QueueRandomCityProductionCommand19To1C
       - thunk_ReadMmioBytesToBufferAndUpdateChunkRemaining_At004028bf
       - thunk_ReadWaveDataAndFormatViaLoaderWithRetry
+      - thunk_ReleaseRuntimeSelectionPeersAndResetOwner_Impl_At005e4dc0
       - thunk_RemovePtrListEntryByOneBasedIndexAndFree
       - thunk_ResetTNewsMgrToSentinelVtable
       - thunk_ResizeDwordPointerArrayAndZeroNewSlots_At00407694
+      - thunk_ReturnOneStub_006145f5
       - thunk_SendMciCommand804IfDeviceOpenAndClearHandle
       - thunk_SendMciCommand804ToDevice_At00401d57
       - thunk_SendMciCommand808ToDeviceWithParam_At0040353a
@@ -2019,4 +2034,6 @@ targets:
       - thunk_WrapperFor_thunk_TemporarilyClearAndRestoreUiInvalidationFlag_At004a1100
       - thunk_WrapperFor_thunk_UpdateTextEntrySharedStringIfChanged_At005b6480
       - thunk_WritePaletteChunkToMmioFromPaletteHandle
+      - thunk_thunk_CProcessLocalObject_At00622aa2
+      - thunk_thunk_CProcessLocalObject_at_006244ce_At006244c4
       ignore_variables: []
