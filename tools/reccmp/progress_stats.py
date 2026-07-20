@@ -12,6 +12,10 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
+from tools.common.function_baseline import (
+    load_function_baseline,
+    write_function_baseline_atomic,
+)
 from tools.common.repo import repo_root_from_file
 from tools.common.report_score import effective_matching
 from tools.common.template_aliases import load_aliases
@@ -247,37 +251,9 @@ def parse_report_functions(path: Path) -> dict[str, dict[str, Any]]:
     return funcs
 
 
-# Report fields that churn on every rebuild without reflecting a real similarity change.
-REPORT_VOLATILE_TOP_KEYS = ("timestamp",)
-REPORT_VOLATILE_ROW_KEYS = ("recomp",)
-
-
-def normalize_report(path: Path) -> dict[str, Any]:
-    """Strip volatile fields and sort rows so the committed baseline diffs only on real changes."""
-    report = json.loads(path.read_text(encoding="utf-8"))
-    normalized = {k: v for k, v in report.items() if k not in REPORT_VOLATILE_TOP_KEYS}
-    rows = [
-        {k: v for k, v in row.items() if k not in REPORT_VOLATILE_ROW_KEYS}
-        for row in report.get("data", [])
-    ]
-    rows.sort(key=lambda row: parse_optional_int(row.get("address", "")) or 0)
-    normalized["data"] = rows
-    return normalized
-
-
 def function_baseline_path(baseline_file: Path) -> Path:
-    """Sibling holding the committed reccmp report used for per-function regression diffing.
-
-    This is the raw `reccmp-reccmp --json` output (same schema `parse_report_functions`
-    reads from the live build), not a bespoke derived format.
-    """
-    return baseline_file.with_name(f"{baseline_file.stem}.report.json")
-
-
-def load_function_baseline(path: Path) -> dict[str, dict[str, Any]] | None:
-    if not path.exists():
-        return None
-    return parse_report_functions(path)
+    """Sibling holding the compact per-function score snapshot."""
+    return baseline_file.with_name(f"{baseline_file.stem}.functions.csv")
 
 
 def function_changes(
@@ -601,10 +577,10 @@ def main() -> int:
 
         if args.commit_baseline:
             write_json_atomic(baseline_file, entry)
-            write_json_atomic(func_baseline_file, normalize_report(report_json))
+            write_function_baseline_atomic(func_baseline_file, curr_funcs)
             print("")
             print(f"Committed stats baseline: {baseline_file}")
-            print(f"Committed report baseline: {func_baseline_file}")
+            print(f"Committed function baseline: {func_baseline_file}")
         return 0
     except Exception as exc:  # pragma: no cover - CLI error path
         print(f"ERROR: {exc}", file=__import__("sys").stderr)
