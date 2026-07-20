@@ -2,6 +2,7 @@
 
 #include "game/TCity.h"
 #include "game/TGreatPower.h"
+#include "game/THelpMgr.h"
 #include "game/TInfoBarText.h"
 #include "game/TSimMgr.h"
 #include "game/TSoundPlayer.h"
@@ -128,12 +129,22 @@ void TStatusPicture::HandleEvent(int commandId, TEventHandler* sourceHandler, TE
         } else {
           RecomputeNationComparisonValuesAndNormalizeScale();
         }
-      } else {
-        // Already-selected tab: re-clicking replays a shift-modified secondary action
-        // (checks 'tab1'/'tab2'/'tab3' + VK_SHIFT, then
-        // g_pHelpMgr->SelectAndActivatePendingEventTypeOffsetFrom1A0B(idx) -- itself
-        // unclaimed/unported, walking an unresolved THelpMgr collection field) -- not yet
-        // ported.
+      } else if ((GetAsyncKeyState(VK_SHIFT) & 0x8000) != 0) {
+        // Already-selected tab, shift-held: a debug shortcut into the help-index records.
+        unsigned int tag = sourceHandler->controlTag;
+        int idx;
+        if (tag == 0x74616231u) { // 'tab1'
+          idx = 2;
+        } else if (tag == 0x74616232u) { // 'tab2'
+          idx = 0;
+        } else if (tag == 0x74616233u) { // 'tab3'
+          idx = 1;
+        } else {
+          idx = -1;
+        }
+        if (idx != -1) {
+          g_pHelpMgr->SelectAndActivatePendingEventTypeOffsetFrom1A0B(idx);
+        }
       }
     }
   }
