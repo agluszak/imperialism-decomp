@@ -60,8 +60,10 @@ void TOffersPanelView::NoOpUiLifecycleHook(int arg) {
   g_pSimMgr->GetString(0x274a, 7, &rejeHint);
   SetControlHoverHelpText(rejeHint, field6c);
 
-  // The original then constructs an empty-string CString (0x6a13a0) and applies it via a
-  // further call on textControl -- not yet decoded, left unmodeled.
+  // Blanks the panel's own hover-help text (SetControlHoverHelpText's callee target
+  // decodes to the real ported SetControlHoverHelpText/TView::SetHoverHelpText, not the
+  // stale "ApplySharedStringToControlState" symbols.csv name).
+  SetControlHoverHelpText(CString(), this);
 }
 
 // FUNCTION: IMPERIALISM 0x004f9300
