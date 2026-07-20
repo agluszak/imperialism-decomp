@@ -22,7 +22,12 @@ IMPLEMENT_DYNCREATE(TMapKey, TPicture)
 TMapKey::TMapKey() {}
 
 // FUNCTION: IMPERIALISM 0x004fcac0
-void TMapKey::NoOpUiLifecycleHook(int arg) {}
+void TMapKey::NoOpUiLifecycleHook(int arg) {
+  TPicture::NoOpUiLifecycleHook(arg);
+  // The original then builds a large table of legend-icon rects (magic-number coordinates)
+  // relative to ownerContext's own frame, and resolves/configures the legend controls from
+  // it -- not yet ported.
+}
 
 // FUNCTION: IMPERIALISM 0x004fcf80
 void TMapKey::ApplyRectSlot110(RECT* rectBuffer) {

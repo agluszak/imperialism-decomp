@@ -19,7 +19,11 @@ IMPLEMENT_DYNCREATE(TGameScorePicture, TNoHilitePicture)
 TGameScorePicture::TGameScorePicture() {}
 
 // FUNCTION: IMPERIALISM 0x0057b0a0
-void TGameScorePicture::NoOpUiLifecycleHook(int arg) {}
+void TGameScorePicture::NoOpUiLifecycleHook(int arg) {
+  TNoHilitePicture::NoOpUiLifecycleHook(arg);
+  // The original then assembles the end-game score/ranking summary (1108 bytes) -- not yet
+  // ported.
+}
 
 // FUNCTION: IMPERIALISM 0x0057b620
 void TGameScorePicture::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
