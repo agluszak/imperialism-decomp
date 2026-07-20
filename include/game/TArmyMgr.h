@@ -238,9 +238,8 @@ public:
   // 0x004a5080, 1407 bytes, __thiscall, 1 arg (cityRecordIndex), returns bool; signature
   // verified via the HandleMapClickByCivilianCursorState callsite disassembly.
   bool ValidateOrderPlacementPrerequisitesForSelectedTile(short cityRecordIndex);
-  // 0x004a5760, 656 bytes, __thiscall, 1 arg (tileIndex). TODO stub body (builds
-  // directional order-overlay controls from the tile's adjacent-region list; not yet
-  // ported).
+  // 0x004a5760, 656 bytes, __thiscall, 1 arg (tileIndex). Builds directional
+  // order-overlay controls from the tile's adjacent-region list.
   void SetActiveProvinceAndBuildDirectionalOrderOverlays(short tileIndex);
   // 0x004a5b10, 243 bytes, __thiscall, 3 args (ourStack, enemyStack, ownerNationCodeInt).
   // Called from TryCreateTacticalBattleViewForTileArmies when a real tactical battle
