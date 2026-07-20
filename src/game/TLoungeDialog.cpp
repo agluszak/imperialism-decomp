@@ -6,6 +6,7 @@
 #include "game/TModuleLibraryCacheTableStateB.h"
 #include "game/TMultiplayerMgr.h"
 #include "game/TStaticText.h"
+#include "game/TInfoBarText.h"
 #include "game/global_data_tables.h"
 #include "game/quickdraw_rendering.h"
 #include "game/ui_control_tags.h"
@@ -30,8 +31,23 @@ void TLoungeDialog::Free() {}
 // FUNCTION: IMPERIALISM 0x0054d730
 void TLoungeDialog::NoOpUiLifecycleHook(int arg) {
   TNoHilitePicture::NoOpUiLifecycleHook(arg);
-  // The original then sets up the multiplayer lounge dialog's roster/chat controls (821
-  // bytes) -- not yet ported.
+
+  // The original also calls g_pGameFlowState->EnableDiplomacyQueueRoutingAndSetContextField44
+  // (this, 1) here; its first param is declared int (an opaque context id elsewhere), and
+  // passing `this` there would need a new cast, so left unmodeled.
+
+  // 'labl' is a TInfoBarText control (vtable slot 0x204 matches
+  // TInfoBarText::InitializeMapHintTextStyleAndThemeFlags exactly).
+  TInfoBarText* lablControl = static_cast<TInfoBarText*>(ResolveControlByTag(0x6c61626c));
+  lablControl->AssertValid();
+  lablControl->BuildAndApplyTextStyleDescriptor(0, 0xe, 0x2b6b);
+  lablControl->InitializeMapHintTextStyleAndThemeFlags(0x2b6b, 0x2b6c);
+  lablControl->SetTextThemeCodeAndMaybeRefresh(1, 0);
+
+  // The original then sets up the multiplayer lounge dialog's roster/chat controls: a
+  // 7-entry 'nam0'-'nam6' loop building per-player name/ready-state labels, plus 'map '/
+  // 'tnam'/'send'/'clnc' setup gated on g_pGameFlowState's session state -- not yet
+  // decoded.
 }
 
 // FUNCTION: IMPERIALISM 0x0054db40

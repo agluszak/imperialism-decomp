@@ -22297,7 +22297,7 @@
     },
     {
       "address": "0x54d730",
-      "matching": 0.024896265560165973,
+      "matching": 0.12734082397003746,
       "name": "TLoungeDialog::NoOpUiLifecycleHook",
       "type": 1
     },
@@ -38986,7 +38986,7 @@
     },
     {
       "address": "0x6091d9",
-      "matching": 0.9787234042553191,
+      "matching": 1.0,
       "name": "CWnd::OnNotify",
       "type": 1
     },
