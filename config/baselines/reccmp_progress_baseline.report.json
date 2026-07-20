@@ -1,18 +1,6 @@
 {
   "data": [
     {
-      "address": "0x4028d8",
-      "matching": 0.0,
-      "name": "thunk_InitializeCityInteriorMinister",
-      "type": 1
-    },
-    {
-      "address": "0x406ccb",
-      "matching": 0.0,
-      "name": "thunk_HandleEngineerConstructionAction",
-      "type": 1
-    },
-    {
       "address": "0x412600",
       "matching": 0.0,
       "name": "InvokeCallbackForRecordRangeWithStride",
@@ -1167,12 +1155,6 @@
       "type": 1
     },
     {
-      "address": "0x457aee",
-      "matching": 0.0,
-      "name": "thunk_BuildMainStatsScoreboardAndDoneUiResourceTree",
-      "type": 1
-    },
-    {
       "address": "0x457af2",
       "matching": 0.0013477088948787063,
       "name": "BuildMainStatsScoreboardAndDoneUiResourceTree",
@@ -1182,12 +1164,6 @@
       "address": "0x458ced",
       "matching": 0.0,
       "name": "AllocateAndConstructTViewDerivedState_00458ced",
-      "type": 1
-    },
-    {
-      "address": "0x458d10",
-      "matching": 0.0,
-      "name": "thunk_InitializeOrderStateUiResourceTreeAndControlEntries",
       "type": 1
     },
     {
@@ -1411,12 +1387,6 @@
       "address": "0x474ac5",
       "matching": 0.0012970168612191958,
       "name": "BuildUniversityDialogControls",
-      "type": 1
-    },
-    {
-      "address": "0x475f80",
-      "matching": 0.0,
-      "name": "thunk_BuildUniversityRecruitmentRows",
       "type": 1
     },
     {
@@ -8051,7 +8021,7 @@
     },
     {
       "address": "0x4a2900",
-      "matching": 0.13063763608087092,
+      "matching": 0.13374805598755832,
       "name": "BuildArmyContextActionRecordsAndDispatchLabel",
       "type": 1
     },
@@ -8354,6 +8324,12 @@
       "address": "0x4a7b20",
       "matching": 1.0,
       "name": "TArmyStack::AddUnitToChainHead",
+      "type": 1
+    },
+    {
+      "address": "0x4a7ba0",
+      "matching": 0.8,
+      "name": "TArmyStack::RemoveUnitFromChain",
       "type": 1
     },
     {
@@ -9517,7 +9493,7 @@
     },
     {
       "address": "0x4b4310",
-      "matching": 1.0,
+      "matching": 0.8842105263157894,
       "name": "TCity::ComputeAverageWeightWord0TimesTenFromResourceCounts",
       "type": 1
     },
@@ -10742,7 +10718,7 @@
     },
     {
       "address": "0x4be8d0",
-      "matching": 0.01092896174863388,
+      "matching": 0.95,
       "name": "TCityInteriorMinister::InitializeCityInteriorState",
       "type": 1
     },
@@ -11649,7 +11625,7 @@
     },
     {
       "address": "0x4cc550",
-      "matching": 0.6495726495726496,
+      "matching": 0.7008547008547008,
       "name": "TPurchaseCluster::SetCityViewValueControlAmount",
       "type": 1
     },
@@ -12603,7 +12579,7 @@
     },
     {
       "address": "0x4d8cc0",
-      "matching": 0.43722943722943725,
+      "matching": 0.44924406047516197,
       "name": "TGreatPower::InitializeNationStateRuntimeSubsystems",
       "type": 1
     },
@@ -12615,7 +12591,7 @@
     },
     {
       "address": "0x4d92e0",
-      "matching": 0.43391902215431627,
+      "matching": 0.4366412213740458,
       "name": "TGreatPower::ReadFrom",
       "type": 1
     },
@@ -15762,7 +15738,7 @@
     },
     {
       "address": "0x4fd000",
-      "matching": 0.832,
+      "matching": 0.816,
       "name": "TMapKey::RenderMapHintOverlayMode0",
       "type": 1
     },
@@ -16838,7 +16814,7 @@
     },
     {
       "address": "0x508800",
-      "matching": 0.6461538461538462,
+      "matching": 0.7230769230769231,
       "name": "TLanguageMgr::BuildNewsTableDimensions",
       "type": 1
     },
@@ -18941,7 +18917,7 @@
     },
     {
       "address": "0x52d750",
-      "matching": 0.2253968253968254,
+      "matching": 0.22380952380952382,
       "name": "TMapMaker::MergeSmallCityRegionsAndCompactIds",
       "type": 1
     },
@@ -19711,12 +19687,6 @@
       "address": "0x5348a0",
       "matching": 0.9090909090909091,
       "name": "TIndexAndRankList::`scalar deleting destructor'",
-      "type": 1
-    },
-    {
-      "address": "0x5348d0",
-      "matching": 0.0,
-      "name": "TIndexAndRankList::DestructTIndexAndRankList",
       "type": 1
     },
     {
@@ -20857,13 +20827,13 @@
     },
     {
       "address": "0x53d020",
-      "matching": 0.38247011952191234,
+      "matching": 0.38095238095238093,
       "name": "TArmyMission::ComputeArmyMissionScoreDeltaWithCandidateUnit",
       "type": 1
     },
     {
       "address": "0x53d200",
-      "matching": 0.3686274509803922,
+      "matching": 0.3700787401574803,
       "name": "TArmyMission::ComputeArmyMissionScoreDeltaWithScaledCandidateUnit",
       "type": 1
     },
@@ -23097,7 +23067,7 @@
     },
     {
       "address": "0x555420",
-      "matching": 0.5546666666666666,
+      "matching": 0.5653333333333334,
       "name": "TTaskForce::ResolveTaskForceOrderConflictAndPickCandidate",
       "type": 1
     },
@@ -23320,7 +23290,7 @@
     },
     {
       "address": "0x5578a0",
-      "matching": 0.44324324324324327,
+      "matching": 0.44594594594594594,
       "name": "TNavyMgr::ResolveMapOrderChainsForTurnPhase",
       "type": 1
     },
@@ -26632,12 +26602,6 @@
       "type": 1
     },
     {
-      "address": "0x57b720",
-      "matching": 0.0,
-      "name": "TSelectoText::CreateTSelectoTextInstance",
-      "type": 1
-    },
-    {
       "address": "0x57b740",
       "matching": 1.0,
       "name": "TSelectoText::GetRuntimeClass",
@@ -29635,13 +29599,13 @@
     },
     {
       "address": "0x59b4f0",
-      "matching": 0.08,
+      "matching": 0.5217391304347826,
       "name": "TArmyPlayer::RemoveTacticalUnitFromUnitList",
       "type": 1
     },
     {
       "address": "0x59b540",
-      "matching": 0.06451612903225806,
+      "matching": 0.7666666666666667,
       "name": "TArmyPlayer::AddTacticalUnitToUnitListHead",
       "type": 1
     },
@@ -29869,7 +29833,7 @@
     },
     {
       "address": "0x59e0d0",
-      "matching": 1.0,
+      "matching": 0.6,
       "name": "TArmyPlayer::ScoreTacticalTileEnemyEdgeColumnZoneBonus",
       "type": 1
     },
@@ -30249,7 +30213,7 @@
     },
     {
       "address": "0x5a1ee0",
-      "matching": 0.6763925729442971,
+      "matching": 0.6737400530503979,
       "name": "TTacticalBattle::EvaluateAndResolveTacticalActionAgainstTileOccupant",
       "type": 1
     },
@@ -30357,7 +30321,7 @@
     },
     {
       "address": "0x5a3d30",
-      "matching": 0.8163265306122449,
+      "matching": 0.8104956268221575,
       "name": "TTacticalBattle::IsTacticalTargetTileReachableForAction",
       "type": 1
     },
@@ -30419,12 +30383,6 @@
       "address": "0x5a4750",
       "matching": 1.0,
       "name": "TArmyBattle::GetRuntimeClass",
-      "type": 1
-    },
-    {
-      "address": "0x5a4770",
-      "matching": 0.0,
-      "name": "TArmyBattle::ConstructTArmyBattleBaseState",
       "type": 1
     },
     {
@@ -30843,7 +30801,7 @@
     },
     {
       "address": "0x5a8ac0",
-      "matching": 0.6867469879518072,
+      "matching": 0.6086956521739131,
       "name": "TTacticalBattleView::CenterViewportAroundGridIndexAndSnap",
       "type": 1
     },
@@ -32444,7 +32402,7 @@
     },
     {
       "address": "0x5ba0e0",
-      "matching": 0.8181818181818182,
+      "matching": 1.0,
       "name": "TTradeMgr::ComputeAverageProposalWeightDeltaAcrossCategoryRows",
       "type": 1
     },
@@ -32854,7 +32812,7 @@
     },
     {
       "address": "0x5bf930",
-      "matching": 0.7907361455748553,
+      "matching": 0.7956989247311828,
       "name": "TOfferDeskPicture::RefreshSelectedNationOrderCompatibilityInfo",
       "type": 1
     },
@@ -34318,7 +34276,7 @@
     },
     {
       "address": "0x5df430",
-      "matching": 0.034482758620689655,
+      "matching": 0.7168141592920354,
       "name": "TAssetMgr::LoadTableResourceStreamByName",
       "type": 1
     },
@@ -34908,12 +34866,6 @@
       "address": "0x5e4a60",
       "matching": 0.0,
       "name": "TNetMgr::WrapperFor_FreeHeapBufferIfNotNull_At005e4a60",
-      "type": 1
-    },
-    {
-      "address": "0x5e4dc0",
-      "matching": 0.0,
-      "name": "thunk_ReleaseRuntimeSelectionPeersAndResetOwner_Impl_At005e4dc0",
       "type": 1
     },
     {
@@ -35550,12 +35502,6 @@
       "address": "0x5e711d",
       "matching": 0.8,
       "name": "CArchiveStream::CArchiveStream",
-      "type": 1
-    },
-    {
-      "address": "0x5e716d",
-      "matching": 0.0,
-      "name": "thunk_NoOpRuntimeCallback_005e717b",
       "type": 1
     },
     {
@@ -37419,12 +37365,6 @@
       "type": 1
     },
     {
-      "address": "0x5ff429",
-      "matching": 0.0,
-      "name": "thunk_GetThisField10Value",
-      "type": 1
-    },
-    {
       "address": "0x5ff432",
       "matching": 0.0,
       "name": "GetThisField10Value",
@@ -37833,18 +37773,6 @@
       "type": 1
     },
     {
-      "address": "0x604bcd",
-      "matching": 0.0,
-      "name": "thunk_NoOpPaddingStub_00604c3c",
-      "type": 1
-    },
-    {
-      "address": "0x604c32",
-      "matching": 0.0,
-      "name": "thunk_NoOpPaddingStub_00604c3c_00604C32",
-      "type": 1
-    },
-    {
       "address": "0x604c3c",
       "matching": 0.0,
       "name": "NoOpPaddingStub_00604c3c",
@@ -38016,12 +37944,6 @@
       "address": "0x605613",
       "matching": 0.0,
       "name": "HandleWndProcExceptionWithNodeTypeDispatch_00605613",
-      "type": 1
-    },
-    {
-      "address": "0x60564e",
-      "matching": 0.0,
-      "name": "thunk_DispatchVirtualSlot18OnImplicitObject",
       "type": 1
     },
     {
@@ -39040,7 +38962,7 @@
     },
     {
       "address": "0x6091d9",
-      "matching": 0.9787234042553191,
+      "matching": 1.0,
       "name": "CWnd::OnNotify",
       "type": 1
     },
@@ -40221,12 +40143,6 @@
       "type": 1
     },
     {
-      "address": "0x612878",
-      "matching": 0.0,
-      "name": "thunk_CallDcCallbackIfPrimaryHdcDiffers",
-      "type": 1
-    },
-    {
       "address": "0x61287e",
       "matching": 0.125,
       "name": "CallDcCallbackIfPrimaryHdcDiffers",
@@ -40563,12 +40479,6 @@
       "type": 1
     },
     {
-      "address": "0x613e36",
-      "matching": 0.0,
-      "name": "thunk_NoOpVirtualStub_00613e44",
-      "type": 1
-    },
-    {
       "address": "0x613e44",
       "matching": 0.0,
       "name": "NoOpVirtualStub_00613e44",
@@ -40740,12 +40650,6 @@
       "address": "0x61441e",
       "matching": 1.0,
       "name": "_AfxChildWindowFromPoint",
-      "type": 1
-    },
-    {
-      "address": "0x6145e3",
-      "matching": 0.0,
-      "name": "thunk_ReturnOneStub_006145f5",
       "type": 1
     },
     {
@@ -41079,12 +40983,6 @@
       "type": 1
     },
     {
-      "address": "0x61874f",
-      "matching": 0.0,
-      "name": "thunk_NoOpVirtualStub_00618753",
-      "type": 1
-    },
-    {
       "address": "0x618753",
       "matching": 0.0,
       "name": "NoOpVirtualStub_00618753",
@@ -41343,15 +41241,51 @@
       "type": 1
     },
     {
-      "address": "0x619ca0",
-      "matching": 0.4,
-      "name": "CopyIntoStreamBufferFromSourceWithClamp_00619ca0",
+      "address": "0x619aac",
+      "matching": 0.9333333333333333,
+      "name": "CMemFile::CMemFile(unsigned int)",
       "type": 1
     },
     {
-      "address": "0x619ca6",
-      "matching": 0.0,
-      "name": "thunk_NoOpVirtualStub_00619cca",
+      "address": "0x619af8",
+      "matching": 0.95,
+      "name": "CMemFile::CMemFile(unsigned char *, unsigned int, unsigned int)",
+      "type": 1
+    },
+    {
+      "address": "0x619b34",
+      "matching": 1.0,
+      "name": "CMemFile::Attach",
+      "type": 1
+    },
+    {
+      "address": "0x619b71",
+      "matching": 0.9615384615384616,
+      "name": "CMemFile::~CMemFile",
+      "type": 1
+    },
+    {
+      "address": "0x619bca",
+      "matching": 1.0,
+      "name": "CMemFile::Realloc",
+      "type": 1
+    },
+    {
+      "address": "0x619c12",
+      "matching": 1.0,
+      "name": "CMemFile::GrowFile",
+      "type": 1
+    },
+    {
+      "address": "0x619c6b",
+      "matching": 1.0,
+      "name": "CMemFile::SetLength",
+      "type": 1
+    },
+    {
+      "address": "0x619ca0",
+      "matching": 0.4,
+      "name": "CopyIntoStreamBufferFromSourceWithClamp_00619ca0",
       "type": 1
     },
     {
@@ -41361,9 +41295,33 @@
       "type": 1
     },
     {
+      "address": "0x619ccf",
+      "matching": 1.0,
+      "name": "CMemFile::Write",
+      "type": 1
+    },
+    {
+      "address": "0x619d11",
+      "matching": 1.0,
+      "name": "CMemFile::Seek",
+      "type": 1
+    },
+    {
+      "address": "0x619d58",
+      "matching": 1.0,
+      "name": "CMemFile::Close",
+      "type": 1
+    },
+    {
       "address": "0x619d82",
       "matching": 0.0,
       "name": "DispatchVirtualSlot54_NoArgs",
+      "type": 1
+    },
+    {
+      "address": "0x619d9f",
+      "matching": 1.0,
+      "name": "CMemFile::GetBufferPtr",
       "type": 1
     },
     {
@@ -42183,12 +42141,6 @@
       "type": 1
     },
     {
-      "address": "0x622aa2",
-      "matching": 0.0,
-      "name": "thunk_thunk_CProcessLocalObject_At00622aa2",
-      "type": 1
-    },
-    {
       "address": "0x622b58",
       "matching": 0.95,
       "name": "CWinThread::CWinThread(void)",
@@ -42537,21 +42489,9 @@
       "type": 1
     },
     {
-      "address": "0x6244a3",
-      "matching": 0.0,
-      "name": "CThreadLocalObject",
-      "type": 1
-    },
-    {
       "address": "0x6244b7",
       "matching": 0.6666666666666666,
       "name": "NoOpPaddingStub_006244b7",
-      "type": 1
-    },
-    {
-      "address": "0x6244c4",
-      "matching": 0.0,
-      "name": "thunk_thunk_CProcessLocalObject_at_006244ce_At006244c4",
       "type": 1
     },
     {
