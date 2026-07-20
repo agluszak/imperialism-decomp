@@ -24,10 +24,28 @@ void TUniversityView::SelectUniversityRecruitmentEntry(short nRecruitmentEntryIn
 
 // FUNCTION: IMPERIALISM 0x004cb8a0
 void TUniversityView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
-  // The original dispatches on field94's real receiver class via a lookup keyed by
-  // field94+0xe4+idx*4 -- its only assignment site, RefreshCityViewProductionDetails
-  // (0x4cfbd0, 1748 bytes), is itself unported, so the receiver class is unresolved here
-  // too -- not yet ported.
+  if (commandId == 0xc) {
+    short index = static_cast<short>(sourceHandler->controlTag) - 0x7630; // 'rec0'-'rec8' low 16 bits
+    if (index >= 0 && index < 9) {
+      selectedRecruitmentIndexA4 = index;
+      SelectUniversityRecruitmentEntry(index);
+    }
+  } else if (commandId == 0xa) {
+    TView* ownerView = static_cast<TView*>(sourceHandler)->ownerContext;
+    short index = static_cast<short>(ownerView->controlTag) - 0x7530; // low 16 bits
+    if (index >= 0 && index < 9) {
+      selectedRecruitmentIndexA4 = index;
+      SelectUniversityRecruitmentEntry(index);
+
+      // The original then resolves the 'sele' control (AssertValid, a slot-0x1c8 call with
+      // tag 'civ0'+index -- same unresolved receiver class as
+      // TShipyardView::OrphanRetStub_004c6fd0's 'sele' tail) and dispatches to the real
+      // receiver at field94[index+0x22] (field94's pointee class is unresolved -- see
+      // RefreshCityViewProductionDetails, 0x4cfbd0, 1748 bytes) which drives a 'num0'+index
+      // control's embedded 'numb' widget and a final invalidate/refresh sequence -- not yet
+      // ported.
+    }
+  }
   TControl::HandleEvent(commandId, sourceHandler, event);
 }
 
