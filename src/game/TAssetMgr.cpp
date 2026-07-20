@@ -231,6 +231,21 @@ unsigned char TAssetMgr::HasPendingClientSaveFile() {
   return findHandle != -1;
 }
 
+// FUNCTION: IMPERIALISM 0x005e0340
+int TAssetMgr::DeleteLegacyCliSaveImpFiles() {
+  int deletedCount = 0;
+  _finddata_t fileInfo;
+  long findHandle = _findfirst("save/cli_*.imp", &fileInfo);
+  _findclose(findHandle);
+  while (findHandle != -1) {
+    CFile::Remove(CString("save/") + fileInfo.name);
+    deletedCount++;
+    findHandle = _findfirst("save/cli_*.imp", &fileInfo);
+    _findclose(findHandle);
+  }
+  return deletedCount;
+}
+
 // FUNCTION: IMPERIALISM 0x005e0590
 void TAssetMgr::FormatVersionStringFromVersionResource(CString* out) {
   HRSRC resourceHandle = FindResourceA(nullptr, MAKEINTRESOURCEA(1), MAKEINTRESOURCEA(16));

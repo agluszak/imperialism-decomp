@@ -1438,10 +1438,15 @@ void TArmyMgr::AppendMapContextActionRecordAndResetWorkingFields(MapOrderBattleS
 }
 
 // FUNCTION: IMPERIALISM 0x004a6ef0
-void TArmyMgr::TrimExcessNavyOrderSupportAndRebuildOrderBuffer(short nationSlot, int cityIndex) {
-  // TODO: port body -- 897 bytes, rebuilds a per-nation navy-order support buffer for
-  // the given city; not yet reverse-engineered. See RefreshMapOrderBattleSideSnapshot
-  // for the one confirmed callsite and receiver evidence (g_pMapContextActionManager).
-  (void)nationSlot;
+void TArmyMgr::TrimExcessNavyOrderSupportAndRebuildOrderBuffer(char requiredCountByte,
+                                                               int cityIndex,
+                                                               MapOrderBattleSnapshot* snapshot) {
+  // TODO: port body -- 897 bytes. See the declaration in TArmyMgr.h for the traced
+  // algorithm (TMilitaryUnit-based random eviction against a weighted-cost budget,
+  // then a MapOrderBattleSideChildRecord array rebuild) and the one open question
+  // (the requiredCountByte/snapshot->requiredCountByte[0] comparison gating the
+  // scratch TList allocation).
+  (void)requiredCountByte;
   (void)cityIndex;
+  (void)snapshot;
 }

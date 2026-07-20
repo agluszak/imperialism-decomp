@@ -697,15 +697,11 @@ public:
   // Returns the number of entries appended.
   int CollectSecondDegreeLinksMatchingNodeType(int cityRecordIndex, int nationTag, int* nodeBuffer);
 
-  // 0x518d90 (thiscall, no explicit args). TODO(port): clears perTileVisitedFlag0f
-  // across the whole terrainStateTable, then walks the active nation's
-  // militaryUnitList44 (CIterator) and, for each order whose tile is diplomatically
-  // linked (via g_pDiplomacyTurnStateManager's vtable slot 8.0x04 war-state check and a
-  // pair of unresolved geometry helpers at 0x40907f/0x408b8e), stamps a per-tile
-  // direction-overlay code into perTileVisitedFlag0f and notifies
-  // mapUberPictureF0->InvalidateTileMarkerChain (slot 0x76). Left as a declared-for-real
-  // stub -- the two geometry helpers and the TDiplomacyMgrVtbl slot aren't recovered yet
-  // (see bd imperialism-decomp-1uj.61).
+  // 0x518d90 (thiscall, no explicit args). Clears perTileVisitedFlag0f across the whole
+  // terrainStateTable, then walks the active nation's militaryUnitList44 (CIterator) and,
+  // for each order whose field_C (city-record index) is set, computes the war/peace-coded
+  // direction overlay via MarkAdjacentHexOrderDirectionAndSelectTile (the same computation
+  // that function already implements for its own caller) and stamps/notifies through it.
   void MarkDirectionalMapOverlayFlagsForNationOrders();
 
   // 0x5108d0. Map-tile sprite-variant resolver: reads the tile's terrain type
