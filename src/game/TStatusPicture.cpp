@@ -23,7 +23,14 @@ IMPLEMENT_DYNCREATE(TStatusPicture, TPicture)
 TStatusPicture::TStatusPicture() {}
 
 // FUNCTION: IMPERIALISM 0x00593f20
-void TStatusPicture::NoOpUiLifecycleHook(int arg) {}
+void TStatusPicture::NoOpUiLifecycleHook(int arg) {
+  TPicture::NoOpUiLifecycleHook(arg);
+  // The original then allocates a per-nation picture-widget descriptor array (0x90 bytes),
+  // resolves seven 'pic0'-'pic6' controls to own it, inlines the same per-nation average
+  // computation seen in HandleEvent/RecomputeNationComparisonValuesAndNormalizeScale's
+  // case 3 to seed values94/pictureIds_b0, sorts them (SortSevenEntriesAndUpdatePictureWidgets),
+  // and resolves+configures a 'curs' cursor-hint control -- not yet ported.
+}
 
 // FUNCTION: IMPERIALISM 0x005942f0
 void TStatusPicture::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
