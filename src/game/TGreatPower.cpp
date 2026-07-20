@@ -2607,7 +2607,7 @@ void TGreatPower::SetNationTransferTargetCodeAndNotifyEligiblePeers(int arg1) {
     g_pInterNationEventQueueManager->QueueInterNationEventRecordDeduped(0x1D, this->nationSlot, 7,
                                                                         '\0');
   }
-  reinterpret_cast<void(__cdecl*)(void)>(RebuildMinorNationDispositionLookupTables)();
+  RebuildMinorNationDispositionLookupTables();
 
   this->encodedNationSlot = static_cast<short>(arg1 + 100);
 
