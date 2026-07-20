@@ -1,5 +1,6 @@
 #include "game/TShipyardView.h"
 
+#include "game/TCluster.h"
 #include "game/TControl.h"
 #include "game/TStaticText.h"
 #include "game/bitmap_descriptor_helpers.h"
@@ -93,9 +94,13 @@ undefined TShipyardView::OrphanRetStub_004c6fd0() {
   fieldA2 = 0;
   InitializeCityViewActionButtons(buildQueueSlotValues[0]);
 
-  // The original then resolves the 'sele' control (AssertValid, a slot-0x1c8 call with tag
-  // 'but0' -- receiver class/arity unresolved), and finally this->vtbl[0x1d8]() -- not yet
-  // ported.
+  // 'sele' is a TCluster (confirmed by cross-referencing turn_event_dialog_factory.cpp,
+  // which builds a real TCluster with controlTag 'sele'); byte 0x1c8 matches
+  // TCluster::SetControlClassAndRefresh(int) exactly (1 arg, RET 4).
+  TCluster* sele = static_cast<TCluster*>(ResolveControlByTag(0x73656c65u)); // 'sele'
+  sele->AssertValid();
+  sele->SetControlClassAndRefresh(0x62757430); // 'but0'
+  OrphanRetStub_004c6fb0();
   return 0;
 }
 
