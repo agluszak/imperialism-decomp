@@ -8351,6 +8351,12 @@
       "type": 1
     },
     {
+      "address": "0x4a7ba0",
+      "matching": 0.8,
+      "name": "TArmyStack::RemoveUnitFromChain",
+      "type": 1
+    },
+    {
       "address": "0x4a7c20",
       "matching": 0.08695652173913043,
       "name": "TArmyStack::Free",
@@ -29630,13 +29636,13 @@
     },
     {
       "address": "0x59b4f0",
-      "matching": 0.08,
+      "matching": 0.5217391304347826,
       "name": "TArmyPlayer::RemoveTacticalUnitFromUnitList",
       "type": 1
     },
     {
       "address": "0x59b540",
-      "matching": 0.06451612903225806,
+      "matching": 0.7666666666666667,
       "name": "TArmyPlayer::AddTacticalUnitToUnitListHead",
       "type": 1
     },
@@ -29864,7 +29870,7 @@
     },
     {
       "address": "0x59e0d0",
-      "matching": 1.0,
+      "matching": 0.6,
       "name": "TArmyPlayer::ScoreTacticalTileEnemyEdgeColumnZoneBonus",
       "type": 1
     },

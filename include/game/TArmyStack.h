@@ -73,6 +73,9 @@ public:
   // Pushes a unit node at the head of the embedded chain (alloc-failure assert via
   // UArmyMgr.cpp line 0xbeb) and bumps the fieldA unit count. 0x004a7b20.
   void AddUnitToChainHead(TUnit* unit);
+  // Unlinks and deletes the first node whose unit pointer matches (searches head14,
+  // then walks the chain), decrementing fieldA. No-op if not found. 0x004a7ba0.
+  void RemoveUnitFromChain(TUnit* unit);
 
   TArmyStack();
 };
