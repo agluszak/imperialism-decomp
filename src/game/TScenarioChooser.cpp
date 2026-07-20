@@ -95,9 +95,12 @@ void TScenarioChooser::ForwardParam(int param) {}
 // FUNCTION: IMPERIALISM 0x0057a6e0
 void TScenarioChooser::LoadScenarioMetadataByIndexIntoUiControlCore(short scenarioIndex) {
   selectedScenarioIndex142 = scenarioIndex;
-  // The original then loads the scenario's metadata (name/description/preview) from the
-  // scenario resource table and rebuilds several dialog controls from it -- not yet
-  // decoded.
+  CString path;
+  g_pUiViewManager->BuildScenarioPathForModeAndIndex(scenarioIndex, 0, &path);
+  // The original then opens that scenario metadata file (a '#'-delimited text format, not
+  // the binary save-slot layout used elsewhere in this codebase) via a 0x1950-byte read
+  // buffer and fgetc-driven parser, and rebuilds several dialog controls from the parsed
+  // fields -- not yet decoded.
 }
 
 // Per-scenario-index language/campaign tag consumed by TAssetMgr::EnsurePictWvDataGobLoadedBySlot.
