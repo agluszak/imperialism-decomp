@@ -202,3 +202,12 @@ public:
   short battlefieldOriginOffsetXD4;
   unsigned char padD6[2];
 };
+
+// Clips srcRect to bounds, shifting dstRect by the same per-edge delta so the two
+// stay in sync (the standard blit-clip prologue before a QuickDraw surface blit).
+// Returns non-zero iff the clipped srcRect is still non-empty. 0x005a6940
+BOOL __stdcall ClipSrcRectToBoundsAndOffsetDstRect(RECT* bounds, RECT* dstRect, RECT* srcRect);
+
+// Draws four short corner-tick brackets around rect's edges (a hex-selection
+// highlight idiom), shrinking rect->right/bottom by 1 first. 0x005a99e0
+void __stdcall DrawHexSelectionOutlineSegments(RECT* rect);

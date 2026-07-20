@@ -5,10 +5,6 @@
 
 void SetQuickDrawFillColor(int fillColor);
 void SetQuickDrawStrokeColor(int strokeColor);
-// Clips srcRect to bounds, shifting dstRect by the same per-edge delta so the two
-// stay in sync (the standard blit-clip prologue before a QuickDraw surface blit).
-// Returns non-zero iff the clipped srcRect is still non-empty. 0x005a6940
-BOOL __stdcall ClipSrcRectToBoundsAndOffsetDstRect(RECT* bounds, RECT* dstRect, RECT* srcRect);
 void SetQuickDrawColorAndSyncGlobals(int color);
 void SetGlobalBlitTransparentColorRaw(int transparentColor);
 void SetGlobalQuickDrawOrigin(short originX, short originY);
@@ -80,10 +76,6 @@ void SetQuickDrawFillColorFromPaletteIndex(unsigned short paletteIndex);
 // Selects the cached measure-font and draws a single character via CDC::TextOut at the
 // resolved text origin (a per-unit letter overlay), then restores DC state. 0x00494950
 void RenderTacticalBattleSelectionAndUnitOverlayPass_Impl(char glyph);
-
-// Draws four short corner-tick brackets around rect's edges (a hex-selection
-// highlight idiom), shrinking rect->right/bottom by 1 first. 0x005a99e0
-void __stdcall DrawHexSelectionOutlineSegments(RECT* rect);
 
 // Classic "simulate TransparentBlt" masked-BitBlt technique (cf. Microsoft KB Q79212):
 // builds a monochrome mask from sourceBitmap's pixels matching colorKey, uses it to AND
