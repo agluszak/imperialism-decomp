@@ -196,3 +196,7 @@ const unsigned int kControlTagChec = 0x63686563u; // 'chec' — ship-check hotsp
 const unsigned int kControlTagCls0 = 0x636c7330u; // 'cls0' — first of the per-resource-type class sliders
 const unsigned int kControlTagScvw = 0x73637677u; // 'scvw' — scroll view
 const unsigned int kControlTagRecc = 0x72656363u; // 'recc' — interior-minister "reconstruction" button
+const unsigned int kControlTagExpo = 0x6578706fu; // 'expo' — foreign-minister "export" button
+const unsigned int kControlTagDeal = 0x6465616cu; // 'deal' — foreign-minister "deal" button
+const unsigned int kControlTagMerc = 0x6d657263u; // 'merc' — foreign-minister "mercenaries" button
+const unsigned int kControlTagPric = 0x70726963u; // 'pric' — foreign-minister "price" button
