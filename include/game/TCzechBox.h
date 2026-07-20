@@ -124,7 +124,9 @@ public:
   // slot 0x71 ResetPictureResourceEntry inherited unchanged (0x48f520)
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
   // slot 0x73 IsSelected inherited unchanged (0x571690)
-  virtual undefined OrphanLeaf_NoCall_Ins02_00571de0(); // slot 0x74 0x571de0
+  // Returns the low byte of checkedStateByte94 (the checkbox's current on/off value,
+  // read raw rather than through a bool-returning wrapper). 0x571de0.
+  virtual unsigned char GetCheckedStateByte(); // slot 0x74 0x571de0
   virtual undefined OrphanCallChain_C1_I10_00571e00(char param_1,
                                                     undefined4 param_2); // slot 0x75 0x571e00
   virtual undefined OrphanCallChain_C4_I45_00571d40(char param_1);       // slot 0x76 0x571d40
@@ -134,6 +136,7 @@ public:
 
   TCzechBox();
 
-  // Original object size is 0x98 (CRuntimeClass m_nObjectSize); the source class ended at 0x94. Trailing 4 byte(s) not yet semantically recovered — declared so sizeof and the recomp's allocation size match the original.
-  int field94;
+  // Original object size is 0x98 (CRuntimeClass m_nObjectSize); the source class ended
+  // at 0x94. Read (low byte only) by GetCheckedStateByte as the checkbox's on/off value.
+  int checkedStateByte94;
 };

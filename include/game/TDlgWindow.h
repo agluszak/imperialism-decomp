@@ -116,7 +116,7 @@ public:
   // slot 0x6a OrphanCallChain_C1_I08_0048da10 inherited unchanged (0x48da10)
   // slot 0x6b ExecuteViewModalStateWithPushPopChain inherited unchanged (0x48da60)
   // slot 0x6c OrphanCallChain_C1_I08_0048dc60 inherited unchanged (0x48dc60)
-  // slot 0x6d OrphanCallChain_C2_I12_0048dc90 inherited unchanged (0x48dc90)
+  // slot 0x6d NotifyDialogBehaviorCommandArmed inherited unchanged (0x48dc90)
   // slot 0x6e OrphanLeaf_NoCall_Ins02_0048dcc0 inherited unchanged (0x48dcc0)
   // slot 0x6f AssertMcAppUILine2554 inherited unchanged (0x48dce0)
   // slot 0x70 SetWindowTarget inherited unchanged (0x48ddc0)

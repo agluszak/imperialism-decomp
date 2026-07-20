@@ -71,6 +71,9 @@ public:
   // activates it. Used by TStatusPicture/TSpecialQuitPicture's shift+'tab1'/'tab2'/'tab3'
   // debug shortcuts.
   void SelectAndActivatePendingEventTypeOffsetFrom1A0B(int idx);
+  // 0x503320 -- finds the first indexList record whose contextId is exactly 0x1a0a and
+  // activates it. Used by TQueryFloater::HandleEvent's 'fore' branch.
+  void SelectAndActivatePendingEventType1A0A();
 
   // 2-byte packed (like TControl's Mac-heritage records): the field suffixes are the real
   // offsets only under pack(2) — field1a is an int AT 0x1a, and helpIndexReady sits at

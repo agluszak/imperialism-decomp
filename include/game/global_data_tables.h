@@ -542,6 +542,7 @@ extern int g_nUiAnimatorSurfaceBoundsHeight;  // 0x006a222c
 extern int g_nIdleMeAnimationNextRegistryTag; // 0x00695934
 extern TMacViewMgr* g_pStrategicMapViewSystem;
 extern TViewMgr* g_pUiRuntimeContext;
+extern "C" int g_diplomacyActionButtonTagTable_00696960[6];
 extern "C" int g_councilControlTagTable[6];
 extern "C" int g_defaultDropShadowTextColor;
 extern TAssetMgr* g_pUiViewManager;
@@ -746,6 +747,7 @@ extern CString g_cstrNationAwolMessageStore;       // @ 0x6a3d08
 extern CString g_cstrMapModeMessageStore;          // @ 0x6a45c0
 extern CString g_cstrTechCapabilityMessageStore;   // @ 0x6a57c8
 extern CString g_cstrUiPromptMessageStore;         // @ 0x6a5be0
+extern CString g_cstrQueryFloaterMessageStore;      // @ 0x6a4048
 extern CString g_cstrDiplomacyNoticeMessageStore;  // @ 0x6a2fc0
 extern int g_nationInfoGoldResourceOverride_006a5bac;
 extern int g_lastTurnAlertTick_006a31c0;
@@ -1752,3 +1754,9 @@ extern char s_mcflavor_0069b640[];
 extern char s_Data_scores_dat_0069b7fc[];
 extern short g_creditsPlaybackActive_006a4084;
 extern short g_offerDeskSelectionIndexTable_00668568[8];
+// Persistent (X,Y) layout-capture buffer shared by the diplomacy popup family
+// (RunDiplomacyNegotiationPopupAndAwaitResponse, RunDiplomacyWaitSheetPopupAndAwaitResponse,
+// InitializeDiplomacyMinisterActionControlsAndLabels) via TView::CaptureLayoutF0, which
+// reads exactly buffer[0]/buffer[1] as ownerLocalX/ownerLocalY.
+extern int g_diplomacyPopupLayoutPosition_006a3020[2];
+extern "C" const char s_SourcePathUDiplomacyViews_00696AE0[];

@@ -30,10 +30,10 @@ void TDefenseMinisterView::HandleEvent(int commandId, TEventHandler* sourceHandl
   unsigned int tag = sourceHandler->controlTag;
   if (commandId == 0xa) {
     if (tag == kControlTagBack) {
-      OrphanLeaf_NoCall_Ins03_004f2ea0();
+      NotifyWindowStatusTick();
       return;
     } else if (tag == kControlTagOkay) {
-      OrphanLeaf_NoCall_Ins03_004f2ea0();
+      NotifyWindowStatusTick();
       TWindow* owner = static_cast<TWindow*>(OwnerPanel());
       g_pGlobalUiRootController->CloseAndFreeWindow(owner);
       return;
@@ -54,7 +54,7 @@ void TDefenseMinisterView::HandleEvent(int commandId, TEventHandler* sourceHandl
             message, &g_cstrDiplomacyNoticeMessageStore, 1, 0);
       }
     } else if (tag == kControlTagRecc) {
-      OrphanCallChain_C2_I08_004f2ec0(0x258a);
+      ShowMinisterHelpDialog(0x258a);
     }
     return;
   }
