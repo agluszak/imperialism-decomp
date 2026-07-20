@@ -27,7 +27,11 @@ TLoungeDialog::TLoungeDialog() {}
 void TLoungeDialog::Free() {}
 
 // FUNCTION: IMPERIALISM 0x0054d730
-void TLoungeDialog::NoOpUiLifecycleHook(int arg) {}
+void TLoungeDialog::NoOpUiLifecycleHook(int arg) {
+  TNoHilitePicture::NoOpUiLifecycleHook(arg);
+  // The original then sets up the multiplayer lounge dialog's roster/chat controls (821
+  // bytes) -- not yet ported.
+}
 
 // FUNCTION: IMPERIALISM 0x0054db40
 char TLoungeDialog::DoIdle(int action) {

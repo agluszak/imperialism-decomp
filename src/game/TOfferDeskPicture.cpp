@@ -37,7 +37,11 @@ TOfferDeskPicture::TOfferDeskPicture() : TPicture(), field9e(0), fieldA0(0), fie
 TOfferDeskPicture::~TOfferDeskPicture() {}
 
 // FUNCTION: IMPERIALISM 0x005be600
-void TOfferDeskPicture::NoOpUiLifecycleHook(int arg) {}
+void TOfferDeskPicture::NoOpUiLifecycleHook(int arg) {
+  TPicture::NoOpUiLifecycleHook(arg);
+  // The original then sets up the offer-desk's per-nation control table (816 bytes) -- not
+  // yet ported.
+}
 
 // FUNCTION: IMPERIALISM 0x005bea00
 undefined TOfferDeskPicture::InitializeTradeScreenControlsLabelsAndNationContext() {
