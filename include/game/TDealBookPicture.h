@@ -126,60 +126,53 @@ public:
   // slot 0x70 SetControlStateFlagAndMaybeRefresh inherited unchanged (0x48e810)
   // slot 0x71 ResetPictureResourceEntry inherited unchanged (0x48f520)
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
-  virtual void
-  UpdateDealBookResourceSelectionAndToggleControls(int nResourceIndex,
-                                                   short nSelectedRow); // slot 0x73 0x5baf70
-  virtual undefined BuildSelectedNationOrderCapabilityRows();           // slot 0x74 0x5bb2e0
+  // Mac name oracle: ShowPage(short, short). The Windows body reads the first argument as
+  // a dword and the second as a word, so the recovered Windows signature remains (int, short).
+  virtual void ShowPage(int pageIndex, short nationId); // slot 0x73 0x5baf70
+  virtual void CalculatePages();                        // slot 0x74 0x5bb2e0
   // TPicture's slice ends at 0x90; RTTI oracle confirms sizeof(TDealBookPicture) == 0xb4.
-  // The ctor (0x5babc0) writes field90 (= 8) and fieldB2 (= 0); the intervening region and
+  // The ctor (0x5babc0) writes selectedNationId90 (= 8) and unresolvedByteB2 (= 0); the intervening region and
   // the 0xb3 byte are unconfirmed padding. Fields 0x92-0xb1 (formerly a pad92[0x20] blob)
-  // recovered from RefreshTradeSelectionHeaderAndNationOfferBidLines (0x5bc0d0).
-  short field90; // +0x90 initialized to 8
-  // +0x92 -- computed as max(sellView->pageCount, buyView->pageCount) - 1 at the end of
-  // RefreshTradeSelectionHeaderAndNationOfferBidLines; purpose beyond that not yet confirmed.
-  short field92;
-  short field94;          // +0x94 -- selected row index, written by
-                          // UpdateDealBookResourceSelectionAndToggleControls (0x5baf70)
-  unsigned char pad96[2]; // +0x96..0x97
-  // +0x98 -- the 'guob' commodity sub-control, cached by RefreshHudNationTitleControlsAndTheme
-  // (copied into fieldAC there). RefreshTradeSelectionHeaderAndNationOfferBidLines reapplies it
-  // as a picture-resource handle via this->SetPictureResourceIdAndRefresh (whose arg is used as
-  // an int/handle, not merely a short id).
-  TView* field98;
-  // +0x9c -- a TView-family pointer, target of one of the 4 CaptureLayoutF0 calls at the end
-  // of RefreshTradeSelectionHeaderAndNationOfferBidLines; not yet confirmed which subview.
-  TView* field9c;
-  TTradePageBuyView* buyView;   // +0xa0
-  TTradePageSellView* sellView; // +0xa4
-  // +0xa8/+0xac -- re-cached copies of sellView/buyView, set at the end of
-  // RefreshTradeSelectionHeaderAndNationOfferBidLines right after their CaptureLayoutF0
-  // calls; field92 (the wider-page selection default) is then computed from these, not
-  // directly from sellView/buyView.
-  TTradePageSellView* fieldA8;
-  TTradePageBuyView* fieldAC;
-  unsigned char padB0; // +0xb0 -- no confirmed writer yet
+  // recovered from SwitchPages (0x5bc0d0).
+  short selectedNationId90; // +0x90 initialized to 8; indexes g_apNationStates in CalculatePages
+  // +0x92 -- last page needed by either page list: max(page counts) - 1.
+  short lastPageIndex92;
+  short currentPageIndex94; // +0x94 -- selected zero-based page, written by ShowPage
+  unsigned char pad96[2];   // +0x96..0x97
+  // +0x98/+0x9c -- 'boug'/'sold' controls. Startup copies them into the typed page slots
+  // at +0xac/+0xa8, proving their concrete page-view types on Windows.
+  TTradePageBuyView* boughtTradesView98;
+  TTradePageSellView* soldTradesView9C;
+  TTradePageBuyView* buyPageViewA0;   // +0xa0, tag 'tbou'
+  TTradePageSellView* sellPageViewA4; // +0xa4, tag 'tsol'
+  // +0xa8/+0xac -- re-cached sell/buy page pointers set at the end of SwitchPages right
+  // after the four CaptureLayoutF0 calls. lastPageIndex92 is computed from these copies.
+  TTradePageSellView* sellPageViewA8;
+  TTradePageBuyView* buyPageViewAC;
+  bool tradeListEmptyB0; // +0xb0 -- CalculatePages starts true and clears it when a row exists
   // +0xb1 -- "already initialized" flag; flipped (via `!=0`) at the end of
-  // RefreshTradeSelectionHeaderAndNationOfferBidLines each time it runs.
-  unsigned char initializedFlagB1;
-  unsigned char fieldB2; // +0xb2 initialized to 0
-  unsigned char padB3;   // +0xb3
+  // SwitchPages each time it runs.
+  bool alternatePageModeB1;
+  // +0xb2 has only the constructor's zero byte write so far; its meaning remains unresolved.
+  unsigned char unresolvedByteB2;
+  unsigned char padB3; // +0xb3
 
   TDealBookPicture();
-  // 0x5bc0d0 -- on first call (initializedFlagB1 == 0), sets the 'mark' state, builds the
+  // 0x5bc0d0 -- on first call (alternatePageModeB1 == false), sets the 'mark' state, builds the
   // "<season> <year>" header text for 'rtil' and loads the tab-strip's shared message.
   // On subsequent calls, resets both trade pages to their unselected state (-1), refreshes
   // 'titL'/'rtil"'s labels from the string table, resets 'mark', and reloads the tab strip.
   // Either way, ends by capturing 4 subviews' layouts, re-caching the sell view pointer,
-  // recomputing field92 from the wider of the two trade pages' pageCount, reapplying the
+  // recomputing lastPageIndex92 from the smaller page count, reapplying the
   // dialog's own picture resource, and flipping the "already initialized" flag.
-  void RefreshTradeSelectionHeaderAndNationOfferBidLines();
+  void SwitchPages();
   // 0x5bac50 -- re-caches the six commodity sub-controls (guob/dlos/uobt/lost) into
-  // field98..fieldAC, resets the 'mark'/'tabs' labels and the initialized flag, refreshes
+  // boughtTradesView98..buyPageViewAC, resets the 'mark'/'tabs' labels and the page-mode flag, refreshes
   // the nation title ('loot'), reapplies this dialog's slot-0x73 theme, plays the refresh
   // sfx, and rebuilds the 'titL'/'rtil' title/subtitle labels + 'rocl'/'rocr' buttons.
   // (Ghidra mis-attributed this to TControl; it is contiguous with this class's methods
   // and uses its exact field layout + slot 0x73.)
-  void RefreshHudNationTitleControlsAndTheme(int themeCode);
+  void Startup(short startupValue);
 };
 
 ASSERT_SIZE(TDealBookPicture, 0xb4);

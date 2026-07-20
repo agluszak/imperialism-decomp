@@ -85,6 +85,57 @@ class UiCodegenTests(unittest.TestCase):
                 else "",
             )
 
+    def test_concrete_factory_classes_have_no_placeholder_field_declarations(self) -> None:
+        rendered_factories = []
+        for recipe in self.recipes:
+            if recipe.emission == "resource_recipe":
+                rendered_factories.append(
+                    render_resource_recipe(recipe, self.views, self.windows_recipes)
+                )
+            else:
+                rendered_factories.append(render_factory(recipe, self.views))
+
+        concrete_classes = {
+            match.group(1)
+            for text in rendered_factories
+            for match in re.finditer(r"\bnew\s+(T[A-Za-z0-9_]+)\b", text)
+        }
+        self.assertGreater(len(concrete_classes), 100)
+
+        header_text = {
+            path: path.read_text() for path in (REPO_ROOT / "include" / "game").glob("*.h")
+        }
+        placeholder_field = re.compile(
+            r"(?m)^\s*(?!//)[^()/;{}]*\b"
+            r"(?P<name>(?:field(?:_0x)?[0-9A-Fa-f]+|unknown[A-Za-z0-9_]*))\b"
+            r"(?:\s*\[[^\]]+\])?\s*;"
+        )
+        opaque_pointer_field = re.compile(
+            r"(?m)^\s*void\s*\*\s*(?P<name>[A-Za-z_][A-Za-z0-9_]*)"
+            r"(?:\s*\[[^\]]+\])?\s*;"
+        )
+
+        for class_name in sorted(concrete_classes):
+            declaration = re.compile(rf"\bclass\s+{re.escape(class_name)}\b[^;{{]*{{")
+            owners = [path for path, text in header_text.items() if declaration.search(text)]
+            self.assertEqual(len(owners), 1, f"expected one owning header for {class_name}: {owners}")
+            match = placeholder_field.search(header_text[owners[0]])
+            self.assertIsNone(
+                match,
+                f"{class_name} still declares placeholder field {match.group('name')!r} "
+                f"in {owners[0].relative_to(REPO_ROOT)}"
+                if match
+                else "",
+            )
+            match = opaque_pointer_field.search(header_text[owners[0]])
+            self.assertIsNone(
+                match,
+                f"{class_name} still declares opaque pointer field {match.group('name')!r} "
+                f"in {owners[0].relative_to(REPO_ROOT)}"
+                if match
+                else "",
+            )
+
     def test_generator_foundation_members_have_concrete_types(self) -> None:
         declarations = {
             "TView.h": (

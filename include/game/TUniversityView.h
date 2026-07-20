@@ -3,6 +3,8 @@
 #include "game/TBuildingView.h"
 #include "game/mfc.h"
 
+class TUnitOrder;
+
 // VTABLE: IMPERIALISM 0x00651fc0
 class TUniversityView : public TBuildingView {
 public:
@@ -124,24 +126,23 @@ public:
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
   // slot 0x73 NoOpUiVirtualSlot73 inherited unchanged (0x572bb0)
   // slot 0x74 ApplyCityViewSelectionPayloadAndRefreshControls inherited unchanged (0x4c6f30)
-  virtual undefined OrphanRetStub_004c6fd0() override; // slot 0x75 0x4cace0
-  virtual undefined OrphanRetStub_004c6fb0() override; // slot 0x76 0x4cbb20
+  virtual void DoStartup() override;    // slot 0x75 0x4cace0
+  virtual void UpdateFields() override; // slot 0x76 0x4cbb20
   // slot 0x77 SetUniversityDialogLocalizedTextAndRefresh inherited unchanged (0x4c70e0)
   // slot 0x78 SetUniversityDialogTextAndRefresh inherited unchanged (0x4c6ff0)
-  virtual void SelectUniversityRecruitmentEntry(short nRecruitmentEntryIndex); // slot 0x79 0x4cb320
+  virtual void SetUnit(short recruitmentCategory); // slot 0x79 0x4cb320
 
   TUniversityView();
 
-  // Original object size is 0xac (CRuntimeClass m_nObjectSize); the source class ended
-  // at 0xa0. fielda0 has no observed accesses in any ported method (true padding so far).
-  int fielda0;
-  // Selected recruitment-slot index (0-8), written/read as a 16-bit narrow view by
+  // Original object size is 0xac. Windows has no accesses in the +0xa0 dword.
+  unsigned char paddingA0[4];
+  // Selected recruitment category (0-8), written/read as a 16-bit value by
   // HandleEvent's commandId 0xa/0xc branches; the upper half of the +0xa4 dword is
   // never touched by either writer, so it's split out rather than declared as int.
-  short selectedRecruitmentIndexA4;
-  // fielda4 evidence (ApplyRectSlot110): always accessed as a 16-bit word -- selects
-  // which requirement-recruitment category/page is shown (index into the row-selection
-  // table + GetMapImprovementSpriteBaseOffset arg) -- so it's a short, not int.
-  short fielda4;
-  int fielda8;
+  short selectedRecruitmentCategoryA4;
+  unsigned char paddingA6[2];
+  // Selected city recruitment recipe. SetUnit indexes city94->orderSlotsE4 at
+  // recruitmentCategory + 0x22; those entries are TUnitOrder objects, and UpdateFields
+  // reads their per-unit paper and cash costs.
+  TUnitOrder* selectedRecruitmentOrderA8;
 };

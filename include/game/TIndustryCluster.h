@@ -126,7 +126,7 @@ public:
   // slot 0x73 IsTradeControlAtMinimum inherited unchanged (0x5714e0)
   virtual void ApplyMoveValue(int value);                                   // slot 0x74 0x588c30
   virtual int NotifyControlSelectionChange(void* boundEntry, int arg2 = 0); // slot 0x75 0x588c60
-  virtual int GetControlFlag(int arg1 = 0, int arg2 = 0);                   // slot 0x76 0x588f60
+  virtual void RefreshBarFromSelectedMetric();                              // slot 0x76 0x588f60
   TAmtBar* selectedMetricControl;                                           // 0x88
   short selectedMetricValue;                                                // 0x8c
   short selectedMetricStep;                                                 // 0x8e

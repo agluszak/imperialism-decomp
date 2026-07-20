@@ -124,13 +124,14 @@ public:
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
   // slot 0x73 NoOpUiVirtualSlot73 inherited unchanged (0x572bb0)
   // slot 0x74 ApplyCityViewSelectionPayloadAndRefreshControls inherited unchanged (0x4c6f30)
-  virtual undefined OrphanRetStub_004c6fd0() override; // slot 0x75 0x4cd8d0
-  virtual undefined OrphanRetStub_004c6fb0() override; // slot 0x76 0x4ce070
+  virtual void DoStartup() override;    // slot 0x75 0x4cd8d0
+  virtual void UpdateFields() override; // slot 0x76 0x4ce070
   // slot 0x77 SetUniversityDialogLocalizedTextAndRefresh inherited unchanged (0x4c70e0)
   // slot 0x78 SetUniversityDialogTextAndRefresh inherited unchanged (0x4c6ff0)
   // RTTI oracle: sizeof(TTradeSchoolView) == 0xa8, identical to TIndustryView -- this
   // class adds no data members of its own. Its ctor (0x4cd840) re-runs exactly
-  // TIndustryView's field init (field94/fieldA0/fieldA4) via the inlined base body.
+  // TIndustryView's field init (city94/unresolvedZeroA0/selectedIndustryUnitTypeA4)
+  // via the inlined base body.
 
   TTradeSchoolView();
 };

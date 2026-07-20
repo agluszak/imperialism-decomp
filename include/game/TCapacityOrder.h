@@ -34,6 +34,6 @@ public:
   // No own fields: RTTI proves TCapacityOrder is exactly TItemOrder's size (0x54).
   // quantityField04/cityField08/summaryField0c/trackingSlots10/field3e/field40 are
   // TProductionOrder's own fields (accumulatedValue is field44/resourceTypeIndex48 is
-  // shared too); field4c/trackingIndex4e(=field4e)/trackingIndex50(=field50)/field52
-  // (=buildingSlot) are TItemOrder's own fields -- use the inherited names directly.
+  // shared too); requestedQuantity4c/primaryInputResourceId/secondaryInputResourceId/
+  // productionSlot are TItemOrder's own fields -- use the inherited names directly.
 };

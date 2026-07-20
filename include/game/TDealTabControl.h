@@ -121,13 +121,14 @@ public:
   // slot 0x6e SetTextColorAndMaybeRefresh inherited unchanged (0x48e7a0)
   // slot 0x6f LogUnhandledDialogMethodAndReturnFalse inherited unchanged (0x4294a0)
   // slot 0x70 SetControlStateFlagAndMaybeRefresh inherited unchanged (0x48e810)
-  virtual undefined ConstructTDealTabControlBaseState(); // slot 0x71 0x5bc780
+  virtual void Setup(short bitmapResourceId, unsigned char useAlternatePair); // slot 0x71 0x5bc780
   // Vertical fill-bar slice read by ApplyRectSlot110: negative selectedRow84 means "no
   // selection" (draw the whole strip empty); otherwise the highlight band spans
   // [selectedRow84*rowHeightPx86, +rowHeightPx86) with the empty strip above and below.
-  short selectedRow84;                               // +0x84 selected row index, -1 = none
-  short rowHeightPx86;                               // +0x86 pixel height of one row
-  unsigned char pad88[4];                            // +0x88 unobserved
+  short selectedRow84; // +0x84 selected row index, -1 = none
+  short rowHeightPx86; // +0x86 pixel height of one row
+  short tabCount88;    // +0x88 Setup default: 15
+  short padding8A;
   struct TQuickDrawSurfaceContext* filledRowStrip8c; // +0x8c highlighted-row strip
   struct TQuickDrawSurfaceContext* emptyRowStrip90;  // +0x90 background strip
 

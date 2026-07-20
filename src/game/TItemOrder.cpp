@@ -1,5 +1,7 @@
 #include "game/TItemOrder.h"
 
+#include "game/TCity.h"
+
 TItemOrder::TItemOrder() {}
 // SYNTHETIC: IMPERIALISM 0x004b51d0
 // TItemOrder::CreateObject
@@ -14,9 +16,24 @@ IMPLEMENT_DYNCREATE(TItemOrder, TProductionOrder)
 TItemOrder::~TItemOrder() {}
 
 // FUNCTION: IMPERIALISM 0x004b5290
-undefined TItemOrder::ItemOrderSlot11(int param_1, undefined2 param_2, undefined2 param_3,
-                                      undefined2 param_4, undefined2 param_5) {
-  return 0;
+void TItemOrder::InitializeItemOrderContext(TCity* city, short outputResourceType,
+                                            short primaryInputResource,
+                                            short secondaryInputResource,
+                                            short productionSlotIndex) {
+  cityField08 = city;
+  summaryField0c = city->productionSummary1d8;
+  resourceTypeIndex48 = outputResourceType;
+  quantityField04 = 0;
+  for (int resource = 0; resource < 0x17; ++resource) {
+    trackingSlots10[resource] = 0;
+  }
+  accumulatedValue = 0;
+  field40 = 0;
+  field3e = 0;
+  requestedQuantity4c = 0;
+  primaryInputResourceId = primaryInputResource;
+  secondaryInputResourceId = secondaryInputResource;
+  productionSlot = productionSlotIndex;
 }
 
 // FUNCTION: IMPERIALISM 0x004b5310
@@ -32,12 +49,12 @@ bool TItemOrder::SetQuantity(short param_1) {
 // FUNCTION: IMPERIALISM 0x004b5510
 void TItemOrder::FillOrderSheet(OrderSheet* orderSheet, short quantity) {
   this->InitializeCityOrderItemWorkingBuffers(orderSheet);
-  if (this->field50 >= 0) {
-    orderSheet->ForResourceCode(this->field4e) = quantity;
-    orderSheet->ForResourceCode(this->field50) = quantity;
+  if (this->secondaryInputResourceId >= 0) {
+    orderSheet->ForResourceCode(this->primaryInputResourceId) = quantity;
+    orderSheet->ForResourceCode(this->secondaryInputResourceId) = quantity;
     orderSheet->slotByResourceCode[0x3d] = static_cast<short>(quantity * 2);
   } else {
-    orderSheet->ForResourceCode(this->field4e) = static_cast<short>(quantity * 2);
+    orderSheet->ForResourceCode(this->primaryInputResourceId) = static_cast<short>(quantity * 2);
     orderSheet->slotByResourceCode[0x3d] = static_cast<short>(quantity * 2);
   }
 }
@@ -51,16 +68,16 @@ undefined TItemOrder::CommitIfPending() {
 void TItemOrder::ResetCityOrderItemDerivedStateNoop() {
   // Clamp the pending quantity to MaxOrder(): recompute the ceiling, zero the
   // pending-quantity field, then re-drive SetQuantity with whichever of the current
-  // derived value (field4c) / the new ceiling is smaller. SetQuantity itself rewrites
-  // field4c, so the smaller-ceiling branch restores the pre-clamp value afterwards.
+  // requested quantity / the new ceiling is smaller. SetQuantity itself rewrites
+  // requestedQuantity4c, so the smaller-ceiling branch restores the desired value.
   short maxOrder = MaxOrder();
-  short savedDerived = field4c;
+  short savedRequestedQuantity = requestedQuantity4c;
   quantityField04 = 0;
-  if (maxOrder < savedDerived && field40 == 0) {
+  if (maxOrder < savedRequestedQuantity && field40 == 0) {
     SetQuantity(maxOrder);
-    field4c = savedDerived;
+    requestedQuantity4c = savedRequestedQuantity;
   } else {
-    SetQuantity(savedDerived);
+    SetQuantity(savedRequestedQuantity);
   }
 }
 

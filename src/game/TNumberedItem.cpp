@@ -8,6 +8,15 @@
 // FUNCTION: IMPERIALISM 0x005077c0
 TNumberedItem::TNumberedItem() : TMegaPicture() {}
 
+// FUNCTION: IMPERIALISM 0x00507850
+void TNumberedItem::InitializeNumberedResourceItem(TView* panel, int* position, int* size,
+                                                   short resourceIconIndex, short count) {
+  InitializeUiResourceEntryFrameAndParent(panel->uiResourceContext40, panel, position, size, 5, 5,
+                                          0);
+  iconRowIndexAc = resourceIconIndex;
+  badgeCountAe = count;
+}
+
 // SYNTHETIC: IMPERIALISM 0x00507700
 // TNumberedItem::CreateObject
 
