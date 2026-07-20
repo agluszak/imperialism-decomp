@@ -3,7 +3,7 @@
 #include "game/TBuildingView.h"
 #include "game/mfc.h"
 
-class TEditText;
+class TUnitOrder;
 
 // VTABLE: IMPERIALISM 0x00652b10
 class TArmoryView : public TBuildingView {
@@ -126,21 +126,21 @@ public:
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
   // slot 0x73 NoOpUiVirtualSlot73 inherited unchanged (0x572bb0)
   // slot 0x74 ApplyCityViewSelectionPayloadAndRefreshControls inherited unchanged (0x4c6f30)
-  virtual undefined OrphanRetStub_004c6fd0() override; // slot 0x75 0x4cee20
-  virtual undefined OrphanRetStub_004c6fb0() override; // slot 0x76 0x4cf5c0
+  virtual void DoStartup() override;    // slot 0x75 0x4cee20
+  virtual void UpdateFields() override; // slot 0x76 0x4cf5c0
   // slot 0x77 SetUniversityDialogLocalizedTextAndRefresh inherited unchanged (0x4c70e0)
   // slot 0x78 SetUniversityDialogTextAndRefresh inherited unchanged (0x4c6ff0)
   virtual void RefreshCityViewProductionDetails(short nBuildingSlotId); // slot 0x79 0x4cfbd0
 
   TArmoryView();
 
-  // Original object size is 0xac (CRuntimeClass m_nObjectSize); the source class ended at 0xa0.
-  int fielda0;
+  // Original object size is 0xac. Windows has no accesses in the +0xa0 dword.
+  unsigned char paddingA0[4];
   // 0xa4 -- selected production-row index (0..8), set from the 'rec0'..'rec8'/'sele' tab
   // controls in HandleEvent; a 16-bit store in the original (0x4cf350), not a full int.
   short selectedRowIndexA4;
   char pad_a6[2];
-  // 0xa8 -- a step-adjustable numeric edit widget (matches TEditText::SetControlValue's
-  // real body, 0x4906f0); HandleEvent's '+'/'-' buttons read/write its field04 directly.
-  TEditText* stepEntryA8;
+  // Selected city production order. RefreshCityViewProductionDetails indexes
+  // city94->orderSlotsE4 at selectedRowIndexA4 + 0x19, the TUnitOrder band.
+  TUnitOrder* selectedUnitOrderA8;
 };

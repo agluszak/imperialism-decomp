@@ -135,4 +135,6 @@ public:
   short badgeCountAe;   // +0xae the number drawn on the badge
 
   TNumberedItem();
+  void InitializeNumberedResourceItem(TView* panel, int* position, int* size,
+                                      short resourceIconIndex, short count);
 };

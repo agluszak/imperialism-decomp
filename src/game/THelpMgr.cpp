@@ -7,6 +7,8 @@
 #include "game/TPopulationMgr.h"
 #include "game/TDiplomacyMgr.h"
 #include "game/TSortedByRelationshipList.h"
+#include "game/TAssetMgr.h"
+#include "game/TTerrainHelpPicture.h"
 #include "game/TWindow.h"
 #include "game/TViewMgr.h"
 #include "game/TDisplayMgr.h"
@@ -17,6 +19,7 @@
 #include "game/TTechMgr.h"
 #include "game/mapped_flavor_text.h"
 #include "game/nation_slot_eligibility.h"
+#include "game/ui_control_tags.h"
 
 namespace {
 
@@ -784,6 +787,26 @@ void THelpMgr::ActivatePendingEventAndRefreshView(HelpSetRecord* pendingEntry) {
   pendingEntry->flagByte = 1;
   pendingEntry->rank = g_pSimMgr->GetActiveNationId();
   // Full dialog refresh path deferred; mark the help-set entry seen/current-nation.
+}
+
+// FUNCTION: IMPERIALISM 0x00503ac0
+void THelpMgr::EnsureMapActionContextViewAndBuildDefaultTileMenu(int mapContextIndex) {
+  if (pendingDialogViewC == 0) {
+    pendingDialogViewC = g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(0xbbd);
+    if (pendingDialogViewC == 0) {
+      MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+      TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUHelpMgr_00696C58, 0x6c1);
+    }
+
+    POINT placement;
+    g_pUiRuntimeContext->ComputeTurnEventDialogPlacementByCode(pendingDialogViewC, &placement);
+    pendingDialogViewC->CaptureLayoutF0(reinterpret_cast<int*>(&placement), 0);
+    pendingDialogViewC->Open();
+  }
+
+  TTerrainHelpPicture* terrainHelp =
+      static_cast<TTerrainHelpPicture*>(pendingDialogViewC->ResolveControlByTag(kControlTagGold));
+  terrainHelp->BuildMapTileActionContextMenu(static_cast<short>(mapContextIndex));
 }
 
 // FUNCTION: IMPERIALISM 0x00503b90

@@ -1,7 +1,11 @@
 #include "game/TShipyardView.h"
 
+#include "game/TAssetMgr.h"
 #include "game/TCluster.h"
+#include "game/TCity.h"
+#include "game/TCityProductionView.h"
 #include "game/TControl.h"
+#include "game/TDisplayMgr.h"
 #include "game/TQuickDrawSurfaceContext.h"
 #include "game/TSimMgr.h"
 #include "game/TStaticText.h"
@@ -19,7 +23,8 @@
 
 IMPLEMENT_DYNCREATE(TShipyardView, TBuildingView)
 
-// Ctor at 0x4c82c0 (`: TBuildingView() { field98 = 0; }`) is intentionally NOT claimed:
+// Ctor at 0x4c82c0 (`: TBuildingView() { productionView98 = 0; }`) is intentionally NOT
+// claimed:
 // unlike its TBuildingView siblings, our toolchain does not emit a uniquely-pairable
 // out-of-line copy for it, so reccmp hard-fails to match the address. Left markerless
 // rather than faking the match.
@@ -30,16 +35,22 @@ TShipyardView::TShipyardView() {}
 TShipyardView::~TShipyardView() {}
 
 // FUNCTION: IMPERIALISM 0x004c8340
-void TShipyardView::Free() {}
+void TShipyardView::Free() {
+  g_pDisplayMgr->FreeQuickDrawSurfaceContextSlot(&iconSurfaceB8);
+  TView::Free();
+  if (g_nSaveFormatVersion != 0x4d6f696c) { // 'Moil'
+    g_pUiViewManager->NoOpRuntimeUiCallback_005df410(0x23f7);
+  }
+}
 
 // Rebuilds the 8-slot ship-build queue UI: caches the strategic-map view system's
 // active-view pointer and a bitmap surface for resource id 0x264f, then for each of
 // eight 'but0'-'but7' queue-slot buttons clears its cached value and resets the
 // button plus its embedded 'plus'/'minu' stepper controls to the disabled/off state.
 // FUNCTION: IMPERIALISM 0x004c8390
-undefined TShipyardView::OrphanRetStub_004c6fd0() {
-  field98 = g_pStrategicMapViewSystem->field04;
-  fieldB4 = 0;
+void TShipyardView::DoStartup() {
+  productionView98 = static_cast<TCityProductionView*>(g_pStrategicMapViewSystem->field04);
+  unresolvedZeroB4 = 0;
   iconSurfaceB8 = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0x264f);
 
   for (int slotIndex = 0; slotIndex < 8; ++slotIndex) {
@@ -98,8 +109,8 @@ undefined TShipyardView::OrphanRetStub_004c6fd0() {
   description->SetTextStyleAndMaybeRefresh(&style.desc, 1);
 
   selectedRequirementRow = 0;
-  unknownA2 = 0;
-  InitializeCityViewActionButtons(buildQueueSlotValues[0]);
+  selectedStatsRowA2 = 0;
+  SetShip(buildQueueSlotValues[0]);
 
   // 'sele' is a TCluster (confirmed by cross-referencing turn_event_dialog_factory.cpp,
   // which builds a real TCluster with controlTag 'sele'); byte 0x1c8 matches
@@ -107,26 +118,27 @@ undefined TShipyardView::OrphanRetStub_004c6fd0() {
   TCluster* sele = static_cast<TCluster*>(ResolveControlByTag(0x73656c65u)); // 'sele'
   sele->AssertValid();
   sele->SetSelectedChildTagAndRefresh(0x62757430); // 'but0'
-  OrphanRetStub_004c6fb0();
-  return 0;
+  UpdateFields();
 }
 
 // FUNCTION: IMPERIALISM 0x004c8a50
-undefined TShipyardView::OrphanRetStub_004c6fb0() {
-  return 0;
+void TShipyardView::UpdateFields() {
+  productionView98->UpdateCityProductionDialogCommodityValueControls();
+  RECT refreshRect = {0x16, 0xb4, 0x124, 0xf0};
+  InvalidateCityDialogRectRegion(&refreshRect, 1);
 }
 
 // FUNCTION: IMPERIALISM 0x004c8ac0
 void TShipyardView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
-  // The original dispatches on field94's real receiver class via a lookup keyed by
-  // field94+0xe4+idx*4 -- its only assignment site, RefreshCityViewProductionDetails
+  // The original dispatches on city94's order receiver via a lookup keyed by
+  // city94+0xe4+idx*4 -- its only assignment site, RefreshCityViewProductionDetails
   // (0x4cfbd0, 1748 bytes), is itself unported, so the receiver class is unresolved here
   // too -- not yet ported.
   TControl::HandleEvent(commandId, sourceHandler, event);
 }
 
 // FUNCTION: IMPERIALISM 0x004c8d70
-void TShipyardView::InitializeCityViewActionButtons(short arg1) {}
+void TShipyardView::SetShip(short shipType) {}
 
 // Draws two dialog sections, each gated by whether it intersects the passed-in
 // paint rect (SectRect): (1) the "commodities in production" icon strip -- up to 4
@@ -165,7 +177,7 @@ void TShipyardView::ApplyRectSlot110(RECT* rectBuffer) {
         text.Format(g_szDecimalFormat, static_cast<int>(commodityRequiredAmounts[slot]));
         DrawTextWithCachedQuickDrawStyleState(&text);
 
-        short haveAmount = field94[0x5b + spriteId];
+        short haveAmount = city94->CityStockByType(spriteId);
         text.Format(g_szDecimalFormat, static_cast<int>(haveAmount));
         if (haveAmount < commodityRequiredAmounts[slot]) {
           ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 0xa, 0x2b69);
@@ -240,14 +252,16 @@ void TShipyardView::ApplyRectSlot110(RECT* rectBuffer) {
 }
 
 // FUNCTION: IMPERIALISM 0x004c97c0
-undefined TShipyardView::BuildIndustryActionCostSummaryTextByActionIndex() {
-  return 0;
-}
+void TShipyardView::GetCostString(CString* output, short actionIndex) {}
 
 // FUNCTION: IMPERIALISM 0x004c9a60
-void __fastcall TShipyardView::RefreshCityViewStatusPanel(int* pCityViewDialog) {}
+void TShipyardView::SetStats(short shipType) {}
 
 // FUNCTION: IMPERIALISM 0x004c9d20
-undefined TShipyardView::OrphanCallChain_C1_I15_004c9d20(int param_1) {
-  return 0;
+void TShipyardView::SetStats(TView* sourceControl) {
+  short row = static_cast<short>(sourceControl->controlTag & 0xf);
+  if (row != selectedStatsRowA2 && buildQueueSlotValues[row] != 0) {
+    selectedStatsRowA2 = row;
+    SetStats(buildQueueSlotValues[row]);
+  }
 }

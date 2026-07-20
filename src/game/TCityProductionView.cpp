@@ -16,10 +16,14 @@
 #include "game/TQuickDrawSurfaceContext.h"
 #include "game/mfc.h"
 
-extern "C" short g_Render_Nation_Header_Value_006961E0[12] = {0};
-extern "C" short g_Render_Nation_Header_Value_006961F8[12] = {0};
-extern "C" short g_Render_Nation_Header_Value_00696210[12] = {0};
-extern "C" short g_Render_Nation_Header_Value_00696228[12] = {0};
+extern "C" short g_Render_Nation_Header_Value_006961E0[12] = {0, 1,  2,  2,  2,  1,
+                                                              0, -2, -2, -2, -2, -1};
+extern "C" short g_Render_Nation_Header_Value_006961F8[12] = {-2, -2, -1, 1,  2,  2,
+                                                              2,  2,  0,  -1, -2, -2};
+extern "C" short g_Render_Nation_Header_Value_00696210[12] = {0, 2,  3,  3,  2,  2,
+                                                              0, -2, -3, -3, -2, -1};
+extern "C" short g_Render_Nation_Header_Value_00696228[12] = {-3, -2, 0, 2,  3,  4,
+                                                              3,  3,  0, -1, -3, -3};
 
 // SYNTHETIC: IMPERIALISM 0x004ba240
 // TCityProductionView::CreateObject
@@ -82,7 +86,7 @@ void TCityProductionView::RenderNationHeaderDateLabelWithPeriodicRefresh() {
 
     int iVar4 = tm->tm_min;
     short sVar6 = static_cast<short>(iVar4 / 5);
-    currentWeekAtAa = sVar6;
+    currentWeekAtAA = sVar6;
 
     short sVar1 = static_cast<short>(tm->tm_hour);
     currentMonthAtA8 = sVar1;
@@ -109,8 +113,8 @@ void TCityProductionView::RenderNationHeaderDateLabelWithPeriodicRefresh() {
   SetQuickDrawFillColor(0);
   SetQuickDrawTextOriginWithContextOffset(originX, sVar2);
 
-  short offset_x2 = g_Render_Nation_Header_Value_00696210[currentWeekAtAa];
-  short offset_y2 = g_Render_Nation_Header_Value_00696228[currentWeekAtAa];
+  short offset_x2 = g_Render_Nation_Header_Value_00696210[currentWeekAtAA];
+  short offset_y2 = g_Render_Nation_Header_Value_00696228[currentWeekAtAA];
   DrawCenteredGuideLineOnMapDc(static_cast<short>(offset_x2 + originX),
                                static_cast<short>(offset_y2 + sVar2));
 }
@@ -123,9 +127,9 @@ void TCityProductionView::HandleCursorHoverSelectionByChildHitTestAndFallback(CP
 }
 
 // FUNCTION: IMPERIALISM 0x004bb7a0
-void TCityProductionView::InitializeCityProductionDialog(int arg1, int* arg2) {
-  (void)arg1;
-  (void)arg2;
+void TCityProductionView::InitializeCityProductionDialog(TCity* city, TView* dialogRoot) {
+  (void)city;
+  (void)dialogRoot;
 }
 
 // FUNCTION: IMPERIALISM 0x004bc0b0

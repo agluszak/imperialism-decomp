@@ -42,10 +42,10 @@ TCapacityOrder::TCapacityOrder(TCity* city) : TItemOrder() {
   field40 = 0;
   accumulatedValue = 0;
   resourceTypeIndex48 = 0;
-  field4c = 0;
-  field4e = 0;
-  field50 = 0;
-  buildingSlot = 0;
+  requestedQuantity4c = 0;
+  primaryInputResourceId = 0;
+  secondaryInputResourceId = 0;
+  productionSlot = 0;
   ZeroTrackingSlots(this);
 }
 
@@ -228,12 +228,12 @@ undefined TCapacityOrder::CapacityOrderSlot12(TCity* city, short resourceType,
   this->quantityField04 = 0;
   ZeroTrackingSlots(this);
   this->accumulatedValue = 0;
-  this->field4e = trackingIndex4eInit;
+  this->primaryInputResourceId = trackingIndex4eInit;
   this->field40 = 0;
   this->field3e = 0;
-  this->field4c = 0;
-  this->field50 = trackingIndex50Init;
-  this->buildingSlot = field52Init;
+  this->requestedQuantity4c = 0;
+  this->secondaryInputResourceId = trackingIndex50Init;
+  this->productionSlot = field52Init;
   return 0;
 }
 
@@ -280,10 +280,10 @@ undefined TCapacityOrder::CommitIfPending() {
       static_cast<short>(city->productionAccum1fc[slotIndex] + deltaToAccum);
   city->productionOrderTable1dc[slotIndex] = newValue;
 apply_done:
-  this->field4c = 0;
+  this->requestedQuantity4c = 0;
   this->quantityField04 = 0;
-  this->trackingSlots10[this->field4e] = 0;
-  this->trackingSlots10[this->field50] = 0;
+  this->trackingSlots10[this->primaryInputResourceId] = 0;
+  this->trackingSlots10[this->secondaryInputResourceId] = 0;
   this->field3e = 0;
   return 0;
 }

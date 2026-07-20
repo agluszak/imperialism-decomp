@@ -47,13 +47,13 @@ void SwapFirstTwoBytesInBuffer(unsigned char* buffer) {
 // FUNCTION: IMPERIALISM 0x004b9360
 void TExpansionOrder::FillOrderSheet(OrderSheet* orderSheet, short quantity) {
   this->InitializeCityOrderItemWorkingBuffers(orderSheet);
-  orderSheet->ForResourceCode(this->field4e) = quantity;
-  if (orderSheet->ForResourceCode(this->field4e) < 0) {
-    orderSheet->ForResourceCode(this->field4e) = 0;
+  orderSheet->ForResourceCode(this->primaryInputResourceId) = quantity;
+  if (orderSheet->ForResourceCode(this->primaryInputResourceId) < 0) {
+    orderSheet->ForResourceCode(this->primaryInputResourceId) = 0;
   }
-  orderSheet->ForResourceCode(this->field50) = quantity;
-  if (orderSheet->ForResourceCode(this->field50) < 0) {
-    orderSheet->ForResourceCode(this->field50) = 0;
+  orderSheet->ForResourceCode(this->secondaryInputResourceId) = quantity;
+  if (orderSheet->ForResourceCode(this->secondaryInputResourceId) < 0) {
+    orderSheet->ForResourceCode(this->secondaryInputResourceId) = 0;
   }
 }
 

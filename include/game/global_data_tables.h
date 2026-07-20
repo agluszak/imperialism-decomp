@@ -467,6 +467,7 @@ extern HRGN g_hOpenRgnAccumulator;
 extern char g_Sanitize_City_Counter_Value_006A24D4;
 extern double DAT_0066fad0;
 extern char* g_pNationInfoEmptyText_0066f050;
+extern short g_anAbilityStatusPictureIndex_0066F058[29];
 extern char g_szListSeparator_00695760[];
 extern char g_szPlusPrefix_00698494[];
 extern char g_szListConjunction_00698498[];
@@ -832,6 +833,7 @@ extern "C" const char s_SourcePathUMultiplayerMgr_00698040[];
 extern "C" const char s_SourcePathUNavy_006983C8[];
 extern "C" const char s_SourcePathUTacViews_00699FF4[];
 extern "C" const char s_SourcePathUViewMgrMore_0069B740[];
+extern "C" const char s_SourcePathUHelpMgr_00696C58[];
 // Assert source-path string for the UArmyMgr TU.
 extern "C" const char s_SourcePathUArmyMgr_0069573C[];
 extern "C" const char s_SourcePathUCityViews_00696650[];

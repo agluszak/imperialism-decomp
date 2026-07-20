@@ -86,7 +86,7 @@ public:
   // imperialism-decomp-kdm.
   virtual void InvokeStrategicMapViewMethod5C();             // 0xac 0x5d7f70
   virtual void InvokeStrategicMapViewMethod60(short param1); // 0xb0 0x5d7f90
-  virtual bool UiRuntimeSlotB4(void* payload);               // 0xb4
+  virtual char UiRuntimeSlotB4(void* payload);               // 0xb4
   // Opens factory dialog 0x2405, seeds its 'GOLD' trade-summary child with the three
   // caller args, places/refreshes it, then forwards the refresh result to the child
   // (0x5dc430).

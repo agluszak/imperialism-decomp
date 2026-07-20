@@ -150,14 +150,14 @@ public:
   TCombatReportContext* m_reportContext; // 0x90
   short reportValue;                     // 0x94
   short totalPages;                      // 0x96
-  short field98;                         // 0x98
-  short field9a;                         // 0x9a
-  short field9c;                         // 0x9c
+  short participantAUnitCount98;         // 0x98
+  short participantBUnitCount9A;         // 0x9a
+  short participantBFirstPage9C;         // 0x9c
 
   TCombatReportView();
   DECLARE_DYNCREATE(TCombatReportView)
   void ApplyRectSlot110(RECT* rectBuffer) override;
-  virtual bool IsSelected(void* reportRecord);
+  virtual void StuffValues(TCombatReportContext* reportContext);
 };
 
 ASSERT_SIZE(TCombatReportView, 0xa0);

@@ -125,15 +125,16 @@ public:
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
   // slot 0x73 NoOpUiVirtualSlot73 inherited unchanged (0x572bb0)
   // slot 0x74 ApplyCityViewSelectionPayloadAndRefreshControls inherited unchanged (0x4c6f30)
-  virtual undefined OrphanRetStub_004c6fd0() override; // slot 0x75 0x4cc820
-  virtual undefined OrphanRetStub_004c6fb0() override; // slot 0x76 0x4cd040
+  virtual void DoStartup() override;    // slot 0x75 0x4cc820
+  virtual void UpdateFields() override; // slot 0x76 0x4cd040
   // slot 0x77 SetUniversityDialogLocalizedTextAndRefresh inherited unchanged (0x4c70e0)
   // slot 0x78 SetUniversityDialogTextAndRefresh inherited unchanged (0x4c6ff0)
   // TBuildingView's slice ends at 0xa0; RTTI oracle confirms sizeof(TIndustryView) == 0xa8.
-  // The ctor (0x4cc790) zeroes fieldA0 and sets fieldA4 to -1; padA6 rounds to 0xa8.
-  int fieldA0;   // +0xa0
-  short fieldA4; // +0xa4 sentinel-initialized to 0xffff
-  short padA6;   // +0xa6
+  // The +0xa0 dword has only the constructor's zero write. DoStartup maps the inherited
+  // building category to a concrete industry unit type at +0xa4.
+  int unresolvedZeroA0;
+  short selectedIndustryUnitTypeA4;
+  short padA6; // +0xa6
 
   TIndustryView();
 };

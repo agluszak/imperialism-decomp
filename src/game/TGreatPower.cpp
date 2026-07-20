@@ -1090,13 +1090,13 @@ void TGreatPower::BuildTransportLinkedInfluenceMap(char** outInfluenceMap) {
          static_cast<int>(marker->regionId14) != this->homeRegionIndex) {
     marker = static_cast<TTown*>(markerCursor.Advance());
   }
-  int homeLinked = marker->IsTransportLinkedAndEnabled();
+  int homeLinked = marker->IsUnblockedPort();
   if (homeLinked == 0) {
     this->MarkConnectedOwnedRegionsFrom(reinterpret_cast<unsigned char*>(influenceMap),
                                         marker->regionId14);
     marker = static_cast<TTown*>(markerCursor.Reset());
     while (markerCursor.More() != 0 && homeLinked == 0) {
-      if (influenceMap[marker->regionId14] != 0 && marker->IsTransportLinkedAndEnabled() != 0) {
+      if (influenceMap[marker->regionId14] != 0 && marker->IsUnblockedPort() != 0) {
         homeLinked = 1;
       }
       marker = static_cast<TTown*>(markerCursor.Advance());
@@ -1104,8 +1104,8 @@ void TGreatPower::BuildTransportLinkedInfluenceMap(char** outInfluenceMap) {
   }
   marker = static_cast<TTown*>(markerCursor.Reset());
   while (markerCursor.More() != 0) {
-    if (marker->IsTransportLinkedAndEnabled() != 0 && homeLinked != 0 &&
-        marker->activeFlag4f != 0 && influenceMap[marker->regionId14] == 0) {
+    if (marker->IsUnblockedPort() != 0 && homeLinked != 0 && marker->activeFlag4f != 0 &&
+        influenceMap[marker->regionId14] == 0) {
       this->MarkConnectedOwnedRegionsFrom(reinterpret_cast<unsigned char*>(influenceMap),
                                           marker->regionId14);
     }
@@ -1114,7 +1114,7 @@ void TGreatPower::BuildTransportLinkedInfluenceMap(char** outInfluenceMap) {
   marker = static_cast<TTown*>(markerCursor.Reset());
   while (markerCursor.More() != 0) {
     if ((influenceMap[marker->regionId14] == 0 || marker->activeFlag4f == 0) &&
-        (marker->IsTransportLinkedAndEnabled() == 0 || homeLinked == 0)) {
+        (marker->IsUnblockedPort() == 0 || homeLinked == 0)) {
       marker->transportLinkedFlag4c = 0;
     } else {
       marker->transportLinkedFlag4c = 1;
@@ -1124,7 +1124,7 @@ void TGreatPower::BuildTransportLinkedInfluenceMap(char** outInfluenceMap) {
   if (outInfluenceMap != 0) {
     marker = static_cast<TTown*>(markerCursor.Reset());
     while (markerCursor.More() != 0) {
-      if (marker->IsTransportLinkedAndEnabled() != 0 && homeLinked != 0) {
+      if (marker->IsUnblockedPort() != 0 && homeLinked != 0) {
         influenceMap[marker->regionId14] = 1;
       }
       marker = static_cast<TTown*>(markerCursor.Advance());
