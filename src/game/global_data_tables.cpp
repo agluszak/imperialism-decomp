@@ -1896,6 +1896,10 @@ char s_szSpaceSeparator_00695794[] = " ";
 // 0x5654e0).
 // GLOBAL: IMPERIALISM 0x0069578c
 char s_szAdmiralPrefix_0069578c[] = "Adm. ";
+// "<label>:" separator between the council-panel's nation-name/label column and its
+// value column (TCouncilPanelView::ApplyRectSlot110, 0x4fb030).
+// GLOBAL: IMPERIALISM 0x00696b10
+char s_szColonSeparator_00696b10[] = ":";
 // GLOBAL: IMPERIALISM 0x00696674
 char s_mcflavor_00696674[] = "";
 // GLOBAL: IMPERIALISM 0x00696d10
