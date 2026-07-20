@@ -42063,12 +42063,6 @@
       "type": 1
     },
     {
-      "address": "0x62246c",
-      "matching": 0.9827586206896551,
-      "name": "CWinApp::CWinApp",
-      "type": 1
-    },
-    {
       "address": "0x622572",
       "matching": 1.0,
       "name": "CWinApp::InitApplication",
