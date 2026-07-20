@@ -1,5 +1,10 @@
 #include "game/TScenarioChooser.h"
 
+#include "game/TAmbitApplication.h"
+#include "game/TMultiplayerMgr.h"
+#include "game/TSimMgr.h"
+#include "game/global_data_tables.h"
+
 // SYNTHETIC: IMPERIALISM 0x0045ae90
 // TScenarioChooser::`scalar deleting destructor'
 TScenarioChooser::~TScenarioChooser() {}
@@ -32,6 +37,11 @@ void TScenarioChooser::HandleEvent(int commandId, TEventHandler* sourceHandler, 
 
 // FUNCTION: IMPERIALISM 0x0057a2d0
 undefined TScenarioChooser::PostTurnEvent5DCOrResetScenarioSelectionState() {
+  if (g_pSimMgr->field44 != 0) {
+    g_pGameFlowState->ResetLocalUiStateAndPostTurnEvent5E5();
+  } else {
+    g_pGlobalUiRootController->PostTurnEventCodeMessage2420(0x5dc);
+  }
   return 0;
 }
 
