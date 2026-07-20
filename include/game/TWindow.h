@@ -122,8 +122,11 @@ public:
   virtual undefined GetDialogBehaviorByte10();         // slot 0x6a 0x48da10
   virtual int ExecuteViewModalStateWithPushPopChain(); // slot 0x6b 0x48da60
   virtual undefined GetDialogBehaviorByte20();         // slot 0x6c 0x48dc60
-  virtual undefined OrphanCallChain_C2_I12_0048dc90(undefined4 param_1,
-                                                    undefined4 param_2); // slot 0x6d 0x48dc90
+  // Forwards to GetEmbeddedDialogBehavior()'s own command-arming slot 0x0e (a no-op if
+  // no behavior is attached), which stashes commandCode as armedCommandCode and
+  // dispatches it to the behavior's owner. 0x48dc90.
+  virtual undefined NotifyDialogBehaviorCommandArmed(undefined4 commandCode,
+                                                     undefined4 flag); // slot 0x6d 0x48dc90
   virtual TDialogBehavior* GetEmbeddedDialogBehavior();                  // slot 0x6e 0x48dcc0
   virtual void AssertMcAppUILine2554();                                  // slot 0x6f 0x48dce0
   // Switching notifies the previous and new targets through TEventHandler slots.

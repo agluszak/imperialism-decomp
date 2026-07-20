@@ -111,10 +111,10 @@ public:
   // slot 0x65 AssertMcAppUILine1914 inherited unchanged (0x48c7a0)
   // slot 0x66 AssertMcAppUILine1922 inherited unchanged (0x48c7d0)
   // slot 0x67 CtrlSlot103_SubtractPosAndDispatchSlot19C_Impl inherited unchanged (0x48bac0)
-  // slot 0x68 OrphanLeaf_NoCall_Ins04_004f2ce0 inherited unchanged (0x4f2ce0)
-  // slot 0x69 OrphanCallChain_C1_I09_004f2ef0 inherited unchanged (0x4f2ef0)
-  // slot 0x6a OrphanCallChain_C2_I08_004f2ec0 inherited unchanged (0x4f2ec0)
-  // slot 0x6b OrphanLeaf_NoCall_Ins03_004f2ea0 inherited unchanged (0x4f2ea0)
+  // slot 0x68 SetAuxNationStateSlot inherited unchanged (0x4f2ce0)
+  // slot 0x69 FreeDisplayHelpControl inherited unchanged (0x4f2ef0)
+  // slot 0x6a ShowMinisterHelpDialog inherited unchanged (0x4f2ec0)
+  // slot 0x6b NotifyWindowStatusTick inherited unchanged (0x4f2ea0)
 
   TDefenseMinisterView();
 };

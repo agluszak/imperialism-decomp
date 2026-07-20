@@ -3,6 +3,8 @@
 #include "game/TView.h"
 #include "game/mfc.h"
 
+class TCountry;
+
 // VTABLE: IMPERIALISM 0x00655100
 class TMinisterView : public TView {
 public:
@@ -112,16 +114,26 @@ public:
   // slot 0x65 AssertMcAppUILine1914 inherited unchanged (0x48c7a0)
   // slot 0x66 AssertMcAppUILine1922 inherited unchanged (0x48c7d0)
   // slot 0x67 CtrlSlot103_SubtractPosAndDispatchSlot19C_Impl inherited unchanged (0x48bac0)
-  virtual undefined OrphanLeaf_NoCall_Ins04_004f2ce0(short param_1);     // slot 0x68 0x4f2ce0
-  virtual undefined OrphanCallChain_C1_I09_004f2ef0();                   // slot 0x69 0x4f2ef0
-  virtual undefined OrphanCallChain_C2_I08_004f2ec0(undefined4 param_1); // slot 0x6a 0x4f2ec0
-  virtual undefined OrphanLeaf_NoCall_Ins03_004f2ea0();                  // slot 0x6b 0x4f2ea0
+  // Stores the TCountry/terrain-descriptor pointer for the given nation slot, indexed
+  // into g_apTerrainTypeDescriptorTable. 0x4f2ce0.
+  virtual undefined SetAuxNationStateSlot(short nationSlot);            // slot 0x68 0x4f2ce0
+  // Resolves the 'disp' sub-picture (if present) and frees it. 0x4f2ef0.
+  virtual undefined FreeDisplayHelpControl();                           // slot 0x69 0x4f2ef0
+  // Ticks the display manager's window-status refresh, then opens/refreshes the
+  // strategic-map turn-event dialog identified by dialogId. Called after every
+  // minister-topic button click (the per-topic ids each HandleEvent override passes
+  // are turn-event/help-dialog resource identifiers). 0x4f2ec0.
+  virtual undefined ShowMinisterHelpDialog(int dialogId);                // slot 0x6a 0x4f2ec0
+  // Forwards to g_pDisplayMgr->DispatchUiWindowStatusTickForClass99Windows(); called
+  // right before a minister dialog is dismissed ('back'/'okay'). 0x4f2ea0.
+  virtual undefined NotifyWindowStatusTick();                            // slot 0x6b 0x4f2ea0
   // TView's own fields end exactly at 0x60 (see TWorldView's identically-placed
   // viewportOffsetX); zeroed by the ctor, no other reader/writer found yet.
   int field60; // +0x60
 
   TMinisterView();
 
-  // Original object size is 0x68 (CRuntimeClass m_nObjectSize); the source class ended at 0x64. Trailing 4 byte(s) not yet semantically recovered — declared so sizeof and the recomp's allocation size match the original.
-  int field64;
+  // Original object size is 0x68 (CRuntimeClass m_nObjectSize); the source class ended
+  // at 0x64. Written by SetAuxNationStateSlot from g_apTerrainTypeDescriptorTable.
+  TCountry* field64;
 };

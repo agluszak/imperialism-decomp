@@ -27,8 +27,18 @@ void TInfoBarPictureText::SetTextAndLayoutRect(CString text, RECT* layoutRect) {
 
 // FUNCTION: IMPERIALISM 0x005b5dd0
 void TInfoBarPictureText::ClearTextAndLayoutRect(int) {
-  // TODO: picture-variant of the slot-0x7f clear -- zeroes layoutRectA4, then measures a
-  // rect via the picture's slot-0x4b getter, CopyRect + invalidate, and calls slot 0x39.
-  // Body not yet ported (unresolved slot-0x4b/0x39 getters); renamed off the bogus
-  // Destruct*AndMaybeFree name so it is a real virtual, not a construction bridge.
+  layoutRectA4.left = 0;
+  layoutRectA4.top = 0;
+  layoutRectA4.right = 0;
+  layoutRectA4.bottom = 0;
+
+  RECT bounds;
+  QueryBounds(&bounds);
+  RECT clipRect;
+  CopyRect(&clipRect, &bounds);
+  ownerContext->InvalidateCityDialogRectRegion(&clipRect, 1);
+
+  CString empty;
+  UpdateTextEntrySharedStringIfChanged(&empty);
+  RefreshControl();
 }

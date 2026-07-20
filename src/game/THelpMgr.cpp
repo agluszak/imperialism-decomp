@@ -738,6 +738,18 @@ char THelpMgr::HandlePendingEventActivationByCode(short eventCode) {
   return activateCandidate;
 }
 
+// FUNCTION: IMPERIALISM 0x00503320
+void THelpMgr::SelectAndActivatePendingEventType1A0A() {
+  for (int index = 1; index <= GetSortedPtrListEntryCount(indexList); ++index) {
+    HelpSetRecord* record =
+        static_cast<HelpSetRecord*>(indexList->GetPtrListEntryByOneBasedIndex(index));
+    if (record->contextId == 0x1a0a) {
+      ActivatePendingEventAndRefreshView(record);
+      return;
+    }
+  }
+}
+
 // FUNCTION: IMPERIALISM 0x00503370
 void THelpMgr::SelectAndActivatePendingEventTypeOffsetFrom1A0B(int idx) {
   short targetContextId = static_cast<short>(idx + 0x1a0b);

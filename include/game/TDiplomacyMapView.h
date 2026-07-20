@@ -78,6 +78,12 @@ public:
   // optional colony-boycott overlay. presentRect is only read, never threaded onward.
   void RenderDiplomacyMatrixRowStatusIcons(RECT* presentRect);
 
+  // 0x4f4620 -- resolves the 6 minister action-topic buttons (info/trty/gran/trad/
+  // coun/offr), refreshes the info button's nation-slot selection, and (re)assigns
+  // each button's hover-help text; called from NoOpUiLifecycleHook. Real body,
+  // previously misattributed to TToolBarCluster in the generated symbol table.
+  void InitializeDiplomacyMinisterActionControlsAndLabels();
+
 protected:
   // 0x90 — compared against a terrain-descriptor index in
   // ResolveDiplomacyActionFromClickAndUpdateTarget (matched to `actionCode != 0xd`); reset to 0
@@ -92,10 +98,21 @@ protected:
   // 0x9c — QuickDraw region handle; disposed and cleared in Free (0x4f3e60), reset to 0 in the
   // constructor.
   RgnHandle regionAt9c;
-  char pad_a0[0x14];
-  // 0xb4 — the panel's child control, read in InvalidateAndForwardTabSwitchToChild /
-  // InvalidateAndRunChildWaitSheet.
-  TControl* childControlAtB4;
+  // 0xa0..0xb4 — the 6 diplomacy-minister action-topic button controls, resolved by
+  // InitializeDiplomacyMinisterActionControlsAndLabels (0x4f4620) from the tag table at
+  // 0x696960 (info/trty/gran/trad/coun/offr, in that exact order) via a real loop over
+  // this array in the original -- stored uniformly as TControl* there. Index 0's real
+  // class is TInfoPanelView (confirmed by its own OrphanLeaf_NoCall_Ins97_004fae00(short)
+  // call right after the loop); callers static_cast that one element rather than the
+  // array carrying a mixed element type. Index 5 (the 'offr' button) is also
+  // childControlAtB4's established "panel's child control" role -- not a conflict, just
+  // two names for the same slot, kept below as a reference alias.
+  // actionButtonsA0[5] (the 'offr' button) is also the panel's child control, read in
+  // InvalidateAndForwardTabSwitchToChild / InvalidateAndRunChildWaitSheet. Element 0's
+  // real class (TInfoPanelView) is a TPanelView sibling, not a TControl descendant, so
+  // this array is typed as TView* (their common base) rather than TControl* -- callers
+  // cast each element to its own real type at the point of use.
+  TView* actionButtonsA0[6];
   // 0xb8 — a state code compared to 5 (mirrors interactionModeAt94's pattern); reset to 0 by
   // CallVoidSlotA0 (slot 0xa0) and in the constructor.
   int stateFlagAtB8;

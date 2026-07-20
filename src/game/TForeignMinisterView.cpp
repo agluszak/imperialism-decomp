@@ -29,10 +29,10 @@ void TForeignMinisterView::HandleEvent(int commandId, TEventHandler* sourceHandl
   unsigned int tag = sourceHandler->controlTag;
   if (commandId == 0xa) {
     if (tag == kControlTagBack) {
-      OrphanLeaf_NoCall_Ins03_004f2ea0();
+      NotifyWindowStatusTick();
       return;
     } else if (tag == kControlTagOkay) {
-      OrphanLeaf_NoCall_Ins03_004f2ea0();
+      NotifyWindowStatusTick();
       TWindow* owner = static_cast<TWindow*>(OwnerPanel());
       g_pGlobalUiRootController->CloseAndFreeWindow(owner);
       return;
@@ -40,22 +40,22 @@ void TForeignMinisterView::HandleEvent(int commandId, TEventHandler* sourceHandl
   } else if (commandId == 0x14) {
     switch (tag) {
       case kControlTagExpo:
-        OrphanCallChain_C2_I08_004f2ec0(0x2300);
+        ShowMinisterHelpDialog(0x2300);
         break;
       case kControlTagDeal:
-        OrphanCallChain_C2_I08_004f2ec0(0x22f6);
+        ShowMinisterHelpDialog(0x22f6);
         break;
       case kControlTagMerc:
-        OrphanCallChain_C2_I08_004f2ec0(0x22ec);
+        ShowMinisterHelpDialog(0x22ec);
         break;
       case kControlTagGlob:
         OrphanCallChain_C3_I22_004f31d0();
         break;
       case kControlTagPric:
-        OrphanCallChain_C2_I08_004f2ec0(0x231e);
+        ShowMinisterHelpDialog(0x231e);
         break;
       case kControlTagRecc:
-        OrphanCallChain_C2_I08_004f2ec0(0x22e2);
+        ShowMinisterHelpDialog(0x22e2);
         break;
       default:
         break;
