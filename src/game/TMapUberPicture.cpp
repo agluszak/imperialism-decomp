@@ -135,7 +135,7 @@ void TMapUberPicture::SetMapInteractionMode(short nMode) {
     // faked; the mode-transition/selection-state and layout-capture side effects below are
     // real.
     if (nMode == 0) {
-      this->EnterMapInteractionOverlayMode(0);
+      this->EnterMapInteractionOverlayMode(nullptr);
     }
   }
 
@@ -194,10 +194,10 @@ void TMapUberPicture::HandleEvent(int commandId, TEventHandler* sourceHandler, T
       return;
     }
     if (tag == kControlTagZmOt) {
-      CommitPendingUiModeChangeAndRefreshViews(this);
+      CommitPendingUiModeChangeAndRefreshViews(static_cast<TView*>(sourceHandler));
       return;
     } else if (tag == kControlTagZmIn) {
-      EnterMapInteractionOverlayMode(0);
+      EnterMapInteractionOverlayMode(static_cast<TView*>(sourceHandler));
       return;
     } else if (tag == kControlTagCanc) {
       if (g_pSimMgr->field44 != 0) {
@@ -206,18 +206,22 @@ void TMapUberPicture::HandleEvent(int commandId, TEventHandler* sourceHandler, T
         g_pUiRuntimeContext->DispatchLocalizedUiMessageWithTemplateA13A0(msg,
                                                                          &g_cstrMapModeMessageStore,
                                                                          0, 0);
+      } else {
+        ReinitializeGameFlowAndPostTurnEventCode(0x5dd);
       }
       return;
     } else if (tag == kControlTagSend) {
       if ((GetAsyncKeyState(VK_CONTROL) & 0x8000) != 0) {
-        if (g_pGameFlowState->fieldF4 == 0) {
+        if (g_pGameFlowState->fieldF4 != 0) {
           g_pSimMgr->SetGlobalTurnStateCodeIfAllowed(0x72);
         }
         // else: falls through with no further action in the original.
         return;
       }
-      // Original calls the currently-unowned 611-byte
-      // RefreshPoseMessageDialogNationSelectionControls (0x54b1b0) here -- not yet ported.
+      // Original calls the currently-unowned, unclaimed 611-byte
+      // RefreshPoseMessageDialogNationSelectionControls(-1) (0x54b1b0, a TMultiplayerMgr
+      // method: a 25-entry nation-slot loop building per-nation control state) here -- not
+      // yet ported.
       return;
     }
   } else if (commandId == 0xc) {
@@ -419,17 +423,17 @@ void TMapUberPicture::OpenMapContextActionDialogByType(TZone* zone, int actionTy
 
 // FUNCTION: IMPERIALISM 0x005999f0
 void TMapUberPicture::ResetMapInteractionToCivilianMode() {
-  EnterMapInteractionOverlayMode(0);
+  EnterMapInteractionOverlayMode(nullptr);
   SetMapInteractionMode(0);
 }
 
 // FUNCTION: IMPERIALISM 0x00599a50
-void TMapUberPicture::EnterMapInteractionOverlayMode(int param1) {
+void TMapUberPicture::EnterMapInteractionOverlayMode(TView* controlOverride) {
   if (this->invalidationFlag94 != 0) {
     return;
   }
   TView* zoomControl =
-      (param1 != 0) ? reinterpret_cast<TView*>(param1) : this->ResolveControlByTag(0x5a6d496e);
+      (controlOverride != nullptr) ? controlOverride : this->ResolveControlByTag(0x5a6d496e);
   zoomControl->AssertValid();
   if (zoomControl != nullptr) {
     zoomControl->controlTag = 0x5a6d4f74; // "ZmOt" ("Zoom Out")
