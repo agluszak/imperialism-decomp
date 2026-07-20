@@ -31,21 +31,23 @@ void TBook::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* eve
   if (commandId == 10) {
     // Tag family 'page'..'pagf': one control per page-list row.
     for (unsigned int tag = 0x70616765u; tag <= 0x70616766u; ++tag) {
-      TView* pageControl = ResolveControlByTag(tag);
+      TControl* pageControl = static_cast<TControl*>(ResolveControlByTag(tag));
       if (pageControl != nullptr) {
-        pageControl->QueryStepValue();
+        pageControl->AssertValid();
         if (sourceHandler->controlTag == kControlTagRcor ||
             sourceHandler->controlTag == kControlTagLcor) {
-          // pageControl is a TControl: frameStyle60 is read here packed (its high word is
-          // the page-list row count), matching TControl's own documented "packs two
-          // values" comment.
-          TControl* pageControlTyped = static_cast<TControl*>(pageControl);
-          short rowCount = static_cast<short>(pageControlTyped->frameStyle60 >> 16);
-          short visibleCount = static_cast<short>(pageControlTyped->controlState64);
+          // frameStyle60 is packed (its high word is the page-list row count, matching
+          // TControl's own documented "packs two values" comment). The visible-count read
+          // is 16 bits wide starting at controlState64 -- wider than controlState64 alone,
+          // so it also picks up the adjacent padding byte (both already-declared fields,
+          // no new cast needed).
+          short rowCount = static_cast<short>(pageControl->frameStyle60 >> 16);
+          short visibleCount = static_cast<short>(
+              pageControl->controlState64 | (pageControl->padding_65_to_67[0] << 8));
           if (sourceHandler->controlTag == kControlTagRcor) {
-            pageControlTyped->ReturnZeroFromUiSlot6C(visibleCount + rowCount);
+            pageControl->ReturnZeroFromUiSlot6C(visibleCount + rowCount);
           } else {
-            pageControlTyped->ReturnZeroFromUiSlot6C(rowCount - visibleCount);
+            pageControl->ReturnZeroFromUiSlot6C(rowCount - visibleCount);
           }
           UpdatePagedListNavigationButtonState(rowCount);
         }
@@ -69,7 +71,8 @@ void TBook::UpdatePagedListNavigationButtonState(int rowCount) {
   }
 
   short lowWord = static_cast<short>(pageControl->frameStyle60);
-  short visibleCount = static_cast<short>(pageControl->controlState64);
+  short visibleCount = static_cast<short>(
+      pageControl->controlState64 | (pageControl->padding_65_to_67[0] << 8));
   if (visibleCount + rowCount <= lowWord) {
     field94->SetState(0, 0);
     field94->SetEnabled(0, 1);
