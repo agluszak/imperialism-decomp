@@ -1,5 +1,7 @@
 #include "game/TTreatiesView.h"
 
+#include "game/TDiplomacyMapView.h"
+#include "game/TEventHandler.h"
 #include "game/TSimMgr.h"
 #include "game/global_data_tables.h"
 #include "game/quickdraw_rendering.h"
@@ -90,4 +92,15 @@ undefined TTreatiesView::OrphanRetStub_00430550() {
 }
 
 // FUNCTION: IMPERIALISM 0x004f7f80
-void TTreatiesView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {}
+void TTreatiesView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+  if (commandId == 0xc) {
+    unsigned int tag = sourceHandler->controlTag;
+    TDiplomacyMapView* mapView = static_cast<TDiplomacyMapView*>(m_panelData);
+    if (tag < kControlTagScr0 + 5) {
+      mapView->actionCodeBC = (tag - kControlTagScr0) + 2;
+    } else {
+      mapView->actionCodeBC = (tag - kControlTagScr0) + 9;
+    }
+  }
+  TEventHandler::HandleEvent(commandId, sourceHandler, event);
+}

@@ -276,5 +276,13 @@ public:
   void AppendMapContextActionRecordAndResetWorkingFields(struct MapOrderBattleSnapshot* record,
                                                          int unusedArg2);
   void InitializeMapContextActionManager();
+
+  // Scans mapContextActionRecordList04 from its last entry down to the first for a
+  // record whose nationIds[0] or nationIds[1] matches activeNationId; returns true on the
+  // first match, or as soon as g_bRandomMapDeveloperCheatFlag is set (the developer-cheat
+  // gate short-circuits the scan the same way it does elsewhere). Sole caller:
+  // TDefenseMinisterView::HandleEvent's 'cann' branch. 0x4a6d40.
+  bool ScanMapContextActionEntriesForCodeMatch(short activeNationId);
+
   TArmyMgr();
 };

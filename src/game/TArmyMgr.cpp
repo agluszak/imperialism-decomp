@@ -1394,6 +1394,28 @@ void TArmyMgr::BuildMapHintOverlayTextAndDispatchUiMessages(short cityRecordInde
   // Code00 feeding one of them) isn't recovered either.
 }
 
+// FUNCTION: IMPERIALISM 0x004a6d40
+bool TArmyMgr::ScanMapContextActionEntriesForCodeMatch(short activeNationId) {
+  int remaining = g_pMapContextActionManager->mapContextActionRecordList04->GetSize();
+  if (remaining <= 0) {
+    return false;
+  }
+  do {
+    MapContextActionRecord* record = static_cast<MapContextActionRecord*>(
+        g_pMapContextActionManager->mapContextActionRecordList04->GetPtrListEntryByOneBasedIndex(
+            remaining));
+    if (activeNationId == static_cast<signed char>(record->nationIds[0]) ||
+        activeNationId == static_cast<signed char>(record->nationIds[1])) {
+      return true;
+    }
+    if (g_bRandomMapDeveloperCheatFlag) {
+      return true;
+    }
+    --remaining;
+  } while (remaining > 0);
+  return false;
+}
+
 // FUNCTION: IMPERIALISM 0x004a6dd0
 unsigned char TArmyMgr::GetByteFlagAtOffset8() {
   return flag8;

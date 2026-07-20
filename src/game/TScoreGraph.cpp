@@ -2,9 +2,11 @@
 
 #include "game/TDiplomacyMgr.h"
 #include "game/TGreatPower.h"
+#include "game/TInfoBarText.h"
 #include "game/TViewMgr.h"
 #include "game/global_data_tables.h"
 #include "game/quickdraw_rendering.h"
+#include "game/ui_control_tags.h"
 #include "game/ui_text_label_helpers_decls.h"
 // SYNTHETIC: IMPERIALISM 0x004fe240
 // TScoreGraph::`scalar deleting destructor'
@@ -20,7 +22,23 @@ IMPLEMENT_DYNCREATE(TScoreGraph, TView)
 TScoreGraph::TScoreGraph() {}
 
 // FUNCTION: IMPERIALISM 0x004fe2b0
-void TScoreGraph::NoOpUiLifecycleHook(int arg) {}
+void TScoreGraph::NoOpUiLifecycleHook(int arg) {
+  TView::NoOpUiLifecycleHook(arg);
+  g_pDiplomacyTurnStateManager->RecomputeNationComparativePowerMetrics();
+
+  for (int i = 0; i < 7; ++i) {
+    TView* tabControl = ownerContext->ResolveControlByTag(kControlTagTab0 + i);
+    tabControl->AssertValid();
+    LoadUiStringByGroupAndIndexToControlObject(0x2757, static_cast<short>(i + 9), tabControl);
+  }
+
+  SetControlHoverHelpText(CString(g_szEmptyString), ownerContext);
+
+  TView* owner = OwnerPanel();
+  g_pCursorControlPanel = static_cast<TInfoBarText*>(owner->ResolveControlByTag(kControlTagCurs));
+  g_pCursorControlPanel->AssertValid();
+  g_pCursorControlPanel->InitializeMapHintTextStyleAndThemeFlags(0x2b6c, 0x2b67);
+}
 
 // For each of the 7 great powers with a live terrain descriptor, draws a stacked
 // horizontal bar of its 4 comparativePowerRows1824 components (army, avg relation,

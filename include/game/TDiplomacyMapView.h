@@ -99,10 +99,20 @@ protected:
   // 0xb8 — a state code compared to 5 (mirrors interactionModeAt94's pattern); reset to 0 by
   // CallVoidSlotA0 (slot 0xa0) and in the constructor.
   int stateFlagAtB8;
+
+ public:
   // 0xbc -- action code written 0xd at the end of the overlay rebuild (matches
-  // selectedTerrainIndexAt90's `actionCode != 0xd` comparison site).
+  // selectedTerrainIndexAt90's `actionCode != 0xd` comparison site); also written 7/8
+  // by TGrantsView::HandleEvent (via TPanelView::m_panelData) keyed off the parity of a
+  // clicked control's tag -- public because that sibling panel writes it directly
+  // through a raw m_panelData pointer, with no accessor method in the original.
   int actionCodeBC;
-  short pad_c0;
+  // 0xc0 -- a row/index value derived from a clicked control's tag
+  // ((controlTag - 0x6330) / 2), written by TGrantsView::HandleEvent through
+  // TPanelView::m_panelData.
+  short selectedGrantRowC0;
+
+ protected:
   // 0xc2 -- active-nation snapshot stamped alongside 0x90/0x98 by the overlay rebuild.
   short activeNationC2;
   // Three consecutive per-nation RECT arrays filling 0xc4..0x514 exactly (23 nations):
