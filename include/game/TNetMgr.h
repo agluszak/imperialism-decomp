@@ -77,11 +77,9 @@ public:
   unsigned char OpenJoinGameRuntimeSelectionAndStartSession(int selectionTag, CString* outGameName,
                                                             const char* seed); // 0x5e3c20
 
-  // Rebuilds the enumerated-protocol selection list (g_WNetSerializedPtrArrayA006a5f10)
-  // via TWNetSessionManager::RebuildRuntimeSelectionSource (takes no argument).
-  // Structurally incomplete: the retail body leads with
-  // provider->ResolveControlByTag('prot')->AssertValid(), stashed in a scratch global
-  // (0x6a6010, cleared again on exit), not modeled yet.
+  // Resolves provider's 'prot' control (asserting it valid), rebuilds the enumerated-
+  // protocol selection list (g_WNetSerializedPtrArrayA006a5f10) and re-enumerates via
+  // TWNetSessionManager::RebuildRuntimeSelectionSource (takes no argument).
   unsigned char ResetRuntimeProtocolOptionsAndRebuildSelectionSource(TView* provider); // 0x5e39a0
 
   // Map a DirectPlay error HRESULT to detail text and pose the localized error dialog.

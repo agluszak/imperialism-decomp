@@ -239,18 +239,23 @@ void TNetMgr::HandleError(int errorCode) {
   }
 }
 
+// Scratch slot holding the resolved 'prot' control for the duration of
+// ResetRuntimeProtocolOptionsAndRebuildSelectionSource; set on entry, cleared on exit.
+// No other reader found yet.
+static TView* g_pActiveNetProtocolControlView; // 0x6a6010
+
 // FUNCTION: IMPERIALISM 0x005e39a0
 unsigned char TNetMgr::ResetRuntimeProtocolOptionsAndRebuildSelectionSource(TView* provider) {
-  // TODO(class-recovery): the retail body leads with
-  // provider->ResolveControlByTag('prot')->AssertValid() into a scratch global
-  // (0x6a6010, cleared again at the end) before this cleanup -- not modeled yet, so
-  // `provider` still goes unused here. RebuildRuntimeSelectionSource itself takes no
-  // argument (Ghidra-verified: bare RET).
+  g_pActiveNetProtocolControlView = provider->ResolveControlByTag(0x70726f74); // 'prot'
+  g_pActiveNetProtocolControlView->AssertValid();
+
   for (int index = 0; index < g_WNetSerializedPtrArrayA006a5f10.GetSize(); ++index) {
     delete static_cast<RuntimeSelectionRecord*>(g_WNetSerializedPtrArrayA006a5f10[index]);
   }
   g_WNetSerializedPtrArrayA006a5f10.RemoveAll();
-  return g_NetworkSessionManager006a5f60.RebuildRuntimeSelectionSource();
+  unsigned char result = g_NetworkSessionManager006a5f60.RebuildRuntimeSelectionSource();
+  g_pActiveNetProtocolControlView = 0;
+  return result;
 }
 
 // FUNCTION: IMPERIALISM 0x005e3a60
