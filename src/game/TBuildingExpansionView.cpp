@@ -14,9 +14,8 @@ TBuildingExpansionView::TBuildingExpansionView() {}
 TBuildingExpansionView::~TBuildingExpansionView() {}
 
 // FUNCTION: IMPERIALISM 0x004ce5a0
-void TBuildingExpansionView::OpenCityViewProductionDialog(int nBuildingSlotId, int * pCityStateData, int nDialogFlags) {
-}
+void TBuildingExpansionView::StuffValues(short buildingSlotId, TCity* city,
+                                         TCityProductionView* productionView) {}
 
 // FUNCTION: IMPERIALISM 0x004cebb0
-void TBuildingExpansionView::ApplyCityProductionDialogChanges(int nDialogActionTag) {
-}
+void TBuildingExpansionView::DoClosingAction(unsigned long dialogActionTag) {}

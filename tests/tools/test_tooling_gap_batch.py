@@ -121,6 +121,18 @@ class DatacmpGateTests(unittest.TestCase):
         self.assertEqual(set(entries), {"g_Real"})
         self.assertEqual(entries["g_Real"]["diffs"], "1")
 
+    def test_function_pointer_tables_skipped(self) -> None:
+        report = (
+            "g_apfnTacticalScorers (0x6994c0) ... WARN \n"
+            "    + 0x00                                  1 : 2 \n"
+            "g_Real (0x699500) ... WARN \n"
+            "    + 0x00                                  3 : 4 \n"
+        )
+        entries = parse_report(report)
+        self.assertNotIn("g_apfnTacticalScorers", entries)
+        self.assertEqual(set(entries), {"g_Real"})
+        self.assertEqual(entries["g_Real"]["diffs"], "1")
+
     def test_new_variable_fails(self) -> None:
         current = parse_report(self.REPORT)
         baseline = {"g_Foo": {"name": "g_Foo", "address": "0x63e038", "status": "WARN", "diffs": "2"}}

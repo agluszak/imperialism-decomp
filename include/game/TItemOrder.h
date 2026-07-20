@@ -27,20 +27,16 @@ public:
   // slot 0x0f Produce inherited unchanged (0x4b5180)
   virtual void FillOrderSheet(OrderSheet* orderSheet,
                               short quantity) override; // slot 0x10 0x4b5510
-  virtual undefined ItemOrderSlot11(int param_1, undefined2 param_2, undefined2 param_3,
-                                    undefined2 param_4,
-                                    undefined2 param_5); // slot 0x11 0x4b5290
-  // TItemOrder is 0x54 bytes vs. TProductionOrder's 0x4c (RTTI), adding four shorts
-  // (0x4c..0x54), all written by the slot-0x11 init
-  // InitializeCityProductionState_Impl (0x004b5290). Unlike TUnitOrder (whose 0x4c is
-  // an input-resource id), TItemOrder zeroes 0x4c at init and only fills 0x4e/0x50/0x52
-  // from its params, so 0x4c is a runtime-derived field. Names hedged by offset.
-  short field4c; // 0x4c — zeroed at init; SetQuantity (0x004b53d0) writes a derived value here
-  short
-      field4e; // 0x4e — init param_3; read by MaxOrder / CommitIfPending / FillOrderSheet as an input requirement
-  short field50; // 0x50 — init param_4 (tested vs 0); read by the same cost/max calcs
-  short
-      buildingSlot; // 0x52 — building slot id (init param_5); read by TIndustryAmtBar / TIndustryCluster
+  virtual void InitializeItemOrderContext(TCity* city, short outputResourceType,
+                                          short primaryInputResourceId,
+                                          short secondaryInputResourceId,
+                                          short productionSlot); // slot 0x11 0x4b5290
+  // TItemOrder is 0x54 bytes vs. TProductionOrder's 0x4c (RTTI). The slot-0x11
+  // initializer and resource-indexed city-stock accesses recover all four added shorts.
+  short requestedQuantity4c;      // desired quantity retained across availability clamps
+  short primaryInputResourceId;   // first cityStockByType / trackingSlots resource index
+  short secondaryInputResourceId; // second resource index, or -1 for two units of primary
+  short productionSlot;           // city productionAccum1fc index
 
   TItemOrder();
 };

@@ -1,4 +1,8 @@
 #include "game/TBuildingView.h"
+#include "game/TCity.h"
+#include "game/TCityProductionView.h"
+#include "game/TViewMgr.h"
+#include "game/global_data_tables.h"
 // SYNTHETIC: IMPERIALISM 0x004c6df0
 // TBuildingView::CreateObject
 
@@ -9,7 +13,7 @@ IMPLEMENT_DYNCREATE(TBuildingView, TNoHilitePicture)
 
 // FUNCTION: IMPERIALISM 0x004c6eb0
 TBuildingView::TBuildingView() : TNoHilitePicture() {
-  field94 = 0;
+  city94 = 0;
 }
 
 // SYNTHETIC: IMPERIALISM 0x004c6ee0
@@ -17,29 +21,23 @@ TBuildingView::TBuildingView() : TNoHilitePicture() {
 TBuildingView::~TBuildingView() {}
 
 // FUNCTION: IMPERIALISM 0x004c6f30
-undefined TBuildingView::ApplyCityViewSelectionPayloadAndRefreshControls(short* payload,
-                                                                         unsigned char flag9c,
-                                                                         void* field98Value,
-                                                                         short field9eValue) {
-  field94 = payload;
-  field9c = flag9c;
-  field98 = field98Value;
-  field9e = field9eValue;
+void TBuildingView::ApplyCityViewSelectionPayloadAndRefreshControls(
+    TCity* city, bool isEmbeddedPage, TCityProductionView* productionView,
+    short embeddedPageIndex) {
+  city94 = city;
+  isEmbeddedPage9C = isEmbeddedPage;
+  productionView98 = productionView;
+  embeddedPageIndex9E = embeddedPageIndex;
   OwnerPanel()->controlValue3c = 0x65;
-  OrphanRetStub_004c6fd0();
-  OrphanRetStub_004c6fb0();
-  return 0;
+  DoStartup();
+  UpdateFields();
 }
 
 // FUNCTION: IMPERIALISM 0x004c6fb0
-undefined TBuildingView::OrphanRetStub_004c6fb0() {
-  return 0;
-}
+void TBuildingView::UpdateFields() {}
 
 // FUNCTION: IMPERIALISM 0x004c6fd0
-undefined TBuildingView::OrphanRetStub_004c6fd0() {
-  return 0;
-}
+void TBuildingView::DoStartup() {}
 
 // FUNCTION: IMPERIALISM 0x004c6ff0
 undefined TBuildingView::SetUniversityDialogTextAndRefresh(int*, CString) {
@@ -52,4 +50,11 @@ undefined TBuildingView::SetUniversityDialogLocalizedTextAndRefresh(int*, int, i
 }
 
 // FUNCTION: IMPERIALISM 0x004c7180
-void TBuildingView::Close() {}
+void TBuildingView::Close() {
+  if (isEmbeddedPage9C) {
+    productionView98->buildingViewsAC[embeddedPageIndex9E] = 0;
+  } else {
+    g_pUiRuntimeContext->InvokeStrategicMapViewMethod60(embeddedPageIndex9E);
+  }
+  TView::Close();
+}

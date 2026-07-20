@@ -124,8 +124,8 @@ public:
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
   // slot 0x73 NoOpUiVirtualSlot73 inherited unchanged (0x572bb0)
   // slot 0x74 ApplyCityViewSelectionPayloadAndRefreshControls inherited unchanged (0x4c6f30)
-  virtual undefined OrphanRetStub_004c6fd0() override; // slot 0x75 0x4c8050
-  // slot 0x76 OrphanRetStub_004c6fb0 inherited unchanged (0x4c6fb0)
+  virtual void DoStartup() override; // slot 0x75 0x4c8050
+  // slot 0x76 UpdateFields inherited unchanged (0x4c6fb0)
   // slot 0x77 SetUniversityDialogLocalizedTextAndRefresh inherited unchanged (0x4c70e0)
   // slot 0x78 SetUniversityDialogTextAndRefresh inherited unchanged (0x4c6ff0)
   // RTTI oracle: sizeof(TUnitsView) == 0xa0, identical to TBuildingView -- this class

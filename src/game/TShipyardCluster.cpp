@@ -90,7 +90,7 @@ void TShipyardCluster::ApplyMoveValue(int value) {
     reinterpret_cast<TView*>(this)->InvalidateCityDialogRectRegion(&invalidateRect, 1);
   }
 
-  reinterpret_cast<TIndustryCluster*>(this->ownerContext)->GetControlFlag(0, 0);
+  static_cast<TIndustryCluster*>(this->ownerContext)->RefreshBarFromSelectedMetric();
   (void)value;
 }
 

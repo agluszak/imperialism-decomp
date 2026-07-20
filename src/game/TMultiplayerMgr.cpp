@@ -1734,7 +1734,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     }
     g_apNationStates[nationSlot2C]->RecomputeDiplomacyAidBudgetScoreFromResourceWeights();
     city2C->field78 = composite->cityField78;
-    city2C->fieldB4 = composite->cityFieldB4;
+    city2C->powerAvailableB4 = composite->cityFieldB4;
     short* stock2C = &city2C->cityStockCottonB6;
     for (int stockType = 0; stockType < 0x17; ++stockType) {
       stock2C[stockType] = composite->cityStock[stockType];
@@ -3221,7 +3221,7 @@ void TMultiplayerMgr::EmitTurnEvent2CNationStateCompositeForSlot(int nationSlot,
       packet.orderCountByType[orderType] = city->orderCountByType5c[orderType];
     }
     packet.cityField78 = city->field78;
-    packet.cityFieldB4 = city->fieldB4;
+    packet.cityFieldB4 = city->powerAvailableB4;
     short* stock = &city->cityStockCottonB6;
     for (int stockType = 0; stockType < 0x17; ++stockType) {
       packet.cityStock[stockType] = stock[stockType];

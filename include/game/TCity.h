@@ -128,7 +128,9 @@ public:
   class TGreatPower* ownerNationAc; // 0xAC — owning nation state (0x004b4dc0)
   // +0xb0 — currently selected order; its +0x14 tile id drives the port-zone lookup
   void* selectedOrderB0; // +0xb0
-  short fieldB4;         // +0xB4 — snapshotted by the turn-event-0x2c packet
+  // +0xB4 — city power value displayed by TWarehouseView's 'powe' control and
+  // snapshotted by the turn-event-0x2c packet.
+  short powerAvailableB4;
   // 0xB6..0xE4 — city commodity stock/need counters, commodity order:
   // Cotton..Gold (bitmap ids 700..722 / strings 17077..17099).
   short cityStockCottonB6;

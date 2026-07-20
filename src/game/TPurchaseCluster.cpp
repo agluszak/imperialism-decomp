@@ -70,10 +70,10 @@ void TPurchaseCluster::SetCityViewValueControlAmount(short nValue, char redrawFl
   ownerContext->InvalidateCityDialogRectRegion(&copiedBounds, 1);
   // ownerContext is a TBuildingView (TArmoryView/TUniversityView/TShipyardView, the city-view
   // dialogs that host a TPurchaseCluster): confirmed by arity -- TBuildingView::
-  // OrphanRetStub_004c6fb0() at slot 0x76 (byte 0x1d8) takes zero args, matching this
+  // UpdateFields() at slot 0x76 (byte 0x1d8) takes zero args, matching this
   // callsite exactly, unlike the byte-coincident TWindow::GetWindowText(CString*) which
   // takes one.
-  static_cast<TBuildingView*>(ownerContext)->OrphanRetStub_004c6fb0();
+  static_cast<TBuildingView*>(ownerContext)->UpdateFields();
 }
 
 // FUNCTION: IMPERIALISM 0x004cc640

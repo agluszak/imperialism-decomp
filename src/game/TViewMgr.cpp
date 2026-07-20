@@ -24,6 +24,7 @@
 #include "game/global_data_tables.h" // g_pGameFlowState, g_pSimMgr, g_apNationStates
 #include "game/TCountry.h"           // FormatOverlayTerrainLabelText (terrain overlay case)
 #include "game/TGreatPower.h"
+#include "game/TGarrisonView.h"
 #include "game/TGlobalMapState.h"
 #include "game/TDisplayMgr.h" // g_pDisplayMgr, g_szUiNilPointerMessage, g_szUiFailureMessage
 #include "game/THelpMgr.h"
@@ -1606,7 +1607,7 @@ void TViewMgr::HandleTurnEventVtableSlot64RefreshMainHudTitles(int) {
     titleControl->SetHoverHelpText(titleString);
   }
   // 0x5bac50 is invoked on the 'main' deal-book control (the binary's receiver), not 'titL'.
-  static_cast<TDealBookPicture*>(mainControl)->RefreshHudNationTitleControlsAndTheme(0x2b6c);
+  static_cast<TDealBookPicture*>(mainControl)->Startup(0x2b6c);
 }
 
 // FUNCTION: IMPERIALISM 0x005da360
@@ -2098,15 +2099,9 @@ void TViewMgr::HandleTurnEventDialogFactorySlotEC(int mapSelection) {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgrMore_0069B740, 0x1e3);
   }
-  // Ground truth (0x004a8890, reached through the resolved ILT thunk at 0x00402216) rebuilds
-  // 'page's TArmyUnitLine roster for the tile at mapSelection from
-  // g_pGlobalMapState->cityScoreTable and appends each line via TPageView's own AddLine slot
-  // (byte 0x1a0, TPageView::AddOrderedEntry). Ghidra/symbols.csv misattribute
-  // that function to TLineData -- TLineData's vtable only spans 12 slots, far short of the
-  // 0x69 needed for its own AddLine call, so the real receiver is a TPageView-derived roster
-  // page. The concrete roster subclass installed as 'page' on this call path isn't recovered
-  // yet, so the call stays undone rather than fake a cast to a guessed class (Hard Rule 12).
-  (void)page;
+  // Mac identity plus the Windows +0x8c tile-index store recover the concrete page as
+  // TGarrisonView. StuffValues rebuilds its TArmyUnitLine roster for this map tile.
+  static_cast<TGarrisonView*>(page)->StuffValues(static_cast<short>(mapSelection));
 
   POINT placement;
   this->ComputeTurnEventDialogPlacementByCode(node, &placement);
