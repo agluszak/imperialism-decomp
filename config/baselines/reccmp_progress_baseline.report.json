@@ -26812,13 +26812,13 @@
     },
     {
       "address": "0x57f4f0",
-      "matching": 0.11764705882352941,
+      "matching": 0.1875,
       "name": "TSimMgr::AreAllActiveNationsReady",
       "type": 1
     },
     {
       "address": "0x57f530",
-      "matching": 0.18181818181818182,
+      "matching": 0.9,
       "name": "TSimMgr::ClearActiveNationReadyFlags",
       "type": 1
     },

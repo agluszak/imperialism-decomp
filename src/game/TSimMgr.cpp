@@ -894,17 +894,27 @@ unsigned char TSimMgr::TestTurnFlowStatusFlagMask(unsigned int mask) {
   return 0;
 }
 
-// TODO: port the "all active nations ready" scan over g_apNationStates.
-
 // FUNCTION: IMPERIALISM 0x0057f4f0
 int TSimMgr::AreAllActiveNationsReady() {
-  return 0;
+  for (TGreatPower** nation = g_apNationStates; nation < (TGreatPower**)&g_apNationStates_End;
+       ++nation) {
+    if ((*nation)->field904 == 0) {
+      return 0;
+    }
+  }
+  return 1;
 }
 
-// TODO: port clearing of the per-nation ready flags.
-
 // FUNCTION: IMPERIALISM 0x0057f530
-void TSimMgr::ClearActiveNationReadyFlags() {}
+void TSimMgr::ClearActiveNationReadyFlags() {
+  TGreatPower** nation = g_apNationStates;
+  do {
+    if ((*nation)->diplomacyEligibilityA0 != 0) {
+      (*nation)->field904 = 0;
+    }
+    ++nation;
+  } while (nation < (TGreatPower**)&g_apNationStates_End);
+}
 
 // TODO: port signed-integer formatting with thousands separators.
 
