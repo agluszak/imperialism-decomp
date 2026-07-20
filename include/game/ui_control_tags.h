@@ -205,3 +205,7 @@ const unsigned int kControlTagTab0 = 0x74616230u; // 'tab0' — first of 7 seque
 const unsigned int kControlTagHdr0 = 0x68647230u; // 'hdr0' — first of 5 sequential game-info header labels (hdr0-hdr4)
 const unsigned int kControlTagTxta = 0x74787461u; // 'txta' — first of 14 sequential game-info text lines (txta-txtn)
 const unsigned int kControlTagLoca = 0x6c6f6361u; // 'loca' — location text
+const unsigned int kControlTagTbou = 0x74626f75u; // 'tbou' — trade-book control region
+const unsigned int kControlTagTsol = 0x74736f6cu; // 'tsol' — trade-book control region
+const unsigned int kControlTagRtil = 0x7274696cu; // 'rtil' — trade-book season/year label
+const unsigned int kControlTagTitL = 0x7469744cu; // 'titL' — trade-book title (uppercase-L variant, distinct from kControlTagTitl)
