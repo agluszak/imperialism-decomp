@@ -38,6 +38,10 @@ const unsigned int kControlTagLcor = 0x6c636f72u; // 'lcor' — left-column cont
 const unsigned int kControlTagRcor = 0x72636f72u; // 'rcor' — right-column control region
 const unsigned int kControlTagLaro = 0x6c61726fu; // 'laro' — purchase-amount decrement arrow
 const unsigned int kControlTagRaro = 0x7261726fu; // 'raro' — purchase-amount increment arrow
+// Capitalized variants distinct from kControlTagFlag ('flag') / kTagDone ('done') --
+// TToolBarCluster::HandleEvent compares against these exact byte values.
+const unsigned int kControlTagFlagCaps = 0x466c6167u; // 'Flag'
+const unsigned int kControlTagDoneCaps = 0x444f4e45u; // 'DONE'
 const unsigned int kControlTagProt = 0x70726f74u; // 'prot' — network protocol option field
 const unsigned int kControlTagPro0 = 0x70726f30u; // 'pro0' — default protocol option tag
 const unsigned int kControlTagPass = 0x70617373u; // 'pass' — password edit field

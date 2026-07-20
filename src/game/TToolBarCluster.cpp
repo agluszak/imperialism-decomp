@@ -1,5 +1,6 @@
 #include "game/TToolBarCluster.h"
 
+#include "game/TApplication.h"
 #include "game/TArmyMgr.h"
 #include "game/TGlobalMapState.h"
 #include "game/TMapUberPicture.h"
@@ -13,6 +14,7 @@
 #include "game/global_data_tables.h"
 #include "game/map_overlay_geometry.h"
 #include "game/mapped_flavor_text.h"
+#include "game/ui_control_tags.h"
 
 struct TGlobalMapCityScoreRecord;
 // 0x00563360 -- __stdcall free resolver (defined in TMapMgr.cpp).
@@ -265,7 +267,26 @@ TToolBarCluster::TToolBarCluster() {}
 TToolBarCluster::~TToolBarCluster() {}
 
 // FUNCTION: IMPERIALISM 0x00584ea0
-void TToolBarCluster::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {}
+void TToolBarCluster::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+  TCluster::HandleEvent(commandId, sourceHandler, event);
+
+  bool eligible = g_pApplicationUiRootController->InModalState() == 0;
+  if (g_pApplicationUiRootController->screenModeAt24 > 1) {
+    eligible = false;
+  }
+  if (commandId == 10 && eligible) {
+    unsigned int tag = sourceHandler->controlTag;
+    if (tag > kControlTagFlagCaps) {
+      // Original tail-calls into the shared 499-byte HandleCrossUSmallViewsCommandTagDispatch
+      // (0x584f27, unowned) for every tag above 'Flag' -- not yet ported.
+    } else if (tag == kControlTagFlagCaps) {
+      // Original calls g_pUiRuntimeContext->DispatchUiRuntimeMessage102CAndRefreshActiveView()
+      // (0x5dc560, 125 bytes, unowned) here -- not yet ported.
+    } else if (tag == kControlTagDoneCaps) {
+      g_pSimMgr->PostMainWindowCommand100ForTurnFlow();
+    }
+  }
+}
 
 // FUNCTION: IMPERIALISM 0x005851c0
 void TToolBarCluster::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* point,
