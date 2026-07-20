@@ -218,10 +218,7 @@ void TMapUberPicture::HandleEvent(int commandId, TEventHandler* sourceHandler, T
         // else: falls through with no further action in the original.
         return;
       }
-      // Original calls the currently-unowned, unclaimed 611-byte
-      // RefreshPoseMessageDialogNationSelectionControls(-1) (0x54b1b0, a TMultiplayerMgr
-      // method: a 25-entry nation-slot loop building per-nation control state) here -- not
-      // yet ported.
+      g_pGameFlowState->RefreshPoseMessageDialogNationSelectionControls(-1);
       return;
     }
   } else if (commandId == 0xc) {

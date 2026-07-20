@@ -314,6 +314,11 @@ public:
   // 0x54b8c0: returns nationStatusTags[slot]; when slot is -1, resolves it from the active
   // nation id (falling back to the game-flow session-id scan).
   int GetNationStatusCodeForSlotOrActiveNation(int slot);
+  // 0x54b1b0, RET 4 (one stack arg, unread by the body so far as ported). If the local
+  // session isn't seated in nationSessionIds[] at all, poses an error prompt and returns.
+  // Otherwise resolves the pose-message dialog (turn-event context 0x5e7) and, for each
+  // 'box0'-'box6' slot control, marks it occupied-by-another-player via SetState.
+  void RefreshPoseMessageDialogNationSelectionControls(int unused);
 };
 
 // 0x5421a0: 0-based index (0..6) of g_pGameFlowState->nationSessionIds[] matching the

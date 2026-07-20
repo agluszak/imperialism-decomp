@@ -2797,6 +2797,38 @@ resolved:
   return nationStatusTags[slot];
 }
 
+// FUNCTION: IMPERIALISM 0x0054b1b0
+void TMultiplayerMgr::RefreshPoseMessageDialogNationSelectionControls(int unused) {
+  (void)unused;
+  if (FindActiveNationSlotIndexInGameFlowList() == -1) {
+    CString notSeatedMessage;
+    g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&notSeatedMessage, 0x2742,
+                                                                    0x16);
+    g_pUiRuntimeContext->DispatchLocalizedUiMessageWithTemplateA13A0(
+        notSeatedMessage, &g_cstrNationAwolMessageStore, 0, 0);
+    return;
+  }
+
+  TView* dialog = g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(0x5e7);
+  dialog->AssertValid();
+
+  int mySlotIndex = FindActiveNationSlotIndexInGameFlowList();
+  for (int i = 0; i < 7; ++i) {
+    TView* boxControl = dialog->ResolveControlByTag(0x62786230u + i); // 'box0'-'box6'
+    boxControl->AssertValid();
+    int sessionId = g_pGameFlowState->nationSessionIds[i];
+    bool occupied = sessionId != 0 && sessionId != -2;
+    bool occupiedByMe = occupied && (i == mySlotIndex);
+    boxControl->SetState(occupied && !occupiedByMe, 0);
+    // The original then calls the box control's own slot-0x75/0x76 virtuals (isMine flag,
+    // then a bare refresh) -- the 'box' receiver class is unresolved, so left unmodeled.
+  }
+
+  // The original then restyles and resolves a 'mesg' control, calls its own slot-0x1f
+  // virtual, and dispatches the built style buffer to the dialog's linked children (slot
+  // 0x27) -- not yet decoded.
+}
+
 // FUNCTION: IMPERIALISM 0x0054b930
 void TMultiplayerMgr::SetNationStatusAwolByNationIdAndDispatchNotices(int networkId) {
   for (int slot = 0; slot < 7; ++slot) {
