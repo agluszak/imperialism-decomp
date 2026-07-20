@@ -3,6 +3,8 @@
 #include "game/TControl.h"
 #include "game/mfc.h"
 
+class TMilitaryUnit;
+
 // VTABLE: IMPERIALISM 0x0064d550
 class TMiniArmyView : public TControl {
 public:
@@ -121,9 +123,8 @@ public:
   // slot 0x6f LogUnhandledDialogMethodAndReturnFalse inherited unchanged (0x4294a0)
   // slot 0x70 SetControlStateFlagAndMaybeRefresh inherited unchanged (0x48e810)
   virtual undefined OrphanRetStub_004aad20(); // slot 0x71 0x4aad20
-  // Unrecovered context object read by ApplyRectSlot110: +0x24 name (CString), +0x34
-  // veterancy level (short). Raw storage until the real pointee class is identified.
-  void* field84; // +0x84
+  // The displayed unit: name24 (CString) and tileIndex06 read by ApplyRectSlot110/HandleEvent.
+  TMilitaryUnit* field84; // +0x84
 
   TMiniArmyView();
 };

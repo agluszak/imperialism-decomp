@@ -164,4 +164,6 @@ const unsigned int kControlTagHull = 0x68756c6cu; // 'hull' — navy ship hull d
 const unsigned int kControlTagSail = 0x7361696cu; // 'sail' — navy ship sail display mode
 const unsigned int kControlTagForM = 0x466f724du; // 'ForM' — trade-desk detail-level toggle
 const unsigned int kControlTagBook = 0x626f6f6bu; // 'book' — offer-desk book control
+const unsigned int kControlTagUpgr = 0x75706772u; // 'upgr' — mini-army upgrade hotspot
+const unsigned int kControlTagTbr1 = 0x74627231u; // 'tbr1' — toolbar slot 1 label
 const unsigned int kControlTagScvw = 0x73637677u; // 'scvw' — scroll view

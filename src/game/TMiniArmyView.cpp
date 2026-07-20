@@ -1,8 +1,16 @@
 #include "game/TMiniArmyView.h"
 
+#include "game/TDisplayMgr.h"
+#include "game/TEventHandler.h"
+#include "game/TMilitaryUnit.h"
 #include "game/TQuickDrawSurfaceContext.h"
+#include "game/TSimMgr.h"
+#include "game/TStaticText.h"
+#include "game/TViewMgr.h"
 #include "game/global_data_tables.h"
 #include "game/quickdraw_rendering.h"
+#include "game/ui_control_tags.h"
+#include "game/ui_text_label_helpers_decls.h"
 
 // FUNCTION: IMPERIALISM 0x004aad20
 undefined TMiniArmyView::OrphanRetStub_004aad20() {
@@ -25,9 +33,7 @@ TMiniArmyView::TMiniArmyView() {}
 // FUNCTION: IMPERIALISM 0x004aaeb0
 void TMiniArmyView::ApplyRectSlot110(RECT* rectBuffer) {
   (void)rectBuffer; // dead parameter in this override, like the other ApplyRectSlot110s
-  char* context = static_cast<char*>(field84);
-  CString name = *reinterpret_cast<CString*>(context + 0x24);
-  CString displayName = name;
+  CString displayName = field84->name24;
 
   InitializeUiTextStyleDescriptorAndApplyQuickDraw(0, 0xc, 0x2b6a, 3);
   if (MeasureTextExtentWithCachedQuickDrawStyle(&displayName) > 100) {
@@ -45,7 +51,7 @@ void TMiniArmyView::ApplyRectSlot110(RECT* rectBuffer) {
   SetQuickDrawTextOriginWithContextOffset(0xa, 0xc);
   DrawTextWithCachedStyle(&displayName);
 
-  short level = *reinterpret_cast<short*>(context + 0x34);
+  short level = field84->field_34;
   short sVar1 = level / 0x19 + 1;
   if (sVar1 > 0x14) {
     sVar1 = 0x14;
@@ -70,4 +76,28 @@ void TMiniArmyView::ApplyRectSlot110(RECT* rectBuffer) {
 }
 
 // FUNCTION: IMPERIALISM 0x004ab1d0
-void TMiniArmyView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {}
+void TMiniArmyView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+  if (sourceHandler->controlTag == kControlTagUpgr) {
+    if (field84->ApplyEraCapabilityCostAndSetSelection()) {
+      TView* sourceView = static_cast<TView*>(sourceHandler);
+      sourceView->SetEnabled(0, 1);
+      SetControlHoverHelpTextAltEntry(CString(g_pMiniCivSharedText_0064cb18), sourceView);
+      TStaticText* tbr1 =
+          static_cast<TStaticText*>(g_pDisplayMgr->activeDialog->ResolveControlByTag(kControlTagTbr1));
+      tbr1->QueryStepValue();
+      tbr1->SetTextThemeCodeAndMaybeRefresh(static_cast<short>(g_pSimMgr->GetActiveNationId()), 0);
+    } else {
+      CString msg;
+      g_pSimMgr->GetString(0x2745, 3, &msg);
+      g_pUiRuntimeContext->DispatchLocalizedUiMessageWithTemplateA13A0(
+          msg, &g_cstrArmyOrderMessageStore, 2, 0);
+    }
+  } else if (sourceHandler == this) {
+    ownerContext->QueryStepValue();
+    // The original writes field84->tileIndex06 into a short field at the same +0x84 offset
+    // on ownerContext's concrete (unrecovered) class -- distinct from this class's own
+    // field84 (a TMilitaryUnit*) despite the matching offset. Left unresolved pending that
+    // class's recovery rather than guessing its layout.
+  }
+  TControl::HandleEvent(commandId, sourceHandler, event);
+}
