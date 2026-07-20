@@ -7,9 +7,12 @@
 #include "game/TSimMgr.h"
 #include "game/TStaticText.h"
 #include "game/TZone.h"
+#include "game/TControl.h"
+#include "game/TSoundPlayer.h"
 #include "game/global_data_tables.h"
 #include "game/mapped_flavor_text.h"
 #include "game/quickdraw_rendering.h"
+#include "game/ui_control_tags.h"
 
 #include <string.h>
 
@@ -232,4 +235,14 @@ void TTerrainHelpPicture::HighlightSelectedMenuItemAndRefreshDetailText(int sele
 }
 
 // FUNCTION: IMPERIALISM 0x005059d0
-void TTerrainHelpPicture::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {}
+void TTerrainHelpPicture::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+  TControl::HandleEvent(commandId, sourceHandler, event);
+  if (commandId == 0xd) {
+    unsigned int tag = sourceHandler->controlTag;
+    if (tag >= kControlTagI00a && tag < kControlTagI00m) {
+      g_pSfxPlaybackSystem->PlaySoundEffect(0x1b58, 0, 1);
+      short index = static_cast<short>(sourceHandler->controlTag) - 0x3061;
+      HighlightSelectedMenuItemAndRefreshDetailText(index);
+    }
+  }
+}
