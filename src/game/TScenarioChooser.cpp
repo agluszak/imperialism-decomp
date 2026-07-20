@@ -7,6 +7,7 @@
 #include "game/TMultiplayerMgr.h"
 #include "game/TSimMgr.h"
 #include "game/TSoundPlayer.h"
+#include "game/TTextList.h"
 #include "game/TViewMgr.h"
 #include "game/global_data_tables.h"
 #include "game/ui_control_tags.h"
@@ -38,10 +39,11 @@ void TScenarioChooser::HandleEvent(int commandId, TEventHandler* sourceHandler, 
     g_pSfxPlaybackSystem->PlaySoundEffect(0x1b58, 0, 1);
     // g_pUiRuntimeContext->cursorTable[26]: (0x7c - 0x14) / sizeof(void*).
     SetCursor(static_cast<HCURSOR>(g_pUiRuntimeContext->cursorTable[26]));
-    // sourceHandler's own +0x1068 field indexes this->scenarioChooserState94 (reinterpreted
-    // as a short array at +0x94) to select a scenario index passed to
-    // LoadScenarioMetadataByIndexIntoUiControlCore -- sourceHandler's receiver class is
-    // unresolved, so not yet ported.
+    // sourceHandler is the 'list' TTextList itself (confirmed by size: TTextList's
+    // selectedIndex lands at exactly +0x1068).
+    TTextList* scenarioList = static_cast<TTextList*>(sourceHandler);
+    LoadScenarioMetadataByIndexIntoUiControlCore(
+        scenarioIndexByListRow94[scenarioList->selectedIndex]);
     SetCursor(LoadCursorA(nullptr, IDC_ARROW));
   } else if (commandId == 0x7069636b) { // 'pick'
     TMapPreviewView* mapPreview = static_cast<TMapPreviewView*>(ResolveControlByTag(0x706d6170u)); // 'pmap'
@@ -63,8 +65,11 @@ void TScenarioChooser::HandleEvent(int commandId, TEventHandler* sourceHandler, 
     }
   } else if (commandId == 0xd) {
     if (sourceHandler->controlTag == 0x6d6f7265u) { // 'more'
-      // Scrolls the 'list' child by one page (clamped) -- not yet ported (unresolved
-      // list-widget receiver class with fields at +0x38/+0x1060/+0x1064/+0x106c).
+      TTextList* list = static_cast<TTextList*>(ResolveControlByTag(0x6c697374u)); // 'list'
+      list->AssertValid();
+      int newOffset = list->frameHeight38 / list->itemHeight + list->scrollOffset;
+      list->scrollOffset = (newOffset > list->totalItems) ? 0 : newOffset;
+      list->RefreshControl();
     }
   } else if (commandId == 0x14) {
     if (sourceHandler->controlTag == 0x65786974u) { // 'exit'
@@ -86,6 +91,14 @@ undefined TScenarioChooser::PostTurnEvent5DCOrResetScenarioSelectionState() {
 
 // FUNCTION: IMPERIALISM 0x0057a310
 void TScenarioChooser::ForwardParam(int param) {}
+
+// FUNCTION: IMPERIALISM 0x0057a6e0
+void TScenarioChooser::LoadScenarioMetadataByIndexIntoUiControlCore(short scenarioIndex) {
+  selectedScenarioIndex142 = scenarioIndex;
+  // The original then loads the scenario's metadata (name/description/preview) from the
+  // scenario resource table and rebuilds several dialog controls from it -- not yet
+  // decoded.
+}
 
 // Per-scenario-index language/campaign tag consumed by TAssetMgr::EnsurePictWvDataGobLoadedBySlot.
 static const int kScenarioLanguageTagByIndex[15] = {1, 3, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0};

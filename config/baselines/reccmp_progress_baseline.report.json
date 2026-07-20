@@ -26514,7 +26514,7 @@
     },
     {
       "address": "0x57a050",
-      "matching": 0.3183673469387755,
+      "matching": 0.6187050359712231,
       "name": "TScenarioChooser::HandleEvent",
       "type": 1
     },
@@ -26538,8 +26538,8 @@
     },
     {
       "address": "0x57a6e0",
-      "matching": 0.0070921985815602835,
-      "name": "LoadScenarioMetadataByIndexIntoUiControlCore",
+      "matching": 0.007067137809187279,
+      "name": "TScenarioChooser::LoadScenarioMetadataByIndexIntoUiControlCore",
       "type": 1
     },
     {
