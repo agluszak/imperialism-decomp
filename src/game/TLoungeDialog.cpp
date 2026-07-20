@@ -8,6 +8,7 @@
 #include "game/TStaticText.h"
 #include "game/global_data_tables.h"
 #include "game/quickdraw_rendering.h"
+#include "game/ui_control_tags.h"
 #include "game/ui_text_label_helpers_decls.h"
 
 // SYNTHETIC: IMPERIALISM 0x0044fae0
@@ -39,7 +40,18 @@ char TLoungeDialog::DoIdle(int action) {
 }
 
 // FUNCTION: IMPERIALISM 0x0054e1f0
-void TLoungeDialog::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {}
+void TLoungeDialog::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+  if (commandId == 0x29a) {
+    TView* okayControl = ResolveControlByTag(kControlTagOkay);
+    okayControl->AssertValid();
+    okayControl->SetState(0, 0);
+    okayControl->SetEnabled(0, 0);
+  }
+  // The original also handles a 'pick' command (calling the currently-unowned 444-byte
+  // TryInvokeNationStateReplacementForSlot with sourceHandler's own +0x6c field), then a
+  // large control-tag dispatch table for commandId in {0xa, 0xd, 0x14, 0x22} -- not yet
+  // ported.
+}
 
 namespace {
 
