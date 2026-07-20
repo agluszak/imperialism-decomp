@@ -107,11 +107,11 @@ void TNumberedArrowButton::HandleCursorHoverSelectionByChildHitTestAndFallback(C
                                                                                RgnHandle hitArg) {
   if (IsActionable() != '\0') {
     if (cursorPoint->y < frameHeight38 / 2) {
-      field4e = 0x100;
+      cursorId4e = 0x100;
       TControl::HandleCursorHoverSelectionByChildHitTestAndFallback(cursorPoint, hitArg);
       return;
     }
-    field4e = (short)0xffff;
+    cursorId4e = (short)0xffff;
   }
   TControl::HandleCursorHoverSelectionByChildHitTestAndFallback(cursorPoint, hitArg);
 }

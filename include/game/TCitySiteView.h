@@ -3,10 +3,14 @@
 #include "game/TMapDialog.h"
 #include "game/mfc.h"
 
+class TTown;
+
 // VTABLE: IMPERIALISM 0x006591d0
 class TCitySiteView : public TMapDialog {
 public:
-  int field364; // +0x364 — no confirmed reader yet
+  // HandleMapClickByInteractionMode writes the selected region id at TTown::regionId14,
+  // names the marker, and submits it through UiRuntimeContext.
+  TTown* pendingTown364;
   // Viewport clamp box consumed by SetMapDialogCellCoordinatesAndRefresh (0x51c320).
   // Not initialized by the ctor (0x51beb0); initialized to an inverted (empty) box
   // (+-1000) by DoPostCreate (0x51bff0), then presumably narrowed by whoever

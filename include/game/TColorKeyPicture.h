@@ -1,6 +1,8 @@
 #pragma once
 
 #include "game/TNoHilitePicture.h"
+
+struct TQuickDrawSurfaceContext;
 #include "game/mfc.h"
 
 // VTABLE: IMPERIALISM 0x00660b48
@@ -126,6 +128,7 @@ public:
 
   TColorKeyPicture();
 
-  // Original object size is 0x98 (CRuntimeClass m_nObjectSize); the source class ended at 0x94. Trailing 4 byte(s) not yet semantically recovered — declared so sizeof and the recomp's allocation size match the original.
-  int field94;
+  // Released through TDisplayMgr::FreeQuickDrawSurfaceContextSlot both before changing
+  // the picture resource and from Free(), proving the concrete pointer type.
+  TQuickDrawSurfaceContext* colorKeySurface94;
 };

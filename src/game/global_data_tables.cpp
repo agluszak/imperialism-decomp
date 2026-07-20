@@ -117,6 +117,10 @@ char* g_pBattleReportSharedText_0064dc30 = g_szEmptyString;
 char* g_pMiniCivSharedText_0064cb18 = g_szEmptyString;
 // GLOBAL: IMPERIALISM 0x0065c830
 char* g_pShipFractionSharedText_0065c830 = g_szEmptyString;
+// Shared empty-text pointer used by the diplomacy panel Setup methods. Unlike the
+// empty string storage itself, the original reads this pointer through an absolute load.
+// GLOBAL: IMPERIALISM 0x00654ec8
+char* g_pDiplomacyPanelEmptyText_00654ec8 = g_szEmptyString;
 // Local player's display name, read by TLoungeDialog::DoPostCreate when posting the
 // lobby-chat "connected" announcement (LobbyChatEvent9Packet's sender/message text).
 // GLOBAL: IMPERIALISM 0x0065c160
@@ -377,8 +381,8 @@ int g_diplomacyActionButtonTagTable_00696960[6] = {0x696e666f, 0x74727479, 0x677
 // TCouncilView::HandleEvent's council-control 4-char tag table ("tfni", "ttrt", "targ",
 // "tart", "tuoc", "rffo" as stored); also the same function's hover-text tag variants.
 // GLOBAL: IMPERIALISM 0x00696978
-int g_councilControlTagTable[6] = {0x696e6674, 0x74727474, 0x67726174,
-                                   0x74726174, 0x636f7574, 0x6f666672};
+unsigned int g_councilControlTagTable[6] = {0x696e6674, 0x74727474, 0x67726174,
+                                            0x74726174, 0x636f7574, 0x6f666672};
 // GLOBAL: IMPERIALISM 0x006a143c
 int g_McAppUiFlag_006A143C = 0;
 // GLOBAL: IMPERIALISM 0x00698ab8

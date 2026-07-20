@@ -128,7 +128,7 @@ public:
   // TPicture ends at 0x90; this object's own 4-byte slice is a lazily-created clip
   // region wrapper (destroyed by Free(), merged into by
   // ForwardCopyRgn, and read/written by
-  // TMapUberPicture::CreateToolWindow_00599CF0 -- see its own evidence).
+  // TMapUberPicture::DisplayMiniMap -- see its own evidence).
   RgnHandle ownClipRegion90;
 
   TOffLimitsPicture();

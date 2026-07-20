@@ -8,7 +8,7 @@
 IMPLEMENT_DYNCREATE(TColorKeyPicture, TNoHilitePicture)
 
 // FUNCTION: IMPERIALISM 0x00572de0
-TColorKeyPicture::TColorKeyPicture() {}
+TColorKeyPicture::TColorKeyPicture() : TNoHilitePicture(), colorKeySurface94(0) {}
 
 // SYNTHETIC: IMPERIALISM 0x00572e10
 // TColorKeyPicture::`scalar deleting destructor'

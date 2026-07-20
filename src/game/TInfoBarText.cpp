@@ -63,10 +63,10 @@ void TInfoBarText::InitializeMapHintTextStyleAndThemeFlags(int stylePrimary, int
   layoutRectA4.bottom = 0;
   int mappedFlags = 0;
   MapUiThemeCodeToStyleFlags(static_cast<short>(stylePrimary), &mappedFlags);
-  cursorThemeCode98 = mappedFlags;
+  textColor98 = mappedFlags;
   MapUiThemeCodeToStyleFlags(static_cast<short>(styleSecondary), &mappedFlags);
-  cursorThemeCode9c = mappedFlags;
-  fieldA0 = 1;
+  shadowTextColor9C = mappedFlags;
+  dropShadowEnabledA0 = true;
 }
 
 // Detach from the shared cursor-info-panel global before the generic view teardown;

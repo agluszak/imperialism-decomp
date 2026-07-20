@@ -9,7 +9,7 @@ IMPLEMENT_DYNCREATE(TNoHilitePicture, TPicture)
 
 // FUNCTION: IMPERIALISM 0x00572b30
 TNoHilitePicture::TNoHilitePicture() : TPicture() {
-  field90 = 0;
+  hiliteState90 = false;
 }
 
 // SYNTHETIC: IMPERIALISM 0x00572b60
@@ -17,4 +17,4 @@ TNoHilitePicture::TNoHilitePicture() : TPicture() {
 TNoHilitePicture::~TNoHilitePicture() {}
 
 // FUNCTION: IMPERIALISM 0x00572bb0
-void TNoHilitePicture::NoOpUiVirtualSlot73() {}
+void TNoHilitePicture::Hilite() {}

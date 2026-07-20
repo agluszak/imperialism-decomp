@@ -122,7 +122,7 @@ public:
   // slot 0x70 SetControlStateFlagAndMaybeRefresh inherited unchanged (0x48e810)
   // slot 0x71 ResetPictureResourceEntry inherited unchanged (0x48f520)
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
-  virtual void NoOpUiVirtualSlot73() override; // slot 0x73 0x45ada0
+  virtual void Hilite() override; // slot 0x73 0x45ada0
 
   // NOOP: verified empty in original 0x00455a91 (trivial inline ctor: the builder
   // expansion site emits only the base ctor call + vtbl install)

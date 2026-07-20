@@ -68,9 +68,9 @@ void TTechItemView::ConstructTTechItemViewBaseState(TView* panel, int* offsetLay
     int titleSize[2] = {0x69, 0x3f};
     titleControl->ConstructTDeluxeTextBaseState(this, titleOffset, titleSize, &zeroRect, &textStyle,
                                                 -2);
-    titleControl->cursorThemeCode98 = titleStyleFlags;
-    titleControl->cursorThemeCode9c = shadowStyleFlags;
-    titleControl->fieldA0 = 1;
+    titleControl->textColor98 = titleStyleFlags;
+    titleControl->shadowTextColor9C = shadowStyleFlags;
+    titleControl->dropShadowEnabledA0 = true;
     g_pSimMgr->GetString(0x2712, static_cast<short>(techId), &techName);
     yearText.Format(g_szDecimalFormat,
                     0x717 + g_pCityOrderCapabilityState->prioritySlots04[techId] / 4);
@@ -85,9 +85,9 @@ void TTechItemView::ConstructTTechItemViewBaseState(TView* panel, int* offsetLay
     int descOffset[2] = {0x127, 0};
     int descSize[2] = {0x10d, 0x3f};
     descText->ConstructTDeluxeTextBaseState(this, descOffset, descSize, &zeroRect, &textStyle, -2);
-    descText->cursorThemeCode98 = titleStyleFlags;
-    descText->cursorThemeCode9c = shadowStyleFlags;
-    descText->fieldA0 = 1;
+    descText->textColor98 = titleStyleFlags;
+    descText->shadowTextColor9C = shadowStyleFlags;
+    descText->dropShadowEnabledA0 = true;
     g_pSimMgr->GetString(0x274e, static_cast<short>(techId - 1), &labelText);
     descText->UpdateTextEntrySharedString(&labelText);
     descText->RecenterTextFromMeasuredWidthAndMaybeInvalidate(0);
@@ -101,9 +101,9 @@ void TTechItemView::ConstructTTechItemViewBaseState(TView* panel, int* offsetLay
     int dateSize[2] = {0x53, 0x3f};
     dateControl->ConstructTDeluxeTextBaseState(this, dateOffset, dateSize, &zeroRect, &textStyle,
                                                1);
-    dateControl->cursorThemeCode98 = titleStyleFlags;
-    dateControl->cursorThemeCode9c = shadowStyleFlags;
-    dateControl->fieldA0 = 1;
+    dateControl->textColor98 = titleStyleFlags;
+    dateControl->shadowTextColor9C = shadowStyleFlags;
+    dateControl->dropShadowEnabledA0 = true;
     g_pSimMgr->GetString(0x274f, 0, &templateText);
     yearText.Format(g_szDecimalFormat,
                     0x717 + techMgr->capRowsE4a6[nationSlot].completionYearOffsetByTechId[techId]);
@@ -137,9 +137,9 @@ void TTechItemView::ConstructTTechItemViewBaseState(TView* panel, int* offsetLay
     int prereqSize[2] = {0x53, 0x3f};
     prereqControl->ConstructTDeluxeTextBaseState(this, prereqOffset, prereqSize, &zeroRect,
                                                  &textStyle, 1);
-    prereqControl->cursorThemeCode98 = titleStyleFlags;
-    prereqControl->cursorThemeCode9c = shadowStyleFlags;
-    prereqControl->fieldA0 = 1;
+    prereqControl->textColor98 = titleStyleFlags;
+    prereqControl->shadowTextColor9C = shadowStyleFlags;
+    prereqControl->dropShadowEnabledA0 = true;
     if (nationSlot == 0) {
       g_pSimMgr->GetString(0x274f, 2, &templateText);
       g_pSimMgr->GetString(0x2712, static_cast<short>(missing1), &labelText);

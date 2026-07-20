@@ -169,7 +169,7 @@ void TWorldView::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* poi
   if (cursorToken == 0x3e7 || cursorToken == 0) {
     cursorToken = -1;
   }
-  field4e = static_cast<unsigned short>(cursorToken);
+  cursorId4e = static_cast<unsigned short>(cursorToken);
 
   HCURSOR cursor;
   if (cursorToken == -1) {

@@ -27,6 +27,8 @@ ASSERT_SIZE(DiplomacyMaskBufferRun, 0x14);
 // turn-event dispatch/data, not an object vtable.
 // VTABLE: IMPERIALISM 0x00655b68
 class TDiplomacyMapView : public TPicture {
+  friend class TInfoPanelView;
+
 public:
   DECLARE_DYNCREATE(TDiplomacyMapView)
   virtual ~TDiplomacyMapView() override { // NOOP: verified empty in original 0x004f3cc0
@@ -65,7 +67,7 @@ public:
   int ResolveDiplomacyActionFromClickAndUpdateTarget(CPoint* clickPoint);
   void BuildTurnEventMonochromeMaskBuffers(int maskIndex, int eventCode);
   void InvalidateAndRunChildWaitSheet(void* arg1, void* arg2, void* arg3, void* arg4);
-  void RenderDiplomacyPendingPolicyIconsAndFrames();
+  void DrawVoteNuggets();
   // 0x4f4a30 -- draws the per-nation legend labels over nationLabelRects234: great
   // powers 0..6 (text only), then minors 7..22 (text + palette-selected flag icons).
   // presentRect is an ignored stack arg the original threads through.
@@ -111,7 +113,7 @@ protected:
   // InitializeDiplomacyMinisterActionControlsAndLabels (0x4f4620) from the tag table at
   // 0x696960 (info/trty/gran/trad/coun/offr, in that exact order) via a real loop over
   // this array in the original -- stored uniformly as TControl* there. Index 0's real
-  // class is TInfoPanelView (confirmed by its own OrphanLeaf_NoCall_Ins97_004fae00(short)
+  // class is TInfoPanelView (confirmed by its own SetInfoCountry(short)
   // call right after the loop); callers static_cast that one element rather than the
   // array carrying a mixed element type. Index 5 (the 'offr' button) is also
   // childControlAtB4's established "panel's child control" role -- not a conflict, just
@@ -129,13 +131,13 @@ protected:
 public:
   // 0xbc -- action code written 0xd at the end of the overlay rebuild (matches
   // selectedTerrainIndexAt90's `actionCode != 0xd` comparison site); also written 7/8
-  // by TGrantsView::HandleEvent (via TPanelView::m_panelData) keyed off the parity of a
+  // by TGrantsView::HandleEvent (via TPanelView::diplomacyMapView60) keyed off the parity of a
   // clicked control's tag -- public because that sibling panel writes it directly
-  // through a raw m_panelData pointer, with no accessor method in the original.
+  // through the panel's owner pointer, with no accessor method in the original.
   int actionCodeBC;
   // 0xc0 -- a row/index value derived from a clicked control's tag
   // ((controlTag - 0x6330) / 2), written by TGrantsView::HandleEvent through
-  // TPanelView::m_panelData.
+  // TPanelView::diplomacyMapView60.
   short selectedGrantRowC0;
 
 protected:
@@ -147,20 +149,24 @@ protected:
   RECT nationTextHitRectsC4[23]; // 0x0c4..0x234
   RECT nationLabelRects234[23];  // 0x234..0x3a4
   RECT nationAnchorRects3A4[23]; // 0x3a4..0x514
-  // +0x514/+0x518 -- map-view origin in screen pixels; the battle-report layout hook
-  // (0x4acb60) stamps marker positions as origin + hex-raster offset.
-  int mapOriginPixelX514;
-  int mapOriginPixelY518;
-  // +0x51c/+0x520 -- map extent in pixels (0x24d x 0x159, set with the origin).
-  int mapExtentPixelX51C;
-  int mapExtentPixelY520;
+  // +0x514..+0x520 -- map origin/extents. Rendering reads the named components, while
+  // TInfoPanelView::HandleEvent passes the same four dwords as an invalidation RECT.
+  union {
+    struct {
+      int mapOriginPixelX514;
+      int mapOriginPixelY518;
+      int mapExtentPixelX51C;
+      int mapExtentPixelY520;
+    };
+    RECT mapViewportRect514;
+  };
   int legendSurfaceModeAt524;
-  // 0x528 — hovered/selected council slot index; TCouncilView's cursor-hover override
-  // compares it against its own nation-count tail field.
-  short field528;
+  // 0x528 — highest pending-policy tier currently visible in the council vote animation.
+  // DrawVoteNuggets draws entries at or below it; TCouncilView advances/resets it.
+  short visibleVoteTier528;
   char pad_52a[0x2];
   // 0x52c -- per-tile flag: owner byte in g_pDiplomacyTurnStateManager's table != -1.
-  unsigned char tileHasOwnerFlags52C[0x180];
+  bool tileHasOwnerFlags52C[0x180];
   // 0x6ac -- per-tile 10x7 marker rect anchored at the tile's hex-raster position.
   RECT tileMarkerRects6AC[0x180]; // 0x6ac..0x1eac
   // 0x1eac -- per-nation overlay hit-mask runs; 0x2078 -- per-nation label opcode

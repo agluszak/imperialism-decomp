@@ -3,6 +3,7 @@
 #include "game/TDiplomacyMapView.h"
 #include "game/TEventHandler.h"
 #include "game/TGreatPower.h"
+#include "game/TCluster.h"
 #include "game/TSimMgr.h"
 #include "game/global_data_tables.h"
 #include "game/quickdraw_rendering.h"
@@ -94,21 +95,25 @@ void TGrantsView::ApplyRectSlot110(RECT* rectBuffer) {
 }
 
 // FUNCTION: IMPERIALISM 0x004f85d0
-undefined TGrantsView::OrphanRetStub_00430550() {
-  return 0;
+void TGrantsView::Setup() {
+  TCluster* documentCluster = static_cast<TCluster*>(ResolveControlByTag(0x646f6373)); // 'docs'
+  SetControlHoverHelpText(CString(g_pDiplomacyPanelEmptyText_00654ec8), documentCluster);
+  documentCluster->SetSelectedChildTagAndRefresh(0x646f6330); // 'doc0'
+  diplomacyMapView60->selectedGrantRowC0 = 0;
+  diplomacyMapView60->actionCodeBC = 7;
 }
 
 // FUNCTION: IMPERIALISM 0x004f8650
 void TGrantsView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId == 0xc) {
     short tagOffset = static_cast<short>(sourceHandler->controlTag - 0x6330);
-    TDiplomacyMapView* mapView = static_cast<TDiplomacyMapView*>(m_panelData);
+    TDiplomacyMapView* mapView = diplomacyMapView60;
     if (tagOffset & 1) {
       mapView->actionCodeBC = 8;
     } else {
       mapView->actionCodeBC = 7;
     }
-    mapView = static_cast<TDiplomacyMapView*>(m_panelData);
+    mapView = diplomacyMapView60;
     mapView->selectedGrantRowC0 = static_cast<short>(tagOffset / 2);
   }
   TEventHandler::HandleEvent(commandId, sourceHandler, event);

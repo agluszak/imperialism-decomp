@@ -1,6 +1,8 @@
 #pragma once
 
 #include "game/TPageView.h"
+
+struct TQuickDrawSurfaceContext;
 #include "game/mfc.h"
 
 // VTABLE: IMPERIALISM 0x0065c9c0
@@ -118,7 +120,10 @@ public:
   // slot 0x6d ResetPageLayout inherited unchanged (0x56ff90)
 
   TMilitaryPageView();
+  void AfterStuffValues();
+  void PrepareUnitCache(int bitmapResourceId, int maskResourceId, int depth);
 
-  // Original object size is 0x88 (CRuntimeClass m_nObjectSize); the source class ended at 0x84. Trailing 4 byte(s) not yet semantically recovered — declared so sizeof and the recomp's allocation size match the original.
-  int field84;
+  // TBattleUnitsView::StuffValues loads an image surface here and Close releases it through
+  // TDisplayMgr::FreeQuickDrawSurfaceContextSlot. Other derived constructors clear it.
+  TQuickDrawSurfaceContext* primaryUnitAtlas84;
 };

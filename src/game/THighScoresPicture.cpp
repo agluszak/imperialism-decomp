@@ -10,7 +10,7 @@
 #include <string.h>
 
 // FUNCTION: IMPERIALISM 0x0045ada0
-void THighScoresPicture::NoOpUiVirtualSlot73() {}
+void THighScoresPicture::Hilite() {}
 
 // SYNTHETIC: IMPERIALISM 0x0045adc0
 // THighScoresPicture::`scalar deleting destructor'

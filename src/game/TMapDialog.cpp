@@ -72,18 +72,18 @@ TMapDialog::TMapDialog() : TWorldView() {
   int row;
   int col;
   viewportOffsetX = 0;
-  field34c = 0;
-  field35c = 0;
+  suppressMarkerOverlay34C = false;
+  overlayObject35C = 0;
   viewportOffsetY = 0;
   SplitTileIndexToRowAndColumn(g_pGlobalMapState->field6, reinterpret_cast<short*>(&row),
                                reinterpret_cast<short*>(&col));
   SetMapViewCellCoordinates(col, row);
-  field354 = 0;
-  field356 = -1;
-  field358 = 0;
+  unresolvedWord354 = 0;
+  selectedTileIndex356 = -1;
+  unresolvedFlag358 = false;
   projectionScale76 = 1;
   previewSquareRadius78 = 0x40;
-  field360 = 0;
+  tileDebugOverlayEnabled360 = false;
 }
 
 // SYNTHETIC: IMPERIALISM 0x00519C40
@@ -93,9 +93,12 @@ TMapDialog::~TMapDialog() {}
 // FUNCTION: IMPERIALISM 0x00519c90
 void TMapDialog::Free() {
   if (quickDrawSurface350 != 0) {
-    quickDrawSurface350 = 0;
+    g_pDisplayMgr->FreeQuickDrawSurfaceContextSlot(&quickDrawSurface350);
   }
-  field35c = 0;
+  if (overlayObject35C != 0) {
+    overlayObject35C->Free();
+  }
+  overlayObject35C = 0;
   TView::Free();
 }
 
@@ -362,7 +365,7 @@ void TMapDialog::SetMapDialogCellCoordinatesAndRefresh(int col, int row, int mod
     rect.right = 0x200;
     rect.bottom = 0x1c0;
     InvalidateCityDialogRectRegion(&rect, 1);
-    static_cast<TMapUberPicture*>(ownerContext)->RefreshMiniMapIfPresent();
+    static_cast<TMapUberPicture*>(ownerContext)->InvalidateMiniMap();
   }
   int dx = oldX - viewportOffsetX;
   int dy = oldY - viewportOffsetY;

@@ -147,7 +147,7 @@ void TCouncilView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEve
   if (commandId == 10) {
     if (sourceHandler->controlTag == 0x73746172) { // "star"
       // Rebuild council controls + restart the vote ticker. 0x4fc2e0's receiver is a
-      // TCouncilView (verified: it writes councilNationCount24c8/field528 and resolves its
+      // TCouncilView (verified: it writes councilNationCount24c8/visibleVoteTier528 and resolves its
       // own controls via the TView vtable), so it is owned by this class, not the small
       // TCouncilTickerAnimation it was previously attributed to.
       this->InitializeDiplomacyCouncilViewControlsAndTicker();
@@ -156,14 +156,14 @@ void TCouncilView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEve
   } else if (commandId == 0x14) {
     unsigned int tag = sourceHandler->controlTag;
     int tagIndex = 0;
-    int* tagTable = g_councilControlTagTable;
+    unsigned int* tagTable = g_councilControlTagTable;
     do {
       if (tag == *tagTable) {
         break;
       }
       tagTable += 1;
       tagIndex += 1;
-    } while (reinterpret_cast<int>(tagTable) < reinterpret_cast<int>(g_councilControlTagTable + 6));
+    } while (tagTable < g_councilControlTagTable + 6);
     if (tagIndex < 6) {
       this->ChangeSelectedActionTopic(tagIndex);
       return;
@@ -173,14 +173,13 @@ void TCouncilView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEve
   }
 }
 
-// Receiver confirmed to be TCouncilView (writes councilNationCount24c8 / field528; resolves
+// Receiver confirmed to be TCouncilView (writes councilNationCount24c8 / visibleVoteTier528; resolves
 // its own controls via the TView vtable). NOTE: still 24.80% -- the original inlines the
 // candidate/coat-of-arms/text-style helpers (and a leading CString ctor) rather than calling
 // them out of line as below; a faithful match needs those inlined. TODO: inline helpers.
 // FUNCTION: IMPERIALISM 0x004fc2e0
 void TCouncilView::InitializeDiplomacyCouncilViewControlsAndTicker() {
   TView* hostPanel = this;
-  char* panelState = reinterpret_cast<char*>(this);
 
   TUiTextStyleDescriptor councilTextStyle;
   councilTextStyle.fontFamily = 0;
@@ -189,7 +188,7 @@ void TCouncilView::InitializeDiplomacyCouncilViewControlsAndTicker() {
   councilTextStyle.textColor = 0;
   BuildUiTextStyleDescriptor(&councilTextStyle, 0, 0xe, 0x2b6a);
 
-  *reinterpret_cast<short*>(panelState + 0x24c8) = 0;
+  councilNationCount24c8 = 0;
 
   RefreshCouncilCandidateNameText(hostPanel, kControlTagCan0,
                                   g_pDiplomacyTurnStateManager->selectedSourceNationSlot784);
@@ -216,30 +215,30 @@ void TCouncilView::InitializeDiplomacyCouncilViewControlsAndTicker() {
     int flagIndex = 0;
     for (int tileOffset = 0; tileOffset < 0xfc00; tileOffset += 0xa8) {
       if (tileRecordBytes[tileOffset] != -1) {
-        panelState[0x52c + flagIndex] = 1;
+        tileHasOwnerFlags52C[flagIndex] = true;
       }
       ++flagIndex;
     }
-    *reinterpret_cast<short*>(panelState + 0x528) = kCouncilTickerIntervalMapMode;
+    visibleVoteTier528 = kCouncilTickerIntervalMapMode;
 
     TControl* endControl = static_cast<TControl*>(hostPanel->ResolveControlByTag(kControlTagEnd));
     if (endControl != nullptr) {
       endControl->AssertValid();
-      *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(endControl) + 0x1c) =
+      endControl->controlTag =
           (localizationMode == 0x17) ? kEndControlTagReselect : kEndControlTagReselectAlt;
     }
     return;
   }
 
-  short maxPendingTier = *reinterpret_cast<short*>(panelState + 0x24c8);
+  short maxPendingTier = councilNationCount24c8;
   for (int tierIndex = 0; tierIndex < kDiplomacyPairMatrixEntries; ++tierIndex) {
     const short tierValue = g_pDiplomacyTurnStateManager->pendingPolicyTierMatrix484[tierIndex];
     if (tierValue != -1 && maxPendingTier < tierValue) {
       maxPendingTier = tierValue;
     }
   }
-  *reinterpret_cast<short*>(panelState + 0x24c8) = maxPendingTier;
-  *reinterpret_cast<short*>(panelState + 0x528) = 0;
+  councilNationCount24c8 = maxPendingTier;
+  visibleVoteTier528 = 0;
 
   TCouncilTickerAnimation* tickerAnimation = new TCouncilTickerAnimation();
   if (tickerAnimation != nullptr) {
@@ -264,7 +263,7 @@ void TCouncilView::InitializeDiplomacyCouncilViewControlsAndTicker() {
 void TCouncilView::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* point,
                                                                        RgnHandle hitArg) {
   TView::HandleCursorHoverSelectionByChildHitTestAndFallback(point, hitArg);
-  if ((int)field528 < councilNationCount24c8 + 2) {
+  if ((int)visibleVoteTier528 < councilNationCount24c8 + 2) {
     SetCursor((HCURSOR)g_pUiRuntimeContext->cursorTable[26]);
   }
 }
