@@ -74,6 +74,9 @@ public:
   // 0x503320 -- finds the first indexList record whose contextId is exactly 0x1a0a and
   // activates it. Used by TQueryFloater::HandleEvent's 'fore' branch.
   void SelectAndActivatePendingEventType1A0A();
+  // Opens/caches the map-context help dialog and asks its 'GOLD' terrain-help pane
+  // to rebuild the action menu for the selected nation/tile context. 0x503ac0.
+  void EnsureMapActionContextViewAndBuildDefaultTileMenu(int mapContextIndex);
 
   // 2-byte packed (like TControl's Mac-heritage records): the field suffixes are the real
   // offsets only under pack(2) — field1a is an int AT 0x1a, and helpIndexReady sits at

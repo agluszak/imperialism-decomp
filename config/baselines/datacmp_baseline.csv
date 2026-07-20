@@ -13,10 +13,6 @@ g_DAT_Value_00653398|0x653398|WARN|32
 g_DAT_Value_00653408|0x653408|WARN|32
 g_Rebuild_Primary_Nation_Value_00653570|0x653570|WARN|276
 g_Recompute_Nation_Order_LookupTable_0065AA20|0x65aa20|WARN|2
-g_Render_Nation_Header_Value_006961E0|0x6961e0|WARN|15
-g_Render_Nation_Header_Value_006961F8|0x6961f8|WARN|17
-g_Render_Nation_Header_Value_00696210|0x696210|WARN|15
-g_Render_Nation_Header_Value_00696228|0x696228|WARN|15
 g_abResourceTypeUsesHighNibbleFlag|0x696df8|WARN|1
 g_adwEngineerRailBuildCostByTerrainType|0x6531d8|WARN|64
 g_anResourceTypeRequiredOrderType|0x696ed8|WARN|8
