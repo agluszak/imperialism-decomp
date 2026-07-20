@@ -16992,7 +16992,7 @@
     },
     {
       "address": "0x50bea0",
-      "matching": 0.2044525215810995,
+      "matching": 0.20536119945479328,
       "name": "TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets",
       "type": 1
     },
@@ -21935,7 +21935,7 @@
     },
     {
       "address": "0x545940",
-      "matching": 0.4274636510500808,
+      "matching": 0.4261712439418417,
       "name": "TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine",
       "type": 1
     },
@@ -24531,7 +24531,7 @@
     },
     {
       "address": "0x569550",
-      "matching": 0.02247191011235955,
+      "matching": 0.4578313253012048,
       "name": "TNavyToolbarCluster::HandleEvent",
       "type": 1
     },
@@ -30177,7 +30177,7 @@
     },
     {
       "address": "0x5a1520",
-      "matching": 0.48148148148148145,
+      "matching": 0.5259259259259259,
       "name": "TTacticalBattle::MoveTacticalUnitTowardTile",
       "type": 1
     },
@@ -30219,7 +30219,7 @@
     },
     {
       "address": "0x5a1ee0",
-      "matching": 0.6763925729442971,
+      "matching": 0.6737400530503979,
       "name": "TTacticalBattle::EvaluateAndResolveTacticalActionAgainstTileOccupant",
       "type": 1
     },
@@ -30327,7 +30327,7 @@
     },
     {
       "address": "0x5a3d30",
-      "matching": 0.8163265306122449,
+      "matching": 0.8104956268221575,
       "name": "TTacticalBattle::IsTacticalTargetTileReachableForAction",
       "type": 1
     },
@@ -30813,7 +30813,7 @@
     },
     {
       "address": "0x5a8ac0",
-      "matching": 0.6086956521739131,
+      "matching": 0.6867469879518072,
       "name": "TTacticalBattleView::CenterViewportAroundGridIndexAndSnap",
       "type": 1
     },
@@ -30849,7 +30849,7 @@
     },
     {
       "address": "0x5a9240",
-      "matching": 0.5397590361445783,
+      "matching": 0.5533980582524272,
       "name": "TTacticalBattleView::AnimateTacticalUnitMoveBetweenTiles",
       "type": 1
     },
@@ -32822,7 +32822,7 @@
     },
     {
       "address": "0x5bf930",
-      "matching": 0.770885028949545,
+      "matching": 0.7775020678246485,
       "name": "TOfferDeskPicture::RefreshSelectedNationOrderCompatibilityInfo",
       "type": 1
     },
