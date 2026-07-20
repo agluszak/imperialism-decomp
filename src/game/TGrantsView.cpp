@@ -1,5 +1,7 @@
 #include "game/TGrantsView.h"
 
+#include "game/TDiplomacyMapView.h"
+#include "game/TEventHandler.h"
 #include "game/TGreatPower.h"
 #include "game/TSimMgr.h"
 #include "game/global_data_tables.h"
@@ -97,4 +99,17 @@ undefined TGrantsView::OrphanRetStub_00430550() {
 }
 
 // FUNCTION: IMPERIALISM 0x004f8650
-void TGrantsView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {}
+void TGrantsView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+  if (commandId == 0xc) {
+    short tagOffset = static_cast<short>(sourceHandler->controlTag - 0x6330);
+    TDiplomacyMapView* mapView = static_cast<TDiplomacyMapView*>(m_panelData);
+    if (tagOffset & 1) {
+      mapView->actionCodeBC = 8;
+    } else {
+      mapView->actionCodeBC = 7;
+    }
+    mapView = static_cast<TDiplomacyMapView*>(m_panelData);
+    mapView->selectedGrantRowC0 = static_cast<short>(tagOffset / 2);
+  }
+  TEventHandler::HandleEvent(commandId, sourceHandler, event);
+}

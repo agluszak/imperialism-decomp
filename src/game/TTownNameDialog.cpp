@@ -1,10 +1,14 @@
 #include "game/TTownNameDialog.h"
 
+#include "game/TEditText.h"
 #include "game/TPicture.h"
 #include "game/TViewMgr.h"
 #include "game/global_data_tables.h"
 #include "game/quickdraw_rendering.h"
 #include "game/ui_control_tags.h"
+#include "game/ui_invalidation_guard.h"
+
+#include <stdlib.h>
 // SYNTHETIC: IMPERIALISM 0x0051ba70
 // TTownNameDialog::CreateObject
 
@@ -22,20 +26,22 @@ TTownNameDialog::~TTownNameDialog() {}
 
 // FUNCTION: IMPERIALISM 0x0051bb90
 void TTownNameDialog::NoOpUiLifecycleHook(int arg) {
+  CString text;
+
   TView::NoOpUiLifecycleHook(arg);
 
-  TView* nameControl = ResolveControlByTag(kControlTagName);
-  // TODO: the original null-checks nameControl (MessageBoxA + abort on failure, standard
-  // g_szUiNilPointerMessage/g_szUiFailureMessage pattern used elsewhere), rolls a random
-  // suggested-name index (rand() % 8 + 1), then calls FOUR methods on it through vtable
-  // slots 0x1cc, 0x7c, 0x1dc, 0x1d8. Confirmed NOT TStaticText-compatible at slot 0x1cc:
-  // TStaticText::LoadUiStringAndDispatchViaVslot1C8 takes 3 args (group, index, refresh),
-  // but this callsite (0x51bc1a-0x51bc1f) only pushes 2 (group=0x1c52, index=randVal) --
-  // a real arity mismatch, not just an unresolved refresh flag. nameControl's concrete
-  // class needs identifying (no direct `new`/RegisterUiResourceEntry construction site
-  // found yet tying a specific control class to this dialog's 'name' tag) before these
-  // four calls can be modeled without guessing a type, per the type-modeling guardrail.
-  (void)nameControl;
+  TEditText* nameControl = static_cast<TEditText*>(ResolveControlByTag(kControlTagName));
+  if (nameControl == nullptr) {
+    FailNilPointerWithAssert(s_SourcePathUMapDlog_006973D0, 0x4d3);
+  }
+
+  // LIBRARY: rand (0x005e83f0)
+  short suggestedNameIndex = static_cast<short>(rand() % 8 + 1);
+  nameControl->LoadUiStringAndDispatchViaVslot1C8(0x1c52, suggestedNameIndex, 1);
+  UpdatePaletteIndexWithDefaultFallback(0x50);
+  nameControl->ActivateCityProductionViewIfAllowed();
+  nameControl->GetCurrentText(&text);
+  nameControl->SetEditSelectionAndScrollCaret(0, static_cast<short>(text.GetLength()), 1);
 }
 
 // FUNCTION: IMPERIALISM 0x0051bcc0
