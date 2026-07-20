@@ -2,8 +2,10 @@
 
 #include "game/TDropShadowText.h"
 #include "game/TSimMgr.h"
+#include "game/mapped_flavor_text.h"
 #include "game/TSoundPlayer.h"
 #include "game/TStaticText.h"
+#include "game/TTechMgr.h"
 #include "game/TToolBarCluster.h"
 #include "game/TTradePageBuyView.h"
 #include "game/TTradePageSellView.h"
@@ -163,7 +165,49 @@ undefined TDealBookPicture::BuildSelectedNationOrderCapabilityRows() {
 }
 
 // FUNCTION: IMPERIALISM 0x005bbc30
-void TDealBookPicture::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {}
+void TDealBookPicture::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+  if (commandId >= 0x2af8) {
+    // The real table is much larger than the declared 8-entry span (the original indexes
+    // it with commandId + hasProductionOrder193*17, which can run far past 8) -- the
+    // pointer arithmetic still lands on the correct address either way since C++ doesn't
+    // bounds-check here, matching the original's raw displacement + computed offset.
+    int categoryTableIndex = commandId + g_pCityOrderCapabilityState->hasProductionOrder193 * 17;
+    short categorySlot = g_offerDeskSelectionIndexTable_00668568[categoryTableIndex];
+    if (categorySlot != -1) {
+      sellView->RebuildNationOfferRowsForCategory(categorySlot);
+      buyView->RebuildNationBidRowsForCategory(categorySlot);
+      if (initializedFlagB1 == 0) {
+        RefreshTradeSelectionHeaderAndNationOfferBidLines();
+      }
+      TStaticText* titLControl = static_cast<TStaticText*>(ResolveControlByTag(0x7469744c)); // 'titL'
+      titLControl->AssertValid();
+      CString templateText;
+      g_pSimMgr->GetString(0x2741, 3, &templateText);
+      CString categoryName;
+      g_pSimMgr->GetString(0x2711, categorySlot, &categoryName);
+      CString composedTitle;
+      scanBracketExpressions(g_pSimMgr, &composedTitle, static_cast<LPCSTR>(templateText),
+                             static_cast<LPCSTR>(categoryName));
+      titLControl->AssignTextSharedRefIfChangedAndMaybeInvalidate(&composedTitle, 0);
+    }
+  } else if (commandId == 0xa) {
+    unsigned int tag = sourceHandler->controlTag;
+    if (tag == 0x6c636f72u) { // 'lcor'
+      if (field94 > 0) {
+        UpdateDealBookResourceSelectionAndToggleControls(field94 - 1, field90);
+      }
+    } else if (tag == 0x72636f72u) { // 'rcor'
+      if (field94 < field92) {
+        UpdateDealBookResourceSelectionAndToggleControls(field94 + 1, field90);
+      }
+    } else if (tag == 0x6d61726bu) { // 'mark'
+      if (initializedFlagB1 != 0) {
+        RefreshTradeSelectionHeaderAndNationOfferBidLines();
+      }
+    }
+  }
+  TControl::HandleEvent(commandId, sourceHandler, event);
+}
 
 // FUNCTION: IMPERIALISM 0x005bc0d0
 void TDealBookPicture::RefreshTradeSelectionHeaderAndNationOfferBidLines() {

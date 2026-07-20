@@ -13,6 +13,12 @@ public:
   // AssignSharedStringFromField84/AssignTextSharedRefIfChangedAndMaybeInvalidate,
   // which both dereference it once more than an embedded value would need.
   CString* text; // 0x84
+  // UNRESOLVED_FIELD_ATTRIBUTION: field88 is a void* elsewhere in this file
+  // (TStaticText's own ctor/LoadUiStringAndDispatchViaVslot1C8 store an int group id via
+  // reinterpret_cast<void*>), but TShipView::HandleEvent reads its low 16 bits as a
+  // short "max value" compared against field90. Same physical object/offset, two
+  // conflicting readings -- kept as void* (the pre-existing, evidenced typing) pending
+  // full resolution; not retyped to avoid corrupting the already-verified ctor pattern.
   void* field88; // 0x88
   int field8C;   // 0x8c
   short field90; // 0x90

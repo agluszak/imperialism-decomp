@@ -210,3 +210,32 @@ unsigned char TAssetMgr::HasPendingClientSaveFile() {
   _findclose(findHandle);
   return findHandle != -1;
 }
+
+// FUNCTION: IMPERIALISM 0x005e0590
+void TAssetMgr::FormatVersionStringFromVersionResource(CString* out) {
+  HRSRC resourceHandle = FindResourceA(nullptr, MAKEINTRESOURCEA(1), MAKEINTRESOURCEA(16));
+  if (resourceHandle == nullptr) {
+    return;
+  }
+  HGLOBAL loadedResource = LoadResource(nullptr, resourceHandle);
+  if (loadedResource == nullptr) {
+    return;
+  }
+  // Raw offsets into the loaded VS_VERSIONINFO block, matching the original's direct parse
+  // (dwFileVersionMS/dwFileVersionLS of the trailing VS_FIXEDFILEINFO) rather than the
+  // VerQueryValue API.
+  const char* versionInfo = static_cast<const char*>(loadedResource);
+  unsigned int fileVersionMS = *reinterpret_cast<const unsigned int*>(versionInfo + 0x38);
+  unsigned int fileVersionLS = *reinterpret_cast<const unsigned int*>(versionInfo + 0x3c);
+  short major = static_cast<short>(fileVersionMS >> 16);
+  short minor = static_cast<short>(fileVersionMS);
+  short build = static_cast<short>(fileVersionLS >> 16);
+  short revision = static_cast<short>(fileVersionLS);
+  if (revision != 0) {
+    out->Format("(v. %d.%d.%d.%d)", major, minor, build, revision);
+  } else if (fileVersionLS != 0) {
+    out->Format("(v. %d.%d.%d)", major, minor, build);
+  } else {
+    out->Format("(v. %d.%d)", major, minor);
+  }
+}

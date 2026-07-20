@@ -126,11 +126,30 @@ public:
   virtual undefined ApplyScenarioSelectionAndPostTurnEvent5E4();     // slot 0x74 0x57a350
   virtual undefined PostTurnEvent5DCOrResetScenarioSelectionState(); // slot 0x75 0x57a2d0
 
+  // 0x57a6e0, RET 4 (non-virtual thiscall, 1 arg). Confirmed receiver via the write to
+  // selectedScenarioIndex142 at +0x1e (MOV word ptr [ecx+0x142],ax) in its opening bytes.
+  void LoadScenarioMetadataByIndexIntoUiControlCore(short scenarioIndex);
+
   TScenarioChooser();
 
   // Own fields at +0x94..+0x160 (RTTI m_nObjectSize 0x160 vs TNoHilitePicture's 0x94).
   // Ctor (0x45ae60) only chains the base ctor and installs the vtable -- nothing here
-  // is written at construction, so this block is still fully unrecovered scenario-
-  // selection state (every override in TScenarioChooser.cpp is currently a stub).
-  unsigned char scenarioChooserState94[0x160 - 0x94];
+  // is written at construction, so most of this block is still unrecovered scenario-
+  // selection state.
+  // Per-list-row scenario index, indexed by the 'list' TTextList's selectedIndex in
+  // HandleEvent's commandId==4 branch and passed to
+  // LoadScenarioMetadataByIndexIntoUiControlCore.
+  short scenarioIndexByListRow94[(0x118 - 0x94) / 2];
+  // Per-nation-slot description text + length, passed to the 'desc' TDeluxeText's
+  // SetTextEntryFromChars(textChars, textLength) in HandleEvent's 'pick' branch, indexed
+  // by TMapPreviewView::pendingNation6C.
+  const char* nationDescriptionTextByMapSelection118[(0x134 - 0x118) / 4];
+  short nationDescriptionLengthByMapSelection134[(0x142 - 0x134) / 2];
+  // Selected scenario index (-1 = none); read by ApplyScenarioSelectionAndPostTurnEvent5E4
+  // and PostTurnEvent5DCOrResetScenarioSelectionState. -1 also short-circuits the whole
+  // apply flow.
+  short selectedScenarioIndex142;
+  // Per-nation-slot state codes, indexed by TMapPreviewView::selectedNation68 and applied
+  // via TSimMgr::SetStateCodeAndUpdateZeroOrOutOfRangeFlag.
+  int nationStateCodesByMapSelection144[(0x160 - 0x144) / 4];
 };

@@ -224,7 +224,7 @@ public:
   // else FindNodeMatching from the second node) and, if found, sets its active; when
   // the flag is nonzero also clears targetOrderObject's +0x34 dword (same idiom as
   // SetTaskForceOrderSelectionByNationClassAndFlag).
-  void SetTaskForceOrderSelectionByNodeId(TTaskForce* targetOrderObject,
+  void SetTaskForceOrderSelectionByNodeId(TObject* targetOrderObject,
                                           char activeFlag); // 0x5549a0
 
   // Counts active childOrderList entries whose descriptor enabledFlagOrBucketOffset

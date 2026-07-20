@@ -3,6 +3,8 @@
 #include "game/TView.h"
 #include "game/mfc.h"
 
+class TEventHandler;
+
 // VTABLE: IMPERIALISM 0x00657eb0
 class TOrderView : public TView {
 public:
@@ -119,6 +121,7 @@ public:
 
   TOrderView();
 
-  // Original object size is 0x68 (CRuntimeClass m_nObjectSize); the source class ended at 0x64. Trailing 4 byte(s) not yet semantically recovered — declared so sizeof and the recomp's allocation size match the original.
-  int field64;
+  // Slider-value listener, notified via the common TEventHandler::SetControlValue base
+  // slot in HandleEvent -- concrete receiver type not otherwise constrained.
+  TEventHandler* field64;
 };

@@ -1,6 +1,8 @@
 #include "game/TToolBarCluster.h"
 
+#include "game/TApplication.h"
 #include "game/TArmyMgr.h"
+#include "game/TAssetMgr.h"
 #include "game/TGlobalMapState.h"
 #include "game/TMapUberPicture.h"
 #include "game/TNavyMgr.h"
@@ -9,14 +11,23 @@
 #include "game/TStaticText.h"
 #include "game/TTaskForce.h"
 #include "game/TViewMgr.h"
+#include "game/TWindow.h"
 #include "game/TZone.h"
 #include "game/global_data_tables.h"
 #include "game/map_overlay_geometry.h"
 #include "game/mapped_flavor_text.h"
+#include "game/ui_control_tags.h"
+#include "game/ui_invalidation_guard.h"
 
 struct TGlobalMapCityScoreRecord;
 // 0x00563360 -- __stdcall free resolver (defined in TMapMgr.cpp).
 TGlobalMapCityScoreRecord* __stdcall GetProvinceByTileIndex(short nTileIndex);
+
+// Resolves the turn-event dialog node for message context 0x102c (the "capabilities" dialog),
+// computes its placement, and refreshes it. Standalone helper (no `this`) -- matches the
+// original's own free-function shape. Defined below at its real address (0x5dc560), after
+// this class's own methods.
+void DispatchUiRuntimeMessage102CAndRefreshActiveView();
 
 // Builds the 16 per-slot hover/hit-test rects consumed by
 // TToolBarCluster::HandleCityBuildingHoverSelection from a table of 17 (x,y) anchor points.
@@ -264,8 +275,29 @@ TToolBarCluster::TToolBarCluster() {}
 // TToolBarCluster::`scalar deleting destructor'
 TToolBarCluster::~TToolBarCluster() {}
 
+// Resolves the turn-event dialog node for message context 0x102c (the "capabilities" dialog),
+// computes its placement, and refreshes it. Standalone helper (no `this`) -- matches the
+
 // FUNCTION: IMPERIALISM 0x00584ea0
-void TToolBarCluster::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {}
+void TToolBarCluster::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+  TCluster::HandleEvent(commandId, sourceHandler, event);
+
+  bool eligible = g_pApplicationUiRootController->InModalState() == 0;
+  if (g_pApplicationUiRootController->screenModeAt24 > 1) {
+    eligible = false;
+  }
+  if (commandId == 10 && eligible) {
+    unsigned int tag = sourceHandler->controlTag;
+    if (tag > kControlTagFlagCaps) {
+      // Original tail-calls into the shared 499-byte HandleCrossUSmallViewsCommandTagDispatch
+      // (0x584f27, unowned) for every tag above 'Flag' -- not yet ported.
+    } else if (tag == kControlTagFlagCaps) {
+      DispatchUiRuntimeMessage102CAndRefreshActiveView();
+    } else if (tag == kControlTagDoneCaps) {
+      g_pSimMgr->PostMainWindowCommand100ForTurnFlow();
+    }
+  }
+}
 
 // FUNCTION: IMPERIALISM 0x005851c0
 void TToolBarCluster::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* point,
@@ -339,4 +371,25 @@ void TToolBarCluster::SehCleanup_ReleaseTwoTempSharedStringRefs(int unusedArg) {
   (void)unusedArg;
   CString unused1;
   CString unused2;
+}
+// FUNCTION: IMPERIALISM 0x005dc560
+void DispatchUiRuntimeMessage102CAndRefreshActiveView() {
+  // Turn-event dialog roots resolved by message context are TWindow-derived popups (several
+  // other ResolveTurnEventDialogNodeByMessageContext callers already cast to TWindow*, e.g.
+  // TLanguageMgr.cpp/TViewMgr.cpp) -- confirmed here by arity: TWindow::
+  // ExecuteViewModalStateWithPushPopChain() takes zero args, matching this callsite's bare
+  // `call [edi+0x1ac]` exactly, whereas the byte-coincident TControl::NoOpUiViewSlotHandler
+  // takes two.
+  TWindow* node = static_cast<TWindow*>(
+      g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(0x102c));
+  if (node == nullptr) {
+    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgr_0069B6BC, 0xf6c);
+  }
+  POINT placement;
+  g_pUiRuntimeContext->ComputeTurnEventDialogPlacementByCode(node, &placement);
+  node->CaptureLayoutF0(reinterpret_cast<int*>(&placement), 0);
+  node->ExecuteViewModalStateWithPushPopChain();
+  node->CallVoidSlotA0();
+  node->Free();
 }

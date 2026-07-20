@@ -1,5 +1,6 @@
 #include "game/TViewMgr.h"
 #include "game/TC2TemplateDialog.h"
+#include "game/TEventHandler.h"
 
 #include "game/TDealBookPicture.h"
 #include "game/TModuleLibraryCacheTableStateB.h"
@@ -56,7 +57,6 @@
 #include "game/quickdraw_rendering.h" // ApplyControlThemeStyleAndOptionalCaption
 #include "game/ui_text_label_helpers_decls.h"
 
-undefined4 QueueDeferredUiEventPacket(void);
 undefined4 ShowDialogTemplateE0ModalAndReleaseCapture(void);
 undefined4 HandleTurnEvent8FC_RebuildPageTabsAndTitles(void);
 
@@ -1158,7 +1158,7 @@ void TViewMgr::DispatchTurnEventSlot4C(short eventCode, int payload) {
       this->pad06 = secondary;
     }
     if (newCode == 0x5e4) {
-      QueueDeferredUiEventPacket(); // (mainView, 0x29a) — args deferred pending port
+      QueueDeferredUiEventPacket(mainView, 0x29a, mainView);
     } else if (newCode == 0x547) {
       mainView->RefreshControl();
       g_pCursorControlPanel->AssertValid();

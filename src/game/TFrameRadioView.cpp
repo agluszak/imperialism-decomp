@@ -32,28 +32,33 @@ void TFrameRadioView::ApplyRectSlot110(RECT* rectBuffer) {
 // FUNCTION: IMPERIALISM 0x004fe060
 void TFrameRadioView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   switch (commandId) {
-  case 0xa:
-    DispatchEvent(0x1f, this, 0);
-    return;
-  case 0xc:
-    if (controlState64 == 0 && GetBoolSlot28() != 0) {
-      SetControlStateFlagAndMaybeRefresh(true, false);
-    }
-    break;
-  case 0x1f:
-    if (GetBoolSlot28() != 0) {
-      SetControlStateFlagAndMaybeRefresh(true, true);
-    }
-    return;
-  case 0x20:
-    if (GetBoolSlot28() != 0) {
-      SetControlStateFlagAndMaybeRefresh(false, true);
-    }
-    return;
-  default:
-    break;
+    case 0xa:
+      DispatchEvent(0x1f, this, nullptr);
+      return;
+    case 0xc:
+      if (controlState64 == 0) {
+        if (GetBoolSlot28() != 0) {
+          SetControlStateFlagAndMaybeRefresh(1, 0);
+        }
+      }
+      TControl::HandleEvent(commandId, sourceHandler, event);
+      return;
+    case 0x1f:
+      if (GetBoolSlot28() != 0) {
+        SetControlStateFlagAndMaybeRefresh(1, 1);
+        return;
+      }
+      break;
+    case 0x20:
+      if (GetBoolSlot28() != 0) {
+        SetControlStateFlagAndMaybeRefresh(0, 1);
+        return;
+      }
+      break;
+    default:
+      TControl::HandleEvent(commandId, sourceHandler, event);
+      return;
   }
-  TView::HandleEvent(commandId, sourceHandler, event);
 }
 
 // FUNCTION: IMPERIALISM 0x004fe190

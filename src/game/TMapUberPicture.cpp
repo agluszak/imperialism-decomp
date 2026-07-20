@@ -6,16 +6,24 @@
 #include "game/TArmyMgr.h"
 #include "game/TCivMgr.h"
 #include "game/TMapDialog.h"
+#include "game/TMapMgr.h"
 #include "game/TMiniMapView.h"
+#include "game/TAssetMgr.h"
+#include "game/TMultiplayerMgr.h"
 #include "game/TOcean.h"
 #include "game/TOceanDialog.h"
 #include "game/TSimMgr.h"
 #include "game/TTaskForce.h"
 #include "game/TViewMgr.h"
 #include "game/global_data_tables.h"
+#include "game/mapped_flavor_text.h"
 #include "game/ui_control_tags.h"
 #include "game/ui_invalidation_guard.h"
 #include "game/ui_text_label_helpers_decls.h"
+
+// 0x597020 -- composes and dispatches the turn-summary message (scenario tag line +
+// multiplayer game-name line + build version), defined below.
+void ComposeAndDispatchTurnSummaryLocalizedMessage();
 
 // SYNTHETIC: IMPERIALISM 0x00596900
 // TMapUberPicture::CreateObject
@@ -127,7 +135,7 @@ void TMapUberPicture::SetMapInteractionMode(short nMode) {
     // faked; the mode-transition/selection-state and layout-capture side effects below are
     // real.
     if (nMode == 0) {
-      this->EnterMapInteractionOverlayMode(0);
+      this->EnterMapInteractionOverlayMode(nullptr);
     }
   }
 
@@ -140,8 +148,90 @@ void TMapUberPicture::SetMapInteractionMode(short nMode) {
   }
 }
 
+// FUNCTION: IMPERIALISM 0x00597020
+void ComposeAndDispatchTurnSummaryLocalizedMessage() {
+  CString summary;
+  CString tempMsg;
+
+  if (strcmp(g_szEmptyString, static_cast<LPCSTR>(g_pGlobalMapState->scenarioTagText1c)) != 0) {
+    g_pSimMgr->GetString(0x273f, 1, &tempMsg);
+    scanBracketExpressions(g_pSimMgr, &summary, static_cast<LPCSTR>(tempMsg),
+                           static_cast<LPCSTR>(g_pGlobalMapState->scenarioTagText1c));
+  }
+
+  if (g_pSimMgr->field44 != 0) {
+    CString sectionMsg;
+    g_pSimMgr->GetString(0x2742, 0x24, &tempMsg);
+    scanBracketExpressions(g_pSimMgr, &sectionMsg, static_cast<LPCSTR>(tempMsg),
+                           static_cast<LPCSTR>(g_pGameFlowState->gameNameString));
+    summary += sectionMsg;
+  }
+
+  CString versionText;
+  g_pUiViewManager->FormatVersionStringFromVersionResource(&versionText);
+
+  if (strcmp(g_szEmptyString, static_cast<LPCSTR>(versionText)) != 0) {
+    if (strcmp(g_szEmptyString, static_cast<LPCSTR>(summary)) != 0) {
+      summary = summary + s_szDoubleNewline_00699438;
+    }
+    summary += versionText;
+  }
+
+  if (strcmp(g_szEmptyString, static_cast<LPCSTR>(summary)) != 0) {
+    g_pUiRuntimeContext->DispatchLocalizedUiMessageWithTemplateA13A0(summary,
+                                                                     &g_cstrMapModeMessageStore, 0,
+                                                                     0);
+  }
+}
+
 // FUNCTION: IMPERIALISM 0x00597340
-void TMapUberPicture::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {}
+void TMapUberPicture::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+  if (commandId == 10) {
+    bool ctrlHeld = (GetAsyncKeyState(VK_CONTROL) & 0x8000) != 0;
+    unsigned int tag = sourceHandler->controlTag;
+    if (ctrlHeld && (tag == kControlTagZmIn || tag == kControlTagZmOt)) {
+      ComposeAndDispatchTurnSummaryLocalizedMessage();
+      return;
+    }
+    if (tag == kControlTagZmOt) {
+      CommitPendingUiModeChangeAndRefreshViews(static_cast<TView*>(sourceHandler));
+      return;
+    } else if (tag == kControlTagZmIn) {
+      EnterMapInteractionOverlayMode(static_cast<TView*>(sourceHandler));
+      return;
+    } else if (tag == kControlTagCanc) {
+      if (g_pSimMgr->field44 != 0) {
+        CString msg;
+        g_pSimMgr->GetString(0x2742, 0x25, &msg);
+        g_pUiRuntimeContext->DispatchLocalizedUiMessageWithTemplateA13A0(msg,
+                                                                         &g_cstrMapModeMessageStore,
+                                                                         0, 0);
+      } else {
+        ReinitializeGameFlowAndPostTurnEventCode(0x5dd);
+      }
+      return;
+    } else if (tag == kControlTagSend) {
+      if ((GetAsyncKeyState(VK_CONTROL) & 0x8000) != 0) {
+        if (g_pGameFlowState->fieldF4 != 0) {
+          g_pSimMgr->SetGlobalTurnStateCodeIfAllowed(0x72);
+        }
+        // else: falls through with no further action in the original.
+        return;
+      }
+      g_pGameFlowState->RefreshPoseMessageDialogNationSelectionControls(-1);
+      return;
+    }
+  } else if (commandId == 0xc) {
+    unsigned int tag = sourceHandler->controlTag;
+    if (tag >= kControlTagAgr0 && tag <= kControlTagAgr2) {
+      TTaskForce* taskForce = g_pActiveMapOrderContext->selectedTaskForce14;
+      if (taskForce != nullptr) {
+        taskForce->ResetOrderTypeAndStrengthDword(static_cast<int>(tag - kControlTagAgr0));
+      }
+    }
+  }
+  TControl::HandleEvent(commandId, sourceHandler, event);
+}
 
 // FUNCTION: IMPERIALISM 0x00597600
 void TMapUberPicture::vmethod_0017(int param) {}
@@ -330,17 +420,17 @@ void TMapUberPicture::OpenMapContextActionDialogByType(TZone* zone, int actionTy
 
 // FUNCTION: IMPERIALISM 0x005999f0
 void TMapUberPicture::ResetMapInteractionToCivilianMode() {
-  EnterMapInteractionOverlayMode(0);
+  EnterMapInteractionOverlayMode(nullptr);
   SetMapInteractionMode(0);
 }
 
 // FUNCTION: IMPERIALISM 0x00599a50
-void TMapUberPicture::EnterMapInteractionOverlayMode(int param1) {
+void TMapUberPicture::EnterMapInteractionOverlayMode(TView* controlOverride) {
   if (this->invalidationFlag94 != 0) {
     return;
   }
   TView* zoomControl =
-      (param1 != 0) ? reinterpret_cast<TView*>(param1) : this->ResolveControlByTag(0x5a6d496e);
+      (controlOverride != nullptr) ? controlOverride : this->ResolveControlByTag(0x5a6d496e);
   zoomControl->AssertValid();
   if (zoomControl != nullptr) {
     zoomControl->controlTag = 0x5a6d4f74; // "ZmOt" ("Zoom Out")
@@ -362,6 +452,31 @@ void TMapUberPicture::EnterMapInteractionOverlayMode(int param1) {
     this->field_0xc0->markerBoxY94 =
         this->field_0xc0->frameHeight38 / 2 - this->field_0xc0->markerBoxHeight9c - 2;
     this->field_0xc0->RefreshControl();
+  }
+}
+
+// FUNCTION: IMPERIALISM 0x00599b90
+void TMapUberPicture::CommitPendingUiModeChangeAndRefreshViews(TView* controlOverride) {
+  if (invalidationFlag94 != 0) {
+    if (g_pUiAnimator != nullptr) {
+      // The original also calls g_pUiAnimator->registryList24's own vtable slot 0x54 here
+      // (CallObjectOffset24Vslot54IfPresent) -- TList's real slot at that byte offset is
+      // unresolved, so left unmodeled.
+    }
+    TView* zoomControl =
+        (controlOverride != nullptr) ? controlOverride : ResolveControlByTag(kControlTagZmOt);
+    zoomControl->AssertValid();
+    if (zoomControl != nullptr) {
+      zoomControl->controlTag = kControlTagZmIn;
+    }
+    invalidationFlag94 = 0;
+    // The original also dispatches subview2A8/goodGoldTagControlA4's own vtable slots
+    // 0x288/0x1d8/0xf0 here (beyond either class's currently-declared extent), then writes
+    // goodGoldTagControlA4's raw pointer value into subviewAc -- but goodGoldTagControlA4
+    // is TOceanDialog* (TWorldView-derived) while subviewAc is declared TMapDialog*, an
+    // unrelated type per the existing class hierarchy, so that assignment is left
+    // unmodeled pending resolution of the mismatch, along with refreshing field_0xc0's
+    // rect cache.
   }
 }
 

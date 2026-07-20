@@ -1,10 +1,13 @@
 #include "game/TTacticalToolbar.h"
 
 #include "game/CString.h"
+#include "game/TAmbitApplication.h"
 #include "game/TArmyTacUnit.h"
+#include "game/THelpMgr.h"
 #include "game/TMilitaryUnit.h"
 #include "game/TPicture.h"
 #include "game/TQuickDrawSurfaceContext.h"
+#include "game/TTacticalBattle.h"
 #include "game/TTacticalUnit.h"
 #include "game/global_data_tables.h"
 #include "game/quickdraw_rendering.h"
@@ -175,4 +178,23 @@ void TTacticalToolbar::ConfigureTacticalTargetDoneRetreatAutoControls(int mode) 
 }
 
 // FUNCTION: IMPERIALISM 0x005acf90
-void TTacticalToolbar::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {}
+void TTacticalToolbar::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+  if (commandId == 0xa) {
+    unsigned int tag = sourceHandler->controlTag;
+    switch (tag) {
+      case kTagDone:
+      case kControlTagAuto:
+      case kControlTagRetr:
+      case kControlTagTarg:
+        battle88->HandleTacticalBattleCommandTag(tag);
+        break;
+      case kControlTagHelp:
+        g_pHelpMgr->SelectAndActivatePendingEventForCurrentView();
+        break;
+      default:
+        break;
+    }
+  }
+  TCluster::HandleEvent(commandId, sourceHandler, event);
+  g_pGlobalUiRootController->SetActiveView(ownerContext);
+}

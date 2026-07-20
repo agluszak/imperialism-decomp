@@ -1,4 +1,11 @@
 #include "game/TPurchaseCluster.h"
+
+#include "game/TAmtBar.h"
+#include "game/TBuildingView.h"
+#include "game/TEventHandler.h"
+#include "game/global_data_tables.h"
+#include "game/ui_control_tags.h"
+#include "game/ui_invalidation_guard.h"
 // SYNTHETIC: IMPERIALISM 0x004cc300
 // TPurchaseCluster::CreateObject
 
@@ -24,11 +31,57 @@ void TPurchaseCluster::BeginMouseCaptureAndStartRepeatTimer(CPoint* point, int a
                                                             int arg4) {}
 
 // FUNCTION: IMPERIALISM 0x004cc490
-void TPurchaseCluster::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {}
+void TPurchaseCluster::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+  if (commandId == 10) {
+    if (sourceHandler->controlTag == kControlTagLaro) {
+      field88->SetControlValue(UpdateCityViewValueControl() - 1);
+    } else if (sourceHandler->controlTag == kControlTagRaro) {
+      field88->SetControlValue(UpdateCityViewValueControl() + 1);
+    }
+    // TODO: the original also calls SetCityViewValueControlAmount(field88's own +0x4 short,
+    // 1) here for either tag branch (confirmed via raw disasm: `ax = word[field88+4]; call
+    // this->SetCityViewValueControlAmount(ax, 1)`). field88's concrete class remains
+    // unresolved: it needs both TEventHandler::SetControlValue (word slot 0xb, byte 0x2c)
+    // AND its own short field at just +0x4 -- i.e. almost no inherited-class prefix before
+    // its own data, ruling out every TView-family widget class checked so far (TAmtBar,
+    // TStaticText, TDeluxeText all have 0x60+ bytes of inherited state first). Left
+    // unmodeled rather than guessing a type.
+  }
+  TCluster::HandleEvent(commandId, sourceHandler, event);
+}
 
 // FUNCTION: IMPERIALISM 0x004cc550
-void __fastcall TPurchaseCluster::SetCityViewValueControlAmount(int* pCityViewDialog,
-                                                                short nValue) {}
+void TPurchaseCluster::SetCityViewValueControlAmount(short nValue, char redrawFlag) {
+  // 'valu' is a TAmtBar (already the established typing at this exact tag in
+  // TProductionCluster.cpp); confirmed here by TAmtBar's own SetControlValueSlot1E4(int,
+  // int) matching this callsite's slot 0x1e4 dispatch and (nValue, 0) argument shape exactly
+  // -- unlike the byte-coincident TDeluxeText::ApplyTextStyleDescriptorAndMaybeRefresh at the
+  // same offset, which takes a style-descriptor pointer, not a plain value.
+  TAmtBar* valueControl = static_cast<TAmtBar*>(ResolveControlByTag(kControlTagValu));
+  if (valueControl == nullptr) {
+    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUCityViews_00696650, 0x781);
+  }
+  valueControl->SetControlValueSlot1E4(nValue, 0);
+  if (redrawFlag == 0) {
+    return;
+  }
+
+  RECT bounds;
+  bounds.left = valueControl->ownerLocalX + ownerLocalX;
+  bounds.top = valueControl->ownerLocalY + ownerLocalY;
+  bounds.right = bounds.left + valueControl->frameWidth34;
+  bounds.bottom = bounds.top + valueControl->frameHeight38;
+  RECT copiedBounds;
+  CopyRect(&copiedBounds, &bounds);
+  ownerContext->InvalidateCityDialogRectRegion(&copiedBounds, 1);
+  // ownerContext is a TBuildingView (TArmoryView/TUniversityView/TShipyardView, the city-view
+  // dialogs that host a TPurchaseCluster): confirmed by arity -- TBuildingView::
+  // OrphanRetStub_004c6fb0() at slot 0x76 (byte 0x1d8) takes zero args, matching this
+  // callsite exactly, unlike the byte-coincident TWindow::GetWindowText(CString*) which
+  // takes one.
+  static_cast<TBuildingView*>(ownerContext)->OrphanRetStub_004c6fb0();
+}
 
 // FUNCTION: IMPERIALISM 0x004cc640
 undefined TPurchaseCluster::UpdateCityViewValueControl() {

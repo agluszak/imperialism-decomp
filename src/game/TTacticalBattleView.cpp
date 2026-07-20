@@ -1,7 +1,10 @@
 #include "game/TTacticalBattleView.h"
 
 #include "game/TCivAnimation2.h"
+#include "game/TControl.h"
+#include "game/TInfoBarText.h"
 #include "game/TOneTimeAnimation.h"
+#include "game/ui_control_tags.h"
 #include "game/ui_invalidation_guard.h"
 
 #include "game/TAnimation.h"
@@ -906,7 +909,17 @@ TTacticalBattleView::~TTacticalBattleView() {}
 void TTacticalBattleView::Free() {}
 
 // FUNCTION: IMPERIALISM 0x005a84d0
-void TTacticalBattleView::NoOpUiLifecycleHook(int arg) {}
+void TTacticalBattleView::NoOpUiLifecycleHook(int arg) {
+  TView::NoOpUiLifecycleHook(arg);
+
+  TInfoBarText* cursorPanel = static_cast<TInfoBarText*>(OwnerPanel()->ResolveControlByTag(kControlTagCurs));
+  cursorPanel->QueryStepValue();
+  g_pCursorControlPanel = cursorPanel;
+  g_pCursorControlPanel->InitializeMapHintTextStyleAndThemeFlags(0x2b6c, 0x2b67);
+
+  static_cast<TControl*>(OwnerPanel())->contentInsets68.left = controlTag;
+  ActivateCityProductionViewIfAllowed();
+}
 
 // FUNCTION: IMPERIALISM 0x005a8550
 void TTacticalBattleView::ForwardParam(int param) {}

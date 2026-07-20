@@ -112,4 +112,7 @@ public:
   // slot 0x67 CtrlSlot103_SubtractPosAndDispatchSlot19C_Impl inherited unchanged (0x48bac0)
 
   TTechHistoryView();
+
+  // Non-virtual (real address 0x5b22c0, called directly, not through the vtable).
+  void ConstructTTechHistoryViewBaseState(short techId);
 };

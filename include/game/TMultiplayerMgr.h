@@ -84,7 +84,9 @@ public:
   // +0x40 — the active lobby dialog view when one is open; the code-9 receive path
   // checks IsKindOf(RUNTIME_CLASS(TLoungeDialog)) before using it as the lounge.
   TView* lobbyDialogView40;               // +0x40
-  int diplomacyQueueContext;              // +0x44 — child handler for queue routing
+  // +0x44 — child handler for queue routing. Opaque: TLoungeDialog::NoOpUiLifecycleHook
+  // passes `this` (a TView-derived dialog) as the sole non-zero writer seen so far.
+  void* diplomacyQueueContext;
   int nationSessionIds[kNationSlotCount]; // +0x48
   int queueSyncDword;                     // +0x64
   char processPrimaryEventQueue;          // +0x68
@@ -143,7 +145,20 @@ public:
   // primaryTurnEventQueueHead. 0x549280.
   void AppendNodeToTurnEventLinkedListAt6C(int node);
   // 0x5430c0 — enable both diplomacy queue-processing flags and set the routing context.
-  void EnableDiplomacyQueueRoutingAndSetContextField44(int nContext, char fEnable);
+  void EnableDiplomacyQueueRoutingAndSetContextField44(void* nContext, char fEnable);
+  // 0x54b4c0, RET 0x10 (4 stack args). Builds and sends a LobbyChatEvent9Packet: reasonCode
+  // becomes nationSlot18 (the field's original comment names it for the AWOL use case; this
+  // caller uses it as a generic status/reason byte instead), field1CValue becomes field1C,
+  // senderText copies into senderName, and messageText copies into messageText (both
+  // unbounded strcpy, matching the original's raw REP MOVSD/MOVSB copy). The only known
+  // caller (TLoungeDialog) passes the same string for both.
+  void DispatchTurnEventCode9WithTwoTextTokens(int reasonCode, int field1CValue,
+                                               const char* senderText, const char* messageText);
+  // 0x5454b0. Records `panel` as lobbyDialogView40, resets nationSessionIds[]/nationStatusTags[]
+  // for all 7 slots, restamps each 'nam0'-'nam6' control from GetString(0x2759, 1) (index is a
+  // literal 1 for every slot, not looped), resets the 'okay' control, and -- only when
+  // g_pSimMgr->field44 == 2 -- broadcasts a minimal event-0xd "time" packet. Always returns 1.
+  unsigned char ResetNationStatusSlotsAndInitializeNameControls(TView* panel);
   void CreateAndSendTurnEvent11_MapOffsetAndFlags(unsigned char flagByte, int mapOffsetSelector,
                                                   int absoluteOffset, short shortA,
                                                   short shortB);       // 0x5493c0
@@ -312,6 +327,11 @@ public:
   // 0x54b8c0: returns nationStatusTags[slot]; when slot is -1, resolves it from the active
   // nation id (falling back to the game-flow session-id scan).
   int GetNationStatusCodeForSlotOrActiveNation(int slot);
+  // 0x54b1b0, RET 4 (one stack arg, unread by the body so far as ported). If the local
+  // session isn't seated in nationSessionIds[] at all, poses an error prompt and returns.
+  // Otherwise resolves the pose-message dialog (turn-event context 0x5e7) and, for each
+  // 'box0'-'box6' slot control, marks it occupied-by-another-player via SetState.
+  void RefreshPoseMessageDialogNationSelectionControls(int unused);
 };
 
 // 0x5421a0: 0-based index (0..6) of g_pGameFlowState->nationSessionIds[] matching the

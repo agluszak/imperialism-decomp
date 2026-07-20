@@ -121,5 +121,8 @@ public:
   // resourceType04 (+4), displayName18 (+0x18), stockLevel1c (+0x1c), and
   // admiralBacklink20 (+0x20) through this pointer, matching TShip's layout exactly.
   TShip* shipNode60;
-  int field64;
+  class TTaskForce* field64;
+
+  // Non-virtual: runs the rename dialog for field60 in response to the 'name' command.
+  void RunEngineerOrderNameEditDialogAndApply();
 };

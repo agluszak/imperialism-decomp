@@ -8,7 +8,9 @@ class TCitySiteView : public TMapDialog {
 public:
   int field364; // +0x364 — no confirmed reader yet
   // Viewport clamp box consumed by SetMapDialogCellCoordinatesAndRefresh (0x51c320).
-  // Not initialized by the ctor (0x51beb0); set up by whoever opens the city-site view.
+  // Not initialized by the ctor (0x51beb0); initialized to an inverted (empty) box
+  // (+-1000) by NoOpUiLifecycleHook (0x51bff0), then presumably narrowed by whoever
+  // opens the city-site view.
   int minColBound368; // +0x368
   int maxColBound36c; // +0x36c
   int minRowBound370; // +0x370

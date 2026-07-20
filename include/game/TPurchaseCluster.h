@@ -125,12 +125,18 @@ public:
   // slot 0x71 OrphanTiny_GetDwordEcxOffset_84_00491770 inherited unchanged (0x491770)
   // slot 0x72 OrphanCallChain_C2_I51_00491790 inherited unchanged (0x491790)
   virtual undefined OrphanCallChain_C1_I08_004cc440(int param_1); // slot 0x73 0x4cc440
-  virtual void __fastcall SetCityViewValueControlAmount(int* pCityViewDialog,
-                                                        short nValue); // slot 0x74 0x4cc550
+  // Real params are (short nValue, char redrawFlag) -- confirmed from the callsite
+  // (0x4cc490: pushes field88's word field then 1) and the body's own stack reads
+  // ([esp+0x2c]=nValue, [esp+0x30]=redrawFlag). The previous (int*, short) declaration
+  // was a poison-pill guess; there is no pCityViewDialog parameter.
+  virtual void SetCityViewValueControlAmount(short nValue, char redrawFlag); // slot 0x74 0x4cc550
   virtual undefined UpdateCityViewValueControl();                      // slot 0x75 0x4cc640
   // TCluster's slice ends at 0x88; RTTI oracle confirms sizeof(TPurchaseCluster) == 0x8c.
-  // The ctor (0x4cc3c0) zeroes the one own field.
-  int field88; // +0x88
+  // The ctor (0x4cc3c0) zeroes the one own field. HandleEvent dispatches
+  // field88->vtbl[0x2c] (TEventHandler::SetControlValue) on it -- concrete class beyond
+  // that shared slot (including the short field HandleEvent reads at field88's own +0x4)
+  // is unresolved.
+  class TEventHandler* field88; // +0x88
 
   TPurchaseCluster();
 };

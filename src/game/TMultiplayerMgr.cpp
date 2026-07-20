@@ -1,3 +1,4 @@
+#include "game/TAmbitApplication.h"
 #include "game/TMultiplayerMgr.h"
 
 #include <string.h>
@@ -284,7 +285,7 @@ void TMultiplayerMgr::WriteTo(TStream* stream) {
 }
 
 // FUNCTION: IMPERIALISM 0x005430c0
-void TMultiplayerMgr::EnableDiplomacyQueueRoutingAndSetContextField44(int nContext, char fEnable) {
+void TMultiplayerMgr::EnableDiplomacyQueueRoutingAndSetContextField44(void* nContext, char fEnable) {
   processPrimaryEventQueue = 1;
   processSecondaryEventQueue = 1;
   if (fEnable != '\0') {
@@ -813,6 +814,40 @@ unsigned char TMultiplayerMgr::ApplyJoinGameSelectionAndPostTurnEvent5E4(int sel
 unsigned char TMultiplayerMgr::AssignStringAtB4FromB0AndResetState40() {
   playerNameMirror = playerNameString;
   lobbyDialogView40 = 0;
+  return 1;
+}
+
+// FUNCTION: IMPERIALISM 0x005454b0
+unsigned char TMultiplayerMgr::ResetNationStatusSlotsAndInitializeNameControls(TView* panel) {
+  lobbyDialogView40 = panel;
+  CString loadedString;
+  for (int i = 0; i < kNationSlotCount; ++i) {
+    nationSessionIds[i] = 0;
+    nationStatusTags[i] = 0x756e6173; // 'unas'
+    g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&loadedString, 0x2759, 1);
+    TStaticText* nameControl =
+        static_cast<TStaticText*>(panel->ResolveControlByTag(0x6e616d30u + i)); // 'nam0'-'nam6'
+    nameControl->AssertValid();
+    nameControl->AssignTextSharedRefIfChangedAndMaybeInvalidate(&loadedString, 1);
+  }
+
+  TView* okayControl = panel->ResolveControlByTag(0x6f6b6179u); // 'okay'
+  okayControl->AssertValid();
+  okayControl->SetEnabled(0, 0);
+
+  if (g_pSimMgr->field44 == 2) {
+    TurnEvent3Mode18Packet packet;
+    packet.packetTag = 0x74696d65; // 'time'
+    packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
+    packet.eventCode = 0;
+    packet.fromNetworkId = 0;
+    packet.toNetworkId = 0;
+    packet.eventCode = 0xd;
+    packet.toNetworkId = -1;
+    packet.messageLength = 0;
+    packet.messageLength = 0x18;
+    g_pNetMgr006a6014->Send(&packet, 0);
+  }
   return 1;
 }
 
@@ -2732,6 +2767,55 @@ NationStateRecordA8& NationStateRecordA8::operator=(const NationStateRecordA8& s
   regionClassA3 = source.regionClassA3;
   cityNameA4 = source.cityNameA4;
   return *this;
+}
+
+// FUNCTION: IMPERIALISM 0x0054b1b0
+void TMultiplayerMgr::RefreshPoseMessageDialogNationSelectionControls(int unused) {
+  (void)unused;
+  if (FindActiveNationSlotIndexInGameFlowList() == -1) {
+    CString notSeatedMessage;
+    g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&notSeatedMessage, 0x2742,
+                                                                    0x16);
+    g_pUiRuntimeContext->DispatchLocalizedUiMessageWithTemplateA13A0(
+        notSeatedMessage, &g_cstrNationAwolMessageStore, 0, 0);
+    return;
+  }
+
+  TView* dialog = g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(0x5e7);
+  dialog->AssertValid();
+
+  int mySlotIndex = FindActiveNationSlotIndexInGameFlowList();
+  for (int i = 0; i < 7; ++i) {
+    TView* boxControl = dialog->ResolveControlByTag(0x62786230u + i); // 'box0'-'box6'
+    boxControl->AssertValid();
+    int sessionId = g_pGameFlowState->nationSessionIds[i];
+    bool occupied = sessionId != 0 && sessionId != -2;
+    bool occupiedByMe = occupied && (i == mySlotIndex);
+    boxControl->SetState(occupied && !occupiedByMe, 0);
+    // The original then calls the box control's own slot-0x75/0x76 virtuals (isMine flag,
+    // then a bare refresh) -- the 'box' receiver class is unresolved, so left unmodeled.
+  }
+
+  // The original then restyles and resolves a 'mesg' control, calls its own slot-0x1f
+  // virtual, and dispatches the built style buffer to the dialog's linked children (slot
+  // 0x27) -- not yet decoded.
+}
+
+// FUNCTION: IMPERIALISM 0x0054b4c0
+void TMultiplayerMgr::DispatchTurnEventCode9WithTwoTextTokens(int reasonCode, int field1CValue,
+                                                              const char* senderText,
+                                                              const char* messageText) {
+  LobbyChatEvent9Packet packet;
+  packet.eventCode = 9;
+  packet.fromNetworkId = 0;
+  packet.toNetworkId = 0;
+  packet.messageLength = sizeof(packet);
+  packet.InitializeEmitEventHeaderWithActiveNation();
+  packet.nationSlot18 = static_cast<unsigned char>(reasonCode);
+  packet.field1C = field1CValue;
+  strcpy(packet.senderName, senderText);
+  strcpy(packet.messageText, messageText);
+  g_pNetMgr006a6014->Send(&packet, 0);
 }
 
 // FUNCTION: IMPERIALISM 0x0054b5d0

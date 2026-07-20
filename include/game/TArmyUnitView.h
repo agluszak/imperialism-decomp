@@ -111,11 +111,12 @@ public:
   // slot 0x65 AssertMcAppUILine1914 inherited unchanged (0x48c7a0)
   // slot 0x66 AssertMcAppUILine1922 inherited unchanged (0x48c7d0)
   // slot 0x67 CtrlSlot103_SubtractPosAndDispatchSlot19C_Impl inherited unchanged (0x48bac0)
-  // Unrecovered context object read by ApplyRectSlot110: +8 unit-type code (int,
-  // compared against 0xe), +0x24 unit-type display name (CString), +0x34 veterancy
-  // level (short), +0x38 xp percent (short). Raw storage until the real pointee
-  // class is identified.
-  void* field60; // +0x60
+  // Offsets read by ApplyRectSlot110 (+8 int, +0x24 CString, +0x34/+0x38 short)
+  // match TMilitaryUnit::field_8/name24/field_34/field_38 exactly.
+  class TMilitaryUnit* field60; // +0x60
+
+  // Non-virtual: runs the rename dialog for field60 in response to the 'name' command.
+  void HandleCrossUArmyViewsNameCommand();
 
   TArmyUnitView();
 };

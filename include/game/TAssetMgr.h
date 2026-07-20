@@ -82,6 +82,12 @@ public:
   // Checks for a pending "save/cli_*.imp" client save file (resumable multiplayer
   // session). `this` is unused; callers dispatch through g_pUiViewManager. 0x5e02f0.
   unsigned char HasPendingClientSaveFile();
+  // Loads the module's RT_VERSION resource and formats "(v. major.minor[.build[.revision]])"
+  // into *out from its VS_FIXEDFILEINFO dwFileVersionMS/dwFileVersionLS fields (raw offsets
+  // into the loaded resource block, matching the original's direct FindResource/
+  // LoadResource parse rather than VerQueryValue); leaves *out empty if the resource can't
+  // be found/loaded. `this` is unused; callers dispatch through g_pUiViewManager. 0x5e0590.
+  void FormatVersionStringFromVersionResource(CString* out);
 };
 
 void __stdcall AssignScoresDatPathToSharedString(CString* out);

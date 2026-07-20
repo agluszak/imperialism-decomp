@@ -738,6 +738,19 @@ char THelpMgr::HandlePendingEventActivationByCode(short eventCode) {
   return activateCandidate;
 }
 
+// FUNCTION: IMPERIALISM 0x00503370
+void THelpMgr::SelectAndActivatePendingEventTypeOffsetFrom1A0B(int idx) {
+  short targetContextId = static_cast<short>(idx + 0x1a0b);
+  for (int index = 1; index <= GetSortedPtrListEntryCount(indexList); ++index) {
+    HelpSetRecord* record =
+        static_cast<HelpSetRecord*>(indexList->GetPtrListEntryByOneBasedIndex(index));
+    if (record->contextId == targetContextId) {
+      ActivatePendingEventAndRefreshView(record);
+      return;
+    }
+  }
+}
+
 // FUNCTION: IMPERIALISM 0x005033e0
 void THelpMgr::NoOpDiplomacyPolicyStateChangedHook(int policyOrGrant, int targetNation,
                                                    int acceptedFlag) {
@@ -759,4 +772,15 @@ void THelpMgr::ActivatePendingEventAndRefreshView(HelpSetRecord* pendingEntry) {
   pendingEntry->flagByte = 1;
   pendingEntry->rank = g_pSimMgr->GetActiveNationId();
   // Full dialog refresh path deferred; mark the help-set entry seen/current-nation.
+}
+
+// FUNCTION: IMPERIALISM 0x00503b90
+void THelpMgr::CycleTradeScreenMode0To2() {
+  if (helpIndexReady == 0) {
+    helpIndexReady = 1;
+  } else if (helpIndexReady == 1) {
+    helpIndexReady = 2;
+  } else if (helpIndexReady == 2) {
+    helpIndexReady = 0;
+  }
 }

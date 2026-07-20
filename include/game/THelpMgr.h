@@ -67,6 +67,10 @@ public:
   // currentTurnEventCode and activates one: the lowest-rank unflagged match wins;
   // otherwise a flagged match, else a zero-helpSetIdB match, is activated.
   void SelectAndActivatePendingEventForCurrentView();
+  // 0x503370 -- finds the first indexList record whose contextId is idx + 0x1a0b and
+  // activates it. Used by TStatusPicture/TSpecialQuitPicture's shift+'tab1'/'tab2'/'tab3'
+  // debug shortcuts.
+  void SelectAndActivatePendingEventTypeOffsetFrom1A0B(int idx);
 
   // 2-byte packed (like TControl's Mac-heritage records): the field suffixes are the real
   // offsets only under pack(2) — field1a is an int AT 0x1a, and helpIndexReady sits at
@@ -90,6 +94,10 @@ public:
 #pragma pack(pop)
 
   THelpMgr();
+
+  // Cycles helpIndexReady through 0 -> 1 -> 2 -> 0 (trade-desk info detail level).
+  // 0x00503b90, __thiscall.
+  void CycleTradeScreenMode0To2();
 };
 
 // 0x00502b60 (free function in the THelpMgr TU): once per turn tick, show the

@@ -123,10 +123,13 @@ public:
   virtual void SetPictureResourceIdAndRefresh(short nPictureId,
                                               bool fRefreshNow) override; // slot 0x72 0x573430
   // slot 0x73 NoOpUiVirtualSlot73 inherited unchanged (0x572bb0)
-  virtual undefined OrphanCallChain_C1_I14_005736c0(ushort param_1, char param_2,
-                                                    char param_3); // slot 0x74 0x5736c0
-  virtual undefined OrphanCallChain_C1_I08_00573690(undefined2 param_1,
-                                                    char param_2); // slot 0x75 0x573690
+  // Clears (useAndMask != 0: flags98 &= mask) or subtracts (flags98 -= mask) bits, then
+  // optionally refreshes.
+  virtual void ClearOrSubtractFlags98AndMaybeRefresh(unsigned short mask, char useAndMask,
+                                                      char refreshNow); // slot 0x74 0x5736c0
+  // Overwrites flags98 wholesale, then optionally refreshes.
+  virtual void AssignFlags98AndMaybeRefresh(unsigned short value,
+                                            char refreshNow); // slot 0x75 0x573690
   // TNoHilitePicture adds a 1-byte field90 at +0x90 and tail-pads to a 4-byte boundary
   // as a base subobject (MSVC does not reuse base tail padding for derived members), so
   // these fields (read by ApplyRectSlot110) start immediately at +0x94, with no gap.

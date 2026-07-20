@@ -1,6 +1,7 @@
 #pragma once
 
 #include "game/TCluster.h"
+#include "game/TStaticText.h"
 #include "game/mfc.h"
 
 // VTABLE: IMPERIALISM 0x00642f88
@@ -125,12 +126,24 @@ public:
 
   TShipFractionCluster();
 
-  // Original object size is 0x98 (CRuntimeClass m_nObjectSize); the source class ended at 0x88.
-  // field88 is a quantity/count read by TShipPlacard::ApplyRectSlot110 (this->ownerContext+0x88)
-  // as a short. Trailing 12 byte(s) beyond it not yet semantically recovered.
+  void UpdateIndustryCapabilityControlStateAndValue(int p1, int p2);
+  void SelectTaskForceOrderForActiveNationClass(char activeFlag);
+
+  // Original object size is 0x98 (CRuntimeClass m_nObjectSize); the source class ended at
+  // 0x88. Enabled/disabled state gate for the ship/arrow controls, set by
+  // UpdateIndustryCapabilityControlStateAndValue; a real `short` (the original writes/reads
+  // it with 16-bit instructions throughout) -- also cross-confirmed by
+  // TShipPlacard::ApplyRectSlot110, which reads a sibling's field88 (via
+  // this->ownerContext+0x88) as a short quantity/count.
   short field88;
   short pad8a;
-  int field8c;
-  int field90;
-  int field94;
+  // The 'main'-tagged control on OwnerPanel(), resolved by NoOpUiLifecycleHook.
+  class TView* field8c;
+  // The 'arro' control, resolved by NoOpUiLifecycleHook; a TStaticText-family control
+  // (confirmed by UpdateIndustryCapabilityControlStateAndValue's slot 0x1c4
+  // SetTextThemeCodeAndMaybeRefresh call on it).
+  TStaticText* field90;
+  // Theme code applied to field90; a real `short` (16-bit reads/writes throughout).
+  short field94;
+  short pad96;
 };

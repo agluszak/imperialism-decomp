@@ -88,3 +88,8 @@ public:
   virtual void DetachUiResourceOwnerIfMatches(TEventHandler* owner); // 0x23 0x48a4a0
   virtual void SetUiResourceOwner(TEventHandler* owner);             // 0x24 0x48a4d0
 };
+
+// Builds a TEvent (commandNumber = dispatchMessage = commandId, sourceHandler = control,
+// targetHandler = owner) and forwards it to owner->DispatchQueuedUiCommandAndRelease.
+// 0x5d4b30.
+void QueueDeferredUiEventPacket(TView* owner, int commandId, TView* control);

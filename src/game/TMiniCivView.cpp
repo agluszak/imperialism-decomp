@@ -162,4 +162,14 @@ void TMiniCivView::ApplyRectSlot110(RECT* rectBuffer) {
 }
 
 // FUNCTION: IMPERIALISM 0x004ac320
-void TMiniCivView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {}
+void TMiniCivView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+  if (sourceHandler == this) {
+    ownerContext->QueryStepValue();
+    // The original also writes civUnit84->tileIndex06 into a short field at the same
+    // +0x84 offset on ownerContext's concrete (unrecovered) class -- distinct from this
+    // class's own field84 (unitText88, a CString) despite the matching offset. Left
+    // unresolved pending that class's recovery rather than guessing its layout (same
+    // pattern as TMiniArmyView::HandleEvent's own ownerContext->field84 write).
+  }
+  TControl::HandleEvent(commandId, sourceHandler, event);
+}

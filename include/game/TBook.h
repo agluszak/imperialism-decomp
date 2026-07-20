@@ -125,7 +125,13 @@ public:
 
   TBook();
 
-  // Original object size is 0x98 (CRuntimeClass m_nObjectSize); the source class ended at 0x90. Trailing 8 byte(s) not yet semantically recovered — declared so sizeof and the recomp's allocation size match the original.
-  int field90;
-  int field94;
+  // Left/right control-region pointers, resolved by tag ('lcor'/'rcor') in
+  // NoOpUiLifecycleHook.
+  TView* field90;
+  TView* field94;
+
+  // Enables/disables field90 ('lcor')/field94 ('rcor') based on `rowCount` (the 'page'
+  // control's own frameStyle60 high word) versus its low word and controlState64
+  // (visible row count). 0x56f6c0, __thiscall, 1 arg.
+  void UpdatePagedListNavigationButtonState(int rowCount);
 };

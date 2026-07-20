@@ -2,11 +2,16 @@
 
 #include "game/TCity.h"
 #include "game/TGreatPower.h"
+#include "game/THelpMgr.h"
+#include "game/TInfoBarText.h"
 #include "game/TSimMgr.h"
+#include "game/TSoundPlayer.h"
 #include "game/TViewMgr.h"
 #include "game/UiRuntimeContext.h"
+#include "game/TDiplomacyMgr.h"
 #include "game/global_data_tables.h"
 #include "game/quickdraw_rendering.h"
+#include "game/ui_control_tags.h"
 #include "game/ui_text_label_helpers_decls.h"
 
 // SYNTHETIC: IMPERIALISM 0x0043d870
@@ -23,10 +28,128 @@ IMPLEMENT_DYNCREATE(TStatusPicture, TPicture)
 TStatusPicture::TStatusPicture() {}
 
 // FUNCTION: IMPERIALISM 0x00593f20
-void TStatusPicture::NoOpUiLifecycleHook(int arg) {}
+void TStatusPicture::NoOpUiLifecycleHook(int arg) {
+  TPicture::NoOpUiLifecycleHook(arg);
+
+  // One TPicture child per eligible nation slot ('pic0'-'pic6'); the picture tag only
+  // advances on rows that actually get a child (ineligible rows are skipped without
+  // consuming a tag), matching the original's separate row/tag counters.
+  unsigned int pictureTag = 0x70696330u; // 'pic0'
+  int rowY = 0x50;
+  for (unsigned int nationSlot = 0; nationSlot < 7; ++nationSlot) {
+    if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(static_cast<short>(nationSlot)) != 0) {
+      TPicture* picture = new TPicture();
+      int offsetLayout[2] = {0x71, rowY};
+      int sizeLayout[2] = {0x23, 0x34};
+      picture->InitializePictureEntryBaseAndRefresh(
+          this, offsetLayout, sizeLayout, 5, 5, static_cast<short>(nationSlot + 0x10d7));
+      picture->controlTag = pictureTag;
+      rowY += 0x37;
+      ++pictureTag;
+    }
+  }
+
+  for (unsigned int tabIndex = 0; tabIndex < 10; ++tabIndex) {
+    TView* tabControl = ResolveControlByTag(0x74616230u + tabIndex); // 'tab0'-'tab9'
+    LoadUiStringByGroupAndIndexToControlObject(0x2757, static_cast<short>(tabIndex + 9),
+                                               tabControl);
+  }
+  ApplySharedStringToGlobalControlTag(g_pStatusPictureMainSharedText_00668b88, kControlTagMain);
+  LoadUiStringByGroupAndIndexToControlObject(0x2730, 0xd, ResolveControlByTag(kControlTagEnd));
+  LoadUiStringByGroupAndIndexToControlObject(0x2730, 3, ResolveControlByTag(kControlTagQuer));
+
+  comparisonMode90 = 0;
+  RefreshControl();
+  g_pDiplomacyTurnStateManager->RecomputeNationComparativePowerMetrics();
+
+  // Same per-nation average as HandleEvent's commandId==10/newIndex==0 branch (identical
+  // instruction sequence): sums 4 dip[0x1824+i*0x10] dwords; the *400/40 magic-number scale
+  // cancels to a plain 16-bit truncation, verified by simulation.
+  {
+    char* dip = reinterpret_cast<char*>(g_pDiplomacyTurnStateManager);
+    int dipOffset = 0;
+    for (int i = 0; i < 7; ++i, dipOffset += 0x10) {
+      if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(static_cast<short>(i)) != 0) {
+        int sum = *reinterpret_cast<int*>(dip + 0x1824 + dipOffset) +
+                  *reinterpret_cast<int*>(dip + 0x1828 + dipOffset) +
+                  *reinterpret_cast<int*>(dip + 0x182c + dipOffset) +
+                  *reinterpret_cast<int*>(dip + 0x1830 + dipOffset);
+        values94[i] = static_cast<short>(sum);
+        pictureIds_b0[i] = static_cast<short>(i);
+      } else {
+        pictureIds_b0[i] = -1;
+      }
+    }
+  }
+  SortSevenEntriesAndUpdatePictureWidgets();
+
+  // 'curs' is also installed as the shared cursor-hint panel, same as 'labl' in
+  // TLoungeDialog::NoOpUiLifecycleHook.
+  TInfoBarText* cursControl = static_cast<TInfoBarText*>(ResolveControlByTag(0x63757273u));
+  g_pCursorControlPanel = cursControl;
+  cursControl->AssertValid();
+  cursControl->InitializeMapHintTextStyleAndThemeFlags(0x2b6c, 0x2b67);
+}
 
 // FUNCTION: IMPERIALISM 0x005942f0
-void TStatusPicture::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {}
+void TStatusPicture::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+  if (commandId == 10) {
+    unsigned int tag = sourceHandler->controlTag;
+    if (tag >= 0x74616230u /* 'tab0' */ && tag <= 0x74616239u /* 'tab9' */) {
+      int newIndex = static_cast<int>(tag - 0x74616230u);
+      if (newIndex != comparisonMode90) {
+        TView* newTab = ResolveControlByTag(0x74616230u + newIndex);
+        newTab->AssertValid();
+        newTab->SetEnabled(0, 1);
+        static_cast<TView*>(sourceHandler)->AssertValid();
+        static_cast<TView*>(sourceHandler)->SetEnabled(1, 1);
+        g_pSfxPlaybackSystem->PlaySoundEffect(0x13f0, 0, 1);
+        comparisonMode90 = newIndex;
+        if (newIndex == 0) {
+          g_pDiplomacyTurnStateManager->RecomputeNationComparativePowerMetrics();
+          char* dip = reinterpret_cast<char*>(g_pDiplomacyTurnStateManager);
+          int dipOffset = 0;
+          for (int i = 0; i < 7; ++i, dipOffset += 0x10) {
+            if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(static_cast<short>(i)) != 0) {
+              int sum = *reinterpret_cast<int*>(dip + 0x1824 + dipOffset) +
+                        *reinterpret_cast<int*>(dip + 0x1828 + dipOffset) +
+                        *reinterpret_cast<int*>(dip + 0x182c + dipOffset) +
+                        *reinterpret_cast<int*>(dip + 0x1830 + dipOffset);
+              // The original scales this sum by 400 then divides by 40 via a magic-number
+              // sequence; verified by simulation that the two cancel exactly for every
+              // 16-bit-range input, so the net effect is a plain (sign-extending) truncation
+              // to 16 bits.
+              values94[i] = static_cast<short>(sum);
+              pictureIds_b0[i] = static_cast<short>(i);
+            } else {
+              pictureIds_b0[i] = -1;
+            }
+          }
+          SortSevenEntriesAndUpdatePictureWidgets();
+        } else {
+          RecomputeNationComparisonValuesAndNormalizeScale();
+        }
+      } else if ((GetAsyncKeyState(VK_SHIFT) & 0x8000) != 0) {
+        // Already-selected tab, shift-held: a debug shortcut into the help-index records.
+        unsigned int tag = sourceHandler->controlTag;
+        int idx;
+        if (tag == 0x74616231u) { // 'tab1'
+          idx = 2;
+        } else if (tag == 0x74616232u) { // 'tab2'
+          idx = 0;
+        } else if (tag == 0x74616233u) { // 'tab3'
+          idx = 1;
+        } else {
+          idx = -1;
+        }
+        if (idx != -1) {
+          g_pHelpMgr->SelectAndActivatePendingEventTypeOffsetFrom1A0B(idx);
+        }
+      }
+    }
+  }
+  TPicture::HandleEvent(commandId, sourceHandler, event);
+}
 
 // FUNCTION: IMPERIALISM 0x00594540
 void TStatusPicture::ApplyRectSlot110(RECT* rectBuffer) {

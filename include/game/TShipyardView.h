@@ -3,6 +3,8 @@
 #include "game/TBuildingView.h"
 #include "game/mfc.h"
 
+struct TQuickDrawSurfaceContext;
+
 // VTABLE: IMPERIALISM 0x00651b30
 class TShipyardView : public TBuildingView {
 public:
@@ -131,27 +133,29 @@ public:
   virtual undefined OrphanCallChain_C1_I15_004c9d20(int param_1);           // slot 0x79 0x4c9d20
   virtual void __fastcall RefreshCityViewStatusPanel(int* pCityViewDialog); // slot 0x7a 0x4c9a60
   virtual undefined BuildIndustryActionCostSummaryTextByActionIndex();      // slot 0x7b 0x4c97c0
-  virtual void InitializeCityViewActionButtons();                           // slot 0x7c 0x4c8d70
+  // RET-imm evidence (RET 0x4) shows this takes one stack arg -- the imported 0-arg
+  // Ghidra prototype undercounted it; OrphanRetStub_004c6fd0 passes
+  // buildQueueSlotValues[0] (sign-extended) as the sole argument.
+  virtual void InitializeCityViewActionButtons(short arg1); // slot 0x7c 0x4c8d70
 
   TShipyardView();
 
   // Own fields at +0xa0..+0xcc (RTTI m_nObjectSize 0xcc vs TBuildingView's 0xa0).
   // CreateObject (0x4c8200) only re-zeroes inherited TBuildingView::field94/field98
-  // and installs the vtable -- nothing new is written in this range at construction,
-  // so it's still fully unrecovered shipyard-view state except for the pieces
-  // ApplyRectSlot110 (0x4c9150) proves the shape of below.
-  //
-  // +0xa0 selectedRequirementRow: index into requirementResourceTypeByRow[], selects
-  //   which resource's requirement grid is displayed.
-  // +0xa4 requirementResourceTypeByRow[]: resource-type id per row, read at
-  //   selectedRequirementRow; true extent unconfirmed (only a single indexed read is
-  //   observed) so it's sized to exactly fill the gap up to the next confirmed field.
-  // +0xbc commoditySpriteIds[4] / +0xc4 commodityRequiredAmounts[4]: parallel arrays
-  //   for the "commodities in production" icon strip (loop bound proven: 4 slots,
-  //   -1 = empty).
-  short selectedRequirementRow;           // +0xa0
-  unsigned char unknownA2[2];             // +0xa2 unrecovered
-  short requirementResourceTypeByRow[12]; // +0xa4 (extent unconfirmed, see above)
-  short commoditySpriteIds[4];            // +0xbc
-  short commodityRequiredAmounts[4];      // +0xc4
+  // and installs the vtable -- nothing new is written in this range at construction.
+  // Two functions independently prove this range's shape and agree once reconciled:
+  // OrphanRetStub_004c6fd0 (0x4c8390) zeroes an 8-element array per 'but0'-'but7'
+  // build-queue slot at +0xa4, then writes an int and a surface pointer at +0xb4/+0xb8;
+  // ApplyRectSlot110 (0x4c9150) reads that same +0xa4 array indexed by
+  // selectedRequirementRow (0-7, matching the 8 build-queue slots) as the row's resource
+  // type -- one array, two roles, not a conflict. ApplyRectSlot110 also proves
+  // commoditySpriteIds[4]/commodityRequiredAmounts[4] at +0xbc/+0xc4 (loop bound proven:
+  // 4 slots, -1 = empty).
+  short selectedRequirementRow;      // +0xa0
+  short unknownA2;                   // +0xa2 unrecovered (written 0 in ApplyRectSlot110's init path)
+  short buildQueueSlotValues[8];     // +0xa4..+0xb3 -- AKA requirementResourceTypeByRow
+  int fieldB4;                       // +0xb4
+  TQuickDrawSurfaceContext* iconSurfaceB8; // +0xb8 -- LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0x264f)
+  short commoditySpriteIds[4];       // +0xbc
+  short commodityRequiredAmounts[4]; // +0xc4
 };

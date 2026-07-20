@@ -128,10 +128,9 @@ public:
   // expansion site emits only the base ctor call + vtbl install)
   THighScoresPicture() {}
 
-  // Own fields at +0x94..+0x1fc (RTTI m_nObjectSize 0x1fc vs TNoHilitePicture's 0x94).
-  // CreateObject (0x575280) only chains the base ctor and installs the vtable --
-  // nothing here is written at construction, so this block is still fully
-  // unrecovered high-scores display/layout state (every override in
-  // THighScoresPicture.cpp is currently a stub).
-  unsigned char highScoresState94[0x1fc - 0x94];
+  // Loaded from Data\scores.dat by NoOpUiLifecycleHook: 10 leading 4-byte score values,
+  // then 10 32-byte score-entry records (name + associated fields; layout beyond raw
+  // bytes not yet recovered).
+  int scoreValues94[10];         // +0x94
+  unsigned char scoreRecordsBc[10][0x20]; // +0xbc
 };

@@ -63,12 +63,22 @@ void TMegaPicture::SetPictureResourceIdAndRefresh(short nPictureId, bool fRefres
 void TMegaPicture::Free() {}
 
 // FUNCTION: IMPERIALISM 0x00573690
-undefined TMegaPicture::OrphanCallChain_C1_I08_00573690(undefined2 param_1, char param_2) {
-  return 0;
+void TMegaPicture::AssignFlags98AndMaybeRefresh(unsigned short value, char refreshNow) {
+  flags98 = value;
+  if (refreshNow) {
+    RefreshControl();
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x005736c0
-undefined TMegaPicture::OrphanCallChain_C1_I14_005736c0(ushort param_1, char param_2,
-                                                        char param_3) {
-  return 0;
+void TMegaPicture::ClearOrSubtractFlags98AndMaybeRefresh(unsigned short mask, char useAndMask,
+                                                         char refreshNow) {
+  if (useAndMask) {
+    flags98 &= mask;
+  } else {
+    flags98 -= mask;
+  }
+  if (refreshNow) {
+    RefreshControl();
+  }
 }

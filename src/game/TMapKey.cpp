@@ -2,6 +2,7 @@
 
 #include "game/CString.h"
 #include "game/TCountry.h"
+#include "game/TDeluxeText.h"
 #include "game/TSimMgr.h"
 #include "game/TView.h"
 #include "game/global_data_tables.h" // g_pSimMgr, g_apTerrainTypeDescriptorTable
@@ -23,7 +24,57 @@ IMPLEMENT_DYNCREATE(TMapKey, TPicture)
 TMapKey::TMapKey() {}
 
 // FUNCTION: IMPERIALISM 0x004fcac0
-void TMapKey::NoOpUiLifecycleHook(int arg) {}
+void TMapKey::NoOpUiLifecycleHook(int arg) {
+  TPicture::NoOpUiLifecycleHook(arg);
+
+  // The loop only walks the first 7 of g_apTerrainTypeDescriptorTable's 23 entries: the
+  // array iterator is seeded with the array's own address (0x6a4310) and bounded by a
+  // literal end address (0x6a432c) that is only 7*4 bytes past the start, not the full
+  // kTerrainTypeDescriptorTableCount span -- confirmed via the raw disassembly's loop
+  // bound constant, not guessed from the decompiler (whose stack-slot aliasing across
+  // this function's several esp-adjusting setup calls made its own variable naming
+  // unreliable, per Hard Rule 6's "ground truth from the tooling" guidance).
+  TView* anchor = ownerContext;
+  short baseX = static_cast<short>(ownerLocalX + anchor->ownerLocalX);
+  short baseY = static_cast<short>(ownerLocalY + anchor->ownerLocalY);
+
+  int shadowStyleFlags = 0;
+  MapUiThemeCodeToStyleFlags(0x2b68, &shadowStyleFlags);
+  TUiTextStyleDescriptor style;
+  InitializeUiTextStyleDescriptor(&style, 0, 0xa, 0x2b6b, 3);
+
+  static const short kLegendX[7] = {0x171, 0x171, 0x171, 0x171, 0x1de, 0x1de, 0x1de};
+  // TODO: the 7th entry (index 6) is read from a stack slot the original never explicitly
+  // writes anywhere in this function -- it doubles as a per-iteration CopyRect scratch
+  // source (0x4fccaa) that only 4 of its 4 RECT dwords get zeroed explicitly, leaving this
+  // one slot as whatever was on the stack at function entry. Modeled as 0 (a plausible
+  // "no vertical offset" default matching the other nearby entries' shape) rather than
+  // reproducing genuinely undefined original stack content.
+  static const short kLegendY[7] = {0x1b8, 0x1d1, 0x187, 0x1a0, 0x1b8, 0x1d1, 0};
+  int sizeXY[2] = {0x46, 0x19};
+
+  for (int i = 0; i < 7; ++i) {
+    TCountry* descriptor = g_apTerrainTypeDescriptorTable[i];
+    CString label;
+    if (descriptor == nullptr) {
+      g_pSimMgr->GetString(0x275d, 2, &label);
+    } else {
+      descriptor->FormatOverlayTerrainLabelText(&label);
+    }
+
+    TDeluxeText* legendText = new TDeluxeText();
+    int offsetXY[2] = {kLegendX[i] - baseX, static_cast<short>(kLegendY[i] - baseY - 0xf)};
+    RECT zeroRect = {0, 0, 0, 0};
+    legendText->ConstructTDeluxeTextBaseState(this, offsetXY, sizeXY, &zeroRect, &style, -2);
+    legendText->UpdateTextEntrySharedStringAndMaybeNotify(&label, 0);
+    legendText->SetEnabled(0, 0);
+    legendText->controlTag = 0x6e616d30 + i; // 'nam0'-'nam6'
+    legendText->RecenterTextFromMeasuredWidthAndMaybeInvalidate(0);
+    legendText->cursorThemeCode9c = shadowStyleFlags;
+    legendText->fieldA0 = 1;
+    legendText->ApplyTextStyleDescriptorAndMaybeRefresh(&style, 1);
+  }
+}
 
 // FUNCTION: IMPERIALISM 0x004fcf80
 void TMapKey::ApplyRectSlot110(RECT* rectBuffer) {

@@ -119,8 +119,9 @@ public:
   // The ctor (0x4f8f70) zeroes field68 and field6c. field64 is written by HandleEvent
   // (0x4f9300) with the accept/reject-hotspot's controlTag (four-char 'acce'/'reje').
   int lastNegotiationResponseTag64; // +0x64
-  int field68; // +0x68
-  int field6c; // +0x6c
+  // The 'acce'/'reje' hotspot controls, resolved by NoOpUiLifecycleHook.
+  class TStaticText* field68; // +0x68
+  class TStaticText* field6c; // +0x6c
 
   TOffersPanelView();
 };

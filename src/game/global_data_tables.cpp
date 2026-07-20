@@ -14,6 +14,7 @@ class TView;
 class TInfoBarText;
 
 #include "game/TArmyPlayer.h"
+#include "game/TAmbitApplication.h"
 #include "game/mfc.h"
 #include "game/global_data_tables.h"
 #include "game/sea_geometry.h"
@@ -95,7 +96,7 @@ THelpMgr* g_pHelpMgr = 0;
 // GLOBAL: IMPERIALISM 0x006a43e8
 TNewsMgr* g_pInterNationEventQueueManager = 0;
 // GLOBAL: IMPERIALISM 0x006a1344
-TApplication* g_pGlobalUiRootController = 0;
+TAmbitApplication* g_pGlobalUiRootController = 0;
 // GLOBAL: IMPERIALISM 0x006a43c8
 TMultiplayerMgr* g_pGameFlowState = 0;
 // GLOBAL: IMPERIALISM 0x006a43d0
@@ -114,6 +115,14 @@ char* g_pBattleReportSharedText_0064dc30 = g_szEmptyString;
 // assembled-string accumulator from; only the empty-string default is observed so far.
 // GLOBAL: IMPERIALISM 0x0064cb18
 char* g_pMiniCivSharedText_0064cb18 = g_szEmptyString;
+// GLOBAL: IMPERIALISM 0x0065c830
+char* g_pShipFractionSharedText_0065c830 = g_szEmptyString;
+// Local player's display name, read by TLoungeDialog::NoOpUiLifecycleHook when posting the
+// lobby-chat "connected" announcement (LobbyChatEvent9Packet's sender/message text).
+// GLOBAL: IMPERIALISM 0x0065c160
+char* g_pLoungeLocalPlayerNameSharedText_0065c160 = g_szEmptyString;
+// GLOBAL: IMPERIALISM 0x00668b88
+char* g_pStatusPictureMainSharedText_00668b88 = g_szEmptyString;
 // GLOBAL: IMPERIALISM 0x00695448
 extern const unsigned char g_MapContextStaticTable_00695448[0x20] = {
     1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0};
@@ -457,6 +466,10 @@ TQuickDrawSurfaceContext* g_pActiveQuickDrawSurfaceContextHead = &g_defaultQuick
 TQuickDrawSurfaceContext* g_pActiveQuickDrawSurfaceContext = 0;
 // GLOBAL: IMPERIALISM 0x006a30a8
 TQuickDrawSurfaceContext* g_pPrimaryRenderSurfaceContext = 0;
+// Cached snapshot of g_pPrimaryRenderSurfaceContext, stamped by
+// TCitySiteView::NoOpUiLifecycleHook after allocating its own surface.
+// GLOBAL: IMPERIALISM 0x006a3450
+TQuickDrawSurfaceContext* g_pCitySiteCachedPrimaryRenderSurfaceContext = 0;
 // GLOBAL: IMPERIALISM 0x006a1da0
 CDC* g_pQuickDrawMemoryDc = nullptr;
 // GLOBAL: IMPERIALISM 0x006a1dbc
@@ -1241,6 +1254,9 @@ extern "C" const char s_SourcePathUTacViews_00699FF4[] = "D:\\Ambit\\Cross\\UTac
 extern "C" const char s_SourcePathUViewMgrMore_0069B740[] = "D:\\Ambit\\Cross\\UViewMgr.more.cpp";
 // GLOBAL: IMPERIALISM 0x0069573c
 extern "C" const char s_SourcePathUArmyMgr_0069573C[] = "D:\\Ambit\\Cross\\UArmyMgr.cpp";
+extern "C" const char s_SourcePathUCityViews_00696650[] = "D:\\Ambit\\Cross\\UCityViews.cpp";
+extern "C" const char s_SourcePathUArmyViews_00695858[] = "D:\\Ambit\\Cross\\UArmyViews.cpp";
+extern "C" const char s_SourcePathUOceanViews_00698650[] = "D:\\Ambit\\Cross\\UOceanViews.cpp";
 // GLOBAL: IMPERIALISM 0x0069943c
 extern "C" const char s_SourcePathUSuperMap_0069943C[] = "D:\\Ambit\\Cross\\USuperMap.cpp";
 // GLOBAL: IMPERIALISM 0x0069aa94
@@ -1518,8 +1534,12 @@ extern "C" const int g_anNationStartingTreasuryByLocale[6] = {50000, 10000, 1000
 CString g_cstrArmyOrderMessageStore;
 // GLOBAL: IMPERIALISM 0x006a3180
 CString g_cstrNationComparisonMessageStore;
+// GLOBAL: IMPERIALISM 0x006a5820
+CString g_cstrTechItemMessageStore;
 // GLOBAL: IMPERIALISM 0x006a3d08
 CString g_cstrNationAwolMessageStore;
+// GLOBAL: IMPERIALISM 0x006a45c0
+CString g_cstrMapModeMessageStore;
 // GLOBAL: IMPERIALISM 0x006a57c8
 CString g_cstrTechCapabilityMessageStore;
 // Message-store slot the TViewMgr prompt helpers (0x5de990/0x5deb40) pass to the
@@ -3156,3 +3176,13 @@ char s_Data_scores_dat_0069b7fc[] = "Data\\scores.dat";
 // 0x508f30).
 // GLOBAL: IMPERIALISM 0x00658640
 extern const float g_HexHighlightScreenScale_00658640 = -0.3125f;
+
+// GLOBAL: IMPERIALISM 0x006a4084
+short g_creditsPlaybackActive_006a4084 = 0;
+
+// GLOBAL: IMPERIALISM 0x00668568
+// Indexed directly by raw commandId (a large turn-event/menu command code, not a small
+// enum) plus hasProductionOrder193*0x11; the real table base sits at a negative
+// C-array-index offset baked into the instruction displacement, so only the leading
+// zero run at this exact address is meaningfully checked.
+short g_offerDeskSelectionIndexTable_00668568[8] = {0};

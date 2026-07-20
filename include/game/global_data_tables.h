@@ -271,6 +271,7 @@ extern short g_Rebuild_Primary_Nation_Value_00653570[6][0x17];
 
 extern "C" {
 class TApplication;
+class TAmbitApplication;
 class TTacticalBattle;
 class ImperialismApp;
 
@@ -316,6 +317,7 @@ extern TQuickDrawSurfaceContext g_defaultQuickDrawSurfaceSentinel;
 extern TQuickDrawSurfaceContext* g_pActiveQuickDrawSurfaceContextHead;
 extern TQuickDrawSurfaceContext* g_pActiveQuickDrawSurfaceContext;
 extern TQuickDrawSurfaceContext* g_pPrimaryRenderSurfaceContext;
+extern TQuickDrawSurfaceContext* g_pCitySiteCachedPrimaryRenderSurfaceContext;
 extern CDC* g_pQuickDrawMemoryDc;
 extern HGDIOBJ g_hQuickDrawSavedBitmap;
 extern int g_nActiveQuickDrawSurfaceFlags;
@@ -333,7 +335,7 @@ extern void* g_apNationStates_End;
 extern TSimMgr* g_pSimMgr;
 extern THelpMgr* g_pHelpMgr;
 extern TNewsMgr* g_pInterNationEventQueueManager;
-extern TApplication* g_pGlobalUiRootController;
+extern TAmbitApplication* g_pGlobalUiRootController;
 
 // The live tactical battle (turn-event 0x29/0x2a receive dispatch target).
 extern TTacticalBattle* g_pActiveTacticalBattle;
@@ -416,6 +418,9 @@ extern const unsigned char g_MapContextStaticTable_00695428[0x20];
 // SetControlHoverHelpText.
 extern char* g_pBattleReportSharedText_0064dc30;
 extern char* g_pMiniCivSharedText_0064cb18;
+extern char* g_pShipFractionSharedText_0065c830;
+extern char* g_pStatusPictureMainSharedText_00668b88;
+extern char* g_pLoungeLocalPlayerNameSharedText_0065c160;
 extern int g_lastEdgeAutoScrollTick16;
 extern int g_nSaveFormatVersion;
 // Gates the assert-messagebox in TTaskForce::ApplyMapOrderTypeExecutionEffects's default
@@ -736,7 +741,9 @@ extern CString g_cstrGreatPowerPressureMessage; // @ 0x6a2df0
 // messageStoreRef argument (0x005d5b00 callsites).
 extern CString g_cstrArmyOrderMessageStore;        // @ 0x6a2318
 extern CString g_cstrNationComparisonMessageStore; // @ 0x6a3180
+extern CString g_cstrTechItemMessageStore;         // @ 0x6a5820
 extern CString g_cstrNationAwolMessageStore;       // @ 0x6a3d08
+extern CString g_cstrMapModeMessageStore;          // @ 0x6a45c0
 extern CString g_cstrTechCapabilityMessageStore;   // @ 0x6a57c8
 extern CString g_cstrUiPromptMessageStore;         // @ 0x6a5be0
 extern int g_nationInfoGoldResourceOverride_006a5bac;
@@ -820,6 +827,9 @@ extern "C" const char s_SourcePathUTacViews_00699FF4[];
 extern "C" const char s_SourcePathUViewMgrMore_0069B740[];
 // Assert source-path string for the UArmyMgr TU.
 extern "C" const char s_SourcePathUArmyMgr_0069573C[];
+extern "C" const char s_SourcePathUCityViews_00696650[];
+extern "C" const char s_SourcePathUArmyViews_00695858[];
+extern "C" const char s_SourcePathUOceanViews_00698650[];
 // Assert source-path string for the USuperMap TU (TMapUberPicture family).
 extern "C" const char s_SourcePathUSuperMap_0069943C[];
 // Assert source-path string for the UTradeViews TU (TOfferDeskPicture family).
@@ -1737,3 +1747,5 @@ extern char s_mcflavor_0069b630[];
 extern char s_mcflavor_0069b638[];
 extern char s_mcflavor_0069b640[];
 extern char s_Data_scores_dat_0069b7fc[];
+extern short g_creditsPlaybackActive_006a4084;
+extern short g_offerDeskSelectionIndexTable_00668568[8];

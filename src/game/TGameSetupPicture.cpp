@@ -1,3 +1,4 @@
+#include "game/TAmbitApplication.h"
 #include "game/TGameSetupPicture.h"
 
 #include "game/ImperialismApp.h"

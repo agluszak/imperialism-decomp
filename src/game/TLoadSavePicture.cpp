@@ -6,12 +6,16 @@
 #include <stdio.h>
 #include <string.h>
 
+#include "game/TApplication.h"
 #include "game/TAssetMgr.h"
 #include "game/TEditText.h"
+#include "game/TEventHandler.h"
+#include "game/TMapPreviewView.h"
 #include "game/TSoundPlayer.h"
 #include "game/TViewMgr.h"
 #include "game/mapped_flavor_text.h"
 #include "game/TMultiplayerMgr.h"
+#include "game/ui_control_tags.h"
 
 // SYNTHETIC: IMPERIALISM 0x0043da40
 // TLoadSavePicture::`scalar deleting destructor'
@@ -27,10 +31,158 @@ IMPLEMENT_DYNCREATE(TLoadSavePicture, TPicture)
 TLoadSavePicture::TLoadSavePicture() {}
 
 // FUNCTION: IMPERIALISM 0x0056bcc0
-void TLoadSavePicture::NoOpUiLifecycleHook(int arg) {}
+void TLoadSavePicture::NoOpUiLifecycleHook(int arg) {
+  TPicture::NoOpUiLifecycleHook(arg);
+  // The original then sets up the load/save dialog's slot-list controls (2136 bytes) --
+  // not yet ported.
+}
+
+// FUNCTION: IMPERIALISM 0x0056c740
+void TLoadSavePicture::RefreshSlotPreviewFromSaveFile(short slotMode) {
+  CString path;
+  BuildSavePathStringForMode(&path, slotMode, 0);
+  if (!TryGetFileMetadataForPath(&path)) {
+    return;
+  }
+
+  char* tileOwnerTagTable = new char[0x1950];
+  FILE* file = fopen(path, g_szLiteralRb_00698720);
+  char headerSkip[0xc];
+  fread(headerSkip, 1, 0xc, file);
+  // 0x20-byte scratch record (likely per-slot metadata -- unconfirmed field layout).
+  unsigned char slotMetadata[0x20];
+  fread(slotMetadata, 1, 0x20, file);
+  fread(tileOwnerTagTable, 1, 0x1950, file);
+  // Turn number (year = turnNumber + 0x717, used below) and three more header fields, whose
+  // exact semantics beyond turnNumber and the pendingNationByte assignment aren't confirmed
+  // yet: two single bytes and a trailing 0x20-byte record.
+  short turnNumber;
+  fread(&turnNumber, 1, 2, file);
+  unsigned char oneByteFieldA;
+  fread(&oneByteFieldA, 1, 1, file);
+  unsigned char pendingNationByte;
+  fread(&pendingNationByte, 1, 1, file);
+  unsigned char trailingRecord[0x20];
+  fread(trailingRecord, 1, 0x20, file);
+  fclose(file);
+
+  TMapPreviewView* mapControl = static_cast<TMapPreviewView*>(ResolveControlByTag(kControlTagMapP));
+  mapControl->AssertValid();
+  mapControl->SetEnabled(1, 1);
+  mapControl->TakeSatellitePhoto(tileOwnerTagTable);
+  mapControl->selectedNation68 = pendingNationByte;
+  mapControl->EnhancePhoto();
+  mapControl->RefreshControl();
+
+  TStaticText* infoControl = static_cast<TStaticText*>(ResolveControlByTag(0x696e666fu)); // 'info'
+  infoControl->AssertValid();
+
+  CString yearText;
+  yearText.Format(g_szDecimalFormat, turnNumber + 0x717);
+  CString slotNationName;
+  g_pSimMgr->GetString(0x2737, oneByteFieldA + 0xd, &slotNationName);
+  CString infoText = yearText + ", " + slotNationName;
+  infoControl->AssignTextSharedRefIfChangedAndMaybeInvalidate(&infoText, 0);
+
+  RECT infoBounds;
+  infoControl->QueryBounds(&infoBounds);
+  InvalidateCityDialogRectRegion(&infoBounds, 1);
+}
+
+namespace {
+
+// Save-file header record: both header readers reserve the full 0x40 bytes on the stack
+// (sub esp,0x40 at 0x56d7d4 / the 0x48 local area at 0x56da65) but only fread the first
+// 0xc bytes to reach scenarioIndex.
+struct SaveFileHeader {
+  unsigned char pad0[8];
+  int scenarioIndex; // +0x08
+  unsigned char pad0C[0x40 - 0xc];
+};
+
+} // namespace
 
 // FUNCTION: IMPERIALISM 0x0056cd10
-void TLoadSavePicture::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {}
+void TLoadSavePicture::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+  // The original never calls a base-class HandleEvent in any path, so none is modeled here
+  // either.
+  bool reachedCommonTail = false;
+  if (commandId == 0xd) {
+    short newSlot = static_cast<short>(sourceHandler->controlTag - 0x736c7430u /* 'slt0' */);
+    if (newSlot != selectedSlot92) {
+      if (loadModeFlag90 != 0) {
+        if (selectedSlot92 != -1 && selectedSlot92 != 0xa1) {
+          TControl* oldSlotControl = static_cast<TControl*>(
+              ResolveControlByTag(0x736c7430u + selectedSlot92));
+          oldSlotControl->AssertValid();
+          oldSlotControl->SetTextStyleAndMaybeRefresh(&styleAt9e, 0);
+          RECT oldBounds;
+          oldSlotControl->QueryBounds(&oldBounds);
+          InvalidateCityDialogRectRegion(&oldBounds, 1);
+        }
+        // sourceHandler is the newly-clicked slot control itself.
+        TControl* newSlotControl = static_cast<TControl*>(sourceHandler);
+        newSlotControl->SetTextStyleAndMaybeRefresh(&styleAt94, 0);
+        RECT newBounds;
+        newSlotControl->QueryBounds(&newBounds);
+        InvalidateCityDialogRectRegion(&newBounds, 1);
+        selectedSlot92 = newSlot;
+        RefreshSlotPreviewFromSaveFile(newSlot);
+      } else if (newSlot == -1) {
+        // Enter "rename" mode: swap the clicked slot's static text label for a live edit
+        // box seeded with its current text.
+        TStaticText* slotControl = static_cast<TStaticText*>(sourceHandler);
+        slotControl->SetEnabled(0, 1);
+        CString slotText;
+        slotControl->AssignSharedStringFromField84(&slotText);
+
+        TEditText* editControl = new TEditText();
+        int offsetLayout[2] = {slotControl->ownerLocalX, slotControl->ownerLocalY};
+        int sizeLayout[2] = {slotControl->frameWidth34, slotControl->frameHeight38};
+        editControl->InitializeTextEntryBaseAndOptionalStringResource(this, offsetLayout,
+                                                                       sizeLayout, 5, 5, -1, 0);
+        editControl->field_9c = 0x1f; // max character count
+        editControl->SetControlValue(1);
+
+        editControl->SetTextStyleAndMaybeRefresh(&styleAt9e, 0);
+        editControl->InitDialogWindowAndSyncTitleIfChanged(&slotText, 0);
+        editControl->Refresh();
+        editControl->ActivateCityProductionViewIfAllowed();
+        editControl->SetEditSelectionAndScrollCaret(0, static_cast<short>(slotText.GetLength()),
+                                                     0);
+        editControl->controlTag = 0x736c6f74u; // 'slot'
+        g_pUiRuntimeContext->UpdatePaletteIndexFromTurnEventCode(0x10);
+      }
+    }
+    reachedCommonTail = true;
+  } else if (commandId == 0x14) {
+    if (sourceHandler->controlTag == 0x636e636cu) { // 'clnc'
+      HandleTurnFlowStateTickOrPostTurnEvent5DC();
+    }
+    if (loadModeFlag90 != 0 && sourceHandler->controlTag == 0x6f74746fu /* 'otto' */) {
+      if (selectedSlot92 != -1 && selectedSlot92 != 0xa1) {
+        TControl* oldSlotControl =
+            static_cast<TControl*>(ResolveControlByTag(0x736c7430u + selectedSlot92));
+        oldSlotControl->AssertValid();
+        oldSlotControl->SetTextStyleAndMaybeRefresh(&styleAt9e, 0);
+        RECT oldBounds;
+        oldSlotControl->QueryBounds(&oldBounds);
+        InvalidateCityDialogRectRegion(&oldBounds, 1);
+      }
+      selectedSlot92 = 0xa1;
+      RefreshSlotPreviewFromSaveFile(0xa1);
+    }
+  } else if (commandId == 0xa && sourceHandler->controlTag == kControlTagOkay) {
+    HandleSaveGameSlotSelectionAndPromptFlow();
+  }
+
+  if (reachedCommonTail && g_pApplicationUiRootController->screenModeAt24 > 1) {
+    TView* okayControl = ResolveControlByTag(kControlTagOkay);
+    if (okayControl != nullptr) {
+      QueueDeferredUiEventPacket(this, 0xa, okayControl);
+    }
+  }
+}
 
 // FUNCTION: IMPERIALISM 0x0056d190
 undefined TLoadSavePicture::HandleTurnFlowStateTickOrPostTurnEvent5DC() {
@@ -137,19 +289,6 @@ void __cdecl BuildSavePathStringForMode(CString* out, int saveMode, char* label)
   *out += slotText;
   *out += g_pszImpSaveExtension_0065DDD8;
 }
-
-namespace {
-
-// Save-file header record: both header readers reserve the full 0x40 bytes on the stack
-// (sub esp,0x40 at 0x56d7d4 / the 0x48 local area at 0x56da65) but only fread the first
-// 0xc bytes to reach scenarioIndex.
-struct SaveFileHeader {
-  unsigned char pad0[8];
-  int scenarioIndex; // +0x08
-  unsigned char pad0C[0x40 - 0xc];
-};
-
-} // namespace
 
 // FUNCTION: IMPERIALISM 0x0056d7d0
 int __cdecl ReadScenarioIndexFromSaveHeader(const char* path) {

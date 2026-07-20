@@ -1,3 +1,4 @@
+#include "game/TAmbitApplication.h"
 #include "game/TTacticalBattle.h"
 
 #include <stdlib.h>

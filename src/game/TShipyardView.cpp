@@ -1,7 +1,11 @@
 #include "game/TShipyardView.h"
 
+#include "game/TCluster.h"
+#include "game/TControl.h"
 #include "game/TQuickDrawSurfaceContext.h"
 #include "game/TSimMgr.h"
+#include "game/TStaticText.h"
+#include "game/bitmap_descriptor_helpers.h"
 #include "game/global_data_tables.h"
 #include "game/navy_order.h"
 #include "game/quickdraw_regions.h"
@@ -28,8 +32,79 @@ TShipyardView::~TShipyardView() {}
 // FUNCTION: IMPERIALISM 0x004c8340
 void TShipyardView::Free() {}
 
+// Rebuilds the 8-slot ship-build queue UI: caches the strategic-map view system's
+// active-view pointer and a bitmap surface for resource id 0x264f, then for each of
+// eight 'but0'-'but7' queue-slot buttons clears its cached value and resets the
+// button plus its embedded 'plus'/'minu' stepper controls to the disabled/off state.
 // FUNCTION: IMPERIALISM 0x004c8390
 undefined TShipyardView::OrphanRetStub_004c6fd0() {
+  field98 = g_pStrategicMapViewSystem->field04;
+  fieldB4 = 0;
+  iconSurfaceB8 = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0x264f);
+
+  for (int slotIndex = 0; slotIndex < 8; ++slotIndex) {
+    TControl* slotButton =
+        static_cast<TControl*>(ResolveControlByTag(0x62757430u + slotIndex)); // 'but0'-'but7'
+    slotButton->SetEnabled(0, 1);
+    slotButton->SetState(0, 1);
+    buildQueueSlotValues[slotIndex] = 0;
+
+    TControl* plusButton = static_cast<TControl*>(slotButton->ResolveControlByTag(0x706c7573u)); // 'plus'
+    plusButton->AssertValid();
+    plusButton->SetState(0, 0);
+
+    TControl* minusButton = static_cast<TControl*>(slotButton->ResolveControlByTag(0x6d696e75u)); // 'minu'
+    minusButton->AssertValid();
+    minusButton->SetState(0, 0);
+  }
+
+  // 14-byte style buffer: the 10-byte descriptor plus 4 explicitly zeroed tail bytes (the
+  // original zeroes them once before the first Build call) -- same idiom as
+  // TBattleReportView::NoOpUiLifecycleHook.
+  struct {
+    TUiTextStyleDescriptor desc;
+    unsigned char tail[4];
+  } style;
+  style.tail[0] = 0;
+  style.tail[1] = 0;
+  style.tail[2] = 0;
+  style.tail[3] = 0;
+
+  BuildUiTextStyleDescriptor(&style.desc, 0, 0xa, 0x2b6b);
+  TStaticText* title = static_cast<TStaticText*>(ResolveControlByTag(0x7469746cu)); // 'titl'
+  title->AssertValid();
+  title->SetTextStyleAndMaybeRefresh(&style.desc, 1);
+  title->LoadUiStringAndDispatchViaVslot1C8(0x2736, 0xe, 1);
+
+  BuildUiTextStyleDescriptor(&style.desc, 0, 0xa, 0x2b6b);
+  for (int i = 0; i < 2; ++i) {
+    TStaticText* fixedLabel = static_cast<TStaticText*>(ResolveControlByTag(0x66697830u + i)); // 'fix0'/'fix1'
+    fixedLabel->AssertValid();
+    fixedLabel->SetTextStyleAndMaybeRefresh(&style.desc, 1);
+    fixedLabel->LoadUiStringAndDispatchViaVslot1C8(0x2736, static_cast<short>(i + 0xf), 1);
+  }
+
+  BuildUiTextStyleDescriptor(&style.desc, 0, 0xc, 0x2b6b);
+  TControl* shipName = static_cast<TControl*>(ResolveControlByTag(0x736e616du)); // 'snam'
+  shipName->AssertValid();
+  shipName->SetTextStyleAndMaybeRefresh(&style.desc, 1);
+
+  BuildUiTextStyleDescriptor(&style.desc, 0, 0xa, 0x2b6b);
+  TControl* description = static_cast<TControl*>(ResolveControlByTag(0x64657363u)); // 'desc'
+  description->AssertValid();
+  description->SetTextStyleAndMaybeRefresh(&style.desc, 1);
+
+  selectedRequirementRow = 0;
+  unknownA2 = 0;
+  InitializeCityViewActionButtons(buildQueueSlotValues[0]);
+
+  // 'sele' is a TCluster (confirmed by cross-referencing turn_event_dialog_factory.cpp,
+  // which builds a real TCluster with controlTag 'sele'); byte 0x1c8 matches
+  // TCluster::SetControlClassAndRefresh(int) exactly (1 arg, RET 4).
+  TCluster* sele = static_cast<TCluster*>(ResolveControlByTag(0x73656c65u)); // 'sele'
+  sele->AssertValid();
+  sele->SetControlClassAndRefresh(0x62757430); // 'but0'
+  OrphanRetStub_004c6fb0();
   return 0;
 }
 
@@ -39,10 +114,16 @@ undefined TShipyardView::OrphanRetStub_004c6fb0() {
 }
 
 // FUNCTION: IMPERIALISM 0x004c8ac0
-void TShipyardView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {}
+void TShipyardView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+  // The original dispatches on field94's real receiver class via a lookup keyed by
+  // field94+0xe4+idx*4 -- its only assignment site, RefreshCityViewProductionDetails
+  // (0x4cfbd0, 1748 bytes), is itself unported, so the receiver class is unresolved here
+  // too -- not yet ported.
+  TControl::HandleEvent(commandId, sourceHandler, event);
+}
 
 // FUNCTION: IMPERIALISM 0x004c8d70
-void TShipyardView::InitializeCityViewActionButtons() {}
+void TShipyardView::InitializeCityViewActionButtons(short arg1) {}
 
 // Draws two dialog sections, each gated by whether it intersects the passed-in
 // paint rect (SectRect): (1) the "commodities in production" icon strip -- up to 4
@@ -100,7 +181,7 @@ void TShipyardView::ApplyRectSlot110(RECT* rectBuffer) {
 
   RECT requirementGridRegion = {0x19, 0x4b, 0xc4, 0x80};
   if (SectRect(&requirementGridRegion, rectBuffer, &scratchClip)) {
-    short nCommoditySpriteId = requirementResourceTypeByRow[selectedRequirementRow];
+    short nCommoditySpriteId = buildQueueSlotValues[selectedRequirementRow];
     ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 0xa, 0x2b6b);
 
     // Column header Y/X positions (6 columns); the last X entry is never explicitly

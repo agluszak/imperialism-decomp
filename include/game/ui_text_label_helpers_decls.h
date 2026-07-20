@@ -49,6 +49,8 @@ void InitializeUiTextStyleDescriptorAndApplyQuickDraw(short face, short pointSiz
 void SetControlHoverHelpText(CString text, TView* control);
 void SetControlHoverHelpTextAltEntry(CString text, TView* control);
 
+void LoadUiStringAndDispatchSharedMessageCommand(short group, short index, TView* control);
+
 // 0x5c4310: resolve `controlTag` on g_pDisplayMgr->activeDialog, AssertValid it, and
 // forward to ApplyControlThemeStyleAndOptionalCaption. Genuine __cdecl free function
 // (callers clean 0x18).
@@ -65,6 +67,9 @@ void __cdecl ApplyUiTextStyleAndThemeFlags(TDropShadowText* control, int unused,
 
 void LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(short group, short index,
                                                            unsigned int controlTag);
+
+void LoadUiStringByGroupAndIndexToGlobalControlTag(short group, short index,
+                                                   unsigned int controlTag);
 
 class TView;
 

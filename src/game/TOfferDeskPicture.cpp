@@ -1,3 +1,4 @@
+#include "game/TAmbitApplication.h"
 #include "game/TOfferDeskPicture.h"
 
 #include "game/CString.h"
@@ -12,10 +13,13 @@
 #include "game/TNextTradeCommand.h"
 #include "game/TNumberText.h"
 #include "game/TSimMgr.h"
+#include "game/TSoundPlayer.h"
 #include "game/TStaticText.h"
+#include "game/TTechMgr.h"
 #include "game/TTradeMgr.h"
 #include "game/global_data_tables.h"
 #include "game/mapped_flavor_text.h"
+#include "game/ui_control_tags.h"
 #include "game/ui_invalidation_guard.h"
 // SYNTHETIC: IMPERIALISM 0x005be4b0
 // TOfferDeskPicture::CreateObject
@@ -33,7 +37,11 @@ TOfferDeskPicture::TOfferDeskPicture() : TPicture(), field9e(0), fieldA0(0), fie
 TOfferDeskPicture::~TOfferDeskPicture() {}
 
 // FUNCTION: IMPERIALISM 0x005be600
-void TOfferDeskPicture::NoOpUiLifecycleHook(int arg) {}
+void TOfferDeskPicture::NoOpUiLifecycleHook(int arg) {
+  TPicture::NoOpUiLifecycleHook(arg);
+  // The original then sets up the offer-desk's per-nation control table (816 bytes) -- not
+  // yet ported.
+}
 
 // FUNCTION: IMPERIALISM 0x005bea00
 undefined TOfferDeskPicture::InitializeTradeScreenControlsLabelsAndNationContext() {
@@ -41,7 +49,32 @@ undefined TOfferDeskPicture::InitializeTradeScreenControlsLabelsAndNationContext
 }
 
 // FUNCTION: IMPERIALISM 0x005bf740
-void TOfferDeskPicture::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {}
+void TOfferDeskPicture::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+  int tag = sourceHandler->controlTag;
+  if (commandId >= 0x2af8) {
+    short selectionIndex =
+        g_offerDeskSelectionIndexTable_00668568[commandId +
+                                                 g_pCityOrderCapabilityState->hasProductionOrder193 *
+                                                     0x11];
+    if (field9e == 0) {
+      UpdateTradeSelectionStateAndRefreshUiIfChanged(1);
+    } else {
+      g_pSfxPlaybackSystem->PlaySoundEffect(0x13f0, 0, 1);
+    }
+    TControl* bookControl = static_cast<TControl*>(ResolveControlByTag(kControlTagBook));
+    bookControl->UpdateSelectionRect(selectionIndex);
+  } else if (commandId == 0xa) {
+    if (tag == kControlTagAcce || tag == kControlTagReje) {
+      CreateNextTradeCommandAndFormatPrompt(tag);
+    } else if (tag == kControlTagForM) {
+      g_pHelpMgr->CycleTradeScreenMode0To2();
+      RefreshSelectedNationOrderCompatibilityInfo();
+    }
+  } else if (commandId == 0x14 && tag == kTagDone) {
+    UpdateTradeSelectionStateAndRefreshUiIfChanged(0);
+  }
+  TControl::HandleEvent(commandId, sourceHandler, event);
+}
 
 // FUNCTION: IMPERIALISM 0x005bf860
 void TOfferDeskPicture::ForwardParam(int param) {}
@@ -300,4 +333,9 @@ char TOfferDeskPicture::DispatchUiMouseEventToChildrenOrSelf_Impl(CPoint* point,
   (void)arg3;
   (void)arg4;
   return 0;
+}
+
+// FUNCTION: IMPERIALISM 0x005c09d0
+void TOfferDeskPicture::UpdateTradeSelectionStateAndRefreshUiIfChanged(int activate) {
+  (void)activate;
 }
