@@ -128,6 +128,10 @@ public:
   // expansion site emits only the base ctor call + vtbl install)
   TSpecialQuitPicture() {}
 
-  // Original object size is 0x94 (CRuntimeClass m_nObjectSize); the source class ended at 0x90. Trailing 4 byte(s) not yet semantically recovered — declared so sizeof and the recomp's allocation size match the original.
-  int field90;
+  // Original object size is 0x94 (CRuntimeClass m_nObjectSize); the source class ended at
+  // 0x90. HandleEvent reads/writes field90 exclusively via 16-bit `ax`/`word ptr` accesses
+  // (both the `= 1` init and the increment/compare/decrement loop), so it's a short, not
+  // an int; padA2 keeps sizeof at 0x94.
+  short field90;
+  short padA2;
 };

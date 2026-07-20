@@ -63,6 +63,7 @@ void TSpecialQuitPicture::NoOpUiLifecycleHook(int arg) {
 
 // FUNCTION: IMPERIALISM 0x005b4a10
 void TSpecialQuitPicture::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+  CString titlText;
   if (commandId == 10) {
     if (sourceHandler->controlTag == kControlTagQuit) {
       PostWmCloseToMainThreadWindow();
@@ -79,18 +80,16 @@ void TSpecialQuitPicture::HandleEvent(int commandId, TEventHandler* sourceHandle
       titlControl->SetEnabled(1, 1);
       field90 = 1;
       SetPictureResourceIdAndRefresh(0x3e9, 1);
-      CString titlText0;
-      g_pSimMgr->GetString(0x1770, 0, &titlText0);
-      titlControl->UpdateTextEntrySharedString(&titlText0);
+      g_pSimMgr->GetString(0x1770, 0, &titlText);
+      titlControl->UpdateTextEntrySharedString(&titlText);
     } else if (field90 > 0) {
       ++field90;
       if (field90 < 10) {
         SetPictureResourceIdAndRefresh(static_cast<short>(field90 + 0x3e8), 1);
         TDeluxeText* titlControl = static_cast<TDeluxeText*>(ResolveControlByTag(kControlTagTitl));
         titlControl->AssertValid();
-        CString titlTextN;
-        g_pSimMgr->GetString(0x1770, static_cast<short>(field90 - 1), &titlTextN);
-        titlControl->UpdateTextEntrySharedString(&titlTextN);
+        g_pSimMgr->GetString(0x1770, static_cast<short>(field90 - 1), &titlText);
+        titlControl->UpdateTextEntrySharedString(&titlText);
       } else {
         field90 = 0;
         SetPictureResourceIdAndRefresh(0x4e20, 1);
