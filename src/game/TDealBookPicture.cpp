@@ -2,6 +2,7 @@
 
 #include "game/TDropShadowText.h"
 #include "game/TSimMgr.h"
+#include "game/mapped_flavor_text.h"
 #include "game/TSoundPlayer.h"
 #include "game/TStaticText.h"
 #include "game/TTechMgr.h"
@@ -178,9 +179,16 @@ void TDealBookPicture::HandleEvent(int commandId, TEventHandler* sourceHandler, 
       if (initializedFlagB1 == 0) {
         RefreshTradeSelectionHeaderAndNationOfferBidLines();
       }
-      // The original then resolves a 'Litl' title control and rebuilds its caption from a
-      // templated category-name string -- that control's concrete class isn't identified
-      // yet, so left unmodeled.
+      TStaticText* titLControl = static_cast<TStaticText*>(ResolveControlByTag(0x7469744c)); // 'titL'
+      titLControl->AssertValid();
+      CString templateText;
+      g_pSimMgr->GetString(0x2741, 3, &templateText);
+      CString categoryName;
+      g_pSimMgr->GetString(0x2711, categorySlot, &categoryName);
+      CString composedTitle;
+      scanBracketExpressions(g_pSimMgr, &composedTitle, static_cast<LPCSTR>(templateText),
+                             static_cast<LPCSTR>(categoryName));
+      titLControl->AssignTextSharedRefIfChangedAndMaybeInvalidate(&composedTitle, 0);
     }
   }
   // The original also dispatches a large per-tag command table below commandId 0x2af8
