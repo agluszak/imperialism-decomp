@@ -118,7 +118,7 @@ series. Resolution:
 | 87-L | Verify stub attribution by field-access consistency with p | `class-recovery` |
 | 88-L | `new T()` callsites are an authoritative sizeof(T) oracle  | `class-recovery` |
 | 89-L | Match the compiler's `>= N` / `> N` compare form, not just | `codegen-shapes` |
-| 90-L | Before acting on a triage `[call_target]` line that names  | `vtable-matching` |
+| 90-L | Route a structured `call_target` through vtable ownership | `vtable-matching` |
 | 91-L | Pointer-walk vs index-loop is an optimizer choice you can' | `codegen-shapes` |
 | 92-L | A sudden mass-unpairing after editing a .cpp is almost alw | stays here (below) |
 | 93-L | A low-scoring "already-ported" leaf may just carry the WRO | stays here (below) |
@@ -157,7 +157,7 @@ series. Resolution:
 | 100-L | Force MSVC's callee-saved-register live-range SPLIT with a | `codegen-shapes` |
 | 101-L | A small __thiscall "iterator/cursor" struct that reads `co | `calling-conventions` |
 | 102-L | Claiming a small "Construct<Class>BaseState" ctor stub is  | `ctors-dtors-eh` |
-| 103-L | Near-miss (95–99%) triage-bucket fix taxonomy — which are  | stays here (below) |
+| 103-L | Near-miss structured triage — proof, trusted mismatch, or | stays here (below) |
 | 104-L | A jump-table switch dispatcher that Ghidra split into per- | `big-functions` |
 | 105-L | A referenced .rdata data table Ghidra never symbolized sho | `data-modeling` |
 | 106-L | Caller-side `movsx`+`push eax` of a short expression + cal | `calling-conventions` |
@@ -472,34 +472,24 @@ shifted PDB lines). If stats suddenly shows ~100 regressions in untouched code, 
 verify the build actually relinked ("Built target Imperialism"), then `rm -f
 build-msvc500/nn?00192 build-msvc500/nm?00192 build-msvc500/a00820*` and rebuild.
 
-- **Near-miss (95–99%) triage-bucket fix taxonomy — which are clean single-line wins
-     and which are traps.** After `just triage 0xADDR`, the bucket + one diff line usually
-     tells you if it's fixable in isolation. **Reliably fixable (each a 1-line source fix
-     verified this session):** (a) *missing assert args* — a `codegen` bucket showing
-     `orig-only: push 0xLINE; push "D:\Ambit\...cpp"; add esp,8` means a
-     `TemporarilyClearAndRestoreUiInvalidationFlag()` call is missing its `(path,line)`
-     arguments; model the path as a real `// GLOBAL:` string (read it via
-     `just ghidra-read-data 0xADDR str`) and pass `(g_sz...Path, 0xLINE)` (e.g. 0x4db7d0).
-     (b) *literal-vs-named-constant* — a `codegen`/data line `fld [g_Named]` vs
-     `fld [<OFFSET1>]` where a bare `return 0.0f;`/literal makes MSVC allocate a fresh
-     constant, but the original reuses an existing zero/constant global; return the named
-     global instead of the literal AND ensure that global carries its `// GLOBAL:` marker so
-     reccmp pairs the data symbol (e.g. 0x53d420 → g_..._0065A9E8, which was ALSO missing its
-     marker). (c) *wrong calling convention* — a `codegen` line `ret 4` vs `ret`: verify the
-     callee's real `RET`/`RET 0x4` in Ghidra, then annotate the free function `__stdcall`
-     (callee-cleans) on BOTH prototype and definition (e.g. 0x5a99e0 DrawHexSelectionOutline).
-     **Traps — do NOT chase (verified dead ends this session):** (d) *ax-vs-eax / bx-vs-bl
-     register-width `reg_alloc` on a single `movsx`/`mov`* — the types are already correct;
-     MSVC's 16- vs 32-bit destination choice is register-reuse (it relies on stale high bits
-     of a reused index reg), not source-controllable; flipping `short`↔`int` just moves the
-     mismatch (0x5a24a0 sfx token, 0x522000). (e) *`call_target` on a LIBRARY function*
-     (AfxMessageBox `(LPCTSTR,UINT,UINT)` vs `(char const*,...)`, or a thiscall method whose
-     ILT thunk resolves fine but shows `(short)` vs `(void)`) — an MFC/symbols pairing
-     artifact, not a codegen diff. (f) *`missing_annotation` on an end-of-array pointer
-     sentinel* (`cmp esi, &table[N]` labeled as the adjacent global) — the loop-end address
-     is unnamed in both binaries so reccmp can't pair it; no clean source fix. (g) *widening
-     a shared struct field or a virtual's param to drop one caller's `movsx`* — correct in
-     isolation but regresses the other N consumers; only do it with full multi-site + stats
-     verification, never as a one-function win.
+- **Near-miss triage now starts from reccmp's structured status, not line buckets.**
+     Raw similarity (even 95–99%) does not decide whether source work exists. After
+     `just triage 0xADDR`: (a) `effective` is a completed proof — reasons such as
+     `register_allocation`, `instruction_reorder`, or `commutative_order` are traps to
+     stop chasing; (b) `mismatch` is actionable, and its first trusted kind routes the
+     investigation — `call_target`/`call_argument` to convention and receiver evidence,
+     `memory_address` to stack-vs-object layout, `symbol_resolution` to annotations,
+     `immediate_value`/`branch_condition` to constants and source shape, and
+     `return_value`/`preserved_state` to ABI correctness; (c) `inconclusive` means the
+     verifier reached an unsupported instruction/CFG, missing metadata, failed trusted
+     alignment, or analysis limit. It must not be converted into a claim that the source
+     is wrong.
+
+     The old regex classifier's `reg_alloc`, `codegen`, `constant`, and
+     `missing_annotation` buckets no longer exist. Preserve the underlying lessons only
+     after structured evidence supports them: model assert path/line arguments and named
+     constants from Ghidra/data symbols, verify `ret N` conventions on both declaration
+     and definition, and never widen a shared field or virtual parameter merely to erase
+     one caller's raw `movsx` difference.
 
   *(ex decomp-loop list-note 103)*

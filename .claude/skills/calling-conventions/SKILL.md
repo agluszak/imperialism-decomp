@@ -30,6 +30,26 @@ guardrail in AGENTS.md). If it's thiscall, find the class and declare a real met
 Verification commands: `just ghidra-listing 0xADDR` (entry + `ret`),
 `just scan-cdecl-thiscall`, and disassemble one caller around the `CALL`.
 
+## Reading structured reccmp call and return diagnosis
+
+Use `just triage 0xADDR`; do not infer ABI meaning from regexes over the rendered
+diff. reccmp now uses PDB types plus decorated-name recovery to check the relevant
+machine state:
+
+- `call_target` means the paired calls resolve to different callees.
+- `call_argument` means the target agrees but a checked register argument differs;
+  its facts name the register. ECX is usually the `thiscall` receiver, EDX is commonly
+  the second `fastcall` register argument. Unknown callees conservatively check both.
+- `return_value` compares only the declared return lanes: nothing for `void`, AL/AX
+  for small integers, EDX:EAX for 64-bit integers, ST(0) for floating point, and exact
+  EAX for unknown returns.
+- `missing_metadata` is `inconclusive`, not proof that either signature or source is
+  wrong. Recover the convention/return contract from callee and callers before editing.
+
+These are trusted divergence facts, not an automatic class attribution. Confirm the
+ECX source and callee cleanup in the listing before moving a method or changing its
+signature.
+
 ## Field notes
 
 ### Calling-convention recovery

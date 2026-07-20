@@ -92,7 +92,7 @@ def main() -> int:
         name = ent.get("name", "?")
         score = ent.get("matching")
         score_pct = f"{score * 100:.2f}%" if isinstance(score, (int, float)) else "?"
-        if ent.get("effective"):
+        if ent["comparison"]["status"] == "effective":
             score_pct = f"{effective_matching(ent) * 100:.2f}% (effective, raw {score_pct})"
         orig_str = f"0x{orig:08x}" if orig is not None else "?"
         recomp_str = f"0x{recomp:08x}" if recomp is not None else "(not linked)"

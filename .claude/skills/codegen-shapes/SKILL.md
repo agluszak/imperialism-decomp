@@ -170,11 +170,11 @@ TryGetFileMetadataForPath (0x5d4c10) returns `(unsigned char)CFile::GetStatus(..
 - **Match the compiler's `>= N` / `> N` compare form, not just the semantics.**
     `if (ver > 0x16)` and `if (ver >= 0x17)` are identical semantically but MSVC5 emits
     different code: `> 0x16` -> `cmp 0x16; jle`, `>= 0x17` -> `cmp 0x17; jl`. When
-    triage shows a `[constant]` `0x17 vs 0x16` on a `cmp [global], imm` paired with a
-    `[codegen]` `jl vs jle` at the next address, the original wrote the boundary the
+    structured triage reports an `immediate_value` (`0x17` vs `0x16`) or a
+    `branch_condition` at the trusted compare, the original wrote the boundary the
     other way — flip your operator to match. Cheap, codegen-faithful, safe (reccmp pairs
-    by address; branch target unchanged). Rarely moves the score alone when a bigger
-    register-scheduling diff dominates alignment, but removes two genuine mismatch lines.
+    by address; branch target unchanged). Do not derive this from a weak raw-diff
+    alignment: if reccmp reports `inconclusive`, there is no trusted source diagnosis yet.
 
   *(ex decomp-loop list-note 89)*
 

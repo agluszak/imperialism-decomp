@@ -116,9 +116,10 @@ instances). Split procedure:
 
 - **`new T()` callsites are an authoritative sizeof(T) oracle — use them to catch
     under-modeled classes.** A `push 0xNN; call 0x606f73` (MFC `operator new`) at a
-    `new T()` site pins `sizeof(T)` exactly, and reccmp flags a wrong size as a
-    `[constant]` mismatch on the `push` immediate (`0x80 vs 0x64` = class is 0x1C bytes
-    short, not codegen wobble). Worked example: `TGreatPower::ReadFrom` (0x4d92e0)
+    `new T()` site pins `sizeof(T)` exactly, and structured reccmp diagnosis flags a
+    trusted wrong size as `immediate_value` (`0x80` vs `0x64` = class is 0x1C bytes
+    short, not codegen wobble). An `inconclusive` raw push difference is not equivalent
+    evidence. Worked example: `TGreatPower::ReadFrom` (0x4d92e0)
     builds three ministers with `push 0x80` / `push 0x1c4` / `push 0x94`; the recomp
     pushed 0x64/0x2c/0x2c, exposing that the shared `TMinister` base was 0x2C instead
     of its real 0x48. Fix belongs on the *base* when the whole family is short: derived

@@ -22,7 +22,10 @@ The workflow that scales:
    lays them out.
 3. Port callees you meet on the way (or verify their existing models — conventions
    especially) rather than bridging around them.
-4. Compare, `just triage`, fix the structural buckets, accept allocator wobble.
+4. Run `just triage` and obey the structured status: stop on `effective`, fix the
+   first trusted `mismatch`, and treat `inconclusive` as an analysis boundary rather
+   than proof that a huge source body is wrong. Use the raw diff only as local context
+   after a concrete mismatch.
 
 ## Field notes
 

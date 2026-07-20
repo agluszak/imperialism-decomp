@@ -30,6 +30,12 @@ levers, most powerful first:
   one (add the missing twin rather than casting the wrong one).
 - **FP wobble in untouched functions is not a regression** — commutative operand
   order can flip when a TU grows (see the score-wobble policy in AGENTS.md).
+- **Let structured diagnosis decide whether FP order matters.** Run `just triage`
+  before source-tuning a low raw score. `effective` with `commutative_order` means
+  reccmp proved the reordered FP expression harmless (the Imperialism x87 case at
+  `0x4e0590` is a representative low-score proof); stop tuning it. Only a concrete
+  `mismatch` such as `memory_value` or `return_value` is actionable. `inconclusive`
+  means the verifier could not decide, not that the FP source is wrong.
 
 ## Field notes
 
