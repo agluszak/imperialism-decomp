@@ -130,7 +130,14 @@ public:
 
   // Own fields at +0x94..+0x160 (RTTI m_nObjectSize 0x160 vs TNoHilitePicture's 0x94).
   // Ctor (0x45ae60) only chains the base ctor and installs the vtable -- nothing here
-  // is written at construction, so this block is still fully unrecovered scenario-
-  // selection state (every override in TScenarioChooser.cpp is currently a stub).
-  unsigned char scenarioChooserState94[0x160 - 0x94];
+  // is written at construction, so most of this block is still unrecovered scenario-
+  // selection state.
+  unsigned char scenarioChooserState94[0x142 - 0x94];
+  // Selected scenario index (-1 = none); read by ApplyScenarioSelectionAndPostTurnEvent5E4
+  // and PostTurnEvent5DCOrResetScenarioSelectionState. -1 also short-circuits the whole
+  // apply flow.
+  short selectedScenarioIndex142;
+  // Per-nation-slot state codes, indexed by TMapPreviewView::selectedNation68 and applied
+  // via TSimMgr::SetStateCodeAndUpdateZeroOrOutOfRangeFlag.
+  int nationStateCodesByMapSelection144[(0x160 - 0x144) / 4];
 };
