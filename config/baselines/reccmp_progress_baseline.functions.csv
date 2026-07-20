@@ -4696,7 +4696,7 @@ address|matching|name
 0x58ab60|0.9166666666666666|TShipAmtBar::TShipAmtBar
 0x58aba0|0.9090909090909091|TShipAmtBar::`scalar deleting destructor'
 0x58abf0|0.9122807017543859|TShipAmtBar::DoPostCreate
-0x58ac80|0.5170731707317073|TShipAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache
+0x58ac80|0.526829268292683|TShipAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache
 0x58ae30|0.5161290322580645|TTraderAmtBar::CreateObject
 0x58aed0|1.0|TTraderAmtBar::GetRuntimeClass
 0x58aef0|0.631578947368421|TTraderAmtBar::TTraderAmtBar
