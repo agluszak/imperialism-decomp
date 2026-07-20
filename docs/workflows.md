@@ -79,6 +79,7 @@ Edit manual source (shape/data passes on already-owned functions), iterating wit
 just build              # Docker MSVC500 build (runs vtable-gate first)
 just compare 0xADDR     # or: just compare --file src/game/Foo.cpp
 just triage 0xADDR      # below 100%? classify the diff into actionable buckets first
+just triage 0xA 0xB     # batch related functions; filtered run with validated setup cache
 ```
 
 Verify + pre-commit (always):
