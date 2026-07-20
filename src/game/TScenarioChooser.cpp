@@ -15,10 +15,20 @@ IMPLEMENT_DYNCREATE(TScenarioChooser, TNoHilitePicture)
 TScenarioChooser::TScenarioChooser() {}
 
 // FUNCTION: IMPERIALISM 0x00579b80
-void TScenarioChooser::NoOpUiLifecycleHook(int arg) {}
+void TScenarioChooser::NoOpUiLifecycleHook(int arg) {
+  TNoHilitePicture::NoOpUiLifecycleHook(arg);
+  // The original then sets up the scenario-list/preview controls (973 bytes) -- not yet
+  // ported.
+}
 
 // FUNCTION: IMPERIALISM 0x0057a050
-void TScenarioChooser::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {}
+void TScenarioChooser::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+  // The original dispatches on commandId (4, 'pick', 0xa, 0x14, ...) against
+  // sourceHandler's own +0x1060/+0x1064/+0x1068 fields (an unresolved receiver class) and
+  // scenarioChooserState94's opaque layout before reaching this common tail in every path
+  // -- not yet ported.
+  TControl::HandleEvent(commandId, sourceHandler, event);
+}
 
 // FUNCTION: IMPERIALISM 0x0057a2d0
 undefined TScenarioChooser::PostTurnEvent5DCOrResetScenarioSelectionState() {
