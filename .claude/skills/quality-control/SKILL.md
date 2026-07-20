@@ -162,6 +162,30 @@ Notes: re-run `detect` after each rebuild; tiny wrappers can be folded/aliased b
 linker, so a targeted compare may map to an unexpected symbol; keep `reccmp-user.yml`
 local/gitignored and commit only `reccmp-project.yml`.
 
+### Oversized-vtable diagnostics
+
+`just vtable [Class]` reports the evidence behind every "recomp vtable is larger"
+warning instead of presenting it as a generic class-size defect:
+
+- `slots candidate=N` is the pointer count reccmp would compare; `orig_bound=N` is
+  the tightest declared-size or next-entity metadata bound.
+- `first_null=N` is the first null pointer in the original across the full candidate
+  extent. `None` means the original pointers continue through that extent;
+  `unavailable` means the binary range could not be read completely.
+- `trigger=declared_size`, `boundary`, or `null` lists every reason the candidate is
+  considered oversized. The `bytes` line preserves all raw `size`, `max_size`, and
+  `any` values for metadata debugging.
+- For `boundary`, the final line names the original entity at the limiting address.
+  A data entity inside a non-null pointer run usually means stale/interior
+  `original_entities.csv` metadata. A separately named dispatch table at the exact
+  boundary may be a genuine split that the recomp class model merged. A `null`
+  trigger is direct evidence of the original vtable tail and usually points to
+  inheritance or an extra override.
+
+These diagnostics are emitted on both cold analysis and prepared-cache hits. Use
+the named boundary plus `just ghidra-vtable-dump`/`just ghidra-read-data` before
+changing inheritance or deleting an annotation.
+
 ### Structured semantic diagnosis
 
 The JSON report's `comparison` object is authoritative; the legacy `effective`
