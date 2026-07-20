@@ -84,7 +84,9 @@ public:
   // +0x40 — the active lobby dialog view when one is open; the code-9 receive path
   // checks IsKindOf(RUNTIME_CLASS(TLoungeDialog)) before using it as the lounge.
   TView* lobbyDialogView40;               // +0x40
-  int diplomacyQueueContext;              // +0x44 — child handler for queue routing
+  // +0x44 — child handler for queue routing. Opaque: TLoungeDialog::NoOpUiLifecycleHook
+  // passes `this` (a TView-derived dialog) as the sole non-zero writer seen so far.
+  void* diplomacyQueueContext;
   int nationSessionIds[kNationSlotCount]; // +0x48
   int queueSyncDword;                     // +0x64
   char processPrimaryEventQueue;          // +0x68
@@ -143,7 +145,7 @@ public:
   // primaryTurnEventQueueHead. 0x549280.
   void AppendNodeToTurnEventLinkedListAt6C(int node);
   // 0x5430c0 — enable both diplomacy queue-processing flags and set the routing context.
-  void EnableDiplomacyQueueRoutingAndSetContextField44(int nContext, char fEnable);
+  void EnableDiplomacyQueueRoutingAndSetContextField44(void* nContext, char fEnable);
   void CreateAndSendTurnEvent11_MapOffsetAndFlags(unsigned char flagByte, int mapOffsetSelector,
                                                   int absoluteOffset, short shortA,
                                                   short shortB);       // 0x5493c0

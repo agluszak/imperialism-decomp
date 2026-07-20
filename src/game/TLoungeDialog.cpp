@@ -32,21 +32,42 @@ void TLoungeDialog::Free() {}
 void TLoungeDialog::NoOpUiLifecycleHook(int arg) {
   TNoHilitePicture::NoOpUiLifecycleHook(arg);
 
-  // The original also calls g_pGameFlowState->EnableDiplomacyQueueRoutingAndSetContextField44
-  // (this, 1) here; its first param is declared int (an opaque context id elsewhere), and
-  // passing `this` there would need a new cast, so left unmodeled.
+  g_pGameFlowState->EnableDiplomacyQueueRoutingAndSetContextField44(this, 1);
 
   // 'labl' is a TInfoBarText control (vtable slot 0x204 matches
-  // TInfoBarText::InitializeMapHintTextStyleAndThemeFlags exactly).
+  // TInfoBarText::InitializeMapHintTextStyleAndThemeFlags exactly). The original also
+  // installs it as the shared cursor-hint panel.
   TInfoBarText* lablControl = static_cast<TInfoBarText*>(ResolveControlByTag(0x6c61626c));
+  g_pCursorControlPanel = lablControl;
   lablControl->AssertValid();
   lablControl->BuildAndApplyTextStyleDescriptor(0, 0xe, 0x2b6b);
   lablControl->InitializeMapHintTextStyleAndThemeFlags(0x2b6b, 0x2b6c);
   lablControl->SetTextThemeCodeAndMaybeRefresh(1, 0);
 
-  // The original then sets up the multiplayer lounge dialog's roster/chat controls: a
-  // 7-entry 'nam0'-'nam6' loop building per-player name/ready-state labels, plus 'map '/
-  // 'tnam'/'send'/'clnc' setup gated on g_pGameFlowState's session state -- not yet
+  // Per-nation-slot roster rows: a ready-state radio ('rad0'-'rad6'), a portrait/pick
+  // button ('pik0'-'pik6'), and a name label ('nam0'-'nam6'), each initialized with a
+  // blank caption via the same restyle idiom as RefreshMapAndMessageControlsForCurrentContext.
+  for (int i = 0; i < 7; ++i) {
+    LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2742, 6, 0x72616430u + i); // 'rad0'-'rad6'
+    LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2742, 7, 0x70696b30u + i); // 'pik0'-'pik6'
+    LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2742, 8, 0x6e616d30u + i); // 'nam0'-'nam6'
+    // 0x6980c8 is an unlabeled data address Ghidra never recognized as a string (no
+    // string-oracle entry, single xref) -- treated as the empty placeholder caption it
+    // reads as.
+    TStaticText* nameControl = RefreshActiveControlThenApplyThemeStyleAndCaption(
+        0x6e616d30u + i, 0, 0xe, 0x2b6b, -2, "");
+    nameControl->AssertValid();
+    ApplyUiTextStyleAndThemeFlags((TDropShadowText*)nameControl, 0, 0xe, 0x2b6b, 0x2b6c);
+  }
+
+  LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2742, 0xb, 0x6d617020u); // 'map '
+  LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2742, 0xd, 0x746e616du); // 'tnam'
+  LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2742, 0xe, 0x73656e64u); // 'send'
+
+  // The original then branches on g_pGameFlowState->IsSpecialNationDialogModeActive(): the
+  // non-special path loads 'clnc' and, when g_pSimMgr->field44 == 1, does further
+  // multiplayer-connect setup and a ChatWindowLine post; the special path loads 'clnc'/
+  // 'busy' conditionally on the pending nation slot and posts more chat lines -- not yet
   // decoded.
 }
 

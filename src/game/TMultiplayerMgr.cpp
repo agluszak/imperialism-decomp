@@ -285,7 +285,7 @@ void TMultiplayerMgr::WriteTo(TStream* stream) {
 }
 
 // FUNCTION: IMPERIALISM 0x005430c0
-void TMultiplayerMgr::EnableDiplomacyQueueRoutingAndSetContextField44(int nContext, char fEnable) {
+void TMultiplayerMgr::EnableDiplomacyQueueRoutingAndSetContextField44(void* nContext, char fEnable) {
   processPrimaryEventQueue = 1;
   processSecondaryEventQueue = 1;
   if (fEnable != '\0') {
