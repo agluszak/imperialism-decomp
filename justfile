@@ -475,9 +475,9 @@ addr *args:
 stackcmp addr *args:
   (cd "{{build_dir}}" && uv run reccmp-stackcmp --target "{{target}}" {{args}} "{{addr}}")
 
-# Classify every mismatched diff line of a below-100% function into actionable
-# buckets (field_offset / stack_layout / call_target / missing_annotation /
-# constant / reg_alloc / codegen). `just triage 0xADDR [...]` or `--file SRC.cpp`.
+# Interpret reccmp's trusted semantic proof or first structured machine-level
+# divergence with Imperialism-specific source/layout advice.
+# `just triage 0xADDR [...]` or `--file SRC.cpp`.
 [group('compare')]
 triage *args:
   uv run python -m tools.reccmp.triage --target "{{target}}" --build-dir "{{build_dir}}" {{args}}

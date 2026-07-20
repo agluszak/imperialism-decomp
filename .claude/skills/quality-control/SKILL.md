@@ -22,12 +22,11 @@ Build, measurement, gates, and regression diagnosis. Obey the Command Policy in
   a file; `just compare-class X` is shorthand for the latter. All three run reccmp
   once with `--json` (seconds total, vs ~10s of PDB parsing per single compare).
 - `just triage 0xADDR` (or `--file src/game/X.cpp`) — **run this before reading a raw
-  compare diff by eye.** Classifies every mismatched line into buckets with the
-  standard next action: `field_offset` (class-layout error), `stack_layout` (run
-  `just stackcmp`), `call_target` (unported callee / vtable-slot mismatch, with the
-  callee's ownership), `missing_annotation` (add `// GLOBAL:`/`// STRING:`),
-  `constant` (flags original values that lie in .data — likely unannotated
-  addresses), `reg_alloc` (chase last), `codegen` (structural; read in context).
+  compare diff by eye.** It consumes `entity["comparison"]` from reccmp's report;
+  it does not classify rendered instruction text. `exact` needs no work,
+  `effective` lists the proof transformations that are safe to ignore, `mismatch`
+  reports the first trusted observable divergence with structured operand facts,
+  and `inconclusive` explicitly says reccmp did not prove the source wrong.
 - `just stackcmp-triage` — batch `reccmp-stackcmp` over the near-match score range
   and rank stack-layout suspects (each run re-parses the PDB, so it caps at
   `--limit`, default 12).
@@ -139,8 +138,10 @@ calling-convention cast back to unblock a commit.
 
 ## reccmp specifics
 
-reccmp is installed from a pinned fork commit in `pyproject.toml` (no local checkout
-needed unless editing reccmp itself). The `just` targets wrap it:
+reccmp is installed from a full, immutable fork commit in `pyproject.toml` (no local
+checkout needed unless editing reccmp itself). After advancing the fork, update the
+full SHA and run `uv lock --refresh-package reccmp`; do not commit a local-file Git
+override. Verify the lock resolves the pushed remote commit. The `just` targets wrap it:
 
 - detection: `reccmp-project detect --what recompiled`
 - compare: `reccmp-reccmp --target IMPERIALISM [--verbose 0xADDR]`
@@ -148,6 +149,31 @@ needed unless editing reccmp itself). The `just` targets wrap it:
 Notes: re-run `detect` after each rebuild; tiny wrappers can be folded/aliased by the
 linker, so a targeted compare may map to an unexpected symbol; keep `reccmp-user.yml`
 local/gitignored and commit only `reccmp-project.yml`.
+
+### Structured semantic diagnosis
+
+The JSON report's `comparison` object is authoritative; the legacy `effective`
+boolean and old report schema are unsupported. It contains:
+
+- `status`: `exact`, `effective`, `mismatch`, or `inconclusive`;
+- `effective_reasons`: deterministically ordered proof reasons, only for
+  `effective` (`register_allocation`, `frame_slot_layout`,
+  `callee_save_substitution`, `instruction_reorder`, `commutative_order`,
+  `condition_inversion`, `dead_operation`, `padding`);
+- `difference`: the first trusted divergence, only for `mismatch`, with kind
+  (`call_target`, `call_argument`, `memory_address`, `memory_value`,
+  `immediate_value`, `branch_condition`, `branch_target`, `return_value`,
+  `preserved_state`, `symbol_resolution`) plus original/recompiled instruction
+  indices, addresses, and primitive facts;
+- `inconclusive_reason` and optional `inconclusive_location`, only for
+  `inconclusive` (`unsupported_instruction`, `unsupported_control_flow`,
+  `alignment_failure`, `missing_metadata`, `analysis_limit`).
+
+Result precedence is `exact` → any complete `effective` proof → a concrete mismatch
+from trusted CFG/lockstep pairing → `inconclusive`. A speculative alignment failure
+cannot override a proof or manufacture an actionable mismatch. Raw similarity remains
+useful for progress and local context, but it is not semantic classification: inspect
+the formatted diff only after triage reports `mismatch`.
 
 ## Known reccmp failure modes
 
