@@ -10,6 +10,10 @@ Primary workflow uses `just` wrappers:
 4. `just stats-baseline-update` (update the committed progress baseline after accepting changes)
 5. `just session-loop` (read-only ranking; pass `--refresh-ignore` to also rewrite ignore lists)
 
+`just compare 0xA 0xB` and `just triage 0xA 0xB` pass those addresses into
+reccmp before comparison. They parse the PDB once and do not build a full-corpus
+report. `just addr` uses the same fresh targeted path in both address spaces.
+
 `just stats-baseline-update` writes two reviewable snapshots:
 
 - `config/baselines/reccmp_progress_baseline.json` — aggregate counts and ratios.
