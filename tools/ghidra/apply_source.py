@@ -39,6 +39,7 @@ import pyghidra
 from tools.common import ghidra_env
 from tools.common.pipe_csv import read_pipe_table
 from tools.common.repo import repo_root_from_file
+from tools.common.vtable_extents import load_verified_vtable_extents
 from tools.source_model import build_model
 
 REPO_ROOT = repo_root_from_file(__file__, levels_up=2)
@@ -69,6 +70,16 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--apply", action="store_true", help="Write and save the DB (default: dry-run).")
     parser.add_argument("--quiet", action="store_true", help="Only print the summary lines.")
     parser.add_argument(
+        "--prune-vtable-interiors-only",
+        action="store_true",
+        help="Only remove labels strictly inside verified vtable extents.",
+    )
+    parser.add_argument(
+        "--demote-embedded-functions-only",
+        action="store_true",
+        help="Only demote configured internal-entry Function entities to labels.",
+    )
+    parser.add_argument(
         "--strict",
         action="store_true",
         help=(
@@ -84,6 +95,15 @@ def main() -> int:
 
     model = build_model(REPO_ROOT, args.target)
     vtables = model.vtables
+    extents = load_verified_vtable_extents(REPO_ROOT / "config" / "verified_vtable_extents.csv")
+    embedded_labels: list[tuple[int, str]] = []
+    embedded_path = REPO_ROOT / "config" / "embedded_function_labels.csv"
+    if embedded_path.is_file():
+        _fields, embedded_rows = read_pipe_table(embedded_path)
+        embedded_labels = [
+            (int((row.get("address") or "").strip(), 16), (row.get("name") or "").strip())
+            for row in embedded_rows
+        ]
     # Claimed entities only: source spelling when parsed, reviewed name for
     # reviewed claims, inventory advisory ONLY as fallback for claimed
     # addresses whose spelling could not be parsed. Unclaimed addresses are
@@ -145,7 +165,9 @@ def main() -> int:
             txid = program.startTransaction("apply source model")
 
         stats = {"primary_exact": 0, "fn": 0, "label": 0, "vtable": 0,
-                 "skipped_illegal": 0, "failed": 0, "stale_labels_dropped": 0}
+                 "skipped_illegal": 0, "failed": 0, "stale_labels_dropped": 0,
+                 "interior_vtable_labels_dropped": 0,
+                 "embedded_functions_demoted": 0}
 
         def _drop_stale_same_name_labels(a, simple):
             """Non-primary labels whose simple name equals the target block the
@@ -162,6 +184,75 @@ def main() -> int:
                 except Exception:  # noqa: BLE001
                     pass
             return removed
+
+        # Labels strictly inside a verified vtable extent are stale entity
+        # boundaries. The end address is intentionally excluded because a real
+        # adjacent entity may begin immediately after the final slot.
+        repair_vtable_interiors = (
+            args.prune_vtable_interiors_only or not args.demote_embedded_functions_only
+        )
+        repair_embedded_functions = (
+            args.demote_embedded_functions_only or not args.prune_vtable_interiors_only
+        )
+        for extent in (extents if repair_vtable_interiors else ()):
+            for address in range(extent.address + 4, extent.end, 4):
+                a = af.getAddress(address)
+                labels = [
+                    sym
+                    for sym in st.getSymbols(a)
+                    if sym.getSymbolType().toString() == "Label" and not sym.isDynamic()
+                ]
+                if not labels:
+                    continue
+                if not args.apply:
+                    if not args.quiet:
+                        names = ", ".join(sym.getName(True) for sym in labels)
+                        print(
+                            f"  would drop interior vtable label(s) at 0x{address:08x}: {names}"
+                        )
+                    stats["interior_vtable_labels_dropped"] += len(labels)
+                    continue
+                for sym in labels:
+                    if sym.delete():
+                        stats["interior_vtable_labels_dropped"] += 1
+
+        for address, label_name in (embedded_labels if repair_embedded_functions else ()):
+            a = af.getAddress(address)
+            fn = fm.getFunctionAt(a)
+            if fn is None:
+                continue
+            if not args.apply:
+                if not args.quiet:
+                    print(
+                        f"  would demote embedded function 0x{address:08x} "
+                        f"{fn.getName(True)} -> label {label_name}"
+                    )
+                stats["embedded_functions_demoted"] += 1
+                continue
+            fm.removeFunction(a)
+            prim = st.getPrimarySymbol(a)
+            if prim is None or prim.getName() != label_name:
+                st.createLabel(a, label_name, global_ns, SourceType.USER_DEFINED).setPrimary()
+            stats["embedded_functions_demoted"] += 1
+
+        if args.prune_vtable_interiors_only or args.demote_embedded_functions_only:
+            if args.apply:
+                program.endTransaction(txid, True)
+                txid = None
+                program.save("repair entity boundaries", pyghidra.task_monitor())
+            mode = "APPLIED" if args.apply else "DRY RUN"
+            print(
+                f"[{mode}] interior_vtable_labels_dropped="
+                f"{stats['interior_vtable_labels_dropped']}"
+                f" embedded_functions_demoted={stats['embedded_functions_demoted']}"
+            )
+            if args.strict and not args.apply and (
+                stats["interior_vtable_labels_dropped"]
+                or stats["embedded_functions_demoted"]
+            ):
+                print("STRICT: entity-boundary repairs are still pending.")
+                return 1
+            return 0
 
         for addr in sorted(wanted):
             name = wanted[addr]
@@ -283,11 +374,17 @@ def main() -> int:
             f"set_label={stats['label']} vtable_labels={stats['vtable']} "
             f"skipped_illegal={stats['skipped_illegal']} "
             f"stale_labels_dropped={stats['stale_labels_dropped']} failed={stats['failed']}"
+            f" interior_vtable_labels_dropped={stats['interior_vtable_labels_dropped']}"
+            f" embedded_functions_demoted={stats['embedded_functions_demoted']}"
         )
         if args.apply:
             print("Run `just export-project` so the vendored .gzf carries the result.")
         if args.strict:
-            pending = 0 if args.apply else (stats["fn"] + stats["label"] + stats["vtable"])
+            pending = 0 if args.apply else (
+                stats["fn"] + stats["label"] + stats["vtable"]
+                + stats["interior_vtable_labels_dropped"]
+                + stats["embedded_functions_demoted"]
+            )
             if stats["failed"] or pending:
                 print(f"STRICT: not converged (failed={stats['failed']} pending={pending}).")
                 return 1

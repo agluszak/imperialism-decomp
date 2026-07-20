@@ -21,7 +21,11 @@ Two ways that second claim sneaks in, both gated here:
    commit history.) The fix is always to delete the row; the annotation is the only
    source of truth for a vtable's name.
 
-2. A `// GLOBAL:` annotation in the source at a `// VTABLE:` address -- typically left on
+2. Any raw-inventory or `// GLOBAL:` entity inside a verified vtable extent. These
+   interior boundaries truncate reccmp's original-side range and produce a false
+   oversized-vtable warning even when every candidate slot is non-null and matches.
+
+3. A `// GLOBAL:` annotation in the source at a `// VTABLE:` address -- typically left on
    a legacy `PTR_Get*RuntimeClass*` vptr-write stand-in. Remove the `// GLOBAL:` marker;
    the `// VTABLE:` annotation + inheritance already own that address.
 
@@ -31,11 +35,13 @@ Check-only; it never edits files.
 from __future__ import annotations
 
 import argparse
+from pathlib import Path
 import re
 
 from tools.common.file_scan import iter_files
 from tools.common.pipe_csv import read_pipe_rows
 from tools.common.repo import normalize_repo_relative_path, repo_root_from_file
+from tools.common.vtable_extents import containing_vtable_extent, load_verified_vtable_extents
 
 
 def addr_key(raw: str) -> int | None:
@@ -66,6 +72,11 @@ def parse_args() -> argparse.Namespace:
         help="Files or directories to scan for annotations.",
     )
     parser.add_argument(
+        "--verified-extents",
+        default=str(repo_root / "config" / "verified_vtable_extents.csv"),
+        help="Verified original-vtable extents (pipe-delimited).",
+    )
+    parser.add_argument(
         "--symbols-csv",
         default=str(repo_root / "config" / "original_entities.csv"),
         help="Path to symbols.csv (pipe-delimited).",
@@ -78,17 +89,25 @@ def main() -> int:
     repo_root = repo_root_from_file(__file__)
 
     # Collect every // VTABLE: address (as an int) and where it is declared.
-    vtable_addrs: dict[int, str] = {}
+    vtable_addrs: dict[int, tuple[str, str]] = {}
     global_markers: list[tuple[int, str]] = []  # (addr_int, "rel:line")
 
     for path in iter_files(args.paths):
         rel = normalize_repo_relative_path(path, repo_root)
-        for idx, line in enumerate(path.read_text(encoding="utf-8", errors="ignore").splitlines()):
+        lines = path.read_text(encoding="utf-8", errors="ignore").splitlines()
+        for idx, line in enumerate(lines):
             vt = VTABLE_MARKER_RE.match(line)
             if vt is not None:
                 addr = addr_key(vt.group("offset"))
                 if addr is not None:
-                    vtable_addrs.setdefault(addr, f"{rel}:{idx + 1}")
+                    next_line = ""
+                    for candidate in lines[idx + 1 :]:
+                        if candidate.strip():
+                            next_line = candidate
+                            break
+                    class_match = re.search(r"\bclass\s+([A-Za-z_][A-Za-z0-9_]*)", next_line)
+                    class_name = class_match.group(1) if class_match is not None else ""
+                    vtable_addrs.setdefault(addr, (class_name, f"{rel}:{idx + 1}"))
                 continue
             gl = GLOBAL_MARKER_RE.match(line)
             if gl is not None:
@@ -97,31 +116,58 @@ def main() -> int:
                     global_markers.append((addr, f"{rel}:{idx + 1}"))
 
     violations: list[str] = []
+    extents = load_verified_vtable_extents(Path(args.verified_extents))
+    for extent in extents:
+        source = vtable_addrs.get(extent.address)
+        if source is None:
+            violations.append(
+                f"verified extent {extent.class_name} at 0x{extent.address:x} has no source "
+                "// VTABLE: annotation"
+            )
+        elif source[0] != extent.class_name:
+            violations.append(
+                f"verified extent 0x{extent.address:x} names {extent.class_name}, but "
+                f"the source annotation at {source[1]} owns {source[0]}"
+            )
 
     # (1) any symbols.csv row at a VTABLE address (including type 'vtable' itself --
     # it always overwrites the marker-derived name and breaks the match; see module docstring).
-    from pathlib import Path
-
     symbols_path = Path(args.symbols_csv)
     if symbols_path.exists():
         for row in read_pipe_rows(symbols_path):
             addr = addr_key(row.get("address") or "")
             row_type = (row.get("type") or "").strip().lower()
-            if addr is None or addr not in vtable_addrs:
+            if addr is None:
                 continue
             name = (row.get("name") or "").strip()
-            violations.append(
-                f"symbols.csv: 0x{addr:x} typed '{row_type}' ({name!r}) collides with the "
-                f"// VTABLE: at {vtable_addrs[addr]} -- delete the row"
-            )
+            if addr in vtable_addrs:
+                violations.append(
+                    f"symbols.csv: 0x{addr:x} typed '{row_type}' ({name!r}) collides with the "
+                    f"// VTABLE: at {vtable_addrs[addr][1]} -- delete the row"
+                )
+                continue
+            extent = containing_vtable_extent(addr, extents)
+            if extent is not None:
+                violations.append(
+                    f"symbols.csv: 0x{addr:x} typed '{row_type}' ({name!r}) lies inside "
+                    f"{extent.class_name}'s verified vtable range "
+                    f"0x{extent.address:x}..0x{extent.end:x} -- delete the row"
+                )
 
     # (2) // GLOBAL: annotation at a VTABLE address.
     for addr, loc in global_markers:
         if addr in vtable_addrs:
             violations.append(
                 f"{loc}: // GLOBAL 0x{addr:x} collides with the // VTABLE: at "
-                f"{vtable_addrs[addr]} -- remove the // GLOBAL marker (the // VTABLE "
+                f"{vtable_addrs[addr][1]} -- remove the // GLOBAL marker (the // VTABLE "
                 f"annotation owns this address)"
+            )
+            continue
+        extent = containing_vtable_extent(addr, extents)
+        if extent is not None:
+            violations.append(
+                f"{loc}: // GLOBAL 0x{addr:x} lies inside {extent.class_name}'s verified "
+                f"vtable range 0x{extent.address:x}..0x{extent.end:x} -- remove it"
             )
 
     print(f"// VTABLE addresses scanned: {len(vtable_addrs)}")

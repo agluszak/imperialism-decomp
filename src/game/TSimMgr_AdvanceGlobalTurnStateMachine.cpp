@@ -276,7 +276,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
       SetOutputDevice();
       DispatchUiSlot4C();
       if (g_pUiRuntimeContext != nullptr) {
-        g_pUiRuntimeContext->DispatchDecisionSlot98(-1, 0, 0, 0x16);
+        g_pUiRuntimeContext->DispatchDecisionSlot98(-1, 0, 0, 0, 0x16);
       }
     }
     if (redrawEnabled != 2) {
