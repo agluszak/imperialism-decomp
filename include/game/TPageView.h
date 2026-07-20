@@ -48,8 +48,8 @@ public:
   // slot 0x24 SetUiResourceOwner inherited unchanged (0x48a4d0)
   // slot 0x25 ResolveControlByTag inherited unchanged (0x48afd0)
   // slot 0x26 SwitchActiveChildAndNotify inherited unchanged (0x48af80)
-  // slot 0x27 DispatchSlot9CToLinkedChildren inherited unchanged (0x48c820)
-  // slot 0x28 CallVoidSlotA0 inherited unchanged (0x48c890)
+  // slot 0x27 Open inherited unchanged (0x48c820)
+  // slot 0x28 Close inherited unchanged (0x48c890)
   // slot 0x29 SetEnabled inherited unchanged (0x48b1c0)
   // slot 0x2a SetState inherited unchanged (0x48b070)
   // slot 0x2b GetField4E inherited unchanged (0x427200)
@@ -64,7 +64,7 @@ public:
   // slot 0x34 HasRenderableParentAndContent inherited unchanged (0x48c050)
   // slot 0x35 HandleCursorHoverSelectionByChildHitTestAndFallback inherited unchanged (0x48c080)
   // slot 0x36 DispatchControlEventToChildrenAndSelf inherited unchanged (0x48aaf0)
-  virtual void NoOpUiLifecycleHook(int arg) override; // slot 0x37 0x56fa50
+  virtual void DoPostCreate(int arg) override; // slot 0x37 0x56fa50
   // slot 0x38 NoOpUiCallback inherited unchanged (0x48abc0)
   // slot 0x39 RefreshControl inherited unchanged (0x48b6d0)
   // slot 0x3a QueryOwnerContextPanel inherited unchanged (0x48b1a0)
@@ -113,23 +113,21 @@ public:
   // slot 0x65 AssertMcAppUILine1914_e9 inherited unchanged (0x48c7a0)
   // slot 0x66 AssertMcAppUILine1922_ea inherited unchanged (0x48c7d0)
   // slot 0x67 CtrlSlot103_SubtractPosAndDispatchSlot19C_Impl_eb inherited unchanged (0x48bac0)
-  virtual POSITION OrphanCallChain_C1_I06_0056fbb0(void* item);      // slot 0x68 0x56fbb0
-  virtual POSITION OrphanCallChain_C1_I06_0056fbd0(void* item);      // slot 0x69 0x56fbd0
-  virtual void ResetSelectableOptionEntriesExceptColorAndOkay();     // slot 0x6a 0x56fbf0
-  virtual undefined OrphanCallChain_C8_I82_0056fc80();               // slot 0x6b 0x56fc80
-  virtual undefined OrphanCallChain_C8_I118_0056fdb0(short param_1); // slot 0x6c 0x56fdb0
-  virtual void OrphanCallChain_C4_I18_0056ff90();                    // slot 0x6d 0x56ff90
+  virtual POSITION AddOrderedEntry(void* item);                  // slot 0x68 0x56fbb0
+  virtual POSITION AddOptionEntry(void* item);                   // slot 0x69 0x56fbd0
+  virtual void ResetSelectableOptionEntriesExceptColorAndOkay(); // slot 0x6a 0x56fbf0
+  virtual void BuildPageLayout();                                // slot 0x6b 0x56fc80
+  virtual void ShowPage(short pageNumber);                       // slot 0x6c 0x56fdb0
+  virtual void ResetPageLayout();                                // slot 0x6d 0x56ff90
 
-  // TPageView slice (+0x60..+0x83, size 0x24). Field names are hedged until the
-  // page UI flow is fully recovered; offsets and init values are from the ctor.
-  short field_0x60;         // +0x60
-  short field_0x62;         // +0x62, ctor writes 0xffff
-  short field_0x64;         // +0x64, ctor writes 0x0001
-  short pad_0x66;           // +0x66
-  RECT pageRect;            // +0x68 (left, top, right, bottom)
-  TList* field_0x78;        // +0x78
-  TList* field_0x7c;        // +0x7c
-  TLongintList* field_0x80; // +0x80
+  short pageCount;                // +0x60
+  short currentPage;              // +0x62, ctor writes -1
+  short visibleColumnCount;       // +0x64, ctor writes 1
+  short reserved66;               // +0x66, no accesses observed
+  RECT pageRect;                  // +0x68
+  TList* optionEntries;           // +0x78, entries referenced by their tag/index
+  TList* orderedEntries;          // +0x7c, rows in layout order
+  TLongintList* pageStartIndices; // +0x80
 
   TPageView();
 };

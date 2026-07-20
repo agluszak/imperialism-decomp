@@ -2,7 +2,6 @@
 #include "game/mfc.h"
 #include "game/TControl.h"
 
-
 // SYNTHETIC: IMPERIALISM 0x00592860
 // TWarningView::CreateObject
 // SYNTHETIC: IMPERIALISM 0x005928e0
@@ -33,7 +32,7 @@ void TWarningView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEve
 }
 
 // FUNCTION: IMPERIALISM 0x00592a70
-void TWarningView::NoOpUiLifecycleHook(int arg) {
+void TWarningView::DoPostCreate(int arg) {
   (void)arg;
   TView* titlePanel = QueryOwnerContextPanel();
   if (titlePanel == 0) {

@@ -105,7 +105,7 @@ ilt_addr,thunk_name,target_addr,target_name,category,notes
 0x00406aaf,thunk_ProcessQueuedWarTransitions,0x004f0a10,ProcessQueuedWarTransitions,dormant,-
 0x00406afa,thunk_BuildUiTextStyleDescriptor,0x005c3e80,BuildUiTextStyleDescriptor,calls-via-thunk,refs:TUberCluster.cpp
 0x00406b3b,thunk_SetActiveCivilianSelection,0x004d2c60,TCivToolbar::SetActiveCivilianSelection,dormant,-
-0x00406ba9,thunk_NoOpUiLifecycleHook,0x0048ab70,NoOpUiLifecycleHook,dormant,-
+0x00406ba9,thunk_NoOpUiLifecycleHook,0x0048ab70,DoPostCreate,dormant,-
 0x00406c1c,thunk_SplitTileIndexToRowAndColumn,0x005125a0,TMapDialog::SplitTileIndexToRowAndColumn,calls-via-thunk,refs:TMapDialog.cpp
 0x00406ee7,thunk_GetTMinorClassNamePointer_At00406ee7,0x004e36f0,TMinor::GetTMinorClassNamePointer,claimed-ilt,owned:TMinor.cpp
 0x00406efb,thunk_DispatchTaggedGameStateEvent1F20,0x0054a340,DispatchTaggedGameStateEvent1F20,calls-via-thunk,"refs:TAutoGreatPower.cpp,TGreatPower.cpp"

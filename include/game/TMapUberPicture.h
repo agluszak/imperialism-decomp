@@ -53,8 +53,8 @@ public:
   // slot 0x24 SetUiResourceOwner inherited unchanged (0x48a4d0)
   // slot 0x25 ResolveControlByTag inherited unchanged (0x48afd0)
   // slot 0x26 SwitchActiveChildAndNotify inherited unchanged (0x48af80)
-  // slot 0x27 DispatchSlot9CToLinkedChildren inherited unchanged (0x48c820)
-  // slot 0x28 CallVoidSlotA0 inherited unchanged (0x48c890)
+  // slot 0x27 Open inherited unchanged (0x48c820)
+  // slot 0x28 Close inherited unchanged (0x48c890)
   // slot 0x29 SetEnabled inherited unchanged (0x48b1c0)
   // slot 0x2a SetState inherited unchanged (0x48b070)
   // slot 0x2b GetField4E inherited unchanged (0x427200)
@@ -69,7 +69,7 @@ public:
   // slot 0x34 HasRenderableParentAndContent inherited unchanged (0x48c050)
   // slot 0x35 HandleCursorHoverSelectionByChildHitTestAndFallback inherited unchanged (0x48c080)
   // slot 0x36 DispatchControlEventToChildrenAndSelf inherited unchanged (0x48aaf0)
-  virtual void NoOpUiLifecycleHook(int arg) override; // slot 0x37 0x596a80
+  virtual void DoPostCreate(int arg) override; // slot 0x37 0x596a80
   // slot 0x38 NoOpUiCallback inherited unchanged (0x48abc0)
   // slot 0x39 RefreshControl inherited unchanged (0x48b6d0)
   // slot 0x3a QueryOwnerContextPanel inherited unchanged (0x48b1a0)
@@ -165,7 +165,7 @@ public:
   SetTradeToolSubcontrolEnabledStateByFlag(bool enabledState); // slot 0x7f 0x59a180
 
   // Own slice (TMapUberUberPicture ends at 0x94; this object is 0xc4). Layout/roles from
-  // ConstructTMapUberPictureBaseState (0x5969e0) and NoOpUiLifecycleHook (0x596a80).
+  // ConstructTMapUberPictureBaseState (0x5969e0) and DoPostCreate (0x596a80).
   // Set to 1 by the ctor; read by SetActiveMapOrderEntry to gate
   // InvalidateMapRegionForOrderEntry calls around orderEntryContext98 updates (matches
   // TWorldView.cpp's independently-derived TMapOrderToolbarPendingState::invalidationFlag).
@@ -191,7 +191,7 @@ public:
   // leaving the alternate ocean-map mode.
   TMapDialog* subviewAc;
   // 0xb0..0xbf: per-category ('uciv'/'uarm'/'unav'/unused) sub-controls resolved by
-  // NoOpUiLifecycleHook via ResolveControlByTag. NOT a homogeneous TMapUberPicture array
+  // DoPostCreate via ResolveControlByTag. NOT a homogeneous TMapUberPicture array
   // (that was the old theory): bd 4yz's evidence disproves it two ways. (a) TCivMgr's
   // SetActiveCivilianSelection (0x4d2c60) makes a direct non-virtual call from
   // categoryPages[0] to TCivToolbar::RefreshCivilianCommandPanelForSelection (0x58eb20,

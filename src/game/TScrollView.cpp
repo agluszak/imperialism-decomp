@@ -23,8 +23,8 @@ void TScrollView::ConstructTScrollViewBaseState(TView* panel, int* offsetLayout,
 // view, then build the companion scrollbar docked to the right edge (width 0x19,
 // full height).
 // FUNCTION: IMPERIALISM 0x00573ce0
-void TScrollView::NoOpUiLifecycleHook(int arg) {
-  TView::NoOpUiLifecycleHook(arg);
+void TScrollView::DoPostCreate(int arg) {
+  TView::DoPostCreate(arg);
   contentView60 = ResolveControlByTag(0x7363726f); // 'scro'
   TScrollBarView* bar = new TScrollBarView();
   int barOffset[2];

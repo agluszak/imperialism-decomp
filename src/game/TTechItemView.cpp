@@ -195,8 +195,8 @@ void TTechItemView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEv
       // matches the pattern already ported elsewhere this session
       // (DispatchUiRuntimeMessage102CAndRefreshActiveView, TArmyUnitView::
       // HandleCrossUArmyViewsNameCommand).
-      TWindow* node =
-          static_cast<TWindow*>(g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(0x942));
+      TWindow* node = static_cast<TWindow*>(
+          g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(0x942));
       TTechHistoryView* historyView =
           static_cast<TTechHistoryView*>(node->ResolveControlByTag(kControlTagGold /* 'DLOG' */));
       historyView->AssertValid();
@@ -211,7 +211,7 @@ void TTechItemView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEv
         behavior->defaultCommandCode = 0x6f6b6179; // 'okay'
       }
       node->ExecuteViewModalStateWithPushPopChain();
-      node->CallVoidSlotA0();
+      node->Close();
       node->Free();
     }
   }

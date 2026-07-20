@@ -52,8 +52,8 @@ TWorldView::TWorldView() {}
 TWorldView::~TWorldView() {}
 
 // FUNCTION: IMPERIALISM 0x00595090
-void TWorldView::NoOpUiLifecycleHook(int arg) {
-  TView::NoOpUiLifecycleHook(arg);
+void TWorldView::DoPostCreate(int arg) {
+  TView::DoPostCreate(arg);
 }
 
 // FUNCTION: IMPERIALISM 0x005950b0

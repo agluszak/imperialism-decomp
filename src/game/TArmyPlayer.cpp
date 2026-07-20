@@ -285,7 +285,7 @@ void TArmyPlayer::StartBattle() {
           static_cast<short>(opposingNationIndex), nationIndex1C, 0, battle14->battleSiteIndex38);
     }
     int resultTag = dialog->RefreshTurnEventDialog();
-    dialog->CallVoidSlotA0();
+    dialog->Close();
     dialog->Free();
     if (resultTag == 0x6f6b6179 /* 'okay' */) {
       ProceedAfterBattleIntroAccepted();

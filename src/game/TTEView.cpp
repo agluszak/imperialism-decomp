@@ -31,7 +31,7 @@ void TTEView::ConstructTTEViewBaseState(int unusedA, TView* panel, int* offsetLa
   contentInsets68.right = insetRect->right;
   contentInsets68.bottom = insetRect->bottom;
   textStyle78 = *style;
-  field90 = styleWord90;
+  textAlignmentCode = styleWord90;
 }
 
 // FUNCTION: IMPERIALISM 0x004860e0

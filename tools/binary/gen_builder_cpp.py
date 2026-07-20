@@ -273,7 +273,7 @@ class Gen:
         if m and self.resolve(m.group(1)) == "CONTEXT":
             v = self.resolve(m.group(2))
             self.emit(
-                "static_cast<TCluster*>(g_pUiResourceContext)->field84 = "
+                "static_cast<TCluster*>(g_pUiResourceContext)->selectedChildTag = "
                 f"static_cast<int>({self.tag_arg(v)});"
             )
             return i + 1

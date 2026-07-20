@@ -3,7 +3,6 @@
 #include "game/GameAssert.h"
 #include "game/mfc.h"
 
-
 // SYNTHETIC: IMPERIALISM 0x005846e0
 // TBoycottButton::CreateObject
 // SYNTHETIC: IMPERIALISM 0x00584760
@@ -28,7 +27,7 @@ void TBoycottButton::Select(bool isPressed, bool notifyParent) {
     if (clusControl == nullptr) {
       GAME_FAIL_NIL_POINTER();
     }
-    clusControl->SetControlClassAndRefresh(0x20202020 /* '    ' */);
+    clusControl->SetSelectedChildTagAndRefresh(0x20202020 /* '    ' */);
   }
   TToggleButton::Select(isPressed, notifyParent);
 }

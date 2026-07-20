@@ -133,14 +133,14 @@ void TTerrainHelpPicture::BuildMapTileActionContextMenu(short nTileIndex) {
     itemPane->SetTextStyleAndMaybeRefresh(&itemStyle, 1);
     short itemId = menuItemIds94[i];
     if (itemId != 0) {
-      itemPane->LoadUiStringAndDispatchViaVslot1C8(0x2755, itemId, 1);
+      itemPane->SetTextFromStringResource(0x2755, itemId, 1);
       itemPane->SetEnabled(1, 0);
       itemPane->SetState(1, 0);
     } else {
       itemPane->SetEnabled(0, 1);
       itemPane->SetState(0, 0);
     }
-    itemPane->SetTextThemeCodeAndMaybeRefresh(i > 6 ? -1 : -2, 0);
+    itemPane->SetTextAlignmentAndMaybeRefresh(i > 6 ? -1 : -2, 0);
   }
 
   // Refresh the two lonely-tile preview panes.
@@ -171,7 +171,7 @@ void TTerrainHelpPicture::BuildMapTileActionContextMenu(short nTileIndex) {
   TStaticText* titlePane = static_cast<TStaticText*>(ResolveControlByTag(0x7469746c /* 'titl' */));
   titlePane->SetEnabled(1, 1);
   titlePane->SetState(0, 1);
-  titlePane->SetTextThemeCodeAndMaybeRefresh(1, 0);
+  titlePane->SetTextAlignmentAndMaybeRefresh(1, 0);
   titlePane->SetTextStyleAndMaybeRefresh(&titleStyle, 0);
 
   if (g_pGlobalMapState->terrainStateTable[nTileIndex].terrainType00 == 5) {
@@ -197,7 +197,7 @@ void TTerrainHelpPicture::BuildMapTileActionContextMenu(short nTileIndex) {
       strInfoText += "\n" + strFormerLine;
     }
   }
-  titlePane->AssignTextSharedRefIfChangedAndMaybeInvalidate(&strInfoText, 1);
+  titlePane->SetTextAndMaybeRefresh(&strInfoText, 1);
   HighlightSelectedMenuItemAndRefreshDetailText(0);
 }
 
@@ -216,10 +216,10 @@ void TTerrainHelpPicture::HighlightSelectedMenuItemAndRefreshDetailText(int sele
 
   TStaticText* captionPane =
       static_cast<TStaticText*>(ResolveControlByTag(0x6974656d /* 'item' */));
-  captionPane->LoadUiStringAndDispatchViaVslot1C8(0x2755, menuItemIds94[selectedIndex], 1);
+  captionPane->SetTextFromStringResource(0x2755, menuItemIds94[selectedIndex], 1);
   captionPane->SetEnabled(1, 1);
   captionPane->SetState(0, 1);
-  captionPane->SetTextThemeCodeAndMaybeRefresh(1, 0);
+  captionPane->SetTextAlignmentAndMaybeRefresh(1, 0);
   captionPane->SetTextStyleAndMaybeRefresh(&captionStyle, 0);
 
   for (int i = 0; i < 12; i++) {

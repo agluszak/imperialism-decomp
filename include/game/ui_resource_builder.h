@@ -34,8 +34,7 @@ void __cdecl SetUiResourceLayoutValues(int frameStyle, int rectLeft, int rectTop
                                        int rectBottom);
 
 // Set the inputGateFlag4c/childHitTestFlag4d pair on the current g_pUiResourceContext widget.
-void __cdecl SetUiResourceStateFlags(unsigned char inputGateFlag4c,
-                                     unsigned char childHitTestFlag4d);
+void __cdecl SetUiResourceStateFlags(bool inputGateFlag4c, bool childHitTestFlag4d);
 
 // Assign text + packed style descriptor + theme code onto the current
 // g_pUiResourceContext text control (a TStaticText-family widget).
@@ -50,7 +49,7 @@ void __cdecl SetUiResourceContextMaxCharCount(short maxChars);
 // (virtual slot 0x72 SetPictureResourceIdAndRefresh, no immediate refresh).
 void __cdecl SetUiResourceContextPictureId(int nPictureId);
 
-// Store a FourCC group/mode code into the current context cluster's field84.
+// Store a FourCC group/mode code as the current context cluster's selected child tag.
 void __cdecl SetUiResourceContextStringCode(int nCode);
 
 // Replace the current context widget's stylePayload48 style payload with a fresh zeroed
@@ -59,10 +58,8 @@ void __cdecl ReplaceUiResourceContextPairBuffer(int styleWord, int packedColor);
 
 // Set the TWindow style/flag block (+0x6c..+0x71 flags, +0x9c mode word, +0x60 window
 // style type) on the current context window.
-void __cdecl SetUiResourceContextFlagsAndMetrics(short nField9C, short nStyleType,
-                                                 unsigned char f70, unsigned char f6f,
-                                                 unsigned char f6e, unsigned char f6d,
-                                                 unsigned char f6c, unsigned char f71);
+void __cdecl SetUiResourceContextFlagsAndMetrics(short nField9C, short nStyleType, bool f70,
+                                                 bool f6f, bool f6e, bool f6d, bool f6c, bool f71);
 
 // Set the embedded dialog behavior's flag0C and gold color triplet on the current
 // context window.
@@ -70,7 +67,7 @@ void __cdecl ApplyUiResourceColorTripletFromContext(unsigned char nFlag0C,
                                                     unsigned char nTripletFlag, int colorA,
                                                     int colorB);
 
-// Bind the value range (TNumberText::field_a4/field_a8, min/max hypothesis) and the
+// Bind the value range (TNumberText::minimumValue/maximumValue) and the
 // current value (virtual slot 0x79 SetControlValue, no immediate refresh) on the
 // current context number-text widget.
 void __cdecl SetUiResourceContextNumberValueAndRange(int value, int minValue, int maxValue);

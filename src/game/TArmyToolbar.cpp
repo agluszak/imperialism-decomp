@@ -55,7 +55,7 @@ static __inline void InvokeMapUberPictureCycleMapInteractionSelection() {
 
 IMPLEMENT_DYNCREATE(TArmyToolbar, TUnitToolbarCluster)
 
-TArmyToolbar::TArmyToolbar() : TUnitToolbarCluster(), field88(0) {}
+TArmyToolbar::TArmyToolbar() : TUnitToolbarCluster(), selectedTileIndex(0) {}
 
 // FUNCTION: IMPERIALISM 0x0058dee0
 TArmyToolbar* TArmyToolbar::ConstructTArmyToolbarBaseState() {
@@ -78,11 +78,11 @@ void TArmyToolbar::HandleEvent(int commandId, TEventHandler* sourceHandler, TEve
     if (commandId == 100) {
       selectedRatioOrMode =
           g_pMapContextActionManager->ActivateFirstActiveTacticalUnitByCategoryAtTile(
-              categoryId, static_cast<short>(field88));
+              categoryId, static_cast<short>(selectedTileIndex));
     } else {
       selectedRatioOrMode =
           g_pMapContextActionManager->ActivateFirstIdleTacticalUnitByCategoryAtTile(
-              categoryId, static_cast<short>(field88));
+              categoryId, static_cast<short>(selectedTileIndex));
     }
     static_cast<TNumberedArrowButton*>(sourceHandler)->SetValue(selectedRatioOrMode, 1);
     DispatchUiRuntimeSlot48();

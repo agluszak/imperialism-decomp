@@ -20,7 +20,7 @@ void TCloseParentButton::HandleEvent(int commandId, TEventHandler* sourceHandler
   (void)event;
   if (commandId == QuerySelectedIndexSlotBC()) {
     if (GetBoolSlot28() != 0 && LogUnhandledDialogMethodAndReturnFalse() == 0) {
-      OwnerPanel()->CallVoidSlotA0();
+      OwnerPanel()->Close();
     }
   }
 }

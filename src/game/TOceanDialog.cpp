@@ -33,8 +33,8 @@ TOceanDialog::TOceanDialog() : scrollRowOffset7c(0), scrollColOffset7e(0) {
 TOceanDialog::~TOceanDialog() {}
 
 // FUNCTION: IMPERIALISM 0x00565f50
-void TOceanDialog::NoOpUiLifecycleHook(int arg) {
-  TWorldView::NoOpUiLifecycleHook(arg);
+void TOceanDialog::DoPostCreate(int arg) {
+  TWorldView::DoPostCreate(arg);
   projectionScale76 = 4;
   previewSquareRadius78 = 0x10;
 }

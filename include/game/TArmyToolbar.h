@@ -8,7 +8,7 @@ struct CRuntimeClass;
 // VTABLE: IMPERIALISM 0x00667ad0
 class TArmyToolbar : public TUnitToolbarCluster {
 public:
-  int field88;
+  int selectedTileIndex;
 
   TArmyToolbar();
   ~TArmyToolbar() override;

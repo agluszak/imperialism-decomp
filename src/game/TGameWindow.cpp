@@ -17,7 +17,6 @@
 #include "game/TDisplayMgr.h"
 #include "game/ui_control_tags.h"
 
-
 namespace {
 
 const short kUiCommandHandledMarker = 0x29a;
@@ -89,11 +88,11 @@ TGameWindow::TGameWindow() {
 TGameWindow::~TGameWindow() {}
 
 // FUNCTION: IMPERIALISM 0x004ffcb0
-void TGameWindow::DispatchSlot9CToLinkedChildren() {
+CMcWindow* TGameWindow::Open() {
   if (IsActionable() == 0) {
     UpdateTurnOrderNavigationWindowLayout();
   }
-  TWindow::DispatchSlot9CToLinkedChildren();
+  return TWindow::Open();
 }
 
 // FUNCTION: IMPERIALISM 0x004ffd10

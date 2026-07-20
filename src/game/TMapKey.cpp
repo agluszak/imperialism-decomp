@@ -24,8 +24,8 @@ IMPLEMENT_DYNCREATE(TMapKey, TPicture)
 TMapKey::TMapKey() {}
 
 // FUNCTION: IMPERIALISM 0x004fcac0
-void TMapKey::NoOpUiLifecycleHook(int arg) {
-  TPicture::NoOpUiLifecycleHook(arg);
+void TMapKey::DoPostCreate(int arg) {
+  TPicture::DoPostCreate(arg);
 
   // The loop only walks the first 7 of g_apTerrainTypeDescriptorTable's 23 entries: the
   // array iterator is seeded with the array's own address (0x6a4310) and bounded by a

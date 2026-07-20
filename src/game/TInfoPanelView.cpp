@@ -22,8 +22,8 @@ IMPLEMENT_DYNCREATE(TInfoPanelView, TPanelView)
 TInfoPanelView::TInfoPanelView() {}
 
 // FUNCTION: IMPERIALISM 0x004fa010
-void TInfoPanelView::NoOpUiLifecycleHook(int arg) {
-  TView::NoOpUiLifecycleHook(arg);
+void TInfoPanelView::DoPostCreate(int arg) {
+  TView::DoPostCreate(arg);
   m_panelData = ownerContext;
 
   // Resource tag array for the four "ovr*" nation labels (ovr0/ovr4/ovr1/ovr2)

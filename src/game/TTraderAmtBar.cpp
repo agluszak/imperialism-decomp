@@ -46,7 +46,7 @@ IMPLEMENT_DYNCREATE(TTraderAmtBar, TAmtBar)
 // TTraderAmtBar::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x0058af80
-void TTraderAmtBar::NoOpUiLifecycleHook(int arg) {
+void TTraderAmtBar::DoPostCreate(int arg) {
   (void)arg;
   TGreatPower* nationState = GetActiveNationState();
   int scenarioTag = *reinterpret_cast<int*>(reinterpret_cast<char*>(this->ownerContext) + 0x1c);
@@ -80,7 +80,7 @@ void TTraderAmtBar::NoOpUiLifecycleHook(int arg) {
 
   auxValueA = tradeCapacity;
   auxValueB = 0x37;
-  TView::NoOpUiLifecycleHook(arg);
+  TView::DoPostCreate(arg);
 }
 
 // FUNCTION: IMPERIALISM 0x0058b040

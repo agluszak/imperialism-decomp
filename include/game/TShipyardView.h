@@ -48,8 +48,8 @@ public:
   // slot 0x24 SetUiResourceOwner inherited unchanged (0x48a4d0)
   // slot 0x25 ResolveControlByTag inherited unchanged (0x48afd0)
   // slot 0x26 SwitchActiveChildAndNotify inherited unchanged (0x48af80)
-  // slot 0x27 DispatchSlot9CToLinkedChildren inherited unchanged (0x48c820)
-  // slot 0x28 CallVoidSlotA0 inherited unchanged (0x4c7180)
+  // slot 0x27 Open inherited unchanged (0x48c820)
+  // slot 0x28 Close inherited unchanged (0x4c7180)
   // slot 0x29 SetEnabled inherited unchanged (0x48b1c0)
   // slot 0x2a SetState inherited unchanged (0x48b070)
   // slot 0x2b GetField4E inherited unchanged (0x427200)
@@ -64,7 +64,7 @@ public:
   // slot 0x34 HasRenderableParentAndContent inherited unchanged (0x48c050)
   // slot 0x35 HandleCursorHoverSelectionByChildHitTestAndFallback inherited unchanged (0x48c080)
   // slot 0x36 DispatchControlEventToChildrenAndSelf inherited unchanged (0x48aaf0)
-  // slot 0x37 NoOpUiLifecycleHook inherited unchanged (0x48ab70)
+  // slot 0x37 DoPostCreate inherited unchanged (0x48ab70)
   // slot 0x38 NoOpUiCallback inherited unchanged (0x48abc0)
   // slot 0x39 RefreshControl inherited unchanged (0x48b6d0)
   // slot 0x3a QueryOwnerContextPanel inherited unchanged (0x48b1a0)
@@ -151,11 +151,12 @@ public:
   // type -- one array, two roles, not a conflict. ApplyRectSlot110 also proves
   // commoditySpriteIds[4]/commodityRequiredAmounts[4] at +0xbc/+0xc4 (loop bound proven:
   // 4 slots, -1 = empty).
-  short selectedRequirementRow;      // +0xa0
-  short unknownA2;                   // +0xa2 unrecovered (written 0 in ApplyRectSlot110's init path)
-  short buildQueueSlotValues[8];     // +0xa4..+0xb3 -- AKA requirementResourceTypeByRow
-  int fieldB4;                       // +0xb4
-  TQuickDrawSurfaceContext* iconSurfaceB8; // +0xb8 -- LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0x264f)
+  short selectedRequirementRow;  // +0xa0
+  short unknownA2;               // +0xa2 unrecovered (written 0 in ApplyRectSlot110's init path)
+  short buildQueueSlotValues[8]; // +0xa4..+0xb3 -- AKA requirementResourceTypeByRow
+  int fieldB4;                   // +0xb4
+  TQuickDrawSurfaceContext*
+      iconSurfaceB8; // +0xb8 -- LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0x264f)
   short commoditySpriteIds[4];       // +0xbc
   short commodityRequiredAmounts[4]; // +0xc4
 };

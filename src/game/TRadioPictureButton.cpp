@@ -13,7 +13,7 @@ IMPLEMENT_DYNCREATE(TRadioPictureButton, TUpDownPictureButton)
 TRadioPictureButton::TRadioPictureButton() : TUpDownPictureButton() {
   this->timingWord92 = 7000;
   this->frameStyle60 = 0xc;
-  this->field94 = 0;
+  this->reserved94 = 0;
 }
 
 // Destructors are compiler-generated (implicit) from real inheritance.

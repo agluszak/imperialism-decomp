@@ -167,8 +167,8 @@ DiplomacyMaskBufferRun::DiplomacyMaskBufferRun() {
 // TDiplomacyMapView::~TDiplomacyMapView
 
 // FUNCTION: IMPERIALISM 0x004f3d60
-void TDiplomacyMapView::NoOpUiLifecycleHook(int arg) {
-  TView::NoOpUiLifecycleHook(arg);
+void TDiplomacyMapView::DoPostCreate(int arg) {
+  TView::DoPostCreate(arg);
   BuildDiplomacyNationOverlayGeometryAndHitMasks();
   InitializeDiplomacyMinisterActionControlsAndLabels();
   SetControlHoverHelpText(CString(g_szEmptyString), this);
@@ -191,7 +191,7 @@ void TDiplomacyMapView::NoOpUiLifecycleHook(int arg) {
 }
 
 // FUNCTION: IMPERIALISM 0x004f3e30
-void TDiplomacyMapView::CallVoidSlotA0() {
+void TDiplomacyMapView::Close() {
   stateFlagAtB8 = 0;
 }
 

@@ -976,7 +976,7 @@ undefined TMacViewMgr::SyncSellTaggedChildControlWithNationState(TView* view, sh
   using turn_event_dialog::GoldCommitControl;
   using turn_event_dialog::TSellOrderRowControl;
   TSellOrderRowControl* row = static_cast<TSellOrderRowControl*>(view);
-  view->NoOpUiLifecycleHook(0);
+  view->DoPostCreate(0);
   *reinterpret_cast<short*>(reinterpret_cast<char*>(view) + 0x88) = orderSlot;
   if (g_pCityOrderCapabilityState->hasProductionOrder193 == 0 &&
       (orderSlot == 6 || orderSlot == 0xc)) {
@@ -1054,7 +1054,7 @@ undefined TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nati
     TUiTextStyleDescriptor styleDescriptor;
     BuildUiTextStyleDescriptor(&styleDescriptor, 0, 0xa, 0x2b67);
     textEntry->SetTextStyleAndMaybeRefresh(&styleDescriptor, 0);
-    textEntry->SetTextThemeCodeAndMaybeRefresh(0, 0);
+    textEntry->SetTextAlignmentAndMaybeRefresh(0, 0);
     textEntry->controlTag = kTagDetailText;
 
     g_pSimMgr->GetString(0x2735, 1, &scratch38);
@@ -1376,7 +1376,7 @@ undefined TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nati
   TUiTextStyleDescriptor styleDescriptor;
   BuildUiTextStyleDescriptor(&styleDescriptor, 0, 0xa, 0x2b67);
   textEntry->SetTextStyleAndMaybeRefresh(&styleDescriptor, 0);
-  textEntry->SetTextThemeCodeAndMaybeRefresh(0, 0);
+  textEntry->SetTextAlignmentAndMaybeRefresh(0, 0);
   textEntry->controlTag = kTagDetailText;
 
   g_pSimMgr->GetString(0x2735, 4, &scratch38);
@@ -1392,7 +1392,7 @@ undefined TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nati
     valueEntry->InitializeTextEntryBaseAndOptionalStringResource(panel, &valuePos, &valueHeight, 5,
                                                                  5, -1, 0);
     valueEntry->SetTextStyleAndMaybeRefresh(&styleDescriptor, 0);
-    valueEntry->SetTextThemeCodeAndMaybeRefresh(0, 0);
+    valueEntry->SetTextAlignmentAndMaybeRefresh(0, 0);
     valueEntry->controlTag = kTagDetailValue;
   }
 

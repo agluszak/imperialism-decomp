@@ -14,12 +14,10 @@ IMPLEMENT_DYNCREATE(TMapEditView, TMapDialog)
 TMapEditView::TMapEditView() {}
 
 // FUNCTION: IMPERIALISM 0x0051cc60
-void TMapEditView::NoOpUiLifecycleHook(int arg) {
-}
+void TMapEditView::DoPostCreate(int arg) {}
 
 // FUNCTION: IMPERIALISM 0x0051ce60
-void TMapEditView::HandleMapClickByInteractionMode(short nTileIndex, int nInputFlags) {
-}
+void TMapEditView::HandleMapClickByInteractionMode(short nTileIndex, int nInputFlags) {}
 
 // FUNCTION: IMPERIALISM 0x0051cfa0
 void TMapEditView::InvokeDialogHooks1D8ThenE4(int stridedRecord, int dispatchContext) {
@@ -40,5 +38,4 @@ void TMapEditView::HandleMapTileClickSetOrderContextAndDispatchEvent79(int arg1,
 }
 
 // FUNCTION: IMPERIALISM 0x0051deb0
-void TMapEditView::ForwardParam(int param) {
-}
+void TMapEditView::ForwardParam(int param) {}

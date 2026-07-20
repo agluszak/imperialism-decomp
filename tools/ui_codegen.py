@@ -366,6 +366,10 @@ def _hex(value: int) -> str:
     return f"0x{value:x}"
 
 
+def _bool(value: object) -> str:
+    return "true" if bool(value) else "false"
+
+
 def _tag(value: int, text: str) -> str:
     escaped = text.replace("'", "\\'")
     return f"0x{value:08x}u /* '{escaped}' */"
@@ -423,10 +427,10 @@ def _emit_view(lines: list[str], view: dict, indent: str = "    ") -> set[str]:
         )
         lines.append(f"{indent}widget->SetState({_hex(int(node['state']))}, 0);")
         lines.append(
-            f"{indent}widget->inputGateFlag4c = {_hex(int(node['input_gate']))};"
+            f"{indent}widget->inputGateFlag4c = {_bool(node['input_gate'])};"
         )
         lines.append(
-            f"{indent}widget->childHitTestFlag4d = {_hex(int(node['child_hit_test']))};"
+            f"{indent}widget->childHitTestFlag4d = {_bool(node['child_hit_test'])};"
         )
 
         family = node.get("family", {})
@@ -469,16 +473,26 @@ def _emit_view(lines: list[str], view: dict, indent: str = "    ") -> set[str]:
         ):
             lines.append(f"{indent}}}")
         if family_code in ("wind", "fwnd"):
-            lines.append(f"{indent}static_cast<TWindow*>(g_pUiResourceContext)->topmostFlag70 = 0;")
-            lines.append(f"{indent}static_cast<TWindow*>(g_pUiResourceContext)->flag6f = 1;")
-            lines.append(f"{indent}static_cast<TWindow*>(g_pUiResourceContext)->flag6e = 1;")
+            lines.append(
+                f"{indent}static_cast<TWindow*>(g_pUiResourceContext)->topmostFlag70 = false;"
+            )
+            lines.append(
+                f"{indent}static_cast<TWindow*>(g_pUiResourceContext)->resourceFlag6f = true;"
+            )
+            lines.append(
+                f"{indent}static_cast<TWindow*>(g_pUiResourceContext)->resourceFlag6e = true;"
+            )
             lines.append(
                 f"{indent}static_cast<TWindow*>(g_pUiResourceContext)"
-                "->useCaptionedFrameFlag6d = 0;"
+                "->useCaptionedFrameFlag6d = false;"
             )
-            lines.append(f"{indent}static_cast<TWindow*>(g_pUiResourceContext)->flag6c = 0;")
-            lines.append(f"{indent}static_cast<TWindow*>(g_pUiResourceContext)->flag71 = 1;")
-            lines.append(f"{indent}static_cast<TWindow*>(g_pUiResourceContext)->field9c = 8;")
+            lines.append(
+                f"{indent}static_cast<TWindow*>(g_pUiResourceContext)->resourceFlag6c = false;"
+            )
+            lines.append(
+                f"{indent}static_cast<TWindow*>(g_pUiResourceContext)->resourceFlag71 = true;"
+            )
+            lines.append(f"{indent}static_cast<TWindow*>(g_pUiResourceContext)->windowFlags = 8;")
             lines.append(
                 f"{indent}static_cast<TWindow*>(g_pUiResourceContext)->windowStyleType = 2;"
             )
@@ -664,15 +678,15 @@ def _emit_window_direct(lines: list[str], variable: str, indent: str) -> None:
     target = variable if variable != "widget" else "static_cast<TWindow*>(g_pUiResourceContext)"
     for field, value in (
         ("topmostFlag70", 0),
-        ("flag6f", 1),
-        ("flag6e", 1),
+        ("resourceFlag6f", 1),
+        ("resourceFlag6e", 1),
         ("useCaptionedFrameFlag6d", 0),
-        ("flag6c", 0),
-        ("flag71", 1),
-        ("field9c", 8),
-        ("windowStyleType", 2),
+        ("resourceFlag6c", 0),
+        ("resourceFlag71", 1),
     ):
-        lines.append(f"{indent}{target}->{field} = {_hex(value)};")
+        lines.append(f"{indent}{target}->{field} = {_bool(value)};")
+    lines.append(f"{indent}{target}->windowFlags = 0x8;")
+    lines.append(f"{indent}{target}->windowStyleType = 0x2;")
     lines.append(f"{indent}{target}->GetEmbeddedDialogBehavior()->SetFlag0C(1);")
     lines.append(
         f"{indent}{target}->GetEmbeddedDialogBehavior()"
@@ -742,7 +756,7 @@ def _emit_recipe_operations(
                     else "static_cast<TCluster*>(g_pUiResourceContext)"
                 )
                 lines.append(
-                    f"{operation_indent}{target}->field84 = {_cpp_value(operation['value'])};"
+                    f"{operation_indent}{target}->selectedChildTag = {_cpp_value(operation['value'])};"
                 )
         elif op == "window":
             if operation["mode"] == "helper":
@@ -761,7 +775,7 @@ def _emit_recipe_operations(
         elif op == "edit_validation":
             lines.append(f"{operation_indent}{variable}->AssertValid();")
             lines.append(
-                f"{operation_indent}{variable}->field_9c = "
+                f"{operation_indent}{variable}->maxCharacterCount = "
                 f"{_cpp_value(operation['max_chars'])};"
             )
     if scoped_layout:
@@ -808,11 +822,11 @@ def _emit_recipe_node(
         else:
             lines.append(
                 f"{inner}static_cast<TControl*>(g_pUiResourceContext)"
-                f"->inputGateFlag4c = {_hex(int(node['input_gate']))};"
+                f"->inputGateFlag4c = {_bool(node['input_gate'])};"
             )
             lines.append(
                 f"{inner}static_cast<TControl*>(g_pUiResourceContext)"
-                f"->childHitTestFlag4d = {_hex(int(node['child_hit_test']))};"
+                f"->childHitTestFlag4d = {_bool(node['child_hit_test'])};"
             )
     else:
         if row.get("allocation") == "shared":
@@ -859,12 +873,10 @@ def _emit_recipe_node(
             "g_pUiResourceContext" if row.get("flags") == "context" else variable
         )
         lines.append(
-            f"{inner}{flag_target}->inputGateFlag4c = "
-            f"{_hex(int(node['input_gate']))};"
+            f"{inner}{flag_target}->inputGateFlag4c = {_bool(node['input_gate'])};"
         )
         lines.append(
-            f"{inner}{flag_target}->childHitTestFlag4d = "
-            f"{_hex(int(node['child_hit_test']))};"
+            f"{inner}{flag_target}->childHitTestFlag4d = {_bool(node['child_hit_test'])};"
         )
     _emit_recipe_operations(lines, node, row, variable, inner)
     if row.get("clear") == "helper":

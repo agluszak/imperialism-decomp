@@ -50,8 +50,8 @@ public:
   // slot 0x24 SetUiResourceOwner inherited unchanged (0x48a4d0)
   // slot 0x25 ResolveControlByTag inherited unchanged (0x48afd0)
   // slot 0x26 SwitchActiveChildAndNotify inherited unchanged (0x48af80)
-  // slot 0x27 DispatchSlot9CToLinkedChildren inherited unchanged (0x48c820)
-  // slot 0x28 CallVoidSlotA0 inherited unchanged (0x48c890)
+  // slot 0x27 Open inherited unchanged (0x48c820)
+  // slot 0x28 Close inherited unchanged (0x48c890)
   // slot 0x29 SetEnabled inherited unchanged (0x48b1c0)
   // slot 0x2a SetState inherited unchanged (0x48b070)
   // slot 0x2b GetField4E inherited unchanged (0x427200)
@@ -66,7 +66,7 @@ public:
   // slot 0x34 HasRenderableParentAndContent inherited unchanged (0x48c050)
   // slot 0x35 HandleCursorHoverSelectionByChildHitTestAndFallback inherited unchanged (0x48c080)
   // slot 0x36 DispatchControlEventToChildrenAndSelf inherited unchanged (0x48aaf0)
-  // slot 0x37 NoOpUiLifecycleHook inherited unchanged (0x48ab70)
+  // slot 0x37 DoPostCreate inherited unchanged (0x48ab70)
   // slot 0x38 NoOpUiCallback inherited unchanged (0x48abc0)
   // slot 0x39 RefreshControl inherited unchanged (0x48b6d0)
   // slot 0x3a QueryOwnerContextPanel inherited unchanged (0x48b1a0)
@@ -135,7 +135,7 @@ public:
   // the 0xb3 byte are unconfirmed padding. Fields 0x92-0xb1 (formerly a pad92[0x20] blob)
   // recovered from RefreshTradeSelectionHeaderAndNationOfferBidLines (0x5bc0d0).
   short field90; // +0x90 initialized to 8
-  // +0x92 -- computed as max(sellView->field_0x60, buyView->field_0x60) - 1 at the end of
+  // +0x92 -- computed as max(sellView->pageCount, buyView->pageCount) - 1 at the end of
   // RefreshTradeSelectionHeaderAndNationOfferBidLines; purpose beyond that not yet confirmed.
   short field92;
   short field94;          // +0x94 -- selected row index, written by
@@ -170,7 +170,7 @@ public:
   // On subsequent calls, resets both trade pages to their unselected state (-1), refreshes
   // 'titL'/'rtil"'s labels from the string table, resets 'mark', and reloads the tab strip.
   // Either way, ends by capturing 4 subviews' layouts, re-caching the sell view pointer,
-  // recomputing field92 from the wider of the two trade pages' field_0x60, reapplying the
+  // recomputing field92 from the wider of the two trade pages' pageCount, reapplying the
   // dialog's own picture resource, and flipping the "already initialized" flag.
   void RefreshTradeSelectionHeaderAndNationOfferBidLines();
   // 0x5bac50 -- re-caches the six commodity sub-controls (guob/dlos/uobt/lost) into

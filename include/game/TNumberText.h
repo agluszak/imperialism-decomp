@@ -7,13 +7,13 @@ class CMcWindow;
 // VTABLE: IMPERIALISM 0x0063e8b0
 class TNumberText : public TEditText {
 public:
-  int value;           // 0xa0
-  int field_a4;        // 0xa4
-  int field_a8;        // 0xa8
+  int value;        // 0xa0
+  int minimumValue; // 0xa4
+  int maximumValue; // 0xa8
 
   DECLARE_DYNCREATE(TNumberText)
-  ~TNumberText() override;                         // slot 0x01 (0x429530)
-  TObject* ShallowClone() override;                // slot 0x08 (0x4912b0)
+  ~TNumberText() override;          // slot 0x01 (0x429530)
+  TObject* ShallowClone() override; // slot 0x08 (0x4912b0)
 
   using TEditText::SetControlValue;
 
@@ -22,5 +22,6 @@ public:
   virtual int UpdateControlCachedIntFromWindowText(); // slot 0x7a (0x4911c0)
 
   TNumberText(); // constructor (0x429500)
-  void ConstructTNumberTextBaseState(TControl* panel, int* offsetLayout, int* sizeLayout, int val, int field_a4_val, int field_a8_val);
+  void ConstructTNumberTextBaseState(TControl* panel, int* offsetLayout, int* sizeLayout, int value,
+                                     int minimumValue, int maximumValue);
 };

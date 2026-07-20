@@ -25,10 +25,10 @@ void TTradePolicyCluster::HandleEvent(int commandId, TEventHandler* sourceHandle
     return;
   }
   TView* owner = OwnerPanel();
-  SetControlClassAndRefresh(0x20202020);
+  SetSelectedChildTagAndRefresh(0x20202020);
   TView* clusControl = owner->ResolveControlByTag(kControlTagClus);
   if (clusControl == nullptr) {
     FailNilPointerWithAssert("D:\\Ambit\\Cross\\USmallViews.cpp", 0x203);
   }
-  static_cast<TCluster*>(clusControl)->SetControlClassAndRefresh(0x20202020);
+  static_cast<TCluster*>(clusControl)->SetSelectedChildTagAndRefresh(0x20202020);
 }

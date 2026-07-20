@@ -39,15 +39,14 @@ void TDropShadowText::ApplyRectSlot110(RECT* rectBuffer) {
 
   SetQuickDrawColorAndSyncGlobals(shadowThemeCode94);
   CString textBuffer;
-  AssignSharedStringFromField84(&textBuffer);
+  CopyTextTo(&textBuffer);
   RECT shadowRect;
   BuildInsetContentRect(&shadowRect);
   shadowRect.left--;
   shadowRect.top--;
   shadowRect.right--;
   shadowRect.bottom--;
-  RenderControlStateTextBySelectionCode((LPCSTR)textBuffer, textBuffer.GetLength(), &shadowRect,
-                                        field90);
+  DrawTextAligned((LPCSTR)textBuffer, textBuffer.GetLength(), &shadowRect, textAlignmentCode);
 
   dc->SelectClipRgn(0);
 }

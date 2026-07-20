@@ -12,7 +12,7 @@
 #include "game/mfc.h"
 #include <new>
 // FUNCTION: IMPERIALISM 0x004294d0
-void TStaticText::AssignSharedStringFromField84(CString* out) {
+void TStaticText::CopyTextTo(CString* out) {
   *out = *text;
 }
 
@@ -28,13 +28,14 @@ void TStaticText::AssignSharedStringFromField84(CString* out) {
 IMPLEMENT_DYNCREATE(TStaticText, TControl)
 
 // FUNCTION: IMPERIALISM 0x00486290
-void TStaticText::UpdateTextEntrySharedStringIfChanged(CString* text) {
-  TStaticText::AssignTextSharedRefIfChangedAndMaybeInvalidate(text, 0);
+void TStaticText::SetText(CString* text) {
+  TStaticText::SetTextAndMaybeRefresh(text, 0);
 }
 
 // FUNCTION: IMPERIALISM 0x0048F890
 TStaticText::TStaticText()
-    : TControl(), text(new CString()), field88((void*)0xffffffff), field8C(0), field90(0) {
+    : TControl(), text(new CString()), stringResourceGroupId(-1), stringResourceIndex(0),
+      textAlignmentCode(0), textOptionFlags(0) {
   frameStyle60 = 13;
 }
 
@@ -96,20 +97,19 @@ void TStaticText::InitializeTextEntryBaseAndOptionalStringResource(
   }
   resourceTemplateId40 = 0;
   SetTextStyleAndMaybeRefresh(&g_UiResourceEntryDefaultTextStyle, 0);
-  field88 = reinterpret_cast<void*>(static_cast<int>(stringResourceGroup));
-  field8C = stringResourceIndex;
+  this->stringResourceGroupId = stringResourceGroup;
+  this->stringResourceIndex = stringResourceIndex;
   if (stringResourceGroup != -1) {
     CString loadedString;
     g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(
         &loadedString, stringResourceGroup, stringResourceIndex);
-    AssignTextSharedRefIfChangedAndMaybeInvalidate(&loadedString, 0);
+    SetTextAndMaybeRefresh(&loadedString, 0);
   }
   HandleCursorHoverFallback(0, 0);
 }
 
 // FUNCTION: IMPERIALISM 0x0048fe60
-void TStaticText::AssignTextSharedRefIfChangedAndMaybeInvalidate(CString* sharedString,
-                                                                 char refreshNow) {
+void TStaticText::SetTextAndMaybeRefresh(CString* sharedString, char refreshNow) {
   if (_mbscmp(reinterpret_cast<unsigned char*>((char*)static_cast<LPCSTR>(*sharedString)),
               reinterpret_cast<unsigned char*>((char*)static_cast<LPCSTR>(*text))) != 0) {
     *text = *sharedString;
@@ -120,17 +120,17 @@ void TStaticText::AssignTextSharedRefIfChangedAndMaybeInvalidate(CString* shared
 }
 
 // FUNCTION: IMPERIALISM 0x0048fed0
-void TStaticText::LoadUiStringAndDispatchViaVslot1C8(short stringResourceGroup,
-                                                     short stringResourceIndex, char refreshNow) {
+void TStaticText::SetTextFromStringResource(short stringResourceGroup, short stringResourceIndex,
+                                            char refreshNow) {
   CString loadedString;
   g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(
       &loadedString, stringResourceGroup, stringResourceIndex);
-  AssignTextSharedRefIfChangedAndMaybeInvalidate(&loadedString, refreshNow);
+  SetTextAndMaybeRefresh(&loadedString, refreshNow);
 }
 
 // FUNCTION: IMPERIALISM 0x0048ff70
-void TStaticText::SetTextThemeCodeAndMaybeRefresh(short themeCode, char refreshFlag) {
-  field90 = themeCode;
+void TStaticText::SetTextAlignmentAndMaybeRefresh(short alignmentCode, char refreshFlag) {
+  textAlignmentCode = alignmentCode;
   if (refreshFlag != 0) {
     PaintOrInvalidateControl(0);
   }
@@ -139,7 +139,7 @@ void TStaticText::SetTextThemeCodeAndMaybeRefresh(short themeCode, char refreshF
 // Paint the static text through the active QuickDraw CDC: aspect-filtered font
 // mapping, cached CFont from the widget's packed text style, text color from the
 // optional stylePayload48 payload (else the style's styleRef), and CDC::DrawText with the
-// field90 alignment code (-2 left / 1 center / -1 right on DT_NOPREFIX|0x100|
+// textAlignmentCode (-2 left / 1 center / -1 right on DT_NOPREFIX|0x100|
 // DT_WORDBREAK).
 // FUNCTION: IMPERIALISM 0x0048ffb0
 void TStaticText::ApplyRectSlot110(RECT* rectBuffer) {
@@ -159,10 +159,10 @@ void TStaticText::ApplyRectSlot110(RECT* rectBuffer) {
   }
   dc->SetTextColor(textColor);
   UINT format = 0x910;
-  if (field90 != -2) {
-    if (field90 == -1) {
+  if (textAlignmentCode != -2) {
+    if (textAlignmentCode == -1) {
       format = 0x912;
-    } else if (field90 == 1) {
+    } else if (textAlignmentCode == 1) {
       format = 0x911;
     }
   }
@@ -171,8 +171,8 @@ void TStaticText::ApplyRectSlot110(RECT* rectBuffer) {
 }
 
 // FUNCTION: IMPERIALISM 0x004900a0
-void TStaticText::RenderControlStateTextBySelectionCode(const char* textChars, int textLength,
-                                                        RECT* rect, short alignmentCode) {
+void TStaticText::DrawTextAligned(const char* textChars, int textLength, RECT* rect,
+                                  short alignmentCode) {
   (void)textLength;
   CDC* dc = GetActiveQuickDrawDc();
   dc->SetBkMode(TRANSPARENT);

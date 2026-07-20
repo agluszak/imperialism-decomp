@@ -22,8 +22,8 @@ IMPLEMENT_DYNCREATE(TTreatiesView, TPanelView)
 TTreatiesView::TTreatiesView() {}
 
 // FUNCTION: IMPERIALISM 0x004f7ac0
-void TTreatiesView::NoOpUiLifecycleHook(int arg) {
-  TPanelView::NoOpUiLifecycleHook(arg);
+void TTreatiesView::DoPostCreate(int arg) {
+  TPanelView::DoPostCreate(arg);
   CString text;
   for (int i = 0; i < 7; ++i) {
     TView* control = ResolveControlByTag(kControlTagScr0 + i);

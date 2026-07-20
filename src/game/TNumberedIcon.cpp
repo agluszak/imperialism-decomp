@@ -15,8 +15,8 @@ TNumberedIcon::TNumberedIcon() : TMegaPicture(), fieldAc(0) {}
 TNumberedIcon::~TNumberedIcon() {}
 
 // FUNCTION: IMPERIALISM 0x005074e0
-void TNumberedIcon::NoOpUiLifecycleHook(int arg) {
-  TMegaPicture::NoOpUiLifecycleHook(arg);
+void TNumberedIcon::DoPostCreate(int arg) {
+  TMegaPicture::DoPostCreate(arg);
   AssignFlags98AndMaybeRefresh(5, 1);
   NumberedIconSlot77();
   // The original then, when fieldAc is set, builds a RECT from frameWidth34/frameHeight38

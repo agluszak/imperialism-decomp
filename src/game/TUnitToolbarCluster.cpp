@@ -61,11 +61,11 @@ int TUnitToolbarCluster::IsTradeControlAtMinimum() {
 }
 
 // FUNCTION: IMPERIALISM 0x00586170
-void TUnitToolbarCluster::SetControlClassAndRefresh(int classState) {
-  field84 = classState;
+void TUnitToolbarCluster::SetSelectedChildTagAndRefresh(int childTag) {
+  selectedChildTag = childTag;
 
   TView* resourceControl =
-      reinterpret_cast<TView*>(this)->ResolveControlByTag(0x7265736f + classState);
+      reinterpret_cast<TView*>(this)->ResolveControlByTag(0x7265736f + childTag);
   if (resourceControl == 0) {
     GAME_FAIL_NIL_POINTER();
     return;

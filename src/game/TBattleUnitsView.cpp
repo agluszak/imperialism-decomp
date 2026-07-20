@@ -14,5 +14,4 @@ IMPLEMENT_DYNCREATE(TBattleUnitsView, TMilitaryPageView)
 TBattleUnitsView::TBattleUnitsView() {}
 
 // FUNCTION: IMPERIALISM 0x004b0900
-void TBattleUnitsView::CallVoidSlotA0() {
-}
+void TBattleUnitsView::Close() {}

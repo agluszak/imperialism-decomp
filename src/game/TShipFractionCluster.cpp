@@ -22,11 +22,11 @@ TShipFractionCluster::~TShipFractionCluster() {}
 IMPLEMENT_DYNCREATE(TShipFractionCluster, TCluster)
 
 // FUNCTION: IMPERIALISM 0x00568d70
-void TShipFractionCluster::NoOpUiLifecycleHook(int arg) {
-  TCluster::NoOpUiLifecycleHook(arg);
+void TShipFractionCluster::DoPostCreate(int arg) {
+  TCluster::DoPostCreate(arg);
 
-  field8c = OwnerPanel()->ResolveControlByTag(kControlTagMain);
-  field8c->AssertValid();
+  mainSelectionView8c = OwnerPanel()->ResolveControlByTag(kControlTagMain);
+  mainSelectionView8c->AssertValid();
 
   TView* shipControl = ResolveControlByTag(kControlTagShip);
   shipControl->AssertValid();
@@ -44,23 +44,23 @@ void TShipFractionCluster::NoOpUiLifecycleHook(int arg) {
     SetControlHoverHelpText(CString(g_pShipFractionSharedText_0065c830), this);
   }
 
-  field90 = static_cast<TStaticText*>(ResolveControlByTag(kControlTagArro));
-  field88 = 1;
-  UpdateIndustryCapabilityControlStateAndValue(0, -1);
+  shipCountButton90 = static_cast<TNumberedArrowButton*>(ResolveControlByTag(kControlTagArro));
+  availableShipCount88 = 1;
+  SetAvailableAndSelectedShipCounts(0, -1);
 }
 
 // FUNCTION: IMPERIALISM 0x00568eb0
 void TShipFractionCluster::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId == 0x64) {
-    if (field94 < field88) {
-      field94 = static_cast<short>(field94 + 1);
-      field90->SetTextThemeCodeAndMaybeRefresh(field94, 1);
+    if (selectedShipCount94 < availableShipCount88) {
+      selectedShipCount94 = static_cast<short>(selectedShipCount94 + 1);
+      shipCountButton90->SetValue(selectedShipCount94, 1);
       SelectTaskForceOrderForActiveNationClass(1);
     }
   } else if (commandId == 0x65) {
-    if (field94 > 0) {
-      field94 = static_cast<short>(field94 - 1);
-      field90->SetTextThemeCodeAndMaybeRefresh(field94, 1);
+    if (selectedShipCount94 > 0) {
+      selectedShipCount94 = static_cast<short>(selectedShipCount94 - 1);
+      shipCountButton90->SetValue(selectedShipCount94, 1);
       SelectTaskForceOrderForActiveNationClass(0);
     }
   } else {
@@ -69,45 +69,48 @@ void TShipFractionCluster::HandleEvent(int commandId, TEventHandler* sourceHandl
 }
 
 // Shared tail for the increment/decrement handlers above: reselects this cluster's task
-// force order entry for the active nation class and notifies field8c's selection listener.
+// force order entry for the active nation class and notifies the main selection view's
+// listener.
 void TShipFractionCluster::SelectTaskForceOrderForActiveNationClass(char activeFlag) {
   g_pActiveMapOrderContext->selectedTaskForce14->SetTaskForceOrderSelectionByNationClassAndFlag(
       static_cast<short>(controlTag - 0x7330), activeFlag);
-  // TODO: the original then calls field8c's own vtable slot 0x1b0 with an arg read from a
-  // sub-object at field8c+0xa0 (NotifyTaskForceSelectionListenerByWord62, 0x599a20) --
-  // field8c's concrete class beyond TView isn't confirmed, so this notify step is left
-  // unmodeled rather than guessing a type for the +0xa0 field.
+  // TODO: the original then calls mainSelectionView8c's own vtable slot 0x1b0 with an arg
+  // read from a sub-object at mainSelectionView8c+0xa0
+  // (NotifyTaskForceSelectionListenerByWord62, 0x599a20). Its concrete class beyond
+  // TView isn't confirmed, so this notify step is left unmodeled rather than guessing a
+  // type for the +0xa0 field.
 }
 
 // The original names this via a stale/reused symbol ("TToolBarCluster::..."); confirmed as
 // a real TShipFractionCluster method by receiver evidence (ResolveControlByTag(kControlTagShip),
-// field88/field90 matching this class's own layout). p1/p2 come from the caller as literal
-// (0, -1); field88 gates whether the ship/arrow controls are currently enabled, field94 is
-// the theme code applied to field90 when p1 is nonzero.
+// availableShipCount88/shipCountButton90 matching this class's own layout). The Mac
+// symbol oracle calls this method Set(int, int); Windows callers pass the available and
+// selected ship counts respectively.
 // FUNCTION: IMPERIALISM 0x00568f90
-void TShipFractionCluster::UpdateIndustryCapabilityControlStateAndValue(int p1, int p2) {
+void TShipFractionCluster::SetAvailableAndSelectedShipCounts(int availableCount,
+                                                             int selectedCount) {
   TView* shipControl = ResolveControlByTag(kControlTagShip);
-  if (p1 != 0) {
-    if (field88 == 0) {
+  if (availableCount != 0) {
+    if (availableShipCount88 == 0) {
       short slot = GetEnabledIndustryCapabilitySlotByClass(static_cast<short>(controlTag - 0x7330));
       shipControl->SetEnabled(1, 1);
-      field90->SetEnabled(1, 1);
+      shipCountButton90->SetEnabled(1, 1);
       LoadUiStringByGroupAndIndexToGlobalControlTag(0x2716, static_cast<short>(slot + 1),
                                                     controlTag);
     }
-  } else if (field88 != 0) {
+  } else if (availableShipCount88 != 0) {
     shipControl->SetEnabled(0, 1);
-    field90->SetEnabled(0, 1);
+    shipCountButton90->SetEnabled(0, 1);
     SetControlHoverHelpTextAltEntry(CString(g_pShipFractionSharedText_0065c830), this);
   }
 
   RefreshControl();
-  field88 = static_cast<short>(p1);
-  field94 = static_cast<short>(p1);
-  if (p2 > -1) {
-    field94 = static_cast<short>(p2);
+  availableShipCount88 = static_cast<short>(availableCount);
+  selectedShipCount94 = static_cast<short>(availableCount);
+  if (selectedCount > -1) {
+    selectedShipCount94 = static_cast<short>(selectedCount);
   }
-  if (p1 > 0) {
-    field90->SetTextThemeCodeAndMaybeRefresh(field94, 1);
+  if (availableCount > 0) {
+    shipCountButton90->SetValue(selectedShipCount94, 1);
   }
 }

@@ -83,10 +83,10 @@ void TMiniArmyView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEv
       TView* sourceView = static_cast<TView*>(sourceHandler);
       sourceView->SetEnabled(0, 1);
       SetControlHoverHelpTextAltEntry(CString(g_pMiniCivSharedText_0064cb18), sourceView);
-      TStaticText* tbr1 =
-          static_cast<TStaticText*>(g_pDisplayMgr->activeDialog->ResolveControlByTag(kControlTagTbr1));
+      TStaticText* tbr1 = static_cast<TStaticText*>(
+          g_pDisplayMgr->activeDialog->ResolveControlByTag(kControlTagTbr1));
       tbr1->QueryStepValue();
-      tbr1->SetTextThemeCodeAndMaybeRefresh(static_cast<short>(g_pSimMgr->GetActiveNationId()), 0);
+      tbr1->SetTextAlignmentAndMaybeRefresh(static_cast<short>(g_pSimMgr->GetActiveNationId()), 0);
     } else {
       CString msg;
       g_pSimMgr->GetString(0x2745, 3, &msg);

@@ -45,8 +45,8 @@ public:
   // slot 0x24 SetUiResourceOwner inherited unchanged (0x48a4d0)
   // slot 0x25 ResolveControlByTag inherited unchanged (0x48afd0)
   // slot 0x26 SwitchActiveChildAndNotify inherited unchanged (0x48af80)
-  // slot 0x27 DispatchSlot9CToLinkedChildren inherited unchanged (0x48c820)
-  // slot 0x28 CallVoidSlotA0 inherited unchanged (0x48c890)
+  // slot 0x27 Open inherited unchanged (0x48c820)
+  // slot 0x28 Close inherited unchanged (0x48c890)
   // slot 0x29 SetEnabled inherited unchanged (0x48b1c0)
   // slot 0x2a SetState inherited unchanged (0x48b070)
   // slot 0x2b GetField4E inherited unchanged (0x427200)
@@ -61,7 +61,7 @@ public:
   // slot 0x34 HasRenderableParentAndContent inherited unchanged (0x48c050)
   // slot 0x35 HandleCursorHoverSelectionByChildHitTestAndFallback inherited unchanged (0x48c080)
   // slot 0x36 DispatchControlEventToChildrenAndSelf inherited unchanged (0x48aaf0)
-  virtual void NoOpUiLifecycleHook(int arg) override; // slot 0x37 0x5074e0
+  virtual void DoPostCreate(int arg) override; // slot 0x37 0x5074e0
   // slot 0x38 NoOpUiCallback inherited unchanged (0x48abc0)
   // slot 0x39 RefreshControl inherited unchanged (0x48b6d0)
   // slot 0x3a QueryOwnerContextPanel inherited unchanged (0x48b1a0)
@@ -126,7 +126,7 @@ public:
   // slot 0x75 AssignFlags98AndMaybeRefresh inherited unchanged (0x573690)
   virtual undefined OrphanCallChain_C1_I10_005076d0(short param_1); // slot 0x76 0x5076d0
   virtual undefined NumberedIconSlot77();                           // slot 0x77 0x507570
-  // TMegaPicture ends exactly at 0xac (ASSERT_SIZE); zeroed by the ctor. NoOpUiLifecycleHook
+  // TMegaPicture ends exactly at 0xac (ASSERT_SIZE); zeroed by the ctor. DoPostCreate
   // dereferences it through a vtable (ApplyBounds, slot 0x5a) when non-null.
   class TView* fieldAc; // +0xac
 

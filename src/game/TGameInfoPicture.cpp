@@ -19,8 +19,8 @@ IMPLEMENT_DYNCREATE(TGameInfoPicture, TPicture)
 TGameInfoPicture::TGameInfoPicture() {}
 
 // FUNCTION: IMPERIALISM 0x0056b870
-void TGameInfoPicture::NoOpUiLifecycleHook(int arg) {
-  TView::NoOpUiLifecycleHook(arg);
+void TGameInfoPicture::DoPostCreate(int arg) {
+  TView::DoPostCreate(arg);
 
   CString text;
   for (int i = 0; i < 5; ++i) {
@@ -37,4 +37,4 @@ void TGameInfoPicture::NoOpUiLifecycleHook(int arg) {
 }
 
 // FUNCTION: IMPERIALISM 0x0056b9b0
-void TGameInfoPicture::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) { }
+void TGameInfoPicture::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {}

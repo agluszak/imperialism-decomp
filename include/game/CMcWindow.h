@@ -48,8 +48,8 @@ public:
   // 0x648590 (ctor 0x4845a0) + cleanup registration; and message 0x36a (0x493d50) —
   // dispatches slot 0x1a on the unidentified global object at 0x6a1348.
 
-  // 0x468 — window-state command sent by TWindow (DispatchSlot9CToLinkedChildren
-  // sends wParam=0, CallVoidSlotA0 sends wParam=1 — both no-ops here; 2=show,
+  // 0x468 — window-state command sent by TWindow (Open
+  // sends wParam=0, Close sends wParam=1 — both no-ops here; 2=show,
   // 3=hide, 4=destroy-and-delete-self).
   afx_msg LRESULT OnWindowStateMsg468(WPARAM wParam, LPARAM lParam);
   // WM_PAINT — the real trigger for all TView-tree painting: builds a CPaintDC and

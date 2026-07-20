@@ -186,7 +186,7 @@ each with the evidence needed to start (address, size, current score if any, blo
   (TScrollBarView's cached `ownerContext`) is genuinely a **`TScrollView*`**, not a
   plain `TView*` — confirmed because `TScrollView`'s OWN header already declares
   `TView* contentView60; // 0x60` and `TScrollBarView* scrollBar64; // 0x64`
-  (`TScrollView::NoOpUiLifecycleHook` is the only `new TScrollBarView()` call site
+  (`TScrollView::DoPostCreate` is the only `new TScrollBarView()` call site
   and passes `this` as the `panel`/ownerContext argument) — an exact match for the
   two object-pointer fields `AdjustCityDialogScrollRangeByDeltaAndClamp` reads at
   those offsets. Retyped `ownerView84` and `ConstructTScrollBarViewBaseState`'s
@@ -256,7 +256,7 @@ each with the evidence needed to start (address, size, current score if any, blo
   against the decompile's literal re-expansion). Don't retry either without new
   evidence; this is the same "optimizer register-pressure choice you can't force
   from a source tweak" class of residual documented in the codegen-shapes skill.
-- `0x574720` TScrollBarView::NoOpUiLifecycleHook at 73.5% — residual is pure
+- `0x574720` TScrollBarView::DoPostCreate at 73.5% — residual is pure
   instruction-scheduling wobble inside the surface-rect block; structure verified.
 - `0x5e50c0` at 77.8% — residual is an ecx/eax naming permutation in the slot-cursor
   idiom; structure verified.

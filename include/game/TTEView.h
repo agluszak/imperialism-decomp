@@ -46,8 +46,8 @@ public:
   // slot 0x24 SetUiResourceOwner inherited unchanged (0x48a4d0)
   // slot 0x25 ResolveControlByTag inherited unchanged (0x48afd0)
   // slot 0x26 SwitchActiveChildAndNotify inherited unchanged (0x48af80)
-  // slot 0x27 DispatchSlot9CToLinkedChildren inherited unchanged (0x48c820)
-  // slot 0x28 CallVoidSlotA0 inherited unchanged (0x48c890)
+  // slot 0x27 Open inherited unchanged (0x48c820)
+  // slot 0x28 Close inherited unchanged (0x48c890)
   // slot 0x29 SetEnabled inherited unchanged (0x48b1c0)
   // slot 0x2a SetState inherited unchanged (0x48b070)
   // slot 0x2b GetField4E inherited unchanged (0x427200)
@@ -62,7 +62,7 @@ public:
   // slot 0x34 HasRenderableParentAndContent inherited unchanged (0x48c050)
   // slot 0x35 HandleCursorHoverSelectionByChildHitTestAndFallback_b9 inherited unchanged (0x48c080)
   // slot 0x36 DispatchControlEventToChildrenAndSelf inherited unchanged (0x48aaf0)
-  // slot 0x37 NoOpUiLifecycleHook inherited unchanged (0x48ab70)
+  // slot 0x37 DoPostCreate inherited unchanged (0x48ab70)
   // slot 0x38 NoOpUiCallback inherited unchanged (0x48abc0)
   // slot 0x39 RefreshControl inherited unchanged (0x48b6d0)
   // slot 0x3a QueryOwnerContextPanel inherited unchanged (0x48b1a0)
@@ -120,15 +120,16 @@ public:
   // slot 0x6e SetTextColorAndMaybeRefresh inherited unchanged (0x48e7a0)
   // slot 0x6f LogUnhandledDialogMethodAndReturnFalse inherited unchanged (0x4294a0)
   // slot 0x70 SetControlStateFlagAndMaybeRefresh inherited unchanged (0x48e810)
-  // slot 0x71 SetTextThemeCodeAndMaybeRefresh inherited unchanged (0x48ff70)
-  // slot 0x72 AssignTextSharedRefIfChangedAndMaybeInvalidate inherited unchanged (0x48fe60)
-  // slot 0x73 LoadUiStringAndDispatchViaVslot1C8 inherited unchanged (0x48fed0)
-  // slot 0x74 AssignSharedStringFromField84 inherited unchanged (0x4294d0)
-  // slot 0x75 RenderControlStateTextBySelectionCode inherited unchanged (0x4900a0)
+  // slot 0x71 SetTextAlignmentAndMaybeRefresh inherited unchanged (0x48ff70)
+  // slot 0x72 SetTextAndMaybeRefresh inherited unchanged (0x48fe60)
+  // slot 0x73 SetTextFromStringResource inherited unchanged (0x48fed0)
+  // slot 0x74 CopyTextTo inherited unchanged (0x4294d0)
+  // slot 0x75 DrawTextAligned inherited unchanged (0x4900a0)
   int MeasureCurrentTextWidthInLayoutRect();
   // Mac-style second-phase init (not the ctor — no vtable store): runs the TStaticText
   // base init, copies the 0x68-0x74 inset rect and the packed text-style descriptor,
-  // and seeds field90. Args 1, 10 and 11 are never read (TDeluxeText passes 0, 0, 1).
+  // and seeds textAlignmentCode. Args 1, 10 and 11 are never read (TDeluxeText passes
+  // 0, 0, 1).
   // 0x486050, __thiscall, RET 0x2c.
   void ConstructTTEViewBaseState(int unusedA, TView* panel, int* offsetLayout, int* sizeLayout,
                                  int layoutParam5, int layoutParam6, RECT* insetRect,

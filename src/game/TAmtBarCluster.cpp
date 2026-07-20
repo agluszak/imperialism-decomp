@@ -26,7 +26,7 @@ TAmtBarCluster::TAmtBarCluster() : TUberCluster() {}
 // TAmtBarCluster::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x00586d60
-void TAmtBarCluster::NoOpUiLifecycleHook(int styleSeed) {
+void TAmtBarCluster::DoPostCreate(int styleSeed) {
   this->InitializeTradeMoveAndBarControls(styleSeed);
 }
 

@@ -24,8 +24,8 @@ IMPLEMENT_DYNCREATE(TTacMapUberPicture, TMapUberUberPicture)
 TTacMapUberPicture::TTacMapUberPicture() : tacticalBattleView94(nullptr) {}
 
 // FUNCTION: IMPERIALISM 0x005ad3a0
-void TTacMapUberPicture::NoOpUiLifecycleHook(int arg) {
-  TMapUberUberPicture::NoOpUiLifecycleHook(arg);
+void TTacMapUberPicture::DoPostCreate(int arg) {
+  TMapUberUberPicture::DoPostCreate(arg);
   tacticalBattleView94 = static_cast<TTacticalBattleView*>(ResolveControlByTag(kControlTagGold));
   tacticalBattleView94->AssertValid();
 }

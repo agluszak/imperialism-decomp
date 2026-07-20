@@ -38,8 +38,8 @@ TAmtBar::TAmtBar()
 // TAmtBar::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x00588610
-void TAmtBar::NoOpUiLifecycleHook(int arg) {
-  TView::NoOpUiLifecycleHook(arg);
+void TAmtBar::DoPostCreate(int arg) {
+  TView::DoPostCreate(arg);
 }
 
 // FUNCTION: IMPERIALISM 0x00588630

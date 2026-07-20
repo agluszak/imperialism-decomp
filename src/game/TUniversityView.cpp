@@ -35,7 +35,8 @@ void TUniversityView::SelectUniversityRecruitmentEntry(short nRecruitmentEntryIn
 // FUNCTION: IMPERIALISM 0x004cb8a0
 void TUniversityView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId == 0xc) {
-    short index = static_cast<short>(sourceHandler->controlTag) - 0x7630; // 'rec0'-'rec8' low 16 bits
+    short index =
+        static_cast<short>(sourceHandler->controlTag) - 0x7630; // 'rec0'-'rec8' low 16 bits
     if (index >= 0 && index < 9) {
       selectedRecruitmentIndexA4 = index;
       SelectUniversityRecruitmentEntry(index);
@@ -50,7 +51,7 @@ void TUniversityView::HandleEvent(int commandId, TEventHandler* sourceHandler, T
       // 'sele' is a TCluster (see TShipyardView::OrphanRetStub_004c6fd0's identical tail).
       TCluster* sele = static_cast<TCluster*>(ResolveControlByTag(0x73656c65u)); // 'sele'
       sele->AssertValid();
-      sele->SetControlClassAndRefresh(0x63697630 + index); // 'civ0'+index
+      sele->SetSelectedChildTagAndRefresh(0x63697630 + index); // 'civ0'+index
 
       // The original then dispatches to the real receiver at field94[index+0x22] (field94's
       // pointee class is unresolved -- see RefreshCityViewProductionDetails, 0x4cfbd0, 1748

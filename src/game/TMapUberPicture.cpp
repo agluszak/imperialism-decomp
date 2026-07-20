@@ -43,8 +43,8 @@ TMapUberPicture::TMapUberPicture()
 TMapUberPicture::~TMapUberPicture() {}
 
 // FUNCTION: IMPERIALISM 0x00596a80
-void TMapUberPicture::NoOpUiLifecycleHook(int arg) {
-  TOffLimitsPicture::NoOpUiLifecycleHook(arg);
+void TMapUberPicture::DoPostCreate(int arg) {
+  TOffLimitsPicture::DoPostCreate(arg);
 
   static_cast<TAmbitApplication*>(g_pGlobalUiRootController)->edgeScrollTarget48 = this;
 
@@ -178,9 +178,8 @@ void ComposeAndDispatchTurnSummaryLocalizedMessage() {
   }
 
   if (strcmp(g_szEmptyString, static_cast<LPCSTR>(summary)) != 0) {
-    g_pUiRuntimeContext->DispatchLocalizedUiMessageWithTemplateA13A0(summary,
-                                                                     &g_cstrMapModeMessageStore, 0,
-                                                                     0);
+    g_pUiRuntimeContext->DispatchLocalizedUiMessageWithTemplateA13A0(
+        summary, &g_cstrMapModeMessageStore, 0, 0);
   }
 }
 
@@ -203,9 +202,8 @@ void TMapUberPicture::HandleEvent(int commandId, TEventHandler* sourceHandler, T
       if (g_pSimMgr->field44 != 0) {
         CString msg;
         g_pSimMgr->GetString(0x2742, 0x25, &msg);
-        g_pUiRuntimeContext->DispatchLocalizedUiMessageWithTemplateA13A0(msg,
-                                                                         &g_cstrMapModeMessageStore,
-                                                                         0, 0);
+        g_pUiRuntimeContext->DispatchLocalizedUiMessageWithTemplateA13A0(
+            msg, &g_cstrMapModeMessageStore, 0, 0);
       } else {
         ReinitializeGameFlowAndPostTurnEventCode(0x5dd);
       }
@@ -262,11 +260,11 @@ void TMapUberPicture::RefreshMapOrderEntryPanel(TTaskForce* pMapOrderEntry) {
   // The per-slot dispatches below (GetMinActionThresholdFromEntryChildren,
   // ExpandTaskForceTraversalDepthAndMarkDeferredNodes, CountTaskForceSelectedOrders-
   // ByNationClass -- all thiscall on pMapOrderEntry/its command descriptor --, and
-  // UpdateIndustryCapabilityControlStateAndValue -- thiscall on the resolved slider
-  // control) all target classes not yet recovered (TTaskForce's own field layout beyond
-  // what TOcean.cpp already established, and the slider controls' concrete type), so
-  // they're left as documented gaps rather than faked calling conventions; the real
-  // control-resolution/AssertValid structure and quota-field reads are reproduced.
+  // SetAvailableAndSelectedShipCounts -- thiscall on the resolved
+  // TShipFractionCluster) still depends on TTaskForce fields and child methods not yet
+  // recovered beyond what TOcean.cpp established, so the chain is left as a documented
+  // gap rather than using fake calling conventions; the real control-resolution/
+  // AssertValid structure and quota-field reads are reproduced.
   if (pMapOrderEntry == nullptr) {
     for (int i = 0; i < 4; ++i) {
       TView* slider = this->ResolveControlByTag(0x636c7330 + i); // "0slc".."3slc"

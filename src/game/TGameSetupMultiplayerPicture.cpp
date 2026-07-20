@@ -34,8 +34,8 @@ TGameSetupMultiplayerPicture::TGameSetupMultiplayerPicture() {}
 TGameSetupMultiplayerPicture::~TGameSetupMultiplayerPicture() {}
 
 // FUNCTION: IMPERIALISM 0x00575fb0
-void TGameSetupMultiplayerPicture::NoOpUiLifecycleHook(int arg) {
-  TView::NoOpUiLifecycleHook(arg);
+void TGameSetupMultiplayerPicture::DoPostCreate(int arg) {
+  TView::DoPostCreate(arg);
 
   TRadioTextCluster* protControl =
       static_cast<TRadioTextCluster*>(ResolveControlByTag(kControlTagProt));
@@ -67,7 +67,7 @@ void TGameSetupMultiplayerPicture::NoOpUiLifecycleHook(int arg) {
   BuildUiTextStyleDescriptor(&styleDescriptor, 0, 0xe, 0x2b6c);
   cursControl->ApplyTextStyleDescriptorAndMaybeRefresh(&styleDescriptor, 1);
   cursControl->InitializeMapHintTextStyleAndThemeFlags(0x2b6b, 0x2b6c);
-  cursControl->SetTextThemeCodeAndMaybeRefresh(1, 0);
+  cursControl->SetTextAlignmentAndMaybeRefresh(1, 0);
 
   ApplySharedStringToGlobalControlTag(CString(g_szEmptyString), kControlTagMain);
   LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2737, 0x1f, kControlTagRand);

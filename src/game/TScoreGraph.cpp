@@ -22,8 +22,8 @@ IMPLEMENT_DYNCREATE(TScoreGraph, TView)
 TScoreGraph::TScoreGraph() {}
 
 // FUNCTION: IMPERIALISM 0x004fe2b0
-void TScoreGraph::NoOpUiLifecycleHook(int arg) {
-  TView::NoOpUiLifecycleHook(arg);
+void TScoreGraph::DoPostCreate(int arg) {
+  TView::DoPostCreate(arg);
   g_pDiplomacyTurnStateManager->RecomputeNationComparativePowerMetrics();
 
   for (int i = 0; i < 7; ++i) {

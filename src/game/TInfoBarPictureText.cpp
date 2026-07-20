@@ -39,6 +39,6 @@ void TInfoBarPictureText::ClearTextAndLayoutRect(int) {
   ownerContext->InvalidateCityDialogRectRegion(&clipRect, 1);
 
   CString empty;
-  UpdateTextEntrySharedStringIfChanged(&empty);
+  SetText(&empty);
   RefreshControl();
 }

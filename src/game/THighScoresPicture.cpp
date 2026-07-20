@@ -24,8 +24,8 @@ THighScoresPicture::~THighScoresPicture() {}
 IMPLEMENT_DYNCREATE(THighScoresPicture, TNoHilitePicture)
 
 // FUNCTION: IMPERIALISM 0x00575320
-void THighScoresPicture::NoOpUiLifecycleHook(int arg) {
-  TNoHilitePicture::NoOpUiLifecycleHook(arg);
+void THighScoresPicture::DoPostCreate(int arg) {
+  TNoHilitePicture::DoPostCreate(arg);
 
   g_pSfxPlaybackSystem->ResetDualAudioCuePools();
   g_pSfxPlaybackSystem->PushCueToDualAudioCuePools(0xb);

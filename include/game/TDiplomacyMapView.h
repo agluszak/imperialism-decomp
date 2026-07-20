@@ -35,12 +35,12 @@ public:
   void HandleEvent(int commandId, TEventHandler* sourceHandler,
                    TEvent* event) override; // slot 0x0f 0x4f70c0
   void ForwardParam(int param) override;    // slot 0x12 0x4f7130
-  void CallVoidSlotA0() override;           // slot 0x28 0x4f3e30
+  void Close() override;                    // slot 0x28 0x4f3e30
   void HandleCursorHoverFallback(CPoint* point,
                                  RgnHandle hitArg) override; // slot 0x2c 0x4f5f90
   void HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* point,
                                                            RgnHandle hitArg) override; // slot 0x35
-  void NoOpUiLifecycleHook(int arg) override;                                          // slot 0x37
+  void DoPostCreate(int arg) override;                                                 // slot 0x37
   void ApplyRectSlot110(RECT* rectBuffer) override;                                    // slot 0x44
   void BeginMouseCaptureAndStartRepeatTimer(CPoint* point, int arg2, int arg3,
                                             int arg4) override; // slot 0x47 0x4f5410
@@ -80,7 +80,7 @@ public:
 
   // 0x4f4620 -- resolves the 6 minister action-topic buttons (info/trty/gran/trad/
   // coun/offr), refreshes the info button's nation-slot selection, and (re)assigns
-  // each button's hover-help text; called from NoOpUiLifecycleHook. Real body,
+  // each button's hover-help text; called from DoPostCreate. Real body,
   // previously misattributed to TToolBarCluster in the generated symbol table.
   void InitializeDiplomacyMinisterActionControlsAndLabels();
 
@@ -114,10 +114,10 @@ protected:
   // cast each element to its own real type at the point of use.
   TView* actionButtonsA0[6];
   // 0xb8 — a state code compared to 5 (mirrors interactionModeAt94's pattern); reset to 0 by
-  // CallVoidSlotA0 (slot 0xa0) and in the constructor.
+  // Close (slot 0xa0) and in the constructor.
   int stateFlagAtB8;
 
- public:
+public:
   // 0xbc -- action code written 0xd at the end of the overlay rebuild (matches
   // selectedTerrainIndexAt90's `actionCode != 0xd` comparison site); also written 7/8
   // by TGrantsView::HandleEvent (via TPanelView::m_panelData) keyed off the parity of a
@@ -129,7 +129,7 @@ protected:
   // TPanelView::m_panelData.
   short selectedGrantRowC0;
 
- protected:
+protected:
   // 0xc2 -- active-nation snapshot stamped alongside 0x90/0x98 by the overlay rebuild.
   short activeNationC2;
   // Three consecutive per-nation RECT arrays filling 0xc4..0x514 exactly (23 nations):

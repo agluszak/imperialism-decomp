@@ -69,7 +69,7 @@ void TDealBookPicture::RefreshHudNationTitleControlsAndTheme(int themeCode) {
   // 'titL' title label.
   TStaticText* titLControl = static_cast<TStaticText*>(this->ResolveControlByTag(0x7469744c));
   titLControl->AssertValid();
-  titLControl->LoadUiStringAndDispatchViaVslot1C8(0x2740, 0x19, 0);
+  titLControl->SetTextFromStringResource(0x2740, 0x19, 0);
   RECT titLBounds;
   titLControl->QueryBounds(&titLBounds);
   RECT titLInval;
@@ -79,7 +79,7 @@ void TDealBookPicture::RefreshHudNationTitleControlsAndTheme(int themeCode) {
   // 'rtil' subtitle label.
   TStaticText* rtilControl = static_cast<TStaticText*>(this->ResolveControlByTag(0x7274696c));
   rtilControl->AssertValid();
-  rtilControl->LoadUiStringAndDispatchViaVslot1C8(0x2740, 0x1a, 0);
+  rtilControl->SetTextFromStringResource(0x2740, 0x1a, 0);
   RECT rtilBounds;
   rtilControl->QueryBounds(&rtilBounds);
   RECT rtilInval;
@@ -109,18 +109,18 @@ void TDealBookPicture::UpdateDealBookResourceSelectionAndToggleControls(int nRes
   ++idx;
 
   TTradePageBuyView* buyCopy = this->fieldAC;
-  if (static_cast<short>(idx) > buyCopy->field_0x60) {
+  if (static_cast<short>(idx) > buyCopy->pageCount) {
     buyCopy->SetEnabled(0, 1);
   } else {
-    buyCopy->OrphanCallChain_C8_I118_0056fdb0(static_cast<short>(idx));
+    buyCopy->ShowPage(static_cast<short>(idx));
     buyCopy->SetEnabled(1, 0);
   }
 
   TTradePageSellView* sellCopy = this->fieldA8;
-  if (static_cast<short>(idx) > sellCopy->field_0x60) {
+  if (static_cast<short>(idx) > sellCopy->pageCount) {
     sellCopy->SetEnabled(0, 1);
   } else {
-    sellCopy->OrphanCallChain_C8_I118_0056fdb0(static_cast<short>(idx));
+    sellCopy->ShowPage(static_cast<short>(idx));
     sellCopy->SetEnabled(1, 0);
   }
 
@@ -179,7 +179,8 @@ void TDealBookPicture::HandleEvent(int commandId, TEventHandler* sourceHandler, 
       if (initializedFlagB1 == 0) {
         RefreshTradeSelectionHeaderAndNationOfferBidLines();
       }
-      TStaticText* titLControl = static_cast<TStaticText*>(ResolveControlByTag(0x7469744c)); // 'titL'
+      TStaticText* titLControl =
+          static_cast<TStaticText*>(ResolveControlByTag(0x7469744c)); // 'titL'
       titLControl->AssertValid();
       CString templateText;
       g_pSimMgr->GetString(0x2741, 3, &templateText);
@@ -188,7 +189,7 @@ void TDealBookPicture::HandleEvent(int commandId, TEventHandler* sourceHandler, 
       CString composedTitle;
       scanBracketExpressions(g_pSimMgr, &composedTitle, static_cast<LPCSTR>(templateText),
                              static_cast<LPCSTR>(categoryName));
-      titLControl->AssignTextSharedRefIfChangedAndMaybeInvalidate(&composedTitle, 0);
+      titLControl->SetTextAndMaybeRefresh(&composedTitle, 0);
     }
   } else if (commandId == 0xa) {
     unsigned int tag = sourceHandler->controlTag;
@@ -225,7 +226,7 @@ void TDealBookPicture::RefreshTradeSelectionHeaderAndNationOfferBidLines() {
     yearText.Format(g_szDecimalFormat, 0x717 + g_pSimMgr->quarterGateTick2c / 4);
     g_pSimMgr->FormatSeasonName(&seasonName);
     CString headerText = seasonName + s_szSpaceSeparator_00695794 + yearText;
-    rtilControl->AssignTextSharedRefIfChangedAndMaybeInvalidate(&headerText, 0);
+    rtilControl->SetTextAndMaybeRefresh(&headerText, 0);
 
     RECT titleBounds;
     rtilControl->QueryBounds(&titleBounds);
@@ -246,7 +247,7 @@ void TDealBookPicture::RefreshTradeSelectionHeaderAndNationOfferBidLines() {
     TStaticText* titLControl =
         static_cast<TStaticText*>(ResolveControlByTag(0x7469744c /* 'titL' */));
     titLControl->AssertValid();
-    titLControl->LoadUiStringAndDispatchViaVslot1C8(0x2740, 0x19, 0);
+    titLControl->SetTextFromStringResource(0x2740, 0x19, 0);
     RECT titLBounds;
     titLControl->QueryBounds(&titLBounds);
     InvalidateCityDialogRectRegion(&titLBounds, 1);
@@ -254,7 +255,7 @@ void TDealBookPicture::RefreshTradeSelectionHeaderAndNationOfferBidLines() {
     TStaticText* rtilControl =
         static_cast<TStaticText*>(ResolveControlByTag(0x7274696c /* 'rtil' */));
     rtilControl->AssertValid();
-    rtilControl->LoadUiStringAndDispatchViaVslot1C8(0x2740, 0x1a, 0);
+    rtilControl->SetTextFromStringResource(0x2740, 0x1a, 0);
     RECT rtilBounds;
     rtilControl->QueryBounds(&rtilBounds);
     InvalidateCityDialogRectRegion(&rtilBounds, 1);
@@ -280,10 +281,10 @@ void TDealBookPicture::RefreshTradeSelectionHeaderAndNationOfferBidLines() {
 
   fieldA8 = sellView;
   fieldAC = buyView;
-  if (fieldAC->field_0x60 < fieldA8->field_0x60) {
-    field92 = fieldAC->field_0x60 - 1;
+  if (fieldAC->pageCount < fieldA8->pageCount) {
+    field92 = fieldAC->pageCount - 1;
   } else {
-    field92 = fieldA8->field_0x60 - 1;
+    field92 = fieldA8->pageCount - 1;
   }
 
   // Reapply the dialog's own picture and re-run the selection toggle. field98 is a control
