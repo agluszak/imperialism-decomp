@@ -11625,7 +11625,7 @@
     },
     {
       "address": "0x4cc490",
-      "matching": 0.04081632653061224,
+      "matching": 0.4444444444444444,
       "name": "TPurchaseCluster::HandleEvent",
       "type": 1
     },
@@ -16992,7 +16992,7 @@
     },
     {
       "address": "0x50bea0",
-      "matching": 0.20263516583371194,
+      "matching": 0.20899591094956838,
       "name": "TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets",
       "type": 1
     },
@@ -21935,7 +21935,7 @@
     },
     {
       "address": "0x545940",
-      "matching": 0.42487883683360256,
+      "matching": 0.3804137039431157,
       "name": "TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine",
       "type": 1
     },
@@ -30369,7 +30369,7 @@
     },
     {
       "address": "0x5a4460",
-      "matching": 0.7147540983606557,
+      "matching": 0.8990228013029316,
       "name": "TTacticalBattle::BuildTacticalDistanceFieldForSide",
       "type": 1
     },
@@ -30813,7 +30813,7 @@
     },
     {
       "address": "0x5a8ac0",
-      "matching": 0.6867469879518072,
+      "matching": 0.6086956521739131,
       "name": "TTacticalBattleView::CenterViewportAroundGridIndexAndSnap",
       "type": 1
     },
@@ -30849,7 +30849,7 @@
     },
     {
       "address": "0x5a9240",
-      "matching": 0.5397590361445783,
+      "matching": 0.5304136253041363,
       "name": "TTacticalBattleView::AnimateTacticalUnitMoveBetweenTiles",
       "type": 1
     },
@@ -32822,7 +32822,7 @@
     },
     {
       "address": "0x5bf930",
-      "matching": 0.7477253928866832,
+      "matching": 0.7907361455748553,
       "name": "TOfferDeskPicture::RefreshSelectedNationOrderCompatibilityInfo",
       "type": 1
     },
@@ -38984,7 +38984,7 @@
     },
     {
       "address": "0x6091d9",
-      "matching": 0.9787234042553191,
+      "matching": 1.0,
       "name": "CWnd::OnNotify",
       "type": 1
     },

@@ -1,4 +1,7 @@
 #include "game/TPurchaseCluster.h"
+
+#include "game/TEventHandler.h"
+#include "game/ui_control_tags.h"
 // SYNTHETIC: IMPERIALISM 0x004cc300
 // TPurchaseCluster::CreateObject
 
@@ -24,7 +27,20 @@ void TPurchaseCluster::BeginMouseCaptureAndStartRepeatTimer(CPoint* point, int a
                                                             int arg4) {}
 
 // FUNCTION: IMPERIALISM 0x004cc490
-void TPurchaseCluster::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {}
+void TPurchaseCluster::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+  if (commandId == 10) {
+    if (sourceHandler->controlTag == kControlTagLaro) {
+      field88->SetControlValue(UpdateCityViewValueControl() - 1);
+    } else if (sourceHandler->controlTag == kControlTagRaro) {
+      field88->SetControlValue(UpdateCityViewValueControl() + 1);
+    }
+    // The original also calls SetCityViewValueControlAmount(field88's own +0x4 short, 1)
+    // here for either tag branch -- field88's concrete class beyond the shared
+    // TEventHandler::SetControlValue slot (and that +0x4 field) is unresolved, so left
+    // unmodeled.
+  }
+  TCluster::HandleEvent(commandId, sourceHandler, event);
+}
 
 // FUNCTION: IMPERIALISM 0x004cc550
 void __fastcall TPurchaseCluster::SetCityViewValueControlAmount(int* pCityViewDialog,

@@ -129,8 +129,11 @@ public:
                                                         short nValue); // slot 0x74 0x4cc550
   virtual undefined UpdateCityViewValueControl();                      // slot 0x75 0x4cc640
   // TCluster's slice ends at 0x88; RTTI oracle confirms sizeof(TPurchaseCluster) == 0x8c.
-  // The ctor (0x4cc3c0) zeroes the one own field.
-  int field88; // +0x88
+  // The ctor (0x4cc3c0) zeroes the one own field. HandleEvent dispatches
+  // field88->vtbl[0x2c] (TEventHandler::SetControlValue) on it -- concrete class beyond
+  // that shared slot (including the short field HandleEvent reads at field88's own +0x4)
+  // is unresolved.
+  class TEventHandler* field88; // +0x88
 
   TPurchaseCluster();
 };
