@@ -35,6 +35,11 @@ Build, measurement, gates, and regression diagnosis. Obey the Command Policy in
 - `just stats-baseline-update` — update the committed aggregate baseline after accepting the
   current stats snapshot. Per-function `compare` remains the real gate for touched
   bodies.
+- `just install-reccmp-merge-driver` — one-time local Git setup. When either generated
+  progress baseline conflicts during a merge/rebase/cherry-pick, the driver preserves
+  a valid side and tracked hooks rebuild and regenerate both files after integration.
+  The result is deliberately unstaged: review it before committing. Set
+  `IMPERIALISM_SKIP_RECCMP_BASELINE_REFRESH=1` to defer the automatic rebuild.
 
 ## Pre-commit sequence
 

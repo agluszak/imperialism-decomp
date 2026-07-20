@@ -34,3 +34,13 @@ if command -v bd >/dev/null 2>&1; then
   if [ $_bd_exit -ne 0 ]; then exit $_bd_exit; fi
 fi
 # --- END BEADS INTEGRATION v1.0.5 ---
+
+# --- BEGIN RECCMP BASELINE INTEGRATION ---
+if command -v uv >/dev/null 2>&1 && [ -f tools/workflow/reccmp_baseline_merge.py ]; then
+  if [ "${1:-0}" = "1" ]; then
+    uv run python -m tools.workflow.reccmp_baseline_merge refresh --event post-merge --squash
+  else
+    uv run python -m tools.workflow.reccmp_baseline_merge refresh --event post-merge
+  fi
+fi
+# --- END RECCMP BASELINE INTEGRATION ---
