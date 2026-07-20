@@ -96,11 +96,25 @@ Two config-file readers replace the by-hand grep-across-CSVs dance:
      For a pure body or signature edit on an already-owned function, **skip these**:
      regeneration can downgrade hand-typed stub signatures back to generic
      `undefined ()` and break the link for unrelated files.
-5. **Compare** the touched function: `just compare 0xADDR --verbose`. If it is
-   below 100%, run `just triage 0xADDR` first — it buckets every mismatched line
-   (field_offset / stack_layout / call_target / missing_annotation / constant /
-   reg_alloc / codegen) with the standard fix per bucket, so you read the raw diff
-   only for the `codegen` leftovers.
+5. **Triage the semantic result**: run `just triage 0xADDR` before interpreting a raw
+   diff. reccmp's structured status is the single source of truth:
+   - `exact`: stop; there is nothing to triage.
+   - `effective`: stop tuning. The verifier completed a semantic proof; its reasons
+     identify the safe compiler variation actually used (`register_allocation`,
+     `frame_slot_layout`, `callee_save_substitution`, `instruction_reorder`,
+     `commutative_order`, `condition_inversion`, `dead_operation`, or `padding`).
+   - `mismatch`: work from the first trusted structured divergence. Use
+     `just compare 0xADDR --verbose` afterward only for nearby codegen context.
+   - `inconclusive`: do not assume the source is wrong. Resolve the reported
+     unsupported instruction/control flow, alignment failure, missing metadata, or
+     analysis limit; use Ghidra evidence while the semantic result remains unknown.
+
+   Route a concrete mismatch by its structured facts, not rendered assembly text:
+   EBP/ESP `memory_address` → `just stackcmp`; same object base with a different
+   displacement → `class-recovery`/`data-modeling`; `call_target` or `call_argument`
+   → `calling-conventions` (ECX commonly identifies the receiver);
+   `symbol_resolution` → annotations/`data-modeling`; branch predicates/targets →
+   `codegen-shapes`; `return_value` or `preserved_state` → ABI/codegen review.
 6. **Data pass — optional, and only the cheap real-shape wins.** Align obvious
    `short`/`int` widths, hidden stack args, struct-return-via-hidden-pointer, and return
    contracts when they reflect the real shape. **Stop there.**
@@ -110,8 +124,10 @@ Two config-file readers replace the by-hand grep-across-CSVs dance:
    triage of every touched address, gates, tests, stats — and records everything in
    the task receipt. Targeted `just gates` / `just stats` runs are fine mid-loop.
 8. **Keep and move on:** if it pairs and the shape is faithful, keep it and go to the
-   next function — even at 30–60%. If it won't pair, fix the marker/ownership; if a
-   receiver class genuinely can't be modeled yet, record what you learned and move on.
+   next function — even at 30–60%. A low-raw-score `effective` result needs no source
+   work. If it won't pair, fix the marker/ownership; if analysis is `inconclusive`, do
+   not convert uncertainty into a source diagnosis. If a receiver class genuinely
+   can't be modeled yet, record what you learned and move on.
 9. **Record the lesson**: append transferable tactics to the matching TOPICAL
    skill's field notes (`calling-conventions`, `ctors-dtors-eh`, `string-handling`,
    `fp-matching`, `codegen-shapes`, `data-modeling`, `big-functions`,

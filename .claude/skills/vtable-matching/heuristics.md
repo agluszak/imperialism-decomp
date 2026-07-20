@@ -246,9 +246,8 @@ slots) — this is flagged as follow-up work, not patched piecemeal per function
 
   *(ex decomp-loop list-note 76)*
 
-- **Before acting on a triage `[call_target]` line that names a vtable slot, run
-    `just vtable <Class>` — an already-100% vtable means the line is a misalignment
-    artifact, not a missing virtual.** Triage reported
+- **Route a structured `call_target` involving a vtable through `just vtable <Class>`
+    before editing the hierarchy.** The old regex triage once reported
     `dword ptr [eax + 0x48] vs TMinor::SetDiplomacyStandingSlot48 (FUNCTION)` inside
     TGreatPower::SetNationTransferTargetCodeAndNotifyEligiblePeers (0x4de860), which
     looks like "slot 0x48 should dispatch a named virtual but our callsite calls it
@@ -256,13 +255,13 @@ slots) — this is flagged as follow-up work, not patched piecemeal per function
     TCountry` both already report **100% match**, so slot 0x48 (index 18) is correctly
     modeled on both sides; `SetDiplomacyStandingSlot48` is an *unmarked, unpaired*
     internal helper (not in `symbols.csv`, no `// FUNCTION:` marker), not the slot body.
-    The `[eax+0x48] vs <name>` line was reccmp pairing the orig's slot dispatch against a
-    Ghidra name while our structurally-divergent function had an unrelated instruction at
-    the aligned offset — an artifact of the diff misaligning a heavily-reshaped body, not
-    a real vtable defect. Lesson: a `call_target` line that fingers a vtable slot is only
-    a real bug if `just vtable <owning Class>` is below 100%; when it's already 100%,
-    don't restructure the base vtable — the residual is the caller's own codegen
-    divergence (see note 91). Cheap to check, saves a large wrong-headed base-class edit.
+    That `[eax+0x48] vs <name>` line came from weak textual alignment and is exactly the
+    kind of evidence the structured verifier no longer promotes to `mismatch`: it should
+    become `inconclusive` unless trusted CFG/lockstep pairing finds a concrete call-site
+    divergence. A real structured `call_target` still needs project interpretation:
+    if `just vtable <owning Class>` is below 100%, repair slot ownership; if it is already
+    100%, investigate the caller's receiver/data flow rather than restructuring the base
+    table. Never downgrade `inconclusive` to a vtable defect from the raw diff alone.
 
   *(ex decomp-loop list-note 90)*
 
