@@ -33,7 +33,8 @@ TMiniArmyView::TMiniArmyView() {}
 // FUNCTION: IMPERIALISM 0x004aaeb0
 void TMiniArmyView::ApplyRectSlot110(RECT* rectBuffer) {
   (void)rectBuffer; // dead parameter in this override, like the other ApplyRectSlot110s
-  CString displayName = field84->name24;
+  CString name = field84->name24;
+  CString displayName = name;
 
   InitializeUiTextStyleDescriptorAndApplyQuickDraw(0, 0xc, 0x2b6a, 3);
   if (MeasureTextExtentWithCachedQuickDrawStyle(&displayName) > 100) {
