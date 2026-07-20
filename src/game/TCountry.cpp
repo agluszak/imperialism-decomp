@@ -81,9 +81,9 @@ char TCountry::ShouldDispatchImmediatelySlot28(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x004d6790
-void TCountry::NoOpNationSelectedRegionAndMapCellLabelHook(int arg1, int arg2) {
-  (void)arg1;
-  (void)arg2;
+void TCountry::SetNationSelectedRegionAndMapCellLabel(short selectedRegion, char* mapCellLabel) {
+  (void)selectedRegion;
+  (void)mapCellLabel;
 }
 
 // SYNTHETIC: IMPERIALISM 0x004d67b0

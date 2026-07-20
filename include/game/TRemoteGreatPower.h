@@ -10,7 +10,7 @@ public:
   ~TRemoteGreatPower() override;
 
   char ShouldDispatchImmediatelySlot28(void) override;
-  void NoOpNationSelectedRegionAndMapCellLabelHook(int arg1, int arg2) override;
+  void SetNationSelectedRegionAndMapCellLabel(short selectedRegion, char* mapCellLabel) override;
   void RefreshGreatPowerRelationPanelsAndDispatchDeltaSummary(void) override;
   void NotifyCitySlot2C(void) override;
   void OrphanRetStub_004dcc30(void) override;

@@ -956,8 +956,8 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     for (int dirSlot = 0; dirSlot < 0x17; ++dirSlot) {
       if (dirSlot != g_pSimMgr->GetActiveNationId() &&
           g_apTerrainTypeDescriptorTable[dirSlot]->ShouldDispatchImmediatelySlot28() != 0) {
-        g_apTerrainTypeDescriptorTable[dirSlot]->NoOpNationSelectedRegionAndMapCellLabelHook(
-            directory->homeRegionBySlot[dirSlot], (int)directory->cityNameBySlot[dirSlot]);
+        g_apTerrainTypeDescriptorTable[dirSlot]->SetNationSelectedRegionAndMapCellLabel(
+            directory->homeRegionBySlot[dirSlot], directory->cityNameBySlot[dirSlot]);
         {
           CString nationName(directory->nationNameBySlot[dirSlot]);
           g_apTerrainTypeDescriptorTable[dirSlot]->SetNationDisplayNameAndLocalizationSlotRef(

@@ -81,7 +81,7 @@ public:
   virtual char ReturnFalseNationStateCapabilityFlag98(void);
   virtual char ReturnFalseNationStateCapabilityFlag9C(void);
   virtual char ShouldDispatchImmediatelySlot28(void);
-  virtual void NoOpNationSelectedRegionAndMapCellLabelHook(int arg1, int arg2);
+  virtual void SetNationSelectedRegionAndMapCellLabel(short selectedRegion, char* mapCellLabel);
 
   int SumWeightedNeighborLinkScoreForLinkedNodes(void);
   // 0x004d8390 — forwards to g_pMapContextActionManager's per-node weighted stationed-

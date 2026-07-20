@@ -2290,7 +2290,7 @@ address|name|symbol|size|type|prototype|provenance
 4d6730|TCountry::ReturnFalseNationStateCapabilityFlag98||3|function|undefined ReturnFalseNationStateCapabilityFlag98()|
 4d6750|TCountry::ReturnFalseNationStateCapabilityFlag9C||3|function|undefined ReturnFalseNationStateCapabilityFlag9C()|
 4d6770|TCountry::ReturnFalseNationStateCapabilityFlagA0||3|function|undefined ReturnFalseNationStateCapabilityFlagA0()|
-4d6790|TCountry::NoOpNationSelectedRegionAndMapCellLabelHook||3|function|undefined NoOpNationSelectedRegionAndMapCellLabelHook(void)|
+4d6790|TCountry::SetNationSelectedRegionAndMapCellLabel||3|function|void SetNationSelectedRegionAndMapCellLabel(short selectedRegion, char * mapCellLabel)|
 4d67b0|TCountry::GetRuntimeClass||6|function|undefined GetTCountryClassNamePointer()|rtti
 4d67d0|TCountry::TCountry||88|function|void __thiscall TCountry(void)|
 4d6850|TCountry::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
@@ -3925,7 +3925,7 @@ address|name|symbol|size|type|prototype|provenance
 541a80|TRemoteGreatPower::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 541ab0|TRemoteGreatPower::DestructTRemoteGreatPower||80|function|undefined DestructTRemoteGreatPower()|
 541b20|TRemoteGreatPower::GetRuntimeClass||6|function|undefined GetTRemoteGreatPowerClassNamePointer()|rtti
-541b40|TRemoteGreatPower::NoOpNationSelectedRegionAndMapCellLabelHook||127|function|undefined SetNationSelectedRegionAndMapCellLabel(short param_1, char * param_2)|
+541b40|TRemoteGreatPower::SetNationSelectedRegionAndMapCellLabel||127|function|void SetNationSelectedRegionAndMapCellLabel(short selectedRegion, char * mapCellLabel)|
 541be0|TRemoteGreatPower::DispatchTurnEvent11F8NoPayloadSlot2AC||17|function|undefined RemoveRemoteGreatPowerNationSlotAndNotifyPeers()|
 541c10|TRemoteMinor::CreateObject|?CreateObject@TRemoteMinor@@SGPAVCObject@@XZ|83|function|undefined CreateObject()|rtti
 541c90|TRemoteMinor::ShouldDispatchImmediatelySlot28||3|function|undefined ShouldDispatchImmediatelySlot28()|
@@ -3933,7 +3933,7 @@ address|name|symbol|size|type|prototype|provenance
 541cd0|TRemoteMinor::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 541d00|TRemoteMinor::~TRemoteMinor||80|function|undefined ~TRemoteMinor()|
 541d70|TRemoteMinor::GetRuntimeClass|?GetRuntimeClass@TRemoteMinor@@UBEPAUCRuntimeClass@@XZ|6|function|undefined GetRuntimeClass()|rtti
-541d90|TRemoteMinor::SetNationSelectedRegionAndMapCellLabelAlt||127|function|undefined SetNationSelectedRegionAndMapCellLabelAlt(void)|
+541d90|TRemoteMinor::SetNationSelectedRegionAndMapCellLabel||127|function|void SetNationSelectedRegionAndMapCellLabel(short selectedRegion, char * mapCellLabel)|
 541f60|WrapperFor_ftol_At00541f60||30|function|undefined WrapperFor_ftol_At00541f60()|
 5420a0|SetEventPayloadNationIdFromSlotIndex||20|function|undefined SetEventPayloadNationIdFromSlotIndex()|
 5420d0|SetEventPayloadNationIdFromSlotIndexWithSentinelHandling||51|function|undefined SetEventPayloadNationIdFromSlotIndexWithSentinelHandling()|

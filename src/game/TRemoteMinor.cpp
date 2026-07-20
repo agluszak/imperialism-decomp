@@ -2,6 +2,9 @@
 
 #include <new>
 
+#include "game/global_data_tables.h"
+#include "game/TMapMgr.h"
+
 // SYNTHETIC: IMPERIALISM 0x00541c10
 // TRemoteMinor::CreateObject
 
@@ -33,7 +36,11 @@ TRemoteMinor::~TRemoteMinor() {}
 TRemoteMinor::TRemoteMinor() : TMinor() {}
 
 // FUNCTION: IMPERIALISM 0x00541d90
-void TRemoteMinor::NoOpNationSelectedRegionAndMapCellLabelHook(int arg1, int arg2) {
-  (void)arg1;
-  (void)arg2;
+void TRemoteMinor::SetNationSelectedRegionAndMapCellLabel(short selectedRegion,
+                                                          char* mapCellLabel) {
+  homeRegionIndex = selectedRegion;
+  CString label(mapCellLabel);
+  short cityRecordIndex =
+      g_pGlobalMapState->terrainStateTable[static_cast<short>(homeRegionIndex)].cityRecordIndex;
+  g_pGlobalMapState->SetGlobalMapCellSharedLabel(cityRecordIndex, &label);
 }

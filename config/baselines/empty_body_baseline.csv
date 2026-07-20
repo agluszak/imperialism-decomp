@@ -76,7 +76,7 @@ src/game/TDiplomacyMgr.cpp|2|0|2|0
 src/game/TDisappearingButton.cpp|1|0|0|0
 src/game/TDocument.cpp|0|0|1|0
 src/game/TDropShadowTextBehavior.cpp|1|0|0|0
-src/game/TEditText.cpp|2|0|0|0
+src/game/TEditText.cpp|1|0|0|0
 src/game/TExpansionOrder.cpp|0|0|1|0
 src/game/TFileBasedDocument.cpp|0|0|1|0
 src/game/TFileStream.cpp|3|0|0|0
@@ -170,8 +170,7 @@ src/game/TQueryFloater.cpp|0|0|1|0
 src/game/TRailCluster.cpp|0|0|1|0
 src/game/TRailheadDialog.cpp|0|0|1|0
 src/game/TRelationshipDialog.cpp|1|0|1|0
-src/game/TRemoteGreatPower.cpp|2|0|1|0
-src/game/TRemoteMinor.cpp|1|0|0|0
+src/game/TRemoteGreatPower.cpp|1|0|1|0
 src/game/TScenarioChooser.cpp|2|0|0|0
 src/game/TScoreGraph.cpp|0|0|1|0
 src/game/TSelectoText.cpp|0|0|1|0
