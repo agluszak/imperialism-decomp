@@ -28,8 +28,8 @@ TMapPreviewView::TMapPreviewView() : TView() {
 }
 
 // FUNCTION: IMPERIALISM 0x00578850
-void TMapPreviewView::NoOpUiLifecycleHook(int arg) {
-  TView::NoOpUiLifecycleHook(arg);
+void TMapPreviewView::DoPostCreate(int arg) {
+  TView::DoPostCreate(arg);
   selectedNation68 = -1;
   field04 = 1;
 

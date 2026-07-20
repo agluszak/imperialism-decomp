@@ -31,8 +31,8 @@ IMPLEMENT_DYNCREATE(TTacticalToolbar, TCluster)
 TTacticalToolbar::TTacticalToolbar() {}
 
 // FUNCTION: IMPERIALISM 0x005ac840
-void TTacticalToolbar::NoOpUiLifecycleHook(int arg) {
-  TView::NoOpUiLifecycleHook(arg);
+void TTacticalToolbar::DoPostCreate(int arg) {
+  TView::DoPostCreate(arg);
 
   TView* helpControl = ResolveControlByTag(kControlTagHelp);
   LoadUiStringByGroupAndIndexToControlObject(0x273d, 0x20, helpControl);
@@ -182,17 +182,17 @@ void TTacticalToolbar::HandleEvent(int commandId, TEventHandler* sourceHandler, 
   if (commandId == 0xa) {
     unsigned int tag = sourceHandler->controlTag;
     switch (tag) {
-      case kTagDone:
-      case kControlTagAuto:
-      case kControlTagRetr:
-      case kControlTagTarg:
-        battle88->HandleTacticalBattleCommandTag(tag);
-        break;
-      case kControlTagHelp:
-        g_pHelpMgr->SelectAndActivatePendingEventForCurrentView();
-        break;
-      default:
-        break;
+    case kTagDone:
+    case kControlTagAuto:
+    case kControlTagRetr:
+    case kControlTagTarg:
+      battle88->HandleTacticalBattleCommandTag(tag);
+      break;
+    case kControlTagHelp:
+      g_pHelpMgr->SelectAndActivatePendingEventForCurrentView();
+      break;
+    default:
+      break;
     }
   }
   TCluster::HandleEvent(commandId, sourceHandler, event);

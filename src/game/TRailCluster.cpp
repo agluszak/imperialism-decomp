@@ -61,7 +61,7 @@ TRailCluster::TRailCluster() : TUberCluster() {
 // TRailCluster::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x005897b0
-void TRailCluster::NoOpUiLifecycleHook(int styleSeed) {
+void TRailCluster::DoPostCreate(int styleSeed) {
   short recordIndex = static_cast<short>(styleSeed);
   short activeNationId = g_pSimMgr->GetActiveNationId();
   TGreatPower* activeNationState = GetNationStateBySlot(activeNationId);

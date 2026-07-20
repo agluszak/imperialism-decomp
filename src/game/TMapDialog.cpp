@@ -100,8 +100,8 @@ void TMapDialog::Free() {
 }
 
 // FUNCTION: IMPERIALISM 0x00519D30
-void TMapDialog::NoOpUiLifecycleHook(int arg) {
-  TWorldView::NoOpUiLifecycleHook(arg);
+void TMapDialog::DoPostCreate(int arg) {
+  TWorldView::DoPostCreate(arg);
 
   projectionScale76 = 1;
   previewSquareRadius78 = 0x40;
@@ -396,8 +396,7 @@ void TMapDialog::PopulateMapContextInfoPanelStringsByTileSelection(short tileInd
                        &mainText);
   numberText.Format(g_szDecimalFormat, tileIndex);
   mainText += " (#" + numberText + g_szUiCloseParen_006973C8;
-  static_cast<TStaticText*>(titleControl)
-      ->AssignTextSharedRefIfChangedAndMaybeInvalidate(&mainText, 1);
+  static_cast<TStaticText*>(titleControl)->SetTextAndMaybeRefresh(&mainText, 1);
 
   TView* infoControl = ResolveControlByTag(0x696e666f); // 'info'
   if (infoControl == 0) {
@@ -436,8 +435,7 @@ void TMapDialog::PopulateMapContextInfoPanelStringsByTileSelection(short tileInd
         mainText += numberText + " " + nameText + "\n";
       }
     }
-    static_cast<TStaticText*>(infoControl)
-        ->AssignTextSharedRefIfChangedAndMaybeInvalidate(&mainText, 1);
+    static_cast<TStaticText*>(infoControl)->SetTextAndMaybeRefresh(&mainText, 1);
 
     g_pGlobalMapState->AssignCityRecordDisplayName(cityIndex, &cityName);
     TCountry* owner = g_apTerrainTypeDescriptorTable[g_pGlobalMapState->terrainStateTable[tileIndex]
@@ -478,8 +476,7 @@ void TMapDialog::PopulateMapContextInfoPanelStringsByTileSelection(short tileInd
       TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUMapDlog_006973D0, 0x4ab);
     }
   }
-  static_cast<TStaticText*>(locationControl)
-      ->AssignTextSharedRefIfChangedAndMaybeInvalidate(&mainText, 1);
+  static_cast<TStaticText*>(locationControl)->SetTextAndMaybeRefresh(&mainText, 1);
 }
 
 // FUNCTION: IMPERIALISM 0x0051e0b0

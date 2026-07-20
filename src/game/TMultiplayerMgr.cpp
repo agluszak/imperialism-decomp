@@ -852,7 +852,7 @@ unsigned char TMultiplayerMgr::ResetNationStatusSlotsAndInitializeNameControls(T
     TStaticText* nameControl =
         static_cast<TStaticText*>(panel->ResolveControlByTag(0x6e616d30u + i)); // 'nam0'-'nam6'
     nameControl->AssertValid();
-    nameControl->AssignTextSharedRefIfChangedAndMaybeInvalidate(&loadedString, 1);
+    nameControl->SetTextAndMaybeRefresh(&loadedString, 1);
   }
 
   TView* okayControl = panel->ResolveControlByTag(0x6f6b6179u); // 'okay'
@@ -1125,7 +1125,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
             (TStaticText*)lounge->ResolveControlByTag(0x6e616d30 /* 'nam0' */ + slot9);
         nameLabel->AssertValid();
         CString normalizedName = g_pLanguageMgr->NormalizeRuntimeCredentialNameToken(&statusText);
-        nameLabel->AssignTextSharedRefIfChangedAndMaybeInvalidate(&normalizedName, 1);
+        nameLabel->SetTextAndMaybeRefresh(&normalizedName, 1);
         ApplyUiTextStyleAndThemeFlags((TDropShadowText*)nameLabel, 0, 0xe,
                                       isLocal != 0 ? 0x2b6c : 0x2b6b,
                                       isLocal != 0 ? 0x2b6b : 0x2b6c);
@@ -1279,8 +1279,8 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
       FailNilPointerWithAssert(s_SourcePathUMultiplayerMgr_00698040, 0x807);
     }
     titleControl->SetTextStyleAndMaybeRefresh(&styleDescriptor, 0);
-    titleControl->SetTextThemeCodeAndMaybeRefresh(1, 0);
-    titleControl->AssignTextSharedRefIfChangedAndMaybeInvalidate(&titleText, 0);
+    titleControl->SetTextAlignmentAndMaybeRefresh(1, 0);
+    titleControl->SetTextAndMaybeRefresh(&titleText, 0);
     TDeluxeText* infoControl = static_cast<TDeluxeText*>(dialog->ResolveControlByTag(0x696e666f));
     infoControl->AssertValid();
     infoControl->SetTextEntryFromChars(static_cast<const char*>(messageTextC),
@@ -1297,7 +1297,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
       cancelButton->SetPictureResourceIdAndRefresh(0x53a, 0);
     }
     int responseTag = dialog->RefreshTurnEventDialog();
-    dialog->CallVoidSlotA0();
+    dialog->Close();
     dialog->Free();
     if (responseTag == 0x72737670) { // 'rsvp'
       TPoseMessageDialog* poseCommand = new TPoseMessageDialog();

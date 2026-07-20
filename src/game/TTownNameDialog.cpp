@@ -25,10 +25,10 @@ TTownNameDialog::TTownNameDialog() : TNoHilitePicture() {}
 TTownNameDialog::~TTownNameDialog() {}
 
 // FUNCTION: IMPERIALISM 0x0051bb90
-void TTownNameDialog::NoOpUiLifecycleHook(int arg) {
+void TTownNameDialog::DoPostCreate(int arg) {
   CString text;
 
-  TView::NoOpUiLifecycleHook(arg);
+  TView::DoPostCreate(arg);
 
   TEditText* nameControl = static_cast<TEditText*>(ResolveControlByTag(kControlTagName));
   if (nameControl == nullptr) {
@@ -37,7 +37,7 @@ void TTownNameDialog::NoOpUiLifecycleHook(int arg) {
 
   // LIBRARY: rand (0x005e83f0)
   short suggestedNameIndex = static_cast<short>(rand() % 8 + 1);
-  nameControl->LoadUiStringAndDispatchViaVslot1C8(0x1c52, suggestedNameIndex, 1);
+  nameControl->SetTextFromStringResource(0x1c52, suggestedNameIndex, 1);
   UpdatePaletteIndexWithDefaultFallback(0x50);
   nameControl->ActivateCityProductionViewIfAllowed();
   nameControl->GetCurrentText(&text);

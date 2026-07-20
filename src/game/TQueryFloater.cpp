@@ -27,26 +27,26 @@ IMPLEMENT_DYNCREATE(TQueryFloater, TPicture)
 TQueryFloater::TQueryFloater() {}
 
 // FUNCTION: IMPERIALISM 0x0056e8e0
-void TQueryFloater::NoOpUiLifecycleHook(int arg) {
-  TPicture::NoOpUiLifecycleHook(arg);
+void TQueryFloater::DoPostCreate(int arg) {
+  TPicture::DoPostCreate(arg);
 
   TUiTextStyleDescriptor style;
 
   TStaticText* titleControl = static_cast<TStaticText*>(ResolveControlByTag(kControlTagTitl));
   titleControl->QueryStepValue();
-  titleControl->LoadUiStringAndDispatchViaVslot1C8(0x2757, 1, 1);
+  titleControl->SetTextFromStringResource(0x2757, 1, 1);
   BuildUiTextStyleDescriptor(&style, 0, 0xc, 0x2b6a);
   titleControl->SetTextStyleAndMaybeRefresh(&style, 0);
-  titleControl->SetTextThemeCodeAndMaybeRefresh(1, 0);
+  titleControl->SetTextAlignmentAndMaybeRefresh(1, 0);
 
   BuildUiTextStyleDescriptor(&style, 0, 0xc, 0x2b6c);
   for (int i = 0; i < 7; ++i) {
     TStaticText* lineControl = static_cast<TStaticText*>(ResolveControlByTag(kControlTagTex0 + i));
     lineControl->QueryStepValue();
-    lineControl->LoadUiStringAndDispatchViaVslot1C8(0x2757, static_cast<short>(i + 2), 1);
+    lineControl->SetTextFromStringResource(0x2757, static_cast<short>(i + 2), 1);
     lineControl->SetTextStyleAndMaybeRefresh(&style, 0);
     if (i == 6) {
-      lineControl->SetTextThemeCodeAndMaybeRefresh(1, 0);
+      lineControl->SetTextAlignmentAndMaybeRefresh(1, 0);
     }
   }
 }

@@ -49,18 +49,20 @@ undefined TShipyardView::OrphanRetStub_004c6fd0() {
     slotButton->SetState(0, 1);
     buildQueueSlotValues[slotIndex] = 0;
 
-    TControl* plusButton = static_cast<TControl*>(slotButton->ResolveControlByTag(0x706c7573u)); // 'plus'
+    TControl* plusButton =
+        static_cast<TControl*>(slotButton->ResolveControlByTag(0x706c7573u)); // 'plus'
     plusButton->AssertValid();
     plusButton->SetState(0, 0);
 
-    TControl* minusButton = static_cast<TControl*>(slotButton->ResolveControlByTag(0x6d696e75u)); // 'minu'
+    TControl* minusButton =
+        static_cast<TControl*>(slotButton->ResolveControlByTag(0x6d696e75u)); // 'minu'
     minusButton->AssertValid();
     minusButton->SetState(0, 0);
   }
 
   // 14-byte style buffer: the 10-byte descriptor plus 4 explicitly zeroed tail bytes (the
   // original zeroes them once before the first Build call) -- same idiom as
-  // TBattleReportView::NoOpUiLifecycleHook.
+  // TBattleReportView::DoPostCreate.
   struct {
     TUiTextStyleDescriptor desc;
     unsigned char tail[4];
@@ -74,14 +76,15 @@ undefined TShipyardView::OrphanRetStub_004c6fd0() {
   TStaticText* title = static_cast<TStaticText*>(ResolveControlByTag(0x7469746cu)); // 'titl'
   title->AssertValid();
   title->SetTextStyleAndMaybeRefresh(&style.desc, 1);
-  title->LoadUiStringAndDispatchViaVslot1C8(0x2736, 0xe, 1);
+  title->SetTextFromStringResource(0x2736, 0xe, 1);
 
   BuildUiTextStyleDescriptor(&style.desc, 0, 0xa, 0x2b6b);
   for (int i = 0; i < 2; ++i) {
-    TStaticText* fixedLabel = static_cast<TStaticText*>(ResolveControlByTag(0x66697830u + i)); // 'fix0'/'fix1'
+    TStaticText* fixedLabel =
+        static_cast<TStaticText*>(ResolveControlByTag(0x66697830u + i)); // 'fix0'/'fix1'
     fixedLabel->AssertValid();
     fixedLabel->SetTextStyleAndMaybeRefresh(&style.desc, 1);
-    fixedLabel->LoadUiStringAndDispatchViaVslot1C8(0x2736, static_cast<short>(i + 0xf), 1);
+    fixedLabel->SetTextFromStringResource(0x2736, static_cast<short>(i + 0xf), 1);
   }
 
   BuildUiTextStyleDescriptor(&style.desc, 0, 0xc, 0x2b6b);
@@ -100,10 +103,10 @@ undefined TShipyardView::OrphanRetStub_004c6fd0() {
 
   // 'sele' is a TCluster (confirmed by cross-referencing turn_event_dialog_factory.cpp,
   // which builds a real TCluster with controlTag 'sele'); byte 0x1c8 matches
-  // TCluster::SetControlClassAndRefresh(int) exactly (1 arg, RET 4).
+  // TCluster::SetSelectedChildTagAndRefresh(int) exactly (1 arg, RET 4).
   TCluster* sele = static_cast<TCluster*>(ResolveControlByTag(0x73656c65u)); // 'sele'
   sele->AssertValid();
-  sele->SetControlClassAndRefresh(0x62757430); // 'but0'
+  sele->SetSelectedChildTagAndRefresh(0x62757430); // 'but0'
   OrphanRetStub_004c6fb0();
   return 0;
 }

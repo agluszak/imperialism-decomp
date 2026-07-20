@@ -71,7 +71,7 @@ void TNewspaperView::BuildInterNationEventSummaryRowsForAdvisorDialog(int pageNa
   formatText.Format(g_szDecimalFormat,
                     static_cast<short>(g_pSimMgr->quarterGateTick2c / 4) + 0x717);
   panelText = dateText + g_szListSeparator_00695760 + formatText;
-  dateControl->AssignTextSharedRefIfChangedAndMaybeInvalidate(&panelText, 1);
+  dateControl->SetTextAndMaybeRefresh(&panelText, 1);
   dateControl->SetTextStyleAndMaybeRefresh(&titleStyle, 1);
 
   TStaticText* specialControl =
@@ -120,7 +120,7 @@ void TNewspaperView::BuildInterNationEventSummaryRowsForAdvisorDialog(int pageNa
       break;
     }
   }
-  specialControl->AssignTextSharedRefIfChangedAndMaybeInvalidate(&panelText, 1);
+  specialControl->SetTextAndMaybeRefresh(&panelText, 1);
   specialControl->SetTextStyleAndMaybeRefresh(&titleStyle, 1);
 
   for (int col = 0; col < 3; col++) {

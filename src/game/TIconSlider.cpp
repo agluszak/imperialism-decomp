@@ -17,8 +17,8 @@ TIconSlider::TIconSlider()
 TIconSlider::~TIconSlider() {}
 
 // FUNCTION: IMPERIALISM 0x00506480
-void TIconSlider::NoOpUiLifecycleHook(int arg) {
-  TIconBar::NoOpUiLifecycleHook(arg);
+void TIconSlider::DoPostCreate(int arg) {
+  TIconBar::DoPostCreate(arg);
 
   fieldA0 = CreateBitmapResourceLoaderHandle(0x3eb);
   RECT rect;

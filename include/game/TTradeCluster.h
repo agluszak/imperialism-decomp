@@ -19,7 +19,7 @@ public:
 
   void HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override;
 
-  void NoOpUiLifecycleHook(int styleSeed) override; // 0xdc 0x587130
+  void DoPostCreate(int styleSeed) override; // 0xdc 0x587130
   virtual int IsTradeControlAtMinimum() override;
   virtual void ApplyMoveValue(int value);
   virtual int NotifyControlSelectionChange(void* boundEntry, int arg2 = 0);

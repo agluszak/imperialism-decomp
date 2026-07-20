@@ -48,8 +48,8 @@ public:
   // slot 0x24 SetUiResourceOwner inherited unchanged (0x48a4d0)
   // slot 0x25 ResolveControlByTag inherited unchanged (0x48afd0)
   // slot 0x26 SwitchActiveChildAndNotify inherited unchanged (0x48af80)
-  // slot 0x27 DispatchSlot9CToLinkedChildren inherited unchanged (0x48c820)
-  // slot 0x28 CallVoidSlotA0 inherited unchanged (0x48c890)
+  // slot 0x27 Open inherited unchanged (0x48c820)
+  // slot 0x28 Close inherited unchanged (0x48c890)
   // slot 0x29 SetEnabled inherited unchanged (0x48b1c0)
   // slot 0x2a SetState inherited unchanged (0x48b070)
   // slot 0x2b GetField4E inherited unchanged (0x427200)
@@ -127,13 +127,13 @@ public:
   virtual void ApplyMoveValue(int value);                                   // slot 0x74 0x588c30
   virtual int NotifyControlSelectionChange(void* boundEntry, int arg2 = 0); // slot 0x75 0x588c60
   virtual int GetControlFlag(int arg1 = 0, int arg2 = 0);                   // slot 0x76 0x588f60
-  TAmtBar* selectedMetricControl; // 0x88
-  short selectedMetricValue;      // 0x8c
-  short selectedMetricStep;       // 0x8e
+  TAmtBar* selectedMetricControl;                                           // 0x88
+  short selectedMetricValue;                                                // 0x8c
+  short selectedMetricStep;                                                 // 0x8e
 
   TIndustryCluster();
   DECLARE_DYNCREATE(TIndustryCluster)
-  void NoOpUiLifecycleHook(int styleSeed) override;
+  void DoPostCreate(int styleSeed) override;
 };
 
 ASSERT_SIZE(TIndustryCluster, 0x90);

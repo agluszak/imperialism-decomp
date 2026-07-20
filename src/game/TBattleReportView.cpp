@@ -42,8 +42,8 @@ IMPLEMENT_DYNCREATE(TBattleReportView, TDiplomacyMapView)
 // record's map cell), registers the report's idle animation, loads the label strings,
 // and schedules the report audio cue.
 // FUNCTION: IMPERIALISM 0x004acb60
-void TBattleReportView::NoOpUiLifecycleHook(int arg) {
-  TView::NoOpUiLifecycleHook(arg);
+void TBattleReportView::DoPostCreate(int arg) {
+  TView::DoPostCreate(arg);
   BuildDiplomacyNationOverlayGeometryAndHitMasks();
 
   // 14-byte style buffer: the 10-byte descriptor plus 4 explicitly zeroed tail bytes
@@ -223,7 +223,7 @@ void TBattleReportView::NoOpUiLifecycleHook(int arg) {
   g_pCursorControlPanel = cursorPanel;
   cursorPanel->AssertValid();
   g_pCursorControlPanel->BuildAndApplyTextStyleDescriptor(0, 0xe, 0x2b6b);
-  g_pCursorControlPanel->SetTextThemeCodeAndMaybeRefresh(1, 1);
+  g_pCursorControlPanel->SetTextAlignmentAndMaybeRefresh(1, 1);
   g_pCursorControlPanel->InitializeMapHintTextStyleAndThemeFlags(0x2b67, 0x2b6c);
 
   SetControlHoverHelpText(g_pBattleReportSharedText_0064dc30,

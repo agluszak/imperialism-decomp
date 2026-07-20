@@ -1,7 +1,7 @@
 #pragma once
 
 #include "game/TCluster.h"
-#include "game/TStaticText.h"
+#include "game/TNumberedArrowButton.h"
 #include "game/mfc.h"
 
 // VTABLE: IMPERIALISM 0x00642f88
@@ -47,8 +47,8 @@ public:
   // slot 0x24 SetUiResourceOwner inherited unchanged (0x48a4d0)
   // slot 0x25 ResolveControlByTag inherited unchanged (0x48afd0)
   // slot 0x26 SwitchActiveChildAndNotify inherited unchanged (0x48af80)
-  // slot 0x27 DispatchSlot9CToLinkedChildren inherited unchanged (0x48c820)
-  // slot 0x28 CallVoidSlotA0 inherited unchanged (0x48c890)
+  // slot 0x27 Open inherited unchanged (0x48c820)
+  // slot 0x28 Close inherited unchanged (0x48c890)
   // slot 0x29 SetEnabled inherited unchanged (0x48b1c0)
   // slot 0x2a SetState inherited unchanged (0x48b070)
   // slot 0x2b GetField4E inherited unchanged (0x427200)
@@ -63,7 +63,7 @@ public:
   // slot 0x34 HasRenderableParentAndContent inherited unchanged (0x48c050)
   // slot 0x35 HandleCursorHoverSelectionByChildHitTestAndFallback inherited unchanged (0x48c080)
   // slot 0x36 DispatchControlEventToChildrenAndSelf inherited unchanged (0x48aaf0)
-  virtual void NoOpUiLifecycleHook(int arg) override; // slot 0x37 0x568d70
+  virtual void DoPostCreate(int arg) override; // slot 0x37 0x568d70
   // slot 0x38 NoOpUiCallback inherited unchanged (0x48abc0)
   // slot 0x39 RefreshControl inherited unchanged (0x48b6d0)
   // slot 0x3a QueryOwnerContextPanel inherited unchanged (0x48b1a0)
@@ -126,24 +126,20 @@ public:
 
   TShipFractionCluster();
 
-  void UpdateIndustryCapabilityControlStateAndValue(int p1, int p2);
+  void SetAvailableAndSelectedShipCounts(int availableCount, int selectedCount);
   void SelectTaskForceOrderForActiveNationClass(char activeFlag);
 
   // Original object size is 0x98 (CRuntimeClass m_nObjectSize); the source class ended at
-  // 0x88. Enabled/disabled state gate for the ship/arrow controls, set by
-  // UpdateIndustryCapabilityControlStateAndValue; a real `short` (the original writes/reads
-  // it with 16-bit instructions throughout) -- also cross-confirmed by
-  // TShipPlacard::ApplyRectSlot110, which reads a sibling's field88 (via
-  // this->ownerContext+0x88) as a short quantity/count.
-  short field88;
+  // 0x88. Available ship count and upper bound for the selected count. The original
+  // writes/reads it with 16-bit instructions throughout; TShipPlacard::ApplyRectSlot110
+  // also renders this count through its ownerContext.
+  short availableShipCount88;
   short pad8a;
-  // The 'main'-tagged control on OwnerPanel(), resolved by NoOpUiLifecycleHook.
-  class TView* field8c;
-  // The 'arro' control, resolved by NoOpUiLifecycleHook; a TStaticText-family control
-  // (confirmed by UpdateIndustryCapabilityControlStateAndValue's slot 0x1c4
-  // SetTextThemeCodeAndMaybeRefresh call on it).
-  TStaticText* field90;
-  // Theme code applied to field90; a real `short` (16-bit reads/writes throughout).
-  short field94;
+  // The 'main'-tagged control on OwnerPanel(), resolved by DoPostCreate.
+  class TView* mainSelectionView8c;
+  // The 'arro' TNumberedArrowButton, resolved by DoPostCreate. Windows calls its
+  // TNumberedArrowButton::SetValue slot at vtable offset 0x1c4.
+  TNumberedArrowButton* shipCountButton90;
+  short selectedShipCount94;
   short pad96;
 };

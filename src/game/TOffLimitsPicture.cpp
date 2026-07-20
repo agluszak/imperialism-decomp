@@ -18,8 +18,8 @@ TOffLimitsPicture::TOffLimitsPicture() : TPicture(), ownClipRegion90(nullptr) {}
 TOffLimitsPicture::~TOffLimitsPicture() {}
 
 // FUNCTION: IMPERIALISM 0x00573850
-void TOffLimitsPicture::NoOpUiLifecycleHook(int arg) {
-  TView::NoOpUiLifecycleHook(arg);
+void TOffLimitsPicture::DoPostCreate(int arg) {
+  TView::DoPostCreate(arg);
   ownClipRegion90 = NewRgn();
   SetEmptyRgn(ownClipRegion90);
 }

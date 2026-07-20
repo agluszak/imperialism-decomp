@@ -79,7 +79,7 @@ undefined4 HandleTurnEvent8FC_RebuildPageTabsAndTitles(void);
 // Provisional dispatch interfaces for the runtime-resolved turn-event dialog node and
 // its 'GOLD' child control now live in one shared header so the TViewMgr and
 // TMacViewMgr copies can't drift apart (bd imperialism-decomp-hpd.7). The lower slots
-// (ResolveControlByTag, CaptureLayoutF0, CallVoidSlotA0, Free, AssertValid) are real
+// (ResolveControlByTag, CaptureLayoutF0, Close, Free, AssertValid) are real
 // inherited TView/TObject virtuals dispatched directly.
 namespace {
 using turn_event_dialog::GoldCommitControl;
@@ -374,7 +374,7 @@ void TViewMgr::HandleTurnEventVtableSlot40RefreshGoldDialog() {
     g_pGameFlowState->processPrimaryEventQueue = 0;
   }
   node->RefreshTurnEventDialog();
-  node->CallVoidSlotA0();
+  node->Close();
   node->Free();
   if (g_pSimMgr->field44 != 0) {
     g_pGameFlowState->processPrimaryEventQueue = savedFlag;
@@ -529,13 +529,13 @@ bool TViewMgr::RunNationInfoModalAndReturnNonCancel(int overlayMode, CString mes
       TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgr_0069B6BC, 0x31a);
     }
     title->SetTextStyleAndMaybeRefresh(&styleDescriptor, 0);
-    title->SetTextThemeCodeAndMaybeRefresh(1, 0);
+    title->SetTextAlignmentAndMaybeRefresh(1, 0);
     BuildUiMessageTextFromBracketTemplate(g_pSimMgr, &titleText, 0x2749, overlayMode, 0x2749,
                                           contextTagSx);
     titleText += '\r';
     titleText += '\r';
     titleText += messageText;
-    title->AssignTextSharedRefIfChangedAndMaybeInvalidate(&titleText, 0);
+    title->SetTextAndMaybeRefresh(&titleText, 0);
   }
 
   TDeluxeText* info = static_cast<TDeluxeText*>(dialog->ResolveControlByTag(0x696e666f)); // 'info'
@@ -550,7 +550,7 @@ bool TViewMgr::RunNationInfoModalAndReturnNonCancel(int overlayMode, CString mes
     if (measuredHeight > info->frameHeight38) {
       TScrollView* scrollView = new TScrollView();
       scrollView->ConstructTScrollViewBaseState(gold, &info->ownerLocalX, &info->frameWidth34);
-      scrollView->NoOpUiLifecycleHook(0);
+      scrollView->DoPostCreate(0);
       gold->DetachChildFromOwnerList(info);
       scrollView->AttachChildControl(info, 0);
       bounds.top = 0;
@@ -598,7 +598,7 @@ bool TViewMgr::RunNationInfoModalAndReturnNonCancel(int overlayMode, CString mes
   }
 
   int modalResult = dialog->RefreshTurnEventDialog();
-  dialog->CallVoidSlotA0();
+  dialog->Close();
   dialog->Free();
   simSuppressed = g_pSimMgr->field44 != 0;
   if (simSuppressed) {
@@ -831,7 +831,7 @@ void TViewMgr::HandleTurnEventDialogFactorySlot70(int eventCode) {
   if (gold != nullptr) {
     gold->CommitGoldDialogContent();
   }
-  node->DispatchSlot9CToLinkedChildren();
+  node->Open();
 }
 
 // FUNCTION: IMPERIALISM 0x005d6d70
@@ -850,7 +850,7 @@ void TViewMgr::HandleTurnEventDialogFactorySlot74(int eventCode) {
   }
   node->ShowTurnEventDialog(1);
   node->RefreshTurnEventDialog();
-  node->CallVoidSlotA0();
+  node->Close();
   node->Free();
 }
 
@@ -875,7 +875,7 @@ void TViewMgr::HandleTurnEventDialogFactorySlot78(int eventCode) {
   }
   node->ShowTurnEventDialog(1);
   node->RefreshTurnEventDialog();
-  node->CallVoidSlotA0();
+  node->Close();
   node->Free();
 }
 
@@ -895,7 +895,7 @@ void TViewMgr::HandleTurnEventDialogFactorySlot7C(int eventCode) {
   }
   node->ShowTurnEventDialog(1);
   node->RefreshTurnEventDialog();
-  node->CallVoidSlotA0();
+  node->Close();
   node->Free();
 }
 
@@ -915,7 +915,7 @@ void TViewMgr::HandleTurnEventDialogFactorySlot80(int eventCode) {
   }
   node->ShowTurnEventDialog(1);
   node->RefreshTurnEventDialog();
-  node->CallVoidSlotA0();
+  node->Close();
   node->Free();
 }
 
@@ -1020,7 +1020,7 @@ void RefreshTradClusterPictureAndHintText() {
   }
   tradControl->AssertValid();
   TToolBarCluster* tradCluster = static_cast<TToolBarCluster*>(tradControl);
-  const short pictureId = static_cast<short>(tradCluster->field84 + 1);
+  const short pictureId = static_cast<short>(tradCluster->selectedChildTag + 1);
   static_cast<TPicture*>(tradControl)->SetPictureResourceIdAndRefresh(pictureId, false);
   tradControl->SetState(0, 0);
 
@@ -1138,7 +1138,7 @@ void TViewMgr::DispatchTurnEventSlot4C(short eventCode, int payload) {
     static_cast<TAmbitApplication*>(g_pGlobalUiRootController)->dispatchBusyFlag4c = 0;
     this->currentTurnEventCode = 0;
     g_pDisplayMgr->clipSnapshotEvent = 0;
-    mainView->CallVoidSlotA0();
+    mainView->Close();
     CWMgrIterator iter;
     iter.Reset(1);
     TWindow* window = static_cast<TWindow*>(iter.FirstWindow());
@@ -1194,7 +1194,7 @@ void TViewMgr::DispatchTurnEventSlot4C(short eventCode, int payload) {
 
   // Cross-code path: tear down the previous dialog, build the new turn-event UI packet.
   g_pUiViewManager->NoOpRuntimeUiCallback_005df780(0);
-  mainView->DispatchSlot9CToLinkedChildren();
+  mainView->Open();
   if (this->field10 != 0) {
     ShowDialogTemplateE0ModalAndReleaseCapture();
     this->field10 = 0;
@@ -1211,7 +1211,7 @@ void TViewMgr::DispatchTurnEventSlot4C(short eventCode, int payload) {
   CString emptyText(g_szEmptyString);
   int anchorPoint[2] = {0, 0};
   packet->BuildTurnEventFactoryPacket(nullptr, mainView, newCode, anchorPoint, &emptyText, 1);
-  packet->NoOpUiLifecycleHook(0);
+  packet->DoPostCreate(0);
   packet->controlTag = 0x496e636c; // 'Incl'
   packet->RefreshControl();
   g_pDisplayMgr->LoadMainViewClipSnapshotIntoQuickDrawState(static_cast<unsigned short>(newCode));
@@ -1689,7 +1689,7 @@ void TViewMgr::UiRuntimeSlotF8() {
   TUiTextStyleDescriptor styleDescriptor = {0, 0, 0, 0};
   BuildUiTextStyleDescriptor(&styleDescriptor, 0, 0xe, 0x2b6c);
   g_pCursorControlPanel->ApplyTextStyleDescriptorAndMaybeRefresh(&styleDescriptor, 1);
-  g_pCursorControlPanel->SetTextThemeCodeAndMaybeRefresh(1, 0);
+  g_pCursorControlPanel->SetTextAlignmentAndMaybeRefresh(1, 0);
 
   int mappedStyleFlags = 0;
   MapUiThemeCodeToStyleFlags(0x2b6b, &mappedStyleFlags);
@@ -1804,7 +1804,7 @@ void TViewMgr::HandleTurnEventDialogFactorySlotB8(int a, int b, int c) {
   node->CaptureLayoutF0(reinterpret_cast<int*>(&placement), 0);
   int refreshResult = node->RefreshTurnEventDialog();
   gold->ApplyGoldTradeDialogRefreshResult(refreshResult);
-  node->CallVoidSlotA0();
+  node->Close();
   node->Free();
 }
 
@@ -1859,7 +1859,7 @@ void TViewMgr::HandleTurnEventDialogFactorySlotD8(int) {
   node->CaptureLayoutF0(reinterpret_cast<int*>(&placement), 0);
   node->ShowTurnEventDialog(1);
   node->RefreshTurnEventDialog();
-  node->CallVoidSlotA0();
+  node->Close();
   node->Free();
 }
 
@@ -1890,7 +1890,7 @@ void TViewMgr::HandleTurnEventDialogFactorySlotE4(int stringCode) {
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgrMore_0069B740, 0x156);
   }
   nameText->SetTextFromUiStringResourceId(static_cast<short>(stringCode));
-  node->CallVoidSlotA0();
+  node->Close();
   node->Free();
 }
 
@@ -1918,7 +1918,7 @@ void TViewMgr::HandleTurnEventDialogFactorySlotF0(TTaskForce* activeMapOrderEntr
   ComputeTurnEventDialogPlacementByCode(node, &placement);
   node->CaptureLayoutF0(reinterpret_cast<int*>(&placement), 0);
   node->RefreshTurnEventDialog();
-  node->CallVoidSlotA0();
+  node->Close();
   node->Free();
 }
 
@@ -1938,7 +1938,7 @@ void TViewMgr::HandleTurnEventDialogFactorySlotEC(int mapSelection) {
   // Ground truth (0x004a8890, reached through the resolved ILT thunk at 0x00402216) rebuilds
   // 'page's TArmyUnitLine roster for the tile at mapSelection from
   // g_pGlobalMapState->cityScoreTable and appends each line via TPageView's own AddLine slot
-  // (byte 0x1a0, TPageView::OrphanCallChain_C1_I06_0056fbb0). Ghidra/symbols.csv misattribute
+  // (byte 0x1a0, TPageView::AddOrderedEntry). Ghidra/symbols.csv misattribute
   // that function to TLineData -- TLineData's vtable only spans 12 slots, far short of the
   // 0x69 needed for its own AddLine call, so the real receiver is a TPageView-derived roster
   // page. The concrete roster subclass installed as 'page' on this call path isn't recovered
@@ -1950,7 +1950,7 @@ void TViewMgr::HandleTurnEventDialogFactorySlotEC(int mapSelection) {
   node->CaptureLayoutF0(reinterpret_cast<int*>(&placement), 0);
   node->ShowTurnEventDialog(1);
   node->RefreshTurnEventDialog();
-  node->CallVoidSlotA0();
+  node->Close();
   node->Free();
 
   // Ground truth then dispatches
@@ -1996,7 +1996,7 @@ void TViewMgr::ShowCivilianLedgerDialogAndSelectUnit() {
   node->ShowTurnEventDialog(1);
   node->RefreshTurnEventDialog();
   short selectedIndex = roster->selectedIndex84;
-  node->CallVoidSlotA0();
+  node->Close();
   node->Free();
 
   if (selectedIndex != -1) {
@@ -2034,7 +2034,7 @@ int TViewMgr::MakePlanetSeedDialog(const char* instruction, CString& planetSeed,
   BuildUiTextStyleDescriptor(&instructionStyle, 0, 0xe, 0);
   instructionText->SetTextStyleAndMaybeRefresh(&instructionStyle, 0);
   CString instructionString(instruction);
-  instructionText->AssignTextSharedRefIfChangedAndMaybeInvalidate(&instructionString, 0);
+  instructionText->SetTextAndMaybeRefresh(&instructionString, 0);
 
   TEditText* planetEdit =
       static_cast<TEditText*>(dialog->ResolveControlByTag(0x706c616e /* 'plan' */));
@@ -2066,17 +2066,17 @@ int TViewMgr::MakePlanetSeedDialog(const char* instruction, CString& planetSeed,
         static_cast<TRadioText*>(choiceCluster->ResolveControlByTag(0x6f6e6531 /* 'one1' */));
     first->AssertValid();
     CString firstText(firstChoice);
-    first->AssignTextSharedRefIfChangedAndMaybeInvalidate(&firstText, 0);
+    first->SetTextAndMaybeRefresh(&firstText, 0);
     ApplyUiTextStyleAndThemeFlags(first, 0, 0xc, 0x2b6b, 0x2b6c);
-    first->SetTextThemeCodeAndMaybeRefresh(1, 0);
+    first->SetTextAlignmentAndMaybeRefresh(1, 0);
 
     TRadioText* second =
         static_cast<TRadioText*>(choiceCluster->ResolveControlByTag(0x74776f32 /* 'two2' */));
     second->AssertValid();
     CString secondText(secondChoice);
-    second->AssignTextSharedRefIfChangedAndMaybeInvalidate(&secondText, 0);
+    second->SetTextAndMaybeRefresh(&secondText, 0);
     ApplyUiTextStyleAndThemeFlags(second, 0, 0xc, 0x2b6b, 0x2b6c);
-    second->SetTextThemeCodeAndMaybeRefresh(1, 0);
+    second->SetTextAlignmentAndMaybeRefresh(1, 0);
 
     choiceCluster->SetSelectedTextOptionByTag(
         initialChoice == 0 ? 0x6f6e6531 /* 'one1' */ : 0x74776f32 /* 'two2' */, false);
@@ -2096,7 +2096,7 @@ int TViewMgr::MakePlanetSeedDialog(const char* instruction, CString& planetSeed,
 
   planetEdit->GetCurrentText(&editText);
   planetSeed = editText;
-  dialog->CallVoidSlotA0();
+  dialog->Close();
   dialog->Free();
   return resultTag;
 }
@@ -2117,7 +2117,7 @@ bool TViewMgr::ShowCivilianReportDialogAndReturnConfirm(TCivUnit* pCivilianOrder
   this->ComputeTurnEventDialogPlacementByCode(node, &placement);
   node->CaptureLayoutF0(reinterpret_cast<int*>(&placement), 0);
   unsigned int resultTag = node->RefreshTurnEventDialog();
-  node->CallVoidSlotA0();
+  node->Close();
   node->Free();
   return resultTag == 0x6f6b6179;
 }
@@ -2147,7 +2147,7 @@ void TViewMgr::DispatchUiRuntimeMessage101AAndRefreshActiveView() {
   this->ComputeTurnEventDialogPlacementByCode(node, &placement);
   node->CaptureLayoutF0(reinterpret_cast<int*>(&placement), 0);
   node->RefreshTurnEventDialog();
-  node->CallVoidSlotA0();
+  node->Close();
   node->Free();
 }
 

@@ -53,7 +53,8 @@ def generate_rows(repo_root: Path, target: str = "IMPERIALISM",
     # comments often carry linker-symbol spellings and never override the
     # reviewed/inventory name.
     source_named = {a: c for a, c in model.functions.items()
-                    if c.origin == "marker" and c.kind == "FUNCTION" and c.name}
+                    if c.origin in ("marker", "generated")
+                    and c.kind == "FUNCTION" and c.name}
 
     kept: list[dict] = []
     stats = {"dropped": 0, "reviewed": 0, "source": 0, "added": 0}

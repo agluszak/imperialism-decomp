@@ -9,12 +9,12 @@ struct CRuntimeClass;
 class TPlacard : public TPicture {
 public:
   short glyph90;
-  short field92;
+  short reserved92;
 
   TPlacard();
   virtual ~TPlacard() override;
   DECLARE_DYNCREATE(TPlacard)
-  void NoOpUiLifecycleHook(int arg) override;
+  void DoPostCreate(int arg) override;
   void ApplyRectSlot110(RECT* rectBuffer) override;
   virtual bool IsSelected(short value = -1, bool refreshNow = true);
 };

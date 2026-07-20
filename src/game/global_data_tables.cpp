@@ -117,7 +117,7 @@ char* g_pBattleReportSharedText_0064dc30 = g_szEmptyString;
 char* g_pMiniCivSharedText_0064cb18 = g_szEmptyString;
 // GLOBAL: IMPERIALISM 0x0065c830
 char* g_pShipFractionSharedText_0065c830 = g_szEmptyString;
-// Local player's display name, read by TLoungeDialog::NoOpUiLifecycleHook when posting the
+// Local player's display name, read by TLoungeDialog::DoPostCreate when posting the
 // lobby-chat "connected" announcement (LobbyChatEvent9Packet's sender/message text).
 // GLOBAL: IMPERIALISM 0x0065c160
 char* g_pLoungeLocalPlayerNameSharedText_0065c160 = g_szEmptyString;
@@ -475,7 +475,7 @@ TQuickDrawSurfaceContext* g_pActiveQuickDrawSurfaceContext = 0;
 // GLOBAL: IMPERIALISM 0x006a30a8
 TQuickDrawSurfaceContext* g_pPrimaryRenderSurfaceContext = 0;
 // Cached snapshot of g_pPrimaryRenderSurfaceContext, stamped by
-// TCitySiteView::NoOpUiLifecycleHook after allocating its own surface.
+// TCitySiteView::DoPostCreate after allocating its own surface.
 // GLOBAL: IMPERIALISM 0x006a3450
 TQuickDrawSurfaceContext* g_pCitySiteCachedPrimaryRenderSurfaceContext = 0;
 // GLOBAL: IMPERIALISM 0x006a1da0

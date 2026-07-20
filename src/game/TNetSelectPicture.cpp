@@ -19,7 +19,9 @@ TNetSelectPicture::~TNetSelectPicture() {}
 IMPLEMENT_DYNCREATE(TNetSelectPicture, TNoHilitePicture)
 
 // FUNCTION: IMPERIALISM 0x005769a0
-void TNetSelectPicture::NoOpUiLifecycleHook(int arg) { TView::NoOpUiLifecycleHook(arg); }
+void TNetSelectPicture::DoPostCreate(int arg) {
+  TView::DoPostCreate(arg);
+}
 
 // FUNCTION: IMPERIALISM 0x005769c0
 void TNetSelectPicture::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
@@ -32,7 +34,7 @@ void TNetSelectPicture::HandleEvent(int commandId, TEventHandler* sourceHandler,
     } else if (sourceHandler->controlTag == kControlTagOkay) {
       TCluster* protControl = static_cast<TCluster*>(ResolveControlByTag(kControlTagProt));
       protControl->AssertValid();
-      int selectedProtocolTag = protControl->GetField84();
+      int selectedProtocolTag = protControl->GetSelectedChildTag();
       TView* protocolOption = ResolveControlByTag(selectedProtocolTag);
       g_pGameFlowState->ValidateGameFlowNameAndSelectionContext(protocolOption->controlValue3c, 1);
     }

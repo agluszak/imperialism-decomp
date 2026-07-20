@@ -1266,7 +1266,7 @@ void TTacticalBattle::EvaluateTacticalSideStateAndShowBattleSummaryDialog() {
     g_pSimMgr->GetString(0x273d, titleMessageIndex, &titleText);
     BuildUiTextStyleDescriptor(&styleDescriptor, 0, 0xc, 0x2b67);
     titleControl->SetTextStyleAndMaybeRefresh(&styleDescriptor, 0);
-    titleControl->AssignTextSharedRefIfChangedAndMaybeInvalidate(&titleText, 0);
+    titleControl->SetTextAndMaybeRefresh(&titleText, 0);
   }
 
   TStaticText* locationControl =
@@ -1287,7 +1287,7 @@ void TTacticalBattle::EvaluateTacticalSideStateAndShowBattleSummaryDialog() {
                            static_cast<const char*>(siteOwnerLabel));
     BuildUiTextStyleDescriptor(&styleDescriptor, 0, 0xa, 0x2b67);
     locationControl->SetTextStyleAndMaybeRefresh(&styleDescriptor, 0);
-    locationControl->AssignTextSharedRefIfChangedAndMaybeInvalidate(&locationText, 1);
+    locationControl->SetTextAndMaybeRefresh(&locationText, 1);
   }
 
   TDeluxeText* infoControl =
@@ -1366,7 +1366,7 @@ void TTacticalBattle::EvaluateTacticalSideStateAndShowBattleSummaryDialog() {
     *reinterpret_cast<int*>(reinterpret_cast<char*>(content) + 0x14) = 0x6f6b6179; // 'okay'
   }
   dialog->RefreshTurnEventDialog();
-  dialog->CallVoidSlotA0();
+  dialog->Close();
   dialog->Free();
   battleView8->InvokeSlot13C();
 }

@@ -36,7 +36,7 @@ TRailAmtBar::TRailAmtBar() : TIndustryAmtBar() {}
 // TRailAmtBar::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x0058a020
-void TRailAmtBar::NoOpUiLifecycleHook(int arg) {
+void TRailAmtBar::DoPostCreate(int arg) {
   TGreatPower* nationState = GetActiveNationState();
   TCity* cityState = nationState != 0 ? nationState->GetCityState() : 0;
   int summaryTag = *reinterpret_cast<int*>(reinterpret_cast<char*>(this->ownerContext) + 0x1c);
@@ -88,7 +88,7 @@ void TRailAmtBar::NoOpUiLifecycleHook(int arg) {
                               (int)productionOrCapValue);
   }
   auxValueB = 0x3a;
-  reinterpret_cast<TView*>(this)->TView::NoOpUiLifecycleHook(arg);
+  reinterpret_cast<TView*>(this)->TView::DoPostCreate(arg);
 }
 
 // FUNCTION: IMPERIALISM 0x0058a1b0

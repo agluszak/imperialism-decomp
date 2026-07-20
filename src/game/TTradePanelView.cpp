@@ -20,7 +20,7 @@ IMPLEMENT_DYNCREATE(TTradePanelView, TPanelView)
 TTradePanelView::TTradePanelView() {}
 
 // FUNCTION: IMPERIALISM 0x004f8780
-void TTradePanelView::NoOpUiLifecycleHook(int arg) {}
+void TTradePanelView::DoPostCreate(int arg) {}
 
 // Row-label geometry (6 commodity rows) and column-header geometry (3 headers), read
 // from raw stack literals in the original (0x4f8940). The exact per-slot stack layout

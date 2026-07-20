@@ -29,8 +29,8 @@ TRadioTextCluster::TRadioTextCluster() : TCluster() {
 TRadioTextCluster::~TRadioTextCluster() {}
 
 // FUNCTION: IMPERIALISM 0x00579740
-void TRadioTextCluster::NoOpUiLifecycleHook(int arg) {
-  TCluster::NoOpUiLifecycleHook(arg);
+void TRadioTextCluster::DoPostCreate(int arg) {
+  TCluster::DoPostCreate(arg);
   selectedTag88 = kTagNada;
 }
 
@@ -108,7 +108,7 @@ TRadioText* TRadioTextCluster::AddItem(unsigned long tag, int value, const char*
   item->controlTag = static_cast<int>(tag);
   item->controlValue3c = value;
   CString itemText(text);
-  item->AssignTextSharedRefIfChangedAndMaybeInvalidate(&itemText, 1);
+  item->SetTextAndMaybeRefresh(&itemText, 1);
   item->SetControlValue(1);
   return item;
 }

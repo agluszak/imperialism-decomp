@@ -21,18 +21,16 @@ extern "C" CRuntimeClass PTR_s_TView_006495a0;
 // UI-resource context helpers 0x426fa0-0x4270e0: original TU is this TView region
 // (0x4272xx methods follow); they operate on g_pUiResourceContext from ui_resource_builder.h.
 // FUNCTION: IMPERIALISM 0x00426fa0
-void __cdecl SetUiResourceContextFlagsAndMetrics(short nField9C, short nStyleType,
-                                                 unsigned char f70, unsigned char f6f,
-                                                 unsigned char f6e, unsigned char f6d,
-                                                 unsigned char f6c, unsigned char f71) {
+void __cdecl SetUiResourceContextFlagsAndMetrics(short nField9C, short nStyleType, bool f70,
+                                                 bool f6f, bool f6e, bool f6d, bool f6c, bool f71) {
   TWindow* window = static_cast<TWindow*>(g_pUiResourceContext);
   window->topmostFlag70 = f70;
-  window->flag6f = f6f;
-  window->flag6e = f6e;
+  window->resourceFlag6f = f6f;
+  window->resourceFlag6e = f6e;
   window->useCaptionedFrameFlag6d = f6d;
-  window->flag6c = f6c;
-  window->flag71 = f71;
-  window->field9c = static_cast<unsigned short>(nField9C);
+  window->resourceFlag6c = f6c;
+  window->resourceFlag71 = f71;
+  window->windowFlags = static_cast<unsigned short>(nField9C);
   window->windowStyleType = nStyleType;
 }
 
@@ -213,10 +211,10 @@ void TView::DispatchControlEventToChildrenAndSelf(int eventArg) {
       child->DispatchControlEventToChildrenAndSelf(eventArg);
     }
   }
-  NoOpUiLifecycleHook(eventArg);
+  DoPostCreate(eventArg);
 }
 // FUNCTION: IMPERIALISM 0x0048ab70
-void TView::NoOpUiLifecycleHook(int arg) {
+void TView::DoPostCreate(int arg) {
   (void)arg;
 }
 // FUNCTION: IMPERIALISM 0x0048ab90
@@ -909,22 +907,23 @@ void TView::AssertMcAppUiLine1922() {
 }
 
 // FUNCTION: IMPERIALISM 0x0048c820
-void TView::DispatchSlot9CToLinkedChildren() {
+CMcWindow* TView::Open() {
   if (childList44 != 0) {
     POSITION pos = childList44->GetHeadPosition();
     while (pos != NULL) {
       TView* child = static_cast<TView*>(childList44->GetNext(pos));
-      child->DispatchSlot9CToLinkedChildren();
+      child->Open();
     }
   }
+  return 0;
 }
 // FUNCTION: IMPERIALISM 0x0048c890
-void TView::CallVoidSlotA0() {
+void TView::Close() {
   if (childList44 != 0) {
     POSITION pos = childList44->GetHeadPosition();
     while (pos != NULL) {
       TView* child = static_cast<TView*>(childList44->GetNext(pos));
-      child->CallVoidSlotA0();
+      child->Close();
     }
   }
 }

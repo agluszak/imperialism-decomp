@@ -23,8 +23,8 @@ IMPLEMENT_DYNCREATE(TJoinSelectorDialog, TNoHilitePicture)
 TJoinSelectorDialog::TJoinSelectorDialog() {}
 
 // FUNCTION: IMPERIALISM 0x0054e730
-void TJoinSelectorDialog::NoOpUiLifecycleHook(int arg) {
-  TView::NoOpUiLifecycleHook(arg);
+void TJoinSelectorDialog::DoPostCreate(int arg) {
+  TView::DoPostCreate(arg);
 
   TStaticText* tnamControl = static_cast<TStaticText*>(ResolveControlByTag(kControlTagTnam));
   tnamControl->AssertValid();
@@ -43,13 +43,13 @@ void TJoinSelectorDialog::NoOpUiLifecycleHook(int arg) {
   CString normalizedPlayerName =
       g_pLanguageMgr->NormalizeRuntimeCredentialNameToken(&g_pGameFlowState->playerNameString);
   ApplyControlThemeStyleAndOptionalCaption(nameControl, 0, 0xc, 0x2b6b, 1, normalizedPlayerName);
-  nameControl->field_9c = 0xc;
-  if (nameControl->field_94 != nullptr) {
-    nameControl->field_94->SendMessage(0xc5, nameControl->field_9c, 0);
+  nameControl->maxCharacterCount = 0xc;
+  if (nameControl->editWindow != nullptr) {
+    nameControl->editWindow->SendMessage(0xc5, nameControl->maxCharacterCount, 0);
   }
 
-  gameControl->field90 = 0x2b6b;
-  gameControl->field92 = 2;
+  gameControl->textAlignmentCode = 0x2b6b;
+  gameControl->textOptionFlags = 2;
 }
 
 // FUNCTION: IMPERIALISM 0x0054e9a0

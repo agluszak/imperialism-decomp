@@ -28,8 +28,8 @@ IMPLEMENT_DYNCREATE(TStatusPicture, TPicture)
 TStatusPicture::TStatusPicture() {}
 
 // FUNCTION: IMPERIALISM 0x00593f20
-void TStatusPicture::NoOpUiLifecycleHook(int arg) {
-  TPicture::NoOpUiLifecycleHook(arg);
+void TStatusPicture::DoPostCreate(int arg) {
+  TPicture::DoPostCreate(arg);
 
   // One TPicture child per eligible nation slot ('pic0'-'pic6'); the picture tag only
   // advances on rows that actually get a child (ineligible rows are skipped without
@@ -41,8 +41,8 @@ void TStatusPicture::NoOpUiLifecycleHook(int arg) {
       TPicture* picture = new TPicture();
       int offsetLayout[2] = {0x71, rowY};
       int sizeLayout[2] = {0x23, 0x34};
-      picture->InitializePictureEntryBaseAndRefresh(
-          this, offsetLayout, sizeLayout, 5, 5, static_cast<short>(nationSlot + 0x10d7));
+      picture->InitializePictureEntryBaseAndRefresh(this, offsetLayout, sizeLayout, 5, 5,
+                                                    static_cast<short>(nationSlot + 0x10d7));
       picture->controlTag = pictureTag;
       rowY += 0x37;
       ++pictureTag;
@@ -84,7 +84,7 @@ void TStatusPicture::NoOpUiLifecycleHook(int arg) {
   SortSevenEntriesAndUpdatePictureWidgets();
 
   // 'curs' is also installed as the shared cursor-hint panel, same as 'labl' in
-  // TLoungeDialog::NoOpUiLifecycleHook.
+  // TLoungeDialog::DoPostCreate.
   TInfoBarText* cursControl = static_cast<TInfoBarText*>(ResolveControlByTag(0x63757273u));
   g_pCursorControlPanel = cursControl;
   cursControl->AssertValid();

@@ -227,7 +227,7 @@ void TWindow::SetWindowTarget(TEventHandler* target) {
 // not-actionable fallback (mark busy, poke the linked window, fire the slot-0x73 chain),
 // and finally recurse the realize hook into each child.
 // FUNCTION: IMPERIALISM 0x0048de00
-void TWindow::DispatchSlot9CToLinkedChildren() {
+CMcWindow* TWindow::Open() {
   if (nativeWindow50 == 0) {
     nativeWindow50 = new CMcWindow(this);
     if (childList44 != 0) {
@@ -250,15 +250,16 @@ void TWindow::DispatchSlot9CToLinkedChildren() {
     POSITION pos = childList44->GetHeadPosition();
     while (pos != NULL) {
       TView* child = static_cast<TView*>(childList44->GetNext(pos));
-      child->DispatchSlot9CToLinkedChildren();
+      child->Open();
     }
   }
+  return 0;
 }
 
 // Clear the busy flag, notify the host window, recurse the slot-0x28 hook into every child
 // control, then run the slot-0x73 state-notify chain.
 // FUNCTION: IMPERIALISM 0x0048e060
-void TWindow::CallVoidSlotA0() {
+void TWindow::Close() {
   busyFlag98 = 0;
   if (nativeWindow50 != 0 && nativeWindow50->m_hWnd != 0) {
     SendMessageA(reinterpret_cast<HWND>(nativeWindow50->m_hWnd), 0x468, 1, controlTag);
@@ -267,7 +268,7 @@ void TWindow::CallVoidSlotA0() {
     POSITION pos = childList44->GetHeadPosition();
     while (pos != NULL) {
       TView* child = static_cast<TView*>(childList44->GetNext(pos));
-      child->CallVoidSlotA0();
+      child->Close();
     }
   }
   OrphanCallChain_C2_I39_0048d900(0, 1);
@@ -275,7 +276,7 @@ void TWindow::CallVoidSlotA0() {
 
 // FUNCTION: IMPERIALISM 0x0048e120
 void TWindow::CloseAndFree() {
-  CallVoidSlotA0();
+  Close();
   Free();
 }
 

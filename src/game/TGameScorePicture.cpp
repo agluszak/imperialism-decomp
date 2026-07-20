@@ -19,8 +19,8 @@ IMPLEMENT_DYNCREATE(TGameScorePicture, TNoHilitePicture)
 TGameScorePicture::TGameScorePicture() {}
 
 // FUNCTION: IMPERIALISM 0x0057b0a0
-void TGameScorePicture::NoOpUiLifecycleHook(int arg) {
-  TNoHilitePicture::NoOpUiLifecycleHook(arg);
+void TGameScorePicture::DoPostCreate(int arg) {
+  TNoHilitePicture::DoPostCreate(arg);
   // The original then assembles the end-game score/ranking summary (1108 bytes) -- not yet
   // ported.
 }

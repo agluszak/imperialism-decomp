@@ -27,8 +27,8 @@ TScenarioChooser::~TScenarioChooser() {}
 IMPLEMENT_DYNCREATE(TScenarioChooser, TNoHilitePicture)
 
 // FUNCTION: IMPERIALISM 0x00579b80
-void TScenarioChooser::NoOpUiLifecycleHook(int arg) {
-  TNoHilitePicture::NoOpUiLifecycleHook(arg);
+void TScenarioChooser::DoPostCreate(int arg) {
+  TNoHilitePicture::DoPostCreate(arg);
   // The original then sets up the scenario-list/preview controls (973 bytes) -- not yet
   // ported.
 }
@@ -46,7 +46,8 @@ void TScenarioChooser::HandleEvent(int commandId, TEventHandler* sourceHandler, 
         scenarioIndexByListRow94[scenarioList->selectedIndex]);
     SetCursor(LoadCursorA(nullptr, IDC_ARROW));
   } else if (commandId == 0x7069636b) { // 'pick'
-    TMapPreviewView* mapPreview = static_cast<TMapPreviewView*>(ResolveControlByTag(0x706d6170u)); // 'pmap'
+    TMapPreviewView* mapPreview =
+        static_cast<TMapPreviewView*>(ResolveControlByTag(0x706d6170u)); // 'pmap'
     mapPreview->AssertValid();
     if (nationStateCodesByMapSelection144[mapPreview->pendingNation6C] != -1 &&
         mapPreview->pendingNation6C != mapPreview->selectedNation68) {
@@ -54,7 +55,8 @@ void TScenarioChooser::HandleEvent(int commandId, TEventHandler* sourceHandler, 
       mapPreview->selectedNation68 = mapPreview->pendingNation6C;
       mapPreview->EnhancePhoto();
       mapPreview->RefreshControl();
-      TDeluxeText* descControl = static_cast<TDeluxeText*>(ResolveControlByTag(0x64657363u)); // 'desc'
+      TDeluxeText* descControl =
+          static_cast<TDeluxeText*>(ResolveControlByTag(0x64657363u)); // 'desc'
       descControl->SetTextEntryFromChars(
           nationDescriptionTextByMapSelection118[mapPreview->pendingNation6C],
           nationDescriptionLengthByMapSelection134[mapPreview->pendingNation6C]);
@@ -64,7 +66,7 @@ void TScenarioChooser::HandleEvent(int commandId, TEventHandler* sourceHandler, 
       ApplyScenarioSelectionAndPostTurnEvent5E4();
     }
   } else if (commandId == 0xd) {
-    if (sourceHandler->controlTag == 0x6d6f7265u) { // 'more'
+    if (sourceHandler->controlTag == 0x6d6f7265u) {                                // 'more'
       TTextList* list = static_cast<TTextList*>(ResolveControlByTag(0x6c697374u)); // 'list'
       list->AssertValid();
       int newOffset = list->frameHeight38 / list->itemHeight + list->scrollOffset;

@@ -47,8 +47,8 @@ public:
   // slot 0x24 SetUiResourceOwner inherited unchanged (0x48a4d0)
   // slot 0x25 ResolveControlByTag inherited unchanged (0x48afd0)
   // slot 0x26 SwitchActiveChildAndNotify inherited unchanged (0x48af80)
-  // slot 0x27 DispatchSlot9CToLinkedChildren inherited unchanged (0x48c820)
-  // slot 0x28 CallVoidSlotA0 inherited unchanged (0x48c890)
+  // slot 0x27 Open inherited unchanged (0x48c820)
+  // slot 0x28 Close inherited unchanged (0x48c890)
   // slot 0x29 SetEnabled inherited unchanged (0x48b1c0)
   // slot 0x2a SetState inherited unchanged (0x48b070)
   // slot 0x2b GetField4E inherited unchanged (0x427200)
@@ -63,7 +63,7 @@ public:
   // slot 0x34 HasRenderableParentAndContent inherited unchanged (0x48c050)
   // slot 0x35 HandleCursorHoverSelectionByChildHitTestAndFallback inherited unchanged (0x48c080)
   // slot 0x36 DispatchControlEventToChildrenAndSelf inherited unchanged (0x48aaf0)
-  virtual void NoOpUiLifecycleHook(int arg) override; // slot 0x37 0x5be600
+  virtual void DoPostCreate(int arg) override; // slot 0x37 0x5be600
   // slot 0x38 NoOpUiCallback inherited unchanged (0x48abc0)
   // slot 0x39 RefreshControl inherited unchanged (0x48b6d0)
   // slot 0x3a QueryOwnerContextPanel inherited unchanged (0x48b1a0)
@@ -126,7 +126,8 @@ public:
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
   virtual undefined InitializeTradeScreenControlsLabelsAndNationContext(); // slot 0x73 0x5bea00
   // TPicture's own slice ends at 0x90 (ASSERT_SIZE); RTTI oracle confirms
-  // sizeof(TOfferDeskPicture) == 0xa8. The ctor only touches field9e/fieldA0/fieldA4.
+  // sizeof(TOfferDeskPicture) == 0xa8. The ctor initializes the selection flag and
+  // resolves the accept/reject controls during DoPostCreate().
   // 0x90/0x92/0x96 identified from RefreshSelectedNationOrderCompatibilityInfo (hedged
   // names); 0x94/0x98/0x9a/0x9d identified from CreateNextTradeCommandAndFormatPrompt
   // (0x5c04f0): all four feed TTradeMgr::DispatchProposalAmountSlot60's arguments or the
@@ -146,10 +147,10 @@ public:
   // +0x9d gates the out-of-range quantity error message: concise (GetString group 0x2740
   // index 0x10) when set, else a detailed bracket-expanded "max is <N>" message.
   unsigned char detailedErrorFlag9d;
-  unsigned char field9e;
+  bool selectionActive9e;
   unsigned char pad9f;
-  int fieldA0;
-  int fieldA4;
+  TControl* acceptButtonA0;
+  TControl* rejectButtonA4;
 
   TOfferDeskPicture();
 
@@ -159,7 +160,7 @@ public:
   void RefreshSelectedNationOrderCompatibilityInfo();
 
   // Reads the 'clus'/'nomo'/'purc' child controls, validates the proposed quantity against
-  // the 'purc' TNumberText's own max (field_a8) -- showing an out-of-range error and
+  // the 'purc' TNumberText's own maximumValue -- showing an out-of-range error and
   // re-selecting the field's text on failure -- then on success dispatches the trade
   // proposal through TTradeMgr, resets the accept/reject buttons, notifies the toolbar of
   // the new source-nation move value, and (unless mid-turn-processing) queues a new

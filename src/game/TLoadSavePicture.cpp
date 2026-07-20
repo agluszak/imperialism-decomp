@@ -31,8 +31,8 @@ IMPLEMENT_DYNCREATE(TLoadSavePicture, TPicture)
 TLoadSavePicture::TLoadSavePicture() {}
 
 // FUNCTION: IMPERIALISM 0x0056bcc0
-void TLoadSavePicture::NoOpUiLifecycleHook(int arg) {
-  TPicture::NoOpUiLifecycleHook(arg);
+void TLoadSavePicture::DoPostCreate(int arg) {
+  TPicture::DoPostCreate(arg);
   // The original then sets up the load/save dialog's slot-list controls (2136 bytes) --
   // not yet ported.
 }
@@ -82,7 +82,7 @@ void TLoadSavePicture::RefreshSlotPreviewFromSaveFile(short slotMode) {
   CString slotNationName;
   g_pSimMgr->GetString(0x2737, oneByteFieldA + 0xd, &slotNationName);
   CString infoText = yearText + ", " + slotNationName;
-  infoControl->AssignTextSharedRefIfChangedAndMaybeInvalidate(&infoText, 0);
+  infoControl->SetTextAndMaybeRefresh(&infoText, 0);
 
   RECT infoBounds;
   infoControl->QueryBounds(&infoBounds);
@@ -112,8 +112,8 @@ void TLoadSavePicture::HandleEvent(int commandId, TEventHandler* sourceHandler, 
     if (newSlot != selectedSlot92) {
       if (loadModeFlag90 != 0) {
         if (selectedSlot92 != -1 && selectedSlot92 != 0xa1) {
-          TControl* oldSlotControl = static_cast<TControl*>(
-              ResolveControlByTag(0x736c7430u + selectedSlot92));
+          TControl* oldSlotControl =
+              static_cast<TControl*>(ResolveControlByTag(0x736c7430u + selectedSlot92));
           oldSlotControl->AssertValid();
           oldSlotControl->SetTextStyleAndMaybeRefresh(&styleAt9e, 0);
           RECT oldBounds;
@@ -134,22 +134,21 @@ void TLoadSavePicture::HandleEvent(int commandId, TEventHandler* sourceHandler, 
         TStaticText* slotControl = static_cast<TStaticText*>(sourceHandler);
         slotControl->SetEnabled(0, 1);
         CString slotText;
-        slotControl->AssignSharedStringFromField84(&slotText);
+        slotControl->CopyTextTo(&slotText);
 
         TEditText* editControl = new TEditText();
         int offsetLayout[2] = {slotControl->ownerLocalX, slotControl->ownerLocalY};
         int sizeLayout[2] = {slotControl->frameWidth34, slotControl->frameHeight38};
         editControl->InitializeTextEntryBaseAndOptionalStringResource(this, offsetLayout,
-                                                                       sizeLayout, 5, 5, -1, 0);
-        editControl->field_9c = 0x1f; // max character count
+                                                                      sizeLayout, 5, 5, -1, 0);
+        editControl->maxCharacterCount = 0x1f;
         editControl->SetControlValue(1);
 
         editControl->SetTextStyleAndMaybeRefresh(&styleAt9e, 0);
         editControl->InitDialogWindowAndSyncTitleIfChanged(&slotText, 0);
         editControl->Refresh();
         editControl->ActivateCityProductionViewIfAllowed();
-        editControl->SetEditSelectionAndScrollCaret(0, static_cast<short>(slotText.GetLength()),
-                                                     0);
+        editControl->SetEditSelectionAndScrollCaret(0, static_cast<short>(slotText.GetLength()), 0);
         editControl->controlTag = 0x736c6f74u; // 'slot'
         g_pUiRuntimeContext->UpdatePaletteIndexFromTurnEventCode(0x10);
       }

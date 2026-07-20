@@ -29,10 +29,8 @@ const short kCouncilTickerIntervalMapMode = 0x2710;
 const unsigned int kEndControlTagReselect = 0x52655374u;    // mode 0x17
 const unsigned int kEndControlTagReselectAlt = 0x53636f72u; // mode 0x16
 
-void ApplyCouncilCandidateTextStyle(TStaticText* textControl,
-                                    const TUiTextStyleDescriptor* style) {
-  textControl->SetTextStyleAndMaybeRefresh(
-      const_cast<TUiTextStyleDescriptor*>(style), 0);
+void ApplyCouncilCandidateTextStyle(TStaticText* textControl, const TUiTextStyleDescriptor* style) {
+  textControl->SetTextStyleAndMaybeRefresh(const_cast<TUiTextStyleDescriptor*>(style), 0);
 }
 
 void RefreshCouncilCandidateNameText(TView* hostPanel, unsigned int controlTag, short nationSlot) {
@@ -50,7 +48,7 @@ void RefreshCouncilCandidateNameText(TView* hostPanel, unsigned int controlTag, 
   CString labelText;
   nation->LoadNationDisplayNameSharedRefFromField8(&labelText);
   TStaticText* textControl = static_cast<TStaticText*>(control);
-  textControl->AssignTextSharedRefIfChangedAndMaybeInvalidate(&labelText, 1);
+  textControl->SetTextAndMaybeRefresh(&labelText, 1);
 }
 
 void RefreshCouncilCoatOfArmsPicture(TView* hostPanel, unsigned int controlTag, short nationSlot) {
@@ -81,10 +79,10 @@ TCouncilView::TCouncilView() : TDiplomacyMapView() {}
 // slot 0x37 — lifecycle-hook override: rebuilds the council nation-overlay geometry and
 // labels (the base impl is a no-op, hence the inherited slot name).
 // FUNCTION: IMPERIALISM 0x004fba70
-void TCouncilView::NoOpUiLifecycleHook(int arg) {
+void TCouncilView::DoPostCreate(int arg) {
   // Calls the (literally no-op) base-class slot 0x37 impl non-virtually, matching the
   // ground truth's fixed-address (not vtable) call to 0x48ab70.
-  this->TView::NoOpUiLifecycleHook(arg);
+  this->TView::DoPostCreate(arg);
 
   interactionModeAt94 = 5;
   tickerSlots24ca[0] = 0;
@@ -104,7 +102,7 @@ void TCouncilView::NoOpUiLifecycleHook(int arg) {
       static_cast<TDropShadowText*>(this->ResolveControlByTag(kControlTagTitl));
   titleControl->AssertValid();
   ApplyUiTextStyleAndThemeFlags(titleControl, 0, 0x10, 0x2b6c, 0x2b67);
-  titleControl->SetTextThemeCodeAndMaybeRefresh(-2, 0);
+  titleControl->SetTextAlignmentAndMaybeRefresh(-2, 0);
 
   if (g_pSimMgr->mode == 0x17 || g_pSimMgr->mode == 0x16) {
     // Map-interaction mode: title shows "<terrain/country name>" expanded through the
@@ -117,7 +115,7 @@ void TCouncilView::NoOpUiLifecycleHook(int arg) {
     CString finalTitle;
     scanBracketExpressions(g_pSimMgr, &finalTitle, static_cast<LPCSTR>(titleTemplate),
                            static_cast<LPCSTR>(terrainLabel));
-    titleControl->AssignTextSharedRefIfChangedAndMaybeInvalidate(&finalTitle, 0);
+    titleControl->SetTextAndMaybeRefresh(&finalTitle, 0);
 
     if (g_pDiplomacyTurnStateManager->lastProcessedNationSlot78e ==
         g_pSimMgr->GetActiveNationId()) {
@@ -130,7 +128,7 @@ void TCouncilView::NoOpUiLifecycleHook(int arg) {
     // ticker panel and the "end"/"quer" council-action button captions.
     CString titleText;
     g_pSimMgr->GetString(0x2733, 0x5e, &titleText);
-    titleControl->AssignTextSharedRefIfChangedAndMaybeInvalidate(&titleText, 0);
+    titleControl->SetTextAndMaybeRefresh(&titleText, 0);
 
     ApplySharedStringToGlobalControlTag(CString(g_szEmptyString), kControlTagMain);
 

@@ -56,7 +56,7 @@ void TInfoBarText::InitializeMapHintTextStyleAndThemeFlags(int stylePrimary, int
   TUiTextStyleDescriptor styleDescriptor = {0, 0, 0, 0};
   BuildUiTextStyleDescriptor(&styleDescriptor, 0, 0xc, styleSecondary);
   ApplyTextStyleDescriptorAndMaybeRefresh(&styleDescriptor, 0);
-  SetTextThemeCodeAndMaybeRefresh(static_cast<short>(-1), 0);
+  SetTextAlignmentAndMaybeRefresh(static_cast<short>(-1), 0);
   layoutRectA4.left = 0;
   layoutRectA4.top = 0;
   layoutRectA4.right = 0;

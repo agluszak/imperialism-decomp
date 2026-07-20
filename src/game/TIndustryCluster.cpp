@@ -59,7 +59,7 @@ TIndustryCluster::TIndustryCluster()
 // TIndustryCluster::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x00588b70
-void TIndustryCluster::NoOpUiLifecycleHook(int styleSeed) {
+void TIndustryCluster::DoPostCreate(int styleSeed) {
   short tagIndex = 0;
   short activeNationId = g_pSimMgr->GetActiveNationId();
   TGreatPower* activeNationState = GetNationStateBySlot(activeNationId);

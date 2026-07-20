@@ -11,6 +11,8 @@ Everything the pipeline knows about the source model is built here, once:
   - **vtables** — every `// VTABLE:` annotation with its owning class (parsed
     from the following `class`/`struct` declaration).
   - **globals** — every `// GLOBAL:` annotation with its declared name.
+  - **generated UI factory claims** — `config/ui_factory_codegen.yml` owns the
+    declarations emitted into the build tree (origin "generated");
   - **reviewed library identities** — `config/reviewed_library_identities.csv`
     rows become LIBRARY claims (origin "reviewed"); a source marker at the same
     address wins.
@@ -68,7 +70,7 @@ class Claim:
     name: str = ""  # source-derived qualified/free name ("" if unparsable)
     prototype: str = ""  # source declaration head ("" if unparsable)
     symbol: str = ""  # mangled linker symbol when known
-    origin: str = "marker"  # marker | reviewed
+    origin: str = "marker"  # marker | generated | reviewed
 
 
 @dataclass
@@ -197,6 +199,14 @@ def build_model(repo_root: Path, target: str = "IMPERIALISM") -> SourceModel:
                 if gname:
                     model.globals.setdefault(gaddr, gname)
 
+    generated_manifest = repo_root / "config" / "ui_factory_codegen.yml"
+    if target.upper() == "IMPERIALISM" and generated_manifest.is_file():
+        from tools.ui_codegen import generated_claim_rows
+
+        for row in generated_claim_rows(repo_root):
+            claim = Claim(**row)
+            per_addr.setdefault(claim.address, []).append(claim)
+
     for addr, claims in sorted(per_addr.items()):
         model.functions[addr] = claims[0]
         if len(claims) > 1:
@@ -237,8 +247,10 @@ def claimed_addresses(repo_root: Path, target: str = "IMPERIALISM") -> set[int]:
     return set(build_model(repo_root, target).functions)
 
 
-def ownership_kind(kind: str) -> str:
-    return "library" if kind == "LIBRARY" else "manual"
+def ownership_kind(kind: str, origin: str = "marker") -> str:
+    if kind == "LIBRARY":
+        return "library"
+    return "generated" if origin == "generated" else "manual"
 
 
 def ownership_view(repo_root: Path, target: str = "IMPERIALISM") -> dict[int, Claim]:

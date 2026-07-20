@@ -23,9 +23,9 @@ THQButton::THQButton() : TPicture() {}
 // THQButton::`scalar deleting destructor'
 THQButton::~THQButton() {}
 // FUNCTION: IMPERIALISM 0x0058b6e0
-void THQButton::NoOpUiLifecycleHook(int arg) {
+void THQButton::DoPostCreate(int arg) {
   short glyph = glyphBase84;
-  TView::NoOpUiLifecycleHook(arg);
+  TView::DoPostCreate(arg);
   glyph98 = 0;
   glyph90 = glyph;
   frameStyle60 = 0xc;

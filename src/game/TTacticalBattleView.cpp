@@ -909,10 +909,11 @@ TTacticalBattleView::~TTacticalBattleView() {}
 void TTacticalBattleView::Free() {}
 
 // FUNCTION: IMPERIALISM 0x005a84d0
-void TTacticalBattleView::NoOpUiLifecycleHook(int arg) {
-  TView::NoOpUiLifecycleHook(arg);
+void TTacticalBattleView::DoPostCreate(int arg) {
+  TView::DoPostCreate(arg);
 
-  TInfoBarText* cursorPanel = static_cast<TInfoBarText*>(OwnerPanel()->ResolveControlByTag(kControlTagCurs));
+  TInfoBarText* cursorPanel =
+      static_cast<TInfoBarText*>(OwnerPanel()->ResolveControlByTag(kControlTagCurs));
   cursorPanel->QueryStepValue();
   g_pCursorControlPanel = cursorPanel;
   g_pCursorControlPanel->InitializeMapHintTextStyleAndThemeFlags(0x2b6c, 0x2b67);

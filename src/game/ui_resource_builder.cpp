@@ -40,8 +40,7 @@ void __cdecl RegisterUiResourceEntry(unsigned int nameTag, unsigned int controlT
 }
 
 // FUNCTION: IMPERIALISM 0x0041b3a0
-void __cdecl SetUiResourceStateFlags(unsigned char inputGateFlag4c,
-                                     unsigned char childHitTestFlag4d) {
+void __cdecl SetUiResourceStateFlags(bool inputGateFlag4c, bool childHitTestFlag4d) {
   TView* context = g_pUiResourceContext;
   context->inputGateFlag4c = inputGateFlag4c;
   context->childHitTestFlag4d = childHitTestFlag4d;
@@ -55,7 +54,7 @@ void __cdecl SetUiResourceContextPictureId(int nPictureId) {
 
 // FUNCTION: IMPERIALISM 0x0041b400
 void __cdecl SetUiResourceContextStringCode(int nCode) {
-  static_cast<TCluster*>(g_pUiResourceContext)->field84 = nCode;
+  static_cast<TCluster*>(g_pUiResourceContext)->selectedChildTag = nCode;
 }
 
 // FUNCTION: IMPERIALISM 0x0041b420
@@ -96,7 +95,7 @@ void __cdecl BindUiResourceTextAndStyle(int nGroupId, int nVariant, char* szText
   TStaticText* context = static_cast<TStaticText*>(g_pUiResourceContext);
   {
     CString text(szText);
-    context->AssignTextSharedRefIfChangedAndMaybeInvalidate(&text, 0);
+    context->SetTextAndMaybeRefresh(&text, 0);
   }
   TUiTextStyleDescriptor style;
   style.fontFamily = nMode;
@@ -104,7 +103,7 @@ void __cdecl BindUiResourceTextAndStyle(int nGroupId, int nVariant, char* szText
   style.fontSize = nPointSize;
   style.textColor = styleRef.value;
   context->SetTextStyleAndMaybeRefresh(&style, 0);
-  context->SetTextThemeCodeAndMaybeRefresh(nThemeCode, 0);
+  context->SetTextAlignmentAndMaybeRefresh(nThemeCode, 0);
 }
 
 // Set the current context edit control's max-character-count word (+0x9c).
@@ -112,15 +111,15 @@ void __cdecl BindUiResourceTextAndStyle(int nGroupId, int nVariant, char* szText
 void __cdecl SetUiResourceContextMaxCharCount(short maxChars) {
   TEditText* context = static_cast<TEditText*>(g_pUiResourceContext);
   context->AssertValid();
-  context->field_9c = maxChars;
+  context->maxCharacterCount = maxChars;
 }
 
 // FUNCTION: IMPERIALISM 0x0041b5a0
 void __cdecl SetUiResourceContextNumberValueAndRange(int value, int minValue, int maxValue) {
   TNumberText* context = static_cast<TNumberText*>(g_pUiResourceContext);
   context->AssertValid();
-  context->field_a8 = maxValue;
-  context->field_a4 = minValue;
+  context->maximumValue = maxValue;
+  context->minimumValue = minValue;
   context->SetControlValue(value, 0);
 }
 

@@ -288,7 +288,7 @@ char TLanguageMgr::PickGender(const char* name) const {
       unsigned long itemTag = 0x66726d30 + rowIndex;
       TRadioText* item = form->AddItem(itemTag, rowIndex, localizedName, 0xf, -1);
       ApplyUiTextStyleAndThemeFlags(item, 0, 0xc, 0x2b6b, 0x2b6c);
-      item->SetTextThemeCodeAndMaybeRefresh(1, 0);
+      item->SetTextAlignmentAndMaybeRefresh(1, 0);
       if (firstTag == 0) {
         firstTag = itemTag;
       }
@@ -305,7 +305,7 @@ char TLanguageMgr::PickGender(const char* name) const {
 
   unsigned char selectedIndex = static_cast<unsigned char>(form->selectedTag88) - '0';
   char rowBase = selectedIndex < primaryRowCount ? firstPrimaryRow : firstExtraRow;
-  dialog->CallVoidSlotA0();
+  dialog->Close();
   dialog->Free();
   return static_cast<char>(selectedIndex + rowBase);
 }

@@ -21,8 +21,8 @@ TPlacard::TPlacard() : TPicture() {
 // TPlacard::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x0058bab0
-void TPlacard::NoOpUiLifecycleHook(int arg) {
-  TView::NoOpUiLifecycleHook(arg);
+void TPlacard::DoPostCreate(int arg) {
+  TView::DoPostCreate(arg);
   if (glyph90 == 0) {
     SetState(0, 1);
     return;

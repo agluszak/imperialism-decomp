@@ -10,19 +10,15 @@ public:
   // Heap-allocated (`new CString()` in the ctor, freed in the dtor) — not an
   // embedded CString. Confirmed by the ctor/dtor disassembly (operator_new(4)
   // + CString::CString/~CString + operator_delete) and by
-  // AssignSharedStringFromField84/AssignTextSharedRefIfChangedAndMaybeInvalidate,
+  // CopyTextTo/SetTextAndMaybeRefresh,
   // which both dereference it once more than an embedded value would need.
-  CString* text; // 0x84
-  // UNRESOLVED_FIELD_ATTRIBUTION: field88 is a void* elsewhere in this file
-  // (TStaticText's own ctor/LoadUiStringAndDispatchViaVslot1C8 store an int group id via
-  // reinterpret_cast<void*>), but TShipView::HandleEvent reads its low 16 bits as a
-  // short "max value" compared against field90. Same physical object/offset, two
-  // conflicting readings -- kept as void* (the pre-existing, evidenced typing) pending
-  // full resolution; not retyped to avoid corrupting the already-verified ctor pattern.
-  void* field88; // 0x88
-  int field8C;   // 0x8c
-  short field90; // 0x90
-  short field92; // 0x92
+  CString* text;             // 0x84
+  int stringResourceGroupId; // 0x88, -1 means no string resource
+  int stringResourceIndex;   // 0x8c
+  short textAlignmentCode;   // 0x90, -2 left, 1 center, -1 right while drawing
+  // Additional text option written by TJoinSelectorDialog for its native edit control.
+  // No reader has yet distinguished the individual flag bits.
+  short textOptionFlags; // 0x92
 
   TStaticText();
   virtual ~TStaticText() override;
@@ -40,23 +36,21 @@ public:
   void ApplyRectSlot110(RECT* rectBuffer) override; // 0x110 0x48ffb0
 
   // 0x486290 — non-virtual convenience: qualified forward to
-  // AssignTextSharedRefIfChangedAndMaybeInvalidate(text, 0).
-  void UpdateTextEntrySharedStringIfChanged(CString* text);
+  // SetTextAndMaybeRefresh(text, 0).
+  void SetText(CString* text);
 
   // TStaticText's five new virtuals beyond TControl (which ends at byte 0x1c0).
   // None of these five are ever called for their return value anywhere in the
   // binary, and none of the bodies deliberately compute one (Ghidra's
   // "undefined" reflects an untracked/incidental AL, not a real result) — so
   // all five are modeled as void, matching observed behavior exactly.
-  virtual void SetTextThemeCodeAndMaybeRefresh(short themeCode,
+  virtual void SetTextAlignmentAndMaybeRefresh(short alignmentCode,
                                                char refreshFlag); // 0x1c4 0x48ff70
-  virtual void AssignTextSharedRefIfChangedAndMaybeInvalidate(CString* sharedString,
-                                                              char refreshNow); // 0x1c8 0x48fe60
-  virtual void LoadUiStringAndDispatchViaVslot1C8(short stringResourceGroup,
-                                                  short stringResourceIndex,
-                                                  char refreshNow); // 0x1cc 0x48fed0
-  virtual void AssignSharedStringFromField84(CString* out);         // 0x1d0 0x4294d0
-  virtual void RenderControlStateTextBySelectionCode(const char* textChars, int textLength,
-                                                     RECT* rect,
-                                                     short alignmentCode); // 0x1d4 0x4900a0
+  virtual void SetTextAndMaybeRefresh(CString* sharedString,
+                                      char refreshNow); // 0x1c8 0x48fe60
+  virtual void SetTextFromStringResource(short stringResourceGroup, short stringResourceIndex,
+                                         char refreshNow); // 0x1cc 0x48fed0
+  virtual void CopyTextTo(CString* out);                   // 0x1d0 0x4294d0
+  virtual void DrawTextAligned(const char* textChars, int textLength, RECT* rect,
+                               short alignmentCode); // 0x1d4 0x4900a0
 };

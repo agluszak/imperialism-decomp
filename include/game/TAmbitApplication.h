@@ -47,7 +47,7 @@ public:
   // 0x48 — receiver of HandleCursor's viewport-edge auto-scroll dispatch
   // (AutoScrollByEdgeMask, slot 0x74). Cleared by InitializeGlobalRuntimeSystems and the
   // map pictures' Free; set to the active map picture by the slot-0x37 lifecycle hook
-  // (TMapUberUberPicture::NoOpUiLifecycleHook 0x596810 and the TMapUberPicture override).
+  // (TMapUberUberPicture::DoPostCreate 0x596810 and the TMapUberPicture override).
   TMapUberUberPicture* edgeScrollTarget48;
   // 0x4c — a busy/dispatch-in-progress byte, set to 1 across many turn-event dispatch
   // branches in TViewMgr's state machine (0x5d7240) and cleared to 0 once handling

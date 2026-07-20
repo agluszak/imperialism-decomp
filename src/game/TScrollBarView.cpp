@@ -90,8 +90,8 @@ void TScrollBarView::Free() {
 // Not a no-op despite the inherited slot name: re-cache+assert the owner, re-seed the
 // bounded-value words, and re-allocate the 8-bit surface for the current frame rect.
 // FUNCTION: IMPERIALISM 0x00574720
-void TScrollBarView::NoOpUiLifecycleHook(int arg) {
-  TView::NoOpUiLifecycleHook(arg);
+void TScrollBarView::DoPostCreate(int arg) {
+  TView::DoPostCreate(arg);
   ownerView84 = static_cast<TScrollView*>(ownerContext);
   ownerView84->AssertValid();
   word88 = 0x12;

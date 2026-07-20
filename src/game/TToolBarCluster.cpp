@@ -322,8 +322,7 @@ void TToolBarCluster::UpdateControlTagTreaTextFromNationAndMapContext(short nati
   }
   TView* treaControl = this->ResolveControlByTag(0x74726561); // 'trea'
   if (treaControl != nullptr) {
-    static_cast<TStaticText*>(treaControl)
-        ->AssignTextSharedRefIfChangedAndMaybeInvalidate(&treaText, 1);
+    static_cast<TStaticText*>(treaControl)->SetTextAndMaybeRefresh(&treaText, 1);
   }
 
   // 'seas' tag: "<season>, <year>" turn-status text (present on the main map toolbar).
@@ -335,8 +334,7 @@ void TToolBarCluster::UpdateControlTagTreaTextFromNationAndMapContext(short nati
     CString yearText;
     yearText.Format("%d", year);
     CString seasText = seasonText + ", " + yearText;
-    static_cast<TStaticText*>(seasControl)
-        ->AssignTextSharedRefIfChangedAndMaybeInvalidate(&seasText, 1);
+    static_cast<TStaticText*>(seasControl)->SetTextAndMaybeRefresh(&seasText, 1);
     return;
   }
 
@@ -358,8 +356,7 @@ void TToolBarCluster::UpdateControlTagTreaTextFromNationAndMapContext(short nati
   CString forcText;
   scanBracketExpressions(g_pSimMgr, &forcText, static_cast<LPCSTR>(templateText),
                          static_cast<LPCSTR>(countText));
-  static_cast<TStaticText*>(forcControl)
-      ->AssignTextSharedRefIfChangedAndMaybeInvalidate(&forcText, 1);
+  static_cast<TStaticText*>(forcControl)->SetTextAndMaybeRefresh(&forcText, 1);
 }
 
 // FUNCTION: IMPERIALISM 0x00585ee0
@@ -380,8 +377,8 @@ void DispatchUiRuntimeMessage102CAndRefreshActiveView() {
   // ExecuteViewModalStateWithPushPopChain() takes zero args, matching this callsite's bare
   // `call [edi+0x1ac]` exactly, whereas the byte-coincident TControl::NoOpUiViewSlotHandler
   // takes two.
-  TWindow* node = static_cast<TWindow*>(
-      g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(0x102c));
+  TWindow* node =
+      static_cast<TWindow*>(g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(0x102c));
   if (node == nullptr) {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgr_0069B6BC, 0xf6c);
@@ -390,6 +387,6 @@ void DispatchUiRuntimeMessage102CAndRefreshActiveView() {
   g_pUiRuntimeContext->ComputeTurnEventDialogPlacementByCode(node, &placement);
   node->CaptureLayoutF0(reinterpret_cast<int*>(&placement), 0);
   node->ExecuteViewModalStateWithPushPopChain();
-  node->CallVoidSlotA0();
+  node->Close();
   node->Free();
 }

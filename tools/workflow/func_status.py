@@ -66,7 +66,7 @@ def main() -> int:
 
     symbols = _index_by_address(SYMBOLS_CSV)
     ownership = {
-        f"{a:x}": {"ownership": ownership_kind(c.kind),
+        f"{a:x}": {"ownership": ownership_kind(c.kind, c.origin),
                    "target_cpp": c.file,
                    "note": f"marker {c.kind} at {c.file}:{c.line}"}
         for a, c in ownership_view(REPO_ROOT).items()

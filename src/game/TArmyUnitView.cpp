@@ -130,8 +130,7 @@ void TArmyUnitView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEv
       sourceView->SetEnabled(0, 1);
       SetControlHoverHelpTextAltEntry(CString(g_pMiniCivSharedText_0064cb18), sourceView);
 
-      TStaticText* checkControl =
-          static_cast<TStaticText*>(ResolveControlByTag(kControlTagChec));
+      TStaticText* checkControl = static_cast<TStaticText*>(ResolveControlByTag(kControlTagChec));
       // UNRESOLVED_FIELD_ATTRIBUTION: the original also updates checkControl's
       // field88/field8C icon-index state here (a per-unit-type table lookup keyed by
       // TUnit::orderType) before RefreshControl. field8C is read here as a base pointer
@@ -141,10 +140,10 @@ void TArmyUnitView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEv
       // is left unmodeled rather than guessing which reading applies here.
       checkControl->RefreshControl();
 
-      TStaticText* tbr1 =
-          static_cast<TStaticText*>(g_pDisplayMgr->activeDialog->ResolveControlByTag(kControlTagTbr1));
+      TStaticText* tbr1 = static_cast<TStaticText*>(
+          g_pDisplayMgr->activeDialog->ResolveControlByTag(kControlTagTbr1));
       tbr1->QueryStepValue();
-      tbr1->SetTextThemeCodeAndMaybeRefresh(static_cast<short>(g_pSimMgr->GetActiveNationId()), 0);
+      tbr1->SetTextAlignmentAndMaybeRefresh(static_cast<short>(g_pSimMgr->GetActiveNationId()), 0);
     } else {
       CString msg;
       g_pSimMgr->GetString(0x2745, 3, &msg);
@@ -165,8 +164,8 @@ void TArmyUnitView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEv
 // typed text back into field60->name24.
 // FUNCTION: IMPERIALISM 0x004a9ca0
 void TArmyUnitView::HandleCrossUArmyViewsNameCommand() {
-  TWindow* node = static_cast<TWindow*>(
-      g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(0xdb4));
+  TWindow* node =
+      static_cast<TWindow*>(g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(0xdb4));
   if (node == nullptr) {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUArmyViews_00695858, 0x204);
@@ -177,12 +176,12 @@ void TArmyUnitView::HandleCrossUArmyViewsNameCommand() {
 
   TStaticText* titleControl = static_cast<TStaticText*>(node->ResolveControlByTag(kControlTagTitl));
   titleControl->AssertValid();
-  titleControl->LoadUiStringAndDispatchViaVslot1C8(0x2746, 1, 1);
+  titleControl->SetTextFromStringResource(0x2746, 1, 1);
   titleControl->textStyle78 = style;
 
   TEditText* nameControl = static_cast<TEditText*>(node->ResolveControlByTag(kControlTagName));
   nameControl->AssertValid();
-  nameControl->field_9c = 0x18;
+  nameControl->maxCharacterCount = 0x18;
   CString editedName;
   editedName = field60->name24;
   nameControl->InitDialogWindowAndSyncTitleIfChanged(&editedName, 1);

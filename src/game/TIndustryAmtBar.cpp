@@ -38,7 +38,7 @@ TIndustryAmtBar::TIndustryAmtBar() : TAmtBar(), selectedMetricRecord(0) {}
 // TIndustryAmtBar::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x00589260
-void TIndustryAmtBar::NoOpUiLifecycleHook(int arg) {
+void TIndustryAmtBar::DoPostCreate(int arg) {
   // ORIG_CALLCONV: __thiscall
   TGreatPower* nationState = GetActiveNationState();
   TCity* cityState = nationState != 0 ? nationState->GetCityState() : 0;
@@ -69,7 +69,7 @@ void TIndustryAmtBar::NoOpUiLifecycleHook(int arg) {
   auxValueB = 0x3a;
   rangeOrMaxValue = (short)((selectedMetricRecord->quantityField04 * rangeRaw) / productionCap);
 
-  reinterpret_cast<TView*>(this)->TView::NoOpUiLifecycleHook(arg);
+  reinterpret_cast<TView*>(this)->TView::DoPostCreate(arg);
 }
 
 // FUNCTION: IMPERIALISM 0x00589340

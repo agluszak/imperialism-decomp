@@ -26,16 +26,17 @@ IMPLEMENT_DYNCREATE(TGamePreferencesPicture, TPicture)
 TGamePreferencesPicture::TGamePreferencesPicture() {}
 
 // FUNCTION: IMPERIALISM 0x0056a5b0
-void TGamePreferencesPicture::NoOpUiLifecycleHook(int arg) {
-}
+void TGamePreferencesPicture::DoPostCreate(int arg) {}
 
 // FUNCTION: IMPERIALISM 0x0056ae10
-void TGamePreferencesPicture::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+void TGamePreferencesPicture::HandleEvent(int commandId, TEventHandler* sourceHandler,
+                                          TEvent* event) {
   if (commandId == 0xa) {
     unsigned int tag = sourceHandler->controlTag;
     if (tag == kControlTagCanc) {
-      g_pSfxPlaybackSystem->SetMasterVolumeFromPercent(static_cast<short>(field90));
-      g_pSimMgr->preferenceValues[3] = static_cast<short>(field90);
+      g_pSfxPlaybackSystem->SetMasterVolumeFromPercent(
+          static_cast<short>(originalSoundVolumePercent));
+      g_pSimMgr->preferenceValues[3] = static_cast<short>(originalSoundVolumePercent);
       g_pSfxPlaybackSystem->ScaleAndApplyAuxOutputVolume(g_pSimMgr->preferenceValues[3]);
       if (g_pSimMgr->mode == 1) {
         g_pGlobalUiRootController->PostTurnEventCodeMessage2420(0x5dc);

@@ -30,8 +30,8 @@ TLoungeDialog::TLoungeDialog() {}
 void TLoungeDialog::Free() {}
 
 // FUNCTION: IMPERIALISM 0x0054d730
-void TLoungeDialog::NoOpUiLifecycleHook(int arg) {
-  TNoHilitePicture::NoOpUiLifecycleHook(arg);
+void TLoungeDialog::DoPostCreate(int arg) {
+  TNoHilitePicture::DoPostCreate(arg);
 
   g_pGameFlowState->EnableDiplomacyQueueRoutingAndSetContextField44(this, 1);
 
@@ -43,20 +43,23 @@ void TLoungeDialog::NoOpUiLifecycleHook(int arg) {
   lablControl->AssertValid();
   lablControl->BuildAndApplyTextStyleDescriptor(0, 0xe, 0x2b6b);
   lablControl->InitializeMapHintTextStyleAndThemeFlags(0x2b6b, 0x2b6c);
-  lablControl->SetTextThemeCodeAndMaybeRefresh(1, 0);
+  lablControl->SetTextAlignmentAndMaybeRefresh(1, 0);
 
   // Per-nation-slot roster rows: a ready-state radio ('rad0'-'rad6'), a portrait/pick
   // button ('pik0'-'pik6'), and a name label ('nam0'-'nam6'), each initialized with a
   // blank caption via the same restyle idiom as RefreshMapAndMessageControlsForCurrentContext.
   for (int i = 0; i < 7; ++i) {
-    LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2742, 6, 0x72616430u + i); // 'rad0'-'rad6'
-    LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2742, 7, 0x70696b30u + i); // 'pik0'-'pik6'
-    LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2742, 8, 0x6e616d30u + i); // 'nam0'-'nam6'
+    LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2742, 6,
+                                                          0x72616430u + i); // 'rad0'-'rad6'
+    LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2742, 7,
+                                                          0x70696b30u + i); // 'pik0'-'pik6'
+    LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2742, 8,
+                                                          0x6e616d30u + i); // 'nam0'-'nam6'
     // 0x6980c8 is an unlabeled data address Ghidra never recognized as a string (no
     // string-oracle entry, single xref) -- treated as the empty placeholder caption it
     // reads as.
-    TStaticText* nameControl = RefreshActiveControlThenApplyThemeStyleAndCaption(
-        0x6e616d30u + i, 0, 0xe, 0x2b6b, -2, "");
+    TStaticText* nameControl =
+        RefreshActiveControlThenApplyThemeStyleAndCaption(0x6e616d30u + i, 0, 0xe, 0x2b6b, -2, "");
     nameControl->AssertValid();
     ApplyUiTextStyleAndThemeFlags((TDropShadowText*)nameControl, 0, 0xe, 0x2b6b, 0x2b6c);
   }
@@ -83,7 +86,7 @@ void TLoungeDialog::NoOpUiLifecycleHook(int arg) {
   }
 
   LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2742, 0xc, 0x6d657373u); // 'mess'
-  field94 = -1;
+  selectedNationSlot = -1;
   DoIdle(1);
 
   // The original then re-checks IsSpecialNationDialogModeActive() and does further
@@ -149,6 +152,6 @@ void TLoungeDialog::RefreshMapAndMessageControlsForCurrentContext() {
   messControl->AssertValid();
   CString messageText;
   g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&messageText, 0x2742, 0x10);
-  messControl->AssignTextSharedRefIfChangedAndMaybeInvalidate(&messageText, 1);
+  messControl->SetTextAndMaybeRefresh(&messageText, 1);
   RefreshControl();
 }

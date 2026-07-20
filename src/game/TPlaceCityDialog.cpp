@@ -27,6 +27,6 @@ void TPlaceCityDialog::ApplyRectSlot110(RECT* rectBuffer) {
 }
 
 // FUNCTION: IMPERIALISM 0x004d1e60
-void TPlaceCityDialog::CallVoidSlotA0() {
-  TView::CallVoidSlotA0();
+void TPlaceCityDialog::Close() {
+  TView::Close();
 }

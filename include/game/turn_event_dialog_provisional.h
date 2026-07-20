@@ -16,7 +16,7 @@ class TViewMgr;
 //
 // The turn-event slots 0x68..0x6e and the GOLD control's 0x71/0x72 are consistent
 // across every call site. Slots that correspond to real, already-recovered TView
-// methods (ResolveControlByTag 0x25, CallVoidSlotA0 0x28, CaptureLayoutF0 0x3c, Free
+// methods (ResolveControlByTag 0x25, Close 0x28, CaptureLayoutF0 0x3c, Free
 // 0x07) are NOT redeclared here — callers invoke those real inherited methods
 // directly. The remaining Slot* names below are still provisional pending recovery of
 // the concrete dialog/control classes.

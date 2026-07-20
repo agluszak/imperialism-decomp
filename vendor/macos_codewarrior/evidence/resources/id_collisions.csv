@@ -1,0 +1,394 @@
+type_code,resource_id,resource_id_hex,occurrences,resource_files,names
+ALIB,0,0x0000,18,Armory.rsrc;Citydlog.rsrc;Citymain.rsrc;Diplo.rsrc;FlagView.rsrc;Linger.rsrc;Linger.rsrc;MapView.rsrc;Minister.rsrc;Multiplayer.rsrc;Shipyard.rsrc;Startup.rsrc;Tactical.rsrc;Tech.rsrc;TechStore.rsrc;Trade.rsrc;Transport.rsrc;Univ.rsrc,;;;;;;;;;;;;;;;;;
+ALIB,1,0x0001,17,Armory.rsrc;Citydlog.rsrc;Citymain.rsrc;Diplo.rsrc;FlagView.rsrc;Linger.rsrc;MapView.rsrc;Minister.rsrc;Multiplayer.rsrc;Shipyard.rsrc;Startup.rsrc;Tactical.rsrc;Tech.rsrc;TechStore.rsrc;Trade.rsrc;Transport.rsrc;Univ.rsrc,;;;;;;;;;;;;;;;;
+ALIB,2,0x0002,17,Armory.rsrc;Citydlog.rsrc;Citymain.rsrc;Diplo.rsrc;FlagView.rsrc;Linger.rsrc;MapView.rsrc;Minister.rsrc;Multiplayer.rsrc;Shipyard.rsrc;Startup.rsrc;Tactical.rsrc;Tech.rsrc;TechStore.rsrc;Trade.rsrc;Transport.rsrc;Univ.rsrc,;;;;;;;;;;;;;;;;
+ALIB,3,0x0003,17,Armory.rsrc;Citydlog.rsrc;Citymain.rsrc;Diplo.rsrc;FlagView.rsrc;Linger.rsrc;MapView.rsrc;Minister.rsrc;Multiplayer.rsrc;Shipyard.rsrc;Startup.rsrc;Tactical.rsrc;Tech.rsrc;TechStore.rsrc;Trade.rsrc;Transport.rsrc;Univ.rsrc,;;;;;;;;;;;;;;;;
+ALIB,253,0x00fd,2,Linger.rsrc;Trade.rsrc,;
+ALIB,953,0x03b9,2,Linger.rsrc;Startup.rsrc,;
+ALIB,1000,0x03e8,2,Linger.rsrc;Startup.rsrc,;
+ALIB,1001,0x03e9,2,Linger.rsrc;TechStore.rsrc,;
+ALIB,1004,0x03ec,2,Linger.rsrc;Startup.rsrc,;
+ALIB,1206,0x04b6,2,Linger.rsrc;MapView.rsrc,;
+ALIB,1300,0x0514,3,Linger.rsrc;MapView.rsrc;Startup.rsrc,;;
+ALIB,1506,0x05e2,2,Linger.rsrc;MapView.rsrc,;
+ALIB,1509,0x05e5,4,Diplo.rsrc;Linger.rsrc;MapView.rsrc;Trade.rsrc,;;;
+ALIB,3300,0x0ce4,8,Citymain.rsrc;Diplo.rsrc;FlagView.rsrc;MapView.rsrc;Tech.rsrc;TechStore.rsrc;Trade.rsrc;Transport.rsrc,;;;;;;;
+ALIB,4000,0x0fa0,5,Armory.rsrc;Citydlog.rsrc;FlagView.rsrc;Shipyard.rsrc;Univ.rsrc,;;;;
+ALIB,5001,0x1389,3,Citydlog.rsrc;FlagView.rsrc;Transport.rsrc,;;
+CURS,128,0x0080,2,Citymain.rsrc;Trade.rsrc,Hollow Arrow;
+PICT,580,0x0244,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,580 21May Big Imp F (Converted);580 6/20 scenario flags.24;580 6/20 scenario flags.24;580 6/20 scenario flags.24
+PICT,700,0x02bc,2,GWorld.rsrc;Linger.rsrc,700 Cotton.m3C;700 Cotton.m3C
+PICT,701,0x02bd,2,GWorld.rsrc;Linger.rsrc,701 Wool .m3C;701 Wool .m3C
+PICT,702,0x02be,2,GWorld.rsrc;Linger.rsrc,702 Timber.m3C;702 Timber.m3C
+PICT,703,0x02bf,2,GWorld.rsrc;Linger.rsrc,703 Coal.m3C;703 Coal.m3C
+PICT,704,0x02c0,2,GWorld.rsrc;Linger.rsrc,704 Iron.m3C;704 Iron.m3C
+PICT,705,0x02c1,2,GWorld.rsrc;Linger.rsrc,705 Horses.m3C;705 Horses.m3C
+PICT,706,0x02c2,2,GWorld.rsrc;Linger.rsrc,706 Oil.m3C;706 Oil.m3C
+PICT,707,0x02c3,2,GWorld.rsrc;Linger.rsrc,707 Canned Food.m3C;707 Canned Food.m3C
+PICT,708,0x02c4,2,GWorld.rsrc;Linger.rsrc,708 Fabric.m3C;708 Fabric.m3C
+PICT,709,0x02c5,2,GWorld.rsrc;Linger.rsrc,709 Lumber.m3C;709 Lumber.m3C
+PICT,710,0x02c6,2,GWorld.rsrc;Linger.rsrc,710 Paper.m3C;710 Paper.m3C
+PICT,711,0x02c7,2,GWorld.rsrc;Linger.rsrc,711 Steel.m3C;711 Steel.m3C
+PICT,712,0x02c8,2,GWorld.rsrc;Linger.rsrc,712 Fuel.m3C;712 Fuel.m3C
+PICT,713,0x02c9,2,GWorld.rsrc;Linger.rsrc,713 Clothing.m3C;713 Clothing.m3C
+PICT,714,0x02ca,2,GWorld.rsrc;Linger.rsrc,714 Furniture.m3C;714 Furniture.m3C
+PICT,715,0x02cb,2,GWorld.rsrc;Linger.rsrc,715 Hardware copy.m3C;715 Hardware.m3C
+PICT,716,0x02cc,2,GWorld.rsrc;Linger.rsrc,716 Armaments.m3C;716 Armaments.m3C
+PICT,717,0x02cd,2,GWorld.rsrc;Linger.rsrc,717 Grain copy.m3C;717 Grain 3/14.m3C
+PICT,718,0x02ce,2,GWorld.rsrc;Linger.rsrc,718 Produce.m3C;718 Produce.m3C
+PICT,719,0x02cf,2,GWorld.rsrc;Linger.rsrc,719 Fish .m3C;719 Fish .m3C
+PICT,720,0x02d0,2,GWorld.rsrc;Linger.rsrc,720 6/17 Livestock;720 6/17 Livestock
+PICT,721,0x02d1,2,GWorld.rsrc;Linger.rsrc,721 Gems.m3C;721 Gems.m3C
+PICT,722,0x02d2,2,GWorld.rsrc;Linger.rsrc,722 gold.m3C;722 gold.m3C
+PICT,1300,0x0514,2,Linger.rsrc;MapView.rsrc,1300 Game Ctrl Dn.m3C;1300 Game Ctrl Dn.m3C
+PICT,1301,0x0515,2,Linger.rsrc;MapView.rsrc,1301 Game Ctrl Dn.m3C;1301 Game Ctrl Dn.m3C
+PICT,1307,0x051b,2,Linger.rsrc;MapView.rsrc,1307 Query Dn.m3C;1307 Query Dn.m3C
+PICT,1380,0x0564,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,1380 Fleet E1 Dk. Blue.24;1380 Fleet E1 Dk. Blue.24;1380 Fleet E1 Dk. Blue.24;1380 Fleet E1 Dk. Blue.24
+PICT,1381,0x0565,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,1381 Fleet E1 Red.24;1381 Fleet E1 Red.24;1381 Fleet E1 Red.24;1381 Fleet E1 Red.24
+PICT,1382,0x0566,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,1382 Fleet E1 Purple.24;1382 Fleet E1 Purple.24;1382 Fleet E1 Purple.24;1382 Fleet E1 Purple.24
+PICT,1383,0x0567,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,1383 Fleet E1 Cyan.24;1383 Fleet E1 Cyan.24;1383 Fleet E1 Cyan.24;1383 Fleet E1 Cyan.24
+PICT,1384,0x0568,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,1384 Fleet E1 Orange.24;1384 Fleet E1 Orange.24;1384 Fleet E1 Orange.24;1384 Fleet E1 Orange.24
+PICT,1385,0x0569,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,1385 Fleet E1 Green.24;1385 Fleet E1 Green.24;1385 Fleet E1 Green.24;1385 Fleet E1 Green.24
+PICT,1386,0x056a,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,1386 Fleet E1 Yellow.24;1386 Fleet E1 Yellow.24;1386 Fleet E1 Yellow.24;1386 Fleet E1 Yellow.24
+PICT,1387,0x056b,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,1387 Fleet E2 Dk. Blue.24;1387 Fleet E2 Dk. Blue.24;1387 Fleet E2 Dk. Blue.24;1387 Fleet E2 Dk. Blue.24
+PICT,1388,0x056c,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,1388 Fleet E2 Red.24;1388 Fleet E2 Red.24;1388 Fleet E2 Red.24;1388 Fleet E2 Red.24
+PICT,1389,0x056d,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,1389 Fleet E2 Purple.24;1389 Fleet E2 Purple.24;1389 Fleet E2 Purple.24;1389 Fleet E2 Purple.24
+PICT,1390,0x056e,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,1390 Fleet E2 Cyan.24;1390 Fleet E2 Cyan.24;1390 Fleet E2 Cyan.24;1390 Fleet E2 Cyan.24
+PICT,1391,0x056f,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,1391 Fleet E2 Orange.24;1391 Fleet E2 Orange.24;1391 Fleet E2 Orange.24;1391 Fleet E2 Orange.24
+PICT,1392,0x0570,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,1392 Fleet E2 Green.24;1392 Fleet E2 Green.24;1392 Fleet E2 Green.24;1392 Fleet E2 Green.24
+PICT,1393,0x0571,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,1393 Fleet E2 Yellow.24;1393 Fleet E2 Yellow.24;1393 Fleet E2 Yellow.24;1393 Fleet E2 Yellow.24
+PICT,1394,0x0572,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,1394 E3 Fleet GP0 Dk. Blue.24;1394 E3 Fleet GP0 Dk. Blue.24;1394 E3 Fleet GP0 Dk. Blue.24;1394 E3 Fleet GP0 Dk. Blue.24
+PICT,1395,0x0573,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,1395 E3 Fleet GP1 Red.24;1395 E3 Fleet GP1 Red.24;1395 E3 Fleet GP1 Red.24;1395 E3 Fleet GP1 Red.24
+PICT,1396,0x0574,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,1396 E3 Fleet GP2 Purple.24;1396 E3 Fleet GP2 Purple.24;1396 E3 Fleet GP2 Purple.24;1396 E3 Fleet GP2 Purple.24
+PICT,1397,0x0575,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,1397 E3 Fleet GP3 Cyan.24;1397 E3 Fleet GP3 Cyan.24;1397 E3 Fleet GP3 Cyan.24;1397 E3 Fleet GP3 Cyan.24
+PICT,1398,0x0576,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,1398 E3 Fleet GP4 Orange.24;1398 E3 Fleet GP4 Orange.24;1398 E3 Fleet GP4 Orange.24;1398 E3 Fleet GP4 Orange.24
+PICT,1399,0x0577,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,1399 E3 Fleet GP5 Green.24;1399 E3 Fleet GP5 Green.24;1399 E3 Fleet GP5 Green.24;1399 E3 Fleet GP5 Green.24
+PICT,1400,0x0578,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,1400 E3 Fleet GP6 Yellow.24;1400 E3 Fleet GP6 Yellow.24;1400 E3 Fleet GP6 Yellow.24;1400 E3 Fleet GP6 Yellow.24
+PICT,1401,0x0579,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,1401 Fleet Nugget E1 Dk.Blue.24;1401 Fleet Nugget E1 Dk.Blue.24;1401 Fleet Nugget E1 Dk.Blue.24;1401 Fleet Nugget E1 Dk.Blue.24
+PICT,1402,0x057a,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,1402 Fleet Nuggets E1 Red.24;1402 Fleet Nuggets E1 Red.24;1402 Fleet Nuggets E1 Red.24;1402 Fleet Nuggets E1 Red.24
+PICT,1403,0x057b,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,1403 Fleet Nuggets E1 Purple.24;1403 Fleet Nuggets E1 Purple.24;1403 Fleet Nuggets E1 Purple.24;1403 Fleet Nuggets E1 Purple.24
+PICT,1404,0x057c,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,1404 Fleet Nuggets E1 Cyan.24;1404 Fleet Nuggets E1 Cyan.24;1404 Fleet Nuggets E1 Cyan.24;1404 Fleet Nuggets E1 Cyan.24
+PICT,1405,0x057d,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,1405 Fleet Nuggets E1 Orange.24;1405 Fleet Nuggets E1 Orange.24;1405 Fleet Nuggets E1 Orange.24;1405 Fleet Nuggets E1 Orange.24
+PICT,1406,0x057e,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,1406 Fleet Nuggets E1 Green.24;1406 Fleet Nuggets E1 Green.24;1406 Fleet Nuggets E1 Green.24;1406 Fleet Nuggets E1 Green.24
+PICT,1407,0x057f,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,1407 Fleet Nuggets E1 Yellow.24;1407 Fleet Nuggets E1 Yellow.24;1407 Fleet Nuggets E1 Yellow.24;1407 Fleet Nuggets E1 Yellow.24
+PICT,1408,0x0580,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,1408 Fleet Nugget E2 Dk.Blue.24;1408 Fleet Nugget E2 Dk.Blue.24;1408 Fleet Nugget E2 Dk.Blue.24;1408 Fleet Nugget E2 Dk.Blue.24
+PICT,1409,0x0581,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,1409 Fleet Nuggets E2 Red.24;1409 Fleet Nuggets E2 Red.24;1409 Fleet Nuggets E2 Red.24;1409 Fleet Nuggets E2 Red.24
+PICT,1410,0x0582,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,1410 Fleet Nuggets E2 Purple.24;1410 Fleet Nuggets E2 Purple.24;1410 Fleet Nuggets E2 Purple.24;1410 Fleet Nuggets E2 Purple.24
+PICT,1411,0x0583,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,1411 Fleet Nuggets E2 Cyan.24;1411 Fleet Nuggets E2 Cyan.24;1411 Fleet Nuggets E2 Cyan.24;1411 Fleet Nuggets E2 Cyan.24
+PICT,1412,0x0584,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,1412 Fleet Nuggets E2 Orange.24;1412 Fleet Nuggets E2 Orange.24;1412 Fleet Nuggets E2 Orange.24;1412 Fleet Nuggets E2 Orange.24
+PICT,1413,0x0585,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,1413 Fleet Nuggets E2 Green.24;1413 Fleet Nuggets E2 Green.24;1413 Fleet Nuggets E2 Green.24;1413 Fleet Nuggets E2 Green.24
+PICT,1414,0x0586,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,1414 Fleet Nuggets E2 Yellow.24;1414 Fleet Nuggets E2 Yellow.24;1414 Fleet Nuggets E2 Yellow.24;1414 Fleet Nuggets E2 Yellow.24
+PICT,1415,0x0587,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,1415 Fleet Nugget E3 Dk.Blue.24;1415 Fleet Nugget E3 Dk.Blue.24;1415 Fleet Nugget E3 Dk.Blue.24;1415 Fleet Nugget E3 Dk.Blue.24
+PICT,1416,0x0588,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,1416 Fleet Nuggets E3 Red.24;1416 Fleet Nuggets E3 Red.24;1416 Fleet Nuggets E3 Red.24;1416 Fleet Nuggets E3 Red.24
+PICT,1417,0x0589,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,1417 Fleet Nuggets E3 Purple.24;1417 Fleet Nuggets E3 Purple.24;1417 Fleet Nuggets E3 Purple.24;1417 Fleet Nuggets E3 Purple.24
+PICT,1418,0x058a,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,1418 Fleet Nuggets E3 Cyan.24;1418 Fleet Nuggets E3 Cyan.24;1418 Fleet Nuggets E3 Cyan.24;1418 Fleet Nuggets E3 Cyan.24
+PICT,1419,0x058b,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,1419 Fleet Nuggets E3 Orange.24;1419 Fleet Nuggets E3 Orange.24;1419 Fleet Nuggets E3 Orange.24;1419 Fleet Nuggets E3 Orange.24
+PICT,1420,0x058c,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,1420 Fleet Nuggets E3 Green.24;1420 Fleet Nuggets E3 Green.24;1420 Fleet Nuggets E3 Green.24;1420 Fleet Nuggets E3 Green.24
+PICT,1421,0x058d,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,1421 Fleet Nuggets E3 Yellow.24;1421 Fleet Nuggets E3 Yellow.24;1421 Fleet Nuggets E3 Yellow.24;1421 Fleet Nuggets E3 Yellow.24
+PICT,1423,0x058f,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,1423 All Flags Strip.m3C;1423 All Flags Strip.24;1423 All Flags Strip.24;1423 All Flags Strip.24
+PICT,2016,0x07e0,2,Diplo.rsrc;Minister.rsrc,2016 Council and Arrow.m3C;2016 Council and Arrow.m3C
+PICT,3750,0x0ea6,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,3750 Tac GP0 COA.24;3750 Tac GP0 COA France.24;3750 Tac GP0 COA France.24;3750 Tac GP0 COA France.24
+PICT,3751,0x0ea7,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,3751 Tac GP1 COA.24;3751 Tac GP1 COA Austria.24;3751 Tac GP1 COA Austria.24;3751 Tac GP1 COA Austria.24
+PICT,3752,0x0ea8,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,3752 Tac GP2 COA.24;3752 Tac GP2 COA Turkey.24;3752 Tac GP2 COA Turkey.24;3752 Tac GP2 COA Turkey.24
+PICT,3753,0x0ea9,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,3753 Tac GP3 COA.24;3753 Tac GP3 COA Russia.24;3753 Tac GP3 COA Russia.24;3753 Tac GP3 COA Russia.24
+PICT,3754,0x0eaa,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,3754 Tac GP4 COA.24;3754 Tac GP4 COA Prussia.24;3754 Tac GP4 COA Prussia.24;3754 Tac GP4 COA Prussia.24
+PICT,3755,0x0eab,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,3755 Tac GP5 COA.24;3755 Tac GP5 COA Italy.24;3755 Tac GP5 COA Italy.24;3755 Tac GP5 COA Italy.24
+PICT,3756,0x0eac,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,3756 Tac GP6 COA.24;3756 Tac GP6 COA Britain.24;3756 Tac GP6 COA Britain.24;3756 Tac GP6 COA Britain.24
+PICT,3757,0x0ead,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,3764 Tac MN 07.24;3757 Tac COA MN 07 Portugal.24;3757 Tac COA MN 07 Portugal.24;3757 Tac COA MN 07 Portugal.24
+PICT,3758,0x0eae,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,3765 Tac MN 08.24;3758 Tac COA MN 08 Spain.24;3758 Tac COA MN 08 Spain.24;3758 Tac COA MN 08 Spain.24
+PICT,3759,0x0eaf,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,3766 Tac MN 09.24;3759 Tac COA MN 09 Catalonia.24;3759 Tac COA MN 09 Catalonia.24;3759 Tac COA MN 09 Catalonia.24
+PICT,3760,0x0eb0,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,3767 Tac MN 10.24;3760 Tac COA MN 10 Morocco.24;3760 Tac COA MN 10 Morocco.24;3760 Tac COA MN 10 Morocco.24
+PICT,3761,0x0eb1,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,3768 Tac MN 11.24;3761 Tac COA MN 11 N.Africa.24;3761 Tac COA MN 11 N.Africa.24;3761 Tac COA MN 11 N.Africa.24
+PICT,3762,0x0eb2,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,3769 Tac MN 12.24;3762 Tac COA MN 12 Sicily.24;3762 Tac COA MN 12 Sicily.24;3762 Tac COA MN 12 Bulgaria.24
+PICT,3763,0x0eb3,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,3770 Tac MN 13.24;3763 Tac COA MN 13 Poland.24;3763 Tac COA MN 13 Belgium.24;3763 Tac COA MN 13 Romania.24
+PICT,3764,0x0eb4,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,3771 Tac MN 14.24;3764 Tac COA MN 14 Egypt.24;3764 Tac COA MN 14 Egypt.24;3764 Tac COA MN 14 Egypt.24
+PICT,3765,0x0eb5,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,3772 Tac MN 15.24;3765 Tac COA MN 15 S.Germany.24;3765 Tac COA MN 15 S.Germany.24;3765 Tac COA MN 15 Albania.24
+PICT,3766,0x0eb6,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,3773 Tac MN 16.24;3766 Tac COA MN 16 Switz.24;3766 Tac COA MN 16 Switz.24;3766 Tac COA MN 16 Switz.24
+PICT,3767,0x0eb7,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,3774 Tac MN 17.24;3767 Tac COA MN 17 Nether.24;3767 Tac COA MN 17 Nether.24;3767 Tac COA MN 17 Nether.24
+PICT,3768,0x0eb8,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,3775 Tac MN 18.24;3768 Tac COA MN 18 N.Germany.24;3768 Tac COA MN 18 N.Germany.24;3768 Tac COA MN 18 Libya.24
+PICT,3769,0x0eb9,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,3776 Tac MN 19.24;3769 Tac COA MN 19 Denmark.24;3769 Tac COA MN 19 Denmark.24;3769 Tac COA MN 19 Denmark.24
+PICT,3770,0x0eba,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,3777 Tac MN 20.24;3770 Tac COA MN 20 Sweden.24;3770 Tac COA MN 20 Sweden.24;3770 Tac COA MN 20 Sweden.24
+PICT,3771,0x0ebb,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,3778 Tac MN 21.24;3771 Tac COA MN 21 Serbia.24;3771 Tac COA MN 21 Serbia.24;3771 Tac COA MN 21 Serbia.24
+PICT,3772,0x0ebc,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,3779 Tac MN 22.24;3772 Tac COA MN 22 Greece.24;3772 Tac COA MN 22 Greece.24;3772 Tac COA MN 22 Greece.24
+PICT,3821,0x0eed,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,3821 GP0 Wins.24;3821 France Wins.24;3821 France Wins.24;3821 France Wins.24
+PICT,3822,0x0eee,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,3822 GP1 Wins.24;3822 Austria Wins.24;3822 Austria Wins.24;3822 Austria Wins.24
+PICT,3823,0x0eef,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,3823 GP2 Wins.24;3823 Turkey Wins.24;3823 Turkey Wins.24;3823 Turkey Wins.24
+PICT,3824,0x0ef0,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,3824 GP3 Wins.24;3824 Russia Wins.24;3824 Russia Wins.24;3824 Russia Wins.24
+PICT,3825,0x0ef1,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,3825 GP4 Wins.24;3825 Prussia Wins.24;3825 Prussia Wins.24;3825 Prussia Wins.24
+PICT,3826,0x0ef2,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,3826 GP5 Wins.24;3826 Italy Wins.24;3826 Italy Wins.24;3826 Italy Wins.24
+PICT,3827,0x0ef3,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,3827 GP6 Wins.24;3827 Britain Wins.24;3827 Britain Wins.24;3827 Britain Wins.24
+PICT,3835,0x0efb,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,3835 GP0 Loses.24;3835 France Loses.24;3835 France Loses.24;3835 France Loses.24
+PICT,3836,0x0efc,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,3836 GP1 Loses.24;3836 Austria Loses.24;3836 Austria Loses.24;3836 Austria Loses.24
+PICT,3837,0x0efd,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,3837 GP2 Loses.24;3837 Turkey Loses.24;3837 Turkey Loses.24;3837 Turkey Loses.24
+PICT,3838,0x0efe,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,3838 GP3 Loses.24;3838 Russia Loses.24;3838 Russia Loses.24;3838 Russia Loses.24
+PICT,3839,0x0eff,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,3839 GP4 Loses.24;3839 Prussia Loses.24;3839 Prussia Loses.24;3839 Prussia Loses.24
+PICT,3840,0x0f00,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,3840 GP5 Loses.24;3840 Italy Loses.24;3840 Italy Loses.24;3840 Italy Loses.24
+PICT,3841,0x0f01,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,3841 GP6 Loses.24;3841 Britain Loses.24;3841 Britain Loses.24;3841 Britain Loses.24
+PICT,4311,0x10d7,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,4311 Status COA GP0.24;4311 Status COA France.24;4311 Status COA France.24;4311 Status COA France.24
+PICT,4312,0x10d8,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,4312 Status COA GP1.24;4312 Status COA Austria.24;4312 Status COA Austria.24;4312 Status COA Austria.24
+PICT,4313,0x10d9,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,4313 Status COA GP2.24;4313 Status COA Turkey.24;4313 Status COA Turkey.24;4313 Status COA Turkey.24
+PICT,4314,0x10da,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,4314 Status COA GP3.24;4314 Status COA Russia.24;4314 Status COA Russia.24;4314 Status COA Russia.24
+PICT,4315,0x10db,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,4315 Status COA GP4.24;4315 Status COA Prussia.24;4315 Status COA Prussia.24;4315 Status COA Prussia.24
+PICT,4316,0x10dc,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,4316 Status COA GP5.24;4316 Status COA Italy.24;4316 Status COA Italy.24;4316 Status COA Italy.24
+PICT,4317,0x10dd,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,4317 Status COA GP6.24;4317 Status COA Britain.24;4317 Status COA Britain.24;4317 Status COA Britain.24
+PICT,4357,0x1105,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,4357 CofGuvs COA GP0.24;4357 CofGuvs COA France.24;4357 CofGuvs COA France.24;4357 CofGuvs COA France.24
+PICT,4358,0x1106,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,4358 CofGuvs COA GP1.24;4358 CofGuvs COA Austria.24;4358 CofGuvs COA Austria.24;4358 CofGuvs COA Austria.24
+PICT,4359,0x1107,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,4359 CofGuvs COA GP2.24;4359 CofGuvs COA Turkey.24;4359 CofGuvs COA Turkey.24;4359 CofGuvs COA Turkey.24
+PICT,4360,0x1108,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,4360 CofGuvs COA GP3.24;4360 CofGuvs COA Russia.24;4360 CofGuvs COA Russia.24;4360 CofGuvs COA Russia.24
+PICT,4361,0x1109,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,4361 CofGuvs COA GP4.24;4361 CofGuvs COA Prussia.24;4361 CofGuvs COA Prussia.24;4361 CofGuvs COA Prussia.24
+PICT,4362,0x110a,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,4362 CofGuvs COA GP5.24;4362 CofGuvs COA Italy.24;4362 CofGuvs COA Italy.24;4362 CofGuvs COA Italy.24
+PICT,4363,0x110b,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,4363 CofGuvs COA GP6.24;4363 CofGuvs COA England.24;4363 CofGuvs COA England.24;4363 CofGuvs COA England.24
+PICT,4400,0x1130,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,4400 BR Flag GP0.24;4400 BR Flag GP0 France.24;4400 BR Flag GP0 France.24;4400 BR Flag GP0 France.24
+PICT,4401,0x1131,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,4401 BR Flag GP1.24;4401 BR Flag GP1 Austria.24;4401 BR Flag GP1 Austria.24;4401 BR Flag GP1 Austria.24
+PICT,4402,0x1132,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,4402 BR Flag GP2.24;4402 BR Flag GP2 Turkey.24;4402 BR Flag GP2 Turkey.24;4402 BR Flag GP2 Turkey.24
+PICT,4403,0x1133,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,4403 BR Flag GP3.24;4403 BR Flag GP3 Russia.24;4403 BR Flag GP3 Russia.24;4403 BR Flag GP3 Russia.24
+PICT,4404,0x1134,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,4404 BR Flag GP4.24;4404 BR Flag GP4 Prussia.24;4404 BR Flag GP4 Prussia.24;4404 BR Flag GP4 Prussia.24
+PICT,4405,0x1135,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,4405 BR Flag GP5.24;4405 BR Flag GP5 Italy.24;4405 BR Flag GP5 Italy.24;4405 BR Flag GP5 Italy.24
+PICT,4406,0x1136,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,4406 BR Flag GP6.24;4406 BR Flag GP6 Britain.24;4406 BR Flag GP6 Britain.24;4406 BR Flag GP6 Britain.24
+PICT,4407,0x1137,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,4407 BR Flag MN 07.24;4407 BR Flag MN07 Portugal.24;4407 BR Flag MN07 Portugal.24;4407 BR Flag MN07 Portugal.24
+PICT,4408,0x1138,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,4408 BR Flag MN 08.24;4408 BR Flag MN08 Spain.24;4408 BR Flag MN08 Spain.24;4408 BR Flag MN08 Spain.24
+PICT,4409,0x1139,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,4409 BR Flag MN 09.24;4409 BR Flag MN09 Catalonia.24;4409 BR Flag MN09 Catalonia.24;4409 BR Flag MN09 Catalonia.24
+PICT,4410,0x113a,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,4410 BR Flag MN 10.24;4410 BR Flag MN10 Morocco.24;4410 BR Flag MN10 Morocco.24;4410 BR Flag MN10 Morocco.24
+PICT,4411,0x113b,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,4411 BR Flag MN 11.24;4411 BR Flag MN11 N.Africa.24;4411 BR Flag MN11 N.Africa.24;4411 BR Flag MN11 N.Africa.24
+PICT,4412,0x113c,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,4412 BR Flag MN 12.24;4412 BR Flag MN12 Sicily.24;4412 BR Flag MN12 Sicily.24;4412 BR Flag MN12 Bulgaria.24
+PICT,4413,0x113d,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,4413 BR Flag MN 13.24;4413 BR Flag MN13 Poland.24;4413 BR Flag MN13 Belgium.24;4413 BR Flag MN13 Romania.24
+PICT,4414,0x113e,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,4414 BR Flag MN 14.24;4414 BR Flag MN14 Egypt.24;4414 BR Flag MN14 Egypt.24;4414 BR Flag MN14 Egypt.24
+PICT,4415,0x113f,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,4415 BR Flag MN 15.24;4415 BR Flag MN15 S.Germany.24;4415 BR Flag MN15 S.Germany.24;4415 BR Flag MN15 Albania.24
+PICT,4416,0x1140,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,4416 BR Flag MN 16.24;4416 BR Flag MN16 Switz.24;4416 BR Flag MN16 Switz.24;4416 BR Flag MN16 Switz.24
+PICT,4417,0x1141,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,4417 BR Flag MN 17.24;4417 BR Flag MN17 Nether.24;4417 BR Flag MN17 Nether.24;4417 BR Flag MN17 Nether.24
+PICT,4418,0x1142,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,4418 BR Flag MN 18.24;4418 BR Flag MN18 N.Germany.24;4418 BR Flag MN18 N.Germany.24;4418 BR Flag MN18 Libya.24
+PICT,4419,0x1143,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,4419 BR Flag MN 19.24;4419 BR Flag MN19 Denmark.24;4419 BR Flag MN19 Denmark.24;4419 BR Flag MN19 Denmark.24
+PICT,4420,0x1144,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,4420 BR Flag MN 20.24;4420 BR Flag MN20 Sweden.24;4420 BR Flag MN20 Sweden.24;4420 BR Flag MN20 Sweden.24
+PICT,4421,0x1145,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,4421 BR Flag MN 21.24;4421 BR Flag MN21 Serbia.24;4421 BR Flag MN21 Serbia.24;4421 BR Flag MN21 Serbia.24
+PICT,4422,0x1146,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,4422 BR Flag MN 22.24;4422 BR Flag MN22 Greece.24;4422 BR Flag MN22 Greece.24;4422 BR Flag MN22 Greece.24
+PICT,4423,0x1147,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,4423 BR 1st COA GP0.24;4072 BR 1st COA GP0 France.24;4423 BR 1st COA GP0 France.24;4423 BR 1st COA GP0 France.24
+PICT,4424,0x1148,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,4424 BR 1st COA GP1.24;4073 BR 1st COA GP1 Austria.24;4424 BR 1st COA GP1 Austria.24;4424 BR 1st COA GP1 Austria.24
+PICT,4425,0x1149,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,4425 BR 1st COA GP2.24;4074 BR 1st COA GP2 Turkey.24;4425 BR 1st COA GP2 Turkey.24;4425 BR 1st COA GP2 Turkey.24
+PICT,4426,0x114a,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,4426 BR 1st COA GP3.24;4075 BR 1st COA GP3 Russia.24;4426 BR 1st COA GP3 Russia.24;4426 BR 1st COA GP3 Russia.24
+PICT,4427,0x114b,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,4427 BR 1st COA GP4.24;4076 BR 1st COA GP4 Prussia.24;4427 BR 1st COA GP4 Prussia.24;4427 BR 1st COA GP4 Prussia.24
+PICT,4428,0x114c,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,4428 BR 1st COA GP5.24;4077 BR 1st COA GP5 Italy.24;4428 BR 1st COA GP5 Italy.24;4428 BR 1st COA GP5 Italy.24
+PICT,4429,0x114d,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,4429 BR 1st COA GP6.24;4078 BR 1st COA GP6 Britain.24;4429 BR 1st COA GP6 Britain.24;4429 BR 1st COA GP6 Britain.24
+PICT,4430,0x114e,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,4430 BR 3rd COA GP0.24;4079 BR 3rd COA GP0 France.24;4430 BR 3rd COA GP0 France.24;4430 BR 3rd COA GP0 France.24
+PICT,4431,0x114f,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,4431 BR 3rd COA GP1.24;4080 BR 3rd COA GP1 Austria.24;4431 BR 3rd COA GP1 Austria.24;4431 BR 3rd COA GP1 Austria.24
+PICT,4432,0x1150,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,4432 BR 3rd COA GP2.24;4081 BR 3rd COA GP2 Turkey.24;4432 BR 3rd COA GP2 Turkey.24;4432 BR 3rd COA GP2 Turkey.24
+PICT,4433,0x1151,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,4433 BR 3rd COA GP3.24;4082 BR 3rd COA GP3 Russia.24;4433 BR 3rd COA GP3 Russia.24;4433 BR 3rd COA GP3 Russia.24
+PICT,4434,0x1152,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,4434 BR 3rd COA GP4.24;4083 BR 3rd COA GP4 Prussia.24;4434 BR 3rd COA GP4 Prussia.24;4434 BR 3rd COA GP4 Prussia.24
+PICT,4435,0x1153,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,4435 BR 3rd COA GP5.24;4084 BR 3rd COA GP5 Italy.24;4435 BR 3rd COA GP5 Italy.24;4435 BR 3rd COA GP5 Italy.24
+PICT,4436,0x1154,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,4436 BR 3rd COA GP6.24;4085 BR 3rd COA GP6 Britain.24;4436 BR 3rd COA GP6 Britain.24;4436 BR 3rd COA GP6 Britain.24
+PICT,4437,0x1155,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,4437 BR 3rd COA MN07.24;4086 BR 3rd COA MN07 Portugl.24;4437 BR 3rd COA MN07 Portugl.24;4437 BR 3rd COA MN07 Portugl.24
+PICT,4438,0x1156,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,4438 BR 3rd COA MN08.24;4087 BR 3rd COA MN08 Spain.24;4438 BR 3rd COA MN08 Spain.24;4438 BR 3rd COA MN08 Spain.24
+PICT,4439,0x1157,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,4439 BR 3rd COA MN09.24;4088 BR 3rd COA MN09 Catalon.24;4439 BR 3rd COA MN09 Catalon.24;4439 BR 3rd COA MN09 Catalon.24
+PICT,4440,0x1158,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,4440 BR 3rd COA MN10.24;4089 BR 3rd COA MN10 Morocco.24;4440 BR 3rd COA MN10 Morocco.24;4440 BR 3rd COA MN10 Morocco.24
+PICT,4441,0x1159,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,4441 BR 3rd COA MN11.24;4090 BR 3rd COA MN11 N.Afric.24;4441 BR 3rd COA MN11 N.Afric.24;4441 BR 3rd COA MN11 N.Afric.24
+PICT,4442,0x115a,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,4442 BR 3rd COA MN12.24;4091 BR 3rd COA MN12 Sicily.24;4442 BR 3rd COA MN12 Sicily.24;4442 BR 3rd COA MN12 Bulgar.24
+PICT,4443,0x115b,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,4443 BR 3rd COA MN13.24;4092 BR 3rd COA MN13 Poland.24;4443 BR 3rd COA MN13 Belgium.24;4443 BR 3rd COA MN13 Romania.24
+PICT,4444,0x115c,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,4444 BR 3rd COA MN14.24;4093 BR 3rd COA MN14 Egypt.24;4444 BR 3rd COA MN14 Egypt.24;4444 BR 3rd COA MN14 Egypt.24
+PICT,4445,0x115d,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,4445 BR 3rd COA MN15.24;4094 BR 3rd COA MN15 S.Germ.24;4445 BR 3rd COA MN15 S.Germ.24;4445 BR 3rd COA MN15 Albania.24
+PICT,4446,0x115e,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,4446 BR 3rd COA MN16.24;4095 BR 3rd COA MN16 Switz.24;4446 BR 3rd COA MN16 Switz.24;4446 BR 3rd COA MN16 Switz.24
+PICT,4447,0x115f,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,4447 BR 3rd COA MN17.24;4096 BR 3rd COA MN17 Nether.24;4447 BR 3rd COA MN17 Nether.24;4447 BR 3rd COA MN17 Nether.24
+PICT,4448,0x1160,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,4448 BR 3rd COA MN18.24;4097 BR 3rd COA MN18 N.Germ.24;4448 BR 3rd COA MN18 N.Germ.24;4448 BR 3rd COA MN18 Libya.24
+PICT,4449,0x1161,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,4449 BR 3rd COA MN19.24;4098 BR 3rd COA MN19 Denmark.24;4449 BR 3rd COA MN19 Denmark.24;4449 BR 3rd COA MN19 Denmark.24
+PICT,4450,0x1162,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,4450 BR 3rd COA MN20.24;4099 BR 3rd COA MN20 Sweden.24;4450 BR 3rd COA MN20 Sweden.24;4450 BR 3rd COA MN20 Sweden.24
+PICT,4451,0x1163,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,4451 BR 3rd COA MN21.24;4100 BR 3rd COA MN21 Serbia.24;4451 BR 3rd COA MN21 Serbia.24;4451 BR 3rd COA MN21 Serbia.24
+PICT,4452,0x1164,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,4452 BR 3rd COA MN22.24;4101 BR 3rd COA MN22 Greece.24;4452 BR 3rd COA MN22 Greece.24;4452 BR 3rd COA MN22 Greece.24
+PICT,4503,0x1197,2,Demo.rsrc;Startup.rsrc,4503 Scenario Disabled.24;4503 Scenario Backgr.24
+PICT,4540,0x11bc,2,Embedded.rsrc;Startup.rsrc,4540 Random w/plates.24;4540 Random w/plate (Converted)
+PICT,4550,0x11c6,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,4550 COA GP0 (Dk Blue).24;4550 COA GP0 (Dk Blue).24;4550 COA GP0 (Dk Blue).24;4550 COA GP0 (Dk Blue).24
+PICT,4551,0x11c7,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,4551 COA GP1 (Red).24;4551 COA GP1 (Red).24;4551 COA GP1 (Red).24;4551 COA GP1 (Red).24
+PICT,4552,0x11c8,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,4552 COA GP2 (Purple).24;4552 COA GP2 (Purple).24;4552 COA GP2 (Purple).24;4552 COA GP2 (Purple).24
+PICT,4553,0x11c9,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,4553 COA GP3 (Cyan).24;4553 COA GP3 (Cyan).24;4553 COA GP3 (Cyan).24;4553 COA GP3 (Cyan).24
+PICT,4554,0x11ca,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,4554 COA GP4 (Orange).24;4554 COA GP4 (Orange).24;4554 COA GP4 (Orange).24;4554 COA GP4 (Orange).24
+PICT,4555,0x11cb,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,4555 COA GP5 (Green).24;4555 COA GP5 (Green).24;4555 COA GP5 (Green).24;4555 COA GP5 (Green).24
+PICT,4556,0x11cc,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,4556 COA GP6 (Yellow).24;4556 COA GP6 (Yellow).24;4556 COA GP6 (Yellow).24;4556 COA GP6 (Yellow).24
+PICT,4611,0x1203,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,4611 Multi-Lounge Flag GP0;4611 France Flag (Multi).24;4611 France Flag (Multi).24;4611 France Flag (Multi).24
+PICT,4612,0x1204,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,4612 Multi-Lounge Flag GP1;4612 Austria Flag (Multi).24;4612 Austria Flag (Multi).24;4612 Austria Flag (Multi).24
+PICT,4613,0x1205,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,4613 Multi-Lounge Flag GP2;4613 Turkey Flag (Multi).24;4613 Turkey Flag (Multi).24;4613 Turkey Flag (Multi).24
+PICT,4614,0x1206,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,4614 Multi-Lounge Flag GP3;4614 Russia Flag (Multi).24;4614 Russia Flag (Multi).24;4614 Russia Flag (Multi).24
+PICT,4615,0x1207,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,4615 Multi-Lounge Flag GP4;4615 Prussia Flag (Multi).24;4615 Prussia Flag (Multi).24;4615 Prussia Flag (Multi).24
+PICT,4616,0x1208,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,4616 Multi-Lounge Flag GP5;4616 Italy Flag (Multi).24;4616 Italy Flag (Multi).24;4616 Italy Flag (Multi).24
+PICT,4617,0x1209,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,4617 Multi-Lounge Flag GP6;4617 Britain Flag (Multi).24;4617 Britain Flag (Multi).24;4617 Britain Flag (Multi).24
+PICT,4618,0x120a,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,4618 COA GP0.24;4618 COA France.24;4618 COA France.24;4618 COA France.24
+PICT,4619,0x120b,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,4619 COA GP1.24;4619 COA Austria.24;4619 COA Austria.24;4619 COA Austria.24
+PICT,4620,0x120c,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,4620 COA GP2.24;4620 COA Turkey.24;4620 COA Turkey.24;4620 COA Turkey.24
+PICT,4621,0x120d,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,4621 COA GP3.24;4621 COA Russia.24;4621 COA Russia.24;4621 COA Russia.24
+PICT,4622,0x120e,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,4622 COA GP4.24;4622 COA Prussia.24;4622 COA Prussia.24;4622 COA Prussia.24
+PICT,4623,0x120f,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,4623 COA GP5.24;4623 COA Italy.24;4623 COA Italy.24;4623 COA Italy.24
+PICT,4624,0x1210,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,4624 COA GP6.24;4624 COA Britain.24;4624 COA Britain.24;4624 COA Britain.24
+PICT,4651,0x122b,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,4651 Chat Tgl GP0 Slctd.24;4651 Chat Toggle Fra Slctd.24;4651 Chat Toggle Fra Slctd.24;4651 Chat Toggle Fra Slctd.24
+PICT,4652,0x122c,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,4652 Chat Tgl GP0 Slctd Dn.24;4652 Chat Tgl Fra Slctd Dn.24;4652 Chat Tgl Fra Slctd Dn.24;4652 Chat Tgl Fra Slctd Dn.24
+PICT,4653,0x122d,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,4653 Chat Tgl GP0 Unslctd.24;4653 Chat Tgl Fra Unslctd.24;4653 Chat Tgl Fra Unslctd.24;4653 Chat Tgl Fra Unslctd.24
+PICT,4654,0x122e,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,4654 Chat Tgl GP0 Unslctd Dn.24;4654 Cht Tgl Fra Unslctd Dn.24;4654 Cht Tgl Fra Unslctd Dn.24;4654 Cht Tgl Fra Unslctd Dn.24
+PICT,4655,0x122f,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,4655 Chat GP0 Grey.24;4655 Chat France Grey.24;4655 Chat France Grey.24;4655 Chat France Grey.24
+PICT,4656,0x1230,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,4656 Chat Toggle GP1 Slctd.24;4656 Chat Tgl Aus Slctd.24;4656 Chat Tgl Aus Slctd.24;4656 Chat Tgl Aus Slctd.24
+PICT,4657,0x1231,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,4657 Chat Tggle GP1 Slctd Dn.24;4657 Chat Tgl Aus Slctd Dn.24;4657 Chat Tgl Aus Slctd Dn.24;4657 Chat Tgl Aus Slctd Dn.24
+PICT,4658,0x1232,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,4658 Chat Tgl GP1 Unslctd.24;4658 Chat Tgl Aus Unslctd.24;4658 Chat Tgl Aus Unslctd.24;4658 Chat Tgl Aus Unslctd.24
+PICT,4659,0x1233,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,4659 Chat Tgl GP1 Unslctd Dn.24;4659 Chat Tgl Aus Unslctd Dn.24;4659 Chat Tgl Aus Unslctd Dn.24;4659 Chat Tgl Aus Unslctd Dn.24
+PICT,4660,0x1234,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,4660 Chat GP1 Grey.24;4660 Chat Austria Grey.24;4660 Chat Austria Grey.24;4660 Chat Austria Grey.24
+PICT,4661,0x1235,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,4661 Chat Toggle GP2 Slctd.24;4661 Chat Tgl Turk Slctd.24;4661 Chat Tgl Turk Slctd.24;4661 Chat Tgl Turk Slctd.24
+PICT,4662,0x1236,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,4662 Chat Tgl GP2 Slctd Dn.24;4662 Chat Tgl Turk Slctd Dn.24;4662 Chat Tgl Turk Slctd Dn.24;4662 Chat Tgl Turk Slctd Dn.24
+PICT,4663,0x1237,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,4663 Chat Tgl GP2 Unslctd.24;4663 Chat Tgl Turk Unslctd.24;4663 Chat Tgl Turk Unslctd.24;4663 Chat Tgl Turk Unslctd.24
+PICT,4664,0x1238,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,4664 Chat Tgl GP2 Unslctd Dn.24;4664 Cht Tgl Turk Unslctd Dn.24;4664 Cht Tgl Turk Unslctd Dn.24;4664 Cht Tgl Turk Unslctd Dn.24
+PICT,4665,0x1239,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,4665 Chat GP2 Grey.24;4665 Chat Turkey Grey.24;4665 Chat Turkey Grey.24;4665 Chat Turkey Grey.24
+PICT,4666,0x123a,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,4666 Chat Toggle GP3 Slctd.24;4666 Cht Tgl Rus Slctd.24;4666 Cht Tgl Rus Slctd.24;4666 Cht Tgl Rus Slctd.24
+PICT,4667,0x123b,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,4667 Cht Tgl GP3 Slctd Dn.24;4667 Cht Tgl Rus Slctd Dn.24;4667 Cht Tgl Rus Slctd Dn.24;4667 Cht Tgl Rus Slctd Dn.24
+PICT,4668,0x123c,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,4668 Cht Tgl GP3 Unslctd.24;4668 Cht Tgl Rus Unslctd.24;4668 Cht Tgl Rus Unslctd.24;4668 Cht Tgl Rus Unslctd.24
+PICT,4669,0x123d,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,4669 Cht Tgl GP3 Unslctd Dn.24;4669 Cht Tgl Rus Unslctd Dn.24;4669 Cht Tgl Rus Unslctd Dn.24;4669 Cht Tgl Rus Unslctd Dn.24
+PICT,4670,0x123e,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,4670 Cht GP3 Grey.24;4670 Cht Russia Grey.24;4670 Cht Russia Grey.24;4670 Cht Russia Grey.24
+PICT,4671,0x123f,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,4671 Chat Toggle GP4 Slctd.24;4671 Cht Tgl Pru Slctd.24;4671 Cht Tgl Pru Slctd.24;4671 Cht Tgl Pru Slctd.24
+PICT,4672,0x1240,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,4672 Cht Tgl GP4 Slctd Dn.24;4672 Cht Tgl Pru Slctd Dn.24;4672 Cht Tgl Pru Slctd Dn.24;4672 Cht Tgl Pru Slctd Dn.24
+PICT,4673,0x1241,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,4673 Cht Tgl GP4 Unslctd.24;4673 Cht Tgl Pru Unslctd.24;4673 Cht Tgl Pru Unslctd.24;4673 Cht Tgl Pru Unslctd.24
+PICT,4674,0x1242,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,4674 Cht Tgl GP4 Unslctd Dn.24;4674 Cht Tgl Pru Unslctd Dn.24;4674 Cht Tgl Pru Unslctd Dn.24;4674 Cht Tgl Pru Unslctd Dn.24
+PICT,4675,0x1243,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,4675 Chat GP4 Grey.24;4675 Chat Prussia Grey.24;4675 Chat Prussia Grey.24;4675 Chat Prussia Grey.24
+PICT,4676,0x1244,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,4676 Chat Toggle GP5 Slctd.24;4676 Cht Tgl Itl Slctd.24;4676 Cht Tgl Itl Slctd.24;4676 Cht Tgl Itl Slctd.24
+PICT,4677,0x1245,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,4677 Cht Tgl GP5 Slctd Dn.24;4677 Cht Tgl Itl Slctd Dn.24;4677 Cht Tgl Itl Slctd Dn.24;4677 Cht Tgl Itl Slctd Dn.24
+PICT,4678,0x1246,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,4678 Cht Tgl GP5 UnSlctd.24;4678 Cht Tgl Itl Unslctd.24;4678 Cht Tgl Itl Unslctd.24;4678 Cht Tgl Itl Unslctd.24
+PICT,4679,0x1247,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,4679 Cht Tgl GP5 UnSlctd Dn.24;4679 Cht Tgl Itl Unslctd Dn.24;4679 Cht Tgl Itl Unslctd Dn.24;4679 Cht Tgl Itl Unslctd Dn.24
+PICT,4680,0x1248,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,4680 Chat GP5 Grey.24;4680 Chat Italy Grey.24;4680 Chat Italy Grey.24;4680 Chat Italy Grey.24
+PICT,4681,0x1249,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,4681 Cht Tgl GP6 Slctd.24;4681 Chat Toggle Brit Slctd.24;4681 Chat Toggle Brit Slctd.24;4681 Chat Toggle Brit Slctd.24
+PICT,4682,0x124a,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,4682 Cht Tgl GP6 Slctd Dn.24;4682 Cht Tgl Brit Slctd Dn.24;4682 Cht Tgl Brit Slctd Dn.24;4682 Cht Tgl Brit Slctd Dn.24
+PICT,4683,0x124b,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,4683 Chat Tgl GP6 UnSlctd.24;4683 Chat Tgl Brit UnSlctd.24;4683 Chat Tgl Brit UnSlctd.24;4683 Chat Tgl Brit UnSlctd.24
+PICT,4684,0x124c,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,4684 Cht Tgl GP6 Unslctd Dn.24;4684 Cht Tgl Brit Unslctd Dn.24;4684 Cht Tgl Brit Unslctd Dn.24;4684 Cht Tgl Brit Unslctd Dn.24
+PICT,4685,0x124d,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,4685 Chat GP6 Grey.24;4685 Chat Brit Grey.24;4685 Chat Brit Grey.24;4685 Chat Brit Grey.24
+PICT,5011,0x1393,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,5011 Info Info Imp.24;5011 Info Info Euro.24;5011 Info Info Euro.24;5011 Info Info Euro.24
+PICT,6020,0x1784,2,Citymain.rsrc;Trade.rsrc,6020 city Query dwn.m3C;6020 Trade Query Dn.m3C
+PICT,6021,0x1785,2,Citymain.rsrc;Trade.rsrc,6021 City Rtrn dwn.m3C;6021 Trade Return Dn.m3C
+PICT,8699,0x21fb,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,8699 Trade Flags Imp.m3c;8699 Trade Flags 1820.m3c;8699 Trade Flags 1830/48.24;8699 Trade Flags 1882.24
+PICT,8700,0x21fc,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,8700 Flag.m3C;8700 Flag.m3C;8700 Flag.m3C;8700 Flag.m3C
+PICT,8701,0x21fd,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,8701 Flag.m3C;8701 Flag.m3C;8701 Flag.m3C;8701 Flag.m3C
+PICT,8702,0x21fe,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,8702 Flag.m3C;8702 Flag.m3C;8702 Flag.m3C;8702 Flag.m3C
+PICT,8703,0x21ff,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,8703 Flag.m3C;8703 Flag.m3C;8703 Flag.m3C;8703 Flag.m3C
+PICT,8704,0x2200,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,8704 Flag.m3C;8704 Flag.m3C;8704 Flag.m3C;8704 Flag.m3C
+PICT,8705,0x2201,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,8705 Flag.m3C;8705 Flag.m3C;8705 Flag.m3C;8705 Flag.m3C
+PICT,8706,0x2202,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,8706 Flag.m3C;8706 Flag.m3C;8706 Flag.m3C;8706 Flag.m3C
+PICT,8707,0x2203,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,8707 Flag.m3C;8707 Flag.m3C;8707 Flag.m3C;8707 Flag.m3C
+PICT,8708,0x2204,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,8708 Flag.m3C;8708 Flag.m3C;8708 Flag.m3C;8708 Flag.m3C
+PICT,8709,0x2205,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,8709 Flag.m3C;8709 Flag.m3C;8709 Flag.m3C;8709 Flag.m3C
+PICT,8710,0x2206,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,8710 Flag.m3C;8710 Flag.m3C;8710 Flag.m3C;8710 Flag.m3C
+PICT,8711,0x2207,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,8711 Flag.m3C;8711 Flag.m3C;8711 Flag.m3C;8711 Flag.m3C
+PICT,8712,0x2208,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,8712 Flag.m3C;8712 Flag.m3C;8712 Flag.m3C;8712 Flag.m3C
+PICT,8713,0x2209,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,8713 Flag.m3C;8713 Flag.m3C;8713 Flag.m3C;8713 Flag.m3C
+PICT,8714,0x220a,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,8714 Flag.m3C;8714 Flag.m3C;8714 Flag.m3C;8714 Flag.m3C
+PICT,8715,0x220b,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,8715 Flag.m3C;8715 Flag.m3C;8715 Flag.m3C;8715 Flag.m3C
+PICT,8716,0x220c,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,8716 Flag.m3C;8716 Flag.m3C;8716 Flag.m3C;8716 Flag.m3C
+PICT,8717,0x220d,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,8717 Flag.m3C;8717 Flag.m3C;8717 Flag.m3C;8717 Flag.m3C
+PICT,8718,0x220e,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,8718 Flag.m3C;8718 Flag.m3C;8718 Flag.m3C;8718 Flag.m3C
+PICT,8719,0x220f,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,8719 Flag.m3C;8719 Flag.m3C;8719 Flag.m3C;8719 Flag.m3C
+PICT,8720,0x2210,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,8720 Flag.m3C;8720 Flag.m3C;8720 Flag.m3C;8720 Flag.m3C
+PICT,8721,0x2211,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,8721 Flag.m3C;8721 Flag.m3C;8721 Flag.m3C;8721 Flag.m3C
+PICT,8722,0x2212,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,8722 Flag.m3C;8722 Flag.m3C;8722 Flag.m3C;8722 Flag.m3C
+PICT,9430,0x24d6,2,Linger.rsrc;MapView.rsrc,9430 InteriorMindown.m3C;9430 Garrison Dn
+PICT,9431,0x24d7,2,Linger.rsrc;MapView.rsrc,9431 Defensedown.m3C;9431 Technology Virgin.24
+PICT,9432,0x24d8,2,Linger.rsrc;MapView.rsrc,9432 ForeignMindown.m3C;9432 Microscope Dn
+PICT,9500,0x251c,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,9500 COA Zimm (6 Mar).m3C;9500 COA France (6 Mar).24;9500 COA France (6 Mar).24;9500 COA France (6 Mar).24
+PICT,9501,0x251d,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,9501 COA Kem (6 Mar).m3C;9501 COA Austria (6 Mar).24;9501 COA Austria (6 Mar).24;9501 COA Austria (6 Mar).24
+PICT,9502,0x251e,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,9502 COA Patagon (6 Mar).m3C;9502 COA Turkey (6 Mar).24;9502 COA Turkey (6 Mar).24;9502 COA Turkey (6 Mar).24
+PICT,9503,0x251f,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,9503 COA Haxaco (6 Mar).m3C;9503 COA Russia (6 Mar).24;9503 COA Russia (6 Mar).24;9503 COA Russia (6 Mar).24
+PICT,9504,0x2520,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,9504 COA Devron (6 Mar).m3C;9504 COA Prussia (6 Mar).24;9504 COA Prussia (6 Mar).24;9504 COA Prussia (6 Mar).24
+PICT,9505,0x2521,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,9505 COA Ordune (6 Mar).m3C;9505 COA Italy.24;9505 COA Italy.24;9505 COA Italy.24
+PICT,9506,0x2522,4,Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,9506 COA Deneb (6 Mar).m3C;9506 COA Britain (6 Mar).24;9506 COA Britain (6 Mar).24;9506 COA Britain (6 Mar).24
+STR#,253,0x00fd,2,Linger.rsrc;Trade.rsrc,View strings;
+STR#,953,0x03b9,2,Linger.rsrc;Startup.rsrc,;
+STR#,1000,0x03e8,4,Linger.rsrc;MapView.rsrc;Startup.rsrc;Trade.rsrc,have city stuff at end;have city stuff at end;;have city stuff at end
+STR#,1001,0x03e9,3,Linger.rsrc;Startup.rsrc;TechStore.rsrc,Materials;;
+STR#,1002,0x03ea,3,Linger.rsrc;MapView.rsrc;Trade.rsrc,;;
+STR#,1004,0x03ec,4,Linger.rsrc;MapView.rsrc;Startup.rsrc;Trade.rsrc,;;;
+STR#,1009,0x03f1,3,Linger.rsrc;MapView.rsrc;Trade.rsrc,;;
+STR#,1020,0x03fc,3,Linger.rsrc;MapView.rsrc;Trade.rsrc,;;
+STR#,1021,0x03fd,3,Linger.rsrc;MapView.rsrc;Trade.rsrc,;;
+STR#,1022,0x03fe,3,Linger.rsrc;MapView.rsrc;Trade.rsrc,;;
+STR#,1024,0x0400,3,Linger.rsrc;MapView.rsrc;Trade.rsrc,;;
+STR#,1025,0x0401,3,Linger.rsrc;MapView.rsrc;Trade.rsrc,;;
+STR#,1206,0x04b6,4,FlagView.rsrc;Linger.rsrc;MapView.rsrc;Trade.rsrc,;;;
+STR#,1207,0x04b7,3,Linger.rsrc;MapView.rsrc;Trade.rsrc,Ambit's Static Text text;Ambit's Static Text text;Ambit's Static Text text
+STR#,1300,0x0514,3,Linger.rsrc;MapView.rsrc;Startup.rsrc,;;
+STR#,1500,0x05dc,3,Linger.rsrc;MapView.rsrc;Trade.rsrc,;;
+STR#,1501,0x05dd,3,Linger.rsrc;MapView.rsrc;Trade.rsrc,;;
+STR#,1504,0x05e0,2,Linger.rsrc;Trade.rsrc,;
+STR#,1505,0x05e1,2,Linger.rsrc;Trade.rsrc,;
+STR#,1506,0x05e2,2,Linger.rsrc;MapView.rsrc,;
+STR#,1508,0x05e4,3,Linger.rsrc;MapView.rsrc;Trade.rsrc,;;
+STR#,1509,0x05e5,4,Diplo.rsrc;Linger.rsrc;MapView.rsrc;Trade.rsrc,;;;
+STR#,1520,0x05f0,3,Linger.rsrc;MapView.rsrc;Trade.rsrc,;;
+STR#,2009,0x07d9,4,FlagView.rsrc;Linger.rsrc;MapView.rsrc;Trade.rsrc,;;;
+STR#,2011,0x07db,4,FlagView.rsrc;Linger.rsrc;MapView.rsrc;Trade.rsrc,;;;
+STR#,3300,0x0ce4,8,Citymain.rsrc;Diplo.rsrc;FlagView.rsrc;MapView.rsrc;Tech.rsrc;TechStore.rsrc;Trade.rsrc;Transport.rsrc,;;;;;;;
+STR#,4000,0x0fa0,5,Armory.rsrc;Citydlog.rsrc;FlagView.rsrc;Shipyard.rsrc;Univ.rsrc,;;;;
+STR#,5001,0x1389,3,Citydlog.rsrc;FlagView.rsrc;Transport.rsrc,;;
+STR#,7010,0x1b62,3,Linger.rsrc;MapView.rsrc;Trade.rsrc,;;
+STR#,7011,0x1b63,3,Linger.rsrc;MapView.rsrc;Trade.rsrc,;;
+STR#,7014,0x1b66,3,Linger.rsrc;MapView.rsrc;Trade.rsrc,;;
+STR#,7250,0x1c52,2,Linger.rsrc;Trade.rsrc,Town names;Town names
+TxSt,700,0x02bc,6,Armory.rsrc;Citymain.rsrc;FlagView.rsrc;Linger.rsrc;MapView.rsrc;Trade.rsrc,used by monthly;used by monthly;used by monthly;used by monthly;used by monthly;used by monthly
+TxSt,800,0x0320,6,Armory.rsrc;Citymain.rsrc;FlagView.rsrc;Linger.rsrc;MapView.rsrc;Trade.rsrc,;;;;;
+TxSt,801,0x0321,6,Armory.rsrc;Citymain.rsrc;FlagView.rsrc;Linger.rsrc;MapView.rsrc;Trade.rsrc,;;;;;
+TxSt,802,0x0322,6,Armory.rsrc;Citymain.rsrc;FlagView.rsrc;Linger.rsrc;MapView.rsrc;Trade.rsrc,;;;;;
+TxSt,999,0x03e7,4,Citymain.rsrc;Diplo.rsrc;FlagView.rsrc;Tech.rsrc,not shown;not shown;not shown;not shown
+TxSt,1000,0x03e8,11,Armory.rsrc;Citydlog.rsrc;Citymain.rsrc;Linger.rsrc;MapView.rsrc;Multiplayer.rsrc;Startup.rsrc;Tactical.rsrc;TechStore.rsrc;Trade.rsrc;Transport.rsrc,;;;;;;;;;;
+TxSt,1001,0x03e9,11,Armory.rsrc;Citydlog.rsrc;Citymain.rsrc;FlagView.rsrc;Linger.rsrc;MapView.rsrc;Multiplayer.rsrc;Startup.rsrc;TechStore.rsrc;Trade.rsrc;Transport.rsrc,;;;;;;;;;;
+TxSt,1002,0x03ea,11,Armory.rsrc;Citydlog.rsrc;Citymain.rsrc;FlagView.rsrc;Linger.rsrc;MapView.rsrc;Multiplayer.rsrc;Startup.rsrc;TechStore.rsrc;Trade.rsrc;Transport.rsrc,;;;;;;;;;;
+TxSt,1003,0x03eb,9,Armory.rsrc;Citydlog.rsrc;Citymain.rsrc;FlagView.rsrc;Linger.rsrc;MapView.rsrc;Startup.rsrc;TechStore.rsrc;Trade.rsrc,;;;;;;;;
+TxSt,1004,0x03ec,7,Citydlog.rsrc;FlagView.rsrc;Linger.rsrc;MapView.rsrc;Startup.rsrc;Trade.rsrc;Transport.rsrc,;;;;;;
+TxSt,1005,0x03ed,6,Armory.rsrc;Citydlog.rsrc;Citymain.rsrc;FlagView.rsrc;Linger.rsrc;Startup.rsrc,;;;;;
+TxSt,1006,0x03ee,8,Armory.rsrc;Citydlog.rsrc;Citymain.rsrc;FlagView.rsrc;Linger.rsrc;MapView.rsrc;Startup.rsrc;Trade.rsrc,;;;;;;;
+TxSt,1007,0x03ef,8,Armory.rsrc;Citydlog.rsrc;Citymain.rsrc;FlagView.rsrc;Linger.rsrc;MapView.rsrc;Startup.rsrc;Trade.rsrc,;;;;;;;
+TxSt,1008,0x03f0,8,Armory.rsrc;Citydlog.rsrc;Citymain.rsrc;FlagView.rsrc;Linger.rsrc;MapView.rsrc;Startup.rsrc;Trade.rsrc,;;;;;;;
+TxSt,1009,0x03f1,5,Citydlog.rsrc;Linger.rsrc;MapView.rsrc;Startup.rsrc;Trade.rsrc,;;;;
+TxSt,1010,0x03f2,2,Citydlog.rsrc;Startup.rsrc,;
+TxSt,1011,0x03f3,2,Citydlog.rsrc;Startup.rsrc,;
+TxSt,1012,0x03f4,2,Citydlog.rsrc;Startup.rsrc,;
+TxSt,1013,0x03f5,2,Citydlog.rsrc;Startup.rsrc,;
+TxSt,1015,0x03f7,2,Citydlog.rsrc;Startup.rsrc,;
+TxSt,1088,0x0440,3,Linger.rsrc;MapView.rsrc;Trade.rsrc,fake extra stuff;fake extra stuff;fake extra stuff
+TxSt,1300,0x0514,8,Armory.rsrc;FlagView.rsrc;Linger.rsrc;MapView.rsrc;Minister.rsrc;Shipyard.rsrc;Startup.rsrc;Univ.rsrc,;;;;;;;
+TxSt,1301,0x0515,4,Armory.rsrc;FlagView.rsrc;Shipyard.rsrc;Univ.rsrc,;;;
+TxSt,1302,0x0516,4,Armory.rsrc;FlagView.rsrc;Shipyard.rsrc;Startup.rsrc,;;;
+TxSt,1303,0x0517,4,Armory.rsrc;Citymain.rsrc;FlagView.rsrc;Shipyard.rsrc,;;;
+TxSt,1304,0x0518,3,Armory.rsrc;Citymain.rsrc;FlagView.rsrc,;;
+TxSt,1305,0x0519,3,Armory.rsrc;Citymain.rsrc;FlagView.rsrc,;;
+TxSt,1306,0x051a,3,Armory.rsrc;Citymain.rsrc;FlagView.rsrc,;;
+TxSt,1307,0x051b,3,Armory.rsrc;Citymain.rsrc;FlagView.rsrc,;;
+TxSt,1308,0x051c,2,Armory.rsrc;FlagView.rsrc,;
+TxSt,1310,0x051e,3,Armory.rsrc;Citymain.rsrc;FlagView.rsrc,;;
+TxSt,1311,0x051f,3,Armory.rsrc;Citymain.rsrc;FlagView.rsrc,;;
+TxSt,1312,0x0520,5,Armory.rsrc;Citymain.rsrc;FlagView.rsrc;Shipyard.rsrc;Univ.rsrc,;;;;
+TxSt,1313,0x0521,4,Armory.rsrc;Citymain.rsrc;FlagView.rsrc;MapView.rsrc,;;;
+TxSt,1314,0x0522,4,Armory.rsrc;Citymain.rsrc;FlagView.rsrc;MapView.rsrc,;;;
+TxSt,1315,0x0523,2,Armory.rsrc;FlagView.rsrc,;
+TxSt,1316,0x0524,3,Armory.rsrc;Citymain.rsrc;FlagView.rsrc,;;
+TxSt,1317,0x0525,3,Armory.rsrc;Citymain.rsrc;FlagView.rsrc,;;
+TxSt,1318,0x0526,3,Armory.rsrc;Citymain.rsrc;FlagView.rsrc,;;
+TxSt,1319,0x0527,3,Armory.rsrc;Citymain.rsrc;FlagView.rsrc,;;
+TxSt,1320,0x0528,3,Armory.rsrc;Citymain.rsrc;FlagView.rsrc,;;
+TxSt,1321,0x0529,3,Armory.rsrc;Citymain.rsrc;FlagView.rsrc,;;
+TxSt,1322,0x052a,2,Citymain.rsrc;FlagView.rsrc,;
+TxSt,1323,0x052b,2,Armory.rsrc;FlagView.rsrc,;
+TxSt,1325,0x052d,3,Armory.rsrc;Citymain.rsrc;FlagView.rsrc,;;
+TxSt,1327,0x052f,2,Armory.rsrc;FlagView.rsrc,;
+TxSt,1328,0x0530,3,Armory.rsrc;FlagView.rsrc;MapView.rsrc,;;
+TxSt,1329,0x0531,5,Armory.rsrc;Citymain.rsrc;FlagView.rsrc;Linger.rsrc;Startup.rsrc,;;;;
+TxSt,1502,0x05de,7,Diplo.rsrc;FlagView.rsrc;Linger.rsrc;MapView.rsrc;Minister.rsrc;Tech.rsrc;Trade.rsrc,;;;;;;
+TxSt,1503,0x05df,9,Armory.rsrc;Diplo.rsrc;Linger.rsrc;MapView.rsrc;Minister.rsrc;Shipyard.rsrc;Tech.rsrc;Trade.rsrc;Univ.rsrc,;;;;;;;;
+TxSt,1504,0x05e0,4,Linger.rsrc;MapView.rsrc;Minister.rsrc;Trade.rsrc,;;;
+TxSt,1505,0x05e1,3,Linger.rsrc;MapView.rsrc;Minister.rsrc,;;
+TxSt,1506,0x05e2,8,Armory.rsrc;Citymain.rsrc;Diplo.rsrc;Linger.rsrc;MapView.rsrc;Minister.rsrc;Startup.rsrc;Trade.rsrc,;;;;;;;
+TxSt,1507,0x05e3,4,Linger.rsrc;MapView.rsrc;Minister.rsrc;Trade.rsrc,;;;
+TxSt,1508,0x05e4,3,Linger.rsrc;MapView.rsrc;Trade.rsrc,;;
+TxSt,1509,0x05e5,3,Linger.rsrc;MapView.rsrc;Trade.rsrc,;;
+TxSt,1510,0x05e6,6,Armory.rsrc;Citymain.rsrc;FlagView.rsrc;Linger.rsrc;MapView.rsrc;Trade.rsrc,;;;;;
+TxSt,1511,0x05e7,3,Linger.rsrc;MapView.rsrc;Trade.rsrc,;;
+TxSt,1512,0x05e8,3,Linger.rsrc;MapView.rsrc;Trade.rsrc,;;
+TxSt,1513,0x05e9,3,Linger.rsrc;MapView.rsrc;Trade.rsrc,;;
+TxSt,1514,0x05ea,2,MapView.rsrc;Trade.rsrc,;
+TxSt,1515,0x05eb,3,Linger.rsrc;MapView.rsrc;Trade.rsrc,;;
+TxSt,1516,0x05ec,2,Linger.rsrc;MapView.rsrc,;
+TxSt,1517,0x05ed,2,Linger.rsrc;Trade.rsrc,;
+TxSt,1518,0x05ee,2,Linger.rsrc;MapView.rsrc,;
+TxSt,1519,0x05ef,2,Linger.rsrc;MapView.rsrc,;
+TxSt,1520,0x05f0,2,Linger.rsrc;MapView.rsrc,;
+TxSt,1521,0x05f1,2,Linger.rsrc;MapView.rsrc,;
+TxSt,1527,0x05f7,2,Linger.rsrc;MapView.rsrc,;
+TxSt,1528,0x05f8,2,Linger.rsrc;MapView.rsrc,;
+TxSt,1529,0x05f9,2,Linger.rsrc;MapView.rsrc,;
+TxSt,1530,0x05fa,2,Linger.rsrc;MapView.rsrc,;
+TxSt,1531,0x05fb,2,Linger.rsrc;MapView.rsrc,;
+ckid,128,0x0080,28,Armory.rsrc;Citydlog.rsrc;Citymain.rsrc;Demo.rsrc;Diplo.rsrc;Embedded.rsrc;FlagView.rsrc;GWorld.rsrc;Linger.rsrc;MapTiles.rsrc;MapView.rsrc;Minister.rsrc;Multiplayer.rsrc;Shipyard.rsrc;Sound.rsrc;Startup.rsrc;Strings.rsrc;TacMaps.rsrc;Tactical.rsrc;Tech.rsrc;TechStore.rsrc;Trade.rsrc;Transport.rsrc;Univ.rsrc;Worldview0.rsrc;Worldview1.rsrc;Worldview2.rsrc;Worldview3.rsrc,Projector;Projector;Projector;Projector;Projector;Projector;Projector;Projector;Projector;Projector;Projector;Projector;Projector;Projector;Projector;Projector;Projector;Projector;Projector;Projector;Projector;Projector;Projector;Projector;Projector;Projector;Projector;Projector
