@@ -922,7 +922,7 @@
     },
     {
       "address": "0x4357b0",
-      "matching": 0.09386882129277567,
+      "matching": 0.21443210009707692,
       "name": "BuildTurnEventDialogUiByCode",
       "type": 1
     },
@@ -6225,6 +6225,12 @@
       "type": 1
     },
     {
+      "address": "0x494040",
+      "matching": 0.6274509803921569,
+      "name": "TQuickDrawClipStateInitializer",
+      "type": 1
+    },
+    {
       "address": "0x494130",
       "matching": 0.47533632286995514,
       "name": "CreateFontFromPresetAndAttachRegionHandle",
@@ -8021,7 +8027,7 @@
     },
     {
       "address": "0x4a2900",
-      "matching": 0.13063763608087092,
+      "matching": 0.13374805598755832,
       "name": "BuildArmyContextActionRecordsAndDispatchLabel",
       "type": 1
     },
@@ -13374,7 +13380,7 @@
     },
     {
       "address": "0x4e06d0",
-      "matching": 0.8095238095238095,
+      "matching": 1.0,
       "name": "TGreatPower::SumCommodityRecordAccumulatedValues",
       "type": 1
     },
@@ -16813,7 +16819,7 @@
     },
     {
       "address": "0x508800",
-      "matching": 0.6461538461538462,
+      "matching": 0.7076923076923077,
       "name": "TLanguageMgr::BuildNewsTableDimensions",
       "type": 1
     },
@@ -21925,7 +21931,7 @@
     },
     {
       "address": "0x545940",
-      "matching": 0.43141056713523995,
+      "matching": 0.43011795120374857,
       "name": "TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine",
       "type": 1
     },
@@ -30170,7 +30176,7 @@
     },
     {
       "address": "0x5a1520",
-      "matching": 0.5259259259259259,
+      "matching": 0.48148148148148145,
       "name": "TTacticalBattle::MoveTacticalUnitTowardTile",
       "type": 1
     },
@@ -30320,7 +30326,7 @@
     },
     {
       "address": "0x5a3d30",
-      "matching": 0.8163265306122449,
+      "matching": 0.8104956268221575,
       "name": "TTacticalBattle::IsTacticalTargetTileReachableForAction",
       "type": 1
     },
@@ -30836,7 +30842,7 @@
     },
     {
       "address": "0x5a9240",
-      "matching": 0.5533980582524272,
+      "matching": 0.5304136253041363,
       "name": "TTacticalBattleView::AnimateTacticalUnitMoveBetweenTiles",
       "type": 1
     },
@@ -45206,6 +45212,6 @@
       "type": 5
     }
   ],
-  "file": "Imperialism.exe",
+  "file": "Imperialism.exe.gog-original",
   "format": 1
 }

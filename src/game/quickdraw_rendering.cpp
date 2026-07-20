@@ -7,6 +7,36 @@
 #include "game/TStaticText.h"
 #include <cstring>
 
+// The QuickDraw clip/surface module state is seeded by a file-scope C++ object
+// (at 0x6a1d58) whose constructor runs from the CRT static-init table (thunk
+// 0x493fe0, entry 0x692648) before WinMain, and whose destructor is registered
+// via atexit. It (a) points the active surface context at the sentinel and
+// (b) allocates the global clip CRgn attached to an empty rect. SetClip/GetClip
+// (quickdraw_regions.cpp) read g_pGlobalClipRegionHandleObject directly with no
+// null-guard, exactly as the original does, so this initializer must run first.
+// Declaring a real file-scope instance reproduces that CRT-init entry; its +0x8
+// member is g_pActiveQuickDrawSurfaceContext (0x6a1d60) in the original layout.
+// FIXME(0x494010): the atexit destructor (DeleteObject + delete the CRgn) is left
+// unmarked because MSVC500 inlines this trivial dtor into the atexit thunk, so no
+// standalone symbol exists at 0x494010 for reccmp to pair. If a non-inlined shape
+// is found, restore the `// FUNCTION: IMPERIALISM 0x00494010` marker here.
+class TQuickDrawClipStateInitializer {
+public:
+  ~TQuickDrawClipStateInitializer() {
+    g_pGlobalClipRegionHandleObject->DeleteObject();
+    delete g_pGlobalClipRegionHandleObject;
+  }
+
+  // FUNCTION: IMPERIALISM 0x00494040
+  TQuickDrawClipStateInitializer() {
+    g_pActiveQuickDrawSurfaceContext = &g_defaultQuickDrawSurfaceSentinel;
+    g_pGlobalClipRegionHandleObject = new CRgn;
+    g_pGlobalClipRegionHandleObject->Attach(::CreateRectRgn(0, 0, 0, 0));
+  }
+};
+
+static TQuickDrawClipStateInitializer g_quickDrawClipStateInitializer;
+
 // FUNCTION: IMPERIALISM 0x00494130
 CFont* __cdecl CreateFontFromPresetAndAttachRegionHandle(TUiTextStyleDescriptor* preset) {
   // Height table for the fixed-size families (indices are size codes 1-0x18); the
@@ -408,20 +438,6 @@ void ResetQuickDrawStrokeState() {
   g_nQuickDrawStrokeStyleSecondary = g_Reset_Quick_Draw_Value_0064B8F4;
   g_Reset_Quick_Draw_State_006A1D10 = g_Reset_Quick_Draw_WordState_0064B8F8;
   g_bQuickDrawStrokePairDirty = 1;
-}
-
-// TODO(shortcut): the real owner is a static-init object at 0x6a1d58 whose ctor
-// (0x494040, CRT init table) does `g_pGlobalClipRegionHandleObject = new CRgn;
-// ...->Attach(::CreateRectRgn(0,0,0,0));` and also seeds its own +0x8 field with
-// &g_defaultQuickDrawSurfaceSentinel. That object isn't modeled yet, so the CRgn is
-// created lazily here instead; same object shape (a real heap CRgn), different
-// construction time. SetClip/GetClip (quickdraw_regions.cpp) read the same global.
-CRgn* EnsureGlobalClipRegionHandleObject() {
-  if (g_pGlobalClipRegionHandleObject == 0) {
-    g_pGlobalClipRegionHandleObject = new CRgn;
-    g_pGlobalClipRegionHandleObject->Attach(::CreateRectRgn(0, 0, 0, 0));
-  }
-  return g_pGlobalClipRegionHandleObject;
 }
 
 // FUNCTION: IMPERIALISM 0x00495b40

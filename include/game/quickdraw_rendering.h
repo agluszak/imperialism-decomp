@@ -10,9 +10,6 @@ void SetGlobalBlitTransparentColorRaw(int transparentColor);
 void SetGlobalQuickDrawOrigin(short originX, short originY);
 void SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty(short styleParamA, short styleParamB);
 void ResetQuickDrawStrokeState();
-// Lazy stand-in for the unported static-init ctor at 0x494040; returns the global
-// clip CRgn (g_pGlobalClipRegionHandleObject), creating it on first use.
-CRgn* EnsureGlobalClipRegionHandleObject();
 void FillRectWithQuickDrawBrushAndContextOffset(RECT* rect);
 
 void SetQuickDrawTextOriginWithContextOffset(short x, short y);
