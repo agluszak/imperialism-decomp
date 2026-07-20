@@ -5672,7 +5672,7 @@ address|matching|name
 0x5dcd50|1.0|TModalMessageCommand::`scalar deleting destructor'
 0x5dcd80|0.8|TModalMessageCommand::~TModalMessageCommand
 0x5dcdd0|1.0|TModalMessageCommand::GetRuntimeClass
-0x5dcdf0|0.9806451612903225|TViewMgr::UiRuntimeSlotB4
+0x5dcdf0|1.0|TViewMgr::UiRuntimeSlotB4
 0x5dcf20|0.7103825136612022|TViewMgr::HandleTurnEventDialogFactorySlotD8
 0x5dd0a0|1.0|TViewMgr::ShowConstructionOptionsDialog
 0x5dd180|0.8823529411764706|TViewMgr::UiRuntimeSlotE0

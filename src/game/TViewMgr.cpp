@@ -1901,7 +1901,7 @@ void TViewMgr::HandleTurnEventVtableSlot2CInitializeHotKeyDialog() {
 }
 
 // FUNCTION: IMPERIALISM 0x005dcdf0
-bool TViewMgr::UiRuntimeSlotB4(void* payload) {
+char TViewMgr::UiRuntimeSlotB4(void* payload) {
   turn_event_dialog::ThreeFlagDialogNode* node =
       static_cast<turn_event_dialog::ThreeFlagDialogNode*>(
           g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(0x3b9));
@@ -1925,7 +1925,7 @@ bool TViewMgr::UiRuntimeSlotB4(void* payload) {
   int result = node->RefreshTurnEventDialog();
   node->Close();
   node->Free();
-  return result != static_cast<int>(kControlTagCncl);
+  return result == static_cast<int>(kControlTagCncl) ? static_cast<char>(0) : static_cast<char>(1);
 }
 
 // FUNCTION: IMPERIALISM 0x005dcf20
