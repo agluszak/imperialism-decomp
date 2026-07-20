@@ -159,4 +159,7 @@ const unsigned int kControlTagTxt0 = 0x74787430u; // 'txt0' — first of 8 seque
 const unsigned int kControlTagSlid = 0x736c6964u; // 'slid' — value slider control
 const unsigned int kControlTagI00a = 0x69303061u; // 'i00a' — first of 12 tile context-menu item panes (i00a-i00l)
 const unsigned int kControlTagI00m = 0x6930306du; // 'i00m' — exclusive upper bound of the i00a-i00l range
+const unsigned int kControlTagCrew = 0x63726577u; // 'crew' — navy ship crew display mode
+const unsigned int kControlTagHull = 0x68756c6cu; // 'hull' — navy ship hull display mode
+const unsigned int kControlTagSail = 0x7361696cu; // 'sail' — navy ship sail display mode
 const unsigned int kControlTagScvw = 0x73637677u; // 'scvw' — scroll view
