@@ -133,7 +133,12 @@ def build_signature(ident: str, prototype: str, use_prototypes: bool) -> str:
 
 
 def function_name_from_prototype(prototype: str) -> str:
-    if not prototype:
+    if not prototype or "operator" in prototype:
+        # "operator delete(...)"/"operator new(...)"-style prototypes match a trailing
+        # C++ keyword ("delete"/"new") as the last identifier-before-"(" token below,
+        # which produced invalid stub identifiers (e.g. `undefined4 delete(void)`).
+        # These prototypes are already rejected by prototype_usable() for use as the
+        # actual signature, so fall back to the ghidra_name-derived identifier instead.
         return ""
     matches = re.findall(r"\b([A-Za-z_][A-Za-z0-9_]*)\s*\(", prototype)
     if not matches:
