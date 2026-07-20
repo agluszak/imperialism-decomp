@@ -1249,6 +1249,7 @@ extern "C" const char s_SourcePathUViewMgrMore_0069B740[] = "D:\\Ambit\\Cross\\U
 extern "C" const char s_SourcePathUArmyMgr_0069573C[] = "D:\\Ambit\\Cross\\UArmyMgr.cpp";
 extern "C" const char s_SourcePathUCityViews_00696650[] = "D:\\Ambit\\Cross\\UCityViews.cpp";
 extern "C" const char s_SourcePathUArmyViews_00695858[] = "D:\\Ambit\\Cross\\UArmyViews.cpp";
+extern "C" const char s_SourcePathUOceanViews_00698650[] = "D:\\Ambit\\Cross\\UOceanViews.cpp";
 // GLOBAL: IMPERIALISM 0x0069943c
 extern "C" const char s_SourcePathUSuperMap_0069943C[] = "D:\\Ambit\\Cross\\USuperMap.cpp";
 // GLOBAL: IMPERIALISM 0x0069aa94

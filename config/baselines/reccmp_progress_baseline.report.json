@@ -8045,7 +8045,7 @@
     },
     {
       "address": "0x4a2900",
-      "matching": 0.13374805598755832,
+      "matching": 0.13063763608087092,
       "name": "BuildArmyContextActionRecordsAndDispatchLabel",
       "type": 1
     },
@@ -13361,7 +13361,8 @@
     },
     {
       "address": "0x4e0610",
-      "matching": 1.0,
+      "effective": true,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::ComputeMinisterSkillFloatSlot8A",
       "type": 1
     },
@@ -13410,7 +13411,7 @@
     },
     {
       "address": "0x4e09a0",
-      "matching": 0.5783132530120482,
+      "matching": 0.5542168674698795,
       "name": "TGreatPower::GetScoreFactorSlot240",
       "type": 1
     },
@@ -15743,7 +15744,7 @@
     },
     {
       "address": "0x4fd000",
-      "matching": 0.816,
+      "matching": 0.832,
       "name": "TMapKey::RenderMapHintOverlayMode0",
       "type": 1
     },
@@ -16819,7 +16820,7 @@
     },
     {
       "address": "0x508800",
-      "matching": 0.7076923076923077,
+      "matching": 0.6461538461538462,
       "name": "TLanguageMgr::BuildNewsTableDimensions",
       "type": 1
     },
@@ -16993,7 +16994,7 @@
     },
     {
       "address": "0x50bea0",
-      "matching": 0.21081326669695594,
+      "matching": 0.21172194457064972,
       "name": "TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets",
       "type": 1
     },
@@ -17829,7 +17830,7 @@
     },
     {
       "address": "0x5178f0",
-      "matching": 0.3446601941747573,
+      "matching": 0.3260340632603406,
       "name": "TMapMgr::ComputeRepresentativeTileIndexForTerrainTypeWithWrapBias",
       "type": 1
     },
@@ -20844,7 +20845,7 @@
     },
     {
       "address": "0x53d200",
-      "matching": 0.3700787401574803,
+      "matching": 0.3686274509803922,
       "name": "TArmyMission::ComputeArmyMissionScoreDeltaWithScaledCandidateUnit",
       "type": 1
     },
@@ -23078,7 +23079,7 @@
     },
     {
       "address": "0x555420",
-      "matching": 0.544,
+      "matching": 0.5546666666666666,
       "name": "TTaskForce::ResolveTaskForceOrderConflictAndPickCandidate",
       "type": 1
     },
@@ -24268,14 +24269,14 @@
     },
     {
       "address": "0x5658d0",
-      "matching": 0.40764331210191085,
+      "matching": 0.4539877300613497,
       "name": "TShipView::HandleEvent",
       "type": 1
     },
     {
       "address": "0x565a40",
-      "matching": 0.014814814814814815,
-      "name": "RunEngineerOrderNameEditDialogAndApply",
+      "matching": 0.6746031746031746,
+      "name": "TShipView::RunEngineerOrderNameEditDialogAndApply",
       "type": 1
     },
     {
@@ -29846,7 +29847,7 @@
     },
     {
       "address": "0x59e0d0",
-      "matching": 1.0,
+      "matching": 0.6,
       "name": "TArmyPlayer::ScoreTacticalTileEnemyEdgeColumnZoneBonus",
       "type": 1
     },
@@ -30184,7 +30185,7 @@
     },
     {
       "address": "0x5a1520",
-      "matching": 0.5259259259259259,
+      "matching": 0.48148148148148145,
       "name": "TTacticalBattle::MoveTacticalUnitTowardTile",
       "type": 1
     },
@@ -30316,7 +30317,7 @@
     },
     {
       "address": "0x5a39a0",
-      "matching": 0.9393939393939394,
+      "matching": 0.9545454545454546,
       "name": "ComputeHexTileDistanceFromIndices",
       "type": 1
     },
@@ -30820,7 +30821,7 @@
     },
     {
       "address": "0x5a8ac0",
-      "matching": 0.6086956521739131,
+      "matching": 0.6867469879518072,
       "name": "TTacticalBattleView::CenterViewportAroundGridIndexAndSnap",
       "type": 1
     },
@@ -32421,7 +32422,7 @@
     },
     {
       "address": "0x5ba0e0",
-      "matching": 1.0,
+      "matching": 0.8181818181818182,
       "name": "TTradeMgr::ComputeAverageProposalWeightDeltaAcrossCategoryRows",
       "type": 1
     },
@@ -32829,7 +32830,7 @@
     },
     {
       "address": "0x5bf930",
-      "matching": 0.7907361455748553,
+      "matching": 0.7956989247311828,
       "name": "TOfferDeskPicture::RefreshSelectedNationOrderCompatibilityInfo",
       "type": 1
     },
@@ -38991,7 +38992,7 @@
     },
     {
       "address": "0x6091d9",
-      "matching": 0.9787234042553191,
+      "matching": 1.0,
       "name": "CWnd::OnNotify",
       "type": 1
     },
