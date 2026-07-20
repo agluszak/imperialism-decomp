@@ -1,5 +1,10 @@
 #include "game/TNavyBoyView.h"
 
+#include "game/TQuickDrawSurfaceContext.h"
+#include "game/TSimMgr.h"
+#include "game/global_data_tables.h"
+#include "game/quickdraw_rendering.h"
+
 // SYNTHETIC: IMPERIALISM 0x004af040
 // TNavyBoyView::`scalar deleting destructor'
 TNavyBoyView::~TNavyBoyView() {}
@@ -15,4 +20,90 @@ TNavyBoyView::TNavyBoyView() {}
 
 // FUNCTION: IMPERIALISM 0x004af0b0
 void TNavyBoyView::ApplyRectSlot110(RECT* rectBuffer) {
+  (void)rectBuffer; // dead parameter in this override, like the other ApplyRectSlot110s
+
+  ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 0xa, 0x2b6a);
+  CString finalLabel;
+  // Constructed and destroyed alongside finalLabel but never read anywhere in the
+  // disassembly between construction and destruction -- matches an unused local in
+  // the original source.
+  CString unusedLabel;
+  InitializeUiTextStyleDescriptorAndApplyQuickDraw(2, 0xc, 0x2b6a, 3);
+
+  // Localized ship "kind" class-name table, indexed by context's kind id (below).
+  // Ground truth: slots 0-2 and slot 10 are explicitly blanked, slots 5/6 are left
+  // at their default-constructed "" (never assigned), and the remaining slots are
+  // filled from group 0x2760 by consecutive word index (with index 6 reused for two
+  // slots) -- the slot<->index mapping isn't fully understood, transcribed as
+  // observed.
+  CString typeNames[14];
+  CString* blankCursor = typeNames;
+  int blankCount = 3;
+  do {
+    *blankCursor = CString(g_szEmptyString);
+    ++blankCursor;
+  } while (--blankCount != 0);
+  g_pSimMgr->GetString(0x2760, 0, &typeNames[3]);
+  g_pSimMgr->GetString(0x2760, 1, &typeNames[4]);
+  g_pSimMgr->GetString(0x2760, 2, &typeNames[7]);
+  g_pSimMgr->GetString(0x2760, 3, &typeNames[8]);
+  g_pSimMgr->GetString(0x2760, 4, &typeNames[9]);
+  typeNames[10] = CString(g_szEmptyString);
+  g_pSimMgr->GetString(0x2760, 5, &typeNames[11]);
+  g_pSimMgr->GetString(0x2760, 6, &typeNames[12]);
+  g_pSimMgr->GetString(0x2760, 6, &typeNames[13]);
+
+  // field60 is re-read fresh at each site here (not cached in a local) -- matches the
+  // original, which re-fetches `this->field60` for every access instead of keeping it
+  // live in a register across these calls.
+  short kindId = *reinterpret_cast<short*>(static_cast<char*>(field60));
+  finalLabel = typeNames[kindId];
+  // The ship-name temporary and the " "+name concat temporary both destruct right
+  // after this statement in the original (two back-to-back ~CString calls) --
+  // matched here by keeping the name construction an unnamed temporary inside the
+  // expression rather than a function-scoped local.
+  finalLabel += s_szSpaceSeparator_00695794 + CString(static_cast<char*>(field60) + 4);
+
+  SetQuickDrawTextOriginWithContextOffset(0x50, 0x18);
+  DrawTextWithCachedQuickDrawStyleState(&finalLabel);
+
+  // Both re-derived fresh from field60 again here, matching the original's second
+  // independent reload (not reused from kindId/level above).
+  short levelDivisor =
+      GetResourceDescriptorWord14ByType(*reinterpret_cast<short*>(static_cast<char*>(field60)));
+  short level = *reinterpret_cast<short*>(static_cast<char*>(field60) + 2);
+  short sVar2 = (level * 0x14) / levelDivisor + 1;
+  if (sVar2 > 0x14) {
+    sVar2 = 0x14;
+  }
+  // Level-bucket row within the icon strip: <5 -> row 0x1a, 5-14 -> row 18, >14 -> row 10.
+  short sVar3 = (sVar2 < 5) ? 0x1a : ((sVar2 > 0xe) ? 10 : 18);
+  RECT srcRect = {0, sVar3, sVar2 * 4 - 1, sVar3 + 7};
+  RECT dstRect = {0x52, 0x1e, sVar2 * 4 + 0x51, 0x25};
+
+  if (level > 0) {
+    // The blit source surface is a per-level icon strip cached on TMacViewMgr; that
+    // field isn't recovered yet, so it's read via a raw offset like the rest of this
+    // function's still-untyped context object.
+    TQuickDrawBlitSurface* iconStripSurface = reinterpret_cast<TQuickDrawBlitSurface*>(
+        *reinterpret_cast<char**>(reinterpret_cast<char*>(g_pStrategicMapViewSystem) + 0x694) + 4);
+    UpdatePaletteIndexWithDefaultFallback(0x10);
+    BlitRectWithOptionalTransparency(iconStripSurface,
+                                     g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &srcRect,
+                                     &dstRect, 0x24, 0);
+  } else {
+    // Untrained unit: draw the localized "in training" string centered.
+    ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(1, 0xc, 0x2b67);
+    CString trainingText;
+    g_pSimMgr->GetString(0x273c, 0x1b, &trainingText);
+    short trainingWidth = MeasureTextExtentWithCachedQuickDrawStyle(&trainingText);
+    SetQuickDrawTextOriginWithContextOffset(0x88 - trainingWidth / 2, 0x25);
+    DrawTextWithCachedQuickDrawStyleState(&trainingText);
+  }
+
+  SetQuickDrawStrokeColor(0x13);
+  SetQuickDrawTextOriginWithContextOffset(0x50, 0x20);
+  DrawCenteredGuideLineOnMapDc(0x50, 0x26);
+  DrawCenteredGuideLineOnMapDc(0xa2, 0x26);
+  DrawCenteredGuideLineOnMapDc(0xa2, 0x20);
 }

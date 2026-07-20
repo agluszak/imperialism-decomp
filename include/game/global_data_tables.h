@@ -149,6 +149,12 @@ short GetResourceDescriptorWeightWord1ByType(short resourceType);
 short GetResourceDescriptorWord20ByType(short resourceType);
 short GetResourceDescriptorWord08ByTypeOffset(short resourceType, short subslot);
 
+// Formats "<count><sep><commodity name>" into `out` (defined in TNavyMgr.cpp; see
+// there for the full field note). commodityCode selects the localized name;
+// count < 0 suppresses the numeric prefix entirely.
+void FormatLocalizedCommodityCountLabelByIndex(CString* out, unsigned int commodityCode,
+                                               short count);
+
 // Per-unit-type military stat records (7 shorts per type, record base 0x695cd2):
 // column 0 = category flag (0x10 = counted toward power/cost), column 1 = power/cost
 // points. See TMilitaryUnit::GetUnitTypeCostPoints (0x5c3400).
@@ -294,9 +300,9 @@ extern const char* const g_apszQuickDrawFontFaceNames[5];
 // cluster above. The preset's styleRef6 field IS the current text color (written by
 // SetQuickDrawFillColor, read as COLORREF by the paint paths; the original PDB labels
 // those 4 bytes g_uQuickDrawCurrentColor — it's the same field, not a separate global).
-extern CFont* g_pQuickDrawCachedMeasureFont;                  // 0x6a1d48
+extern CFont* g_pQuickDrawCachedMeasureFont;                // 0x6a1d48
 extern TUiTextStyleDescriptor g_QuickDrawMeasureFontPreset; // 0x6a1d4c
-extern unsigned char g_bQuickDrawMeasureFontDirty;            // 0x6a1d56
+extern unsigned char g_bQuickDrawMeasureFontDirty;          // 0x6a1d56
 extern int g_uQuickDrawStrokeColor;
 extern int g_nQuickDrawOriginX;
 extern int g_nQuickDrawOriginY;

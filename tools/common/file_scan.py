@@ -18,11 +18,25 @@ CPP_HEADER_PATTERNS = ("*.cpp", "*.cc", "*.cxx", "*.h", "*.hpp", "*.hh", "*.hxx"
 # but exclude defensively so a scan rooted at the repo root stays correct too.
 _EXCLUDED_PATH_PARTS = (".claude",)
 
+# This module's own location tells us whether the whole toolchain is itself running
+# from inside a nested worktree (an agent operating out of .claude/worktrees/<id>/).
+# In that case every one of *our own* source paths necessarily contains '.claude' as
+# an ancestor segment, and a naive "any part matches" exclusion would blank out the
+# entire scan (see bd imperialism-decomp-idi follow-up: 0 marker claims found from
+# inside an isolated worktree). Only exclude '.claude' segments that appear *beyond*
+# our own root -- i.e. genuinely nested worktrees encountered while scanning -- not
+# ones inherited from where our own root happens to live.
+_SELF_ROOT_PARTS = Path(__file__).resolve().parents[2].parts
+
 
 def is_excluded_scan_path(path: Path) -> bool:
     """True for paths under runtime-state dirs (e.g. .claude/worktrees/) that must never
     be treated as canonical source during a repo-wide scan."""
-    return any(part in _EXCLUDED_PATH_PARTS for part in path.parts)
+    parts = path.resolve().parts
+    self_len = len(_SELF_ROOT_PARTS)
+    if parts[:self_len] == _SELF_ROOT_PARTS:
+        parts = parts[self_len:]
+    return any(part in _EXCLUDED_PATH_PARTS for part in parts)
 
 # Hand-owned headers carry a marked, auto-generated reference block (inserted by a
 # now-retired generator) inside them. Its slot table embeds raw provisional Ghidra
