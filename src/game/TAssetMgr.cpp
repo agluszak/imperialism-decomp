@@ -10,6 +10,7 @@
 #include "game/TTurnEventDialogFactoryRegistry.h"
 #include "game/TViewMgr.h"
 #include "game/global_data_tables.h"
+#include "game/ui_invalidation_guard.h"
 
 #include <io.h>
 // SYNTHETIC: IMPERIALISM 0x005df1d0
@@ -52,11 +53,30 @@ void TAssetMgr::NoOpRuntimeUiCallback_005df410(int arg) {
   (void)arg;
 }
 
+// Per-callsite assert-suppress flag, adjacent to timer_slots.cpp's
+// g_timerDispatchSuppressAssert (0x6a5d24) in the original WAssetMgr.cpp.
+int g_resourceStreamOpenSuppressAssert; // 0x6a5d20
+
 // FUNCTION: IMPERIALISM 0x005df430
 CFile_Virtuals* TAssetMgr::LoadTableResourceStreamByName(CString name) {
-  // TODO: port body @ 0x5df430.
-  (void)name;
-  return 0;
+  HMODULE hModule = LoadLibraryA(g_pImperialismApp->field_D4);
+  HRSRC hResInfo = FindResourceA(hModule, name, "TABLE");
+  if (hResInfo != 0) {
+    HGLOBAL hResData = LoadResource(hModule, hResInfo);
+    CMemFile* memFile = new CMemFile(0x400);
+    LPVOID buffer = LockResource(hResData);
+    DWORD size = SizeofResource(hModule, hResInfo);
+    memFile->Attach(static_cast<BYTE*>(buffer), size, 0);
+    return reinterpret_cast<CFile_Virtuals*>(memFile);
+  }
+
+  CFile* file = new CFile();
+  CFileException exception;
+  if (file->Open(name, CFile::modeReadWrite, &exception) == 0 &&
+      g_resourceStreamOpenSuppressAssert == 0) {
+    TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\WAssetMgr.cpp", 0xce);
+  }
+  return reinterpret_cast<CFile_Virtuals*>(file);
 }
 
 // `this` (g_pUiViewManager at every callsite) is unused; the method just reseeks the
