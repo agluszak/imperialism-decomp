@@ -37,7 +37,12 @@ public:
   // Compose the on-disk path for a scenario table resource (mode 1 = map state) into
   // outPath. 0x5dfd70; `this` ignored (same singleton idiom as the siblings below).
   void BuildScenarioPathForModeAndIndex(int scenarioIndex, int mode, CString* outPath);
-  class CFile_Virtuals* LoadTableResourceStreamByName(CString name); // 0x5df430, body TODO
+  // Finds "name" as a TABLE resource in the app's own module; if present, loads it and
+  // returns a CMemFile attached to the locked resource bytes. If absent, falls back to
+  // opening "name" as a real disk file via a plain CFile (asserting on failure unless
+  // the file's own suppress flag is set). Either concrete object is viewed through the
+  // CFile_Virtuals interface. 0x5df430.
+  class CFile_Virtuals* LoadTableResourceStreamByName(CString name);
   // Reads *countInOut bytes from the stream into buffer, writes bytes-read back
   // through countInOut. 0x5df700.
   int ReadResourceStreamIntoBufferAndAdvance(class CFile_Virtuals* stream, void* buffer,

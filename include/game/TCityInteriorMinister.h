@@ -3,8 +3,10 @@
 #include "game/TInteriorMinister.h"
 
 class TCity;
-
-undefined4 thunk_InitializeCityInteriorMinister(void);
+class TGreatPower;
+class TLongintList;
+class TList;
+class TFuzzySet;
 
 // Player city interior minister — derives from TInteriorMinister (shares slots 0x48-0x50)
 // and overrides serialization/Free/NotifySlot44 plus a long city-policy virtual run.
@@ -101,7 +103,11 @@ public:
   virtual undefined CityMinisterSlot46();                                    // slot 0x46 0x4c4fe0
   virtual undefined BuildFrogCityTerrainCountsAndOverlayStats();             // slot 0x47 0x4c5240
   TCityInteriorMinister();
-  void InitializeCityInteriorState();
+  // 0x4be8d0: allocate and reset this minister's city-policy state -- the interior-minister
+  // analogue of TForeignMinister::InitializeStateAndCounters(owner). Links the base order
+  // array to the owning great power, allocates the tracked-list members and the city-policy
+  // TFuzzySet, and seeds the fuzzy set with four policy curves.
+  void InitializeCityInteriorState(TGreatPower* owner);
 
   DECLARE_DYNCREATE(TCityInteriorMinister)
   void WriteTo(TStream* stream) override;  // slot 0x14
@@ -115,7 +121,30 @@ public:
   // InteriorSlot1D/1E/1F (0x4be7b0/0x4be7d0/0x4be7f0) index short arrays inside it at
   // +0x12a and +0x158 via raw this+offset access (callers pass order-type codes up to
   // 6 -- TAutoGreatPower.cpp ~L1035/1049), not yet promoted to named array fields.
-  unsigned char cityMinisterState28[0x18c - 0x28];
-  int field18c; // +0x18c -- ctor (0x4be840) zeroes this; only scalar confirmed so far.
-  unsigned char cityMinisterState190[0x1c4 - 0x190];
+  TLongintList* list28;        // +0x28  (new TLongintList, vtable 0x650a08)
+  TLongintList* list2c;        // +0x2c  (new TLongintList)
+  short field30;               // +0x30  set to 1 by InitializeCityInteriorState
+  short field32;               // +0x32
+  short field34;               // +0x34
+  short field36;               // +0x36  init -1
+  short field38;               // +0x38  init -1
+  short field3a;               // +0x3a  init 50
+  short field3c;               // +0x3c  init -1
+  short field3e;               // +0x3e
+  int orderMetricTable40[30];  // +0x40..0xb8  city-order metric table (zeroed on init)
+  short fieldB8;               // +0xb8
+  short orderShortTableBA[16]; // +0xba..0xda
+  short fieldDA;               // +0xda
+  short orderShortTableDC[16]; // +0xdc..0xfc
+  // Three parallel short[23] order-type tables (InteriorSlot1D/1E/1F index +0x12a/+0x158
+  // by order-type code); all cleared together by InitializeCityInteriorState.
+  short orderTypeTableFC[23];                        // +0xfc..0x12a
+  short orderTypeTable12A[23];                       // +0x12a..0x158
+  short orderTypeTable158[23];                       // +0x158..0x186
+  short field186;                                    // +0x186
+  TFuzzySet* cityPolicyFuzzySet;                     // +0x188 (new TFuzzySet, 4 policy curves)
+  TList* orderList18c;                               // +0x18c (new TList; ctor 0x4be840 nulls it)
+  TLongintList* list190;                             // +0x190 (new TLongintList)
+  unsigned char cityMinisterState194[0x1c2 - 0x194]; // +0x194 (unrecovered)
+  short field1c2;                                    // +0x1c2
 };

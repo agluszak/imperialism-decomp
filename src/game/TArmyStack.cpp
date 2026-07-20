@@ -80,6 +80,29 @@ void TArmyStack::AddUnitToChainHead(TUnit* unit) {
   head14 = node;
 }
 
+// FUNCTION: IMPERIALISM 0x004a7ba0
+void TArmyStack::RemoveUnitFromChain(TUnit* unit) {
+  TArmyStackUnitNode* prev = head14;
+  if (prev != nullptr) {
+    TArmyStackUnitNode* node = prev->next;
+    if (prev->unit == unit) {
+      head14 = node;
+      delete prev;
+      --fieldA;
+      return;
+    }
+    for (; node != nullptr && node->unit != unit; node = node->next) {
+      prev = node;
+    }
+    TArmyStackUnitNode* found = prev->next;
+    if (found != nullptr) {
+      prev->next = found->next;
+      delete found;
+      --fieldA;
+    }
+  }
+}
+
 // FUNCTION: IMPERIALISM 0x004a7c20
 void TArmyStack::Free() {}
 

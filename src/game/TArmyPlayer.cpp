@@ -168,14 +168,22 @@ void TArmyPlayer::CommitTacticalResultsToSourceUnits(int unused) {
 
 // FUNCTION: IMPERIALISM 0x0059b4f0
 void TArmyPlayer::RemoveTacticalUnitFromUnitList(TTacticalUnit* unit) {
-  // TODO: port body @ 0x59b4f0.
-  (void)unit;
+  POSITION pos = unitList4->listState.Find(unit);
+  if (pos != nullptr) {
+    unitList4->listState.RemoveAt(pos);
+  }
+  armyStack28->RemoveUnitFromChain(static_cast<TArmyTacUnit*>(unit)->sourceUnit38);
 }
 
 // FUNCTION: IMPERIALISM 0x0059b540
 void TArmyPlayer::AddTacticalUnitToUnitListHead(TTacticalUnit* unit) {
-  // TODO: port body @ 0x59b540.
-  (void)unit;
+  unitList4->listState.AddHead(unit);
+  unit->FlipUnitSideAffiliation();
+  TMilitaryUnit* sourceUnit = static_cast<TArmyTacUnit*>(unit)->sourceUnit38;
+  sourceUnit->field_18 = static_cast<short>(nationIndex1C);
+  sourceUnit->VTableSlot10(battle14->battleSiteIndex38);
+  armyStack28->AddUnitToChainHead(sourceUnit);
+  static_cast<TArmyTacUnit*>(unit)->morale34 = unit->strength4;
 }
 
 // Rebuilds the side's projection metrics from the active records: sums the five-float
@@ -1686,7 +1694,8 @@ void TArmyPlayer::RunTacticalAutoTurnControllerForActiveUnit() {
   // Phase 2: march toward it, one echoed step at a time (guarded at 200 steps).
   if (targetTileIndex != unit->tileIndex8) {
     int moveGuard = 200;
-    while (battle14->pendingEndOfActionFlag48 != 0 && unit->state1c == 0 && unit->tileIndex8 != targetTileIndex) {
+    while (battle14->pendingEndOfActionFlag48 != 0 && unit->state1c == 0 &&
+           unit->tileIndex8 != targetTileIndex) {
       if (moveGuard-- == 0) {
         break;
       }
