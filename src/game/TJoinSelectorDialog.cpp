@@ -7,6 +7,7 @@
 #include "game/global_data_tables.h"
 #include "game/quickdraw_rendering.h"
 #include "game/ui_control_tags.h"
+#include "game/ui_text_label_helpers_decls.h"
 
 // SYNTHETIC: IMPERIALISM 0x0044fab0
 // TJoinSelectorDialog::`scalar deleting destructor'

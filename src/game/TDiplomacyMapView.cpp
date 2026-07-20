@@ -23,6 +23,7 @@
 #include "game/TMilitaryUnit.h"
 #include "game/TViewMgr.h"
 #include "game/TSimMgr.h"
+#include "game/ui_text_label_helpers_decls.h"
 
 // Defined below in address order (0x4d5d30).
 void __cdecl BuildDiplomacyOverlayHitMaskOpcodeStream(DiplomacyMaskBufferRun* run,

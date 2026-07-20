@@ -11,7 +11,6 @@ void SetQuickDrawStrokeColor(int strokeColor);
 BOOL __stdcall ClipSrcRectToBoundsAndOffsetDstRect(RECT* bounds, RECT* dstRect, RECT* srcRect);
 void SetQuickDrawColorAndSyncGlobals(int color);
 void SetGlobalBlitTransparentColorRaw(int transparentColor);
-void MapUiThemeCodeToStyleFlags(short themeCode, int* outStyleFlags);
 void SetGlobalQuickDrawOrigin(short originX, short originY);
 void SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty(short styleParamA, short styleParamB);
 void ResetQuickDrawStrokeState();
@@ -35,33 +34,16 @@ CFont* __cdecl CreateFontFromPresetAndAttachRegionHandle(TUiTextStyleDescriptor*
 // field changed (or none exists yet), and return it. 0x004944e0
 CFont* __cdecl UpdateGlobalFontPresetAndRebuildCachedFontIfDirty(TUiTextStyleDescriptor* style);
 
-void BuildUiTextStyleDescriptor(TUiTextStyleDescriptor* styleDescriptor, int unused, int arg2,
-                                int themeCode);
-void InitializeUiTextStyleDescriptor(TUiTextStyleDescriptor* styleDescriptor, short face,
-                                     short pointSize, int themeCode, short font);
-
-// 0x5c4020 -- asserts the text control, applies a theme style descriptor built from
-// themeCode (BuildUiTextStyleDescriptor inline-expanded in the original), sets the
-// text theme code, and optionally assigns a caption string. Returns the control.
-// unused2 is always 0 at every known call site.
-class TStaticText;
-TStaticText* ApplyControlThemeStyleAndOptionalCaption(TStaticText* control, int unused2,
-                                                      int pointSize, int themeCode, int themeCode2,
-                                                      const char* caption);
-
-// 0x5c4180 -- same shape as ApplyControlThemeStyleAndOptionalCaption, but the caption
-// text is loaded from a string-table resource (group/index) via
-// g_pModuleLibraryCacheState instead of being passed as a literal pointer.
-TStaticText* ConfigureUiControlStyleValueAndCaptionFromStringResource(
-    TStaticText* control, int unused2, int pointSize, int themeCode, int themeCode2,
-    int stringResourceGroup, short stringResourceIndex);
+// The TUiTextStyleDescriptor text-style / control-theme helpers (BuildUiTextStyleDescriptor,
+// InitializeUiTextStyleDescriptor, ApplyControlThemeStyleAndOptionalCaption,
+// ConfigureUiControlStyleValueAndCaptionFromStringResource,
+// ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor, InitializeUiTextStyleDescriptorAndApplyQuickDraw,
+// MapUiThemeCodeToStyleFlags) live in game/ui_text_label_helpers_decls.h -- they belong to the
+// ui_text_label_helpers.cpp unit, not the QuickDraw surface/font engine.
 
 // If paletteIndex is the sentinel -1 (as a short), resolves it from the default
 // cached bitmap resource's palette instead. 0x004951e0
 void UpdatePaletteIndexWithDefaultFallback(unsigned int paletteIndex);
-void ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(int unused, int styleWidth, int themeCode);
-void InitializeUiTextStyleDescriptorAndApplyQuickDraw(short face, short pointSize, int themeCode,
-                                                      short font);
 
 // Cached-style text measurement leaf (0x494e00): rebuilds the cached measure-font from
 // g_QuickDrawMeasureFontPreset if dirty, selects it into the active QuickDraw CDC (or a
@@ -73,10 +55,6 @@ short __cdecl MeasureTextExtentWithCachedQuickDrawStyle(const CString* text);
 // the active QuickDraw CDC, applies the current QuickDraw text color, then draws at the
 // resolved origin cached by SetQuickDrawTextOriginWithContextOffset.
 void __cdecl DrawTextWithCachedQuickDrawStyleState(const CString* text);
-
-static __inline void DrawTextWithCachedStyle(const CString* text) {
-  DrawTextWithCachedQuickDrawStyleState(text);
-}
 
 // Cached-style rect text draw leaf (0x494bf0): same cached-font/color setup as
 // DrawTextWithCachedQuickDrawStyleState, but draws into a caller rect via CDC::DrawText with
@@ -91,14 +69,6 @@ void __cdecl RenderTradeScreenCommoditySummaryRows_Impl(CString* text, RECT* rec
 void SetQuickDrawTextFont(short value); // 0x00495230 (txFont)
 void SetQuickDrawTextFace(short value); // 0x00495290 (txFace)
 void SetQuickDrawTextSize(short value); // 0x00495260 (txSize)
-
-static __inline void ApplyUiTextStyleAndSyncColor(int unused, int styleWidth, int themeCode) {
-  ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(unused, styleWidth, themeCode);
-}
-
-static __inline void UpdatePaletteIndexWithFallback(int paletteIndex) {
-  UpdatePaletteIndexWithDefaultFallback(static_cast<unsigned int>(paletteIndex));
-}
 
 // Sets the QuickDraw fill color from a palette-table index (0xff = black, <1 = white
 // fallback, else index | 0x1000000). When a QuickDraw memory DC is active, the real

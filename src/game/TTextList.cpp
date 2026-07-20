@@ -6,6 +6,7 @@
 #include "game/ui_invalidation_guard.h"
 #include "game/quickdraw_rendering.h"
 #include "game/mfc.h"
+#include "game/ui_text_label_helpers_decls.h"
 
 // SYNTHETIC: IMPERIALISM 0x0045af30
 // TTextList::`scalar deleting destructor'

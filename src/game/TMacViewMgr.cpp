@@ -33,6 +33,7 @@
 #include "game/TMultiplayerMgr.h"
 #include "game/mfc.h"
 #include "game/turn_flow_cooldown.h"
+#include "game/ui_text_label_helpers_decls.h"
 #include "decomp_types.h"
 #include <string.h>
 

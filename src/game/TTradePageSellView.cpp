@@ -7,6 +7,7 @@
 #include "game/TTradeOfferNationLine.h"
 #include "game/global_data_tables.h"
 #include "game/quickdraw_rendering.h" // BuildUiTextStyleDescriptor
+#include "game/ui_text_label_helpers_decls.h"
 
 // SYNTHETIC: IMPERIALISM 0x004355c0
 // TTradePageSellView::`scalar deleting destructor'

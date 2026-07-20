@@ -3,6 +3,7 @@
 #include "game/TQuickDrawSurfaceContext.h"
 #include "game/global_data_tables.h"
 #include "game/quickdraw_rendering.h"
+#include "game/ui_text_label_helpers_decls.h"
 
 // FUNCTION: IMPERIALISM 0x004aad20
 undefined TMiniArmyView::OrphanRetStub_004aad20() {
