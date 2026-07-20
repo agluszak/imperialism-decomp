@@ -11649,7 +11649,7 @@
     },
     {
       "address": "0x4cc550",
-      "matching": 0.6495726495726496,
+      "matching": 0.6666666666666666,
       "name": "TPurchaseCluster::SetCityViewValueControlAmount",
       "type": 1
     },
@@ -15840,7 +15840,7 @@
     },
     {
       "address": "0x4fe2b0",
-      "matching": 0.034482758620689655,
+      "matching": 1.0,
       "name": "TScoreGraph::NoOpUiLifecycleHook",
       "type": 1
     },
@@ -21955,7 +21955,7 @@
     },
     {
       "address": "0x545940",
-      "matching": 0.43011795120374857,
+      "matching": 0.43141056713523995,
       "name": "TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine",
       "type": 1
     },
@@ -26507,7 +26507,7 @@
     },
     {
       "address": "0x5798a0",
-      "matching": 0.5673076923076923,
+      "matching": 0.5865384615384616,
       "name": "TRadioTextCluster::AddItem",
       "type": 1
     },
@@ -30843,7 +30843,7 @@
     },
     {
       "address": "0x5a8ac0",
-      "matching": 0.6867469879518072,
+      "matching": 0.6086956521739131,
       "name": "TTacticalBattleView::CenterViewportAroundGridIndexAndSnap",
       "type": 1
     },
@@ -32854,7 +32854,7 @@
     },
     {
       "address": "0x5bf930",
-      "matching": 0.7543424317617866,
+      "matching": 0.7890818858560794,
       "name": "TOfferDeskPicture::RefreshSelectedNationOrderCompatibilityInfo",
       "type": 1
     },
