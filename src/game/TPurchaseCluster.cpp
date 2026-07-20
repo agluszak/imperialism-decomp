@@ -38,14 +38,7 @@ void TPurchaseCluster::HandleEvent(int commandId, TEventHandler* sourceHandler, 
     } else if (sourceHandler->controlTag == kControlTagRaro) {
       field88->SetControlValue(UpdateCityViewValueControl() + 1);
     }
-    // TODO: the original also calls SetCityViewValueControlAmount(field88's own +0x4 short,
-    // 1) here for either tag branch (confirmed via raw disasm: `ax = word[field88+4]; call
-    // this->SetCityViewValueControlAmount(ax, 1)`). field88's concrete class remains
-    // unresolved: it needs both TEventHandler::SetControlValue (word slot 0xb, byte 0x2c)
-    // AND its own short field at just +0x4 -- i.e. almost no inherited-class prefix before
-    // its own data, ruling out every TView-family widget class checked so far (TAmtBar,
-    // TStaticText, TDeluxeText all have 0x60+ bytes of inherited state first). Left
-    // unmodeled rather than guessing a type.
+    SetCityViewValueControlAmount(static_cast<short>(field88->field04), 1);
   }
   TCluster::HandleEvent(commandId, sourceHandler, event);
 }

@@ -11643,7 +11643,7 @@
     },
     {
       "address": "0x4cc490",
-      "matching": 0.4444444444444444,
+      "matching": 0.35051546391752575,
       "name": "TPurchaseCluster::HandleEvent",
       "type": 1
     },
@@ -15310,7 +15310,7 @@
     },
     {
       "address": "0x4f6170",
-      "matching": 0.5705882352941176,
+      "matching": 0.5764705882352941,
       "name": "TDiplomacyMapView::RenderDiplomacyLegendSurfaceAndPresent",
       "type": 1
     },
@@ -15496,7 +15496,7 @@
     },
     {
       "address": "0x4f8650",
-      "matching": 0.06896551724137931,
+      "matching": 0.8214285714285714,
       "name": "TGrantsView::HandleEvent",
       "type": 1
     },
@@ -18010,7 +18010,7 @@
     },
     {
       "address": "0x519d30",
-      "matching": 0.04878048780487805,
+      "matching": 0.8604651162790697,
       "name": "TMapDialog::NoOpUiLifecycleHook",
       "type": 1
     },
@@ -18142,7 +18142,7 @@
     },
     {
       "address": "0x51bb90",
-      "matching": 0.24390243902439024,
+      "matching": 0.9436619718309859,
       "name": "TTownNameDialog::NoOpUiLifecycleHook",
       "type": 1
     },
@@ -18178,7 +18178,7 @@
     },
     {
       "address": "0x51bff0",
-      "matching": 0.6552901023890785,
+      "matching": 0.7162162162162162,
       "name": "TCitySiteView::NoOpUiLifecycleHook",
       "type": 1
     },
@@ -18448,8 +18448,7 @@
     },
     {
       "address": "0x522c10",
-      "effective": true,
-      "matching": 0.9848484848484849,
+      "matching": 1.0,
       "name": "TMapDialog::DrawMapDialogWrappedTileConnectionMarker_00522c10",
       "type": 1
     },

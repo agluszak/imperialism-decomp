@@ -36,14 +36,9 @@ void TCitySiteView::NoOpUiLifecycleHook(int arg) {
   previewSquareRadius78 = 0x40;
 
   RECT surfaceBounds = {0, 0, 0x1680, 0x40};
-  g_pDisplayMgr->InitializeBitmapSurfaceContextWithRetry(
-      reinterpret_cast<TQuickDrawSurfaceContext**>(&quickDrawSurface350), 8, &surfaceBounds);
+  g_pDisplayMgr->InitializeBitmapSurfaceContextWithRetry(&quickDrawSurface350, 8, &surfaceBounds);
 
-  // TODO: dispatches through this object's own vtable slot 0x1f8 (word slot 0x7e) with no
-  // arguments -- far beyond every vtable extent currently declared for the
-  // TView/TWorldView/TMapDialog/TCitySiteView chain (nothing claims that slot yet). Needs a
-  // dedicated vtable-recovery pass (see the vtable-matching/class-recovery skills) before
-  // this call can be modeled as a real virtual method.
+  ResetAllTileMarkersToSentinel();
 
   g_pCitySiteCachedPrimaryRenderSurfaceContext = g_pPrimaryRenderSurfaceContext;
   ApplySharedStringToGlobalControlTag(CString(g_szEmptyString), kControlTagMain);
