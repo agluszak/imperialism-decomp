@@ -220,3 +220,6 @@ const unsigned int kControlTagClnc = 0x636c6e63u; // 'clnc' — query-floater ca
 const unsigned int kControlTagChar = 0x63686172u; // 'char' — query-floater "chart"/graph hotspot
 const unsigned int kControlTagNews = 0x6e657773u; // 'news' — query-floater "news" hotspot
 const unsigned int kControlTagFore = 0x6f726566u; // 'fore' — query-floater "foreign affairs" hotspot
+const unsigned int kControlTagGowy = 0x676f7779u; // 'gowy' — flag-options "go/continue" hotspot
+const unsigned int kControlTagNewg = 0x6e657767u; // 'newg' — flag-options "new game" hotspot
+const unsigned int kControlTagSave = 0x73617665u; // 'save' — flag-options "save game" hotspot
