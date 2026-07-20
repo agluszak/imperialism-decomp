@@ -1,0 +1,182 @@
+format_version: 1
+
+# Windows ownership and dispatch shape for the resource-driven turn-event UI
+# factories.  Resource keys are deliberately scoped by resource file: IDs are
+# not globally unique in the Mac resource set.
+functions:
+  - address: 0x00415fe0
+    name: BuildTradeSchoolDialogControls
+    prototype: TView* __cdecl BuildTradeSchoolDialogControls(CWnd* pHostWindow, int nEventCode)
+    cases:
+      - {event: 0x23f8, resource: Armory.rsrc:9208}
+
+  - address: 0x0041b6d0
+    name: InitializeIndustryViewTradeMoveControlsAndCommodityRows
+    emission: compact
+    prototype: TView* __cdecl InitializeIndustryViewTradeMoveControlsAndCommodityRows(CWnd* pHostWindow, int nEventCode)
+    cases:
+      - {event: 0x23f0, resource: Citydlog.rsrc:9200}
+      - {event: 0x23f1, resource: Citydlog.rsrc:9201}
+      - {event: 0x23f2, resource: Citydlog.rsrc:9202}
+      - {event: 0x23f3, resource: Citydlog.rsrc:9203}
+      - {event: 0x23f4, resource: Citydlog.rsrc:9204}
+      - {event: 0x23f5, resource: Citydlog.rsrc:9205}
+      - {event: 0x23f6, resource: Citydlog.rsrc:9206}
+      - {event: 0x23f9, resource: Citydlog.rsrc:9209}
+      - {event: 0x23fb, resource: Citydlog.rsrc:9211}
+      - {event: 0x23fc, resource: Citydlog.rsrc:9212}
+      - {event: 0x23fd, resource: Citydlog.rsrc:9213}
+      - {event: 0x23fe, resource: Citydlog.rsrc:9214}
+      - {event: 0x23ff, resource: Citydlog.rsrc:9215}
+      - {event: 0x2404, resource: Citydlog.rsrc:9220}
+      - {event: 0x2405, resource: Citydlog.rsrc:9221}
+
+  - address: 0x00427360
+    name: InitializeIndustryOverviewPlacardsAndTradeStatusTags
+    prototype: TView* __cdecl InitializeIndustryOverviewPlacardsAndTradeStatusTags(CWnd* pHostWindow, int nEventCode)
+    cases:
+      - {event: 0x07db, resource: Citymain.rsrc:2011}
+
+  - address: 0x004295a0
+    name: BuildTurnEventDialogResourcesForEvent547Or7D8
+    emission: compact
+    prototype: TView* __cdecl BuildTurnEventDialogResourcesForEvent547Or7D8(CWnd* pHostWindow, int nEventCode)
+    cases:
+      - {event: 0x0547, resource: Diplo.rsrc:1351}
+      - {event: 0x0548, resource: Diplo.rsrc:1352}
+      - {event: 0x07d8, resource: Diplo.rsrc:2008}
+      - {event: 0x07e0, resource: Diplo.rsrc:2016}
+      - {event: 0x07e1, resource: Diplo.rsrc:2017}
+
+  - address: 0x00430c50
+    name: InitializeDealBookScreenControlsAndCommandTags
+    prototype: TView* __cdecl InitializeDealBookScreenControlsAndCommandTags(CWnd* pHostWindow, int nEventCode)
+    cases:
+      - {event: 0x2103, resource: FlagView.rsrc:8451}
+      - {event: 0x2134, resource: FlagView.rsrc:8500}
+      - {event: 0x2260, resource: FlagView.rsrc:8800}
+
+  - address: 0x004357b0
+    name: BuildTurnEventDialogUiByCode
+    emission: compact
+    prototype: TView* __cdecl BuildTurnEventDialogUiByCode(CWnd* pHostWindow, int nEventCode)
+    cases:
+      - {event: 0x03b6, resource: Linger.rsrc:950}
+      - {event: 0x03ba, resource: Linger.rsrc:954}
+      - {event: 0x03ea, resource: Linger.rsrc:1002}
+      - {event: 0x05de, resource: Linger.rsrc:1502}
+      - {event: 0x07d1, resource: Linger.rsrc:2001}
+      - {event: 0x07d2, resource: Linger.rsrc:2002}
+      - {event: 0x07e4, resource: Linger.rsrc:2020}
+      - {event: 0x0bb8, resource: Linger.rsrc:3000}
+      - {event: 0x0bbd, resource: Linger.rsrc:3005}
+      - {event: 0x101a, resource: Linger.rsrc:4122}
+      - {event: 0x102c, resource: Linger.rsrc:4140}
+      - {event: 0x1036, resource: Linger.rsrc:4150}
+      - {event: 0x104f, resource: Linger.rsrc:4175}
+      - {event: 0x10cc, resource: Linger.rsrc:4300}
+      - {event: 0x11f8, resource: Linger.rsrc:4600}
+      - {event: 0x3a98, resource: Linger.rsrc:15000}
+
+  - address: 0x0043dbc0
+    name: InitializeArmyNavyReportViewsAndCommandTags
+    emission: windows_profile
+    prototype: TView* __cdecl InitializeArmyNavyReportViewsAndCommandTags(CWnd* pHostWindow, int nEventCode)
+    cases:
+      - {event: 0x0546, resource: MapView.rsrc:1350}
+      - {event: 0x07dd, resource: MapView.rsrc:2013}
+      - {event: 0x0bc4, resource: MapView.rsrc:3012}
+      - {event: 0x0c1c, resource: MapView.rsrc:3100}
+      - {event: 0x0dac, resource: MapView.rsrc:3500}
+      - {event: 0x0db4, resource: MapView.rsrc:3508}
+      - {event: 0x1c20, resource: MapView.rsrc:7200}
+      - {event: 0x24f4, resource: MapView.rsrc:9460}
+      - {event: 0x24f6, resource: MapView.rsrc:9462}
+      - {event: 0x24f9, resource: MapView.rsrc:9465}
+      - {event: 0x2502, resource: MapView.rsrc:9474}
+      - {event: 0x2503, resource: MapView.rsrc:9475}
+      - {event: 0x2505, resource: MapView.rsrc:9477}
+      - {event: 0x2506, resource: MapView.rsrc:9478}
+
+  - address: 0x0044a810
+    name: BuildTurnEventDialogResources_2508
+    emission: windows_profile
+    prototype: TView* __cdecl BuildTurnEventDialogResources_2508(CWnd* pHostWindow, int nEventCode)
+    cases:
+      - {event: 0x2508, resource: Minister.rsrc:9480}
+
+  - address: 0x0044af90
+    name: InitializeJoinSelectorDialogControlsAndNationSlots
+    prototype: TView* __cdecl InitializeJoinSelectorDialogControlsAndNationSlots(CWnd* pHostWindow, int nEventCode)
+    cases:
+      - {event: 0x05e3, resource: Multiplayer.rsrc:1507}
+      - {event: 0x05e4, resource: Multiplayer.rsrc:1508}
+      - {event: 0x05e6, resource: Multiplayer.rsrc:1510}
+      - {event: 0x05e7, windows_only: true, evidence: 0x0044e466}
+
+  - address: 0x0044fbc0
+    name: BuildUiResourceTreeByTemplateIdAndBindScreenContext
+    prototype: TView* __cdecl BuildUiResourceTreeByTemplateIdAndBindScreenContext(CWnd* pHostWindow, int nEventCode)
+    cases:
+      - {event: 0x23f7, resource: Shipyard.rsrc:9207}
+
+  - address: 0x004538a0
+    name: InitializeGameSetupScreenControlsAndModeTags
+    emission: windows_profile
+    prototype: TView* __cdecl InitializeGameSetupScreenControlsAndModeTags(CWnd* pHostWindow, int nEventCode)
+    cases:
+      - {event: 0x03b8, resource: Startup.rsrc:952}
+      - {event: 0x03b9, resource: Startup.rsrc:953}
+      - {event: 0x03c6, resource: Startup.rsrc:966}
+      - {event: 0x05dc, resource: Startup.rsrc:1500}
+      - {event: 0x05dd, resource: Startup.rsrc:1501}
+      - {event: 0x05df, resource: Startup.rsrc:1503}
+      - {event: 0x05e0, resource: Startup.rsrc:1504}
+      - {event: 0x05e2, resource: Startup.rsrc:1506}
+      - {event: 0x05e5, resource: Startup.rsrc:1509}
+      - {event: 0x05eb, resource: Startup.rsrc:1515}
+      - {event: 0x4e20, resource: Startup.rsrc:20000}
+
+  - address: 0x0045b100
+    name: InitializeTacticalBattleViewToolbarAndDialogControls
+    prototype: TView* __cdecl InitializeTacticalBattleViewToolbarAndDialogControls(CWnd* pHostWindow, int nEventCode)
+    cases:
+      - {event: 0x0ed8, resource: Tactical.rsrc:3800}
+      - {event: 0x0eed, resource: Tactical.rsrc:3821}
+      - {event: 0x0f19, resource: Tactical.rsrc:3865}
+
+  - address: 0x0045d520
+    name: BuildTurnEventDialogResourcesForEvent898
+    emission: windows_profile
+    prototype: TView* __cdecl BuildTurnEventDialogResourcesForEvent898(CWnd* pHostWindow, int nEventCode)
+    cases:
+      - {event: 0x0898, resource: Tech.rsrc:2200}
+
+  - address: 0x0045e0b0
+    name: BuildTurnEventDialogResourcesForEvent8FC
+    emission: windows_profile
+    prototype: TView* __cdecl BuildTurnEventDialogResourcesForEvent8FC(CWnd* pHostWindow, int nEventCode)
+    cases:
+      - {event: 0x08fc, resource: TechStore.rsrc:2300}
+      - {event: 0x0942, resource: TechStore.rsrc:2370}
+
+  - address: 0x004601b0
+    name: InitializeTradeScreenBitmapControls
+    emission: windows_profile
+    prototype: TView* __cdecl InitializeTradeScreenBitmapControls(CWnd* pHostWindow, int nEventCode)
+    cases:
+      - {event: 0x07d9, resource: Trade.rsrc:2009}
+      - {event: 0x07da, resource: Trade.rsrc:2010}
+
+  - address: 0x0046fd10
+    name: BuildTurnEventDialogResourcesForEvent7DE
+    emission: compact
+    prototype: TView* __cdecl BuildTurnEventDialogResourcesForEvent7DE(CWnd* pHostWindow, int nEventCode)
+    cases:
+      - {event: 0x07de, resource: Transport.rsrc:2014}
+
+  - address: 0x004749a0
+    name: BuildUniversityDialogShell
+    prototype: TView* __cdecl BuildUniversityDialogShell(CWnd* pHostWindow, int nEventCode)
+    cases:
+      - {event: 0x23fa, resource: Univ.rsrc:9210}

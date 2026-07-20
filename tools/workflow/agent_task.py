@@ -56,6 +56,14 @@ GENERATED_PREFIXES = (
     "include/ghidra_autogen/",
 )  # legacy paths: kept so a stale checkout's leftovers still trip the integrity check
 MANUAL_CPP_PREFIXES = ("src/", "include/")
+UI_CODEGEN_INPUTS = frozenset(
+    (
+        "config/ui_factory_codegen.yml",
+        "tools/ui_codegen.py",
+        "tools/workflow/macos_resource_evidence.py",
+        "vendor/macos_codewarrior/evidence/resources/ui_views.json",
+    )
+)
 MARKER_RE = re.compile(
     r"^[+-].*//\s*(FUNCTION|SYNTHETIC|TEMPLATE|LIBRARY|GLOBAL|VTABLE|NOOP):",
 )
@@ -129,7 +137,7 @@ def _ownership_row(addr: str, source: str = "") -> dict:
     if claim is None:
         return {}
     return {"address": format(addr_int, "x"), "target_cpp": claim.file,
-            "ownership": ownership_kind(claim.kind),
+            "ownership": ownership_kind(claim.kind, claim.origin),
             "note": f"marker {claim.kind} at {claim.file}:{claim.line}"}
 
 
@@ -441,6 +449,13 @@ def cmd_check(args: argparse.Namespace) -> int:
 
     # Batch compare of every touched address.
     addrs = set(task.get("targets", {}))
+    if any(
+        path in UI_CODEGEN_INPUTS or path.startswith("config/ui_codegen_profiles/")
+        for path in paths
+    ):
+        from tools.ui_codegen import load_recipes
+
+        addrs.update(f"0x{recipe.address:08x}" for recipe in load_recipes(REPO_ROOT))
     for line in diff_text.splitlines():
         if line.startswith("+"):
             m = re.search(r"//\s*(?:FUNCTION|SYNTHETIC|TEMPLATE):\s*\w+\s+(0x[0-9a-fA-F]+)", line)

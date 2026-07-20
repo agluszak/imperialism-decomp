@@ -1,5 +1,5 @@
 {
-  "format_version": 1,
+  "format_version": 2,
   "named_pictures": 2296,
   "pictures": 2297,
   "resource_files": [
@@ -51,10 +51,11 @@
   "string_groups": 287,
   "strings": 3821,
   "text_styles": 316,
-  "unique_widget_classes": 144,
-  "unique_widget_tags": 673,
+  "ui_ir_views": 121,
+  "unique_widget_classes": 149,
+  "unique_widget_tags": 674,
   "views": 121,
-  "widgets": 2042,
+  "widgets": 2119,
   "windows_builder_crosscheck": {
     "event_code": "0x5dc",
     "resource_file": "Startup.rsrc",

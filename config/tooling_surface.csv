@@ -5,6 +5,8 @@ module|tools.generate|just:generate|The one-process build-input orchestrator (mo
 module|tools.stubgen|direct|Stub rendering (invoked by tools.generate; standalone via uv)
 module|tools.source_model|direct|The central source model (invoked by tools.generate; standalone via uv)
 module|tools.generate_symbols|direct|Symbols overlay (invoked by tools.generate; standalone via uv)
+module|tools.ui_codegen|just:ui-codegen/ui-codegen-check|Resource-driven turn-event UI factory generator and manifest validator
+module|tools.workflow.check_ui_codegen_matching|just:ui-codegen-match-gate|Protect generated UI factory pairing and similarity
 module|tools.workflow.annotate_globals_from_symbols|just:annotate-globals|Global annotation pass
 module|tools.migrations.annotate_vtables_from_symbols|direct|Vtable annotation pass (completed migration; run via uv)
 module|tools.migrations.annotate_strings_from_symbols|direct|String annotation pass (completed migration; run via uv)

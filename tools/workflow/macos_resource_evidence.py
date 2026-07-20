@@ -29,7 +29,7 @@ from tools.common.repo import repo_root_from_file, resolve_repo_path
 
 
 DEFAULT_SOURCE = os.environ.get("MACOS_IMPERIALISM_DUMP", "")
-EVIDENCE_VERSION = 1
+EVIDENCE_VERSION = 2
 UI_TYPES = {
     b"view",
     b"pict",
@@ -335,7 +335,32 @@ def _candidate_widgets(view: ResourceEntry) -> list[WidgetRecord]:
         sentinel = data[class_end + 5 : class_end + 9]
         if sentinel not in (b"\x7f\xff\xff\xff", b"\0\0\0\0"):
             continue
-        y, x, height, width = struct.unpack_from(">iiii", data, class_end + 13)
+        geometry_offset = class_end + 13
+        if type_bytes in (b"wind", b"fwnd"):
+            # Window records serialize TDialogBehavior before their inherited
+            # TView fields.  Locate the inherited geometry block by its two
+            # binding-mode bytes instead of pretending the window prefix is a
+            # normal TView header.
+            geometry_offset = -1
+            scan_end = min(record_end - 18, class_end + 160)
+            for candidate in range(class_end + 9, scan_end):
+                if data[candidate + 16 : candidate + 18] not in (
+                    b"\x04\x04",
+                    b"\x05\x05",
+                ):
+                    continue
+                cy, cx, cheight, cwidth = struct.unpack_from(">iiii", data, candidate)
+                if (
+                    -10000 <= cx <= 10000
+                    and -10000 <= cy <= 10000
+                    and 0 <= cwidth <= 10000
+                    and 0 <= cheight <= 10000
+                ):
+                    geometry_offset = candidate
+                    break
+            if geometry_offset < 0:
+                continue
+        y, x, height, width = struct.unpack_from(">iiii", data, geometry_offset)
         if any(not -10000 <= value <= 10000 for value in (x, y, width, height)):
             continue
         candidates.append(
@@ -394,6 +419,117 @@ def _candidate_widgets(view: ResourceEntry) -> list[WidgetRecord]:
             )
         )
     return resolved
+
+
+def _fourcc_value(text: str) -> int:
+    return int.from_bytes(text.encode("mac_roman"), "big")
+
+
+def _geometry_offset(data: bytes, record: WidgetRecord) -> int:
+    payload = record.offset + 8
+    class_end = payload + 1 + data[payload]
+    if record.type_code not in ("wind", "fwnd"):
+        return class_end + 13
+    scan_end = min(record.record_end - 18, class_end + 160)
+    for candidate in range(class_end + 9, scan_end):
+        if data[candidate + 16 : candidate + 18] not in (b"\x04\x04", b"\x05\x05"):
+            continue
+        y, x, height, width = struct.unpack_from(">iiii", data, candidate)
+        if (
+            -10000 <= x <= 10000
+            and -10000 <= y <= 10000
+            and 0 <= width <= 10000
+            and 0 <= height <= 10000
+        ):
+            return candidate
+    raise ResourceFormatError(
+        f"{record.resource_file} View {record.view_id} record 0x{record.offset:x}: "
+        "window geometry block not found"
+    )
+
+
+def _widget_ir(view: ResourceEntry, record: WidgetRecord, records: Sequence[WidgetRecord]) -> dict:
+    data = view.data
+    payload = record.offset + 8
+    class_end = payload + 1 + data[payload]
+    geometry_offset = _geometry_offset(data, record)
+    common_flags_offset = geometry_offset + 16
+    direct_children = [
+        child.offset for child in records if child.parent_offset == record.offset
+    ]
+    properties_end = min(direct_children, default=record.record_end)
+    search_start = min(common_flags_offset + 22, properties_end)
+    family_bytes = record.type_code.encode("ascii")
+    family_offset = data.find(family_bytes, search_start, properties_end)
+    if family_offset < 0:
+        family_offset = properties_end
+
+    common_flags = data[common_flags_offset:min(common_flags_offset + 22, properties_end)]
+    family_payload = data[family_offset:properties_end]
+    family: dict[str, object] = {
+        "offset": family_offset,
+        "size": len(family_payload),
+        "raw_hex": family_payload.hex(),
+    }
+    if len(family_payload) >= 8 and family_payload[:4] == family_bytes:
+        family["frame_style"] = _u32(family_payload, 4, "widget frame style")
+    if len(family_payload) >= 24 and family_payload[:4] == family_bytes:
+        family["content_insets"] = list(struct.unpack_from(">iiii", family_payload, 8))
+    if record.type_code == "pict" and len(family_payload) >= 32:
+        family["picture_id"] = _u16(family_payload, 30, "picture resource id")
+
+    return {
+        "offset": record.offset,
+        "record_end": record.record_end,
+        "depth": record.depth,
+        "parent_offset": record.parent_offset,
+        "type_code": record.type_code,
+        "type_value": _fourcc_value(record.type_code),
+        "class_name": record.class_name,
+        "tag": record.tag,
+        "tag_value": _fourcc_value(record.tag),
+        "geometry": {
+            "x": record.x,
+            "y": record.y,
+            "width": record.width,
+            "height": record.height,
+        },
+        "state": data[class_end + 4],
+        "enabled": common_flags[2] if len(common_flags) > 2 else 1,
+        "input_gate": common_flags[4] if len(common_flags) > 4 else 1,
+        "child_hit_test": common_flags[5] if len(common_flags) > 5 else 1,
+        "common_flags_hex": common_flags.hex(),
+        "window_prefix_hex": data[class_end + 9 : geometry_offset].hex(),
+        "drawing_environment_hex": data[search_start:family_offset].hex(),
+        "family": family,
+    }
+
+
+def build_ui_ir(resources: Sequence[ResourceEntry], widgets: Sequence[WidgetRecord]) -> dict:
+    by_view: dict[tuple[str, int], list[WidgetRecord]] = {}
+    for widget in widgets:
+        by_view.setdefault((widget.resource_file, widget.view_id), []).append(widget)
+    views = []
+    for resource in sorted(
+        (entry for entry in resources if entry.type_code == "View"),
+        key=_resource_sort_key,
+    ):
+        records = by_view.get((resource.resource_file, resource.resource_id), [])
+        views.append(
+            {
+                "resource_file": resource.resource_file,
+                "view_id": resource.resource_id,
+                "view_name": resource.name,
+                "size": len(resource.data),
+                "sha256": _sha256(resource.data),
+                "nodes": [_widget_ir(resource, record, records) for record in records],
+            }
+        )
+    return {
+        "format_version": EVIDENCE_VERSION,
+        "resource_set_sha256": _resource_set_sha256(resources),
+        "views": views,
+    }
 
 
 def decode_widgets(resources: Sequence[ResourceEntry]) -> list[WidgetRecord]:
@@ -499,6 +635,11 @@ def write_outputs(output_dir: Path, resources: Sequence[ResourceEntry]) -> dict[
             }
             for resource in views
         ],
+    )
+
+    ui_ir = build_ui_ir(resources, widgets)
+    (output_dir / "ui_views.json").write_text(
+        json.dumps(ui_ir, indent=2, sort_keys=True) + "\n", encoding="utf-8"
     )
     _write_csv(
         output_dir / "widgets.csv",
@@ -646,6 +787,7 @@ def write_outputs(output_dir: Path, resources: Sequence[ResourceEntry]) -> dict[
         ),
         "views": len(views),
         "widgets": len(widgets),
+        "ui_ir_views": len(ui_ir["views"]),
         "unique_widget_classes": len({widget.class_name for widget in widgets if widget.class_name}),
         "unique_widget_tags": len({widget.tag for widget in widgets}),
         "pictures": len(pictures),
@@ -678,6 +820,7 @@ def check_outputs(output_dir: Path) -> int:
         "strings.csv",
         "text_styles.csv",
         "id_collisions.csv",
+        "ui_views.json",
     ]
     missing = [name for name in required if not (output_dir / name).is_file()]
     if missing:
@@ -707,8 +850,18 @@ def check_outputs(output_dir: Path) -> int:
     if not isinstance(crosscheck, dict) or crosscheck.get("status") != "match":
         errors.append("Startup.rsrc View 1500 Windows-builder cross-check is not marked match")
 
+    ui_ir = json.loads((output_dir / "ui_views.json").read_text(encoding="utf-8"))
+    if ui_ir.get("format_version") != EVIDENCE_VERSION:
+        errors.append("ui_views.json format version does not match the resource oracle")
+    if ui_ir.get("resource_set_sha256") != summary.get("resource_set_sha256"):
+        errors.append("ui_views.json resource-set hash does not match summary.json")
+    if len(ui_ir.get("views", [])) != summary.get("views"):
+        errors.append("ui_views.json view count does not match summary.json")
+
     csv_rows: dict[str, list[dict[str, str]]] = {}
     for name in required[1:]:
+        if not name.endswith(".csv"):
+            continue
         with (output_dir / name).open(encoding="utf-8", newline="") as stream:
             csv_rows[name] = list(csv.DictReader(stream))
     expected_counts = {

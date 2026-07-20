@@ -428,7 +428,7 @@
     },
     {
       "address": "0x415fe0",
-      "matching": 0.0007971303308090873,
+      "matching": 0.33189428240497,
       "name": "BuildTradeSchoolDialogControls",
       "type": 1
     },
@@ -501,7 +501,7 @@
     },
     {
       "address": "0x41b6d0",
-      "matching": 0.0003499256408013297,
+      "matching": 0.10313855048523643,
       "name": "InitializeIndustryViewTradeMoveControlsAndCommodityRows",
       "type": 1
     },
@@ -597,7 +597,7 @@
     },
     {
       "address": "0x427360",
-      "matching": 0.0021019442984760903,
+      "matching": 0.18920916481892092,
       "name": "InitializeIndustryOverviewPlacardsAndTradeStatusTags",
       "type": 1
     },
@@ -658,7 +658,7 @@
     },
     {
       "address": "0x4295a0",
-      "matching": 0.0007331378299120235,
+      "matching": 0.38829487900956666,
       "name": "BuildTurnEventDialogResourcesForEvent547Or7D8",
       "type": 1
     },
@@ -880,7 +880,7 @@
     },
     {
       "address": "0x430c50",
-      "matching": 0.0009199632014719411,
+      "matching": 0.3170194003527337,
       "name": "InitializeDealBookScreenControlsAndCommandTags",
       "type": 1
     },
@@ -922,7 +922,7 @@
     },
     {
       "address": "0x4357b0",
-      "matching": 0.38553988833159836,
+      "matching": 0.49060931899641574,
       "name": "BuildTurnEventDialogUiByCode",
       "type": 1
     },
@@ -1096,7 +1096,7 @@
     },
     {
       "address": "0x44af90",
-      "matching": 0.000894254415381176,
+      "matching": 0.33117932148626816,
       "name": "InitializeJoinSelectorDialogControlsAndNationSlots",
       "type": 1
     },
@@ -1120,7 +1120,7 @@
     },
     {
       "address": "0x44fbc0",
-      "matching": 0.0011176306230790724,
+      "matching": 0.3152079092759523,
       "name": "BuildUiResourceTreeByTemplateIdAndBindScreenContext",
       "type": 1
     },
@@ -1277,7 +1277,7 @@
     },
     {
       "address": "0x45b100",
-      "matching": 0.0020130850528434826,
+      "matching": 0.2510063935590812,
       "name": "InitializeTacticalBattleViewToolbarAndDialogControls",
       "type": 1
     },
@@ -1373,13 +1373,13 @@
     },
     {
       "address": "0x46fd10",
-      "matching": 0.0008733624454148472,
+      "matching": 0.24468364400105014,
       "name": "BuildTurnEventDialogResourcesForEvent7DE",
       "type": 1
     },
     {
       "address": "0x4749a0",
-      "matching": 0.0299625468164794,
+      "matching": 0.03104325699745547,
       "name": "BuildUniversityDialogShell",
       "type": 1
     },
@@ -38974,7 +38974,7 @@
     },
     {
       "address": "0x6091d9",
-      "matching": 0.9787234042553191,
+      "matching": 1.0,
       "name": "CWnd::OnNotify",
       "type": 1
     },

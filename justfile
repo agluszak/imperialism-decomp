@@ -570,11 +570,32 @@ const-stores *args:
 decode-builder *args:
   uv run python -m tools.binary.decode_builder {{args}}
 
-# Generate compact-vocabulary C++ draft for a screen-builder region (bd 1uj.51):
-# widget blocks emitted as ready-to-review statements, unrecognized instructions as
-# `// RAW` comments for hand-fixing. `just gen-builder 0xSTART 0xEND`.
-[group('ghidra-inspect')]
+# Generate resource-driven UI factory TUs from committed Mac View IR and the
+# reviewed Windows dispatch/emission manifest.  Normal generation never reads
+# the original binary or retail Mac files.
+[group('build')]
 gen-builder *args:
+  uv run python -m tools.ui_codegen {{args}}
+
+[doc('Generate resource-driven turn-event factory TUs into the build tree')]
+[group('build')]
+ui-codegen *args:
+  uv run python -m tools.ui_codegen --gen-dir "{{build_dir}}/generated/ui" {{args}}
+
+[doc('Validate committed UI resource IR, Windows recipes, and class bindings')]
+[group('gates')]
+ui-codegen-check:
+  uv run python -m tools.ui_codegen --check
+
+[doc('Print one scoped Mac View resource from committed UI IR (FILE:ID)')]
+[group('ghidra-inspect')]
+ui-resource-show resource:
+  uv run python -m tools.ui_codegen --view "{{resource}}"
+
+# Evidence-only predecessor: disassemble a Windows region into a draft.  It is
+# intentionally outside the build/codegen pipeline.
+[group('ghidra-inspect')]
+gen-builder-binary *args:
   uv run python -m tools.binary.gen_builder_cpp {{args}}
 
 # Audit every manual `new TViewFamily(...)` spelling against the original's allocator
@@ -1064,6 +1085,7 @@ precommit:
 [group('gates')]
 gates:
   just source-gates
+  just ui-codegen-match-gate
   just vtable
   just datacmp-gate
   just decomplint
@@ -1072,6 +1094,12 @@ gates:
 [group('gates')]
 tooling-check:
   uv run python -m tools.workflow.check_tooling_surface
+
+# Generated UI factories must remain paired and may not fall below the
+# committed per-function baseline. This runs one shared reccmp report parse.
+[group('gates')]
+ui-codegen-match-gate:
+  uv run python -m tools.workflow.check_ui_codegen_matching --target "{{target}}" --build-dir "{{build_dir}}"
 
 # Generated stub count vs baseline (ratchet down). A rise is the un-claiming
 # tell: a real owner lost its marker and would be re-stubbed, breaking vtables.
@@ -1327,6 +1355,7 @@ agent-rules-gate:
 [group('gates')]
 source-gates:
   just generate
+  just ui-codegen-check
   just tooling-check
   just vtable-gate
   just antipattern-gate

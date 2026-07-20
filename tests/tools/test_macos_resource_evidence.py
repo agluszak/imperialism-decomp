@@ -168,6 +168,35 @@ class MacosResourceEvidenceTests(unittest.TestCase):
         self.assertTrue(all(widget.depth == 1 for widget in widgets[1:]))
         self.assertTrue(all(widget.parent_tag == "base" for widget in widgets[1:]))
 
+    def test_builds_typed_hierarchical_ui_ir(self) -> None:
+        resources = [
+            oracle.ResourceEntry(
+                "Startup.rsrc", "View", 1500, "Startup", 0, _startup_view()
+            )
+        ]
+        widgets = oracle.decode_widgets(resources)
+
+        ui_ir = oracle.build_ui_ir(resources, widgets)
+
+        self.assertEqual(ui_ir["format_version"], oracle.EVIDENCE_VERSION)
+        view = ui_ir["views"][0]
+        self.assertEqual((view["resource_file"], view["view_id"]), ("Startup.rsrc", 1500))
+        root, child = view["nodes"][:2]
+        expected_root = oracle.EXPECTED_STARTUP_1500[0]
+        self.assertEqual(
+            root["geometry"],
+            {
+                "x": expected_root[3],
+                "y": expected_root[4],
+                "width": expected_root[5],
+                "height": expected_root[6],
+            },
+        )
+        self.assertIsNone(root["parent_offset"])
+        self.assertEqual(child["parent_offset"], root["offset"])
+        self.assertIsInstance(child["type_value"], int)
+        self.assertIsInstance(child["tag_value"], int)
+
     def test_writes_deterministic_metadata_only_evidence(self) -> None:
         strings = struct.pack(">H", 2) + _pascal("New Game") + _pascal("Quit")
         resources = [

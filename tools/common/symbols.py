@@ -43,4 +43,4 @@ def ownership_by_address(repo_root: Path) -> dict[int, str]:
     """address -> ownership ('manual'/'library') derived from source markers."""
     from tools.source_model import ownership_kind, ownership_view
 
-    return {a: ownership_kind(c.kind) for a, c in ownership_view(repo_root).items()}
+    return {a: ownership_kind(c.kind, c.origin) for a, c in ownership_view(repo_root).items()}
