@@ -19691,12 +19691,6 @@
       "type": 1
     },
     {
-      "address": "0x5348d0",
-      "matching": 0.0,
-      "name": "TIndexAndRankList::DestructTIndexAndRankList",
-      "type": 1
-    },
-    {
       "address": "0x534910",
       "matching": 0.8125,
       "name": "TIndexAndRankList::Compare",
@@ -26609,12 +26603,6 @@
       "type": 1
     },
     {
-      "address": "0x57b720",
-      "matching": 0.0,
-      "name": "TSelectoText::CreateTSelectoTextInstance",
-      "type": 1
-    },
-    {
       "address": "0x57b740",
       "matching": 1.0,
       "name": "TSelectoText::GetRuntimeClass",
@@ -30396,12 +30384,6 @@
       "address": "0x5a4750",
       "matching": 1.0,
       "name": "TArmyBattle::GetRuntimeClass",
-      "type": 1
-    },
-    {
-      "address": "0x5a4770",
-      "matching": 0.0,
-      "name": "TArmyBattle::ConstructTArmyBattleBaseState",
       "type": 1
     },
     {
@@ -42505,12 +42487,6 @@
       "address": "0x62449e",
       "matching": 0.0,
       "name": "Dtor_CThreadLocalObject_Global_006A7D70",
-      "type": 1
-    },
-    {
-      "address": "0x6244a3",
-      "matching": 0.0,
-      "name": "CThreadLocalObject",
       "type": 1
     },
     {

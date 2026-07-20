@@ -154,6 +154,7 @@ targets:
       - CPtrArray::SetAtGrow
       - CPtrList::NewNode
       - CScrollView::DoMouseWheel
+      - CThreadLocalObject
       - CWinApp::CallField80VirtualSlot38OrReturnFalse_0061873c
       - CWinApp::CloseAllDocuments_618704
       - CWinApp::DoMessageBox
@@ -412,6 +413,7 @@ targets:
       - TApplication::DestructTApplicationAndMaybeFree
       - TApplication::thunk_DestructTApplicationAndMaybeFree_At00404b3d
       - TApplicationUiRootControllerState_00648CA8::DestructApplicationUiRootControllerState_00648CA8_AndFreeChain_At004867e0
+      - TArmyBattle::ConstructTArmyBattleBaseState
       - TArmyBoyView::DestructTArmyBoyViewAndMaybeFree
       - TArmyCheckBox::DestructTArmyCheckBoxAndMaybeFree
       - TArmyInfoView::?DestructTArmyInfoViewAndMaybeFree@@YIPAUArmyInfoViewState@?%Z:\imperialism\src\game\TArmyInfoView.cpp234212302@@PAU12@HE@Z
@@ -648,6 +650,7 @@ targets:
       - TIncludeView::DestructTIncludeViewAndMaybeFree
       - TIncludeView::thunk_DestructTIncludeViewAndMaybeFree_At00409570
       - TIndexAndRankList::DestructCObArrayAndMaybeFree
+      - TIndexAndRankList::DestructTIndexAndRankList
       - TIndustryAmtBar::DestructAndMaybeFree
       - TIndustryCluster::DestructTIndustryClusterMaybeFree
       - TIndustryCluster::thunk_DestructTIndustryClusterMaybeFree_At00401aa0
@@ -909,6 +912,7 @@ targets:
       - TScrollView::thunk_DestructTScrollViewAndMaybeFree
       - TScroller::DestructTScrollerAndMaybeFree
       - TScrollerButton::DestructTScrollerButtonAndMaybeFree
+      - TSelectoText::CreateTSelectoTextInstance
       - TSetupRandomMapPicture::DestructTSetupRandomMapPictureAndMaybeFree
       - TShip::DestructTShipAndFreeIfOwned
       - TShip::thunk_DeleteMapOrderEntryAndUnlink_At00403459
