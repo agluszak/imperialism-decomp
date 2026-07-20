@@ -3,6 +3,9 @@
 #include "game/TPicture.h"
 #include "game/mfc.h"
 
+class TCity;
+class TCityProductionView;
+
 // VTABLE: IMPERIALISM 0x006528d8
 class TBuildingExpansionView : public TPicture {
 public:
@@ -121,14 +124,15 @@ public:
   // slot 0x70 SetControlStateFlagAndMaybeRefresh inherited unchanged (0x48e810)
   // slot 0x71 ResetPictureResourceEntry inherited unchanged (0x48f520)
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
-  virtual void OpenCityViewProductionDialog(int nBuildingSlotId, int* pCityStateData,
-                                            int nDialogFlags);         // slot 0x73 0x4ce5a0
-  virtual void ApplyCityProductionDialogChanges(int nDialogActionTag); // slot 0x74 0x4cebb0
+  virtual void StuffValues(short buildingSlotId, TCity* city,
+                           TCityProductionView* productionView); // slot 0x73 0x4ce5a0
+  virtual void DoClosingAction(unsigned long dialogActionTag);   // slot 0x74 0x4cebb0
 
   TBuildingExpansionView();
 
-  // Original object size is 0x9c (CRuntimeClass m_nObjectSize); the source class ended at 0x90. Trailing 12 byte(s) not yet semantically recovered — declared so sizeof and the recomp's allocation size match the original.
-  int field90;
-  int field94;
-  int field98;
+  // Windows StuffValues stores the first argument as a word, then the two typed pointers.
+  short buildingSlotId90;
+  unsigned char padding92[2];
+  TCity* city94;
+  TCityProductionView* productionView98;
 };

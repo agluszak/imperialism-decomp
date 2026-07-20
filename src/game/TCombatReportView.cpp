@@ -27,17 +27,36 @@ TCombatReportView::TCombatReportView() : TPicture() {}
 // TCombatReportView::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x0058c950
-bool TCombatReportView::IsSelected(void* reportRecord) {
-  (void)reportRecord;
-  return false;
+void TCombatReportView::StuffValues(TCombatReportContext* reportContext) {
+  m_reportContext = reportContext;
+
+  short participantAUnitCount = 0;
+  while (reportContext->unitsA[participantAUnitCount].statusStringIndex14 != -1) {
+    participantAUnitCount++;
+  }
+  participantAUnitCount98 = participantAUnitCount;
+  participantBFirstPage9C = static_cast<short>((participantAUnitCount + 3) / 4 + 1);
+
+  short participantBUnitCount = 0;
+  while (reportContext->unitsB[participantBUnitCount].statusStringIndex14 != -1) {
+    participantBUnitCount++;
+  }
+  participantBUnitCount9A = participantBUnitCount;
+  totalPages = static_cast<short>((participantBUnitCount + 2) / 4 + participantBFirstPage9C);
+  reportValue = 0;
+
+  // The persistent report/page state above is the listing-grounded first recovery pass.
+  // The resource-backed title, report summary, loss summary, and page controls remain in
+  // imperialism-decomp-1uj.51.11.
 }
 
 // Draws the combat-report participant page: a header line naming the active
 // participant nation, then up to 4 unit rows (name + status suffix, a divider strip, a
 // unit icon, an XP/experience guide-line pair, and up to two conditional icon
 // overlays). Two participants (A/B) share one contiguous page range: pages
-// [1..field9c) list participant A's units (m_reportContext->unitsA), pages
-// [field9c..totalPages] list participant B's (unitsB); rowIndex = (reportValue-1)*4
+// [1..participantBFirstPage9C) list participant A's units (m_reportContext->unitsA), pages
+// [participantBFirstPage9C..totalPages] list participant B's (unitsB); rowIndex =
+// (reportValue-1)*4
 // relative to whichever participant's range reportValue falls in.
 // FUNCTION: IMPERIALISM 0x0058d2b0
 void TCombatReportView::ApplyRectSlot110(RECT* rectBuffer) {
@@ -55,16 +74,16 @@ void TCombatReportView::ApplyRectSlot110(RECT* rectBuffer) {
 
     short upperBound;
     short rowIndex;
-    if (reportValue < field9c) {
+    if (reportValue < participantBFirstPage9C) {
       g_apTerrainTypeDescriptorTable[m_reportContext->nationIdA]->FormatOverlayTerrainLabelText(
           &scratch);
-      upperBound = field98;
+      upperBound = participantAUnitCount98;
       rowIndex = reportValue * 4 - 4;
     } else {
       g_apTerrainTypeDescriptorTable[m_reportContext->nationIdB]->FormatOverlayTerrainLabelText(
           &scratch);
-      upperBound = field9a;
-      rowIndex = (reportValue - field9c) * 4;
+      upperBound = participantBUnitCount9A;
+      rowIndex = (reportValue - participantBFirstPage9C) * 4;
     }
 
     SetQuickDrawTextOriginWithContextOffset(6, 0xb0);
@@ -80,8 +99,9 @@ void TCombatReportView::ApplyRectSlot110(RECT* rectBuffer) {
       }
       SetQuickDrawTextOriginWithContextOffset(6, static_cast<short>(y));
 
-      CombatReportUnitRecord* record = (reportValue < field9c) ? m_reportContext->unitsA + rowIndex
-                                                               : m_reportContext->unitsB + rowIndex;
+      CombatReportUnitRecord* record = (reportValue < participantBFirstPage9C)
+                                           ? m_reportContext->unitsA + rowIndex
+                                           : m_reportContext->unitsB + rowIndex;
 
       {
         // The record's own name buffer copy-constructs the label; a separate GetString

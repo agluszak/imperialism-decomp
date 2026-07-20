@@ -3,6 +3,9 @@
 #include "compat.h"
 #include "game/TNoHilitePicture.h"
 
+class TBuildingView;
+class TCity;
+
 // VTABLE: IMPERIALISM 0x0064fc20
 class TCityProductionView : public TNoHilitePicture {
 public:
@@ -32,7 +35,7 @@ public:
                                                                 undefined4 palette);
   virtual void RenderNationHeaderDateLabelWithPeriodicRefresh(); // slot 0x75 0x4badd0
   // RET 0x8 = 2 stack dwords (int + int*), not 0. slot 0x76 0x4bb7a0
-  virtual void InitializeCityProductionDialog(int arg1, int* arg2);
+  virtual void InitializeCityProductionDialog(TCity* city, TView* dialogRoot);
   virtual void UpdateCityProductionDialogCommodityValueControls(); // slot 0x77 0x4bc0b0
   virtual void RefreshCityBuildingActionAvailabilityIndicators();  // slot 0x78 0x4bc500
   virtual void OrphanCallChain_C5_I49_004bc910();                  // slot 0x79 0x4bc910
@@ -43,11 +46,22 @@ public:
   TCityProductionView();
 
 private:
-  char pad_94[0x10];
+  friend class TBuildingView;
+  friend class TShipyardView;
+
+  TCity* city94;
+  TView* dialogRoot98;
+  unsigned char padding9C[8];
   short selectedBuildingSlotA4;
-  unsigned char needsRefreshAtA6;
-  char pad_a7;
+  bool needsRefreshAtA6;
+  unsigned char paddingA7;
   short currentMonthAtA8;
-  short currentWeekAtAa;
-  char pad_ac[0xe0];
+  short currentWeekAtAA;
+  // InitializeCityProductionDialog loops over all 16 city production slots and stores
+  // each constructed building page from +0xac through +0xe8. TBuildingView::Close clears
+  // the indexed entry directly when the page is embedded.
+  TBuildingView* buildingViewsAC[16];
+  unsigned char paddingEC[0xa0];
 };
+
+ASSERT_SIZE(TCityProductionView, 0x18c);

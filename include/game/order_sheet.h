@@ -8,7 +8,7 @@
 // this buffer at a 2-byte-aligned offset that is always `resourceCode * 2` -- both as a
 // literal constant (e.g. WriteShort(orderSheet, 0x16, ...) for weight code 0x0B) and,
 // in TExpansionOrder/TItemOrder/TUnitOrder, as an explicit runtime multiply
-// (`this->field4e * 2`, `this->primaryInputResourceId * 2`). That makes the sheet a flat
+// (`this->primaryInputResourceId * 2`). That makes the sheet a flat
 // per-resource-code array of shorts, matching the sibling `TProductionOrder::
 // trackingSlots10` array (same offset range 0x10..0x3e, same resource-code indexing) --
 // i.e. the order-sheet and the order's own tracking slots share one indexing scheme.

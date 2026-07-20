@@ -3,6 +3,8 @@
 #include "game/TBuildingView.h"
 #include "game/mfc.h"
 
+class TPictureNumberText;
+
 // VTABLE: IMPERIALISM 0x006516a0
 class TWarehouseView : public TBuildingView {
 public:
@@ -124,16 +126,19 @@ public:
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
   // slot 0x73 NoOpUiVirtualSlot73 inherited unchanged (0x572bb0)
   // slot 0x74 ApplyCityViewSelectionPayloadAndRefreshControls inherited unchanged (0x4c6f30)
-  virtual undefined OrphanRetStub_004c6fd0() override; // slot 0x75 0x4c7360
-  virtual undefined OrphanRetStub_004c6fb0() override; // slot 0x76 0x4c7d90
+  virtual void DoStartup() override;    // slot 0x75 0x4c7360
+  virtual void UpdateFields() override; // slot 0x76 0x4c7d90
   // slot 0x77 SetUniversityDialogLocalizedTextAndRefresh inherited unchanged (0x4c70e0)
   // slot 0x78 SetUniversityDialogTextAndRefresh inherited unchanged (0x4c6ff0)
 
   TWarehouseView();
 
-  // Own fields at +0xa0..+0x104 (RTTI m_nObjectSize 0x104 vs TBuildingView's 0xa0).
-  // CreateObject (0x4c71f0) only re-zeroes inherited TBuildingView::field94 and
-  // installs the vtable -- nothing new is written in this range at construction, so
-  // it's still fully unrecovered warehouse-view state.
-  unsigned char warehouseViewStateA0[0x104 - 0xa0];
+  // DoStartup resolves the 23 FourCC tags in g_pTradeSummarySelectionMap into
+  // TPictureNumberText controls, then resolves the separate 'labo' and 'powe'
+  // controls. UpdateFields reads and writes them through TNumberText's slots 0x79/0x7a.
+  TPictureNumberText* commodityValueControlsA0[23];
+  TPictureNumberText* laborValueControlFC;
+  TPictureNumberText* powerValueControl100;
 };
+
+ASSERT_SIZE(TWarehouseView, 0x104);

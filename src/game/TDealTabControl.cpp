@@ -1,6 +1,7 @@
 #include "game/TDealTabControl.h"
 
 #include "game/TQuickDrawSurfaceContext.h"
+#include "game/bitmap_descriptor_helpers.h"
 #include "game/global_data_tables.h"
 #include "game/quickdraw_rendering.h"
 
@@ -18,8 +19,15 @@ IMPLEMENT_DYNCREATE(TDealTabControl, TControl)
 TDealTabControl::TDealTabControl() {}
 
 // FUNCTION: IMPERIALISM 0x005bc780
-undefined TDealTabControl::ConstructTDealTabControlBaseState() {
-  return 0;
+void TDealTabControl::Setup(short bitmapResourceId, unsigned char useAlternatePair) {
+  if (useAlternatePair) {
+    ++bitmapResourceId;
+  } else {
+    tabCount88 = 15;
+  }
+  filledRowStrip8c = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(bitmapResourceId);
+  emptyRowStrip90 = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(bitmapResourceId + 4);
+  rowHeightPx86 = 25;
 }
 
 // Vertical 3-segment fill bar: empty strip above the highlight band, the filled strip

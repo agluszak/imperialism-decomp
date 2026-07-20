@@ -126,35 +126,38 @@ public:
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
   // slot 0x73 NoOpUiVirtualSlot73 inherited unchanged (0x572bb0)
   // slot 0x74 ApplyCityViewSelectionPayloadAndRefreshControls inherited unchanged (0x4c6f30)
-  virtual undefined OrphanRetStub_004c6fd0() override; // slot 0x75 0x4c8390
-  virtual undefined OrphanRetStub_004c6fb0() override; // slot 0x76 0x4c8a50
+  virtual void DoStartup() override;    // slot 0x75 0x4c8390
+  virtual void UpdateFields() override; // slot 0x76 0x4c8a50
   // slot 0x77 SetUniversityDialogLocalizedTextAndRefresh inherited unchanged (0x4c70e0)
   // slot 0x78 SetUniversityDialogTextAndRefresh inherited unchanged (0x4c6ff0)
-  virtual undefined OrphanCallChain_C1_I15_004c9d20(int param_1);           // slot 0x79 0x4c9d20
-  virtual void __fastcall RefreshCityViewStatusPanel(int* pCityViewDialog); // slot 0x7a 0x4c9a60
-  virtual undefined BuildIndustryActionCostSummaryTextByActionIndex();      // slot 0x7b 0x4c97c0
+  // VC5 emits these overloads in reverse declaration order: declaring the short overload
+  // first places SetStats(TView*) in original slot 0x79 and SetStats(short) in slot 0x7a.
+  virtual void SetStats(short shipType);                          // slot 0x7a 0x4c9a60
+  virtual void SetStats(TView* sourceControl);                    // slot 0x79 0x4c9d20
+  virtual void GetCostString(CString* output, short actionIndex); // slot 0x7b 0x4c97c0
   // RET-imm evidence (RET 0x4) shows this takes one stack arg -- the imported 0-arg
-  // Ghidra prototype undercounted it; OrphanRetStub_004c6fd0 passes
+  // Ghidra prototype undercounted it; DoStartup passes
   // buildQueueSlotValues[0] (sign-extended) as the sole argument.
-  virtual void InitializeCityViewActionButtons(short arg1); // slot 0x7c 0x4c8d70
+  virtual void SetShip(short shipType); // slot 0x7c 0x4c8d70
 
   TShipyardView();
 
   // Own fields at +0xa0..+0xcc (RTTI m_nObjectSize 0xcc vs TBuildingView's 0xa0).
-  // CreateObject (0x4c8200) only re-zeroes inherited TBuildingView::field94/field98
+  // CreateObject (0x4c8200) only re-zeroes inherited
+  // TBuildingView::city94/productionView98
   // and installs the vtable -- nothing new is written in this range at construction.
   // Two functions independently prove this range's shape and agree once reconciled:
-  // OrphanRetStub_004c6fd0 (0x4c8390) zeroes an 8-element array per 'but0'-'but7'
+  // DoStartup (0x4c8390) zeroes an 8-element array per 'but0'-'but7'
   // build-queue slot at +0xa4, then writes an int and a surface pointer at +0xb4/+0xb8;
   // ApplyRectSlot110 (0x4c9150) reads that same +0xa4 array indexed by
   // selectedRequirementRow (0-7, matching the 8 build-queue slots) as the row's resource
   // type -- one array, two roles, not a conflict. ApplyRectSlot110 also proves
   // commoditySpriteIds[4]/commodityRequiredAmounts[4] at +0xbc/+0xc4 (loop bound proven:
   // 4 slots, -1 = empty).
-  short selectedRequirementRow;  // +0xa0
-  short unknownA2;               // +0xa2 unrecovered (written 0 in ApplyRectSlot110's init path)
+  short selectedRequirementRow; // +0xa0
+  short selectedStatsRowA2;
   short buildQueueSlotValues[8]; // +0xa4..+0xb3 -- AKA requirementResourceTypeByRow
-  int fieldB4;                   // +0xb4
+  int unresolvedZeroB4;          // +0xb4, only DoStartup's zero write is confirmed
   TQuickDrawSurfaceContext*
       iconSurfaceB8; // +0xb8 -- LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0x264f)
   short commoditySpriteIds[4];       // +0xbc

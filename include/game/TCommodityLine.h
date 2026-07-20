@@ -21,6 +21,8 @@ public:
 
   TCommodityLine();
 
-  // Original object size is 0x14 (CRuntimeClass m_nObjectSize); the source class ended at 0x10. Trailing 4 byte(s) not yet semantically recovered — declared so sizeof and the recomp's allocation size match the original.
-  int field10;
+  short commoditySlot10;
+  short padding12;
 };
+
+ASSERT_SIZE(TCommodityLine, 0x14);

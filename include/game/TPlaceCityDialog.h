@@ -1,6 +1,8 @@
 #pragma once
 
 #include "game/TPicture.h"
+
+class TTown;
 #include "game/mfc.h"
 
 // VTABLE: IMPERIALISM 0x00652f58
@@ -121,10 +123,9 @@ public:
   // slot 0x70 SetControlStateFlagAndMaybeRefresh inherited unchanged (0x48e810)
   // slot 0x71 ResetPictureResourceEntry inherited unchanged (0x48f520)
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
-  virtual undefined BuildCityViewResourceRows(); // slot 0x73 0x4d1880
+  virtual void StuffValues(TTown* town); // slot 0x73 0x4d1880
 
   TPlaceCityDialog();
 
-  // Original object size is 0x94 (CRuntimeClass m_nObjectSize); the source class ended at 0x90. Trailing 4 byte(s) not yet semantically recovered — declared so sizeof and the recomp's allocation size match the original.
-  int field90;
+  TTown* town90;
 };

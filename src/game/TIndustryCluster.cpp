@@ -78,12 +78,12 @@ void TIndustryCluster::DoPostCreate(int styleSeed) {
   // short value" shape the original exploits at this one call site — the
   // pointer genuinely is a TProductionOrder, not a TAmtBar.
   this->selectedMetricControl = reinterpret_cast<TAmtBar*>(selectedMetricRecord);
-  // `buildingSlot` only exists on TItemOrder-sized (0x54-byte) objects; safe
+  // `productionSlot` only exists on TItemOrder-sized (0x54-byte) objects; safe
   // here because tagIndex is bounded to the 23-entry g_pTradeSummarySelectionMap
   // table (0x696108), which never selects the TTrainingOrder slots
   // (0x17/0x18) sharing this band.
   this->selectedMetricValue = static_cast<short>(activeNationState->GetCityState()->GetBuildingType(
-      static_cast<TItemOrder*>(selectedMetricRecord)->buildingSlot));
+      static_cast<TItemOrder*>(selectedMetricRecord)->productionSlot));
 
   this->InitializeTradeMoveAndBarControls(styleSeed);
   this->NotifyControlSelectionChange(reinterpret_cast<void*>(selectedMetricRecord->quantityField04),
@@ -141,14 +141,13 @@ int TIndustryCluster::NotifyControlSelectionChange(void* dragValuePtr, int updat
   int scaledMetric = (int)((float)selectedControl->QueryValue() * barScale);
   int scaledRange = (int)((float)ReadControlValueFieldPlus4(selectedControl) * barScale);
   barControl->SetBarMetric(scaledMetric, scaledRange);
-  this->GetControlFlag(0, 0);
+  this->RefreshBarFromSelectedMetric();
   return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x00588f60
-int TIndustryCluster::GetControlFlag(int arg1, int arg2) {
+void TIndustryCluster::RefreshBarFromSelectedMetric() {
   UpdateTradeBarFromSelectedMetricRatio(this, kAssertLineRatioB);
-  return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x00588ff0
