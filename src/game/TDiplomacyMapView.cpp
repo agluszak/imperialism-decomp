@@ -1169,7 +1169,7 @@ void TDiplomacyMapView::BlitDiplomacyMapEventPaletteMaskToSurface(short maskInde
 }
 
 // Selects a minister action topic: repositions the old/new topic buttons via
-// CaptureLayoutF0, toggles the 'batl'/'batr' bracket TPicture controls around the new
+// CaptureLayoutF0, toggles the 'ltab'/'rtab' bracket TPicture controls around the new
 // selection (and their picture-resource id, 5001/5002 at the ends, 5003-5007 or the
 // mode-6 override 8410 in between), refreshes the picture-dependent interaction mode via
 // a fixed topic->mode table, and invalidates the map region.
@@ -1194,26 +1194,26 @@ void TDiplomacyMapView::ChangeSelectedActionTopic(int topicIndex) {
   layoutPosition[1] = 0x162;
   actionButtonsA0[newTopic]->CaptureLayoutF0(layoutPosition, 1);
 
-  TPicture* batlControl = static_cast<TPicture*>(this->ResolveControlByTag(kControlTagBatl));
-  batlControl->AssertValid();
-  TPicture* batrControl = static_cast<TPicture*>(this->ResolveControlByTag(kControlTagBatr));
-  batrControl->AssertValid();
+  TPicture* ltabControl = static_cast<TPicture*>(this->ResolveControlByTag(kControlTagLtab));
+  ltabControl->AssertValid();
+  TPicture* rtabControl = static_cast<TPicture*>(this->ResolveControlByTag(kControlTagRtab));
+  rtabControl->AssertValid();
 
   if (newTopic == 0 || newTopic == 4) {
-    batlControl->SetEnabled(1, 1);
-    batrControl->SetEnabled(0, 1);
+    ltabControl->SetEnabled(1, 1);
+    rtabControl->SetEnabled(0, 1);
     if (newTopic == 0) {
-      batlControl->SetPictureResourceIdAndRefresh(0x1389, 1);
+      ltabControl->SetPictureResourceIdAndRefresh(0x1389, 1);
     } else {
-      batlControl->SetPictureResourceIdAndRefresh(0x138a, 1);
+      ltabControl->SetPictureResourceIdAndRefresh(0x138a, 1);
     }
   } else {
-    batlControl->SetEnabled(0, 1);
-    batrControl->SetEnabled(1, 1);
+    ltabControl->SetEnabled(0, 1);
+    rtabControl->SetEnabled(1, 1);
     if (g_pSimMgr->mode == 6) {
-      batrControl->SetPictureResourceIdAndRefresh(0x20da, 1);
+      rtabControl->SetPictureResourceIdAndRefresh(0x20da, 1);
     } else {
-      batrControl->SetPictureResourceIdAndRefresh(static_cast<short>(newTopic + 0x138a), 1);
+      rtabControl->SetPictureResourceIdAndRefresh(static_cast<short>(newTopic + 0x138a), 1);
     }
   }
 
