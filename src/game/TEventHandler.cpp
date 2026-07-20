@@ -334,3 +334,13 @@ TObject* TEventHandler::ShallowClone() {
   header->controlTag = controlTag;
   return header;
 }
+
+// FUNCTION: IMPERIALISM 0x005d4b30
+void QueueDeferredUiEventPacket(TView* owner, int commandId, TView* control) {
+  TEvent* event = new TEvent();
+  event->commandNumber = commandId;
+  event->dispatchMessage = commandId;
+  event->sourceHandler = control;
+  event->targetHandler = owner;
+  owner->DispatchQueuedUiCommandAndRelease(event);
+}

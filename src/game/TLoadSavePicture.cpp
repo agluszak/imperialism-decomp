@@ -6,8 +6,10 @@
 #include <stdio.h>
 #include <string.h>
 
+#include "game/TApplication.h"
 #include "game/TAssetMgr.h"
 #include "game/TEditText.h"
+#include "game/TEventHandler.h"
 #include "game/TSoundPlayer.h"
 #include "game/TViewMgr.h"
 #include "game/mapped_flavor_text.h"
@@ -38,6 +40,7 @@ void TLoadSavePicture::NoOpUiLifecycleHook(int arg) {
 void TLoadSavePicture::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   // The original never calls a base-class HandleEvent in any path, so none is modeled here
   // either.
+  bool reachedCommonTail = false;
   if (commandId == 0xd) {
     short newSlot = static_cast<short>(sourceHandler->controlTag - 0x736c7430u /* 'slt0' */);
     if (newSlot != selectedSlot92) {
@@ -49,19 +52,38 @@ void TLoadSavePicture::HandleEvent(int commandId, TEventHandler* sourceHandler, 
           oldSlotControl->SetTextStyleAndMaybeRefresh(&styleAt9e, 0);
           // The original then queries oldSlotControl's bounds, unions them with the new
           // slot control's bounds via a GDI import, and invalidates the combined region --
-          // not yet decoded, left unmodeled.
+          // that import (0x6ab4b8) isn't identified yet, left unmodeled.
         }
-        // The original then resolves/refreshes the new slot control and updates
-        // selectedSlot92 -- not yet decoded.
+        // The original then resolves the newly-clicked slot control (sourceHandler itself)
+        // via SetTextStyleAndMaybeRefresh(&styleAt94, 0) -- the "selected" style -- unions
+        // its bounds the same unresolved way, then sets selectedSlot92 = newSlot and calls
+        // the currently-misnamed 1173-byte helper at 0x4047d7 (symbols.csv's guessed name
+        // for it is stale/wrong, per Hard Rule 6) -- not yet decoded.
       }
-      // The original also handles the loadModeFlag90==0 case (a different control
-      // refresh path) -- not yet decoded.
+      // The original also handles the loadModeFlag90==0 case (constructs a new ~0xa0-byte
+      // object via an unrecovered class before the same selectedSlot92=0xa1 tail) -- not
+      // yet decoded.
     }
-    // The original also handles re-clicking the already-selected slot (newSlot ==
-    // selectedSlot92) -- not yet decoded.
-  }
-  if (commandId == 0xa && sourceHandler->controlTag == kControlTagOkay) {
+    reachedCommonTail = true;
+  } else if (commandId == 0x14) {
+    if (sourceHandler->controlTag == 0x636e636cu) { // 'clnc'
+      HandleTurnFlowStateTickOrPostTurnEvent5DC();
+    }
+    if (loadModeFlag90 != 0 && sourceHandler->controlTag == 0x6f74746fu /* 'otto' */) {
+      // The original restyles the previously-selected slot back to unselected (same
+      // unresolved GDI-union invalidate as above when selectedSlot92 isn't -1/0xa1), then
+      // sets selectedSlot92 = 0xa1 and calls the same misnamed 0x4047d7(0xa1) -- not yet
+      // decoded.
+    }
+  } else if (commandId == 0xa && sourceHandler->controlTag == kControlTagOkay) {
     HandleSaveGameSlotSelectionAndPromptFlow();
+  }
+
+  if (reachedCommonTail && g_pApplicationUiRootController->screenModeAt24 > 1) {
+    TView* okayControl = ResolveControlByTag(kControlTagOkay);
+    if (okayControl != nullptr) {
+      QueueDeferredUiEventPacket(this, 0xa, okayControl);
+    }
   }
 }
 
