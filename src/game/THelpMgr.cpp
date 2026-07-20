@@ -760,3 +760,14 @@ void THelpMgr::ActivatePendingEventAndRefreshView(HelpSetRecord* pendingEntry) {
   pendingEntry->rank = g_pSimMgr->GetActiveNationId();
   // Full dialog refresh path deferred; mark the help-set entry seen/current-nation.
 }
+
+// FUNCTION: IMPERIALISM 0x00503b90
+void THelpMgr::CycleTradeScreenMode0To2() {
+  if (helpIndexReady == 0) {
+    helpIndexReady = 1;
+  } else if (helpIndexReady == 1) {
+    helpIndexReady = 2;
+  } else if (helpIndexReady == 2) {
+    helpIndexReady = 0;
+  }
+}

@@ -3126,3 +3126,10 @@ extern const float g_HexHighlightScreenScale_00658640 = -0.3125f;
 
 // GLOBAL: IMPERIALISM 0x006a4084
 short g_creditsPlaybackActive_006a4084 = 0;
+
+// GLOBAL: IMPERIALISM 0x00668568
+// Indexed directly by raw commandId (a large turn-event/menu command code, not a small
+// enum) plus hasProductionOrder193*0x11; the real table base sits at a negative
+// C-array-index offset baked into the instruction displacement, so only the leading
+// zero run at this exact address is meaningfully checked.
+short g_offerDeskSelectionIndexTable_00668568[8] = {0};

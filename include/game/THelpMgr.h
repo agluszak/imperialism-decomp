@@ -90,6 +90,10 @@ public:
 #pragma pack(pop)
 
   THelpMgr();
+
+  // Cycles helpIndexReady through 0 -> 1 -> 2 -> 0 (trade-desk info detail level).
+  // 0x00503b90, __thiscall.
+  void CycleTradeScreenMode0To2();
 };
 
 // 0x00502b60 (free function in the THelpMgr TU): once per turn tick, show the

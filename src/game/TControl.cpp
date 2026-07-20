@@ -224,4 +224,9 @@ void TControl::SetFrameStyle60(int value) {
   frameStyle60 = value;
 }
 
+// FUNCTION: IMPERIALISM 0x005be150
+void TControl::UpdateSelectionRect(short selectionIndex) {
+  (void)selectionIndex;
+}
+
 TControl::~TControl() {}

@@ -166,6 +166,10 @@ public:
   // TNextTradeCommand onto the UI root controller. `actionCode` is the triggering button's
   // FourCC tag ('acce'/'reje'/etc.); 'reje' forces the proposed quantity to 0.
   void CreateNextTradeCommandAndFormatPrompt(int actionCode); // 0x5c04f0
+
+  // Updates the trade-desk selection state (activating/deactivating) and refreshes the UI
+  // to match. 0x5c09d0, __thiscall.
+  void UpdateTradeSelectionStateAndRefreshUiIfChanged(int activate);
 };
 
 ASSERT_SIZE(TOfferDeskPicture, 0xa8);

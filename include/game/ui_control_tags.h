@@ -162,4 +162,6 @@ const unsigned int kControlTagI00m = 0x6930306du; // 'i00m' — exclusive upper 
 const unsigned int kControlTagCrew = 0x63726577u; // 'crew' — navy ship crew display mode
 const unsigned int kControlTagHull = 0x68756c6cu; // 'hull' — navy ship hull display mode
 const unsigned int kControlTagSail = 0x7361696cu; // 'sail' — navy ship sail display mode
+const unsigned int kControlTagForM = 0x466f724du; // 'ForM' — trade-desk detail-level toggle
+const unsigned int kControlTagBook = 0x626f6f6bu; // 'book' — offer-desk book control
 const unsigned int kControlTagScvw = 0x73637677u; // 'scvw' — scroll view
