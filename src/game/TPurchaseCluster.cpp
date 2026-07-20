@@ -1,5 +1,6 @@
 #include "game/TPurchaseCluster.h"
 
+#include "game/TAmtBar.h"
 #include "game/TEventHandler.h"
 #include "game/global_data_tables.h"
 #include "game/ui_control_tags.h"
@@ -46,18 +47,34 @@ void TPurchaseCluster::HandleEvent(int commandId, TEventHandler* sourceHandler, 
 
 // FUNCTION: IMPERIALISM 0x004cc550
 void TPurchaseCluster::SetCityViewValueControlAmount(short nValue, char redrawFlag) {
-  TView* valueControl = ResolveControlByTag(kControlTagValu);
+  // 'valu' is a TAmtBar (already the established typing at this exact tag in
+  // TProductionCluster.cpp); confirmed here by TAmtBar's own SetControlValueSlot1E4(int,
+  // int) matching this callsite's slot 0x1e4 dispatch and (nValue, 0) argument shape exactly
+  // -- unlike the byte-coincident TDeluxeText::ApplyTextStyleDescriptorAndMaybeRefresh at the
+  // same offset, which takes a style-descriptor pointer, not a plain value.
+  TAmtBar* valueControl = static_cast<TAmtBar*>(ResolveControlByTag(kControlTagValu));
   if (valueControl == nullptr) {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUCityViews_00696650, 0x781);
   }
-  // TODO: dispatches through valueControl's own vtable slot 0x1e4 with (nValue, 0) --
-  // byte-offset 0x1e4 coincides with TDeluxeText::ApplyTextStyleDescriptorAndMaybeRefresh
-  // elsewhere, but that method takes a style-descriptor pointer, not a plain value, so
-  // valueControl is NOT a TDeluxeText despite the matching offset (same "same slot,
-  // different class" trap flagged repeatedly this session). Its concrete class is
-  // unresolved, so the value-set call and the conditional redraw tail (invalidate rect +
-  // refresh via ownerContext's own slot 0x1d8) are left unmodeled rather than guessed.
+  valueControl->SetControlValueSlot1E4(nValue, 0);
+  if (redrawFlag == 0) {
+    return;
+  }
+
+  RECT bounds;
+  bounds.left = valueControl->ownerLocalX + ownerLocalX;
+  bounds.top = valueControl->ownerLocalY + ownerLocalY;
+  bounds.right = bounds.left + valueControl->frameWidth34;
+  bounds.bottom = bounds.top + valueControl->frameHeight38;
+  RECT copiedBounds;
+  CopyRect(&copiedBounds, &bounds);
+  ownerContext->InvalidateCityDialogRectRegion(&copiedBounds, 1);
+  // TODO: dispatches through ownerContext's own vtable slot 0x1d8 (word slot 0x76) with no
+  // args -- that byte offset coincides with TWindow::GetWindowText(CString*) elsewhere, but
+  // that method takes one arg while this callsite passes none, so ownerContext is NOT a
+  // TWindow at this slot (same "shared offset, different class" trap as elsewhere this
+  // session). Its concrete class is unresolved, so this final refresh call is left unmodeled.
 }
 
 // FUNCTION: IMPERIALISM 0x004cc640
