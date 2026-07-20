@@ -312,6 +312,7 @@ extern TQuickDrawSurfaceContext g_defaultQuickDrawSurfaceSentinel;
 extern TQuickDrawSurfaceContext* g_pActiveQuickDrawSurfaceContextHead;
 extern TQuickDrawSurfaceContext* g_pActiveQuickDrawSurfaceContext;
 extern TQuickDrawSurfaceContext* g_pPrimaryRenderSurfaceContext;
+extern TQuickDrawSurfaceContext* g_pCitySiteCachedPrimaryRenderSurfaceContext;
 extern CDC* g_pQuickDrawMemoryDc;
 extern HGDIOBJ g_hQuickDrawSavedBitmap;
 extern int g_nActiveQuickDrawSurfaceFlags;

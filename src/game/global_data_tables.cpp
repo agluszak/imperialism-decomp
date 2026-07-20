@@ -463,6 +463,10 @@ TQuickDrawSurfaceContext* g_pActiveQuickDrawSurfaceContextHead = &g_defaultQuick
 TQuickDrawSurfaceContext* g_pActiveQuickDrawSurfaceContext = 0;
 // GLOBAL: IMPERIALISM 0x006a30a8
 TQuickDrawSurfaceContext* g_pPrimaryRenderSurfaceContext = 0;
+// Cached snapshot of g_pPrimaryRenderSurfaceContext, stamped by
+// TCitySiteView::NoOpUiLifecycleHook after allocating its own surface.
+// GLOBAL: IMPERIALISM 0x006a3450
+TQuickDrawSurfaceContext* g_pCitySiteCachedPrimaryRenderSurfaceContext = 0;
 // GLOBAL: IMPERIALISM 0x006a1da0
 CDC* g_pQuickDrawMemoryDc = nullptr;
 // GLOBAL: IMPERIALISM 0x006a1dbc
