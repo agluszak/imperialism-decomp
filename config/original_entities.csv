@@ -2379,7 +2379,7 @@ address|name|symbol|size|type|prototype|provenance
 4dc840|TGreatPower::BuildGreatPowerEligibleNationEventMessagesFromLinkedList||325|function|char __thiscall BuildGreatPowerEligibleNationEventMessagesFromLinkedList(CString * outMessageText)|
 4dc9f0|TGreatPower::RefreshGreatPowerRelationPanelsAndDispatchDeltaSummary||67|function|undefined RefreshGreatPowerRelationPanelsAndDispatchDeltaSummary()|
 4dca60|TGreatPower::OrphanRetStub_0059add0||16|function|undefined OrphanRetStub_0059add0(void)|
-4dca80|TGreatPower::SelectCandidateTilesWithLowGroundUnitCount_3f||3|function|undefined SelectCandidateTilesWithLowGroundUnitCount(void)|
+4dca80|TGreatPower::AbsorbCityNeedVectorSlotFC||3|function|void AbsorbCityNeedVectorSlotFC(short* needVector)|
 4dcaa0|TGreatPower::OrphanLeaf_NoCall_Ins07_004d8920_40||306|function|undefined OrphanLeaf_NoCall_Ins07_004d8920(void)|
 4dcc30|TGreatPower::GetTEventHandlerClassNamePointer_38||1|function|undefined GetTEventHandlerClassNamePointer(void)|
 4dcc50|TGreatPower::ApplyDiplomacyState222ToCityStockAndClear||51|function|void ApplyDiplomacyState222ToCityStockAndClear()|

@@ -134,11 +134,9 @@ public:
   virtual void DispatchGreatPowerQuarterlyStatusMessageLevel2(CString* message);
   virtual void DispatchGreatPowerQuarterlyStatusMessageLevel1(CString* message);
   virtual void DispatchGreatPowerQuarterlyStatusMessageLevel0(CString* message);
-  // slot 0xfc — placeholder in the original table; city callers use the direct helper
-  // below (`AbsorbCityNeedVectorSlotFC`), not virtual dispatch. Body is a bare `ret 4`:
-  // it takes one stack dword (proven by RET 0x4) and ignores it; no vtable call site
-  // exists to pin the argument's type, so it is modeled as an opaque dword.
-  virtual void OrphanRetStub_004dca80(int);
+  // slot 0x3f / vtable offset 0xfc — TCity::PredictedNeeds passes its 23-entry
+  // city-stock vector here. The base implementation is a bare `ret 4`.
+  virtual void AbsorbCityNeedVectorSlotFC(short* needVector);
   // slot 0x40 — body 0x004dcaa0: effective diplomacyCounterA2 for a proposal code,
   // reduced by 2 when the interaction manager maps the code into an active minister
   // capability category (4/5/3), or by 1 for the code-3 special case.
@@ -455,7 +453,6 @@ public:
   void CompileGreatPowerRelationshipDeltaLinesAndDispatchMessage(void);
   void ReleaseTrackedObjectsByMapOwnerAndUnassignedEntries(int ownerClass);
   bool ExecuteAdvisoryPromptAndApplyActionType1(int arg1, int arg2);
-  void AbsorbCityNeedVectorSlotFC(short* needVector);
   void RevokeDiplomacyGrantForTargetAndAdjustInfluence(int arg1);
   // 0x004e3620 — sums the encoded diplomacyGrantByNation entries (masking off the
   // top 2 flag bits), skipping the 0xffff "no grant" sentinel. Used by the grants/aid

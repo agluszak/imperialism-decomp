@@ -92,7 +92,6 @@ src/game/TGamePreferencesPicture.cpp|1|0|1|0
 src/game/TGameSetupDialog.cpp|0|0|1|0
 src/game/TGarrisonView.cpp|1|0|0|0
 src/game/TGrantsView.cpp|1|0|1|0
-src/game/TGreatPower.cpp|0|0|1|0
 src/game/THandleStream.cpp|4|0|0|0
 src/game/THelpMgr.cpp|3|0|1|0
 src/game/THelpPicture.cpp|2|0|1|0
