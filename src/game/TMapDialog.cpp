@@ -2,6 +2,7 @@
 
 #include <stdlib.h>
 #include "game/TAnimator.h"
+#include "game/TDisplayMgr.h"
 #include "game/TDiplomacyMgr.h"
 #include "game/TGreatPower.h"
 #include "game/TMapMgr.h"
@@ -16,7 +17,9 @@
 #include "game/TViewMgr.h"
 #include "game/global_data_tables.h"
 #include "game/quickdraw_rendering.h"
+#include "game/ui_control_tags.h"
 #include "game/ui_invalidation_guard.h"
+#include "game/ui_text_label_helpers_decls.h"
 
 void NormalizeWrappedMapCoord108x60(short* xCoord, short* yCoord);
 
@@ -98,7 +101,19 @@ void TMapDialog::Free() {
 
 // FUNCTION: IMPERIALISM 0x00519D30
 void TMapDialog::NoOpUiLifecycleHook(int arg) {
-  (void)arg;
+  TWorldView::NoOpUiLifecycleHook(arg);
+
+  projectionScale76 = 1;
+  previewSquareRadius78 = 0x40;
+
+  RECT surfaceBounds = {0, 0, 0x1680, 0x40};
+  g_pDisplayMgr->InitializeBitmapSurfaceContextWithRetry(&quickDrawSurface350, 8, &surfaceBounds);
+
+  ResetAllTileMarkersToSentinel();
+
+  g_pCitySiteCachedPrimaryRenderSurfaceContext = g_pPrimaryRenderSurfaceContext;
+  ApplySharedStringToGlobalControlTag(CString(g_szEmptyString), kControlTagMain);
+  ApplySharedStringToGlobalControlTag(CString(g_szEmptyString), kControlTagGold);
 }
 
 // FUNCTION: IMPERIALISM 0x00519e00

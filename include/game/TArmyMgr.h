@@ -263,6 +263,32 @@ public:
   // side's requiredCountByte (nation slot) and the resolved city index. 0x004a6ef0,
   // 897 bytes. TODO: port body -- out of scope for RefreshMapOrderBattleSideSnapshot,
   // which only needs a real, correctly-typed call site.
+  //
+  // Investigation notes (all callees already resolved -- this is pure logic, not a
+  // class-recovery cascade):
+  //  - Allocates a scratch `TList` (0x20 bytes, already-recovered class), CIterator-walks
+  //    g_apNationStates[nationSlot]'s order list (militaryUnitList44-shaped field at
+  //    +0x44), and AddTail()s every entry whose tile isn't a movement-class tile
+  //    (TileHasMovementClassId) for cityIndex, summing GetUnitTypeCostPoints per entry.
+  //  - Subtracts ComputeAggregateWeightedChildCostForMatchingType5NavyOrders(this,
+  //    &g_pGlobalMapState->cityScoreTable[cityIndex], 0) from that sum; if the remainder
+  //    is positive, randomly evicts entries from the TList (rand() % GetCount() + 1 via
+  //    GetEntryByOrdinal) until the remainder is <= 0, each time looking the evicted
+  //    entry up in a CPtrList via CPtrList::Find/RemoveAt and re-subtracting its
+  //    GetUnitTypeCostPoints, then stamping 0xffaa into a short at the evicted record's
+  //    +0x34 and calling its own vtable slot 0x30 + slot 0x1c (Free) -- the evicted
+  //    record's own class (fields read at +1, +6, +9 (a CString), +0xc, +0xd, +0xe) is
+  //    NOT yet identified.
+  //  - Grows a per-nation dynamic array (0x2c-byte records) read/written through fields
+  //    at g_pNavyOrderManager + 0x24a (short count) and +0x250 (record pointer), indexed
+  //    by a nation-slot-derived cursor -- reallocates via operator new, copies the old
+  //    records, zero-fills the tail, then appends one new 0x2c record per evicted entry
+  //    (writing a direction/rail-style code 0xffaa, an id short, a name string clamped to
+  //    0x20 chars via g_szEmptyString, and a "mrma"-tagged short computed as
+  //    evictedRecord's field+0xe / 100). Neither g_pNavyOrderManager's +0x24a/+0x250
+  //    fields nor the 0x2c record layout are modeled yet -- needs a dedicated pass to pin
+  //    down the per-nation navy-order-support array and the evicted-record class before
+  //    this can be ported faithfully.
   void TrimExcessNavyOrderSupportAndRebuildOrderBuffer(short nationSlot, int cityIndex);
 
   // Bare `this+8` accessor; sole caller is TSimMgr::AdvanceGlobalTurnStateMachine
@@ -276,5 +302,13 @@ public:
   void AppendMapContextActionRecordAndResetWorkingFields(struct MapOrderBattleSnapshot* record,
                                                          int unusedArg2);
   void InitializeMapContextActionManager();
+
+  // Scans mapContextActionRecordList04 from its last entry down to the first for a
+  // record whose nationIds[0] or nationIds[1] matches activeNationId; returns true on the
+  // first match, or as soon as g_bRandomMapDeveloperCheatFlag is set (the developer-cheat
+  // gate short-circuits the scan the same way it does elsewhere). Sole caller:
+  // TDefenseMinisterView::HandleEvent's 'cann' branch. 0x4a6d40.
+  bool ScanMapContextActionEntriesForCodeMatch(short activeNationId);
+
   TArmyMgr();
 };

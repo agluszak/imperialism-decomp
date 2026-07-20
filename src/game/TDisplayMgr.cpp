@@ -271,7 +271,7 @@ undefined TDisplayMgr::DispatchUiWindowStatusTickForClass99Windows() {
         if (window->GetDialogBehaviorByte10() == 0) {
           window->CloseAndFree();
         } else {
-          window->OrphanCallChain_C2_I12_0048dc90(kTagOkOkOk, 1);
+          window->NotifyDialogBehaviorCommandArmed(kTagOkOkOk, 1);
         }
       }
     }

@@ -239,19 +239,28 @@ void TNetMgr::HandleError(int errorCode) {
   }
 }
 
+// Scratch slot holding the resolved 'prot' control for the duration of
+// ResetRuntimeProtocolOptionsAndRebuildSelectionSource; set on entry, cleared on exit.
+// No other reader found yet.
+static TView* g_pActiveNetProtocolControlView; // 0x6a6010
+
 // FUNCTION: IMPERIALISM 0x005e39a0
-unsigned char
-TNetMgr::ResetRuntimeProtocolOptionsAndRebuildSelectionSource(TView* provider) {
+unsigned char TNetMgr::ResetRuntimeProtocolOptionsAndRebuildSelectionSource(TView* provider) {
+  g_pActiveNetProtocolControlView = provider->ResolveControlByTag(0x70726f74); // 'prot'
+  g_pActiveNetProtocolControlView->AssertValid();
+
   for (int index = 0; index < g_WNetSerializedPtrArrayA006a5f10.GetSize(); ++index) {
     delete static_cast<RuntimeSelectionRecord*>(g_WNetSerializedPtrArrayA006a5f10[index]);
   }
   g_WNetSerializedPtrArrayA006a5f10.RemoveAll();
-  return g_NetworkSessionManager006a5f60.RebuildRuntimeSelectionSource(provider);
+  unsigned char result = g_NetworkSessionManager006a5f60.RebuildRuntimeSelectionSource();
+  g_pActiveNetProtocolControlView = 0;
+  return result;
 }
 
 // FUNCTION: IMPERIALISM 0x005e3a60
 unsigned char TNetMgr::OpenRuntimeSelectionSourceByIndexAndCopyPath(int index, int flag,
-                                                                     const char* seed) {
+                                                                    const char* seed) {
   (void)flag;
   strncpy(g_RuntimeSelectionSourceSeedBuffer_006a5fe8, seed, 0x20);
   const GUID* sessionGuid = static_cast<const GUID*>(g_WNetSerializedPtrArrayA006a5f10[index]);
@@ -279,12 +288,14 @@ static BOOL FAR PASCAL RecordHostPlayerIdDuringEnumeration(DPID dpId, DWORD dwPl
 }
 
 // FUNCTION: IMPERIALISM 0x005e3c00
-unsigned char TNetMgr::ReturnTrueRuntimeCredentialFinalizeStub() { return 1; }
+unsigned char TNetMgr::ReturnTrueRuntimeCredentialFinalizeStub() {
+  return 1;
+}
 
 // FUNCTION: IMPERIALISM 0x005e3c20
 unsigned char TNetMgr::OpenJoinGameRuntimeSelectionAndStartSession(int selectionTag,
-                                                                    CString* outGameName,
-                                                                    const char* seed) {
+                                                                   CString* outGameName,
+                                                                   const char* seed) {
   strncpy(g_JoinGameSeedBuffer_006a5fc8, seed, 0x20);
   g_JoinGamePlayerNameStaging_006a6008 = *outGameName;
 

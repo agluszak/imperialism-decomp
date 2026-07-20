@@ -14,6 +14,7 @@
 #include "game/TViewMgr.h"
 #include "game/TCountry.h"
 #include "game/TMacViewMgr.h"
+#include "game/TMapUberPicture.h"
 #include "game/TSortedList.h"
 #include "game/TMinor.h"
 #include "game/TCivUnit.h"
@@ -3771,9 +3772,52 @@ int TMapMgr::CalculateDeveloperTilePurchaseCost(short nTileIndex) {
 
 // FUNCTION: IMPERIALISM 0x00518bd0
 void TMapMgr::MarkAdjacentHexOrderDirectionAndSelectTile(int tileIndex, int contextArg, char flag) {
-  (void)tileIndex;
-  (void)contextArg;
-  (void)flag;
+  short anchorTile = cityScoreTable[contextArg].cityTileIndex04;
+  short direction = GetHexDirectionBetweenTiles(
+      anchorTile, g_pGlobalMapState->cityScoreTable[tileIndex].cityTileIndex04);
+
+  int row = anchorTile / 0x6c;
+  int col = anchorTile % 0x6c;
+
+  short hexAreaX =
+      static_cast<short>(row % 2 + col * 2 +
+                         g_Build_Hex_Area_LookupTable_00696E70[direction < 0    ? direction + 6
+                                                               : direction <= 5 ? direction
+                                                                                : direction - 6]);
+
+  short hexAreaY =
+      static_cast<short>(g_Build_Hex_Area_LookupTable_00696E80[direction < 0    ? direction + 6
+                                                               : direction <= 5 ? direction
+                                                                                : direction - 6] +
+                         row);
+
+  if (hexAreaX > 0xd7) {
+    hexAreaX -= 0xd9;
+  } else if (hexAreaX < 0) {
+    hexAreaX += 0xd8;
+  }
+
+  if (hexAreaY < 0) {
+    hexAreaY = 0;
+  } else if (hexAreaY > 0x3b) {
+    hexAreaY = 0x3b;
+  }
+
+  short finalTileIndex = static_cast<short>(hexAreaX / 2 + hexAreaY * 0x6c);
+  if (finalTileIndex < 0 || finalTileIndex >= 0x1950) {
+    finalTileIndex = -1;
+  }
+
+  if (finalTileIndex != -1) {
+    signed char directionCode = static_cast<signed char>((direction + 3) % 6 + 1);
+    if (flag != 0) {
+      directionCode += 6;
+    }
+    g_pGlobalMapState->terrainStateTable[finalTileIndex].perTileVisitedFlag0f = directionCode;
+    if (g_pUiRuntimeContext->mapUberPictureF0 != nullptr) {
+      g_pUiRuntimeContext->mapUberPictureF0->InvalidateTileMarkerChain(finalTileIndex);
+    }
+  }
 }
 
 namespace {

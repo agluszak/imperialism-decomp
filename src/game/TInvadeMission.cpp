@@ -5,6 +5,7 @@
 #include "game/global_data_tables.h"
 #include "game/CIterator.h"
 #include "game/TBeachheadMission.h"
+#include "game/TCountry.h"
 #include "game/TGlobalMapState.h"
 #include "game/TMilitaryUnit.h"
 #include "game/TStream.h"
@@ -258,10 +259,9 @@ char TInvadeMission::TryResolveTargetTerrainClass() {
     field_14 = static_cast<short>(0xffff);
     return 0;
   }
-  // TODO: else-branch resolves field_14 from the owning nation's own terrain
-  // descriptor via an unrecovered TCountry vtable slot (0x4d87b0); pending
-  // that virtual's recovery, field_14 stays -1 and this reports failure.
-  return 0;
+  field_14 = static_cast<short>(
+      g_apTerrainTypeDescriptorTable[nationId04]->GetHomeRegionCityRecordIndex());
+  return 1;
 }
 
 // FUNCTION: IMPERIALISM 0x0053fe10

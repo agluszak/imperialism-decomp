@@ -1,4 +1,13 @@
 #include "game/TDefenseMinisterView.h"
+
+#include "game/TAmbitApplication.h"
+#include "game/TArmyMgr.h"
+#include "game/TEventHandler.h"
+#include "game/TSimMgr.h"
+#include "game/TViewMgr.h"
+#include "game/TWindow.h"
+#include "game/global_data_tables.h"
+#include "game/ui_control_tags.h"
 // SYNTHETIC: IMPERIALISM 0x004f3240
 // TDefenseMinisterView::CreateObject
 
@@ -18,4 +27,36 @@ TDefenseMinisterView::~TDefenseMinisterView() {}
 
 // FUNCTION: IMPERIALISM 0x004f3370
 void TDefenseMinisterView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+  unsigned int tag = sourceHandler->controlTag;
+  if (commandId == 0xa) {
+    if (tag == kControlTagBack) {
+      NotifyWindowStatusTick();
+      return;
+    } else if (tag == kControlTagOkay) {
+      NotifyWindowStatusTick();
+      TWindow* owner = static_cast<TWindow*>(OwnerPanel());
+      g_pGlobalUiRootController->CloseAndFreeWindow(owner);
+      return;
+    }
+  } else if (commandId == 0x14) {
+    if (tag == kControlTagCann) {
+      short activeNationId = g_pSimMgr->GetActiveNationId();
+      if (g_pMapContextActionManager->ScanMapContextActionEntriesForCodeMatch(activeNationId)) {
+        if (g_pSimMgr->field14 == 0) {
+          TWindow* owner = static_cast<TWindow*>(OwnerPanel());
+          g_pGlobalUiRootController->CloseAndFreeWindow(owner);
+          g_pSimMgr->SetGlobalTurnStateCodeIfAllowed(0x65);
+        }
+      } else {
+        CString message;
+        g_pSimMgr->GetString(0x273d, 0x12, &message);
+        g_pUiRuntimeContext->DispatchLocalizedUiMessageWithTemplateA13A0(
+            message, &g_cstrDiplomacyNoticeMessageStore, 1, 0);
+      }
+    } else if (tag == kControlTagRecc) {
+      ShowMinisterHelpDialog(0x258a);
+    }
+    return;
+  }
+  TEventHandler::HandleEvent(commandId, sourceHandler, event);
 }

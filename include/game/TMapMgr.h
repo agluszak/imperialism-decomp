@@ -770,12 +770,14 @@ public:
   // tiles tagged in [7,22]. 0x00518470, __thiscall, one int param.
   void ApplyJoinEmpireMode0GlobalDiplomacyReset(int nationSlot);
 
-  // Ground truth 0x00518bd0 (reached through the ILT thunk at 0x004079af): hex-neighbor
-  // direction math (adjacentRegionIds0A-style lookup via g_Build_Hex_Area_LookupTable_*)
-  // that marks an adjacent tile's rail/road direction byte and, if mapUberPictureF0 is
-  // set, forwards to its own slot-0x76 (byte 0x1d8) virtual. Left as a stub pending a
-  // dedicated pass -- the body is 343 bytes of hex-grid arithmetic, out of scope for the
-  // TArmyMgr callers that merely need a real, correctly-typed call site.
+  // 0x00518bd0 (reached through the ILT thunk at 0x004079af): computes the hex-grid
+  // cell adjacent to cityScoreTable[contextArg]'s tile in the direction of
+  // cityScoreTable[tileIndex]'s tile (GetHexDirectionBetweenTiles +
+  // g_Build_Hex_Area_LookupTable_00696E70/E80's per-direction offsets), clamps it onto
+  // the wrapped map grid, and -- if the resulting tile is on-map -- stamps its
+  // perTileVisitedFlag0f with a direction-overlay code ((direction+3)%6+1, or +7 when
+  // `flag` is set) and forwards it through mapUberPictureF0's slot-0x76
+  // InvalidateTileMarkerChain.
   void MarkAdjacentHexOrderDirectionAndSelectTile(int tileIndex, int contextArg, char flag);
 
   // Resolves cityScoreTable[tileIndex].ownerNationCode00, following one level of

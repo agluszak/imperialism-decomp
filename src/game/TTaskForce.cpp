@@ -668,12 +668,19 @@ void TTaskForce::SetMapOrderType5AndQueue(int nOrderTarget) {
   g_pActiveMapOrderContext->FinalizeQueuedMapOrderEntry(this);
 }
 
-// TODO: port body @ 0x005539c0 (recomputes this task force's per-order selection flags
-// for the active nation's current orders).
-
 // FUNCTION: IMPERIALISM 0x005539c0
 void TTaskForce::RefreshTaskForceSelectionFlagsForCurrentNationOrders(int mode) {
-  (void)mode;
+  for (TShip* ship = g_pNavyPrimaryOrderListHead; ship != nullptr; ship = ship->nextOlder24) {
+    if (ship->field08 == contextAnchor && ship->ownerNationSlot14 == required_count &&
+        ship->ownerOrderEntry0c == 0) {
+      FindOrCreateChildOrderLink(ship);
+    }
+  }
+
+  for (TMapOrderChildLinkNode* node = childOrderList; node != nullptr; node = node->next) {
+    // Same node+0x34 overrun documented on FindOrCreateChildOrderLink.
+    node->active = !((char)mode == 0 && static_cast<TShip*>(node->payload)->field34 != 0);
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x00553a50

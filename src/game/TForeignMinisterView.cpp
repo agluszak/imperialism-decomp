@@ -1,4 +1,10 @@
 #include "game/TForeignMinisterView.h"
+
+#include "game/TAmbitApplication.h"
+#include "game/TEventHandler.h"
+#include "game/TWindow.h"
+#include "game/global_data_tables.h"
+#include "game/ui_control_tags.h"
 // SYNTHETIC: IMPERIALISM 0x004f2f20
 // TForeignMinisterView::CreateObject
 
@@ -20,6 +26,43 @@ TForeignMinisterView::~TForeignMinisterView() {}
 
 // FUNCTION: IMPERIALISM 0x004f3050
 void TForeignMinisterView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+  unsigned int tag = sourceHandler->controlTag;
+  if (commandId == 0xa) {
+    if (tag == kControlTagBack) {
+      NotifyWindowStatusTick();
+      return;
+    } else if (tag == kControlTagOkay) {
+      NotifyWindowStatusTick();
+      TWindow* owner = static_cast<TWindow*>(OwnerPanel());
+      g_pGlobalUiRootController->CloseAndFreeWindow(owner);
+      return;
+    }
+  } else if (commandId == 0x14) {
+    switch (tag) {
+      case kControlTagExpo:
+        ShowMinisterHelpDialog(0x2300);
+        break;
+      case kControlTagDeal:
+        ShowMinisterHelpDialog(0x22f6);
+        break;
+      case kControlTagMerc:
+        ShowMinisterHelpDialog(0x22ec);
+        break;
+      case kControlTagGlob:
+        OrphanCallChain_C3_I22_004f31d0();
+        break;
+      case kControlTagPric:
+        ShowMinisterHelpDialog(0x231e);
+        break;
+      case kControlTagRecc:
+        ShowMinisterHelpDialog(0x22e2);
+        break;
+      default:
+        break;
+    }
+    return;
+  }
+  TEventHandler::HandleEvent(commandId, sourceHandler, event);
 }
 
 // FUNCTION: IMPERIALISM 0x004f31d0

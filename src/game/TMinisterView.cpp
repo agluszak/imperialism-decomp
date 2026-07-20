@@ -3,6 +3,7 @@
 #include "game/TAmbitApplication.h"
 #include "game/TDisplayMgr.h"
 #include "game/TEventHandler.h"
+#include "game/TMacViewMgr.h"
 #include "game/TWindow.h"
 #include "game/global_data_tables.h"
 #include "game/ui_control_tags.h"
@@ -22,7 +23,8 @@ TMinisterView::TMinisterView() : TView(), field60(0) {}
 TMinisterView::~TMinisterView() {}
 
 // FUNCTION: IMPERIALISM 0x004f2ce0
-undefined TMinisterView::OrphanLeaf_NoCall_Ins04_004f2ce0(short param_1) {
+undefined TMinisterView::SetAuxNationStateSlot(short nationSlot) {
+  field64 = g_apTerrainTypeDescriptorTable[nationSlot];
   return 0;
 }
 
@@ -41,13 +43,13 @@ void TMinisterView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEv
   int tag = sourceHandler->controlTag;
   if (commandId == 0xa) {
     if (tag == kControlTagOkay) {
-      OrphanLeaf_NoCall_Ins03_004f2ea0();
+      NotifyWindowStatusTick();
       TWindow* owner = static_cast<TWindow*>(OwnerPanel());
       g_pGlobalUiRootController->CloseAndFreeWindow(owner);
       return;
     }
     if (tag == kControlTagBack) {
-      OrphanLeaf_NoCall_Ins03_004f2ea0();
+      NotifyWindowStatusTick();
       return;
     }
   }
@@ -55,16 +57,21 @@ void TMinisterView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEv
 }
 
 // FUNCTION: IMPERIALISM 0x004f2ea0
-undefined TMinisterView::OrphanLeaf_NoCall_Ins03_004f2ea0() {
+undefined TMinisterView::NotifyWindowStatusTick() {
   return g_pDisplayMgr->DispatchUiWindowStatusTickForClass99Windows();
 }
 
 // FUNCTION: IMPERIALISM 0x004f2ec0
-undefined TMinisterView::OrphanCallChain_C2_I08_004f2ec0(undefined4 param_1) {
-  return 0;
+undefined TMinisterView::ShowMinisterHelpDialog(int dialogId) {
+  NotifyWindowStatusTick();
+  return g_pStrategicMapViewSystem->ResolveTurnEventDialogOrFailAndInvokeSlot9C(dialogId);
 }
 
 // FUNCTION: IMPERIALISM 0x004f2ef0
-undefined TMinisterView::OrphanCallChain_C1_I09_004f2ef0() {
+undefined TMinisterView::FreeDisplayHelpControl() {
+  TView* dispControl = ResolveControlByTag(kControlTagDisp);
+  if (dispControl != nullptr) {
+    dispControl->Free();
+  }
   return 0;
 }

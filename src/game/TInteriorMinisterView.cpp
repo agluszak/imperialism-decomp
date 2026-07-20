@@ -1,4 +1,11 @@
 #include "game/TInteriorMinisterView.h"
+
+#include "game/TAmbitApplication.h"
+#include "game/TEventHandler.h"
+#include "game/TSimMgr.h"
+#include "game/TWindow.h"
+#include "game/global_data_tables.h"
+#include "game/ui_control_tags.h"
 // SYNTHETIC: IMPERIALISM 0x004f35e0
 // TInteriorMinisterView::CreateObject
 
@@ -18,4 +25,30 @@ TInteriorMinisterView::~TInteriorMinisterView() {}
 
 // FUNCTION: IMPERIALISM 0x004f3710
 void TInteriorMinisterView::HandleEvent(int commandId, TEventHandler* sourceHandler,
-                                        TEvent* event) {}
+                                        TEvent* event) {
+  unsigned int tag = sourceHandler->controlTag;
+  if (commandId == 0xa) {
+    if (tag == kControlTagBack) {
+      NotifyWindowStatusTick();
+      return;
+    } else if (tag == kControlTagOkay) {
+      NotifyWindowStatusTick();
+      TWindow* owner = static_cast<TWindow*>(OwnerPanel());
+      g_pGlobalUiRootController->CloseAndFreeWindow(owner);
+      return;
+    }
+  } else if (commandId == 0x14) {
+    if (tag == kControlTagRecc) {
+      ShowMinisterHelpDialog(0x25ee);
+    } else if (tag == kControlTagTran) {
+      if (g_pSimMgr->field14 == 0) {
+        TWindow* owner = static_cast<TWindow*>(OwnerPanel());
+        g_pGlobalUiRootController->CloseAndFreeWindow(owner);
+      }
+    } else if (tag == kControlTagTrea) {
+      ShowMinisterHelpDialog(0x25f8);
+    }
+    return;
+  }
+  TEventHandler::HandleEvent(commandId, sourceHandler, event);
+}

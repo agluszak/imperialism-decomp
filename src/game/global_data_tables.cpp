@@ -369,8 +369,13 @@ char g_szMcAppUiHeaderPath_006943CC[] = "D:\\Ambit\\McAppUI.h";
 char g_szUGameWindowSourcePath_00696bc0[] = "D:\\Ambit\\Cross\\UGameWindow.cpp";
 // GLOBAL: IMPERIALISM 0x00696728
 char g_szUCountrySourcePath_00696728[] = "D:\\Ambit\\Cross\\UCountry.cpp";
+// InitializeDiplomacyMinisterActionControlsAndLabels' (0x4f4620) 6 action-button tags,
+// in construction order: info/trty/gran/trad/coun/offr.
+// GLOBAL: IMPERIALISM 0x00696960
+int g_diplomacyActionButtonTagTable_00696960[6] = {0x696e666f, 0x74727479, 0x6772616e,
+                                                    0x74726164, 0x636f756e, 0x6f666672};
 // TCouncilView::HandleEvent's council-control 4-char tag table ("tfni", "ttrt", "targ",
-// "tart", "tuoc", "rffo" as stored).
+// "tart", "tuoc", "rffo" as stored); also the same function's hover-text tag variants.
 // GLOBAL: IMPERIALISM 0x00696978
 int g_councilControlTagTable[6] = {0x696e6674, 0x74727474, 0x67726174,
                                    0x74726174, 0x636f7574, 0x6f666672};
@@ -1260,6 +1265,8 @@ extern "C" const char s_SourcePathUArmyMgr_0069573C[] = "D:\\Ambit\\Cross\\UArmy
 extern "C" const char s_SourcePathUCityViews_00696650[] = "D:\\Ambit\\Cross\\UCityViews.cpp";
 extern "C" const char s_SourcePathUArmyViews_00695858[] = "D:\\Ambit\\Cross\\UArmyViews.cpp";
 extern "C" const char s_SourcePathUOceanViews_00698650[] = "D:\\Ambit\\Cross\\UOceanViews.cpp";
+// GLOBAL: IMPERIALISM 0x00696ae0
+extern "C" const char s_SourcePathUDiplomacyViews_00696AE0[] = "D:\\Ambit\\Cross\\UDiplomacyViews.cpp";
 // GLOBAL: IMPERIALISM 0x006964b0
 extern "C" const char s_SourcePathUCityMinister_006964B0[] = "D:\\Ambit\\Cross\\UCityMinister.cpp";
 // GLOBAL: IMPERIALISM 0x0069943c
@@ -1551,6 +1558,10 @@ CString g_cstrTechCapabilityMessageStore;
 // localized-message dispatch.
 // GLOBAL: IMPERIALISM 0x006a5be0
 CString g_cstrUiPromptMessageStore;
+// GLOBAL: IMPERIALISM 0x006a4048
+CString g_cstrQueryFloaterMessageStore;
+// GLOBAL: IMPERIALISM 0x006a2fc0
+CString g_cstrDiplomacyNoticeMessageStore;
 
 // Last turn tick for which ShowTurnAlertsForActiveNation (0x502b60) ran; the alert
 // pass is skipped until the tick advances.
@@ -3191,3 +3202,5 @@ short g_creditsPlaybackActive_006a4084 = 0;
 // C-array-index offset baked into the instruction displacement, so only the leading
 // zero run at this exact address is meaningfully checked.
 short g_offerDeskSelectionIndexTable_00668568[8] = {0};
+// GLOBAL: IMPERIALISM 0x006a3020
+int g_diplomacyPopupLayoutPosition_006a3020[2] = {0};

@@ -20,6 +20,9 @@
 #include "game/TInfoBarText.h"
 #include "game/ui_control_tags.h"
 #include "game/TCountry.h"
+#include "game/TInfoPanelView.h"
+#include "game/ui_invalidation_guard.h"
+#include "game/ui_text_label_helpers_decls.h"
 #include "game/TGreatPower.h"
 #include "game/TMilitaryUnit.h"
 #include "game/TViewMgr.h"
@@ -165,7 +168,26 @@ DiplomacyMaskBufferRun::DiplomacyMaskBufferRun() {
 
 // FUNCTION: IMPERIALISM 0x004f3d60
 void TDiplomacyMapView::NoOpUiLifecycleHook(int arg) {
-  (void)arg;
+  TView::NoOpUiLifecycleHook(arg);
+  BuildDiplomacyNationOverlayGeometryAndHitMasks();
+  InitializeDiplomacyMinisterActionControlsAndLabels();
+  SetControlHoverHelpText(CString(g_szEmptyString), this);
+
+  if (g_pSimMgr->mode == 6) {
+    TView* endControl = ResolveControlByTag(kControlTagEndSpace);
+    if (endControl != nullptr) {
+      endControl->Free();
+    }
+    TView* querControl = ResolveControlByTag(kControlTagQuer);
+    if (querControl != nullptr) {
+      querControl->Free();
+    }
+    TView* topBControl = ResolveControlByTag(kControlTagTopB);
+    if (topBControl != nullptr) {
+      topBControl->Free();
+    }
+    SetPictureResourceIdAndRefresh(0x20d0, 1);
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x004f3e30
@@ -338,6 +360,52 @@ void TDiplomacyMapView::BuildDiplomacyNationOverlayGeometryAndHitMasks() {
   frameRegionSelectorAt98 = activeNation;
   activeNationC2 = activeNation;
   actionCodeBC = 0xd;
+}
+
+// Shared nil-pointer assert used by InitializeDiplomacyMinisterActionControlsAndLabels'
+// 6 action-button resolves (0x4f4620, D:\Ambit\Cross\UDiplomacyViews.cpp:0x3a7).
+static inline void AssertActionButtonResolved(void* button) {
+  if (button == nullptr) {
+    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUDiplomacyViews_00696AE0, 0x3a7);
+  }
+}
+
+// FUNCTION: IMPERIALISM 0x004f4620
+void TDiplomacyMapView::InitializeDiplomacyMinisterActionControlsAndLabels() {
+  CString text;
+
+  for (int buttonIndex = 0; buttonIndex < 6; ++buttonIndex) {
+    TView* button = ResolveControlByTag(g_diplomacyActionButtonTagTable_00696960[buttonIndex]);
+    actionButtonsA0[buttonIndex] = button;
+    AssertActionButtonResolved(button);
+  }
+
+  TInfoPanelView* infoActionButton = static_cast<TInfoPanelView*>(actionButtonsA0[0]);
+  infoActionButton->OrphanLeaf_NoCall_Ins97_004fae00(activeNationC2);
+  infoActionButton->OrphanRetStub_00430550();
+
+  for (short i = 0; i < 6; ++i) {
+    TView* hoverControl = ResolveControlByTag(g_councilControlTagTable[i]);
+    g_pSimMgr->GetString(0x2733, static_cast<short>(i + 0x52), &text);
+    SetControlHoverHelpText(text, hoverControl);
+  }
+
+  if (g_pSimMgr->mode == 6) {
+    TView* trtyHover = ResolveControlByTag(g_councilControlTagTable[1]);
+    g_pSimMgr->GetString(0x274a, 5, &text);
+    SetControlHoverHelpTextAltEntry(text, trtyHover);
+
+    TView* granHover = ResolveControlByTag(g_councilControlTagTable[2]);
+    SetControlHoverHelpTextAltEntry(CString(g_szEmptyString), granHover);
+
+    TView* tradHover = ResolveControlByTag(g_councilControlTagTable[3]);
+    SetControlHoverHelpTextAltEntry(CString(g_szEmptyString), tradHover);
+  } else {
+    TView* offrControl = ResolveControlByTag(g_councilControlTagTable[5]);
+    SetControlHoverHelpText(CString(g_szEmptyString), offrControl);
+    offrControl->CaptureLayoutF0(g_diplomacyPopupLayoutPosition_006a3020, 0);
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x004f48c0
@@ -1105,13 +1173,13 @@ void TDiplomacyMapView::InvalidateAndRunChildWaitSheet(void* arg1, void* arg2, v
                                                        void* arg4) {
   reinterpret_cast<void(__stdcall*)(int)>(Function_004f6d90)(5);
   reinterpret_cast<void(__fastcall*)(void*, int, void*, void*, void*, void*)>(
-      RunDiplomacyWaitSheetPopupAndAwaitResponse)(childControlAtB4, 0, arg1, arg2, arg3, arg4);
+      RunDiplomacyWaitSheetPopupAndAwaitResponse)(actionButtonsA0[5], 0, arg1, arg2, arg3, arg4);
 }
 
 // FUNCTION: IMPERIALISM 0x004f7080
 void TDiplomacyMapView::InvalidateAndForwardTabSwitchToChild(void* arg1, void* arg2, void* arg3) {
   reinterpret_cast<void(__stdcall*)(int)>(Function_004f6d90)(5);
-  childControlAtB4->BuildInsetContentRect(reinterpret_cast<RECT*>(arg1));
+  static_cast<TControl*>(actionButtonsA0[5])->BuildInsetContentRect(reinterpret_cast<RECT*>(arg1));
 }
 
 // FUNCTION: IMPERIALISM 0x004f70c0
@@ -1138,7 +1206,7 @@ void TDiplomacyMapView::HandleEvent(int commandId, TEventHandler* panelEvent, TE
 // FUNCTION: IMPERIALISM 0x004f7130
 void TDiplomacyMapView::ForwardParam(int param) {
   if (stateFlagAtB8 == 5) {
-    childControlAtB4->ForwardParam(param);
+    actionButtonsA0[5]->ForwardParam(param);
     return;
   }
   // Non-virtual call to TEventHandler::ForwardParam's body (orig routes through the
