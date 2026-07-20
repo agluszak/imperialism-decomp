@@ -7401,7 +7401,7 @@ address|name|symbol|size|type|prototype|provenance
 6128ec|CDC::SelectStockObject|?SelectStockObject@CDC@@UAEPAVCGdiObject@@H@Z|69|function|public: virtual class CGdiObject * __thiscall CDC::SelectStockObject(int)|msvc500_library_oracle
 612931|SelectObject||83|function|undefined SelectObject()|
 612984|CDC::SelectObject|?SelectObject@CDC@@QAEPAVCBrush@@PAV2@@Z|83|function|undefined SelectObject_612984()|
-6129d7|CDC::SelectObject|?SelectObject@CDC@@QAEPAVCBrush@@PAV2@@Z|83|function|undefined SelectObject_6129d7()|
+6129d7|CDC::SelectObject|?SelectObject@CDC@@QAEPAVCPen@@PAV2@@Z|83|function|public: class CPen * __thiscall CDC::SelectObject(class CPen *)|msvc500_library_oracle
 612a2a|CDC::SelectClipRgn|CDC::SelectClipRgn|78|function|undefined ?SelectClipRgn@CDC@@QAEHPAVCRgn@@@Z@00612a2a()|
 612a78|CDC::SelectPalette||16|function|undefined SelectPalette()|
 612a88|TOceanDialog::SelectPaletteThenLookupHandleMapEntryWithCreate||18|function|undefined SelectPaletteThenLookupHandleMapEntryWithCreate()|
@@ -7422,12 +7422,12 @@ address|name|symbol|size|type|prototype|provenance
 612e42|CDC::ScaleWindowExt|?ScaleWindowExt@CDC@@UAE?AVCSize@@HHHH@Z|88|function|undefined ?ScaleWindowExt@CDC@@UAE?AVCSize@@HHHH@Z@00612e42()|
 612e9a|CDC::GetClipBox|?GetClipBox@CDC@@UBEHPAUtagRECT@@@Z|16|function|public: virtual int __thiscall CDC::GetClipBox(struct tagRECT *) const|msvc500_library_oracle
 612eaa|CDC::SelectClipRgn|?SelectClipRgn@CDC@@QAEHPAVCRgn@@@Z|78|function|undefined SelectClipRegionOnPrimaryAndSecondaryDc()|
-612ef8|CDC::IntersectClipRect|CDC::IntersectClipRect|74|function|undefined ?IntersectClipRect@CDC@@QAEHHHHH@Z@00612ef8()|
-612f42|CDC::ExcludeClipRect|CDC::ExcludeClipRect|76|function|undefined ?ExcludeClipRect@CDC@@QAEHPBUtagRECT@@@Z@00612f42()|
-612f8e|CDC::IntersectClipRect|CDC::IntersectClipRect|74|function|undefined ?IntersectClipRect@CDC@@QAEHHHHH@Z@00612f8e()|
+612ef8|CDC::IntersectClipRect|?IntersectClipRect@CDC@@QAEHHHHH@Z|74|function|public: int __thiscall CDC::IntersectClipRect(int, int, int, int)|msvc500_library_oracle
+612f42|CDC::ExcludeClipRect|?ExcludeClipRect@CDC@@QAEHHHHH@Z|76|function|public: int __thiscall CDC::ExcludeClipRect(int, int, int, int)|msvc500_library_oracle
+612f8e|CDC::IntersectClipRect|?IntersectClipRect@CDC@@QAEHPBUtagRECT@@@Z|74|function|public: int __thiscall CDC::IntersectClipRect(struct tagRECT const *)|msvc500_library_oracle
 612fd8|CDC::IntersectClipRect|CDC::IntersectClipRect|76|function|undefined ?IntersectClipRect@CDC@@QAEHPBUtagRECT@@@Z@00612fd8()|
-613024|CDC::OffsetClipRgn|CDC::OffsetClipRgn|62|function|undefined ?OffsetClipRgn@CDC@@QAEHUtagSIZE@@@Z@00613024()|
-613062|CDC::OffsetClipRgn|CDC::OffsetClipRgn|62|function|undefined ?OffsetClipRgn@CDC@@QAEHUtagSIZE@@@Z@00613062()|
+613024|CDC::OffsetClipRgn|?OffsetClipRgn@CDC@@QAEHHH@Z|62|function|public: int __thiscall CDC::OffsetClipRgn(int, int)|msvc500_library_oracle
+613062|CDC::OffsetClipRgn|?OffsetClipRgn@CDC@@QAEHUtagSIZE@@@Z|62|function|public: int __thiscall CDC::OffsetClipRgn(struct tagSIZE)|msvc500_library_oracle
 6130a0|CDC::OffsetWindowOrg|?OffsetWindowOrg@CDC@@QAE?AVCPoint@@HH@Z|76|function|undefined ?OffsetViewportOrg@CDC@@UAE?AVCPoint@@HH@Z@006130a0()|
 6130ec|LineTo|?LineTo@CDC@@QAEHHH@Z|53|function|int __thiscall ?LineTo@CDC@@QAEHHH@Z@006130ec(int param_1, int param_2)|msvc500_library_oracle
 613121|CDC::SetTextAlign|?SetTextAlign@CDC@@QAEII@Z|52|function|public: unsigned int __thiscall CDC::SetTextAlign(unsigned int)|msvc500_library_oracle
@@ -7593,8 +7593,8 @@ address|name|symbol|size|type|prototype|provenance
 618bc6|DDX_Text|?DDX_Text@@YGXPAVCDataExchange@@HAAF@Z|59|function|void __stdcall DDX_Text(class CDataExchange *, int, short &)|msvc500_library_oracle
 618c01|DDX_Text|?DDX_Text@@YGXPAVCDataExchange@@HAAJ@Z|47|function|undefined DDX_Text_618c01()|
 618c30|DDX_Text|?DDX_Text@@YGXPAVCDataExchange@@HAAK@Z|47|function|undefined DDX_Text_618c30()|
-618c5f|DDX_Text|?DDX_Text@@YGXPAVCDataExchange@@HAAJ@Z|47|function|undefined DDX_Text_618c5f()|
-618c8e|DDX_Text|?DDX_Text@@YGXPAVCDataExchange@@HAAK@Z|47|function|undefined DDX_Text_618c8e()|
+618c5f|DDX_Text|?DDX_Text@@YGXPAVCDataExchange@@HAAH@Z|47|function|void __stdcall DDX_Text(class CDataExchange *, int, int &)|msvc500_library_oracle
+618c8e|DDX_Text|?DDX_Text@@YGXPAVCDataExchange@@HAAI@Z|47|function|void __stdcall DDX_Text(class CDataExchange *, int, unsigned int &)|msvc500_library_oracle
 618cbd|DDX_Text|?DDX_Text@@YGXPAVCDataExchange@@HAAVCString@@@Z|82|function|void __stdcall DDX_Text(class CDataExchange *, int, class CString &)|msvc500_library_oracle
 618d0f|DDX_Check|?DDX_Check@@YGXPAVCDataExchange@@HAAH@Z|82|function|void __stdcall DDX_Check(class CDataExchange *, int, int &)|msvc500_library_override
 618d61|DDX_Radio|?DDX_Radio@@YGXPAVCDataExchange@@HAAH@Z|145|function|void __stdcall DDX_Radio(class CDataExchange *, int, int &)|msvc500_library_oracle
@@ -7779,11 +7779,11 @@ address|name|symbol|size|type|prototype|provenance
 621112|CDumpContext::operator<<|??6CDumpContext@@QAEAAV0@E@Z|50|function|public: class CDumpContext & __thiscall CDumpContext::operator<<(unsigned char)|msvc500_library_oracle
 621144|CDumpContext::operator<<|??6CDumpContext@@QAEAAV0@G@Z|50|function|public: class CDumpContext & __thiscall CDumpContext::operator<<(unsigned short)|msvc500_library_oracle
 621176|CDumpContext::operator<<|??6CDumpContext@@QAEAAV0@H@Z|48|function|undefined ??6CDumpContext@@QAEAAV0@H@Z()|
-6211a6|CDumpContext::operator<<|??6CDumpContext@@QAEAAV0@H@Z|48|function|undefined ??6CDumpContext@@QAEAAV0@H@Z()|
-6211d6|CDumpContext::operator<<|??6CDumpContext@@QAEAAV0@H@Z|48|function|undefined ??6CDumpContext@@QAEAAV0@H@Z()|
-621206|CDumpContext::operator<<|??6CDumpContext@@QAEAAV0@H@Z|48|function|undefined ??6CDumpContext@@QAEAAV0@H@Z()|
+6211a6|CDumpContext::operator<<|??6CDumpContext@@QAEAAV0@I@Z|48|function|public: class CDumpContext & __thiscall CDumpContext::operator<<(unsigned int)|msvc500_library_oracle
+6211d6|CDumpContext::operator<<|??6CDumpContext@@QAEAAV0@J@Z|48|function|public: class CDumpContext & __thiscall CDumpContext::operator<<(long)|msvc500_library_oracle
+621206|CDumpContext::operator<<|??6CDumpContext@@QAEAAV0@K@Z|48|function|public: class CDumpContext & __thiscall CDumpContext::operator<<(unsigned long)|msvc500_library_oracle
 621236|CDumpContext::operator<<|??6CDumpContext@@QAEAAV0@PBVCObject@@@Z|37|function|public: class CDumpContext & __thiscall CDumpContext::operator<<(class CObject const *)|msvc500_library_oracle
-621267|CDumpContext::operator<<|??6CDumpContext@@QAEAAV0@H@Z|48|function|undefined ??6CDumpContext@@QAEAAV0@H@Z()|
+621267|CDumpContext::operator<<|??6CDumpContext@@QAEAAV0@ABVCObject@@@Z|48|function|public: class CDumpContext & __thiscall CDumpContext::operator<<(class CObject const &)|msvc500_library_oracle
 621297|CDumpContext::HexDump|?HexDump@CDumpContext@@QAEXPBDPAEHH@Z|147|function|public: void __thiscall CDumpContext::HexDump(char const *, unsigned char *, int, int)|msvc500_library_oracle
 62132a|CDumpContext::operator<<|??6CDumpContext@@QAEAAV0@PBG@Z|74|function|public: class CDumpContext & __thiscall CDumpContext::operator<<(unsigned short const *)|msvc500_library_oracle
 622442|CDialog::GetRuntimeClass|?GetRuntimeClass@CDialog@@UBEPAUCRuntimeClass@@XZ||function|public: virtual struct CRuntimeClass * __thiscall CDialog::GetRuntimeClass(void)const|msvc500_library_override

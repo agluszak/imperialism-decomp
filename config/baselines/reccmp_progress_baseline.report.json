@@ -1012,7 +1012,7 @@
             "instruction_index": 10
           },
           "recomp": {
-            "address": 4829198,
+            "address": 4829230,
             "facts": {
               "symbol": "CList<TView *"
             },
@@ -1203,7 +1203,7 @@
             "instruction_index": 6
           },
           "recomp": {
-            "address": 5080751,
+            "address": 5090319,
             "facts": {
               "base_register": "esp",
               "displacement": 16,
@@ -1435,7 +1435,7 @@
             "instruction_index": 0
           },
           "recomp": {
-            "address": 4823008,
+            "address": 4823040,
             "facts": {
               "base_register": "ecx",
               "displacement": 36,
@@ -1485,7 +1485,7 @@
             "instruction_index": 1
           },
           "recomp": {
-            "address": 4823108,
+            "address": 4823140,
             "facts": {
               "base_register": "ecx",
               "displacement": 36,
@@ -1686,7 +1686,7 @@
         "inconclusive_reason": "alignment_failure",
         "status": "inconclusive"
       },
-      "matching": 0.0007331378299120235,
+      "matching": 0.4933526710176456,
       "name": "BuildTurnEventDialogResourcesForEvent547Or7D8",
       "type": 1
     },
@@ -1803,9 +1803,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4658435,
+            "address": 4658467,
             "facts": {
-              "target": 4658416,
+              "target": 4658448,
               "target_instruction_index": null,
               "target_name": "TPageCorner::~TPageCorner"
             },
@@ -1849,9 +1849,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4814083,
+            "address": 4814115,
             "facts": {
-              "target": 4814064,
+              "target": 4814096,
               "target_instruction_index": null,
               "target_name": "TTreatiesView::~TTreatiesView"
             },
@@ -1941,9 +1941,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4807027,
+            "address": 4807059,
             "facts": {
-              "target": 4807008,
+              "target": 4807040,
               "target_instruction_index": null,
               "target_name": "TTradePanelView::~TTradePanelView"
             },
@@ -2495,9 +2495,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4806227,
+            "address": 4806259,
             "facts": {
-              "target": 4806208,
+              "target": 4806240,
               "target_instruction_index": null,
               "target_name": "TTradePageSellView::~TTradePageSellView"
             },
@@ -2528,9 +2528,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4805571,
+            "address": 4805603,
             "facts": {
-              "target": 4805552,
+              "target": 4805584,
               "target_instruction_index": null,
               "target_name": "TTradePageBuyView::~TTradePageBuyView"
             },
@@ -2561,9 +2561,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4792595,
+            "address": 4792627,
             "facts": {
-              "target": 4792576,
+              "target": 4792608,
               "target_instruction_index": null,
               "target_name": "TTradeBookView::~TTradeBookView"
             },
@@ -2699,9 +2699,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4816787,
+            "address": 4816819,
             "facts": {
-              "target": 4816816,
+              "target": 4816848,
               "target_instruction_index": null,
               "target_name": "TTwoPicSlider::~TTwoPicSlider"
             },
@@ -2732,9 +2732,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4667555,
+            "address": 4667587,
             "facts": {
-              "target": 4667536,
+              "target": 4667568,
               "target_instruction_index": null,
               "target_name": "TQueryFloater::~TQueryFloater"
             },
@@ -2798,9 +2798,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4780419,
+            "address": 4780451,
             "facts": {
-              "target": 4780400,
+              "target": 4780432,
               "target_instruction_index": null,
               "target_name": "TTerrainHelpPicture::~TTerrainHelpPicture"
             },
@@ -2831,9 +2831,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4679459,
+            "address": 4679491,
             "facts": {
-              "target": 4679440,
+              "target": 4679472,
               "target_instruction_index": null,
               "target_name": "TScrollView::~TScrollView"
             },
@@ -2877,9 +2877,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4723219,
+            "address": 4723251,
             "facts": {
-              "target": 4723200,
+              "target": 4723232,
               "target_instruction_index": null,
               "target_name": "TStatusPicture::~TStatusPicture"
             },
@@ -3074,9 +3074,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4669171,
+            "address": 4669203,
             "facts": {
-              "target": 4669152,
+              "target": 4669184,
               "target_instruction_index": null,
               "target_name": "TRadioText::~TRadioText"
             },
@@ -3205,9 +3205,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4691075,
+            "address": 4691107,
             "facts": {
-              "target": 4691104,
+              "target": 4691136,
               "target_instruction_index": null,
               "target_name": "TShipFractionCluster::~TShipFractionCluster"
             },
@@ -3435,9 +3435,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4658275,
+            "address": 4658307,
             "facts": {
-              "target": 4658304,
+              "target": 4658336,
               "target_instruction_index": null,
               "target_name": "TOverlayRadioButton::~TOverlayRadioButton"
             },
@@ -3559,9 +3559,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4719747,
+            "address": 4719779,
             "facts": {
-              "target": 4719728,
+              "target": 4719760,
               "target_instruction_index": null,
               "target_name": "TSpecialQuitPicture::~TSpecialQuitPicture"
             },
@@ -3605,9 +3605,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4729283,
+            "address": 4729315,
             "facts": {
-              "target": 4729264,
+              "target": 4729296,
               "target_instruction_index": null,
               "target_name": "TTEView::~TTEView"
             },
@@ -3730,9 +3730,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4675443,
+            "address": 4675475,
             "facts": {
-              "target": 4675472,
+              "target": 4675504,
               "target_instruction_index": null,
               "target_name": "TScenarioChooser::~TScenarioChooser"
             },
@@ -3776,9 +3776,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4784003,
+            "address": 4784035,
             "facts": {
-              "target": 4784032,
+              "target": 4784064,
               "target_instruction_index": null,
               "target_name": "TTextList::~TTextList"
             },
@@ -3988,9 +3988,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4729795,
+            "address": 4729827,
             "facts": {
-              "target": 4729776,
+              "target": 4729808,
               "target_instruction_index": null,
               "target_name": "TTacArmyView::~TTacArmyView"
             },
@@ -4021,9 +4021,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4761763,
+            "address": 4761795,
             "facts": {
-              "target": 4761744,
+              "target": 4761776,
               "target_instruction_index": null,
               "target_name": "TTacticalToolbar::~TTacticalToolbar"
             },
@@ -4067,9 +4067,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4736531,
+            "address": 4736563,
             "facts": {
-              "target": 4736512,
+              "target": 4736544,
               "target_instruction_index": null,
               "target_name": "TTacMapUberPicture::~TTacMapUberPicture"
             },
@@ -4100,9 +4100,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4737219,
+            "address": 4737251,
             "facts": {
-              "target": 4737200,
+              "target": 4737232,
               "target_instruction_index": null,
               "target_name": "TTacticalAdiosPicture::~TTacticalAdiosPicture"
             },
@@ -4133,9 +4133,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4760387,
+            "address": 4760419,
             "facts": {
-              "target": 4760368,
+              "target": 4760400,
               "target_instruction_index": null,
               "target_name": "TTacticalHolaPicture::~TTacticalHolaPicture"
             },
@@ -4205,9 +4205,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4780227,
+            "address": 4780259,
             "facts": {
-              "target": 4780208,
+              "target": 4780240,
               "target_instruction_index": null,
               "target_name": "TTechStorePage::~TTechStorePage"
             },
@@ -4238,9 +4238,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4771827,
+            "address": 4771859,
             "facts": {
-              "target": 4771808,
+              "target": 4771840,
               "target_instruction_index": null,
               "target_name": "TTechHistoryView::~TTechHistoryView"
             },
@@ -4655,7 +4655,7 @@
             "instruction_index": 1
           },
           "recomp": {
-            "address": 5086162,
+            "address": 5095730,
             "facts": {
               "value": "0"
             },
@@ -5636,7 +5636,7 @@
           "recomp": {
             "address": 4293008,
             "facts": {
-              "target": 5270068,
+              "target": 5279636,
               "target_instruction_index": null,
               "target_name": "DDX_Text(class CDataExchange *, int, unsigned int &)"
             },
@@ -5909,7 +5909,7 @@
           "recomp": {
             "address": 4294548,
             "facts": {
-              "target": 5270068,
+              "target": 5279636,
               "target_instruction_index": null,
               "target_name": "DDX_Text(class CDataExchange *, int, unsigned int &)"
             },
@@ -6059,7 +6059,7 @@
           "recomp": {
             "address": 4294844,
             "facts": {
-              "target": 5225359,
+              "target": 5234927,
               "target_instruction_index": null,
               "target_name": "CWnd::UpdateData"
             },
@@ -6284,7 +6284,7 @@
           "recomp": {
             "address": 4281242,
             "facts": {
-              "target": 5225359,
+              "target": 5234927,
               "target_instruction_index": null,
               "target_name": "CWnd::UpdateData"
             },
@@ -6461,7 +6461,7 @@
             "instruction_index": 1
           },
           "recomp": {
-            "address": 5086818,
+            "address": 5096386,
             "facts": {
               "value": "0"
             },
@@ -6516,7 +6516,7 @@
             "instruction_index": 1
           },
           "recomp": {
-            "address": 5086866,
+            "address": 5096434,
             "facts": {
               "value": "0"
             },
@@ -6705,7 +6705,7 @@
             "instruction_index": 0
           },
           "recomp": {
-            "address": 4847072,
+            "address": 4847104,
             "facts": {
               "base_register": "esp",
               "displacement": 20,
@@ -6816,7 +6816,7 @@
             "instruction_index": 1
           },
           "recomp": {
-            "address": 5087010,
+            "address": 5096578,
             "facts": {
               "value": "retstack:(),0"
             },
@@ -6847,9 +6847,9 @@
             "instruction_index": 32
           },
           "recomp": {
-            "address": 4847036,
+            "address": 4847068,
             "facts": {
-              "target": 5102402,
+              "target": 5111970,
               "target_instruction_index": null,
               "target_name": "_DirectPlayEnumerateA@8"
             },
@@ -7034,7 +7034,7 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4847973,
+            "address": 4848005,
             "facts": {
               "value": "1"
             },
@@ -7245,7 +7245,7 @@
             "instruction_index": 1
           },
           "recomp": {
-            "address": 5087218,
+            "address": 5096786,
             "facts": {
               "value": "0"
             },
@@ -7391,7 +7391,7 @@
             "instruction_index": 1
           },
           "recomp": {
-            "address": 5087298,
+            "address": 5096866,
             "facts": {
               "value": "0"
             },
@@ -7433,7 +7433,7 @@
             "instruction_index": 1
           },
           "recomp": {
-            "address": 5087330,
+            "address": 5096898,
             "facts": {
               "value": "0"
             },
@@ -7579,7 +7579,7 @@
             "instruction_index": 1
           },
           "recomp": {
-            "address": 5087378,
+            "address": 5096946,
             "facts": {
               "value": "0"
             },
@@ -7621,7 +7621,7 @@
             "instruction_index": 1
           },
           "recomp": {
-            "address": 5087410,
+            "address": 5096978,
             "facts": {
               "value": "0"
             },
@@ -7663,7 +7663,7 @@
             "instruction_index": 1
           },
           "recomp": {
-            "address": 5087442,
+            "address": 5097010,
             "facts": {
               "value": "0"
             },
@@ -7809,7 +7809,7 @@
             "instruction_index": 1
           },
           "recomp": {
-            "address": 5087490,
+            "address": 5097058,
             "facts": {
               "value": "0"
             },
@@ -7955,7 +7955,7 @@
             "instruction_index": 1
           },
           "recomp": {
-            "address": 5087538,
+            "address": 5097106,
             "facts": {
               "value": "0"
             },
@@ -8153,7 +8153,7 @@
             "instruction_index": 1
           },
           "recomp": {
-            "address": 5087618,
+            "address": 5097186,
             "facts": {
               "value": "0"
             },
@@ -8586,9 +8586,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4818611,
+            "address": 4818643,
             "facts": {
-              "target": 4818640,
+              "target": 4818672,
               "target_instruction_index": null,
               "target_name": "TUiEvent::~TUiEvent"
             },
@@ -8747,7 +8747,7 @@
             "instruction_index": 6
           },
           "recomp": {
-            "address": 4818592,
+            "address": 4818624,
             "facts": {
               "value": "TUiEvent::`vftable' (VTABLE)"
             },
@@ -9419,9 +9419,9 @@
             "instruction_index": 23
           },
           "recomp": {
-            "address": 4729648,
+            "address": 4729680,
             "facts": {
-              "target": 5251274,
+              "target": 5260842,
               "target_instruction_index": null,
               "target_name": "CDC::SelectObject(class CFont *)"
             },
@@ -9476,7 +9476,7 @@
             "instruction_index": 1
           },
           "recomp": {
-            "address": 5087986,
+            "address": 5097554,
             "facts": {
               "value": "0"
             },
@@ -10488,7 +10488,7 @@
             "instruction_index": 26
           },
           "recomp": {
-            "address": 4713941,
+            "address": 4713973,
             "facts": {
               "value": "load:callesp+40"
             },
@@ -10857,9 +10857,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4715475,
+            "address": 4715507,
             "facts": {
-              "target": 4715456,
+              "target": 4715488,
               "target_instruction_index": null,
               "target_name": "TSortedPtrList::~TSortedPtrList"
             },
@@ -10929,9 +10929,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4666819,
+            "address": 4666851,
             "facts": {
-              "target": 4666848,
+              "target": 4666880,
               "target_instruction_index": null,
               "target_name": "TPtrList::~TPtrList"
             },
@@ -11314,9 +11314,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4726963,
+            "address": 4726995,
             "facts": {
-              "target": 4726992,
+              "target": 4727024,
               "target_instruction_index": null,
               "target_name": "TStream::~TStream"
             },
@@ -12581,7 +12581,7 @@
             "instruction_index": 1
           },
           "recomp": {
-            "address": 5088290,
+            "address": 5097858,
             "facts": {
               "value": "0"
             },
@@ -13281,7 +13281,7 @@
             "instruction_index": 17
           },
           "recomp": {
-            "address": 4823879,
+            "address": 4823911,
             "facts": {
               "base_register": "eax",
               "displacement": 0,
@@ -13379,7 +13379,7 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4824805,
+            "address": 4824837,
             "facts": {
               "predicate": "cc:test#723fe18b"
             },
@@ -13408,7 +13408,7 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4824821,
+            "address": 4824853,
             "facts": {
               "predicate": "cc:test#723fe18b"
             },
@@ -13463,7 +13463,7 @@
             "instruction_index": 6
           },
           "recomp": {
-            "address": 4824955,
+            "address": 4824987,
             "facts": {
               "predicate": "cc:test#86267770"
             },
@@ -13505,7 +13505,7 @@
             "instruction_index": 1
           },
           "recomp": {
-            "address": 4825140,
+            "address": 4825172,
             "facts": {
               "value": 48
             },
@@ -13694,7 +13694,7 @@
             "instruction_index": 1
           },
           "recomp": {
-            "address": 4826308,
+            "address": 4826340,
             "facts": {
               "base_register": "ecx",
               "displacement": 40,
@@ -13731,7 +13731,7 @@
             "instruction_index": 1
           },
           "recomp": {
-            "address": 4826356,
+            "address": 4826388,
             "facts": {
               "base_register": "ecx",
               "displacement": 40,
@@ -13768,7 +13768,7 @@
             "instruction_index": 0
           },
           "recomp": {
-            "address": 4826400,
+            "address": 4826432,
             "facts": {
               "base_register": "ecx",
               "displacement": 40,
@@ -13831,7 +13831,7 @@
             "instruction_index": 1
           },
           "recomp": {
-            "address": 4826531,
+            "address": 4826563,
             "facts": {
               "base_register": "esp",
               "displacement": 24,
@@ -13896,7 +13896,7 @@
             "instruction_index": 9
           },
           "recomp": {
-            "address": 4826776,
+            "address": 4826808,
             "facts": {
               "base_register": "esp",
               "displacement": 20,
@@ -13981,7 +13981,7 @@
             "instruction_index": 10
           },
           "recomp": {
-            "address": 4827095,
+            "address": 4827127,
             "facts": {
               "value": "1"
             },
@@ -14116,9 +14116,9 @@
             "instruction_index": 11
           },
           "recomp": {
-            "address": 4828350,
+            "address": 4828382,
             "facts": {
-              "target": 4828388,
+              "target": 4828420,
               "target_instruction_index": 27,
               "target_name": null
             },
@@ -14318,9 +14318,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4680611,
+            "address": 4680643,
             "facts": {
-              "target": 4680640,
+              "target": 4680672,
               "target_instruction_index": null,
               "target_name": "TScroller::~TScroller"
             },
@@ -14829,9 +14829,9 @@
             "instruction_index": 3
           },
           "recomp": {
-            "address": 4849768,
+            "address": 4849800,
             "facts": {
-              "target": 4849801,
+              "target": 4849833,
               "target_instruction_index": 13,
               "target_name": null
             },
@@ -14925,7 +14925,7 @@
             "instruction_index": 1
           },
           "recomp": {
-            "address": 4850354,
+            "address": 4850386,
             "facts": {
               "value": "3"
             },
@@ -15384,9 +15384,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4668755,
+            "address": 4668787,
             "facts": {
-              "target": 4668784,
+              "target": 4668816,
               "target_instruction_index": null,
               "target_name": "TRadio::~TRadio"
             },
@@ -15768,9 +15768,9 @@
             "instruction_index": 35
           },
           "recomp": {
-            "address": 4722507,
+            "address": 4722539,
             "facts": {
-              "target": 4722519,
+              "target": 4722551,
               "target_instruction_index": 38,
               "target_name": null
             },
@@ -16394,7 +16394,7 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4815332,
+            "address": 4815364,
             "facts": {
               "symbol": "CList<TView * (__cdecl *)(class CWnd *, int)"
             },
@@ -16479,7 +16479,7 @@
             "instruction_index": 36
           },
           "recomp": {
-            "address": 4815907,
+            "address": 4815939,
             "facts": {
               "base_register": "edi",
               "displacement": 40,
@@ -16792,7 +16792,7 @@
             "instruction_index": 10
           },
           "recomp": {
-            "address": 4816414,
+            "address": 4816446,
             "facts": {
               "symbol": "CList<TView * (__cdecl *)(class CWnd *, int)"
             },
@@ -17490,7 +17490,7 @@
           "recomp": {
             "address": 4219540,
             "facts": {
-              "target": 5250601,
+              "target": 5260169,
               "target_instruction_index": null,
               "target_name": "CDC::FromHandle"
             },
@@ -17643,9 +17643,9 @@
             "instruction_index": 30
           },
           "recomp": {
-            "address": 4924859,
+            "address": 4924891,
             "facts": {
-              "target": 4924867,
+              "target": 4924899,
               "target_instruction_index": 32,
               "target_name": null
             },
@@ -17689,9 +17689,9 @@
             "instruction_index": 7
           },
           "recomp": {
-            "address": 4925300,
+            "address": 4925332,
             "facts": {
-              "target": 4925309,
+              "target": 4925341,
               "target_instruction_index": 10,
               "target_name": null
             },
@@ -17750,7 +17750,7 @@
             "instruction_index": 7
           },
           "recomp": {
-            "address": 4925948,
+            "address": 4925980,
             "facts": {
               "base_register": null,
               "displacement": 0,
@@ -17800,7 +17800,7 @@
             "instruction_index": 4
           },
           "recomp": {
-            "address": 4926018,
+            "address": 4926050,
             "facts": {
               "base_register": null,
               "displacement": 0,
@@ -17976,7 +17976,7 @@
             "instruction_index": 17
           },
           "recomp": {
-            "address": 4922315,
+            "address": 4922347,
             "facts": {
               "value": "CGdiObject::`vftable' (VTABLE)"
             },
@@ -18070,7 +18070,7 @@
             "instruction_index": 25
           },
           "recomp": {
-            "address": 4922600,
+            "address": 4922632,
             "facts": {
               "value": "CRgn::`vftable' (VTABLE)"
             },
@@ -18138,7 +18138,7 @@
             "instruction_index": 10
           },
           "recomp": {
-            "address": 4922963,
+            "address": 4922995,
             "facts": {
               "value": "CRgn::`vftable' (VTABLE)"
             },
@@ -18677,7 +18677,7 @@
             "instruction_index": 6
           },
           "recomp": {
-            "address": 4923482,
+            "address": 4923514,
             "facts": {
               "value": 32
             },
@@ -19921,7 +19921,7 @@
             "instruction_index": 1
           },
           "recomp": {
-            "address": 5090082,
+            "address": 5099650,
             "facts": {
               "value": "0"
             },
@@ -21096,7 +21096,7 @@
             "instruction_index": 0
           },
           "recomp": {
-            "address": 4657136,
+            "address": 4657168,
             "facts": {
               "value": "TOneTimeAnimation::`vftable' (VTABLE)"
             },
@@ -21142,7 +21142,7 @@
             "instruction_index": 14
           },
           "recomp": {
-            "address": 4657270,
+            "address": 4657302,
             "facts": {
               "base_register": "esp",
               "displacement": 16,
@@ -21177,9 +21177,9 @@
             "instruction_index": 10
           },
           "recomp": {
-            "address": 4657360,
+            "address": 4657392,
             "facts": {
-              "target": 4657506,
+              "target": 4657538,
               "target_instruction_index": 55,
               "target_name": null
             },
@@ -21461,9 +21461,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4812323,
+            "address": 4812355,
             "facts": {
-              "target": 4812576,
+              "target": 4812608,
               "target_instruction_index": null,
               "target_name": "TTransFocusAnimation::~TTransFocusAnimation"
             },
@@ -21505,7 +21505,7 @@
             "instruction_index": 0
           },
           "recomp": {
-            "address": 4812224,
+            "address": 4812256,
             "facts": {
               "symbol": "TTransFocusAnimation::classTTransFocusAnimation"
             },
@@ -23582,9 +23582,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4727987,
+            "address": 4728019,
             "facts": {
-              "target": 4727968,
+              "target": 4728000,
               "target_instruction_index": null,
               "target_name": "TSuperArmyRoster::~TSuperArmyRoster"
             },
@@ -23837,9 +23837,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4728195,
+            "address": 4728227,
             "facts": {
-              "target": 4728176,
+              "target": 4728208,
               "target_instruction_index": null,
               "target_name": "TSuperCivRoster::~TSuperCivRoster"
             },
@@ -24105,9 +24105,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4729091,
+            "address": 4729123,
             "facts": {
-              "target": 4729072,
+              "target": 4729104,
               "target_instruction_index": null,
               "target_name": "TSwapperDaddyView::~TSwapperDaddyView"
             },
@@ -25474,9 +25474,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4771619,
+            "address": 4771651,
             "facts": {
-              "target": 4771600,
+              "target": 4771632,
               "target_instruction_index": null,
               "target_name": "TTechCheater::~TTechCheater"
             },
@@ -25807,9 +25807,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4663459,
+            "address": 4663491,
             "facts": {
-              "target": 4663440,
+              "target": 4663472,
               "target_instruction_index": null,
               "target_name": "TPopGrowthOrder::~TPopGrowthOrder"
             },
@@ -26361,9 +26361,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4665523,
+            "address": 4665555,
             "facts": {
-              "target": 4665664,
+              "target": 4665696,
               "target_instruction_index": null,
               "target_name": "TProductionOrder::~TProductionOrder"
             },
@@ -26700,9 +26700,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4657683,
+            "address": 4657715,
             "facts": {
-              "target": 4657712,
+              "target": 4657744,
               "target_instruction_index": null,
               "target_name": "TOrItemOrder::~TOrItemOrder"
             },
@@ -26798,9 +26798,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4663971,
+            "address": 4664003,
             "facts": {
-              "target": 4664000,
+              "target": 4664032,
               "target_instruction_index": null,
               "target_name": "TPopulationMgr::~TPopulationMgr"
             },
@@ -27052,9 +27052,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4811939,
+            "address": 4811971,
             "facts": {
-              "target": 4811968,
+              "target": 4812000,
               "target_instruction_index": null,
               "target_name": "TTrainingOrder::~TTrainingOrder"
             },
@@ -27189,9 +27189,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4819651,
+            "address": 4819683,
             "facts": {
-              "target": 4819680,
+              "target": 4819712,
               "target_instruction_index": null,
               "target_name": "TUnitOrder::~TUnitOrder"
             },
@@ -27352,9 +27352,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4664835,
+            "address": 4664867,
             "facts": {
-              "target": 4664864,
+              "target": 4664896,
               "target_instruction_index": null,
               "target_name": "TPowerPlantOrder::~TPowerPlantOrder"
             },
@@ -27756,9 +27756,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4692211,
+            "address": 4692243,
             "facts": {
-              "target": 4692352,
+              "target": 4692384,
               "target_instruction_index": null,
               "target_name": "TShipOrder::~TShipOrder"
             },
@@ -28481,9 +28481,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4672659,
+            "address": 4672691,
             "facts": {
-              "target": 4672640,
+              "target": 4672672,
               "target_instruction_index": null,
               "target_name": "TRailheadDialog::~TRailheadDialog"
             },
@@ -28566,9 +28566,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4813859,
+            "address": 4813891,
             "facts": {
-              "target": 4813840,
+              "target": 4813872,
               "target_instruction_index": null,
               "target_name": "TTransportView::~TTransportView"
             },
@@ -29042,7 +29042,7 @@
             "instruction_index": 1
           },
           "recomp": {
-            "address": 5091410,
+            "address": 5100978,
             "facts": {
               "value": "retstack:(),0"
             },
@@ -30676,9 +30676,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4848163,
+            "address": 4848195,
             "facts": {
-              "target": 4848192,
+              "target": 4848224,
               "target_instruction_index": null,
               "target_name": "TWarehouseView::~TWarehouseView"
             },
@@ -30787,9 +30787,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4820819,
+            "address": 4820851,
             "facts": {
-              "target": 4820848,
+              "target": 4820880,
               "target_instruction_index": null,
               "target_name": "TUnitsView::~TUnitsView"
             },
@@ -30872,9 +30872,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4696771,
+            "address": 4696803,
             "facts": {
-              "target": 4696800,
+              "target": 4696832,
               "target_instruction_index": null,
               "target_name": "TShipyardView::~TShipyardView"
             },
@@ -31224,9 +31224,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4821027,
+            "address": 4821059,
             "facts": {
-              "target": 4821056,
+              "target": 4821088,
               "target_instruction_index": null,
               "target_name": "TUniversityView::~TUniversityView"
             },
@@ -31402,9 +31402,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4667107,
+            "address": 4667139,
             "facts": {
-              "target": 4667136,
+              "target": 4667168,
               "target_instruction_index": null,
               "target_name": "TPurchaseCluster::~TPurchaseCluster"
             },
@@ -31663,9 +31663,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4808355,
+            "address": 4808387,
             "facts": {
-              "target": 4808384,
+              "target": 4808416,
               "target_instruction_index": null,
               "target_name": "TTradeSchoolView::~TTradeSchoolView"
             },
@@ -32211,9 +32211,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4663347,
+            "address": 4663379,
             "facts": {
-              "target": 4663376,
+              "target": 4663408,
               "target_instruction_index": null,
               "target_name": "TPlaceCityDialog::~TPlaceCityDialog"
             },
@@ -32921,9 +32921,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4665971,
+            "address": 4666003,
             "facts": {
-              "target": 4715504,
+              "target": 4715536,
               "target_instruction_index": null,
               "target_name": "TSortedPtrList::TSortedPtrList"
             },
@@ -32954,9 +32954,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4666003,
+            "address": 4666035,
             "facts": {
-              "target": 4666032,
+              "target": 4666064,
               "target_instruction_index": null,
               "target_name": "TProvinceDesirabilityList::~TProvinceDesirabilityList"
             },
@@ -34126,12 +34126,14 @@
       "address": "0x4dbac0",
       "comparison": {
         "difference": null,
-        "effective_reasons": [],
+        "effective_reasons": [
+          "commutative_order"
+        ],
         "inconclusive_location": null,
         "inconclusive_reason": null,
-        "status": "exact"
+        "status": "effective"
       },
-      "matching": 1.0,
+      "matching": 0.9848484848484849,
       "name": "TGreatPower::MarkConnectedOwnedRegionsFrom",
       "type": 1
     },
@@ -35783,15 +35785,12 @@
       "address": "0x4e05d0",
       "comparison": {
         "difference": null,
-        "effective_reasons": [
-          "commutative_order",
-          "dead_operation"
-        ],
+        "effective_reasons": [],
         "inconclusive_location": null,
         "inconclusive_reason": null,
-        "status": "effective"
+        "status": "exact"
       },
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::ComputeMinisterSkillFloatSlot89",
       "type": 1
     },
@@ -35941,7 +35940,7 @@
         "inconclusive_reason": "alignment_failure",
         "status": "inconclusive"
       },
-      "matching": 0.5783132530120482,
+      "matching": 0.5542168674698795,
       "name": "TGreatPower::GetScoreFactorSlot240",
       "type": 1
     },
@@ -36657,7 +36656,7 @@
         "inconclusive_reason": "alignment_failure",
         "status": "inconclusive"
       },
-      "matching": 0.9333333333333333,
+      "matching": 0.6666666666666666,
       "name": "TMinor::SumDiplomacyState1c6AndRelationDeltaSnapshot",
       "type": 1
     },
@@ -37036,9 +37035,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4816563,
+            "address": 4816595,
             "facts": {
-              "target": 4816512,
+              "target": 4816544,
               "target_instruction_index": null,
               "target_name": "TTurnStartEvent::~TTurnStartEvent"
             },
@@ -38913,9 +38912,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4713491,
+            "address": 4713523,
             "facts": {
-              "target": 4715504,
+              "target": 4715536,
               "target_instruction_index": null,
               "target_name": "TSortedPtrList::TSortedPtrList"
             },
@@ -38946,9 +38945,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4713523,
+            "address": 4713555,
             "facts": {
-              "target": 4713552,
+              "target": 4713584,
               "target_instruction_index": null,
               "target_name": "TSortedByRelationshipList::~TSortedByRelationshipList"
             },
@@ -40345,9 +40344,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4673011,
+            "address": 4673043,
             "facts": {
-              "target": 4673040,
+              "target": 4673072,
               "target_instruction_index": null,
               "target_name": "TRearFloatWindow::~TRearFloatWindow"
             },
@@ -40432,7 +40431,7 @@
           "recomp": {
             "address": 4352638,
             "facts": {
-              "target": 5115200,
+              "target": 5124768,
               "target_instruction_index": null,
               "target_name": "??_L@YGXPAXIHP6EX0@Z1@Z (UNK)"
             },
@@ -40915,9 +40914,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4660067,
+            "address": 4660099,
             "facts": {
-              "target": 4660048,
+              "target": 4660080,
               "target_instruction_index": null,
               "target_name": "TPanelView::~TPanelView"
             },
@@ -41039,7 +41038,7 @@
             "instruction_index": 4
           },
           "recomp": {
-            "address": 4815034,
+            "address": 4815066,
             "facts": {
               "target": null,
               "target_instruction_index": null,
@@ -41283,9 +41282,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4656115,
+            "address": 4656147,
             "facts": {
-              "target": 4656144,
+              "target": 4656176,
               "target_instruction_index": null,
               "target_name": "TOffersPanelView::~TOffersPanelView"
             },
@@ -41329,9 +41328,9 @@
             "instruction_index": 5
           },
           "recomp": {
-            "address": 4656655,
+            "address": 4656687,
             "facts": {
-              "target": 4656676,
+              "target": 4656708,
               "target_instruction_index": 12,
               "target_name": null
             },
@@ -41946,9 +41945,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4676499,
+            "address": 4676531,
             "facts": {
-              "target": 4676480,
+              "target": 4676512,
               "target_instruction_index": null,
               "target_name": "TScoreGraph::~TScoreGraph"
             },
@@ -42151,7 +42150,7 @@
           "recomp": {
             "address": 4371737,
             "facts": {
-              "target": 5208195,
+              "target": 5217763,
               "target_instruction_index": null,
               "target_name": "operator delete"
             },
@@ -42197,7 +42196,7 @@
           "recomp": {
             "address": 4371896,
             "facts": {
-              "target": 5208195,
+              "target": 5217763,
               "target_instruction_index": null,
               "target_name": "operator delete"
             },
@@ -43627,9 +43626,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4783059,
+            "address": 4783091,
             "facts": {
-              "target": 4783088,
+              "target": 4783120,
               "target_instruction_index": null,
               "target_name": "TTerrainHelpWindow::~TTerrainHelpWindow"
             },
@@ -44190,9 +44189,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4657923,
+            "address": 4657955,
             "facts": {
-              "target": 4657952,
+              "target": 4657984,
               "target_instruction_index": null,
               "target_name": "TOrderView::~TOrderView"
             },
@@ -44710,7 +44709,7 @@
           "recomp": {
             "address": 4467936,
             "facts": {
-              "target": 5115200,
+              "target": 5124768,
               "target_instruction_index": null,
               "target_name": "??_L@YGXPAXIHP6EX0@Z1@Z (UNK)"
             },
@@ -46274,13 +46273,33 @@
     {
       "address": "0x513ca0",
       "comparison": {
-        "difference": null,
+        "difference": {
+          "kind": "branch_target",
+          "orig": {
+            "address": 5324038,
+            "facts": {
+              "target": null,
+              "target_instruction_index": null,
+              "target_name": "si"
+            },
+            "instruction_index": 38
+          },
+          "recomp": {
+            "address": 4528405,
+            "facts": {
+              "target": 4528412,
+              "target_instruction_index": 41,
+              "target_name": null
+            },
+            "instruction_index": 38
+          }
+        },
         "effective_reasons": [],
         "inconclusive_location": null,
-        "inconclusive_reason": "alignment_failure",
-        "status": "inconclusive"
+        "inconclusive_reason": null,
+        "status": "mismatch"
       },
-      "matching": 0.47297297297297297,
+      "matching": 0.5782312925170068,
       "name": "TMapMgr::HasReachableSeaTileOutsideActiveType3Or4DiplomaticMask",
       "type": 1
     },
@@ -47759,9 +47778,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4783283,
+            "address": 4783315,
             "facts": {
-              "target": 4783312,
+              "target": 4783344,
               "target_instruction_index": null,
               "target_name": "TTerrainInfoDialog::~TTerrainInfoDialog"
             },
@@ -47786,7 +47805,7 @@
         "inconclusive_reason": "alignment_failure",
         "status": "inconclusive"
       },
-      "matching": 0.66524064171123,
+      "matching": 0.6809421841541756,
       "name": "TMapDialog::PopulateMapContextInfoPanelStringsByTileSelection",
       "type": 1
     },
@@ -47844,9 +47863,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4791427,
+            "address": 4791459,
             "facts": {
-              "target": 4791456,
+              "target": 4791488,
               "target_instruction_index": null,
               "target_name": "TTownNameDialog::~TTownNameDialog"
             },
@@ -48609,12 +48628,14 @@
       "address": "0x522c10",
       "comparison": {
         "difference": null,
-        "effective_reasons": [],
+        "effective_reasons": [
+          "instruction_reorder"
+        ],
         "inconclusive_location": null,
         "inconclusive_reason": null,
-        "status": "exact"
+        "status": "effective"
       },
-      "matching": 1.0,
+      "matching": 0.9848484848484849,
       "name": "TMapDialog::DrawMapDialogWrappedTileConnectionMarker_00522c10",
       "type": 1
     },
@@ -49406,9 +49427,9 @@
             "instruction_index": 3
           },
           "recomp": {
-            "address": 4918090,
+            "address": 4918122,
             "facts": {
-              "target": 4918124,
+              "target": 4918156,
               "target_instruction_index": 15,
               "target_name": null
             },
@@ -49689,9 +49710,9 @@
             "instruction_index": 7
           },
           "recomp": {
-            "address": 4930861,
+            "address": 4930893,
             "facts": {
-              "target": 4930936,
+              "target": 4930968,
               "target_instruction_index": 34,
               "target_name": null
             },
@@ -51494,9 +51515,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4713267,
+            "address": 4713299,
             "facts": {
-              "target": 4715504,
+              "target": 4715536,
               "target_instruction_index": null,
               "target_name": "TSortedPtrList::TSortedPtrList"
             },
@@ -51540,9 +51561,9 @@
             "instruction_index": 0
           },
           "recomp": {
-            "address": 4713328,
+            "address": 4713360,
             "facts": {
-              "target": 4715456,
+              "target": 4715488,
               "target_instruction_index": null,
               "target_name": "TSortedPtrList::~TSortedPtrList"
             },
@@ -51614,7 +51635,7 @@
           "recomp": {
             "address": 4444515,
             "facts": {
-              "target": 4715504,
+              "target": 4715536,
               "target_instruction_index": null,
               "target_name": "TSortedPtrList::TSortedPtrList"
             },
@@ -52404,9 +52425,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4674723,
+            "address": 4674755,
             "facts": {
-              "target": 4674752,
+              "target": 4674784,
               "target_instruction_index": null,
               "target_name": "TScatteredShipsMission::~TScatteredShipsMission"
             },
@@ -53070,7 +53091,7 @@
           "recomp": {
             "address": 4628233,
             "facts": {
-              "target": 4688656,
+              "target": 4688688,
               "target_instruction_index": null,
               "target_name": "TShip::GetNavyOrderNormalizationBaseByNationType"
             },
@@ -54073,7 +54094,7 @@
             "instruction_index": 0
           },
           "recomp": {
-            "address": 4674608,
+            "address": 4674640,
             "facts": {
               "symbol": "TScatteredShipsMission::classTScatteredShipsMission"
             },
@@ -54169,9 +54190,9 @@
             "instruction_index": 22
           },
           "recomp": {
-            "address": 4675020,
+            "address": 4675052,
             "facts": {
-              "target": 4674993,
+              "target": 4675025,
               "target_instruction_index": 14,
               "target_name": null
             },
@@ -55716,7 +55737,7 @@
             "instruction_index": 1
           },
           "recomp": {
-            "address": 4666146,
+            "address": 4666178,
             "facts": {
               "value": "0"
             },
@@ -55745,7 +55766,7 @@
             "instruction_index": 1
           },
           "recomp": {
-            "address": 4666162,
+            "address": 4666194,
             "facts": {
               "value": "0"
             },
@@ -55802,9 +55823,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4666227,
+            "address": 4666259,
             "facts": {
-              "target": 4666208,
+              "target": 4666240,
               "target_instruction_index": null,
               "target_name": "TProxyGreatPower::~TProxyGreatPower"
             },
@@ -56360,7 +56381,7 @@
             "instruction_index": 1
           },
           "recomp": {
-            "address": 4673458,
+            "address": 4673490,
             "facts": {
               "value": "0"
             },
@@ -56612,9 +56633,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4673763,
+            "address": 4673795,
             "facts": {
-              "target": 4673744,
+              "target": 4673776,
               "target_instruction_index": null,
               "target_name": "TRemoteGreatPower::~TRemoteGreatPower"
             },
@@ -57410,7 +57431,7 @@
         "inconclusive_reason": "alignment_failure",
         "status": "inconclusive"
       },
-      "matching": 0.3850008081461128,
+      "matching": 0.3862938419266203,
       "name": "TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine",
       "type": 1
     },
@@ -57429,7 +57450,7 @@
             "instruction_index": 1
           },
           "recomp": {
-            "address": 4699333,
+            "address": 4699365,
             "facts": {
               "target": null,
               "target_instruction_index": null,
@@ -57862,7 +57883,7 @@
           "recomp": {
             "address": 4597651,
             "facts": {
-              "target": 4664576,
+              "target": 4664608,
               "target_instruction_index": null,
               "target_name": "TPoseMessageDialog::~TPoseMessageDialog"
             },
@@ -58615,9 +58636,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4686579,
+            "address": 4686611,
             "facts": {
-              "target": 4686608,
+              "target": 4686640,
               "target_instruction_index": null,
               "target_name": "TShip::~TShip"
             },
@@ -58778,7 +58799,7 @@
             "instruction_index": 12
           },
           "recomp": {
-            "address": 4687952,
+            "address": 4687984,
             "facts": {
               "target": null,
               "target_instruction_index": null,
@@ -58839,7 +58860,7 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4688567,
+            "address": 4688599,
             "facts": {
               "base_register": null,
               "displacement": 0,
@@ -58889,7 +58910,7 @@
             "instruction_index": 0
           },
           "recomp": {
-            "address": 4688624,
+            "address": 4688656,
             "facts": {
               "base_register": "esp",
               "displacement": 4,
@@ -58978,7 +58999,7 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4689031,
+            "address": 4689063,
             "facts": {
               "base_register": null,
               "displacement": 0,
@@ -59037,7 +59058,7 @@
             "instruction_index": 0
           },
           "recomp": {
-            "address": 4689136,
+            "address": 4689168,
             "facts": {
               "value": "initial:bp"
             },
@@ -59122,7 +59143,7 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4931288,
+            "address": 4931320,
             "facts": {
               "base_register": null,
               "displacement": 0,
@@ -59159,7 +59180,7 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4931320,
+            "address": 4931352,
             "facts": {
               "base_register": null,
               "displacement": 0,
@@ -59196,7 +59217,7 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4931352,
+            "address": 4931384,
             "facts": {
               "base_register": null,
               "displacement": 0,
@@ -59233,7 +59254,7 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4931384,
+            "address": 4931416,
             "facts": {
               "base_register": null,
               "displacement": 0,
@@ -59270,7 +59291,7 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4689608,
+            "address": 4689640,
             "facts": {
               "base_register": null,
               "displacement": 0,
@@ -59307,7 +59328,7 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4931416,
+            "address": 4931448,
             "facts": {
               "base_register": null,
               "displacement": 0,
@@ -59344,7 +59365,7 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4931448,
+            "address": 4931480,
             "facts": {
               "base_register": null,
               "displacement": 0,
@@ -59745,7 +59766,7 @@
             "instruction_index": 5
           },
           "recomp": {
-            "address": 4764437,
+            "address": 4764469,
             "facts": {
               "target": null,
               "target_instruction_index": null,
@@ -60006,7 +60027,7 @@
         "inconclusive_reason": "alignment_failure",
         "status": "inconclusive"
       },
-      "matching": 0.41379310344827586,
+      "matching": 0.4827586206896552,
       "name": "TTaskForce::HasNoMapOrderEntryChildrenQueued",
       "type": 1
     },
@@ -60019,7 +60040,7 @@
         "inconclusive_reason": "alignment_failure",
         "status": "inconclusive"
       },
-      "matching": 0.5454545454545454,
+      "matching": 0.5818181818181818,
       "name": "TTaskForce::HasActiveMapOrderEntryChildren",
       "type": 1
     },
@@ -60088,7 +60109,7 @@
             "instruction_index": 0
           },
           "recomp": {
-            "address": 4767488,
+            "address": 4767520,
             "facts": {
               "value": "initial:bp"
             },
@@ -60152,7 +60173,7 @@
         "inconclusive_reason": "alignment_failure",
         "status": "inconclusive"
       },
-      "matching": 0.5822784810126582,
+      "matching": 0.5569620253164557,
       "name": "TTaskForce::CanQueueMapOrderForProvinceContext",
       "type": 1
     },
@@ -60173,7 +60194,7 @@
             "instruction_index": 17
           },
           "recomp": {
-            "address": 4768067,
+            "address": 4768099,
             "facts": {
               "base_register": "edx",
               "displacement": 4,
@@ -60258,7 +60279,7 @@
             "instruction_index": 10
           },
           "recomp": {
-            "address": 4768560,
+            "address": 4768592,
             "facts": {
               "predicate": "ne:('load', ('mem', '', ((('addr', ('mem', '', ((('movsx', 'word', ('load', ('mem', '', ((('load', ('mem', '', ((('load', ('mem', '', ((('init', 'c'), 1),), 16, ()), 'dword', ('cfg_mem_init',)), 1),), 0, ()), 'dword', ('cfg_mem_write', 4)), 1),), 4, ()), 'word', ('cfg_mem_write', 4))), 1), (('movsx', 'word', ('load', ('mem', '', ((('load', ('mem', '', ((('load', ('mem', '', ((('init', 'c'), 1),), 16, ()), 'dword', ('cfg_mem_init',)), 1),), 0, ()), 'dword', ('cfg_mem_write', 4)), 1),), 4, ()), 'word', ('cfg_mem_write', 4))), 8)), 0, ())), 4),), 0, ((1, 'g_NavyOrderResourceDescriptorTable+24 (OFFSET)'),)), 'word', ('cfg_mem_write', 4))"
             },
@@ -60287,7 +60308,7 @@
             "instruction_index": 12
           },
           "recomp": {
-            "address": 4768630,
+            "address": 4768662,
             "facts": {
               "predicate": "le_s:10000,movsx#f8a0bcab"
             },
@@ -60318,9 +60339,9 @@
             "instruction_index": 19
           },
           "recomp": {
-            "address": 4768704,
+            "address": 4768736,
             "facts": {
-              "target": 4768710,
+              "target": 4768742,
               "target_instruction_index": 23,
               "target_name": null
             },
@@ -60518,7 +60539,7 @@
             "instruction_index": 3
           },
           "recomp": {
-            "address": 4770918,
+            "address": 4770950,
             "facts": {
               "value": "0"
             },
@@ -62023,7 +62044,7 @@
             "instruction_index": 20
           },
           "recomp": {
-            "address": 4859117,
+            "address": 4859149,
             "facts": {
               "predicate": "cc:test#826084aa"
             },
@@ -62568,7 +62589,7 @@
             "instruction_index": 27
           },
           "recomp": {
-            "address": 4860914,
+            "address": 4860946,
             "facts": {
               "symbol": "stretch<void *"
             },
@@ -62676,6 +62697,19 @@
       "type": 1
     },
     {
+      "address": "0x563300",
+      "comparison": {
+        "difference": null,
+        "effective_reasons": [],
+        "inconclusive_location": null,
+        "inconclusive_reason": null,
+        "status": "exact"
+      },
+      "matching": 1.0,
+      "name": "TOcean::GetMapActionContextEntryByNationCodeOffset17",
+      "type": 1
+    },
+    {
       "address": "0x563330",
       "comparison": {
         "difference": null,
@@ -62749,7 +62783,7 @@
         "inconclusive_reason": "alignment_failure",
         "status": "inconclusive"
       },
-      "matching": 0.3008474576271186,
+      "matching": 0.3057324840764331,
       "name": "TOcean::EnsurePortZoneForTile",
       "type": 1
     },
@@ -62820,9 +62854,9 @@
             "instruction_index": 4
           },
           "recomp": {
-            "address": 4650218,
+            "address": 4650250,
             "facts": {
-              "target": 4650316,
+              "target": 4650348,
               "target_instruction_index": 41,
               "target_name": null
             },
@@ -62853,9 +62887,9 @@
             "instruction_index": 10
           },
           "recomp": {
-            "address": 4650364,
+            "address": 4650396,
             "facts": {
-              "target": 4650528,
+              "target": 4650560,
               "target_instruction_index": 62,
               "target_name": null
             },
@@ -63154,9 +63188,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4691907,
+            "address": 4691939,
             "facts": {
-              "target": 4691888,
+              "target": 4691920,
               "target_instruction_index": null,
               "target_name": "TShipLine::~TShipLine"
             },
@@ -63239,9 +63273,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4694179,
+            "address": 4694211,
             "facts": {
-              "target": 4694160,
+              "target": 4694192,
               "target_instruction_index": null,
               "target_name": "TShipView::~TShipView"
             },
@@ -63339,7 +63373,7 @@
             "instruction_index": 24
           },
           "recomp": {
-            "address": 4918568,
+            "address": 4918600,
             "facts": {
               "base_register": "esp",
               "displacement": 36,
@@ -63413,9 +63447,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4651027,
+            "address": 4651059,
             "facts": {
-              "target": 4651056,
+              "target": 4651088,
               "target_instruction_index": null,
               "target_name": "TOceanDialog::~TOceanDialog"
             },
@@ -63652,7 +63686,7 @@
             "instruction_index": 19
           },
           "recomp": {
-            "address": 4651731,
+            "address": 4651763,
             "facts": {
               "value": "addr:addr+0#81ca73bb"
             },
@@ -63885,9 +63919,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4693859,
+            "address": 4693891,
             "facts": {
-              "target": 4693888,
+              "target": 4693920,
               "target_instruction_index": null,
               "target_name": "TShipPlacard::~TShipPlacard"
             },
@@ -64071,9 +64105,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4728675,
+            "address": 4728707,
             "facts": {
-              "target": 4728656,
+              "target": 4728688,
               "target_instruction_index": null,
               "target_name": "TSuperNavyRoster::~TSuperNavyRoster"
             },
@@ -64748,7 +64782,7 @@
             "instruction_index": 0
           },
           "recomp": {
-            "address": 4816704,
+            "address": 4816736,
             "facts": {
               "symbol": "TTwoPicSlider::classTTwoPicSlider"
             },
@@ -65202,9 +65236,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4658787,
+            "address": 4658819,
             "facts": {
-              "target": 4658816,
+              "target": 4658848,
               "target_instruction_index": null,
               "target_name": "TPageView::~TPageView"
             },
@@ -65365,9 +65399,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4661955,
+            "address": 4661987,
             "facts": {
-              "target": 4661984,
+              "target": 4662016,
               "target_instruction_index": null,
               "target_name": "TPictureLine::~TPictureLine"
             },
@@ -65450,9 +65484,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4783539,
+            "address": 4783571,
             "facts": {
-              "target": 4783568,
+              "target": 4783600,
               "target_instruction_index": null,
               "target_name": "TTextLine::~TTextLine"
             },
@@ -65576,9 +65610,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4661571,
+            "address": 4661603,
             "facts": {
-              "target": 4661600,
+              "target": 4661632,
               "target_instruction_index": null,
               "target_name": "TPictureButton::~TPictureButton"
             },
@@ -65870,9 +65904,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4662355,
+            "address": 4662387,
             "facts": {
-              "target": 4662384,
+              "target": 4662416,
               "target_instruction_index": null,
               "target_name": "TPictureRadioButton::~TPictureRadioButton"
             },
@@ -65994,9 +66028,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4785539,
+            "address": 4785571,
             "facts": {
-              "target": 4786000,
+              "target": 4786032,
               "target_instruction_index": null,
               "target_name": "TToggleButton::~TToggleButton"
             },
@@ -66118,9 +66152,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4818115,
+            "address": 4818147,
             "facts": {
-              "target": 4818560,
+              "target": 4818592,
               "target_instruction_index": null,
               "target_name": "TUberCluster::~TUberCluster"
             },
@@ -66149,7 +66183,7 @@
             "instruction_index": 1
           },
           "recomp": {
-            "address": 4818149,
+            "address": 4818181,
             "facts": {
               "value": "1"
             },
@@ -66221,9 +66255,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4822115,
+            "address": 4822147,
             "facts": {
-              "target": 4822096,
+              "target": 4822128,
               "target_instruction_index": null,
               "target_name": "TUpDownPictureButton::~TUpDownPictureButton"
             },
@@ -66319,9 +66353,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4668915,
+            "address": 4668947,
             "facts": {
-              "target": 4822144,
+              "target": 4822176,
               "target_instruction_index": null,
               "target_name": "TUpDownPictureButton::TUpDownPictureButton"
             },
@@ -66352,9 +66386,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4668963,
+            "address": 4668995,
             "facts": {
-              "target": 4668992,
+              "target": 4669024,
               "target_instruction_index": null,
               "target_name": "TRadioPictureButton::~TRadioPictureButton"
             },
@@ -66450,9 +66484,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4656899,
+            "address": 4656931,
             "facts": {
-              "target": 4656928,
+              "target": 4656960,
               "target_instruction_index": null,
               "target_name": "TOnOffRadioButton::~TOnOffRadioButton"
             },
@@ -67034,9 +67068,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4784867,
+            "address": 4784899,
             "facts": {
-              "target": 4784896,
+              "target": 4784928,
               "target_instruction_index": null,
               "target_name": "TTextPictureButton::~TTextPictureButton"
             },
@@ -67552,9 +67586,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4652035,
+            "address": 4652067,
             "facts": {
-              "target": 4652064,
+              "target": 4652096,
               "target_instruction_index": null,
               "target_name": "TOffLimitsPicture::~TOffLimitsPicture"
             },
@@ -67676,9 +67710,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4713091,
+            "address": 4713123,
             "facts": {
-              "target": 4713120,
+              "target": 4713152,
               "target_instruction_index": null,
               "target_name": "TSliderPicture::~TSliderPicture"
             },
@@ -67776,9 +67810,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4677283,
+            "address": 4677315,
             "facts": {
-              "target": 4677264,
+              "target": 4677296,
               "target_instruction_index": null,
               "target_name": "TScrollBarView::~TScrollBarView"
             },
@@ -68021,9 +68055,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4680915,
+            "address": 4680947,
             "facts": {
-              "target": 4680944,
+              "target": 4680976,
               "target_instruction_index": null,
               "target_name": "TScrollerButton::~TScrollerButton"
             },
@@ -68106,9 +68140,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4719539,
+            "address": 4719571,
             "facts": {
-              "target": 4719520,
+              "target": 4719552,
               "target_instruction_index": null,
               "target_name": "TSpaceCommand::~TSpaceCommand"
             },
@@ -69032,9 +69066,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4669587,
+            "address": 4669619,
             "facts": {
-              "target": 4669616,
+              "target": 4669648,
               "target_instruction_index": null,
               "target_name": "TRadioTextCluster::~TRadioTextCluster"
             },
@@ -69182,9 +69216,9 @@
             "instruction_index": 3
           },
           "recomp": {
-            "address": 4676074,
+            "address": 4676106,
             "facts": {
-              "target": 4676090,
+              "target": 4676122,
               "target_instruction_index": 8,
               "target_name": null
             },
@@ -69384,9 +69418,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4680995,
+            "address": 4681027,
             "facts": {
-              "target": 4680976,
+              "target": 4681008,
               "target_instruction_index": null,
               "target_name": "TSelectoText::~TSelectoText"
             },
@@ -69495,9 +69529,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4699779,
+            "address": 4699811,
             "facts": {
-              "target": 4699808,
+              "target": 4699840,
               "target_instruction_index": null,
               "target_name": "TSimMgr::~TSimMgr"
             },
@@ -69786,7 +69820,7 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4704966,
+            "address": 4704998,
             "facts": {
               "predicate": "le_s:load:initial:c+4,3"
             },
@@ -69919,7 +69953,7 @@
             "instruction_index": 8
           },
           "recomp": {
-            "address": 4705200,
+            "address": 4705232,
             "facts": {
               "predicate": "lt_u:add,g_apNationStates_End"
             },
@@ -70028,9 +70062,9 @@
             "instruction_index": 36
           },
           "recomp": {
-            "address": 4919185,
+            "address": 4919217,
             "facts": {
-              "target": 4919455,
+              "target": 4919487,
               "target_instruction_index": 119,
               "target_name": null
             },
@@ -70800,9 +70834,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4698755,
+            "address": 4698787,
             "facts": {
-              "target": 4698784,
+              "target": 4698816,
               "target_instruction_index": null,
               "target_name": "TSidewaysArrow::~TSidewaysArrow"
             },
@@ -70887,9 +70921,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4822499,
+            "address": 4822531,
             "facts": {
-              "target": 4822528,
+              "target": 4822560,
               "target_instruction_index": null,
               "target_name": "TUpDownView::~TUpDownView"
             },
@@ -70974,9 +71008,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4674339,
+            "address": 4674371,
             "facts": {
-              "target": 4674320,
+              "target": 4674352,
               "target_instruction_index": null,
               "target_name": "TRightLeftView::~TRightLeftView"
             },
@@ -71144,9 +71178,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4808019,
+            "address": 4808051,
             "facts": {
-              "target": 4808048,
+              "target": 4808080,
               "target_instruction_index": null,
               "target_name": "TTradePolicyCluster::~TTradePolicyCluster"
             },
@@ -71229,9 +71263,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4805475,
+            "address": 4805507,
             "facts": {
-              "target": 4805504,
+              "target": 4805536,
               "target_instruction_index": null,
               "target_name": "TTradeOrderPicture::~TTradeOrderPicture"
             },
@@ -71680,9 +71714,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4789523,
+            "address": 4789555,
             "facts": {
-              "target": 4789552,
+              "target": 4789584,
               "target_instruction_index": null,
               "target_name": "TToolBarCluster::~TToolBarCluster"
             },
@@ -71830,9 +71864,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4820403,
+            "address": 4820435,
             "facts": {
-              "target": 4820656,
+              "target": 4820688,
               "target_instruction_index": null,
               "target_name": "TUnitToolbarCluster::~TUnitToolbarCluster"
             },
@@ -71874,7 +71908,7 @@
             "instruction_index": 1
           },
           "recomp": {
-            "address": 4820565,
+            "address": 4820597,
             "facts": {
               "value": "1"
             },
@@ -71957,9 +71991,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4722835,
+            "address": 4722867,
             "facts": {
-              "target": 4722864,
+              "target": 4722896,
               "target_instruction_index": null,
               "target_name": "TStatusButton::~TStatusButton"
             },
@@ -72129,9 +72163,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4665251,
+            "address": 4665283,
             "facts": {
-              "target": 4665440,
+              "target": 4665472,
               "target_instruction_index": null,
               "target_name": "TProductionCluster::~TProductionCluster"
             },
@@ -72478,9 +72512,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4793603,
+            "address": 4793635,
             "facts": {
-              "target": 4793632,
+              "target": 4793664,
               "target_instruction_index": null,
               "target_name": "TTradeCluster::~TTradeCluster"
             },
@@ -73122,9 +73156,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4671619,
+            "address": 4671651,
             "facts": {
-              "target": 4672624,
+              "target": 4672656,
               "target_instruction_index": null,
               "target_name": "TRailCluster::~TRailCluster"
             },
@@ -73231,7 +73265,7 @@
             "instruction_index": 0
           },
           "recomp": {
-            "address": 4670448,
+            "address": 4670480,
             "facts": {
               "symbol": "TRailAmtBar::classTRailAmtBar"
             },
@@ -73275,9 +73309,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4670499,
+            "address": 4670531,
             "facts": {
-              "target": 4670528,
+              "target": 4670560,
               "target_instruction_index": null,
               "target_name": "TRailAmtBar::~TRailAmtBar"
             },
@@ -73321,9 +73355,9 @@
             "instruction_index": 20
           },
           "recomp": {
-            "address": 4670924,
+            "address": 4670956,
             "facts": {
-              "target": 4671172,
+              "target": 4671204,
               "target_instruction_index": 100,
               "target_name": null
             },
@@ -73406,9 +73440,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4695891,
+            "address": 4695923,
             "facts": {
-              "target": 4696608,
+              "target": 4696640,
               "target_instruction_index": null,
               "target_name": "TShipyardCluster::~TShipyardCluster"
             },
@@ -73489,7 +73523,7 @@
             "instruction_index": 0
           },
           "recomp": {
-            "address": 4690240,
+            "address": 4690272,
             "facts": {
               "symbol": "TShipAmtBar::classTShipAmtBar"
             },
@@ -73520,7 +73554,7 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4690259,
+            "address": 4690291,
             "facts": {
               "target": 4444752,
               "target_instruction_index": null,
@@ -73553,9 +73587,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4690307,
+            "address": 4690339,
             "facts": {
-              "target": 4690336,
+              "target": 4690368,
               "target_instruction_index": null,
               "target_name": "TShipAmtBar::~TShipAmtBar"
             },
@@ -73651,9 +73685,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4811011,
+            "address": 4811043,
             "facts": {
-              "target": 4811040,
+              "target": 4811072,
               "target_instruction_index": null,
               "target_name": "TTraderAmtBar::~TTraderAmtBar"
             },
@@ -74010,9 +74044,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4662803,
+            "address": 4662835,
             "facts": {
-              "target": 4663184,
+              "target": 4663216,
               "target_instruction_index": null,
               "target_name": "TPlacard::~TPlacard"
             },
@@ -74043,7 +74077,7 @@
             "instruction_index": 11
           },
           "recomp": {
-            "address": 4662863,
+            "address": 4662895,
             "facts": {
               "target": null,
               "target_instruction_index": null,
@@ -74076,9 +74110,9 @@
             "instruction_index": 8
           },
           "recomp": {
-            "address": 4662919,
+            "address": 4662951,
             "facts": {
-              "target": 4663043,
+              "target": 4663075,
               "target_instruction_index": 51,
               "target_name": null
             },
@@ -74627,9 +74661,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4725827,
+            "address": 4725859,
             "facts": {
-              "target": 4725856,
+              "target": 4725888,
               "target_instruction_index": null,
               "target_name": "TStratReportView::~TStratReportView"
             },
@@ -75112,7 +75146,7 @@
             "instruction_index": 4
           },
           "recomp": {
-            "address": 4813466,
+            "address": 4813498,
             "facts": {
               "base_register": "esi",
               "displacement": 144,
@@ -75147,9 +75181,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4813523,
+            "address": 4813555,
             "facts": {
-              "target": 4813824,
+              "target": 4813856,
               "target_instruction_index": null,
               "target_name": "TTransportPicture::~TTransportPicture"
             },
@@ -75206,7 +75240,7 @@
             "instruction_index": 7
           },
           "recomp": {
-            "address": 4813809,
+            "address": 4813841,
             "facts": {
               "target": null,
               "target_instruction_index": null,
@@ -75278,9 +75312,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4848403,
+            "address": 4848435,
             "facts": {
-              "target": 4848432,
+              "target": 4848464,
               "target_instruction_index": null,
               "target_name": "TWarningView::~TWarningView"
             },
@@ -75376,7 +75410,7 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4715907,
+            "address": 4715939,
             "facts": {
               "target": 4377648,
               "target_instruction_index": null,
@@ -75420,7 +75454,7 @@
             "instruction_index": 0
           },
           "recomp": {
-            "address": 4715984,
+            "address": 4716016,
             "facts": {
               "value": "TSoundPlayer::`vftable' (VTABLE)"
             },
@@ -75737,9 +75771,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4851059,
+            "address": 4851091,
             "facts": {
-              "target": 4851088,
+              "target": 4851120,
               "target_instruction_index": null,
               "target_name": "TWorldView::~TWorldView"
             },
@@ -77017,7 +77051,7 @@
             "instruction_index": 0
           },
           "recomp": {
-            "address": 4761408,
+            "address": 4761440,
             "facts": {
               "base_register": "esp",
               "displacement": 4,
@@ -78372,7 +78406,7 @@
             "instruction_index": 40
           },
           "recomp": {
-            "address": 4737818,
+            "address": 4737850,
             "facts": {
               "base_register": "edi",
               "displacement": 16,
@@ -78472,9 +78506,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4738067,
+            "address": 4738099,
             "facts": {
-              "target": 4738096,
+              "target": 4738128,
               "target_instruction_index": null,
               "target_name": "TTacticalBattle::~TTacticalBattle"
             },
@@ -78990,7 +79024,7 @@
             "instruction_index": 12
           },
           "recomp": {
-            "address": 4747123,
+            "address": 4747155,
             "facts": {
               "base_register": "esi",
               "displacement": 0,
@@ -79088,7 +79122,7 @@
             "instruction_index": 50
           },
           "recomp": {
-            "address": 4867529,
+            "address": 4867561,
             "facts": {
               "predicate": "cc:test#275d4242"
             },
@@ -79612,7 +79646,7 @@
             "instruction_index": 1
           },
           "recomp": {
-            "address": 4763506,
+            "address": 4763538,
             "facts": {
               "value": "0"
             },
@@ -79641,7 +79675,7 @@
             "instruction_index": 1
           },
           "recomp": {
-            "address": 4763522,
+            "address": 4763554,
             "facts": {
               "value": "0"
             },
@@ -79672,9 +79706,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4763587,
+            "address": 4763619,
             "facts": {
-              "target": 4763536,
+              "target": 4763568,
               "target_instruction_index": null,
               "target_name": "TTacticalUnit::~TTacticalUnit"
             },
@@ -80081,7 +80115,7 @@
             "instruction_index": 0
           },
           "recomp": {
-            "address": 4750768,
+            "address": 4750800,
             "facts": {
               "base_register": "esp",
               "displacement": 12,
@@ -80181,9 +80215,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4756099,
+            "address": 4756131,
             "facts": {
-              "target": 4756144,
+              "target": 4756176,
               "target_instruction_index": null,
               "target_name": "TTacticalBattleView::~TTacticalBattleView"
             },
@@ -80422,9 +80456,9 @@
             "instruction_index": 34
           },
           "recomp": {
-            "address": 4757598,
+            "address": 4757630,
             "facts": {
-              "target": 4757614,
+              "target": 4757646,
               "target_instruction_index": 40,
               "target_name": null
             },
@@ -80492,7 +80526,7 @@
             "instruction_index": 19
           },
           "recomp": {
-            "address": 4759572,
+            "address": 4759604,
             "facts": {
               "value": "ins_r16:callret,add"
             },
@@ -80783,9 +80817,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4736819,
+            "address": 4736851,
             "facts": {
-              "target": 4736800,
+              "target": 4736832,
               "target_instruction_index": null,
               "target_name": "TTacNavyToolbar::~TTacNavyToolbar"
             },
@@ -81037,9 +81071,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4763875,
+            "address": 4763907,
             "facts": {
-              "target": 4763904,
+              "target": 4763936,
               "target_instruction_index": null,
               "target_name": "TTask::~TTask"
             },
@@ -81350,9 +81384,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4690947,
+            "address": 4690979,
             "facts": {
-              "target": 4690976,
+              "target": 4691008,
               "target_instruction_index": null,
               "target_name": "TShipBuildingTask::~TShipBuildingTask"
             },
@@ -81487,9 +81521,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4771475,
+            "address": 4771507,
             "facts": {
-              "target": 4771504,
+              "target": 4771536,
               "target_instruction_index": null,
               "target_name": "TTaskList::~TTaskList"
             },
@@ -81611,9 +81645,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4775811,
+            "address": 4775843,
             "facts": {
-              "target": 4775840,
+              "target": 4775872,
               "target_instruction_index": null,
               "target_name": "TTechMgr::~TTechMgr"
             },
@@ -81904,9 +81938,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4772547,
+            "address": 4772579,
             "facts": {
-              "target": 4772528,
+              "target": 4772560,
               "target_instruction_index": null,
               "target_name": "TTechItemLine::~TTechItemLine"
             },
@@ -81976,9 +82010,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4772851,
+            "address": 4772883,
             "facts": {
-              "target": 4772880,
+              "target": 4772912,
               "target_instruction_index": null,
               "target_name": "TTechItemView::~TTechItemView"
             },
@@ -82329,9 +82363,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4673251,
+            "address": 4673283,
             "facts": {
-              "target": 4673232,
+              "target": 4673264,
               "target_instruction_index": null,
               "target_name": "TRelationshipDialog::~TRelationshipDialog"
             },
@@ -82878,7 +82912,7 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4662131,
+            "address": 4662163,
             "facts": {
               "target": 4644544,
               "target_instruction_index": null,
@@ -82911,9 +82945,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4662163,
+            "address": 4662195,
             "facts": {
-              "target": 4662192,
+              "target": 4662224,
               "target_instruction_index": null,
               "target_name": "TPictureNumberText::~TPictureNumberText"
             },
@@ -82983,9 +83017,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4662611,
+            "address": 4662643,
             "facts": {
-              "target": 4662640,
+              "target": 4662672,
               "target_instruction_index": null,
               "target_name": "TPictureText::~TPictureText"
             },
@@ -83423,7 +83457,7 @@
           "recomp": {
             "address": 4350653,
             "facts": {
-              "target": 4926000,
+              "target": 4926032,
               "target_instruction_index": null,
               "target_name": "SetQuickDrawColorAndSyncGlobals"
             },
@@ -83784,9 +83818,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4790723,
+            "address": 4790755,
             "facts": {
-              "target": 4791216,
+              "target": 4791248,
               "target_instruction_index": null,
               "target_name": "TTown::~TTown"
             },
@@ -83945,7 +83979,7 @@
             "instruction_index": 0
           },
           "recomp": {
-            "address": 4797024,
+            "address": 4797056,
             "facts": {
               "symbol": "TTradeMgr::classTTradeMgr"
             },
@@ -84015,9 +84049,9 @@
             "instruction_index": 31
           },
           "recomp": {
-            "address": 4797215,
+            "address": 4797247,
             "facts": {
-              "target": 4797226,
+              "target": 4797258,
               "target_instruction_index": 35,
               "target_name": null
             },
@@ -84223,7 +84257,7 @@
             "instruction_index": 4
           },
           "recomp": {
-            "address": 4800927,
+            "address": 4800959,
             "facts": {
               "value": "200"
             },
@@ -84308,9 +84342,9 @@
             "instruction_index": 6
           },
           "recomp": {
-            "address": 4801664,
+            "address": 4801696,
             "facts": {
-              "target": 4801691,
+              "target": 4801723,
               "target_instruction_index": 15,
               "target_name": null
             },
@@ -84378,7 +84412,7 @@
             "instruction_index": 24
           },
           "recomp": {
-            "address": 4802530,
+            "address": 4802562,
             "facts": {
               "predicate": "cc:test#47dd185b"
             },
@@ -84450,7 +84484,7 @@
             "instruction_index": 1
           },
           "recomp": {
-            "address": 4803941,
+            "address": 4803973,
             "facts": {
               "base_register": null,
               "displacement": 0,
@@ -84539,7 +84573,7 @@
             "instruction_index": 1
           },
           "recomp": {
-            "address": 4804273,
+            "address": 4804305,
             "facts": {
               "base_register": "ecx",
               "displacement": 10,
@@ -84602,7 +84636,7 @@
           "recomp": {
             "address": 4343331,
             "facts": {
-              "target": 4715504,
+              "target": 4715536,
               "target_instruction_index": null,
               "target_name": "TSortedPtrList::TSortedPtrList"
             },
@@ -84816,9 +84850,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4808579,
+            "address": 4808611,
             "facts": {
-              "target": 4808608,
+              "target": 4808640,
               "target_instruction_index": null,
               "target_name": "TTradeScreenPicture::~TTradeScreenPicture"
             },
@@ -85118,9 +85152,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4804355,
+            "address": 4804387,
             "facts": {
-              "target": 4804336,
+              "target": 4804368,
               "target_instruction_index": null,
               "target_name": "TTradeOfferNationLine::~TTradeOfferNationLine"
             },
@@ -85190,9 +85224,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4804563,
+            "address": 4804595,
             "facts": {
-              "target": 4804544,
+              "target": 4804576,
               "target_instruction_index": null,
               "target_name": "TTradeOfferNationView::~TTradeOfferNationView"
             },
@@ -85301,9 +85335,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4791827,
+            "address": 4791859,
             "facts": {
-              "target": 4791808,
+              "target": 4791840,
               "target_instruction_index": null,
               "target_name": "TTradeBidNationLine::~TTradeBidNationLine"
             },
@@ -85373,9 +85407,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4792035,
+            "address": 4792067,
             "facts": {
-              "target": 4792016,
+              "target": 4792048,
               "target_instruction_index": null,
               "target_name": "TTradeBidNationView::~TTradeBidNationView"
             },
@@ -85564,9 +85598,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4652451,
+            "address": 4652483,
             "facts": {
-              "target": 4652480,
+              "target": 4652512,
               "target_instruction_index": null,
               "target_name": "TOfferDeskPicture::~TOfferDeskPicture"
             },
@@ -85910,9 +85944,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4809443,
+            "address": 4809475,
             "facts": {
-              "target": 4809472,
+              "target": 4809504,
               "target_instruction_index": null,
               "target_name": "TTradeTotalsLine::~TTradeTotalsLine"
             },
@@ -85995,9 +86029,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4809651,
+            "address": 4809683,
             "facts": {
-              "target": 4809680,
+              "target": 4809712,
               "target_instruction_index": null,
               "target_name": "TTradeTotalsView::~TTradeTotalsView"
             },
@@ -86156,7 +86190,7 @@
             "instruction_index": 5
           },
           "recomp": {
-            "address": 4819129,
+            "address": 4819161,
             "facts": {
               "predicate": "cc:test#2c83568d"
             },
@@ -87004,7 +87038,7 @@
             "instruction_index": 9
           },
           "recomp": {
-            "address": 5082007,
+            "address": 5091575,
             "facts": {
               "base_register": "esp",
               "displacement": 48,
@@ -87533,7 +87567,7 @@
             "instruction_index": 40
           },
           "recomp": {
-            "address": 4920249,
+            "address": 4920281,
             "facts": {
               "target": null,
               "target_instruction_index": null,
@@ -87594,7 +87628,7 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4920553,
+            "address": 4920585,
             "facts": {
               "base_register": null,
               "displacement": 0,
@@ -87627,7 +87661,7 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4920583,
+            "address": 4920615,
             "facts": {
               "predicate": "cc:test#af4b5899"
             },
@@ -89540,7 +89574,7 @@
             "instruction_index": 7
           },
           "recomp": {
-            "address": 4709111,
+            "address": 4709143,
             "facts": {
               "value": "retstack:(),0"
             },
@@ -89662,9 +89696,9 @@
             "instruction_index": 14
           },
           "recomp": {
-            "address": 5083967,
+            "address": 5093535,
             "facts": {
-              "target": 5084104,
+              "target": 5093672,
               "target_instruction_index": 67,
               "target_name": null
             },
@@ -89747,9 +89781,9 @@
             "instruction_index": 8
           },
           "recomp": {
-            "address": 4863397,
+            "address": 4863429,
             "facts": {
-              "target": 4863471,
+              "target": 4863503,
               "target_instruction_index": 38,
               "target_name": null
             },
@@ -90445,7 +90479,7 @@
             "instruction_index": 1
           },
           "recomp": {
-            "address": 5098770,
+            "address": 5108338,
             "facts": {
               "value": "retstack:(),0"
             },
@@ -90706,7 +90740,7 @@
             "instruction_index": 8
           },
           "recomp": {
-            "address": 4867319,
+            "address": 4867351,
             "facts": {
               "symbol": "CList<void *"
             },
@@ -90735,7 +90769,7 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4866772,
+            "address": 4866804,
             "facts": {
               "symbol": "CArray<void *"
             },
@@ -90764,7 +90798,7 @@
             "instruction_index": 9
           },
           "recomp": {
-            "address": 4866829,
+            "address": 4866861,
             "facts": {
               "symbol": "CArray<void *"
             },
@@ -90847,9 +90881,9 @@
             "instruction_index": 5
           },
           "recomp": {
-            "address": 4717184,
+            "address": 4717216,
             "facts": {
-              "target": 4719344,
+              "target": 4719376,
               "target_instruction_index": null,
               "target_name": "TSoundResourceManager::InitializeDirectSoundDeviceAndChannels"
             },
@@ -90908,7 +90942,7 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4717238,
+            "address": 4717270,
             "facts": {
               "base_register": "esi",
               "displacement": 0,
@@ -90954,7 +90988,7 @@
             "instruction_index": 0
           },
           "recomp": {
-            "address": 4717360,
+            "address": 4717392,
             "facts": {
               "value": "retstack:(),0"
             },
@@ -91011,7 +91045,7 @@
             "instruction_index": 1
           },
           "recomp": {
-            "address": 5098930,
+            "address": 5108498,
             "facts": {
               "value": "retstack:(),0"
             },
@@ -91040,7 +91074,7 @@
             "instruction_index": 1
           },
           "recomp": {
-            "address": 5098946,
+            "address": 5108514,
             "facts": {
               "value": "retstack:(),0"
             },
@@ -91121,7 +91155,7 @@
             "instruction_index": 4
           },
           "recomp": {
-            "address": 5103531,
+            "address": 5113099,
             "facts": {
               "value": "_AFX_CTL3D_STATE::`vftable' (VTABLE)"
             },
@@ -91163,7 +91197,7 @@
             "instruction_index": 4
           },
           "recomp": {
-            "address": 5103579,
+            "address": 5113147,
             "facts": {
               "value": "_AFX_CTL3D_THREAD::`vftable' (VTABLE)"
             },
@@ -91207,9 +91241,9 @@
             "instruction_index": 11
           },
           "recomp": {
-            "address": 5103480,
+            "address": 5113048,
             "facts": {
-              "target": 5290395,
+              "target": 5299963,
               "target_instruction_index": null,
               "target_name": "_AFX_WIN_STATE::_AFX_WIN_STATE"
             },
@@ -91264,7 +91298,7 @@
             "instruction_index": 6
           },
           "recomp": {
-            "address": 5103968,
+            "address": 5113536,
             "facts": {
               "value": "CDragListBox::`vftable' (VTABLE)"
             },
@@ -91384,7 +91418,7 @@
             "instruction_index": 16
           },
           "recomp": {
-            "address": 5104460,
+            "address": 5114028,
             "facts": {
               "value": "CRgn::`vftable' (VTABLE)"
             },
@@ -91413,7 +91447,7 @@
             "instruction_index": 6
           },
           "recomp": {
-            "address": 5104670,
+            "address": 5114238,
             "facts": {
               "predicate": "eq:('load', ('mem', '', ((('spadd', ('init', 'sp'), -4), 1),), 8, ()), 'dword', ('cfg_mem_write', 0))#5d5682f2"
             },
@@ -91455,7 +91489,7 @@
             "instruction_index": 6
           },
           "recomp": {
-            "address": 5108167,
+            "address": 5117735,
             "facts": {
               "value": "CProgressCtrl::`vftable' (VTABLE)"
             },
@@ -91720,9 +91754,9 @@
             "instruction_index": 10
           },
           "recomp": {
-            "address": 5106525,
+            "address": 5116093,
             "facts": {
-              "target": 5109233,
+              "target": 5118801,
               "target_instruction_index": null,
               "target_name": "CImageList::FromHandlePermanent"
             },
@@ -91883,9 +91917,9 @@
             "instruction_index": 10
           },
           "recomp": {
-            "address": 5107458,
+            "address": 5117026,
             "facts": {
-              "target": 5109233,
+              "target": 5118801,
               "target_instruction_index": null,
               "target_name": "CImageList::FromHandlePermanent"
             },
@@ -92090,7 +92124,7 @@
             "instruction_index": 6
           },
           "recomp": {
-            "address": 5239011,
+            "address": 5248579,
             "facts": {
               "predicate": "ne:('imm', 0)#4ba03eb3"
             },
@@ -92121,7 +92155,7 @@
             "instruction_index": 6
           },
           "recomp": {
-            "address": 5239253,
+            "address": 5248821,
             "facts": {
               "target": null,
               "target_instruction_index": null,
@@ -92232,9 +92266,9 @@
             "instruction_index": 9
           },
           "recomp": {
-            "address": 5109468,
+            "address": 5119036,
             "facts": {
-              "target": 5109057,
+              "target": 5118625,
               "target_instruction_index": null,
               "target_name": "afxMapHIMAGELIST"
             },
@@ -92265,9 +92299,9 @@
             "instruction_index": 11
           },
           "recomp": {
-            "address": 5109518,
+            "address": 5119086,
             "facts": {
-              "target": 5110748,
+              "target": 5120316,
               "target_instruction_index": null,
               "target_name": "_ImageList_Read@4"
             },
@@ -92298,9 +92332,9 @@
             "instruction_index": 12
           },
           "recomp": {
-            "address": 5109566,
+            "address": 5119134,
             "facts": {
-              "target": 5110754,
+              "target": 5120322,
               "target_instruction_index": null,
               "target_name": "_ImageList_Write@8"
             },
@@ -92433,7 +92467,7 @@
             "instruction_index": 8
           },
           "recomp": {
-            "address": 5103687,
+            "address": 5113255,
             "facts": {
               "value": "CMemoryException::`vftable' (VTABLE)"
             },
@@ -92490,7 +92524,7 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 4928851,
+            "address": 4928883,
             "facts": {
               "target": 4293936,
               "target_instruction_index": null,
@@ -92586,7 +92620,7 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 5110101,
+            "address": 5119669,
             "facts": {
               "value": "CArchiveStream::`vftable' (VTABLE)"
             },
@@ -92747,9 +92781,9 @@
             "instruction_index": 16
           },
           "recomp": {
-            "address": 5111543,
+            "address": 5121111,
             "facts": {
-              "target": 5197726,
+              "target": 5207294,
               "target_instruction_index": null,
               "target_name": "_RtlUnwind@16"
             },
@@ -92806,9 +92840,9 @@
             "instruction_index": 7
           },
           "recomp": {
-            "address": 5111856,
+            "address": 5121424,
             "facts": {
-              "value": "5112048"
+              "value": "5121616"
             },
             "instruction_index": 7
           }
@@ -92876,9 +92910,9 @@
             "instruction_index": 3
           },
           "recomp": {
-            "address": 5112506,
+            "address": 5122074,
             "facts": {
-              "predicate": "ne:('imm', 5112352)"
+              "predicate": "ne:('imm', 5121920)"
             },
             "instruction_index": 3
           }
@@ -92905,7 +92939,7 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 5112527,
+            "address": 5122095,
             "facts": {
               "symbol": "__NLG_Destination (UNK)"
             },
@@ -93001,7 +93035,7 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 5114183,
+            "address": 5123751,
             "facts": {
               "predicate": "cc:test#9ee1cd30"
             },
@@ -93138,7 +93172,7 @@
             "instruction_index": 58
           },
           "recomp": {
-            "address": 5115832,
+            "address": 5125400,
             "facts": {
               "predicate": "le_u:load:___sbh_threshold (UNK),phi"
             },
@@ -93574,7 +93608,7 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 5124487,
+            "address": 5134055,
             "facts": {
               "predicate": "cc:test#3d820eef"
             },
@@ -93817,7 +93851,7 @@
             "instruction_index": 4
           },
           "recomp": {
-            "address": 5123146,
+            "address": 5132714,
             "facts": {
               "predicate": "cc:test#83efd29c"
             },
@@ -94053,9 +94087,9 @@
             "instruction_index": 3
           },
           "recomp": {
-            "address": 5126855,
+            "address": 5136423,
             "facts": {
-              "target": 5126880,
+              "target": 5136448,
               "target_instruction_index": null,
               "target_name": "<OFFSET1>"
             },
@@ -94140,7 +94174,7 @@
             "instruction_index": 16
           },
           "recomp": {
-            "address": 5139263,
+            "address": 5148831,
             "facts": {
               "predicate": "cc:test#052bc4cb"
             },
@@ -94679,9 +94713,9 @@
             "instruction_index": 29
           },
           "recomp": {
-            "address": 5141027,
+            "address": 5150595,
             "facts": {
-              "predicate": "eq:('imm', 5627392)"
+              "predicate": "eq:('imm', 5635584)"
             },
             "instruction_index": 29
           }
@@ -94764,7 +94798,7 @@
             "instruction_index": 39
           },
           "recomp": {
-            "address": 5146364,
+            "address": 5155932,
             "facts": {
               "base_register": null,
               "displacement": 0,
@@ -95225,9 +95259,9 @@
             "instruction_index": 55
           },
           "recomp": {
-            "address": 5156990,
+            "address": 5166558,
             "facts": {
-              "target": 5155222,
+              "target": 5164790,
               "target_instruction_index": null,
               "target_name": "___from_strstr_to_strchr (UNK)"
             },
@@ -95308,7 +95342,7 @@
             "instruction_index": 9
           },
           "recomp": {
-            "address": 5160822,
+            "address": 5170390,
             "facts": {
               "predicate": "ne:('imm', 0)#3bec67f0"
             },
@@ -95761,7 +95795,7 @@
             "instruction_index": 40
           },
           "recomp": {
-            "address": 5164599,
+            "address": 5174167,
             "facts": {
               "base_register": null,
               "displacement": 0,
@@ -96345,7 +96379,7 @@
             "instruction_index": 47
           },
           "recomp": {
-            "address": 5189577,
+            "address": 5199145,
             "facts": {
               "base_register": null,
               "displacement": 0,
@@ -96551,7 +96585,7 @@
             "instruction_index": 12
           },
           "recomp": {
-            "address": 5195442,
+            "address": 5205010,
             "facts": {
               "value": "CToolTipCtrl::`vftable' (VTABLE)"
             },
@@ -96593,7 +96627,7 @@
             "instruction_index": 6
           },
           "recomp": {
-            "address": 5195580,
+            "address": 5205148,
             "facts": {
               "value": "CToolTipCtrl::`vftable' (VTABLE)"
             },
@@ -96845,9 +96879,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 5198047,
+            "address": 5207615,
             "facts": {
-              "target": 5209677,
+              "target": 5219245,
               "target_instruction_index": null,
               "target_name": "AfxGetEmptyString"
             },
@@ -96878,9 +96912,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 5198103,
+            "address": 5207671,
             "facts": {
-              "target": 5209677,
+              "target": 5219245,
               "target_instruction_index": null,
               "target_name": "AfxGetEmptyString"
             },
@@ -97002,9 +97036,9 @@
             "instruction_index": 8
           },
           "recomp": {
-            "address": 5198847,
+            "address": 5208415,
             "facts": {
-              "target": 5122960,
+              "target": 5132528,
               "target_instruction_index": null,
               "target_name": "__mbscspn"
             },
@@ -97048,9 +97082,9 @@
             "instruction_index": 4
           },
           "recomp": {
-            "address": 5211384,
+            "address": 5220952,
             "facts": {
-              "target": 5122128,
+              "target": 5131696,
               "target_instruction_index": null,
               "target_name": "__mbspbrk"
             },
@@ -97196,7 +97230,7 @@
             "instruction_index": 12
           },
           "recomp": {
-            "address": 5201675,
+            "address": 5211243,
             "facts": {
               "value": "CCommonDialog::`vftable' (VTABLE)"
             },
@@ -97227,9 +97261,9 @@
             "instruction_index": 39
           },
           "recomp": {
-            "address": 5202124,
+            "address": 5211692,
             "facts": {
-              "target": 5110772,
+              "target": 5120340,
               "target_instruction_index": null,
               "target_name": "_GetOpenFileNameA@4"
             },
@@ -97427,7 +97461,7 @@
             "instruction_index": 30
           },
           "recomp": {
-            "address": 5204363,
+            "address": 5213931,
             "facts": {
               "predicate": "eq:('load', ('mem', '', ((('spadd', ('init', 'sp'), -4), 1),), 12, ()), 'dword', 9)#43916677"
             },
@@ -97458,9 +97492,9 @@
             "instruction_index": 3
           },
           "recomp": {
-            "address": 5204585,
+            "address": 5214153,
             "facts": {
-              "target": 5225359,
+              "target": 5234927,
               "target_instruction_index": null,
               "target_name": "CWnd::UpdateData"
             },
@@ -97582,9 +97616,9 @@
             "instruction_index": 5
           },
           "recomp": {
-            "address": 5201394,
+            "address": 5210962,
             "facts": {
-              "target": 5127456,
+              "target": 5137024,
               "target_instruction_index": null,
               "target_name": "_gmtime"
             },
@@ -97652,7 +97686,7 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 5205406,
+            "address": 5214974,
             "facts": {
               "value": "CPtrArray::`vftable' (VTABLE)"
             },
@@ -97681,7 +97715,7 @@
             "instruction_index": 6
           },
           "recomp": {
-            "address": 5205470,
+            "address": 5215038,
             "facts": {
               "value": "CPtrArray::`vftable' (VTABLE)"
             },
@@ -97749,7 +97783,7 @@
             "instruction_index": 8
           },
           "recomp": {
-            "address": 5204693,
+            "address": 5214261,
             "facts": {
               "value": "CPtrList::`vftable' (VTABLE)"
             },
@@ -97804,7 +97838,7 @@
             "instruction_index": 6
           },
           "recomp": {
-            "address": 5204782,
+            "address": 5214350,
             "facts": {
               "value": "CPtrList::`vftable' (VTABLE)"
             },
@@ -97963,7 +97997,7 @@
             "instruction_index": 7
           },
           "recomp": {
-            "address": 5206305,
+            "address": 5215873,
             "facts": {
               "value": "CMapPtrToPtr::`vftable' (VTABLE)"
             },
@@ -98018,7 +98052,7 @@
             "instruction_index": 6
           },
           "recomp": {
-            "address": 5206482,
+            "address": 5216050,
             "facts": {
               "value": "CMapPtrToPtr::`vftable' (VTABLE)"
             },
@@ -98151,7 +98185,7 @@
             "instruction_index": 7
           },
           "recomp": {
-            "address": 5207030,
+            "address": 5216598,
             "facts": {
               "value": "CMapStringToPtr::`vftable' (VTABLE)"
             },
@@ -98180,7 +98214,7 @@
             "instruction_index": 6
           },
           "recomp": {
-            "address": 5207246,
+            "address": 5216814,
             "facts": {
               "value": "CMapStringToPtr::`vftable' (VTABLE)"
             },
@@ -98211,9 +98245,9 @@
             "instruction_index": 5
           },
           "recomp": {
-            "address": 5207517,
+            "address": 5217085,
             "facts": {
-              "target": 5207417,
+              "target": 5216985,
               "target_instruction_index": null,
               "target_name": "CMapStringToPtr::GetAssocAt"
             },
@@ -98244,9 +98278,9 @@
             "instruction_index": 5
           },
           "recomp": {
-            "address": 5207551,
+            "address": 5217119,
             "facts": {
-              "target": 5207417,
+              "target": 5216985,
               "target_instruction_index": null,
               "target_name": "CMapStringToPtr::GetAssocAt"
             },
@@ -98277,9 +98311,9 @@
             "instruction_index": 9
           },
           "recomp": {
-            "address": 5207590,
+            "address": 5217158,
             "facts": {
-              "target": 5207417,
+              "target": 5216985,
               "target_instruction_index": null,
               "target_name": "CMapStringToPtr::GetAssocAt"
             },
@@ -98321,7 +98355,7 @@
             "instruction_index": 0
           },
           "recomp": {
-            "address": 5211773,
+            "address": 5221341,
             "facts": {
               "symbol": "CDialog::messageMap"
             },
@@ -98389,7 +98423,7 @@
             "instruction_index": 7
           },
           "recomp": {
-            "address": 5212081,
+            "address": 5221649,
             "facts": {
               "value": "CDialog::`vftable' (VTABLE)"
             },
@@ -98418,7 +98452,7 @@
             "instruction_index": 6
           },
           "recomp": {
-            "address": 5212144,
+            "address": 5221712,
             "facts": {
               "value": "CDialog::`vftable' (VTABLE)"
             },
@@ -98551,7 +98585,7 @@
             "instruction_index": 8
           },
           "recomp": {
-            "address": 5213050,
+            "address": 5222618,
             "facts": {
               "value": "CDialog::`vftable' (VTABLE)"
             },
@@ -98580,7 +98614,7 @@
             "instruction_index": 8
           },
           "recomp": {
-            "address": 5213116,
+            "address": 5222684,
             "facts": {
               "value": "CDialog::`vftable' (VTABLE)"
             },
@@ -98702,9 +98736,9 @@
             "instruction_index": 15
           },
           "recomp": {
-            "address": 5214020,
+            "address": 5223588,
             "facts": {
-              "target": 5225359,
+              "target": 5234927,
               "target_instruction_index": null,
               "target_name": "CWnd::UpdateData"
             },
@@ -98735,9 +98769,9 @@
             "instruction_index": 3
           },
           "recomp": {
-            "address": 5214090,
+            "address": 5223658,
             "facts": {
-              "target": 5225359,
+              "target": 5234927,
               "target_instruction_index": null,
               "target_name": "CWnd::UpdateData"
             },
@@ -98872,9 +98906,9 @@
             "instruction_index": 25
           },
           "recomp": {
-            "address": 5232139,
+            "address": 5241707,
             "facts": {
-              "target": 5110790,
+              "target": 5120358,
               "target_instruction_index": null,
               "target_name": "_OpenPrinterA@12"
             },
@@ -98905,9 +98939,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 5209686,
+            "address": 5219254,
             "facts": {
-              "target": 5209677,
+              "target": 5219245,
               "target_instruction_index": null,
               "target_name": "AfxGetEmptyString"
             },
@@ -98938,9 +98972,9 @@
             "instruction_index": 12
           },
           "recomp": {
-            "address": 5209729,
+            "address": 5219297,
             "facts": {
-              "target": 5209677,
+              "target": 5219245,
               "target_instruction_index": null,
               "target_name": "AfxGetEmptyString"
             },
@@ -98971,9 +99005,9 @@
             "instruction_index": 6
           },
           "recomp": {
-            "address": 5209766,
+            "address": 5219334,
             "facts": {
-              "target": 5209677,
+              "target": 5219245,
               "target_instruction_index": null,
               "target_name": "AfxGetEmptyString"
             },
@@ -99004,9 +99038,9 @@
             "instruction_index": 15
           },
           "recomp": {
-            "address": 5209851,
+            "address": 5219419,
             "facts": {
-              "target": 5209677,
+              "target": 5219245,
               "target_instruction_index": null,
               "target_name": "AfxGetEmptyString"
             },
@@ -99102,9 +99136,9 @@
             "instruction_index": 10
           },
           "recomp": {
-            "address": 5210074,
+            "address": 5219642,
             "facts": {
-              "target": 5209677,
+              "target": 5219245,
               "target_instruction_index": null,
               "target_name": "AfxGetEmptyString"
             },
@@ -99135,9 +99169,9 @@
             "instruction_index": 4
           },
           "recomp": {
-            "address": 5210129,
+            "address": 5219697,
             "facts": {
-              "target": 5209677,
+              "target": 5219245,
               "target_instruction_index": null,
               "target_name": "AfxGetEmptyString"
             },
@@ -99168,9 +99202,9 @@
             "instruction_index": 4
           },
           "recomp": {
-            "address": 5210223,
+            "address": 5219791,
             "facts": {
-              "target": 5209677,
+              "target": 5219245,
               "target_instruction_index": null,
               "target_name": "AfxGetEmptyString"
             },
@@ -99435,9 +99469,9 @@
             "instruction_index": 4
           },
           "recomp": {
-            "address": 5211452,
+            "address": 5221020,
             "facts": {
-              "target": 5122656,
+              "target": 5132224,
               "target_instruction_index": null,
               "target_name": "__mbsrev"
             },
@@ -99481,7 +99515,7 @@
             "instruction_index": 6
           },
           "recomp": {
-            "address": 5211517,
+            "address": 5221085,
             "facts": {
               "target": null,
               "target_instruction_index": null,
@@ -99746,7 +99780,7 @@
             "instruction_index": 4
           },
           "recomp": {
-            "address": 5208213,
+            "address": 5217781,
             "facts": {
               "value": "CCmdTarget::`vftable' (VTABLE)"
             },
@@ -99775,7 +99809,7 @@
             "instruction_index": 6
           },
           "recomp": {
-            "address": 5208283,
+            "address": 5217851,
             "facts": {
               "value": "CCmdTarget::`vftable' (VTABLE)"
             },
@@ -99934,7 +99968,7 @@
             "instruction_index": 1
           },
           "recomp": {
-            "address": 5100226,
+            "address": 5109794,
             "facts": {
               "value": "0"
             },
@@ -99963,7 +99997,7 @@
             "instruction_index": 0
           },
           "recomp": {
-            "address": 5209003,
+            "address": 5218571,
             "facts": {
               "symbol": "CCmdTarget::dispatchMap"
             },
@@ -99992,7 +100026,7 @@
             "instruction_index": 0
           },
           "recomp": {
-            "address": 5209009,
+            "address": 5218577,
             "facts": {
               "symbol": "CCmdTarget::eventsinkMap"
             },
@@ -100021,7 +100055,7 @@
             "instruction_index": 0
           },
           "recomp": {
-            "address": 5209015,
+            "address": 5218583,
             "facts": {
               "symbol": "CCmdTarget::interfaceMap"
             },
@@ -100089,7 +100123,7 @@
             "instruction_index": 0
           },
           "recomp": {
-            "address": 5209080,
+            "address": 5218648,
             "facts": {
               "symbol": "CCmdTarget::connectionMap"
             },
@@ -100144,7 +100178,7 @@
             "instruction_index": 0
           },
           "recomp": {
-            "address": 5209096,
+            "address": 5218664,
             "facts": {
               "symbol": "CCmdTarget::commandMap"
             },
@@ -100186,7 +100220,7 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 5209130,
+            "address": 5218698,
             "facts": {
               "value": "CCmdUI::`vftable' (VTABLE)"
             },
@@ -100306,7 +100340,7 @@
             "instruction_index": 0
           },
           "recomp": {
-            "address": 5207884,
+            "address": 5217452,
             "facts": {
               "symbol": "CObject::classCObject"
             },
@@ -100738,7 +100772,7 @@
             "instruction_index": 7
           },
           "recomp": {
-            "address": 5214625,
+            "address": 5224193,
             "facts": {
               "value": "CWnd::`vftable' (VTABLE)"
             },
@@ -100780,7 +100814,7 @@
             "instruction_index": 8
           },
           "recomp": {
-            "address": 5214696,
+            "address": 5224264,
             "facts": {
               "value": "CWnd::`vftable' (VTABLE)"
             },
@@ -100952,7 +100986,7 @@
             "instruction_index": 1
           },
           "recomp": {
-            "address": 5100402,
+            "address": 5109970,
             "facts": {
               "value": "0"
             },
@@ -101035,9 +101069,9 @@
             "instruction_index": 61
           },
           "recomp": {
-            "address": 5216571,
+            "address": 5226139,
             "facts": {
-              "target": 5215701,
+              "target": 5225269,
               "target_instruction_index": null,
               "target_name": "AfxGetAfxWndProc"
             },
@@ -101092,7 +101126,7 @@
             "instruction_index": 13
           },
           "recomp": {
-            "address": 5217224,
+            "address": 5226792,
             "facts": {
               "value": "_afxWnd"
             },
@@ -101134,7 +101168,7 @@
             "instruction_index": 6
           },
           "recomp": {
-            "address": 5217331,
+            "address": 5226899,
             "facts": {
               "value": "CWnd::`vftable' (VTABLE)"
             },
@@ -101475,7 +101509,7 @@
             "instruction_index": 3
           },
           "recomp": {
-            "address": 5221101,
+            "address": 5230669,
             "facts": {
               "value": "CTestCmdUI::`vftable' (VTABLE)"
             },
@@ -101508,20 +101542,20 @@
       "address": "0x6091d9",
       "comparison": {
         "difference": {
-          "kind": "memory_value",
+          "kind": "symbol_resolution",
           "orig": {
-            "address": 6328896,
+            "address": 6328885,
             "facts": {
-              "value": "or:movzx,<OFFSET6>"
+              "symbol": "<OFFSET6>"
             },
-            "instruction_index": 37
+            "instruction_index": 34
           },
           "recomp": {
-            "address": 5221387,
+            "address": 5230944,
             "facts": {
-              "value": "or:5111808,movzx"
+              "symbol": "_DrawTextA@20"
             },
-            "instruction_index": 37
+            "instruction_index": 34
           }
         },
         "effective_reasons": [],
@@ -102289,9 +102323,9 @@
             "instruction_index": 13
           },
           "recomp": {
-            "address": 5227441,
+            "address": 5237009,
             "facts": {
-              "target": 5215701,
+              "target": 5225269,
               "target_instruction_index": null,
               "target_name": "AfxGetAfxWndProc"
             },
@@ -102333,7 +102367,7 @@
             "instruction_index": 1
           },
           "recomp": {
-            "address": 5232252,
+            "address": 5241820,
             "facts": {
               "value": "CException::`vftable' (VTABLE)"
             },
@@ -102362,7 +102396,7 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 5232272,
+            "address": 5241840,
             "facts": {
               "value": "CException::`vftable' (VTABLE)"
             },
@@ -102430,7 +102464,7 @@
             "instruction_index": 13
           },
           "recomp": {
-            "address": 5233581,
+            "address": 5243149,
             "facts": {
               "value": "CFile::`vftable' (VTABLE)"
             },
@@ -102459,7 +102493,7 @@
             "instruction_index": 14
           },
           "recomp": {
-            "address": 5233675,
+            "address": 5243243,
             "facts": {
               "value": "CFile::`vftable' (VTABLE)"
             },
@@ -102488,7 +102522,7 @@
             "instruction_index": 13
           },
           "recomp": {
-            "address": 5233740,
+            "address": 5243308,
             "facts": {
               "value": "CFile::`vftable' (VTABLE)"
             },
@@ -102517,7 +102551,7 @@
             "instruction_index": 6
           },
           "recomp": {
-            "address": 5233882,
+            "address": 5243450,
             "facts": {
               "value": "CFile::`vftable' (VTABLE)"
             },
@@ -102741,7 +102775,7 @@
             "instruction_index": 6
           },
           "recomp": {
-            "address": 5234999,
+            "address": 5244567,
             "facts": {
               "value": "afxIID_IClassFactory"
             },
@@ -103056,7 +103090,7 @@
             "instruction_index": 10
           },
           "recomp": {
-            "address": 5240348,
+            "address": 5249916,
             "facts": {
               "symbol": "\"System\""
             },
@@ -103124,7 +103158,7 @@
             "instruction_index": 20
           },
           "recomp": {
-            "address": 5241019,
+            "address": 5250587,
             "facts": {
               "value": "CRecentFileList::`vftable' (VTABLE)"
             },
@@ -103166,7 +103200,7 @@
             "instruction_index": 6
           },
           "recomp": {
-            "address": 5241251,
+            "address": 5250819,
             "facts": {
               "value": "CRecentFileList::`vftable' (VTABLE)"
             },
@@ -103403,7 +103437,7 @@
             "instruction_index": 8
           },
           "recomp": {
-            "address": 5257803,
+            "address": 5267371,
             "facts": {
               "value": "CSingleDocTemplate::`vftable' (VTABLE)"
             },
@@ -103497,7 +103531,7 @@
             "instruction_index": 1
           },
           "recomp": {
-            "address": 5100530,
+            "address": 5110098,
             "facts": {
               "value": "0"
             },
@@ -103539,7 +103573,7 @@
             "instruction_index": 6
           },
           "recomp": {
-            "address": 5243100,
+            "address": 5252668,
             "facts": {
               "value": "CDocument::`vftable' (VTABLE)"
             },
@@ -103778,9 +103812,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 5257654,
+            "address": 5267222,
             "facts": {
-              "target": 5103383,
+              "target": 5112951,
               "target_instruction_index": null,
               "target_name": "CCtrlView::~CCtrlView"
             },
@@ -103967,9 +104001,9 @@
             "instruction_index": 46
           },
           "recomp": {
-            "address": 5248459,
+            "address": 5258027,
             "facts": {
-              "target": 5209677,
+              "target": 5219245,
               "target_instruction_index": null,
               "target_name": "AfxGetEmptyString"
             },
@@ -104336,7 +104370,7 @@
             "instruction_index": 6
           },
           "recomp": {
-            "address": 5250766,
+            "address": 5260334,
             "facts": {
               "value": "CDC::`vftable' (VTABLE)"
             },
@@ -104497,7 +104531,7 @@
             "instruction_index": 12
           },
           "recomp": {
-            "address": 5251607,
+            "address": 5261175,
             "facts": {
               "target": null,
               "target_instruction_index": null,
@@ -104530,7 +104564,7 @@
             "instruction_index": 12
           },
           "recomp": {
-            "address": 5253336,
+            "address": 5262904,
             "facts": {
               "target": null,
               "target_instruction_index": null,
@@ -104576,7 +104610,7 @@
             "instruction_index": 16
           },
           "recomp": {
-            "address": 5252287,
+            "address": 5261855,
             "facts": {
               "target": null,
               "target_instruction_index": null,
@@ -104609,7 +104643,7 @@
             "instruction_index": 18
           },
           "recomp": {
-            "address": 5252445,
+            "address": 5262013,
             "facts": {
               "target": null,
               "target_instruction_index": null,
@@ -104681,7 +104715,7 @@
             "instruction_index": 15
           },
           "recomp": {
-            "address": 5252772,
+            "address": 5262340,
             "facts": {
               "target": null,
               "target_instruction_index": null,
@@ -104818,7 +104852,7 @@
             "instruction_index": 10
           },
           "recomp": {
-            "address": 5253727,
+            "address": 5263295,
             "facts": {
               "target": null,
               "target_instruction_index": null,
@@ -104890,9 +104924,9 @@
             "instruction_index": 15
           },
           "recomp": {
-            "address": 5254617,
+            "address": 5264185,
             "facts": {
-              "target": 5124016,
+              "target": 5133584,
               "target_instruction_index": null,
               "target_name": "_abs (UNK)"
             },
@@ -104923,9 +104957,9 @@
             "instruction_index": 15
           },
           "recomp": {
-            "address": 5254722,
+            "address": 5264290,
             "facts": {
-              "target": 5124016,
+              "target": 5133584,
               "target_instruction_index": null,
               "target_name": "_abs (UNK)"
             },
@@ -104954,7 +104988,7 @@
             "instruction_index": 10
           },
           "recomp": {
-            "address": 5254819,
+            "address": 5264387,
             "facts": {
               "value": "CClientDC::`vftable' (VTABLE)"
             },
@@ -104996,7 +105030,7 @@
             "instruction_index": 6
           },
           "recomp": {
-            "address": 5254919,
+            "address": 5264487,
             "facts": {
               "value": "CClientDC::`vftable' (VTABLE)"
             },
@@ -105025,7 +105059,7 @@
             "instruction_index": 10
           },
           "recomp": {
-            "address": 5254999,
+            "address": 5264567,
             "facts": {
               "value": "CWindowDC::`vftable' (VTABLE)"
             },
@@ -105054,7 +105088,7 @@
             "instruction_index": 6
           },
           "recomp": {
-            "address": 5255099,
+            "address": 5264667,
             "facts": {
               "value": "CWindowDC::`vftable' (VTABLE)"
             },
@@ -105083,7 +105117,7 @@
             "instruction_index": 9
           },
           "recomp": {
-            "address": 5255177,
+            "address": 5264745,
             "facts": {
               "value": "CPaintDC::`vftable' (VTABLE)"
             },
@@ -105125,7 +105159,7 @@
             "instruction_index": 6
           },
           "recomp": {
-            "address": 5255279,
+            "address": 5264847,
             "facts": {
               "value": "CPaintDC::`vftable' (VTABLE)"
             },
@@ -105154,7 +105188,7 @@
             "instruction_index": 10
           },
           "recomp": {
-            "address": 5255384,
+            "address": 5264952,
             "facts": {
               "value": "AfxCriticalNewHandler"
             },
@@ -105211,9 +105245,9 @@
             "instruction_index": 4
           },
           "recomp": {
-            "address": 5255583,
+            "address": 5265151,
             "facts": {
-              "target": 5255532,
+              "target": 5265100,
               "target_instruction_index": null,
               "target_name": "CGdiObject::Detach"
             },
@@ -105242,7 +105276,7 @@
             "instruction_index": 9
           },
           "recomp": {
-            "address": 5255624,
+            "address": 5265192,
             "facts": {
               "value": "CPen::`vftable' (VTABLE)"
             },
@@ -105271,7 +105305,7 @@
             "instruction_index": 9
           },
           "recomp": {
-            "address": 5255704,
+            "address": 5265272,
             "facts": {
               "value": "CPen::`vftable' (VTABLE)"
             },
@@ -105300,7 +105334,7 @@
             "instruction_index": 9
           },
           "recomp": {
-            "address": 5255790,
+            "address": 5265358,
             "facts": {
               "value": "CBrush::`vftable' (VTABLE)"
             },
@@ -105329,7 +105363,7 @@
             "instruction_index": 9
           },
           "recomp": {
-            "address": 5255864,
+            "address": 5265432,
             "facts": {
               "value": "CBrush::`vftable' (VTABLE)"
             },
@@ -105358,7 +105392,7 @@
             "instruction_index": 9
           },
           "recomp": {
-            "address": 5255941,
+            "address": 5265509,
             "facts": {
               "value": "CBrush::`vftable' (VTABLE)"
             },
@@ -105400,7 +105434,7 @@
             "instruction_index": 4
           },
           "recomp": {
-            "address": 5256112,
+            "address": 5265680,
             "facts": {
               "value": "CView::`vftable' (VTABLE)"
             },
@@ -105429,7 +105463,7 @@
             "instruction_index": 6
           },
           "recomp": {
-            "address": 5256167,
+            "address": 5265735,
             "facts": {
               "value": "CView::`vftable' (VTABLE)"
             },
@@ -105757,7 +105791,7 @@
             "instruction_index": 11
           },
           "recomp": {
-            "address": 5256959,
+            "address": 5266527,
             "facts": {
               "value": "CSplitterWnd::classCSplitterWnd"
             },
@@ -105851,7 +105885,7 @@
             "instruction_index": 18
           },
           "recomp": {
-            "address": 5257404,
+            "address": 5266972,
             "facts": {
               "value": "CFrameWnd::classCFrameWnd"
             },
@@ -105893,7 +105927,7 @@
             "instruction_index": 19
           },
           "recomp": {
-            "address": 5258911,
+            "address": 5268479,
             "facts": {
               "value": "szComboBox"
             },
@@ -105987,7 +106021,7 @@
             "instruction_index": 13
           },
           "recomp": {
-            "address": 5264047,
+            "address": 5273615,
             "facts": {
               "value": "CDocTemplate::`vftable' (VTABLE)"
             },
@@ -106029,7 +106063,7 @@
             "instruction_index": 7
           },
           "recomp": {
-            "address": 5264550,
+            "address": 5274118,
             "facts": {
               "value": "CDocTemplate::`vftable' (VTABLE)"
             },
@@ -106201,7 +106235,7 @@
             "instruction_index": 5
           },
           "recomp": {
-            "address": 5265322,
+            "address": 5274890,
             "facts": {
               "value": "CCmdTarget::classCCmdTarget"
             },
@@ -106243,7 +106277,7 @@
             "instruction_index": 8
           },
           "recomp": {
-            "address": 5259858,
+            "address": 5269426,
             "facts": {
               "value": "CScrollView::`vftable' (VTABLE)"
             },
@@ -106779,7 +106813,7 @@
             "instruction_index": 30
           },
           "recomp": {
-            "address": 5268161,
+            "address": 5277729,
             "facts": {
               "value": "\"%d\""
             },
@@ -106912,7 +106946,7 @@
             "instruction_index": 10
           },
           "recomp": {
-            "address": 5270141,
+            "address": 5279709,
             "facts": {
               "value": "\"%ld\""
             },
@@ -106941,7 +106975,7 @@
             "instruction_index": 10
           },
           "recomp": {
-            "address": 5270188,
+            "address": 5279756,
             "facts": {
               "value": "\"%lu\""
             },
@@ -106970,7 +107004,7 @@
             "instruction_index": 10
           },
           "recomp": {
-            "address": 5270047,
+            "address": 5279615,
             "facts": {
               "value": "\"%d\""
             },
@@ -106999,7 +107033,7 @@
             "instruction_index": 10
           },
           "recomp": {
-            "address": 5270094,
+            "address": 5279662,
             "facts": {
               "value": "\"%u\""
             },
@@ -107236,7 +107270,7 @@
             "instruction_index": 16
           },
           "recomp": {
-            "address": 5271590,
+            "address": 5281158,
             "facts": {
               "value": "\"%d\""
             },
@@ -107382,7 +107416,7 @@
             "instruction_index": 4
           },
           "recomp": {
-            "address": 5268537,
+            "address": 5278105,
             "facts": {
               "value": "CMemFile::`vftable' (VTABLE)"
             },
@@ -107411,7 +107445,7 @@
             "instruction_index": 12
           },
           "recomp": {
-            "address": 5268636,
+            "address": 5278204,
             "facts": {
               "value": "CMemFile::`vftable' (VTABLE)"
             },
@@ -107453,7 +107487,7 @@
             "instruction_index": 7
           },
           "recomp": {
-            "address": 5268740,
+            "address": 5278308,
             "facts": {
               "value": "CMemFile::`vftable' (VTABLE)"
             },
@@ -107729,7 +107763,7 @@
             "instruction_index": 24
           },
           "recomp": {
-            "address": 5275274,
+            "address": 5284842,
             "facts": {
               "symbol": "CNewTypeDlg::`vftable' (VTABLE)"
             },
@@ -107836,7 +107870,7 @@
             "instruction_index": 20
           },
           "recomp": {
-            "address": 5275705,
+            "address": 5285273,
             "facts": {
               "value": "CFrameWnd::`vftable' (VTABLE)"
             },
@@ -107878,7 +107912,7 @@
             "instruction_index": 6
           },
           "recomp": {
-            "address": 5275883,
+            "address": 5285451,
             "facts": {
               "value": "CFrameWnd::`vftable' (VTABLE)"
             },
@@ -108206,7 +108240,7 @@
             "instruction_index": 43
           },
           "recomp": {
-            "address": 5278385,
+            "address": 5287953,
             "facts": {
               "value": "CFrameWnd::rectDefault"
             },
@@ -108248,7 +108282,7 @@
             "instruction_index": 15
           },
           "recomp": {
-            "address": 5278596,
+            "address": 5288164,
             "facts": {
               "value": "CView::classCView"
             },
@@ -108409,9 +108443,9 @@
             "instruction_index": 14
           },
           "recomp": {
-            "address": 5280288,
+            "address": 5289856,
             "facts": {
-              "target": 5194822,
+              "target": 5204390,
               "target_instruction_index": null,
               "target_name": "_UnpackDDElParam@16"
             },
@@ -108440,7 +108474,7 @@
             "instruction_index": 1
           },
           "recomp": {
-            "address": 5101202,
+            "address": 5110770,
             "facts": {
               "value": "0"
             },
@@ -108820,7 +108854,7 @@
             "instruction_index": 9
           },
           "recomp": {
-            "address": 5286413,
+            "address": 5295981,
             "facts": {
               "value": "\"BUTTON\""
             },
@@ -108994,9 +109028,9 @@
             "instruction_index": 8
           },
           "recomp": {
-            "address": 5284795,
+            "address": 5294363,
             "facts": {
-              "target": 5103616,
+              "target": 5113184,
               "target_instruction_index": null,
               "target_name": "CGdiObject::CGdiObject"
             },
@@ -109079,9 +109113,9 @@
             "instruction_index": 45
           },
           "recomp": {
-            "address": 5286007,
+            "address": 5295575,
             "facts": {
-              "target": 5124016,
+              "target": 5133584,
               "target_instruction_index": null,
               "target_name": "_abs (UNK)"
             },
@@ -109188,7 +109222,7 @@
             "instruction_index": 7
           },
           "recomp": {
-            "address": 5287799,
+            "address": 5297367,
             "facts": {
               "value": "\"%d\""
             },
@@ -109230,7 +109264,7 @@
             "instruction_index": 7
           },
           "recomp": {
-            "address": 5288043,
+            "address": 5297611,
             "facts": {
               "value": "\"%d\""
             },
@@ -109259,7 +109293,7 @@
             "instruction_index": 7
           },
           "recomp": {
-            "address": 5287899,
+            "address": 5297467,
             "facts": {
               "value": "\"0x%X\""
             },
@@ -109288,7 +109322,7 @@
             "instruction_index": 7
           },
           "recomp": {
-            "address": 5287947,
+            "address": 5297515,
             "facts": {
               "value": "\"%ld\""
             },
@@ -109317,7 +109351,7 @@
             "instruction_index": 7
           },
           "recomp": {
-            "address": 5287995,
+            "address": 5297563,
             "facts": {
               "value": "\"%lu\""
             },
@@ -109398,7 +109432,7 @@
             "instruction_index": 0
           },
           "recomp": {
-            "address": 5290120,
+            "address": 5299688,
             "facts": {
               "symbol": "CDialog::classCDialog"
             },
@@ -109466,7 +109500,7 @@
             "instruction_index": 5
           },
           "recomp": {
-            "address": 5290897,
+            "address": 5300465,
             "facts": {
               "predicate": "le_s:load:__argc,load:spadd"
             },
@@ -109495,7 +109529,7 @@
             "instruction_index": 23
           },
           "recomp": {
-            "address": 5291065,
+            "address": 5300633,
             "facts": {
               "value": "CCommandLineInfo::`vftable' (VTABLE)"
             },
@@ -109537,7 +109571,7 @@
             "instruction_index": 6
           },
           "recomp": {
-            "address": 5291135,
+            "address": 5300703,
             "facts": {
               "value": "CCommandLineInfo::`vftable' (VTABLE)"
             },
@@ -109579,7 +109613,7 @@
             "instruction_index": 6
           },
           "recomp": {
-            "address": 5291266,
+            "address": 5300834,
             "facts": {
               "value": "\"pt\""
             },
@@ -109634,7 +109668,7 @@
             "instruction_index": 8
           },
           "recomp": {
-            "address": 5291588,
+            "address": 5301156,
             "facts": {
               "value": "CWinApp::`vftable' (VTABLE)"
             },
@@ -109663,7 +109697,7 @@
             "instruction_index": 13
           },
           "recomp": {
-            "address": 5291921,
+            "address": 5301489,
             "facts": {
               "value": "szPreviewEntry"
             },
@@ -109705,7 +109739,7 @@
             "instruction_index": 0
           },
           "recomp": {
-            "address": 5291992,
+            "address": 5301560,
             "facts": {
               "symbol": "CWinApp::classCWinApp"
             },
@@ -109747,7 +109781,7 @@
             "instruction_index": 10
           },
           "recomp": {
-            "address": 5290307,
+            "address": 5299875,
             "facts": {
               "value": "CWinThread::`vftable' (VTABLE)"
             },
@@ -109789,7 +109823,7 @@
             "instruction_index": 43
           },
           "recomp": {
-            "address": 5288512,
+            "address": 5298080,
             "facts": {
               "value": "rgbDot"
             },
@@ -109818,7 +109852,7 @@
             "instruction_index": 1
           },
           "recomp": {
-            "address": 5101410,
+            "address": 5110978,
             "facts": {
               "value": "0"
             },
@@ -109886,7 +109920,7 @@
             "instruction_index": 6
           },
           "recomp": {
-            "address": 5292905,
+            "address": 5302473,
             "facts": {
               "value": "szSystemTopic"
             },
@@ -109954,7 +109988,7 @@
             "instruction_index": 13
           },
           "recomp": {
-            "address": 5293109,
+            "address": 5302677,
             "facts": {
               "value": "szSoftware"
             },
@@ -110011,9 +110045,9 @@
             "instruction_index": 3
           },
           "recomp": {
-            "address": 5293426,
+            "address": 5302994,
             "facts": {
-              "target": 5116112,
+              "target": 5125680,
               "target_instruction_index": null,
               "target_name": "__chkstk (UNK)"
             },
@@ -110068,7 +110102,7 @@
             "instruction_index": 3
           },
           "recomp": {
-            "address": 5288646,
+            "address": 5298214,
             "facts": {
               "value": "_AFX_THREAD_STATE::`vftable' (VTABLE)"
             },
@@ -110110,7 +110144,7 @@
             "instruction_index": 7
           },
           "recomp": {
-            "address": 5288698,
+            "address": 5298266,
             "facts": {
               "value": "_AFX_THREAD_STATE::`vftable' (VTABLE)"
             },
@@ -110139,7 +110173,7 @@
             "instruction_index": 15
           },
           "recomp": {
-            "address": 5288909,
+            "address": 5298477,
             "facts": {
               "value": "AFX_MODULE_STATE::`vftable' (VTABLE)"
             },
@@ -110170,9 +110204,9 @@
             "instruction_index": 2
           },
           "recomp": {
-            "address": 5289640,
+            "address": 5299208,
             "facts": {
-              "target": 5289664,
+              "target": 5299232,
               "target_instruction_index": null,
               "target_name": "_AFX_BASE_MODULE_STATE::~_AFX_BASE_MODULE_STATE"
             },
@@ -110201,7 +110235,7 @@
             "instruction_index": 7
           },
           "recomp": {
-            "address": 5289003,
+            "address": 5298571,
             "facts": {
               "value": "AFX_MODULE_STATE::`vftable' (VTABLE)"
             },
@@ -110230,7 +110264,7 @@
             "instruction_index": 6
           },
           "recomp": {
-            "address": 5289179,
+            "address": 5298747,
             "facts": {
               "value": "CNoTrackObject::`vftable' (VTABLE)"
             },
@@ -110272,7 +110306,7 @@
             "instruction_index": 7
           },
           "recomp": {
-            "address": 5289314,
+            "address": 5298882,
             "facts": {
               "value": "AFX_MODULE_THREAD_STATE::`vftable' (VTABLE)"
             },
@@ -110301,7 +110335,7 @@
             "instruction_index": 15
           },
           "recomp": {
-            "address": 5289616,
+            "address": 5299184,
             "facts": {
               "value": "_AFX_BASE_MODULE_STATE::`vftable' (VTABLE)"
             },
@@ -110356,7 +110390,7 @@
             "instruction_index": 1
           },
           "recomp": {
-            "address": 5101426,
+            "address": 5110994,
             "facts": {
               "value": "0"
             },
@@ -110385,7 +110419,7 @@
             "instruction_index": 0
           },
           "recomp": {
-            "address": 5290025,
+            "address": 5299593,
             "facts": {
               "symbol": "CPalette::classCPalette"
             },
@@ -110414,7 +110448,7 @@
             "instruction_index": 0
           },
           "recomp": {
-            "address": 5293968,
+            "address": 5303536,
             "facts": {
               "symbol": "CPtrList::classCPtrList"
             },
@@ -110443,7 +110477,7 @@
             "instruction_index": 1
           },
           "recomp": {
-            "address": 5101570,
+            "address": 5111138,
             "facts": {
               "value": "0"
             },
@@ -110472,7 +110506,7 @@
             "instruction_index": 1
           },
           "recomp": {
-            "address": 5101586,
+            "address": 5111154,
             "facts": {
               "value": "0"
             },
@@ -110605,7 +110639,7 @@
             "instruction_index": 21
           },
           "recomp": {
-            "address": 5295310,
+            "address": 5304878,
             "facts": {
               "value": "CThreadData::`vftable' (VTABLE)"
             },
@@ -110686,7 +110720,7 @@
             "instruction_index": 11
           },
           "recomp": {
-            "address": 5295809,
+            "address": 5305377,
             "facts": {
               "predicate": "cc:test#8490cbd9"
             },
@@ -110793,7 +110827,7 @@
             "instruction_index": 6
           },
           "recomp": {
-            "address": 5296554,
+            "address": 5306122,
             "facts": {
               "value": "_AFX_CTL3D_STATE::`vftable' (VTABLE)"
             },
@@ -110822,7 +110856,7 @@
             "instruction_index": 6
           },
           "recomp": {
-            "address": 5296625,
+            "address": 5306193,
             "facts": {
               "value": "_AFX_CTL3D_THREAD::`vftable' (VTABLE)"
             },
@@ -110903,7 +110937,7 @@
             "instruction_index": 12
           },
           "recomp": {
-            "address": 5297225,
+            "address": 5306793,
             "facts": {
               "value": "CDocManager::`vftable' (VTABLE)"
             },
@@ -110958,7 +110992,7 @@
             "instruction_index": 152
           },
           "recomp": {
-            "address": 5298389,
+            "address": 5307957,
             "facts": {
               "value": "szPrintArg"
             },
@@ -111013,7 +111047,7 @@
             "instruction_index": 6
           },
           "recomp": {
-            "address": 5299773,
+            "address": 5309341,
             "facts": {
               "value": "_AFX_WIN_STATE::`vftable' (VTABLE)"
             },
@@ -111055,7 +111089,7 @@
             "instruction_index": 6
           },
           "recomp": {
-            "address": 5299694,
+            "address": 5309262,
             "facts": {
               "value": "CWinThread::`vftable' (VTABLE)"
             },
@@ -111097,7 +111131,7 @@
             "instruction_index": 7
           },
           "recomp": {
-            "address": 5299874,
+            "address": 5309442,
             "facts": {
               "value": "CDocManager::`vftable' (VTABLE)"
             },

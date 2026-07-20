@@ -2158,7 +2158,7 @@
 // ?SelectObject@CDC@@QAEPAVCBrush@@PAV2@@Z
 
 // LIBRARY: IMPERIALISM 0x006129d7
-// ?SelectObject@CDC@@QAEPAVCBrush@@PAV2@@Z
+// ?SelectObject@CDC@@QAEPAVCPen@@PAV2@@Z
 
 // LIBRARY: IMPERIALISM 0x00612a2a
 // CDC::SelectClipRgn
@@ -2215,22 +2215,22 @@
 // ?SelectClipRgn@CDC@@QAEHPAVCRgn@@@Z
 
 // LIBRARY: IMPERIALISM 0x00612ef8
-// CDC::IntersectClipRect
+// ?IntersectClipRect@CDC@@QAEHHHHH@Z
 
 // LIBRARY: IMPERIALISM 0x00612f42
-// CDC::ExcludeClipRect
+// ?ExcludeClipRect@CDC@@QAEHHHHH@Z
 
 // LIBRARY: IMPERIALISM 0x00612f8e
-// CDC::IntersectClipRect
+// ?IntersectClipRect@CDC@@QAEHPBUtagRECT@@@Z
 
 // LIBRARY: IMPERIALISM 0x00612fd8
 // CDC::IntersectClipRect
 
 // LIBRARY: IMPERIALISM 0x00613024
-// CDC::OffsetClipRgn
+// ?OffsetClipRgn@CDC@@QAEHHH@Z
 
 // LIBRARY: IMPERIALISM 0x00613062
-// CDC::OffsetClipRgn
+// ?OffsetClipRgn@CDC@@QAEHUtagSIZE@@@Z
 
 // LIBRARY: IMPERIALISM 0x006130a0
 // ?OffsetWindowOrg@CDC@@QAE?AVCPoint@@HH@Z
@@ -2557,10 +2557,10 @@
 // ?DDX_Text@@YGXPAVCDataExchange@@HAAK@Z
 
 // LIBRARY: IMPERIALISM 0x00618c5f
-// ?DDX_Text@@YGXPAVCDataExchange@@HAAJ@Z
+// ?DDX_Text@@YGXPAVCDataExchange@@HAAH@Z
 
 // LIBRARY: IMPERIALISM 0x00618c8e
-// ?DDX_Text@@YGXPAVCDataExchange@@HAAK@Z
+// ?DDX_Text@@YGXPAVCDataExchange@@HAAI@Z
 
 // LIBRARY: IMPERIALISM 0x00618cbd
 // ?DDX_Text@@YGXPAVCDataExchange@@HAAVCString@@@Z
@@ -2986,19 +2986,19 @@
 // ??6CDumpContext@@QAEAAV0@H@Z
 
 // LIBRARY: IMPERIALISM 0x006211a6
-// ??6CDumpContext@@QAEAAV0@H@Z
+// ??6CDumpContext@@QAEAAV0@I@Z
 
 // LIBRARY: IMPERIALISM 0x006211d6
-// ??6CDumpContext@@QAEAAV0@H@Z
+// ??6CDumpContext@@QAEAAV0@J@Z
 
 // LIBRARY: IMPERIALISM 0x00621206
-// ??6CDumpContext@@QAEAAV0@H@Z
+// ??6CDumpContext@@QAEAAV0@K@Z
 
 // LIBRARY: IMPERIALISM 0x00621236
 // ??6CDumpContext@@QAEAAV0@PBVCObject@@@Z
 
 // LIBRARY: IMPERIALISM 0x00621267
-// ??6CDumpContext@@QAEAAV0@H@Z
+// ??6CDumpContext@@QAEAAV0@ABVCObject@@@Z
 
 // LIBRARY: IMPERIALISM 0x00621297
 // ?HexDump@CDumpContext@@QAEXPBDPAEHH@Z

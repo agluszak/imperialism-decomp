@@ -394,9 +394,9 @@ compare *args:
   set -euo pipefail
   args=({{args}})
   if [[ ${#args[@]} -eq 0 ]]; then
-    (cd "{{build_dir}}" && uv run reccmp-reccmp --target "{{target}}")
+    (cd "{{build_dir}}" && PYTHONPATH=.. uv run python -m tools.reccmp.compare_cli --target "{{target}}")
   elif [[ ${#args[@]} -eq 1 && "${args[0]}" != "--file" ]]; then
-    (cd "{{build_dir}}" && uv run reccmp-reccmp --target "{{target}}" --verbose "${args[0]}")
+    (cd "{{build_dir}}" && PYTHONPATH=.. uv run python -m tools.reccmp.compare_cli --target "{{target}}" --verbose "${args[0]}")
   else
     uv run python -m tools.reccmp.compare_batch --target "{{target}}" --build-dir "{{build_dir}}" {{args}}
   fi
