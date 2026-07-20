@@ -1238,10 +1238,6 @@ const unsigned int g_tradeCommodityRowTagTable[17] = {
 
 // GLOBAL: IMPERIALISM 0x006a58c8
 int g_defaultDropShadowTextColor = 0;
-// GLOBAL: IMPERIALISM 0x006a5fc0
-int g_NetworkDefaultNationId006a5fc0 = 0;
-// GLOBAL: IMPERIALISM 0x006a5fc4
-int g_NetworkBroadcastNationId006a5fc4 = 0;
 // 26 (start, end) capability-priority range pairs walked by
 // TTechMgr::GenerateRandomCapabilityPrioritySlots. The reccmp symbol points at pair 0's END
 // value; pair 0's START value (1) lives one short earlier and is read via cursor[-1].
@@ -1252,12 +1248,6 @@ short g_anCapabilityPriorityRangePairs[53] = {
     55, 56, 60, 56, 60, 56, 60, 61, 65, 61, 65, 66, 70, 66, 70, 0,  0};
 // GLOBAL: IMPERIALISM 0x006a601c
 int DAT_006a601c = 0;
-// GLOBAL: IMPERIALISM 0x006a5fc8
-char g_JoinGameSeedBuffer_006a5fc8[0x20];
-// GLOBAL: IMPERIALISM 0x006a6008
-CString g_JoinGamePlayerNameStaging_006a6008;
-// GLOBAL: IMPERIALISM 0x006a600c
-int g_JoinGamePlayerDataTag_006a600c = 0;
 
 // InitInstance asset-path literals (LoadLanguageResourcesFromIrgFiles,
 // EnsurePictWvDataGobLoadedBySlot).
@@ -1420,10 +1410,12 @@ CList<TView*, TView*> g_UiWidgetBuildStack006a13e0;
 // WNetMgr.cpp file-scope template statics; g_WNetPendingPacketList006a5f40 is the
 // local-player pending-packet queue that TNetMgr::Send appends heap packet copies to
 // (block size 10, per the original static-init at 0x5e26d0).
+// GLOBAL: IMPERIALISM 0x006a5ed8
+CString g_WNetJoinGameMessageStore006a5ed8;
 // GLOBAL: IMPERIALISM 0x006a5f10
 CArray<void*, void*> g_WNetSerializedPtrArrayA006a5f10;
 // GLOBAL: IMPERIALISM 0x006a5f28
-CArray<void*, void*> g_WNetSerializedPtrArrayB006a5f28;
+CArray<RuntimeSelectionRecord*, RuntimeSelectionRecord*> g_WNetSerializedPtrArrayB006a5f28;
 // GLOBAL: IMPERIALISM 0x006a5f40
 CList<void*, void*> g_WNetPendingPacketList006a5f40(10);
 
@@ -1466,8 +1458,11 @@ CList<void*, void*> g_WNetPendingPacketList006a5f40(10);
 // DirectPlay session manager object embedded at a fixed address (not a pointer).
 // GLOBAL: IMPERIALISM 0x006a5f60
 TWNetSessionManager g_NetworkSessionManager006a5f60;
-// GLOBAL: IMPERIALISM 0x006a5fe8
-char g_RuntimeSelectionSourceSeedBuffer_006a5fe8[0x20];
+
+// DirectPlay application identity written into DPSESSIONDESC2 before host/join enumeration.
+// GLOBAL: IMPERIALISM 0x0066f968
+const GUID g_ImperialismDirectPlayApplicationGuid0066f968 = {
+    0xc55dc2ef, 0xfd3e, 0x11d0, {0xbc, 0x16, 0x44, 0x45, 0x53, 0x54, 0x00, 0x00}};
 
 // Heap-owned runtime selection records used by the DirectPlay session chooser.
 // This TU's CArray specialization has vtable 0x00646fb0 and ctor 0x00480b20.

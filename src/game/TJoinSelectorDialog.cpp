@@ -4,6 +4,9 @@
 #include "game/TEditText.h"
 #include "game/TLanguageMgr.h"
 #include "game/TMultiplayerMgr.h"
+#include "game/TRadioText.h"
+#include "game/TRadioTextCluster.h"
+#include "game/TWNetSessionManager.h"
 #include "game/global_data_tables.h"
 #include "game/quickdraw_rendering.h"
 #include "game/ui_control_tags.h"
@@ -50,6 +53,27 @@ void TJoinSelectorDialog::DoPostCreate(int arg) {
 
   gameControl->textAlignmentCode = 0x2b6b;
   gameControl->textOptionFlags = 2;
+}
+
+// FUNCTION: IMPERIALISM 0x0054e8e0
+void TJoinSelectorDialog::AddJoinableGameOptionEntry(const char* label,
+                                                     RuntimeSelectionRecord* record) {
+  TRadioTextCluster* gameControl =
+      static_cast<TRadioTextCluster*>(ResolveControlByTag(kControlTagGame));
+  gameControl->AssertValid();
+  unsigned long recordTag = (unsigned long)record;
+  TRadioText* item = gameControl->AddItem(recordTag, (int)record, label, 0x12, -1);
+  ApplyUiTextStyleAndThemeFlags(item, 0, 0xc, 0x2b6b, 0x2b6c);
+  item->SetTextAlignmentAndMaybeRefresh(-2, 0);
+  gameControl->SetSelectedTextOptionByTag((int)record, false);
+}
+
+// FUNCTION: IMPERIALISM 0x0054e970
+RuntimeSelectionRecord* TJoinSelectorDialog::GetSelectedJoinableGame() {
+  TRadioTextCluster* gameControl =
+      static_cast<TRadioTextCluster*>(ResolveControlByTag(kControlTagGame));
+  gameControl->AssertValid();
+  return (RuntimeSelectionRecord*)gameControl->selectedTag88;
 }
 
 // FUNCTION: IMPERIALISM 0x0054e9a0
