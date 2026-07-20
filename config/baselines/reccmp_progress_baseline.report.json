@@ -922,7 +922,7 @@
     },
     {
       "address": "0x4357b0",
-      "matching": 0.3052328467878066,
+      "matching": 0.38553988833159836,
       "name": "BuildTurnEventDialogUiByCode",
       "type": 1
     },
@@ -38974,7 +38974,7 @@
     },
     {
       "address": "0x6091d9",
-      "matching": 0.9787234042553191,
+      "matching": 1.0,
       "name": "CWnd::OnNotify",
       "type": 1
     },
