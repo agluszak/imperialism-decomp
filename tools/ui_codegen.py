@@ -23,9 +23,9 @@ from tools.common.repo import repo_root_from_file, resolve_repo_path
 
 MANIFEST_PATH = "config/ui_factory_codegen.yml"
 IR_PATH = "vendor/macos_codewarrior/evidence/resources/ui_views.json"
-PROFILE_DIR = "config/ui_codegen_profiles"
+WINDOWS_RECIPE_PATH = "config/ui_factory_windows.json"
 FORMAT_VERSION = 1
-EMISSION_MODES = frozenset(("expanded", "compact", "windows_profile"))
+EMISSION_MODES = frozenset(("expanded", "compact", "resource_recipe"))
 
 DEFAULT_CLASSES = {
     "view": "TView",
@@ -35,6 +35,7 @@ DEFAULT_CLASSES = {
     "clus": "TCluster",
     "tevw": "TTEView",
     "edit": "TEditText",
+    "nmbr": "TNumberText",
     "wind": "TWindow",
     "fwnd": "TFloatWindow",
 }
@@ -46,7 +47,7 @@ CLASS_ALIASES = {
     "TMyWindow": "TWindow",
 }
 
-LAYOUT_FAMILIES = frozenset(("pict", "cntl", "stat", "clus", "edit"))
+LAYOUT_FAMILIES = frozenset(("pict", "cntl", "stat", "clus", "edit", "nmbr"))
 
 
 @dataclass(frozen=True)
@@ -165,6 +166,20 @@ def load_ui_views(repo_root: Path) -> dict[UiResourceKey, dict]:
     return views
 
 
+def load_windows_recipes(repo_root: Path) -> dict[str, dict]:
+    path = repo_root / WINDOWS_RECIPE_PATH
+    data = json.loads(path.read_text(encoding="utf-8"))
+    if data.get("format_version") != FORMAT_VERSION:
+        raise ValueError(
+            f"{WINDOWS_RECIPE_PATH}: unsupported format_version "
+            f"{data.get('format_version')!r}"
+        )
+    functions = data.get("functions")
+    if not isinstance(functions, dict):
+        raise ValueError(f"{WINDOWS_RECIPE_PATH}: functions must be an object")
+    return functions
+
+
 def _resolved_class(node: dict) -> str:
     class_name = str(node.get("class_name") or "")
     if class_name:
@@ -175,25 +190,31 @@ def _resolved_class(node: dict) -> str:
         raise ValueError(f"no Windows default class for {node.get('type_code')!r}") from exc
 
 
-def validate(repo_root: Path, recipes: Iterable[UiFactoryRecipe], views: dict) -> list[str]:
+def validate(
+    repo_root: Path,
+    recipes: Iterable[UiFactoryRecipe],
+    views: dict,
+    windows_recipes: dict[str, dict] | None = None,
+) -> list[str]:
     recipe_list = list(recipes)
     errors: list[str] = []
     include_dir = repo_root / "include" / "game"
     referenced: set[UiResourceKey] = set()
     for recipe in recipe_list:
-        if recipe.emission == "windows_profile":
-            profile = repo_root / PROFILE_DIR / f"{recipe.output_name}.in"
-            if not profile.is_file():
+        windows_function = None
+        if recipe.emission == "resource_recipe":
+            windows_function = (windows_recipes or {}).get(f"0x{recipe.address:08x}")
+            if not isinstance(windows_function, dict):
                 errors.append(
-                    f"0x{recipe.address:08x}: missing Windows emission profile {profile}"
+                    f"0x{recipe.address:08x}: missing {WINDOWS_RECIPE_PATH} entry"
                 )
-            else:
-                profile_text = profile.read_text(encoding="utf-8")
-                marker = f"// FUNCTION: IMPERIALISM 0x{recipe.address:08x}"
-                if marker not in profile_text:
-                    errors.append(f"{profile}: missing {marker}")
-                if recipe.prototype not in profile_text:
-                    errors.append(f"{profile}: prototype does not match manifest")
+            elif len(recipe.cases) > 1 and set(
+                windows_function.get("case_order", [])
+            ) != {f"0x{case.event:04x}" for case in recipe.cases}:
+                errors.append(
+                    f"0x{recipe.address:08x}: Windows case_order does not exactly "
+                    "cover manifest events"
+                )
         expected_name = f"{recipe.name}("
         if expected_name not in recipe.prototype:
             errors.append(
@@ -225,9 +246,112 @@ def validate(repo_root: Path, recipes: Iterable[UiFactoryRecipe], views: dict) -
                         f"{case.resource.text()} node 0x{int(node['offset']):x}: "
                         f"missing Windows header include/game/{class_name}.h"
                     )
+            if windows_function is not None:
+                case_recipe = windows_function.get("cases", {}).get(
+                    f"0x{case.event:04x}"
+                )
+                if not isinstance(case_recipe, dict):
+                    errors.append(
+                        f"0x{recipe.address:08x}/0x{case.event:x}: missing Windows case recipe"
+                    )
+                    continue
+                if case_recipe.get("resource") != case.resource.text():
+                    errors.append(
+                        f"0x{recipe.address:08x}/0x{case.event:x}: Windows recipe resource "
+                        "does not match manifest"
+                    )
+                node_rows = case_recipe.get("nodes", {})
+                skipped = set(case_recipe.get("skip_offsets", []))
+                expected_offsets = {
+                    f"0x{int(node['offset']):04x}" for node in view.get("nodes", [])
+                }
+                if set(node_rows) | skipped != expected_offsets:
+                    errors.append(
+                        f"0x{recipe.address:08x}/0x{case.event:x}: Windows node recipes "
+                        "do not cover the resource offsets exactly"
+                    )
+                for node in view.get("nodes", []):
+                    offset = f"0x{int(node['offset']):04x}"
+                    if offset in skipped:
+                        continue
+                    node_recipe = node_rows.get(offset, {})
+                    if node_recipe.get("emission") not in ("compact", "expanded"):
+                        errors.append(
+                            f"{case.resource.text()} node {offset}: Windows emission "
+                            "must be compact or expanded"
+                        )
+                    if node_recipe.get("allocation") not in ("local", "shared"):
+                        errors.append(
+                            f"{case.resource.text()} node {offset}: Windows allocation "
+                            "must be local or shared"
+                        )
+                    if node_recipe.get("control_value", "zero") not in (
+                        "zero",
+                        "resource",
+                    ):
+                        errors.append(
+                            f"{case.resource.text()} node {offset}: Windows control_value "
+                            "must be zero or resource"
+                        )
+                    class_name = str(node_recipe.get("class") or _resolved_class(node))
+                    if not (include_dir / f"{class_name}.h").is_file():
+                        errors.append(
+                            f"{case.resource.text()} node {offset}: Windows recipe class "
+                            f"include/game/{class_name}.h is missing"
+                        )
+                    family = node.get("family", {})
+                    for operation in node_recipe.get("operations", []):
+                        if operation.get("op") == "text_binding" and node.get(
+                            "type_code"
+                        ) in ("stat", "nmbr"):
+                            args = operation.get("args", [])
+                            expected_id = int(family.get("text_resource_id", -2))
+                            expected_index = int(family.get("text_resource_index", -2))
+                            actual_id = int(args[0]) & 0xFFFF if len(args) > 1 else -1
+                            actual_index = int(args[1]) & 0xFFFF if len(args) > 1 else -1
+                            if (actual_id, actual_index) != (
+                                expected_id,
+                                expected_index,
+                            ):
+                                errors.append(
+                                    f"{case.resource.text()} node {offset}: text binding "
+                                    "does not match typed Mac string ID/index"
+                                )
+                        if operation.get("op") == "max_chars" and node.get(
+                            "type_code"
+                        ) == "nmbr" and int(operation.get("value", -1)) != int(
+                            family.get("max_char_count", -2)
+                        ):
+                            errors.append(
+                                f"{case.resource.text()} node {offset}: max chars do not "
+                                "match typed Mac number payload"
+                            )
+                        if operation.get("op") == "number_range" and node.get(
+                            "type_code"
+                        ) == "nmbr":
+                            expected_range = [
+                                int(family.get("number_value", -2)),
+                                int(family.get("number_minimum", -2)),
+                                int(family.get("number_maximum", -2)),
+                            ]
+                            if operation.get("args") != expected_range:
+                                errors.append(
+                                    f"{case.resource.text()} node {offset}: number range "
+                                    "does not match typed Mac payload"
+                                )
     if len(recipe_list) != 17:
         errors.append(
             f"factory manifest must own exactly 17 functions, found {len(recipe_list)}"
+        )
+    expected_windows = {
+        f"0x{recipe.address:08x}"
+        for recipe in recipe_list
+        if recipe.emission == "resource_recipe"
+    }
+    if windows_recipes is not None and set(windows_recipes) != expected_windows:
+        errors.append(
+            f"{WINDOWS_RECIPE_PATH}: function keys do not exactly match resource_recipe "
+            "manifest entries"
         )
     return sorted(set(errors))
 
@@ -255,7 +379,11 @@ def _emit_pop(lines: list[str], tag_value: int, tag_text: str, indent: str) -> N
 def _emit_view(lines: list[str], view: dict, indent: str = "    ") -> set[str]:
     classes: set[str] = set()
     stack: list[dict] = []
-    for node in view.get("nodes", []):
+    # The compact/expanded legacy recipes predate recovery of embedded `nmbr`
+    # records.  Only resource_recipe factories opt into those newly typed
+    # children, so recovering the oracle does not silently reshape unrelated
+    # Windows functions.
+    for node in (row for row in view.get("nodes", []) if row["type_code"] != "nmbr"):
         depth = int(node["depth"])
         while len(stack) > depth:
             closed = stack.pop()
@@ -376,7 +504,7 @@ def _emit_view_compact(lines: list[str], view: dict, indent: str = "    ") -> se
     """Emit the helper-call shape used by compact Windows builder regions."""
     classes: set[str] = set()
     stack: list[dict] = []
-    for node in view.get("nodes", []):
+    for node in (row for row in view.get("nodes", []) if row["type_code"] != "nmbr"):
         depth = int(node["depth"])
         while len(stack) > depth:
             closed = stack.pop()
@@ -447,13 +575,430 @@ def _emit_view_compact(lines: list[str], view: dict, indent: str = "    ") -> se
     return classes
 
 
+def _cpp_value(value: object) -> str:
+    if isinstance(value, int):
+        return _hex(value)
+    return str(value)
+
+
+def _cpp_args(values: Iterable[object]) -> str:
+    return ", ".join(_cpp_value(value) for value in values)
+
+
+def _emit_recipe_layout(
+    lines: list[str], node: dict, row: dict, variable: str, indent: str
+) -> None:
+    family = node.get("family", {})
+    family_code = str(node["type_code"])
+    layout_values = row.get("layout_values")
+    frame_style = (
+        layout_values[0] if isinstance(layout_values, list) and len(layout_values) == 5
+        else family.get("frame_style")
+    )
+    insets = (
+        layout_values[1:] if isinstance(layout_values, list) and len(layout_values) == 5
+        else family.get("content_insets")
+    )
+    if not (
+        family_code in LAYOUT_FAMILIES
+        and isinstance(frame_style, int)
+        and 0 <= frame_style <= 0xFFFF
+        and isinstance(insets, list)
+        and len(insets) == 4
+    ):
+        return
+    if row["emission"] == "compact":
+        lines.append(
+            f"{indent}SetUiResourceLayoutValues({_hex(frame_style)}, "
+            f"{_cpp_args(int(value) for value in insets)});"
+        )
+        return
+    target = (
+        f"static_cast<TControl*>(g_pUiResourceContext)"
+        if row.get("layout") == "pragma"
+        else variable
+    )
+    lines.append(f"{indent}{target}->frameStyle60 = {_hex(frame_style)};")
+    if row.get("layout") == "pragma":
+        lines.append(f"{indent}#pragma inline_depth(0)")
+    lines.append(f"{indent}CRect contentInsets({_cpp_args(int(value) for value in insets)});")
+    if row.get("layout") == "pragma":
+        lines.append(f"{indent}#pragma inline_depth()")
+    for field in ("left", "top", "right", "bottom"):
+        lines.append(
+            f"{indent}{target}->contentInsets68.{field} = contentInsets.{field};"
+        )
+
+
+def _emit_style_pair(
+    lines: list[str], operation: dict, variable: str, indent: str
+) -> None:
+    if operation["mode"] == "helper":
+        lines.append(
+            f"{indent}ReplaceUiResourceContextPairBuffer("
+            f"{_cpp_args(operation['args'])});"
+        )
+        return
+    lines.append(f"{indent}delete {variable}->stylePayload48;")
+    if operation["mode"] == "operator_new_reset":
+        lines.append(
+            f"{indent}{variable}->stylePayload48 = "
+            "static_cast<TUiStyleBytes*>(operator new(8));"
+        )
+        lines.append(f"{indent}if ({variable}->stylePayload48 != 0) {{")
+        lines.append(f"{indent}  {variable}->stylePayload48->Reset();")
+        lines.append(f"{indent}}}")
+    else:
+        lines.append(f"{indent}{variable}->stylePayload48 = new TUiStyleBytes();")
+    lines.append(
+        f"{indent}{variable}->stylePayload48->styleWord = "
+        f"{_cpp_value(operation['style_word'])};"
+    )
+    lines.append(
+        f"{indent}{variable}->stylePayload48->packedColor = "
+        f"{_cpp_value(operation['packed_color'])};"
+    )
+
+
+def _emit_window_direct(lines: list[str], variable: str, indent: str) -> None:
+    target = variable if variable != "widget" else "static_cast<TWindow*>(g_pUiResourceContext)"
+    for field, value in (
+        ("topmostFlag70", 0),
+        ("flag6f", 1),
+        ("flag6e", 1),
+        ("useCaptionedFrameFlag6d", 0),
+        ("flag6c", 0),
+        ("flag71", 1),
+        ("field9c", 8),
+        ("windowStyleType", 2),
+    ):
+        lines.append(f"{indent}{target}->{field} = {_hex(value)};")
+    lines.append(f"{indent}{target}->GetEmbeddedDialogBehavior()->SetFlag0C(1);")
+    lines.append(
+        f"{indent}{target}->GetEmbeddedDialogBehavior()"
+        "->SetUiColorDescriptorGoldTriplet(1, 0x20202020, 0x20202020);"
+    )
+
+
+def _emit_recipe_operations(
+    lines: list[str], node: dict, row: dict, variable: str, indent: str
+) -> None:
+    operations = row.get("operations", [])
+    for operation in operations:
+        if operation["op"] == "style_pair":
+            _emit_style_pair(lines, operation, variable, indent)
+    scoped_layout = row.get("layout") == "pragma"
+    operation_indent = indent
+    if scoped_layout:
+        lines.append(f"{indent}{{")
+        operation_indent += "  "
+    _emit_recipe_layout(lines, node, row, variable, operation_indent)
+    picture_id = node.get("family", {}).get("picture_id")
+    if node.get("type_code") == "pict" and isinstance(picture_id, int):
+        picture_mode = row.get("picture")
+        if picture_mode == "helper":
+            lines.append(
+                f"{operation_indent}SetUiResourceContextPictureId({_hex(picture_id)});"
+            )
+        elif picture_mode == "context" or variable == "widget":
+            lines.append(
+                f"{operation_indent}static_cast<TPicture*>(g_pUiResourceContext)"
+                f"->SetPictureResourceIdAndRefresh({_hex(picture_id)}, 0);"
+            )
+        elif picture_mode == "variable":
+            lines.append(
+                f"{operation_indent}{variable}->SetPictureResourceIdAndRefresh("
+                f"{_hex(picture_id)}, 0);"
+            )
+    for operation in operations:
+        op = operation["op"]
+        if op == "style_pair":
+            continue
+        if op == "text_binding":
+            lines.append(
+                f"{operation_indent}BindUiResourceTextAndStyle("
+                f"{_cpp_args(operation['args'])});"
+            )
+        elif op == "max_chars":
+            lines.append(
+                f"{operation_indent}SetUiResourceContextMaxCharCount("
+                f"{_cpp_value(operation['value'])});"
+            )
+        elif op == "number_range":
+            lines.append(
+                f"{operation_indent}SetUiResourceContextNumberValueAndRange("
+                f"{_cpp_args(operation['args'])});"
+            )
+        elif op == "cluster_code":
+            if operation["mode"] == "helper":
+                lines.append(
+                    f"{operation_indent}SetUiResourceContextStringCode("
+                    f"{_cpp_value(operation['value'])});"
+                )
+            else:
+                target = (
+                    variable
+                    if row["emission"] == "expanded" and variable != "widget"
+                    else "static_cast<TCluster*>(g_pUiResourceContext)"
+                )
+                lines.append(
+                    f"{operation_indent}{target}->field84 = {_cpp_value(operation['value'])};"
+                )
+        elif op == "window":
+            if operation["mode"] == "helper":
+                if operation.get("metrics") is not None:
+                    lines.append(
+                        f"{operation_indent}SetUiResourceContextFlagsAndMetrics("
+                        f"{_cpp_args(operation['metrics'])});"
+                    )
+                if operation.get("color") is not None:
+                    lines.append(
+                        f"{operation_indent}ApplyUiResourceColorTripletFromContext("
+                        f"{_cpp_args(operation['color'])});"
+                    )
+            else:
+                _emit_window_direct(lines, variable, operation_indent)
+        elif op == "edit_validation":
+            lines.append(f"{operation_indent}{variable}->AssertValid();")
+            lines.append(
+                f"{operation_indent}{variable}->field_9c = "
+                f"{_cpp_value(operation['max_chars'])};"
+            )
+    if scoped_layout:
+        lines.append(f"{indent}}}")
+
+
+def _emit_recipe_node(
+    lines: list[str], node: dict, row: dict, parent_node: dict | None, indent: str
+) -> tuple[str, str]:
+    class_name = str(row.get("class") or _resolved_class(node))
+    geometry = node["geometry"]
+    variable = str(row.get("variable") or f"node_{int(node['offset']):04x}")
+    lines.append("")
+    scoped_node = row.get("allocation") != "shared"
+    if scoped_node:
+        lines.append(f"{indent}{{")
+    inner = indent + "  " if scoped_node else indent
+    if row["emission"] == "compact":
+        if row.get("allocation") == "shared":
+            variable = "widget"
+            lines.append(f"{inner}widget = new {class_name}();")
+        else:
+            lines.append(f"{inner}{class_name}* {variable} = new {class_name}();")
+        parent_arg = (
+            _tag(int(parent_node["tag_value"]), str(parent_node["tag"]))
+            if parent_node is not None
+            else "0"
+        )
+        lines.append(
+            f"{inner}RegisterUiResourceEntry("
+            f"{_tag(int(node['type_value']), str(node['type_code']))}, "
+            f"{_tag(int(node['tag_value']), str(node['tag']))}, {variable}, "
+            f"{_hex(int(geometry['x']))}, {_hex(int(geometry['y']))}, "
+            f"{_hex(int(geometry['width']))}, {_hex(int(geometry['height']))}, "
+            f"{_hex(int(node['state']))}, {_hex(int(node['enabled']))}, "
+            f"{parent_arg}, "
+            f"{_hex(int(node['control_value'])) if row.get('control_value') == 'resource' else '0'});"
+        )
+        if row.get("state") == "helper":
+            lines.append(
+                f"{inner}SetUiResourceStateFlags({_hex(int(node['input_gate']))}, "
+                f"{_hex(int(node['child_hit_test']))});"
+            )
+        else:
+            lines.append(
+                f"{inner}static_cast<TControl*>(g_pUiResourceContext)"
+                f"->inputGateFlag4c = {_hex(int(node['input_gate']))};"
+            )
+            lines.append(
+                f"{inner}static_cast<TControl*>(g_pUiResourceContext)"
+                f"->childHitTestFlag4d = {_hex(int(node['child_hit_test']))};"
+            )
+    else:
+        if row.get("allocation") == "shared":
+            variable = "widget"
+            lines.append(f"{inner}widget = new {class_name}();")
+        else:
+            lines.append(f"{inner}{class_name}* {variable} = new {class_name}();")
+        lines.append(f"{inner}g_pUiResourceContext = {variable};")
+        lines.append(f"{inner}if (g_pUiResourceHead != 0) {{")
+        lines.append(
+            f"{inner}  parent = static_cast<TView*>("
+            "g_UiWidgetBuildStack006a13e0.GetTail());"
+        )
+        lines.append(f"{inner}}} else {{")
+        lines.append(f"{inner}  g_pUiResourceHead = {variable};")
+        lines.append(f"{inner}  parent = 0;")
+        lines.append(f"{inner}}}")
+        lines.append(f"{inner}PushUiWidgetBuildStackNode({variable});")
+        lines.append(f"{inner}offset[0] = {_hex(int(geometry['x']))};")
+        lines.append(f"{inner}offset[1] = {_hex(int(geometry['y']))};")
+        lines.append(f"{inner}size[0] = {_hex(int(geometry['width']))};")
+        lines.append(f"{inner}size[1] = {_hex(int(geometry['height']))};")
+        lines.append(
+            f"{inner}{variable}->InitializeUiResourceEntryFrameAndParent("
+            "0, parent, offset, size, 0, 0, 1);"
+        )
+        lines.append(
+            f"{inner}{variable}->controlTag = static_cast<int>("
+            f"{_tag(int(node['tag_value']), str(node['tag']))});"
+        )
+        control_value = (
+            _hex(int(node["control_value"]))
+            if row.get("control_value") == "resource"
+            else "0"
+        )
+        lines.append(f"{inner}{variable}->controlValue3c = {control_value};")
+        lines.append(
+            f"{inner}{variable}->SetEnabled({_hex(int(node['enabled']))}, 0);"
+        )
+        lines.append(
+            f"{inner}{variable}->SetState({_hex(int(node['state']))}, 0);"
+        )
+        flag_target = (
+            "g_pUiResourceContext" if row.get("flags") == "context" else variable
+        )
+        lines.append(
+            f"{inner}{flag_target}->inputGateFlag4c = "
+            f"{_hex(int(node['input_gate']))};"
+        )
+        lines.append(
+            f"{inner}{flag_target}->childHitTestFlag4d = "
+            f"{_hex(int(node['child_hit_test']))};"
+        )
+    _emit_recipe_operations(lines, node, row, variable, inner)
+    if row.get("clear") == "helper":
+        lines.append(f"{inner}ClearUiResourceContext();")
+    elif row.get("clear") == "direct":
+        lines.append(f"{inner}g_pUiResourceContext = 0;")
+    if scoped_node:
+        lines.append(f"{indent}}}")
+    return class_name, variable
+
+
+def render_resource_recipe(
+    recipe: UiFactoryRecipe,
+    views: dict[UiResourceKey, dict],
+    windows_recipes: dict[str, dict],
+    annotation_kind: str = "FUNCTION",
+) -> str:
+    windows_function = windows_recipes[f"0x{recipe.address:08x}"]
+    cases_by_event = {case.event: case for case in recipe.cases}
+    ordered_cases = (
+        [cases_by_event[int(value, 0)] for value in windows_function["case_order"]]
+        if len(recipe.cases) > 1
+        else list(recipe.cases)
+    )
+    needs_shared_widget = any(
+        node_row.get("allocation") == "shared"
+        for case_row in windows_function["cases"].values()
+        for node_row in case_row.get("nodes", {}).values()
+    )
+    body: list[str] = []
+    classes: set[str] = set()
+    if annotation_kind != "none":
+        body.append(f"// {annotation_kind}: IMPERIALISM 0x{recipe.address:08x}")
+    body.append(recipe.prototype + " {")
+    body.append("  TView* parent;")
+    if needs_shared_widget:
+        body.append("  TView* widget;")
+    body.extend(("  int offset[2];", "  int size[2];", ""))
+    body.append("  g_pUiResourceHead = 0;")
+    if len(recipe.cases) == 1:
+        body.append(
+            f"  if (static_cast<short>(nEventCode) != {_hex(recipe.cases[0].event)}) {{"
+        )
+        body.extend(("    return 0;", "  }"))
+    else:
+        body.append(
+            f"  switch (static_cast<{windows_function['switch_type']}>(nEventCode)) {{"
+        )
+
+    for case in ordered_cases:
+        case_indent = "  " if len(recipe.cases) == 1 else "    "
+        if len(recipe.cases) != 1:
+            body.append(f"  case {_hex(case.event)}: {{")
+        if case.resource is None:
+            body.append(
+                f"{case_indent}// WINDOWS_ONLY: resource absent; binary evidence {case.evidence}."
+            )
+        else:
+            view = views[case.resource]
+            case_recipe = windows_function["cases"][f"0x{case.event:04x}"]
+            skipped = set(case_recipe.get("skip_offsets", []))
+            nodes_by_offset = {
+                int(node["offset"]): node for node in view.get("nodes", [])
+            }
+            emitted = {
+                offset: node
+                for offset, node in nodes_by_offset.items()
+                if f"0x{offset:04x}" not in skipped
+            }
+
+            def emitted_parent(node: dict) -> dict | None:
+                parent_offset = node.get("parent_offset")
+                while parent_offset is not None and int(parent_offset) not in emitted:
+                    parent_offset = nodes_by_offset[int(parent_offset)].get("parent_offset")
+                return emitted.get(int(parent_offset)) if parent_offset is not None else None
+
+            stack: list[dict] = []
+            for node in view.get("nodes", []):
+                offset = f"0x{int(node['offset']):04x}"
+                if offset in skipped:
+                    continue
+                row = case_recipe["nodes"][offset]
+                class_name, _ = _emit_recipe_node(
+                    body, node, row, emitted_parent(node), case_indent
+                )
+                classes.add(class_name)
+                stack.append(node)
+                for pop_mode in row.get("pops", []):
+                    if not stack:
+                        raise ValueError(
+                            f"0x{recipe.address:08x}/0x{case.event:x}/{offset}: "
+                            "Windows pop recipe underflows"
+                        )
+                    closed = stack.pop()
+                    if pop_mode == "pool":
+                        body.append(
+                            f"{case_indent}PopUiResourcePoolNode("
+                            f"{_tag(int(closed['tag_value']), str(closed['tag']))});"
+                        )
+                    else:
+                        body.append(f"{case_indent}PopUiWidgetBuildStackNode();")
+        if len(recipe.cases) != 1:
+            body.append("  } break;")
+    if len(recipe.cases) != 1:
+        body.extend(("  default:", "    return 0;", "  }"))
+    body.extend(
+        (
+            "",
+            "  if (g_pUiResourceHead != 0) {",
+            "    g_pUiResourceHead->PropagateUiResourceContextRecursive(pHostWindow);",
+            "  }",
+            "  return g_pUiResourceHead;",
+            "}",
+        )
+    )
+    includes = [
+        '#include "game/turn_event_dialog_factory.h"',
+        '#include "game/global_data_tables.h"',
+        '#include "game/turn_event_dialog_builder_detail.h"',
+        '#include "game/ui_resource_builder.h"',
+    ]
+    for class_name in sorted(classes):
+        if class_name != "TView":
+            includes.append(f'#include "game/{class_name}.h"')
+    return "// AUTOGENERATED FROM RESOURCE AND WINDOWS RECIPES. DO NOT EDIT.\n" + "\n".join(includes) + "\n\n" + "\n".join(body) + "\n"
+
+
 def render_factory(
     recipe: UiFactoryRecipe,
     views: dict[UiResourceKey, dict],
     annotation_kind: str = "FUNCTION",
 ) -> str:
-    if recipe.emission == "windows_profile":
-        raise ValueError("Windows profiles require render_windows_profile()")
+    if recipe.emission == "resource_recipe":
+        raise ValueError("resource recipes require render_resource_recipe()")
     emit_view = _emit_view_compact if recipe.emission == "compact" else _emit_view
     body: list[str] = []
     classes: set[str] = set()
@@ -510,26 +1055,12 @@ def render_factory(
     return "// AUTOGENERATED FILE. DO NOT EDIT.\n" + "\n".join(includes) + "\n\n" + "\n".join(body) + "\n"
 
 
-def render_windows_profile(
-    repo_root: Path, recipe: UiFactoryRecipe, annotation_kind: str = "FUNCTION"
-) -> str:
-    profile = repo_root / PROFILE_DIR / f"{recipe.output_name}.in"
-    profile_text = profile.read_text(encoding="utf-8")
-    marker = f"// FUNCTION: IMPERIALISM 0x{recipe.address:08x}"
-    if annotation_kind == "none":
-        profile_text = profile_text.replace(marker + "\n", "")
-    elif annotation_kind != "FUNCTION":
-        profile_text = profile_text.replace(
-            marker, f"// {annotation_kind}: IMPERIALISM 0x{recipe.address:08x}"
-        )
-    return "// AUTOGENERATED FROM A WINDOWS EMISSION PROFILE. DO NOT EDIT.\n" + profile_text
-
-
 def write_generated(
     repo_root: Path,
     output_dir: Path,
     recipes: list[UiFactoryRecipe],
     views: dict[UiResourceKey, dict],
+    windows_recipes: dict[str, dict],
     annotation_kind: str = "FUNCTION",
 ) -> dict:
     output_dir.mkdir(parents=True, exist_ok=True)
@@ -541,8 +1072,8 @@ def write_generated(
     for recipe in recipes:
         output = output_dir / recipe.output_name
         generated_text = (
-            render_windows_profile(repo_root, recipe, annotation_kind)
-            if recipe.emission == "windows_profile"
+            render_resource_recipe(recipe, views, windows_recipes, annotation_kind)
+            if recipe.emission == "resource_recipe"
             else render_factory(recipe, views, annotation_kind)
         )
         if not output.is_file() or output.read_text(encoding="utf-8") != generated_text:
@@ -557,17 +1088,13 @@ def write_generated(
                     case.resource.text() for case in recipe.cases if case.resource is not None
                 ],
                 "emission": recipe.emission,
-                "profile_sha256": (
-                    _sha256(repo_root / PROFILE_DIR / f"{recipe.output_name}.in")
-                    if recipe.emission == "windows_profile"
-                    else None
-                ),
             }
         )
     manifest = {
         "format_version": FORMAT_VERSION,
         "recipe_sha256": _sha256(repo_root / MANIFEST_PATH),
         "resource_ir_sha256": _sha256(repo_root / IR_PATH),
+        "windows_recipe_sha256": _sha256(repo_root / WINDOWS_RECIPE_PATH),
         "annotation_kind": annotation_kind,
         "files": files,
     }
@@ -604,7 +1131,8 @@ def main() -> int:
     repo_root = repo_root_from_file(__file__, levels_up=1)
     recipes = load_recipes(repo_root)
     views = load_ui_views(repo_root)
-    errors = validate(repo_root, recipes, views)
+    windows_recipes = load_windows_recipes(repo_root)
+    errors = validate(repo_root, recipes, views, windows_recipes)
     if errors:
         print("UI codegen validation failed:")
         for error in errors:
@@ -627,7 +1155,7 @@ def main() -> int:
         )
         return 0
     output_dir = resolve_repo_path(repo_root, args.gen_dir)
-    manifest = write_generated(repo_root, output_dir, recipes, views)
+    manifest = write_generated(repo_root, output_dir, recipes, views, windows_recipes)
     print(f"Wrote {len(manifest['files'])} UI factory TUs to {output_dir}")
     return 0
 

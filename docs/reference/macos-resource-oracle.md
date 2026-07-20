@@ -37,7 +37,7 @@ deterministically sorted files:
 | `summary.json` | Counts, a source-set fingerprint, resource-file inventory, and the Windows cross-check result |
 | `views.csv` | `View` ID/name, serialized size/hash, and widget count |
 | `widgets.csv` | Screen, record offset, nesting, four-character type/tag, class, and rectangle |
-| `ui_views.json` | Typed generator IR: hierarchy, FourCC integers, geometry, state flags, family payload, frame/inset data, and picture IDs |
+| `ui_views.json` | Typed generator IR: hierarchy (including embedded `nmbr` controls), FourCC integers, geometry, state/command values, and typed picture, text, number, cluster, edit, text-view, and window properties |
 | `pictures.csv` | `PICT` ID/name, bounds, serialized size/hash; no pixels |
 | `strings.csv` | `STR#` group ID/name and one-based index/text |
 | `text_styles.csv` | `TxSt` ID/name and serialized size/hash; no payload |
@@ -59,8 +59,10 @@ collisions explicit.
 ## Generate the Windows UI factories
 
 `config/ui_factory_codegen.yml` maps Windows factory addresses and event cases to
-resource-file-scoped `View` IDs. Normal generation consumes only that manifest and the
-committed `ui_views.json`; it never reads either retail binary:
+resource-file-scoped `View` IDs. `config/ui_factory_windows.json` describes the
+Windows emission dialect and platform-specific overrides as structured data. Normal
+generation consumes only those two configs and the committed `ui_views.json`; it never
+reads either retail binary:
 
 ```sh
 just ui-codegen-check
@@ -76,11 +78,12 @@ source model, symbol projection, stub suppression, CMake, and diff-aware agent c
 The former manually owned `src/game/turn_event_dialog_factory_*.cpp` files are therefore
 absent; their 17 addresses have exactly one generated owner.
 
-The manifest supports two resource emission shapes because the Windows binary used both
-expanded member calls and compact builder helpers. Six mature factories also have an
-explicit `windows_profile` under `config/ui_codegen_profiles/`: these preserve recovered
-Windows-only text/range/style operations that are not yet typed in the cross-platform
-resource IR. Profiles are generated inputs with committed hashes, not ABI evidence from
-the Mac build. Replacing a profile with fully resource-derived operations is safe once
-the IR models those properties and `just ui-codegen-match-gate` confirms that pairing and
-similarity did not regress.
+The manifest supports two direct resource emission shapes because the Windows binary
+used both expanded member calls and compact builder helpers. Six mature factories use
+the structured `resource_recipe` shape: Mac IR still owns their pane hierarchy, FourCCs,
+rectangles, state, picture/string IDs, number ranges, and control values, while the
+Windows recipe selects compact versus expanded calls, specialized Windows classes,
+stack-pop shape, and genuine platform overrides. There are no C++ body templates and no
+retail inputs in the normal generation path. The generated manifest hashes all three
+committed inputs, and `just ui-codegen-match-gate` protects pairing and the accepted
+similarity floor.

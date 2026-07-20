@@ -59,6 +59,7 @@ MANUAL_CPP_PREFIXES = ("src/", "include/")
 UI_CODEGEN_INPUTS = frozenset(
     (
         "config/ui_factory_codegen.yml",
+        "config/ui_factory_windows.json",
         "tools/ui_codegen.py",
         "tools/workflow/macos_resource_evidence.py",
         "vendor/macos_codewarrior/evidence/resources/ui_views.json",
@@ -450,7 +451,7 @@ def cmd_check(args: argparse.Namespace) -> int:
     # Batch compare of every touched address.
     addrs = set(task.get("targets", {}))
     if any(
-        path in UI_CODEGEN_INPUTS or path.startswith("config/ui_codegen_profiles/")
+        path in UI_CODEGEN_INPUTS
         for path in paths
     ):
         from tools.ui_codegen import load_recipes

@@ -1042,7 +1042,7 @@
     },
     {
       "address": "0x43dbc0",
-      "matching": 0.5224003063289755,
+      "matching": 0.5213871567662182,
       "name": "InitializeArmyNavyReportViewsAndCommandTags",
       "type": 1
     },
@@ -1138,7 +1138,7 @@
     },
     {
       "address": "0x4538a0",
-      "matching": 0.5049331489165514,
+      "matching": 0.5049797122832903,
       "name": "InitializeGameSetupScreenControlsAndModeTags",
       "type": 1
     },
@@ -1331,13 +1331,13 @@
     },
     {
       "address": "0x45d520",
-      "matching": 0.5518731988472623,
+      "matching": 0.5594808940158615,
       "name": "BuildTurnEventDialogResourcesForEvent898",
       "type": 1
     },
     {
       "address": "0x45e0b0",
-      "matching": 0.5439017880971444,
+      "matching": 0.6413214472994232,
       "name": "BuildTurnEventDialogResourcesForEvent8FC",
       "type": 1
     },
@@ -1361,7 +1361,7 @@
     },
     {
       "address": "0x4601b0",
-      "matching": 0.6324700480665758,
+      "matching": 0.6988332435828397,
       "name": "InitializeTradeScreenBitmapControls",
       "type": 1
     },

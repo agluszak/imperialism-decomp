@@ -29,7 +29,7 @@ from tools.common.repo import repo_root_from_file, resolve_repo_path
 
 
 DEFAULT_SOURCE = os.environ.get("MACOS_IMPERIALISM_DUMP", "")
-EVIDENCE_VERSION = 2
+EVIDENCE_VERSION = 3
 UI_TYPES = {
     b"view",
     b"pict",
@@ -40,6 +40,7 @@ UI_TYPES = {
     b"wind",
     b"fwnd",
     b"edit",
+    b"nmbr",
 }
 
 
@@ -477,6 +478,61 @@ def _widget_ir(view: ResourceEntry, record: WidgetRecord, records: Sequence[Widg
         family["content_insets"] = list(struct.unpack_from(">iiii", family_payload, 8))
     if record.type_code == "pict" and len(family_payload) >= 32:
         family["picture_id"] = _u16(family_payload, 30, "picture resource id")
+    if record.type_code == "stat" and len(family_payload) >= 40:
+        family["text_resource_id"] = _u16(
+            family_payload, 34, "static text resource id"
+        )
+        family["text_resource_index"] = _u16(
+            family_payload, 36, "static text resource index"
+        )
+        family["text_attributes_hex"] = family_payload[24:34].hex()
+        family["text_tail_hex"] = family_payload[38:].hex()
+    if record.type_code == "clus" and len(family_payload) >= 38:
+        family["cluster_attributes_hex"] = family_payload[24:34].hex()
+        family["serialized_child_count"] = _u16(
+            family_payload, 34, "cluster child count"
+        )
+        family["cluster_format"] = _u16(
+            family_payload, 36, "cluster format"
+        )
+    if record.type_code == "tevw" and len(family_payload) >= 37:
+        family["text_view_flags"] = list(family_payload[4:6])
+        family["text_view_mode"] = _u16(family_payload, 6, "text view mode")
+        family["text_view_extent"] = _u32(family_payload, 8, "text view extent")
+        family["text_view_limit"] = _s16(family_payload, 12, "text view limit")
+        family["text_view_attributes_hex"] = family_payload[14:32].hex()
+        family["text_style_id"] = _u16(family_payload, 32, "text view style id")
+        family["text_view_tail_hex"] = family_payload[34:].hex()
+    if record.type_code == "edit" and len(family_payload) >= 32:
+        family["edit_attributes_hex"] = family_payload[24:].hex()
+        family["text_style_id"] = _u16(family_payload, 26, "edit text style id")
+    if record.type_code == "nmbr" and len(family_payload) >= 58:
+        family["text_attributes_hex"] = family_payload[24:34].hex()
+        family["text_resource_id"] = _u16(
+            family_payload, 34, "number text resource id"
+        )
+        family["text_resource_index"] = _u16(
+            family_payload, 36, "number text resource index"
+        )
+        family["max_char_count"] = family_payload[39]
+        family["number_attributes_hex"] = family_payload[38:44].hex()
+        family["number_value"] = struct.unpack_from(">i", family_payload, 44)[0]
+        family["number_minimum"] = struct.unpack_from(">i", family_payload, 48)[0]
+        family["number_maximum"] = struct.unpack_from(">i", family_payload, 52)[0]
+        family["number_tail_hex"] = family_payload[56:].hex()
+    if record.type_code in ("wind", "fwnd") and len(family_payload) >= 20:
+        family["window_flags"] = _u16(family_payload, 4, "window flags")
+        family["content_tag"] = _decode_mac_text(family_payload[6:10])
+        family["content_tag_value"] = int.from_bytes(family_payload[6:10], "big")
+        family["window_attributes"] = _u16(
+            family_payload, 10, "window attributes"
+        )
+        family["window_style_id"] = _u16(family_payload, 12, "window style id")
+        family["window_value"] = _s16(family_payload, 14, "window value")
+        family["serialized_child_count"] = _u16(
+            family_payload, 16, "window child count"
+        )
+        family["window_format"] = _u16(family_payload, 18, "window format")
 
     return {
         "offset": record.offset,
@@ -498,6 +554,11 @@ def _widget_ir(view: ResourceEntry, record: WidgetRecord, records: Sequence[Widg
         "enabled": common_flags[2] if len(common_flags) > 2 else 1,
         "input_gate": common_flags[4] if len(common_flags) > 4 else 1,
         "child_hit_test": common_flags[5] if len(common_flags) > 5 else 1,
+        "control_value": (
+            struct.unpack_from(">i", common_flags, 18)[0]
+            if len(common_flags) >= 22
+            else 0
+        ),
         "common_flags_hex": common_flags.hex(),
         "window_prefix_hex": data[class_end + 9 : geometry_offset].hex(),
         "drawing_environment_hex": data[search_start:family_offset].hex(),

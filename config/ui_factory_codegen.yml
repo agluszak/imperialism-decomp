@@ -80,7 +80,7 @@ functions:
 
   - address: 0x0043dbc0
     name: InitializeArmyNavyReportViewsAndCommandTags
-    emission: windows_profile
+    emission: resource_recipe
     prototype: TView* __cdecl InitializeArmyNavyReportViewsAndCommandTags(CWnd* pHostWindow, int nEventCode)
     cases:
       - {event: 0x0546, resource: MapView.rsrc:1350}
@@ -100,7 +100,7 @@ functions:
 
   - address: 0x0044a810
     name: BuildTurnEventDialogResources_2508
-    emission: windows_profile
+    emission: resource_recipe
     prototype: TView* __cdecl BuildTurnEventDialogResources_2508(CWnd* pHostWindow, int nEventCode)
     cases:
       - {event: 0x2508, resource: Minister.rsrc:9480}
@@ -122,7 +122,7 @@ functions:
 
   - address: 0x004538a0
     name: InitializeGameSetupScreenControlsAndModeTags
-    emission: windows_profile
+    emission: resource_recipe
     prototype: TView* __cdecl InitializeGameSetupScreenControlsAndModeTags(CWnd* pHostWindow, int nEventCode)
     cases:
       - {event: 0x03b8, resource: Startup.rsrc:952}
@@ -147,14 +147,14 @@ functions:
 
   - address: 0x0045d520
     name: BuildTurnEventDialogResourcesForEvent898
-    emission: windows_profile
+    emission: resource_recipe
     prototype: TView* __cdecl BuildTurnEventDialogResourcesForEvent898(CWnd* pHostWindow, int nEventCode)
     cases:
       - {event: 0x0898, resource: Tech.rsrc:2200}
 
   - address: 0x0045e0b0
     name: BuildTurnEventDialogResourcesForEvent8FC
-    emission: windows_profile
+    emission: resource_recipe
     prototype: TView* __cdecl BuildTurnEventDialogResourcesForEvent8FC(CWnd* pHostWindow, int nEventCode)
     cases:
       - {event: 0x08fc, resource: TechStore.rsrc:2300}
@@ -162,7 +162,7 @@ functions:
 
   - address: 0x004601b0
     name: InitializeTradeScreenBitmapControls
-    emission: windows_profile
+    emission: resource_recipe
     prototype: TView* __cdecl InitializeTradeScreenBitmapControls(CWnd* pHostWindow, int nEventCode)
     cases:
       - {event: 0x07d9, resource: Trade.rsrc:2009}
