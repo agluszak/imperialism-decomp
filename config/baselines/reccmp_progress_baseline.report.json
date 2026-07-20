@@ -28934,13 +28934,13 @@
     },
     {
       "address": "0x593f20",
-      "matching": 0.5072463768115942,
+      "matching": 0.3719512195121951,
       "name": "TStatusPicture::NoOpUiLifecycleHook",
       "type": 1
     },
     {
       "address": "0x5942f0",
-      "matching": 0.28,
+      "matching": 0.3008130081300813,
       "name": "TStatusPicture::HandleEvent",
       "type": 1
     },
@@ -28958,7 +28958,7 @@
     },
     {
       "address": "0x594900",
-      "matching": 0.2789317507418398,
+      "matching": 0.47058823529411764,
       "name": "TStatusPicture::RecomputeNationComparisonValuesAndNormalizeScale",
       "type": 1
     },

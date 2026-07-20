@@ -2,6 +2,7 @@
 
 #include "game/TCity.h"
 #include "game/TGreatPower.h"
+#include "game/TInfoBarText.h"
 #include "game/TSimMgr.h"
 #include "game/TSoundPlayer.h"
 #include "game/TViewMgr.h"
@@ -60,10 +61,33 @@ void TStatusPicture::NoOpUiLifecycleHook(int arg) {
   RefreshControl();
   g_pDiplomacyTurnStateManager->RecomputeNationComparativePowerMetrics();
 
-  // The original then inlines a per-nation average computation (distinct from
-  // RecomputeNationComparisonValuesAndNormalizeScale's case 3: sums 4 dip[0x1824+i*0x10]
-  // dwords and divides by 10, rather than multiplying by 3) to seed values94/
-  // pictureIds_b0, and resolves+configures a 'curs' cursor-hint control -- not yet ported.
+  // Same per-nation average as HandleEvent's commandId==10/newIndex==0 branch (identical
+  // instruction sequence): sums 4 dip[0x1824+i*0x10] dwords; the *400/40 magic-number scale
+  // cancels to a plain 16-bit truncation, verified by simulation.
+  {
+    char* dip = reinterpret_cast<char*>(g_pDiplomacyTurnStateManager);
+    int dipOffset = 0;
+    for (int i = 0; i < 7; ++i, dipOffset += 0x10) {
+      if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(static_cast<short>(i)) != 0) {
+        int sum = *reinterpret_cast<int*>(dip + 0x1824 + dipOffset) +
+                  *reinterpret_cast<int*>(dip + 0x1828 + dipOffset) +
+                  *reinterpret_cast<int*>(dip + 0x182c + dipOffset) +
+                  *reinterpret_cast<int*>(dip + 0x1830 + dipOffset);
+        values94[i] = static_cast<short>(sum);
+        pictureIds_b0[i] = static_cast<short>(i);
+      } else {
+        pictureIds_b0[i] = -1;
+      }
+    }
+  }
+  SortSevenEntriesAndUpdatePictureWidgets();
+
+  // 'curs' is also installed as the shared cursor-hint panel, same as 'labl' in
+  // TLoungeDialog::NoOpUiLifecycleHook.
+  TInfoBarText* cursControl = static_cast<TInfoBarText*>(ResolveControlByTag(0x63757273u));
+  g_pCursorControlPanel = cursControl;
+  cursControl->AssertValid();
+  cursControl->InitializeMapHintTextStyleAndThemeFlags(0x2b6c, 0x2b67);
 }
 
 // FUNCTION: IMPERIALISM 0x005942f0
@@ -80,13 +104,36 @@ void TStatusPicture::HandleEvent(int commandId, TEventHandler* sourceHandler, TE
         static_cast<TView*>(sourceHandler)->SetEnabled(1, 1);
         g_pSfxPlaybackSystem->PlaySoundEffect(0x13f0, 0, 1);
         comparisonMode90 = newIndex;
-        // The original then recomputes the seven nation-comparison values via an inlined
-        // per-nation average distinct from RecomputeNationComparisonValuesAndNormalizeScale
-        // (dip[0x1824+i*0x10] summed over 4 dwords, divided by 10) before refreshing --
-        // not yet ported.
+        if (newIndex == 0) {
+          g_pDiplomacyTurnStateManager->RecomputeNationComparativePowerMetrics();
+          char* dip = reinterpret_cast<char*>(g_pDiplomacyTurnStateManager);
+          int dipOffset = 0;
+          for (int i = 0; i < 7; ++i, dipOffset += 0x10) {
+            if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(static_cast<short>(i)) != 0) {
+              int sum = *reinterpret_cast<int*>(dip + 0x1824 + dipOffset) +
+                        *reinterpret_cast<int*>(dip + 0x1828 + dipOffset) +
+                        *reinterpret_cast<int*>(dip + 0x182c + dipOffset) +
+                        *reinterpret_cast<int*>(dip + 0x1830 + dipOffset);
+              // The original scales this sum by 400 then divides by 40 via a magic-number
+              // sequence; verified by simulation that the two cancel exactly for every
+              // 16-bit-range input, so the net effect is a plain (sign-extending) truncation
+              // to 16 bits.
+              values94[i] = static_cast<short>(sum);
+              pictureIds_b0[i] = static_cast<short>(i);
+            } else {
+              pictureIds_b0[i] = -1;
+            }
+          }
+          SortSevenEntriesAndUpdatePictureWidgets();
+        } else {
+          RecomputeNationComparisonValuesAndNormalizeScale();
+        }
       } else {
         // Already-selected tab: re-clicking replays a shift-modified secondary action
-        // (checks 'tab1'/'tab2' + VK_SHIFT) -- not yet ported.
+        // (checks 'tab1'/'tab2'/'tab3' + VK_SHIFT, then
+        // g_pHelpMgr->SelectAndActivatePendingEventTypeOffsetFrom1A0B(idx) -- itself
+        // unclaimed/unported, walking an unresolved THelpMgr collection field) -- not yet
+        // ported.
       }
     }
   }
