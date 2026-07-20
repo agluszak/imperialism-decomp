@@ -2204,14 +2204,14 @@
     },
     {
       "address": "0x47fd90",
-      "matching": 0.0,
+      "matching": 0.9523809523809523,
       "name": "TWNetSessionManager::RebuildRuntimeSelectionSource",
       "type": 1
     },
     {
       "address": "0x47fe50",
       "matching": 0.29045643153526973,
-      "name": "TWNetSessionManager::OpenRuntimeSelectionSourceWithOptionalSeed",
+      "name": "OpenRuntimeSelectionSourceWithOptionalSeed",
       "type": 1
     },
     {
@@ -8021,7 +8021,7 @@
     },
     {
       "address": "0x4a2900",
-      "matching": 0.13374805598755832,
+      "matching": 0.13063763608087092,
       "name": "BuildArmyContextActionRecordsAndDispatchLabel",
       "type": 1
     },
@@ -9493,7 +9493,7 @@
     },
     {
       "address": "0x4b4310",
-      "matching": 0.8842105263157894,
+      "matching": 1.0,
       "name": "TCity::ComputeAverageWeightWord0TimesTenFromResourceCounts",
       "type": 1
     },
@@ -11625,7 +11625,7 @@
     },
     {
       "address": "0x4cc550",
-      "matching": 0.7008547008547008,
+      "matching": 0.6495726495726496,
       "name": "TPurchaseCluster::SetCityViewValueControlAmount",
       "type": 1
     },
@@ -13343,8 +13343,7 @@
     },
     {
       "address": "0x4e0590",
-      "effective": true,
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::ComputeMinisterSkillFloatSlot88",
       "type": 1
     },
@@ -15287,7 +15286,7 @@
     },
     {
       "address": "0x4f6170",
-      "matching": 0.5764705882352941,
+      "matching": 0.5705882352941176,
       "name": "TDiplomacyMapView::RenderDiplomacyLegendSurfaceAndPresent",
       "type": 1
     },
@@ -15738,7 +15737,7 @@
     },
     {
       "address": "0x4fd000",
-      "matching": 0.816,
+      "matching": 0.832,
       "name": "TMapKey::RenderMapHintOverlayMode0",
       "type": 1
     },
@@ -16814,7 +16813,7 @@
     },
     {
       "address": "0x508800",
-      "matching": 0.7230769230769231,
+      "matching": 0.6461538461538462,
       "name": "TLanguageMgr::BuildNewsTableDimensions",
       "type": 1
     },
@@ -18917,7 +18916,7 @@
     },
     {
       "address": "0x52d750",
-      "matching": 0.22380952380952382,
+      "matching": 0.2253968253968254,
       "name": "TMapMaker::MergeSmallCityRegionsAndCompactIds",
       "type": 1
     },
@@ -20827,13 +20826,13 @@
     },
     {
       "address": "0x53d020",
-      "matching": 0.38095238095238093,
+      "matching": 0.38247011952191234,
       "name": "TArmyMission::ComputeArmyMissionScoreDeltaWithCandidateUnit",
       "type": 1
     },
     {
       "address": "0x53d200",
-      "matching": 0.3700787401574803,
+      "matching": 0.3686274509803922,
       "name": "TArmyMission::ComputeArmyMissionScoreDeltaWithScaledCandidateUnit",
       "type": 1
     },
@@ -23067,7 +23066,7 @@
     },
     {
       "address": "0x555420",
-      "matching": 0.5653333333333334,
+      "matching": 0.5546666666666666,
       "name": "TTaskForce::ResolveTaskForceOrderConflictAndPickCandidate",
       "type": 1
     },
@@ -23290,7 +23289,7 @@
     },
     {
       "address": "0x5578a0",
-      "matching": 0.44594594594594594,
+      "matching": 0.44324324324324327,
       "name": "TNavyMgr::ResolveMapOrderChainsForTurnPhase",
       "type": 1
     },
@@ -30213,7 +30212,7 @@
     },
     {
       "address": "0x5a1ee0",
-      "matching": 0.6737400530503979,
+      "matching": 0.6763925729442971,
       "name": "TTacticalBattle::EvaluateAndResolveTacticalActionAgainstTileOccupant",
       "type": 1
     },
@@ -30321,7 +30320,7 @@
     },
     {
       "address": "0x5a3d30",
-      "matching": 0.8104956268221575,
+      "matching": 0.8163265306122449,
       "name": "TTacticalBattle::IsTacticalTargetTileReachableForAction",
       "type": 1
     },
@@ -30801,7 +30800,7 @@
     },
     {
       "address": "0x5a8ac0",
-      "matching": 0.6086956521739131,
+      "matching": 0.6867469879518072,
       "name": "TTacticalBattleView::CenterViewportAroundGridIndexAndSnap",
       "type": 1
     },
@@ -32402,7 +32401,7 @@
     },
     {
       "address": "0x5ba0e0",
-      "matching": 1.0,
+      "matching": 0.8181818181818182,
       "name": "TTradeMgr::ComputeAverageProposalWeightDeltaAcrossCategoryRows",
       "type": 1
     },
@@ -32812,7 +32811,7 @@
     },
     {
       "address": "0x5bf930",
-      "matching": 0.7956989247311828,
+      "matching": 0.7907361455748553,
       "name": "TOfferDeskPicture::RefreshSelectedNationOrderCompatibilityInfo",
       "type": 1
     },
@@ -34762,8 +34761,8 @@
     },
     {
       "address": "0x5e39a0",
-      "matching": 0.6,
-      "name": "ResetRuntimeProtocolOptionsAndRebuildSelectionSource",
+      "matching": 0.6153846153846154,
+      "name": "TNetMgr::ResetRuntimeProtocolOptionsAndRebuildSelectionSource",
       "type": 1
     },
     {
@@ -45207,6 +45206,6 @@
       "type": 5
     }
   ],
-  "file": "Imperialism.exe.gog-original",
+  "file": "Imperialism.exe",
   "format": 1
 }
