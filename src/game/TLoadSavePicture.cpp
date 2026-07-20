@@ -50,15 +50,20 @@ void TLoadSavePicture::HandleEvent(int commandId, TEventHandler* sourceHandler, 
               ResolveControlByTag(0x736c7430u + selectedSlot92));
           oldSlotControl->AssertValid();
           oldSlotControl->SetTextStyleAndMaybeRefresh(&styleAt9e, 0);
-          // The original then queries oldSlotControl's bounds, unions them with the new
-          // slot control's bounds via a GDI import, and invalidates the combined region --
-          // that import (0x6ab4b8) isn't identified yet, left unmodeled.
+          RECT oldBounds;
+          oldSlotControl->QueryBounds(&oldBounds);
+          InvalidateCityDialogRectRegion(&oldBounds, 1);
         }
-        // The original then resolves the newly-clicked slot control (sourceHandler itself)
-        // via SetTextStyleAndMaybeRefresh(&styleAt94, 0) -- the "selected" style -- unions
-        // its bounds the same unresolved way, then sets selectedSlot92 = newSlot and calls
-        // the currently-misnamed 1173-byte helper at 0x4047d7 (symbols.csv's guessed name
-        // for it is stale/wrong, per Hard Rule 6) -- not yet decoded.
+        // sourceHandler is the newly-clicked slot control itself.
+        TControl* newSlotControl = static_cast<TControl*>(sourceHandler);
+        newSlotControl->SetTextStyleAndMaybeRefresh(&styleAt94, 0);
+        RECT newBounds;
+        newSlotControl->QueryBounds(&newBounds);
+        InvalidateCityDialogRectRegion(&newBounds, 1);
+        selectedSlot92 = newSlot;
+        // The original then calls the currently-misnamed 1173-byte helper at 0x4047d7(newSlot)
+        // (symbols.csv's guessed name for it is stale/wrong, per Hard Rule 6) -- not yet
+        // decoded.
       }
       // The original also handles the loadModeFlag90==0 case (constructs a new ~0xa0-byte
       // object via an unrecovered class before the same selectedSlot92=0xa1 tail) -- not
@@ -70,10 +75,17 @@ void TLoadSavePicture::HandleEvent(int commandId, TEventHandler* sourceHandler, 
       HandleTurnFlowStateTickOrPostTurnEvent5DC();
     }
     if (loadModeFlag90 != 0 && sourceHandler->controlTag == 0x6f74746fu /* 'otto' */) {
-      // The original restyles the previously-selected slot back to unselected (same
-      // unresolved GDI-union invalidate as above when selectedSlot92 isn't -1/0xa1), then
-      // sets selectedSlot92 = 0xa1 and calls the same misnamed 0x4047d7(0xa1) -- not yet
-      // decoded.
+      if (selectedSlot92 != -1 && selectedSlot92 != 0xa1) {
+        TControl* oldSlotControl =
+            static_cast<TControl*>(ResolveControlByTag(0x736c7430u + selectedSlot92));
+        oldSlotControl->AssertValid();
+        oldSlotControl->SetTextStyleAndMaybeRefresh(&styleAt9e, 0);
+        RECT oldBounds;
+        oldSlotControl->QueryBounds(&oldBounds);
+        InvalidateCityDialogRectRegion(&oldBounds, 1);
+      }
+      selectedSlot92 = 0xa1;
+      // The original then calls the same misnamed 0x4047d7(0xa1) -- not yet decoded.
     }
   } else if (commandId == 0xa && sourceHandler->controlTag == kControlTagOkay) {
     HandleSaveGameSlotSelectionAndPromptFlow();
