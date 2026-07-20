@@ -4,6 +4,7 @@
 #include "game/TSimMgr.h"
 #include "game/TSoundPlayer.h"
 #include "game/TStaticText.h"
+#include "game/TTechMgr.h"
 #include "game/TToolBarCluster.h"
 #include "game/TTradePageBuyView.h"
 #include "game/TTradePageSellView.h"
@@ -164,8 +165,26 @@ undefined TDealBookPicture::BuildSelectedNationOrderCapabilityRows() {
 
 // FUNCTION: IMPERIALISM 0x005bbc30
 void TDealBookPicture::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
-  // The original dispatches a large per-tag command table here (934 bytes) -- not yet
-  // ported.
+  if (commandId >= 0x2af8) {
+    // The real table is much larger than the declared 8-entry span (the original indexes
+    // it with commandId + hasProductionOrder193*17, which can run far past 8) -- the
+    // pointer arithmetic still lands on the correct address either way since C++ doesn't
+    // bounds-check here, matching the original's raw displacement + computed offset.
+    int categoryTableIndex = commandId + g_pCityOrderCapabilityState->hasProductionOrder193 * 17;
+    short categorySlot = g_offerDeskSelectionIndexTable_00668568[categoryTableIndex];
+    if (categorySlot != -1) {
+      sellView->RebuildNationOfferRowsForCategory(categorySlot);
+      buyView->RebuildNationBidRowsForCategory(categorySlot);
+      if (initializedFlagB1 == 0) {
+        RefreshTradeSelectionHeaderAndNationOfferBidLines();
+      }
+      // The original then resolves a 'Litl' title control and rebuilds its caption from a
+      // templated category-name string -- that control's concrete class isn't identified
+      // yet, so left unmodeled.
+    }
+  }
+  // The original also dispatches a large per-tag command table below commandId 0x2af8
+  // (934 bytes total) -- not yet ported.
   TControl::HandleEvent(commandId, sourceHandler, event);
 }
 
