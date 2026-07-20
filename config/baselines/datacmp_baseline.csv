@@ -1,5 +1,5 @@
 name|address|status|diffs
-afxDataNil|0x69be08|WARN|3
+afxDataNil|0x69be08|WARN|2
 g_DAT_006533b0_Value_006533B0|0x6533b0|WARN|32
 g_DAT_006533d0_Value_006533D0|0x6533d0|WARN|32
 g_DAT_006533e8_Value_006533E8|0x6533e8|WARN|32
@@ -27,7 +27,7 @@ g_apszQuickDrawFontFaceNames|0x695108|WARN|15
 g_awEngineerFortBuildCostByLevel|0x65318a|WARN|16
 g_awTileSpriteVariantOffsetTable3b|0x697000|WARN|16
 g_nationMetricSlotDispatchOrder006d810|0x66d810|WARN|36
-g_pActiveQuickDrawSurfaceContextHead|0x6950f8|WARN|5
+g_pActiveQuickDrawSurfaceContextHead|0x6950f8|WARN|3
 g_pRegistryAppKey_0063E03C|0x63e03c|WARN|3
 g_pRegistryAutoResKey_0063E048|0x63e048|WARN|3
 g_pRegistryCompanyKey_0063E038|0x63e038|WARN|3
@@ -670,3 +670,4 @@ s_mcflavor_0069b628|0x69b628|WARN|4
 s_mcflavor_0069b630|0x69b630|WARN|4
 s_mcflavor_0069b638|0x69b638|WARN|4
 s_mcflavor_0069b640|0x69b640|WARN|8
+s_szColonSeparator_00696b10|0x696b10|WARN|4
