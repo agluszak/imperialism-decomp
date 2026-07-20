@@ -36,7 +36,7 @@ TCityProductionView::TCityProductionView() {}
 TCityProductionView::~TCityProductionView() {}
 
 // FUNCTION: IMPERIALISM 0x004ba3b0
-void TCityProductionView::NoOpUiLifecycleHook(int arg) {
+void TCityProductionView::DoPostCreate(int arg) {
   (void)arg;
 }
 

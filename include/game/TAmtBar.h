@@ -45,8 +45,8 @@ public:
   // slot 0x24 SetUiResourceOwner inherited unchanged (0x48a4d0)
   // slot 0x25 ResolveControlByTag inherited unchanged (0x48afd0)
   // slot 0x26 SwitchActiveChildAndNotify inherited unchanged (0x48af80)
-  // slot 0x27 DispatchSlot9CToLinkedChildren inherited unchanged (0x48c820)
-  // slot 0x28 CallVoidSlotA0 inherited unchanged (0x48c890)
+  // slot 0x27 Open inherited unchanged (0x48c820)
+  // slot 0x28 Close inherited unchanged (0x48c890)
   // slot 0x29 SetEnabled inherited unchanged (0x48b1c0)
   // slot 0x2a SetState inherited unchanged (0x48b070)
   // slot 0x2b GetField4E inherited unchanged (0x427200)
@@ -116,7 +116,7 @@ public:
   DECLARE_DYNCREATE(TAmtBar)
 
   // TView-branch slot overrides (0xdc, 0x110, 0x11c).
-  void NoOpUiLifecycleHook(int arg) override;
+  void DoPostCreate(int arg) override;
   void ApplyRectSlot110(RECT* rectBuffer) override;
   void BeginMouseCaptureAndStartRepeatTimer(CPoint* point, int arg2, int arg3, int arg4) override;
 

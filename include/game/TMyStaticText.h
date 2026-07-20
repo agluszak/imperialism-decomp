@@ -119,11 +119,11 @@ public:
   // slot 0x6e SetTextColorAndMaybeRefresh inherited unchanged (0x48e7a0)
   // slot 0x6f LogUnhandledDialogMethodAndReturnFalse inherited unchanged (0x4294a0)
   // slot 0x70 SetControlStateFlagAndMaybeRefresh inherited unchanged (0x48e810)
-  // slot 0x71 SetTextThemeCodeAndMaybeRefresh inherited unchanged (0x48ff70)
-  // slot 0x72 AssignTextSharedRefIfChangedAndMaybeInvalidate inherited unchanged (0x48fe60)
-  // slot 0x73 LoadUiStringAndDispatchViaVslot1C8 inherited unchanged (0x48fed0)
-  // slot 0x74 AssignSharedStringFromField84 inherited unchanged (0x4294d0)
-  // slot 0x75 RenderControlStateTextBySelectionCode inherited unchanged (0x4900a0)
+  // slot 0x71 SetTextAlignmentAndMaybeRefresh inherited unchanged (0x48ff70)
+  // slot 0x72 SetTextAndMaybeRefresh inherited unchanged (0x48fe60)
+  // slot 0x73 SetTextFromStringResource inherited unchanged (0x48fed0)
+  // slot 0x74 CopyTextTo inherited unchanged (0x4294d0)
+  // slot 0x75 DrawTextAligned inherited unchanged (0x4900a0)
 
   TMyStaticText();
 };

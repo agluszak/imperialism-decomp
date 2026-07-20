@@ -4,7 +4,7 @@
 #include "game/TList.h"
 #include "game/TLongintList.h"
 
-// Option-entry item held in TPageView's field_0x78/field_0x7c lists. It carries the
+// Option-entry item held in TPageView's optionEntries/orderedEntries lists. It carries the
 // tag used to look up the actual renderable entry and the short metrics used by
 // the page layout algorithms.
 class TSelectableTextOptionEntry : public TObject {
@@ -28,10 +28,10 @@ IMPLEMENT_DYNCREATE(TPageView, TView)
 
 // FUNCTION: IMPERIALISM 0x0056f9c0
 TPageView::TPageView() {
-  this->field_0x7c = nullptr;
-  this->field_0x80 = nullptr;
-  this->field_0x62 = -1;
-  this->field_0x64 = 1;
+  this->orderedEntries = nullptr;
+  this->pageStartIndices = nullptr;
+  this->currentPage = -1;
+  this->visibleColumnCount = 1;
 }
 
 // SYNTHETIC: IMPERIALISM 0x0056fa00
@@ -39,11 +39,11 @@ TPageView::TPageView() {
 TPageView::~TPageView() {}
 
 // FUNCTION: IMPERIALISM 0x0056fa50
-void TPageView::NoOpUiLifecycleHook(int arg) {
+void TPageView::DoPostCreate(int arg) {
   (void)arg;
-  this->field_0x7c = new TList();
-  this->field_0x78 = new TList();
-  this->field_0x80 = new TLongintList();
+  this->orderedEntries = new TList();
+  this->optionEntries = new TList();
+  this->pageStartIndices = new TLongintList();
   this->pageRect.bottom = this->frameHeight38 - 1;
   this->pageRect.top = 0;
   this->pageRect.left = 0;
@@ -51,13 +51,13 @@ void TPageView::NoOpUiLifecycleHook(int arg) {
 }
 
 // FUNCTION: IMPERIALISM 0x0056fbb0
-POSITION TPageView::OrphanCallChain_C1_I06_0056fbb0(void* item) {
-  return this->field_0x7c->AddTail(item);
+POSITION TPageView::AddOrderedEntry(void* item) {
+  return this->orderedEntries->AddTail(item);
 }
 
 // FUNCTION: IMPERIALISM 0x0056fbd0
-POSITION TPageView::OrphanCallChain_C1_I06_0056fbd0(void* item) {
-  return this->field_0x78->AddTail(item);
+POSITION TPageView::AddOptionEntry(void* item) {
+  return this->optionEntries->AddTail(item);
 }
 
 // FUNCTION: IMPERIALISM 0x0056fbf0
@@ -84,18 +84,18 @@ void TPageView::ResetSelectableOptionEntriesExceptColorAndOkay() {
 }
 
 // FUNCTION: IMPERIALISM 0x0056fc80
-undefined TPageView::OrphanCallChain_C8_I82_0056fc80() {
-  this->field_0x80->RemoveAll();
-  this->field_0x80->InsertLast(1);
+void TPageView::BuildPageLayout() {
+  this->pageStartIndices->RemoveAll();
+  this->pageStartIndices->InsertLast(1);
 
-  int count = this->field_0x7c->GetCount();
+  int count = this->orderedEntries->GetCount();
   short y = (short)this->pageRect.top;
   short previousTag = 0;
   short overflowCount = 1;
 
   for (int i = 1; i <= count; i++) {
     TSelectableTextOptionEntry* entry =
-        static_cast<TSelectableTextOptionEntry*>(this->field_0x7c->GetEntryByOrdinal(i));
+        static_cast<TSelectableTextOptionEntry*>(this->orderedEntries->GetEntryByOrdinal(i));
     if (entry == nullptr) {
       continue;
     }
@@ -103,7 +103,7 @@ undefined TPageView::OrphanCallChain_C8_I82_0056fc80() {
     if (tag != 0 && tag != previousTag) {
       previousTag = tag;
       TSelectableTextOptionEntry* lookup =
-          static_cast<TSelectableTextOptionEntry*>(this->field_0x78->GetEntryByOrdinal(tag));
+          static_cast<TSelectableTextOptionEntry*>(this->optionEntries->GetEntryByOrdinal(tag));
       if (lookup != nullptr) {
         y += lookup->field_0xc;
       }
@@ -115,10 +115,10 @@ undefined TPageView::OrphanCallChain_C8_I82_0056fc80() {
     if (bottom > this->pageRect.bottom) {
       overflowCount++;
       y = this->pageRect.top + height;
-      this->field_0x80->InsertLast(i);
+      this->pageStartIndices->InsertLast(i);
       if (entry->tag != 0) {
         TSelectableTextOptionEntry* lookup = static_cast<TSelectableTextOptionEntry*>(
-            this->field_0x78->GetEntryByOrdinal(entry->tag));
+            this->optionEntries->GetEntryByOrdinal(entry->tag));
         if (lookup != nullptr) {
           height = lookup->field_0xc;
         }
@@ -128,35 +128,34 @@ undefined TPageView::OrphanCallChain_C8_I82_0056fc80() {
     y += height;
   }
 
-  this->field_0x60 = overflowCount;
-  return 0;
+  this->pageCount = overflowCount;
 }
 
 // FUNCTION: IMPERIALISM 0x0056fdb0
-undefined TPageView::OrphanCallChain_C8_I118_0056fdb0(short param_1) {
-  if (param_1 < 1 || param_1 > this->field_0x60) {
-    return 0;
+void TPageView::ShowPage(short pageNumber) {
+  if (pageNumber < 1 || pageNumber > this->pageCount) {
+    return;
   }
 
   this->ResetSelectableOptionEntriesExceptColorAndOkay();
 
   short previousTag = 0;
-  for (int column = param_1; column < param_1 + this->field_0x64; column++) {
-    if (this->field_0x80->GetSize() < column) {
+  for (int column = pageNumber; column < pageNumber + this->visibleColumnCount; column++) {
+    if (this->pageStartIndices->GetSize() < column) {
       continue;
     }
 
-    int startIndex = this->field_0x80->At(column);
-    int perColumnWidth = this->frameWidth34 / this->field_0x64;
-    short x = (short)(this->pageRect.left + perColumnWidth * (column - param_1));
+    int startIndex = this->pageStartIndices->At(column);
+    int perColumnWidth = this->frameWidth34 / this->visibleColumnCount;
+    short x = (short)(this->pageRect.left + perColumnWidth * (column - pageNumber));
 
-    int count = this->field_0x7c->GetCount();
+    int count = this->orderedEntries->GetCount();
     int currentIndex = startIndex;
     short y = (short)this->pageRect.top;
 
     while (currentIndex <= count) {
       TSelectableTextOptionEntry* entry = static_cast<TSelectableTextOptionEntry*>(
-          this->field_0x7c->GetEntryByOrdinal(currentIndex));
+          this->orderedEntries->GetEntryByOrdinal(currentIndex));
       if (entry == nullptr) {
         break;
       }
@@ -165,7 +164,7 @@ undefined TPageView::OrphanCallChain_C8_I118_0056fdb0(short param_1) {
       if (tag != 0 && tag != previousTag) {
         previousTag = tag;
         TSelectableTextOptionEntry* lookup =
-            static_cast<TSelectableTextOptionEntry*>(this->field_0x78->GetEntryByOrdinal(tag));
+            static_cast<TSelectableTextOptionEntry*>(this->optionEntries->GetEntryByOrdinal(tag));
         if (lookup != nullptr) {
           entry = lookup;
         }
@@ -186,31 +185,30 @@ undefined TPageView::OrphanCallChain_C8_I118_0056fdb0(short param_1) {
     }
   }
 
-  this->field_0x62 = param_1;
+  this->currentPage = pageNumber;
   this->RefreshControl();
-  return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x0056ff90
-void TPageView::OrphanCallChain_C4_I18_0056ff90() {
+void TPageView::ResetPageLayout() {
   this->ResetSelectableOptionEntriesExceptColorAndOkay();
-  this->field_0x78->RemoveAll();
-  this->field_0x7c->RemoveAll();
-  this->field_0x80->RemoveAll();
-  this->field_0x62 = 0;
-  this->field_0x60 = 0;
+  this->optionEntries->RemoveAll();
+  this->orderedEntries->RemoveAll();
+  this->pageStartIndices->RemoveAll();
+  this->currentPage = 0;
+  this->pageCount = 0;
 }
 
 // FUNCTION: IMPERIALISM 0x0056ffe0
 void TPageView::Free() {
-  if (this->field_0x78 != nullptr) {
-    this->field_0x78->FreePayloadsAndDestroy();
+  if (this->optionEntries != nullptr) {
+    this->optionEntries->FreePayloadsAndDestroy();
   }
-  if (this->field_0x7c != nullptr) {
-    this->field_0x7c->FreePayloadsAndDestroy();
+  if (this->orderedEntries != nullptr) {
+    this->orderedEntries->FreePayloadsAndDestroy();
   }
-  if (this->field_0x80 != nullptr) {
-    this->field_0x80->Free();
+  if (this->pageStartIndices != nullptr) {
+    this->pageStartIndices->Free();
   }
   TView::Free();
 }

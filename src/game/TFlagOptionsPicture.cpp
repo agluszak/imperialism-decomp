@@ -86,20 +86,21 @@ void TFlagOptionsPicture::HandleEvent(int commandId, TEventHandler* sourceHandle
 }
 
 // FUNCTION: IMPERIALISM 0x0056b640
-void TFlagOptionsPicture::NoOpUiLifecycleHook(int arg) {
-  TPicture::NoOpUiLifecycleHook(arg);
+void TFlagOptionsPicture::DoPostCreate(int arg) {
+  TPicture::DoPostCreate(arg);
 
   CString text;
   for (int i = 0; i < 8; ++i) {
     g_pSimMgr->GetString(0x2743, static_cast<short>(i), &text);
-    TDropShadowText* control = static_cast<TDropShadowText*>(ResolveControlByTag(kControlTagTxt0 + i));
+    TDropShadowText* control =
+        static_cast<TDropShadowText*>(ResolveControlByTag(kControlTagTxt0 + i));
     control->QueryStepValue();
     if (i == 0) {
       ApplyUiTextStyleAndThemeFlags(control, 0, 0xc, 0x2b6c, 0x2b6a);
     } else {
       ApplyUiTextStyleAndThemeFlags(control, 0, 0xe, 0x2b6b, 0x2b6c);
     }
-    control->SetTextThemeCodeAndMaybeRefresh(i > 1 ? -2 : 1, 0);
-    control->AssignTextSharedRefIfChangedAndMaybeInvalidate(&text, 0);
+    control->SetTextAlignmentAndMaybeRefresh(i > 1 ? -2 : 1, 0);
+    control->SetTextAndMaybeRefresh(&text, 0);
   }
 }

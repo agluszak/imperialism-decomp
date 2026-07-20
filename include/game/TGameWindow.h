@@ -12,7 +12,7 @@ public:
 
   virtual void Free() override;
   virtual void ForwardParam(int param) override;
-  virtual void DispatchSlot9CToLinkedChildren() override;
+  virtual CMcWindow* Open() override;
   virtual char DispatchUiMouseMoveToChildren(CPoint* point, int arg2, int arg3, int arg4) override;
   virtual char DispatchUiMouseEventToChildrenOrSelf_Impl(CPoint* point, int arg2, int arg3,
                                                          int arg4) override;
@@ -31,4 +31,3 @@ public:
 
   TGameWindow();
 };
-

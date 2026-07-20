@@ -28,7 +28,7 @@ void TTradePageBuyView::RebuildNationBidRowsForCategory(short categorySlot) {
     return;
   }
   lastBuiltCategorySlot84 = categorySlot;
-  OrphanCallChain_C4_I18_0056ff90();
+  ResetPageLayout();
 
   if (categorySlot != -1) {
     if (g_pNationInteractionStateManager->IsNationMetricCellNegative(
@@ -43,7 +43,7 @@ void TTradePageBuyView::RebuildNationBidRowsForCategory(short categorySlot) {
       TUiTextStyleDescriptor headerStyle;
       BuildUiTextStyleDescriptor(&headerStyle, 4, 0xc, 0x2b6a);
       headerRow->SetTextLineStyleDescriptor(&headerStyle);
-      field_0x7c->AddTail(headerRow);
+      orderedEntries->AddTail(headerRow);
 
       for (short nationSlot = 0; nationSlot < 0x17; ++nationSlot) {
         if (g_pNationInteractionStateManager->IsNationMetricCellNegative(nationSlot,
@@ -53,13 +53,13 @@ void TTradePageBuyView::RebuildNationBidRowsForCategory(short categorySlot) {
           row->SetLineDataRowAndBounds(0, 0, rowBounds);
           row->nationSlot12 = nationSlot;
           row->categorySlot10 = categorySlot;
-          field_0x7c->AddTail(row);
+          orderedEntries->AddTail(row);
         }
       }
     }
 
-    OrphanCallChain_C8_I82_0056fc80();
-    OrphanCallChain_C8_I118_0056fdb0(1);
+    BuildPageLayout();
+    ShowPage(1);
   }
 
   RefreshControl();

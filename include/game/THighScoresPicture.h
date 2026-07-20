@@ -46,8 +46,8 @@ public:
   // slot 0x24 SetUiResourceOwner inherited unchanged (0x48a4d0)
   // slot 0x25 ResolveControlByTag inherited unchanged (0x48afd0)
   // slot 0x26 SwitchActiveChildAndNotify inherited unchanged (0x48af80)
-  // slot 0x27 DispatchSlot9CToLinkedChildren inherited unchanged (0x48c820)
-  // slot 0x28 CallVoidSlotA0 inherited unchanged (0x48c890)
+  // slot 0x27 Open inherited unchanged (0x48c820)
+  // slot 0x28 Close inherited unchanged (0x48c890)
   // slot 0x29 SetEnabled inherited unchanged (0x48b1c0)
   // slot 0x2a SetState inherited unchanged (0x48b070)
   // slot 0x2b GetField4E inherited unchanged (0x427200)
@@ -62,7 +62,7 @@ public:
   // slot 0x34 HasRenderableParentAndContent inherited unchanged (0x48c050)
   // slot 0x35 HandleCursorHoverSelectionByChildHitTestAndFallback inherited unchanged (0x48c080)
   // slot 0x36 DispatchControlEventToChildrenAndSelf inherited unchanged (0x48aaf0)
-  virtual void NoOpUiLifecycleHook(int arg) override; // slot 0x37 0x575320
+  virtual void DoPostCreate(int arg) override; // slot 0x37 0x575320
   // slot 0x38 NoOpUiCallback inherited unchanged (0x48abc0)
   // slot 0x39 RefreshControl inherited unchanged (0x48b6d0)
   // slot 0x3a QueryOwnerContextPanel inherited unchanged (0x48b1a0)
@@ -128,9 +128,9 @@ public:
   // expansion site emits only the base ctor call + vtbl install)
   THighScoresPicture() {}
 
-  // Loaded from Data\scores.dat by NoOpUiLifecycleHook: 10 leading 4-byte score values,
+  // Loaded from Data\scores.dat by DoPostCreate: 10 leading 4-byte score values,
   // then 10 32-byte score-entry records (name + associated fields; layout beyond raw
   // bytes not yet recovered).
-  int scoreValues94[10];         // +0x94
+  int scoreValues94[10];                  // +0x94
   unsigned char scoreRecordsBc[10][0x20]; // +0xbc
 };

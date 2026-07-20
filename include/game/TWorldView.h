@@ -55,7 +55,7 @@ public:
   virtual void HandleCursorHoverFallback(CPoint* point, RgnHandle hitArg) override;
   virtual void HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* point,
                                                                    RgnHandle hitArg) override;
-  virtual void NoOpUiLifecycleHook(int arg) override;
+  virtual void DoPostCreate(int arg) override;
   virtual char DispatchUiMouseMoveToChildren(CPoint* point, int arg2, int arg3, int arg4) override;
 
   virtual void SetFlagByteAndInvokeVslot1A4(unsigned char flagByte);

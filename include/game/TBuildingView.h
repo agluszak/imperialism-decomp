@@ -46,8 +46,8 @@ public:
   // slot 0x24 SetUiResourceOwner inherited unchanged (0x48a4d0)
   // slot 0x25 ResolveControlByTag inherited unchanged (0x48afd0)
   // slot 0x26 SwitchActiveChildAndNotify inherited unchanged (0x48af80)
-  // slot 0x27 DispatchSlot9CToLinkedChildren inherited unchanged (0x48c820)
-  virtual void CallVoidSlotA0() override; // slot 0x28 0x4c7180
+  // slot 0x27 Open inherited unchanged (0x48c820)
+  virtual void Close() override; // slot 0x28 0x4c7180
   // slot 0x29 SetEnabled inherited unchanged (0x48b1c0)
   // slot 0x2a SetState inherited unchanged (0x48b070)
   // slot 0x2b GetField4E inherited unchanged (0x427200)
@@ -62,7 +62,7 @@ public:
   // slot 0x34 HasRenderableParentAndContent inherited unchanged (0x48c050)
   // slot 0x35 HandleCursorHoverSelectionByChildHitTestAndFallback inherited unchanged (0x48c080)
   // slot 0x36 DispatchControlEventToChildrenAndSelf inherited unchanged (0x48aaf0)
-  // slot 0x37 NoOpUiLifecycleHook inherited unchanged (0x48ab70)
+  // slot 0x37 DoPostCreate inherited unchanged (0x48ab70)
   // slot 0x38 NoOpUiCallback inherited unchanged (0x48abc0)
   // slot 0x39 RefreshControl inherited unchanged (0x48b6d0)
   // slot 0x3a QueryOwnerContextPanel inherited unchanged (0x48b1a0)
@@ -143,14 +143,14 @@ public:
   // that one short-array region is confirmed so far. Also written directly (not cast)
   // by ApplyCityViewSelectionPayloadAndRefreshControls's own arg1, confirming the
   // parameter itself is short*, not a mistyped int.
-  short* field94;   // +0x94
+  short* field94; // +0x94
   // UNRESOLVED_FIELD_ATTRIBUTION: ApplyCityViewSelectionPayloadAndRefreshControls's arg3
   // (a void* with no traceable direct call site, since slot 0x74 is only ever reached via
   // vtable dispatch) and TShipyardView::OrphanRetStub_004c6fd0 (a definite TView*,
   // g_pStrategicMapViewSystem->field04) both write this slot with apparently different
   // concrete types -- kept opaque as void* per the opaque/polymorphic-slot convention
   // rather than guessing one caller's type.
-  void* field98;    // +0x98
+  void* field98; // +0x98
   short field9c; // +0x9c
   short field9e; // +0x9e -- read by TIndustryView::HandleEvent as the 3rd arg to
                  // TViewMgr::HandleTurnEventDialogFactorySlotB8

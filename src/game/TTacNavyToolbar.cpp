@@ -31,9 +31,9 @@ IMPLEMENT_DYNCREATE(TTacNavyToolbar, TTacticalToolbar)
 TTacNavyToolbar::TTacNavyToolbar() {}
 
 // FUNCTION: IMPERIALISM 0x005ad180
-void TTacNavyToolbar::NoOpUiLifecycleHook(int arg) {
-  TTacticalToolbar::NoOpUiLifecycleHook(arg);
-  SetControlClassAndRefresh(0x68756c6c); // 'hull'
+void TTacNavyToolbar::DoPostCreate(int arg) {
+  TTacticalToolbar::DoPostCreate(arg);
+  SetSelectedChildTagAndRefresh(0x68756c6c); // 'hull'
 }
 
 // FUNCTION: IMPERIALISM 0x005ad1b0
@@ -41,33 +41,33 @@ void TTacNavyToolbar::HandleEvent(int commandId, TEventHandler* sourceHandler, T
   if (commandId == 0xc) {
     unsigned int tag = sourceHandler->controlTag;
     switch (tag) {
-      case kControlTagCrew:
-        battle88->SetCurrentSideNavyShipDisplayMode(1);
-        break;
-      case kControlTagHull:
-        battle88->SetCurrentSideNavyShipDisplayMode(0);
-        break;
-      case kControlTagSail:
-        battle88->SetCurrentSideNavyShipDisplayMode(2);
-        break;
-      default:
-        break;
+    case kControlTagCrew:
+      battle88->SetCurrentSideNavyShipDisplayMode(1);
+      break;
+    case kControlTagHull:
+      battle88->SetCurrentSideNavyShipDisplayMode(0);
+      break;
+    case kControlTagSail:
+      battle88->SetCurrentSideNavyShipDisplayMode(2);
+      break;
+    default:
+      break;
     }
   }
   if (commandId == 0xa) {
     unsigned int tag = sourceHandler->controlTag;
     switch (tag) {
-      case kTagDone:
-      case kControlTagAuto:
-      case kControlTagRetr:
-      case kControlTagTarg:
-        battle88->HandleTacticalBattleCommandTag(tag);
-        break;
-      case kControlTagHelp:
-        g_pHelpMgr->SelectAndActivatePendingEventForCurrentView();
-        break;
-      default:
-        break;
+    case kTagDone:
+    case kControlTagAuto:
+    case kControlTagRetr:
+    case kControlTagTarg:
+      battle88->HandleTacticalBattleCommandTag(tag);
+      break;
+    case kControlTagHelp:
+      g_pHelpMgr->SelectAndActivatePendingEventForCurrentView();
+      break;
+    default:
+      break;
     }
   }
   TCluster::HandleEvent(commandId, sourceHandler, event);

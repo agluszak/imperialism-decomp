@@ -22,7 +22,7 @@ IMPLEMENT_DYNCREATE(TGrantsView, TPanelView)
 TGrantsView::TGrantsView() {}
 
 // FUNCTION: IMPERIALISM 0x004f8080
-void TGrantsView::NoOpUiLifecycleHook(int arg) {}
+void TGrantsView::DoPostCreate(int arg) {}
 
 // Draws the grants/aid table's 7 category headers (column index 3 is reserved for
 // the row-label column, drawn separately below) plus a "Total" row summing this

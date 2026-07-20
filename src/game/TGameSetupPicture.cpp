@@ -28,7 +28,9 @@ TGameSetupPicture::TGameSetupPicture() : TNoHilitePicture() {}
 TGameSetupPicture::~TGameSetupPicture() {}
 
 // FUNCTION: IMPERIALISM 0x005758e0
-void TGameSetupPicture::NoOpUiLifecycleHook(int arg) { TView::NoOpUiLifecycleHook(arg); }
+void TGameSetupPicture::DoPostCreate(int arg) {
+  TView::DoPostCreate(arg);
+}
 
 // Main-menu button dispatcher. Only commandId 0x14/0x0a/0x22 (button-activation
 // codes) are handled; anything else forwards straight to the base class. The

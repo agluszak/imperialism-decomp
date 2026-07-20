@@ -28,8 +28,8 @@ IMPLEMENT_DYNCREATE(TCreditsPicture, TPicture)
 TCreditsPicture::TCreditsPicture() {}
 
 // FUNCTION: IMPERIALISM 0x0056ee50
-void TCreditsPicture::NoOpUiLifecycleHook(int arg) {
-  TPicture::NoOpUiLifecycleHook(arg);
+void TCreditsPicture::DoPostCreate(int arg) {
+  TPicture::DoPostCreate(arg);
 
   g_pSfxPlaybackSystem->ResetDualAudioCuePools();
   g_pSfxPlaybackSystem->PushCueToDualAudioCuePools(0xc);

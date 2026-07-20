@@ -9,6 +9,8 @@
 #include "game/quickdraw_regions.h"
 #include "game/mfc.h"
 
+class CMcWindow;
+
 //
 // TView inherits the 37-slot shared interface (slots 0x00-0x24) and fields through +0x1c
 // from TEventHandler. It overrides only the few base slots whose vtable bodies differ
@@ -80,10 +82,10 @@ public:
   TUiStyleBytes* stylePayload48; // 8-byte style/color payload (see TUiStyleBytes above)
   // 0x4c — participates in the control input gate (EvaluateControlInputGate passes
   // when this is set and GetBoolSlot28() reports true).
-  unsigned char inputGateFlag4c;
+  bool inputGateFlag4c;
   // 0x4d — gates child traversal for renderability/hover hit-tests
   // (HasRenderableParentAndContent requires it before childList44 counts).
-  unsigned char childHitTestFlag4d;
+  bool childHitTestFlag4d;
   unsigned short field4e;
   CWnd* nativeWindow50; // 0x50 — host window (MFC CWnd; HWND via m_hWnd)
   unsigned short field54;
@@ -112,8 +114,8 @@ public:
   // remaining (body-owned-elsewhere / unported) slots.
   virtual class TView* ResolveControlByTag(unsigned int controlTag);            // 0x25 0x48afd0
   virtual void SwitchActiveChildAndNotify(class TView* child);                  // 0x26 0x48af80
-  virtual void DispatchSlot9CToLinkedChildren();                                // 0x27 0x48c820
-  virtual void CallVoidSlotA0();                                                // 0x28 0x48c890
+  virtual CMcWindow* Open();                                                    // 0x27 0x48c820
+  virtual void Close();                                                         // 0x28 0x48c890
   virtual void SetEnabled(int enabledState, int refreshFlag);                   // 0x29 0x48b1c0
   virtual void SetState(int state, int refreshFlag);                            // 0x2a 0x48b070
   virtual unsigned short GetField4E();                                          // 0x2b 0x427200
@@ -130,7 +132,7 @@ public:
   HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* point,
                                                       RgnHandle hitArg); // 0x35 0x48c080
   virtual void DispatchControlEventToChildrenAndSelf(int eventArg);      // 0x36 0x48aaf0
-  virtual void NoOpUiLifecycleHook(int arg);                             // 0x37 0x48ab70
+  virtual void DoPostCreate(int arg);                                    // 0x37 0x48ab70
   virtual void NoOpUiCallback();                                         // 0x38 0x48abc0
   virtual void RefreshControl();                                         // 0x39 0x48b6d0
   virtual class TView* QueryOwnerContextPanel();                         // 0x3a 0x48b1a0

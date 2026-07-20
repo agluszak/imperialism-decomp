@@ -11,7 +11,7 @@ public:
   DECLARE_DYNCREATE(TIconSlider)
   virtual ~TIconSlider() override;
 
-  virtual void NoOpUiLifecycleHook(int arg) override;
+  virtual void DoPostCreate(int arg) override;
   virtual void ApplyRectSlot110(RECT* rectBuffer) override;
   virtual char DispatchUiMouseMoveToChildren(CPoint* point, int arg2, int arg3, int arg4) override;
   virtual void DispatchPictureResourceCommand(int nEventType, void* pEventSender, void* pEventDataA,

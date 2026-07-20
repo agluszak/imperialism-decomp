@@ -14,11 +14,10 @@ THelpPicture::THelpPicture() {}
 THelpPicture::~THelpPicture() {}
 
 // FUNCTION: IMPERIALISM 0x00503d10
-void THelpPicture::NoOpUiLifecycleHook(int arg) {
-}
+void THelpPicture::DoPostCreate(int arg) {}
 
 // FUNCTION: IMPERIALISM 0x00503ed0
-void THelpPicture::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) { }
+void THelpPicture::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {}
 
 // FUNCTION: IMPERIALISM 0x00504120
 undefined THelpPicture::OrphanCallChain_C2_I34_00504120() {

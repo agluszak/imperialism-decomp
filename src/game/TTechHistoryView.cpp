@@ -30,9 +30,10 @@ void TTechHistoryView::ConstructTTechHistoryViewBaseState(short techId) {
   TUiTextStyleDescriptor style;
   BuildUiTextStyleDescriptor(&style, 0, 0xc, 0x2b6a);
 
-  TDropShadowText* titleControl = static_cast<TDropShadowText*>(ResolveControlByTag(kControlTagTitl));
+  TDropShadowText* titleControl =
+      static_cast<TDropShadowText*>(ResolveControlByTag(kControlTagTitl));
   titleControl->AssertValid();
-  titleControl->LoadUiStringAndDispatchViaVslot1C8(0x2712, static_cast<short>(techId + 1), 1);
+  titleControl->SetTextFromStringResource(0x2712, static_cast<short>(techId + 1), 1);
   ApplyUiTextStyleAndThemeFlags(titleControl, 0, 0x12, 0x2b6a, 0x2b68);
 
   TPicture* pictControl = static_cast<TPicture*>(ResolveControlByTag(kControlTagPict));

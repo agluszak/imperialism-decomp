@@ -30,15 +30,16 @@
 IMPLEMENT_DYNCREATE(TOfferDeskPicture, TPicture)
 
 // FUNCTION: IMPERIALISM 0x005be570
-TOfferDeskPicture::TOfferDeskPicture() : TPicture(), field9e(0), fieldA0(0), fieldA4(0) {}
+TOfferDeskPicture::TOfferDeskPicture()
+    : TPicture(), selectionActive9e(false), acceptButtonA0(0), rejectButtonA4(0) {}
 
 // SYNTHETIC: IMPERIALISM 0x005be5b0
 // TOfferDeskPicture::`scalar deleting destructor'
 TOfferDeskPicture::~TOfferDeskPicture() {}
 
 // FUNCTION: IMPERIALISM 0x005be600
-void TOfferDeskPicture::NoOpUiLifecycleHook(int arg) {
-  TPicture::NoOpUiLifecycleHook(arg);
+void TOfferDeskPicture::DoPostCreate(int arg) {
+  TPicture::DoPostCreate(arg);
   // The original then sets up the offer-desk's per-nation control table (816 bytes) -- not
   // yet ported.
 }
@@ -54,9 +55,9 @@ void TOfferDeskPicture::HandleEvent(int commandId, TEventHandler* sourceHandler,
   if (commandId >= 0x2af8) {
     short selectionIndex =
         g_offerDeskSelectionIndexTable_00668568[commandId +
-                                                 g_pCityOrderCapabilityState->hasProductionOrder193 *
-                                                     0x11];
-    if (field9e == 0) {
+                                                g_pCityOrderCapabilityState->hasProductionOrder193 *
+                                                    0x11];
+    if (!selectionActive9e) {
       UpdateTradeSelectionStateAndRefreshUiIfChanged(1);
     } else {
       g_pSfxPlaybackSystem->PlaySoundEffect(0x13f0, 0, 1);
@@ -116,7 +117,7 @@ void TOfferDeskPicture::RefreshSelectedNationOrderCompatibilityInfo() {
 
   TStaticText* info = static_cast<TStaticText*>(ResolveControlByTag(0x696e666f /* 'info' */));
   info->AssertValid();
-  info->SetTextThemeCodeAndMaybeRefresh(-2, 0);
+  info->SetTextAlignmentAndMaybeRefresh(-2, 0);
 
   {
     strTargetNation = g_pSimMgr->LoadNormalizedCredentialName(targetNationSlot92);
@@ -128,7 +129,7 @@ void TOfferDeskPicture::RefreshSelectedNationOrderCompatibilityInfo() {
 
   if (g_pHelpMgr->helpIndexReady == 0) {
     g_pSimMgr->GetString(0x2740, 9, &strFinal);
-    info->SetTextThemeCodeAndMaybeRefresh(1, 0);
+    info->SetTextAlignmentAndMaybeRefresh(1, 0);
   } else if (g_pHelpMgr->helpIndexReady == 1) {
     if (compat >= 1 &&
         g_apTerrainTypeDescriptorTable[targetNationSlot92]->IsEncodedNationSlotMinus200Equal(
@@ -242,7 +243,7 @@ void TOfferDeskPicture::RefreshSelectedNationOrderCompatibilityInfo() {
   RECT inval;
   ::CopyRect(&inval, &grown);
   info->ownerContext->InvalidateCityDialogRectRegion(&inval, 1);
-  info->AssignTextSharedRefIfChangedAndMaybeInvalidate(&strFinal, 1);
+  info->SetTextAndMaybeRefresh(&strFinal, 1);
 }
 
 // Reads the 'clus'->'nomo' checkbox state and the 'purc' quantity field, validates the
@@ -277,7 +278,7 @@ void TOfferDeskPicture::CreateNextTradeCommandAndFormatPrompt(int actionCode) {
   bool quantityValid = true;
   if (actionCode == 'reje') {
     proposedAmount98 = 0;
-  } else if (proposedAmount98 > purchaseControl->field_a8 || proposedAmount98 < 0) {
+  } else if (proposedAmount98 > purchaseControl->maximumValue || proposedAmount98 < 0) {
     quantityValid = false;
   }
 
@@ -312,7 +313,7 @@ void TOfferDeskPicture::CreateNextTradeCommandAndFormatPrompt(int actionCode) {
       g_pSimMgr->GetString(0x2740, 0x10, &localizedMessage);
     } else {
       CString maxValueTemplate;
-      errorMessage.Format(g_szDecimalFormat, purchaseControl->field_a8);
+      errorMessage.Format(g_szDecimalFormat, purchaseControl->maximumValue);
       g_pSimMgr->GetString(0x2740, 0x11, &maxValueTemplate);
       scanBracketExpressions(g_pSimMgr, &localizedMessage, static_cast<LPCSTR>(maxValueTemplate),
                              static_cast<LPCSTR>(errorMessage));

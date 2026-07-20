@@ -57,7 +57,7 @@ void TIncludeView::BuildTurnEventFactoryPacket(TView* ownerContextArg, TView* ma
 }
 
 // FUNCTION: IMPERIALISM 0x0048cfd0
-void TIncludeView::NoOpUiLifecycleHook(int arg) {
+void TIncludeView::DoPostCreate(int arg) {
   (void)arg;
   if (turnEventCode60 != -1 && g_pTurnEventDialogFactoryRegistry != nullptr) {
     int eventCode = static_cast<int>(turnEventCode60);

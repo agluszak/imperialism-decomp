@@ -237,7 +237,7 @@ void TCombatReportView::HandleEvent(int commandId, TEventHandler* sourceHandler,
       pageText = pageText + " of ";
       pageNumber.Format(g_szDecimalFormat, totalPages + 1);
       pageText += pageNumber;
-      static_cast<TStaticText*>(page)->AssignTextSharedRefIfChangedAndMaybeInvalidate(&pageText, 1);
+      static_cast<TStaticText*>(page)->SetTextAndMaybeRefresh(&pageText, 1);
     }
   }
 

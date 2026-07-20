@@ -47,14 +47,14 @@ void TUberCluster::DispatchRuntimeApplyMoveValue(int value) {
   reinterpret_cast<void(__fastcall*)(TUberCluster*, int /*edx*/, int)>(slotFn)(this, 0, value);
 }
 
-// Helper shared by TAmtBarCluster::NoOpUiLifecycleHook (0x586d60); the original address
+// Helper shared by TAmtBarCluster::DoPostCreate (0x586d60); the original address
 // is owned by that vtable-slot override, so this body is not separately address-marked.
 void TUberCluster::InitializeTradeMoveAndBarControls(unsigned int styleSeed) {
   TAmtBar* moveControl = reinterpret_cast<TAmtBar*>(this->ResolveControlByTag(kControlTagMove));
   unsigned int styleSeedMasked = styleSeed & 0xffff0000U;
   // Buffer sized/args ordered to match BuildUiTextStyleDescriptor's real signature
   // (styleDescriptor first, unused=0) -- was previously a single 4-byte `unsigned int`
-  // reused for both this buffer AND the NoOpUiLifecycleHook scalar below, an
+  // reused for both this buffer AND the DoPostCreate scalar below, an
   // undersized-buffer/type conflation now that the callee has a real body (harmless
   // while it was an empty stub).
   TUiTextStyleDescriptor styleDescriptor = {0, 0, 0, 0};
@@ -68,8 +68,8 @@ void TUberCluster::InitializeTradeMoveAndBarControls(unsigned int styleSeed) {
   if (barControl == 0) {
     FailNilPointerInUSmallViews(kAssertLineMoveBarInitNil);
   }
-  barControl->NoOpUiLifecycleHook(static_cast<int>(styleSeedMasked));
-  reinterpret_cast<TView*>(this)->TView::NoOpUiLifecycleHook(0);
+  barControl->DoPostCreate(static_cast<int>(styleSeedMasked));
+  reinterpret_cast<TView*>(this)->TView::DoPostCreate(0);
 }
 
 // Helper shared by TAmtBarCluster::HandleEvent (0x586e70); the original address is owned

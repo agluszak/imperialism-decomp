@@ -22,14 +22,14 @@ IMPLEMENT_DYNCREATE(TNumberText, TEditText)
 
 // FUNCTION: IMPERIALISM 0x00491060
 void TNumberText::ConstructTNumberTextBaseState(TControl* panel, int* offsetLayout, int* sizeLayout,
-                                                int val, int field_a4_val, int field_a8_val) {
+                                                int value, int minimumValue, int maximumValue) {
   this->InitializeTextEntryBaseAndOptionalStringResource(panel, offsetLayout, sizeLayout, 5, 5, -1,
                                                          0);
-  this->field_9c = 0xff;
+  this->maxCharacterCount = 0xff;
   this->SetControlValue(1);
-  this->field_a8 = field_a8_val;
-  this->field_a4 = field_a4_val;
-  this->SetControlValue(val, 0);
+  this->maximumValue = maximumValue;
+  this->minimumValue = minimumValue;
+  this->SetControlValue(value, 0);
 }
 
 // FUNCTION: IMPERIALISM 0x004910e0
@@ -42,9 +42,9 @@ void TNumberText::SetControlValue(int val, int refresh) {
 
 // FUNCTION: IMPERIALISM 0x004911c0
 int TNumberText::UpdateControlCachedIntFromWindowText() {
-  if (this->field_94 != nullptr) {
+  if (this->editWindow != nullptr) {
     CString textVal;
-    this->field_94->GetWindowText(textVal);
+    this->editWindow->GetWindowText(textVal);
     this->value = atoi(textVal);
   }
   return this->value;
@@ -55,8 +55,8 @@ TObject* TNumberText::ShallowClone() {
   TObject* cloned = this->ShallowFree();
   TNumberText* dest = static_cast<TNumberText*>(cloned);
   dest->CopyViewStateFromSource(this);
-  dest->field_94 = this->field_94;
-  dest->field_98 = this->field_98;
-  dest->field_9c = this->field_9c;
+  dest->editWindow = this->editWindow;
+  dest->editFont = this->editFont;
+  dest->maxCharacterCount = this->maxCharacterCount;
   return cloned;
 }

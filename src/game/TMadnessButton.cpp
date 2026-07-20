@@ -14,9 +14,9 @@ IMPLEMENT_DYNCREATE(TMadnessButton, TCzechBox)
 TMadnessButton::TMadnessButton() {}
 
 // FUNCTION: IMPERIALISM 0x0054eaf0
-void TMadnessButton::NoOpUiLifecycleHook(int arg) {
-  TCzechBox::NoOpUiLifecycleHook(arg);
-  field98 = glyphBase84;
+void TMadnessButton::DoPostCreate(int arg) {
+  TCzechBox::DoPostCreate(arg);
+  initialPictureId = glyphBase84;
   OrphanCallChain_C1_I10_00571e00(1, 0);
 }
 

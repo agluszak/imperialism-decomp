@@ -31,8 +31,8 @@ void TDeluxeText::ConstructTDeluxeTextBaseState(TView* panel, int* offsetLayout,
 }
 
 // FUNCTION: IMPERIALISM 0x005b6060
-void TDeluxeText::NoOpUiLifecycleHook(int arg) {
-  TView::NoOpUiLifecycleHook(arg);
+void TDeluxeText::DoPostCreate(int arg) {
+  TView::DoPostCreate(arg);
   field95 = 0;
   SetSelectedFlagAndState(0);
 }
@@ -54,20 +54,18 @@ void TDeluxeText::SetTextFromUiStringResourceId(short stringId) {
 void TDeluxeText::ApplyRectSlot110(RECT* rectBuffer) {
   (void)rectBuffer;
   CString textBuffer;
-  AssignSharedStringFromField84(&textBuffer);
+  CopyTextTo(&textBuffer);
   if (fieldA0 != 0) {
     SetQuickDrawColorAndSyncGlobals(cursorThemeCode9c);
     RECT shadowRect;
     BuildInsetContentRect(&shadowRect);
     OffsetRect(&shadowRect, 1, 1);
-    RenderControlStateTextBySelectionCode((LPCSTR)textBuffer, textBuffer.GetLength(), &shadowRect,
-                                          field90);
+    DrawTextAligned((LPCSTR)textBuffer, textBuffer.GetLength(), &shadowRect, textAlignmentCode);
   }
   RECT mainRect;
   BuildInsetContentRect(&mainRect);
   SetQuickDrawColorAndSyncGlobals(cursorThemeCode98);
-  RenderControlStateTextBySelectionCode((LPCSTR)textBuffer, textBuffer.GetLength(), &mainRect,
-                                        field90);
+  DrawTextAligned((LPCSTR)textBuffer, textBuffer.GetLength(), &mainRect, textAlignmentCode);
 }
 
 // FUNCTION: IMPERIALISM 0x005b62a0
@@ -110,12 +108,12 @@ int TDeluxeText::RecenterTextFromMeasuredWidthAndMaybeInvalidate(char refreshNow
 
 // FUNCTION: IMPERIALISM 0x005b6480
 void TDeluxeText::UpdateTextEntrySharedString(CString* text) {
-  UpdateTextEntrySharedStringIfChanged(text);
+  SetText(text);
 }
 
 // FUNCTION: IMPERIALISM 0x005b64a0
 void TDeluxeText::UpdateTextEntrySharedStringAndMaybeNotify(CString* text, char notifyFlag) {
-  UpdateTextEntrySharedStringIfChanged(text);
+  SetText(text);
   if (notifyFlag != 0) {
     RefreshControl();
   }
@@ -125,6 +123,6 @@ void TDeluxeText::UpdateTextEntrySharedStringAndMaybeNotify(CString* text, char 
 void TDeluxeText::BuildCityViewProductionControls_Impl(short codeGroup, short stringIndex) {
   CString text;
   g_pSimMgr->GetString(codeGroup, stringIndex - 1, &text);
-  UpdateTextEntrySharedStringIfChanged(&text);
+  SetText(&text);
   RefreshControl();
 }

@@ -25,8 +25,8 @@ TSpecialQuitPicture::~TSpecialQuitPicture() {}
 IMPLEMENT_DYNCREATE(TSpecialQuitPicture, TPicture)
 
 // FUNCTION: IMPERIALISM 0x005b4810
-void TSpecialQuitPicture::NoOpUiLifecycleHook(int arg) {
-  TPicture::NoOpUiLifecycleHook(arg);
+void TSpecialQuitPicture::DoPostCreate(int arg) {
+  TPicture::DoPostCreate(arg);
 
   // 'sale'/'shot'/'equi'/'titl' are TDeluxeText controls (verified via class-vtable-dump:
   // TDeluxeText is the class that introduces real virtuals at byte offsets 0x1d8-0x1f8,
@@ -59,7 +59,7 @@ void TSpecialQuitPicture::NoOpUiLifecycleHook(int arg) {
   TDeluxeText* titlControl = static_cast<TDeluxeText*>(ResolveControlByTag(kControlTagTitl));
   titlControl->AssertValid();
   titlControl->BuildAndApplyTextStyleDescriptor(0, 0xe, 0x2b6c);
-  titlControl->SetTextThemeCodeAndMaybeRefresh(1, 1);
+  titlControl->SetTextAlignmentAndMaybeRefresh(1, 1);
 }
 
 // FUNCTION: IMPERIALISM 0x005b4a10

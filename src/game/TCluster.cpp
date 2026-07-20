@@ -27,7 +27,7 @@ IMPLEMENT_DYNCREATE(TCluster, TControl)
 // FUNCTION: IMPERIALISM 0x00491400
 TCluster::TCluster() {
   this->frameStyle60 = 5;
-  this->field84 = 0x20202020;
+  this->selectedChildTag = 0x20202020;
 }
 
 // SYNTHETIC: IMPERIALISM 0x00491480
@@ -48,7 +48,7 @@ void TCluster::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* 
         sibling->DispatchEvent(0x20, this, 0);
       }
     }
-    field84 = sourceHandler->controlTag;
+    selectedChildTag = sourceHandler->controlTag;
   }
 
   if (commandId == 0x1f) {
@@ -70,13 +70,13 @@ void TCluster::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* 
 }
 
 // FUNCTION: IMPERIALISM 0x00491770
-int TCluster::GetField84() {
-  return this->field84;
+int TCluster::GetSelectedChildTag() {
+  return this->selectedChildTag;
 }
 
 // FUNCTION: IMPERIALISM 0x00491790
-void TCluster::SetControlClassAndRefresh(int classState) {
-  field84 = classState;
+void TCluster::SetSelectedChildTagAndRefresh(int childTag) {
+  selectedChildTag = childTag;
   if (childList44 == 0) {
     return;
   }
@@ -84,7 +84,7 @@ void TCluster::SetControlClassAndRefresh(int classState) {
   while (pos != NULL) {
     TControl* child = reinterpret_cast<TControl*>(childList44->GetNext(pos));
     if (child != 0) {
-      if (child->controlTag == static_cast<unsigned int>(classState)) {
+      if (child->controlTag == static_cast<unsigned int>(childTag)) {
         child->HandleEvent(0x1f, this, 0);
       } else {
         child->HandleEvent(0x20, this, 0);
@@ -97,6 +97,6 @@ void TCluster::SetControlClassAndRefresh(int classState) {
 TObject* TCluster::ShallowClone() {
   TCluster* clone = static_cast<TCluster*>(ShallowFree());
   clone->CopyViewStateFromSource(this);
-  clone->field84 = this->field84;
+  clone->selectedChildTag = this->selectedChildTag;
   return clone;
 }

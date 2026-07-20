@@ -43,7 +43,7 @@ TShipyardCluster::TShipyardCluster() : TUberCluster(), field_88(0), field_8c(0),
 // TShipyardCluster::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x0058a610
-void TShipyardCluster::NoOpUiLifecycleHook(int styleSeed) {
+void TShipyardCluster::DoPostCreate(int styleSeed) {
   (void)styleSeed;
   TCity* cityState = GetNationCityStateBySlot(g_pSimMgr->GetActiveNationId());
   field_88 = cityState != 0 ? (int)cityState->shipOrderSlots[0] : 0;

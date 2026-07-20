@@ -7,8 +7,8 @@
 #include "game/TMapUberPicture.h"
 #include "game/TQuickDrawSurfaceContext.h"
 #include "game/TShip.h"
+#include "game/TShipFractionCluster.h"
 #include "game/TSimMgr.h"
-#include "game/TStaticText.h"
 #include "game/TTaskForce.h"
 #include "game/TViewMgr.h"
 #include "game/TWindow.h"
@@ -113,19 +113,18 @@ void TShipView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent*
     TView* categoryControl = mapUber->categoryPages[mapUber->activeUnitCategoryIndex96];
     if (categoryControl != nullptr) {
       short resourceType = shipNode60->GetOrderNodeDescriptorWord20ByResourceType();
-      TStaticText* slider =
-          static_cast<TStaticText*>(categoryControl->ResolveControlByTag(kControlTagCls0 + resourceType));
-      // The original also range-checks against slider->field88 (a max-value short packed
-      // into a dual-use void* field -- see the UNRESOLVED_FIELD_ATTRIBUTION note on
-      // TStaticText::field88) before applying the delta; that guard is not modeled here.
+      TShipFractionCluster* shipFraction = static_cast<TShipFractionCluster*>(
+          categoryControl->ResolveControlByTag(kControlTagCls0 + resourceType));
       if (delta > 0) {
-        short newValue = slider->field90 + 1;
-        slider->field90 = newValue;
-        slider->SetTextThemeCodeAndMaybeRefresh(newValue, 1);
-      } else if (slider->field90 > 0) {
-        short newValue = slider->field90 - 1;
-        slider->field90 = newValue;
-        slider->SetTextThemeCodeAndMaybeRefresh(newValue, 1);
+        if (shipFraction->selectedShipCount94 < shipFraction->availableShipCount88) {
+          short newValue = static_cast<short>(shipFraction->selectedShipCount94 + 1);
+          shipFraction->selectedShipCount94 = newValue;
+          shipFraction->shipCountButton90->SetValue(newValue, 1);
+        }
+      } else if (shipFraction->selectedShipCount94 > 0) {
+        short newValue = static_cast<short>(shipFraction->selectedShipCount94 - 1);
+        shipFraction->selectedShipCount94 = newValue;
+        shipFraction->shipCountButton90->SetValue(newValue, 1);
       }
     }
   } else if (sourceHandler->controlTag == kControlTagName) {
@@ -144,8 +143,8 @@ void TShipView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent*
 // is exactly 'okay' (rather than "commit unless 'cncl'").
 // FUNCTION: IMPERIALISM 0x00565a40
 void TShipView::RunEngineerOrderNameEditDialogAndApply() {
-  TWindow* node = static_cast<TWindow*>(
-      g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(0xdb4));
+  TWindow* node =
+      static_cast<TWindow*>(g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(0xdb4));
   if (node == nullptr) {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUOceanViews_00698650, 0x203);
@@ -156,7 +155,7 @@ void TShipView::RunEngineerOrderNameEditDialogAndApply() {
 
   TStaticText* titleControl = static_cast<TStaticText*>(node->ResolveControlByTag(kControlTagTitl));
   titleControl->AssertValid();
-  titleControl->LoadUiStringAndDispatchViaVslot1C8(0x2746, 5, 1);
+  titleControl->SetTextFromStringResource(0x2746, 5, 1);
   titleControl->textStyle78 = style;
 
   TEditText* nameControl = static_cast<TEditText*>(node->ResolveControlByTag(kControlTagName));
@@ -168,7 +167,7 @@ void TShipView::RunEngineerOrderNameEditDialogAndApply() {
 
   int modalResult = node->ExecuteViewModalStateWithPushPopChain();
   nameControl->GetCurrentText(&editedName);
-  node->CallVoidSlotA0();
+  node->Close();
   node->Free();
   if (modalResult == 0x6f6b6179 /* 'okay' */) {
     shipNode60->displayName18 = editedName;

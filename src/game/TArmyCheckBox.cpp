@@ -91,7 +91,7 @@ void TArmyCheckBox::HandleEvent(int commandId, TEventHandler* sourceHandler, TEv
 }
 
 // FUNCTION: IMPERIALISM 0x004aa2f0
-void TArmyCheckBox::NoOpUiLifecycleHook(int arg) {
+void TArmyCheckBox::DoPostCreate(int arg) {
   (void)arg;
   frameStyle60 = 4;
 }

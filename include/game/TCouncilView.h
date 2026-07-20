@@ -19,7 +19,7 @@ public:
                                                            RgnHandle hitArg) override; // slot 0x35
   // slot 0x37 — despite the inherited no-op name, TCouncilView's override rebuilds the
   // council nation-overlay geometry and labels (0x4fba70, 578 bytes).
-  void NoOpUiLifecycleHook(int arg) override;
+  void DoPostCreate(int arg) override;
 
   // Rebuilds the council candidate name/coat-of-arms controls and (re)starts the vote
   // ticker. Non-virtual; called from HandleEvent's "star" branch with ecx = this. Its

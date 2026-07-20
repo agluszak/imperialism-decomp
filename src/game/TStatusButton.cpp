@@ -32,7 +32,7 @@ void TStatusButton::HandleEvent(int selectedIndex, TEventHandler* sourceHandler,
     }
 
     if (g_pActiveCityDialogLegendSelectionOwner != nullptr) {
-      static_cast<TView*>(g_pActiveCityDialogLegendSelectionOwner)->CallVoidSlotA0();
+      static_cast<TView*>(g_pActiveCityDialogLegendSelectionOwner)->Close();
       g_pActiveCityDialogLegendSelectionOwner = nullptr;
       g_bCityDialogLegendSelectionInitialized = 0;
     }
@@ -46,11 +46,11 @@ void TStatusButton::HandleEvent(int selectedIndex, TEventHandler* sourceHandler,
 
     if (controlTag != kControlTagArms && controlTag == kControlTagClos) {
       if (g_pActiveCityDialogLegendSelectionOwner != nullptr) {
-        static_cast<TView*>(g_pActiveCityDialogLegendSelectionOwner)->CallVoidSlotA0();
+        static_cast<TView*>(g_pActiveCityDialogLegendSelectionOwner)->Close();
         g_pActiveCityDialogLegendSelectionOwner = nullptr;
       }
       g_bCityDialogLegendSelectionInitialized = 0;
-      OwnerPanel()->CallVoidSlotA0();
+      OwnerPanel()->Close();
     }
 
     TControl::HandleEvent(selectedIndex, this, event);

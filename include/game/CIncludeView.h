@@ -65,7 +65,7 @@ protected:
   void OnDraw(CDC* pDC) override;                     // 0x00482c90
 
   afx_msg BOOL OnEraseBkgnd(CDC* pDC); // 0x004835a0
-  // Custom message 0x4ef from TIncludeView::NoOpUiLifecycleHook / turn-event rebuilds:
+  // Custom message 0x4ef from TIncludeView::DoPostCreate / turn-event rebuilds:
   // wParam 1 = re-propagate this view as the tree's native window and re-resolve 'main';
   // wParam 0 = detach the dialog context (one-shot assert if the gate flag is clear).
   afx_msg LRESULT OnDialogTreeHostMsg4EF(WPARAM wParam, LPARAM lParam); // 0x00482bf0

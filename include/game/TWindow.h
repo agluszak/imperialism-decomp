@@ -51,8 +51,8 @@ public:
   // slot 0x24 SetUiResourceOwner inherited unchanged (0x48a4d0)
   // slot 0x25 ResolveControlByTag inherited unchanged (0x48afd0)
   // slot 0x26 SwitchActiveChildAndNotify inherited unchanged (0x48af80)
-  virtual void DispatchSlot9CToLinkedChildren() override; // slot 0x27 0x48de00
-  virtual void CallVoidSlotA0() override;                 // slot 0x28 0x48e060
+  virtual CMcWindow* Open() override; // slot 0x27 0x48de00
+  virtual void Close() override;      // slot 0x28 0x48e060
   // slot 0x29 SetEnabled inherited unchanged (0x48b1c0)
   // slot 0x2a SetState inherited unchanged (0x48b070)
   // slot 0x2b GetField4E inherited unchanged (0x427200)
@@ -67,7 +67,7 @@ public:
   // slot 0x34 HasRenderableParentAndContent inherited unchanged (0x48c050)
   // slot 0x35 HandleCursorHoverSelectionByChildHitTestAndFallback inherited unchanged (0x48c080)
   // slot 0x36 DispatchControlEventToChildrenAndSelf inherited unchanged (0x48aaf0)
-  // slot 0x37 NoOpUiLifecycleHook inherited unchanged (0x48ab70)
+  // slot 0x37 DoPostCreate inherited unchanged (0x48ab70)
   // slot 0x38 NoOpUiCallback inherited unchanged (0x48abc0)
   // slot 0x39 RefreshControl inherited unchanged (0x48b6d0)
   virtual class TView* QueryOwnerContextPanel() override; // slot 0x3a 0x492ce0
@@ -153,20 +153,20 @@ public:
   // notifies the previous one via DispatchUiCommand19ToParent.
   TEventHandler* activeLinkedWindow64;
   unsigned char padding_68_to_6b[0x04]; // 0x68
-  // 0x6c-0x71 — style/behavior flag bytes written per-window by the turn-event dialog
-  // factory builders (names hedged; only useCaptionedFrameFlag6d/field70 have verified consumers).
-  unsigned char flag6c; // 0x6c
+  // 0x6c-0x71 — style/behavior booleans written by the UI resource builders. The names
+  // remain offset-qualified where no Windows reader has established the exact behavior.
+  bool resourceFlag6c; // 0x6c
   // 0x6d — for window-type codes 0x30/0x1f40, selects the captioned frame style
   // (0x00c80000) instead of the popup style (0x80c00000) in CMcWindow's CreateEx.
-  unsigned char useCaptionedFrameFlag6d;
-  unsigned char flag6e;        // 0x6e
-  unsigned char flag6f;        // 0x6f
-  unsigned char topmostFlag70; // 0x70 — when set, CMcWindow adds WS_EX_TOPMOST
-  unsigned char flag71;        // 0x71
+  bool useCaptionedFrameFlag6d;
+  bool resourceFlag6e; // 0x6e
+  bool resourceFlag6f; // 0x6f
+  bool topmostFlag70;  // 0x70 — when set, CMcWindow adds WS_EX_TOPMOST
+  bool resourceFlag71; // 0x71
   unsigned char padding_72_to_73[0x02];
   TDialogBehavior dialogBehavior; // 0x74
   int busyFlag98;                 // 0x98
-  unsigned short field9c;         // 0x9c — style/mode word set by the dialog factory builders
+  unsigned short windowFlags;     // 0x9c — flag word set by the dialog factory builders
   unsigned char padding_9e_to_9f[0x02];
 
   TWindow();

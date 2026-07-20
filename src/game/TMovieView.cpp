@@ -16,7 +16,7 @@ IMPLEMENT_DYNCREATE(TMovieView, TPicture)
 // across a conditional. Reproduced verbatim (not factored into a helper) to match.
 // Note: movieWindowState is not explicitly zeroed here (listing at 0x5e2230 has no
 // write to this+0x90) — it stays whatever the allocator handed back until
-// NoOpUiLifecycleHook assigns it. Matches the original; not "fixed" to zero-init.
+// DoPostCreate assigns it. Matches the original; not "fixed" to zero-init.
 // FUNCTION: IMPERIALISM 0x005e2230
 TMovieView::TMovieView() : TPicture() {
   g_pSfxPlaybackSystem->ClearDirectSoundInitPendingAndResetState();
@@ -57,8 +57,8 @@ TMovieView::~TMovieView() {
 }
 
 // FUNCTION: IMPERIALISM 0x005e23f0
-void TMovieView::NoOpUiLifecycleHook(int arg) {
-  TPicture::NoOpUiLifecycleHook(arg);
+void TMovieView::DoPostCreate(int arg) {
+  TPicture::DoPostCreate(arg);
 
   TView* owner = OwnerPanel();
   CWnd* nativeWindow = owner->nativeWindow50;

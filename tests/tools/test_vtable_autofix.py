@@ -37,7 +37,7 @@ TStaticText::`vftable' : orig 0x64ab58, recomp 0x486d48
 vtable0x48 : -(0x401d61 / 0x42b360)  :  TControl::thunk_ForwardCityDialogParamToChildSlot48
            : +(0x48a380 / 0x40e340)  :  TControl::ForwardCityDialogParamToChildSlot48
 vtable0xdc : -(0x406ba9 / no recomp)  :  TView::thunk_NoOpUiLifecycleHook
-           : +(0x48ab70 / 0x427ec0)  :  NoOpUiLifecycleHook
+           : +(0x48ab70 / 0x427ec0)  :  DoPostCreate
 Vtables found: 1.
 Vtables not matching: 1.
 """

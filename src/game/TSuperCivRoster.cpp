@@ -31,7 +31,7 @@ undefined TSuperCivRoster::InitializeLedgerRosterPages(TView* pOwnerContext, int
   controlTag = 0x70616765; // 'page'
   // Explicit qualification forces a non-virtual call, matching the original's
   // devirtualized direct call (TSuperCivRoster doesn't override this slot).
-  TPageView::NoOpUiLifecycleHook(0);
+  TPageView::DoPostCreate(0);
 
   short activeNationId = g_pSimMgr->GetActiveNationId();
   CIterator cursor(g_apNationStates[activeNationId]->trackedObjectList);
@@ -41,14 +41,14 @@ undefined TSuperCivRoster::InitializeLedgerRosterPages(TView* pOwnerContext, int
     int lineBounds[2] = {0xec, 0x40};
     line->SetLineDataRowAndBounds(0, 0, lineBounds);
     line->civUnit10 = static_cast<TCivUnit*>(current);
-    OrphanCallChain_C1_I06_0056fbb0(line);
+    AddOrderedEntry(line);
     current = cursor.Advance();
   }
 
-  field_0x64 = 2;
-  OrphanCallChain_C8_I82_0056fc80();
-  OrphanCallChain_C8_I118_0056fdb0(1);
+  visibleColumnCount = 2;
+  BuildPageLayout();
+  ShowPage(1);
   ownerContext->AssertValid();
-  static_cast<TBook*>(ownerContext)->UpdatePagedListNavigationButtonState(field_0x62);
+  static_cast<TBook*>(ownerContext)->UpdatePagedListNavigationButtonState(currentPage);
   return 0;
 }

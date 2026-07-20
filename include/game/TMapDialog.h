@@ -71,7 +71,7 @@ public:
   // the thunk. The second argument is never read. 0x51b1c0, __thiscall, RET 0x8.
   void PopulateMapContextInfoPanelStringsByTileSelection(short tileIndex, int unusedArg);
 
-  virtual void NoOpUiLifecycleHook(int arg) override;
+  virtual void DoPostCreate(int arg) override;
 
   void OrphanRetStub_005966c0(short arg1) override;
   undefined OrphanLeaf_NoCall_Ins02_005966e0(short arg1) override;

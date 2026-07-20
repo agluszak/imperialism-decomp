@@ -20,8 +20,8 @@ TMilitaryPageView::TMilitaryPageView() {}
 TMilitaryPageView::~TMilitaryPageView() {}
 
 // FUNCTION: IMPERIALISM 0x005649a0
-void TMilitaryPageView::NoOpUiLifecycleHook(int arg) {
-  TPageView::NoOpUiLifecycleHook(arg);
+void TMilitaryPageView::DoPostCreate(int arg) {
+  TPageView::DoPostCreate(arg);
   TView* okControl = ownerContext->ResolveControlByTag(kControlTagOkay);
   LoadUiStringByGroupAndIndexToControlObject(0x2730, 0x22, okControl);
   CString empty(g_szEmptyString);
@@ -29,5 +29,4 @@ void TMilitaryPageView::NoOpUiLifecycleHook(int arg) {
 }
 
 // FUNCTION: IMPERIALISM 0x00564bf0
-void TMilitaryPageView::CallVoidSlotA0() {
-}
+void TMilitaryPageView::Close() {}

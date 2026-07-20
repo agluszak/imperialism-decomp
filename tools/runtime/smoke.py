@@ -40,7 +40,7 @@ DEFAULT_PORT = 47632
 # (name, original address, what reaching it proves). Ordered by runtime flow.
 STARTUP_MILESTONES = [
     ("dispatch-4c", 0x5D7240, "TViewMgr::DispatchTurnEventSlot4C — turn-event dispatch alive"),
-    ("child-realize", 0x48DE00, "TWindow::DispatchSlot9CToLinkedChildren — view tree realizes"),
+    ("child-realize", 0x48DE00, "TWindow::Open — view tree realizes"),
     ("mcwindow-ctor", 0x493470, "CMcWindow constructed — native paint host exists"),
     ("view-init", 0x483750, "CIncludeView::OnInitialUpdate — CDib + tick timer created"),
     ("on-draw", 0x482C90, "CIncludeView::OnDraw — paint recursion runs"),
@@ -54,9 +54,9 @@ RANDOM_GAME_MILESTONES = [
      "TSimMgr::RebuildNationStateSlotsAndAvailability — nation construction entered"),
     ("dispatch-map", 0x5D7240,
      "TViewMgr::DispatchTurnEventSlot4C — event 0x3b8 observed"),
-    ("include-lifecycle", 0x48CFD0, "TIncludeView::NoOpUiLifecycleHook — factory tree attached"),
+    ("include-lifecycle", 0x48CFD0, "TIncludeView::DoPostCreate — factory tree attached"),
     ("map-lifecycle", 0x596A80,
-     "TMapUberPicture::NoOpUiLifecycleHook — strategic-map root initialized"),
+     "TMapUberPicture::DoPostCreate — strategic-map root initialized"),
     ("map-dialog-ctor", 0x519B50, "TMapDialog::TMapDialog — map dialog constructed"),
     ("create-tool-window", 0x599CF0,
      "TMapUberPicture::CreateToolWindow — tool/minimap construction entered"),

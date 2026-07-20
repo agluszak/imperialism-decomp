@@ -106,10 +106,10 @@ TStaticText* ApplyControlThemeStyleAndOptionalCaption(TStaticText* control, int 
   styleDescriptor.textColor = 0;
   BuildUiTextStyleDescriptor(&styleDescriptor, 0, pointSize, themeCode);
   control->SetTextStyleAndMaybeRefresh(&styleDescriptor, 0);
-  control->SetTextThemeCodeAndMaybeRefresh(static_cast<short>(themeCode2), 0);
+  control->SetTextAlignmentAndMaybeRefresh(static_cast<short>(themeCode2), 0);
   if (caption != 0) {
     CString captionString(caption);
-    control->AssignTextSharedRefIfChangedAndMaybeInvalidate(&captionString, 0);
+    control->SetTextAndMaybeRefresh(&captionString, 0);
   }
   return control;
 }
@@ -132,9 +132,9 @@ TStaticText* ConfigureUiControlStyleValueAndCaptionFromStringResource(TStaticTex
   styleDescriptor.textColor = 0;
   BuildUiTextStyleDescriptor(&styleDescriptor, 0, pointSize, themeCode);
   control->SetTextStyleAndMaybeRefresh(&styleDescriptor, 0);
-  control->SetTextThemeCodeAndMaybeRefresh(static_cast<short>(themeCode2), 0);
+  control->SetTextAlignmentAndMaybeRefresh(static_cast<short>(themeCode2), 0);
   if (static_cast<LPCSTR>(caption) != 0) {
-    control->AssignTextSharedRefIfChangedAndMaybeInvalidate(&caption, 0);
+    control->SetTextAndMaybeRefresh(&caption, 0);
   }
   return control;
 }

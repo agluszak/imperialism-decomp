@@ -11,7 +11,7 @@ public:
   TShipAmtBar();
   DECLARE_DYNCREATE(TShipAmtBar)
 
-  void NoOpUiLifecycleHook(int arg) override;
+  void DoPostCreate(int arg) override;
   void RenderPrimarySurfaceOverlayPanelWithClipCache() override;
 
   // 0x0058abf0 — TShipAmtBar's summary source is always the first navy order

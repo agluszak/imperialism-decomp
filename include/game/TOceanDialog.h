@@ -18,7 +18,7 @@ public:
   DECLARE_DYNCREATE(TOceanDialog)
   virtual ~TOceanDialog() override;
 
-  virtual void NoOpUiLifecycleHook(int arg) override;
+  virtual void DoPostCreate(int arg) override;
   virtual void ApplyRectSlot110(RECT* rectBuffer) override;
 
   virtual void RenderMapOrderEntryTilePreview(TCivUnit* orderEntry, int projectedX, int projectedY,

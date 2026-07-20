@@ -38,7 +38,7 @@ TShipAmtBar::TShipAmtBar() : TIndustryAmtBar() {
 // TShipAmtBar::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x0058abf0
-void TShipAmtBar::NoOpUiLifecycleHook(int arg) {
+void TShipAmtBar::DoPostCreate(int arg) {
   TGreatPower* nationState = GetActiveNationState();
   TCity* cityState = nationState != 0 ? nationState->GetCityState() : 0;
   selectedMetricRecord = cityState->shipOrderSlots[0];
@@ -47,7 +47,7 @@ void TShipAmtBar::NoOpUiLifecycleHook(int arg) {
   auxValueA = productionCap;
   auxValueB = 0x3a;
   rangeOrMaxValue = (short)(0 / (int)productionCap);
-  reinterpret_cast<TView*>(this)->TView::NoOpUiLifecycleHook(arg);
+  reinterpret_cast<TView*>(this)->TView::DoPostCreate(arg);
 }
 
 // FUNCTION: IMPERIALISM 0x0058ac80

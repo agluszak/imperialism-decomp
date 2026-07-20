@@ -44,7 +44,7 @@ void TArmoryView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEven
         // 'sele' is a TCluster (see TUniversityView::HandleEvent's identical tail).
         TCluster* sele = static_cast<TCluster*>(ResolveControlByTag(0x73656c65u)); // 'sele'
         sele->AssertValid();
-        sele->SetControlClassAndRefresh(0x63697630 + index); // 'civ0'+index
+        sele->SetSelectedChildTagAndRefresh(0x63697630 + index); // 'civ0'+index
       }
 
       // stepEntryA8 is a step-adjustable numeric edit widget (field04 get/set + a
@@ -59,7 +59,7 @@ void TArmoryView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEven
       stepEntryA8->SetControlValue(newValue);
 
       // The original tests AL after this call, which -- since TEditText::SetControlValue
-      // ends in the (always-taken here, field_94 unconstructed) DispatchSlot9CToLinkedChildren
+      // ends in the (always-taken here, editWindow unconstructed) Open
       // no-op tail -- is really just the low byte of `newValue` left over in EAX from the
       // value computation above. For the small counts this widget holds, that means the
       // refresh below runs whenever the new value is nonzero.
@@ -96,9 +96,7 @@ undefined TArmoryView::OrphanRetStub_004c6fb0() {
 }
 
 // FUNCTION: IMPERIALISM 0x004cfbd0
-void TArmoryView::RefreshCityViewProductionDetails(short nBuildingSlotId) {
-}
+void TArmoryView::RefreshCityViewProductionDetails(short nBuildingSlotId) {}
 
 // FUNCTION: IMPERIALISM 0x004d0470
-void TArmoryView::Free() {
-}
+void TArmoryView::Free() {}

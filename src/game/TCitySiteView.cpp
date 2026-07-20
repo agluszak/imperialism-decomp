@@ -26,11 +26,11 @@ TCitySiteView::TCitySiteView() {}
 TCitySiteView::~TCitySiteView() {}
 
 // FUNCTION: IMPERIALISM 0x0051bff0
-void TCitySiteView::NoOpUiLifecycleHook(int arg) {
-  // Explicitly skips TMapDialog::NoOpUiLifecycleHook (an empty override, 0x519d30) and
+void TCitySiteView::DoPostCreate(int arg) {
+  // Explicitly skips TMapDialog::DoPostCreate (an empty override, 0x519d30) and
   // calls straight through to TWorldView's -- confirmed by the real call target (0x595090)
   // in the disassembly.
-  TWorldView::NoOpUiLifecycleHook(arg);
+  TWorldView::DoPostCreate(arg);
 
   projectionScale76 = 1;
   previewSquareRadius78 = 0x40;

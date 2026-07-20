@@ -117,7 +117,7 @@ CMcWindow::~CMcWindow() {
 
 // Window-state command from the owning TWindow layer: wParam 2 = show, 3 = hide,
 // 4 = destroy the native window and delete this host object; 0/1 (sent by
-// TWindow::DispatchSlot9CToLinkedChildren / CallVoidSlotA0 with the control tag in
+// TWindow::Open / Close with the control tag in
 // lParam) are accepted no-ops. Unknown codes fire the McWindow.cpp:184 one-shot assert.
 // FUNCTION: IMPERIALISM 0x00493800
 LRESULT CMcWindow::OnWindowStateMsg468(WPARAM wParam, LPARAM lParam) {

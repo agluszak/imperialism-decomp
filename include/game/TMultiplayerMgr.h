@@ -84,7 +84,7 @@ public:
   // +0x40 — the active lobby dialog view when one is open; the code-9 receive path
   // checks IsKindOf(RUNTIME_CLASS(TLoungeDialog)) before using it as the lounge.
   TView* lobbyDialogView40; // +0x40
-  // +0x44 — child handler for queue routing. Opaque: TLoungeDialog::NoOpUiLifecycleHook
+  // +0x44 — child handler for queue routing. Opaque: TLoungeDialog::DoPostCreate
   // passes `this` (a TView-derived dialog) as the sole non-zero writer seen so far.
   void* diplomacyQueueContext;
   int nationSessionIds[kNationSlotCount]; // +0x48

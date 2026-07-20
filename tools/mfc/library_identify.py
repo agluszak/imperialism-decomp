@@ -87,7 +87,8 @@ def main() -> int:
 
     claim = ownership_view(repo_root).get(address)
     ownership_row = (
-        {"ownership": ownership_kind(claim.kind), "target_cpp": claim.file} if claim else None
+        {"ownership": ownership_kind(claim.kind, claim.origin), "target_cpp": claim.file}
+        if claim else None
     )
     fid_row = _fid_row(resolve_repo_path(repo_root, args.fid_matches), address)
     oracle_row = _row_for_address(resolve_repo_path(repo_root, args.oracle), address)

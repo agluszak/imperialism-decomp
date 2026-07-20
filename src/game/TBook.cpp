@@ -18,12 +18,12 @@ IMPLEMENT_DYNCREATE(TBook, TPicture)
 TBook::TBook() {}
 
 // FUNCTION: IMPERIALISM 0x0056f560
-void TBook::NoOpUiLifecycleHook(int arg) {
-  TPicture::NoOpUiLifecycleHook(arg);
-  field90 = ResolveControlByTag(kControlTagLcor);
-  LoadUiStringByGroupAndIndexToControlObject(0x2730, 0xc, field90);
-  field94 = ResolveControlByTag(kControlTagRcor);
-  LoadUiStringByGroupAndIndexToControlObject(0x2730, 0xb, field94);
+void TBook::DoPostCreate(int arg) {
+  TPicture::DoPostCreate(arg);
+  previousPageButton = ResolveControlByTag(kControlTagLcor);
+  LoadUiStringByGroupAndIndexToControlObject(0x2730, 0xc, previousPageButton);
+  nextPageButton = ResolveControlByTag(kControlTagRcor);
+  LoadUiStringByGroupAndIndexToControlObject(0x2730, 0xb, nextPageButton);
 }
 
 // FUNCTION: IMPERIALISM 0x0056f5e0
@@ -43,8 +43,8 @@ void TBook::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* eve
         // so it also picks up the adjacent padding byte (both already-declared fields,
         // no new cast needed).
         short rowCount = static_cast<short>(pageControl->frameStyle60 >> 16);
-        short visibleCount = static_cast<short>(
-            pageControl->controlState64 | (pageControl->padding_65_to_67[0] << 8));
+        short visibleCount = static_cast<short>(pageControl->controlState64 |
+                                                (pageControl->padding_65_to_67[0] << 8));
         if (sourceHandler->controlTag == kControlTagRcor) {
           pageControl->ReturnZeroFromUiSlot6C(visibleCount + rowCount);
           UpdatePagedListNavigationButtonState(rowCount);
@@ -64,21 +64,21 @@ void TBook::UpdatePagedListNavigationButtonState(int rowCount) {
   pageControl->AssertValid();
 
   if (rowCount == 1) {
-    field90->SetState(0, 0);
-    field90->SetEnabled(0, 1);
+    previousPageButton->SetState(0, 0);
+    previousPageButton->SetEnabled(0, 1);
   } else {
-    field90->SetState(1, 0);
-    field90->SetEnabled(1, 1);
+    previousPageButton->SetState(1, 0);
+    previousPageButton->SetEnabled(1, 1);
   }
 
   short lowWord = static_cast<short>(pageControl->frameStyle60);
-  short visibleCount = static_cast<short>(
-      pageControl->controlState64 | (pageControl->padding_65_to_67[0] << 8));
+  short visibleCount =
+      static_cast<short>(pageControl->controlState64 | (pageControl->padding_65_to_67[0] << 8));
   if (visibleCount + rowCount <= lowWord) {
-    field94->SetState(0, 0);
-    field94->SetEnabled(0, 1);
+    nextPageButton->SetState(0, 0);
+    nextPageButton->SetEnabled(0, 1);
   } else {
-    field94->SetState(1, 0);
-    field94->SetEnabled(1, 1);
+    nextPageButton->SetState(1, 0);
+    nextPageButton->SetEnabled(1, 1);
   }
 }
