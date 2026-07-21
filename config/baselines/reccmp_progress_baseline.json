@@ -11,9 +11,9 @@
   "failed_to_match_function_count": 0,
   "flo_orig_only_count": 225,
   "flo_recomp_only_count": 0,
-  "git_branch": "agent/tsimmgr-secondary-nation-rebuild",
-  "git_commit": "471812fc78aaee0140d2e14c949811b05b309612",
-  "git_commit_date": "2026-07-21T13:30:33+02:00",
+  "git_branch": "agent/mac-payload-diff",
+  "git_commit": "59cc800ba4eaa35f83707855a9726c6886308f46",
+  "git_commit_date": "2026-07-21T13:36:11+02:00",
   "global_coverage_pct": 23.341363973313566,
   "global_orig_only_count": 8273,
   "global_recomp_only_count": 6792,
@@ -61,7 +61,7 @@
   "target": "IMPERIALISM",
   "template_alias_recognized_count": 4,
   "template_canonical_paired_count": 4,
-  "timestamp_utc": "2026-07-21T11:30:53+00:00",
+  "timestamp_utc": "2026-07-21T11:37:55+00:00",
   "wid_orig_only_count": 0,
   "wid_recomp_only_count": 2
 }
