@@ -19,6 +19,11 @@ struct DiplomacyMaskBufferRun {
 
 ASSERT_SIZE(DiplomacyMaskBufferRun, 0x14);
 
+// Mac CodeWarrior names the action parameter eDipAction. Only the two values used by
+// CheckEntanglements are named here; the diplomacy-map click handler uses the wider
+// action range for unrelated offer types.
+enum eDipAction { kDipActionJoinEmpire = 2, kDipActionAlliance = 3 };
+
 // Constructor evidence calls TPicture::TPicture at 0x0048efc0, then writes the
 // complete-object vfptr at 0x00655b68. The table at 0x0066f16c is separate
 // turn-event dispatch/data, not an object vtable.
@@ -63,7 +68,9 @@ public:
 
   int ResolveDiplomacyActionFromClickAndUpdateTarget(CPoint* clickPoint);
   void BuildTurnEventMonochromeMaskBuffers(int maskIndex, int eventCode);
-  void InvalidateAndRunChildWaitSheet(void* arg1, void* arg2, void* arg3, void* arg4);
+  // Mac CodeWarrior: TDiplomacyMapView::PoseWarOffer(short, long, long, long).
+  char PoseWarOffer(short sourceNationSlot, int minorNationSlot, int enemyNationSlot,
+                    int promptCode);
   void DrawVoteNuggets();
   // 0x4f4a30 -- Mac CodeWarrior names this TDiplomacyMapView::DrawNames(const VRect&).
   // Draws the per-nation map labels over nationLabelRects234: great powers 0..6,
@@ -85,13 +92,17 @@ public:
   // previously misattributed to TToolBarCluster in the generated symbol table.
   void InitializeDiplomacyMinisterActionControlsAndLabels();
 
+  // Mac CodeWarrior: TDiplomacyMapView::CheckEntanglements(int, eDipAction).
+  // Confirms alliance/annexation offers that would inherit the target's wars. 0x4f74f0.
+  char CheckEntanglements(int targetNationSlot, eDipAction action);
+
   // 0x4f6d90 -- selects a minister action topic: repositions the old/new topic buttons
   // via CaptureLayoutF0, toggles the 'ltab'/'rtab' bracket TPicture controls around the
   // new selection (and their picture-resource id), refreshes the picture-dependent
   // interaction mode, and invalidates the map region. Shared out-of-line method: called
   // from TDiplomacyMapView::DoEvent and TCouncilView::DoEvent (topicIndex from a
   // control-tag scan) and unconditionally with topicIndex=5 from
-  // InvalidateAndRunChildWaitSheet / InvalidateAndForwardTabSwitchToChild.
+  // PoseWarOffer / InvalidateAndForwardTabSwitchToChild.
   void ChangeSelectedActionTopic(int topicIndex);
 
 protected:
@@ -118,7 +129,7 @@ protected:
   // childControlAtB4's established "panel's child control" role -- not a conflict, just
   // two names for the same slot, kept below as a reference alias.
   // actionButtonsA0[5] (the 'offr' button) is also the panel's child control, read in
-  // InvalidateAndForwardTabSwitchToChild / InvalidateAndRunChildWaitSheet. Element 0's
+  // InvalidateAndForwardTabSwitchToChild / PoseWarOffer. Element 0's
   // real class (TInfoPanelView) is a TPanelView sibling, not a TControl descendant, so
   // this array is typed as TView* (their common base) rather than TControl* -- callers
   // cast each element to its own real type at the point of use.

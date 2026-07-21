@@ -1601,7 +1601,7 @@ address|name|symbol|size|type|prototype|provenance
 4ab380|TSuperCivRoster::CreateObject|?CreateObject@TSuperCivRoster@@SGPAVCObject@@XZ|92|function|void * CreateObject(void)|rtti
 4ab400|TSuperCivRoster::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4ab450|TSuperCivRoster::GetRuntimeClass||6|function|undefined GetTSuperCivRosterClassNamePointer()|rtti
-4ab470|TSuperCivRoster::InitializeLedgerRosterPages||325|function|undefined InitializeLedgerRosterPages(class TView * pOwnerContext, int * pBoundsRect, class TView * * pOutDialogView)|
+4ab470|TSuperCivRoster::InitializeLedgerRosterPages||325|function|void InitializeLedgerRosterPages(class TView * pOwnerContext, int * pBoundsRect, class TView * * pOutDialogView)|
 4ab620|TMiniCivLine::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4ab650|DestructTSuperCivRosterAndMaybeFree_Impl||7|function|undefined DestructTSuperCivRosterAndMaybeFree_Impl()|
 4ab670|TMiniCivLine::CreateObject|?CreateObject@TMiniCivLine@@SGPAVCObject@@XZ|80|function|undefined CreateObject()|rtti
@@ -2819,13 +2819,13 @@ address|name|symbol|size|type|prototype|provenance
 4f6b10|TDiplomacyMapView::BuildTurnEventMonochromeMaskBuffers||130|function|undefined BuildTurnEventMonochromeMaskBuffers()|
 4f6bd0|TDiplomacyMapView::BlitDiplomacyMapEventPaletteMaskToSurface||349|function|undefined BlitDiplomacyMapEventPaletteMaskToSurface()|
 4f6d90|Function_004f6d90||513|function|undefined4 Function_004f6d90(void)|
-4f7040|WrapperFor_thunk_WrapperFor_InvalidateCityDialogRectRegion_At004f6d90_At004f7040||45|function|undefined WrapperFor_thunk_WrapperFor_InvalidateCityDialogRectRegion_At004f6d90_At004f7040()|
+4f7040|TDiplomacyMapView::PoseWarOffer||45|function|char PoseWarOffer(short sourceNationSlot, int minorNationSlot, int enemyNationSlot, int promptCode)|
 4f7080|TDiplomacyMapView::PoseOffer||43|function|void __thiscall PoseOffer(short sourceNation, short targetNation, short offerType)|listing+mac-symbol
 4f70c0|TDiplomacyMapView::HandleDiplomacyMapControlTagToggleOrForward||74|function|undefined HandleDiplomacyMapControlTagToggleOrForward()|
 4f7130|TDiplomacyMapView::WrapperFor_thunk_ForwardCityDialogParamToChildSlot48_At004f7130||41|function|undefined WrapperFor_thunk_ForwardCityDialogParamToChildSlot48_At004f7130()|
 4f71a0|TDiplomacyMapView::DrawVoteNuggets||475|function|undefined DrawVoteNuggets()|
 4f7400|ShowDiplomacyActionRejectedNotice||179|function|undefined ShowDiplomacyActionRejectedNotice()|
-4f74f0|TToolBarCluster::ValidateDiplomacyProposalTargetAndShowBlockedDetails||787|function|undefined ValidateDiplomacyProposalTargetAndShowBlockedDetails()|
+4f74f0|TDiplomacyMapView::CheckEntanglements||787|function|char CheckEntanglements(int targetNationSlot, eDipAction action)|
 4f78e0|TPanelView::CreateObject|?CreateObject@TPanelView@@SGPAVCObject@@XZ|107|function|undefined CreateObject()|rtti
 4f7970|TPanelView::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4f79c0|TPanelView::GetRuntimeClass||6|function|undefined GetTPanelViewClassNamePointer()|rtti
@@ -2857,7 +2857,7 @@ address|name|symbol|size|type|prototype|provenance
 4f9350|TOffersPanelView::ForwardParam||153|function|undefined HandleDialogAcceptRejectShortcutAndQueueUiEvent()|
 4f9420|TOffersPanelView::HandleMouseUp||28|function|char HandleMouseUp(const CPoint &point, TToolboxEvent *event, CPoint origin)|
 4f9450|TOffersPanelView::PoseOffer||1194|function|char __thiscall PoseOffer(short sourceNation, short targetNation, short offerType)|listing+mac-symbol
-4f9a60|TToolBarCluster::RunDiplomacyWaitSheetPopupAndAwaitResponse||1014|function|undefined RunDiplomacyWaitSheetPopupAndAwaitResponse()|
+4f9a60|TOffersPanelView::PoseWarOffer||1014|function|char PoseWarOffer(short sourceNationSlot, int minorNationSlot, int enemyNationSlot, int promptCode)|
 4f9f60|TInfoPanelView::CreateObject|?CreateObject@TInfoPanelView@@SGPAVCObject@@XZ|107|function|undefined CreateObject()|rtti
 4f9ff0|TInfoPanelView::GetRuntimeClass||6|function|undefined GetTInfoPanelViewClassNamePointer()|rtti
 4fa010|TInfoPanelView::DoPostCreate||298|function|undefined OrphanCallChain_C6_I49_004875d0(void)|

@@ -1181,6 +1181,9 @@ extern int DAT_006a3914;
 
 // Map-context flavor-text string pool (see global_data_tables.cpp).
 extern char s_szSpaceSeparator_00695794[];
+extern char s_szTurnHistorySeparator_00699320[];
+extern char s_szCombatLossesHeading_00699324[];
+extern char s_szTurnHistoryPrefix_0069b71c[];
 extern char s_szAdmiralPrefix_0069578c[];
 extern char s_szColonSeparator_00696b10[];
 extern char s_mcflavor_00696674[];
@@ -1804,9 +1807,10 @@ extern char s_Data_scores_dat_0069b7fc[];
 extern short g_creditsPlaybackActive_006a4084;
 extern short g_offerDeskSelectionIndexTable_00668568[8];
 // Persistent (X,Y) layout-capture buffer shared by the diplomacy popup family
-// (RunDiplomacyNegotiationPopupAndAwaitResponse, RunDiplomacyWaitSheetPopupAndAwaitResponse,
+// (TOffersPanelView::PoseOffer, TOffersPanelView::PoseWarOffer,
 // InitializeDiplomacyMinisterActionControlsAndLabels) via TView::CaptureLayoutF0, which
 // reads exactly buffer[0]/buffer[1] as ownerLocalX/ownerLocalY.
+extern int g_diplomacyWarOfferSheetPosition_006a2fe0[2];
 extern int g_diplomacyPopupLayoutPosition_006a3020[2];
 // Zero origin used for the hidden dummy view installed by TInfoBarBehavior.
 extern int g_InfoBarDummyOrigin_006A2410[2];

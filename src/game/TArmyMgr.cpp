@@ -1079,6 +1079,50 @@ void TArmyMgr::SetActiveProvinceSelection(short tileIndex) {
   g_pUiRuntimeContext->mapUberPictureF0->InvalidateMap();
 }
 
+// FUNCTION: IMPERIALISM 0x004a46d0
+void TArmyMgr::ClearProvinceSelectionHighlightsForNation(short nationId) {
+  TSortedList* unitList = g_apNationStates[nationId]->militaryUnitList44;
+  int unitCount = unitList->GetCount();
+  for (short ordinal = 1; ordinal <= unitCount; ++ordinal) {
+    TUnit* unit = static_cast<TUnit*>(unitList->GetEntryByOrdinal(ordinal));
+    if (unit->field_8 == 3) {
+      unit->SetOrderModeSlot34(0, -1);
+    }
+  }
+  this->pendingMapActionIndex = -1;
+}
+
+// FUNCTION: IMPERIALISM 0x004a4760
+short TArmyMgr::FindNextSelectableProvinceForNation(short nationId) {
+  short candidate = this->pendingMapActionIndex;
+  if (candidate == -1) {
+    candidate = 0;
+  }
+
+  while (candidate < 0x180) {
+    const TGlobalMapCityScoreRecord& cityRecord = g_pGlobalMapState->cityScoreTable[candidate];
+    short ownerNation = cityRecord.ownerNationCode00;
+    bool ownerPermitsSelection = false;
+    if (ownerNation > -1) {
+      ownerPermitsSelection =
+          ownerNation == nationId ||
+          g_apTerrainTypeDescriptorTable[ownerNation]->IsEncodedNationSlotMinus200Equal(nationId);
+    }
+
+    if (ownerPermitsSelection) {
+      TMilitaryUnit* unit = cityRecord.stationedUnitChain98;
+      while (unit != nullptr) {
+        if (unit->field_8 == 0 && unit->GetUnitMovementClassId() != 0) {
+          return candidate;
+        }
+        unit = static_cast<TMilitaryUnit*>(unit->nextOnTile);
+      }
+    }
+    ++candidate;
+  }
+  return -1;
+}
+
 // FUNCTION: IMPERIALISM 0x004a4870
 undefined TArmyMgr::HandleMapClickByComputedCursorState(short tileIndex, short mode) {
   bool handled = false;

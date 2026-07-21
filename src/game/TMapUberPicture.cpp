@@ -380,12 +380,120 @@ bool TMapUberPicture::OrphanLeaf_NoCall_Ins23_00597a10() {
   }
 }
 
-// Cycles map interaction selection to the next civilian/province/map-order candidate after
-// a handled click. TODO: body not yet ported -- see the declaration comment in
-// TMapUberPicture.h for the re-attribution evidence and why the state-machine body itself
-// is deferred (packed-byte switch over ~15 unresolved helper functions).
 // FUNCTION: IMPERIALISM 0x00597a80
-void TMapUberPicture::CycleMapInteractionSelectionAfterHandledClick() {}
+void TMapUberPicture::CycleMapInteractionSelectionAfterHandledClick() {
+  unsigned char modeCursor = static_cast<unsigned char>(activeUnitCategoryIndex96);
+  unsigned char visitedModes = 0;
+  char selectionResolved = 0;
+  unsigned char previousMode = modeCursor;
+
+  short activeNation = g_pSimMgr->GetActiveNationId();
+  if (!g_pSimMgr->IsNationSlotEligibleForEventProcessing(activeNation)) {
+    visitedModes = 7;
+  }
+
+  while (visitedModes != 7 && selectionResolved == 0) {
+    switch (modeCursor) {
+    case 0: {
+      if (previousMode != 0) {
+        g_pSelectedCivilianOrderState->ClearCivilianSelectionHighlightsForNation(
+            g_pSimMgr->GetActiveNationId());
+        visitedModes |= 1;
+      }
+
+      TCivUnit* civilian = g_pSelectedCivilianOrderState->SelectFirstAvailableCivilianForNation(
+          g_pSimMgr->GetActiveNationId());
+      if (civilian != nullptr) {
+        selectionResolved = 1;
+        if (activeUnitCategoryIndex96 != 0) {
+          EnterMapInteractionOverlayMode(nullptr);
+          SetMapInteractionMode(0);
+        }
+        g_pSelectedCivilianOrderState->SetActiveCivilianSelection(civilian, 1);
+        CenterOn(civilian->tileIndex06);
+        ForceRedraw();
+      } else {
+        modeCursor = 1;
+        previousMode = 0;
+        if (activeUnitCategoryIndex96 != 0) {
+          visitedModes |= 1;
+        }
+      }
+      break;
+    }
+
+    case 1: {
+      if (previousMode != 1) {
+        g_pMapContextActionManager->ClearProvinceSelectionHighlightsForNation(
+            g_pSimMgr->GetActiveNationId());
+        visitedModes |= 2;
+      }
+
+      short province = g_pMapContextActionManager->FindNextSelectableProvinceForNation(
+          g_pSimMgr->GetActiveNationId());
+      if (province != -1) {
+        if (activeUnitCategoryIndex96 != 1) {
+          SetMapInteractionMode(1);
+        }
+        g_pMapContextActionManager->SetActiveProvinceSelection(province);
+        CenterOn(g_pGlobalMapState->cityScoreTable[province].cityTileIndex04);
+        selectionResolved = 1;
+      } else {
+        modeCursor = 2;
+        previousMode = 1;
+        if (activeUnitCategoryIndex96 != 1) {
+          visitedModes |= 2;
+        }
+      }
+      break;
+    }
+
+    case 2:
+      if (TrySelectNextValidMapOrderEntry(0)) {
+        selectionResolved = 1;
+      } else {
+        modeCursor = 0;
+        orderEntryContext98 = nullptr;
+        previousMode = 2;
+        visitedModes |= 4;
+      }
+      break;
+
+    case 3:
+      modeCursor = 0;
+      break;
+    }
+  }
+
+  // A completed traversal wraps the navy chain once: the failed navy scan cleared the
+  // current cursor, so this second scan starts at g_pMapActionContextListHead.
+  if (visitedModes == 7 && selectionResolved == 0) {
+    selectionResolved = TrySelectNextValidMapOrderEntry(0) ? 1 : 0;
+  }
+
+  if (selectionResolved != 0) {
+    return;
+  }
+
+  switch (activeUnitCategoryIndex96) {
+  case 0:
+    g_pSelectedCivilianOrderState->selectedEntry = nullptr;
+    break;
+  case 1:
+    g_pMapContextActionManager->SetActiveProvinceSelection(-1);
+    SetMapInteractionMode(3);
+    return;
+  case 2:
+    SetMapInteractionMode(2);
+    InvalidateMapRegionForEntryIfUiPassive(orderEntryContext98);
+    orderEntryContext98 = nullptr;
+    InvalidateMapRegionForEntryIfUiPassive(nullptr);
+    RefreshMapOrderEntryPanel(nullptr);
+    SetMapInteractionMode(3);
+    return;
+  }
+  SetMapInteractionMode(3);
+}
 
 // FUNCTION: IMPERIALISM 0x00597f80
 void TMapUberPicture::InspectTaskForceDialog(TTaskForce* taskForce) {
@@ -513,6 +621,13 @@ void TMapUberPicture::InspectTaskForceDialog(TTaskForce* taskForce) {
                   previousContext)
             : 0;
     RefreshMapOrderEntryPanel(refreshed);
+  }
+}
+
+// FUNCTION: IMPERIALISM 0x00598840
+void TMapUberPicture::InvalidateMapRegionForEntryIfUiPassive(TZone* zone) {
+  if (invalidationFlag94 == 0) {
+    goodGoldTagControlA4->InvalidateZone(zone);
   }
 }
 
@@ -753,6 +868,67 @@ void TMapUberPicture::NavalIntelligenceDialog(TZone* zone, short nation,
   dialog->PoseModally();
   dialog->Close();
   dialog->Free();
+}
+
+// FUNCTION: IMPERIALISM 0x00599770
+void TMapUberPicture::SelectNextValidMapOrderEntryFromCursor(char includeCurrent) {
+  if (activeUnitCategoryIndex96 != 2) {
+    return;
+  }
+
+  g_pActiveMapOrderContext->EnsureSelectedTaskForceForOrderOwnerAndRefresh(nullptr);
+  TZone* candidate = orderEntryContext98;
+  if (candidate != nullptr && includeCurrent == 0) {
+    candidate = candidate->prev18;
+  }
+  if (candidate == nullptr) {
+    candidate = g_pMapActionContextListHead;
+  }
+
+  while (candidate != nullptr) {
+    if (candidate->CanDisplayMapOrderEntryInCurrentContext(-1, 0)) {
+      SetMapInteractionMode(2);
+      InvalidateMapRegionForEntryIfUiPassive(orderEntryContext98);
+      orderEntryContext98 = candidate;
+      InvalidateMapRegionForEntryIfUiPassive(candidate);
+      TTaskForce* taskForce =
+          g_pActiveMapOrderContext->EnsureSelectedTaskForceForOrderOwnerAndRefresh(candidate);
+      RefreshMapOrderEntryPanel(taskForce);
+      return;
+    }
+    candidate = candidate->prev18;
+  }
+  orderEntryContext98 = nullptr;
+}
+
+// FUNCTION: IMPERIALISM 0x005998a0
+bool TMapUberPicture::TrySelectNextValidMapOrderEntry(char includeCurrent) {
+  g_pActiveMapOrderContext->EnsureSelectedTaskForceForOrderOwnerAndRefresh(nullptr);
+
+  TZone* candidate = orderEntryContext98;
+  if (candidate != nullptr && includeCurrent == 0) {
+    candidate = candidate->prev18;
+  }
+  if (candidate == nullptr) {
+    candidate = g_pMapActionContextListHead;
+  }
+
+  while (candidate != nullptr) {
+    if (candidate->CanDisplayMapOrderEntryInCurrentContext(-1, 0)) {
+      SetMapInteractionMode(2);
+      InvalidateMapRegionForEntryIfUiPassive(orderEntryContext98);
+      orderEntryContext98 = candidate;
+      InvalidateMapRegionForEntryIfUiPassive(candidate);
+      TTaskForce* taskForce =
+          g_pActiveMapOrderContext->EnsureSelectedTaskForceForOrderOwnerAndRefresh(candidate);
+      RefreshMapOrderEntryPanel(taskForce);
+      return true;
+    }
+    candidate = candidate->prev18;
+  }
+
+  orderEntryContext98 = nullptr;
+  return false;
 }
 
 // FUNCTION: IMPERIALISM 0x005999f0
