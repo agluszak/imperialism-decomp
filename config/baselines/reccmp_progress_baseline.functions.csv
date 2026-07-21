@@ -4450,7 +4450,7 @@ address|matching|name
 0x57d8d0|1.0|TSimMgr::CopyScenarioNationSetupIntoFlowState
 0x57d950|1.0|TSimMgr::IncrementQuarterGateTick2C
 0x57d970|1.0|TSimMgr::PostMainWindowCommand100ForTurnFlow
-0x57d990|0.1941747572815534|TSimMgr::SetGlobalTurnStateCodeIfAllowed
+0x57d990|0.2803738317757009|TSimMgr::SetGlobalTurnStateCodeIfAllowed
 0x57da70|0.1986754966887417|TSimMgr::AdvanceGlobalTurnStateMachine
 0x57f0e0|1.0|TCountry::IsNationProfileInMinorRange100To199
 0x57f110|0.3333333333333333|TSimMgr::IsTurnFlowPhaseOutsideRange4To5

@@ -48,6 +48,21 @@ int __cdecl TouchSessionActiveNationId(void);
 void __cdecl ResetPortZoneGlobalContextCounters(void);
 void RegenerateAllMapActionContextStatusCodes();
 
+static inline bool IsNationTerrainEligible(short nationSlot) {
+  if (nationSlot == -1) {
+    return false;
+  }
+  TCountry* terrain = g_apTerrainTypeDescriptorTable[nationSlot];
+  if (terrain == nullptr) {
+    return false;
+  }
+  if (nationSlot > 6) {
+    return true;
+  }
+  const short code = terrain->encodedNationSlot;
+  return code < 100 || code >= 200;
+}
+
 // FUNCTION: IMPERIALISM 0x004153a0
 int ReadSettingsPrefIntByIndex(int index, int defaultValue) {
   CString key;
@@ -840,32 +855,8 @@ void TSimMgr::PostMainWindowCommand100ForTurnFlow() {
 
 // FUNCTION: IMPERIALISM 0x0057d990
 void TSimMgr::SetGlobalTurnStateCodeIfAllowed(int turnStateCode) {
-  short nationSlot = activeNationSlot;
-  bool allowStateChange;
-  if (nationSlot == -1) {
-    allowStateChange = false;
-  } else {
-    TCountry* terrainDescriptor = g_apTerrainTypeDescriptorTable[nationSlot];
-    if (terrainDescriptor == 0) {
-      allowStateChange = false;
-    } else {
-      if (nationSlot < 7) {
-        short field0e = terrainDescriptor->encodedNationSlot;
-        if (terrainDescriptor == 0 || field0e < 100 || field0e > 199) {
-          allowStateChange = false;
-        } else {
-          allowStateChange = true;
-        }
-        if (allowStateChange) {
-          allowStateChange = false;
-          goto check_turn_state_code;
-        }
-      }
-      allowStateChange = true;
-    }
-  }
-check_turn_state_code:
-  if (!allowStateChange) {
+  bool allowStateChange = IsNationTerrainEligible(activeNationSlot);
+  if (allowStateChange == false) {
     switch (turnStateCode) {
     case 100:
     case 0x67:

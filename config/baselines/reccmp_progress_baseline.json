@@ -2,7 +2,7 @@
   "aligned_fun_count": 3326,
   "aligned_vs_original_pct": 42.62463155196719,
   "aligned_vs_paired_pct": 43.80927291886196,
-  "avg_matching_pct": 72.18024643192558,
+  "avg_matching_pct": 72.18139102194674,
   "compared_fun_count": 7531,
   "coverage_pct": 97.2959118287838,
   "dat_orig_only_count": 1599,
@@ -12,8 +12,8 @@
   "flo_orig_only_count": 225,
   "flo_recomp_only_count": 0,
   "git_branch": "agent/tsimmgr-secondary-nation-rebuild",
-  "git_commit": "68ec9411fd968a67a9c104969364525bdc9ca7c0",
-  "git_commit_date": "2026-07-21T13:08:15+02:00",
+  "git_commit": "db29ada39bac7b72753e914370f463560292ff51",
+  "git_commit_date": "2026-07-21T13:15:52+02:00",
   "global_coverage_pct": 23.341363973313566,
   "global_orig_only_count": 8273,
   "global_recomp_only_count": 6792,
@@ -61,7 +61,7 @@
   "target": "IMPERIALISM",
   "template_alias_recognized_count": 4,
   "template_canonical_paired_count": 4,
-  "timestamp_utc": "2026-07-21T11:15:20+00:00",
+  "timestamp_utc": "2026-07-21T11:22:39+00:00",
   "wid_orig_only_count": 0,
   "wid_recomp_only_count": 2
 }
