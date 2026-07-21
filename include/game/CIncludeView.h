@@ -65,6 +65,9 @@ protected:
   void OnDraw(CDC* pDC) override;                     // 0x00482c90
 
   afx_msg BOOL OnEraseBkgnd(CDC* pDC); // 0x004835a0
+  // WM_CTLCOLOR: bind the shared indexed palette for native edit controls and apply the
+  // owning TControl's text color while returning the stock hollow brush.
+  afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor); // 0x00483660
   // Custom message 0x4ef from TIncludeView::DoPostCreate / turn-event rebuilds:
   // wParam 1 = re-propagate this view as the tree's native window and re-resolve 'main';
   // wParam 0 = detach the dialog context (one-shot assert if the gate flag is clear).
@@ -74,6 +77,13 @@ protected:
   // WM_LBUTTONUP: complete the click — slot-0x48 mouse-up dispatch into the dialog tree,
   // then end the global mouse capture. 0x00483b00
   afx_msg void OnLButtonUp(UINT nFlags, CPoint point); // 0x00483b00
+  // WM_LBUTTONDBLCLK: let MFC default-route the message only while UI input is enabled.
+  afx_msg void OnLButtonDblClk(UINT nFlags, CPoint point); // 0x00483b70
+  // Private frame commands used to refresh the wait cursor and force an immediate repaint.
+  afx_msg void OnRefreshWaitCursorCommand(); // 0x00483d60, command 0x8011
+  afx_msg void OnUpdateWindowCommand();      // 0x00483d90, command 0x8012
+  // WM_SETCURSOR is deliberately left to the MFC default dispatcher.
+  afx_msg BOOL OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message); // 0x00483ef0
   // WM_RBUTTONDOWN/UP use the same hosted-tree dispatch as the left button. The down
   // event carries mouseButton24=1; the up event closes the shared capture state.
   afx_msg void OnRButtonDown(UINT nFlags, CPoint point); // 0x00483f10

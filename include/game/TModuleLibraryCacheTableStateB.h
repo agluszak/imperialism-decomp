@@ -70,6 +70,10 @@ public:
   // Lazily build and return the shared palette from backdrop bitmap 0x3b6. 0x004995c0
   CDibPal* EnsureDefaultDibPalette();
 
+  // Convert a PALETTEINDEX color through the shared DIB palette to PALETTERGB; leave
+  // literal COLORREF values unchanged. 0x0049ace0
+  COLORREF ResolvePaletteIndexColor(unsigned int packedColor);
+
   // Resolve the shared default LOGPALETTE build buffer:
   // EnsureDefaultDibPalette()->m_pLogPalette. Real __thiscall at 0x004995a0 (Ghidra's
   // "TMacViewMgr::WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At004995a0"; the

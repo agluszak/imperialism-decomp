@@ -512,6 +512,7 @@ address|matching|name
 0x483530|0.08|WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At00483530
 0x4835a0|1.0|CIncludeView::OnEraseBkgnd
 0x4835e0|0.0|SelectPaletteAndResolveHandleMapEntry_004835e0
+0x483660|0.8623853211009175|CIncludeView::OnCtlColor
 0x483720|1.0|CIncludeView::OnActivateView
 0x483750|0.9120879120879121|CIncludeView::OnInitialUpdate
 0x4838b0|0.9487179487179487|CIncludeView::OnMouseMove
@@ -519,9 +520,13 @@ address|matching|name
 0x483ab0|0.5|WrapperFor_FreeHeapBufferIfNotNull_At00483ad0_Impl
 0x483ad0|0.9090909090909091|TUiEvent::`scalar deleting destructor'
 0x483b00|0.84375|CIncludeView::OnLButtonUp
+0x483b70|1.0|CIncludeView::OnLButtonDblClk
 0x483ba0|0.017543859649122806|WrapperFor_AllocateAndLinkBlockHead_At00483ba0
+0x483d60|1.0|CIncludeView::OnRefreshWaitCursorCommand
+0x483d90|1.0|CIncludeView::OnUpdateWindowCommand
 0x483db0|1.0|CIncludeView::PreCreateWindow
 0x483e80|1.0|CIncludeView::OnCommand
+0x483ef0|1.0|CIncludeView::OnSetCursor
 0x483f10|0.2558139534883721|CIncludeView::OnRButtonDown
 0x483ff0|0.84375|CIncludeView::OnRButtonUp
 0x484060|1.0|CIncludeView::GetUiInteractiveFlag90
@@ -1191,7 +1196,7 @@ address|matching|name
 0x496450|1.0|TransparentBlitBitmapUsingMaskedRasterOps
 0x4967e0|1.0|TransparentBlitBitmapRegionUsingMaskedRasterOps
 0x496b80|0.03333333333333333|BlitBitmapResourceToTemporaryCompatibleDcAndPresent
-0x496d40|0.1836734693877551|BlitRectWithOptionalTransparency
+0x496d40|0.1833616298811545|BlitRectWithOptionalTransparency
 0x497230|0.27586206896551724|InitializeGlobalRectDefaultsIfUninitialized
 0x4972a0|1.0|InitializeTurnOrderNavigationDialogByViewportSize_Impl
 0x4972c0|1.0|ReturnConstantTrueQuickDrawFlag
@@ -1250,6 +1255,7 @@ address|matching|name
 0x49a6c0|0.0|TToolBarCluster::LoadStringOrThrow
 0x49a7f0|0.027777777777777776|FilterStringByCharacterTypeFlag4AndAppend
 0x49a910|0.019417475728155338|renderTemplateOrExpandTokens
+0x49ace0|0.8260869565217391|TModuleLibraryCacheTableStateB::ResolvePaletteIndexColor
 0x49ad50|0.02666666666666667|RemoveHashIndexedRecordByShortKey
 0x49ae30|0.9791666666666666|CMap<unsigned short,unsigned short,CacheRecord *,CacheRecord *>::~CMap<unsigned short,unsigned short,CacheRecord *,CacheRecord *>
 0x49aef0|0.01015228426395939|TNetMgr::SerializeNodeMapEntries_Key16Value32_WithArchive
@@ -3028,7 +3034,7 @@ address|matching|name
 0x50bbc0|0.8888888888888888|TMacViewMgr::OrphanCallChain_C4_I35_0050bbc0
 0x50bc50|0.6026200873362445|TMacViewMgr::SyncSellTaggedChildControlWithNationState
 0x50be30|1.0|TMacViewMgr::MakeBookDialog
-0x50bea0|0.21263062244434347|TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets
+0x50bea0|0.2044525215810995|TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets
 0x50d310|0.5625|TMacViewMgr::DispatchTurnEvent3B8AndWaitForCompletionFlag
 0x50d360|0.46551724137931033|TMacViewMgr::CreateCityBuildingDialogBySlot
 0x50d470|0.3880597014925373|TMacViewMgr::OrphanCallChain_C10_I80_0050d470
@@ -4046,8 +4052,8 @@ address|matching|name
 0x553840|0.6697247706422018|TTaskForce::SetMapOrderType5AndQueue
 0x5539c0|1.0|TTaskForce::RefreshTaskForceSelectionFlagsForCurrentNationOrders
 0x553a50|1.0|TTaskForce::ApplyTaskForceSelectionModeForCurrentNationOrders
-0x553b10|0.41379310344827586|TTaskForce::HasNoMapOrderEntryChildrenQueued
-0x553b50|0.5454545454545454|TTaskForce::HasActiveMapOrderEntryChildren
+0x553b10|0.4827586206896552|TTaskForce::HasNoMapOrderEntryChildrenQueued
+0x553b50|0.5818181818181818|TTaskForce::HasActiveMapOrderEntryChildren
 0x553bc0|0.6536585365853659|TTaskForce::FindOrCreateChildOrderLink
 0x553d40|0.02857142857142857|ObjectPool::RemoveTaskForceOrderNodeById
 0x553e30|1.0|TTaskForce::RecomputeMapOrderChildAggregateMetric
@@ -4056,7 +4062,7 @@ address|matching|name
 0x5540b0|0.0|TScatteredShipsMission::ApplyMapOrderTypeAndQueue
 0x554300|0.5416666666666666|TTaskForce::ResolveMapOrderCommandFromActionContext
 0x554460|0.8125|TTaskForce::ResolveMapOrderCommandFromProvinceContext
-0x554590|0.5569620253164557|TTaskForce::CanQueueMapOrderForProvinceContext
+0x554590|0.5822784810126582|TTaskForce::CanQueueMapOrderForProvinceContext
 0x554660|0.9026548672566371|TTaskForce::RequeueMapOrderEntry
 0x5547d0|0.7301587301587301|TTaskForce::CancelOrders
 0x5548e0|0.9565217391304348|TTaskForce::RecomputeTaskForceAverageOrderScore
@@ -4070,7 +4076,7 @@ address|matching|name
 0x554e70|0.0|TToolBarCluster::BuildNavyOrderStatusLineText
 0x555090|0.3829787234042553|TTaskForce::PruneNavyOrderIfUnserviceableOrNoChildren
 0x5551d0|0.37104072398190047|TTaskForce::GetAuthority
-0x555420|0.5546666666666666|TTaskForce::ResolveTaskForceOrderConflictAndPickCandidate
+0x555420|0.5653333333333334|TTaskForce::ResolveTaskForceOrderConflictAndPickCandidate
 0x555720|0.24899598393574296|TTaskForce::ShouldAttemptMapOrderPairResolution
 0x555920|0.39009287925696595|TTaskForce::TryMarkLosingMapOrderEntryFromForceBalance
 0x555c20|0.5945945945945946|TTaskForce::ComputeTaskForceOrderTieBreakScore
