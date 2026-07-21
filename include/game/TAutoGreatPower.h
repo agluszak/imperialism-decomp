@@ -172,7 +172,7 @@ public:
   float activeMissionPressureAverageB6c;
 };
 
-bool SelectBestCityDevelopmentFromResourcePools(short nationSlot, int* resourcePools,
+bool SelectBestCityDevelopmentFromResourcePools(int nationSlot, int* resourcePools,
                                                 TMilitaryUnit** bestUnitByType,
                                                 char* selectedIsIndustry, char* selectedIsUpgrade,
                                                 int* selectedSlot, int unused,

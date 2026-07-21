@@ -949,11 +949,9 @@ TTaskForce* TZone::CreateTaskForceFromNavyOrdersForNationIfEligible(short nation
     for (TShip* ship = GetNavyPrimaryOrderListHead(); ship != nullptr; ship = ship->nextOlder24) {
       if (ship->field08 == this && ship->ownerNationSlot14 == resolvedNation &&
           ship->ownerOrderEntry0c == 0) {
-        // The TTaskForce ctor's contextAnchor (a TZone*, see TTaskForce.h) carries this
-        // zone, passed as the ctor's opaque int arg. requiredCount seeds from the raw
-        // incoming nation arg, which the original keeps distinct from the active-nation-
-        // resolved slot used above.
-        TTaskForce* taskForce = new TTaskForce(reinterpret_cast<int>(this), nation);
+        // requiredCount seeds from the raw incoming nation arg, which the original keeps
+        // distinct from the active-nation-resolved slot used above.
+        TTaskForce* taskForce = new TTaskForce(this, nation);
         taskForce->NoOpTaskForceInitSlot();
         taskForce->RefreshTaskForceSelectionFlagsForCurrentNationOrders(0);
         taskForce->RecomputeTaskForceAverageOrderScore();

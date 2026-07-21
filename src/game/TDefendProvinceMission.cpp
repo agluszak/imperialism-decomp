@@ -103,7 +103,7 @@ TMilitaryUnit* StationedUnitChainAt(int regionIndex) {
 }
 
 float NormalizeFiveComponentPriorityVector(const float* vector, float sum,
-                                           const unsigned short* lookupTable) {
+                                           const short* lookupTable) {
   if (sum == static_cast<float>(g_Recompute_Nation_Order_LookupTable_0065A9F0)) {
     return g_Recompute_Nation_Order_LookupTable_0065A9E8;
   }
@@ -133,7 +133,8 @@ float TDefendProvinceMission::ComputeCrossNationSupportVectorScore(int nodeConte
   float vector[5] = {0.0f, 0.0f, 0.0f, 0.0f, 0.0f};
   int remainingBudgetByNation[7] = {0, 0, 0, 0, 0, 0, 0};
 
-  short unitOrderWeight = GetProvinceUnitOrderWeight(static_cast<short>(nodeContext));
+  short unitOrderWeight =
+      g_pGlobalMapState->GetProvinceUnitOrderWeight(static_cast<short>(nodeContext));
 
   char* nationContextTable = reinterpret_cast<char*>(g_pGlobalMapState->cityScoreTable);
   int sourceNation =
@@ -206,8 +207,7 @@ float TDefendProvinceMission::ComputeCrossNationSupportVectorScore(int nodeConte
 
   char resourceTypeByte = nationContextTable[nodeContext * 0xa8 + 3];
   int lookupGroup = (resourceTypeByte > 0) ? 2 : 1;
-  const unsigned short* lookupTable =
-      g_awTacticalCompositionReferenceProfiles_00697870 + lookupGroup * 5;
+  const short* lookupTable = g_awTacticalCompositionReferenceProfiles_00697870 + lookupGroup * 5;
   return NormalizeFiveComponentPriorityVector(vector, sum, lookupTable);
 }
 
@@ -215,7 +215,8 @@ float TDefendProvinceMission::ComputeCrossNationSupportVectorScore(int nodeConte
 float TDefendProvinceMission::ComputeLocalSupportVectorScore(int nodeContext) {
   float vector[5] = {0.0f, 0.0f, 0.0f, 0.0f, 0.0f};
 
-  short unitOrderWeight = GetProvinceUnitOrderWeight(static_cast<short>(nodeContext));
+  short unitOrderWeight =
+      g_pGlobalMapState->GetProvinceUnitOrderWeight(static_cast<short>(nodeContext));
 
   for (TMilitaryUnit* unit = StationedUnitChainAt(nodeContext); unit != 0;
        unit = static_cast<TMilitaryUnit*>(unit->nextOnTile)) {
@@ -376,7 +377,7 @@ void TDefendProvinceMission::NoOpSlot3C() {
   char* cityScoreTable = reinterpret_cast<char*>(g_pGlobalMapState->cityScoreTable);
   char tileByte3 = cityScoreTable[3 + field_14 * 0xa8];
   int offset = (tileByte3 < 1) ? 0 : 15;
-  unsigned short* psVar5 = g_awTacticalCompositionReferenceProfiles_00697870 + offset;
+  short* psVar5 = g_awTacticalCompositionReferenceProfiles_00697870 + offset;
 
   for (int j = 0; j < 5; ++j) {
     short val = psVar5[j];

@@ -14,8 +14,8 @@ class TNavyMission : public TMission {
 public:
   TZone* targetZone14;                 // +0x14
   TZone* targetZone18;                 // +0x18
-  int navyField1c;                     // +0x1c
-  TObject* navyField20;                // +0x20
+  TShip* selectedOrder1c;              // +0x1c selected primary navy-order node
+  TTaskForce* taskForce20;             // +0x20 combined task-force/map-order entry
   TMapOrderChildLinkNode* orderList24; // +0x24 -- head of child order-node chain
   int navyState28;            // +0x28 target-selection state (0 -> zone18 active, 1..2 -> zone14)
   float resourceWeights2c[4]; // +0x2c
@@ -59,9 +59,8 @@ public:
 
   // TNavyMission-introduced virtuals (TMission abstract slots 0x27+ / offset 0x9c+).
   // `pMapOrderEntry` is opaque here (RET 4 confirms one stack arg, real base body is a
-  // pure no-op) -- overrides interpret it as the map-order entry the enclosing
-  // MissionSlot44 dispatch passed (navyField20), concretely a TTaskForce* in every
-  // known override (TControlSeaZoneMission/TBlockadePortMission/TBeachheadMission).
+  // pure no-op) -- overrides interpret it as the task-force/map-order entry the
+  // enclosing MissionSlot44 dispatch passed (taskForce20).
   virtual void NoOpSlot9C(void* pMapOrderEntry); // slot 0x27 0x5354c0
   // Returns the best neighbor port zone for the current nation (delegates to
   // targetZone14->SelectBestPrimaryNeighborForNationDiplomacyMask); every override
@@ -71,12 +70,15 @@ public:
   // targetZone18).
   virtual TZone* RefreshMissionPortZoneContextForNation(); // slot 0x28 0x536fa0
   virtual void
-  ConsolidateMissionOrderEntriesByTargetAndQueue(int* pContextAnchor); // slot 0x29 0x5371d0
-  virtual void
-  QueueMissionOrdersByPriorityForContext(int pContextAnchor,
-                                         int* ppSelectedChildNode); // slot 0x2a 0x537090
+  ConsolidateMissionOrderEntriesByTargetAndQueue(TZone* contextAnchor); // slot 0x29 0x5371d0
+  virtual void QueueMissionOrdersByPriorityForContext(TZone* contextAnchor,
+                                                      TShip** selectedOrder); // slot 0x2a 0x537090
   // Selects the active target zone from lifecycle state28 (0 -> zone18, 1..2 -> zone14).
   virtual TZone* GetActiveTargetZoneByState28(); // slot 0x2b 0x537060
+
+  // Mac: CombineForce(TZone*, TTaskForce*&). Reuses or creates the task force for
+  // `contextAnchor`, then moves every matching mission order into it.
+  void CombineForce(TZone* contextAnchor, TTaskForce*& taskForce); // 0x536d60
 
   static float ComputeOrderDistributionSimilarityScoreForExactSourceNation(int sourceNation,
                                                                            TZone* nodeContext);
@@ -93,7 +95,7 @@ public:
   float ComputeOrderDistributionSimilarityScoreForZoneWithBaseProfile(TZone* nodeContext);
   // Builds a 4-category priority vector from every existing orderList24 ship plus
   // `candidateOrder` (each contribution weighted by a per-ship distance-decay factor,
-  // see g_NavyOrderDistanceDecayWeightTable_006978c8), then scores it against
+  // see g_MissionOrderDistanceDecayWeightTable_006978c8), then scores it against
   // resourceWeights2c via a Bhattacharyya-coefficient-style similarity:
   // sum(sqrt(resourceWeights2c[i] * vector[i])) / sum(resourceWeights2c[i]). Used to
   // evaluate how well adding `candidateOrder` would fit this mission's target profile.
@@ -116,13 +118,10 @@ public:
   // Builds a per-category priority vector over every orderList24 ship: a ship counts if
   // it's within `distanceThreshold` hops of `nearZone` (or unconditionally if `nearZone`
   // is null), OR (when farther than that) if it's within `distanceThreshold` hops of
-  // `farZone` instead (when farZone is non-null and != nearZone). farZone is TObject*
-  // because navyField20 (the usual caller-supplied value) is genuinely dual-typed -- see
-  // its own field comment -- so the TZone cast is confined to this one call site.
+  // `farZone` instead (when farZone is non-null and != nearZone).
   // 0x537900.
   void BuildNavyOrderCategoryVectorForNationWithExclusion(float* vector, TZone* nearZone,
-                                                          short distanceThreshold,
-                                                          TObject* farZone);
+                                                          short distanceThreshold, TZone* farZone);
   // Builds a per-category priority vector over every orderList24 ship, each weighted by
   // (stockLevel1c/normalizationBase) * a distance-decay factor (0.8^hopDistance to the
   // active target zone, clamped to index 5) -- same per-ship math as
@@ -131,7 +130,7 @@ public:
   void BuildMissionQueuedOrderCategoryVector(float* vector);
   // Same shape as ComputeNavyOrderCategorySimilarityRatio (BuildNavyOrderCategoryVectorFor-
   // NationWithExclusion + a sqrt-coefficient tail), but always uses targetZone14 as the near
-  // zone and targetZone18 as the far zone (instead of navyField20), with an explicit caller-
+  // zone and targetZone18 as the far zone, with an explicit caller-
   // supplied distance threshold instead of a fixed 0/1. 0x537eb0.
   float ComputeMissionQueuedOrderSimilarityForTargetNation(short distanceThreshold);
 

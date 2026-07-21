@@ -156,9 +156,9 @@ void TAttackProvinceMission::MissionSlot44() {
     TryResolveTargetTerrainClass();
   }
 
-  short contextId = GetMissionTargetContextIdFromField14();
+  short contextId = GetPresentLocation();
   float vector[5];
-  AccumulateMissionUnitPriorityVectorWithOptionalFilter(vector, contextId, 0);
+  ProjectEquipage(vector, contextId, 0);
 
   float total = 0.0f;
   float weighted = 0.0f;
@@ -265,7 +265,7 @@ void TAttackProvinceMission::ResetValue0CToZero() {
 // Shared with TInvadeMission (COMDAT-folded body).
 // FUNCTION: IMPERIALISM 0x0053e290
 void TAttackProvinceMission::NoOpSlot3C() {
-  short unitOrderWeight = GetProvinceUnitOrderWeight(targetProvince30);
+  short unitOrderWeight = g_pGlobalMapState->GetProvinceUnitOrderWeight(targetProvince30);
 
   float vector[5] = {0.0f, 0.0f, 0.0f, 0.0f, 0.0f};
   if (targetProvince30 >= 0 && targetProvince30 <= 0x17f) {

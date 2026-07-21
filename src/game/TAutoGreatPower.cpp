@@ -1761,7 +1761,7 @@ void TAutoGreatPower::UpdateTrackedEntryEligibilityByClassMaskAndRatio(int unuse
 }
 
 // FUNCTION: IMPERIALISM 0x00535b00
-bool SelectBestCityDevelopmentFromResourcePools(short nationSlot, int* resourcePools,
+bool SelectBestCityDevelopmentFromResourcePools(int nationSlot, int* resourcePools,
                                                 TMilitaryUnit** bestUnitByType,
                                                 char* selectedIsIndustry, char* selectedIsUpgrade,
                                                 int* selectedSlot, int unused,
