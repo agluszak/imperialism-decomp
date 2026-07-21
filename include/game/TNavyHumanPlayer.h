@@ -24,7 +24,7 @@ public:
   // slot 0x0f AddTacticalUnitToUnitListHead inherited unchanged (0x59eea0)
   // slot 0x10 AlwaysTrueTacticalPredicate10 inherited unchanged (0x59adf0)
   // slot 0x11 ProceedAfterBattleIntroAccepted inherited unchanged (0x59ae10)
-  virtual undefined ConstructTNavyHumanPlayerBaseState(); // slot 0x12 0x59efc0
+  virtual void DeploymentClick(int tileIndex); // slot 0x12 0x59efc0
 
   TNavyHumanPlayer();
 };

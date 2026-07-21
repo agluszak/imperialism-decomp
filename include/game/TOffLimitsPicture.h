@@ -119,7 +119,7 @@ public:
   // slot 0x6d SetTextStyleAndMaybeRefresh inherited unchanged (0x48e7d0)
   // slot 0x6e SetTextColorAndMaybeRefresh inherited unchanged (0x48e7a0)
   // slot 0x6f LogUnhandledDialogMethodAndReturnFalse inherited unchanged (0x4294a0)
-  // slot 0x70 SetControlStateFlagAndMaybeRefresh inherited unchanged (0x48e810)
+  // slot 0x70 HiliteState inherited unchanged (0x48e810)
   // slot 0x71 ResetPictureResourceEntry inherited unchanged (0x48f520)
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
   // Ground truth (RET 0x4) proves the previous 0-arg declaration was a poison-pill

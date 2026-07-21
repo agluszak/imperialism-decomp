@@ -22,7 +22,7 @@ TPictureButton::TPictureButton() : TPicture(), timingWord92(7000) {}
 TPictureButton::~TPictureButton() {}
 
 // FUNCTION: IMPERIALISM 0x00570870
-void TPictureButton::SetControlStateFlagAndMaybeRefresh(bool enabledState, bool refreshNow) {
+void TPictureButton::HiliteState(unsigned char enabledState, unsigned char refreshNow) {
   if (static_cast<unsigned char>(enabledState) != this->controlState64) {
     this->controlState64 = enabledState;
     this->SetEnabled(enabledState, true);

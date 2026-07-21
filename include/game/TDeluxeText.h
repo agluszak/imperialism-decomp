@@ -118,7 +118,7 @@ public:
   // slot 0x6d SetTextStyleAndMaybeRefresh inherited unchanged (0x48e7d0)
   // slot 0x6e SetTextColorAndMaybeRefresh inherited unchanged (0x48e7a0)
   // slot 0x6f LogUnhandledDialogMethodAndReturnFalse inherited unchanged (0x4294a0)
-  // slot 0x70 SetControlStateFlagAndMaybeRefresh inherited unchanged (0x48e810)
+  // slot 0x70 HiliteState inherited unchanged (0x48e810)
   // slot 0x71 SetTextAlignmentAndMaybeRefresh inherited unchanged (0x48ff70)
   // slot 0x72 SetTextAndMaybeRefresh inherited unchanged (0x48fe60)
   // slot 0x73 SetTextFromStringResource inherited unchanged (0x48fed0)

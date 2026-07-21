@@ -47,12 +47,11 @@ void TCouncilTickerAnimation::ConstructTCouncilTickerAnimationBaseState(TCouncil
 }
 
 // FUNCTION: IMPERIALISM 0x0049ffe0
-undefined TCouncilTickerAnimation::AdvanceAnimationTickAndInvalidateOnFrameFlip() {
+void TCouncilTickerAnimation::Tick() {
   int tick = tickCounter10 + 1;
   tickCounter10 = tick;
   if (tick == ticksPerFrame14) {
     static_cast<TCouncilView*>(ownerView04)->AdvanceCivilianTerrainSelectionStep();
     tickCounter10 = 0;
   }
-  return static_cast<undefined>(tick);
 }

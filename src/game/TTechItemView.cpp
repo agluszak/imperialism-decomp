@@ -205,12 +205,12 @@ void TTechItemView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEv
       POINT placement;
       g_pUiRuntimeContext->ComputeTurnEventDialogPlacementByCode(node, &placement);
       historyView->CaptureLayoutF0(reinterpret_cast<int*>(&placement), 0);
-      node->SetField84(1);
-      TDialogBehavior* behavior = node->GetEmbeddedDialogBehavior();
+      node->SetModality(1);
+      TDialogBehavior* behavior = node->GetDialogBehavior();
       if (behavior != nullptr) {
         behavior->defaultCommandCode = 0x6f6b6179; // 'okay'
       }
-      node->ExecuteViewModalStateWithPushPopChain();
+      node->PoseModally();
       node->Close();
       node->Free();
     }

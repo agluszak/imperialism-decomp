@@ -296,12 +296,12 @@ char TLanguageMgr::PickGender(const char* name) const {
   }
 
   form->SetSelectedTextOptionByTag(firstTag, false);
-  dialog->SetField84(1);
-  TDialogBehavior* behavior = dialog->GetEmbeddedDialogBehavior();
+  dialog->SetModality(1);
+  TDialogBehavior* behavior = dialog->GetDialogBehavior();
   if (behavior != 0) {
     behavior->defaultCommandCode = 0x6f6b6179;
   }
-  dialog->ExecuteViewModalStateWithPushPopChain();
+  dialog->PoseModally();
 
   unsigned char selectedIndex = static_cast<unsigned char>(form->selectedTag88) - '0';
   char rowBase = selectedIndex < primaryRowCount ? firstPrimaryRow : firstExtraRow;

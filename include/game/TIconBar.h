@@ -15,6 +15,9 @@ public:
   virtual void SetNumIcons(short numIcons);
   virtual void SetNumIcons(short numIcons, unsigned char refreshNow);
 
+  void IIconBar(TView* panel, int* position, int* size, int layoutParam4, int layoutParam5,
+                short pictureId, int numIcons);
+
   // TNoHilitePicture's own slice ends at 0x94 (see TMegaPicture.h). RTTI oracle
   // confirms sizeof(TIconBar) == 0x9c.
   //

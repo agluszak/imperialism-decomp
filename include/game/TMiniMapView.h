@@ -126,7 +126,7 @@ public:
   // slot 0x6d SetTextStyleAndMaybeRefresh inherited unchanged (0x48e7d0)
   // slot 0x6e SetTextColorAndMaybeRefresh inherited unchanged (0x48e7a0)
   // slot 0x6f LogUnhandledDialogMethodAndReturnFalse inherited unchanged (0x4294a0)
-  // slot 0x70 SetControlStateFlagAndMaybeRefresh inherited unchanged (0x48e810)
+  // slot 0x70 HiliteState inherited unchanged (0x48e810)
   // TControl ends at 0x84; this object's own slice runs 0x84-0x9f (object size 0xa0).
   // Owning TMapUberPicture backref -- set by DisplayMiniMap right after
   // construction (not by the ctor itself; ctor leaves it untouched).

@@ -16,12 +16,12 @@ public:
   // slot 0x07 Free inherited unchanged (0x4798b0)
   // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
-  virtual undefined AdvanceAnimationTickAndInvalidateOnFrameFlip() override; // slot 0x0a 0x49f580
-  // slot 0x0b RenderBattleReportInsetWithPaletteShift inherited unchanged (0x49f190)
-  // slot 0x0c RenderBattleReportViewSurfaceSpriteWithResourceHandle inherited unchanged (0x49f2d0)
+  virtual void Tick() override; // slot 0x0a 0x49f580
+  // slot 0x0b DrawNextFrame inherited unchanged (0x49f190)
+  // slot 0x0c LoadFrameIntoBuffer inherited unchanged (0x49f2d0)
 
   TCivAnimation();
 
-  // Original object size is 0x30 (CRuntimeClass m_nObjectSize); the source class ended at 0x2c. Trailing 4 byte(s) not yet semantically recovered — declared so sizeof and the recomp's allocation size match the original.
-  int field2c;
+  short randomResetFrame2c;     // +0x2c frame that may restart the cycle early
+  short randomResetThreshold2e; // +0x2e threshold compared with rand() & 0xf
 };

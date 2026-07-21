@@ -157619,6 +157619,101 @@
         "owner_class": null,
         "recovered_source": "src/game/TArmyUnitView.cpp"
       },
+      "0x004b4580": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "definition_source": "src/game/TCity.cpp",
+                "kind": "source_path_global_reference",
+                "path": "D:\\Ambit\\Cross\\UCity.cpp",
+                "symbol": "kUCityCppPath"
+              }
+            ],
+            "module": "UCity.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "TCity::MakeTown",
+        "owner_class": "TCity",
+        "recovered_source": "src/game/TCity.cpp"
+      },
+      "0x004bd040": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "definition_source": "src/game/global_data_tables.cpp",
+                "kind": "source_path_global_reference",
+                "path": "D:\\Ambit\\Cross\\UCityDialogs.cpp",
+                "symbol": "s_SourcePathUCityDialogs_006962E8"
+              }
+            ],
+            "module": "UCityDialogs.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "TRailheadDialog::StuffValues",
+        "owner_class": "TRailheadDialog",
+        "recovered_source": "src/game/TRailheadDialog.cpp"
+      },
+      "0x004bd260": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "definition_source": "src/game/global_data_tables.cpp",
+                "kind": "source_path_global_reference",
+                "path": "D:\\Ambit\\Cross\\UCityDialogs.cpp",
+                "symbol": "s_SourcePathUCityDialogs_006962E8"
+              }
+            ],
+            "module": "UCityDialogs.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "TRailheadDialog::DoClosingAction",
+        "owner_class": "TRailheadDialog",
+        "recovered_source": "src/game/TRailheadDialog.cpp"
+      },
+      "0x004bd3e0": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "definition_source": "src/game/global_data_tables.cpp",
+                "kind": "source_path_global_reference",
+                "path": "D:\\Ambit\\Cross\\UCityDialogs.cpp",
+                "symbol": "s_SourcePathUCityDialogs_006962E8"
+              }
+            ],
+            "module": "UCityDialogs.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "TTransportView::StuffValues",
+        "owner_class": "TTransportView",
+        "recovered_source": "src/game/TTransportView.cpp"
+      },
+      "0x004bd880": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "definition_source": "src/game/global_data_tables.cpp",
+                "kind": "source_path_global_reference",
+                "path": "D:\\Ambit\\Cross\\UCityDialogs.cpp",
+                "symbol": "s_SourcePathUCityDialogs_006962E8"
+              }
+            ],
+            "module": "UCityDialogs.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "TNewTownView::StuffValues",
+        "owner_class": "TNewTownView",
+        "recovered_source": "src/game/TNewTownView.cpp"
+      },
       "0x004be8d0": {
         "modules": [
           {
@@ -159279,6 +159374,27 @@
           "0x004a9ca0"
         ]
       },
+      "UCity.cpp": {
+        "classes": [
+          "TCity"
+        ],
+        "functions": [
+          "0x004b4580"
+        ]
+      },
+      "UCityDialogs.cpp": {
+        "classes": [
+          "TNewTownView",
+          "TRailheadDialog",
+          "TTransportView"
+        ],
+        "functions": [
+          "0x004bd040",
+          "0x004bd260",
+          "0x004bd3e0",
+          "0x004bd880"
+        ]
+      },
       "UCityMinister.cpp": {
         "classes": [],
         "functions": [
@@ -159579,11 +159695,11 @@
     "classes_with_source_module_evidence": 14,
     "declared_classes": 152,
     "factories_with_source_module_candidates": 9,
-    "functions_with_source_module_evidence": 90,
+    "functions_with_source_module_evidence": 95,
     "nodes": 3263,
     "screens": 121,
     "screens_with_source_module_candidates": 25,
-    "source_modules": 31,
+    "source_modules": 33,
     "tags": 813
   },
   "tags": {

@@ -15,8 +15,7 @@ TDisappearingButton::TDisappearingButton() {}
 TDisappearingButton::~TDisappearingButton() {}
 
 // FUNCTION: IMPERIALISM 0x00568c40
-void TDisappearingButton::SetControlStateFlagAndMaybeRefresh(bool fEnabledState, bool fRefreshNow) {
-}
+void TDisappearingButton::HiliteState(unsigned char fEnabledState, unsigned char fRefreshNow) {}
 
 // FUNCTION: IMPERIALISM 0x00568c90
 undefined TDisappearingButton::OrphanCallChain_C2_I18_00568c90() {

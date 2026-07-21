@@ -139,8 +139,8 @@ public:
   virtual void SetTextColorAndMaybeRefresh(const int* textColor,
                                            bool refreshNow); // slot 0x6e 0x48e7a0
   virtual char LogUnhandledDialogMethodAndReturnFalse();     // slot 0x6f 0x4294a0
-  virtual void SetControlStateFlagAndMaybeRefresh(bool enabledState,
-                                                  bool refreshNow); // slot 0x70 0x48e810
+  virtual void HiliteState(unsigned char enabledState,
+                           unsigned char refreshNow); // slot 0x70 0x48e810
   void SetDiplomacyNationSelectionFilterAndRefreshRows(short selectedNation);
 
   // 0x60 -- construction-time frame/style selector; SetUiResourceLayoutValues names its
@@ -148,7 +148,7 @@ public:
   // value as a command/event code (observed values: 4, 5, 6, 0xa, 0xc, 0xd, 0x22), so the
   // field genuinely serves double duty rather than being a boolean "has resource" flag.
   int frameStyle60;
-  // 0x64 -- enabled/mode state byte: SetControlStateFlagAndMaybeRefresh's enabledState;
+  // 0x64 -- enabled/mode state byte: HiliteState's enabledState;
   // THQButton/TUpDownPictureButton also drive a multi-valued "mode" through it.
   unsigned char controlState64;
   unsigned char padding_65_to_67[3];

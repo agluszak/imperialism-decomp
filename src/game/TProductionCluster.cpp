@@ -27,7 +27,8 @@ IMPLEMENT_DYNCREATE(TProductionCluster, TUberCluster)
 
 // FUNCTION: IMPERIALISM 0x00586920
 TProductionCluster::TProductionCluster()
-    : TUberCluster(), field88(0), field8c(0), field8e(0), field90(0), field94(0) {}
+    : TUberCluster(), field88(0), laborRate8c(0), stockpileRate8e(0), currentStockpile90(0),
+      maximumStockpile94(0) {}
 
 // SYNTHETIC: IMPERIALISM 0x00586970
 // TProductionCluster::`scalar deleting destructor'
@@ -42,21 +43,19 @@ void TProductionCluster::HandleEvent(int commandId, TEventHandler* sourceHandler
 }
 
 // FUNCTION: IMPERIALISM 0x00586a60
-void TProductionCluster::ApplyMoveValue(int value) {
-  field8c = value;
+void TProductionCluster::SetLaborRate(short laborRate) {
+  laborRate8c = laborRate;
 }
 
 // FUNCTION: IMPERIALISM 0x00586a80
-int TProductionCluster::GetControlFlag(int value90, int value94) {
-  field90 = value90;
-  field94 = value94;
-  return 0;
+void TProductionCluster::SetStockpiles(short* current, short* maximum) {
+  currentStockpile90 = current;
+  maximumStockpile94 = maximum;
 }
 
 // FUNCTION: IMPERIALISM 0x00586ab0
-int TProductionCluster::NotifyControlSelectionChange(void* boundEntry, int arg2) {
-  field8e = (int)boundEntry;
-  return 0;
+void TProductionCluster::SetStockpileRate(short stockpileRate) {
+  stockpileRate8e = stockpileRate;
 }
 
 TProductionCluster::~TProductionCluster() {}

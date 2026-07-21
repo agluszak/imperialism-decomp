@@ -18,9 +18,9 @@ public:
   // slot 0x07 Free inherited unchanged (0x4798b0)
   // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
-  virtual undefined AdvanceAnimationTickAndInvalidateOnFrameFlip() override; // slot 0x0a 0x49ffe0
-  // slot 0x0b RenderBattleReportInsetWithPaletteShift inherited unchanged (0x49f190)
-  // slot 0x0c RenderBattleReportViewSurfaceSpriteWithResourceHandle inherited unchanged (0x49f2d0)
+  virtual void Tick() override; // slot 0x0a 0x49ffe0
+  // slot 0x0b DrawNextFrame inherited unchanged (0x49f190)
+  // slot 0x0c LoadFrameIntoBuffer inherited unchanged (0x49f2d0)
 
   // Initializes the inherited TAnimation fields directly (inline duplicate of
   // TAnimation::ConstructTAnimationBaseState's pattern, not a call to it): owner view,

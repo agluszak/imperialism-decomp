@@ -1,6 +1,7 @@
 #pragma once
 
 #include "game/TBehavior.h"
+#include "game/quickdraw_regions.h"
 #include "game/mfc.h"
 
 // VTABLE: IMPERIALISM 0x0064eac8
@@ -20,7 +21,8 @@ public:
   // slot 0x0b OrphanLeaf_NoCall_Ins02_004872a0 inherited unchanged (0x4872a0)
   // slot 0x0c CreateTDialogBehaviorInstance inherited unchanged (0x4872c0)
   // slot 0x0d OrphanRetStub_004872e0 inherited unchanged (0x4872e0)
-  virtual undefined HotspotBehaviorSlot0E(); // slot 0x0e 0x4b0c00
+  virtual unsigned char DoSetCursor(CPoint* point,
+                                    RgnHandle region); // slot 0x0e 0x4b0c00
 
   THotspotBehavior();
 };

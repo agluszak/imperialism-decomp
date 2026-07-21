@@ -19,28 +19,27 @@ TOnOffRadioButton::~TOnOffRadioButton() {}
 // FUNCTION: IMPERIALISM 0x00571a80
 void TOnOffRadioButton::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   switch (commandId) {
-    case 0xc:
-      if (controlState64 == 0) {
-        OrphanCallChain_C2_I16_00571b20(1, 1);
-      }
-      TControl::HandleEvent(commandId, sourceHandler, event);
-      return;
-    case 0x1f:
-      OrphanCallChain_C2_I16_00571b20(1, 1);
-      return;
-    case 0x20:
-      OrphanCallChain_C2_I16_00571b20(0, 1);
-      return;
-    default:
-      TControl::HandleEvent(commandId, sourceHandler, event);
-      return;
+  case 0xc:
+    if (controlState64 == 0) {
+      SetState(static_cast<unsigned char>(1), static_cast<unsigned char>(1));
+    }
+    TControl::HandleEvent(commandId, sourceHandler, event);
+    return;
+  case 0x1f:
+    SetState(static_cast<unsigned char>(1), static_cast<unsigned char>(1));
+    return;
+  case 0x20:
+    SetState(static_cast<unsigned char>(0), static_cast<unsigned char>(1));
+    return;
+  default:
+    TControl::HandleEvent(commandId, sourceHandler, event);
+    return;
   }
 }
 
 // FUNCTION: IMPERIALISM 0x00571b20
-undefined TOnOffRadioButton::OrphanCallChain_C2_I16_00571b20(undefined4 param_1, undefined4 param_2) {
+void TOnOffRadioButton::SetState(unsigned char on, unsigned char drawImmediate) {
   if (GetBoolSlot28() != 0) {
-    SetControlStateFlagAndMaybeRefresh(param_1, param_2);
+    HiliteState(on, drawImmediate);
   }
-  return 0;
 }

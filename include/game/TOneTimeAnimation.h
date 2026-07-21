@@ -23,10 +23,10 @@ public:
   DECLARE_DYNCREATE(TOneTimeAnimation)
   virtual ~TOneTimeAnimation() override; // slot 0x01 (scalar deleting destructor); dtor 0x49fd20
 
-  // Override of TAnimation::AdvanceAnimationTickAndInvalidateOnFrameFlip (slot 0x0a): tick the
+  // Override of TAnimation::Tick (slot 0x0a): tick the
   // one-shot animation, invalidate + repaint the target rect on each frame flip, and latch
   // completeFlag once the last frame has played.
-  virtual undefined AdvanceAnimationTickAndInvalidateOnFrameFlip() override; // slot 0x0a 0x49fde0
+  virtual void Tick() override; // slot 0x0a 0x49fde0
 
   char completeFlag; // 0x2c — set once all frames have played (stops the modal pump)
   char pad2d[3];

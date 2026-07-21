@@ -79,7 +79,7 @@ void TIndustryAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache() {
   GetClip(surface.tempRgn);
 
   if (control != 0 && control->IsActionable() != 0) {
-    control->Refresh();
+    control->PrepareForDrawing();
     if (control->IsActionable() != 0) {
       RECT boundsRect = {0, 0, 0, 0};
       control->QueryBounds(&boundsRect);
@@ -119,7 +119,7 @@ void TIndustryAmtBar::RenderQuickDrawOverlayWithHitRegion(short selectedValue) {
   GetClip(surface.tempRgn);
 
   if (IsActionable() != 0) {
-    Refresh();
+    PrepareForDrawing();
     if (IsActionable() != 0) {
       int cachedX = g_nOverlayClipCacheParamX;
       int cachedY = g_nOverlayClipCacheParamY;

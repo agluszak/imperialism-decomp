@@ -1022,7 +1022,12 @@ void DiplomacyMaskBufferRun::BlitMonochromeMaskBytePatternToSurface(int surfaceC
 }
 
 // FUNCTION: IMPERIALISM 0x004f6820
-void TDiplomacyMapView::OrphanLeaf_NoCall_Ins05_004f6820() {}
+void TDiplomacyMapView::VisitNationSlotsForOverlay(int unusedMode) {
+  short nationSlot = 0;
+  do {
+    ++nationSlot;
+  } while (nationSlot < 23);
+}
 
 // FUNCTION: IMPERIALISM 0x004f6840
 void TDiplomacyMapView::RebuildDiplomacyLegendPaletteMode1AndBlit(int activeNationSlot,

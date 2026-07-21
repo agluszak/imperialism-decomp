@@ -93871,6 +93871,36 @@
       "to": "control_tag:0x72657375"
     },
     {
+      "from": "windows_function:0x004bd3e0",
+      "relation": "resolves_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x746f7461"
+    },
+    {
+      "from": "windows_function:0x004bd3e0",
+      "relation": "resolves_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x7472616e"
+    },
+    {
+      "from": "windows_function:0x004bd880",
+      "relation": "resolves_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x636e636c"
+    },
+    {
+      "from": "windows_function:0x004bd880",
+      "relation": "resolves_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x6e616d65"
+    },
+    {
+      "from": "windows_function:0x004bd880",
+      "relation": "resolves_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x6f6b6179"
+    },
+    {
       "from": "windows_function:0x004c8390",
       "relation": "resolves_control_tag",
       "status": "resolved",
@@ -94151,6 +94181,42 @@
       "relation": "resolves_control_tag",
       "status": "resolved",
       "to": "control_tag:0x656e6420"
+    },
+    {
+      "from": "windows_function:0x00504220",
+      "relation": "resolves_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x6e616d31"
+    },
+    {
+      "from": "windows_function:0x00504220",
+      "relation": "resolves_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x7375626a"
+    },
+    {
+      "from": "windows_function:0x00504220",
+      "relation": "resolves_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x746f676c"
+    },
+    {
+      "from": "windows_function:0x005046c0",
+      "relation": "resolves_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x6e616d31"
+    },
+    {
+      "from": "windows_function:0x005046c0",
+      "relation": "resolves_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x7375626a"
+    },
+    {
+      "from": "windows_function:0x005046c0",
+      "relation": "resolves_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x746f676c"
     },
     {
       "from": "windows_function:0x00504e90",
@@ -185318,6 +185384,16 @@
       "kind": "windows_function",
       "source": "src/game/TBattleReportView.cpp"
     },
+    "windows_function:0x004bd3e0": {
+      "address": "0x004bd3e0",
+      "kind": "windows_function",
+      "source": "src/game/TTransportView.cpp"
+    },
+    "windows_function:0x004bd880": {
+      "address": "0x004bd880",
+      "kind": "windows_function",
+      "source": "src/game/TNewTownView.cpp"
+    },
     "windows_function:0x004c8390": {
       "address": "0x004c8390",
       "kind": "windows_function",
@@ -185407,6 +185483,16 @@
       "address": "0x004ffd70",
       "kind": "windows_function",
       "source": "src/game/TGameWindow.cpp"
+    },
+    "windows_function:0x00504220": {
+      "address": "0x00504220",
+      "kind": "windows_function",
+      "source": "src/game/THelpPicture.cpp"
+    },
+    "windows_function:0x005046c0": {
+      "address": "0x005046c0",
+      "kind": "windows_function",
+      "source": "src/game/THelpPicture.cpp"
     },
     "windows_function:0x00504e90": {
       "address": "0x00504e90",
@@ -185775,9 +185861,9 @@
       "references_picture": 909,
       "references_string": 1441,
       "references_text_style": 58,
-      "resolves_control_tag": 203
+      "resolves_control_tag": 214
     },
-    "edges": 15729,
+    "edges": 15740,
     "mac_classes_without_windows_header": 18,
     "node_kinds": {
       "control_tag": 813,
@@ -185789,9 +185875,9 @@
       "view_node": 3263,
       "windows_event": 94,
       "windows_factory": 17,
-      "windows_function": 88
+      "windows_function": 92
     },
-    "nodes": 10992,
+    "nodes": 10996,
     "unreferenced_resources": {
       "pict": 1998,
       "str_entry": 3623,

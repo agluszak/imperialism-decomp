@@ -55,7 +55,7 @@ public:
   // slot 0x2e OrphanCallChain_C2_I18_00488ff0 inherited unchanged (0x488ff0)
   // slot 0x2f AssertMcAppStreamLine304 inherited unchanged (0x488b10)
   // slot 0x30 AssertMcAppStreamLine596 inherited unchanged (0x488e00)
-  virtual undefined OrphanLeaf_NoCall_Ins06_00489720(); // slot 0x31 0x489720
+  virtual int GrowthSize(int requestedSize); // slot 0x31 0x489720
   // clang-format on
   // Field semantics evidenced by AttachGlobalMemoryHandleAndResetPosition (0x489660):
   // +0x04 receives the HGLOBAL, +0x08 is zeroed (position), +0x0c receives
@@ -63,7 +63,7 @@ public:
   HGLOBAL attachedGlobalHandle; // +0x04
   int streamPosition;           // +0x08
   int attachedSizeBytes;        // +0x0c
-  int modeFlags10;              // +0x10
+  int growthSize10;             // +0x10
   bool ownsHandleOrDirty;       // +0x14
 
   DECLARE_DYNCREATE(THandleStream)
@@ -72,7 +72,7 @@ public:
 
   // Attach a global-memory handle: mode from the caller, position reset to 0,
   // size from GlobalSize. A null handle only resets position/mode. (0x489660)
-  void AttachGlobalMemoryHandleAndResetPosition(HGLOBAL memoryHandle, int modeFlags);
+  void AttachGlobalMemoryHandleAndResetPosition(HGLOBAL memoryHandle, int growthSize);
 
   int streamSlot28() override;
   void streamSlot2c(int) override;
@@ -81,4 +81,3 @@ public:
   void ReadBytes(void* buffer, int sizeBytes) override;
   void WriteBytesSlot78(void* data, int length) override;
 };
-

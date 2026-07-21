@@ -119,8 +119,8 @@ public:
   // slot 0x6d SetTextStyleAndMaybeRefresh inherited unchanged (0x48e7d0)
   // slot 0x6e SetTextColorAndMaybeRefresh inherited unchanged (0x48e7a0)
   // slot 0x6f LogUnhandledDialogMethodAndReturnFalse inherited unchanged (0x4294a0)
-  virtual void SetControlStateFlagAndMaybeRefresh(bool fEnabledState,
-                                                  bool fRefreshNow) override; // slot 0x70 0x571620
+  virtual void HiliteState(unsigned char fEnabledState,
+                           unsigned char fRefreshNow) override; // slot 0x70 0x571620
   // slot 0x71 ResetPictureResourceEntry inherited unchanged (0x48f520)
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
   virtual bool IsSelected(); // slot 0x73 0x571690

@@ -19,7 +19,7 @@ TUpDownPictureButton::~TUpDownPictureButton() {}
 TUpDownPictureButton::TUpDownPictureButton() : TPicture(), timingWord92(7000) {}
 
 // FUNCTION: IMPERIALISM 0x00571620
-void TUpDownPictureButton::SetControlStateFlagAndMaybeRefresh(bool enabledState, bool refreshNow) {
+void TUpDownPictureButton::HiliteState(unsigned char enabledState, unsigned char refreshNow) {
   char mode = enabledState ? 1 : 0;
   if (mode != static_cast<char>(controlState64)) {
     controlState64 = static_cast<unsigned char>(mode);

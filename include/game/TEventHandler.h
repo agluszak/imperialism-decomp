@@ -9,6 +9,7 @@ class CArchive;
 class TView;
 class TControl;
 class TEvent;
+class TBehavior;
 
 //
 // The real shared base of TView and TApplication (TApplication). Both
@@ -32,7 +33,7 @@ public:
   };
   int field10;
   int field14;
-  TEventHandler* linkedResourceOwner;
+  TBehavior* firstBehavior;
   int controlTag; // 0x1c
 
   TEventHandler();
@@ -85,8 +86,8 @@ public:
   virtual char TryDeactivateActiveView();             // 0x20 0x48a5e0
   virtual void vmethod_0081(int param);               // 0x21 0x48a710
   virtual char IsActiveView();                        // 0x22 0x48a500
-  virtual void DetachUiResourceOwnerIfMatches(TEventHandler* owner); // 0x23 0x48a4a0
-  virtual void SetUiResourceOwner(TEventHandler* owner);             // 0x24 0x48a4d0
+  virtual void RemoveBehavior(TBehavior* behavior);   // 0x23 0x48a4a0
+  virtual void AddBehavior(TBehavior* behavior);      // 0x24 0x48a4d0
 };
 
 // Builds a TEvent (commandNumber = dispatchMessage = commandId, sourceHandler = control,

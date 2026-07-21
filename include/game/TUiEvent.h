@@ -23,7 +23,7 @@ ASSERT_SIZE(TUiEvent, 0x14);
 // keystroke by CIncludeView::OnKeyDown (0x484260) and read by TGameWindow::ForwardParam
 // (0x4ffd70). The not-yet-ported CMcWindow WM_CHAR handler (0x493ce0) shares the same
 // global object and should use this type when it's ported.
-struct TKeyCommandEvent {
+struct TToolboxEvent {
   TUiEvent event;                   // 0x00 TEvent-derived header (installs vtable 0x648590)
   unsigned char pad14[0x1c - 0x14]; // 0x14
   short commandCode;                // 0x1c virtual key code (0x68 for VK_F1)
@@ -34,4 +34,7 @@ struct TKeyCommandEvent {
   unsigned int modifierFlags;       // 0x28 bit0 Ctrl, bit1 Shift, bit2 Alt, bit3 RWin
 };
 
-ASSERT_SIZE(TKeyCommandEvent, 0x2c);
+ASSERT_SIZE(TToolboxEvent, 0x2c);
+
+// Transitional source alias for the already-ported Windows keyboard handlers.
+typedef TToolboxEvent TKeyCommandEvent;

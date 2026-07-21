@@ -121,10 +121,11 @@ public:
   // slot 0x6d SetTextStyleAndMaybeRefresh inherited unchanged (0x48e7d0)
   // slot 0x6e SetTextColorAndMaybeRefresh inherited unchanged (0x48e7a0)
   // slot 0x6f LogUnhandledDialogMethodAndReturnFalse inherited unchanged (0x4294a0)
-  // slot 0x70 SetControlStateFlagAndMaybeRefresh inherited unchanged (0x48e810)
+  // slot 0x70 HiliteState inherited unchanged (0x48e810)
   // slot 0x71 ResetPictureResourceEntry inherited unchanged (0x48f520)
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
-  virtual undefined InitializeTradeScreenControlsLabelsAndNationContext(); // slot 0x73 0x5bea00
+  virtual void PoseOfferSheet(short sourceNation, short targetNation, short proposedAmount,
+                              short maxAmount, short commodityType); // slot 0x73 0x5bea00
   // TPicture's own slice ends at 0x90 (ASSERT_SIZE); RTTI oracle confirms
   // sizeof(TOfferDeskPicture) == 0xa8. The ctor initializes the selection flag and
   // resolves the accept/reject controls during DoPostCreate().
@@ -132,7 +133,7 @@ public:
   // names); 0x94/0x98/0x9a/0x9d identified from CreateNextTradeCommandAndFormatPrompt
   // (0x5c04f0): all four feed TTradeMgr::DispatchProposalAmountSlot60's arguments or the
   // quantity-validation / error-detail branches there.
-  short nationSlot90;       // +0x90 selected/source major nation slot (indexes g_apNationStates)
+  short sourceNationSlot90; // +0x90 selected/source major nation slot (indexes g_apNationStates)
   short targetNationSlot92; // +0x92 trade-target nation slot (index into the 23-nation tables)
   short maxAmount94;     // +0x94 upper bound passed to DispatchProposalAmountSlot60's maxAmount arg
   short commodityType96; // +0x96 commodity/need-type index 0..0x16 (0/1 = Cotton+Wool pair)

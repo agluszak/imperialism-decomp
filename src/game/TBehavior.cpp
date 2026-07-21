@@ -1,5 +1,6 @@
 #include "game/TBehavior.h"
 
+#include "game/TEventHandler.h"
 #include "game/global_data_tables.h"
 #include "game/mfc.h"
 
@@ -12,33 +13,28 @@
 IMPLEMENT_DYNCREATE(TBehavior, TObject)
 
 // FUNCTION: IMPERIALISM 0x004871e0
-TBehavior::TBehavior() : TObject() {
-  field_0x4 = 0x20202020;
-  field_0x8 = 0;
-  field_0xc = 1;
-}
+TBehavior::TBehavior() : TObject(), behaviorTag(0x20202020), owner(0), enabled(1) {}
 
 // SYNTHETIC: IMPERIALISM 0x00487210
 // TBehavior::`scalar deleting destructor'
 TBehavior::~TBehavior() {}
 
 // FUNCTION: IMPERIALISM 0x00487280
-void TBehavior::SetDword08(undefined4 value) {
-  field_0x8 = value;
+void TBehavior::SetOwner(TEventHandler* newOwner) {
+  owner = newOwner;
 }
 
 // FUNCTION: IMPERIALISM 0x004872a0
-unsigned char TBehavior::GetFlag0C() {
-  return field_0xc;
+unsigned char TBehavior::IsEnabled() {
+  return enabled;
 }
 
 // FUNCTION: IMPERIALISM 0x004872c0
-void TBehavior::SetFlag0C(unsigned char value) {
-  field_0xc = value;
+void TBehavior::SetEnabled(unsigned char isEnabled) {
+  enabled = isEnabled;
 }
 
 // FUNCTION: IMPERIALISM 0x004872e0
-void TBehavior::NoOpSlot34(undefined4 value) {
-  (void)value;
-  return;
+void TBehavior::Draw(RECT* bounds) {
+  (void)bounds;
 }

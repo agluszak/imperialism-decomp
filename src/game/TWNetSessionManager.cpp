@@ -350,8 +350,8 @@ BOOL TWNetSessionManager::ShowJoinGameSelectionDialogAndCaptureChoice(GUID* sele
 
   TWindow* dialog =
       static_cast<TWindow*>(g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(0x5e3));
-  dialog->SetField84(1);
-  TDialogBehavior* behavior = dialog->GetEmbeddedDialogBehavior();
+  dialog->SetModality(1);
+  TDialogBehavior* behavior = dialog->GetDialogBehavior();
   if (behavior != 0) {
     behavior->defaultCommandCode = 0x6f6b6179; // 'okay'
   }
@@ -373,7 +373,7 @@ BOOL TWNetSessionManager::ShowJoinGameSelectionDialogAndCaptureChoice(GUID* sele
   nameControl->AssertValid();
   nameControl->InitDialogWindowAndSyncTitleIfChanged(&joinGamePlayerNameA8, 0);
 
-  int command = dialog->ExecuteViewModalStateWithPushPopChain();
+  int command = dialog->PoseModally();
   RuntimeSelectionRecord* selected = selector->GetSelectedJoinableGame();
   if (command == 0x6f6b6179) {
     *selectedSessionGuid = selected->providerGuid;

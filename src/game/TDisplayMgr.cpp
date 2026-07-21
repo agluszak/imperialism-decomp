@@ -268,10 +268,10 @@ undefined TDisplayMgr::DispatchUiWindowStatusTickForClass99Windows() {
   while (cursor.More() != 0) {
     if (window != 0) {
       if (window->IsActionable() != 0 && window->controlValue3c == kClass99WindowId) {
-        if (window->GetDialogBehaviorByte10() == 0) {
+        if (window->IsModal() == 0) {
           window->CloseAndFree();
         } else {
-          window->NotifyDialogBehaviorCommandArmed(kTagOkOkOk, 1);
+          window->Dismiss(kTagOkOkOk, 1);
         }
       }
     }

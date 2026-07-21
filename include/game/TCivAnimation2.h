@@ -27,10 +27,9 @@ public:
   // slot 0x07 Free inherited unchanged (0x4798b0)
   // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
-  virtual undefined AdvanceAnimationTickAndInvalidateOnFrameFlip() override; // slot 0x0a 0x49f7c0
-  virtual undefined
-  RenderBattleReportInsetWithPaletteShift(POINT* offset) override; // slot 0x0b 0x49f8e0
-  // slot 0x0c RenderBattleReportViewSurfaceSpriteWithResourceHandle inherited unchanged (0x49f2d0)
+  virtual void Tick() override;                       // slot 0x0a 0x49f7c0
+  virtual void DrawNextFrame(POINT* offset) override; // slot 0x0b 0x49f8e0
+  // slot 0x0c LoadFrameIntoBuffer inherited unchanged (0x49f2d0)
   // TAnimation's own slice ends at 0x2c (ASSERT_SIZE); RTTI oracle confirms
   // sizeof(TCivAnimation2) == 0x30. Caches the ctor's `kind` selector (see the ctor
   // below) for later reference; real reader not yet identified.
@@ -43,7 +42,7 @@ public:
   // 9-entry tables baked into the original as immediate stores (kind 0..8 -- battle
   // report civ animation variants) and forwards them to the already-ported
   // TAnimation::ConstructTAnimationBaseState with frameCount pinned to 0 (this class
-  // overrides AdvanceAnimationTickAndInvalidateOnFrameFlip itself, so the inherited
+  // overrides Tick itself, so the inherited
   // frame-index scheme is unused). Confirmed against both call sites
   // (OrphanTiny_ReturnZero_0048a730 and ApplyRectSlot110): param_1 is the enclosing
   // TView, param_2 a RECT computed from a (x,y) origin, param_3 the kind index read

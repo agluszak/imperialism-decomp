@@ -379,7 +379,10 @@ void TSoundPlayer::SetMasterVolumeFromPercent(short percent) {
 }
 
 // FUNCTION: IMPERIALISM 0x005e50a0
-void TSoundPlayer::NoOpAudioTickCallback_005e50a0() {}
+void TSoundPlayer::PriorityOverride(short currentPriority, short requestedPriority) {
+  (void)currentPriority;
+  (void)requestedPriority;
+}
 
 // Slot 0x07 override — release the two channel peers, then run the base teardown.
 

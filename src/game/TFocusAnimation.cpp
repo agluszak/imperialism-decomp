@@ -20,39 +20,37 @@ IMPLEMENT_DYNCREATE(TFocusAnimation, TAnimation)
 TFocusAnimation::TFocusAnimation() : TAnimation(), enabledFlag(1) {}
 
 // FUNCTION: IMPERIALISM 0x004a0140
-undefined TFocusAnimation::AdvanceAnimationTickAndInvalidateOnFrameFlip() {
+void TFocusAnimation::Tick() {
   tickCounter10++;
   if (tickCounter10 == ticksPerFrame14) {
-    VTableSlot0D();
+    IdleDraw();
     frameIndex08++;
     tickCounter10 = 0;
     if (frameIndex08 == frameCount0A) {
       frameIndex08 = 0;
     }
   }
-  return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004a0190
-void TFocusAnimation::VTableSlot0D() {
+void TFocusAnimation::IdleDraw() {
   if (enabledFlag != 0) {
     ScopedMapQuickDrawContextGuard quickDrawContext(ownerView04);
-    ownerView04->Refresh();
+    ownerView04->PrepareForDrawing();
     POINT offset = {0, 0};
-    RenderBattleReportInsetWithPaletteShift(&offset);
+    DrawNextFrame(&offset);
     ownerView04->PostRenderSlotFC();
   }
 }
 
 // FUNCTION: IMPERIALISM 0x004a0250
-undefined TFocusAnimation::RenderBattleReportInsetWithPaletteShift(POINT* offset) {
-  RenderBattleReportViewSurfaceSpriteWithResourceHandle();
-  FocusAnimationSlot0E();
-  return 0;
+void TFocusAnimation::DrawNextFrame(POINT* offset) {
+  LoadFrameIntoBuffer();
+  ClipAndPaste();
 }
 
 // FUNCTION: IMPERIALISM 0x004a0280
-void TFocusAnimation::FocusAnimationSlot0E() {
+void TFocusAnimation::ClipAndPaste() {
   TQuickDrawSurfaceContext* srcContext =
       *reinterpret_cast<TQuickDrawSurfaceContext**>(g_pUiAnimator + 0x20);
 

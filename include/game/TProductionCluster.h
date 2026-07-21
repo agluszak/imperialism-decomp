@@ -123,18 +123,18 @@ public:
   // slot 0x6d SetTextStyleAndMaybeRefresh inherited unchanged (0x48e7d0)
   // slot 0x6e SetTextColorAndMaybeRefresh inherited unchanged (0x48e7a0)
   // slot 0x6f LogUnhandledDialogMethodAndReturnFalse inherited unchanged (0x4294a0)
-  // slot 0x70 SetControlStateFlagAndMaybeRefresh inherited unchanged (0x48e810)
+  // slot 0x70 HiliteState inherited unchanged (0x48e810)
   // slot 0x71 OrphanTiny_GetDwordEcxOffset_84_00491770 inherited unchanged (0x491770)
   // slot 0x72 OrphanCallChain_C2_I51_00491790 inherited unchanged (0x491790)
   // slot 0x73 IsTradeControlAtMinimum inherited unchanged (0x5714e0)
-  virtual void ApplyMoveValue(int value);                                   // slot 0x74 0x586a60
-  virtual int NotifyControlSelectionChange(void* boundEntry, int arg2 = 0); // slot 0x75 0x586ab0
-  virtual int GetControlFlag(int value90 = 0, int value94 = 0);             // slot 0x76 0x586a80
+  virtual void SetLaborRate(short laborRate);                 // slot 0x74 0x586a60
+  virtual void SetStockpileRate(short stockpileRate);         // slot 0x75 0x586ab0
+  virtual void SetStockpiles(short* current, short* maximum); // slot 0x76 0x586a80
   int field88;
-  short field8c;
-  short field8e;
-  int field90;
-  int field94;
+  short laborRate8c;
+  short stockpileRate8e;
+  short* currentStockpile90;
+  short* maximumStockpile94;
 
   TProductionCluster();
   DECLARE_DYNCREATE(TProductionCluster)

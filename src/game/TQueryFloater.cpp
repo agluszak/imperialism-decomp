@@ -60,7 +60,7 @@ void TQueryFloater::HandleEvent(int commandId, TEventHandler* sourceHandler, TEv
   unsigned int tag = sourceHandler->controlTag;
   if (tag == kControlTagAdvi) {
     TWindow* owner = static_cast<TWindow*>(OwnerPanel());
-    owner->NotifyDialogBehaviorCommandArmed(kControlTagOkay, 0);
+    owner->Dismiss(kControlTagOkay, 0);
     g_pHelpMgr->SelectAndActivatePendingEventForCurrentView();
   } else if (tag == kControlTagBatt) {
     short activeNationId = g_pSimMgr->GetActiveNationId();
@@ -74,16 +74,16 @@ void TQueryFloater::HandleEvent(int commandId, TEventHandler* sourceHandler, TEv
           text, &g_cstrQueryFloaterMessageStore, 1, 0);
     } else {
       TWindow* owner = static_cast<TWindow*>(OwnerPanel());
-      owner->NotifyDialogBehaviorCommandArmed(kControlTagOkay, 0);
+      owner->Dismiss(kControlTagOkay, 0);
       g_pSimMgr->EnterOptionalPhase(0x65);
     }
   } else if (tag == kControlTagChar) {
     TWindow* owner = static_cast<TWindow*>(OwnerPanel());
-    owner->NotifyDialogBehaviorCommandArmed(kControlTagOkay, 0);
+    owner->Dismiss(kControlTagOkay, 0);
     g_pSimMgr->EnterOptionalPhase(0x6e);
   } else if (tag == kControlTagClnc) {
     TWindow* owner = static_cast<TWindow*>(OwnerPanel());
-    owner->NotifyDialogBehaviorCommandArmed(kControlTagOkay, 0);
+    owner->Dismiss(kControlTagOkay, 0);
   } else if (tag == kControlTagDeal) {
     if (g_pSimMgr->GetEconomicTurn() == 1) {
       g_pSimMgr->GetString(0x2741, 9, &text);
@@ -91,12 +91,12 @@ void TQueryFloater::HandleEvent(int commandId, TEventHandler* sourceHandler, TEv
           text, &g_cstrQueryFloaterMessageStore, 1, 0);
     } else {
       TWindow* owner = static_cast<TWindow*>(OwnerPanel());
-      owner->NotifyDialogBehaviorCommandArmed(kControlTagOkay, 0);
+      owner->Dismiss(kControlTagOkay, 0);
       g_pSimMgr->EnterOptionalPhase(0x64);
     }
   } else if (tag == kControlTagNews) {
     TWindow* owner = static_cast<TWindow*>(OwnerPanel());
-    owner->NotifyDialogBehaviorCommandArmed(kControlTagOkay, 0);
+    owner->Dismiss(kControlTagOkay, 0);
     if (g_pInterNationEventQueueManager->perNationStoryLastUsedTick[0] != nullptr) {
       g_pSimMgr->EnterOptionalPhase(0x66);
     } else {
@@ -104,7 +104,7 @@ void TQueryFloater::HandleEvent(int commandId, TEventHandler* sourceHandler, TEv
     }
   } else if (tag == kControlTagFore) {
     TWindow* owner = static_cast<TWindow*>(OwnerPanel());
-    owner->NotifyDialogBehaviorCommandArmed(kControlTagOkay, 0);
+    owner->Dismiss(kControlTagOkay, 0);
     g_pHelpMgr->SelectAndActivatePendingEventType1A0A();
   }
 }
