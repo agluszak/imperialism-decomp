@@ -1655,14 +1655,14 @@ address|matching|name
 0x4b6f20|0.42424242424242425|TUnitOrder::CreateObject
 0x4b6f50|1.0|TUnitOrder::GetRuntimeClass
 0x4b6f90|0.9090909090909091|TUnitOrder::`scalar deleting destructor'
-0x4b6fe0|0.05405405405405406|TUnitOrder::InitializeCityRecruitmentOrderContext
+0x4b6fe0|1.0|TUnitOrder::InitializeCityRecruitmentOrderContext
 0x4b7080|0.017094017094017096|TUnitOrder::MaxOrder
 0x4b7210|0.057971014492753624|TUnitOrder::SetQuantity
 0x4b7320|1.0|TUnitOrder::FillOrderSheet
 0x4b73b0|0.2314540059347181|TUnitOrder::CommitIfPending
 0x4b77e0|1.0|TUnitOrder::SetOrderCostProfile
-0x4b7850|0.025|TUnitOrder::WriteTo
-0x4b7920|0.025|TUnitOrder::ReadFrom
+0x4b7850|1.0|TUnitOrder::WriteTo
+0x4b7920|1.0|TUnitOrder::ReadFrom
 0x4b79f0|0.42424242424242425|TPowerPlantOrder::CreateObject
 0x4b7a20|1.0|TPowerPlantOrder::GetRuntimeClass
 0x4b7a60|0.9090909090909091|TPowerPlantOrder::`scalar deleting destructor'

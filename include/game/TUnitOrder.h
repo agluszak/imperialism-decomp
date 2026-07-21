@@ -5,6 +5,7 @@
 
 // Forward declarations for types referenced by generated signatures.
 class TStream;
+class TCity;
 
 // VTABLE: IMPERIALISM 0x0064f8a0
 class TUnitOrder : public TProductionOrder {
@@ -35,7 +36,7 @@ public:
   virtual void FillOrderSheet(OrderSheet* orderSheet,
                               short quantity) override; // slot 0x10 0x4b7320
   virtual void InitializeCityRecruitmentOrderContext(
-      void* pCityState, short nEntryId, short nPrimaryInputResourceId, short nPrimaryInputPerUnit,
+      TCity* city, short nEntryId, short nPrimaryInputResourceId, short nPrimaryInputPerUnit,
       short nSecondaryInputResourceId, short nSecondaryInputPerUnit, short nCashCostPerUnit,
       short nWorkforceMode, byte bSpecialistMode); // slot 0x11 0x4b6fe0
   // TUnitOrder adds 0x10 bytes (0x4c..0x5c) over TProductionOrder's 0x4c base. All are
