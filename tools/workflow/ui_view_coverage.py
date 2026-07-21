@@ -29,6 +29,7 @@ ALLOWED_STATUSES = frozenset(
         "windows_runtime_gap",
         "needs_windows_classification",
         "excluded_mac_test_debug_or_framework",
+        "excluded_mac_only_or_obsolete",
         "windows_alternate_path",
     )
 )
