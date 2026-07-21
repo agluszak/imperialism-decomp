@@ -16,9 +16,9 @@ class MacControlUsageTests(unittest.TestCase):
 
     def test_index_covers_the_complete_view_corpus(self) -> None:
         self.assertEqual(self.index["summary"]["screens"], 121)
-        self.assertEqual(self.index["summary"]["nodes"], 3173)
-        self.assertEqual(len(self.index["nodes"]), 3173)
-        self.assertEqual(len({node["id"] for node in self.index["nodes"]}), 3173)
+        self.assertEqual(self.index["summary"]["nodes"], 3263)
+        self.assertEqual(len(self.index["nodes"]), 3263)
+        self.assertEqual(len({node["id"] for node in self.index["nodes"]}), 3263)
 
     def test_screen_identity_remains_resource_file_scoped(self) -> None:
         self.assertIn("Linger.rsrc:2050", self.index["screens"])

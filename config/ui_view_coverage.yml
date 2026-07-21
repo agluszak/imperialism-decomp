@@ -330,12 +330,3 @@ resources:
       - Mac View name identifies a test resource
       - Initial Windows immediate/xref audit found no construction request
     bead: imperialism-decomp-1uj.58.7.3
-
-  Startup.rsrc:960:
-    status: windows_runtime_gap
-    name: Map editor
-    reason: Windows requests event 0x03c0, but the committed Mac decoder omits 30 serialized children.
-    evidence:
-      - 0x0050ed78 pushes event 0x03c0 before TViewMgr virtual dispatch slot 0x4c
-      - Startup.rsrc:960 node 0x015e serializes 36 children but decodes only 6
-    bead: imperialism-decomp-1uj.58.7.1.2

@@ -54010,7 +54010,43 @@
       "from": "Linger.rsrc:View:8155",
       "relation": "contains_view_node",
       "status": "resolved",
+      "to": "Linger.rsrc:View:8155@0x1221"
+    },
+    {
+      "from": "Linger.rsrc:View:8155",
+      "relation": "contains_view_node",
+      "status": "resolved",
+      "to": "Linger.rsrc:View:8155@0x1284"
+    },
+    {
+      "from": "Linger.rsrc:View:8155",
+      "relation": "contains_view_node",
+      "status": "resolved",
+      "to": "Linger.rsrc:View:8155@0x12e7"
+    },
+    {
+      "from": "Linger.rsrc:View:8155",
+      "relation": "contains_view_node",
+      "status": "resolved",
       "to": "Linger.rsrc:View:8155@0x134a"
+    },
+    {
+      "from": "Linger.rsrc:View:8155",
+      "relation": "contains_view_node",
+      "status": "resolved",
+      "to": "Linger.rsrc:View:8155@0x13ac"
+    },
+    {
+      "from": "Linger.rsrc:View:8155",
+      "relation": "contains_view_node",
+      "status": "resolved",
+      "to": "Linger.rsrc:View:8155@0x140f"
+    },
+    {
+      "from": "Linger.rsrc:View:8155",
+      "relation": "contains_view_node",
+      "status": "resolved",
+      "to": "Linger.rsrc:View:8155@0x1472"
     },
     {
       "from": "Linger.rsrc:View:8155",
@@ -54226,7 +54262,43 @@
       "from": "Linger.rsrc:View:8155",
       "relation": "contains_view_node",
       "status": "resolved",
+      "to": "Linger.rsrc:View:8155@0x276f"
+    },
+    {
+      "from": "Linger.rsrc:View:8155",
+      "relation": "contains_view_node",
+      "status": "resolved",
+      "to": "Linger.rsrc:View:8155@0x27d2"
+    },
+    {
+      "from": "Linger.rsrc:View:8155",
+      "relation": "contains_view_node",
+      "status": "resolved",
+      "to": "Linger.rsrc:View:8155@0x2835"
+    },
+    {
+      "from": "Linger.rsrc:View:8155",
+      "relation": "contains_view_node",
+      "status": "resolved",
       "to": "Linger.rsrc:View:8155@0x2898"
+    },
+    {
+      "from": "Linger.rsrc:View:8155",
+      "relation": "contains_view_node",
+      "status": "resolved",
+      "to": "Linger.rsrc:View:8155@0x28fa"
+    },
+    {
+      "from": "Linger.rsrc:View:8155",
+      "relation": "contains_view_node",
+      "status": "resolved",
+      "to": "Linger.rsrc:View:8155@0x295d"
+    },
+    {
+      "from": "Linger.rsrc:View:8155",
+      "relation": "contains_view_node",
+      "status": "resolved",
+      "to": "Linger.rsrc:View:8155@0x29c0"
     },
     {
       "from": "Linger.rsrc:View:8155",
@@ -54932,6 +55004,24 @@
     },
     {
       "from": "Linger.rsrc:View:8155@0x11bf",
+      "relation": "contains_child_node",
+      "status": "resolved",
+      "to": "Linger.rsrc:View:8155@0x1221"
+    },
+    {
+      "from": "Linger.rsrc:View:8155@0x11bf",
+      "relation": "contains_child_node",
+      "status": "resolved",
+      "to": "Linger.rsrc:View:8155@0x1284"
+    },
+    {
+      "from": "Linger.rsrc:View:8155@0x11bf",
+      "relation": "contains_child_node",
+      "status": "resolved",
+      "to": "Linger.rsrc:View:8155@0x12e7"
+    },
+    {
+      "from": "Linger.rsrc:View:8155@0x11bf",
       "relation": "has_control_tag",
       "status": "resolved",
       "to": "control_tag:0x74616374"
@@ -54941,6 +55031,84 @@
       "relation": "instantiates_mac_class",
       "status": "resolved",
       "to": "mac_class:TCluster"
+    },
+    {
+      "from": "Linger.rsrc:View:8155@0x1221",
+      "relation": "has_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x6f707431"
+    },
+    {
+      "from": "Linger.rsrc:View:8155@0x1221",
+      "relation": "instantiates_mac_class",
+      "status": "resolved",
+      "to": "mac_class:TRadioPictureButton"
+    },
+    {
+      "bead": "imperialism-decomp-1uj.77.5",
+      "explanation": "The file-scoped PICT target is absent from committed metadata; do not resolve the colliding numeric ID from another resource file.",
+      "from": "Linger.rsrc:View:8155@0x1221",
+      "relation": "references_picture",
+      "status": "dangling_explained",
+      "to": "Linger.rsrc:PICT:1000"
+    },
+    {
+      "from": "Linger.rsrc:View:8155@0x1284",
+      "relation": "has_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x6f707432"
+    },
+    {
+      "from": "Linger.rsrc:View:8155@0x1284",
+      "relation": "instantiates_mac_class",
+      "status": "resolved",
+      "to": "mac_class:TRadioPictureButton"
+    },
+    {
+      "bead": "imperialism-decomp-1uj.77.5",
+      "explanation": "The file-scoped PICT target is absent from committed metadata; do not resolve the colliding numeric ID from another resource file.",
+      "from": "Linger.rsrc:View:8155@0x1284",
+      "relation": "references_picture",
+      "status": "dangling_explained",
+      "to": "Linger.rsrc:PICT:1000"
+    },
+    {
+      "from": "Linger.rsrc:View:8155@0x12e7",
+      "relation": "has_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x6f707433"
+    },
+    {
+      "from": "Linger.rsrc:View:8155@0x12e7",
+      "relation": "instantiates_mac_class",
+      "status": "resolved",
+      "to": "mac_class:TRadioPictureButton"
+    },
+    {
+      "bead": "imperialism-decomp-1uj.77.5",
+      "explanation": "The file-scoped PICT target is absent from committed metadata; do not resolve the colliding numeric ID from another resource file.",
+      "from": "Linger.rsrc:View:8155@0x12e7",
+      "relation": "references_picture",
+      "status": "dangling_explained",
+      "to": "Linger.rsrc:PICT:1000"
+    },
+    {
+      "from": "Linger.rsrc:View:8155@0x134a",
+      "relation": "contains_child_node",
+      "status": "resolved",
+      "to": "Linger.rsrc:View:8155@0x13ac"
+    },
+    {
+      "from": "Linger.rsrc:View:8155@0x134a",
+      "relation": "contains_child_node",
+      "status": "resolved",
+      "to": "Linger.rsrc:View:8155@0x140f"
+    },
+    {
+      "from": "Linger.rsrc:View:8155@0x134a",
+      "relation": "contains_child_node",
+      "status": "resolved",
+      "to": "Linger.rsrc:View:8155@0x1472"
     },
     {
       "from": "Linger.rsrc:View:8155@0x134a",
@@ -54953,6 +55121,66 @@
       "relation": "instantiates_mac_class",
       "status": "resolved",
       "to": "mac_class:TCluster"
+    },
+    {
+      "from": "Linger.rsrc:View:8155@0x13ac",
+      "relation": "has_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x6f707431"
+    },
+    {
+      "from": "Linger.rsrc:View:8155@0x13ac",
+      "relation": "instantiates_mac_class",
+      "status": "resolved",
+      "to": "mac_class:TRadioPictureButton"
+    },
+    {
+      "bead": "imperialism-decomp-1uj.77.5",
+      "explanation": "The file-scoped PICT target is absent from committed metadata; do not resolve the colliding numeric ID from another resource file.",
+      "from": "Linger.rsrc:View:8155@0x13ac",
+      "relation": "references_picture",
+      "status": "dangling_explained",
+      "to": "Linger.rsrc:PICT:1000"
+    },
+    {
+      "from": "Linger.rsrc:View:8155@0x140f",
+      "relation": "has_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x6f707432"
+    },
+    {
+      "from": "Linger.rsrc:View:8155@0x140f",
+      "relation": "instantiates_mac_class",
+      "status": "resolved",
+      "to": "mac_class:TRadioPictureButton"
+    },
+    {
+      "bead": "imperialism-decomp-1uj.77.5",
+      "explanation": "The file-scoped PICT target is absent from committed metadata; do not resolve the colliding numeric ID from another resource file.",
+      "from": "Linger.rsrc:View:8155@0x140f",
+      "relation": "references_picture",
+      "status": "dangling_explained",
+      "to": "Linger.rsrc:PICT:1000"
+    },
+    {
+      "from": "Linger.rsrc:View:8155@0x1472",
+      "relation": "has_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x6f707433"
+    },
+    {
+      "from": "Linger.rsrc:View:8155@0x1472",
+      "relation": "instantiates_mac_class",
+      "status": "resolved",
+      "to": "mac_class:TRadioPictureButton"
+    },
+    {
+      "bead": "imperialism-decomp-1uj.77.5",
+      "explanation": "The file-scoped PICT target is absent from committed metadata; do not resolve the colliding numeric ID from another resource file.",
+      "from": "Linger.rsrc:View:8155@0x1472",
+      "relation": "references_picture",
+      "status": "dangling_explained",
+      "to": "Linger.rsrc:PICT:1000"
     },
     {
       "from": "Linger.rsrc:View:8155@0x14d5",
@@ -55684,6 +55912,24 @@
     },
     {
       "from": "Linger.rsrc:View:8155@0x270d",
+      "relation": "contains_child_node",
+      "status": "resolved",
+      "to": "Linger.rsrc:View:8155@0x276f"
+    },
+    {
+      "from": "Linger.rsrc:View:8155@0x270d",
+      "relation": "contains_child_node",
+      "status": "resolved",
+      "to": "Linger.rsrc:View:8155@0x27d2"
+    },
+    {
+      "from": "Linger.rsrc:View:8155@0x270d",
+      "relation": "contains_child_node",
+      "status": "resolved",
+      "to": "Linger.rsrc:View:8155@0x2835"
+    },
+    {
+      "from": "Linger.rsrc:View:8155@0x270d",
       "relation": "has_control_tag",
       "status": "resolved",
       "to": "control_tag:0x74616374"
@@ -55693,6 +55939,84 @@
       "relation": "instantiates_mac_class",
       "status": "resolved",
       "to": "mac_class:TCluster"
+    },
+    {
+      "from": "Linger.rsrc:View:8155@0x276f",
+      "relation": "has_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x6f707431"
+    },
+    {
+      "from": "Linger.rsrc:View:8155@0x276f",
+      "relation": "instantiates_mac_class",
+      "status": "resolved",
+      "to": "mac_class:TRadioPictureButton"
+    },
+    {
+      "bead": "imperialism-decomp-1uj.77.5",
+      "explanation": "The file-scoped PICT target is absent from committed metadata; do not resolve the colliding numeric ID from another resource file.",
+      "from": "Linger.rsrc:View:8155@0x276f",
+      "relation": "references_picture",
+      "status": "dangling_explained",
+      "to": "Linger.rsrc:PICT:1000"
+    },
+    {
+      "from": "Linger.rsrc:View:8155@0x27d2",
+      "relation": "has_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x6f707432"
+    },
+    {
+      "from": "Linger.rsrc:View:8155@0x27d2",
+      "relation": "instantiates_mac_class",
+      "status": "resolved",
+      "to": "mac_class:TRadioPictureButton"
+    },
+    {
+      "bead": "imperialism-decomp-1uj.77.5",
+      "explanation": "The file-scoped PICT target is absent from committed metadata; do not resolve the colliding numeric ID from another resource file.",
+      "from": "Linger.rsrc:View:8155@0x27d2",
+      "relation": "references_picture",
+      "status": "dangling_explained",
+      "to": "Linger.rsrc:PICT:1000"
+    },
+    {
+      "from": "Linger.rsrc:View:8155@0x2835",
+      "relation": "has_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x6f707433"
+    },
+    {
+      "from": "Linger.rsrc:View:8155@0x2835",
+      "relation": "instantiates_mac_class",
+      "status": "resolved",
+      "to": "mac_class:TRadioPictureButton"
+    },
+    {
+      "bead": "imperialism-decomp-1uj.77.5",
+      "explanation": "The file-scoped PICT target is absent from committed metadata; do not resolve the colliding numeric ID from another resource file.",
+      "from": "Linger.rsrc:View:8155@0x2835",
+      "relation": "references_picture",
+      "status": "dangling_explained",
+      "to": "Linger.rsrc:PICT:1000"
+    },
+    {
+      "from": "Linger.rsrc:View:8155@0x2898",
+      "relation": "contains_child_node",
+      "status": "resolved",
+      "to": "Linger.rsrc:View:8155@0x28fa"
+    },
+    {
+      "from": "Linger.rsrc:View:8155@0x2898",
+      "relation": "contains_child_node",
+      "status": "resolved",
+      "to": "Linger.rsrc:View:8155@0x295d"
+    },
+    {
+      "from": "Linger.rsrc:View:8155@0x2898",
+      "relation": "contains_child_node",
+      "status": "resolved",
+      "to": "Linger.rsrc:View:8155@0x29c0"
     },
     {
       "from": "Linger.rsrc:View:8155@0x2898",
@@ -55705,6 +56029,66 @@
       "relation": "instantiates_mac_class",
       "status": "resolved",
       "to": "mac_class:TCluster"
+    },
+    {
+      "from": "Linger.rsrc:View:8155@0x28fa",
+      "relation": "has_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x6f707431"
+    },
+    {
+      "from": "Linger.rsrc:View:8155@0x28fa",
+      "relation": "instantiates_mac_class",
+      "status": "resolved",
+      "to": "mac_class:TRadioPictureButton"
+    },
+    {
+      "bead": "imperialism-decomp-1uj.77.5",
+      "explanation": "The file-scoped PICT target is absent from committed metadata; do not resolve the colliding numeric ID from another resource file.",
+      "from": "Linger.rsrc:View:8155@0x28fa",
+      "relation": "references_picture",
+      "status": "dangling_explained",
+      "to": "Linger.rsrc:PICT:1000"
+    },
+    {
+      "from": "Linger.rsrc:View:8155@0x295d",
+      "relation": "has_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x6f707432"
+    },
+    {
+      "from": "Linger.rsrc:View:8155@0x295d",
+      "relation": "instantiates_mac_class",
+      "status": "resolved",
+      "to": "mac_class:TRadioPictureButton"
+    },
+    {
+      "bead": "imperialism-decomp-1uj.77.5",
+      "explanation": "The file-scoped PICT target is absent from committed metadata; do not resolve the colliding numeric ID from another resource file.",
+      "from": "Linger.rsrc:View:8155@0x295d",
+      "relation": "references_picture",
+      "status": "dangling_explained",
+      "to": "Linger.rsrc:PICT:1000"
+    },
+    {
+      "from": "Linger.rsrc:View:8155@0x29c0",
+      "relation": "has_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x6f707433"
+    },
+    {
+      "from": "Linger.rsrc:View:8155@0x29c0",
+      "relation": "instantiates_mac_class",
+      "status": "resolved",
+      "to": "mac_class:TRadioPictureButton"
+    },
+    {
+      "bead": "imperialism-decomp-1uj.77.5",
+      "explanation": "The file-scoped PICT target is absent from committed metadata; do not resolve the colliding numeric ID from another resource file.",
+      "from": "Linger.rsrc:View:8155@0x29c0",
+      "relation": "references_picture",
+      "status": "dangling_explained",
+      "to": "Linger.rsrc:PICT:1000"
     },
     {
       "from": "Linger.rsrc:View:8155@0x2a23",
@@ -55876,7 +56260,43 @@
       "from": "Linger.rsrc:View:900",
       "relation": "contains_view_node",
       "status": "resolved",
+      "to": "Linger.rsrc:View:900@0x0138"
+    },
+    {
+      "from": "Linger.rsrc:View:900",
+      "relation": "contains_view_node",
+      "status": "resolved",
+      "to": "Linger.rsrc:View:900@0x019b"
+    },
+    {
+      "from": "Linger.rsrc:View:900",
+      "relation": "contains_view_node",
+      "status": "resolved",
       "to": "Linger.rsrc:View:900@0x01fe"
+    },
+    {
+      "from": "Linger.rsrc:View:900",
+      "relation": "contains_view_node",
+      "status": "resolved",
+      "to": "Linger.rsrc:View:900@0x0260"
+    },
+    {
+      "from": "Linger.rsrc:View:900",
+      "relation": "contains_view_node",
+      "status": "resolved",
+      "to": "Linger.rsrc:View:900@0x02c3"
+    },
+    {
+      "from": "Linger.rsrc:View:900",
+      "relation": "contains_view_node",
+      "status": "resolved",
+      "to": "Linger.rsrc:View:900@0x0326"
+    },
+    {
+      "from": "Linger.rsrc:View:900",
+      "relation": "contains_view_node",
+      "status": "resolved",
+      "to": "Linger.rsrc:View:900@0x0389"
     },
     {
       "from": "Linger.rsrc:View:900",
@@ -55888,13 +56308,73 @@
       "from": "Linger.rsrc:View:900",
       "relation": "contains_view_node",
       "status": "resolved",
+      "to": "Linger.rsrc:View:900@0x044e"
+    },
+    {
+      "from": "Linger.rsrc:View:900",
+      "relation": "contains_view_node",
+      "status": "resolved",
+      "to": "Linger.rsrc:View:900@0x04b1"
+    },
+    {
+      "from": "Linger.rsrc:View:900",
+      "relation": "contains_view_node",
+      "status": "resolved",
       "to": "Linger.rsrc:View:900@0x0514"
     },
     {
       "from": "Linger.rsrc:View:900",
       "relation": "contains_view_node",
       "status": "resolved",
+      "to": "Linger.rsrc:View:900@0x0576"
+    },
+    {
+      "from": "Linger.rsrc:View:900",
+      "relation": "contains_view_node",
+      "status": "resolved",
+      "to": "Linger.rsrc:View:900@0x05d9"
+    },
+    {
+      "from": "Linger.rsrc:View:900",
+      "relation": "contains_view_node",
+      "status": "resolved",
+      "to": "Linger.rsrc:View:900@0x063c"
+    },
+    {
+      "from": "Linger.rsrc:View:900",
+      "relation": "contains_view_node",
+      "status": "resolved",
+      "to": "Linger.rsrc:View:900@0x069f"
+    },
+    {
+      "from": "Linger.rsrc:View:900",
+      "relation": "contains_view_node",
+      "status": "resolved",
+      "to": "Linger.rsrc:View:900@0x0702"
+    },
+    {
+      "from": "Linger.rsrc:View:900",
+      "relation": "contains_view_node",
+      "status": "resolved",
+      "to": "Linger.rsrc:View:900@0x0765"
+    },
+    {
+      "from": "Linger.rsrc:View:900",
+      "relation": "contains_view_node",
+      "status": "resolved",
       "to": "Linger.rsrc:View:900@0x07c8"
+    },
+    {
+      "from": "Linger.rsrc:View:900",
+      "relation": "contains_view_node",
+      "status": "resolved",
+      "to": "Linger.rsrc:View:900@0x082a"
+    },
+    {
+      "from": "Linger.rsrc:View:900",
+      "relation": "contains_view_node",
+      "status": "resolved",
+      "to": "Linger.rsrc:View:900@0x088d"
     },
     {
       "from": "Linger.rsrc:View:900",
@@ -55970,6 +56450,18 @@
     },
     {
       "from": "Linger.rsrc:View:900@0x00d6",
+      "relation": "contains_child_node",
+      "status": "resolved",
+      "to": "Linger.rsrc:View:900@0x0138"
+    },
+    {
+      "from": "Linger.rsrc:View:900@0x00d6",
+      "relation": "contains_child_node",
+      "status": "resolved",
+      "to": "Linger.rsrc:View:900@0x019b"
+    },
+    {
+      "from": "Linger.rsrc:View:900@0x00d6",
       "relation": "has_control_tag",
       "status": "resolved",
       "to": "control_tag:0x56573032"
@@ -55979,6 +56471,70 @@
       "relation": "instantiates_mac_class",
       "status": "resolved",
       "to": "mac_class:TCluster"
+    },
+    {
+      "from": "Linger.rsrc:View:900@0x0138",
+      "relation": "has_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x6d656e75"
+    },
+    {
+      "from": "Linger.rsrc:View:900@0x0138",
+      "relation": "instantiates_mac_class",
+      "status": "resolved",
+      "to": "mac_class:TCzechBox"
+    },
+    {
+      "bead": "imperialism-decomp-1uj.77.5",
+      "explanation": "The file-scoped PICT target is absent from committed metadata; do not resolve the colliding numeric ID from another resource file.",
+      "from": "Linger.rsrc:View:900@0x0138",
+      "relation": "references_picture",
+      "status": "dangling_explained",
+      "to": "Linger.rsrc:PICT:801"
+    },
+    {
+      "from": "Linger.rsrc:View:900@0x019b",
+      "relation": "has_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x65766e74"
+    },
+    {
+      "from": "Linger.rsrc:View:900@0x019b",
+      "relation": "instantiates_mac_class",
+      "status": "resolved",
+      "to": "mac_class:TCzechBox"
+    },
+    {
+      "bead": "imperialism-decomp-1uj.77.5",
+      "explanation": "The file-scoped PICT target is absent from committed metadata; do not resolve the colliding numeric ID from another resource file.",
+      "from": "Linger.rsrc:View:900@0x019b",
+      "relation": "references_picture",
+      "status": "dangling_explained",
+      "to": "Linger.rsrc:PICT:801"
+    },
+    {
+      "from": "Linger.rsrc:View:900@0x01fe",
+      "relation": "contains_child_node",
+      "status": "resolved",
+      "to": "Linger.rsrc:View:900@0x0260"
+    },
+    {
+      "from": "Linger.rsrc:View:900@0x01fe",
+      "relation": "contains_child_node",
+      "status": "resolved",
+      "to": "Linger.rsrc:View:900@0x02c3"
+    },
+    {
+      "from": "Linger.rsrc:View:900@0x01fe",
+      "relation": "contains_child_node",
+      "status": "resolved",
+      "to": "Linger.rsrc:View:900@0x0326"
+    },
+    {
+      "from": "Linger.rsrc:View:900@0x01fe",
+      "relation": "contains_child_node",
+      "status": "resolved",
+      "to": "Linger.rsrc:View:900@0x0389"
     },
     {
       "from": "Linger.rsrc:View:900@0x01fe",
@@ -55993,6 +56549,98 @@
       "to": "mac_class:TCluster"
     },
     {
+      "from": "Linger.rsrc:View:900@0x0260",
+      "relation": "has_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x63757273"
+    },
+    {
+      "from": "Linger.rsrc:View:900@0x0260",
+      "relation": "instantiates_mac_class",
+      "status": "resolved",
+      "to": "mac_class:TCzechBox"
+    },
+    {
+      "bead": "imperialism-decomp-1uj.77.5",
+      "explanation": "The file-scoped PICT target is absent from committed metadata; do not resolve the colliding numeric ID from another resource file.",
+      "from": "Linger.rsrc:View:900@0x0260",
+      "relation": "references_picture",
+      "status": "dangling_explained",
+      "to": "Linger.rsrc:PICT:801"
+    },
+    {
+      "from": "Linger.rsrc:View:900@0x02c3",
+      "relation": "has_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x736c6565"
+    },
+    {
+      "from": "Linger.rsrc:View:900@0x02c3",
+      "relation": "instantiates_mac_class",
+      "status": "resolved",
+      "to": "mac_class:TCzechBox"
+    },
+    {
+      "bead": "imperialism-decomp-1uj.77.5",
+      "explanation": "The file-scoped PICT target is absent from committed metadata; do not resolve the colliding numeric ID from another resource file.",
+      "from": "Linger.rsrc:View:900@0x02c3",
+      "relation": "references_picture",
+      "status": "dangling_explained",
+      "to": "Linger.rsrc:PICT:801"
+    },
+    {
+      "from": "Linger.rsrc:View:900@0x0326",
+      "relation": "has_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x68656c70"
+    },
+    {
+      "from": "Linger.rsrc:View:900@0x0326",
+      "relation": "instantiates_mac_class",
+      "status": "resolved",
+      "to": "mac_class:TCzechBox"
+    },
+    {
+      "bead": "imperialism-decomp-1uj.77.5",
+      "explanation": "The file-scoped PICT target is absent from committed metadata; do not resolve the colliding numeric ID from another resource file.",
+      "from": "Linger.rsrc:View:900@0x0326",
+      "relation": "references_picture",
+      "status": "dangling_explained",
+      "to": "Linger.rsrc:PICT:801"
+    },
+    {
+      "from": "Linger.rsrc:View:900@0x0389",
+      "relation": "has_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x696e766c"
+    },
+    {
+      "from": "Linger.rsrc:View:900@0x0389",
+      "relation": "instantiates_mac_class",
+      "status": "resolved",
+      "to": "mac_class:TCzechBox"
+    },
+    {
+      "bead": "imperialism-decomp-1uj.77.5",
+      "explanation": "The file-scoped PICT target is absent from committed metadata; do not resolve the colliding numeric ID from another resource file.",
+      "from": "Linger.rsrc:View:900@0x0389",
+      "relation": "references_picture",
+      "status": "dangling_explained",
+      "to": "Linger.rsrc:PICT:801"
+    },
+    {
+      "from": "Linger.rsrc:View:900@0x03ec",
+      "relation": "contains_child_node",
+      "status": "resolved",
+      "to": "Linger.rsrc:View:900@0x044e"
+    },
+    {
+      "from": "Linger.rsrc:View:900@0x03ec",
+      "relation": "contains_child_node",
+      "status": "resolved",
+      "to": "Linger.rsrc:View:900@0x04b1"
+    },
+    {
       "from": "Linger.rsrc:View:900@0x03ec",
       "relation": "has_control_tag",
       "status": "resolved",
@@ -56003,6 +56651,82 @@
       "relation": "instantiates_mac_class",
       "status": "resolved",
       "to": "mac_class:TCluster"
+    },
+    {
+      "from": "Linger.rsrc:View:900@0x044e",
+      "relation": "has_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x7365676c"
+    },
+    {
+      "from": "Linger.rsrc:View:900@0x044e",
+      "relation": "instantiates_mac_class",
+      "status": "resolved",
+      "to": "mac_class:TCzechBox"
+    },
+    {
+      "bead": "imperialism-decomp-1uj.77.5",
+      "explanation": "The file-scoped PICT target is absent from committed metadata; do not resolve the colliding numeric ID from another resource file.",
+      "from": "Linger.rsrc:View:900@0x044e",
+      "relation": "references_picture",
+      "status": "dangling_explained",
+      "to": "Linger.rsrc:PICT:801"
+    },
+    {
+      "from": "Linger.rsrc:View:900@0x04b1",
+      "relation": "has_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x73656775"
+    },
+    {
+      "from": "Linger.rsrc:View:900@0x04b1",
+      "relation": "instantiates_mac_class",
+      "status": "resolved",
+      "to": "mac_class:TCzechBox"
+    },
+    {
+      "bead": "imperialism-decomp-1uj.77.5",
+      "explanation": "The file-scoped PICT target is absent from committed metadata; do not resolve the colliding numeric ID from another resource file.",
+      "from": "Linger.rsrc:View:900@0x04b1",
+      "relation": "references_picture",
+      "status": "dangling_explained",
+      "to": "Linger.rsrc:PICT:801"
+    },
+    {
+      "from": "Linger.rsrc:View:900@0x0514",
+      "relation": "contains_child_node",
+      "status": "resolved",
+      "to": "Linger.rsrc:View:900@0x0576"
+    },
+    {
+      "from": "Linger.rsrc:View:900@0x0514",
+      "relation": "contains_child_node",
+      "status": "resolved",
+      "to": "Linger.rsrc:View:900@0x05d9"
+    },
+    {
+      "from": "Linger.rsrc:View:900@0x0514",
+      "relation": "contains_child_node",
+      "status": "resolved",
+      "to": "Linger.rsrc:View:900@0x063c"
+    },
+    {
+      "from": "Linger.rsrc:View:900@0x0514",
+      "relation": "contains_child_node",
+      "status": "resolved",
+      "to": "Linger.rsrc:View:900@0x069f"
+    },
+    {
+      "from": "Linger.rsrc:View:900@0x0514",
+      "relation": "contains_child_node",
+      "status": "resolved",
+      "to": "Linger.rsrc:View:900@0x0702"
+    },
+    {
+      "from": "Linger.rsrc:View:900@0x0514",
+      "relation": "contains_child_node",
+      "status": "resolved",
+      "to": "Linger.rsrc:View:900@0x0765"
     },
     {
       "from": "Linger.rsrc:View:900@0x0514",
@@ -56017,6 +56741,138 @@
       "to": "mac_class:TCluster"
     },
     {
+      "from": "Linger.rsrc:View:900@0x0576",
+      "relation": "has_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x696e7473"
+    },
+    {
+      "from": "Linger.rsrc:View:900@0x0576",
+      "relation": "instantiates_mac_class",
+      "status": "resolved",
+      "to": "mac_class:TCzechBox"
+    },
+    {
+      "bead": "imperialism-decomp-1uj.77.5",
+      "explanation": "The file-scoped PICT target is absent from committed metadata; do not resolve the colliding numeric ID from another resource file.",
+      "from": "Linger.rsrc:View:900@0x0576",
+      "relation": "references_picture",
+      "status": "dangling_explained",
+      "to": "Linger.rsrc:PICT:801"
+    },
+    {
+      "from": "Linger.rsrc:View:900@0x05d9",
+      "relation": "has_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x666f6375"
+    },
+    {
+      "from": "Linger.rsrc:View:900@0x05d9",
+      "relation": "instantiates_mac_class",
+      "status": "resolved",
+      "to": "mac_class:TCzechBox"
+    },
+    {
+      "bead": "imperialism-decomp-1uj.77.5",
+      "explanation": "The file-scoped PICT target is absent from committed metadata; do not resolve the colliding numeric ID from another resource file.",
+      "from": "Linger.rsrc:View:900@0x05d9",
+      "relation": "references_picture",
+      "status": "dangling_explained",
+      "to": "Linger.rsrc:PICT:801"
+    },
+    {
+      "from": "Linger.rsrc:View:900@0x063c",
+      "relation": "has_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x70726e74"
+    },
+    {
+      "from": "Linger.rsrc:View:900@0x063c",
+      "relation": "instantiates_mac_class",
+      "status": "resolved",
+      "to": "mac_class:TCzechBox"
+    },
+    {
+      "bead": "imperialism-decomp-1uj.77.5",
+      "explanation": "The file-scoped PICT target is absent from committed metadata; do not resolve the colliding numeric ID from another resource file.",
+      "from": "Linger.rsrc:View:900@0x063c",
+      "relation": "references_picture",
+      "status": "dangling_explained",
+      "to": "Linger.rsrc:PICT:801"
+    },
+    {
+      "from": "Linger.rsrc:View:900@0x069f",
+      "relation": "has_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x75737231"
+    },
+    {
+      "from": "Linger.rsrc:View:900@0x069f",
+      "relation": "instantiates_mac_class",
+      "status": "resolved",
+      "to": "mac_class:TCzechBox"
+    },
+    {
+      "bead": "imperialism-decomp-1uj.77.5",
+      "explanation": "The file-scoped PICT target is absent from committed metadata; do not resolve the colliding numeric ID from another resource file.",
+      "from": "Linger.rsrc:View:900@0x069f",
+      "relation": "references_picture",
+      "status": "dangling_explained",
+      "to": "Linger.rsrc:PICT:801"
+    },
+    {
+      "from": "Linger.rsrc:View:900@0x0702",
+      "relation": "has_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x75737232"
+    },
+    {
+      "from": "Linger.rsrc:View:900@0x0702",
+      "relation": "instantiates_mac_class",
+      "status": "resolved",
+      "to": "mac_class:TCzechBox"
+    },
+    {
+      "bead": "imperialism-decomp-1uj.77.5",
+      "explanation": "The file-scoped PICT target is absent from committed metadata; do not resolve the colliding numeric ID from another resource file.",
+      "from": "Linger.rsrc:View:900@0x0702",
+      "relation": "references_picture",
+      "status": "dangling_explained",
+      "to": "Linger.rsrc:PICT:801"
+    },
+    {
+      "from": "Linger.rsrc:View:900@0x0765",
+      "relation": "has_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x75737233"
+    },
+    {
+      "from": "Linger.rsrc:View:900@0x0765",
+      "relation": "instantiates_mac_class",
+      "status": "resolved",
+      "to": "mac_class:TCzechBox"
+    },
+    {
+      "bead": "imperialism-decomp-1uj.77.5",
+      "explanation": "The file-scoped PICT target is absent from committed metadata; do not resolve the colliding numeric ID from another resource file.",
+      "from": "Linger.rsrc:View:900@0x0765",
+      "relation": "references_picture",
+      "status": "dangling_explained",
+      "to": "Linger.rsrc:PICT:801"
+    },
+    {
+      "from": "Linger.rsrc:View:900@0x07c8",
+      "relation": "contains_child_node",
+      "status": "resolved",
+      "to": "Linger.rsrc:View:900@0x082a"
+    },
+    {
+      "from": "Linger.rsrc:View:900@0x07c8",
+      "relation": "contains_child_node",
+      "status": "resolved",
+      "to": "Linger.rsrc:View:900@0x088d"
+    },
+    {
       "from": "Linger.rsrc:View:900@0x07c8",
       "relation": "has_control_tag",
       "status": "resolved",
@@ -56027,6 +56883,46 @@
       "relation": "instantiates_mac_class",
       "status": "resolved",
       "to": "mac_class:TCluster"
+    },
+    {
+      "from": "Linger.rsrc:View:900@0x082a",
+      "relation": "has_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x72737263"
+    },
+    {
+      "from": "Linger.rsrc:View:900@0x082a",
+      "relation": "instantiates_mac_class",
+      "status": "resolved",
+      "to": "mac_class:TCzechBox"
+    },
+    {
+      "bead": "imperialism-decomp-1uj.77.5",
+      "explanation": "The file-scoped PICT target is absent from committed metadata; do not resolve the colliding numeric ID from another resource file.",
+      "from": "Linger.rsrc:View:900@0x082a",
+      "relation": "references_picture",
+      "status": "dangling_explained",
+      "to": "Linger.rsrc:PICT:801"
+    },
+    {
+      "from": "Linger.rsrc:View:900@0x088d",
+      "relation": "has_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x6d656d62"
+    },
+    {
+      "from": "Linger.rsrc:View:900@0x088d",
+      "relation": "instantiates_mac_class",
+      "status": "resolved",
+      "to": "mac_class:TCzechBox"
+    },
+    {
+      "bead": "imperialism-decomp-1uj.77.5",
+      "explanation": "The file-scoped PICT target is absent from committed metadata; do not resolve the colliding numeric ID from another resource file.",
+      "from": "Linger.rsrc:View:900@0x088d",
+      "relation": "references_picture",
+      "status": "dangling_explained",
+      "to": "Linger.rsrc:PICT:801"
     },
     {
       "from": "Linger.rsrc:View:900@0x08f0",
@@ -56086,6 +56982,12 @@
       "from": "Linger.rsrc:View:901",
       "relation": "contains_view_node",
       "status": "resolved",
+      "to": "Linger.rsrc:View:901@0x038d"
+    },
+    {
+      "from": "Linger.rsrc:View:901",
+      "relation": "contains_view_node",
+      "status": "resolved",
       "to": "Linger.rsrc:View:901@0x03f0"
     },
     {
@@ -56099,6 +57001,12 @@
       "relation": "contains_view_node",
       "status": "resolved",
       "to": "Linger.rsrc:View:901@0x04fc"
+    },
+    {
+      "from": "Linger.rsrc:View:901",
+      "relation": "contains_view_node",
+      "status": "resolved",
+      "to": "Linger.rsrc:View:901@0x055e"
     },
     {
       "from": "Linger.rsrc:View:901",
@@ -56129,6 +57037,12 @@
       "relation": "contains_view_node",
       "status": "resolved",
       "to": "Linger.rsrc:View:901@0x07e5"
+    },
+    {
+      "from": "Linger.rsrc:View:901",
+      "relation": "contains_view_node",
+      "status": "resolved",
+      "to": "Linger.rsrc:View:901@0x0847"
     },
     {
       "from": "Linger.rsrc:View:901",
@@ -56314,6 +57228,12 @@
       "from": "Linger.rsrc:View:901@0x032b",
       "relation": "contains_child_node",
       "status": "resolved",
+      "to": "Linger.rsrc:View:901@0x038d"
+    },
+    {
+      "from": "Linger.rsrc:View:901@0x032b",
+      "relation": "contains_child_node",
+      "status": "resolved",
       "to": "Linger.rsrc:View:901@0x03f0"
     },
     {
@@ -56333,6 +57253,26 @@
       "relation": "instantiates_mac_class",
       "status": "resolved",
       "to": "mac_class:TCluster"
+    },
+    {
+      "from": "Linger.rsrc:View:901@0x038d",
+      "relation": "has_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x6d616364"
+    },
+    {
+      "from": "Linger.rsrc:View:901@0x038d",
+      "relation": "instantiates_mac_class",
+      "status": "resolved",
+      "to": "mac_class:TCzechBox"
+    },
+    {
+      "bead": "imperialism-decomp-1uj.77.5",
+      "explanation": "The file-scoped PICT target is absent from committed metadata; do not resolve the colliding numeric ID from another resource file.",
+      "from": "Linger.rsrc:View:901@0x038d",
+      "relation": "references_picture",
+      "status": "dangling_explained",
+      "to": "Linger.rsrc:PICT:801"
     },
     {
       "from": "Linger.rsrc:View:901@0x03f0",
@@ -56376,6 +57316,12 @@
       "from": "Linger.rsrc:View:901@0x04fc",
       "relation": "contains_child_node",
       "status": "resolved",
+      "to": "Linger.rsrc:View:901@0x055e"
+    },
+    {
+      "from": "Linger.rsrc:View:901@0x04fc",
+      "relation": "contains_child_node",
+      "status": "resolved",
       "to": "Linger.rsrc:View:901@0x05c1"
     },
     {
@@ -56407,6 +57353,26 @@
       "relation": "instantiates_mac_class",
       "status": "resolved",
       "to": "mac_class:TCluster"
+    },
+    {
+      "from": "Linger.rsrc:View:901@0x055e",
+      "relation": "has_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x6d726364"
+    },
+    {
+      "from": "Linger.rsrc:View:901@0x055e",
+      "relation": "instantiates_mac_class",
+      "status": "resolved",
+      "to": "mac_class:TCzechBox"
+    },
+    {
+      "bead": "imperialism-decomp-1uj.77.5",
+      "explanation": "The file-scoped PICT target is absent from committed metadata; do not resolve the colliding numeric ID from another resource file.",
+      "from": "Linger.rsrc:View:901@0x055e",
+      "relation": "references_picture",
+      "status": "dangling_explained",
+      "to": "Linger.rsrc:PICT:801"
     },
     {
       "from": "Linger.rsrc:View:901@0x05c1",
@@ -56486,6 +57452,12 @@
       "from": "Linger.rsrc:View:901@0x07e5",
       "relation": "contains_child_node",
       "status": "resolved",
+      "to": "Linger.rsrc:View:901@0x0847"
+    },
+    {
+      "from": "Linger.rsrc:View:901@0x07e5",
+      "relation": "contains_child_node",
+      "status": "resolved",
       "to": "Linger.rsrc:View:901@0x08aa"
     },
     {
@@ -56535,6 +57507,26 @@
       "relation": "instantiates_mac_class",
       "status": "resolved",
       "to": "mac_class:TCluster"
+    },
+    {
+      "from": "Linger.rsrc:View:901@0x0847",
+      "relation": "has_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x6d6f7574"
+    },
+    {
+      "from": "Linger.rsrc:View:901@0x0847",
+      "relation": "instantiates_mac_class",
+      "status": "resolved",
+      "to": "mac_class:TCzechBox"
+    },
+    {
+      "bead": "imperialism-decomp-1uj.77.5",
+      "explanation": "The file-scoped PICT target is absent from committed metadata; do not resolve the colliding numeric ID from another resource file.",
+      "from": "Linger.rsrc:View:901@0x0847",
+      "relation": "references_picture",
+      "status": "dangling_explained",
+      "to": "Linger.rsrc:PICT:801"
     },
     {
       "from": "Linger.rsrc:View:901@0x08aa",
@@ -62698,7 +63690,103 @@
       "from": "MapView.rsrc:View:9470",
       "relation": "contains_view_node",
       "status": "resolved",
+      "to": "MapView.rsrc:View:9470@0x0397"
+    },
+    {
+      "from": "MapView.rsrc:View:9470",
+      "relation": "contains_view_node",
+      "status": "resolved",
+      "to": "MapView.rsrc:View:9470@0x03fa"
+    },
+    {
+      "from": "MapView.rsrc:View:9470",
+      "relation": "contains_view_node",
+      "status": "resolved",
+      "to": "MapView.rsrc:View:9470@0x045d"
+    },
+    {
+      "from": "MapView.rsrc:View:9470",
+      "relation": "contains_view_node",
+      "status": "resolved",
+      "to": "MapView.rsrc:View:9470@0x04c0"
+    },
+    {
+      "from": "MapView.rsrc:View:9470",
+      "relation": "contains_view_node",
+      "status": "resolved",
+      "to": "MapView.rsrc:View:9470@0x0523"
+    },
+    {
+      "from": "MapView.rsrc:View:9470",
+      "relation": "contains_view_node",
+      "status": "resolved",
+      "to": "MapView.rsrc:View:9470@0x0586"
+    },
+    {
+      "from": "MapView.rsrc:View:9470",
+      "relation": "contains_view_node",
+      "status": "resolved",
+      "to": "MapView.rsrc:View:9470@0x05e9"
+    },
+    {
+      "from": "MapView.rsrc:View:9470",
+      "relation": "contains_view_node",
+      "status": "resolved",
+      "to": "MapView.rsrc:View:9470@0x064c"
+    },
+    {
+      "from": "MapView.rsrc:View:9470",
+      "relation": "contains_view_node",
+      "status": "resolved",
+      "to": "MapView.rsrc:View:9470@0x06af"
+    },
+    {
+      "from": "MapView.rsrc:View:9470",
+      "relation": "contains_view_node",
+      "status": "resolved",
       "to": "MapView.rsrc:View:9470@0x0774"
+    },
+    {
+      "from": "MapView.rsrc:View:9470",
+      "relation": "contains_view_node",
+      "status": "resolved",
+      "to": "MapView.rsrc:View:9470@0x07d6"
+    },
+    {
+      "from": "MapView.rsrc:View:9470",
+      "relation": "contains_view_node",
+      "status": "resolved",
+      "to": "MapView.rsrc:View:9470@0x0839"
+    },
+    {
+      "from": "MapView.rsrc:View:9470",
+      "relation": "contains_view_node",
+      "status": "resolved",
+      "to": "MapView.rsrc:View:9470@0x089c"
+    },
+    {
+      "from": "MapView.rsrc:View:9470",
+      "relation": "contains_view_node",
+      "status": "resolved",
+      "to": "MapView.rsrc:View:9470@0x08ff"
+    },
+    {
+      "from": "MapView.rsrc:View:9470",
+      "relation": "contains_view_node",
+      "status": "resolved",
+      "to": "MapView.rsrc:View:9470@0x0962"
+    },
+    {
+      "from": "MapView.rsrc:View:9470",
+      "relation": "contains_view_node",
+      "status": "resolved",
+      "to": "MapView.rsrc:View:9470@0x09c5"
+    },
+    {
+      "from": "MapView.rsrc:View:9470",
+      "relation": "contains_view_node",
+      "status": "resolved",
+      "to": "MapView.rsrc:View:9470@0x0a28"
     },
     {
       "from": "MapView.rsrc:View:9470@0x0004",
@@ -62774,6 +63862,60 @@
     },
     {
       "from": "MapView.rsrc:View:9470@0x0335",
+      "relation": "contains_child_node",
+      "status": "resolved",
+      "to": "MapView.rsrc:View:9470@0x0397"
+    },
+    {
+      "from": "MapView.rsrc:View:9470@0x0335",
+      "relation": "contains_child_node",
+      "status": "resolved",
+      "to": "MapView.rsrc:View:9470@0x03fa"
+    },
+    {
+      "from": "MapView.rsrc:View:9470@0x0335",
+      "relation": "contains_child_node",
+      "status": "resolved",
+      "to": "MapView.rsrc:View:9470@0x045d"
+    },
+    {
+      "from": "MapView.rsrc:View:9470@0x0335",
+      "relation": "contains_child_node",
+      "status": "resolved",
+      "to": "MapView.rsrc:View:9470@0x04c0"
+    },
+    {
+      "from": "MapView.rsrc:View:9470@0x0335",
+      "relation": "contains_child_node",
+      "status": "resolved",
+      "to": "MapView.rsrc:View:9470@0x0523"
+    },
+    {
+      "from": "MapView.rsrc:View:9470@0x0335",
+      "relation": "contains_child_node",
+      "status": "resolved",
+      "to": "MapView.rsrc:View:9470@0x0586"
+    },
+    {
+      "from": "MapView.rsrc:View:9470@0x0335",
+      "relation": "contains_child_node",
+      "status": "resolved",
+      "to": "MapView.rsrc:View:9470@0x05e9"
+    },
+    {
+      "from": "MapView.rsrc:View:9470@0x0335",
+      "relation": "contains_child_node",
+      "status": "resolved",
+      "to": "MapView.rsrc:View:9470@0x064c"
+    },
+    {
+      "from": "MapView.rsrc:View:9470@0x0335",
+      "relation": "contains_child_node",
+      "status": "resolved",
+      "to": "MapView.rsrc:View:9470@0x06af"
+    },
+    {
+      "from": "MapView.rsrc:View:9470@0x0335",
       "relation": "has_control_tag",
       "status": "resolved",
       "to": "control_tag:0x74797065"
@@ -62783,6 +63925,228 @@
       "relation": "instantiates_mac_class",
       "status": "resolved",
       "to": "mac_class:TCluster"
+    },
+    {
+      "from": "MapView.rsrc:View:9470@0x0397",
+      "relation": "has_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x74797038"
+    },
+    {
+      "from": "MapView.rsrc:View:9470@0x0397",
+      "relation": "instantiates_mac_class",
+      "status": "resolved",
+      "to": "mac_class:TRadioPictureButton"
+    },
+    {
+      "bead": "imperialism-decomp-1uj.77.5",
+      "explanation": "The file-scoped PICT target is absent from committed metadata; do not resolve the colliding numeric ID from another resource file.",
+      "from": "MapView.rsrc:View:9470@0x0397",
+      "relation": "references_picture",
+      "status": "dangling_explained",
+      "to": "MapView.rsrc:PICT:1520"
+    },
+    {
+      "from": "MapView.rsrc:View:9470@0x03fa",
+      "relation": "has_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x74797030"
+    },
+    {
+      "from": "MapView.rsrc:View:9470@0x03fa",
+      "relation": "instantiates_mac_class",
+      "status": "resolved",
+      "to": "mac_class:TRadioPictureButton"
+    },
+    {
+      "bead": "imperialism-decomp-1uj.77.5",
+      "explanation": "The file-scoped PICT target is absent from committed metadata; do not resolve the colliding numeric ID from another resource file.",
+      "from": "MapView.rsrc:View:9470@0x03fa",
+      "relation": "references_picture",
+      "status": "dangling_explained",
+      "to": "MapView.rsrc:PICT:1520"
+    },
+    {
+      "from": "MapView.rsrc:View:9470@0x045d",
+      "relation": "has_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x74797031"
+    },
+    {
+      "from": "MapView.rsrc:View:9470@0x045d",
+      "relation": "instantiates_mac_class",
+      "status": "resolved",
+      "to": "mac_class:TRadioPictureButton"
+    },
+    {
+      "bead": "imperialism-decomp-1uj.77.5",
+      "explanation": "The file-scoped PICT target is absent from committed metadata; do not resolve the colliding numeric ID from another resource file.",
+      "from": "MapView.rsrc:View:9470@0x045d",
+      "relation": "references_picture",
+      "status": "dangling_explained",
+      "to": "MapView.rsrc:PICT:1520"
+    },
+    {
+      "from": "MapView.rsrc:View:9470@0x04c0",
+      "relation": "has_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x74797032"
+    },
+    {
+      "from": "MapView.rsrc:View:9470@0x04c0",
+      "relation": "instantiates_mac_class",
+      "status": "resolved",
+      "to": "mac_class:TRadioPictureButton"
+    },
+    {
+      "bead": "imperialism-decomp-1uj.77.5",
+      "explanation": "The file-scoped PICT target is absent from committed metadata; do not resolve the colliding numeric ID from another resource file.",
+      "from": "MapView.rsrc:View:9470@0x04c0",
+      "relation": "references_picture",
+      "status": "dangling_explained",
+      "to": "MapView.rsrc:PICT:1520"
+    },
+    {
+      "from": "MapView.rsrc:View:9470@0x0523",
+      "relation": "has_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x74797033"
+    },
+    {
+      "from": "MapView.rsrc:View:9470@0x0523",
+      "relation": "instantiates_mac_class",
+      "status": "resolved",
+      "to": "mac_class:TRadioPictureButton"
+    },
+    {
+      "bead": "imperialism-decomp-1uj.77.5",
+      "explanation": "The file-scoped PICT target is absent from committed metadata; do not resolve the colliding numeric ID from another resource file.",
+      "from": "MapView.rsrc:View:9470@0x0523",
+      "relation": "references_picture",
+      "status": "dangling_explained",
+      "to": "MapView.rsrc:PICT:1520"
+    },
+    {
+      "from": "MapView.rsrc:View:9470@0x0586",
+      "relation": "has_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x74797034"
+    },
+    {
+      "from": "MapView.rsrc:View:9470@0x0586",
+      "relation": "instantiates_mac_class",
+      "status": "resolved",
+      "to": "mac_class:TRadioPictureButton"
+    },
+    {
+      "bead": "imperialism-decomp-1uj.77.5",
+      "explanation": "The file-scoped PICT target is absent from committed metadata; do not resolve the colliding numeric ID from another resource file.",
+      "from": "MapView.rsrc:View:9470@0x0586",
+      "relation": "references_picture",
+      "status": "dangling_explained",
+      "to": "MapView.rsrc:PICT:1520"
+    },
+    {
+      "from": "MapView.rsrc:View:9470@0x05e9",
+      "relation": "has_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x74797035"
+    },
+    {
+      "from": "MapView.rsrc:View:9470@0x05e9",
+      "relation": "instantiates_mac_class",
+      "status": "resolved",
+      "to": "mac_class:TRadioPictureButton"
+    },
+    {
+      "bead": "imperialism-decomp-1uj.77.5",
+      "explanation": "The file-scoped PICT target is absent from committed metadata; do not resolve the colliding numeric ID from another resource file.",
+      "from": "MapView.rsrc:View:9470@0x05e9",
+      "relation": "references_picture",
+      "status": "dangling_explained",
+      "to": "MapView.rsrc:PICT:1520"
+    },
+    {
+      "from": "MapView.rsrc:View:9470@0x064c",
+      "relation": "has_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x74797036"
+    },
+    {
+      "from": "MapView.rsrc:View:9470@0x064c",
+      "relation": "instantiates_mac_class",
+      "status": "resolved",
+      "to": "mac_class:TRadioPictureButton"
+    },
+    {
+      "bead": "imperialism-decomp-1uj.77.5",
+      "explanation": "The file-scoped PICT target is absent from committed metadata; do not resolve the colliding numeric ID from another resource file.",
+      "from": "MapView.rsrc:View:9470@0x064c",
+      "relation": "references_picture",
+      "status": "dangling_explained",
+      "to": "MapView.rsrc:PICT:1520"
+    },
+    {
+      "from": "MapView.rsrc:View:9470@0x06af",
+      "relation": "has_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x74797037"
+    },
+    {
+      "from": "MapView.rsrc:View:9470@0x06af",
+      "relation": "instantiates_mac_class",
+      "status": "resolved",
+      "to": "mac_class:TRadioPictureButton"
+    },
+    {
+      "bead": "imperialism-decomp-1uj.77.5",
+      "explanation": "The file-scoped PICT target is absent from committed metadata; do not resolve the colliding numeric ID from another resource file.",
+      "from": "MapView.rsrc:View:9470@0x06af",
+      "relation": "references_picture",
+      "status": "dangling_explained",
+      "to": "MapView.rsrc:PICT:1520"
+    },
+    {
+      "from": "MapView.rsrc:View:9470@0x0774",
+      "relation": "contains_child_node",
+      "status": "resolved",
+      "to": "MapView.rsrc:View:9470@0x07d6"
+    },
+    {
+      "from": "MapView.rsrc:View:9470@0x0774",
+      "relation": "contains_child_node",
+      "status": "resolved",
+      "to": "MapView.rsrc:View:9470@0x0839"
+    },
+    {
+      "from": "MapView.rsrc:View:9470@0x0774",
+      "relation": "contains_child_node",
+      "status": "resolved",
+      "to": "MapView.rsrc:View:9470@0x089c"
+    },
+    {
+      "from": "MapView.rsrc:View:9470@0x0774",
+      "relation": "contains_child_node",
+      "status": "resolved",
+      "to": "MapView.rsrc:View:9470@0x08ff"
+    },
+    {
+      "from": "MapView.rsrc:View:9470@0x0774",
+      "relation": "contains_child_node",
+      "status": "resolved",
+      "to": "MapView.rsrc:View:9470@0x0962"
+    },
+    {
+      "from": "MapView.rsrc:View:9470@0x0774",
+      "relation": "contains_child_node",
+      "status": "resolved",
+      "to": "MapView.rsrc:View:9470@0x09c5"
+    },
+    {
+      "from": "MapView.rsrc:View:9470@0x0774",
+      "relation": "contains_child_node",
+      "status": "resolved",
+      "to": "MapView.rsrc:View:9470@0x0a28"
     },
     {
       "from": "MapView.rsrc:View:9470@0x0774",
@@ -62795,6 +64159,132 @@
       "relation": "instantiates_mac_class",
       "status": "resolved",
       "to": "mac_class:TCluster"
+    },
+    {
+      "from": "MapView.rsrc:View:9470@0x07d6",
+      "relation": "has_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x6f776e30"
+    },
+    {
+      "from": "MapView.rsrc:View:9470@0x07d6",
+      "relation": "instantiates_mac_class",
+      "status": "resolved",
+      "to": "mac_class:TRadioPictureButton"
+    },
+    {
+      "from": "MapView.rsrc:View:9470@0x07d6",
+      "relation": "references_picture",
+      "status": "resolved",
+      "to": "MapView.rsrc:PICT:1519"
+    },
+    {
+      "from": "MapView.rsrc:View:9470@0x0839",
+      "relation": "has_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x6f776e31"
+    },
+    {
+      "from": "MapView.rsrc:View:9470@0x0839",
+      "relation": "instantiates_mac_class",
+      "status": "resolved",
+      "to": "mac_class:TRadioPictureButton"
+    },
+    {
+      "from": "MapView.rsrc:View:9470@0x0839",
+      "relation": "references_picture",
+      "status": "resolved",
+      "to": "MapView.rsrc:PICT:1519"
+    },
+    {
+      "from": "MapView.rsrc:View:9470@0x089c",
+      "relation": "has_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x6f776e32"
+    },
+    {
+      "from": "MapView.rsrc:View:9470@0x089c",
+      "relation": "instantiates_mac_class",
+      "status": "resolved",
+      "to": "mac_class:TRadioPictureButton"
+    },
+    {
+      "from": "MapView.rsrc:View:9470@0x089c",
+      "relation": "references_picture",
+      "status": "resolved",
+      "to": "MapView.rsrc:PICT:1519"
+    },
+    {
+      "from": "MapView.rsrc:View:9470@0x08ff",
+      "relation": "has_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x6f776e33"
+    },
+    {
+      "from": "MapView.rsrc:View:9470@0x08ff",
+      "relation": "instantiates_mac_class",
+      "status": "resolved",
+      "to": "mac_class:TRadioPictureButton"
+    },
+    {
+      "from": "MapView.rsrc:View:9470@0x08ff",
+      "relation": "references_picture",
+      "status": "resolved",
+      "to": "MapView.rsrc:PICT:1519"
+    },
+    {
+      "from": "MapView.rsrc:View:9470@0x0962",
+      "relation": "has_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x6f776e36"
+    },
+    {
+      "from": "MapView.rsrc:View:9470@0x0962",
+      "relation": "instantiates_mac_class",
+      "status": "resolved",
+      "to": "mac_class:TRadioPictureButton"
+    },
+    {
+      "from": "MapView.rsrc:View:9470@0x0962",
+      "relation": "references_picture",
+      "status": "resolved",
+      "to": "MapView.rsrc:PICT:1519"
+    },
+    {
+      "from": "MapView.rsrc:View:9470@0x09c5",
+      "relation": "has_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x6f776e35"
+    },
+    {
+      "from": "MapView.rsrc:View:9470@0x09c5",
+      "relation": "instantiates_mac_class",
+      "status": "resolved",
+      "to": "mac_class:TRadioPictureButton"
+    },
+    {
+      "from": "MapView.rsrc:View:9470@0x09c5",
+      "relation": "references_picture",
+      "status": "resolved",
+      "to": "MapView.rsrc:PICT:1519"
+    },
+    {
+      "from": "MapView.rsrc:View:9470@0x0a28",
+      "relation": "has_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x6f776e34"
+    },
+    {
+      "from": "MapView.rsrc:View:9470@0x0a28",
+      "relation": "instantiates_mac_class",
+      "status": "resolved",
+      "to": "mac_class:TRadioPictureButton"
+    },
+    {
+      "from": "MapView.rsrc:View:9470@0x0a28",
+      "relation": "references_picture",
+      "status": "resolved",
+      "to": "MapView.rsrc:PICT:1519"
     },
     {
       "from": "MapView.rsrc:View:9474",
@@ -63556,6 +65046,60 @@
       "from": "MapView.rsrc:View:9476",
       "relation": "contains_view_node",
       "status": "resolved",
+      "to": "MapView.rsrc:View:9476@0x01a8"
+    },
+    {
+      "from": "MapView.rsrc:View:9476",
+      "relation": "contains_view_node",
+      "status": "resolved",
+      "to": "MapView.rsrc:View:9476@0x020b"
+    },
+    {
+      "from": "MapView.rsrc:View:9476",
+      "relation": "contains_view_node",
+      "status": "resolved",
+      "to": "MapView.rsrc:View:9476@0x026e"
+    },
+    {
+      "from": "MapView.rsrc:View:9476",
+      "relation": "contains_view_node",
+      "status": "resolved",
+      "to": "MapView.rsrc:View:9476@0x02d1"
+    },
+    {
+      "from": "MapView.rsrc:View:9476",
+      "relation": "contains_view_node",
+      "status": "resolved",
+      "to": "MapView.rsrc:View:9476@0x0334"
+    },
+    {
+      "from": "MapView.rsrc:View:9476",
+      "relation": "contains_view_node",
+      "status": "resolved",
+      "to": "MapView.rsrc:View:9476@0x0397"
+    },
+    {
+      "from": "MapView.rsrc:View:9476",
+      "relation": "contains_view_node",
+      "status": "resolved",
+      "to": "MapView.rsrc:View:9476@0x03fa"
+    },
+    {
+      "from": "MapView.rsrc:View:9476",
+      "relation": "contains_view_node",
+      "status": "resolved",
+      "to": "MapView.rsrc:View:9476@0x045d"
+    },
+    {
+      "from": "MapView.rsrc:View:9476",
+      "relation": "contains_view_node",
+      "status": "resolved",
+      "to": "MapView.rsrc:View:9476@0x04c0"
+    },
+    {
+      "from": "MapView.rsrc:View:9476",
+      "relation": "contains_view_node",
+      "status": "resolved",
       "to": "MapView.rsrc:View:9476@0x0523"
     },
     {
@@ -63668,6 +65212,60 @@
     },
     {
       "from": "MapView.rsrc:View:9476@0x0146",
+      "relation": "contains_child_node",
+      "status": "resolved",
+      "to": "MapView.rsrc:View:9476@0x01a8"
+    },
+    {
+      "from": "MapView.rsrc:View:9476@0x0146",
+      "relation": "contains_child_node",
+      "status": "resolved",
+      "to": "MapView.rsrc:View:9476@0x020b"
+    },
+    {
+      "from": "MapView.rsrc:View:9476@0x0146",
+      "relation": "contains_child_node",
+      "status": "resolved",
+      "to": "MapView.rsrc:View:9476@0x026e"
+    },
+    {
+      "from": "MapView.rsrc:View:9476@0x0146",
+      "relation": "contains_child_node",
+      "status": "resolved",
+      "to": "MapView.rsrc:View:9476@0x02d1"
+    },
+    {
+      "from": "MapView.rsrc:View:9476@0x0146",
+      "relation": "contains_child_node",
+      "status": "resolved",
+      "to": "MapView.rsrc:View:9476@0x0334"
+    },
+    {
+      "from": "MapView.rsrc:View:9476@0x0146",
+      "relation": "contains_child_node",
+      "status": "resolved",
+      "to": "MapView.rsrc:View:9476@0x0397"
+    },
+    {
+      "from": "MapView.rsrc:View:9476@0x0146",
+      "relation": "contains_child_node",
+      "status": "resolved",
+      "to": "MapView.rsrc:View:9476@0x03fa"
+    },
+    {
+      "from": "MapView.rsrc:View:9476@0x0146",
+      "relation": "contains_child_node",
+      "status": "resolved",
+      "to": "MapView.rsrc:View:9476@0x045d"
+    },
+    {
+      "from": "MapView.rsrc:View:9476@0x0146",
+      "relation": "contains_child_node",
+      "status": "resolved",
+      "to": "MapView.rsrc:View:9476@0x04c0"
+    },
+    {
+      "from": "MapView.rsrc:View:9476@0x0146",
       "relation": "has_control_tag",
       "status": "resolved",
       "to": "control_tag:0x74797065"
@@ -63677,6 +65275,186 @@
       "relation": "instantiates_mac_class",
       "status": "resolved",
       "to": "mac_class:TCluster"
+    },
+    {
+      "from": "MapView.rsrc:View:9476@0x01a8",
+      "relation": "has_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x74797030"
+    },
+    {
+      "from": "MapView.rsrc:View:9476@0x01a8",
+      "relation": "instantiates_mac_class",
+      "status": "resolved",
+      "to": "mac_class:TRadioPictureButton"
+    },
+    {
+      "bead": "imperialism-decomp-1uj.77.5",
+      "explanation": "The file-scoped PICT target is absent from committed metadata; do not resolve the colliding numeric ID from another resource file.",
+      "from": "MapView.rsrc:View:9476@0x01a8",
+      "relation": "references_picture",
+      "status": "dangling_explained",
+      "to": "MapView.rsrc:PICT:1314"
+    },
+    {
+      "from": "MapView.rsrc:View:9476@0x020b",
+      "relation": "has_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x74797031"
+    },
+    {
+      "from": "MapView.rsrc:View:9476@0x020b",
+      "relation": "instantiates_mac_class",
+      "status": "resolved",
+      "to": "mac_class:TRadioPictureButton"
+    },
+    {
+      "bead": "imperialism-decomp-1uj.77.5",
+      "explanation": "The file-scoped PICT target is absent from committed metadata; do not resolve the colliding numeric ID from another resource file.",
+      "from": "MapView.rsrc:View:9476@0x020b",
+      "relation": "references_picture",
+      "status": "dangling_explained",
+      "to": "MapView.rsrc:PICT:1314"
+    },
+    {
+      "from": "MapView.rsrc:View:9476@0x026e",
+      "relation": "has_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x74797032"
+    },
+    {
+      "from": "MapView.rsrc:View:9476@0x026e",
+      "relation": "instantiates_mac_class",
+      "status": "resolved",
+      "to": "mac_class:TRadioPictureButton"
+    },
+    {
+      "bead": "imperialism-decomp-1uj.77.5",
+      "explanation": "The file-scoped PICT target is absent from committed metadata; do not resolve the colliding numeric ID from another resource file.",
+      "from": "MapView.rsrc:View:9476@0x026e",
+      "relation": "references_picture",
+      "status": "dangling_explained",
+      "to": "MapView.rsrc:PICT:1314"
+    },
+    {
+      "from": "MapView.rsrc:View:9476@0x02d1",
+      "relation": "has_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x74797033"
+    },
+    {
+      "from": "MapView.rsrc:View:9476@0x02d1",
+      "relation": "instantiates_mac_class",
+      "status": "resolved",
+      "to": "mac_class:TRadioPictureButton"
+    },
+    {
+      "bead": "imperialism-decomp-1uj.77.5",
+      "explanation": "The file-scoped PICT target is absent from committed metadata; do not resolve the colliding numeric ID from another resource file.",
+      "from": "MapView.rsrc:View:9476@0x02d1",
+      "relation": "references_picture",
+      "status": "dangling_explained",
+      "to": "MapView.rsrc:PICT:1314"
+    },
+    {
+      "from": "MapView.rsrc:View:9476@0x0334",
+      "relation": "has_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x74797034"
+    },
+    {
+      "from": "MapView.rsrc:View:9476@0x0334",
+      "relation": "instantiates_mac_class",
+      "status": "resolved",
+      "to": "mac_class:TRadioPictureButton"
+    },
+    {
+      "bead": "imperialism-decomp-1uj.77.5",
+      "explanation": "The file-scoped PICT target is absent from committed metadata; do not resolve the colliding numeric ID from another resource file.",
+      "from": "MapView.rsrc:View:9476@0x0334",
+      "relation": "references_picture",
+      "status": "dangling_explained",
+      "to": "MapView.rsrc:PICT:1314"
+    },
+    {
+      "from": "MapView.rsrc:View:9476@0x0397",
+      "relation": "has_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x74797035"
+    },
+    {
+      "from": "MapView.rsrc:View:9476@0x0397",
+      "relation": "instantiates_mac_class",
+      "status": "resolved",
+      "to": "mac_class:TRadioPictureButton"
+    },
+    {
+      "bead": "imperialism-decomp-1uj.77.5",
+      "explanation": "The file-scoped PICT target is absent from committed metadata; do not resolve the colliding numeric ID from another resource file.",
+      "from": "MapView.rsrc:View:9476@0x0397",
+      "relation": "references_picture",
+      "status": "dangling_explained",
+      "to": "MapView.rsrc:PICT:1314"
+    },
+    {
+      "from": "MapView.rsrc:View:9476@0x03fa",
+      "relation": "has_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x74797036"
+    },
+    {
+      "from": "MapView.rsrc:View:9476@0x03fa",
+      "relation": "instantiates_mac_class",
+      "status": "resolved",
+      "to": "mac_class:TRadioPictureButton"
+    },
+    {
+      "bead": "imperialism-decomp-1uj.77.5",
+      "explanation": "The file-scoped PICT target is absent from committed metadata; do not resolve the colliding numeric ID from another resource file.",
+      "from": "MapView.rsrc:View:9476@0x03fa",
+      "relation": "references_picture",
+      "status": "dangling_explained",
+      "to": "MapView.rsrc:PICT:1314"
+    },
+    {
+      "from": "MapView.rsrc:View:9476@0x045d",
+      "relation": "has_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x74797037"
+    },
+    {
+      "from": "MapView.rsrc:View:9476@0x045d",
+      "relation": "instantiates_mac_class",
+      "status": "resolved",
+      "to": "mac_class:TRadioPictureButton"
+    },
+    {
+      "bead": "imperialism-decomp-1uj.77.5",
+      "explanation": "The file-scoped PICT target is absent from committed metadata; do not resolve the colliding numeric ID from another resource file.",
+      "from": "MapView.rsrc:View:9476@0x045d",
+      "relation": "references_picture",
+      "status": "dangling_explained",
+      "to": "MapView.rsrc:PICT:1314"
+    },
+    {
+      "from": "MapView.rsrc:View:9476@0x04c0",
+      "relation": "has_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x74797038"
+    },
+    {
+      "from": "MapView.rsrc:View:9476@0x04c0",
+      "relation": "instantiates_mac_class",
+      "status": "resolved",
+      "to": "mac_class:TRadioPictureButton"
+    },
+    {
+      "bead": "imperialism-decomp-1uj.77.5",
+      "explanation": "The file-scoped PICT target is absent from committed metadata; do not resolve the colliding numeric ID from another resource file.",
+      "from": "MapView.rsrc:View:9476@0x04c0",
+      "relation": "references_picture",
+      "status": "dangling_explained",
+      "to": "MapView.rsrc:PICT:1520"
     },
     {
       "from": "MapView.rsrc:View:9476@0x0523",
@@ -72543,6 +74321,18 @@
       "to": "Startup.rsrc:View:951@0x10cd"
     },
     {
+      "from": "Startup.rsrc:View:951",
+      "relation": "contains_view_node",
+      "status": "resolved",
+      "to": "Startup.rsrc:View:951@0x12ef"
+    },
+    {
+      "from": "Startup.rsrc:View:951",
+      "relation": "contains_view_node",
+      "status": "resolved",
+      "to": "Startup.rsrc:View:951@0x1352"
+    },
+    {
       "from": "Startup.rsrc:View:951@0x0004",
       "relation": "contains_child_node",
       "status": "resolved",
@@ -72583,6 +74373,18 @@
       "relation": "contains_child_node",
       "status": "resolved",
       "to": "Startup.rsrc:View:951@0x10cd"
+    },
+    {
+      "from": "Startup.rsrc:View:951@0x0004",
+      "relation": "contains_child_node",
+      "status": "resolved",
+      "to": "Startup.rsrc:View:951@0x12ef"
+    },
+    {
+      "from": "Startup.rsrc:View:951@0x0004",
+      "relation": "contains_child_node",
+      "status": "resolved",
+      "to": "Startup.rsrc:View:951@0x1352"
     },
     {
       "from": "Startup.rsrc:View:951@0x0004",
@@ -72679,6 +74481,46 @@
       "relation": "instantiates_mac_class",
       "status": "resolved",
       "to": "mac_class:TCluster"
+    },
+    {
+      "from": "Startup.rsrc:View:951@0x12ef",
+      "relation": "has_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x6d756c74"
+    },
+    {
+      "from": "Startup.rsrc:View:951@0x12ef",
+      "relation": "instantiates_mac_class",
+      "status": "resolved",
+      "to": "mac_class:TCzechBox"
+    },
+    {
+      "bead": "imperialism-decomp-1uj.77.5",
+      "explanation": "The file-scoped PICT target is absent from committed metadata; do not resolve the colliding numeric ID from another resource file.",
+      "from": "Startup.rsrc:View:951@0x12ef",
+      "relation": "references_picture",
+      "status": "dangling_explained",
+      "to": "Startup.rsrc:PICT:1000"
+    },
+    {
+      "from": "Startup.rsrc:View:951@0x1352",
+      "relation": "has_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x65646974"
+    },
+    {
+      "from": "Startup.rsrc:View:951@0x1352",
+      "relation": "instantiates_mac_class",
+      "status": "resolved",
+      "to": "mac_class:TCzechBox"
+    },
+    {
+      "bead": "imperialism-decomp-1uj.77.5",
+      "explanation": "The file-scoped PICT target is absent from committed metadata; do not resolve the colliding numeric ID from another resource file.",
+      "from": "Startup.rsrc:View:951@0x1352",
+      "relation": "references_picture",
+      "status": "dangling_explained",
+      "to": "Startup.rsrc:PICT:1000"
     },
     {
       "from": "Startup.rsrc:View:952",
@@ -73112,6 +74954,60 @@
       "from": "Startup.rsrc:View:960",
       "relation": "contains_view_node",
       "status": "resolved",
+      "to": "Startup.rsrc:View:960@0x01cf"
+    },
+    {
+      "from": "Startup.rsrc:View:960",
+      "relation": "contains_view_node",
+      "status": "resolved",
+      "to": "Startup.rsrc:View:960@0x0232"
+    },
+    {
+      "from": "Startup.rsrc:View:960",
+      "relation": "contains_view_node",
+      "status": "resolved",
+      "to": "Startup.rsrc:View:960@0x0295"
+    },
+    {
+      "from": "Startup.rsrc:View:960",
+      "relation": "contains_view_node",
+      "status": "resolved",
+      "to": "Startup.rsrc:View:960@0x02f8"
+    },
+    {
+      "from": "Startup.rsrc:View:960",
+      "relation": "contains_view_node",
+      "status": "resolved",
+      "to": "Startup.rsrc:View:960@0x035b"
+    },
+    {
+      "from": "Startup.rsrc:View:960",
+      "relation": "contains_view_node",
+      "status": "resolved",
+      "to": "Startup.rsrc:View:960@0x03be"
+    },
+    {
+      "from": "Startup.rsrc:View:960",
+      "relation": "contains_view_node",
+      "status": "resolved",
+      "to": "Startup.rsrc:View:960@0x0421"
+    },
+    {
+      "from": "Startup.rsrc:View:960",
+      "relation": "contains_view_node",
+      "status": "resolved",
+      "to": "Startup.rsrc:View:960@0x0484"
+    },
+    {
+      "from": "Startup.rsrc:View:960",
+      "relation": "contains_view_node",
+      "status": "resolved",
+      "to": "Startup.rsrc:View:960@0x04e7"
+    },
+    {
+      "from": "Startup.rsrc:View:960",
+      "relation": "contains_view_node",
+      "status": "resolved",
       "to": "Startup.rsrc:View:960@0x054a"
     },
     {
@@ -73130,6 +75026,12 @@
       "from": "Startup.rsrc:View:960",
       "relation": "contains_view_node",
       "status": "resolved",
+      "to": "Startup.rsrc:View:960@0x06c1"
+    },
+    {
+      "from": "Startup.rsrc:View:960",
+      "relation": "contains_view_node",
+      "status": "resolved",
       "to": "Startup.rsrc:View:960@0x0724"
     },
     {
@@ -73143,6 +75045,126 @@
       "relation": "contains_view_node",
       "status": "resolved",
       "to": "Startup.rsrc:View:960@0x07e4"
+    },
+    {
+      "from": "Startup.rsrc:View:960",
+      "relation": "contains_view_node",
+      "status": "resolved",
+      "to": "Startup.rsrc:View:960@0x084a"
+    },
+    {
+      "from": "Startup.rsrc:View:960",
+      "relation": "contains_view_node",
+      "status": "resolved",
+      "to": "Startup.rsrc:View:960@0x08ad"
+    },
+    {
+      "from": "Startup.rsrc:View:960",
+      "relation": "contains_view_node",
+      "status": "resolved",
+      "to": "Startup.rsrc:View:960@0x0910"
+    },
+    {
+      "from": "Startup.rsrc:View:960",
+      "relation": "contains_view_node",
+      "status": "resolved",
+      "to": "Startup.rsrc:View:960@0x0973"
+    },
+    {
+      "from": "Startup.rsrc:View:960",
+      "relation": "contains_view_node",
+      "status": "resolved",
+      "to": "Startup.rsrc:View:960@0x09d6"
+    },
+    {
+      "from": "Startup.rsrc:View:960",
+      "relation": "contains_view_node",
+      "status": "resolved",
+      "to": "Startup.rsrc:View:960@0x0a39"
+    },
+    {
+      "from": "Startup.rsrc:View:960",
+      "relation": "contains_view_node",
+      "status": "resolved",
+      "to": "Startup.rsrc:View:960@0x0a9c"
+    },
+    {
+      "from": "Startup.rsrc:View:960",
+      "relation": "contains_view_node",
+      "status": "resolved",
+      "to": "Startup.rsrc:View:960@0x0aff"
+    },
+    {
+      "from": "Startup.rsrc:View:960",
+      "relation": "contains_view_node",
+      "status": "resolved",
+      "to": "Startup.rsrc:View:960@0x0b62"
+    },
+    {
+      "from": "Startup.rsrc:View:960",
+      "relation": "contains_view_node",
+      "status": "resolved",
+      "to": "Startup.rsrc:View:960@0x0bc5"
+    },
+    {
+      "from": "Startup.rsrc:View:960",
+      "relation": "contains_view_node",
+      "status": "resolved",
+      "to": "Startup.rsrc:View:960@0x0c28"
+    },
+    {
+      "from": "Startup.rsrc:View:960",
+      "relation": "contains_view_node",
+      "status": "resolved",
+      "to": "Startup.rsrc:View:960@0x0c8b"
+    },
+    {
+      "from": "Startup.rsrc:View:960",
+      "relation": "contains_view_node",
+      "status": "resolved",
+      "to": "Startup.rsrc:View:960@0x0cee"
+    },
+    {
+      "from": "Startup.rsrc:View:960",
+      "relation": "contains_view_node",
+      "status": "resolved",
+      "to": "Startup.rsrc:View:960@0x0d51"
+    },
+    {
+      "from": "Startup.rsrc:View:960",
+      "relation": "contains_view_node",
+      "status": "resolved",
+      "to": "Startup.rsrc:View:960@0x0db4"
+    },
+    {
+      "from": "Startup.rsrc:View:960",
+      "relation": "contains_view_node",
+      "status": "resolved",
+      "to": "Startup.rsrc:View:960@0x0e17"
+    },
+    {
+      "from": "Startup.rsrc:View:960",
+      "relation": "contains_view_node",
+      "status": "resolved",
+      "to": "Startup.rsrc:View:960@0x0e7a"
+    },
+    {
+      "from": "Startup.rsrc:View:960",
+      "relation": "contains_view_node",
+      "status": "resolved",
+      "to": "Startup.rsrc:View:960@0x0edd"
+    },
+    {
+      "from": "Startup.rsrc:View:960",
+      "relation": "contains_view_node",
+      "status": "resolved",
+      "to": "Startup.rsrc:View:960@0x0f40"
+    },
+    {
+      "from": "Startup.rsrc:View:960",
+      "relation": "contains_view_node",
+      "status": "resolved",
+      "to": "Startup.rsrc:View:960@0x0fa3"
     },
     {
       "from": "Startup.rsrc:View:960",
@@ -73220,6 +75242,60 @@
       "from": "Startup.rsrc:View:960@0x015e",
       "relation": "contains_child_node",
       "status": "resolved",
+      "to": "Startup.rsrc:View:960@0x01cf"
+    },
+    {
+      "from": "Startup.rsrc:View:960@0x015e",
+      "relation": "contains_child_node",
+      "status": "resolved",
+      "to": "Startup.rsrc:View:960@0x0232"
+    },
+    {
+      "from": "Startup.rsrc:View:960@0x015e",
+      "relation": "contains_child_node",
+      "status": "resolved",
+      "to": "Startup.rsrc:View:960@0x0295"
+    },
+    {
+      "from": "Startup.rsrc:View:960@0x015e",
+      "relation": "contains_child_node",
+      "status": "resolved",
+      "to": "Startup.rsrc:View:960@0x02f8"
+    },
+    {
+      "from": "Startup.rsrc:View:960@0x015e",
+      "relation": "contains_child_node",
+      "status": "resolved",
+      "to": "Startup.rsrc:View:960@0x035b"
+    },
+    {
+      "from": "Startup.rsrc:View:960@0x015e",
+      "relation": "contains_child_node",
+      "status": "resolved",
+      "to": "Startup.rsrc:View:960@0x03be"
+    },
+    {
+      "from": "Startup.rsrc:View:960@0x015e",
+      "relation": "contains_child_node",
+      "status": "resolved",
+      "to": "Startup.rsrc:View:960@0x0421"
+    },
+    {
+      "from": "Startup.rsrc:View:960@0x015e",
+      "relation": "contains_child_node",
+      "status": "resolved",
+      "to": "Startup.rsrc:View:960@0x0484"
+    },
+    {
+      "from": "Startup.rsrc:View:960@0x015e",
+      "relation": "contains_child_node",
+      "status": "resolved",
+      "to": "Startup.rsrc:View:960@0x04e7"
+    },
+    {
+      "from": "Startup.rsrc:View:960@0x015e",
+      "relation": "contains_child_node",
+      "status": "resolved",
       "to": "Startup.rsrc:View:960@0x054a"
     },
     {
@@ -73233,6 +75309,12 @@
       "relation": "contains_child_node",
       "status": "resolved",
       "to": "Startup.rsrc:View:960@0x0661"
+    },
+    {
+      "from": "Startup.rsrc:View:960@0x015e",
+      "relation": "contains_child_node",
+      "status": "resolved",
+      "to": "Startup.rsrc:View:960@0x06c1"
     },
     {
       "from": "Startup.rsrc:View:960@0x015e",
@@ -73254,6 +75336,126 @@
     },
     {
       "from": "Startup.rsrc:View:960@0x015e",
+      "relation": "contains_child_node",
+      "status": "resolved",
+      "to": "Startup.rsrc:View:960@0x084a"
+    },
+    {
+      "from": "Startup.rsrc:View:960@0x015e",
+      "relation": "contains_child_node",
+      "status": "resolved",
+      "to": "Startup.rsrc:View:960@0x08ad"
+    },
+    {
+      "from": "Startup.rsrc:View:960@0x015e",
+      "relation": "contains_child_node",
+      "status": "resolved",
+      "to": "Startup.rsrc:View:960@0x0910"
+    },
+    {
+      "from": "Startup.rsrc:View:960@0x015e",
+      "relation": "contains_child_node",
+      "status": "resolved",
+      "to": "Startup.rsrc:View:960@0x0973"
+    },
+    {
+      "from": "Startup.rsrc:View:960@0x015e",
+      "relation": "contains_child_node",
+      "status": "resolved",
+      "to": "Startup.rsrc:View:960@0x09d6"
+    },
+    {
+      "from": "Startup.rsrc:View:960@0x015e",
+      "relation": "contains_child_node",
+      "status": "resolved",
+      "to": "Startup.rsrc:View:960@0x0a39"
+    },
+    {
+      "from": "Startup.rsrc:View:960@0x015e",
+      "relation": "contains_child_node",
+      "status": "resolved",
+      "to": "Startup.rsrc:View:960@0x0a9c"
+    },
+    {
+      "from": "Startup.rsrc:View:960@0x015e",
+      "relation": "contains_child_node",
+      "status": "resolved",
+      "to": "Startup.rsrc:View:960@0x0aff"
+    },
+    {
+      "from": "Startup.rsrc:View:960@0x015e",
+      "relation": "contains_child_node",
+      "status": "resolved",
+      "to": "Startup.rsrc:View:960@0x0b62"
+    },
+    {
+      "from": "Startup.rsrc:View:960@0x015e",
+      "relation": "contains_child_node",
+      "status": "resolved",
+      "to": "Startup.rsrc:View:960@0x0bc5"
+    },
+    {
+      "from": "Startup.rsrc:View:960@0x015e",
+      "relation": "contains_child_node",
+      "status": "resolved",
+      "to": "Startup.rsrc:View:960@0x0c28"
+    },
+    {
+      "from": "Startup.rsrc:View:960@0x015e",
+      "relation": "contains_child_node",
+      "status": "resolved",
+      "to": "Startup.rsrc:View:960@0x0c8b"
+    },
+    {
+      "from": "Startup.rsrc:View:960@0x015e",
+      "relation": "contains_child_node",
+      "status": "resolved",
+      "to": "Startup.rsrc:View:960@0x0cee"
+    },
+    {
+      "from": "Startup.rsrc:View:960@0x015e",
+      "relation": "contains_child_node",
+      "status": "resolved",
+      "to": "Startup.rsrc:View:960@0x0d51"
+    },
+    {
+      "from": "Startup.rsrc:View:960@0x015e",
+      "relation": "contains_child_node",
+      "status": "resolved",
+      "to": "Startup.rsrc:View:960@0x0db4"
+    },
+    {
+      "from": "Startup.rsrc:View:960@0x015e",
+      "relation": "contains_child_node",
+      "status": "resolved",
+      "to": "Startup.rsrc:View:960@0x0e17"
+    },
+    {
+      "from": "Startup.rsrc:View:960@0x015e",
+      "relation": "contains_child_node",
+      "status": "resolved",
+      "to": "Startup.rsrc:View:960@0x0e7a"
+    },
+    {
+      "from": "Startup.rsrc:View:960@0x015e",
+      "relation": "contains_child_node",
+      "status": "resolved",
+      "to": "Startup.rsrc:View:960@0x0edd"
+    },
+    {
+      "from": "Startup.rsrc:View:960@0x015e",
+      "relation": "contains_child_node",
+      "status": "resolved",
+      "to": "Startup.rsrc:View:960@0x0f40"
+    },
+    {
+      "from": "Startup.rsrc:View:960@0x015e",
+      "relation": "contains_child_node",
+      "status": "resolved",
+      "to": "Startup.rsrc:View:960@0x0fa3"
+    },
+    {
+      "from": "Startup.rsrc:View:960@0x015e",
       "relation": "has_control_tag",
       "status": "resolved",
       "to": "control_tag:0x65636f6e"
@@ -73263,6 +75465,186 @@
       "relation": "instantiates_mac_class",
       "status": "resolved",
       "to": "mac_class:TMapEditCluster"
+    },
+    {
+      "from": "Startup.rsrc:View:960@0x01cf",
+      "relation": "has_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x74657261"
+    },
+    {
+      "from": "Startup.rsrc:View:960@0x01cf",
+      "relation": "instantiates_mac_class",
+      "status": "resolved",
+      "to": "mac_class:TRadioPictureButton"
+    },
+    {
+      "bead": "imperialism-decomp-1uj.77.5",
+      "explanation": "The file-scoped PICT target is absent from committed metadata; do not resolve the colliding numeric ID from another resource file.",
+      "from": "Startup.rsrc:View:960@0x01cf",
+      "relation": "references_picture",
+      "status": "dangling_explained",
+      "to": "Startup.rsrc:PICT:1015"
+    },
+    {
+      "from": "Startup.rsrc:View:960@0x0232",
+      "relation": "has_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x74657262"
+    },
+    {
+      "from": "Startup.rsrc:View:960@0x0232",
+      "relation": "instantiates_mac_class",
+      "status": "resolved",
+      "to": "mac_class:TRadioPictureButton"
+    },
+    {
+      "bead": "imperialism-decomp-1uj.77.5",
+      "explanation": "The file-scoped PICT target is absent from committed metadata; do not resolve the colliding numeric ID from another resource file.",
+      "from": "Startup.rsrc:View:960@0x0232",
+      "relation": "references_picture",
+      "status": "dangling_explained",
+      "to": "Startup.rsrc:PICT:1015"
+    },
+    {
+      "from": "Startup.rsrc:View:960@0x0295",
+      "relation": "has_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x74657263"
+    },
+    {
+      "from": "Startup.rsrc:View:960@0x0295",
+      "relation": "instantiates_mac_class",
+      "status": "resolved",
+      "to": "mac_class:TRadioPictureButton"
+    },
+    {
+      "bead": "imperialism-decomp-1uj.77.5",
+      "explanation": "The file-scoped PICT target is absent from committed metadata; do not resolve the colliding numeric ID from another resource file.",
+      "from": "Startup.rsrc:View:960@0x0295",
+      "relation": "references_picture",
+      "status": "dangling_explained",
+      "to": "Startup.rsrc:PICT:1015"
+    },
+    {
+      "from": "Startup.rsrc:View:960@0x02f8",
+      "relation": "has_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x74657264"
+    },
+    {
+      "from": "Startup.rsrc:View:960@0x02f8",
+      "relation": "instantiates_mac_class",
+      "status": "resolved",
+      "to": "mac_class:TRadioPictureButton"
+    },
+    {
+      "bead": "imperialism-decomp-1uj.77.5",
+      "explanation": "The file-scoped PICT target is absent from committed metadata; do not resolve the colliding numeric ID from another resource file.",
+      "from": "Startup.rsrc:View:960@0x02f8",
+      "relation": "references_picture",
+      "status": "dangling_explained",
+      "to": "Startup.rsrc:PICT:1015"
+    },
+    {
+      "from": "Startup.rsrc:View:960@0x035b",
+      "relation": "has_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x74657269"
+    },
+    {
+      "from": "Startup.rsrc:View:960@0x035b",
+      "relation": "instantiates_mac_class",
+      "status": "resolved",
+      "to": "mac_class:TRadioPictureButton"
+    },
+    {
+      "bead": "imperialism-decomp-1uj.77.5",
+      "explanation": "The file-scoped PICT target is absent from committed metadata; do not resolve the colliding numeric ID from another resource file.",
+      "from": "Startup.rsrc:View:960@0x035b",
+      "relation": "references_picture",
+      "status": "dangling_explained",
+      "to": "Startup.rsrc:PICT:1015"
+    },
+    {
+      "from": "Startup.rsrc:View:960@0x03be",
+      "relation": "has_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x7465726a"
+    },
+    {
+      "from": "Startup.rsrc:View:960@0x03be",
+      "relation": "instantiates_mac_class",
+      "status": "resolved",
+      "to": "mac_class:TRadioPictureButton"
+    },
+    {
+      "bead": "imperialism-decomp-1uj.77.5",
+      "explanation": "The file-scoped PICT target is absent from committed metadata; do not resolve the colliding numeric ID from another resource file.",
+      "from": "Startup.rsrc:View:960@0x03be",
+      "relation": "references_picture",
+      "status": "dangling_explained",
+      "to": "Startup.rsrc:PICT:1015"
+    },
+    {
+      "from": "Startup.rsrc:View:960@0x0421",
+      "relation": "has_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x7465726b"
+    },
+    {
+      "from": "Startup.rsrc:View:960@0x0421",
+      "relation": "instantiates_mac_class",
+      "status": "resolved",
+      "to": "mac_class:TRadioPictureButton"
+    },
+    {
+      "bead": "imperialism-decomp-1uj.77.5",
+      "explanation": "The file-scoped PICT target is absent from committed metadata; do not resolve the colliding numeric ID from another resource file.",
+      "from": "Startup.rsrc:View:960@0x0421",
+      "relation": "references_picture",
+      "status": "dangling_explained",
+      "to": "Startup.rsrc:PICT:1015"
+    },
+    {
+      "from": "Startup.rsrc:View:960@0x0484",
+      "relation": "has_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x7465726c"
+    },
+    {
+      "from": "Startup.rsrc:View:960@0x0484",
+      "relation": "instantiates_mac_class",
+      "status": "resolved",
+      "to": "mac_class:TRadioPictureButton"
+    },
+    {
+      "bead": "imperialism-decomp-1uj.77.5",
+      "explanation": "The file-scoped PICT target is absent from committed metadata; do not resolve the colliding numeric ID from another resource file.",
+      "from": "Startup.rsrc:View:960@0x0484",
+      "relation": "references_picture",
+      "status": "dangling_explained",
+      "to": "Startup.rsrc:PICT:1015"
+    },
+    {
+      "from": "Startup.rsrc:View:960@0x04e7",
+      "relation": "has_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x70726f76"
+    },
+    {
+      "from": "Startup.rsrc:View:960@0x04e7",
+      "relation": "instantiates_mac_class",
+      "status": "resolved",
+      "to": "mac_class:TRadioPictureButton"
+    },
+    {
+      "bead": "imperialism-decomp-1uj.77.5",
+      "explanation": "The file-scoped PICT target is absent from committed metadata; do not resolve the colliding numeric ID from another resource file.",
+      "from": "Startup.rsrc:View:960@0x04e7",
+      "relation": "references_picture",
+      "status": "dangling_explained",
+      "to": "Startup.rsrc:PICT:1302"
     },
     {
       "from": "Startup.rsrc:View:960@0x054a",
@@ -73307,6 +75689,26 @@
       "relation": "references_picture",
       "status": "dangling_explained",
       "to": "Startup.rsrc:PICT:9410"
+    },
+    {
+      "from": "Startup.rsrc:View:960@0x06c1",
+      "relation": "has_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x73656174"
+    },
+    {
+      "from": "Startup.rsrc:View:960@0x06c1",
+      "relation": "instantiates_mac_class",
+      "status": "resolved",
+      "to": "mac_class:TRadioPictureButton"
+    },
+    {
+      "bead": "imperialism-decomp-1uj.77.5",
+      "explanation": "The file-scoped PICT target is absent from committed metadata; do not resolve the colliding numeric ID from another resource file.",
+      "from": "Startup.rsrc:View:960@0x06c1",
+      "relation": "references_picture",
+      "status": "dangling_explained",
+      "to": "Startup.rsrc:PICT:1015"
     },
     {
       "from": "Startup.rsrc:View:960@0x0724",
@@ -73367,6 +75769,406 @@
       "to": "Startup.rsrc:STR#:1300:6"
     },
     {
+      "from": "Startup.rsrc:View:960@0x084a",
+      "relation": "has_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x65786930"
+    },
+    {
+      "from": "Startup.rsrc:View:960@0x084a",
+      "relation": "instantiates_mac_class",
+      "status": "resolved",
+      "to": "mac_class:TCzechBox"
+    },
+    {
+      "bead": "imperialism-decomp-1uj.77.5",
+      "explanation": "The file-scoped PICT target is absent from committed metadata; do not resolve the colliding numeric ID from another resource file.",
+      "from": "Startup.rsrc:View:960@0x084a",
+      "relation": "references_picture",
+      "status": "dangling_explained",
+      "to": "Startup.rsrc:PICT:1000"
+    },
+    {
+      "from": "Startup.rsrc:View:960@0x08ad",
+      "relation": "has_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x65786931"
+    },
+    {
+      "from": "Startup.rsrc:View:960@0x08ad",
+      "relation": "instantiates_mac_class",
+      "status": "resolved",
+      "to": "mac_class:TCzechBox"
+    },
+    {
+      "bead": "imperialism-decomp-1uj.77.5",
+      "explanation": "The file-scoped PICT target is absent from committed metadata; do not resolve the colliding numeric ID from another resource file.",
+      "from": "Startup.rsrc:View:960@0x08ad",
+      "relation": "references_picture",
+      "status": "dangling_explained",
+      "to": "Startup.rsrc:PICT:1000"
+    },
+    {
+      "from": "Startup.rsrc:View:960@0x0910",
+      "relation": "has_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x65786932"
+    },
+    {
+      "from": "Startup.rsrc:View:960@0x0910",
+      "relation": "instantiates_mac_class",
+      "status": "resolved",
+      "to": "mac_class:TCzechBox"
+    },
+    {
+      "bead": "imperialism-decomp-1uj.77.5",
+      "explanation": "The file-scoped PICT target is absent from committed metadata; do not resolve the colliding numeric ID from another resource file.",
+      "from": "Startup.rsrc:View:960@0x0910",
+      "relation": "references_picture",
+      "status": "dangling_explained",
+      "to": "Startup.rsrc:PICT:1000"
+    },
+    {
+      "from": "Startup.rsrc:View:960@0x0973",
+      "relation": "has_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x65786933"
+    },
+    {
+      "from": "Startup.rsrc:View:960@0x0973",
+      "relation": "instantiates_mac_class",
+      "status": "resolved",
+      "to": "mac_class:TCzechBox"
+    },
+    {
+      "bead": "imperialism-decomp-1uj.77.5",
+      "explanation": "The file-scoped PICT target is absent from committed metadata; do not resolve the colliding numeric ID from another resource file.",
+      "from": "Startup.rsrc:View:960@0x0973",
+      "relation": "references_picture",
+      "status": "dangling_explained",
+      "to": "Startup.rsrc:PICT:1000"
+    },
+    {
+      "from": "Startup.rsrc:View:960@0x09d6",
+      "relation": "has_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x65786934"
+    },
+    {
+      "from": "Startup.rsrc:View:960@0x09d6",
+      "relation": "instantiates_mac_class",
+      "status": "resolved",
+      "to": "mac_class:TCzechBox"
+    },
+    {
+      "bead": "imperialism-decomp-1uj.77.5",
+      "explanation": "The file-scoped PICT target is absent from committed metadata; do not resolve the colliding numeric ID from another resource file.",
+      "from": "Startup.rsrc:View:960@0x09d6",
+      "relation": "references_picture",
+      "status": "dangling_explained",
+      "to": "Startup.rsrc:PICT:1000"
+    },
+    {
+      "from": "Startup.rsrc:View:960@0x0a39",
+      "relation": "has_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x65786935"
+    },
+    {
+      "from": "Startup.rsrc:View:960@0x0a39",
+      "relation": "instantiates_mac_class",
+      "status": "resolved",
+      "to": "mac_class:TCzechBox"
+    },
+    {
+      "bead": "imperialism-decomp-1uj.77.5",
+      "explanation": "The file-scoped PICT target is absent from committed metadata; do not resolve the colliding numeric ID from another resource file.",
+      "from": "Startup.rsrc:View:960@0x0a39",
+      "relation": "references_picture",
+      "status": "dangling_explained",
+      "to": "Startup.rsrc:PICT:1000"
+    },
+    {
+      "from": "Startup.rsrc:View:960@0x0a9c",
+      "relation": "has_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x7261696c"
+    },
+    {
+      "from": "Startup.rsrc:View:960@0x0a9c",
+      "relation": "instantiates_mac_class",
+      "status": "resolved",
+      "to": "mac_class:TRadioPictureButton"
+    },
+    {
+      "bead": "imperialism-decomp-1uj.77.5",
+      "explanation": "The file-scoped PICT target is absent from committed metadata; do not resolve the colliding numeric ID from another resource file.",
+      "from": "Startup.rsrc:View:960@0x0a9c",
+      "relation": "references_picture",
+      "status": "dangling_explained",
+      "to": "Startup.rsrc:PICT:1015"
+    },
+    {
+      "from": "Startup.rsrc:View:960@0x0aff",
+      "relation": "has_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x72697665"
+    },
+    {
+      "from": "Startup.rsrc:View:960@0x0aff",
+      "relation": "instantiates_mac_class",
+      "status": "resolved",
+      "to": "mac_class:TRadioPictureButton"
+    },
+    {
+      "bead": "imperialism-decomp-1uj.77.5",
+      "explanation": "The file-scoped PICT target is absent from committed metadata; do not resolve the colliding numeric ID from another resource file.",
+      "from": "Startup.rsrc:View:960@0x0aff",
+      "relation": "references_picture",
+      "status": "dangling_explained",
+      "to": "Startup.rsrc:PICT:1015"
+    },
+    {
+      "from": "Startup.rsrc:View:960@0x0b62",
+      "relation": "has_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x74657265"
+    },
+    {
+      "from": "Startup.rsrc:View:960@0x0b62",
+      "relation": "instantiates_mac_class",
+      "status": "resolved",
+      "to": "mac_class:TRadioPictureButton"
+    },
+    {
+      "bead": "imperialism-decomp-1uj.77.5",
+      "explanation": "The file-scoped PICT target is absent from committed metadata; do not resolve the colliding numeric ID from another resource file.",
+      "from": "Startup.rsrc:View:960@0x0b62",
+      "relation": "references_picture",
+      "status": "dangling_explained",
+      "to": "Startup.rsrc:PICT:1015"
+    },
+    {
+      "from": "Startup.rsrc:View:960@0x0bc5",
+      "relation": "has_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x74657266"
+    },
+    {
+      "from": "Startup.rsrc:View:960@0x0bc5",
+      "relation": "instantiates_mac_class",
+      "status": "resolved",
+      "to": "mac_class:TRadioPictureButton"
+    },
+    {
+      "bead": "imperialism-decomp-1uj.77.5",
+      "explanation": "The file-scoped PICT target is absent from committed metadata; do not resolve the colliding numeric ID from another resource file.",
+      "from": "Startup.rsrc:View:960@0x0bc5",
+      "relation": "references_picture",
+      "status": "dangling_explained",
+      "to": "Startup.rsrc:PICT:1015"
+    },
+    {
+      "from": "Startup.rsrc:View:960@0x0c28",
+      "relation": "has_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x74657267"
+    },
+    {
+      "from": "Startup.rsrc:View:960@0x0c28",
+      "relation": "instantiates_mac_class",
+      "status": "resolved",
+      "to": "mac_class:TRadioPictureButton"
+    },
+    {
+      "bead": "imperialism-decomp-1uj.77.5",
+      "explanation": "The file-scoped PICT target is absent from committed metadata; do not resolve the colliding numeric ID from another resource file.",
+      "from": "Startup.rsrc:View:960@0x0c28",
+      "relation": "references_picture",
+      "status": "dangling_explained",
+      "to": "Startup.rsrc:PICT:1015"
+    },
+    {
+      "from": "Startup.rsrc:View:960@0x0c8b",
+      "relation": "has_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x74657268"
+    },
+    {
+      "from": "Startup.rsrc:View:960@0x0c8b",
+      "relation": "instantiates_mac_class",
+      "status": "resolved",
+      "to": "mac_class:TRadioPictureButton"
+    },
+    {
+      "bead": "imperialism-decomp-1uj.77.5",
+      "explanation": "The file-scoped PICT target is absent from committed metadata; do not resolve the colliding numeric ID from another resource file.",
+      "from": "Startup.rsrc:View:960@0x0c8b",
+      "relation": "references_picture",
+      "status": "dangling_explained",
+      "to": "Startup.rsrc:PICT:1015"
+    },
+    {
+      "from": "Startup.rsrc:View:960@0x0cee",
+      "relation": "has_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x7465726d"
+    },
+    {
+      "from": "Startup.rsrc:View:960@0x0cee",
+      "relation": "instantiates_mac_class",
+      "status": "resolved",
+      "to": "mac_class:TRadioPictureButton"
+    },
+    {
+      "bead": "imperialism-decomp-1uj.77.5",
+      "explanation": "The file-scoped PICT target is absent from committed metadata; do not resolve the colliding numeric ID from another resource file.",
+      "from": "Startup.rsrc:View:960@0x0cee",
+      "relation": "references_picture",
+      "status": "dangling_explained",
+      "to": "Startup.rsrc:PICT:1015"
+    },
+    {
+      "from": "Startup.rsrc:View:960@0x0d51",
+      "relation": "has_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x7465726e"
+    },
+    {
+      "from": "Startup.rsrc:View:960@0x0d51",
+      "relation": "instantiates_mac_class",
+      "status": "resolved",
+      "to": "mac_class:TRadioPictureButton"
+    },
+    {
+      "bead": "imperialism-decomp-1uj.77.5",
+      "explanation": "The file-scoped PICT target is absent from committed metadata; do not resolve the colliding numeric ID from another resource file.",
+      "from": "Startup.rsrc:View:960@0x0d51",
+      "relation": "references_picture",
+      "status": "dangling_explained",
+      "to": "Startup.rsrc:PICT:1015"
+    },
+    {
+      "from": "Startup.rsrc:View:960@0x0db4",
+      "relation": "has_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x6d696e30"
+    },
+    {
+      "from": "Startup.rsrc:View:960@0x0db4",
+      "relation": "instantiates_mac_class",
+      "status": "resolved",
+      "to": "mac_class:TRadioPictureButton"
+    },
+    {
+      "bead": "imperialism-decomp-1uj.77.5",
+      "explanation": "The file-scoped PICT target is absent from committed metadata; do not resolve the colliding numeric ID from another resource file.",
+      "from": "Startup.rsrc:View:960@0x0db4",
+      "relation": "references_picture",
+      "status": "dangling_explained",
+      "to": "Startup.rsrc:PICT:1015"
+    },
+    {
+      "from": "Startup.rsrc:View:960@0x0e17",
+      "relation": "has_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x6d696e31"
+    },
+    {
+      "from": "Startup.rsrc:View:960@0x0e17",
+      "relation": "instantiates_mac_class",
+      "status": "resolved",
+      "to": "mac_class:TRadioPictureButton"
+    },
+    {
+      "bead": "imperialism-decomp-1uj.77.5",
+      "explanation": "The file-scoped PICT target is absent from committed metadata; do not resolve the colliding numeric ID from another resource file.",
+      "from": "Startup.rsrc:View:960@0x0e17",
+      "relation": "references_picture",
+      "status": "dangling_explained",
+      "to": "Startup.rsrc:PICT:1015"
+    },
+    {
+      "from": "Startup.rsrc:View:960@0x0e7a",
+      "relation": "has_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x6d696e33"
+    },
+    {
+      "from": "Startup.rsrc:View:960@0x0e7a",
+      "relation": "instantiates_mac_class",
+      "status": "resolved",
+      "to": "mac_class:TRadioPictureButton"
+    },
+    {
+      "bead": "imperialism-decomp-1uj.77.5",
+      "explanation": "The file-scoped PICT target is absent from committed metadata; do not resolve the colliding numeric ID from another resource file.",
+      "from": "Startup.rsrc:View:960@0x0e7a",
+      "relation": "references_picture",
+      "status": "dangling_explained",
+      "to": "Startup.rsrc:PICT:1015"
+    },
+    {
+      "from": "Startup.rsrc:View:960@0x0edd",
+      "relation": "has_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x6d696e32"
+    },
+    {
+      "from": "Startup.rsrc:View:960@0x0edd",
+      "relation": "instantiates_mac_class",
+      "status": "resolved",
+      "to": "mac_class:TRadioPictureButton"
+    },
+    {
+      "bead": "imperialism-decomp-1uj.77.5",
+      "explanation": "The file-scoped PICT target is absent from committed metadata; do not resolve the colliding numeric ID from another resource file.",
+      "from": "Startup.rsrc:View:960@0x0edd",
+      "relation": "references_picture",
+      "status": "dangling_explained",
+      "to": "Startup.rsrc:PICT:1015"
+    },
+    {
+      "from": "Startup.rsrc:View:960@0x0f40",
+      "relation": "has_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x6d696e34"
+    },
+    {
+      "from": "Startup.rsrc:View:960@0x0f40",
+      "relation": "instantiates_mac_class",
+      "status": "resolved",
+      "to": "mac_class:TRadioPictureButton"
+    },
+    {
+      "bead": "imperialism-decomp-1uj.77.5",
+      "explanation": "The file-scoped PICT target is absent from committed metadata; do not resolve the colliding numeric ID from another resource file.",
+      "from": "Startup.rsrc:View:960@0x0f40",
+      "relation": "references_picture",
+      "status": "dangling_explained",
+      "to": "Startup.rsrc:PICT:1015"
+    },
+    {
+      "from": "Startup.rsrc:View:960@0x0fa3",
+      "relation": "has_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x74657270"
+    },
+    {
+      "from": "Startup.rsrc:View:960@0x0fa3",
+      "relation": "instantiates_mac_class",
+      "status": "resolved",
+      "to": "mac_class:TRadioPictureButton"
+    },
+    {
+      "bead": "imperialism-decomp-1uj.77.5",
+      "explanation": "The file-scoped PICT target is absent from committed metadata; do not resolve the colliding numeric ID from another resource file.",
+      "from": "Startup.rsrc:View:960@0x0fa3",
+      "relation": "references_picture",
+      "status": "dangling_explained",
+      "to": "Startup.rsrc:PICT:1015"
+    },
+    {
       "from": "Startup.rsrc:View:960@0x1006",
       "relation": "has_control_tag",
       "status": "resolved",
@@ -73425,6 +76227,18 @@
       "relation": "contains_view_node",
       "status": "resolved",
       "to": "Startup.rsrc:View:965@0x0376"
+    },
+    {
+      "from": "Startup.rsrc:View:965",
+      "relation": "contains_view_node",
+      "status": "resolved",
+      "to": "Startup.rsrc:View:965@0x03d8"
+    },
+    {
+      "from": "Startup.rsrc:View:965",
+      "relation": "contains_view_node",
+      "status": "resolved",
+      "to": "Startup.rsrc:View:965@0x043b"
     },
     {
       "from": "Startup.rsrc:View:965@0x0004",
@@ -73590,6 +76404,18 @@
     },
     {
       "from": "Startup.rsrc:View:965@0x0376",
+      "relation": "contains_child_node",
+      "status": "resolved",
+      "to": "Startup.rsrc:View:965@0x03d8"
+    },
+    {
+      "from": "Startup.rsrc:View:965@0x0376",
+      "relation": "contains_child_node",
+      "status": "resolved",
+      "to": "Startup.rsrc:View:965@0x043b"
+    },
+    {
+      "from": "Startup.rsrc:View:965@0x0376",
       "relation": "has_control_tag",
       "status": "resolved",
       "to": "control_tag:0x74797065"
@@ -73599,6 +76425,46 @@
       "relation": "instantiates_mac_class",
       "status": "resolved",
       "to": "mac_class:TCluster"
+    },
+    {
+      "from": "Startup.rsrc:View:965@0x03d8",
+      "relation": "has_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x746f776e"
+    },
+    {
+      "from": "Startup.rsrc:View:965@0x03d8",
+      "relation": "instantiates_mac_class",
+      "status": "resolved",
+      "to": "mac_class:TRadioPictureButton"
+    },
+    {
+      "bead": "imperialism-decomp-1uj.77.5",
+      "explanation": "The file-scoped PICT target is absent from committed metadata; do not resolve the colliding numeric ID from another resource file.",
+      "from": "Startup.rsrc:View:965@0x03d8",
+      "relation": "references_picture",
+      "status": "dangling_explained",
+      "to": "Startup.rsrc:PICT:1000"
+    },
+    {
+      "from": "Startup.rsrc:View:965@0x043b",
+      "relation": "has_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x63697479"
+    },
+    {
+      "from": "Startup.rsrc:View:965@0x043b",
+      "relation": "instantiates_mac_class",
+      "status": "resolved",
+      "to": "mac_class:TRadioPictureButton"
+    },
+    {
+      "bead": "imperialism-decomp-1uj.77.5",
+      "explanation": "The file-scoped PICT target is absent from committed metadata; do not resolve the colliding numeric ID from another resource file.",
+      "from": "Startup.rsrc:View:965@0x043b",
+      "relation": "references_picture",
+      "status": "dangling_explained",
+      "to": "Startup.rsrc:PICT:1000"
     },
     {
       "from": "Startup.rsrc:View:966",
@@ -89805,6 +92671,12 @@
       "to": "Linger.rsrc:View:954"
     },
     {
+      "from": "windows_event:0x03c0",
+      "relation": "builds_view",
+      "status": "resolved",
+      "to": "Startup.rsrc:View:960"
+    },
+    {
       "from": "windows_event:0x03c5",
       "relation": "builds_view",
       "status": "resolved",
@@ -90667,6 +93539,12 @@
       "relation": "handles_event",
       "status": "resolved",
       "to": "windows_event:0x03b9"
+    },
+    {
+      "from": "windows_factory:0x004538a0",
+      "relation": "handles_event",
+      "status": "resolved",
+      "to": "windows_event:0x03c0"
     },
     {
       "from": "windows_factory:0x004538a0",
@@ -121916,7 +124794,7 @@
     "Linger.rsrc:View:8155": {
       "kind": "view",
       "name": "test - Naval Battle",
-      "node_count": 75,
+      "node_count": 87,
       "resource_file": "Linger.rsrc",
       "resource_id": 8155
     },
@@ -122181,6 +125059,33 @@
       "type_code": "clus",
       "view": "Linger.rsrc:View:8155"
     },
+    "Linger.rsrc:View:8155@0x1221": {
+      "class_name": "TRadioPictureButton",
+      "class_source": "type_family",
+      "kind": "view_node",
+      "offset": 4641,
+      "tag": "opt1",
+      "type_code": "radb",
+      "view": "Linger.rsrc:View:8155"
+    },
+    "Linger.rsrc:View:8155@0x1284": {
+      "class_name": "TRadioPictureButton",
+      "class_source": "type_family",
+      "kind": "view_node",
+      "offset": 4740,
+      "tag": "opt2",
+      "type_code": "radb",
+      "view": "Linger.rsrc:View:8155"
+    },
+    "Linger.rsrc:View:8155@0x12e7": {
+      "class_name": "TRadioPictureButton",
+      "class_source": "type_family",
+      "kind": "view_node",
+      "offset": 4839,
+      "tag": "opt3",
+      "type_code": "radb",
+      "view": "Linger.rsrc:View:8155"
+    },
     "Linger.rsrc:View:8155@0x134a": {
       "class_name": "TCluster",
       "class_source": "type_family",
@@ -122188,6 +125093,33 @@
       "offset": 4938,
       "tag": "targ",
       "type_code": "clus",
+      "view": "Linger.rsrc:View:8155"
+    },
+    "Linger.rsrc:View:8155@0x13ac": {
+      "class_name": "TRadioPictureButton",
+      "class_source": "type_family",
+      "kind": "view_node",
+      "offset": 5036,
+      "tag": "opt1",
+      "type_code": "radb",
+      "view": "Linger.rsrc:View:8155"
+    },
+    "Linger.rsrc:View:8155@0x140f": {
+      "class_name": "TRadioPictureButton",
+      "class_source": "type_family",
+      "kind": "view_node",
+      "offset": 5135,
+      "tag": "opt2",
+      "type_code": "radb",
+      "view": "Linger.rsrc:View:8155"
+    },
+    "Linger.rsrc:View:8155@0x1472": {
+      "class_name": "TRadioPictureButton",
+      "class_source": "type_family",
+      "kind": "view_node",
+      "offset": 5234,
+      "tag": "opt3",
+      "type_code": "radb",
       "view": "Linger.rsrc:View:8155"
     },
     "Linger.rsrc:View:8155@0x14d5": {
@@ -122505,6 +125437,33 @@
       "type_code": "clus",
       "view": "Linger.rsrc:View:8155"
     },
+    "Linger.rsrc:View:8155@0x276f": {
+      "class_name": "TRadioPictureButton",
+      "class_source": "type_family",
+      "kind": "view_node",
+      "offset": 10095,
+      "tag": "opt1",
+      "type_code": "radb",
+      "view": "Linger.rsrc:View:8155"
+    },
+    "Linger.rsrc:View:8155@0x27d2": {
+      "class_name": "TRadioPictureButton",
+      "class_source": "type_family",
+      "kind": "view_node",
+      "offset": 10194,
+      "tag": "opt2",
+      "type_code": "radb",
+      "view": "Linger.rsrc:View:8155"
+    },
+    "Linger.rsrc:View:8155@0x2835": {
+      "class_name": "TRadioPictureButton",
+      "class_source": "type_family",
+      "kind": "view_node",
+      "offset": 10293,
+      "tag": "opt3",
+      "type_code": "radb",
+      "view": "Linger.rsrc:View:8155"
+    },
     "Linger.rsrc:View:8155@0x2898": {
       "class_name": "TCluster",
       "class_source": "type_family",
@@ -122512,6 +125471,33 @@
       "offset": 10392,
       "tag": "targ",
       "type_code": "clus",
+      "view": "Linger.rsrc:View:8155"
+    },
+    "Linger.rsrc:View:8155@0x28fa": {
+      "class_name": "TRadioPictureButton",
+      "class_source": "type_family",
+      "kind": "view_node",
+      "offset": 10490,
+      "tag": "opt1",
+      "type_code": "radb",
+      "view": "Linger.rsrc:View:8155"
+    },
+    "Linger.rsrc:View:8155@0x295d": {
+      "class_name": "TRadioPictureButton",
+      "class_source": "type_family",
+      "kind": "view_node",
+      "offset": 10589,
+      "tag": "opt2",
+      "type_code": "radb",
+      "view": "Linger.rsrc:View:8155"
+    },
+    "Linger.rsrc:View:8155@0x29c0": {
+      "class_name": "TRadioPictureButton",
+      "class_source": "type_family",
+      "kind": "view_node",
+      "offset": 10688,
+      "tag": "opt3",
+      "type_code": "radb",
       "view": "Linger.rsrc:View:8155"
     },
     "Linger.rsrc:View:8155@0x2a23": {
@@ -122598,7 +125584,7 @@
     "Linger.rsrc:View:900": {
       "kind": "view",
       "name": "Debug Flags Window",
-      "node_count": 8,
+      "node_count": 24,
       "resource_file": "Linger.rsrc",
       "resource_id": 900
     },
@@ -122629,6 +125615,24 @@
       "type_code": "clus",
       "view": "Linger.rsrc:View:900"
     },
+    "Linger.rsrc:View:900@0x0138": {
+      "class_name": "TCzechBox",
+      "class_source": "type_family",
+      "kind": "view_node",
+      "offset": 312,
+      "tag": "menu",
+      "type_code": "chkb",
+      "view": "Linger.rsrc:View:900"
+    },
+    "Linger.rsrc:View:900@0x019b": {
+      "class_name": "TCzechBox",
+      "class_source": "type_family",
+      "kind": "view_node",
+      "offset": 411,
+      "tag": "evnt",
+      "type_code": "chkb",
+      "view": "Linger.rsrc:View:900"
+    },
     "Linger.rsrc:View:900@0x01fe": {
       "class_name": "TCluster",
       "class_source": "type_family",
@@ -122636,6 +125640,42 @@
       "offset": 510,
       "tag": "VW05",
       "type_code": "clus",
+      "view": "Linger.rsrc:View:900"
+    },
+    "Linger.rsrc:View:900@0x0260": {
+      "class_name": "TCzechBox",
+      "class_source": "type_family",
+      "kind": "view_node",
+      "offset": 608,
+      "tag": "curs",
+      "type_code": "chkb",
+      "view": "Linger.rsrc:View:900"
+    },
+    "Linger.rsrc:View:900@0x02c3": {
+      "class_name": "TCzechBox",
+      "class_source": "type_family",
+      "kind": "view_node",
+      "offset": 707,
+      "tag": "slee",
+      "type_code": "chkb",
+      "view": "Linger.rsrc:View:900"
+    },
+    "Linger.rsrc:View:900@0x0326": {
+      "class_name": "TCzechBox",
+      "class_source": "type_family",
+      "kind": "view_node",
+      "offset": 806,
+      "tag": "help",
+      "type_code": "chkb",
+      "view": "Linger.rsrc:View:900"
+    },
+    "Linger.rsrc:View:900@0x0389": {
+      "class_name": "TCzechBox",
+      "class_source": "type_family",
+      "kind": "view_node",
+      "offset": 905,
+      "tag": "invl",
+      "type_code": "chkb",
       "view": "Linger.rsrc:View:900"
     },
     "Linger.rsrc:View:900@0x03ec": {
@@ -122647,6 +125687,24 @@
       "type_code": "clus",
       "view": "Linger.rsrc:View:900"
     },
+    "Linger.rsrc:View:900@0x044e": {
+      "class_name": "TCzechBox",
+      "class_source": "type_family",
+      "kind": "view_node",
+      "offset": 1102,
+      "tag": "segl",
+      "type_code": "chkb",
+      "view": "Linger.rsrc:View:900"
+    },
+    "Linger.rsrc:View:900@0x04b1": {
+      "class_name": "TCzechBox",
+      "class_source": "type_family",
+      "kind": "view_node",
+      "offset": 1201,
+      "tag": "segu",
+      "type_code": "chkb",
+      "view": "Linger.rsrc:View:900"
+    },
     "Linger.rsrc:View:900@0x0514": {
       "class_name": "TCluster",
       "class_source": "type_family",
@@ -122656,6 +125714,60 @@
       "type_code": "clus",
       "view": "Linger.rsrc:View:900"
     },
+    "Linger.rsrc:View:900@0x0576": {
+      "class_name": "TCzechBox",
+      "class_source": "type_family",
+      "kind": "view_node",
+      "offset": 1398,
+      "tag": "ints",
+      "type_code": "chkb",
+      "view": "Linger.rsrc:View:900"
+    },
+    "Linger.rsrc:View:900@0x05d9": {
+      "class_name": "TCzechBox",
+      "class_source": "type_family",
+      "kind": "view_node",
+      "offset": 1497,
+      "tag": "focu",
+      "type_code": "chkb",
+      "view": "Linger.rsrc:View:900"
+    },
+    "Linger.rsrc:View:900@0x063c": {
+      "class_name": "TCzechBox",
+      "class_source": "type_family",
+      "kind": "view_node",
+      "offset": 1596,
+      "tag": "prnt",
+      "type_code": "chkb",
+      "view": "Linger.rsrc:View:900"
+    },
+    "Linger.rsrc:View:900@0x069f": {
+      "class_name": "TCzechBox",
+      "class_source": "type_family",
+      "kind": "view_node",
+      "offset": 1695,
+      "tag": "usr1",
+      "type_code": "chkb",
+      "view": "Linger.rsrc:View:900"
+    },
+    "Linger.rsrc:View:900@0x0702": {
+      "class_name": "TCzechBox",
+      "class_source": "type_family",
+      "kind": "view_node",
+      "offset": 1794,
+      "tag": "usr2",
+      "type_code": "chkb",
+      "view": "Linger.rsrc:View:900"
+    },
+    "Linger.rsrc:View:900@0x0765": {
+      "class_name": "TCzechBox",
+      "class_source": "type_family",
+      "kind": "view_node",
+      "offset": 1893,
+      "tag": "usr3",
+      "type_code": "chkb",
+      "view": "Linger.rsrc:View:900"
+    },
     "Linger.rsrc:View:900@0x07c8": {
       "class_name": "TCluster",
       "class_source": "type_family",
@@ -122663,6 +125775,24 @@
       "offset": 1992,
       "tag": "VW01",
       "type_code": "clus",
+      "view": "Linger.rsrc:View:900"
+    },
+    "Linger.rsrc:View:900@0x082a": {
+      "class_name": "TCzechBox",
+      "class_source": "type_family",
+      "kind": "view_node",
+      "offset": 2090,
+      "tag": "rsrc",
+      "type_code": "chkb",
+      "view": "Linger.rsrc:View:900"
+    },
+    "Linger.rsrc:View:900@0x088d": {
+      "class_name": "TCzechBox",
+      "class_source": "type_family",
+      "kind": "view_node",
+      "offset": 2189,
+      "tag": "memb",
+      "type_code": "chkb",
       "view": "Linger.rsrc:View:900"
     },
     "Linger.rsrc:View:900@0x08f0": {
@@ -122677,7 +125807,7 @@
     "Linger.rsrc:View:901": {
       "kind": "view",
       "name": "debug - Initialize PerfMon",
-      "node_count": 22,
+      "node_count": 25,
       "resource_file": "Linger.rsrc",
       "resource_id": 901
     },
@@ -122735,6 +125865,15 @@
       "type_code": "clus",
       "view": "Linger.rsrc:View:901"
     },
+    "Linger.rsrc:View:901@0x038d": {
+      "class_name": "TCzechBox",
+      "class_source": "type_family",
+      "kind": "view_node",
+      "offset": 909,
+      "tag": "macd",
+      "type_code": "chkb",
+      "view": "Linger.rsrc:View:901"
+    },
     "Linger.rsrc:View:901@0x03f0": {
       "class_name": "TStaticText",
       "class_source": "type_family",
@@ -122760,6 +125899,15 @@
       "offset": 1276,
       "tag": "VW11",
       "type_code": "clus",
+      "view": "Linger.rsrc:View:901"
+    },
+    "Linger.rsrc:View:901@0x055e": {
+      "class_name": "TCzechBox",
+      "class_source": "type_family",
+      "kind": "view_node",
+      "offset": 1374,
+      "tag": "mrcd",
+      "type_code": "chkb",
       "view": "Linger.rsrc:View:901"
     },
     "Linger.rsrc:View:901@0x05c1": {
@@ -122805,6 +125953,15 @@
       "offset": 2021,
       "tag": "xxxx",
       "type_code": "clus",
+      "view": "Linger.rsrc:View:901"
+    },
+    "Linger.rsrc:View:901@0x0847": {
+      "class_name": "TCzechBox",
+      "class_source": "type_family",
+      "kind": "view_node",
+      "offset": 2119,
+      "tag": "mout",
+      "type_code": "chkb",
       "view": "Linger.rsrc:View:901"
     },
     "Linger.rsrc:View:901@0x08aa": {
@@ -130748,7 +133905,7 @@
     "MapView.rsrc:View:9470": {
       "kind": "view",
       "name": "Civilian Maker",
-      "node_count": 5,
+      "node_count": 21,
       "resource_file": "MapView.rsrc",
       "resource_id": 9470
     },
@@ -130788,6 +133945,87 @@
       "type_code": "clus",
       "view": "MapView.rsrc:View:9470"
     },
+    "MapView.rsrc:View:9470@0x0397": {
+      "class_name": "TRadioPictureButton",
+      "class_source": "type_family",
+      "kind": "view_node",
+      "offset": 919,
+      "tag": "typ8",
+      "type_code": "radb",
+      "view": "MapView.rsrc:View:9470"
+    },
+    "MapView.rsrc:View:9470@0x03fa": {
+      "class_name": "TRadioPictureButton",
+      "class_source": "type_family",
+      "kind": "view_node",
+      "offset": 1018,
+      "tag": "typ0",
+      "type_code": "radb",
+      "view": "MapView.rsrc:View:9470"
+    },
+    "MapView.rsrc:View:9470@0x045d": {
+      "class_name": "TRadioPictureButton",
+      "class_source": "type_family",
+      "kind": "view_node",
+      "offset": 1117,
+      "tag": "typ1",
+      "type_code": "radb",
+      "view": "MapView.rsrc:View:9470"
+    },
+    "MapView.rsrc:View:9470@0x04c0": {
+      "class_name": "TRadioPictureButton",
+      "class_source": "type_family",
+      "kind": "view_node",
+      "offset": 1216,
+      "tag": "typ2",
+      "type_code": "radb",
+      "view": "MapView.rsrc:View:9470"
+    },
+    "MapView.rsrc:View:9470@0x0523": {
+      "class_name": "TRadioPictureButton",
+      "class_source": "type_family",
+      "kind": "view_node",
+      "offset": 1315,
+      "tag": "typ3",
+      "type_code": "radb",
+      "view": "MapView.rsrc:View:9470"
+    },
+    "MapView.rsrc:View:9470@0x0586": {
+      "class_name": "TRadioPictureButton",
+      "class_source": "type_family",
+      "kind": "view_node",
+      "offset": 1414,
+      "tag": "typ4",
+      "type_code": "radb",
+      "view": "MapView.rsrc:View:9470"
+    },
+    "MapView.rsrc:View:9470@0x05e9": {
+      "class_name": "TRadioPictureButton",
+      "class_source": "type_family",
+      "kind": "view_node",
+      "offset": 1513,
+      "tag": "typ5",
+      "type_code": "radb",
+      "view": "MapView.rsrc:View:9470"
+    },
+    "MapView.rsrc:View:9470@0x064c": {
+      "class_name": "TRadioPictureButton",
+      "class_source": "type_family",
+      "kind": "view_node",
+      "offset": 1612,
+      "tag": "typ6",
+      "type_code": "radb",
+      "view": "MapView.rsrc:View:9470"
+    },
+    "MapView.rsrc:View:9470@0x06af": {
+      "class_name": "TRadioPictureButton",
+      "class_source": "type_family",
+      "kind": "view_node",
+      "offset": 1711,
+      "tag": "typ7",
+      "type_code": "radb",
+      "view": "MapView.rsrc:View:9470"
+    },
     "MapView.rsrc:View:9470@0x0774": {
       "class_name": "TCluster",
       "class_source": "type_family",
@@ -130795,6 +134033,69 @@
       "offset": 1908,
       "tag": "owne",
       "type_code": "clus",
+      "view": "MapView.rsrc:View:9470"
+    },
+    "MapView.rsrc:View:9470@0x07d6": {
+      "class_name": "TRadioPictureButton",
+      "class_source": "type_family",
+      "kind": "view_node",
+      "offset": 2006,
+      "tag": "own0",
+      "type_code": "radb",
+      "view": "MapView.rsrc:View:9470"
+    },
+    "MapView.rsrc:View:9470@0x0839": {
+      "class_name": "TRadioPictureButton",
+      "class_source": "type_family",
+      "kind": "view_node",
+      "offset": 2105,
+      "tag": "own1",
+      "type_code": "radb",
+      "view": "MapView.rsrc:View:9470"
+    },
+    "MapView.rsrc:View:9470@0x089c": {
+      "class_name": "TRadioPictureButton",
+      "class_source": "type_family",
+      "kind": "view_node",
+      "offset": 2204,
+      "tag": "own2",
+      "type_code": "radb",
+      "view": "MapView.rsrc:View:9470"
+    },
+    "MapView.rsrc:View:9470@0x08ff": {
+      "class_name": "TRadioPictureButton",
+      "class_source": "type_family",
+      "kind": "view_node",
+      "offset": 2303,
+      "tag": "own3",
+      "type_code": "radb",
+      "view": "MapView.rsrc:View:9470"
+    },
+    "MapView.rsrc:View:9470@0x0962": {
+      "class_name": "TRadioPictureButton",
+      "class_source": "type_family",
+      "kind": "view_node",
+      "offset": 2402,
+      "tag": "own6",
+      "type_code": "radb",
+      "view": "MapView.rsrc:View:9470"
+    },
+    "MapView.rsrc:View:9470@0x09c5": {
+      "class_name": "TRadioPictureButton",
+      "class_source": "type_family",
+      "kind": "view_node",
+      "offset": 2501,
+      "tag": "own5",
+      "type_code": "radb",
+      "view": "MapView.rsrc:View:9470"
+    },
+    "MapView.rsrc:View:9470@0x0a28": {
+      "class_name": "TRadioPictureButton",
+      "class_source": "type_family",
+      "kind": "view_node",
+      "offset": 2600,
+      "tag": "own4",
+      "type_code": "radb",
       "view": "MapView.rsrc:View:9470"
     },
     "MapView.rsrc:View:9474": {
@@ -131039,7 +134340,7 @@
     "MapView.rsrc:View:9476": {
       "kind": "view",
       "name": "Navy Maker",
-      "node_count": 8,
+      "node_count": 17,
       "resource_file": "MapView.rsrc",
       "resource_id": 9476
     },
@@ -131077,6 +134378,87 @@
       "offset": 326,
       "tag": "type",
       "type_code": "clus",
+      "view": "MapView.rsrc:View:9476"
+    },
+    "MapView.rsrc:View:9476@0x01a8": {
+      "class_name": "TRadioPictureButton",
+      "class_source": "type_family",
+      "kind": "view_node",
+      "offset": 424,
+      "tag": "typ0",
+      "type_code": "radb",
+      "view": "MapView.rsrc:View:9476"
+    },
+    "MapView.rsrc:View:9476@0x020b": {
+      "class_name": "TRadioPictureButton",
+      "class_source": "type_family",
+      "kind": "view_node",
+      "offset": 523,
+      "tag": "typ1",
+      "type_code": "radb",
+      "view": "MapView.rsrc:View:9476"
+    },
+    "MapView.rsrc:View:9476@0x026e": {
+      "class_name": "TRadioPictureButton",
+      "class_source": "type_family",
+      "kind": "view_node",
+      "offset": 622,
+      "tag": "typ2",
+      "type_code": "radb",
+      "view": "MapView.rsrc:View:9476"
+    },
+    "MapView.rsrc:View:9476@0x02d1": {
+      "class_name": "TRadioPictureButton",
+      "class_source": "type_family",
+      "kind": "view_node",
+      "offset": 721,
+      "tag": "typ3",
+      "type_code": "radb",
+      "view": "MapView.rsrc:View:9476"
+    },
+    "MapView.rsrc:View:9476@0x0334": {
+      "class_name": "TRadioPictureButton",
+      "class_source": "type_family",
+      "kind": "view_node",
+      "offset": 820,
+      "tag": "typ4",
+      "type_code": "radb",
+      "view": "MapView.rsrc:View:9476"
+    },
+    "MapView.rsrc:View:9476@0x0397": {
+      "class_name": "TRadioPictureButton",
+      "class_source": "type_family",
+      "kind": "view_node",
+      "offset": 919,
+      "tag": "typ5",
+      "type_code": "radb",
+      "view": "MapView.rsrc:View:9476"
+    },
+    "MapView.rsrc:View:9476@0x03fa": {
+      "class_name": "TRadioPictureButton",
+      "class_source": "type_family",
+      "kind": "view_node",
+      "offset": 1018,
+      "tag": "typ6",
+      "type_code": "radb",
+      "view": "MapView.rsrc:View:9476"
+    },
+    "MapView.rsrc:View:9476@0x045d": {
+      "class_name": "TRadioPictureButton",
+      "class_source": "type_family",
+      "kind": "view_node",
+      "offset": 1117,
+      "tag": "typ7",
+      "type_code": "radb",
+      "view": "MapView.rsrc:View:9476"
+    },
+    "MapView.rsrc:View:9476@0x04c0": {
+      "class_name": "TRadioPictureButton",
+      "class_source": "type_family",
+      "kind": "view_node",
+      "offset": 1216,
+      "tag": "typ8",
+      "type_code": "radb",
       "view": "MapView.rsrc:View:9476"
     },
     "MapView.rsrc:View:9476@0x0523": {
@@ -136119,7 +139501,7 @@
     "Startup.rsrc:View:951": {
       "kind": "view",
       "name": "test - Game Setup Dialog",
-      "node_count": 8,
+      "node_count": 10,
       "resource_file": "Startup.rsrc",
       "resource_id": 951
     },
@@ -136193,6 +139575,24 @@
       "offset": 4301,
       "tag": "GP5 ",
       "type_code": "clus",
+      "view": "Startup.rsrc:View:951"
+    },
+    "Startup.rsrc:View:951@0x12ef": {
+      "class_name": "TCzechBox",
+      "class_source": "type_family",
+      "kind": "view_node",
+      "offset": 4847,
+      "tag": "mult",
+      "type_code": "chkb",
+      "view": "Startup.rsrc:View:951"
+    },
+    "Startup.rsrc:View:951@0x1352": {
+      "class_name": "TCzechBox",
+      "class_source": "type_family",
+      "kind": "view_node",
+      "offset": 4946,
+      "tag": "edit",
+      "type_code": "chkb",
       "view": "Startup.rsrc:View:951"
     },
     "Startup.rsrc:View:952": {
@@ -136347,7 +139747,7 @@
     "Startup.rsrc:View:960": {
       "kind": "view",
       "name": "Map editor",
-      "node_count": 11,
+      "node_count": 41,
       "resource_file": "Startup.rsrc",
       "resource_id": 960
     },
@@ -136387,6 +139787,87 @@
       "type_code": "clus",
       "view": "Startup.rsrc:View:960"
     },
+    "Startup.rsrc:View:960@0x01cf": {
+      "class_name": "TRadioPictureButton",
+      "class_source": "type_family",
+      "kind": "view_node",
+      "offset": 463,
+      "tag": "tera",
+      "type_code": "radb",
+      "view": "Startup.rsrc:View:960"
+    },
+    "Startup.rsrc:View:960@0x0232": {
+      "class_name": "TRadioPictureButton",
+      "class_source": "type_family",
+      "kind": "view_node",
+      "offset": 562,
+      "tag": "terb",
+      "type_code": "radb",
+      "view": "Startup.rsrc:View:960"
+    },
+    "Startup.rsrc:View:960@0x0295": {
+      "class_name": "TRadioPictureButton",
+      "class_source": "type_family",
+      "kind": "view_node",
+      "offset": 661,
+      "tag": "terc",
+      "type_code": "radb",
+      "view": "Startup.rsrc:View:960"
+    },
+    "Startup.rsrc:View:960@0x02f8": {
+      "class_name": "TRadioPictureButton",
+      "class_source": "type_family",
+      "kind": "view_node",
+      "offset": 760,
+      "tag": "terd",
+      "type_code": "radb",
+      "view": "Startup.rsrc:View:960"
+    },
+    "Startup.rsrc:View:960@0x035b": {
+      "class_name": "TRadioPictureButton",
+      "class_source": "type_family",
+      "kind": "view_node",
+      "offset": 859,
+      "tag": "teri",
+      "type_code": "radb",
+      "view": "Startup.rsrc:View:960"
+    },
+    "Startup.rsrc:View:960@0x03be": {
+      "class_name": "TRadioPictureButton",
+      "class_source": "type_family",
+      "kind": "view_node",
+      "offset": 958,
+      "tag": "terj",
+      "type_code": "radb",
+      "view": "Startup.rsrc:View:960"
+    },
+    "Startup.rsrc:View:960@0x0421": {
+      "class_name": "TRadioPictureButton",
+      "class_source": "type_family",
+      "kind": "view_node",
+      "offset": 1057,
+      "tag": "terk",
+      "type_code": "radb",
+      "view": "Startup.rsrc:View:960"
+    },
+    "Startup.rsrc:View:960@0x0484": {
+      "class_name": "TRadioPictureButton",
+      "class_source": "type_family",
+      "kind": "view_node",
+      "offset": 1156,
+      "tag": "terl",
+      "type_code": "radb",
+      "view": "Startup.rsrc:View:960"
+    },
+    "Startup.rsrc:View:960@0x04e7": {
+      "class_name": "TRadioPictureButton",
+      "class_source": "type_family",
+      "kind": "view_node",
+      "offset": 1255,
+      "tag": "prov",
+      "type_code": "radb",
+      "view": "Startup.rsrc:View:960"
+    },
     "Startup.rsrc:View:960@0x054a": {
       "class_name": "TNumberText",
       "class_source": "type_family",
@@ -136412,6 +139893,15 @@
       "offset": 1633,
       "tag": "done",
       "type_code": "pict",
+      "view": "Startup.rsrc:View:960"
+    },
+    "Startup.rsrc:View:960@0x06c1": {
+      "class_name": "TRadioPictureButton",
+      "class_source": "type_family",
+      "kind": "view_node",
+      "offset": 1729,
+      "tag": "seat",
+      "type_code": "radb",
       "view": "Startup.rsrc:View:960"
     },
     "Startup.rsrc:View:960@0x0724": {
@@ -136441,6 +139931,186 @@
       "type_code": "stat",
       "view": "Startup.rsrc:View:960"
     },
+    "Startup.rsrc:View:960@0x084a": {
+      "class_name": "TCzechBox",
+      "class_source": "type_family",
+      "kind": "view_node",
+      "offset": 2122,
+      "tag": "exi0",
+      "type_code": "chkb",
+      "view": "Startup.rsrc:View:960"
+    },
+    "Startup.rsrc:View:960@0x08ad": {
+      "class_name": "TCzechBox",
+      "class_source": "type_family",
+      "kind": "view_node",
+      "offset": 2221,
+      "tag": "exi1",
+      "type_code": "chkb",
+      "view": "Startup.rsrc:View:960"
+    },
+    "Startup.rsrc:View:960@0x0910": {
+      "class_name": "TCzechBox",
+      "class_source": "type_family",
+      "kind": "view_node",
+      "offset": 2320,
+      "tag": "exi2",
+      "type_code": "chkb",
+      "view": "Startup.rsrc:View:960"
+    },
+    "Startup.rsrc:View:960@0x0973": {
+      "class_name": "TCzechBox",
+      "class_source": "type_family",
+      "kind": "view_node",
+      "offset": 2419,
+      "tag": "exi3",
+      "type_code": "chkb",
+      "view": "Startup.rsrc:View:960"
+    },
+    "Startup.rsrc:View:960@0x09d6": {
+      "class_name": "TCzechBox",
+      "class_source": "type_family",
+      "kind": "view_node",
+      "offset": 2518,
+      "tag": "exi4",
+      "type_code": "chkb",
+      "view": "Startup.rsrc:View:960"
+    },
+    "Startup.rsrc:View:960@0x0a39": {
+      "class_name": "TCzechBox",
+      "class_source": "type_family",
+      "kind": "view_node",
+      "offset": 2617,
+      "tag": "exi5",
+      "type_code": "chkb",
+      "view": "Startup.rsrc:View:960"
+    },
+    "Startup.rsrc:View:960@0x0a9c": {
+      "class_name": "TRadioPictureButton",
+      "class_source": "type_family",
+      "kind": "view_node",
+      "offset": 2716,
+      "tag": "rail",
+      "type_code": "radb",
+      "view": "Startup.rsrc:View:960"
+    },
+    "Startup.rsrc:View:960@0x0aff": {
+      "class_name": "TRadioPictureButton",
+      "class_source": "type_family",
+      "kind": "view_node",
+      "offset": 2815,
+      "tag": "rive",
+      "type_code": "radb",
+      "view": "Startup.rsrc:View:960"
+    },
+    "Startup.rsrc:View:960@0x0b62": {
+      "class_name": "TRadioPictureButton",
+      "class_source": "type_family",
+      "kind": "view_node",
+      "offset": 2914,
+      "tag": "tere",
+      "type_code": "radb",
+      "view": "Startup.rsrc:View:960"
+    },
+    "Startup.rsrc:View:960@0x0bc5": {
+      "class_name": "TRadioPictureButton",
+      "class_source": "type_family",
+      "kind": "view_node",
+      "offset": 3013,
+      "tag": "terf",
+      "type_code": "radb",
+      "view": "Startup.rsrc:View:960"
+    },
+    "Startup.rsrc:View:960@0x0c28": {
+      "class_name": "TRadioPictureButton",
+      "class_source": "type_family",
+      "kind": "view_node",
+      "offset": 3112,
+      "tag": "terg",
+      "type_code": "radb",
+      "view": "Startup.rsrc:View:960"
+    },
+    "Startup.rsrc:View:960@0x0c8b": {
+      "class_name": "TRadioPictureButton",
+      "class_source": "type_family",
+      "kind": "view_node",
+      "offset": 3211,
+      "tag": "terh",
+      "type_code": "radb",
+      "view": "Startup.rsrc:View:960"
+    },
+    "Startup.rsrc:View:960@0x0cee": {
+      "class_name": "TRadioPictureButton",
+      "class_source": "type_family",
+      "kind": "view_node",
+      "offset": 3310,
+      "tag": "term",
+      "type_code": "radb",
+      "view": "Startup.rsrc:View:960"
+    },
+    "Startup.rsrc:View:960@0x0d51": {
+      "class_name": "TRadioPictureButton",
+      "class_source": "type_family",
+      "kind": "view_node",
+      "offset": 3409,
+      "tag": "tern",
+      "type_code": "radb",
+      "view": "Startup.rsrc:View:960"
+    },
+    "Startup.rsrc:View:960@0x0db4": {
+      "class_name": "TRadioPictureButton",
+      "class_source": "type_family",
+      "kind": "view_node",
+      "offset": 3508,
+      "tag": "min0",
+      "type_code": "radb",
+      "view": "Startup.rsrc:View:960"
+    },
+    "Startup.rsrc:View:960@0x0e17": {
+      "class_name": "TRadioPictureButton",
+      "class_source": "type_family",
+      "kind": "view_node",
+      "offset": 3607,
+      "tag": "min1",
+      "type_code": "radb",
+      "view": "Startup.rsrc:View:960"
+    },
+    "Startup.rsrc:View:960@0x0e7a": {
+      "class_name": "TRadioPictureButton",
+      "class_source": "type_family",
+      "kind": "view_node",
+      "offset": 3706,
+      "tag": "min3",
+      "type_code": "radb",
+      "view": "Startup.rsrc:View:960"
+    },
+    "Startup.rsrc:View:960@0x0edd": {
+      "class_name": "TRadioPictureButton",
+      "class_source": "type_family",
+      "kind": "view_node",
+      "offset": 3805,
+      "tag": "min2",
+      "type_code": "radb",
+      "view": "Startup.rsrc:View:960"
+    },
+    "Startup.rsrc:View:960@0x0f40": {
+      "class_name": "TRadioPictureButton",
+      "class_source": "type_family",
+      "kind": "view_node",
+      "offset": 3904,
+      "tag": "min4",
+      "type_code": "radb",
+      "view": "Startup.rsrc:View:960"
+    },
+    "Startup.rsrc:View:960@0x0fa3": {
+      "class_name": "TRadioPictureButton",
+      "class_source": "type_family",
+      "kind": "view_node",
+      "offset": 4003,
+      "tag": "terp",
+      "type_code": "radb",
+      "view": "Startup.rsrc:View:960"
+    },
     "Startup.rsrc:View:960@0x1006": {
       "class_name": "TMapEditView",
       "class_source": "declared",
@@ -136453,7 +140123,7 @@
     "Startup.rsrc:View:965": {
       "kind": "view",
       "name": "Province editor",
-      "node_count": 8,
+      "node_count": 10,
       "resource_file": "Startup.rsrc",
       "resource_id": 965
     },
@@ -136527,6 +140197,24 @@
       "offset": 886,
       "tag": "type",
       "type_code": "clus",
+      "view": "Startup.rsrc:View:965"
+    },
+    "Startup.rsrc:View:965@0x03d8": {
+      "class_name": "TRadioPictureButton",
+      "class_source": "type_family",
+      "kind": "view_node",
+      "offset": 984,
+      "tag": "town",
+      "type_code": "radb",
+      "view": "Startup.rsrc:View:965"
+    },
+    "Startup.rsrc:View:965@0x043b": {
+      "class_name": "TRadioPictureButton",
+      "class_source": "type_family",
+      "kind": "view_node",
+      "offset": 1083,
+      "tag": "city",
+      "type_code": "radb",
       "view": "Startup.rsrc:View:965"
     },
     "Startup.rsrc:View:966": {
@@ -175893,7 +179581,7 @@
       "tag_value": 1667785074
     },
     "control_tag:0x63697479": {
-      "instance_count": 7,
+      "instance_count": 8,
       "kind": "control_tag",
       "tag": "city",
       "tag_value": 1667855481
@@ -176175,7 +179863,7 @@
       "tag_value": 1668641394
     },
     "control_tag:0x63757273": {
-      "instance_count": 22,
+      "instance_count": 23,
       "kind": "control_tag",
       "tag": "curs",
       "tag_value": 1668641395
@@ -176354,6 +180042,12 @@
       "tag": "eddy",
       "tag_value": 1701078137
     },
+    "control_tag:0x65646974": {
+      "instance_count": 1,
+      "kind": "control_tag",
+      "tag": "edit",
+      "tag_value": 1701079412
+    },
     "control_tag:0x65666c67": {
       "instance_count": 1,
       "kind": "control_tag",
@@ -176407,6 +180101,48 @@
       "kind": "control_tag",
       "tag": "eshp",
       "tag_value": 1702062192
+    },
+    "control_tag:0x65766e74": {
+      "instance_count": 1,
+      "kind": "control_tag",
+      "tag": "evnt",
+      "tag_value": 1702260340
+    },
+    "control_tag:0x65786930": {
+      "instance_count": 1,
+      "kind": "control_tag",
+      "tag": "exi0",
+      "tag_value": 1702390064
+    },
+    "control_tag:0x65786931": {
+      "instance_count": 1,
+      "kind": "control_tag",
+      "tag": "exi1",
+      "tag_value": 1702390065
+    },
+    "control_tag:0x65786932": {
+      "instance_count": 1,
+      "kind": "control_tag",
+      "tag": "exi2",
+      "tag_value": 1702390066
+    },
+    "control_tag:0x65786933": {
+      "instance_count": 1,
+      "kind": "control_tag",
+      "tag": "exi3",
+      "tag_value": 1702390067
+    },
+    "control_tag:0x65786934": {
+      "instance_count": 1,
+      "kind": "control_tag",
+      "tag": "exi4",
+      "tag_value": 1702390068
+    },
+    "control_tag:0x65786935": {
+      "instance_count": 1,
+      "kind": "control_tag",
+      "tag": "exi5",
+      "tag_value": 1702390069
     },
     "control_tag:0x65786974": {
       "instance_count": 1,
@@ -176527,6 +180263,12 @@
       "kind": "control_tag",
       "tag": "flgR",
       "tag_value": 1718380370
+    },
+    "control_tag:0x666f6375": {
+      "instance_count": 1,
+      "kind": "control_tag",
+      "tag": "focu",
+      "tag_value": 1718575989
     },
     "control_tag:0x666f6f64": {
       "instance_count": 5,
@@ -176703,7 +180445,7 @@
       "tag_value": 1751216740
     },
     "control_tag:0x68656c70": {
-      "instance_count": 1,
+      "instance_count": 2,
       "kind": "control_tag",
       "tag": "help",
       "tag_value": 1751477360
@@ -176845,6 +180587,18 @@
       "kind": "control_tag",
       "tag": "inst",
       "tag_value": 1768846196
+    },
+    "control_tag:0x696e7473": {
+      "instance_count": 1,
+      "kind": "control_tag",
+      "tag": "ints",
+      "tag_value": 1768846451
+    },
+    "control_tag:0x696e766c": {
+      "instance_count": 1,
+      "kind": "control_tag",
+      "tag": "invl",
+      "tag_value": 1768846956
     },
     "control_tag:0x6972636c": {
       "instance_count": 2,
@@ -177152,6 +180906,12 @@
       "tag": "ma6 ",
       "tag_value": 1835087392
     },
+    "control_tag:0x6d616364": {
+      "instance_count": 1,
+      "kind": "control_tag",
+      "tag": "macd",
+      "tag_value": 1835098980
+    },
     "control_tag:0x6d61696e": {
       "instance_count": 35,
       "kind": "control_tag",
@@ -177181,6 +180941,18 @@
       "kind": "control_tag",
       "tag": "meat",
       "tag_value": 1835360628
+    },
+    "control_tag:0x6d656d62": {
+      "instance_count": 1,
+      "kind": "control_tag",
+      "tag": "memb",
+      "tag_value": 1835363682
+    },
+    "control_tag:0x6d656e75": {
+      "instance_count": 1,
+      "kind": "control_tag",
+      "tag": "menu",
+      "tag_value": 1835363957
     },
     "control_tag:0x6d657263": {
       "instance_count": 1,
@@ -177217,6 +180989,36 @@
       "kind": "control_tag",
       "tag": "milb",
       "tag_value": 1835625570
+    },
+    "control_tag:0x6d696e30": {
+      "instance_count": 1,
+      "kind": "control_tag",
+      "tag": "min0",
+      "tag_value": 1835626032
+    },
+    "control_tag:0x6d696e31": {
+      "instance_count": 1,
+      "kind": "control_tag",
+      "tag": "min1",
+      "tag_value": 1835626033
+    },
+    "control_tag:0x6d696e32": {
+      "instance_count": 1,
+      "kind": "control_tag",
+      "tag": "min2",
+      "tag_value": 1835626034
+    },
+    "control_tag:0x6d696e33": {
+      "instance_count": 1,
+      "kind": "control_tag",
+      "tag": "min3",
+      "tag_value": 1835626035
+    },
+    "control_tag:0x6d696e34": {
+      "instance_count": 1,
+      "kind": "control_tag",
+      "tag": "min4",
+      "tag_value": 1835626036
     },
     "control_tag:0x6d696e69": {
       "instance_count": 1,
@@ -177266,6 +181068,12 @@
       "tag": "more",
       "tag_value": 1836020325
     },
+    "control_tag:0x6d6f7574": {
+      "instance_count": 1,
+      "kind": "control_tag",
+      "tag": "mout",
+      "tag_value": 1836021108
+    },
     "control_tag:0x6d6f7665": {
       "instance_count": 15,
       "kind": "control_tag",
@@ -177277,6 +181085,12 @@
       "kind": "control_tag",
       "tag": "movi",
       "tag_value": 1836021353
+    },
+    "control_tag:0x6d726364": {
+      "instance_count": 1,
+      "kind": "control_tag",
+      "tag": "mrcd",
+      "tag_value": 1836213092
     },
     "control_tag:0x6d736731": {
       "instance_count": 1,
@@ -177309,7 +181123,7 @@
       "tag_value": 1836279605
     },
     "control_tag:0x6d756c74": {
-      "instance_count": 2,
+      "instance_count": 3,
       "kind": "control_tag",
       "tag": "mult",
       "tag_value": 1836412020
@@ -177890,6 +181704,24 @@
       "tag": "opca",
       "tag_value": 1869636449
     },
+    "control_tag:0x6f707431": {
+      "instance_count": 4,
+      "kind": "control_tag",
+      "tag": "opt1",
+      "tag_value": 1869640753
+    },
+    "control_tag:0x6f707432": {
+      "instance_count": 4,
+      "kind": "control_tag",
+      "tag": "opt2",
+      "tag_value": 1869640754
+    },
+    "control_tag:0x6f707433": {
+      "instance_count": 4,
+      "kind": "control_tag",
+      "tag": "opt3",
+      "tag_value": 1869640755
+    },
     "control_tag:0x6f707463": {
       "instance_count": 1,
       "kind": "control_tag",
@@ -177979,6 +181811,48 @@
       "kind": "control_tag",
       "tag": "ovr4",
       "tag_value": 1870033460
+    },
+    "control_tag:0x6f776e30": {
+      "instance_count": 1,
+      "kind": "control_tag",
+      "tag": "own0",
+      "tag_value": 1870097968
+    },
+    "control_tag:0x6f776e31": {
+      "instance_count": 1,
+      "kind": "control_tag",
+      "tag": "own1",
+      "tag_value": 1870097969
+    },
+    "control_tag:0x6f776e32": {
+      "instance_count": 1,
+      "kind": "control_tag",
+      "tag": "own2",
+      "tag_value": 1870097970
+    },
+    "control_tag:0x6f776e33": {
+      "instance_count": 1,
+      "kind": "control_tag",
+      "tag": "own3",
+      "tag_value": 1870097971
+    },
+    "control_tag:0x6f776e34": {
+      "instance_count": 1,
+      "kind": "control_tag",
+      "tag": "own4",
+      "tag_value": 1870097972
+    },
+    "control_tag:0x6f776e35": {
+      "instance_count": 1,
+      "kind": "control_tag",
+      "tag": "own5",
+      "tag_value": 1870097973
+    },
+    "control_tag:0x6f776e36": {
+      "instance_count": 1,
+      "kind": "control_tag",
+      "tag": "own6",
+      "tag_value": 1870097974
     },
     "control_tag:0x6f776e65": {
       "instance_count": 2,
@@ -178232,6 +182106,12 @@
       "tag": "pric",
       "tag_value": 1886546275
     },
+    "control_tag:0x70726e74": {
+      "instance_count": 1,
+      "kind": "control_tag",
+      "tag": "prnt",
+      "tag_value": 1886547572
+    },
     "control_tag:0x70726e75": {
       "instance_count": 1,
       "kind": "control_tag",
@@ -178269,7 +182149,7 @@
       "tag_value": 1886547828
     },
     "control_tag:0x70726f76": {
-      "instance_count": 1,
+      "instance_count": 2,
       "kind": "control_tag",
       "tag": "prov",
       "tag_value": 1886547830
@@ -178413,7 +182293,7 @@
       "tag_value": 1918986596
     },
     "control_tag:0x7261696c": {
-      "instance_count": 1,
+      "instance_count": 2,
       "kind": "control_tag",
       "tag": "rail",
       "tag_value": 1918986604
@@ -178484,6 +182364,12 @@
       "tag": "rght",
       "tag_value": 1919379572
     },
+    "control_tag:0x72697665": {
+      "instance_count": 1,
+      "kind": "control_tag",
+      "tag": "rive",
+      "tag_value": 1919514213
+    },
     "control_tag:0x726d6964": {
       "instance_count": 1,
       "kind": "control_tag",
@@ -178549,6 +182435,12 @@
       "kind": "control_tag",
       "tag": "rs6 ",
       "tag_value": 1920153120
+    },
+    "control_tag:0x72737263": {
+      "instance_count": 1,
+      "kind": "control_tag",
+      "tag": "rsrc",
+      "tag_value": 1920168547
     },
     "control_tag:0x72746162": {
       "instance_count": 1,
@@ -178736,6 +182628,24 @@
       "tag": "seas",
       "tag_value": 1936023923
     },
+    "control_tag:0x73656174": {
+      "instance_count": 1,
+      "kind": "control_tag",
+      "tag": "seat",
+      "tag_value": 1936023924
+    },
+    "control_tag:0x7365676c": {
+      "instance_count": 1,
+      "kind": "control_tag",
+      "tag": "segl",
+      "tag_value": 1936025452
+    },
+    "control_tag:0x73656775": {
+      "instance_count": 1,
+      "kind": "control_tag",
+      "tag": "segu",
+      "tag_value": 1936025461
+    },
     "control_tag:0x73656c65": {
       "instance_count": 3,
       "kind": "control_tag",
@@ -178801,6 +182711,12 @@
       "kind": "control_tag",
       "tag": "siez",
       "tag_value": 1936287098
+    },
+    "control_tag:0x736c6565": {
+      "instance_count": 1,
+      "kind": "control_tag",
+      "tag": "slee",
+      "tag_value": 1936483685
     },
     "control_tag:0x736c7430": {
       "instance_count": 1,
@@ -179066,6 +182982,96 @@
       "tag": "tcou",
       "tag_value": 1952673653
     },
+    "control_tag:0x74657261": {
+      "instance_count": 1,
+      "kind": "control_tag",
+      "tag": "tera",
+      "tag_value": 1952805473
+    },
+    "control_tag:0x74657262": {
+      "instance_count": 1,
+      "kind": "control_tag",
+      "tag": "terb",
+      "tag_value": 1952805474
+    },
+    "control_tag:0x74657263": {
+      "instance_count": 1,
+      "kind": "control_tag",
+      "tag": "terc",
+      "tag_value": 1952805475
+    },
+    "control_tag:0x74657264": {
+      "instance_count": 1,
+      "kind": "control_tag",
+      "tag": "terd",
+      "tag_value": 1952805476
+    },
+    "control_tag:0x74657265": {
+      "instance_count": 1,
+      "kind": "control_tag",
+      "tag": "tere",
+      "tag_value": 1952805477
+    },
+    "control_tag:0x74657266": {
+      "instance_count": 1,
+      "kind": "control_tag",
+      "tag": "terf",
+      "tag_value": 1952805478
+    },
+    "control_tag:0x74657267": {
+      "instance_count": 1,
+      "kind": "control_tag",
+      "tag": "terg",
+      "tag_value": 1952805479
+    },
+    "control_tag:0x74657268": {
+      "instance_count": 1,
+      "kind": "control_tag",
+      "tag": "terh",
+      "tag_value": 1952805480
+    },
+    "control_tag:0x74657269": {
+      "instance_count": 1,
+      "kind": "control_tag",
+      "tag": "teri",
+      "tag_value": 1952805481
+    },
+    "control_tag:0x7465726a": {
+      "instance_count": 1,
+      "kind": "control_tag",
+      "tag": "terj",
+      "tag_value": 1952805482
+    },
+    "control_tag:0x7465726b": {
+      "instance_count": 1,
+      "kind": "control_tag",
+      "tag": "terk",
+      "tag_value": 1952805483
+    },
+    "control_tag:0x7465726c": {
+      "instance_count": 1,
+      "kind": "control_tag",
+      "tag": "terl",
+      "tag_value": 1952805484
+    },
+    "control_tag:0x7465726d": {
+      "instance_count": 1,
+      "kind": "control_tag",
+      "tag": "term",
+      "tag_value": 1952805485
+    },
+    "control_tag:0x7465726e": {
+      "instance_count": 1,
+      "kind": "control_tag",
+      "tag": "tern",
+      "tag_value": 1952805486
+    },
+    "control_tag:0x74657270": {
+      "instance_count": 1,
+      "kind": "control_tag",
+      "tag": "terp",
+      "tag_value": 1952805488
+    },
     "control_tag:0x74657830": {
       "instance_count": 1,
       "kind": "control_tag",
@@ -179221,6 +183227,12 @@
       "kind": "control_tag",
       "tag": "tota",
       "tag_value": 1953461345
+    },
+    "control_tag:0x746f776e": {
+      "instance_count": 1,
+      "kind": "control_tag",
+      "tag": "town",
+      "tag_value": 1953462126
     },
     "control_tag:0x74706361": {
       "instance_count": 1,
@@ -179570,6 +183582,60 @@
       "tag": "txte",
       "tag_value": 1954051173
     },
+    "control_tag:0x74797030": {
+      "instance_count": 2,
+      "kind": "control_tag",
+      "tag": "typ0",
+      "tag_value": 1954115632
+    },
+    "control_tag:0x74797031": {
+      "instance_count": 2,
+      "kind": "control_tag",
+      "tag": "typ1",
+      "tag_value": 1954115633
+    },
+    "control_tag:0x74797032": {
+      "instance_count": 2,
+      "kind": "control_tag",
+      "tag": "typ2",
+      "tag_value": 1954115634
+    },
+    "control_tag:0x74797033": {
+      "instance_count": 2,
+      "kind": "control_tag",
+      "tag": "typ3",
+      "tag_value": 1954115635
+    },
+    "control_tag:0x74797034": {
+      "instance_count": 2,
+      "kind": "control_tag",
+      "tag": "typ4",
+      "tag_value": 1954115636
+    },
+    "control_tag:0x74797035": {
+      "instance_count": 2,
+      "kind": "control_tag",
+      "tag": "typ5",
+      "tag_value": 1954115637
+    },
+    "control_tag:0x74797036": {
+      "instance_count": 2,
+      "kind": "control_tag",
+      "tag": "typ6",
+      "tag_value": 1954115638
+    },
+    "control_tag:0x74797037": {
+      "instance_count": 2,
+      "kind": "control_tag",
+      "tag": "typ7",
+      "tag_value": 1954115639
+    },
+    "control_tag:0x74797038": {
+      "instance_count": 2,
+      "kind": "control_tag",
+      "tag": "typ8",
+      "tag_value": 1954115640
+    },
     "control_tag:0x74797065": {
       "instance_count": 3,
       "kind": "control_tag",
@@ -179611,6 +183677,24 @@
       "kind": "control_tag",
       "tag": "untr",
       "tag_value": 1970173042
+    },
+    "control_tag:0x75737231": {
+      "instance_count": 1,
+      "kind": "control_tag",
+      "tag": "usr1",
+      "tag_value": 1970500145
+    },
+    "control_tag:0x75737232": {
+      "instance_count": 1,
+      "kind": "control_tag",
+      "tag": "usr2",
+      "tag_value": 1970500146
+    },
+    "control_tag:0x75737233": {
+      "instance_count": 1,
+      "kind": "control_tag",
+      "tag": "usr3",
+      "tag_value": 1970500147
     },
     "control_tag:0x76657274": {
       "instance_count": 2,
@@ -179859,7 +183943,7 @@
       "windows_header": true
     },
     "mac_class:TCzechBox": {
-      "instance_count": 2,
+      "instance_count": 29,
       "kind": "mac_class",
       "name": "TCzechBox",
       "windows_header": true
@@ -180351,7 +184435,7 @@
       "windows_header": true
     },
     "mac_class:TRadioPictureButton": {
-      "instance_count": 49,
+      "instance_count": 112,
       "kind": "mac_class",
       "name": "TRadioPictureButton",
       "windows_header": true
@@ -180676,6 +184760,10 @@
     },
     "windows_event:0x03ba": {
       "event": "0x03ba",
+      "kind": "windows_event"
+    },
+    "windows_event:0x03c0": {
+      "event": "0x03c0",
       "kind": "windows_event"
     },
     "windows_event:0x03c5": {
@@ -181543,41 +185631,41 @@
   },
   "summary": {
     "dangling_by_relation": {
-      "references_picture": 203,
+      "references_picture": 286,
       "references_string": 9,
       "references_text_style": 11
     },
-    "dangling_explained": 223,
+    "dangling_explained": 306,
     "dangling_unexplained": 0,
     "edge_relations": {
-      "builds_view": 84,
-      "contains_child_node": 3052,
-      "contains_view_node": 3173,
-      "handles_event": 85,
-      "has_control_tag": 3173,
-      "instantiates_mac_class": 3173,
-      "references_picture": 819,
+      "builds_view": 85,
+      "contains_child_node": 3142,
+      "contains_view_node": 3263,
+      "handles_event": 86,
+      "has_control_tag": 3263,
+      "instantiates_mac_class": 3263,
+      "references_picture": 909,
       "references_string": 1441,
       "references_text_style": 58,
       "resolves_control_tag": 203
     },
-    "edges": 15261,
+    "edges": 15713,
     "mac_classes_without_windows_header": 18,
     "node_kinds": {
-      "control_tag": 747,
+      "control_tag": 813,
       "mac_class": 162,
       "pict": 2297,
       "str_entry": 3821,
       "txst": 316,
       "view": 121,
-      "view_node": 3173,
-      "windows_event": 85,
+      "view_node": 3263,
+      "windows_event": 86,
       "windows_factory": 17,
       "windows_function": 88
     },
-    "nodes": 10827,
+    "nodes": 10984,
     "unreferenced_resources": {
-      "pict": 1999,
+      "pict": 1998,
       "str_entry": 3623,
       "txst": 301
     }
@@ -182273,7 +186361,6 @@
       "MapView.rsrc:PICT:1514",
       "MapView.rsrc:PICT:1517",
       "MapView.rsrc:PICT:1518",
-      "MapView.rsrc:PICT:1519",
       "MapView.rsrc:PICT:1521",
       "MapView.rsrc:PICT:1522",
       "MapView.rsrc:PICT:1523",

@@ -6317,6 +6317,13 @@
     "0x004538a0": {
       "references": [
         {
+          "event": 960,
+          "kind": "generated_mac_resource",
+          "mac_string": "Startup.rsrc:STR#:1300:6",
+          "resource": "Startup.rsrc:960",
+          "text": "Save\r\rLoad\r\rExit"
+        },
+        {
           "event": 965,
           "kind": "generated_mac_resource",
           "mac_string": "Startup.rsrc:STR#:1300:4",

@@ -17,8 +17,8 @@ class UiPlatformDiffTests(unittest.TestCase):
     def test_report_covers_every_generated_case_and_node(self) -> None:
         self.assertEqual(self.errors, [])
         self.assertEqual(self.report["summary"]["functions"], 17)
-        self.assertEqual(self.report["summary"]["cases"], 85)
-        self.assertEqual(self.report["summary"]["nodes"], 1778)
+        self.assertEqual(self.report["summary"]["cases"], 86)
+        self.assertEqual(self.report["summary"]["nodes"], 1821)
         self.assertEqual(self.report["summary"]["unexplained_deltas"], 0)
 
     def test_declared_toolbar_class_substitution_is_explicit(self) -> None:

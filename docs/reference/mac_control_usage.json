@@ -518,6 +518,7 @@
       "child_classes": {
         "TCluster": 27,
         "TColorKeyPicture": 1,
+        "TCzechBox": 19,
         "TDeluxeText": 2,
         "TDropShadowNumberText": 1,
         "TDropShadowText": 4,
@@ -529,7 +530,7 @@
         "TOverlayRadioButton": 8,
         "TPicture": 18,
         "TPictureButton": 5,
-        "TRadioPictureButton": 46,
+        "TRadioPictureButton": 85,
         "TRadioTextCluster": 2,
         "TStaticText": 129,
         "TUberCluster": 1,
@@ -1076,21 +1077,82 @@
     "TCzechBox": {
       "child_classes": {},
       "declared_instance_count": 2,
-      "instance_count": 2,
+      "instance_count": 29,
       "nodes": [
         "Linger.rsrc:4150@0x00bf",
-        "Linger.rsrc:4150@0x0128"
+        "Linger.rsrc:4150@0x0128",
+        "Linger.rsrc:900@0x0138",
+        "Linger.rsrc:900@0x019b",
+        "Linger.rsrc:900@0x0260",
+        "Linger.rsrc:900@0x02c3",
+        "Linger.rsrc:900@0x0326",
+        "Linger.rsrc:900@0x0389",
+        "Linger.rsrc:900@0x044e",
+        "Linger.rsrc:900@0x04b1",
+        "Linger.rsrc:900@0x0576",
+        "Linger.rsrc:900@0x05d9",
+        "Linger.rsrc:900@0x063c",
+        "Linger.rsrc:900@0x069f",
+        "Linger.rsrc:900@0x0702",
+        "Linger.rsrc:900@0x0765",
+        "Linger.rsrc:900@0x082a",
+        "Linger.rsrc:900@0x088d",
+        "Linger.rsrc:901@0x038d",
+        "Linger.rsrc:901@0x055e",
+        "Linger.rsrc:901@0x0847",
+        "Startup.rsrc:951@0x12ef",
+        "Startup.rsrc:951@0x1352",
+        "Startup.rsrc:960@0x084a",
+        "Startup.rsrc:960@0x08ad",
+        "Startup.rsrc:960@0x0910",
+        "Startup.rsrc:960@0x0973",
+        "Startup.rsrc:960@0x09d6",
+        "Startup.rsrc:960@0x0a39"
       ],
       "original_modules": [],
       "parent_classes": {
-        "TGamePreferencesPicture": 2
+        "TCluster": 19,
+        "TGamePreferencesPicture": 2,
+        "TMapEditCluster": 6,
+        "TWindow": 2
       },
       "screens": [
-        "Linger.rsrc:4150"
+        "Linger.rsrc:4150",
+        "Linger.rsrc:900",
+        "Linger.rsrc:901",
+        "Startup.rsrc:951",
+        "Startup.rsrc:960"
       ],
       "tags": {
+        "curs": 1,
+        "edit": 1,
+        "evnt": 1,
+        "exi0": 1,
+        "exi1": 1,
+        "exi2": 1,
+        "exi3": 1,
+        "exi4": 1,
+        "exi5": 1,
+        "focu": 1,
+        "help": 1,
+        "ints": 1,
+        "invl": 1,
+        "macd": 1,
+        "memb": 1,
+        "menu": 1,
+        "mout": 1,
+        "mrcd": 1,
+        "mult": 1,
         "optc": 1,
-        "optd": 1
+        "optd": 1,
+        "prnt": 1,
+        "rsrc": 1,
+        "segl": 1,
+        "segu": 1,
+        "slee": 1,
+        "usr1": 1,
+        "usr2": 1,
+        "usr3": 1
       }
     },
     "TDealBookPicture": {
@@ -2565,8 +2627,10 @@
     },
     "TMapEditCluster": {
       "child_classes": {
+        "TCzechBox": 6,
         "TNumberText": 1,
         "TPicture": 3,
+        "TRadioPictureButton": 24,
         "TStaticText": 2
       },
       "declared_instance_count": 1,
@@ -5126,7 +5190,7 @@
     "TRadioPictureButton": {
       "child_classes": {},
       "declared_instance_count": 49,
-      "instance_count": 49,
+      "instance_count": 112,
       "nodes": [
         "Armory.rsrc:9208@0x05fa",
         "Armory.rsrc:9208@0x088f",
@@ -5163,13 +5227,76 @@
         "Diplo.rsrc:2008@0x0f4b",
         "Diplo.rsrc:2008@0x0fbe",
         "Diplo.rsrc:2008@0x1031",
+        "Linger.rsrc:8155@0x1221",
+        "Linger.rsrc:8155@0x1284",
+        "Linger.rsrc:8155@0x12e7",
+        "Linger.rsrc:8155@0x13ac",
+        "Linger.rsrc:8155@0x140f",
+        "Linger.rsrc:8155@0x1472",
+        "Linger.rsrc:8155@0x276f",
+        "Linger.rsrc:8155@0x27d2",
+        "Linger.rsrc:8155@0x2835",
+        "Linger.rsrc:8155@0x28fa",
+        "Linger.rsrc:8155@0x295d",
+        "Linger.rsrc:8155@0x29c0",
         "MapView.rsrc:2013@0x0d21",
         "MapView.rsrc:2013@0x0d94",
         "MapView.rsrc:2013@0x0e07",
+        "MapView.rsrc:9470@0x0397",
+        "MapView.rsrc:9470@0x03fa",
+        "MapView.rsrc:9470@0x045d",
+        "MapView.rsrc:9470@0x04c0",
+        "MapView.rsrc:9470@0x0523",
+        "MapView.rsrc:9470@0x0586",
+        "MapView.rsrc:9470@0x05e9",
+        "MapView.rsrc:9470@0x064c",
+        "MapView.rsrc:9470@0x06af",
+        "MapView.rsrc:9470@0x07d6",
+        "MapView.rsrc:9470@0x0839",
+        "MapView.rsrc:9470@0x089c",
+        "MapView.rsrc:9470@0x08ff",
+        "MapView.rsrc:9470@0x0962",
+        "MapView.rsrc:9470@0x09c5",
+        "MapView.rsrc:9470@0x0a28",
+        "MapView.rsrc:9476@0x01a8",
+        "MapView.rsrc:9476@0x020b",
+        "MapView.rsrc:9476@0x026e",
+        "MapView.rsrc:9476@0x02d1",
+        "MapView.rsrc:9476@0x0334",
+        "MapView.rsrc:9476@0x0397",
+        "MapView.rsrc:9476@0x03fa",
+        "MapView.rsrc:9476@0x045d",
+        "MapView.rsrc:9476@0x04c0",
         "Startup.rsrc:1506@0x03f9",
         "Startup.rsrc:1506@0x046c",
         "Startup.rsrc:1506@0x04df",
         "Startup.rsrc:1506@0x0552",
+        "Startup.rsrc:960@0x01cf",
+        "Startup.rsrc:960@0x0232",
+        "Startup.rsrc:960@0x0295",
+        "Startup.rsrc:960@0x02f8",
+        "Startup.rsrc:960@0x035b",
+        "Startup.rsrc:960@0x03be",
+        "Startup.rsrc:960@0x0421",
+        "Startup.rsrc:960@0x0484",
+        "Startup.rsrc:960@0x04e7",
+        "Startup.rsrc:960@0x06c1",
+        "Startup.rsrc:960@0x0a9c",
+        "Startup.rsrc:960@0x0aff",
+        "Startup.rsrc:960@0x0b62",
+        "Startup.rsrc:960@0x0bc5",
+        "Startup.rsrc:960@0x0c28",
+        "Startup.rsrc:960@0x0c8b",
+        "Startup.rsrc:960@0x0cee",
+        "Startup.rsrc:960@0x0d51",
+        "Startup.rsrc:960@0x0db4",
+        "Startup.rsrc:960@0x0e17",
+        "Startup.rsrc:960@0x0e7a",
+        "Startup.rsrc:960@0x0edd",
+        "Startup.rsrc:960@0x0f40",
+        "Startup.rsrc:960@0x0fa3",
+        "Startup.rsrc:965@0x03d8",
+        "Startup.rsrc:965@0x043b",
         "Univ.rsrc:9210@0x09b8",
         "Univ.rsrc:9210@0x0a2b",
         "Univ.rsrc:9210@0x0cf6",
@@ -5180,20 +5307,27 @@
       ],
       "original_modules": [],
       "parent_classes": {
-        "TCluster": 46,
+        "TCluster": 85,
+        "TMapEditCluster": 24,
         "TNavyToolbarCluster": 3
       },
       "screens": [
         "Armory.rsrc:9208",
         "Diplo.rsrc:2008",
+        "Linger.rsrc:8155",
         "MapView.rsrc:2013",
+        "MapView.rsrc:9470",
+        "MapView.rsrc:9476",
         "Startup.rsrc:1506",
+        "Startup.rsrc:960",
+        "Startup.rsrc:965",
         "Univ.rsrc:9210"
       ],
       "tags": {
         "agr0": 1,
         "agr1": 1,
         "agr2": 1,
+        "city": 1,
         "civ0": 2,
         "civ1": 2,
         "civ2": 2,
@@ -5212,14 +5346,32 @@
         "doc6": 1,
         "doc7": 1,
         "link": 1,
+        "min0": 1,
+        "min1": 1,
+        "min2": 1,
+        "min3": 1,
+        "min4": 1,
+        "opt1": 4,
+        "opt2": 4,
+        "opt3": 4,
         "ovr0": 1,
         "ovr1": 1,
         "ovr2": 1,
         "ovr4": 1,
+        "own0": 1,
+        "own1": 1,
+        "own2": 1,
+        "own3": 1,
+        "own4": 1,
+        "own5": 1,
+        "own6": 1,
+        "prov": 1,
         "rad0": 1,
         "rad1": 1,
         "rad2": 1,
         "rad3": 1,
+        "rail": 1,
+        "rive": 1,
         "scr0": 1,
         "scr1": 1,
         "scr2": 1,
@@ -5227,13 +5379,39 @@
         "scr4": 1,
         "scr5": 1,
         "scr6": 1,
+        "seat": 1,
+        "tera": 1,
+        "terb": 1,
+        "terc": 1,
+        "terd": 1,
+        "tere": 1,
+        "terf": 1,
+        "terg": 1,
+        "terh": 1,
+        "teri": 1,
+        "terj": 1,
+        "terk": 1,
+        "terl": 1,
+        "term": 1,
+        "tern": 1,
+        "terp": 1,
+        "town": 1,
         "traa": 1,
         "trab": 1,
         "trac": 1,
         "trad": 1,
         "trae": 1,
         "traf": 1,
-        "trag": 1
+        "trag": 1,
+        "typ0": 2,
+        "typ1": 2,
+        "typ2": 2,
+        "typ3": 2,
+        "typ4": 2,
+        "typ5": 2,
+        "typ6": 2,
+        "typ7": 2,
+        "typ8": 2
       }
     },
     "TRadioText": {
@@ -8081,6 +8259,7 @@
         "TCivReport": 1,
         "TCluster": 111,
         "TCombatReportView": 1,
+        "TCzechBox": 2,
         "TDebugFlagsView": 1,
         "TEngineerDialog": 1,
         "TFlagOptionsPicture": 1,
@@ -8418,11 +8597,13 @@
             "TMapUberPicture"
           ],
           "events": [
-            "0x03b8"
+            "0x03b8",
+            "0x03c0"
           ],
           "module": "USuperMap.cpp",
           "resources": [
-            "Startup.rsrc:952"
+            "Startup.rsrc:952",
+            "Startup.rsrc:960"
           ],
           "status": "candidate"
         }
@@ -8497,12 +8678,6 @@
       "depth": 0,
       "enabled": 1,
       "family": {
-        "content_insets": [
-          1330093578,
-          79101951,
-          196611,
-          1936941682
-        ],
         "content_tag": "DLOG",
         "content_tag_value": 1145851719,
         "frame_style": 524305484,
@@ -11706,12 +11881,6 @@
       "depth": 0,
       "enabled": 1,
       "family": {
-        "content_insets": [
-          1330101770,
-          79101951,
-          196611,
-          1936941682
-        ],
         "content_tag": "DLOG",
         "content_tag_value": 1145851719,
         "frame_style": 524305484,
@@ -12383,12 +12552,6 @@
       "depth": 0,
       "enabled": 1,
       "family": {
-        "content_insets": [
-          1330101770,
-          79101951,
-          196611,
-          1936941682
-        ],
         "content_tag": "DLOG",
         "content_tag_value": 1145851719,
         "frame_style": 524305484,
@@ -12972,12 +13135,6 @@
       "depth": 0,
       "enabled": 1,
       "family": {
-        "content_insets": [
-          1330101770,
-          79101951,
-          196611,
-          1936941682
-        ],
         "content_tag": "DLOG",
         "content_tag_value": 1145851719,
         "frame_style": 524305484,
@@ -13605,12 +13762,6 @@
       "depth": 0,
       "enabled": 1,
       "family": {
-        "content_insets": [
-          1330101770,
-          79101951,
-          196611,
-          1936941682
-        ],
         "content_tag": "DLOG",
         "content_tag_value": 1145851719,
         "frame_style": 524305484,
@@ -14446,12 +14597,6 @@
       "depth": 0,
       "enabled": 1,
       "family": {
-        "content_insets": [
-          1330101770,
-          79101951,
-          196611,
-          1936941682
-        ],
         "content_tag": "DLOG",
         "content_tag_value": 1145851719,
         "frame_style": 524305484,
@@ -15287,12 +15432,6 @@
       "depth": 0,
       "enabled": 1,
       "family": {
-        "content_insets": [
-          1330101770,
-          79101951,
-          196611,
-          1936941682
-        ],
         "content_tag": "DLOG",
         "content_tag_value": 1145851719,
         "frame_style": 524305484,
@@ -15876,12 +16015,6 @@
       "depth": 0,
       "enabled": 1,
       "family": {
-        "content_insets": [
-          1330101770,
-          79101951,
-          196611,
-          1936941682
-        ],
         "content_tag": "DLOG",
         "content_tag_value": 1145851719,
         "frame_style": 524305484,
@@ -16465,12 +16598,6 @@
       "depth": 0,
       "enabled": 1,
       "family": {
-        "content_insets": [
-          1330101770,
-          79101951,
-          196611,
-          1936941682
-        ],
         "content_tag": "DLOG",
         "content_tag_value": 1145851719,
         "frame_style": 524305484,
@@ -17532,12 +17659,6 @@
       "depth": 0,
       "enabled": 1,
       "family": {
-        "content_insets": [
-          1330101770,
-          79101951,
-          196611,
-          1936941682
-        ],
         "content_tag": "DLOG",
         "content_tag_value": 1145851719,
         "frame_style": 524305484,
@@ -17951,12 +18072,6 @@
       "depth": 0,
       "enabled": 1,
       "family": {
-        "content_insets": [
-          1330101770,
-          79101951,
-          196611,
-          1936941682
-        ],
         "content_tag": "DLOG",
         "content_tag_value": 1145851719,
         "frame_style": 524305484,
@@ -19752,12 +19867,6 @@
       "depth": 0,
       "enabled": 1,
       "family": {
-        "content_insets": [
-          1330101770,
-          79101951,
-          196611,
-          1936941682
-        ],
         "content_tag": "DLOG",
         "content_tag_value": 1145851719,
         "frame_style": 524305484,
@@ -20259,12 +20368,6 @@
       "depth": 0,
       "enabled": 1,
       "family": {
-        "content_insets": [
-          1330101770,
-          79101951,
-          196611,
-          1936941682
-        ],
         "content_tag": "DLOG",
         "content_tag_value": 1145851719,
         "frame_style": 524305484,
@@ -20854,12 +20957,6 @@
       "depth": 0,
       "enabled": 1,
       "family": {
-        "content_insets": [
-          1330060802,
-          79101951,
-          196611,
-          1936941682
-        ],
         "content_tag": "DLOG",
         "content_tag_value": 1145851719,
         "frame_style": 148556,
@@ -21378,12 +21475,6 @@
       "depth": 0,
       "enabled": 1,
       "family": {
-        "content_insets": [
-          1330060802,
-          79101951,
-          196611,
-          1936941682
-        ],
         "content_tag": "DLOG",
         "content_tag_value": 1145851719,
         "frame_style": 148556,
@@ -22800,12 +22891,6 @@
       "depth": 2,
       "enabled": 1,
       "family": {
-        "content_insets": [
-          120,
-          2147418112,
-          0,
-          0
-        ],
         "frame_style": 16842753,
         "offset": 2969,
         "size": 37,
@@ -22974,12 +23059,6 @@
       "depth": 3,
       "enabled": 1,
       "family": {
-        "content_insets": [
-          120,
-          2147418112,
-          0,
-          0
-        ],
         "frame_style": 16842753,
         "offset": 426,
         "size": 37,
@@ -25725,12 +25804,6 @@
       "depth": 4,
       "enabled": 1,
       "family": {
-        "content_insets": [
-          120,
-          2147418112,
-          0,
-          0
-        ],
         "frame_style": 16842753,
         "offset": 4560,
         "size": 37,
@@ -25898,12 +25971,6 @@
       "depth": 4,
       "enabled": 1,
       "family": {
-        "content_insets": [
-          120,
-          2147418112,
-          0,
-          0
-        ],
         "frame_style": 16842753,
         "offset": 5047,
         "size": 37,
@@ -26629,12 +26696,6 @@
       "depth": 2,
       "enabled": 1,
       "family": {
-        "content_insets": [
-          120,
-          2147418112,
-          0,
-          0
-        ],
         "frame_style": 16842753,
         "offset": 7025,
         "size": 37,
@@ -27843,12 +27904,6 @@
       "depth": 2,
       "enabled": 1,
       "family": {
-        "content_insets": [
-          120,
-          2147418112,
-          0,
-          0
-        ],
         "frame_style": 16842753,
         "offset": 2685,
         "size": 37,
@@ -28737,12 +28792,6 @@
       "depth": 2,
       "enabled": 1,
       "family": {
-        "content_insets": [
-          120,
-          2147418112,
-          0,
-          0
-        ],
         "frame_style": 16842753,
         "offset": 1518,
         "size": 37,
@@ -30486,12 +30535,6 @@
       "depth": 2,
       "enabled": 1,
       "family": {
-        "content_insets": [
-          120,
-          2147418112,
-          0,
-          0
-        ],
         "frame_style": 16842753,
         "offset": 3575,
         "size": 37,
@@ -31447,12 +31490,6 @@
       "depth": 1,
       "enabled": 1,
       "family": {
-        "content_insets": [
-          120,
-          2147418112,
-          0,
-          0
-        ],
         "frame_style": 16842753,
         "offset": 2121,
         "size": 37,
@@ -32000,12 +32037,6 @@
       "depth": 0,
       "enabled": 1,
       "family": {
-        "content_insets": [
-          807460354,
-          98369537,
-          327683,
-          1936941682
-        ],
         "content_tag": "rs0 ",
         "content_tag_value": 1920151584,
         "frame_style": 553587,
@@ -43260,12 +43291,6 @@
       "depth": 0,
       "enabled": 1,
       "family": {
-        "content_insets": [
-          1330059442,
-          66125825,
-          196611,
-          1936941682
-        ],
         "content_tag": "DLOG",
         "content_tag_value": 1145851719,
         "frame_style": 279628,
@@ -46732,12 +46757,6 @@
       "depth": 0,
       "enabled": 1,
       "family": {
-        "content_insets": [
-          1330077234,
-          98369538,
-          196611,
-          1936941682
-        ],
         "content_tag": "DLOG",
         "content_tag_value": 1145851719,
         "frame_style": 345164,
@@ -54481,12 +54500,6 @@
       "depth": 0,
       "enabled": 1,
       "family": {
-        "content_insets": [
-          807460354,
-          79036421,
-          196611,
-          1936941682
-        ],
         "content_tag": "rs0 ",
         "content_tag_value": 1920151584,
         "frame_style": 553587,
@@ -62619,12 +62632,6 @@
       "depth": 0,
       "enabled": 1,
       "family": {
-        "content_insets": [
-          807460354,
-          79036422,
-          196611,
-          1936941682
-        ],
         "content_tag": "rs0 ",
         "content_tag_value": 1920151584,
         "frame_style": 553587,
@@ -75876,12 +75883,6 @@
       "depth": 0,
       "enabled": 1,
       "family": {
-        "content_insets": [
-          1330077234,
-          67108865,
-          196611,
-          1936941682
-        ],
         "content_tag": "DLOG",
         "content_tag_value": 1145851719,
         "frame_style": 345164,
@@ -83645,12 +83646,6 @@
       "depth": 0,
       "enabled": 1,
       "family": {
-        "content_insets": [
-          1330059442,
-          67174401,
-          262147,
-          1936941682
-        ],
         "content_tag": "DLOG",
         "content_tag_value": 1145851719,
         "frame_style": 345164,
@@ -87142,12 +87137,6 @@
       "depth": 0,
       "enabled": 1,
       "family": {
-        "content_insets": [
-          1830821426,
-          65798147,
-          196611,
-          1936941682
-        ],
         "content_tag": "num ",
         "content_tag_value": 1853189408,
         "frame_style": 290421,
@@ -87282,12 +87271,6 @@
       "depth": 0,
       "enabled": 1,
       "family": {
-        "content_insets": [
-          1330075698,
-          65667074,
-          196611,
-          1936941682
-        ],
         "content_tag": "DLOG",
         "content_tag_value": 1145851719,
         "frame_style": 17484,
@@ -87370,12 +87353,6 @@
       "depth": 0,
       "enabled": 1,
       "family": {
-        "content_insets": [
-          1330108474,
-          65667075,
-          196611,
-          1936941682
-        ],
         "content_tag": "DLOG",
         "content_tag_value": 1145851719,
         "frame_style": 17484,
@@ -87484,12 +87461,6 @@
       "depth": 0,
       "enabled": 1,
       "family": {
-        "content_insets": [
-          1852102730,
-          1,
-          196611,
-          1935897196
-        ],
         "content_tag": "wind",
         "content_tag_value": 2003398244,
         "frame_style": 554857,
@@ -87906,12 +87877,6 @@
       "depth": 2,
       "enabled": 1,
       "family": {
-        "content_insets": [
-          120,
-          2147418112,
-          0,
-          0
-        ],
         "frame_style": 16777473,
         "offset": 1427,
         "size": 37,
@@ -88744,12 +88709,6 @@
       "depth": 2,
       "enabled": 1,
       "family": {
-        "content_insets": [
-          120,
-          2147418112,
-          0,
-          0
-        ],
         "frame_style": 16842753,
         "offset": 1818,
         "size": 37,
@@ -88893,12 +88852,6 @@
       "depth": 0,
       "enabled": 1,
       "family": {
-        "content_insets": [
-          1330075698,
-          65667073,
-          196611,
-          1936941682
-        ],
         "content_tag": "DLOG",
         "content_tag_value": 1145851719,
         "frame_style": 279628,
@@ -89232,12 +89185,6 @@
       "depth": 2,
       "enabled": 1,
       "family": {
-        "content_insets": [
-          120,
-          2147418112,
-          0,
-          0
-        ],
         "frame_style": 16842753,
         "offset": 772,
         "size": 37,
@@ -89909,12 +89856,6 @@
       "depth": 0,
       "enabled": 1,
       "family": {
-        "content_insets": [
-          120,
-          2147418112,
-          0,
-          0
-        ],
         "frame_style": 257,
         "offset": 124,
         "size": 37,
@@ -90701,12 +90642,6 @@
       "depth": 2,
       "enabled": 1,
       "family": {
-        "content_insets": [
-          120,
-          2147418112,
-          0,
-          0
-        ],
         "frame_style": 16842753,
         "offset": 379,
         "size": 37,
@@ -93235,12 +93170,6 @@
       "depth": 2,
       "enabled": 1,
       "family": {
-        "content_insets": [
-          120,
-          16711680,
-          0,
-          0
-        ],
         "frame_style": 16842753,
         "offset": 1066,
         "size": 37,
@@ -93284,12 +93213,6 @@
       "depth": 2,
       "enabled": 1,
       "family": {
-        "content_insets": [
-          120,
-          16711680,
-          0,
-          0
-        ],
         "frame_style": 16842753,
         "offset": 1223,
         "size": 37,
@@ -93333,12 +93256,6 @@
       "depth": 2,
       "enabled": 1,
       "family": {
-        "content_insets": [
-          120,
-          16711680,
-          0,
-          0
-        ],
         "frame_style": 16842753,
         "offset": 1380,
         "size": 37,
@@ -93382,12 +93299,6 @@
       "depth": 2,
       "enabled": 1,
       "family": {
-        "content_insets": [
-          120,
-          16711680,
-          0,
-          0
-        ],
         "frame_style": 16842753,
         "offset": 1537,
         "size": 37,
@@ -93431,12 +93342,6 @@
       "depth": 2,
       "enabled": 1,
       "family": {
-        "content_insets": [
-          120,
-          16711680,
-          0,
-          0
-        ],
         "frame_style": 16842753,
         "offset": 1694,
         "size": 37,
@@ -93611,12 +93516,6 @@
       "depth": 2,
       "enabled": 0,
       "family": {
-        "content_insets": [
-          120,
-          16711680,
-          0,
-          0
-        ],
         "frame_style": 16842753,
         "offset": 2190,
         "size": 37,
@@ -93744,12 +93643,6 @@
       "depth": 2,
       "enabled": 1,
       "family": {
-        "content_insets": [
-          120,
-          2147418112,
-          0,
-          0
-        ],
         "frame_style": 16842753,
         "offset": 2571,
         "size": 37,
@@ -93871,12 +93764,6 @@
       "depth": 2,
       "enabled": 1,
       "family": {
-        "content_insets": [
-          120,
-          268435456,
-          0,
-          0
-        ],
         "frame_style": 16842753,
         "offset": 301,
         "size": 37,
@@ -93920,12 +93807,6 @@
       "depth": 2,
       "enabled": 1,
       "family": {
-        "content_insets": [
-          120,
-          268435456,
-          0,
-          0
-        ],
         "frame_style": 16842753,
         "offset": 458,
         "size": 37,
@@ -94142,12 +94023,6 @@
       "depth": 2,
       "enabled": 1,
       "family": {
-        "content_insets": [
-          120,
-          2147418112,
-          0,
-          0
-        ],
         "frame_style": 16842753,
         "offset": 524,
         "size": 37,
@@ -94797,12 +94672,6 @@
       "depth": 0,
       "enabled": 1,
       "family": {
-        "content_insets": [
-          1330093706,
-          79036419,
-          196611,
-          1936941682
-        ],
         "content_tag": "DLOG",
         "content_tag_value": 1145851719,
         "frame_style": 279628,
@@ -96097,7 +95966,11 @@
     },
     {
       "child_hit_test": 1,
-      "children": [],
+      "children": [
+        "Linger.rsrc:8155@0x1221",
+        "Linger.rsrc:8155@0x1284",
+        "Linger.rsrc:8155@0x12e7"
+      ],
       "class": "TCluster",
       "class_source": "type_family",
       "control_value": 0,
@@ -96116,7 +95989,7 @@
         "frame_style": 5,
         "offset": 4603,
         "serialized_child_count": 3,
-        "size": 333
+        "size": 38
       },
       "geometry": {
         "height": 77,
@@ -96140,6 +96013,142 @@
     {
       "child_hit_test": 1,
       "children": [],
+      "class": "TRadioPictureButton",
+      "class_source": "type_family",
+      "control_value": 10,
+      "declared_class": "",
+      "depth": 3,
+      "enabled": 1,
+      "family": {
+        "content_insets": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "control_state": 0,
+        "control_tail_hex": "0000",
+        "control_value": 10,
+        "frame_style": 12,
+        "offset": 4701,
+        "picture_id": 1000,
+        "secondary_picture_id": 1300,
+        "size": 37
+      },
+      "geometry": {
+        "height": 16,
+        "width": 80,
+        "x": 8,
+        "y": 18
+      },
+      "id": "Linger.rsrc:8155@0x1221",
+      "input_gate": 1,
+      "offset": 4641,
+      "parent": "Linger.rsrc:8155@0x11bf",
+      "parent_class": "TCluster",
+      "parent_tag": "tact",
+      "screen": "Linger.rsrc:8155",
+      "screen_name": "test - Naval Battle",
+      "state": 1,
+      "tag": "opt1",
+      "tag_value": 1869640753,
+      "type_code": "radb"
+    },
+    {
+      "child_hit_test": 1,
+      "children": [],
+      "class": "TRadioPictureButton",
+      "class_source": "type_family",
+      "control_value": 11,
+      "declared_class": "",
+      "depth": 3,
+      "enabled": 1,
+      "family": {
+        "content_insets": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "control_state": 0,
+        "control_tail_hex": "0000",
+        "control_value": 11,
+        "frame_style": 12,
+        "offset": 4800,
+        "picture_id": 1000,
+        "secondary_picture_id": 1300,
+        "size": 37
+      },
+      "geometry": {
+        "height": 16,
+        "width": 80,
+        "x": 8,
+        "y": 37
+      },
+      "id": "Linger.rsrc:8155@0x1284",
+      "input_gate": 1,
+      "offset": 4740,
+      "parent": "Linger.rsrc:8155@0x11bf",
+      "parent_class": "TCluster",
+      "parent_tag": "tact",
+      "screen": "Linger.rsrc:8155",
+      "screen_name": "test - Naval Battle",
+      "state": 1,
+      "tag": "opt2",
+      "tag_value": 1869640754,
+      "type_code": "radb"
+    },
+    {
+      "child_hit_test": 1,
+      "children": [],
+      "class": "TRadioPictureButton",
+      "class_source": "type_family",
+      "control_value": 12,
+      "declared_class": "",
+      "depth": 3,
+      "enabled": 1,
+      "family": {
+        "content_insets": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "control_state": 1,
+        "control_tail_hex": "0000",
+        "control_value": 12,
+        "frame_style": 12,
+        "offset": 4899,
+        "picture_id": 1000,
+        "secondary_picture_id": 1300,
+        "size": 37
+      },
+      "geometry": {
+        "height": 16,
+        "width": 80,
+        "x": 8,
+        "y": 55
+      },
+      "id": "Linger.rsrc:8155@0x12e7",
+      "input_gate": 1,
+      "offset": 4839,
+      "parent": "Linger.rsrc:8155@0x11bf",
+      "parent_class": "TCluster",
+      "parent_tag": "tact",
+      "screen": "Linger.rsrc:8155",
+      "screen_name": "test - Naval Battle",
+      "state": 1,
+      "tag": "opt3",
+      "tag_value": 1869640755,
+      "type_code": "radb"
+    },
+    {
+      "child_hit_test": 1,
+      "children": [
+        "Linger.rsrc:8155@0x13ac",
+        "Linger.rsrc:8155@0x140f",
+        "Linger.rsrc:8155@0x1472"
+      ],
       "class": "TCluster",
       "class_source": "type_family",
       "control_value": 0,
@@ -96158,7 +96167,7 @@
         "frame_style": 5,
         "offset": 4998,
         "serialized_child_count": 3,
-        "size": 333
+        "size": 38
       },
       "geometry": {
         "height": 77,
@@ -96178,6 +96187,138 @@
       "tag": "targ",
       "tag_value": 1952543335,
       "type_code": "clus"
+    },
+    {
+      "child_hit_test": 1,
+      "children": [],
+      "class": "TRadioPictureButton",
+      "class_source": "type_family",
+      "control_value": 14,
+      "declared_class": "",
+      "depth": 3,
+      "enabled": 1,
+      "family": {
+        "content_insets": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "control_state": 0,
+        "control_tail_hex": "0000",
+        "control_value": 14,
+        "frame_style": 12,
+        "offset": 5096,
+        "picture_id": 1000,
+        "secondary_picture_id": 1300,
+        "size": 37
+      },
+      "geometry": {
+        "height": 16,
+        "width": 80,
+        "x": 8,
+        "y": 18
+      },
+      "id": "Linger.rsrc:8155@0x13ac",
+      "input_gate": 1,
+      "offset": 5036,
+      "parent": "Linger.rsrc:8155@0x134a",
+      "parent_class": "TCluster",
+      "parent_tag": "targ",
+      "screen": "Linger.rsrc:8155",
+      "screen_name": "test - Naval Battle",
+      "state": 1,
+      "tag": "opt1",
+      "tag_value": 1869640753,
+      "type_code": "radb"
+    },
+    {
+      "child_hit_test": 1,
+      "children": [],
+      "class": "TRadioPictureButton",
+      "class_source": "type_family",
+      "control_value": 15,
+      "declared_class": "",
+      "depth": 3,
+      "enabled": 1,
+      "family": {
+        "content_insets": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "control_state": 0,
+        "control_tail_hex": "0000",
+        "control_value": 15,
+        "frame_style": 12,
+        "offset": 5195,
+        "picture_id": 1000,
+        "secondary_picture_id": 1300,
+        "size": 37
+      },
+      "geometry": {
+        "height": 16,
+        "width": 80,
+        "x": 8,
+        "y": 37
+      },
+      "id": "Linger.rsrc:8155@0x140f",
+      "input_gate": 1,
+      "offset": 5135,
+      "parent": "Linger.rsrc:8155@0x134a",
+      "parent_class": "TCluster",
+      "parent_tag": "targ",
+      "screen": "Linger.rsrc:8155",
+      "screen_name": "test - Naval Battle",
+      "state": 1,
+      "tag": "opt2",
+      "tag_value": 1869640754,
+      "type_code": "radb"
+    },
+    {
+      "child_hit_test": 1,
+      "children": [],
+      "class": "TRadioPictureButton",
+      "class_source": "type_family",
+      "control_value": 16,
+      "declared_class": "",
+      "depth": 3,
+      "enabled": 1,
+      "family": {
+        "content_insets": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "control_state": 1,
+        "control_tail_hex": "0000",
+        "control_value": 16,
+        "frame_style": 12,
+        "offset": 5294,
+        "picture_id": 1000,
+        "secondary_picture_id": 1300,
+        "size": 37
+      },
+      "geometry": {
+        "height": 16,
+        "width": 80,
+        "x": 8,
+        "y": 55
+      },
+      "id": "Linger.rsrc:8155@0x1472",
+      "input_gate": 1,
+      "offset": 5234,
+      "parent": "Linger.rsrc:8155@0x134a",
+      "parent_class": "TCluster",
+      "parent_tag": "targ",
+      "screen": "Linger.rsrc:8155",
+      "screen_name": "test - Naval Battle",
+      "state": 1,
+      "tag": "opt3",
+      "tag_value": 1869640755,
+      "type_code": "radb"
     },
     {
       "child_hit_test": 1,
@@ -97758,7 +97899,11 @@
     },
     {
       "child_hit_test": 1,
-      "children": [],
+      "children": [
+        "Linger.rsrc:8155@0x276f",
+        "Linger.rsrc:8155@0x27d2",
+        "Linger.rsrc:8155@0x2835"
+      ],
       "class": "TCluster",
       "class_source": "type_family",
       "control_value": 0,
@@ -97777,7 +97922,7 @@
         "frame_style": 5,
         "offset": 10057,
         "serialized_child_count": 3,
-        "size": 333
+        "size": 38
       },
       "geometry": {
         "height": 77,
@@ -97801,6 +97946,142 @@
     {
       "child_hit_test": 1,
       "children": [],
+      "class": "TRadioPictureButton",
+      "class_source": "type_family",
+      "control_value": 10,
+      "declared_class": "",
+      "depth": 3,
+      "enabled": 1,
+      "family": {
+        "content_insets": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "control_state": 0,
+        "control_tail_hex": "0000",
+        "control_value": 10,
+        "frame_style": 12,
+        "offset": 10155,
+        "picture_id": 1000,
+        "secondary_picture_id": 1300,
+        "size": 37
+      },
+      "geometry": {
+        "height": 16,
+        "width": 80,
+        "x": 8,
+        "y": 18
+      },
+      "id": "Linger.rsrc:8155@0x276f",
+      "input_gate": 1,
+      "offset": 10095,
+      "parent": "Linger.rsrc:8155@0x270d",
+      "parent_class": "TCluster",
+      "parent_tag": "tact",
+      "screen": "Linger.rsrc:8155",
+      "screen_name": "test - Naval Battle",
+      "state": 1,
+      "tag": "opt1",
+      "tag_value": 1869640753,
+      "type_code": "radb"
+    },
+    {
+      "child_hit_test": 1,
+      "children": [],
+      "class": "TRadioPictureButton",
+      "class_source": "type_family",
+      "control_value": 11,
+      "declared_class": "",
+      "depth": 3,
+      "enabled": 1,
+      "family": {
+        "content_insets": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "control_state": 0,
+        "control_tail_hex": "0000",
+        "control_value": 11,
+        "frame_style": 12,
+        "offset": 10254,
+        "picture_id": 1000,
+        "secondary_picture_id": 1300,
+        "size": 37
+      },
+      "geometry": {
+        "height": 16,
+        "width": 80,
+        "x": 8,
+        "y": 37
+      },
+      "id": "Linger.rsrc:8155@0x27d2",
+      "input_gate": 1,
+      "offset": 10194,
+      "parent": "Linger.rsrc:8155@0x270d",
+      "parent_class": "TCluster",
+      "parent_tag": "tact",
+      "screen": "Linger.rsrc:8155",
+      "screen_name": "test - Naval Battle",
+      "state": 1,
+      "tag": "opt2",
+      "tag_value": 1869640754,
+      "type_code": "radb"
+    },
+    {
+      "child_hit_test": 1,
+      "children": [],
+      "class": "TRadioPictureButton",
+      "class_source": "type_family",
+      "control_value": 12,
+      "declared_class": "",
+      "depth": 3,
+      "enabled": 1,
+      "family": {
+        "content_insets": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "control_state": 1,
+        "control_tail_hex": "0000",
+        "control_value": 12,
+        "frame_style": 12,
+        "offset": 10353,
+        "picture_id": 1000,
+        "secondary_picture_id": 1300,
+        "size": 37
+      },
+      "geometry": {
+        "height": 16,
+        "width": 80,
+        "x": 8,
+        "y": 55
+      },
+      "id": "Linger.rsrc:8155@0x2835",
+      "input_gate": 1,
+      "offset": 10293,
+      "parent": "Linger.rsrc:8155@0x270d",
+      "parent_class": "TCluster",
+      "parent_tag": "tact",
+      "screen": "Linger.rsrc:8155",
+      "screen_name": "test - Naval Battle",
+      "state": 1,
+      "tag": "opt3",
+      "tag_value": 1869640755,
+      "type_code": "radb"
+    },
+    {
+      "child_hit_test": 1,
+      "children": [
+        "Linger.rsrc:8155@0x28fa",
+        "Linger.rsrc:8155@0x295d",
+        "Linger.rsrc:8155@0x29c0"
+      ],
       "class": "TCluster",
       "class_source": "type_family",
       "control_value": 0,
@@ -97819,7 +98100,7 @@
         "frame_style": 5,
         "offset": 10452,
         "serialized_child_count": 3,
-        "size": 333
+        "size": 38
       },
       "geometry": {
         "height": 77,
@@ -97839,6 +98120,138 @@
       "tag": "targ",
       "tag_value": 1952543335,
       "type_code": "clus"
+    },
+    {
+      "child_hit_test": 1,
+      "children": [],
+      "class": "TRadioPictureButton",
+      "class_source": "type_family",
+      "control_value": 14,
+      "declared_class": "",
+      "depth": 3,
+      "enabled": 1,
+      "family": {
+        "content_insets": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "control_state": 0,
+        "control_tail_hex": "0000",
+        "control_value": 14,
+        "frame_style": 12,
+        "offset": 10550,
+        "picture_id": 1000,
+        "secondary_picture_id": 1300,
+        "size": 37
+      },
+      "geometry": {
+        "height": 16,
+        "width": 80,
+        "x": 8,
+        "y": 18
+      },
+      "id": "Linger.rsrc:8155@0x28fa",
+      "input_gate": 1,
+      "offset": 10490,
+      "parent": "Linger.rsrc:8155@0x2898",
+      "parent_class": "TCluster",
+      "parent_tag": "targ",
+      "screen": "Linger.rsrc:8155",
+      "screen_name": "test - Naval Battle",
+      "state": 1,
+      "tag": "opt1",
+      "tag_value": 1869640753,
+      "type_code": "radb"
+    },
+    {
+      "child_hit_test": 1,
+      "children": [],
+      "class": "TRadioPictureButton",
+      "class_source": "type_family",
+      "control_value": 15,
+      "declared_class": "",
+      "depth": 3,
+      "enabled": 1,
+      "family": {
+        "content_insets": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "control_state": 0,
+        "control_tail_hex": "0000",
+        "control_value": 15,
+        "frame_style": 12,
+        "offset": 10649,
+        "picture_id": 1000,
+        "secondary_picture_id": 1300,
+        "size": 37
+      },
+      "geometry": {
+        "height": 16,
+        "width": 80,
+        "x": 8,
+        "y": 37
+      },
+      "id": "Linger.rsrc:8155@0x295d",
+      "input_gate": 1,
+      "offset": 10589,
+      "parent": "Linger.rsrc:8155@0x2898",
+      "parent_class": "TCluster",
+      "parent_tag": "targ",
+      "screen": "Linger.rsrc:8155",
+      "screen_name": "test - Naval Battle",
+      "state": 1,
+      "tag": "opt2",
+      "tag_value": 1869640754,
+      "type_code": "radb"
+    },
+    {
+      "child_hit_test": 1,
+      "children": [],
+      "class": "TRadioPictureButton",
+      "class_source": "type_family",
+      "control_value": 16,
+      "declared_class": "",
+      "depth": 3,
+      "enabled": 1,
+      "family": {
+        "content_insets": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "control_state": 1,
+        "control_tail_hex": "0000",
+        "control_value": 16,
+        "frame_style": 12,
+        "offset": 10748,
+        "picture_id": 1000,
+        "secondary_picture_id": 1300,
+        "size": 37
+      },
+      "geometry": {
+        "height": 16,
+        "width": 80,
+        "x": 8,
+        "y": 55
+      },
+      "id": "Linger.rsrc:8155@0x29c0",
+      "input_gate": 1,
+      "offset": 10688,
+      "parent": "Linger.rsrc:8155@0x2898",
+      "parent_class": "TCluster",
+      "parent_tag": "targ",
+      "screen": "Linger.rsrc:8155",
+      "screen_name": "test - Naval Battle",
+      "state": 1,
+      "tag": "opt3",
+      "tag_value": 1869640755,
+      "type_code": "radb"
     },
     {
       "child_hit_test": 1,
@@ -98327,7 +98740,10 @@
     },
     {
       "child_hit_test": 1,
-      "children": [],
+      "children": [
+        "Linger.rsrc:900@0x0138",
+        "Linger.rsrc:900@0x019b"
+      ],
       "class": "TCluster",
       "class_source": "type_family",
       "control_value": 0,
@@ -98346,7 +98762,7 @@
         "frame_style": 5,
         "offset": 274,
         "serialized_child_count": 2,
-        "size": 234
+        "size": 38
       },
       "geometry": {
         "height": 56,
@@ -98370,6 +98786,99 @@
     {
       "child_hit_test": 1,
       "children": [],
+      "class": "TCzechBox",
+      "class_source": "type_family",
+      "control_value": 1,
+      "declared_class": "",
+      "depth": 3,
+      "enabled": 1,
+      "family": {
+        "content_insets": [
+          256,
+          0,
+          0,
+          0
+        ],
+        "control_state": 0,
+        "control_tail_hex": "0000",
+        "control_value": 1,
+        "frame_style": 4,
+        "offset": 372,
+        "picture_id": 801,
+        "secondary_picture_id": 802,
+        "size": 37
+      },
+      "geometry": {
+        "height": 16,
+        "width": 144,
+        "x": 16,
+        "y": 16
+      },
+      "id": "Linger.rsrc:900@0x0138",
+      "input_gate": 1,
+      "offset": 312,
+      "parent": "Linger.rsrc:900@0x00d6",
+      "parent_class": "TCluster",
+      "parent_tag": "VW02",
+      "screen": "Linger.rsrc:900",
+      "screen_name": "Debug Flags Window",
+      "state": 1,
+      "tag": "menu",
+      "tag_value": 1835363957,
+      "type_code": "chkb"
+    },
+    {
+      "child_hit_test": 1,
+      "children": [],
+      "class": "TCzechBox",
+      "class_source": "type_family",
+      "control_value": 2,
+      "declared_class": "",
+      "depth": 3,
+      "enabled": 1,
+      "family": {
+        "content_insets": [
+          256,
+          0,
+          0,
+          0
+        ],
+        "control_state": 0,
+        "control_tail_hex": "0000",
+        "control_value": 2,
+        "frame_style": 4,
+        "offset": 471,
+        "picture_id": 801,
+        "secondary_picture_id": 802,
+        "size": 37
+      },
+      "geometry": {
+        "height": 16,
+        "width": 96,
+        "x": 16,
+        "y": 32
+      },
+      "id": "Linger.rsrc:900@0x019b",
+      "input_gate": 1,
+      "offset": 411,
+      "parent": "Linger.rsrc:900@0x00d6",
+      "parent_class": "TCluster",
+      "parent_tag": "VW02",
+      "screen": "Linger.rsrc:900",
+      "screen_name": "Debug Flags Window",
+      "state": 1,
+      "tag": "evnt",
+      "tag_value": 1702260340,
+      "type_code": "chkb"
+    },
+    {
+      "child_hit_test": 1,
+      "children": [
+        "Linger.rsrc:900@0x0260",
+        "Linger.rsrc:900@0x02c3",
+        "Linger.rsrc:900@0x0326",
+        "Linger.rsrc:900@0x0389"
+      ],
       "class": "TCluster",
       "class_source": "type_family",
       "control_value": 0,
@@ -98388,7 +98897,7 @@
         "frame_style": 5,
         "offset": 570,
         "serialized_child_count": 4,
-        "size": 432
+        "size": 38
       },
       "geometry": {
         "height": 88,
@@ -98412,6 +98921,185 @@
     {
       "child_hit_test": 1,
       "children": [],
+      "class": "TCzechBox",
+      "class_source": "type_family",
+      "control_value": 3,
+      "declared_class": "",
+      "depth": 3,
+      "enabled": 1,
+      "family": {
+        "content_insets": [
+          256,
+          0,
+          0,
+          0
+        ],
+        "control_state": 0,
+        "control_tail_hex": "0000",
+        "control_value": 3,
+        "frame_style": 4,
+        "offset": 668,
+        "picture_id": 801,
+        "secondary_picture_id": 802,
+        "size": 37
+      },
+      "geometry": {
+        "height": 16,
+        "width": 96,
+        "x": 16,
+        "y": 16
+      },
+      "id": "Linger.rsrc:900@0x0260",
+      "input_gate": 1,
+      "offset": 608,
+      "parent": "Linger.rsrc:900@0x01fe",
+      "parent_class": "TCluster",
+      "parent_tag": "VW05",
+      "screen": "Linger.rsrc:900",
+      "screen_name": "Debug Flags Window",
+      "state": 1,
+      "tag": "curs",
+      "tag_value": 1668641395,
+      "type_code": "chkb"
+    },
+    {
+      "child_hit_test": 1,
+      "children": [],
+      "class": "TCzechBox",
+      "class_source": "type_family",
+      "control_value": 4,
+      "declared_class": "",
+      "depth": 3,
+      "enabled": 1,
+      "family": {
+        "content_insets": [
+          256,
+          0,
+          0,
+          0
+        ],
+        "control_state": 0,
+        "control_tail_hex": "0000",
+        "control_value": 4,
+        "frame_style": 4,
+        "offset": 767,
+        "picture_id": 801,
+        "secondary_picture_id": 802,
+        "size": 37
+      },
+      "geometry": {
+        "height": 16,
+        "width": 80,
+        "x": 16,
+        "y": 32
+      },
+      "id": "Linger.rsrc:900@0x02c3",
+      "input_gate": 1,
+      "offset": 707,
+      "parent": "Linger.rsrc:900@0x01fe",
+      "parent_class": "TCluster",
+      "parent_tag": "VW05",
+      "screen": "Linger.rsrc:900",
+      "screen_name": "Debug Flags Window",
+      "state": 1,
+      "tag": "slee",
+      "tag_value": 1936483685,
+      "type_code": "chkb"
+    },
+    {
+      "child_hit_test": 1,
+      "children": [],
+      "class": "TCzechBox",
+      "class_source": "type_family",
+      "control_value": 5,
+      "declared_class": "",
+      "depth": 3,
+      "enabled": 1,
+      "family": {
+        "content_insets": [
+          256,
+          0,
+          0,
+          0
+        ],
+        "control_state": 0,
+        "control_tail_hex": "0000",
+        "control_value": 5,
+        "frame_style": 4,
+        "offset": 866,
+        "picture_id": 801,
+        "secondary_picture_id": 802,
+        "size": 37
+      },
+      "geometry": {
+        "height": 16,
+        "width": 80,
+        "x": 16,
+        "y": 48
+      },
+      "id": "Linger.rsrc:900@0x0326",
+      "input_gate": 1,
+      "offset": 806,
+      "parent": "Linger.rsrc:900@0x01fe",
+      "parent_class": "TCluster",
+      "parent_tag": "VW05",
+      "screen": "Linger.rsrc:900",
+      "screen_name": "Debug Flags Window",
+      "state": 1,
+      "tag": "help",
+      "tag_value": 1751477360,
+      "type_code": "chkb"
+    },
+    {
+      "child_hit_test": 1,
+      "children": [],
+      "class": "TCzechBox",
+      "class_source": "type_family",
+      "control_value": 6,
+      "declared_class": "",
+      "depth": 3,
+      "enabled": 1,
+      "family": {
+        "content_insets": [
+          256,
+          0,
+          0,
+          0
+        ],
+        "control_state": 0,
+        "control_tail_hex": "0000",
+        "control_value": 6,
+        "frame_style": 4,
+        "offset": 965,
+        "picture_id": 801,
+        "secondary_picture_id": 802,
+        "size": 37
+      },
+      "geometry": {
+        "height": 16,
+        "width": 96,
+        "x": 16,
+        "y": 64
+      },
+      "id": "Linger.rsrc:900@0x0389",
+      "input_gate": 1,
+      "offset": 905,
+      "parent": "Linger.rsrc:900@0x01fe",
+      "parent_class": "TCluster",
+      "parent_tag": "VW05",
+      "screen": "Linger.rsrc:900",
+      "screen_name": "Debug Flags Window",
+      "state": 1,
+      "tag": "invl",
+      "tag_value": 1768846956,
+      "type_code": "chkb"
+    },
+    {
+      "child_hit_test": 1,
+      "children": [
+        "Linger.rsrc:900@0x044e",
+        "Linger.rsrc:900@0x04b1"
+      ],
       "class": "TCluster",
       "class_source": "type_family",
       "control_value": 0,
@@ -98430,7 +99118,7 @@
         "frame_style": 5,
         "offset": 1064,
         "serialized_child_count": 2,
-        "size": 234
+        "size": 38
       },
       "geometry": {
         "height": 56,
@@ -98454,6 +99142,101 @@
     {
       "child_hit_test": 1,
       "children": [],
+      "class": "TCzechBox",
+      "class_source": "type_family",
+      "control_value": 7,
+      "declared_class": "",
+      "depth": 3,
+      "enabled": 1,
+      "family": {
+        "content_insets": [
+          256,
+          0,
+          0,
+          0
+        ],
+        "control_state": 0,
+        "control_tail_hex": "0000",
+        "control_value": 7,
+        "frame_style": 4,
+        "offset": 1162,
+        "picture_id": 801,
+        "secondary_picture_id": 802,
+        "size": 37
+      },
+      "geometry": {
+        "height": 16,
+        "width": 80,
+        "x": 16,
+        "y": 16
+      },
+      "id": "Linger.rsrc:900@0x044e",
+      "input_gate": 1,
+      "offset": 1102,
+      "parent": "Linger.rsrc:900@0x03ec",
+      "parent_class": "TCluster",
+      "parent_tag": "VW18",
+      "screen": "Linger.rsrc:900",
+      "screen_name": "Debug Flags Window",
+      "state": 1,
+      "tag": "segl",
+      "tag_value": 1936025452,
+      "type_code": "chkb"
+    },
+    {
+      "child_hit_test": 1,
+      "children": [],
+      "class": "TCzechBox",
+      "class_source": "type_family",
+      "control_value": 8,
+      "declared_class": "",
+      "depth": 3,
+      "enabled": 1,
+      "family": {
+        "content_insets": [
+          256,
+          0,
+          0,
+          0
+        ],
+        "control_state": 1,
+        "control_tail_hex": "0000",
+        "control_value": 8,
+        "frame_style": 4,
+        "offset": 1261,
+        "picture_id": 801,
+        "secondary_picture_id": 802,
+        "size": 37
+      },
+      "geometry": {
+        "height": 16,
+        "width": 64,
+        "x": 16,
+        "y": 32
+      },
+      "id": "Linger.rsrc:900@0x04b1",
+      "input_gate": 1,
+      "offset": 1201,
+      "parent": "Linger.rsrc:900@0x03ec",
+      "parent_class": "TCluster",
+      "parent_tag": "VW18",
+      "screen": "Linger.rsrc:900",
+      "screen_name": "Debug Flags Window",
+      "state": 1,
+      "tag": "segu",
+      "tag_value": 1936025461,
+      "type_code": "chkb"
+    },
+    {
+      "child_hit_test": 1,
+      "children": [
+        "Linger.rsrc:900@0x0576",
+        "Linger.rsrc:900@0x05d9",
+        "Linger.rsrc:900@0x063c",
+        "Linger.rsrc:900@0x069f",
+        "Linger.rsrc:900@0x0702",
+        "Linger.rsrc:900@0x0765"
+      ],
       "class": "TCluster",
       "class_source": "type_family",
       "control_value": 0,
@@ -98472,7 +99255,7 @@
         "frame_style": 5,
         "offset": 1360,
         "serialized_child_count": 6,
-        "size": 630
+        "size": 38
       },
       "geometry": {
         "height": 88,
@@ -98496,6 +99279,273 @@
     {
       "child_hit_test": 1,
       "children": [],
+      "class": "TCzechBox",
+      "class_source": "type_family",
+      "control_value": 9,
+      "declared_class": "",
+      "depth": 3,
+      "enabled": 1,
+      "family": {
+        "content_insets": [
+          256,
+          0,
+          0,
+          0
+        ],
+        "control_state": 0,
+        "control_tail_hex": "0000",
+        "control_value": 9,
+        "frame_style": 4,
+        "offset": 1458,
+        "picture_id": 801,
+        "secondary_picture_id": 802,
+        "size": 37
+      },
+      "geometry": {
+        "height": 16,
+        "width": 112,
+        "x": 16,
+        "y": 16
+      },
+      "id": "Linger.rsrc:900@0x0576",
+      "input_gate": 1,
+      "offset": 1398,
+      "parent": "Linger.rsrc:900@0x0514",
+      "parent_class": "TCluster",
+      "parent_tag": "VW10",
+      "screen": "Linger.rsrc:900",
+      "screen_name": "Debug Flags Window",
+      "state": 1,
+      "tag": "ints",
+      "tag_value": 1768846451,
+      "type_code": "chkb"
+    },
+    {
+      "child_hit_test": 1,
+      "children": [],
+      "class": "TCzechBox",
+      "class_source": "type_family",
+      "control_value": 10,
+      "declared_class": "",
+      "depth": 3,
+      "enabled": 1,
+      "family": {
+        "content_insets": [
+          256,
+          0,
+          0,
+          0
+        ],
+        "control_state": 1,
+        "control_tail_hex": "0000",
+        "control_value": 10,
+        "frame_style": 4,
+        "offset": 1557,
+        "picture_id": 801,
+        "secondary_picture_id": 802,
+        "size": 37
+      },
+      "geometry": {
+        "height": 16,
+        "width": 176,
+        "x": 16,
+        "y": 40
+      },
+      "id": "Linger.rsrc:900@0x05d9",
+      "input_gate": 1,
+      "offset": 1497,
+      "parent": "Linger.rsrc:900@0x0514",
+      "parent_class": "TCluster",
+      "parent_tag": "VW10",
+      "screen": "Linger.rsrc:900",
+      "screen_name": "Debug Flags Window",
+      "state": 1,
+      "tag": "focu",
+      "tag_value": 1718575989,
+      "type_code": "chkb"
+    },
+    {
+      "child_hit_test": 1,
+      "children": [],
+      "class": "TCzechBox",
+      "class_source": "type_family",
+      "control_value": 11,
+      "declared_class": "",
+      "depth": 3,
+      "enabled": 1,
+      "family": {
+        "content_insets": [
+          256,
+          0,
+          0,
+          0
+        ],
+        "control_state": 0,
+        "control_tail_hex": "0000",
+        "control_value": 11,
+        "frame_style": 4,
+        "offset": 1656,
+        "picture_id": 801,
+        "secondary_picture_id": 802,
+        "size": 37
+      },
+      "geometry": {
+        "height": 16,
+        "width": 96,
+        "x": 16,
+        "y": 64
+      },
+      "id": "Linger.rsrc:900@0x063c",
+      "input_gate": 1,
+      "offset": 1596,
+      "parent": "Linger.rsrc:900@0x0514",
+      "parent_class": "TCluster",
+      "parent_tag": "VW10",
+      "screen": "Linger.rsrc:900",
+      "screen_name": "Debug Flags Window",
+      "state": 1,
+      "tag": "prnt",
+      "tag_value": 1886547572,
+      "type_code": "chkb"
+    },
+    {
+      "child_hit_test": 1,
+      "children": [],
+      "class": "TCzechBox",
+      "class_source": "type_family",
+      "control_value": 12,
+      "declared_class": "",
+      "depth": 3,
+      "enabled": 1,
+      "family": {
+        "content_insets": [
+          256,
+          0,
+          0,
+          0
+        ],
+        "control_state": 0,
+        "control_tail_hex": "0000",
+        "control_value": 12,
+        "frame_style": 4,
+        "offset": 1755,
+        "picture_id": 801,
+        "secondary_picture_id": 802,
+        "size": 37
+      },
+      "geometry": {
+        "height": 16,
+        "width": 96,
+        "x": 224,
+        "y": 16
+      },
+      "id": "Linger.rsrc:900@0x069f",
+      "input_gate": 1,
+      "offset": 1695,
+      "parent": "Linger.rsrc:900@0x0514",
+      "parent_class": "TCluster",
+      "parent_tag": "VW10",
+      "screen": "Linger.rsrc:900",
+      "screen_name": "Debug Flags Window",
+      "state": 1,
+      "tag": "usr1",
+      "tag_value": 1970500145,
+      "type_code": "chkb"
+    },
+    {
+      "child_hit_test": 1,
+      "children": [],
+      "class": "TCzechBox",
+      "class_source": "type_family",
+      "control_value": 13,
+      "declared_class": "",
+      "depth": 3,
+      "enabled": 1,
+      "family": {
+        "content_insets": [
+          256,
+          0,
+          0,
+          0
+        ],
+        "control_state": 0,
+        "control_tail_hex": "0000",
+        "control_value": 13,
+        "frame_style": 4,
+        "offset": 1854,
+        "picture_id": 801,
+        "secondary_picture_id": 802,
+        "size": 37
+      },
+      "geometry": {
+        "height": 16,
+        "width": 96,
+        "x": 224,
+        "y": 40
+      },
+      "id": "Linger.rsrc:900@0x0702",
+      "input_gate": 1,
+      "offset": 1794,
+      "parent": "Linger.rsrc:900@0x0514",
+      "parent_class": "TCluster",
+      "parent_tag": "VW10",
+      "screen": "Linger.rsrc:900",
+      "screen_name": "Debug Flags Window",
+      "state": 1,
+      "tag": "usr2",
+      "tag_value": 1970500146,
+      "type_code": "chkb"
+    },
+    {
+      "child_hit_test": 1,
+      "children": [],
+      "class": "TCzechBox",
+      "class_source": "type_family",
+      "control_value": 14,
+      "declared_class": "",
+      "depth": 3,
+      "enabled": 1,
+      "family": {
+        "content_insets": [
+          256,
+          0,
+          0,
+          0
+        ],
+        "control_state": 0,
+        "control_tail_hex": "0000",
+        "control_value": 14,
+        "frame_style": 4,
+        "offset": 1953,
+        "picture_id": 801,
+        "secondary_picture_id": 802,
+        "size": 37
+      },
+      "geometry": {
+        "height": 16,
+        "width": 96,
+        "x": 224,
+        "y": 64
+      },
+      "id": "Linger.rsrc:900@0x0765",
+      "input_gate": 1,
+      "offset": 1893,
+      "parent": "Linger.rsrc:900@0x0514",
+      "parent_class": "TCluster",
+      "parent_tag": "VW10",
+      "screen": "Linger.rsrc:900",
+      "screen_name": "Debug Flags Window",
+      "state": 1,
+      "tag": "usr3",
+      "tag_value": 1970500147,
+      "type_code": "chkb"
+    },
+    {
+      "child_hit_test": 1,
+      "children": [
+        "Linger.rsrc:900@0x082a",
+        "Linger.rsrc:900@0x088d"
+      ],
       "class": "TCluster",
       "class_source": "type_family",
       "control_value": 0,
@@ -98514,7 +99564,7 @@
         "frame_style": 5,
         "offset": 2052,
         "serialized_child_count": 2,
-        "size": 234
+        "size": 38
       },
       "geometry": {
         "height": 56,
@@ -98534,6 +99584,94 @@
       "tag": "VW01",
       "tag_value": 1448554545,
       "type_code": "clus"
+    },
+    {
+      "child_hit_test": 1,
+      "children": [],
+      "class": "TCzechBox",
+      "class_source": "type_family",
+      "control_value": 15,
+      "declared_class": "",
+      "depth": 3,
+      "enabled": 1,
+      "family": {
+        "content_insets": [
+          256,
+          0,
+          0,
+          0
+        ],
+        "control_state": 0,
+        "control_tail_hex": "0000",
+        "control_value": 15,
+        "frame_style": 4,
+        "offset": 2150,
+        "picture_id": 801,
+        "secondary_picture_id": 802,
+        "size": 37
+      },
+      "geometry": {
+        "height": 16,
+        "width": 112,
+        "x": 16,
+        "y": 16
+      },
+      "id": "Linger.rsrc:900@0x082a",
+      "input_gate": 1,
+      "offset": 2090,
+      "parent": "Linger.rsrc:900@0x07c8",
+      "parent_class": "TCluster",
+      "parent_tag": "VW01",
+      "screen": "Linger.rsrc:900",
+      "screen_name": "Debug Flags Window",
+      "state": 1,
+      "tag": "rsrc",
+      "tag_value": 1920168547,
+      "type_code": "chkb"
+    },
+    {
+      "child_hit_test": 1,
+      "children": [],
+      "class": "TCzechBox",
+      "class_source": "type_family",
+      "control_value": 16,
+      "declared_class": "",
+      "depth": 3,
+      "enabled": 1,
+      "family": {
+        "content_insets": [
+          256,
+          0,
+          0,
+          0
+        ],
+        "control_state": 0,
+        "control_tail_hex": "0000",
+        "control_value": 16,
+        "frame_style": 4,
+        "offset": 2249,
+        "picture_id": 801,
+        "secondary_picture_id": 802,
+        "size": 37
+      },
+      "geometry": {
+        "height": 16,
+        "width": 112,
+        "x": 16,
+        "y": 32
+      },
+      "id": "Linger.rsrc:900@0x088d",
+      "input_gate": 1,
+      "offset": 2189,
+      "parent": "Linger.rsrc:900@0x07c8",
+      "parent_class": "TCluster",
+      "parent_tag": "VW01",
+      "screen": "Linger.rsrc:900",
+      "screen_name": "Debug Flags Window",
+      "state": 1,
+      "tag": "memb",
+      "tag_value": 1835363682,
+      "type_code": "chkb"
     },
     {
       "child_hit_test": 1,
@@ -98597,12 +99735,6 @@
       "depth": 0,
       "enabled": 1,
       "family": {
-        "content_insets": [
-          1987512370,
-          52822017,
-          65539,
-          1684828007
-        ],
         "content_tag": "rtvw",
         "content_tag_value": 1920235127,
         "frame_style": 94836,
@@ -98819,6 +99951,7 @@
     {
       "child_hit_test": 1,
       "children": [
+        "Linger.rsrc:901@0x038d",
         "Linger.rsrc:901@0x03f0",
         "Linger.rsrc:901@0x0456"
       ],
@@ -98840,7 +99973,7 @@
         "frame_style": 5,
         "offset": 871,
         "serialized_child_count": 3,
-        "size": 137
+        "size": 38
       },
       "geometry": {
         "height": 64,
@@ -98860,6 +99993,50 @@
       "tag": "VW06",
       "tag_value": 1448554550,
       "type_code": "clus"
+    },
+    {
+      "child_hit_test": 1,
+      "children": [],
+      "class": "TCzechBox",
+      "class_source": "type_family",
+      "control_value": 17,
+      "declared_class": "",
+      "depth": 2,
+      "enabled": 1,
+      "family": {
+        "content_insets": [
+          256,
+          0,
+          0,
+          0
+        ],
+        "control_state": 1,
+        "control_tail_hex": "0000",
+        "control_value": 17,
+        "frame_style": 4,
+        "offset": 969,
+        "picture_id": 801,
+        "secondary_picture_id": 802,
+        "size": 37
+      },
+      "geometry": {
+        "height": 16,
+        "width": 144,
+        "x": 16,
+        "y": 40
+      },
+      "id": "Linger.rsrc:901@0x038d",
+      "input_gate": 1,
+      "offset": 909,
+      "parent": "Linger.rsrc:901@0x032b",
+      "parent_class": "TCluster",
+      "parent_tag": "VW06",
+      "screen": "Linger.rsrc:901",
+      "screen_name": "debug - Initialize PerfMon",
+      "state": 1,
+      "tag": "macd",
+      "tag_value": 1835098980,
+      "type_code": "chkb"
     },
     {
       "child_hit_test": 1,
@@ -98948,6 +100125,7 @@
     {
       "child_hit_test": 1,
       "children": [
+        "Linger.rsrc:901@0x055e",
         "Linger.rsrc:901@0x05c1",
         "Linger.rsrc:901@0x0627",
         "Linger.rsrc:901@0x06d9",
@@ -98971,7 +100149,7 @@
         "frame_style": 5,
         "offset": 1336,
         "serialized_child_count": 5,
-        "size": 137
+        "size": 38
       },
       "geometry": {
         "height": 64,
@@ -98991,6 +100169,50 @@
       "tag": "VW11",
       "tag_value": 1448554801,
       "type_code": "clus"
+    },
+    {
+      "child_hit_test": 1,
+      "children": [],
+      "class": "TCzechBox",
+      "class_source": "type_family",
+      "control_value": 18,
+      "declared_class": "",
+      "depth": 2,
+      "enabled": 1,
+      "family": {
+        "content_insets": [
+          256,
+          0,
+          0,
+          0
+        ],
+        "control_state": 0,
+        "control_tail_hex": "0000",
+        "control_value": 18,
+        "frame_style": 4,
+        "offset": 1434,
+        "picture_id": 801,
+        "secondary_picture_id": 802,
+        "size": 37
+      },
+      "geometry": {
+        "height": 16,
+        "width": 112,
+        "x": 128,
+        "y": 40
+      },
+      "id": "Linger.rsrc:901@0x055e",
+      "input_gate": 1,
+      "offset": 1374,
+      "parent": "Linger.rsrc:901@0x04fc",
+      "parent_class": "TCluster",
+      "parent_tag": "VW11",
+      "screen": "Linger.rsrc:901",
+      "screen_name": "debug - Initialize PerfMon",
+      "state": 1,
+      "tag": "mrcd",
+      "tag_value": 1836213092,
+      "type_code": "chkb"
     },
     {
       "child_hit_test": 1,
@@ -99170,6 +100392,7 @@
     {
       "child_hit_test": 1,
       "children": [
+        "Linger.rsrc:901@0x0847",
         "Linger.rsrc:901@0x08aa",
         "Linger.rsrc:901@0x0910",
         "Linger.rsrc:901@0x0976",
@@ -99196,7 +100419,7 @@
         "frame_style": 5,
         "offset": 2081,
         "serialized_child_count": 8,
-        "size": 137
+        "size": 38
       },
       "geometry": {
         "height": 88,
@@ -99216,6 +100439,50 @@
       "tag": "xxxx",
       "tag_value": 2021161080,
       "type_code": "clus"
+    },
+    {
+      "child_hit_test": 1,
+      "children": [],
+      "class": "TCzechBox",
+      "class_source": "type_family",
+      "control_value": 19,
+      "declared_class": "",
+      "depth": 2,
+      "enabled": 1,
+      "family": {
+        "content_insets": [
+          256,
+          0,
+          0,
+          0
+        ],
+        "control_state": 0,
+        "control_tail_hex": "0000",
+        "control_value": 19,
+        "frame_style": 4,
+        "offset": 2179,
+        "picture_id": 801,
+        "secondary_picture_id": 802,
+        "size": 37
+      },
+      "geometry": {
+        "height": 16,
+        "width": 128,
+        "x": 64,
+        "y": 64
+      },
+      "id": "Linger.rsrc:901@0x0847",
+      "input_gate": 1,
+      "offset": 2119,
+      "parent": "Linger.rsrc:901@0x07e5",
+      "parent_class": "TCluster",
+      "parent_tag": "xxxx",
+      "screen": "Linger.rsrc:901",
+      "screen_name": "debug - Initialize PerfMon",
+      "state": 1,
+      "tag": "mout",
+      "tag_value": 1836021108,
+      "type_code": "chkb"
     },
     {
       "child_hit_test": 1,
@@ -99716,12 +100983,6 @@
       "depth": 0,
       "enabled": 1,
       "family": {
-        "content_insets": [
-          1635319858,
-          79101951,
-          262147,
-          1936941682
-        ],
         "content_tag": "okay",
         "content_tag_value": 1869308281,
         "frame_style": 225131,
@@ -100189,12 +101450,6 @@
       "depth": 0,
       "enabled": 1,
       "family": {
-        "content_insets": [
-          1330060802,
-          79101951,
-          196611,
-          1936941682
-        ],
         "content_tag": "DLOG",
         "content_tag_value": 1145851719,
         "frame_style": 148556,
@@ -103607,12 +104862,6 @@
       "depth": 2,
       "enabled": 1,
       "family": {
-        "content_insets": [
-          120,
-          2147418112,
-          0,
-          0
-        ],
         "frame_style": 16842753,
         "offset": 8052,
         "size": 37,
@@ -103909,12 +105158,6 @@
       "depth": 2,
       "enabled": 1,
       "family": {
-        "content_insets": [
-          120,
-          67108864,
-          0,
-          0
-        ],
         "frame_style": 65537,
         "offset": 677,
         "size": 37,
@@ -104476,12 +105719,6 @@
       "depth": 0,
       "enabled": 1,
       "family": {
-        "content_insets": [
-          1330060802,
-          79101951,
-          196611,
-          1936941682
-        ],
         "content_tag": "DLOG",
         "content_tag_value": 1145851719,
         "frame_style": 148556,
@@ -104974,12 +106211,6 @@
       "depth": 0,
       "enabled": 1,
       "family": {
-        "content_insets": [
-          1330060802,
-          79101951,
-          196611,
-          1936941682
-        ],
         "content_tag": "DLOG",
         "content_tag_value": 1145851719,
         "frame_style": 148556,
@@ -105164,12 +106395,6 @@
       "depth": 0,
       "enabled": 1,
       "family": {
-        "content_insets": [
-          1835146754,
-          79101951,
-          196611,
-          1936941682
-        ],
         "content_tag": "numb",
         "content_tag_value": 1853189474,
         "frame_style": 93813,
@@ -108130,12 +109355,6 @@
       "depth": 0,
       "enabled": 1,
       "family": {
-        "content_insets": [
-          1835277826,
-          79101951,
-          196611,
-          1936941682
-        ],
         "content_tag": "numd",
         "content_tag_value": 1853189476,
         "frame_style": 93813,
@@ -108944,12 +110163,6 @@
       "depth": 0,
       "enabled": 1,
       "family": {
-        "content_insets": [
-          1330060850,
-          79036417,
-          196611,
-          1936941682
-        ],
         "content_tag": "DLOG",
         "content_tag_value": 1145851719,
         "frame_style": 148556,
@@ -109075,12 +110288,6 @@
       "depth": 0,
       "enabled": 1,
       "family": {
-        "content_insets": [
-          1330060802,
-          79101951,
-          196611,
-          1936941682
-        ],
         "content_tag": "DLOG",
         "content_tag_value": 1145851719,
         "frame_style": 214092,
@@ -109201,7 +110408,17 @@
     },
     {
       "child_hit_test": 1,
-      "children": [],
+      "children": [
+        "MapView.rsrc:9470@0x0397",
+        "MapView.rsrc:9470@0x03fa",
+        "MapView.rsrc:9470@0x045d",
+        "MapView.rsrc:9470@0x04c0",
+        "MapView.rsrc:9470@0x0523",
+        "MapView.rsrc:9470@0x0586",
+        "MapView.rsrc:9470@0x05e9",
+        "MapView.rsrc:9470@0x064c",
+        "MapView.rsrc:9470@0x06af"
+      ],
       "class": "TCluster",
       "class_source": "type_family",
       "control_value": 0,
@@ -109220,7 +110437,7 @@
         "frame_style": 5,
         "offset": 881,
         "serialized_child_count": 9,
-        "size": 927
+        "size": 38
       },
       "geometry": {
         "height": 190,
@@ -109244,6 +110461,410 @@
     {
       "child_hit_test": 1,
       "children": [],
+      "class": "TRadioPictureButton",
+      "class_source": "type_family",
+      "control_value": 31,
+      "declared_class": "",
+      "depth": 3,
+      "enabled": 1,
+      "family": {
+        "content_insets": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "control_state": 0,
+        "control_tail_hex": "0000",
+        "control_value": 31,
+        "frame_style": 12,
+        "offset": 979,
+        "picture_id": 1520,
+        "secondary_picture_id": 1300,
+        "size": 37
+      },
+      "geometry": {
+        "height": 16,
+        "width": 96,
+        "x": 43,
+        "y": 167
+      },
+      "id": "MapView.rsrc:9470@0x0397",
+      "input_gate": 1,
+      "offset": 919,
+      "parent": "MapView.rsrc:9470@0x0335",
+      "parent_class": "TCluster",
+      "parent_tag": "type",
+      "screen": "MapView.rsrc:9470",
+      "screen_name": "Civilian Maker",
+      "state": 1,
+      "tag": "typ8",
+      "tag_value": 1954115640,
+      "type_code": "radb"
+    },
+    {
+      "child_hit_test": 1,
+      "children": [],
+      "class": "TRadioPictureButton",
+      "class_source": "type_family",
+      "control_value": 16,
+      "declared_class": "",
+      "depth": 3,
+      "enabled": 1,
+      "family": {
+        "content_insets": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "control_state": 1,
+        "control_tail_hex": "0000",
+        "control_value": 16,
+        "frame_style": 12,
+        "offset": 1078,
+        "picture_id": 1520,
+        "secondary_picture_id": 1300,
+        "size": 37
+      },
+      "geometry": {
+        "height": 16,
+        "width": 96,
+        "x": 43,
+        "y": 23
+      },
+      "id": "MapView.rsrc:9470@0x03fa",
+      "input_gate": 1,
+      "offset": 1018,
+      "parent": "MapView.rsrc:9470@0x0335",
+      "parent_class": "TCluster",
+      "parent_tag": "type",
+      "screen": "MapView.rsrc:9470",
+      "screen_name": "Civilian Maker",
+      "state": 1,
+      "tag": "typ0",
+      "tag_value": 1954115632,
+      "type_code": "radb"
+    },
+    {
+      "child_hit_test": 1,
+      "children": [],
+      "class": "TRadioPictureButton",
+      "class_source": "type_family",
+      "control_value": 17,
+      "declared_class": "",
+      "depth": 3,
+      "enabled": 1,
+      "family": {
+        "content_insets": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "control_state": 0,
+        "control_tail_hex": "0000",
+        "control_value": 17,
+        "frame_style": 12,
+        "offset": 1177,
+        "picture_id": 1520,
+        "secondary_picture_id": 1300,
+        "size": 37
+      },
+      "geometry": {
+        "height": 16,
+        "width": 96,
+        "x": 43,
+        "y": 41
+      },
+      "id": "MapView.rsrc:9470@0x045d",
+      "input_gate": 1,
+      "offset": 1117,
+      "parent": "MapView.rsrc:9470@0x0335",
+      "parent_class": "TCluster",
+      "parent_tag": "type",
+      "screen": "MapView.rsrc:9470",
+      "screen_name": "Civilian Maker",
+      "state": 1,
+      "tag": "typ1",
+      "tag_value": 1954115633,
+      "type_code": "radb"
+    },
+    {
+      "child_hit_test": 1,
+      "children": [],
+      "class": "TRadioPictureButton",
+      "class_source": "type_family",
+      "control_value": 18,
+      "declared_class": "",
+      "depth": 3,
+      "enabled": 1,
+      "family": {
+        "content_insets": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "control_state": 0,
+        "control_tail_hex": "0000",
+        "control_value": 18,
+        "frame_style": 12,
+        "offset": 1276,
+        "picture_id": 1520,
+        "secondary_picture_id": 1300,
+        "size": 37
+      },
+      "geometry": {
+        "height": 16,
+        "width": 96,
+        "x": 43,
+        "y": 59
+      },
+      "id": "MapView.rsrc:9470@0x04c0",
+      "input_gate": 1,
+      "offset": 1216,
+      "parent": "MapView.rsrc:9470@0x0335",
+      "parent_class": "TCluster",
+      "parent_tag": "type",
+      "screen": "MapView.rsrc:9470",
+      "screen_name": "Civilian Maker",
+      "state": 1,
+      "tag": "typ2",
+      "tag_value": 1954115634,
+      "type_code": "radb"
+    },
+    {
+      "child_hit_test": 1,
+      "children": [],
+      "class": "TRadioPictureButton",
+      "class_source": "type_family",
+      "control_value": 19,
+      "declared_class": "",
+      "depth": 3,
+      "enabled": 1,
+      "family": {
+        "content_insets": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "control_state": 0,
+        "control_tail_hex": "0000",
+        "control_value": 19,
+        "frame_style": 12,
+        "offset": 1375,
+        "picture_id": 1520,
+        "secondary_picture_id": 1300,
+        "size": 37
+      },
+      "geometry": {
+        "height": 16,
+        "width": 96,
+        "x": 43,
+        "y": 77
+      },
+      "id": "MapView.rsrc:9470@0x0523",
+      "input_gate": 1,
+      "offset": 1315,
+      "parent": "MapView.rsrc:9470@0x0335",
+      "parent_class": "TCluster",
+      "parent_tag": "type",
+      "screen": "MapView.rsrc:9470",
+      "screen_name": "Civilian Maker",
+      "state": 1,
+      "tag": "typ3",
+      "tag_value": 1954115635,
+      "type_code": "radb"
+    },
+    {
+      "child_hit_test": 1,
+      "children": [],
+      "class": "TRadioPictureButton",
+      "class_source": "type_family",
+      "control_value": 27,
+      "declared_class": "",
+      "depth": 3,
+      "enabled": 1,
+      "family": {
+        "content_insets": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "control_state": 0,
+        "control_tail_hex": "0000",
+        "control_value": 27,
+        "frame_style": 12,
+        "offset": 1474,
+        "picture_id": 1520,
+        "secondary_picture_id": 1300,
+        "size": 37
+      },
+      "geometry": {
+        "height": 16,
+        "width": 96,
+        "x": 43,
+        "y": 95
+      },
+      "id": "MapView.rsrc:9470@0x0586",
+      "input_gate": 1,
+      "offset": 1414,
+      "parent": "MapView.rsrc:9470@0x0335",
+      "parent_class": "TCluster",
+      "parent_tag": "type",
+      "screen": "MapView.rsrc:9470",
+      "screen_name": "Civilian Maker",
+      "state": 1,
+      "tag": "typ4",
+      "tag_value": 1954115636,
+      "type_code": "radb"
+    },
+    {
+      "child_hit_test": 1,
+      "children": [],
+      "class": "TRadioPictureButton",
+      "class_source": "type_family",
+      "control_value": 28,
+      "declared_class": "",
+      "depth": 3,
+      "enabled": 1,
+      "family": {
+        "content_insets": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "control_state": 0,
+        "control_tail_hex": "0000",
+        "control_value": 28,
+        "frame_style": 12,
+        "offset": 1573,
+        "picture_id": 1520,
+        "secondary_picture_id": 1300,
+        "size": 37
+      },
+      "geometry": {
+        "height": 16,
+        "width": 96,
+        "x": 43,
+        "y": 113
+      },
+      "id": "MapView.rsrc:9470@0x05e9",
+      "input_gate": 1,
+      "offset": 1513,
+      "parent": "MapView.rsrc:9470@0x0335",
+      "parent_class": "TCluster",
+      "parent_tag": "type",
+      "screen": "MapView.rsrc:9470",
+      "screen_name": "Civilian Maker",
+      "state": 1,
+      "tag": "typ5",
+      "tag_value": 1954115637,
+      "type_code": "radb"
+    },
+    {
+      "child_hit_test": 1,
+      "children": [],
+      "class": "TRadioPictureButton",
+      "class_source": "type_family",
+      "control_value": 29,
+      "declared_class": "",
+      "depth": 3,
+      "enabled": 1,
+      "family": {
+        "content_insets": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "control_state": 0,
+        "control_tail_hex": "0000",
+        "control_value": 29,
+        "frame_style": 12,
+        "offset": 1672,
+        "picture_id": 1520,
+        "secondary_picture_id": 1300,
+        "size": 37
+      },
+      "geometry": {
+        "height": 16,
+        "width": 96,
+        "x": 43,
+        "y": 131
+      },
+      "id": "MapView.rsrc:9470@0x064c",
+      "input_gate": 1,
+      "offset": 1612,
+      "parent": "MapView.rsrc:9470@0x0335",
+      "parent_class": "TCluster",
+      "parent_tag": "type",
+      "screen": "MapView.rsrc:9470",
+      "screen_name": "Civilian Maker",
+      "state": 1,
+      "tag": "typ6",
+      "tag_value": 1954115638,
+      "type_code": "radb"
+    },
+    {
+      "child_hit_test": 1,
+      "children": [],
+      "class": "TRadioPictureButton",
+      "class_source": "type_family",
+      "control_value": 30,
+      "declared_class": "",
+      "depth": 3,
+      "enabled": 1,
+      "family": {
+        "content_insets": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "control_state": 0,
+        "control_tail_hex": "0000",
+        "control_value": 30,
+        "frame_style": 12,
+        "offset": 1771,
+        "picture_id": 1520,
+        "secondary_picture_id": 1300,
+        "size": 37
+      },
+      "geometry": {
+        "height": 16,
+        "width": 96,
+        "x": 43,
+        "y": 149
+      },
+      "id": "MapView.rsrc:9470@0x06af",
+      "input_gate": 1,
+      "offset": 1711,
+      "parent": "MapView.rsrc:9470@0x0335",
+      "parent_class": "TCluster",
+      "parent_tag": "type",
+      "screen": "MapView.rsrc:9470",
+      "screen_name": "Civilian Maker",
+      "state": 1,
+      "tag": "typ7",
+      "tag_value": 1954115639,
+      "type_code": "radb"
+    },
+    {
+      "child_hit_test": 1,
+      "children": [
+        "MapView.rsrc:9470@0x07d6",
+        "MapView.rsrc:9470@0x0839",
+        "MapView.rsrc:9470@0x089c",
+        "MapView.rsrc:9470@0x08ff",
+        "MapView.rsrc:9470@0x0962",
+        "MapView.rsrc:9470@0x09c5",
+        "MapView.rsrc:9470@0x0a28"
+      ],
       "class": "TCluster",
       "class_source": "type_family",
       "control_value": 0,
@@ -109262,7 +110883,7 @@
         "frame_style": 5,
         "offset": 1968,
         "serialized_child_count": 7,
-        "size": 729
+        "size": 38
       },
       "geometry": {
         "height": 98,
@@ -109282,6 +110903,314 @@
       "tag": "owne",
       "tag_value": 1870098021,
       "type_code": "clus"
+    },
+    {
+      "child_hit_test": 1,
+      "children": [],
+      "class": "TRadioPictureButton",
+      "class_source": "type_family",
+      "control_value": 3,
+      "declared_class": "",
+      "depth": 3,
+      "enabled": 1,
+      "family": {
+        "content_insets": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "control_state": 1,
+        "control_tail_hex": "0000",
+        "control_value": 3,
+        "frame_style": 12,
+        "offset": 2066,
+        "picture_id": 1519,
+        "secondary_picture_id": 1508,
+        "size": 37
+      },
+      "geometry": {
+        "height": 18,
+        "width": 55,
+        "x": 12,
+        "y": 19
+      },
+      "id": "MapView.rsrc:9470@0x07d6",
+      "input_gate": 1,
+      "offset": 2006,
+      "parent": "MapView.rsrc:9470@0x0774",
+      "parent_class": "TCluster",
+      "parent_tag": "owne",
+      "screen": "MapView.rsrc:9470",
+      "screen_name": "Civilian Maker",
+      "state": 1,
+      "tag": "own0",
+      "tag_value": 1870097968,
+      "type_code": "radb"
+    },
+    {
+      "child_hit_test": 1,
+      "children": [],
+      "class": "TRadioPictureButton",
+      "class_source": "type_family",
+      "control_value": 1,
+      "declared_class": "",
+      "depth": 3,
+      "enabled": 1,
+      "family": {
+        "content_insets": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "control_state": 0,
+        "control_tail_hex": "0000",
+        "control_value": 1,
+        "frame_style": 12,
+        "offset": 2165,
+        "picture_id": 1519,
+        "secondary_picture_id": 1508,
+        "size": 37
+      },
+      "geometry": {
+        "height": 18,
+        "width": 55,
+        "x": 12,
+        "y": 38
+      },
+      "id": "MapView.rsrc:9470@0x0839",
+      "input_gate": 1,
+      "offset": 2105,
+      "parent": "MapView.rsrc:9470@0x0774",
+      "parent_class": "TCluster",
+      "parent_tag": "owne",
+      "screen": "MapView.rsrc:9470",
+      "screen_name": "Civilian Maker",
+      "state": 1,
+      "tag": "own1",
+      "tag_value": 1870097969,
+      "type_code": "radb"
+    },
+    {
+      "child_hit_test": 1,
+      "children": [],
+      "class": "TRadioPictureButton",
+      "class_source": "type_family",
+      "control_value": 2,
+      "declared_class": "",
+      "depth": 3,
+      "enabled": 1,
+      "family": {
+        "content_insets": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "control_state": 0,
+        "control_tail_hex": "0000",
+        "control_value": 2,
+        "frame_style": 12,
+        "offset": 2264,
+        "picture_id": 1519,
+        "secondary_picture_id": 1508,
+        "size": 37
+      },
+      "geometry": {
+        "height": 18,
+        "width": 55,
+        "x": 12,
+        "y": 57
+      },
+      "id": "MapView.rsrc:9470@0x089c",
+      "input_gate": 1,
+      "offset": 2204,
+      "parent": "MapView.rsrc:9470@0x0774",
+      "parent_class": "TCluster",
+      "parent_tag": "owne",
+      "screen": "MapView.rsrc:9470",
+      "screen_name": "Civilian Maker",
+      "state": 1,
+      "tag": "own2",
+      "tag_value": 1870097970,
+      "type_code": "radb"
+    },
+    {
+      "child_hit_test": 1,
+      "children": [],
+      "class": "TRadioPictureButton",
+      "class_source": "type_family",
+      "control_value": 4,
+      "declared_class": "",
+      "depth": 3,
+      "enabled": 1,
+      "family": {
+        "content_insets": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "control_state": 0,
+        "control_tail_hex": "0000",
+        "control_value": 4,
+        "frame_style": 12,
+        "offset": 2363,
+        "picture_id": 1519,
+        "secondary_picture_id": 1508,
+        "size": 37
+      },
+      "geometry": {
+        "height": 18,
+        "width": 55,
+        "x": 12,
+        "y": 76
+      },
+      "id": "MapView.rsrc:9470@0x08ff",
+      "input_gate": 1,
+      "offset": 2303,
+      "parent": "MapView.rsrc:9470@0x0774",
+      "parent_class": "TCluster",
+      "parent_tag": "owne",
+      "screen": "MapView.rsrc:9470",
+      "screen_name": "Civilian Maker",
+      "state": 1,
+      "tag": "own3",
+      "tag_value": 1870097971,
+      "type_code": "radb"
+    },
+    {
+      "child_hit_test": 1,
+      "children": [],
+      "class": "TRadioPictureButton",
+      "class_source": "type_family",
+      "control_value": 5,
+      "declared_class": "",
+      "depth": 3,
+      "enabled": 1,
+      "family": {
+        "content_insets": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "control_state": 0,
+        "control_tail_hex": "0000",
+        "control_value": 5,
+        "frame_style": 12,
+        "offset": 2462,
+        "picture_id": 1519,
+        "secondary_picture_id": 1508,
+        "size": 37
+      },
+      "geometry": {
+        "height": 18,
+        "width": 55,
+        "x": 96,
+        "y": 57
+      },
+      "id": "MapView.rsrc:9470@0x0962",
+      "input_gate": 1,
+      "offset": 2402,
+      "parent": "MapView.rsrc:9470@0x0774",
+      "parent_class": "TCluster",
+      "parent_tag": "owne",
+      "screen": "MapView.rsrc:9470",
+      "screen_name": "Civilian Maker",
+      "state": 1,
+      "tag": "own6",
+      "tag_value": 1870097974,
+      "type_code": "radb"
+    },
+    {
+      "child_hit_test": 1,
+      "children": [],
+      "class": "TRadioPictureButton",
+      "class_source": "type_family",
+      "control_value": 6,
+      "declared_class": "",
+      "depth": 3,
+      "enabled": 1,
+      "family": {
+        "content_insets": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "control_state": 0,
+        "control_tail_hex": "0000",
+        "control_value": 6,
+        "frame_style": 12,
+        "offset": 2561,
+        "picture_id": 1519,
+        "secondary_picture_id": 1508,
+        "size": 37
+      },
+      "geometry": {
+        "height": 18,
+        "width": 55,
+        "x": 96,
+        "y": 38
+      },
+      "id": "MapView.rsrc:9470@0x09c5",
+      "input_gate": 1,
+      "offset": 2501,
+      "parent": "MapView.rsrc:9470@0x0774",
+      "parent_class": "TCluster",
+      "parent_tag": "owne",
+      "screen": "MapView.rsrc:9470",
+      "screen_name": "Civilian Maker",
+      "state": 1,
+      "tag": "own5",
+      "tag_value": 1870097973,
+      "type_code": "radb"
+    },
+    {
+      "child_hit_test": 1,
+      "children": [],
+      "class": "TRadioPictureButton",
+      "class_source": "type_family",
+      "control_value": 7,
+      "declared_class": "",
+      "depth": 3,
+      "enabled": 1,
+      "family": {
+        "content_insets": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "control_state": 0,
+        "control_tail_hex": "0000",
+        "control_value": 7,
+        "frame_style": 12,
+        "offset": 2660,
+        "picture_id": 1519,
+        "secondary_picture_id": 1508,
+        "size": 37
+      },
+      "geometry": {
+        "height": 18,
+        "width": 55,
+        "x": 96,
+        "y": 19
+      },
+      "id": "MapView.rsrc:9470@0x0a28",
+      "input_gate": 1,
+      "offset": 2600,
+      "parent": "MapView.rsrc:9470@0x0774",
+      "parent_class": "TCluster",
+      "parent_tag": "owne",
+      "screen": "MapView.rsrc:9470",
+      "screen_name": "Civilian Maker",
+      "state": 1,
+      "tag": "own4",
+      "tag_value": 1870097972,
+      "type_code": "radb"
     },
     {
       "child_hit_test": 1,
@@ -110501,7 +112430,17 @@
     },
     {
       "child_hit_test": 1,
-      "children": [],
+      "children": [
+        "MapView.rsrc:9476@0x01a8",
+        "MapView.rsrc:9476@0x020b",
+        "MapView.rsrc:9476@0x026e",
+        "MapView.rsrc:9476@0x02d1",
+        "MapView.rsrc:9476@0x0334",
+        "MapView.rsrc:9476@0x0397",
+        "MapView.rsrc:9476@0x03fa",
+        "MapView.rsrc:9476@0x045d",
+        "MapView.rsrc:9476@0x04c0"
+      ],
       "class": "TCluster",
       "class_source": "type_family",
       "control_value": 0,
@@ -110520,7 +112459,7 @@
         "frame_style": 5,
         "offset": 386,
         "serialized_child_count": 9,
-        "size": 927
+        "size": 38
       },
       "geometry": {
         "height": 182,
@@ -110540,6 +112479,402 @@
       "tag": "type",
       "tag_value": 1954115685,
       "type_code": "clus"
+    },
+    {
+      "child_hit_test": 1,
+      "children": [],
+      "class": "TRadioPictureButton",
+      "class_source": "type_family",
+      "control_value": 4,
+      "declared_class": "",
+      "depth": 3,
+      "enabled": 1,
+      "family": {
+        "content_insets": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "control_state": 1,
+        "control_tail_hex": "0000",
+        "control_value": 4,
+        "frame_style": 12,
+        "offset": 484,
+        "picture_id": 1314,
+        "secondary_picture_id": 1300,
+        "size": 37
+      },
+      "geometry": {
+        "height": 16,
+        "width": 159,
+        "x": 16,
+        "y": 19
+      },
+      "id": "MapView.rsrc:9476@0x01a8",
+      "input_gate": 1,
+      "offset": 424,
+      "parent": "MapView.rsrc:9476@0x0146",
+      "parent_class": "TCluster",
+      "parent_tag": "type",
+      "screen": "MapView.rsrc:9476",
+      "screen_name": "Navy Maker",
+      "state": 1,
+      "tag": "typ0",
+      "tag_value": 1954115632,
+      "type_code": "radb"
+    },
+    {
+      "child_hit_test": 1,
+      "children": [],
+      "class": "TRadioPictureButton",
+      "class_source": "type_family",
+      "control_value": 5,
+      "declared_class": "",
+      "depth": 3,
+      "enabled": 1,
+      "family": {
+        "content_insets": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "control_state": 0,
+        "control_tail_hex": "0000",
+        "control_value": 5,
+        "frame_style": 12,
+        "offset": 583,
+        "picture_id": 1314,
+        "secondary_picture_id": 1300,
+        "size": 37
+      },
+      "geometry": {
+        "height": 16,
+        "width": 159,
+        "x": 16,
+        "y": 36
+      },
+      "id": "MapView.rsrc:9476@0x020b",
+      "input_gate": 1,
+      "offset": 523,
+      "parent": "MapView.rsrc:9476@0x0146",
+      "parent_class": "TCluster",
+      "parent_tag": "type",
+      "screen": "MapView.rsrc:9476",
+      "screen_name": "Navy Maker",
+      "state": 1,
+      "tag": "typ1",
+      "tag_value": 1954115633,
+      "type_code": "radb"
+    },
+    {
+      "child_hit_test": 1,
+      "children": [],
+      "class": "TRadioPictureButton",
+      "class_source": "type_family",
+      "control_value": 6,
+      "declared_class": "",
+      "depth": 3,
+      "enabled": 1,
+      "family": {
+        "content_insets": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "control_state": 0,
+        "control_tail_hex": "0000",
+        "control_value": 6,
+        "frame_style": 12,
+        "offset": 682,
+        "picture_id": 1314,
+        "secondary_picture_id": 1300,
+        "size": 37
+      },
+      "geometry": {
+        "height": 16,
+        "width": 159,
+        "x": 16,
+        "y": 53
+      },
+      "id": "MapView.rsrc:9476@0x026e",
+      "input_gate": 1,
+      "offset": 622,
+      "parent": "MapView.rsrc:9476@0x0146",
+      "parent_class": "TCluster",
+      "parent_tag": "type",
+      "screen": "MapView.rsrc:9476",
+      "screen_name": "Navy Maker",
+      "state": 1,
+      "tag": "typ2",
+      "tag_value": 1954115634,
+      "type_code": "radb"
+    },
+    {
+      "child_hit_test": 1,
+      "children": [],
+      "class": "TRadioPictureButton",
+      "class_source": "type_family",
+      "control_value": 7,
+      "declared_class": "",
+      "depth": 3,
+      "enabled": 1,
+      "family": {
+        "content_insets": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "control_state": 0,
+        "control_tail_hex": "0000",
+        "control_value": 7,
+        "frame_style": 12,
+        "offset": 781,
+        "picture_id": 1314,
+        "secondary_picture_id": 1300,
+        "size": 37
+      },
+      "geometry": {
+        "height": 16,
+        "width": 159,
+        "x": 16,
+        "y": 70
+      },
+      "id": "MapView.rsrc:9476@0x02d1",
+      "input_gate": 1,
+      "offset": 721,
+      "parent": "MapView.rsrc:9476@0x0146",
+      "parent_class": "TCluster",
+      "parent_tag": "type",
+      "screen": "MapView.rsrc:9476",
+      "screen_name": "Navy Maker",
+      "state": 1,
+      "tag": "typ3",
+      "tag_value": 1954115635,
+      "type_code": "radb"
+    },
+    {
+      "child_hit_test": 1,
+      "children": [],
+      "class": "TRadioPictureButton",
+      "class_source": "type_family",
+      "control_value": 8,
+      "declared_class": "",
+      "depth": 3,
+      "enabled": 1,
+      "family": {
+        "content_insets": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "control_state": 0,
+        "control_tail_hex": "0000",
+        "control_value": 8,
+        "frame_style": 12,
+        "offset": 880,
+        "picture_id": 1314,
+        "secondary_picture_id": 1300,
+        "size": 37
+      },
+      "geometry": {
+        "height": 16,
+        "width": 159,
+        "x": 16,
+        "y": 87
+      },
+      "id": "MapView.rsrc:9476@0x0334",
+      "input_gate": 1,
+      "offset": 820,
+      "parent": "MapView.rsrc:9476@0x0146",
+      "parent_class": "TCluster",
+      "parent_tag": "type",
+      "screen": "MapView.rsrc:9476",
+      "screen_name": "Navy Maker",
+      "state": 1,
+      "tag": "typ4",
+      "tag_value": 1954115636,
+      "type_code": "radb"
+    },
+    {
+      "child_hit_test": 1,
+      "children": [],
+      "class": "TRadioPictureButton",
+      "class_source": "type_family",
+      "control_value": 9,
+      "declared_class": "",
+      "depth": 3,
+      "enabled": 1,
+      "family": {
+        "content_insets": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "control_state": 0,
+        "control_tail_hex": "0000",
+        "control_value": 9,
+        "frame_style": 12,
+        "offset": 979,
+        "picture_id": 1314,
+        "secondary_picture_id": 1300,
+        "size": 37
+      },
+      "geometry": {
+        "height": 16,
+        "width": 159,
+        "x": 16,
+        "y": 104
+      },
+      "id": "MapView.rsrc:9476@0x0397",
+      "input_gate": 1,
+      "offset": 919,
+      "parent": "MapView.rsrc:9476@0x0146",
+      "parent_class": "TCluster",
+      "parent_tag": "type",
+      "screen": "MapView.rsrc:9476",
+      "screen_name": "Navy Maker",
+      "state": 1,
+      "tag": "typ5",
+      "tag_value": 1954115637,
+      "type_code": "radb"
+    },
+    {
+      "child_hit_test": 1,
+      "children": [],
+      "class": "TRadioPictureButton",
+      "class_source": "type_family",
+      "control_value": 20,
+      "declared_class": "",
+      "depth": 3,
+      "enabled": 1,
+      "family": {
+        "content_insets": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "control_state": 0,
+        "control_tail_hex": "0000",
+        "control_value": 20,
+        "frame_style": 12,
+        "offset": 1078,
+        "picture_id": 1314,
+        "secondary_picture_id": 1300,
+        "size": 37
+      },
+      "geometry": {
+        "height": 16,
+        "width": 159,
+        "x": 16,
+        "y": 121
+      },
+      "id": "MapView.rsrc:9476@0x03fa",
+      "input_gate": 1,
+      "offset": 1018,
+      "parent": "MapView.rsrc:9476@0x0146",
+      "parent_class": "TCluster",
+      "parent_tag": "type",
+      "screen": "MapView.rsrc:9476",
+      "screen_name": "Navy Maker",
+      "state": 1,
+      "tag": "typ6",
+      "tag_value": 1954115638,
+      "type_code": "radb"
+    },
+    {
+      "child_hit_test": 1,
+      "children": [],
+      "class": "TRadioPictureButton",
+      "class_source": "type_family",
+      "control_value": 22,
+      "declared_class": "",
+      "depth": 3,
+      "enabled": 1,
+      "family": {
+        "content_insets": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "control_state": 0,
+        "control_tail_hex": "0000",
+        "control_value": 22,
+        "frame_style": 12,
+        "offset": 1177,
+        "picture_id": 1314,
+        "secondary_picture_id": 1300,
+        "size": 37
+      },
+      "geometry": {
+        "height": 16,
+        "width": 159,
+        "x": 16,
+        "y": 138
+      },
+      "id": "MapView.rsrc:9476@0x045d",
+      "input_gate": 1,
+      "offset": 1117,
+      "parent": "MapView.rsrc:9476@0x0146",
+      "parent_class": "TCluster",
+      "parent_tag": "type",
+      "screen": "MapView.rsrc:9476",
+      "screen_name": "Navy Maker",
+      "state": 1,
+      "tag": "typ7",
+      "tag_value": 1954115639,
+      "type_code": "radb"
+    },
+    {
+      "child_hit_test": 1,
+      "children": [],
+      "class": "TRadioPictureButton",
+      "class_source": "type_family",
+      "control_value": 42,
+      "declared_class": "",
+      "depth": 3,
+      "enabled": 1,
+      "family": {
+        "content_insets": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "control_state": 0,
+        "control_tail_hex": "0000",
+        "control_value": 42,
+        "frame_style": 12,
+        "offset": 1276,
+        "picture_id": 1520,
+        "secondary_picture_id": 1300,
+        "size": 37
+      },
+      "geometry": {
+        "height": 16,
+        "width": 159,
+        "x": 16,
+        "y": 155
+      },
+      "id": "MapView.rsrc:9476@0x04c0",
+      "input_gate": 1,
+      "offset": 1216,
+      "parent": "MapView.rsrc:9476@0x0146",
+      "parent_class": "TCluster",
+      "parent_tag": "type",
+      "screen": "MapView.rsrc:9476",
+      "screen_name": "Navy Maker",
+      "state": 1,
+      "tag": "typ8",
+      "tag_value": 1954115640,
+      "type_code": "radb"
     },
     {
       "child_hit_test": 0,
@@ -111608,12 +113943,6 @@
       "depth": 0,
       "enabled": 1,
       "family": {
-        "content_insets": [
-          1330060802,
-          79101951,
-          196611,
-          1936941682
-        ],
         "content_tag": "DLOG",
         "content_tag_value": 1145851719,
         "frame_style": 148556,
@@ -113456,12 +115785,6 @@
       "depth": 2,
       "enabled": 1,
       "family": {
-        "content_insets": [
-          120,
-          2147418112,
-          0,
-          0
-        ],
         "frame_style": 16842753,
         "offset": 650,
         "size": 37,
@@ -116221,12 +118544,6 @@
       "depth": 2,
       "enabled": 1,
       "family": {
-        "content_insets": [
-          120,
-          2147418112,
-          0,
-          0
-        ],
         "frame_style": 16842753,
         "offset": 3629,
         "size": 37,
@@ -116767,12 +119084,6 @@
       "depth": 0,
       "enabled": 1,
       "family": {
-        "content_insets": [
-          1330093706,
-          79101951,
-          196611,
-          1936941682
-        ],
         "content_tag": "DLOG",
         "content_tag_value": 1145851719,
         "frame_style": 524305484,
@@ -119167,12 +121478,6 @@
       "depth": 2,
       "enabled": 1,
       "family": {
-        "content_insets": [
-          120,
-          2147418112,
-          0,
-          0
-        ],
         "frame_style": 16842753,
         "offset": 828,
         "size": 37,
@@ -119378,12 +121683,6 @@
       "depth": 2,
       "enabled": 1,
       "family": {
-        "content_insets": [
-          120,
-          2147418112,
-          0,
-          0
-        ],
         "frame_style": 16842753,
         "offset": 363,
         "size": 37,
@@ -120578,12 +122877,6 @@
       "depth": 3,
       "enabled": 0,
       "family": {
-        "content_insets": [
-          120,
-          134217728,
-          0,
-          0
-        ],
         "frame_style": 65537,
         "offset": 623,
         "size": 37,
@@ -120627,12 +122920,6 @@
       "depth": 3,
       "enabled": 0,
       "family": {
-        "content_insets": [
-          120,
-          134217728,
-          0,
-          0
-        ],
         "frame_style": 65537,
         "offset": 780,
         "size": 37,
@@ -120747,12 +123034,6 @@
       "depth": 3,
       "enabled": 1,
       "family": {
-        "content_insets": [
-          120,
-          2147418112,
-          0,
-          0
-        ],
         "frame_style": 16842753,
         "offset": 1119,
         "size": 37,
@@ -121787,12 +124068,6 @@
       "depth": 2,
       "enabled": 1,
       "family": {
-        "content_insets": [
-          120,
-          2147418112,
-          0,
-          0
-        ],
         "frame_style": 16842753,
         "offset": 2327,
         "size": 37,
@@ -122077,12 +124352,6 @@
       "depth": 2,
       "enabled": 1,
       "family": {
-        "content_insets": [
-          120,
-          2147418112,
-          0,
-          0
-        ],
         "frame_style": 16842753,
         "offset": 745,
         "size": 37,
@@ -123700,12 +125969,6 @@
       "depth": 3,
       "enabled": 1,
       "family": {
-        "content_insets": [
-          120,
-          2147418112,
-          0,
-          0
-        ],
         "frame_style": 16842753,
         "offset": 427,
         "size": 37,
@@ -123829,12 +126092,6 @@
       "depth": 3,
       "enabled": 1,
       "family": {
-        "content_insets": [
-          120,
-          2147418112,
-          0,
-          0
-        ],
         "frame_style": 16842753,
         "offset": 804,
         "size": 37,
@@ -123964,12 +126221,6 @@
       "depth": 3,
       "enabled": 0,
       "family": {
-        "content_insets": [
-          120,
-          67108864,
-          0,
-          0
-        ],
         "frame_style": 16842753,
         "offset": 1165,
         "size": 37,
@@ -124012,7 +126263,9 @@
         "Startup.rsrc:951@0x0a67",
         "Startup.rsrc:951@0x0c89",
         "Startup.rsrc:951@0x0eab",
-        "Startup.rsrc:951@0x10cd"
+        "Startup.rsrc:951@0x10cd",
+        "Startup.rsrc:951@0x12ef",
+        "Startup.rsrc:951@0x1352"
       ],
       "class": "TWindow",
       "class_source": "type_family",
@@ -124021,12 +126274,6 @@
       "depth": 0,
       "enabled": 1,
       "family": {
-        "content_insets": [
-          1330060850,
-          65798145,
-          196611,
-          1936941682
-        ],
         "content_tag": "DLOG",
         "content_tag_value": 1145851719,
         "frame_style": 279628,
@@ -124354,6 +126601,94 @@
     },
     {
       "child_hit_test": 1,
+      "children": [],
+      "class": "TCzechBox",
+      "class_source": "type_family",
+      "control_value": 1,
+      "declared_class": "",
+      "depth": 1,
+      "enabled": 1,
+      "family": {
+        "content_insets": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "control_state": 0,
+        "control_tail_hex": "0000",
+        "control_value": 1,
+        "frame_style": 4,
+        "offset": 4907,
+        "picture_id": 1000,
+        "secondary_picture_id": 1000,
+        "size": 37
+      },
+      "geometry": {
+        "height": 14,
+        "width": 105,
+        "x": 231,
+        "y": 313
+      },
+      "id": "Startup.rsrc:951@0x12ef",
+      "input_gate": 1,
+      "offset": 4847,
+      "parent": "Startup.rsrc:951@0x0004",
+      "parent_class": "TWindow",
+      "parent_tag": "WIND",
+      "screen": "Startup.rsrc:951",
+      "screen_name": "test - Game Setup Dialog",
+      "state": 1,
+      "tag": "mult",
+      "tag_value": 1836412020,
+      "type_code": "chkb"
+    },
+    {
+      "child_hit_test": 1,
+      "children": [],
+      "class": "TCzechBox",
+      "class_source": "type_family",
+      "control_value": 2,
+      "declared_class": "",
+      "depth": 1,
+      "enabled": 1,
+      "family": {
+        "content_insets": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "control_state": 0,
+        "control_tail_hex": "0000",
+        "control_value": 2,
+        "frame_style": 4,
+        "offset": 5006,
+        "picture_id": 1000,
+        "secondary_picture_id": 1000,
+        "size": 37
+      },
+      "geometry": {
+        "height": 16,
+        "width": 84,
+        "x": 231,
+        "y": 343
+      },
+      "id": "Startup.rsrc:951@0x1352",
+      "input_gate": 1,
+      "offset": 4946,
+      "parent": "Startup.rsrc:951@0x0004",
+      "parent_class": "TWindow",
+      "parent_tag": "WIND",
+      "screen": "Startup.rsrc:951",
+      "screen_name": "test - Game Setup Dialog",
+      "state": 1,
+      "tag": "edit",
+      "tag_value": 1701079412,
+      "type_code": "chkb"
+    },
+    {
+      "child_hit_test": 1,
       "children": [
         "Startup.rsrc:952@0x0048"
       ],
@@ -124639,12 +126974,6 @@
       "depth": 2,
       "enabled": 1,
       "family": {
-        "content_insets": [
-          120,
-          2147418112,
-          0,
-          0
-        ],
         "frame_style": 65537,
         "offset": 886,
         "size": 37,
@@ -124690,12 +127019,6 @@
       "depth": 0,
       "enabled": 1,
       "family": {
-        "content_insets": [
-          1330060802,
-          79101951,
-          196611,
-          1936941682
-        ],
         "content_tag": "DLOG",
         "content_tag_value": 1145851719,
         "frame_style": 148556,
@@ -125107,12 +127430,42 @@
     {
       "child_hit_test": 1,
       "children": [
+        "Startup.rsrc:960@0x01cf",
+        "Startup.rsrc:960@0x0232",
+        "Startup.rsrc:960@0x0295",
+        "Startup.rsrc:960@0x02f8",
+        "Startup.rsrc:960@0x035b",
+        "Startup.rsrc:960@0x03be",
+        "Startup.rsrc:960@0x0421",
+        "Startup.rsrc:960@0x0484",
+        "Startup.rsrc:960@0x04e7",
         "Startup.rsrc:960@0x054a",
         "Startup.rsrc:960@0x05fb",
         "Startup.rsrc:960@0x0661",
+        "Startup.rsrc:960@0x06c1",
         "Startup.rsrc:960@0x0724",
         "Startup.rsrc:960@0x0784",
-        "Startup.rsrc:960@0x07e4"
+        "Startup.rsrc:960@0x07e4",
+        "Startup.rsrc:960@0x084a",
+        "Startup.rsrc:960@0x08ad",
+        "Startup.rsrc:960@0x0910",
+        "Startup.rsrc:960@0x0973",
+        "Startup.rsrc:960@0x09d6",
+        "Startup.rsrc:960@0x0a39",
+        "Startup.rsrc:960@0x0a9c",
+        "Startup.rsrc:960@0x0aff",
+        "Startup.rsrc:960@0x0b62",
+        "Startup.rsrc:960@0x0bc5",
+        "Startup.rsrc:960@0x0c28",
+        "Startup.rsrc:960@0x0c8b",
+        "Startup.rsrc:960@0x0cee",
+        "Startup.rsrc:960@0x0d51",
+        "Startup.rsrc:960@0x0db4",
+        "Startup.rsrc:960@0x0e17",
+        "Startup.rsrc:960@0x0e7a",
+        "Startup.rsrc:960@0x0edd",
+        "Startup.rsrc:960@0x0f40",
+        "Startup.rsrc:960@0x0fa3"
       ],
       "class": "TMapEditCluster",
       "class_source": "declared",
@@ -125132,7 +127485,7 @@
         "frame_style": 5,
         "offset": 425,
         "serialized_child_count": 36,
-        "size": 929
+        "size": 38
       },
       "geometry": {
         "height": 351,
@@ -125152,6 +127505,402 @@
       "tag": "econ",
       "tag_value": 1701015406,
       "type_code": "clus"
+    },
+    {
+      "child_hit_test": 1,
+      "children": [],
+      "class": "TRadioPictureButton",
+      "class_source": "type_family",
+      "control_value": 3,
+      "declared_class": "",
+      "depth": 4,
+      "enabled": 1,
+      "family": {
+        "content_insets": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "control_state": 0,
+        "control_tail_hex": "0000",
+        "control_value": 3,
+        "frame_style": 12,
+        "offset": 523,
+        "picture_id": 1015,
+        "secondary_picture_id": 1000,
+        "size": 37
+      },
+      "geometry": {
+        "height": 17,
+        "width": 48,
+        "x": 5,
+        "y": 2
+      },
+      "id": "Startup.rsrc:960@0x01cf",
+      "input_gate": 1,
+      "offset": 463,
+      "parent": "Startup.rsrc:960@0x015e",
+      "parent_class": "TMapEditCluster",
+      "parent_tag": "econ",
+      "screen": "Startup.rsrc:960",
+      "screen_name": "Map editor",
+      "state": 1,
+      "tag": "tera",
+      "tag_value": 1952805473,
+      "type_code": "radb"
+    },
+    {
+      "child_hit_test": 1,
+      "children": [],
+      "class": "TRadioPictureButton",
+      "class_source": "type_family",
+      "control_value": 5,
+      "declared_class": "",
+      "depth": 4,
+      "enabled": 1,
+      "family": {
+        "content_insets": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "control_state": 0,
+        "control_tail_hex": "0000",
+        "control_value": 5,
+        "frame_style": 12,
+        "offset": 622,
+        "picture_id": 1015,
+        "secondary_picture_id": 1000,
+        "size": 37
+      },
+      "geometry": {
+        "height": 17,
+        "width": 48,
+        "x": 5,
+        "y": 19
+      },
+      "id": "Startup.rsrc:960@0x0232",
+      "input_gate": 1,
+      "offset": 562,
+      "parent": "Startup.rsrc:960@0x015e",
+      "parent_class": "TMapEditCluster",
+      "parent_tag": "econ",
+      "screen": "Startup.rsrc:960",
+      "screen_name": "Map editor",
+      "state": 1,
+      "tag": "terb",
+      "tag_value": 1952805474,
+      "type_code": "radb"
+    },
+    {
+      "child_hit_test": 1,
+      "children": [],
+      "class": "TRadioPictureButton",
+      "class_source": "type_family",
+      "control_value": 6,
+      "declared_class": "",
+      "depth": 4,
+      "enabled": 1,
+      "family": {
+        "content_insets": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "control_state": 0,
+        "control_tail_hex": "0000",
+        "control_value": 6,
+        "frame_style": 12,
+        "offset": 721,
+        "picture_id": 1015,
+        "secondary_picture_id": 1000,
+        "size": 37
+      },
+      "geometry": {
+        "height": 17,
+        "width": 48,
+        "x": 5,
+        "y": 36
+      },
+      "id": "Startup.rsrc:960@0x0295",
+      "input_gate": 1,
+      "offset": 661,
+      "parent": "Startup.rsrc:960@0x015e",
+      "parent_class": "TMapEditCluster",
+      "parent_tag": "econ",
+      "screen": "Startup.rsrc:960",
+      "screen_name": "Map editor",
+      "state": 1,
+      "tag": "terc",
+      "tag_value": 1952805475,
+      "type_code": "radb"
+    },
+    {
+      "child_hit_test": 1,
+      "children": [],
+      "class": "TRadioPictureButton",
+      "class_source": "type_family",
+      "control_value": 7,
+      "declared_class": "",
+      "depth": 4,
+      "enabled": 1,
+      "family": {
+        "content_insets": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "control_state": 0,
+        "control_tail_hex": "0000",
+        "control_value": 7,
+        "frame_style": 12,
+        "offset": 820,
+        "picture_id": 1015,
+        "secondary_picture_id": 1000,
+        "size": 37
+      },
+      "geometry": {
+        "height": 17,
+        "width": 48,
+        "x": 5,
+        "y": 53
+      },
+      "id": "Startup.rsrc:960@0x02f8",
+      "input_gate": 1,
+      "offset": 760,
+      "parent": "Startup.rsrc:960@0x015e",
+      "parent_class": "TMapEditCluster",
+      "parent_tag": "econ",
+      "screen": "Startup.rsrc:960",
+      "screen_name": "Map editor",
+      "state": 1,
+      "tag": "terd",
+      "tag_value": 1952805476,
+      "type_code": "radb"
+    },
+    {
+      "child_hit_test": 1,
+      "children": [],
+      "class": "TRadioPictureButton",
+      "class_source": "type_family",
+      "control_value": 8,
+      "declared_class": "",
+      "depth": 4,
+      "enabled": 1,
+      "family": {
+        "content_insets": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "control_state": 0,
+        "control_tail_hex": "0000",
+        "control_value": 8,
+        "frame_style": 12,
+        "offset": 919,
+        "picture_id": 1015,
+        "secondary_picture_id": 1000,
+        "size": 37
+      },
+      "geometry": {
+        "height": 17,
+        "width": 48,
+        "x": 57,
+        "y": 2
+      },
+      "id": "Startup.rsrc:960@0x035b",
+      "input_gate": 1,
+      "offset": 859,
+      "parent": "Startup.rsrc:960@0x015e",
+      "parent_class": "TMapEditCluster",
+      "parent_tag": "econ",
+      "screen": "Startup.rsrc:960",
+      "screen_name": "Map editor",
+      "state": 1,
+      "tag": "teri",
+      "tag_value": 1952805481,
+      "type_code": "radb"
+    },
+    {
+      "child_hit_test": 1,
+      "children": [],
+      "class": "TRadioPictureButton",
+      "class_source": "type_family",
+      "control_value": 9,
+      "declared_class": "",
+      "depth": 4,
+      "enabled": 1,
+      "family": {
+        "content_insets": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "control_state": 0,
+        "control_tail_hex": "0000",
+        "control_value": 9,
+        "frame_style": 12,
+        "offset": 1018,
+        "picture_id": 1015,
+        "secondary_picture_id": 1000,
+        "size": 37
+      },
+      "geometry": {
+        "height": 17,
+        "width": 48,
+        "x": 57,
+        "y": 19
+      },
+      "id": "Startup.rsrc:960@0x03be",
+      "input_gate": 1,
+      "offset": 958,
+      "parent": "Startup.rsrc:960@0x015e",
+      "parent_class": "TMapEditCluster",
+      "parent_tag": "econ",
+      "screen": "Startup.rsrc:960",
+      "screen_name": "Map editor",
+      "state": 1,
+      "tag": "terj",
+      "tag_value": 1952805482,
+      "type_code": "radb"
+    },
+    {
+      "child_hit_test": 1,
+      "children": [],
+      "class": "TRadioPictureButton",
+      "class_source": "type_family",
+      "control_value": 10,
+      "declared_class": "",
+      "depth": 4,
+      "enabled": 1,
+      "family": {
+        "content_insets": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "control_state": 0,
+        "control_tail_hex": "0000",
+        "control_value": 10,
+        "frame_style": 12,
+        "offset": 1117,
+        "picture_id": 1015,
+        "secondary_picture_id": 1000,
+        "size": 37
+      },
+      "geometry": {
+        "height": 17,
+        "width": 48,
+        "x": 57,
+        "y": 36
+      },
+      "id": "Startup.rsrc:960@0x0421",
+      "input_gate": 1,
+      "offset": 1057,
+      "parent": "Startup.rsrc:960@0x015e",
+      "parent_class": "TMapEditCluster",
+      "parent_tag": "econ",
+      "screen": "Startup.rsrc:960",
+      "screen_name": "Map editor",
+      "state": 1,
+      "tag": "terk",
+      "tag_value": 1952805483,
+      "type_code": "radb"
+    },
+    {
+      "child_hit_test": 1,
+      "children": [],
+      "class": "TRadioPictureButton",
+      "class_source": "type_family",
+      "control_value": 12,
+      "declared_class": "",
+      "depth": 4,
+      "enabled": 1,
+      "family": {
+        "content_insets": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "control_state": 0,
+        "control_tail_hex": "0000",
+        "control_value": 12,
+        "frame_style": 12,
+        "offset": 1216,
+        "picture_id": 1015,
+        "secondary_picture_id": 1000,
+        "size": 37
+      },
+      "geometry": {
+        "height": 17,
+        "width": 48,
+        "x": 57,
+        "y": 53
+      },
+      "id": "Startup.rsrc:960@0x0484",
+      "input_gate": 1,
+      "offset": 1156,
+      "parent": "Startup.rsrc:960@0x015e",
+      "parent_class": "TMapEditCluster",
+      "parent_tag": "econ",
+      "screen": "Startup.rsrc:960",
+      "screen_name": "Map editor",
+      "state": 1,
+      "tag": "terl",
+      "tag_value": 1952805484,
+      "type_code": "radb"
+    },
+    {
+      "child_hit_test": 1,
+      "children": [],
+      "class": "TRadioPictureButton",
+      "class_source": "type_family",
+      "control_value": 11,
+      "declared_class": "",
+      "depth": 4,
+      "enabled": 1,
+      "family": {
+        "content_insets": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "control_state": 0,
+        "control_tail_hex": "0000",
+        "control_value": 11,
+        "frame_style": 12,
+        "offset": 1315,
+        "picture_id": 1302,
+        "secondary_picture_id": 1000,
+        "size": 37
+      },
+      "geometry": {
+        "height": 17,
+        "width": 74,
+        "x": 38,
+        "y": 185
+      },
+      "id": "Startup.rsrc:960@0x04e7",
+      "input_gate": 1,
+      "offset": 1255,
+      "parent": "Startup.rsrc:960@0x015e",
+      "parent_class": "TMapEditCluster",
+      "parent_tag": "econ",
+      "screen": "Startup.rsrc:960",
+      "screen_name": "Map editor",
+      "state": 1,
+      "tag": "prov",
+      "tag_value": 1886547830,
+      "type_code": "radb"
     },
     {
       "child_hit_test": 0,
@@ -125287,6 +128036,50 @@
     {
       "child_hit_test": 1,
       "children": [],
+      "class": "TRadioPictureButton",
+      "class_source": "type_family",
+      "control_value": 20,
+      "declared_class": "",
+      "depth": 4,
+      "enabled": 1,
+      "family": {
+        "content_insets": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "control_state": 0,
+        "control_tail_hex": "0000",
+        "control_value": 20,
+        "frame_style": 12,
+        "offset": 1789,
+        "picture_id": 1015,
+        "secondary_picture_id": 1000,
+        "size": 37
+      },
+      "geometry": {
+        "height": 16,
+        "width": 104,
+        "x": 5,
+        "y": 203
+      },
+      "id": "Startup.rsrc:960@0x06c1",
+      "input_gate": 1,
+      "offset": 1729,
+      "parent": "Startup.rsrc:960@0x015e",
+      "parent_class": "TMapEditCluster",
+      "parent_tag": "econ",
+      "screen": "Startup.rsrc:960",
+      "screen_name": "Map editor",
+      "state": 1,
+      "tag": "seat",
+      "tag_value": 1936023924,
+      "type_code": "radb"
+    },
+    {
+      "child_hit_test": 1,
+      "children": [],
       "class": "TPicture",
       "class_source": "type_family",
       "control_value": 0,
@@ -125406,6 +128199,886 @@
       "tag": "    ",
       "tag_value": 538976288,
       "type_code": "stat"
+    },
+    {
+      "child_hit_test": 1,
+      "children": [],
+      "class": "TCzechBox",
+      "class_source": "type_family",
+      "control_value": -1,
+      "declared_class": "",
+      "depth": 4,
+      "enabled": 1,
+      "family": {
+        "content_insets": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "control_state": 0,
+        "control_tail_hex": "0000",
+        "control_value": -1,
+        "frame_style": 4,
+        "offset": 2182,
+        "picture_id": 1000,
+        "secondary_picture_id": 1000,
+        "size": 37
+      },
+      "geometry": {
+        "height": 16,
+        "width": 16,
+        "x": 28,
+        "y": 226
+      },
+      "id": "Startup.rsrc:960@0x084a",
+      "input_gate": 1,
+      "offset": 2122,
+      "parent": "Startup.rsrc:960@0x015e",
+      "parent_class": "TMapEditCluster",
+      "parent_tag": "econ",
+      "screen": "Startup.rsrc:960",
+      "screen_name": "Map editor",
+      "state": 1,
+      "tag": "exi0",
+      "tag_value": 1702390064,
+      "type_code": "chkb"
+    },
+    {
+      "child_hit_test": 1,
+      "children": [],
+      "class": "TCzechBox",
+      "class_source": "type_family",
+      "control_value": -1,
+      "declared_class": "",
+      "depth": 4,
+      "enabled": 1,
+      "family": {
+        "content_insets": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "control_state": 0,
+        "control_tail_hex": "0000",
+        "control_value": -1,
+        "frame_style": 4,
+        "offset": 2281,
+        "picture_id": 1000,
+        "secondary_picture_id": 1000,
+        "size": 37
+      },
+      "geometry": {
+        "height": 16,
+        "width": 16,
+        "x": 36,
+        "y": 240
+      },
+      "id": "Startup.rsrc:960@0x08ad",
+      "input_gate": 1,
+      "offset": 2221,
+      "parent": "Startup.rsrc:960@0x015e",
+      "parent_class": "TMapEditCluster",
+      "parent_tag": "econ",
+      "screen": "Startup.rsrc:960",
+      "screen_name": "Map editor",
+      "state": 1,
+      "tag": "exi1",
+      "tag_value": 1702390065,
+      "type_code": "chkb"
+    },
+    {
+      "child_hit_test": 1,
+      "children": [],
+      "class": "TCzechBox",
+      "class_source": "type_family",
+      "control_value": -1,
+      "declared_class": "",
+      "depth": 4,
+      "enabled": 1,
+      "family": {
+        "content_insets": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "control_state": 0,
+        "control_tail_hex": "0000",
+        "control_value": -1,
+        "frame_style": 4,
+        "offset": 2380,
+        "picture_id": 1000,
+        "secondary_picture_id": 1000,
+        "size": 37
+      },
+      "geometry": {
+        "height": 16,
+        "width": 16,
+        "x": 28,
+        "y": 254
+      },
+      "id": "Startup.rsrc:960@0x0910",
+      "input_gate": 1,
+      "offset": 2320,
+      "parent": "Startup.rsrc:960@0x015e",
+      "parent_class": "TMapEditCluster",
+      "parent_tag": "econ",
+      "screen": "Startup.rsrc:960",
+      "screen_name": "Map editor",
+      "state": 1,
+      "tag": "exi2",
+      "tag_value": 1702390066,
+      "type_code": "chkb"
+    },
+    {
+      "child_hit_test": 1,
+      "children": [],
+      "class": "TCzechBox",
+      "class_source": "type_family",
+      "control_value": -1,
+      "declared_class": "",
+      "depth": 4,
+      "enabled": 1,
+      "family": {
+        "content_insets": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "control_state": 0,
+        "control_tail_hex": "0000",
+        "control_value": -1,
+        "frame_style": 4,
+        "offset": 2479,
+        "picture_id": 1000,
+        "secondary_picture_id": 1000,
+        "size": 37
+      },
+      "geometry": {
+        "height": 16,
+        "width": 16,
+        "x": 13,
+        "y": 254
+      },
+      "id": "Startup.rsrc:960@0x0973",
+      "input_gate": 1,
+      "offset": 2419,
+      "parent": "Startup.rsrc:960@0x015e",
+      "parent_class": "TMapEditCluster",
+      "parent_tag": "econ",
+      "screen": "Startup.rsrc:960",
+      "screen_name": "Map editor",
+      "state": 1,
+      "tag": "exi3",
+      "tag_value": 1702390067,
+      "type_code": "chkb"
+    },
+    {
+      "child_hit_test": 1,
+      "children": [],
+      "class": "TCzechBox",
+      "class_source": "type_family",
+      "control_value": -1,
+      "declared_class": "",
+      "depth": 4,
+      "enabled": 1,
+      "family": {
+        "content_insets": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "control_state": 0,
+        "control_tail_hex": "0000",
+        "control_value": -1,
+        "frame_style": 4,
+        "offset": 2578,
+        "picture_id": 1000,
+        "secondary_picture_id": 1000,
+        "size": 37
+      },
+      "geometry": {
+        "height": 16,
+        "width": 16,
+        "x": 5,
+        "y": 240
+      },
+      "id": "Startup.rsrc:960@0x09d6",
+      "input_gate": 1,
+      "offset": 2518,
+      "parent": "Startup.rsrc:960@0x015e",
+      "parent_class": "TMapEditCluster",
+      "parent_tag": "econ",
+      "screen": "Startup.rsrc:960",
+      "screen_name": "Map editor",
+      "state": 1,
+      "tag": "exi4",
+      "tag_value": 1702390068,
+      "type_code": "chkb"
+    },
+    {
+      "child_hit_test": 1,
+      "children": [],
+      "class": "TCzechBox",
+      "class_source": "type_family",
+      "control_value": -1,
+      "declared_class": "",
+      "depth": 4,
+      "enabled": 1,
+      "family": {
+        "content_insets": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "control_state": 0,
+        "control_tail_hex": "0000",
+        "control_value": -1,
+        "frame_style": 4,
+        "offset": 2677,
+        "picture_id": 1000,
+        "secondary_picture_id": 1000,
+        "size": 37
+      },
+      "geometry": {
+        "height": 16,
+        "width": 16,
+        "x": 13,
+        "y": 226
+      },
+      "id": "Startup.rsrc:960@0x0a39",
+      "input_gate": 1,
+      "offset": 2617,
+      "parent": "Startup.rsrc:960@0x015e",
+      "parent_class": "TMapEditCluster",
+      "parent_tag": "econ",
+      "screen": "Startup.rsrc:960",
+      "screen_name": "Map editor",
+      "state": 1,
+      "tag": "exi5",
+      "tag_value": 1702390069,
+      "type_code": "chkb"
+    },
+    {
+      "child_hit_test": 1,
+      "children": [],
+      "class": "TRadioPictureButton",
+      "class_source": "type_family",
+      "control_value": 24,
+      "declared_class": "",
+      "depth": 4,
+      "enabled": 1,
+      "family": {
+        "content_insets": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "control_state": 0,
+        "control_tail_hex": "0000",
+        "control_value": 24,
+        "frame_style": 12,
+        "offset": 2776,
+        "picture_id": 1015,
+        "secondary_picture_id": 1000,
+        "size": 37
+      },
+      "geometry": {
+        "height": 17,
+        "width": 48,
+        "x": 61,
+        "y": 226
+      },
+      "id": "Startup.rsrc:960@0x0a9c",
+      "input_gate": 1,
+      "offset": 2716,
+      "parent": "Startup.rsrc:960@0x015e",
+      "parent_class": "TMapEditCluster",
+      "parent_tag": "econ",
+      "screen": "Startup.rsrc:960",
+      "screen_name": "Map editor",
+      "state": 1,
+      "tag": "rail",
+      "tag_value": 1918986604,
+      "type_code": "radb"
+    },
+    {
+      "child_hit_test": 1,
+      "children": [],
+      "class": "TRadioPictureButton",
+      "class_source": "type_family",
+      "control_value": 25,
+      "declared_class": "",
+      "depth": 4,
+      "enabled": 1,
+      "family": {
+        "content_insets": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "control_state": 0,
+        "control_tail_hex": "0000",
+        "control_value": 25,
+        "frame_style": 12,
+        "offset": 2875,
+        "picture_id": 1015,
+        "secondary_picture_id": 1000,
+        "size": 37
+      },
+      "geometry": {
+        "height": 17,
+        "width": 48,
+        "x": 61,
+        "y": 244
+      },
+      "id": "Startup.rsrc:960@0x0aff",
+      "input_gate": 1,
+      "offset": 2815,
+      "parent": "Startup.rsrc:960@0x015e",
+      "parent_class": "TMapEditCluster",
+      "parent_tag": "econ",
+      "screen": "Startup.rsrc:960",
+      "screen_name": "Map editor",
+      "state": 1,
+      "tag": "rive",
+      "tag_value": 1919514213,
+      "type_code": "radb"
+    },
+    {
+      "child_hit_test": 1,
+      "children": [],
+      "class": "TRadioPictureButton",
+      "class_source": "type_family",
+      "control_value": 13,
+      "declared_class": "",
+      "depth": 4,
+      "enabled": 1,
+      "family": {
+        "content_insets": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "control_state": 0,
+        "control_tail_hex": "0000",
+        "control_value": 13,
+        "frame_style": 12,
+        "offset": 2974,
+        "picture_id": 1015,
+        "secondary_picture_id": 1000,
+        "size": 37
+      },
+      "geometry": {
+        "height": 17,
+        "width": 48,
+        "x": 5,
+        "y": 70
+      },
+      "id": "Startup.rsrc:960@0x0b62",
+      "input_gate": 1,
+      "offset": 2914,
+      "parent": "Startup.rsrc:960@0x015e",
+      "parent_class": "TMapEditCluster",
+      "parent_tag": "econ",
+      "screen": "Startup.rsrc:960",
+      "screen_name": "Map editor",
+      "state": 1,
+      "tag": "tere",
+      "tag_value": 1952805477,
+      "type_code": "radb"
+    },
+    {
+      "child_hit_test": 1,
+      "children": [],
+      "class": "TRadioPictureButton",
+      "class_source": "type_family",
+      "control_value": 14,
+      "declared_class": "",
+      "depth": 4,
+      "enabled": 1,
+      "family": {
+        "content_insets": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "control_state": 0,
+        "control_tail_hex": "0000",
+        "control_value": 14,
+        "frame_style": 12,
+        "offset": 3073,
+        "picture_id": 1015,
+        "secondary_picture_id": 1000,
+        "size": 37
+      },
+      "geometry": {
+        "height": 17,
+        "width": 48,
+        "x": 5,
+        "y": 87
+      },
+      "id": "Startup.rsrc:960@0x0bc5",
+      "input_gate": 1,
+      "offset": 3013,
+      "parent": "Startup.rsrc:960@0x015e",
+      "parent_class": "TMapEditCluster",
+      "parent_tag": "econ",
+      "screen": "Startup.rsrc:960",
+      "screen_name": "Map editor",
+      "state": 1,
+      "tag": "terf",
+      "tag_value": 1952805478,
+      "type_code": "radb"
+    },
+    {
+      "child_hit_test": 1,
+      "children": [],
+      "class": "TRadioPictureButton",
+      "class_source": "type_family",
+      "control_value": 15,
+      "declared_class": "",
+      "depth": 4,
+      "enabled": 1,
+      "family": {
+        "content_insets": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "control_state": 0,
+        "control_tail_hex": "0000",
+        "control_value": 15,
+        "frame_style": 12,
+        "offset": 3172,
+        "picture_id": 1015,
+        "secondary_picture_id": 1000,
+        "size": 37
+      },
+      "geometry": {
+        "height": 17,
+        "width": 48,
+        "x": 5,
+        "y": 104
+      },
+      "id": "Startup.rsrc:960@0x0c28",
+      "input_gate": 1,
+      "offset": 3112,
+      "parent": "Startup.rsrc:960@0x015e",
+      "parent_class": "TMapEditCluster",
+      "parent_tag": "econ",
+      "screen": "Startup.rsrc:960",
+      "screen_name": "Map editor",
+      "state": 1,
+      "tag": "terg",
+      "tag_value": 1952805479,
+      "type_code": "radb"
+    },
+    {
+      "child_hit_test": 1,
+      "children": [],
+      "class": "TRadioPictureButton",
+      "class_source": "type_family",
+      "control_value": 16,
+      "declared_class": "",
+      "depth": 4,
+      "enabled": 1,
+      "family": {
+        "content_insets": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "control_state": 0,
+        "control_tail_hex": "0000",
+        "control_value": 16,
+        "frame_style": 12,
+        "offset": 3271,
+        "picture_id": 1015,
+        "secondary_picture_id": 1000,
+        "size": 37
+      },
+      "geometry": {
+        "height": 17,
+        "width": 48,
+        "x": 57,
+        "y": 104
+      },
+      "id": "Startup.rsrc:960@0x0c8b",
+      "input_gate": 1,
+      "offset": 3211,
+      "parent": "Startup.rsrc:960@0x015e",
+      "parent_class": "TMapEditCluster",
+      "parent_tag": "econ",
+      "screen": "Startup.rsrc:960",
+      "screen_name": "Map editor",
+      "state": 1,
+      "tag": "terh",
+      "tag_value": 1952805480,
+      "type_code": "radb"
+    },
+    {
+      "child_hit_test": 1,
+      "children": [],
+      "class": "TRadioPictureButton",
+      "class_source": "type_family",
+      "control_value": 17,
+      "declared_class": "",
+      "depth": 4,
+      "enabled": 1,
+      "family": {
+        "content_insets": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "control_state": 0,
+        "control_tail_hex": "0000",
+        "control_value": 17,
+        "frame_style": 12,
+        "offset": 3370,
+        "picture_id": 1015,
+        "secondary_picture_id": 1000,
+        "size": 37
+      },
+      "geometry": {
+        "height": 17,
+        "width": 48,
+        "x": 57,
+        "y": 70
+      },
+      "id": "Startup.rsrc:960@0x0cee",
+      "input_gate": 1,
+      "offset": 3310,
+      "parent": "Startup.rsrc:960@0x015e",
+      "parent_class": "TMapEditCluster",
+      "parent_tag": "econ",
+      "screen": "Startup.rsrc:960",
+      "screen_name": "Map editor",
+      "state": 1,
+      "tag": "term",
+      "tag_value": 1952805485,
+      "type_code": "radb"
+    },
+    {
+      "child_hit_test": 1,
+      "children": [],
+      "class": "TRadioPictureButton",
+      "class_source": "type_family",
+      "control_value": 4,
+      "declared_class": "",
+      "depth": 4,
+      "enabled": 1,
+      "family": {
+        "content_insets": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "control_state": 0,
+        "control_tail_hex": "0000",
+        "control_value": 4,
+        "frame_style": 12,
+        "offset": 3469,
+        "picture_id": 1015,
+        "secondary_picture_id": 1000,
+        "size": 37
+      },
+      "geometry": {
+        "height": 17,
+        "width": 48,
+        "x": 57,
+        "y": 87
+      },
+      "id": "Startup.rsrc:960@0x0d51",
+      "input_gate": 1,
+      "offset": 3409,
+      "parent": "Startup.rsrc:960@0x015e",
+      "parent_class": "TMapEditCluster",
+      "parent_tag": "econ",
+      "screen": "Startup.rsrc:960",
+      "screen_name": "Map editor",
+      "state": 1,
+      "tag": "tern",
+      "tag_value": 1952805486,
+      "type_code": "radb"
+    },
+    {
+      "child_hit_test": 1,
+      "children": [],
+      "class": "TRadioPictureButton",
+      "class_source": "type_family",
+      "control_value": 18,
+      "declared_class": "",
+      "depth": 4,
+      "enabled": 1,
+      "family": {
+        "content_insets": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "control_state": 0,
+        "control_tail_hex": "0000",
+        "control_value": 18,
+        "frame_style": 12,
+        "offset": 3568,
+        "picture_id": 1015,
+        "secondary_picture_id": 1000,
+        "size": 37
+      },
+      "geometry": {
+        "height": 17,
+        "width": 48,
+        "x": 5,
+        "y": 131
+      },
+      "id": "Startup.rsrc:960@0x0db4",
+      "input_gate": 1,
+      "offset": 3508,
+      "parent": "Startup.rsrc:960@0x015e",
+      "parent_class": "TMapEditCluster",
+      "parent_tag": "econ",
+      "screen": "Startup.rsrc:960",
+      "screen_name": "Map editor",
+      "state": 1,
+      "tag": "min0",
+      "tag_value": 1835626032,
+      "type_code": "radb"
+    },
+    {
+      "child_hit_test": 1,
+      "children": [],
+      "class": "TRadioPictureButton",
+      "class_source": "type_family",
+      "control_value": 19,
+      "declared_class": "",
+      "depth": 4,
+      "enabled": 1,
+      "family": {
+        "content_insets": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "control_state": 0,
+        "control_tail_hex": "0000",
+        "control_value": 19,
+        "frame_style": 12,
+        "offset": 3667,
+        "picture_id": 1015,
+        "secondary_picture_id": 1000,
+        "size": 37
+      },
+      "geometry": {
+        "height": 17,
+        "width": 48,
+        "x": 57,
+        "y": 148
+      },
+      "id": "Startup.rsrc:960@0x0e17",
+      "input_gate": 1,
+      "offset": 3607,
+      "parent": "Startup.rsrc:960@0x015e",
+      "parent_class": "TMapEditCluster",
+      "parent_tag": "econ",
+      "screen": "Startup.rsrc:960",
+      "screen_name": "Map editor",
+      "state": 1,
+      "tag": "min1",
+      "tag_value": 1835626033,
+      "type_code": "radb"
+    },
+    {
+      "child_hit_test": 1,
+      "children": [],
+      "class": "TRadioPictureButton",
+      "class_source": "type_family",
+      "control_value": 26,
+      "declared_class": "",
+      "depth": 4,
+      "enabled": 1,
+      "family": {
+        "content_insets": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "control_state": 0,
+        "control_tail_hex": "0000",
+        "control_value": 26,
+        "frame_style": 12,
+        "offset": 3766,
+        "picture_id": 1015,
+        "secondary_picture_id": 1000,
+        "size": 37
+      },
+      "geometry": {
+        "height": 17,
+        "width": 48,
+        "x": 57,
+        "y": 165
+      },
+      "id": "Startup.rsrc:960@0x0e7a",
+      "input_gate": 1,
+      "offset": 3706,
+      "parent": "Startup.rsrc:960@0x015e",
+      "parent_class": "TMapEditCluster",
+      "parent_tag": "econ",
+      "screen": "Startup.rsrc:960",
+      "screen_name": "Map editor",
+      "state": 1,
+      "tag": "min3",
+      "tag_value": 1835626035,
+      "type_code": "radb"
+    },
+    {
+      "child_hit_test": 1,
+      "children": [],
+      "class": "TRadioPictureButton",
+      "class_source": "type_family",
+      "control_value": 27,
+      "declared_class": "",
+      "depth": 4,
+      "enabled": 1,
+      "family": {
+        "content_insets": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "control_state": 0,
+        "control_tail_hex": "0000",
+        "control_value": 27,
+        "frame_style": 12,
+        "offset": 3865,
+        "picture_id": 1015,
+        "secondary_picture_id": 1000,
+        "size": 37
+      },
+      "geometry": {
+        "height": 17,
+        "width": 48,
+        "x": 5,
+        "y": 148
+      },
+      "id": "Startup.rsrc:960@0x0edd",
+      "input_gate": 1,
+      "offset": 3805,
+      "parent": "Startup.rsrc:960@0x015e",
+      "parent_class": "TMapEditCluster",
+      "parent_tag": "econ",
+      "screen": "Startup.rsrc:960",
+      "screen_name": "Map editor",
+      "state": 1,
+      "tag": "min2",
+      "tag_value": 1835626034,
+      "type_code": "radb"
+    },
+    {
+      "child_hit_test": 1,
+      "children": [],
+      "class": "TRadioPictureButton",
+      "class_source": "type_family",
+      "control_value": 28,
+      "declared_class": "",
+      "depth": 4,
+      "enabled": 1,
+      "family": {
+        "content_insets": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "control_state": 0,
+        "control_tail_hex": "0000",
+        "control_value": 28,
+        "frame_style": 12,
+        "offset": 3964,
+        "picture_id": 1015,
+        "secondary_picture_id": 1000,
+        "size": 37
+      },
+      "geometry": {
+        "height": 17,
+        "width": 48,
+        "x": 5,
+        "y": 165
+      },
+      "id": "Startup.rsrc:960@0x0f40",
+      "input_gate": 1,
+      "offset": 3904,
+      "parent": "Startup.rsrc:960@0x015e",
+      "parent_class": "TMapEditCluster",
+      "parent_tag": "econ",
+      "screen": "Startup.rsrc:960",
+      "screen_name": "Map editor",
+      "state": 1,
+      "tag": "min4",
+      "tag_value": 1835626036,
+      "type_code": "radb"
+    },
+    {
+      "child_hit_test": 1,
+      "children": [],
+      "class": "TRadioPictureButton",
+      "class_source": "type_family",
+      "control_value": 29,
+      "declared_class": "",
+      "depth": 4,
+      "enabled": 1,
+      "family": {
+        "content_insets": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "control_state": 0,
+        "control_tail_hex": "0000",
+        "control_value": 29,
+        "frame_style": 12,
+        "offset": 4063,
+        "picture_id": 1015,
+        "secondary_picture_id": 1000,
+        "size": 37
+      },
+      "geometry": {
+        "height": 17,
+        "width": 48,
+        "x": 57,
+        "y": 121
+      },
+      "id": "Startup.rsrc:960@0x0fa3",
+      "input_gate": 1,
+      "offset": 4003,
+      "parent": "Startup.rsrc:960@0x015e",
+      "parent_class": "TMapEditCluster",
+      "parent_tag": "econ",
+      "screen": "Startup.rsrc:960",
+      "screen_name": "Map editor",
+      "state": 1,
+      "tag": "terp",
+      "tag_value": 1952805488,
+      "type_code": "radb"
     },
     {
       "child_hit_test": 1,
@@ -125746,7 +129419,10 @@
     },
     {
       "child_hit_test": 1,
-      "children": [],
+      "children": [
+        "Startup.rsrc:965@0x03d8",
+        "Startup.rsrc:965@0x043b"
+      ],
       "class": "TCluster",
       "class_source": "type_family",
       "control_value": 0,
@@ -125765,7 +129441,7 @@
         "frame_style": 5,
         "offset": 946,
         "serialized_child_count": 2,
-        "size": 234
+        "size": 38
       },
       "geometry": {
         "height": 54,
@@ -125785,6 +129461,94 @@
       "tag": "type",
       "tag_value": 1954115685,
       "type_code": "clus"
+    },
+    {
+      "child_hit_test": 1,
+      "children": [],
+      "class": "TRadioPictureButton",
+      "class_source": "type_family",
+      "control_value": 22,
+      "declared_class": "",
+      "depth": 3,
+      "enabled": 1,
+      "family": {
+        "content_insets": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "control_state": 1,
+        "control_tail_hex": "0000",
+        "control_value": 22,
+        "frame_style": 12,
+        "offset": 1044,
+        "picture_id": 1000,
+        "secondary_picture_id": 1000,
+        "size": 37
+      },
+      "geometry": {
+        "height": 16,
+        "width": 104,
+        "x": 6,
+        "y": 17
+      },
+      "id": "Startup.rsrc:965@0x03d8",
+      "input_gate": 1,
+      "offset": 984,
+      "parent": "Startup.rsrc:965@0x0376",
+      "parent_class": "TCluster",
+      "parent_tag": "type",
+      "screen": "Startup.rsrc:965",
+      "screen_name": "Province editor",
+      "state": 1,
+      "tag": "town",
+      "tag_value": 1953462126,
+      "type_code": "radb"
+    },
+    {
+      "child_hit_test": 1,
+      "children": [],
+      "class": "TRadioPictureButton",
+      "class_source": "type_family",
+      "control_value": 23,
+      "declared_class": "",
+      "depth": 3,
+      "enabled": 1,
+      "family": {
+        "content_insets": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "control_state": 0,
+        "control_tail_hex": "0000",
+        "control_value": 23,
+        "frame_style": 12,
+        "offset": 1143,
+        "picture_id": 1000,
+        "secondary_picture_id": 1000,
+        "size": 37
+      },
+      "geometry": {
+        "height": 16,
+        "width": 104,
+        "x": 6,
+        "y": 34
+      },
+      "id": "Startup.rsrc:965@0x043b",
+      "input_gate": 1,
+      "offset": 1083,
+      "parent": "Startup.rsrc:965@0x0376",
+      "parent_class": "TCluster",
+      "parent_tag": "type",
+      "screen": "Startup.rsrc:965",
+      "screen_name": "Province editor",
+      "state": 1,
+      "tag": "city",
+      "tag_value": 1667855481,
+      "type_code": "radb"
     },
     {
       "child_hit_test": 1,
@@ -126084,12 +129848,6 @@
       "depth": 2,
       "enabled": 1,
       "family": {
-        "content_insets": [
-          120,
-          67108864,
-          0,
-          0
-        ],
         "frame_style": 16842753,
         "offset": 359,
         "size": 37,
@@ -126664,12 +130422,6 @@
       "depth": 2,
       "enabled": 1,
       "family": {
-        "content_insets": [
-          120,
-          65536000,
-          0,
-          0
-        ],
         "frame_style": 16842753,
         "offset": 479,
         "size": 37,
@@ -126963,12 +130715,6 @@
       "depth": 2,
       "enabled": 1,
       "family": {
-        "content_insets": [
-          120,
-          65536000,
-          0,
-          0
-        ],
         "frame_style": 16842753,
         "offset": 561,
         "size": 37,
@@ -127513,12 +131259,6 @@
       "depth": 2,
       "enabled": 1,
       "family": {
-        "content_insets": [
-          120,
-          2147418112,
-          0,
-          0
-        ],
         "frame_style": 16842753,
         "offset": 900,
         "size": 37,
@@ -128392,12 +132132,6 @@
       "depth": 2,
       "enabled": 1,
       "family": {
-        "content_insets": [
-          120,
-          2147418112,
-          0,
-          0
-        ],
         "frame_style": 16842753,
         "offset": 2260,
         "size": 37,
@@ -135365,12 +139099,6 @@
       "depth": 2,
       "enabled": 1,
       "family": {
-        "content_insets": [
-          120,
-          2147418112,
-          0,
-          0
-        ],
         "frame_style": 16842753,
         "offset": 19618,
         "size": 37,
@@ -142655,12 +146383,6 @@
       "depth": 1,
       "enabled": 1,
       "family": {
-        "content_insets": [
-          120,
-          2147418112,
-          0,
-          0
-        ],
         "frame_style": 16842753,
         "offset": 20358,
         "size": 37,
@@ -145608,12 +149330,6 @@
       "depth": 2,
       "enabled": 1,
       "family": {
-        "content_insets": [
-          120,
-          2147418112,
-          0,
-          0
-        ],
         "frame_style": 16842753,
         "offset": 7885,
         "size": 37,
@@ -146833,12 +150549,6 @@
       "depth": 2,
       "enabled": 1,
       "family": {
-        "content_insets": [
-          120,
-          2147418112,
-          0,
-          0
-        ],
         "frame_style": 16842753,
         "offset": 2992,
         "size": 37,
@@ -146884,12 +150594,6 @@
       "depth": 0,
       "enabled": 1,
       "family": {
-        "content_insets": [
-          1330093626,
-          79101951,
-          196611,
-          1936941682
-        ],
         "content_tag": "DLOG",
         "content_tag_value": 1145851719,
         "frame_style": 524305484,
@@ -151861,7 +155565,7 @@
     },
     "Linger.rsrc:8155": {
       "name": "test - Naval Battle",
-      "node_count": 75,
+      "node_count": 87,
       "nodes": [
         "Linger.rsrc:8155@0x0004",
         "Linger.rsrc:8155@0x0332",
@@ -151892,7 +155596,13 @@
         "Linger.rsrc:8155@0x10a8",
         "Linger.rsrc:8155@0x110e",
         "Linger.rsrc:8155@0x11bf",
+        "Linger.rsrc:8155@0x1221",
+        "Linger.rsrc:8155@0x1284",
+        "Linger.rsrc:8155@0x12e7",
         "Linger.rsrc:8155@0x134a",
+        "Linger.rsrc:8155@0x13ac",
+        "Linger.rsrc:8155@0x140f",
+        "Linger.rsrc:8155@0x1472",
         "Linger.rsrc:8155@0x14d5",
         "Linger.rsrc:8155@0x153b",
         "Linger.rsrc:8155@0x15ec",
@@ -151928,7 +155638,13 @@
         "Linger.rsrc:8155@0x25f6",
         "Linger.rsrc:8155@0x265c",
         "Linger.rsrc:8155@0x270d",
+        "Linger.rsrc:8155@0x276f",
+        "Linger.rsrc:8155@0x27d2",
+        "Linger.rsrc:8155@0x2835",
         "Linger.rsrc:8155@0x2898",
+        "Linger.rsrc:8155@0x28fa",
+        "Linger.rsrc:8155@0x295d",
+        "Linger.rsrc:8155@0x29c0",
         "Linger.rsrc:8155@0x2a23",
         "Linger.rsrc:8155@0x2a89",
         "Linger.rsrc:8155@0x2b3a",
@@ -151943,22 +155659,38 @@
     },
     "Linger.rsrc:900": {
       "name": "Debug Flags Window",
-      "node_count": 8,
+      "node_count": 24,
       "nodes": [
         "Linger.rsrc:900@0x0004",
         "Linger.rsrc:900@0x0083",
         "Linger.rsrc:900@0x00d6",
+        "Linger.rsrc:900@0x0138",
+        "Linger.rsrc:900@0x019b",
         "Linger.rsrc:900@0x01fe",
+        "Linger.rsrc:900@0x0260",
+        "Linger.rsrc:900@0x02c3",
+        "Linger.rsrc:900@0x0326",
+        "Linger.rsrc:900@0x0389",
         "Linger.rsrc:900@0x03ec",
+        "Linger.rsrc:900@0x044e",
+        "Linger.rsrc:900@0x04b1",
         "Linger.rsrc:900@0x0514",
+        "Linger.rsrc:900@0x0576",
+        "Linger.rsrc:900@0x05d9",
+        "Linger.rsrc:900@0x063c",
+        "Linger.rsrc:900@0x069f",
+        "Linger.rsrc:900@0x0702",
+        "Linger.rsrc:900@0x0765",
         "Linger.rsrc:900@0x07c8",
+        "Linger.rsrc:900@0x082a",
+        "Linger.rsrc:900@0x088d",
         "Linger.rsrc:900@0x08f0"
       ],
       "original_modules": []
     },
     "Linger.rsrc:901": {
       "name": "debug - Initialize PerfMon",
-      "node_count": 22,
+      "node_count": 25,
       "nodes": [
         "Linger.rsrc:901@0x0004",
         "Linger.rsrc:901@0x00fb",
@@ -151966,14 +155698,17 @@
         "Linger.rsrc:901@0x0213",
         "Linger.rsrc:901@0x0279",
         "Linger.rsrc:901@0x032b",
+        "Linger.rsrc:901@0x038d",
         "Linger.rsrc:901@0x03f0",
         "Linger.rsrc:901@0x0456",
         "Linger.rsrc:901@0x04fc",
+        "Linger.rsrc:901@0x055e",
         "Linger.rsrc:901@0x05c1",
         "Linger.rsrc:901@0x0627",
         "Linger.rsrc:901@0x06d9",
         "Linger.rsrc:901@0x073f",
         "Linger.rsrc:901@0x07e5",
+        "Linger.rsrc:901@0x0847",
         "Linger.rsrc:901@0x08aa",
         "Linger.rsrc:901@0x0910",
         "Linger.rsrc:901@0x0976",
@@ -152334,13 +156069,29 @@
     },
     "MapView.rsrc:9470": {
       "name": "Civilian Maker",
-      "node_count": 5,
+      "node_count": 21,
       "nodes": [
         "MapView.rsrc:9470@0x0004",
         "MapView.rsrc:9470@0x026f",
         "MapView.rsrc:9470@0x02cf",
         "MapView.rsrc:9470@0x0335",
-        "MapView.rsrc:9470@0x0774"
+        "MapView.rsrc:9470@0x0397",
+        "MapView.rsrc:9470@0x03fa",
+        "MapView.rsrc:9470@0x045d",
+        "MapView.rsrc:9470@0x04c0",
+        "MapView.rsrc:9470@0x0523",
+        "MapView.rsrc:9470@0x0586",
+        "MapView.rsrc:9470@0x05e9",
+        "MapView.rsrc:9470@0x064c",
+        "MapView.rsrc:9470@0x06af",
+        "MapView.rsrc:9470@0x0774",
+        "MapView.rsrc:9470@0x07d6",
+        "MapView.rsrc:9470@0x0839",
+        "MapView.rsrc:9470@0x089c",
+        "MapView.rsrc:9470@0x08ff",
+        "MapView.rsrc:9470@0x0962",
+        "MapView.rsrc:9470@0x09c5",
+        "MapView.rsrc:9470@0x0a28"
       ],
       "original_modules": []
     },
@@ -152385,12 +156136,21 @@
     },
     "MapView.rsrc:9476": {
       "name": "Navy Maker",
-      "node_count": 8,
+      "node_count": 17,
       "nodes": [
         "MapView.rsrc:9476@0x0004",
         "MapView.rsrc:9476@0x0080",
         "MapView.rsrc:9476@0x00e0",
         "MapView.rsrc:9476@0x0146",
+        "MapView.rsrc:9476@0x01a8",
+        "MapView.rsrc:9476@0x020b",
+        "MapView.rsrc:9476@0x026e",
+        "MapView.rsrc:9476@0x02d1",
+        "MapView.rsrc:9476@0x0334",
+        "MapView.rsrc:9476@0x0397",
+        "MapView.rsrc:9476@0x03fa",
+        "MapView.rsrc:9476@0x045d",
+        "MapView.rsrc:9476@0x04c0",
         "MapView.rsrc:9476@0x0523",
         "MapView.rsrc:9476@0x05d4",
         "MapView.rsrc:9476@0x0685",
@@ -152913,7 +156673,7 @@
     },
     "Startup.rsrc:951": {
       "name": "test - Game Setup Dialog",
-      "node_count": 8,
+      "node_count": 10,
       "nodes": [
         "Startup.rsrc:951@0x0004",
         "Startup.rsrc:951@0x0401",
@@ -152922,7 +156682,9 @@
         "Startup.rsrc:951@0x0a67",
         "Startup.rsrc:951@0x0c89",
         "Startup.rsrc:951@0x0eab",
-        "Startup.rsrc:951@0x10cd"
+        "Startup.rsrc:951@0x10cd",
+        "Startup.rsrc:951@0x12ef",
+        "Startup.rsrc:951@0x1352"
       ],
       "original_modules": []
     },
@@ -152973,18 +156735,48 @@
     },
     "Startup.rsrc:960": {
       "name": "Map editor",
-      "node_count": 11,
+      "node_count": 41,
       "nodes": [
         "Startup.rsrc:960@0x0004",
         "Startup.rsrc:960@0x0048",
         "Startup.rsrc:960@0x00ed",
         "Startup.rsrc:960@0x015e",
+        "Startup.rsrc:960@0x01cf",
+        "Startup.rsrc:960@0x0232",
+        "Startup.rsrc:960@0x0295",
+        "Startup.rsrc:960@0x02f8",
+        "Startup.rsrc:960@0x035b",
+        "Startup.rsrc:960@0x03be",
+        "Startup.rsrc:960@0x0421",
+        "Startup.rsrc:960@0x0484",
+        "Startup.rsrc:960@0x04e7",
         "Startup.rsrc:960@0x054a",
         "Startup.rsrc:960@0x05fb",
         "Startup.rsrc:960@0x0661",
+        "Startup.rsrc:960@0x06c1",
         "Startup.rsrc:960@0x0724",
         "Startup.rsrc:960@0x0784",
         "Startup.rsrc:960@0x07e4",
+        "Startup.rsrc:960@0x084a",
+        "Startup.rsrc:960@0x08ad",
+        "Startup.rsrc:960@0x0910",
+        "Startup.rsrc:960@0x0973",
+        "Startup.rsrc:960@0x09d6",
+        "Startup.rsrc:960@0x0a39",
+        "Startup.rsrc:960@0x0a9c",
+        "Startup.rsrc:960@0x0aff",
+        "Startup.rsrc:960@0x0b62",
+        "Startup.rsrc:960@0x0bc5",
+        "Startup.rsrc:960@0x0c28",
+        "Startup.rsrc:960@0x0c8b",
+        "Startup.rsrc:960@0x0cee",
+        "Startup.rsrc:960@0x0d51",
+        "Startup.rsrc:960@0x0db4",
+        "Startup.rsrc:960@0x0e17",
+        "Startup.rsrc:960@0x0e7a",
+        "Startup.rsrc:960@0x0edd",
+        "Startup.rsrc:960@0x0f40",
+        "Startup.rsrc:960@0x0fa3",
         "Startup.rsrc:960@0x1006"
       ],
       "original_modules": [
@@ -152999,7 +156791,7 @@
     },
     "Startup.rsrc:965": {
       "name": "Province editor",
-      "node_count": 8,
+      "node_count": 10,
       "nodes": [
         "Startup.rsrc:965@0x0004",
         "Startup.rsrc:965@0x0080",
@@ -153008,7 +156800,9 @@
         "Startup.rsrc:965@0x01f9",
         "Startup.rsrc:965@0x025f",
         "Startup.rsrc:965@0x0310",
-        "Startup.rsrc:965@0x0376"
+        "Startup.rsrc:965@0x0376",
+        "Startup.rsrc:965@0x03d8",
+        "Startup.rsrc:965@0x043b"
       ],
       "original_modules": []
     },
@@ -155780,17 +159574,17 @@
     "policy": "Function and qualified-class associations are confirmed by direct Windows source-path use. Mac screen and generated-factory joins are candidates only; they do not prove Windows ownership or ABI."
   },
   "summary": {
-    "ambiguous_tags": 147,
+    "ambiguous_tags": 153,
     "classes": 162,
     "classes_with_source_module_evidence": 14,
     "declared_classes": 152,
     "factories_with_source_module_candidates": 9,
     "functions_with_source_module_evidence": 90,
-    "nodes": 3173,
+    "nodes": 3263,
     "screens": 121,
     "screens_with_source_module_candidates": 25,
     "source_modules": 31,
-    "tags": 747
+    "tags": 813
   },
   "tags": {
     "    ": {
@@ -159422,7 +163216,7 @@
       "tag_value": 1667785074
     },
     "city": {
-      "ambiguous": false,
+      "ambiguous": true,
       "candidates": [
         {
           "class": "TUpDownPictureButton",
@@ -159438,19 +163232,29 @@
             "Transport.rsrc:2014"
           ],
           "type_code": "pict"
+        },
+        {
+          "class": "TRadioPictureButton",
+          "class_source": "type_family",
+          "count": 1,
+          "screens": [
+            "Startup.rsrc:965"
+          ],
+          "type_code": "radb"
         }
       ],
-      "instance_count": 7,
+      "instance_count": 8,
       "nodes": [
         "Citymain.rsrc:2011@0x08e7",
         "Diplo.rsrc:2008@0x199e",
         "MapView.rsrc:2013@0x0434",
+        "Startup.rsrc:965@0x043b",
         "TechStore.rsrc:2300@0x0391",
         "Trade.rsrc:2009@0x4acf",
         "Trade.rsrc:2010@0x4db3",
         "Transport.rsrc:2014@0x018d"
       ],
-      "screen_count": 7,
+      "screen_count": 8,
       "tag_value": 1667855481
     },
     "civ0": {
@@ -160665,7 +164469,7 @@
       "tag_value": 1668641394
     },
     "curs": {
-      "ambiguous": false,
+      "ambiguous": true,
       "candidates": [
         {
           "class": "TInfoBarText",
@@ -160696,9 +164500,18 @@
             "Transport.rsrc:3901"
           ],
           "type_code": "tevw"
+        },
+        {
+          "class": "TCzechBox",
+          "class_source": "type_family",
+          "count": 1,
+          "screens": [
+            "Linger.rsrc:900"
+          ],
+          "type_code": "chkb"
         }
       ],
-      "instance_count": 22,
+      "instance_count": 23,
       "nodes": [
         "Citymain.rsrc:2011@0x0b22",
         "Diplo.rsrc:1351@0x0133",
@@ -160710,6 +164523,7 @@
         "Linger.rsrc:1502@0x06a3",
         "Linger.rsrc:4150@0x0994",
         "Linger.rsrc:4300@0x0195",
+        "Linger.rsrc:900@0x0260",
         "MapView.rsrc:2013@0x1efd",
         "Startup.rsrc:1500@0x02c5",
         "Startup.rsrc:1503@0x03e8",
@@ -160723,7 +164537,7 @@
         "Transport.rsrc:2014@0x1e56",
         "Transport.rsrc:3901@0x0b39"
       ],
-      "screen_count": 22,
+      "screen_count": 23,
       "tag_value": 1668641395
     },
     "date": {
@@ -161369,6 +165183,26 @@
       "screen_count": 1,
       "tag_value": 1701078137
     },
+    "edit": {
+      "ambiguous": false,
+      "candidates": [
+        {
+          "class": "TCzechBox",
+          "class_source": "type_family",
+          "count": 1,
+          "screens": [
+            "Startup.rsrc:951"
+          ],
+          "type_code": "chkb"
+        }
+      ],
+      "instance_count": 1,
+      "nodes": [
+        "Startup.rsrc:951@0x1352"
+      ],
+      "screen_count": 1,
+      "tag_value": 1701079412
+    },
     "eflg": {
       "ambiguous": false,
       "candidates": [
@@ -161600,6 +165434,146 @@
       ],
       "screen_count": 1,
       "tag_value": 1702062192
+    },
+    "evnt": {
+      "ambiguous": false,
+      "candidates": [
+        {
+          "class": "TCzechBox",
+          "class_source": "type_family",
+          "count": 1,
+          "screens": [
+            "Linger.rsrc:900"
+          ],
+          "type_code": "chkb"
+        }
+      ],
+      "instance_count": 1,
+      "nodes": [
+        "Linger.rsrc:900@0x019b"
+      ],
+      "screen_count": 1,
+      "tag_value": 1702260340
+    },
+    "exi0": {
+      "ambiguous": false,
+      "candidates": [
+        {
+          "class": "TCzechBox",
+          "class_source": "type_family",
+          "count": 1,
+          "screens": [
+            "Startup.rsrc:960"
+          ],
+          "type_code": "chkb"
+        }
+      ],
+      "instance_count": 1,
+      "nodes": [
+        "Startup.rsrc:960@0x084a"
+      ],
+      "screen_count": 1,
+      "tag_value": 1702390064
+    },
+    "exi1": {
+      "ambiguous": false,
+      "candidates": [
+        {
+          "class": "TCzechBox",
+          "class_source": "type_family",
+          "count": 1,
+          "screens": [
+            "Startup.rsrc:960"
+          ],
+          "type_code": "chkb"
+        }
+      ],
+      "instance_count": 1,
+      "nodes": [
+        "Startup.rsrc:960@0x08ad"
+      ],
+      "screen_count": 1,
+      "tag_value": 1702390065
+    },
+    "exi2": {
+      "ambiguous": false,
+      "candidates": [
+        {
+          "class": "TCzechBox",
+          "class_source": "type_family",
+          "count": 1,
+          "screens": [
+            "Startup.rsrc:960"
+          ],
+          "type_code": "chkb"
+        }
+      ],
+      "instance_count": 1,
+      "nodes": [
+        "Startup.rsrc:960@0x0910"
+      ],
+      "screen_count": 1,
+      "tag_value": 1702390066
+    },
+    "exi3": {
+      "ambiguous": false,
+      "candidates": [
+        {
+          "class": "TCzechBox",
+          "class_source": "type_family",
+          "count": 1,
+          "screens": [
+            "Startup.rsrc:960"
+          ],
+          "type_code": "chkb"
+        }
+      ],
+      "instance_count": 1,
+      "nodes": [
+        "Startup.rsrc:960@0x0973"
+      ],
+      "screen_count": 1,
+      "tag_value": 1702390067
+    },
+    "exi4": {
+      "ambiguous": false,
+      "candidates": [
+        {
+          "class": "TCzechBox",
+          "class_source": "type_family",
+          "count": 1,
+          "screens": [
+            "Startup.rsrc:960"
+          ],
+          "type_code": "chkb"
+        }
+      ],
+      "instance_count": 1,
+      "nodes": [
+        "Startup.rsrc:960@0x09d6"
+      ],
+      "screen_count": 1,
+      "tag_value": 1702390068
+    },
+    "exi5": {
+      "ambiguous": false,
+      "candidates": [
+        {
+          "class": "TCzechBox",
+          "class_source": "type_family",
+          "count": 1,
+          "screens": [
+            "Startup.rsrc:960"
+          ],
+          "type_code": "chkb"
+        }
+      ],
+      "instance_count": 1,
+      "nodes": [
+        "Startup.rsrc:960@0x0a39"
+      ],
+      "screen_count": 1,
+      "tag_value": 1702390069
     },
     "exit": {
       "ambiguous": false,
@@ -162119,6 +166093,26 @@
       ],
       "screen_count": 1,
       "tag_value": 1718380370
+    },
+    "focu": {
+      "ambiguous": false,
+      "candidates": [
+        {
+          "class": "TCzechBox",
+          "class_source": "type_family",
+          "count": 1,
+          "screens": [
+            "Linger.rsrc:900"
+          ],
+          "type_code": "chkb"
+        }
+      ],
+      "instance_count": 1,
+      "nodes": [
+        "Linger.rsrc:900@0x05d9"
+      ],
+      "screen_count": 1,
+      "tag_value": 1718575989
     },
     "food": {
       "ambiguous": true,
@@ -163070,8 +167064,17 @@
       "tag_value": 1751216740
     },
     "help": {
-      "ambiguous": false,
+      "ambiguous": true,
       "candidates": [
+        {
+          "class": "TCzechBox",
+          "class_source": "type_family",
+          "count": 1,
+          "screens": [
+            "Linger.rsrc:900"
+          ],
+          "type_code": "chkb"
+        },
         {
           "class": "TUpDownPictureButton",
           "class_source": "declared",
@@ -163082,11 +167085,12 @@
           "type_code": "pict"
         }
       ],
-      "instance_count": 1,
+      "instance_count": 2,
       "nodes": [
+        "Linger.rsrc:900@0x0326",
         "Tactical.rsrc:3800@0x0250"
       ],
-      "screen_count": 1,
+      "screen_count": 2,
       "tag_value": 1751477360
     },
     "high": {
@@ -163611,6 +167615,46 @@
       ],
       "screen_count": 1,
       "tag_value": 1768846196
+    },
+    "ints": {
+      "ambiguous": false,
+      "candidates": [
+        {
+          "class": "TCzechBox",
+          "class_source": "type_family",
+          "count": 1,
+          "screens": [
+            "Linger.rsrc:900"
+          ],
+          "type_code": "chkb"
+        }
+      ],
+      "instance_count": 1,
+      "nodes": [
+        "Linger.rsrc:900@0x0576"
+      ],
+      "screen_count": 1,
+      "tag_value": 1768846451
+    },
+    "invl": {
+      "ambiguous": false,
+      "candidates": [
+        {
+          "class": "TCzechBox",
+          "class_source": "type_family",
+          "count": 1,
+          "screens": [
+            "Linger.rsrc:900"
+          ],
+          "type_code": "chkb"
+        }
+      ],
+      "instance_count": 1,
+      "nodes": [
+        "Linger.rsrc:900@0x0389"
+      ],
+      "screen_count": 1,
+      "tag_value": 1768846956
     },
     "ircl": {
       "ambiguous": false,
@@ -165194,6 +169238,26 @@
       "screen_count": 1,
       "tag_value": 1835087392
     },
+    "macd": {
+      "ambiguous": false,
+      "candidates": [
+        {
+          "class": "TCzechBox",
+          "class_source": "type_family",
+          "count": 1,
+          "screens": [
+            "Linger.rsrc:901"
+          ],
+          "type_code": "chkb"
+        }
+      ],
+      "instance_count": 1,
+      "nodes": [
+        "Linger.rsrc:901@0x038d"
+      ],
+      "screen_count": 1,
+      "tag_value": 1835098980
+    },
     "main": {
       "ambiguous": true,
       "candidates": [
@@ -165590,6 +169654,46 @@
       "screen_count": 1,
       "tag_value": 1835360628
     },
+    "memb": {
+      "ambiguous": false,
+      "candidates": [
+        {
+          "class": "TCzechBox",
+          "class_source": "type_family",
+          "count": 1,
+          "screens": [
+            "Linger.rsrc:900"
+          ],
+          "type_code": "chkb"
+        }
+      ],
+      "instance_count": 1,
+      "nodes": [
+        "Linger.rsrc:900@0x088d"
+      ],
+      "screen_count": 1,
+      "tag_value": 1835363682
+    },
+    "menu": {
+      "ambiguous": false,
+      "candidates": [
+        {
+          "class": "TCzechBox",
+          "class_source": "type_family",
+          "count": 1,
+          "screens": [
+            "Linger.rsrc:900"
+          ],
+          "type_code": "chkb"
+        }
+      ],
+      "instance_count": 1,
+      "nodes": [
+        "Linger.rsrc:900@0x0138"
+      ],
+      "screen_count": 1,
+      "tag_value": 1835363957
+    },
     "merc": {
       "ambiguous": false,
       "candidates": [
@@ -165709,6 +169813,106 @@
       ],
       "screen_count": 1,
       "tag_value": 1835625570
+    },
+    "min0": {
+      "ambiguous": false,
+      "candidates": [
+        {
+          "class": "TRadioPictureButton",
+          "class_source": "type_family",
+          "count": 1,
+          "screens": [
+            "Startup.rsrc:960"
+          ],
+          "type_code": "radb"
+        }
+      ],
+      "instance_count": 1,
+      "nodes": [
+        "Startup.rsrc:960@0x0db4"
+      ],
+      "screen_count": 1,
+      "tag_value": 1835626032
+    },
+    "min1": {
+      "ambiguous": false,
+      "candidates": [
+        {
+          "class": "TRadioPictureButton",
+          "class_source": "type_family",
+          "count": 1,
+          "screens": [
+            "Startup.rsrc:960"
+          ],
+          "type_code": "radb"
+        }
+      ],
+      "instance_count": 1,
+      "nodes": [
+        "Startup.rsrc:960@0x0e17"
+      ],
+      "screen_count": 1,
+      "tag_value": 1835626033
+    },
+    "min2": {
+      "ambiguous": false,
+      "candidates": [
+        {
+          "class": "TRadioPictureButton",
+          "class_source": "type_family",
+          "count": 1,
+          "screens": [
+            "Startup.rsrc:960"
+          ],
+          "type_code": "radb"
+        }
+      ],
+      "instance_count": 1,
+      "nodes": [
+        "Startup.rsrc:960@0x0edd"
+      ],
+      "screen_count": 1,
+      "tag_value": 1835626034
+    },
+    "min3": {
+      "ambiguous": false,
+      "candidates": [
+        {
+          "class": "TRadioPictureButton",
+          "class_source": "type_family",
+          "count": 1,
+          "screens": [
+            "Startup.rsrc:960"
+          ],
+          "type_code": "radb"
+        }
+      ],
+      "instance_count": 1,
+      "nodes": [
+        "Startup.rsrc:960@0x0e7a"
+      ],
+      "screen_count": 1,
+      "tag_value": 1835626035
+    },
+    "min4": {
+      "ambiguous": false,
+      "candidates": [
+        {
+          "class": "TRadioPictureButton",
+          "class_source": "type_family",
+          "count": 1,
+          "screens": [
+            "Startup.rsrc:960"
+          ],
+          "type_code": "radb"
+        }
+      ],
+      "instance_count": 1,
+      "nodes": [
+        "Startup.rsrc:960@0x0f40"
+      ],
+      "screen_count": 1,
+      "tag_value": 1835626036
     },
     "mini": {
       "ambiguous": false,
@@ -165904,6 +170108,26 @@
       "screen_count": 2,
       "tag_value": 1836020325
     },
+    "mout": {
+      "ambiguous": false,
+      "candidates": [
+        {
+          "class": "TCzechBox",
+          "class_source": "type_family",
+          "count": 1,
+          "screens": [
+            "Linger.rsrc:901"
+          ],
+          "type_code": "chkb"
+        }
+      ],
+      "instance_count": 1,
+      "nodes": [
+        "Linger.rsrc:901@0x0847"
+      ],
+      "screen_count": 1,
+      "tag_value": 1836021108
+    },
     "move": {
       "ambiguous": false,
       "candidates": [
@@ -165968,6 +170192,26 @@
       ],
       "screen_count": 1,
       "tag_value": 1836021353
+    },
+    "mrcd": {
+      "ambiguous": false,
+      "candidates": [
+        {
+          "class": "TCzechBox",
+          "class_source": "type_family",
+          "count": 1,
+          "screens": [
+            "Linger.rsrc:901"
+          ],
+          "type_code": "chkb"
+        }
+      ],
+      "instance_count": 1,
+      "nodes": [
+        "Linger.rsrc:901@0x055e"
+      ],
+      "screen_count": 1,
+      "tag_value": 1836213092
     },
     "msg1": {
       "ambiguous": false,
@@ -166070,7 +170314,7 @@
       "tag_value": 1836279605
     },
     "mult": {
-      "ambiguous": false,
+      "ambiguous": true,
       "candidates": [
         {
           "class": "TControl",
@@ -166081,14 +170325,24 @@
             "Startup.rsrc:1509"
           ],
           "type_code": "cntl"
+        },
+        {
+          "class": "TCzechBox",
+          "class_source": "type_family",
+          "count": 1,
+          "screens": [
+            "Startup.rsrc:951"
+          ],
+          "type_code": "chkb"
         }
       ],
-      "instance_count": 2,
+      "instance_count": 3,
       "nodes": [
         "Startup.rsrc:1500@0x01ab",
-        "Startup.rsrc:1509@0x01b6"
+        "Startup.rsrc:1509@0x01b6",
+        "Startup.rsrc:951@0x12ef"
       ],
-      "screen_count": 2,
+      "screen_count": 3,
       "tag_value": 1836412020
     },
     "musi": {
@@ -168744,6 +172998,75 @@
       "screen_count": 1,
       "tag_value": 1869636449
     },
+    "opt1": {
+      "ambiguous": false,
+      "candidates": [
+        {
+          "class": "TRadioPictureButton",
+          "class_source": "type_family",
+          "count": 4,
+          "screens": [
+            "Linger.rsrc:8155"
+          ],
+          "type_code": "radb"
+        }
+      ],
+      "instance_count": 4,
+      "nodes": [
+        "Linger.rsrc:8155@0x1221",
+        "Linger.rsrc:8155@0x13ac",
+        "Linger.rsrc:8155@0x276f",
+        "Linger.rsrc:8155@0x28fa"
+      ],
+      "screen_count": 1,
+      "tag_value": 1869640753
+    },
+    "opt2": {
+      "ambiguous": false,
+      "candidates": [
+        {
+          "class": "TRadioPictureButton",
+          "class_source": "type_family",
+          "count": 4,
+          "screens": [
+            "Linger.rsrc:8155"
+          ],
+          "type_code": "radb"
+        }
+      ],
+      "instance_count": 4,
+      "nodes": [
+        "Linger.rsrc:8155@0x1284",
+        "Linger.rsrc:8155@0x140f",
+        "Linger.rsrc:8155@0x27d2",
+        "Linger.rsrc:8155@0x295d"
+      ],
+      "screen_count": 1,
+      "tag_value": 1869640754
+    },
+    "opt3": {
+      "ambiguous": false,
+      "candidates": [
+        {
+          "class": "TRadioPictureButton",
+          "class_source": "type_family",
+          "count": 4,
+          "screens": [
+            "Linger.rsrc:8155"
+          ],
+          "type_code": "radb"
+        }
+      ],
+      "instance_count": 4,
+      "nodes": [
+        "Linger.rsrc:8155@0x12e7",
+        "Linger.rsrc:8155@0x1472",
+        "Linger.rsrc:8155@0x2835",
+        "Linger.rsrc:8155@0x29c0"
+      ],
+      "screen_count": 1,
+      "tag_value": 1869640755
+    },
     "optc": {
       "ambiguous": false,
       "candidates": [
@@ -169055,6 +173378,146 @@
       ],
       "screen_count": 1,
       "tag_value": 1870033460
+    },
+    "own0": {
+      "ambiguous": false,
+      "candidates": [
+        {
+          "class": "TRadioPictureButton",
+          "class_source": "type_family",
+          "count": 1,
+          "screens": [
+            "MapView.rsrc:9470"
+          ],
+          "type_code": "radb"
+        }
+      ],
+      "instance_count": 1,
+      "nodes": [
+        "MapView.rsrc:9470@0x07d6"
+      ],
+      "screen_count": 1,
+      "tag_value": 1870097968
+    },
+    "own1": {
+      "ambiguous": false,
+      "candidates": [
+        {
+          "class": "TRadioPictureButton",
+          "class_source": "type_family",
+          "count": 1,
+          "screens": [
+            "MapView.rsrc:9470"
+          ],
+          "type_code": "radb"
+        }
+      ],
+      "instance_count": 1,
+      "nodes": [
+        "MapView.rsrc:9470@0x0839"
+      ],
+      "screen_count": 1,
+      "tag_value": 1870097969
+    },
+    "own2": {
+      "ambiguous": false,
+      "candidates": [
+        {
+          "class": "TRadioPictureButton",
+          "class_source": "type_family",
+          "count": 1,
+          "screens": [
+            "MapView.rsrc:9470"
+          ],
+          "type_code": "radb"
+        }
+      ],
+      "instance_count": 1,
+      "nodes": [
+        "MapView.rsrc:9470@0x089c"
+      ],
+      "screen_count": 1,
+      "tag_value": 1870097970
+    },
+    "own3": {
+      "ambiguous": false,
+      "candidates": [
+        {
+          "class": "TRadioPictureButton",
+          "class_source": "type_family",
+          "count": 1,
+          "screens": [
+            "MapView.rsrc:9470"
+          ],
+          "type_code": "radb"
+        }
+      ],
+      "instance_count": 1,
+      "nodes": [
+        "MapView.rsrc:9470@0x08ff"
+      ],
+      "screen_count": 1,
+      "tag_value": 1870097971
+    },
+    "own4": {
+      "ambiguous": false,
+      "candidates": [
+        {
+          "class": "TRadioPictureButton",
+          "class_source": "type_family",
+          "count": 1,
+          "screens": [
+            "MapView.rsrc:9470"
+          ],
+          "type_code": "radb"
+        }
+      ],
+      "instance_count": 1,
+      "nodes": [
+        "MapView.rsrc:9470@0x0a28"
+      ],
+      "screen_count": 1,
+      "tag_value": 1870097972
+    },
+    "own5": {
+      "ambiguous": false,
+      "candidates": [
+        {
+          "class": "TRadioPictureButton",
+          "class_source": "type_family",
+          "count": 1,
+          "screens": [
+            "MapView.rsrc:9470"
+          ],
+          "type_code": "radb"
+        }
+      ],
+      "instance_count": 1,
+      "nodes": [
+        "MapView.rsrc:9470@0x09c5"
+      ],
+      "screen_count": 1,
+      "tag_value": 1870097973
+    },
+    "own6": {
+      "ambiguous": false,
+      "candidates": [
+        {
+          "class": "TRadioPictureButton",
+          "class_source": "type_family",
+          "count": 1,
+          "screens": [
+            "MapView.rsrc:9470"
+          ],
+          "type_code": "radb"
+        }
+      ],
+      "instance_count": 1,
+      "nodes": [
+        "MapView.rsrc:9470@0x0962"
+      ],
+      "screen_count": 1,
+      "tag_value": 1870097974
     },
     "owne": {
       "ambiguous": true,
@@ -170078,6 +174541,26 @@
       "screen_count": 1,
       "tag_value": 1886546275
     },
+    "prnt": {
+      "ambiguous": false,
+      "candidates": [
+        {
+          "class": "TCzechBox",
+          "class_source": "type_family",
+          "count": 1,
+          "screens": [
+            "Linger.rsrc:900"
+          ],
+          "type_code": "chkb"
+        }
+      ],
+      "instance_count": 1,
+      "nodes": [
+        "Linger.rsrc:900@0x063c"
+      ],
+      "screen_count": 1,
+      "tag_value": 1886547572
+    },
     "prnu": {
       "ambiguous": false,
       "candidates": [
@@ -170259,8 +174742,17 @@
       "tag_value": 1886547828
     },
     "prov": {
-      "ambiguous": false,
+      "ambiguous": true,
       "candidates": [
+        {
+          "class": "TRadioPictureButton",
+          "class_source": "type_family",
+          "count": 1,
+          "screens": [
+            "Startup.rsrc:960"
+          ],
+          "type_code": "radb"
+        },
         {
           "class": "TStaticText",
           "class_source": "type_family",
@@ -170271,11 +174763,12 @@
           "type_code": "stat"
         }
       ],
-      "instance_count": 1,
+      "instance_count": 2,
       "nodes": [
-        "Citydlog.rsrc:9215@0x072f"
+        "Citydlog.rsrc:9215@0x072f",
+        "Startup.rsrc:960@0x04e7"
       ],
-      "screen_count": 1,
+      "screen_count": 2,
       "tag_value": 1886547830
     },
     "ptfr": {
@@ -171160,8 +175653,17 @@
       "tag_value": 1918986596
     },
     "rail": {
-      "ambiguous": false,
+      "ambiguous": true,
       "candidates": [
+        {
+          "class": "TRadioPictureButton",
+          "class_source": "type_family",
+          "count": 1,
+          "screens": [
+            "Startup.rsrc:960"
+          ],
+          "type_code": "radb"
+        },
         {
           "class": "TRailCluster",
           "class_source": "declared",
@@ -171172,11 +175674,12 @@
           "type_code": "clus"
         }
       ],
-      "instance_count": 1,
+      "instance_count": 2,
       "nodes": [
-        "Citydlog.rsrc:9214@0x0386"
+        "Citydlog.rsrc:9214@0x0386",
+        "Startup.rsrc:960@0x0a9c"
       ],
-      "screen_count": 1,
+      "screen_count": 2,
       "tag_value": 1918986604
     },
     "rand": {
@@ -171560,6 +176063,26 @@
       ],
       "screen_count": 15,
       "tag_value": 1919379572
+    },
+    "rive": {
+      "ambiguous": false,
+      "candidates": [
+        {
+          "class": "TRadioPictureButton",
+          "class_source": "type_family",
+          "count": 1,
+          "screens": [
+            "Startup.rsrc:960"
+          ],
+          "type_code": "radb"
+        }
+      ],
+      "instance_count": 1,
+      "nodes": [
+        "Startup.rsrc:960@0x0aff"
+      ],
+      "screen_count": 1,
+      "tag_value": 1919514213
     },
     "rmid": {
       "ambiguous": false,
@@ -172151,6 +176674,26 @@
       ],
       "screen_count": 4,
       "tag_value": 1920153120
+    },
+    "rsrc": {
+      "ambiguous": false,
+      "candidates": [
+        {
+          "class": "TCzechBox",
+          "class_source": "type_family",
+          "count": 1,
+          "screens": [
+            "Linger.rsrc:900"
+          ],
+          "type_code": "chkb"
+        }
+      ],
+      "instance_count": 1,
+      "nodes": [
+        "Linger.rsrc:900@0x082a"
+      ],
+      "screen_count": 1,
+      "tag_value": 1920168547
     },
     "rtab": {
       "ambiguous": false,
@@ -172806,6 +177349,66 @@
       "screen_count": 11,
       "tag_value": 1936023923
     },
+    "seat": {
+      "ambiguous": false,
+      "candidates": [
+        {
+          "class": "TRadioPictureButton",
+          "class_source": "type_family",
+          "count": 1,
+          "screens": [
+            "Startup.rsrc:960"
+          ],
+          "type_code": "radb"
+        }
+      ],
+      "instance_count": 1,
+      "nodes": [
+        "Startup.rsrc:960@0x06c1"
+      ],
+      "screen_count": 1,
+      "tag_value": 1936023924
+    },
+    "segl": {
+      "ambiguous": false,
+      "candidates": [
+        {
+          "class": "TCzechBox",
+          "class_source": "type_family",
+          "count": 1,
+          "screens": [
+            "Linger.rsrc:900"
+          ],
+          "type_code": "chkb"
+        }
+      ],
+      "instance_count": 1,
+      "nodes": [
+        "Linger.rsrc:900@0x044e"
+      ],
+      "screen_count": 1,
+      "tag_value": 1936025452
+    },
+    "segu": {
+      "ambiguous": false,
+      "candidates": [
+        {
+          "class": "TCzechBox",
+          "class_source": "type_family",
+          "count": 1,
+          "screens": [
+            "Linger.rsrc:900"
+          ],
+          "type_code": "chkb"
+        }
+      ],
+      "instance_count": 1,
+      "nodes": [
+        "Linger.rsrc:900@0x04b1"
+      ],
+      "screen_count": 1,
+      "tag_value": 1936025461
+    },
     "sele": {
       "ambiguous": false,
       "candidates": [
@@ -173058,6 +177661,26 @@
       ],
       "screen_count": 1,
       "tag_value": 1936287098
+    },
+    "slee": {
+      "ambiguous": false,
+      "candidates": [
+        {
+          "class": "TCzechBox",
+          "class_source": "type_family",
+          "count": 1,
+          "screens": [
+            "Linger.rsrc:900"
+          ],
+          "type_code": "chkb"
+        }
+      ],
+      "instance_count": 1,
+      "nodes": [
+        "Linger.rsrc:900@0x02c3"
+      ],
+      "screen_count": 1,
+      "tag_value": 1936483685
     },
     "slt0": {
       "ambiguous": false,
@@ -174031,6 +178654,306 @@
       "screen_count": 1,
       "tag_value": 1952673653
     },
+    "tera": {
+      "ambiguous": false,
+      "candidates": [
+        {
+          "class": "TRadioPictureButton",
+          "class_source": "type_family",
+          "count": 1,
+          "screens": [
+            "Startup.rsrc:960"
+          ],
+          "type_code": "radb"
+        }
+      ],
+      "instance_count": 1,
+      "nodes": [
+        "Startup.rsrc:960@0x01cf"
+      ],
+      "screen_count": 1,
+      "tag_value": 1952805473
+    },
+    "terb": {
+      "ambiguous": false,
+      "candidates": [
+        {
+          "class": "TRadioPictureButton",
+          "class_source": "type_family",
+          "count": 1,
+          "screens": [
+            "Startup.rsrc:960"
+          ],
+          "type_code": "radb"
+        }
+      ],
+      "instance_count": 1,
+      "nodes": [
+        "Startup.rsrc:960@0x0232"
+      ],
+      "screen_count": 1,
+      "tag_value": 1952805474
+    },
+    "terc": {
+      "ambiguous": false,
+      "candidates": [
+        {
+          "class": "TRadioPictureButton",
+          "class_source": "type_family",
+          "count": 1,
+          "screens": [
+            "Startup.rsrc:960"
+          ],
+          "type_code": "radb"
+        }
+      ],
+      "instance_count": 1,
+      "nodes": [
+        "Startup.rsrc:960@0x0295"
+      ],
+      "screen_count": 1,
+      "tag_value": 1952805475
+    },
+    "terd": {
+      "ambiguous": false,
+      "candidates": [
+        {
+          "class": "TRadioPictureButton",
+          "class_source": "type_family",
+          "count": 1,
+          "screens": [
+            "Startup.rsrc:960"
+          ],
+          "type_code": "radb"
+        }
+      ],
+      "instance_count": 1,
+      "nodes": [
+        "Startup.rsrc:960@0x02f8"
+      ],
+      "screen_count": 1,
+      "tag_value": 1952805476
+    },
+    "tere": {
+      "ambiguous": false,
+      "candidates": [
+        {
+          "class": "TRadioPictureButton",
+          "class_source": "type_family",
+          "count": 1,
+          "screens": [
+            "Startup.rsrc:960"
+          ],
+          "type_code": "radb"
+        }
+      ],
+      "instance_count": 1,
+      "nodes": [
+        "Startup.rsrc:960@0x0b62"
+      ],
+      "screen_count": 1,
+      "tag_value": 1952805477
+    },
+    "terf": {
+      "ambiguous": false,
+      "candidates": [
+        {
+          "class": "TRadioPictureButton",
+          "class_source": "type_family",
+          "count": 1,
+          "screens": [
+            "Startup.rsrc:960"
+          ],
+          "type_code": "radb"
+        }
+      ],
+      "instance_count": 1,
+      "nodes": [
+        "Startup.rsrc:960@0x0bc5"
+      ],
+      "screen_count": 1,
+      "tag_value": 1952805478
+    },
+    "terg": {
+      "ambiguous": false,
+      "candidates": [
+        {
+          "class": "TRadioPictureButton",
+          "class_source": "type_family",
+          "count": 1,
+          "screens": [
+            "Startup.rsrc:960"
+          ],
+          "type_code": "radb"
+        }
+      ],
+      "instance_count": 1,
+      "nodes": [
+        "Startup.rsrc:960@0x0c28"
+      ],
+      "screen_count": 1,
+      "tag_value": 1952805479
+    },
+    "terh": {
+      "ambiguous": false,
+      "candidates": [
+        {
+          "class": "TRadioPictureButton",
+          "class_source": "type_family",
+          "count": 1,
+          "screens": [
+            "Startup.rsrc:960"
+          ],
+          "type_code": "radb"
+        }
+      ],
+      "instance_count": 1,
+      "nodes": [
+        "Startup.rsrc:960@0x0c8b"
+      ],
+      "screen_count": 1,
+      "tag_value": 1952805480
+    },
+    "teri": {
+      "ambiguous": false,
+      "candidates": [
+        {
+          "class": "TRadioPictureButton",
+          "class_source": "type_family",
+          "count": 1,
+          "screens": [
+            "Startup.rsrc:960"
+          ],
+          "type_code": "radb"
+        }
+      ],
+      "instance_count": 1,
+      "nodes": [
+        "Startup.rsrc:960@0x035b"
+      ],
+      "screen_count": 1,
+      "tag_value": 1952805481
+    },
+    "terj": {
+      "ambiguous": false,
+      "candidates": [
+        {
+          "class": "TRadioPictureButton",
+          "class_source": "type_family",
+          "count": 1,
+          "screens": [
+            "Startup.rsrc:960"
+          ],
+          "type_code": "radb"
+        }
+      ],
+      "instance_count": 1,
+      "nodes": [
+        "Startup.rsrc:960@0x03be"
+      ],
+      "screen_count": 1,
+      "tag_value": 1952805482
+    },
+    "terk": {
+      "ambiguous": false,
+      "candidates": [
+        {
+          "class": "TRadioPictureButton",
+          "class_source": "type_family",
+          "count": 1,
+          "screens": [
+            "Startup.rsrc:960"
+          ],
+          "type_code": "radb"
+        }
+      ],
+      "instance_count": 1,
+      "nodes": [
+        "Startup.rsrc:960@0x0421"
+      ],
+      "screen_count": 1,
+      "tag_value": 1952805483
+    },
+    "terl": {
+      "ambiguous": false,
+      "candidates": [
+        {
+          "class": "TRadioPictureButton",
+          "class_source": "type_family",
+          "count": 1,
+          "screens": [
+            "Startup.rsrc:960"
+          ],
+          "type_code": "radb"
+        }
+      ],
+      "instance_count": 1,
+      "nodes": [
+        "Startup.rsrc:960@0x0484"
+      ],
+      "screen_count": 1,
+      "tag_value": 1952805484
+    },
+    "term": {
+      "ambiguous": false,
+      "candidates": [
+        {
+          "class": "TRadioPictureButton",
+          "class_source": "type_family",
+          "count": 1,
+          "screens": [
+            "Startup.rsrc:960"
+          ],
+          "type_code": "radb"
+        }
+      ],
+      "instance_count": 1,
+      "nodes": [
+        "Startup.rsrc:960@0x0cee"
+      ],
+      "screen_count": 1,
+      "tag_value": 1952805485
+    },
+    "tern": {
+      "ambiguous": false,
+      "candidates": [
+        {
+          "class": "TRadioPictureButton",
+          "class_source": "type_family",
+          "count": 1,
+          "screens": [
+            "Startup.rsrc:960"
+          ],
+          "type_code": "radb"
+        }
+      ],
+      "instance_count": 1,
+      "nodes": [
+        "Startup.rsrc:960@0x0d51"
+      ],
+      "screen_count": 1,
+      "tag_value": 1952805486
+    },
+    "terp": {
+      "ambiguous": false,
+      "candidates": [
+        {
+          "class": "TRadioPictureButton",
+          "class_source": "type_family",
+          "count": 1,
+          "screens": [
+            "Startup.rsrc:960"
+          ],
+          "type_code": "radb"
+        }
+      ],
+      "instance_count": 1,
+      "nodes": [
+        "Startup.rsrc:960@0x0fa3"
+      ],
+      "screen_count": 1,
+      "tag_value": 1952805488
+    },
     "tex0": {
       "ambiguous": false,
       "candidates": [
@@ -174764,6 +179687,26 @@
       ],
       "screen_count": 1,
       "tag_value": 1953461345
+    },
+    "town": {
+      "ambiguous": false,
+      "candidates": [
+        {
+          "class": "TRadioPictureButton",
+          "class_source": "type_family",
+          "count": 1,
+          "screens": [
+            "Startup.rsrc:965"
+          ],
+          "type_code": "radb"
+        }
+      ],
+      "instance_count": 1,
+      "nodes": [
+        "Startup.rsrc:965@0x03d8"
+      ],
+      "screen_count": 1,
+      "tag_value": 1953462126
     },
     "tpca": {
       "ambiguous": false,
@@ -176178,6 +181121,204 @@
       "screen_count": 1,
       "tag_value": 1954051173
     },
+    "typ0": {
+      "ambiguous": false,
+      "candidates": [
+        {
+          "class": "TRadioPictureButton",
+          "class_source": "type_family",
+          "count": 2,
+          "screens": [
+            "MapView.rsrc:9470",
+            "MapView.rsrc:9476"
+          ],
+          "type_code": "radb"
+        }
+      ],
+      "instance_count": 2,
+      "nodes": [
+        "MapView.rsrc:9470@0x03fa",
+        "MapView.rsrc:9476@0x01a8"
+      ],
+      "screen_count": 2,
+      "tag_value": 1954115632
+    },
+    "typ1": {
+      "ambiguous": false,
+      "candidates": [
+        {
+          "class": "TRadioPictureButton",
+          "class_source": "type_family",
+          "count": 2,
+          "screens": [
+            "MapView.rsrc:9470",
+            "MapView.rsrc:9476"
+          ],
+          "type_code": "radb"
+        }
+      ],
+      "instance_count": 2,
+      "nodes": [
+        "MapView.rsrc:9470@0x045d",
+        "MapView.rsrc:9476@0x020b"
+      ],
+      "screen_count": 2,
+      "tag_value": 1954115633
+    },
+    "typ2": {
+      "ambiguous": false,
+      "candidates": [
+        {
+          "class": "TRadioPictureButton",
+          "class_source": "type_family",
+          "count": 2,
+          "screens": [
+            "MapView.rsrc:9470",
+            "MapView.rsrc:9476"
+          ],
+          "type_code": "radb"
+        }
+      ],
+      "instance_count": 2,
+      "nodes": [
+        "MapView.rsrc:9470@0x04c0",
+        "MapView.rsrc:9476@0x026e"
+      ],
+      "screen_count": 2,
+      "tag_value": 1954115634
+    },
+    "typ3": {
+      "ambiguous": false,
+      "candidates": [
+        {
+          "class": "TRadioPictureButton",
+          "class_source": "type_family",
+          "count": 2,
+          "screens": [
+            "MapView.rsrc:9470",
+            "MapView.rsrc:9476"
+          ],
+          "type_code": "radb"
+        }
+      ],
+      "instance_count": 2,
+      "nodes": [
+        "MapView.rsrc:9470@0x0523",
+        "MapView.rsrc:9476@0x02d1"
+      ],
+      "screen_count": 2,
+      "tag_value": 1954115635
+    },
+    "typ4": {
+      "ambiguous": false,
+      "candidates": [
+        {
+          "class": "TRadioPictureButton",
+          "class_source": "type_family",
+          "count": 2,
+          "screens": [
+            "MapView.rsrc:9470",
+            "MapView.rsrc:9476"
+          ],
+          "type_code": "radb"
+        }
+      ],
+      "instance_count": 2,
+      "nodes": [
+        "MapView.rsrc:9470@0x0586",
+        "MapView.rsrc:9476@0x0334"
+      ],
+      "screen_count": 2,
+      "tag_value": 1954115636
+    },
+    "typ5": {
+      "ambiguous": false,
+      "candidates": [
+        {
+          "class": "TRadioPictureButton",
+          "class_source": "type_family",
+          "count": 2,
+          "screens": [
+            "MapView.rsrc:9470",
+            "MapView.rsrc:9476"
+          ],
+          "type_code": "radb"
+        }
+      ],
+      "instance_count": 2,
+      "nodes": [
+        "MapView.rsrc:9470@0x05e9",
+        "MapView.rsrc:9476@0x0397"
+      ],
+      "screen_count": 2,
+      "tag_value": 1954115637
+    },
+    "typ6": {
+      "ambiguous": false,
+      "candidates": [
+        {
+          "class": "TRadioPictureButton",
+          "class_source": "type_family",
+          "count": 2,
+          "screens": [
+            "MapView.rsrc:9470",
+            "MapView.rsrc:9476"
+          ],
+          "type_code": "radb"
+        }
+      ],
+      "instance_count": 2,
+      "nodes": [
+        "MapView.rsrc:9470@0x064c",
+        "MapView.rsrc:9476@0x03fa"
+      ],
+      "screen_count": 2,
+      "tag_value": 1954115638
+    },
+    "typ7": {
+      "ambiguous": false,
+      "candidates": [
+        {
+          "class": "TRadioPictureButton",
+          "class_source": "type_family",
+          "count": 2,
+          "screens": [
+            "MapView.rsrc:9470",
+            "MapView.rsrc:9476"
+          ],
+          "type_code": "radb"
+        }
+      ],
+      "instance_count": 2,
+      "nodes": [
+        "MapView.rsrc:9470@0x06af",
+        "MapView.rsrc:9476@0x045d"
+      ],
+      "screen_count": 2,
+      "tag_value": 1954115639
+    },
+    "typ8": {
+      "ambiguous": false,
+      "candidates": [
+        {
+          "class": "TRadioPictureButton",
+          "class_source": "type_family",
+          "count": 2,
+          "screens": [
+            "MapView.rsrc:9470",
+            "MapView.rsrc:9476"
+          ],
+          "type_code": "radb"
+        }
+      ],
+      "instance_count": 2,
+      "nodes": [
+        "MapView.rsrc:9470@0x0397",
+        "MapView.rsrc:9476@0x04c0"
+      ],
+      "screen_count": 2,
+      "tag_value": 1954115640
+    },
     "type": {
       "ambiguous": false,
       "candidates": [
@@ -176353,6 +181494,66 @@
       ],
       "screen_count": 1,
       "tag_value": 1970173042
+    },
+    "usr1": {
+      "ambiguous": false,
+      "candidates": [
+        {
+          "class": "TCzechBox",
+          "class_source": "type_family",
+          "count": 1,
+          "screens": [
+            "Linger.rsrc:900"
+          ],
+          "type_code": "chkb"
+        }
+      ],
+      "instance_count": 1,
+      "nodes": [
+        "Linger.rsrc:900@0x069f"
+      ],
+      "screen_count": 1,
+      "tag_value": 1970500145
+    },
+    "usr2": {
+      "ambiguous": false,
+      "candidates": [
+        {
+          "class": "TCzechBox",
+          "class_source": "type_family",
+          "count": 1,
+          "screens": [
+            "Linger.rsrc:900"
+          ],
+          "type_code": "chkb"
+        }
+      ],
+      "instance_count": 1,
+      "nodes": [
+        "Linger.rsrc:900@0x0702"
+      ],
+      "screen_count": 1,
+      "tag_value": 1970500146
+    },
+    "usr3": {
+      "ambiguous": false,
+      "candidates": [
+        {
+          "class": "TCzechBox",
+          "class_source": "type_family",
+          "count": 1,
+          "screens": [
+            "Linger.rsrc:900"
+          ],
+          "type_code": "chkb"
+        }
+      ],
+      "instance_count": 1,
+      "nodes": [
+        "Linger.rsrc:900@0x0765"
+      ],
+      "screen_count": 1,
+      "tag_value": 1970500147
     },
     "vert": {
       "ambiguous": false,

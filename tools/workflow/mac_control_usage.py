@@ -31,6 +31,8 @@ TYPE_FAMILY_CLASSES = {
     "edit": "TEditText",
     "fwnd": "TFloatWindow",
     "nmbr": "TNumberText",
+    "radb": "TRadioPictureButton",
+    "chkb": "TCzechBox",
     "pict": "TPicture",
     "stat": "TStaticText",
     "tevw": "TTEView",

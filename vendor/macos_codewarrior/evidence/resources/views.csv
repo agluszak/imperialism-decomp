@@ -27,8 +27,8 @@ FlagView.rsrc,8500,0x2134,Offer Sheet Screen,3945,b0755d345125f4f035a45212880db1
 FlagView.rsrc,8800,0x2260,Deal Book,2158,d15939874492ccd96870c430cea9e618ff8a10ddf3c6af1f0d4fd9bede333f0d,21
 Linger.rsrc,200,0x00c8,MA - IDClipWindow,659,3000cb57b889a0615f3d1ef9ca6d50b361c858818ca212b9ca693230c2422dba,1
 Linger.rsrc,300,0x012c,MA - kDialogTEViewID,161,f959702ca83606d35e41477244c2dd1739fb7957b4f5b40a8066b1050158cd3c,1
-Linger.rsrc,900,0x0384,Debug Flags Window,2388,cbbfdaf3d012498c2791a0d523d03441ce1509a75c4cdc1e2a8589945ee02e41,8
-Linger.rsrc,901,0x0385,debug - Initialize PerfMon,3568,038da8f84127ac92bfde5fb587aefa60f703b15f7e754ec63c726310b6c2677b,22
+Linger.rsrc,900,0x0384,Debug Flags Window,2388,cbbfdaf3d012498c2791a0d523d03441ce1509a75c4cdc1e2a8589945ee02e41,24
+Linger.rsrc,901,0x0385,debug - Initialize PerfMon,3568,038da8f84127ac92bfde5fb587aefa60f703b15f7e754ec63c726310b6c2677b,25
 Linger.rsrc,950,0x03b6,About Box,790,e8b61b56146312918431e671d65e48c73047d2fe7e78d7d90178d733debeefc3,2
 Linger.rsrc,954,0x03ba,Planet Seed Dialog & So Much More,1060,e00fbeb7ee56b29e63d7096b7532210c3e5c40542cf31dacd1e80bb2b8c21b47,9
 Linger.rsrc,1000,0x03e8,test - modal message-offscreen test,1234,7d7f4f9dec96561999c0e18c619b071b9f3440903cabf3c283d619f21a16e04b,10
@@ -58,7 +58,7 @@ Linger.rsrc,4150,0x1036,Game preferences,2608,01c898079646e45bb45f2bfc08ad1939a9
 Linger.rsrc,4175,0x104f,Credits,495,5e34984fbcb84c33b1a03afec9b15c250d2e5c65d41ac69d9a794b905ac7fcc0,4
 Linger.rsrc,4300,0x10cc,Game status,1904,5c03deb0e3649634232ed52d92dbace81ed8015280f00c4048994ba150411132,17
 Linger.rsrc,4600,0x11f8,Opening Cinematic,326,2b42bf249e166baed32c81f9e6ff64557d918f20facd46087491dbc63d9d36a5,3
-Linger.rsrc,8155,0x1fdb,test - Naval Battle,12137,92411df116ebc17c4585f37a40361613423f62b17d348dd17fefea6191db2914,75
+Linger.rsrc,8155,0x1fdb,test - Naval Battle,12137,92411df116ebc17c4585f37a40361613423f62b17d348dd17fefea6191db2914,87
 Linger.rsrc,9285,0x2445,Brick court,335,40b3bd2ef94555e670aa733238f88ea2c4cdbc27c15320d6662e87ad978bcd3e,3
 Linger.rsrc,15000,0x3a98,Cheater base window,173,47e4028b3830ecbcb1d951ca7f48c02bc32593b1ce46eda430d8780206947f75,1
 Linger.rsrc,15001,0x3a99,Cheaty Mission Snooper,2142,ec8e6d42d331197ef215097ffae775d946aa5925d568dfae57d5f09d53e1babb,14
@@ -72,10 +72,10 @@ MapView.rsrc,7200,0x1c20,Engineer Build Menu,806,c417040cf376a94d04a74b12c30bce3
 MapView.rsrc,9460,0x24f4,Army Maker,9482,0c1d292b90a06476cc3e9676d7f9ae385707edda8c09290b6715a018d2bd3d9e,65
 MapView.rsrc,9462,0x24f6,Navy Maker II,2963,fdfa28001aa8519dbf9135f1c081ac77c4511549453d2d33a4497d3ab110e2b8,18
 MapView.rsrc,9465,0x24f9,Terrain Info Window /h,833,52c422a0e91eee0c7828c72e8f3a9caddd0017443cff0a53b6d6771fdba6aeb2,3
-MapView.rsrc,9470,0x24fe,Civilian Maker,2697,b424664184d7d219c310d97bcd42e7ce1c5b3f637b9909bd1b22f968df02fd61,5
+MapView.rsrc,9470,0x24fe,Civilian Maker,2697,b424664184d7d219c310d97bcd42e7ce1c5b3f637b9909bd1b22f968df02fd61,21
 MapView.rsrc,9474,0x2502,Friendly Fleet Report,1372,9cbf80ab5e59391319efabd0ea8958295d883950865b9f611a67cc1d9ee75faf,13
 MapView.rsrc,9475,0x2503,Enemy Fleet Report,1256,023d959f6458c785e6e24aaffad3524f9f49f38d1c9e728372cfa03e2e8b7d78,12
-MapView.rsrc,9476,0x2504,Navy Maker,1969,fbd437be711564d2c030f9f5da1f6e37cf7fe5b0a5d314d17b99c84662ea50fe,8
+MapView.rsrc,9476,0x2504,Navy Maker,1969,fbd437be711564d2c030f9f5da1f6e37cf7fe5b0a5d314d17b99c84662ea50fe,17
 MapView.rsrc,9477,0x2505,Merchant interception report,2072,f2f66e4f2e7b8a1038a96f2765ba252cf1ac03244b707208b26968e006db5f50,20
 MapView.rsrc,9478,0x2506,Navy Roster,1135,ad37b68ba85cca68c0a2fb534076dd9c03f9cf44102b80f50b93ba6bf07a75cb,6
 Minister.rsrc,8900,0x22c4,Foreign Minister Dlog,1018,a321088478175069cb121e9a2a5a40a437cfa707e5dad441258eedb8fe1b785b,10
@@ -95,11 +95,11 @@ Multiplayer.rsrc,1507,0x05e3,kMultiplayerPickGameDialog,957,b144d68aaa6fa89df98c
 Multiplayer.rsrc,1508,0x05e4,kGameSetupNetGameOptionsView,3666,3359888b6a94314f4d9d8af689be161c1438a421a87dc601c2739e8408a72df9,33
 Multiplayer.rsrc,1510,0x05e6,kMultiplayerMessageSendWindow,1443,bd2d685ca1a86668774df96e5e41b2ca724f2f0f5da8dbc00b6606faaef3d5ad,12
 Shipyard.rsrc,9207,0x23f7,Shipyard 3,5954,9d1327e5a8856f35e2df2346ec6dbea3edbc3e83bb891a67a96c73e06d552d44,49
-Startup.rsrc,951,0x03b7,test - Game Setup Dialog,5043,c36df932efe837a7d65b6b3ed8503a2cb2164c7dfe047bbcfe2f177e7e480ef3,8
+Startup.rsrc,951,0x03b7,test - Game Setup Dialog,5043,c36df932efe837a7d65b6b3ed8503a2cb2164c7dfe047bbcfe2f177e7e480ef3,10
 Startup.rsrc,952,0x03b8,City Site selector,923,45b5e85ee16211744debf06c28158413c3c505b0c81cb6e3cb5db23a8f19173b,8
 Startup.rsrc,953,0x03b9,New City Dialog,1271,e64a8cc5f28941b8da6244fbb127de83d7289a1d47fba9bc86d396f943469d26,7
-Startup.rsrc,960,0x03c0,Map editor,4180,b616f149b86ee3e87501c6e1d09cef5efca20d516af4ec767fc0eeea91d14118,11
-Startup.rsrc,965,0x03c5,Province editor,1180,f190b268bac6e8753d6743c34efbf5ab8e7422eee4e1cc502cd0ca7b8365e5a6,8
+Startup.rsrc,960,0x03c0,Map editor,4180,b616f149b86ee3e87501c6e1d09cef5efca20d516af4ec767fc0eeea91d14118,41
+Startup.rsrc,965,0x03c5,Province editor,1180,f190b268bac6e8753d6743c34efbf5ab8e7422eee4e1cc502cd0ca7b8365e5a6,10
 Startup.rsrc,966,0x03c6,Verb Form Dialog,555,5f1a659eda2e4c225fbf01c5b1ce35c51e249438a9a80150073f24b27f6468ab,5
 Startup.rsrc,1500,0x05dc,kGameSetupMainView,1053,fbb51eed479870d9744f913d6c573b7bae733e8d00274423f001fcc625ccd652,10
 Startup.rsrc,1501,0x05dd,kGameSetupRandomView,2902,0819d9db4c13c21c527796c2ce86ce2679cf2753fbf72eb9a1ff085182d1ce11,26
