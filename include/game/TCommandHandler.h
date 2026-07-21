@@ -45,7 +45,7 @@ public:
   // slot 0x22 IsTarget inherited unchanged (0x48a500)
   // slot 0x23 RemoveBehavior inherited unchanged (0x48a4a0)
   // slot 0x24 AddBehavior inherited unchanged (0x48a4d0)
-  virtual void ConstructTCommandHandlerBaseState(TCommand* command); // slot 0x25 0x486650
+  virtual void PerformCommand(TCommand* command); // slot 0x25 0x486650
 
   TCommandHandler();
 };

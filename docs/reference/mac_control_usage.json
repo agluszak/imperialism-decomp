@@ -158992,6 +158992,63 @@
         "owner_class": "TTacArmyView",
         "recovered_source": "src/game/TTacArmyView.cpp"
       },
+      "0x005b2aa0": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "definition_source": "src/game/global_data_tables.cpp",
+                "kind": "source_path_global_reference",
+                "path": "D:\\Ambit\\Cross\\UTestDialogs.cpp",
+                "symbol": "s_SourcePathUTestDialogs_0069A7F8"
+              }
+            ],
+            "module": "UTestDialogs.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "TMinorTradeBidsDialog::StuffValues",
+        "owner_class": "TMinorTradeBidsDialog",
+        "recovered_source": "src/game/TMinorTradeBidsDialog.cpp"
+      },
+      "0x005b3be0": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "definition_source": "src/game/global_data_tables.cpp",
+                "kind": "source_path_global_reference",
+                "path": "D:\\Ambit\\Cross\\UTestDialogs.cpp",
+                "symbol": "s_SourcePathUTestDialogs_0069A7F8"
+              }
+            ],
+            "module": "UTestDialogs.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "TGPTreatyDialog::StuffValues",
+        "owner_class": "TGPTreatyDialog",
+        "recovered_source": "src/game/TGPTreatyDialog.cpp"
+      },
+      "0x005b4090": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "definition_source": "src/game/global_data_tables.cpp",
+                "kind": "source_path_global_reference",
+                "path": "D:\\Ambit\\Cross\\UTestDialogs.cpp",
+                "symbol": "s_SourcePathUTestDialogs_0069A7F8"
+              }
+            ],
+            "module": "UTestDialogs.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "TMinorTreatyDialog::StuffValues",
+        "owner_class": "TMinorTreatyDialog",
+        "recovered_source": "src/game/TMinorTreatyDialog.cpp"
+      },
       "0x005ba7a0": {
         "modules": [
           {
@@ -159864,6 +159921,18 @@
           "0x005a9d90"
         ]
       },
+      "UTestDialogs.cpp": {
+        "classes": [
+          "TGPTreatyDialog",
+          "TMinorTradeBidsDialog",
+          "TMinorTreatyDialog"
+        ],
+        "functions": [
+          "0x005b2aa0",
+          "0x005b3be0",
+          "0x005b4090"
+        ]
+      },
       "UTradeViews.cpp": {
         "classes": [
           "TDealBookPicture",
@@ -159935,11 +160004,11 @@
     "classes_with_source_module_evidence": 16,
     "declared_classes": 152,
     "factories_with_source_module_candidates": 9,
-    "functions_with_source_module_evidence": 105,
+    "functions_with_source_module_evidence": 108,
     "nodes": 3263,
     "screens": 121,
     "screens_with_source_module_candidates": 26,
-    "source_modules": 33,
+    "source_modules": 34,
     "tags": 813
   },
   "tags": {

@@ -1145,6 +1145,13 @@
       "text": "D:\\Ambit\\Cross\\UTacViews.cpp"
     },
     {
+      "address": "0x0069a7f8",
+      "placeholders": [],
+      "source": "embedded_global",
+      "symbol": "s_SourcePathUTestDialogs_0069A7F8",
+      "text": "D:\\Ambit\\Cross\\UTestDialogs.cpp"
+    },
+    {
       "address": "0x0069aa94",
       "placeholders": [],
       "source": "embedded_global",
@@ -7201,6 +7208,12 @@
           "kind": "embedded_global",
           "symbol": "s_SourcePathUTacViews_00699FF4",
           "text": "D:\\Ambit\\Cross\\UTacViews.cpp"
+        },
+        {
+          "address": "0x0069a7f8",
+          "kind": "embedded_global",
+          "symbol": "s_SourcePathUTestDialogs_0069A7F8",
+          "text": "D:\\Ambit\\Cross\\UTestDialogs.cpp"
         },
         {
           "address": "0x0069aa94",
@@ -15082,6 +15095,39 @@
         }
       ],
       "source_file": "src/game/TTechItemView.cpp"
+    },
+    "0x005b2aa0": {
+      "references": [
+        {
+          "address": "0x0069a7f8",
+          "kind": "embedded_global",
+          "symbol": "s_SourcePathUTestDialogs_0069A7F8",
+          "text": "D:\\Ambit\\Cross\\UTestDialogs.cpp"
+        }
+      ],
+      "source_file": "src/game/TMinorTradeBidsDialog.cpp"
+    },
+    "0x005b3be0": {
+      "references": [
+        {
+          "address": "0x0069a7f8",
+          "kind": "embedded_global",
+          "symbol": "s_SourcePathUTestDialogs_0069A7F8",
+          "text": "D:\\Ambit\\Cross\\UTestDialogs.cpp"
+        }
+      ],
+      "source_file": "src/game/TGPTreatyDialog.cpp"
+    },
+    "0x005b4090": {
+      "references": [
+        {
+          "address": "0x0069a7f8",
+          "kind": "embedded_global",
+          "symbol": "s_SourcePathUTestDialogs_0069A7F8",
+          "text": "D:\\Ambit\\Cross\\UTestDialogs.cpp"
+        }
+      ],
+      "source_file": "src/game/TMinorTreatyDialog.cpp"
     },
     "0x005b4810": {
       "references": [
@@ -179569,9 +179615,9 @@
     "windows_strings": "docs/reference/strenu-strings.tsv"
   },
   "summary": {
-    "embedded_globals": 769,
+    "embedded_globals": 770,
     "formula_matches": 2356,
-    "functions_with_references": 288,
+    "functions_with_references": 291,
     "mac_strings": 3821,
     "mac_strings_with_candidates": 3091,
     "text_resources": 0,

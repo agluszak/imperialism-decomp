@@ -32,7 +32,7 @@ public:
   // existing slot rather than eliminated, since there is no evidence either way whether
   // the original dispatches it via vtable or a direct call, and this class has a prior
   // revert history from vtable-signature mistakes (bd imperialism-decomp-1uj.39).
-  virtual void ConstructTPopGrowthOrderBaseState(TCity* city); // slot 0x11 0x4b8160
+  virtual void IPopGrowthOrder(TCity* city); // slot 0x11 0x4b8160, Mac-style second-phase init
 
   TPopGrowthOrder();
 };
