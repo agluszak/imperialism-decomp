@@ -340,6 +340,10 @@ extern int g_QuickDrawSetCursorAssertGate;
 extern int g_QuickDrawGetCursorAssertGate;
 extern const int g_pTradeSummarySelectionMap[23];
 extern const int kTradeSellPropagationTags[17];
+extern const int g_tradeBidNationMetricControlTags[24];
+extern const unsigned int g_majorTreatyPanelTags[7];
+extern const unsigned int g_minorTreatyPanelTags[16];
+extern const unsigned int g_majorTreatyCellTags[7];
 
 // 0x6a4280..0x6a4310 — secondary (minor-power) nation rows; TMinor layout
 // (military unit list at +0x44 summed by 0x004e0fe0/0x004e1300).
@@ -876,6 +880,7 @@ extern "C" const char s_SourcePathUDefenseMinister_00696860[];
 // Assert source-path string for the UArmyMgr TU.
 extern "C" const char s_SourcePathUArmyMgr_0069573C[];
 extern "C" const char s_SourcePathUCityDialogs_006962E8[];
+extern "C" const char s_SourcePathUTestDialogs_0069A7F8[];
 extern "C" const char s_SourcePathUCityViews_00696650[];
 extern "C" const char s_SourcePathUArmyViews_00695858[];
 extern "C" const char s_SourcePathUOceanViews_00698650[];

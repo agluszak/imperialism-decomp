@@ -616,7 +616,7 @@ address|name|symbol|size|type|prototype|provenance
 4865e0|TCommandHandler::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 486610|TCommandHandler::CreateTCommandHandlerInstance||7|function|undefined CreateTCommandHandlerInstance()|
 486630|TCommandHandler::GetRuntimeClass||6|function|undefined GetTCommandHandlerClassNamePointer()|rtti
-486650|TCommandHandler::ConstructTCommandHandlerBaseState||23|function|void ConstructTCommandHandlerBaseState(TCommand * command)|
+486650|TCommandHandler::PerformCommand||23|function|void PerformCommand(TCommand * command)|mac_oracle
 486680|TApplication::CreateObject|?CreateObject@TApplication@@SGPAVCObject@@XZ|142|function|undefined CreateObject()|rtti
 486740|TApplication::GetRuntimeClass||6|function|undefined GetTApplicationClassNamePointer()|rtti
 486760|TApplication::TApplication|??0TApplication@@QAE@XZ|61|function|undefined TApplication()|curated
@@ -1865,7 +1865,7 @@ address|name|symbol|size|type|prototype|provenance
 4b80c0|TFoodProcessingOrder::FillOrderSheet||51|function|undefined CreateTPopGrowthOrderInstance()|
 4b8110|TPopGrowthOrder::CreateObject|?CreateObject@TPopGrowthOrder@@SGPAVCObject@@XZ|24|function|undefined CreateObject()|rtti
 4b8140|TPopGrowthOrder::GetRuntimeClass||6|function|undefined GetTPopGrowthOrderClassNamePointer()|rtti
-4b8160|TPopGrowthOrder::ConstructTPopGrowthOrderBaseState||62|function|undefined ConstructTPopGrowthOrderBaseState()|
+4b8160|TPopGrowthOrder::IPopGrowthOrder||62|function|void IPopGrowthOrder(TCity * city)|mac_oracle
 4b81b0|TPopGrowthOrder::MaxOrder||89|function|undefined MaxOrder(void)|
 4b8230|TPopGrowthOrder::SetQuantity||138|function|undefined SetQuantity(short param_1)|
 4b82f0|TPopGrowthOrder::CommitIfPending||229|function|undefined CommitIfPending(void)|
@@ -5666,7 +5666,7 @@ address|name|symbol|size|type|prototype|provenance
 5b29a0|TMinorTradeBidsDialog::CreateObject|?CreateObject@TMinorTradeBidsDialog@@SGPAVCObject@@XZ|106|function|undefined CreateObject()|rtti
 5b2a30|TMinorTradeBidsDialog::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 5b2a80|TMinorTradeBidsDialog::GetRuntimeClass||6|function|undefined GetTMinorTradeBidsDialogClassNamePointer()|rtti
-5b2aa0|TMinorTradeBidsDialog::ConstructTMinorTradeBidsDialogBaseState||391|function|undefined ConstructTMinorTradeBidsDialogBaseState()|
+5b2aa0|TMinorTradeBidsDialog::StuffValues||391|function|void StuffValues()|mac_oracle
 5b2ca0|TRelationshipDialog::CreateObject|?CreateObject@TRelationshipDialog@@SGPAVCObject@@XZ|106|function|undefined CreateObject()|rtti
 5b2d30|TRelationshipDialog::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 5b2d80|TRelationshipDialog::GetRuntimeClass||6|function|undefined GetTRelationshipDialogClassNamePointer()|rtti
@@ -5680,11 +5680,11 @@ address|name|symbol|size|type|prototype|provenance
 5b3ae0|TGPTreatyDialog::CreateObject|?CreateObject@TGPTreatyDialog@@SGPAVCObject@@XZ|106|function|undefined CreateObject()|rtti
 5b3b70|TGPTreatyDialog::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 5b3bc0|TGPTreatyDialog::GetRuntimeClass||6|function|undefined GetTGPTreatyDialogClassNamePointer()|rtti
-5b3be0|TGPTreatyDialog::ConstructTGPTreatyDialogBaseState||737|function|undefined ConstructTGPTreatyDialogBaseState()|
+5b3be0|TGPTreatyDialog::StuffValues||737|function|void StuffValues()|mac_oracle
 5b3f90|TMinorTreatyDialog::CreateObject|?CreateObject@TMinorTreatyDialog@@SGPAVCObject@@XZ|106|function|undefined CreateObject()|rtti
 5b4020|TMinorTreatyDialog::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 5b4070|TMinorTreatyDialog::GetRuntimeClass||6|function|undefined GetTMinorTreatyDialogClassNamePointer()|rtti
-5b4090|TMinorTreatyDialog::ConstructTMinorTreatyDialogBaseState||1049|function|undefined ConstructTMinorTreatyDialogBaseState()|
+5b4090|TMinorTreatyDialog::StuffValues||1049|function|void StuffValues()|mac_oracle
 5b45c0|TAutomatedPlayDialog::CreateObject|?CreateObject@TAutomatedPlayDialog@@SGPAVCObject@@XZ|106|function|undefined CreateObject()|rtti
 5b4650|TAutomatedPlayDialog::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 5b46a0|TAutomatedPlayDialog::GetRuntimeClass||6|function|undefined GetTAutomatedPlayDialogClassNamePointer()|rtti
@@ -8336,6 +8336,10 @@ address|name|symbol|size|type|prototype|provenance
 66ae28|TTechItemLine::classTTechItemLine|||global||
 66ae40|TTechItemView::classTTechItemView|||global||
 66ae58|TTechHistoryView::classTTechHistoryView|||global||
+66b100|g_majorTreatyPanelTags|||global||binary_data
+66b13c|g_minorTreatyPanelTags|||global||binary_data
+66b180|g_majorTreatyCellTags|||global||binary_data
+66b1a0|g_tradeBidNationMetricControlTags|||global||binary_data
 66b220|TGameSetupDialog::classTGameSetupDialog|||global||
 66b238|TMapEditCluster::classTMapEditCluster|||global||
 66b250|TMinorTradeBidsDialog::classTMinorTradeBidsDialog|||global||
@@ -8560,6 +8564,7 @@ address|name|symbol|size|type|prototype|provenance
 698bf4|s_PictWvGobPathFormat_00698BF4|||global||
 698c0c|s_Chunk_00698C0C|||global||
 698f58|g_anTargetTileProfileByCivilianClassAndSlot|||global||
+69a7f8|s_SourcePathUTestDialogs_0069A7F8|||global||binary_string
 69a910|g_aTradeItemBasePriceByCategory_0069A910|||global||
 69b6b4|s_TurnEventCursorNameFormat_0069B6B4|||global||
 69b810|s_MissingFileSuffix_0069B810|||global||
