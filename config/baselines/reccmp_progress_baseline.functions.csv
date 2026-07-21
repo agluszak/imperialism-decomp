@@ -180,7 +180,7 @@ address|matching|name
 0x44a720|0.9090909090909091|TShipFractionCluster::`scalar deleting destructor'
 0x44a770|1.0|TCivDescription::TCivDescription
 0x44a7a0|0.9090909090909091|TCivDescription::`scalar deleting destructor'
-0x44a810|0.21037868162692847|BuildTurnEventDialogResources_2508
+0x44a810|0.08956796628029505|BuildTurnEventDialogResources_2508
 0x44af90|0.2152599594868332|InitializeJoinSelectorDialogControlsAndNationSlots
 0x44fab0|0.9090909090909091|TJoinSelectorDialog::`scalar deleting destructor'
 0x44fae0|0.9090909090909091|TLoungeDialog::`scalar deleting destructor'

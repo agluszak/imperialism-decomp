@@ -92989,6 +92989,36 @@
       "to": "FlagView.rsrc:View:8800"
     },
     {
+      "from": "windows_event:0x22e2",
+      "relation": "builds_view",
+      "status": "resolved",
+      "to": "Minister.rsrc:View:8930"
+    },
+    {
+      "from": "windows_event:0x22ec",
+      "relation": "builds_view",
+      "status": "resolved",
+      "to": "Minister.rsrc:View:8940"
+    },
+    {
+      "from": "windows_event:0x22f6",
+      "relation": "builds_view",
+      "status": "resolved",
+      "to": "Minister.rsrc:View:8950"
+    },
+    {
+      "from": "windows_event:0x2300",
+      "relation": "builds_view",
+      "status": "resolved",
+      "to": "Minister.rsrc:View:8960"
+    },
+    {
+      "from": "windows_event:0x231e",
+      "relation": "builds_view",
+      "status": "resolved",
+      "to": "Minister.rsrc:View:8990"
+    },
+    {
       "from": "windows_event:0x23f0",
       "relation": "builds_view",
       "status": "resolved",
@@ -93143,6 +93173,24 @@
       "relation": "builds_view",
       "status": "resolved",
       "to": "Minister.rsrc:View:9480"
+    },
+    {
+      "from": "windows_event:0x258a",
+      "relation": "builds_view",
+      "status": "resolved",
+      "to": "Minister.rsrc:View:9610"
+    },
+    {
+      "from": "windows_event:0x25ee",
+      "relation": "builds_view",
+      "status": "resolved",
+      "to": "Minister.rsrc:View:9710"
+    },
+    {
+      "from": "windows_event:0x25f8",
+      "relation": "builds_view",
+      "status": "resolved",
+      "to": "Minister.rsrc:View:9720"
     },
     {
       "from": "windows_event:0x3a98",
@@ -93496,7 +93544,55 @@
       "from": "windows_factory:0x0044a810",
       "relation": "handles_event",
       "status": "resolved",
+      "to": "windows_event:0x22e2"
+    },
+    {
+      "from": "windows_factory:0x0044a810",
+      "relation": "handles_event",
+      "status": "resolved",
+      "to": "windows_event:0x22ec"
+    },
+    {
+      "from": "windows_factory:0x0044a810",
+      "relation": "handles_event",
+      "status": "resolved",
+      "to": "windows_event:0x22f6"
+    },
+    {
+      "from": "windows_factory:0x0044a810",
+      "relation": "handles_event",
+      "status": "resolved",
+      "to": "windows_event:0x2300"
+    },
+    {
+      "from": "windows_factory:0x0044a810",
+      "relation": "handles_event",
+      "status": "resolved",
+      "to": "windows_event:0x231e"
+    },
+    {
+      "from": "windows_factory:0x0044a810",
+      "relation": "handles_event",
+      "status": "resolved",
       "to": "windows_event:0x2508"
+    },
+    {
+      "from": "windows_factory:0x0044a810",
+      "relation": "handles_event",
+      "status": "resolved",
+      "to": "windows_event:0x258a"
+    },
+    {
+      "from": "windows_factory:0x0044a810",
+      "relation": "handles_event",
+      "status": "resolved",
+      "to": "windows_event:0x25ee"
+    },
+    {
+      "from": "windows_factory:0x0044a810",
+      "relation": "handles_event",
+      "status": "resolved",
+      "to": "windows_event:0x25f8"
     },
     {
       "from": "windows_factory:0x0044af90",
@@ -184978,6 +185074,26 @@
       "event": "0x2260",
       "kind": "windows_event"
     },
+    "windows_event:0x22e2": {
+      "event": "0x22e2",
+      "kind": "windows_event"
+    },
+    "windows_event:0x22ec": {
+      "event": "0x22ec",
+      "kind": "windows_event"
+    },
+    "windows_event:0x22f6": {
+      "event": "0x22f6",
+      "kind": "windows_event"
+    },
+    "windows_event:0x2300": {
+      "event": "0x2300",
+      "kind": "windows_event"
+    },
+    "windows_event:0x231e": {
+      "event": "0x231e",
+      "kind": "windows_event"
+    },
     "windows_event:0x23f0": {
       "event": "0x23f0",
       "kind": "windows_event"
@@ -185080,6 +185196,18 @@
     },
     "windows_event:0x2508": {
       "event": "0x2508",
+      "kind": "windows_event"
+    },
+    "windows_event:0x258a": {
+      "event": "0x258a",
+      "kind": "windows_event"
+    },
+    "windows_event:0x25ee": {
+      "event": "0x25ee",
+      "kind": "windows_event"
+    },
+    "windows_event:0x25f8": {
+      "event": "0x25f8",
       "kind": "windows_event"
     },
     "windows_event:0x3a98": {
@@ -185638,10 +185766,10 @@
     "dangling_explained": 306,
     "dangling_unexplained": 0,
     "edge_relations": {
-      "builds_view": 85,
+      "builds_view": 93,
       "contains_child_node": 3142,
       "contains_view_node": 3263,
-      "handles_event": 86,
+      "handles_event": 94,
       "has_control_tag": 3263,
       "instantiates_mac_class": 3263,
       "references_picture": 909,
@@ -185649,7 +185777,7 @@
       "references_text_style": 58,
       "resolves_control_tag": 203
     },
-    "edges": 15713,
+    "edges": 15729,
     "mac_classes_without_windows_header": 18,
     "node_kinds": {
       "control_tag": 813,
@@ -185659,11 +185787,11 @@
       "txst": 316,
       "view": 121,
       "view_node": 3263,
-      "windows_event": 86,
+      "windows_event": 94,
       "windows_factory": 17,
       "windows_function": 88
     },
-    "nodes": 10984,
+    "nodes": 10992,
     "unreferenced_resources": {
       "pict": 1998,
       "str_entry": 3623,
