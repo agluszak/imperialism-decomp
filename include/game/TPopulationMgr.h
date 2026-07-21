@@ -27,9 +27,11 @@ public:
   virtual undefined OrphanLeaf_NoCall_Ins47_004b5dc0(short param_1, short param_2,
                                                      short param_3); // slot 0x0b 0x4b5dc0
   virtual undefined OrphanLeaf_NoCall_Ins20_004b5d50(short param_1); // slot 0x0c 0x4b5d50
-  virtual undefined OrphanLeaf_NoCall_Ins87_004b66a0(short param_1,
-                                                     short param_2); // slot 0x0d 0x4b66a0
-  virtual undefined PopulationMgrSlot0E();                           // slot 0x0e 0x4b5ed0
+  // Mac CodeWarrior oracle: RemovePopulation(short, short). The first argument selects
+  // the starting skill band (1/2/4); a negative amount adds population to that band.
+  virtual void RemovePopulation(short startingSkillBand,
+                                short amount); // slot 0x0d 0x4b66a0
+  virtual undefined PopulationMgrSlot0E();     // slot 0x0e 0x4b5ed0
   // Out-param pair reporting recent storm impact (both callers treat "either output
   // nonzero" as a noteworthy event to surface -- THelpMgr's periodic advisory and
   // TCityInteriorMinister's foreign-minister notification). Renamed from the

@@ -38,13 +38,13 @@ address|name|symbol|size|type|prototype|provenance
 413c00|TModalDialogBase::`scalar deleting destructor'|??_GTModalDialogBase@@UAEPAXI@Z|30|function|undefined ScalarDeletingDestructor()|
 413c30|TDDTemplateDialog::~TDDTemplateDialog|??1TDDTemplateDialog@@UAE@XZ|117|function|public: virtual __thiscall TDDTemplateDialog::~TDDTemplateDialog(void)|
 413cd0|TDDTemplateDialog::`scalar deleting destructor'|??_GTDDTemplateDialog@@UAEPAXI@Z|30|function|undefined ScalarDeletingDestructor()|
-413d20|ShowNationSelectDialogAndRedispatchCurrentTurnEvent||328|function|undefined ShowNationSelectDialogAndRedispatchCurrentTurnEvent()|
+413d20|ImperialismApp::OnSelectActiveNation||328|function|void OnSelectActiveNation()|
 413ed0|WrapperFor_FreeHeapBufferIfNotNull_At0047d3f0_Impl||104|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At0047d3f0_Impl()|
-413f60|HandleDialogResultAndPostCommand100||208|function|undefined HandleDialogResultAndPostCommand100()|
+413f60|ImperialismApp::OnApplyTurnCooldownOverride||208|function|void OnApplyTurnCooldownOverride()|
 414070|WrapperFor_CDialog_At00414070||86|function|undefined WrapperFor_CDialog_At00414070()|
-4140f0|ApplyDialogSelectionToNationState||444|function|undefined ApplyDialogSelectionToNationState()|
+4140f0|ImperialismApp::OnAdjustNationResourcesAndPopulation||444|function|void OnAdjustNationResourcesAndPopulation()|
 414320|WrapperFor_FreeHeapBufferIfNotNull_At0047dc40_Impl||104|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At0047dc40_Impl()|
-4143b0|LoadAndPreviewDibFromDialogInput||428|function|undefined LoadAndPreviewDibFromDialogInput()|
+4143b0|ImperialismApp::OnPreviewDibResource||428|function|void OnPreviewDibResource()|
 4145f0|ImperialismApp::OnIdle|?OnIdle@ImperialismApp@@UAEHJ@Z|55|function|public: virtual int __thiscall ImperialismApp::OnIdle(long)|
 414640|AssertAmbitSubsystemReadyOrFailWithBmp3B6||28|function|undefined AssertAmbitSubsystemReadyOrFailWithBmp3B6()|
 4146d0|PostWmCloseToMainThreadWindow||55|function|undefined PostWmCloseToMainThreadWindow()|
@@ -334,7 +334,7 @@ address|name|symbol|size|type|prototype|provenance
 47bde0|BlitSurfaceRectSkippingTransparentColor||331|function|undefined BlitSurfaceRectSkippingTransparentColor()|
 47bf90|LoadBmpResourceByIdCached_Impl||73|function|undefined LoadBmpResourceByIdCached_Impl()|
 47c080|CDib::LoadBitmapResourceAndInitializeSurfaceState||224|function|int LoadBitmapResourceAndInitializeSurfaceState(LPCSTR resourceName, HMODULE module)|
-47c1f0|LoadAndPreviewDibFromDialogInput_Impl||384|function|undefined LoadAndPreviewDibFromDialogInput_Impl()|
+47c1f0|CDib::BuildMonochromeOutlineMaskInPlace||384|function|int BuildMonochromeOutlineMaskInPlace()|
 47c3d0|CDib::BuildNonTransparentOutlinePolygon||898|function|int * __thiscall Sprite__CollectNonTransparentPixels(uint this_ptr)|
 47c980|RebuildSurfaceRowsWithTemporaryRowBuffer||203|function|undefined RebuildSurfaceRowsWithTemporaryRowBuffer()|
 47cac0|WrapperFor_DeleteRegionHandleFromClipState_At0047cac0||70|function|undefined WrapperFor_DeleteRegionHandleFromClipState_At0047cac0()|
@@ -1808,7 +1808,7 @@ address|name|symbol|size|type|prototype|provenance
 4b63e0|TPopulationMgr::OrphanLeaf_NoCall_Ins50_004b63e0||168|function|undefined OrphanLeaf_NoCall_Ins50_004b63e0(void)|
 4b64c0|TPopulationMgr::OrphanLeaf_NoCall_Ins63_004b64c0||178|function|undefined OrphanLeaf_NoCall_Ins63_004b64c0(void)|
 4b65b0|TPopulationMgr::OrphanCallChain_C2_I61_004b65b0||179|function|undefined OrphanCallChain_C2_I61_004b65b0(void)|
-4b66a0|TPopulationMgr::OrphanLeaf_NoCall_Ins87_004b66a0||248|function|undefined OrphanLeaf_NoCall_Ins87_004b66a0(short param_1, short param_2)|
+4b66a0|TPopulationMgr::RemovePopulation||248|function|void RemovePopulation(short startingSkillBand, short amount)|
 4b67e0|TPopulationMgr::OrphanLeaf_NoCall_Ins26_004b67e0||79|function|undefined OrphanLeaf_NoCall_Ins26_004b67e0(short param_1, short param_2)|
 4b6850|TPopulationMgr::WriteTo||113|function|undefined WrapperFor_HandleCityDialogNoOpSlot14_At004b6850(int * param_1)|
 4b68f0|TPopulationMgr::ReadFrom||113|function|undefined WrapperFor_HandleCityDialogNoOpSlot18_At004b68f0(int * param_1)|

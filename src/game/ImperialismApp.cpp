@@ -13,7 +13,12 @@
 #include "game/CMainFrame.h"
 #include "game/TMacViewMgr.h"
 #include "game/TAssetMgr.h"
+#include "game/TC2TemplateDialog.h"
+#include "game/TCity.h"
+#include "game/CDib.h"
+#include "game/TGreatPower.h"
 #include "game/TView.h"
+#include "game/TViewMgr.h"
 #include "game/CString.h"
 #include "game/mfc.h"
 #include "game/TAutoResolutionDialog.h"
@@ -161,6 +166,10 @@ CIncludeView* GetMainViewHostFromActiveThread() {
 // ImperialismApp::GetMessageMap
 #ifndef IMPERIALISM_LINT
 BEGIN_MESSAGE_MAP(ImperialismApp, CWinApp)
+ON_COMMAND(0x8015, OnSelectActiveNation)
+ON_COMMAND(0x8016, OnApplyTurnCooldownOverride)
+ON_COMMAND(0x8017, OnAdjustNationResourcesAndPopulation)
+ON_COMMAND(0x8018, OnPreviewDibResource)
 END_MESSAGE_MAP()
 #endif
 
@@ -366,6 +375,109 @@ void ImperialismApp::RestoreWaitCursorIfStartupBusy() {
 BOOL ImperialismApp::PreTranslateMessage(MSG* pMsg) {
   RefreshBackdropOnInputMessages(pMsg);
   return CWinThread::PreTranslateMessage(pMsg);
+}
+
+// Let the developer choose the active nation, rebuild the active nation's derived resource
+// state when the simulation is in setup mode, then redispatch the currently displayed turn
+// event for the newly selected nation.
+// FUNCTION: IMPERIALISM 0x00413d20
+void ImperialismApp::OnSelectActiveNation() {
+  TDBTemplateDialog dialog(0);
+  dialog.PrepareAndCreateModalFromTemplate();
+  dialog.slider.SetRange(0, 6, FALSE);
+  dialog.slider.SetPos(g_pSimMgr->GetActiveNationId());
+
+  if (dialog.DoModal() == IDOK) {
+    short nationSlot = static_cast<short>(dialog.slider.GetPos());
+    g_pSimMgr->SetActiveNationSlotAndRefreshCityCapabilityUiHandles(nationSlot);
+    if (g_pSimMgr->mode == 0x11) {
+      g_apNationStates[g_pSimMgr->GetActiveNationId()]
+          ->RebuildNationResourceYieldCountersAndDevelopmentTargets();
+    }
+    g_pUiRuntimeContext->DispatchTurnEventSlot4C(g_pUiRuntimeContext->currentTurnEventCode,
+                                                 g_pSimMgr->GetActiveNationId());
+  }
+}
+
+// Preserve the turn-flow cooldown across the modal edit, copy the current simulation mode
+// into the side flag, and ask the main frame to advance command 100 asynchronously.
+// FUNCTION: IMPERIALISM 0x00413f60
+void ImperialismApp::OnApplyTurnCooldownOverride() {
+  TDCTemplateDialog dialog(0);
+  dialog.PrepareAndCreateModalFromTemplate();
+  short savedCooldown = g_nTurnCooldownDeferCounter006A43C4;
+
+  if (dialog.DoModal() == IDOK) {
+    g_nTurnCooldownDeferCounter006A43C4 = savedCooldown;
+    g_nTurnCooldownSideFlag00698B10 = static_cast<short>(g_pSimMgr->mode);
+    PostMessageA(m_pMainWnd->m_hWnd, WM_COMMAND, 100, 0);
+  }
+}
+
+// Apply the DE diagnostic dialog's two edits to the selected nation's city: one delta is
+// added to every commodity stock and the other is passed as a negative population removal,
+// which is the original UI's way of adding population in each skill band.
+// FUNCTION: IMPERIALISM 0x004140f0
+void ImperialismApp::OnAdjustNationResourcesAndPopulation() {
+  TDETemplateDialog dialog(0);
+  dialog.PrepareAndCreateModalFromTemplate();
+  dialog.slider.SetRange(0, 6, FALSE);
+  dialog.slider.SetPos(g_pSimMgr->GetActiveNationId());
+
+  if (dialog.DoModal() == IDOK) {
+    int nationSlot = dialog.slider.GetPos();
+    TCity* city = g_apNationStates[nationSlot] != 0 ? g_apNationStates[nationSlot]->city : 0;
+    for (short commodity = 0; commodity < 0x17; ++commodity) {
+      city->CityStockByType(commodity) = static_cast<short>(
+          city->CityStockByType(commodity) + static_cast<short>(dialog.commodityAdjustmentB4));
+      city->VerifyStocks();
+    }
+
+    short populationDelta = static_cast<short>(-static_cast<int>(dialog.populationAdjustmentB0));
+    city->productionSummary1d8->RemovePopulation(1, populationDelta);
+    city->productionSummary1d8->RemovePopulation(2, populationDelta);
+    city->productionSummary1d8->RemovePopulation(4, populationDelta);
+  }
+}
+
+// Preview either a cached bitmap resource (IDs below 20000) or a direct CDib pointer entered
+// in the DF developer dialog. The preview options map directly to the DD dialog's outline,
+// fill and rendering controls.
+// FUNCTION: IMPERIALISM 0x004143b0
+void ImperialismApp::OnPreviewDibResource() {
+  TDFTemplateDialog inputDialog(0);
+  if (inputDialog.DoModal() != IDOK) {
+    return;
+  }
+
+  int inputValue = inputDialog.editValue5c;
+  CDib* dib;
+  if (inputValue < 20000) {
+    dib = g_pModuleLibraryCacheState->LoadBmpResourceByIdCached(
+        static_cast<unsigned short>(inputValue));
+  } else {
+    dib = reinterpret_cast<CDib*>(inputValue);
+  }
+
+  if (dib != 0 && AfxIsValidAddress(dib, sizeof(CDib), FALSE) &&
+      dib->IsKindOf(RUNTIME_CLASS(CDib))) {
+    TDDTemplateDialog previewDialog(0);
+    if (inputDialog.checkFlag60 != 0) {
+      dib->BuildMonochromeOutlineMaskInPlace();
+    }
+    previewDialog.picture = dib;
+    previewDialog.drawOutline = inputDialog.checkFlag64;
+    previewDialog.fillPolygon = inputDialog.checkFlag68;
+    previewDialog.renderMode = inputDialog.checkFlag6c;
+    previewDialog.windowTitle = "The DIB you requested";
+    previewDialog.DoModal();
+  } else {
+    MessageBoxA(0, "You Fool!", "That's No Dib", 0);
+  }
+
+  if (inputValue < 20000 && dib != 0) {
+    g_pModuleLibraryCacheState->ReleaseRecordById(static_cast<short>(inputValue));
+  }
 }
 
 // CWinThread::OnIdle override (vtable slot +0x68): after the base idle work, give the game
