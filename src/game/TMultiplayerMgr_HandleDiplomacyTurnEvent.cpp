@@ -830,7 +830,7 @@ void TMultiplayerMgr::ReplaceNationStateForSlotAndRefreshStatus(int nationSlot) 
           newNation->candidateNationFlags[targetSlot] = 1;
         }
       }
-      g_pSimMgr->scenarioSetupRows0[nationSlot] = 2;
+      g_pSimMgr->nationControlModes[nationSlot] = 2;
       oldNation->Free();
     }
     unsigned char stillHosting = g_pSimMgr->multiplayerSessionRole == 1;

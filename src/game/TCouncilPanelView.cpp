@@ -58,7 +58,7 @@ void TCouncilPanelView::ApplyRectSlot110(RECT* rectBuffer) {
   }
 
   g_pSimMgr->GetString(0x2733, 0x35, &titleTemplate);
-  int decadeYear = (static_cast<short>(g_pSimMgr->quarterGateTick2c / 4) / 10) * 10 + 0x717;
+  int decadeYear = (static_cast<short>(g_pSimMgr->economicTurn / 4) / 10) * 10 + 0x717;
   scratchText.Format(g_szDecimalFormat, decadeYear);
   scanBracketExpressions(g_pSimMgr, &rowText, static_cast<LPCSTR>(titleTemplate),
                          static_cast<LPCSTR>(scratchText));

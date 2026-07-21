@@ -88,7 +88,7 @@ void TEscortMission::ResetValue0CToZero() {
 
 // Walks the 16 minor-nation slots (g_apSecondaryNationStateSlots[7..22]), gating each by
 // (a) a scenario-year-derived relation-score threshold when its encodedNationSlot < 200
-// (relationStandingScoreMatrix79c[i*0x17 + nationId04] vs. quarterGateTick2c/4 + 110), or
+// (relationStandingScoreMatrix79c[i*0x17 + nationId04] vs. economicTurn/4 + 110), or
 // (b) a direct owner-slot match otherwise (the same test as
 // TCountry::IsEncodedNationSlotMinus200Equal). For each eligible minor, resolves its home
 // port zone's cached-owner context (FindFirstPortZoneContextByNation +
@@ -107,7 +107,7 @@ void TEscortMission::ResetValue0CToZero() {
 // FUNCTION: IMPERIALISM 0x00539e70
 void TEscortMission::NoOpSlot3C() {
   float total = 1.0f;
-  short year = static_cast<short>(g_pSimMgr->quarterGateTick2c / 4);
+  short year = static_cast<short>(g_pSimMgr->economicTurn / 4);
   float yearThreshold = static_cast<float>(year) + 110.0f;
 
   for (int i = 7; i < 23; ++i) {

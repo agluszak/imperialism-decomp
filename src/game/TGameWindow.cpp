@@ -141,7 +141,7 @@ void TGameWindow::ForwardParam(int param) {
         mainControl->ResolveControlByTag(0x656e6420) != 0) { // 'end '
       GameWindowInvoke::PlayClickSfx7000();
       if (g_pSimMgr->mode != 0x11) {
-        g_pSimMgr->PostMainWindowCommand100ForTurnFlow();
+        g_pSimMgr->StartNextPhase();
         return;
       }
       short nationId = g_pSimMgr->GetActiveNationId();
@@ -150,7 +150,7 @@ void TGameWindow::ForwardParam(int param) {
         GameWindowInvoke::DispatchUiRuntimeAbilityUnlockSlot88Gate(abilityIndex);
         return;
       }
-      g_pSimMgr->PostMainWindowCommand100ForTurnFlow();
+      g_pSimMgr->StartNextPhase();
       return;
     }
     if (QueryUiRuntimeFieldF8() != 0) {
@@ -179,35 +179,35 @@ void TGameWindow::ForwardParam(int param) {
   case 0x31:
     if (QueryUiRuntimeEventCode() != 0x7de) {
       GameWindowInvoke::PlayClickSfx7000();
-      g_pSimMgr->SetGlobalTurnStateCodeIfAllowed(0x69);
+      g_pSimMgr->EnterOptionalPhase(0x69);
       return;
     }
     break;
   case 0x32:
     if (QueryUiRuntimeEventCode() != 0x7db) {
       GameWindowInvoke::PlayClickSfx7000();
-      g_pSimMgr->SetGlobalTurnStateCodeIfAllowed(0x6a);
+      g_pSimMgr->EnterOptionalPhase(0x6a);
       return;
     }
     break;
   case 0x33:
     if (QueryUiRuntimeEventCode() != 0x7d9 && QueryUiRuntimeEventCode() != 0x7da) {
       GameWindowInvoke::PlayClickSfx7000();
-      g_pSimMgr->SetGlobalTurnStateCodeIfAllowed(0x67);
+      g_pSimMgr->EnterOptionalPhase(0x67);
       return;
     }
     break;
   case 0x34:
     if (QueryUiRuntimeEventCode() != 0x7d8) {
       GameWindowInvoke::PlayClickSfx7000();
-      g_pSimMgr->SetGlobalTurnStateCodeIfAllowed(0x68);
+      g_pSimMgr->EnterOptionalPhase(0x68);
       return;
     }
     break;
   case 0x35:
     if (QueryUiRuntimeEventCode() != 0x8fc) {
       GameWindowInvoke::PlayClickSfx7000();
-      g_pSimMgr->SetGlobalTurnStateCodeIfAllowed(0x6d);
+      g_pSimMgr->EnterOptionalPhase(0x6d);
       return;
     }
     break;

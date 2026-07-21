@@ -311,10 +311,10 @@ void TForeignMinister::RecomputeOrderStateSlot9C() {
 
 // FUNCTION: IMPERIALISM 0x0052fd10
 void TForeignMinister::RefreshForeignMinisterStateByLocalizationMode() {
-  if (g_pSimMgr->GetTurnTickSlot3C() == 1) {
+  if (g_pSimMgr->GetEconomicTurn() == 1) {
     this->MinisterSlot18();
   }
-  if (g_pSimMgr->GetTurnTickSlot3C() == 2) {
+  if (g_pSimMgr->GetEconomicTurn() == 2) {
     this->MinisterSlot19();
   }
   this->MinisterSlot1B();

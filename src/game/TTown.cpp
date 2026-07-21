@@ -48,7 +48,7 @@ void TTown::InitializeTownMarker(const char* markerName, short regionId, char en
   this->flags16[1] = 0;
   this->flags16[2] = 0;
   this->flags16[3] = 0;
-  this->createdTurnTick1a = g_pSimMgr->GetTurnTickSlot3C();
+  this->createdTurnTick1a = g_pSimMgr->GetEconomicTurn();
   this->transportLinkedFlag4c = 0;
   memset(this->resourceYieldByType, 0, sizeof(this->resourceYieldByType));
 }
@@ -223,7 +223,7 @@ void TTown::CalculateCityResources() {
 void TTown::Grow() {
   TGreatPower* owner = g_apNationStates[ownerNation1c];
   TCity* city = owner != 0 ? owner->city : 0;
-  short age = static_cast<short>(g_pSimMgr->GetTurnTickSlot3C() - createdTurnTick1a);
+  short age = static_cast<short>(g_pSimMgr->GetEconomicTurn() - createdTurnTick1a);
 
   if (age > 4 && (age & 1) == 0) {
     short rawTextile = static_cast<short>(resourceYieldByType[0] + resourceYieldByType[1]);

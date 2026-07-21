@@ -349,7 +349,7 @@ char TDiplomacyMgr::IsNationPairRelationTurnStampOutOfDate(int sourceNationSlot,
   if (HasPolicyWithNationSlot44(sourceNationSlot, targetNationSlot) == 0) {
     return 0;
   }
-  short currentTurn = g_pSimMgr->GetTurnTickSlot3C();
+  short currentTurn = g_pSimMgr->GetEconomicTurn();
   int source = static_cast<short>(sourceNationSlot);
   int target = static_cast<short>(targetNationSlot);
   return relationTurnStampMatrixFe0[source * kNationSlotCount + target] != currentTurn;
@@ -822,7 +822,7 @@ void TDiplomacyMgr::ApplyDiplomacyInterNationStatesForTurn() {
 
 // FUNCTION: IMPERIALISM 0x004f0590
 void TDiplomacyMgr::SyncNationField790FromLocalizationStateId() {
-  proposalDispatchCounter790 = g_pSimMgr->GetTurnTickSlot3C();
+  proposalDispatchCounter790 = g_pSimMgr->GetEconomicTurn();
 }
 
 // FUNCTION: IMPERIALISM 0x004f05c0
@@ -925,7 +925,7 @@ void TDiplomacyMgr::ProcessQueuedWarTransitions() {
     if (isLocalizationOne) {
       g_pGameFlowState->EmitTurnEvent3Mode18WithActiveNation();
     } else {
-      g_pSimMgr->PostMainWindowCommand100ForTurnFlow();
+      g_pSimMgr->StartNextPhase();
     }
   }
 }
@@ -1306,8 +1306,8 @@ void TDiplomacyMgr::SetNationPairDiplomacyRelationCode(int sourceNationSlot, int
   relationPropagationMatrixBbe[forwardIndex] = newRelationCode;
   int reverseIndex = target * kNationSlotCount + source;
   relationPropagationMatrixBbe[reverseIndex] = newRelationCode;
-  relationTurnStampMatrixFe0[forwardIndex] = g_pSimMgr->GetTurnTickSlot3C();
-  relationTurnStampMatrixFe0[reverseIndex] = g_pSimMgr->GetTurnTickSlot3C();
+  relationTurnStampMatrixFe0[forwardIndex] = g_pSimMgr->GetEconomicTurn();
+  relationTurnStampMatrixFe0[reverseIndex] = g_pSimMgr->GetEconomicTurn();
 
   if (HasFlag84ForNationSlot84(sourceNationSlot) != 0) {
     g_apNationStates[source]->DispatchNationDiplomacySlotActionByMode(target, relationCode);

@@ -282,7 +282,7 @@ public:
   // "nothing garrisoned" fallback) built from cityScoreTable[cityRecordIndex]'s
   // stationedUnitChain98: each unit rolls twice against a per-strength-tier probability
   // table (g_MapOrderResourceRollWeightTable, keyed by Phase 1/2's winning score) seeded
-  // from cityRecordIndex+TSimMgr::GetTurnTickSlot3C()+GetActiveNationId(): the first roll
+  // from cityRecordIndex+TSimMgr::GetEconomicTurn()+GetActiveNationId(): the first roll
   // picks a 0-2 "point cost", the second picks which of 11 buckets that cost lands in
   // (the unit's own GetUnitMovementClassId(), a fixed "misc" bucket, or a uniform 0-9
   // roll) -- singular/plural localized names come from string group 0x2726 (offset i vs

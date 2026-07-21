@@ -269,7 +269,7 @@ short TCountry::GetOrComputeOverlayAnchorTileIndex() {
 // FUNCTION: IMPERIALISM 0x004d71b0
 void TCountry::SeedInitialMilitaryAndNavyOrdersForOwnedRegions(void) {
   TSimMgr* localization = g_pSimMgr;
-  if (localization->stateFlag114 > 0) {
+  if (localization->scenarioMapIndexPlusOne > 0) {
     g_pGlobalMapState->NotifyCityRecordSlot12C(
         g_pGlobalMapState->terrainStateTable[static_cast<short>(this->homeRegionIndex)]
             .cityRecordIndex);
@@ -421,7 +421,7 @@ void TCountry::ApplyJoinEmpireModeForTargetNation(int targetNationSlot, int mode
   }
 
   if (this->nationSlot < 7) {
-    g_pSimMgr->DecrementField30Value();
+    g_pSimMgr->ReduceNumGPs();
   }
 
   if (mode == 0) {
@@ -674,7 +674,7 @@ int TCountry::GetHomeRegionCityRecordIndex(void) {
 
 // FUNCTION: IMPERIALISM 0x004d87e0
 void TCountry::QueueRecruitOrdersForUndergarrisonedRegions(void) {
-  short tickRaw = g_pSimMgr->quarterGateTick2c;
+  short tickRaw = g_pSimMgr->economicTurn;
   if (!IsRecruitQuarterTickGate(tickRaw)) {
     return;
   }

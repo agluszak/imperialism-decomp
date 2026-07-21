@@ -63,7 +63,7 @@ void TSetupRandomMapPicture::RecheckCountryName() {
 void TSetupRandomMapPicture::DoPostCreate(int arg) {
   TNoHilitePicture::DoPostCreate(arg);
   g_pUiViewManager->EnsurePictWvDataGobLoadedBySlot(0);
-  g_pSimMgr->stateFlag114 = 0;
+  g_pSimMgr->scenarioMapIndexPlusOne = 0;
 
   if (g_pGlobalMapState == 0) {
     // LIBRARY: rand (0x005e83f0)
@@ -344,10 +344,10 @@ void TSetupRandomMapPicture::StartGame() {
   SaveSettingValueFromPointerByKey(&g_cstrCountryNameSettingValue006A4220,
                                    g_szCountryNameProfileKey00698AE0);
   for (int nationSlot = 0; nationSlot < 7; ++nationSlot) {
-    g_pSimMgr->scenarioSetupRows0[nationSlot] = 2;
+    g_pSimMgr->nationControlModes[nationSlot] = 2;
   }
-  g_pSimMgr->scenarioSetupRows0[selectedNationSlot9A] = 1;
-  g_pSimMgr->PostMainWindowCommand100ForTurnFlow();
+  g_pSimMgr->nationControlModes[selectedNationSlot9A] = 1;
+  g_pSimMgr->StartNextPhase();
 }
 
 // FUNCTION: IMPERIALISM 0x005781f0
