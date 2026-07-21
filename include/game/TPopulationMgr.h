@@ -1,18 +1,13 @@
 #pragma once
 
 #include "game/TObject.h"
+#include "game/TLaborPool.h"
 #include "game/mfc.h"
 
 // Forward declarations for types referenced by generated signatures.
 class TStream;
 
-class TPopulationMetricBucket {
-public:
-  void* vftable;
-  short valueAt4;
-  short valueAt6;
-  short valueAt8;
-};
+class TCity;
 
 // VTABLE: IMPERIALISM 0x0064f9b0
 class TPopulationMgr : public TObject {
@@ -54,24 +49,28 @@ public:
   }
   short* GetSummaryArraySlot50();
 
-  unsigned char pad04[0x08 - 0x04];
+  // 0x004b5c00: attach this population state to a city and allocate its three
+  // labor pools.
+  void InitializePopulationState(TCity* city);
+
+  TCity* city04;
   short fieldAt8; // +0x08 — snapshotted by the turn-event-0x2c packet
   unsigned char pad0a[2];
   // +0x0c — snapshotted by the turn-event-0x2c packet. Genuinely float: written via FSTP in
   // OrphanLeaf_NoCall_Ins47_004b5dc0 (0x4b5dc0), not an int.
   float fieldAtC;
-  TPopulationMetricBucket* baselineSlots10;     // +0x10
-  TPopulationMetricBucket* productionSlots14;   // +0x14
-  TPopulationMetricBucket* pendingDeltaSlots18; // +0x18
-  short stockLevel1c;                           // +0x1c — low-stock flag / trade production cap
-  short extraAt1e;                              // +0x1e
-  short fieldAt20;                              // +0x20 — snapshotted by the turn-event-0x2c packet
+  TLaborPool* baselineSlots10;     // +0x10
+  TLaborPool* productionSlots14;   // +0x14
+  TLaborPool* pendingDeltaSlots18; // +0x18
+  short stockLevel1c;              // +0x1c — low-stock flag / trade production cap
+  short extraAt1e;                 // +0x1e
+  short fieldAt20;                 // +0x20 — snapshotted by the turn-event-0x2c packet
 
   // +0x24..+0x50 (padding to align the declared fields to a 4-byte boundary, then RTTI
   // m_nObjectSize proves 0x50 total). CreateObject (0x4b5b40) only allocates and
   // installs the vtable; every override past the ctor is currently a stub, so this
   // tail is still fully unrecovered.
-  unsigned char pad24[0x50 - 0x24];
+  unsigned char pad22[0x50 - 0x22];
 
   TPopulationMgr();
 };

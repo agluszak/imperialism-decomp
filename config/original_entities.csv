@@ -1721,14 +1721,14 @@ address|name|symbol|size|type|prototype|provenance
 4b2190|TLaborPool::DestructTLaborPoolAndMaybeFree||7|function|undefined DestructTLaborPoolAndMaybeFree()|
 4b21d0|TLaborPool::WriteTo||56|function|undefined WrapperFor_HandleCityDialogNoOpSlot14_At004b21d0(int * param_1)|
 4b2220|TLaborPool::ReadFrom||56|function|undefined WrapperFor_HandleCityDialogNoOpSlot18_At004b2220(int * param_1)|
-4b2270|TLaborPool::OrphanLeaf_NoCall_Ins44_004b2270||156|function|undefined OrphanLeaf_NoCall_Ins44_004b2270(int param_1, short param_2)|
-4b2340|TLaborPool::CreateTCityInstance||156|function|undefined CreateTCityInstance()|
+4b2270|TLaborPool::TransferToLowSkillFirst||156|function|short TransferToLowSkillFirst(TLaborPool *, short)|
+4b2340|TLaborPool::TransferToHighSkillFirst||156|function|short TransferToHighSkillFirst(TLaborPool *, short)|
 4b2410|TCity::CreateObject|?CreateObject@TCity@@SGPAVCObject@@XZ|96|function|undefined CreateObject()|rtti
 4b2490|TCity::GetRuntimeClass||6|function|undefined GetTCityClassNamePointer()|rtti
 4b24b0|TCity::TCity||77|function|undefined TCity()|
 4b2520|TCity::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4b2550|TCity::~TCity||7|function|undefined ~TCity()|
-4b2570|InitializeCityProductionState||2210|function|undefined InitializeCityProductionState()|
+4b2570|TCity::InitializeCityProductionState||2210|function|void InitializeCityProductionState(TGreatPower *)|
 4b3050|TPopGrowthOrder::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4b3080|WrapperFor_FreeHeapBufferIfNotNull_At004b3050_Impl||7|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At004b3050_Impl()|
 4b30a0|TCity::ReadFrom||1044|function|undefined DeserializeCityProductionState()|
@@ -1798,7 +1798,7 @@ address|name|symbol|size|type|prototype|provenance
 4b5b70|TPopulationMgr::GetRuntimeClass||6|function|undefined GetTPopulationMgrClassNamePointer()|rtti
 4b5bb0|TPopulationMgr::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4b5be0|TPopulationMgr::DestructTPopulationMgrAndMaybeFree||7|function|undefined DestructTPopulationMgrAndMaybeFree()|
-4b5c00|WrapperFor_AllocateWithFallbackHandler_At004b5c00||196|function|undefined WrapperFor_AllocateWithFallbackHandler_At004b5c00()|
+4b5c00|TPopulationMgr::InitializePopulationState||196|function|void InitializePopulationState(TCity *)|
 4b5d10|TPopulationMgr::OrphanLeaf_NoCall_Ins09_004b5d10||35|function|undefined OrphanLeaf_NoCall_Ins09_004b5d10(int param_1, int param_2)|
 4b5d50|TPopulationMgr::OrphanLeaf_NoCall_Ins20_004b5d50||71|function|undefined OrphanLeaf_NoCall_Ins20_004b5d50(short param_1)|
 4b5dc0|TPopulationMgr::OrphanLeaf_NoCall_Ins47_004b5dc0||142|function|undefined OrphanLeaf_NoCall_Ins47_004b5dc0(short param_1, short param_2, short param_3)|
@@ -2449,9 +2449,9 @@ address|name|symbol|size|type|prototype|provenance
 4df5a0|OrphanLeaf_NoCall_Ins03_004df5a0||11|function|undefined OrphanLeaf_NoCall_Ins03_004df5a0()|
 4df5c0|TGreatPower::DispatchTurnEvent2103WithNationFromRecord||24|function|undefined DispatchTurnEvent2103WithNationFromRecord()|
 4df5f0|TGreatPower::ProcessPendingDiplomacyProposalQueue||429|function|undefined ProcessPendingDiplomacyProposalQueue()|
-4df810|TGreatPower::RebuildPrimaryNationStateForSlot_Impl||403|function|undefined RebuildPrimaryNationStateForSlot_Impl()|
+4df810|TGreatPower::ApplyScenarioRelationPresetAndSpawnFrogCity||403|function|void ApplyScenarioRelationPresetAndSpawnFrogCity()|
 4dfa20|TGreatPower::DeserializeRecruitScenarioAndInstantiateOrders_3a||139|function|undefined __thiscall DeserializeRecruitScenarioAndInstantiateOrders(int * param_1)|
-4dfae0|TGreatPower::CreateAndQueueFrogCityMarkerForNationTile||449|function|undefined CreateAndQueueFrogCityMarkerForNationTile()|
+4dfae0|TGreatPower::CreateFrogCityAtHomeRegionAndAttach||449|function|void __thiscall CreateFrogCityAtHomeRegionAndAttach(void * receiver)|
 4dfd30|TGreatPower::SetHomeCityTileAndDisplayName||723|function|undefined RefreshNationCivilianWorkOrdersForTurn()|
 4e00d0|TGreatPower::DispatchGreatPowerQuarterlyStatusMessageLevel2||65|function|undefined DispatchGreatPowerQuarterlyStatusMessageLevel2()|
 4e0140|TGreatPower::DispatchGreatPowerQuarterlyStatusMessageLevel1||65|function|undefined DispatchGreatPowerQuarterlyStatusMessageLevel1()|
@@ -4751,7 +4751,7 @@ address|name|symbol|size|type|prototype|provenance
 576ed0|DestroySharedStringRef_006A4220_AtExit||1|function|undefined DestroySharedStringRef_006A4220_AtExit()|
 576fe0|TSetupRandomMapPicture::RecheckCountryName||53|function|void __thiscall RecheckCountryName()|
 577030|TSetupRandomMapPicture::DoPostCreate||1949|function|undefined OrphanLeaf_NoCall_Ins07_004d8920(void)|
-5779c0|TSetupRandomMapPicture::HandleEvent||839|function|undefined HandleRandomMapNationPlanAndFlagCommands()|
+5779c0|TSetupRandomMapPicture::HandleEvent||839|function|void HandleEvent(int, TEventHandler *, TEvent *)|
 577df0|TGWorldPartView::SetSourceRectFromGridCell||59|function|void __thiscall SetSourceRectFromGridCell(int column,int row)|
 577e40|TSetupRandomMapPicture::StartGame||751|function|void __thiscall StartGame()|
 5781f0|TSetupRandomMapPicture::ExitScreen||48|function|void __thiscall ExitScreen()|
@@ -8500,6 +8500,7 @@ address|name|symbol|size|type|prototype|provenance
 695bb0|g_industryActionCostWeightResCode0B|||global||
 695bd0|g_industryActionCostWeightResCode03|||global||
 695bf0|g_industryActionCostWeightResCode0C|||global||
+695c50|g_aInitialCityRecruitmentOrderProfiles|||global||
 695cd0|g_aUnitOrderCostProfileByAbilityId|||global||
 695cd4|g_Classify_Nation_Military_LookupTable_00695CD4|||global||
 696108|g_pTradeSummarySelectionMap|||global||
@@ -8544,7 +8545,7 @@ address|name|symbol|size|type|prototype|provenance
 698ab0|g_nRandomMapSelectedNationSlot00698AB0|||global||
 698ae0|g_szCountryNameProfileKey00698AE0|||global||
 698b10|g_nTurnCooldownSideFlag00698B10|||global||
-698b1a|g_anScenarioNationSetupTable_00698B1A|||global||
+698b18|g_aDefaultNationSetupPolicyProfiles|||global||
 698b50|g_apfnScenarioScriptInstructionHandlers|||global||
 698bf4|s_PictWvGobPathFormat_00698BF4|||global||
 698c0c|s_Chunk_00698C0C|||global||

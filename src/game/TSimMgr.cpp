@@ -126,19 +126,12 @@ TSimMgr::TSimMgr() : sharedTextSlots() {
   numGreatPowers = 7;
   numMinorCountries = 0x10;
 
-  // Copy the per-nation scenario setup table (DAT_00698b1a) into the four contiguous
-  // GameSetup policy rows arrays. The original reads 4 shorts per iteration at table[-1..2]
-  // with stride 4, scattering them via one cursor anchored at cityMinisterPolicyIds
-  // (+0xe8): [-7] hits rows0, [0] rows1, [7] rows2, [14] rows3.
-  short* destCursor = cityMinisterPolicyIds;
-  const short* tableCursor = g_anScenarioNationSetupTable_00698B1A;
+  // Copy the four-column default nation profile table into TSimMgr's parallel arrays.
   for (int row = 0; row < 7; ++row) {
-    destCursor[-7] = tableCursor[-1];
-    destCursor[0] = tableCursor[0];
-    destCursor[7] = tableCursor[1];
-    destCursor[14] = tableCursor[2];
-    destCursor += 1;
-    tableCursor += 4;
+    nationControlModes[row] = g_aDefaultNationSetupPolicyProfiles[row][0];
+    cityMinisterPolicyIds[row] = g_aDefaultNationSetupPolicyProfiles[row][1];
+    foreignMinisterPolicyIds[row] = g_aDefaultNationSetupPolicyProfiles[row][2];
+    defenseMinisterPolicyIds[row] = g_aDefaultNationSetupPolicyProfiles[row][3];
   }
 
   multiplayerGameActive = 0;
@@ -393,16 +386,12 @@ void TSimMgr::RebuildGlobalOrderManagersAndCapabilityState(char flag) {
   if (((flag != 0) && (g_bMultiplayerScenarioSetupActive == 0)) ||
       ((flag == 0) && (g_bMultiplayerScenarioSetupActive != 0))) {
     if (flag != 0) {
-      short* destCursor = cityMinisterPolicyIds;
-      const short* srcCursor = g_anScenarioNationSetupTable_00698B1A;
-      do {
-        destCursor[-7] = srcCursor[-1];
-        destCursor[0] = srcCursor[0];
-        destCursor[7] = srcCursor[1];
-        destCursor[14] = srcCursor[2];
-        destCursor += 1;
-        srcCursor += 4;
-      } while (srcCursor < g_anScenarioNationSetupTable_00698B1A + 28);
+      for (i = 0; i < 7; ++i) {
+        nationControlModes[i] = g_aDefaultNationSetupPolicyProfiles[i][0];
+        cityMinisterPolicyIds[i] = g_aDefaultNationSetupPolicyProfiles[i][1];
+        foreignMinisterPolicyIds[i] = g_aDefaultNationSetupPolicyProfiles[i][2];
+        defenseMinisterPolicyIds[i] = g_aDefaultNationSetupPolicyProfiles[i][3];
+      }
       multiplayerGameActive = 0;
       reloadPoliticalMapState = 0;
     }
@@ -556,9 +545,9 @@ void TSimMgr::RebuildNationStateSlotsAndAvailability(int activate) {
 
     for (i = 0; i < 7; ++i) {
       int val = profileBySlot[i];
-      cityMinisterPolicyIds[i] = g_anScenarioNationSetupTable_00698B1A[val * 4];
-      foreignMinisterPolicyIds[i] = g_anScenarioNationSetupTable_00698B1A[val * 4 + 1];
-      defenseMinisterPolicyIds[i] = g_anScenarioNationSetupTable_00698B1A[val * 4 + 2];
+      cityMinisterPolicyIds[i] = g_aDefaultNationSetupPolicyProfiles[val][1];
+      foreignMinisterPolicyIds[i] = g_aDefaultNationSetupPolicyProfiles[val][2];
+      defenseMinisterPolicyIds[i] = g_aDefaultNationSetupPolicyProfiles[val][3];
     }
   }
 

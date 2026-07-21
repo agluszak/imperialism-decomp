@@ -55,8 +55,8 @@ bool TPopGrowthOrder::SetQuantity(short param_1) {
 void TPopGrowthOrder::Produce() {
   short quantity = quantityField04;
   TPopulationMgr* population = cityField08->productionSummary1d8;
-  population->baselineSlots10->valueAt4 += quantity;
-  population->productionSlots14->valueAt4 += quantity;
+  population->baselineSlots10->lowSkillCount04 += quantity;
+  population->productionSlots14->lowSkillCount04 += quantity;
   population->fieldAt8 += quantity;
 
   TCity* city = cityField08;

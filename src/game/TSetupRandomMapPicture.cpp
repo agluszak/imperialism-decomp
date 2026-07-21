@@ -30,6 +30,15 @@
 #include "game/ui_text_label_helpers_decls.h"
 
 #include <stdlib.h>
+
+static void GenerateDifferentRandomMapSeed(CString* seed) {
+  CString previousSeed(*seed);
+  do {
+    GenerateMappedFlavorTextByCurrentContextNation(seed);
+  } while (_mbscmp(reinterpret_cast<const unsigned char*>(static_cast<LPCSTR>(*seed)),
+                   reinterpret_cast<const unsigned char*>(static_cast<LPCSTR>(previousSeed))) == 0);
+}
+
 // SYNTHETIC: IMPERIALISM 0x00576ca0
 // TSetupRandomMapPicture::CreateObject
 
@@ -252,7 +261,7 @@ void TSetupRandomMapPicture::HandleEvent(int commandId, TEventHandler* sourceHan
     if (controlTag == kControlTagCanc || controlTag == kControlTagCncl) {
       ExitScreen();
     } else if (controlTag == kControlTagGlob) {
-      GenerateMappedFlavorTextByCurrentContextNation(&planetSeed94);
+      GenerateDifferentRandomMapSeed(&planetSeed94);
       MajorTomToGroundControl(1);
     } else if (controlTag == kControlTagKeyP || controlTag == 0x706c616e /* 'plan' */) {
       CString planetSeed(planetSeed94);

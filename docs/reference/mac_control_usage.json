@@ -158283,6 +158283,40 @@
         "owner_class": null,
         "recovered_source": "src/game/TMapMgr.cpp"
       },
+      "0x005145b0": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "kind": "inline_source_path_literal",
+                "path": "D:\\Ambit\\Cross\\UMap.cpp"
+              }
+            ],
+            "module": "UMap.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "TMapMgr::QueueDepotConstructionOrder",
+        "owner_class": "TMapMgr",
+        "recovered_source": "src/game/TMapMgr.cpp"
+      },
+      "0x005147d0": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "kind": "inline_source_path_literal",
+                "path": "D:\\Ambit\\Cross\\UMap.cpp"
+              }
+            ],
+            "module": "UMap.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "TMapMgr::QueuePortConstructionOrder",
+        "owner_class": "TMapMgr",
+        "recovered_source": "src/game/TMapMgr.cpp"
+      },
       "0x0051b1c0": {
         "modules": [
           {
@@ -159583,7 +159617,9 @@
         ],
         "functions": [
           "0x0050e8b0",
-          "0x00512930"
+          "0x00512930",
+          "0x005145b0",
+          "0x005147d0"
         ]
       },
       "UMapDlog.cpp": {
@@ -159777,7 +159813,7 @@
     "classes_with_source_module_evidence": 14,
     "declared_classes": 152,
     "factories_with_source_module_candidates": 9,
-    "functions_with_source_module_evidence": 99,
+    "functions_with_source_module_evidence": 101,
     "nodes": 3263,
     "screens": 121,
     "screens_with_source_module_candidates": 25,

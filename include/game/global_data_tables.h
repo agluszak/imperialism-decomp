@@ -833,6 +833,8 @@ extern int g_wMapDialogViewportTileSpan; // 0x6a33b0
 
 // Per-ability unit-order cost profile rows (see TUnitOrder::SetOrderCostProfile). 0x695cd0.
 extern short g_aUnitOrderCostProfileByAbilityId[0x1e][7];
+// Initial city recruitment profiles for order slots 0x22..0x2a. 0x695c50.
+extern short g_aInitialCityRecruitmentOrderProfiles[9][7];
 
 // Per-tech prerequisite pair (tech ids; 0 = none), indexed by tech id. 0x66ac10.
 extern short g_aTechItemPrerequisitePairs[34][2];
@@ -1059,7 +1061,9 @@ extern short g_NavyMissionOrderRanking[14];
 extern short g_NavyPriorityOrderRanking[14];
 
 // TSimMgr.cpp — per-nation scenario setup source table.
-extern short g_anScenarioNationSetupTable_00698B1A[27];
+// Seven default nation setup rows: {control mode, city minister policy,
+// foreign minister policy, defense minister policy}. 0x698b18.
+extern short g_aDefaultNationSetupPolicyProfiles[7][4];
 
 // TSimMgr_AdvanceGlobalTurnStateMachine.cpp — debug tag literal passed to
 // TSimMgr::RebuildMapContextAndGlobalMapState.

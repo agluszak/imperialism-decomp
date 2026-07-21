@@ -13,7 +13,7 @@ class TShipOrder;
 class TUnitOrder;
 
 // The per-nation city/production model at TGreatPower+0x894 (field `city`).
-// RTTI: g_pClassDescTCity @ 0x0064f338; created by CreateTCityInstance (0x004b2340).
+// RTTI: g_pClassDescTCity @ 0x0064f338; CreateObject body at 0x004b2410.
 // LAYOUT: RECOVERED
 // VTABLE: IMPERIALISM 0x0064f580
 class TCity : public TObject {
@@ -214,7 +214,7 @@ public:
   int GetBuildingType(short buildingSlot);
 
   // 0x004b2570: initialize production arrays and build the city entry-object tables.
-  void InitializeCityProductionState(int initialProductionMode);
+  void InitializeCityProductionState(TGreatPower* ownerNation);
 };
 
 ASSERT_SIZE(TCity, 0x2d4);

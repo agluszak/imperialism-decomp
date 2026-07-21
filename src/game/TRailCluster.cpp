@@ -74,8 +74,8 @@ void TRailCluster::DoPostCreate(int styleSeed) {
       recordIndex = 0x3c;
       this->selectedMetricStep = 1;
       this->selectedMetricValue = QueryNationMetricBySlot(activeNationState, 2) +
-                                  scenarioDescriptor->productionSlots14->valueAt8 -
-                                  scenarioDescriptor->productionSlots14->valueAt4;
+                                  scenarioDescriptor->productionSlots14->highSkillCount08 -
+                                  scenarioDescriptor->productionSlots14->lowSkillCount04;
       goto LABEL_12;
     }
     if (summaryTag == kSummaryTagProf) {
@@ -89,8 +89,8 @@ void TRailCluster::DoPostCreate(int styleSeed) {
       recordIndex = 0x38;
       this->selectedMetricStep = 1;
       this->selectedMetricValue = QueryNationMetricBySlot(activeNationState, 0) +
-                                  scenarioDescriptor->productionSlots14->valueAt6 -
-                                  scenarioDescriptor->productionSlots14->valueAt4;
+                                  scenarioDescriptor->productionSlots14->mediumSkillCount06 -
+                                  scenarioDescriptor->productionSlots14->lowSkillCount04;
       goto LABEL_12;
     }
   } else {
@@ -117,7 +117,7 @@ void TRailCluster::DoPostCreate(int styleSeed) {
       this->selectedMetricStep = 0;
       this->selectedMetricValue = QueryNationMetricBySlot(activeNationState, 1) +
                                   scenarioDescriptor->stockLevel1c -
-                                  scenarioDescriptor->productionSlots14->valueAt4;
+                                  scenarioDescriptor->productionSlots14->lowSkillCount04;
       goto LABEL_12;
     }
   }
