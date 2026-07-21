@@ -24,5 +24,3 @@
 // Ghidra 0x606f73 / 0x606faf are retail MFC operator new/delete (LIBRARY — see mfc_heap_library.h).
 
 // CString helper functions
-undefined4 AssignStringSharedRefAndReturnThis(void);
-undefined4 NoOpCallback_00498ca0(void);

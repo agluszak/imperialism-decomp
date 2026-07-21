@@ -1,5 +1,6 @@
 #include "game/TButton.h"
 #include "game/mfc.h"
+#include "game/ui_invalidation_guard.h"
 
 // SYNTHETIC: IMPERIALISM 0x0048eb10
 // TButton::CreateObject
@@ -8,8 +9,6 @@
 // TButton::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TButton, TCtlMgr)
-
-undefined4 TemporarilyClearAndRestoreUiInvalidationFlag(...);
 
 // SYNTHETIC: IMPERIALISM 0x0048ec00
 // TButton::`scalar deleting destructor'

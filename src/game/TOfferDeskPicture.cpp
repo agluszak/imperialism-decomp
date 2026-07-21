@@ -352,8 +352,7 @@ void TOfferDeskPicture::CreateNextTradeCommandAndFormatPrompt(int actionCode) {
       scanBracketExpressions(g_pSimMgr, &localizedMessage, static_cast<LPCSTR>(maxValueTemplate),
                              static_cast<LPCSTR>(errorMessage));
     }
-    g_pDisplayMgr->DispatchDisplayManagerControlStringMessage(localizedMessage,
-                                                              g_ptControlStringModalMessage);
+    g_pDisplayMgr->ModalMessage(localizedMessage, g_ptControlStringModalMessage);
     purchaseControl->GetCurrentText(&errorMessage);
     purchaseControl->SetEditSelectionAndScrollCaret(0, static_cast<short>(errorMessage.GetLength()),
                                                     1);

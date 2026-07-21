@@ -6,11 +6,19 @@ from __future__ import annotations
 import argparse
 import csv
 import json
+import logging
 import subprocess
 import tempfile
+from contextlib import redirect_stderr, redirect_stdout
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any
+from typing import Any, Iterable
+
+from reccmp.compare import Compare
+from reccmp.compare.diff import DiffReport
+from reccmp.compare.report import ReccmpStatusReport, serialize_reccmp_report
+from reccmp.project.detect import RecCmpProject
+from reccmp.types import EntityType
 
 from tools.common.function_baseline import (
     load_function_baseline,
@@ -34,16 +42,16 @@ ROW_TYPE_LABELS = {
 }
 
 METRICS: tuple[tuple[str, str, str, str], ...] = (
-    ("aligned_fun_count", "aligned functions (100%)", "int", "higher"),
+    ("exact_fun_count", "exact functions (100%)", "int", "higher"),
     ("paired_fun_count", "paired functions", "int", "higher"),
     ("orig_only_count", "original-only functions", "int", "lower"),
     ("template_alias_recognized_count", "recognized duplicate template bodies", "int", "higher"),
     ("template_canonical_paired_count", "template canonical bodies paired", "int", "higher"),
     ("recomp_only_count", "recomp-only functions", "int", "lower"),
-    ("not_aligned_vs_original_count", "not aligned vs original", "int", "lower"),
+    ("not_exact_vs_original_count", "not exact vs original", "int", "lower"),
     ("coverage_pct", "function coverage", "pct", "higher"),
-    ("aligned_vs_original_pct", "aligned/original", "pct", "higher"),
-    ("aligned_vs_paired_pct", "aligned/paired", "pct", "higher"),
+    ("exact_vs_original_pct", "exact/original", "pct", "higher"),
+    ("exact_vs_paired_pct", "exact/paired", "pct", "higher"),
     ("avg_matching_pct", "average similarity", "pct", "higher"),
     ("paired_global_count", "paired globals", "int", "higher"),
     ("global_orig_only_count", "global original-only", "int", "lower"),
@@ -115,6 +123,52 @@ def run_logged(cmd: list[str], cwd: Path, log_path: Path) -> None:
         )
     if proc.returncode != 0:
         raise RuntimeError(f"Command failed ({proc.returncode}): {' '.join(cmd)}. See {log_path}")
+
+
+def build_progress_report(
+    filename: str, compared: Iterable[DiffReport]
+) -> ReccmpStatusReport:
+    """Build the complete report used for progress accounting.
+
+    ``report.ignore_functions`` is a presentation filter for normal reccmp CLI
+    reports. Progress baselines must include every comparable entity, otherwise a
+    symbol rename or ignore-list refresh silently rewrites historical progress.
+    """
+    report = ReccmpStatusReport(filename=filename)
+    for match in compared:
+        report.add_match(match)
+    return report
+
+
+def run_progress_report(
+    target_id: str, build_dir: Path, output: Path, log_path: Path
+) -> None:
+    """Write a complete diet report without applying presentation ignore lists."""
+    output.parent.mkdir(parents=True, exist_ok=True)
+    log_path.parent.mkdir(parents=True, exist_ok=True)
+
+    with log_path.open("w", encoding="utf-8") as log:
+        log.write(f"+ complete reccmp progress report --target {target_id}\n")
+        handler = logging.StreamHandler(log)
+        handler.setFormatter(logging.Formatter("[%(levelname)s] %(message)s"))
+        root_logger = logging.getLogger()
+        root_logger.addHandler(handler)
+        try:
+            with redirect_stdout(log), redirect_stderr(log):
+                project = RecCmpProject.from_directory(build_dir)
+                target = project.get(target_id)
+                compare = Compare.from_target(target)
+                report = build_progress_report(
+                    target.original_path.name,
+                    compare.compare_all(include_diff=False, include_exact_diff=False),
+                )
+        finally:
+            root_logger.removeHandler(handler)
+
+    output.write_text(
+        serialize_reccmp_report(report, diff_included=False) + "\n",
+        encoding="utf-8",
+    )
 
 
 def pct(numerator: int, denominator: int) -> float:
@@ -244,6 +298,11 @@ def parse_report_functions(path: Path) -> dict[str, dict[str, Any]]:
 
     funcs: dict[str, dict[str, Any]] = {}
     for row in json.loads(path.read_text(encoding="utf-8")).get("data", []):
+        row_type = row.get("type")
+        if row_type is not None and row_type != int(EntityType.FUNCTION):
+            continue
+        if row.get("stub", False):
+            continue
         address = row.get("address")
         if not address:
             continue
@@ -323,19 +382,24 @@ def parse_report_counts(path: Path) -> dict[str, float | int]:
     if not path.exists():
         raise FileNotFoundError(f"Missing reccmp JSON report: {path}")
 
-    rows = json.loads(path.read_text(encoding="utf-8")).get("data", [])
+    rows = [
+        row
+        for row in json.loads(path.read_text(encoding="utf-8")).get("data", [])
+        if (row.get("type") is None or row.get("type") == int(EntityType.FUNCTION))
+        and not row.get("stub", False)
+    ]
     compared = len(rows)
     total_matching = 0.0
-    aligned = 0
+    exact = 0
     for row in rows:
         matching = effective_matching(row)
         total_matching += matching
-        aligned += int(matching >= 1.0)
+        exact += int(matching >= 1.0)
 
     return {
         "compared_fun_count": compared,
-        "aligned_fun_count": aligned,
-        "not_aligned_compared_count": max(compared - aligned, 0),
+        "exact_fun_count": exact,
+        "not_exact_compared_count": max(compared - exact, 0),
         "avg_matching_pct": (total_matching / compared) * 100.0 if compared else 0.0,
     }
 
@@ -394,22 +458,7 @@ def build_entry(args: argparse.Namespace, build_dir: Path) -> dict[str, Any]:
             cwd=build_dir,
             log_path=build_dir / "reccmp_roadmap.log",
         )
-        run_logged(
-            [
-                "uv",
-                "run",
-                "reccmp-reccmp",
-                "--target",
-                args.target,
-                "--json",
-                str(report_json),
-                "--json-diet",
-                "--silent",
-                "--no-color",
-            ],
-            cwd=build_dir,
-            log_path=report_log,
-        )
+        run_progress_report(args.target, build_dir, report_json, report_log)
 
     noise_log = report_log
     legacy_log = build_dir / "reccmp_run.log"
@@ -425,12 +474,12 @@ def build_entry(args: argparse.Namespace, build_dir: Path) -> dict[str, Any]:
         **parse_noise_counts(noise_log),
     }
     entry["coverage_pct"] = pct(entry["paired_fun_count"], entry["original_fun_count"])
-    entry["aligned_vs_original_pct"] = pct(entry["aligned_fun_count"], entry["original_fun_count"])
-    entry["aligned_vs_paired_pct"] = pct(entry["aligned_fun_count"], entry["paired_fun_count"])
+    entry["exact_vs_original_pct"] = pct(entry["exact_fun_count"], entry["original_fun_count"])
+    entry["exact_vs_paired_pct"] = pct(entry["exact_fun_count"], entry["paired_fun_count"])
     entry["global_coverage_pct"] = pct(entry["paired_global_count"], entry["original_global_count"])
     entry["non_fun_coverage_pct"] = pct(entry["paired_non_fun_count"], entry["original_non_fun_count"])
-    entry["not_aligned_vs_original_count"] = max(
-        entry["original_fun_count"] - entry["aligned_fun_count"], 0
+    entry["not_exact_vs_original_count"] = max(
+        entry["original_fun_count"] - entry["exact_fun_count"], 0
     )
     return entry
 
@@ -503,8 +552,8 @@ def print_summary(entry: dict[str, Any], baseline: dict[str, Any] | None, baseli
     print_count_line("original functions", entry, baseline, "original_fun_count")
     print_count_line("recompiled functions", entry, baseline, "recompiled_fun_count")
     print_count_line("paired functions", entry, baseline, "paired_fun_count")
-    print_count_line("aligned functions (100%)", entry, baseline, "aligned_fun_count")
-    print_count_line("not aligned vs original", entry, baseline, "not_aligned_vs_original_count")
+    print_count_line("exact functions (100%)", entry, baseline, "exact_fun_count")
+    print_count_line("not exact vs original", entry, baseline, "not_exact_vs_original_count")
     print_count_line("original-only functions", entry, baseline, "orig_only_count")
     print_count_line("recognized duplicate template bodies", entry, baseline,
                      "template_alias_recognized_count")
@@ -515,8 +564,8 @@ def print_summary(entry: dict[str, Any], baseline: dict[str, Any] | None, baseli
 
     print("Ratios")
     print_pct_line("function coverage", entry, baseline, "coverage_pct")
-    print_pct_line("aligned/original", entry, baseline, "aligned_vs_original_pct")
-    print_pct_line("aligned/paired", entry, baseline, "aligned_vs_paired_pct")
+    print_pct_line("exact/original", entry, baseline, "exact_vs_original_pct")
+    print_pct_line("exact/paired", entry, baseline, "exact_vs_paired_pct")
     print_pct_line("average similarity", entry, baseline, "avg_matching_pct")
     print("")
 

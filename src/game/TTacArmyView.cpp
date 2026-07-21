@@ -70,22 +70,22 @@ void TTacArmyView::ConstructTTacArmyViewBaseState(int compositionClass, TArmyBat
   tileColumnsPerRow80 = 0x1d;
   // Release order in the original: +0x64, +0x68, +0xbc, +0x6c, +0x70, +0x74.
   if (battlefieldSurface64 != 0) {
-    g_pDisplayMgr->FreeQuickDrawSurfaceContextSlot(&battlefieldSurface64);
+    g_pDisplayMgr->RemoveGWorld(battlefieldSurface64);
   }
   if (unitSpriteAtlasSurface68 != 0) {
-    g_pDisplayMgr->FreeQuickDrawSurfaceContextSlot(&unitSpriteAtlasSurface68);
+    g_pDisplayMgr->RemoveGWorld(unitSpriteAtlasSurface68);
   }
   if (unitSpriteScratchSurfaceBC != 0) {
-    g_pDisplayMgr->FreeQuickDrawSurfaceContextSlot(&unitSpriteScratchSurfaceBC);
+    g_pDisplayMgr->RemoveGWorld(unitSpriteScratchSurfaceBC);
   }
   if (fortLevelAtlasSurface6C != 0) {
-    g_pDisplayMgr->FreeQuickDrawSurfaceContextSlot(&fortLevelAtlasSurface6C);
+    g_pDisplayMgr->RemoveGWorld(fortLevelAtlasSurface6C);
   }
   if (tileScratchSurface70 != 0) {
-    g_pDisplayMgr->FreeQuickDrawSurfaceContextSlot(&tileScratchSurface70);
+    g_pDisplayMgr->RemoveGWorld(tileScratchSurface70);
   }
   if (effectAtlasSurface74 != 0) {
-    g_pDisplayMgr->FreeQuickDrawSurfaceContextSlot(&effectAtlasSurface74);
+    g_pDisplayMgr->RemoveGWorld(effectAtlasSurface74);
   }
 
   TQuickDrawSurfaceContext* savedContext;
@@ -98,7 +98,7 @@ void TTacArmyView::ConstructTTacArmyViewBaseState(int compositionClass, TArmyBat
   bounds.right = g_nTacticalBattlefieldSurfaceWidth_006A5448;
   bounds.left = 0;
   bounds.bottom = g_nTacticalBattlefieldSurfaceHeight_006A544C;
-  g_pDisplayMgr->InitializeBitmapSurfaceContextWithRetry(&battlefieldSurface64, 8, &bounds);
+  g_pDisplayMgr->MakeNewGWorld(battlefieldSurface64, 8, bounds);
   TBitmapResourceLoader** loaderHandle =
       CreateBitmapResourceLoaderHandle(static_cast<unsigned short>(compositionClass + 0xf0a));
   SetActiveQuickDrawSurfaceContext(battlefieldSurface64, savedFlags);
@@ -134,7 +134,7 @@ void TTacArmyView::ConstructTTacArmyViewBaseState(int compositionClass, TArmyBat
       SetQuickDrawFillColorFromPaletteIndex(0);
       BlitQuickDrawSurfaces(fortStripSurface->GetBlitSurface(),
                             battlefieldSurface64->GetBlitSurface(), &bounds, &overlayBounds, 0);
-      g_pDisplayMgr->FreeQuickDrawSurfaceContextSlot(&fortStripSurface);
+      g_pDisplayMgr->RemoveGWorld(fortStripSurface);
     }
 
     unitSpriteAtlasSurface68 = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0xee2);
@@ -147,7 +147,7 @@ void TTacArmyView::ConstructTTacArmyViewBaseState(int compositionClass, TArmyBat
     bounds.bottom = tileRowHeightPx8C;
     bounds.left = 0;
     bounds.top = 0;
-    g_pDisplayMgr->InitializeBitmapSurfaceContextWithRetry(&tileScratchSurface70, 8, &bounds);
+    g_pDisplayMgr->MakeNewGWorld(tileScratchSurface70, 8, bounds);
 
     field84 = -1;
     tacticalBattle60 = battle;
@@ -181,8 +181,7 @@ void TTacArmyView::ConstructTTacArmyViewBaseState(int compositionClass, TArmyBat
     overlayBounds.right = unitSpriteCellWidth90 * 2;
     overlayBounds.top = 0;
     overlayBounds.bottom = unitSpriteCellHeight94 * 3;
-    g_pDisplayMgr->InitializeBitmapSurfaceContextWithRetry(&unitSpriteScratchSurfaceBC, 8,
-                                                           &overlayBounds);
+    g_pDisplayMgr->MakeNewGWorld(unitSpriteScratchSurfaceBC, 8, overlayBounds);
     RefreshControl();
     OwnerPanel()->InvokeSlot13C();
   }

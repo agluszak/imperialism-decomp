@@ -36,7 +36,8 @@ public:
   // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
   virtual undefined InitializeHelpManagerIndexArrayAndState(); // slot 0x0a 0x500680
-  virtual undefined OrphanCallChain_C1_I22_00500f10();         // slot 0x0b 0x500f10
+  // Clears the per-help-set rank and pending flag at the start of a new game/turn flow.
+  virtual void ResetHelpSetRanksAndFlags(); // slot 0x0b 0x500f10
 
   // Empty release-build hook invoked (this = g_pHelpMgr) after diplomacy policy/grant
   // state changes (callers 0x4dd040/0x4ddfc0/0x4de340 push three args and load ECX from

@@ -22,9 +22,9 @@ void TBattleUnitsView::StuffValues(BattleRecord* battleRecord, int participantIn
 void TBattleUnitsView::Close() {
   TMilitaryPageView::Close();
   if (primaryUnitAtlas84 != 0) {
-    g_pDisplayMgr->FreeQuickDrawSurfaceContextSlot(&primaryUnitAtlas84);
+    g_pDisplayMgr->RemoveGWorld(primaryUnitAtlas84);
   }
   if (secondaryUnitAtlas88 != 0) {
-    g_pDisplayMgr->FreeQuickDrawSurfaceContextSlot(&secondaryUnitAtlas88);
+    g_pDisplayMgr->RemoveGWorld(secondaryUnitAtlas88);
   }
 }

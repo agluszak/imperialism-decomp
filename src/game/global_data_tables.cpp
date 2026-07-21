@@ -630,8 +630,8 @@ TView* g_pUiResourceHead = nullptr;
 TView* g_pUiResourceContext = nullptr;
 
 // FUNCTION: IMPERIALISM 0x00489a50
-undefined4 SetGlobalUiInvalidationFlagAndReturnPrevious(undefined4 newValue) {
-  undefined4 previous = g_McAppUiActiveFlag_006950AC;
+int SetGlobalUiInvalidationFlagAndReturnPrevious(int newValue) {
+  int previous = g_McAppUiActiveFlag_006950AC;
   g_McAppUiActiveFlag_006950AC = newValue;
   return previous;
 }
@@ -642,8 +642,8 @@ int GetMcAppUiActiveFlag() {
 }
 
 // FUNCTION: IMPERIALISM 0x00489a90
-undefined4 ClearGlobalUiInvalidationFlagAndReturnPrevious() {
-  undefined4 previous = g_McAppUiActiveFlag_006950AC;
+int ClearGlobalUiInvalidationFlagAndReturnPrevious() {
+  int previous = g_McAppUiActiveFlag_006950AC;
   g_McAppUiActiveFlag_006950AC = 0;
   return previous;
 }

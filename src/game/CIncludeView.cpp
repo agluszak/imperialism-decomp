@@ -150,7 +150,7 @@ CIncludeView::~CIncludeView() {
   }
   m_field44 = 0;
   if (m_activeDialogContext != 0) {
-    undefined4 previousUiActive = ClearGlobalUiInvalidationFlagAndReturnPrevious();
+    int previousUiActive = ClearGlobalUiInvalidationFlagAndReturnPrevious();
     m_activeDialogContext->nativeWindow50 = 0;
     if (m_activeDialogContext != 0) {
       m_activeDialogContext->Free();

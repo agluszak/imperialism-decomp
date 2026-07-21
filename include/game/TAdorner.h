@@ -5,6 +5,7 @@
 
 // Forward declarations for types referenced by generated signatures.
 class TStream;
+class TView;
 
 // A base class for pluggable draw/layout/hit-test decorations (Mac naming: an "adorner"
 // attaches optional rendering behavior to a host view/control without subclassing it).
@@ -30,24 +31,19 @@ public:
   // slot 0x07 Free inherited unchanged (0x4798b0)
   // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
-  // Slots 0x0a-0x10: base-class placeholder default for every adorner draw/layout/hit-test
-  // hook. All seven share one real body (not a no-op stub, despite the generic slot names):
-  // pulse the global UI-invalidation flag off and back to its prior value via
-  // SetGlobalUiInvalidationFlagAndReturnPrevious(0) / (previous) -- the same no-op
-  // refresh-barrier idiom TDialogView::EnsureField48Buffer uses for its own vtable-slot
-  // override (see TAdorner.cpp). Kept as generic slot names rather than guessed
-  // draw/layout/hit-test roles: nothing in ported source calls any of them yet to establish
-  // which is which, and the base class's own body gives no clue since it's identical seven
-  // times over.
-  virtual undefined AdornerSlot0A(int unusedArg);                  // slot 0x0a 0x49d900
-  virtual undefined AdornerSlot0B(int unusedArg);                  // slot 0x0b 0x49d930
-  virtual undefined AdornerSlot0C(int unusedArg1, int unusedArg2); // slot 0x0c 0x49d9c0
-  virtual undefined AdornerSlot0D(int unusedArg1, int unusedArg2, int unusedArg3,
-                                  int unusedArg4); // slot 0x0d 0x49d9f0
-  virtual undefined AdornerSlot0E(int unusedArg);  // slot 0x0e 0x49da20
-  virtual undefined AdornerSlot0F(int unusedArg1, int unusedArg2, int unusedArg3,
-                                  int unusedArg4); // slot 0x0f 0x49da50
-  virtual undefined AdornerSlot10(int unusedArg);  // slot 0x10 0x49da80
+  // The seven adorner hooks follow the MacApp declaration order. Windows RET immediates
+  // prove their arity; TColorFill's slot-0x0c override proves Draw's slot, and DoesAdorn
+  // uniquely clears AL before returning. The base implementations only pulse the global UI
+  // invalidation flag, providing an inert default for each hook.
+  virtual void AddedToView(TView* view);              // slot 0x0a 0x49d900
+  virtual void RemovedFromView(TView* view);          // slot 0x0b 0x49d930
+  virtual void Draw(TView* view, const RECT& bounds); // slot 0x0c 0x49d9c0
+  virtual void ViewChangedFrame(TView* view, const RECT& oldFrame, const RECT& newFrame,
+                                unsigned char redraw); // slot 0x0d 0x49d9f0
+  virtual void InvalidateAdorner(TView* view);         // slot 0x0e 0x49da20
+  virtual void DrawLine(signed char colorIndex, short x1, short y1,
+                        short length);          // slot 0x0f 0x49da50
+  virtual unsigned char DoesAdorn(TView* view); // slot 0x10 0x49da80
 
   TAdorner();
 

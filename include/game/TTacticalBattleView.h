@@ -145,7 +145,7 @@ public:
   // and move-animation bodies; gaps unobserved.
   TTacticalBattle* tacticalBattle60; // +0x60 the battle this view renders
   // Offscreen surfaces allocated/loaded by the live-battle initializer (0x5a9d90);
-  // all released through FreeQuickDrawSurfaceContextSlot.
+  // all released through RemoveGWorld.
   struct TQuickDrawSurfaceContext* battlefieldSurface64;     // +0x64 0x5dc x 0x1c2 backdrop
   struct TQuickDrawSurfaceContext* unitSpriteAtlasSurface68; // +0x68 bitmap 0xee2 atlas
   struct TQuickDrawSurfaceContext* fortLevelAtlasSurface6C;  // +0x6c fort bitmap 0xee6+lvl/0xee7

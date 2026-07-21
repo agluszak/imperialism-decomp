@@ -148,6 +148,9 @@ public:
   // 0x57cad0. Verified against 0x0057db53: real __thiscall on `this` (not
   // g_pSimMgr this time), 1 stack arg (`RET 0x4`).
   void RebuildNationStateSlotsAndAvailability(int flag);
+  // Mac retail identities for the two state-2 setup branches.
+  void NameCapitals();          // 0x581c00
+  void ProcessScenarioScript(); // 0x581e60
   // 0x581ae0. Sets field6a, then reloads the picture-word-data language pack for
   // that index (EnsurePictWvDataGobLoadedBySlot) and refreshes the strategic map
   // view's cached bitmap 244 (TMacViewMgr::ReloadBitmap244AndRefreshUiCaches on
@@ -156,7 +159,7 @@ public:
   void SetActiveNationSlotAndRefreshCityCapabilityUiHandles(short nationSlot); // 0x5837c0
 
   // --- turn-instruction stream handlers (dispatched by FourCC through the table at
-  //     0x698b50 inside ProcessTurnInstructionStreamAndFinalizePhase; each reads one or
+  //     0x698b50 inside ProcessScenarioScript; each reads one or
   //     more big-endian tokens from the cursor and mutates this manager / global state) ---
   void
   HandleTurnInstruction_Year_UpdateScenarioYearFieldScaledBy4(void* pInstructionRaw); // 0x582ed0
@@ -229,8 +232,8 @@ public:
   unsigned char pad69;
   short field6a;
   short field6c;
-  unsigned char field6e;
-  unsigned char phaseFlags[9];
+  // +0x6e — ten decade-bucket phase-state bytes, indexed by economicTurn / 40.
+  unsigned char phaseStateByDecade[10];
   unsigned char field78;
   unsigned char field79;
   unsigned char gateFlag7a;

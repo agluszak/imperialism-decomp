@@ -201,7 +201,7 @@ void* GetSurfaceNodeSlot(TQuickDrawSurfaceContext* context) {
 
 // FUNCTION: IMPERIALISM 0x004962c0
 short InitializeBitmapDescriptorRecordAndLoadSurfaceNode(TQuickDrawSurfaceContext** outContext,
-                                                         short bitDepth, RECT* bounds,
+                                                         short bitDepth, const RECT* bounds,
                                                          int hintField18, int arg4, int arg5) {
   (void)hintField18;
   (void)arg4;
@@ -258,7 +258,7 @@ LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(unsigned short resourceId) {
   RECT bitmapRect = loader->bitmapRect;
   TQuickDrawSurfaceContext* outContext = 0;
   if (g_pDisplayMgr != nullptr) {
-    g_pDisplayMgr->InitializeBitmapSurfaceContextWithRetry(&outContext, 8, &bitmapRect);
+    g_pDisplayMgr->MakeNewGWorld(outContext, 8, bitmapRect);
   }
   if (outContext == 0) {
     ReleaseBitmapLoaderHandle(loaderHandle);

@@ -47,7 +47,7 @@ void TScrollBarView::ConstructTScrollBarViewBaseState(TScrollView* panel, int* o
     surfaceRect.top = 0;
     surfaceRect.right = frameWidth34;
     surfaceRect.bottom = frameHeight38;
-    g_pDisplayMgr->InitializeBitmapSurfaceContextWithRetry(&surfaceContext90, 8, &surfaceRect);
+    g_pDisplayMgr->MakeNewGWorld(surfaceContext90, 8, surfaceRect);
   }
 
   TPictureButton* upButton = new TPictureButton();
@@ -82,7 +82,7 @@ void TScrollBarView::ConstructTScrollBarViewBaseState(TScrollView* panel, int* o
 // FUNCTION: IMPERIALISM 0x005746e0
 void TScrollBarView::Free() {
   if (surfaceContext90 != 0) {
-    g_pDisplayMgr->FreeQuickDrawSurfaceContextSlot(&surfaceContext90);
+    g_pDisplayMgr->RemoveGWorld(surfaceContext90);
   }
   TView::Free();
 }
@@ -103,7 +103,7 @@ void TScrollBarView::DoPostCreate(int arg) {
   surfaceRect.bottom = frameHeight38;
   word8a = static_cast<short>(frameHeight38) - 0x24;
   surfaceRect.right = frameWidth34;
-  g_pDisplayMgr->InitializeBitmapSurfaceContextWithRetry(&surfaceContext90, 8, &surfaceRect);
+  g_pDisplayMgr->MakeNewGWorld(surfaceContext90, 8, surfaceRect);
 }
 
 // FUNCTION: IMPERIALISM 0x005747c0
