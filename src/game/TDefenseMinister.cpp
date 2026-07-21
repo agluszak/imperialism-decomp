@@ -157,10 +157,7 @@ void TDefenseMinister::MinisterSlot14() {
   int totalUnitCount = owner->militaryUnitList44->GetCount();
 
   TCity* city = owner ? owner->city : 0;
-  short homeTileId =
-      city->selectedOrderB0
-          ? *reinterpret_cast<short*>(static_cast<char*>(city->selectedOrderB0) + 0x14)
-          : 1;
+  short homeTileId = city->SelectedOrderTileId();
 
   short ownNationSlot = owner->nationSlot;
 
