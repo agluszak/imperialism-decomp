@@ -24,7 +24,7 @@ IMPLEMENT_DYNCREATE(TApplication, TCommandHandler)
 
 // FUNCTION: IMPERIALISM 0x00486760
 TApplication::TApplication()
-    : TCommandHandler(), currentTarget(0), screenModeAt24(0), field28(0), cohandlers() {
+    : TCommandHandler(), currentTarget(0), screenModeAt24(0), cohandlers() {
   g_pApplicationUiRootController = this;
 }
 

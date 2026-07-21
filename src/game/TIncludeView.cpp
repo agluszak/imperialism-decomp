@@ -31,7 +31,7 @@ TIncludeView::TIncludeView()
 TIncludeView::~TIncludeView() {}
 
 // FUNCTION: IMPERIALISM 0x0048cf10
-void TIncludeView::BuildTurnEventFactoryPacket(TView* ownerContextArg, TView* mainView,
+void TIncludeView::BuildTurnEventFactoryPacket(TView* resourceContext, TView* mainView,
                                                short eventCode, int* anchorPoint,
                                                CString* labelText, int flag) {
   if (mainView != nullptr) {
@@ -48,7 +48,7 @@ void TIncludeView::BuildTurnEventFactoryPacket(TView* ownerContextArg, TView* ma
   if (mainView != nullptr) {
     mainView->AttachChildControl(this, 0);
   }
-  uiResourceContext40 = ownerContextArg;
+  this->resourceContext = resourceContext;
   turnEventCode60 = eventCode;
   anchorPoint64[0] = anchorPoint[0];
   anchorPoint64[1] = anchorPoint[1];

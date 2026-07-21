@@ -1105,8 +1105,7 @@ void TTacticalBattleView::DoSetCursor(CPoint* point, RgnHandle hitArg) {
   if (cursorId != -1) {
     CPoint mappedPoint = ViewToQDPt(point);
     if (PtInRgn(&mappedPoint, hitArg) != 0) {
-      SetCursor(static_cast<HCURSOR>(
-          g_pUiRuntimeContext->cursorTable[cursorId - TViewMgr::kCursorResourceIdBase]));
+      SetCursor(g_pUiRuntimeContext->turnEventCursors[cursorId - TViewMgr::kCursorResourceIdBase]);
       return;
     }
   }

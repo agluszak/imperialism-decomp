@@ -79,16 +79,9 @@ public:
   // 0x3c — general per-control value slot: toggle/current value (T2PictToggleButton),
   // window id (TDisplayMgr), dialog resource-template id (TControl).
   int controlValue3c;
-  // TODO(class-recovery): offset +0x40 has at least two observed meanings. Startup and
-  // TIncludeView treat it as a TView* UI-resource context, while TControl (see
-  // TStaticText::resourceTemplateId40) uses the same inherited slot as a dialog
-  // resource-template id. Verify whether one path is misclassified, or whether the
-  // common base should stop owning this slot once the affected subclasses are split
-  // more precisely.
-  union {
-    TView* uiResourceContext40;
-    int resourceTemplateId40;
-  };
+  // Optional resource-construction context inherited by dynamically built child views.
+  // Controls that do not inherit a context store null here.
+  TView* resourceContext;        // 0x40
   TViewChildList* childList44;   // 0x44 — child-control list (CList<TView*,TView*>)
   TUiStyleBytes* stylePayload48; // 8-byte style/color payload (see TUiStyleBytes above)
   // 0x4c — participates in the control input gate (EvaluateControlInputGate passes
@@ -105,7 +98,7 @@ public:
   int hoverHelpEnabled5c;
 
   TView();
-  void InitializeUiResourceEntryFrameAndParent(TView* uiResourceContext, TView* panel,
+  void InitializeUiResourceEntryFrameAndParent(TView* resourceContext, TView* panel,
                                                int* offsetLayout, int* sizeLayout, int layoutParam6,
                                                int layoutParam7, int attachFlag);
   void InvalidateCityDialogRectRegion(RECT* rect, int flag);
@@ -173,7 +166,7 @@ public:
   virtual void QueryBounds(CRect* boundsOut);                    // 0x4b 0x427290
   virtual void TranslateRectToWindow(CRect* rect);               // 0x4c 0x4272d0
   virtual void TranslatePointToParentChain4D(CPoint* point = 0); // 0x4d 0x48ba80
-  virtual void TranslatePointToParentChain4E(CPoint* point = 0); // 0x4e 0x48ba40
+  virtual void TranslatePointToParentChain4E(CPoint* point);     // 0x4e 0x48ba40
   virtual void ForceRedraw();                                    // 0x4f 0x48b700
   virtual void LocalToSuperVRect(CRect* rect);                   // 0x50 0x48bb00
   virtual void SuperToLocal(CPoint* point);                      // 0x51

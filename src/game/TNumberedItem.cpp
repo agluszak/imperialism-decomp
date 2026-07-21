@@ -11,8 +11,7 @@ TNumberedItem::TNumberedItem() : TMegaPicture() {}
 // FUNCTION: IMPERIALISM 0x00507850
 void TNumberedItem::InitializeNumberedResourceItem(TView* panel, int* position, int* size,
                                                    short resourceIconIndex, short count) {
-  InitializeUiResourceEntryFrameAndParent(panel->uiResourceContext40, panel, position, size, 5, 5,
-                                          0);
+  InitializeUiResourceEntryFrameAndParent(panel->resourceContext, panel, position, size, 5, 5, 0);
   iconRowIndexAc = resourceIconIndex;
   badgeCountAe = count;
 }

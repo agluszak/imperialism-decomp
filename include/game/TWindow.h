@@ -90,7 +90,7 @@ public:
   // slot 0x4b QueryBounds inherited unchanged (0x427290)
   virtual void TranslateRectToWindow(CRect* rect) override;               // slot 0x4c 0x492d40
   virtual void TranslatePointToParentChain4D(CPoint* point = 0) override; // slot 0x4d 0x492d20
-  virtual void TranslatePointToParentChain4E(CPoint* point = 0) override; // slot 0x4e 0x492d00
+  virtual void TranslatePointToParentChain4E(CPoint* point) override;     // slot 0x4e 0x492d00
   // slot 0x4f ForceRedraw inherited unchanged (0x48b700)
   // slot 0x50 LocalToSuperVRect inherited unchanged (0x48bb00)
   // slot 0x51 SuperToLocal inherited unchanged (0x427330)

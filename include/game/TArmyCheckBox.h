@@ -154,7 +154,7 @@ public:
 
   TArmyCheckBox();
   // Real ctor (0x4a9fe0): forwards panel/offsetLayout/sizeLayout to the already-ported
-  // TView::InitializeUiResourceEntryFrameAndParent (uiResourceContext=null,
+  // TView::InitializeUiResourceEntryFrameAndParent (resourceContext=null,
   // layoutParam6/7=4, attachFlag=0), then stores its own two trailing args into
   // surfaceContext90/field88. unused1/unused2 (the 4th/5th real stack params) are never
   // read by this ctor.

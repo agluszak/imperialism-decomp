@@ -741,6 +741,8 @@ def _db_logical(fn):
         if p.getName() == "this":
             has_this = True
             continue
+        if p.getName() == "__return_storage_ptr__":
+            continue  # CUSTOM_STORAGE cannot always preserve AutoParameterImpl identity
         if p.isAutoParameter():
             continue  # sret __return_storage_ptr and other compiler-inserted params
         explicit += 1
@@ -765,6 +767,9 @@ def _db_signature_full(fn):
         if p.getName() == "this":
             has_this = True
             continue
+        if p.getName() == "__return_storage_ptr__":
+            has_sret = True
+            continue
         if p.isAutoParameter():
             if p.getName() == "__return_storage_ptr__":
                 has_sret = True
@@ -781,6 +786,133 @@ def _db_signature_full(fn):
         "has_varargs": has_varargs, "has_sret": has_sret,
         "custom_storage": custom_storage, "ret_size": ret_size,
     }
+
+
+def _flattened_by_value_storage_matches(exp_sizes, db_sizes):
+    """True when Ghidra split a wide source parameter into stack dword pieces.
+
+    VC5 passes an 8-byte value such as CPoint in two stack dwords while it remains
+    one logical C++ parameter. An untyped Ghidra signature can expose those dwords
+    as two separate undefined4 parameters. Only recognize that shape when the
+    source has fewer logical parameters, contains a genuinely wide value, and both
+    signatures occupy exactly the same number of x86 stack dwords.
+    """
+    if not exp_sizes or len(exp_sizes) >= len(db_sizes):
+        return False
+    if any(size is None or size <= 0 for size in exp_sizes + db_sizes):
+        return False
+    if not any(size > 4 for size in exp_sizes):
+        return False
+
+    def stack_dwords(sizes):
+        return sum(max(1, (size + 3) // 4) for size in sizes)
+
+    return stack_dwords(exp_sizes) == stack_dwords(db_sizes)
+
+
+def _source_arity_is_proven_by_ret_cleanup(exp_cc, exp_n, exp_sizes, exp_this,
+                                           db_cc, db_n, db_this, ret_cleanup):
+    """Whether RET cleanup exactly proves a shorter source parameter list."""
+    if len(exp_sizes) != exp_n or any(size is None or size <= 0 for size in exp_sizes):
+        return False
+    expected_cleanup = sum(max(1, (size + 3) // 4) for size in exp_sizes) * 4
+    return (exp_cc in ("__thiscall", "__stdcall")
+            and db_cc == exp_cc
+            and db_this == exp_this
+            and db_n > len(exp_sizes)
+            and ret_cleanup == expected_cleanup)
+
+
+def _cstring_sret_overdeclaration_is_proven(ret_str, exp_cc, exp_n, exp_sizes, exp_this,
+                                            db_cc, db_n, db_this, ret_cleanup,
+                                            db_first_param_is_cstring_ptr):
+    """Whether one DB-only parameter is the hidden result pointer for CString."""
+    normalized_return = re.sub(r"\b(class|struct|const|volatile)\b", "", ret_str)
+    normalized_return = re.sub(r"\s+", "", normalized_return)
+    if normalized_return != "CString" or len(exp_sizes) != exp_n:
+        return False
+    if any(size is None or size <= 0 for size in exp_sizes):
+        return False
+    explicit_cleanup = sum(max(1, (size + 3) // 4) for size in exp_sizes) * 4
+    return (exp_cc == "__thiscall"
+            and db_cc == exp_cc
+            and db_this == exp_this
+            and db_n == exp_n + 1
+            and ret_cleanup == explicit_cleanup + 4
+            and db_first_param_is_cstring_ptr)
+
+
+def _source_convention_is_proven_by_abi(exp_cc, exp_n, exp_sizes, exp_this,
+                                        db_cc, ret_cleanup, ecx_verdict):
+    """Whether RET cleanup and incoming-ECX use support the source convention."""
+    if db_cc == exp_cc or len(exp_sizes) != exp_n:
+        return False
+    if any(size is None or size <= 0 for size in exp_sizes):
+        return False
+    stack_dwords = [max(1, (size + 3) // 4) for size in exp_sizes]
+    if exp_cc == "__cdecl":
+        expected_cleanup = 0
+        register_shape_ok = ecx_verdict == "no_ecx" and not exp_this
+    elif exp_cc == "__stdcall":
+        expected_cleanup = sum(stack_dwords) * 4
+        register_shape_ok = ecx_verdict == "no_ecx" and not exp_this
+    elif exp_cc == "__thiscall":
+        expected_cleanup = sum(stack_dwords) * 4
+        # A recovered method may legitimately leave `this` unused; its qualified
+        # source ownership plus exact callee cleanup still distinguishes it from a
+        # caller-clean free function. Callsite evidence remains the ownership proof.
+        register_shape_ok = exp_this and ecx_verdict in ("ecx_this", "no_ecx")
+    elif exp_cc == "__fastcall":
+        if exp_this or any(size > 4 for size in exp_sizes):
+            return False
+        expected_cleanup = sum(stack_dwords[2:]) * 4
+        register_shape_ok = ecx_verdict == "ecx_this"
+    else:
+        return False
+    return ret_cleanup == expected_cleanup and register_shape_ok
+
+
+def _first_explicit_param_points_to(fn, type_name):
+    """Whether the first non-auto/non-this DB parameter points to `type_name`."""
+    from ghidra.program.model.data import Pointer
+    for param in fn.getParameters():
+        if param.getName() == "this" or param.isAutoParameter():
+            continue
+        dt = param.getDataType()
+        return isinstance(dt, Pointer) and dt.getDataType().getName() == type_name
+    return False
+
+
+def _consistent_ret_cleanup_bytes(program, fn):
+    """Return the common x86 RET cleanup immediate, or None when not provable."""
+    cleanups = set()
+    instructions = program.getListing().getInstructions(fn.getBody(), True)
+    while instructions.hasNext():
+        instruction = instructions.next()
+        if not instruction.getMnemonicString().upper().startswith("RET"):
+            continue
+        cleanup = 0
+        for operand_index in range(instruction.getNumOperands()):
+            for obj in instruction.getOpObjects(operand_index):
+                try:
+                    cleanup = max(cleanup, int(obj.getValue()))
+                except AttributeError:
+                    continue
+        cleanups.add(cleanup)
+    return next(iter(cleanups)) if len(cleanups) == 1 else None
+
+
+def _in_stack_offsets_are_only_slot_padding(param_sizes, offsets):
+    """Whether residual reads start only in dword padding of source parameters."""
+    padding_offsets = set()
+    stack_offset = 4
+    for size in param_sizes:
+        if size is None or size <= 0:
+            return False
+        slot_size = max(1, (size + 3) // 4) * 4
+        padding_offsets.update(range(stack_offset + size, stack_offset + slot_size))
+        stack_offset += slot_size
+    return bool(offsets) and set(offsets) <= padding_offsets
 
 
 # Type-resolution grades that count as genuinely SEMANTIC (not just ABI-storage
@@ -1205,9 +1337,12 @@ def run_divergent(program, args, model):
       - db_signature_incomplete — DB `cc=unknown` or 0 params, source has a real
         signature (Ghidra never resolved it; invisible to the in_stack projector);
       - param_count_mismatch with source arity > DB arity and matching convention
-        (DB is missing trailing parameters).
-    Excluded here (delicate / handled elsewhere): DB over-declared (source arity <
-    DB, likely an MFC override), and convention_mismatch (bridges / ambiguity).
+        (DB is missing trailing parameters);
+      - DB over-declaration only when it is exactly the flattened storage of a
+        source by-value parameter wider than one dword (for example CPoint), or
+        when a parameterless callee-cleaned method's RET instructions all prove
+        zero stack cleanup.
+    Other DB over-declarations and convention mismatches remain excluded.
 
     Acceptance is STRICTER than the in_stack path — these functions had no in_stack
     to clear, so `in_stack` clearing proves nothing. Commit only on FULL
@@ -1241,14 +1376,43 @@ def run_divergent(program, args, model):
         if parsed is None:
             continue
         cc, ret_str, param_strs, punct_kind = parsed
+        exp_varargs = bool(param_strs) and param_strs[-1].strip() == "..."
+        if exp_varargs:
+            param_strs = param_strs[:-1]
         entity_kind = resolve_entity_kind(decl_index, claim.name, len(param_strs), punct_kind)
         exp_cc = cc or default_convention(entity_kind)
         exp_this = entity_kind in ("constructor", "destructor", "instance_method")
         exp_n = len(param_strs)
 
-        db_cc, db_n, db_this, _ = _db_logical(fn)
+        db_cc, db_n, db_this, db_param_sizes = _db_logical(fn)
         incomplete = db_cc in ("", "unknown", "default") or (db_n == 0 and exp_n > 0)
         short = (db_cc == exp_cc and db_this == exp_this and exp_n > db_n)
+        flattened_by_value = False
+        exp_param_sizes = []
+        if ((db_cc == exp_cc and db_this == exp_this and exp_n < db_n)
+                or db_cc != exp_cc):
+            for t in param_strs:
+                dt, _q = resolver.resolve_quality(t)
+                if dt is None:
+                    exp_param_sizes = []
+                    break
+                exp_param_sizes.append(dt.getLength())
+            if db_cc == exp_cc and db_this == exp_this:
+                flattened_by_value = _flattened_by_value_storage_matches(
+                    exp_param_sizes, db_param_sizes)
+        ret_cleanup = _consistent_ret_cleanup_bytes(program, fn)
+        source_arity_proven = _source_arity_is_proven_by_ret_cleanup(
+            exp_cc, exp_n, exp_param_sizes, exp_this, db_cc, db_n, db_this,
+            ret_cleanup)
+        cstring_sret_proven = _cstring_sret_overdeclaration_is_proven(
+            ret_str, exp_cc, exp_n, exp_param_sizes, exp_this,
+            db_cc, db_n, db_this, ret_cleanup,
+            _first_explicit_param_points_to(fn, "CString"))
+        from tools.ghidra.scan_cdecl_thiscall import classify as classify_ecx_use
+        ecx_verdict, _ecx_where = classify_ecx_use(
+            program.getListing(), fm, fn.getEntryPoint())
+        convention_proven = _source_convention_is_proven_by_abi(
+            exp_cc, exp_n, exp_param_sizes, exp_this, db_cc, ret_cleanup, ecx_verdict)
         # Arity/cc can already match yet a param/return be a WRONG opaque-by-value
         # type (Ghidra typed a scalar arg as a game class by value). The arity check
         # misses those; catch them so the correct source types get projected.
@@ -1256,9 +1420,12 @@ def run_divergent(program, args, model):
                         for p in fn.getParameters()
                         if not p.isAutoParameter() and p.getName() != "this") \
             or TypeResolver.is_opaque(fn.getReturnType())
-        if not (incomplete or short or db_opaque):
+        if not (incomplete or short or flattened_by_value
+                or source_arity_proven or cstring_sret_proven
+                or convention_proven or db_opaque):
             continue  # not a broad-projection candidate
-        if exp_n == 0 and not incomplete and not db_opaque:
+        if (exp_n == 0 and not incomplete and not db_opaque
+                and not source_arity_proven and not convention_proven):
             continue
 
         # Resolve every parameter type; a non-pointer we cannot size => queue. An
@@ -1297,24 +1464,60 @@ def run_divergent(program, args, model):
         ftx = program.startTransaction(f"project-divergent 0x{addr:08x}")
         commit, reason = False, None
         try:
-            if ret_dt is not None:
-                fn.setReturnType(ret_dt, SourceType.USER_DEFINED)
-            fn.setCallingConvention(exp_cc)
             impls = [ParameterImpl(f"a{i}", dt, program) for i, dt in enumerate(param_dts)]
-            fn.replaceParameters(
-                Function.FunctionUpdateType.DYNAMIC_STORAGE_FORMAL_PARAMS, True,
-                SourceType.USER_DEFINED, *impls)
+            if cstring_sret_proven:
+                from ghidra.program.model.lang import DynamicVariableStorage
+                from ghidra.program.model.data import PointerDataType
+                from ghidra.program.model.listing import (
+                    AutoParameterImpl, AutoParameterType, ReturnParameterImpl, VariableStorage)
+                stack = program.getAddressFactory().getStackSpace()
+                this_type = resolver.resolve(claim.name.split("::", 1)[0] + "*")
+                custom_impls = [
+                    ParameterImpl("this", this_type,
+                                  VariableStorage(program, program.getRegister("ECX")), program)
+                ]
+                result_ptr = PointerDataType(ret_dt, program.getDataTypeManager())
+                result_storage = DynamicVariableStorage(
+                    program, AutoParameterType.RETURN_STORAGE_PTR, stack.getAddress(4), 4)
+                custom_impls.append(AutoParameterImpl(result_ptr, 1, result_storage, fn))
+                stack_offset = 8
+                for i, dt in enumerate(param_dts):
+                    custom_impls.append(ParameterImpl(
+                        f"a{i}", dt, VariableStorage(program, stack.getAddress(stack_offset),
+                                                     dt.getLength()), program))
+                    stack_offset += max(1, (dt.getLength() + 3) // 4) * 4
+                return_param = ReturnParameterImpl(
+                    ret_dt, VariableStorage(program, program.getRegister("EAX")), True, program)
+                fn.updateFunction(
+                    exp_cc, return_param, Function.FunctionUpdateType.CUSTOM_STORAGE,
+                    True, SourceType.USER_DEFINED, *custom_impls)
+            else:
+                if ret_dt is not None:
+                    fn.setReturnType(ret_dt, SourceType.USER_DEFINED)
+                fn.setCallingConvention(exp_cc)
+                fn.replaceParameters(
+                    Function.FunctionUpdateType.DYNAMIC_STORAGE_FORMAL_PARAMS, True,
+                    SourceType.USER_DEFINED, *impls)
+            fn.setVarArgs(exp_varargs)
             ifc.flushCache()
             after = _decompile_in_stack(ifc, fn, monitor)
             n_cc, n_n, n_this, _ = _db_logical(fn)
             if after is None:
                 reason = "decompile_failed:after"
+            elif (after and (source_arity_proven or convention_proven)
+                  and _in_stack_offsets_are_only_slot_padding(exp_param_sizes, after)
+                  and n_cc == exp_cc and n_n == exp_n and n_this == exp_this
+                  and bool(fn.hasVarArgs()) == exp_varargs):
+                commit = True
+                reason = "params_bound_residual:" + ",".join(hex(o) for o in sorted(after))
             elif after:
                 reason = "introduced_in_stack:" + ",".join(hex(o) for o in sorted(after))
-            elif n_cc == exp_cc and n_n == exp_n and n_this == exp_this:
+            elif (n_cc == exp_cc and n_n == exp_n and n_this == exp_this
+                  and bool(fn.hasVarArgs()) == exp_varargs):
                 commit = True
             else:
-                reason = f"structural_mismatch:db[{n_cc},this={n_this},n={n_n}]"
+                reason = (f"structural_mismatch:db[{n_cc},this={n_this},n={n_n},"
+                          f"varargs={bool(fn.hasVarArgs())}]")
         except Exception as exc:  # noqa: BLE001
             reason = f"apply_error:{type(exc).__name__}"
         finally:
@@ -1325,6 +1528,8 @@ def run_divergent(program, args, model):
 
         if commit:
             projected.append((addr, claim.name, "projected", exp_n))
+            if reason is not None:
+                queued.append((addr, claim.name, reason, claim.prototype))
         else:
             queued.append((addr, claim.name, reason, claim.prototype))
 
