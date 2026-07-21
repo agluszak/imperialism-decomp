@@ -460,7 +460,7 @@ void TDiplomacyMapView::ApplyRectSlot110(RECT* rectBuffer) {
   if (interactionModeAt94 == 5) {
     DrawVoteNuggets();
   }
-  RenderDiplomacyMatrixRowStatusIcons(rectBuffer);
+  DrawIcons(rectBuffer);
 }
 
 // Relation-percentage -> icon-row lookup for interactionModeAt94 == 2 (0x00696950).
@@ -558,7 +558,9 @@ void TDiplomacyMapView::DrawNames(RECT* presentRect) {
 }
 
 // FUNCTION: IMPERIALISM 0x004f4ec0
-void TDiplomacyMapView::RenderDiplomacyMatrixRowStatusIcons(RECT* presentRect) {
+void TDiplomacyMapView::DrawIcons(RECT* presentRect) {
+  const short policyIconColumns[5] = {4, 3, 2, 0, 1};
+
   if (interactionModeAt94 != 1 && interactionModeAt94 != 4 && interactionModeAt94 != 2) {
     return;
   }
@@ -593,26 +595,16 @@ void TDiplomacyMapView::RenderDiplomacyMatrixRowStatusIcons(RECT* presentRect) {
       UpdatePaletteIndexWithDefaultFallback(0x13);
     }
 
-    if (interactionModeAt94 == 1) {
+    if (interactionModeAt94 == 4) {
       if (g_pDiplomacyTurnStateManager->IsPrimaryNationSlotIndex(frameRegionSelectorAt98)) {
         short need =
-            g_apNationStates[frameRegionSelectorAt98]->diplomacyGrantByNation[terrainIndex];
-        if (need == 1000) {
-          iconOffset = 0xd0;
-        } else if (need == 3000) {
-          iconOffset = 0xe0;
-        } else if (need == 5000) {
-          iconOffset = 0xf0;
-        } else if (need == 10000) {
-          iconOffset = 0x100;
-        } else if (need == 0x43e8) {
-          iconOffset = 0x110;
-        } else if (need == 0x4bb8) {
-          iconOffset = 0x120;
-        } else if (need == 0x5388) {
-          iconOffset = 0x130;
-        } else if (need == 0x6710) {
-          iconOffset = 0x140;
+            g_apNationStates[frameRegionSelectorAt98]->diplomacyPolicyByNation[terrainIndex];
+        if (need == 0x133) {
+          iconOffset = 0x150;
+        } else if (need == 0x134) {
+          iconOffset = 0x160;
+        } else if (need != -1) {
+          iconOffset = static_cast<short>(policyIconColumns[need] << 4);
         }
       }
     } else if (interactionModeAt94 == 2) {
@@ -636,20 +628,27 @@ void TDiplomacyMapView::RenderDiplomacyMatrixRowStatusIcons(RECT* presentRect) {
           }
         }
       }
-    } else { // interactionModeAt94 == 4
+    } else { // interactionModeAt94 == 1
       if (g_pDiplomacyTurnStateManager->IsPrimaryNationSlotIndex(frameRegionSelectorAt98)) {
         short need =
-            g_apNationStates[frameRegionSelectorAt98]->diplomacyPolicyByNation[terrainIndex];
-        if (need == 0x133) {
-          iconOffset = 0x150;
-        } else if (need == 0x134) {
-          iconOffset = 0x160;
+            g_apNationStates[frameRegionSelectorAt98]->diplomacyGrantByNation[terrainIndex];
+        if (need == 1000) {
+          iconOffset = 0xd0;
+        } else if (need == 3000) {
+          iconOffset = 0xe0;
+        } else if (need == 5000) {
+          iconOffset = 0xf0;
+        } else if (need == 10000) {
+          iconOffset = 0x100;
+        } else if (need == 0x43e8) {
+          iconOffset = 0x110;
+        } else if (need == 0x4bb8) {
+          iconOffset = 0x120;
+        } else if (need == 0x5388) {
+          iconOffset = 0x130;
+        } else if (need == 0x6710) {
+          iconOffset = 0x140;
         }
-        // UNRESOLVED: for every other `need` value the original indexes a
-        // ~0x133-entry table (`asStackY_2c6[need] << 4`) that Ghidra renders as a
-        // stack-relative read far outside this function's own frame -- almost
-        // certainly a global lookup table it failed to recognize as such. Left
-        // unmapped (no icon drawn) pending recovery of that table's real address.
       }
     }
 

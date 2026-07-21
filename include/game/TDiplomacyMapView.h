@@ -73,13 +73,14 @@ public:
   // then minors 7..22 with the default DIB palette selected for their theme colors.
   // presentRect is an ignored stack arg the original threads through.
   void DrawNames(RECT* presentRect);
-  // 0x4f4ec0 -- called unconditionally from ApplyRectSlot110 for interactionModeAt94 in
+  // 0x4f4ec0 -- Mac CodeWarrior names this TDiplomacyMapView::DrawIcons(const VRect&).
+  // Called unconditionally from ApplyRectSlot110 for interactionModeAt94 in
   // {1,2,4}: for every terrain-descriptor slot whose hit rect intersects presentRect,
   // draws a diplomacy-compatibility highlight (LookupOrderCompatibilityMatrixValue) into
   // nationAnchorRects3A4, a mode-specific status icon into nationTextHitRectsC4 (need/
   // grant level for mode 1, relation tier for mode 2, policy level for mode 4), and an
   // optional colony-boycott overlay. presentRect is only read, never threaded onward.
-  void RenderDiplomacyMatrixRowStatusIcons(RECT* presentRect);
+  void DrawIcons(RECT* presentRect);
 
   // 0x4f4620 -- resolves the 6 minister action-topic buttons (info/trty/gran/trad/
   // coun/offr), refreshes the info button's nation-slot selection, and (re)assigns
