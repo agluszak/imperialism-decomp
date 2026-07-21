@@ -212,6 +212,9 @@ extern "C" short* __cdecl BuildHexAreaTileIndexList(short centerTileIndex, short
 // VTABLE: IMPERIALISM 0x006587e0
 class TMapMgr : public TObject {
 public:
+  // Retail callers pass g_pGlobalMapState in ECX; the body intentionally does not
+  // inspect the receiver and returns the constant province-order weight.
+  short GetProvinceUnitOrderWeight(short provinceId); // 0x5184e0
   DECLARE_DYNCREATE(TMapMgr)
   virtual ~TMapMgr() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -822,7 +825,3 @@ public:
 
   TMapMgr();
 };
-
-// Retail body ignores provinceId and returns the constant weight 0x21 (33); the
-// mission-scoring family converts it to float for the accumulate dampening factor.
-short __stdcall GetProvinceUnitOrderWeight(short provinceId); // 0x5184e0

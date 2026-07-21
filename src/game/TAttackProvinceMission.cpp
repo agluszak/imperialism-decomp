@@ -265,7 +265,7 @@ void TAttackProvinceMission::ResetValue0CToZero() {
 // Shared with TInvadeMission (COMDAT-folded body).
 // FUNCTION: IMPERIALISM 0x0053e290
 void TAttackProvinceMission::NoOpSlot3C() {
-  short unitOrderWeight = GetProvinceUnitOrderWeight(targetProvince30);
+  short unitOrderWeight = g_pGlobalMapState->GetProvinceUnitOrderWeight(targetProvince30);
 
   float vector[5] = {0.0f, 0.0f, 0.0f, 0.0f, 0.0f};
   if (targetProvince30 >= 0 && targetProvince30 <= 0x17f) {

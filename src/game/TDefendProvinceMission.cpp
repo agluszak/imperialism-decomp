@@ -133,7 +133,8 @@ float TDefendProvinceMission::ComputeCrossNationSupportVectorScore(int nodeConte
   float vector[5] = {0.0f, 0.0f, 0.0f, 0.0f, 0.0f};
   int remainingBudgetByNation[7] = {0, 0, 0, 0, 0, 0, 0};
 
-  short unitOrderWeight = GetProvinceUnitOrderWeight(static_cast<short>(nodeContext));
+  short unitOrderWeight =
+      g_pGlobalMapState->GetProvinceUnitOrderWeight(static_cast<short>(nodeContext));
 
   char* nationContextTable = reinterpret_cast<char*>(g_pGlobalMapState->cityScoreTable);
   int sourceNation =
@@ -215,7 +216,8 @@ float TDefendProvinceMission::ComputeCrossNationSupportVectorScore(int nodeConte
 float TDefendProvinceMission::ComputeLocalSupportVectorScore(int nodeContext) {
   float vector[5] = {0.0f, 0.0f, 0.0f, 0.0f, 0.0f};
 
-  short unitOrderWeight = GetProvinceUnitOrderWeight(static_cast<short>(nodeContext));
+  short unitOrderWeight =
+      g_pGlobalMapState->GetProvinceUnitOrderWeight(static_cast<short>(nodeContext));
 
   for (TMilitaryUnit* unit = StationedUnitChainAt(nodeContext); unit != 0;
        unit = static_cast<TMilitaryUnit*>(unit->nextOnTile)) {

@@ -3662,7 +3662,7 @@ void TMapMgr::ApplyJoinEmpireMode0GlobalDiplomacyReset(int nationSlot) {
 }
 
 // FUNCTION: IMPERIALISM 0x005184e0
-short __stdcall GetProvinceUnitOrderWeight(short provinceId) {
+short TMapMgr::GetProvinceUnitOrderWeight(short provinceId) {
   // Retail body ignores the province and returns the constant weight 0x21 (33);
   // mission scoring converts it to float for the accumulate dampening factor.
   (void)provinceId;

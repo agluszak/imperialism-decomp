@@ -907,8 +907,9 @@ extern const char* const g_pRegistryLanguageKey_0063E04C;
 extern char g_szEmptyString[];
 extern const char* const g_pszEmptyTextPointer_00656f60; // = g_szEmptyString @ 0x656f60
 
-// TArmyMission.cpp / TNavyMission.cpp — army-mission order-priority tables.
-extern float g_ArmyMissionOrderWeightTable_006978c8[6];
+// TArmyMission.cpp / TNavyMission.cpp — shared per-hop/per-province distance decay
+// weights (1.0, 0.8, ...), used by both army and navy mission scoring.
+extern const float g_MissionOrderDistanceDecayWeightTable_006978c8[6];
 extern float g_ArmyMissionDotProductWeights_00697980[5];
 extern float g_ArmyMissionCandidateScoreTable_006978f8[];
 
@@ -945,9 +946,9 @@ extern unsigned short g_Populate_Beachhead_Mission_LookupTable_00697958[];
 // sign-extend (movsx) in the original despite being small positive values, so the
 // storage type must be signed short to match the codegen.
 extern const short g_NavyOrderDistributionCategoryWeights_00697978[4];
-// TNavyMission.cpp — per-hop distance decay weight (0.8^index, clamped index 0..5) used
-// by ComputeMissionOrderMatchScoreWithCandidateNavyOrder's per-ship accumulation.
-extern const float g_NavyOrderDistanceDecayWeightTable_006978c8[6];
+// TBeachheadMission.cpp — normalization base for the parent invade mission's
+// calculated priority contribution.
+extern const double g_BeachheadMissionPriorityNormalization_0065AA30;
 
 // TMapMgr.cpp — per-resourceType requirement level table (0x513610).
 extern unsigned char g_abUniversityRequirementLevelById[24][4];

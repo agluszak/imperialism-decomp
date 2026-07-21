@@ -93,7 +93,7 @@ public:
   float ComputeOrderDistributionSimilarityScoreForZoneWithBaseProfile(TZone* nodeContext);
   // Builds a 4-category priority vector from every existing orderList24 ship plus
   // `candidateOrder` (each contribution weighted by a per-ship distance-decay factor,
-  // see g_NavyOrderDistanceDecayWeightTable_006978c8), then scores it against
+  // see g_MissionOrderDistanceDecayWeightTable_006978c8), then scores it against
   // resourceWeights2c via a Bhattacharyya-coefficient-style similarity:
   // sum(sqrt(resourceWeights2c[i] * vector[i])) / sum(resourceWeights2c[i]). Used to
   // evaluate how well adding `candidateOrder` would fit this mission's target profile.

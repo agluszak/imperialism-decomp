@@ -16,6 +16,10 @@ public:
   TInvadeMission();
   TInvadeMission(short targetProvince, TZone* beachheadZone);
 
+  // Mac: CalculatePriority(). Sums the current army cost, derives remaining
+  // city-development resource demand, and returns the larger pressure score.
+  float CalculatePriority(); // 0x53f800
+
   virtual void WriteTo(TStream* stream) override;  // slot 0x05 0x53f640
   virtual void ReadFrom(TStream* stream) override; // slot 0x06 0x53f690
   virtual void Free() override;                    // slot 0x07 0x53f410

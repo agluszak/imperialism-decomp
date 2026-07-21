@@ -456,8 +456,8 @@ float TNavyMission::ReturnZeroFloatSlot74(void* candidate) {
       if (bucket > 5) {
         bucket = 5;
       }
-      AccumulateNavyOrderCategoryVectorWithScale(entry, profile,
-                                                 g_ArmyMissionOrderWeightTable_006978c8[bucket]);
+      AccumulateNavyOrderCategoryVectorWithScale(
+          entry, profile, g_MissionOrderDistanceDecayWeightTable_006978c8[bucket]);
     }
     short bucket;
     if (GetActiveTargetZoneByState28() != 0) {
@@ -469,7 +469,7 @@ float TNavyMission::ReturnZeroFloatSlot74(void* candidate) {
     if (bucket > 5) {
       bucket = 5;
     }
-    float weight = static_cast<float>(g_ArmyMissionOrderWeightTable_006978c8[bucket] *
+    float weight = static_cast<float>(g_MissionOrderDistanceDecayWeightTable_006978c8[bucket] *
                                       g_Recompute_Nation_Order_LookupTable_0065A9E0);
     float scaledRatio =
         weight * static_cast<float>(orderNode->stockLevel1c /
@@ -515,8 +515,8 @@ float TNavyMission::ReturnZeroFloatSlot74(void* candidate) {
     if (bucket > 5) {
       bucket = 5;
     }
-    AccumulateNavyOrderCategoryVectorWithScale(entry, profile,
-                                               g_ArmyMissionOrderWeightTable_006978c8[bucket]);
+    AccumulateNavyOrderCategoryVectorWithScale(
+        entry, profile, g_MissionOrderDistanceDecayWeightTable_006978c8[bucket]);
   }
   short bucket;
   if (GetActiveTargetZoneByState28() != 0) {
@@ -528,8 +528,8 @@ float TNavyMission::ReturnZeroFloatSlot74(void* candidate) {
   if (bucket > 5) {
     bucket = 5;
   }
-  AccumulateNavyOrderCategoryVectorWithScale(orderNode, profile,
-                                             g_ArmyMissionOrderWeightTable_006978c8[bucket]);
+  AccumulateNavyOrderCategoryVectorWithScale(
+      orderNode, profile, g_MissionOrderDistanceDecayWeightTable_006978c8[bucket]);
   float sqrtSum = g_Recompute_Nation_Order_LookupTable_0065A9E8;
   float weightSum = g_Recompute_Nation_Order_LookupTable_0065A9E8;
   for (int componentIndex = 0; componentIndex < 4; ++componentIndex) {
@@ -723,7 +723,7 @@ void TNavyMission::BuildMissionQueuedOrderCategoryVector(float* vector) {
     if (distanceIndex > 5) {
       distanceIndex = 5;
     }
-    float weight = g_NavyOrderDistanceDecayWeightTable_006978c8[distanceIndex];
+    float weight = g_MissionOrderDistanceDecayWeightTable_006978c8[distanceIndex];
     float ratio =
         static_cast<float>(ship->stockLevel1c / ship->GetNavyOrderNormalizationBaseByNationType()) *
         weight;
@@ -784,7 +784,7 @@ float TNavyMission::ComputeMissionOrderMatchScoreWithCandidateNavyOrder(TShip* c
       distanceIndex = 5;
     }
     float scale =
-        g_NavyOrderDistanceDecayWeightTable_006978c8[distanceIndex] *
+        g_MissionOrderDistanceDecayWeightTable_006978c8[distanceIndex] *
         static_cast<float>(ship->stockLevel1c / ship->GetNavyOrderNormalizationBaseByNationType());
     for (int componentIndex = 0; componentIndex < 4; ++componentIndex) {
       vector[componentIndex] +=
@@ -803,7 +803,7 @@ float TNavyMission::ComputeMissionOrderMatchScoreWithCandidateNavyOrder(TShip* c
   if (distanceIndex > 5) {
     distanceIndex = 5;
   }
-  float scale = g_NavyOrderDistanceDecayWeightTable_006978c8[distanceIndex] *
+  float scale = g_MissionOrderDistanceDecayWeightTable_006978c8[distanceIndex] *
                 static_cast<float>(candidateOrder->stockLevel1c /
                                    candidateOrder->GetNavyOrderNormalizationBaseByNationType());
   for (int componentIndex = 0; componentIndex < 4; ++componentIndex) {
@@ -845,7 +845,7 @@ float TNavyMission::ComputeMissionOrderMatchScoreWithScaledCandidateNavyOrder(
       distanceIndex = 5;
     }
     float scale =
-        g_NavyOrderDistanceDecayWeightTable_006978c8[distanceIndex] *
+        g_MissionOrderDistanceDecayWeightTable_006978c8[distanceIndex] *
         static_cast<float>(ship->stockLevel1c / ship->GetNavyOrderNormalizationBaseByNationType());
     for (int componentIndex = 0; componentIndex < 4; ++componentIndex) {
       vector[componentIndex] +=
@@ -864,7 +864,7 @@ float TNavyMission::ComputeMissionOrderMatchScoreWithScaledCandidateNavyOrder(
   if (distanceIndex > 5) {
     distanceIndex = 5;
   }
-  float scale = g_NavyOrderDistanceDecayWeightTable_006978c8[distanceIndex] *
+  float scale = g_MissionOrderDistanceDecayWeightTable_006978c8[distanceIndex] *
                 static_cast<float>(g_Recompute_Nation_Order_LookupTable_0065A9E0) *
                 static_cast<float>(candidateOrder->stockLevel1c /
                                    candidateOrder->GetNavyOrderNormalizationBaseByNationType());

@@ -109,8 +109,9 @@ inline void TArmyMission::AccumulateOrderPriorityVector(float* vector) {
       weightIndex = 5;
     }
     AccumulateUnitOrderPriorityVectorContribution(
-        unit, vector, g_ArmyMissionOrderWeightTable_006978c8[weightIndex],
-        static_cast<float>(GetProvinceUnitOrderWeight(GetMissionTargetContextIdFromField14())));
+        unit, vector, g_MissionOrderDistanceDecayWeightTable_006978c8[weightIndex],
+        static_cast<float>(
+            g_pGlobalMapState->GetProvinceUnitOrderWeight(GetMissionTargetContextIdFromField14())));
   }
 }
 
@@ -268,7 +269,8 @@ void TArmyMission::AccumulateMissionUnitPriorityVectorWithOptionalFilter(float* 
     if (targetTile == -1 || unit->MatchesTargetTileOrBypass(bypassTileFilter, targetTile)) {
       AccumulateUnitOrderPriorityVectorContribution(
           unit, vector, 1.0f,
-          static_cast<float>(GetProvinceUnitOrderWeight(GetMissionTargetContextIdFromField14())));
+          static_cast<float>(g_pGlobalMapState->GetProvinceUnitOrderWeight(
+              GetMissionTargetContextIdFromField14())));
     }
   }
 }
@@ -283,9 +285,9 @@ void TArmyMission::AccumulateMissionUnitPriorityContributionWithScaleMode(TMilit
   }
   float sign = scaleMode ? static_cast<float>(g_Recompute_Nation_Order_LookupTable_0065AA08)
                          : static_cast<float>(g_Recompute_Nation_Order_LookupTable_0065A9E0);
-  float scale = g_NavyOrderDistanceDecayWeightTable_006978c8[weightIndex] * sign;
-  float weight =
-      static_cast<float>(GetProvinceUnitOrderWeight(GetMissionTargetContextIdFromField14()));
+  float scale = g_MissionOrderDistanceDecayWeightTable_006978c8[weightIndex] * sign;
+  float weight = static_cast<float>(
+      g_pGlobalMapState->GetProvinceUnitOrderWeight(GetMissionTargetContextIdFromField14()));
   AccumulateUnitOrderPriorityVectorContribution(unit, vector, scale, weight);
 }
 
@@ -336,8 +338,9 @@ float TArmyMission::ComputeArmyMissionScoreDeltaWithCandidateUnit(TMilitaryUnit*
     weightIndex = 5;
   }
   AccumulateUnitOrderPriorityVectorContribution(
-      candidateUnit, vector, g_ArmyMissionOrderWeightTable_006978c8[weightIndex],
-      static_cast<float>(GetProvinceUnitOrderWeight(GetMissionTargetContextIdFromField14())));
+      candidateUnit, vector, g_MissionOrderDistanceDecayWeightTable_006978c8[weightIndex],
+      static_cast<float>(
+          g_pGlobalMapState->GetProvinceUnitOrderWeight(GetMissionTargetContextIdFromField14())));
 
   double numerator = 0.0;
   double denominator = 0.0;
@@ -365,8 +368,9 @@ float TArmyMission::ComputeArmyMissionScoreDeltaWithScaledCandidateUnit(
     weightIndex = 5;
   }
   AccumulateUnitOrderPriorityVectorContribution(
-      candidateUnit, vector, g_ArmyMissionOrderWeightTable_006978c8[weightIndex] * -1.0f,
-      static_cast<float>(GetProvinceUnitOrderWeight(GetMissionTargetContextIdFromField14())));
+      candidateUnit, vector, g_MissionOrderDistanceDecayWeightTable_006978c8[weightIndex] * -1.0f,
+      static_cast<float>(
+          g_pGlobalMapState->GetProvinceUnitOrderWeight(GetMissionTargetContextIdFromField14())));
 
   double numerator = 0.0;
   double denominator = 0.0;
@@ -424,7 +428,8 @@ float TArmyMission::ReturnZeroFloatSlot78(TMilitaryUnit* candidateUnit, float* r
   float vector[5] = {0.0f, 0.0f, 0.0f, 0.0f, 0.0f};
   AccumulateUnitOrderPriorityVectorContribution(
       candidateUnit, vector, 1.0f,
-      static_cast<float>(GetProvinceUnitOrderWeight(GetMissionTargetContextIdFromField14())));
+      static_cast<float>(
+          g_pGlobalMapState->GetProvinceUnitOrderWeight(GetMissionTargetContextIdFromField14())));
 
   float total = 0.0f;
   for (int i = 0; i < 5; ++i) {
