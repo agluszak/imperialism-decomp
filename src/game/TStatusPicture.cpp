@@ -179,7 +179,7 @@ void TStatusPicture::ApplyRectSlot110(RECT* rectBuffer) {
     SetQuickDrawFillColor(0);
     FillRectWithQuickDrawBrushAndContextOffset(&swatch);
     OffsetRect(&swatch, -1, -1);
-    g_pUiRuntimeContext->ApplyTurnEventPaletteColorByEventCode(pictureIds_b0[i]);
+    g_pUiRuntimeContext->SetForeColor(static_cast<short>(pictureIds_b0[i]));
     FillRectWithQuickDrawBrushAndContextOffset(&swatch);
   }
 }

@@ -6033,10 +6033,10 @@ address|name|symbol|size|type|prototype|provenance
 5d51e0|TViewMgr::Free||12|function|undefined ReleaseTurnEventDialogIfPresent()|
 5d5200|TViewMgr::ReadFrom||57|function|undefined DeserializeTurnEventDispatchState()|
 5d5250|TViewMgr::WriteTo||13|function|undefined SerializeTurnEventDispatchState()|
-5d5270|TViewMgr::MapTurnEventCodeToPaletteIndex||554|function|int __thiscall MapTurnEventCodeToPaletteIndex(int eventCode)|
-5d5710|UpdateTurnEventPaletteByCode||41|function|undefined UpdateTurnEventPaletteByCode()|
-5d5750|TViewMgr::ApplyTurnEventPaletteColorByEventCode||22|function|undefined ApplyTurnEventPaletteColorByEventCode()|
-5d5780|TViewMgr::UpdatePaletteIndexFromTurnEventCode||22|function|undefined UpdatePaletteIndexFromTurnEventCode()|
+5d5270|TViewMgr::GetColor||554|function|int __thiscall GetColor(short colorCode)|
+5d5710|TViewMgr::SetColor||41|function|void __thiscall SetColor(short colorCode, unsigned char foreground)|
+5d5750|TViewMgr::SetForeColor||22|function|void __thiscall SetForeColor(short colorCode)|
+5d5780|TViewMgr::SetBackColor||22|function|void __thiscall SetBackColor(short colorCode)|
 5d57b0|TViewMgr::HandleTurnEventVtableSlot40RefreshGoldDialog||328|function|undefined HandleTurnEventVtableSlot40RefreshGoldDialog()|
 5d5960|TViewMgr::ClassifyTurnStateForOverlayMode||47|function|undefined ClassifyTurnStateForOverlayMode()|
 5d5a70|TViewMgr::RunControlStringProviderAndDispatchLocalizedMessage||104|function|undefined RunControlStringProviderAndDispatchLocalizedMessage()|

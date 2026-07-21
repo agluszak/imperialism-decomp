@@ -150,7 +150,7 @@ void TLoadSavePicture::HandleEvent(int commandId, TEventHandler* sourceHandler, 
         editControl->ActivateCityProductionViewIfAllowed();
         editControl->SetEditSelectionAndScrollCaret(0, static_cast<short>(slotText.GetLength()), 0);
         editControl->controlTag = 0x736c6f74u; // 'slot'
-        g_pUiRuntimeContext->UpdatePaletteIndexFromTurnEventCode(0x10);
+        g_pUiRuntimeContext->SetBackColor(0x10);
       }
     }
     reachedCommonTail = true;
