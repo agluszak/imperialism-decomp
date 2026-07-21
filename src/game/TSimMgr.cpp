@@ -1659,6 +1659,30 @@ void TSimMgr::HandleTurnInstruction_Rela_SetNationRelationValue(void* pInstructi
       static_cast<int>(sourceToken), static_cast<int>(targetToken), static_cast<int>(scoreToken));
 }
 
+// Reads a big-endian 32-bit tile-index token followed by a fixed 64-byte inline C-string
+// (the province name) and applies it via the global map state's shared-label setter.
+// FUNCTION: IMPERIALISM 0x00583270
+void TSimMgr::HandleTurnInstruction_Pnam_AssignProvinceName(void* pInstructionRaw) {
+  STurnInstructionCursor* instruction = static_cast<STurnInstructionCursor*>(pInstructionRaw);
+
+  unsigned int tileToken = *instruction->tokenCursor;
+  const char* rawName = reinterpret_cast<const char*>(instruction->tokenCursor + 1);
+  instruction->tokenCursor = instruction->tokenCursor + 1;
+  unsigned char* traw = reinterpret_cast<unsigned char*>(&tileToken);
+  unsigned char tt = traw[0];
+  traw[0] = traw[3];
+  traw[3] = tt;
+  tt = traw[1];
+  traw[1] = traw[2];
+  traw[2] = tt;
+
+  CString rawText(rawName);
+  instruction->tokenCursor =
+      reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(instruction->tokenCursor) + 0x40);
+  CString name(rawText);
+  g_pGlobalMapState->SetGlobalMapCellSharedLabel(static_cast<int>(tileToken), &name);
+}
+
 // Reads two big-endian 32-bit tokens (nation slot, then cash amount) and writes the amount
 // into that nation's treasury field.
 // FUNCTION: IMPERIALISM 0x00583360
