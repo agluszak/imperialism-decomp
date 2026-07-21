@@ -10,6 +10,7 @@ module|tools.workflow.check_ui_codegen_matching|just:ui-codegen-match-gate|Prote
 module|tools.workflow.ui_view_coverage|just:ui-view-coverage/ui-view-coverage-check|Account for every committed Mac View in the Windows source model
 module|tools.workflow.mac_control_usage|just:mac-control-usage/mac-control-usage-check|File-scoped Mac control class/tag/screen semantic index and portprep hints
 module|tools.workflow.mac_string_crosswalk|just:mac-string-search/string-crosswalk/strings-for-function/mac-string-crosswalk-check|File-scoped Mac STR# to Windows GOB/global/source semantic crosswalk
+module|tools.workflow.ui_platform_diff|just:ui-platform-diff/ui-platform-diff-check|Declared Mac-resource versus generated Windows UI semantic delta report
 module|tools.workflow.annotate_globals_from_symbols|just:annotate-globals|Global annotation pass
 module|tools.migrations.annotate_vtables_from_symbols|direct|Vtable annotation pass (completed migration; run via uv)
 module|tools.migrations.annotate_strings_from_symbols|direct|String annotation pass (completed migration; run via uv)

@@ -1,0 +1,24 @@
+format_version: 1
+
+# Explicit semantic differences between the Mac resource class name and the
+# Windows source model. These are not ABI claims; each substitution must remain
+# represented by tools.ui_codegen.CLASS_ALIASES and appear in the delta report.
+class_substitutions:
+  TToolbarCluster:
+    windows_class: TToolBarCluster
+    reason: Windows source and RTTI use the internal-capital spelling for the toolbar cluster class.
+    evidence: FlagView.rsrc:8800 node tbr2; Windows TToolBarCluster source/RTTI identity
+  TMyWindow:
+    windows_class: TWindow
+    reason: Mac utility resources use a local window subclass absent from the Windows source model.
+    evidence: Linger.rsrc:1000 root WIND; Windows RTTI has TWindow and no TMyWindow
+
+# Cases intentionally registered for functional reachability even though the
+# recovered original builder lacks the corresponding switch arm.
+functional_parity_cases:
+  "0x004357b0/0x07e5":
+    evidence: Windows request 0x005d57ce
+  "0x004538a0/0x03c5":
+    evidence: Windows request 0x0051dd0b
+  "0x0046fd10/0x0f3d":
+    evidence: Windows request 0x0057e984

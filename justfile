@@ -640,6 +640,21 @@ mac-string-crosswalk-update:
 mac-string-crosswalk-check:
   uv run python -m tools.workflow.mac_string_crosswalk --check
 
+[doc('Report Mac-resource versus generated Windows UI semantic deltas')]
+[group('ghidra-inspect')]
+ui-platform-diff *args:
+  uv run python -m tools.workflow.ui_platform_diff {{args}}
+
+[doc('MUTATES: regenerate the committed UI platform-delta report')]
+[group('recovery')]
+ui-platform-diff-update:
+  uv run python -m tools.workflow.ui_platform_diff --write
+
+[doc('Reject undeclared or stale UI platform deltas')]
+[group('gates')]
+ui-platform-diff-check:
+  uv run python -m tools.workflow.ui_platform_diff --check
+
 [doc('Print one scoped Mac View resource from committed UI IR (FILE:ID)')]
 [group('ghidra-inspect')]
 ui-resource-show resource:
@@ -1422,6 +1437,7 @@ source-gates:
   just ui-view-coverage-check
   just mac-control-usage-check
   just mac-string-crosswalk-check
+  just ui-platform-diff-check
   just tooling-check
   just vtable-gate
   just antipattern-gate
