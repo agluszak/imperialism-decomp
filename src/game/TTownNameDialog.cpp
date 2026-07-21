@@ -39,14 +39,14 @@ void TTownNameDialog::DoPostCreate(int arg) {
   short suggestedNameIndex = static_cast<short>(rand() % 8 + 1);
   nameControl->SetTextFromStringResource(0x1c52, suggestedNameIndex, 1);
   UpdatePaletteIndexWithDefaultFallback(0x50);
-  nameControl->ActivateCityProductionViewIfAllowed();
+  nameControl->BecomeTarget();
   nameControl->GetCurrentText(&text);
   nameControl->SetEditSelectionAndScrollCaret(0, static_cast<short>(text.GetLength()), 1);
 }
 
 // FUNCTION: IMPERIALISM 0x0051bcc0
-void TTownNameDialog::ApplyRectSlot110(RECT* rectBuffer) {
-  TPicture::ApplyRectSlot110(rectBuffer);
+void TTownNameDialog::Draw(RECT* rectBuffer) {
+  TPicture::Draw(rectBuffer);
   TView* nameControl = ResolveControlByTag(kControlTagName);
   if (nameControl != nullptr) {
     CRect bounds;

@@ -36,7 +36,7 @@ void TStaticText::SetText(CString* text) {
 TStaticText::TStaticText()
     : TControl(), text(new CString()), stringResourceGroupId(-1), stringResourceIndex(0),
       textAlignmentCode(0), textOptionFlags(0) {
-  frameStyle60 = 13;
+  eventNumber60 = 13;
 }
 
 // Destructors are compiler-generated (implicit) from real inheritance; the
@@ -58,7 +58,7 @@ TStaticText::~TStaticText() {
 void TStaticText::CopyViewStateFromSource(TView* source) {
   TView::CopyViewStateFromSource(source);
   TStaticText* src = static_cast<TStaticText*>(source);
-  this->frameStyle60 = src->frameStyle60;
+  this->eventNumber60 = src->eventNumber60;
   this->controlState64 = src->controlState64;
   this->contentInsets68 = src->contentInsets68;
   this->textStyle78 = src->textStyle78;
@@ -105,7 +105,7 @@ void TStaticText::InitializeTextEntryBaseAndOptionalStringResource(
         &loadedString, stringResourceGroup, stringResourceIndex);
     SetTextAndMaybeRefresh(&loadedString, 0);
   }
-  HandleCursorHoverFallback(0, 0);
+  DoSetCursor(0, 0);
 }
 
 // FUNCTION: IMPERIALISM 0x0048fe60
@@ -142,7 +142,7 @@ void TStaticText::SetTextAlignmentAndMaybeRefresh(short alignmentCode, char refr
 // textAlignmentCode (-2 left / 1 center / -1 right on DT_NOPREFIX|0x100|
 // DT_WORDBREAK).
 // FUNCTION: IMPERIALISM 0x0048ffb0
-void TStaticText::ApplyRectSlot110(RECT* rectBuffer) {
+void TStaticText::Draw(RECT* rectBuffer) {
   (void)rectBuffer;
   CDC* dc = GetActiveQuickDrawDc();
   dc->SetBkMode(TRANSPARENT);

@@ -27,7 +27,7 @@ TTextList::TTextList() : TView() {
 }
 
 // FUNCTION: IMPERIALISM 0x0057acc0
-void TTextList::ApplyRectSlot110(RECT* rectBuffer) {
+void TTextList::Draw(RECT* rectBuffer) {
   (void)rectBuffer;
 
   int styleFlags1 = 0;
@@ -100,8 +100,8 @@ void TTextList::BeginMouseCaptureAndStartRepeatTimer(const CPoint& point, TToolb
     CopyRect(&localRect, &rect);
 
     ownerContext->InvalidateCityDialogRectRegion(&localRect, 1);
-    InvokeSlot13C(); // slot 0x4f (was facade OnSelectionConfirmedSlot13C)
+    ForceRedraw(); // slot 0x4f (was facade OnSelectionConfirmedSlot13C)
 
-    ownerContext->DispatchEvent(4, this, 0);
+    ownerContext->HandleEvent(4, this, 0);
   }
 }

@@ -26,8 +26,8 @@ void TGameScorePicture::DoPostCreate(int arg) {
 }
 
 // FUNCTION: IMPERIALISM 0x0057b620
-void TGameScorePicture::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
-  TControl::HandleEvent(commandId, sourceHandler, event);
+void TGameScorePicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+  TControl::DoEvent(commandId, sourceHandler, event);
   if (commandId == 0xa && sourceHandler->controlTag == kTagDone) {
     ReinitializeGameFlowAndPostTurnEventCode(0x5e0);
   }

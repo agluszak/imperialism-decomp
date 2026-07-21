@@ -49,6 +49,6 @@ undefined TSuperCivRoster::InitializeLedgerRosterPages(TView* pOwnerContext, int
   BuildPageLayout();
   ShowPage(1);
   ownerContext->AssertValid();
-  static_cast<TBook*>(ownerContext)->UpdatePagedListNavigationButtonState(currentPage);
+  static_cast<TBook*>(ownerContext)->ShowPage(currentPage);
   return 0;
 }

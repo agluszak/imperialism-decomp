@@ -34,7 +34,7 @@ void TUpDownPictureButton::HiliteState(unsigned char enabledState, unsigned char
 
 // FUNCTION: IMPERIALISM 0x00571690
 bool TUpDownPictureButton::IsSelected() {
-  OwnerPanel()->InvokeSlot13C();
+  GetWindow()->ForceRedraw();
   return true;
 }
 

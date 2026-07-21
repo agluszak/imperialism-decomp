@@ -16,8 +16,8 @@ public:
   TTransportPicture();
   virtual ~TTransportPicture() override;
   DECLARE_DYNCREATE(TTransportPicture)
-  void HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override;
-  void ApplyRectSlot110(RECT* rectBuffer) override;
+  void DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override;
+  void Draw(RECT* rectBuffer) override;
   virtual void Refresh();
 };
 

@@ -31,7 +31,7 @@ TTradeScreenPicture::~TTradeScreenPicture() {}
 // diplomacy value (right cell) and the proposal weight (middle cell) via the cached
 // QuickDraw text state.
 // FUNCTION: IMPERIALISM 0x005ba7a0
-void TTradeScreenPicture::ApplyRectSlot110(RECT* rectBuffer) {
+void TTradeScreenPicture::Draw(RECT* rectBuffer) {
   RECT localRect;
   localRect.left = rectBuffer->left;
   localRect.top = rectBuffer->top;
@@ -46,7 +46,7 @@ void TTradeScreenPicture::ApplyRectSlot110(RECT* rectBuffer) {
     return;
   }
 
-  TPicture::ApplyRectSlot110(rectBuffer);
+  TPicture::Draw(rectBuffer);
   InitializeUiTextStyleDescriptorAndApplyQuickDraw(0, 0xe, 0x2b68, 2);
 
   int i = 0;

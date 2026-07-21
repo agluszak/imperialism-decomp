@@ -31,7 +31,7 @@ void TGrantsView::DoPostCreate(int arg) {}
 // color at +1,+1 then theme 0x2b6b color at +0,+0) -- a drop-shadow idiom shared with
 // TDiplomacyMapView's legend labels.
 // FUNCTION: IMPERIALISM 0x004f81c0
-void TGrantsView::ApplyRectSlot110(RECT* rectBuffer) {
+void TGrantsView::Draw(RECT* rectBuffer) {
   (void)rectBuffer;
   CString labelText;
   CString sumText;
@@ -104,7 +104,7 @@ void TGrantsView::Setup() {
 }
 
 // FUNCTION: IMPERIALISM 0x004f8650
-void TGrantsView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+void TGrantsView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId == 0xc) {
     short tagOffset = static_cast<short>(sourceHandler->controlTag - 0x6330);
     TDiplomacyMapView* mapView = diplomacyMapView60;
@@ -116,5 +116,5 @@ void TGrantsView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEven
     mapView = diplomacyMapView60;
     mapView->selectedGrantRowC0 = static_cast<short>(tagOffset / 2);
   }
-  TEventHandler::HandleEvent(commandId, sourceHandler, event);
+  TEventHandler::DoEvent(commandId, sourceHandler, event);
 }

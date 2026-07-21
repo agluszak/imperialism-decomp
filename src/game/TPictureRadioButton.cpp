@@ -20,7 +20,7 @@ TPictureRadioButton::~TPictureRadioButton() {}
 void TPictureRadioButton::ViewEnable(char isEnabled, char refreshNow) {
   short pictureId = glyphBase84;
   short alternatePictureId = static_cast<short>(controlValue3c);
-  char currentState = GetBoolSlot28();
+  char currentState = IsEnabled();
   if (((isEnabled != 0 && currentState == 0) || (isEnabled == 0 && currentState != 0)) &&
       alternatePictureId != 0) {
     SetPictureResourceIdAndRefresh(alternatePictureId, false);

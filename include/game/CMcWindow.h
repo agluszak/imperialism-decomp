@@ -32,7 +32,7 @@ public:
   BOOL PreCreateWindow(CREATESTRUCT& cs) override; // 0x00493d80
   // Overrides CWnd::OnCommand (vtable slot 0x80): for custom notify code 0x400 (HIWORD of
   // wParam), refresh the sending control's owning TView (RefreshControl, slot 0x39) and
-  // re-arm the owner tree's input capture (InvokeSlot13C, slot 0x4f), then default-route.
+  // re-arm the owner tree's input capture (ForceRedraw, slot 0x4f), then default-route.
   BOOL OnCommand(WPARAM wParam, LPARAM lParam) override; // 0x00493c30
 
   // +0x3c — backref to the owning TWindow, installed by

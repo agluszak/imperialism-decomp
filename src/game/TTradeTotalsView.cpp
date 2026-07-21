@@ -25,7 +25,7 @@ TTradeTotalsView::TTradeTotalsView() : TView() {}
 TTradeTotalsView::~TTradeTotalsView() {}
 
 // FUNCTION: IMPERIALISM 0x005c1bd0
-void TTradeTotalsView::ApplyRectSlot110(RECT* rectBuffer) {
+void TTradeTotalsView::Draw(RECT* rectBuffer) {
   CString strA;
   CString strB;
   CString strC;

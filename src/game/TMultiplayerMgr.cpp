@@ -1143,7 +1143,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
           mapControl->QueryContentBounds(&mapRect);
           {
             ScopedMapQuickDrawContext quickDraw(mapControl);
-            mapControl->ApplyRectSlot110(&mapRect);
+            mapControl->Draw(&mapRect);
           }
           TPicture* coatControl = (TPicture*)lounge->ResolveControlByTag(0x636f6174 /* 'coat' */);
           coatControl->AssertValid();

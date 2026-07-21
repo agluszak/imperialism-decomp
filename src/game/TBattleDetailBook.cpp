@@ -17,12 +17,12 @@ IMPLEMENT_DYNCREATE(TBattleDetailBook, TBook)
 TBattleDetailBook::TBattleDetailBook() {}
 
 // FUNCTION: IMPERIALISM 0x004aea90
-void TBattleDetailBook::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+void TBattleDetailBook::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId == 0xa && sourceHandler->controlTag == kControlTagOkay) {
-    static_cast<TControl*>(OwnerPanel())
+    static_cast<TControl*>(GetWindow())
         ->SetTextStyleAndMaybeRefresh(
             reinterpret_cast<const TUiTextStyleDescriptor*>(sourceHandler->controlTag), 1);
     return;
   }
-  TBook::HandleEvent(commandId, sourceHandler, event);
+  TBook::DoEvent(commandId, sourceHandler, event);
 }

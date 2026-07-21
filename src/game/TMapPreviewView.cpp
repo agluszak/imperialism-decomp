@@ -72,13 +72,13 @@ void TMapPreviewView::BeginMouseCaptureAndStartRepeatTimer(const CPoint& point,
         static_cast<unsigned short>(g_pUiRuntimeContext->GetColor(static_cast<short>(nation)));
     if (nationPalette == clickedPalette) {
       pendingNation6C = nation;
-      ownerContext->HandleEvent(0x7069636b /* 'pick' */, this, 0);
+      ownerContext->DoEvent(0x7069636b /* 'pick' */, this, 0);
     }
   }
 }
 
 // FUNCTION: IMPERIALISM 0x00578a80
-void TMapPreviewView::ApplyRectSlot110(RECT* rectBuffer) {
+void TMapPreviewView::Draw(RECT* rectBuffer) {
   (void)rectBuffer;
 
   RECT previewRect = {0, 0, frameWidth34, frameHeight38};

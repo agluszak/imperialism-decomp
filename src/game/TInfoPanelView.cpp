@@ -44,7 +44,7 @@ void TInfoPanelView::DoPostCreate(int arg) {
 }
 
 // FUNCTION: IMPERIALISM 0x004fa190
-void TInfoPanelView::ApplyRectSlot110(RECT* rectBuffer) {
+void TInfoPanelView::Draw(RECT* rectBuffer) {
   // TODO: paint the info panel for `rectBuffer` (0x004fa190).  This is a large
   // draw routine that builds a row of text strings via g_pSimMgr->GetString and
   // applies them to the child controls, then clears `this` caption.  Ported
@@ -67,7 +67,7 @@ void TInfoPanelView::Setup() {
 }
 
 // FUNCTION: IMPERIALISM 0x004fad60
-void TInfoPanelView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+void TInfoPanelView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId == 0xc) {
     short selectedOverlayMode = (short)sourceHandler->controlTag - 0x7230;
     diplomacyMapView60->interactionModeAt94 = selectedOverlayMode;
@@ -77,7 +77,7 @@ void TInfoPanelView::HandleEvent(int commandId, TEventHandler* sourceHandler, TE
     mkey->AssertValid();
     mkey->SetDiplomacyNationSelectionFilterAndRefreshRows(selectedOverlayMode);
   }
-  TEventHandler::HandleEvent(commandId, sourceHandler, event);
+  TEventHandler::DoEvent(commandId, sourceHandler, event);
 }
 
 // FUNCTION: IMPERIALISM 0x004fae00

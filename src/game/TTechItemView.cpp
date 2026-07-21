@@ -159,7 +159,7 @@ void TTechItemView::ConstructTTechItemViewBaseState(TView* panel, int* offsetLay
 }
 
 // FUNCTION: IMPERIALISM 0x005b1e20
-void TTechItemView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+void TTechItemView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId == 10) {
     if (sourceHandler->controlTag == kControlTagPurc) {
       TTextPictureButton* purchaseButton = static_cast<TTextPictureButton*>(sourceHandler);
@@ -214,5 +214,5 @@ void TTechItemView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEv
       node->Free();
     }
   }
-  TView::HandleEvent(commandId, sourceHandler, event);
+  TView::DoEvent(commandId, sourceHandler, event);
 }

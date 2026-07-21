@@ -37,7 +37,7 @@ static __inline void UpdateTradeBarFromSelectedMetricRatio(TRailCluster* context
   TAmtBar* barLayout = reinterpret_cast<TAmtBar*>(barControl);
   if (barLayout->auxValueA != 0) {
     int ratioValue =
-        ((int)context->selectedMetricControl->QueryStepValue() * barLayout->frameWidth34) /
+        ((int)context->selectedMetricControl->GetNextHandler() * barLayout->frameWidth34) /
         (int)barLayout->auxValueA;
     barControl->SetBarMetricRatio(ratioValue);
   }
@@ -149,7 +149,7 @@ void TRailCluster::SetMoveAmount(short dragValue, unsigned char updateFlag) {
   TAmtBar* selectedControl = ctx->selectedMetricControl;
   short previousValue = ReadControlValueFieldPlus4(selectedControl);
   if (selectedControl != 0) {
-    selectedControl->SetControlValue(quantizedDragValue);
+    selectedControl->SetEnable(static_cast<unsigned char>(quantizedDragValue));
   }
 
   if (((char)updateFlag == 0) && (ReadControlValueFieldPlus4(selectedControl) == previousValue)) {
@@ -202,7 +202,7 @@ void TRailCluster::UpdateMax() {
 }
 
 // FUNCTION: IMPERIALISM 0x00589da0
-void TRailCluster::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+void TRailCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId == 100) {
     TAmtBar* moveControl = reinterpret_cast<TAmtBar*>(this->ResolveControlByTag(kControlTagMove));
     if (moveControl == 0) {

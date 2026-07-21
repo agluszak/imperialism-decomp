@@ -47,11 +47,11 @@ void TAmtBar::UpdateBarValuesAndRefresh(short valueAt60, short valueAt62) {
   this->stepOrCurrentValue = valueAt60;
   this->rangeOrMaxValue = valueAt62;
   this->RefreshControl();
-  this->InvokeSlot13C();
+  this->ForceRedraw();
 }
 
 // FUNCTION: IMPERIALISM 0x00588670
-void TAmtBar::ApplyRectSlot110(RECT* rectBuffer) {
+void TAmtBar::Draw(RECT* rectBuffer) {
   (void)rectBuffer;
   InvokeSlot1A8();
 }
@@ -147,7 +147,7 @@ void TAmtBar::ClampAndApplyTradeMoveValue(int requestedValue) {
   }
 
   int appliedValue = ApplyMoveClamp(baseValue, requestedValue);
-  TView* owner = OwnerPanel();
+  TView* owner = GetWindow();
   if (((short)appliedValue == 0) && requestedValue != 0) {
     TAmtBar* fallbackControl =
         reinterpret_cast<TAmtBar*>(owner->ResolveControlByTag(kControlTagMove));

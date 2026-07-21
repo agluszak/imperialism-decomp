@@ -27,12 +27,12 @@ struct TEventHandlerRawQueueNode {
 } // namespace
 
 // FUNCTION: IMPERIALISM 0x00415d50
-int TEventHandler::GetCityDialogValueDword10() {
+int TEventHandler::GetIdleFreq() {
   return field10;
 }
 
 // FUNCTION: IMPERIALISM 0x00415d70
-void TEventHandler::SetCityDialogValueDword10(int value) {
+void TEventHandler::SetIdleFreq(int value) {
   field10 = value;
 }
 
@@ -81,13 +81,13 @@ void TEventHandler::InitializePacketHeaderFields_Tag20202020(int packetTag) {
 // FUNCTION: IMPERIALISM 0x0048a1b0
 void TEventHandler::Free() {
   if (g_pApplicationUiRootController != 0 && g_pApplicationUiRootController != this) {
-    TEventHandler* activeView = g_pApplicationUiRootController->GetActiveView();
-    if (activeView == this) {
-      TEventHandler* replacement = QueryStepValue();
+    TEventHandler* currentTarget = g_pApplicationUiRootController->GetTarget();
+    if (currentTarget == this) {
+      TEventHandler* replacement = GetNextHandler();
       if (replacement == 0) {
-        g_pApplicationUiRootController->SetActiveView(g_pApplicationUiRootController);
+        g_pApplicationUiRootController->SetTarget(g_pApplicationUiRootController);
       } else {
-        g_pApplicationUiRootController->SetActiveView(replacement);
+        g_pApplicationUiRootController->SetTarget(replacement);
       }
     }
   }
@@ -100,46 +100,46 @@ void TEventHandler::Free() {
 }
 
 // FUNCTION: IMPERIALISM 0x0048a240
-char TEventHandler::GetBoolSlot28() {
+char TEventHandler::IsEnabled() {
   return (char)field04;
 }
 
 // FUNCTION: IMPERIALISM 0x0048a260
-void TEventHandler::SetControlValue(int value) {
-  field04 = (signed char)value;
+void TEventHandler::SetEnable(unsigned char enabled) {
+  field04 = (signed char)enabled;
 }
 
-// Forward a UI command triplet to the child returned by slot 0x0c (QueryStepValue), if any.
+// Forward a UI command triplet to the child returned by slot 0x0c (GetNextHandler), if any.
 // FUNCTION: IMPERIALISM 0x0048a280
-void TEventHandler::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
-  TEventHandler* child = QueryStepValue();
+void TEventHandler::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+  TEventHandler* child = GetNextHandler();
   if (child != 0) {
-    child->DispatchEvent(commandId, sourceHandler, event);
+    child->HandleEvent(commandId, sourceHandler, event);
   }
 }
 
 // FUNCTION: IMPERIALISM 0x0048a2c0
-TEventHandler* TEventHandler::QueryStepValue() {
+TEventHandler* TEventHandler::GetNextHandler() {
   return linkedChildHandler;
 }
 
-// Bubble a UI command triplet into this handler chain (forwards to HandleEvent at slot 0x0f).
+// Bubble a UI command triplet into this handler chain (forwards to DoEvent at slot 0x0f).
 // FUNCTION: IMPERIALISM 0x0048a2e0
-void TEventHandler::DispatchEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
-  HandleEvent(commandId, sourceHandler, event);
+void TEventHandler::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+  DoEvent(commandId, sourceHandler, event);
 }
 
 // FUNCTION: IMPERIALISM 0x0048a310
-void TEventHandler::vmethod_0017(int param) {
-  TView* child = static_cast<TView*>(QueryStepValue());
+void TEventHandler::DoMenuCommand(int param) {
+  TEventHandler* child = GetNextHandler();
   if (child != 0) {
-    child->vmethod_0017(param);
+    child->DoMenuCommand(param);
   }
 }
 
 // FUNCTION: IMPERIALISM 0x0048a380
 void TEventHandler::ForwardParam(int param) {
-  TView* child = static_cast<TView*>(QueryStepValue());
+  TEventHandler* child = GetNextHandler();
   if (child != 0) {
     child->ForwardParam(param);
   }
@@ -155,7 +155,7 @@ void TEventHandler::DispatchQueuedUiCommandAndRelease(void* payload) {
   // handler dispatches the command's message + source handler, with the command object
   // itself passed through its real TEvent base, then frees it.
   TCommand* command = static_cast<TCommand*>(payload);
-  command->targetHandler->DispatchEvent(command->dispatchMessage, command->sourceHandler, command);
+  command->targetHandler->HandleEvent(command->dispatchMessage, command->sourceHandler, command);
   if (command != 0) {
     command->Free();
   }
@@ -176,7 +176,7 @@ void TEventHandler::HandleIdle(int idlePhase) {
   if (field10 == 0x7fffffff) {
     return;
   }
-  if (!GetBoolSlot28()) {
+  if (!IsEnabled()) {
     return;
   }
   if (idlePhase == 1) {
@@ -215,106 +215,101 @@ void TEventHandler::AddBehavior(TBehavior* behavior) {
   }
 }
 
-// True iff this view is the root controller's current active view.
+// True iff this view is the root controller's current target.
 // FUNCTION: IMPERIALISM 0x0048a500
-char TEventHandler::IsActiveView() {
-  return this == g_pApplicationUiRootController->GetActiveView();
+char TEventHandler::IsTarget() {
+  return this == g_pApplicationUiRootController->GetTarget();
 }
 
 // FUNCTION: IMPERIALISM 0x0048a530
-char TEventHandler::vmethod_0023() {
+char TEventHandler::WantsToBeTarget() {
   return 0;
 }
 
-// Slot 0x18: veto gate consulted by TryDeactivateActiveView before the active view is torn
+// Slot 0x18: veto gate consulted by ResignTarget before the target is torn
 // down. 0 == no objection (base default); a nonzero code blocks deactivation and is echoed
-// back through OnDeactivateVetoed.
+// back through TargetValidationFailed.
 // FUNCTION: IMPERIALISM 0x0048a550
-char TEventHandler::GetDeactivateVetoCode() {
+char TEventHandler::WillingToResignTarget() {
   return 0;
 }
 
-// Make this view the active view if allowed: already-active short-circuits to true;
-// otherwise the current active view must agree (slot 0x20) before we take over.
+// Make this view the target if allowed: already-active short-circuits to true;
+// otherwise the current target must agree (slot 0x20) before we take over.
 // FUNCTION: IMPERIALISM 0x0048a570
-char TEventHandler::ActivateCityProductionViewIfAllowed() {
-  TEventHandler* active = g_pApplicationUiRootController->GetActiveView();
+char TEventHandler::BecomeTarget() {
+  TEventHandler* active = g_pApplicationUiRootController->GetTarget();
   if (this == active) {
     return 1;
   }
-  if (active != 0 && active->TryDeactivateActiveView() != 0) {
-    g_pApplicationUiRootController->SetActiveView(this);
+  if (active != 0 && active->ResignTarget() != 0) {
+    g_pApplicationUiRootController->SetTarget(this);
     return 1;
   }
   return 0;
 }
 
-// Slot 0x20: ask the root controller's current active view to relinquish. It consults the
-// active view's GetDeactivateVetoCode: no veto -> notify it via OnDeactivated, hand the
+// Slot 0x20: ask the root controller's current target to relinquish. It consults the
+// target's WillingToResignTarget: no veto -> notify it via ResignedTarget, hand the
 // active slot back to the root controller, and report success; otherwise notify the active
-// view via OnDeactivateVetoed(reason) and report failure. Called by
-// ActivateCityProductionViewIfAllowed on the incumbent before a new view takes over.
+// view via TargetValidationFailed(reason) and report failure. Called by
+// BecomeTarget on the incumbent before a new view takes over.
 // FUNCTION: IMPERIALISM 0x0048a5e0
-char TEventHandler::TryDeactivateActiveView() {
+char TEventHandler::ResignTarget() {
   if (g_pApplicationUiRootController == 0) {
     return 0;
   }
-  TEventHandler* activeView = g_pApplicationUiRootController->GetActiveView();
-  if (activeView == 0) {
+  TEventHandler* currentTarget = g_pApplicationUiRootController->GetTarget();
+  if (currentTarget == 0) {
     return 0;
   }
-  char gate = activeView->GetDeactivateVetoCode();
+  char gate = currentTarget->WillingToResignTarget();
   if (gate == 0) {
-    activeView->OnDeactivated();
-    g_pApplicationUiRootController->SetActiveView(g_pApplicationUiRootController);
+    currentTarget->ResignedTarget();
+    g_pApplicationUiRootController->SetTarget(g_pApplicationUiRootController);
     return 1;
   }
-  activeView->OnDeactivateVetoed(gate);
+  currentTarget->TargetValidationFailed(gate);
   return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x0048a650
-void TEventHandler::HandleCityProductionNoOp() {}
+void TEventHandler::TargetValidationSucceeded() {}
 
 // FUNCTION: IMPERIALISM 0x0048a670
-void TEventHandler::DispatchCityProductionAction1A() {
-  DispatchEvent(0x1a, this, 0);
+void TEventHandler::ResignedWindowTarget() {
+  HandleEvent(0x1a, this, 0);
 }
 
-// Slot 0x19: notification hook fired on the active view when TryDeactivateActiveView is
+// Slot 0x19: notification hook fired on the target when ResignTarget is
 // letting it go (base is a no-op).
 // FUNCTION: IMPERIALISM 0x0048a690
-void TEventHandler::OnDeactivated() {}
+void TEventHandler::ResignedTarget() {}
 
-// Slot 0x1a: notification hook fired on the active view when its own GetDeactivateVetoCode
+// Slot 0x1a: notification hook fired on the target when its own WillingToResignTarget
 // blocked deactivation, passed the veto reason (base is a no-op).
 // FUNCTION: IMPERIALISM 0x0048a6b0
-void TEventHandler::OnDeactivateVetoed(int gate) {
+void TEventHandler::TargetValidationFailed(int gate) {
   (void)gate;
 }
 
 // FUNCTION: IMPERIALISM 0x0048a6d0
-void TEventHandler::DispatchUiCommand19ToParent() {
-  DispatchEvent(0x19, this, 0);
+void TEventHandler::BecameWindowTarget() {
+  HandleEvent(0x19, this, 0);
 }
 
-// ContinueModal: the modal-loop continuation gate consulted by TView::RunModalLoop
-// (0x0060a60a). Bubbles command 0x1b up the owner chain via DispatchEvent/HandleEvent
-// (side effects preserved); the loop-relevant answer is whether an owner is still
-// present to receive it (QueryStepValue() != 0), i.e. whether this view (or its
-// owner chain) is still attached to the view tree.
+// Notify the handler chain that this object became the target.
 // FUNCTION: IMPERIALISM 0x0048a6f0
-bool TEventHandler::ContinueModal() {
-  DispatchEvent(0x1b, this, 0);
-  return QueryStepValue() != 0;
+void TEventHandler::BecameTarget() {
+  HandleEvent(0x1b, this, 0);
 }
 
 // FUNCTION: IMPERIALISM 0x0048a710
-void TEventHandler::vmethod_0081(int) {}
+void TEventHandler::SelectOwner(unsigned char) {}
 
 // Slot 0x16: base implementation (TView overrides with the owner-chain walk).
 // FUNCTION: IMPERIALISM 0x0048a730
-class TView* TEventHandler::OwnerPanel() {
+class TView* TEventHandler::GetWindow() {
   return 0;
 }
 

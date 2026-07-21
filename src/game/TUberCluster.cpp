@@ -72,7 +72,7 @@ void TUberCluster::InitializeTradeMoveAndBarControls(unsigned int styleSeed) {
   reinterpret_cast<TView*>(this)->TView::DoPostCreate(0);
 }
 
-// Helper shared by TAmtBarCluster::HandleEvent (0x586e70); the original address is owned
+// Helper shared by TAmtBarCluster::DoEvent (0x586e70); the original address is owned
 // by that vtable-slot override, so this body is not separately address-marked.
 void TUberCluster::HandleTradeMoveControlAdjustment(int commandId, void* eventArg, int eventExtra) {
   // ORIG_CALLCONV: __thiscall
@@ -106,8 +106,8 @@ void TUberCluster::HandleTradeMoveControlAdjustment(int commandId, void* eventAr
       this->DispatchRuntimeApplyMoveValue(moveValue - 1);
     }
   }
-  this->TCluster::HandleEvent(commandId, reinterpret_cast<TEventHandler*>(eventArg),
-                              reinterpret_cast<TEvent*>(eventExtra));
+  this->TCluster::DoEvent(commandId, reinterpret_cast<TEventHandler*>(eventArg),
+                          reinterpret_cast<TEvent*>(eventExtra));
 }
 
 TUberCluster::~TUberCluster() {}

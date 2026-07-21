@@ -327,6 +327,8 @@ extern TQuickDrawSurfaceContext* g_pCitySiteCachedPrimaryRenderSurfaceContext;
 extern CDC* g_pQuickDrawMemoryDc;
 extern HGDIOBJ g_hQuickDrawSavedBitmap;
 extern int g_nActiveQuickDrawSurfaceFlags;
+extern int g_QuickDrawSetCursorAssertGate;
+extern int g_QuickDrawGetCursorAssertGate;
 extern const int g_pTradeSummarySelectionMap[23];
 extern const int kTradeSellPropagationTags[17];
 
@@ -502,7 +504,7 @@ extern char g_szCountryNameProfileKey00698AE0[];
 }
 
 // Typed C++ linkage — see typed-recovered-globals.mdc (not inside extern "C").
-// Per-resourceType04 index into TShipView::ApplyRectSlot110's 8-entry order-status
+// Per-resourceType04 index into TShipView::Draw's 8-entry order-status
 // string pool (GetString group 0x2760, one status line per naval order state);
 // -1 = no status line for that resource type.
 extern const int g_ShipOrderStatusStringIndexByResourceType_0065c7f8[14];
@@ -513,7 +515,7 @@ extern CString g_cstrCountryNameSettingValue006A4220;
 extern TSetupRandomMapPicture* g_pActiveRandomMapSetupPicture006A4268;
 extern "C" short g_nationMetricSlotDispatchOrder006d810[0x11];
 extern "C" const unsigned int g_tradeCommodityRowTagTable[17];
-// Shared substitution value read by TTradeTotalsView::ApplyRectSlot110 (0x5c1bd0) as
+// Shared substitution value read by TTradeTotalsView::Draw (0x5c1bd0) as
 // the sole scanBracketExpressions() argument for its "balance" row template (GetString
 // group 0x2740 idx 0x1b). The original's raw bytes are a compile-time-constant pointer
 // to an empty string (not a deferred-construction CString), so this is modeled as a
@@ -618,6 +620,7 @@ extern unsigned int g_McAppUiMouseCaptureTimerId_006A1ADC; // 0x6a1adc
 // Source-file path string ("D:\\Ambit\\McAppUI.cpp") passed with a line number to the
 // UI invalidation-flag assert/log helper.
 extern char g_szMcAppUiSourcePath_006950B0[];
+extern char g_szQuickDrawSourcePath_00695168[];
 
 // Source-file path string ("D:\\Ambit\\McWindow.cpp") for CMcWindow's one-shot asserts,
 // and the gate read before the unknown-wParam 0x468 assert fires.
@@ -728,7 +731,7 @@ extern char g_szUCountrySourcePath_00696728[];
 extern int g_McAppUiFlag_006A143C;
 
 // Source path/gate for the USetupScreens.cpp line-0x2e6 assert in
-// TNetSelectPicture::HandleEvent (and siblings in that TU).
+// TNetSelectPicture::DoEvent (and siblings in that TU).
 extern char g_szSetupScreensSourcePath_00698AB8[];
 extern int g_SetupScreensAssertFlag_006A4264;
 
@@ -951,7 +954,7 @@ extern const float g_NavyOrderDistanceDecayWeightTable_006978c8[6];
 
 // TMapMgr.cpp — per-resourceType requirement level table (0x513610).
 extern unsigned char g_abUniversityRequirementLevelById[24][4];
-// TUniversityView.cpp — TUniversityView::ApplyRectSlot110 (0x4cbf70) reads
+// TUniversityView.cpp — TUniversityView::Draw (0x4cbf70) reads
 // table[row + fielda4*4] (row 0-4, only the low 16 bits used, -1 = empty slot) to pick
 // which resource's requirement row to draw for the selected recruitment category
 // (fielda4). Real category boundaries/count not otherwise recovered; declared to the

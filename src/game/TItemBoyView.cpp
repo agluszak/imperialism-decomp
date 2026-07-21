@@ -21,8 +21,8 @@ IMPLEMENT_DYNCREATE(TItemBoyView, TView)
 TItemBoyView::TItemBoyView() {}
 
 // FUNCTION: IMPERIALISM 0x004af9f0
-void TItemBoyView::ApplyRectSlot110(RECT* rectBuffer) {
-  (void)rectBuffer; // dead parameter in this override, like the other ApplyRectSlot110s
+void TItemBoyView::Draw(RECT* rectBuffer) {
+  (void)rectBuffer; // dead parameter in this override, like the other Draws
   CString label;
   CString kindText;
   CString countText;

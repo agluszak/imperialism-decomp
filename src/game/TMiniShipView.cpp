@@ -29,8 +29,8 @@ IMPLEMENT_DYNCREATE(TMiniShipView, TControl)
 TMiniShipView::TMiniShipView() {}
 
 // FUNCTION: IMPERIALISM 0x00569eb0
-void TMiniShipView::ApplyRectSlot110(RECT* rectBuffer) {
-  (void)rectBuffer; // dead parameter in this override, like the other ApplyRectSlot110s
+void TMiniShipView::Draw(RECT* rectBuffer) {
+  (void)rectBuffer; // dead parameter in this override, like the other Draws
 
   InitializeUiTextStyleDescriptorAndApplyQuickDraw(2, 0xc, 0x2b6a, 3);
 

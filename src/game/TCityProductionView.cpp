@@ -48,7 +48,7 @@ void TCityProductionView::DoPostCreate(int arg) {
 void TCityProductionView::Free() {}
 
 // FUNCTION: IMPERIALISM 0x004ba7b0
-void TCityProductionView::ApplyRectSlot110(RECT* rectBuffer) {
+void TCityProductionView::Draw(RECT* rectBuffer) {
   (void)rectBuffer;
 }
 
@@ -139,7 +139,7 @@ void TCityProductionView::UpdateCityProductionDialogCommodityValueControls() {}
 void TCityProductionView::RefreshCityBuildingActionAvailabilityIndicators() {}
 
 // FUNCTION: IMPERIALISM 0x004bc610
-void TCityProductionView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+void TCityProductionView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   (void)commandId;
   (void)sourceHandler;
   (void)event;
@@ -184,7 +184,7 @@ void TCityProductionView::RenderViewIntoPrimaryRenderContextWithTemporaryClip(in
   clipRect.bottom = boundsRecord.bottom;
 
   // Original pushes the guard's wrapper here and again into the snapshot below,
-  // and hands ApplyRectSlot110 the same rect QueryBounds filled in.
+  // and hands Draw the same rect QueryBounds filled in.
   GetClip(surface.tempRgn);
 
   TQuickDrawSurfaceContext* previousSurface = 0;
@@ -195,7 +195,7 @@ void TCityProductionView::RenderViewIntoPrimaryRenderContextWithTemporaryClip(in
   ClipRect(&clipRect);
 
   needsRefreshAtA6 = 1;
-  this->ApplyRectSlot110(&boundsRecord);
+  this->Draw(&boundsRecord);
 
   SetActiveQuickDrawSurfaceContext(previousSurface, contextFlags);
   SetClip(surface.tempRgn);

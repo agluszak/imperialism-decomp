@@ -15,7 +15,7 @@ TColorKeyPicture::TColorKeyPicture() : TNoHilitePicture(), colorKeySurface94(0) 
 TColorKeyPicture::~TColorKeyPicture() {}
 
 // FUNCTION: IMPERIALISM 0x00572e60
-void TColorKeyPicture::ApplyRectSlot110(RECT* rectBuffer) {}
+void TColorKeyPicture::Draw(RECT* rectBuffer) {}
 
 // FUNCTION: IMPERIALISM 0x00573040
 void TColorKeyPicture::SetPictureResourceIdAndRefresh(short nPictureId, bool fRefreshNow) {}

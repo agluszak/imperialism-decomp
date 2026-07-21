@@ -44,21 +44,20 @@ void TTacticalAdiosPicture::DoPostCreate(int arg) {
   infoControl->BuildAndApplyTextStyleDescriptor(0, 0xa, 0x2b6b);
   infoControl->SetTextAlignmentAndMaybeRefresh(1, 0);
 
-  TView* owner = OwnerPanel();
+  TView* owner = GetWindow();
   POINT placement;
   g_pUiRuntimeContext->ComputeTurnEventDialogPlacementByCode(owner, &placement);
 
-  TView* owner2 = OwnerPanel();
+  TView* owner2 = GetWindow();
   owner2->CaptureLayoutF0(reinterpret_cast<int*>(&placement), 0);
 }
 
 // FUNCTION: IMPERIALISM 0x005ad650
-void TTacticalAdiosPicture::HandleEvent(int commandId, TEventHandler* sourceHandler,
-                                        TEvent* event) {
+void TTacticalAdiosPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId == 0xa && sourceHandler->controlTag == kControlTagOkay) {
-    static_cast<TControl*>(OwnerPanel())
+    static_cast<TControl*>(GetWindow())
         ->SetTextStyleAndMaybeRefresh(
             reinterpret_cast<const TUiTextStyleDescriptor*>(sourceHandler->controlTag), 1);
   }
-  TControl::HandleEvent(commandId, sourceHandler, event);
+  TControl::DoEvent(commandId, sourceHandler, event);
 }

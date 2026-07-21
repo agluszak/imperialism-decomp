@@ -38,7 +38,7 @@ const short kTradePanelColumnX[3] = {0x1b7, 0x184, 0x1ce};
 } // namespace
 
 // FUNCTION: IMPERIALISM 0x004f8940
-void TTradePanelView::ApplyRectSlot110(RECT* rectBuffer) {
+void TTradePanelView::Draw(RECT* rectBuffer) {
   CString strA;
   CString strB; // constructed/destroyed only in the original; never otherwise touched.
 
@@ -98,4 +98,4 @@ void TTradePanelView::Setup() {
 }
 
 // FUNCTION: IMPERIALISM 0x004f8dd0
-void TTradePanelView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {}
+void TTradePanelView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {}

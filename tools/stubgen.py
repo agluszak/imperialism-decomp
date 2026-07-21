@@ -118,8 +118,6 @@ def prototype_usable(proto: str) -> bool:
 def build_signature(ident: str, prototype: str, use_prototypes: bool) -> str:
     whitelist = {
         "IsPointInsideHitRegion",
-        "AssertQuickDrawFlag6A1DCCNonZero",
-        "AssertQuickDrawFlag6A1DC8NonZero",
         "scanBracketExpressions",
         "BuildUiTextStyleDescriptor",
     }

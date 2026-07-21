@@ -15,6 +15,6 @@ public:
   virtual ~TPlacard() override;
   DECLARE_DYNCREATE(TPlacard)
   void DoPostCreate(int arg) override;
-  void ApplyRectSlot110(RECT* rectBuffer) override;
+  void Draw(RECT* rectBuffer) override;
   virtual bool IsSelected(short value = -1, bool refreshNow = true);
 };

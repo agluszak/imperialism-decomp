@@ -12,13 +12,13 @@ public:
   DECLARE_DYNCREATE(TCityProductionView)
   virtual ~TCityProductionView() override; // slot 0x01 (scalar deleting destructor)
   void Free() override;                    // slot 0x07 0x4ba740 ReleaseCityBuildingControls
-  void HandleEvent(int commandId, TEventHandler* sourceHandler,
-                   TEvent* event) override; // slot 0x0f 0x4bc610
+  void DoEvent(int commandId, TEventHandler* sourceHandler,
+               TEvent* event) override; // slot 0x0f 0x4bc610
   void HandleCursorHoverSelectionByChildHitTestAndFallback(
       CPoint* point,
-      RgnHandle hitArg) override;                   // slot 0x35 0x4bafa0
-  void DoPostCreate(int arg) override;              // slot 0x37 0x4ba3b0
-  void ApplyRectSlot110(RECT* rectBuffer) override; // slot 0x44 0x4ba7b0
+      RgnHandle hitArg) override;       // slot 0x35 0x4bafa0
+  void DoPostCreate(int arg) override;  // slot 0x37 0x4ba3b0
+  void Draw(RECT* rectBuffer) override; // slot 0x44 0x4ba7b0
   void BeginMouseCaptureAndStartRepeatTimer(const CPoint& point, TToolboxEvent* event,
                                             CPoint origin) override; // slot 0x47 0x4bc660
   void DispatchPictureResourceCommand(int eventType, void* eventSender, void* eventDataA,

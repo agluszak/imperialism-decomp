@@ -41,7 +41,7 @@ void TEngineerDialog::Free() {
 }
 
 // FUNCTION: IMPERIALISM 0x004d0650
-void TEngineerDialog::ApplyRectSlot110(RECT* rectBuffer) {
+void TEngineerDialog::Draw(RECT* rectBuffer) {
   if (this->headerSurface60 == 0) {
     return;
   }

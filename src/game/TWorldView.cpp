@@ -58,8 +58,8 @@ void TWorldView::DoPostCreate(int arg) {
 }
 
 // FUNCTION: IMPERIALISM 0x005950b0
-void TWorldView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
-  TEventHandler::HandleEvent(commandId, sourceHandler, event);
+void TWorldView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+  TEventHandler::DoEvent(commandId, sourceHandler, event);
 }
 
 // FUNCTION: IMPERIALISM 0x00595130
@@ -68,8 +68,17 @@ void TWorldView::ForwardParam(int param) {
 }
 
 // FUNCTION: IMPERIALISM 0x00595810
-void TWorldView::HandleCursorHoverFallback(CPoint* point, RgnHandle hitArg) {
-  TView::HandleCursorHoverFallback(point, hitArg);
+void TWorldView::DoSetCursor(CPoint* point, RgnHandle hitArg) {
+  short cursorId = static_cast<short>(GetCursorID());
+  if (cursorId != -1) {
+    CPoint mappedPoint = ViewToQDPt(point);
+    if (PtInRgn(&mappedPoint, hitArg) != 0) {
+      SetCursor(static_cast<HCURSOR>(
+          g_pUiRuntimeContext->cursorTable[cursorId - TViewMgr::kCursorResourceIdBase]));
+      return;
+    }
+  }
+  SetCursor(LoadCursorA(0, IDC_ARROW));
 }
 
 // FUNCTION: IMPERIALISM 0x005958b0
@@ -380,7 +389,7 @@ void TWorldView::InvokeDialogHooks1D8ThenE4(int stridedRecord, int dispatchConte
 }
 
 // FUNCTION: IMPERIALISM 0x005962a0
-void TWorldView::HandleMapTileClickSetOrderContextAndDispatchEvent79(int arg1, int arg2) {
+void TWorldView::HandleMapTileClickSetOrderContextAndHandleEvent79(int arg1, int arg2) {
   (void)arg2;
   TEvent* event = new TEvent();
 
@@ -534,6 +543,6 @@ void TWorldView::OrphanCallChain_C6_I29_00596700(int arg1) {
     CenterOn(arg1);
   }
   static_cast<TWorldView*>(ownerContext)->CenterOn(arg1);
-  OwnerPanel()->InvokeSlot13C();
+  GetWindow()->ForceRedraw();
   reinterpret_cast<void(__cdecl*)(int)>(Function_005c3b40)(0x1e);
 }

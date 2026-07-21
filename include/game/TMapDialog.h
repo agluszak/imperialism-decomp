@@ -25,7 +25,7 @@ class TMapDialog : public TWorldView {
 public:
   // CreateObject (0x00519c0e) allocates 0x364 bytes for the concrete object.
   TMapDialogTileMarker tileMarkers7c[90]; // +0x7c .. +0x34c
-  // Suppress-tile-marker-rerender gate: ApplyRectSlot110 (0x51e260) only blits the marker
+  // Suppress-tile-marker-rerender gate: Draw (0x51e260) only blits the marker
   // overlay into quickDrawSurface350 while this is 0. Zeroed by the ctor.
   bool suppressMarkerOverlay34C; // +0x34c
   unsigned char pad34d[3];
@@ -48,7 +48,7 @@ public:
 
   void Free() override; // slot 0x07 — 0x00519c90: release both owned resources.
 
-  void ApplyRectSlot110(RECT* rectBuffer) override;
+  void Draw(RECT* rectBuffer) override;
 
   virtual void RenderMapOrderEntryTilePreview(TCivUnit* orderEntry, int projectedX, int projectedY,
                                               int flag, short tileIndex) override;
