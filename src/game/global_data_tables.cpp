@@ -1097,6 +1097,8 @@ unsigned char g_bPerfectNavalIntelligenceCheat = 0;
 MappedFlavorTextNationVariantEntry g_MappedFlavorTextNationVariantTable_0066EF30[32] = {0};
 
 // Defend-province / mission priority-vector normalization (0x53e6e0 / 0x53ea70 family).
+// GLOBAL: IMPERIALISM 0x0065a8f0
+extern const float g_AttackProvinceMissionReadinessThreshold_0065A8F0 = 1.0f;
 // GLOBAL: IMPERIALISM 0x0065a8fc
 extern const float g_MissionResourceWeightScale_0065A8FC = 1.1f;
 // GLOBAL: IMPERIALISM 0x0065a900
@@ -1119,6 +1121,8 @@ double g_Recompute_Nation_Order_LookupTable_0065AA08 = 1.0;
 extern const float g_Recompute_Nation_Order_LookupTable_0065AA20 = 139069760.0f;
 // GLOBAL: IMPERIALISM 0x0065aa24
 extern const float g_MissionEmptyResourceWeight_0065AA24 = 100.0f;
+// GLOBAL: IMPERIALISM 0x0065aa48
+extern const double g_ArmyMissionEligibleUnitStrengthScale_0065AA48 = 0.002;
 // GLOBAL: IMPERIALISM 0x00697870
 // Tactical composition reference profiles (4 rows x 5 action classes, shorts at
 // 0x697870): row 0 baseline, row 1 fort-siege, row 2 open-field, row 3 unattributed.

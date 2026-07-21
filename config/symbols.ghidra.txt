@@ -10473,6 +10473,7 @@ TScatteredShipsMission::'vftable' 65A5A8 l
 TDefendProvinceMission::'vftable' 65A680 l
 TControlSeaZoneMission::'vftable' 65A740 l
 TNavyMission::'vftable' 65A818 l
+g_AttackProvinceMissionReadinessThreshold_0065A8F0 65A8F0 l
 g_MissionResourceWeightScale_0065A8FC 65A8FC l
 g_BlockadePortMissionThreatFloor_0065A900 65A900 l
 g_BlockadePortMissionThreatScale_0065A904 65A904 l
@@ -10487,6 +10488,7 @@ g_Recompute_Nation_Order_LookupTable_0065AA00 65AA00 l
 g_Recompute_Nation_Order_LookupTable_0065AA08 65AA08 l
 g_Recompute_Nation_Order_LookupTable_0065AA20 65AA20 l
 g_MissionEmptyResourceWeight_0065AA24 65AA24 l
+g_ArmyMissionEligibleUnitStrengthScale_0065AA48 65AA48 l
 TEscortMission::'vftable' 65AAB0 l
 TBeachheadMission::'vftable' 65AB88 l
 TBlockadePortMission::'vftable' 65AC60 l
