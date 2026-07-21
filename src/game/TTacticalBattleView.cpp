@@ -1257,19 +1257,19 @@ void TTacticalBattleView::DrawUiTilesAndOverlay() {
     scratchRect.right = tileWidthPx88 << 1;
     scratchRect.bottom = tileRowHeightPx8C * 3;
     RECT primaryClipRect;
-    CopyRect(&primaryClipRect, &g_pPrimaryRenderSurfaceContext->clipRect);
+    CopyRect(&primaryClipRect, &g_pPrimaryRenderSurfaceContext->blitSurface.clipRect);
     if (ClipSrcRectToBoundsAndOffsetDstRect(&primaryClipRect, &scratchRect, &screenRect)) {
-      if (unitSpriteScratchSurfaceBC->surfaceDib != 0) {
+      if (unitSpriteScratchSurfaceBC->blitSurface.surfaceDib != 0) {
         int scratchDibHeight =
-            unitSpriteScratchSurfaceBC->surfaceDib->m_pInfoHeader->bmiHeader.biHeight;
+            unitSpriteScratchSurfaceBC->blitSurface.surfaceDib->m_pInfoHeader->bmiHeader.biHeight;
         if (scratchDibHeight < 1) {
           scratchDibHeight = -scratchDibHeight;
         }
         OffsetRect(&scratchRect, 0, (scratchDibHeight - scratchRect.top) - scratchRect.bottom);
       }
-      if (g_pPrimaryRenderSurfaceContext->surfaceDib != 0) {
-        int primaryDibHeight =
-            g_pPrimaryRenderSurfaceContext->surfaceDib->m_pInfoHeader->bmiHeader.biHeight;
+      if (g_pPrimaryRenderSurfaceContext->blitSurface.surfaceDib != 0) {
+        int primaryDibHeight = g_pPrimaryRenderSurfaceContext->blitSurface.surfaceDib->m_pInfoHeader
+                                   ->bmiHeader.biHeight;
         if (primaryDibHeight < 1) {
           primaryDibHeight = -primaryDibHeight;
         }
@@ -1293,19 +1293,19 @@ void TTacticalBattleView::DrawUiTilesAndOverlay() {
 
     RECT spriteSrcRect = moveAnimSpriteSrcRectAC;
     RECT atlasClipRect;
-    CopyRect(&atlasClipRect, &unitSpriteAtlasSurface68->clipRect);
+    CopyRect(&atlasClipRect, &unitSpriteAtlasSurface68->blitSurface.clipRect);
     if (ClipSrcRectToBoundsAndOffsetDstRect(&atlasClipRect, &tileRect, &spriteSrcRect)) {
-      if (unitSpriteAtlasSurface68->surfaceDib != 0) {
+      if (unitSpriteAtlasSurface68->blitSurface.surfaceDib != 0) {
         int atlasDibHeight =
-            unitSpriteAtlasSurface68->surfaceDib->m_pInfoHeader->bmiHeader.biHeight;
+            unitSpriteAtlasSurface68->blitSurface.surfaceDib->m_pInfoHeader->bmiHeader.biHeight;
         if (atlasDibHeight < 1) {
           atlasDibHeight = -atlasDibHeight;
         }
         OffsetRect(&spriteSrcRect, 0, (atlasDibHeight - spriteSrcRect.top) - spriteSrcRect.bottom);
       }
-      if (unitSpriteScratchSurfaceBC->surfaceDib != 0) {
+      if (unitSpriteScratchSurfaceBC->blitSurface.surfaceDib != 0) {
         int scratchDibHeight2 =
-            unitSpriteScratchSurfaceBC->surfaceDib->m_pInfoHeader->bmiHeader.biHeight;
+            unitSpriteScratchSurfaceBC->blitSurface.surfaceDib->m_pInfoHeader->bmiHeader.biHeight;
         if (scratchDibHeight2 < 1) {
           scratchDibHeight2 = -scratchDibHeight2;
         }
@@ -1325,9 +1325,9 @@ void TTacticalBattleView::DrawUiTilesAndOverlay() {
                             frameHeight38};
     if (ClipSrcRectToBoundsAndOffsetDstRect(&frameBoundsRect, &compositeDstRect,
                                             &compositeSrcRect)) {
-      if (g_pActiveQuickDrawSurfaceContext->surfaceDib != 0) {
-        int activeDibHeight =
-            g_pActiveQuickDrawSurfaceContext->surfaceDib->m_pInfoHeader->bmiHeader.biHeight;
+      if (g_pActiveQuickDrawSurfaceContext->blitSurface.surfaceDib != 0) {
+        int activeDibHeight = g_pActiveQuickDrawSurfaceContext->blitSurface.surfaceDib
+                                  ->m_pInfoHeader->bmiHeader.biHeight;
         if (activeDibHeight < 1) {
           activeDibHeight = -activeDibHeight;
         }

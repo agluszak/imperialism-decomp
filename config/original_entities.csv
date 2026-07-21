@@ -1213,7 +1213,7 @@ address|name|symbol|size|type|prototype|provenance
 496450|OrphanCallChain_C42_I283_00496450||719|function|undefined OrphanCallChain_C42_I283_00496450()|
 4967e0|OrphanCallChain_C42_I285_004967e0||729|function|undefined OrphanCallChain_C42_I285_004967e0()|
 496b80|BlitBitmapResourceToTemporaryCompatibleDcAndPresent||344|function|undefined BlitBitmapResourceToTemporaryCompatibleDcAndPresent()|
-496d40|BlitRectWithOptionalTransparency||1000|function|void __stdcall BlitRectWithOptionalTransparency(astruct_17 * srcSurface, astruct_18 * dstSurface, RECT * srcRect, RECT * dstRect, byte blitFlags, astruct_19 * renderCtx)|
+496d40|BlitRectWithOptionalTransparency||1000|function|void __cdecl BlitRectWithOptionalTransparency(TQuickDrawBlitSurface * srcSurface, TQuickDrawBlitSurface * dstSurface, RECT * srcRect, RECT * dstRect, byte blitFlags, RgnHandle clipRegion)|
 497230|InitializeGlobalRectDefaultsIfUninitialized||70|function|undefined InitializeGlobalRectDefaultsIfUninitialized()|
 4972a0|InitializeTurnOrderNavigationDialogByViewportSize_Impl||3|function|undefined InitializeTurnOrderNavigationDialogByViewportSize_Impl()|
 4972c0|ReturnConstantTrueQuickDrawFlag||3|function|undefined ReturnConstantTrueQuickDrawFlag()|

@@ -3,31 +3,34 @@
 #include "compat.h"
 #include "decomp_types.h"
 #include "game/mfc.h"
+#include "game/quickdraw_regions.h"
 
 class CDib;
 
-// Nested blit target at parent+0x4 (astruct_18 / Ghidra). Passed as the first two
-// operands to BlitRectWithOptionalTransparency. Original init (0x495eb0) stores the
-// DIB-section bits pointer and the dword-aligned 8bpp row stride ((biWidth + 3) & ~3).
+// Surface body at TQuickDrawSurfaceContext+0x4 (astruct_17/astruct_18 in Ghidra).
+// BlitRectWithOptionalTransparency receives a pointer to this subobject and reads both
+// its leading pixel buffer/stride and its backing CDib at +0x1c. Original init
+// (0x495eb0) stores the DIB-section bits pointer and the dword-aligned 8bpp row stride
+// ((biWidth + 3) & ~3).
 struct TQuickDrawBlitSurface {
-  void* pixelBits; // +0x0
-  short stride;    // +0x4
-  short pad06;
+  void* pixelBits;          // +0x00
+  short stride;             // +0x04
+  short pad06;              // +0x06
+  RECT clipRect;            // +0x08
+  short field18;            // +0x18
+  short pad1a;              // +0x1a
+  CDib* surfaceDib;         // +0x1c
+  void* surfaceObject;      // +0x20
+  int quickDrawColor;       // +0x24
+  int transparentBlitColor; // +0x28
 };
-ASSERT_SIZE(TQuickDrawBlitSurface, 0x8);
+ASSERT_SIZE(TQuickDrawBlitSurface, 0x2c);
 
 // Runtime QuickDraw surface context (primary / active / transient). The blit subobject
 // at +0x4 is what callers historically reached via `context + 4`.
 struct TQuickDrawSurfaceContext {
   int field00;
   TQuickDrawBlitSurface blitSurface; // +0x4
-  RECT clipRect;                     // +0x0c
-  short field1c;                     // +0x1c
-  short pad1e;
-  CDib* surfaceDib;         // +0x20 — backing CDib (0x495eb0 stores node->dib here)
-  void* surfaceObject;      // +0x24
-  int quickDrawColor;       // +0x28
-  int transparentBlitColor; // +0x2c
 
   TQuickDrawBlitSurface* GetBlitSurface() {
     return &blitSurface;
@@ -73,11 +76,11 @@ struct TBitmapSurfaceContextDescriptor : public TQuickDrawSurfaceContext {
   void ReleaseSurfaceNode();
 
   TBitmapSurfaceNode** GetSurfaceNodeSlot() const {
-    return static_cast<TBitmapSurfaceNode**>(surfaceObject);
+    return static_cast<TBitmapSurfaceNode**>(blitSurface.surfaceObject);
   }
 
   void SetSurfaceNodeSlot(TBitmapSurfaceNode** slot) {
-    surfaceObject = slot;
+    blitSurface.surfaceObject = slot;
   }
 
   TBitmapSurfaceNode* GetSurfaceNode() const {
@@ -91,12 +94,11 @@ ASSERT_SIZE(TBitmapSurfaceContextDescriptor, 0x34);
 
 // Core QuickDraw surface blitter (memory-to-memory row copy, with an 0x24-flagged
 // transparent-color-skip variant; a GDI/CDC-based path handles the real-screen
-// sentinel surface or a caller-supplied clip region). renderCtx's real type isn't
-// recovered; every current caller passes null. 0x00496d40
-void __stdcall BlitRectWithOptionalTransparency(TQuickDrawBlitSurface* srcSurface,
-                                                TQuickDrawBlitSurface* dstSurface, RECT* srcRect,
-                                                RECT* dstRect, unsigned char blitFlags,
-                                                void* renderCtx);
+// sentinel surface or a caller-supplied QuickDraw region). 0x00496d40
+void __cdecl BlitRectWithOptionalTransparency(TQuickDrawBlitSurface* srcSurface,
+                                              TQuickDrawBlitSurface* dstSurface, RECT* srcRect,
+                                              RECT* dstRect, unsigned char blitFlags,
+                                              RgnHandle clipRegion);
 
 static __inline void BlitQuickDrawSurfaces(TQuickDrawBlitSurface* srcSurface,
                                            TQuickDrawBlitSurface* dstSurface, RECT* srcRect,

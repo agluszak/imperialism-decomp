@@ -85,15 +85,16 @@ void TAnimation::DrawNextFrame(POINT* offset) {
   RECT source = {0, 0, destination.right - destination.left, destination.bottom - destination.top};
 
   UpdatePaletteIndexWithDefaultFallback(0x10);
-  if (frameBuffer->surfaceDib != 0) {
-    int height = frameBuffer->surfaceDib->m_pInfoHeader->bmiHeader.biHeight;
+  if (frameBuffer->blitSurface.surfaceDib != 0) {
+    int height = frameBuffer->blitSurface.surfaceDib->m_pInfoHeader->bmiHeader.biHeight;
     if (height < 1) {
       height = -height;
     }
     OffsetRect(&source, 0, (height - source.top) - source.bottom);
   }
-  if (g_pActiveQuickDrawSurfaceContext->surfaceDib != 0) {
-    int height = g_pActiveQuickDrawSurfaceContext->surfaceDib->m_pInfoHeader->bmiHeader.biHeight;
+  if (g_pActiveQuickDrawSurfaceContext->blitSurface.surfaceDib != 0) {
+    int height =
+        g_pActiveQuickDrawSurfaceContext->blitSurface.surfaceDib->m_pInfoHeader->bmiHeader.biHeight;
     if (height < 1) {
       height = -height;
     }
