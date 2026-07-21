@@ -24,8 +24,9 @@ public:
   // slot 0x0f ResetOrderSheet inherited unchanged (0x4b5180)
   // slot 0x10 FillOrderSheet inherited unchanged (0x4b5510)
   // slot 0x11 InitializeItemOrderContext inherited unchanged (0x4b5290)
-  virtual undefined OrItemOrderSlot12(int param_1, undefined2 param_2, undefined2 param_3,
-                                      undefined2 param_4, undefined2 param_5); // slot 0x12 0x4b5870
+  virtual void IOrItemOrder(TCity* city, short resourceType, short primaryInputResource,
+                            short secondaryInputResource,
+                            short productionSlot); // slot 0x12 0x4b5870
 
   TOrItemOrder();
 };

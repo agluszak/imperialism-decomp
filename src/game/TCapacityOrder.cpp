@@ -219,22 +219,22 @@ IMPLEMENT_DYNCREATE(TCapacityOrder, TItemOrder)
 
 TCapacityOrder::~TCapacityOrder() {}
 // FUNCTION: IMPERIALISM 0x004b8d50
-undefined TCapacityOrder::CapacityOrderSlot12(TCity* city, short resourceType,
-                                              short trackingIndex4eInit, short trackingIndex50Init,
-                                              short field52Init) {
+void TCapacityOrder::ICapacityOrder(TCity* city, short resourceType, short primaryInputResource,
+                                    short secondaryInputResource, short productionSlotValue) {
   this->cityField08 = city;
   this->summaryField0c = city->productionSummary1d8;
   this->resourceTypeIndex48 = resourceType;
   this->quantityField04 = 0;
-  ZeroTrackingSlots(this);
+  for (int resource = 0; resource < 0x17; ++resource) {
+    this->trackingSlots10[resource] = 0;
+  }
   this->accumulatedValue = 0;
-  this->primaryInputResourceId = trackingIndex4eInit;
+  this->primaryInputResourceId = primaryInputResource;
   this->field40 = 0;
   this->field3e = 0;
   this->requestedQuantity4c = 0;
-  this->secondaryInputResourceId = trackingIndex50Init;
-  this->productionSlot = field52Init;
-  return 0;
+  this->secondaryInputResourceId = secondaryInputResource;
+  this->productionSlot = productionSlotValue;
 }
 
 // FUNCTION: IMPERIALISM 0x004b8dd0

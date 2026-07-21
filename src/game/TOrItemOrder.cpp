@@ -1,4 +1,6 @@
 #include "game/TOrItemOrder.h"
+
+#include "game/TCity.h"
 // SYNTHETIC: IMPERIALISM 0x004b57b0
 // TOrItemOrder::CreateObject
 
@@ -14,9 +16,22 @@ TOrItemOrder::TOrItemOrder() {}
 TOrItemOrder::~TOrItemOrder() {}
 
 // FUNCTION: IMPERIALISM 0x004b5870
-undefined TOrItemOrder::OrItemOrderSlot12(int param_1, undefined2 param_2, undefined2 param_3,
-                                          undefined2 param_4, undefined2 param_5) {
-  return 0;
+void TOrItemOrder::IOrItemOrder(TCity* city, short resourceType, short primaryInputResource,
+                                short secondaryInputResource, short productionSlotValue) {
+  cityField08 = city;
+  summaryField0c = city->productionSummary1d8;
+  resourceTypeIndex48 = resourceType;
+  quantityField04 = 0;
+  for (int resource = 0; resource < 0x17; ++resource) {
+    trackingSlots10[resource] = 0;
+  }
+  accumulatedValue = 0;
+  primaryInputResourceId = primaryInputResource;
+  field40 = 0;
+  field3e = 0;
+  requestedQuantity4c = 0;
+  secondaryInputResourceId = secondaryInputResource;
+  productionSlot = productionSlotValue;
 }
 
 // FUNCTION: IMPERIALISM 0x004b58f0
