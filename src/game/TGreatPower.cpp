@@ -50,7 +50,6 @@
 #include "game/TSortedList.h"
 #include "game/TStream.h"
 #include "game/TTown.h"
-#include "game/TTurnInstructionCiviCursor.h"
 #include "game/TUiRuntimeContext.h"
 #include "game/TUnit.h"
 #include "game/turn_flow_cooldown.h"
@@ -4757,38 +4756,6 @@ float TGreatPower::ComputeMapActionContextCompositeScoreForNation(TZone* zone) {
   }
 
   return compositeScore;
-}
-
-// FUNCTION: IMPERIALISM 0x00582630
-void TGreatPower::HandleTurnInstruction_Civi_DeserializeAndCreateWorkOrder(void* pInstructionRaw) {
-  STurnInstructionCiviCursor* instruction =
-      static_cast<STurnInstructionCiviCursor*>(pInstructionRaw);
-  if (instruction == 0 || instruction->tokenCursor == 0) {
-    return;
-  }
-
-  unsigned int* cursor = instruction->tokenCursor;
-  unsigned int token0 = *cursor++;
-  unsigned int token1 = *cursor++;
-  instruction->tokenCursor = cursor;
-
-  short workOrderType = static_cast<short>((token0 >> 0x10) & 0xFFFF);
-  short ownerNationSlot = static_cast<short>((token1 >> 0x10) & 0xFFFF);
-
-  signed char cityOwnerTag = 0;
-  if (g_pGlobalMapState != 0) {
-    TTerrainStateRecordView* tileTable = g_pGlobalMapState->terrainStateTable;
-    if (tileTable != 0) {
-      cityOwnerTag = tileTable[ownerNationSlot].ownerNationTag04;
-    }
-  }
-
-  TCivUnit* orderObject = new TCivUnit();
-  if (orderObject == nullptr) {
-    return;
-  }
-  orderObject->InitializeCivWorkOrderState(workOrderType, ownerNationSlot,
-                                           static_cast<int>(cityOwnerTag));
 }
 
 // Ghidra mislabels this 0x005b7f50 leaf "ApplyIndexedResourceDeltaAndAdjustNationTotals_Impl";

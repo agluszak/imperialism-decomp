@@ -4868,33 +4868,33 @@ address|name|symbol|size|type|prototype|provenance
 581bc0|AssignSharedStringFromIndexedSlot7C||38|function|undefined AssignSharedStringFromIndexedSlot7C()|
 581c00|TSimMgr::NameCapitals||477|function|void NameCapitals(void)|mac-oracle
 581e60|TSimMgr::ProcessScenarioScript||549|function|void ProcessScenarioScript(void)|mac-oracle
-582120|HandleTurnInstruction_Labo_SetNationLaborTierCounts||231|function|undefined HandleTurnInstruction_Labo_SetNationLaborTierCounts()|
-5822c0|HandleTurnInstruction_Capa_ApplyNationSlotValueWithDelta||178|function|undefined HandleTurnInstruction_Capa_ApplyNationSlotValueWithDelta()|
-5823e0|HandleTurnInstruction_Ware_ApplyNationIndexedShortAndRefresh||167|function|undefined HandleTurnInstruction_Ware_ApplyNationIndexedShortAndRefresh()|
-5824c0|HandleTurnInstruction_Army_DeserializeAndCreateRecruitOrders||274|function|undefined HandleTurnInstruction_Army_DeserializeAndCreateRecruitOrders()|
-582630|HandleTurnInstruction_Civi_DeserializeAndCreateWorkOrder||187|function|undefined HandleTurnInstruction_Civi_DeserializeAndCreateWorkOrder()|
-582720|HandleTurnInstruction_Ship_DeserializeAndCreatePrimaryOrders||250|function|undefined HandleTurnInstruction_Ship_DeserializeAndCreatePrimaryOrders()|
-582860|HandleTurnInstruction_Tran_SetNationTransportStat||106|function|undefined HandleTurnInstruction_Tran_SetNationTransportStat()|
-5828f0|HandleTurnInstruction_Deve_ApplyMapDevelopmentEntry||135|function|undefined HandleTurnInstruction_Deve_ApplyMapDevelopmentEntry()|
-5829b0|HandleTurnInstruction_Rail_ApplyRailPlacementAndCashBonus||98|function|undefined HandleTurnInstruction_Rail_ApplyRailPlacementAndCashBonus()|
-582a40|HandleTurnInstruction_Port_ApplyPortPlacementAndCashBonus||98|function|undefined HandleTurnInstruction_Port_ApplyPortPlacementAndCashBonus()|
-582ad0|HandleTurnInstruction_Tech_ApplyTechUnlockAndNotifyNations||120|function|undefined HandleTurnInstruction_Tech_ApplyTechUnlockAndNotifyNations()|
-582b70|HandleTurnInstruction_Pric_ApplyDiplomacyPriceEntry||86|function|undefined HandleTurnInstruction_Pric_ApplyDiplomacyPriceEntry()|
-582bf0|HandleTurnInstruction_Emba_SetEmbassyRelationFlags||189|function|undefined HandleTurnInstruction_Emba_SetEmbassyRelationFlags()|
-582ce0|HandleTurnInstruction_Subs_ApplyNationSubsidyEntry||140|function|undefined HandleTurnInstruction_Subs_ApplyNationSubsidyEntry()|
-582da0|HandleTurnInstruction_Trea_ApplyTreatyAndRelationEntry||240|function|undefined HandleTurnInstruction_Trea_ApplyTreatyAndRelationEntry()|
-582ed0|HandleTurnInstruction_Year_UpdateScenarioYearFieldScaledBy4||53|function|undefined HandleTurnInstruction_Year_UpdateScenarioYearFieldScaledBy4()|
-582f20|HandleTurnInstruction_Prov_ApplyProvinceAssignmentEntry||89|function|undefined HandleTurnInstruction_Prov_ApplyProvinceAssignmentEntry()|
-582fa0|HandleTurnInstruction_Zone_AssignMapActionContextNameByNodeId||155|function|undefined HandleTurnInstruction_Zone_AssignMapActionContextNameByNodeId()|
-583070|HandleTurnInstruction_Cnam_AssignCountryName||259|function|undefined HandleTurnInstruction_Cnam_AssignCountryName()|
-5831d0|HandleTurnInstruction_Rela_SetNationRelationValue||122|function|undefined HandleTurnInstruction_Rela_SetNationRelationValue()|
-583270|TToolBarCluster::HandleTurnInstruction_Pnam_AssignProvinceName||188|function|undefined HandleTurnInstruction_Pnam_AssignProvinceName()|
-583360|HandleTurnInstruction_Cash_SetNationCash||117|function|undefined HandleTurnInstruction_Cash_SetNationCash()|
-583400|HandleTurnInstruction_Flag_SetNationFlagAndRefresh||73|function|undefined HandleTurnInstruction_Flag_SetNationFlagAndRefresh()|
-583470|HandleTurnInstruction_Tyer_SetCityOrderCapabilityTierValue||121|function|undefined HandleTurnInstruction_Tyer_SetCityOrderCapabilityTierValue()|
-583510|HandleTurnInstruction_Tbar_SetNationRelationBarValue||271|function|undefined HandleTurnInstruction_Tbar_SetNationRelationBarValue()|
-583670|HandleTurnInstruction_Tclr_ResetNationRelationBars||101|function|undefined HandleTurnInstruction_Tclr_ResetNationRelationBars()|
-583700|HandleTurnInstruction_Coun_SetCountrySlotState||134|function|undefined HandleTurnInstruction_Coun_SetCountrySlotState()|
+582120|TSimMgr::HandleTurnInstruction_Labo_SetNationLaborTierCounts||231|function|void __thiscall HandleTurnInstruction_Labo_SetNationLaborTierCounts(void *)|
+5822c0|TSimMgr::HandleTurnInstruction_Capa_ApplyNationSlotValueWithDelta||178|function|void __thiscall HandleTurnInstruction_Capa_ApplyNationSlotValueWithDelta(void *)|
+5823e0|TSimMgr::HandleTurnInstruction_Ware_ApplyNationIndexedShortAndRefresh||167|function|void __thiscall HandleTurnInstruction_Ware_ApplyNationIndexedShortAndRefresh(void *)|
+5824c0|TSimMgr::HandleTurnInstruction_Army_DeserializeAndCreateRecruitOrders||274|function|void __thiscall HandleTurnInstruction_Army_DeserializeAndCreateRecruitOrders(void *)|
+582630|TSimMgr::HandleTurnInstruction_Civi_DeserializeAndCreateWorkOrder||187|function|void __thiscall HandleTurnInstruction_Civi_DeserializeAndCreateWorkOrder(void *)|
+582720|TSimMgr::HandleTurnInstruction_Ship_DeserializeAndCreatePrimaryOrders||250|function|void __thiscall HandleTurnInstruction_Ship_DeserializeAndCreatePrimaryOrders(void *)|
+582860|TSimMgr::HandleTurnInstruction_Tran_SetNationTransportStat||106|function|void __thiscall HandleTurnInstruction_Tran_SetNationTransportStat(void *)|
+5828f0|TSimMgr::HandleTurnInstruction_Deve_ApplyMapDevelopmentEntry||135|function|void __thiscall HandleTurnInstruction_Deve_ApplyMapDevelopmentEntry(void *)|
+5829b0|TSimMgr::HandleTurnInstruction_Rail_ApplyRailPlacementAndCashBonus||98|function|void __thiscall HandleTurnInstruction_Rail_ApplyRailPlacementAndCashBonus(void *)|
+582a40|TSimMgr::HandleTurnInstruction_Port_ApplyPortPlacementAndCashBonus||98|function|void __thiscall HandleTurnInstruction_Port_ApplyPortPlacementAndCashBonus(void *)|
+582ad0|TSimMgr::HandleTurnInstruction_Tech_ApplyTechUnlockAndNotifyNations||120|function|void __thiscall HandleTurnInstruction_Tech_ApplyTechUnlockAndNotifyNations(void *)|
+582b70|TSimMgr::HandleTurnInstruction_Pric_ApplyDiplomacyPriceEntry||86|function|void __thiscall HandleTurnInstruction_Pric_ApplyDiplomacyPriceEntry(void *)|
+582bf0|TSimMgr::HandleTurnInstruction_Emba_SetEmbassyRelationFlags||189|function|void __thiscall HandleTurnInstruction_Emba_SetEmbassyRelationFlags(void *)|
+582ce0|TSimMgr::HandleTurnInstruction_Subs_ApplyNationSubsidyEntry||140|function|void __thiscall HandleTurnInstruction_Subs_ApplyNationSubsidyEntry(void *)|
+582da0|TSimMgr::HandleTurnInstruction_Trea_ApplyTreatyAndRelationEntry||240|function|void __thiscall HandleTurnInstruction_Trea_ApplyTreatyAndRelationEntry(void *)|
+582ed0|TSimMgr::HandleTurnInstruction_Year_UpdateScenarioYearFieldScaledBy4||53|function|void __thiscall HandleTurnInstruction_Year_UpdateScenarioYearFieldScaledBy4(void *)|
+582f20|TSimMgr::HandleTurnInstruction_Prov_ApplyProvinceAssignmentEntry||89|function|void __thiscall HandleTurnInstruction_Prov_ApplyProvinceAssignmentEntry(void *)|
+582fa0|TSimMgr::HandleTurnInstruction_Zone_AssignMapActionContextNameByNodeId||155|function|void __thiscall HandleTurnInstruction_Zone_AssignMapActionContextNameByNodeId(void *)|
+583070|TSimMgr::HandleTurnInstruction_Cnam_AssignCountryName||259|function|void __thiscall HandleTurnInstruction_Cnam_AssignCountryName(void *)|
+5831d0|TSimMgr::HandleTurnInstruction_Rela_SetNationRelationValue||122|function|void __thiscall HandleTurnInstruction_Rela_SetNationRelationValue(void *)|
+583270|TSimMgr::HandleTurnInstruction_Pnam_AssignProvinceName||188|function|void __thiscall HandleTurnInstruction_Pnam_AssignProvinceName(void *)|
+583360|TSimMgr::HandleTurnInstruction_Cash_SetNationCash||117|function|void __thiscall HandleTurnInstruction_Cash_SetNationCash(void *)|
+583400|TSimMgr::HandleTurnInstruction_Flag_SetNationFlagAndRefresh||73|function|void __thiscall HandleTurnInstruction_Flag_SetNationFlagAndRefresh(void *)|
+583470|TSimMgr::HandleTurnInstruction_Tyer_SetCityOrderCapabilityTierValue||121|function|void __thiscall HandleTurnInstruction_Tyer_SetCityOrderCapabilityTierValue(void *)|
+583510|TSimMgr::HandleTurnInstruction_Tbar_SetNationRelationBarValue||271|function|void __thiscall HandleTurnInstruction_Tbar_SetNationRelationBarValue(void *)|
+583670|TSimMgr::HandleTurnInstruction_Tclr_ResetNationRelationBars||101|function|void __thiscall HandleTurnInstruction_Tclr_ResetNationRelationBars(void *)|
+583700|TSimMgr::HandleTurnInstruction_Coun_SetCountrySlotState||134|function|void __thiscall HandleTurnInstruction_Coun_SetCountrySlotState(void *)|
 5837c0|WrapperFor_thunk_RefreshCityCapabilityUiHandlesForActiveNation_At005837c0||23|function|undefined WrapperFor_thunk_RefreshCityCapabilityUiHandlesForActiveNation_At005837c0()|
 583880|WrapperFor_ftol_At00583880||30|function|undefined WrapperFor_ftol_At00583880()|
 5838b0|TArrowsControl::CreateObject|?CreateObject@TArrowsControl@@SGPAVCObject@@XZ|113|function|undefined CreateObject()|rtti
@@ -8249,6 +8249,7 @@ address|name|symbol|size|type|prototype|provenance
 661a70|TGameScorePicture::classTGameScorePicture|||global||
 661a88|TSelectoText::classTSelectoText|||global||
 662960|TSimMgr::classTSimMgr|||global||
+662978|g_anScenarioScriptInstructionTags|||global||
 662db8|TArrowsControl::classTArrowsControl|||global||
 662dd0|TSidewaysArrow::classTSidewaysArrow|||global||
 662de8|TUpDownView::classTUpDownView|||global||
@@ -8545,6 +8546,7 @@ address|name|symbol|size|type|prototype|provenance
 698ae0|g_szCountryNameProfileKey00698AE0|||global||
 698b10|g_nTurnCooldownSideFlag00698B10|||global||
 698b1a|g_anScenarioNationSetupTable_00698B1A|||global||
+698b50|g_apfnScenarioScriptInstructionHandlers|||global||
 698bf4|s_PictWvGobPathFormat_00698BF4|||global||
 698c0c|s_Chunk_00698C0C|||global||
 698f58|g_anTargetTileProfileByCivilianClassAndSlot|||global||
@@ -8660,6 +8662,8 @@ address|name|symbol|size|type|prototype|provenance
 6a432c|g_apMinorNationCapabilityObjects|||global||
 6a4370|g_apNationStates|||global||
 6a438c|g_apNationStates_End|||global||
+6a4398|g_bScenarioScriptTerminationRequested|||global||
+6a43b8|g_nScenarioScriptInstructionCount|||global||
 6a43c0|g_bTurnFlowBootstrapComplete|||global||
 6a43c4|g_nTurnCooldownDeferCounter006A43C4|||global||
 6a43c8|g_pGameFlowState|||global||

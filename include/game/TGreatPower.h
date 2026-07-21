@@ -515,7 +515,6 @@ public:
   int SumNavyOrderPriorityForNation();
   void InitializeNationStateRuntimeSubsystems(int arg1, int arg2);
 
-  void HandleTurnInstruction_Civi_DeserializeAndCreateWorkOrder(void* pInstructionRaw);
   void QueueInterNationEventType0FForNationPairContext(short targetNationSlot,
                                                        short sourceNationSlot);
 

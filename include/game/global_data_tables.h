@@ -420,6 +420,10 @@ extern char* g_pStatusPictureMainSharedText_00668b88;
 extern char* g_pLoungeLocalPlayerNameSharedText_0065c160;
 extern int g_lastEdgeAutoScrollTick16;
 extern int g_nSaveFormatVersion;
+extern const unsigned int g_anScenarioScriptInstructionTags[27];
+extern void (TSimMgr::* g_apfnScenarioScriptInstructionHandlers[27])(void*);
+extern unsigned char g_bScenarioScriptTerminationRequested;
+extern int g_nScenarioScriptInstructionCount;
 // Gates the assert-messagebox in TTaskForce::ApplyMapOrderTypeExecutionEffects's default
 // (unhandled attachment/kind) case; not yet recovered beyond that one read site.
 extern int g_UnknownMapOrderExecutionGuard_006a3ee0;
