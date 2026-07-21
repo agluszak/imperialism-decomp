@@ -7,11 +7,14 @@
 #include "game/CIterator.h"
 #include "game/mfc.h"
 #include "game/TAutoGreatPower.h"
+#include "game/TCity.h"
 #include "game/TGreatPower.h"
+#include "game/TList.h"
 #include "game/TLongintList.h"
 #include "game/TMapMgr.h"
 #include "game/TStream.h"
 #include "game/TMission.h"
+#include "game/TUnit.h"
 #include "game/ui_invalidation_guard.h"
 
 // Slot 24 (0x60) — body 0x4ec0a0; placed first because it is the lowest address.
@@ -149,7 +152,124 @@ void TDefenseMinister::Call4C() {
 // Slot 20 override (0x4ec540).
 
 // FUNCTION: IMPERIALISM 0x004ec540
-void TDefenseMinister::MinisterSlot14() {}
+void TDefenseMinister::MinisterSlot14() {
+  TGreatPower* owner = ownerContextAt04;
+  int totalUnitCount = owner->militaryUnitList44->GetCount();
+
+  TCity* city = owner ? owner->city : 0;
+  short homeTileId =
+      city->selectedOrderB0
+          ? *reinterpret_cast<short*>(static_cast<char*>(city->selectedOrderB0) + 0x14)
+          : 1;
+
+  short ownNationSlot = owner->nationSlot;
+
+  TLongintList* ownedRegionsList = new TLongintList();
+  for (int tile = 0; tile < 0x1950; ++tile) {
+    if (g_pGlobalMapState->terrainStateTable[tile].ownerNationTag04 == ownNationSlot) {
+      ownedRegionsList->InsertLast(tile);
+    }
+  }
+
+  unsigned char* priorityMap = this->BuildTileRingPriorityMapForNationTileList(ownedRegionsList);
+
+  TList* bucket1 = new TList();
+  if (bucket1 == nullptr) {
+    FailNilPointerWithAssert(s_SourcePathUDefenseMinister_00696860, 0x12f);
+  }
+
+  TList* bucket2 = new TList();
+  if (bucket2 == nullptr) {
+    FailNilPointerWithAssert(s_SourcePathUDefenseMinister_00696860, 0x130);
+  }
+
+  TList* bucket3 = new TList();
+  if (bucket3 == nullptr) {
+    FailNilPointerWithAssert(s_SourcePathUDefenseMinister_00696860, 0x131);
+  }
+
+  TSortedList* militaryUnitList = owner->militaryUnitList44;
+  for (int unitOrdinal = 1; unitOrdinal <= totalUnitCount; ++unitOrdinal) {
+    TUnit* unit = static_cast<TUnit*>(militaryUnitList->GetEntryByOrdinal(unitOrdinal));
+    if (unit->orderType == 2) {
+      bucket1->AddTail(unit);
+    } else if (unit->orderType == 7) {
+      bucket2->AddTail(unit);
+    } else if (unit->orderType == 6) {
+      bucket2->AddTail(unit);
+    } else {
+      bucket3->AddTail(unit);
+    }
+  }
+
+  int bucket1Count = bucket1->GetCount();
+  int n = bucket1Count / 2;
+  int trimCount = (n < 3) ? bucket1->GetCount() : 4;
+  for (; trimCount > 0; --trimCount) {
+    int idx = bucket1->GetCount();
+    TUnit* unit = static_cast<TUnit*>(bucket1->GetEntryByOrdinal(idx));
+    unit->VTableSlot10(homeTileId);
+    bucket1->RemoveAtOrdinal(idx);
+  }
+
+  if (bucket2->GetCount() != 0) {
+    int idx = bucket2->GetCount();
+    TUnit* unit = static_cast<TUnit*>(bucket2->GetEntryByOrdinal(idx));
+    unit->VTableSlot10(homeTileId);
+    bucket2->RemoveAtOrdinal(idx);
+  }
+
+  n -= 2;
+  if (n > 0) {
+    short* scratchBuf = new short[n];
+    if (scratchBuf == nullptr) {
+      FailNilPointerWithAssert(s_SourcePathUDefenseMinister_00696860, 0x15e);
+    }
+
+    for (int fillIdx = 1; fillIdx <= n; ++fillIdx) {
+      scratchBuf[fillIdx - 1] = static_cast<short>(ownedRegionsList->At(fillIdx));
+    }
+
+    int regionCount = ownedRegionsList->GetSize();
+    for (int i2 = 1; i2 <= regionCount; ++i2) {
+      short regionId = static_cast<short>(ownedRegionsList->At(i2));
+      short bestPriority = static_cast<signed char>(priorityMap[regionId]);
+      for (int j = 0; j < n; ++j) {
+        short scratchRegionId = scratchBuf[j];
+        short candidatePriority = static_cast<signed char>(priorityMap[scratchRegionId]);
+        if (candidatePriority < bestPriority) {
+          scratchBuf[j] = regionId;
+          bestPriority = candidatePriority;
+          regionId = scratchRegionId;
+        }
+      }
+    }
+
+    for (int k = 0; k < n; ++k) {
+      short regionId = scratchBuf[k];
+      for (int u = 0; u < 2; ++u) {
+        int idx = bucket1->GetCount();
+        TUnit* unit = static_cast<TUnit*>(bucket1->GetEntryByOrdinal(idx));
+        unit->VTableSlot10(regionId);
+        bucket1->RemoveAtOrdinal(idx);
+      }
+      if (bucket2->GetCount() != 0) {
+        int idx = bucket2->GetCount();
+        TUnit* unit = static_cast<TUnit*>(bucket2->GetEntryByOrdinal(idx));
+        unit->VTableSlot10(regionId);
+        bucket2->RemoveAtOrdinal(idx);
+      }
+    }
+    // Note: the original never frees scratchBuf (leaked), matching its exact allocation
+    // pattern here.
+  }
+
+  bucket1->Free();
+  bucket2->Free();
+  bucket3->Free();
+  delete[] priorityMap;
+  ownedRegionsList->Free();
+}
 
 // Slot 21 override (0x4ecbb0).
 
