@@ -29,13 +29,13 @@ TEngineerDialog::~TEngineerDialog() {}
 // FUNCTION: IMPERIALISM 0x004d05e0
 void TEngineerDialog::Free() {
   if (this->headerSurface60 != 0) {
-    g_pDisplayMgr->FreeQuickDrawSurfaceContextSlot(&headerSurface60);
+    g_pDisplayMgr->RemoveGWorld(headerSurface60);
   }
   if (this->footerSurface64 != 0) {
-    g_pDisplayMgr->FreeQuickDrawSurfaceContextSlot(&footerSurface64);
+    g_pDisplayMgr->RemoveGWorld(footerSurface64);
   }
   if (this->bodyTileSurface68 != 0) {
-    g_pDisplayMgr->FreeQuickDrawSurfaceContextSlot(&bodyTileSurface68);
+    g_pDisplayMgr->RemoveGWorld(bodyTileSurface68);
   }
   TView::Free();
 }

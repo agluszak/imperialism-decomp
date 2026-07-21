@@ -40,19 +40,19 @@ void TTwoPicSlider::InitializePictureSurfaces(int baseBitmapId) {
   lowerSurface = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(baseBitmapId + 1);
   upperSurface = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(baseBitmapId);
   RECT bounds = {0, 0, frameWidth34, frameHeight38};
-  g_pDisplayMgr->InitializeBitmapSurfaceContextWithRetry(&compositeSurface, 8, &bounds);
+  g_pDisplayMgr->MakeNewGWorld(compositeSurface, 8, bounds);
 }
 
 // FUNCTION: IMPERIALISM 0x0056e2f0
 void TTwoPicSlider::Free() {
   if (lowerSurface != 0) {
-    g_pDisplayMgr->FreeQuickDrawSurfaceContextSlot(&lowerSurface);
+    g_pDisplayMgr->RemoveGWorld(lowerSurface);
   }
   if (upperSurface != 0) {
-    g_pDisplayMgr->FreeQuickDrawSurfaceContextSlot(&upperSurface);
+    g_pDisplayMgr->RemoveGWorld(upperSurface);
   }
   if (compositeSurface != 0) {
-    g_pDisplayMgr->FreeQuickDrawSurfaceContextSlot(&compositeSurface);
+    g_pDisplayMgr->RemoveGWorld(compositeSurface);
   }
   TView::Free();
 }

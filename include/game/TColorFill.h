@@ -16,16 +16,16 @@ public:
   // slot 0x07 Free inherited unchanged (0x4798b0)
   // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
-  // slot 0x0a AdornerSlot0A inherited unchanged (0x49d900)
-  // slot 0x0b AdornerSlot0B inherited unchanged (0x49d930)
+  // slot 0x0a AddedToView inherited unchanged (0x49d900)
+  // slot 0x0b RemovedFromView inherited unchanged (0x49d930)
   // Real override, not a no-op: a nil-pointer assert guarded by a private static flag (see
   // TColorFill.cpp) -- the base class's shared invalidation-flag-pulse default does not
   // apply here.
-  virtual undefined AdornerSlot0C(int unusedArg1, int unusedArg2) override; // slot 0x0c 0x4ff1c0
-  // slot 0x0d AdornerSlot0D inherited unchanged (0x49d9f0)
-  // slot 0x0e AdornerSlot0E inherited unchanged (0x49da20)
-  // slot 0x0f AdornerSlot0F inherited unchanged (0x49da50)
-  // slot 0x10 AdornerSlot10 inherited unchanged (0x49da80)
+  virtual void Draw(TView* view, const RECT& bounds) override; // slot 0x0c 0x4ff1c0
+  // slot 0x0d ViewChangedFrame inherited unchanged (0x49d9f0)
+  // slot 0x0e InvalidateAdorner inherited unchanged (0x49da20)
+  // slot 0x0f DrawLine inherited unchanged (0x49da50)
+  // slot 0x10 DoesAdorn inherited unchanged (0x49da80)
 
   TColorFill();
 };

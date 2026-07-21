@@ -344,22 +344,22 @@ void TMacViewMgr::Free() {
     }
     ++index;
   }
-  g_pDisplayMgr->FreeQuickDrawSurfaceContextSlot(&unitIconAtlas);
-  g_pDisplayMgr->FreeQuickDrawSurfaceContextSlot(&unitOverlayAtlas);
-  g_pDisplayMgr->FreeQuickDrawSurfaceContextSlot(&atlas674);
-  g_pDisplayMgr->FreeQuickDrawSurfaceContextSlot(&atlas668);
-  g_pDisplayMgr->FreeQuickDrawSurfaceContextSlot(&atlas66c);
-  g_pDisplayMgr->FreeQuickDrawSurfaceContextSlot(&atlas670);
-  g_pDisplayMgr->FreeQuickDrawSurfaceContextSlot(&atlas680);
-  g_pDisplayMgr->FreeQuickDrawSurfaceContextSlot(&atlas688);
-  g_pDisplayMgr->FreeQuickDrawSurfaceContextSlot(&atlas68c);
-  g_pDisplayMgr->FreeQuickDrawSurfaceContextSlot(&atlas690);
-  g_pDisplayMgr->FreeQuickDrawSurfaceContextSlot(&atlas684);
-  g_pDisplayMgr->FreeQuickDrawSurfaceContextSlot(&atlas6b4);
-  g_pDisplayMgr->FreeQuickDrawSurfaceContextSlot(&atlas6b8);
+  g_pDisplayMgr->RemoveGWorld(unitIconAtlas);
+  g_pDisplayMgr->RemoveGWorld(unitOverlayAtlas);
+  g_pDisplayMgr->RemoveGWorld(atlas674);
+  g_pDisplayMgr->RemoveGWorld(atlas668);
+  g_pDisplayMgr->RemoveGWorld(atlas66c);
+  g_pDisplayMgr->RemoveGWorld(atlas670);
+  g_pDisplayMgr->RemoveGWorld(atlas680);
+  g_pDisplayMgr->RemoveGWorld(atlas688);
+  g_pDisplayMgr->RemoveGWorld(atlas68c);
+  g_pDisplayMgr->RemoveGWorld(atlas690);
+  g_pDisplayMgr->RemoveGWorld(atlas684);
+  g_pDisplayMgr->RemoveGWorld(atlas6b4);
+  g_pDisplayMgr->RemoveGWorld(atlas6b8);
   index = 0;
   while (index < 8) {
-    g_pDisplayMgr->FreeQuickDrawSurfaceContextSlot(&atlas694[index]);
+    g_pDisplayMgr->RemoveGWorld(atlas694[index]);
     ++index;
   }
   g_pStrategicMapViewSystem = 0;
@@ -397,7 +397,7 @@ undefined TMacViewMgr::BuildStrategicMapCommodityIconAtlasFrom700To722() {
   atlasBounds.top = 0;
   atlasBounds.right = 0x2e0;
   atlasBounds.bottom = 0x18;
-  g_pDisplayMgr->InitializeBitmapSurfaceContextWithRetry(&atlas674, 8, &atlasBounds);
+  g_pDisplayMgr->MakeNewGWorld(atlas674, 8, atlasBounds);
   GetActiveQuickDrawSurfaceContextAndFlags(&savedContext, &savedFlags);
   SetActiveQuickDrawSurfaceContext(atlas674, savedFlags);
   atlasSurface = static_cast<TBitmapSurfaceNode**>(GetSurfaceNodeSlot(atlas674));
@@ -463,7 +463,7 @@ void TMacViewMgr::BuildStrategicMapGaugeAtlasFrom1422And1423() {
   atlasBounds.top = 0;
   atlasBounds.right = 0x500;
   atlasBounds.bottom = 0x10;
-  g_pDisplayMgr->InitializeBitmapSurfaceContextWithRetry(&atlas688, 8, &atlasBounds);
+  g_pDisplayMgr->MakeNewGWorld(atlas688, 8, atlasBounds);
   GetActiveQuickDrawSurfaceContextAndFlags(&savedContext, &savedFlags);
   SetActiveQuickDrawSurfaceContext(atlas688, savedFlags);
   ReturnConstantTrueQuickDrawFlag(GetSurfaceNodeSlot(atlas688));
@@ -485,10 +485,10 @@ void TMacViewMgr::RefreshCityCapabilityUiHandlesForActiveNation() {
     return;
   }
   if (atlas68c != 0) {
-    g_pDisplayMgr->FreeQuickDrawSurfaceContextSlot(&atlas68c);
+    g_pDisplayMgr->RemoveGWorld(atlas68c);
   }
   if (atlas690 != 0) {
-    g_pDisplayMgr->FreeQuickDrawSurfaceContextSlot(&atlas690);
+    g_pDisplayMgr->RemoveGWorld(atlas690);
   }
   nationId = g_pSimMgr->GetActiveNationId();
   if (nationId < 0) {
@@ -522,8 +522,7 @@ void TMacViewMgr::BuildStrategicMapTileOverlayStripSurfaces800To807() {
     TBitmapResourceLoader* loader = *loaderHandle;
     RECT resourceBounds;
     CopyRect(&resourceBounds, &loader->bitmapRect);
-    g_pDisplayMgr->InitializeBitmapSurfaceContextWithRetry(&atlas694[stripIndex], 8,
-                                                           &resourceBounds);
+    g_pDisplayMgr->MakeNewGWorld(atlas694[stripIndex], 8, resourceBounds);
     SetActiveQuickDrawSurfaceContext(atlas694[stripIndex], savedFlags);
     ReturnConstantTrueQuickDrawFlag(GetSurfaceNodeSlot(atlas694[stripIndex]));
     QDLoadResource(loaderHandle);
@@ -561,7 +560,7 @@ undefined TMacViewMgr::RenderOffscreenBitmapGridStripAndRestoreContext() {
   atlasBounds.top = 0;
   atlasBounds.right = 0xcc0;
   atlasBounds.bottom = 0x40;
-  g_pDisplayMgr->InitializeBitmapSurfaceContextWithRetry(&atlas668, 8, &atlasBounds);
+  g_pDisplayMgr->MakeNewGWorld(atlas668, 8, atlasBounds);
   GetActiveQuickDrawSurfaceContextAndFlags(&savedContext, &savedFlags);
   SetActiveQuickDrawSurfaceContext(atlas668, savedFlags);
   ReturnConstantTrueQuickDrawFlag(GetSurfaceNodeSlot(atlas668));
@@ -621,7 +620,7 @@ undefined TMacViewMgr::RenderOffscreenBitmapGridStripAndRestoreContext() {
   SetActiveQuickDrawSurfaceContext(savedContext, savedFlags);
 
   atlasBounds.right = 0xa80;
-  g_pDisplayMgr->InitializeBitmapSurfaceContextWithRetry(&atlas66c, 8, &atlasBounds);
+  g_pDisplayMgr->MakeNewGWorld(atlas66c, 8, atlasBounds);
   GetActiveQuickDrawSurfaceContextAndFlags(&savedContext, &savedFlags);
   SetActiveQuickDrawSurfaceContext(atlas66c, savedFlags);
   ReturnConstantTrueQuickDrawFlag(GetSurfaceNodeSlot(atlas66c));
@@ -689,10 +688,10 @@ undefined TMacViewMgr::RenderOffscreenBitmapGridStripAndRestoreContext() {
 
   atlasBounds.right = 0xd7;
   atlasBounds.bottom = 0x78;
-  g_pDisplayMgr->InitializeBitmapSurfaceContextWithRetry(&atlas670, 8, &atlasBounds);
+  g_pDisplayMgr->MakeNewGWorld(atlas670, 8, atlasBounds);
   atlasBounds.right = 0x90;
   atlasBounds.bottom = 0x26;
-  g_pDisplayMgr->InitializeBitmapSurfaceContextWithRetry(&atlas6b4, 8, &atlasBounds);
+  g_pDisplayMgr->MakeNewGWorld(atlas6b4, 8, atlasBounds);
   GetActiveQuickDrawSurfaceContextAndFlags(&savedContext, &savedFlags);
   SetActiveQuickDrawSurfaceContext(atlas6b4, savedFlags);
   ReturnConstantTrueQuickDrawFlag(GetSurfaceNodeSlot(atlas6b4));
@@ -713,13 +712,13 @@ undefined TMacViewMgr::RenderOffscreenBitmapGridStripAndRestoreContext() {
   SetActiveQuickDrawSurfaceContext(savedContext, savedFlags);
 
   if (atlas6b8 != 0) {
-    g_pDisplayMgr->FreeQuickDrawSurfaceContextSlot(&atlas6b8);
+    g_pDisplayMgr->RemoveGWorld(atlas6b8);
   }
   atlasBounds.left = 0;
   atlasBounds.top = 0;
   atlasBounds.right = 0;
   atlasBounds.bottom = 0;
-  g_pDisplayMgr->InitializeBitmapSurfaceContextWithRetry(&atlas6b8, 8, &atlasBounds);
+  g_pDisplayMgr->MakeNewGWorld(atlas6b8, 8, atlasBounds);
   GetActiveQuickDrawSurfaceContextAndFlags(&savedContext, &savedFlags);
   SetActiveQuickDrawSurfaceContext(atlas6b8, savedFlags);
   ReturnConstantTrueQuickDrawFlag(GetSurfaceNodeSlot(atlas6b8));
@@ -755,11 +754,11 @@ undefined TMacViewMgr::RenderOffscreenBitmapGridStripAndRestoreContext() {
 void TMacViewMgr::ReloadBitmap244AndRefreshUiCaches() {
   g_pUiViewManager->NoOpRuntimeUiCallback_005df3f0(3);
   if (atlas6b8 != 0) {
-    g_pDisplayMgr->FreeQuickDrawSurfaceContextSlot(&atlas6b8);
+    g_pDisplayMgr->RemoveGWorld(atlas6b8);
   }
   atlas6b8 = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0x244);
   if (atlas688 != 0) {
-    g_pDisplayMgr->FreeQuickDrawSurfaceContextSlot(&atlas688);
+    g_pDisplayMgr->RemoveGWorld(atlas688);
   }
   LoadStrategicMapOverlayAtlas8699();
 }
@@ -1490,14 +1489,14 @@ undefined TMacViewMgr::RenderOffscreenBitmapTileSpanAndRestoreContext(int param_
   int savedFlags;
   RECT resourceBounds;
   // The original reuses the incoming argument's stack slot as the out-context of
-  // InitializeBitmapSurfaceContextWithRetry; the previous port misread that slot as
+  // MakeNewGWorld; the previous port misread that slot as
   // resourceBounds.right and passed the rect width around as a "context".
   TQuickDrawSurfaceContext* tileSurface = 0;
   regionSlots[param_1] = NewRgn();
   GetActiveQuickDrawSurfaceContextAndFlags(&savedContext, &savedFlags);
   TBitmapResourceLoader** loaderHandle = CreateBitmapResourceLoaderHandle(param_1 + 4000);
   CopyRect(&resourceBounds, &(*loaderHandle)->bitmapRect);
-  g_pDisplayMgr->InitializeBitmapSurfaceContextWithRetry(&tileSurface, 1, &resourceBounds);
+  g_pDisplayMgr->MakeNewGWorld(tileSurface, 1, resourceBounds);
   SetActiveQuickDrawSurfaceContext(tileSurface, savedFlags);
   ReturnConstantTrueQuickDrawFlag(GetSurfaceNodeSlot(tileSurface));
   QDLoadResource(loaderHandle);
@@ -1516,7 +1515,7 @@ undefined TMacViewMgr::RenderOffscreenBitmapTileSpanAndRestoreContext(int param_
     BitMapToRegion(regionSlots[param_1], *surfaceHandle);
     BitMapToRegion(regionSlots[param_1], *surfaceHandle);
   }
-  g_pDisplayMgr->FreeQuickDrawSurfaceContextSlot(&tileSurface);
+  g_pDisplayMgr->RemoveGWorld(tileSurface);
   // Faithful to the original: the slot is already zeroed here, so this reads
   // *(0 + 0x24) — benign on the Win9x null page the game shipped against.
   NoOpQuickDrawLifecycleHookB(GetSurfaceNodeSlot(tileSurface));

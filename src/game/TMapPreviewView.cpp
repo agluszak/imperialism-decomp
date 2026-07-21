@@ -38,7 +38,7 @@ void TMapPreviewView::DoPostCreate(int arg) {
   RECT surfaceBounds = contentBounds;
 
   ++g_nDibOrientationFlag_006A1890;
-  g_pDisplayMgr->InitializeBitmapSurfaceContextWithRetry(&previewSurface60, 8, &surfaceBounds);
+  g_pDisplayMgr->MakeNewGWorld(previewSurface60, 8, surfaceBounds);
 
   TBitmapSurfaceNode** surfaceObject =
       static_cast<TBitmapSurfaceNode**>(GetSurfaceNodeSlot(previewSurface60));
@@ -51,7 +51,7 @@ void TMapPreviewView::DoPostCreate(int arg) {
 
 // FUNCTION: IMPERIALISM 0x005789b0
 void TMapPreviewView::Free() {
-  g_pDisplayMgr->FreeQuickDrawSurfaceContextSlot(&previewSurface60);
+  g_pDisplayMgr->RemoveGWorld(previewSurface60);
   TView::Free();
 }
 

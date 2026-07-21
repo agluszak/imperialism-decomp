@@ -81,7 +81,7 @@ void TAmbitApplication::InitializeGlobalRuntimeSystems() {
 
   TDisplayMgr* displayMgr = new TDisplayMgr();
   if (displayMgr != nullptr) {
-    displayMgr->InitializeTurnOrderNavigationDialogByViewportSize();
+    displayMgr->InitializeWindowAndMBarSize();
   }
   g_pDisplayMgr = displayMgr;
 

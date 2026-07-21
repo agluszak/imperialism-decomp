@@ -8,7 +8,7 @@
 // clean the stack themselves; modelling it variadic lets both f() and
 // f(path, line) call 0x49d620 directly instead of routing arg-passing calls through
 // a separate forwarder (which broke pairing at those call sites).
-undefined4 TemporarilyClearAndRestoreUiInvalidationFlag(...);
+int TemporarilyClearAndRestoreUiInvalidationFlag(...);
 int __stdcall PumpUiMessagesAndBackgroundTasks(int nTaskPumpMode);
 
 // Nil-pointer assert helper for USmallViews

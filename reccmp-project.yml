@@ -1133,7 +1133,7 @@ targets:
       - TDiplomacyMapView::WrapperFor_thunk_ForwardCityDialogParamToChildSlot48_At004f7130
       - TDiplomacyMapView::WrapperFor_thunk_RenderDiplomacyMatrixRowWithStatusIconsAndFill_At004ade00_Impl
       - TDisplayMgr::Free
-      - TDisplayMgr::FreeQuickDrawSurfaceContextSlot
+      - TDisplayMgr::RemoveGWorld
       - TEditText::Free
       - TEditText::WrapperFor_StringShared_AssignFromPtr_At00490c70
       - TEngineerDialog::Free

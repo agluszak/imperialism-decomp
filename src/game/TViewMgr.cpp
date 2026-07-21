@@ -1246,7 +1246,7 @@ void TViewMgr::DispatchTurnEventSlot4C(short eventCode, int payload) {
   packet->DoPostCreate(0);
   packet->controlTag = 0x496e636c; // 'Incl'
   packet->RefreshControl();
-  g_pDisplayMgr->LoadMainViewClipSnapshotIntoQuickDrawState(static_cast<unsigned short>(newCode));
+  g_pDisplayMgr->UpdateTheGWorld(newCode);
   if (this->field10 != 0) {
     ShowDialogTemplateE0ModalAndReleaseCapture();
     this->field10 = 0;
@@ -2231,9 +2231,14 @@ int TViewMgr::MakePlanetSeedDialog(const char* instruction, CString& planetSeed,
   planetEdit->SetEditSelectionAndScrollCaret(0, static_cast<short>(editText.GetLength()), 1);
   dialog->SetWindowTarget(planetEdit);
 
-  int mappedTheme = 0;
-  MapUiThemeCodeToStyleFlags(0x2b6c, &mappedTheme);
-  g_pDisplayMgr->SetMapTileIconVariantTriplet(reinterpret_cast<undefined1*>(&mappedTheme));
+  int mappedThemeValue = 0;
+  MapUiThemeCodeToStyleFlags(0x2b6c, &mappedThemeValue);
+  RGBQUAD mappedTheme;
+  mappedTheme.rgbBlue = static_cast<BYTE>(mappedThemeValue);
+  mappedTheme.rgbGreen = static_cast<BYTE>(mappedThemeValue >> 8);
+  mappedTheme.rgbRed = static_cast<BYTE>(mappedThemeValue >> 16);
+  mappedTheme.rgbReserved = static_cast<BYTE>(mappedThemeValue >> 24);
+  g_pDisplayMgr->SetHiliteColor(&mappedTheme);
   UpdatePaletteIndexWithDefaultFallback(0x3b);
 
   TRadioTextCluster* choiceCluster =

@@ -93,7 +93,7 @@ TMapDialog::~TMapDialog() {}
 // FUNCTION: IMPERIALISM 0x00519c90
 void TMapDialog::Free() {
   if (quickDrawSurface350 != 0) {
-    g_pDisplayMgr->FreeQuickDrawSurfaceContextSlot(&quickDrawSurface350);
+    g_pDisplayMgr->RemoveGWorld(quickDrawSurface350);
   }
   if (overlayObject35C != 0) {
     overlayObject35C->Free();
@@ -110,7 +110,7 @@ void TMapDialog::DoPostCreate(int arg) {
   previewSquareRadius78 = 0x40;
 
   RECT surfaceBounds = {0, 0, 0x1680, 0x40};
-  g_pDisplayMgr->InitializeBitmapSurfaceContextWithRetry(&quickDrawSurface350, 8, &surfaceBounds);
+  g_pDisplayMgr->MakeNewGWorld(quickDrawSurface350, 8, surfaceBounds);
 
   ResetAllTileMarkersToSentinel();
 

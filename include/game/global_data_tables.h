@@ -423,7 +423,7 @@ extern int g_nSaveFormatVersion;
 // Gates the assert-messagebox in TTaskForce::ApplyMapOrderTypeExecutionEffects's default
 // (unhandled attachment/kind) case; not yet recovered beyond that one read site.
 extern int g_UnknownMapOrderExecutionGuard_006a3ee0;
-// Guards the nil-pointer assert in TColorFill::AdornerSlot0C (0x004ff1c0, TColorFill.cpp);
+// Guards the nil-pointer assert in TColorFill::Draw (0x004ff1c0, TColorFill.cpp);
 // no write site found anywhere in ported source, so this may be a debug/never-reached
 // assertion path in the retail build rather than a genuine run-once flag.
 extern int g_colorFillAssertGuard_006a30b4;
@@ -871,9 +871,9 @@ extern CPtrList g_ModalViewStack;
 // UI runtime globals
 // ============================================================================
 
-undefined4 SetGlobalUiInvalidationFlagAndReturnPrevious(undefined4 newValue);
+int SetGlobalUiInvalidationFlagAndReturnPrevious(int newValue);
 // Clear g_McAppUiActiveFlag_006950AC and return the previous value (0x489a90).
-undefined4 ClearGlobalUiInvalidationFlagAndReturnPrevious();
+int ClearGlobalUiInvalidationFlagAndReturnPrevious();
 
 // Read g_McAppUiActiveFlag_006950AC (0x489a70) — guard checked before any real painting.
 int GetMcAppUiActiveFlag();

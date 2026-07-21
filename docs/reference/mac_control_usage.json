@@ -157972,7 +157972,7 @@
             "status": "confirmed"
           }
         ],
-        "name": "TDisplayMgr::InitializeTurnOrderNavigationDialogByViewportSize",
+        "name": "TDisplayMgr::InitializeWindowAndMBarSize",
         "owner_class": "TDisplayMgr",
         "recovered_source": "src/game/TDisplayMgr.cpp"
       },
@@ -157991,7 +157991,7 @@
             "status": "confirmed"
           }
         ],
-        "name": "TDisplayMgr::AssertUDisplayMgrLine471",
+        "name": "TDisplayMgr::CloseBooks",
         "owner_class": "TDisplayMgr",
         "recovered_source": "src/game/TDisplayMgr.cpp"
       },
@@ -158010,7 +158010,7 @@
             "status": "confirmed"
           }
         ],
-        "name": "TDisplayMgr::AssertUDisplayMgrLine495",
+        "name": "TDisplayMgr::DismissTouchyFloaters",
         "owner_class": "TDisplayMgr",
         "recovered_source": "src/game/TDisplayMgr.cpp"
       },
@@ -158029,7 +158029,7 @@
             "status": "confirmed"
           }
         ],
-        "name": "TDisplayMgr::AssertUDisplayMgrLines614And616",
+        "name": "TDisplayMgr::SetBitDepth",
         "owner_class": "TDisplayMgr",
         "recovered_source": "src/game/TDisplayMgr.cpp"
       },
@@ -158048,7 +158048,7 @@
             "status": "confirmed"
           }
         ],
-        "name": "TDisplayMgr::LoadMainViewClipSnapshotIntoQuickDrawState",
+        "name": "TDisplayMgr::UpdateTheGWorld",
         "owner_class": "TDisplayMgr",
         "recovered_source": "src/game/TDisplayMgr.cpp"
       },
@@ -158057,17 +158057,15 @@
           {
             "evidence": [
               {
-                "definition_source": "src/game/TDisplayMgr.cpp",
-                "kind": "source_path_global_reference",
-                "path": "D:\\Ambit\\Cross\\UDisplayMgr.cpp",
-                "symbol": "kSourceFileUDisplayMgr"
+                "kind": "inline_source_path_literal",
+                "path": "D:\\Ambit\\Cross\\UDisplayMgr.cpp"
               }
             ],
             "module": "UDisplayMgr.cpp",
             "status": "confirmed"
           }
         ],
-        "name": "TColorFill::AdornerSlot0C",
+        "name": "TColorFill::Draw",
         "owner_class": "TColorFill",
         "recovered_source": "src/game/TColorFill.cpp"
       },
