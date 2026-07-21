@@ -22,9 +22,11 @@ public:
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
   virtual TView*
   ResolveTurnEventDialogNodeByMessageContext(int messageContext); // slot 0x0a 0x5df3c0
-  virtual void NoOpRuntimeUiCallback_005df780(int arg);           // slot 0x0b 0x5df780
-  virtual void NoOpRuntimeUiCallback_005df3f0(int arg);           // slot 0x0c 0x5df3f0
-  virtual void NoOpRuntimeUiCallback_005df410(int arg);           // slot 0x0d 0x5df410
+  // Retail Mac identities. These are real resource-file lifecycle slots even though
+  // the Windows implementations are intentional no-ops.
+  virtual void OpenFilesForView(short fileSet); // slot 0x0b 0x5df780
+  virtual void OpenFilesFor(short fileSet);     // slot 0x0c 0x5df3f0
+  virtual void CloseFilesFor(short fileSet);    // slot 0x0d 0x5df410
   // Ground truth (0x5dfc10): two parameters only — the movie view pointer is the
   // second arg (stored into g_pUiRuntimeContext->activeMovieViewF4 at 0x5dfc8e);
   // there is no mode flag.

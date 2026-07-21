@@ -44,13 +44,13 @@ TView* TAssetMgr::ResolveTurnEventDialogNodeByMessageContext(int messageContext)
 }
 
 // FUNCTION: IMPERIALISM 0x005df3f0
-void TAssetMgr::NoOpRuntimeUiCallback_005df3f0(int arg) {
-  (void)arg;
+void TAssetMgr::OpenFilesFor(short fileSet) {
+  (void)fileSet;
 }
 
 // FUNCTION: IMPERIALISM 0x005df410
-void TAssetMgr::NoOpRuntimeUiCallback_005df410(int arg) {
-  (void)arg;
+void TAssetMgr::CloseFilesFor(short fileSet) {
+  (void)fileSet;
 }
 
 // Per-callsite assert-suppress flag, adjacent to timer_slots.cpp's
@@ -106,8 +106,8 @@ int TAssetMgr::GetResourceStreamSize(CFile_Virtuals* stream) {
 }
 
 // FUNCTION: IMPERIALISM 0x005df780
-void TAssetMgr::NoOpRuntimeUiCallback_005df780(int arg) {
-  (void)arg;
+void TAssetMgr::OpenFilesForView(short fileSet) {
+  (void)fileSet;
 }
 
 // FUNCTION: IMPERIALISM 0x005dfc10

@@ -179,6 +179,6 @@ void TArmoryView::RefreshCityViewProductionDetails(short nBuildingSlotId) {}
 void TArmoryView::Free() {
   TView::Free();
   if (g_nSaveFormatVersion != 0x4d6f696c) { // 'Moil'
-    g_pUiViewManager->NoOpRuntimeUiCallback_005df410(0x23f8);
+    g_pUiViewManager->CloseFilesFor(0x23f8);
   }
 }

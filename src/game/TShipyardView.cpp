@@ -39,7 +39,7 @@ void TShipyardView::Free() {
   g_pDisplayMgr->FreeQuickDrawSurfaceContextSlot(&iconSurfaceB8);
   TView::Free();
   if (g_nSaveFormatVersion != 0x4d6f696c) { // 'Moil'
-    g_pUiViewManager->NoOpRuntimeUiCallback_005df410(0x23f7);
+    g_pUiViewManager->CloseFilesFor(0x23f7);
   }
 }
 

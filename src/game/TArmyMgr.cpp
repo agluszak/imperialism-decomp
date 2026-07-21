@@ -85,22 +85,21 @@ void TArmyMgr::ReadFrom(TStream* stream) {}
 void TArmyMgr::WriteTo(TStream* stream) {}
 
 // FUNCTION: IMPERIALISM 0x004a1e40
-undefined TArmyMgr::OrphanCallChain_C4_I26_004a1e40() {
+void TArmyMgr::DoCombatMoves() {
   // g_pSimMgr->multiplayerSessionRole is the multiplayer-mode dword (compared against 1/2 throughout
   // TMultiplayerMgr.cpp); == 2 selects the alternate branch here.
   if (g_pSimMgr->multiplayerSessionRole == 2) {
-    this->IterateLinkedListCursorAndClearPerTileByte0F();
+    this->ClearPendingStacksAndFinalizeMilitaryUnits();
     g_pSimMgr->StartNextPhase();
   } else {
-    this->ProcessTileUnitListsAndApplyRandomStatusUpdates();
-    this->pendingRebuildFlag10 = 1;
-    this->ProcessPendingArmyStacksForBattleOrRelocation();
+    this->FormStacks();
+    this->nextStackOrdinal10 = 1;
+    this->ResolveNextMove();
   }
-  return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004a1eb0
-void TArmyMgr::ReleaseThreeLinkedObjectsAndResetTerrainDescriptorFlags() {
+void TArmyMgr::EndBattlePhase() {
   if (this->ourStackBattle39c != nullptr) {
     this->ourStackBattle39c->Free();
   }
@@ -114,8 +113,8 @@ void TArmyMgr::ReleaseThreeLinkedObjectsAndResetTerrainDescriptorFlags() {
   }
   this->activeBattleView3a4 = nullptr;
 
-  this->IterateLinkedListCursorAndClearPerTileByte0F();
-  this->ArmyMgrSlot12();
+  this->ClearPendingStacksAndFinalizeMilitaryUnits();
+  this->DoOwnershipChanges();
 
   if (this->needsTerrainRefreshFlag39a != 0) {
     g_pStrategicMapViewSystem->RebuildNationClipRegionsAndDispatchMapEvent();
@@ -130,7 +129,7 @@ void TArmyMgr::ReleaseThreeLinkedObjectsAndResetTerrainDescriptorFlags() {
 }
 
 // FUNCTION: IMPERIALISM 0x004a1f80
-undefined TArmyMgr::ProcessTileUnitListsAndApplyRandomStatusUpdates() {
+void TArmyMgr::FormStacks() {
   TArmyStack* stack = nullptr;
   for (int tileIndex = 0; tileIndex < 0x180; ++tileIndex) {
     TUnit* unit = g_pGlobalMapState->cityScoreTable[tileIndex].stationedUnitChain98;
@@ -243,11 +242,10 @@ undefined TArmyMgr::ProcessTileUnitListsAndApplyRandomStatusUpdates() {
     this->perTileOwnerNationCodeCache1c[i] =
         g_pGlobalMapState->ResolveTileOwnerNationCodeNormalized(i);
   }
-  return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004a2390
-undefined TArmyMgr::ProcessPendingArmyStacksForBattleOrRelocation() {
+void TArmyMgr::ResolveNextMove() {
   bool battleViewCreated = false;
   if (this->ourStackBattle39c != nullptr) {
     this->ourStackBattle39c->Free();
@@ -263,14 +261,14 @@ undefined TArmyMgr::ProcessPendingArmyStacksForBattleOrRelocation() {
   this->activeBattleView3a4 = nullptr;
 
   int stackCount = this->pendingUnitPool0c->GetCount();
-  if (this->pendingRebuildFlag10 <= stackCount) {
+  if (this->nextStackOrdinal10 <= stackCount) {
     do {
-      int cursor = this->pendingRebuildFlag10;
+      int cursor = this->nextStackOrdinal10;
       stackCount = this->pendingUnitPool0c->GetCount();
       if (stackCount < cursor) {
         break;
       }
-      this->pendingRebuildFlag10 = cursor + 1;
+      this->nextStackOrdinal10 = cursor + 1;
       TArmyStack* stack =
           static_cast<TArmyStack*>(this->pendingUnitPool0c->GetEntryByOrdinal(cursor));
       stack->AssertValid();
@@ -297,19 +295,18 @@ undefined TArmyMgr::ProcessPendingArmyStacksForBattleOrRelocation() {
       }
     } while (!battleViewCreated);
     stackCount = this->pendingUnitPool0c->GetCount();
-    if (this->pendingRebuildFlag10 <= stackCount) {
-      return 0;
+    if (this->nextStackOrdinal10 <= stackCount) {
+      return;
     }
     if (battleViewCreated) {
-      return 0;
+      return;
     }
   }
-  this->ReleaseThreeLinkedObjectsAndResetTerrainDescriptorFlags();
-  return 0;
+  this->EndBattlePhase();
 }
 
 // FUNCTION: IMPERIALISM 0x004a2500
-undefined TArmyMgr::IterateLinkedListCursorAndClearPerTileByte0F() {
+void TArmyMgr::ClearPendingStacksAndFinalizeMilitaryUnits() {
   this->pendingUnitPool0c->FreePayloads();
   g_pGlobalMapState->ClearPerTileByte0FForAllMapTiles();
 
@@ -335,7 +332,6 @@ undefined TArmyMgr::IterateLinkedListCursorAndClearPerTileByte0F() {
       }
     }
   }
-  return 0;
 }
 
 // Own-source function (not a TArmyMgr method -- neither callsite reliably sets ECX to
@@ -734,7 +730,7 @@ bool TArmyMgr::UpdateDualLinkedEntryMetersAndBlinkState(TArmyStack* stack1, TArm
 }
 
 // FUNCTION: IMPERIALISM 0x004a3bc0
-undefined TArmyMgr::ArmyMgrSlot12() {
+void TArmyMgr::DoOwnershipChanges() {
   for (int tileIndex = 0; tileIndex < 0x180; ++tileIndex) {
     short cachedOwner = this->perTileOwnerNationCodeCache1c[tileIndex];
     signed char currentOwner = g_pGlobalMapState->cityScoreTable[tileIndex].ownerNationCode00;
@@ -780,7 +776,6 @@ undefined TArmyMgr::ArmyMgrSlot12() {
         static_cast<short>(tileIndex), cachedOwner);
     this->needsTerrainRefreshFlag39a = 1;
   }
-  return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004a3d90
@@ -1428,7 +1423,7 @@ void TArmyMgr::ApplyPostBattleStackOutcomeAndGrowUnitMeters(TArmyStack* ourStack
       }
     }
 
-    this->ProcessPendingArmyStacksForBattleOrRelocation();
+    this->ResolveNextMove();
   } else {
     this->ResetAndRelocateUnitOrderQueue_004a37b0(ourStack);
 
@@ -1446,7 +1441,7 @@ void TArmyMgr::ApplyPostBattleStackOutcomeAndGrowUnitMeters(TArmyStack* ourStack
     }
 
     enemyStack->ApplyMeterGrowthToEligibleUnits(true);
-    this->ProcessPendingArmyStacksForBattleOrRelocation();
+    this->ResolveNextMove();
   }
 }
 
