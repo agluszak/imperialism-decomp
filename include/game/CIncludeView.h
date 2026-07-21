@@ -74,6 +74,10 @@ protected:
   // WM_LBUTTONUP: complete the click — slot-0x48 mouse-up dispatch into the dialog tree,
   // then end the global mouse capture. 0x00483b00
   afx_msg void OnLButtonUp(UINT nFlags, CPoint point); // 0x00483b00
+  // WM_RBUTTONDOWN/UP use the same hosted-tree dispatch as the left button. The down
+  // event carries mouseButton24=1; the up event closes the shared capture state.
+  afx_msg void OnRButtonDown(UINT nFlags, CPoint point); // 0x00483f10
+  afx_msg void OnRButtonUp(UINT nFlags, CPoint point);   // 0x00483ff0
   // WM_MOUSEMOVE: update the global capture drag state, drive this view's own captured
   // control (m_capturedControl74 + the +0x78 point triple), feed the cursor to the UI
   // root controller, and (while the app is active) run the dialog tree's hover

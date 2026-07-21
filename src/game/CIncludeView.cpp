@@ -70,8 +70,7 @@ IMPLEMENT_DYNCREATE(CIncludeView, CView)
 
 // Original AFX_MSGMAP_ENTRY order (entries @ 0x6489e8). Still unported:
 // WM_LBUTTONDBLCLK 0x483b70, WM_COMMAND id 0x8011/0x8012 0x483d60/0x483d90,
-// WM_SETCURSOR 0x483ef0, WM_RBUTTONDOWN 0x483f10, WM_RBUTTONUP 0x483ff0,
-// WM_CTLCOLOR 0x483660.
+// WM_SETCURSOR 0x483ef0 and WM_CTLCOLOR 0x483660.
 //
 // clang-cl's lint build rejects the MFC message-map macros' unqualified `&OnPaint`-style
 // address-of-member-function (a long-standing MSVC extension clang doesn't implement for
@@ -87,6 +86,8 @@ BEGIN_MESSAGE_MAP(CIncludeView, CView)
 ON_WM_ERASEBKGND()
 ON_WM_LBUTTONDOWN()
 ON_WM_LBUTTONUP()
+ON_WM_RBUTTONDOWN()
+ON_WM_RBUTTONUP()
 ON_WM_MOUSEMOVE()
 ON_WM_PARENTNOTIFY()
 ON_WM_KEYDOWN()
@@ -334,6 +335,33 @@ BOOL CIncludeView::OnCommand(WPARAM wParam, LPARAM lParam) {
     }
   }
   return CWnd::OnCommand(wParam, lParam);
+}
+
+// Right-button clicks follow the same hosted-dialog path as left-button clicks. The
+// TToolboxEvent button field distinguishes the two down events; mouse-up uses the shared
+// tree dispatch and capture teardown.
+// FUNCTION: IMPERIALISM 0x00483f10
+void CIncludeView::OnRButtonDown(UINT nFlags, CPoint point) {
+  (void)nFlags;
+  if (m_uiInteractiveFlag90 != 0 && m_activeDialogContext != 0) {
+    TToolboxEvent event;
+    event.mouseX = point.x;
+    event.mouseY = point.y;
+    event.mouseMetadata1c = 0;
+    event.mouseButton24 = 1;
+    m_activeDialogContext->HandleMouseDown(point, &event, CPoint(0, 0));
+  }
+}
+
+// FUNCTION: IMPERIALISM 0x00483ff0
+void CIncludeView::OnRButtonUp(UINT nFlags, CPoint point) {
+  if (m_uiInteractiveFlag90 != 0) {
+    if (m_activeDialogContext != 0) {
+      CPoint pt(point);
+      m_activeDialogContext->HandleMouseUp(pt, 0, CPoint(0, 0));
+    }
+    g_McAppMouseCaptureState.EndMouseCaptureAndStopRepeatTimer(nFlags, point.x, point.y);
+  }
 }
 
 // Everything the hosted activeDialog TView tree ever draws on screen flows through
