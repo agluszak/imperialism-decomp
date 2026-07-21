@@ -54,8 +54,8 @@ void TZone::HandleKeyDown(int key_id) {
   bool bSlotIsActive;
   unsigned int uSlotIndex;
   unsigned int uSlotCountLocal;
-  int* piSlotEntry;
-  int** slotTable = reinterpret_cast<int**>(secondaryNeighbors.Data());
+  TGlobalMapCityScoreRecord** piSlotEntry;
+  TGlobalMapCityScoreRecord** slotTable = secondaryNeighbors.Data();
   unsigned int slotCount = static_cast<unsigned int>(secondaryNeighbors.GetSize());
 
   if ((nationKeyMask10 & (1U << ((unsigned char)key_id & 0x1f))) == 0) {
@@ -69,11 +69,11 @@ void TZone::HandleKeyDown(int key_id) {
       if (uSlotCountLocal != 0) {
         do {
           if (uSlotIndex < uSlotCountLocal) {
-            piSlotEntry = reinterpret_cast<int*>(slotTable) + static_cast<int>(uSlotIndex);
+            piSlotEntry = slotTable + static_cast<int>(uSlotIndex);
           } else {
             piSlotEntry = 0;
           }
-          if (*reinterpret_cast<char*>(*piSlotEntry) == static_cast<char>(sVarSlotId)) {
+          if ((*piSlotEntry)->ownerNationCode00 == static_cast<char>(sVarSlotId)) {
             goto LAB_0055fcae;
           }
           uSlotIndex = uSlotIndex + 1;
@@ -534,8 +534,8 @@ void TOcean::EnsurePortZoneForTile(short nTileIndex) {
       }
     }
     if (!alreadyLinked) {
-      portZone->AppendZonePointerToPrimaryArray(linkedContext);
-      linkedContext->AppendZonePointerToSecondaryArray(portZone);
+      portZone->primaryNeighbors.GetOrAppendUnique(linkedContext);
+      linkedContext->primaryNeighbors.GetOrAppendUnique(portZone);
     }
   }
 

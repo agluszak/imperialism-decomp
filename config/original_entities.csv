@@ -4268,10 +4268,10 @@ address|name|symbol|size|type|prototype|provenance
 55e880|TZone::ReturnFalseForZoneCapabilityFlagD||5|function|undefined ReturnFalseForZoneCapabilityFlagD()|
 55e8a0|TZone::ReturnFalseForZoneCapabilityFlagE||5|function|undefined ReturnFalseForZoneCapabilityFlagE()|
 55e8c0|TZone::HasZoneActiveChildCount||12|function|undefined HasZoneActiveChildCount()|
-55e8e0|TZone::GetOrAppendUniqueZonePointerInPrimaryArray||167|function|undefined GetOrAppendUniqueZonePointerInPrimaryArray()|
-55e9c0|TZone::GetOrAppendUniqueZonePointerInSecondaryArray||167|function|undefined GetOrAppendUniqueZonePointerInSecondaryArray()|
-55ead0|TZone::AppendZonePointerToPrimaryArray||124|function|undefined AppendZonePointerToPrimaryArray()|
-55eba0|TZone::AppendZonePointerToSecondaryArray||124|function|undefined AppendZonePointerToSecondaryArray()|
+55e8e0|TZonePrimaryNeighborStretch::GetOrAppendUnique||167|function|TZone** __thiscall GetOrAppendUnique(TZone* zone)|
+55e9c0|TZoneSecondaryNeighborStretch::GetOrAppendUnique||167|function|TGlobalMapCityScoreRecord** __thiscall GetOrAppendUnique(TGlobalMapCityScoreRecord* entry)|
+55ead0|TZonePrimaryNeighborStretch::Add||124|function|void __thiscall Add(TZone* zone)|
+55eba0|TZoneSecondaryNeighborStretch::Add||124|function|void __thiscall Add(TGlobalMapCityScoreRecord* entry)|
 55ec60|TZone::Free||65|function|undefined RemoveZoneFromGlobalListAndRelease()|
 55ed20|TZone::ReadFrom||564|function|undefined DeserializeZoneFromBinaryStream()|
 55eff0|TZone::WriteTo||88|function|undefined SerializeZoneToBinaryStream()|

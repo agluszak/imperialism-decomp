@@ -183,7 +183,8 @@ TZone** TZonePrimaryNeighborStretch::GetOrAppendUnique(TZone* zone) {
 }
 
 // FUNCTION: IMPERIALISM 0x0055e9c0
-void** TZoneSecondaryNeighborStretch::GetOrAppendUnique(void* entry) {
+TGlobalMapCityScoreRecord**
+TZoneSecondaryNeighborStretch::GetOrAppendUnique(TGlobalMapCityScoreRecord* entry) {
   int count = Count();
   for (int index = 0; index < count; ++index) {
     if (Data()[index] == entry) {
@@ -197,10 +198,10 @@ void** TZoneSecondaryNeighborStretch::GetOrAppendUnique(void* entry) {
     }
     void* grownBuffer = realloc(Data(), (count + 1) * 8);
     if (grownBuffer == 0) {
-      Data() = static_cast<void**>(realloc(Data(), (count + 1) * 4));
+      Data() = static_cast<TGlobalMapCityScoreRecord**>(realloc(Data(), (count + 1) * 4));
       Capacity() = count + 1;
     } else {
-      Data() = static_cast<void**>(grownBuffer);
+      Data() = static_cast<TGlobalMapCityScoreRecord**>(grownBuffer);
       Capacity() = static_cast<int>(doubledCapacity);
     }
   }
@@ -235,7 +236,7 @@ void TZonePrimaryNeighborStretch::Add(TZone* zone) {
 }
 
 // FUNCTION: IMPERIALISM 0x0055eba0
-void TZoneSecondaryNeighborStretch::Add(void* entry) {
+void TZoneSecondaryNeighborStretch::Add(TGlobalMapCityScoreRecord* entry) {
   int index = Count();
   if (index >= Capacity()) {
     unsigned int doubledCapacity = static_cast<unsigned int>((index + 1) * 2);
@@ -244,10 +245,10 @@ void TZoneSecondaryNeighborStretch::Add(void* entry) {
     }
     void* grownBuffer = realloc(Data(), (index + 1) * 8);
     if (grownBuffer == 0) {
-      Data() = static_cast<void**>(realloc(Data(), (index + 1) * 4));
+      Data() = static_cast<TGlobalMapCityScoreRecord**>(realloc(Data(), (index + 1) * 4));
       Capacity() = index + 1;
     } else {
-      Data() = static_cast<void**>(grownBuffer);
+      Data() = static_cast<TGlobalMapCityScoreRecord**>(grownBuffer);
       Capacity() = static_cast<int>(doubledCapacity);
     }
   }
@@ -325,7 +326,7 @@ void TZone::ReadFrom(TStream* stream) {
     short secondaryCount;
     stream->ReadBytes(&secondaryCount, 2);
     for (short j = 0; j < secondaryCount; ++j) {
-      TZone* entry;
+      TGlobalMapCityScoreRecord* entry;
       stream->ReadBytes(&entry, 4);
       if (j >= secondaryNeighbors.Capacity()) {
         secondaryNeighbors.ResizePointerArrayCapacityByRequestedCount(j + 1);
@@ -398,8 +399,8 @@ int TZone::ComputeMapActionContextNodeValueAverage() {
     unsigned int sum = 0;
     for (unsigned int i = 0; i < static_cast<unsigned int>(secondaryNeighbors.Count()); ++i) {
       sum += g_pGlobalMapState
-                 ->cityScoreTable[static_cast<short>(GetCityIndexFromCityStatePointer(
-                     static_cast<TGlobalMapCityScoreRecord*>(secondaryNeighbors[i])))]
+                 ->cityScoreTable[static_cast<short>(
+                     GetCityIndexFromCityStatePointer(secondaryNeighbors[i]))]
                  .cityScoreValue;
     }
     return sum / secondaryNeighbors.Count();
@@ -418,11 +419,11 @@ char TZone::ContainsCityStatePointerInZoneArrayByCityIndex(short cityIndex) {
   if (entryCount == 0) {
     return 0;
   }
-  const void* target = &g_pGlobalMapState->cityScoreTable[cityIndex];
+  const TGlobalMapCityScoreRecord* target = &g_pGlobalMapState->cityScoreTable[cityIndex];
   for (unsigned int entryIndex = 0; entryIndex < entryCount; ++entryIndex) {
     // Inlined bounds-guarded stretch element access, as in the original (mirrors
     // HasSecondaryNeighborWithNationTag / IsZoneMaskOrArrayEntryPresentForKey).
-    void* const* entrySlot =
+    TGlobalMapCityScoreRecord* const* entrySlot =
         (entryIndex < entryCount) ? this->secondaryNeighbors.Data() + entryIndex : 0;
     if (*entrySlot == target) {
       return 1;
@@ -439,13 +440,9 @@ char TZone::HasSecondaryNeighborWithNationTag(short nationTag) {
   }
   for (unsigned int entryIndex = 0; entryIndex < entryCount; ++entryIndex) {
     // Inlined bounds-guarded stretch element access, as in the original.
-    void* const* entrySlot =
+    TGlobalMapCityScoreRecord* const* entrySlot =
         (entryIndex < entryCount) ? this->secondaryNeighbors.Data() + entryIndex : 0;
-    // Read unconditionally as a TGlobalMapCityScoreRecord* (see TZone.h's
-    // UNRESOLVED_FIELD_ATTRIBUTION note on secondaryNeighbors -- this reader has no
-    // port-zone guard); byte 0 of the record is its ownerNationCode00.
-    const void* record = *entrySlot;
-    short entryNationTag = *static_cast<const signed char*>(record);
+    short entryNationTag = (*entrySlot)->ownerNationCode00;
     if (entryNationTag == nationTag) {
       return 1;
     }
@@ -464,13 +461,10 @@ char TZone::IsZoneMaskOrArrayEntryPresentForKey(short key) {
     return 0;
   }
   for (unsigned int entryIndex = 0; entryIndex < entryCount; ++entryIndex) {
-    // Inlined bounds-guarded stretch element access, as in the original (mirrors
-    // HasSecondaryNeighborWithNationTag; same UNRESOLVED_FIELD_ATTRIBUTION caveat in
-    // TZone.h -- no port-zone guard). Byte 0 of the record is its ownerNationCode00.
-    void* const* entrySlot =
+    // Inlined bounds-guarded stretch element access, as in the original.
+    TGlobalMapCityScoreRecord* const* entrySlot =
         (entryIndex < entryCount) ? this->secondaryNeighbors.Data() + entryIndex : 0;
-    const void* record = *entrySlot;
-    short entryKey = *static_cast<const signed char*>(record);
+    short entryKey = (*entrySlot)->ownerNationCode00;
     if (entryKey == key) {
       return 1;
     }
@@ -560,9 +554,7 @@ void TZone::GenerateMapActionContextDisplayNameAndHeadline(void* usedCityFlags,
   if (providedName == 0) {
     int chosenCity = -1;
     // With a used-city bitmap and secondary neighbours, try to feature a random adjacent
-    // city that has not been used yet. Reads the entry unconditionally as a
-    // TGlobalMapCityScoreRecord* -- see TZone.h's UNRESOLVED_FIELD_ATTRIBUTION note on
-    // secondaryNeighbors (this reader has no port-zone guard either).
+    // city that has not been used yet.
     if (usedCity != 0 && secondaryNeighbors.Count() != 0) {
       g_zoneStatusCodePrngSeed_006a5aec = g_zoneStatusCodePrngSeed_006a5aec * 0x15a4e35 + 1;
       unsigned int pick = (g_zoneStatusCodePrngSeed_006a5aec >> 0xc & 0x7fff) %
@@ -573,8 +565,7 @@ void TZone::GenerateMapActionContextDisplayNameAndHeadline(void* usedCityFlags,
       if (static_cast<unsigned int>(secondaryNeighbors.Count()) <= pick) {
         secondaryNeighbors.Count() = pick + 1;
       }
-      TGlobalMapCityScoreRecord* cityRecord = static_cast<TGlobalMapCityScoreRecord*>(
-          static_cast<void*>(secondaryNeighbors.Data()[pick]));
+      TGlobalMapCityScoreRecord* cityRecord = secondaryNeighbors.Data()[pick];
       short tile = cityRecord->linkedRegionIds[0];
       chosenCity = g_pGlobalMapState->terrainStateTable[tile].cityRecordIndex;
       if (usedCity[chosenCity] == '\0') {
@@ -631,11 +622,11 @@ void TZoneSecondaryNeighborStretch::ResizePointerArrayCapacityByRequestedCount(i
   }
   void* grown = realloc(Data(), count * 8);
   if (grown == 0) {
-    Data() = static_cast<void**>(realloc(Data(), count * 4));
+    Data() = static_cast<TGlobalMapCityScoreRecord**>(realloc(Data(), count * 4));
     Capacity() = count;
     return;
   }
-  Data() = static_cast<void**>(grown);
+  Data() = static_cast<TGlobalMapCityScoreRecord**>(grown);
   Capacity() = static_cast<int>(doubled);
 }
 
@@ -1007,8 +998,7 @@ void TZone::ExpandTaskForceTraversalDepthAndMarkDeferredNodes(int remainingDepth
 
   if (depth > 0 && markAdjacentCities != 0) {
     for (int i = secondaryNeighbors.Count() - 1; i >= 0; --i) {
-      TGlobalMapCityScoreRecord* city =
-          static_cast<TGlobalMapCityScoreRecord*>(secondaryNeighbors.Data()[i]);
+      TGlobalMapCityScoreRecord* city = secondaryNeighbors.Data()[i];
       city->navyOrderReachableA0 = 1;
     }
   }
@@ -1352,19 +1342,19 @@ void PopulatePortZoneAdjacencyToNearbyCityContexts(void) {
           short cityIdx = *reinterpret_cast<short*>(
               reinterpret_cast<char*>(g_pGlobalMapState->terrainStateTable) + 0x14 +
               neighborTile * 0x24);
-          int cityRecord;
+          TGlobalMapCityScoreRecord* cityRecord;
           if (cityIdx == -1) {
             cityRecord = 0;
           } else {
-            cityRecord = reinterpret_cast<int>(&g_pGlobalMapState->cityScoreTable[cityIdx]);
+            cityRecord = &g_pGlobalMapState->cityScoreTable[cityIdx];
           }
           if (cityRecord != 0) {
             // Append the neighbour's city context to the secondary list if not already present.
-            int* match = 0;
+            TGlobalMapCityScoreRecord** match = 0;
             if (context->secondaryNeighbors.Count() != 0) {
-              int* entries = reinterpret_cast<int*>(context->secondaryNeighbors.Data());
+              TGlobalMapCityScoreRecord** entries = context->secondaryNeighbors.Data();
               unsigned int j = 0;
-              int* scan = entries;
+              TGlobalMapCityScoreRecord** scan = entries;
               do {
                 if (*scan == cityRecord) {
                   match = entries + j;
@@ -1375,7 +1365,7 @@ void PopulatePortZoneAdjacencyToNearbyCityContexts(void) {
               } while (j < static_cast<unsigned int>(context->secondaryNeighbors.Count()));
             }
             if (match == 0) {
-              context->secondaryNeighbors.GetOrAppendUnique(reinterpret_cast<void*>(cityRecord));
+              context->secondaryNeighbors.GetOrAppendUnique(cityRecord);
             }
           }
         }
@@ -1429,7 +1419,8 @@ void RefreshPortZoneNeighborContextLinksAndFallbacks(void) {
           continue;
         }
 
-        TTerrainStateRecordView& neighborRecord = g_pGlobalMapState->terrainStateTable[neighborTile];
+        TTerrainStateRecordView& neighborRecord =
+            g_pGlobalMapState->terrainStateTable[neighborTile];
         if (neighborRecord.cityRecordIndex != -1) {
           TGlobalMapCityScoreRecord* candidate =
               &g_pGlobalMapState->cityScoreTable[neighborRecord.cityRecordIndex];
@@ -1452,7 +1443,8 @@ void RefreshPortZoneNeighborContextLinksAndFallbacks(void) {
             candidateContext = candidateContext->GetNextPortZone();
           }
         } else if (neighborRecord.ownerNationTag04 >= 0x17) {
-          candidateContext = &g_pActiveMapOrderContext->contextArray[neighborRecord.ownerNationTag04 - 0x17];
+          candidateContext =
+              &g_pActiveMapOrderContext->contextArray[neighborRecord.ownerNationTag04 - 0x17];
         } else {
           candidateContext = 0;
         }
