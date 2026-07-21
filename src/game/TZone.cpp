@@ -1390,5 +1390,84 @@ void PopulatePortZoneAdjacencyToNearbyCityContexts(void) {
   } while (static_cast<short>(tileIndex) < 0x1950);
 }
 
+// Walks every map tile, resolving each to its owning map-order context the same way
+// PopulatePortZoneAdjacencyToNearbyCityContexts does (port zone matched by tile id, or the
+// region-indexed nation context). If the context is itself a capable port zone with no
+// primaryNeighbors yet, links it bidirectionally with its owning nation's context (mirrors
+// ResolvePortZoneOwnerContextAndDispatch, reading tileOrTerrainId0c directly instead of
+// searching outward via FindNearestActiveSeaContextTileFromOffset216). Otherwise, for each
+// of the tile's 6 hex neighbours: a neighbour with a city record resolves to that city's
+// TGlobalMapCityScoreRecord and is appended (if absent) to secondaryNeighbors; a neighbour
+// without one resolves to a port zone or region context (same two-way match as above) and,
+// unless it's this same context or itself a capable port zone, is appended (if absent) to
+// primaryNeighbors. This backfills the primary/secondary neighbour graph for contexts the
+// map-gen pass (PopulatePortZoneAdjacencyToNearbyCityContexts) didn't already reach.
+// FUNCTION: IMPERIALISM 0x00563f50
+void RefreshPortZoneNeighborContextLinksAndFallbacks(void) {
+  for (int tileIndex = 0; static_cast<short>(tileIndex) < 0x1950; ++tileIndex) {
+    TTerrainStateRecordView& tileRecord = g_pGlobalMapState->terrainStateTable[tileIndex];
+    TZone* zone;
+    if (tileRecord.tileActionClass16 == 3 || tileRecord.tileActionClass16 == 0xe) {
+      zone = TZone::FindPortZoneByTile(static_cast<short>(tileIndex));
+    } else if (tileRecord.ownerNationTag04 >= 0x17) {
+      zone = &g_pActiveMapOrderContext->contextArray[tileRecord.ownerNationTag04 - 0x17];
+    } else {
+      zone = 0;
+    }
+
+    if (zone != 0 && zone->QueryPortZoneCapability()) {
+      if (zone->primaryNeighbors.Count() == 0) {
+        short tileIdx = static_cast<short>(zone->tileOrTerrainId0c);
+        short ownerNation = g_pGlobalMapState->terrainStateTable[tileIdx].ownerNationTag04;
+        TZone* contextElement = &g_pActiveMapOrderContext->contextArray[ownerNation - 0x17];
+        zone->primaryNeighbors.GetOrAppendUnique(contextElement);
+        contextElement->primaryNeighbors.GetOrAppendUnique(zone);
+      }
+    } else if (zone != 0) {
+      for (int direction = 0; direction < 6; ++direction) {
+        short neighborTile = TMapMgr::StepHexTileIndexByDirectionWithWrapRules(
+            static_cast<short>(tileIndex), static_cast<short>(direction));
+        if (neighborTile == -1) {
+          continue;
+        }
+
+        TTerrainStateRecordView& neighborRecord = g_pGlobalMapState->terrainStateTable[neighborTile];
+        if (neighborRecord.cityRecordIndex != -1) {
+          TGlobalMapCityScoreRecord* candidate =
+              &g_pGlobalMapState->cityScoreTable[neighborRecord.cityRecordIndex];
+          if (!zone->secondaryNeighbors.ContainsEntry(candidate)) {
+            zone->secondaryNeighbors.GetOrAppendUnique(candidate);
+          }
+          continue;
+        }
+
+        TZone* candidateContext;
+        if (neighborRecord.tileActionClass16 == 3 || neighborRecord.tileActionClass16 == 0xe) {
+          // Inlined FindPortZoneByTile(neighborTile): match a port zone by any of its tile ids.
+          candidateContext = TZone::GetFirstPortZone();
+          while (candidateContext != 0) {
+            if (static_cast<short>(candidateContext->tileOrTerrainId0c) == neighborTile ||
+                candidateContext->activeTileIndex20 == neighborTile ||
+                static_cast<TPortZone*>(candidateContext)->field48 == neighborTile) {
+              break;
+            }
+            candidateContext = candidateContext->GetNextPortZone();
+          }
+        } else if (neighborRecord.ownerNationTag04 >= 0x17) {
+          candidateContext = &g_pActiveMapOrderContext->contextArray[neighborRecord.ownerNationTag04 - 0x17];
+        } else {
+          candidateContext = 0;
+        }
+
+        if (candidateContext != 0 && candidateContext != zone &&
+            !candidateContext->QueryPortZoneCapability() &&
+            !zone->primaryNeighbors.ContainsEntry(candidateContext)) {
+          zone->primaryNeighbors.GetOrAppendUnique(candidateContext);
+        }
+      }
+    }
+  }
+}
+
 // 0x00564570 (FindMapActionContextContainingNodeByIndex) is a real TOcean __thiscall
 // method; body lives in TOcean.cpp.
