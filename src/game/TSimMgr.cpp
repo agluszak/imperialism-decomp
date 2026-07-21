@@ -48,19 +48,19 @@ int __cdecl TouchSessionActiveNationId(void);
 void __cdecl ResetPortZoneGlobalContextCounters(void);
 void RegenerateAllMapActionContextStatusCodes();
 
-static inline bool IsNationTerrainEligible(short nationSlot) {
+static inline bool IsNationEligibleForOptionalPhase(short nationSlot) {
   if (nationSlot == -1) {
     return false;
   }
-  TCountry* terrain = g_apTerrainTypeDescriptorTable[nationSlot];
-  if (terrain == nullptr) {
+  TCountry* country = g_apTerrainTypeDescriptorTable[nationSlot];
+  if (country == nullptr) {
     return false;
   }
   if (nationSlot > 6) {
     return true;
   }
-  const short code = terrain->encodedNationSlot;
-  return code < 100 || code >= 200;
+  const short profileCode = country->encodedNationSlot;
+  return profileCode < 100 || profileCode >= 200;
 }
 
 // FUNCTION: IMPERIALISM 0x004153a0
@@ -118,16 +118,16 @@ TSimMgr::TSimMgr() : sharedTextSlots() {
     sharedTextSlots[i] = empty;     // -> 0x00605a29 CString::operator=
   }
 
-  quarterGateTick2c = 0;
+  economicTurn = 0;
   activeNationSlot = -1;
-  field30 = 7;
-  field34 = 0x10;
+  numGreatPowers = 7;
+  numMinorCountries = 0x10;
 
   // Copy the per-nation scenario setup table (DAT_00698b1a) into the four contiguous
-  // scenarioSetupRows arrays. The original reads 4 shorts per iteration at table[-1..2]
-  // with stride 4, scattering them via one cursor anchored at scenarioSetupRows1
+  // GameSetup policy rows arrays. The original reads 4 shorts per iteration at table[-1..2]
+  // with stride 4, scattering them via one cursor anchored at cityMinisterPolicyIds
   // (+0xe8): [-7] hits rows0, [0] rows1, [7] rows2, [14] rows3.
-  short* destCursor = scenarioSetupRows1;
+  short* destCursor = cityMinisterPolicyIds;
   const short* tableCursor = g_anScenarioNationSetupTable_00698B1A;
   for (int row = 0; row < 7; ++row) {
     destCursor[-7] = tableCursor[-1];
@@ -138,9 +138,9 @@ TSimMgr::TSimMgr() : sharedTextSlots() {
     tableCursor += 4;
   }
 
-  fieldd8 = 0;
-  field112 = 0;
-  stateFlag114 = 0;
+  multiplayerGameActive = 0;
+  reloadPoliticalMapState = 0;
+  scenarioMapIndexPlusOne = 0;
   multiplayerSessionRole = 0;
 }
 
@@ -150,7 +150,7 @@ TSimMgr::~TSimMgr() {}
 
 // FUNCTION: IMPERIALISM 0x0057bbf0
 void TSimMgr::InitializeTurnFlowStateDefaults() {
-  quarterGateTick2c = 0;
+  economicTurn = 0;
   activeNationSlot = -1;
   field14 = 0;
   turnStateCode = 1;
@@ -254,9 +254,9 @@ void TSimMgr::ReadFrom(TStream* stream) {
     short years;
     stream->ReadBytes(&quarters, 2);
     stream->ReadBytes(&years, 2);
-    quarterGateTick2c = quarters + years * 4;
+    economicTurn = quarters + years * 4;
   } else {
-    stream->ReadBytes(&quarterGateTick2c, 2);
+    stream->ReadBytes(&economicTurn, 2);
   }
 
   stream->ReadBytes(&activeNationSlot, 2);
@@ -265,8 +265,8 @@ void TSimMgr::ReadFrom(TStream* stream) {
   stream->ReadBytes(&previousTurnStateCode, 2);
   stream->ReadBytes(&previousMode, 2);
   stream->ReadBytes(&field14, 1);
-  stream->ReadBytes(&field30, 4);
-  stream->ReadBytes(&field34, 4);
+  stream->ReadBytes(&numGreatPowers, 4);
+  stream->ReadBytes(&numMinorCountries, 4);
   stream->ReadBytes(&turnFlowStatusFlags, 4);
 
   if (g_nSaveFormatVersion >= 0x20) {
@@ -274,10 +274,10 @@ void TSimMgr::ReadFrom(TStream* stream) {
   }
 
   if (g_nSaveFormatVersion < 0x2d) {
-    stream->ReadBytes(&fieldd8, 0x3c);
-    stateFlag114 = 0;
+    stream->ReadBytes(&multiplayerGameActive, 0x3c);
+    scenarioMapIndexPlusOne = 0;
   } else {
-    stream->ReadBytes(&fieldd8, 0x3e);
+    stream->ReadBytes(&multiplayerGameActive, 0x3e);
   }
 
   if (g_nSaveFormatVersion < 0x2e) {
@@ -306,7 +306,7 @@ void TSimMgr::ReadFrom(TStream* stream) {
     field6a = selectedIndex;
     g_pUiViewManager->EnsurePictWvDataGobLoadedBySlot(selectedIndex);
   } else {
-    field6a = (stateFlag114 != 0) ? 1 : 0;
+    field6a = (scenarioMapIndexPlusOne != 0) ? 1 : 0;
     g_pUiViewManager->EnsurePictWvDataGobLoadedBySlot(field6a);
   }
 
@@ -342,7 +342,7 @@ void TSimMgr::ReadFrom(TStream* stream) {
   RebuildNationStateSlotsAndAvailability(0);
 
   turnStateCode = 4;
-  PostMainWindowCommand100ForTurnFlow();
+  StartNextPhase();
 }
 
 // FUNCTION: IMPERIALISM 0x0057c230
@@ -350,18 +350,18 @@ void TSimMgr::WriteTo(TStream* stream) {
   int i;
   TObject::WriteTo(stream);
 
-  stream->WriteBytesSlot78(&quarterGateTick2c, 2);
+  stream->WriteBytesSlot78(&economicTurn, 2);
   stream->WriteBytesSlot78(&activeNationSlot, 2);
   stream->WriteBytesSlot78(&turnStateCode, 2);
   stream->WriteBytesSlot78(&mode, 2);
   stream->WriteBytesSlot78(&previousTurnStateCode, 2);
   stream->WriteBytesSlot78(&previousMode, 2);
   stream->WriteBytesSlot78(&field14, 1);
-  stream->WriteBytesSlot78(&field30, 4);
-  stream->WriteBytesSlot78(&field34, 4);
+  stream->WriteBytesSlot78(&numGreatPowers, 4);
+  stream->WriteBytesSlot78(&numMinorCountries, 4);
   stream->WriteBytesSlot78(&turnFlowStatusFlags, 4);
   stream->streamSlot7c(static_cast<unsigned char>(difficultyLevel));
-  stream->WriteBytesSlot78(&fieldd8, 0x3e);
+  stream->WriteBytesSlot78(&multiplayerGameActive, 0x3e);
   stream->WriteBytesSlot78(&field_64, 4);
   stream->WriteBytesSlot78(&field15, 0x17);
   stream->WriteBytesSlot78(&multiplayerSessionRole, 4);
@@ -390,7 +390,7 @@ void TSimMgr::RebuildGlobalOrderManagersAndCapabilityState(char flag) {
   if (((flag != 0) && (g_bMultiplayerScenarioSetupActive == 0)) ||
       ((flag == 0) && (g_bMultiplayerScenarioSetupActive != 0))) {
     if (flag != 0) {
-      short* destCursor = scenarioSetupRows1;
+      short* destCursor = cityMinisterPolicyIds;
       const short* srcCursor = g_anScenarioNationSetupTable_00698B1A;
       do {
         destCursor[-7] = srcCursor[-1];
@@ -400,22 +400,22 @@ void TSimMgr::RebuildGlobalOrderManagersAndCapabilityState(char flag) {
         destCursor += 1;
         srcCursor += 4;
       } while (srcCursor < g_anScenarioNationSetupTable_00698B1A + 28);
-      fieldd8 = 0;
-      field112 = 0;
+      multiplayerGameActive = 0;
+      reloadPoliticalMapState = 0;
     }
 
-    field30 = 0;
-    fieldd8 = (multiplayerSessionRole != 0) ? 1 : 0;
+    numGreatPowers = 0;
+    multiplayerGameActive = (multiplayerSessionRole != 0) ? 1 : 0;
     for (i = 0; i < 7; ++i) {
       if (field15[i] != 0) {
-        field30++;
+        numGreatPowers++;
       }
     }
 
-    field34 = 0;
+    numMinorCountries = 0;
     for (i = 7; i < 0x17; ++i) {
       if (field15[i] != 0) {
-        field34++;
+        numMinorCountries++;
       }
     }
 
@@ -524,7 +524,7 @@ void TSimMgr::RebuildMapContextAndGlobalMapState(int arg1, const char* arg2, int
 
 // FUNCTION: IMPERIALISM 0x0057c9a0
 unsigned char TSimMgr::RecreateActiveMapContextAndInitializeGlobalMapState(int scenarioIndex) {
-  stateFlag114 = static_cast<short>(scenarioIndex + 1);
+  scenarioMapIndexPlusOne = static_cast<short>(scenarioIndex + 1);
 
   if (g_pActiveMapOrderContext != nullptr) {
     g_pActiveMapOrderContext->Free();
@@ -553,9 +553,9 @@ void TSimMgr::RebuildNationStateSlotsAndAvailability(int activate) {
 
     for (i = 0; i < 7; ++i) {
       int val = profileBySlot[i];
-      scenarioSetupRows1[i] = g_anScenarioNationSetupTable_00698B1A[val * 4];
-      scenarioSetupRows2[i] = g_anScenarioNationSetupTable_00698B1A[val * 4 + 1];
-      scenarioSetupRows3[i] = g_anScenarioNationSetupTable_00698B1A[val * 4 + 2];
+      cityMinisterPolicyIds[i] = g_anScenarioNationSetupTable_00698B1A[val * 4];
+      foreignMinisterPolicyIds[i] = g_anScenarioNationSetupTable_00698B1A[val * 4 + 1];
+      defenseMinisterPolicyIds[i] = g_anScenarioNationSetupTable_00698B1A[val * 4 + 2];
     }
   }
 
@@ -564,11 +564,11 @@ void TSimMgr::RebuildNationStateSlotsAndAvailability(int activate) {
       int activeSessionId = g_pGameFlowState->nationSessionIds[i];
       int activeNationId = TouchSessionActiveNationId();
       if (activeSessionId == activeNationId) {
-        scenarioSetupRows0[i] = 1;
+        nationControlModes[i] = 1;
       } else if (multiplayerSessionRole == 2) {
-        scenarioSetupRows0[i] = 4;
+        nationControlModes[i] = 4;
       } else {
-        scenarioSetupRows0[i] = (activeSessionId != 0) ? 3 : 2;
+        nationControlModes[i] = (activeSessionId != 0) ? 3 : 2;
       }
     }
   }
@@ -622,7 +622,7 @@ void TSimMgr::RebuildPrimaryNationStateForSlot(int slotIndex, char activate) {
   g_apNationStates[nationIndex] = nullptr;
   g_apTerrainTypeDescriptorTable[nationIndex] = nullptr;
 
-  short setupMode = scenarioSetupRows0[nationIndex];
+  short setupMode = nationControlModes[nationIndex];
   if (setupMode == 1) {
     unsigned char useClientNation = multiplayerSessionRole == 2;
     if (useClientNation != 0) {
@@ -676,7 +676,7 @@ void TSimMgr::RebuildPrimaryNationStateForSlot(int slotIndex, char activate) {
       g_apTerrainTypeDescriptorTable[nationIndex]->identitySharedString1 = nationName;
     }
 
-    if (activate != 0 && stateFlag114 != 0) {
+    if (activate != 0 && scenarioMapIndexPlusOne != 0) {
       TCity* city = pTVar5 != nullptr ? pTVar5->city : nullptr;
       pTVar5->ApplyScenarioRelationPresetAndSpawnFrogCity(city);
     }
@@ -708,8 +708,8 @@ void TSimMgr::RebuildPrimaryNationStateForSlot(int slotIndex, char activate) {
     // bare TGreatPower (whose object size is 0x964, too small for the tail AI state block).
     TAutoGreatPower* pTVar5 = new TAutoGreatPower();
     pTVar5->InitializeNationMinisterSubsystemsByPolicyIds(
-        slotIndex, 2, scenarioSetupRows1[nationIndex], scenarioSetupRows2[nationIndex],
-        scenarioSetupRows3[nationIndex]);
+        slotIndex, 2, cityMinisterPolicyIds[nationIndex], foreignMinisterPolicyIds[nationIndex],
+        defenseMinisterPolicyIds[nationIndex]);
     g_apNationStates[nationIndex] = pTVar5;
     g_apTerrainTypeDescriptorTable[nationIndex] = pTVar5;
 
@@ -762,7 +762,7 @@ void TSimMgr::RebuildSecondaryNationStateForSlot(int slotIndex) {
 
   int nationIndex = nationSlot;
   TMinor* minor = nullptr;
-  if (nationIndex < field34 + 7 && multiplayerSessionRole == 2) {
+  if (nationIndex < numMinorCountries + 7 && multiplayerSessionRole == 2) {
     if (g_apSecondaryNationStateSlots[nationIndex] != nullptr) {
       g_apSecondaryNationStateSlots[nationIndex]->Free();
     }
@@ -770,7 +770,7 @@ void TSimMgr::RebuildSecondaryNationStateForSlot(int slotIndex) {
     g_apTerrainTypeDescriptorTable[nationIndex] = nullptr;
     minor = new TRemoteMinor();
     minor->InitializeSecondaryNationStateAndSelectHomeTile(slotIndex);
-  } else if (nationIndex < field34 + 7) {
+  } else if (nationIndex < numMinorCountries + 7) {
     if (g_apSecondaryNationStateSlots[nationIndex] != nullptr) {
       g_apSecondaryNationStateSlots[nationIndex]->Free();
     }
@@ -811,69 +811,61 @@ void TSimMgr::RebuildSecondaryNationStateForSlot(int slotIndex) {
 }
 
 // FUNCTION: IMPERIALISM 0x0057d830
-void TSimMgr::FormatSeasonName(CString* destString) {
-  short offset = quarterGateTick2c % 4;
+void TSimMgr::GetSeason(CString* destString) {
+  short offset = economicTurn % 4;
   GetString(10000, offset, destString);
 }
 
 // FUNCTION: IMPERIALISM 0x0057d870
 void TSimMgr::SetDifficultyLevel(int difficulty) {
-  char zeroFlag = 0;
+  signed char zeroFlag = 0;
   difficultyLevel = difficulty;
   if (difficulty != 0) {
     if (0 < difficulty && difficulty <= 4) {
-      this->preferenceValues[10] = 0;
+      this->preferenceValues[10] = static_cast<short>(zeroFlag);
       return;
     }
   } else {
     zeroFlag = 1;
   }
-  this->preferenceValues[10] = zeroFlag;
+  this->preferenceValues[10] = static_cast<short>(zeroFlag);
 }
 
 // FUNCTION: IMPERIALISM 0x0057d8b0
-short TSimMgr::GetTurnTickSlot3C() {
-  return quarterGateTick2c;
+short TSimMgr::GetEconomicTurn() {
+  return economicTurn;
 }
 
 // FUNCTION: IMPERIALISM 0x0057d8d0
-void TSimMgr::CopyScenarioNationSetupIntoFlowState(void* setupBuffer) {
-  struct ScenarioSetupBuffer {
-    unsigned char flagD8;
-    unsigned char padding;
-    short nationSetup[4][7];
-    unsigned char flag112;
-  };
-  const ScenarioSetupBuffer* buf = static_cast<const ScenarioSetupBuffer*>(setupBuffer);
-
+void TSimMgr::SetGameSetupValues(GameSetup* setup) {
   for (int i = 0; i < 7; ++i) {
-    scenarioSetupRows0[i] = buf->nationSetup[0][i];
-    scenarioSetupRows1[i] = buf->nationSetup[1][i];
-    scenarioSetupRows2[i] = buf->nationSetup[2][i];
-    scenarioSetupRows3[i] = buf->nationSetup[3][i];
+    nationControlModes[i] = setup->nationControlModes[i];
+    cityMinisterPolicyIds[i] = setup->cityMinisterPolicyIds[i];
+    foreignMinisterPolicyIds[i] = setup->foreignMinisterPolicyIds[i];
+    defenseMinisterPolicyIds[i] = setup->defenseMinisterPolicyIds[i];
   }
 
-  fieldd8 = buf->flagD8;
-  if (buf->flag112 != 0) {
-    field112 = 1;
+  multiplayerGameActive = setup->multiplayerGameActive;
+  if (setup->reloadPoliticalMapState != 0) {
+    reloadPoliticalMapState = 1;
   }
 }
 
 // FUNCTION: IMPERIALISM 0x0057d950
-void TSimMgr::IncrementQuarterGateTick2C() {
-  ++quarterGateTick2c;
+void TSimMgr::AdvanceSeason() {
+  ++economicTurn;
 }
 
 // FUNCTION: IMPERIALISM 0x0057d970
-void TSimMgr::PostMainWindowCommand100ForTurnFlow() {
+void TSimMgr::StartNextPhase() {
   g_pImperialismApp->PostStartupCommand100();
 }
 
 // FUNCTION: IMPERIALISM 0x0057d990
-void TSimMgr::SetGlobalTurnStateCodeIfAllowed(int turnStateCode) {
-  bool allowStateChange = IsNationTerrainEligible(activeNationSlot);
-  if (allowStateChange == false) {
-    switch (turnStateCode) {
+void TSimMgr::EnterOptionalPhase(int gamePhase) {
+  bool mayEnterPhase = IsNationEligibleForOptionalPhase(activeNationSlot);
+  if (mayEnterPhase == false) {
+    switch (gamePhase) {
     case 100:
     case 0x67:
     case 0x68:
@@ -883,11 +875,12 @@ void TSimMgr::SetGlobalTurnStateCodeIfAllowed(int turnStateCode) {
       return;
     }
   }
-  int previousMode = this->turnStateCode;
-  this->turnStateCode = turnStateCode;
+
+  int oldPhase = this->turnStateCode;
+  this->turnStateCode = gamePhase;
   this->previousMode = mode;
-  previousTurnStateCode = previousMode;
-  PostMainWindowCommand100ForTurnFlow();
+  previousTurnStateCode = oldPhase;
+  StartNextPhase();
 }
 
 // TSimMgr::AdvanceGlobalTurnStateMachine (0x0057da70) is defined in its own translation unit,
@@ -926,7 +919,7 @@ int TSimMgr::ReturnZeroSlot6c() {
 }
 
 // FUNCTION: IMPERIALISM 0x0057f4b0
-void TSimMgr::MergeTurnFlowStatusFlags(unsigned int flags) {
+void TSimMgr::SetFlags(unsigned int flags) {
   turnFlowStatusFlags |= flags;
 }
 
@@ -1040,13 +1033,18 @@ void TSimMgr::GetString(short codeGroup, short offset, CString* destString) {
 void TSimMgr::FormatDiplomacyNoticeTextByPolicyOrGrantCode(CString*, short*) {}
 
 // FUNCTION: IMPERIALISM 0x005811e0
-int TSimMgr::GetField30(void) {
-  return field30;
+int TSimMgr::GetNumGPs(void) {
+  return numGreatPowers;
 }
 
 // FUNCTION: IMPERIALISM 0x00581200
-void TSimMgr::DecrementField30Value() {
-  --field30;
+void TSimMgr::ReduceNumGPs() {
+  --numGreatPowers;
+}
+
+// FUNCTION: IMPERIALISM 0x00581240
+int TSimMgr::GetNumCountries() {
+  return numMinorCountries + numGreatPowers;
 }
 
 // FUNCTION: IMPERIALISM 0x00581260
@@ -1105,7 +1103,7 @@ void TSimMgr::RemoveNationSlotAndNotifyPeers(short nationSlot) {
   g_apNationStates[nationSlot] = 0;
   g_apTerrainTypeDescriptorTable[nationSlot] = 0;
   field15[nationSlot] = 0;
-  --field30;
+  --numGreatPowers;
   g_pDiplomacyTurnStateManager->RemoveNationSlotAndNotifyPeers_Impl(nationSlot);
 }
 
@@ -1220,7 +1218,7 @@ void ReinitializeGameFlowAndPostTurnEventCode(int eventCode) {
   }
   if (eventCode == 0x5dd) {
     TSimMgr* simMgr = g_pSimMgr;
-    simMgr->quarterGateTick2c = 0;
+    simMgr->economicTurn = 0;
     simMgr->activeNationSlot = -1;
     simMgr->field14 = 0;
     simMgr->turnStateCode = 1;
@@ -1240,7 +1238,7 @@ void ReinitializeGameFlowAndPostTurnEventCode(int eventCode) {
     g_pSimMgr->Free();
     g_pSimMgr = new TSimMgr();
     g_pSimMgr->InitializeTurnFlowStateDefaults();
-    g_pSimMgr->PostMainWindowCommand100ForTurnFlow();
+    g_pSimMgr->StartNextPhase();
     if (eventCode != 0) {
       g_pGlobalUiRootController->PostTurnEventCodeMessage2420(static_cast<short>(eventCode));
     }
@@ -1647,7 +1645,7 @@ void TSimMgr::HandleTurnInstruction_Year_UpdateScenarioYearFieldScaledBy4(void* 
   unsigned char* raw = reinterpret_cast<unsigned char*>(&token);
   raw[0] = raw[3];
   raw[1] = raw[2];
-  quarterGateTick2c = static_cast<short>(token) * 4;
+  economicTurn = static_cast<short>(token) * 4;
 }
 
 // Reads a big-endian short city-record index and a big-endian nation tag, then dispatches

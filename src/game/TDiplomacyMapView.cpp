@@ -1366,7 +1366,7 @@ void TDiplomacyMapView::DrawVoteNuggets() {
 }
 
 // 0x005DA040 and 0x005DA180 moved to TViewMgr::HandleTurnEventVtableSlot60ActivateMainDialog
-// / HandleTurnEventVtableSlot64RefreshMainHudTitles (src/game/TViewMgr.cpp): the vtable
+// / HandleTurnEvent2260_RefreshMainHudTitles (src/game/TViewMgr.cpp): the vtable
 // evidence (`just vtable TViewMgr`) shows both are TViewMgr's own vtable slots 0x60/0x64, not
 // TDiplomacyMapView methods -- neither body ever reads `this`, and this class's prior
 // attribution called TView::SetHoverHelpText with an implicit (wrong) `this` receiver

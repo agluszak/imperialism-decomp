@@ -90,7 +90,7 @@ undefined TArmyMgr::OrphanCallChain_C4_I26_004a1e40() {
   // TMultiplayerMgr.cpp); == 2 selects the alternate branch here.
   if (g_pSimMgr->multiplayerSessionRole == 2) {
     this->IterateLinkedListCursorAndClearPerTileByte0F();
-    g_pSimMgr->PostMainWindowCommand100ForTurnFlow();
+    g_pSimMgr->StartNextPhase();
   } else {
     this->ProcessTileUnitListsAndApplyRandomStatusUpdates();
     this->pendingRebuildFlag10 = 1;
@@ -126,7 +126,7 @@ void TArmyMgr::ReleaseThreeLinkedObjectsAndResetTerrainDescriptorFlags() {
     }
   }
   this->needsTerrainRefreshFlag39a = 0;
-  g_pSimMgr->PostMainWindowCommand100ForTurnFlow();
+  g_pSimMgr->StartNextPhase();
 }
 
 // FUNCTION: IMPERIALISM 0x004a1f80
@@ -1532,7 +1532,7 @@ bool TArmyMgr::BuildMapOrderContextSummaryStringForNation(short cityRecordIndex,
 
   // Phase 3: tally the city's stationed units into 11 resource buckets via a
   // per-strength-tier weighted roll, seeded from the city/turn/nation.
-  short turnTick = g_pSimMgr->GetTurnTickSlot3C();
+  short turnTick = g_pSimMgr->GetEconomicTurn();
   short activeNationId = g_pSimMgr->GetActiveNationId();
   int seed = cityRecordIndex + turnTick + activeNationId;
   if (seed == 0) {

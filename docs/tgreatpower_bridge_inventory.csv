@@ -31,7 +31,7 @@ List_ReadFromStreamSlot18,1146,TPtrList,direct Call18,,P3,done
 GlobalMapState_GetTerrainRecord,264,TGlobalMapState,unused dead bridge removed,,P3,done
 ReleaseAndClear24,337,TPtrList,unused template removed,,P3,done
 ReleaseAndClear58,344,TPtrList,unused template removed,,P3,done
-LocalizationRuntime_GetTurnTick,294,TLocalizationRuntime,direct GetTurnTickSlot3C,,P3,done
+TSimMgr_GetEconomicTurn,294,TSimMgr,direct GetEconomicTurn,,P3,done
 ReleaseObjectAtSlot1C,382,TTrackedObject,direct Release1C,,P3,done
 Object_CallSlot30NoArgs,388,TTrackedObject,direct Call30,,P3,done
 Object_CallSlot8CNoArgs,400,TMinister,direct Call8C,,P3,done
@@ -47,7 +47,7 @@ SecondaryState_SetPolicyValue48,593,TMinor,direct SetDiplomacyStandingSlot48,,P3
 SecondaryState_CallSlot4C,598,TMinor,direct VTableSlot4C_Provisional,,P3,done
 CityOrderCapabilityByte277,1136,TCityOrderCapabilityState,direct orderCapRows277 lookup,,P3,done
 IsNationSlotEligibleForEventProcessingFast,325,TDiplomacyTurnStateManager,nation_slot_eligibility.h direct call,,P3,done
-CallGetField30ThunkWithManager,REMOVED,TLocalizationRuntime,GetField30() method,,P3,done
+CallGetNumGPsThunkWithManager,REMOVED,TSimMgr,GetNumGPs() method,,P3,done
 TownMarker_IsTransportLinkedAndEnabled,REMOVED,TTownMarker,IsTransportLinkedAndEnabled() @ 0x5b7830,,P3,done
 IsTurnCooldownCounterActiveOrResetFlagAsChar,343,turn_flow_cooldown.h,IsTurnCooldownCounterActiveOrResetFlag,,P3,done
 TemporarilyClearAndRestoreUiInvalidationFlag,533,ui_invalidation_guard.h,direct call (path/line ignored),,P3,done

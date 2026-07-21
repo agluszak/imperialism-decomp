@@ -38,7 +38,7 @@ void TFlagOptionsPicture::HandleEvent(int commandId, TEventHandler* sourceHandle
     } else if (tag == kControlTagCred) {
       TWindow* owner = static_cast<TWindow*>(OwnerPanel());
       owner->NotifyDialogBehaviorCommandArmed(kControlTagOkay, 0);
-      g_pSimMgr->SetGlobalTurnStateCodeIfAllowed(0x71);
+      g_pSimMgr->EnterOptionalPhase(0x71);
     } else if (tag == kControlTagNewg || tag == kControlTagQuit) {
       if (g_pUiRuntimeContext->DispatchGameStateEventIfLocalizedPromptAccepted(tag)) {
         TWindow* owner = static_cast<TWindow*>(OwnerPanel());
@@ -61,12 +61,12 @@ void TFlagOptionsPicture::HandleEvent(int commandId, TEventHandler* sourceHandle
       } else {
         TWindow* owner = static_cast<TWindow*>(OwnerPanel());
         owner->NotifyDialogBehaviorCommandArmed(tag, 0);
-        g_pSimMgr->SetGlobalTurnStateCodeIfAllowed(0x70);
+        g_pSimMgr->EnterOptionalPhase(0x70);
       }
     } else if (tag == kControlTagPref) {
       TWindow* owner = static_cast<TWindow*>(OwnerPanel());
       owner->NotifyDialogBehaviorCommandArmed(tag, 0);
-      g_pSimMgr->SetGlobalTurnStateCodeIfAllowed(0x6b);
+      g_pSimMgr->EnterOptionalPhase(0x6b);
     } else if (tag == kControlTagSave) {
       TWindow* owner = static_cast<TWindow*>(OwnerPanel());
       owner->NotifyDialogBehaviorCommandArmed(tag, 0);
@@ -75,7 +75,7 @@ void TFlagOptionsPicture::HandleEvent(int commandId, TEventHandler* sourceHandle
         g_pUiRuntimeContext->DispatchLocalizedUiMessageWithTemplateA13A0(
             text, &g_cstrQueryFloaterMessageStore, 0, 0);
       } else {
-        g_pSimMgr->SetGlobalTurnStateCodeIfAllowed(0x6f);
+        g_pSimMgr->EnterOptionalPhase(0x6f);
       }
     } else {
       TControl::HandleEvent(commandId, sourceHandler, event);

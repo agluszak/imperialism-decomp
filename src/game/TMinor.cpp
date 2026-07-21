@@ -115,7 +115,7 @@ void TMinor::InitializeSecondaryNationStateAndSelectHomeTile(short nationSlot) {
 
   if (g_bMultiplayerScenarioSetupActive == 0) {
     char noImmediateDispatch = ShouldDispatchImmediatelySlot28() == 0;
-    if (noImmediateDispatch || g_pSimMgr->stateFlag114 != 0) {
+    if (noImmediateDispatch || g_pSimMgr->scenarioMapIndexPlusOne != 0) {
       TLongintList* candidateTiles = new TLongintList();
       short selectedTile = -1;
       short tile;

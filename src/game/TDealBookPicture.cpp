@@ -298,8 +298,8 @@ void TDealBookPicture::SwitchPages() {
 
     CString seasonName;
     CString yearText;
-    yearText.Format(g_szDecimalFormat, 0x717 + g_pSimMgr->quarterGateTick2c / 4);
-    g_pSimMgr->FormatSeasonName(&seasonName);
+    yearText.Format(g_szDecimalFormat, 0x717 + g_pSimMgr->economicTurn / 4);
+    g_pSimMgr->GetSeason(&seasonName);
     CString headerText = seasonName + s_szSpaceSeparator_00695794 + yearText;
     rtilControl->SetTextAndMaybeRefresh(&headerText, 0);
 

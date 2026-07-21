@@ -124,10 +124,10 @@ undefined TScenarioChooser::ApplyScenarioSelectionAndPostTurnEvent5E4() {
   } else {
     g_pSimMgr->SetActiveNationSlotAndRefreshCityCapabilityUiHandles(mapControl->selectedNation68);
     for (int i = 0; i < 7; ++i) {
-      g_pSimMgr->scenarioSetupRows0[i] = 2;
+      g_pSimMgr->nationControlModes[i] = 2;
     }
-    g_pSimMgr->scenarioSetupRows0[mapControl->selectedNation68] = 1;
-    g_pSimMgr->PostMainWindowCommand100ForTurnFlow();
+    g_pSimMgr->nationControlModes[mapControl->selectedNation68] = 1;
+    g_pSimMgr->StartNextPhase();
   }
   return 0;
 }

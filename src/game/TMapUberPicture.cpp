@@ -212,7 +212,7 @@ void TMapUberPicture::HandleEvent(int commandId, TEventHandler* sourceHandler, T
     } else if (tag == kControlTagSend) {
       if ((GetAsyncKeyState(VK_CONTROL) & 0x8000) != 0) {
         if (g_pGameFlowState->fieldF4 != 0) {
-          g_pSimMgr->SetGlobalTurnStateCodeIfAllowed(0x72);
+          g_pSimMgr->EnterOptionalPhase(0x72);
         }
         // else: falls through with no further action in the original.
         return;
