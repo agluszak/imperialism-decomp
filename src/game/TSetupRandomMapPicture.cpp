@@ -395,8 +395,9 @@ void TSetupRandomMapPicture::MajorTomToGroundControl(unsigned char mode) {
 
   TView* settingsPanel = ResolveControlByTag(kControlTagStuf);
   settingsPanel->AssertValid();
-  int layout[4] = {0x7d0, 0x898, 0x120, 4};
-  settingsPanel->CaptureLayoutF0(layout, 0);
+  int hiddenSettingsPanelPosition[2] = {0x7d0, 0x898};
+  int visibleSettingsPanelPosition[2] = {0x120, 4};
+  settingsPanel->CaptureLayoutF0(hiddenSettingsPanelPosition, 0);
 
   SetPictureResourceIdAndRefresh(0x1195, true);
   TPicture* coatView = static_cast<TPicture*>(ResolveControlByTag(kControlTagCoat));
@@ -422,7 +423,7 @@ void TSetupRandomMapPicture::MajorTomToGroundControl(unsigned char mode) {
   mapPreview->EnhancePhoto();
 
   countryControl->SetEnabled(1, 0);
-  settingsPanel->CaptureLayoutF0(layout, 0);
+  settingsPanel->CaptureLayoutF0(visibleSettingsPanelPosition, 0);
   SetPictureResourceIdAndRefresh(0x11bc, true);
   coatView->SetPictureResourceIdAndRefresh(static_cast<short>(selectedNationSlot9A + 0x11c6), true);
 
