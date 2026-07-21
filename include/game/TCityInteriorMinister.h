@@ -43,8 +43,16 @@ public:
   virtual void InteriorSlot1F(int arg) override;   // slot 0x1f 0x4be7f0
   virtual void CityInteriorSlot20();               // slot 0x20 0x4bed60
   virtual undefined VTableSlot21(int arg);         // slot 0x21 0x4bf8a0
-  virtual undefined GetTEventHandlerClassNamePointer_22(int arg1,
-                                                        int unusedArg2); // slot 0x22 0x4bfa50
+  // Dispatches production-order-queueing helpers for `city`: exactly one of
+  // QueueCityProductionCommand17Or18FromSupportRatio (lowProductionFlag7c set,
+  // lowStockFlag7d clear) / DistributeCityProductionCommandBudgetAndQueueOrders
+  // (the reverse), then unconditionally QueueCityProductionCommand33From
+  // AccumulatedDeficit / QueueCityProductionCommand2BIfMissingAndResetValue /
+  // QueueSingleCityProductionCommandFromField36 / ...Field38 (each gated on this
+  // minister's own field3e/field32/field36/field38), then always
+  // QueueCityProductionRebalanceCommandsByThresholds.
+  virtual undefined GetTEventHandlerClassNamePointer_22(TCity* city,
+                                                        int* arg2); // slot 0x22 0x4bfa50
   virtual undefined
   QueueCityProductionRebalanceCommandsByThresholds(TCity* city, int* arg2); // slot 0x23 0x4bfb20
   virtual undefined GetTEventHandlerClassNamePointer_24(int unusedArg1,
@@ -66,8 +74,8 @@ public:
   QueueCityProductionCommand33FromAccumulatedDeficit(int* arg1,
                                                      int unusedArg2); // slot 0x2b 0x4bff80
   virtual undefined DistributeCityProductionAcrossOrderTemplatesAndBackfillDeficits(
-      TCity* city);                          // slot 0x2c 0x4c07d0
-  virtual undefined VTableSlot2D(short arg); // slot 0x2d 0x4bef10
+      TCity* city);                     // slot 0x2c 0x4c07d0
+  virtual void VTableSlot2D(short arg); // slot 0x2d 0x4bef10
   virtual undefined SetForeignMinisterReadyFlag14_2e(short arg1, short arg2,
                                                      short arg3); // slot 0x2e 0x4c0de0
   virtual undefined
