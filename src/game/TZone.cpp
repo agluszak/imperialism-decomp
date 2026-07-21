@@ -9,7 +9,9 @@
 #include "game/mapped_flavor_text.h"
 #include "game/mfc.h"
 #include "game/TGlobalMapState.h"
+#include "game/TAdmiral.h"
 #include "game/TMapMgr.h"
+#include "game/TModuleLibraryCacheTableStateB.h"
 #include "game/TOcean.h"
 #include "game/TDiplomacyMgr.h"
 #include "game/TPortZone.h"
@@ -890,6 +892,50 @@ void TZone::SetMapOrderUiFlag(int flag) {
     SetMapTileStateByteAndNotifyObserver(activeTileIndex20, magnitude * 0x14);
     NotifyMapUberPictureTileMarker(activeTileIndex20);
   }
+}
+
+// Builds the human-readable source line for a naval-intelligence report. Mac's
+// resource strings identify the two cases as an admiral/ship attribution and an
+// anonymous phone call.
+// FUNCTION: IMPERIALISM 0x005606f0
+void TZone::BuildNavalIntelligenceSourceDescription(CString* out, short nation) {
+  TShip* selected = 0;
+  for (TShip* ship = GetNavyPrimaryOrderListHead(); ship != 0; ship = ship->nextOlder24) {
+    if (ship->field08 == this && ship->ownerNationSlot14 == nation) {
+      selected = ship->SelectPreferredMapOrderEntryByPriorityRules(selected, 0);
+    }
+  }
+
+  if (selected == 0) {
+    g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(out, 0x2762, 0x10);
+    return;
+  }
+
+  CString reportTemplate;
+  if (selected->admiralBacklink20 != 0) {
+    CString admiralName =
+        CString(s_szAdmiralPrefix_0069578c) + selected->admiralBacklink20->displayName;
+    CString shipName = selected->displayName18;
+    g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&reportTemplate, 0x2762, 0xe);
+    scanBracketExpressions(g_pSimMgr, out, static_cast<LPCSTR>(reportTemplate),
+                           static_cast<LPCSTR>(admiralName), static_cast<LPCSTR>(shipName));
+  } else {
+    CString shipName = selected->displayName18;
+    g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&reportTemplate, 0x2762, 0xf);
+    scanBracketExpressions(g_pSimMgr, out, static_cast<LPCSTR>(reportTemplate),
+                           static_cast<LPCSTR>(shipName));
+  }
+}
+
+// FUNCTION: IMPERIALISM 0x00560970
+TAdmiral* TZone::FindReportingAdmiralForNation(short nation) {
+  TShip* selected = 0;
+  for (TShip* ship = GetNavyPrimaryOrderListHead(); ship != 0; ship = ship->nextOlder24) {
+    if (ship->field08 == this && ship->ownerNationSlot14 == nation) {
+      selected = ship->SelectPreferredMapOrderEntryByPriorityRules(selected, 0);
+    }
+  }
+  return selected != 0 ? selected->admiralBacklink20 : 0;
 }
 
 // FUNCTION: IMPERIALISM 0x005609e0

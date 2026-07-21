@@ -2,6 +2,7 @@ kind|entry|source|note
 module|tools.ghidra.sync_exports|just:refresh-inventory|Wholesale raw-inventory refresh from the DB
 module|tools.ghidra.apply_source|just:ghidra-apply-source|One-way source model -> Ghidra DB
 module|tools.generate|just:generate|The one-process build-input orchestrator (model -> symbols -> stubs)
+module|tools.workflow.msvc_build_lock|just:build|Worktree-local mutual exclusion for the complete MSVC500 build
 module|tools.stubgen|direct|Stub rendering (invoked by tools.generate; standalone via uv)
 module|tools.source_model|direct|The central source model (invoked by tools.generate; standalone via uv)
 module|tools.generate_symbols|direct|Symbols overlay (invoked by tools.generate; standalone via uv)

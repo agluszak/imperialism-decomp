@@ -1,9 +1,15 @@
 #include "game/TAdmiral.h"
 
+#include <stdlib.h>
+
 #include "game/mapped_flavor_text.h"
 #include "game/TShip.h"
+#include "game/TModuleLibraryCacheTableStateB.h"
 #include "game/navy_order.h"
+#include "game/TSimMgr.h"
 #include "game/TTaskForce.h"
+#include "game/TTechMgr.h"
+#include "game/TZone.h"
 #include "game/global_data_tables.h"
 #include "game/TMinor.h"
 #include "game/TStream.h"
@@ -65,7 +71,8 @@ static inline void RecomputeMapOrderOwnerActiveSelection(TTaskForce* ownerContex
   for (TMapOrderChildLinkNode* link = ownerContext->childOrderList; link != 0; link = link->next) {
     TShip* activeEntry = ownerContext->activeChildEntry;
     ownerContext->activeChildEntry =
-        static_cast<TShip*>(link->payload)->SelectPreferredMapOrderEntryByPriorityRules(activeEntry, 0);
+        static_cast<TShip*>(link->payload)
+            ->SelectPreferredMapOrderEntryByPriorityRules(activeEntry, 0);
   }
 }
 
@@ -162,6 +169,124 @@ void TAdmiral::SelectNavyPrimaryOrderByNationAndRecomputePreferredChild() {
   }
 }
 
+// Mac oracle: TAdmiral::EstimateEnemyForces(short*, const TZone*, short) const.
+// FUNCTION: IMPERIALISM 0x00551a00
+short TAdmiral::EstimateEnemyForces(short* estimatedCounts, TZone* zone, short nation) const {
+  int skill = this == 0 ? 0 : field_10 / 100 + 1;
+  srand(static_cast<unsigned int>(g_pSimMgr->GetEconomicTurn() + reinterpret_cast<int>(this) +
+                                  reinterpret_cast<int>(zone) + nation));
+
+  int i;
+  for (i = 0; i < 5; ++i) {
+    estimatedCounts[i] = 0;
+  }
+
+  short total = 0;
+  for (TShip* ship = g_pNavyPrimaryOrderListHead; ship != 0; ship = ship->nextOlder24) {
+    if (ship->ownerNationSlot14 != nation || ship->field08 != zone) {
+      continue;
+    }
+
+    short countRoll = static_cast<short>(rand() % 100);
+    short estimatedCount = -1;
+    do {
+      ++estimatedCount;
+      countRoll = static_cast<short>(countRoll +
+                                     -g_aNavalIntelligenceAccuracyProfiles[skill][estimatedCount]);
+    } while (countRoll > 0);
+
+    short classRoll = static_cast<short>(rand() % 100);
+    short classEstimate = -1;
+    do {
+      ++classEstimate;
+      classRoll = static_cast<short>(
+          classRoll + -g_aNavalIntelligenceAccuracyProfiles[skill][classEstimate + 3]);
+    } while (classRoll > 0);
+
+    if (g_bPerfectNavalIntelligenceCheat != 0 &&
+        (static_cast<unsigned short>(GetAsyncKeyState(VK_MENU)) & 0x8000) != 0) {
+      classEstimate = 3;
+      estimatedCount = 1;
+    }
+
+    short category;
+    if (classEstimate == 1) {
+      category = 4;
+    } else if (classEstimate == 2) {
+      category = static_cast<short>(rand() % 4);
+    } else {
+      category =
+          static_cast<short>(g_aIndustryCapabilityClassSlotTable[ship->resourceType04].classId);
+    }
+    estimatedCounts[category] = static_cast<short>(estimatedCounts[category] + estimatedCount);
+    total = static_cast<short>(total + estimatedCount);
+  }
+  return total;
+}
+
+// Mac oracle: TAdmiral::GetFleetReport(CStr255&, TZone*, short) const.
+// FUNCTION: IMPERIALISM 0x00551be0
+void TAdmiral::GetFleetReport(CString* out, TZone* zone, short nation) const {
+  short estimates[5];
+  short total = EstimateEnemyForces(estimates, zone, nation);
+
+  if (total == 0) {
+    g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(out, 0x2762, 0x1e);
+    return;
+  }
+
+  CString comma;
+  CString conjunction;
+  CString itemTemplate;
+  g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&comma, 0x2762, 0x1f);
+  g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&conjunction, 0x2762, 0x20);
+  g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&itemTemplate, 0x2762, 0x21);
+  *out = g_szEmptyString;
+
+  short remaining = total;
+  int category;
+  for (category = 0; category < 4; ++category) {
+    short count = estimates[category];
+    if (count <= 0) {
+      continue;
+    }
+    remaining = static_cast<short>(remaining - count);
+    if (!out->IsEmpty()) {
+      *out += remaining == 0 ? conjunction : comma;
+    }
+    CString number;
+    number.Format(g_szDecimalFormat, static_cast<int>(count));
+    CString shipType = GetLocalizedNavalReportShipType(static_cast<short>(category), count != 1);
+    CString item;
+    scanBracketExpressions(g_pSimMgr, &item, static_cast<LPCSTR>(itemTemplate),
+                           static_cast<LPCSTR>(number), static_cast<LPCSTR>(shipType));
+    *out += item;
+  }
+
+  if (estimates[4] > 0) {
+    if (!out->IsEmpty()) {
+      *out += conjunction;
+    }
+    CString number;
+    number.Format(g_szDecimalFormat, static_cast<int>(estimates[4]));
+    CString unknownTemplate;
+    g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(
+        &unknownTemplate, 0x2762, static_cast<short>(estimates[4] > 1 ? 0x23 : 0x22));
+    CString item;
+    scanBracketExpressions(g_pSimMgr, &item, static_cast<LPCSTR>(unknownTemplate),
+                           static_cast<LPCSTR>(number));
+    *out += item;
+  }
+
+  int skill = this == 0 ? 0 : field_10 / 100 + 1;
+  CString observedComposition = *out;
+  CString certaintyTemplate;
+  g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&certaintyTemplate, 0x2762,
+                                                                  static_cast<short>(skill + 0x24));
+  scanBracketExpressions(g_pSimMgr, out, static_cast<LPCSTR>(certaintyTemplate),
+                         static_cast<LPCSTR>(observedComposition));
+}
+
 // FUNCTION: IMPERIALISM 0x00552250
 void TAdmiral::SetTaskForcePrimaryOrderLinkAndRefreshChildBacklinks(TShip* primaryOrderNode) {
   if (this->primaryOrderNode08 != 0) {
@@ -189,4 +314,22 @@ void TAdmiral::RemoveDuplicateNavySecondaryOrdersByDisplayName() {
       this->RemoveDuplicateNavySecondaryOrdersByDisplayName();
     }
   }
+}
+
+// Genuine cdecl by-value helper (the caller cleans its hidden return pointer and two
+// arguments). It maps the four report categories back to an enabled ship resource.
+// FUNCTION: IMPERIALISM 0x00557320
+CString GetLocalizedNavalReportShipType(short category, char plural) {
+  short resourceType = 0;
+  int i;
+  for (i = 13; i > 0; --i) {
+    if (g_aIndustryCapabilityClassSlotTable[i].classId == category &&
+        g_pCityOrderCapabilityState->resourceTypeEnabled19d[i] != 0) {
+      resourceType = static_cast<short>(i);
+      break;
+    }
+  }
+  CString result;
+  g_pSimMgr->GetString(plural != 0 ? 0x271a : 0x2716, resourceType, &result);
+  return result;
 }

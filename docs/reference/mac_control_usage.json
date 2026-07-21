@@ -2736,6 +2736,9 @@
       "original_modules": [
         {
           "functions": [
+            "0x00597f80",
+            "0x00598e10",
+            "0x00599090",
             "0x00599cf0",
             "0x00599fd0",
             "0x0059a180"
@@ -158726,6 +158729,63 @@
         "owner_class": "TCivToolbar",
         "recovered_source": "src/game/TCivToolbar.cpp"
       },
+      "0x00597f80": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "definition_source": "src/game/global_data_tables.cpp",
+                "kind": "source_path_global_reference",
+                "path": "D:\\Ambit\\Cross\\USuperMap.cpp",
+                "symbol": "s_SourcePathUSuperMap_0069943C"
+              }
+            ],
+            "module": "USuperMap.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "TMapUberPicture::InspectTaskForceDialog",
+        "owner_class": "TMapUberPicture",
+        "recovered_source": "src/game/TMapUberPicture.cpp"
+      },
+      "0x00598e10": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "definition_source": "src/game/global_data_tables.cpp",
+                "kind": "source_path_global_reference",
+                "path": "D:\\Ambit\\Cross\\USuperMap.cpp",
+                "symbol": "s_SourcePathUSuperMap_0069943C"
+              }
+            ],
+            "module": "USuperMap.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "TMapUberPicture::RunNavyPrimaryOrderCreationDialogAndApplyResults",
+        "owner_class": "TMapUberPicture",
+        "recovered_source": "src/game/TMapUberPicture.cpp"
+      },
+      "0x00599090": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "definition_source": "src/game/global_data_tables.cpp",
+                "kind": "source_path_global_reference",
+                "path": "D:\\Ambit\\Cross\\USuperMap.cpp",
+                "symbol": "s_SourcePathUSuperMap_0069943C"
+              }
+            ],
+            "module": "USuperMap.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "TMapUberPicture::NavalIntelligenceDialog",
+        "owner_class": "TMapUberPicture",
+        "recovered_source": "src/game/TMapUberPicture.cpp"
+      },
       "0x00599cf0": {
         "modules": [
           {
@@ -159624,6 +159684,9 @@
           "TMapUberPicture"
         ],
         "functions": [
+          "0x00597f80",
+          "0x00598e10",
+          "0x00599090",
           "0x00599cf0",
           "0x00599fd0",
           "0x0059a180"
@@ -159714,7 +159777,7 @@
     "classes_with_source_module_evidence": 14,
     "declared_classes": 152,
     "factories_with_source_module_candidates": 9,
-    "functions_with_source_module_evidence": 96,
+    "functions_with_source_module_evidence": 99,
     "nodes": 3263,
     "screens": 121,
     "screens_with_source_module_candidates": 25,

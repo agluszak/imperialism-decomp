@@ -99,6 +99,10 @@ public:
   // body is a documented placeholder; see bd 1uj.16 follow-up notes.
   void FinalizeQueuedMapOrderEntry(TTaskForce* entry); // 0x5642e0
 
+  // Mac oracle: TOcean::ForgetForce(TTaskForce*). Clears the selected force and
+  // refreshes the affected zone's active-order overlay after removal.
+  void ForgetForce(TTaskForce* entry); // 0x564400
+
   // Frees the previously-tracked task force if the new map-order context zone is null,
   // or resolves/caches one for it via GetActiveNationId(); returns the (possibly
   // updated) cached task force. The map-order "entry" is the selected context TZone

@@ -136,6 +136,11 @@ struct IndustryCapabilityClassSlotEntry {
 };
 extern "C" IndustryCapabilityClassSlotEntry g_aIndustryCapabilityClassSlotTable[14];
 
+// Six admiral-skill rows. Columns 0..2 select an estimated ship count and columns
+// 3..5 select class accuracy; each triplet is a percentage distribution.
+extern "C" short g_aNavalIntelligenceAccuracyProfiles[6][6];
+extern "C" unsigned char g_bPerfectNavalIntelligenceCheat;
+
 short GetResourceTypeRandomDrawBlockFlag(short resourceType);
 short GetResourceDescriptorWord0CByType(short resourceType);
 short GetResourceDescriptorWord10ByType(short resourceType);

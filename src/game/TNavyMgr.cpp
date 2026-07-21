@@ -1267,8 +1267,8 @@ bool TNavyMgr::TryHandleMapContextAction(short nTileIndex, int nInputFlags) {
   case 7:
   case 8: {
     TZone* zone = g_pActiveMapOrderContext->GetLinkedZoneForSeaTile(nTileIndex);
-    mapUberPicture->OpenMapContextActionDialogByType(zone, actionCode - 2,
-                                                     g_pCachedMapActionContext);
+    mapUberPicture->NavalIntelligenceDialog(zone, static_cast<short>(actionCode - 2),
+                                            g_pCachedMapActionContext);
     return true;
   }
   case 11: {
@@ -1276,7 +1276,7 @@ bool TNavyMgr::TryHandleMapContextAction(short nTileIndex, int nInputFlags) {
     while (entry != 0 && entry->tiebreak_strength != nTileIndex) {
       entry = entry->queue_next;
     }
-    mapUberPicture->OpenMapEntryOrderDialog(entry);
+    mapUberPicture->InspectTaskForceDialog(entry);
     return true;
   }
   case 10: {
