@@ -1,6 +1,8 @@
 #include "game/quickdraw_rendering.h"
 
 #include "game/bitmap_descriptor_helpers.h"
+#include "game/CDib.h"
+#include "game/CDibPal.h"
 #include "game/global_data_tables.h"
 #include "game/TModuleLibraryCacheTableStateB.h"
 #include "game/TQuickDrawSurfaceContext.h"
@@ -337,7 +339,7 @@ short __cdecl MeasureTextExtentWithCachedQuickDrawStyle(const CString* text) {
 void SetQuickDrawFillColor(int fillColor) {
   g_Quick_Draw_Color_State_006950FC = fillColor;
   if (g_pActiveQuickDrawSurfaceContext != 0) {
-    g_pActiveQuickDrawSurfaceContext->quickDrawColor = fillColor;
+    g_pActiveQuickDrawSurfaceContext->blitSurface.quickDrawColor = fillColor;
   }
   g_QuickDrawMeasureFontPreset.textColor = fillColor;
 }
@@ -348,7 +350,7 @@ void SetQuickDrawFillColor(int fillColor) {
 void SetQuickDrawColorAndPropagateIfChanged(int newColor) {
   if (g_Quick_Draw_Color_State_006950FC != newColor) {
     g_Quick_Draw_Color_State_006950FC = newColor;
-    g_pActiveQuickDrawSurfaceContext->quickDrawColor = newColor;
+    g_pActiveQuickDrawSurfaceContext->blitSurface.quickDrawColor = newColor;
     g_QuickDrawMeasureFontPreset.textColor = newColor;
   }
 }
@@ -357,14 +359,14 @@ void SetQuickDrawColorAndPropagateIfChanged(int newColor) {
 void SetQuickDrawStrokeColor(int strokeColor) {
   g_uQuickDrawStrokeColor = strokeColor;
   if (g_pActiveQuickDrawSurfaceContext != 0) {
-    g_pActiveQuickDrawSurfaceContext->transparentBlitColor = strokeColor;
+    g_pActiveQuickDrawSurfaceContext->blitSurface.transparentBlitColor = strokeColor;
   }
 }
 
 // FUNCTION: IMPERIALISM 0x004950a0
 void SetQuickDrawColorAndSyncGlobals(int color) {
   g_Quick_Draw_Color_State_006950FC = color;
-  g_pActiveQuickDrawSurfaceContext->quickDrawColor = color;
+  g_pActiveQuickDrawSurfaceContext->blitSurface.quickDrawColor = color;
   g_QuickDrawMeasureFontPreset.textColor = color;
 }
 
@@ -556,17 +558,53 @@ void TransparentBlitBitmapRegionUsingMaskedRasterOps(HDC destDc, HBITMAP sourceB
 }
 
 // FUNCTION: IMPERIALISM 0x00496d40
-void __stdcall BlitRectWithOptionalTransparency(TQuickDrawBlitSurface* srcSurface,
-                                                TQuickDrawBlitSurface* dstSurface, RECT* srcRect,
-                                                RECT* dstRect, unsigned char blitFlags,
-                                                void* renderCtx) {
-  if (dstSurface == g_defaultQuickDrawSurfaceSentinel.GetBlitSurface() || renderCtx != nullptr) {
-    // TODO(class-recovery): GDI/CDC path -- draws straight to the real screen surface
-    // (or through a caller-supplied clip region) via CreateCompatibleDC/BitBlt (or
-    // StretchDIBits for the blitFlags&0x24 case). Not modeled: renderCtx's real type
-    // is unrecovered and every current caller (all via BlitQuickDrawSurfaces) passes
-    // dstSurface != the screen sentinel and renderCtx == null, so this path is dead
-    // for all current call sites.
+void __cdecl BlitRectWithOptionalTransparency(TQuickDrawBlitSurface* srcSurface,
+                                              TQuickDrawBlitSurface* dstSurface, RECT* srcRect,
+                                              RECT* dstRect, unsigned char blitFlags,
+                                              RgnHandle clipRegion) {
+  if (clipRegion != 0) {
+    CDC* clipDc = g_pQuickDrawMemoryDc;
+    if (clipDc == 0) {
+      clipDc = g_pScopedMapQuickDrawDcHandleObject;
+    }
+    clipDc->SelectClipRgn(&(*clipRegion)->rgn);
+  }
+
+  if (dstSurface == g_defaultQuickDrawSurfaceSentinel.GetBlitSurface() || clipRegion != 0) {
+    CDC* destinationDc = g_pQuickDrawMemoryDc;
+    if (destinationDc == 0) {
+      destinationDc = g_pScopedMapQuickDrawDcHandleObject;
+    }
+    g_pModuleLibraryCacheState->EnsureDefaultDibPalette()->SelectIntoDcAndRealize(destinationDc,
+                                                                                  FALSE);
+
+    if ((blitFlags & 0x24) == 0x24) {
+      int destinationWidth = dstRect->right - dstRect->left;
+      int destinationHeight = dstRect->bottom - dstRect->top;
+      int sourceWidth = srcRect->right - srcRect->left;
+      int sourceHeight = srcRect->bottom - srcRect->top;
+      srcSurface->surfaceDib->StretchDibitsWithCopiedPaletteTable(
+          destinationDc, 0x10, dstRect->left + g_nQuickDrawOriginX,
+          dstRect->top + g_nQuickDrawOriginY, destinationWidth, destinationHeight, srcRect->left,
+          srcRect->top, sourceWidth, sourceHeight);
+    } else {
+      CDC sourceDc;
+      sourceDc.Attach(CreateCompatibleDC(destinationDc != 0 ? destinationDc->m_hDC : 0));
+      HGDIOBJ previousBitmap = SelectObject(sourceDc.m_hDC, srcSurface->surfaceDib->m_hBitmap);
+
+      int destinationX = dstRect->left;
+      int destinationY = dstRect->top;
+      if (dstSurface == g_defaultQuickDrawSurfaceSentinel.GetBlitSurface()) {
+        destinationX += g_nQuickDrawOriginX;
+        destinationY += g_nQuickDrawOriginY;
+      }
+      BitBlt(destinationDc->m_hDC, destinationX, destinationY, srcRect->right - srcRect->left,
+             srcRect->bottom - srcRect->top, sourceDc.m_hDC, srcRect->left, srcRect->top, SRCCOPY);
+
+      if (previousBitmap != 0) {
+        SelectObject(sourceDc.m_hDC, previousBitmap);
+      }
+    }
   } else {
     int rowCount = srcRect->bottom - srcRect->top;
     if (rowCount < 0) {
@@ -609,12 +647,12 @@ void __stdcall BlitRectWithOptionalTransparency(TQuickDrawBlitSurface* srcSurfac
       }
     }
   }
-  if (renderCtx != nullptr) {
-    CDC* dc = g_pQuickDrawMemoryDc;
-    if (dc == nullptr) {
-      dc = g_pScopedMapQuickDrawDcHandleObject;
+  if (clipRegion != 0) {
+    CDC* clipDc = g_pQuickDrawMemoryDc;
+    if (clipDc == 0) {
+      clipDc = g_pScopedMapQuickDrawDcHandleObject;
     }
-    dc->SelectClipRgn(0);
+    clipDc->SelectClipRgn(0);
   }
 }
 

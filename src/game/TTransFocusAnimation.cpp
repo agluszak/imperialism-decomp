@@ -98,7 +98,7 @@ void TTransFocusAnimation::UpdateBackground() {
   UpdatePaletteIndexWithDefaultFallback(0x13);
   SetQuickDrawFillColorFromPaletteIndex(0);
 
-  CDib* primaryDib = g_pPrimaryRenderSurfaceContext->surfaceDib;
+  CDib* primaryDib = g_pPrimaryRenderSurfaceContext->blitSurface.surfaceDib;
   if (primaryDib != 0) {
     int primaryHeight = primaryDib->m_pInfoHeader->bmiHeader.biHeight;
     if (primaryHeight < 1) {
@@ -107,7 +107,7 @@ void TTransFocusAnimation::UpdateBackground() {
     OffsetRect(&sourceRect, 0, (primaryHeight - sourceRect.top) - sourceRect.bottom);
   }
 
-  CDib* transientDib = transientSurfaceContext->surfaceDib;
+  CDib* transientDib = transientSurfaceContext->blitSurface.surfaceDib;
   if (transientDib != 0) {
     int transientHeight = transientDib->m_pInfoHeader->bmiHeader.biHeight;
     if (transientHeight < 1) {
@@ -147,8 +147,9 @@ void TTransFocusAnimation::DrawNextFrame(POINT* offset) {
   // arithmetic to the TAnimator*, reading a garbage "context".
   RECT clipRect = destinationRect;
   TQuickDrawSurfaceContext* animatorTarget = g_pUiAnimator->renderSurfaceContext;
-  if (animatorTarget->surfaceDib != 0) {
-    int animatorTargetHeight = animatorTarget->surfaceDib->m_pInfoHeader->bmiHeader.biHeight;
+  if (animatorTarget->blitSurface.surfaceDib != 0) {
+    int animatorTargetHeight =
+        animatorTarget->blitSurface.surfaceDib->m_pInfoHeader->bmiHeader.biHeight;
     if (animatorTargetHeight < 1) {
       animatorTargetHeight = -animatorTargetHeight;
     }

@@ -74,15 +74,15 @@ void TFocusAnimation::ClipAndPaste() {
 
   SetQuickDrawStrokeColor(0xffffff);
 
-  if (g_pActiveQuickDrawSurfaceContext->surfaceDib != 0) {
-    if (srcContext != nullptr && srcContext->surfaceDib != 0) {
-      int heightAnim = srcContext->surfaceDib->m_pInfoHeader->bmiHeader.biHeight;
+  if (g_pActiveQuickDrawSurfaceContext->blitSurface.surfaceDib != 0) {
+    if (srcContext != nullptr && srcContext->blitSurface.surfaceDib != 0) {
+      int heightAnim = srcContext->blitSurface.surfaceDib->m_pInfoHeader->bmiHeader.biHeight;
       if (heightAnim < 1)
         heightAnim = -heightAnim;
       OffsetRect(&tStack_14, 0, (heightAnim - tStack_14.top) - tStack_14.bottom);
     }
 
-    CDib* activeDib = g_pActiveQuickDrawSurfaceContext->surfaceDib;
+    CDib* activeDib = g_pActiveQuickDrawSurfaceContext->blitSurface.surfaceDib;
     if (activeDib != 0) {
       int heightActive = activeDib->m_pInfoHeader->bmiHeader.biHeight;
       if (heightActive < 1)

@@ -112,13 +112,14 @@ void StrategicMapCallbackRecord::AppendPackedColorDword(int surface, int packedC
 // FUNCTION: IMPERIALISM 0x004d5cf0
 void __cdecl StreamOverlayHitMaskToSurfaceDib(DiplomacyMaskBufferRun* run,
                                               TQuickDrawSurfaceContext* surface, int flag) {
-  int height = surface->surfaceDib->m_pInfoHeader->bmiHeader.biHeight;
+  int height = surface->blitSurface.surfaceDib->m_pInfoHeader->bmiHeader.biHeight;
   if (height < 1) {
     height = -height;
   }
   BuildDiplomacyOverlayHitMaskOpcodeStream(
-      run, reinterpret_cast<void*>(surface->surfaceDib->m_pInfoHeader->bmiHeader.biWidth), flag,
-      height);
+      run,
+      reinterpret_cast<void*>(surface->blitSurface.surfaceDib->m_pInfoHeader->bmiHeader.biWidth),
+      flag, height);
 }
 
 // Clamps `rect` inside `bounds`, preserving the rect's width/height.
@@ -824,8 +825,8 @@ void TDiplomacyMapView::RenderDiplomacyLegendSurfaceAndPresent(const RECT* prese
   QueryBounds(const_cast<RECT*>(presentRect));
 
   if (legendSurfaceModeAt524 != 0) {
-    int savedTransparentColor = g_pActiveQuickDrawSurfaceContext->transparentBlitColor;
-    int savedQuickDrawColor = g_pActiveQuickDrawSurfaceContext->quickDrawColor;
+    int savedTransparentColor = g_pActiveQuickDrawSurfaceContext->blitSurface.transparentBlitColor;
+    int savedQuickDrawColor = g_pActiveQuickDrawSurfaceContext->blitSurface.quickDrawColor;
 
     TQuickDrawSurfaceContext* previousSurface = 0;
     int contextFlags = 0;
@@ -1136,7 +1137,7 @@ void TDiplomacyMapView::BlitDiplomacyMapEventPaletteMaskToSurface(short maskInde
   if (maskCursor != 0) {
     int srcRowWidth = bmpHandle->m_pInfoHeader->bmiHeader.biWidth;
     int srcRowAdvance = (((srcRowWidth + 3) & 0xfffffffc) - maskRun->rightAt0c) + maskRun->leftAt04;
-    int surfaceHeight = surface->surfaceDib->m_pInfoHeader->bmiHeader.biHeight;
+    int surfaceHeight = surface->blitSurface.surfaceDib->m_pInfoHeader->bmiHeader.biHeight;
     if (surfaceHeight < 1) {
       surfaceHeight = -surfaceHeight;
     }
@@ -1353,7 +1354,7 @@ void TDiplomacyMapView::DrawVoteNuggets() {
       destRect.right = iconRect->right;
       destRect.bottom = iconRect->bottom;
 
-      CDib* activeDib = g_pActiveQuickDrawSurfaceContext->surfaceDib;
+      CDib* activeDib = g_pActiveQuickDrawSurfaceContext->blitSurface.surfaceDib;
       if (activeDib != 0) {
         int surfaceHeight = activeDib->m_pInfoHeader->bmiHeader.biHeight;
         if (surfaceHeight < 1) {
