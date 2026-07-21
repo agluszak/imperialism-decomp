@@ -116,3 +116,25 @@ nodes, and stale reports. Ordinary Mac-backed nodes are explicitly reported as u
 Mac semantics without pretending that per-node Windows-binary recipes still exist;
 Windows-only nodes retain their listing evidence. `ui-codegen-triage` includes the case
 classification and intentional-delta counts in its summary.
+
+## Resource reference graph
+
+`docs/reference/mac_resource_xrefs.json` joins every committed `View` and widget with
+its file-scoped `PICT`, `STR#`, and `TxSt` targets. It also connects Windows factories
+to events and mapped views, Mac classes and control tags to their instances, and
+statically resolved Windows `ResolveControlByTag` calls to tags present in the Mac
+corpus. Query any graph identity directly:
+
+```sh
+just mac-resource-xrefs Tech.rsrc:View:2200
+just mac-resource-xrefs Tech.rsrc:PICT:2200 --json
+just mac-resource-xrefs-check
+```
+
+The default query includes the transitive dependency set, so a screen query exposes
+its widget classes, tags, pictures, strings, and text styles as one dossier. Missing
+targets remain dangling under the original resource-file scope; each carries an
+explanation and the focused Beads owner instead of being guessed from a same-numbered
+resource in another file. Undecoded `TEXT`/`styl` input is explicitly marked pending
+`imperialism-decomp-1uj.77.4`, and the graph gate rejects stale output or any dangling
+edge without an explanation and owner.
