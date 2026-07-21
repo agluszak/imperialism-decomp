@@ -1628,6 +1628,36 @@ void TSimMgr::HandleTurnInstruction_Flag_SetNationFlagAndRefresh(void* pInstruct
   g_pStrategicMapViewSystem->ReloadBitmap244AndRefreshUiCaches();
 }
 
+// Reads two big-endian 32-bit tokens (priority-slot index, then value) and applies the
+// value (offset by 1) via the city-order capability state's tier setter.
+// FUNCTION: IMPERIALISM 0x00583470
+void TSimMgr::HandleTurnInstruction_Tyer_SetCityOrderCapabilityTierValue(void* pInstructionRaw) {
+  STurnInstructionCursor* instruction = static_cast<STurnInstructionCursor*>(pInstructionRaw);
+
+  unsigned int indexToken = *instruction->tokenCursor;
+  instruction->tokenCursor = instruction->tokenCursor + 1;
+  unsigned char* iraw = reinterpret_cast<unsigned char*>(&indexToken);
+  unsigned char it = iraw[0];
+  iraw[0] = iraw[3];
+  iraw[3] = it;
+  it = iraw[1];
+  iraw[1] = iraw[2];
+  iraw[2] = it;
+
+  unsigned int valueToken = *instruction->tokenCursor;
+  instruction->tokenCursor = instruction->tokenCursor + 1;
+  unsigned char* vraw = reinterpret_cast<unsigned char*>(&valueToken);
+  unsigned char vt = vraw[0];
+  vraw[0] = vraw[3];
+  vraw[3] = vt;
+  vt = vraw[1];
+  vraw[1] = vraw[2];
+  vraw[2] = vt;
+
+  g_pCityOrderCapabilityState->SetCityOrderCapabilityTierScaledValueByIndex(
+      static_cast<int>(indexToken), static_cast<int>(valueToken + 1));
+}
+
 // Reads a big-endian 32-bit nation slot, then rebuilds that nation's resource-yield /
 // development targets and clears all 0x17 need targets back to zero.
 // FUNCTION: IMPERIALISM 0x00583670

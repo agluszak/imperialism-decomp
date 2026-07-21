@@ -134,8 +134,10 @@ public:
   //     0x698b50 inside ProcessTurnInstructionStreamAndFinalizePhase; each reads one or
   //     more big-endian tokens from the cursor and mutates this manager / global state) ---
   void
-  HandleTurnInstruction_Year_UpdateScenarioYearFieldScaledBy4(void* pInstructionRaw);  // 0x582ed0
-  void HandleTurnInstruction_Flag_SetNationFlagAndRefresh(void* pInstructionRaw);      // 0x583400
+  HandleTurnInstruction_Year_UpdateScenarioYearFieldScaledBy4(void* pInstructionRaw); // 0x582ed0
+  void HandleTurnInstruction_Flag_SetNationFlagAndRefresh(void* pInstructionRaw);     // 0x583400
+  void
+  HandleTurnInstruction_Tyer_SetCityOrderCapabilityTierValue(void* pInstructionRaw);   // 0x583470
   void HandleTurnInstruction_Cash_SetNationCash(void* pInstructionRaw);                // 0x583360
   void HandleTurnInstruction_Tran_SetNationTransportStat(void* pInstructionRaw);       // 0x582860
   void HandleTurnInstruction_Tclr_ResetNationRelationBars(void* pInstructionRaw);      // 0x583670
