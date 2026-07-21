@@ -30,7 +30,6 @@
 
 extern undefined4 RefreshNationAdvisorLabelStrings(void);
 extern undefined4 ProcessTurnInstructionStreamAndFinalizePhase(void);
-extern undefined4 UpdatePersistentTopTenNationScores(void);
 extern undefined4 UpdateCityOrderCapabilityUnlockProgress(void);
 extern undefined4 RefreshNavyOrderCycleAndClearReadyFlags(void);
 extern undefined4 SetOutputDevice(void);

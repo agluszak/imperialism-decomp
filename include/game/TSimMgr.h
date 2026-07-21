@@ -103,6 +103,12 @@ public:
   void DecrementField30Value();
   void InitializeTurnFlowStateDefaults();
   void InitializeOrLoadEntryArray14AndClampLimits(bool writeBack);
+  // 0x581510. Loads the 10-entry {score, name} table from scores.dat (defaulting each
+  // slot to {0, this nation's own name} when the file/entry is missing), recomputes the
+  // active nation's economy/diplomacy summary, and if its score beats one of the ten
+  // entries, shifts the lower entries down and inserts {score, active nation's overlay
+  // label} at that position, rewriting the whole table back to scores.dat.
+  void UpdatePersistentTopTenNationScores();
   // 0x57c3b0. Verified against AdvanceGlobalTurnStateMachine's case-3 callsite
   // (0x0057db25): a real __thiscall on TSimMgr (receiver g_pSimMgr), not a
   // free function -- writes into the scenarioSetupRows regions at +0xe8 on `this`.

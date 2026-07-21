@@ -3,6 +3,7 @@
 
 #include <cstring>
 #include <ctime>
+#include <stdio.h>
 #include <stdlib.h>
 
 #include "decomp_types.h"
@@ -1102,6 +1103,57 @@ void TSimMgr::InitializeOrLoadEntryArray14AndClampLimits(bool writeBack) {
   }
   preferenceValues[12] = 0;
   preferenceValues[1] = 0;
+}
+
+// FUNCTION: IMPERIALISM 0x00581510
+void TSimMgr::UpdatePersistentTopTenNationScores() {
+  CString path;
+  CString ownNationName;
+  GetString(0x2737, 0xd, &ownNationName);
+
+  AssignScoresDatPathToSharedString(&path);
+  FILE* file = fopen(path, "rb");
+
+  int scoreValues[10];
+  char scoreRecords[10][0x20];
+  for (int i = 0; i < 10; ++i) {
+    if (file != 0 && fread(&scoreValues[i], 4, 1, file) != 0) {
+      fread(scoreRecords[i], 0x20, 1, file);
+    } else {
+      scoreValues[i] = 0;
+      strcpy(scoreRecords[i], ownNationName);
+    }
+  }
+  if (file != 0) {
+    fclose(file);
+  }
+
+  g_apNationStates[activeNationSlot]->RecomputeNationEconomyAndDiplomacySummaryMetrics();
+  int score = g_apNationStates[activeNationSlot]->economySummaryWeightedTotal95c;
+
+  int insertIndex = 0;
+  while (insertIndex < 10 && score <= scoreValues[insertIndex]) {
+    ++insertIndex;
+  }
+
+  if (insertIndex < 10) {
+    for (int j = 9; j > insertIndex; --j) {
+      scoreValues[j] = scoreValues[j - 1];
+      strcpy(scoreRecords[j], scoreRecords[j - 1]);
+    }
+    scoreValues[insertIndex] = score;
+
+    CString recordName;
+    g_apNationStates[activeNationSlot]->FormatOverlayTerrainLabelText(&recordName);
+    strcpy(scoreRecords[insertIndex], recordName);
+
+    FILE* writeFile = fopen(path, "wb");
+    for (int i = 0; i < 10; ++i) {
+      fwrite(&scoreValues[i], 4, 1, writeFile);
+      fwrite(scoreRecords[i], 0x20, 1, writeFile);
+    }
+    fclose(writeFile);
+  }
 }
 
 // The "Done/advance" turn-flow bootstrap primitive (free __cdecl in the TSimMgr TU): the
