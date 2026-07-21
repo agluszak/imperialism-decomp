@@ -4589,8 +4589,8 @@ address|matching|name
 0x58f110|0.782608695652174|TCivDescription::UpdateCivilianOrderClassAndRefreshTargetCounts
 0x58f1a0|0.22310756972111553|TCivDescription::BeginMouseCaptureAndStartRepeatTimer
 0x58f3c0|1.0|TCivDescription::UpdateCivilianOrderTargetTileCountsForOwnerNation
-0x58f550|0.4825174825174825|TCivDescription::ApplyRectSlot110
-0x58f7b0|0.004962779156327543|TCivDescription::DrawEngineer
+0x58f550|0.5664335664335665|TCivDescription::ApplyRectSlot110
+0x58f7b0|0.5983827493261455|TCivDescription::DrawEngineer
 0x58fec0|0.007067137809187279|TCivDescription::DrawProspector
 0x5903c0|0.004514672686230248|TCivDescription::DrawDeveloper
 0x590b90|0.4897959183673469|TCivReport::CreateObject
