@@ -128,7 +128,7 @@ public:
 
   TColorKeyPicture();
 
-  // Released through TDisplayMgr::FreeQuickDrawSurfaceContextSlot both before changing
+  // Released through TDisplayMgr::RemoveGWorld both before changing
   // the picture resource and from Free(), proving the concrete pointer type.
   TQuickDrawSurfaceContext* colorKeySurface94;
 };

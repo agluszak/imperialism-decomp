@@ -139,7 +139,7 @@ public:
   short word8c; // 0x8c — clamped current value (seeded 0x12)
   short word8e; // 0x8e — allocation padding/unobserved so far
   // 0x90 — 8-bit offscreen surface from
-  // TDisplayMgr::InitializeBitmapSurfaceContextWithRetry; released in Free().
+  // TDisplayMgr::MakeNewGWorld; released in Free().
   struct TQuickDrawSurfaceContext* surfaceContext90;
 
   // Inline in the original: the only construction site (0x573d37) expands to the

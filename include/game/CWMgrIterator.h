@@ -10,7 +10,7 @@
 
 // MacApp's window-manager iterator (CIterator-derived): a 12-byte stack cursor that
 // sweeps every live UI window/view in g_LiveViewRegistry (e.g.
-// TDisplayMgr::DispatchUiWindowStatusTickForClass99Windows). Reset() arms it,
+// TDisplayMgr::CloseFloaters). Reset() arms it,
 // FirstWindow()/NextWindow() walk the registry, More() reports whether the current node
 // still holds an entry. Identified via the Mac CodeWarrior symbol oracle (the framework
 // is MacApp-derived: TView/TWindow/CWMgrIterator).

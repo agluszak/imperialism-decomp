@@ -76,6 +76,10 @@ void SetQuickDrawTextSize(short value); // 0x00495260 (txSize)
 // left unmodeled. 0x004950f0
 void SetQuickDrawFillColorFromPaletteIndex(unsigned short paletteIndex);
 
+// Windows no-op for the classic QuickDraw HiliteColor hook. RGBQUAD is the VC5-era
+// Win32 GDI color record used by this Windows port. 0x00498ca0
+void HiliteColor(const RGBQUAD* color);
+
 // Selects the cached measure-font and draws a single character via CDC::TextOut at the
 // resolved text origin (a per-unit letter overlay), then restores DC state. 0x00494950
 void RenderTacticalBattleSelectionAndUnitOverlayPass_Impl(char glyph);

@@ -16,9 +16,7 @@
 #include "game/global_data_tables.h"
 #include "game/map_overlay_geometry.h"
 #include "game/sea_geometry.h"
-
-// UMapper.cpp assert reporter (see the merge/rotate passes).
-undefined4 TemporarilyClearAndRestoreUiInvalidationFlag(...);
+#include "game/ui_invalidation_guard.h"
 
 namespace {
 const char kUMapperPath[] = "D:\\Ambit\\Cross\\UMapper.cpp";

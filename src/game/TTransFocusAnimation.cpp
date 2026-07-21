@@ -56,8 +56,7 @@ TTransFocusAnimation::TTransFocusAnimation(TView* target, RECT* bounds, short f0
   insetBitmapSurface = 0;
 
   RECT local_bounds = {0, 0, bounds->right - bounds->left, bounds->bottom - bounds->top};
-  g_pDisplayMgr->InitializeBitmapSurfaceContextWithRetry(&transientSurfaceContext, 8,
-                                                         &local_bounds);
+  g_pDisplayMgr->MakeNewGWorld(transientSurfaceContext, 8, local_bounds);
   insetBitmapSurface = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(f0c);
 }
 
@@ -68,10 +67,10 @@ TTransFocusAnimation::~TTransFocusAnimation() {}
 // FUNCTION: IMPERIALISM 0x004a0570
 void TTransFocusAnimation::Free() {
   if (transientSurfaceContext != 0) {
-    g_pDisplayMgr->FreeQuickDrawSurfaceContextSlot(&transientSurfaceContext);
+    g_pDisplayMgr->RemoveGWorld(transientSurfaceContext);
   }
   if (insetBitmapSurface != 0) {
-    g_pDisplayMgr->FreeQuickDrawSurfaceContextSlot(&insetBitmapSurface);
+    g_pDisplayMgr->RemoveGWorld(insetBitmapSurface);
   }
   if (this != nullptr) {
     delete this;

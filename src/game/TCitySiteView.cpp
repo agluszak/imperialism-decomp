@@ -36,7 +36,7 @@ void TCitySiteView::DoPostCreate(int arg) {
   previewSquareRadius78 = 0x40;
 
   RECT surfaceBounds = {0, 0, 0x1680, 0x40};
-  g_pDisplayMgr->InitializeBitmapSurfaceContextWithRetry(&quickDrawSurface350, 8, &surfaceBounds);
+  g_pDisplayMgr->MakeNewGWorld(quickDrawSurface350, 8, surfaceBounds);
 
   ResetAllTileMarkersToSentinel();
 

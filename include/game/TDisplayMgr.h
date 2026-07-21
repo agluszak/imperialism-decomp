@@ -5,6 +5,7 @@
 
 class TView;
 class TPtrList;
+struct TToolboxEvent;
 struct TQuickDrawSurfaceContext;
 
 // Display-surface / GWorld manager (singleton g_pDisplayMgr @ 0x006a2158).
@@ -21,48 +22,38 @@ public:
   virtual void Free() override; // slot 0x07 0x4fea60
   // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
-  virtual undefined InitializeTurnOrderNavigationDialogByViewportSize(); // slot 0x0a 0x4fe840
-  virtual void InitializeBitmapSurfaceContextWithRetry(TQuickDrawSurfaceContext** outContext,
-                                                       short bitDepth,
-                                                       RECT* bounds); // slot 0x0b 0x4feab0
-  virtual void EnsurePrimaryRenderSurfaceContextAllocated();          // slot 0x0c 0x4feb80
-  virtual undefined DisplayMgrSlot0D(int unusedArg);                  // slot 0x0d 0x4febd0
-  virtual undefined DisplayMgrSlot0E(int unusedArg);                  // slot 0x0e 0x4fed00
-  virtual undefined OrphanRetStub_004fed50(char param_1);             // slot 0x0f 0x4fed50
-  virtual undefined AssertUDisplayMgrLines614And616(char param_1);    // slot 0x10 0x4fed70
-  virtual undefined AssertUDisplayMgrLine471();                       // slot 0x11 0x4fec20
-  virtual undefined AssertUDisplayMgrLine495(int unusedArg);          // slot 0x12 0x4fec50
-  // slot 0x13 0x4fec80 — forwards (message, messagePosition) to TViewMgr::ModalMessage.
-  virtual void DispatchDisplayManagerControlStringMessage(CString message,
-                                                          const POINT& messagePosition);
-  virtual undefined
-  LoadMainViewClipSnapshotIntoQuickDrawState(undefined2 param_1);  // slot 0x14 0x4fedc0
-  virtual void SetMapTileIconVariantTriplet(undefined1* param_1);  // slot 0x15 0x4fefc0
-  virtual undefined DispatchUiWindowStatusTickForClass99Windows(); // slot 0x16 0x4ff000
+  virtual void InitializeWindowAndMBarSize(); // slot 0x0a 0x4fe840
+  virtual void MakeNewGWorld(TQuickDrawSurfaceContext*& outContext, short bitDepth,
+                             const RECT& bounds);                           // slot 0x0b 0x4feab0
+  virtual void ExamineGWorld();                                             // slot 0x0c 0x4feb80
+  virtual void AboutToLoseControl(unsigned char saveState);                 // slot 0x0d 0x4febd0
+  virtual void RegainControl(unsigned char restoreState);                   // slot 0x0e 0x4fed00
+  virtual void SetMenuHeight(unsigned char menuHeight);                     // slot 0x0f 0x4fed50
+  virtual void SetBitDepth(unsigned char bitDepth);                         // slot 0x10 0x4fed70
+  virtual void CloseBooks();                                                // slot 0x11 0x4fec20
+  virtual void DismissTouchyFloaters(TToolboxEvent* event);                 // slot 0x12 0x4fec50
+  virtual void ModalMessage(CString message, const POINT& messagePosition); // slot 0x13 0x4fec80
+  virtual void UpdateTheGWorld(short eventCode);                            // slot 0x14 0x4fedc0
+  virtual void SetHiliteColor(const RGBQUAD* color);                        // slot 0x15 0x4fefc0
+  virtual void CloseFloaters();                                             // slot 0x16 0x4ff000
 
   // Frees the TQuickDrawSurfaceContext record held in `slot` and clears the slot.
   // Real __thiscall on the display manager (every callsite loads ecx = g_pDisplayMgr)
   // even though the body never reads `this`. 0x4feb50, ret 4.
-  void FreeQuickDrawSurfaceContextSlot(struct TQuickDrawSurfaceContext** slot);
+  void RemoveGWorld(TQuickDrawSurfaceContext*& surface);
 
   TView* activeDialog;      // +0x04
   short viewportMetric;     // +0x08 (default 8)
   short dialogActiveFlag;   // +0x0a
   short field0c;            // +0x0c
   short eventCode0e;        // +0x0e (0x7d1 / 0x7d2)
-  unsigned char tileIcon10; // +0x10
-  unsigned char tileIcon11; // +0x11
-  unsigned char tileIcon12; // +0x12
-  unsigned char tileIcon13; // +0x13
-  unsigned char tileIcon14; // +0x14
-  unsigned char tileIcon15; // +0x15
-  unsigned char tileIcon16; // +0x16
-  unsigned char tileIcon17; // +0x17
+  RGBQUAD hiliteColor;      // +0x10
+  RGBQUAD savedHiliteColor; // +0x14
   int field18;              // +0x18
   short clipSnapshotEvent;  // +0x1c
   unsigned short field1e;   // +0x1e
   // Turn-order-navigation-dialog scratch list, constructed in
-  // InitializeTurnOrderNavigationDialogByViewportSize as a real TPtrList -- not a TView
+  // InitializeWindowAndMBarSize as a real TPtrList -- not a TView
   // (bd d9p: the port previously typed this TView* and reinterpret_cast'd a bare
   // TSortedPtrList onto it, which made TDisplayMgr::Free's call resolve to TView's
   // 0x28-slot vtable entry instead of the list's; fixed to call the real list method).

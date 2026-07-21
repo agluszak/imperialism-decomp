@@ -723,6 +723,9 @@ void FillRectWithQuickDrawBrushAndContextOffset(RECT* rect) {
   }
 }
 
+// FUNCTION: IMPERIALISM 0x00498ca0
+void HiliteColor(const RGBQUAD*) {}
+
 // FUNCTION: IMPERIALISM 0x005d4c60
 void TruncateTextToFitWidthWithEllipsis(CString* text, short maxWidth) {
   // Shrinks *text one character at a time, appending "...", until it (plus the

@@ -37,7 +37,7 @@ void TAnimator::InitializeUiTransientObjectRegistry(int idleFrequency) {
   bounds.top = 0;
   bounds.right = g_nUiAnimatorSurfaceBoundsWidth;
   bounds.bottom = g_nUiAnimatorSurfaceBoundsHeight;
-  g_pDisplayMgr->InitializeBitmapSurfaceContextWithRetry(&renderSurfaceContext, 8, &bounds);
+  g_pDisplayMgr->MakeNewGWorld(renderSurfaceContext, 8, bounds);
   registryList24 = new TList();
   field28 = 0;
 }
@@ -80,7 +80,7 @@ void TAnimator::Free() {
   if (registryList24 != 0) {
     registryList24->FreePayloadsAndDestroy();
   }
-  g_pDisplayMgr->FreeQuickDrawSurfaceContextSlot(&renderSurfaceContext);
+  g_pDisplayMgr->RemoveGWorld(renderSurfaceContext);
   TEventHandler::Free();
 }
 
