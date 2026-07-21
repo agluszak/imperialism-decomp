@@ -111,7 +111,7 @@ bool TBitmapSurfaceContextDescriptor::InitializeSurfaceNode(int width, int heigh
   // stride, clip rect = the CDib's own width/height (re-read through
   // CopyBitmapDimensionsToPoint, not the cached node fields), +0x20 = the CDib itself. The
   // node is re-read through the slot each time (no cached local), matching the original.
-  blitSurface.pixelBits = (*GetSurfaceNodeSlot())->dib->m_dibBits;
+  blitSurface.pixelBits = static_cast<unsigned char*>((*GetSurfaceNodeSlot())->dib->m_dibBits);
   blitSurface.stride =
       static_cast<short>(((*GetSurfaceNodeSlot())->dib->m_pInfoHeader->bmiHeader.biWidth + 3) & ~3);
   CPoint dims;

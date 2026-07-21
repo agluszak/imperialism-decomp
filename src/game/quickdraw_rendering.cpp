@@ -579,71 +579,76 @@ void __cdecl BlitRectWithOptionalTransparency(TQuickDrawBlitSurface* srcSurface,
                                                                                   FALSE);
 
     if ((blitFlags & 0x24) == 0x24) {
-      int destinationWidth = dstRect->right - dstRect->left;
-      int destinationHeight = dstRect->bottom - dstRect->top;
-      int sourceWidth = srcRect->right - srcRect->left;
-      int sourceHeight = srcRect->bottom - srcRect->top;
+      destinationDc = g_pQuickDrawMemoryDc;
+      if (destinationDc == 0) {
+        destinationDc = g_pScopedMapQuickDrawDcHandleObject;
+      }
       srcSurface->surfaceDib->StretchDibitsWithCopiedPaletteTable(
           destinationDc, 0x10, dstRect->left + g_nQuickDrawOriginX,
-          dstRect->top + g_nQuickDrawOriginY, destinationWidth, destinationHeight, srcRect->left,
-          srcRect->top, sourceWidth, sourceHeight);
+          dstRect->top + g_nQuickDrawOriginY, CRect(dstRect).Width(), CRect(dstRect).Height(),
+          srcRect->left, srcRect->top, CRect(srcRect).Width(), CRect(srcRect).Height());
     } else {
       CDC sourceDc;
-      sourceDc.Attach(CreateCompatibleDC(destinationDc != 0 ? destinationDc->m_hDC : 0));
-      HGDIOBJ previousBitmap = SelectObject(sourceDc.m_hDC, srcSurface->surfaceDib->m_hBitmap);
-
-      int destinationX = dstRect->left;
-      int destinationY = dstRect->top;
-      if (dstSurface == g_defaultQuickDrawSurfaceSentinel.GetBlitSurface()) {
-        destinationX += g_nQuickDrawOriginX;
-        destinationY += g_nQuickDrawOriginY;
+      CDC* compatibleDc = g_pQuickDrawMemoryDc;
+      if (compatibleDc == 0) {
+        compatibleDc = g_pScopedMapQuickDrawDcHandleObject;
       }
-      BitBlt(destinationDc->m_hDC, destinationX, destinationY, srcRect->right - srcRect->left,
-             srcRect->bottom - srcRect->top, sourceDc.m_hDC, srcRect->left, srcRect->top, SRCCOPY);
+      sourceDc.Attach(CreateCompatibleDC(compatibleDc->GetSafeHdc()));
+      HGDIOBJ previousBitmap =
+          SelectObject(sourceDc.GetSafeHdc(), srcSurface->surfaceDib->m_hBitmap);
+
+      if (dstSurface == g_defaultQuickDrawSurfaceSentinel.GetBlitSurface()) {
+        destinationDc = g_pQuickDrawMemoryDc;
+        if (destinationDc == 0) {
+          destinationDc = g_pScopedMapQuickDrawDcHandleObject;
+        }
+        BitBlt(destinationDc->m_hDC, dstRect->left + g_nQuickDrawOriginX,
+               dstRect->top + g_nQuickDrawOriginY, CRect(srcRect).Width(), CRect(srcRect).Height(),
+               sourceDc.GetSafeHdc(), srcRect->left, srcRect->top, SRCCOPY);
+      } else {
+        destinationDc = g_pQuickDrawMemoryDc;
+        if (destinationDc == 0) {
+          destinationDc = g_pScopedMapQuickDrawDcHandleObject;
+        }
+        BitBlt(destinationDc->m_hDC, dstRect->left, dstRect->top, CRect(srcRect).Width(),
+               CRect(srcRect).Height(), sourceDc.GetSafeHdc(), srcRect->left, srcRect->top,
+               SRCCOPY);
+      }
 
       if (previousBitmap != 0) {
-        SelectObject(sourceDc.m_hDC, previousBitmap);
+        SelectObject(sourceDc.GetSafeHdc(), previousBitmap);
       }
     }
   } else {
-    int rowCount = srcRect->bottom - srcRect->top;
+    int srcPitch = srcSurface->stride;
+    int dstPitch = dstSurface->stride;
+    unsigned char* srcPtr = srcSurface->pixelBits + srcRect->top * srcPitch + srcRect->left;
+    unsigned char* dstPtr = dstSurface->pixelBits + dstRect->top * dstPitch + dstRect->left;
+    int rowCount = CRect(srcRect).Height();
+    int rowBytes = CRect(srcRect).Width();
     if (rowCount < 0) {
       rowCount = -rowCount;
     }
-    int rowBytes = srcRect->right - srcRect->left;
-    int srcPitch = srcSurface->stride;
-    int dstPitch = dstSurface->stride;
-    char* srcPtr =
-        static_cast<char*>(srcSurface->pixelBits) + srcRect->top * srcPitch + srcRect->left;
-    char* dstPtr =
-        static_cast<char*>(dstSurface->pixelBits) + dstRect->top * dstPitch + dstRect->left;
-    if ((blitFlags & 0x24) == 0x24) {
-      char transparentColor = static_cast<char>(g_uQuickDrawStrokeColor);
-      for (; rowCount != 0; --rowCount) {
+    if ((blitFlags & 0x24) != 0x24) {
+      while (rowCount-- != 0) {
+        memcpy(dstPtr, srcPtr, rowBytes);
+        srcPtr += srcPitch;
+        dstPtr += dstPitch;
+      }
+    } else {
+      unsigned char transparentColor = static_cast<unsigned char>(g_uQuickDrawStrokeColor);
+      int srcRowAdvance = srcPitch - rowBytes;
+      int dstRowAdvance = dstPitch - rowBytes;
+      while (rowCount-- != 0) {
         for (int count = rowBytes; count != 0; --count) {
-          char srcPixel = *srcPtr++;
+          unsigned char srcPixel = *srcPtr++;
           if (srcPixel != transparentColor) {
             *dstPtr = srcPixel;
           }
           ++dstPtr;
         }
-        srcPtr += srcPitch - rowBytes;
-        dstPtr += dstPitch - rowBytes;
-      }
-    } else {
-      for (; rowCount != 0; --rowCount) {
-        char* rowSrcPtr = srcPtr;
-        char* rowDstPtr = dstPtr;
-        for (int dwordCount = rowBytes >> 2; dwordCount != 0; --dwordCount) {
-          *reinterpret_cast<unsigned int*>(rowDstPtr) = *reinterpret_cast<unsigned int*>(rowSrcPtr);
-          rowSrcPtr += 4;
-          rowDstPtr += 4;
-        }
-        for (int byteCount = rowBytes & 3; byteCount != 0; --byteCount) {
-          *rowDstPtr++ = *rowSrcPtr++;
-        }
-        srcPtr += srcPitch;
-        dstPtr += dstPitch;
+        srcPtr += srcRowAdvance;
+        dstPtr += dstRowAdvance;
       }
     }
   }
@@ -737,18 +742,18 @@ void FillRectWithQuickDrawBrushAndContextOffset(RECT* rect) {
   RECT fillRect;
   CopyRect(&fillRect, rect);
 
-  int surfaceField1c = 0;
+  CDib* activeSurfaceDib = 0;
   if (g_pActiveQuickDrawSurfaceContextHead == &g_defaultQuickDrawSurfaceSentinel) {
-    surfaceField1c = 0;
+    activeSurfaceDib = 0;
   } else {
     TBitmapSurfaceContextDescriptor* descriptor =
         static_cast<TBitmapSurfaceContextDescriptor*>(g_pActiveQuickDrawSurfaceContextHead);
     TBitmapSurfaceNode* node = descriptor->GetSurfaceNode();
     if (node != nullptr) {
-      surfaceField1c = reinterpret_cast<int>(node->dib);
+      activeSurfaceDib = node->dib;
     }
   }
-  if (surfaceField1c == 0) {
+  if (activeSurfaceDib == 0) {
     OffsetRect(&fillRect, g_nQuickDrawOriginX, g_nQuickDrawOriginY);
   }
 
