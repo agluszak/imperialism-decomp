@@ -10,10 +10,10 @@ class TMilitaryUnit;
 class TArmyMission : public TMission {
   DECLARE_SERIAL(TArmyMission)
 public:
-  short field_14;
+  short presentLocation14;
   short padding_16;
   TSortedList* orderListAt18;
-  float resourceWeights[5]; // offset 0x1c
+  float requiredEquipageByClass[5]; // offset 0x1c
 
   TArmyMission();
   TArmyMission(int nodeKey);
@@ -24,15 +24,15 @@ public:
   Free() override; // slot 0x1c (TObject) 0x53c220 -- releases orderListAt18 and deletes self
 
   virtual char
-  ReturnFalseSlot28() override; // slot 0x28 0x53c1b0 -- army attack/invade capability flag
-  virtual int ReturnZeroSlot2C(int* outBuffer, int unused)
-      override; // slot 0x2c 0x53c620 -- builds priority vector, returns total
+  IsANoBrainer() const override; // slot 0x28 0x53c1b0 -- army attack/invade capability flag
+  virtual int AccumulateLack(int* accumulatedLack, unsigned char includeExistingLack)
+      const override; // slot 0x2c 0x53c620 -- accumulates remaining equipage lack, returns total
   virtual TMission* GetReplacementSlot48() override; // slot 0x48 0x53d630
   virtual char
-  ReturnFalseSlot50() override; // slot 0x50 0x5356f0 -- army mission capability flag (true)
-  virtual int ReturnZeroSlot58() override; // slot 0x58 0x535710
+  IsArmyMission() const override; // slot 0x50 0x5356f0 -- army mission capability flag (true)
+  virtual TMission* GetArmyMission() override; // slot 0x58 0x535710 -- returns this
   virtual TMission*
-  ReturnZeroSlot5C() override; // slot 0x5c 0x535730 -- army: no navy-selectable mission (null)
+  GetNavyMission() override; // slot 0x5c 0x535730 -- army: no navy-selectable mission (null)
   virtual float
   ReturnZeroFloatSlot68() override; // slot 0x68 0x53ceb0 -- composition alignment score
   virtual float ReturnZeroFloatSlot6C() override; // slot 0x6c 0x53d3e0 -- dot product score

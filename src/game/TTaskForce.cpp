@@ -1421,7 +1421,7 @@ TTaskForce* TTaskForce::PruneNavyOrderIfUnserviceableOrNoChildren() {
       int cityIndex = GetCityIndexFromCityStatePointer(
           reinterpret_cast<TGlobalMapCityScoreRecord*>(attachment));
       // Byte at cityScoreTable[cityIndex]+0x10 -- not yet a named field on
-      // TGlobalMapCityScoreRecord (same raw-offset read TInvadeMission::Call30 uses).
+      // TGlobalMapCityScoreRecord (same raw-offset read TInvadeMission::Initialize uses).
       const char* recordBytes =
           reinterpret_cast<const char*>(&g_pGlobalMapState->cityScoreTable[cityIndex]);
       char ownerByte = recordBytes[0x10];

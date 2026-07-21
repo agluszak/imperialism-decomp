@@ -622,7 +622,7 @@ public:
   // steps of 0xa8 bytes (matching TGlobalMapCityScoreRecord exactly), and the following
   // divisor field lands at field_0x18 -- confirmed independently by 3 call sites reading
   // [g_pGlobalMapState+0x10] with the cityScoreTable stride/sub-offsets directly (bd
-  // 1uj.8, bd 1uj.23: TDefendProvinceMission::ResetValue0CToZero 0x53ed00 and
+  // 1uj.8, bd 1uj.23: TDefendProvinceMission::CalculateImportance 0x53ed00 and
   // TGreatPower::ComputeAdvisoryMapNodeScoreFactorByCaseMetric 0x4e8750, both FILD
   // dword ptr [.. + 0x9c] -- an int-to-float CONVERSION of cityScoreValue, not a raw
   // bit-reinterpret). field_0x1c (scenarioTagText1c) and field_0x20

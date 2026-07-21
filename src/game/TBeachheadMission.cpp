@@ -2,7 +2,7 @@
 //
 // Real base is TControlSeaZoneMission (RTTI ancestry: TBeachheadMission ->
 // TControlSeaZoneMission -> TNavyMission -> TMission -> TObject -> CObject).
-// Call30 / SetStateByte8To2 / ResetValue0CToZero / GetReplacementSlot48 /
+// Initialize / SetStateByte8To2 / CalculateImportance / GetReplacementSlot48 /
 // RefreshMissionPortZoneContextForNation are NOT overridden here -- they're
 // inherited unchanged from TControlSeaZoneMission, which owns their
 // `// FUNCTION:` markers.
@@ -26,12 +26,12 @@ IMPLEMENT_SERIAL(TBeachheadMission, TControlSeaZoneMission, 1)
 // TBeachheadMission::CreateObject
 
 // FUNCTION: IMPERIALISM 0x0053a390
-char TBeachheadMission::ReturnFalseSlot64() {
+char TBeachheadMission::IsHospitalMission() const {
   return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x0053a3b0
-char TBeachheadMission::ReturnFalseSlot60() {
+char TBeachheadMission::IsDefensiveSeaZoneMission() const {
   return 0;
 }
 
@@ -47,15 +47,15 @@ TBeachheadMission::TBeachheadMission() : TControlSeaZoneMission(), parentMission
 TBeachheadMission::TBeachheadMission(TZone* targetZone, TAttackProvinceMission* parentMission)
     : TControlSeaZoneMission(targetZone), parentMission3c(parentMission) {}
 
-// Reproduces the base TControlSeaZoneMission::NoOpSlot3C's targetZone14-tagged base score
+// Reproduces the base TControlSeaZoneMission::CalculateNeeds's targetZone14-tagged base score
 // inline -- the two classes are separate translation units with no LTO, so a qualified
-// `TControlSeaZoneMission::NoOpSlot3C()` call (which the original's own object code shows
+// `TControlSeaZoneMission::CalculateNeeds()` call (which the original's own object code shows
 // fully duplicated, not a real CALL) would either emit a real cross-TU CALL or, since this
 // whole function used to be nothing else, collapse into a bare tail-call JMP -- neither
 // matches the original's inlined shape, so the body is duplicated here instead. The original
-// then scales the owning invade mission's calculated priority into resourceWeights2c[3].
+// then scales the owning invade mission's calculated priority into requiredShipEquipageByCategory[3].
 // FUNCTION: IMPERIALISM 0x0053a500
-void TBeachheadMission::NoOpSlot3C() {
+void TBeachheadMission::CalculateNeeds() {
   float vector[4] = {0.0f, 0.0f, 0.0f, 0.0f};
   for (TShip* node = GetNavyPrimaryOrderListHead(); node != nullptr; node = node->nextOlder24) {
     if (node->field08 != targetZone14) {
@@ -96,19 +96,20 @@ void TBeachheadMission::NoOpSlot3C() {
   }
 
   for (int i = 0; i < 4; ++i) {
-    resourceWeights2c[i] = static_cast<float>(static_cast<short>(lookupTable[i])) * total * 0.01f;
+    requiredShipEquipageByCategory[i] =
+        static_cast<float>(static_cast<short>(lookupTable[i])) * total * 0.01f;
   }
 
   float invadePriority = static_cast<float>(g_BeachheadMissionPriorityNormalization_0065AA30 /
                                             GetNavyContextPointerFromGlobalTableByIndex(3)) *
                          static_cast<TInvadeMission*>(parentMission3c)->CalculatePriority();
-  if (resourceWeights2c[3] < invadePriority) {
-    resourceWeights2c[3] = invadePriority;
+  if (requiredShipEquipageByCategory[3] < invadePriority) {
+    requiredShipEquipageByCategory[3] = invadePriority;
   }
 }
 
 // FUNCTION: IMPERIALISM 0x0053a7b0
-char TBeachheadMission::MatchesMissionKeySlot4C(int kind, int key, int mode) {
+char TBeachheadMission::Matches(int kind, int key, int mode) const {
   if (kind == 2 && key != -1 && parentMission3c != nullptr &&
       static_cast<short>(key) == parentMission3c->targetProvince30 &&
       mode == reinterpret_cast<int>(targetZone14)) {
@@ -122,34 +123,36 @@ char TBeachheadMission::MatchesMissionKeySlot4C(int kind, int key, int mode) {
 // war-relation timestamp with this mission's nation (TDiplomacyMgr::IsNationPairAtWar's slot
 // 0x48 sibling), queues map-order type 5 on the passed-in TTaskForce* directly. Otherwise, if
 // the two nations aren't currently at war (IsNationPairAtWar/HasPolicyWithNationSlot44),
-// applies the diplomacy policy state via TGreatPower::ApplyDiplomacyPolicyStateForTargetWithCostChecks
-// (real vtable slot 0x1d0/116) -- the original also gates that dispatch on a per-nation "need
-// already queued" cache (needCurrentByType, TGreatPower+0xb2) which is omitted here pending
-// recovery of that table's real index range, matching the same accepted gap already
-// documented on TAttackProvinceMission::MissionSlot44's analogous call.
+// applies the diplomacy policy state via
+// TGreatPower::ApplyDiplomacyPolicyStateForTargetWithCostChecks (real vtable slot 0x1d0/116),
+// unless the owner's diplomacyPolicyByNation entry already carries that same 0x131 policy code.
 // FUNCTION: IMPERIALISM 0x0053a800
-void TBeachheadMission::NoOpSlot9C(void* pMapOrderEntry) {
-  short cityId = parentMission3c->targetProvince30;
-  signed char ownerCode = g_pGlobalMapState->cityScoreTable[cityId].ownerNationCode00;
+void TBeachheadMission::GiveActionOrders(TTaskForce* mapOrderEntry) {
+  signed char ownerCode =
+      g_pGlobalMapState->cityScoreTable[parentMission3c->targetProvince30].ownerNationCode00;
   if (g_pDiplomacyTurnStateManager->HasOutdatedWarRelationSlot48(nationId04, ownerCode)) {
-    static_cast<TTaskForce*>(pMapOrderEntry)
-        ->SetMapOrderType5AndQueue(
-            reinterpret_cast<int>(&g_pGlobalMapState->cityScoreTable[cityId]));
+    mapOrderEntry->SetMapOrderType5AndQueue(reinterpret_cast<int>(
+        &g_pGlobalMapState->cityScoreTable[parentMission3c->targetProvince30]));
     return;
   }
 
-  ownerCode = g_pGlobalMapState->cityScoreTable[cityId].ownerNationCode00;
+  ownerCode =
+      g_pGlobalMapState->cityScoreTable[parentMission3c->targetProvince30].ownerNationCode00;
   if (g_pDiplomacyTurnStateManager->HasPolicyWithNationSlot44(nationId04, ownerCode)) {
     return;
   }
 
-  ownerCode = g_pGlobalMapState->cityScoreTable[cityId].ownerNationCode00;
-  g_apNationStates[nationId04]->ApplyDiplomacyPolicyStateForTargetWithCostChecks(ownerCode, 0x131);
+  ownerCode =
+      g_pGlobalMapState->cityScoreTable[parentMission3c->targetProvince30].ownerNationCode00;
+  if (g_apNationStates[nationId04]->diplomacyPolicyByNation[ownerCode] != 0x131) {
+    g_apNationStates[nationId04]->ApplyDiplomacyPolicyStateForTargetWithCostChecks(ownerCode,
+                                                                                   0x131);
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x0053a920
-int TBeachheadMission::ReturnZeroSlot58() {
-  return reinterpret_cast<int>(parentMission3c);
+TMission* TBeachheadMission::GetArmyMission() {
+  return parentMission3c;
 }
 
 // FUNCTION: IMPERIALISM 0x0053a940

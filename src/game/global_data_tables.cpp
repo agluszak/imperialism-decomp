@@ -1099,6 +1099,8 @@ MappedFlavorTextNationVariantEntry g_MappedFlavorTextNationVariantTable_0066EF30
 // Defend-province / mission priority-vector normalization (0x53e6e0 / 0x53ea70 family).
 // GLOBAL: IMPERIALISM 0x0065a8f0
 extern const float g_AttackProvinceMissionReadinessThreshold_0065A8F0 = 1.0f;
+// GLOBAL: IMPERIALISM 0x0065a8f8
+extern const float g_DefendProvinceMissionCrossSupportFloorScale_0065A8F8 = 0.8f;
 // GLOBAL: IMPERIALISM 0x0065a8fc
 extern const float g_MissionResourceWeightScale_0065A8FC = 1.1f;
 // GLOBAL: IMPERIALISM 0x0065a900
@@ -1107,6 +1109,8 @@ extern const float g_BlockadePortMissionThreatFloor_0065A900 = 10.0f;
 extern const float g_BlockadePortMissionThreatScale_0065A904 = 0.5f;
 // GLOBAL: IMPERIALISM 0x0065a958
 extern const float g_NavyMissionQueuedWeightDeficitScale_0065A958 = 1.0f;
+// GLOBAL: IMPERIALISM 0x0065a95c
+extern const float g_InvadeMissionSuppressedPriorContributionScale_0065A95C = 0.0f;
 // GLOBAL: IMPERIALISM 0x0065a960
 extern const float g_NavyMissionSimilarityExcessBlend_0065A960 = 0.25f;
 // GLOBAL: IMPERIALISM 0x0065a968
@@ -1117,6 +1121,8 @@ extern const float g_AttackProvinceMissionResourceScaleByDifficultyAndFortLevel_
     {2.0f, 2.3f, 2.5f, 2.7f},
     {2.1f, 2.3f, 2.5f, 2.7f},
     {2.3f, 2.5f, 2.7f, 2.9f}};
+// GLOBAL: IMPERIALISM 0x0065a9b8
+extern const float g_MissionPositiveFallback_0065A9B8 = 1.0f;
 // GLOBAL: IMPERIALISM 0x0065a9bc
 extern const float g_Recompute_Nation_Order_LookupTable_0065A9BC = 0.05f;
 // GLOBAL: IMPERIALISM 0x0065a9c4

@@ -921,7 +921,7 @@ void TGreatPower::DispatchMissionNodeCallbacksAndClearQueue(void) {
   CIterator nodeIter(this->missionNodeQueue);
   for (TMission* node = static_cast<TMission*>(nodeIter.Reset()); nodeIter.More();
        node = static_cast<TMission*>(nodeIter.Advance())) {
-    node->DispatchMissionNodeSlot28();
+    node->IsANoBrainer();
   }
   this->missionNodeQueue->FreePayloads();
 }

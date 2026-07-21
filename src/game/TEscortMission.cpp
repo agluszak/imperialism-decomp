@@ -23,12 +23,12 @@ TMission* TEscortMission::GetReplacementSlot48() {
 }
 
 // FUNCTION: IMPERIALISM 0x00539920
-char TEscortMission::ReturnFalseSlot64() {
+char TEscortMission::IsHospitalMission() const {
   return 1;
 }
 
 // FUNCTION: IMPERIALISM 0x00539940
-char TEscortMission::ReturnFalseSlot60() {
+char TEscortMission::IsDefensiveSeaZoneMission() const {
   return 0;
 }
 // SYNTHETIC: IMPERIALISM 0x00539960
@@ -49,20 +49,20 @@ TEscortMission::~TEscortMission() {}
 TEscortMission::TEscortMission(TZone* targetZone) : TNavyMission(targetZone) {}
 
 // FUNCTION: IMPERIALISM 0x00539a70
-void TEscortMission::Call30() {
+void TEscortMission::Initialize() {
   marker11 = 0;
   targetZone18 = targetZone14;
 }
 
 // Scales this mission's score by home-nation trade capacity and need pressure: starts from
 // the current home port zone's cached-owner (primaryNeighbors slot 0, punned to TGreatPower*
-// -- same convention Call30/ResetValue0CToZero use elsewhere in this file)
+// -- same convention Initialize/CalculateImportance use elsewhere in this file)
 // ComputeMapActionContextNodeValueAverage(), then for every OTHER port zone sharing that same
 // cached owner multiplies the running score by 1.5 (if that zone's own mission-field-48 owner
 // nation matches this mission's nation) or 1.25 (otherwise), and finally scales by
 // nation->tradeCapacity / max(nation->needCapA6, 1) / 5000.
 // FUNCTION: IMPERIALISM 0x00539ca0
-void TEscortMission::ResetValue0CToZero() {
+void TEscortMission::CalculateImportance() {
   TGreatPower* nation = g_apNationStates[nationId04];
   short needCap = (nation != nullptr) ? nation->needCapA6 : 0;
   if (needCap == 0) {
@@ -78,12 +78,14 @@ void TEscortMission::ResetValue0CToZero() {
     TZone** zoneOwnerSlot = zone->primaryNeighbors.EnsureSlotAllocatedAndReturnPointer(0);
     if (*zoneOwnerSlot == cachedOwner) {
       short ownerNationCode = zone->GetPortZoneOwnerNationCodeFromMissionField48();
-      score *= (ownerNationCode == nationId04) ? 1.5f : 1.25f;
+      score *= (ownerNationCode == nationId04)
+                   ? static_cast<float>(g_PortZoneFriendlyMissionScoreMultiplier_0065AA10)
+                   : static_cast<float>(g_PortZoneForeignMissionScoreMultiplier_0065AA18);
     }
   }
 
-  value0c =
-      (score / 5000.0f) * static_cast<float>(nation->tradeCapacity) / static_cast<float>(needCap);
+  importanceScore0c = (score / g_fMissionScoreNormalizationDivisor) *
+                      static_cast<float>(nation->tradeCapacity) / static_cast<float>(needCap);
 }
 
 // Walks the 16 minor-nation slots (g_apSecondaryNationStateSlots[7..22]), gating each by
@@ -93,7 +95,7 @@ void TEscortMission::ResetValue0CToZero() {
 // TCountry::IsEncodedNationSlotMinus200Equal). For each eligible minor, resolves its home
 // port zone's cached-owner context (FindFirstPortZoneContextByNation +
 // primaryNeighbors.EnsureSlotAllocatedAndReturnPointer(0), the same idiom
-// ResetValue0CToZero above uses) and scores that context's tagged primary navy order-list
+// CalculateImportance above uses) and scores that context's tagged primary navy order-list
 // ships (gated by TDiplomacyMgr::HasPolicyWithNationSlot44) into a 4-category vector --
 // categories 0-2 scaled by stockLevel1c/normalizationBase, category 3 unscaled -- via the
 // same per-ship math as AccumulateNavyOrderCategoryVectorWithScale, but inlined here rather
@@ -102,10 +104,10 @@ void TEscortMission::ResetValue0CToZero() {
 // a {40,30,30,0} weight profile (g_Populate_Beachhead_Mission_LookupTable_00697958[4..7])
 // the same way TShip::ComputeNavyOrderDistributionScoreForNation does, and accumulates that
 // per-nation score into a running total seeded at 1.0f across every eligible minor. Spreads
-// the final total across resourceWeights2c[4] via a second, address-distinct {40,30,30,0}
+// the final total across requiredShipEquipageByCategory[4] via a second, address-distinct {40,30,30,0}
 // profile (g_NavyOrderDistributionCategoryWeights_00697978).
 // FUNCTION: IMPERIALISM 0x00539e70
-void TEscortMission::NoOpSlot3C() {
+void TEscortMission::CalculateNeeds() {
   float total = 1.0f;
   short year = static_cast<short>(g_pSimMgr->economicTurn / 4);
   float yearThreshold = static_cast<float>(year) + 110.0f;
@@ -123,7 +125,14 @@ void TEscortMission::NoOpSlot3C() {
               g_pDiplomacyTurnStateManager->relationStandingScoreMatrix79c[i * 0x17 + nationId04]) >
           yearThreshold;
     } else {
-      eligible = nation->IsEncodedNationSlotMinus200Equal(nationId04) != 0;
+      short encodedNationSlot = nation->encodedNationSlot;
+      if (encodedNationSlot >= 200) {
+        eligible = encodedNationSlot - 200 == nationId04;
+      } else if (encodedNationSlot >= 100) {
+        eligible = encodedNationSlot - 100 == nationId04;
+      } else {
+        eligible = nation->nationSlot == nationId04;
+      }
     }
     if (!eligible) {
       continue;
@@ -176,13 +185,13 @@ void TEscortMission::NoOpSlot3C() {
   }
 
   for (int c = 0; c < 4; ++c) {
-    resourceWeights2c[c] =
+    requiredShipEquipageByCategory[c] =
         static_cast<float>(g_NavyOrderDistributionCategoryWeights_00697978[c]) * total * 0.01f;
   }
 }
 
 // FUNCTION: IMPERIALISM 0x0053a250
-char TEscortMission::MatchesMissionKeySlot4C(int kind, int key, int mode) {
+char TEscortMission::Matches(int kind, int key, int mode) const {
   (void)mode;
   if ((kind == 0 || kind == 3) && key == reinterpret_cast<int>(targetZone14)) {
     return 1;
@@ -191,7 +200,7 @@ char TEscortMission::MatchesMissionKeySlot4C(int kind, int key, int mode) {
 }
 
 // FUNCTION: IMPERIALISM 0x0053a290
-void TEscortMission::MissionSlot44() {
+void TEscortMission::GiveOrders() {
   if (orderList24 != nullptr) {
     orderList24->active = 0;
     orderList24->next->SetChainActiveFlag(0);

@@ -25,29 +25,50 @@ static __inline short SignedDiv10(int value) {
 
 // FUNCTION: IMPERIALISM 0x0053b800
 float ComputeNavyOrderDistributionScoreForNation(short nation) {
-  float categoryVector[4] = {
-      g_Recompute_Nation_Order_LookupTable_0065A9E8, g_Recompute_Nation_Order_LookupTable_0065A9E8,
-      g_Recompute_Nation_Order_LookupTable_0065A9E8, g_Recompute_Nation_Order_LookupTable_0065A9E8};
+  float categoryVector[4] = {0.0f, 0.0f, 0.0f, 0.0f};
   for (TShip* ship = GetNavyPrimaryOrderListHead(); ship != nullptr; ship = ship->nextOlder24) {
     if (ship->ownerNationSlot14 == nation && ship->IsInHomePort() &&
         ship->GetNavyOrderNormalizationBaseByNationType() <= ship->stockLevel1c) {
-      AccumulateNavyOrderCategoryVectorWithScale(
-          ship, categoryVector, static_cast<float>(g_Recompute_Nation_Order_LookupTable_0065AA08));
+      float stockRatio = static_cast<float>(ship->stockLevel1c /
+                                            ship->GetNavyOrderNormalizationBaseByNationType());
+      categoryVector[0] =
+          static_cast<float>(ship->ComputeNavyOrderPriorityContributionPercentByCategory(0)) *
+              stockRatio +
+          categoryVector[0];
+      categoryVector[1] =
+          static_cast<float>(ship->ComputeNavyOrderPriorityContributionPercentByCategory(1)) *
+              stockRatio +
+          categoryVector[1];
+      categoryVector[2] =
+          static_cast<float>(ship->ComputeNavyOrderPriorityContributionPercentByCategory(2)) *
+              stockRatio +
+          categoryVector[2];
+      categoryVector[3] =
+          static_cast<float>(ship->ComputeNavyOrderPriorityContributionPercentByCategory(3)) +
+          categoryVector[3];
     }
   }
-  float total = categoryVector[0] + categoryVector[1] + categoryVector[2] + categoryVector[3];
+  float total = g_Recompute_Nation_Order_LookupTable_0065A9E8;
+  float* component = categoryVector;
+  for (int remaining = 4; remaining != 0; --remaining) {
+    total += *component++;
+  }
   if (total == static_cast<float>(g_Recompute_Nation_Order_LookupTable_0065A9F0)) {
     return g_Recompute_Nation_Order_LookupTable_0065A9E8;
   }
   float diffSum = g_Recompute_Nation_Order_LookupTable_0065A9E8;
-  for (int i = 0; i < 4; ++i) {
-    float diff = categoryVector[i] / total -
-                 static_cast<float>(g_NavyOrderDistributionCategoryWeights_00697978[i]) *
-                     static_cast<float>(g_Recompute_Nation_Order_LookupTable_0065A9F8);
+  const short* targetWeight = g_NavyOrderDistributionCategoryWeights_00697978;
+  component = categoryVector;
+  while (targetWeight < g_NavyOrderDistributionCategoryWeights_00697978 + 4) {
+    float diff =
+        *component / total - static_cast<float>(*targetWeight) *
+                                 static_cast<float>(g_Recompute_Nation_Order_LookupTable_0065A9F8);
     if (diff <= static_cast<float>(g_Recompute_Nation_Order_LookupTable_0065A9F0)) {
       diff = -diff;
     }
     diffSum += diff;
+    ++targetWeight;
+    ++component;
   }
   return total * (static_cast<float>(g_Recompute_Nation_Order_LookupTable_0065AA08) -
                   diffSum * static_cast<float>(g_Recompute_Nation_Order_LookupTable_0065AA00));
@@ -213,7 +234,7 @@ int GetNavyContextPointerFromGlobalTableByIndex(int index) {
 }
 
 // Receiver-agnostic: also called directly on a TTaskForce's own
-// order_type/required_count/tiebreak_strength fields (TNavyMission::ReturnZeroSlot2C),
+// order_type/required_count/tiebreak_strength fields (TNavyMission::AccumulateLack),
 // which happen to share these same 3 offsets with TShip -- see the header comment.
 
 // FUNCTION: IMPERIALISM 0x0054ff00

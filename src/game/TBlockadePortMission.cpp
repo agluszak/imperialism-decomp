@@ -2,9 +2,9 @@
 //
 // Real base is TControlSeaZoneMission (RTTI ancestry: TBlockadePortMission ->
 // TControlSeaZoneMission -> TNavyMission -> TMission -> TObject -> CObject).
-// ResetValue0CToZero and RefreshMissionPortZoneContextForNation are NOT
+// CalculateImportance and RefreshMissionPortZoneContextForNation are NOT
 // overridden here -- they're inherited unchanged from TControlSeaZoneMission,
-// which owns their `// FUNCTION:` markers. Call30 here is a genuinely distinct
+// which owns their `// FUNCTION:` markers. Initialize here is a genuinely distinct
 // own override (RecomputeAndClearMissionScoreUsingPortZoneContextAverageVariantB).
 
 #include "game/TArmyPlayer.h"
@@ -25,12 +25,12 @@ IMPLEMENT_SERIAL(TBlockadePortMission, TControlSeaZoneMission, 1)
 // TBlockadePortMission::CreateObject
 
 // FUNCTION: IMPERIALISM 0x0053aa50
-char TBlockadePortMission::ReturnFalseSlot64() {
+char TBlockadePortMission::IsHospitalMission() const {
   return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x0053aa70
-char TBlockadePortMission::ReturnFalseSlot60() {
+char TBlockadePortMission::IsDefensiveSeaZoneMission() const {
   return 0;
 }
 // SYNTHETIC: IMPERIALISM 0x0053aa90
@@ -67,7 +67,7 @@ void TBlockadePortMission::ReadFrom(TStream* stream) {
 }
 
 // FUNCTION: IMPERIALISM 0x0053ace0
-void TBlockadePortMission::Call30() {
+void TBlockadePortMission::Initialize() {
   float score = static_cast<float>(targetZone14->ComputeMapActionContextNodeValueAverage());
 
   for (TZone* zone = TZone::GetFirstPortZone(); zone != nullptr; zone = zone->GetNextPortZone()) {
@@ -80,7 +80,7 @@ void TBlockadePortMission::Call30() {
   }
 
   marker11 = 0;
-  value0c = score / g_fMissionScoreNormalizationDivisor;
+  importanceScore0c = score / g_fMissionScoreNormalizationDivisor;
 }
 
 // Same overall shape as TControlSeaZoneMission::GetReplacementSlot48, but the coverage
@@ -117,7 +117,7 @@ void TBlockadePortMission::SetStateByte8To2() {
   state08 = 3;
 }
 
-// First reproduces the base TControlSeaZoneMission::NoOpSlot3C's targetZone14-tagged base
+// First reproduces the base TControlSeaZoneMission::CalculateNeeds's targetZone14-tagged base
 // score (duplicated inline -- see the in-body comment), then computes a second "threat"
 // score: either from a single target nation (this blockade's portZoneContext3c owner-
 // nation-code, if < 7) or maxed over every nation in g_apNationStates whose diplomacy
@@ -126,16 +126,16 @@ void TBlockadePortMission::SetStateByte8To2() {
 // distribution score -- the same per-ship walk/accumulate/normalize shape as
 // TShip::ComputeNavyOrderDistributionScoreForNation, inlined here rather than calling that
 // function (no CALL to 0x53b800 in the raw listing). Finally uses max(threat*0.5, 10.0) to
-// raise (never lower) each resourceWeights2c[i] via the
+// raise (never lower) each requiredShipEquipageByCategory[i] via the
 // g_Populate_Beachhead_Mission_LookupTable_00697958[4..7] profile (same slice TEscortMission's
-// own NoOpSlot3C uses).
+// own CalculateNeeds uses).
 // FUNCTION: IMPERIALISM 0x0053aeb0
-void TBlockadePortMission::NoOpSlot3C() {
-  // Reproduces the base TControlSeaZoneMission::NoOpSlot3C's targetZone14-tagged base score
+void TBlockadePortMission::CalculateNeeds() {
+  // Reproduces the base TControlSeaZoneMission::CalculateNeeds's targetZone14-tagged base score
   // inline -- the two classes are separate translation units with no LTO, so a qualified
-  // `TControlSeaZoneMission::NoOpSlot3C()` call would emit a real cross-TU CALL rather than
+  // `TControlSeaZoneMission::CalculateNeeds()` call would emit a real cross-TU CALL rather than
   // reproducing the original's fully-duplicated inlined body, so the body is duplicated here
-  // instead (see TBeachheadMission::NoOpSlot3C's identical duplication and its longer
+  // instead (see TBeachheadMission::CalculateNeeds's identical duplication and its longer
   // rationale comment).
   float baseVector[4] = {
       g_Recompute_Nation_Order_LookupTable_0065A9E8, g_Recompute_Nation_Order_LookupTable_0065A9E8,
@@ -186,8 +186,8 @@ void TBlockadePortMission::NoOpSlot3C() {
       total = g_MissionEmptyResourceWeight_0065AA24;
     }
     for (i = 0; i < 4; ++i) {
-      resourceWeights2c[i] = static_cast<float>(lookupTable[i] * total *
-                                                g_Recompute_Nation_Order_LookupTable_0065A9F8);
+      requiredShipEquipageByCategory[i] = static_cast<float>(
+          lookupTable[i] * total * g_Recompute_Nation_Order_LookupTable_0065A9F8);
     }
   }
 
@@ -244,14 +244,14 @@ void TBlockadePortMission::NoOpSlot3C() {
   for (int i = 0; i < 4; ++i) {
     float raised = static_cast<float>(weights[i] * threatFloor *
                                       g_Recompute_Nation_Order_LookupTable_0065A9F8);
-    if (resourceWeights2c[i] < raised) {
-      resourceWeights2c[i] = raised;
+    if (requiredShipEquipageByCategory[i] < raised) {
+      requiredShipEquipageByCategory[i] = raised;
     }
   }
 }
 
 // FUNCTION: IMPERIALISM 0x0053ba10
-char TBlockadePortMission::MatchesMissionKeySlot4C(int kind, int key, int mode) {
+char TBlockadePortMission::Matches(int kind, int key, int mode) const {
   (void)key;
   // Original (0x53ba10) compares the third argument against the inherited
   // targetZone14 pointer, not the second argument against portZoneContext3c.
@@ -262,7 +262,6 @@ char TBlockadePortMission::MatchesMissionKeySlot4C(int kind, int key, int mode) 
 }
 
 // FUNCTION: IMPERIALISM 0x0053ba40
-void TBlockadePortMission::NoOpSlot9C(void* pMapOrderEntry) {
-  static_cast<TTaskForce*>(pMapOrderEntry)
-      ->SetMapOrderType6AndQueue(reinterpret_cast<int>(portZoneContext3c));
+void TBlockadePortMission::GiveActionOrders(TTaskForce* mapOrderEntry) {
+  mapOrderEntry->SetMapOrderType6AndQueue(reinterpret_cast<int>(portZoneContext3c));
 }
