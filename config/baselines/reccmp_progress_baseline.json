@@ -12,8 +12,8 @@
   "flo_orig_only_count": 225,
   "flo_recomp_only_count": 0,
   "git_branch": "agent/tsimmgr-order-manager-rebuild",
-  "git_commit": "886fed32e17e055956cf3af4ecb8848b60a73fe4",
-  "git_commit_date": "2026-07-21T13:50:27+02:00",
+  "git_commit": "214335d33e32c55a08806143b1d136c7016691c0",
+  "git_commit_date": "2026-07-21T14:01:37+02:00",
   "global_coverage_pct": 23.341363973313566,
   "global_orig_only_count": 8273,
   "global_recomp_only_count": 6788,
@@ -61,7 +61,7 @@
   "target": "IMPERIALISM",
   "template_alias_recognized_count": 4,
   "template_canonical_paired_count": 4,
-  "timestamp_utc": "2026-07-21T12:00:25+00:00",
+  "timestamp_utc": "2026-07-21T12:01:57+00:00",
   "wid_orig_only_count": 0,
   "wid_recomp_only_count": 2
 }
