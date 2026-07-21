@@ -160,7 +160,7 @@ void TCity::ProduceUnits() {
   int buildRemaining = 0x12;
   do {
     if (*buildCursor != 0) {
-      (*buildCursor)->CommitIfPending();
+      (*buildCursor)->Produce();
     }
     ++buildCursor;
     --buildRemaining;
@@ -170,7 +170,7 @@ void TCity::ProduceUnits() {
   remaining = 8;
   do {
     if (*shipCursor != 0) {
-      (*shipCursor)->CommitIfPending();
+      (*shipCursor)->Produce();
     }
     ++shipCursor;
     --remaining;

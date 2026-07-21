@@ -20,7 +20,7 @@ public:
   // slot 0x07 Free inherited unchanged (0x4798b0)
   // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
-  // slot 0x0a InitializeBasicCityOrderContext inherited unchanged (0x4b4f70)
+  // slot 0x0a IProductionOrder inherited unchanged (0x4b4f70)
   virtual bool SetQuantity(short param_1) override; // slot 0x0b 0x4b7210
   virtual short MaxOrder() override;                // slot 0x0c 0x4b7080
 
@@ -30,9 +30,9 @@ public:
   void SetOrderCostProfile(short resourceTypeIndex, short primaryInputResourceId,
                            short primaryInputPerUnit, short secondaryInputResourceId,
                            short secondaryInputPerUnit, short cashCostPerUnit, short workforceMode);
-  virtual undefined CommitIfPending() override; // slot 0x0d 0x4b73b0
-  // slot 0x0e ResetCityOrderItemDerivedStateNoop inherited unchanged (0x4b5140)
-  // slot 0x0f Produce inherited unchanged (0x4b5180)
+  virtual void Produce() override; // slot 0x0d 0x4b73b0
+  // slot 0x0e Restock inherited unchanged (0x4b5140)
+  // slot 0x0f ResetOrderSheet inherited unchanged (0x4b5180)
   virtual void FillOrderSheet(OrderSheet* orderSheet,
                               short quantity) override; // slot 0x10 0x4b7320
   virtual void InitializeCityRecruitmentOrderContext(

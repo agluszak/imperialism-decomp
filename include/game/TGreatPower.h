@@ -404,7 +404,7 @@ public:
   // Compared signed (setge vs 0x33) by the region-list growth check (0x4e22b0).
   signed char serializedStatusFlags[8];
   signed char expansionAlertCounter;
-  unsigned char field8d1;
+  signed char field8d1;
   unsigned char field8d2;
   unsigned char field8d3;
   signed char expansionEventGate;

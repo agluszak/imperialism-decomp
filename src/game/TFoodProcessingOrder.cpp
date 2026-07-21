@@ -1,5 +1,7 @@
 #include "game/TFoodProcessingOrder.h"
 
+#include "game/TCity.h"
+
 // SYNTHETIC: IMPERIALISM 0x004b7dc0
 // TFoodProcessingOrder::CreateObject
 
@@ -30,19 +32,23 @@ bool TFoodProcessingOrder::SetQuantity(short param_1) {
 }
 
 // FUNCTION: IMPERIALISM 0x004b8060
-undefined TFoodProcessingOrder::CommitIfPending() {
-  return 0;
+void TFoodProcessingOrder::Produce() {
+  TCity* city = cityField08;
+  city->cityStockCannedFoodC4 += quantityField04;
+  city->VerifyStocks();
+  quantityField04 = 0;
+  field3e = 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004b80a0
-void TFoodProcessingOrder::ResetCityOrderItemDerivedStateNoop() {}
+void TFoodProcessingOrder::Restock() {}
 
 // FUNCTION: IMPERIALISM 0x004b80c0
 void TFoodProcessingOrder::FillOrderSheet(OrderSheet* orderSheet, short quantity) {
   if (quantity & 1) {
     quantity = static_cast<short>(quantity + 1);
   }
-  this->InitializeCityOrderItemWorkingBuffers(orderSheet);
+  this->ResetOrderSheet(orderSheet);
   orderSheet->slotByResourceCode[0x11] = quantity;
   orderSheet->slotByResourceCode[0x12] = static_cast<short>(quantity / 2);
   orderSheet->slotByResourceCode[0x14] = static_cast<short>(quantity / 2);

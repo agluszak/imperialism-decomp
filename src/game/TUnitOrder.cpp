@@ -57,7 +57,7 @@ bool TUnitOrder::SetQuantity(short param_1) {
 
 // FUNCTION: IMPERIALISM 0x004b7320
 void TUnitOrder::FillOrderSheet(OrderSheet* orderSheet, short quantity) {
-  this->InitializeCityOrderItemWorkingBuffers(orderSheet);
+  this->ResetOrderSheet(orderSheet);
   orderSheet->ForResourceCode(this->primaryInputResourceId) =
       static_cast<short>(this->primaryInputPerUnit * quantity);
   if (this->secondaryInputResourceId >= 0) {
@@ -80,11 +80,11 @@ void TUnitOrder::FillOrderSheet(OrderSheet* orderSheet, short quantity) {
 // Reads the inherited TProductionOrder recipe fields (quantity/city/resource-type) plus this
 // class's specialistMode, then spawns quantityField04 TCivUnit work orders into the city.
 // FUNCTION: IMPERIALISM 0x004b73b0
-undefined TUnitOrder::CommitIfPending() {
+void TUnitOrder::Produce() {
   short pendingDelta = quantityField04;
   TCity* cityContext = cityField08;
   if (pendingDelta <= 0 || cityContext == 0) {
-    return 0;
+    return;
   }
 
   CString sharedRefA;
@@ -120,7 +120,6 @@ undefined TUnitOrder::CommitIfPending() {
   }
 
   quantityField04 = 0;
-  return 0;
 }
 
 // The store order (0x48, 0x4c, 0x50, 0x4e, 0x52, 0x54, 0x56) follows the original's

@@ -49,7 +49,7 @@ bool TItemOrder::SetQuantity(short param_1) {
 
 // FUNCTION: IMPERIALISM 0x004b5510
 void TItemOrder::FillOrderSheet(OrderSheet* orderSheet, short quantity) {
-  this->InitializeCityOrderItemWorkingBuffers(orderSheet);
+  this->ResetOrderSheet(orderSheet);
   if (this->secondaryInputResourceId >= 0) {
     orderSheet->ForResourceCode(this->primaryInputResourceId) = quantity;
     orderSheet->ForResourceCode(this->secondaryInputResourceId) = quantity;
@@ -61,12 +61,23 @@ void TItemOrder::FillOrderSheet(OrderSheet* orderSheet, short quantity) {
 }
 
 // FUNCTION: IMPERIALISM 0x004b5580
-undefined TItemOrder::CommitIfPending() {
-  return 0;
+void TItemOrder::Produce() {
+  cityField08->productionAccum1fc[productionSlot] =
+      static_cast<short>(cityField08->productionAccum1fc[productionSlot] + quantityField04);
+  cityField08->CityStockByType(resourceTypeIndex48) =
+      static_cast<short>(cityField08->CityStockByType(resourceTypeIndex48) + quantityField04);
+  cityField08->VerifyStocks();
+  cityField08->field78 += quantityField04;
+  trackingSlots10[primaryInputResourceId] = 0;
+  if (secondaryInputResourceId >= 0) {
+    trackingSlots10[secondaryInputResourceId] = 0;
+  }
+  field3e = 0;
+  accumulatedValue += quantityField04;
 }
 
 // FUNCTION: IMPERIALISM 0x004b5620
-void TItemOrder::ResetCityOrderItemDerivedStateNoop() {
+void TItemOrder::Restock() {
   // Clamp the pending quantity to MaxOrder(): recompute the ceiling, zero the
   // pending-quantity field, then re-drive SetQuantity with whichever of the current
   // requested quantity / the new ceiling is smaller. SetQuantity itself rewrites

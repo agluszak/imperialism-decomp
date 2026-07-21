@@ -3339,7 +3339,7 @@ void TGreatPower::SetHomeCityTileAndDisplayName(short homeRegionTile, char* city
     CString nameStr(cityName);
     short cityRecordIndex = g_pGlobalMapState->terrainStateTable[regionIndex].cityRecordIndex;
     g_pGlobalMapState->SetGlobalMapCellSharedLabel(cityRecordIndex, &nameStr);
-    static_cast<TProductionOrder*>(selectedOrder)->ResetCityOrderItemDerivedStateNoop();
+    static_cast<TProductionOrder*>(selectedOrder)->Restock();
   }
 
   this->RebuildNationResourceYieldCountersAndDevelopmentTargets();
@@ -4489,7 +4489,8 @@ void TGreatPower::RecomputeNationEconomyAndDiplomacySummaryMetrics() {
       continue;
     }
     relationSum +=
-        diplomacy->relationStandingScoreMatrix79c[nationSlot * 0x17 + static_cast<short>(otherSlot)];
+        diplomacy
+            ->relationStandingScoreMatrix79c[nationSlot * 0x17 + static_cast<short>(otherSlot)];
     relationCount++;
   }
   economySummaryAvgRelationScore948 = relationSum / relationCount;

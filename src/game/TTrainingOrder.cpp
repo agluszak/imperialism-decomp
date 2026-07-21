@@ -1,5 +1,8 @@
 #include "game/TTrainingOrder.h"
 
+#include "game/TCity.h"
+#include "game/TGreatPower.h"
+
 // SYNTHETIC: IMPERIALISM 0x004b6a60
 // TTrainingOrder::CreateObject
 
@@ -31,7 +34,7 @@ bool TTrainingOrder::SetQuantity(short param_1) {
 
 // FUNCTION: IMPERIALISM 0x004b6de0
 void TTrainingOrder::FillOrderSheet(OrderSheet* orderSheet, short quantity) {
-  this->InitializeCityOrderItemWorkingBuffers(orderSheet);
+  this->ResetOrderSheet(orderSheet);
   if (this->resourceTypeIndex48 == 1) {
     orderSheet->slotByResourceCode[0x0a] = quantity;
     return;
@@ -41,9 +44,31 @@ void TTrainingOrder::FillOrderSheet(OrderSheet* orderSheet, short quantity) {
 }
 
 // FUNCTION: IMPERIALISM 0x004b6e30
-undefined TTrainingOrder::CommitIfPending() {
-  return 0;
+void TTrainingOrder::Produce() {
+  short quantity = quantityField04;
+  if (quantity == 0) {
+    return;
+  }
+
+  TPopulationMetricBucket* population = summaryField0c->baselineSlots10;
+  if (resourceTypeIndex48 == 1) {
+    population->valueAt4 -= quantity;
+    population->valueAt6 += quantityField04;
+    quantityField04 = 0;
+    return;
+  }
+
+  int newLevel = static_cast<int>(population->valueAt8) + quantity;
+  TGreatPower* owner = cityField08->ownerNationAc;
+  if (newLevel >= 10 && owner->serializedStatusFlags[7] < '2') {
+    owner->SetNationPendingActionStateAndPayload(7, 2);
+  } else if (newLevel >= 30 && owner->serializedStatusFlags[7] <= '3') {
+    owner->SetNationPendingActionStateAndPayload(7, 3);
+  }
+  population->valueAt6 -= quantityField04;
+  population->valueAt8 += quantityField04;
+  quantityField04 = 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004b6f00
-void TTrainingOrder::ResetCityOrderItemDerivedStateNoop() {}
+void TTrainingOrder::Restock() {}

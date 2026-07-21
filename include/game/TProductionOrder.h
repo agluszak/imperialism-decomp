@@ -27,14 +27,12 @@ public:
   // slot 0x07 Free inherited unchanged (0x4798b0)
   // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
-  virtual undefined InitializeBasicCityOrderContext(int param_1,
-                                                    undefined2 param_2); // slot 0x0a 0x4b4f70
-  virtual bool SetQuantity(short param_1);                               // slot 0x0b 0x4b5100
-  virtual short MaxOrder();                                              // slot 0x0c 0x4b50e0
-  virtual undefined CommitIfPending();                                   // slot 0x0d 0x4b5160
-  virtual void ResetCityOrderItemDerivedStateNoop();                     // slot 0x0e 0x4b5140
-  virtual undefined
-  InitializeCityOrderItemWorkingBuffers(OrderSheet* orderSheet);       // slot 0x0f 0x4b5180
+  virtual void IProductionOrder(TCity* city, short resourceType);      // slot 0x0a 0x4b4f70
+  virtual bool SetQuantity(short quantity);                            // slot 0x0b 0x4b5100
+  virtual short MaxOrder();                                            // slot 0x0c 0x4b50e0
+  virtual void Produce();                                              // slot 0x0d 0x4b5160
+  virtual void Restock();                                              // slot 0x0e 0x4b5140
+  virtual void ResetOrderSheet(OrderSheet* orderSheet);                // slot 0x0f 0x4b5180
   virtual void FillOrderSheet(OrderSheet* orderSheet, short quantity); // slot 0x10 0x4b51b0
   // Field layout recovered from the RTTI object-size match: TProductionOrder
   // and several direct children (TShipOrder, TTrainingOrder,
@@ -42,15 +40,15 @@ public:
   // `config/rtti_class_oracle.csv`, so those children add zero fields of
   // their own — every field previously modeled on TShipOrder at these same
   // offsets is really this base's own layout. Cross-checked against
-  // TUnitOrder::CommitIfPending (0x004b73b0, a sibling with its own extra
+  // TUnitOrder::Produce (0x004b73b0, a sibling with its own extra
   // 0x10 bytes) reading the identical offsets +0x04/+0x08/+0x48 for the same
   // roles (pending quantity, owning city, resource/entry id).
-  short quantityField04;       // 0x04 — pending order quantity
-  TCity* cityField08;          // 0x08 — owning city
+  short quantityField04;          // 0x04 — pending order quantity
+  TCity* cityField08;             // 0x08 — owning city
   TPopulationMgr* summaryField0c; // 0x0c — city population/production summary
-  short trackingSlots10[0x17]; // 0x10..0x3e — per-resource tracking slots
-  short field3e;               // 0x3e
-  short field40;               // 0x40
+  short trackingSlots10[0x17];    // 0x10..0x3e — per-resource tracking slots
+  short field3e;                  // 0x3e
+  short field40;                  // 0x40
   int accumulatedValue; // 0x44 — summed by TGreatPower::SumCommodityRecordAccumulatedValues (0x004e06d0)
   short resourceTypeIndex48; // 0x48 — resource/entry type index
   short field4a;             // 0x4a
