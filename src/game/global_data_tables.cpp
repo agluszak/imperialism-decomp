@@ -3430,10 +3430,11 @@ int g_diplomacyPopupLayoutPosition_006a3020[2] = {0};
 // GLOBAL: IMPERIALISM 0x006a2410
 int g_InfoBarDummyOrigin_006A2410[2] = {0};
 
-// Per-strength-tier probability-split table for BuildMapOrderContextSummaryStringForNation's
+// Per-strength-tier probability-split table for TArmyMgr::GenerateSpyReport's
 // per-garrisoned-unit resource roll: each 3-short half sums to 100. The first half picks a
-// 0-2 "point cost" for the unit; the second half picks how that cost gets bucketed (the
-// unit's own movement class, a fixed "misc" bucket, or a uniform random bucket). Indexed by
+// 0-2 "point cost" for the unit; the second result is biased by 3, with selector 4 choosing
+// a fixed "misc" bucket, selector 5 choosing a uniform random bucket, and every other
+// selector choosing the unit's own movement class. Indexed by
 // the function's winning strength tier (unclamped, matching the original -- tiers beyond
 // row 5 read past this table in the original too). table[tier]+3 is the second half (at
 // original address 0x0064c5de, 6 bytes/3 shorts into this same row-major table).

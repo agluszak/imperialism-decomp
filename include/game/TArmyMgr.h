@@ -278,22 +278,24 @@ public:
   bool ValidateOrderPlacementPrerequisitesForSelectedTile(short cityRecordIndex);
   // 0x004a5760, 656 bytes, __thiscall, 1 arg (tileIndex). Builds directional
   // order-overlay controls from the tile's adjacent-region list.
-  void SetActiveProvinceAndBuildDirectionalOrderOverlays(short tileIndex);
+  // Mac oracle: MarchSelectedArmies(short).
+  void MarchSelectedArmies(short tileIndex);
   // 0x004a5b10, 243 bytes, __thiscall, 3 args (ourStack, enemyStack, ownerNationCodeInt).
   // Called from TryCreateTacticalBattleViewForTileArmies when a real tactical battle
   // should be created (SEH-framed).
   void CreateTacticalBattleViewAndInitializeBattleSetup(TArmyStack* ourStack,
                                                         TArmyStack* enemyStack,
                                                         int ownerNationCodeInt);
-  void BuildMapHintOverlayTextAndDispatchUiMessages(short cityRecordIndex);
+  // Mac oracle: ShowSpyReport(long).
+  void ShowSpyReport(int cityRecordIndex);
 
   // Builds two localized summary strings for cityRecordIndex's garrison/order state;
   // returns false when there's nothing to show (both outputs untouched in that case).
   // 0x004a5ec0, __thiscall, 1580 bytes.
   //
   // The previous 2-arg `TUiTextStyleDescriptor*` signature was never verified against
-  // the callee's body and is wrong: the caller (BuildMapHintOverlayTextAndDispatchUi-
-  // Messages) constructs FOUR TUiTextStyleDescriptor locals (styleA-D) via
+  // the callee's body and is wrong: the caller (ShowSpyReport) constructs FOUR
+  // TUiTextStyleDescriptor locals (styleA-D) via
   // InitializeUiTextStyleDescriptor/BuildUiTextStyleDescriptor, but the raw disassembly
   // of the call site (0x4a67b1, ILT thunk 0x408c79) pushes the addresses of two
   // separately-constructed CString locals (real `CString::CString()` calls at
@@ -308,7 +310,7 @@ public:
   // (score = field_38/100 + 1); ties keep the first found. If no adjacent region is
   // owned (or none qualifies), falls back to the region's own city display name
   // (TMapMgr::AssignCityRecordDisplayName). Phase 2 separately scans
-  // g_pNavyPrimaryOrderListHead for a TShip owned by the active nation whose zone
+  // GetNavyPrimaryOrderListHead() for a TShip owned by the active nation whose zone
   // (field08) contains cityRecordIndex (TZone::ContainsCityStatePointerInZoneArrayBy-
   // CityIndex), reducing over TShip::SelectPreferredMapOrderEntryByPriorityRules; if
   // found, its admiral (admiralBacklink20) can override outDefenderSummary with
@@ -321,14 +323,16 @@ public:
   // stationedUnitChain98: each unit rolls twice against a per-strength-tier probability
   // table (g_MapOrderResourceRollWeightTable, keyed by Phase 1/2's winning score) seeded
   // from cityRecordIndex+TSimMgr::GetEconomicTurn()+GetActiveNationId(): the first roll
-  // picks a 0-2 "point cost", the second picks which of 11 buckets that cost lands in
-  // (the unit's own GetUnitMovementClassId(), a fixed "misc" bucket, or a uniform 0-9
-  // roll) -- singular/plural localized names come from string group 0x2726 (offset i vs
-  // i+11). Returns false only when Phase 1/2 found nothing at all (bestScore == -1, i.e.
-  // zero adjacent regions AND no owned ship in zone).
-  bool BuildMapOrderContextSummaryStringForNation(short cityRecordIndex,
-                                                  CString* outDefenderSummary,
-                                                  CString* outGarrisonSummary);
+  // picks a 0-2 "point cost". The second result is biased by 3: selector 4 uses the
+  // fixed "misc" bucket, selector 5 rolls uniformly over buckets 0-9, and the default
+  // uses the unit's GetUnitMovementClassId(). Singular/plural localized names come from
+  // string group 0x2726 (offset i vs i+11). Returns false only when Phase 1/2 found
+  // nothing at all (bestScore == -1, i.e. zero adjacent regions AND no owned ship in
+  // zone).
+  // Mac oracle: GenerateSpyReport(long, CStr255&, CStr255&); CString is the Windows
+  // counterpart of the Mac CStr255 outputs.
+  bool GenerateSpyReport(int cityRecordIndex, CString& outDefenderSummary,
+                         CString& outGarrisonSummary);
 
   // Called from RefreshMapOrderBattleSideSnapshot's type-5 (ship-order) tail. 0x004a6ef0,
   // 897 bytes.

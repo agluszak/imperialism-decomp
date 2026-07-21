@@ -1510,14 +1510,14 @@ address|name|symbol|size|type|prototype|provenance
 4a4c80|ComputeCivilianMapCursorStateIndex||641|function|undefined ComputeCivilianMapCursorStateIndex()|
 4a4fc0|TArmyMgr::OrphanCallChain_C2_I54_004a4fc0||144|function|undefined OrphanCallChain_C2_I54_004a4fc0()|
 4a5080|ValidateOrderPlacementPrerequisitesForSelectedTile||1407|function|undefined ValidateOrderPlacementPrerequisitesForSelectedTile()|
-4a5760|SetActiveProvinceAndBuildDirectionalOrderOverlays||656|function|undefined SetActiveProvinceAndBuildDirectionalOrderOverlays()|
+4a5760|TArmyMgr::MarchSelectedArmies||656|function|undefined MarchSelectedArmies()|
 4a5aa0|TArmyMgr::ComputeWeightedNeighborLinkScoreForNodeIndex||75|function|int __thiscall ComputeWeightedNeighborLinkScoreForNodeIndex(int nodeIndex)|
 4a5b10|CreateTacticalBattleViewAndInitializeBattleSetup||243|function|undefined CreateTacticalBattleViewAndInitializeBattleSetup()|
 4a5c50|TArmyBattle::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4a5c80|WrapperFor_FreeHeapBufferIfNotNull_At004a5c50_Impl||7|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At004a5c50_Impl()|
 4a5ca0|WrapperFor_HandleBlinkStateAndScheduleTimerTick_At005a5320_Impl||424|function|undefined WrapperFor_HandleBlinkStateAndScheduleTimerTick_At005a5320_Impl()|
-4a5ec0|BuildMapOrderContextSummaryStringForNation||1580|function|undefined BuildMapOrderContextSummaryStringForNation()|
-4a6680|BuildMapHintOverlayTextAndDispatchUiMessages||1372|function|undefined BuildMapHintOverlayTextAndDispatchUiMessages()|
+4a5ec0|TArmyMgr::GenerateSpyReport||1580|function|undefined GenerateSpyReport()|
+4a6680|TArmyMgr::ShowSpyReport||1372|function|undefined ShowSpyReport()|
 4a6d40|ScanMapContextActionEntriesForCodeMatch||99|function|undefined ScanMapContextActionEntriesForCodeMatch()|
 4a6dd0|GetByteFlagAtOffset8||4|function|undefined GetByteFlagAtOffset8()|
 4a6df0|TArmyMgr::CleanUpStacks||108|function|void __thiscall CleanUpStacks()|
