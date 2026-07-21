@@ -112,7 +112,7 @@ def _walk_records(node: dict, scope: list, cur_file: list, out: dict,
                     is_virtual=bool(b.get("isVirtual"))))
             for c in node.get("inner", []) or []:
                 ck = c.get("kind")
-                if ck == "FieldDecl" and c.get("name"):
+                if ck == "FieldDecl" and c.get("name") and not c.get("isInvalid"):
                     qt = (c.get("type") or {}).get("qualType", "")
                     rec.fields.append(FieldInfo(
                         name=c["name"], type=qt,

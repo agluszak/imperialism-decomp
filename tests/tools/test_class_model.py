@@ -90,6 +90,14 @@ class WalkRecordsTest(unittest.TestCase):
             file="/repo/include/game/f.h")]}
         self.assertTrue(_walk(tu)["F"].fields[0].is_bitfield)
 
+    def test_invalid_recovery_field_skipped(self):
+        invalid = _field("BOOL", "int")
+        invalid["isInvalid"] = True
+        tu = {"kind": "TranslationUnitDecl", "inner": [_record(
+            "CIncludeView", invalid, _field("m_field44", "int"),
+            file="/repo/include/game/CIncludeView.h")]}
+        self.assertEqual([f.name for f in _walk(tu)["CIncludeView"].fields], ["m_field44"])
+
 
 class ArrayCountTest(unittest.TestCase):
     def test_shapes(self):

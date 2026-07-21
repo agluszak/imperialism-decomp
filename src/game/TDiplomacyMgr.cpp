@@ -22,6 +22,7 @@
 #include "game/TStream.h"
 #include "game/TMultiplayerMgr.h"
 #include <new>
+#include <stdlib.h>
 
 namespace {
 const unsigned int kTurnEventTagNext = 0x4E655854;
@@ -141,6 +142,122 @@ void TDiplomacyMgr::InitializeTDiplomacyTurnStateManagerDefaults() {
     ++rowStart;
     --rowCount;
   } while (rowCount != 0);
+}
+
+// FUNCTION: IMPERIALISM 0x004ee8c0
+void TDiplomacyMgr::RebuildCivilianOrderCompatibilityMatrices() {
+  int sourceNation;
+  int targetNation;
+
+  for (sourceNation = 0; sourceNation < kNationSlotCount; ++sourceNation) {
+    for (targetNation = 0; targetNation < kNationSlotCount; ++targetNation) {
+      int forwardIndex = sourceNation * kNationSlotCount + targetNation;
+      int reverseIndex = targetNation * kNationSlotCount + sourceNation;
+      relationSideEffectMatrix1402[forwardIndex] = 0;
+      relationSideEffectMatrix1402[reverseIndex] = 0;
+
+      short standingScore = 0x5a;
+      if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(static_cast<short>(sourceNation)) !=
+              0 &&
+          g_pSimMgr->IsNationSlotEligibleForEventProcessing(static_cast<short>(targetNation)) !=
+              0) {
+        if (sourceNation < 7 && g_apNationStates[sourceNation]->diplomacyEligibilityA0 == 0 &&
+            g_pSimMgr->redrawEnabled > 2) {
+          standingScore = static_cast<short>(g_pSimMgr->redrawEnabled == 4 ? 0x69 : 0x64);
+        }
+      }
+      relationStandingScoreMatrix79c[forwardIndex] = standingScore;
+      relationPropagationMatrixBbe[forwardIndex] = 4;
+    }
+  }
+
+  for (sourceNation = 7; sourceNation < kNationSlotCount; ++sourceNation) {
+    TMinor* sourceMinor = g_apMinorNationCapabilityObjects[sourceNation - 7];
+    for (targetNation = 7; targetNation < kNationSlotCount; ++targetNation) {
+      int pairIndex = sourceNation * kNationSlotCount + targetNation;
+      short standingScore = 0x5a;
+      if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(static_cast<short>(sourceNation)) !=
+              0 &&
+          g_pSimMgr->IsNationSlotEligibleForEventProcessing(static_cast<short>(targetNation)) !=
+              0) {
+        standingScore =
+            sourceMinor->HasStandingPropagationBridgeSlot90(targetNation) != 0 ? 0x96 : 0x6e;
+      }
+      relationStandingScoreMatrix79c[pairIndex] = standingScore;
+      relationPropagationMatrixBbe[pairIndex] = 4;
+    }
+  }
+
+  for (sourceNation = 0; sourceNation < kNationSlotCount; ++sourceNation) {
+    relationStandingScoreMatrix79c[sourceNation * (kNationSlotCount + 1)] = 0xff;
+  }
+
+  for (sourceNation = 0; sourceNation < 7; ++sourceNation) {
+    for (targetNation = 0; targetNation < 7; ++targetNation) {
+      int forwardIndex = sourceNation * kNationSlotCount + targetNation;
+      int reverseIndex = targetNation * kNationSlotCount + sourceNation;
+      if (sourceNation == targetNation) {
+        relationSideEffectMatrix1402[forwardIndex] = 0;
+      } else {
+        relationSideEffectMatrix1402[forwardIndex] = 2;
+        relationSideEffectMatrix1402[reverseIndex] = 2;
+      }
+    }
+  }
+
+  for (sourceNation = 0; sourceNation < 0x10; ++sourceNation) {
+    specialRelationSourceSlots1894[sourceNation] = -1;
+    specialRelationTargetSlots18b4[sourceNation] = -1;
+  }
+
+  if (g_pSimMgr->redrawEnabled == 0) {
+    for (sourceNation = 0; sourceNation < 7; ++sourceNation) {
+      TGreatPower* sourcePower = g_apNationStates[sourceNation];
+      if (sourcePower != 0 && sourcePower->diplomacyEligibilityA0 != 0) {
+        int firstMinorNation = (abs(rand()) % 4) * 4 + 7;
+        int lastMinorNation = firstMinorNation + 4;
+        for (targetNation = firstMinorNation; targetNation < lastMinorNation; ++targetNation) {
+          int forwardIndex = sourceNation * kNationSlotCount + targetNation;
+          int reverseIndex = targetNation * kNationSlotCount + sourceNation;
+          relationSideEffectMatrix1402[forwardIndex] = 1;
+          relationSideEffectMatrix1402[reverseIndex] = 1;
+          g_pInterNationEventQueueManager->QueueInterNationEventRecordDeduped(0x12, sourceNation,
+                                                                              targetNation, 0);
+          relationStandingScoreMatrix79c[forwardIndex] = 0x6e;
+          relationStandingScoreMatrix79c[reverseIndex] = 0x6e;
+        }
+      }
+    }
+  }
+
+  if (g_pSimMgr->redrawEnabled > 2) {
+    for (sourceNation = 0; sourceNation < 7; ++sourceNation) {
+      if (g_apNationStates[sourceNation]->diplomacyEligibilityA0 == 0) {
+        targetNation = abs(rand()) % 0x10 + 7;
+        int forwardIndex = sourceNation * kNationSlotCount + targetNation;
+        int reverseIndex = targetNation * kNationSlotCount + sourceNation;
+        relationSideEffectMatrix1402[forwardIndex] = 1;
+        relationSideEffectMatrix1402[reverseIndex] = 1;
+        g_pInterNationEventQueueManager->QueueInterNationEventRecordDeduped(0x12, sourceNation,
+                                                                            targetNation, 0);
+        relationStandingScoreMatrix79c[forwardIndex] = 0x6e;
+        relationStandingScoreMatrix79c[reverseIndex] = 0x6e;
+      }
+    }
+  }
+
+  if (g_pSimMgr->redrawEnabled == 4) {
+    for (sourceNation = 0; sourceNation < 7; ++sourceNation) {
+      if (g_apNationStates[sourceNation]->diplomacyEligibilityA0 == 0) {
+        for (targetNation = 0; targetNation < 7; ++targetNation) {
+          if (g_apNationStates[targetNation]->diplomacyEligibilityA0 == 0) {
+            relationStandingScoreMatrix79c[sourceNation * kNationSlotCount + targetNation] = 0x6e;
+            relationStandingScoreMatrix79c[targetNation * kNationSlotCount + sourceNation] = 0x6e;
+          }
+        }
+      }
+    }
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x004eee60
