@@ -138,3 +138,27 @@ explanation and the focused Beads owner instead of being guessed from a same-num
 resource in another file. Undecoded `TEXT`/`styl` input is explicitly marked pending
 `imperialism-decomp-1uj.77.4`, and the graph gate rejects stale output or any dangling
 edge without an explanation and owner.
+
+## Serialized widget payload differentials
+
+`docs/reference/mac_payload_diff.json` groups every retained widget byte segment by
+effective class, type code, and exact segment length. For every class with at least two
+instances it records invariant ranges, varying ranges that exactly correlate with an
+already-decoded scalar, and varying bytes that remain unexplained:
+
+```sh
+just mac-payload-diff TDeluxeText
+just mac-payload-diff TPictureButton --json
+just mac-payload-diff-check
+```
+
+Correlations test one-, two-, and four-byte big-endian encodings across every instance
+in a partition. Confidence reflects width and the number of distinct observed values;
+low-confidence boolean and two-value coincidences stay labeled as such and do not remove
+bytes from the unexplained inventory. Exact prefix comparisons also retain appended
+class-specific segment bytes when every instance supports them. The report otherwise
+compares segment-length sets with generic type-family records, but explicitly treats
+those as serialized-shape differences rather than Mac inheritance proof—and never as
+Windows object-layout or ABI evidence. Tests pin representative `text_style_id` and
+`picture_id` byte correlations while preserving unexplained ranges for future decoder
+work.

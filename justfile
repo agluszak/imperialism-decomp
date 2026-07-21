@@ -630,6 +630,21 @@ mac-resource-xrefs-update:
 mac-resource-xrefs-check:
   uv run python -m tools.workflow.mac_resource_xrefs --check
 
+[doc('Inspect differential Mac widget payload evidence for one effective class')]
+[group('ghidra-inspect')]
+mac-payload-diff class_name *args:
+  uv run python -m tools.workflow.mac_payload_diff "{{class_name}}" {{args}}
+
+[doc('MUTATES: regenerate the committed Mac widget payload differential report')]
+[group('recovery')]
+mac-payload-diff-update:
+  uv run python -m tools.workflow.mac_payload_diff --write
+
+[doc('Reject stale Mac widget payload differential evidence')]
+[group('gates')]
+mac-payload-diff-check:
+  uv run python -m tools.workflow.mac_payload_diff --check
+
 [doc('Search file-scoped Mac STR# text and show ranked Windows candidates')]
 [group('ghidra-inspect')]
 mac-string-search query:
@@ -1452,6 +1467,7 @@ source-gates:
   just ui-view-coverage-check
   just mac-control-usage-check
   just mac-resource-xrefs-check
+  just mac-payload-diff-check
   just mac-string-crosswalk-check
   just ui-platform-diff-check
   just tooling-check
