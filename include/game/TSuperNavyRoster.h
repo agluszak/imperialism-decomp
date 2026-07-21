@@ -116,7 +116,8 @@ public:
   // slot 0x6b BuildPageLayout inherited unchanged (0x56fc80)
   // slot 0x6c ShowPage inherited unchanged (0x56fdb0)
   // slot 0x6d ResetPageLayout inherited unchanged (0x56ff90)
-  virtual undefined PopulateNavyOrderPageEntriesByMapContext(); // slot 0x6e 0x5698e0
+  virtual void PopulateNavyOrderPageEntriesByMapContext(TView* panel, int* offsetLayout,
+                                                        int* sizeLayout); // slot 0x6e 0x5698e0
 
   TSuperNavyRoster();
 

@@ -165,7 +165,7 @@ void TTwoPicSlider::DispatchPictureResourceCommand(int nEventType, void* pEventS
       slider->splitPosition = nextSplit;
 
       ScopedMapQuickDrawContextGuard quickDrawContext(slider);
-      slider->Refresh();
+      slider->PrepareForDrawing();
 
       RECT sliderRect;
       sliderRect.left = 0;

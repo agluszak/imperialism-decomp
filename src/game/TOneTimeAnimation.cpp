@@ -44,15 +44,15 @@ void TOneTimeAnimation::ConstructTOneTimeAnimationBaseState(TView* view, RECT* r
 }
 
 // FUNCTION: IMPERIALISM 0x0049fde0
-undefined TOneTimeAnimation::AdvanceAnimationTickAndInvalidateOnFrameFlip() {
+void TOneTimeAnimation::Tick() {
   if (completeFlag == 0) {
     int nextTick = tickCounter10 + 1;
     tickCounter10 = nextTick;
     if (nextTick == ticksPerFrame14) {
-      reinterpret_cast<TView*>(this)->InvalidateCityDialogRectRegion(&screenRect1C, 1);
+      ownerView04->InvalidateCityDialogRectRegion(&screenRect1C, 1);
 
       ScopedMapQuickDrawContextGuard quickDrawContext(ownerView04);
-      ownerView04->Refresh();
+      ownerView04->PrepareForDrawing();
 
       RECT renderRect;
       CopyRect(&renderRect, &screenRect1C);
@@ -66,5 +66,4 @@ undefined TOneTimeAnimation::AdvanceAnimationTickAndInvalidateOnFrameFlip() {
       }
     }
   }
-  return 0;
 }

@@ -10,7 +10,7 @@ IMPLEMENT_DYNCREATE(THandleStream, TStream)
 
 // FUNCTION: IMPERIALISM 0x004895e0
 THandleStream::THandleStream() {
-  this->modeFlags10 = 1;
+  this->growthSize10 = 1;
   this->attachedGlobalHandle = 0;
   this->streamPosition = 0;
   this->ownsHandleOrDirty = 0;
@@ -25,8 +25,8 @@ THandleStream::~THandleStream() {}
 // THandleStream::~THandleStream
 
 // FUNCTION: IMPERIALISM 0x00489660
-void THandleStream::AttachGlobalMemoryHandleAndResetPosition(HGLOBAL memoryHandle, int modeFlags) {
-  this->modeFlags10 = modeFlags;
+void THandleStream::AttachGlobalMemoryHandleAndResetPosition(HGLOBAL memoryHandle, int growthSize) {
+  this->growthSize10 = growthSize;
   this->streamPosition = 0;
   if (memoryHandle != 0) {
     this->attachedSizeBytes = GlobalSize(memoryHandle);
@@ -48,8 +48,11 @@ int THandleStream::streamSlot30() {
 }
 
 // FUNCTION: IMPERIALISM 0x00489720
-undefined THandleStream::OrphanLeaf_NoCall_Ins06_00489720() {
-  return 0;
+int THandleStream::GrowthSize(int requestedSize) {
+  if (growthSize10 <= requestedSize) {
+    return requestedSize;
+  }
+  return growthSize10;
 }
 
 // Seek: store the requested position directly (no clamp for the handle stream).

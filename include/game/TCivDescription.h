@@ -21,9 +21,7 @@ public:
   virtual void ApplyRectSlot110(RECT* rectBuffer) override; // slot 0x44 0x58f550
   virtual void BeginMouseCaptureAndStartRepeatTimer(CPoint* point, int arg2, int arg3,
                                                     int arg4) override; // slot 0x47 0x58f1a0
-  virtual void DispatchPictureResourceCommand(int eventType, void* eventSender, void* eventDataA,
-                                              void* eventDataB,
-                                              int commandFlag); // slot 0x68 0x58fec0
+  virtual void DrawProspector(RECT* bounds);                            // slot 0x68 0x58fec0
   // Overrides TControl's "build inset content rect" slot with an unrelated real
   // function: renders the Engineer civilian's target-tile legend (icon grid +
   // labels) into legendRects/legendInitialized below. Ignores boundsBuffer entirely
@@ -61,9 +59,8 @@ public:
   //   `just stackcmp` once a first attempt is built -- reconstructing it purely from the
   //   listing (this pass) was not reliable enough to commit without visual verification
   //   (screenshot capture), which this session could not run.
-  virtual void BuildInsetContentRect(RECT* boundsBuffer); // slot 0x69 0x58f7b0
-  virtual void AssertCityProductionGlobalStateInitialized(int arg1,
-                                                          int arg2); // slot 0x6a 0x5903c0
+  virtual void DrawEngineer(RECT* bounds);  // slot 0x69 0x58f7b0
+  virtual void DrawDeveloper(RECT* bounds); // slot 0x6a 0x5903c0
   short selectedCivilianClass;
   short ownerNationId;
   union {

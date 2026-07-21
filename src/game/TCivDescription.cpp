@@ -302,12 +302,11 @@ void TCivDescription::ApplyRectSlot110(RECT* rectBuffer) {
 
   selectedClass = this->selectedCivilianClass;
   if (selectedClass == kCivilianClass_Prospector) {
-    this->DispatchPictureResourceCommand(0, 0, 0, 0, 0);
+    this->DrawProspector(rectBuffer);
   } else if (selectedClass == kCivilianClass_Engineer) {
-    RECT boundsBuffer;
-    this->BuildInsetContentRect(&boundsBuffer);
+    this->DrawEngineer(rectBuffer);
   } else if (selectedClass != kCivilianClass_Developer) {
-    this->AssertCityProductionGlobalStateInitialized(0, 0);
+    this->DrawDeveloper(rectBuffer);
   }
 
   this->legendInitialized = 1;
@@ -340,25 +339,18 @@ void TCivDescription::ApplyRectSlot110(RECT* rectBuffer) {
 // class-name label via g_pSimMgr->GetString), ignoring boundsBuffer. Unported — the
 // Engineer civilian legend overlay currently never paints. See bd tracking issue.
 // FUNCTION: IMPERIALISM 0x0058f7b0
-void TCivDescription::BuildInsetContentRect(RECT* boundsBuffer) {
+void TCivDescription::DrawEngineer(RECT* boundsBuffer) {
   (void)boundsBuffer;
 }
 
 // FUNCTION: IMPERIALISM 0x0058fec0
-void TCivDescription::DispatchPictureResourceCommand(int eventType, void* eventSender,
-                                                     void* eventDataA, void* eventDataB,
-                                                     int commandFlag) {
-  (void)commandFlag;
-  (void)eventType;
-  (void)eventSender;
-  (void)eventDataA;
-  (void)eventDataB;
+void TCivDescription::DrawProspector(RECT* bounds) {
+  (void)bounds;
 }
 
 // FUNCTION: IMPERIALISM 0x005903c0
-void TCivDescription::AssertCityProductionGlobalStateInitialized(int arg1, int arg2) {
-  (void)arg1;
-  (void)arg2;
+void TCivDescription::DrawDeveloper(RECT* bounds) {
+  (void)bounds;
 }
 
 TCivDescription::~TCivDescription() {}

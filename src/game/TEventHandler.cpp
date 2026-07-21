@@ -4,6 +4,8 @@
 // TView/AppRoot override only the few slots where their vtable bodies differ.
 
 #include "game/TEventHandler.h"
+
+#include "game/TBehavior.h"
 #include "game/TEvent.h"
 #include "game/TCommand.h"
 #include "game/TFileStream.h"
@@ -51,8 +53,7 @@ void TEventHandler::CreateTEventHandlerInstance() {
 
 IMPLEMENT_DYNCREATE(TEventHandler, TObject)
 
-TEventHandler::TEventHandler()
-    : field0c(0), field10(0x7fffffff), field14(0), linkedResourceOwner(0) {}
+TEventHandler::TEventHandler() : field0c(0), field10(0x7fffffff), field14(0), firstBehavior(0) {}
 
 // Binary helper @ 0x48a100: same header field defaults as TEventHandler().
 // FUNCTION: IMPERIALISM 0x0048a100
@@ -91,10 +92,10 @@ void TEventHandler::Free() {
     }
   }
   field0c = 0;
-  if (linkedResourceOwner != 0) {
-    linkedResourceOwner->Free();
+  if (firstBehavior != 0) {
+    firstBehavior->Free();
   }
-  linkedResourceOwner = 0;
+  firstBehavior = 0;
   delete this;
 }
 
@@ -198,19 +199,19 @@ char TEventHandler::DoIdle(int action) {
 // Slot 0x23: if the given object is our currently-linked resourceOwner target, detach it
 // both ways (inverse of SetUiResourceOwner at slot 0x24).
 // FUNCTION: IMPERIALISM 0x0048a4a0
-void TEventHandler::DetachUiResourceOwnerIfMatches(TEventHandler* owner) {
-  if (linkedResourceOwner != 0 && linkedResourceOwner == owner) {
-    linkedResourceOwner = 0;
-    owner->resourceOwnerBackLink = 0;
+void TEventHandler::RemoveBehavior(TBehavior* behavior) {
+  if (firstBehavior != 0 && firstBehavior == behavior) {
+    firstBehavior = 0;
+    behavior->owner = 0;
   }
 }
 
 // Link this view to a resource-owner object and set the owner's back-pointer to this.
 // FUNCTION: IMPERIALISM 0x0048a4d0
-void TEventHandler::SetUiResourceOwner(TEventHandler* owner) {
-  if (owner != 0) {
-    linkedResourceOwner = owner;
-    owner->resourceOwnerBackLink = this;
+void TEventHandler::AddBehavior(TBehavior* behavior) {
+  if (behavior != 0) {
+    firstBehavior = behavior;
+    behavior->owner = this;
   }
 }
 

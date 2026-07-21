@@ -742,6 +742,13 @@
       "text": " "
     },
     {
+      "address": "0x006962e8",
+      "placeholders": [],
+      "source": "embedded_global",
+      "symbol": "s_SourcePathUCityDialogs_006962E8",
+      "text": "D:\\Ambit\\Cross\\UCityDialogs.cpp"
+    },
+    {
       "address": "0x006964b0",
       "placeholders": [],
       "source": "embedded_global",
@@ -7090,6 +7097,12 @@
           "text": "D:\\Ambit\\Cross\\UArmyMgr.cpp"
         },
         {
+          "address": "0x006962e8",
+          "kind": "embedded_global",
+          "symbol": "s_SourcePathUCityDialogs_006962E8",
+          "text": "D:\\Ambit\\Cross\\UCityDialogs.cpp"
+        },
+        {
           "address": "0x006964b0",
           "kind": "embedded_global",
           "symbol": "s_SourcePathUCityMinister_006964B0",
@@ -11546,6 +11559,50 @@
       ],
       "source_file": "src/game/TInterruptusView.cpp"
     },
+    "0x004bd040": {
+      "references": [
+        {
+          "address": "0x006962e8",
+          "kind": "embedded_global",
+          "symbol": "s_SourcePathUCityDialogs_006962E8",
+          "text": "D:\\Ambit\\Cross\\UCityDialogs.cpp"
+        }
+      ],
+      "source_file": "src/game/TRailheadDialog.cpp"
+    },
+    "0x004bd260": {
+      "references": [
+        {
+          "address": "0x006962e8",
+          "kind": "embedded_global",
+          "symbol": "s_SourcePathUCityDialogs_006962E8",
+          "text": "D:\\Ambit\\Cross\\UCityDialogs.cpp"
+        }
+      ],
+      "source_file": "src/game/TRailheadDialog.cpp"
+    },
+    "0x004bd3e0": {
+      "references": [
+        {
+          "address": "0x006962e8",
+          "kind": "embedded_global",
+          "symbol": "s_SourcePathUCityDialogs_006962E8",
+          "text": "D:\\Ambit\\Cross\\UCityDialogs.cpp"
+        }
+      ],
+      "source_file": "src/game/TTransportView.cpp"
+    },
+    "0x004bd880": {
+      "references": [
+        {
+          "address": "0x006962e8",
+          "kind": "embedded_global",
+          "symbol": "s_SourcePathUCityDialogs_006962E8",
+          "text": "D:\\Ambit\\Cross\\UCityDialogs.cpp"
+        }
+      ],
+      "source_file": "src/game/TNewTownView.cpp"
+    },
     "0x004be8d0": {
       "references": [
         {
@@ -14085,6 +14142,17 @@
         }
       ],
       "source_file": "src/game/TStratReportView.cpp"
+    },
+    "0x005921c0": {
+      "references": [
+        {
+          "address": "0x0069430c",
+          "kind": "embedded_global",
+          "symbol": "g_szDecimalFormat",
+          "text": "%d"
+        }
+      ],
+      "source_file": "src/game/TTransportPicture.cpp"
     },
     "0x00593f20": {
       "references": [
@@ -178827,9 +178895,9 @@
     "windows_strings": "docs/reference/strenu-strings.tsv"
   },
   "summary": {
-    "embedded_globals": 765,
+    "embedded_globals": 766,
     "formula_matches": 2356,
-    "functions_with_references": 257,
+    "functions_with_references": 262,
     "mac_strings": 3821,
     "mac_strings_with_candidates": 3091,
     "text_resources": 0,

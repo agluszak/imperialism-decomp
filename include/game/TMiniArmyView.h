@@ -121,7 +121,7 @@ public:
   // slot 0x6d SetTextStyleAndMaybeRefresh inherited unchanged (0x48e7d0)
   // slot 0x6e SetTextColorAndMaybeRefresh inherited unchanged (0x48e7a0)
   // slot 0x6f LogUnhandledDialogMethodAndReturnFalse inherited unchanged (0x4294a0)
-  // slot 0x70 SetControlStateFlagAndMaybeRefresh inherited unchanged (0x48e810)
+  // slot 0x70 HiliteState inherited unchanged (0x48e810)
   virtual undefined OrphanRetStub_004aad20(); // slot 0x71 0x4aad20
   // The displayed unit: name24 (CString) and tileIndex06 read by ApplyRectSlot110/HandleEvent.
   TMilitaryUnit* field84; // +0x84

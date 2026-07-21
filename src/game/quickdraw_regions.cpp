@@ -202,6 +202,11 @@ unsigned char EmptyRgn(RgnHandle rgn) {
   return 1;
 }
 
+// FUNCTION: IMPERIALISM 0x00498be0
+void SetRectRgn(RgnHandle rgn, short left, short top, short right, short bottom) {
+  (*rgn)->rgn.Attach(::CreateRectRgn(left, top, right, bottom));
+}
+
 // FUNCTION: IMPERIALISM 0x00498b10
 int ProbeRectEmptyAfterCopyToLocal(RECT* rect) {
   tagRECT localRect;

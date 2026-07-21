@@ -45,8 +45,42 @@ void TOfferDeskPicture::DoPostCreate(int arg) {
 }
 
 // FUNCTION: IMPERIALISM 0x005bea00
-undefined TOfferDeskPicture::InitializeTradeScreenControlsLabelsAndNationContext() {
-  return 0;
+void TOfferDeskPicture::PoseOfferSheet(short sourceNation, short targetNation, short proposedAmount,
+                                       short maxAmount, short commodityType) {
+  if (sourceNation == -1) {
+    sourceNation = g_pSimMgr->GetActiveNationId();
+  }
+
+  sourceNationSlot90 = sourceNation;
+  targetNationSlot92 = targetNation;
+  proposedAmount98 = proposedAmount;
+  maxAmount94 = maxAmount;
+  commodityType96 = commodityType;
+  suppressEventFlag9a = 0;
+
+  TNumberText* purchaseControl = static_cast<TNumberText*>(ResolveControlByTag('purc'));
+  purchaseControl->AssertValid();
+  purchaseControl->maximumValue = maxAmount;
+  purchaseControl->SetControlValue(proposedAmount);
+
+  acceptButtonA0 = static_cast<TControl*>(ResolveControlByTag('acce'));
+  acceptButtonA0->AssertValid();
+  acceptButtonA0->SetState(0, 0);
+  rejectButtonA4 = static_cast<TControl*>(ResolveControlByTag('reje'));
+  rejectButtonA4->AssertValid();
+  rejectButtonA4->SetState(0, 0);
+
+  TView* cluster = ResolveControlByTag('clus');
+  cluster->AssertValid();
+  TView* noMore = cluster->ResolveControlByTag('nomo');
+  noMore->AssertValid();
+  noMore->SetEnabled(1, 0);
+  noMore->SetState(0, 0);
+
+  selectionActive9e = false;
+  detailedErrorFlag9d = proposedAmount > maxAmount;
+  RefreshSelectedNationOrderCompatibilityInfo();
+  ResolveControlByTag('shee')->RefreshControl();
 }
 
 // FUNCTION: IMPERIALISM 0x005bf740
@@ -88,7 +122,7 @@ void TOfferDeskPicture::ForwardParam(int param) {}
 // Commodity types 0/1 (Cotton+Wool) are always evaluated as a combined pair.
 // FUNCTION: IMPERIALISM 0x005bf930
 void TOfferDeskPicture::RefreshSelectedNationOrderCompatibilityInfo() {
-  TGreatPower* gp = g_apNationStates[nationSlot90];
+  TGreatPower* gp = g_apNationStates[sourceNationSlot90];
   TCity* city;
   if (gp == 0) {
     city = 0;
@@ -125,7 +159,7 @@ void TOfferDeskPicture::RefreshSelectedNationOrderCompatibilityInfo() {
   g_pSimMgr->GetStringPrelude(commodityType96, &strCommodity);
 
   short compat = g_pDiplomacyTurnStateManager->LookupOrderCompatibilityMatrixValue(
-      nationSlot90, targetNationSlot92);
+      sourceNationSlot90, targetNationSlot92);
 
   if (g_pHelpMgr->helpIndexReady == 0) {
     g_pSimMgr->GetString(0x2740, 9, &strFinal);
@@ -133,7 +167,7 @@ void TOfferDeskPicture::RefreshSelectedNationOrderCompatibilityInfo() {
   } else if (g_pHelpMgr->helpIndexReady == 1) {
     if (compat >= 1 &&
         g_apTerrainTypeDescriptorTable[targetNationSlot92]->IsEncodedNationSlotMinus200Equal(
-            nationSlot90) == 0) {
+            sourceNationSlot90) == 0) {
       notAligned = 1;
     }
     if (commodityType96 != 0 && commodityType96 != 1) {
@@ -154,7 +188,7 @@ void TOfferDeskPicture::RefreshSelectedNationOrderCompatibilityInfo() {
 
     if (notAligned == 0 && hasSurplus == 0) {
       if (g_apTerrainTypeDescriptorTable[targetNationSlot92]->IsEncodedNationSlotMinus200Equal(
-              nationSlot90) != 0) {
+              sourceNationSlot90) != 0) {
         g_pSimMgr->GetString(0x2764, 0x10, &strTemplate);
       } else {
         g_pSimMgr->GetString(0x2764, 5, &strPrefix);
@@ -203,7 +237,7 @@ void TOfferDeskPicture::RefreshSelectedNationOrderCompatibilityInfo() {
       {
         strDominantName = g_pSimMgr->LoadNormalizedCredentialName(dominant);
       }
-      if (dominant == nationSlot90) {
+      if (dominant == sourceNationSlot90) {
         g_pSimMgr->GetString(0x2764, 0xe, &strTemplate);
         scanBracketExpressions(g_pSimMgr, &strStatsIntro, static_cast<LPCSTR>(strTemplate),
                                static_cast<LPCSTR>(strTargetNation));
@@ -218,7 +252,7 @@ void TOfferDeskPicture::RefreshSelectedNationOrderCompatibilityInfo() {
     if (compat == 2) {
       verdictIndex =
           g_apTerrainTypeDescriptorTable[targetNationSlot92]->IsEncodedNationSlotMinus200Equal(
-              nationSlot90) != 0
+              sourceNationSlot90) != 0
               ? 0xf
               : 0xa;
     } else {
@@ -284,7 +318,7 @@ void TOfferDeskPicture::CreateNextTradeCommandAndFormatPrompt(int actionCode) {
 
   if (quantityValid) {
     g_pNationInteractionStateManager->DispatchProposalAmountSlot60(
-        nationSlot90, targetNationSlot92, proposedAmount98, maxAmount94, commodityType96,
+        sourceNationSlot90, targetNationSlot92, proposedAmount98, maxAmount94, commodityType96,
         static_cast<char>(suppressEventFlag9a), 0);
 
     TView* acceptButton = ResolveControlByTag('acce');
@@ -297,7 +331,7 @@ void TOfferDeskPicture::CreateNextTradeCommandAndFormatPrompt(int actionCode) {
     if (proposedAmount98 != 0) {
       TView* toolbar = g_pDisplayMgr->activeDialog->ResolveControlByTag('tool');
       if (toolbar != nullptr) {
-        static_cast<TAmtBarCluster*>(toolbar)->ApplyMoveValue(nationSlot90);
+        static_cast<TAmtBarCluster*>(toolbar)->ApplyMoveValue(sourceNationSlot90);
       }
     }
 

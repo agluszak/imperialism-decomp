@@ -121,26 +121,26 @@ public:
   // slot 0x6d SetTextStyleAndMaybeRefresh inherited unchanged (0x48e7d0)
   // slot 0x6e SetTextColorAndMaybeRefresh inherited unchanged (0x48e7a0)
   // slot 0x6f LogUnhandledDialogMethodAndReturnFalse inherited unchanged (0x4294a0)
-  virtual void SetControlStateFlagAndMaybeRefresh(bool fEnabledState,
-                                                  bool fRefreshNow) override; // slot 0x70 0x4aa310
-  virtual undefined OrphanLeaf_NoCall_Ins02_004aa340();                       // slot 0x71 0x4aa340
-  virtual undefined SetArmyUnitLineActiveFlagAndNotify();                     // slot 0x72 0x4aa360
-  virtual undefined VTableSlot73(char param_1);                               // slot 0x73 0x4aa030
-  virtual undefined OrphanCallChain_C2_I16_004aa3a0(int unused);              // slot 0x74 0x4aa3a0
-  virtual undefined OrphanCallChain_C3_I23_004aa3e0(char param_1,
-                                                    undefined4 param_2); // slot 0x75 0x4aa3e0
-  virtual undefined OrphanCallChain_C1_I05_004aa430();                   // slot 0x76 0x4aa430
+  virtual void HiliteState(unsigned char hilited,
+                           unsigned char drawImmediate) override;       // slot 0x70 0x4aa310
+  virtual unsigned char IsOn();                                         // slot 0x71 0x4aa340
+  virtual void SetState(unsigned char on, unsigned char drawImmediate); // slot 0x72 0x4aa360
+  virtual void CheckTheLook(unsigned char drawImmediate);               // slot 0x73 0x4aa030
+  virtual void Toggle(unsigned char drawImmediate);                     // slot 0x74 0x4aa3a0
+  virtual void ToggleIf(unsigned char expectedState,
+                        unsigned char drawImmediate); // slot 0x75 0x4aa3e0
+  virtual void DrawImmediate();                       // slot 0x76 0x4aa430
   // TControl's own slice ends at 0x84 (RTTI oracle: sizeof(TControl) == 0x84);
   // sizeof(TArmyCheckBox) == 0x94, adding one 0x10-byte region. The real ctor
   // (0x4a9fe0) only ever writes field88/field90 (its 6th/7th real stack params --
-  // Ghidra's own signature undercounts the real param count as 5); pad8c is left
-  // as unconfirmed padding. field84 is read as a byte flag in HandleEvent (0x4aa280)
-  // guarding whether Ctrl-click toggles the checkbox; not yet observed written.
-  int field84;
+  // Ghidra's own signature undercounts the real param count as 5). The trailing
+  // region contains the checkbox state and the currently applied glyph offset.
+  unsigned char isOn84;
+  unsigned char pad85[3];
   // Horizontal pixel offset added to the paint rect's left/right when blitting from
   // surfaceContext90 (ApplyRectSlot110, 0x4aa100).
   int field88;
-  int pad8c;
+  int checkedGlyphOffsetApplied8c;
   // A second QuickDraw surface (icon strip) this checkbox blits its check-glyph from,
   // read at +0x4 (blit surface) and +0x20 (backing CDib, for the negative-height DIB
   // vertical-flip adjustment) -- the exact same TQuickDrawSurfaceContext shape used by

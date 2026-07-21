@@ -386,7 +386,7 @@ void DispatchUiRuntimeMessage102CAndRefreshActiveView() {
   POINT placement;
   g_pUiRuntimeContext->ComputeTurnEventDialogPlacementByCode(node, &placement);
   node->CaptureLayoutF0(reinterpret_cast<int*>(&placement), 0);
-  node->ExecuteViewModalStateWithPushPopChain();
+  node->PoseModally();
   node->Close();
   node->Free();
 }

@@ -15,8 +15,7 @@ TColorKeyButton::TColorKeyButton() {}
 TColorKeyButton::~TColorKeyButton() {}
 
 // FUNCTION: IMPERIALISM 0x00571ff0
-void TColorKeyButton::SetControlStateFlagAndMaybeRefresh(bool fEnabledState, bool fRefreshNow) {
-}
+void TColorKeyButton::HiliteState(unsigned char fEnabledState, unsigned char fRefreshNow) {}
 
 // FUNCTION: IMPERIALISM 0x00572060
 undefined TColorKeyButton::OrphanCallChain_C1_I05_00572060() {

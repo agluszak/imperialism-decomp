@@ -48,6 +48,12 @@ static TempMapLockCallback ResolveTempMapLockCallback(int module_thread_state) {
 // LIBRARY: IMPERIALISM 0x0060a27d
 // CWnd::CenterWindow
 
+// LIBRARY: IMPERIALISM 0x0060a60a
+// CWnd::RunModalLoop(DWORD)
+
+// LIBRARY: IMPERIALISM 0x0060a770
+// CWnd::EndModalLoop(int)
+
 // LIBRARY: IMPERIALISM 0x006073b4
 // CWnd::SetWindowText(LPCTSTR)
 

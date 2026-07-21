@@ -212,7 +212,7 @@ void TTradeCluster::HandleEvent(int commandId, TEventHandler* sourceHandler, TEv
         TControl* rowControl =
             static_cast<TControl*>(ownerPanel->ResolveControlByTag(kTradeSellPropagationTags[i]));
         if (rowControl != 0 &&
-            reinterpret_cast<TTradeCluster*>(rowControl)->GetControlFlag() == '\0') {
+            reinterpret_cast<TTradeCluster*>(rowControl)->IsSelectionAllowed() == '\0') {
           reinterpret_cast<TTradeCluster*>(rowControl)->DoControlAction();
         }
       }
@@ -228,7 +228,7 @@ void TTradeCluster::HandleEvent(int commandId, TEventHandler* sourceHandler, TEv
         TControl* rowControl =
             static_cast<TControl*>(ownerPanel->ResolveControlByTag(kTradeSellPropagationTags[i]));
         if (rowControl != 0 &&
-            reinterpret_cast<TTradeCluster*>(rowControl)->GetControlFlag() == '\0') {
+            reinterpret_cast<TTradeCluster*>(rowControl)->IsSelectionAllowed() == '\0') {
           reinterpret_cast<TTradeCluster*>(rowControl)->DoControlAction();
         }
       }
@@ -306,7 +306,7 @@ int TTradeCluster::NotifyControlSelectionChange(void* boundEntry, int arg2) {
 // Bid control is actionable when its 'card' bitmap is in a Bid state and the
 // control reports actionable.
 // FUNCTION: IMPERIALISM 0x00587980
-int TTradeCluster::GetControlFlag(int arg1, int arg2) {
+unsigned char TTradeCluster::IsSelectionAllowed() {
   TPicture* bidControl = reinterpret_cast<TPicture*>(this->ResolveControlByTag(kControlTagCard));
   if (bidControl == 0) {
     FailNilPointerInUSmallViews(kAssertLineBidActionable);
@@ -366,7 +366,7 @@ void TTradeCluster::DoControlAction() {
     } else {
       bidControl->SetBitmap(kTradeBitmapBidSecondaryStateA, 0);
     }
-    bidControl->Refresh();
+    bidControl->PrepareForDrawing();
     bidControl->PaintOrInvalidateControl();
     return;
   }
@@ -413,7 +413,7 @@ void TTradeCluster::SetTradeBidControlBitmap() {
   leftControl->SetState(0, 1);
   rightControl->SetState(0, 1);
 
-  bidControl->Refresh();
+  bidControl->PrepareForDrawing();
   bidControl->PaintOrInvalidateControl();
 }
 
@@ -458,7 +458,7 @@ void TTradeCluster::SetTradeOfferControlBitmap() {
   leftControl->SetState(1, 1);
   rightControl->SetState(1, 1);
 
-  offerControl->Refresh();
+  offerControl->PrepareForDrawing();
   offerControl->PaintOrInvalidateControl();
 }
 
@@ -517,7 +517,7 @@ void TTradeCluster::SetTradeOfferSecondaryBitmap() {
   leftControl->SetState(0, 1);
   rightControl->SetState(0, 1);
 
-  offerControl->Refresh();
+  offerControl->PrepareForDrawing();
   offerControl->PaintOrInvalidateControl();
 }
 

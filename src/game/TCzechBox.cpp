@@ -29,7 +29,7 @@ void TCzechBox::DoPostCreate(int arg) {
 }
 
 // FUNCTION: IMPERIALISM 0x00571d10
-void TCzechBox::SetControlStateFlagAndMaybeRefresh(bool fEnabledState, bool fRefreshNow) {}
+void TCzechBox::HiliteState(unsigned char fEnabledState, unsigned char fRefreshNow) {}
 
 // FUNCTION: IMPERIALISM 0x00571d40
 undefined TCzechBox::OrphanCallChain_C4_I45_00571d40(char param_1) {

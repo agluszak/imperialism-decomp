@@ -136,13 +136,12 @@ LABEL_12:
 }
 
 // FUNCTION: IMPERIALISM 0x005899c0
-void TRailCluster::ApplyMoveValue(int value) {
-  this->NotifyControlSelectionChange(reinterpret_cast<void*>(value), 0);
+void TRailCluster::SetMoveAmount(short amount) {
+  this->SetMoveAmount(amount, 0);
 }
 
 // FUNCTION: IMPERIALISM 0x005899f0
-int TRailCluster::NotifyControlSelectionChange(void* dragValuePtr, int updateFlag) {
-  int dragValue = (int)dragValuePtr;
+void TRailCluster::SetMoveAmount(short dragValue, unsigned char updateFlag) {
   TRailCluster* ctx = reinterpret_cast<TRailCluster*>(this);
   // ORIG_CALLCONV: __thiscall
   short step = ctx->selectedMetricStep;
@@ -154,7 +153,7 @@ int TRailCluster::NotifyControlSelectionChange(void* dragValuePtr, int updateFla
   }
 
   if (((char)updateFlag == 0) && (ReadControlValueFieldPlus4(selectedControl) == previousValue)) {
-    return 0;
+    return;
   }
 
   TAmtBar* moveControl = reinterpret_cast<TAmtBar*>(
@@ -194,14 +193,12 @@ int TRailCluster::NotifyControlSelectionChange(void* dragValuePtr, int updateFla
   int scaledMetric = (int)((float)selectedControl->QueryValue() * barScale);
   int scaledRange = (int)((float)ReadControlValueFieldPlus4(selectedControl) * barScale);
   barControl->SetBarMetric(scaledMetric, scaledRange);
-  ctx->GetControlFlag(0, 0);
-  return 0;
+  ctx->UpdateMax();
 }
 
 // FUNCTION: IMPERIALISM 0x00589d10
-int TRailCluster::GetControlFlag(int arg1, int arg2) {
+void TRailCluster::UpdateMax() {
   UpdateTradeBarFromSelectedMetricRatio(reinterpret_cast<TRailCluster*>(this), kAssertLineRatioA);
-  return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x00589da0
@@ -212,7 +209,7 @@ void TRailCluster::HandleEvent(int commandId, TEventHandler* sourceHandler, TEve
       FailNilPointerInUSmallViews(0xcf2);
     }
     int moveValue = moveControl->QueryValue();
-    this->ApplyMoveValue(moveValue + 1);
+    this->SetMoveAmount(static_cast<short>(moveValue + 1));
     return;
   }
   if (commandId != 0x65) {
@@ -224,7 +221,7 @@ void TRailCluster::HandleEvent(int commandId, TEventHandler* sourceHandler, TEve
     FailNilPointerInUSmallViews(0xcf2);
   }
   int moveValue = moveControl->QueryValue();
-  this->ApplyMoveValue(moveValue - 1);
+  this->SetMoveAmount(static_cast<short>(moveValue - 1));
 }
 
 TRailCluster::~TRailCluster() {}

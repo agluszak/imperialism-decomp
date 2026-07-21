@@ -116,19 +116,19 @@ public:
   // slot 0x65 AssertMcAppUILine1914 inherited unchanged (0x48c7a0)
   // slot 0x66 AssertMcAppUILine1922 inherited unchanged (0x48c7d0)
   virtual void SubtractPosAndDispatchToOwnerSlot19C(CPoint* point) override; // slot 0x67 0x492d60
-  virtual void SetField84(unsigned char param_1);                            // slot 0x68 0x48da40
+  virtual void SetModality(unsigned char modal);                             // slot 0x68 0x48da40
   virtual void SetField88And8c(int param_1,
-                               int param_2);           // slot 0x69 0x48d8a0
-  virtual undefined GetDialogBehaviorByte10();         // slot 0x6a 0x48da10
-  virtual int ExecuteViewModalStateWithPushPopChain(); // slot 0x6b 0x48da60
-  virtual undefined GetDialogBehaviorByte20();         // slot 0x6c 0x48dc60
-  // Forwards to GetEmbeddedDialogBehavior()'s own command-arming slot 0x0e (a no-op if
+                               int param_2); // slot 0x69 0x48d8a0
+  virtual unsigned char IsModal();           // slot 0x6a 0x48da10
+  virtual int PoseModally();                 // slot 0x6b 0x48da60
+  virtual unsigned char IsDismissed();       // slot 0x6c 0x48dc60
+  // Forwards to GetDialogBehavior()'s own command-arming slot 0x0e (a no-op if
   // no behavior is attached), which stashes commandCode as armedCommandCode and
   // dispatches it to the behavior's owner. 0x48dc90.
-  virtual undefined NotifyDialogBehaviorCommandArmed(undefined4 commandCode,
-                                                     undefined4 flag); // slot 0x6d 0x48dc90
-  virtual TDialogBehavior* GetEmbeddedDialogBehavior();                // slot 0x6e 0x48dcc0
-  virtual void AssertMcAppUILine2554();                                // slot 0x6f 0x48dce0
+  virtual void Dismiss(unsigned long commandCode,
+                       unsigned char accepted); // slot 0x6d 0x48dc90
+  virtual TDialogBehavior* GetDialogBehavior(); // slot 0x6e 0x48dcc0
+  virtual void AssertMcAppUILine2554();         // slot 0x6f 0x48dce0
   // Switching notifies the previous and new targets through TEventHandler slots.
   virtual void SetWindowTarget(TEventHandler* target); // slot 0x70 0x48ddc0
   // Centers the real MFC CWnd (CenterWindow) when one is attached; otherwise computes

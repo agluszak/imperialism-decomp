@@ -45,7 +45,7 @@ public:
   void SeedRandomDiplomacyPolicyThresholds(void);
   char CanInitiateJoinEmpireProposalToTarget(short targetNationSlot, short proposalCode);
   void HandleNetworkPortConstructionOrder(int nationId);
-  void SetNationRowDisplayValueByDiplomacyPredicate(short targetNationSlot, short predicateCode);
+  void SetNationRowDisplayValueByDiplomacyPredicate(short targetNationSlot);
   void ClearTileActivityOverlayByProvinceId(int provinceId);
   void QueueInterNationEvent17ForState300AffectedNations(void);
   void ApplyDiplomacyRelationMaskToProvinceLinkedObjects(short provinceId);

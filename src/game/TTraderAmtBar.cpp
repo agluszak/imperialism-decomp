@@ -118,7 +118,7 @@ void TTraderAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache() {
   GetClip(surface.tempRgn);
 
   if (control != 0 && control->IsActionable() != 0) {
-    control->Refresh();
+    control->PrepareForDrawing();
     if (control->IsActionable() != 0) {
       RECT boundsRect = {0, 0, 0, 0};
       control->QueryBounds(&boundsRect);

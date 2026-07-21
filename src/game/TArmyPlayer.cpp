@@ -602,8 +602,22 @@ int TArmyPlayer::SelectTacticalTileIndexByColumnPriorityVariantB() {
 }
 
 // FUNCTION: IMPERIALISM 0x0059c3c0
-undefined TArmyPlayer::TArmyTacUnit_VtblSlot07() {
-  return 0;
+void TArmyPlayer::DeploymentClick(int tileIndex) {
+  int ordinal = 1;
+  TTacticalUnit* unit;
+  do {
+    unit = static_cast<TTacticalUnit*>(unitList4->GetEntryByOrdinal(ordinal));
+    ++ordinal;
+    if (unit->tileIndex8 == -2) {
+      break;
+    }
+  } while (ordinal <= unitList4->GetCount());
+
+  if (ordinal > unitList4->GetCount()) {
+    sideReadyFlag10 = 1;
+  } else {
+    battle14->DeployTacticalUnitToTile(unit, tileIndex);
+  }
 }
 
 // Re-derives the side's AI cursor mode from both sides' aggregated projection metrics

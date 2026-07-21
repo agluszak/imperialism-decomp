@@ -120,13 +120,13 @@ public:
   // slot 0x6d SetTextStyleAndMaybeRefresh inherited unchanged (0x48e7d0)
   // slot 0x6e SetTextColorAndMaybeRefresh inherited unchanged (0x48e7a0)
   // slot 0x6f LogUnhandledDialogMethodAndReturnFalse inherited unchanged (0x4294a0)
-  virtual void SetControlStateFlagAndMaybeRefresh(bool fEnabledState,
-                                                  bool fRefreshNow) override; // slot 0x70 0x572200
+  virtual void HiliteState(unsigned char fEnabledState,
+                           unsigned char fRefreshNow) override; // slot 0x70 0x572200
 
   TGWorldButton();
 
   // Source-strip column offset (in pixels): shifted by +/-frameWidth34 on each
-  // SetControlStateFlagAndMaybeRefresh toggle to select the enabled/disabled frame
+  // HiliteState toggle to select the enabled/disabled frame
   // of a horizontal sprite strip. Zeroed by the ctor.
   short field84;
   short pad86;

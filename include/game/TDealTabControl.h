@@ -120,7 +120,7 @@ public:
   // slot 0x6d SetTextStyleAndMaybeRefresh inherited unchanged (0x48e7d0)
   // slot 0x6e SetTextColorAndMaybeRefresh inherited unchanged (0x48e7a0)
   // slot 0x6f LogUnhandledDialogMethodAndReturnFalse inherited unchanged (0x4294a0)
-  // slot 0x70 SetControlStateFlagAndMaybeRefresh inherited unchanged (0x48e810)
+  // slot 0x70 HiliteState inherited unchanged (0x48e810)
   virtual void Setup(short bitmapResourceId, unsigned char useAlternatePair); // slot 0x71 0x5bc780
   // Vertical fill-bar slice read by ApplyRectSlot110: negative selectedRow84 means "no
   // selection" (draw the whole strip empty); otherwise the highlight band spans

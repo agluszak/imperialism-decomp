@@ -165,7 +165,7 @@ void TShipView::RunEngineerOrderNameEditDialogAndApply() {
   nameControl->InitDialogWindowAndSyncTitleIfChanged(&editedName, 1);
   nameControl->textStyle78 = style;
 
-  int modalResult = node->ExecuteViewModalStateWithPushPopChain();
+  int modalResult = node->PoseModally();
   nameControl->GetCurrentText(&editedName);
   node->Close();
   node->Free();

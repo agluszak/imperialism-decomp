@@ -2532,7 +2532,8 @@ void TMapMgr::SeedRecruitSearchVisitedStateExcludingNation(short ownerNationTag)
 }
 
 // FUNCTION: IMPERIALISM 0x00514e80
-void TMapMgr::SeedRecruitSearchVisitedStateFromSelectedCivilianOrder() {
+void TMapMgr::SeedRecruitSearchVisitedStateFromSelectedCivilianOrder(TCivUnit* unusedOrder) {
+  (void)unusedOrder;
   TTerrainStateRecordView* tile = terrainStateTable;
   this->field9 = 1;
   for (int tileIndex = 0; tileIndex < 0x1950; ++tileIndex, ++tile) {

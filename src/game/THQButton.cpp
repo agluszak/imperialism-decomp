@@ -35,7 +35,7 @@ void THQButton::DoPostCreate(int arg) {
 }
 
 // FUNCTION: IMPERIALISM 0x0058b750
-void THQButton::SetControlStateFlagAndMaybeRefresh(bool enabledState, bool refreshNow) {
+void THQButton::HiliteState(unsigned char enabledState, unsigned char refreshNow) {
   char mode = enabledState ? 1 : 0;
   if (mode != static_cast<char>(controlState64)) {
     controlState64 = static_cast<unsigned char>(mode);
@@ -86,7 +86,7 @@ void THQButton::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent*
 // FUNCTION: IMPERIALISM 0x0058b890
 bool THQButton::IsSelected(short value, bool refreshNow) {
   if (GetBoolSlot28()) {
-    SetControlStateFlagAndMaybeRefresh(value != 0, refreshNow);
+    HiliteState(value != 0, refreshNow);
   }
   return controlState64 != 0;
 }

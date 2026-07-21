@@ -1,9 +1,13 @@
 #include "game/TAnimation.h"
 
 #include "game/TModuleLibraryCacheTableStateB.h"
+#include "game/TAnimator.h"
+#include "game/TQuickDrawSurfaceContext.h"
+#include "game/bitmap_descriptor_helpers.h"
 #include "game/global_data_tables.h"
 #include "game/TView.h"
 #include "game/ui_invalidation_guard.h"
+#include "game/quickdraw_rendering.h"
 
 // FUNCTION: IMPERIALISM 0x00495b70
 void TBitmapResourceLoader::EnsureBitmapResourceLoadedAndCopyRectSize() {
@@ -59,7 +63,7 @@ void TAnimation::ConstructTAnimationBaseState(TView* ownerView, RECT* rect, shor
 // and advance/wrap the frame index (the old WrapperFor_InvalidateCityDialogRectRegion
 // name was junk).
 // FUNCTION: IMPERIALISM 0x0049f140
-undefined TAnimation::AdvanceAnimationTickAndInvalidateOnFrameFlip() {
+void TAnimation::Tick() {
   tickCounter10 = tickCounter10 + 1;
   if (tickCounter10 == ticksPerFrame14) {
     ownerView04->InvalidateCityDialogRectRegion(&screenRect1C, 1);
@@ -69,17 +73,65 @@ undefined TAnimation::AdvanceAnimationTickAndInvalidateOnFrameFlip() {
       frameIndex08 = 0;
     }
   }
-  return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x0049f190
-undefined TAnimation::RenderBattleReportInsetWithPaletteShift(POINT* offset) {
-  return 0;
+void TAnimation::DrawNextFrame(POINT* offset) {
+  TQuickDrawSurfaceContext* frameBuffer = g_pUiAnimator->renderSurfaceContext;
+  LoadFrameIntoBuffer();
+
+  RECT destination = screenRect1C;
+  OffsetRect(&destination, offset->x, offset->y);
+  RECT source = {0, 0, destination.right - destination.left, destination.bottom - destination.top};
+
+  UpdatePaletteIndexWithDefaultFallback(0x10);
+  if (frameBuffer->surfaceDib != 0) {
+    int height = frameBuffer->surfaceDib->m_pInfoHeader->bmiHeader.biHeight;
+    if (height < 1) {
+      height = -height;
+    }
+    OffsetRect(&source, 0, (height - source.top) - source.bottom);
+  }
+  if (g_pActiveQuickDrawSurfaceContext->surfaceDib != 0) {
+    int height = g_pActiveQuickDrawSurfaceContext->surfaceDib->m_pInfoHeader->bmiHeader.biHeight;
+    if (height < 1) {
+      height = -height;
+    }
+    OffsetRect(&destination, 0, (height - destination.top) - destination.bottom);
+  }
+  BlitRectWithOptionalTransparency(frameBuffer->GetBlitSurface(),
+                                   g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &source,
+                                   &destination, 0x24, 0);
+  UpdatePaletteIndexWithDefaultFallback(0x13);
 }
 
 // FUNCTION: IMPERIALISM 0x0049f2d0
-undefined TAnimation::RenderBattleReportViewSurfaceSpriteWithResourceHandle() {
-  return 0;
+void TAnimation::LoadFrameIntoBuffer() {
+  TQuickDrawSurfaceContext* savedContext = 0;
+  int savedFlags = 0;
+  GetActiveQuickDrawSurfaceContextAndFlags(&savedContext, &savedFlags);
+
+  TBitmapResourceLoader** loaderHandle =
+      CreateBitmapResourceLoaderHandle(static_cast<unsigned short>(field0C + frameIndex08));
+  QDLoadResource(loaderHandle);
+  TBitmapResourceLoader* loader = loaderHandle != 0 ? *loaderHandle : 0;
+  if (loader != 0) {
+    TQuickDrawSurfaceContext* frameBuffer = g_pUiAnimator->renderSurfaceContext;
+    SetActiveQuickDrawSurfaceContext(frameBuffer, savedFlags);
+    void* surfaceObject = GetSurfaceNodeSlot(frameBuffer);
+    ReturnConstantTrueQuickDrawFlag(surfaceObject);
+
+    loader->EnsureBitmapResourceLoadedAndCopyRectSize();
+    loader->flags |= 1;
+    RECT resourceBounds = loader->bitmapRect;
+    ResetQuickDrawStrokeState();
+    BlitBitmapResourceLoaderToActiveDc(loaderHandle, &resourceBounds);
+
+    delete loader;
+    delete loaderHandle;
+    NoOpQuickDrawLifecycleHookB(surfaceObject);
+    SetActiveQuickDrawSurfaceContext(savedContext, savedFlags);
+  }
 }
 
 // Base slot-0x02 stub: reports an assert (D:\Ambit\QuickDraw.h:417) and returns 0. Its

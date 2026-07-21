@@ -120,16 +120,17 @@ public:
   // slot 0x6d SetTextStyleAndMaybeRefresh inherited unchanged (0x48e7d0)
   // slot 0x6e SetTextColorAndMaybeRefresh inherited unchanged (0x48e7a0)
   // slot 0x6f LogUnhandledDialogMethodAndReturnFalse inherited unchanged (0x4294a0)
-  // slot 0x70 SetControlStateFlagAndMaybeRefresh inherited unchanged (0x48e810)
+  // slot 0x70 HiliteState inherited unchanged (0x48e810)
   // slot 0x71 OrphanTiny_GetDwordEcxOffset_84_00491770 inherited unchanged (0x491770)
   // slot 0x72 OrphanCallChain_C2_I51_00491790 inherited unchanged (0x491790)
   // slot 0x73 IsTradeControlAtMinimum inherited unchanged (0x5714e0)
-  virtual void ApplyMoveValue(int value);                                   // slot 0x74 0x5899c0
-  virtual int NotifyControlSelectionChange(void* boundEntry, int arg2 = 0); // slot 0x75 0x5899f0
-  virtual int GetControlFlag(int arg1 = 0, int arg2 = 0);                   // slot 0x76 0x589d10
-  TAmtBar* selectedMetricControl;                                           // 0x88
-  short selectedMetricValue;                                                // 0x8c
-  short selectedMetricStep;                                                 // 0x8e
+  virtual void SetMoveAmount(short amount,
+                             unsigned char updateControls); // slot 0x75 0x5899f0
+  virtual void SetMoveAmount(short amount);                 // slot 0x74 0x5899c0
+  virtual void UpdateMax();                                 // slot 0x76 0x589d10
+  TAmtBar* selectedMetricControl;                           // 0x88
+  short selectedMetricValue;                                // 0x8c
+  short selectedMetricStep;                                 // 0x8e
 
   TRailCluster();
   DECLARE_DYNCREATE(TRailCluster)

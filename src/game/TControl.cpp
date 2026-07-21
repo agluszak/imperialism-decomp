@@ -88,15 +88,15 @@ void TControl::BeginMouseCaptureAndStartRepeatTimer(CPoint* point, int arg2, int
 // FUNCTION: IMPERIALISM 0x0048e710
 void TControl::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId == 0x1f) {
-    SetControlStateFlagAndMaybeRefresh(1, 1);
+    HiliteState(1, 1);
     return;
   }
   if (commandId == 0x20) {
-    SetControlStateFlagAndMaybeRefresh(0, 1);
+    HiliteState(0, 1);
     return;
   }
   if (commandId == 0x21) {
-    SetControlStateFlagAndMaybeRefresh(controlState64 == 0, 1);
+    HiliteState(controlState64 == 0, 1);
     return;
   }
   TEventHandler* child = QueryStepValue();
@@ -122,7 +122,7 @@ void TControl::SetTextStyleAndMaybeRefresh(const TUiTextStyleDescriptor* style, 
 }
 
 // FUNCTION: IMPERIALISM 0x0048e810
-void TControl::SetControlStateFlagAndMaybeRefresh(bool enabledState, bool refreshNow) {
+void TControl::HiliteState(unsigned char enabledState, unsigned char refreshNow) {
   if (controlState64 != static_cast<unsigned char>(enabledState)) {
     controlState64 = static_cast<unsigned char>(enabledState);
     if (refreshNow) {
@@ -138,12 +138,11 @@ void TControl::DispatchPictureResourceCommand(int eventType, void* eventSender, 
   (void)eventDataA;
   (void)commandFlag;
   if (eventType == 0) {
-    SetControlStateFlagAndMaybeRefresh(1, 1);
+    HiliteState(1, 1);
     return;
   }
   if (eventType == 1) {
-    SetControlStateFlagAndMaybeRefresh(
-        PointInBoundsAndActionable(reinterpret_cast<CPoint*>(eventDataB)), 1);
+    HiliteState(PointInBoundsAndActionable(reinterpret_cast<CPoint*>(eventDataB)), 1);
     return;
   }
   if (eventType == 2 && PointInBoundsAndActionable(reinterpret_cast<CPoint*>(eventDataB)) != 0) {

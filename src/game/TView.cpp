@@ -39,9 +39,8 @@ void __cdecl ApplyUiResourceColorTripletFromContext(unsigned char nFlag0C,
                                                     unsigned char nTripletFlag, int colorA,
                                                     int colorB) {
   TWindow* window = static_cast<TWindow*>(g_pUiResourceContext);
-  window->GetEmbeddedDialogBehavior()->SetFlag0C(nFlag0C);
-  window->GetEmbeddedDialogBehavior()->SetUiColorDescriptorGoldTriplet(nTripletFlag, colorA,
-                                                                       colorB);
+  window->GetDialogBehavior()->SetEnabled(nFlag0C);
+  window->GetDialogBehavior()->SetUiColorDescriptorGoldTriplet(nTripletFlag, colorA, colorB);
 }
 
 // Replaces the context widget's stylePayload48 style payload. Note the original writes
@@ -347,10 +346,10 @@ void TView::Free() {
     }
   }
   field0c = 0;
-  if (linkedResourceOwner != 0) {
-    linkedResourceOwner->Free();
+  if (firstBehavior != 0) {
+    firstBehavior->Free();
   }
-  linkedResourceOwner = 0;
+  firstBehavior = 0;
   delete this;
 }
 
@@ -517,7 +516,7 @@ void TView::InvokeSlot13C() {
   }
 }
 // FUNCTION: IMPERIALISM 0x0048b770
-char TView::Refresh() {
+char TView::PrepareForDrawing() {
   if (this != g_McAppUiActiveRenderContext_006A1AF4) {
     SetGlobalQuickDrawOrigin(static_cast<short>(absoluteX), static_cast<short>(absoluteY));
     g_McAppUiActiveRenderContext_006A1AF4 = this;
@@ -553,7 +552,7 @@ void TView::PaintOrInvalidateControl(CDC* paintDc) {
 
 // FUNCTION: IMPERIALISM 0x0048b8d0
 void TView::PaintVisibleChildrenIntersectingClipRect(RECT* clipRect, CDC* paintDc) {
-  if (g_McAppUiActiveFlag_006950AC == 0 || IsActionable() == 0 || Refresh() == 0) {
+  if (g_McAppUiActiveFlag_006950AC == 0 || IsActionable() == 0 || PrepareForDrawing() == 0) {
     return;
   }
 
@@ -565,8 +564,8 @@ void TView::PaintVisibleChildrenIntersectingClipRect(RECT* clipRect, CDC* paintD
 
   if (BindMapQuickDrawDc(paintDc) != 0) {
     ApplyRectSlot110(&clippedRect);
-    if (linkedResourceOwner != 0) {
-      linkedResourceOwner->DispatchQueuedUiCommandAndRelease(&clippedRect);
+    if (firstBehavior != 0) {
+      firstBehavior->Draw(&clippedRect);
     }
     ReleaseMapQuickDrawDc(paintDc);
   }
@@ -757,7 +756,7 @@ void TView::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* point, R
     }
   }
 
-  if (EmptyRgn(hitArg) != 0 && Refresh() != 0) {
+  if (EmptyRgn(hitArg) != 0 && PrepareForDrawing() != 0) {
     HandleCursorHoverFallback(point, hitArg);
   }
 }
@@ -835,7 +834,7 @@ char TView::DispatchUiMouseMoveToChildren(CPoint* point, int arg2, int arg3, int
     }
   }
 
-  if (Refresh() != 0 && GetBoolSlot28() != 0) {
+  if (PrepareForDrawing() != 0 && GetBoolSlot28() != 0) {
     CPoint localPoint = *point;
     BeginMouseCaptureAndStartRepeatTimer(&localPoint, arg2, arg3, arg4);
     return 1;
@@ -859,7 +858,7 @@ char TView::DispatchUiMouseEventToChildrenOrSelf_Impl(CPoint* point, int arg2, i
     }
   }
 
-  if (Refresh() != 0) {
+  if (PrepareForDrawing() != 0) {
     CPoint localPoint = *point;
     if (GetBoolSlot28() != 0) {
       return HandleMouseCommandToSelf(&localPoint, arg2, arg3, arg4) != 0;

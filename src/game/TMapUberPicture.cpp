@@ -359,7 +359,7 @@ undefined TMapUberPicture::DispatchSelectedTileToSubviewsAndSyncTradeToolState(s
 
 // FUNCTION: IMPERIALISM 0x00598910
 undefined TMapUberPicture::OrphanCallChain_C2_I11_00598910(undefined4 param_1) {
-  this->Refresh();
+  this->PrepareForDrawing();
   // Ground truth also calls subviewAc->vtable[0x1a0](param_1) here -- that slot lands on
   // TMapUberPicture's own (inherited-from-TControl) DispatchPictureResourceCommand, whose
   // real arity is independently established elsewhere (TControl.cpp/TMiniMapView's own

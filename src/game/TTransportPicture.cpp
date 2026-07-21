@@ -3,6 +3,7 @@
 #include "game/mfc.h"
 #include "game/TControl.h"
 #include "game/TGreatPower.h"
+#include "game/TStaticText.h"
 #include "game/UiRuntimeContext.h"
 #include "game/global_data_tables.h"
 
@@ -64,10 +65,60 @@ void TTransportPicture::HandleEvent(int commandId, TEventHandler* sourceHandler,
 }
 
 // FUNCTION: IMPERIALISM 0x005921c0
-bool TTransportPicture::IsSelected(short value, bool refreshNow) {
-  (void)value;
-  (void)refreshNow;
-  return false;
+void TTransportPicture::Refresh() {
+  short total = splitValue96;
+  if (total < 1) {
+    total = 1;
+  }
+
+  // The gauge is 113 pixels wide. The original gives the first remainder pixels one
+  // extra pixel so all integer divisions still fill the complete bar.
+  float pixelsPerUnit = 113.0f / static_cast<float>(total);
+  float remainder = 113.0f - pixelsPerUnit * static_cast<float>(total);
+  float markerPosition;
+  if (remainder < static_cast<float>(splitValue94)) {
+    markerPosition = remainder * (pixelsPerUnit + 1.0f) +
+                     (static_cast<float>(splitValue94) - remainder) * pixelsPerUnit;
+  } else {
+    markerPosition = static_cast<float>(splitValue94) * (pixelsPerUnit + 1.0f);
+  }
+
+  CString currentText;
+  CString totalText;
+  CString gaugeText;
+  currentText.Format(g_szDecimalFormat, static_cast<int>(splitValue94));
+  totalText.Format(g_szDecimalFormat, static_cast<int>(splitValue96));
+  gaugeText = currentText + CString(s_szSpaceSeparator_00695794) + totalText;
+
+  TStaticText* text = static_cast<TStaticText*>(ResolveControlByTag('text'));
+  text->AssertValid();
+  text->SetTextAndMaybeRefresh(&gaugeText, 1);
+
+  if (resourceMetricSlot92 == 0x16 || resourceMetricSlot92 == 0x15) {
+    int multiplier = resourceMetricSlot92 == 0x16 ? 200 : 500;
+    CString valueText;
+    valueText.Format(g_szDecimalFormat, static_cast<int>(splitValue94) * multiplier);
+    TStaticText* value = static_cast<TStaticText*>(ResolveControlByTag('valu'));
+    value->AssertValid();
+    value->SetTextAndMaybeRefresh(&valueText, 1);
+  }
+
+  if (splitLimit98 >= 0) {
+    SetState(splitValue94 < splitLimit98 ? 0 : 1, 0);
+  }
+
+  if (controlTag != static_cast<int>('tota')) {
+    short activeNation = g_pSimMgr->GetActiveNationId();
+    TGreatPower* nation = g_apNationStates[activeNation];
+    TTransportPicture* totalPicture =
+        static_cast<TTransportPicture*>(ownerContext->ResolveControlByTag('tota'));
+    totalPicture->AssertValid();
+    totalPicture->splitValue94 = nation != 0 ? nation->needsOverCapFlag : 0;
+    totalPicture->RefreshControl();
+  }
+
+  (void)markerPosition;
+  TView::RefreshControl();
 }
 
 // FUNCTION: IMPERIALISM 0x00592830

@@ -356,6 +356,15 @@ int CIncludeView::GetUiInteractiveFlag90() {
   return m_uiInteractiveFlag90;
 }
 
+// Replace the main-view input gate and return its previous state. Dialog modal loops
+// temporarily clear this gate and restore it only when it had been set on entry.
+// FUNCTION: IMPERIALISM 0x00484080
+int CIncludeView::SetUiInteractiveFlag90(unsigned char interactive) {
+  int previous = m_uiInteractiveFlag90;
+  m_uiInteractiveFlag90 = interactive;
+  return previous;
+}
+
 // WM_CHAR: no game handling; defers to DefWindowProc (matches the original).
 // FUNCTION: IMPERIALISM 0x004840b0
 void CIncludeView::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags) {
@@ -448,8 +457,8 @@ void CIncludeView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
     if (ownerWindow != 0) {
       PopulateKeyCommandBlock(s_keyCommand, nChar, nRepCnt, nFlags);
       ownerWindow->ForwardParam(commandParam);
-      if (ownerWindow->GetEmbeddedDialogBehavior() != 0) {
-        ownerWindow->GetEmbeddedDialogBehavior()->OrphanCallChain_C11_I88_004874b0(commandParam);
+      if (ownerWindow->GetDialogBehavior() != 0) {
+        ownerWindow->GetDialogBehavior()->DoKeyEvent(&s_keyCommand);
       }
     }
   }

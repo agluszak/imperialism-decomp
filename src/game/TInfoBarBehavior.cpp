@@ -1,4 +1,8 @@
 #include "game/TInfoBarBehavior.h"
+
+#include "game/TInfoBarText.h"
+#include "game/TView.h"
+#include "game/global_data_tables.h"
 // SYNTHETIC: IMPERIALISM 0x004b0c90
 // TInfoBarBehavior::CreateObject
 
@@ -15,12 +19,31 @@ TInfoBarBehavior::TInfoBarBehavior() : TBehavior() {}
 TInfoBarBehavior::~TInfoBarBehavior() {}
 
 // FUNCTION: IMPERIALISM 0x004b0e20
-undefined TInfoBarBehavior::InitializeInfoBarTagEntryWithOptionalDummyChild(int param_1,
-                                                                            int* param_2) {
-  return 0;
+void TInfoBarBehavior::IInfoBarBehavior(CString newText, TView* ownerView) {
+  behaviorTag = 0x696e6642;
+  ownerView->QueryBounds(&layoutRect);
+  text = newText;
+
+  if (ownerView->EvaluateControlInputGate() == 0) {
+    TView* dummy = new TView();
+    dummy->InitializeUiResourceEntryFrameAndParent(0, ownerView, g_InfoBarDummyOrigin_006A2410,
+                                                   &ownerView->frameWidth34, 0, 0, 0);
+    dummy->controlTag = 0x64756d79;
+    dummy->SetState(1, 0);
+    dummy->SetEnabled(0, 0);
+  }
+  ownerView->AddBehavior(this);
 }
 
 // FUNCTION: IMPERIALISM 0x004b0f50
-undefined TInfoBarBehavior::RefreshInfoBarCursorPanelRegionClip() {
+unsigned char TInfoBarBehavior::DoSetCursor(CPoint* point, RgnHandle region) {
+  (void)point;
+  if (g_pCursorControlPanel != 0) {
+    g_pCursorControlPanel->SetTextAndLayoutRect(text, &layoutRect);
+    static_cast<TView*>(owner)->PrepareForDrawing();
+    if (EmptyRgn(region) != 0) {
+      SetRectRgn(region, 0, 0, 0x280, 0x1e0);
+    }
+  }
   return 0;
 }

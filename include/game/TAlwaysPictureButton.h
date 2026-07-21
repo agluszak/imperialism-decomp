@@ -123,7 +123,7 @@ public:
   // slot 0x73 IsSelected inherited unchanged (0x5708c0)
   TAlwaysPictureButton();
   DECLARE_DYNCREATE(TAlwaysPictureButton)
-  void SetControlStateFlagAndMaybeRefresh(bool enabledState, bool refreshNow) override;
+  void HiliteState(unsigned char enabledState, unsigned char refreshNow) override;
   virtual void Select(bool isPressed, bool notifyParent); // slot 0x1d0
 };
 

@@ -117,7 +117,8 @@ public:
   // reports TRUE while it is 0. Writer not yet located.
   int m_uiInteractiveFlag90;
 
-  int GetUiInteractiveFlag90(); // 0x00484060
+  int GetUiInteractiveFlag90();                          // 0x00484060
+  int SetUiInteractiveFlag90(unsigned char interactive); // 0x00484080
 };
 
 ASSERT_SIZE(CIncludeView, 0x94);

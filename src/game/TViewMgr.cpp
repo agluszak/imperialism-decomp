@@ -2201,8 +2201,8 @@ int TViewMgr::MakePlanetSeedDialog(const char* instruction, CString& planetSeed,
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgrMore_0069B740, 0x26a);
   }
 
-  dialog->SetField84(1);
-  TDialogBehavior* behavior = dialog->GetEmbeddedDialogBehavior();
+  dialog->SetModality(1);
+  TDialogBehavior* behavior = dialog->GetDialogBehavior();
   if (behavior != 0) {
     behavior->defaultCommandCode = kControlTagOkay;
   }
@@ -2270,7 +2270,7 @@ int TViewMgr::MakePlanetSeedDialog(const char* instruction, CString& planetSeed,
     cancel->SetState(1, 0);
   }
 
-  int resultTag = dialog->ExecuteViewModalStateWithPushPopChain();
+  int resultTag = dialog->PoseModally();
   if (firstChoice != 0) {
     resultTag = choiceCluster->selectedTag88;
   }
