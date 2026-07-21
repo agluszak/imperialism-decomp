@@ -546,10 +546,26 @@ Linger.rsrc,300,0x012c,MA - kDialogTEViewID,0x0004,0,,,tevw,TDialogTEView,    ,0
 Linger.rsrc,900,0x0384,Debug Flags Window,0x0004,0,,,wind,,DGOW,312,50,508,192
 Linger.rsrc,900,0x0384,Debug Flags Window,0x0083,1,0x0004,DGOW,view,TDebugFlagsView,DGOV,0,0,512,192
 Linger.rsrc,900,0x0384,Debug Flags Window,0x00d6,2,0x0083,DGOV,clus,,VW02,176,32,192,56
+Linger.rsrc,900,0x0384,Debug Flags Window,0x0138,3,0x00d6,VW02,chkb,,menu,16,16,144,16
+Linger.rsrc,900,0x0384,Debug Flags Window,0x019b,3,0x00d6,VW02,chkb,,evnt,16,32,96,16
 Linger.rsrc,900,0x0384,Debug Flags Window,0x01fe,2,0x0083,DGOV,clus,,VW05,16,96,128,88
+Linger.rsrc,900,0x0384,Debug Flags Window,0x0260,3,0x01fe,VW05,chkb,,curs,16,16,96,16
+Linger.rsrc,900,0x0384,Debug Flags Window,0x02c3,3,0x01fe,VW05,chkb,,slee,16,32,80,16
+Linger.rsrc,900,0x0384,Debug Flags Window,0x0326,3,0x01fe,VW05,chkb,,help,16,48,80,16
+Linger.rsrc,900,0x0384,Debug Flags Window,0x0389,3,0x01fe,VW05,chkb,,invl,16,64,96,16
 Linger.rsrc,900,0x0384,Debug Flags Window,0x03ec,2,0x0083,DGOV,clus,,VW18,384,32,112,56
+Linger.rsrc,900,0x0384,Debug Flags Window,0x044e,3,0x03ec,VW18,chkb,,segl,16,16,80,16
+Linger.rsrc,900,0x0384,Debug Flags Window,0x04b1,3,0x03ec,VW18,chkb,,segu,16,32,64,16
 Linger.rsrc,900,0x0384,Debug Flags Window,0x0514,2,0x0083,DGOV,clus,,VW10,160,96,336,88
+Linger.rsrc,900,0x0384,Debug Flags Window,0x0576,3,0x0514,VW10,chkb,,ints,16,16,112,16
+Linger.rsrc,900,0x0384,Debug Flags Window,0x05d9,3,0x0514,VW10,chkb,,focu,16,40,176,16
+Linger.rsrc,900,0x0384,Debug Flags Window,0x063c,3,0x0514,VW10,chkb,,prnt,16,64,96,16
+Linger.rsrc,900,0x0384,Debug Flags Window,0x069f,3,0x0514,VW10,chkb,,usr1,224,16,96,16
+Linger.rsrc,900,0x0384,Debug Flags Window,0x0702,3,0x0514,VW10,chkb,,usr2,224,40,96,16
+Linger.rsrc,900,0x0384,Debug Flags Window,0x0765,3,0x0514,VW10,chkb,,usr3,224,64,96,16
 Linger.rsrc,900,0x0384,Debug Flags Window,0x07c8,2,0x0083,DGOV,clus,,VW01,16,32,144,56
+Linger.rsrc,900,0x0384,Debug Flags Window,0x082a,3,0x07c8,VW01,chkb,,rsrc,16,16,112,16
+Linger.rsrc,900,0x0384,Debug Flags Window,0x088d,3,0x07c8,VW01,chkb,,memb,16,32,112,16
 Linger.rsrc,900,0x0384,Debug Flags Window,0x08f0,2,0x0083,DGOV,stat,,VW03,16,8,480,16
 Linger.rsrc,901,0x0385,debug - Initialize PerfMon,0x0004,0,,,wind,,wind,304,50,544,248
 Linger.rsrc,901,0x0385,debug - Initialize PerfMon,0x00fb,1,0x0004,wind,stat,,VW02,16,40,64,16
@@ -557,14 +573,17 @@ Linger.rsrc,901,0x0385,debug - Initialize PerfMon,0x0161,1,0x0004,wind,nmbr,,tmc
 Linger.rsrc,901,0x0385,debug - Initialize PerfMon,0x0213,1,0x0004,wind,stat,,VW04,176,40,112,16
 Linger.rsrc,901,0x0385,debug - Initialize PerfMon,0x0279,1,0x0004,wind,nmbr,,cbsz,288,40,32,16
 Linger.rsrc,901,0x0385,debug - Initialize PerfMon,0x032b,1,0x0004,wind,clus,,VW06,16,72,176,64
+Linger.rsrc,901,0x0385,debug - Initialize PerfMon,0x038d,2,0x032b,VW06,chkb,,macd,16,40,144,16
 Linger.rsrc,901,0x0385,debug - Initialize PerfMon,0x03f0,2,0x032b,VW06,stat,,VW08,16,16,80,16
 Linger.rsrc,901,0x0385,debug - Initialize PerfMon,0x0456,2,0x032b,VW06,edit,,acrs,96,16,32,16
 Linger.rsrc,901,0x0385,debug - Initialize PerfMon,0x04fc,1,0x0004,wind,clus,,VW11,208,72,320,64
+Linger.rsrc,901,0x0385,debug - Initialize PerfMon,0x055e,2,0x04fc,VW11,chkb,,mrcd,128,40,112,16
 Linger.rsrc,901,0x0385,debug - Initialize PerfMon,0x05c1,2,0x04fc,VW11,stat,,VW13,224,16,48,16
 Linger.rsrc,901,0x0385,debug - Initialize PerfMon,0x0627,2,0x04fc,VW11,nmbr,,rmid,272,16,32,16
 Linger.rsrc,901,0x0385,debug - Initialize PerfMon,0x06d9,2,0x04fc,VW11,stat,,VW15,16,16,64,16
 Linger.rsrc,901,0x0385,debug - Initialize PerfMon,0x073f,2,0x04fc,VW11,edit,,rmnm,80,16,128,16
 Linger.rsrc,901,0x0385,debug - Initialize PerfMon,0x07e5,1,0x0004,wind,clus,,xxxx,16,152,256,88
+Linger.rsrc,901,0x0385,debug - Initialize PerfMon,0x0847,2,0x07e5,xxxx,chkb,,mout,64,64,128,16
 Linger.rsrc,901,0x0385,debug - Initialize PerfMon,0x08aa,2,0x07e5,xxxx,stat,,VW20,16,16,80,16
 Linger.rsrc,901,0x0385,debug - Initialize PerfMon,0x0910,2,0x07e5,xxxx,stat,,VW21,16,40,64,16
 Linger.rsrc,901,0x0385,debug - Initialize PerfMon,0x0976,2,0x07e5,xxxx,stat,,VW22,96,16,32,16
@@ -1943,7 +1962,13 @@ Linger.rsrc,8155,0x1fdb,test - Naval Battle,0x1042,2,0x0332,beta,stat,,    ,10,1
 Linger.rsrc,8155,0x1fdb,test - Naval Battle,0x10a8,2,0x0332,beta,stat,,    ,10,163,115,16
 Linger.rsrc,8155,0x1fdb,test - Naval Battle,0x110e,2,0x0332,beta,nmbr,,bshi,128,160,36,16
 Linger.rsrc,8155,0x1fdb,test - Naval Battle,0x11bf,2,0x0332,beta,clus,,tact,3,256,99,77
+Linger.rsrc,8155,0x1fdb,test - Naval Battle,0x1221,3,0x11bf,tact,radb,,opt1,8,18,80,16
+Linger.rsrc,8155,0x1fdb,test - Naval Battle,0x1284,3,0x11bf,tact,radb,,opt2,8,37,80,16
+Linger.rsrc,8155,0x1fdb,test - Naval Battle,0x12e7,3,0x11bf,tact,radb,,opt3,8,55,80,16
 Linger.rsrc,8155,0x1fdb,test - Naval Battle,0x134a,2,0x0332,beta,clus,,targ,105,256,99,77
+Linger.rsrc,8155,0x1fdb,test - Naval Battle,0x13ac,3,0x134a,targ,radb,,opt1,8,18,80,16
+Linger.rsrc,8155,0x1fdb,test - Naval Battle,0x140f,3,0x134a,targ,radb,,opt2,8,37,80,16
+Linger.rsrc,8155,0x1fdb,test - Naval Battle,0x1472,3,0x134a,targ,radb,,opt3,8,55,80,16
 Linger.rsrc,8155,0x1fdb,test - Naval Battle,0x14d5,2,0x0332,beta,stat,,name,5,336,191,15
 Linger.rsrc,8155,0x1fdb,test - Naval Battle,0x153b,2,0x0332,beta,nmbr,,perc,56,348,36,16
 Linger.rsrc,8155,0x1fdb,test - Naval Battle,0x15ec,2,0x0332,beta,nmbr,,spee,56,366,36,16
@@ -1979,7 +2004,13 @@ Linger.rsrc,8155,0x1fdb,test - Naval Battle,0x2590,2,0x1880,alph,stat,,    ,10,1
 Linger.rsrc,8155,0x1fdb,test - Naval Battle,0x25f6,2,0x1880,alph,stat,,    ,10,163,115,16
 Linger.rsrc,8155,0x1fdb,test - Naval Battle,0x265c,2,0x1880,alph,nmbr,,bshi,128,160,36,16
 Linger.rsrc,8155,0x1fdb,test - Naval Battle,0x270d,2,0x1880,alph,clus,,tact,3,256,99,77
+Linger.rsrc,8155,0x1fdb,test - Naval Battle,0x276f,3,0x270d,tact,radb,,opt1,8,18,80,16
+Linger.rsrc,8155,0x1fdb,test - Naval Battle,0x27d2,3,0x270d,tact,radb,,opt2,8,37,80,16
+Linger.rsrc,8155,0x1fdb,test - Naval Battle,0x2835,3,0x270d,tact,radb,,opt3,8,55,80,16
 Linger.rsrc,8155,0x1fdb,test - Naval Battle,0x2898,2,0x1880,alph,clus,,targ,105,256,99,77
+Linger.rsrc,8155,0x1fdb,test - Naval Battle,0x28fa,3,0x2898,targ,radb,,opt1,8,18,80,16
+Linger.rsrc,8155,0x1fdb,test - Naval Battle,0x295d,3,0x2898,targ,radb,,opt2,8,37,80,16
+Linger.rsrc,8155,0x1fdb,test - Naval Battle,0x29c0,3,0x2898,targ,radb,,opt3,8,55,80,16
 Linger.rsrc,8155,0x1fdb,test - Naval Battle,0x2a23,2,0x1880,alph,stat,,name,5,336,191,15
 Linger.rsrc,8155,0x1fdb,test - Naval Battle,0x2a89,2,0x1880,alph,nmbr,,perc,56,348,36,16
 Linger.rsrc,8155,0x1fdb,test - Naval Battle,0x2b3a,2,0x1880,alph,nmbr,,spee,56,366,36,16
@@ -2215,7 +2246,23 @@ MapView.rsrc,9470,0x24fe,Civilian Maker,0x0004,0,,,wind,,WIND,168,37,256,400
 MapView.rsrc,9470,0x24fe,Civilian Maker,0x026f,1,0x0004,WIND,pict,,DLOG,0,0,256,400
 MapView.rsrc,9470,0x24fe,Civilian Maker,0x02cf,2,0x026f,DLOG,stat,,titl,0,9,256,27
 MapView.rsrc,9470,0x24fe,Civilian Maker,0x0335,2,0x026f,DLOG,clus,,type,31,44,181,190
+MapView.rsrc,9470,0x24fe,Civilian Maker,0x0397,3,0x0335,type,radb,,typ8,43,167,96,16
+MapView.rsrc,9470,0x24fe,Civilian Maker,0x03fa,3,0x0335,type,radb,,typ0,43,23,96,16
+MapView.rsrc,9470,0x24fe,Civilian Maker,0x045d,3,0x0335,type,radb,,typ1,43,41,96,16
+MapView.rsrc,9470,0x24fe,Civilian Maker,0x04c0,3,0x0335,type,radb,,typ2,43,59,96,16
+MapView.rsrc,9470,0x24fe,Civilian Maker,0x0523,3,0x0335,type,radb,,typ3,43,77,96,16
+MapView.rsrc,9470,0x24fe,Civilian Maker,0x0586,3,0x0335,type,radb,,typ4,43,95,96,16
+MapView.rsrc,9470,0x24fe,Civilian Maker,0x05e9,3,0x0335,type,radb,,typ5,43,113,96,16
+MapView.rsrc,9470,0x24fe,Civilian Maker,0x064c,3,0x0335,type,radb,,typ6,43,131,96,16
+MapView.rsrc,9470,0x24fe,Civilian Maker,0x06af,3,0x0335,type,radb,,typ7,43,149,96,16
 MapView.rsrc,9470,0x24fe,Civilian Maker,0x0774,2,0x026f,DLOG,clus,,owne,33,241,177,98
+MapView.rsrc,9470,0x24fe,Civilian Maker,0x07d6,3,0x0774,owne,radb,,own0,12,19,55,18
+MapView.rsrc,9470,0x24fe,Civilian Maker,0x0839,3,0x0774,owne,radb,,own1,12,38,55,18
+MapView.rsrc,9470,0x24fe,Civilian Maker,0x089c,3,0x0774,owne,radb,,own2,12,57,55,18
+MapView.rsrc,9470,0x24fe,Civilian Maker,0x08ff,3,0x0774,owne,radb,,own3,12,76,55,18
+MapView.rsrc,9470,0x24fe,Civilian Maker,0x0962,3,0x0774,owne,radb,,own6,96,57,55,18
+MapView.rsrc,9470,0x24fe,Civilian Maker,0x09c5,3,0x0774,owne,radb,,own5,96,38,55,18
+MapView.rsrc,9470,0x24fe,Civilian Maker,0x0a28,3,0x0774,owne,radb,,own4,96,19,55,18
 MapView.rsrc,9474,0x2502,Friendly Fleet Report,0x0004,0,,,wind,,WIND,160,138,350,250
 MapView.rsrc,9474,0x2502,Friendly Fleet Report,0x0080,1,0x0004,WIND,pict,,DLOG,0,0,350,250
 MapView.rsrc,9474,0x2502,Friendly Fleet Report,0x00e0,2,0x0080,DLOG,stat,,titl,12,10,326,23
@@ -2245,6 +2292,15 @@ MapView.rsrc,9476,0x2504,Navy Maker,0x0004,0,,,wind,,WIND,168,37,200,330
 MapView.rsrc,9476,0x2504,Navy Maker,0x0080,1,0x0004,WIND,pict,,DLOG,0,0,200,330
 MapView.rsrc,9476,0x2504,Navy Maker,0x00e0,2,0x0080,DLOG,stat,,titl,0,9,200,26
 MapView.rsrc,9476,0x2504,Navy Maker,0x0146,2,0x0080,DLOG,clus,,type,3,44,185,182
+MapView.rsrc,9476,0x2504,Navy Maker,0x01a8,3,0x0146,type,radb,,typ0,16,19,159,16
+MapView.rsrc,9476,0x2504,Navy Maker,0x020b,3,0x0146,type,radb,,typ1,16,36,159,16
+MapView.rsrc,9476,0x2504,Navy Maker,0x026e,3,0x0146,type,radb,,typ2,16,53,159,16
+MapView.rsrc,9476,0x2504,Navy Maker,0x02d1,3,0x0146,type,radb,,typ3,16,70,159,16
+MapView.rsrc,9476,0x2504,Navy Maker,0x0334,3,0x0146,type,radb,,typ4,16,87,159,16
+MapView.rsrc,9476,0x2504,Navy Maker,0x0397,3,0x0146,type,radb,,typ5,16,104,159,16
+MapView.rsrc,9476,0x2504,Navy Maker,0x03fa,3,0x0146,type,radb,,typ6,16,121,159,16
+MapView.rsrc,9476,0x2504,Navy Maker,0x045d,3,0x0146,type,radb,,typ7,16,138,159,16
+MapView.rsrc,9476,0x2504,Navy Maker,0x04c0,3,0x0146,type,radb,,typ8,16,155,159,16
 MapView.rsrc,9476,0x2504,Navy Maker,0x0523,2,0x0080,DLOG,nmbr,,quan,75,260,36,22
 MapView.rsrc,9476,0x2504,Navy Maker,0x05d4,2,0x0080,DLOG,nmbr,,coun,75,285,36,22
 MapView.rsrc,9476,0x2504,Navy Maker,0x0685,2,0x0080,DLOG,stat,,    ,23,263,49,15
@@ -2451,6 +2507,8 @@ Startup.rsrc,951,0x03b7,test - Game Setup Dialog,0x0a67,1,0x0004,WIND,clus,,GP3 
 Startup.rsrc,951,0x03b7,test - Game Setup Dialog,0x0c89,1,0x0004,WIND,clus,,GP6 ,13,285,183,131
 Startup.rsrc,951,0x03b7,test - Game Setup Dialog,0x0eab,1,0x0004,WIND,clus,,GP4 ,204,149,183,131
 Startup.rsrc,951,0x03b7,test - Game Setup Dialog,0x10cd,1,0x0004,WIND,clus,,GP5 ,396,149,183,131
+Startup.rsrc,951,0x03b7,test - Game Setup Dialog,0x12ef,1,0x0004,WIND,chkb,,mult,231,313,105,14
+Startup.rsrc,951,0x03b7,test - Game Setup Dialog,0x1352,1,0x0004,WIND,chkb,,edit,231,343,84,16
 Startup.rsrc,952,0x03b8,City Site selector,0x0004,0,,,view,,base,0,0,2000,2000
 Startup.rsrc,952,0x03b8,City Site selector,0x0048,1,0x0004,base,pict,TMapUberPicture,main,0,0,640,480
 Startup.rsrc,952,0x03b8,City Site selector,0x00ed,2,0x0048,main,clus,TToolBarCluster,tool,517,0,123,480
@@ -2470,12 +2528,42 @@ Startup.rsrc,960,0x03c0,Map editor,0x0004,0,,,view,,base,0,0,2000,2000
 Startup.rsrc,960,0x03c0,Map editor,0x0048,1,0x0004,base,pict,TMapUberPicture,main,0,0,640,480
 Startup.rsrc,960,0x03c0,Map editor,0x00ed,2,0x0048,main,clus,TToolBarCluster,tool,517,0,123,480
 Startup.rsrc,960,0x03c0,Map editor,0x015e,3,0x00ed,tool,clus,TMapEditCluster,econ,4,123,115,351
+Startup.rsrc,960,0x03c0,Map editor,0x01cf,4,0x015e,econ,radb,,tera,5,2,48,17
+Startup.rsrc,960,0x03c0,Map editor,0x0232,4,0x015e,econ,radb,,terb,5,19,48,17
+Startup.rsrc,960,0x03c0,Map editor,0x0295,4,0x015e,econ,radb,,terc,5,36,48,17
+Startup.rsrc,960,0x03c0,Map editor,0x02f8,4,0x015e,econ,radb,,terd,5,53,48,17
+Startup.rsrc,960,0x03c0,Map editor,0x035b,4,0x015e,econ,radb,,teri,57,2,48,17
+Startup.rsrc,960,0x03c0,Map editor,0x03be,4,0x015e,econ,radb,,terj,57,19,48,17
+Startup.rsrc,960,0x03c0,Map editor,0x0421,4,0x015e,econ,radb,,terk,57,36,48,17
+Startup.rsrc,960,0x03c0,Map editor,0x0484,4,0x015e,econ,radb,,terl,57,53,48,17
+Startup.rsrc,960,0x03c0,Map editor,0x04e7,4,0x015e,econ,radb,,prov,38,185,74,17
 Startup.rsrc,960,0x03c0,Map editor,0x054a,4,0x015e,econ,nmbr,,prnu,5,185,30,17
 Startup.rsrc,960,0x03c0,Map editor,0x05fb,4,0x015e,econ,stat,,pron,36,185,73,16
 Startup.rsrc,960,0x03c0,Map editor,0x0661,4,0x015e,econ,pict,,done,3,324,61,24
+Startup.rsrc,960,0x03c0,Map editor,0x06c1,4,0x015e,econ,radb,,seat,5,203,104,16
 Startup.rsrc,960,0x03c0,Map editor,0x0724,4,0x015e,econ,pict,,load,3,301,61,24
 Startup.rsrc,960,0x03c0,Map editor,0x0784,4,0x015e,econ,pict,,save,3,278,61,24
 Startup.rsrc,960,0x03c0,Map editor,0x07e4,4,0x015e,econ,stat,,    ,69,282,38,66
+Startup.rsrc,960,0x03c0,Map editor,0x084a,4,0x015e,econ,chkb,,exi0,28,226,16,16
+Startup.rsrc,960,0x03c0,Map editor,0x08ad,4,0x015e,econ,chkb,,exi1,36,240,16,16
+Startup.rsrc,960,0x03c0,Map editor,0x0910,4,0x015e,econ,chkb,,exi2,28,254,16,16
+Startup.rsrc,960,0x03c0,Map editor,0x0973,4,0x015e,econ,chkb,,exi3,13,254,16,16
+Startup.rsrc,960,0x03c0,Map editor,0x09d6,4,0x015e,econ,chkb,,exi4,5,240,16,16
+Startup.rsrc,960,0x03c0,Map editor,0x0a39,4,0x015e,econ,chkb,,exi5,13,226,16,16
+Startup.rsrc,960,0x03c0,Map editor,0x0a9c,4,0x015e,econ,radb,,rail,61,226,48,17
+Startup.rsrc,960,0x03c0,Map editor,0x0aff,4,0x015e,econ,radb,,rive,61,244,48,17
+Startup.rsrc,960,0x03c0,Map editor,0x0b62,4,0x015e,econ,radb,,tere,5,70,48,17
+Startup.rsrc,960,0x03c0,Map editor,0x0bc5,4,0x015e,econ,radb,,terf,5,87,48,17
+Startup.rsrc,960,0x03c0,Map editor,0x0c28,4,0x015e,econ,radb,,terg,5,104,48,17
+Startup.rsrc,960,0x03c0,Map editor,0x0c8b,4,0x015e,econ,radb,,terh,57,104,48,17
+Startup.rsrc,960,0x03c0,Map editor,0x0cee,4,0x015e,econ,radb,,term,57,70,48,17
+Startup.rsrc,960,0x03c0,Map editor,0x0d51,4,0x015e,econ,radb,,tern,57,87,48,17
+Startup.rsrc,960,0x03c0,Map editor,0x0db4,4,0x015e,econ,radb,,min0,5,131,48,17
+Startup.rsrc,960,0x03c0,Map editor,0x0e17,4,0x015e,econ,radb,,min1,57,148,48,17
+Startup.rsrc,960,0x03c0,Map editor,0x0e7a,4,0x015e,econ,radb,,min3,57,165,48,17
+Startup.rsrc,960,0x03c0,Map editor,0x0edd,4,0x015e,econ,radb,,min2,5,148,48,17
+Startup.rsrc,960,0x03c0,Map editor,0x0f40,4,0x015e,econ,radb,,min4,5,165,48,17
+Startup.rsrc,960,0x03c0,Map editor,0x0fa3,4,0x015e,econ,radb,,terp,57,121,48,17
 Startup.rsrc,960,0x03c0,Map editor,0x1006,2,0x0048,main,view,TMapEditView,DLOG,5,27,512,448
 Startup.rsrc,965,0x03c5,Province editor,0x0004,0,,,wind,,WIND,160,138,250,175
 Startup.rsrc,965,0x03c5,Province editor,0x0080,1,0x0004,WIND,pict,,DLOG,0,0,250,175
@@ -2485,6 +2573,8 @@ Startup.rsrc,965,0x03c5,Province editor,0x01f9,2,0x0080,DLOG,stat,,    ,38,10,15
 Startup.rsrc,965,0x03c5,Province editor,0x025f,2,0x0080,DLOG,nmbr,,fort,14,76,36,22
 Startup.rsrc,965,0x03c5,Province editor,0x0310,2,0x0080,DLOG,stat,,    ,10,58,48,18
 Startup.rsrc,965,0x03c5,Province editor,0x0376,2,0x0080,DLOG,clus,,type,68,66,114,54
+Startup.rsrc,965,0x03c5,Province editor,0x03d8,3,0x0376,type,radb,,town,6,17,104,16
+Startup.rsrc,965,0x03c5,Province editor,0x043b,3,0x0376,type,radb,,city,6,34,104,16
 Startup.rsrc,966,0x03c6,Verb Form Dialog,0x0004,0,,,wind,,WIND,160,138,328,175
 Startup.rsrc,966,0x03c6,Verb Form Dialog,0x0080,1,0x0004,WIND,pict,,DLOG,0,0,330,175
 Startup.rsrc,966,0x03c6,Verb Form Dialog,0x00e0,2,0x0080,DLOG,stat,,ques,12,14,301,33

@@ -21,7 +21,7 @@ class MacPayloadDiffTests(unittest.TestCase):
             counts[record["class"]] = counts.get(record["class"], 0) + 1
         expected = {class_name for class_name, count in counts.items() if count >= 2}
         self.assertEqual(set(self.report["classes"]), expected)
-        self.assertEqual(self.report["summary"]["records"], 3173)
+        self.assertEqual(self.report["summary"]["records"], 3263)
         self.assertEqual(self.report["summary"]["classes_with_multiple_instances"], 62)
 
     def test_deluxe_text_style_id_correlation_is_exact_and_high_confidence(self) -> None:

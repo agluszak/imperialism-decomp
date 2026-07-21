@@ -122,6 +122,7 @@ functions:
     cases:
       - {event: 0x03b8, resource: Startup.rsrc:952}
       - {event: 0x03b9, resource: Startup.rsrc:953}
+      - {event: 0x03c0, resource: Startup.rsrc:960, evidence: "Windows request 0x0050ed78; functional-parity case absent from original builder"}
       - {event: 0x03c5, resource: Startup.rsrc:965, evidence: "Windows request 0x0051dd0b; functional-parity case absent from original builder"}
       - {event: 0x03c6, resource: Startup.rsrc:966}
       - {event: 0x05dc, resource: Startup.rsrc:1500}
