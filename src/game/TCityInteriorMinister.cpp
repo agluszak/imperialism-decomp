@@ -221,8 +221,7 @@ undefined TCityInteriorMinister::GetTEventHandlerClassNamePointer_22(TCity* city
   }
 
   if (field3e != 0) {
-    QueueCityProductionCommand33FromAccumulatedDeficit(reinterpret_cast<int*>(city),
-                                                       reinterpret_cast<int>(arg2));
+    QueueCityProductionCommand33FromAccumulatedDeficit(city, arg2);
   }
   if (field32 != 0) {
     QueueCityProductionCommand2BIfMissingAndResetValue(reinterpret_cast<int>(city), arg2);
@@ -246,7 +245,7 @@ undefined TCityInteriorMinister::QueueCityProductionRebalanceCommandsByThreshold
 void TCityInteriorMinister::NoOpProductionCommandHook24(int, int) {}
 
 // FUNCTION: IMPERIALISM 0x004bff80
-undefined TCityInteriorMinister::QueueCityProductionCommand33FromAccumulatedDeficit(int*, int) {
+undefined TCityInteriorMinister::QueueCityProductionCommand33FromAccumulatedDeficit(TCity*, int*) {
   return 0;
 }
 

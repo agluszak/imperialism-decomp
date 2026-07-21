@@ -80,9 +80,20 @@ public:
                                                                 void* arg2); // slot 0x29 0x4c0690
   virtual undefined QueueSingleCityProductionCommandFromField38(void* arg1,
                                                                 void* arg2); // slot 0x2a 0x4c0730
+  // NOT YET PORTED (raw disassembly investigated): arg1 is TCity* (matches the ESP+0x20
+  // read, confirmed via lowProductionFlag7c-style offsets at the caller). arg2 is NOT an
+  // `int` -- it is dereferenced as a vtable pointer (`MOV EAX,[arg2]; CALL [EAX+0x7c]`
+  // with a pushed short constant, e.g. 0x33, and the bool return tested via TEST AL,AL).
+  // Checked TCity (slot 0x7c = MouseTrap, a real no-arg no-op -- wrong shape) and
+  // TSortedList (slot 0x7c is null, past its vtable end) -- arg2's real class is still
+  // unidentified. Needs its own class-recovery pass before this can be ported; the
+  // accumulated-deficit sum (23-entry loop over `field_0x10e`) and the
+  // the 0x14-byte heap allocation + TCityTask-shaped field stores later in the body are already
+  // understood (see TCityTask.h/.cpp), it's specifically this one vtable receiver that's
+  // blocking completion.
   virtual undefined
-  QueueCityProductionCommand33FromAccumulatedDeficit(int* arg1,
-                                                     int unusedArg2); // slot 0x2b 0x4bff80
+  QueueCityProductionCommand33FromAccumulatedDeficit(TCity* arg1,
+                                                     int* arg2); // slot 0x2b 0x4bff80
   virtual undefined DistributeCityProductionAcrossOrderTemplatesAndBackfillDeficits(
       TCity* city);                     // slot 0x2c 0x4c07d0
   virtual void VTableSlot2D(short arg); // slot 0x2d 0x4bef10
