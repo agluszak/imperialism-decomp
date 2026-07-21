@@ -177,7 +177,7 @@ void TCivMgr::SetActiveCivilianSelection(TCivUnit* entryContext, char refreshCom
 
   TMapUberPicture* mapUberPicture = g_pUiRuntimeContext->mapUberPictureF0;
   if (mapUberPicture != nullptr) {
-    mapUberPicture->InvalidateTileMarkerChain(entryContext->tileIndex06);
+    mapUberPicture->InvalidateTile(entryContext->tileIndex06);
   }
 
   if (refreshCommandPanel != 0) {
@@ -238,7 +238,7 @@ void TCivMgr::ShowDisbandCivilianConfirmationDialog() {
 
   TMapUberPicture* mapUberPicture = g_pUiRuntimeContext->mapUberPictureF0;
   if (mapUberPicture != nullptr) {
-    mapUberPicture->DispatchSelectedTileToSubviewsAndSyncTradeToolState(tileIndex);
+    mapUberPicture->RedrawTile(tileIndex);
   }
   mapUberPicture = g_pUiRuntimeContext->mapUberPictureF0;
   if (mapUberPicture != nullptr) {
@@ -348,7 +348,7 @@ void TCivMgr::HandleCivilianReportDecision(TCivUnit* pCivilianOrderEntry) {
 
     TMapUberPicture* invalidateTarget = g_pUiRuntimeContext->mapUberPictureF0;
     if (invalidateTarget != nullptr) {
-      invalidateTarget->InvalidateTileMarkerChain(pCivilianOrderEntry->tileIndex06);
+      invalidateTarget->InvalidateTile(pCivilianOrderEntry->tileIndex06);
     }
 
     TMapUberPicture* refreshTarget = g_pUiRuntimeContext->mapUberPictureF0;
@@ -362,7 +362,7 @@ void TCivMgr::HandleCivilianReportDecision(TCivUnit* pCivilianOrderEntry) {
   }
 
   if (mapUberPicture != nullptr) {
-    mapUberPicture->NotifySubviewOfSelectedTile(pCivilianOrderEntry->tileIndex06);
+    mapUberPicture->NoticeTile(pCivilianOrderEntry->tileIndex06);
   }
 }
 
@@ -482,7 +482,7 @@ bool TCivMgr::HandleEngineerConstructionAction(short nTileIndex) {
         g_apNationStates[nationId]->treasuryValue10 -= 3000;
         pCiv->SetOrderModeSlot34(7, pCiv->tileIndex06);
         if (g_pUiRuntimeContext->mapUberPictureF0 != nullptr) {
-          g_pUiRuntimeContext->mapUberPictureF0->InvalidateTileMarkerChain(nTileIndex);
+          g_pUiRuntimeContext->mapUberPictureF0->InvalidateTile(nTileIndex);
         }
         g_pSfxPlaybackSystem->PlaySoundEffect(0x232b, 0, 1);
         actionFinalized = true;
@@ -509,7 +509,7 @@ bool TCivMgr::HandleEngineerConstructionAction(short nTileIndex) {
         g_apNationStates[nationId]->treasuryValue10 -= 2000;
         pCiv->SetOrderModeSlot34(12, pCiv->tileIndex06);
         if (g_pUiRuntimeContext->mapUberPictureF0 != nullptr) {
-          g_pUiRuntimeContext->mapUberPictureF0->InvalidateTileMarkerChain(nTileIndex);
+          g_pUiRuntimeContext->mapUberPictureF0->InvalidateTile(nTileIndex);
         }
         g_pSfxPlaybackSystem->PlaySoundEffect(0x232a, 0, 1);
         actionFinalized = true;

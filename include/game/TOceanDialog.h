@@ -33,7 +33,7 @@ public:
   virtual void ComputeWrappedMapCellAndRegionBandFromScreenCoord(int overlayRecord, short* outRow,
                                                                  unsigned short* outCol,
                                                                  short* outBand) override;
-  virtual void UpdateMapDialogTileRowColumnMarkerAndInvalidate(int arg1) override;
+  virtual void CenterOn(int tileIndex) override;
   virtual void SetMapViewCellCoordinates(int arg1, int arg2) override;
   virtual void OrphanRetStub_005966c0(short arg1) override;
   virtual undefined OrphanLeaf_NoCall_Ins02_005966e0(short arg1) override;
@@ -41,6 +41,9 @@ public:
   // NormalizeWrappedMapCoord108x60 and returns the resulting linear tile index
   // (row*0x6c + col). 0x00568ab0.
   virtual int ComputeWrappedTileIndexFromObjectOffset7C7E();
+  // 0x00565fc0 -- Mac CodeWarrior identity: TOceanDialog::InvalidateTile(short).
+  // Invalidates the tile's 16x16 cell in the wrapped ocean viewport.
+  void InvalidateTile(short tileIndex);
   void ComputeTileClassBoundsInViewport(int* outRect, int entry); // 0x566060
 
   // Nudges scrollRowOffset7c/scrollColOffset7e by +-4 per set bit in directionFlags

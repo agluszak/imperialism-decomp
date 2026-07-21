@@ -35,7 +35,7 @@ TOcean g_anchorTOceanInstance;
 // FUNCTION: IMPERIALISM 0x00515e00
 void NotifyMapUberPictureTileMarker(short tileIndex) {
   if (g_pUiRuntimeContext != 0 && g_pUiRuntimeContext->mapUberPictureF0 != 0) {
-    g_pUiRuntimeContext->mapUberPictureF0->InvalidateTileMarkerChain(static_cast<short>(tileIndex));
+    g_pUiRuntimeContext->mapUberPictureF0->InvalidateTile(static_cast<short>(tileIndex));
   }
 }
 
@@ -598,10 +598,11 @@ void TOcean::FinalizeQueuedMapOrderEntry(TTaskForce* entry) {
   zone->SetMapOrderUiFlag(hasPendingNode);
 
   // tiebreak_strength (+0x30) doubles as the entry's active map-tile notify index; 0xffff
-  // means "no tile". mapUberPictureF0 slot 0x1e8 is NotifySubviewOfSelectedTile.
+  // means "no tile". Mac CodeWarrior identifies mapUberPictureF0 slot 0x1e8 as
+  // NoticeTile.
   short tileNotifyIndex = entry->tiebreak_strength;
   if (tileNotifyIndex != -1 && g_pUiRuntimeContext->mapUberPictureF0 != nullptr) {
-    g_pUiRuntimeContext->mapUberPictureF0->NotifySubviewOfSelectedTile(tileNotifyIndex);
+    g_pUiRuntimeContext->mapUberPictureF0->NoticeTile(tileNotifyIndex);
   }
 
   if (selectedTaskForce14 == entry) {

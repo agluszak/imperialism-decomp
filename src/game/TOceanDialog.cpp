@@ -39,6 +39,22 @@ void TOceanDialog::DoPostCreate(int arg) {
   previewSquareRadius78 = 0x10;
 }
 
+// FUNCTION: IMPERIALISM 0x00565fc0
+void TOceanDialog::InvalidateTile(short tileIndex) {
+  if (tileIndex < 0) {
+    return;
+  }
+
+  int row = tileIndex / 0x6c;
+  int x = ((tileIndex - scrollColOffset7e + 0x6c) % 0x6c) << 4;
+  if ((row & 1) == 0) {
+    x -= 8;
+  }
+  int y = (row - scrollRowOffset7c) << 4;
+  CRect tileRect(x, y, x + 0x10, y + 0x10);
+  InvalidateCityDialogRectRegion(&tileRect, 1);
+}
+
 // Computes the viewport-space bounding rectangle of every strategic tile whose owner tag
 // matches the order entry's field at +0x12, converted through the dialog's scroll offsets.
 // Emits a zero rect when nothing matches.
@@ -162,8 +178,11 @@ void TOceanDialog::SetMapViewCellCoordinates(int arg1, int arg2) {
 }
 
 // FUNCTION: IMPERIALISM 0x005689f0
-void TOceanDialog::UpdateMapDialogTileRowColumnMarkerAndInvalidate(int arg1) {
-  (void)arg1;
+void TOceanDialog::CenterOn(int tileIndex) {
+  short promotedTileIndex = static_cast<short>(tileIndex);
+  int row = promotedTileIndex / 0x6c;
+  int col = promotedTileIndex % 0x6c;
+  SetMapViewCellCoordinates(col - 0x10, row - 0xe);
 }
 
 // FUNCTION: IMPERIALISM 0x00568a40

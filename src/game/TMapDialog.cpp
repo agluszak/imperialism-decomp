@@ -225,7 +225,7 @@ void TMapDialog::DrawHexNeighborOutlineFromTileArray(short* neighborTiles) {
 }
 
 // FUNCTION: IMPERIALISM 0x0051A900
-void TMapDialog::UpdateMapDialogProjectedTileMarkerAndInvalidate(int tileIndex) {
+void TMapDialog::InvalidateTile(short tileIndex) {
   int originalTileIndex = tileIndex;
   short projectedY;
   ProjectTileIndexToWrappedScreenOffsetByScale(
@@ -291,11 +291,12 @@ undefined TMapDialog::OrphanLeaf_NoCall_Ins02_005966e0(short arg1) {
 // row offset by 3) and invalidates the whole 0x200x0x1c0 dialog surface. The split writes
 // only the low words of the arg slot / col local (same short*-into-int idiom as the ctor).
 // FUNCTION: IMPERIALISM 0x0051ac40
-void TMapDialog::UpdateMapDialogTileRowColumnMarkerAndInvalidate(int arg1) {
+void TMapDialog::CenterOn(int tileIndex) {
   int col;
-  SplitTileIndexToRowAndColumn(static_cast<short>(arg1), reinterpret_cast<short*>(&arg1),
+  SplitTileIndexToRowAndColumn(static_cast<short>(tileIndex), reinterpret_cast<short*>(&tileIndex),
                                reinterpret_cast<short*>(&col));
-  SetMapViewCellCoordinates(col - static_cast<short>(g_wMapDialogViewportTileSpan) / 2, arg1 - 3);
+  SetMapViewCellCoordinates(col - static_cast<short>(g_wMapDialogViewportTileSpan) / 2,
+                            tileIndex - 3);
   RECT invalidateRect;
   invalidateRect.left = 0;
   invalidateRect.top = 0;
@@ -305,8 +306,11 @@ void TMapDialog::UpdateMapDialogTileRowColumnMarkerAndInvalidate(int arg1) {
 }
 
 // FUNCTION: IMPERIALISM 0x0051ace0
-undefined TMapDialog::HasRenderableParentAndContentSlotA2() {
-  return 0;
+int TMapDialog::GetCenterTile() const {
+  int col = viewportOffsetX / 0x40 + static_cast<short>(g_wMapDialogViewportTileSpan) / 2;
+  int row = viewportOffsetY / 0x40 + 4;
+  NormalizeWrappedMapCoord108x60(reinterpret_cast<short*>(&col), reinterpret_cast<short*>(&row));
+  return col + row * 0x6c;
 }
 
 // FUNCTION: IMPERIALISM 0x0051ad70

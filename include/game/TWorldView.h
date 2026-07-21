@@ -86,7 +86,9 @@ public:
   virtual void DispatchOverlayEvent78RootHighFromStridedRecord(int stridedRecord,
                                                                int dispatchContext);
   virtual void HandleMapClickByInteractionMode(short nTileIndex, int nInputFlags);
-  virtual void UpdateMapDialogTileRowColumnMarkerAndInvalidate(int arg1);
+  // Mac CodeWarrior identity: TWorldView::CenterOn(short). Windows consumes the promoted
+  // stack dword at this virtual boundary.
+  virtual void CenterOn(int tileIndex);
   virtual short QueryMinusOneWordSlot77();
   virtual void SetMapViewTileIndex(int arg1);
   virtual void SetMapViewCellCoordinates(int arg1, int arg2);

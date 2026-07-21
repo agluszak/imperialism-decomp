@@ -3817,7 +3817,7 @@ void TMapMgr::MarkAdjacentHexOrderDirectionAndSelectTile(int tileIndex, int cont
     }
     g_pGlobalMapState->terrainStateTable[finalTileIndex].perTileVisitedFlag0f = directionCode;
     if (g_pUiRuntimeContext->mapUberPictureF0 != nullptr) {
-      g_pUiRuntimeContext->mapUberPictureF0->InvalidateTileMarkerChain(finalTileIndex);
+      g_pUiRuntimeContext->mapUberPictureF0->InvalidateTile(finalTileIndex);
     }
   }
 }
@@ -3897,7 +3897,7 @@ void TMapMgr::MarkDirectionalMapOverlayFlagsForNationOrders() {
         }
         terrainStateTable[finalTileIndex].perTileVisitedFlag0f = directionCode;
         if (g_pUiRuntimeContext->mapUberPictureF0 != nullptr) {
-          g_pUiRuntimeContext->mapUberPictureF0->InvalidateTileMarkerChain(finalTileIndex);
+          g_pUiRuntimeContext->mapUberPictureF0->InvalidateTile(finalTileIndex);
         }
       }
     }

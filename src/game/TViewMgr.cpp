@@ -2182,7 +2182,7 @@ void TViewMgr::ShowCivilianLedgerDialogAndSelectUnit() {
   node->Free();
 
   if (selectedIndex != -1) {
-    this->mapUberPictureF0->NotifySubviewOfSelectedTile(selectedIndex);
+    this->mapUberPictureF0->NoticeTile(selectedIndex);
     int orderState =
         g_pGlobalMapState->terrainStateTable[selectedIndex].firstCivilianOrder20->field_8;
     if (orderState == 0 || orderState == 3 || orderState == 2) {
