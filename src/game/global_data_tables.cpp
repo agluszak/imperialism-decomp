@@ -1597,6 +1597,12 @@ const int g_ShipOrderStatusStringIndexByResourceType_0065c7f8[14] = {
     -1, -1, -1, 0, 1, -1, -1, 2, 3, 4, -1, 5, 6, 7,
 };
 
+// Per-resourceType04 horizontal source offset in TNavyRoster's 0xdba bitmap atlas.
+// GLOBAL: IMPERIALISM 0x006985e8
+const short g_ShipRosterAtlasHorizontalOffsetByResourceType_006985E8[14] = {
+    0, 0, 0, 0, 160, 0, 0, 320, 480, 640, 0, 800, 960, 1120,
+};
+
 // GLOBAL: IMPERIALISM 0x006a590c
 TInfoBarText* g_pCursorControlPanel = nullptr;
 

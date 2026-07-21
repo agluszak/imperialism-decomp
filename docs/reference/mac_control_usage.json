@@ -3024,7 +3024,15 @@
       "nodes": [
         "MapView.rsrc:9478@0x0342"
       ],
-      "original_modules": [],
+      "original_modules": [
+        {
+          "functions": [
+            "0x00564dc0"
+          ],
+          "module": "UOceanViews.cpp",
+          "status": "confirmed"
+        }
+      ],
       "parent_classes": {
         "TBook": 1
       },
@@ -8520,6 +8528,19 @@
           "module": "UMapDlog.cpp",
           "resources": [
             "MapView.rsrc:2013"
+          ],
+          "status": "candidate"
+        },
+        {
+          "classes": [
+            "TNavyRoster"
+          ],
+          "events": [
+            "0x2506"
+          ],
+          "module": "UOceanViews.cpp",
+          "resources": [
+            "MapView.rsrc:9478"
           ],
           "status": "candidate"
         },
@@ -156199,7 +156220,15 @@
         "MapView.rsrc:9478@0x0391",
         "MapView.rsrc:9478@0x0401"
       ],
-      "original_modules": []
+      "original_modules": [
+        {
+          "classes": [
+            "TNavyRoster"
+          ],
+          "module": "UOceanViews.cpp",
+          "status": "candidate"
+        }
+      ]
     },
     "Minister.rsrc:8900": {
       "name": "Foreign Minister Dlog",
@@ -158613,6 +158642,25 @@
         "owner_class": "TOcean",
         "recovered_source": "src/game/TOcean.cpp"
       },
+      "0x00564dc0": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "definition_source": "src/game/global_data_tables.cpp",
+                "kind": "source_path_global_reference",
+                "path": "D:\\Ambit\\Cross\\UOceanViews.cpp",
+                "symbol": "s_SourcePathUOceanViews_00698650"
+              }
+            ],
+            "module": "UOceanViews.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "TNavyRoster::StuffValues",
+        "owner_class": "TNavyRoster",
+        "recovered_source": "src/game/TNavyRoster.cpp"
+      },
       "0x00565a40": {
         "modules": [
           {
@@ -159346,7 +159394,26 @@
             "status": "confirmed"
           }
         ],
-        "name": "TViewMgr::HandleTurnEventDialogFactorySlotF0",
+        "name": "TViewMgr::MakeNavyRosterDialog",
+        "owner_class": "TViewMgr",
+        "recovered_source": "src/game/TViewMgr.cpp"
+      },
+      "0x005dd450": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "definition_source": "src/game/global_data_tables.cpp",
+                "kind": "source_path_global_reference",
+                "path": "D:\\Ambit\\Cross\\UViewMgr.more.cpp",
+                "symbol": "s_SourcePathUViewMgrMore_0069B740"
+              }
+            ],
+            "module": "UViewMgr.more.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "TViewMgr::ShowNavyRosterDialogAndApplySelection",
         "owner_class": "TViewMgr",
         "recovered_source": "src/game/TViewMgr.cpp"
       },
@@ -159707,8 +159774,11 @@
         ]
       },
       "UOceanViews.cpp": {
-        "classes": [],
+        "classes": [
+          "TNavyRoster"
+        ],
         "functions": [
+          "0x00564dc0",
           "0x00565a40"
         ]
       },
@@ -159815,6 +159885,7 @@
           "0x005dd180",
           "0x005dd220",
           "0x005dd340",
+          "0x005dd450",
           "0x005dd770",
           "0x005dd900",
           "0x005dda30",
@@ -159830,13 +159901,13 @@
   "summary": {
     "ambiguous_tags": 153,
     "classes": 162,
-    "classes_with_source_module_evidence": 14,
+    "classes_with_source_module_evidence": 15,
     "declared_classes": 152,
     "factories_with_source_module_candidates": 9,
-    "functions_with_source_module_evidence": 102,
+    "functions_with_source_module_evidence": 104,
     "nodes": 3263,
     "screens": 121,
-    "screens_with_source_module_candidates": 25,
+    "screens_with_source_module_candidates": 26,
     "source_modules": 33,
     "tags": 813
   },

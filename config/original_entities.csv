@@ -6104,8 +6104,8 @@ address|name|symbol|size|type|prototype|provenance
 5dd0a0|TViewMgr::ExecuteUiFactoryModalDialogAndReturnResultTag||169|function|undefined ExecuteUiFactoryModalDialogAndReturnResultTag()|
 5dd180|TViewMgr::HandleGlobalMapNationContextSelection||120|function|undefined HandleGlobalMapNationContextSelection()|
 5dd220|TViewMgr::HandleTurnEventDialogFactorySlotE4||218|function|undefined HandleTurnEventDialogFactorySlotE4(int stringCode)|
-5dd340|TViewMgr::HandleTurnEventDialogFactorySlotF0||203|function|undefined HandleTurnEventDialogFactorySlotF0()|
-5dd450|RunMapOrderPageSelectionDialogAndApplyResult||635|function|undefined RunMapOrderPageSelectionDialogAndApplyResult()|
+5dd340|TViewMgr::MakeNavyRosterDialog||203|function|TNavyRoster * MakeNavyRosterDialog(TTaskForce * activeMapOrderEntry)|macos-name-oracle:MakeNavyRosterDialog(TTaskForce*)
+5dd450|TViewMgr::ShowNavyRosterDialogAndApplySelection||635|function|void ShowNavyRosterDialogAndApplySelection()|
 5dd770|TViewMgr::HandleTurnEventDialogFactorySlotE8||315|function|undefined HandleTurnEventDialogFactorySlotE8()|
 5dd900|TLineData::HandleTurnEventDialogFactorySlotEC||239|function|undefined HandleTurnEventDialogFactorySlotEC()|
 5dda30|TViewMgr::ShowArmyRosterDialogAndActivateProvinceSelection||587|function|void ShowArmyRosterDialogAndActivateProvinceSelection()|

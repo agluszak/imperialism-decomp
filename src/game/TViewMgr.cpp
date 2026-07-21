@@ -48,6 +48,9 @@
 #include "game/TApplication.h"
 #include "game/TSuperCivRoster.h"
 #include "game/TSuperArmyRoster.h"
+#include "game/TSuperNavyRoster.h"
+#include "game/TNavyRoster.h"
+#include "game/TTaskForce.h"
 #include "game/TTacticalBattleView.h"
 #include "game/TScrollView.h" // nation-info modal overflow scroll wrapper
 #include "game/TStaticText.h"
@@ -2042,24 +2045,19 @@ void TViewMgr::HandleTurnEventDialogFactorySlotE4(int stringCode) {
 }
 
 // FUNCTION: IMPERIALISM 0x005dd340
-void TViewMgr::HandleTurnEventDialogFactorySlotF0(TTaskForce* activeMapOrderEntry) {
+TNavyRoster* TViewMgr::MakeNavyRosterDialog(TTaskForce* activeMapOrderEntry) {
   TurnEventDialogNode* node = static_cast<TurnEventDialogNode*>(
       g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(0x2506));
   if (node == nullptr) {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgrMore_0069B740, 0x167);
   }
-  TView* page = node->ResolveControlByTag(0x70616765); // 'page'
+  TNavyRoster* page = static_cast<TNavyRoster*>(node->ResolveControlByTag(0x70616765)); // 'page'
   if (page == nullptr) {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgrMore_0069B740, 0x169);
   }
-  // Ground truth (byte 0x1b8) rebuilds 'page's roster around activeMapOrderEntry, but the
-  // concrete roster subclass installed as 'page' here isn't recovered yet (same gap as
-  // HandleTurnEventDialogFactorySlotEC above) -- left undone rather than fake the cast
-  // (Hard Rule 12).
-  (void)page;
-  (void)activeMapOrderEntry;
+  page->StuffValues(activeMapOrderEntry);
 
   POINT placement;
   ComputeTurnEventDialogPlacementByCode(node, &placement);
@@ -2067,6 +2065,62 @@ void TViewMgr::HandleTurnEventDialogFactorySlotF0(TTaskForce* activeMapOrderEntr
   node->RefreshTurnEventDialog();
   node->Close();
   node->Free();
+  return page;
+}
+
+// Build the Mac-evidenced Navy Roster screen around a TSuperNavyRoster page. Row clicks
+// return either a loose ship's zone or an existing task force; apply that choice to the
+// strategic map only after the modal dialog has released its view tree.
+// FUNCTION: IMPERIALISM 0x005dd450
+void TViewMgr::ShowNavyRosterDialogAndApplySelection() {
+  TurnEventDialogNode* node = static_cast<TurnEventDialogNode*>(
+      g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(0x2506));
+  if (node == 0) {
+    MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgrMore_0069B740, 0x183);
+  }
+  TControl* page = static_cast<TControl*>(node->ResolveControlByTag(0x70616765)); // 'page'
+  if (page == 0) {
+    MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgrMore_0069B740, 0x187);
+  }
+  TView* pageOwner = page->ownerContext;
+  page->Free();
+
+  TSuperNavyRoster* roster = ::new TSuperNavyRoster();
+  int rosterOffset[2] = {0x1ca, 0x136};
+  int rosterSize[2] = {0xd, 0x2e};
+  roster->PopulateNavyOrderPageEntriesByMapContext(pageOwner, rosterOffset, rosterSize);
+  roster->controlTag = 0x70616765; // 'page'
+
+  TStaticText* textEntry = ::new TStaticText();
+  int textOffset[2] = {0x4d, 0x11};
+  int textSize[2] = {0x80, 0x12};
+  textEntry->InitializeTextEntryBaseAndOptionalStringResource(
+      static_cast<TControl*>(pageOwner), textOffset, textSize, 5, 5, 0x2746, 0xc);
+  ApplyControlThemeStyleAndOptionalCaption(textEntry, 0, 0xe, 0x2b6a, -2, 0);
+
+  POINT placement;
+  ComputeTurnEventDialogPlacementByCode(node, &placement);
+  node->CaptureLayoutF0(reinterpret_cast<int*>(&placement), 0);
+  node->ShowTurnEventDialog(1);
+  node->RefreshTurnEventDialog();
+  TZone* selectedZone = roster->selectedZone84;
+  TTaskForce* selectedTaskForce = roster->selectedTaskForce88;
+  node->Close();
+  node->Free();
+
+  if (selectedTaskForce != 0) {
+    if (static_cast<short>(selectedTaskForce->attachment) == 0) {
+      mapUberPictureF0->SetActiveMapOrderEntry(selectedTaskForce->contextAnchor);
+    } else {
+      mapUberPictureF0->RefreshMapOrderEntryPanel(0);
+      mapUberPictureF0->SetMapInteractionMode(3);
+      mapUberPictureF0->NoticeTile(selectedTaskForce->tiebreak_strength);
+    }
+  } else if (selectedZone != 0) {
+    mapUberPictureF0->SetActiveMapOrderEntry(selectedZone);
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x005dd770
