@@ -46,7 +46,15 @@ DEFAULT_CLASSES = {
 }
 
 CLASS_ALIASES = {
+    "TBookView": "TBook",
+    "TDefenseNotesView": "TBook",
+    "TExportsView": "TBook",
+    "TForeignNotesView": "TBook",
+    "TInteriorNotesView": "TBook",
+    "TMerchantMarineView": "TBook",
+    "TMiniDealBookView": "TBook",
     "TToolbarCluster": "TToolBarCluster",
+    "TTreasuriesView": "TBook",
     "TMyWindow": "TWindow",
 }
 

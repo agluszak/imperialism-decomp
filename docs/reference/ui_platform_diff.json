@@ -48193,6 +48193,1041 @@
     },
     "0x0044a810": {
       "cases": {
+        "0x22e2": {
+          "classification": "functional_parity_extension",
+          "manifest_evidence": "Windows request 0x004f314e; functional-parity case absent from original builder",
+          "nodes": {
+            "0x0004": {
+              "classification": "same_semantics",
+              "delta": null,
+              "generated_lines": [
+                19,
+                26
+              ],
+              "mac_source": "Minister.rsrc:8930 node 0x0004",
+              "semantic": {
+                "child_hit_test": 1,
+                "class_name": "TFloatWindow",
+                "control_value": 99,
+                "enabled": 1,
+                "family": {
+                  "cluster_value": null,
+                  "content_insets": null,
+                  "control_state": null,
+                  "frame_style": null,
+                  "max_chars": null,
+                  "number": null,
+                  "picture_id": null,
+                  "style": null,
+                  "text": null,
+                  "window": {
+                    "captioned_frame": 0,
+                    "color": {
+                      "background": 538976288,
+                      "behavior_flag": 1,
+                      "foreground": 538976288,
+                      "triplet_flag": 1
+                    },
+                    "flags": 8,
+                    "resource_6c": 0,
+                    "resource_6e": 1,
+                    "resource_6f": 1,
+                    "resource_71": 1,
+                    "style_type": 2,
+                    "topmost": 0
+                  }
+                },
+                "geometry": [
+                  5,
+                  76,
+                  334,
+                  267
+                ],
+                "input_gate": 1,
+                "node_id": "0x0004",
+                "parent_id": null,
+                "state": 1,
+                "tag": "WIND",
+                "type_code": "fwnd"
+              },
+              "tag": "WIND",
+              "windows_binary_evidence": "not encoded; Mac semantic resource is canonical for functional parity"
+            },
+            "0x0080": {
+              "classification": "expected_windows_class_substitution",
+              "delta": {
+                "evidence": "Minister.rsrc:8930 DLOG has the TBook serialized pict shape and lcor/rcor children; Windows requests event 0x22e2 and has TBook RTTI but no TForeignNotesView RTTI",
+                "field": "class",
+                "mac": "TForeignNotesView",
+                "reason": "The Windows port uses the shared TBook pager for the foreign-notes shell instead of the resource-only Mac class name.",
+                "windows": "TBook"
+              },
+              "generated_lines": [
+                27,
+                34
+              ],
+              "mac_source": "Minister.rsrc:8930 node 0x0080",
+              "semantic": {
+                "child_hit_test": 1,
+                "class_name": "TBook",
+                "control_value": 0,
+                "enabled": 1,
+                "family": {
+                  "cluster_value": null,
+                  "content_insets": [
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "control_state": null,
+                  "frame_style": 10,
+                  "max_chars": null,
+                  "number": null,
+                  "picture_id": 8932,
+                  "style": null,
+                  "text": null,
+                  "window": null
+                },
+                "geometry": [
+                  0,
+                  0,
+                  334,
+                  267
+                ],
+                "input_gate": 1,
+                "node_id": "0x0080",
+                "parent_id": "0x0004",
+                "state": 1,
+                "tag": "DLOG",
+                "type_code": "pict"
+              },
+              "tag": "DLOG",
+              "windows_binary_evidence": "not encoded; Mac semantic resource is canonical for functional parity"
+            },
+            "0x00f1": {
+              "classification": "same_semantics",
+              "delta": null,
+              "generated_lines": [
+                35,
+                42
+              ],
+              "mac_source": "Minister.rsrc:8930 node 0x00f1",
+              "semantic": {
+                "child_hit_test": 1,
+                "class_name": "TColorKeyPicture",
+                "control_value": 0,
+                "enabled": 1,
+                "family": {
+                  "cluster_value": null,
+                  "content_insets": [
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "control_state": null,
+                  "frame_style": 10,
+                  "max_chars": null,
+                  "number": null,
+                  "picture_id": 8820,
+                  "style": null,
+                  "text": null,
+                  "window": null
+                },
+                "geometry": [
+                  8,
+                  236,
+                  29,
+                  26
+                ],
+                "input_gate": 1,
+                "node_id": "0x00f1",
+                "parent_id": "0x0080",
+                "state": 1,
+                "tag": "lcor",
+                "type_code": "pict"
+              },
+              "tag": "lcor",
+              "windows_binary_evidence": "not encoded; Mac semantic resource is canonical for functional parity"
+            },
+            "0x0161": {
+              "classification": "same_semantics",
+              "delta": null,
+              "generated_lines": [
+                44,
+                51
+              ],
+              "mac_source": "Minister.rsrc:8930 node 0x0161",
+              "semantic": {
+                "child_hit_test": 1,
+                "class_name": "TColorKeyPicture",
+                "control_value": 0,
+                "enabled": 1,
+                "family": {
+                  "cluster_value": null,
+                  "content_insets": [
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "control_state": null,
+                  "frame_style": 10,
+                  "max_chars": null,
+                  "number": null,
+                  "picture_id": 8821,
+                  "style": null,
+                  "text": null,
+                  "window": null
+                },
+                "geometry": [
+                  299,
+                  237,
+                  29,
+                  25
+                ],
+                "input_gate": 1,
+                "node_id": "0x0161",
+                "parent_id": "0x0080",
+                "state": 1,
+                "tag": "rcor",
+                "type_code": "pict"
+              },
+              "tag": "rcor",
+              "windows_binary_evidence": "not encoded; Mac semantic resource is canonical for functional parity"
+            }
+          },
+          "source": "Minister.rsrc:8930"
+        },
+        "0x22ec": {
+          "classification": "functional_parity_extension",
+          "manifest_evidence": "Windows request 0x004f312c; functional-parity case absent from original builder",
+          "nodes": {
+            "0x0004": {
+              "classification": "same_semantics",
+              "delta": null,
+              "generated_lines": [
+                59,
+                66
+              ],
+              "mac_source": "Minister.rsrc:8940 node 0x0004",
+              "semantic": {
+                "child_hit_test": 1,
+                "class_name": "TFloatWindow",
+                "control_value": 99,
+                "enabled": 1,
+                "family": {
+                  "cluster_value": null,
+                  "content_insets": null,
+                  "control_state": null,
+                  "frame_style": null,
+                  "max_chars": null,
+                  "number": null,
+                  "picture_id": null,
+                  "style": null,
+                  "text": null,
+                  "window": {
+                    "captioned_frame": 0,
+                    "color": {
+                      "background": 538976288,
+                      "behavior_flag": 1,
+                      "foreground": 538976288,
+                      "triplet_flag": 1
+                    },
+                    "flags": 8,
+                    "resource_6c": 0,
+                    "resource_6e": 1,
+                    "resource_6f": 1,
+                    "resource_71": 1,
+                    "style_type": 2,
+                    "topmost": 0
+                  }
+                },
+                "geometry": [
+                  5,
+                  76,
+                  334,
+                  267
+                ],
+                "input_gate": 1,
+                "node_id": "0x0004",
+                "parent_id": null,
+                "state": 1,
+                "tag": "WIND",
+                "type_code": "fwnd"
+              },
+              "tag": "WIND",
+              "windows_binary_evidence": "not encoded; Mac semantic resource is canonical for functional parity"
+            },
+            "0x0080": {
+              "classification": "expected_windows_class_substitution",
+              "delta": {
+                "evidence": "Minister.rsrc:8940 DLOG has the TBook serialized pict shape and lcor/rcor children; Windows requests event 0x22ec and has TBook RTTI but no TMerchantMarineView RTTI",
+                "field": "class",
+                "mac": "TMerchantMarineView",
+                "reason": "The Windows port uses the shared TBook pager for the merchant-marine shell instead of the resource-only Mac class name.",
+                "windows": "TBook"
+              },
+              "generated_lines": [
+                67,
+                74
+              ],
+              "mac_source": "Minister.rsrc:8940 node 0x0080",
+              "semantic": {
+                "child_hit_test": 1,
+                "class_name": "TBook",
+                "control_value": 0,
+                "enabled": 1,
+                "family": {
+                  "cluster_value": null,
+                  "content_insets": [
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "control_state": null,
+                  "frame_style": 10,
+                  "max_chars": null,
+                  "number": null,
+                  "picture_id": 8940,
+                  "style": null,
+                  "text": null,
+                  "window": null
+                },
+                "geometry": [
+                  0,
+                  0,
+                  334,
+                  267
+                ],
+                "input_gate": 1,
+                "node_id": "0x0080",
+                "parent_id": "0x0004",
+                "state": 1,
+                "tag": "DLOG",
+                "type_code": "pict"
+              },
+              "tag": "DLOG",
+              "windows_binary_evidence": "not encoded; Mac semantic resource is canonical for functional parity"
+            },
+            "0x00f3": {
+              "classification": "same_semantics",
+              "delta": null,
+              "generated_lines": [
+                75,
+                82
+              ],
+              "mac_source": "Minister.rsrc:8940 node 0x00f3",
+              "semantic": {
+                "child_hit_test": 1,
+                "class_name": "TColorKeyPicture",
+                "control_value": 0,
+                "enabled": 1,
+                "family": {
+                  "cluster_value": null,
+                  "content_insets": [
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "control_state": null,
+                  "frame_style": 10,
+                  "max_chars": null,
+                  "number": null,
+                  "picture_id": 8820,
+                  "style": null,
+                  "text": null,
+                  "window": null
+                },
+                "geometry": [
+                  8,
+                  236,
+                  29,
+                  26
+                ],
+                "input_gate": 1,
+                "node_id": "0x00f3",
+                "parent_id": "0x0080",
+                "state": 1,
+                "tag": "lcor",
+                "type_code": "pict"
+              },
+              "tag": "lcor",
+              "windows_binary_evidence": "not encoded; Mac semantic resource is canonical for functional parity"
+            },
+            "0x0163": {
+              "classification": "same_semantics",
+              "delta": null,
+              "generated_lines": [
+                84,
+                91
+              ],
+              "mac_source": "Minister.rsrc:8940 node 0x0163",
+              "semantic": {
+                "child_hit_test": 1,
+                "class_name": "TColorKeyPicture",
+                "control_value": 0,
+                "enabled": 1,
+                "family": {
+                  "cluster_value": null,
+                  "content_insets": [
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "control_state": null,
+                  "frame_style": 10,
+                  "max_chars": null,
+                  "number": null,
+                  "picture_id": 8821,
+                  "style": null,
+                  "text": null,
+                  "window": null
+                },
+                "geometry": [
+                  299,
+                  237,
+                  29,
+                  25
+                ],
+                "input_gate": 1,
+                "node_id": "0x0163",
+                "parent_id": "0x0080",
+                "state": 1,
+                "tag": "rcor",
+                "type_code": "pict"
+              },
+              "tag": "rcor",
+              "windows_binary_evidence": "not encoded; Mac semantic resource is canonical for functional parity"
+            }
+          },
+          "source": "Minister.rsrc:8940"
+        },
+        "0x22f6": {
+          "classification": "functional_parity_extension",
+          "manifest_evidence": "Windows request 0x004f30e5; functional-parity case absent from original builder",
+          "nodes": {
+            "0x0004": {
+              "classification": "same_semantics",
+              "delta": null,
+              "generated_lines": [
+                99,
+                106
+              ],
+              "mac_source": "Minister.rsrc:8950 node 0x0004",
+              "semantic": {
+                "child_hit_test": 1,
+                "class_name": "TFloatWindow",
+                "control_value": 99,
+                "enabled": 1,
+                "family": {
+                  "cluster_value": null,
+                  "content_insets": null,
+                  "control_state": null,
+                  "frame_style": null,
+                  "max_chars": null,
+                  "number": null,
+                  "picture_id": null,
+                  "style": null,
+                  "text": null,
+                  "window": {
+                    "captioned_frame": 0,
+                    "color": {
+                      "background": 538976288,
+                      "behavior_flag": 1,
+                      "foreground": 538976288,
+                      "triplet_flag": 1
+                    },
+                    "flags": 8,
+                    "resource_6c": 0,
+                    "resource_6e": 1,
+                    "resource_6f": 1,
+                    "resource_71": 1,
+                    "style_type": 2,
+                    "topmost": 0
+                  }
+                },
+                "geometry": [
+                  5,
+                  76,
+                  334,
+                  267
+                ],
+                "input_gate": 1,
+                "node_id": "0x0004",
+                "parent_id": null,
+                "state": 1,
+                "tag": "WIND",
+                "type_code": "fwnd"
+              },
+              "tag": "WIND",
+              "windows_binary_evidence": "not encoded; Mac semantic resource is canonical for functional parity"
+            },
+            "0x0080": {
+              "classification": "expected_windows_class_substitution",
+              "delta": {
+                "evidence": "Minister.rsrc:8950 DLOG has the TBook serialized pict shape and lcor/rcor children; Windows requests event 0x22f6 and has TBook RTTI but no TMiniDealBookView RTTI",
+                "field": "class",
+                "mac": "TMiniDealBookView",
+                "reason": "The Windows port uses the shared TBook pager for the mini-deal shell instead of the resource-only Mac class name.",
+                "windows": "TBook"
+              },
+              "generated_lines": [
+                107,
+                114
+              ],
+              "mac_source": "Minister.rsrc:8950 node 0x0080",
+              "semantic": {
+                "child_hit_test": 1,
+                "class_name": "TBook",
+                "control_value": 0,
+                "enabled": 1,
+                "family": {
+                  "cluster_value": null,
+                  "content_insets": [
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "control_state": null,
+                  "frame_style": 10,
+                  "max_chars": null,
+                  "number": null,
+                  "picture_id": 8950,
+                  "style": null,
+                  "text": null,
+                  "window": null
+                },
+                "geometry": [
+                  0,
+                  0,
+                  334,
+                  267
+                ],
+                "input_gate": 1,
+                "node_id": "0x0080",
+                "parent_id": "0x0004",
+                "state": 1,
+                "tag": "DLOG",
+                "type_code": "pict"
+              },
+              "tag": "DLOG",
+              "windows_binary_evidence": "not encoded; Mac semantic resource is canonical for functional parity"
+            },
+            "0x00f1": {
+              "classification": "same_semantics",
+              "delta": null,
+              "generated_lines": [
+                115,
+                122
+              ],
+              "mac_source": "Minister.rsrc:8950 node 0x00f1",
+              "semantic": {
+                "child_hit_test": 1,
+                "class_name": "TColorKeyPicture",
+                "control_value": 0,
+                "enabled": 1,
+                "family": {
+                  "cluster_value": null,
+                  "content_insets": [
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "control_state": null,
+                  "frame_style": 10,
+                  "max_chars": null,
+                  "number": null,
+                  "picture_id": 8820,
+                  "style": null,
+                  "text": null,
+                  "window": null
+                },
+                "geometry": [
+                  8,
+                  236,
+                  29,
+                  26
+                ],
+                "input_gate": 1,
+                "node_id": "0x00f1",
+                "parent_id": "0x0080",
+                "state": 1,
+                "tag": "lcor",
+                "type_code": "pict"
+              },
+              "tag": "lcor",
+              "windows_binary_evidence": "not encoded; Mac semantic resource is canonical for functional parity"
+            },
+            "0x0161": {
+              "classification": "same_semantics",
+              "delta": null,
+              "generated_lines": [
+                124,
+                131
+              ],
+              "mac_source": "Minister.rsrc:8950 node 0x0161",
+              "semantic": {
+                "child_hit_test": 1,
+                "class_name": "TColorKeyPicture",
+                "control_value": 0,
+                "enabled": 1,
+                "family": {
+                  "cluster_value": null,
+                  "content_insets": [
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "control_state": null,
+                  "frame_style": 10,
+                  "max_chars": null,
+                  "number": null,
+                  "picture_id": 8821,
+                  "style": null,
+                  "text": null,
+                  "window": null
+                },
+                "geometry": [
+                  299,
+                  237,
+                  29,
+                  25
+                ],
+                "input_gate": 1,
+                "node_id": "0x0161",
+                "parent_id": "0x0080",
+                "state": 1,
+                "tag": "rcor",
+                "type_code": "pict"
+              },
+              "tag": "rcor",
+              "windows_binary_evidence": "not encoded; Mac semantic resource is canonical for functional parity"
+            }
+          },
+          "source": "Minister.rsrc:8950"
+        },
+        "0x2300": {
+          "classification": "functional_parity_extension",
+          "manifest_evidence": "Windows request 0x004f30f9; functional-parity case absent from original builder",
+          "nodes": {
+            "0x0004": {
+              "classification": "same_semantics",
+              "delta": null,
+              "generated_lines": [
+                139,
+                146
+              ],
+              "mac_source": "Minister.rsrc:8960 node 0x0004",
+              "semantic": {
+                "child_hit_test": 1,
+                "class_name": "TFloatWindow",
+                "control_value": 99,
+                "enabled": 1,
+                "family": {
+                  "cluster_value": null,
+                  "content_insets": null,
+                  "control_state": null,
+                  "frame_style": null,
+                  "max_chars": null,
+                  "number": null,
+                  "picture_id": null,
+                  "style": null,
+                  "text": null,
+                  "window": {
+                    "captioned_frame": 0,
+                    "color": {
+                      "background": 538976288,
+                      "behavior_flag": 1,
+                      "foreground": 538976288,
+                      "triplet_flag": 1
+                    },
+                    "flags": 8,
+                    "resource_6c": 0,
+                    "resource_6e": 1,
+                    "resource_6f": 1,
+                    "resource_71": 1,
+                    "style_type": 2,
+                    "topmost": 0
+                  }
+                },
+                "geometry": [
+                  5,
+                  76,
+                  334,
+                  267
+                ],
+                "input_gate": 1,
+                "node_id": "0x0004",
+                "parent_id": null,
+                "state": 1,
+                "tag": "WIND",
+                "type_code": "fwnd"
+              },
+              "tag": "WIND",
+              "windows_binary_evidence": "not encoded; Mac semantic resource is canonical for functional parity"
+            },
+            "0x0080": {
+              "classification": "expected_windows_class_substitution",
+              "delta": {
+                "evidence": "Minister.rsrc:8960 DLOG has the TBook serialized pict shape and lcor/rcor children; Windows requests event 0x2300 and has TBook RTTI but no TExportsView RTTI",
+                "field": "class",
+                "mac": "TExportsView",
+                "reason": "The Windows port uses the shared TBook pager for the exports shell instead of the resource-only Mac class name.",
+                "windows": "TBook"
+              },
+              "generated_lines": [
+                147,
+                154
+              ],
+              "mac_source": "Minister.rsrc:8960 node 0x0080",
+              "semantic": {
+                "child_hit_test": 1,
+                "class_name": "TBook",
+                "control_value": 0,
+                "enabled": 1,
+                "family": {
+                  "cluster_value": null,
+                  "content_insets": [
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "control_state": null,
+                  "frame_style": 10,
+                  "max_chars": null,
+                  "number": null,
+                  "picture_id": 8960,
+                  "style": null,
+                  "text": null,
+                  "window": null
+                },
+                "geometry": [
+                  0,
+                  0,
+                  334,
+                  267
+                ],
+                "input_gate": 1,
+                "node_id": "0x0080",
+                "parent_id": "0x0004",
+                "state": 1,
+                "tag": "DLOG",
+                "type_code": "pict"
+              },
+              "tag": "DLOG",
+              "windows_binary_evidence": "not encoded; Mac semantic resource is canonical for functional parity"
+            },
+            "0x00ec": {
+              "classification": "same_semantics",
+              "delta": null,
+              "generated_lines": [
+                155,
+                162
+              ],
+              "mac_source": "Minister.rsrc:8960 node 0x00ec",
+              "semantic": {
+                "child_hit_test": 1,
+                "class_name": "TColorKeyPicture",
+                "control_value": 0,
+                "enabled": 1,
+                "family": {
+                  "cluster_value": null,
+                  "content_insets": [
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "control_state": null,
+                  "frame_style": 10,
+                  "max_chars": null,
+                  "number": null,
+                  "picture_id": 8820,
+                  "style": null,
+                  "text": null,
+                  "window": null
+                },
+                "geometry": [
+                  8,
+                  235,
+                  29,
+                  26
+                ],
+                "input_gate": 1,
+                "node_id": "0x00ec",
+                "parent_id": "0x0080",
+                "state": 1,
+                "tag": "lcor",
+                "type_code": "pict"
+              },
+              "tag": "lcor",
+              "windows_binary_evidence": "not encoded; Mac semantic resource is canonical for functional parity"
+            },
+            "0x015c": {
+              "classification": "same_semantics",
+              "delta": null,
+              "generated_lines": [
+                164,
+                171
+              ],
+              "mac_source": "Minister.rsrc:8960 node 0x015c",
+              "semantic": {
+                "child_hit_test": 1,
+                "class_name": "TColorKeyPicture",
+                "control_value": 0,
+                "enabled": 1,
+                "family": {
+                  "cluster_value": null,
+                  "content_insets": [
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "control_state": null,
+                  "frame_style": 10,
+                  "max_chars": null,
+                  "number": null,
+                  "picture_id": 8821,
+                  "style": null,
+                  "text": null,
+                  "window": null
+                },
+                "geometry": [
+                  299,
+                  237,
+                  29,
+                  25
+                ],
+                "input_gate": 1,
+                "node_id": "0x015c",
+                "parent_id": "0x0080",
+                "state": 1,
+                "tag": "rcor",
+                "type_code": "pict"
+              },
+              "tag": "rcor",
+              "windows_binary_evidence": "not encoded; Mac semantic resource is canonical for functional parity"
+            }
+          },
+          "source": "Minister.rsrc:8960"
+        },
+        "0x231e": {
+          "classification": "functional_parity_extension",
+          "manifest_evidence": "Windows request 0x004f3162; functional-parity case absent from original builder",
+          "nodes": {
+            "0x0004": {
+              "classification": "same_semantics",
+              "delta": null,
+              "generated_lines": [
+                179,
+                186
+              ],
+              "mac_source": "Minister.rsrc:8990 node 0x0004",
+              "semantic": {
+                "child_hit_test": 1,
+                "class_name": "TFloatWindow",
+                "control_value": 99,
+                "enabled": 1,
+                "family": {
+                  "cluster_value": null,
+                  "content_insets": null,
+                  "control_state": null,
+                  "frame_style": null,
+                  "max_chars": null,
+                  "number": null,
+                  "picture_id": null,
+                  "style": null,
+                  "text": null,
+                  "window": {
+                    "captioned_frame": 0,
+                    "color": {
+                      "background": 538976288,
+                      "behavior_flag": 1,
+                      "foreground": 538976288,
+                      "triplet_flag": 1
+                    },
+                    "flags": 8,
+                    "resource_6c": 0,
+                    "resource_6e": 1,
+                    "resource_6f": 1,
+                    "resource_71": 1,
+                    "style_type": 2,
+                    "topmost": 0
+                  }
+                },
+                "geometry": [
+                  5,
+                  76,
+                  334,
+                  267
+                ],
+                "input_gate": 1,
+                "node_id": "0x0004",
+                "parent_id": null,
+                "state": 1,
+                "tag": "WIND",
+                "type_code": "fwnd"
+              },
+              "tag": "WIND",
+              "windows_binary_evidence": "not encoded; Mac semantic resource is canonical for functional parity"
+            },
+            "0x0080": {
+              "classification": "expected_windows_class_substitution",
+              "delta": {
+                "evidence": "Minister.rsrc:8990 DLOG has the TBook serialized pict shape and lcor/rcor children; TBook is present in Windows RTTI while TBookView is absent from both code symbol corpora",
+                "field": "class",
+                "mac": "TBookView",
+                "reason": "The Windows port uses the shared TBook pager for the price-history shell instead of the resource-only Mac class name.",
+                "windows": "TBook"
+              },
+              "generated_lines": [
+                187,
+                194
+              ],
+              "mac_source": "Minister.rsrc:8990 node 0x0080",
+              "semantic": {
+                "child_hit_test": 1,
+                "class_name": "TBook",
+                "control_value": 0,
+                "enabled": 1,
+                "family": {
+                  "cluster_value": null,
+                  "content_insets": [
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "control_state": null,
+                  "frame_style": 10,
+                  "max_chars": null,
+                  "number": null,
+                  "picture_id": 8990,
+                  "style": null,
+                  "text": null,
+                  "window": null
+                },
+                "geometry": [
+                  0,
+                  0,
+                  334,
+                  267
+                ],
+                "input_gate": 1,
+                "node_id": "0x0080",
+                "parent_id": "0x0004",
+                "state": 1,
+                "tag": "DLOG",
+                "type_code": "pict"
+              },
+              "tag": "DLOG",
+              "windows_binary_evidence": "not encoded; Mac semantic resource is canonical for functional parity"
+            },
+            "0x00e9": {
+              "classification": "same_semantics",
+              "delta": null,
+              "generated_lines": [
+                195,
+                202
+              ],
+              "mac_source": "Minister.rsrc:8990 node 0x00e9",
+              "semantic": {
+                "child_hit_test": 1,
+                "class_name": "TColorKeyPicture",
+                "control_value": 0,
+                "enabled": 1,
+                "family": {
+                  "cluster_value": null,
+                  "content_insets": [
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "control_state": null,
+                  "frame_style": 10,
+                  "max_chars": null,
+                  "number": null,
+                  "picture_id": 8820,
+                  "style": null,
+                  "text": null,
+                  "window": null
+                },
+                "geometry": [
+                  8,
+                  235,
+                  29,
+                  26
+                ],
+                "input_gate": 1,
+                "node_id": "0x00e9",
+                "parent_id": "0x0080",
+                "state": 1,
+                "tag": "lcor",
+                "type_code": "pict"
+              },
+              "tag": "lcor",
+              "windows_binary_evidence": "not encoded; Mac semantic resource is canonical for functional parity"
+            },
+            "0x0159": {
+              "classification": "same_semantics",
+              "delta": null,
+              "generated_lines": [
+                204,
+                211
+              ],
+              "mac_source": "Minister.rsrc:8990 node 0x0159",
+              "semantic": {
+                "child_hit_test": 1,
+                "class_name": "TColorKeyPicture",
+                "control_value": 0,
+                "enabled": 1,
+                "family": {
+                  "cluster_value": null,
+                  "content_insets": [
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "control_state": null,
+                  "frame_style": 10,
+                  "max_chars": null,
+                  "number": null,
+                  "picture_id": 8821,
+                  "style": null,
+                  "text": null,
+                  "window": null
+                },
+                "geometry": [
+                  299,
+                  237,
+                  29,
+                  25
+                ],
+                "input_gate": 1,
+                "node_id": "0x0159",
+                "parent_id": "0x0080",
+                "state": 1,
+                "tag": "rcor",
+                "type_code": "pict"
+              },
+              "tag": "rcor",
+              "windows_binary_evidence": "not encoded; Mac semantic resource is canonical for functional parity"
+            }
+          },
+          "source": "Minister.rsrc:8990"
+        },
         "0x2508": {
           "classification": "mapped_mac_resource",
           "manifest_evidence": "",
@@ -48201,8 +49236,8 @@
               "classification": "same_semantics",
               "delta": null,
               "generated_lines": [
-                16,
-                23
+                218,
+                225
               ],
               "mac_source": "Minister.rsrc:9480 node 0x0004",
               "semantic": {
@@ -48257,8 +49292,8 @@
               "classification": "same_semantics",
               "delta": null,
               "generated_lines": [
-                24,
-                31
+                226,
+                233
               ],
               "mac_source": "Minister.rsrc:9480 node 0x0080",
               "semantic": {
@@ -48303,8 +49338,8 @@
               "classification": "same_semantics",
               "delta": null,
               "generated_lines": [
-                32,
-                39
+                234,
+                241
               ],
               "mac_source": "Minister.rsrc:9480 node 0x00e0",
               "semantic": {
@@ -48349,8 +49384,8 @@
               "classification": "same_semantics",
               "delta": null,
               "generated_lines": [
-                41,
-                48
+                243,
+                250
               ],
               "mac_source": "Minister.rsrc:9480 node 0x0154",
               "semantic": {
@@ -48395,8 +49430,8 @@
               "classification": "same_semantics",
               "delta": null,
               "generated_lines": [
-                50,
-                57
+                252,
+                259
               ],
               "mac_source": "Minister.rsrc:9480 node 0x01b4",
               "semantic": {
@@ -48441,8 +49476,8 @@
               "classification": "same_semantics",
               "delta": null,
               "generated_lines": [
-                59,
-                64
+                261,
+                266
               ],
               "mac_source": "Minister.rsrc:9480 node 0x0214",
               "semantic": {
@@ -48480,10 +49515,631 @@
             }
           },
           "source": "Minister.rsrc:9480"
+        },
+        "0x258a": {
+          "classification": "functional_parity_extension",
+          "manifest_evidence": "Windows request 0x004f345d; functional-parity case absent from original builder",
+          "nodes": {
+            "0x0004": {
+              "classification": "same_semantics",
+              "delta": null,
+              "generated_lines": [
+                274,
+                281
+              ],
+              "mac_source": "Minister.rsrc:9610 node 0x0004",
+              "semantic": {
+                "child_hit_test": 1,
+                "class_name": "TFloatWindow",
+                "control_value": 99,
+                "enabled": 1,
+                "family": {
+                  "cluster_value": null,
+                  "content_insets": null,
+                  "control_state": null,
+                  "frame_style": null,
+                  "max_chars": null,
+                  "number": null,
+                  "picture_id": null,
+                  "style": null,
+                  "text": null,
+                  "window": {
+                    "captioned_frame": 0,
+                    "color": {
+                      "background": 538976288,
+                      "behavior_flag": 1,
+                      "foreground": 538976288,
+                      "triplet_flag": 1
+                    },
+                    "flags": 8,
+                    "resource_6c": 0,
+                    "resource_6e": 1,
+                    "resource_6f": 1,
+                    "resource_71": 1,
+                    "style_type": 2,
+                    "topmost": 0
+                  }
+                },
+                "geometry": [
+                  5,
+                  76,
+                  334,
+                  267
+                ],
+                "input_gate": 1,
+                "node_id": "0x0004",
+                "parent_id": null,
+                "state": 1,
+                "tag": "WIND",
+                "type_code": "fwnd"
+              },
+              "tag": "WIND",
+              "windows_binary_evidence": "not encoded; Mac semantic resource is canonical for functional parity"
+            },
+            "0x0080": {
+              "classification": "expected_windows_class_substitution",
+              "delta": {
+                "evidence": "Minister.rsrc:9610 DLOG has the TBook serialized pict shape and lcor/rcor children; Windows requests event 0x258a and has TBook RTTI but no TDefenseNotesView RTTI",
+                "field": "class",
+                "mac": "TDefenseNotesView",
+                "reason": "The Windows port uses the shared TBook pager for the defense-notes shell instead of the resource-only Mac class name.",
+                "windows": "TBook"
+              },
+              "generated_lines": [
+                282,
+                289
+              ],
+              "mac_source": "Minister.rsrc:9610 node 0x0080",
+              "semantic": {
+                "child_hit_test": 1,
+                "class_name": "TBook",
+                "control_value": 0,
+                "enabled": 1,
+                "family": {
+                  "cluster_value": null,
+                  "content_insets": [
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "control_state": null,
+                  "frame_style": 10,
+                  "max_chars": null,
+                  "number": null,
+                  "picture_id": 8931,
+                  "style": null,
+                  "text": null,
+                  "window": null
+                },
+                "geometry": [
+                  0,
+                  0,
+                  334,
+                  267
+                ],
+                "input_gate": 1,
+                "node_id": "0x0080",
+                "parent_id": "0x0004",
+                "state": 1,
+                "tag": "DLOG",
+                "type_code": "pict"
+              },
+              "tag": "DLOG",
+              "windows_binary_evidence": "not encoded; Mac semantic resource is canonical for functional parity"
+            },
+            "0x00f1": {
+              "classification": "same_semantics",
+              "delta": null,
+              "generated_lines": [
+                290,
+                297
+              ],
+              "mac_source": "Minister.rsrc:9610 node 0x00f1",
+              "semantic": {
+                "child_hit_test": 1,
+                "class_name": "TColorKeyPicture",
+                "control_value": 0,
+                "enabled": 1,
+                "family": {
+                  "cluster_value": null,
+                  "content_insets": [
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "control_state": null,
+                  "frame_style": 10,
+                  "max_chars": null,
+                  "number": null,
+                  "picture_id": 8820,
+                  "style": null,
+                  "text": null,
+                  "window": null
+                },
+                "geometry": [
+                  8,
+                  235,
+                  29,
+                  26
+                ],
+                "input_gate": 1,
+                "node_id": "0x00f1",
+                "parent_id": "0x0080",
+                "state": 1,
+                "tag": "lcor",
+                "type_code": "pict"
+              },
+              "tag": "lcor",
+              "windows_binary_evidence": "not encoded; Mac semantic resource is canonical for functional parity"
+            },
+            "0x0161": {
+              "classification": "same_semantics",
+              "delta": null,
+              "generated_lines": [
+                299,
+                306
+              ],
+              "mac_source": "Minister.rsrc:9610 node 0x0161",
+              "semantic": {
+                "child_hit_test": 1,
+                "class_name": "TColorKeyPicture",
+                "control_value": 0,
+                "enabled": 1,
+                "family": {
+                  "cluster_value": null,
+                  "content_insets": [
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "control_state": null,
+                  "frame_style": 10,
+                  "max_chars": null,
+                  "number": null,
+                  "picture_id": 8821,
+                  "style": null,
+                  "text": null,
+                  "window": null
+                },
+                "geometry": [
+                  299,
+                  237,
+                  29,
+                  25
+                ],
+                "input_gate": 1,
+                "node_id": "0x0161",
+                "parent_id": "0x0080",
+                "state": 1,
+                "tag": "rcor",
+                "type_code": "pict"
+              },
+              "tag": "rcor",
+              "windows_binary_evidence": "not encoded; Mac semantic resource is canonical for functional parity"
+            }
+          },
+          "source": "Minister.rsrc:9610"
+        },
+        "0x25ee": {
+          "classification": "functional_parity_extension",
+          "manifest_evidence": "Windows request 0x004f37e8; functional-parity case absent from original builder",
+          "nodes": {
+            "0x0004": {
+              "classification": "same_semantics",
+              "delta": null,
+              "generated_lines": [
+                314,
+                321
+              ],
+              "mac_source": "Minister.rsrc:9710 node 0x0004",
+              "semantic": {
+                "child_hit_test": 1,
+                "class_name": "TFloatWindow",
+                "control_value": 99,
+                "enabled": 1,
+                "family": {
+                  "cluster_value": null,
+                  "content_insets": null,
+                  "control_state": null,
+                  "frame_style": null,
+                  "max_chars": null,
+                  "number": null,
+                  "picture_id": null,
+                  "style": null,
+                  "text": null,
+                  "window": {
+                    "captioned_frame": 0,
+                    "color": {
+                      "background": 538976288,
+                      "behavior_flag": 1,
+                      "foreground": 538976288,
+                      "triplet_flag": 1
+                    },
+                    "flags": 8,
+                    "resource_6c": 0,
+                    "resource_6e": 1,
+                    "resource_6f": 1,
+                    "resource_71": 1,
+                    "style_type": 2,
+                    "topmost": 0
+                  }
+                },
+                "geometry": [
+                  5,
+                  76,
+                  334,
+                  267
+                ],
+                "input_gate": 1,
+                "node_id": "0x0004",
+                "parent_id": null,
+                "state": 1,
+                "tag": "WIND",
+                "type_code": "fwnd"
+              },
+              "tag": "WIND",
+              "windows_binary_evidence": "not encoded; Mac semantic resource is canonical for functional parity"
+            },
+            "0x0080": {
+              "classification": "expected_windows_class_substitution",
+              "delta": {
+                "evidence": "Minister.rsrc:9710 DLOG has the TBook serialized pict shape and lcor/rcor children; Windows requests event 0x25ee and has TBook RTTI but no TInteriorNotesView RTTI",
+                "field": "class",
+                "mac": "TInteriorNotesView",
+                "reason": "The Windows port uses the shared TBook pager for the interior-notes shell instead of the resource-only Mac class name.",
+                "windows": "TBook"
+              },
+              "generated_lines": [
+                322,
+                329
+              ],
+              "mac_source": "Minister.rsrc:9710 node 0x0080",
+              "semantic": {
+                "child_hit_test": 1,
+                "class_name": "TBook",
+                "control_value": 0,
+                "enabled": 1,
+                "family": {
+                  "cluster_value": null,
+                  "content_insets": [
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "control_state": null,
+                  "frame_style": 10,
+                  "max_chars": null,
+                  "number": null,
+                  "picture_id": 8930,
+                  "style": null,
+                  "text": null,
+                  "window": null
+                },
+                "geometry": [
+                  0,
+                  0,
+                  334,
+                  267
+                ],
+                "input_gate": 1,
+                "node_id": "0x0080",
+                "parent_id": "0x0004",
+                "state": 1,
+                "tag": "DLOG",
+                "type_code": "pict"
+              },
+              "tag": "DLOG",
+              "windows_binary_evidence": "not encoded; Mac semantic resource is canonical for functional parity"
+            },
+            "0x00f2": {
+              "classification": "same_semantics",
+              "delta": null,
+              "generated_lines": [
+                330,
+                337
+              ],
+              "mac_source": "Minister.rsrc:9710 node 0x00f2",
+              "semantic": {
+                "child_hit_test": 1,
+                "class_name": "TColorKeyPicture",
+                "control_value": 0,
+                "enabled": 1,
+                "family": {
+                  "cluster_value": null,
+                  "content_insets": [
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "control_state": null,
+                  "frame_style": 10,
+                  "max_chars": null,
+                  "number": null,
+                  "picture_id": 8820,
+                  "style": null,
+                  "text": null,
+                  "window": null
+                },
+                "geometry": [
+                  8,
+                  235,
+                  29,
+                  26
+                ],
+                "input_gate": 1,
+                "node_id": "0x00f2",
+                "parent_id": "0x0080",
+                "state": 1,
+                "tag": "lcor",
+                "type_code": "pict"
+              },
+              "tag": "lcor",
+              "windows_binary_evidence": "not encoded; Mac semantic resource is canonical for functional parity"
+            },
+            "0x0162": {
+              "classification": "same_semantics",
+              "delta": null,
+              "generated_lines": [
+                339,
+                346
+              ],
+              "mac_source": "Minister.rsrc:9710 node 0x0162",
+              "semantic": {
+                "child_hit_test": 1,
+                "class_name": "TColorKeyPicture",
+                "control_value": 0,
+                "enabled": 1,
+                "family": {
+                  "cluster_value": null,
+                  "content_insets": [
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "control_state": null,
+                  "frame_style": 10,
+                  "max_chars": null,
+                  "number": null,
+                  "picture_id": 8821,
+                  "style": null,
+                  "text": null,
+                  "window": null
+                },
+                "geometry": [
+                  300,
+                  237,
+                  29,
+                  25
+                ],
+                "input_gate": 1,
+                "node_id": "0x0162",
+                "parent_id": "0x0080",
+                "state": 1,
+                "tag": "rcor",
+                "type_code": "pict"
+              },
+              "tag": "rcor",
+              "windows_binary_evidence": "not encoded; Mac semantic resource is canonical for functional parity"
+            }
+          },
+          "source": "Minister.rsrc:9710"
+        },
+        "0x25f8": {
+          "classification": "functional_parity_extension",
+          "manifest_evidence": "Windows request 0x004f37ac; functional-parity case absent from original builder",
+          "nodes": {
+            "0x0004": {
+              "classification": "same_semantics",
+              "delta": null,
+              "generated_lines": [
+                354,
+                361
+              ],
+              "mac_source": "Minister.rsrc:9720 node 0x0004",
+              "semantic": {
+                "child_hit_test": 1,
+                "class_name": "TFloatWindow",
+                "control_value": 99,
+                "enabled": 1,
+                "family": {
+                  "cluster_value": null,
+                  "content_insets": null,
+                  "control_state": null,
+                  "frame_style": null,
+                  "max_chars": null,
+                  "number": null,
+                  "picture_id": null,
+                  "style": null,
+                  "text": null,
+                  "window": {
+                    "captioned_frame": 0,
+                    "color": {
+                      "background": 538976288,
+                      "behavior_flag": 1,
+                      "foreground": 538976288,
+                      "triplet_flag": 1
+                    },
+                    "flags": 8,
+                    "resource_6c": 0,
+                    "resource_6e": 1,
+                    "resource_6f": 1,
+                    "resource_71": 1,
+                    "style_type": 2,
+                    "topmost": 0
+                  }
+                },
+                "geometry": [
+                  5,
+                  76,
+                  334,
+                  267
+                ],
+                "input_gate": 1,
+                "node_id": "0x0004",
+                "parent_id": null,
+                "state": 1,
+                "tag": "WIND",
+                "type_code": "fwnd"
+              },
+              "tag": "WIND",
+              "windows_binary_evidence": "not encoded; Mac semantic resource is canonical for functional parity"
+            },
+            "0x0080": {
+              "classification": "expected_windows_class_substitution",
+              "delta": {
+                "evidence": "Minister.rsrc:9720 DLOG has the TBook serialized pict shape and lcor/rcor children; Windows requests event 0x25f8 and has TBook RTTI but no TTreasuriesView RTTI",
+                "field": "class",
+                "mac": "TTreasuriesView",
+                "reason": "The Windows port uses the shared TBook pager for the treasuries shell instead of the resource-only Mac class name.",
+                "windows": "TBook"
+              },
+              "generated_lines": [
+                362,
+                369
+              ],
+              "mac_source": "Minister.rsrc:9720 node 0x0080",
+              "semantic": {
+                "child_hit_test": 1,
+                "class_name": "TBook",
+                "control_value": 0,
+                "enabled": 1,
+                "family": {
+                  "cluster_value": null,
+                  "content_insets": [
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "control_state": null,
+                  "frame_style": 10,
+                  "max_chars": null,
+                  "number": null,
+                  "picture_id": 9720,
+                  "style": null,
+                  "text": null,
+                  "window": null
+                },
+                "geometry": [
+                  0,
+                  0,
+                  334,
+                  267
+                ],
+                "input_gate": 1,
+                "node_id": "0x0080",
+                "parent_id": "0x0004",
+                "state": 1,
+                "tag": "DLOG",
+                "type_code": "pict"
+              },
+              "tag": "DLOG",
+              "windows_binary_evidence": "not encoded; Mac semantic resource is canonical for functional parity"
+            },
+            "0x00ef": {
+              "classification": "same_semantics",
+              "delta": null,
+              "generated_lines": [
+                370,
+                377
+              ],
+              "mac_source": "Minister.rsrc:9720 node 0x00ef",
+              "semantic": {
+                "child_hit_test": 1,
+                "class_name": "TColorKeyPicture",
+                "control_value": 0,
+                "enabled": 1,
+                "family": {
+                  "cluster_value": null,
+                  "content_insets": [
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "control_state": null,
+                  "frame_style": 10,
+                  "max_chars": null,
+                  "number": null,
+                  "picture_id": 8820,
+                  "style": null,
+                  "text": null,
+                  "window": null
+                },
+                "geometry": [
+                  8,
+                  236,
+                  29,
+                  26
+                ],
+                "input_gate": 1,
+                "node_id": "0x00ef",
+                "parent_id": "0x0080",
+                "state": 1,
+                "tag": "lcor",
+                "type_code": "pict"
+              },
+              "tag": "lcor",
+              "windows_binary_evidence": "not encoded; Mac semantic resource is canonical for functional parity"
+            },
+            "0x015f": {
+              "classification": "same_semantics",
+              "delta": null,
+              "generated_lines": [
+                379,
+                386
+              ],
+              "mac_source": "Minister.rsrc:9720 node 0x015f",
+              "semantic": {
+                "child_hit_test": 1,
+                "class_name": "TColorKeyPicture",
+                "control_value": 0,
+                "enabled": 1,
+                "family": {
+                  "cluster_value": null,
+                  "content_insets": [
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "control_state": null,
+                  "frame_style": 10,
+                  "max_chars": null,
+                  "number": null,
+                  "picture_id": 8821,
+                  "style": null,
+                  "text": null,
+                  "window": null
+                },
+                "geometry": [
+                  299,
+                  237,
+                  29,
+                  25
+                ],
+                "input_gate": 1,
+                "node_id": "0x015f",
+                "parent_id": "0x0080",
+                "state": 1,
+                "tag": "rcor",
+                "type_code": "pict"
+              },
+              "tag": "rcor",
+              "windows_binary_evidence": "not encoded; Mac semantic resource is canonical for functional parity"
+            }
+          },
+          "source": "Minister.rsrc:9720"
         }
       },
       "generated_file": "turn_event_dialog_factory_0044a810.cpp",
-      "generated_sha256": "b1793747b18fbc17e34f848b828288c8da982243524ad7646013ca13ded53499",
+      "generated_sha256": "b8450914648477e7753fd9032fbe694e64dee0052f0ea78ba7a2e0dcaec6e62e",
       "name": "BuildTurnEventDialogResources_2508"
     },
     "0x0044af90": {
@@ -90518,13 +92174,13 @@
     "windows_only_views": "config/ui_factory_windows_views.yml"
   },
   "summary": {
-    "cases": 86,
-    "expected_windows_class_substitution": 1,
-    "functional_parity_cases": 4,
+    "cases": 94,
+    "expected_windows_class_substitution": 9,
+    "functional_parity_cases": 12,
     "functions": 17,
-    "mapped_mac_cases": 85,
-    "nodes": 1821,
-    "same_semantics": 1808,
+    "mapped_mac_cases": 93,
+    "nodes": 1853,
+    "same_semantics": 1832,
     "unexplained_deltas": 0,
     "windows_only_cases": 1,
     "windows_only_nodes": 12
