@@ -1404,6 +1404,63 @@ int TDiplomacyMgr::SelectDiplomacyTargetNationFromCandidateSetSlot94(int sourceN
   return matchedNationSlot;
 }
 
+// FUNCTION: IMPERIALISM 0x004f24a0
+void TDiplomacyMgr::RebuildMinorNationDispositionLookupTables(int nationCode) {
+  for (int auxIndex = 0; auxIndex < 16; ++auxIndex) {
+    TMinor* candidate = g_apNationAuxRuntimeStateSlots[auxIndex];
+    if (!candidate->IsEncodedNationSlotMinus200Equal(nationCode)) {
+      continue;
+    }
+    candidate->ApplyJoinEmpireMode2FinalizeNationNameState();
+
+    TMinor* capabilityObject = g_apMinorNationCapabilityObjects[auxIndex];
+    short minorSlot = static_cast<short>(7 + auxIndex);
+
+    for (int majorSlot = 0; majorSlot < 7; ++majorSlot) {
+      if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(majorSlot)) {
+        relationStandingScoreMatrix79c[majorSlot * kNationSlotCount + minorSlot] = 0x5a;
+        relationStandingScoreMatrix79c[minorSlot * kNationSlotCount + majorSlot] = 0x5a;
+        relationPropagationMatrixBbe[majorSlot * kNationSlotCount + minorSlot] = 4;
+        relationPropagationMatrixBbe[minorSlot * kNationSlotCount + majorSlot] = 4;
+      }
+    }
+
+    for (int otherMinorSlot = 7; otherMinorSlot < kNationSlotCount; ++otherMinorSlot) {
+      short standingValue;
+      short propagationValue;
+      if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(otherMinorSlot)) {
+        TMinor* otherMinorCandidate = g_apMinorNationCapabilityObjects[otherMinorSlot - 7];
+        if (otherMinorCandidate->encodedNationSlot >= 200) {
+          short normalizedSlot = capabilityObject->DecodeOwnerNationSlot();
+          int lookupIndex = normalizedSlot * kNationSlotCount + minorSlot;
+          standingValue = relationStandingScoreMatrix79c[lookupIndex];
+          propagationValue = relationPropagationMatrixBbe[lookupIndex];
+        } else if (capabilityObject->ReturnFalseNationStateCapabilityFlag90(
+                       static_cast<short>(otherMinorSlot))) {
+          standingValue = 0x96;
+          propagationValue = 4;
+        } else {
+          standingValue = 0x6e;
+          propagationValue = 4;
+        }
+      } else {
+        standingValue = 0x5a;
+        propagationValue = 4;
+      }
+      relationStandingScoreMatrix79c[otherMinorSlot * kNationSlotCount + minorSlot] = standingValue;
+      relationStandingScoreMatrix79c[minorSlot * kNationSlotCount + otherMinorSlot] = standingValue;
+      relationPropagationMatrixBbe[otherMinorSlot * kNationSlotCount + minorSlot] = propagationValue;
+      relationPropagationMatrixBbe[minorSlot * kNationSlotCount + otherMinorSlot] = propagationValue;
+    }
+
+    for (int notifySlot = 0; notifySlot < 7; ++notifySlot) {
+      if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(notifySlot)) {
+        g_apNationStates[notifySlot]->ResetDiplomacyLevelForNationSlot12(minorSlot, 100);
+      }
+    }
+  }
+}
+
 // FUNCTION: IMPERIALISM 0x004f2760
 TurnEvent2SyncPacket*
 TDiplomacyMgr::BuildTurnEvent2ArraySyncPacketFromBufferAndRefreshBaselineCopy() {

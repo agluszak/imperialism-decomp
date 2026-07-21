@@ -59,9 +59,6 @@
 #include "game/ui_invalidation_guard.h"
 #include "game/UiRuntimeContext.h"
 
-// Remaining autogen-stub extern. Retire by porting the real body.
-undefined4 RebuildMinorNationDispositionLookupTables(void);
-
 // Real body ported at 0x005b7f50 (file end, ascending-address order). Genuine __stdcall
 // predicate: returns 1 when the resource index is in [13,16].
 char __stdcall IsSpecialNationInteractionResource(short resourceIndex);
@@ -2698,7 +2695,7 @@ void TGreatPower::SetNationTransferTargetCodeAndNotifyEligiblePeers(int arg1) {
     g_pInterNationEventQueueManager->QueueInterNationEventRecordDeduped(0x1D, this->nationSlot, 7,
                                                                         '\0');
   }
-  RebuildMinorNationDispositionLookupTables();
+  g_pDiplomacyTurnStateManager->RebuildMinorNationDispositionLookupTables(this->nationSlot);
 
   this->encodedNationSlot = static_cast<short>(arg1 + 100);
 

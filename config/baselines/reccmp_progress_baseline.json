@@ -2,7 +2,7 @@
   "aligned_fun_count": 3275,
   "aligned_vs_original_pct": 41.94953247085949,
   "aligned_vs_paired_pct": 43.12615222544114,
-  "avg_matching_pct": 71.4134281218273,
+  "avg_matching_pct": 71.4135968078136,
   "compared_fun_count": 7531,
   "coverage_pct": 97.27167926220059,
   "dat_orig_only_count": 1595,
@@ -12,8 +12,8 @@
   "flo_orig_only_count": 231,
   "flo_recomp_only_count": 0,
   "git_branch": "claude/environment-setup-8k0tib",
-  "git_commit": "4dc2e66c2a0a91dae54d02b2e186d68056477805",
-  "git_commit_date": "2026-07-21T01:56:50+02:00",
+  "git_commit": "305c5c483a20c44290f20ef6e9a91f6615c02507",
+  "git_commit_date": "2026-07-21T00:56:32+00:00",
   "global_coverage_pct": 23.041261010662957,
   "global_orig_only_count": 8300,
   "global_recomp_only_count": 6548,
@@ -61,7 +61,7 @@
   "target": "IMPERIALISM",
   "template_alias_recognized_count": 4,
   "template_canonical_paired_count": 4,
-  "timestamp_utc": "2026-07-21T00:56:14+00:00",
+  "timestamp_utc": "2026-07-21T01:15:42+00:00",
   "wid_orig_only_count": 0,
   "wid_recomp_only_count": 2
 }
