@@ -70,7 +70,7 @@ void TShipView::Draw(RECT* rectBuffer) {
     DrawTextWithCachedQuickDrawStyleState(&label);
   }
 
-  short normBase = GetNavyOrderNormalizationBaseByResourceType(shipNode60->resourceType04);
+  short normBase = shipNode60->GetNavyOrderNormalizationBaseByNationType();
   short levelBucket = static_cast<short>(shipNode60->stockLevel1c * 20 / normBase) + 1;
   if (levelBucket > 0x14) {
     levelBucket = 0x14;

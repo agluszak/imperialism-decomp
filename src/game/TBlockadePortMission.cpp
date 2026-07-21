@@ -133,7 +133,9 @@ void TBlockadePortMission::NoOpSlot3C() {
   // reproducing the original's fully-duplicated inlined body, so the body is duplicated here
   // instead (see TBeachheadMission::NoOpSlot3C's identical duplication and its longer
   // rationale comment).
-  float baseVector[4] = {0.0f, 0.0f, 0.0f, 0.0f};
+  float baseVector[4] = {
+      g_Recompute_Nation_Order_LookupTable_0065A9E8, g_Recompute_Nation_Order_LookupTable_0065A9E8,
+      g_Recompute_Nation_Order_LookupTable_0065A9E8, g_Recompute_Nation_Order_LookupTable_0065A9E8};
   for (TShip* node = GetNavyPrimaryOrderListHead(); node != nullptr; node = node->nextOlder24) {
     if (node->field08 != targetZone14) {
       continue;
@@ -155,43 +157,47 @@ void TBlockadePortMission::NoOpSlot3C() {
   }
 
   {
-    const unsigned short* lookupTable = g_Populate_Beachhead_Mission_LookupTable_00697958;
-    float sum = baseVector[0] + baseVector[1] + baseVector[2] + baseVector[3];
-    float total = 0.0f;
-    if (sum != 0.0f) {
-      float delta = 0.0f;
-      for (int i = 0; i < 4; ++i) {
+    const short* lookupTable = g_Populate_Beachhead_Mission_LookupTable_00697958;
+    float sum = g_Recompute_Nation_Order_LookupTable_0065A9E8;
+    int i;
+    for (i = 0; i < 4; ++i) {
+      sum += baseVector[i];
+    }
+    float total = g_Recompute_Nation_Order_LookupTable_0065A9E8;
+    if (sum != g_Recompute_Nation_Order_LookupTable_0065A9F0) {
+      float delta = g_Recompute_Nation_Order_LookupTable_0065A9E8;
+      for (i = 0; i < 4; ++i) {
         float diff =
-            baseVector[i] / sum - static_cast<float>(static_cast<short>(lookupTable[i])) * 0.01f;
-        if (diff <= 0.0f) {
+            baseVector[i] / sum - lookupTable[i] * g_Recompute_Nation_Order_LookupTable_0065A9F8;
+        if (diff <= g_Recompute_Nation_Order_LookupTable_0065A9F0) {
           diff = -diff;
         }
         delta += diff;
       }
-      total = sum * (1.0f - delta * 0.5f);
+      total = static_cast<float>(sum * (g_Recompute_Nation_Order_LookupTable_0065AA08 -
+                                        delta * g_Recompute_Nation_Order_LookupTable_0065AA00));
     }
-    total *= 1.1f;
+    total *= g_MissionResourceWeightScale_0065A8FC;
     if (total == 0.0f) {
-      total = 100.0f;
+      total = g_MissionEmptyResourceWeight_0065AA24;
     }
-    for (int i = 0; i < 4; ++i) {
-      resourceWeights2c[i] = static_cast<float>(static_cast<short>(lookupTable[i])) * total * 0.01f;
+    for (i = 0; i < 4; ++i) {
+      resourceWeights2c[i] = static_cast<float>(lookupTable[i] * total *
+                                                g_Recompute_Nation_Order_LookupTable_0065A9F8);
     }
   }
 
-  // Same signed-short storage as the sibling per-category weight table (see the
-  // g_NavyOrderDistributionCategoryWeights_00697978 declaration comment); reinterpreted
-  // as unsigned short* only to match ComputeDistributionSimilarityScoreFromVectorAndReferenceProfile's
-  // parameter type -- the callee immediately re-casts each element back to short.
-  unsigned short* navyDistributionWeights = reinterpret_cast<unsigned short*>(
-      const_cast<short*>(g_NavyOrderDistributionCategoryWeights_00697978));
+  const short* navyDistributionWeights = g_NavyOrderDistributionCategoryWeights_00697978;
 
-  float threatScore = 0.0f;
+  float threatScore = g_Recompute_Nation_Order_LookupTable_0065A9E8;
   if (portZoneContext3c->GetPortZoneOwnerNationCodeFromMissionField48() < 7) {
     short targetNationCode = portZoneContext3c->GetPortZoneOwnerNationCodeFromMissionField48();
-    float vector[4] = {0.0f, 0.0f, 0.0f, 0.0f};
+    float vector[4] = {g_Recompute_Nation_Order_LookupTable_0065A9E8,
+                       g_Recompute_Nation_Order_LookupTable_0065A9E8,
+                       g_Recompute_Nation_Order_LookupTable_0065A9E8,
+                       g_Recompute_Nation_Order_LookupTable_0065A9E8};
     for (TShip* node = GetNavyPrimaryOrderListHead(); node != nullptr; node = node->nextOlder24) {
-      if (node->ownerNationSlot14 == targetNationCode && node->field08->QueryPortZoneCapability() &&
+      if (node->ownerNationSlot14 == targetNationCode && node->IsInHomePort() &&
           node->GetNavyOrderNormalizationBaseByNationType() <= node->stockLevel1c) {
         AccumulateNavyOrderCategoryVectorWithScale(node, vector, 1.0f);
       }
@@ -207,10 +213,12 @@ void TBlockadePortMission::NoOpSlot3C() {
         continue;
       }
       short targetNationCode = portZoneContext3c->GetPortZoneOwnerNationCodeFromMissionField48();
-      float vector[4] = {0.0f, 0.0f, 0.0f, 0.0f};
+      float vector[4] = {g_Recompute_Nation_Order_LookupTable_0065A9E8,
+                         g_Recompute_Nation_Order_LookupTable_0065A9E8,
+                         g_Recompute_Nation_Order_LookupTable_0065A9E8,
+                         g_Recompute_Nation_Order_LookupTable_0065A9E8};
       for (TShip* node = GetNavyPrimaryOrderListHead(); node != nullptr; node = node->nextOlder24) {
-        if (node->ownerNationSlot14 == targetNationCode &&
-            node->field08->QueryPortZoneCapability() &&
+        if (node->ownerNationSlot14 == targetNationCode && node->IsInHomePort() &&
             node->GetNavyOrderNormalizationBaseByNationType() <= node->stockLevel1c) {
           AccumulateNavyOrderCategoryVectorWithScale(node, vector, 1.0f);
         }
@@ -223,14 +231,15 @@ void TBlockadePortMission::NoOpSlot3C() {
     }
   }
 
-  float threatFloor = threatScore * 0.5f;
-  if (threatFloor <= 10.0f) {
-    threatFloor = 10.0f;
+  float threatFloor = threatScore * g_BlockadePortMissionThreatScale_0065A904;
+  if (threatFloor <= g_BlockadePortMissionThreatFloor_0065A900) {
+    threatFloor = g_BlockadePortMissionThreatFloor_0065A900;
   }
 
-  const unsigned short* weights = &g_Populate_Beachhead_Mission_LookupTable_00697958[4];
+  const short* weights = &g_Populate_Beachhead_Mission_LookupTable_00697958[4];
   for (int i = 0; i < 4; ++i) {
-    float raised = static_cast<float>(static_cast<short>(weights[i])) * threatFloor * 0.01f;
+    float raised = static_cast<float>(weights[i] * threatFloor *
+                                      g_Recompute_Nation_Order_LookupTable_0065A9F8);
     if (resourceWeights2c[i] < raised) {
       resourceWeights2c[i] = raised;
     }

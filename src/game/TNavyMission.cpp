@@ -85,7 +85,7 @@ float NormalizeFourComponentNavyVector(const float* vector, float sum) {
   if (sum == static_cast<float>(g_Recompute_Nation_Order_LookupTable_0065A9F0)) {
     return g_Recompute_Nation_Order_LookupTable_0065A9E8;
   }
-  const unsigned short* lookupTable = g_Populate_Beachhead_Mission_LookupTable_00697958;
+  const short* lookupTable = g_Populate_Beachhead_Mission_LookupTable_00697958;
   float accum = g_Recompute_Nation_Order_LookupTable_0065A9E8;
   for (int componentIndex = 0; componentIndex < 4; ++componentIndex) {
     float diff = vector[componentIndex] / sum -
@@ -257,7 +257,7 @@ int TNavyMission::ReturnZeroSlot2C(int* outBuffer, int unused) {
     for (int category = 0; category < 4; ++category) {
       static_cast<TShip*>(entry)->ComputeNavyOrderPriorityContributionPercentByCategory(category);
     }
-    GetNavyOrderNormalizationBaseByResourceType(static_cast<TTaskForce*>(entry)->order_type);
+    static_cast<TShip*>(entry)->GetNavyOrderNormalizationBaseByNationType();
   }
 
   int total = 0;
@@ -1084,7 +1084,7 @@ float TNavyMission::ComputeMissionNavyOrderDistributionScoreForPortOwnerOrAllies
                        g_Recompute_Nation_Order_LookupTable_0065A9E8,
                        g_Recompute_Nation_Order_LookupTable_0065A9E8};
     for (TShip* ship = GetNavyPrimaryOrderListHead(); ship != nullptr; ship = ship->nextOlder24) {
-      if (ship->ownerNationSlot14 == ownerNation && ship->field08->QueryPortZoneCapability() &&
+      if (ship->ownerNationSlot14 == ownerNation && ship->IsInHomePort() &&
           ship->GetNavyOrderNormalizationBaseByNationType() <= ship->stockLevel1c) {
         AccumulateNavyOrderCategoryVectorWithScale(
             ship, vector, static_cast<float>(g_Recompute_Nation_Order_LookupTable_0065AA08));
@@ -1117,7 +1117,7 @@ float TNavyMission::ComputeMissionNavyOrderDistributionScoreForPortOwnerOrAllies
                          g_Recompute_Nation_Order_LookupTable_0065A9E8,
                          g_Recompute_Nation_Order_LookupTable_0065A9E8};
       for (TShip* ship = GetNavyPrimaryOrderListHead(); ship != nullptr; ship = ship->nextOlder24) {
-        if (ship->ownerNationSlot14 == scoreNation && ship->field08->QueryPortZoneCapability() &&
+        if (ship->ownerNationSlot14 == scoreNation && ship->IsInHomePort() &&
             ship->GetNavyOrderNormalizationBaseByNationType() <= ship->stockLevel1c) {
           AccumulateNavyOrderCategoryVectorWithScale(
               ship, vector, static_cast<float>(g_Recompute_Nation_Order_LookupTable_0065AA08));

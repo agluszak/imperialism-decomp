@@ -69,6 +69,9 @@ public:
   // 0x00550b60 — composite economic score of this order node (quantity + descriptor
   // weights, normalized by the task-force weight).
   int ComputeOrderNodeCompositeEconomicScore();
+  // Mac oracle: IsInHomePort() const. The Windows body forwards to
+  // location field08's TZone::QueryPortZoneCapability virtual. 0x00550f60.
+  bool IsInHomePort() const;
   // Position of `this` in the primary navy order roster, counted from
   // g_pNavyPrimaryOrderListHead (used when serializing orderList24 nodes by index;
   // Mac oracle: TShip::GetIndex).

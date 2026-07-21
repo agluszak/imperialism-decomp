@@ -50,7 +50,7 @@ void TMiniShipView::Draw(RECT* rectBuffer) {
   SetQuickDrawTextOriginWithContextOffset(0xa, 0xc);
   DrawTextWithCachedQuickDrawStyleState(&statusLine);
 
-  short normBase = GetNavyOrderNormalizationBaseByResourceType(shipNode84->resourceType04);
+  short normBase = shipNode84->GetNavyOrderNormalizationBaseByNationType();
   short levelBucket = static_cast<short>(shipNode84->stockLevel1c * 20 / normBase) + 1;
   if (levelBucket > 0x14) {
     levelBucket = 0x14;

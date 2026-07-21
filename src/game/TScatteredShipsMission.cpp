@@ -78,7 +78,7 @@ void TScatteredShipsMission::NoOpSlot3C() {
   float navyPressure = nation->activeMissionPressureAverageB6c;
   float scale = (navyPressure + 1.0f) * 0.01f;
 
-  const unsigned short* lookupTable = g_Populate_Beachhead_Mission_LookupTable_00697958;
+  const short* lookupTable = g_Populate_Beachhead_Mission_LookupTable_00697958;
   for (int i = 0; i < 4; ++i) {
     resourceWeights2c[i] = static_cast<float>(static_cast<short>(lookupTable[i])) * scale;
   }
@@ -111,7 +111,7 @@ void TScatteredShipsMission::MissionSlot44() {
     orderList24->next->SetChainActiveFlag(0);
   }
 
-  short stepCount = static_cast<short>(g_pSimMgr->GetEconomicTurn() % 50);
+  int stepCount = static_cast<int>(g_pSimMgr->GetEconomicTurn()) % 50;
 
   TZone* zone = g_pMapActionContextListHead;
   while (zone != nullptr) {
@@ -125,7 +125,7 @@ void TScatteredShipsMission::MissionSlot44() {
   }
 
   TZone* current = g_pMapActionContextListHead;
-  for (; stepCount != 0; --stepCount) {
+  while (stepCount-- != 0) {
     TZone* nextZone = current->prev18;
     current = (nextZone != nullptr) ? nextZone : g_pMapActionContextListHead;
   }

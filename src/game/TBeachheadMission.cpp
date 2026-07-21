@@ -74,7 +74,7 @@ void TBeachheadMission::NoOpSlot3C() {
     vector[3] += static_cast<float>(node->ComputeNavyOrderPriorityContributionPercentByCategory(3));
   }
 
-  const unsigned short* lookupTable = g_Populate_Beachhead_Mission_LookupTable_00697958;
+  const short* lookupTable = g_Populate_Beachhead_Mission_LookupTable_00697958;
   float sum = vector[0] + vector[1] + vector[2] + vector[3];
   float total = 0.0f;
   if (sum != 0.0f) {
@@ -88,9 +88,9 @@ void TBeachheadMission::NoOpSlot3C() {
     }
     total = sum * (1.0f - delta * 0.5f);
   }
-  total *= 1.1f;
+  total *= g_MissionResourceWeightScale_0065A8FC;
   if (total == 0.0f) {
-    total = 100.0f;
+    total = g_MissionEmptyResourceWeight_0065AA24;
   }
 
   for (int i = 0; i < 4; ++i) {

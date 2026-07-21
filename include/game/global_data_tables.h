@@ -942,8 +942,12 @@ extern double g_Recompute_Nation_Order_LookupTable_0065A9F8;
 extern double g_Recompute_Nation_Order_LookupTable_0065AA00;
 extern double g_Recompute_Nation_Order_LookupTable_0065AA08;
 extern const float g_Recompute_Nation_Order_LookupTable_0065AA20;
-extern unsigned short g_awTacticalCompositionReferenceProfiles_00697870[];
-extern unsigned short g_Populate_Beachhead_Mission_LookupTable_00697958[];
+extern const float g_MissionResourceWeightScale_0065A8FC;
+extern const float g_BlockadePortMissionThreatFloor_0065A900;
+extern const float g_BlockadePortMissionThreatScale_0065A904;
+extern const float g_MissionEmptyResourceWeight_0065AA24;
+extern short g_awTacticalCompositionReferenceProfiles_00697870[];
+extern short g_Populate_Beachhead_Mission_LookupTable_00697958[];
 // TShip.cpp — per-category target-percentage weights (40/30/30/0) used by
 // ComputeNavyOrderDistributionScoreForNation's divergence-score formula. Read via
 // sign-extend (movsx) in the original despite being small positive values, so the

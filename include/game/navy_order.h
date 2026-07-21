@@ -33,7 +33,6 @@ float ComputeNavyOrderDistributionScoreForNation(short nation);
 
 // Per-resourceType normalization base (the "stock cap" field of the shared
 // per-resource-type descriptor table, TNavyOrderResourceDescriptor). 0x5505a0.
-short GetNavyOrderNormalizationBaseByResourceType(short resourceType);
 void __cdecl AccumulateNavyOrderCategoryVectorWithScale(TShip* orderNode, float* vector,
                                                         float scale);
 

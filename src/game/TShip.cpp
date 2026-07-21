@@ -29,7 +29,7 @@ float ComputeNavyOrderDistributionScoreForNation(short nation) {
       g_Recompute_Nation_Order_LookupTable_0065A9E8, g_Recompute_Nation_Order_LookupTable_0065A9E8,
       g_Recompute_Nation_Order_LookupTable_0065A9E8, g_Recompute_Nation_Order_LookupTable_0065A9E8};
   for (TShip* ship = GetNavyPrimaryOrderListHead(); ship != nullptr; ship = ship->nextOlder24) {
-    if (ship->ownerNationSlot14 == nation && ship->field08->QueryPortZoneCapability() &&
+    if (ship->ownerNationSlot14 == nation && ship->IsInHomePort() &&
         ship->GetNavyOrderNormalizationBaseByNationType() <= ship->stockLevel1c) {
       AccumulateNavyOrderCategoryVectorWithScale(
           ship, categoryVector, static_cast<float>(g_Recompute_Nation_Order_LookupTable_0065AA08));
@@ -407,13 +407,12 @@ short TShip::ComputeOrderNodeDistanceQuotientByDescriptorWord24(TZone* otherZone
   return static_cast<short>((descriptorWeight - 1 + hopDistance) / descriptorWeight);
 }
 
+// Mac oracle: TShip::GetMaxStrength() const. The established descriptive name is kept
+// for now, but this is a real TShip method, not a free resource-type lookup: every
+// callsite loads the ship receiver into ECX and the body reads resourceType04 at +0x04.
 // FUNCTION: IMPERIALISM 0x005505a0
-short GetNavyOrderNormalizationBaseByResourceType(short resourceType) {
-  return g_NavyOrderResourceDescriptorTable[resourceType].stockCap;
-}
-
 short TShip::GetNavyOrderNormalizationBaseByNationType() {
-  return GetNavyOrderNormalizationBaseByResourceType(resourceType04);
+  return g_NavyOrderResourceDescriptorTable[resourceType04].stockCap;
 }
 
 // FUNCTION: IMPERIALISM 0x005505c0
@@ -607,6 +606,11 @@ int TShip::ComputeOrderNodeCompositeEconomicScore() {
 // FUNCTION: IMPERIALISM 0x00550e70
 short GetResourceDescriptorWeightWord0ByType(short resourceType) {
   return g_NavyOrderResourceDescriptorTable[resourceType].resourceDescriptorWeightWord0;
+}
+
+// FUNCTION: IMPERIALISM 0x00550f60
+bool TShip::IsInHomePort() const {
+  return field08->QueryPortZoneCapability();
 }
 
 // FUNCTION: IMPERIALISM 0x00550f80
