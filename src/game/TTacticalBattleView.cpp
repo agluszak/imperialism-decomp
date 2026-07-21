@@ -30,7 +30,7 @@ void NoOpModalAnimWaitBracketHookA_00498c60(void) {}
 void NoOpModalAnimWaitBracketHookB_00498c80(void) {}
 
 // FUNCTION: IMPERIALISM 0x005a6940
-BOOL __stdcall ClipSrcRectToBoundsAndOffsetDstRect(RECT* bounds, RECT* dstRect, RECT* srcRect) {
+BOOL __cdecl ClipSrcRectToBoundsAndOffsetDstRect(RECT* bounds, RECT* dstRect, RECT* srcRect) {
   if (srcRect->top < bounds->top) {
     dstRect->top += bounds->top - srcRect->top;
     srcRect->top = bounds->top;

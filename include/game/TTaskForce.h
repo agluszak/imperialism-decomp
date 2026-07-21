@@ -94,7 +94,7 @@ public:
   // TZone slots 0x2c (AssignZoneDisplayName), 0x38, 0x4c (tile search) and 0x54 (coastal
   // heuristic). Serialized as a single CObject reference regardless of attachment. Seeded
   // from the source order node's +0x08 when the entry is created (0x5503a0); the 2-arg ctor
-  // takes it as an opaque int and stores it verbatim.
+  // takes the real TZone* directly.
   TZone* contextAnchor; // +0x18
   s16 required_count;
   // +0x1e..+0x25: total ships available in each of the four UI classes. Every writer
@@ -116,10 +116,8 @@ public:
   TTaskForce();
   // Real constructor used when a task-force order entry is created for a specific
   // context/nation slot (CreateTaskForceFromNavyOrdersForNationIfEligible 0x560a78,
-  // RebuildMapOrderEntryChildrenForContext 0x536dce). `contextAnchorArg` is the context
-  // TZone* passed as an opaque int and stored verbatim into contextAnchor;
-  // `requiredCountArg` seeds required_count.
-  TTaskForce(int contextAnchorArg, short requiredCountArg);
+  // TNavyMission::CombineForce 0x536dce). `requiredCountArg` seeds required_count.
+  TTaskForce(TZone* contextAnchorArg, short requiredCountArg);
 
   void RelinkMapOrderQueueNodeBetween(TTaskForce* prev_node, TTaskForce* next_node);
 

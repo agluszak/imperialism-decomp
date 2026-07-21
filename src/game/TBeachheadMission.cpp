@@ -11,6 +11,7 @@
 #include "game/TAttackProvinceMission.h"
 #include "game/TDiplomacyMgr.h"
 #include "game/TGreatPower.h"
+#include "game/TInvadeMission.h"
 #include "game/TMapMgr.h"
 #include "game/TShip.h"
 #include "game/navy_order.h"
@@ -50,13 +51,7 @@ char TBeachheadMission::ReturnFalseSlot60() {
 // fully duplicated, not a real CALL) would either emit a real cross-TU CALL or, since this
 // whole function used to be nothing else, collapse into a bare tail-call JMP -- neither
 // matches the original's inlined shape, so the body is duplicated here instead. The original
-// then has a further tail (not yet ported): `resourceWeights2c[3] = max(resourceWeights2c[3],
-// (100.0f / GetNavyContextPointerFromGlobalTableByIndex(3)) * ComputeInvadeMissionPriorityScore(...))`.
-// ComputeInvadeMissionPriorityScore (0x53f800, 526 bytes) is itself a genuinely separate,
-// still-fully-unported function (currently a stub in stubs_part016.cpp) with its own
-// unresolved receiver/calling-convention (Ghidra shows `in_ECX` rather than a clean `this`)
-// and several of its own unidentified sub-calls -- left as a dedicated follow-up rather than
-// pulled into this cluster.
+// then scales the owning invade mission's calculated priority into resourceWeights2c[3].
 // FUNCTION: IMPERIALISM 0x0053a500
 void TBeachheadMission::NoOpSlot3C() {
   float vector[4] = {0.0f, 0.0f, 0.0f, 0.0f};
@@ -79,7 +74,7 @@ void TBeachheadMission::NoOpSlot3C() {
     vector[3] += static_cast<float>(node->ComputeNavyOrderPriorityContributionPercentByCategory(3));
   }
 
-  const unsigned short* lookupTable = g_Populate_Beachhead_Mission_LookupTable_00697958;
+  const short* lookupTable = g_Populate_Beachhead_Mission_LookupTable_00697958;
   float sum = vector[0] + vector[1] + vector[2] + vector[3];
   float total = 0.0f;
   if (sum != 0.0f) {
@@ -93,13 +88,20 @@ void TBeachheadMission::NoOpSlot3C() {
     }
     total = sum * (1.0f - delta * 0.5f);
   }
-  total *= 1.1f;
+  total *= g_MissionResourceWeightScale_0065A8FC;
   if (total == 0.0f) {
-    total = 100.0f;
+    total = g_MissionEmptyResourceWeight_0065AA24;
   }
 
   for (int i = 0; i < 4; ++i) {
     resourceWeights2c[i] = static_cast<float>(static_cast<short>(lookupTable[i])) * total * 0.01f;
+  }
+
+  float invadePriority = static_cast<float>(g_BeachheadMissionPriorityNormalization_0065AA30 /
+                                            GetNavyContextPointerFromGlobalTableByIndex(3)) *
+                         static_cast<TInvadeMission*>(parentMission3c)->CalculatePriority();
+  if (resourceWeights2c[3] < invadePriority) {
+    resourceWeights2c[3] = invadePriority;
   }
 }
 
@@ -152,7 +154,7 @@ int TBeachheadMission::ReturnZeroSlot58() {
 char TBeachheadMission::ReturnFalseSlot98() {
   // ClearBlockadePortMissionChildOrderLinksIfReady: clears each queued
   // order-child's owner-back-pointer, then frees the chain.
-  if (marker11 == 0 && navyField20 != nullptr) {
+  if (marker11 == 0 && taskForce20 != nullptr) {
     return 0;
   }
   orderList24 = nullptr;

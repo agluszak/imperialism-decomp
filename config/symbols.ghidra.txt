@@ -4716,7 +4716,7 @@ TShip::AdjustMapOrderNodeStatCapped499 550370 f
 TShip::GetOrCreateMissionOrderEntryForNode 5503A0 f
 TShip::GetOrderNodeDescriptorWord20ByResourceType 550510 f
 TShip::ComputeOrderNodeDistanceQuotientByDescriptorWord24 550550 f
-GetNavyOrderNormalizationBaseByResourceType 5505A0 f
+TShip::GetNavyOrderNormalizationBaseByNationType 5505A0 f
 GetNavyPrimaryOrderListHead 5505C0 f
 TShip::GetIndexInPrimaryOrderList 550610 f
 GetNavyPrimaryOrderNodeByIndex 550640 f
@@ -4737,7 +4737,7 @@ GetResourceDescriptorWeightWord0ByType 550E70 f
 GetResourceDescriptorWord20ByType 550EA0 f
 GetResourceDescriptorWeightWord1ByType 550ED0 f
 GetResourceDescriptorWord08ByTypeOffset 550F30 f
-InvokeOrderNodeOwnerVfunc38 550F60 f
+TShip::IsInHomePort 550F60 f
 TShip::DecrementRequiredCount 550F80 f
 TShip::RemoveNode 550FF0 f
 TShip::ReassignOrderNodeNationAndRebindParentCounters 551100 f
@@ -10473,6 +10473,9 @@ TScatteredShipsMission::'vftable' 65A5A8 l
 TDefendProvinceMission::'vftable' 65A680 l
 TControlSeaZoneMission::'vftable' 65A740 l
 TNavyMission::'vftable' 65A818 l
+g_MissionResourceWeightScale_0065A8FC 65A8FC l
+g_BlockadePortMissionThreatFloor_0065A900 65A900 l
+g_BlockadePortMissionThreatScale_0065A904 65A904 l
 g_Recompute_Nation_Order_LookupTable_0065A9BC 65A9BC l
 g_fMissionScoreNormalizationDivisor 65A9C0 l
 g_Recompute_Nation_Order_LookupTable_0065A9C4 65A9C4 l
@@ -10483,6 +10486,7 @@ g_Recompute_Nation_Order_LookupTable_0065A9F8 65A9F8 l
 g_Recompute_Nation_Order_LookupTable_0065AA00 65AA00 l
 g_Recompute_Nation_Order_LookupTable_0065AA08 65AA08 l
 g_Recompute_Nation_Order_LookupTable_0065AA20 65AA20 l
+g_MissionEmptyResourceWeight_0065AA24 65AA24 l
 TEscortMission::'vftable' 65AAB0 l
 TBeachheadMission::'vftable' 65AB88 l
 TBlockadePortMission::'vftable' 65AC60 l
@@ -11172,7 +11176,7 @@ g_Populate_Beachhead_Mission_LookupTable_00697958 697958 l
 g_szClientSavePrefix_00697CBC 697CBC l
 s_SourcePathUMultiplayerMgr_00698040 698040 l
 g_szUiOpenParen_0069806C 69806C l
-g_Resolve_Map_Order_LookupTable_00698108 698108 l
+g_NavyOrderResourceDescriptorTable 698108 l
 g_Calculate_Mission_Order_LookupTable_0069810C 69810C l
 g_Task_Force_Order_LookupTable_00698110 698110 l
 g_Navy_Order_Priority_LookupTable_00698118 698118 l
