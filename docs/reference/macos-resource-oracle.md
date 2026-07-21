@@ -10,6 +10,13 @@ evidence. It can establish source-era pane/control tags, class names, resource n
 layout rectangles, and likely relationships between screens. It cannot assign Windows
 addresses, calling conventions, vtable slots, or inheritance.
 
+The existing control-usage evidence also joins directly referenced original
+`U*.cpp` path strings to qualified Windows class owners, then carries those module
+candidates through matching Mac View classes. `ghidra-portprep` surfaces the result
+in the normal function-recovery dossier; there is no separate module-map workflow to
+remember. Direct function/class links are confirmed, while Mac screen and generated
+factory joins remain explicitly candidate evidence.
+
 ## Reproduce it
 
 Install `hfsutils` so `hmount`, `hcopy`, and `humount` are available. Then either set
