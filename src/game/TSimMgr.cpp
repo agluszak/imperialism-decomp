@@ -1690,6 +1690,68 @@ void TSimMgr::HandleTurnInstruction_Tyer_SetCityOrderCapabilityTierValue(void* p
       static_cast<int>(indexToken), static_cast<int>(valueToken + 1));
 }
 
+// Reads a big-endian 32-bit owner-nation index and two more big-endian 32-bit tokens (a
+// relation-bar type selector, then a value). If the nation's current need for that type is
+// below the value, kicks off a resource-yield rebuild; type 0/0x14 first remaps to a fixed
+// need slot (1 or 0x13) and tops that need up to its current value before the value used
+// below is replaced by the (now-capped) current reading; finally applies the value (needIndex
+// = the type selector, or the capped current reading for the 0/0x14 case) via the need
+// target/over-cap accumulator.
+// FUNCTION: IMPERIALISM 0x00583510
+void TSimMgr::HandleTurnInstruction_Tbar_SetNationRelationBarValue(void* pInstructionRaw) {
+  STurnInstructionCursor* instruction = static_cast<STurnInstructionCursor*>(pInstructionRaw);
+
+  unsigned int ownerToken = *instruction->tokenCursor;
+  instruction->tokenCursor = instruction->tokenCursor + 1;
+  unsigned char* oraw = reinterpret_cast<unsigned char*>(&ownerToken);
+  unsigned char ot = oraw[0];
+  oraw[0] = oraw[3];
+  oraw[3] = ot;
+  ot = oraw[1];
+  oraw[1] = oraw[2];
+  oraw[2] = ot;
+
+  unsigned int typeToken = *instruction->tokenCursor;
+  instruction->tokenCursor = instruction->tokenCursor + 1;
+  unsigned char* traw = reinterpret_cast<unsigned char*>(&typeToken);
+  unsigned char tt = traw[0];
+  traw[0] = traw[3];
+  traw[3] = tt;
+  tt = traw[1];
+  traw[1] = traw[2];
+  traw[2] = tt;
+
+  unsigned int valueToken = *instruction->tokenCursor;
+  instruction->tokenCursor = instruction->tokenCursor + 1;
+  unsigned char* vraw = reinterpret_cast<unsigned char*>(&valueToken);
+  unsigned char vt = vraw[0];
+  vraw[0] = vraw[3];
+  vraw[3] = vt;
+  vt = vraw[1];
+  vraw[1] = vraw[2];
+  vraw[2] = vt;
+
+  short needIndex = static_cast<short>(typeToken);
+  int value = static_cast<int>(valueToken);
+
+  if (g_apNationStates[ownerToken]->needCurrentByType[needIndex] < value) {
+    g_apNationStates[ownerToken]->RebuildNationResourceYieldCountersAndDevelopmentTargets();
+  }
+
+  if (typeToken == 0 || typeToken == 0x14) {
+    short mappedIndex = (typeToken != 0) ? 0x13 : 1;
+    unsigned short currentRaw = g_apNationStates[ownerToken]->needCurrentByType[needIndex];
+    if (static_cast<short>(currentRaw) < value) {
+      g_apNationStates[ownerToken]->UpdateNeedTargetAndAccumulateOverCap(
+          mappedIndex, static_cast<short>(value - currentRaw));
+      value = static_cast<short>(currentRaw);
+    }
+  }
+
+  g_apNationStates[ownerToken]->UpdateNeedTargetAndAccumulateOverCap(needIndex,
+                                                                     static_cast<short>(value));
+}
+
 // Reads a big-endian 32-bit nation slot, then rebuilds that nation's resource-yield /
 // development targets and clears all 0x17 need targets back to zero.
 // FUNCTION: IMPERIALISM 0x00583670

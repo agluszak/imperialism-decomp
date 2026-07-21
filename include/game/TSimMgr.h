@@ -138,6 +138,7 @@ public:
   void HandleTurnInstruction_Flag_SetNationFlagAndRefresh(void* pInstructionRaw);     // 0x583400
   void
   HandleTurnInstruction_Tyer_SetCityOrderCapabilityTierValue(void* pInstructionRaw);   // 0x583470
+  void HandleTurnInstruction_Tbar_SetNationRelationBarValue(void* pInstructionRaw);    // 0x583510
   void HandleTurnInstruction_Cash_SetNationCash(void* pInstructionRaw);                // 0x583360
   void HandleTurnInstruction_Tran_SetNationTransportStat(void* pInstructionRaw);       // 0x582860
   void HandleTurnInstruction_Tclr_ResetNationRelationBars(void* pInstructionRaw);      // 0x583670
