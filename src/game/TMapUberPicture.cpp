@@ -19,6 +19,7 @@
 #include "game/TStaticText.h"
 #include "game/TShipFractionCluster.h"
 #include "game/TTaskForce.h"
+#include "game/TToolBarCluster.h"
 #include "game/TViewMgr.h"
 #include "game/TWindow.h"
 #include "game/TModuleLibraryCacheTableStateB.h"
@@ -134,16 +135,34 @@ void TMapUberPicture::SetMapInteractionMode(short nMode) {
       g_pMapContextActionManager->SetActiveProvinceSelection(-1);
     }
 
-    // Ground truth also probes ownerPanel->ResolveControlByTag('tbr1'); if present, and
-    // depending on whether the OLD mode was 1 (army) or the NEW mode is 1, it resolves a
-    // further ('forc'/'seas'-tagged) control, tags it, and rebuilds its caption text from
-    // two concatenated TSimMgr::GetString lookups (group 0x2730, offsets 0x12/0x8 or a
-    // single lookup at group 0x2732 offset 0x11) before calling
-    // categoryPages[]-style AutoScrollByEdgeMask(GetActiveNationId()) on it. That
-    // caption-control's real class isn't recovered (its own field writes don't match any
-    // modeled class), so this whole UI-caption side effect is left undone rather than
-    // faked; the mode-transition/selection-state and layout-capture side effects below are
-    // real.
+    // Mac MapView.rsrc:2013 identifies 'tbr1' as TToolBarCluster and its 'seas' child as
+    // TDropShadowText. Windows reuses that child as 'forc' while army mode is active.
+    TToolBarCluster* toolbar =
+        static_cast<TToolBarCluster*>(OwnerPanel()->ResolveControlByTag(0x74627231)); // 'tbr1'
+    if (toolbar != nullptr) {
+      if (previousMode == 1) {
+        TView* caption = toolbar->ResolveControlByTag(0x666f7263); // 'forc'
+        caption->AssertValid();
+        caption->controlTag = 0x73656173; // 'seas'
+
+        CString seasonCaption;
+        CString yearCaption;
+        g_pSimMgr->GetString(0x2730, 0x12, &seasonCaption);
+        g_pSimMgr->GetString(0x2730, 8, &yearCaption);
+        CString hoverHelp = seasonCaption + g_szListSeparator_00695760 + yearCaption;
+        SetControlHoverHelpTextAltEntry(hoverHelp, caption);
+      } else if (nMode == 1) {
+        CString hoverHelp;
+        TView* caption = toolbar->ResolveControlByTag(0x73656173); // 'seas'
+        caption->AssertValid();
+        caption->controlTag = 0x666f7263; // 'forc'
+        g_pSimMgr->GetString(0x2732, 0x11, &hoverHelp);
+        SetControlHoverHelpTextAltEntry(hoverHelp, caption);
+      }
+
+      toolbar->UpdateControlTagTreaTextFromNationAndMapContext(g_pSimMgr->GetActiveNationId());
+    }
+
     if (nMode == 0) {
       this->EnterMapInteractionOverlayMode(nullptr);
     }

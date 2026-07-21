@@ -94651,6 +94651,18 @@
       "to": "control_tag:0x756e6176"
     },
     {
+      "from": "windows_function:0x00596cb0",
+      "relation": "resolves_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x73656173"
+    },
+    {
+      "from": "windows_function:0x00596cb0",
+      "relation": "resolves_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x74627231"
+    },
+    {
       "from": "windows_function:0x00597810",
       "relation": "resolves_control_tag",
       "status": "resolved",
@@ -185791,6 +185803,11 @@
       "kind": "windows_function",
       "source": "src/game/TMapUberPicture.cpp"
     },
+    "windows_function:0x00596cb0": {
+      "address": "0x00596cb0",
+      "kind": "windows_function",
+      "source": "src/game/TMapUberPicture.cpp"
+    },
     "windows_function:0x00597810": {
       "address": "0x00597810",
       "kind": "windows_function",
@@ -186013,9 +186030,9 @@
       "references_picture": 909,
       "references_string": 1441,
       "references_text_style": 58,
-      "resolves_control_tag": 236
+      "resolves_control_tag": 238
     },
-    "edges": 15762,
+    "edges": 15764,
     "mac_classes_without_windows_header": 18,
     "node_kinds": {
       "control_tag": 813,
@@ -186027,9 +186044,9 @@
       "view_node": 3263,
       "windows_event": 94,
       "windows_factory": 17,
-      "windows_function": 96
+      "windows_function": 97
     },
-    "nodes": 11000,
+    "nodes": 11001,
     "unreferenced_resources": {
       "pict": 1998,
       "str_entry": 3623,
