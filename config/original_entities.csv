@@ -46,7 +46,8 @@ address|name|symbol|size|type|prototype|provenance
 414320|WrapperFor_FreeHeapBufferIfNotNull_At0047dc40_Impl||104|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At0047dc40_Impl()|
 4143b0|ImperialismApp::OnPreviewDibResource||428|function|void OnPreviewDibResource()|
 4145f0|ImperialismApp::OnIdle|?OnIdle@ImperialismApp@@UAEHJ@Z|55|function|public: virtual int __thiscall ImperialismApp::OnIdle(long)|
-414640|AssertAmbitSubsystemReadyOrFailWithBmp3B6||28|function|undefined AssertAmbitSubsystemReadyOrFailWithBmp3B6()|
+414640|ImperialismApp::OnRunAmbitDeveloperAssert||28|function|void OnRunAmbitDeveloperAssert()|
+414670|ImperialismApp::OnUpdateAmbitDeveloperAssert||13|function|void OnUpdateAmbitDeveloperAssert(CCmdUI * commandUi)|
 4146d0|PostWmCloseToMainThreadWindow||55|function|undefined PostWmCloseToMainThreadWindow()|
 414720|TApplication::PostTurnEventCodeMessage2420||51|function|undefined PostTurnEventCodeMessage2420()|
 414770|TAmbitApplication::DoSetupMenus||1|function|undefined DoSetupMenus()|
@@ -8561,6 +8562,7 @@ address|name|symbol|size|type|prototype|provenance
 6a134c|g_pModuleLibraryCacheState|||global||
 6a1350|DAT_006a1350|||global||
 6a1354|g_pfnPreviousNewHandler|||global||
+6a1358|g_pAmbitDeveloperAssertProbe_006A1358|||global||
 6a13a0|g_szEmptyString|||global||
 6a141c|g_pUiResourceHead|||global||
 6a1420|g_pUiResourceContext|||global||

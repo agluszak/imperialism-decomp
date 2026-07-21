@@ -440,6 +440,9 @@ extern char g_szCmdSwitchLangQuit_00694254[];
 extern ImperialismApp* g_pImperialismApp;
 extern int DAT_006a1350;
 extern _PNH g_pfnPreviousNewHandler;
+// Read only by ImperialismApp's developer assert command; no writer exists in the retail
+// image, so the command deliberately exercises the nil-pointer assert path.
+extern void* g_pAmbitDeveloperAssertProbe_006A1358;
 extern short g_industryActionCostWeightResCode09[16];
 extern short g_industryActionCostWeightResCode08[16];
 extern short g_industryActionCostWeightResCode10[16];

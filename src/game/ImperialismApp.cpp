@@ -19,6 +19,7 @@
 #include "game/TGreatPower.h"
 #include "game/TView.h"
 #include "game/TViewMgr.h"
+#include "game/ui_invalidation_guard.h"
 #include "game/CString.h"
 #include "game/mfc.h"
 #include "game/TAutoResolutionDialog.h"
@@ -170,6 +171,8 @@ ON_COMMAND(0x8015, OnSelectActiveNation)
 ON_COMMAND(0x8016, OnApplyTurnCooldownOverride)
 ON_COMMAND(0x8017, OnAdjustNationResourcesAndPopulation)
 ON_COMMAND(0x8018, OnPreviewDibResource)
+ON_COMMAND(0x8019, OnRunAmbitDeveloperAssert)
+ON_UPDATE_COMMAND_UI(0x8019, OnUpdateAmbitDeveloperAssert)
 END_MESSAGE_MAP()
 #endif
 
@@ -478,6 +481,21 @@ void ImperialismApp::OnPreviewDibResource() {
   if (inputValue < 20000 && dib != 0) {
     g_pModuleLibraryCacheState->ReleaseRecordById(static_cast<short>(inputValue));
   }
+}
+
+// The retail debug menu retains this explicit assert probe. Its backing pointer has no
+// writer in the image, and the paired update handler keeps the command disabled in normal
+// menus; preserving both behaviors makes the dormant command safe and structurally honest.
+// FUNCTION: IMPERIALISM 0x00414640
+void ImperialismApp::OnRunAmbitDeveloperAssert() {
+  if (g_pAmbitDeveloperAssertProbe_006A1358 == 0) {
+    TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Ambit.cpp", 0x3b6);
+  }
+}
+
+// FUNCTION: IMPERIALISM 0x00414670
+void ImperialismApp::OnUpdateAmbitDeveloperAssert(CCmdUI* commandUi) {
+  commandUi->Enable(FALSE);
 }
 
 // CWinThread::OnIdle override (vtable slot +0x68): after the base idle work, give the game

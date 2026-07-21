@@ -201,6 +201,8 @@ int DAT_006a1350 = 0;
 // Previous CRT new-handler returned by _set_new_handler at startup (write-only).
 // GLOBAL: IMPERIALISM 0x006a1354
 _PNH g_pfnPreviousNewHandler = 0;
+// GLOBAL: IMPERIALISM 0x006a1358
+void* g_pAmbitDeveloperAssertProbe_006A1358 = 0;
 
 // McAppUI.cpp module globals referenced by TView/TControl widget code. See
 // include/game/global_data_tables.h.
