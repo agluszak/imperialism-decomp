@@ -1,5 +1,6 @@
 #include "game/TNavyBattle.h"
 
+#include "game/TNavyMgr.h"
 #include "game/TNavyPlayer.h"
 #include "game/TNavyTacUnit.h"
 #include "game/TTacticalBattleView.h"
@@ -168,7 +169,8 @@ void TNavyBattle::ComputeTacticalReachableTileCostsByUnitCategory(TTacticalUnit*
 }
 
 // FUNCTION: IMPERIALISM 0x005a5b70
-undefined TNavyBattle::CreateTTacticalBattleInstance(int) {
+undefined TNavyBattle::FinalizeTacticalBattleOutcome(int) {
+  g_pNavyOrderManager->ResolveMapOrderChainsForTurnPhase();
   return 0;
 }
 

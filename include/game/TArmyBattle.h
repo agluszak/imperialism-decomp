@@ -29,7 +29,11 @@ public:
   // slot 0x0f ExecuteTacticalActionAndQueueEventIfNoAdjacentValidTarget inherited unchanged (0x5a1ca0)
   // slot 0x10 EvaluateAndResolveTacticalActionAgainstTileOccupant inherited unchanged (0x5a1ee0)
   // slot 0x11 TransferTacticalUnitToOpposingSide inherited unchanged (0x5a2700)
-  virtual undefined CreateTTacticalBattleInstance(int) override; // slot 0x12 0x5a5320
+  // Marks the battle decided (battleOutcomeCode44 = 1), asserts both sides, silences the
+  // blink cue, resets the 'tool' toolbar's current-unit display, then delegates to
+  // g_pMapContextActionManager->ApplyPostBattleStackOutcomeAndGrowUnitMeters with each
+  // side's armyStack28 to relocate/reset the losing side and grow unit quality.
+  virtual undefined FinalizeTacticalBattleOutcome(int sideWonFlag) override; // slot 0x12 0x5a5320
   // slot 0x13 MarkTacticalTileStateQueuedAndMaybeDispatchPacket inherited unchanged (0x5a3190)
   // slot 0x14 AdvanceOrResetTacticalTileStateRunAndMaybeDispatchPacket inherited unchanged (0x5a3210)
   // slot 0x15 ClearTacticalTileStateRunByStride inherited unchanged (0x5a3320)

@@ -75,7 +75,7 @@ void TTacticalBattle::DeployTacticalUnitToTile(TTacticalUnit* unit, int tileInde
 }
 
 // FUNCTION: IMPERIALISM 0x0059f730
-undefined TTacticalBattle::CreateTTacticalBattleInstance(int) {
+undefined TTacticalBattle::FinalizeTacticalBattleOutcome(int) {
   return 0;
 }
 
@@ -546,6 +546,60 @@ void TTacticalBattle::QueueTacticalEventPacket232A() {
   command->InitializeRangePair(0x232a, g_pGlobalUiRootController, 0, 0, 0);
   command->battle18 = this;
   g_pGlobalUiRootController->DispatchUiSelectionToHandler(command);
+}
+
+// FUNCTION: IMPERIALISM 0x005a0ea0
+void TTacticalBattle::AdvanceToNextTacticalUnitTurnStep() {
+  int position;
+  if (selectedUnit1c == 0) {
+    position = 1;
+  } else {
+    position = 1;
+    CIterator cursor(recordList20);
+    for (TTacticalUnit* unit = static_cast<TTacticalUnit*>(cursor.Reset()); cursor.More();
+         unit = static_cast<TTacticalUnit*>(cursor.Advance())) {
+      unit->AssertValid();
+      if (unit == selectedUnit1c) {
+        break;
+      }
+      ++position;
+    }
+  }
+
+  TTacticalUnit* candidateUnit;
+  for (;;) {
+    int totalCount = recordList20->GetCount();
+    if (position == totalCount) {
+      ++roundCounter74;
+      if (roundCounter74 >= 0x23) {
+        EvaluateTacticalSideStateAndShowBattleSummaryDialog();
+        QueueTacticalEventPacket232A();
+        return;
+      }
+      position = 1;
+    } else {
+      ++position;
+    }
+    candidateUnit = static_cast<TTacticalUnit*>(recordList20->GetEntryByOrdinal(position));
+    candidateUnit->AssertValid();
+    if (candidateUnit->state1c != 3) {
+      break;
+    }
+  }
+
+  candidateUnit->AssertValid();
+  SetCurrentTacticalUnitSelection(candidateUnit, 0);
+  if (candidateUnit->state1c == 1) {
+    ProcessTacticalUnitState1TurnStep(candidateUnit);
+    return;
+  }
+  if (g_awTacticalUnitCategoryCodeBySlot[candidateUnit->unitTypeC] == 8 &&
+      static_cast<TArmyTacUnit*>(candidateUnit)->sapTargetTileIndex40 != -1) {
+    AdvanceOrResetTacticalTileStateRunAndMaybeDispatchPacket(
+        static_cast<TArmyTacUnit*>(candidateUnit));
+    return;
+  }
+  (&tacticalPlayer14)[currentSideC]->AdvanceTacticalTurnPulse();
 }
 
 // Tactical command family: each handler echoes the command to multiplayer when it

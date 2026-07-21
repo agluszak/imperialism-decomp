@@ -58,7 +58,11 @@ public:
                                                       int targetTileIndex); // slot 0x10 0x5a1ee0
   // Moves a unit's record onto the opposing side's player list (artillery capture).
   virtual void TransferTacticalUnitToOpposingSide(TTacticalUnit* unit); // slot 0x11 0x5a2700
-  virtual undefined CreateTTacticalBattleInstance(int);                 // slot 0x12 0x59f730
+  // Called once the battle's outcome is decided (TNextMoveCommand::DoIt, 0x5a6620).
+  // Base is a no-op stub; TArmyBattle/TNavyBattle override with the real per-side
+  // outcome processing. The old "CreateTTacticalBattleInstance" name was Ghidra junk
+  // (the function finalizes an existing battle, it never constructs one).
+  virtual undefined FinalizeTacticalBattleOutcome(int sideWonFlag); // slot 0x12 0x59f730
   virtual void
   MarkTacticalTileStateQueuedAndMaybeDispatchPacket(TArmyTacUnit* unit,
                                                     int targetTileIndex); // slot 0x13 0x5a3190
@@ -193,6 +197,15 @@ public:
   // Queues the 0x232a end-of-action turn event (news a TCommand and clears pendingEndOfActionFlag48).
   // 0x5a0d60, __thiscall.
   void QueueTacticalEventPacket232A();
+  // Advances the turn cursor to the next live unit in recordList20's turn order,
+  // skipping destroyed (state1c == 3) records; on wraparound bumps roundCounter74 and
+  // ends the battle once it reaches 35 rounds (EvaluateTacticalSideStateAndShowBattle-
+  // SummaryDialog + QueueTacticalEventPacket232A). Selects the found unit and either
+  // runs its morale-broken turn step, its sap/mine tile-state advance (category 8 with
+  // a pending sapTargetTileIndex40), or the current side's AdvanceTacticalTurnPulse.
+  // Called from TNextMoveCommand::DoIt (0x5a6620) when the battle isn't yet decided.
+  // 0x5a0ea0, __thiscall, no args.
+  void AdvanceToNextTacticalUnitTurnStep();
   // Paths the unit toward the target tile. 0x5a1520, __thiscall.
   void MoveTacticalUnitTowardTile(TTacticalUnit* unit, int targetTileIndex);
   // Whether the selected unit still has a valid follow-up target for the current
