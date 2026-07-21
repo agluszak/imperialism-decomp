@@ -185,16 +185,14 @@ float TInvadeMission::CalculatePriority() {
   for (TMilitaryUnit* selectedUnit = static_cast<TMilitaryUnit*>(unitIterator.Reset());
        unitIterator.More(); selectedUnit = static_cast<TMilitaryUnit*>(unitIterator.Advance())) {
     selectedUnit->AssertValid();
-    short weightIndex =
-        selectedUnit->IsNotStationedInProvince(GetMissionTargetContextIdFromField14());
+    short weightIndex = selectedUnit->IsNotStationedInProvince(GetPresentLocation());
     if (weightIndex > 5) {
       weightIndex = 5;
     }
     float distanceWeight = g_MissionOrderDistanceDecayWeightTable_006978c8[weightIndex];
     AccumulateUnitOrderPriorityVectorContribution(
         selectedUnit, committedResources, distanceWeight,
-        static_cast<float>(
-            g_pGlobalMapState->GetProvinceUnitOrderWeight(GetMissionTargetContextIdFromField14())));
+        static_cast<float>(g_pGlobalMapState->GetProvinceUnitOrderWeight(GetPresentLocation())));
   }
 
   for (int resourceIndex = 0; resourceIndex < 5; ++resourceIndex) {
@@ -289,14 +287,13 @@ int TInvadeMission::ReturnZeroSlot2C(int* outBuffer, int unused) {
     for (void* item = iter.Reset(); iter.More(); item = iter.Advance()) {
       TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(item);
       unit->AssertValid();
-      short weightIndex = unit->IsNotStationedInProvince(GetMissionTargetContextIdFromField14());
+      short weightIndex = unit->IsNotStationedInProvince(GetPresentLocation());
       if (weightIndex > 5) {
         weightIndex = 5;
       }
       AccumulateUnitOrderPriorityVectorContribution(
           unit, vector, g_MissionOrderDistanceDecayWeightTable_006978c8[weightIndex],
-          static_cast<float>(g_pGlobalMapState->GetProvinceUnitOrderWeight(
-              GetMissionTargetContextIdFromField14())));
+          static_cast<float>(g_pGlobalMapState->GetProvinceUnitOrderWeight(GetPresentLocation())));
     }
   }
 

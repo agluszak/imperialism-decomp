@@ -184,7 +184,7 @@ char TControlSeaZoneMission::MatchesMissionKeySlot4C(int kind, int key, int mode
 }
 
 // Resolves a port-zone context command into a queued order type. `pMapOrderEntry` is the
-// TTaskForce map-order entry MissionSlot44's dispatch passed (navyField20). Builds a per-nation
+// TTaskForce map-order entry MissionSlot44's dispatch passed (taskForce20). Builds a per-nation
 // bitmask of nations with an outdated war-relation timestamp against this mission's nation,
 // tracking the first such nation's port-zone context whose cached owner (primaryNeighbors slot
 // 0) matches the entry's contextAnchor (a TZone*). If the entry's own target

@@ -156,9 +156,9 @@ void TAttackProvinceMission::MissionSlot44() {
     TryResolveTargetTerrainClass();
   }
 
-  short contextId = GetMissionTargetContextIdFromField14();
+  short contextId = GetPresentLocation();
   float vector[5];
-  AccumulateMissionUnitPriorityVectorWithOptionalFilter(vector, contextId, 0);
+  ProjectEquipage(vector, contextId, 0);
 
   float total = 0.0f;
   float weighted = 0.0f;

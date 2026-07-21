@@ -34,7 +34,7 @@ public:
   virtual char ReturnFalseSlot64() override; // slot 0x19 0x5355b0
 
   // pMapOrderEntry is the TTaskForce map-order entry passed by MissionSlot44's dispatch
-  // (navyField20); see the TNavyMission::NoOpSlot9C declaration comment.
+  // (taskForce20); see the TNavyMission::NoOpSlot9C declaration comment.
   virtual void NoOpSlot9C(
       void* pMapOrderEntry) override; // slot 0x27 0x539640 -- resolve+queue port-zone map order
   // Returns the resolved port-zone context TZone* (GetReplacementSlot48 consumes it,

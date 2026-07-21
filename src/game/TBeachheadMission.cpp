@@ -154,7 +154,7 @@ int TBeachheadMission::ReturnZeroSlot58() {
 char TBeachheadMission::ReturnFalseSlot98() {
   // ClearBlockadePortMissionChildOrderLinksIfReady: clears each queued
   // order-child's owner-back-pointer, then frees the chain.
-  if (marker11 == 0 && navyField20 != nullptr) {
+  if (marker11 == 0 && taskForce20 != nullptr) {
     return 0;
   }
   orderList24 = nullptr;

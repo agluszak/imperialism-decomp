@@ -377,16 +377,15 @@ TTaskForce* TShip::GetOrCreateMissionOrderEntryForNode() {
     }
   }
 
-  // Real construction (TTaskForce::TTaskForce(int, short), 0x552800). The original
+  // Real construction (TTaskForce::TTaskForce(TZone*, short), 0x552800). The original
   // compiles this one call site's construction as inlined field stores rather than a
   // call to that ctor (likely a disabled-ICF duplicate, matching TArmyMission-style
   // per-callsite reproduction elsewhere in this codebase); that inlining is not
   // reproducible from C++ source without a manual vtable write, which construction
   // Hard Rule 2 forbids outside quarantined runtime files. `new T()` is the correct
   // model here even though it costs some match percentage at this address.
-  // The entry's zone context comes from this ship's port zone; the entry ctor takes the
-  // contextAnchor (a TZone*) as an opaque int arg and stores it verbatim.
-  TTaskForce* entry = new TTaskForce(reinterpret_cast<int>(field08), ownerNationSlot14);
+  // The entry's zone context comes from this ship's port zone.
+  TTaskForce* entry = new TTaskForce(field08, ownerNationSlot14);
   if (entry == nullptr) {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UNavy.cpp", 0x306);

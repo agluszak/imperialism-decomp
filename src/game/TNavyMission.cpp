@@ -34,8 +34,8 @@ static inline float SwapFloat(float val) {
 TNavyMission::TNavyMission(TZone* targetZone) : TMission() {
   targetZone14 = targetZone;
   targetZone18 = nullptr;
-  navyField1c = 0;
-  navyField20 = nullptr;
+  selectedOrder1c = nullptr;
+  taskForce20 = nullptr;
   orderList24 = nullptr;
   navyState28 = 0;
   for (int i = 0; i < 4; ++i) {
@@ -123,10 +123,10 @@ void AccumulateNavyOrderVectorFromNode(TShip* orderNode, float* vector) {
 
 // FUNCTION: IMPERIALISM 0x005364c0
 void TNavyMission::Free() {
-  if (navyField20 != nullptr) {
-    navyField20->Free();
+  if (taskForce20 != nullptr) {
+    taskForce20->Free();
   }
-  navyField20 = nullptr;
+  taskForce20 = nullptr;
 
   while (orderList24 != nullptr) {
     orderList24->payload = nullptr;
@@ -194,11 +194,11 @@ void TNavyMission::ReadFrom(TStream* stream) {
   }
 
   stream->ReadBytes(&navyState28, 4);
-  navyField1c = 0;
-  if (navyField20 != nullptr) {
-    navyField20->Free();
+  selectedOrder1c = nullptr;
+  if (taskForce20 != nullptr) {
+    taskForce20->Free();
   }
-  navyField20 = nullptr;
+  taskForce20 = nullptr;
 }
 
 // FUNCTION: IMPERIALISM 0x00536740
@@ -236,15 +236,15 @@ void TNavyMission::NoOpSlot8C(void* a, int b) {
     }
   }
   item->missionBacklink2c = nullptr;
-  if (navyField1c == reinterpret_cast<int>(a)) {
-    navyField1c = 0;
+  if (selectedOrder1c == item) {
+    selectedOrder1c = nullptr;
   }
 }
 
 // FUNCTION: IMPERIALISM 0x00536810
 void TNavyMission::NoOpSlot90(void* a) {
-  if (navyField20 == a) {
-    navyField20 = nullptr;
+  if (taskForce20 == a) {
+    taskForce20 = nullptr;
   }
 }
 // FUNCTION: IMPERIALISM 0x00536840
@@ -297,13 +297,69 @@ void TNavyMission::RefreshSlot40() {
   } else if (mode == 2) {
     if (ComputeNavyOrderCategorySimilarityRatio(1) < 0.8f) {
       navyState28 = 0;
-      navyField20 = static_cast<TObject*>(GetReplacementSlot48());
+      targetZone18 = RefreshMissionPortZoneContextForNation();
     }
   }
 }
 
+// FUNCTION: IMPERIALISM 0x00536d60
+void TNavyMission::CombineForce(TZone* contextAnchor, TTaskForce*& taskForce) {
+  if (taskForce != nullptr && taskForce->contextAnchor != contextAnchor) {
+    taskForce->Free();
+    taskForce = nullptr;
+  }
+
+  for (TMapOrderChildLinkNode* node = orderList24; node != nullptr; node = node->next) {
+    TShip* ship = static_cast<TShip*>(node->payload);
+    if (ship->field08 != contextAnchor) {
+      continue;
+    }
+    if (taskForce == nullptr) {
+      taskForce = new TTaskForce(contextAnchor, nationId04);
+      taskForce->NoOpTaskForceInitSlot();
+    }
+    ship->RemoveNode(taskForce);
+  }
+}
+
 // FUNCTION: IMPERIALISM 0x00536e40
-void TNavyMission::MissionSlot44() {}
+void TNavyMission::MissionSlot44() {
+  if (orderList24 != nullptr) {
+    orderList24->active = 0;
+    orderList24->next->SetChainActiveFlag(0);
+  }
+
+  if (navyState28 == 2) {
+    ConsolidateMissionOrderEntriesByTargetAndQueue(targetZone14);
+    CombineForce(targetZone14, taskForce20);
+    if (taskForce20 != nullptr) {
+      NoOpSlot9C(taskForce20);
+    }
+    return;
+  }
+
+  if (navyState28 == 1) {
+    ConsolidateMissionOrderEntriesByTargetAndQueue(targetZone14);
+    CombineForce(targetZone14, taskForce20);
+    if (taskForce20 != nullptr) {
+      taskForce20->SetMapOrderType9AndQueue();
+    }
+    return;
+  }
+
+  if (navyState28 == 0) {
+    if (targetZone18 == nullptr) {
+      targetZone18 = RefreshMissionPortZoneContextForNation();
+    }
+    QueueMissionOrdersByPriorityForContext(targetZone14, &selectedOrder1c);
+    ConsolidateMissionOrderEntriesByTargetAndQueue(targetZone18);
+    CombineForce(targetZone18, taskForce20);
+    if (taskForce20 != nullptr) {
+      taskForce20->ResetOrderTypeAndStrengthDword(0);
+      taskForce20->SetMapOrderType3Or4AndQueue(0);
+    }
+  }
+}
 
 // FUNCTION: IMPERIALISM 0x00536fa0
 TZone* TNavyMission::RefreshMissionPortZoneContextForNation() {
@@ -315,7 +371,7 @@ TMission* TNavyMission::GetReplacementSlot48() {
   if (targetZone18 != nullptr) {
     if (targetZone18->QueryPortZoneCapability() != 0) {
       if (targetZone18->QueryZoneCapabilityFlagD(nationId04) == 0) {
-        targetZone18 = reinterpret_cast<TZone*>(GetReplacementSlot48());
+        targetZone18 = RefreshMissionPortZoneContextForNation();
       }
     }
   }
@@ -335,15 +391,14 @@ TZone* TNavyMission::GetActiveTargetZoneByState28() {
 }
 
 // FUNCTION: IMPERIALISM 0x00537090
-void TNavyMission::QueueMissionOrdersByPriorityForContext(int pContextAnchor,
-                                                          int* ppSelectedChildNode) {
+void TNavyMission::QueueMissionOrdersByPriorityForContext(TZone* contextAnchor,
+                                                          TShip** selectedOrder) {
   // Was bridged through a mis-targeted "FindFirstTrackedHandlerMatchingModeAndShortKey"
   // cdecl stub cast (a name collision with the unrelated real function at 0x535940); the
   // actual callee here (verified via the 0x40635c ILT thunk row) is the already-ported
   // TMapOrderChildLinkNode::FindNodeMatching (0x552510).
-  if (*ppSelectedChildNode != 0 &&
-      orderList24->FindNodeMatching(reinterpret_cast<TObject*>(*ppSelectedChildNode)) == nullptr) {
-    *ppSelectedChildNode = 0;
+  if (*selectedOrder != nullptr && orderList24->FindNodeMatching(*selectedOrder) == nullptr) {
+    *selectedOrder = nullptr;
   }
 
   void* topOrder = nullptr;
@@ -361,19 +416,19 @@ void TNavyMission::QueueMissionOrdersByPriorityForContext(int pContextAnchor,
     }
   }
 
-  void* selectedOrder = reinterpret_cast<void*>(*ppSelectedChildNode);
+  TShip* currentSelection = *selectedOrder;
 
   if (topOrder != nullptr) {
-    if (topOrder == selectedOrder) {
+    if (topOrder == currentSelection) {
       topOrder = nullptr;
     } else {
-      if (selectedOrder != nullptr) {
+      if (currentSelection != nullptr) {
         // Ground truth (0x537090): the original compares the *existing selection's*
         // zone-distance against the *candidate's* zone-distance, both to targetZone14 --
         // the prior port dropped this argument and used targetZone14 itself as a fake
         // receiver for target1 instead of selectedOrder.
-        short target1 = static_cast<TShip*>(selectedOrder)
-                            ->ComputeOrderNodeDistanceQuotientByDescriptorWord24(targetZone14);
+        short target1 =
+            currentSelection->ComputeOrderNodeDistanceQuotientByDescriptorWord24(targetZone14);
         short target2 =
             static_cast<TShip*>(topOrder)->ComputeOrderNodeDistanceQuotientByDescriptorWord24(
                 targetZone14);
@@ -381,13 +436,13 @@ void TNavyMission::QueueMissionOrdersByPriorityForContext(int pContextAnchor,
           goto LAB_0053711a;
         }
       }
-      *ppSelectedChildNode = reinterpret_cast<int>(topOrder);
+      *selectedOrder = static_cast<TShip*>(topOrder);
       topOrder = nullptr;
     }
   }
 
 LAB_0053711a:
-  void* startOrder = reinterpret_cast<void*>(*ppSelectedChildNode);
+  void* startOrder = *selectedOrder;
   void* orders[2] = {startOrder, topOrder};
 
   for (int i = 0; i < 2; ++i) {
@@ -401,16 +456,16 @@ LAB_0053711a:
     node->active = 1;
     TTaskForce* entry = static_cast<TShip*>(orderObj)->GetOrCreateMissionOrderEntryForNode();
 
-    if (static_cast<TShip*>(orderObj)->field08 == reinterpret_cast<TZone*>(pContextAnchor)) {
+    if (static_cast<TShip*>(orderObj)->field08 == contextAnchor) {
       entry->SetMapOrderType9AndQueue();
     } else {
-      entry->PromoteMapOrderChainAndQueue(reinterpret_cast<TZone*>(pContextAnchor));
+      entry->PromoteMapOrderChainAndQueue(contextAnchor);
     }
   }
 }
 
 // FUNCTION: IMPERIALISM 0x005371d0
-void TNavyMission::ConsolidateMissionOrderEntriesByTargetAndQueue(int* pContextAnchor) {
+void TNavyMission::ConsolidateMissionOrderEntriesByTargetAndQueue(TZone* contextAnchor) {
   for (TMapOrderChildLinkNode* node = orderList24; node != nullptr; node = node->next) {
     if (node->active == 0) {
       node->active = 1;
@@ -422,7 +477,7 @@ void TNavyMission::ConsolidateMissionOrderEntriesByTargetAndQueue(int* pContextA
           other->active = 1;
         }
       }
-      entry->PromoteMapOrderChainAndQueue(reinterpret_cast<TZone*>(pContextAnchor));
+      entry->PromoteMapOrderChainAndQueue(contextAnchor);
     }
   }
 }
@@ -628,7 +683,7 @@ float TNavyMission::ReturnZeroFloatSlot6C() {
 void TNavyMission::BuildNavyOrderCategoryVectorForNationWithExclusion(float* vector,
                                                                       TZone* nearZone,
                                                                       short distanceThreshold,
-                                                                      TObject* farZone) {
+                                                                      TZone* farZone) {
   vector[0] = 0.0f;
   vector[1] = 0.0f;
   vector[2] = 0.0f;
@@ -642,7 +697,7 @@ void TNavyMission::BuildNavyOrderCategoryVectorForNationWithExclusion(float* vec
     if (nearZone != nullptr &&
         ship->ComputeOrderNodeDistanceQuotientByDescriptorWord24(nearZone) > distanceThreshold) {
       inRange = farZone != nullptr && ship->ComputeOrderNodeDistanceQuotientByDescriptorWord24(
-                                          static_cast<TZone*>(farZone)) <= distanceThreshold;
+                                          farZone) <= distanceThreshold;
     }
     if (inRange) {
       short normBase = ship->GetNavyOrderNormalizationBaseByNationType();
@@ -666,7 +721,7 @@ void TNavyMission::BuildNavyOrderCategoryVectorForNationWithExclusion(float* vec
 float TNavyMission::ComputeNavyOrderCategorySimilarityRatio(int excludeCurrent) {
   float vector[4];
   BuildNavyOrderCategoryVectorForNationWithExclusion(
-      vector, targetZone14, static_cast<short>(excludeCurrent), navyField20);
+      vector, targetZone14, static_cast<short>(excludeCurrent), targetZone18);
   float numerator = 0.0f;
   float denominator = 0.0f;
   for (int i = 0; i < 4; ++i) {
@@ -739,7 +794,7 @@ void TNavyMission::BuildMissionQueuedOrderCategoryVector(float* vector) {
 }
 
 // Same shape as ComputeNavyOrderCategorySimilarityRatio above, but always scores against
-// targetZone14 (near) / targetZone18 (far) instead of navyField20, with an explicit
+// targetZone14 (near) / targetZone18 (far), with an explicit
 // caller-supplied distance threshold instead of a fixed 0/1.
 // FUNCTION: IMPERIALISM 0x00537eb0
 float TNavyMission::ComputeMissionQueuedOrderSimilarityForTargetNation(short distanceThreshold) {
@@ -965,8 +1020,8 @@ float TNavyMission::ComputeOrderDistributionSimilarityScoreForZoneWithBaseProfil
 TNavyMission::TNavyMission() : TMission() {
   targetZone14 = nullptr;
   targetZone18 = nullptr;
-  navyField1c = 0;
-  navyField20 = nullptr;
+  selectedOrder1c = nullptr;
+  taskForce20 = nullptr;
   orderList24 = nullptr;
   navyState28 = 0;
   for (int i = 0; i < 4; ++i) {

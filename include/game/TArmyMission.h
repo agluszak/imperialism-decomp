@@ -49,21 +49,28 @@ public:
   ReturnFalseSlot98() override; // slot 0x98 0x53c4f0 -- queue eligible units by movement class
 
   // First TArmyMission-introduced virtual (TMission abstract slot 0x27 / offset 0x9c).
-  virtual short GetMissionTargetContextIdFromField14(); // 0x535750
+  // Mac: GetPresentLocation() const. Returns the mission's target province/context id.
+  virtual short GetPresentLocation() const; // 0x535750
 
-  // Accumulate the 5-slot unit-priority vector over orderListAt18, optionally keeping
-  // only units whose order tile matches targetTile (targetTile == -1 disables the
-  // filter). 0x53c9d0, __thiscall, RET 0xC.
-  void AccumulateMissionUnitPriorityVectorWithOptionalFilter(float* vector, short targetTile,
-                                                             short bypassTileFilter);
+  // Mac: ProjectEquipage(float*, short, short) const. Accumulates the five-slot
+  // unit equipage vector, optionally filtering by the target tile.
+  void ProjectEquipage(float* vector, short targetTile, short bypassTileFilter) const; // 0x53c9d0
+
+  // Mac: ProjectSatisfaction(short) const. Scores projected equipage against the
+  // mission's requested resource weights.
+  float ProjectSatisfaction(short bypassTileFilter) const; // 0x53cac0
 
   // Adds one unit's contribution directly into `vector` (no accumulation loop): weight-
-  // table lookup by clamped IsNotStationedInProvince distance from GetMissionTarget-
-  // ContextIdFromField14, scaled by GetProvinceUnitOrderWeight, with an explicit sign
+  // table lookup by clamped IsNotStationedInProvince distance from GetPresentLocation,
+  // scaled by GetProvinceUnitOrderWeight, with an explicit sign
   // (true adds, false subtracts) instead of the fixed +1.0 the loop-based accumulators use.
   // 0x53cb50, __thiscall, RET 0xC.
   void AccumulateMissionUnitPriorityContributionWithScaleMode(TMilitaryUnit* unit, float* vector,
                                                               bool scaleMode);
+
+  // Mac: GetWeightedEquipage(float*) const. Builds the distance-weighted five-slot
+  // vector for the mission's current unit list.
+  void GetWeightedEquipage(float* vector) const; // 0x53cda0
 
   // Order-vector score including one extra candidate unit contribution
   // (0x53d200 negates the candidate's scale: the "without unit" variant).
@@ -74,7 +81,7 @@ public:
 private:
   // Shared accumulation loop over orderListAt18 (0x53c620 / 0x53ceb0 both repeat
   // this exact per-unit vector-contribution pattern).
-  void AccumulateOrderPriorityVector(float* vector);
+  void AccumulateOrderPriorityVector(float* vector) const;
 };
 
 ASSERT_SIZE(TArmyMission, 0x30);
