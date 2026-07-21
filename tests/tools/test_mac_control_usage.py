@@ -62,6 +62,18 @@ class MacControlUsageTests(unittest.TestCase):
         )
         self.assertEqual(setup["status"], "candidate")
 
+    def test_class_dossier_summarizes_resolved_and_missing_text_styles(self) -> None:
+        drop_shadow = self.index["classes"]["TDropShadowText"]["text_styles"]
+        map_style = next(
+            row for row in drop_shadow if row["resource"] == "MapView.rsrc:TxSt:1503"
+        )
+        self.assertEqual(
+            (map_style["decoded"]["font_name"], map_style["decoded"]["point_size"]),
+            ("A", 9),
+        )
+        edit_styles = self.index["classes"]["TEditText"]["text_styles"]
+        self.assertTrue(any(row["decoded"] is None for row in edit_styles))
+
 
 if __name__ == "__main__":
     unittest.main()

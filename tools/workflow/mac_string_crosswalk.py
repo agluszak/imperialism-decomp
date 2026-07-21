@@ -24,6 +24,7 @@ from tools.common.repo import repo_root_from_file
 
 FORMAT_VERSION = 1
 MAC_STRINGS_PATH = "vendor/macos_codewarrior/evidence/resources/strings.csv"
+MAC_TEXT_RESOURCES_PATH = "vendor/macos_codewarrior/evidence/resources/text_resources.json"
 MAC_SUMMARY_PATH = "vendor/macos_codewarrior/evidence/resources/summary.json"
 WINDOWS_STRINGS_PATH = "docs/reference/strenu-strings.tsv"
 GLOBAL_DATA_PATH = "src/game/global_data_tables.cpp"
@@ -164,10 +165,31 @@ def load_mac_strings(repo_root: Path) -> list[dict]:
         rows.append(
             {
                 "id": f"{resource_file}:STR#:{group_id}:{string_index}",
+                "resource_type": "STR#",
                 "resource_file": resource_file,
                 "group_id": group_id,
                 "group_name": row["group_name"],
                 "string_index": string_index,
+                "text": text,
+                "normalized": normalized_text(text),
+                "semantic": semantic_text(text),
+                "placeholders": placeholder_signature(text),
+            }
+        )
+    text_resources = json.loads(
+        (repo_root / MAC_TEXT_RESOURCES_PATH).read_text(encoding="utf-8")
+    )
+    for row in text_resources["texts"]:
+        text = str(row["text"])
+        resource_file = str(row["resource_file"])
+        resource_id = int(row["resource_id"])
+        rows.append(
+            {
+                "id": f"{resource_file}:TEXT:{resource_id}",
+                "resource_type": "TEXT",
+                "resource_file": resource_file,
+                "resource_id": resource_id,
+                "resource_name": row["name"],
                 "text": text,
                 "normalized": normalized_text(text),
                 "semantic": semantic_text(text),
@@ -232,7 +254,7 @@ def build_crosswalk(repo_root: Path) -> dict:
     formula_matches = 0
     for mac in mac_rows:
         candidates: dict[tuple, dict] = {}
-        if mac["resource_file"] == "Strings.rsrc":
+        if mac["resource_type"] == "STR#" and mac["resource_file"] == "Strings.rsrc":
             runtime_id = (mac["group_id"] * 100 + mac["string_index"]) & 0xFFFF
             for windows in windows_by_id.get(runtime_id, []):
                 text_match = _text_match_score(mac, windows)
@@ -293,19 +315,20 @@ def build_crosswalk(repo_root: Path) -> dict:
         ),
         "sources": {
             "mac_strings": MAC_STRINGS_PATH,
+            "mac_text_resources": MAC_TEXT_RESOURCES_PATH,
             "mac_resource_set_sha256": summary["resource_set_sha256"],
             "windows_strings": WINDOWS_STRINGS_PATH,
             "embedded_globals": GLOBAL_DATA_PATH,
-            "text_resources": "pending decoded TEXT evidence (imperialism-decomp-1uj.77.4)",
+            "text_resources": MAC_TEXT_RESOURCES_PATH,
         },
         "summary": {
-            "mac_strings": len(mac_rows),
+            "mac_strings": sum(row["resource_type"] == "STR#" for row in mac_rows),
+            "text_resources": sum(row["resource_type"] == "TEXT" for row in mac_rows),
             "windows_gob_strings": len(windows_rows),
             "embedded_globals": len(embedded_rows),
             "mac_strings_with_candidates": matched,
             "formula_matches": formula_matches,
             "functions_with_references": len(functions),
-            "text_resources": 0,
         },
         "mac_strings": public_mac_rows,
         "windows_gob_strings": public_windows_rows,
@@ -372,7 +395,9 @@ def _build_function_references(
             }
 
     mac_by_key = {
-        (row["resource_file"], row["group_id"], row["string_index"]): row for row in mac_rows
+        (row["resource_file"], row["group_id"], row["string_index"]): row
+        for row in mac_rows
+        if row["resource_type"] == "STR#"
     }
     views_data = json.loads((repo_root / UI_VIEWS_PATH).read_text(encoding="utf-8"))
     views = {(row["resource_file"], int(row["view_id"])): row for row in views_data["views"]}
@@ -419,7 +444,8 @@ def _print_crosswalk(index: dict, group: int, string_index: int, resource_file: 
     rows = [
         row
         for row in index["mac_strings"]
-        if row["group_id"] == group
+        if row["resource_type"] == "STR#"
+        and row["group_id"] == group
         and row["string_index"] == string_index
         and (resource_file is None or row["resource_file"] == resource_file)
     ]

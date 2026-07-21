@@ -24,6 +24,8 @@ class MacResourceXrefTests(unittest.TestCase):
         self.assertEqual(kinds["pict"], 2297)
         self.assertEqual(kinds["str_entry"], 3821)
         self.assertEqual(kinds["txst"], 316)
+        self.assertEqual(kinds["text"], 182)
+        self.assertEqual(kinds["style_scrap"], 89)
 
     def test_generated_factory_ownership_reaches_mac_view(self) -> None:
         edges = self.graph["edges"]
@@ -81,10 +83,20 @@ class MacResourceXrefTests(unittest.TestCase):
             self.graph["edges"],
         )
 
-    def test_undecoded_text_and_styl_source_is_explicit(self) -> None:
+    def test_text_and_style_resources_are_decoded_and_linked(self) -> None:
         source = self.graph["sources"]["text_and_styl"]
-        self.assertEqual(source["status"], "pending_decoder")
-        self.assertEqual(source["bead"], "imperialism-decomp-1uj.77.4")
+        self.assertEqual(source["status"], "decoded")
+        style = self.graph["nodes"]["Armory.rsrc:TxSt:1312"]
+        self.assertEqual((style["font_name"], style["point_size"]), ("A", 9))
+        self.assertIn(
+            {
+                "from": "Strings.rsrc:TEXT:3012",
+                "relation": "has_style_scrap",
+                "to": "Strings.rsrc:styl:3012",
+                "status": "resolved",
+            },
+            self.graph["edges"],
+        )
 
 
 if __name__ == "__main__":

@@ -1,9 +1,11 @@
 # Mac UI resource oracle
 
 The retail Mac build describes its UI in custom `View` resources. It does not use
-PowerPlant `PPob`/`PPTM` resources. The normalized, metadata-only inventory is vendored
-under `vendor/macos_codewarrior/evidence/resources/`; no retail image or raw bitmap,
-audio, or serialized resource payload is committed.
+PowerPlant `PPob`/`PPTM` resources. The normalized evidence inventory is vendored under
+`vendor/macos_codewarrior/evidence/resources/`; no retail image or raw bitmap/audio
+payload is committed. Small text-style payloads are retained as hex beside their named
+fields, and `TEXT` is retained as decoded MacRoman text so the evidence is directly
+searchable.
 
 Like the CodeWarrior symbol inventory, this is an oracle rather than Windows ABI
 evidence. It can establish source-era pane/control tags, class names, resource names,
@@ -44,23 +46,31 @@ deterministically sorted files:
 | `summary.json` | Counts, a source-set fingerprint, resource-file inventory, and the Windows cross-check result |
 | `views.csv` | `View` ID/name, serialized size/hash, and widget count |
 | `widgets.csv` | Screen, record offset, nesting, four-character type/tag, class, and rectangle |
-| `ui_views.json` | Typed generator IR: hierarchy (including embedded `nmbr` controls), FourCC integers, geometry, state/command values, and typed picture, text, number, cluster, edit, text-view, and window properties |
+| `ui_views.json` | Typed generator IR: hierarchy (including embedded `nmbr` controls), FourCC integers, geometry, state/command values, and typed picture, text/style/alignment, number, cluster, edit, text-view, and window properties |
 | `pictures.csv` | `PICT` ID/name, bounds, serialized size/hash; no pixels |
 | `strings.csv` | `STR#` group ID/name and one-based index/text |
-| `text_styles.csv` | `TxSt` ID/name and serialized size/hash; no payload |
+| `text_styles.csv` | Flat `TxSt` index with font name, point size, QuickDraw face flags, RGB color, raw bytes, confidence, and the explicitly unexplained alignment byte |
+| `text_resources.json` | Canonical decoded `TxSt`, MacRoman `TEXT`, and TextEdit `styl` runs, including run ranges, font/face/size/color, line height/ascent/leading, raw style bytes, and confidence |
 | `id_collisions.csv` | Same type/ID appearing in multiple resource files |
 
 The checker validates every decoded hierarchy for one reachable root, ordered and
 non-overlapping siblings, parent containment, family FourCC identity, and typed-family
 minimum lengths. Fresh extraction also rejects missing or ambiguous family markers and
 records per-node decoder confidence while preserving unparsed bytes as hex evidence.
+`TxSt` must be a ten-byte `TextStyle` header plus an exactly bounded Pascal font name.
+`styl` must be a TextEdit `StScrpRec`: one run count followed by fixed 20-byte
+`ScrpSTElement` records whose starts are ordered and bounded by the paired `TEXT`.
+This layout is also documented by Apple's archived
+[Text Media Handlers guide](https://developer.apple.com/library/archive/documentation/QuickTime/RM/MediaTypesAndHandlers/MHFundamentals/D-Chapter/4TextMediaHandlers.html).
 
 Real-resource sentinels pin both the resource SHA and selected decoded properties for
-`MapView.rsrc` 1350/2013, `Multiplayer.rsrc` 1507, `Startup.rsrc` 1500, and
-`Univ.rsrc` 9210. Together they cover nested clusters, window/float-window records,
-static text, edit and number controls, text views, nonzero picture/control insets, and
-the deeply nested university hierarchy. `Startup.rsrc` 1500 additionally retains its
-ten-record Windows event `0x5dc` correspondence check.
+`MapView.rsrc` 1350/2013, `Linger.rsrc` 2020, `Multiplayer.rsrc` 1507,
+`Startup.rsrc` 1500, and `Univ.rsrc` 9210. Together they cover nested clusters,
+window/float-window records, static/deluxe/edit/text-view styles, number controls,
+nonzero picture/control insets, and the deeply nested university hierarchy. Separate
+style sentinels pin bold and nonblack `TxSt` records plus a three-run `TEXT`/`styl`
+pair. `Startup.rsrc` 1500 additionally retains its ten-record Windows event `0x5dc`
+correspondence check.
 
 ## Resource ID scope
 
@@ -128,8 +138,9 @@ classification and intentional-delta counts in its summary.
 ## Resource reference graph
 
 `docs/reference/mac_resource_xrefs.json` joins every committed `View` and widget with
-its file-scoped `PICT`, `STR#`, and `TxSt` targets. It also connects Windows factories
-to events and mapped views, Mac classes and control tags to their instances, and
+its file-scoped `PICT`, `STR#`, and decoded `TxSt` targets. Paired `TEXT` and `styl`
+records are graph nodes connected to their decoded style runs. It also connects Windows
+factories to events and mapped views, Mac classes and control tags to their instances, and
 statically resolved Windows `ResolveControlByTag` calls to tags present in the Mac
 corpus. Query any graph identity directly:
 
@@ -143,9 +154,10 @@ The default query includes the transitive dependency set, so a screen query expo
 its widget classes, tags, pictures, strings, and text styles as one dossier. Missing
 targets remain dangling under the original resource-file scope; each carries an
 explanation and the focused Beads owner instead of being guessed from a same-numbered
-resource in another file. Undecoded `TEXT`/`styl` input is explicitly marked pending
-`imperialism-decomp-1uj.77.4`, and the graph gate rejects stale output or any dangling
-edge without an explanation and owner.
+resource in another file. In particular, an edit control whose file lacks its cited
+`TxSt` stays explicitly unresolved rather than borrowing a collision from another open
+resource file. The graph gate rejects stale output or any dangling edge without an
+explanation and owner.
 
 ## Serialized widget payload differentials
 
