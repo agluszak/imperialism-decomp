@@ -519,7 +519,9 @@ extern POINT g_ptControlStringModalMessage;
 extern TTradeMgr* g_pNationInteractionStateManager;
 extern CString g_cstrCountryNameSettingValue006A4220;
 extern TSetupRandomMapPicture* g_pActiveRandomMapSetupPicture006A4268;
-extern "C" short g_nationMetricSlotDispatchOrder006d810[0x11];
+extern "C" short g_aTradeDealCategoryOrder_0066D810[0x11];
+extern "C" const double g_TradePowerIdentity_0066D8E0;
+extern "C" const short g_aTradeItemBasePriceByCategory_0069A910[0x11];
 extern "C" const unsigned int g_tradeCommodityRowTagTable[17];
 // Shared substitution value read by TTradeTotalsView::Draw (0x5c1bd0) as
 // the sole scanBracketExpressions() argument for its "balance" row template (GetString

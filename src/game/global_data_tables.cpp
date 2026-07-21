@@ -1341,11 +1341,20 @@ unsigned char g_bRandomMapDeveloperCheatFlag = 0;
 // GLOBAL: IMPERIALISM 0x00698bec
 char g_szConanCheatFileName_00698BEC[] = "Conan";
 
-// Metric-slot dispatch-order lookup consumed by
+// Trade-item dispatch order consumed by
 // TTradeMgr::ProcessPendingDiplomacyTransferEntriesUntilBlockedWrapper (0x5b9190). Values
-// are the original rdata table; kept zero-initialized here (function pairing is by address).
+// are read directly from the original rdata table.
 // GLOBAL: IMPERIALISM 0x0066d810
-short g_nationMetricSlotDispatchOrder006d810[0x11] = {0};
+short g_aTradeDealCategoryOrder_0066D810[0x11] = {13, 14, 15, 16, 7, 8, 9, 10, 11,
+                                                  12, 0,  1,  2,  3, 4, 5, 6};
+// Multiplicative identity used by TTradeMgr::Power.
+// GLOBAL: IMPERIALISM 0x0066d8e0
+extern const double g_TradePowerIdentity_0066D8E0 = 1.0;
+
+// Initial price for each of the 17 trade-item categories.
+// GLOBAL: IMPERIALISM 0x0069a910
+extern const short g_aTradeItemBasePriceByCategory_0069A910[0x11] = {
+    100, 100, 100, 100, 100, 300, 100, 100, 300, 300, 300, 300, 300, 900, 900, 900, 900};
 
 // 17 four-char control tags (space + digit + 2-letter category: "sr" raw materials 0-6,
 // "am" manufactured 0-5, "dg" 0-3), walked by TTradeScreenPicture::Draw to
