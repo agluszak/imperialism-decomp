@@ -615,6 +615,21 @@ mac-control-usage *args:
 mac-control-usage-check:
   uv run python -m tools.workflow.mac_control_usage --check
 
+[doc('Query the committed file-scoped Mac resource reference graph')]
+[group('ghidra-inspect')]
+mac-resource-xrefs *args:
+  uv run python -m tools.workflow.mac_resource_xrefs {{args}}
+
+[doc('MUTATES: regenerate the committed Mac resource reference graph')]
+[group('recovery')]
+mac-resource-xrefs-update:
+  uv run python -m tools.workflow.mac_resource_xrefs --write
+
+[doc('Reject stale resource xrefs and unexplained dangling edges')]
+[group('gates')]
+mac-resource-xrefs-check:
+  uv run python -m tools.workflow.mac_resource_xrefs --check
+
 [doc('Search file-scoped Mac STR# text and show ranked Windows candidates')]
 [group('ghidra-inspect')]
 mac-string-search query:
@@ -1436,6 +1451,7 @@ source-gates:
   just ui-codegen-check
   just ui-view-coverage-check
   just mac-control-usage-check
+  just mac-resource-xrefs-check
   just mac-string-crosswalk-check
   just ui-platform-diff-check
   just tooling-check
