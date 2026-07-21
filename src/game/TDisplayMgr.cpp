@@ -59,16 +59,23 @@ IMPLEMENT_DYNCREATE(TDisplayMgr, TObject)
 // FUNCTION: IMPERIALISM 0x004fe7a0
 TDisplayMgr::TDisplayMgr()
     : TObject(), activeDialog(0), viewportMetric(8), dialogActiveFlag(0), field0c(0),
-      eventCode0e(0), tileIcon10(0), tileIcon11(0), tileIcon12(0), tileIcon13(0), tileIcon14(0),
-      tileIcon15(0), tileIcon16(0), tileIcon17(0), field18(0), clipSnapshotEvent(0), field1e(0),
-      turnOrderList(0) {}
+      eventCode0e(0), field18(0), clipSnapshotEvent(0), field1e(0), turnOrderList(0) {
+  hiliteColor.rgbBlue = 0;
+  hiliteColor.rgbGreen = 0;
+  hiliteColor.rgbRed = 0;
+  hiliteColor.rgbReserved = 0;
+  savedHiliteColor.rgbBlue = 0;
+  savedHiliteColor.rgbGreen = 0;
+  savedHiliteColor.rgbRed = 0;
+  savedHiliteColor.rgbReserved = 0;
+}
 
 // SYNTHETIC: IMPERIALISM 0x004fe7f0
 // TDisplayMgr::`scalar deleting destructor'
 TDisplayMgr::~TDisplayMgr() {}
 
 // FUNCTION: IMPERIALISM 0x004fe840
-undefined TDisplayMgr::InitializeTurnOrderNavigationDialogByViewportSize() {
+void TDisplayMgr::InitializeWindowAndMBarSize() {
   TPtrList* list = new TPtrList();
   if (list == 0) {
     turnOrderList = 0;
@@ -96,7 +103,7 @@ undefined TDisplayMgr::InitializeTurnOrderNavigationDialogByViewportSize() {
     eventCode0e = 0x7d2;
   }
 
-  OrphanRetStub_004fed50(0);
+  SetMenuHeight(0);
 
   TView* dialogRoot = g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(eventCode0e);
   if (dialogRoot == 0) {
@@ -105,8 +112,7 @@ undefined TDisplayMgr::InitializeTurnOrderNavigationDialogByViewportSize() {
   }
   activeDialog = dialogRoot;
   field18 = InitializeTurnOrderNavigationDialogByViewportSize_Impl(0x80);
-  EnsurePrimaryRenderSurfaceContextAllocated();
-  return 0;
+  ExamineGWorld();
 }
 
 // FUNCTION: IMPERIALISM 0x004fea60
@@ -118,100 +124,90 @@ void TDisplayMgr::Free() {
 }
 
 // FUNCTION: IMPERIALISM 0x004feab0
-void TDisplayMgr::InitializeBitmapSurfaceContextWithRetry(TQuickDrawSurfaceContext** outContext,
-                                                          short bitDepth, RECT* bounds) {
-  short result = InitializeBitmapDescriptorRecordAndLoadSurfaceNode(outContext, bitDepth, bounds,
+void TDisplayMgr::MakeNewGWorld(TQuickDrawSurfaceContext*& outContext, short bitDepth,
+                                const RECT& bounds) {
+  short result = InitializeBitmapDescriptorRecordAndLoadSurfaceNode(&outContext, bitDepth, &bounds,
                                                                     field18, 0, 0);
   if (result != 0) {
-    InitializeBitmapDescriptorRecordAndLoadSurfaceNode(outContext, bitDepth, bounds, field18, 0, 0);
-    InitializeBitmapDescriptorRecordAndLoadSurfaceNode(outContext, bitDepth, bounds, field18, 0, 0);
+    InitializeBitmapDescriptorRecordAndLoadSurfaceNode(&outContext, bitDepth, &bounds, field18, 0,
+                                                       0);
+    InitializeBitmapDescriptorRecordAndLoadSurfaceNode(&outContext, bitDepth, &bounds, field18, 0,
+                                                       0);
   }
 }
 
 // Frees the TQuickDrawSurfaceContext record held in `slot` and clears the slot.
 // `this` is unused, but the callsites all dispatch through g_pDisplayMgr.
 // FUNCTION: IMPERIALISM 0x004feb50
-void TDisplayMgr::FreeQuickDrawSurfaceContextSlot(TQuickDrawSurfaceContext** slot) {
-  delete *slot;
-  *slot = 0;
+void TDisplayMgr::RemoveGWorld(TQuickDrawSurfaceContext*& surface) {
+  delete surface;
+  surface = 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004feb80
-void TDisplayMgr::EnsurePrimaryRenderSurfaceContextAllocated() {
+void TDisplayMgr::ExamineGWorld() {
   if (g_pPrimaryRenderSurfaceContext == 0) {
     RECT bounds = {-64, -64, 0x280, 0x220};
-    InitializeBitmapSurfaceContextWithRetry(&g_pPrimaryRenderSurfaceContext, 8, &bounds);
+    MakeNewGWorld(g_pPrimaryRenderSurfaceContext, 8, bounds);
   }
 }
 
 // FUNCTION: IMPERIALISM 0x004febd0
-undefined TDisplayMgr::DisplayMgrSlot0D(int unusedArg) {
-  (void)unusedArg;
+void TDisplayMgr::AboutToLoseControl(unsigned char) {
   if (dialogActiveFlag != 0 && activeDialog != 0) {
     activeDialog->RefreshCityProductionViewStateFromContext(0);
   }
-  OrphanRetStub_004fed50(1);
-  reinterpret_cast<void(__cdecl*)(void*)>(NoOpCallback_00498ca0)(&tileIcon14);
-  return 0;
+  SetMenuHeight(1);
+  HiliteColor(&savedHiliteColor);
 }
 
 // FUNCTION: IMPERIALISM 0x004fec20
-undefined TDisplayMgr::AssertUDisplayMgrLine471() {
+void TDisplayMgr::CloseBooks() {
   if (g_nUiInvalidationAssertFlagLine471 == 0) {
     TemporarilyClearAndRestoreUiInvalidationFlag(kSourceFileUDisplayMgr, 0x1d7);
   }
-  return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004fec50
-undefined TDisplayMgr::AssertUDisplayMgrLine495(int unusedArg) {
-  (void)unusedArg;
+void TDisplayMgr::DismissTouchyFloaters(TToolboxEvent*) {
   if (g_nUiInvalidationAssertFlagLine495 == 0) {
     TemporarilyClearAndRestoreUiInvalidationFlag(kSourceFileUDisplayMgr, 0x1ef);
   }
-  return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004fec80
-void TDisplayMgr::DispatchDisplayManagerControlStringMessage(CString message,
-                                                             const POINT& messagePosition) {
+void TDisplayMgr::ModalMessage(CString message, const POINT& messagePosition) {
   g_pUiRuntimeContext->ModalMessage(message, messagePosition);
 }
 
 // FUNCTION: IMPERIALISM 0x004fed00
-undefined TDisplayMgr::DisplayMgrSlot0E(int unusedArg) {
-  (void)unusedArg;
+void TDisplayMgr::RegainControl(unsigned char) {
   if (dialogActiveFlag != 0 && activeDialog != 0) {
     activeDialog->InvalidateOffsetRegionUsingChildClipRect(0);
     activeDialog->InvokeSlot13C();
   }
-  OrphanRetStub_004fed50(0);
-  reinterpret_cast<void(__cdecl*)(void*)>(NoOpCallback_00498ca0)(&tileIcon10);
-  return 0;
+  SetMenuHeight(0);
+  HiliteColor(&hiliteColor);
 }
 
 // FUNCTION: IMPERIALISM 0x004fed50
-undefined TDisplayMgr::OrphanRetStub_004fed50(char param_1) {
-  (void)param_1;
-  return 0;
-}
+void TDisplayMgr::SetMenuHeight(unsigned char) {}
 
 // FUNCTION: IMPERIALISM 0x004fed70
-undefined TDisplayMgr::AssertUDisplayMgrLines614And616(char param_1) {
+void TDisplayMgr::SetBitDepth(unsigned char bitDepth) {
   if (dialogActiveFlag != 0) {
-    if (param_1 != 0) {
+    if (bitDepth != 0) {
       TemporarilyClearAndRestoreUiInvalidationFlag(kSourceFileUDisplayMgr, 0x266);
     } else {
       TemporarilyClearAndRestoreUiInvalidationFlag(kSourceFileUDisplayMgr, 0x268);
     }
   }
-  return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004fedc0
-undefined TDisplayMgr::LoadMainViewClipSnapshotIntoQuickDrawState(undefined2 param_1) {
+void TDisplayMgr::UpdateTheGWorld(short eventCode) {
   if (g_pPrimaryRenderSurfaceContext == 0) {
-    return 0;
+    return;
   }
 
   int savedFlags = 0;
@@ -226,7 +222,7 @@ undefined TDisplayMgr::LoadMainViewClipSnapshotIntoQuickDrawState(undefined2 par
   if (mainControl == 0) {
     MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(kSourceFileUDisplayMgr, 0x28a);
-    return 0;
+    return;
   }
 
   TView* mainView = mainControl;
@@ -247,34 +243,32 @@ undefined TDisplayMgr::LoadMainViewClipSnapshotIntoQuickDrawState(undefined2 par
   NoOpQuickDrawLifecycleHookB(GetSurfaceNodeSlot(g_pPrimaryRenderSurfaceContext));
   SetActiveQuickDrawSurfaceContext(savedContext, savedFlags);
   SetClip(surfaceGuard.tempRgn);
-  clipSnapshotEvent = static_cast<short>(param_1);
-  return 0;
+  clipSnapshotEvent = eventCode;
 }
 
 // FUNCTION: IMPERIALISM 0x004fefc0
-void TDisplayMgr::SetMapTileIconVariantTriplet(undefined1* param_1) {
-  tileIcon10 = param_1[0];
-  tileIcon11 = param_1[1];
-  tileIcon12 = param_1[2];
-  reinterpret_cast<void(__cdecl*)(void*)>(NoOpCallback_00498ca0)(&tileIcon10);
+void TDisplayMgr::SetHiliteColor(const RGBQUAD* color) {
+  hiliteColor.rgbBlue = color->rgbBlue;
+  hiliteColor.rgbGreen = color->rgbGreen;
+  hiliteColor.rgbRed = color->rgbRed;
+  HiliteColor(&hiliteColor);
 }
 
 // FUNCTION: IMPERIALISM 0x004ff000
-undefined TDisplayMgr::DispatchUiWindowStatusTickForClass99Windows() {
+void TDisplayMgr::CloseFloaters() {
   CWMgrIterator cursor;
   cursor.Reset(1);
   TWindow* window = static_cast<TWindow*>(cursor.FirstWindow());
   while (cursor.More() != 0) {
     if (window != 0) {
       if (window->IsActionable() != 0 && window->controlValue3c == kClass99WindowId) {
-        if (window->IsModal() == 0) {
-          window->CloseAndFree();
-        } else {
+        if (window->IsModal() != 0) {
           window->Dismiss(kTagOkOkOk, 1);
+        } else {
+          window->CloseAndFree();
         }
       }
     }
     window = static_cast<TWindow*>(cursor.NextWindow());
   }
-  return 0;
 }

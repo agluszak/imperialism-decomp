@@ -12,7 +12,7 @@ void SetActiveQuickDrawSurfaceContext(TQuickDrawSurfaceContext* context, int fla
 void* GetSurfaceNodeSlot(TQuickDrawSurfaceContext* context);
 void* GetSurfaceNodePixelBits(void* surfaceObject);
 short InitializeBitmapDescriptorRecordAndLoadSurfaceNode(TQuickDrawSurfaceContext** outContext,
-                                                         short bitDepth, RECT* bounds,
+                                                         short bitDepth, const RECT* bounds,
                                                          int hintField18, int arg4, int arg5);
 unsigned char ReturnConstantTrueQuickDrawFlag(void* surfaceObject);
 void NoOpQuickDrawLifecycleHookB(void* surfaceObject);

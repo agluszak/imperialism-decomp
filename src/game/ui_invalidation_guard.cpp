@@ -6,8 +6,8 @@
 // Variadic so assert-style call sites (which push a source path + line) call this
 // directly and clean the stack, matching the original — the body ignores all args.
 // FUNCTION: IMPERIALISM 0x0049d620
-undefined4 TemporarilyClearAndRestoreUiInvalidationFlag(...) {
-  undefined4 previous = SetGlobalUiInvalidationFlagAndReturnPrevious(0);
+int TemporarilyClearAndRestoreUiInvalidationFlag(...) {
+  int previous = SetGlobalUiInvalidationFlagAndReturnPrevious(0);
   SetGlobalUiInvalidationFlagAndReturnPrevious(previous);
   return 0;
 }

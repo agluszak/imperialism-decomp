@@ -57,8 +57,8 @@ void TMinisterView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEv
 }
 
 // FUNCTION: IMPERIALISM 0x004f2ea0
-undefined TMinisterView::NotifyWindowStatusTick() {
-  return g_pDisplayMgr->DispatchUiWindowStatusTickForClass99Windows();
+void TMinisterView::NotifyWindowStatusTick() {
+  g_pDisplayMgr->CloseFloaters();
 }
 
 // FUNCTION: IMPERIALISM 0x004f2ec0

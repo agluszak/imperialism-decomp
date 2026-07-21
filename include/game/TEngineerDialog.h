@@ -9,7 +9,7 @@ struct TQuickDrawSurfaceContext;
 class TEngineerDialog : public TView {
 public:
   // Offscreen QuickDraw surface contexts for the three dialog strips; each is released
-  // through g_pDisplayMgr->FreeQuickDrawSurfaceContextSlot and blitted via GetBlitSurface()
+  // through g_pDisplayMgr->RemoveGWorld and blitted via GetBlitSurface()
   // (its blit sub-object lives at +0x4). Were mis-modeled as raw unsigned char* buffers
   // reached with a `ctx + 4` cast.
   TQuickDrawSurfaceContext* headerSurface60;   // 0x60

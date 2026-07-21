@@ -15,7 +15,7 @@ TDialogView::TDialogView() {}
 // value (a no-op refresh barrier), rather than TView's stylePayload48-buffer allocation.
 // FUNCTION: IMPERIALISM 0x0049d880
 void TDialogView::EnsureField48Buffer() {
-  undefined4 previous = SetGlobalUiInvalidationFlagAndReturnPrevious(0);
+  int previous = SetGlobalUiInvalidationFlagAndReturnPrevious(0);
   SetGlobalUiInvalidationFlagAndReturnPrevious(previous);
 }
 

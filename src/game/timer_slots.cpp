@@ -1,9 +1,7 @@
 #include "game/timer_slots.h"
 
 #include "game/global_data_tables.h"
-
-// Assert helper (validates the WM_TIMER slot); shared UI-invalidation guard.
-undefined4 TemporarilyClearAndRestoreUiInvalidationFlag(...);
+#include "game/ui_invalidation_guard.h"
 
 TimerSlotCallback g_timerSlotCallbacks[10]; // 0x006a5cf8
 UINT g_timerSlotIds[10];                    // 0x006a5c98

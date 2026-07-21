@@ -36,7 +36,7 @@ TShipyardView::~TShipyardView() {}
 
 // FUNCTION: IMPERIALISM 0x004c8340
 void TShipyardView::Free() {
-  g_pDisplayMgr->FreeQuickDrawSurfaceContextSlot(&iconSurfaceB8);
+  g_pDisplayMgr->RemoveGWorld(iconSurfaceB8);
   TView::Free();
   if (g_nSaveFormatVersion != 0x4d6f696c) { // 'Moil'
     g_pUiViewManager->CloseFilesFor(0x23f7);
