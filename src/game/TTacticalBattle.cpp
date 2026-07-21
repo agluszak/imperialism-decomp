@@ -5,6 +5,7 @@
 
 #include "game/CIterator.h"
 #include "game/CString.h"
+#include "game/hex_tile_distance.h"
 #include "game/TAssetMgr.h"
 #include "game/TControl.h"
 #include "game/TCountry.h"
@@ -578,6 +579,76 @@ void TTacticalBattle::SetCurrentTacticalUnitSelection(TTacticalUnit* unit, char 
   unit->selectedFlag18 = 1;
   ApplyTacticalDoneSelectionAndRefreshUi(unit);
 }
+
+// FUNCTION: IMPERIALISM 0x005a10e0
+void TTacticalBattle::ProcessTacticalUnitState1TurnStep(TTacticalUnit* unit) {
+  int bestDistance = 999;
+  int originalTile = unit->tileIndex8;
+  BuildTacticalDistanceFieldForSide(unit->side20 == 0);
+
+  int bestTile = originalTile;
+  for (int i = 0; i < tacticalTileCount3c; ++i) {
+    if (tileMoveCostArray24[i] != -1 && tileIntArray30[i] != -1 &&
+        (tileIntArray30[i] < bestDistance ||
+         (tileIntArray30[i] == bestDistance && (rand() & 1) != 0))) {
+      bestDistance = tileIntArray30[i];
+      bestTile = i;
+    }
+  }
+  if (bestTile != unit->tileIndex8) {
+    MoveTacticalUnitTowardTile(unit, bestTile);
+  }
+
+  if (unit->state1c == 1) {
+    TList* sideUnitList =
+        (unit->side20 == 0) ? tacticalPlayer18->unitList4 : tacticalPlayer14->unitList4;
+
+    int nearbyThreshold = 0;
+    CIterator cursor(sideUnitList);
+    for (TTacticalUnit* candidate = static_cast<TTacticalUnit*>(cursor.Reset()); cursor.More();
+         candidate = static_cast<TTacticalUnit*>(cursor.Advance())) {
+      if (candidate->state1c != 0) {
+        continue;
+      }
+      int distance = ComputeHexTileDistanceFromIndices(unit->tileIndex8, candidate->tileIndex8);
+      if (distance < 3) {
+        nearbyThreshold =
+            static_cast<int>(candidate->GetBaseAttackPower() * candidate->strength4 + nearbyThreshold);
+      }
+    }
+
+    int ownThreshold = static_cast<int>(unit->GetBaseAttackPower() * (unit->strength4 * 3));
+    if (nearbyThreshold > ownThreshold) {
+      nearbyThreshold = ownThreshold;
+    }
+
+    bool shouldDestroy = true;
+    if (unit->tileIndex8 != originalTile) {
+      shouldDestroy = false;
+      if (nearbyThreshold > 0) {
+        int remainder = rand() % nearbyThreshold;
+        if (unit->GetBaseAttackPower() * unit->strength4 < static_cast<float>(remainder)) {
+          shouldDestroy = true;
+        }
+      }
+    }
+
+    if (shouldDestroy) {
+      if (battleView8 != 0) {
+        battleView8->PlayTacticalTileEffect(unit->tileIndex8, 0xf8c, 10);
+      }
+      unit->ApplyTacticalDamage(unit->strength4, 0);
+      tileGrid4[unit->tileIndex8].occupant4 = 0;
+      unit->tileIndex8 = -1;
+      if (battleView8 != 0) {
+        battleView8->InvalidateTacticalUnitTileRect(unit);
+      }
+      EvaluateTacticalSideStateAndShowBattleSummaryDialog();
+    }
+  }
+  QueueTacticalEventPacket232A();
+}
+
 // FUNCTION: IMPERIALISM 0x005a1400
 unsigned char TTacticalBattle::HasEnemyUnitOnTilesFlankingHexDirection(int tileIndex,
                                                                        int hexDirection,

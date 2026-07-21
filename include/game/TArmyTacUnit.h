@@ -24,8 +24,8 @@ public:
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
   virtual int GetBaseActionPoints() override;                          // slot 0x0a 0x5a6120
   virtual int GetUnitRange() override;                                 // slot 0x0b 0x5a6140
-  virtual undefined OrphanLeaf_NoCall_Ins02_005a5d80() override;       // slot 0x0c 0x5a6180
-  virtual undefined OrphanLeaf_NoCall_Ins02_005a5da0() override;       // slot 0x0d 0x5a61a0
+  virtual float GetBaseAttackPower() override; // slot 0x0c 0x5a6180
+  virtual float GetDamageScale() override;     // slot 0x0d 0x5a61a0
   virtual void ApplyTacticalDamage(int damageA, int damageB) override; // slot 0x0e 0x5a61c0
   // slot 0x0f FlipUnitSideAffiliation inherited unchanged (0x5a5eb0)
 

@@ -145,6 +145,13 @@ public:
   // the 0x545940 dispatcher's pushes.
   TArmyTacUnit* SeekLinkedListCursorByNestedId(int nestedId);                 // 0x5a53e0
   void SetCurrentTacticalUnitSelection(TTacticalUnit* unit, char remoteFlag); // 0x5a1010
+  // Per-turn upkeep for a unit sitting in state 1 (morale broken): retreats it toward the
+  // lowest-distance-field tile (BuildTacticalDistanceFieldForSide), then -- if still
+  // morale-broken -- scores its odds of being removed from the battle by comparing a
+  // quality-weighted threshold from nearby same-side units against a random roll (always
+  // fatal if the retreat couldn't move the unit at all), and always queues the end-of-
+  // action turn event. 0x5a10e0.
+  void ProcessTacticalUnitState1TurnStep(TTacticalUnit* unit);
   void MoveTacticalUnitBetweenTiles(TTacticalUnit* unit, int fromTileIndex, int toTileIndex,
                                     char remoteFlag); // 0x5a1910
   void ApplyTacticalActionEffectsAndMaybeRemoveUnit(TTacticalUnit* attackerUnit,

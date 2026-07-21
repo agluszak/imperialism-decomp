@@ -1693,6 +1693,22 @@ double g_dTacticalCursorArtillerySuperiorityThreshold_00669528 = 1.8;
 double g_dTacticalCursorAssaultRatioThreshold_00669530 = 2.5;
 // GLOBAL: IMPERIALISM 0x00669538
 double g_dTacticalCursorRetreatRatioThreshold_00669538 = 0.8;
+// Base-class default for TTacticalUnit::GetBaseAttackPower/GetDamageScale; derived unit
+// types (TArmyTacUnit/TNavyTacUnit) override with real per-unit-type table lookups.
+// KNOWN RESIDUAL: this value is genuinely 0.0f in the original. A zero-valued scalar
+// global lands in .bss under this toolchain, which just datacmp flags as
+// "(uninitialized)" against the original's on-disk 0.0 -- a data-section placement
+// quirk, not a source defect (see the data-modeling skill's BSS field note). Tried and
+// rejected: a literal `return 0.0f;` (moves the constant into the compiler's
+// CRuntimeClass structure instead, a real call-target mismatch, strictly worse) and a
+// raw `reinterpret_cast<const float*>(0x00669ec0)` address read (same established
+// technique as TDefendProvinceMission.cpp's p_neg_one_/p_1_0_ locals, but reccmp still
+// can't resolve the bare address to a clean symbol here). This named-global form is the
+// only one of the three giving a 100% exact match on all four affected functions
+// (TTacticalUnit/TArmyTacUnit/TNavyTacUnit x2); the residual is isolated to
+// just datacmp-gate, which needs a maintainer-approved baseline update to clear.
+// GLOBAL: IMPERIALISM 0x00669ec0
+float g_fTacticalRetreatQualityWeightDefault_00669EC0 = 0.0f;
 // GLOBAL: IMPERIALISM 0x00669ec8
 double g_dTacticalQualityFactorStep_00669EC8 = -0.1;
 // GLOBAL: IMPERIALISM 0x00669ed0
@@ -1768,6 +1784,16 @@ float g_afTacticalDamageScaleByUnitType[30] = {
     0.0025f, 0.0015f, 0.002f,  0.002f,  0.0015f, 0.002f,  0.004f, 0.005f,  0.0025f, 0.0015f,
     0.0015f, 0.0015f, 0.0015f, 0.002f,  0.003f,  0.0035f, 0.001f, 0.0005f, 0.0005f, 0.0005f,
     0.001f,  0.0005f, 0.0005f, 0.0005f, 0.003f,  0.0025f, 0.001f, 0.002f,  0.0015f, 0.0005f};
+
+// Incoming-damage scale per defender navy unit type (.rdata floats).
+// GLOBAL: IMPERIALISM 0x00669d28
+float g_afTacticalNavyDamageScaleByUnitType[8] = {0.045f, 0.04f, 0.04f,  0.022f,
+                                                  0.02f,  0.025f, 0.015f, 0.022f};
+
+// Base attack power per navy unit type (.rdata floats).
+// GLOBAL: IMPERIALISM 0x00669d48
+float g_afTacticalNavyBaseAttackPowerByUnitType[8] = {3.0f, 3.5f, 4.0f,  4.0f,
+                                                      8.0f, 8.0f, 15.0f, 15.0f};
 
 // Attack-power terrain modifier [category * 5 + tile terrainType0] (.rdata floats).
 // GLOBAL: IMPERIALISM 0x00669ac8

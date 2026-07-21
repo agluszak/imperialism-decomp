@@ -18,8 +18,8 @@ public:
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
   virtual int GetBaseActionPoints() override;                    // slot 0x0a 0x5a6310
   virtual int GetUnitRange() override;                           // slot 0x0b 0x5a6330
-  virtual undefined OrphanLeaf_NoCall_Ins02_005a5d80() override; // slot 0x0c 0x5a6350
-  virtual undefined OrphanLeaf_NoCall_Ins02_005a5da0() override; // slot 0x0d 0x5a6370
+  virtual float GetBaseAttackPower() override; // slot 0x0c 0x5a6350
+  virtual float GetDamageScale() override;     // slot 0x0d 0x5a6370
   // slot 0x0e ApplyTacticalDamage inherited unchanged (0x5a5e70)
   // slot 0x0f FlipUnitSideAffiliation inherited unchanged (0x5a5eb0)
   // Navy-only added virtual: returns the unit's source fleet (the old

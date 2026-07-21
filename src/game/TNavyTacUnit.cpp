@@ -1,5 +1,6 @@
 #include "game/TNavyTacUnit.h"
 
+#include "game/global_data_tables.h"
 #include "game/TShip.h"
 
 // FUNCTION: IMPERIALISM 0x0059ed60
@@ -31,11 +32,11 @@ int TNavyTacUnit::GetUnitRange() {
 }
 
 // FUNCTION: IMPERIALISM 0x005a6350
-undefined TNavyTacUnit::OrphanLeaf_NoCall_Ins02_005a5d80() {
-  return 0;
+float TNavyTacUnit::GetBaseAttackPower() {
+  return g_afTacticalNavyBaseAttackPowerByUnitType[unitTypeC];
 }
 
 // FUNCTION: IMPERIALISM 0x005a6370
-undefined TNavyTacUnit::OrphanLeaf_NoCall_Ins02_005a5da0() {
-  return 0;
+float TNavyTacUnit::GetDamageScale() {
+  return g_afTacticalNavyDamageScaleByUnitType[unitTypeC];
 }

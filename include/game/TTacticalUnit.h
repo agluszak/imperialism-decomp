@@ -28,8 +28,14 @@ public:
   // the per-unit-type 0x6699e8 range table (defending artillery gets +1). Mac oracle name
   // is TTacticalUnit::GetRange().
   virtual int GetUnitRange();                                 // slot 0x0b 0x5a5d60
-  virtual undefined OrphanLeaf_NoCall_Ins02_005a5d80();       // slot 0x0c 0x5a5d80
-  virtual undefined OrphanLeaf_NoCall_Ins02_005a5da0();       // slot 0x0d 0x5a5da0
+  // Per-unit-type base attack power / incoming-damage scale, indexed by unitTypeC on the
+  // Army/Navy overrides (g_afTacticalBaseAttackPowerByUnitType / g_afTacticalDamageScaleByUnitType
+  // / g_afTacticalNavyBaseAttackPowerByUnitType / g_afTacticalNavyDamageScaleByUnitType); also
+  // reused generically by TTacticalBattle::ProcessTacticalUnitState1TurnStep to score
+  // morale-break retreat/destruction odds. Base class returns the shared default constant.
+  // Real x87 float return (FLD/RET), not an int -- verify any override matches.
+  virtual float GetBaseAttackPower(); // slot 0x0c 0x5a5d80
+  virtual float GetDamageScale();     // slot 0x0d 0x5a5da0
   virtual void ApplyTacticalDamage(int damageA, int damageB); // slot 0x0e 0x5a5e70
   // Toggles side20 between 0 and 1; invoked when a unit is handed to the other
   // side's list (TTacticalPlayer::AddTacticalUnitToUnitListHead).
