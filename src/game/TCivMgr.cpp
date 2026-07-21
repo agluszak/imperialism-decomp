@@ -12,7 +12,9 @@
 #include "game/global_data_tables.h"
 #include "game/TSimMgr.h"
 #include "game/TSoundPlayer.h"
+#include "game/TSortedList.h"
 #include "game/TGreatPower.h"
+#include "game/THelpMgr.h"
 #include "game/TLandSaleEvent.h"
 #include "game/TCivToolbar.h"
 #include "game/TNewsMgr.h"
@@ -47,6 +49,46 @@ TCivMgr::~TCivMgr() {}
 
 // FUNCTION: IMPERIALISM 0x004d20c0
 void TCivMgr::ICivMgr() {}
+
+// FUNCTION: IMPERIALISM 0x004d20e0
+void TCivMgr::ClearCivilianSelectionHighlightsForNation(short nationId) {
+  TSortedList* civilianList = g_apNationStates[nationId]->trackedObjectList;
+  int civilianCount = civilianList->GetCount();
+  for (short ordinal = 1; ordinal <= civilianCount; ++ordinal) {
+    TCivUnit* civilian = static_cast<TCivUnit*>(civilianList->GetEntryByOrdinal(ordinal));
+    if (civilian->field_8 == 3) {
+      civilian->SetOrderModeSlot34(0, -1);
+    }
+  }
+}
+
+// FUNCTION: IMPERIALISM 0x004d2160
+TCivUnit* TCivMgr::SelectFirstAvailableCivilianForNation(short nationId) {
+  TSortedList* civilianList = g_apNationStates[nationId]->trackedObjectList;
+  int civilianCount = civilianList->GetCount();
+  TCivUnit* candidate = nullptr;
+  for (short ordinal = 1; ordinal <= civilianCount; ++ordinal) {
+    candidate = static_cast<TCivUnit*>(civilianList->GetEntryByOrdinal(ordinal));
+    if (candidate->field_8 == 0) {
+      break;
+    }
+    candidate = nullptr;
+  }
+
+  if (candidate != nullptr) {
+    this->DispatchSelectedUnitToGlobalMapStateHandler(candidate);
+  }
+  this->selectedEntry = candidate;
+
+  if (candidate != nullptr && candidate->completionMarker26 != -1) {
+    g_pSfxPlaybackSystem->PlaySoundEffect(candidate->completionMarker26, 0, 1);
+    if (g_pSimMgr->difficultyLevel == 0) {
+      g_pHelpMgr->TryShowCivilianCompletionMilestoneNotification(candidate);
+    }
+    candidate->completionMarker26 = -1;
+  }
+  return candidate;
+}
 
 // FUNCTION: IMPERIALISM 0x004d2270
 void TCivMgr::DispatchSelectedUnitToGlobalMapStateHandler(TCivUnit* pUnitOrderEntry) {}

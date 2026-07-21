@@ -7,6 +7,7 @@
 class TStream;
 class TSortedPtrList;
 class TView;
+class TCivUnit;
 
 // Mac oracle: HelpSetRecord — 0xe bytes stored in TSortedPtrList (recordSize14 0xe).
 struct HelpSetRecord {
@@ -21,6 +22,15 @@ struct HelpSetRecord {
 };
 
 ASSERT_SIZE(HelpSetRecord, 0xe);
+
+// Two adjacent short counters are cleared as one dword by THelpMgr's constructor, then
+// incremented independently by the civilian-completion advisor path.
+union THelpCompletionCounterPair {
+  short values[2];
+  int packed;
+};
+
+ASSERT_SIZE(THelpCompletionCounterPair, 4);
 
 // VTABLE: IMPERIALISM 0x00657040
 class THelpMgr : public TObject {
@@ -58,6 +68,10 @@ public:
   // (`this` unused).
   void ShowPeriodicCapabilityReminderIfNeeded();
 
+  // Tracks the first few completed civilian construction categories and shows the
+  // corresponding one-time localized advisor message. 0x005038b0, __thiscall.
+  void TryShowCivilianCompletionMilestoneNotification(TCivUnit* civilianOrderEntry);
+
   // Periodic "another great power is beating you" advisory (turn-tick-indexed metric
   // comparison, string group 0x2753). 0x501be0, __thiscall (`this` unused).
   char ShowPeriodicNationComparisonAdvisoryIfNeeded();
@@ -86,9 +100,12 @@ public:
   TSortedPtrList* indexList;
   TView* pendingDialogView8;
   TView* pendingDialogViewC;
-  int field10;
-  int field14;
-  short field18;
+  // Five independent completion counters consumed by
+  // TryShowCivilianCompletionMilestoneNotification. Their short widths and offsets are
+  // explicit in the increment/compare instructions at 0x005038b0.
+  THelpCompletionCounterPair civilianCompletionCounters10;
+  THelpCompletionCounterPair civilianCompletionCounters14;
+  short civilianCompletionCounter18;
   int field1a;
   int field1e;
   int field22;

@@ -1,6 +1,7 @@
 #include "game/THelpMgr.h"
 
 #include "game/TSimMgr.h"
+#include "game/TCivUnit.h"
 #include "game/TGreatPower.h"
 #include "game/TSortedPtrList.h"
 #include "game/TCity.h"
@@ -81,9 +82,9 @@ THelpMgr::THelpMgr() : TObject() {
   field26 = 0;
   field2a = 0;
   field2c = 0;
-  field10 = 0;
-  field14 = 0;
-  field18 = 0;
+  civilianCompletionCounters10.packed = 0;
+  civilianCompletionCounters14.packed = 0;
+  civilianCompletionCounter18 = 0;
   indexList = nullptr;
 }
 
@@ -792,6 +793,53 @@ void THelpMgr::ActivatePendingEventAndRefreshView(HelpSetRecord* pendingEntry) {
   pendingEntry->flagByte = 1;
   pendingEntry->rank = g_pSimMgr->GetActiveNationId();
   // Full dialog refresh path deferred; mark the help-set entry seen/current-nation.
+}
+
+// FUNCTION: IMPERIALISM 0x005038b0
+void THelpMgr::TryShowCivilianCompletionMilestoneNotification(TCivUnit* civilianOrderEntry) {
+  int titleStringIndex = -1;
+  int messageStringIndex = -1;
+
+  if (civilianOrderEntry->orderType == 1) {
+    if (civilianOrderEntry->completionMarker26 == 0x232f &&
+        ++civilianCompletionCounters10.values[0] == 1) {
+      titleStringIndex = 0x2c;
+      messageStringIndex = 0x2d;
+    }
+  } else if (civilianOrderEntry->orderType == 4) {
+    switch (civilianOrderEntry->completionMarker26) {
+    case 0x2329:
+      if (++civilianCompletionCounters10.values[1] == 3) {
+        titleStringIndex = 0x2e;
+        messageStringIndex = 0x2f;
+      }
+      break;
+    case 0x232a:
+      if (++civilianCompletionCounters14.values[0] == 1) {
+        titleStringIndex = 0x32;
+        messageStringIndex = 0x33;
+      }
+      break;
+    case 0x232b:
+      if (++civilianCompletionCounters14.values[1] == 1) {
+        titleStringIndex = 0x34;
+        messageStringIndex = 0x35;
+      }
+      break;
+    }
+  } else if (++civilianCompletionCounter18 == 1) {
+    titleStringIndex = 0x30;
+    messageStringIndex = 0x31;
+  }
+
+  if (titleStringIndex != -1) {
+    CString titleText;
+    CString messageText;
+    g_pSimMgr->GetString(0x2753, static_cast<short>(titleStringIndex), &titleText);
+    g_pSimMgr->GetString(0x2753, static_cast<short>(messageStringIndex), &messageText);
+    g_pUiRuntimeContext->ModalMessage(5, titleText, messageText, g_ptNationComparisonModalMessage,
+                                      2, 0);
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x00503ac0

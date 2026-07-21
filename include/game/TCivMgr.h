@@ -33,6 +33,13 @@ public:
   // TCivMgr instance (same 0xc-byte object, same selectedEntry slot, and its vtable
   // dispatches match the slots declared above).
   void SetActiveCivilianSelection(class TCivUnit* entryContext, char refreshCommandPanel);
+  // Clear highlighted (mode 3) civilian entries in the nation's tracked-object list.
+  // 0x004d20e0, __thiscall.
+  void ClearCivilianSelectionHighlightsForNation(short nationId);
+  // Select the first idle civilian entry in the nation's tracked-object list, dispatch it
+  // to the map state, and consume any pending completion sound/advisor marker.
+  // 0x004d2160, __thiscall.
+  class TCivUnit* SelectFirstAvailableCivilianForNation(short nationId);
   void QueueImmediateCivilianCommandAndCycleSelection(int commandType);
   void ShowDisbandCivilianConfirmationDialog();
 
