@@ -77,4 +77,12 @@ public:
   // Non-virtual: push cueId onto both channel peers' queues (InsertLast on
   // each). Same callsite as above.
   void PushCueToDualAudioCuePools(int cueId); // 0x593760
+
+  // Non-virtual: force-switch to cueId, clearing any pending random-cue rotation state or
+  // deferred preset-change state in the process, then reset both channel peers' queues to
+  // hold just cueId and (re)apply it as the active preset (deferred if flag is set and a
+  // preset is already active). All 3 original callsites (in
+  // TSimMgr::AdvanceGlobalTurnStateMachine) load ECX = g_pSfxPlaybackSystem and pass
+  // cueId=4, flag=true.
+  void SetActiveAudioCueAndResetQueue(int cueId, bool flag); // 0x593a10
 };

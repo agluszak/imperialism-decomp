@@ -32,7 +32,6 @@ extern undefined4 RefreshNationAdvisorLabelStrings(void);
 extern undefined4 ProcessTurnInstructionStreamAndFinalizePhase(void);
 extern undefined4 UpdateCityOrderCapabilityUnlockProgress(void);
 extern undefined4 RefreshNavyOrderCycleAndClearReadyFlags(void);
-extern undefined4 SetOutputDevice(void);
 
 static inline bool IsNationTerrainEligible(short nationSlot) {
   if (nationSlot == -1) {
@@ -241,7 +240,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
         TGreatPower* nation = *nationCursor;
         if (nation != nullptr && nation->diplomacyEligibilityA0 != 0 &&
             GetNationTrackedOrderCount(nation) > 0) {
-          SetOutputDevice();
+          g_pSfxPlaybackSystem->SetActiveAudioCueAndResetQueue(4, true);
           DispatchUiSlot4C();
           break;
         }
@@ -272,7 +271,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
     }
     if (redrawEnabled != 0) {
       g_pGameFlowState->ConfigureTurnResumeStateAndNationMask(previousTurnStateCode, turnStateCode);
-      SetOutputDevice();
+      g_pSfxPlaybackSystem->SetActiveAudioCueAndResetQueue(4, true);
       DispatchUiSlot4C();
       if (g_pUiRuntimeContext != nullptr) {
         g_pUiRuntimeContext->DispatchDecisionSlot98(-1, 0, 0, 0, 0x16);
@@ -346,7 +345,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
     turnStateCode = 0xe;
     if (IsNationTerrainEligible(activeNationSlot)) {
       DispatchUiSlot4C();
-      SetOutputDevice();
+      g_pSfxPlaybackSystem->SetActiveAudioCueAndResetQueue(4, true);
       break;
     }
     if (!IsNationTerrainEligible(activeNationSlot)) {
