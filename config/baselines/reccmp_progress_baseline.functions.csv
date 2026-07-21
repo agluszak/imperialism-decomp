@@ -1672,8 +1672,8 @@ address|matching|name
 0x4b7c20|0.6666666666666666|TPowerPlantOrder::CommitIfPending
 0x4b7c40|1.0|TPowerPlantOrder::ResetCityOrderItemDerivedStateNoop
 0x4b7c90|1.0|TPowerPlantOrder::FillOrderSheet
-0x4b7cc0|0.04|TPowerPlantOrder::WriteTo
-0x4b7d40|0.04|TPowerPlantOrder::ReadFrom
+0x4b7cc0|1.0|TPowerPlantOrder::WriteTo
+0x4b7d40|1.0|TPowerPlantOrder::ReadFrom
 0x4b7dc0|0.42424242424242425|TFoodProcessingOrder::CreateObject
 0x4b7df0|1.0|TFoodProcessingOrder::GetRuntimeClass
 0x4b7e30|0.9090909090909091|TFoodProcessingOrder::`scalar deleting destructor'
