@@ -314,7 +314,76 @@ void TTaskForce::WriteTo(TStream* stream) {
 
 // FUNCTION: IMPERIALISM 0x00552d10
 void TTaskForce::ReadFrom(TStream* stream) {
-  (void)stream;
+  TObject::ReadFrom(stream);
+  stream->ReadBytes(&order_type, 4);
+  stream->ReadBytes(&attachment, 4);
+
+  short ownerOrdinal;
+  stream->ReadBytes(&ownerOrdinal, 2);
+  if (attachment == 5) {
+    owner.asCityTarget = &g_pGlobalMapState->cityScoreTable[ownerOrdinal];
+  } else {
+    owner.asZone = FindMapActionContextByNodeId(ownerOrdinal);
+  }
+
+  short contextOrdinal;
+  stream->ReadBytes(&contextOrdinal, 2);
+  contextAnchor = FindMapActionContextByNodeId(contextOrdinal);
+
+  stream->ReadBytes(&required_count, 2);
+  stream->ReadBytes(&eliminatedFlag26, 1);
+  stream->ReadBytes(&tiebreak_strength, 2);
+
+  short childCount;
+  stream->ReadBytes(&childCount, 2);
+  for (short remaining = childCount; remaining != 0; --remaining) {
+    short shipIndex;
+    stream->ReadBytes(&shipIndex, 2);
+    short activeByte;
+    stream->ReadBytes(&activeByte, 2);
+
+    TShip* ship = g_pNavyPrimaryOrderListHead;
+    if (ship != 0) {
+      for (short walk = shipIndex; walk != 0; --walk) {
+        ship = ship->nextOlder24;
+        if (ship == 0) {
+          break;
+        }
+      }
+    }
+
+    if (g_nSaveFormatVersion >= 0x11 || ship->ownerOrderEntry0c == 0) {
+      FindOrCreateChildOrderLink(ship);
+      TMapOrderChildLinkNode* node = childOrderList;
+      if (node != 0 && node->payload != ship) {
+        node = node->next->FindNodeMatching(ship);
+      }
+      if (node != 0) {
+        node->active = activeByte;
+        if (activeByte != 0) {
+          ship->field34 = 0;
+        }
+      }
+    }
+  }
+
+  bool isActiveNation = required_count == g_pSimMgr->GetActiveNationId();
+  if (tiebreak_strength == -1) {
+    if (isActiveNation) {
+      UpdateNavyOrderMapMarkerByOrderType();
+    }
+    return;
+  }
+
+  bool tileActionClassNonNegative =
+      g_pGlobalMapState->terrainStateTable[tiebreak_strength].tileActionClass16 >= 0;
+  if (!isActiveNation) {
+    tiebreak_strength = -1;
+    return;
+  }
+  if (!tileActionClassNonNegative) {
+    UpdateNavyOrderMapMarkerByOrderType();
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x00552f60
