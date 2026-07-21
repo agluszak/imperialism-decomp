@@ -1,4 +1,5 @@
 #include "game/TNewTownView.h"
+#include "game/TWindow.h"
 
 #include "game/TEditText.h"
 #include "game/TIconBar.h"

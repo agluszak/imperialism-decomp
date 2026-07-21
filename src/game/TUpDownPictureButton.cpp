@@ -1,4 +1,5 @@
 #include "game/TUpDownPictureButton.h"
+#include "game/TWindow.h"
 #include "game/TAmtBar.h"
 #include "game/TView.h"
 #include "game/global_data_tables.h"

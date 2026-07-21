@@ -1,4 +1,5 @@
 #include "game/TIndustryCluster.h"
+#include "game/TWindow.h"
 #include "game/TSimMgr.h"
 #include "game/TRailCluster.h"
 #include "game/TShipyardCluster.h"

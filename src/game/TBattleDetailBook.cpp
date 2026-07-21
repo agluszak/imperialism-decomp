@@ -1,4 +1,5 @@
 #include "game/TBattleDetailBook.h"
+#include "game/TWindow.h"
 
 #include "game/TControl.h"
 #include "game/ui_control_tags.h"
@@ -19,9 +20,7 @@ TBattleDetailBook::TBattleDetailBook() {}
 // FUNCTION: IMPERIALISM 0x004aea90
 void TBattleDetailBook::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId == 0xa && sourceHandler->controlTag == kControlTagOkay) {
-    static_cast<TControl*>(GetWindow())
-        ->SetTextStyleAndMaybeRefresh(
-            reinterpret_cast<const TUiTextStyleDescriptor*>(sourceHandler->controlTag), 1);
+    GetWindow()->Dismiss(sourceHandler->controlTag, 1);
     return;
   }
   TBook::DoEvent(commandId, sourceHandler, event);

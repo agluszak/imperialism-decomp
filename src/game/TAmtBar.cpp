@@ -1,4 +1,5 @@
 #include <new>
+#include "game/TWindow.h"
 
 #include "game/global_data_tables.h"
 #include "game/TAmtBar.h"

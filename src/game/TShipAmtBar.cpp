@@ -1,4 +1,5 @@
 #include "game/TAmtBar.h"
+#include "game/TWindow.h"
 #include "game/TShipAmtBar.h"
 #include "game/TShipOrder.h"
 #include "game/TCity.h"

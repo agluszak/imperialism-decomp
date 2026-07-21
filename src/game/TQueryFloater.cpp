@@ -59,7 +59,7 @@ void TQueryFloater::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
   }
   unsigned int tag = sourceHandler->controlTag;
   if (tag == kControlTagAdvi) {
-    TWindow* owner = static_cast<TWindow*>(GetWindow());
+    TWindow* owner = GetWindow();
     owner->Dismiss(kControlTagOkay, 0);
     g_pHelpMgr->SelectAndActivatePendingEventForCurrentView();
   } else if (tag == kControlTagBatt) {
@@ -72,28 +72,28 @@ void TQueryFloater::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
       }
       g_pUiRuntimeContext->ModalMessage(text, g_ptQueryFloaterModalMessage, 1, 0);
     } else {
-      TWindow* owner = static_cast<TWindow*>(GetWindow());
+      TWindow* owner = GetWindow();
       owner->Dismiss(kControlTagOkay, 0);
       g_pSimMgr->EnterOptionalPhase(0x65);
     }
   } else if (tag == kControlTagChar) {
-    TWindow* owner = static_cast<TWindow*>(GetWindow());
+    TWindow* owner = GetWindow();
     owner->Dismiss(kControlTagOkay, 0);
     g_pSimMgr->EnterOptionalPhase(0x6e);
   } else if (tag == kControlTagClnc) {
-    TWindow* owner = static_cast<TWindow*>(GetWindow());
+    TWindow* owner = GetWindow();
     owner->Dismiss(kControlTagOkay, 0);
   } else if (tag == kControlTagDeal) {
     if (g_pSimMgr->GetEconomicTurn() == 1) {
       g_pSimMgr->GetString(0x2741, 9, &text);
       g_pUiRuntimeContext->ModalMessage(text, g_ptQueryFloaterModalMessage, 1, 0);
     } else {
-      TWindow* owner = static_cast<TWindow*>(GetWindow());
+      TWindow* owner = GetWindow();
       owner->Dismiss(kControlTagOkay, 0);
       g_pSimMgr->EnterOptionalPhase(0x64);
     }
   } else if (tag == kControlTagNews) {
-    TWindow* owner = static_cast<TWindow*>(GetWindow());
+    TWindow* owner = GetWindow();
     owner->Dismiss(kControlTagOkay, 0);
     if (g_pInterNationEventQueueManager->perNationStoryLastUsedTick[0] != nullptr) {
       g_pSimMgr->EnterOptionalPhase(0x66);
@@ -101,7 +101,7 @@ void TQueryFloater::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
       g_pUiRuntimeContext->ShowLocalizedUiPromptByGroupAndIndex(0x275e, 6, 2, 0);
     }
   } else if (tag == kControlTagFore) {
-    TWindow* owner = static_cast<TWindow*>(GetWindow());
+    TWindow* owner = GetWindow();
     owner->Dismiss(kControlTagOkay, 0);
     g_pHelpMgr->SelectAndActivatePendingEventType1A0A();
   }

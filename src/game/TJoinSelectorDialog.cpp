@@ -1,4 +1,5 @@
 #include "game/TJoinSelectorDialog.h"
+#include "game/TWindow.h"
 
 #include "game/CMcWindow.h"
 #include "game/TEditText.h"
@@ -82,9 +83,7 @@ void TJoinSelectorDialog::DoEvent(int commandId, TEventHandler* sourceHandler, T
       (sourceHandler->controlTag == kControlTagCanc ||
        sourceHandler->controlTag == kControlTagCncl ||
        sourceHandler->controlTag == kControlTagOkay)) {
-    static_cast<TControl*>(GetWindow())
-        ->SetTextStyleAndMaybeRefresh(
-            reinterpret_cast<TUiTextStyleDescriptor*>(sourceHandler->controlTag), 1);
+    GetWindow()->Dismiss(sourceHandler->controlTag, 1);
   }
   TControl::DoEvent(commandId, sourceHandler, event);
 }

@@ -1,4 +1,5 @@
 #include "game/TMovieView.h"
+#include "game/TWindow.h"
 
 #include "game/CMainFrame.h"
 #include "game/TSoundPlayer.h"

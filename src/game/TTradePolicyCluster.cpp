@@ -1,4 +1,5 @@
 #include "game/TTradePolicyCluster.h"
+#include "game/TWindow.h"
 
 #include "game/TCluster.h"
 #include "game/ui_control_tags.h"

@@ -1,4 +1,5 @@
 #include "game/TAmbitApplication.h"
+#include "game/TWindow.h"
 #include "game/TWorldView.h"
 
 #include "game/TApplication.h"

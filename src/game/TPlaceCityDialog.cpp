@@ -1,4 +1,5 @@
 #include "game/TPlaceCityDialog.h"
+#include "game/TWindow.h"
 
 #include "game/TNumberedItem.h"
 #include "game/TPicture.h"

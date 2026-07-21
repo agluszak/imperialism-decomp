@@ -821,8 +821,8 @@ address|name|symbol|size|type|prototype|provenance
 489ee0|TEvent::CreateTEventInstance||6|function|undefined CreateTEventInstance()|
 489f00|TEvent::CreateObject|?CreateObject@TEvent@@SGPAVCObject@@XZ|38|function|undefined CreateObject()|rtti
 489f40|TEvent::GetRuntimeClass||6|function|undefined GetTEventClassNamePointer()|rtti
-489f90|RemoveUiListEntryByOwnerIdAndRecycleStorage||171|function|undefined RemoveUiListEntryByOwnerIdAndRecycleStorage()|
-48a070|TEventHandler::CreateTEventHandlerInstance||30|function|void CreateTEventHandlerInstance(void)|
+489f90|TViewChildList::RemoveByTag||171|function|void __thiscall RemoveByTag(unsigned int tag)|
+48a070|TViewChildList::FreeAll||30|function|void __thiscall FreeAll(void)|
 48a0a0|TEventHandler::CreateObject|?CreateObject@TEventHandler@@SGPAVCObject@@XZ|42|function|undefined CreateObject()|rtti
 48a0e0|TEventHandler::GetRuntimeClass||6|function|undefined GetTEventHandlerClassNamePointer()|rtti
 48a100|InitializeUiResourceEntryBaseHeaderDefaults||27|function|undefined InitializeUiResourceEntryBaseHeaderDefaults()|
@@ -855,7 +855,7 @@ address|name|symbol|size|type|prototype|provenance
 48a6d0|TEventHandler::BecameWindowTarget||11|function|void __thiscall BecameWindowTarget(void)|
 48a6f0|TEventHandler::BecameTarget||11|function|void __thiscall BecameTarget(void)|
 48a710|TEventHandler::SelectOwner||3|function|void __thiscall SelectOwner(uchar select)|
-48a730|TEventHandler::GetWindow||3|function|TView * __thiscall GetWindow(void)|
+48a730|TEventHandler::GetWindow||3|function|TWindow * __thiscall GetWindow(void)|
 48a7c0|TEventHandler::ShallowClone||86|function|TObject* __thiscall ShallowClone()|
 48a840|TView::CreateObject|?CreateObject@TView@@SGPAVCObject@@XZ|87|function|undefined CreateTViewInstance()|rtti
 48a8c0|TView::GetRuntimeClass||6|function|undefined GetTViewClassNamePointer()|rtti
@@ -875,8 +875,8 @@ address|name|symbol|size|type|prototype|provenance
 48afd0|TView::FindUiChildControlByWindowHandleRecursive_a9||117|function|undefined FindUiChildControlByWindowHandleRecursive()|
 48b070|TView::SetUiControlVisibleFlagAndMaybeRefreshWindow_ae||35|function|undefined SetUiControlVisibleFlagAndMaybeRefreshWindow()|
 48b0b0|TView::CloseCityDialogChildrenAndReleaseSelf||147|function|undefined CloseCityDialogChildrenAndReleaseSelf()|
-48b180|TView::GetCityDialogValueViaChildSlot58||15|function|undefined GetCityDialogValueViaChildSlot58()|
-48b1a0|TView::QueryChildMapViewSlot58OrZero_be||15|function|undefined QueryChildMapViewSlot58OrZero()|
+48b180|TView::GetWindow||15|function|TWindow * __thiscall GetWindow(void)|
+48b1a0|TView::GetRootView||15|function|TView * __thiscall GetRootView(void)|
 48b1c0|TView::SetControlActiveFlagAndRefreshIfChanged_ad||33|function|undefined SetControlActiveFlagAndRefreshIfChanged()|
 48b200|TView::CanProcessMapViewSlotECUnderWindowState_bf||51|function|undefined CanProcessMapViewSlotECUnderWindowState()|
 48b250|TView::GetTEventHandlerClassNamePointer_c0||94|function|undefined GetTEventHandlerClassNamePointer(void)|
@@ -1101,8 +1101,8 @@ address|name|symbol|size|type|prototype|provenance
 492b70|WrapperFor_StringSharedRef_AssignFromPtr_At00492b70||19|function|undefined WrapperFor_StringSharedRef_AssignFromPtr_At00492b70()|
 492c70|TEvent::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 492ca0|WrapperFor_FreeHeapBufferIfNotNull_At00492c70_Impl||7|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At00492c70_Impl()|
-492cc0|TWindow::GetWindow||3|function|undefined OrphanTiny_ReturnZero_0048a730(void)|
-492ce0|TWindow::QueryOwnerContextPanel||3|function|undefined GetTEventHandlerClassNamePointer(void)|
+492cc0|TWindow::GetWindow||3|function|TWindow * __thiscall GetWindow(void)|
+492ce0|TWindow::GetRootView||3|function|TView * __thiscall GetRootView(void)|
 492d00|TWindow::TranslatePointToParentChain4E||3|function|void TranslatePointToParentChain4E(CPoint*)|
 492d20|TWindow::TranslatePointToParentChain4D||3|function|void TranslatePointToParentChain4D(CPoint*)|
 492d40|TWindow::TranslateRectToWindow||3|function|void __thiscall TranslateRectToWindow(CRect* rect)|listing

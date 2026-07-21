@@ -1,4 +1,5 @@
 #include "game/TRadioText.h"
+#include "game/TWindow.h"
 
 #include "game/TRadioTextCluster.h"
 #include "game/TQuickDrawSurfaceContext.h"

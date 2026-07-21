@@ -34,7 +34,7 @@ void TForeignMinisterView::DoEvent(int commandId, TEventHandler* sourceHandler, 
       return;
     } else if (tag == kControlTagOkay) {
       CloseBooks();
-      TWindow* owner = static_cast<TWindow*>(GetWindow());
+      TWindow* owner = GetWindow();
       g_pGlobalUiRootController->CloseAndFreeWindow(owner);
       return;
     }
@@ -69,7 +69,7 @@ void TForeignMinisterView::DoEvent(int commandId, TEventHandler* sourceHandler, 
 // FUNCTION: IMPERIALISM 0x004f31d0
 void TForeignMinisterView::ShowWorldMap() {
   if (g_pSimMgr->field14 == 0) {
-    TWindow* owner = static_cast<TWindow*>(GetWindow());
+    TWindow* owner = GetWindow();
     CloseBooks();
     g_pGlobalUiRootController->CloseAndFreeWindow(owner);
   }

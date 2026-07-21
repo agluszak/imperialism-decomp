@@ -7,6 +7,7 @@
 
 class CArchive;
 class TView;
+class TWindow;
 class TControl;
 class TEvent;
 class TBehavior;
@@ -37,8 +38,6 @@ public:
   int controlTag; // 0x1c
 
   TEventHandler();
-
-  void CreateTEventHandlerInstance();
 
   // 0x48a410 — MacApp TEventHandler::HandleIdle(IdlePhase); throttled idle dispatch
   // using field10 (idle frequency, 0x7fffffff = never) / field14 (last-idle stamp).
@@ -73,7 +72,7 @@ public:
   virtual char DoIdle(int action);                  // 0x13 0x48a480 (MacApp DoIdle)
   virtual int GetIdleFreq();                        // 0x14 0x415d50
   virtual void SetIdleFreq(int frequency);          // 0x15 0x415d70
-  virtual class TView* GetWindow();                 // 0x16
+  virtual TWindow* GetWindow();                     // 0x16
   virtual char WantsToBeTarget();                   // 0x17 0x48a530
   virtual char WillingToResignTarget();             // 0x18 0x48a550
   virtual void ResignedTarget();                    // 0x19 0x48a690

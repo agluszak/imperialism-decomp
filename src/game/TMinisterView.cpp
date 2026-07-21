@@ -54,7 +54,7 @@ void TMinisterView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
   if (commandId == 0xa) {
     if (tag == kControlTagOkay) {
       CloseBooks();
-      TWindow* owner = static_cast<TWindow*>(GetWindow());
+      TWindow* owner = GetWindow();
       g_pGlobalUiRootController->CloseAndFreeWindow(owner);
       return;
     }

@@ -34,7 +34,7 @@ void TWarningView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* 
 // FUNCTION: IMPERIALISM 0x00592a70
 void TWarningView::DoPostCreate(int arg) {
   (void)arg;
-  TView* titlePanel = QueryOwnerContextPanel();
+  TView* titlePanel = GetRootView();
   if (titlePanel == 0) {
     return;
   }

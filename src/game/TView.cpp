@@ -139,13 +139,28 @@ void TView::BeginMouseCaptureAndStartRepeatTimer(const CPoint& point, TToolboxEv
 // TEMPLATE: IMPERIALISM 0x00479d80
 // ??1?$CList@PAVTView@@PAV1@@@UAE@XZ
 
-// TEMPLATE: IMPERIALISM 0x0048ada0
-// ??_G?$CList@PAVTView@@PAV1@@@UAEPAXI@Z
+// FUNCTION: IMPERIALISM 0x00489f90
+void TViewChildList::RemoveByTag(unsigned int tag) {
+  POSITION position = GetHeadPosition();
+  while (position != 0) {
+    POSITION current = position;
+    TView* child = GetNext(position);
+    if (static_cast<unsigned int>(child->controlTag) == tag) {
+      RemoveAt(current);
+      return;
+    }
+  }
+  if (g_McAppUiFlag_006A1AE0 == 0) {
+    TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiSourcePath_006950B0, 0x152);
+  }
+}
 
-// TEMPLATE: IMPERIALISM 0x0048add0
-// ??1?$CList@PAVTView@@PAV1@@@UAE@XZ
-
-// IMPLEMENT_DYNCREATE also emits `TView::CreateObject` (`return new TView;`).
+// FUNCTION: IMPERIALISM 0x0048a070
+void TViewChildList::FreeAll() {
+  while (!IsEmpty()) {
+    GetHead()->Free();
+  }
+}
 // SYNTHETIC: IMPERIALISM 0x0048a840
 // TView::CreateObject
 
@@ -235,6 +250,13 @@ void TView::AttachChildControl(class TView* child, int flag) {
 
   child->UpdateCoordinates();
 }
+// TEMPLATE: IMPERIALISM 0x0048ada0
+// ??_G?$CList@PAVTView@@PAV1@@@UAEPAXI@Z
+
+// TEMPLATE: IMPERIALISM 0x0048add0
+// ??1?$CList@PAVTView@@PAV1@@@UAE@XZ
+
+// IMPLEMENT_DYNCREATE also emits `TView::CreateObject` (`return new TView;`).
 
 // Inlines CList<TView*,TView*>::RemoveAt (frees the list's block chain once empty).
 // FUNCTION: IMPERIALISM 0x0048ae60
@@ -345,21 +367,19 @@ void TView::Free() {
   delete this;
 }
 
-// Recurses to the root owner. QueryOwnerContextPanel below looks almost identical but
-// only hops one level (via this method) instead of recursing.
 // FUNCTION: IMPERIALISM 0x0048b180
-TView* TView::GetWindow() {
-  if (ownerContext == 0) {
-    return 0;
+TWindow* TView::GetWindow() {
+  if (ownerContext != 0) {
+    return ownerContext->GetWindow();
   }
-  return ownerContext->GetWindow();
+  return 0;
 }
 // FUNCTION: IMPERIALISM 0x0048b1a0
-TView* TView::QueryOwnerContextPanel() {
-  if (ownerContext == 0) {
-    return 0;
+TView* TView::GetRootView() {
+  if (ownerContext != 0) {
+    return ownerContext->GetWindow();
   }
-  return ownerContext->GetWindow();
+  return 0;
 }
 // FUNCTION: IMPERIALISM 0x0048b1c0
 void TView::SetEnabled(int enabledState, int refreshFlag) {

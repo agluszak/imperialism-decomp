@@ -1,4 +1,5 @@
 #include "game/TTacticalBattleView.h"
+#include "game/TWindow.h"
 
 #include "game/TCivAnimation2.h"
 #include "game/TControl.h"
@@ -919,7 +920,7 @@ void TTacticalBattleView::DoPostCreate(int arg) {
   g_pCursorControlPanel = cursorPanel;
   g_pCursorControlPanel->InitializeMapHintTextStyleAndThemeFlags(0x2b6c, 0x2b67);
 
-  static_cast<TControl*>(GetWindow())->contentInsets68.left = controlTag;
+  GetWindow()->activeViewTag68 = controlTag;
   BecomeTarget();
 }
 

@@ -1,4 +1,5 @@
 #include "game/TIndustryCluster.h"
+#include "game/TWindow.h"
 #include "game/TRailCluster.h"
 #include "game/TShipyardCluster.h"
 #include "game/TTradeCluster.h"
@@ -137,7 +138,7 @@ void TTraderAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache() {
       }
 
       SetClip(surface.tempRgn);
-      TAmtBar* owner = reinterpret_cast<TAmtBar*>(reinterpret_cast<TView*>(control)->GetWindow());
+      TWindow* owner = control->GetWindow();
       if (owner != 0) {
         owner->ForceRedraw();
       }
