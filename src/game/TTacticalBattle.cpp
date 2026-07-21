@@ -498,6 +498,138 @@ void TTacticalBattle::ComputeHexNeighborTileIndices_005A0420(int tileIndex,
   }
 }
 
+// Hover-cursor state for `tileIndex` relative to the current selection/side. Before the
+// battle goes live: hovering the current side's own unit returns 0xc; otherwise a per-side
+// deployment-zone column band (columns 3-5 for side 0, the mirrored band at the far edge for
+// side 1) returns 3, everything else 2. Once live: checks the selected unit against the
+// hovered tile for reachable move (4), manned fort wall (9), adjacent dig/mine target (7),
+// adjacent rally target (8), ranged/fire attack target (5), adjacent melee attack target
+// (0xa), or hovering the selection itself (6). 0 when nothing applies.
+// FUNCTION: IMPERIALISM 0x005a05a0
+int TTacticalBattle::ComputeTacticalHoverCursorStateIndex(int tileIndex) {
+  TTacticalPlayer* currentSidePlayer = (&tacticalPlayer14)[currentSideC];
+  if (!currentSidePlayer->IsTacticalControllerOwnedByActiveNation()) {
+    return 1;
+  }
+
+  if (battleLive10 == 0) {
+    TacticalTileRecord* tile = &tileGrid4[tileIndex];
+    TTacticalUnit* occupant = tile->occupant4;
+    if (occupant != 0 && occupant->side20 == currentSideC) {
+      return 0xc;
+    }
+
+    int column = tileIndex % tacticalTileStride40;
+    if (tileIndex >= tacticalTileStride40 && tile->terrainType0 != 4 && occupant == 0) {
+      if (currentSideC == 0) {
+        if (column > 2 && column < 6) {
+          return 3;
+        }
+      } else if (column <= battlefieldColumnCount34 - 3 && column >= battlefieldColumnCount34 - 5) {
+        return 3;
+      }
+    }
+    return 2;
+  }
+
+  short unitCategoryCode0 = g_awTacticalUnitCategoryCodeBySlot[selectedUnit1c->unitTypeC];
+  int state = 0;
+
+  if (unitCategoryCode0 == 8) {
+    int neighbors[6];
+    ComputeHexNeighborTileIndices_005A0420(selectedUnit1c->tileIndex8, neighbors);
+    bool tileIsNeighbor = false;
+    for (int i = 0; i < 6; ++i) {
+      if (neighbors[i] == tileIndex) {
+        tileIsNeighbor = true;
+        break;
+      }
+    }
+    if (tileIsNeighbor) {
+      TacticalTileRecord* tile = &tileGrid4[tileIndex];
+      if (tile->deployMark8 > 1 && fortStrengthPoints54[tileIndex / tacticalTileStride40 / 2] > 0) {
+        state = 9;
+      } else if (selectedUnit1c->actionPoints28 >=
+                     g_awUnitTypeBaseActionPointTable[selectedUnit1c->unitTypeC] / 2 &&
+                 (tile->trenchMask10 & 0xc0) == 0 && tile->occupant4 == 0 &&
+                 tile->terrainType0 != 4) {
+        state = 7;
+      }
+    }
+  } else if (unitCategoryCode0 == 9) {
+    int neighbors[6];
+    ComputeHexNeighborTileIndices_005A0420(selectedUnit1c->tileIndex8, neighbors);
+    bool tileIsNeighbor = false;
+    for (int i = 0; i < 6; ++i) {
+      if (neighbors[i] == tileIndex) {
+        tileIsNeighbor = true;
+        break;
+      }
+    }
+    if (tileIsNeighbor) {
+      TTacticalUnit* occupant = tileGrid4[tileIndex].occupant4;
+      if (occupant != 0 && occupant->side20 == selectedUnit1c->side20) {
+        state = 8;
+      }
+    }
+  }
+
+  if (state == 0) {
+    TacticalTileRecord* tile = &tileGrid4[tileIndex];
+    if (tile->deployMark8 > 1 && fortStrengthPoints54[tileIndex / tacticalTileStride40 / 2] > 0) {
+      // Manned fort wall: direct-fire units can't shoot over it at all; indirect-fire units
+      // can if in range (the wall-crossing check inside IsTacticalTargetTileReachableForAction
+      // is skipped by passing directFireFlag=0).
+      short unitCategoryCode = g_awTacticalUnitCategoryCodeBySlot[selectedUnit1c->unitTypeC];
+      if (g_afTacticalDirectFireFlagByCategory[unitCategoryCode] ==
+          g_fTacticalRetreatQualityWeightDefault_00669EC0) {
+        char reachable =
+            selectedUnit1c->selectedFlag18 == 0
+                ? 0
+                : IsTacticalTargetTileReachableForAction(selectedUnit1c->tileIndex8, tileIndex, 0,
+                                                         selectedUnit1c->GetUnitRange());
+        if (reachable != 0) {
+          return 5;
+        }
+      }
+      if (tileMoveCostArray24[tileIndex] > 0 && tile->occupant4 == 0) {
+        return 4;
+      }
+    } else {
+      if (tileMoveCostArray24[tileIndex] > 0 && tile->occupant4 == 0) {
+        return 4;
+      }
+      TTacticalUnit* occupant = tile->occupant4;
+      if (occupant != 0 && occupant->side20 != currentSideC && unitCategoryCode0 != 8) {
+        char reachable =
+            selectedUnit1c->selectedFlag18 == 0
+                ? 0
+                : IsTacticalTargetTileReachableForAction(
+                      selectedUnit1c->tileIndex8, tileIndex,
+                      static_cast<char>(
+                          g_afTacticalDirectFireFlagByCategory
+                              [g_awTacticalUnitCategoryCodeBySlot[selectedUnit1c->unitTypeC]]),
+                      selectedUnit1c->GetUnitRange());
+        if (reachable != 0) {
+          int neighbors[6];
+          ComputeHexNeighborTileIndices_005A0420(selectedUnit1c->tileIndex8, neighbors);
+          bool tileIsNeighbor = false;
+          for (int i = 0; i < 6; ++i) {
+            if (neighbors[i] == tileIndex) {
+              tileIsNeighbor = true;
+              break;
+            }
+          }
+          return tileIsNeighbor ? 0xa : 5;
+        }
+      } else if (occupant == selectedUnit1c) {
+        return 6;
+      }
+    }
+  }
+  return state;
+}
+
 // Top-level tactical toolbar command dispatch for the current side. Ignored unless the side
 // is human-watched; then routes the 4-char command tag to the matching handler.
 // FUNCTION: IMPERIALISM 0x005a0c50
