@@ -715,44 +715,45 @@ void TAutoGreatPower::QueueMapActionMissionsForPortZoneCandidates() {
   TZone** heapData = portZone->PrimaryZoneHeapData();
   TZone* firstEntry = *heapData;
 
-  short index = (firstEntry != 0) ? *(short*)((char*)firstEntry + 0x14) : -1;
+  short index = firstEntry->GetContextOrdinalOrInvalid();
   this->portZoneStateFlags[index] = 1;
   QueueMapActionMissionFromCandidateAndMarkState(kMissionTypeDefendProvince, -1, firstEntry, -1);
 
-  index = (portZone != 0) ? *(short*)((char*)portZone + 0x14) : -1;
+  index = portZone->GetContextOrdinalOrInvalid();
   this->portZoneStateFlags[index] = 1;
   QueueMapActionMissionFromCandidateAndMarkState(kMissionTypeDefendProvince, -1, portZone, -1);
 
-  QueueMapActionMissionFromCandidateAndMarkState(kMissionTypeBlockadePort, -1, 0, -1);
+  QueueMapActionMissionFromCandidateAndMarkState(kMissionTypeScatteredShips, -1, 0, -1);
 }
 
 // FUNCTION: IMPERIALISM 0x004e8540
-void TAutoGreatPower::QueueMapActionMissionFromCandidateAndMarkState(eMissionType arg1, int arg2,
-                                                                     TZone* portZoneContext,
-                                                                     int arg4) {
+void TAutoGreatPower::QueueMapActionMissionFromCandidateAndMarkState(eMissionType missionType,
+                                                                     int mapNodeIndex,
+                                                                     TZone* zoneContext,
+                                                                     int relatedMapNodeIndex) {
   const unsigned char kNodeStateAvailable = 1;
   const unsigned char kNodeStateQueued = 2;
 
-  if (arg2 != -1 && this->mapNodeStateFlags[arg2] != kNodeStateAvailable) {
+  if (mapNodeIndex != -1 && this->mapNodeStateFlags[mapNodeIndex] != kNodeStateAvailable) {
     return;
   }
 
-  if ((portZoneContext != 0) && (arg4 == -1)) {
-    short index = g_pMapActionContextListHead->GetContextOrdinalOrInvalid();
+  if ((zoneContext != 0) && (relatedMapNodeIndex == -1)) {
+    short index = zoneContext->GetContextOrdinalOrInvalid();
     if (this->portZoneStateFlags[index] != kNodeStateAvailable) {
       return;
     }
   }
 
-  eMissionType missionKind = arg1;
-  if ((portZoneContext != 0) && (arg2 == -1) && (arg4 == -1) &&
-      (arg1 != kMissionTypeBlockadePort)) {
+  eMissionType missionKind = missionType;
+  if ((zoneContext != 0) && (mapNodeIndex == -1) && (relatedMapNodeIndex == -1) &&
+      (missionType != kMissionTypeBlockadePort)) {
     missionKind = kMissionTypeDefendProvince;
-    arg4 = -1;
   }
 
   TMission* missionObj = CreateMissionObjectByKindAndNodeContext(
-      this->nationSlot, missionKind, arg2, reinterpret_cast<int>(portZoneContext), arg4);
+      this->nationSlot, missionKind, mapNodeIndex, reinterpret_cast<int>(zoneContext),
+      relatedMapNodeIndex);
   if (missionObj == 0) {
     GAME_FAIL_NIL_POINTER();
     TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UCountryAuto.cpp", 0x5ed);
@@ -761,19 +762,15 @@ void TAutoGreatPower::QueueMapActionMissionFromCandidateAndMarkState(eMissionTyp
   TSortedList* missionQueue = this->missionQueue;
   missionQueue->AddTail(missionObj);
 
-  if (arg2 != -1) {
-    this->mapNodeStateFlags[arg2] = kNodeStateQueued;
+  if (mapNodeIndex != -1) {
+    this->mapNodeStateFlags[mapNodeIndex] = kNodeStateQueued;
   }
-  if (portZoneContext != 0) {
-    // portZoneContext is a tagged parameter in the original: -1 selects the active
-    // context ordinal, other non-null values double as a map-node index below.
-    if (portZoneContext == reinterpret_cast<TZone*>(-1)) {
-      short index = g_pMapActionContextListHead->GetContextOrdinalOrInvalid();
-      this->portZoneStateFlags[index] = kNodeStateQueued;
-    }
-    if (portZoneContext != reinterpret_cast<TZone*>(-1)) {
-      this->mapNodeStateFlags[reinterpret_cast<int>(portZoneContext)] = kNodeStateQueued;
-    }
+  if ((zoneContext != 0) && (relatedMapNodeIndex == -1)) {
+    short index = zoneContext->GetContextOrdinalOrInvalid();
+    this->portZoneStateFlags[index] = kNodeStateQueued;
+  }
+  if (relatedMapNodeIndex != -1) {
+    this->mapNodeStateFlags[relatedMapNodeIndex] = kNodeStateQueued;
   }
 }
 // province's map-action-context link is unavailable for this nation, in which case it's

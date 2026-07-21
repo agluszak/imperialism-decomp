@@ -672,7 +672,7 @@ void TMapMgr::RebuildTileOwnerNeighborCachesAndFallbackAssignments() {
 }
 
 // FUNCTION: IMPERIALISM 0x0050fca0
-void TMapMgr::UpdateTilePrimaryAndSecondaryNeighborLinksByPriority(short cityRecordIndex) {
+void TMapMgr::UpdateTilePrimaryAndSecondaryNeighborLinksByPriority(int cityRecordIndex) {
   short neighbors[6];
   ComputeHexNeighborTileIndices(cityScoreTable[cityRecordIndex].cityTileIndex04, neighbors,
                                 hexNeighborWrapHorizontally20);
@@ -1869,7 +1869,7 @@ TTown* TMapMgr::FindTownMarkerForTileByOwnerNation(short tileIndex) {
   TSortedList* townMarkerList = owner->townMarkerList;
   for (int ordinal = 1; ordinal <= townMarkerList->GetCount(); ++ordinal) {
     TTown* town = static_cast<TTown*>(townMarkerList->GetEntryByOrdinal(ordinal));
-    if (town->regionId14 == tileIndex) {
+    if (town->tileIndex14 == tileIndex) {
       return town;
     }
   }
@@ -2001,7 +2001,7 @@ void TMapMgr::SetTileOwnerAndInvalidateNeighborState(short regionId, short newNa
     bool found = false;
     while (ordinal <= count) {
       matchedTown = static_cast<TTown*>(oldTownList->GetEntryByOrdinal(ordinal));
-      if (matchedTown->regionId14 == regionId) {
+      if (matchedTown->tileIndex14 == regionId) {
         found = true;
         break;
       }
@@ -2653,7 +2653,7 @@ void TMapMgr::SeedRecruitSearchVisitedStateAndClearAlliedTerritory(TCivUnit* pCi
     if (g_pDiplomacyTurnStateManager->IsNationPairAtWar(minorSlot, pCivilianOrderEntry->field_18)) {
       continue;
     }
-    terrainStateTable[static_cast<short>(minorObj->homeRegionIndex)].recruitSearchVisited0e = 0;
+    terrainStateTable[static_cast<short>(minorObj->homeTileIndex)].recruitSearchVisited0e = 0;
   }
 
   TGreatPower* owner = g_apNationStates[pCivilianOrderEntry->field_18];
@@ -2661,7 +2661,7 @@ void TMapMgr::SeedRecruitSearchVisitedStateAndClearAlliedTerritory(TCivUnit* pCi
   for (int ordinal = 1; ordinal <= townMarkerList->GetCount(); ++ordinal) {
     TTown* town = static_cast<TTown*>(townMarkerList->GetEntryByOrdinal(ordinal));
     if (town->enabledFlag4d != 0) {
-      terrainStateTable[town->regionId14].recruitSearchVisited0e = 0;
+      terrainStateTable[town->tileIndex14].recruitSearchVisited0e = 0;
     }
   }
 }
@@ -2872,7 +2872,7 @@ void TMapMgr::MarkType5NeighborTilesUnavailableByNationCapability(TCivUnit* pCiv
     if (town->enabledFlag4d == 0) {
       continue;
     }
-    short regionId = town->regionId14;
+    short regionId = town->tileIndex14;
     signed char townTag5 = terrainStateTable[regionId].regionSubtypeTag05;
     short neighbors[6];
     ComputeHexNeighborTileIndices(regionId, neighbors, hexNeighborWrapHorizontally20);
@@ -3117,7 +3117,7 @@ short TMapMgr::FindLinkedRegionIdForAdjacentRegion(int cityRecordIndex, int regi
 void TMapMgr::SetCapitalCityDevelopmentStageIfValidNationSlot(int nationSlotParam, int param_2) {
   (void)param_2;
   short capitalTileIndex =
-      static_cast<short>(g_apTerrainTypeDescriptorTable[nationSlotParam]->homeRegionIndex);
+      static_cast<short>(g_apTerrainTypeDescriptorTable[nationSlotParam]->homeTileIndex);
   short cityRecordIndex = terrainStateTable[capitalTileIndex].cityRecordIndex;
   if (nationSlotParam < 7) {
     cityScoreTable[cityRecordIndex].developmentStage = 2;
@@ -3364,9 +3364,9 @@ short TMapMgr::ComputeRepresentativeTileIndexForTerrainTypeWithWrapBias(short te
     }
     char includeTile = 1;
     if (terrainType < 0x17 && g_apTerrainTypeDescriptorTable[terrainType] != 0 &&
-        g_apTerrainTypeDescriptorTable[terrainType]->homeRegionIndex != -1) {
+        g_apTerrainTypeDescriptorTable[terrainType]->homeTileIndex != -1) {
       short nationHomeTile =
-          static_cast<short>(g_apTerrainTypeDescriptorTable[terrainType]->homeRegionIndex);
+          static_cast<short>(g_apTerrainTypeDescriptorTable[terrainType]->homeTileIndex);
       short tileCityLink = *reinterpret_cast<short*>(tileTable + tileByteOffset + 0x14);
       char tileCityByte = cityTable[0xa3 + static_cast<int>(tileCityLink) * 0xa8];
       short nationTileCityLink =
@@ -4503,9 +4503,4 @@ short TMapMgr::QueryIconStripXSlot110(int iconCode) {
 
 void TMapMgr::NotifyCityRecordSlot12C(int cityRecordIndex) {
   (void)cityRecordIndex;
-}
-
-void TMapMgr::LinkRegionToNationSlot134(int regionId, int nationSlot) {
-  (void)regionId;
-  (void)nationSlot;
 }

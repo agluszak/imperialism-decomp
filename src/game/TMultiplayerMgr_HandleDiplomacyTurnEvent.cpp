@@ -56,7 +56,7 @@ struct TurnEventBNationDirectoryPacket : NetMessage {
   unsigned char pad15[3];
   short pendingNationSlot; // +0x18
   unsigned char pad1a[2];
-  short homeRegionBySlot[0x17];      // +0x1c
+  short homeTileBySlot[0x17];        // +0x1c
   char cityNameBySlot[0x17][0x17];   // +0x4a
   unsigned char pad25b[0xe6];        // reserve to 0x17 * 0x21
   char nationNameBySlot[0x17][0x17]; // +0x341
@@ -116,7 +116,7 @@ struct TurnEvent1PendingMaskPacket2 : TimelyMessageHeader {
 struct TurnEventACityAnnouncePacket : TimelyNetMessagePrefix {
   unsigned char nationId1C; // +0x1c
   unsigned char pad1d;
-  short homeRegion1E;    // +0x1e
+  short homeTile1E;      // +0x1e
   char cityName20[0x24]; // +0x20 (strncpy'd 0x21), total 0x44
 };
 
@@ -211,7 +211,7 @@ void TMultiplayerMgr::HandleTurnResumeStateTelemetry() {
       packet.uiTurnToken = static_cast<short>(g_pGameFlowState->pendingNationSlotIndex);
       char nationId = static_cast<char>(g_pSimMgr->GetActiveNationId());
       packet.nationId1C = nationId;
-      packet.homeRegion1E = (short)g_apTerrainTypeDescriptorTable[nationId]->homeRegionIndex;
+      packet.homeTile1E = (short)g_apTerrainTypeDescriptorTable[nationId]->homeTileIndex;
       int cityRecordIndex =
           g_apTerrainTypeDescriptorTable[nationId]->GetHomeRegionCityRecordIndex();
       g_pGlobalMapState->AssignCityRecordDisplayName(cityRecordIndex, &cityName);
@@ -346,8 +346,7 @@ void TMultiplayerMgr::HandleDiplomacyTurnEventPacketByCode() {
       packet.messageLength = 0x668;
       packet.pendingNationSlot = static_cast<short>(g_pGameFlowState->pendingNationSlotIndex);
       for (int slot = 0; slot < 0x17; ++slot) {
-        packet.homeRegionBySlot[slot] =
-            (short)g_apTerrainTypeDescriptorTable[slot]->homeRegionIndex;
+        packet.homeTileBySlot[slot] = (short)g_apTerrainTypeDescriptorTable[slot]->homeTileIndex;
         int cityRecordIndex = g_apTerrainTypeDescriptorTable[slot]->GetHomeRegionCityRecordIndex();
         CString cityName;
         g_pGlobalMapState->AssignCityRecordDisplayName(cityRecordIndex, &cityName);
@@ -364,7 +363,7 @@ void TMultiplayerMgr::HandleDiplomacyTurnEventPacketByCode() {
     }
 
     for (int capitalSlot = 0; capitalSlot < 7; ++capitalSlot) {
-      int homeTile = g_apTerrainTypeDescriptorTable[capitalSlot]->homeRegionIndex;
+      int homeTile = g_apTerrainTypeDescriptorTable[capitalSlot]->homeTileIndex;
       short neighborTiles[7];
       TMapMgr::ComputeHexNeighborTileIndices(static_cast<short>(homeTile), neighborTiles,
                                              g_pGlobalMapState->hexNeighborWrapHorizontally20);
@@ -604,7 +603,8 @@ void TMultiplayerMgr::HandleTurnEventCodes28_2E_2F_30_31_32(TStream* stream) {
           TTown* town = new TTown();
           town->InitializeTownMarker(g_szEmptyString, 0, 0, g_pSimMgr->GetActiveNationId());
           town->ReadFrom(stream);
-          TTown* existing = g_pGlobalMapState->FindTownMarkerForTileByOwnerNation(town->regionId14);
+          TTown* existing =
+              g_pGlobalMapState->FindTownMarkerForTileByOwnerNation(town->tileIndex14);
           if (existing != 0) {
             memcpy(existing, town, sizeof(TTown));
             town->Free();
@@ -754,7 +754,7 @@ void TMultiplayerMgr::ReplaceNationStateForSlotAndRefreshStatus(int nationSlot) 
       memcpy(newNation->unitNameOrdinalByType, oldNation->unitNameOrdinalByType,
              sizeof(newNation->unitNameOrdinalByType));
       newNation->unitNameCounter84 = oldNation->unitNameCounter84;
-      newNation->homeRegionIndex = oldNation->homeRegionIndex;
+      newNation->homeTileIndex = oldNation->homeTileIndex;
       newNation->overlayAnchorTileCache8c = oldNation->overlayAnchorTileCache8c;
       TLongintList* ownedRegions = newNation->ownedRegionList;
       newNation->ownedRegionList = oldNation->ownedRegionList;

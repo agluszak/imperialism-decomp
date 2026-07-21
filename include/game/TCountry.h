@@ -146,10 +146,10 @@ public:
   // stores movsx(short); 0x004db7d0/0x004dbf00 load dwords), the TCountry readers
   // narrow it to a short (0x004d87b0/0x004d71b0 `movsx word`) — expressed here as
   // an int field with static_cast<short> at the narrow readers.
-  int homeRegionIndex;
+  int homeTileIndex;
   // 0x8c — cached overlay-anchor tile index (-1 = unset; lazily computed by
   // GetOrComputeOverlayAnchorTileIndex); serialized as a 4-byte block by slots
-  // 0x0a/0x0b together with homeRegionIndex.
+  // 0x0a/0x0b together with homeTileIndex.
   int overlayAnchorTileCache8c;
   // The region-id list is a TLongintList (vtable 0x650a08 written by the inline ctor
   // at 0x4d6a5d), not a TSortedList; entries are cityScoreTable indices.
