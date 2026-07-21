@@ -31,8 +31,8 @@ public:
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
   virtual void LoadTurnEventCursorTable();                                     // slot 0x0a 0x5d5100
   virtual void MakeGameSetupDialog();                                          // slot 0x0b 0x5dcaa0
-  virtual void UpdatePaletteIndexFromTurnEventCode(int eventCode);             // slot 0x0c 0x5d5780
-  virtual void ApplyTurnEventPaletteColorByEventCode(int eventCode);           // slot 0x0d 0x5d5750
+  virtual void SetBackColor(short colorCode);                                  // slot 0x0c 0x5d5780
+  virtual void SetForeColor(short colorCode);                                  // slot 0x0d 0x5d5750
   virtual int ClassifyTurnStateForOverlayMode();                               // slot 0x0e 0x5d5960
   virtual void BuildAndShowTurnOverlayByMode(int overlayMode, int contextArg); // slot 0x0f 0x5d6480
   virtual void HandleTurnEventVtableSlot40RefreshGoldDialog();                 // slot 0x10 0x5d57b0
@@ -134,7 +134,7 @@ public:
   virtual void HandleTurnEventF3D_PopulateRecentTurnMessages(int nationSlot); // 0x110
 
   void ApplyLegendSplitSlot34(int split) {
-    ApplyTurnEventPaletteColorByEventCode(split);
+    SetForeColor(static_cast<short>(split));
   }
   void QueueTurnStatusPromptSlot3C(int promptIndex, int payload) {
     BuildAndShowTurnOverlayByMode(promptIndex, payload);
@@ -143,7 +143,11 @@ public:
     RefreshMainViewNationIndicatorForCurrentTurnEvent();
   }
 
-  int MapTurnEventCodeToPaletteIndex(int eventCode);
+  // Mac CodeWarrior names/signatures identify this palette family as GetColor,
+  // SetColor, SetForeColor, and SetBackColor. Windows listing supplies the
+  // implementations and addresses.
+  int GetColor(short colorCode);
+  void SetColor(short colorCode, unsigned char foreground);
 
   // 0x5ddd20 — opens the civilian ledger (TSuperCivRoster) inside factory dialog
   // 0xdac, runs it modally via the show/refresh chain, then applies the selected

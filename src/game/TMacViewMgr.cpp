@@ -800,7 +800,7 @@ undefined TMacViewMgr::RenderTurnEventPalettePreviewSurfaceAndProgress() {
         terrainCode = 0x3e;
       }
       paletteByte = static_cast<unsigned char>(
-          g_pUiRuntimeContext->MapTurnEventCodeToPaletteIndex(terrainCode));
+          g_pUiRuntimeContext->GetColor(static_cast<short>(terrainCode)));
       *reinterpret_cast<unsigned char*>(pixelBase + colOffset) = paletteByte;
       *reinterpret_cast<unsigned char*>(pixelBase + colOffset + 1) = paletteByte;
       *reinterpret_cast<unsigned char*>(pixelBase + strideBytes + colOffset) = paletteByte;

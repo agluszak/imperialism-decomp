@@ -36,7 +36,6 @@ void __cdecl BuildDiplomacyOverlayHitMaskOpcodeStream(DiplomacyMaskBufferRun* ru
                                                       int surfaceHeight);
 
 undefined4 FrameRegionOnHdcAndReleaseBrushState(void);
-undefined4 MapTurnEventCodeToPaletteIndex(void);
 undefined4 BlitMonochromeMaskBytePatternToSurface(void);
 undefined4 RunDiplomacyWaitSheetPopupAndAwaitResponse(void);
 
@@ -929,12 +928,12 @@ void TDiplomacyMapView::RebuildDiplomacyLegendPaletteMode4AndBlit(int activeNati
       // compiler-emitted converting-constructor call for BlitMonochromeMaskBytePatternToSurface's
       // paletteByte argument -- ABI-transparent for a plain int, so passing paletteIndex directly
       // reproduces it exactly with no separate call needed at this call site (and the two below).
-      int paletteIndex = g_pUiRuntimeContext->MapTurnEventCodeToPaletteIndex(eventCode);
+      int paletteIndex = g_pUiRuntimeContext->GetColor(static_cast<short>(eventCode));
       maskRuns[nationIndex].BlitMonochromeMaskBytePatternToSurface(
           reinterpret_cast<int>(g_pActiveQuickDrawSurfaceContext->GetBlitSurface()), paletteIndex,
           maskState, 1);
 
-      int packedColor = g_pUiRuntimeContext->MapTurnEventCodeToPaletteIndex(0x3f);
+      int packedColor = g_pUiRuntimeContext->GetColor(0x3f);
       packedColorRuns[nationIndex].AppendPackedColorDword(
           reinterpret_cast<unsigned int>(g_pActiveQuickDrawSurfaceContext->GetBlitSurface()),
           packedColor);
@@ -1062,12 +1061,12 @@ void TDiplomacyMapView::RebuildDiplomacyLegendPaletteMode1AndBlit(int activeNati
 
         maskState[0] = 0;
         maskState[1] = 0;
-        int paletteIndex = g_pUiRuntimeContext->MapTurnEventCodeToPaletteIndex(eventCode + 200);
+        int paletteIndex = g_pUiRuntimeContext->GetColor(static_cast<short>(eventCode + 200));
         maskRuns[terrainIndex].BlitMonochromeMaskBytePatternToSurface(
             reinterpret_cast<int>(g_pActiveQuickDrawSurfaceContext->GetBlitSurface()), paletteIndex,
             maskState, 1);
 
-        int packedColor = g_pUiRuntimeContext->MapTurnEventCodeToPaletteIndex(0x3f);
+        int packedColor = g_pUiRuntimeContext->GetColor(0x3f);
         packedColorRuns[terrainIndex].AppendPackedColorDword(
             reinterpret_cast<unsigned int>(g_pActiveQuickDrawSurfaceContext->GetBlitSurface()),
             packedColor);
@@ -1093,13 +1092,13 @@ void TDiplomacyMapView::BuildTurnEventMonochromeMaskBuffers(int maskIndex, int e
   int maskState[2];
   maskState[0] = 0;
   maskState[1] = 0;
-  int paletteIndex = g_pUiRuntimeContext->MapTurnEventCodeToPaletteIndex(eventCode);
+  int paletteIndex = g_pUiRuntimeContext->GetColor(static_cast<short>(eventCode));
   DiplomacyMaskBufferRun* maskRun = &maskRuns[maskIndex];
   maskRun->BlitMonochromeMaskBytePatternToSurface(
       reinterpret_cast<int>(g_pActiveQuickDrawSurfaceContext->GetBlitSurface()), paletteIndex,
       maskState, 1);
 
-  int packedColor = g_pUiRuntimeContext->MapTurnEventCodeToPaletteIndex(0x3f);
+  int packedColor = g_pUiRuntimeContext->GetColor(0x3f);
   StrategicMapCallbackRecord* packedRun = &packedColorRuns[maskIndex];
   packedRun->AppendPackedColorDword(
       reinterpret_cast<int>(g_pActiveQuickDrawSurfaceContext->GetBlitSurface()), packedColor);
@@ -1168,7 +1167,7 @@ void TDiplomacyMapView::BlitDiplomacyMapEventPaletteMaskToSurface(short maskInde
   }
 
   g_pModuleLibraryCacheState->ReleaseRecordByHandle(bmpHandle);
-  int packedColor = g_pUiRuntimeContext->MapTurnEventCodeToPaletteIndex(0x3f);
+  int packedColor = g_pUiRuntimeContext->GetColor(0x3f);
   StrategicMapCallbackRecord* packedRun = &packedColorRuns[maskIndex];
   packedRun->AppendPackedColorDword(reinterpret_cast<int>(surface->GetBlitSurface()), packedColor);
 }

@@ -199,7 +199,9 @@ void __cdecl DrawTextWithCachedQuickDrawStyleState(const CString* text) {
   if (dc == nullptr) {
     dc = g_pScopedMapQuickDrawDcHandleObject;
   }
-  dc->SetBkMode(TRANSPARENT);
+  // The original calls CDC::SetMapperFlags(1) here. This is not the Win32
+  // background-mode setter: it configures the font mapper before TextOut.
+  dc->SetMapperFlags(1);
 
   dc = g_pQuickDrawMemoryDc;
   if (dc == nullptr) {

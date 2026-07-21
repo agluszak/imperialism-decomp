@@ -174,7 +174,7 @@ void TViewMgr::WriteTo(TStream* stream) {
 }
 
 // FUNCTION: IMPERIALISM 0x005d5270
-int TViewMgr::MapTurnEventCodeToPaletteIndex(int eventCode) {
+int TViewMgr::GetColor(short eventCode) {
   if (200 < eventCode) {
     if (eventCode < 0x2b68) {
       if (eventCode == 0x2b67) {
@@ -332,15 +332,25 @@ int TViewMgr::MapTurnEventCodeToPaletteIndex(int eventCode) {
   return 0x20;
 }
 
+// FUNCTION: IMPERIALISM 0x005d5710
+void TViewMgr::SetColor(short colorCode, unsigned char foreground) {
+  int paletteIndex = GetColor(colorCode);
+  if (foreground != 0) {
+    SetQuickDrawFillColorFromPaletteIndex(static_cast<unsigned short>(paletteIndex));
+  } else {
+    UpdatePaletteIndexWithDefaultFallback(paletteIndex);
+  }
+}
+
 // FUNCTION: IMPERIALISM 0x005d5750
-void TViewMgr::ApplyTurnEventPaletteColorByEventCode(int eventCode) {
-  int paletteIndex = this->MapTurnEventCodeToPaletteIndex(eventCode);
+void TViewMgr::SetForeColor(short colorCode) {
+  int paletteIndex = GetColor(colorCode);
   SetQuickDrawFillColorFromPaletteIndex(static_cast<unsigned short>(paletteIndex));
 }
 
 // FUNCTION: IMPERIALISM 0x005d5780
-void TViewMgr::UpdatePaletteIndexFromTurnEventCode(int eventCode) {
-  int paletteIndex = this->MapTurnEventCodeToPaletteIndex(eventCode);
+void TViewMgr::SetBackColor(short colorCode) {
+  int paletteIndex = GetColor(colorCode);
   UpdatePaletteIndexWithDefaultFallback(paletteIndex);
 }
 

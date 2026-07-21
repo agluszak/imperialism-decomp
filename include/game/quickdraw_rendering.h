@@ -4,6 +4,7 @@
 #include "game/mfc.h"
 
 void SetQuickDrawFillColor(int fillColor);
+void SetQuickDrawColorAndPropagateIfChanged(int newColor);
 void SetQuickDrawStrokeColor(int strokeColor);
 void SetQuickDrawColorAndSyncGlobals(int color);
 void SetGlobalBlitTransparentColorRaw(int transparentColor);

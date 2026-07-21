@@ -535,9 +535,9 @@ undefined TMapDialog::RenderStrategicMapTileCell(short, short, short) {
 void TMapDialog::RenderMapDialogBilateralRelationMarkers(short relationLevel, int originX,
                                                          int originY, int nationA, int nationB) {
   if (g_pDiplomacyTurnStateManager->IsPrimaryNationSlotIndex(nationA) == 0) {
-    g_pUiRuntimeContext->ApplyTurnEventPaletteColorByEventCode(0x35);
+    g_pUiRuntimeContext->SetForeColor(0x35);
   } else {
-    g_pUiRuntimeContext->ApplyTurnEventPaletteColorByEventCode(nationA);
+    g_pUiRuntimeContext->SetForeColor(static_cast<short>(nationA));
   }
   SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty(2, 2);
   switch (relationLevel) {
@@ -573,9 +573,9 @@ void TMapDialog::RenderMapDialogBilateralRelationMarkers(short relationLevel, in
     break;
   }
   if (g_pDiplomacyTurnStateManager->IsPrimaryNationSlotIndex(nationB) == 0) {
-    g_pUiRuntimeContext->ApplyTurnEventPaletteColorByEventCode(0x35);
+    g_pUiRuntimeContext->SetForeColor(0x35);
   } else {
-    g_pUiRuntimeContext->ApplyTurnEventPaletteColorByEventCode(nationB);
+    g_pUiRuntimeContext->SetForeColor(static_cast<short>(nationB));
   }
   switch (relationLevel) {
   case 0:
@@ -887,8 +887,8 @@ undefined TMapDialog::EmitHexAdjacencyTransitionEventsByBitmask(unsigned char, i
 // FUNCTION: IMPERIALISM 0x00522000
 void TMapDialog::DrawMapDialogOwnershipMarkerForNation_00522000(unsigned char edgeMask, int screenX,
                                                                 int screenY, short tileIndex) {
-  g_pUiRuntimeContext->ApplyTurnEventPaletteColorByEventCode(
-      g_pGlobalMapState->terrainStateTable[tileIndex].ownerNationTag04);
+  g_pUiRuntimeContext->SetForeColor(
+      static_cast<short>(g_pGlobalMapState->terrainStateTable[tileIndex].ownerNationTag04));
   if ((edgeMask & 0x20) != 0) {
     SetQuickDrawTextOriginWithContextOffset(screenX + 8, screenY + 8);
     DrawCenteredGuideLineOnMapDc(screenX + 0xc, screenY + 8);
