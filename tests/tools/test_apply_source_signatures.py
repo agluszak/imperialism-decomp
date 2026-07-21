@@ -13,6 +13,7 @@ from tools.ghidra.apply_source_signatures import (
     _classify_projection,
     _flattened_by_value_storage_matches,
     _is_placeholder_return,
+    _parameterless_overdeclaration_is_proven,
     _param_type_only,
     _queue_out_for_mode,
     classify_convergence,
@@ -327,6 +328,28 @@ class FlattenedByValueStorageTest(unittest.TestCase):
 
     def test_rejects_unknown_sizes(self):
         self.assertFalse(_flattened_by_value_storage_matches([4, None], [4, 4]))
+
+
+class ParameterlessOverdeclarationTest(unittest.TestCase):
+    def test_thiscall_plain_ret_proves_zero_explicit_parameters(self):
+        self.assertTrue(_parameterless_overdeclaration_is_proven(
+            "__thiscall", 0, True, "__thiscall", 1, True, 0))
+
+    def test_stdcall_plain_ret_proves_zero_explicit_parameters(self):
+        self.assertTrue(_parameterless_overdeclaration_is_proven(
+            "__stdcall", 0, False, "__stdcall", 2, False, 0))
+
+    def test_cdecl_cleanup_cannot_prove_parameter_count(self):
+        self.assertFalse(_parameterless_overdeclaration_is_proven(
+            "__cdecl", 0, False, "__cdecl", 1, False, 0))
+
+    def test_nonzero_cleanup_rejects_parameterless_source(self):
+        self.assertFalse(_parameterless_overdeclaration_is_proven(
+            "__thiscall", 0, True, "__thiscall", 1, True, 4))
+
+    def test_receiver_mismatch_is_not_safe(self):
+        self.assertFalse(_parameterless_overdeclaration_is_proven(
+            "__thiscall", 0, True, "__thiscall", 1, False, 0))
 
 
 class ClassifyConvergenceTest(unittest.TestCase):

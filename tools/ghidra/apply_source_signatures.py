@@ -805,6 +805,36 @@ def _flattened_by_value_storage_matches(exp_sizes, db_sizes):
     return stack_dwords(exp_sizes) == stack_dwords(db_sizes)
 
 
+def _parameterless_overdeclaration_is_proven(exp_cc, exp_n, exp_this,
+                                              db_cc, db_n, db_this, ret_cleanup):
+    """Whether callee-cleanup evidence proves DB-only parameters are impossible."""
+    return (exp_cc in ("__thiscall", "__stdcall")
+            and db_cc == exp_cc
+            and db_this == exp_this
+            and exp_n == 0
+            and db_n > 0
+            and ret_cleanup == 0)
+
+
+def _consistent_ret_cleanup_bytes(program, fn):
+    """Return the common x86 RET cleanup immediate, or None when not provable."""
+    cleanups = set()
+    instructions = program.getListing().getInstructions(fn.getBody(), True)
+    while instructions.hasNext():
+        instruction = instructions.next()
+        if not instruction.getMnemonicString().upper().startswith("RET"):
+            continue
+        cleanup = 0
+        for operand_index in range(instruction.getNumOperands()):
+            for obj in instruction.getOpObjects(operand_index):
+                try:
+                    cleanup = max(cleanup, int(obj.getValue()))
+                except AttributeError:
+                    continue
+        cleanups.add(cleanup)
+    return next(iter(cleanups)) if len(cleanups) == 1 else None
+
+
 # Type-resolution grades that count as genuinely SEMANTIC (not just ABI-storage
 # compatible pointer voodoo) — see TypeResolver.resolve_quality's docstring.
 _SEMANTIC_GRADES = {"exact_complete", "canonical_alias"}
@@ -1229,7 +1259,9 @@ def run_divergent(program, args, model):
       - param_count_mismatch with source arity > DB arity and matching convention
         (DB is missing trailing parameters);
       - DB over-declaration only when it is exactly the flattened storage of a
-        source by-value parameter wider than one dword (for example CPoint).
+        source by-value parameter wider than one dword (for example CPoint), or
+        when a parameterless callee-cleaned method's RET instructions all prove
+        zero stack cleanup.
     Other DB over-declarations and convention mismatches remain excluded.
 
     Acceptance is STRICTER than the in_stack path — these functions had no in_stack
@@ -1283,6 +1315,9 @@ def run_divergent(program, args, model):
                 exp_param_sizes.append(dt.getLength())
             flattened_by_value = _flattened_by_value_storage_matches(
                 exp_param_sizes, db_param_sizes)
+        parameterless_overdeclaration = _parameterless_overdeclaration_is_proven(
+            exp_cc, exp_n, exp_this, db_cc, db_n, db_this,
+            _consistent_ret_cleanup_bytes(program, fn))
         # Arity/cc can already match yet a param/return be a WRONG opaque-by-value
         # type (Ghidra typed a scalar arg as a game class by value). The arity check
         # misses those; catch them so the correct source types get projected.
@@ -1290,9 +1325,11 @@ def run_divergent(program, args, model):
                         for p in fn.getParameters()
                         if not p.isAutoParameter() and p.getName() != "this") \
             or TypeResolver.is_opaque(fn.getReturnType())
-        if not (incomplete or short or flattened_by_value or db_opaque):
+        if not (incomplete or short or flattened_by_value
+                or parameterless_overdeclaration or db_opaque):
             continue  # not a broad-projection candidate
-        if exp_n == 0 and not incomplete and not db_opaque:
+        if (exp_n == 0 and not incomplete and not db_opaque
+                and not parameterless_overdeclaration):
             continue
 
         # Resolve every parameter type; a non-pointer we cannot size => queue. An
