@@ -19,8 +19,6 @@ TSuperNavyRoster::~TSuperNavyRoster() {}
 
 IMPLEMENT_DYNCREATE(TSuperNavyRoster, TPageView)
 
-TSuperNavyRoster::TSuperNavyRoster() {}
-
 // FUNCTION: IMPERIALISM 0x005698e0
 void TSuperNavyRoster::PopulateNavyOrderPageEntriesByMapContext(TView* panel, int* offsetLayout,
                                                                 int* sizeLayout) {

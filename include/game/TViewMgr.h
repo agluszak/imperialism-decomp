@@ -12,6 +12,7 @@ class TControl;
 class TDiplomacyMapView;
 class TMovieView;
 class TTaskForce;
+class TNavyRoster;
 
 // VTABLE: IMPERIALISM 0x0066f120
 class TViewMgr : public TObject {
@@ -111,14 +112,12 @@ public:
   // Refreshes the 0xdac factory dialog's 'page' roster for a tile-selection map click
   // (0x5dd900); reached from TArmyToolbar's map-tile-selection handler.
   virtual void HandleTurnEventDialogFactorySlotEC(int mapSelection); // 0xec
-  // Resolves the 0x2506 factory dialog's 'page' child and forwards the caller-supplied
-  // map-order context to it, then places/refreshes/frees the dialog (0x5dd340). Real
-  // arity confirmed from TToolBarCluster::TryHandleMapContextAction's case-10 call
-  // site: ecx=g_pUiRuntimeContext, one pushed arg = GetActiveMapOrderEntry()'s result
-  // (a TTaskForce*).
-  virtual void HandleTurnEventDialogFactorySlotF0(TTaskForce* activeMapOrderEntry); // 0xf0
-  virtual void HandleTurnEventDialogFactorySlotF4();                                // 0xf4
-  virtual void UiRuntimeSlotF8();                                                   // 0xf8
+  // Mac oracle: TViewMgr::MakeNavyRosterDialog(TTaskForce*). Resolves the 0x2506
+  // Navy Roster's TNavyRoster page, populates it from the supplied task force, and
+  // returns the page after the modal dialog closes (0x5dd340).
+  virtual TNavyRoster* MakeNavyRosterDialog(TTaskForce* activeMapOrderEntry); // 0xf0
+  virtual void HandleTurnEventDialogFactorySlotF4();                          // 0xf4
+  virtual void UiRuntimeSlotF8();                                             // 0xf8
   virtual void NoOpTurnEventStateVtableSlotFC(); // 0xfc 0x5dbd10 -- real body is a bare `ret`
   // Turn-event 0x5DE: re-assert + refresh the 'main' view panel (sibling of the 0x5DF
   // handler; the original brackets the body with a scoped empty CString). 0x5dbd30.
@@ -153,6 +152,12 @@ public:
   // 0xdac, runs it modally via the show/refresh chain, then applies the selected
   // civilian as the active map selection.
   void ShowCivilianLedgerDialogAndSelectUnit();
+  // 0x5dda30 — army-roster sibling of the civilian ledger: replace the factory page with
+  // TSuperArmyRoster, then activate and center the selected province.
+  void ShowArmyRosterDialogAndActivateProvinceSelection();
+  // 0x5dd450 — replace the Navy Roster factory page with TSuperNavyRoster and apply the
+  // selected loose-zone or existing-task-force map context.
+  void ShowNavyRosterDialogAndApplySelection();
 
   // 0x5dea60 — allocates a TModalMessageCommand carrying `message`/`payload`, seeds
   // it with dispatch code 'Hey!' targeting the global UI root controller, and posts

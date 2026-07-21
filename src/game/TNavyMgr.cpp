@@ -1280,7 +1280,7 @@ bool TNavyMgr::TryHandleMapContextAction(short nTileIndex, int nInputFlags) {
     return true;
   }
   case 10: {
-    g_pUiRuntimeContext->HandleTurnEventDialogFactorySlotF0(GetActiveMapOrderEntry());
+    g_pUiRuntimeContext->MakeNavyRosterDialog(GetActiveMapOrderEntry());
     return true;
   }
   default:
@@ -1326,7 +1326,7 @@ int TNavyMgr::TryQueueMapOrderFromTileAction(short nTileIndex, int nInputFlags) 
   entry = GetActiveMapOrderEntry();
   switch (commandId) {
   case 0x0a:
-    g_pUiRuntimeContext->HandleTurnEventDialogFactorySlotF0(entry);
+    g_pUiRuntimeContext->MakeNavyRosterDialog(entry);
     break;
   case 0x0c:
     entry->attachment = 3;
