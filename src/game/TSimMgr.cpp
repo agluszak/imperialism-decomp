@@ -1408,6 +1408,39 @@ void TSimMgr::HandleTurnInstruction_Port_ApplyPortPlacementAndCashBonus(void* pI
   }
 }
 
+// Reads two big-endian 32-bit tokens (forced nation slot, then tech id) and applies the
+// tech unlock via the city-order capability state singleton.
+// FUNCTION: IMPERIALISM 0x00582ad0
+void TSimMgr::HandleTurnInstruction_Tech_ApplyTechUnlockAndNotifyNations(void* pInstructionRaw) {
+  STurnInstructionCursor* instruction = static_cast<STurnInstructionCursor*>(pInstructionRaw);
+  unsigned int* cursor = instruction->tokenCursor;
+
+  unsigned int nationToken = *cursor;
+  cursor = cursor + 1;
+  instruction->tokenCursor = cursor;
+  unsigned char* nraw = reinterpret_cast<unsigned char*>(&nationToken);
+  unsigned char nt = nraw[0];
+  nraw[0] = nraw[3];
+  nraw[3] = nt;
+  nt = nraw[1];
+  nraw[1] = nraw[2];
+  nraw[2] = nt;
+
+  unsigned int techToken = *cursor;
+  cursor = cursor + 1;
+  instruction->tokenCursor = cursor;
+  unsigned char* traw = reinterpret_cast<unsigned char*>(&techToken);
+  unsigned char tt = traw[0];
+  traw[0] = traw[3];
+  traw[3] = tt;
+  tt = traw[1];
+  traw[1] = traw[2];
+  traw[2] = tt;
+
+  g_pCityOrderCapabilityState->ApplyTechUnlockAndQueueNationAbilityNotices(
+      static_cast<int>(techToken), static_cast<int>(nationToken));
+}
+
 // Reads two big-endian 32-bit nation slots and a big-endian short relation value, then
 // writes the value symmetrically into both [A][B] and [B][A] of the diplomacy manager's
 // side-effect relation matrix.
