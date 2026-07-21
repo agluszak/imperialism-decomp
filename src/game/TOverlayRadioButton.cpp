@@ -22,11 +22,11 @@ TOverlayRadioButton::TOverlayRadioButton() : TRadioPictureButton() {
 // TOverlayRadioButton::`scalar deleting destructor'
 TOverlayRadioButton::~TOverlayRadioButton() {}
 
-// slot 0x44 — ApplyRectSlot110 override: base picture render, then blit the attached
+// slot 0x44 — Draw override: base picture render, then blit the attached
 // overlay surface into the active quickdraw surface.
 // FUNCTION: IMPERIALISM 0x004cab10
-void TOverlayRadioButton::ApplyRectSlot110(RECT* rectBuffer) {
-  TPicture::ApplyRectSlot110(rectBuffer);
+void TOverlayRadioButton::Draw(RECT* rectBuffer) {
+  TPicture::Draw(rectBuffer);
   if (overlaySurfaceContext98 != 0) {
     UpdatePaletteIndexWithDefaultFallback(0x10);
     BlitQuickDrawSurfaces(overlaySurfaceContext98->GetBlitSurface(),

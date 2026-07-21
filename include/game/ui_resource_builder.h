@@ -28,10 +28,10 @@ void __cdecl RegisterUiResourceEntry(unsigned int nameTag, unsigned int controlT
                                      int stateValue, int enabledState, unsigned int ownerTag,
                                      int field3cValue);
 
-// Set the frame-style dword (+0x60 frameStyle60) and the 0x68-0x74 rect region
+// Set the event-number dword (+0x60) and the 0x68-0x74 content-inset region
 // on the current g_pUiResourceContext widget.
-void __cdecl SetUiResourceLayoutValues(int frameStyle, int rectLeft, int rectTop, int rectRight,
-                                       int rectBottom);
+void __cdecl SetUiResourceEventNumberAndInsets(int eventNumber, int rectLeft, int rectTop,
+                                               int rectRight, int rectBottom);
 
 // Set the inputGateFlag4c/childHitTestFlag4d pair on the current g_pUiResourceContext widget.
 void __cdecl SetUiResourceStateFlags(bool inputGateFlag4c, bool childHitTestFlag4d);

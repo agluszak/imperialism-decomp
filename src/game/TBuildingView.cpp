@@ -28,7 +28,7 @@ void TBuildingView::ApplyCityViewSelectionPayloadAndRefreshControls(
   isEmbeddedPage9C = isEmbeddedPage;
   productionView98 = productionView;
   embeddedPageIndex9E = embeddedPageIndex;
-  OwnerPanel()->controlValue3c = 0x65;
+  GetWindow()->controlValue3c = 0x65;
   DoStartup();
   UpdateFields();
 }

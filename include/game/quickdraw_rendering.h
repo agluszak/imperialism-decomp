@@ -13,6 +13,17 @@ void SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty(short styleParamA, short style
 void ResetQuickDrawStrokeState();
 void FillRectWithQuickDrawBrushAndContextOffset(RECT* rect);
 
+// Opaque classic QuickDraw cursor types. A CursHandle is a relocatable Handle,
+// hence the pointer-to-pointer shape consumed by TView's GetCursor/SetCursor path.
+struct QuickDrawCursor;
+typedef QuickDrawCursor** QuickDrawCursorHandle;
+
+// Windows compatibility stubs for the classic QuickDraw cursor API. The retail
+// implementation only performs its availability assertion; GetCursor then returns
+// a null handle and SetCursor otherwise has no effect.
+void __cdecl SetQuickDrawCursor(const QuickDrawCursor* cursor);
+QuickDrawCursorHandle __cdecl GetQuickDrawCursor(short cursorId);
+
 void SetQuickDrawTextOriginWithContextOffset(short x, short y);
 void DrawCenteredGuideLineOnMapDc(short x, short y);
 
@@ -57,7 +68,7 @@ void __cdecl DrawTextWithCachedQuickDrawStyleState(const CString* text);
 
 // Cached-style rect text draw leaf (0x494bf0): same cached-font/color setup as
 // DrawTextWithCachedQuickDrawStyleState, but draws into a caller rect via CDC::DrawText with
-// a styleSel-selected format. Sole caller: TTradeScreenPicture::ApplyRectSlot110.
+// a styleSel-selected format. Sole caller: TTradeScreenPicture::Draw.
 void __cdecl RenderTradeScreenCommoditySummaryRows_Impl(CString* text, RECT* rect, short styleSel,
                                                         int unused);
 

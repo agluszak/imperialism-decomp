@@ -21,7 +21,7 @@ public:
   virtual ~TOceanDialog() override;
 
   virtual void DoPostCreate(int arg) override;
-  virtual void ApplyRectSlot110(RECT* rectBuffer) override;
+  virtual void Draw(RECT* rectBuffer) override;
 
   virtual void RenderMapOrderEntryTilePreview(TCivUnit* orderEntry, int projectedX, int projectedY,
                                               int flag, short tileIndex) override;
@@ -53,7 +53,7 @@ public:
   // Nudges scrollRowOffset7c/scrollColOffset7e by +-4 per set bit in directionFlags
   // (bit0/1 adjust the row offset, bit2/3 the column offset), forwards the new (col, row)
   // pair to SetMapViewCellCoordinates, then refreshes the active dialog surface via
-  // g_pDisplayMgr->activeDialog->InvokeSlot13C(). 0x00568a40.
+  // g_pDisplayMgr->activeDialog->ForceRedraw(). 0x00568a40.
   void ApplyDirectionalNudgeAndRefreshDisplay(unsigned char directionFlags);
 
   TOceanDialog();

@@ -12,13 +12,13 @@ public:
   ~TBattleReportView() override; // slot 0x01 scalar deleting dtor
 
   void Free() override; // slot 0x07 0x4ad560
-  void HandleEvent(int commandId, TEventHandler* sourceHandler,
-                   TEvent* event) override; // slot 0x0f 0x4ad7a0
-  char DoIdle(int action) override;         // slot 0x13 0x4ad5a0
+  void DoEvent(int commandId, TEventHandler* sourceHandler,
+               TEvent* event) override; // slot 0x0f 0x4ad7a0
+  char DoIdle(int action) override;     // slot 0x13 0x4ad5a0
   void HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* point,
                                                            RgnHandle hitArg) override; // slot 0x35
   void DoPostCreate(int arg) override;                                                 // slot 0x37
-  void ApplyRectSlot110(RECT* rectBuffer) override;                                    // slot 0x44
+  void Draw(RECT* rectBuffer) override;                                                // slot 0x44
   void BeginMouseCaptureAndStartRepeatTimer(const CPoint& point, TToolboxEvent* event,
                                             CPoint origin) override; // slot 0x47 0x4adcb0
 
@@ -28,7 +28,7 @@ public:
   // for every g_pMapContextActionManager action record NOT currently selected (and with
   // placedFlag260 set), then one extra highlighted-variant pass (spriteCode262 + 1) for
   // the currently selected record (selectedReportIndex24c8). rectBuffer is an ignored
-  // stack arg threaded through by the caller (ApplyRectSlot110).
+  // stack arg threaded through by the caller (Draw).
   void RenderMapContextActionMarkers(RECT* rectBuffer);
 
   TBattleReportView();

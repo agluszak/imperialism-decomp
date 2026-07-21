@@ -104,9 +104,9 @@ void TIndustryAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache() {
       DrawCenteredGuideLineOnMapDc(overlayOffsetX, (short)(overlayOffsetY - 2));
 
       SetClip(surface.tempRgn);
-      TAmtBar* owner = reinterpret_cast<TAmtBar*>(reinterpret_cast<TView*>(control)->OwnerPanel());
+      TAmtBar* owner = reinterpret_cast<TAmtBar*>(reinterpret_cast<TView*>(control)->GetWindow());
       if (owner != 0) {
-        owner->InvokeSlot13C();
+        owner->ForceRedraw();
       }
     }
   }

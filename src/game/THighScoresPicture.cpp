@@ -48,10 +48,10 @@ void THighScoresPicture::DoPostCreate(int arg) {
 }
 
 // FUNCTION: IMPERIALISM 0x00575460
-void THighScoresPicture::ApplyRectSlot110(RECT* rectBuffer) {}
+void THighScoresPicture::Draw(RECT* rectBuffer) {}
 
 // FUNCTION: IMPERIALISM 0x00575770
-void THighScoresPicture::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+void THighScoresPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   (void)sourceHandler;
   (void)event;
   if (commandId == 0xa) {

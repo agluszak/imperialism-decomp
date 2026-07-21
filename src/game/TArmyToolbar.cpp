@@ -68,7 +68,7 @@ TArmyToolbar* TArmyToolbar::ConstructTArmyToolbarBaseState() {
 TArmyToolbar::~TArmyToolbar() {}
 
 // FUNCTION: IMPERIALISM 0x0058e1c0
-void TArmyToolbar::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+void TArmyToolbar::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   (void)event;
   unsigned int controlTag = sourceHandler->controlTag;
 

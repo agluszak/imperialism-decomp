@@ -49,12 +49,12 @@ char TMinisterView::HandleMouseUp(const CPoint& point, TToolboxEvent* event, CPo
 }
 
 // FUNCTION: IMPERIALISM 0x004f2e00
-void TMinisterView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+void TMinisterView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   int tag = sourceHandler->controlTag;
   if (commandId == 0xa) {
     if (tag == kControlTagOkay) {
       CloseBooks();
-      TWindow* owner = static_cast<TWindow*>(OwnerPanel());
+      TWindow* owner = static_cast<TWindow*>(GetWindow());
       g_pGlobalUiRootController->CloseAndFreeWindow(owner);
       return;
     }
@@ -63,7 +63,7 @@ void TMinisterView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEv
       return;
     }
   }
-  TEventHandler::HandleEvent(commandId, sourceHandler, event);
+  TEventHandler::DoEvent(commandId, sourceHandler, event);
 }
 
 // FUNCTION: IMPERIALISM 0x004f2ea0

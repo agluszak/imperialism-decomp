@@ -280,7 +280,7 @@ void CIncludeView::OnMouseMove(UINT nFlags, CPoint point) {
       TemporarilyClearAndRestoreUiInvalidationFlag(g_szIncludeViewSourcePath_00694D10, 0x2b7);
     }
     CPoint controlRelativePoint(point);
-    m_capturedControl74->SubtractPosAndDispatchToOwnerSlot19C(&controlRelativePoint);
+    m_capturedControl74->WindowToLocal(&controlRelativePoint);
     m_captureLastPoint80 = m_captureCurrentPoint88;
     m_captureCurrentPoint88 = controlRelativePoint;
     m_capturedControl74->DispatchPictureResourceCommand(
@@ -375,7 +375,7 @@ BOOL CIncludeView::PreCreateWindow(CREATESTRUCT& cs) {
 // Overrides CWnd::OnCommand (vtable slot 0x80). For a custom notify code 0x400 (HIWORD of
 // wParam) from a child control, recover the control's owning TView from its GWL_USERDATA
 // (both receivers are TView-hierarchy objects: the control's slot 0xe4 is TView::RefreshControl
-// at 0x48b6d0, and m_activeDialogContext's slot 0x13c is TView::InvokeSlot13C at 0x48b700),
+// at 0x48b6d0, and m_activeDialogContext's slot 0x13c is TView::ForceRedraw at 0x48b700),
 // refresh the control, and reset the hosted dialog tree's input capture. Then default-route.
 // FUNCTION: IMPERIALISM 0x00483e80
 BOOL CIncludeView::OnCommand(WPARAM wParam, LPARAM lParam) {
@@ -384,7 +384,7 @@ BOOL CIncludeView::OnCommand(WPARAM wParam, LPARAM lParam) {
         reinterpret_cast<TView*>(::GetWindowLong(reinterpret_cast<HWND>(lParam), GWL_USERDATA));
     if (controlView != NULL) {
       controlView->RefreshControl();
-      m_activeDialogContext->InvokeSlot13C();
+      m_activeDialogContext->ForceRedraw();
     }
   }
   return CWnd::OnCommand(wParam, lParam);

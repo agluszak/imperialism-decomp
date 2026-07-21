@@ -24,7 +24,7 @@ void TNetSelectPicture::DoPostCreate(int arg) {
 }
 
 // FUNCTION: IMPERIALISM 0x005769c0
-void TNetSelectPicture::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+void TNetSelectPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (g_SetupScreensAssertFlag_006A4264 == 0) {
     TemporarilyClearAndRestoreUiInvalidationFlag(g_szSetupScreensSourcePath_00698AB8, 0x2e6);
   }
@@ -39,5 +39,5 @@ void TNetSelectPicture::HandleEvent(int commandId, TEventHandler* sourceHandler,
       g_pGameFlowState->ValidateGameFlowNameAndSelectionContext(protocolOption->controlValue3c, 1);
     }
   }
-  TControl::HandleEvent(commandId, sourceHandler, event);
+  TControl::DoEvent(commandId, sourceHandler, event);
 }

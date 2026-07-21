@@ -279,7 +279,7 @@ void TAutoGreatPower::HandleNationLost(void) {
 void TAutoGreatPower::RefreshGreatPowerRelationPanelsAndDispatchDeltaSummary(void) {
   if (this->city != 0) {
     this->RebuildNationResourceYieldCountersAndDevelopmentTargets();
-    this->AdvanceOwnedRegionDevelopmentCountersAndDispatchEvents();
+    this->AdvanceOwnedRegionDevelopmentCountersAndHandleEvents();
   }
 }
 

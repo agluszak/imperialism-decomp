@@ -23,8 +23,8 @@ TShipPlacard::TShipPlacard() {}
 TShipPlacard::~TShipPlacard() {}
 
 // FUNCTION: IMPERIALISM 0x005692f0
-void TShipPlacard::ApplyRectSlot110(RECT* rectBuffer) {
-  TPicture::ApplyRectSlot110(rectBuffer);
+void TShipPlacard::Draw(RECT* rectBuffer) {
+  TPicture::Draw(rectBuffer);
   short quantity = static_cast<TShipFractionCluster*>(ownerContext)->availableShipCount88;
   if (quantity > 0) {
     CString countText;

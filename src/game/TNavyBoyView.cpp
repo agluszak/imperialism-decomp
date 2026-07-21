@@ -20,8 +20,8 @@ IMPLEMENT_DYNCREATE(TNavyBoyView, TView)
 TNavyBoyView::TNavyBoyView() {}
 
 // FUNCTION: IMPERIALISM 0x004af0b0
-void TNavyBoyView::ApplyRectSlot110(RECT* rectBuffer) {
-  (void)rectBuffer; // dead parameter in this override, like the other ApplyRectSlot110s
+void TNavyBoyView::Draw(RECT* rectBuffer) {
+  (void)rectBuffer; // dead parameter in this override, like the other Draws
 
   ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 0xa, 0x2b6a);
   CString finalLabel;

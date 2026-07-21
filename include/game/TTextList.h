@@ -22,7 +22,7 @@ public:
 
   TTextList();
 
-  void ApplyRectSlot110(RECT* rectBuffer) override;
+  void Draw(RECT* rectBuffer) override;
   void BeginMouseCaptureAndStartRepeatTimer(const CPoint& point, TToolboxEvent* event,
                                             CPoint origin) override;
 };

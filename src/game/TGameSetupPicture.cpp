@@ -42,9 +42,9 @@ void TGameSetupPicture::DoPostCreate(int arg) {
 // messagebox via TViewMgr::ModalMessage) never runs.
 // Omitted below since it can never execute; only the loop's post-condition is kept.
 // FUNCTION: IMPERIALISM 0x00575900
-void TGameSetupPicture::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+void TGameSetupPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId != 0x14 && commandId != 0xa && commandId != 0x22) {
-    TNoHilitePicture::HandleEvent(commandId, sourceHandler, event);
+    TNoHilitePicture::DoEvent(commandId, sourceHandler, event);
     return;
   }
 
@@ -114,12 +114,12 @@ void TGameSetupPicture::HandleEvent(int commandId, TEventHandler* sourceHandler,
     g_pSfxPlaybackSystem->PlaySoundEffect(0x1b58, 0, 1);
     postEventCode = 0x5df;
   } else {
-    TNoHilitePicture::HandleEvent(commandId, sourceHandler, event);
+    TNoHilitePicture::DoEvent(commandId, sourceHandler, event);
     return;
   }
 
   if (postEventCode >= 0) {
     g_pGlobalUiRootController->PostTurnEventCodeMessage2420(postEventCode);
   }
-  TNoHilitePicture::HandleEvent(commandId, sourceHandler, event);
+  TNoHilitePicture::DoEvent(commandId, sourceHandler, event);
 }

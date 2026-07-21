@@ -24,7 +24,7 @@ IMPLEMENT_DYNCREATE(TApplication, TCommandHandler)
 
 // FUNCTION: IMPERIALISM 0x00486760
 TApplication::TApplication()
-    : TCommandHandler(), activeView(0), screenModeAt24(0), field28(0), cohandlers() {
+    : TCommandHandler(), currentTarget(0), screenModeAt24(0), field28(0), cohandlers() {
   g_pApplicationUiRootController = this;
 }
 
@@ -37,13 +37,13 @@ TApplication::~TApplication() {
 }
 
 // FUNCTION: IMPERIALISM 0x00486880
-void TApplication::SetActiveView(TEventHandler* view) {
-  this->activeView = view;
+void TApplication::SetTarget(TEventHandler* view) {
+  this->currentTarget = view;
 }
 
 // FUNCTION: IMPERIALISM 0x004868a0
-TEventHandler* TApplication::GetActiveView() {
-  return this->activeView;
+TEventHandler* TApplication::GetTarget() {
+  return this->currentTarget;
 }
 
 // vtable slot 0x25 is inherited from TCommandHandler: process a queued command through
@@ -100,7 +100,70 @@ void TApplication::DispatchQueuedUiCommandAndRelease(void* payload) {
 }
 
 // FUNCTION: IMPERIALISM 0x00486ba0
-void TApplication::vmethod_0017(int param) {}
+void TApplication::DoMenuCommand(int command) {
+  CWnd* mainWindow;
+
+  // Case bodies follow their order in the retail jump table. VC5 preserves source
+  // order here, so keeping this order also preserves the original layout.
+  switch (command) {
+  case 0x24:
+    mainWindow = AfxGetThread() != 0 ? AfxGetThread()->GetMainWnd() : 0;
+    ::PostMessage(mainWindow->m_hWnd, WM_CLOSE, 0, 0);
+    return;
+
+  case 0x0a:
+  case 0x0b:
+  case 0x0c:
+  case 0x0d:
+  case 0x0e:
+  case 0x0f:
+  case 0x10:
+  case 0x11:
+  case 0x12:
+  case 0x13:
+    mainWindow = AfxGetThread() != 0 ? AfxGetThread()->GetMainWnd() : 0;
+    ::PostMessage(mainWindow->m_hWnd, WM_COMMAND, 0xe100, 0);
+    return;
+
+  case 0x14:
+  case 0x15:
+  case 0x16:
+  case 0x17:
+  case 0x18:
+  case 0x19:
+  case 0x1a:
+  case 0x1b:
+  case 0x1c:
+  case 0x1d:
+    mainWindow = AfxGetThread() != 0 ? AfxGetThread()->GetMainWnd() : 0;
+    ::PostMessage(mainWindow->m_hWnd, WM_COMMAND, 0xe101, 0);
+    return;
+
+  case 0x1e:
+    mainWindow = AfxGetThread() != 0 ? AfxGetThread()->GetMainWnd() : 0;
+    ::PostMessage(mainWindow->m_hWnd, WM_COMMAND, 0xe103, 0);
+    return;
+
+  case 0x20:
+    mainWindow = AfxGetThread() != 0 ? AfxGetThread()->GetMainWnd() : 0;
+    ::PostMessage(mainWindow->m_hWnd, WM_COMMAND, 0xe104, 0);
+    return;
+
+  case 0x1f:
+    mainWindow = AfxGetThread() != 0 ? AfxGetThread()->GetMainWnd() : 0;
+    ::PostMessage(mainWindow->m_hWnd, WM_COMMAND, 0xe102, 0);
+    return;
+
+  case 1:
+    mainWindow = AfxGetThread() != 0 ? AfxGetThread()->GetMainWnd() : 0;
+    ::PostMessage(mainWindow->m_hWnd, WM_COMMAND, 0xe140, 0);
+    return;
+
+  default:
+    TEventHandler::DoMenuCommand(command);
+    return;
+  }
+}
 
 // TApplication::cohandlers' compiler-emitted CList<void*,void*>::Serialize body.
 // The real source is the embedded cohandlers template list, not a TApplication vtable slot.

@@ -26,7 +26,7 @@ TDefenseMinisterView::TDefenseMinisterView() : TMinisterView() {}
 TDefenseMinisterView::~TDefenseMinisterView() {}
 
 // FUNCTION: IMPERIALISM 0x004f3370
-void TDefenseMinisterView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+void TDefenseMinisterView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   unsigned int tag = sourceHandler->controlTag;
   if (commandId == 0xa) {
     if (tag == kControlTagBack) {
@@ -34,7 +34,7 @@ void TDefenseMinisterView::HandleEvent(int commandId, TEventHandler* sourceHandl
       return;
     } else if (tag == kControlTagOkay) {
       CloseBooks();
-      TWindow* owner = static_cast<TWindow*>(OwnerPanel());
+      TWindow* owner = static_cast<TWindow*>(GetWindow());
       g_pGlobalUiRootController->CloseAndFreeWindow(owner);
       return;
     }
@@ -43,7 +43,7 @@ void TDefenseMinisterView::HandleEvent(int commandId, TEventHandler* sourceHandl
       short activeNationId = g_pSimMgr->GetActiveNationId();
       if (g_pMapContextActionManager->ScanMapContextActionEntriesForCodeMatch(activeNationId)) {
         if (g_pSimMgr->field14 == 0) {
-          TWindow* owner = static_cast<TWindow*>(OwnerPanel());
+          TWindow* owner = static_cast<TWindow*>(GetWindow());
           g_pGlobalUiRootController->CloseAndFreeWindow(owner);
           g_pSimMgr->EnterOptionalPhase(0x65);
         }
@@ -57,5 +57,5 @@ void TDefenseMinisterView::HandleEvent(int commandId, TEventHandler* sourceHandl
     }
     return;
   }
-  TEventHandler::HandleEvent(commandId, sourceHandler, event);
+  TEventHandler::DoEvent(commandId, sourceHandler, event);
 }

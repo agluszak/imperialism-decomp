@@ -89,7 +89,7 @@ public:
   // slot 0x4b IsDiplomacyTargetClassCode200Match_4b inherited unchanged (0x4dcfd0)
   // slot 0x4c IterateLinkedListCursorEntries_004e0220 inherited unchanged (0x4e0220)
   // slot 0x4d RebuildNationResourceYieldCountersAndDevelopmentTargets inherited unchanged
-  // (0x4dbd20) slot 0x4e AdvanceOwnedRegionDevelopmentCountersAndDispatchEvents inherited unchanged
+  // (0x4dbd20) slot 0x4e AdvanceOwnedRegionDevelopmentCountersAndHandleEvents inherited unchanged
   // (0x4dbf00) slot 0x4f OrphanRetStub_004d7e90 inherited unchanged (0x4dc3f0) slot 0x50
   // OrphanLeaf_NoCall_Ins02_004d7ee0 inherited unchanged (0x4dc440) slot 0x51
   // OrphanLeaf_NoCall_Ins02_004d7f00 inherited unchanged (0x4dc4c0) slot 0x52

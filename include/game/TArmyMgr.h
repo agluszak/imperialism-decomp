@@ -143,7 +143,7 @@ public:
   int ComputeWeightedNeighborLinkScoreForNodeIndex(int nodeIndex);
 
   // Object size 0x3a8 confirmed by RTTI. Only +0x31c is confirmed so far (read from three
-  // independent call sites: TArmyPlacard::HandleEvent, TArmyToolbar's equivalent, and
+  // independent call sites: TArmyPlacard::DoEvent, TArmyToolbar's equivalent, and
   // TWorldView::RenderMapContextOverlayWithScopedClipAndSurface) -- a pending map-order/
   // action index, -1 when none selected, otherwise used both as a tile index
   // (ActivateFirstActiveTacticalUnitByCategoryAtTile) and as an index into the terrain
@@ -371,7 +371,7 @@ public:
   // record whose nationIds[0] or nationIds[1] matches activeNationId; returns true on the
   // first match, or as soon as g_bRandomMapDeveloperCheatFlag is set (the developer-cheat
   // gate short-circuits the scan the same way it does elsewhere). Sole caller:
-  // TDefenseMinisterView::HandleEvent's 'cann' branch. 0x4a6d40.
+  // TDefenseMinisterView::DoEvent's 'cann' branch. 0x4a6d40.
   bool ScanMapContextActionEntriesForCodeMatch(short activeNationId);
 
   TArmyMgr();

@@ -18,8 +18,8 @@ IMPLEMENT_DYNCREATE(TInterruptusView, TItemBoyView)
 TInterruptusView::TInterruptusView() {}
 
 // FUNCTION: IMPERIALISM 0x004afda0
-void TInterruptusView::ApplyRectSlot110(RECT* rectBuffer) {
-  (void)rectBuffer; // dead parameter in this override, like the other ApplyRectSlot110s
+void TInterruptusView::Draw(RECT* rectBuffer) {
+  (void)rectBuffer; // dead parameter in this override, like the other Draws
   CString label;
   CString kindText;
   CString countText;

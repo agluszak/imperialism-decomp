@@ -91,10 +91,10 @@ void TGameSetupMultiplayerPicture::DoPostCreate(int arg) {
 // Note on 'load'/'rand'/'scen' (retry confirm loop): the retail binary's own
 // confirmation-dialog retry loop here is dead code -- its guard (ReturnTrueStub,
 // 0x408594) unconditionally returns 1, so the loop body never runs. Omitted below,
-// matching TGameSetupPicture::HandleEvent's identical precedent.
+// matching TGameSetupPicture::DoEvent's identical precedent.
 // FUNCTION: IMPERIALISM 0x00576230
-void TGameSetupMultiplayerPicture::HandleEvent(int commandId, TEventHandler* sourceHandler,
-                                               TEvent* event) {
+void TGameSetupMultiplayerPicture::DoEvent(int commandId, TEventHandler* sourceHandler,
+                                           TEvent* event) {
   if (commandId == 0x14 || commandId == 0xa || commandId == 0x22 || commandId == 0xd) {
     unsigned int tag = static_cast<unsigned int>(sourceHandler->controlTag);
 
@@ -168,5 +168,5 @@ void TGameSetupMultiplayerPicture::HandleEvent(int commandId, TEventHandler* sou
       }
     }
   }
-  TControl::HandleEvent(commandId, sourceHandler, event);
+  TControl::DoEvent(commandId, sourceHandler, event);
 }

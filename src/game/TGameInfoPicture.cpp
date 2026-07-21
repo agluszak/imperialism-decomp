@@ -37,4 +37,4 @@ void TGameInfoPicture::DoPostCreate(int arg) {
 }
 
 // FUNCTION: IMPERIALISM 0x0056b9b0
-void TGameInfoPicture::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {}
+void TGameInfoPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {}

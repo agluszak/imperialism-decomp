@@ -1489,7 +1489,7 @@ void TViewMgr::UiRuntimeSlot88(int abilityIndex) {
   BuildUiTextStyleDescriptor(&style, 0, 0xc, 0x2b6b);
   textControl->SetTextStyleAndMaybeRefresh(&style, 0);
   textControl->SetTextAlignmentAndMaybeRefresh(-2, 0);
-  activeDialog->InvokeSlot13C();
+  activeDialog->ForceRedraw();
 }
 
 // FUNCTION: IMPERIALISM 0x005d8c40
@@ -1500,7 +1500,7 @@ void TViewMgr::UiRuntimeSlot9C(int pageIndex) {
   mainControl->AssertValid();
   g_pSfxPlaybackSystem->PlaySoundEffect(0x14b4, 0, 1);
   mainControl->BuildInterNationEventSummaryRowsForAdvisorDialog(pageIndex);
-  activeDialog->InvokeSlot13C();
+  activeDialog->ForceRedraw();
 }
 
 // FUNCTION: IMPERIALISM 0x005d8cc0
@@ -1669,7 +1669,7 @@ void TViewMgr::HandleTurnEventDialogFactorySlotF4() {
   TMovieView* movieView = static_cast<TMovieView*>(activeDialog->ResolveControlByTag(0x6d6f7669));
   movieView->AssertValid();
   movieView->SetState(1, 0);
-  movieView->InvokeSlot13C();
+  movieView->ForceRedraw();
 
   CString movieName;
   switch (g_pSimMgr->mode) {
@@ -2226,7 +2226,7 @@ int TViewMgr::MakePlanetSeedDialog(const char* instruction, CString& planetSeed,
   BuildUiTextStyleDescriptor(&editStyle, 0, 0xc, 0);
   planetEdit->SetTextStyleAndMaybeRefresh(&editStyle, 0);
   planetEdit->InitDialogWindowAndSyncTitleIfChanged(&editText, 0);
-  planetEdit->ActivateCityProductionViewIfAllowed();
+  planetEdit->BecomeTarget();
   planetEdit->SetEditSelectionAndScrollCaret(0, static_cast<short>(editText.GetLength()), 1);
   dialog->SetWindowTarget(planetEdit);
 

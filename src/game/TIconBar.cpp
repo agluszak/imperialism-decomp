@@ -51,8 +51,8 @@ void TIconBar::SetNumIcons(short numIcons, unsigned char refreshNow) {
 // computed tick width is cached in iconSpacing98 for TIconSlider's thumb-position
 // helpers.
 // FUNCTION: IMPERIALISM 0x00506150
-void TIconBar::ApplyRectSlot110(RECT* rectBuffer) {
-  (void)rectBuffer; // dead parameter in this override, like the other ApplyRectSlot110s
+void TIconBar::Draw(RECT* rectBuffer) {
+  (void)rectBuffer; // dead parameter in this override, like the other Draws
   CRect contentRect;
   BuildInsetContentRect(&contentRect);
 

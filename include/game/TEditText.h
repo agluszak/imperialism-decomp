@@ -19,19 +19,19 @@ public:
   virtual ~TEditText() override;
 
   void Free() override;
-  char GetBoolSlot28() override;
-  void SetControlValue(int value) override;
-  void HandleCityProductionNoOp() override;
-  char ActivateCityProductionViewIfAllowed() override;
-  void vmethod_0081(int) override;
+  char IsEnabled() override;
+  void SetEnable(unsigned char enabled) override;
+  void TargetValidationSucceeded() override;
+  char BecomeTarget() override;
+  void SelectOwner(unsigned char select) override;
   CMcWindow* Open() override;
   void Close() override;
   void SetEnabled(int enabledState, int refreshFlag) override;
-  void ApplyRectSlot110(RECT* rectBuffer) override;
+  void Draw(RECT* rectBuffer) override;
   char HandleMouseDown(const CPoint& point, TToolboxEvent* event, CPoint origin) override;
-  void RecomputeAbsolutePositionRecursive() override;
+  void UpdateCoordinates() override;
   void SetTextAlignmentAndMaybeRefresh(short alignmentCode, char refreshFlag) override;
-  // Third param is pushed by callers (e.g. vmethod_0081) but unused by this
+  // Third param is pushed by callers (e.g. SelectOwner) but unused by this
   // body — kept to match the real 3-stack-arg thiscall (confirmed by `ret 0xc`).
   virtual void SetEditSelectionAndScrollCaret(short selStart, short selEnd, int unusedFlag);
   // Returns the control's current text: the live edit window's text if the

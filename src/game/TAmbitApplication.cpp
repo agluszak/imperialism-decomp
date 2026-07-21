@@ -175,7 +175,7 @@ void TAmbitApplication::HandleCursor(int x, int y, void* cursorRegion) {
         pt.x = x;
         pt.y = y;
 
-        g_pDisplayMgr->activeDialog->UpdateAfterBitmapChange(&pt);
+        g_pDisplayMgr->activeDialog->SuperToLocal(&pt);
 
         if (pt.x > -200 && pt.y > -200) {
           TView* activeDialog = g_pDisplayMgr->activeDialog;

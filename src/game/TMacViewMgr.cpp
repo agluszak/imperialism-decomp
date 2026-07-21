@@ -1335,9 +1335,9 @@ undefined TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nati
   if (needCurrent == 0) {
     panel->SetEnabled(0, 0);
     TControl* leftArrow = ResolveTaggedChildOrFail(panel, kTagArrowLeft);
-    leftArrow->DispatchUiCommand19ToParent();
+    leftArrow->BecameWindowTarget();
     TControl* rightArrow = ResolveTaggedChildOrFail(panel, kTagArrowRight);
-    rightArrow->DispatchUiCommand19ToParent();
+    rightArrow->BecameWindowTarget();
     return 0;
   }
 
@@ -1345,7 +1345,7 @@ undefined TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nati
   int leftLayout0[2];
   int leftLayout1[2];
   CopyViewLayoutFieldsToStack(leftLayout0, leftLayout1, leftSource);
-  leftSource->DispatchUiCommand19ToParent();
+  leftSource->BecameWindowTarget();
 
   TRightLeftView* leftView = new TRightLeftView();
   leftView->InitializeUiResourceEntryFrameAndParent(0, panel, leftLayout1, leftLayout0, 5, 5, 0);
@@ -1355,7 +1355,7 @@ undefined TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nati
   int rightLayout0[2];
   int rightLayout1[2];
   CopyViewLayoutFieldsToStack(rightLayout0, rightLayout1, rightSource);
-  rightSource->DispatchUiCommand19ToParent();
+  rightSource->BecameWindowTarget();
 
   TRightLeftView* rightView = new TRightLeftView();
   rightView->InitializeUiResourceEntryFrameAndParent(0, panel, rightLayout1, rightLayout0, 5, 5, 0);
@@ -1540,7 +1540,7 @@ void TMacViewMgr::OrphanLeaf_NoCall_Ins06_0050d8f0(short param_1) {
 // FUNCTION: IMPERIALISM 0x0050d920
 void TMacViewMgr::OrphanCallChain_C1_I10_0050d920() {
   if (field04 != 0) {
-    field04->RefreshCityProductionViewStateFromContext(0);
+    field04->GetDrawableRegion(0);
   }
   field04 = 0;
 }

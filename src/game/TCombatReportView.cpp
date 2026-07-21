@@ -196,12 +196,12 @@ void TCombatReportView::StuffValues(TCombatReportContext* reportContext) {
 // (reportValue-1)*4
 // relative to whichever participant's range reportValue falls in.
 // FUNCTION: IMPERIALISM 0x0058d2b0
-void TCombatReportView::ApplyRectSlot110(RECT* rectBuffer) {
+void TCombatReportView::Draw(RECT* rectBuffer) {
   // Function-scope scratch: reused first for the page-header nation name, then
   // overwritten each loop iteration with the current row's "Name (Status)" label.
   CString scratch;
 
-  TPicture::ApplyRectSlot110(rectBuffer);
+  TPicture::Draw(rectBuffer);
 
   if (reportValue != 0) {
     SetQuickDrawFillColor(0);
@@ -310,7 +310,7 @@ void TCombatReportView::ApplyRectSlot110(RECT* rectBuffer) {
 }
 
 // FUNCTION: IMPERIALISM 0x0058d950
-void TCombatReportView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+void TCombatReportView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId == 10) {
     unsigned int controlTag = static_cast<unsigned int>(sourceHandler->controlTag);
 
@@ -398,7 +398,7 @@ void TCombatReportView::HandleEvent(int commandId, TEventHandler* sourceHandler,
     }
   }
 
-  TControl::HandleEvent(commandId, sourceHandler, event);
+  TControl::DoEvent(commandId, sourceHandler, event);
 }
 
 TCombatReportView::~TCombatReportView() {}

@@ -76,7 +76,7 @@ void TNavyBattle::DeployTacticalUnitToTile(TTacticalUnit* unit, int tileIndex) {
         battleView8->ownerContext->ResolveControlByTag(kControlTagTool));
     toolbar->AssertValid();
     toolbar->UpdateTacticalCurrentUnitControlAndDialogLabel(selectedUnit1c);
-    toolbar->InvokeSlot13C();
+    toolbar->ForceRedraw();
   }
 
   if ((&tacticalPlayer14)[currentSideC]->sideReadyFlag10 != 0) {

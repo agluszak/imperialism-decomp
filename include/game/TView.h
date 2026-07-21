@@ -16,7 +16,7 @@ struct TToolboxEvent;
 // TView inherits the 37-slot shared interface (slots 0x00-0x24) and fields through +0x1c
 // from TEventHandler. It overrides only the few base slots whose vtable bodies differ
 // (0x07 ReleaseRuntimeSelectionOwnerAndDestroyObject, 0x08 CloneEngineerDialogStateToNewInstance,
-// 0x16 OwnerPanel) and introduces its own virtuals at slot 0x25+ (declared below in exact vtable
+// 0x16 GetWindow) and introduces its own virtuals at slot 0x25+ (declared below in exact vtable
 // slot order). See include/game/TEventHandler.h and memory tview-vtable-slot-scramble.
 
 // 8-byte style/color payload hung off TView::stylePayload48 (see TView::EnsureField48Buffer
@@ -82,7 +82,7 @@ public:
   TViewChildList* childList44;   // 0x44 — child-control list (CList<TView*,TView*>)
   TUiStyleBytes* stylePayload48; // 8-byte style/color payload (see TUiStyleBytes above)
   // 0x4c — participates in the control input gate (EvaluateControlInputGate passes
-  // when this is set and GetBoolSlot28() reports true).
+  // when this is set and IsEnabled() reports true).
   bool inputGateFlag4c;
   // 0x4d — gates child traversal for renderability/hover hit-tests
   // (HasRenderableParentAndContent requires it before childList44 counts).
@@ -105,30 +105,29 @@ public:
 
   // Base-slot overrides (vtable bodies differ from TEventHandler's).
   DECLARE_DYNCREATE(TView)
-  void Free() override;                       // 0x07
-  TObject* ShallowClone() override;           // 0x08 0x48bfd0
-  virtual class TView* OwnerPanel() override; // 0x16 0x48b180
+  void Free() override;                      // 0x07
+  TObject* ShallowClone() override;          // 0x08 0x48bfd0
+  virtual class TView* GetWindow() override; // 0x16 0x48b180
 
   // TView-introduced virtuals (slots 0x25-0x67), in exact vtable slot order. Slot
   // assignments are pinned by FUNCTION-marker addresses, original-binary call offsets,
-  // and the byte-offset encoded in "SlotXX" names. vmethod_00NN placeholders fill the
-  // remaining (body-owned-elsewhere / unported) slots.
-  virtual class TView* ResolveControlByTag(unsigned int controlTag);            // 0x25 0x48afd0
-  virtual void SwitchActiveChildAndNotify(class TView* child);                  // 0x26 0x48af80
-  virtual CMcWindow* Open();                                                    // 0x27 0x48c820
-  virtual void Close();                                                         // 0x28 0x48c890
-  virtual void SetEnabled(int enabledState, int refreshFlag);                   // 0x29 0x48b1c0
-  virtual void SetState(int state, int refreshFlag);                            // 0x2a 0x48b070
-  virtual unsigned short GetCursorID();                                         // 0x2b 0x427200
-  virtual void HandleCursorHoverFallback(CPoint* point, RgnHandle hitArg);      // 0x2c
-  virtual void NoOpClipRegionSlot2D(int arg1, int arg2);                        // 0x2d 0x48c1c0
-  virtual void RefreshCityProductionViewStateFromContext(RgnHandle clipRegion); // 0x2e 0x48c1e0
-  virtual int QuerySelectedIndexSlotBC();                                       // 0x2f
-  virtual void InvalidateOffsetRegionUsingChildClipRect(RgnHandle region);      // 0x30 0x48b4b0
-  virtual void ForwardMapViewVirtualC4IfPresent(int param);                     // 0x31 0x48ab90
-  virtual void ValidateControlRectIfWindowActive(RECT* rect);                   // 0x32 0x48b690
-  virtual char EvaluateControlInputGate();                                      // 0x33 0x48c000
-  virtual char HasRenderableParentAndContent();                                 // 0x34 0x48c050
+  // and the corresponding Mac-oracle method signatures where available.
+  virtual class TView* ResolveControlByTag(unsigned int controlTag);       // 0x25 0x48afd0
+  virtual void SwitchActiveChildAndNotify(class TView* child);             // 0x26 0x48af80
+  virtual CMcWindow* Open();                                               // 0x27 0x48c820
+  virtual void Close();                                                    // 0x28 0x48c890
+  virtual void SetEnabled(int enabledState, int refreshFlag);              // 0x29 0x48b1c0
+  virtual void SetState(int state, int refreshFlag);                       // 0x2a 0x48b070
+  virtual unsigned short GetCursorID();                                    // 0x2b 0x427200
+  virtual void DoSetCursor(CPoint* point, RgnHandle hitArg);               // 0x2c
+  virtual void HandleHelp(const CPoint* point, RgnHandle helpRegion);      // 0x2d 0x48c1c0
+  virtual void GetDrawableRegion(RgnHandle region);                        // 0x2e 0x48c1e0
+  virtual int GetEventNumber();                                            // 0x2f
+  virtual void InvalidateOffsetRegionUsingChildClipRect(RgnHandle region); // 0x30 0x48b4b0
+  virtual void ForwardMapViewVirtualC4IfPresent(int param);                // 0x31 0x48ab90
+  virtual void ValidateControlRectIfWindowActive(RECT* rect);              // 0x32 0x48b690
+  virtual char EvaluateControlInputGate();                                 // 0x33 0x48c000
+  virtual char HasRenderableParentAndContent();                            // 0x34 0x48c050
   virtual void
   HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* point,
                                                       RgnHandle hitArg); // 0x35 0x48c080
@@ -141,7 +140,7 @@ public:
   virtual void CaptureLayoutF0(int* buffer, int modeFlag);               // 0x3c 0x48b250
   virtual void CaptureLayout(int* buffer, int modeFlag);                 // 0x3d 0x48b3f0
   virtual char PrepareForDrawing();                                      // 0x3e 0x48b770
-  virtual void PostRenderSlotFC();                                       // 0x3f
+  virtual void PostRender();                                             // 0x3f
   // The "DC handle" flowing through slots 0x40/0x41/0x43/0x45 is a caller-supplied MFC
   // CDC* (or null = bind a fresh window DC): CMcWindow::OnPaint (0x4938c0) passes its
   // CPaintDC here, and BindScopedMapQuickDrawDcHandle stores it as the active DC object.
@@ -150,7 +149,7 @@ public:
   virtual void EnsureField48Buffer();               // 0x42 0x48b810
   virtual void PaintVisibleChildrenIntersectingClipRect(RECT* clipRect,
                                                         CDC* paintDc); // 0x43 0x48b8d0
-  virtual void ApplyRectSlot110(RECT* rectBuffer);                     // 0x44
+  virtual void Draw(RECT* clipRect);                                   // 0x44
   virtual void PaintOrInvalidateControl(CDC* paintDc = 0);             // 0x45
   virtual char HandleMouseDown(const CPoint& point, TToolboxEvent* event,
                                CPoint origin); // 0x46 0x48c450
@@ -165,17 +164,17 @@ public:
   virtual void TranslateRectToWindow(CRect* rect);               // 0x4c 0x4272d0
   virtual void TranslatePointToParentChain4D(CPoint* point = 0); // 0x4d 0x48ba80
   virtual void TranslatePointToParentChain4E(CPoint* point = 0); // 0x4e 0x48ba40
-  virtual void InvokeSlot13C();                                  // 0x4f 0x48b700
-  virtual void OffsetRectByControlPosition(CRect* rect);         // 0x50 0x48bb00
-  virtual void UpdateAfterBitmapChange(CPoint* point);           // 0x51
-  virtual CPoint TransformPointViaSlot138(CPoint* inPoint);
-  virtual CRect TransformRectViaSlot148(CRect* inRect);
+  virtual void ForceRedraw();                                    // 0x4f 0x48b700
+  virtual void LocalToSuperVRect(CRect* rect);                   // 0x50 0x48bb00
+  virtual void SuperToLocal(CPoint* point);                      // 0x51
+  virtual CPoint ViewToQDPt(CPoint* inPoint);
+  virtual CRect ViewToQDRect(CRect* inRect);
   virtual void AddControlPosToPoint(int x, int y, CPoint* outPoint);
   virtual void OffsetRectByCachedPos(CRect* inRect, CRect* outRect);
   virtual CPoint* GetAbsolutePosition(CPoint* outPoint);
   virtual void GetDrawableQDRect(CRect* rectOut); // 0x57 0x429410
   virtual CRect* GetQDExtent(CRect* rectOut);
-  virtual void RecomputeAbsolutePositionRecursive();
+  virtual void UpdateCoordinates();
   virtual void ApplyBounds(CRect* newBounds, int modeFlag);      // 0x5a 0x48c380
   virtual char PointInBoundsAndActionable(CPoint* point);        // 0x5b 0x48c6d0
   virtual void AttachChildControl(class TView* child, int flag); // 0x5c 0x48abe0
@@ -186,12 +185,12 @@ public:
   virtual void MoveByUser(const CPoint& point);
   virtual void ResizeByUser(const CPoint& point);
   virtual void ZoomByUser(const CPoint& point, short partCode);
-  virtual void DrawRectangleInCurrentUiContext(int* rect);
+  virtual void DrawRectangleInCurrentUiContext(const RECT* rect);
   // One ignored stack arg (body ends `RET 0x4`; sibling Line1922 is a bare RET)
   // -- present only for stack-cleanup fidelity.
   virtual void AssertMcAppUiLine1914(int unusedArg);
   virtual void AssertMcAppUiLine1922();
-  virtual void SubtractPosAndDispatchToOwnerSlot19C(CPoint* point);
+  virtual void WindowToLocal(CPoint* point);
   // TView's real vtable is 104 slots (0x00-0x19c). Slots 0x1A0+ belong to the sibling
   // branches (TControl, TCivDescription, TAmtBar, ...). The destructor is slot 1
   // (TEventHandler override), so its declaration position is irrelevant.

@@ -39,7 +39,7 @@ void TFocusAnimation::IdleDraw() {
     ownerView04->PrepareForDrawing();
     POINT offset = {0, 0};
     DrawNextFrame(&offset);
-    ownerView04->PostRenderSlotFC();
+    ownerView04->PostRender();
   }
 }
 
@@ -55,7 +55,7 @@ void TFocusAnimation::ClipAndPaste() {
       *reinterpret_cast<TQuickDrawSurfaceContext**>(g_pUiAnimator + 0x20);
 
   CPoint pt(screenRect1C.left, screenRect1C.top);
-  CPoint transformedPt = ownerView04->TransformPointViaSlot138(&pt);
+  CPoint transformedPt = ownerView04->ViewToQDPt(&pt);
 
   int width = screenRect1C.right - screenRect1C.left;
   int height = screenRect1C.bottom - screenRect1C.top;

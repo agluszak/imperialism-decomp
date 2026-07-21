@@ -33,7 +33,7 @@ void TQueryFloater::DoPostCreate(int arg) {
   TUiTextStyleDescriptor style;
 
   TStaticText* titleControl = static_cast<TStaticText*>(ResolveControlByTag(kControlTagTitl));
-  titleControl->QueryStepValue();
+  titleControl->GetNextHandler();
   titleControl->SetTextFromStringResource(0x2757, 1, 1);
   BuildUiTextStyleDescriptor(&style, 0, 0xc, 0x2b6a);
   titleControl->SetTextStyleAndMaybeRefresh(&style, 0);
@@ -42,7 +42,7 @@ void TQueryFloater::DoPostCreate(int arg) {
   BuildUiTextStyleDescriptor(&style, 0, 0xc, 0x2b6c);
   for (int i = 0; i < 7; ++i) {
     TStaticText* lineControl = static_cast<TStaticText*>(ResolveControlByTag(kControlTagTex0 + i));
-    lineControl->QueryStepValue();
+    lineControl->GetNextHandler();
     lineControl->SetTextFromStringResource(0x2757, static_cast<short>(i + 2), 1);
     lineControl->SetTextStyleAndMaybeRefresh(&style, 0);
     if (i == 6) {
@@ -52,14 +52,14 @@ void TQueryFloater::DoPostCreate(int arg) {
 }
 
 // FUNCTION: IMPERIALISM 0x0056ea20
-void TQueryFloater::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+void TQueryFloater::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   CString text;
   if (commandId != 0xa) {
     return;
   }
   unsigned int tag = sourceHandler->controlTag;
   if (tag == kControlTagAdvi) {
-    TWindow* owner = static_cast<TWindow*>(OwnerPanel());
+    TWindow* owner = static_cast<TWindow*>(GetWindow());
     owner->Dismiss(kControlTagOkay, 0);
     g_pHelpMgr->SelectAndActivatePendingEventForCurrentView();
   } else if (tag == kControlTagBatt) {
@@ -72,28 +72,28 @@ void TQueryFloater::HandleEvent(int commandId, TEventHandler* sourceHandler, TEv
       }
       g_pUiRuntimeContext->ModalMessage(text, g_ptQueryFloaterModalMessage, 1, 0);
     } else {
-      TWindow* owner = static_cast<TWindow*>(OwnerPanel());
+      TWindow* owner = static_cast<TWindow*>(GetWindow());
       owner->Dismiss(kControlTagOkay, 0);
       g_pSimMgr->EnterOptionalPhase(0x65);
     }
   } else if (tag == kControlTagChar) {
-    TWindow* owner = static_cast<TWindow*>(OwnerPanel());
+    TWindow* owner = static_cast<TWindow*>(GetWindow());
     owner->Dismiss(kControlTagOkay, 0);
     g_pSimMgr->EnterOptionalPhase(0x6e);
   } else if (tag == kControlTagClnc) {
-    TWindow* owner = static_cast<TWindow*>(OwnerPanel());
+    TWindow* owner = static_cast<TWindow*>(GetWindow());
     owner->Dismiss(kControlTagOkay, 0);
   } else if (tag == kControlTagDeal) {
     if (g_pSimMgr->GetEconomicTurn() == 1) {
       g_pSimMgr->GetString(0x2741, 9, &text);
       g_pUiRuntimeContext->ModalMessage(text, g_ptQueryFloaterModalMessage, 1, 0);
     } else {
-      TWindow* owner = static_cast<TWindow*>(OwnerPanel());
+      TWindow* owner = static_cast<TWindow*>(GetWindow());
       owner->Dismiss(kControlTagOkay, 0);
       g_pSimMgr->EnterOptionalPhase(0x64);
     }
   } else if (tag == kControlTagNews) {
-    TWindow* owner = static_cast<TWindow*>(OwnerPanel());
+    TWindow* owner = static_cast<TWindow*>(GetWindow());
     owner->Dismiss(kControlTagOkay, 0);
     if (g_pInterNationEventQueueManager->perNationStoryLastUsedTick[0] != nullptr) {
       g_pSimMgr->EnterOptionalPhase(0x66);
@@ -101,7 +101,7 @@ void TQueryFloater::HandleEvent(int commandId, TEventHandler* sourceHandler, TEv
       g_pUiRuntimeContext->ShowLocalizedUiPromptByGroupAndIndex(0x275e, 6, 2, 0);
     }
   } else if (tag == kControlTagFore) {
-    TWindow* owner = static_cast<TWindow*>(OwnerPanel());
+    TWindow* owner = static_cast<TWindow*>(GetWindow());
     owner->Dismiss(kControlTagOkay, 0);
     g_pHelpMgr->SelectAndActivatePendingEventType1A0A();
   }

@@ -37,7 +37,7 @@ void TTacNavyToolbar::DoPostCreate(int arg) {
 }
 
 // FUNCTION: IMPERIALISM 0x005ad1b0
-void TTacNavyToolbar::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+void TTacNavyToolbar::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId == 0xc) {
     unsigned int tag = sourceHandler->controlTag;
     switch (tag) {
@@ -70,6 +70,6 @@ void TTacNavyToolbar::HandleEvent(int commandId, TEventHandler* sourceHandler, T
       break;
     }
   }
-  TCluster::HandleEvent(commandId, sourceHandler, event);
-  g_pGlobalUiRootController->SetActiveView(ownerContext);
+  TCluster::DoEvent(commandId, sourceHandler, event);
+  g_pGlobalUiRootController->SetTarget(ownerContext);
 }

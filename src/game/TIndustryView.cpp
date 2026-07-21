@@ -147,9 +147,9 @@ void TIndustryView::DoStartup() {
 }
 
 // FUNCTION: IMPERIALISM 0x004ccf30
-void TIndustryView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+void TIndustryView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId == 0xa && sourceHandler->controlTag == kControlTagExpa) {
-    TView* owner = OwnerPanel();
+    TView* owner = GetWindow();
     TWindow* ownerWindow = static_cast<TWindow*>(owner);
     bool wasDisabled = ownerWindow->nativeWindow50->EnableWindow(0) == 0;
 
@@ -161,10 +161,10 @@ void TIndustryView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEv
     g_pUiRuntimeContext->HandleTurnEventDialogFactorySlotB8(embeddedPageIndex9E, (int)city94,
                                                             (int)mainControl);
 
-    TView* owner2 = OwnerPanel();
+    TView* owner2 = GetWindow();
     static_cast<TWindow*>(owner2)->nativeWindow50->EnableWindow(wasDisabled);
   }
-  TControl::HandleEvent(commandId, sourceHandler, event);
+  TControl::DoEvent(commandId, sourceHandler, event);
 }
 
 // FUNCTION: IMPERIALISM 0x004cd040

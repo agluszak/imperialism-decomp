@@ -32,7 +32,7 @@ void TMapEditView::DispatchOverlayEvent78FromStridedRecord(int stridedRecord, in
 }
 
 // FUNCTION: IMPERIALISM 0x0051d210
-void TMapEditView::HandleMapTileClickSetOrderContextAndDispatchEvent79(int arg1, int arg2) {
+void TMapEditView::HandleMapTileClickSetOrderContextAndHandleEvent79(int arg1, int arg2) {
   (void)arg1;
   (void)arg2;
 }

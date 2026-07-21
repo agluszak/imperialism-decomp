@@ -73,7 +73,7 @@ public:
   // debug shortcuts.
   void SelectAndActivatePendingEventTypeOffsetFrom1A0B(int idx);
   // 0x503320 -- finds the first indexList record whose contextId is exactly 0x1a0a and
-  // activates it. Used by TQueryFloater::HandleEvent's 'fore' branch.
+  // activates it. Used by TQueryFloater::DoEvent's 'fore' branch.
   void SelectAndActivatePendingEventType1A0A();
   // Opens/caches the map-context help dialog and asks its 'GOLD' terrain-help pane
   // to rebuild the action menu for the selected nation/tile context. 0x503ac0.

@@ -31,16 +31,16 @@ public:
   virtual ~TDiplomacyMapView() override { // NOOP: verified empty in original 0x004f3cc0
   }
   void Free() override; // slot 0x07 0x4f3e60
-  void HandleEvent(int commandId, TEventHandler* sourceHandler,
-                   TEvent* event) override; // slot 0x0f 0x4f70c0
-  void ForwardParam(int param) override;    // slot 0x12 0x4f7130
-  void Close() override;                    // slot 0x28 0x4f3e30
-  void HandleCursorHoverFallback(CPoint* point,
-                                 RgnHandle hitArg) override; // slot 0x2c 0x4f5f90
+  void DoEvent(int commandId, TEventHandler* sourceHandler,
+               TEvent* event) override;  // slot 0x0f 0x4f70c0
+  void ForwardParam(int param) override; // slot 0x12 0x4f7130
+  void Close() override;                 // slot 0x28 0x4f3e30
+  void DoSetCursor(CPoint* point,
+                   RgnHandle hitArg) override; // slot 0x2c 0x4f5f90
   void HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* point,
                                                            RgnHandle hitArg) override; // slot 0x35
   void DoPostCreate(int arg) override;                                                 // slot 0x37
-  void ApplyRectSlot110(RECT* rectBuffer) override;                                    // slot 0x44
+  void Draw(RECT* rectBuffer) override;                                                // slot 0x44
   void BeginMouseCaptureAndStartRepeatTimer(const CPoint& point, TToolboxEvent* event,
                                             CPoint origin) override; // slot 0x47 0x4f5410
 
@@ -71,7 +71,7 @@ public:
   // presentRect is an ignored stack arg the original threads through.
   void DrawNames(const RECT* presentRect);
   // 0x4f4ec0 -- Mac CodeWarrior names this TDiplomacyMapView::DrawIcons(const VRect&).
-  // Called unconditionally from ApplyRectSlot110 for interactionModeAt94 in
+  // Called unconditionally from Draw for interactionModeAt94 in
   // {1,2,4}: for every terrain-descriptor slot whose hit rect intersects presentRect,
   // draws a diplomacy-compatibility highlight (LookupOrderCompatibilityMatrixValue) into
   // nationAnchorRects3A4, a mode-specific status icon into nationTextHitRectsC4 (need/
@@ -89,7 +89,7 @@ public:
   // via CaptureLayoutF0, toggles the 'ltab'/'rtab' bracket TPicture controls around the
   // new selection (and their picture-resource id), refreshes the picture-dependent
   // interaction mode, and invalidates the map region. Shared out-of-line method: called
-  // from TDiplomacyMapView::HandleEvent and TCouncilView::HandleEvent (topicIndex from a
+  // from TDiplomacyMapView::DoEvent and TCouncilView::DoEvent (topicIndex from a
   // control-tag scan) and unconditionally with topicIndex=5 from
   // InvalidateAndRunChildWaitSheet / InvalidateAndForwardTabSwitchToChild.
   void ChangeSelectedActionTopic(int topicIndex);
@@ -130,12 +130,12 @@ protected:
 public:
   // 0xbc -- action code written 0xd at the end of the overlay rebuild (matches
   // selectedTerrainIndexAt90's `actionCode != 0xd` comparison site); also written 7/8
-  // by TGrantsView::HandleEvent (via TPanelView::diplomacyMapView60) keyed off the parity of a
+  // by TGrantsView::DoEvent (via TPanelView::diplomacyMapView60) keyed off the parity of a
   // clicked control's tag -- public because that sibling panel writes it directly
   // through the panel's owner pointer, with no accessor method in the original.
   int actionCodeBC;
   // 0xc0 -- a row/index value derived from a clicked control's tag
-  // ((controlTag - 0x6330) / 2), written by TGrantsView::HandleEvent through
+  // ((controlTag - 0x6330) / 2), written by TGrantsView::DoEvent through
   // TPanelView::diplomacyMapView60.
   short selectedGrantRowC0;
 
@@ -149,7 +149,7 @@ protected:
   CRect nationLabelRects234[23];  // 0x234..0x3a4
   CRect nationAnchorRects3A4[23]; // 0x3a4..0x514
   // +0x514..+0x520 -- map origin/extents. Rendering reads the named components, while
-  // TInfoPanelView::HandleEvent passes the same four dwords as an invalidation RECT.
+  // TInfoPanelView::DoEvent passes the same four dwords as an invalidation RECT.
   union {
     struct {
       int mapOriginPixelX514;

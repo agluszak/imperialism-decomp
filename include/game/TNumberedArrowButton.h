@@ -15,7 +15,7 @@ public:
   DECLARE_DYNCREATE(TNumberedArrowButton)
   void HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* cursorPoint,
                                                            RgnHandle hitArg) override;
-  void ApplyRectSlot110(RECT* rectBuffer) override;
+  void Draw(RECT* rectBuffer) override;
   void DispatchPictureResourceCommand(int eventType, void* eventSender, void* eventDataA,
                                       void* eventDataB, int commandFlag) override;
 

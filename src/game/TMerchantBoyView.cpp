@@ -19,8 +19,8 @@ IMPLEMENT_DYNCREATE(TMerchantBoyView, TView)
 TMerchantBoyView::TMerchantBoyView() {}
 
 // FUNCTION: IMPERIALISM 0x004af780
-void TMerchantBoyView::ApplyRectSlot110(RECT* rectBuffer) {
-  (void)rectBuffer; // dead parameter in this override, like the other ApplyRectSlot110s
+void TMerchantBoyView::Draw(RECT* rectBuffer) {
+  (void)rectBuffer; // dead parameter in this override, like the other Draws
 
   ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 0xa, 0x2b6a);
   // `label` is reused for both the commodity name AND (after being drawn) the

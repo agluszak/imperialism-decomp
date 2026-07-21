@@ -46,5 +46,5 @@ void TSuperNavyRoster::PopulateNavyOrderPageEntriesByMapContext(TView* panel, in
   BuildPageLayout();
   ShowPage(1);
   ownerContext->AssertValid();
-  static_cast<TBook*>(ownerContext)->UpdatePagedListNavigationButtonState(currentPage);
+  static_cast<TBook*>(ownerContext)->ShowPage(currentPage);
 }

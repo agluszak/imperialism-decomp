@@ -33,5 +33,5 @@ void TFloatWindow::Close() {
       child->Close();
     }
   }
-  OrphanCallChain_C2_I39_0048d900(0, 1);
+  Show(0, 1);
 }

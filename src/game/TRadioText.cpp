@@ -26,7 +26,7 @@ void TRadioText::DoPostCreate(int arg) {
 }
 
 // FUNCTION: IMPERIALISM 0x005794b0
-void TRadioText::ApplyRectSlot110(RECT* rectBuffer) {
+void TRadioText::Draw(RECT* rectBuffer) {
   if (isSelectedOption98 != 0 || controlState64 != 0) {
     // All eleven Mac TRadioText resource instances are direct children of a
     // TRadioTextCluster; the Windows body reads that owner's two color codes.
@@ -41,11 +41,11 @@ void TRadioText::ApplyRectSlot110(RECT* rectBuffer) {
     FillRectWithQuickDrawBrushAndContextOffset(&fillRect);
     SetQuickDrawColorAndSyncGlobals(savedColor);
   }
-  TDropShadowText::ApplyRectSlot110(rectBuffer);
+  TDropShadowText::Draw(rectBuffer);
 }
 
 // FUNCTION: IMPERIALISM 0x00579580
 void TRadioText::RefreshAndNotifyOwnerSlot13C() {
   RefreshControl();
-  OwnerPanel()->InvokeSlot13C();
+  GetWindow()->ForceRedraw();
 }

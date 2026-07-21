@@ -70,9 +70,9 @@ void TShipAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache() {
       DrawCenteredGuideLineOnMapDc(stepOrCurrentValue, (short)(frameHeight38 - 2));
 
       SetClip(surface.tempRgn);
-      TView* owner = control->OwnerPanel();
+      TView* owner = control->GetWindow();
       if (owner != 0) {
-        owner->InvokeSlot13C();
+        owner->ForceRedraw();
       }
     }
   }

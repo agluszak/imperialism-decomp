@@ -34,7 +34,7 @@ void TScenarioChooser::DoPostCreate(int arg) {
 }
 
 // FUNCTION: IMPERIALISM 0x0057a050
-void TScenarioChooser::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+void TScenarioChooser::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId == 4) {
     g_pSfxPlaybackSystem->PlaySoundEffect(0x1b58, 0, 1);
     // g_pUiRuntimeContext->cursorTable[26]: (0x7c - 0x14) / sizeof(void*).
@@ -78,7 +78,7 @@ void TScenarioChooser::HandleEvent(int commandId, TEventHandler* sourceHandler, 
       PostTurnEvent5DCOrResetScenarioSelectionState();
     }
   }
-  TControl::HandleEvent(commandId, sourceHandler, event);
+  TControl::DoEvent(commandId, sourceHandler, event);
 }
 
 // FUNCTION: IMPERIALISM 0x0057a2d0

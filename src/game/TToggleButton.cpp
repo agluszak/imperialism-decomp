@@ -19,12 +19,12 @@ TToggleButton::TToggleButton() : TPicture() {}
 // TToggleButton::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x00571170
-void TToggleButton::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+void TToggleButton::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId != 0x20) {
     if (commandId == 0x1f) {
       return;
     }
-    TControl::HandleEvent(commandId, sourceHandler, event);
+    TControl::DoEvent(commandId, sourceHandler, event);
     return;
   }
 
@@ -45,7 +45,7 @@ void TToggleButton::HandleEvent(int commandId, TEventHandler* sourceHandler, TEv
       }
     }
     if (match) {
-      this->ownerContext->DispatchEvent(0x20, nullptr, nullptr);
+      this->ownerContext->HandleEvent(0x20, nullptr, nullptr);
     }
   }
 
@@ -78,7 +78,7 @@ char TToggleButton::HandleMouseDown(const CPoint& point, TToolboxEvent* event, C
   (void)point;
   (void)event;
   (void)origin;
-  if (!this->GetBoolSlot28()) {
+  if (!this->IsEnabled()) {
     return 0;
   }
   bool isFieldWithinLimit = this->IsSelected();
@@ -91,9 +91,9 @@ char TToggleButton::HandleMouseDown(const CPoint& point, TToolboxEvent* event, C
   }
   this->Select(!isFieldWithinLimit, 1);
   if (!isFieldWithinLimit) {
-    this->ownerContext->DispatchEvent(0x68, this, nullptr);
+    this->ownerContext->HandleEvent(0x68, this, nullptr);
   } else {
-    this->ownerContext->DispatchEvent(0x67, this, nullptr);
+    this->ownerContext->HandleEvent(0x67, this, nullptr);
   }
   return 1;
 }

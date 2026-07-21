@@ -24,8 +24,7 @@ TInteriorMinisterView::TInteriorMinisterView() : TMinisterView() {}
 TInteriorMinisterView::~TInteriorMinisterView() {}
 
 // FUNCTION: IMPERIALISM 0x004f3710
-void TInteriorMinisterView::HandleEvent(int commandId, TEventHandler* sourceHandler,
-                                        TEvent* event) {
+void TInteriorMinisterView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   unsigned int tag = sourceHandler->controlTag;
   if (commandId == 0xa) {
     if (tag == kControlTagBack) {
@@ -33,7 +32,7 @@ void TInteriorMinisterView::HandleEvent(int commandId, TEventHandler* sourceHand
       return;
     } else if (tag == kControlTagOkay) {
       CloseBooks();
-      TWindow* owner = static_cast<TWindow*>(OwnerPanel());
+      TWindow* owner = static_cast<TWindow*>(GetWindow());
       g_pGlobalUiRootController->CloseAndFreeWindow(owner);
       return;
     }
@@ -42,7 +41,7 @@ void TInteriorMinisterView::HandleEvent(int commandId, TEventHandler* sourceHand
       OpenBook(0x25ee);
     } else if (tag == kControlTagTran) {
       if (g_pSimMgr->field14 == 0) {
-        TWindow* owner = static_cast<TWindow*>(OwnerPanel());
+        TWindow* owner = static_cast<TWindow*>(GetWindow());
         g_pGlobalUiRootController->CloseAndFreeWindow(owner);
       }
     } else if (tag == kControlTagTrea) {
@@ -50,5 +49,5 @@ void TInteriorMinisterView::HandleEvent(int commandId, TEventHandler* sourceHand
     }
     return;
   }
-  TEventHandler::HandleEvent(commandId, sourceHandler, event);
+  TEventHandler::DoEvent(commandId, sourceHandler, event);
 }

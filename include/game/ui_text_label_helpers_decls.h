@@ -43,7 +43,7 @@ void InitializeUiTextStyleDescriptorAndApplyQuickDraw(short face, short pointSiz
 
 // 0x5c49d0 / 0x5c4a40: set a control's cursor hover-help text -- both forward `text`
 // (by value) to TView::SetHoverHelpText, which stores it in hoverHelpText58 and sets
-// hoverHelpEnabled5c; TView::HandleCursorHoverFallback later sends that string + the
+// hoverHelpEnabled5c; TView::DoSetCursor later sends that string + the
 // control rect to g_pCursorControlPanel. Two separate original addresses with identical
 // bodies (do NOT merge -- likely distinct source functions or linker-fold candidates).
 void SetControlHoverHelpText(CString text, TView* control);

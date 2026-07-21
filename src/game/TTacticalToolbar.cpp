@@ -53,10 +53,10 @@ void TTacticalToolbar::DoPostCreate(int arg) {
 
 // Draws each side's xp progress bar (bar width = qualityLevel * 11, +5 rounding bump
 // past .50) from the shared per-level icon strip, same idiom as
-// TArmyBoyView/TArmyUnitView::ApplyRectSlot110.
+// TArmyBoyView/TArmyUnitView::Draw.
 // FUNCTION: IMPERIALISM 0x005ac950
-void TTacticalToolbar::ApplyRectSlot110(RECT* rectBuffer) {
-  (void)rectBuffer; // dead parameter in this override, like the other ApplyRectSlot110s
+void TTacticalToolbar::Draw(RECT* rectBuffer) {
+  (void)rectBuffer; // dead parameter in this override, like the other Draws
   TQuickDrawBlitSurface* iconStripSurface = reinterpret_cast<TQuickDrawBlitSurface*>(
       *reinterpret_cast<char**>(reinterpret_cast<char*>(g_pStrategicMapViewSystem) + 0x694) + 4);
 
@@ -178,7 +178,7 @@ void TTacticalToolbar::ConfigureTacticalTargetDoneRetreatAutoControls(int mode) 
 }
 
 // FUNCTION: IMPERIALISM 0x005acf90
-void TTacticalToolbar::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+void TTacticalToolbar::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId == 0xa) {
     unsigned int tag = sourceHandler->controlTag;
     switch (tag) {
@@ -195,6 +195,6 @@ void TTacticalToolbar::HandleEvent(int commandId, TEventHandler* sourceHandler, 
       break;
     }
   }
-  TCluster::HandleEvent(commandId, sourceHandler, event);
-  g_pGlobalUiRootController->SetActiveView(ownerContext);
+  TCluster::DoEvent(commandId, sourceHandler, event);
+  g_pGlobalUiRootController->SetTarget(ownerContext);
 }

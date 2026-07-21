@@ -1552,4 +1552,4 @@ void TMapMaker::EraseZones(long coarseIndex) {
 }
 
 // FUNCTION: IMPERIALISM 0x0052e900
-void TMapMaker::HandleCityProductionNoOp() {}
+void TMapMaker::TargetValidationSucceeded() {}

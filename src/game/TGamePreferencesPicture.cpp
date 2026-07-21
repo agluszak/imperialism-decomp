@@ -29,8 +29,7 @@ TGamePreferencesPicture::TGamePreferencesPicture() {}
 void TGamePreferencesPicture::DoPostCreate(int arg) {}
 
 // FUNCTION: IMPERIALISM 0x0056ae10
-void TGamePreferencesPicture::HandleEvent(int commandId, TEventHandler* sourceHandler,
-                                          TEvent* event) {
+void TGamePreferencesPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId == 0xa) {
     unsigned int tag = sourceHandler->controlTag;
     if (tag == kControlTagCanc) {
@@ -80,10 +79,10 @@ void TGamePreferencesPicture::HandleEvent(int commandId, TEventHandler* sourceHa
         g_pUiRuntimeContext->ShowLocalizedUiPromptByGroupAndIndex(0x2763, 7, 2, 0);
       }
     } else {
-      TControl::HandleEvent(commandId, sourceHandler, event);
+      TControl::DoEvent(commandId, sourceHandler, event);
     }
   } else {
-    TControl::HandleEvent(commandId, sourceHandler, event);
+    TControl::DoEvent(commandId, sourceHandler, event);
   }
 
   if (commandId == 4) {
