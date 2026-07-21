@@ -116,7 +116,7 @@ public:
   // slot 0x6a AssertCityProductionGlobalStateInitialized inherited unchanged (0x429470)
   // slot 0x6b NoOpUiViewSlotHandler inherited unchanged (0x48e9c0)
   // slot 0x6c NoOpControlAction inherited unchanged (0x48e9e0)
-  // slot 0x6d SetTextStyleAndMaybeRefresh inherited unchanged (0x48e7d0)
+  // slot 0x6d InstallTextStyle inherited unchanged (0x48e7d0)
   // slot 0x6e SetTextColorAndMaybeRefresh inherited unchanged (0x48e7a0)
   // slot 0x6f LogUnhandledDialogMethodAndReturnFalse inherited unchanged (0x4294a0)
   // slot 0x70 HiliteState inherited unchanged (0x48e810)
@@ -142,6 +142,5 @@ public:
   // 0x55df50: build one TDeluxeText row (column grid x=0x18/0xe2/0x1ac) from the .tex
   // record, expand its bracket template with tokens, and return the consumed height.
   int AppendInterNationEventSummaryTextEntry(int column, int y, int recordId, int recordLength,
-                                             TUiTextStyleDescriptor* style, int styleWord,
-                                             CString* tokens);
+                                             TextStyle* style, int styleWord, CString* tokens);
 };

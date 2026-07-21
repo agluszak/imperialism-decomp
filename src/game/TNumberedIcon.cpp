@@ -36,12 +36,12 @@ void TNumberedIcon::InstallNumberText() {
   int sizeLayout[2] = {1, 1};
   numberText->ConstructTNumberTextBaseState(this, offsetLayout, sizeLayout, 0, 0, 9999);
 
-  TUiTextStyleDescriptor style;
+  TextStyle style;
   style.textColor = 0;
   style.fontFamily = 3;
   style.fontStyleFlags = 0;
   style.fontSize = 9;
-  numberText->SetTextStyleAndMaybeRefresh(&style, 0);
+  numberText->InstallTextStyle(style, 0);
   numberText->SetEnabled(1, 0);
   numberTextAc = numberText;
 }

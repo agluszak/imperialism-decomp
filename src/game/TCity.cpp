@@ -193,7 +193,7 @@ void TCity::InitializeCityProductionState(TGreatPower* ownerNation) {
   orderSlotsE4[0x33] = capacityOrder;
 
   TPopGrowthOrder* populationGrowthOrder = new TPopGrowthOrder();
-  populationGrowthOrder->ConstructTPopGrowthOrderBaseState(this);
+  populationGrowthOrder->IPopGrowthOrder(this);
   orderSlotsE4[0x3c] = populationGrowthOrder;
 
   trackedOrderList270 = new TSortedList();

@@ -64,8 +64,7 @@ void MapUiThemeCodeToStyleFlags(short themeCode, int* outStyleFlags) {
 }
 
 // FUNCTION: IMPERIALISM 0x005c3e80
-void BuildUiTextStyleDescriptor(TUiTextStyleDescriptor* styleDescriptor, int unused, int arg2,
-                                int themeCode) {
+void BuildUiTextStyleDescriptor(TextStyle* styleDescriptor, int unused, int arg2, int themeCode) {
   (void)unused;
   // Verified against 0x5c3e9b-0x5c3f01: constructed unconditionally, never read or
   // written again -- a genuinely dead local kept faithfully (not our porting
@@ -80,8 +79,8 @@ void BuildUiTextStyleDescriptor(TUiTextStyleDescriptor* styleDescriptor, int unu
 }
 
 // FUNCTION: IMPERIALISM 0x005c3f50
-void InitializeUiTextStyleDescriptor(TUiTextStyleDescriptor* styleDescriptor, short face,
-                                     short pointSize, int themeCode, short font) {
+void InitializeUiTextStyleDescriptor(TextStyle* styleDescriptor, short face, short pointSize,
+                                     int themeCode, short font) {
   // Same dead CString shape as BuildUiTextStyleDescriptor; the original constructs and
   // destroys it while only using the packed descriptor fields below.
   CString deadLocal;
@@ -99,13 +98,13 @@ TStaticText* ApplyControlThemeStyleAndOptionalCaption(TStaticText* control, int 
                                                       const char* caption) {
   (void)unused2;
   control->AssertValid();
-  TUiTextStyleDescriptor styleDescriptor;
+  TextStyle styleDescriptor;
   styleDescriptor.fontFamily = 0;
   styleDescriptor.fontStyleFlags = 0;
   styleDescriptor.fontSize = 0;
   styleDescriptor.textColor = 0;
   BuildUiTextStyleDescriptor(&styleDescriptor, 0, pointSize, themeCode);
-  control->SetTextStyleAndMaybeRefresh(&styleDescriptor, 0);
+  control->InstallTextStyle(styleDescriptor, 0);
   control->SetTextAlignmentAndMaybeRefresh(static_cast<short>(themeCode2), 0);
   if (caption != 0) {
     CString captionString(caption);
@@ -125,13 +124,13 @@ TStaticText* ConfigureUiControlStyleValueAndCaptionFromStringResource(TStaticTex
   g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&caption, stringResourceGroup,
                                                                   stringResourceIndex);
   control->AssertValid();
-  TUiTextStyleDescriptor styleDescriptor;
+  TextStyle styleDescriptor;
   styleDescriptor.fontFamily = 0;
   styleDescriptor.fontStyleFlags = 0;
   styleDescriptor.fontSize = 0;
   styleDescriptor.textColor = 0;
   BuildUiTextStyleDescriptor(&styleDescriptor, 0, pointSize, themeCode);
-  control->SetTextStyleAndMaybeRefresh(&styleDescriptor, 0);
+  control->InstallTextStyle(styleDescriptor, 0);
   control->SetTextAlignmentAndMaybeRefresh(static_cast<short>(themeCode2), 0);
   if (static_cast<LPCSTR>(caption) != 0) {
     control->SetTextAndMaybeRefresh(&caption, 0);
@@ -155,11 +154,10 @@ TStaticText* __cdecl RefreshActiveControlThenApplyThemeStyleAndCaption(unsigned 
 // subtree: if `view` itself is a TStaticText it gets the state, then each subview is visited
 // via the shared CSubViewIterator (which recurses into their subviews in turn).
 // FUNCTION: IMPERIALISM 0x005c43b0
-void __cdecl DispatchToSelectableTextOptionEntries(TView* view, TUiTextStyleDescriptor* state,
-                                                   int flag) {
+void __cdecl DispatchToSelectableTextOptionEntries(TView* view, TextStyle* state, int flag) {
   if (view->IsKindOf(RUNTIME_CLASS(TStaticText))) {
     view->AssertValid();
-    static_cast<TControl*>(view)->SetTextStyleAndMaybeRefresh(state, flag);
+    static_cast<TControl*>(view)->InstallTextStyle(*state, flag);
   }
   CSubViewIterator iter(view);
   TView* child = iter.FirstSubView();
@@ -173,7 +171,7 @@ void __cdecl DispatchToSelectableTextOptionEntries(TView* view, TUiTextStyleDesc
 
 // FUNCTION: IMPERIALISM 0x005c4470
 void ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(int unused, int styleWidth, int themeCode) {
-  TUiTextStyleDescriptor styleDescriptor;
+  TextStyle styleDescriptor;
   styleDescriptor.textColor = 0;
   BuildUiTextStyleDescriptor(&styleDescriptor, unused, styleWidth, themeCode);
   SetQuickDrawTextFace(styleDescriptor.fontStyleFlags);
@@ -185,7 +183,7 @@ void ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(int unused, int styleWidt
 // FUNCTION: IMPERIALISM 0x005c4500
 void InitializeUiTextStyleDescriptorAndApplyQuickDraw(short face, short pointSize, int themeCode,
                                                       short font) {
-  TUiTextStyleDescriptor styleDescriptor;
+  TextStyle styleDescriptor;
   styleDescriptor.textColor = 0;
   InitializeUiTextStyleDescriptor(&styleDescriptor, face, pointSize, themeCode, font);
   SetQuickDrawTextFace(styleDescriptor.fontStyleFlags);
@@ -197,10 +195,10 @@ void InitializeUiTextStyleDescriptorAndApplyQuickDraw(short face, short pointSiz
 // FUNCTION: IMPERIALISM 0x005c4590
 void __cdecl ApplyUiTextStyleAndThemeFlags(TDropShadowText* control, int unused, int pointSize,
                                            int shadowThemeCode, int textThemeCode) {
-  TUiTextStyleDescriptor styleDescriptor;
+  TextStyle styleDescriptor;
   styleDescriptor.textColor = 0;
   BuildUiTextStyleDescriptor(&styleDescriptor, unused, pointSize, textThemeCode);
-  control->SetTextStyleAndMaybeRefresh(&styleDescriptor, 0);
+  control->InstallTextStyle(styleDescriptor, 0);
   MapUiThemeCodeToStyleFlags(static_cast<short>(shadowThemeCode), &control->shadowThemeCode94);
 }
 

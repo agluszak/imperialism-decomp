@@ -43,7 +43,7 @@ THelpPicture::~THelpPicture() {}
 void THelpPicture::DoPostCreate(int arg) {
   TView::DoPostCreate(arg);
 
-  TUiTextStyleDescriptor textStyle;
+  TextStyle textStyle;
   InitializeUiTextStyleDescriptor(&textStyle, 0, 12, 0x2b67, 3);
 
   // Mac Linger.rsrc:3000 identifies 'swin' as the help dialog's TScrollView.
@@ -129,9 +129,9 @@ void THelpPicture::ShowPreviousHelpSet() {
 // FUNCTION: IMPERIALISM 0x00504220
 void THelpPicture::ShowTopic(short topic) {
   TView* helpDialog = g_pHelpMgr->pendingDialogView8;
-  TUiTextStyleDescriptor normalStyle;
-  TUiTextStyleDescriptor highlightStyle;
-  TUiTextStyleDescriptor captionStyle;
+  TextStyle normalStyle;
+  TextStyle highlightStyle;
+  TextStyle captionStyle;
   normalStyle.textColor = 0;
   highlightStyle.textColor = 0;
   captionStyle.textColor = 0;
@@ -147,13 +147,13 @@ void THelpPicture::ShowTopic(short topic) {
   subject->SetEnabled(1, 1);
   subject->SetState(0, 1);
   subject->SetTextAlignmentAndMaybeRefresh(1, 0);
-  subject->SetTextStyleAndMaybeRefresh(&captionStyle, 0);
+  subject->InstallTextStyle(captionStyle, 0);
 
   TStaticText* toggle = static_cast<TStaticText*>(ResolveControlByTag(0x746f676c)); // 'togl'
   toggle->SetEnabled(1, 1);
   toggle->SetState(1, 1);
   toggle->SetTextAlignmentAndMaybeRefresh(1, 0);
-  toggle->SetTextStyleAndMaybeRefresh(&normalStyle, 0);
+  toggle->InstallTextStyle(normalStyle, 0);
 
   for (int index = 0; index < 5; ++index) {
     TView* topicName = ResolveControlByTag(0x6e616d31 + index); // 'nam1'..'nam5'
@@ -167,7 +167,7 @@ void THelpPicture::ShowTopic(short topic) {
   previous->SetEnabled(0, 1);
   previous->SetState(0, 1);
   previous->SetTextAlignmentAndMaybeRefresh(-1, 0);
-  previous->SetTextStyleAndMaybeRefresh(&normalStyle, 0);
+  previous->InstallTextStyle(normalStyle, 0);
 
   TStaticText* next = static_cast<TStaticText*>(ResolveControlByTag(0x6e657874)); // 'next'
   g_pSimMgr->GetString(0x2749, 0xe, &navigationText);
@@ -175,7 +175,7 @@ void THelpPicture::ShowTopic(short topic) {
   next->SetEnabled(0, 1);
   next->SetState(0, 1);
   next->SetTextAlignmentAndMaybeRefresh(-1, 0);
-  next->SetTextStyleAndMaybeRefresh(&normalStyle, 0);
+  next->InstallTextStyle(normalStyle, 0);
 
   topicListText94->SetEnabled(1, 0);
 
@@ -214,9 +214,9 @@ void THelpPicture::ShowTopic(short topic) {
 // FUNCTION: IMPERIALISM 0x005046c0
 void THelpPicture::ShowTopicList() {
   TView* helpDialog = g_pHelpMgr->pendingDialogView8;
-  TUiTextStyleDescriptor normalStyle;
-  TUiTextStyleDescriptor highlightStyle;
-  TUiTextStyleDescriptor captionStyle;
+  TextStyle normalStyle;
+  TextStyle highlightStyle;
+  TextStyle captionStyle;
   normalStyle.textColor = 0;
   highlightStyle.textColor = 0;
   captionStyle.textColor = 0;
@@ -231,7 +231,7 @@ void THelpPicture::ShowTopicList() {
   subject->SetEnabled(1, 1);
   subject->SetState(0, 1);
   subject->SetTextAlignmentAndMaybeRefresh(1, 0);
-  subject->SetTextStyleAndMaybeRefresh(&captionStyle, 0);
+  subject->InstallTextStyle(captionStyle, 0);
 
   TStaticText* toggle = static_cast<TStaticText*>(ResolveControlByTag(0x746f676c)); // 'togl'
   toggle->SetEnabled(0, 1);
@@ -247,7 +247,7 @@ void THelpPicture::ShowTopicList() {
     topicName->SetEnabled(1, 1);
     topicName->SetState(1, 1);
     topicName->SetTextAlignmentAndMaybeRefresh(-2, 0);
-    topicName->SetTextStyleAndMaybeRefresh(&normalStyle, 0);
+    topicName->InstallTextStyle(normalStyle, 0);
   }
 
   for (int unusedTopicTag = currentHelpSet90->topicCount + 0x6e616d31; unusedTopicTag < 0x6e616d36;
@@ -264,7 +264,7 @@ void THelpPicture::ShowTopicList() {
   previous->SetEnabled(navigationAvailable, 1);
   previous->SetState(navigationAvailable, 1);
   previous->SetTextAlignmentAndMaybeRefresh(-1, 0);
-  previous->SetTextStyleAndMaybeRefresh(&normalStyle, 0);
+  previous->InstallTextStyle(normalStyle, 0);
 
   navigationAvailable = currentHelpSet90->nextHelpResourceBaseId != 0;
   TStaticText* next = static_cast<TStaticText*>(ResolveControlByTag(0x6e657874)); // 'next'
@@ -273,7 +273,7 @@ void THelpPicture::ShowTopicList() {
   next->SetEnabled(navigationAvailable, 1);
   next->SetState(navigationAvailable, 1);
   next->SetTextAlignmentAndMaybeRefresh(-1, 0);
-  next->SetTextStyleAndMaybeRefresh(&normalStyle, 0);
+  next->InstallTextStyle(normalStyle, 0);
 
   topicListText94->SetEnabled(0, 1);
 

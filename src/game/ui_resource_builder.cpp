@@ -97,12 +97,12 @@ void __cdecl BindUiResourceTextAndStyle(int nGroupId, int nVariant, const char* 
     CString text(szText);
     context->SetTextAndMaybeRefresh(&text, 0);
   }
-  TUiTextStyleDescriptor style;
+  TextStyle style;
   style.fontFamily = nMode;
   style.fontStyleFlags = nFlag;
   style.fontSize = nPointSize;
   style.textColor = styleRef.value;
-  context->SetTextStyleAndMaybeRefresh(&style, 0);
+  context->InstallTextStyle(style, 0);
   context->SetTextAlignmentAndMaybeRefresh(nThemeCode, 0);
 }
 

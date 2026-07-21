@@ -48,7 +48,7 @@ void TPurchaseCluster::SetCityViewValueControlAmount(short nValue, char redrawFl
   // 'valu' is a TAmtBar (already the established typing at this exact tag in
   // TProductionCluster.cpp); confirmed here by TAmtBar's own SetControlValueSlot1E4(int,
   // int) matching this callsite's slot 0x1e4 dispatch and (nValue, 0) argument shape exactly
-  // -- unlike the byte-coincident TDeluxeText::ApplyTextStyleDescriptorAndMaybeRefresh at the
+  // -- unlike the byte-coincident TDeluxeText::SetTextStyle at the
   // same offset, which takes a style-descriptor pointer, not a plain value.
   TAmtBar* valueControl = static_cast<TAmtBar*>(ResolveControlByTag(kControlTagValu));
   if (valueControl == nullptr) {

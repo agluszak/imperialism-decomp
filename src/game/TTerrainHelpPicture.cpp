@@ -33,7 +33,7 @@ TTerrainHelpPicture::TTerrainHelpPicture() {}
 
 // FUNCTION: IMPERIALISM 0x00504e90
 void TTerrainHelpPicture::BuildMapTileActionContextMenu(short nTileIndex) {
-  TUiTextStyleDescriptor itemStyle;
+  TextStyle itemStyle;
   itemStyle.textColor = 0;
   memset(menuItemIds94, 0, sizeof(menuItemIds94));
   short count = 0;
@@ -131,7 +131,7 @@ void TTerrainHelpPicture::BuildMapTileActionContextMenu(short nTileIndex) {
   for (short i = 0; i < 12; i++) {
     TStaticText* itemPane =
         static_cast<TStaticText*>(ResolveControlByTag(0x69303061 /* 'i00a' */ + i));
-    itemPane->SetTextStyleAndMaybeRefresh(&itemStyle, 1);
+    itemPane->InstallTextStyle(itemStyle, 1);
     short itemId = menuItemIds94[i];
     if (itemId != 0) {
       itemPane->SetTextFromStringResource(0x2755, itemId, 1);
@@ -159,10 +159,10 @@ void TTerrainHelpPicture::BuildMapTileActionContextMenu(short nTileIndex) {
   // Style the 'info' pane.
   InitializeUiTextStyleDescriptor(&itemStyle, 0, 0xc, 0x2b67, 3);
   infoTextPane90 = static_cast<TDeluxeText*>(ResolveControlByTag(0x696e666f /* 'info' */));
-  infoTextPane90->ApplyTextStyleDescriptorAndMaybeRefresh(&itemStyle, 0);
+  infoTextPane90->SetTextStyle(itemStyle, 0);
 
   // Title pane + location text.
-  TUiTextStyleDescriptor titleStyle;
+  TextStyle titleStyle;
   titleStyle.textColor = 0;
   CString strCityName;
   CString strTemplate;
@@ -173,7 +173,7 @@ void TTerrainHelpPicture::BuildMapTileActionContextMenu(short nTileIndex) {
   titlePane->SetEnabled(1, 1);
   titlePane->SetState(0, 1);
   titlePane->SetTextAlignmentAndMaybeRefresh(1, 0);
-  titlePane->SetTextStyleAndMaybeRefresh(&titleStyle, 0);
+  titlePane->InstallTextStyle(titleStyle, 0);
 
   if (g_pGlobalMapState->terrainStateTable[nTileIndex].terrainType00 == 5) {
     TZone* zone = g_pActiveMapOrderContext->GetLinkedZoneForSeaTile(nTileIndex);
@@ -205,9 +205,9 @@ void TTerrainHelpPicture::BuildMapTileActionContextMenu(short nTileIndex) {
 // FUNCTION: IMPERIALISM 0x005057a0
 void TTerrainHelpPicture::HighlightSelectedMenuItemAndRefreshDetailText(int selectedIndex) {
   GetWindow();
-  TUiTextStyleDescriptor normalStyle;
-  TUiTextStyleDescriptor highlightStyle;
-  TUiTextStyleDescriptor captionStyle;
+  TextStyle normalStyle;
+  TextStyle highlightStyle;
+  TextStyle captionStyle;
   normalStyle.textColor = 0;
   highlightStyle.textColor = 0;
   captionStyle.textColor = 0;
@@ -221,12 +221,12 @@ void TTerrainHelpPicture::HighlightSelectedMenuItemAndRefreshDetailText(int sele
   captionPane->SetEnabled(1, 1);
   captionPane->SetState(0, 1);
   captionPane->SetTextAlignmentAndMaybeRefresh(1, 0);
-  captionPane->SetTextStyleAndMaybeRefresh(&captionStyle, 0);
+  captionPane->InstallTextStyle(captionStyle, 0);
 
   for (int i = 0; i < 12; i++) {
     TStaticText* itemPane =
         static_cast<TStaticText*>(ResolveControlByTag(0x69303061 /* 'i00a' */ + i));
-    itemPane->SetTextStyleAndMaybeRefresh((selectedIndex == i) ? &highlightStyle : &normalStyle, 1);
+    itemPane->InstallTextStyle((selectedIndex == i) ? highlightStyle : normalStyle, 1);
   }
 
   CString detailText;

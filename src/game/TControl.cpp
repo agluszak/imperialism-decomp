@@ -114,8 +114,8 @@ void TControl::SetTextColorAndMaybeRefresh(const int* textColor, bool refreshNow
 }
 
 // FUNCTION: IMPERIALISM 0x0048e7d0
-void TControl::SetTextStyleAndMaybeRefresh(const TUiTextStyleDescriptor* style, char refreshNow) {
-  textStyle78 = *style;
+void TControl::InstallTextStyle(const TextStyle& style, char refreshNow) {
+  textStyle78 = style;
   if (refreshNow != 0) {
     PaintOrInvalidateControl(0);
   }

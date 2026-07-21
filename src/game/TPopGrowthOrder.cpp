@@ -30,7 +30,7 @@ IMPLEMENT_DYNCREATE(TPopGrowthOrder, TProductionOrder)
 TPopGrowthOrder::TPopGrowthOrder() {}
 
 // FUNCTION: IMPERIALISM 0x004b8160
-void TPopGrowthOrder::ConstructTPopGrowthOrderBaseState(TCity* city) {
+void TPopGrowthOrder::IPopGrowthOrder(TCity* city) {
   cityField08 = city;
   summaryField0c = city != nullptr ? city->productionSummary1d8 : nullptr;
   resourceTypeIndex48 = 1;

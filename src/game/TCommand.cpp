@@ -49,7 +49,7 @@ void TCommand::Free() {
 // FUNCTION: IMPERIALISM 0x00487900
 void TCommand::NextDiplomacyCommandVtableSlotE8_NotifyOwnerSlot94() {
   if (targetContext != 0) {
-    targetContext->ConstructTCommandHandlerBaseState(this);
+    targetContext->PerformCommand(this);
   }
 }
 

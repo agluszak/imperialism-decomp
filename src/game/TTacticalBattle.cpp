@@ -1498,7 +1498,7 @@ void TTacticalBattle::EvaluateTacticalSideStateAndShowBattleSummaryDialog() {
 
   g_pSfxPlaybackSystem->RequestAudioPresetChangeWithDeferredApply(localSideWon != 0 ? 9 : 10, 0);
 
-  TUiTextStyleDescriptor styleDescriptor;
+  TextStyle styleDescriptor;
   styleDescriptor.textColor = 0;
   TurnEventDialogNode* dialog = static_cast<TurnEventDialogNode*>(
       g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(0xeed));
@@ -1522,7 +1522,7 @@ void TTacticalBattle::EvaluateTacticalSideStateAndShowBattleSummaryDialog() {
     CString titleText;
     g_pSimMgr->GetString(0x273d, titleMessageIndex, &titleText);
     BuildUiTextStyleDescriptor(&styleDescriptor, 0, 0xc, 0x2b67);
-    titleControl->SetTextStyleAndMaybeRefresh(&styleDescriptor, 0);
+    titleControl->InstallTextStyle(styleDescriptor, 0);
     titleControl->SetTextAndMaybeRefresh(&titleText, 0);
   }
 
@@ -1543,7 +1543,7 @@ void TTacticalBattle::EvaluateTacticalSideStateAndShowBattleSummaryDialog() {
                            static_cast<const char*>(cityName),
                            static_cast<const char*>(siteOwnerLabel));
     BuildUiTextStyleDescriptor(&styleDescriptor, 0, 0xa, 0x2b67);
-    locationControl->SetTextStyleAndMaybeRefresh(&styleDescriptor, 0);
+    locationControl->InstallTextStyle(styleDescriptor, 0);
     locationControl->SetTextAndMaybeRefresh(&locationText, 1);
   }
 
@@ -1612,9 +1612,9 @@ void TTacticalBattle::EvaluateTacticalSideStateAndShowBattleSummaryDialog() {
 
     combinedCasualtyText =
         CString(side0CasualtyLine + s_szDoubleNewline_00699438 + side1CasualtyLine);
-    infoControl->ApplyTextStyleDescriptorAndMaybeRefresh(&styleDescriptor, 0);
+    infoControl->SetTextStyle(styleDescriptor, 0);
     infoControl->UpdateTextEntrySharedStringAndMaybeNotify(&combinedCasualtyText, 0);
-    infoControl->RecenterTextVerticallyFromMeasuredHeightAndMaybeInvalidate(0);
+    infoControl->CenterVertically(0);
   }
 
   dialog->ShowTurnEventDialog(1);

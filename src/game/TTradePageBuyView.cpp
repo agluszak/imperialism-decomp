@@ -40,7 +40,7 @@ void TTradePageBuyView::RebuildNationBidRowsForCategory(short categorySlot) {
       headerBounds[0] = 0x24;
       headerRow->SetTextLineRowBoundsAndStyle(0, 0, headerBounds, 0x2741, 3);
       headerRow->SetField1E(1);
-      TUiTextStyleDescriptor headerStyle;
+      TextStyle headerStyle;
       BuildUiTextStyleDescriptor(&headerStyle, 4, 0xc, 0x2b6a);
       headerRow->SetTextLineStyleDescriptor(&headerStyle);
       orderedEntries->AddTail(headerRow);

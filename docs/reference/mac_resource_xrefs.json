@@ -105895,6 +105895,48 @@
       "to": "control_tag:0x746f6f6c"
     },
     {
+      "from": "windows_function:0x005b2aa0",
+      "relation": "resolves_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x436f7374"
+    },
+    {
+      "from": "windows_function:0x005b3be0",
+      "relation": "resolves_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x686f7269"
+    },
+    {
+      "from": "windows_function:0x005b3be0",
+      "relation": "resolves_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x76657274"
+    },
+    {
+      "from": "windows_function:0x005b4090",
+      "relation": "resolves_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x636f6c31"
+    },
+    {
+      "from": "windows_function:0x005b4090",
+      "relation": "resolves_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x636f6c32"
+    },
+    {
+      "from": "windows_function:0x005b4090",
+      "relation": "resolves_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x726f7731"
+    },
+    {
+      "from": "windows_function:0x005b4090",
+      "relation": "resolves_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x726f7732"
+    },
+    {
       "from": "windows_function:0x005bac50",
       "relation": "resolves_control_tag",
       "status": "resolved",
@@ -204649,6 +204691,21 @@
       "kind": "windows_function",
       "source": "src/game/TArmyBattle.cpp"
     },
+    "windows_function:0x005b2aa0": {
+      "address": "0x005b2aa0",
+      "kind": "windows_function",
+      "source": "src/game/TMinorTradeBidsDialog.cpp"
+    },
+    "windows_function:0x005b3be0": {
+      "address": "0x005b3be0",
+      "kind": "windows_function",
+      "source": "src/game/TGPTreatyDialog.cpp"
+    },
+    "windows_function:0x005b4090": {
+      "address": "0x005b4090",
+      "kind": "windows_function",
+      "source": "src/game/TMinorTreatyDialog.cpp"
+    },
     "windows_function:0x005bac50": {
       "address": "0x005bac50",
       "kind": "windows_function",
@@ -204822,9 +204879,9 @@
       "references_picture": 909,
       "references_string": 1451,
       "references_text_style": 1784,
-      "resolves_control_tag": 247
+      "resolves_control_tag": 254
     },
-    "edges": 17598,
+    "edges": 17605,
     "mac_classes_without_windows_header": 18,
     "node_kinds": {
       "control_tag": 813,
@@ -204838,9 +204895,9 @@
       "view_node": 3263,
       "windows_event": 94,
       "windows_factory": 17,
-      "windows_function": 100
+      "windows_function": 103
     },
-    "nodes": 11275,
+    "nodes": 11278,
     "unreferenced_resources": {
       "pict": 1998,
       "str_entry": 3616,
