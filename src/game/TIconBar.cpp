@@ -20,24 +20,27 @@ TIconBar::~TIconBar() {}
 
 // FUNCTION: IMPERIALISM 0x005060c0
 void TIconBar::SetPictureResourceIdAndRefresh(short nPictureId, bool fRefreshNow) {
-  field94 = nPictureId - 700;
+  iconAtlasFrame94 = nPictureId - 700;
   TPicture::SetPictureResourceIdAndRefresh(nPictureId, fRefreshNow);
 }
 
 // FUNCTION: IMPERIALISM 0x005060f0
-undefined TIconBar::OrphanTiny_SetWordEcxOffset_96_005060f0(undefined2 param_1) {
-  return 0;
+void TIconBar::SetNumIcons(short numIcons) {
+  numIcons96 = numIcons;
 }
 
 // FUNCTION: IMPERIALISM 0x00506110
-undefined TIconBar::OrphanCallChain_C2_I15_00506110(char param_1) {
-  return 0;
+void TIconBar::SetNumIcons(short numIcons, unsigned char refreshNow) {
+  SetNumIcons(numIcons);
+  if (refreshNow != 0) {
+    RefreshControl();
+  }
 }
 
-// Draws field96 copies of the atlas674 icon frame selected by field94 evenly spaced
+// Draws numIcons96 copies of the atlas674 icon frame selected by iconAtlasFrame94 evenly spaced
 // across the bar's inset content rect (BuildInsetContentRect), dividing the content
-// width by (field96+1) ticks and clamping each tick's width to 0x20 (32px). The
-// computed tick width is cached in tickSlotWidth98 for TIconSlider's thumb-position
+// width by (numIcons96+1) ticks and clamping each tick's width to 0x20 (32px). The
+// computed tick width is cached in iconSpacing98 for TIconSlider's thumb-position
 // helpers.
 // FUNCTION: IMPERIALISM 0x00506150
 void TIconBar::ApplyRectSlot110(RECT* rectBuffer) {
@@ -45,19 +48,19 @@ void TIconBar::ApplyRectSlot110(RECT* rectBuffer) {
   RECT contentRect;
   BuildInsetContentRect(&contentRect);
 
-  short slotWidth = static_cast<short>(contentRect.right - contentRect.left) / (field96 + 1);
+  short slotWidth = static_cast<short>(contentRect.right - contentRect.left) / (numIcons96 + 1);
   if (slotWidth > 0x20) {
     slotWidth = 0x20;
   }
-  tickSlotWidth98 = slotWidth;
+  iconSpacing98 = slotWidth;
 
-  RECT srcRect = {field94 * 0x20, 0, field94 * 0x20 + 0x20, 0x18};
+  RECT srcRect = {iconAtlasFrame94 * 0x20, 0, iconAtlasFrame94 * 0x20 + 0x20, 0x18};
   RECT dstRect = {contentRect.left, contentRect.top, contentRect.left + 0x20,
                   contentRect.top + 0x18};
 
   ResetQuickDrawStrokeState();
   UpdatePaletteIndexWithDefaultFallback(0x10);
-  for (short i = 0; i < field96; ++i) {
+  for (short i = 0; i < numIcons96; ++i) {
     BlitRectWithOptionalTransparency(g_pStrategicMapViewSystem->atlas674->GetBlitSurface(),
                                      g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &srcRect,
                                      &dstRect, 0x24, 0);

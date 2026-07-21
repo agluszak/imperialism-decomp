@@ -4,6 +4,9 @@
 #include "game/mfc.h"
 
 class TEventHandler;
+class TGreatPower;
+class TCity;
+class TItemOrder;
 
 // VTABLE: IMPERIALISM 0x00657eb0
 class TOrderView : public TView {
@@ -105,23 +108,21 @@ public:
   // slot 0x5d DetachUiElementFromOwnerListAndClearBackref inherited unchanged (0x48ae60)
   // slot 0x5e CtrlSlot94_GetWordField54_Impl inherited unchanged (0x48c970)
   // slot 0x5f CtrlSlot95_TestPointInBoundsFromSlot128_Impl inherited unchanged (0x48c990)
-  // slot 0x60 OrphanCallChain_C11_I88_004874b0 inherited unchanged (0x48c9e0)
-  // slot 0x61 OrphanLeaf_NoCall_Ins07_004d8920 inherited unchanged (0x48ca00)
-  // slot 0x62 OrphanCallChain_C11_I88_004874b0 inherited unchanged (0x48ca20)
+  // slot 0x60 ReturnFromUiSlot60 inherited unchanged (0x48c9e0)
+  // slot 0x61 ReturnFromUiSlot61 inherited unchanged (0x48ca00)
+  // slot 0x62 ReturnFromUiSlot62 inherited unchanged (0x48ca20)
   // slot 0x63 GetTEventHandlerClassNamePointer inherited unchanged (0x48ca40)
   // slot 0x64 DrawRectangleInCurrentUiContext inherited unchanged (0x48c750)
   // slot 0x65 AssertMcAppUILine1914 inherited unchanged (0x48c7a0)
   // slot 0x66 AssertMcAppUILine1922 inherited unchanged (0x48c7d0)
   // slot 0x67 CtrlSlot103_SubtractPosAndDispatchSlot19C_Impl inherited unchanged (0x48bac0)
-  virtual undefined PopulateDialogControlsFromSelectedProductionEntry(); // slot 0x68 0x506b00
-  virtual undefined RefreshOrderViewSupplyAndUseControlValues();         // slot 0x69 0x506f90
-  // TView's own fields end exactly at 0x60 (see TWorldView's identically-placed
-  // viewportOffsetX); zeroed by the ctor, no other reader/writer found yet.
-  int field60; // +0x60
+  virtual void StuffValues(TGreatPower* power, short orderSlot); // slot 0x68 0x506b00
+  virtual void UpdateFields();                                   // slot 0x69 0x506f90
+  // TView's own fields end exactly at 0x60. StuffValues installs the active city and
+  // production order used by UpdateFields and HandleEvent.
+  TCity* city60; // +0x60
 
   TOrderView();
 
-  // Slider-value listener, notified via the common TEventHandler::SetControlValue base
-  // slot in HandleEvent -- concrete receiver type not otherwise constrained.
-  TEventHandler* field64;
+  TItemOrder* order64; // +0x64 — selected city-production item order
 };
