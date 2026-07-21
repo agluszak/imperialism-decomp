@@ -265,7 +265,7 @@ void TGreatPower::InitializeNationStateRuntimeSubsystems(int arg1, int arg2) {
 
   TCity* cityModel = new TCity();
   if (cityModel != 0) {
-    cityModel->InitializeCityProductionState(arg1);
+    cityModel->InitializeCityProductionState(this);
   }
   this->city = cityModel;
 
@@ -3570,11 +3570,11 @@ short TGreatPower::ComputeNationRuntimeAdvisoryMetricCase6() {
   TCity* nationCity = this->city;
   if (nationCity != 0) {
     TPopulationMgr* summary = nationCity->productionSummary1d8;
-    TPopulationMetricBucket* bucket = summary->productionSlots14;
+    TLaborPool* bucket = summary->productionSlots14;
     // 100% at a file-tail position; the register-allocator picks an esi-spill form here
     // (position-dependent wobble, heuristics 18/47) - keep the natural expression.
-    short folded = static_cast<short>(bucket->valueAt8 * 2 + bucket->valueAt6);
-    folded = static_cast<short>(folded * 2 + bucket->valueAt4);
+    short folded = static_cast<short>(bucket->highSkillCount08 * 2 + bucket->mediumSkillCount06);
+    folded = static_cast<short>(folded * 2 + bucket->lowSkillCount04);
     return static_cast<short>(folded + summary->extraAt1e);
   }
   return 0;
@@ -3587,7 +3587,7 @@ int TGreatPower::ComputeArmyCommitBudgetSlot8E(void) {
   }
   TPopulationMgr* scenario = this->city->productionSummary1d8;
   short scenarioCap = scenario->stockLevel1c;
-  short productionCap = scenario->productionSlots14->valueAt4;
+  short productionCap = scenario->productionSlots14->lowSkillCount04;
   if (scenarioCap < productionCap) {
     productionCap = scenarioCap;
   }
@@ -4440,9 +4440,9 @@ int TGreatPower::RecomputeNationComparativePowerMetrics_Impl() {
 void TGreatPower::RecomputeNationEconomyAndDiplomacySummaryMetrics() {
   int seasonPercentTable[5] = {10, 15, 20, 25, 30};
 
-  TPopulationMetricBucket* baseline = city->productionSummary1d8->baselineSlots10;
-  economySummaryBaseline930 =
-      baseline->valueAt4 + (baseline->valueAt6 + baseline->valueAt8 * 2) * 2;
+  TLaborPool* baseline = city->productionSummary1d8->baselineSlots10;
+  economySummaryBaseline930 = baseline->lowSkillCount04 +
+                              (baseline->mediumSkillCount06 + baseline->highSkillCount08 * 2) * 2;
   economySummaryNeedCapSnapshot934 = needCapA6;
 
   economySummaryBuildingTypeSum938 = 0;
