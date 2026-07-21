@@ -30,13 +30,13 @@ TQueryFloater::TQueryFloater() {}
 void TQueryFloater::DoPostCreate(int arg) {
   TPicture::DoPostCreate(arg);
 
-  TUiTextStyleDescriptor style;
+  TextStyle style;
 
   TStaticText* titleControl = static_cast<TStaticText*>(ResolveControlByTag(kControlTagTitl));
   titleControl->GetNextHandler();
   titleControl->SetTextFromStringResource(0x2757, 1, 1);
   BuildUiTextStyleDescriptor(&style, 0, 0xc, 0x2b6a);
-  titleControl->SetTextStyleAndMaybeRefresh(&style, 0);
+  titleControl->InstallTextStyle(style, 0);
   titleControl->SetTextAlignmentAndMaybeRefresh(1, 0);
 
   BuildUiTextStyleDescriptor(&style, 0, 0xc, 0x2b6c);
@@ -44,7 +44,7 @@ void TQueryFloater::DoPostCreate(int arg) {
     TStaticText* lineControl = static_cast<TStaticText*>(ResolveControlByTag(kControlTagTex0 + i));
     lineControl->GetNextHandler();
     lineControl->SetTextFromStringResource(0x2757, static_cast<short>(i + 2), 1);
-    lineControl->SetTextStyleAndMaybeRefresh(&style, 0);
+    lineControl->InstallTextStyle(style, 0);
     if (i == 6) {
       lineControl->SetTextAlignmentAndMaybeRefresh(1, 0);
     }

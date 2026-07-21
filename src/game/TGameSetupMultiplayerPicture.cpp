@@ -59,13 +59,13 @@ void TGameSetupMultiplayerPicture::DoPostCreate(int arg) {
 
   TInfoBarText* cursControl = static_cast<TInfoBarText*>(ResolveControlByTag(kControlTagCurs));
   cursControl->AssertValid();
-  TUiTextStyleDescriptor styleDescriptor;
+  TextStyle styleDescriptor;
   styleDescriptor.fontFamily = 0;
   styleDescriptor.fontStyleFlags = 0;
   styleDescriptor.fontSize = 0;
   styleDescriptor.textColor = 0;
   BuildUiTextStyleDescriptor(&styleDescriptor, 0, 0xe, 0x2b6c);
-  cursControl->ApplyTextStyleDescriptorAndMaybeRefresh(&styleDescriptor, 1);
+  cursControl->SetTextStyle(styleDescriptor, 1);
   cursControl->InitializeMapHintTextStyleAndThemeFlags(0x2b6b, 0x2b6c);
   cursControl->SetTextAlignmentAndMaybeRefresh(1, 0);
 

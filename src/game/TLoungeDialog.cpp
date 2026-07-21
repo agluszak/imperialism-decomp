@@ -41,7 +41,7 @@ void TLoungeDialog::DoPostCreate(int arg) {
   TInfoBarText* lablControl = static_cast<TInfoBarText*>(ResolveControlByTag(0x6c61626c));
   g_pCursorControlPanel = lablControl;
   lablControl->AssertValid();
-  lablControl->BuildAndApplyTextStyleDescriptor(0, 0xe, 0x2b6b);
+  lablControl->SetTextStyle(0, 0xe, 0x2b6b);
   lablControl->InitializeMapHintTextStyleAndThemeFlags(0x2b6b, 0x2b6c);
   lablControl->SetTextAlignmentAndMaybeRefresh(1, 0);
 

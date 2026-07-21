@@ -23,7 +23,7 @@ IMPLEMENT_DYNCREATE(TDeluxeText, TTEView)
 
 // FUNCTION: IMPERIALISM 0x005b5ff0
 void TDeluxeText::ConstructTDeluxeTextBaseState(TView* panel, int* offsetLayout, int* sizeLayout,
-                                                RECT* insetRect, TUiTextStyleDescriptor* style,
+                                                RECT* insetRect, TextStyle* style,
                                                 short styleWord90) {
   ConstructTTEViewBaseState(0, panel, offsetLayout, sizeLayout, 5, 5, insetRect, style, styleWord90,
                             0, 1);
@@ -70,17 +70,18 @@ void TDeluxeText::Draw(RECT* rectBuffer) {
 }
 
 // FUNCTION: IMPERIALISM 0x005b62a0
-void TDeluxeText::ApplyTextStyleDescriptorAndMaybeRefresh(TUiTextStyleDescriptor* styleDescriptor,
-                                                          int refreshFlag) {
-  textColor98 = styleDescriptor->textColor;
-  SetTextStyleAndMaybeRefresh(styleDescriptor, static_cast<char>(refreshFlag));
+void TDeluxeText::SetTextStyle(const TextStyle& style, unsigned char refreshNow) {
+  textColor98 = style.textColor;
+  SetOneStyle(0, GetNumberOfChars(), 0xf, style, refreshNow);
 }
 
 // FUNCTION: IMPERIALISM 0x005b62e0
-void TDeluxeText::BuildAndApplyTextStyleDescriptor(int unused, int pointSize, int themeCode) {
-  TUiTextStyleDescriptor styleDescriptor = {0, 0, 0, 0};
-  BuildUiTextStyleDescriptor(&styleDescriptor, unused, pointSize, themeCode);
-  ApplyTextStyleDescriptorAndMaybeRefresh(&styleDescriptor, 1);
+void TDeluxeText::SetTextStyle(int fontStyleFlags, int pointSize, int themeCode) {
+  TextStyle style;
+  style.textColor = 0;
+  BuildUiTextStyleDescriptor(&style, fontStyleFlags, pointSize, themeCode);
+  textColor98 = style.textColor;
+  SetOneStyle(0, GetNumberOfChars(), 0xf, style, 1);
 }
 
 // FUNCTION: IMPERIALISM 0x005b6360
@@ -91,20 +92,24 @@ void TDeluxeText::SetTextEntryFromChars(const char* textChars, int textLength) {
 }
 
 // FUNCTION: IMPERIALISM 0x005b63e0
-int TDeluxeText::RecenterTextFromMeasuredWidthAndMaybeInvalidate(char refreshNow) {
+short TDeluxeText::CenterVertically(unsigned char refreshNow) {
   contentInsets68.bottom = 0;
   contentInsets68.top = 0;
   int measuredWidth = MeasureCurrentTextWidthInLayoutRect();
-  int inset = 0;
+  short inset;
   if (measuredWidth < frameHeight38) {
-    inset = (frameHeight38 - measuredWidth) / 2;
+    inset = static_cast<short>((frameHeight38 - measuredWidth) / 2);
+  } else {
+    inset = 0;
   }
-  contentInsets68.bottom = static_cast<short>(inset);
-  contentInsets68.top = static_cast<short>(inset);
+  contentInsets68.bottom = inset;
+  contentInsets68.top = inset;
+  CRect textRect(0, inset, frameWidth34, frameHeight38 - inset);
+  StuffTERects(textRect);
   if (refreshNow != 0) {
     RefreshControl();
   }
-  return measuredWidth;
+  return static_cast<short>(measuredWidth);
 }
 
 // FUNCTION: IMPERIALISM 0x005b6480

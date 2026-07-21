@@ -40,7 +40,7 @@ void TMapKey::DoPostCreate(int arg) {
 
   int shadowStyleFlags = 0;
   MapUiThemeCodeToStyleFlags(0x2b68, &shadowStyleFlags);
-  TUiTextStyleDescriptor style;
+  TextStyle style;
   InitializeUiTextStyleDescriptor(&style, 0, 0xa, 0x2b6b, 3);
 
   static const short kLegendX[7] = {0x171, 0x171, 0x171, 0x171, 0x1de, 0x1de, 0x1de};
@@ -69,10 +69,10 @@ void TMapKey::DoPostCreate(int arg) {
     legendText->UpdateTextEntrySharedStringAndMaybeNotify(&label, 0);
     legendText->SetEnabled(0, 0);
     legendText->controlTag = 0x6e616d30 + i; // 'nam0'-'nam6'
-    legendText->RecenterTextFromMeasuredWidthAndMaybeInvalidate(0);
+    legendText->CenterVertically(0);
     legendText->shadowTextColor9C = shadowStyleFlags;
     legendText->dropShadowEnabledA0 = true;
-    legendText->ApplyTextStyleDescriptorAndMaybeRefresh(&style, 1);
+    legendText->SetTextStyle(style, 1);
   }
 }
 

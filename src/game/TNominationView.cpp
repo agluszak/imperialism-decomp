@@ -32,19 +32,19 @@ TNominationView::TNominationView() {}
 void TNominationView::DoPostCreate(int arg) {
   (void)arg;
   CString text;
-  TUiTextStyleDescriptor style;
+  TextStyle style;
 
   TStaticText* countryControl = static_cast<TStaticText*>(ResolveControlByTag(kControlTagCoun));
   countryControl->AssertValid();
   countryControl->SetTextFromStringResource(0x2733, 0x5f, 1);
   BuildUiTextStyleDescriptor(&style, 0, 0x12, 0x2b6c);
-  countryControl->SetTextStyleAndMaybeRefresh(&style, 1);
+  countryControl->InstallTextStyle(style, 1);
 
   TStaticText* titleControl = static_cast<TStaticText*>(ResolveControlByTag(kControlTagTitl));
   titleControl->AssertValid();
   titleControl->SetTextFromStringResource(0x2733, 0x60, 1);
   BuildUiTextStyleDescriptor(&style, 0, 0xe, 0x2b6c);
-  titleControl->SetTextStyleAndMaybeRefresh(&style, 1);
+  titleControl->InstallTextStyle(style, 1);
 
   TStaticText* candidate0Control = static_cast<TStaticText*>(ResolveControlByTag(kControlTagCan0));
   candidate0Control->AssertValid();
@@ -52,7 +52,7 @@ void TNominationView::DoPostCreate(int arg) {
       g_apNationStates[g_pDiplomacyTurnStateManager->selectedSourceNationSlot784];
   nation0->FormatOverlayTerrainLabelText(&text);
   candidate0Control->SetTextAndMaybeRefresh(&text, 1);
-  candidate0Control->SetTextStyleAndMaybeRefresh(&style, 1);
+  candidate0Control->InstallTextStyle(style, 1);
 
   TStaticText* candidate1Control = static_cast<TStaticText*>(ResolveControlByTag(kControlTagCan1));
   candidate1Control->AssertValid();
@@ -60,7 +60,7 @@ void TNominationView::DoPostCreate(int arg) {
       g_apNationStates[g_pDiplomacyTurnStateManager->selectedTargetNationSlot786];
   nation1->FormatOverlayTerrainLabelText(&text);
   candidate1Control->SetTextAndMaybeRefresh(&text, 1);
-  candidate1Control->SetTextStyleAndMaybeRefresh(&style, 1);
+  candidate1Control->InstallTextStyle(style, 1);
 }
 
 // FUNCTION: IMPERIALISM 0x004fb990

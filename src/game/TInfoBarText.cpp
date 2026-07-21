@@ -30,7 +30,7 @@ void TInfoBarText::SetTextAndLayoutRect(CString text, RECT* layoutRect) {
     layoutRectA4.right = layoutRect->right;
     layoutRectA4.bottom = layoutRect->bottom;
     UpdateTextEntrySharedString(&text);
-    RecenterTextFromMeasuredWidthAndMaybeInvalidate(1);
+    CenterVertically(1);
   }
 }
 
@@ -43,7 +43,7 @@ void TInfoBarText::ClearTextAndLayoutRect(int) {
   layoutRectA4.right = 0;
   layoutRectA4.bottom = 0;
   UpdateTextEntrySharedString(&text);
-  RecenterTextFromMeasuredWidthAndMaybeInvalidate(1);
+  CenterVertically(1);
 }
 
 // FUNCTION: IMPERIALISM 0x005b6810
@@ -53,9 +53,9 @@ void TInfoBarText::OrphanCallChain_C1_I05_005b6810() {
 
 // FUNCTION: IMPERIALISM 0x005b6840
 void TInfoBarText::InitializeMapHintTextStyleAndThemeFlags(int stylePrimary, int styleSecondary) {
-  TUiTextStyleDescriptor styleDescriptor = {0, 0, 0, 0};
+  TextStyle styleDescriptor = {0, 0, 0, 0};
   BuildUiTextStyleDescriptor(&styleDescriptor, 0, 0xc, styleSecondary);
-  ApplyTextStyleDescriptorAndMaybeRefresh(&styleDescriptor, 0);
+  SetTextStyle(styleDescriptor, 0);
   SetTextAlignmentAndMaybeRefresh(static_cast<short>(-1), 0);
   layoutRectA4.left = 0;
   layoutRectA4.top = 0;

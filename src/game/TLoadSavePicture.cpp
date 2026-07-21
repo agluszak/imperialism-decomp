@@ -116,14 +116,14 @@ void TLoadSavePicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEve
           TControl* oldSlotControl =
               static_cast<TControl*>(ResolveControlByTag(0x736c7430u + selectedSlot92));
           oldSlotControl->AssertValid();
-          oldSlotControl->SetTextStyleAndMaybeRefresh(&styleAt9e, 0);
+          oldSlotControl->InstallTextStyle(styleAt9e, 0);
           CRect oldBounds;
           oldSlotControl->QueryBounds(&oldBounds);
           InvalidateCityDialogRectRegion(&oldBounds, 1);
         }
         // sourceHandler is the newly-clicked slot control itself.
         TControl* newSlotControl = static_cast<TControl*>(sourceHandler);
-        newSlotControl->SetTextStyleAndMaybeRefresh(&styleAt94, 0);
+        newSlotControl->InstallTextStyle(styleAt94, 0);
         CRect newBounds;
         newSlotControl->QueryBounds(&newBounds);
         InvalidateCityDialogRectRegion(&newBounds, 1);
@@ -145,7 +145,7 @@ void TLoadSavePicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEve
         editControl->maxCharacterCount = 0x1f;
         editControl->SetEnable(1);
 
-        editControl->SetTextStyleAndMaybeRefresh(&styleAt9e, 0);
+        editControl->InstallTextStyle(styleAt9e, 0);
         editControl->InitDialogWindowAndSyncTitleIfChanged(&slotText, 0);
         editControl->PrepareForDrawing();
         editControl->BecomeTarget();
@@ -164,7 +164,7 @@ void TLoadSavePicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEve
         TControl* oldSlotControl =
             static_cast<TControl*>(ResolveControlByTag(0x736c7430u + selectedSlot92));
         oldSlotControl->AssertValid();
-        oldSlotControl->SetTextStyleAndMaybeRefresh(&styleAt9e, 0);
+        oldSlotControl->InstallTextStyle(styleAt9e, 0);
         CRect oldBounds;
         oldSlotControl->QueryBounds(&oldBounds);
         InvalidateCityDialogRectRegion(&oldBounds, 1);

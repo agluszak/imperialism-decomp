@@ -19,8 +19,8 @@ TTEView::TTEView() {}
 // FUNCTION: IMPERIALISM 0x00486050
 void TTEView::ConstructTTEViewBaseState(int unusedA, TView* panel, int* offsetLayout,
                                         int* sizeLayout, int layoutParam5, int layoutParam6,
-                                        RECT* insetRect, TUiTextStyleDescriptor* style,
-                                        short styleWord90, int unusedB, int unusedC) {
+                                        RECT* insetRect, TextStyle* style, short styleWord90,
+                                        int unusedB, int unusedC) {
   (void)unusedA;
   (void)unusedB;
   (void)unusedC;
@@ -46,4 +46,23 @@ int TTEView::MeasureCurrentTextWidthInLayoutRect() {
   dc.DrawText(*text, text->GetLength(), &bounds, 0xd10);
   dc.SelectObject(oldFont);
   return bounds.right - bounds.left;
+}
+
+// FUNCTION: IMPERIALISM 0x004862b0
+short TTEView::GetNumberOfChars() {
+  return 1;
+}
+
+// FUNCTION: IMPERIALISM 0x004862d0
+void TTEView::SetOneStyle(short start, short end, short styleMask, const TextStyle& style,
+                          unsigned char refreshNow) {
+  (void)start;
+  (void)end;
+  (void)styleMask;
+  InstallTextStyle(style, refreshNow);
+}
+
+// FUNCTION: IMPERIALISM 0x00486300
+void TTEView::StuffTERects(const CRect& textRect) {
+  (void)textRect;
 }

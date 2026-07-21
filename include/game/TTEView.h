@@ -116,7 +116,7 @@ public:
   // slot 0x6a AssertCityProductionGlobalStateInitialized inherited unchanged (0x429470)
   // slot 0x6b NoOpUiViewSlotHandler inherited unchanged (0x48e9c0)
   // slot 0x6c NoOpControlAction inherited unchanged (0x48e9e0)
-  // slot 0x6d SetTextStyleAndMaybeRefresh inherited unchanged (0x48e7d0)
+  // slot 0x6d InstallTextStyle inherited unchanged (0x48e7d0)
   // slot 0x6e SetTextColorAndMaybeRefresh inherited unchanged (0x48e7a0)
   // slot 0x6f LogUnhandledDialogMethodAndReturnFalse inherited unchanged (0x4294a0)
   // slot 0x70 HiliteState inherited unchanged (0x48e810)
@@ -125,6 +125,10 @@ public:
   // slot 0x73 SetTextFromStringResource inherited unchanged (0x48fed0)
   // slot 0x74 CopyTextTo inherited unchanged (0x4294d0)
   // slot 0x75 DrawTextAligned inherited unchanged (0x4900a0)
+  short GetNumberOfChars();
+  void SetOneStyle(short start, short end, short styleMask, const TextStyle& style,
+                   unsigned char refreshNow);
+  void StuffTERects(const CRect& textRect);
   int MeasureCurrentTextWidthInLayoutRect();
   // Mac-style second-phase init (not the ctor — no vtable store): runs the TStaticText
   // base init, copies the 0x68-0x74 inset rect and the packed text-style descriptor,
@@ -133,8 +137,7 @@ public:
   // 0x486050, __thiscall, RET 0x2c.
   void ConstructTTEViewBaseState(int unusedA, TView* panel, int* offsetLayout, int* sizeLayout,
                                  int layoutParam5, int layoutParam6, RECT* insetRect,
-                                 TUiTextStyleDescriptor* style, short styleWord90, int unusedB,
-                                 int unusedC);
+                                 TextStyle* style, short styleWord90, int unusedB, int unusedC);
 
   // Original object size is 0x98 (CRuntimeClass m_nObjectSize). These three
   // members previously sat at the head of TDeluxeText, but the RTTI sizes prove

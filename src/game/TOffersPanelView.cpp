@@ -36,22 +36,22 @@ void TOffersPanelView::DoPostCreate(int arg) {
   acceptText->textOptionFlags = 0x1388;
   rejectText->textOptionFlags = 0x1388;
 
-  TUiTextStyleDescriptor sharedStyle;
+  TextStyle sharedStyle;
   BuildUiTextStyleDescriptor(&sharedStyle, 0, 0, 0x2b68);
 
   // 'prop'/'text' are TDeluxeText controls (see the TDeluxeText class-recovery note in
   // TSpecialQuitPicture.cpp): their vtable slots 0x1e4/0x1c4 match
-  // ApplyTextStyleDescriptorAndMaybeRefresh/SetTextAlignmentAndMaybeRefresh exactly.
+  // SetTextStyle/SetTextAlignmentAndMaybeRefresh exactly.
   TDeluxeText* propControl = static_cast<TDeluxeText*>(ResolveControlByTag(kControlTagProp));
   propControl->AssertValid();
-  propControl->ApplyTextStyleDescriptorAndMaybeRefresh(&sharedStyle, 0);
+  propControl->SetTextStyle(sharedStyle, 0);
   propControl->shadowTextColor9C = sharedStyle.textColor;
   propControl->dropShadowEnabledA0 = true;
   propControl->SetTextAlignmentAndMaybeRefresh(1, 0);
 
   TDeluxeText* textControl = static_cast<TDeluxeText*>(ResolveControlByTag(kControlTagText));
   textControl->AssertValid();
-  textControl->ApplyTextStyleDescriptorAndMaybeRefresh(&sharedStyle, 0);
+  textControl->SetTextStyle(sharedStyle, 0);
   textControl->shadowTextColor9C = sharedStyle.textColor;
   textControl->dropShadowEnabledA0 = true;
   textControl->SetTextAlignmentAndMaybeRefresh(1, 0);
@@ -218,7 +218,7 @@ char TOffersPanelView::PoseWarOffer(short sourceNationSlot, int minorNationSlot,
   wait->CaptureLayoutF0(g_diplomacyPopupLayoutPosition_006a3020, 0);
   sheet->CaptureLayoutF0(g_diplomacyWarOfferSheetPosition_006a2fe0, 1);
   proposalText->UpdateTextEntrySharedStringAndMaybeNotify(&formattedMessage, 1);
-  proposalText->RecenterTextFromMeasuredWidthAndMaybeInvalidate(1);
+  proposalText->CenterVertically(1);
   RefreshControl();
   ForceRedraw();
 

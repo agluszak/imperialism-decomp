@@ -43,7 +43,7 @@ TQuickDrawClipStateInitializer::TQuickDrawClipStateInitializer() {
 static TQuickDrawClipStateInitializer g_quickDrawClipStateInitializer;
 
 // FUNCTION: IMPERIALISM 0x00494130
-CFont* __cdecl CreateFontFromPresetAndAttachRegionHandle(TUiTextStyleDescriptor* preset) {
+CFont* __cdecl CreateFontFromPresetAndAttachRegionHandle(TextStyle* preset) {
   // Height table for the fixed-size families (indices are size codes 1-0x18); the
   // original builds it on the stack every call.
   int heightBySizeIndex[25];
@@ -105,7 +105,7 @@ CFont* __cdecl CreateFontFromPresetAndAttachRegionHandle(TUiTextStyleDescriptor*
 }
 
 // FUNCTION: IMPERIALISM 0x004944e0
-CFont* __cdecl UpdateGlobalFontPresetAndRebuildCachedFontIfDirty(TUiTextStyleDescriptor* style) {
+CFont* __cdecl UpdateGlobalFontPresetAndRebuildCachedFontIfDirty(TextStyle* style) {
   if (g_QuickDrawCachedFontPreset.fontFamily != style->fontFamily) {
     g_bQuickDrawCachedFontDirty = 1;
     g_QuickDrawCachedFontPreset.fontFamily = style->fontFamily;
@@ -381,9 +381,10 @@ void SetGlobalBlitTransparentColorRaw(int transparentColor) {
 // FUNCTION: IMPERIALISM 0x004950f0
 void SetQuickDrawFillColorFromPaletteIndex(unsigned short paletteIndex) {
   if (g_pQuickDrawMemoryDc != nullptr) {
-    // TODO(class-recovery): resolves the real color from TMacViewMgr's resource-cache
-    // palette handle via GetPaletteEntries; same unresolved thunk as
-    // UpdatePaletteIndexWithDefaultFallback's -1 fallback. Left unmodeled.
+    CDibPal* palette = g_pModuleLibraryCacheState->EnsureDefaultDibPalette();
+    PALETTEENTRY entries[2];
+    palette->GetPaletteEntries(static_cast<short>(paletteIndex), 1, entries);
+    SetQuickDrawFillColor(RGB(entries[0].peRed, entries[0].peGreen, entries[0].peBlue));
     return;
   }
   if (paletteIndex == 0xff) {
@@ -398,12 +399,8 @@ void SetQuickDrawFillColorFromPaletteIndex(unsigned short paletteIndex) {
 // FUNCTION: IMPERIALISM 0x004951e0
 void UpdatePaletteIndexWithDefaultFallback(unsigned int paletteIndex) {
   if ((short)paletteIndex == -1) {
-    // TODO(class-recovery): the original resolves this from the default cached
-    // bitmap resource (id 0x3b6) via a TMacViewMgr-owned refcounted resource cache
-    // (TMacViewMgr::ResolveBmpResourceHandleWithDefault3B6, 0x004995c0) and reads
-    // GetNearestPaletteIndex(cacheNode->hPalette, 0xffffff) from it. That cache's
-    // node layout isn't recovered yet, so the fallback itself isn't modeled. Every
-    // current caller passes a real index (0x10/0x13), never -1.
+    CDibPal* palette = g_pModuleLibraryCacheState->EnsureDefaultDibPalette();
+    paletteIndex = palette->GetNearestPaletteIndex(RGB(0xff, 0xff, 0xff));
   }
   g_uQuickDrawStrokeColor = (paletteIndex & 0xffff) | 0x1000000;
 }

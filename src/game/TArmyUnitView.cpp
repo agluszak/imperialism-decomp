@@ -170,7 +170,7 @@ void TArmyUnitView::HandleCrossUArmyViewsNameCommand() {
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUArmyViews_00695858, 0x204);
   }
 
-  TUiTextStyleDescriptor style;
+  TextStyle style;
   BuildUiTextStyleDescriptor(&style, 0, 0xc, 0x2b6a);
 
   TStaticText* titleControl = static_cast<TStaticText*>(node->ResolveControlByTag(kControlTagTitl));

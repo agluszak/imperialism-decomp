@@ -43,9 +43,9 @@ void TNewspaperView::BuildInterNationEventSummaryRowsForAdvisorDialog(int pageNa
   newsTexStream94 =
       g_pUiViewManager->LoadTableResourceStreamByName(g_pLanguageMgr->GetNewsTexPath());
 
-  TUiTextStyleDescriptor titleStyle;   // (face 0, 12pt)
-  TUiTextStyleDescriptor featureStyle; // (face 1, 14pt)
-  TUiTextStyleDescriptor plainStyle;   // (face 0, 14pt)
+  TextStyle titleStyle;   // (face 0, 12pt)
+  TextStyle featureStyle; // (face 1, 14pt)
+  TextStyle plainStyle;   // (face 0, 14pt)
   char* styleRefBytes = reinterpret_cast<char*>(&titleStyle.textColor);
   styleRefBytes[0] = 0;
   styleRefBytes[1] = 0;
@@ -71,7 +71,7 @@ void TNewspaperView::BuildInterNationEventSummaryRowsForAdvisorDialog(int pageNa
   formatText.Format(g_szDecimalFormat, static_cast<short>(g_pSimMgr->economicTurn / 4) + 0x717);
   panelText = dateText + g_szListSeparator_00695760 + formatText;
   dateControl->SetTextAndMaybeRefresh(&panelText, 1);
-  dateControl->SetTextStyleAndMaybeRefresh(&titleStyle, 1);
+  dateControl->InstallTextStyle(titleStyle, 1);
 
   TStaticText* specialControl =
       static_cast<TStaticText*>(ResolveControlByTag(0x73706563)); // 'spec'
@@ -120,7 +120,7 @@ void TNewspaperView::BuildInterNationEventSummaryRowsForAdvisorDialog(int pageNa
     }
   }
   specialControl->SetTextAndMaybeRefresh(&panelText, 1);
-  specialControl->SetTextStyleAndMaybeRefresh(&titleStyle, 1);
+  specialControl->InstallTextStyle(titleStyle, 1);
 
   for (int col = 0; col < 3; col++) {
     int y = 0x50;
@@ -246,8 +246,7 @@ void TNewspaperView::BuildLocalizedNationListFromBitmaskWithConjunction(CString*
 
 // FUNCTION: IMPERIALISM 0x0055df50
 int TNewspaperView::AppendInterNationEventSummaryTextEntry(int column, int y, int recordId,
-                                                           int recordLength,
-                                                           TUiTextStyleDescriptor* style,
+                                                           int recordLength, TextStyle* style,
                                                            int styleWord, CString* tokens) {
   (void)recordId;
   TDeluxeText* text;

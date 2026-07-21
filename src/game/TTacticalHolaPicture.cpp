@@ -59,8 +59,8 @@ void TTacticalHolaPicture::ConfigureBattleIntroCoatsAndSiteLabels(int nationA, i
   TDeluxeText* infoControl = static_cast<TDeluxeText*>(ResolveControlByTag(kControlTagInfo));
   infoControl->AssertValid();
   infoControl->UpdateTextEntrySharedString(&siteLabelText);
-  infoControl->BuildAndApplyTextStyleDescriptor(0, 0xc, 0x2b6a);
-  infoControl->RecenterTextFromMeasuredWidthAndMaybeInvalidate(1);
+  infoControl->SetTextStyle(0, 0xc, 0x2b6a);
+  infoControl->CenterVertically(1);
 
   TMapPreviewView* previewMap =
       static_cast<TMapPreviewView*>(ResolveControlByTag(kControlTagPreviewMap));

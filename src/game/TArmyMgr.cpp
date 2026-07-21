@@ -1738,16 +1738,16 @@ bool TArmyMgr::BuildMapOrderContextSummaryStringForNation(short cityRecordIndex,
 
 // FUNCTION: IMPERIALISM 0x004a6680
 void TArmyMgr::BuildMapHintOverlayTextAndDispatchUiMessages(short cityRecordIndex) {
-  TUiTextStyleDescriptor styleA;
+  TextStyle styleA;
   InitializeUiTextStyleDescriptor(&styleA, 0, 0xe, 0x2b67, 1);
 
-  TUiTextStyleDescriptor styleB;
+  TextStyle styleB;
   BuildUiTextStyleDescriptor(&styleB, 0, 0xc, 0x2b67);
 
-  TUiTextStyleDescriptor styleC;
+  TextStyle styleC;
   InitializeUiTextStyleDescriptor(&styleC, 0, 0xa, 0x2b67, 3);
 
-  TUiTextStyleDescriptor styleD;
+  TextStyle styleD;
   InitializeUiTextStyleDescriptor(&styleD, 0, 0xa, 0x2b67, 3);
 
   CString defenderSummary;

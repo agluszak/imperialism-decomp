@@ -5,20 +5,19 @@
 class TDropShadowText;
 class TStaticText;
 class TView;
-struct TUiTextStyleDescriptor;
+struct TextStyle;
 
 // --- Text-style / control-theme helpers (implemented in ui_text_label_helpers.cpp) ---
 // Relocated here from quickdraw_rendering.h: these operate on the packed
-// TUiTextStyleDescriptor text-style record and the 0x5c40xx control-theme path, not on
+// TextStyle text-style record and the 0x5c40xx control-theme path, not on
 // the QuickDraw surface/font engine. (The font-engine consumers
 // CreateFontFromPresetAndAttachRegionHandle / UpdateGlobalFontPresetAndRebuildCachedFontIfDirty
 // stay in quickdraw_rendering.h with their own forward-decl.)
 
 void MapUiThemeCodeToStyleFlags(short themeCode, int* outStyleFlags);
-void BuildUiTextStyleDescriptor(TUiTextStyleDescriptor* styleDescriptor, int unused, int arg2,
-                                int themeCode);
-void InitializeUiTextStyleDescriptor(TUiTextStyleDescriptor* styleDescriptor, short face,
-                                     short pointSize, int themeCode, short font);
+void BuildUiTextStyleDescriptor(TextStyle* styleDescriptor, int unused, int arg2, int themeCode);
+void InitializeUiTextStyleDescriptor(TextStyle* styleDescriptor, short face, short pointSize,
+                                     int themeCode, short font);
 
 // 0x5c4020 -- asserts the text control, applies a theme style descriptor built from
 // themeCode (BuildUiTextStyleDescriptor inline-expanded in the original), sets the

@@ -57,7 +57,7 @@ void TTechItemView::ConstructTTechItemViewBaseState(TView* panel, int* offsetLay
   int shadowStyleFlags = 0;
   MapUiThemeCodeToStyleFlags(0x2b6a, &titleStyleFlags);
   MapUiThemeCodeToStyleFlags(0x2b68, &shadowStyleFlags);
-  TUiTextStyleDescriptor textStyle;
+  TextStyle textStyle;
   BuildUiTextStyleDescriptor(&textStyle, 0, 0xc, 0x2b6a);
   CRect zeroRect(0, 0, 0, 0);
 
@@ -76,7 +76,7 @@ void TTechItemView::ConstructTTechItemViewBaseState(TView* panel, int* offsetLay
                     0x717 + g_pCityOrderCapabilityState->prioritySlots04[techId] / 4);
     labelText = techName + "\n" + yearText;
     titleControl->UpdateTextEntrySharedString(&labelText);
-    titleControl->RecenterTextFromMeasuredWidthAndMaybeInvalidate(0);
+    titleControl->CenterVertically(0);
   }
 
   // Description text.
@@ -90,7 +90,7 @@ void TTechItemView::ConstructTTechItemViewBaseState(TView* panel, int* offsetLay
     descText->dropShadowEnabledA0 = true;
     g_pSimMgr->GetString(0x274e, static_cast<short>(techId - 1), &labelText);
     descText->UpdateTextEntrySharedString(&labelText);
-    descText->RecenterTextFromMeasuredWidthAndMaybeInvalidate(0);
+    descText->CenterVertically(0);
   }
 
   // Status area: completion date, buy button, or missing-prerequisites line.
@@ -110,7 +110,7 @@ void TTechItemView::ConstructTTechItemViewBaseState(TView* panel, int* offsetLay
     scanBracketExpressions(g_pSimMgr, &assembledText, static_cast<LPCSTR>(templateText),
                            static_cast<LPCSTR>(yearText));
     dateControl->UpdateTextEntrySharedString(&assembledText);
-    dateControl->RecenterTextFromMeasuredWidthAndMaybeInvalidate(0);
+    dateControl->CenterVertically(0);
   } else if (techMgr->AreTechItemPrerequisitePairCompleted(techId, nationSlot)) {
     short labelIndex;
     if (techMgr->orderCapRows277[nationSlot].techStatusByTechId[techId] == 1) {
@@ -153,7 +153,7 @@ void TTechItemView::ConstructTTechItemViewBaseState(TView* panel, int* offsetLay
                              static_cast<LPCSTR>(labelText), static_cast<LPCSTR>(techName));
     }
     prereqControl->UpdateTextEntrySharedString(&assembledText);
-    prereqControl->RecenterTextFromMeasuredWidthAndMaybeInvalidate(0);
+    prereqControl->CenterVertically(0);
   }
   ApplySharedStringToGlobalControlTag(CString(g_szEmptyString), controlTag);
 }

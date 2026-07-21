@@ -115,7 +115,7 @@ public:
   // slot 0x6a AssertCityProductionGlobalStateInitialized inherited unchanged (0x429470)
   // slot 0x6b NoOpUiViewSlotHandler inherited unchanged (0x48e9c0)
   // slot 0x6c NoOpControlAction inherited unchanged (0x48e9e0)
-  // slot 0x6d SetTextStyleAndMaybeRefresh inherited unchanged (0x48e7d0)
+  // slot 0x6d InstallTextStyle inherited unchanged (0x48e7d0)
   // slot 0x6e SetTextColorAndMaybeRefresh inherited unchanged (0x48e7a0)
   // slot 0x6f LogUnhandledDialogMethodAndReturnFalse inherited unchanged (0x4294a0)
   // slot 0x70 HiliteState inherited unchanged (0x48e810)
@@ -130,12 +130,14 @@ public:
   // the old InitializeTechHistoryViewTitleAndMapKeyControls name was junk and the
   // declaration had dropped the argument).
   virtual void SetTextFromUiStringResourceId(short stringId); // slot 0x77 0x5b60d0
-  virtual void BuildAndApplyTextStyleDescriptor(int unused, int pointSize,
-                                                int themeCode); // slot 0x78 0x5b62e0
-  // styleDescriptor points at the packed text-style record built by BuildUiTextStyleDescriptor;
-  // its styleRef6 is also cached in the deluxe-text slice at +0x98.
-  virtual void ApplyTextStyleDescriptorAndMaybeRefresh(TUiTextStyleDescriptor* styleDescriptor,
-                                                       int refreshFlag); // slot 0x79 0x5b62a0
+  virtual void SetTextStyle(const TextStyle& style,
+                            unsigned char refreshNow); // slot 0x79 0x5b62a0
+  // VC5 emits an overload set's virtual entries in reverse declaration order, so this
+  // declaration follows the reference overload while occupying the preceding slot.
+  // The Mac build used shorts, but the Windows body forwards all three full dword
+  // arguments without sign extension; keep the verified Windows ABI here.
+  virtual void SetTextStyle(int fontStyleFlags, int pointSize,
+                            int themeCode); // slot 0x78 0x5b62e0
   virtual void BuildCityViewProductionControls_Impl(short codeGroup,
                                                     short stringIndex); // slot 0x7a 0x5b64e0
   virtual void UpdateTextEntrySharedStringAndMaybeNotify(CString* text,
@@ -145,12 +147,8 @@ public:
   // unused by the body (ret 8 proves the two-arg shape; renamed from the provisional
   // Helper_Uses_ConstructSharedStringFromCStrOrResourceId_At005b6360).
   virtual void SetTextEntryFromChars(const char* textChars,
-                                     int textLength); // slot 0x7d 0x5b6360
-  // Real return is undefined4 (packs two shorts via CONCAT22) with an
-  // unresolved measure-width helper (func_0x004065e1) feeding it — kept as
-  // `undefined` rather than guessing a real return type.
-  virtual int
-  RecenterTextFromMeasuredWidthAndMaybeInvalidate(char refreshNow); // slot 0x7e 0x5b63e0
+                                     int textLength);       // slot 0x7d 0x5b6360
+  virtual short CenterVertically(unsigned char refreshNow); // slot 0x7e 0x5b63e0
   // field94/field95/padding96 moved to the base TTEView (its RTTI object size is
   // 0x98; TDeluxeText's own fields start at 0x98 — see TTEView.h).
   int textColor98;            // +0x98
@@ -165,6 +163,5 @@ public:
   // textColor98, and clears the selected flag via the slot-0x76 virtual.
   // 0x5b5ff0, __thiscall, RET 0x18.
   void ConstructTDeluxeTextBaseState(TView* panel, int* offsetLayout, int* sizeLayout,
-                                     RECT* insetRect, TUiTextStyleDescriptor* style,
-                                     short styleWord90);
+                                     RECT* insetRect, TextStyle* style, short styleWord90);
 };

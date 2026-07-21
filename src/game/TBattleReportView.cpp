@@ -49,7 +49,7 @@ void TBattleReportView::DoPostCreate(int arg) {
   // 14-byte style buffer: the 10-byte descriptor plus 4 explicitly zeroed tail bytes
   // (the original zeroes them once before the first Build call).
   struct {
-    TUiTextStyleDescriptor desc;
+    TextStyle desc;
     unsigned char tail[4];
   } style;
   style.tail[0] = 0;
@@ -64,28 +64,28 @@ void TBattleReportView::DoPostCreate(int arg) {
   BuildUiTextStyleDescriptor(&style.desc, 0, 0xe, 0x2b67);
   TControl* control = static_cast<TControl*>(ResolveControlByTag(0x72657375)); // 'user'
   control->AssertValid();
-  control->SetTextStyleAndMaybeRefresh(&style.desc, 0);
+  control->InstallTextStyle(style.desc, 0);
 
   BuildUiTextStyleDescriptor(&style.desc, 2, 0xe, 0x2b67);
   control = static_cast<TControl*>(ResolveControlByTag(0x6c6f6361)); // 'acol'
   control->AssertValid();
-  control->SetTextStyleAndMaybeRefresh(&style.desc, 0);
+  control->InstallTextStyle(style.desc, 0);
 
   BuildUiTextStyleDescriptor(&style.desc, 0, 0xc, 0x2b67);
   control = static_cast<TControl*>(ResolveControlByTag(0x6661646d)); // 'mdaf'
   control->AssertValid();
-  control->SetTextStyleAndMaybeRefresh(&style.desc, 0);
+  control->InstallTextStyle(style.desc, 0);
   control = static_cast<TControl*>(ResolveControlByTag(0x6561646d)); // 'mdae'
   control->AssertValid();
-  control->SetTextStyleAndMaybeRefresh(&style.desc, 0);
+  control->InstallTextStyle(style.desc, 0);
 
   BuildUiTextStyleDescriptor(&style.desc, 0, 0xa, 0x2b67);
   control = static_cast<TControl*>(ResolveControlByTag(0x66736870)); // 'phsf'
   control->AssertValid();
-  control->SetTextStyleAndMaybeRefresh(&style.desc, 0);
+  control->InstallTextStyle(style.desc, 0);
   control = static_cast<TControl*>(ResolveControlByTag(0x65736870)); // 'phse'
   control->AssertValid();
-  control->SetTextStyleAndMaybeRefresh(&style.desc, 0);
+  control->InstallTextStyle(style.desc, 0);
 
   int selectedOrdinal = -1;
   int remaining = g_pMapContextActionManager->mapContextActionRecordList04->GetSize();
@@ -222,7 +222,7 @@ void TBattleReportView::DoPostCreate(int arg) {
   TInfoBarText* cursorPanel = static_cast<TInfoBarText*>(ResolveControlByTag(0x63757273)); // 'surc'
   g_pCursorControlPanel = cursorPanel;
   cursorPanel->AssertValid();
-  g_pCursorControlPanel->BuildAndApplyTextStyleDescriptor(0, 0xe, 0x2b6b);
+  g_pCursorControlPanel->SetTextStyle(0, 0xe, 0x2b6b);
   g_pCursorControlPanel->SetTextAlignmentAndMaybeRefresh(1, 1);
   g_pCursorControlPanel->InitializeMapHintTextStyleAndThemeFlags(0x2b67, 0x2b6c);
 

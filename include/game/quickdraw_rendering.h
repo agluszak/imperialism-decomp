@@ -27,27 +27,27 @@ QuickDrawCursorHandle __cdecl GetQuickDrawCursor(short cursorId);
 void SetQuickDrawTextOriginWithContextOffset(short x, short y);
 void DrawCenteredGuideLineOnMapDc(short x, short y);
 
-struct TUiTextStyleDescriptor;
+struct TextStyle;
 
 // Build a CFont from a packed text-style preset (mode=font family 0-4, flag2=bold/
 // italic/underline bits, pointSize=size index): fixed-size families 2/3 map the size
 // index through a height table, scalable families compute (index*10+3)/8; the face
 // name comes from g_apszQuickDrawFontFaceNames. 0x00494130
-CFont* __cdecl CreateFontFromPresetAndAttachRegionHandle(TUiTextStyleDescriptor* preset);
+CFont* __cdecl CreateFontFromPresetAndAttachRegionHandle(TextStyle* preset);
 
 // Copy the preset into the global font-preset cache, rebuild the cached CFont if any
 // field changed (or none exists yet), and return it. 0x004944e0
-CFont* __cdecl UpdateGlobalFontPresetAndRebuildCachedFontIfDirty(TUiTextStyleDescriptor* style);
+CFont* __cdecl UpdateGlobalFontPresetAndRebuildCachedFontIfDirty(TextStyle* style);
 
-// The TUiTextStyleDescriptor text-style / control-theme helpers (BuildUiTextStyleDescriptor,
+// The TextStyle text-style / control-theme helpers (BuildUiTextStyleDescriptor,
 // InitializeUiTextStyleDescriptor, ApplyControlThemeStyleAndOptionalCaption,
 // ConfigureUiControlStyleValueAndCaptionFromStringResource,
 // ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor, InitializeUiTextStyleDescriptorAndApplyQuickDraw,
 // MapUiThemeCodeToStyleFlags) live in game/ui_text_label_helpers_decls.h -- they belong to the
 // ui_text_label_helpers.cpp unit, not the QuickDraw surface/font engine.
 
-// If paletteIndex is the sentinel -1 (as a short), resolves it from the default
-// cached bitmap resource's palette instead. 0x004951e0
+// If paletteIndex is the sentinel -1 (as a short), resolves the nearest white entry
+// from the default cached bitmap resource's palette instead. 0x004951e0
 void UpdatePaletteIndexWithDefaultFallback(unsigned int paletteIndex);
 
 // Cached-style text measurement leaf (0x494e00): rebuilds the cached measure-font from
@@ -80,11 +80,9 @@ void SetQuickDrawTextFont(short value); // 0x00495230 (txFont)
 void SetQuickDrawTextFace(short value); // 0x00495290 (txFace)
 void SetQuickDrawTextSize(short value); // 0x00495260 (txSize)
 
-// Sets the QuickDraw fill color from a palette-table index (0xff = black, <1 = white
-// fallback, else index | 0x1000000). When a QuickDraw memory DC is active, the real
-// body instead resolves the color from TMacViewMgr's resource-cache palette handle
-// (same unrecovered-class gap as UpdatePaletteIndexWithDefaultFallback's -1 branch);
-// left unmodeled. 0x004950f0
+// Sets the QuickDraw fill color from a palette-table index. When a memory DC is active,
+// resolves the palette entry to an RGB color; otherwise 0xff = black, <1 = white, and
+// positive indices retain the PALETTEINDEX marker. 0x004950f0
 void SetQuickDrawFillColorFromPaletteIndex(unsigned short paletteIndex);
 
 // Windows no-op for the classic QuickDraw HiliteColor hook. RGBQUAD is the VC5-era

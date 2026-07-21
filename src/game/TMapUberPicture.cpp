@@ -497,10 +497,10 @@ void TMapUberPicture::CycleMapInteractionSelectionAfterHandledClick() {
 
 // FUNCTION: IMPERIALISM 0x00597f80
 void TMapUberPicture::InspectTaskForceDialog(TTaskForce* taskForce) {
-  TUiTextStyleDescriptor titleStyle;
-  TUiTextStyleDescriptor bodyStyle;
-  TUiTextStyleDescriptor detailStyle;
-  TUiTextStyleDescriptor attributionStyle;
+  TextStyle titleStyle;
+  TextStyle bodyStyle;
+  TextStyle detailStyle;
+  TextStyle attributionStyle;
   InitializeUiTextStyleDescriptor(&titleStyle, 0, 14, 0x2b67, 1);
   BuildUiTextStyleDescriptor(&bodyStyle, 0, 12, 0x2b67);
   InitializeUiTextStyleDescriptor(&detailStyle, 0, 10, 0x2b67, 3);
@@ -522,7 +522,7 @@ void TMapUberPicture::InspectTaskForceDialog(TTaskForce* taskForce) {
   control->AssertValid();
   taskForce->contextAnchor->AssignZoneDisplayNameToOutputRef(&text);
   control->SetTextAndMaybeRefresh(&text, 0);
-  control->SetTextStyleAndMaybeRefresh(&bodyStyle, 0);
+  control->InstallTextStyle(bodyStyle, 0);
 
   control = static_cast<TStaticText*>(dialog->ResolveControlByTag(0x6164616d)); // adam
   control->AssertValid();
@@ -531,13 +531,13 @@ void TMapUberPicture::InspectTaskForceDialog(TTaskForce* taskForce) {
   scanBracketExpressions(g_pSimMgr, &text, static_cast<LPCSTR>(reportTemplate),
                          static_cast<LPCSTR>(value));
   control->SetTextAndMaybeRefresh(&text, 0);
-  control->SetTextStyleAndMaybeRefresh(&detailStyle, 0);
+  control->InstallTextStyle(detailStyle, 0);
 
   control = static_cast<TStaticText*>(dialog->ResolveControlByTag(0x77686f6d)); // whom
   control->AssertValid();
   taskForce->GetCompositionDescription(&text);
   control->SetTextAndMaybeRefresh(&text, 0);
-  control->SetTextStyleAndMaybeRefresh(&detailStyle, 0);
+  control->InstallTextStyle(detailStyle, 0);
 
   control = static_cast<TStaticText*>(dialog->ResolveControlByTag(0x6f726473)); // ords
   control->AssertValid();
@@ -568,37 +568,37 @@ void TMapUberPicture::InspectTaskForceDialog(TTaskForce* taskForce) {
     break;
   }
   control->SetTextAndMaybeRefresh(&text, 0);
-  control->SetTextStyleAndMaybeRefresh(&detailStyle, 0);
+  control->InstallTextStyle(detailStyle, 0);
 
   control = static_cast<TStaticText*>(dialog->ResolveControlByTag(0x6167726f)); // agro
   control->AssertValid();
   g_pSimMgr->GetString(0x2762, static_cast<short>(taskForce->order_type + 4), &text);
   control->SetTextAndMaybeRefresh(&text, 0);
-  control->SetTextStyleAndMaybeRefresh(&attributionStyle, 0);
+  control->InstallTextStyle(attributionStyle, 0);
 
   control = static_cast<TStaticText*>(dialog->ResolveControlByTag(0x7469746c)); // titl
   control->AssertValid();
   g_pSimMgr->GetString(0x2762, 7, &text);
   control->SetTextAndMaybeRefresh(&text, 0);
-  control->SetTextStyleAndMaybeRefresh(&titleStyle, 0);
+  control->InstallTextStyle(titleStyle, 0);
 
   control = static_cast<TStaticText*>(dialog->ResolveControlByTag(0x6c616231)); // lab1
   control->AssertValid();
   g_pSimMgr->GetString(0x2762, 8, &text);
   control->SetTextAndMaybeRefresh(&text, 0);
-  control->SetTextStyleAndMaybeRefresh(&detailStyle, 0);
+  control->InstallTextStyle(detailStyle, 0);
 
   control = static_cast<TStaticText*>(dialog->ResolveControlByTag(0x6c616232)); // lab2
   control->AssertValid();
   g_pSimMgr->GetString(0x2762, 9, &text);
   control->SetTextAndMaybeRefresh(&text, 0);
-  control->SetTextStyleAndMaybeRefresh(&bodyStyle, 0);
+  control->InstallTextStyle(bodyStyle, 0);
 
   control = static_cast<TStaticText*>(dialog->ResolveControlByTag(0x6c616233)); // lab3
   control->AssertValid();
   g_pSimMgr->GetString(0x2762, 0xa, &text);
   control->SetTextAndMaybeRefresh(&text, 0);
-  control->SetTextStyleAndMaybeRefresh(&bodyStyle, 0);
+  control->InstallTextStyle(bodyStyle, 0);
 
   TDialogBehavior* behavior = dialog->GetDialogBehavior();
   if (behavior != 0) {
@@ -775,10 +775,10 @@ void TMapUberPicture::RunNavyPrimaryOrderCreationDialogAndApplyResults(TZone* po
 // FUNCTION: IMPERIALISM 0x00599090
 void TMapUberPicture::NavalIntelligenceDialog(TZone* zone, short nation,
                                               TTaskForce* cachedTaskForce) {
-  TUiTextStyleDescriptor titleStyle;
-  TUiTextStyleDescriptor bodyStyle;
-  TUiTextStyleDescriptor detailStyle;
-  TUiTextStyleDescriptor attributionStyle;
+  TextStyle titleStyle;
+  TextStyle bodyStyle;
+  TextStyle detailStyle;
+  TextStyle attributionStyle;
   InitializeUiTextStyleDescriptor(&titleStyle, 0, 14, 0x2b67, 1);
   BuildUiTextStyleDescriptor(&bodyStyle, 0, 12, 0x2b67);
   InitializeUiTextStyleDescriptor(&detailStyle, 0, 10, 0x2b67, 3);
@@ -799,13 +799,13 @@ void TMapUberPicture::NavalIntelligenceDialog(TZone* zone, short nation,
   control->AssertValid();
   g_apTerrainTypeDescriptorTable[nation]->FormatOverlayTerrainLabelText(&text);
   control->SetTextAndMaybeRefresh(&text, 0);
-  control->SetTextStyleAndMaybeRefresh(&bodyStyle, 0);
+  control->InstallTextStyle(bodyStyle, 0);
 
   control = static_cast<TStaticText*>(dialog->ResolveControlByTag(0x7a6f6e65)); // zone
   control->AssertValid();
   zone->AssignZoneDisplayNameToOutputRef(&text);
   control->SetTextAndMaybeRefresh(&text, 0);
-  control->SetTextStyleAndMaybeRefresh(&bodyStyle, 0);
+  control->InstallTextStyle(bodyStyle, 0);
 
   control = static_cast<TStaticText*>(dialog->ResolveControlByTag(0x6164616d)); // adam
   control->AssertValid();
@@ -817,7 +817,7 @@ void TMapUberPicture::NavalIntelligenceDialog(TZone* zone, short nation,
     zone->BuildNavalIntelligenceSourceDescription(&text, g_pSimMgr->GetActiveNationId());
   }
   control->SetTextAndMaybeRefresh(&text, 0);
-  control->SetTextStyleAndMaybeRefresh(&attributionStyle, 0);
+  control->InstallTextStyle(attributionStyle, 0);
 
   control = static_cast<TStaticText*>(dialog->ResolveControlByTag(0x73686970)); // ship
   control->AssertValid();
@@ -828,38 +828,38 @@ void TMapUberPicture::NavalIntelligenceDialog(TZone* zone, short nation,
     observer->GetFleetReport(&text, zone, nation);
   }
   control->SetTextAndMaybeRefresh(&text, 0);
-  control->SetTextStyleAndMaybeRefresh(&detailStyle, 0);
+  control->InstallTextStyle(detailStyle, 0);
 
   int stringIndex = cachedTaskForce != 0 ? 0x2e : 0x29;
   control = static_cast<TStaticText*>(dialog->ResolveControlByTag(0x7469746c)); // titl
   control->AssertValid();
   g_pSimMgr->GetString(0x2762, static_cast<short>(stringIndex++), &text);
   control->SetTextAndMaybeRefresh(&text, 0);
-  control->SetTextStyleAndMaybeRefresh(&titleStyle, 0);
+  control->InstallTextStyle(titleStyle, 0);
 
   control = static_cast<TStaticText*>(dialog->ResolveControlByTag(0x6c616231)); // lab1
   control->AssertValid();
   g_pSimMgr->GetString(0x2762, static_cast<short>(stringIndex++), &text);
   control->SetTextAndMaybeRefresh(&text, 0);
-  control->SetTextStyleAndMaybeRefresh(&detailStyle, 0);
+  control->InstallTextStyle(detailStyle, 0);
 
   control = static_cast<TStaticText*>(dialog->ResolveControlByTag(0x6c616232)); // lab2
   control->AssertValid();
   g_pSimMgr->GetString(0x2762, static_cast<short>(stringIndex++), &text);
   control->SetTextAndMaybeRefresh(&text, 0);
-  control->SetTextStyleAndMaybeRefresh(&detailStyle, 0);
+  control->InstallTextStyle(detailStyle, 0);
 
   control = static_cast<TStaticText*>(dialog->ResolveControlByTag(0x6c616233)); // lab3
   control->AssertValid();
   g_pSimMgr->GetString(0x2762, static_cast<short>(stringIndex++), &text);
   control->SetTextAndMaybeRefresh(&text, 0);
-  control->SetTextStyleAndMaybeRefresh(&bodyStyle, 0);
+  control->InstallTextStyle(bodyStyle, 0);
 
   control = static_cast<TStaticText*>(dialog->ResolveControlByTag(0x6c616234)); // lab4
   control->AssertValid();
   g_pSimMgr->GetString(0x2762, static_cast<short>(stringIndex), &text);
   control->SetTextAndMaybeRefresh(&text, 0);
-  control->SetTextStyleAndMaybeRefresh(&attributionStyle, 0);
+  control->InstallTextStyle(attributionStyle, 0);
 
   TDialogBehavior* behavior = dialog->GetDialogBehavior();
   if (behavior != 0) {
