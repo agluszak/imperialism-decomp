@@ -1043,7 +1043,7 @@ address|matching|name
 0x4947e0|0.7578947368421053|ScopedMapQuickDrawContext::ScopedMapQuickDrawContext(class TView *, struct tagRECT *)
 0x4948b0|0.7666666666666667|ScopedMapQuickDrawContext::~ScopedMapQuickDrawContext
 0x494950|0.9259259259259259|RenderTacticalBattleSelectionAndUnitOverlayPass_Impl
-0x494a90|0.7023809523809523|DrawTextWithCachedQuickDrawStyleState
+0x494a90|0.7142857142857143|DrawTextWithCachedQuickDrawStyleState
 0x494bf0|0.8947368421052632|RenderTradeScreenCommoditySummaryRows_Impl
 0x494e00|0.2297872340425532|MeasureTextExtentWithCachedQuickDrawStyle
 0x495000|0.5714285714285714|SetQuickDrawFillColor
