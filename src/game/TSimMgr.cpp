@@ -1490,38 +1490,6 @@ void TSimMgr::HandleTurnInstruction_Tech_ApplyTechUnlockAndNotifyNations(void* p
       static_cast<int>(techToken), static_cast<int>(nationToken));
 }
 
-// Reads a big-endian 32-bit owner-nation index plus two big-endian 16-bit tokens (target
-// nation slot, then reset level) and applies them via the owner's diplomacy-level resetter.
-// FUNCTION: IMPERIALISM 0x00582ce0
-void TSimMgr::HandleTurnInstruction_Subs_ApplyNationSubsidyEntry(void* pInstructionRaw) {
-  STurnInstructionCursor* instruction = static_cast<STurnInstructionCursor*>(pInstructionRaw);
-
-  unsigned int ownerToken = *instruction->tokenCursor;
-  instruction->tokenCursor = instruction->tokenCursor + 1;
-  unsigned char* oraw = reinterpret_cast<unsigned char*>(&ownerToken);
-  unsigned char ot = oraw[0];
-  oraw[0] = oraw[3];
-  oraw[3] = ot;
-  ot = oraw[1];
-  oraw[1] = oraw[2];
-  oraw[2] = ot;
-
-  unsigned int targetToken = *instruction->tokenCursor;
-  instruction->tokenCursor = instruction->tokenCursor + 1;
-  unsigned char* traw = reinterpret_cast<unsigned char*>(&targetToken);
-  traw[0] = traw[3];
-  traw[1] = traw[2];
-
-  unsigned int levelToken = *instruction->tokenCursor;
-  instruction->tokenCursor = instruction->tokenCursor + 1;
-  unsigned char* lraw = reinterpret_cast<unsigned char*>(&levelToken);
-  lraw[0] = lraw[3];
-  lraw[1] = lraw[2];
-
-  g_apNationStates[ownerToken]->ResetDiplomacyLevelForNationSlot12(
-      static_cast<NationSlot>(targetToken), static_cast<int>(levelToken));
-}
-
 // Reads two big-endian 16-bit tokens (metric category, then value) and applies the value
 // via the trade manager's per-nation metric cell setter.
 // FUNCTION: IMPERIALISM 0x00582b70
@@ -1590,6 +1558,38 @@ void TSimMgr::HandleTurnInstruction_Emba_SetEmbassyRelationFlags(void* pInstruct
   TDiplomacyMgr* diplomacy = g_pDiplomacyTurnStateManager;
   diplomacy->relationSideEffectMatrix1402[nationA * 0x17 + nationB] = value;
   diplomacy->relationSideEffectMatrix1402[nationB * 0x17 + nationA] = value;
+}
+
+// Reads a big-endian 32-bit owner-nation index plus two big-endian 16-bit tokens (target
+// nation slot, then reset level) and applies them via the owner's diplomacy-level resetter.
+// FUNCTION: IMPERIALISM 0x00582ce0
+void TSimMgr::HandleTurnInstruction_Subs_ApplyNationSubsidyEntry(void* pInstructionRaw) {
+  STurnInstructionCursor* instruction = static_cast<STurnInstructionCursor*>(pInstructionRaw);
+
+  unsigned int ownerToken = *instruction->tokenCursor;
+  instruction->tokenCursor = instruction->tokenCursor + 1;
+  unsigned char* oraw = reinterpret_cast<unsigned char*>(&ownerToken);
+  unsigned char ot = oraw[0];
+  oraw[0] = oraw[3];
+  oraw[3] = ot;
+  ot = oraw[1];
+  oraw[1] = oraw[2];
+  oraw[2] = ot;
+
+  unsigned int targetToken = *instruction->tokenCursor;
+  instruction->tokenCursor = instruction->tokenCursor + 1;
+  unsigned char* traw = reinterpret_cast<unsigned char*>(&targetToken);
+  traw[0] = traw[3];
+  traw[1] = traw[2];
+
+  unsigned int levelToken = *instruction->tokenCursor;
+  instruction->tokenCursor = instruction->tokenCursor + 1;
+  unsigned char* lraw = reinterpret_cast<unsigned char*>(&levelToken);
+  lraw[0] = lraw[3];
+  lraw[1] = lraw[2];
+
+  g_apNationStates[ownerToken]->ResetDiplomacyLevelForNationSlot12(
+      static_cast<NationSlot>(targetToken), static_cast<int>(levelToken));
 }
 
 // Reads one big-endian short token (the scenario year) and stores it, scaled to quarter

@@ -1,13 +1,18 @@
 #include "game/TDefenseMinister.h"
 
+#include <string.h>
+
 #include "game/global_data_tables.h"
 
 #include "game/CIterator.h"
 #include "game/mfc.h"
 #include "game/TAutoGreatPower.h"
 #include "game/TGreatPower.h"
+#include "game/TLongintList.h"
+#include "game/TMapMgr.h"
 #include "game/TStream.h"
 #include "game/TMission.h"
+#include "game/ui_invalidation_guard.h"
 
 // Slot 24 (0x60) — body 0x4ec0a0; placed first because it is the lowest address.
 
@@ -149,8 +154,91 @@ void TDefenseMinister::MinisterSlot14() {}
 // Slot 21 override (0x4ecbb0).
 
 // FUNCTION: IMPERIALISM 0x004ecbb0
-undefined TDefenseMinister::BuildTileRingPriorityMapForNationTileList(int*) {
-  return 0;
+unsigned char*
+TDefenseMinister::BuildTileRingPriorityMapForNationTileList(TLongintList* ownedRegions) {
+  int ownNationSlot = ownerContextAt04->nationSlot;
+  int regionCount = ownedRegions->GetSize();
+
+  unsigned char* priorityMap = new unsigned char[0x1950];
+  if (priorityMap == nullptr) {
+    FailNilPointerWithAssert(s_SourcePathUDefenseMinister_00696860, 0x1a9);
+  }
+  memset(priorityMap, 0, 0x1950);
+
+  short neighbors[6];
+  char wrapHorizontally = g_pGlobalMapState->hexNeighborWrapHorizontally20;
+
+  // Pass 1: mark regions bordering foreign-owned territory with priority 4.
+  for (int i = 1; i <= regionCount; ++i) {
+    short regionId = static_cast<short>(ownedRegions->At(i));
+    TMapMgr::ComputeHexNeighborTileIndices(regionId, neighbors, wrapHorizontally);
+    for (int dir = 0; dir < 6; ++dir) {
+      short neighborTile = neighbors[dir];
+      int neighborOwner = g_pGlobalMapState->terrainStateTable[neighborTile].ownerNationTag04;
+      if (neighborOwner > 0 && neighborOwner != ownNationSlot) {
+        priorityMap[regionId] = 4;
+      }
+    }
+  }
+
+  // Pass 2: mark regions bordering a priority-4 tile with priority 3.
+  for (int i2 = 1; i2 <= regionCount; ++i2) {
+    short regionId = static_cast<short>(ownedRegions->At(i2));
+    TMapMgr::ComputeHexNeighborTileIndices(regionId, neighbors, wrapHorizontally);
+    for (int dir = 0; dir < 6; ++dir) {
+      short neighborTile = neighbors[dir];
+      if (priorityMap[neighborTile] == 4) {
+        priorityMap[regionId] = 3;
+      }
+    }
+  }
+
+  // Pass 3: mark regions bordering a priority-3 tile, or a terrainType00==5 tile, with
+  // priority 2.
+  for (int i3 = 1; i3 <= regionCount; ++i3) {
+    short regionId = static_cast<short>(ownedRegions->At(i3));
+    TMapMgr::ComputeHexNeighborTileIndices(regionId, neighbors, wrapHorizontally);
+    for (int dir = 0; dir < 6; ++dir) {
+      short neighborTile = neighbors[dir];
+      if (priorityMap[neighborTile] == 3 ||
+          g_pGlobalMapState->terrainStateTable[neighborTile].terrainType00 == 5) {
+        priorityMap[regionId] = 2;
+      }
+    }
+  }
+
+  // Pass 4: mark regions bordering a priority-2 tile with priority 1.
+  for (int i4 = 1; i4 <= regionCount; ++i4) {
+    short regionId = static_cast<short>(ownedRegions->At(i4));
+    TMapMgr::ComputeHexNeighborTileIndices(regionId, neighbors, wrapHorizontally);
+    for (int dir = 0; dir < 6; ++dir) {
+      short neighborTile = neighbors[dir];
+      if (priorityMap[neighborTile] == 2) {
+        priorityMap[regionId] = 1;
+      }
+    }
+  }
+
+  // Pass 5: for regions with a qualifying activeFlags1c/resourceTypeByEdge[1] combination,
+  // boost this region's priority by 3 and each prospecting-eligible neighbor's by 1.
+  for (int i5 = 1; i5 <= regionCount; ++i5) {
+    short regionId = static_cast<short>(ownedRegions->At(i5));
+    TTerrainStateRecordView* record = &g_pGlobalMapState->terrainStateTable[regionId];
+    if ((record->activeFlags1c & 3) == 0 || record->resourceTypeByEdge[1] == 0) {
+      continue;
+    }
+    priorityMap[regionId] += 3;
+
+    TMapMgr::ComputeHexNeighborTileIndices(regionId, neighbors, wrapHorizontally);
+    for (int dir = 0; dir < 6; ++dir) {
+      short neighborTile = neighbors[dir];
+      if (g_pGlobalMapState->CheckTileProspectingDiscoveryCandidate(neighborTile)) {
+        ++priorityMap[neighborTile];
+      }
+    }
+  }
+
+  return priorityMap;
 }
 
 // FUNCTION: IMPERIALISM 0x004ecf20

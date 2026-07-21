@@ -837,6 +837,8 @@ extern "C" const char s_SourcePathUNavy_006983C8[];
 extern "C" const char s_SourcePathUTacViews_00699FF4[];
 extern "C" const char s_SourcePathUViewMgrMore_0069B740[];
 extern "C" const char s_SourcePathUHelpMgr_00696C58[];
+// Assert source-path string for the UDefenseMinister TU.
+extern "C" const char s_SourcePathUDefenseMinister_00696860[];
 // Assert source-path string for the UArmyMgr TU.
 extern "C" const char s_SourcePathUArmyMgr_0069573C[];
 extern "C" const char s_SourcePathUCityViews_00696650[];
