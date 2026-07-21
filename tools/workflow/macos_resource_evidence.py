@@ -41,6 +41,8 @@ UI_TYPES = {
     b"fwnd",
     b"edit",
     b"nmbr",
+    b"radb",
+    b"chkb",
 }
 
 
@@ -101,6 +103,8 @@ FAMILY_MINIMUM_SIZES = {
     "fwnd": 20,
     "edit": 46,
     "nmbr": 58,
+    "radb": 37,
+    "chkb": 37,
 }
 
 # SHA-pinned properties from retail resources used by the Windows generator.
@@ -189,6 +193,33 @@ REAL_UI_SENTINELS: tuple[dict[str, object], ...] = (
                     "text_style_id": 1000,
                 },
             },
+        },
+    },
+    {
+        "resource_file": "Startup.rsrc",
+        "view_id": 960,
+        "sha256": "b616f149b86ee3e87501c6e1d09cef5efca20d516af4ec767fc0eeea91d14118",
+        "nodes": {
+            350: {
+                "type_code": "clus",
+                "class_name": "TMapEditCluster",
+                "family": {"serialized_child_count": 36},
+            },
+            463: {
+                "type_code": "radb",
+                "tag": "tera",
+                "parent_offset": 350,
+                "control_value": 3,
+                "family": {"picture_id": 1015, "control_state": 0},
+            },
+            2122: {
+                "type_code": "chkb",
+                "tag": "exi0",
+                "parent_offset": 350,
+                "control_value": -1,
+                "family": {"picture_id": 1000, "control_state": 0},
+            },
+            4003: {"type_code": "radb", "tag": "terp", "parent_offset": 350},
         },
     },
     {
@@ -589,13 +620,18 @@ def _widget_ir(view: ResourceEntry, record: WidgetRecord, records: Sequence[Widg
     properties_end = min(direct_children, default=record.record_end)
     search_start = min(common_flags_offset + 22, properties_end)
     family_bytes = record.type_code.encode("ascii")
+    minimum_size = FAMILY_MINIMUM_SIZES[record.type_code]
     family_offsets: list[int] = []
     cursor = search_start
     while cursor < properties_end:
         family_offset = data.find(family_bytes, cursor, properties_end)
         if family_offset < 0:
             break
-        family_offsets.append(family_offset)
+        # A window's content tag and other typed payload fields may equal the
+        # family FourCC.  Such occurrences cannot begin a family payload when
+        # fewer than the type's minimum bytes remain before the first child.
+        if properties_end - family_offset >= minimum_size:
+            family_offsets.append(family_offset)
         cursor = family_offset + 1
     if len(family_offsets) != 1:
         raise ResourceFormatError(
@@ -607,7 +643,6 @@ def _widget_ir(view: ResourceEntry, record: WidgetRecord, records: Sequence[Widg
 
     common_flags = data[common_flags_offset:min(common_flags_offset + 22, properties_end)]
     family_payload = data[family_offset:properties_end]
-    minimum_size = FAMILY_MINIMUM_SIZES[record.type_code]
     if len(family_payload) < minimum_size:
         raise ResourceFormatError(
             f"{record.resource_file} View {record.view_id} record 0x{record.offset:x}: "
@@ -621,10 +656,27 @@ def _widget_ir(view: ResourceEntry, record: WidgetRecord, records: Sequence[Widg
     }
     if len(family_payload) >= 8 and family_payload[:4] == family_bytes:
         family["frame_style"] = _u32(family_payload, 4, "widget frame style")
-    if record.type_code in ("pict", "cntl", "stat", "clus", "edit", "nmbr"):
+    if record.type_code in (
+        "pict",
+        "cntl",
+        "stat",
+        "clus",
+        "edit",
+        "nmbr",
+        "radb",
+        "chkb",
+    ):
         family["content_insets"] = list(struct.unpack_from(">iiii", family_payload, 8))
     if record.type_code == "pict" and len(family_payload) >= 32:
         family["picture_id"] = _u16(family_payload, 30, "picture resource id")
+    if record.type_code in ("radb", "chkb") and len(family_payload) >= 37:
+        family["picture_id"] = _u16(family_payload, 27, "button picture resource id")
+        family["control_state"] = _u16(family_payload, 29, "button control state")
+        family["secondary_picture_id"] = _u16(
+            family_payload, 31, "button secondary picture resource id"
+        )
+        family["control_value"] = _s16(family_payload, 33, "button control value")
+        family["control_tail_hex"] = family_payload[35:].hex()
     if record.type_code == "stat" and len(family_payload) >= 40:
         family["text_resource_id"] = _u16(
             family_payload, 34, "static text resource id"
@@ -702,9 +754,13 @@ def _widget_ir(view: ResourceEntry, record: WidgetRecord, records: Sequence[Widg
         "input_gate": common_flags[4] if len(common_flags) > 4 else 1,
         "child_hit_test": common_flags[5] if len(common_flags) > 5 else 1,
         "control_value": (
-            struct.unpack_from(">i", common_flags, 18)[0]
-            if len(common_flags) >= 22
-            else 0
+            int(family["control_value"])
+            if "control_value" in family
+            else (
+                struct.unpack_from(">i", common_flags, 18)[0]
+                if len(common_flags) >= 22
+                else 0
+            )
         ),
         "common_flags_hex": common_flags.hex(),
         "window_prefix_hex": data[class_end + 9 : geometry_offset].hex(),
@@ -1232,6 +1288,13 @@ def check_outputs(output_dir: Path) -> int:
     if len(ui_ir.get("views", [])) != summary.get("views"):
         errors.append("ui_views.json view count does not match summary.json")
     errors.extend(validate_ui_ir_structure(ui_ir))
+    errors.extend(
+        validate_ui_ir_structure(
+            ui_ir,
+            selected_keys={("Startup.rsrc", 960)},
+            require_cluster_counts=True,
+        )
+    )
     errors.extend(validate_real_ui_sentinels(ui_ir))
 
     csv_rows: dict[str, list[dict[str, str]]] = {}

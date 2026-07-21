@@ -79,16 +79,11 @@ int TDiplomacyMgr::IsNationSlotEligibleForEventProcessing(int nationSlot) {
 IMPLEMENT_DYNCREATE(TDiplomacyMgr, TObject)
 
 // FUNCTION: IMPERIALISM 0x004ee6c0
-TDiplomacyMgr* TDiplomacyMgr::ConstructTDiplomacyTurnStateManager_Vtbl00654d90() {
-  int zero = 0;
-  relationMatrixBaselineCopy794 = reinterpret_cast<short*>(zero);
-  relationMatrixBaselineSize798 = zero;
-  proposalDispatchCounter790 = static_cast<short>(zero);
-  lastProcessedNationSlot78e = static_cast<short>(-1);
-  return this;
+TDiplomacyMgr::TDiplomacyMgr()
+    : relationMatrixBaselineCopy794(0), relationMatrixBaselineSize798(0) {
+  proposalDispatchCounter790 = 0;
+  lastProcessedNationSlot78e = -1;
 }
-
-TDiplomacyMgr::TDiplomacyMgr() {}
 
 // SYNTHETIC: IMPERIALISM 0x004ee700
 // TDiplomacyMgr::`scalar deleting destructor'
@@ -162,8 +157,8 @@ void TDiplomacyMgr::RebuildCivilianOrderCompatibilityMatrices() {
           g_pSimMgr->IsNationSlotEligibleForEventProcessing(static_cast<short>(targetNation)) !=
               0) {
         if (sourceNation < 7 && g_apNationStates[sourceNation]->diplomacyEligibilityA0 == 0 &&
-            g_pSimMgr->redrawEnabled > 2) {
-          standingScore = static_cast<short>(g_pSimMgr->redrawEnabled == 4 ? 0x69 : 0x64);
+            g_pSimMgr->difficultyLevel > 2) {
+          standingScore = static_cast<short>(g_pSimMgr->difficultyLevel == 4 ? 0x69 : 0x64);
         }
       }
       relationStandingScoreMatrix79c[forwardIndex] = standingScore;
@@ -210,7 +205,7 @@ void TDiplomacyMgr::RebuildCivilianOrderCompatibilityMatrices() {
     specialRelationTargetSlots18b4[sourceNation] = -1;
   }
 
-  if (g_pSimMgr->redrawEnabled == 0) {
+  if (g_pSimMgr->difficultyLevel == 0) {
     for (sourceNation = 0; sourceNation < 7; ++sourceNation) {
       TGreatPower* sourcePower = g_apNationStates[sourceNation];
       if (sourcePower != 0 && sourcePower->diplomacyEligibilityA0 != 0) {
@@ -230,7 +225,7 @@ void TDiplomacyMgr::RebuildCivilianOrderCompatibilityMatrices() {
     }
   }
 
-  if (g_pSimMgr->redrawEnabled > 2) {
+  if (g_pSimMgr->difficultyLevel > 2) {
     for (sourceNation = 0; sourceNation < 7; ++sourceNation) {
       if (g_apNationStates[sourceNation]->diplomacyEligibilityA0 == 0) {
         targetNation = abs(rand()) % 0x10 + 7;
@@ -246,7 +241,7 @@ void TDiplomacyMgr::RebuildCivilianOrderCompatibilityMatrices() {
     }
   }
 
-  if (g_pSimMgr->redrawEnabled == 4) {
+  if (g_pSimMgr->difficultyLevel == 4) {
     for (sourceNation = 0; sourceNation < 7; ++sourceNation) {
       if (g_apNationStates[sourceNation]->diplomacyEligibilityA0 == 0) {
         for (targetNation = 0; targetNation < 7; ++targetNation) {
@@ -354,7 +349,7 @@ char TDiplomacyMgr::IsNationPairRelationTurnStampOutOfDate(int sourceNationSlot,
   if (HasPolicyWithNationSlot44(sourceNationSlot, targetNationSlot) == 0) {
     return 0;
   }
-  short currentTurn = g_pSimMgr->GetTurnTickSlot3C();
+  short currentTurn = g_pSimMgr->GetEconomicTurn();
   int source = static_cast<short>(sourceNationSlot);
   int target = static_cast<short>(targetNationSlot);
   return relationTurnStampMatrixFe0[source * kNationSlotCount + target] != currentTurn;
@@ -733,7 +728,7 @@ void TDiplomacyMgr::PropagateRelationSideEffectSlot80(int sourceNationSlot, int 
 void TDiplomacyMgr::ApplyDiplomacyInterNationStatesForTurn() {
   // Pre-pass (unless localization phase 2): run the per-nation begin-turn slot 0x1c8
   // over the seven majors descending, gated on the nation's eligibility byte at +0xa0.
-  if (g_pSimMgr->redrawEnabled != 2) {
+  if (g_pSimMgr->difficultyLevel != 2) {
     TGreatPower** nationCursor = &g_apNationStates[6];
     int remaining = 7;
     do {
@@ -752,7 +747,7 @@ void TDiplomacyMgr::ApplyDiplomacyInterNationStatesForTurn() {
   ScratchSharedString scratch2;
   ScratchSharedString scratch3;
 
-  if (g_pSimMgr->redrawEnabled == 2) {
+  if (g_pSimMgr->difficultyLevel == 2) {
     TGreatPower** nationCursor = &g_apNationStates[6];
     int remaining = 7;
     do {
@@ -827,7 +822,7 @@ void TDiplomacyMgr::ApplyDiplomacyInterNationStatesForTurn() {
 
 // FUNCTION: IMPERIALISM 0x004f0590
 void TDiplomacyMgr::SyncNationField790FromLocalizationStateId() {
-  proposalDispatchCounter790 = g_pSimMgr->GetTurnTickSlot3C();
+  proposalDispatchCounter790 = g_pSimMgr->GetEconomicTurn();
 }
 
 // FUNCTION: IMPERIALISM 0x004f05c0
@@ -926,11 +921,11 @@ void TDiplomacyMgr::ProcessQueuedWarTransitions() {
       g_pGlobalUiRootController->DispatchUiSelectionToHandler(packet);
     }
   } else {
-    bool isLocalizationOne = (g_pSimMgr->redrawEnabled == 1);
+    bool isLocalizationOne = (g_pSimMgr->difficultyLevel == 1);
     if (isLocalizationOne) {
       g_pGameFlowState->EmitTurnEvent3Mode18WithActiveNation();
     } else {
-      g_pSimMgr->PostMainWindowCommand100ForTurnFlow();
+      g_pSimMgr->StartNextPhase();
     }
   }
 }
@@ -1105,7 +1100,7 @@ void TDiplomacyMgr::RebuildDiplomacyStandingAndInfluenceMatrices(char forceOrMod
   if (winnerNationSlot != -1) {
     lastProcessedNationSlot78e = static_cast<short>(winnerNationSlot);
   }
-  if (g_pSimMgr->field44 == 1) {
+  if (g_pSimMgr->multiplayerSessionRole == 1) {
     g_pGameFlowState->EmitTurnEvent26DiplomacyMatrixSnapshot();
   }
 }
@@ -1311,8 +1306,8 @@ void TDiplomacyMgr::SetNationPairDiplomacyRelationCode(int sourceNationSlot, int
   relationPropagationMatrixBbe[forwardIndex] = newRelationCode;
   int reverseIndex = target * kNationSlotCount + source;
   relationPropagationMatrixBbe[reverseIndex] = newRelationCode;
-  relationTurnStampMatrixFe0[forwardIndex] = g_pSimMgr->GetTurnTickSlot3C();
-  relationTurnStampMatrixFe0[reverseIndex] = g_pSimMgr->GetTurnTickSlot3C();
+  relationTurnStampMatrixFe0[forwardIndex] = g_pSimMgr->GetEconomicTurn();
+  relationTurnStampMatrixFe0[reverseIndex] = g_pSimMgr->GetEconomicTurn();
 
   if (HasFlag84ForNationSlot84(sourceNationSlot) != 0) {
     g_apNationStates[source]->DispatchNationDiplomacySlotActionByMode(target, relationCode);
@@ -1566,8 +1561,10 @@ void TDiplomacyMgr::RebuildMinorNationDispositionLookupTables(int nationCode) {
       }
       relationStandingScoreMatrix79c[otherMinorSlot * kNationSlotCount + minorSlot] = standingValue;
       relationStandingScoreMatrix79c[minorSlot * kNationSlotCount + otherMinorSlot] = standingValue;
-      relationPropagationMatrixBbe[otherMinorSlot * kNationSlotCount + minorSlot] = propagationValue;
-      relationPropagationMatrixBbe[minorSlot * kNationSlotCount + otherMinorSlot] = propagationValue;
+      relationPropagationMatrixBbe[otherMinorSlot * kNationSlotCount + minorSlot] =
+          propagationValue;
+      relationPropagationMatrixBbe[minorSlot * kNationSlotCount + otherMinorSlot] =
+          propagationValue;
     }
 
     for (int notifySlot = 0; notifySlot < 7; ++notifySlot) {

@@ -6,6 +6,7 @@
 #include "game/mfc.h"              // CListBox (afxwin.h)
 
 class CDib;
+struct GameSetup;
 
 // Shared "C2" template modal dialog: a CDialog subclass (via TModalDialogBase, template
 // id 0xc2) with an embedded CSliderCtrl at +0x74 and CListBox at +0xb0 (both CWnd-sized,
@@ -350,22 +351,20 @@ protected:
 
 ASSERT_SIZE(TE0TemplateDialog, 0x74);
 
-// Sibling "A1" hot-key/slider template dialog (template id 0xa1, own vtable 0x647428): a PLAIN
-// CDialog subclass with three embedded CSliderCtrl trackbars at +0x5c/+0x98/+0xd4, two DDX_Check
-// flags at +0x110/+0x114, and a caller-supplied state pointer at +0x118. Overrides OnInitDialog
-// (SetRange + TBM_SETPOS) and OnOK (TBM_GETPOS write-back) — those bodies are follow-up. Built by
-// InitializeHotKeyDialogTemplateA1WithTripleTextState (0x004813a0).
+// Windows game-setup dialog (template id 0xa1, own vtable 0x647428): three policy sliders,
+// two DDX checkboxes, and the caller-owned GameSetup record at +0x118.
 // VTABLE: IMPERIALISM 0x00647428
 class TA1TemplateDialog : public CDialog {
 public:
-  TA1TemplateDialog(void* initParam); // 0x004813a0
+  TA1TemplateDialog(void* initParam);        // 0x004813a0
+  void SetGameSetupValues(GameSetup* setup); // 0x004821d0
 
   CSliderCtrl slider5c; // +0x5c
   CSliderCtrl slider98; // +0x98
   CSliderCtrl sliderD4; // +0xd4
   int check110;         // +0x110 — DDX_Check control 0x404
   int check114;         // +0x114 — DDX_Check control 0x405
-  void* state118;       // +0x118 — caller-supplied selection state
+  GameSetup* state118;  // +0x118
 
 protected:
   BOOL OnInitDialog() override;                     // 0x004821f0 (slot 0xc4)

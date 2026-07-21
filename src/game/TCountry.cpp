@@ -269,7 +269,7 @@ short TCountry::GetOrComputeOverlayAnchorTileIndex() {
 // FUNCTION: IMPERIALISM 0x004d71b0
 void TCountry::SeedInitialMilitaryAndNavyOrdersForOwnedRegions(void) {
   TSimMgr* localization = g_pSimMgr;
-  if (localization->stateFlag114 > 0) {
+  if (localization->scenarioMapIndexPlusOne > 0) {
     g_pGlobalMapState->NotifyCityRecordSlot12C(
         g_pGlobalMapState->terrainStateTable[static_cast<short>(this->homeRegionIndex)]
             .cityRecordIndex);
@@ -283,31 +283,31 @@ void TCountry::SeedInitialMilitaryAndNavyOrdersForOwnedRegions(void) {
       if ((g_pGlobalMapState->terrainStateTable[regionTerrainId].activeFlags1c & 1) != 0) {
         TMilitaryUnit* order = new TMilitaryUnit();
         order->InitializeRecruitOrderState(2, regionId, this->nationSlot);
-        if (g_pSimMgr->redrawEnabled < 2) {
+        if (g_pSimMgr->difficultyLevel < 2) {
           order->SetOrderModeSlot34(2, -1);
         }
         order = new TMilitaryUnit();
         order->InitializeRecruitOrderState(2, regionId, this->nationSlot);
-        if (g_pSimMgr->redrawEnabled < 2) {
+        if (g_pSimMgr->difficultyLevel < 2) {
           order->SetOrderModeSlot34(2, -1);
         }
         order = new TMilitaryUnit();
         order->InitializeRecruitOrderState(7, regionId, this->nationSlot);
-        if (g_pSimMgr->redrawEnabled < 2) {
+        if (g_pSimMgr->difficultyLevel < 2) {
           order->SetOrderModeSlot34(2, -1);
         }
         g_pGlobalMapState->NotifyCityRecordSlot12C(regionId);
         if (this->nationSlot < 7 &&
             g_apNationStates[this->nationSlot]->diplomacyEligibilityA0 == 0 &&
-            g_pSimMgr->redrawEnabled == 4) {
+            g_pSimMgr->difficultyLevel == 4) {
           order = new TMilitaryUnit();
           order->InitializeRecruitOrderState(6, regionId, this->nationSlot);
-          if (g_pSimMgr->redrawEnabled < 2) {
+          if (g_pSimMgr->difficultyLevel < 2) {
             order->SetOrderModeSlot34(2, -1);
           }
           order = new TMilitaryUnit();
           order->InitializeRecruitOrderState(5, regionId, this->nationSlot);
-          if (g_pSimMgr->redrawEnabled < 2) {
+          if (g_pSimMgr->difficultyLevel < 2) {
             order->SetOrderModeSlot34(2, -1);
           }
           TGreatPower* nation = g_apNationStates[this->nationSlot];
@@ -317,7 +317,7 @@ void TCountry::SeedInitialMilitaryAndNavyOrdersForOwnedRegions(void) {
         }
         if (this->nationSlot < 7) {
           TGreatPower* nation = g_apNationStates[this->nationSlot];
-          if (nation->diplomacyEligibilityA0 != 0 && g_pSimMgr->redrawEnabled == 0) {
+          if (nation->diplomacyEligibilityA0 != 0 && g_pSimMgr->difficultyLevel == 0) {
             TCity* cityForPort = (nation != 0) ? nation->city : 0;
             TZone* portZone = g_pActiveMapOrderContext->FindPortZoneBySelectedTile(cityForPort);
             if (portZone->PrimaryZoneHeapCapacity() == 0) {
@@ -342,7 +342,7 @@ void TCountry::SeedInitialMilitaryAndNavyOrdersForOwnedRegions(void) {
       this->CreateMilitaryRecruitOrderForNode(regionId);
       this->CreateMilitaryRecruitOrderForNode(regionId);
       this->CreateMilitaryRecruitOrderForNode(regionId);
-      if (g_pSimMgr->redrawEnabled > 2) {
+      if (g_pSimMgr->difficultyLevel > 2) {
         this->CreateMilitaryRecruitOrderForNode(regionId);
         if (this->nationSlot >= 7) {
           TMilitaryUnit* lateOrder = new TMilitaryUnit();
@@ -410,7 +410,7 @@ char TCountry::TryDispatchNationActionViaUiContextOrFallback(int arg1, int arg2,
 
 // FUNCTION: IMPERIALISM 0x004d7b20
 void TCountry::ApplyJoinEmpireModeForTargetNation(int targetNationSlot, int mode) {
-  if (g_pSimMgr != 0 && g_pSimMgr->redrawEnabled == 1) {
+  if (g_pSimMgr != 0 && g_pSimMgr->difficultyLevel == 1) {
     g_pGameFlowState->DispatchJoinEmpireModeEventPacket24_27(this->nationSlot, targetNationSlot,
                                                              mode);
   }
@@ -421,7 +421,7 @@ void TCountry::ApplyJoinEmpireModeForTargetNation(int targetNationSlot, int mode
   }
 
   if (this->nationSlot < 7) {
-    g_pSimMgr->DecrementField30Value();
+    g_pSimMgr->ReduceNumGPs();
   }
 
   if (mode == 0) {
@@ -674,7 +674,7 @@ int TCountry::GetHomeRegionCityRecordIndex(void) {
 
 // FUNCTION: IMPERIALISM 0x004d87e0
 void TCountry::QueueRecruitOrdersForUndergarrisonedRegions(void) {
-  short tickRaw = g_pSimMgr->quarterGateTick2c;
+  short tickRaw = g_pSimMgr->economicTurn;
   if (!IsRecruitQuarterTickGate(tickRaw)) {
     return;
   }

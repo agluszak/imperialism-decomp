@@ -93,8 +93,8 @@ using turn_event_dialog::TCivilianReportGoldControl;
 using turn_event_dialog::TurnEventDialogNode;
 // g_pUiViewManager (TAssetMgr) @ 0x6a2148 — the UI/view asset registry that resolves
 // turn-event dialog nodes by message context.
-const unsigned int kAddrHotKeyDialogTemplate = 0x00698b1a;
-const unsigned int kAddrHotKeyDialogTemplateEnd = 0x00698b52;
+const unsigned int kAddrDefaultGameSetupPolicies = 0x00698b1a;
+const unsigned int kAddrDefaultGameSetupPoliciesEnd = 0x00698b52;
 } // namespace
 
 namespace {
@@ -375,15 +375,15 @@ void TViewMgr::HandleTurnEventVtableSlot40RefreshGoldDialog() {
 
   // Mask the game-flow flag while committing the refresh when localization mode is active.
   unsigned char savedFlag = 0;
-  bool localizationActive = g_pSimMgr->field44 != 0;
-  if (localizationActive) {
+  bool multiplayerActive = g_pSimMgr->multiplayerSessionRole != 0;
+  if (multiplayerActive) {
     savedFlag = g_pGameFlowState->processPrimaryEventQueue;
     g_pGameFlowState->processPrimaryEventQueue = 0;
   }
   node->RefreshTurnEventDialog();
   node->Close();
   node->Free();
-  if (g_pSimMgr->field44 != 0) {
+  if (g_pSimMgr->multiplayerSessionRole != 0) {
     g_pGameFlowState->processPrimaryEventQueue = savedFlag;
   }
 }
@@ -578,7 +578,7 @@ bool TViewMgr::RunNationInfoModalAndReturnNonCancel(int overlayMode, CString mes
   }
 
   unsigned char savedProcessFlag;
-  bool simSuppressed = g_pSimMgr->field44 != 0;
+  bool simSuppressed = g_pSimMgr->multiplayerSessionRole != 0;
   if (simSuppressed) {
     unsigned char currentFlag = g_pGameFlowState->processPrimaryEventQueue;
     g_pGameFlowState->processPrimaryEventQueue = 0;
@@ -607,7 +607,7 @@ bool TViewMgr::RunNationInfoModalAndReturnNonCancel(int overlayMode, CString mes
   int modalResult = dialog->RefreshTurnEventDialog();
   dialog->Close();
   dialog->Free();
-  simSuppressed = g_pSimMgr->field44 != 0;
+  simSuppressed = g_pSimMgr->multiplayerSessionRole != 0;
   if (simSuppressed) {
     g_pGameFlowState->processPrimaryEventQueue = savedProcessFlag;
   }
@@ -617,11 +617,10 @@ bool TViewMgr::RunNationInfoModalAndReturnNonCancel(int overlayMode, CString mes
   return true;
 }
 
-static void CopyHotKeyDialogTemplateToBuffer(int buffer) {
-  const unsigned short* src = reinterpret_cast<const unsigned short*>(kAddrHotKeyDialogTemplate);
-  const unsigned short* srcEnd =
-      reinterpret_cast<const unsigned short*>(kAddrHotKeyDialogTemplateEnd);
-  unsigned short* dst = reinterpret_cast<unsigned short*>(buffer + 0x10);
+static void InitializeGameSetupFromDefaultNationPolicies(GameSetup* setup) {
+  const short* src = reinterpret_cast<const short*>(kAddrDefaultGameSetupPolicies);
+  const short* srcEnd = reinterpret_cast<const short*>(kAddrDefaultGameSetupPoliciesEnd);
+  short* dst = setup->cityMinisterPolicyIds;
   while (src < srcEnd) {
     dst[-7] = src[-1];
     dst[0] = src[0];
@@ -1209,7 +1208,7 @@ void TViewMgr::DispatchTurnEventSlot4C(short eventCode, int payload) {
       this->UiRuntimeSlotA8(newCode);
     } else if (newCode == 0x7dd) {
       mainView->RefreshControl();
-      this->UiRuntimeSlotBC(newCode);
+      this->HandleTurnEvent7DD_RefreshOrderStatusPanelsAndIcons(newCode);
     } else if (newCode == 0x7de) {
       mainView->RefreshControl();
       this->UiRuntimeSlot84(newCode);
@@ -1217,7 +1216,7 @@ void TViewMgr::DispatchTurnEventSlot4C(short eventCode, int payload) {
       this->UiRuntimeSlot9C();
     } else if (newCode == 0x2260) {
       mainView->RefreshControl();
-      this->HandleTurnEventVtableSlot64RefreshMainHudTitles(newCode);
+      this->HandleTurnEvent2260_RefreshMainHudTitles(newCode);
     }
     DispatchPostTurnStateUpdatesTail();
     return;
@@ -1287,18 +1286,18 @@ void TViewMgr::DispatchTurnEventSlot4C(short eventCode, int payload) {
       } else if (newCode == 0xf3d) {
         this->HandleTurnEventF3D_PopulateRecentTurnMessages(static_cast<int>(secondary));
       } else if (newCode == 0x2103) {
-        this->HandleTurnEventVtableSlot64RefreshMainHudTitles(newCode);
+        this->HandleTurnEvent2260_RefreshMainHudTitles(newCode);
       } else if (newCode == 0x2134) {
         this->HandleTurnEventVtableSlot60ActivateMainDialog(newCode);
       } else if (newCode == 0x2260) {
         this->UiRuntimeSlot9C();
       }
     } else if (newCode == 0x898) {
-      this->UiRuntimeSlotBC(newCode);
+      this->HandleTurnEvent7DD_RefreshOrderStatusPanelsAndIcons(newCode);
     } else {
       switch (newCode) {
       case 0x7d9:
-        this->UiRuntimeSlotBC(newCode);
+        this->HandleTurnEvent7DD_RefreshOrderStatusPanelsAndIcons(newCode);
         break;
       case 0x7da:
         this->UiRuntimeSlot5C(newCode);
@@ -1592,7 +1591,7 @@ void TViewMgr::HandleTurnEventVtableSlot60ActivateMainDialog(int) {
 }
 
 // FUNCTION: IMPERIALISM 0x005da180
-void TViewMgr::HandleTurnEventVtableSlot64RefreshMainHudTitles(int) {
+void TViewMgr::HandleTurnEvent2260_RefreshMainHudTitles(int) {
   TView* mainView = g_pDisplayMgr->activeDialog;
 
   g_pCursorControlPanel =
@@ -1616,7 +1615,7 @@ void TViewMgr::HandleTurnEventVtableSlot64RefreshMainHudTitles(int) {
     static_cast<TInfoBarText*>(titleControl)
         ->InitializeMapHintTextStyleAndThemeFlags(0x2b6c, 0x2b6b);
     CString titleString;
-    g_pSimMgr->CopyScenarioNationSetupIntoFlowState(&titleString);
+    g_pSimMgr->GetString(0x2741, 0, &titleString);
     titleControl->SetHoverHelpText(titleString);
   }
   // 0x5bac50 is invoked on the 'main' deal-book control (the binary's receiver), not 'titL'.
@@ -1624,10 +1623,10 @@ void TViewMgr::HandleTurnEventVtableSlot64RefreshMainHudTitles(int) {
 }
 
 // FUNCTION: IMPERIALISM 0x005da360
-void TViewMgr::UiRuntimeSlotBC(int) {
+void TViewMgr::HandleTurnEvent7DD_RefreshOrderStatusPanelsAndIcons(int) {
   const short activeNationId = g_pSimMgr->GetActiveNationId();
   if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(activeNationId) == 0) {
-    g_pSimMgr->CopyScenarioNationSetupIntoFlowState(nullptr);
+    g_pSimMgr->SetFlags(static_cast<unsigned int>(-1));
   }
 
   turn_event_ui_refresh::BindCursorPanelAndSetTurnEventCodeRange();
@@ -1898,19 +1897,19 @@ void TViewMgr::HandleTurnEventF3D_PopulateRecentTurnMessages(int nationSlot) {
 }
 
 // FUNCTION: IMPERIALISM 0x005dcaa0
-void TViewMgr::HandleTurnEventVtableSlot2CInitializeHotKeyDialog() {
+void TViewMgr::MakeGameSetupDialog() {
   TA1TemplateDialog dialog(NULL);
 
-  char* buffer = new char[0x3e];
-  if (buffer != 0) {
-    CopyHotKeyDialogTemplateToBuffer(reinterpret_cast<int>(buffer));
-    dialog.state118 = buffer;
+  GameSetup* setup = new GameSetup;
+  if (setup != 0) {
+    InitializeGameSetupFromDefaultNationPolicies(setup);
+    dialog.SetGameSetupValues(setup);
 
     int modalResult = dialog.DoModal();
     if (modalResult != 0) {
-      g_pSimMgr->CopyScenarioNationSetupIntoFlowState(reinterpret_cast<void*>(buffer));
+      g_pSimMgr->SetGameSetupValues(setup);
     }
-    delete[] buffer;
+    delete setup;
   }
 }
 
@@ -2354,12 +2353,12 @@ void TViewMgr::CreateModalMessageCommandAndQueue(CString* message, int payload) 
 // FUNCTION: IMPERIALISM 0x005deb40
 char TViewMgr::DispatchGameStateEventIfLocalizedPromptAccepted(int actionTag) {
   CString message;
-  int gameFlowMode = g_pSimMgr->field44;
-  unsigned char sessionTornDown = gameFlowMode == 2;
-  if (sessionTornDown != 0) {
+  int sessionRole = g_pSimMgr->multiplayerSessionRole;
+  unsigned char isClientSession = sessionRole == 2;
+  if (isClientSession != 0) {
     g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&message, 0x2737, 0x31);
   } else {
-    unsigned char hosting = gameFlowMode == 1;
+    unsigned char hosting = sessionRole == 1;
     if (hosting != 0) {
       if (actionTag == 0x6367616d) { // 'magc'
         g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&message, 0x2737, 0x37);
@@ -2379,8 +2378,8 @@ char TViewMgr::DispatchGameStateEventIfLocalizedPromptAccepted(int actionTag) {
   char accepted = g_pUiRuntimeContext->DispatchLocalizedUiMessageWithTemplateA13A0(
       message, &g_cstrUiPromptMessageStore, 0, 1);
   if (accepted != 0) {
-    unsigned char tearingDown = g_pSimMgr->field44 == 2;
-    if (tearingDown != 0) {
+    unsigned char isClientSession = g_pSimMgr->multiplayerSessionRole == 2;
+    if (isClientSession != 0) {
       g_pGameFlowState->DispatchTaggedGameStateEvent1F20(0x61626469, // 'abdi'
                                                          g_pSimMgr->GetActiveNationId(), -2);
     }

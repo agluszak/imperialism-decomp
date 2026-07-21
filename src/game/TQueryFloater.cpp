@@ -65,7 +65,7 @@ void TQueryFloater::HandleEvent(int commandId, TEventHandler* sourceHandler, TEv
   } else if (tag == kControlTagBatt) {
     short activeNationId = g_pSimMgr->GetActiveNationId();
     if (!g_pMapContextActionManager->ScanMapContextActionEntriesForCodeMatch(activeNationId)) {
-      if (g_pSimMgr->GetTurnTickSlot3C() == 1) {
+      if (g_pSimMgr->GetEconomicTurn() == 1) {
         g_pSimMgr->GetString(0x273d, 0x1e, &text);
       } else {
         g_pSimMgr->GetString(0x273d, 0x12, &text);
@@ -75,30 +75,30 @@ void TQueryFloater::HandleEvent(int commandId, TEventHandler* sourceHandler, TEv
     } else {
       TWindow* owner = static_cast<TWindow*>(OwnerPanel());
       owner->Dismiss(kControlTagOkay, 0);
-      g_pSimMgr->SetGlobalTurnStateCodeIfAllowed(0x65);
+      g_pSimMgr->EnterOptionalPhase(0x65);
     }
   } else if (tag == kControlTagChar) {
     TWindow* owner = static_cast<TWindow*>(OwnerPanel());
     owner->Dismiss(kControlTagOkay, 0);
-    g_pSimMgr->SetGlobalTurnStateCodeIfAllowed(0x6e);
+    g_pSimMgr->EnterOptionalPhase(0x6e);
   } else if (tag == kControlTagClnc) {
     TWindow* owner = static_cast<TWindow*>(OwnerPanel());
     owner->Dismiss(kControlTagOkay, 0);
   } else if (tag == kControlTagDeal) {
-    if (g_pSimMgr->GetTurnTickSlot3C() == 1) {
+    if (g_pSimMgr->GetEconomicTurn() == 1) {
       g_pSimMgr->GetString(0x2741, 9, &text);
       g_pUiRuntimeContext->DispatchLocalizedUiMessageWithTemplateA13A0(
           text, &g_cstrQueryFloaterMessageStore, 1, 0);
     } else {
       TWindow* owner = static_cast<TWindow*>(OwnerPanel());
       owner->Dismiss(kControlTagOkay, 0);
-      g_pSimMgr->SetGlobalTurnStateCodeIfAllowed(0x64);
+      g_pSimMgr->EnterOptionalPhase(0x64);
     }
   } else if (tag == kControlTagNews) {
     TWindow* owner = static_cast<TWindow*>(OwnerPanel());
     owner->Dismiss(kControlTagOkay, 0);
     if (g_pInterNationEventQueueManager->perNationStoryLastUsedTick[0] != nullptr) {
-      g_pSimMgr->SetGlobalTurnStateCodeIfAllowed(0x66);
+      g_pSimMgr->EnterOptionalPhase(0x66);
     } else {
       g_pUiRuntimeContext->ShowLocalizedUiPromptByGroupAndIndex(0x275e, 6, 2, 0);
     }

@@ -54,12 +54,10 @@ short GetEnabledIndustryCapabilitySlotByClass(short classId) {
 
 IMPLEMENT_DYNCREATE(TTechMgr, TObject)
 
-TTechMgr::TTechMgr() {}
-
 TTechMgr::~TTechMgr() {}
 
 // FUNCTION: IMPERIALISM 0x005aef80
-void TTechMgr::ConstructCityOrderCapabilityStateVtable(void) {}
+TTechMgr::TTechMgr() {}
 
 // SYNTHETIC: IMPERIALISM 0x005aefa0
 // TTechMgr::`scalar deleting destructor'
@@ -160,7 +158,7 @@ void TTechMgr::GenerateRandomCapabilityPrioritySlots() {
   prioritySlots04[0] = 0;
 
   unsigned int seed;
-  if (g_pSimMgr->field44 == 0 ||
+  if (g_pSimMgr->multiplayerSessionRole == 0 ||
       (seed = static_cast<unsigned int>(g_pGameFlowState->queueSyncDword)) == 0) {
     // Genuine __cdecl free function declared (void); the guardrail-sanctioned arg-adjust cast
     // pushes the ignored 0 argument the original passes.
@@ -222,7 +220,7 @@ void TTechMgr::ApplyTechUnlockAndQueueNationAbilityNotices(int techId, int force
     TGreatPower* nation = *nationCursor;
     if (nation->diplomacyEligibilityA0 == 0 || nationSlot == forcedNationSlot) {
       this->capRowsE4a6[nationSlot].completionYearOffsetByTechId[techId] =
-          static_cast<short>(g_pSimMgr->quarterGateTick2c / 4);
+          static_cast<short>(g_pSimMgr->economicTurn / 4);
       this->HandleAbilityUnlock(techId, nationSlot);
     }
     ++nationCursor;
@@ -283,7 +281,7 @@ void TTechMgr::HandleAbilityUnlock(int techId, int nationSlot) {
 
   // Late-era arms bonus scale: only for AI-eligible nations once the sim level passes 2.
   short eraOffset = 0;
-  int simLevel = g_pSimMgr->redrawEnabled;
+  int simLevel = g_pSimMgr->difficultyLevel;
   if (simLevel >= 3 && g_apNationStates[nationSlot]->diplomacyEligibilityA0 == 0) {
     eraOffset = static_cast<short>(simLevel - 2);
   }
@@ -633,7 +631,7 @@ void TTechMgr::ApplyTechItemPurchaseCostAndState(int slot, int nationIndex) {
       -g_anTechItemPurchaseCostBySlot_0066aae8[slot]);
   orderCapRows277[nationIndex].techStatusByTechId[slot] = 1;
   capRowsE4a6[nationIndex].completionYearOffsetByTechId[slot] =
-      static_cast<short>(g_pSimMgr->quarterGateTick2c / 4);
+      static_cast<short>(g_pSimMgr->economicTurn / 4);
 }
 
 // Inverse of ApplyTechItemPurchaseCostAndState: refunds the slot's cost back to the

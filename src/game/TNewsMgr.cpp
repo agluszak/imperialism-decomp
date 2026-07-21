@@ -24,8 +24,6 @@ TNewsMgr::~TNewsMgr() {}
 
 IMPLEMENT_DYNCREATE(TNewsMgr, TObject)
 
-TNewsMgr::TNewsMgr() {}
-
 // FUNCTION: IMPERIALISM 0x0055b710
 void TNewsMgr::InitializeInterNationEventQueueManager() {
   for (int i = 0; i < 7; i++) {
@@ -156,7 +154,7 @@ void TNewsMgr::CreateNewspaper(int nation) {
   }
 
   int misses = 0;
-  int curTick = g_pSimMgr->GetTurnTickSlot3C();
+  int curTick = g_pSimMgr->GetEconomicTurn();
   while (major < 3 && misses < 4) {
     // Random pick biased toward least-recently-used templates (min of two uniforms
     // over the sorted order), skipping event-story rows (negative ids).
@@ -178,7 +176,7 @@ void TNewsMgr::CreateNewspaper(int nation) {
     int id = tmpl->storyId;
     if (id > 9 && id % 10 == 0) {
       // Decade feature: visible only while the year index is inside [id-10, id).
-      short year = static_cast<short>(g_pSimMgr->quarterGateTick2c / 4);
+      short year = static_cast<short>(g_pSimMgr->economicTurn / 4);
       if (year < id - 10 || year >= id) {
         continue;
       }

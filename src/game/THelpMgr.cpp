@@ -159,7 +159,7 @@ void THelpMgr::SelectAndActivatePendingEventForCurrentView() {
   HelpSetRecord* best = nullptr;             // lowest-rank unflagged match
   HelpSetRecord* flaggedCandidate = nullptr; // context match with flagByte set
   HelpSetRecord* zeroIdCandidate = nullptr;  // context match, rank>=threshold, helpSetIdB==0
-  short threshold = g_pSimMgr->GetTurnTickSlot3C();
+  short threshold = g_pSimMgr->GetEconomicTurn();
   short contextId = g_pUiRuntimeContext->currentTurnEventCode;
   for (int index = 1; index <= GetSortedPtrListEntryCount(indexList); ++index) {
     HelpSetRecord* record =
@@ -196,9 +196,9 @@ void THelpMgr::HandlePostDispatchTurnStateEventUpdates() {
   const int flowMode = ReadLocalizationFlowMode();
   if (flowMode != 0xf) {
     if (flowMode == 0x6a && ReadLocalizationTurnGateFlag58() != 0) {
-      if (g_nTurnFlowNationComparisonAdvisoryTick < g_pSimMgr->GetTurnTickSlot3C()) {
+      if (g_nTurnFlowNationComparisonAdvisoryTick < g_pSimMgr->GetEconomicTurn()) {
         if (ShowPeriodicNationComparisonAdvisoryIfNeeded() != 0) {
-          g_nTurnFlowNationComparisonAdvisoryTick = g_pSimMgr->GetTurnTickSlot3C();
+          g_nTurnFlowNationComparisonAdvisoryTick = g_pSimMgr->GetEconomicTurn();
         }
       }
     }
@@ -216,7 +216,7 @@ void THelpMgr::HandlePostDispatchTurnStateEventUpdates() {
 
 // FUNCTION: IMPERIALISM 0x00501270
 short THelpMgr::DispatchTurnStateSpecialAdvisoriesAndReturnCount() {
-  g_pSimMgr->GetTurnTickSlot3C();
+  g_pSimMgr->GetEconomicTurn();
   short activeNation = g_pSimMgr->GetActiveNationId();
   CString titleText;
   CString templateText;
@@ -320,7 +320,7 @@ short THelpMgr::DispatchTurnStateSpecialAdvisoriesAndReturnCount() {
 
 // FUNCTION: IMPERIALISM 0x00501a20
 void THelpMgr::ShowPeriodicCapabilityReminderIfNeeded() {
-  short tickMod = static_cast<short>(g_pSimMgr->GetTurnTickSlot3C() % 10);
+  short tickMod = static_cast<short>(g_pSimMgr->GetEconomicTurn() % 10);
   short activeNation = g_pSimMgr->GetActiveNationId();
   CString titleText;
   CString messageText;
@@ -349,7 +349,7 @@ char THelpMgr::ShowPeriodicNationComparisonAdvisoryIfNeeded() {
   CString message;
   char advisoryShown = 0;
 
-  switch (static_cast<short>(g_pSimMgr->GetTurnTickSlot3C() % 10)) {
+  switch (static_cast<short>(g_pSimMgr->GetEconomicTurn() % 10)) {
   case 0: {
     TGreatPower* active = g_apNationStates[activeNation];
     short best = (active != 0) ? active->needCapA6 : 0;
@@ -625,7 +625,7 @@ char ShowTurnAlertsForActiveNation() {
   TCity* city = (g_apNationStates[nationId] != 0) ? g_apNationStates[nationId]->city : 0;
   int stormOutB;
   stormOutA = stormOutB = 0;
-  short currentTick = g_pSimMgr->GetTurnTickSlot3C();
+  short currentTick = g_pSimMgr->GetEconomicTurn();
   if (g_pSimMgr->preferenceValues[8] == 0) {
     return 0;
   }
@@ -682,7 +682,7 @@ char ShowTurnAlertsForActiveNation() {
         anyAlertShown = 1;
       }
     }
-    city->productionSummary1d8->OrphanLeaf_NoCall_Ins111_004b6260(
+    city->productionSummary1d8->GetRecentStormImpactMetrics(
         reinterpret_cast<short*>(&stormOutB), reinterpret_cast<unsigned short*>(&stormOutA));
     if (*reinterpret_cast<short*>(&stormOutA) != 0) {
       g_pSimMgr->GetString(0x2753, 0x20, &titleText);
@@ -719,9 +719,9 @@ char THelpMgr::HandlePendingEventActivationByCode(short eventCode) {
             static_cast<HelpSetRecord*>(indexList->GetPtrListEntryByOneBasedIndex(index));
         if (entry->contextId == eventCode) {
           // NOT GetActiveNationId — original loads ECX from g_pSimMgr and
-          // dispatches vtable slot 0x3c (GetTurnTickSlot3C), same call as the currentTurn
+          // dispatches vtable slot 0x3c (GetEconomicTurn), same call as the currentTurn
           // check above. entry->rank stores a turn tick here, not a nation id.
-          const short currentTick = g_pSimMgr->GetTurnTickSlot3C();
+          const short currentTick = g_pSimMgr->GetEconomicTurn();
           if (entry->rank == currentTick) {
             nationAlreadyCurrent = true;
           } else if (entry->flagByte == 0) {

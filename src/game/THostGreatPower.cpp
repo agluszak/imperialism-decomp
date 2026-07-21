@@ -73,5 +73,5 @@ void THostGreatPower::HandleNationLost(void) {
     TGreatPower::HandleNationLost();
     return;
   }
-  g_pSimMgr->PostMainWindowCommand100ForTurnFlow();
+  g_pSimMgr->StartNextPhase();
 }

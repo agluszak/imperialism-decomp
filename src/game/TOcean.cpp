@@ -140,16 +140,6 @@ TOcean::~TOcean() {}
 
 IMPLEMENT_DYNCREATE(TOcean, TObject)
 
-// No standalone address: the original ctor is small enough that MSVC500 inlined it
-// directly at its one call site (TGameSetupPicture::HandleEvent's 'rand'-cheat path,
-// 0x575bb0-0x575bd9) rather than emitting a separate TOcean::TOcean symbol.
-TOcean::TOcean()
-    : TObject(), nationCount(0), contextArray(0), routeNodeCount(0), routeNodeBuffer(0) {
-  // Only selectedTaskForce14 (+0x14) is zeroed by the original ctor; the rest of the
-  // still-unrecovered pad18 region is left uninitialized there too.
-  selectedTaskForce14 = 0;
-}
-
 // Slot 0x07 (Free). Ghidra: DispatchNationPendingActionEventCodes (264 bytes) —
 // real body is a follow-up port; stub keeps the vtable slot owned/paired. The
 // address was briefly mis-modeled as non-virtual after a bad symbols.csv row

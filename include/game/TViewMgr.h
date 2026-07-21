@@ -30,7 +30,7 @@ public:
   // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
   virtual void LoadTurnEventCursorTable();                                     // slot 0x0a 0x5d5100
-  virtual void HandleTurnEventVtableSlot2CInitializeHotKeyDialog();            // slot 0x0b 0x5dcaa0
+  virtual void MakeGameSetupDialog();                                          // slot 0x0b 0x5dcaa0
   virtual void UpdatePaletteIndexFromTurnEventCode(int eventCode);             // slot 0x0c 0x5d5780
   virtual void ApplyTurnEventPaletteColorByEventCode(int eventCode);           // slot 0x0d 0x5d5750
   virtual int ClassifyTurnStateForOverlayMode();                               // slot 0x0e 0x5d5960
@@ -52,7 +52,7 @@ public:
   // Sibling of slot 0x60: refreshes the 'curs' cursor panel, then repopulates the
   // 'quer' query label and 'titL' nation-title panel from the current scenario setup
   // (0x5da180).
-  virtual void HandleTurnEventVtableSlot64RefreshMainHudTitles(int eventCode); // 0x64
+  virtual void HandleTurnEvent2260_RefreshMainHudTitles(int eventCode); // 0x64
 
   // UI runtime helper functions
   virtual void AddPendingTurnOverlayCode(int modeValue); // 0x68
@@ -90,14 +90,14 @@ public:
   // Opens factory dialog 0x2405, seeds its 'GOLD' trade-summary child with the three
   // caller args, places/refreshes it, then forwards the refresh result to the child
   // (0x5dc430).
-  virtual void HandleTurnEventDialogFactorySlotB8(int a, int b, int c); // 0xb8 0x5dc430
-  virtual void UiRuntimeSlotBC(int eventCode);                          // 0xbc
-  virtual undefined InvokeStrategicMapViewMethod68();                   // 0xc0 0x5dc180
-  virtual undefined InvokeStrategicMapViewMethod70();                   // 0xc4 0x5dc1c0
-  virtual undefined InvokeStrategicMapViewMethod74();                   // 0xc8 0x5dc1a0
-  virtual void InvokeStrategicMapViewMethod6C();                        // 0xcc 0x5dc160
-  virtual void UiRuntimeSlotD0(int eventCode);                          // 0xd0
-  virtual void UiRuntimeSlotD4(int arg);                                // 0xd4
+  virtual void HandleTurnEventDialogFactorySlotB8(int a, int b, int c);            // 0xb8 0x5dc430
+  virtual void HandleTurnEvent7DD_RefreshOrderStatusPanelsAndIcons(int eventCode); // 0xbc
+  virtual undefined InvokeStrategicMapViewMethod68();                              // 0xc0 0x5dc180
+  virtual undefined InvokeStrategicMapViewMethod70();                              // 0xc4 0x5dc1c0
+  virtual undefined InvokeStrategicMapViewMethod74();                              // 0xc8 0x5dc1a0
+  virtual void InvokeStrategicMapViewMethod6C();                                   // 0xcc 0x5dc160
+  virtual void UiRuntimeSlotD0(int eventCode);                                     // 0xd0
+  virtual void UiRuntimeSlotD4(int arg);                                           // 0xd4
   // Resolves the active dialog's 'GOLD' panel, notifies it of the current turn-event
   // code, then resolves+shows+refreshes the 0x546 factory dialog's own 'GOLD' child
   // (0x5dcf20).

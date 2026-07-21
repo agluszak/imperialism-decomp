@@ -19,7 +19,11 @@ class TTaskForce;
 // VTABLE: IMPERIALISM 0x0065c7c8
 class TOcean : public TObject {
 public:
-  TOcean();
+  // No standalone address: VC5 inlines this constructor at both allocation sites,
+  // including TSimMgr::RebuildMapContextAndGlobalMapState (0x57c7c0).
+  TOcean()
+      : TObject(), nationCount(0), contextArray(0), routeNodeCount(0), routeNodeBuffer(0),
+        selectedTaskForce14(0) {}
   DECLARE_DYNCREATE(TOcean)
   virtual ~TOcean() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)

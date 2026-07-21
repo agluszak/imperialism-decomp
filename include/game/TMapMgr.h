@@ -794,7 +794,7 @@ public:
   int ClassifyCityGateTerrainComposition(int cityIndex);
 
   // Fills outProfileBySlot[0..6] with the AI profile id chosen for each great-power slot
-  // that TSimMgr has marked open (scenarioSetupRows0 == 2), or 3 for a slot that is not
+  // that TSimMgr has marked open (nationControlModes == 2), or 3 for a slot that is not
   // open. Slots are ranked by how isolated their region class is (unique / shared with a
   // minor / shared with another great power) and profiles are handed out in a fixed
   // priority order. 0x00519610, __thiscall on g_pGlobalMapState, one short* stack arg

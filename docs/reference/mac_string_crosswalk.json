@@ -6324,6 +6324,13 @@
     "0x004538a0": {
       "references": [
         {
+          "event": 960,
+          "kind": "generated_mac_resource",
+          "mac_string": "Startup.rsrc:STR#:1300:6",
+          "resource": "Startup.rsrc:960",
+          "text": "Save\r\rLoad\r\rExit"
+        },
+        {
           "event": 965,
           "kind": "generated_mac_resource",
           "mac_string": "Startup.rsrc:STR#:1300:4",
@@ -14109,6 +14116,35 @@
       ],
       "source_file": "src/game/TArmyPlacard.cpp"
     },
+    "0x0058c950": {
+      "references": [
+        {
+          "address": "0x0069430c",
+          "kind": "embedded_global",
+          "symbol": "g_szDecimalFormat",
+          "text": "%d"
+        },
+        {
+          "address": "0x00694fd8",
+          "kind": "embedded_global",
+          "symbol": "g_szUiFailureMessage",
+          "text": "Failure"
+        },
+        {
+          "address": "0x00694fc8",
+          "kind": "embedded_global",
+          "symbol": "g_szUiNilPointerMessage",
+          "text": "Nil Pointer"
+        },
+        {
+          "address": "0x00695794",
+          "kind": "embedded_global",
+          "symbol": "s_szSpaceSeparator_00695794",
+          "text": " "
+        }
+      ],
+      "source_file": "src/game/TCombatReportView.cpp"
+    },
     "0x0058d950": {
       "references": [
         {
@@ -14150,6 +14186,12 @@
           "kind": "embedded_global",
           "symbol": "g_szDecimalFormat",
           "text": "%d"
+        },
+        {
+          "address": "0x00695794",
+          "kind": "embedded_global",
+          "symbol": "s_szSpaceSeparator_00695794",
+          "text": " "
         }
       ],
       "source_file": "src/game/TTransportPicture.cpp"
@@ -178897,7 +178939,7 @@
   "summary": {
     "embedded_globals": 766,
     "formula_matches": 2356,
-    "functions_with_references": 262,
+    "functions_with_references": 263,
     "mac_strings": 3821,
     "mac_strings_with_candidates": 3091,
     "text_resources": 0,

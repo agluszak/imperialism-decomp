@@ -51,7 +51,11 @@ IMPLEMENT_DYNCREATE(TArmyMgr, TObject)
 // for HandleMapClickByComputedCursorState's use.
 static int __stdcall ComputeMapCursorStateIndex(short tileIndex, short mode);
 
-TArmyMgr::TArmyMgr() {}
+// FUNCTION: IMPERIALISM 0x004a1870
+TArmyMgr::TArmyMgr() {
+  pendingMapActionIndex = -1;
+  mapContextActionRecordList04 = 0;
+}
 
 // SYNTHETIC: IMPERIALISM 0x004a18a0
 // TArmyMgr::`scalar deleting destructor'
@@ -82,11 +86,11 @@ void TArmyMgr::WriteTo(TStream* stream) {}
 
 // FUNCTION: IMPERIALISM 0x004a1e40
 undefined TArmyMgr::OrphanCallChain_C4_I26_004a1e40() {
-  // g_pSimMgr->field44 is the multiplayer-mode dword (compared against 1/2 throughout
+  // g_pSimMgr->multiplayerSessionRole is the multiplayer-mode dword (compared against 1/2 throughout
   // TMultiplayerMgr.cpp); == 2 selects the alternate branch here.
-  if (g_pSimMgr->field44 == 2) {
+  if (g_pSimMgr->multiplayerSessionRole == 2) {
     this->IterateLinkedListCursorAndClearPerTileByte0F();
-    g_pSimMgr->PostMainWindowCommand100ForTurnFlow();
+    g_pSimMgr->StartNextPhase();
   } else {
     this->ProcessTileUnitListsAndApplyRandomStatusUpdates();
     this->pendingRebuildFlag10 = 1;
@@ -122,7 +126,7 @@ void TArmyMgr::ReleaseThreeLinkedObjectsAndResetTerrainDescriptorFlags() {
     }
   }
   this->needsTerrainRefreshFlag39a = 0;
-  g_pSimMgr->PostMainWindowCommand100ForTurnFlow();
+  g_pSimMgr->StartNextPhase();
 }
 
 // FUNCTION: IMPERIALISM 0x004a1f80
@@ -1343,7 +1347,7 @@ void TArmyMgr::CreateTacticalBattleViewAndInitializeBattleSetup(TArmyStack* ourS
   this->enemyStackBattle3a0 = enemyStack;
   this->activeBattleView3a4 = newBattle;
 
-  if (g_pSimMgr->field44 == 1) {
+  if (g_pSimMgr->multiplayerSessionRole == 1) {
     g_pGameFlowState->NoOpCallbackRet4(newBattle);
   }
   newBattle->StartBattle();
@@ -1351,14 +1355,14 @@ void TArmyMgr::CreateTacticalBattleViewAndInitializeBattleSetup(TArmyStack* ourS
 
 // FUNCTION: IMPERIALISM 0x004a5ca0
 void TArmyMgr::ApplyPostBattleStackOutcomeAndGrowUnitMeters(TArmyStack* ourStack,
-                                                            TArmyStack* enemyStack,
-                                                            int sideWonFlag, int battleSiteIndex) {
+                                                            TArmyStack* enemyStack, int sideWonFlag,
+                                                            int battleSiteIndex) {
   BuildArmyContextActionRecordsAndDispatchLabel(ourStack, enemyStack, sideWonFlag, battleSiteIndex,
                                                 1);
 
   if (sideWonFlag != 0) {
-    this->RedistributeUnitOrderQueueToRandomAdjacentRegion(
-        enemyStack, static_cast<short>(battleSiteIndex));
+    this->RedistributeUnitOrderQueueToRandomAdjacentRegion(enemyStack,
+                                                           static_cast<short>(battleSiteIndex));
 
     // Winning stack: settle every unit into its tile (raw head14/cursor18 walk -- no
     // calls emitted, matching TryCreateTacticalBattleViewForTileArmies's peaceful path).
@@ -1528,7 +1532,7 @@ bool TArmyMgr::BuildMapOrderContextSummaryStringForNation(short cityRecordIndex,
 
   // Phase 3: tally the city's stationed units into 11 resource buckets via a
   // per-strength-tier weighted roll, seeded from the city/turn/nation.
-  short turnTick = g_pSimMgr->GetTurnTickSlot3C();
+  short turnTick = g_pSimMgr->GetEconomicTurn();
   short activeNationId = g_pSimMgr->GetActiveNationId();
   int seed = cityRecordIndex + turnTick + activeNationId;
   if (seed == 0) {

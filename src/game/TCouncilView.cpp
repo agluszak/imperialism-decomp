@@ -298,8 +298,8 @@ void TCouncilView::AdvanceCivilianTerrainSelectionStep() {
       bool allowAdvance = false;
       short activeNation = g_pSimMgr->GetActiveNationId();
       if (g_pDiplomacyTurnStateManager->lastProcessedNationSlot78e == activeNation &&
-          g_pSimMgr->field44 == 0) {
-        short tick = g_pSimMgr->GetTurnTickSlot3C();
+          g_pSimMgr->multiplayerSessionRole == 0) {
+        short tick = g_pSimMgr->GetEconomicTurn();
         unsigned char* phaseTable = &g_pSimMgr->field6e;
         if (phaseTable[tick / 40] != 2) {
           allowAdvance =
@@ -307,7 +307,7 @@ void TCouncilView::AdvanceCivilianTerrainSelectionStep() {
         }
       }
       if (!allowAdvance) {
-        g_pSimMgr->PostMainWindowCommand100ForTurnFlow();
+        g_pSimMgr->StartNextPhase();
       } else {
         g_pDiplomacyTurnStateManager->lastProcessedNationSlot78e = -1;
         g_pSimMgr->turnStateCode = 0x10;

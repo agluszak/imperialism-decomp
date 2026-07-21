@@ -99,7 +99,15 @@ functions:
     name: BuildTurnEventDialogResources_2508
     prototype: TView* __cdecl BuildTurnEventDialogResources_2508(CWnd* pHostWindow, int nEventCode)
     cases:
+      - {event: 0x22e2, resource: Minister.rsrc:8930, evidence: "Windows request 0x004f314e; functional-parity case absent from original builder"}
+      - {event: 0x22ec, resource: Minister.rsrc:8940, evidence: "Windows request 0x004f312c; functional-parity case absent from original builder"}
+      - {event: 0x22f6, resource: Minister.rsrc:8950, evidence: "Windows request 0x004f30e5; functional-parity case absent from original builder"}
+      - {event: 0x2300, resource: Minister.rsrc:8960, evidence: "Windows request 0x004f30f9; functional-parity case absent from original builder"}
+      - {event: 0x231e, resource: Minister.rsrc:8990, evidence: "Windows request 0x004f3162; functional-parity case absent from original builder"}
       - {event: 0x2508, resource: Minister.rsrc:9480}
+      - {event: 0x258a, resource: Minister.rsrc:9610, evidence: "Windows request 0x004f345d; functional-parity case absent from original builder"}
+      - {event: 0x25ee, resource: Minister.rsrc:9710, evidence: "Windows request 0x004f37e8; functional-parity case absent from original builder"}
+      - {event: 0x25f8, resource: Minister.rsrc:9720, evidence: "Windows request 0x004f37ac; functional-parity case absent from original builder"}
 
   - address: 0x0044af90
     name: InitializeJoinSelectorDialogControlsAndNationSlots
@@ -122,6 +130,7 @@ functions:
     cases:
       - {event: 0x03b8, resource: Startup.rsrc:952}
       - {event: 0x03b9, resource: Startup.rsrc:953}
+      - {event: 0x03c0, resource: Startup.rsrc:960, evidence: "Windows request 0x0050ed78; functional-parity case absent from original builder"}
       - {event: 0x03c5, resource: Startup.rsrc:965, evidence: "Windows request 0x0051dd0b; functional-parity case absent from original builder"}
       - {event: 0x03c6, resource: Startup.rsrc:966}
       - {event: 0x05dc, resource: Startup.rsrc:1500}

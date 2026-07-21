@@ -311,10 +311,10 @@ void TForeignMinister::RecomputeOrderStateSlot9C() {
 
 // FUNCTION: IMPERIALISM 0x0052fd10
 void TForeignMinister::RefreshForeignMinisterStateByLocalizationMode() {
-  if (g_pSimMgr->GetTurnTickSlot3C() == 1) {
+  if (g_pSimMgr->GetEconomicTurn() == 1) {
     this->MinisterSlot18();
   }
-  if (g_pSimMgr->GetTurnTickSlot3C() == 2) {
+  if (g_pSimMgr->GetEconomicTurn() == 2) {
     this->MinisterSlot19();
   }
   this->MinisterSlot1B();
@@ -373,7 +373,7 @@ void TForeignMinister::QueueTurnEventHintActionsByNationMetricsAndCompatibility(
 char TForeignMinister::EvaluateLocalizedScoreThresholdPredicateForNationValue(int nationCode) {
   // Two difficulty-indexed threshold rows (A = [difficulty], B = [difficulty + 5]).
   int thresholds[10] = {0x15, 0x12, 0xf, 0xd, 0xb, 0x1b, 0x17, 0x13, 0x10, 0xe};
-  int difficulty = g_pSimMgr->redrawEnabled; // [g_pSimMgr + 0x40] scenario/difficulty index
+  int difficulty = g_pSimMgr->difficultyLevel; // [g_pSimMgr + 0x40] scenario/difficulty index
   int thresholdA = thresholds[difficulty];
   int thresholdB = thresholds[difficulty + 5];
   char result = 0;

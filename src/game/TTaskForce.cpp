@@ -1217,8 +1217,7 @@ void TTaskForce::SetTaskForceOrderSelectionByNationClassAndFlag(short nationClas
 }
 
 // FUNCTION: IMPERIALISM 0x005549a0
-void TTaskForce::SetTaskForceOrderSelectionByNodeId(TObject* targetOrderObject,
-                                                    char activeFlag) {
+void TTaskForce::SetTaskForceOrderSelectionByNodeId(TObject* targetOrderObject, char activeFlag) {
   TMapOrderChildLinkNode* node;
   if (childOrderList == nullptr) {
     node = nullptr;
@@ -1633,7 +1632,7 @@ void TTaskForce::ApplyMapOrderTypeExecutionEffects() {
     TGlobalMapCityScoreRecord* cityRecord = owner.asCityTarget;
     reinterpret_cast<unsigned char*>(cityRecord)[0xa1] |=
         static_cast<unsigned char>(1 << required_count);
-    if (g_pSimMgr->field44 == 1) {
+    if (g_pSimMgr->multiplayerSessionRole == 1) {
       int cityIndex = GetCityIndexFromCityStatePointer(cityRecord);
       g_pGameFlowState->DispatchCityRedrawInvalidateEvent(static_cast<short>(cityIndex));
     }

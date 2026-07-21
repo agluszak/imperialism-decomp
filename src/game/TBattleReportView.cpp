@@ -198,7 +198,7 @@ void TBattleReportView::DoPostCreate(int arg) {
   }
 
   if (selectedOrdinal == -1) {
-    g_pSimMgr->PostMainWindowCommand100ForTurnFlow();
+    g_pSimMgr->StartNextPhase();
     selectedOrdinal = 1;
   }
   selectedReportIndex24c8 = selectedOrdinal - 1;

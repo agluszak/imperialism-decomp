@@ -4,10 +4,42 @@ format_version: 1
 # Windows source model. These are not ABI claims; each substitution must remain
 # represented by tools.ui_codegen.CLASS_ALIASES and appear in the delta report.
 class_substitutions:
+  TBookView:
+    windows_class: TBook
+    reason: The Windows port uses the shared TBook pager for the price-history shell instead of the resource-only Mac class name.
+    evidence: Minister.rsrc:8990 DLOG has the TBook serialized pict shape and lcor/rcor children; TBook is present in Windows RTTI while TBookView is absent from both code symbol corpora
+  TDefenseNotesView:
+    windows_class: TBook
+    reason: The Windows port uses the shared TBook pager for the defense-notes shell instead of the resource-only Mac class name.
+    evidence: Minister.rsrc:9610 DLOG has the TBook serialized pict shape and lcor/rcor children; Windows requests event 0x258a and has TBook RTTI but no TDefenseNotesView RTTI
+  TExportsView:
+    windows_class: TBook
+    reason: The Windows port uses the shared TBook pager for the exports shell instead of the resource-only Mac class name.
+    evidence: Minister.rsrc:8960 DLOG has the TBook serialized pict shape and lcor/rcor children; Windows requests event 0x2300 and has TBook RTTI but no TExportsView RTTI
+  TForeignNotesView:
+    windows_class: TBook
+    reason: The Windows port uses the shared TBook pager for the foreign-notes shell instead of the resource-only Mac class name.
+    evidence: Minister.rsrc:8930 DLOG has the TBook serialized pict shape and lcor/rcor children; Windows requests event 0x22e2 and has TBook RTTI but no TForeignNotesView RTTI
+  TInteriorNotesView:
+    windows_class: TBook
+    reason: The Windows port uses the shared TBook pager for the interior-notes shell instead of the resource-only Mac class name.
+    evidence: Minister.rsrc:9710 DLOG has the TBook serialized pict shape and lcor/rcor children; Windows requests event 0x25ee and has TBook RTTI but no TInteriorNotesView RTTI
+  TMerchantMarineView:
+    windows_class: TBook
+    reason: The Windows port uses the shared TBook pager for the merchant-marine shell instead of the resource-only Mac class name.
+    evidence: Minister.rsrc:8940 DLOG has the TBook serialized pict shape and lcor/rcor children; Windows requests event 0x22ec and has TBook RTTI but no TMerchantMarineView RTTI
+  TMiniDealBookView:
+    windows_class: TBook
+    reason: The Windows port uses the shared TBook pager for the mini-deal shell instead of the resource-only Mac class name.
+    evidence: Minister.rsrc:8950 DLOG has the TBook serialized pict shape and lcor/rcor children; Windows requests event 0x22f6 and has TBook RTTI but no TMiniDealBookView RTTI
   TToolbarCluster:
     windows_class: TToolBarCluster
     reason: Windows source and RTTI use the internal-capital spelling for the toolbar cluster class.
     evidence: FlagView.rsrc:8800 node tbr2; Windows TToolBarCluster source/RTTI identity
+  TTreasuriesView:
+    windows_class: TBook
+    reason: The Windows port uses the shared TBook pager for the treasuries shell instead of the resource-only Mac class name.
+    evidence: Minister.rsrc:9720 DLOG has the TBook serialized pict shape and lcor/rcor children; Windows requests event 0x25f8 and has TBook RTTI but no TTreasuriesView RTTI
   TMyWindow:
     windows_class: TWindow
     reason: Mac utility resources use a local window subclass absent from the Windows source model.
@@ -18,6 +50,24 @@ class_substitutions:
 functional_parity_cases:
   "0x004357b0/0x07e5":
     evidence: Windows request 0x005d57ce
+  "0x0044a810/0x22e2":
+    evidence: Windows request 0x004f314e
+  "0x0044a810/0x22ec":
+    evidence: Windows request 0x004f312c
+  "0x0044a810/0x22f6":
+    evidence: Windows request 0x004f30e5
+  "0x0044a810/0x2300":
+    evidence: Windows request 0x004f30f9
+  "0x0044a810/0x231e":
+    evidence: Windows request 0x004f3162
+  "0x0044a810/0x258a":
+    evidence: Windows request 0x004f345d
+  "0x0044a810/0x25ee":
+    evidence: Windows request 0x004f37e8
+  "0x0044a810/0x25f8":
+    evidence: Windows request 0x004f37ac
+  "0x004538a0/0x03c0":
+    evidence: Windows request 0x0050ed78
   "0x004538a0/0x03c5":
     evidence: Windows request 0x0051dd0b
   "0x0046fd10/0x0f3d":

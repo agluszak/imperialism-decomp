@@ -83,7 +83,7 @@ void TScenarioChooser::HandleEvent(int commandId, TEventHandler* sourceHandler, 
 
 // FUNCTION: IMPERIALISM 0x0057a2d0
 undefined TScenarioChooser::PostTurnEvent5DCOrResetScenarioSelectionState() {
-  if (g_pSimMgr->field44 != 0) {
+  if (g_pSimMgr->multiplayerSessionRole != 0) {
     g_pGameFlowState->ResetLocalUiStateAndPostTurnEvent5E5();
   } else {
     g_pGlobalUiRootController->PostTurnEventCodeMessage2420(0x5dc);
@@ -115,20 +115,19 @@ undefined TScenarioChooser::ApplyScenarioSelectionAndPostTurnEvent5E4() {
   mapControl->AssertValid();
   g_pSimMgr->RebuildGlobalOrderManagersAndCapabilityState(1);
   g_pSimMgr->RecreateActiveMapContextAndInitializeGlobalMapState(selectedScenarioIndex142);
-  g_pSimMgr->SetStateCodeAndUpdateZeroOrOutOfRangeFlag(
-      nationStateCodesByMapSelection144[mapControl->selectedNation68]);
+  g_pSimMgr->SetDifficultyLevel(nationStateCodesByMapSelection144[mapControl->selectedNation68]);
 
-  if (g_pSimMgr->field44 != 0) {
+  if (g_pSimMgr->multiplayerSessionRole != 0) {
     // The original then builds a multiplayer save-slot file path (finding the next unused
     // numbered slot in a loop), publishes it, and posts turn event 0x5e4 -- not yet
     // decoded.
   } else {
     g_pSimMgr->SetActiveNationSlotAndRefreshCityCapabilityUiHandles(mapControl->selectedNation68);
     for (int i = 0; i < 7; ++i) {
-      g_pSimMgr->scenarioSetupRows0[i] = 2;
+      g_pSimMgr->nationControlModes[i] = 2;
     }
-    g_pSimMgr->scenarioSetupRows0[mapControl->selectedNation68] = 1;
-    g_pSimMgr->PostMainWindowCommand100ForTurnFlow();
+    g_pSimMgr->nationControlModes[mapControl->selectedNation68] = 1;
+    g_pSimMgr->StartNextPhase();
   }
   return 0;
 }

@@ -270,7 +270,7 @@ void TAutoGreatPower::WriteTo(TStream* stream) {
 
 // FUNCTION: IMPERIALISM 0x004e7510
 void TAutoGreatPower::HandleNationLost(void) {
-  if (g_pSimMgr->redrawEnabled != 0) {
+  if (g_pSimMgr->difficultyLevel != 0) {
     g_pGameFlowState->DispatchTaggedGameStateEvent1F20(0x6c6f7374, this->nationSlot, -3);
   }
 }
@@ -661,7 +661,7 @@ char TAutoGreatPower::ReturnZeroSlot9D(int targetNation) {
     ++peerCursor;
     ++peerSlot;
   } while (peerCursor < g_apNationStates + 7);
-  int tickQuarter = static_cast<short>(g_pSimMgr->quarterGateTick2c / 4);
+  int tickQuarter = static_cast<short>(g_pSimMgr->economicTurn / 4);
   if (tickQuarter >= 0x3c) {
     tickQuarter = 0x3c;
   }
@@ -885,7 +885,7 @@ void TAutoGreatPower::PopulateCase16AdvisoryMapNodeCandidateState() {
   CString turnText;
   CString preludeText;
   FormatOverlayTerrainLabelText(&nationText);
-  turnText.Format(g_szDecimalFormat, static_cast<short>(g_pSimMgr->quarterGateTick2c / 4));
+  turnText.Format(g_szDecimalFormat, static_cast<short>(g_pSimMgr->economicTurn / 4));
 
   int t;
   for (t = 0; t < 4; ++t) {
@@ -1390,7 +1390,7 @@ float TAutoGreatPower::GetCachedAiCityActionContextBias(short selector) {
     cacheIndex = 2;
   }
 
-  if (g_cachedAiCityActionTurnTick_006967d8 != g_pSimMgr->GetTurnTickSlot3C()) {
+  if (g_cachedAiCityActionTurnTick_006967d8 != g_pSimMgr->GetEconomicTurn()) {
     int base = g_pNationInteractionStateManager->QueryProposalWeightSlot4C(0x0d) +
                g_pNationInteractionStateManager->QueryProposalWeightSlot4C(0x0e) +
                g_pNationInteractionStateManager->QueryProposalWeightSlot4C(0x07);
@@ -1400,7 +1400,7 @@ float TAutoGreatPower::GetCachedAiCityActionContextBias(short selector) {
     g_cachedAiCityActionContextBias[1] = static_cast<float>(base + middle);
     g_cachedAiCityActionContextBias[2] = static_cast<float>(base + middle + tail);
     g_cachedAiCityActionNationSlot_006967d4 = nationSlot;
-    g_cachedAiCityActionTurnTick_006967d8 = g_pSimMgr->GetTurnTickSlot3C();
+    g_cachedAiCityActionTurnTick_006967d8 = g_pSimMgr->GetEconomicTurn();
   }
 
   return g_cachedAiCityActionContextBias[cacheIndex];

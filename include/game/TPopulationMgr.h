@@ -35,8 +35,12 @@ public:
   virtual undefined OrphanLeaf_NoCall_Ins87_004b66a0(short param_1,
                                                      short param_2); // slot 0x0d 0x4b66a0
   virtual undefined PopulationMgrSlot0E();                           // slot 0x0e 0x4b5ed0
-  virtual undefined OrphanLeaf_NoCall_Ins111_004b6260(short* param_1,
-                                                      ushort* param_2); // slot 0x0f 0x4b6260
+  // Out-param pair reporting recent storm impact (both callers treat "either output
+  // nonzero" as a noteworthy event to surface -- THelpMgr's periodic advisory and
+  // TCityInteriorMinister's foreign-minister notification). Renamed from the
+  // placeholder OrphanLeaf_NoCall_Ins111_004b6260; still a stub.
+  virtual undefined GetRecentStormImpactMetrics(short* damageOut,
+                                                ushort* eventCountOut); // slot 0x0f 0x4b6260
   virtual undefined OrphanCallChain_C2_I61_004b65b0();                  // slot 0x10 0x4b65b0
   virtual undefined OrphanCallChain_C2_I24_004b5e80();                  // slot 0x11 0x4b5e80
   virtual undefined OrphanLeaf_NoCall_Ins50_004b63e0();                 // slot 0x12 0x4b63e0

@@ -45,7 +45,7 @@ void TDefenseMinisterView::HandleEvent(int commandId, TEventHandler* sourceHandl
         if (g_pSimMgr->field14 == 0) {
           TWindow* owner = static_cast<TWindow*>(OwnerPanel());
           g_pGlobalUiRootController->CloseAndFreeWindow(owner);
-          g_pSimMgr->SetGlobalTurnStateCodeIfAllowed(0x65);
+          g_pSimMgr->EnterOptionalPhase(0x65);
         }
       } else {
         CString message;

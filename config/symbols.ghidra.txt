@@ -50,7 +50,7 @@ thunk_SetNumericEntryCheckedState 401B09 l
 thunk_GetCitySiteViewTypeName 401B22 l
 thunk_ApplyCityDialogMinisterValues 401B72 l
 thunk_SetUiRuntimeContextAndActivateMain 401B77 l
-thunk_GetInt32Field30 401B86 l
+thunk_GetNumGPs 401B86 l
 TControl::thunk_LookupOrderCompatibilityMatrixValue 401B8B l
 thunk_InitializeCityModel 401BA4 l
 thunk_ConstructSelectableTextOptionEntryBase 401BEA l
@@ -81,7 +81,7 @@ thunk_ReleaseHashIndexedRecordByHandle 4020FE l
 thunk_ClearCivilianSelectionHighlightsForNation 402135 l
 thunk_ApplyCompletedCivWorkOrderToMapState 402144 l
 thunk_HandleTurnEvent8FC_RebuildPageTabsAndTitles 402199 l
-TSimMgr::thunk_GetTurnFlowStateCounter2C_At004021ee 4021EE l
+TSimMgr::thunk_GetEconomicTurn_At004021ee 4021EE l
 thunk_ConstructGlobalUiRootControllerState 40223E l
 thunk_DispatchTurnEvent1AWithNationActionPayload 4022C5 l
 thunk_ShowTurnAlertsForActiveNation 402315 l
@@ -133,7 +133,7 @@ thunk_HandleTurnEvent7DB_SelectCityAndRefreshView 402AD6 l
 thunk_GetTileNormalizedMovementClassId 402B1C l
 thunk_IncrementDialogResourceRefCountByShortIdInRegistry 402C98 l
 thunk_SetCurrentTacticalUnitSelection 402CCA l
-TSimMgr::thunk_IncrementTurnFlowStateCounter2C_At00402d1a 402D1A l
+TSimMgr::thunk_AdvanceSeason_At00402d1a 402D1A l
 thunk_ExecuteDeferredCityOrderCommand 402D56 l
 thunk_SetUniversityDialogTextAndRefresh 402DD3 l
 thunk_ActivatePendingEventAndRefreshView 402DDD l
@@ -291,7 +291,7 @@ thunk_ConstructUiGoldLabelResourceEntry 40533A l
 thunk_ComputeRepresentativeTileIndexForTerrainTypeWithWrapBias 405344 l
 thunk_InitializeCitySiteView 405362 l
 thunk_GetDefendProvinceMissionClassName 4053A3 l
-TSimMgr::thunk_PostMainWindowCommand100ForTurnFlow_At004053d5 4053D5 l
+TSimMgr::thunk_StartNextPhase_At004053d5 4053D5 l
 thunk_UpdateUiResourceContextMetricWord27 40540C l
 thunk_ConstructUiTextResourceEntryBase 40541B l
 thunk_InitializeDialogTemplateDEWithTextState 40545C l
@@ -388,7 +388,7 @@ thunk_RefreshUniversityAdvancedStatus 406438 l
 thunk_HandleTurnEventDialogFactorySlot70 4064BA l
 thunk_InitializeTurnOrderNavigationDialogByViewportSize 4064DD l
 thunk_ConstructTViewBaseState 4064E2 l
-thunk_HandleTurnEventVtableSlot2CInitializeHotKeyDialog 406514 l
+thunk_MakeGameSetupDialog 406514 l
 thunk_FillRectWithQuickDrawBrushAndContextOffset 406546 l
 thunk_QueueCivilianWorkOrderWithCostCheck 406555 l
 thunk_InitializeTMinisterBaseOrderArrayMetrics 40656E l
@@ -439,7 +439,7 @@ thunk_InvokeStrategicMapViewMethod74 406F23 l
 thunk_SetActiveQuickDrawSurfaceContext 406F5F l
 thunk_ShowPeriodicCapabilityReminderIfNeeded 406F78 l
 thunk_ApplyAutoResolutionModeAndPersist 406FFA l
-thunk_InitializeHotKeyDialogTemplateA1WithTripleTextState 40713A l
+thunk_TA1TemplateDialog_ctor_At0040713A 40713A l
 thunk_SumNavyOrderPriorityForNationAndNodeType 40716C l
 thunk_HandleTurnEventDialogFactorySlotE4 4071AD l
 thunk_DispatchUiMouseMoveToChildren 40723E l
@@ -1131,7 +1131,7 @@ WrapperFor_FreeHeapBufferIfNotNull_At004820e0 4820E0 f
 WrapperFor_FreeHeapBufferIfNotNull_At004820e0_Impl 482110 f
 TB1TemplateDialog::DoDataExchange 482180 f
 TB1TemplateDialog::GetMessageMap 4821B0 f
-HandleTurnEventVtableSlot2CInitializeHotKeyDialog_Impl 4821D0 f
+TA1TemplateDialog::SetGameSetupValues 4821D0 f
 TA1TemplateDialog::OnInitDialog 4821F0 f
 OrphanRetStub_004822e0 4822E0 f
 TA1TemplateDialog::OnOK 482300 f
@@ -5452,13 +5452,13 @@ TSimMgr::RecreateActiveMapContextAndInitializeGlobalMapState 57C9A0 f
 TSimMgr::RebuildNationStateSlotsAndAvailability 57CAD0 f
 TSimMgr::RebuildPrimaryNationStateForSlot 57CDA0 f
 TSimMgr::RebuildSecondaryNationStateForSlot 57D520 f
-TSimMgr::FormatSeasonName 57D830 f
-TSimMgr::SetStateCodeAndUpdateZeroOrOutOfRangeFlag 57D870 f
-TSimMgr::GetTurnTickSlot3C 57D8B0 f
-TSimMgr::CopyScenarioNationSetupIntoFlowState 57D8D0 f
-TSimMgr::IncrementQuarterGateTick2C 57D950 f
-TSimMgr::PostMainWindowCommand100ForTurnFlow 57D970 f
-TSimMgr::SetGlobalTurnStateCodeIfAllowed 57D990 f
+TSimMgr::GetSeason 57D830 f
+TSimMgr::SetDifficultyLevel 57D870 f
+TSimMgr::GetEconomicTurn 57D8B0 f
+TSimMgr::SetGameSetupValues 57D8D0 f
+TSimMgr::AdvanceSeason 57D950 f
+TSimMgr::StartNextPhase 57D970 f
+TSimMgr::EnterOptionalPhase 57D990 f
 TSimMgr::AdvanceGlobalTurnStateMachine 57DA70 f
 TCountry::IsNationProfileInMinorRange100To199 57F0E0 f
 TSimMgr::IsTurnFlowPhaseOutsideRange4To5 57F110 f
@@ -5467,7 +5467,7 @@ TSimMgr::DispatchEligibleNationTurnCallback158 57F200 f
 TSimMgr::RefreshMapSystemsAndPrepareOrderExecution 57F280 f
 TSimMgr::DispatchTurnEvent2134AndRefreshNationPanels 57F3C0 f
 TSimMgr::ReturnZeroSlot6c 57F490 f
-TSimMgr::MergeTurnFlowStatusFlags 57F4B0 f
+TSimMgr::SetFlags 57F4B0 f
 TSimMgr::TestTurnFlowStatusFlagMask 57F4D0 f
 TSimMgr::AreAllActiveNationsReady 57F4F0 f
 TSimMgr::ClearActiveNationReadyFlags 57F530 f
@@ -5484,9 +5484,9 @@ TResizableByteSink::AppendByteToResizableBuffer 580460 f
 ExpandBracketMappedStringToSinkCallback 5804F0 f
 TSimMgr::GetString 580760 f
 TSimMgr::FormatDiplomacyNoticeTextByPolicyOrGrantCode 580790 f
-TSimMgr::GetField30 5811E0 f
-TSimMgr::DecrementField30Value 581200 f
-GetSumField34PlusField30 581240 f
+TSimMgr::GetNumGPs 5811E0 f
+TSimMgr::ReduceNumGPs 581200 f
+TSimMgr::GetNumCountries 581240 f
 TSimMgr::GetActiveNationId 581260 f
 TSimMgr::IsNationSlotEligibleForEventProcessing 581280 f
 TSimMgr::RemoveNationSlotAndNotifyPeers 581300 f
@@ -6725,8 +6725,8 @@ TViewMgr::UiRuntimeSlot9C 5D8C40 f
 TViewMgr::UiRuntimeSlotA0 5D8CC0 f
 TViewMgr::UiRuntimeSlot5C 5D8DD0 f
 TViewMgr::HandleTurnEventVtableSlot60ActivateMainDialog 5DA040 f
-TViewMgr::HandleTurnEventVtableSlot64RefreshMainHudTitles 5DA180 f
-TViewMgr::UiRuntimeSlotBC 5DA360 f
+TViewMgr::HandleTurnEvent2260_RefreshMainHudTitles 5DA180 f
+TViewMgr::HandleTurnEvent7DD_RefreshOrderStatusPanelsAndIcons 5DA360 f
 CString::GetLength 5DB2F0 f
 TViewMgr::HandleTurnEventDialogFactorySlotF4 5DB3B0 f
 TViewMgr::HandleTurnStateExitAndPostFollowupEventCode 5DB620 f
@@ -6745,7 +6745,7 @@ TViewMgr::HandleTurnEventTable66F220_Slot0C_InvokeGoldViewSlots0C_1E4_14x14 5DC3
 TViewMgr::HandleTurnEventDialogFactorySlotB8 5DC430 f
 DispatchUiRuntimeMessage102CAndRefreshActiveView 5DC560 f
 TViewMgr::HandleTurnEventF3D_PopulateRecentTurnMessages 5DC690 f
-TViewMgr::HandleTurnEventVtableSlot2CInitializeHotKeyDialog 5DCAA0 f
+TViewMgr::MakeGameSetupDialog 5DCAA0 f
 WrapperFor_ftol_At005dcc60 5DCC60 f
 TModalMessageCommand::CreateObject 5DCC90 f
 TModalMessageCommand::DoIt 5DCD10 f

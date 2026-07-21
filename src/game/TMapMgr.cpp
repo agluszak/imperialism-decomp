@@ -57,7 +57,7 @@ TMilitaryUnit* TMapMgr::ValidateGridIndexRange0To17F(short index) {
 // specific completion kind: 5=rail section, 6=depot, 7=port, 8=discovery/prospecting,
 // 10=development-tier advance, 12=city/building completion, 13=tile activity byte), then
 // dispatches redraw invalidation for the affected tiles/cities when the localized map UI
-// is active (g_pSimMgr->field44 != 0).
+// is active (g_pSimMgr->multiplayerSessionRole != 0).
 // FUNCTION: IMPERIALISM 0x004d4390
 void __cdecl ApplyCompletedCivWorkOrderToMapState(TCivUnit* order) {
   // Case bodies are written in the original's physical block layout (5, 8, 3, 1, 2, 0, 7 --
@@ -111,7 +111,7 @@ void __cdecl ApplyCompletedCivWorkOrderToMapState(TCivUnit* order) {
     break;
   }
 
-  if (g_pSimMgr->field44 == 0) {
+  if (g_pSimMgr->multiplayerSessionRole == 0) {
     return;
   }
 
@@ -343,8 +343,8 @@ void TMapMgr::AllocateAndResetTerrainAndCityScoreTables() {
 }
 
 // Builds (or loads) the whole per-session map state. Three entry modes: replay
-// (TSimMgr field112 set) reloads the political tables and refreshes tiles in place;
-// scenario (stateFlag114 set) loads the fixed map table (returning 0 on failure);
+// (TSimMgr reloadPoliticalMapState set) reloads the political tables and refreshes tiles in place;
+// scenario (scenarioMapIndexPlusOne set) loads the fixed map table (returning 0 on failure);
 // otherwise a fresh map is generated from the tuning string unless mapStreamName
 // names an already-populated stream. Every phase is bracketed by setup-globe spins.
 // FUNCTION: IMPERIALISM 0x0050ec90
@@ -359,7 +359,7 @@ char TMapMgr::BuildOrLoadGlobalMapStateForSession(const char* mapStreamName, cha
   TMapMaker* mapMaker = new TMapMaker();
 
   char sessionActive;
-  if (g_pSimMgr->field112 != 0 || g_pSimMgr->stateFlag114 != 0) {
+  if (g_pSimMgr->reloadPoliticalMapState != 0 || g_pSimMgr->scenarioMapIndexPlusOne != 0) {
     sessionActive = 1;
   } else {
     sessionActive = 0;
@@ -367,7 +367,7 @@ char TMapMgr::BuildOrLoadGlobalMapStateForSession(const char* mapStreamName, cha
   mapMaker->modeByte2a1 = hexNeighborWrapHorizontally20;
 
   if (sessionActive != 0) {
-    if (g_pSimMgr->field112 != 0) {
+    if (g_pSimMgr->reloadPoliticalMapState != 0) {
       // Replay path: reload the political tables and refresh every tile in place.
       LoadPoliticalMapRegionSubtypeTableFromResourceStream();
       short tile;
@@ -378,7 +378,7 @@ char TMapMgr::BuildOrLoadGlobalMapStateForSession(const char* mapStreamName, cha
       g_pUiRuntimeContext->DispatchTurnEventSlot4C(0x3c0, 0);
     } else {
       // Scenario path: load the fixed map; bail out entirely when that fails.
-      if (LoadScenarioMapStateFromTableResource(g_pSimMgr->stateFlag114 - 1) == 0) {
+      if (LoadScenarioMapStateFromTableResource(g_pSimMgr->scenarioMapIndexPlusOne - 1) == 0) {
         if (mapMaker != 0) {
           mapMaker->Free();
         }
@@ -1963,10 +1963,10 @@ void TMapMgr::DispatchFormationEntryActionsAndMaybeCreateTurnEvent12(short cityR
       static_cast<short>(newNationTag);
 
   bool isPrimary = g_pDiplomacyTurnStateManager->IsPrimaryNationSlotIndex(newNationTag) != 0;
-  if (isPrimary && g_pSimMgr->field44 != 2) {
+  if (isPrimary && g_pSimMgr->multiplayerSessionRole != 2) {
     g_apNationStates[newNationTag]->NotifyActionSlot94(oldNationCode, 0x135);
   }
-  if (g_pSimMgr->field44 == 1) {
+  if (g_pSimMgr->multiplayerSessionRole == 1) {
     g_pGameFlowState->CreateAndSendTurnEvent12_TwoShorts(static_cast<short>(newNationTag),
                                                          static_cast<short>(newNationTag));
   }
@@ -2396,7 +2396,7 @@ void TMapMgr::FloodFillTileRegionMarker(short nTileIndex, short nOwnerNationId) 
   if (terrainStateTable[nTileIndex].activeFlags1c & 2) {
     short cityIdx = terrainStateTable[nTileIndex].cityRecordIndex;
     if (cityScoreTable[cityIdx].lastTurnTick == 999) {
-      cityScoreTable[cityIdx].lastTurnTick = g_pSimMgr->GetTurnTickSlot3C();
+      cityScoreTable[cityIdx].lastTurnTick = g_pSimMgr->GetEconomicTurn();
     }
   }
 
@@ -2419,14 +2419,14 @@ void TMapMgr::FloodFillTileRegionMarker(short nTileIndex, short nOwnerNationId) 
       short cityIdx = terrainStateTable[neighborTile].cityRecordIndex;
       bool skipRedraw = false;
       if (cityScoreTable[cityIdx].lastTurnTick == 999) {
-        cityScoreTable[cityIdx].lastTurnTick = g_pSimMgr->GetTurnTickSlot3C();
+        cityScoreTable[cityIdx].lastTurnTick = g_pSimMgr->GetEconomicTurn();
         if (g_nSaveFormatVersion == -3) {
           skipRedraw = true;
-        } else if (g_pSimMgr->field44 == 1) {
+        } else if (g_pSimMgr->multiplayerSessionRole == 1) {
           g_pGameFlowState->DispatchCityRedrawInvalidateEvent(cityIdx);
         }
       }
-      if (!skipRedraw && g_nSaveFormatVersion != -3 && g_pSimMgr->field44 == 1) {
+      if (!skipRedraw && g_nSaveFormatVersion != -3 && g_pSimMgr->multiplayerSessionRole == 1) {
         DispatchTileRedrawInvalidateEvent(neighborTile);
       }
     }
@@ -4137,7 +4137,7 @@ void TMapMgr::ChooseNationSetupProfilesForOpenSlots(short* outProfileBySlot) {
         }
       }
     }
-    if (g_pSimMgr->scenarioSetupRows0[slot] == 2) {
+    if (g_pSimMgr->nationControlModes[slot] == 2) {
       ++openSlotCount;
     }
     outProfileBySlot[slot] = -1;
@@ -4150,7 +4150,7 @@ void TMapMgr::ChooseNationSetupProfilesForOpenSlots(short* outProfileBySlot) {
     assigned = false;
     for (pass = 0; pass < 3 && !assigned; ++pass) {
       for (openSlot = 0; openSlot < 7 && !assigned; ++openSlot) {
-        if (g_pSimMgr->scenarioSetupRows0[openSlot] == 2 &&
+        if (g_pSimMgr->nationControlModes[openSlot] == 2 &&
             slotIsolation[openSlot] == preferredIsolationByProfile[*profile][pass] &&
             outProfileBySlot[openSlot] == -1) {
           assigned = true;
@@ -4162,7 +4162,7 @@ void TMapMgr::ChooseNationSetupProfilesForOpenSlots(short* outProfileBySlot) {
   }
 
   for (slot = 0; slot < 7; ++slot) {
-    if (g_pSimMgr->scenarioSetupRows0[slot] != 2) {
+    if (g_pSimMgr->nationControlModes[slot] != 2) {
       outProfileBySlot[slot] = 3;
     }
   }

@@ -17,7 +17,7 @@ class MacResourceXrefTests(unittest.TestCase):
     def test_graph_covers_committed_resource_corpus(self) -> None:
         kinds = self.graph["summary"]["node_kinds"]
         self.assertEqual(kinds["view"], 121)
-        self.assertEqual(kinds["view_node"], 3173)
+        self.assertEqual(kinds["view_node"], 3263)
         self.assertEqual(kinds["pict"], 2297)
         self.assertEqual(kinds["str_entry"], 3821)
         self.assertEqual(kinds["txst"], 316)

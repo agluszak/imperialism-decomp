@@ -742,7 +742,7 @@ void TTradeMgr::RefreshNationStateAndEmitTurnEvent3Mode18() {
   if (*reinterpret_cast<int*>(&g_pSimMgr->preferenceValues[0]) == 1) {
     g_pGameFlowState->EmitTurnEvent3Mode18WithActiveNation();
   } else {
-    g_pSimMgr->PostMainWindowCommand100ForTurnFlow();
+    g_pSimMgr->StartNextPhase();
   }
 }
 
@@ -795,13 +795,13 @@ void TTradeMgr::RebuildNationMetricPassesAndClampRowsByBaseline() {
 void TTradeMgr::DispatchProposalAmountSlot60(short ownerNation, int sourceContext, int amount,
                                              int maxAmount, int targetNation, char emitEventFlag,
                                              char skipLocalizationBranch) {
-  if ((skipLocalizationBranch == 0) && (g_pSimMgr->redrawEnabled == 2)) {
+  if ((skipLocalizationBranch == 0) && (g_pSimMgr->difficultyLevel == 2)) {
     g_pGameFlowState->CreateAndSendTurnEvent1C_BoolAndSixShorts(
         true, ownerNation, static_cast<short>(sourceContext), static_cast<short>(amount),
         static_cast<short>(maxAmount), static_cast<short>(targetNation), emitEventFlag);
     return;
   }
-  if (g_pSimMgr->redrawEnabled == 1) {
+  if (g_pSimMgr->difficultyLevel == 1) {
     g_pGameFlowState->CreateAndSendTurnEvent1C_BoolAndSixShorts(
         false, ownerNation, static_cast<short>(sourceContext), static_cast<short>(amount),
         static_cast<short>(maxAmount), static_cast<short>(targetNation), emitEventFlag);
@@ -913,7 +913,7 @@ void TTradeMgr::RunNationMetricPreUpdatePassAcrossSecondaryNations() {
 
 // FUNCTION: IMPERIALISM 0x005b98d0
 void TTradeMgr::BuildEligibleNationMetricBucketsAndWeightedTrendScores() {
-  short turnCount = g_pSimMgr->quarterGateTick2c;
+  short turnCount = g_pSimMgr->economicTurn;
   short bucket = static_cast<short>(
       (static_cast<int>(turnCount) + (static_cast<int>(turnCount) >> 0x1f & 3U)) >> 2);
   double base;
@@ -987,7 +987,7 @@ void TTradeMgr::BuildEligibleNationMetricBucketsAndWeightedTrendScores() {
 
 // FUNCTION: IMPERIALISM 0x005b9b30
 void TTradeMgr::BuildSecondaryNationMetricBucketsAndWeightedTrendScores() {
-  short turnCount = g_pSimMgr->quarterGateTick2c;
+  short turnCount = g_pSimMgr->economicTurn;
   short band = static_cast<short>(
       (static_cast<int>(turnCount) + (static_cast<int>(turnCount) >> 0x1f & 3U)) >> 2);
   double base;

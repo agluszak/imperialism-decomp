@@ -104,10 +104,9 @@ void TInteriorMinister::Call4C() {
 
 // Tops up up to 10 of the nation's needs (in the fixed priority order
 // g_aInteriorMinisterNeedPriorityOrder_00696408) toward their current reading, stopping as
-// soon as the nation's need-cap headroom (needCapA6 - needsOverCapFlag) hits zero. NOTE:
-// TDefenseMinister::MinisterSlot14 (0x4b5dc0's sibling override at 0x4ec540, ~1.3KB with EH
-// scaffolding) was discovered to be similarly wrongly stubbed as a no-op while investigating
-// this slot; it is out of scope for this port and left as a flagged follow-up.
+// soon as the nation's need-cap headroom (needCapA6 - needsOverCapFlag) hits zero.
+// (TDefenseMinister::AssignDefenseUnitsToHomeAndBorderRegions, this slot's sibling override
+// at 0x4ec540, has since been ported.)
 // FUNCTION: IMPERIALISM 0x004be520
 void TInteriorMinister::MinisterSlot14() {
   short i = 0;

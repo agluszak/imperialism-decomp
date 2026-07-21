@@ -294,7 +294,7 @@ void TToolBarCluster::HandleEvent(int commandId, TEventHandler* sourceHandler, T
     } else if (tag == kControlTagFlagCaps) {
       DispatchUiRuntimeMessage102CAndRefreshActiveView();
     } else if (tag == kControlTagDoneCaps) {
-      g_pSimMgr->PostMainWindowCommand100ForTurnFlow();
+      g_pSimMgr->StartNextPhase();
     }
   }
 }
@@ -329,8 +329,8 @@ void TToolBarCluster::UpdateControlTagTreaTextFromNationAndMapContext(short nati
   TView* seasControl = this->ResolveControlByTag(0x73656173); // 'seas'
   if (seasControl != nullptr) {
     CString seasonText;
-    g_pSimMgr->FormatSeasonName(&seasonText);
-    int year = 1815 + g_pSimMgr->quarterGateTick2c / 4;
+    g_pSimMgr->GetSeason(&seasonText);
+    int year = 1815 + g_pSimMgr->economicTurn / 4;
     CString yearText;
     yearText.Format("%d", year);
     CString seasText = seasonText + ", " + yearText;

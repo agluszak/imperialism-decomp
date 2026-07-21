@@ -36,7 +36,7 @@ void TNewsMgr::QueueInterNationEventIntoNationBucket(int eventCode, int payloadO
     return;
   }
 
-  if (isReplayBypass != '\0' || g_pSimMgr->redrawEnabled == 0) {
+  if (isReplayBypass != '\0' || g_pSimMgr->difficultyLevel == 0) {
     TSortedPtrList* interNationQueue = perNationEventBuckets[eventCode];
     if (interNationQueue != 0) {
       interNationQueue->InsertCopiedRecordSortedByComparator(&payloadOrNation);
@@ -65,8 +65,8 @@ void TNewsMgr::QueueInterNationEventRecordDeduped(int eventCode, int nationA, in
     return;
   }
 
-  if (isReplayBypass == 0 && g_pSimMgr->redrawEnabled != 0) {
-    if (g_pSimMgr->redrawEnabled == 1) {
+  if (isReplayBypass == 0 && g_pSimMgr->difficultyLevel != 0) {
+    if (g_pSimMgr->difficultyLevel == 1) {
       g_pGameFlowState->CreateAndSendTurnEvent20_ShortAndTwoBytes(
           static_cast<short>(eventCode), static_cast<unsigned char>(nationA),
           static_cast<unsigned char>(nationB));
@@ -139,7 +139,7 @@ void TNewsMgr::QueueInterNationEventType0FWithBitmaskMerge(int eventCode, int na
     return;
   }
 
-  if (isReplayBypass != '\0' || g_pSimMgr->redrawEnabled == 0) {
+  if (isReplayBypass != '\0' || g_pSimMgr->difficultyLevel == 0) {
     TSortedPtrList* mergeQueue = sharedEventRecordQueue;
     if (mergeQueue == 0) {
       return;
@@ -188,7 +188,7 @@ struct TBilateralActionRelationEntry {
 void TNewsMgr::QueueInterNationEventType11(int eventParam, int value, char isReplayBypass) {
   if (g_pSimMgr->gateFlag7a == 0) {
     if (isReplayBypass == 0) {
-      unsigned char multiplayerActive = g_pSimMgr->field44 != 0;
+      unsigned char multiplayerActive = g_pSimMgr->multiplayerSessionRole != 0;
       if (multiplayerActive != 0) {
         g_pGameFlowState->CreateAndSendTurnEvent22_ByteAndShort((unsigned char)eventParam,
                                                                 (short)value);

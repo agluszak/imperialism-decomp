@@ -130,7 +130,7 @@ public:
   // the receiver and the global map, and notifies the interior minister.
   virtual void CreateFrogCityAtHomeRegionAndAttach(void* receiver);
   // Slots 0x3c-0x3e — each dispatches *message via A13A0 (overlayMode 2/1/0)
-  // when the quarter gate (quarterGateTick2c / 4) is open.
+  // when the quarter gate (economicTurn / 4) is open.
   virtual void DispatchGreatPowerQuarterlyStatusMessageLevel2(CString* message);
   virtual void DispatchGreatPowerQuarterlyStatusMessageLevel1(CString* message);
   virtual void DispatchGreatPowerQuarterlyStatusMessageLevel0(CString* message);
@@ -438,7 +438,7 @@ public:
   int economySummaryTradeCapacitySnapshot94c; // 0x94c — copy of tradeCapacity
   int economySummarySeasonCountdown950;       // 0x950 — (100 - currentQuarter) * 10
   int economySummaryTotal954;                 // 0x954 — sum of the 9 fields above (930..950)
-  int economySummarySeasonPercent958; // 0x958 — seasonPercentTable[g_pSimMgr->redrawEnabled]
+  int economySummarySeasonPercent958; // 0x958 — seasonPercentTable[g_pSimMgr->difficultyLevel]
   int economySummaryWeightedTotal95c; // 0x95c — economySummaryTotal954 * economySummarySeasonPercent958 / 10
   int pendingAidTotal;
   // Object ends here at 0x964 (== CRuntimeClass::m_nObjectSize for TGreatPower and

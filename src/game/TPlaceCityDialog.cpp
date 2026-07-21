@@ -5,6 +5,7 @@
 #include "game/TSimMgr.h"
 #include "game/TStaticText.h"
 #include "game/TTown.h"
+#include "game/TUpDownPictureButton.h"
 #include "game/global_data_tables.h"
 #include "game/mapped_flavor_text.h"
 #include "game/ui_invalidation_guard.h"
@@ -57,7 +58,9 @@ void TPlaceCityDialog::StuffValues(TTown* town) {
   const unsigned int buttonTags[2] = {0x636e636cu, 0x6f6b6179u}; // 'cncl', 'okay'
   const int buttonAssertLines[2] = {0xde2, 0xde8};
   for (int buttonIndex = 0; buttonIndex < 2; ++buttonIndex) {
-    TView* button = ResolveControlByTag(buttonTags[buttonIndex]);
+    // Startup.rsrc:953 declares both 'cncl' and 'okay' as TUpDownPictureButton.
+    TUpDownPictureButton* button =
+        static_cast<TUpDownPictureButton*>(ResolveControlByTag(buttonTags[buttonIndex]));
     if (button == 0) {
       FailNilPointerWithAssert(s_SourcePathUCityViews_00696650, buttonAssertLines[buttonIndex]);
       continue;

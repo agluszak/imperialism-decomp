@@ -9,13 +9,17 @@ inheritance from Mac resource evidence.
 from __future__ import annotations
 
 import argparse
+import ast
 from collections import Counter, defaultdict
 import json
 from pathlib import Path
+import re
 from typing import Iterable
 
+from tools.common.file_scan import iter_files
 from tools.common.repo import repo_root_from_file
-from tools.ui_codegen import IR_PATH, UiResourceKey, load_ui_views
+from tools.common.symbols import names_by_address
+from tools.ui_codegen import IR_PATH, UiResourceKey, load_recipes, load_ui_views
 
 
 FORMAT_VERSION = 1
@@ -27,12 +31,21 @@ TYPE_FAMILY_CLASSES = {
     "edit": "TEditText",
     "fwnd": "TFloatWindow",
     "nmbr": "TNumberText",
+    "radb": "TRadioPictureButton",
+    "chkb": "TCzechBox",
     "pict": "TPicture",
     "stat": "TStaticText",
     "tevw": "TTEView",
     "view": "TView",
     "wind": "TWindow",
 }
+
+_FUNCTION_RE = re.compile(r"^// FUNCTION: IMPERIALISM (0x[0-9a-fA-F]+)$", re.MULTILINE)
+_STRING_RE = re.compile(r'"(?:\\.|[^"\\])*"')
+_PATH_RE = re.compile(r"^[A-Za-z]:\\Ambit\\(?:Cross\\)?U[^\\]+\.cpp$", re.IGNORECASE)
+_PATH_DEFINITION_RE = re.compile(
+    r"\b(?P<symbol>[A-Za-z_]\w*)\s*(?:\[[^]]*\])?\s*=\s*(?P<literal>\"(?:\\.|[^\"\\])*\")"
+)
 
 
 def _node_id(screen: str, offset: int) -> str:
@@ -52,6 +65,117 @@ def _effective_class(node: dict) -> tuple[str, str]:
         return declared, "declared"
     type_code = str(node.get("type_code", ""))
     return TYPE_FAMILY_CLASSES.get(type_code, f"<{type_code or 'unknown'}>"), "type_family"
+
+
+def _decode_literal(token: str) -> str | None:
+    try:
+        value = ast.literal_eval(token)
+    except (SyntaxError, ValueError):
+        return None
+    return value if isinstance(value, str) else None
+
+
+def _source_module_evidence(repo_root: Path) -> dict:
+    """Recover direct Windows source-module facts and qualified class owners."""
+    definitions: dict[str, dict] = {}
+    source_paths = list(iter_files([str(repo_root / "src" / "game")], patterns=("*.cpp",)))
+    for path in source_paths:
+        source = path.read_text(encoding="utf-8", errors="replace")
+        for match in _PATH_DEFINITION_RE.finditer(source):
+            value = _decode_literal(match.group("literal"))
+            if value is None or not _PATH_RE.fullmatch(value):
+                continue
+            definitions[match.group("symbol")] = {
+                "path": value,
+                "module": value.rsplit("\\", 1)[-1],
+                "definition_source": path.relative_to(repo_root).as_posix(),
+            }
+
+    names = names_by_address(repo_root)
+    functions: dict[str, dict] = {}
+    class_modules: dict[str, dict[str, set[str]]] = defaultdict(lambda: defaultdict(set))
+    module_functions: dict[str, set[str]] = defaultdict(set)
+    for path in source_paths:
+        source = path.read_text(encoding="utf-8", errors="replace")
+        markers = list(_FUNCTION_RE.finditer(source))
+        for index, marker in enumerate(markers):
+            end = markers[index + 1].start() if index + 1 < len(markers) else len(source)
+            body = source[marker.end() : end]
+            address_value = int(marker.group(1), 0)
+            address = f"0x{address_value:08x}"
+            evidence: dict[str, list[dict]] = defaultdict(list)
+            for symbol, definition in definitions.items():
+                occurrences = len(re.findall(rf"\b{re.escape(symbol)}\b", body))
+                defined_here = bool(
+                    re.search(
+                        rf"\b{re.escape(symbol)}\s*(?:\[[^]]*\])?\s*=",
+                        body,
+                    )
+                )
+                if occurrences <= int(defined_here):
+                    continue
+                evidence[definition["module"]].append(
+                    {
+                        "kind": "source_path_global_reference",
+                        "path": definition["path"],
+                        "symbol": symbol,
+                        "definition_source": definition["definition_source"],
+                    }
+                )
+            for token in _STRING_RE.findall(body):
+                value = _decode_literal(token)
+                if value is None or not _PATH_RE.fullmatch(value):
+                    continue
+                if re.search(
+                    rf"\b[A-Za-z_]\w*\s*(?:\[[^]]*\])?\s*=\s*{re.escape(token)}", body
+                ):
+                    continue
+                evidence[value.rsplit("\\", 1)[-1]].append(
+                    {"kind": "inline_source_path_literal", "path": value}
+                )
+            if not evidence:
+                continue
+            name = names.get(address_value, "")
+            owner = name.split("::", 1)[0] if "::" in name else ""
+            if not re.fullmatch(r"[A-Za-z_]\w*", owner):
+                owner = ""
+            functions[address] = {
+                "name": name,
+                "recovered_source": path.relative_to(repo_root).as_posix(),
+                "owner_class": owner or None,
+                "modules": [
+                    {"module": module, "status": "confirmed", "evidence": rows}
+                    for module, rows in sorted(evidence.items())
+                ],
+            }
+            for module in evidence:
+                module_functions[module].add(address)
+                if owner:
+                    class_modules[owner][module].add(address)
+
+    classes = {
+        class_name: [
+            {
+                "module": module,
+                "status": "confirmed",
+                "functions": sorted(addresses),
+            }
+            for module, addresses in sorted(modules.items())
+        ]
+        for class_name, modules in sorted(class_modules.items())
+    }
+    modules = {
+        module: {
+            "functions": sorted(addresses),
+            "classes": sorted(
+                class_name for class_name, entries in classes.items() if any(
+                    entry["module"] == module for entry in entries
+                )
+            ),
+        }
+        for module, addresses in sorted(module_functions.items())
+    }
+    return {"modules": modules, "functions": dict(sorted(functions.items())), "classes": classes}
 
 
 def build_index(repo_root: Path) -> dict:
@@ -147,6 +271,54 @@ def build_index(repo_root: Path) -> dict:
             "nodes": ids,
         }
 
+    source_modules = _source_module_evidence(repo_root)
+    for class_name, entry in classes.items():
+        entry["original_modules"] = source_modules["classes"].get(class_name, [])
+
+    for screen, entry in screens.items():
+        screen_classes = sorted({node_by_id[node_id]["class"] for node_id in entry["nodes"]})
+        candidates: dict[str, set[str]] = defaultdict(set)
+        for class_name in screen_classes:
+            for association in classes[class_name]["original_modules"]:
+                candidates[association["module"]].add(class_name)
+        entry["original_modules"] = [
+            {
+                "module": module,
+                "status": "candidate",
+                "classes": sorted(candidate_classes),
+            }
+            for module, candidate_classes in sorted(candidates.items())
+        ]
+
+    factories: dict[str, dict] = {}
+    for recipe in load_recipes(repo_root):
+        address = f"0x{recipe.address:08x}"
+        candidates: dict[str, dict[str, set[str]]] = defaultdict(
+            lambda: {"resources": set(), "classes": set(), "events": set()}
+        )
+        for case in recipe.cases:
+            if case.resource is None:
+                continue
+            screen = f"{case.resource.resource_file}:{case.resource.view_id}"
+            for association in screens[screen]["original_modules"]:
+                candidate = candidates[association["module"]]
+                candidate["resources"].add(screen)
+                candidate["classes"].update(association["classes"])
+                candidate["events"].add(f"0x{case.event:04x}")
+        factories[address] = {
+            "name": recipe.name,
+            "original_modules": [
+                {
+                    "module": module,
+                    "status": "candidate",
+                    "resources": sorted(evidence["resources"]),
+                    "classes": sorted(evidence["classes"]),
+                    "events": sorted(evidence["events"]),
+                }
+                for module, evidence in sorted(candidates.items())
+            ],
+        }
+
     tags: dict[str, dict] = {}
     for tag, ids in sorted(tag_nodes.items()):
         instances = [node_by_id[node_id] for node_id in ids]
@@ -200,11 +372,32 @@ def build_index(repo_root: Path) -> dict:
             ),
             "tags": len(tags),
             "ambiguous_tags": sum(entry["ambiguous"] for entry in tags.values()),
+            "source_modules": len(source_modules["modules"]),
+            "functions_with_source_module_evidence": len(source_modules["functions"]),
+            "classes_with_source_module_evidence": sum(
+                bool(entry["original_modules"]) for entry in classes.values()
+            ),
+            "screens_with_source_module_candidates": sum(
+                bool(entry["original_modules"]) for entry in screens.values()
+            ),
+            "factories_with_source_module_candidates": sum(
+                bool(entry["original_modules"]) for entry in factories.values()
+            ),
         },
         "screens": screens,
         "classes": classes,
         "tags": tags,
         "nodes": nodes,
+        "factories": factories,
+        "source_modules": {
+            "policy": (
+                "Function and qualified-class associations are confirmed by direct Windows "
+                "source-path use. Mac screen and generated-factory joins are candidates only; "
+                "they do not prove Windows ownership or ABI."
+            ),
+            "modules": source_modules["modules"],
+            "functions": source_modules["functions"],
+        },
     }
 
 
@@ -237,6 +430,37 @@ def tag_hints(index: dict, tags: Iterable[str], *, max_candidates: int = 4) -> l
             f"{entry['screen_count']} screen(s){ambiguity}"
         )
     return lines
+
+
+def source_module_hints(index: dict, address: int, name: str) -> list[str]:
+    """Render actionable original-module evidence for a portprep dossier."""
+    rows: list[str] = []
+    address_key = f"0x{address:08x}"
+    direct = index.get("source_modules", {}).get("functions", {}).get(address_key)
+    if direct:
+        for association in direct["modules"]:
+            rows.append(
+                f"  {association['module']}: confirmed by direct source-path use in {address_key}"
+            )
+
+    owner = name.split("::", 1)[0] if "::" in name else ""
+    class_entry = index.get("classes", {}).get(owner)
+    if class_entry:
+        for association in class_entry.get("original_modules", []):
+            rows.append(
+                f"  {association['module']}: confirmed class owner {owner}; "
+                f"Mac instances in {', '.join(class_entry['screens'][:4])}"
+            )
+
+    factory = index.get("factories", {}).get(address_key)
+    if factory:
+        for association in factory.get("original_modules", []):
+            rows.append(
+                f"  {association['module']}: candidate via Mac classes "
+                f"{', '.join(association['classes'][:4])} in "
+                f"{', '.join(association['resources'][:3])}"
+            )
+    return list(dict.fromkeys(rows))
 
 
 def load_committed_index(repo_root: Path | None = None) -> dict | None:

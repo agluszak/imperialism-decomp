@@ -67,9 +67,8 @@ void TNewspaperView::BuildInterNationEventSummaryRowsForAdvisorDialog(int pageNa
 
   TStaticText* dateControl = static_cast<TStaticText*>(ResolveControlByTag(0x64617465)); // 'date'
   dateControl->AssertValid();
-  g_pSimMgr->FormatSeasonName(&dateText);
-  formatText.Format(g_szDecimalFormat,
-                    static_cast<short>(g_pSimMgr->quarterGateTick2c / 4) + 0x717);
+  g_pSimMgr->GetSeason(&dateText);
+  formatText.Format(g_szDecimalFormat, static_cast<short>(g_pSimMgr->economicTurn / 4) + 0x717);
   panelText = dateText + g_szListSeparator_00695760 + formatText;
   dateControl->SetTextAndMaybeRefresh(&panelText, 1);
   dateControl->SetTextStyleAndMaybeRefresh(&titleStyle, 1);
@@ -80,7 +79,7 @@ void TNewspaperView::BuildInterNationEventSummaryRowsForAdvisorDialog(int pageNa
   if (g_apNationStates[g_pSimMgr->GetActiveNationId()] == 0) {
     panelText = CString(g_szEmptyString);
   } else {
-    switch (static_cast<short>(g_pSimMgr->quarterGateTick2c % 4)) {
+    switch (static_cast<short>(g_pSimMgr->economicTurn % 4)) {
     case 0:
       dateText.Format(g_szDecimalFormat,
                       g_apNationStates[g_pSimMgr->GetActiveNationId()]->escalationCounter);

@@ -5,6 +5,23 @@
 
 class TStream;
 
+// Mac CodeWarrior oracle: GameSetup. Windows allocates exactly 0x3e bytes for this
+// record before the setup dialog copies the four seven-country rows into it. The
+// first row selects local/AI/proxy/remote ownership; the other rows carry the three
+// minister policy identifiers consumed by TAutoGreatPower::IAutoGreatPower.
+struct GameSetup {
+  unsigned char multiplayerGameActive; // +0x00
+  unsigned char pad01;
+  short nationControlModes[7];           // +0x02
+  short cityMinisterPolicyIds[7];        // +0x10
+  short foreignMinisterPolicyIds[7];     // +0x1e
+  short defenseMinisterPolicyIds[7];     // +0x2c
+  unsigned char reloadPoliticalMapState; // +0x3a
+  unsigned char pad3b[3];
+};
+
+ASSERT_SIZE(GameSetup, 0x3e);
+
 // TSimMgr — the global turn-flow / simulation manager (historically reached through the
 // `g_pSimMgr` singleton @ 0x6a20f8; it also owns the UI string/format helpers,
 // which is why callers treat it as a "localization table"). It drives the per-turn state
@@ -34,32 +51,29 @@ public:
   virtual void RebuildNationStateSlotsNoOp();                                  // 0x28  0x0057c390
   virtual void RebuildPrimaryNationStateForSlot(int slotIndex, char activate); // 0x2c 0x0057cda0
   virtual void RebuildSecondaryNationStateForSlot(int slotIndex);              // 0x30  0x0057d520
-  // Ghidra mislabelled this "ApplyScenarioVariantSeedForNationSetup"; the real body
-  // computes the current season index (quarterGateTick2c % 4) and looks it up via
-  // GetString(10000, seasonIndex, destString) -- a localized season-name formatter,
-  // used by the toolbar's turn-status "seas" tag text. 0x0057d830.
-  virtual void FormatSeasonName(CString* destString); // 0x34  0x0057d830
-  // 0x38 — copies the scenario nation-setup buffer into this manager's flow state.
-  // (Ghidra mislabelled this "RegisterHotKeyDialogState"; the real call site in TViewMgr
-  // passes the assembled setup buffer.)
-  virtual void CopyScenarioNationSetupIntoFlowState(void* setupBuffer); // 0x38  0x0057d8d0
-  virtual short GetTurnTickSlot3C();                                    // 0x3c  0x0057d8b0
-  virtual void IncrementQuarterGateTick2C();                            // 0x40  0x0057d950
-  // 0x44 — posts command 100 to the main window so the turn-flow UI re-evaluates. This is the
-  // single slot behind both the old "CallSlot44" (TDiplomacyMgr) and "PostTurnFlowUiRefresh"
-  // (TGameWindow) names.
-  virtual void PostMainWindowCommand100ForTurnFlow();               // 0x44  0x0057d970
-  virtual void SetGlobalTurnStateCodeIfAllowed(int turnStateCode);  // 0x48  0x0057d990
-  virtual void AdvanceGlobalTurnStateMachine();                     // 0x4c  0x0057da70
-  virtual int IsTurnFlowPhaseOutsideRange4To5();                    // 0x50  0x0057f110
-  virtual void RefreshEligibleNationTurnPhaseHandlers();            // 0x54  0x0057f140
-  virtual void DispatchEligibleNationTurnCallback158();             // 0x58  0x0057f200
-  virtual void RefreshMapSystemsAndPrepareOrderExecution();         // 0x5c  0x0057f280
-  virtual void DispatchTurnEvent2134AndRefreshNationPanels();       // 0x60  0x0057f3c0
-  virtual int AreAllActiveNationsReady();                           // 0x64  0x0057f4f0
-  virtual void ClearActiveNationReadyFlags();                       // 0x68  0x0057f530
-  virtual int ReturnZeroSlot6c();                                   // 0x6c  0x0057f490
-  virtual void MergeTurnFlowStatusFlags(unsigned int flags);        // 0x70  0x0057f4b0
+  // Mac oracle: GetSeason(CStr255&). Windows computes economicTurn % 4 and looks the
+  // localized name up through GetString(10000, seasonIndex, destString).
+  virtual void GetSeason(CString* destString);       // 0x34  0x0057d830
+  virtual void SetGameSetupValues(GameSetup* setup); // 0x38  0x0057d8d0
+  virtual short GetEconomicTurn();                   // 0x3c  0x0057d8b0
+  virtual void AdvanceSeason();                      // 0x40  0x0057d950
+  // Mac oracle: StartNextPhase(). Windows posts command 100 to the main window so the
+  // turn-flow state machine advances asynchronously.
+  virtual void StartNextPhase(); // 0x44  0x0057d970
+  // Mac oracle: EnterOptionalPhase(eGamePhaseNewStyle). The Windows phase enum is not
+  // yet named, so retain its ABI-equivalent int representation.
+  virtual void EnterOptionalPhase(int gamePhase);             // 0x48  0x0057d990
+  virtual void AdvanceGlobalTurnStateMachine();               // 0x4c  0x0057da70
+  virtual int IsTurnFlowPhaseOutsideRange4To5();              // 0x50  0x0057f110
+  virtual void RefreshEligibleNationTurnPhaseHandlers();      // 0x54  0x0057f140
+  virtual void DispatchEligibleNationTurnCallback158();       // 0x58  0x0057f200
+  virtual void RefreshMapSystemsAndPrepareOrderExecution();   // 0x5c  0x0057f280
+  virtual void DispatchTurnEvent2134AndRefreshNationPanels(); // 0x60  0x0057f3c0
+  virtual int AreAllActiveNationsReady();                     // 0x64  0x0057f4f0
+  virtual void ClearActiveNationReadyFlags();                 // 0x68  0x0057f530
+  virtual int ReturnZeroSlot6c();                             // 0x6c  0x0057f490
+  // Mac oracle: SetFlags(short). Windows reads and merges the full pushed dword.
+  virtual void SetFlags(unsigned int flags);                        // 0x70  0x0057f4b0
   virtual void FormatIntegerString(int value, CString* destString); // 0x74  0x0057f5b0
   virtual void FormatOrdinalString(int value, CString* destString); // 0x78  0x0057f8f0
   // Copy string-resource group 0x2711 (commodity names) entry `offset` into dest.
@@ -82,7 +96,9 @@ public:
   unsigned char TestTurnFlowStatusFlagMask(unsigned int mask);
 
   // --- non-virtual helpers ---
-  int GetField30();
+  int GetNumGPs();       // Mac oracle; 0x5811e0
+  void ReduceNumGPs();   // Mac oracle; 0x581200
+  int GetNumCountries(); // Mac oracle; great powers + minor countries, 0x581240
 
   // Active great-power slot (this+0x2e). Every original callsite loads ECX from
   // g_pSimMgr (0x6a20f8) — this getter belongs to TSimMgr, not the view
@@ -97,10 +113,10 @@ public:
   // clears its state/descriptor slots and the per-slot flag byte, decrements the active
   // count, then resets its diplomacy relation matrices via g_pDiplomacyTurnStateManager.
   void RemoveNationSlotAndNotifyPeers(short nationSlot);
-  // Store a state code into +0x40 and set the +0x5c short flag to 1 only when the
-  // code is exactly zero (codes 1..4 and out-of-range codes clear it). 0x57d870.
-  void SetStateCodeAndUpdateZeroOrOutOfRangeFlag(int stateCode);
-  void DecrementField30Value();
+  // Mac symbol oracle: SetDifficultyLevel(eDifficulty). Store the selected difficulty
+  // into +0x40 and set the +0x5c short flag only for the zero-valued level; values 1..4
+  // and out-of-range values clear it. Windows 0x57d870.
+  void SetDifficultyLevel(int difficulty);
   void InitializeTurnFlowStateDefaults();
   void InitializeOrLoadEntryArray14AndClampLimits(bool writeBack);
   // 0x581510. Loads the 10-entry {score, name} table from scores.dat (defaulting each
@@ -111,7 +127,7 @@ public:
   void UpdatePersistentTopTenNationScores();
   // 0x57c3b0. Verified against AdvanceGlobalTurnStateMachine's case-3 callsite
   // (0x0057db25): a real __thiscall on TSimMgr (receiver g_pSimMgr), not a
-  // free function -- writes into the scenarioSetupRows regions at +0xe8 on `this`.
+  // free function -- writes into the GameSetup policy rows regions at +0xe8 on `this`.
   void RebuildGlobalOrderManagersAndCapabilityState(char flag);
   // 0x57c7c0. Same callsite family (0x0057db32); real __thiscall, 3 stack args
   // (`RET 0xc` confirms the count); param2 is the string literal "Chunk", not a
@@ -159,41 +175,42 @@ public:
   void HandleTurnInstruction_Pric_ApplyDiplomacyPriceEntry(void* pInstructionRaw);   // 0x582b70
   void HandleTurnInstruction_Subs_ApplyNationSubsidyEntry(void* pInstructionRaw);    // 0x582ce0
 
-  // --- fields (offsets are load-bearing: referenced from many other classes via
-  //     g_pSimMgr; do not rename or move) ---
+  // --- fields (offsets and declaration order are load-bearing) ---
   int turnStateCode;
   int mode;
   int previousTurnStateCode;
   int previousMode;
   unsigned char field14;
   unsigned char field15[0x17];
-  short quarterGateTick2c;
+  short economicTurn;
   short activeNationSlot;
-  int field30;
-  int field34;
+  int numGreatPowers;
+  int numMinorCountries;
   // +0x38 — sign-extended char result of ShowTurnAlertsForActiveNation stored by
-  // AdvanceGlobalTurnStateMachine (0x57dcd5); serialized whole (4 bytes).
+  // AdvanceGlobalTurnStateMachine (0x57dcd5). The save stream deliberately skips
+  // this transient alert result.
   unsigned int alertsPendingFlag38;
   // +0x3c — session/turn-flow flag word: zeroed by the ctor, OR'd with 0x40 by
   // AdvanceGlobalTurnStateMachine, masked by Merge/TestTurnFlowStatusFlagMask
-  // (0x57f4b0/0x57f4d0 both use [ecx+0x3c]), and serialized as a byte. NOT the mode
-  // index below — reader code comparing to 0/1/2/4 wants redrawEnabled (+0x40).
+  // (0x57f4b0/0x57f4d0 both use [ecx+0x3c]), and serialized as a full dword.
   unsigned int turnFlowStatusFlags;
-  // +0x40 — mode/scenario/localization index (0/1/2/4); read all over TCountry/TGreatPower/
-  // TDiplomacyMgr/etc. (the "redrawEnabled" name is a misnomer kept for churn reasons).
-  int redrawEnabled;
-  // +0x44 — the multiplayer/session-mode dword: zeroed by the constructor (0x57bae7),
-  // compared against 1 and 2 all over TMultiplayerMgr/TMapMgr/TArmyMgr, and tested
-  // whole by ReinitializeGameFlowAndPostTurnEventCode (0x5818ad), which tears down and
-  // recreates g_pGameFlowState when it is nonzero. Nonzero writer not yet ported.
-  int field44;
+  // +0x40 — difficulty level (Mac eDifficulty; normally 0..4), consumed throughout
+  // TCountry/TGreatPower/TDiplomacyMgr balancing logic. Save streams encode it through
+  // the integer-byte slot.
+  int difficultyLevel;
+  // +0x44 — multiplayer role: 0 standalone, 1 host, 2 client. The setup UI writes
+  // these values directly, and TMultiplayerMgr/TMapMgr/TArmyMgr branch on the host/client
+  // distinction. ReinitializeGameFlowAndPostTurnEventCode recreates g_pGameFlowState
+  // whenever the role is nonzero.
+  int multiplayerSessionRole;
   // +0x48 — settings-preference slots. Ground truth: InitializeOrLoadEntryArray14AndClampLimits
   // (0x581412 `[this + i*2 + 0x48]`) anchors the array at +0x48, not +0x44 (the earlier
-  // +0x44 base — bd 1uj.4's -4 shift — folded field44 into the array and skewed every
-  // index by one slot). 14 shorts end at +0x63, so field_64 lands at its literal +0x64
-  // with no padding gap. Known slots: [2] clamped 0..100, [3] master volume 0..0xff
+  // +0x44 base — bd 1uj.4's -4 shift — folded multiplayerSessionRole into the array
+  // and skewed every index by one slot). 14 shorts end at +0x63, so field_64 lands at
+  // its literal +0x64 with no padding gap. Known slots: [2] clamped 0..100, [3] master
+  // volume 0..0xff
   // (TTwoPicSlider writes +0x4e), [8] = the +0x58 turn-gate flag, [10] = the +0x5c
-  // pending-event gate (SetStateCodeAndUpdateZeroOrOutOfRangeFlag writes +0x5c).
+  // difficulty-zero gate (SetDifficultyLevel writes +0x5c).
   short preferenceValues[14];
   int field_64;
   // +0x68 — nonzero: city/nation names come from the localized string table
@@ -210,19 +227,18 @@ public:
   unsigned char gateFlag7a;
   unsigned char pad7b;
   CString sharedTextSlots[0x17];
-  unsigned char fieldd8;
+  unsigned char multiplayerGameActive;
   unsigned char padD9;
-  // Contiguous 4x7 scenario setup rows at +0xda/+0xe8/+0xf6/+0x104 (constructor
-  // scatter-copy evidence; no inter-row padding).
-  short scenarioSetupRows0[7];
-  short scenarioSetupRows1[7];
-  short scenarioSetupRows2[7];
-  short scenarioSetupRows3[7];
-  unsigned char field112;
+  // Contiguous GameSetup policy rows; no inter-row padding.
+  short nationControlModes[7];
+  short cityMinisterPolicyIds[7];
+  short foreignMinisterPolicyIds[7];
+  short defenseMinisterPolicyIds[7];
+  unsigned char reloadPoliticalMapState;
   unsigned char pad113;
   // 0x114 — nonzero switches TGreatPower seeding/home-region resolution to the
   // direct-map path (0x004d71b0 / 0x004dfae0 / 0x004df810).
-  short stateFlag114;
+  short scenarioMapIndexPlusOne;
 };
 
 ASSERT_SIZE(TSimMgr, 0x118);
@@ -235,8 +251,9 @@ void __cdecl DeleteFileWithErrorReporting(CString* path);
 
 // 0x581870 — the "Done/advance" turn-flow bootstrap primitive (free __cdecl, TSimMgr TU).
 // Optionally activates the pending help event (0x5dc), recreates g_pGameFlowState when a
-// game flow was active (field44), then either soft-resets the existing TSimMgr for the
-// scenario-setup path (eventCode 0x5dd: shared reset prefix, turnStateCode = 3) or
+// game flow was active (multiplayerSessionRole != 0), then either soft-resets the existing
+// TSimMgr for the scenario-setup path (eventCode 0x5dd: shared reset prefix,
+// turnStateCode = 3) or
 // replaces g_pSimMgr with a fresh TSimMgr and reinitializes its turn-flow defaults.
 // Posts eventCode to the main frame (message 0x2420) unless it is 0, and latches the
 // bootstrap-complete flag DAT_006a43c0 the turn state machine's case 1 keys off.

@@ -41,7 +41,12 @@ public:
   // New virtuals introduced by TDefenseMinister (vtable 0x6549b0, bytes 0x48-0x60).
   virtual void MinisterSlot12(); // 0x48 (0x4ec450)
   virtual void Call4C();         // 0x4c (0x4ec4c0)
-  virtual void MinisterSlot14(); // 0x50 (0x4ec540)
+  // Buckets militaryUnitList44 by orderType into three TList buckets, trims a batch of
+  // up to 4 (or fewer, when small) bucket-1 units plus one bucket-2 unit to garrison
+  // the nation's home tile, then selects the top border-priority-scored owned regions
+  // (via BuildTileRingPriorityMapForNationTileList) and assigns 2 bucket-1 + 1
+  // bucket-2 unit to each. Renamed from the placeholder MinisterSlot14.
+  virtual void AssignDefenseUnitsToHomeAndBorderRegions(); // 0x50 (0x4ec540)
   // Builds a per-tile priority map (one byte per map tile, 0x1950 tiles): for every
   // region in ownedRegions, examines the 6 hex neighbors and scores border proximity
   // (4 = borders foreign territory, 3 = borders a 4-tile, 2 = borders a 3-tile or a

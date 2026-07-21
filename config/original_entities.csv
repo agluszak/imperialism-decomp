@@ -464,7 +464,7 @@ address|name|symbol|size|type|prototype|provenance
 481200|OrphanVtableAssignStub_00481200||6|function|undefined OrphanVtableAssignStub_00481200()|
 481220|WrapperFor_UpdateCursorHelperWindowVisibilityFromControllerState_At00481220||11|function|undefined WrapperFor_UpdateCursorHelperWindowVisibilityFromControllerState_At00481220()|
 481370|WrapperFor_ftol_At00481370||30|function|undefined WrapperFor_ftol_At00481370()|
-4813a0|InitializeHotKeyDialogTemplateA1WithTripleTextState||164|function|undefined InitializeHotKeyDialogTemplateA1WithTripleTextState()|
+4813a0|TA1TemplateDialog::TA1TemplateDialog||164|function|undefined TA1TemplateDialog(void* initParam)|windows_listing
 481480|TA1TemplateDialog::`scalar deleting destructor'|??_GTA1TemplateDialog@@UAEPAXI@Z|30|function|undefined ScalarDeletingDestructor()|
 4814b0|WrapperFor_FreeHeapBufferIfNotNull_At00481480_Impl||108|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At00481480_Impl()|
 481540|Helper_Uses_EnsureWindowSubclassAndParentConsistency_At00481540||100|function|undefined Helper_Uses_EnsureWindowSubclassAndParentConsistency_At00481540()|
@@ -503,7 +503,7 @@ address|name|symbol|size|type|prototype|provenance
 482110|WrapperFor_FreeHeapBufferIfNotNull_At004820e0_Impl||71|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At004820e0_Impl()|
 482180|WrapperFor_DDX_Text_618cbd_At00482180||22|function|undefined WrapperFor_DDX_Text_618cbd_At00482180()|
 4821b0|TB1TemplateDialog::GetMessageMap|?GetMessageMap@TB1TemplateDialog@@MBEPBUAFX_MSGMAP@@XZ|6|function|undefined GetMessageMap()|
-4821d0|HandleTurnEventVtableSlot2CInitializeHotKeyDialog_Impl||13|function|undefined HandleTurnEventVtableSlot2CInitializeHotKeyDialog_Impl()|
+4821d0|TA1TemplateDialog::SetGameSetupValues||13|function|void __thiscall SetGameSetupValues(GameSetup* setup)|windows_listing
 4821f0|SyncTripleSelectionControlsFromState||180|function|undefined SyncTripleSelectionControlsFromState()|
 4822e0|OrphanRetStub_004822e0||1|function|undefined OrphanRetStub_004822e0()|
 482300|SyncTripleSelectionStateViaMessage400||122|function|undefined SyncTripleSelectionStateViaMessage400()|
@@ -1465,7 +1465,7 @@ address|name|symbol|size|type|prototype|provenance
 4a1640|TArmyMgr::CreateTArmyMgrInstance||354|function|undefined CreateTArmyMgrInstance()|
 4a1810|TArmyMgr::CreateObject|?CreateObject@TArmyMgr@@SGPAVCObject@@XZ|43|function|undefined CreateObject()|rtti
 4a1850|TArmyMgr::GetRuntimeClass||6|function|undefined GetTArmyMgrClassNamePointer()|rtti
-4a1870|ConstructMapContextActionManager||25|function|void __thiscall ConstructMapContextActionManager(void)|
+4a1870|TArmyMgr::TArmyMgr|??0TArmyMgr@@QAE@XZ|25|function|TArmyMgr* __thiscall TArmyMgr(void)|
 4a18a0|TArmyMgr::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4a18d0|DestructTArmyMgrAndMaybeFree_Impl||7|function|undefined DestructTArmyMgrAndMaybeFree_Impl()|
 4a18f0|TArmyMgr::InitializeMapContextActionManager||208|function|void __thiscall InitializeMapContextActionManager(void)|
@@ -2219,10 +2219,10 @@ address|name|symbol|size|type|prototype|provenance
 4d1fb0|WrapperFor_ftol_At004d1fb0||30|function|undefined WrapperFor_ftol_At004d1fb0()|
 4d2000|TCivMgr::CreateObject|?CreateObject@TCivMgr@@SGPAVCObject@@XZ|24|function|undefined CreateObject()|rtti
 4d2030|TCivMgr::GetRuntimeClass||6|function|undefined GetTCivMgrClassNamePointer()|rtti
-4d2050|CivilianMapInteractionManager::InitializeCivilianMapInteractionManagerVtable||9|function|undefined InitializeCivilianMapInteractionManagerVtable()|
+4d2050|TCivMgr::TCivMgr|??0TCivMgr@@QAE@XZ|9|function|TCivMgr* __thiscall TCivMgr(void)|
 4d2070|TCivMgr::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
-4d20a0|InitializeCivilianMapInteractionManagerBaseVtable||7|function|undefined InitializeCivilianMapInteractionManagerBaseVtable()|
-4d20c0|NoOpCivilianMapInteractionManagerVirtualHook||1|function|undefined NoOpCivilianMapInteractionManagerVirtualHook()|
+4d20a0|TCivMgr::~TCivMgr|??1TCivMgr@@UAE@XZ|7|function|void __thiscall ~TCivMgr(void)|
+4d20c0|TCivMgr::ICivMgr||1|function|void __thiscall ICivMgr(void)|
 4d20e0|ClearCivilianSelectionHighlightsForNation||92|function|undefined ClearCivilianSelectionHighlightsForNation()|
 4d2160|SelectFirstAvailableCivilianForNation||207|function|void * __thiscall SelectFirstAvailableCivilianForNation(short nNationId)|
 4d2270|TCivMgr::DispatchSelectedUnitToGlobalMapStateHandler||170|function|void __thiscall DispatchSelectedUnitToGlobalMapStateHandler(int * pUnitOrderEntry)|
@@ -2697,7 +2697,7 @@ address|name|symbol|size|type|prototype|provenance
 4ee5e0|TSortedByRelationshipList::Compare||65|function|undefined CreateTDiplomacyMgrInstance()|
 4ee650|TDiplomacyMgr::CreateObject|?CreateObject@TDiplomacyMgr@@SGPAVCObject@@XZ|57|function|undefined CreateObject()|rtti
 4ee6a0|TDiplomacyMgr::GetRuntimeClass||6|function|undefined GetTDiplomacyMgrClassNamePointer()|rtti
-4ee6c0|ConstructDiplomacyTurnStateManager_Vtbl00654d90||39|function|undefined ConstructDiplomacyTurnStateManager_Vtbl00654d90()|
+4ee6c0|TDiplomacyMgr::TDiplomacyMgr|??0TDiplomacyMgr@@QAE@XZ|39|function|TDiplomacyMgr* __thiscall TDiplomacyMgr(void)|
 4ee700|TDiplomacyMgr::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4ee730|WrapperFor_FreeHeapBufferIfNotNull_At004ee730||73|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At004ee730()|
 4ee7a0|TDiplomacyMgr::InitializeTDiplomacyTurnStateManagerDefaults||220|function|undefined InitializeDiplomacyTurnStateManagerDefaults()|
@@ -3126,10 +3126,10 @@ address|name|symbol|size|type|prototype|provenance
 50e2c0|GetCityIndexFromCityStatePointer||30|function|int __fastcall GetCityIndexFromCityStatePointer(TGlobalMapCityScoreRecord* cityState)|
 50e2f0|TMapMgr::CreateObject|?CreateObject@TMapMgr@@SGPAVCObject@@XZ|138|function|undefined CreateObject()|rtti
 50e3b0|TMapMgr::GetRuntimeClass||6|function|undefined GetTMapMgrClassNamePointer()|rtti
-50e3d0|ConstructGlobalMapState||100|function|void * __fastcall ConstructGlobalMapState(void * pGlobalMapState)|
+50e3d0|TMapMgr::TMapMgr|??0TMapMgr@@QAE@XZ|100|function|TMapMgr* __thiscall TMapMgr(void)|
 50e460|TMapMgr::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 50e490|WrapperFor_ReleaseSharedStringRefIfNotEmpty_At0050e490||62|function|undefined WrapperFor_ReleaseSharedStringRefIfNotEmpty_At0050e490()|
-50e4e0|InitializeGlobalMapState||28|function|void __fastcall InitializeGlobalMapState(int * pGlobalMapState)|
+50e4e0|TMapMgr::InitializeGlobalMapState|?InitializeGlobalMapState@TMapMgr@@QAEXXZ|28|function|void __thiscall InitializeGlobalMapState(void)|
 50e510|TMapMgr::Free||75|function|undefined Helper_Uses_FreeHeapBufferIfNotNull_At0050e510(void)|
 50e600|OrphanTiny_ThisAdjustJump_a4_0050e600||11|function|undefined OrphanTiny_ThisAdjustJump_a4_0050e600()|
 50e620|TMapMgr::ReadFrom||293|function|undefined WrapperFor_HandleCityDialogNoOpSlot18_At0050e620(int * param_1)|
@@ -4186,10 +4186,10 @@ address|name|symbol|size|type|prototype|provenance
 5564f0|ClearNavyOrderMapMarker||35|function|undefined ClearNavyOrderMapMarker()|
 556530|TNavyMgr::CreateObject|?CreateObject@TNavyMgr@@SGPAVCObject@@XZ|38|function|undefined CreateObject()|rtti
 556570|TNavyMgr::GetRuntimeClass||6|function|undefined GetTNavyMgrClassNamePointer()|rtti
-556590|ConstructNavyManager||23|function|undefined ConstructNavyManager()|
+556590|TNavyMgr::TNavyMgr|??0TNavyMgr@@QAE@XZ|23|function|TNavyMgr* __thiscall TNavyMgr(void)|
 5565c0|TNavyMgr::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 5565f0|ResetNavyManagerVtable||7|function|undefined ResetNavyManagerVtable()|
-556610|InitializeNavyOrderPriorityTables||308|function|undefined InitializeNavyOrderPriorityTables()|
+556610|TNavyMgr::INavyMgr||308|function|void __thiscall INavyMgr(void)|
 5567a0|TNavyMgr::Free||92|function|undefined ClearNavyOrderLists()|
 556820|DestroyNavyOrderAndChildren||24|function|undefined DestroyNavyOrderAndChildren()|
 556850|ResetNavyOrderListsAndManagerOwner||77|function|undefined ResetNavyOrderListsAndManagerOwner()|
@@ -4823,13 +4823,13 @@ address|name|symbol|size|type|prototype|provenance
 57cad0|RebuildNationStateSlotsAndAvailability||564|function|undefined RebuildNationStateSlotsAndAvailability()|
 57cda0|TSimMgr::RebuildPrimaryNationStateForSlot||1532|function|undefined RebuildPrimaryNationStateForSlot()|
 57d520|TSimMgr::RebuildSecondaryNationStateForSlot||499|function|undefined RebuildSecondaryNationStateForSlot()|
-57d830|TSimMgr::ApplyScenarioVariantSeedForNationSetup||40|function|undefined ApplyScenarioVariantSeedForNationSetup()|
-57d870|SetStateCodeAndUpdateZeroOrOutOfRangeFlag||44|function|undefined SetStateCodeAndUpdateZeroOrOutOfRangeFlag()|
-57d8b0|TSimMgr::GetTurnFlowStateCounter2C||5|function|undefined GetTurnFlowStateCounter2C()|
-57d8d0|TSimMgr::CopyScenarioNationSetupIntoFlowState||89|function|undefined CopyScenarioNationSetupIntoFlowState()|
-57d950|TSimMgr::IncrementTurnFlowStateCounter2C||5|function|undefined IncrementTurnFlowStateCounter2C()|
-57d970|TSimMgr::PostMainWindowCommand100ForTurnFlow||11|function|undefined PostMainWindowCommand100ForTurnFlow()|
-57d990|TSimMgr::SetGlobalTurnStateCodeIfAllowed||134|function|undefined SetGlobalTurnStateCodeIfAllowed()|
+57d830|TSimMgr::GetSeason||40|function|void __thiscall GetSeason(CString* destString)|mac_symbol_oracle
+57d870|TSimMgr::SetDifficultyLevel||44|function|void __thiscall SetDifficultyLevel(int difficulty)|mac_symbol_oracle
+57d8b0|TSimMgr::GetEconomicTurn||5|function|short __thiscall GetEconomicTurn(void)|mac_symbol_oracle
+57d8d0|TSimMgr::SetGameSetupValues||89|function|void __thiscall SetGameSetupValues(GameSetup* setup)|mac_symbol_oracle
+57d950|TSimMgr::AdvanceSeason||5|function|void __thiscall AdvanceSeason(void)|mac_symbol_oracle
+57d970|TSimMgr::StartNextPhase||11|function|void __thiscall StartNextPhase(void)|mac_symbol_oracle
+57d990|TSimMgr::EnterOptionalPhase||134|function|void __thiscall EnterOptionalPhase(int gamePhase)|mac_symbol_oracle
 57da70|TSimMgr::AdvanceGlobalTurnStateMachine||4314|function|void __fastcall AdvanceGlobalTurnStateMachine(astruct_24 * ctx)|
 57f0e0|IsNationProfileInMinorRange100To199||26|function|undefined IsNationProfileInMinorRange100To199()|
 57f110|TSimMgr::IsTurnFlowPhaseOutsideRange4To5||19|function|undefined IsTurnFlowPhaseOutsideRange4To5()|
@@ -4838,7 +4838,7 @@ address|name|symbol|size|type|prototype|provenance
 57f280|TSimMgr::RefreshMapSystemsAndPrepareOrderExecution||249|function|void __fastcall RefreshMapSystemsAndPrepareOrderExecution(int * pTurnContext)|
 57f3c0|TSimMgr::DispatchTurnEvent2134AndRefreshNationPanels||160|function|undefined DispatchTurnEvent2134AndRefreshNationPanels()|
 57f490|TSimMgr::OrphanTiny_ReturnZero_0057f490||3|function|undefined OrphanTiny_ReturnZero_0057f490(void)|
-57f4b0|TSimMgr::OrphanLeaf_NoCall_Ins05_0057f4b0||15|function|undefined OrphanLeaf_NoCall_Ins05_0057f4b0(uint param_1)|
+57f4b0|TSimMgr::SetFlags||15|function|void __thiscall SetFlags(unsigned int flags)|mac_symbol_oracle
 57f4d0|TestTurnFlowStatusFlagMask||15|function|undefined TestTurnFlowStatusFlagMask()|
 57f4f0|TSimMgr::OrphanLeaf_NoCall_Ins15_0057f4f0||37|function|undefined OrphanLeaf_NoCall_Ins15_0057f4f0(void)|
 57f530|TSimMgr::OrphanLeaf_NoCall_Ins10_0057f530||35|function|undefined OrphanLeaf_NoCall_Ins10_0057f530(void)|
@@ -4855,9 +4855,9 @@ address|name|symbol|size|type|prototype|provenance
 5804f0|ExpandBracketMappedStringToSinkCallback||489|function|undefined ExpandBracketMappedStringToSinkCallback()|
 580760|TSimMgr::LoadUiStringByCodeGroupAndOffset||32|function|undefined LoadUiStringByCodeGroupAndOffset(short param_1, short param_2, undefined4 param_3)|
 580790|TSimMgr::FormatDiplomacyNoticeTextByPolicyOrGrantCode||2082|function|undefined FormatDiplomacyNoticeTextByPolicyOrGrantCode()|
-5811e0|GetInt32Field30||4|function|undefined GetInt32Field30()|
-581200|DecrementField30Value||4|function|undefined DecrementField30Value()|
-581240|GetSumField34PlusField30||9|function|undefined GetSumField34PlusField30()|
+5811e0|TSimMgr::GetNumGPs||4|function|int __thiscall GetNumGPs(void)|mac_symbol_oracle
+581200|TSimMgr::ReduceNumGPs||4|function|void __thiscall ReduceNumGPs(void)|mac_symbol_oracle
+581240|TSimMgr::GetNumCountries||9|function|int __thiscall GetNumCountries(void)|mac_symbol_oracle
 581260|GetActiveNationId||5|function|undefined GetActiveNationId()|
 581280|IsNationSlotEligibleForEventProcessing||81|function|undefined IsNationSlotEligibleForEventProcessing()|
 581300|TSimMgr::RemoveNationSlotAndNotifyPeers||159|function|undefined RemoveNationSlotAndNotifyPeers()|
@@ -5616,7 +5616,7 @@ address|name|symbol|size|type|prototype|provenance
 5aef00|WrapperFor_ftol_At005aef00||30|function|undefined WrapperFor_ftol_At005aef00()|
 5aef30|TTechMgr::CreateObject|?CreateObject@TTechMgr@@SGPAVCObject@@XZ|27|function|undefined CreateObject()|rtti
 5aef60|TTechMgr::GetRuntimeClass||6|function|undefined GetTTechMgrClassNamePointer()|rtti
-5aef80|ConstructCityOrderCapabilityStateVtable||9|function|undefined ConstructCityOrderCapabilityStateVtable()|
+5aef80|TTechMgr::TTechMgr|??0TTechMgr@@QAE@XZ|9|function|TTechMgr* __thiscall TTechMgr(void)|
 5aefa0|TTechMgr::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 5aefd0|DestructTTechMgrAndMaybeFree_Impl||7|function|undefined DestructTTechMgrAndMaybeFree_Impl()|
 5aeff0|InitializeCityOrderCapabilityStateDefaults||651|function|undefined InitializeCityOrderCapabilityStateDefaults()|
@@ -5775,7 +5775,7 @@ address|name|symbol|size|type|prototype|provenance
 5b79a0|WrapperFor_ftol_At005b79a0||30|function|undefined WrapperFor_ftol_At005b79a0()|
 5b79d0|TTradeMgr::CreateObject|?CreateObject@TTradeMgr@@SGPAVCObject@@XZ|27|function|undefined CreateObject()|rtti
 5b7a00|TTradeMgr::GetRuntimeClass|?GetRuntimeClass@TTradeMgr@@UBEPAUCRuntimeClass@@XZ|6|function|undefined __thiscall GetRuntimeClass(void)|rtti
-5b7a20|ConstructNationInteractionStateManager_Vtbl0066d990||9|function|undefined ConstructNationInteractionStateManager_Vtbl0066d990()|
+5b7a20|TTradeMgr::TTradeMgr|??0TTradeMgr@@QAE@XZ|9|function|TTradeMgr* __thiscall TTradeMgr(void)|
 5b7a40|TTradeMgr::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 5b7a70|TTradeMgr::DestructTTradeMgrAndMaybeFree_Impl||7|function|undefined DestructTTradeMgrAndMaybeFree_Impl()|
 5b7a90|TDealList::InitializeNationInteractionStateManagerDefaults||234|function|undefined InitializeNationInteractionStateManagerDefaults()|
@@ -6074,8 +6074,8 @@ address|name|symbol|size|type|prototype|provenance
 5d8cc0|HandleTurnEventVtableSlotA0SyncStatusPanel||206|function|undefined HandleTurnEventVtableSlotA0SyncStatusPanel()|
 5d8dd0|HandleTurnEvent7D9Or7DA_UpdateNationResourceAdvisor||3770|function|undefined HandleTurnEvent7D9Or7DA_UpdateNationResourceAdvisor()|
 5da040|HandleTurnEventVtableSlot60ActivateMainDialog||243|function|undefined HandleTurnEventVtableSlot60ActivateMainDialog()|
-5da180|HandleTurnEvent2260_RefreshMainHudTitles||370|function|undefined HandleTurnEvent2260_RefreshMainHudTitles()|
-5da360|HandleTurnEvent7DD_RefreshOrderStatusPanelsAndIcons||3184|function|undefined HandleTurnEvent7DD_RefreshOrderStatusPanelsAndIcons()|
+5da180|TViewMgr::HandleTurnEvent2260_RefreshMainHudTitles||370|function|void __thiscall HandleTurnEvent2260_RefreshMainHudTitles(int eventCode)|windows_listing
+5da360|TViewMgr::HandleTurnEvent7DD_RefreshOrderStatusPanelsAndIcons||3184|function|void __thiscall HandleTurnEvent7DD_RefreshOrderStatusPanelsAndIcons(int eventCode)|windows_listing
 5db2f0|CString::GetLength||6|function|int __thiscall GetLength()|
 5db3b0|TViewMgr::HandleTurnEventDialogFactorySlotF4||439|function|void __thiscall HandleTurnEventDialogFactorySlotF4(void)|
 5db620|TViewMgr::HandleTurnStateExitAndPostFollowupEventCode||219|function|undefined HandleTurnStateExitAndPostFollowupEventCode()|
@@ -6094,7 +6094,7 @@ address|name|symbol|size|type|prototype|provenance
 5dc430|HandleTurnEventDialogFactorySlotB8||238|function|undefined HandleTurnEventDialogFactorySlotB8()|
 5dc560|DispatchUiRuntimeMessage102CAndRefreshActiveView||125|function|undefined DispatchUiRuntimeMessage102CAndRefreshActiveView()|
 5dc690|TViewMgr::HandleTurnEventF3D_PopulateRecentTurnMessages||751|function|void __thiscall HandleTurnEventF3D_PopulateRecentTurnMessages(int nationSlot)|
-5dcaa0|TViewMgr::HandleTurnEventVtableSlot2CInitializeHotKeyDialog||260|function|undefined HandleTurnEventVtableSlot2CInitializeHotKeyDialog()|
+5dcaa0|TViewMgr::MakeGameSetupDialog||260|function|void __thiscall MakeGameSetupDialog(void)|mac_symbol_oracle
 5dcc60|WrapperFor_ftol_At005dcc60||30|function|undefined WrapperFor_ftol_At005dcc60()|
 5dcc90|TModalMessageCommand::CreateObject|?CreateObject@TModalMessageCommand@@SGPAVCObject@@XZ|93|function|void * CreateObject(void)|rtti
 5dcd10|TModalMessageCommand::DoIt||42|function|void __thiscall DoIt(void)|

@@ -19,8 +19,7 @@ public:
 
   TMapEditView();
 
-  // Original object size is 0x370 (CRuntimeClass m_nObjectSize); the source class ended at 0x364. Trailing 12 byte(s) not yet semantically recovered — declared so sizeof and the recomp's allocation size match the original.
-  int field364;
-  int field368;
-  int field36c;
+  // Original object size is 0x370 (CRuntimeClass m_nObjectSize); the source class ended at
+  // 0x364. No recovered method currently attributes semantics to this trailing state.
+  unsigned char unrecoveredTrailingState[12];
 };

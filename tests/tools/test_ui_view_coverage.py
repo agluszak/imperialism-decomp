@@ -30,10 +30,10 @@ class UiViewCoverageTests(unittest.TestCase):
         self.assertEqual(
             Counter(row.status for row in rows),
             {
-                "generated_turn_event_factory": 84,
-                "windows_runtime_gap": 13,
+                "generated_turn_event_factory": 93,
+                "windows_runtime_gap": 1,
                 "windows_alternate_path": 1,
-                "excluded_mac_only_or_obsolete": 7,
+                "excluded_mac_only_or_obsolete": 10,
                 "excluded_mac_test_debug_or_framework": 16,
             },
         )
