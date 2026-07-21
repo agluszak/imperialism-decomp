@@ -4,6 +4,7 @@
 #include "game/TAdmiral.h"
 #include "game/TCountry.h"
 #include "game/TGreatPower.h"
+#include "game/TMapMgr.h"
 #include "game/TMission.h"
 #include "game/TTechMgr.h"
 #include "game/TStream.h"
@@ -131,14 +132,91 @@ void TMilitaryUnit::DetachUnitOrderFromOwnerAndReset() {
   CopyUnitCurrentTileIntoOrderTargets();
 }
 
-// TODO(big-function): moves this unit between two regions' priority-ordered
-// stationed-unit chains (cityScoreTable[region]+0x98, a doubly-linked list via
-// TUnit::field_10/nextOnTile ordered by g_awTacticalUnitCategoryCodeBySlot-style
-// priority at 0x695528). Flagged as an in-progress investigation; left as a stub
-// rather than a rushed/unverified port.
+// Moves this unit between two regions' priority-ordered stationed-unit chains
+// (cityScoreTable[region].stationedUnitChain98, threaded via nextOnTile/field_10,
+// ordered by g_awTacticalUnitCategoryCodeBySlot[orderType] ascending): detaches from
+// the current region's chain (if any), then inserts into the new region's chain (if
+// pOwnerContext isn't -1 = none) either as the new head or, when the head's priority
+// is lower than this unit's, at the first position whose successor's priority is not
+// lower.
 // FUNCTION: IMPERIALISM 0x005c3200
 void TMilitaryUnit::VTableSlot10(int pOwnerContext) {
-  (void)pOwnerContext;
+  if (tileIndex06 != -1) {
+    if (field_10 == 0) {
+      if (tileIndex06 >= 0 && tileIndex06 < 0x180) {
+        g_pGlobalMapState->cityScoreTable[tileIndex06].stationedUnitChain98 =
+            static_cast<TMilitaryUnit*>(nextOnTile);
+      }
+    } else {
+      field_10->nextOnTile = nextOnTile;
+    }
+    if (nextOnTile != 0) {
+      nextOnTile->field_10 = field_10;
+    }
+    tileIndex06 = -1;
+    field_10 = 0;
+    nextOnTile = 0;
+  }
+
+  short newTileIndex = static_cast<short>(pOwnerContext);
+  if (newTileIndex == -1) {
+    field_10 = 0;
+    nextOnTile = 0;
+    tileIndex06 = newTileIndex;
+    field_C = -1;
+    return;
+  }
+
+  TMilitaryUnit* head = 0;
+  if (newTileIndex >= 0 && newTileIndex < 0x180) {
+    head = g_pGlobalMapState->cityScoreTable[newTileIndex].stationedUnitChain98;
+  }
+
+  if (head == 0) {
+    if (newTileIndex >= 0 && newTileIndex < 0x180) {
+      g_pGlobalMapState->cityScoreTable[newTileIndex].stationedUnitChain98 = this;
+    }
+    field_10 = 0;
+    nextOnTile = 0;
+    tileIndex06 = newTileIndex;
+    field_C = -1;
+    return;
+  }
+
+  short priority = g_awTacticalUnitCategoryCodeBySlot[orderType];
+  if (g_awTacticalUnitCategoryCodeBySlot[head->orderType] < priority) {
+    TUnit* scanNode = head;
+    TUnit* nextScan = scanNode->nextOnTile;
+    if (nextScan != 0) {
+      bool found = false;
+      do {
+        if (found) {
+          break;
+        }
+        if (g_awTacticalUnitCategoryCodeBySlot[static_cast<TMilitaryUnit*>(nextScan)->orderType] <
+            priority) {
+          scanNode = nextScan;
+        } else {
+          found = true;
+        }
+        nextScan = scanNode->nextOnTile;
+      } while (nextScan != 0);
+    }
+    TUnit* afterScan = scanNode->nextOnTile;
+    field_10 = scanNode;
+    nextOnTile = afterScan;
+    scanNode->nextOnTile = this;
+    if (nextOnTile != 0) {
+      nextOnTile->field_10 = this;
+    }
+  } else {
+    head->field_10 = this;
+    field_10 = 0;
+    nextOnTile = head;
+  }
+
+  tileIndex06 = newTileIndex;
+  field_C = -1;
 }
 
 // FUNCTION: IMPERIALISM 0x005c3400

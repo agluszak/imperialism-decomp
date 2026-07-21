@@ -5522,7 +5522,7 @@ address|matching|name
 0x5c30a0|0.9078947368421053|TMilitaryUnit::WriteTo
 0x5c3190|0.25|TMilitaryUnit::CopyUnitCurrentTileIntoOrderTargets
 0x5c31c0|1.0|TMilitaryUnit::DetachUnitOrderFromOwnerAndReset
-0x5c3200|0.015037593984962405|TMilitaryUnit::VTableSlot10
+0x5c3200|0.366412213740458|TMilitaryUnit::VTableSlot10
 0x5c3400|0.7|TMilitaryUnit::GetUnitTypeCostPoints
 0x5c3450|0.8181818181818182|GetCityActionGateValueBySlot
 0x5c3490|1.0|TMilitaryUnit::GetUnitMovementClassId
