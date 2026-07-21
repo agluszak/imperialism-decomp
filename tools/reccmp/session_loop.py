@@ -240,7 +240,10 @@ def main() -> int:
     md_lines.append("")
     md_lines.append(f"- Generated: {now}")
     if history:
-        md_lines.append(f"- Aligned: {history.get('aligned_fun_count', 'n/a')}")
+        exact_count = history.get(
+            "exact_fun_count", history.get("aligned_fun_count", "n/a")
+        )
+        md_lines.append(f"- Exact functions: {exact_count}")
         md_lines.append(
             f"- Avg similarity: {float(history.get('avg_matching_pct', 0.0)):.2f}%"
         )
