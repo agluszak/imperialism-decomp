@@ -11,9 +11,9 @@
   "failed_to_match_function_count": 0,
   "flo_orig_only_count": 215,
   "flo_recomp_only_count": 0,
-  "git_branch": "agent/mission-recovery-agent3-final-stubs",
-  "git_commit": "bba9731574548212dd005a974f401f3aa419c028",
-  "git_commit_date": "2026-07-21T23:44:52+02:00",
+  "git_branch": "agent/profile-agent-check",
+  "git_commit": "94ae50222a8e3e02b2a0b25b803a20742f1d5354",
+  "git_commit_date": "2026-07-22T00:12:16+02:00",
   "global_coverage_pct": 23.83683285542503,
   "global_orig_only_count": 8234,
   "global_recomp_only_count": 7159,
@@ -61,7 +61,7 @@
   "target": "IMPERIALISM",
   "template_alias_recognized_count": 4,
   "template_canonical_paired_count": 4,
-  "timestamp_utc": "2026-07-21T21:46:59+00:00",
+  "timestamp_utc": "2026-07-21T22:15:07+00:00",
   "wid_orig_only_count": 0,
   "wid_recomp_only_count": 2
 }

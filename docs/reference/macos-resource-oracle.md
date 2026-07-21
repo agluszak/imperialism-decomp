@@ -87,7 +87,7 @@ just ui-codegen-explain 0x43dbc0 0x07dd tool
 just ui-codegen-triage 0x43dbc0
 just ui-platform-diff --function 0x43dbc0 --event 0x07dd
 just build
-just ui-codegen-match-gate
+just stats --ui-codegen-gate
 ```
 
 `just generate` writes one translation unit per factory under
@@ -113,8 +113,9 @@ tag, class, semantic evidence, confidence, and generated line span. The explain 
 selects a node by record offset or tag; the triage command summarizes case coverage and
 confidence before machine-level `just triage` work. There are no C++ body templates or
 retail inputs in the normal generation path. The generated manifest hashes every
-committed semantic input, and `just ui-codegen-match-gate` protects symbol pairing and
-the explicitly accepted similarity baseline rather than dictating source architecture.
+committed semantic input. The normal stats pass also protects generated-factory symbol
+pairing and the explicitly accepted similarity baseline, without a second full reccmp
+scan or source-shape constraints.
 
 `docs/reference/ui_platform_diff.json` joins those generated line spans back to the
 normalized Mac nodes and declared Windows deltas. The corresponding source gate rejects

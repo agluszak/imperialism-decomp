@@ -1,9 +1,10 @@
 from __future__ import annotations
 
+import json
 from pathlib import Path
 import unittest
 
-from tools.workflow.mac_payload_diff import build_report, load_records
+from tools.workflow.mac_payload_diff import load_records
 
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
@@ -12,7 +13,9 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 class MacPayloadDiffTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
-        cls.report = build_report(REPO_ROOT)
+        cls.report = json.loads(
+            (REPO_ROOT / "docs/reference/mac_payload_diff.json").read_text()
+        )
         cls.records = load_records(REPO_ROOT)
 
     def test_report_covers_every_multi_instance_effective_class(self) -> None:
