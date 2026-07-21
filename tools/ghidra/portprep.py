@@ -23,6 +23,7 @@ import re
 import sys
 
 from tools.ghidra import decompile_one
+from tools.workflow.mac_control_usage import load_committed_index, tag_hints
 
 
 def _addr_int(addr) -> int | None:
@@ -170,11 +171,17 @@ def run(program, argv: list[str]) -> int:
   reg_calls: list[str] = []
   globals_seen: dict[int, str] = {}
   jump_tables: list[str] = []
+  fourcc_tags: set[str] = set()
 
   data_min = 0x628000  # beyond .text: rdata/data/bss for this binary
   for ins in listing.getInstructions(body, True):
     mnem = ins.getMnemonicString().upper()
     text = str(ins)
+    for raw_value in re.findall(r"0x([0-9a-fA-F]{8})", text):
+      value = int(raw_value, 16)
+      raw_bytes = value.to_bytes(4, "big")
+      if all(0x20 <= byte <= 0x7e for byte in raw_bytes):
+        fourcc_tags.add(raw_bytes.decode("ascii"))
     if mnem.startswith("CALL"):
       flows = ins.getFlows()
       if flows:
@@ -263,6 +270,14 @@ def run(program, argv: list[str]) -> int:
       prev = g
   else:
     print("  (none)")
+
+  control_usage = load_committed_index()
+  if control_usage is not None:
+    hints = tag_hints(control_usage, fourcc_tags)
+    if hints:
+      print("-- Mac control-tag hints (semantic oracle only; no Windows ABI claim) --")
+      for line in hints:
+        print(line)
 
   if want_decompile:
     print("-- decompile --")
