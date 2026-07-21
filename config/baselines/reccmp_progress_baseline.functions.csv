@@ -2399,7 +2399,7 @@ address|matching|name
 0x4f3ea0|0.22195985832349469|TDiplomacyMapView::BuildDiplomacyNationOverlayGeometryAndHitMasks
 0x4f4620|0.8553459119496856|TDiplomacyMapView::InitializeDiplomacyMinisterActionControlsAndLabels
 0x4f48c0|0.6274509803921569|TDiplomacyMapView::ApplyRectSlot110
-0x4f4a30|0.4918032786885246|TDiplomacyMapView::RenderTerrainAndMinorNationLegendLabels
+0x4f4a30|0.34108527131782945|TDiplomacyMapView::DrawNames
 0x4f4ec0|0.1692573402417962|TDiplomacyMapView::RenderDiplomacyMatrixRowStatusIcons
 0x4f5410|0.015625|TDiplomacyMapView::BeginMouseCaptureAndStartRepeatTimer
 0x4f5e00|0.56353591160221|TDiplomacyMapView::ResolveDiplomacyActionFromClickAndUpdateTarget
