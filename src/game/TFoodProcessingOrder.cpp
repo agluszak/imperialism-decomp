@@ -17,8 +17,17 @@ TFoodProcessingOrder::TFoodProcessingOrder() {}
 TFoodProcessingOrder::~TFoodProcessingOrder() {}
 
 // FUNCTION: IMPERIALISM 0x004b7e80
-undefined TFoodProcessingOrder::FoodProcessingOrderSlot11(int param_1) {
-  return 0;
+void TFoodProcessingOrder::IFoodProcessingOrder(TCity* city) {
+  cityField08 = city;
+  summaryField0c = city->productionSummary1d8;
+  resourceTypeIndex48 = 7;
+  quantityField04 = 0;
+  for (int resource = 0; resource < 0x17; ++resource) {
+    trackingSlots10[resource] = 0;
+  }
+  accumulatedValue = 0;
+  field40 = 0;
+  field3e = 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004b7ed0

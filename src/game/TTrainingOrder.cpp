@@ -18,8 +18,17 @@ TTrainingOrder::TTrainingOrder() {}
 TTrainingOrder::~TTrainingOrder() {}
 
 // FUNCTION: IMPERIALISM 0x004b6b20
-undefined TTrainingOrder::TrainingOrderSlot11(int param_1, undefined2 param_2) {
-  return 0;
+void TTrainingOrder::ITrainingOrder(TCity* city, short resourceType) {
+  cityField08 = city;
+  summaryField0c = city->productionSummary1d8;
+  resourceTypeIndex48 = resourceType;
+  quantityField04 = 0;
+  for (int resource = 0; resource < 0x17; ++resource) {
+    trackingSlots10[resource] = 0;
+  }
+  accumulatedValue = 0;
+  field40 = 0;
+  field3e = 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004b6b90

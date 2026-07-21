@@ -1619,7 +1619,7 @@ address|matching|name
 0x4b57b0|0.4117647058823529|TOrItemOrder::CreateObject
 0x4b57e0|1.0|TOrItemOrder::GetRuntimeClass
 0x4b5820|0.9090909090909091|TOrItemOrder::`scalar deleting destructor'
-0x4b5870|0.06451612903225806|TOrItemOrder::OrItemOrderSlot12
+0x4b5870|1.0|TOrItemOrder::IOrItemOrder
 0x4b58f0|0.046511627906976744|TOrItemOrder::MaxOrder
 0x4b5990|0.03773584905660377|TOrItemOrder::SetQuantity
 0x4b5b40|0.42424242424242425|TPopulationMgr::CreateObject
@@ -1643,7 +1643,7 @@ address|matching|name
 0x4b6a60|0.42424242424242425|TTrainingOrder::CreateObject
 0x4b6a90|1.0|TTrainingOrder::GetRuntimeClass
 0x4b6ad0|0.9090909090909091|TTrainingOrder::`scalar deleting destructor'
-0x4b6b20|0.08333333333333333|TTrainingOrder::TrainingOrderSlot11
+0x4b6b20|1.0|TTrainingOrder::ITrainingOrder
 0x4b6b90|0.02247191011235955|TTrainingOrder::MaxOrder
 0x4b6cd0|0.05405405405405406|TTrainingOrder::SetQuantity
 0x4b6de0|1.0|TTrainingOrder::FillOrderSheet
@@ -1663,7 +1663,7 @@ address|matching|name
 0x4b79f0|0.42424242424242425|TPowerPlantOrder::CreateObject
 0x4b7a20|1.0|TPowerPlantOrder::GetRuntimeClass
 0x4b7a60|0.9090909090909091|TPowerPlantOrder::`scalar deleting destructor'
-0x4b7ab0|0.0|TPowerPlantOrder::InitializeCityProductionState_Impl
+0x4b7ab0|1.0|TPowerPlantOrder::IPowerPlantOrder
 0x4b7b00|0.25|TPowerPlantOrder::MaxOrder
 0x4b7b30|0.06153846153846154|TPowerPlantOrder::SetQuantity
 0x4b7c20|1.0|TPowerPlantOrder::Produce
@@ -1674,7 +1674,7 @@ address|matching|name
 0x4b7dc0|0.42424242424242425|TFoodProcessingOrder::CreateObject
 0x4b7df0|1.0|TFoodProcessingOrder::GetRuntimeClass
 0x4b7e30|0.9090909090909091|TFoodProcessingOrder::`scalar deleting destructor'
-0x4b7e80|0.08695652173913043|TFoodProcessingOrder::FoodProcessingOrderSlot11
+0x4b7e80|1.0|TFoodProcessingOrder::IFoodProcessingOrder
 0x4b7ed0|0.058823529411764705|TFoodProcessingOrder::MaxOrder
 0x4b7f50|0.05970149253731343|TFoodProcessingOrder::SetQuantity
 0x4b8060|1.0|TFoodProcessingOrder::Produce
@@ -1702,12 +1702,12 @@ address|matching|name
 0x4b8cc0|1.0|TCapacityOrder::GetRuntimeClass
 0x4b8d00|0.9090909090909091|TCapacityOrder::`scalar deleting destructor'
 0x4b8d30|0.5|TCapacityOrder::DestructTCapacityOrderAndMaybeFree
-0x4b8d50|0.24561403508771928|TCapacityOrder::CapacityOrderSlot12
+0x4b8d50|1.0|TCapacityOrder::ICapacityOrder
 0x4b8dd0|0.21390374331550802|TCapacityOrder::Produce
 0x4b8f50|0.4117647058823529|TExpansionOrder::CreateObject
 0x4b8f80|1.0|TExpansionOrder::GetRuntimeClass
 0x4b8fc0|0.9090909090909091|TExpansionOrder::`scalar deleting destructor'
-0x4b9010|0.06451612903225806|TExpansionOrder::ExpansionOrderSlot12
+0x4b9010|1.0|TExpansionOrder::IExpansionOrder
 0x4b9090|0.6125|TExpansionOrder::Produce
 0x4b91f0|0.08333333333333333|TExpansionOrder::MaxOrder
 0x4b9260|0.07272727272727272|TExpansionOrder::SetQuantity
@@ -4197,13 +4197,13 @@ address|matching|name
 0x570b90|1.0|T2PictureButton::GetRuntimeClass
 0x570bb0|0.8|T2PictureButton::T2PictureButton
 0x570be0|0.9090909090909091|T2PictureButton::`scalar deleting destructor'
-0x570c30|0.0|T2PictureButton::OrphanCallChain_C3_I43_00570c30
+0x570c30|1.0|T2PictureButton::SetAvailability
 0x570cc0|0.52|TPictureRadioButton::CreateObject
 0x570d40|1.0|TPictureRadioButton::GetRuntimeClass
 0x570d60|0.8|TPictureRadioButton::TPictureRadioButton
 0x570d90|0.9090909090909091|TPictureRadioButton::`scalar deleting destructor'
-0x570de0|0.0|TPictureRadioButton::PictureRadioButtonSlot75
-0x570ea0|0.0|TPictureRadioButton::PictureRadioButtonSlot76
+0x570de0|1.0|TPictureRadioButton::ViewEnable
+0x570ea0|0.5057471264367817|TPictureRadioButton::DefaultSize
 0x570f40|0.0625|TPictureRadioButton::Select
 0x570fb0|0.031746031746031744|TPictureRadioButton::DispatchUiMouseMoveToChildren
 0x571050|0.4897959183673469|TToggleButton::CreateObject

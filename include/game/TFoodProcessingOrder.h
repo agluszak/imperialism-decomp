@@ -23,8 +23,8 @@ public:
   virtual void Restock() override;                  // slot 0x0e 0x4b80a0
   // slot 0x0f ResetOrderSheet inherited unchanged (0x4b5180)
   virtual void FillOrderSheet(OrderSheet* orderSheet,
-                              short quantity) override;     // slot 0x10 0x4b80c0
-  virtual undefined FoodProcessingOrderSlot11(int param_1); // slot 0x11 0x4b7e80
+                              short quantity) override; // slot 0x10 0x4b80c0
+  virtual void IFoodProcessingOrder(TCity* city);       // slot 0x11 0x4b7e80
 
   TFoodProcessingOrder();
 };

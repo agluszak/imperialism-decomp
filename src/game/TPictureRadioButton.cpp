@@ -1,4 +1,6 @@
 #include "game/TPictureRadioButton.h"
+
+#include "game/CDib.h"
 // SYNTHETIC: IMPERIALISM 0x00570cc0
 // TPictureRadioButton::CreateObject
 
@@ -15,13 +17,34 @@ TPictureRadioButton::TPictureRadioButton() {}
 TPictureRadioButton::~TPictureRadioButton() {}
 
 // FUNCTION: IMPERIALISM 0x00570de0
-undefined TPictureRadioButton::PictureRadioButtonSlot75(char param_1) {
-  return 0;
+void TPictureRadioButton::ViewEnable(char isEnabled, char refreshNow) {
+  short pictureId = glyphBase84;
+  short alternatePictureId = static_cast<short>(controlValue3c);
+  char currentState = GetBoolSlot28();
+  if (((isEnabled != 0 && currentState == 0) || (isEnabled == 0 && currentState != 0)) &&
+      alternatePictureId != 0) {
+    SetPictureResourceIdAndRefresh(alternatePictureId, false);
+    controlValue3c = pictureId;
+    DefaultSize(true);
+    field08 = isEnabled;
+    SetEnabled(!isEnabled, refreshNow);
+  }
+  TView::SetState(isEnabled, refreshNow);
 }
 
 // FUNCTION: IMPERIALISM 0x00570ea0
-undefined TPictureRadioButton::PictureRadioButtonSlot76() {
-  return 0;
+void TPictureRadioButton::DefaultSize(bool refreshNow) {
+  (void)refreshNow;
+  CPoint bitmapSize;
+  CPoint* dimensions = cachedBitmap->CopyBitmapDimensionsToPoint(&bitmapSize);
+  CPoint bottomRight;
+  bottomRight.x = ownerLocalX + dimensions->x;
+  bottomRight.y = ownerLocalY + dimensions->y;
+  RECT bounds;
+  QueryBounds(&bounds);
+  bounds.right = bounds.left + bottomRight.x - ownerLocalX;
+  bounds.bottom = bounds.top + bottomRight.y - ownerLocalY;
+  ApplyBounds(&bounds, true);
 }
 
 // FUNCTION: IMPERIALISM 0x00570f40

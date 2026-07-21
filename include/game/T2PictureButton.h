@@ -121,7 +121,7 @@ public:
   // slot 0x71 ResetPictureResourceEntry inherited unchanged (0x48f520)
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
   // slot 0x73 IsSelected inherited unchanged (0x5708c0)
-  virtual undefined OrphanCallChain_C3_I43_00570c30(); // slot 0x74 0x570c30
+  virtual void SetAvailability(char isAvailable, char refreshNow); // slot 0x74 0x570c30
   T2PictureButton();
   virtual ~T2PictureButton() override;
   DECLARE_DYNCREATE(T2PictureButton)

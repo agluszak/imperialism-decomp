@@ -26,8 +26,8 @@ public:
   virtual void Restock() override;                  // slot 0x0e 0x4b7c40
   // slot 0x0f ResetOrderSheet inherited unchanged (0x4b5180)
   virtual void FillOrderSheet(OrderSheet* orderSheet,
-                              short quantity) override;   // slot 0x10 0x4b7c90
-  virtual undefined InitializeCityProductionState_Impl(); // slot 0x11 0x4b7ab0
+                              short quantity) override; // slot 0x10 0x4b7c90
+  virtual void IPowerPlantOrder(TCity* city);           // slot 0x11 0x4b7ab0
 
   // 0x4c — runtime-derived quantity cap (first field past TProductionOrder's 0x4c
   // base). Zeroed/written by SetQuantity (0x4b7b30); read+restored by the slot-0x0e

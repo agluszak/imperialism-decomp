@@ -1,5 +1,6 @@
 #include "game/TPowerPlantOrder.h"
 
+#include "game/TCity.h"
 #include "game/TStream.h"
 
 // SYNTHETIC: IMPERIALISM 0x004b79f0
@@ -17,8 +18,18 @@ TPowerPlantOrder::TPowerPlantOrder() {}
 TPowerPlantOrder::~TPowerPlantOrder() {}
 
 // FUNCTION: IMPERIALISM 0x004b7ab0
-undefined TPowerPlantOrder::InitializeCityProductionState_Impl() {
-  return 0;
+void TPowerPlantOrder::IPowerPlantOrder(TCity* city) {
+  cityField08 = city;
+  summaryField0c = city->productionSummary1d8;
+  resourceTypeIndex48 = 0;
+  quantityField04 = 0;
+  for (int resource = 0; resource < 0x17; ++resource) {
+    trackingSlots10[resource] = 0;
+  }
+  accumulatedValue = 0;
+  field40 = 0;
+  field3e = 0;
+  field4c = 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004b7b00
