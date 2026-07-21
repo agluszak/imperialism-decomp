@@ -1794,7 +1794,7 @@ address|matching|name
 0x4bef60|0.006557377049180328|TCityInteriorMinister::WriteTo
 0x4bf390|0.006430868167202572|TCityInteriorMinister::ReadFrom
 0x4bf770|0.023809523809523808|TCityInteriorMinister::Call54
-0x4bf8a0|0.018867924528301886|TCityInteriorMinister::VTableSlot21
+0x4bf8a0|0.43564356435643564|TCityInteriorMinister::VTableSlot21
 0x4bfa50|1.0|TCityInteriorMinister::GetTEventHandlerClassNamePointer_22
 0x4bfb20|0.007017543859649123|TCityInteriorMinister::QueueCityProductionRebalanceCommandsByThresholds
 0x4bff60|0.6666666666666666|TCityInteriorMinister::GetTEventHandlerClassNamePointer_24
