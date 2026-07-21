@@ -13,11 +13,14 @@
 #include "game/TAssetMgr.h"
 #include "game/TDisplayMgr.h"
 #include "game/TMultiplayerMgr.h"
+#include "game/TNavyToolbarCluster.h"
 #include "game/TOcean.h"
 #include "game/TOceanDialog.h"
 #include "game/TSimMgr.h"
 #include "game/TStaticText.h"
+#include "game/TShipFractionCluster.h"
 #include "game/TTaskForce.h"
+#include "game/TToolBarCluster.h"
 #include "game/TViewMgr.h"
 #include "game/TWindow.h"
 #include "game/TModuleLibraryCacheTableStateB.h"
@@ -133,16 +136,34 @@ void TMapUberPicture::SetMapInteractionMode(short nMode) {
       g_pMapContextActionManager->SetActiveProvinceSelection(-1);
     }
 
-    // Ground truth also probes ownerPanel->ResolveControlByTag('tbr1'); if present, and
-    // depending on whether the OLD mode was 1 (army) or the NEW mode is 1, it resolves a
-    // further ('forc'/'seas'-tagged) control, tags it, and rebuilds its caption text from
-    // two concatenated TSimMgr::GetString lookups (group 0x2730, offsets 0x12/0x8 or a
-    // single lookup at group 0x2732 offset 0x11) before calling
-    // categoryPages[]-style AutoScrollByEdgeMask(GetActiveNationId()) on it. That
-    // caption-control's real class isn't recovered (its own field writes don't match any
-    // modeled class), so this whole UI-caption side effect is left undone rather than
-    // faked; the mode-transition/selection-state and layout-capture side effects below are
-    // real.
+    // Mac MapView.rsrc:2013 identifies 'tbr1' as TToolBarCluster and its 'seas' child as
+    // TDropShadowText. Windows reuses that child as 'forc' while army mode is active.
+    TToolBarCluster* toolbar =
+        static_cast<TToolBarCluster*>(GetWindow()->ResolveControlByTag(0x74627231)); // 'tbr1'
+    if (toolbar != nullptr) {
+      if (previousMode == 1) {
+        TView* caption = toolbar->ResolveControlByTag(0x666f7263); // 'forc'
+        caption->AssertValid();
+        caption->controlTag = 0x73656173; // 'seas'
+
+        CString seasonCaption;
+        CString yearCaption;
+        g_pSimMgr->GetString(0x2730, 0x12, &seasonCaption);
+        g_pSimMgr->GetString(0x2730, 8, &yearCaption);
+        CString hoverHelp = seasonCaption + g_szListSeparator_00695760 + yearCaption;
+        SetControlHoverHelpTextAltEntry(hoverHelp, caption);
+      } else if (nMode == 1) {
+        CString hoverHelp;
+        TView* caption = toolbar->ResolveControlByTag(0x73656173); // 'seas'
+        caption->AssertValid();
+        caption->controlTag = 0x666f7263; // 'forc'
+        g_pSimMgr->GetString(0x2732, 0x11, &hoverHelp);
+        SetControlHoverHelpTextAltEntry(hoverHelp, caption);
+      }
+
+      toolbar->UpdateControlTagTreaTextFromNationAndMapContext(g_pSimMgr->GetActiveNationId());
+    }
+
     if (nMode == 0) {
       this->EnterMapInteractionOverlayMode(nullptr);
     }
@@ -294,39 +315,36 @@ void TMapUberPicture::AutoScrollByEdgeMask(short edgeMask) {
 // FUNCTION: IMPERIALISM 0x00597810
 void TMapUberPicture::RefreshMapOrderEntryPanel(TTaskForce* pMapOrderEntry) {
   this->SetMapInteractionMode(2);
-  // Ground truth also calls ResetMapActionContextActivityAndNationFlags() here and
-  // branches on its result; that helper's own role isn't recovered, so this always takes
-  // the path matching pMapOrderEntry's null-ness (its real gate).
-  //
-  // The per-slot dispatches below (GetMinActionThresholdFromEntryChildren,
-  // ExpandTaskForceTraversalDepthAndMarkDeferredNodes, CountTaskForceSelectedOrders-
-  // ByNationClass -- all thiscall on pMapOrderEntry/its command descriptor --, and
-  // SetAvailableAndSelectedShipCounts -- thiscall on the resolved
-  // TShipFractionCluster) still depends on TTaskForce fields and child methods not yet
-  // recovered beyond what TOcean.cpp established, so the chain is left as a documented
-  // gap rather than using fake calling conventions; the real control-resolution/
-  // AssertValid structure and quota-field reads are reproduced.
+  ResetMapActionContextActivityAndNationFlags();
+
   if (pMapOrderEntry == nullptr) {
     for (int i = 0; i < 4; ++i) {
-      TView* slider = this->ResolveControlByTag(0x636c7330 + i); // "0slc".."3slc"
-      slider->AssertValid();
+      TShipFractionCluster* shipClass =
+          static_cast<TShipFractionCluster*>(ResolveControlByTag(0x636c7330 + i)); // 'cls0'..'cls3'
+      shipClass->AssertValid();
+      shipClass->SetAvailableAndSelectedShipCounts(0, -1);
     }
     return;
   }
 
-  char* entry = reinterpret_cast<char*>(pMapOrderEntry);
-  TView* commandDescriptor = *reinterpret_cast<TView**>(entry + 0x18);
-  short commandCode = *reinterpret_cast<short*>(reinterpret_cast<char*>(commandDescriptor) + 0xc);
-  this->CenterOn(commandCode);
+  TZone* context = pMapOrderEntry->contextAnchor;
+  context->ExpandTaskForceTraversalDepthAndMarkDeferredNodes(
+      pMapOrderEntry->GetMinActionThresholdFromEntryChildren(), 1);
+  CenterOn(static_cast<short>(context->tileOrTerrainId0c));
 
   for (int i = 0; i < 4; ++i) {
-    TView* slider = this->ResolveControlByTag(0x636c7330 + i); // "0slc".."3slc"
-    slider->AssertValid();
-    (void)*reinterpret_cast<short*>(entry + 0x1e + i * 2); // per-category order quota
+    TShipFractionCluster* shipClass =
+        static_cast<TShipFractionCluster*>(ResolveControlByTag(0x636c7330 + i)); // 'cls0'..'cls3'
+    shipClass->AssertValid();
+    shipClass->SetAvailableAndSelectedShipCounts(
+        pMapOrderEntry->shipCountsByClass[i],
+        pMapOrderEntry->CountTaskForceSelectedOrdersByNationClass(static_cast<short>(i)));
   }
 
-  TView* navyControl = this->ResolveControlByTag(0x756e6176); // "unav"
-  navyControl->AssertValid();
+  TNavyToolbarCluster* navyToolbar =
+      static_cast<TNavyToolbarCluster*>(ResolveControlByTag(0x756e6176)); // 'unav'
+  navyToolbar->AssertValid();
+  navyToolbar->SetSelectedChildTagAndRefresh(kControlTagAgr0 + pMapOrderEntry->order_type);
 }
 
 // FUNCTION: IMPERIALISM 0x00597950

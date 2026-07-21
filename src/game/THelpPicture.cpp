@@ -1,10 +1,13 @@
 #include "game/THelpPicture.h"
 
 #include "game/THelpMgr.h"
-#include "game/TSortedPtrList.h"
 #include "game/TDeluxeText.h"
+#include "game/TScrollView.h"
+#include "game/TSortedPtrList.h"
+#include "game/TSoundPlayer.h"
 #include "game/TStaticText.h"
 #include "game/global_data_tables.h"
+#include "game/ui_text_label_helpers_decls.h"
 
 namespace {
 
@@ -27,8 +30,6 @@ void SetHelpNavigationControlState(THelpPicture* picture, unsigned int tag, bool
 }
 
 } // namespace
-#include "game/TDeluxeText.h"
-#include "game/THelpMgr.h"
 // SYNTHETIC: IMPERIALISM 0x00503bd0
 // THelpPicture::CreateObject
 
@@ -44,10 +45,73 @@ THelpPicture::THelpPicture() : TPicture(), currentHelpSet90(0), topicListText94(
 THelpPicture::~THelpPicture() {}
 
 // FUNCTION: IMPERIALISM 0x00503d10
-void THelpPicture::DoPostCreate(int arg) {}
+void THelpPicture::DoPostCreate(int arg) {
+  TView::DoPostCreate(arg);
+
+  TUiTextStyleDescriptor textStyle;
+  InitializeUiTextStyleDescriptor(&textStyle, 0, 12, 0x2b67, 3);
+
+  // Mac Linger.rsrc:3000 identifies 'swin' as the help dialog's TScrollView.
+  TScrollView* scrollView = static_cast<TScrollView*>(ResolveControlByTag(0x7377696e)); // 'swin'
+  scrollView->AssertValid();
+
+  TDeluxeText* topicText = new TDeluxeText();
+  int textOffset[2] = {0, 0};
+  int textSize[2] = {scrollView->frameWidth34 - 0x1c, scrollView->frameHeight38};
+  RECT textInsets = {0, 0, 0, 0};
+  topicText->ConstructTDeluxeTextBaseState(scrollView, textOffset, textSize, &textInsets,
+                                           &textStyle, -2);
+
+  topicListText94 = topicText;
+  scrollView->contentView60 = topicText;
+  scrollView->SyncBoundedValueAndToggleControlStates();
+}
 
 // FUNCTION: IMPERIALISM 0x00503ed0
-void THelpPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {}
+void THelpPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+  TControl::DoEvent(commandId, sourceHandler, event);
+  if (commandId != 0xd) {
+    return;
+  }
+
+  switch (sourceHandler->controlTag) {
+  case 0x6d6f7265: // 'more'
+    MessageBeep(static_cast<UINT>(-1));
+    return;
+  case 0x6e616d31: // 'nam1'
+    g_pSfxPlaybackSystem->PlaySoundEffect(0x1b58, 0, 1);
+    ShowTopic(1);
+    return;
+  case 0x6e616d32: // 'nam2'
+    g_pSfxPlaybackSystem->PlaySoundEffect(0x1b58, 0, 1);
+    ShowTopic(2);
+    return;
+  case 0x6e616d33: // 'nam3'
+    g_pSfxPlaybackSystem->PlaySoundEffect(0x1b58, 0, 1);
+    ShowTopic(3);
+    return;
+  case 0x6e616d34: // 'nam4'
+    g_pSfxPlaybackSystem->PlaySoundEffect(0x1b58, 0, 1);
+    ShowTopic(4);
+    return;
+  case 0x6e616d35: // 'nam5'
+    g_pSfxPlaybackSystem->PlaySoundEffect(0x1b58, 0, 1);
+    ShowTopic(5);
+    return;
+  case 0x6e657874: // 'next'
+    g_pSfxPlaybackSystem->PlaySoundEffect(0x1b58, 0, 1);
+    ShowNextHelpSet();
+    return;
+  case 0x70726576: // 'prev'
+    g_pSfxPlaybackSystem->PlaySoundEffect(0x1b58, 0, 1);
+    ShowPreviousHelpSet();
+    return;
+  case 0x746f676c: // 'togl'
+    g_pSfxPlaybackSystem->PlaySoundEffect(0x1b58, 0, 1);
+    ShowTopicList();
+    return;
+  }
+}
 
 // FUNCTION: IMPERIALISM 0x00504120
 void THelpPicture::ShowNextHelpSet() {

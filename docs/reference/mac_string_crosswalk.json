@@ -14455,6 +14455,38 @@
       ],
       "source_file": "src/game/TMapUberPicture.cpp"
     },
+    "0x00596cb0": {
+      "references": [
+        {
+          "address": "0x00695760",
+          "kind": "embedded_global",
+          "symbol": "g_szListSeparator_00695760",
+          "text": ", "
+        },
+        {
+          "group": 10032,
+          "index": 8,
+          "kind": "windows_gob",
+          "load_string_id": 20168,
+          "text": "End Phase"
+        },
+        {
+          "group": 10032,
+          "index": 18,
+          "kind": "windows_gob",
+          "load_string_id": 20178,
+          "text": "End Turn"
+        },
+        {
+          "group": 10034,
+          "index": 17,
+          "kind": "windows_gob",
+          "load_string_id": 20377,
+          "text": "Force Size: [1]"
+        }
+      ],
+      "source_file": "src/game/TMapUberPicture.cpp"
+    },
     "0x00597020": {
       "references": [
         {
@@ -179306,7 +179338,7 @@
   "summary": {
     "embedded_globals": 767,
     "formula_matches": 2356,
-    "functions_with_references": 276,
+    "functions_with_references": 277,
     "mac_strings": 3821,
     "mac_strings_with_candidates": 3091,
     "text_resources": 0,

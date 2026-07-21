@@ -94183,6 +94183,12 @@
       "to": "control_tag:0x656e6420"
     },
     {
+      "from": "windows_function:0x00503d10",
+      "relation": "resolves_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x7377696e"
+    },
+    {
       "from": "windows_function:0x00504220",
       "relation": "resolves_control_tag",
       "status": "resolved",
@@ -94409,6 +94415,12 @@
       "relation": "resolves_control_tag",
       "status": "resolved",
       "to": "control_tag:0x73706563"
+    },
+    {
+      "from": "windows_function:0x005696f0",
+      "relation": "resolves_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x444f4f47"
     },
     {
       "from": "windows_function:0x0056c740",
@@ -94643,6 +94655,18 @@
       "relation": "resolves_control_tag",
       "status": "resolved",
       "to": "control_tag:0x756e6176"
+    },
+    {
+      "from": "windows_function:0x00596cb0",
+      "relation": "resolves_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x73656173"
+    },
+    {
+      "from": "windows_function:0x00596cb0",
+      "relation": "resolves_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x74627231"
     },
     {
       "from": "windows_function:0x00597810",
@@ -185610,6 +185634,11 @@
       "kind": "windows_function",
       "source": "src/game/TGameWindow.cpp"
     },
+    "windows_function:0x00503d10": {
+      "address": "0x00503d10",
+      "kind": "windows_function",
+      "source": "src/game/THelpPicture.cpp"
+    },
     "windows_function:0x00504220": {
       "address": "0x00504220",
       "kind": "windows_function",
@@ -185684,6 +185713,11 @@
       "address": "0x0055d200",
       "kind": "windows_function",
       "source": "src/game/TNewspaperView.cpp"
+    },
+    "windows_function:0x005696f0": {
+      "address": "0x005696f0",
+      "kind": "windows_function",
+      "source": "src/game/TNavyToolbarCluster.cpp"
     },
     "windows_function:0x0056c740": {
       "address": "0x0056c740",
@@ -185777,6 +185811,11 @@
     },
     "windows_function:0x00596a80": {
       "address": "0x00596a80",
+      "kind": "windows_function",
+      "source": "src/game/TMapUberPicture.cpp"
+    },
+    "windows_function:0x00596cb0": {
+      "address": "0x00596cb0",
       "kind": "windows_function",
       "source": "src/game/TMapUberPicture.cpp"
     },
@@ -186002,9 +186041,9 @@
       "references_picture": 909,
       "references_string": 1441,
       "references_text_style": 58,
-      "resolves_control_tag": 235
+      "resolves_control_tag": 239
     },
-    "edges": 15761,
+    "edges": 15765,
     "mac_classes_without_windows_header": 18,
     "node_kinds": {
       "control_tag": 813,
@@ -186016,9 +186055,9 @@
       "view_node": 3263,
       "windows_event": 94,
       "windows_factory": 17,
-      "windows_function": 95
+      "windows_function": 98
     },
-    "nodes": 10999,
+    "nodes": 11002,
     "unreferenced_resources": {
       "pict": 1998,
       "str_entry": 3623,

@@ -92,8 +92,8 @@ void TUniversityView::UpdateFields() {
 
   TPopulationMgr* population = city94->productionSummary1d8;
   short recruitmentCapacity = static_cast<short>(population->stockLevel1c / 4);
-  if (population->productionSlots14->valueAt8 < recruitmentCapacity) {
-    recruitmentCapacity = population->productionSlots14->valueAt8;
+  if (population->productionSlots14->highSkillCount08 < recruitmentCapacity) {
+    recruitmentCapacity = population->productionSlots14->highSkillCount08;
   }
 
   TNumberText* capacityAvailable =

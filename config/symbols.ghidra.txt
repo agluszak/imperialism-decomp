@@ -1486,7 +1486,7 @@ TEventHandler::OnDeactivateVetoed 48A6B0 f
 TEventHandler::DispatchUiCommand19ToParent 48A6D0 f
 TEventHandler::ContinueModal 48A6F0 f
 TEventHandler::vmethod_0081 48A710 f
-TEventHandler::OwnerPanel 48A730 f
+TEventHandler::GetWindow 48A730 f
 TEventHandler::ShallowClone 48A7C0 f
 TView::CreateObject 48A840 f
 TView::GetRuntimeClass 48A8C0 f
@@ -1506,7 +1506,7 @@ TView::SwitchActiveChildAndNotify 48AF80 f
 TView::ResolveControlByTag 48AFD0 f
 TView::SetState 48B070 f
 TView::Free 48B0B0 f
-TView::OwnerPanel 48B180 f
+TView::GetWindow 48B180 f
 TView::QueryOwnerContextPanel 48B1A0 f
 TView::SetEnabled 48B1C0 f
 TView::IsActionable 48B200 f
@@ -1736,7 +1736,7 @@ WrapperFor_FreeLinkedBlockChain_At00492b00 492B00 f
 WrapperFor_StringSharedRef_AssignFromPtr_At00492b70 492B70 f
 TEvent::'scalar_deleting_destructor' 492C70 f
 WrapperFor_FreeHeapBufferIfNotNull_At00492c70_Impl 492CA0 f
-TWindow::OwnerPanel 492CC0 f
+TWindow::GetWindow 492CC0 f
 TWindow::QueryOwnerContextPanel 492CE0 f
 TWindow::TranslatePointToParentChain4E 492D00 f
 TWindow::TranslatePointToParentChain4D 492D20 f

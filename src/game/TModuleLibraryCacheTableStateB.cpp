@@ -290,6 +290,18 @@ void TModuleLibraryCacheTableStateB::ReleaseRecordByHandle(void* handle) {
   }
 }
 
+// Windows COLORREF values with the PALETTEINDEX marker (0x01 in the high byte) name an
+// entry in the shared DIB palette. Native edit controls need an RGB-bearing palette color,
+// so resolve that entry and return PALETTERGB; ordinary COLORREF values pass through.
+// FUNCTION: IMPERIALISM 0x0049ace0
+COLORREF TModuleLibraryCacheTableStateB::ResolvePaletteIndexColor(unsigned int packedColor) {
+  if (m_dibPalette != NULL && (packedColor & 0xff000000) == 0x01000000) {
+    PALETTEENTRY& entry = m_dibPalette->m_pLogPalette->palPalEntry[packedColor & 0xffff];
+    return PALETTERGB(entry.peRed, entry.peGreen, entry.peBlue);
+  }
+  return packedColor;
+}
+
 // Compiler-emitted destructors for the two embedded CMap<> members above (m_tableA,
 // m_tableB); MSVC500 instantiates and calls these automatically as part of
 // ~TModuleLibraryCacheTableStateB(), so there is no source body to write (mfc-collections

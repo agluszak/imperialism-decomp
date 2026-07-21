@@ -46,7 +46,7 @@ struct NationStateRecordA8 {
   // never read back out of this wire copy.
   int reservedUnitChainSlot98;
   int reservedCityScoreSlot9C;
-  unsigned char padA0;
+  unsigned char navyOrderReachableA0;
   unsigned char exploredByNationMaskA1;
   unsigned char resourcePresenceMaskA2;
   unsigned char regionClassA3;
@@ -175,6 +175,10 @@ public:
                                            unsigned char byte2); // 0x549680
   void DispatchTurnEvent1AWithNationActionPayload(short param0, short param1, short param2,
                                                   short param3, short param4); // 0x5497b0
+  // 0x549a90: wraps a {tag, object} pair and sends it through the event-0x31
+  // serializer. Town/depot/port creation uses the 'town' tag and destination -2.
+  void DispatchTurnEvent31TaggedPayload(int payloadTag, TObject* payloadObject,
+                                        int destinationSlot);
   void DispatchTaggedGameStateEvent1F20(int packetTag, int param2,
                                         int nationSlotOrMode); // 0x54a340
   void DispatchCityRedrawInvalidateEvent(short cityId);        // 0x54abf0

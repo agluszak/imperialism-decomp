@@ -2438,15 +2438,71 @@ void TMapMgr::FloodFillTileRegionMarker(short nTileIndex, short nOwnerNationId) 
 
 // FUNCTION: IMPERIALISM 0x005145b0
 int TMapMgr::QueueDepotConstructionOrder(short nTileIndex, short nNationId) {
-  (void)nTileIndex;
-  (void)nNationId;
-  return 0;
+  CString emptyName(g_szEmptyString);
+  TTown* town;
+
+  if ((terrainStateTable[nTileIndex].activeFlags1c & 4) != 0) {
+    town = FindTownMarkerForTileByOwnerNation(nTileIndex);
+    town->activeFlag4f = true;
+  } else {
+    town = new TTown();
+    town->InitializeTownMarker(static_cast<LPCSTR>(emptyName), nTileIndex, 0, nNationId);
+
+    TSortedList* townMarkers = g_apNationStates[nNationId]->townMarkerList;
+    if (townMarkers == 0) {
+      FailNilPointerWithAssert("D:\\Ambit\\Cross\\UMap.cpp", 0xfa8);
+    }
+    townMarkers->AddTail(town);
+    FloodFillTileRegionMarker(nTileIndex, nNationId);
+  }
+
+  TGreatPower* nation = g_apNationStates[nNationId];
+  if (nation->diplomacyEligibilityA0 == 0) {
+    nation->treasuryValue10 -= 2000;
+  }
+  terrainStateTable[nTileIndex].activeFlags1c |= 0x10;
+
+  if (g_nSaveFormatVersion != -3 && g_pSimMgr->multiplayerSessionRole != 0) {
+    g_pGameFlowState->DispatchTurnEvent31TaggedPayload(0x746f776e, town, -2);
+    g_pGameFlowState->DispatchCityRedrawInvalidateEvent(
+        terrainStateTable[nTileIndex].cityRecordIndex);
+    DispatchTileRedrawInvalidateEvent(nTileIndex);
+  }
+  return 1;
 }
 
 // FUNCTION: IMPERIALISM 0x005147d0
 void TMapMgr::QueuePortConstructionOrder(short nTileIndex, short nNationId) {
-  (void)nTileIndex;
-  (void)nNationId;
+  TTown* town;
+
+  if ((terrainStateTable[nTileIndex].activeFlags1c & 0x10) != 0) {
+    town = FindTownMarkerForTileByOwnerNation(nTileIndex);
+    town->enabledFlag4d = true;
+  } else {
+    town = new TTown();
+    town->InitializeTownMarker(g_szEmptyString, nTileIndex, 1, nNationId);
+
+    TSortedList* townMarkers = g_apNationStates[nNationId]->townMarkerList;
+    if (townMarkers == 0) {
+      FailNilPointerWithAssert("D:\\Ambit\\Cross\\UMap.cpp", 0xfda);
+    }
+    townMarkers->AddTail(town);
+    FloodFillTileRegionMarker(nTileIndex, nNationId);
+  }
+
+  TGreatPower* nation = g_apNationStates[nNationId];
+  if (nation->diplomacyEligibilityA0 == 0) {
+    nation->treasuryValue10 -= 3000;
+  }
+  terrainStateTable[nTileIndex].activeFlags1c |= 4;
+  g_pActiveMapOrderContext->EnsurePortZoneForTile(nTileIndex);
+
+  if (g_nSaveFormatVersion != -3 && g_pSimMgr->multiplayerSessionRole != 0) {
+    g_pGameFlowState->DispatchTurnEvent31TaggedPayload(0x746f776e, town, -2);
+    g_pGameFlowState->DispatchCityRedrawInvalidateEvent(
+        terrainStateTable[nTileIndex].cityRecordIndex);
+    DispatchTileRedrawInvalidateEvent(nTileIndex);
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x005149d0

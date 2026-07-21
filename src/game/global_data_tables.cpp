@@ -1244,6 +1244,11 @@ int g_anTechItemResearchCostByTechId[29] = {
 // TUnitOrder::SetOrderCostProfile's parameters: {resourceTypeIndex,
 // primaryInputResourceId, primaryInputPerUnit, secondaryInputResourceId,
 // secondaryInputPerUnit, cashCostPerUnit, workforceMode}.
+// GLOBAL: IMPERIALISM 0x00695c50
+short g_aInitialCityRecruitmentOrderProfiles[9][7] = {
+    {0, 10, 2, -1, 0, 1500, 4}, {1, 10, 2, -1, 0, 500, 4},  {2, 10, 2, -1, 0, 1000, 4},
+    {3, 10, 2, -1, 0, 1000, 4}, {4, 10, 2, -1, 0, 2000, 4}, {5, 10, 2, -1, 0, 1000, 4},
+    {6, 10, 2, -1, 0, 1000, 4}, {7, 10, 2, -1, 0, 2000, 4}, {8, 10, 2, -1, 0, 5000, 4}};
 // GLOBAL: IMPERIALISM 0x00695cd0
 short g_aUnitOrderCostProfileByAbilityId[0x1e][7] = {
     {0, -1, 0, -1, 0, 0, 1},      {1, 16, 1, -1, 0, 200, 1},   {2, 16, 1, -1, 0, 500, 1},
@@ -1454,14 +1459,14 @@ char g_bMultiplayerScenarioSetupActive = 0;
 // GLOBAL: IMPERIALISM 0x00698b10
 short g_nTurnCooldownSideFlag00698B10 = 1;
 
-// Per-nation scenario setup table copied into TSimMgr's +0xe8 region by the ctor (0x57b9e0)
-// and by InitializeTurnFlowStateDefaults. The copy loop reads with a -1 short bias (starts at
-// &table[-1]), so the referenced symbol 0x698b1a is one short into the read span. Values
-// recovered from the original binary; sized to cover every short the loop reads.
-// GLOBAL: IMPERIALISM 0x00698b1a
-extern "C" short g_anScenarioNationSetupTable_00698B1A[27] = {
-    0x40f,  0x0,  0x41fc, 0x67, 0x410,  0x0,  0x41f4, 0x67, 0x410,  0x0,  0x41e4, 0x67, 0x810, 0x0,
-    0x41e0, 0x67, 0x810,  0x0,  0x41d4, 0x67, 0x411,  0x0,  0x41d0, 0x67, 0x411,  0x0,  0x41cc};
+// Per-nation setup defaults copied into TSimMgr by the ctor and reset path. The old
+// model incorrectly anchored a 27-short array one element into this table and filled
+// it with unrelated address-like values. The original is seven complete four-short
+// rows beginning at 0x698b18.
+// GLOBAL: IMPERIALISM 0x00698b18
+extern "C" short g_aDefaultNationSetupPolicyProfiles[7][4] = {
+    {1, 2, 3, 3}, {2, 2, 5, 2}, {2, 1, 4, 1}, {2, 3, 3, 3},
+    {2, 3, 2, 4}, {2, 2, 1, 3}, {2, 0, 4, 0}};
 
 // Debug/trace tag literal passed to TSimMgr::RebuildMapContextAndGlobalMapState
 // (0x0057c7c0) from case 3 of AdvanceGlobalTurnStateMachine.

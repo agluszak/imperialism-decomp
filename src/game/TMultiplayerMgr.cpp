@@ -1760,15 +1760,15 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     summary2C->stockLevel1c = composite->popStockLevel;
     summary2C->extraAt1e = composite->popExtraAt1e;
     summary2C->fieldAt20 = composite->popFieldAt20;
-    summary2C->baselineSlots10->valueAt4 = composite->popBucketWords[0];
-    summary2C->baselineSlots10->valueAt6 = composite->popBucketWords[1];
-    summary2C->baselineSlots10->valueAt8 = composite->popBucketWords[2];
-    summary2C->productionSlots14->valueAt4 = composite->popBucketWords[3];
-    summary2C->productionSlots14->valueAt6 = composite->popBucketWords[4];
-    summary2C->productionSlots14->valueAt8 = composite->popBucketWords[5];
-    summary2C->pendingDeltaSlots18->valueAt4 = composite->popBucketWords[6];
-    summary2C->pendingDeltaSlots18->valueAt6 = composite->popBucketWords[7];
-    summary2C->pendingDeltaSlots18->valueAt8 = composite->popBucketWords[8];
+    summary2C->baselineSlots10->lowSkillCount04 = composite->popBucketWords[0];
+    summary2C->baselineSlots10->mediumSkillCount06 = composite->popBucketWords[1];
+    summary2C->baselineSlots10->highSkillCount08 = composite->popBucketWords[2];
+    summary2C->productionSlots14->lowSkillCount04 = composite->popBucketWords[3];
+    summary2C->productionSlots14->mediumSkillCount06 = composite->popBucketWords[4];
+    summary2C->productionSlots14->highSkillCount08 = composite->popBucketWords[5];
+    summary2C->pendingDeltaSlots18->lowSkillCount04 = composite->popBucketWords[6];
+    summary2C->pendingDeltaSlots18->mediumSkillCount06 = composite->popBucketWords[7];
+    summary2C->pendingDeltaSlots18->highSkillCount08 = composite->popBucketWords[8];
     break;
   }
   case 0x2d: {
@@ -2476,6 +2476,16 @@ void TMultiplayerMgr::CreateAndSendTurnEvent1C_BoolAndSixShorts(bool broadcastFl
   g_pNetMgr006a6014->Send(&packet, 0);
 }
 
+// FUNCTION: IMPERIALISM 0x00549a90
+void TMultiplayerMgr::DispatchTurnEvent31TaggedPayload(int payloadTag, TObject* payloadObject,
+                                                       int destinationSlot) {
+  TaggedSerializablePayload payload;
+  payload.tag = payloadTag;
+  payload.object = payloadObject;
+  DispatchTurnEventPacketWithCodeAndPayloadBuffer(0x31, static_cast<short>(destinationSlot),
+                                                  &payload);
+}
+
 // FUNCTION: IMPERIALISM 0x00549ad0
 void TMultiplayerMgr::DispatchTurnEventPacketWithCodeAndPayloadBuffer(short eventTag,
                                                                       short destinationSlot,
@@ -2746,7 +2756,7 @@ void TMultiplayerMgr::DispatchCityRedrawInvalidateEvent(short cityId) {
 
   packet.stationedUnitChain98 = src->stationedUnitChain98;
   packet.cityScoreValue9C = src->cityScoreValue;
-  packet.cityBytesA0[0] = src->padA0;
+  packet.cityBytesA0[0] = src->navyOrderReachableA0;
   packet.cityBytesA0[1] = src->exploredByNationMaskA1;
   packet.cityBytesA0[2] = src->resourcePresenceMaskA2;
   packet.cityBytesA0[3] = src->regionClassA3;
@@ -2783,7 +2793,7 @@ NationStateRecordA8& NationStateRecordA8::operator=(const NationStateRecordA8& s
   }
   reservedUnitChainSlot98 = source.reservedUnitChainSlot98;
   reservedCityScoreSlot9C = source.reservedCityScoreSlot9C;
-  padA0 = source.padA0;
+  navyOrderReachableA0 = source.navyOrderReachableA0;
   exploredByNationMaskA1 = source.exploredByNationMaskA1;
   resourcePresenceMaskA2 = source.resourcePresenceMaskA2;
   regionClassA3 = source.regionClassA3;
@@ -3248,15 +3258,15 @@ void TMultiplayerMgr::EmitTurnEvent2CNationStateCompositeForSlot(int nationSlot,
     packet.popStockLevel = summary->stockLevel1c;
     packet.popExtraAt1e = summary->extraAt1e;
     packet.popFieldAt20 = summary->fieldAt20;
-    packet.popBucketWords[0] = summary->baselineSlots10->valueAt4;
-    packet.popBucketWords[1] = summary->baselineSlots10->valueAt6;
-    packet.popBucketWords[2] = summary->baselineSlots10->valueAt8;
-    packet.popBucketWords[3] = summary->productionSlots14->valueAt4;
-    packet.popBucketWords[4] = summary->productionSlots14->valueAt6;
-    packet.popBucketWords[5] = summary->productionSlots14->valueAt8;
-    packet.popBucketWords[6] = summary->pendingDeltaSlots18->valueAt4;
-    packet.popBucketWords[7] = summary->pendingDeltaSlots18->valueAt6;
-    packet.popBucketWords[8] = summary->pendingDeltaSlots18->valueAt8;
+    packet.popBucketWords[0] = summary->baselineSlots10->lowSkillCount04;
+    packet.popBucketWords[1] = summary->baselineSlots10->mediumSkillCount06;
+    packet.popBucketWords[2] = summary->baselineSlots10->highSkillCount08;
+    packet.popBucketWords[3] = summary->productionSlots14->lowSkillCount04;
+    packet.popBucketWords[4] = summary->productionSlots14->mediumSkillCount06;
+    packet.popBucketWords[5] = summary->productionSlots14->highSkillCount08;
+    packet.popBucketWords[6] = summary->pendingDeltaSlots18->lowSkillCount04;
+    packet.popBucketWords[7] = summary->pendingDeltaSlots18->mediumSkillCount06;
+    packet.popBucketWords[8] = summary->pendingDeltaSlots18->highSkillCount08;
     g_pNetMgr006a6014->Send(&packet, destinationSlot == -3);
   }
 }
