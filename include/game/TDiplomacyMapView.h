@@ -68,7 +68,9 @@ public:
 
   int ResolveDiplomacyActionFromClickAndUpdateTarget(CPoint* clickPoint);
   void BuildTurnEventMonochromeMaskBuffers(int maskIndex, int eventCode);
-  void InvalidateAndRunChildWaitSheet(void* arg1, void* arg2, void* arg3, void* arg4);
+  // Mac CodeWarrior: TDiplomacyMapView::PoseWarOffer(short, long, long, long).
+  char PoseWarOffer(short sourceNationSlot, int minorNationSlot, int enemyNationSlot,
+                    int promptCode);
   void DrawVoteNuggets();
   // 0x4f4a30 -- Mac CodeWarrior names this TDiplomacyMapView::DrawNames(const VRect&).
   // Draws the per-nation map labels over nationLabelRects234: great powers 0..6,
@@ -100,7 +102,7 @@ public:
   // interaction mode, and invalidates the map region. Shared out-of-line method: called
   // from TDiplomacyMapView::DoEvent and TCouncilView::DoEvent (topicIndex from a
   // control-tag scan) and unconditionally with topicIndex=5 from
-  // InvalidateAndRunChildWaitSheet / InvalidateAndForwardTabSwitchToChild.
+  // PoseWarOffer / InvalidateAndForwardTabSwitchToChild.
   void ChangeSelectedActionTopic(int topicIndex);
 
 protected:
@@ -127,7 +129,7 @@ protected:
   // childControlAtB4's established "panel's child control" role -- not a conflict, just
   // two names for the same slot, kept below as a reference alias.
   // actionButtonsA0[5] (the 'offr' button) is also the panel's child control, read in
-  // InvalidateAndForwardTabSwitchToChild / InvalidateAndRunChildWaitSheet. Element 0's
+  // InvalidateAndForwardTabSwitchToChild / PoseWarOffer. Element 0's
   // real class (TInfoPanelView) is a TPanelView sibling, not a TControl descendant, so
   // this array is typed as TView* (their common base) rather than TControl* -- callers
   // cast each element to its own real type at the point of use.

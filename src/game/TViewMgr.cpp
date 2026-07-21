@@ -956,13 +956,7 @@ char TViewMgr::RequestDecisionSlot94(int sourceNation, int arg1, int arg2, int p
   TDiplomacyMapView* mainView =
       static_cast<TDiplomacyMapView*>(activeDialog->ResolveControlByTag(kControlTagMain));
   mainView->AssertValid();
-  mainView->InvalidateAndRunChildWaitSheet(
-      reinterpret_cast<void*>(sourceNation), reinterpret_cast<void*>(arg1),
-      reinterpret_cast<void*>(arg2), reinterpret_cast<void*>(promptCode));
-  // The original's non-cooldown path leaves AL from the (void) child call; the trailing
-  // xor al,al this emits is the sole residual diff (InvalidateAndRunChildWaitSheet is void,
-  // so its incidental AL cannot be tail-returned without regressing 0x4f7040's own match).
-  return 0;
+  return mainView->PoseWarOffer(static_cast<short>(sourceNation), arg1, arg2, promptCode);
 }
 
 // FUNCTION: IMPERIALISM 0x005d7190

@@ -3391,6 +3391,8 @@ short g_creditsPlaybackActive_006a4084 = 0;
 // C-array-index offset baked into the instruction displacement, so only the leading
 // zero run at this exact address is meaningfully checked.
 short g_offerDeskSelectionIndexTable_00668568[8] = {0};
+// GLOBAL: IMPERIALISM 0x006a2fe0
+int g_diplomacyWarOfferSheetPosition_006a2fe0[2] = {0};
 // GLOBAL: IMPERIALISM 0x006a3020
 int g_diplomacyPopupLayoutPosition_006a3020[2] = {0};
 

@@ -12190,6 +12190,36 @@
       ],
       "source_file": "src/game/TOffersPanelView.cpp"
     },
+    "0x004f9a60": {
+      "references": [
+        {
+          "address": "0x00694fd8",
+          "kind": "embedded_global",
+          "symbol": "g_szUiFailureMessage",
+          "text": "Failure"
+        },
+        {
+          "address": "0x00694fc8",
+          "kind": "embedded_global",
+          "symbol": "g_szUiNilPointerMessage",
+          "text": "Nil Pointer"
+        },
+        {
+          "address": "0x00696ae0",
+          "kind": "embedded_global",
+          "symbol": "s_SourcePathUDiplomacyViews_00696AE0",
+          "text": "D:\\Ambit\\Cross\\UDiplomacyViews.cpp"
+        },
+        {
+          "group": 10025,
+          "index": 2,
+          "kind": "windows_gob",
+          "load_string_id": 19462,
+          "text": "[1:] has declared war on [2:]. Honor alliance with [3:] and declare war on [4:]?"
+        }
+      ],
+      "source_file": "src/game/TOffersPanelView.cpp"
+    },
     "0x004fb030": {
       "references": [
         {
@@ -179522,7 +179552,7 @@
   "summary": {
     "embedded_globals": 769,
     "formula_matches": 2356,
-    "functions_with_references": 286,
+    "functions_with_references": 287,
     "mac_strings": 3821,
     "mac_strings_with_candidates": 3091,
     "text_resources": 0,

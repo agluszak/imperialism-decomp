@@ -3459,7 +3459,7 @@ TDiplomacyMapView::RebuildDiplomacyLegendPaletteMode1AndBlit 4F6840 f
 TDiplomacyMapView::BuildTurnEventMonochromeMaskBuffers 4F6B10 f
 TDiplomacyMapView::BlitDiplomacyMapEventPaletteMaskToSurface 4F6BD0 f
 TDiplomacyMapView::ChangeSelectedActionTopic 4F6D90 f
-TDiplomacyMapView::InvalidateAndRunChildWaitSheet 4F7040 f
+TDiplomacyMapView::PoseWarOffer 4F7040 f
 TDiplomacyMapView::InvalidateAndForwardTabSwitchToChild 4F7080 f
 TDiplomacyMapView::DoEvent 4F70C0 f
 TDiplomacyMapView::ForwardParam 4F7130 f
@@ -3497,7 +3497,7 @@ TOffersPanelView::DoEvent 4F9300 f
 TOffersPanelView::ForwardParam 4F9350 f
 TOffersPanelView::DispatchUiMouseEventToChildrenOrSelf_Impl 4F9420 f
 TOffersPanelView::RunDiplomacyNegotiationPopupAndAwaitResponse 4F9450 f
-TToolBarCluster::RunDiplomacyWaitSheetPopupAndAwaitResponse 4F9A60 f
+TOffersPanelView::PoseWarOffer 4F9A60 f
 TInfoPanelView::CreateObject 4F9F60 f
 TInfoPanelView::GetRuntimeClass 4F9FF0 f
 TInfoPanelView::DoPostCreate 4FA010 f

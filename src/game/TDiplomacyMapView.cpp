@@ -40,8 +40,6 @@ void __cdecl BuildDiplomacyOverlayHitMaskOpcodeStream(DiplomacyMaskBufferRun* ru
 
 undefined4 FrameRegionOnHdcAndReleaseBrushState(void);
 undefined4 BlitMonochromeMaskBytePatternToSurface(void);
-undefined4 RunDiplomacyWaitSheetPopupAndAwaitResponse(void);
-
 namespace {
 const unsigned int kAddrTerrainTypeDescriptorTable = 0x006A4310;
 const unsigned int kAddrDiplomacyTurnStateManager = 0x006A43D0;
@@ -1283,11 +1281,11 @@ void TDiplomacyMapView::ChangeSelectedActionTopic(int topicIndex) {
 }
 
 // FUNCTION: IMPERIALISM 0x004f7040
-void TDiplomacyMapView::InvalidateAndRunChildWaitSheet(void* arg1, void* arg2, void* arg3,
-                                                       void* arg4) {
+char TDiplomacyMapView::PoseWarOffer(short sourceNationSlot, int minorNationSlot,
+                                     int enemyNationSlot, int promptCode) {
   ChangeSelectedActionTopic(5);
-  reinterpret_cast<void(__fastcall*)(void*, int, void*, void*, void*, void*)>(
-      RunDiplomacyWaitSheetPopupAndAwaitResponse)(actionButtonsA0[5], 0, arg1, arg2, arg3, arg4);
+  return static_cast<TOffersPanelView*>(actionButtonsA0[5])
+      ->PoseWarOffer(sourceNationSlot, minorNationSlot, enemyNationSlot, promptCode);
 }
 
 // FUNCTION: IMPERIALISM 0x004f7080
