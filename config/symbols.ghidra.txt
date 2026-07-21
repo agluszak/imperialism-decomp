@@ -5453,7 +5453,7 @@ TSimMgr::RebuildNationStateSlotsAndAvailability 57CAD0 f
 TSimMgr::RebuildPrimaryNationStateForSlot 57CDA0 f
 TSimMgr::RebuildSecondaryNationStateForSlot 57D520 f
 TSimMgr::FormatSeasonName 57D830 f
-TSimMgr::SetStateCodeAndUpdateZeroOrOutOfRangeFlag 57D870 f
+TSimMgr::SetDifficultyLevel 57D870 f
 TSimMgr::GetTurnTickSlot3C 57D8B0 f
 TSimMgr::CopyScenarioNationSetupIntoFlowState 57D8D0 f
 TSimMgr::IncrementQuarterGateTick2C 57D950 f

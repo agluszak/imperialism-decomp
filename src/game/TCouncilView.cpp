@@ -260,7 +260,7 @@ void TCouncilView::InitializeDiplomacyCouncilViewControlsAndTicker() {
 
 // FUNCTION: IMPERIALISM 0x004fc630
 void TCouncilView::AdvanceCivilianTerrainSelectionStep() {
-  CString unusedMsg;  // constructed/destructed; never populated in the observed binary
+  CString unusedMsg; // constructed/destructed; never populated in the observed binary
   ++visibleVoteTier528;
 
   for (int idx = 0; idx < kDiplomacyPairMatrixEntries; ++idx) {
@@ -268,7 +268,7 @@ void TCouncilView::AdvanceCivilianTerrainSelectionStep() {
     if (tier != -1 && (tier == visibleVoteTier528 || tier == visibleVoteTier528 - 1)) {
       RECT* tileRect = &tileMarkerRects6AC[idx];
       RECT inflated = {tileRect->left - 1, tileRect->top - 1, tileRect->right + 2,
-                        tileRect->bottom + 2};
+                       tileRect->bottom + 2};
       InvalidateCityDialogRectRegion(&inflated, 1);
     }
   }
@@ -281,7 +281,7 @@ void TCouncilView::AdvanceCivilianTerrainSelectionStep() {
     ValidateControlRectIfWindowActive(&rect);
   }
 
-  bool unusedFlag = false;  // never set true in the observed binary
+  bool unusedFlag = false; // never set true in the observed binary
   if (unusedFlag) {
     g_pSfxPlaybackSystem->PlaySoundEffect(0x1f41, 0, 1);
   }
@@ -298,7 +298,7 @@ void TCouncilView::AdvanceCivilianTerrainSelectionStep() {
       bool allowAdvance = false;
       short activeNation = g_pSimMgr->GetActiveNationId();
       if (g_pDiplomacyTurnStateManager->lastProcessedNationSlot78e == activeNation &&
-          g_pSimMgr->field44 == 0) {
+          g_pSimMgr->multiplayerSessionRole == 0) {
         short tick = g_pSimMgr->GetTurnTickSlot3C();
         unsigned char* phaseTable = &g_pSimMgr->field6e;
         if (phaseTable[tick / 40] != 2) {

@@ -375,15 +375,15 @@ void TViewMgr::HandleTurnEventVtableSlot40RefreshGoldDialog() {
 
   // Mask the game-flow flag while committing the refresh when localization mode is active.
   unsigned char savedFlag = 0;
-  bool localizationActive = g_pSimMgr->field44 != 0;
-  if (localizationActive) {
+  bool multiplayerActive = g_pSimMgr->multiplayerSessionRole != 0;
+  if (multiplayerActive) {
     savedFlag = g_pGameFlowState->processPrimaryEventQueue;
     g_pGameFlowState->processPrimaryEventQueue = 0;
   }
   node->RefreshTurnEventDialog();
   node->Close();
   node->Free();
-  if (g_pSimMgr->field44 != 0) {
+  if (g_pSimMgr->multiplayerSessionRole != 0) {
     g_pGameFlowState->processPrimaryEventQueue = savedFlag;
   }
 }
@@ -578,7 +578,7 @@ bool TViewMgr::RunNationInfoModalAndReturnNonCancel(int overlayMode, CString mes
   }
 
   unsigned char savedProcessFlag;
-  bool simSuppressed = g_pSimMgr->field44 != 0;
+  bool simSuppressed = g_pSimMgr->multiplayerSessionRole != 0;
   if (simSuppressed) {
     unsigned char currentFlag = g_pGameFlowState->processPrimaryEventQueue;
     g_pGameFlowState->processPrimaryEventQueue = 0;
@@ -607,7 +607,7 @@ bool TViewMgr::RunNationInfoModalAndReturnNonCancel(int overlayMode, CString mes
   int modalResult = dialog->RefreshTurnEventDialog();
   dialog->Close();
   dialog->Free();
-  simSuppressed = g_pSimMgr->field44 != 0;
+  simSuppressed = g_pSimMgr->multiplayerSessionRole != 0;
   if (simSuppressed) {
     g_pGameFlowState->processPrimaryEventQueue = savedProcessFlag;
   }
@@ -2354,12 +2354,12 @@ void TViewMgr::CreateModalMessageCommandAndQueue(CString* message, int payload) 
 // FUNCTION: IMPERIALISM 0x005deb40
 char TViewMgr::DispatchGameStateEventIfLocalizedPromptAccepted(int actionTag) {
   CString message;
-  int gameFlowMode = g_pSimMgr->field44;
-  unsigned char sessionTornDown = gameFlowMode == 2;
-  if (sessionTornDown != 0) {
+  int sessionRole = g_pSimMgr->multiplayerSessionRole;
+  unsigned char isClientSession = sessionRole == 2;
+  if (isClientSession != 0) {
     g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&message, 0x2737, 0x31);
   } else {
-    unsigned char hosting = gameFlowMode == 1;
+    unsigned char hosting = sessionRole == 1;
     if (hosting != 0) {
       if (actionTag == 0x6367616d) { // 'magc'
         g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&message, 0x2737, 0x37);
@@ -2379,8 +2379,8 @@ char TViewMgr::DispatchGameStateEventIfLocalizedPromptAccepted(int actionTag) {
   char accepted = g_pUiRuntimeContext->DispatchLocalizedUiMessageWithTemplateA13A0(
       message, &g_cstrUiPromptMessageStore, 0, 1);
   if (accepted != 0) {
-    unsigned char tearingDown = g_pSimMgr->field44 == 2;
-    if (tearingDown != 0) {
+    unsigned char isClientSession = g_pSimMgr->multiplayerSessionRole == 2;
+    if (isClientSession != 0) {
       g_pGameFlowState->DispatchTaggedGameStateEvent1F20(0x61626469, // 'abdi'
                                                          g_pSimMgr->GetActiveNationId(), -2);
     }

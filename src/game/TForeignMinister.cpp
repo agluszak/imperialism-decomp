@@ -373,7 +373,7 @@ void TForeignMinister::QueueTurnEventHintActionsByNationMetricsAndCompatibility(
 char TForeignMinister::EvaluateLocalizedScoreThresholdPredicateForNationValue(int nationCode) {
   // Two difficulty-indexed threshold rows (A = [difficulty], B = [difficulty + 5]).
   int thresholds[10] = {0x15, 0x12, 0xf, 0xd, 0xb, 0x1b, 0x17, 0x13, 0x10, 0xe};
-  int difficulty = g_pSimMgr->redrawEnabled; // [g_pSimMgr + 0x40] scenario/difficulty index
+  int difficulty = g_pSimMgr->difficultyLevel; // [g_pSimMgr + 0x40] scenario/difficulty index
   int thresholdA = thresholds[difficulty];
   int thresholdB = thresholds[difficulty + 5];
   char result = 0;

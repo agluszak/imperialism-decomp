@@ -270,7 +270,7 @@ void TAutoGreatPower::WriteTo(TStream* stream) {
 
 // FUNCTION: IMPERIALISM 0x004e7510
 void TAutoGreatPower::HandleNationLost(void) {
-  if (g_pSimMgr->redrawEnabled != 0) {
+  if (g_pSimMgr->difficultyLevel != 0) {
     g_pGameFlowState->DispatchTaggedGameStateEvent1F20(0x6c6f7374, this->nationSlot, -3);
   }
 }

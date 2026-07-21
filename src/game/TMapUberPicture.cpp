@@ -78,7 +78,7 @@ void TMapUberPicture::DoPostCreate(int arg) {
   g_pActiveMapOrderContext->EnsureSelectedTaskForceForOrderOwnerAndRefresh(nullptr);
   g_pActiveMapOrderContext->RefreshMapActionContextNationOverlaysAndOrderRanks();
 
-  unsigned char multiplayerSessionActive = g_pSimMgr->field44 != 0;
+  unsigned char multiplayerSessionActive = g_pSimMgr->multiplayerSessionRole != 0;
   if (multiplayerSessionActive != 0) {
     TView* sendControl = ResolveControlByTag(0x73656e64); // 'send'
     sendControl->AssertValid();
@@ -160,7 +160,7 @@ void ComposeAndDispatchTurnSummaryLocalizedMessage() {
                            static_cast<LPCSTR>(g_pGlobalMapState->scenarioTagText1c));
   }
 
-  if (g_pSimMgr->field44 != 0) {
+  if (g_pSimMgr->multiplayerSessionRole != 0) {
     CString sectionMsg;
     g_pSimMgr->GetString(0x2742, 0x24, &tempMsg);
     scanBracketExpressions(g_pSimMgr, &sectionMsg, static_cast<LPCSTR>(tempMsg),
@@ -200,7 +200,7 @@ void TMapUberPicture::HandleEvent(int commandId, TEventHandler* sourceHandler, T
       EnterMapInteractionOverlayMode(static_cast<TView*>(sourceHandler));
       return;
     } else if (tag == kControlTagCanc) {
-      if (g_pSimMgr->field44 != 0) {
+      if (g_pSimMgr->multiplayerSessionRole != 0) {
         CString msg;
         g_pSimMgr->GetString(0x2742, 0x25, &msg);
         g_pUiRuntimeContext->DispatchLocalizedUiMessageWithTemplateA13A0(

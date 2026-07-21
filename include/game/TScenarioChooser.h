@@ -150,6 +150,6 @@ public:
   // apply flow.
   short selectedScenarioIndex142;
   // Per-nation-slot state codes, indexed by TMapPreviewView::selectedNation68 and applied
-  // via TSimMgr::SetStateCodeAndUpdateZeroOrOutOfRangeFlag.
+  // via TSimMgr::SetDifficultyLevel.
   int nationStateCodesByMapSelection144[(0x160 - 0x144) / 4];
 };

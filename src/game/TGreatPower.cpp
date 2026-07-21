@@ -190,7 +190,7 @@ TGreatPower::TGreatPower()
 
   int localeIndex = 0;
   if (g_pSimMgr != 0) {
-    localeIndex = g_pSimMgr->redrawEnabled;
+    localeIndex = g_pSimMgr->difficultyLevel;
   }
   this->diplomacyBudgetBase = g_anNationBasePressureByLocale[localeIndex] * 100;
   this->escalationCounter =
@@ -256,7 +256,7 @@ void TGreatPower::InitializeNationStateRuntimeSubsystems(int arg1, int arg2) {
 
   TSimMgr* localizationRuntime = g_pSimMgr;
   if (localizationRuntime != 0) {
-    int runtimeIndex = localizationRuntime->redrawEnabled;
+    int runtimeIndex = localizationRuntime->difficultyLevel;
     this->treasuryValue10 = g_anNationStartingTreasuryByLocale[runtimeIndex];
   } else {
     this->treasuryValue10 = 0;
@@ -964,7 +964,7 @@ void TGreatPower::CompileGreatPowerRelationshipDeltaLinesAndDispatchMessage(void
   TSimMgr* localizationRuntime = g_pSimMgr;
   int localeIndex = 0;
   if (localizationRuntime != 0) {
-    localeIndex = localizationRuntime->redrawEnabled;
+    localeIndex = localizationRuntime->difficultyLevel;
   }
   int compileThreshold = g_anGreatPowerCompileThresholdByLocale[localeIndex];
   if (compileThreshold > static_cast<int>(this->pressureCounter)) {
@@ -1029,7 +1029,7 @@ char TGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage(void
   TSimMgr* localizationRuntime = g_pSimMgr;
   int localeIndex = 0;
   if (localizationRuntime != 0) {
-    localeIndex = localizationRuntime->redrawEnabled;
+    localeIndex = localizationRuntime->difficultyLevel;
   }
 
   int treasuryValue10 = this->treasuryValue10;
@@ -1463,7 +1463,7 @@ void TGreatPower::AdvanceOwnedRegionDevelopmentCountersAndDispatchEvents(void) {
           }
         }
 
-        if (localizationRuntime->redrawEnabled != 0 && needsRedraw != 0) {
+        if (localizationRuntime->difficultyLevel != 0 && needsRedraw != 0) {
           g_pGameFlowState->DispatchCityRedrawInvalidateEvent(regionId);
         }
       }
@@ -1999,7 +1999,7 @@ int TGreatPower::ComputeRemainingDiplomacyAidBudget(void) {
 // FUNCTION: IMPERIALISM 0x004dd470
 void TGreatPower::ResetDiplomacyNeedSlots7012AndRefreshIfModeGateMatches(void) {
   TSimMgr* localizationTable = g_pSimMgr;
-  if (localizationTable->redrawEnabled != 0 || localizationTable->mode != 2) {
+  if (localizationTable->difficultyLevel != 0 || localizationTable->mode != 2) {
     return;
   }
 
@@ -2829,7 +2829,7 @@ void TGreatPower::SetNationTransferTargetCodeAndNotifyEligiblePeers(int arg1) {
   g_pGlobalMapState->ApplyJoinEmpireMode0GlobalDiplomacyReset(this->nationSlot);
 
   TSimMgr* localizationTable = g_pSimMgr;
-  if (localizationTable != 0 && localizationTable->redrawEnabled != 0) {
+  if (localizationTable != 0 && localizationTable->difficultyLevel != 0) {
     g_pGameFlowState->DispatchTaggedGameStateEvent1F20(0x6e616d65, this->nationSlot, 0xfffffffd);
   }
 }
@@ -3235,7 +3235,7 @@ void TGreatPower::ApplyScenarioRelationPresetAndSpawnFrogCity(TCity* mgr) {
   if (this->diplomacyEligibilityA0 == 0) {
     presetLevel = 2;
   } else {
-    presetLevel = g_pSimMgr->redrawEnabled;
+    presetLevel = g_pSimMgr->difficultyLevel;
   }
   const short* presetRow = g_Rebuild_Primary_Nation_Value_00653570[presetLevel];
   for (int needIndex = 0; needIndex < 0x17; ++needIndex) {
@@ -3260,7 +3260,7 @@ void TGreatPower::ApplyScenarioRelationPresetAndSpawnFrogCity(TCity* mgr) {
     notifySink->NotifyProductionPresetSlot2C(4, 2, 1);
   }
   TSimMgr* localization = g_pSimMgr;
-  if (this->diplomacyEligibilityA0 == 0 || localization->redrawEnabled < 2 ||
+  if (this->diplomacyEligibilityA0 == 0 || localization->difficultyLevel < 2 ||
       localization->stateFlag114 != 0) {
     if (this->ShouldDispatchImmediatelySlot28() == 0 || localization->stateFlag114 != 0) {
       this->CreateFrogCityAtHomeRegionAndAttach(mgr);
@@ -3361,7 +3361,7 @@ void TGreatPower::SetHomeCityTileAndDisplayName(short homeRegionTile, char* city
 
     city->orderCountByType5c[1] += 2;
 
-    if (g_pSimMgr->redrawEnabled == 0 && this->diplomacyEligibilityA0) {
+    if (g_pSimMgr->difficultyLevel == 0 && this->diplomacyEligibilityA0) {
       city->orderCountByType5c[1] += 6;
 
       short result3 = g_pGlobalMapState->FindReachableRecruitSpawnTileWithVisitedReset(
@@ -4505,7 +4505,7 @@ void TGreatPower::RecomputeNationEconomyAndDiplomacySummaryMetrics() {
     economySummaryTotal954 += summaryFields[fieldIndex];
   }
 
-  economySummarySeasonPercent958 = seasonPercentTable[g_pSimMgr->redrawEnabled];
+  economySummarySeasonPercent958 = seasonPercentTable[g_pSimMgr->difficultyLevel];
   economySummaryWeightedTotal95c = economySummaryTotal954 * economySummarySeasonPercent958 / 10;
 }
 

@@ -71,7 +71,7 @@ void TLoungeDialog::DoPostCreate(int arg) {
   if (!g_pGameFlowState->IsSpecialNationDialogModeActive()) {
     LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2742, 9, 0x636e636cu); // 'clnc'
     g_pGameFlowState->ResetNationStatusSlotsAndInitializeNameControls(this);
-    if (g_pSimMgr->field44 == 1) {
+    if (g_pSimMgr->multiplayerSessionRole == 1) {
       g_pGameFlowState->SetDialogModeTagInitAndInvokeNoOpHook();
       RefreshMapAndMessageControlsForCurrentContext();
       g_pGameFlowState->DispatchTurnEventCode9WithTwoTextTokens(
