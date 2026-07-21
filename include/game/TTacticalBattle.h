@@ -88,7 +88,7 @@ public:
   int currentSideC;                 // +0x0c side (0/1) of the current selection; serialized
   // battleLive10: 0 until the setup/sort step marks the battle live (see
   // "marks the battle live (battleLive10 = 1)" below); tested before per-round work runs.
-  int battleLive10;                      // +0x10 serialized battle-header dword
+  int battleLive10; // +0x10 serialized battle-header dword
   // The two battle players (Mac oracle: TTacticalBattle::InitTacticalBattle(
   // TTacticalPlayer*, TTacticalPlayer*)). Windows evidence: TTacticalBattle::Free
   // (0x59fb50) Free()s both; 0x5a2700 dispatches slots 0x0e/0x0f on them; 0x59fc20
@@ -113,22 +113,22 @@ public:
   int tacticalTileStride40;     // +0x40 = 0x1d (29)
   // battleOutcomeCode44: 0 undecided; 1 = side 0 still standing before round 35 (side-0
   // win), 2 = side-1 win (see the round-cutoff check near roundCounter74 below).
-  int battleOutcomeCode44;                  // +0x44 serialized; 0x5a5320 sets it to 1
+  int battleOutcomeCode44; // +0x44 serialized; 0x5a5320 sets it to 1
   // pendingEndOfActionFlag48: cleared when the 0x232a end-of-action turn event is queued
   // (news a TCommand); TArmyPlayer's move/target-selection loops (via the battle14
   // back-pointer) gate on it being nonzero. No observed set site in ported code yet.
-  char pendingEndOfActionFlag48;                 // +0x48
-  char fortLevel49;             // +0x49 serialized; nonzero suppresses depl trench-marking
-  unsigned char pad4a[2];       // +0x4a
-  int moveAnimSuppressCode4c;                  // +0x4c serialized; == 7 suppresses the move animation
-  int compositionClass50;       // +0x50 stack-composition class of the battle
+  char pendingEndOfActionFlag48; // +0x48
+  char fortLevel49;              // +0x49 serialized; nonzero suppresses depl trench-marking
+  unsigned char pad4a[2];        // +0x4a
+  int moveAnimSuppressCode4c;    // +0x4c serialized; == 7 suppresses the move animation
+  int compositionClass50;        // +0x50 stack-composition class of the battle
   // Per-row-pair fort strength pools (one slot per two grid rows, tile/58), seeded by
   // LoadBattleSetupTabDataByIndex from g_anFortStrengthPointsByFortLevel; consumed by
   // the mine action, gates passability in slot 0x0a.
   int fortStrengthPoints54[8]; // +0x54
   // roundCounter74: current battle round; battleOutcomeCode44 is only decided once a side
   // has no live units and roundCounter74 < 0x23 (35).
-  int roundCounter74;                 // +0x74
+  int roundCounter74; // +0x74
 
   TTacticalBattle();
 
@@ -224,6 +224,12 @@ public:
   // attacker category's direct-fire flag). 0x5a3d30, ret 0x10.
   unsigned char IsTacticalTargetTileReachableForAction(int attackerTileIndex, int targetTileIndex,
                                                        char directFireFlag, int range);
+  // Hover-cursor state for `tileIndex` relative to the current selection/side: not-your-turn
+  // (1), pre-battle-live setup checks (own-unit hover 0xc, blocked 2, deployment zone 3), and
+  // once the battle is live: own-tile reselect (6), reachable empty move tile (4), manned fort
+  // wall (9), adjacent dig/mine target (7), adjacent rally target (8), ranged/fire attack
+  // target (5), adjacent melee attack target (0xa). 0 when nothing applies. 0x5a05a0.
+  int ComputeTacticalHoverCursorStateIndex(int tileIndex);
   // Builds the per-tile distance field into tileIntArray30 for the given side
   // (consumed by the AI advance heuristic). 0x5a4460.
   void BuildTacticalDistanceFieldForSide(char ourSideFlag);

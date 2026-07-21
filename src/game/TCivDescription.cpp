@@ -1,23 +1,22 @@
 // TCivDescription wrapper class pair extracted from Ghidra autogen.
 
-#include <new>
-
 #include "decomp_types.h"
-#include "game/mfc.h"
 #include "game/TCivDescription.h"
 #include "game/TCountry.h"
-#include <string.h>
+#include "game/CString.h"
 #include "game/TCivUnit.h"
 #include "game/TGlobalMapState.h"
-#include "game/TView.h"
-#include "game/CString.h"
-
-#include "game/CString.h"
-#include "game/mfc.h"
+#include "game/TMacViewMgr.h"
+#include "game/TQuickDrawSurfaceContext.h"
 #include "game/TSimMgr.h"
+#include "game/TTechMgr.h"
+#include "game/TView.h"
 #include "game/global_data_tables.h"
+#include "game/mfc.h"
 #include "game/quickdraw_rendering.h"
 #include "game/ui_text_label_helpers_decls.h"
+
+#include <string.h>
 
 namespace {
 const unsigned int kAddrTargetTileProfileByCivilianClassAndSlot = 0x00698F58;
@@ -278,7 +277,6 @@ void TCivDescription::UpdateCivilianOrderTargetTileCountsForOwnerNation(TCivUnit
 void TCivDescription::ApplyRectSlot110(RECT* rectBuffer) {
   (void)rectBuffer;
   // ORIG_CALLCONV: __thiscall
-  int slotIndex;
   unsigned short* legendSelectionCountsBySlot;
   int stylePrimary;
   int styleSecondary;
@@ -334,13 +332,113 @@ void TCivDescription::ApplyRectSlot110(RECT* rectBuffer) {
   }
 }
 
-// TODO(bd follow-up): real body (Ghidra name RenderCivilianTargetLegendVariantA, 1438
-// bytes) draws the Engineer target-tile legend into legendRects[16] (icon rects +
-// class-name label via g_pSimMgr->GetString), ignoring boundsBuffer. Unported — the
-// Engineer civilian legend overlay currently never paints. See bd tracking issue.
 // FUNCTION: IMPERIALISM 0x0058f7b0
 void TCivDescription::DrawEngineer(RECT* boundsBuffer) {
   (void)boundsBuffer;
+
+  CString labelText;
+  CString costText;
+
+  // The Mac Civ-toolbar strings identify this block as the Engineer's "Can Build"
+  // legend: Depot, Port, Fort, then the terrain types that are still unavailable.
+  unsigned char cannotBuildTerrain[4];
+  cannotBuildTerrain[0] =
+      g_pCityOrderCapabilityState->orderCapRows277[g_pSimMgr->GetActiveNationId()]
+          .techStatusByTechId[6] != 2;
+  cannotBuildTerrain[1] =
+      g_pCityOrderCapabilityState->orderCapRows277[g_pSimMgr->GetActiveNationId()]
+          .techStatusByTechId[12] != 2;
+  cannotBuildTerrain[2] =
+      g_pCityOrderCapabilityState->orderCapRows277[g_pSimMgr->GetActiveNationId()]
+          .techStatusByTechId[12] != 2;
+  cannotBuildTerrain[3] =
+      g_pCityOrderCapabilityState->orderCapRows277[g_pSimMgr->GetActiveNationId()]
+          .techStatusByTechId[23] != 2;
+
+  InitializeUiTextStyleDescriptorAndApplyQuickDraw(0, 10, 0x2b6c, 3);
+
+  g_pSimMgr->GetString(0x272d, 6, &labelText); // Can Build
+  SetQuickDrawTextOriginWithContextOffset(12, 96);
+  DrawTextWithCachedQuickDrawStyleState(&labelText);
+
+  g_pSimMgr->GetString(0x272d, 7, &labelText); // Depot
+  SetQuickDrawTextOriginWithContextOffset(40, 120);
+  DrawTextWithCachedQuickDrawStyleState(&labelText);
+  g_pSimMgr->NumToCurrency(2000, &costText);
+  SetQuickDrawTextOriginWithContextOffset(84, 120);
+  DrawTextWithCachedQuickDrawStyleState(&costText);
+
+  g_pSimMgr->GetString(0x272d, 8, &labelText); // Port
+  g_pSimMgr->NumToCurrency(3000, &costText);
+  SetQuickDrawTextOriginWithContextOffset(40, 144);
+  DrawTextWithCachedQuickDrawStyleState(&labelText);
+  SetQuickDrawTextOriginWithContextOffset(84, 144);
+  DrawTextWithCachedQuickDrawStyleState(&costText);
+
+  g_pSimMgr->GetString(0x272d, 9, &labelText); // Fort
+  g_pSimMgr->NumToCurrency(5000, &costText);
+  SetQuickDrawTextOriginWithContextOffset(40, 168);
+  DrawTextWithCachedQuickDrawStyleState(&labelText);
+  SetQuickDrawTextOriginWithContextOffset(84, 168);
+  DrawTextWithCachedQuickDrawStyleState(&costText);
+
+  g_pSimMgr->GetString(0x272d, 10, &labelText); // Cannot Build In
+  short titleWidth = MeasureTextExtentWithCachedQuickDrawStyle(&labelText);
+  SetQuickDrawTextOriginWithContextOffset(
+      static_cast<short>(this->frameWidth34 / 2 - titleWidth / 2), 212);
+  DrawTextWithCachedQuickDrawStyleState(&labelText);
+
+  UpdatePaletteIndexWithDefaultFallback(0x10);
+  TQuickDrawBlitSurface* iconAtlas = g_pStrategicMapViewSystem->atlas694[1]->GetBlitSurface();
+  TQuickDrawBlitSurface* destination = g_pActiveQuickDrawSurfaceContext->GetBlitSurface();
+
+  RECT sourceRect = {347, 0, 374, 20};
+  RECT destinationRect = {10, 110, 37, 130};
+  SetQuickDrawFillColor(0);
+  BlitRectWithOptionalTransparency(iconAtlas, destination, &sourceRect, &destinationRect, 0x24, 0);
+
+  sourceRect.left = 374;
+  sourceRect.right = 401;
+  destinationRect.top = 134;
+  destinationRect.bottom = 154;
+  SetQuickDrawFillColor(0);
+  BlitRectWithOptionalTransparency(iconAtlas, destination, &sourceRect, &destinationRect, 0x24, 0);
+
+  sourceRect.left = 320;
+  sourceRect.right = 347;
+  destinationRect.top = 158;
+  destinationRect.bottom = 178;
+  SetQuickDrawFillColor(0);
+  BlitRectWithOptionalTransparency(iconAtlas, destination, &sourceRect, &destinationRect, 0x24, 0);
+
+  SetQuickDrawStrokeColor(0xffffff);
+  short terrainIconIndex[4] = {10, 7, 8, 9};
+  short iconX = 10;
+  short iconY = 216;
+  int slot = 0;
+  do {
+    if (cannotBuildTerrain[slot] != 0) {
+      sourceRect.left = terrainIconIndex[slot] * 20;
+      sourceRect.top = 0;
+      sourceRect.right = sourceRect.left + 20;
+      sourceRect.bottom = 20;
+      destinationRect.left = iconX;
+      destinationRect.top = iconY;
+      destinationRect.right = iconX + 20;
+      destinationRect.bottom = iconY + 20;
+
+      SetQuickDrawFillColor(0);
+      BlitRectWithOptionalTransparency(iconAtlas, destination, &sourceRect, &destinationRect, 0, 0);
+
+      if (iconX < 94) {
+        iconX = static_cast<short>(iconX + 28);
+      } else {
+        iconX = 10;
+        iconY = static_cast<short>(iconY + 22);
+      }
+    }
+    slot++;
+  } while (slot < 4);
 }
 
 // FUNCTION: IMPERIALISM 0x0058fec0
