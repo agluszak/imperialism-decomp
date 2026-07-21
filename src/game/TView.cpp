@@ -187,7 +187,7 @@ TView::~TView() {
 }
 
 // FUNCTION: IMPERIALISM 0x0048aa60
-void TView::InitializeUiResourceEntryFrameAndParent(TView* uiResourceContext, TView* panel,
+void TView::InitializeUiResourceEntryFrameAndParent(TView* resourceContext, TView* panel,
                                                     int* offsetLayout, int* sizeLayout,
                                                     int layoutParam6, int layoutParam7,
                                                     int attachFlag) {
@@ -207,7 +207,7 @@ void TView::InitializeUiResourceEntryFrameAndParent(TView* uiResourceContext, TV
   if (panel != 0) {
     panel->AttachChildControl(this, attachFlag);
   }
-  uiResourceContext40 = uiResourceContext;
+  this->resourceContext = resourceContext;
 }
 // FUNCTION: IMPERIALISM 0x0048aaf0
 void TView::DispatchControlEventToChildrenAndSelf(int eventArg) {

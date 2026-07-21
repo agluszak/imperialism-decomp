@@ -95,7 +95,7 @@ void TStaticText::InitializeTextEntryBaseAndOptionalStringResource(
   if (panel != 0) {
     panel->AttachChildControl(this, 0);
   }
-  resourceTemplateId40 = 0;
+  resourceContext = 0;
   SetTextStyleAndMaybeRefresh(&g_UiResourceEntryDefaultTextStyle, 0);
   this->stringResourceGroupId = stringResourceGroup;
   this->stringResourceIndex = stringResourceIndex;

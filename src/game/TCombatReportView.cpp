@@ -149,10 +149,10 @@ void TCombatReportView::StuffValues(TCombatReportContext* reportContext) {
   }
   reportControl->SetTextAndMaybeRefresh(&reportText, 1);
 
-  reportText = CString("Losses\n");
+  reportText = CString(s_szCombatLossesHeading_00699324);
   g_apTerrainTypeDescriptorTable[reportContext->nationIdA]->FormatOverlayTerrainLabelText(
       &scratchText);
-  reportText += scratchText + ": ";
+  reportText += scratchText + s_szTurnHistorySeparator_00699320;
 
   int participantAPercentage = participantAMinimumTotal * 100 / participantAField18Total;
   g_pSimMgr->GetString(0x271f, GetCombatLossDescriptionIndex(participantAPercentage), &scratchText);

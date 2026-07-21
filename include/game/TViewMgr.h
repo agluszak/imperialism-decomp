@@ -17,7 +17,7 @@ class TNavyRoster;
 // VTABLE: IMPERIALISM 0x0066f120
 class TViewMgr : public TObject {
 public:
-  // Base Windows cursor resource ID for cursorTable's indexing scheme (see below).
+  // Base Windows cursor resource ID for turnEventCursors' indexing scheme (see below).
   enum { kCursorResourceIdBase = 1000 };
 
   DECLARE_DYNCREATE(TViewMgr)
@@ -129,7 +129,7 @@ public:
   // Resolves the active dialog's 'GOLD' control and configures its value-cell grid
   // (0x14 x 0x14) via the control's slot-0x79 virtual (0x5dc3f0).
   virtual void ConfigureActiveDialogGoldValueGridForTurnEvent3C0();           // 0x10c 0x5dc3f0
-  virtual void HandleTurnEventF3D_PopulateRecentTurnMessages(int nationSlot); // 0x110
+  virtual void ShowUnitHistory(short nationSlot); // 0x110 0x5dc690
 
   void ApplyLegendSplitSlot34(int split) {
     SetForeColor(static_cast<short>(split));
@@ -229,10 +229,10 @@ public:
   unsigned char field10;              // +0x10
   unsigned char pad11[3];             // +0x11
   // +0x14 .. 0xeb (54 turn-event cursor handles). Indexed as
-  // cursorTable[resourceCursorId - kCursorResourceIdBase] -- confirmed against
+  // turnEventCursors[resourceCursorId - kCursorResourceIdBase] -- confirmed against
   // TDiplomacyMapView::HandleCursorHoverSelectionByChildHitTestAndFallback's ground-truth
   // `[EAX + EDX*4 + 0xfffff074]` (0xfffff074 == -0xf8c == 0x14 - kCursorResourceIdBase*4).
-  void* cursorTable[0x36];
+  HCURSOR turnEventCursors[0x36];
   short fieldEc;                           // +0xec
   short padEe;                             // +0xee
   class TMapUberPicture* mapUberPictureF0; // +0xf0

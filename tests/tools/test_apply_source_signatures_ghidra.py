@@ -7,9 +7,9 @@ tooling failures in this area (the unsound `addParameter` fixer, and the manual
 `_restore` that ignored custom storage) were both "the restore didn't restore".
 This test exercises the rollback primitive directly against the real DB.
 
-Skipped unless a Ghidra environment is available (so the pure-Python
-`just test` suite ignores it); run it where GHIDRA_INSTALL_DIR + the vendored
-project are present, e.g. in the DB-tooling CI lane.
+Skipped unless explicitly enabled with `IMPERIALISM_RUN_GHIDRA_TESTS=1` and a
+Ghidra environment is available. This keeps ordinary unit-test runs independent
+of whether the developer happens to have a live project configured.
 """
 
 import os
@@ -17,6 +17,8 @@ import unittest
 
 
 def _ghidra_available() -> bool:
+    if os.environ.get("IMPERIALISM_RUN_GHIDRA_TESTS") != "1":
+        return False
     if not os.environ.get("GHIDRA_INSTALL_DIR"):
         return False
     try:
@@ -26,7 +28,10 @@ def _ghidra_available() -> bool:
     return True
 
 
-@unittest.skipUnless(_ghidra_available(), "requires GHIDRA_INSTALL_DIR + pyghidra")
+@unittest.skipUnless(
+    _ghidra_available(),
+    "requires IMPERIALISM_RUN_GHIDRA_TESTS=1, GHIDRA_INSTALL_DIR, and pyghidra",
+)
 class TransactionRollbackSmokeTest(unittest.TestCase):
     def test_aborted_transaction_restores_signature_exactly(self):
         import pyghidra
@@ -92,7 +97,10 @@ class TransactionRollbackSmokeTest(unittest.TestCase):
             project.close()
 
 
-@unittest.skipUnless(_ghidra_available(), "requires GHIDRA_INSTALL_DIR + pyghidra")
+@unittest.skipUnless(
+    _ghidra_available(),
+    "requires IMPERIALISM_RUN_GHIDRA_TESTS=1, GHIDRA_INSTALL_DIR, and pyghidra",
+)
 class DecompilerCacheFlushAfterRollbackTest(unittest.TestCase):
     """Regression test for the Task-4 fix: `run`/`run_divergent`/`run_packed` each
     call `ifc.flushCache()` right after `endTransaction`, so a rolled-back mutation
@@ -159,7 +167,10 @@ class DecompilerCacheFlushAfterRollbackTest(unittest.TestCase):
             project.close()
 
 
-@unittest.skipUnless(_ghidra_available(), "requires GHIDRA_INSTALL_DIR + pyghidra")
+@unittest.skipUnless(
+    _ghidra_available(),
+    "requires IMPERIALISM_RUN_GHIDRA_TESTS=1, GHIDRA_INSTALL_DIR, and pyghidra",
+)
 class TypeResolverLiveTest(unittest.TestCase):
     """Live-DB coverage for the two Task-3 fixes to `TypeResolver`: project-local
     scalar typedefs (nation_domain_types.h) are invisible to Ghidra without

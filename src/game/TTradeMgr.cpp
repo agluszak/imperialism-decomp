@@ -16,11 +16,6 @@
 #include "game/TLongintList.h"
 #include "game/TMultiplayerMgr.h"
 
-// Preset seed table for the metric rows (original global @ 0x69a910). Kept file-local until
-// modeled as a recovered global. (The proposal-code lookup formerly here was replaced by the
-// real global g_nationMetricSlotDispatchOrder006d810.)
-static short kNationMetricCategoryPresetValues[0x11];
-
 // SYNTHETIC: IMPERIALISM 0x005b79d0
 // TTradeMgr::CreateObject
 
@@ -40,7 +35,7 @@ TTradeMgr::~TTradeMgr() {}
 
 // FUNCTION: IMPERIALISM 0x005b7a90
 void TTradeMgr::InitializeNationInteractionStateManagerDefaults() {
-  short* presetCursor = kNationMetricCategoryPresetValues;
+  const short* presetCursor = g_aTradeItemBasePriceByCategory_0069A910;
   TDealList** rankListCursor = this->categoryRankLists;
   char* rowCursor = reinterpret_cast<char*>(this) + 0x0e;
   int rowCount = 0x11;
@@ -211,8 +206,7 @@ void TTradeMgr::OrphanCallChain_C3_I50_005b7fc0() {
     row->field08 = 0;
     row->field0a = 0;
     row->capabilityActiveFlag14 = 0;
-    *reinterpret_cast<int*>(row->weightedScore0c) = 0;
-    *reinterpret_cast<int*>(row->weightedScore0c + 4) = 0;
+    row->weightedScore0c = 0.0;
     short* cell = rowCursor + 0x1e;
     int c = 0x17;
     do {
@@ -501,7 +495,7 @@ void TTradeMgr::ComputeNationMetricBaselineValueForSlot(short slot) {
              2;
     break;
   default: {
-    double weighted = *reinterpret_cast<double*>(&row->weightedScore0c);
+    double weighted = row->weightedScore0c;
     double diff = (double)(int)row->field08 - weighted;
     int pw = (int)row->proposalWeightScale06;
     int a = (int)((double)pw + diff);
@@ -525,7 +519,7 @@ void TTradeMgr::ComputeNationMetricBaselineValueForSlot(short slot) {
 
 // FUNCTION: IMPERIALISM 0x005b8d40
 double TTradeMgr::GetNationMetricWeightedScoreForSlot(short category) {
-  return *reinterpret_cast<double*>(&this->categoryRows[category].weightedScore0c);
+  return this->categoryRows[category].weightedScore0c;
 }
 
 // FUNCTION: IMPERIALISM 0x005b8d70
@@ -653,7 +647,7 @@ void TTradeMgr::ProcessPendingDiplomacyTransferEntriesUntilBlockedWrapper() {
   short next = 0;
   do {
     short i = *reinterpret_cast<short*>(self + 0x4);
-    short idx = g_nationMetricSlotDispatchOrder006d810[i];
+    short idx = g_aTradeDealCategoryOrder_0066D810[i];
     TDealList* list = this->categoryRankLists[idx];
     if (list->GetSize() != 0) {
       break;
@@ -674,8 +668,7 @@ void TTradeMgr::ProcessPendingDiplomacyTransferEntriesUntilBlocked() {
     if (categoryRows[0].resetTransitionFlagA00 > 0x10) {
       break;
     }
-    short dispatchIdx =
-        g_nationMetricSlotDispatchOrder006d810[categoryRows[0].resetTransitionFlagA00];
+    short dispatchIdx = g_aTradeDealCategoryOrder_0066D810[categoryRows[0].resetTransitionFlagA00];
     TDealList* list = categoryRankLists[dispatchIdx];
     // TDealList entry record layout not yet recovered: entry[0]=source nation slot,
     // entry[1]=target nation slot, entry[4]=amount-ish field (raw short offsets, matching
@@ -709,7 +702,7 @@ void TTradeMgr::ProcessPendingDiplomacyTransferEntriesUntilBlocked() {
           break;
         }
       } while (categoryRankLists
-                   [g_nationMetricSlotDispatchOrder006d810[categoryRows[0].resetTransitionFlagA00]]
+                   [g_aTradeDealCategoryOrder_0066D810[categoryRows[0].resetTransitionFlagA00]]
                        ->GetSize() == 0);
       categoryRows[0].resetTransitionFlagB02 = 1;
     }
@@ -722,24 +715,33 @@ void TTradeMgr::ProcessPendingDiplomacyTransferEntriesUntilBlocked() {
 
 // FUNCTION: IMPERIALISM 0x005b9370
 void TTradeMgr::RefreshNationStateAndEmitTurnEvent3Mode18() {
-  for (TGreatPower** cursor = g_apNationStates;
-       reinterpret_cast<int>(cursor) < reinterpret_cast<int>(&g_apNationStates_End); ++cursor) {
-    if (*cursor != 0) {
-      (*cursor)->ClearDiplomacyState1c6Block();
+  TGreatPower** nationCursor = g_apNationStates;
+  do {
+    if (*nationCursor != 0) {
+      (*nationCursor)->ClearDiplomacyState1c6Block();
     }
-  }
+    ++nationCursor;
+  } while (nationCursor < reinterpret_cast<TGreatPower**>(&g_apNationStates_End));
 
   short* rowCursor = &categoryRows[0].cells18[46];
-  for (int row = 0; row < 0x11; ++row) {
-    for (int i = 0; i < 0x17; ++i) {
-      if (rowCursor[i] < rowCursor[i - 0x17]) {
-        rowCursor[i] = rowCursor[i - 0x17];
+  int rowCount = 0x11;
+  do {
+    short* cellCursor = rowCursor;
+    int cellCount = 0x17;
+    do {
+      short priorValue = cellCursor[-0x17];
+      if (priorValue > *cellCursor) {
+        *cellCursor = priorValue;
       }
-    }
+      ++cellCursor;
+      --cellCount;
+    } while (cellCount != 0);
     rowCursor += 0x50;
-  }
+    --rowCount;
+  } while (rowCount != 0);
 
-  if (*reinterpret_cast<int*>(&g_pSimMgr->preferenceValues[0]) == 1) {
+  unsigned char isHost = g_pSimMgr->multiplayerSessionRole == 1;
+  if (isHost != 0) {
     g_pGameFlowState->EmitTurnEvent3Mode18WithActiveNation();
   } else {
     g_pSimMgr->StartNextPhase();
@@ -872,7 +874,7 @@ void TTradeMgr::RunNationUpdatePassesAndResetTransitionFlags() {
     np = np + 1;
   } while (static_cast<short>(slot) < 7);
 
-  TMinor** mp = g_apSecondaryNationStateSlots + 7;
+  TMinor** mp = g_apNationAuxRuntimeStateSlots;
   int i = 0x10;
   do {
     if (*mp != 0) {
@@ -899,7 +901,7 @@ void TTradeMgr::RunNationUpdatePassesAndResetTransitionFlags() {
 
 // FUNCTION: IMPERIALISM 0x005b9890
 void TTradeMgr::RunNationMetricPreUpdatePassAcrossSecondaryNations() {
-  TMinor** p = g_apSecondaryNationStateSlots + 7;
+  TMinor** p = g_apNationAuxRuntimeStateSlots;
   int i = 0x10;
   do {
     if (*p != 0) {
@@ -966,13 +968,12 @@ void TTradeMgr::BuildEligibleNationMetricBucketsAndWeightedTrendScores() {
             factor = 1.0;
           } else {
             int exponent = (metric < 0x19) ? (metric - 1) : 0x17;
-            factor = this->ComputeNationMetricPowerScale(base, static_cast<short>(exponent));
+            factor = this->Power(base, static_cast<short>(exponent));
             if (2.0 < factor) {
               factor = 2.0;
             }
           }
-          *reinterpret_cast<double*>(row->weightedScore0c) =
-              factor + *reinterpret_cast<double*>(row->weightedScore0c);
+          row->weightedScore0c = factor + row->weightedScore0c;
         }
       }
       np = np + 1;
@@ -1018,7 +1019,7 @@ void TTradeMgr::BuildSecondaryNationMetricBucketsAndWeightedTrendScores() {
   int metricRow = 0;
   do {
     short* cellCursor = psVar4 + 0xe;
-    TMinor** mp = g_apSecondaryNationStateSlots + 7;
+    TMinor** mp = g_apNationAuxRuntimeStateSlots;
     int remaining = 0x10;
     do {
       short metric = (*mp)->QueryNationMetricBySlot7C(static_cast<short>(metricRow));
@@ -1039,7 +1040,7 @@ void TTradeMgr::BuildSecondaryNationMetricBucketsAndWeightedTrendScores() {
           factor = 1.0;
         } else {
           int exponent = (sv < 0x19) ? (value - 1) : 0x17;
-          factor = this->ComputeNationMetricPowerScale(base, static_cast<short>(exponent));
+          factor = this->Power(base, static_cast<short>(exponent));
         }
         *reinterpret_cast<double*>(psVar4 + 1) = factor + *reinterpret_cast<double*>(psVar4 + 1);
       }
@@ -1051,7 +1052,7 @@ void TTradeMgr::BuildSecondaryNationMetricBucketsAndWeightedTrendScores() {
     metricRow = metricRow + 1;
   } while (static_cast<short>(metricRow) < 7);
 
-  TMinor** mp = g_apSecondaryNationStateSlots + 7;
+  TMinor** mp = g_apNationAuxRuntimeStateSlots;
   short* aggCursor = reinterpret_cast<short*>(self + 0x48a);
   int count = 0x10;
   do {
@@ -1066,7 +1067,7 @@ void TTradeMgr::BuildSecondaryNationMetricBucketsAndWeightedTrendScores() {
         factor = 1.0;
       } else {
         int exponent = (metric < 0x19) ? (metric - 1) : 0x17;
-        factor = this->ComputeNationMetricPowerScale(base, static_cast<short>(exponent));
+        factor = this->Power(base, static_cast<short>(exponent));
       }
       *reinterpret_cast<double*>(self + 0x470) = factor + *reinterpret_cast<double*>(self + 0x470);
     }
@@ -1080,7 +1081,7 @@ void TTradeMgr::BuildSecondaryNationMetricBucketsAndWeightedTrendScores() {
   int cellBase = 0x410;
   do {
     int col = 7;
-    mp = g_apSecondaryNationStateSlots + 7;
+    mp = g_apNationAuxRuntimeStateSlots;
     int rem = 0x10;
     do {
       if (*mp != 0) {
@@ -1101,8 +1102,8 @@ void TTradeMgr::BuildSecondaryNationMetricBucketsAndWeightedTrendScores() {
 }
 
 // FUNCTION: IMPERIALISM 0x005b9f30
-double TTradeMgr::ComputeNationMetricPowerScale(double base, short exponent) {
-  double result = 1.0;
+double TTradeMgr::Power(double base, short exponent) {
+  double result = g_TradePowerIdentity_0066D8E0;
   if (exponent > 0) {
     int remaining = exponent;
     do {
@@ -1153,7 +1154,7 @@ TLongintList* TTradeMgr::AllocateAndPopulateLinkedValueCollectionFromRosterFilte
 // bottom-tested body — logic, registers, global ref and read-once all match.)
 // FUNCTION: IMPERIALISM 0x005ba090
 short TTradeMgr::ResolveProposalCodeForCategorySlot84(short proposalCode, short category) {
-  short* lookupCursor = g_nationMetricSlotDispatchOrder006d810;
+  short* lookupCursor = g_aTradeDealCategoryOrder_0066D810;
   do {
     short slotValue = *lookupCursor;
     if (slotValue == proposalCode) {
@@ -1163,7 +1164,7 @@ short TTradeMgr::ResolveProposalCodeForCategorySlot84(short proposalCode, short 
       return category;
     }
     lookupCursor = lookupCursor + 1;
-  } while (lookupCursor < &g_nationMetricSlotDispatchOrder006d810[0x11]);
+  } while (lookupCursor < &g_aTradeDealCategoryOrder_0066D810[0x11]);
   return proposalCode;
 }
 

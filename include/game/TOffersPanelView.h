@@ -116,6 +116,11 @@ public:
   // slot 0x68 Setup inherited unchanged (0x430550)
   virtual char PoseOffer(short sourceNation, short targetNation,
                          short offerType); // slot 0x69 0x4f9450
+  // Mac CodeWarrior: TOffersPanelView::PoseWarOffer(short, long, long, long).
+  // Builds the localized war invitation, presents the 'shee' offer sheet, and blocks on
+  // the UI message pump until the player chooses 'acce' or 'reje'. 0x4f9a60.
+  char PoseWarOffer(short sourceNationSlot, int minorNationSlot, int enemyNationSlot,
+                    int promptCode);
   // TPanelView's slice ends at 0x64; RTTI oracle confirms sizeof(TOffersPanelView) == 0x70.
   // The ctor (0x4f8f70) zeroes acceptText and rejectText. field64 is written by DoEvent
   // (0x4f9300) with the accept/reject-hotspot's controlTag (four-char 'acce'/'reje').

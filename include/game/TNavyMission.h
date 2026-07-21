@@ -17,8 +17,8 @@ public:
   TShip* selectedOrder1c;              // +0x1c selected primary navy-order node
   TTaskForce* taskForce20;             // +0x20 combined task-force/map-order entry
   TMapOrderChildLinkNode* orderList24; // +0x24 -- head of child order-node chain
-  int navyState28;            // +0x28 target-selection state (0 -> zone18 active, 1..2 -> zone14)
-  float resourceWeights2c[4]; // +0x2c
+  int navyState28; // +0x28 target-selection state (0 -> zone18 active, 1..2 -> zone14)
+  float requiredShipEquipageByCategory[4]; // +0x2c
 
   TNavyMission();
   TNavyMission(TZone* targetZone);
@@ -29,16 +29,15 @@ public:
   virtual void
   Free() override; // slot 0x1c (TObject) 0x5364c0 -- releases orderList24 and deletes self
 
-  virtual char ReturnFalseSlot28() override; // slot 0x28 0x535500
-  virtual int ReturnZeroSlot2C(int* outBuffer, int unused)
-      override; // slot 0x2c 0x536840 -- builds category weight vector, returns total
-  virtual void RefreshSlot40() override; // slot 0x40 0x536b30 -- updates order-selection-mode state
-  virtual void
-  MissionSlot44() override; // slot 0x44 0x536e40 -- processes queued-order context mode
+  virtual char IsANoBrainer() const override; // slot 0x28 0x535500
+  virtual int AccumulateLack(int* accumulatedLack, unsigned char includeExistingLack)
+      const override; // slot 0x2c 0x536840 -- accumulates remaining ship-equipage lack
+  virtual void Reassess() override;   // slot 0x40 0x536b30 -- updates order-selection-mode state
+  virtual void GiveOrders() override; // slot 0x44 0x536e40 -- processes queued-order context mode
   virtual TMission* GetReplacementSlot48() override; // slot 0x48 0x536fc0
-  virtual char ReturnFalseSlot54() override;         // slot 0x54 0x5354e0
-  virtual int ReturnZeroSlot58() override;           // slot 0x58 0x535520
-  virtual TMission* ReturnZeroSlot5C() override;     // slot 0x5c 0x535540 -- returns this
+  virtual char IsNavyMission() const override;       // slot 0x54 0x5354e0
+  virtual TMission* GetArmyMission() override;       // slot 0x58 0x535520 -- returns null
+  virtual TMission* GetNavyMission() override;       // slot 0x5c 0x535540 -- returns this
   virtual float ReturnZeroFloatSlot68() override;    // slot 0x68 0x537f40
   virtual float
   ReturnZeroFloatSlot6C() override; // slot 0x6c 0x5378c0 -- dot product with baseline profile
@@ -58,10 +57,9 @@ public:
       override; // slot 0x98 0x536740 -- clears queued order links/owner pointers, returns true
 
   // TNavyMission-introduced virtuals (TMission abstract slots 0x27+ / offset 0x9c+).
-  // `pMapOrderEntry` is opaque here (RET 4 confirms one stack arg, real base body is a
-  // pure no-op) -- overrides interpret it as the task-force/map-order entry the
-  // enclosing MissionSlot44 dispatch passed (taskForce20).
-  virtual void NoOpSlot9C(void* pMapOrderEntry); // slot 0x27 0x5354c0
+  // Mac: GiveActionOrders(TTaskForce*). The base is a no-op; concrete missions use the
+  // task-force/map-order entry passed by GiveOrders (taskForce20).
+  virtual void GiveActionOrders(TTaskForce* mapOrderEntry); // slot 0x27 0x5354c0
   // Returns the best neighbor port zone for the current nation (delegates to
   // targetZone14->SelectBestPrimaryNeighborForNationDiplomacyMask); every override
   // (TControlSeaZoneMission/TScatteredShipsMission) also returns a TZone*, and
@@ -74,7 +72,7 @@ public:
   virtual void QueueMissionOrdersByPriorityForContext(TZone* contextAnchor,
                                                       TShip** selectedOrder); // slot 0x2a 0x537090
   // Selects the active target zone from lifecycle state28 (0 -> zone18, 1..2 -> zone14).
-  virtual TZone* GetActiveTargetZoneByState28(); // slot 0x2b 0x537060
+  virtual TZone* GetActiveTargetZoneByState28() const; // slot 0x2b 0x537060
 
   // Mac: CombineForce(TZone*, TTaskForce*&). Reuses or creates the task force for
   // `contextAnchor`, then moves every matching mission order into it.
@@ -96,8 +94,8 @@ public:
   // Builds a 4-category priority vector from every existing orderList24 ship plus
   // `candidateOrder` (each contribution weighted by a per-ship distance-decay factor,
   // see g_MissionOrderDistanceDecayWeightTable_006978c8), then scores it against
-  // resourceWeights2c via a Bhattacharyya-coefficient-style similarity:
-  // sum(sqrt(resourceWeights2c[i] * vector[i])) / sum(resourceWeights2c[i]). Used to
+  // requiredShipEquipageByCategory via a Bhattacharyya-coefficient-style similarity:
+  // sum(sqrt(requiredShipEquipageByCategory[i] * vector[i])) / sum(requiredShipEquipageByCategory[i]). Used to
   // evaluate how well adding `candidateOrder` would fit this mission's target profile.
   // 0x538120.
   float ComputeMissionOrderMatchScoreWithCandidateNavyOrder(TShip* candidateOrder);
@@ -135,7 +133,7 @@ public:
   float ComputeMissionQueuedOrderSimilarityForTargetNation(short distanceThreshold);
 
 private:
-  // Shared by RefreshSlot40's mode-transition checks (0x536b30).
+  // Shared by Reassess's mode-transition checks (0x536b30).
   float ComputeNavyOrderCategorySimilarityRatio(int excludeCurrent);
 };
 

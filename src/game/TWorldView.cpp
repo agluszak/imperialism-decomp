@@ -74,8 +74,7 @@ void TWorldView::DoSetCursor(CPoint* point, RgnHandle hitArg) {
   if (cursorId != -1) {
     CPoint mappedPoint = ViewToQDPt(point);
     if (PtInRgn(&mappedPoint, hitArg) != 0) {
-      SetCursor(static_cast<HCURSOR>(
-          g_pUiRuntimeContext->cursorTable[cursorId - TViewMgr::kCursorResourceIdBase]));
+      SetCursor(g_pUiRuntimeContext->turnEventCursors[cursorId - TViewMgr::kCursorResourceIdBase]);
       return;
     }
   }
@@ -185,7 +184,7 @@ void TWorldView::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* poi
   if (cursorToken == -1) {
     cursor = LoadCursorA(0, MAKEINTRESOURCEA(0x7f00));
   } else {
-    cursor = static_cast<HCURSOR>(g_pUiRuntimeContext->cursorTable[cursorToken - 1000]);
+    cursor = g_pUiRuntimeContext->turnEventCursors[cursorToken - 1000];
   }
   SetCursor(cursor);
 

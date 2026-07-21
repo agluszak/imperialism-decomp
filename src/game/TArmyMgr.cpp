@@ -1079,6 +1079,50 @@ void TArmyMgr::SetActiveProvinceSelection(short tileIndex) {
   g_pUiRuntimeContext->mapUberPictureF0->InvalidateMap();
 }
 
+// FUNCTION: IMPERIALISM 0x004a46d0
+void TArmyMgr::ClearProvinceSelectionHighlightsForNation(short nationId) {
+  TSortedList* unitList = g_apNationStates[nationId]->militaryUnitList44;
+  int unitCount = unitList->GetCount();
+  for (short ordinal = 1; ordinal <= unitCount; ++ordinal) {
+    TUnit* unit = static_cast<TUnit*>(unitList->GetEntryByOrdinal(ordinal));
+    if (unit->field_8 == 3) {
+      unit->SetOrderModeSlot34(0, -1);
+    }
+  }
+  this->pendingMapActionIndex = -1;
+}
+
+// FUNCTION: IMPERIALISM 0x004a4760
+short TArmyMgr::FindNextSelectableProvinceForNation(short nationId) {
+  short candidate = this->pendingMapActionIndex;
+  if (candidate == -1) {
+    candidate = 0;
+  }
+
+  while (candidate < 0x180) {
+    const TGlobalMapCityScoreRecord& cityRecord = g_pGlobalMapState->cityScoreTable[candidate];
+    short ownerNation = cityRecord.ownerNationCode00;
+    bool ownerPermitsSelection = false;
+    if (ownerNation > -1) {
+      ownerPermitsSelection =
+          ownerNation == nationId ||
+          g_apTerrainTypeDescriptorTable[ownerNation]->IsEncodedNationSlotMinus200Equal(nationId);
+    }
+
+    if (ownerPermitsSelection) {
+      TMilitaryUnit* unit = cityRecord.stationedUnitChain98;
+      while (unit != nullptr) {
+        if (unit->field_8 == 0 && unit->GetUnitMovementClassId() != 0) {
+          return candidate;
+        }
+        unit = static_cast<TMilitaryUnit*>(unit->nextOnTile);
+      }
+    }
+    ++candidate;
+  }
+  return -1;
+}
+
 // FUNCTION: IMPERIALISM 0x004a4870
 undefined TArmyMgr::HandleMapClickByComputedCursorState(short tileIndex, short mode) {
   bool handled = false;
@@ -1093,10 +1137,10 @@ undefined TArmyMgr::HandleMapClickByComputedCursorState(short tileIndex, short m
     }
     break;
   case 6:
-    this->SetActiveProvinceAndBuildDirectionalOrderOverlays(tileIndex);
+    this->MarchSelectedArmies(tileIndex);
     return 1;
   case 8:
-    this->BuildMapHintOverlayTextAndDispatchUiMessages(cityRecordIndex);
+    this->ShowSpyReport(cityRecordIndex);
     return 1;
   }
   return handled;
@@ -1160,13 +1204,13 @@ undefined TArmyMgr::HandleMapClickByCivilianCursorState(short tileIndex, short m
   case 5:
     return this->ValidateOrderPlacementPrerequisitesForSelectedTile(cityRecordIndex);
   case 6:
-    this->SetActiveProvinceAndBuildDirectionalOrderOverlays(tileIndex);
+    this->MarchSelectedArmies(tileIndex);
     return 0;
   case 7:
     g_pUiRuntimeContext->HandleTurnEventDialogFactorySlotEC(this->pendingMapActionIndex);
     return 0;
   case 8:
-    this->BuildMapHintOverlayTextAndDispatchUiMessages(cityRecordIndex);
+    this->ShowSpyReport(cityRecordIndex);
     // fall through
   default:
     return 0;
@@ -1329,7 +1373,7 @@ bool TArmyMgr::ValidateOrderPlacementPrerequisitesForSelectedTile(short cityReco
 }
 
 // FUNCTION: IMPERIALISM 0x004a5760
-void TArmyMgr::SetActiveProvinceAndBuildDirectionalOrderOverlays(short tileIndex) {
+void TArmyMgr::MarchSelectedArmies(short tileIndex) {
   short direction = (g_pGlobalMapState->terrainStateTable[tileIndex].perTileVisitedFlag0f - 1) % 6;
   short neighborTile = TMapMgr::GetWrappedHexNeighborTileIndexByDirection(tileIndex, direction);
   short cityRecordIndex = g_pGlobalMapState->terrainStateTable[neighborTile].cityRecordIndex;
@@ -1546,11 +1590,10 @@ void TArmyMgr::ApplyPostBattleStackOutcomeAndGrowUnitMeters(TArmyStack* ourStack
 }
 
 // FUNCTION: IMPERIALISM 0x004a5ec0
-bool TArmyMgr::BuildMapOrderContextSummaryStringForNation(short cityRecordIndex,
-                                                          CString* outDefenderSummary,
-                                                          CString* outGarrisonSummary) {
-  CString candidateName;
+bool TArmyMgr::GenerateSpyReport(int cityRecordIndex, CString& outDefenderSummary,
+                                 CString& outGarrisonSummary) {
   int bestScore = -1;
+  CString candidateName;
 
   // Phase 1: scan the city's adjacent regions owned by the active nation for the
   // strongest stationed military unit; fall back to the region's own display name when
@@ -1569,11 +1612,11 @@ bool TArmyMgr::BuildMapOrderContextSummaryStringForNation(short cityRecordIndex,
               g_pGlobalMapState->cityScoreTable[regionId].stationedUnitChain98);
         }
         for (; unit != nullptr; unit = static_cast<TMilitaryUnit*>(unit->nextOnTile)) {
-          if (unit->orderType > 0x1a) {
-            int score = unit->field_38 / 100 + 1;
+          if (unit->orderType >= 0x1b) {
+            int score = static_cast<short>(unit->field_38 / 100) + 1;
             if (bestScore < score) {
               candidateName = unit->name24;
-              *outDefenderSummary = candidateName;
+              outDefenderSummary = candidateName;
               bestScore = score;
             }
           }
@@ -1581,8 +1624,9 @@ bool TArmyMgr::BuildMapOrderContextSummaryStringForNation(short cityRecordIndex,
         if (bestScore < 0) {
           bestScore = 0;
           g_pGlobalMapState->AssignCityRecordDisplayName(regionId, &candidateName);
-          g_pSimMgr->GetString(0x2744, 1, outDefenderSummary);
-          *outDefenderSummary = *outDefenderSummary + s_szSpaceSeparator_00695794 + candidateName;
+          g_pSimMgr->GetString(0x2744, 1, &outDefenderSummary);
+          outDefenderSummary =
+              CString(outDefenderSummary + s_szSpaceSeparator_00695794 + candidateName);
         }
       }
       ++i;
@@ -1594,27 +1638,28 @@ bool TArmyMgr::BuildMapOrderContextSummaryStringForNation(short cityRecordIndex,
   // pick, or (only when Phase 1 found nothing at all) the ship's own name is the
   // fallback.
   TShip* bestShip = nullptr;
-  for (TShip* ship = g_pNavyPrimaryOrderListHead; ship != nullptr; ship = ship->nextOlder24) {
+  for (TShip* ship = GetNavyPrimaryOrderListHead(); ship != nullptr; ship = ship->nextOlder24) {
     if (ship->ownerNationSlot14 == g_pSimMgr->GetActiveNationId() &&
         ship->field08->ContainsCityStatePointerInZoneArrayByCityIndex(cityRecordIndex)) {
       bestShip = ship->SelectPreferredMapOrderEntryByPriorityRules(bestShip, 0);
     }
   }
   if (bestShip != nullptr) {
+    CString selectedName;
     TAdmiral* admiral = bestShip->admiralBacklink20;
     if (admiral == nullptr) {
       if (bestScore == -1) {
-        g_pSimMgr->GetString(0x2744, 3, outDefenderSummary);
-        *outDefenderSummary =
-            *outDefenderSummary + s_szSpaceSeparator_00695794 + bestShip->displayName18;
+        selectedName = bestShip->displayName18;
+        g_pSimMgr->GetString(0x2744, 3, &outDefenderSummary);
+        outDefenderSummary += s_szSpaceSeparator_00695794 + selectedName;
         bestScore = 0;
       }
     } else {
-      int admiralScore = admiral->field_10 / 100 + 1;
+      int admiralScore = static_cast<short>(admiral->field_10 / 100) + 1;
       if (bestScore < admiralScore) {
-        CString admiralName = s_szAdmiralPrefix_0069578c + admiral->displayName;
-        g_pSimMgr->GetString(0x2744, 2, outDefenderSummary);
-        *outDefenderSummary = *outDefenderSummary + s_szSpaceSeparator_00695794 + admiralName;
+        selectedName = CString(s_szAdmiralPrefix_0069578c + admiral->displayName);
+        g_pSimMgr->GetString(0x2744, 2, &outDefenderSummary);
+        outDefenderSummary += s_szSpaceSeparator_00695794 + selectedName;
         bestScore = admiralScore;
       }
     }
@@ -1625,39 +1670,52 @@ bool TArmyMgr::BuildMapOrderContextSummaryStringForNation(short cityRecordIndex,
   }
 
   // Phase 3: tally the city's stationed units into 11 resource buckets via a
-  // per-strength-tier weighted roll, seeded from the city/turn/nation.
-  short turnTick = g_pSimMgr->GetEconomicTurn();
+  // per-strength-tier weighted roll, seeded from the city/turn/nation. The category
+  // result is biased by 3: 4 selects the misc bucket, 5 selects a random bucket, and
+  // every other result selects the unit's movement class.
   short activeNationId = g_pSimMgr->GetActiveNationId();
+  short turnTick = g_pSimMgr->GetEconomicTurn();
   int seed = cityRecordIndex + turnTick + activeNationId;
   if (seed == 0) {
     seed = cityRecordIndex;
   }
 
-  int resourceBuckets[11] = {0};
+  int resourceBuckets[11];
+  memset(resourceBuckets, 0, sizeof(resourceBuckets));
+  short citySlot = static_cast<short>(cityRecordIndex);
   TMilitaryUnit* unit = nullptr;
-  if (cityRecordIndex >= 0 && cityRecordIndex < 0x180) {
+  if (citySlot >= 0 && citySlot < 0x180) {
     unit = static_cast<TMilitaryUnit*>(
-        g_pGlobalMapState->cityScoreTable[cityRecordIndex].stationedUnitChain98);
+        g_pGlobalMapState->cityScoreTable[citySlot].stationedUnitChain98);
   }
   if (unit != nullptr) {
     const short* pointCostWeights = g_MapOrderResourceRollWeightTable_0064c5d8[bestScore];
     const short* categoryWeights = g_MapOrderResourceRollWeightTable_0064c5d8[bestScore] + 3;
     do {
       seed = seed * 0x15a4e35 + 1;
-      int pointCost = FindCumulativeWeightBucketIndex(
+      short pointCost = static_cast<short>(FindCumulativeWeightBucketIndex(
           const_cast<short*>(pointCostWeights),
-          static_cast<short>((static_cast<unsigned int>(seed) >> 0xc & 0x7fff) % 100));
+          static_cast<short>(static_cast<int>(static_cast<unsigned int>(seed) >> 0xc & 0x7fff) %
+                             100)));
       seed = seed * 0x15a4e35 + 1;
-      short category = static_cast<short>(FindCumulativeWeightBucketIndex(
-          const_cast<short*>(categoryWeights),
-          static_cast<short>((static_cast<unsigned int>(seed) >> 0xc & 0x7fff) % 100)));
-      if (category == 1) {
-        category = 10;
-      } else if (category == 2) {
-        seed = seed * 0x15a4e35 + 1;
-        category = static_cast<short>((static_cast<unsigned int>(seed) >> 0xc & 0x7fff) % 10);
-      } else {
+      short category = static_cast<short>(
+          FindCumulativeWeightBucketIndex(
+              const_cast<short*>(categoryWeights),
+              static_cast<short>(static_cast<int>(static_cast<unsigned int>(seed) >> 0xc & 0x7fff) %
+                                 100)) +
+          3);
+      switch (category) {
+      default:
         category = unit->GetUnitMovementClassId();
+        break;
+      case 5:
+        seed = seed * 0x15a4e35 + 1;
+        category = static_cast<short>(
+            static_cast<int>(static_cast<unsigned int>(seed) >> 0xc & 0x7fff) % 10);
+        break;
+      case 4:
+        category = 10;
+        break;
       }
       unit = static_cast<TMilitaryUnit*>(unit->nextOnTile);
       resourceBuckets[category] += pointCost;
@@ -1667,33 +1725,40 @@ bool TArmyMgr::BuildMapOrderContextSummaryStringForNation(short cityRecordIndex,
   // Phase 4: format the non-empty buckets into a comma-separated "<count> <resource>"
   // list (singular/plural string group 0x2726, offset i vs i+11), or a fallback when
   // nothing was garrisoned.
-  *outGarrisonSummary = g_szEmptyString;
-  bool wroteAnyBucket = false;
-  for (int bucket = 0; bucket < 0xb; ++bucket) {
-    int count = resourceBuckets[bucket];
+  {
+    CString emptySummary(g_szEmptyString);
+    outGarrisonSummary = emptySummary;
+  }
+  CString resourceTypeName;
+  CString countText;
+  short renderedBucketCount = 0;
+  int bucket = 0;
+  int* bucketCursor = resourceBuckets;
+  do {
+    int count = *bucketCursor;
     if (count != 0) {
-      if (wroteAnyBucket) {
-        *outGarrisonSummary += g_szListSeparator_00695760;
+      if (renderedBucketCount != 0) {
+        outGarrisonSummary += g_szListSeparator_00695760;
       }
-      int stringOffset = (count != 1) ? bucket + 0xb : bucket;
-      CString resourceTypeName;
-      g_pSimMgr->GetString(0x2726, static_cast<short>(stringOffset), &resourceTypeName);
-      CString countText;
+      g_pSimMgr->GetString(0x2726, static_cast<short>(count == 1 ? bucket : bucket + 0xb),
+                           &resourceTypeName);
       countText.Format(g_szDecimalFormat, count);
-      *outGarrisonSummary += countText + s_szSpaceSeparator_00695794 + resourceTypeName;
-      wroteAnyBucket = true;
+      outGarrisonSummary += countText + s_szSpaceSeparator_00695794 + resourceTypeName;
+      ++renderedBucketCount;
     }
+    ++bucket;
+    ++bucketCursor;
+  } while (bucket < 0xb);
+  if (renderedBucketCount == 0) {
+    g_pSimMgr->GetString(0x2744, 9, &outGarrisonSummary);
   }
-  if (!wroteAnyBucket) {
-    g_pSimMgr->GetString(0x2744, 9, outGarrisonSummary);
-  }
-  *outGarrisonSummary += ".";
+  outGarrisonSummary += ".";
 
   return true;
 }
 
 // FUNCTION: IMPERIALISM 0x004a6680
-void TArmyMgr::BuildMapHintOverlayTextAndDispatchUiMessages(short cityRecordIndex) {
+void TArmyMgr::ShowSpyReport(int cityRecordIndex) {
   TUiTextStyleDescriptor styleA;
   InitializeUiTextStyleDescriptor(&styleA, 0, 0xe, 0x2b67, 1);
 
@@ -1708,8 +1773,7 @@ void TArmyMgr::BuildMapHintOverlayTextAndDispatchUiMessages(short cityRecordInde
 
   CString defenderSummary;
   CString garrisonSummary;
-  if (!this->BuildMapOrderContextSummaryStringForNation(cityRecordIndex, &defenderSummary,
-                                                        &garrisonSummary)) {
+  if (!this->GenerateSpyReport(cityRecordIndex, defenderSummary, garrisonSummary)) {
     CString noSummaryMessage;
     g_pSimMgr->GetString(0x2744, 8, &noSummaryMessage);
     // Ground truth also dispatches noSummaryMessage via

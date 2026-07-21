@@ -65,8 +65,9 @@ public:
   AllocateAndPopulateLinkedValueCollectionFromRosterFilter(int rosterSlot,
                                                            int filterValue); // 0x20 0x5b9fd0
   virtual short ResolveProposalCodeForCategorySlot84(short proposalCode,
-                                                     short category);        // 0x21 0x5ba090
-  virtual double ComputeNationMetricPowerScale(double base, short exponent); // 0x22 0x5b9f30
+                                                     short category); // 0x21 0x5ba090
+  // Mac oracle: Power(double, short).
+  virtual double Power(double base, short exponent); // 0x22 0x5b9f30
 
   TTradeMgr();
   void InitializeNationInteractionStateManagerDefaults();
@@ -86,8 +87,9 @@ public:
 
   // One 0xa0-byte metric row per category, indexed from class offset 0x04. Field offsets
   // recovered from the accessors' disassembly: `categoryRows[i].field` resolves to
-  // `this + i*0xa0 + (0x04 + struct_off)`. Row stride is 0xa0; struct alignment is 2 (the
-  // double at 0x0c is stored unaligned, so it is kept as raw bytes to avoid 8-byte packing).
+  // `this + i*0xa0 + (0x04 + struct_off)`. Row stride is 0xa0; the original VC5 layout
+  // uses 4-byte packing, placing the real double member at struct offset 0x0c.
+#pragma pack(push, 4)
   struct NationMetricCategoryRow {
     // struct 0x00/0x02 -- only observed written by
     // TTradeMgr::RunNationUpdatePassesAndResetTransitionFlags, and only for categoryRows[0]
@@ -100,11 +102,12 @@ public:
     short proposalWeightScale06;      // struct 0x06
     short field08;                    // struct 0x08
     short field0a;                    // struct 0x0a
-    unsigned char weightedScore0c[8]; // struct 0x0c (unaligned double)
+    double weightedScore0c;           // struct 0x0c
     short capabilityActiveFlag14;     // struct 0x14
     short field16;                    // struct 0x16
     short cells18[(0xa0 - 0x18) / 2]; // struct 0x18..0x9f (flat cell matrix, stride 0x50 shorts)
   };
+#pragma pack(pop)
 
   NationMetricCategoryRow categoryRows[0x11]; // 0x04 .. 0xaa3
   unsigned char padAA4[0xaa8 - 0xaa4];        // 0xaa4 .. 0xaa7
@@ -112,4 +115,5 @@ public:
   unsigned char padAEC[0xaf0 - 0xaec];        // 0xaec .. 0xaef
 };
 
+ASSERT_SIZE(TTradeMgr::NationMetricCategoryRow, 0xa0);
 ASSERT_SIZE(TTradeMgr, 0xaf0);

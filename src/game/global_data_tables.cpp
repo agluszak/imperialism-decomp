@@ -1109,12 +1109,30 @@ MappedFlavorTextNationVariantEntry g_MappedFlavorTextNationVariantTable_0066EF30
 // Defend-province / mission priority-vector normalization (0x53e6e0 / 0x53ea70 family).
 // GLOBAL: IMPERIALISM 0x0065a8f0
 extern const float g_AttackProvinceMissionReadinessThreshold_0065A8F0 = 1.0f;
+// GLOBAL: IMPERIALISM 0x0065a8f8
+extern const float g_DefendProvinceMissionCrossSupportFloorScale_0065A8F8 = 0.8f;
 // GLOBAL: IMPERIALISM 0x0065a8fc
 extern const float g_MissionResourceWeightScale_0065A8FC = 1.1f;
 // GLOBAL: IMPERIALISM 0x0065a900
 extern const float g_BlockadePortMissionThreatFloor_0065A900 = 10.0f;
 // GLOBAL: IMPERIALISM 0x0065a904
 extern const float g_BlockadePortMissionThreatScale_0065A904 = 0.5f;
+// GLOBAL: IMPERIALISM 0x0065a958
+extern const float g_NavyMissionQueuedWeightDeficitScale_0065A958 = 1.0f;
+// GLOBAL: IMPERIALISM 0x0065a95c
+extern const float g_InvadeMissionSuppressedPriorContributionScale_0065A95C = 0.0f;
+// GLOBAL: IMPERIALISM 0x0065a960
+extern const float g_NavyMissionSimilarityExcessBlend_0065A960 = 0.25f;
+// GLOBAL: IMPERIALISM 0x0065a968
+// Difficulty-row / fort-level-column resource scaling for attack-province missions.
+extern const float g_AttackProvinceMissionResourceScaleByDifficultyAndFortLevel_0065A968[5][4] = {
+    {1.9f, 2.3f, 2.5f, 2.7f},
+    {1.9f, 2.3f, 2.5f, 2.7f},
+    {2.0f, 2.3f, 2.5f, 2.7f},
+    {2.1f, 2.3f, 2.5f, 2.7f},
+    {2.3f, 2.5f, 2.7f, 2.9f}};
+// GLOBAL: IMPERIALISM 0x0065a9b8
+extern const float g_MissionPositiveFallback_0065A9B8 = 1.0f;
 // GLOBAL: IMPERIALISM 0x0065a9bc
 extern const float g_Recompute_Nation_Order_LookupTable_0065A9BC = 0.05f;
 // GLOBAL: IMPERIALISM 0x0065a9c4
@@ -1127,6 +1145,10 @@ extern const double g_Recompute_Nation_Order_LookupTable_0065A9F0 = 0.0;
 double g_Recompute_Nation_Order_LookupTable_0065A9F8 = 0.01;
 double g_Recompute_Nation_Order_LookupTable_0065AA00 = 0.5;
 double g_Recompute_Nation_Order_LookupTable_0065AA08 = 1.0;
+// GLOBAL: IMPERIALISM 0x0065aa10
+extern const double g_PortZoneFriendlyMissionScoreMultiplier_0065AA10 = 1.5;
+// GLOBAL: IMPERIALISM 0x0065aa18
+extern const double g_PortZoneForeignMissionScoreMultiplier_0065AA18 = 1.25;
 // GLOBAL: IMPERIALISM 0x0065aa20
 extern const float g_Recompute_Nation_Order_LookupTable_0065AA20 = 139069760.0f;
 // GLOBAL: IMPERIALISM 0x0065aa24
@@ -1329,11 +1351,20 @@ unsigned char g_bRandomMapDeveloperCheatFlag = 0;
 // GLOBAL: IMPERIALISM 0x00698bec
 char g_szConanCheatFileName_00698BEC[] = "Conan";
 
-// Metric-slot dispatch-order lookup consumed by
+// Trade-item dispatch order consumed by
 // TTradeMgr::ProcessPendingDiplomacyTransferEntriesUntilBlockedWrapper (0x5b9190). Values
-// are the original rdata table; kept zero-initialized here (function pairing is by address).
+// are read directly from the original rdata table.
 // GLOBAL: IMPERIALISM 0x0066d810
-short g_nationMetricSlotDispatchOrder006d810[0x11] = {0};
+short g_aTradeDealCategoryOrder_0066D810[0x11] = {13, 14, 15, 16, 7, 8, 9, 10, 11,
+                                                  12, 0,  1,  2,  3, 4, 5, 6};
+// Multiplicative identity used by TTradeMgr::Power.
+// GLOBAL: IMPERIALISM 0x0066d8e0
+extern const double g_TradePowerIdentity_0066D8E0 = 1.0;
+
+// Initial price for each of the 17 trade-item categories.
+// GLOBAL: IMPERIALISM 0x0069a910
+extern const short g_aTradeItemBasePriceByCategory_0069A910[0x11] = {
+    100, 100, 100, 100, 100, 300, 100, 100, 300, 300, 300, 300, 300, 900, 900, 900, 900};
 
 // 17 four-char control tags (space + digit + 2-letter category: "sr" raw materials 0-6,
 // "am" manufactured 0-5, "dg" 0-3), walked by TTradeScreenPicture::Draw to
@@ -2134,6 +2165,15 @@ int g_mapActionContextDisplayNameCacheStep_006984bc = 7;
 // Empty content: reccmp pairs by the // GLOBAL address marker, not by value. ===
 // GLOBAL: IMPERIALISM 0x00695794
 char s_szSpaceSeparator_00695794[] = " ";
+// Separator used by TViewMgr::ShowUnitHistory to build "Turn N: count message".
+// The original symbol's eight-byte comparison extent includes the aligned NUL and
+// the first four bytes of the adjacent pooled "Losses\n" literal.
+// GLOBAL: IMPERIALISM 0x00699320
+char s_szTurnHistorySeparator_00699320[8] = {':', ' ', 0, 0, 'L', 'o', 's', 's'};
+// GLOBAL: IMPERIALISM 0x00699324
+char s_szCombatLossesHeading_00699324[] = "Losses\n";
+// GLOBAL: IMPERIALISM 0x0069b71c
+char s_szTurnHistoryPrefix_0069b71c[] = "Turn ";
 // "Adm. " prefix for the assigned-admiral name line (TShipView::Draw,
 // 0x5654e0).
 // GLOBAL: IMPERIALISM 0x0069578c
@@ -3395,16 +3435,19 @@ short g_creditsPlaybackActive_006a4084 = 0;
 // C-array-index offset baked into the instruction displacement, so only the leading
 // zero run at this exact address is meaningfully checked.
 short g_offerDeskSelectionIndexTable_00668568[8] = {0};
+// GLOBAL: IMPERIALISM 0x006a2fe0
+int g_diplomacyWarOfferSheetPosition_006a2fe0[2] = {0};
 // GLOBAL: IMPERIALISM 0x006a3020
 int g_diplomacyPopupLayoutPosition_006a3020[2] = {0};
 
 // GLOBAL: IMPERIALISM 0x006a2410
 int g_InfoBarDummyOrigin_006A2410[2] = {0};
 
-// Per-strength-tier probability-split table for BuildMapOrderContextSummaryStringForNation's
+// Per-strength-tier probability-split table for TArmyMgr::GenerateSpyReport's
 // per-garrisoned-unit resource roll: each 3-short half sums to 100. The first half picks a
-// 0-2 "point cost" for the unit; the second half picks how that cost gets bucketed (the
-// unit's own movement class, a fixed "misc" bucket, or a uniform random bucket). Indexed by
+// 0-2 "point cost" for the unit; the second result is biased by 3, with selector 4 choosing
+// a fixed "misc" bucket, selector 5 choosing a uniform random bucket, and every other
+// selector choosing the unit's own movement class. Indexed by
 // the function's winning strength tier (unclamped, matching the original -- tiers beyond
 // row 5 read past this table in the original too). table[tier]+3 is the second half (at
 // original address 0x0064c5de, 6 bytes/3 shorts into this same row-major table).

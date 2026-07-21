@@ -86,7 +86,8 @@ void TIndustryAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache() {
       control->QueryBounds(&boundsRect);
       ClipRect(&boundsRect);
       control->QueryBounds(&boundsRect);
-      control->TranslatePointToParentChain4E();
+      CPoint translatedOrigin(g_nOverlayClipCacheParamX, g_nOverlayClipCacheParamY);
+      control->TranslatePointToParentChain4E(&translatedOrigin);
 
       short styleValueAt60 = *reinterpret_cast<short*>(reinterpret_cast<char*>(control) + 0x60);
       if (styleValueAt60 > 0) {
@@ -122,12 +123,11 @@ void TIndustryAmtBar::RenderQuickDrawOverlayWithHitRegion(short selectedValue) {
   if (IsActionable() != 0) {
     PrepareForDrawing();
     if (IsActionable() != 0) {
-      int cachedX = g_nOverlayClipCacheParamX;
-      int cachedY = g_nOverlayClipCacheParamY;
-      RECT invalidRect = {cachedX, cachedY, 0, 0};
-      TranslatePointToParentChain4E();
-      invalidRect.right = cachedX + (int)(short)frameWidth34;
-      invalidRect.bottom = cachedY + (int)(short)frameHeight38;
+      CPoint translatedOrigin(g_nOverlayClipCacheParamX, g_nOverlayClipCacheParamY);
+      TranslatePointToParentChain4E(&translatedOrigin);
+      RECT invalidRect = {translatedOrigin.x, translatedOrigin.y,
+                          translatedOrigin.x + (int)(short)frameWidth34,
+                          translatedOrigin.y + (int)(short)frameHeight38};
       InvalidateCityDialogRectRegion(&invalidRect, 1);
     }
   }

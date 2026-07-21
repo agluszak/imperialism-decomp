@@ -55,7 +55,8 @@ void TShipAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache() {
       control->QueryBounds(&boundsRect);
       ClipRect(&boundsRect);
       control->QueryBounds(&boundsRect);
-      control->TranslatePointToParentChain4E();
+      CPoint translatedOrigin(g_nOverlayClipCacheParamX, g_nOverlayClipCacheParamY);
+      control->TranslatePointToParentChain4E(&translatedOrigin);
 
       if (rangeOrMaxValue > 0) {
         SetQuickDrawTextOriginWithContextOffset(0, 1);

@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import csv
+import hashlib
 import json
 import logging
 import subprocess
@@ -29,6 +30,8 @@ from tools.common.report_score import effective_matching
 from tools.common.template_aliases import load_aliases
 
 FUNCTION_ROW_TYPE = "fun"
+REPORT_CACHE_VERSION = 1
+REPORT_CACHE_FILE = "reccmp_report.inputs.json"
 GLOBAL_ROW_TYPES = ("dat", "lab", "str", "flo", "wid")
 AUX_NON_FUNCTION_ROW_TYPES = ("imp",)
 TRACKED_NON_FUNCTION_ROW_TYPES = GLOBAL_ROW_TYPES + AUX_NON_FUNCTION_ROW_TYPES
@@ -72,6 +75,11 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--build-dir", default=str(repo_root / "build-msvc500"))
     parser.add_argument("--detect-recompiled", action="store_true")
     parser.add_argument("--no-run", action="store_true", help="Parse existing report files only.")
+    parser.add_argument(
+        "--ui-codegen-gate",
+        action="store_true",
+        help="Fail if a generated UI factory is unpaired or below its baseline.",
+    )
     parser.add_argument(
         "--baseline-file",
         default=str(repo_root / "config" / "baselines" / "reccmp_progress_baseline.json"),
@@ -310,6 +318,29 @@ def parse_report_functions(path: Path) -> dict[str, dict[str, Any]]:
     return funcs
 
 
+def ui_codegen_regressions(
+    addresses: Iterable[int],
+    current: dict[str, dict[str, Any]],
+    baseline: dict[str, dict[str, Any]],
+) -> list[str]:
+    errors: list[str] = []
+    for address in addresses:
+        key = hex(address)
+        label = f"0x{address:08x}"
+        before = baseline.get(key)
+        after = current.get(key)
+        if before is None:
+            errors.append(f"{label}: missing from committed baseline")
+        elif after is None:
+            errors.append(f"{label}: generated function is not paired")
+        elif float(after["m"]) < float(before["m"]) - FUNCTION_CHANGE_EPS:
+            errors.append(
+                f"{label}: similarity regressed "
+                f"{float(before['m']) * 100:.4f}% -> {float(after['m']) * 100:.4f}%"
+            )
+    return errors
+
+
 def function_baseline_path(baseline_file: Path) -> Path:
     """Sibling holding the compact per-function score snapshot."""
     return baseline_file.with_name(f"{baseline_file.stem}.functions.csv")
@@ -441,6 +472,87 @@ def write_json_atomic(path: Path, data: dict[str, Any]) -> None:
     tmp_path.replace(path)
 
 
+def _file_sha256(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as stream:
+        for chunk in iter(lambda: stream.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
+def _cache_path_label(repo_root: Path, path: Path) -> str:
+    resolved = path.resolve()
+    try:
+        return resolved.relative_to(repo_root).as_posix()
+    except ValueError:
+        return str(resolved)
+
+
+def report_input_hashes(
+    repo_root: Path, build_dir: Path, target_id: str
+) -> dict[str, str]:
+    project = RecCmpProject.from_directory(build_dir)
+    target = project.get(target_id)
+    paths = {
+        repo_root / "pyproject.toml",
+        repo_root / "uv.lock",
+        repo_root / "reccmp-project.yml",
+        repo_root / "reccmp-user.yml",
+        build_dir / "reccmp-build.yml",
+        Path(__file__),
+        target.original_path,
+        target.recompiled_path,
+        target.recompiled_pdb,
+        *target.data_sources,
+    }
+    for source_root in target.source_paths:
+        paths.update(path for path in source_root.rglob("*") if path.is_file())
+    return {
+        _cache_path_label(repo_root, path): _file_sha256(path)
+        for path in sorted(paths, key=lambda item: str(item.resolve()))
+    }
+
+
+def report_cache_is_current(
+    cache_path: Path,
+    target_id: str,
+    inputs: dict[str, str],
+    outputs: dict[str, Path],
+) -> bool:
+    if not cache_path.is_file() or any(not path.is_file() for path in outputs.values()):
+        return False
+    try:
+        cache = json.loads(cache_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return False
+    if (
+        cache.get("format_version") != REPORT_CACHE_VERSION
+        or cache.get("target") != target_id
+        or cache.get("inputs") != inputs
+    ):
+        return False
+    return cache.get("outputs") == {
+        name: _file_sha256(path) for name, path in outputs.items()
+    }
+
+
+def write_report_cache(
+    cache_path: Path,
+    target_id: str,
+    inputs: dict[str, str],
+    outputs: dict[str, Path],
+) -> None:
+    write_json_atomic(
+        cache_path,
+        {
+            "format_version": REPORT_CACHE_VERSION,
+            "target": target_id,
+            "inputs": inputs,
+            "outputs": {name: _file_sha256(path) for name, path in outputs.items()},
+        },
+    )
+
+
 def build_entry(args: argparse.Namespace, build_dir: Path) -> dict[str, Any]:
     roadmap_csv = resolve_build_path(build_dir, args.roadmap_csv)
     report_json = resolve_build_path(build_dir, args.report_json)
@@ -453,12 +565,32 @@ def build_entry(args: argparse.Namespace, build_dir: Path) -> dict[str, Any]:
                 cwd=build_dir,
                 log_path=build_dir / "reccmp_detect.log",
             )
-        run_logged(
-            ["uv", "run", "reccmp-roadmap", "--target", args.target, "--csv", str(roadmap_csv)],
-            cwd=build_dir,
-            log_path=build_dir / "reccmp_roadmap.log",
-        )
-        run_progress_report(args.target, build_dir, report_json, report_log)
+        repo_root = repo_root_from_file(__file__)
+        inputs = report_input_hashes(repo_root, build_dir, args.target)
+        outputs = {
+            "roadmap_csv": roadmap_csv,
+            "report_json": report_json,
+            "report_log": report_log,
+        }
+        cache_path = build_dir / REPORT_CACHE_FILE
+        if report_cache_is_current(cache_path, args.target, inputs, outputs):
+            print("Reusing full reccmp progress report: verified input and output hashes")
+        else:
+            run_logged(
+                [
+                    "uv",
+                    "run",
+                    "reccmp-roadmap",
+                    "--target",
+                    args.target,
+                    "--csv",
+                    str(roadmap_csv),
+                ],
+                cwd=build_dir,
+                log_path=build_dir / "reccmp_roadmap.log",
+            )
+            run_progress_report(args.target, build_dir, report_json, report_log)
+            write_report_cache(cache_path, args.target, inputs, outputs)
 
     noise_log = report_log
     legacy_log = build_dir / "reccmp_run.log"
@@ -624,13 +756,34 @@ def main() -> int:
         print_summary(entry, baseline, baseline_file)
         print_function_changes(curr_funcs, func_baseline)
 
+        ui_errors: list[str] = []
+        if args.ui_codegen_gate:
+            if func_baseline is None:
+                raise FileNotFoundError(func_baseline_file)
+            from tools.ui_codegen import load_recipes
+
+            recipes = load_recipes(repo_root)
+            ui_errors = ui_codegen_regressions(
+                (recipe.address for recipe in recipes), curr_funcs, func_baseline
+            )
+            print("")
+            if ui_errors:
+                print("Generated UI matching gate failed:")
+                for error in ui_errors:
+                    print(f"  - {error}")
+            else:
+                print(
+                    f"Generated UI matching gate passed: {len(recipes)} paired, "
+                    "no regressions"
+                )
+
         if args.commit_baseline:
             write_json_atomic(baseline_file, entry)
             write_function_baseline_atomic(func_baseline_file, curr_funcs)
             print("")
             print(f"Committed stats baseline: {baseline_file}")
             print(f"Committed function baseline: {func_baseline_file}")
-        return 0
+        return 1 if ui_errors else 0
     except Exception as exc:  # pragma: no cover - CLI error path
         print(f"ERROR: {exc}", file=__import__("sys").stderr)
         return 1

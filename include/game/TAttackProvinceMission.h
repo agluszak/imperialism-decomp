@@ -19,18 +19,18 @@ public:
   virtual void Free() override;                    // slot 0x07 0x53d890
 
   virtual void
-  Call30() override; // slot 0x0c 0x53e570 -- resolves movement class from target province
+  Initialize() override; // slot 0x0c 0x53e570 -- resolves movement class from target province
   virtual void SetStateByte8To2() override; // slot 0x0d 0x53e180 -- sets state08 = 2 (pending)
-  virtual void ResetValue0CToZero()
+  virtual void CalculateImportance()
       override; // slot 0x0e 0x53e1a0 -- terrain adjacency score (shared w/ TInvadeMission)
-  virtual void
-  NoOpSlot3C() override; // slot 0x0f 0x53e290 -- populates resourceWeights from target province
+  virtual void CalculateNeeds()
+      override; // slot 0x0f 0x53e290 -- populates requiredEquipageByClass from target province
 
-  virtual void MissionSlot44() override;                                      // slot 0x11 0x53de00
-  virtual TMission* GetReplacementSlot48() override;                          // slot 0x12 0x53e050
-  virtual char MatchesMissionKeySlot4C(int kind, int key, int mode) override; // slot 0x13 0x53e5b0
+  virtual void GiveOrders() override;                               // slot 0x11 0x53de00
+  virtual TMission* GetReplacementSlot48() override;                // slot 0x12 0x53e050
+  virtual char Matches(int kind, int key, int mode) const override; // slot 0x13 0x53e5b0
 
-  virtual char ReturnFalseSlot64() override; // slot 0x19 0x53d6f0
+  virtual char IsHospitalMission() const override; // slot 0x19 0x53d6f0
 
   virtual float ReturnZeroFloatSlot78(
       TMilitaryUnit* candidateUnit,

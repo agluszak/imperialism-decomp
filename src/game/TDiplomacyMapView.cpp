@@ -1,6 +1,7 @@
 // TDiplomacyMapView QuickDraw legend rendering slice.
 
 #include "decomp_types.h"
+#include "game/TAmbitApplication.h"
 #include "game/TDiplomacyMapView.h"
 #include "game/global_data_tables.h"
 #include "game/TView.h"
@@ -30,6 +31,7 @@
 #include "game/TSimMgr.h"
 #include "game/TPanelView.h"
 #include "game/TOffersPanelView.h"
+#include "game/mapped_flavor_text.h"
 #include "game/ui_text_label_helpers_decls.h"
 
 // Defined below in address order (0x4d5d30).
@@ -39,8 +41,6 @@ void __cdecl BuildDiplomacyOverlayHitMaskOpcodeStream(DiplomacyMaskBufferRun* ru
 
 undefined4 FrameRegionOnHdcAndReleaseBrushState(void);
 undefined4 BlitMonochromeMaskBytePatternToSurface(void);
-undefined4 RunDiplomacyWaitSheetPopupAndAwaitResponse(void);
-
 namespace {
 const unsigned int kAddrTerrainTypeDescriptorTable = 0x006A4310;
 const unsigned int kAddrDiplomacyTurnStateManager = 0x006A43D0;
@@ -174,10 +174,7 @@ TDiplomacyMapView::TDiplomacyMapView() : TPicture() {
   regionAt9c = 0;
   legendSurfaceModeAt524 = 6;
   stateFlagAtB8 = 0;
-  // cursorTable is a shared void* scratch array; slot 5 (0x14 + 5*4 = 0x28) holds a plain
-  // flag value (1) here. That is consistent with the array's void* element typing -- each
-  // consumer interprets its own slot -- not one field carrying two overlaid meanings.
-  g_pUiRuntimeContext->cursorTable[5] = reinterpret_cast<void*>(1);
+  g_pGlobalUiRootController->cursorRegionInvalid = TRUE;
 }
 
 // FUNCTION: IMPERIALISM 0x004f3c70
@@ -216,7 +213,8 @@ void TDiplomacyMapView::DoPostCreate(int arg) {
 
 // FUNCTION: IMPERIALISM 0x004f3e30
 void TDiplomacyMapView::Close() {
-  stateFlagAtB8 = 0;
+  g_pGlobalUiRootController->cursorRegionInvalid = FALSE;
+  TView::Close();
 }
 
 // FUNCTION: IMPERIALISM 0x004f3e60
@@ -750,23 +748,23 @@ void TDiplomacyMapView::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoi
   localPoint.x = clickPoint->x;
   localPoint.y = clickPoint->y;
 
-  short cursorTable[16];
-  cursorTable[0] = 0x41b;
-  cursorTable[1] = 0x41b;
-  cursorTable[2] = 0x408;
-  cursorTable[3] = 0x407;
-  cursorTable[4] = 0x406;
-  cursorTable[5] = 0x404;
-  cursorTable[6] = 0x405;
-  cursorTable[7] = 0x411;
-  cursorTable[8] = 0x415;
-  cursorTable[9] = 0x409;
-  cursorTable[10] = 0x41b;
-  cursorTable[11] = 0x40f;
-  cursorTable[12] = 0x410;
-  cursorTable[13] = 0x3f3;
-  cursorTable[14] = 0x419;
-  cursorTable[15] = 0x41a;
+  short cursorIdsByAction[16];
+  cursorIdsByAction[0] = 0x41b;
+  cursorIdsByAction[1] = 0x41b;
+  cursorIdsByAction[2] = 0x408;
+  cursorIdsByAction[3] = 0x407;
+  cursorIdsByAction[4] = 0x406;
+  cursorIdsByAction[5] = 0x404;
+  cursorIdsByAction[6] = 0x405;
+  cursorIdsByAction[7] = 0x411;
+  cursorIdsByAction[8] = 0x415;
+  cursorIdsByAction[9] = 0x409;
+  cursorIdsByAction[10] = 0x41b;
+  cursorIdsByAction[11] = 0x40f;
+  cursorIdsByAction[12] = 0x410;
+  cursorIdsByAction[13] = 0x3f3;
+  cursorIdsByAction[14] = 0x419;
+  cursorIdsByAction[15] = 0x41a;
 
   void** terrainDescriptors = reinterpret_cast<void**>(kAddrTerrainTypeDescriptorTable);
   int hitIndex = 0;
@@ -794,17 +792,17 @@ void TDiplomacyMapView::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoi
     if (valid == 0) {
       cursorId = 0x41b;
     } else {
-      cursorId = cursorTable[actionCode];
+      cursorId = cursorIdsByAction[actionCode];
       if (actionCode == 9 || actionCode == 7 || actionCode == 8) {
         cursorId = static_cast<short>(cursorId + *reinterpret_cast<short*>(self + 0xc0));
       }
     }
     *reinterpret_cast<short*>(self + 0x52a) = cursorId;
-    hCursor = g_pUiRuntimeContext->cursorTable[cursorId - TViewMgr::kCursorResourceIdBase];
+    hCursor = g_pUiRuntimeContext->turnEventCursors[cursorId - TViewMgr::kCursorResourceIdBase];
     applyCursor = true;
   } else if (*reinterpret_cast<short*>(self + 0x52a) != 0x41b) {
     *reinterpret_cast<short*>(self + 0x52a) = 0x41b;
-    hCursor = g_pUiRuntimeContext->cursorTable[0x41b - TViewMgr::kCursorResourceIdBase];
+    hCursor = g_pUiRuntimeContext->turnEventCursors[0x41b - TViewMgr::kCursorResourceIdBase];
     applyCursor = true;
   }
 
@@ -1282,11 +1280,11 @@ void TDiplomacyMapView::ChangeSelectedActionTopic(int topicIndex) {
 }
 
 // FUNCTION: IMPERIALISM 0x004f7040
-void TDiplomacyMapView::InvalidateAndRunChildWaitSheet(void* arg1, void* arg2, void* arg3,
-                                                       void* arg4) {
+char TDiplomacyMapView::PoseWarOffer(short sourceNationSlot, int minorNationSlot,
+                                     int enemyNationSlot, int promptCode) {
   ChangeSelectedActionTopic(5);
-  reinterpret_cast<void(__fastcall*)(void*, int, void*, void*, void*, void*)>(
-      RunDiplomacyWaitSheetPopupAndAwaitResponse)(actionButtonsA0[5], 0, arg1, arg2, arg3, arg4);
+  return static_cast<TOffersPanelView*>(actionButtonsA0[5])
+      ->PoseWarOffer(sourceNationSlot, minorNationSlot, enemyNationSlot, promptCode);
 }
 
 // FUNCTION: IMPERIALISM 0x004f7080
@@ -1389,6 +1387,44 @@ void TDiplomacyMapView::DrawVoteNuggets() {
   } while (policyIndex < 0x180);
 
   UpdatePaletteIndexWithDefaultFallback(0x13);
+}
+
+// FUNCTION: IMPERIALISM 0x004f74f0
+char TDiplomacyMapView::CheckEntanglements(int targetNationSlot, eDipAction action) {
+  if (g_pDiplomacyTurnStateManager->HasAllianceGuardSlot60(targetNationSlot,
+                                                           selectedTerrainIndexAt90) != 0) {
+    CString formattedIntro;
+    CString entangledNations;
+    CString unusedSuffix;
+    CString templateText;
+    CString targetName;
+    CString title;
+
+    g_apTerrainTypeDescriptorTable[targetNationSlot]->FormatOverlayTerrainLabelText(&targetName);
+    int introStringIndex = 0;
+    if (action != kDipActionAlliance) {
+      introStringIndex = 4;
+    }
+    g_pSimMgr->GetString(0x275d, introStringIndex, &templateText);
+    scanBracketExpressions(g_pSimMgr, &formattedIntro, static_cast<LPCSTR>(templateText),
+                           static_cast<LPCSTR>(targetName));
+
+    entangledNations = CString(g_pDiplomacyPanelEmptyText_00654ec8);
+    for (int nationSlot = 0; nationSlot < 7; ++nationSlot) {
+      if (g_pDiplomacyTurnStateManager->IsNationPairAtWar(static_cast<short>(targetNationSlot),
+                                                          static_cast<short>(nationSlot)) != 0) {
+        CString nationName;
+        g_apTerrainTypeDescriptorTable[nationSlot]->FormatOverlayTerrainLabelText(&nationName);
+        entangledNations += "   " + nationName + "\n";
+      }
+    }
+
+    templateText = formattedIntro + "\n" + entangledNations + unusedSuffix;
+    g_pSimMgr->GetString(0x275d, 5, &title);
+    return g_pUiRuntimeContext->ModalMessage(3, title, templateText,
+                                             g_ptDiplomacyNoticeModalMessage, 0, 0);
+  }
+  return 1;
 }
 
 // 0x005DA040 and 0x005DA180 moved to TViewMgr::HandleTurnEventVtableSlot60ActivateMainDialog

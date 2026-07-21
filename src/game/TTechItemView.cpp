@@ -36,8 +36,8 @@ void TTechItemView::ConstructTTechItemViewBaseState(TView* panel, int* offsetLay
   CString templateText;
   CString assembledText;
 
-  InitializeUiResourceEntryFrameAndParent(panel->uiResourceContext40, panel, offsetLayout,
-                                          sizeLayout, 5, 5, 0);
+  InitializeUiResourceEntryFrameAndParent(panel->resourceContext, panel, offsetLayout, sizeLayout,
+                                          5, 5, 0);
   nationSlot60 = nationSlot;
   techId64 = techId;
 

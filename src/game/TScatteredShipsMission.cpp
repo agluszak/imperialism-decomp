@@ -25,31 +25,31 @@ TScatteredShipsMission::TScatteredShipsMission() : TNavyMission() {}
 TScatteredShipsMission::TScatteredShipsMission(TZone* targetZone) : TNavyMission(targetZone) {}
 
 // FUNCTION: IMPERIALISM 0x00535640
-char TScatteredShipsMission::ReturnFalseSlot64() {
+char TScatteredShipsMission::IsHospitalMission() const {
   return 1;
 }
 
 // FUNCTION: IMPERIALISM 0x00535660
-char TScatteredShipsMission::ReturnFalseSlot60() {
+char TScatteredShipsMission::IsDefensiveSeaZoneMission() const {
   return 1;
 }
 
 // FUNCTION: IMPERIALISM 0x00535680
-char TScatteredShipsMission::ReturnFalseSlot28() {
+char TScatteredShipsMission::IsANoBrainer() const {
   return 1;
 }
 
 // FUNCTION: IMPERIALISM 0x0053bb90
-void TScatteredShipsMission::Call30() {
+void TScatteredShipsMission::Initialize() {
   marker11 = 0;
-  value0c = g_fScatteredShipsMissionDefaultScore;
+  importanceScore0c = g_fScatteredShipsMissionDefaultScore;
 }
 
 // FUNCTION: IMPERIALISM 0x0053bbb0
-void TScatteredShipsMission::RefreshSlot40() {
+void TScatteredShipsMission::Reassess() {
   SetStateByte8To2();
-  ResetValue0CToZero();
-  NoOpSlot3C();
+  CalculateImportance();
+  CalculateNeeds();
 }
 
 // FUNCTION: IMPERIALISM 0x0053bbe0
@@ -63,16 +63,16 @@ void TScatteredShipsMission::SetStateByte8To2() {
 }
 
 // FUNCTION: IMPERIALISM 0x0053bc20
-void TScatteredShipsMission::ResetValue0CToZero() {
-  value0c = g_fScatteredShipsMissionDefaultScore;
+void TScatteredShipsMission::CalculateImportance() {
+  importanceScore0c = g_fScatteredShipsMissionDefaultScore;
 }
 
 // Spreads the fixed g_Populate_Beachhead_Mission_LookupTable_00697958 percentages across
-// resourceWeights2c[4], scaled by (1 + this mission's nation's active-mission pressure).
+// requiredShipEquipageByCategory[4], scaled by (1 + this mission's nation's active-mission pressure).
 // AssertValid()s the nation first (same CObject virtual slot 0xc dispatch used elsewhere in
 // this file family).
 // FUNCTION: IMPERIALISM 0x0053bc40
-void TScatteredShipsMission::NoOpSlot3C() {
+void TScatteredShipsMission::CalculateNeeds() {
   TAutoGreatPower* nation = static_cast<TAutoGreatPower*>(g_apNationStates[nationId04]);
   nation->AssertValid();
   float navyPressure = nation->activeMissionPressureAverageB6c;
@@ -80,12 +80,13 @@ void TScatteredShipsMission::NoOpSlot3C() {
 
   const short* lookupTable = g_Populate_Beachhead_Mission_LookupTable_00697958;
   for (int i = 0; i < 4; ++i) {
-    resourceWeights2c[i] = static_cast<float>(static_cast<short>(lookupTable[i])) * scale;
+    requiredShipEquipageByCategory[i] =
+        static_cast<float>(static_cast<short>(lookupTable[i])) * scale;
   }
 }
 
 // FUNCTION: IMPERIALISM 0x0053bcc0
-char TScatteredShipsMission::MatchesMissionKeySlot4C(int kind, int key, int mode) {
+char TScatteredShipsMission::Matches(int kind, int key, int mode) const {
   (void)key;
   (void)mode;
   return kind == 5;
@@ -94,7 +95,7 @@ char TScatteredShipsMission::MatchesMissionKeySlot4C(int kind, int key, int mode
 // Deactivates the whole existing childOrderList chain, then hunts for a port-zone context
 // eligible for this mission's nation (!QueryPortZoneCapability() &&
 // HasSecondaryNeighborWithNationTag(nationId04), same eligibility pair the whole
-// TControlSeaZoneMission family's NoOpSlot3C/NoOpSlot9C use elsewhere) -- first to confirm
+// TControlSeaZoneMission family's CalculateNeeds/GiveActionOrders use elsewhere) -- first to confirm
 // at least one exists at all (walking g_pMapActionContextListHead via prev18), then re-walks
 // from the head, stepped forward g_pSimMgr->GetEconomicTurn() % 50 times (wrapping to the
 // head on a null prev18), as the starting point for an unbounded sweep: for every eligible
@@ -105,7 +106,7 @@ char TScatteredShipsMission::MatchesMissionKeySlot4C(int kind, int key, int mode
 // it there. Returns as soon as no inactive node remains (childOrderList is finite, so the
 // sweep is bounded even though the zone ring never explicitly stops).
 // FUNCTION: IMPERIALISM 0x0053bdd0
-void TScatteredShipsMission::MissionSlot44() {
+void TScatteredShipsMission::GiveOrders() {
   if (orderList24 != nullptr) {
     orderList24->active = 0;
     orderList24->next->SetChainActiveFlag(0);

@@ -241,6 +241,14 @@ public:
   // Sets orderEntryContext98 (invalidating the old/new map regions around the write),
   // then calls RefreshMapOrderEntryPanel. 0x00597950, __thiscall, 1 arg.
   void SetActiveMapOrderEntry(TZone* pMapOrderContextZone);
+  // Invalidate one navy-order zone only while the alternate ocean view is active.
+  // 0x00598840, __thiscall; previously mis-attributed to TToolBarCluster.
+  void InvalidateMapRegionForEntryIfUiPassive(TZone* zone);
+  // Scan the navy-order context chain from either the current entry or its successor,
+  // select the first displayable entry, and refresh the navy panel. 0x005998a0.
+  bool TrySelectNextValidMapOrderEntry(char includeCurrent);
+  // Mode-guarded void sibling used by click/navigation paths. 0x00599770.
+  void SelectNextValidMapOrderEntryFromCursor(char includeCurrent);
   // Enters/exits the mode-specific overlay UI state (called from SetMapInteractionMode
   // when switching to civilian mode). 0x00599a50, 252 bytes.
   void EnterMapInteractionOverlayMode(TView* controlOverride);
@@ -255,10 +263,7 @@ public:
   // (TCivMgr::QueueImmediateCivilianCommandAndCycleSelection's thunk 0x408b93, and
   // TArmyToolbar.cpp's own call) load ECX from g_pUiRuntimeContext->mapUberPictureF0
   // directly -- ground-truth-confirmed via `just ghidra-listing`, not a categoryPages[]
-  // dispatch. TODO: body still an honest stub; the real state machine is a packed-byte
-  // switch over ~15 unresolved func_0x00... helpers (civilian/province/map-order
-  // candidate walkers) that need their own raw-listing recovery pass before this can be
-  // ported faithfully.
+  // dispatch.
   void CycleMapInteractionSelectionAfterHandledClick();
   // Mac oracle: NavalIntelligenceDialog(TZone*, short, TTaskForce*). Opens the
   // MapView.rsrc:9475 "Enemy Fleet Report" tree (event 0x2503); nation selects the

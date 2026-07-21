@@ -37,8 +37,8 @@ void TScenarioChooser::DoPostCreate(int arg) {
 void TScenarioChooser::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId == 4) {
     g_pSfxPlaybackSystem->PlaySoundEffect(0x1b58, 0, 1);
-    // g_pUiRuntimeContext->cursorTable[26]: (0x7c - 0x14) / sizeof(void*).
-    SetCursor(static_cast<HCURSOR>(g_pUiRuntimeContext->cursorTable[26]));
+    // g_pUiRuntimeContext->turnEventCursors[26]: (0x7c - 0x14) / sizeof(HCURSOR).
+    SetCursor(g_pUiRuntimeContext->turnEventCursors[26]);
     // sourceHandler is the 'list' TTextList itself (confirmed by size: TTextList's
     // selectedIndex lands at exactly +0x1068).
     TTextList* scenarioList = static_cast<TTextList*>(sourceHandler);

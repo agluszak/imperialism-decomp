@@ -22,69 +22,69 @@ IMPLEMENT_SERIAL(TMission, TObject, 1)
 
 // --- TMission default-mission virtual stubs (concrete missions override) ---
 // FUNCTION: IMPERIALISM 0x00534c00
-char TMission::ReturnFalseSlot28() {
+char TMission::IsANoBrainer() const {
   return 0;
 }
 // FUNCTION: IMPERIALISM 0x00534c20
-int TMission::ReturnZeroSlot2C(int* outBuffer, int unused) {
-  (void)outBuffer;
-  (void)unused;
+int TMission::AccumulateLack(int* accumulatedLack, unsigned char includeExistingLack) const {
+  (void)accumulatedLack;
+  (void)includeExistingLack;
   return 0;
 }
 // FUNCTION: IMPERIALISM 0x00534c40
-void TMission::Call30() {}
+void TMission::Initialize() {}
 
 // FUNCTION: IMPERIALISM 0x00534c60
 void TMission::SetStateByte8To2() {
   state08 = 2;
 }
 // FUNCTION: IMPERIALISM 0x00534c80
-void TMission::ResetValue0CToZero() {
-  value0c = 0.0f;
+void TMission::CalculateImportance() {
+  importanceScore0c = 0.0f;
 }
 // FUNCTION: IMPERIALISM 0x00534ca0
-void TMission::NoOpSlot3C() {}
+void TMission::CalculateNeeds() {}
 // FUNCTION: IMPERIALISM 0x00534cc0
-void TMission::RefreshSlot40() {
+void TMission::Reassess() {
   SetStateByte8To2();
-  ResetValue0CToZero();
-  NoOpSlot3C();
+  CalculateImportance();
+  CalculateNeeds();
 }
 // FUNCTION: IMPERIALISM 0x00534cf0
-void TMission::MissionSlot44() {}
+void TMission::GiveOrders() {}
 // FUNCTION: IMPERIALISM 0x00534d10
 TMission* TMission::GetReplacementSlot48() {
   return this;
 }
 // FUNCTION: IMPERIALISM 0x00534d30
-char TMission::MatchesMissionKeySlot4C(int a, int b, int c) {
+char TMission::Matches(int a, int b, int c) const {
   (void)a;
   (void)b;
   (void)c;
   return 0;
 }
 // FUNCTION: IMPERIALISM 0x00534d50
-char TMission::ReturnFalseSlot50() {
+char TMission::IsArmyMission() const {
   return 0;
 }
 // FUNCTION: IMPERIALISM 0x00534d70
-char TMission::ReturnFalseSlot54() {
+char TMission::IsNavyMission() const {
   return 0;
 }
 // FUNCTION: IMPERIALISM 0x00534d90
-int TMission::ReturnZeroSlot58() {
-  return 0;
+TMission* TMission::GetArmyMission() {
+  return nullptr;
 }
 // FUNCTION: IMPERIALISM 0x00534db0
-TMission* TMission::ReturnZeroSlot5C() {
+TMission* TMission::GetNavyMission() {
   return nullptr;
 }
 // FUNCTION: IMPERIALISM 0x00534dd0
-char TMission::ReturnFalseSlot60() {
+char TMission::IsDefensiveSeaZoneMission() const {
   return 0;
 }
 // FUNCTION: IMPERIALISM 0x00534df0
-char TMission::ReturnFalseSlot64() {
+char TMission::IsHospitalMission() const {
   return 0;
 }
 // FUNCTION: IMPERIALISM 0x00534e10
@@ -156,7 +156,7 @@ char TMission::ReturnFalseSlot98() {
 // FUNCTION: IMPERIALISM 0x00535020
 TMission::TMission() {
   state08 = 2;
-  value0c = 0.0f;
+  importanceScore0c = 0.0f;
   marker11 = 0xff;
 }
 
@@ -166,9 +166,19 @@ TMission::TMission() {
 // FUNCTION: IMPERIALISM 0x00535080
 TMission::~TMission() {}
 
+// Sets the common mission owner and path sentinel, then dispatches the concrete
+// mission's initialization hook. TInvadeMission uses this to initialize its
+// owned beachhead mission with the same nation.
+// FUNCTION: IMPERIALISM 0x005350a0
+void TMission::InitializeMissionWithNationIdAndResetPathMarker(short nationId) {
+  nationId04 = nationId;
+  pathMarker06 = -1;
+  Initialize();
+}
+
 // Mission factory: allocates and constructs the concrete mission subtype selected by
 // missionKind, then stamps the common owner/marker fields and runs the mission's
-// Call30 initializer. Each arm is real construction (new T(...)); the compiler emits
+// Initialize initializer. Each arm is real construction (new T(...)); the compiler emits
 // the operator-new + construction-unwind frame. contextArg is the map-order context /
 // target port zone (a TZone) for the navy missions; nodeKey/keyArg carry the province
 // or amassing keys for the army missions.
@@ -215,7 +225,7 @@ TMission* CreateMissionObjectByKindAndNodeContext(int sourceNation, eMissionType
   }
   mission->nationId04 = static_cast<short>(sourceNation);
   mission->pathMarker06 = -1;
-  mission->Call30();
+  mission->Initialize();
   return mission;
 }
 
@@ -225,7 +235,7 @@ void TMission::WriteTo(TStream* stream) {
   TObject::WriteTo(stream);
   stream->WriteBytesSlot78(&nationId04, 2);
   stream->WriteBytesSlot78(&state08, 1);
-  stream->WriteBytesSlot78(&value0c, 4);
+  stream->WriteBytesSlot78(&importanceScore0c, 4);
   stream->WriteBytesSlot78(&flag10, 1);
   stream->WriteBytesSlot78(&pathMarker06, 2);
   stream->WriteBytesSlot78(&marker11, 1);
@@ -236,7 +246,7 @@ void TMission::ReadFrom(TStream* stream) {
   TObject::ReadFrom(stream);
   stream->ReadBytes(&nationId04, 2);
   stream->ReadBytes(&state08, 1);
-  stream->ReadBytes(&value0c, 4);
+  stream->ReadBytes(&importanceScore0c, 4);
   stream->ReadBytes(&flag10, 1);
   if (g_nSaveFormatVersion < 0x10) {
     pathMarker06 = static_cast<short>(0xffff);
@@ -244,13 +254,13 @@ void TMission::ReadFrom(TStream* stream) {
     stream->ReadBytes(&pathMarker06, 2);
   }
   if (g_nSaveFormatVersion < 9) {
-    Call30();
+    Initialize();
     return;
   }
   stream->ReadBytes(&marker11, 1);
 }
 
-// Walks `list` (a TSortedList) calling AssertValid() then MatchesMissionKeySlot4C(kind,
+// Walks `list` (a TSortedList) calling AssertValid() then Matches(kind,
 // key, mode) on each TMission-derived entry, returning the first one that matches (or
 // nullptr).
 // FUNCTION: IMPERIALISM 0x00535940
@@ -260,7 +270,7 @@ TMission* __cdecl FindFirstTrackedHandlerMatchingModeAndShortKey(TSortedList* li
   for (TMission* entry = static_cast<TMission*>(iter.Reset()); iter.More();
        entry = static_cast<TMission*>(iter.Advance())) {
     entry->AssertValid();
-    if (entry->MatchesMissionKeySlot4C(kind, key, mode)) {
+    if (entry->Matches(kind, key, mode)) {
       return entry;
     }
   }
@@ -286,8 +296,8 @@ short __cdecl CompareMissionOrderEntriesByMovementClassThenEfficiency(void* a, v
     return lesserResult;
   }
 
-  float ratioA = missionA->value0c / missionA->ReturnZeroFloatSlot6C();
-  float ratioB = missionB->value0c / missionB->ReturnZeroFloatSlot6C();
+  float ratioA = missionA->importanceScore0c / missionA->ReturnZeroFloatSlot6C();
+  float ratioB = missionB->importanceScore0c / missionB->ReturnZeroFloatSlot6C();
   if (ratioA < ratioB) {
     return greaterResult;
   }
@@ -298,7 +308,7 @@ short __cdecl CompareMissionOrderEntriesByMovementClassThenEfficiency(void* a, v
 }
 
 // qsort-style comparator: descending order by a "remaining priority" score --
-// (1.0 - ReturnZeroFloatSlot68()) scaled by value0c (multiplied when that difference is
+// (1.0 - ReturnZeroFloatSlot68()) scaled by importanceScore0c (multiplied when that difference is
 // >= 0, divided when negative). AssertValid() is invoked on both sides first (the
 // inherited CObject/MFC debug-assert virtual, a no-op in release builds), matching the
 // ground truth's double-dispatch shape before the scores are read.
@@ -308,12 +318,12 @@ short __cdecl CompareMissionOrderEntriesByPriorityScore(TMission* a, TMission* b
   b->AssertValid();
 
   float diffA = static_cast<float>(g_MissionScoreOneConstant_0065a470) - a->ReturnZeroFloatSlot68();
-  float weightedA =
-      (diffA >= g_MissionDefaultScore_0065a468) ? diffA * a->value0c : diffA / a->value0c;
+  float weightedA = (diffA >= g_MissionDefaultScore_0065a468) ? diffA * a->importanceScore0c
+                                                              : diffA / a->importanceScore0c;
 
   float diffB = static_cast<float>(g_MissionScoreOneConstant_0065a470) - b->ReturnZeroFloatSlot68();
-  float weightedB =
-      (diffB >= g_MissionDefaultScore_0065a468) ? diffB * b->value0c : diffB / b->value0c;
+  float weightedB = (diffB >= g_MissionDefaultScore_0065a468) ? diffB * b->importanceScore0c
+                                                              : diffB / b->importanceScore0c;
 
   if (weightedB < weightedA) {
     return -1;

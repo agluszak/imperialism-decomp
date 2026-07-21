@@ -19,8 +19,8 @@ TSuperCivRoster::~TSuperCivRoster() {}
 IMPLEMENT_DYNCREATE(TSuperCivRoster, TPageView)
 
 // FUNCTION: IMPERIALISM 0x004ab470
-undefined TSuperCivRoster::InitializeLedgerRosterPages(TView* pOwnerContext, int* pBoundsRect,
-                                                       TView** pOutDialogView) {
+void TSuperCivRoster::InitializeLedgerRosterPages(TView* pOwnerContext, int* pBoundsRect,
+                                                  TView** pOutDialogView) {
   // sizeLayout is genuinely the caller's &runningDialog (a TView**) passed straight
   // through as the stack arg -- verified against the raw call site
   // (TViewMgr::ShowCivilianLedgerDialogAndSelectUnit passes &runningDialog as
@@ -48,7 +48,7 @@ undefined TSuperCivRoster::InitializeLedgerRosterPages(TView* pOwnerContext, int
   visibleColumnCount = 2;
   BuildPageLayout();
   ShowPage(1);
-  ownerContext->AssertValid();
-  static_cast<TBook*>(ownerContext)->ShowPage(currentPage);
-  return 0;
+  TBook* ownerBook = static_cast<TBook*>(ownerContext);
+  ownerBook->AssertValid();
+  ownerBook->ShowPage(currentPage);
 }
