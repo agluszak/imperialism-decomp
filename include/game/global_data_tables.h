@@ -1177,6 +1177,9 @@ extern int DAT_006a3914;
 
 // Map-context flavor-text string pool (see global_data_tables.cpp).
 extern char s_szSpaceSeparator_00695794[];
+extern char s_szTurnHistorySeparator_00699320[];
+extern char s_szCombatLossesHeading_00699324[];
+extern char s_szTurnHistoryPrefix_0069b71c[];
 extern char s_szAdmiralPrefix_0069578c[];
 extern char s_szColonSeparator_00696b10[];
 extern char s_mcflavor_00696674[];

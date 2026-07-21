@@ -25,6 +25,7 @@
 #include "game/global_data_tables.h" // g_pGameFlowState, g_pSimMgr, g_apNationStates
 #include "game/TCountry.h"           // FormatOverlayTerrainLabelText (terrain overlay case)
 #include "game/TGreatPower.h"
+#include "game/TSortedByRelationshipList.h"
 #include "game/TGarrisonView.h"
 #include "game/TGlobalMapState.h"
 #include "game/TDisplayMgr.h" // g_pDisplayMgr, g_szUiNilPointerMessage, g_szUiFailureMessage
@@ -1290,7 +1291,7 @@ void TViewMgr::DispatchTurnEventSlot4C(short eventCode, int payload) {
       } else if (newCode == 0x11f8) {
         this->HandleTurnEventDialogFactorySlotF4();
       } else if (newCode == 0xf3d) {
-        this->HandleTurnEventF3D_PopulateRecentTurnMessages(static_cast<int>(secondary));
+        this->ShowUnitHistory(secondary);
       } else if (newCode == 0x2103) {
         this->HandleTurnEvent2260_RefreshMainHudTitles(newCode);
       } else if (newCode == 0x2134) {
@@ -1898,8 +1899,85 @@ void TViewMgr::HandleTurnEventDialogFactorySlotB8(int a, int b, int c) {
 }
 
 // FUNCTION: IMPERIALISM 0x005dc690
-void TViewMgr::HandleTurnEventF3D_PopulateRecentTurnMessages(int nationSlot) {
-  (void)nationSlot;
+void TViewMgr::ShowUnitHistory(short nationSlot) {
+  struct TurnHistoryRecord {
+    short turnNumber;
+    short messageKind;
+    short subjectStringIndex;
+    short subjectCount;
+  };
+
+  CString lineText;
+  CString messageText;
+  CString countText;
+
+  TView* activeDialog = g_pDisplayMgr->activeDialog;
+  TToolBarCluster* toolbar =
+      static_cast<TToolBarCluster*>(activeDialog->ResolveControlByTag(kControlTagTool));
+  toolbar->AssertValid();
+  if (toolbar != 0) {
+    toolbar->UpdateControlTagTreaTextFromNationAndMapContext(nationSlot);
+  }
+
+  TSortedByRelationshipList* history = g_apNationStates[nationSlot]->turnSummaryQueue;
+  int historyCount = history->GetSize();
+  if (historyCount <= 0) {
+    return;
+  }
+
+  int entryOrdinal;
+  if (historyCount > 20) {
+    entryOrdinal = historyCount - 20;
+  } else {
+    entryOrdinal = 1;
+  }
+  while (entryOrdinal <= history->GetSize()) {
+    TurnHistoryRecord* record =
+        static_cast<TurnHistoryRecord*>(history->GetPtrListEntryByOneBasedIndex(entryOrdinal));
+
+    countText.Format(g_szDecimalFormat, record->subjectCount);
+    switch (record->messageKind) {
+    case 0:
+    case 1:
+      if (record->subjectCount > 1) {
+        g_pSimMgr->GetString(0x271a, record->subjectStringIndex, &messageText);
+      } else {
+        g_pSimMgr->GetString(0x2716, record->subjectStringIndex, &messageText);
+      }
+      break;
+    case 2:
+      if (record->subjectCount > 1) {
+        g_pSimMgr->GetString(0x2748, record->subjectStringIndex, &messageText);
+      } else {
+        g_pSimMgr->GetString(0x2718, record->subjectStringIndex, &messageText);
+      }
+      break;
+    case 3:
+      if (record->subjectCount > 1) {
+        BuildUiMessageTextFromBracketTemplate(g_pSimMgr, &messageText, 0x2747, 1, 0x2717,
+                                              record->subjectStringIndex);
+      } else {
+        BuildUiMessageTextFromBracketTemplate(g_pSimMgr, &messageText, 0x2747, 0, 0x2717,
+                                              record->subjectStringIndex);
+      }
+      break;
+    }
+
+    lineText.Format(g_szDecimalFormat, record->turnNumber);
+    lineText = s_szTurnHistoryPrefix_0069b71c + lineText + s_szTurnHistorySeparator_00699320;
+    lineText += countText + s_szSpaceSeparator_00695794 + messageText;
+
+    // Mac Transport.rsrc:3901 identifies the twenty history labels as the
+    // consecutive FourCC tags `txtA`..`txtT`.
+    TStaticText* textControl =
+        static_cast<TStaticText*>(activeDialog->ResolveControlByTag(0x74787440u + entryOrdinal));
+    if (textControl != 0) {
+      textControl->SetEnabled(1, 1);
+      textControl->SetTextAndMaybeRefresh(&lineText, 1);
+    }
+
+    ++entryOrdinal;
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x005dcaa0

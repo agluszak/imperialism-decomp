@@ -1101,6 +1101,13 @@
       "text": "Chunk"
     },
     {
+      "address": "0x00699324",
+      "placeholders": [],
+      "source": "embedded_global",
+      "symbol": "s_szCombatLossesHeading_00699324",
+      "text": "Losses\n"
+    },
+    {
       "address": "0x00699438",
       "placeholders": [],
       "source": "embedded_global",
@@ -5366,6 +5373,13 @@
       "source": "embedded_global",
       "symbol": "s_SourcePathUViewMgr_0069B6BC",
       "text": "D:\\Ambit\\Cross\\UViewMgr.cpp"
+    },
+    {
+      "address": "0x0069b71c",
+      "placeholders": [],
+      "source": "embedded_global",
+      "symbol": "s_szTurnHistoryPrefix_0069b71c",
+      "text": "Turn "
     },
     {
       "address": "0x0069b740",
@@ -10861,6 +10875,12 @@
           "text": ":"
         },
         {
+          "address": "0x00699324",
+          "kind": "embedded_global",
+          "symbol": "s_szCombatLossesHeading_00699324",
+          "text": "Losses\n"
+        },
+        {
           "address": "0x00699438",
           "kind": "embedded_global",
           "symbol": "s_szDoubleNewline_00699438",
@@ -10871,6 +10891,12 @@
           "kind": "embedded_global",
           "symbol": "s_szSpaceSeparator_00695794",
           "text": " "
+        },
+        {
+          "address": "0x0069b71c",
+          "kind": "embedded_global",
+          "symbol": "s_szTurnHistoryPrefix_0069b71c",
+          "text": "Turn "
         }
       ],
       "source_file": "src/game/global_data_tables.cpp"
@@ -14363,6 +14389,12 @@
           "kind": "embedded_global",
           "symbol": "g_szUiNilPointerMessage",
           "text": "Nil Pointer"
+        },
+        {
+          "address": "0x00699324",
+          "kind": "embedded_global",
+          "symbol": "s_szCombatLossesHeading_00699324",
+          "text": "Losses\n"
         },
         {
           "address": "0x00695794",
@@ -25874,6 +25906,29 @@
         }
       ],
       "source_file": "src/game/TToolBarCluster.cpp"
+    },
+    "0x005dc690": {
+      "references": [
+        {
+          "address": "0x0069430c",
+          "kind": "embedded_global",
+          "symbol": "g_szDecimalFormat",
+          "text": "%d"
+        },
+        {
+          "address": "0x00695794",
+          "kind": "embedded_global",
+          "symbol": "s_szSpaceSeparator_00695794",
+          "text": " "
+        },
+        {
+          "address": "0x0069b71c",
+          "kind": "embedded_global",
+          "symbol": "s_szTurnHistoryPrefix_0069b71c",
+          "text": "Turn "
+        }
+      ],
+      "source_file": "src/game/TViewMgr.cpp"
     },
     "0x005dcdf0": {
       "references": [
@@ -179422,9 +179477,9 @@
     "windows_strings": "docs/reference/strenu-strings.tsv"
   },
   "summary": {
-    "embedded_globals": 767,
+    "embedded_globals": 769,
     "formula_matches": 2356,
-    "functions_with_references": 282,
+    "functions_with_references": 283,
     "mac_strings": 3821,
     "mac_strings_with_candidates": 3091,
     "text_resources": 0,

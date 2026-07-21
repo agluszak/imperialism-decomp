@@ -2110,6 +2110,15 @@ int g_mapActionContextDisplayNameCacheStep_006984bc = 7;
 // Empty content: reccmp pairs by the // GLOBAL address marker, not by value. ===
 // GLOBAL: IMPERIALISM 0x00695794
 char s_szSpaceSeparator_00695794[] = " ";
+// Separator used by TViewMgr::ShowUnitHistory to build "Turn N: count message".
+// The original symbol's eight-byte comparison extent includes the aligned NUL and
+// the first four bytes of the adjacent pooled "Losses\n" literal.
+// GLOBAL: IMPERIALISM 0x00699320
+char s_szTurnHistorySeparator_00699320[8] = {':', ' ', 0, 0, 'L', 'o', 's', 's'};
+// GLOBAL: IMPERIALISM 0x00699324
+char s_szCombatLossesHeading_00699324[] = "Losses\n";
+// GLOBAL: IMPERIALISM 0x0069b71c
+char s_szTurnHistoryPrefix_0069b71c[] = "Turn ";
 // "Adm. " prefix for the assigned-admiral name line (TShipView::Draw,
 // 0x5654e0).
 // GLOBAL: IMPERIALISM 0x0069578c
