@@ -28,6 +28,7 @@
 #include "game/TCivMgr.h"
 #include "game/TTurnInstructionCursor.h"
 #include "game/TNewsMgr.h"
+#include "game/TNetMgr.h"
 #include "game/TNavyMgr.h"
 #include "game/TNewsMgr.h"
 #include "game/TMinor.h"
@@ -43,7 +44,6 @@
 #include "game/global_data_tables.h"
 #include "game/mapped_flavor_text.h"
 
-void __fastcall RebuildCivilianOrderCompatibilityMatrices(TDiplomacyMgr* self, int dummyEdx);
 int __cdecl TouchSessionActiveNationId(void);
 void __cdecl ResetPortZoneGlobalContextCounters(void);
 void RegenerateAllMapActionContextStatusCodes();
@@ -69,17 +69,9 @@ CString& __stdcall GetProfileStringFromSettingsSection(CString* result, LPCTSTR 
   return *result;
 }
 
-// FUNCTION: IMPERIALISM 0x004ee8c0
-void __fastcall RebuildCivilianOrderCompatibilityMatrices(TDiplomacyMgr* self, int dummyEdx) {
-  // TODO: promote body @ 0x004ee8c0 — rebuilds civilian-order compatibility
-  // and diplomacy relation matrices (1137 bytes)
-  (void)self;
-  (void)dummyEdx;
-}
-
 // FUNCTION: IMPERIALISM 0x00549240
 int __cdecl TouchSessionActiveNationId(void) {
-  return reinterpret_cast<int(__cdecl*)()>(0x00549240)();
+  return GetSessionActiveNationId();
 }
 
 // FUNCTION: IMPERIALISM 0x005621b0
@@ -569,7 +561,7 @@ void TSimMgr::RebuildNationStateSlotsAndAvailability(int activate) {
   }
 
   if (g_bMultiplayerScenarioSetupActive == 0) {
-    RebuildCivilianOrderCompatibilityMatrices(g_pDiplomacyTurnStateManager, 0);
+    g_pDiplomacyTurnStateManager->RebuildCivilianOrderCompatibilityMatrices();
     g_pUiRuntimeContext->InvokeStrategicMapViewMethod74();
     g_pCityOrderCapabilityState->GenerateRandomCapabilityPrioritySlots();
     g_pGlobalMapState->RefreshMapContextRotatingStatusStrings();

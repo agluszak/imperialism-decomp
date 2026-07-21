@@ -149,13 +149,15 @@ public:
   // RecomputeNationComparativePowerMetrics (0x4f1760): {army, avgRelation,
   // territory+tech combined, commodity} normalized to 0..100 (0..50+50 for combined).
   int comparativePowerRows1824[7][4];
-  unsigned char pad1894[0x18d4 - 0x1894];
+  short specialRelationSourceSlots1894[0x10];
+  short specialRelationTargetSlots18b4[0x10];
   TSortedPtrList* pendingWarTransitionQueue18d4;
   short proposalArrayMode18d8;
   unsigned char pad18da[2];
 
   TDiplomacyMgr* ConstructTDiplomacyTurnStateManager_Vtbl00654d90();
   void InitializeTDiplomacyTurnStateManagerDefaults();
+  void RebuildCivilianOrderCompatibilityMatrices();
   void QueueNationPairWarTransition(int sourceNationSlot, int targetNationSlot);
   short LookupOrderCompatibilityMatrixValue(int sourceNationSlot, int targetNationSlot);
   void ProcessQueuedWarTransitions();

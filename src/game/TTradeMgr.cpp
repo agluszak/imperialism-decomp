@@ -1170,8 +1170,11 @@ short TTradeMgr::ResolveProposalCodeForCategorySlot84(short proposalCode, short 
 // FUNCTION: IMPERIALISM 0x005ba0e0
 int TTradeMgr::ComputeAverageProposalWeightDeltaAcrossCategoryRows() {
   int sum = 0;
-  for (int row = 0; row < 0x11; ++row) {
-    sum += categoryRows[row].proposalWeightScale06 - categoryRows[row].presetSeed04;
+  NationMetricCategoryRow* row = categoryRows;
+  for (int remaining = 0x11; remaining != 0; --remaining) {
+    short* weights = &row->presetSeed04;
+    sum += weights[1] - weights[0];
+    ++row;
   }
   return sum / 0x11;
 }
