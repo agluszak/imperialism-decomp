@@ -1346,8 +1346,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
         CString messageTextE;
         g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&messageTextE, 0x2742,
                                                                         0x14);
-        g_pUiRuntimeContext->DispatchLocalizedUiMessageWithTemplateA13A0(
-            messageTextE, &g_cstrNationAwolMessageStore, 0, 0);
+        g_pUiRuntimeContext->ModalMessage(messageTextE, g_ptNationAwolModalMessage, 0, 0);
         TCancelGameOptionsCommand* cancelCommand = new TCancelGameOptionsCommand();
         cancelCommand->InitializeRangePair(0x63676f70 /* 'cgop' */, g_pGlobalUiRootController, 0, 0,
                                            0);
@@ -1370,8 +1369,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
       if (rebuilt == 0) {
         CString messageTextE2;
         g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&messageTextE2, 0x2742, 2);
-        g_pUiRuntimeContext->DispatchLocalizedUiMessageWithTemplateA13A0(
-            messageTextE2, &g_cstrNationAwolMessageStore, 0, 0);
+        g_pUiRuntimeContext->ModalMessage(messageTextE2, g_ptNationAwolModalMessage, 0, 0);
         TCancelGameOptionsCommand* cancelCommand2 = new TCancelGameOptionsCommand();
         cancelCommand2->InitializeRangePair(0x63676f70 /* 'cgop' */, g_pGlobalUiRootController, 0,
                                             0, 0);
@@ -2800,8 +2798,7 @@ void TMultiplayerMgr::RefreshPoseMessageDialogNationSelectionControls(int unused
     CString notSeatedMessage;
     g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&notSeatedMessage, 0x2742,
                                                                     0x16);
-    g_pUiRuntimeContext->DispatchLocalizedUiMessageWithTemplateA13A0(
-        notSeatedMessage, &g_cstrNationAwolMessageStore, 0, 0);
+    g_pUiRuntimeContext->ModalMessage(notSeatedMessage, g_ptNationAwolModalMessage, 0, 0);
     return;
   }
 
@@ -2946,8 +2943,7 @@ void TMultiplayerMgr::SetNationStatusAwolByNationIdAndDispatchNotices(int networ
         g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&templateText, 0x2759, 4);
         scanBracketExpressions(g_pSimMgr, &formatted, static_cast<LPCSTR>(templateText),
                                static_cast<LPCSTR>(nationName));
-        g_pUiRuntimeContext->DispatchLocalizedUiMessageWithTemplateA13A0(
-            formatted, &g_cstrNationAwolMessageStore, 0, 0);
+        g_pUiRuntimeContext->ModalMessage(formatted, g_ptNationAwolModalMessage, 0, 0);
         if (g_pGameFlowState != this || fieldF4 == 0) {
           TCancelGameOptionsCommand* cancelCommand = new TCancelGameOptionsCommand();
           cancelCommand->InitializeRangePair(0x63676f70, g_pGlobalUiRootController, 0, 0,

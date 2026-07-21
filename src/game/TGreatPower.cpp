@@ -1019,8 +1019,7 @@ void TGreatPower::CompileGreatPowerRelationshipDeltaLinesAndDispatchMessage(void
       localizationRuntime->GetString(0x274b, 0, &scoreHeaderRef);
       localizationRuntime->GetString(0x274b, static_cast<short>(interactionScore), &scoreTextRef);
     }
-    g_pUiRuntimeContext->DispatchLocalizedUiMessageWithTemplateA13A0(
-        scoreTextRef, &g_cstrGreatPowerPressureMessage, 2, 0);
+    g_pUiRuntimeContext->ModalMessage(scoreTextRef, g_ptGreatPowerModalMessage, 2, 0);
   }
 }
 
@@ -1085,22 +1084,19 @@ char TGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage(void
 
       if (hardThreshold <= pressureTier) {
         g_pSimMgr->GetString(0x274b, 4, &sharedMessageRef);
-        g_pUiRuntimeContext->DispatchLocalizedUiMessageWithTemplateA13A0(
-            sharedMessageRef, &g_cstrGreatPowerPressureMessage, 2, 0);
+        g_pUiRuntimeContext->ModalMessage(sharedMessageRef, g_ptGreatPowerModalMessage, 2, 0);
         return 1;
       }
 
       if (pressureTier >= compileThreshold) {
         g_pSimMgr->GetString(0x274b, 1, &sharedMessageRef);
-        g_pUiRuntimeContext->DispatchLocalizedUiMessageWithTemplateA13A0(
-            sharedMessageRef, &g_cstrGreatPowerPressureMessage, 2, 0);
+        g_pUiRuntimeContext->ModalMessage(sharedMessageRef, g_ptGreatPowerModalMessage, 2, 0);
         // 0x004db5f6: the original re-runs the relationship-delta compile here.
         this->CompileGreatPowerRelationshipDeltaLinesAndDispatchMessage();
       } else {
         int statusId = (pressureTier == (compileThreshold - 1)) ? 3 : 2;
         g_pSimMgr->GetString(0x274b, static_cast<short>(statusId), &sharedMessageRef);
-        g_pUiRuntimeContext->DispatchLocalizedUiMessageWithTemplateA13A0(
-            sharedMessageRef, &g_cstrGreatPowerPressureMessage, 2, 0);
+        g_pUiRuntimeContext->ModalMessage(sharedMessageRef, g_ptGreatPowerModalMessage, 2, 0);
       }
     }
   } else {
@@ -2575,8 +2571,7 @@ bool TGreatPower::SetDiplomacyGrantEntryForTargetAndUpdateTreasury(int arg1, int
         g_pSimMgr->GetString(0x2753, 0x45, &alertTextRef);
         // alertHeaderRef is fetched and released without being dispatched, as in
         // the original (0x004de4a2..0x004de4ea).
-        g_pUiRuntimeContext->DispatchLocalizedUiMessageWithTemplateA13A0(
-            alertTextRef, &g_cstrGreatPowerPressureMessage, 0, 0);
+        g_pUiRuntimeContext->ModalMessage(alertTextRef, g_ptGreatPowerModalMessage, 0, 0);
       }
     }
   }
@@ -3303,8 +3298,7 @@ void TGreatPower::CreateFrogCityAtHomeRegionAndAttach(void* receiver) {
       }
       message += static_cast<char>('0' + static_cast<char>(this->nationSlot));
       message += " is missing capitol site";
-      g_pUiRuntimeContext->RunControlStringProviderAndDispatchLocalizedMessage(
-          message, &g_cstrGreatPowerPressureMessage);
+      g_pUiRuntimeContext->ModalMessage(message, g_ptGreatPowerModalMessage);
     }
   }
   this->homeRegionIndex = static_cast<short>(homeRegionIndex);
@@ -3393,8 +3387,7 @@ void TGreatPower::DispatchGreatPowerQuarterlyStatusMessageLevel2(CString* messag
   if (static_cast<short>(quarterTick / 4) == 0) {
     return;
   }
-  g_pUiRuntimeContext->DispatchLocalizedUiMessageWithTemplateA13A0(
-      *message, &g_cstrGreatPowerPressureMessage, 2, 0);
+  g_pUiRuntimeContext->ModalMessage(*message, g_ptGreatPowerModalMessage, 2, 0);
 }
 
 // FUNCTION: IMPERIALISM 0x004e0140
@@ -3403,8 +3396,7 @@ void TGreatPower::DispatchGreatPowerQuarterlyStatusMessageLevel1(CString* messag
   if (static_cast<short>(quarterTick / 4) == 0) {
     return;
   }
-  g_pUiRuntimeContext->DispatchLocalizedUiMessageWithTemplateA13A0(
-      *message, &g_cstrGreatPowerPressureMessage, 1, 0);
+  g_pUiRuntimeContext->ModalMessage(*message, g_ptGreatPowerModalMessage, 1, 0);
 }
 
 // FUNCTION: IMPERIALISM 0x004e01b0
@@ -3413,8 +3405,7 @@ void TGreatPower::DispatchGreatPowerQuarterlyStatusMessageLevel0(CString* messag
   if (static_cast<short>(quarterTick / 4) == 0) {
     return;
   }
-  g_pUiRuntimeContext->DispatchLocalizedUiMessageWithTemplateA13A0(
-      *message, &g_cstrGreatPowerPressureMessage, 0, 0);
+  g_pUiRuntimeContext->ModalMessage(*message, g_ptGreatPowerModalMessage, 0, 0);
 }
 
 // --- Slots 0x4c/0x65/0x6c/0x6f/0x78/0x7d/0x7f/0xac and trivial tail slots ---

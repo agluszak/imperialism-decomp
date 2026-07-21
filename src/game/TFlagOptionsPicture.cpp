@@ -72,8 +72,7 @@ void TFlagOptionsPicture::HandleEvent(int commandId, TEventHandler* sourceHandle
       owner->Dismiss(tag, 0);
       if (g_pSimMgr->multiplayerSessionRole == 2) {
         g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&text, 0x2742, 0x13);
-        g_pUiRuntimeContext->DispatchLocalizedUiMessageWithTemplateA13A0(
-            text, &g_cstrQueryFloaterMessageStore, 0, 0);
+        g_pUiRuntimeContext->ModalMessage(text, g_ptQueryFloaterModalMessage, 0, 0);
       } else {
         g_pSimMgr->EnterOptionalPhase(0x6f);
       }

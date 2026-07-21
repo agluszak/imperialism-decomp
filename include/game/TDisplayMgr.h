@@ -32,10 +32,9 @@ public:
   virtual undefined AssertUDisplayMgrLines614And616(char param_1);    // slot 0x10 0x4fed70
   virtual undefined AssertUDisplayMgrLine471();                       // slot 0x11 0x4fec20
   virtual undefined AssertUDisplayMgrLine495(int unusedArg);          // slot 0x12 0x4fec50
-  // slot 0x13 0x4fec80 — forwards (message, messageStoreRef) to the TViewMgr
-  // RunControlStringProvider dispatch.
+  // slot 0x13 0x4fec80 — forwards (message, messagePosition) to TViewMgr::ModalMessage.
   virtual void DispatchDisplayManagerControlStringMessage(CString message,
-                                                          CString* messageStoreRef);
+                                                          const POINT& messagePosition);
   virtual undefined
   LoadMainViewClipSnapshotIntoQuickDrawState(undefined2 param_1);  // slot 0x14 0x4fedc0
   virtual void SetMapTileIconVariantTriplet(undefined1* param_1);  // slot 0x15 0x4fefc0

@@ -501,7 +501,7 @@ extern char g_szCountryNameProfileKey00698AE0[];
 // -1 = no status line for that resource type.
 extern const int g_ShipOrderStatusStringIndexByResourceType_0065c7f8[14];
 extern TInfoBarText* g_pCursorControlPanel;
-extern CString g_cstrControlStringMessageStore;
+extern POINT g_ptControlStringModalMessage;
 extern TTradeMgr* g_pNationInteractionStateManager;
 extern CString g_cstrCountryNameSettingValue006A4220;
 extern TSetupRandomMapPicture* g_pActiveRandomMapSetupPicture006A4268;
@@ -535,7 +535,7 @@ extern CList<TView*, TView*> g_UiWidgetBuildStack006a13e0;
 extern CArray<void*, void*> g_WNetSerializedPtrArrayA006a5f10;
 extern CArray<RuntimeSelectionRecord*, RuntimeSelectionRecord*> g_WNetSerializedPtrArrayB006a5f28;
 extern CList<void*, void*> g_WNetPendingPacketList006a5f40;
-extern CString g_WNetJoinGameMessageStore006a5ed8;
+extern POINT g_ptNetworkModalMessage006a5ed8;
 extern TTechMgr* g_pCityOrderCapabilityState;
 extern TSoundResourceManager g_soundResourceManager;
 // CD-audio MCI device singleton (see game/cd_audio.h).
@@ -748,19 +748,19 @@ extern "C" const int g_anGreatPowerPressureRiseStepByLocale[6];
 extern "C" const int g_anGreatPowerCompileThresholdByLocale[6];
 extern "C" const int g_anGreatPowerPressureHardAlertThresholdByLocale[6];
 extern "C" const int g_anNationStartingTreasuryByLocale[6];
-extern CString g_cstrGreatPowerPressureMessage; // @ 0x6a2df0
-// Per-subsystem message-store CStrings passed as the A13A0 dispatcher's
-// messageStoreRef argument (0x005d5b00 callsites).
-extern CString g_cstrArmyOrderMessageStore;        // @ 0x6a2318
-extern CString g_cstrNationComparisonMessageStore; // @ 0x6a3180
-extern CString g_cstrTechItemMessageStore;         // @ 0x6a5820
-extern CString g_cstrNationAwolMessageStore;       // @ 0x6a3d08
-extern CString g_cstrMapModeMessageStore;          // @ 0x6a45c0
-extern CString g_cstrTechCapabilityMessageStore;   // @ 0x6a57c8
-extern CString g_cstrUiPromptMessageStore;         // @ 0x6a5be0
-extern CString g_cstrQueryFloaterMessageStore;     // @ 0x6a4048
-extern CString g_cstrDiplomacyNoticeMessageStore;  // @ 0x6a2fc0
-extern CString g_cstrGameSetupMessageStore;        // @ 0x6a4218
+extern POINT g_ptGreatPowerModalMessage; // @ 0x6a2df0
+// Per-subsystem VPoint equivalents passed to the ModalMessage overloads. The Mac
+// signatures provide the semantic type; Windows stores them as zero-initialized POINTs.
+extern POINT g_ptArmyOrderModalMessage;        // @ 0x6a2318
+extern POINT g_ptNationComparisonModalMessage; // @ 0x6a3180
+extern POINT g_ptTechItemModalMessage;         // @ 0x6a5820
+extern POINT g_ptNationAwolModalMessage;       // @ 0x6a3d08
+extern POINT g_ptMapModeModalMessage;          // @ 0x6a45c0
+extern POINT g_ptTechCapabilityModalMessage;   // @ 0x6a57c8
+extern POINT g_ptUiPromptModalMessage;         // @ 0x6a5be0
+extern POINT g_ptQueryFloaterModalMessage;     // @ 0x6a4048
+extern POINT g_ptDiplomacyNoticeModalMessage;  // @ 0x6a2fc0
+extern POINT g_ptGameSetupModalMessage;        // @ 0x6a4218
 extern int g_nationInfoGoldResourceOverride_006a5bac;
 extern int g_lastTurnAlertTick_006a31c0;
 extern int g_lastClickedMapTileIndex_006a4608;
@@ -782,7 +782,7 @@ extern char g_ScenarioSaveNameBuffer_006A2178[0x30];     // scenario name for sa
 extern char* g_pszDescriptorDefaultName_00653300;
 extern char g_szUiCloseParen_006973C8[];
 extern char g_szUiOpenParen_0069806C[];
-extern CString g_cstrCivilianOrderMessageStore; // @ 0x6a2d40
+extern POINT g_ptCivilianOrderModalMessage; // @ 0x6a2d40
 extern "C" const char g_szUiFailureMessage[];
 extern CString g_cstrUiFontBelweLight;
 extern CString g_cstrUiFontPalatino;

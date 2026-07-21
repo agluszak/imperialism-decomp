@@ -158,16 +158,11 @@ public:
   // it with dispatch code 'Hey!' targeting the global UI root controller, and posts
   // it there. `this` is unused by the original body.
   void CreateModalMessageCommandAndQueue(CString* message, int payload);
-  // 0x005d5a70 (ret 0x8) — dispatches `message` via A13A0 with overlayMode from
-  // ClassifyTurnStateForOverlayMode (slot 0x38).
-  void RunControlStringProviderAndDispatchLocalizedMessage(CString message,
-                                                           CString* messageStoreRef);
-  // 0x005d5b00 (ret 0x10) — takes the message BY VALUE (copy-constructed into the
-  // arg slot by every caller, destroyed by the callee) and forwards it plus an
-  // empty format CString to DispatchLocalizedUiMessageWithTemplate(3, ...).
-  // messageStoreRef is a per-subsystem CString global (may be null: TNetMgr).
-  undefined1 DispatchLocalizedUiMessageWithTemplateA13A0(CString message, CString* messageStoreRef,
-                                                         int overlayMode, int arg4);
+  // Mac oracle: TViewMgr::ModalMessage(CStr255, const VPoint&) and the four-argument
+  // overload. Windows substitutes CString/POINT but preserves the value/reference shape.
+  void ModalMessage(CString message, const POINT& messagePosition);
+  char ModalMessage(CString message, const POINT& messagePosition, short overlayMode,
+                    unsigned char showCancel);
   // 0x5de990 — load string (group, index) and pose it through the localized-message
   // dispatch; returns the prompt result byte.
   char ShowLocalizedUiPromptByGroupAndIndex(int uiStringGroup, int uiStringIndex, int overlayMode,
@@ -179,10 +174,10 @@ public:
   // 'load'; group 0x2737 index by game-flow mode) and, when accepted during session
   // teardown, dispatch the 'abdi' game-state event. Returns the accepted byte.
   char DispatchGameStateEventIfLocalizedPromptAccepted(int actionTag);
-  // 0x005d5c40 (ret 0x18) — the real message-window dispatch; body still TODO.
-  undefined1 DispatchLocalizedUiMessageWithTemplate(int templateKind, CString formatText,
-                                                    CString message, CString* messageStoreRef,
-                                                    int overlayMode, int arg4);
+  // Mac oracle: TViewMgr::ModalMessage(long, CStr255, CStr255, const VPoint&, short,
+  // unsigned char). This overload formats and presents the actual modal message window.
+  char ModalMessage(long templateKind, CString formatText, CString message,
+                    const POINT& messagePosition, short overlayMode, unsigned char showCancel);
 
   // 0x5de4f0. Shows the Civilian Report confirmation dialog (resource 0xbc4) for
   // pCivilianOrderEntry and returns true iff the player picked "confirm" ('okay').
@@ -191,7 +186,7 @@ public:
   // "confirm, no changes" default so callers don't act on unverified dialog state.
   bool ShowCivilianReportDialogAndReturnConfirm(class TCivUnit* pCivilianOrderEntry);
 
-  // 0x5d5d30 (ret 0x1c). The nation-info turn-overlay modal driven by
+  // 0x5d5d30 (ret 0x1c). The shared nation-info/modal-message implementation driven by
   // BuildAndShowTurnOverlayByMode: resolves the turn-event dialog (message context
   // 0x7e4, or 0x2508 after the TAssetMgr slot-0xc notify when eventPayload carries a
   // resource word after a -1000 sentinel), fills the 'GOLD'/'coat'/'awer'/'titl'/'info'
@@ -199,9 +194,10 @@ public:
   // per-mode sfx, runs the modal loop, and returns false only for a 'cncl' close.
   // (Ghidra's TCivToolbar attribution was wrong: the placement dispatch is this class's
   // own virtual slot 0x11 and the only caller passes TViewMgr's `this`.)
-  bool RunNationInfoModalAndReturnNonCancel(int overlayMode, CString messageText,
-                                            const char* infoChars, int infoLength,
-                                            int* eventPayload, int contextTag, char showCancel);
+  bool RunNationInfoModalAndReturnNonCancel(int messageKind, CString titleSuffix,
+                                            const char* messageChars, int messageLength,
+                                            const POINT& messagePosition, int contextTag,
+                                            char showCancel);
 
   // 0x5de5d0 (ret 0x8). Resolves the turn-event dialog node for message context 0xc1c,
   // marks it via TWindow::SetField84(1) (same idiom as MakePlanetSeedDialog),

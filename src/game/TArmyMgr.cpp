@@ -395,7 +395,7 @@ static void BuildArmyContextActionRecordsAndDispatchLabel(TArmyStack* ourStack,
   // computed short, and a CString unit-name copy) per distinct orderType seen across
   // ourCount/enemyCount, builds a formatted label from ourBestUnit/enemyBestUnit and the
   // per-type counts, and dispatches it. Not modeled -- needs a new record struct plus
-  // CString-internals fidelity, and ends in the same DispatchLocalizedUiMessageWithTemplate-
+  // CString-internals fidelity, and ends in the same ModalMessage-
   // family arity ambiguity already documented on several other TArmyMgr callsites; left as
   // a gap rather than guessed.
   (void)ourCount;
@@ -861,8 +861,7 @@ bool TArmyMgr::CommitCityActionGateCostIfAffordable(int contextArg) {
   CString formattedMessage;
   scanBracketExpressions(g_pSimMgr, &formattedMessage, static_cast<LPCSTR>(templateText),
                          static_cast<LPCSTR>(currentAmountString), static_cast<LPCSTR>(costString));
-  g_pUiRuntimeContext->DispatchLocalizedUiMessageWithTemplateA13A0(
-      formattedMessage, &g_cstrArmyOrderMessageStore, 2, 0);
+  g_pUiRuntimeContext->ModalMessage(formattedMessage, g_ptArmyOrderModalMessage, 2, 0);
   return false;
 }
 
@@ -1182,7 +1181,7 @@ bool TArmyMgr::ValidateOrderPlacementPrerequisitesForSelectedTile(short cityReco
   if (!g_pGlobalMapState->TileHasMovementClassId(this->pendingMapActionIndex, cityRecordIndex)) {
     // Ground truth builds and dispatches a "not adjacent" localized message here
     // (TSimMgr::GetString group 0x2745 offsets 4/5, then
-    // TViewMgr::DispatchLocalizedUiMessageWithTemplate(5)). That dispatch's own real
+    // TViewMgr::ModalMessage(5)). That dispatch's own real
     // arity (3 explicit stack args per its own disassembly at 0x5d5c40) contradicts this
     // callsite's 0 explicit args -- the same class of contradiction already documented on
     // TMapUberPicture::DispatchPictureResourceCommand -- so it's left undone rather than
@@ -1192,7 +1191,7 @@ bool TArmyMgr::ValidateOrderPlacementPrerequisitesForSelectedTile(short cityReco
 
   if (!g_pGlobalMapState->AreAllLinkedEntriesTerrainFlagBit2Clear(this->pendingMapActionIndex)) {
     // Ground truth builds and dispatches a similar "at war" localized message here; same
-    // DispatchLocalizedUiMessageWithTemplate arity caveat as above.
+    // ModalMessage arity caveat as above.
     return false;
   }
 
@@ -1213,7 +1212,7 @@ bool TArmyMgr::ValidateOrderPlacementPrerequisitesForSelectedTile(short cityReco
   if (totalCost + reinforcementCost > seaValue) {
     // Ground truth builds and dispatches an "insufficient capacity" localized message
     // here (scanBracketExpressions-templated, embedding totalCost/reinforcementCost/
-    // seaValue); same DispatchLocalizedUiMessageWithTemplate arity caveat as above.
+    // seaValue); same ModalMessage arity caveat as above.
     return false;
   }
 
@@ -1619,7 +1618,7 @@ void TArmyMgr::BuildMapHintOverlayTextAndDispatchUiMessages(short cityRecordInde
     CString noSummaryMessage;
     g_pSimMgr->GetString(0x2744, 8, &noSummaryMessage);
     // Ground truth also dispatches noSummaryMessage via
-    // TViewMgr::DispatchLocalizedUiMessageWithTemplateA13A0 here -- that dispatch's own
+    // TViewMgr::ModalMessage here -- that dispatch's own
     // real arity (per its disassembly at 0x5d5b00) contradicts this callsite's 0
     // explicit args, the same class of contradiction already documented on
     // TMapUberPicture::DispatchPictureResourceCommand and

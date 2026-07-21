@@ -425,39 +425,31 @@ int TViewMgr::ClassifyTurnStateForOverlayMode() {
 }
 
 // FUNCTION: IMPERIALISM 0x005d5a70
-void TViewMgr::RunControlStringProviderAndDispatchLocalizedMessage(CString message,
-                                                                   CString* messageStoreRef) {
+void TViewMgr::ModalMessage(CString message, const POINT& messagePosition) {
   int overlayMode = this->ClassifyTurnStateForOverlayMode();
-  this->DispatchLocalizedUiMessageWithTemplateA13A0(message, messageStoreRef, overlayMode, 0);
+  this->ModalMessage(message, messagePosition, overlayMode, 0);
 }
 
 // FUNCTION: IMPERIALISM 0x005d5b00
-undefined1 TViewMgr::DispatchLocalizedUiMessageWithTemplateA13A0(CString message,
-                                                                 CString* messageStoreRef,
-                                                                 int overlayMode, int arg4) {
-  return this->DispatchLocalizedUiMessageWithTemplate(3, CString(g_szEmptyString), message,
-                                                      messageStoreRef, overlayMode, arg4);
+char TViewMgr::ModalMessage(CString message, const POINT& messagePosition, short overlayMode,
+                            unsigned char showCancel) {
+  return this->ModalMessage(3, CString(g_szEmptyString), message, messagePosition, overlayMode,
+                            showCancel);
 }
 
 // FUNCTION: IMPERIALISM 0x005d5c40
-undefined1 TViewMgr::DispatchLocalizedUiMessageWithTemplate(int templateKind, CString formatText,
-                                                            CString message,
-                                                            CString* messageStoreRef,
-                                                            int overlayMode, int arg4) {
-  // TODO: real body — builds and shows the localized message window.
-  (void)templateKind;
-  (void)formatText;
-  (void)message;
-  (void)messageStoreRef;
-  (void)overlayMode;
-  (void)arg4;
-  return 0;
+char TViewMgr::ModalMessage(long templateKind, CString formatText, CString message,
+                            const POINT& messagePosition, short overlayMode,
+                            unsigned char showCancel) {
+  return RunNationInfoModalAndReturnNonCancel(templateKind, formatText,
+                                              static_cast<LPCSTR>(message), message.GetLength(),
+                                              messagePosition, overlayMode, showCancel);
 }
 
 // FUNCTION: IMPERIALISM 0x005d5d30
-bool TViewMgr::RunNationInfoModalAndReturnNonCancel(int overlayMode, CString messageText,
-                                                    const char* infoChars, int infoLength,
-                                                    int* eventPayload, int contextTag,
+bool TViewMgr::RunNationInfoModalAndReturnNonCancel(int messageKind, CString titleSuffix,
+                                                    const char* messageChars, int messageLength,
+                                                    const POINT& messagePosition, int contextTag,
                                                     char showCancel) {
   CString titleText;
   TUiTextStyleDescriptor styleDescriptor;
@@ -473,8 +465,8 @@ bool TViewMgr::RunNationInfoModalAndReturnNonCancel(int overlayMode, CString mes
   styleRefBytes[2] = 0;
   styleRefBytes[3] = 0;
   payloadResource = 0;
-  if (*eventPayload == -1000) {
-    *reinterpret_cast<short*>(&payloadResource) = *reinterpret_cast<short*>(eventPayload + 1);
+  if (messagePosition.x == -1000) {
+    *reinterpret_cast<short*>(&payloadResource) = static_cast<short>(messagePosition.y);
   }
   BuildUiTextStyleDescriptor(&styleDescriptor, 0, 0xc, 0x2b67);
 
@@ -547,17 +539,17 @@ bool TViewMgr::RunNationInfoModalAndReturnNonCancel(int overlayMode, CString mes
     }
     title->SetTextStyleAndMaybeRefresh(&styleDescriptor, 0);
     title->SetTextAlignmentAndMaybeRefresh(1, 0);
-    BuildUiMessageTextFromBracketTemplate(g_pSimMgr, &titleText, 0x2749, overlayMode, 0x2749,
+    BuildUiMessageTextFromBracketTemplate(g_pSimMgr, &titleText, 0x2749, messageKind, 0x2749,
                                           contextTagSx);
     titleText += '\r';
     titleText += '\r';
-    titleText += messageText;
+    titleText += titleSuffix;
     title->SetTextAndMaybeRefresh(&titleText, 0);
   }
 
   TDeluxeText* info = static_cast<TDeluxeText*>(dialog->ResolveControlByTag(0x696e666f)); // 'info'
   info->AssertValid();
-  info->SetTextEntryFromChars(infoChars, infoLength);
+  info->SetTextEntryFromChars(messageChars, messageLength);
   info->ApplyTextStyleDescriptorAndMaybeRefresh(&styleDescriptor, 0);
   int measuredHeight = static_cast<short>(info->MeasureCurrentTextWidthInLayoutRect());
   if (measuredHeight > info->frameHeight38) {
@@ -611,7 +603,7 @@ bool TViewMgr::RunNationInfoModalAndReturnNonCancel(int overlayMode, CString mes
     overlaySfxIds[10] = 0xbd7;
     overlaySfxIds[11] = 0xbd7;
     overlaySfxIds[12] = 0xbd9;
-    g_pSfxPlaybackSystem->PlaySoundEffect(overlaySfxIds[overlayMode], 0, 1);
+    g_pSfxPlaybackSystem->PlaySoundEffect(overlaySfxIds[messageKind], 0, 1);
   }
 
   int modalResult = dialog->RefreshTurnEventDialog();
@@ -739,12 +731,12 @@ void TViewMgr::BuildAndShowTurnOverlayByMode(int overlayMode, int contextArg) {
     break;
   }
 
-  int modalPayload[2];
-  modalPayload[1] = resourceId;
-  modalPayload[0] = -1000;
+  POINT modalPosition;
+  modalPosition.x = -1000;
+  modalPosition.y = resourceId;
   RunNationInfoModalAndReturnNonCancel(overlayMode, CString(g_pNationInfoEmptyText_0066f050),
                                        static_cast<LPCSTR>(messageText), messageText.GetLength(),
-                                       modalPayload, dialogContext, 0);
+                                       modalPosition, dialogContext, 0);
 }
 
 // FUNCTION: IMPERIALISM 0x005d69b0
@@ -2347,8 +2339,7 @@ char TViewMgr::ShowLocalizedUiPromptByGroupAndIndex(int uiStringGroup, int uiStr
   CString message;
   g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&message, uiStringGroup,
                                                                   uiStringIndex);
-  return DispatchLocalizedUiMessageWithTemplateA13A0(message, &g_cstrUiPromptMessageStore,
-                                                     overlayMode, arg4);
+  return ModalMessage(message, g_ptUiPromptModalMessage, overlayMode, arg4);
 }
 
 // FUNCTION: IMPERIALISM 0x005dea60
@@ -2385,8 +2376,7 @@ char TViewMgr::DispatchGameStateEventIfLocalizedPromptAccepted(int actionTag) {
       g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&message, 0x2737, 0x2b);
     }
   }
-  char accepted = g_pUiRuntimeContext->DispatchLocalizedUiMessageWithTemplateA13A0(
-      message, &g_cstrUiPromptMessageStore, 0, 1);
+  char accepted = g_pUiRuntimeContext->ModalMessage(message, g_ptUiPromptModalMessage, 0, 1);
   if (accepted != 0) {
     unsigned char isClientSession = g_pSimMgr->multiplayerSessionRole == 2;
     if (isClientSession != 0) {

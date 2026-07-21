@@ -147,8 +147,7 @@ void TArmyUnitView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEv
     } else {
       CString msg;
       g_pSimMgr->GetString(0x2745, 3, &msg);
-      g_pUiRuntimeContext->DispatchLocalizedUiMessageWithTemplateA13A0(
-          msg, &g_cstrArmyOrderMessageStore, 2, 0);
+      g_pUiRuntimeContext->ModalMessage(msg, g_ptArmyOrderModalMessage, 2, 0);
     }
   } else if (sourceHandler->controlTag == kControlTagName) {
     HandleCrossUArmyViewsNameCommand();
