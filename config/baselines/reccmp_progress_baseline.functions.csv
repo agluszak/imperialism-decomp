@@ -1383,8 +1383,8 @@ address|matching|name
 0x4a76f0|1.0|TArmyStack::TArmyStack
 0x4a7720|0.9090909090909091|TArmyStack::`scalar deleting destructor'
 0x4a7770|0.6666666666666666|TArmyStack::InitializeSideAndTile
-0x4a77b0|0.017391304347826087|TArmyStack::ReadFrom
-0x4a7960|0.024691358024691357|TArmyStack::WriteTo
+0x4a77b0|0.8311688311688312|TArmyStack::ReadFrom
+0x4a7960|0.9367088607594937|TArmyStack::WriteTo
 0x4a7a40|0.0|InitializeLinkedListCursorContainerAndIterate_004a7a40
 0x4a7b20|1.0|TArmyStack::AddUnitToChainHead
 0x4a7ba0|0.8|TArmyStack::RemoveUnitFromChain
