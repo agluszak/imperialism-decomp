@@ -1320,7 +1320,7 @@ address|matching|name
 0x4a1640|0.014492753623188406|TArmyMgr::CreateTArmyMgrInstance
 0x4a1810|0.4|TArmyMgr::CreateObject
 0x4a1850|1.0|TArmyMgr::GetRuntimeClass
-0x4a1870|0.2857142857142857|ConstructMapContextActionManager
+0x4a1870|1.0|TArmyMgr::TArmyMgr
 0x4a18a0|0.9090909090909091|TArmyMgr::`scalar deleting destructor'
 0x4a18f0|0.8245614035087719|TArmyMgr::InitializeMapContextActionManager
 0x4a1a00|0.019417475728155338|TArmyMgr::Free
@@ -1986,9 +1986,10 @@ address|matching|name
 0x4d1e60|1.0|TPlaceCityDialog::Close
 0x4d2000|0.42424242424242425|TCivMgr::CreateObject
 0x4d2030|1.0|TCivMgr::GetRuntimeClass
-0x4d2070|0.9090909090909091|TCivMgr::`scalar deleting destructor'
-0x4d20a0|0.5|InitializeCivilianMapInteractionManagerBaseVtable
-0x4d20c0|0.6666666666666666|NoOpCivilianMapInteractionManagerVirtualHook
+0x4d2050|1.0|TCivMgr::TCivMgr
+0x4d2070|1.0|TCivMgr::`scalar deleting destructor'
+0x4d20a0|1.0|TCivMgr::~TCivMgr
+0x4d20c0|1.0|TCivMgr::ICivMgr
 0x4d20e0|0.0|ClearCivilianSelectionHighlightsForNation
 0x4d2160|0.0|SelectFirstAvailableCivilianForNation
 0x4d2270|0.043478260869565216|TCivMgr::DispatchSelectedUnitToGlobalMapStateHandler
@@ -2145,7 +2146,7 @@ address|matching|name
 0x4dd340|0.6222222222222222|TGreatPower::AddAmountToAidAllocationMatrixCellAndTotal
 0x4dd3b0|1.0|TGreatPower::SumAidAllocationMatrixColumnForTarget
 0x4dd3f0|1.0|TGreatPower::SumAidAllocationMatrixAllCells
-0x4dd430|0.5714285714285714|TGreatPower::ComputeRemainingDiplomacyAidBudget
+0x4dd430|0.5142857142857142|TGreatPower::ComputeRemainingDiplomacyAidBudget
 0x4dd470|1.0|TGreatPower::ResetDiplomacyNeedSlots7012AndRefreshIfModeGateMatches
 0x4dd4e0|0.4585987261146497|TGreatPower::AssignFallbackNationsToUnfilledDiplomacyNeedSlots
 0x4dd740|1.0|TGreatPower::GetDiplomacyExternalStateByTarget
@@ -2435,7 +2436,7 @@ address|matching|name
 0x4ee5e0|1.0|TSortedByRelationshipList::Compare
 0x4ee650|0.3157894736842105|TDiplomacyMgr::CreateObject
 0x4ee6a0|1.0|TDiplomacyMgr::GetRuntimeClass
-0x4ee6c0|0.9333333333333333|TDiplomacyMgr::ConstructTDiplomacyTurnStateManager_Vtbl00654d90
+0x4ee6c0|1.0|TDiplomacyMgr::TDiplomacyMgr
 0x4ee700|0.9090909090909091|TDiplomacyMgr::`scalar deleting destructor'
 0x4ee7a0|0.6942148760330579|TDiplomacyMgr::InitializeTDiplomacyTurnStateManagerDefaults
 0x4ee8c0|0.2777777777777778|TDiplomacyMgr::RebuildCivilianOrderCompatibilityMatrices
@@ -2824,7 +2825,7 @@ address|matching|name
 0x50bbc0|0.8888888888888888|TMacViewMgr::OrphanCallChain_C4_I35_0050bbc0
 0x50bc50|0.6026200873362445|TMacViewMgr::SyncSellTaggedChildControlWithNationState
 0x50be30|1.0|TMacViewMgr::ResolveTurnEventDialogOrFailAndInvokeSlot9C
-0x50bea0|0.21263062244434347|TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets
+0x50bea0|0.21081326669695594|TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets
 0x50d310|0.5625|TMacViewMgr::DispatchTurnEvent3B8AndWaitForCompletionFlag
 0x50d360|0.46551724137931033|TMacViewMgr::CreateCityBuildingDialogBySlot
 0x50d470|0.3880597014925373|TMacViewMgr::OrphanCallChain_C10_I80_0050d470
@@ -3646,7 +3647,7 @@ address|matching|name
 0x545660|1.0|TMultiplayerMgr::ResetLocalUiStateAndPostTurnEvent5E5
 0x5456a0|0.14814814814814814|ResetDialogContextField40AndEmitTurnEvent3Mode18
 0x545730|0.016666666666666666|TMultiplayerMgr::RouteAndProcessDiplomacyTurnStateEventQueue
-0x545940|0.433855596834114|TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine
+0x545940|0.3864921635159153|TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine
 0x549240|0.6666666666666666|TouchSessionActiveNationId
 0x549280|1.0|TMultiplayerMgr::AppendNodeToTurnEventLinkedListAt6C
 0x5493c0|0.3516483516483517|TMultiplayerMgr::CreateAndSendTurnEvent11_MapOffsetAndFlags
@@ -3853,7 +3854,7 @@ address|matching|name
 0x556590|1.0|TNavyMgr::TNavyMgr
 0x5565c0|1.0|TNavyMgr::`scalar deleting destructor'
 0x5565f0|1.0|TNavyMgr::~TNavyMgr
-0x556610|0.7123287671232876|InitializeNavyOrderPriorityTables
+0x556610|0.7123287671232876|TNavyMgr::INavyMgr
 0x5567a0|0.05405405405405406|TNavyMgr::Free
 0x556820|1.0|TTaskForce::DestroyNavyOrderAndChildren
 0x556850|0.06666666666666667|ResetNavyOrderListsAndManagerOwner
@@ -3884,7 +3885,7 @@ address|matching|name
 0x55a020|0.6557377049180327|TNavyMgr::TryHandleMapContextAction
 0x55a160|0.41604010025062654|TNavyMgr::TryQueueMapOrderFromTileAction
 0x55a780|0.11241217798594848|TNavyMgr::ResolveMapOrderPairConflictStep
-0x55b670|0.42424242424242425|TNewsMgr::CreateObject
+0x55b670|1.0|TNewsMgr::CreateObject
 0x55b6a0|0.9090909090909091|TNewsMgr::`scalar deleting destructor'
 0x55b6f0|1.0|TNewsMgr::GetRuntimeClass
 0x55b710|0.5689655172413793|TNewsMgr::InitializeInterNationEventQueueManager
@@ -4438,7 +4439,7 @@ address|matching|name
 0x57bea0|0.7181628392484343|TSimMgr::ReadFrom
 0x57c230|0.8366533864541833|TSimMgr::WriteTo
 0x57c390|1.0|TSimMgr::RebuildNationStateSlotsNoOp
-0x57c3b0|0.5336225596529284|TSimMgr::RebuildGlobalOrderManagersAndCapabilityState
+0x57c3b0|0.9873949579831933|TSimMgr::RebuildGlobalOrderManagersAndCapabilityState
 0x57c7c0|0.5405405405405406|TSimMgr::RebuildMapContextAndGlobalMapState
 0x57c9a0|0.6031746031746031|TSimMgr::RecreateActiveMapContextAndInitializeGlobalMapState
 0x57cad0|0.7278481012658228|TSimMgr::RebuildNationStateSlotsAndAvailability
@@ -5209,7 +5210,7 @@ address|matching|name
 0x5aed50|0.0|TTaskList::CreateTTechMgrInstance
 0x5aef30|0.42424242424242425|TTechMgr::CreateObject
 0x5aef60|1.0|TTechMgr::GetRuntimeClass
-0x5aef80|0.5|TTechMgr::ConstructCityOrderCapabilityStateVtable
+0x5aef80|1.0|TTechMgr::TTechMgr
 0x5aefa0|0.9090909090909091|TTechMgr::`scalar deleting destructor'
 0x5aeff0|0.6985915492957746|TTechMgr::InitializeCityOrderCapabilityStateDefaults
 0x5af330|0.4936708860759494|TTechMgr::GenerateRandomCapabilityPrioritySlots
@@ -5458,7 +5459,7 @@ address|matching|name
 0x5bea00|0.0|TOfferDeskPicture::InitializeTradeScreenControlsLabelsAndNationContext
 0x5bf740|0.6442953020134228|TOfferDeskPicture::HandleEvent
 0x5bf860|0.03636363636363636|TOfferDeskPicture::ForwardParam
-0x5bf930|0.7890818858560794|TOfferDeskPicture::RefreshSelectedNationOrderCompatibilityInfo
+0x5bf930|0.770885028949545|TOfferDeskPicture::RefreshSelectedNationOrderCompatibilityInfo
 0x5c04f0|0.8066528066528067|TOfferDeskPicture::CreateNextTradeCommandAndFormatPrompt
 0x5c0930|0.05|TOfferDeskPicture::DispatchUiMouseEventToChildrenOrSelf_Impl
 0x5c09d0|0.010309278350515464|TOfferDeskPicture::UpdateTradeSelectionStateAndRefreshUiIfChanged

@@ -41,6 +41,9 @@ public:
   int field08;                   // 0x8
 
   TCivMgr();
+  // Mac name oracle: ICivMgr. The Windows body is intentionally empty; the setup
+  // lifecycle still calls this second-phase initializer after construction.
+  void ICivMgr();
 
   // 0x004d2f60. Validate whether the selected civilian (selectedEntry) can be assigned to the
   // clicked tile. (Ghidra mis-attributed this to TCivToolbar via a thunk-only caller; the `this`

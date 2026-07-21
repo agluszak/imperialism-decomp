@@ -385,14 +385,14 @@ void TSimMgr::RebuildGlobalOrderManagersAndCapabilityState(char flag) {
     if (flag != 0) {
       short* destCursor = scenarioSetupRows1;
       const short* srcCursor = g_anScenarioNationSetupTable_00698B1A;
-      for (i = 0; i < 7; ++i) {
+      do {
         destCursor[-7] = srcCursor[-1];
         destCursor[0] = srcCursor[0];
         destCursor[7] = srcCursor[1];
         destCursor[14] = srcCursor[2];
         destCursor += 1;
         srcCursor += 4;
-      }
+      } while (srcCursor < g_anScenarioNationSetupTable_00698B1A + 28);
       fieldd8 = 0;
       field112 = 0;
     }
@@ -416,51 +416,62 @@ void TSimMgr::RebuildGlobalOrderManagersAndCapabilityState(char flag) {
       g_pUiAnimator->Free();
       g_pUiAnimator = nullptr;
     }
-    g_pUiAnimator = new TAnimator();
-    g_pUiAnimator->InitializeUiTransientObjectRegistry(0x7fffffff);
+    TAnimator* animator = new TAnimator();
+    animator->InitializeUiTransientObjectRegistry(0x7fffffff);
+    animator->OrphanCallChain_C2_I13_004a0c00();
+    g_pUiAnimator = animator;
 
     if (g_pDiplomacyTurnStateManager != nullptr) {
       g_pDiplomacyTurnStateManager->Free();
       g_pDiplomacyTurnStateManager = nullptr;
     }
-    g_pDiplomacyTurnStateManager = new TDiplomacyMgr();
+    TDiplomacyMgr* diplomacyManager = new TDiplomacyMgr();
+    diplomacyManager->InitializeTDiplomacyTurnStateManagerDefaults();
+    g_pDiplomacyTurnStateManager = diplomacyManager;
 
     if (g_pNationInteractionStateManager != nullptr) {
       g_pNationInteractionStateManager->Free();
       g_pNationInteractionStateManager = nullptr;
     }
-    g_pNationInteractionStateManager = new TTradeMgr();
+    TTradeMgr* tradeManager = new TTradeMgr();
+    tradeManager->InitializeNationInteractionStateManagerDefaults();
+    g_pNationInteractionStateManager = tradeManager;
 
     if (g_pInterNationEventQueueManager != nullptr) {
       g_pInterNationEventQueueManager->Free();
       g_pInterNationEventQueueManager = nullptr;
     }
-    g_pInterNationEventQueueManager = new TNewsMgr();
-    g_pInterNationEventQueueManager->InitializeInterNationEventQueueManager();
+    TNewsMgr* newsManager = new TNewsMgr();
+    newsManager->InitializeInterNationEventQueueManager();
+    g_pInterNationEventQueueManager = newsManager;
 
     if (g_pMapContextActionManager != nullptr) {
       g_pMapContextActionManager->Free();
       g_pMapContextActionManager = nullptr;
     }
-    g_pMapContextActionManager = new TArmyMgr();
+    TArmyMgr* armyManager = new TArmyMgr();
+    armyManager->InitializeMapContextActionManager();
+    g_pMapContextActionManager = armyManager;
 
     if (g_pSelectedCivilianOrderState != nullptr) {
       g_pSelectedCivilianOrderState->Free();
       g_pSelectedCivilianOrderState = nullptr;
     }
-    g_pSelectedCivilianOrderState = new TCivMgr();
+    TCivMgr* civilianManager = new TCivMgr();
+    civilianManager->ICivMgr();
+    g_pSelectedCivilianOrderState = civilianManager;
 
     if (g_pNavyOrderManager != nullptr) {
       g_pNavyOrderManager->Free();
-      g_pNavyOrderManager = nullptr;
     }
     g_pNavyOrderManager = new TNavyMgr();
+    g_pNavyOrderManager->INavyMgr();
 
     if (g_pCityOrderCapabilityState != nullptr) {
       g_pCityOrderCapabilityState->Free();
-      g_pCityOrderCapabilityState = nullptr;
     }
     g_pCityOrderCapabilityState = new TTechMgr();
+    g_pCityOrderCapabilityState->InitializeCityOrderCapabilityStateDefaults();
   }
 }
 

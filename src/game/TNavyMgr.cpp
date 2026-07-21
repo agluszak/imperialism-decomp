@@ -255,7 +255,7 @@ TNavyMgr::~TNavyMgr() {}
 // navy-priority). The weight columns are read as dwords from the descriptor table, matching
 // the original's g_..._LookupTable_006981xx int views.
 // FUNCTION: IMPERIALISM 0x00556610
-void InitializeNavyOrderPriorityTables() {
+void TNavyMgr::INavyMgr() {
   int i;
   for (i = 0; i < 14; ++i) {
     g_NavyResolveOrderRanking[i] = static_cast<short>(i);
