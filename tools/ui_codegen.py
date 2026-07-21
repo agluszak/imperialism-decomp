@@ -1193,6 +1193,13 @@ def _print_source_map_explanation(
 def _print_source_map_triage(repo_root: Path, gen_dir: str, raw_address: str) -> None:
     source_map = _load_generated_source_map(repo_root, gen_dir)
     function = _function_map(source_map, raw_address)
+    platform_path = repo_root / "docs/reference/ui_platform_diff.json"
+    platform_report = (
+        json.loads(platform_path.read_text(encoding="utf-8"))
+        if platform_path.is_file()
+        else {"functions": {}}
+    )
+    platform_function = platform_report.get("functions", {}).get(function["function"], {})
     print(f"{function['function']} {function['name']}")
     print(f"generated: {resolve_repo_path(repo_root, gen_dir) / function['generated_file']}")
     for event, case in sorted(function.get("cases", {}).items()):
@@ -1204,7 +1211,20 @@ def _print_source_map_triage(repo_root: Path, gen_dir: str, raw_address: str) ->
         counts = ", ".join(
             f"{name}={count}" for name, count in sorted(confidence_counts.items())
         )
-        print(f"{event}: nodes={len(nodes)} {counts}; {case['source']}")
+        platform_case = platform_function.get("cases", {}).get(event, {})
+        platform_classification = platform_case.get("classification", "unavailable")
+        delta_counts: dict[str, int] = {}
+        for node in platform_case.get("nodes", {}).values():
+            classification = str(node["classification"])
+            if classification != "same_semantics":
+                delta_counts[classification] = delta_counts.get(classification, 0) + 1
+        deltas = ", ".join(
+            f"{name}={count}" for name, count in sorted(delta_counts.items())
+        ) or "none"
+        print(
+            f"{event}: nodes={len(nodes)} {counts}; platform={platform_classification} "
+            f"deltas={deltas}; {case['source']}"
+        )
 
 
 def main() -> int:

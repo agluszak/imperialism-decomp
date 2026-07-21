@@ -1,5 +1,7 @@
 #include "game/TExpansionOrder.h"
 
+#include "game/TCity.h"
+#include "game/TGreatPower.h"
 #include "game/TStream.h"
 
 // SYNTHETIC: IMPERIALISM 0x004b8f50
@@ -23,8 +25,45 @@ undefined TExpansionOrder::ExpansionOrderSlot12(int param_1, undefined2 param_2,
 }
 
 // FUNCTION: IMPERIALISM 0x004b9090
-undefined TExpansionOrder::CommitIfPending() {
-  return 0;
+void TExpansionOrder::Produce() {
+  short zero = 0;
+  if (quantityField04 == zero) {
+    return;
+  }
+
+  TCity* city = cityField08;
+  short newValue;
+  if (resourceTypeIndex48 == 0x0f) {
+    TGreatPower* owner = city->ownerNationAc;
+    signed char usesThreeRegionsPerLevel = owner->field8d1 >= '3';
+    if (usesThreeRegionsPerLevel != zero) {
+      int regionCount = owner->ownedRegionList->GetSize();
+      if (regionCount / 3 > 1) {
+        newValue = static_cast<short>(city->ownerNationAc->ownedRegionList->GetSize() / 3);
+      } else {
+        newValue = 1;
+      }
+    } else {
+      int regionCount = owner->ownedRegionList->GetSize();
+      if (regionCount / 4 > 1) {
+        newValue = static_cast<short>(city->ownerNationAc->ownedRegionList->GetSize() / 4);
+      } else {
+        newValue = 1;
+      }
+    }
+  } else {
+    newValue = city->productionOrderTable1dc[resourceTypeIndex48];
+  }
+
+  newValue = static_cast<short>(newValue + quantityField04);
+  short delta = static_cast<short>(newValue - city->productionOrderTable1dc[resourceTypeIndex48]);
+  city->productionAccum1fc[resourceTypeIndex48] =
+      static_cast<short>(city->productionAccum1fc[resourceTypeIndex48] + delta);
+  city->productionOrderTable1dc[resourceTypeIndex48] = newValue;
+  requestedQuantity4c = zero;
+  quantityField04 = zero;
+  trackingSlots10[primaryInputResourceId] = zero;
+  trackingSlots10[secondaryInputResourceId] = zero;
 }
 
 // FUNCTION: IMPERIALISM 0x004b91f0
@@ -46,7 +85,7 @@ void SwapFirstTwoBytesInBuffer(unsigned char* buffer) {
 
 // FUNCTION: IMPERIALISM 0x004b9360
 void TExpansionOrder::FillOrderSheet(OrderSheet* orderSheet, short quantity) {
-  this->InitializeCityOrderItemWorkingBuffers(orderSheet);
+  this->ResetOrderSheet(orderSheet);
   orderSheet->ForResourceCode(this->primaryInputResourceId) = quantity;
   if (orderSheet->ForResourceCode(this->primaryInputResourceId) < 0) {
     orderSheet->ForResourceCode(this->primaryInputResourceId) = 0;

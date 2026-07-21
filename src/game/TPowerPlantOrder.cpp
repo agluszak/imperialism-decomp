@@ -32,12 +32,10 @@ bool TPowerPlantOrder::SetQuantity(short param_1) {
 }
 
 // FUNCTION: IMPERIALISM 0x004b7c20
-undefined TPowerPlantOrder::CommitIfPending() {
-  return 0;
-}
+void TPowerPlantOrder::Produce() {}
 
 // FUNCTION: IMPERIALISM 0x004b7c40
-void TPowerPlantOrder::ResetCityOrderItemDerivedStateNoop() {
+void TPowerPlantOrder::Restock() {
   // Same quantity re-clamp as TItemOrder's slot 0x0e, minus the field40 guard: zero
   // the pending quantity and re-drive SetQuantity with the smaller of the current
   // derived value (field4c) and the recomputed MaxOrder() ceiling.
@@ -54,7 +52,7 @@ void TPowerPlantOrder::ResetCityOrderItemDerivedStateNoop() {
 
 // FUNCTION: IMPERIALISM 0x004b7c90
 void TPowerPlantOrder::FillOrderSheet(OrderSheet* orderSheet, short quantity) {
-  this->InitializeCityOrderItemWorkingBuffers(orderSheet);
+  this->ResetOrderSheet(orderSheet);
   orderSheet->slotByResourceCode[0x0c] = static_cast<short>(quantity * 6);
 }
 

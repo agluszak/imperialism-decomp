@@ -78,6 +78,7 @@ just ui-codegen
 just ui-resource-show Startup.rsrc:1500
 just ui-codegen-explain 0x43dbc0 0x07dd tool
 just ui-codegen-triage 0x43dbc0
+just ui-platform-diff --function 0x43dbc0 --event 0x07dd
 just build
 just ui-codegen-match-gate
 ```
@@ -107,3 +108,11 @@ confidence before machine-level `just triage` work. There are no C++ body templa
 retail inputs in the normal generation path. The generated manifest hashes every
 committed semantic input, and `just ui-codegen-match-gate` protects symbol pairing and
 the explicitly accepted similarity baseline rather than dictating source architecture.
+
+`docs/reference/ui_platform_diff.json` joins those generated line spans back to the
+normalized Mac nodes and declared Windows deltas. The corresponding source gate rejects
+unexplained class substitutions, undeclared functional-parity cases, missing generated
+nodes, and stale reports. Ordinary Mac-backed nodes are explicitly reported as using
+Mac semantics without pretending that per-node Windows-binary recipes still exist;
+Windows-only nodes retain their listing evidence. `ui-codegen-triage` includes the case
+classification and intentional-delta counts in its summary.

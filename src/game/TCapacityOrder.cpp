@@ -200,7 +200,7 @@ bool TCapacityOrder::SetCapacityOrderQuantity(short quantity) {
 
 void TCapacityOrder::CommitCapacityOrderIfPending() {
   if (this->resourceTypeIndex48 != 0 && this->quantityField04 != 0) {
-    this->CommitIfPending();
+    this->Produce();
   }
 }
 
@@ -238,14 +238,14 @@ undefined TCapacityOrder::CapacityOrderSlot12(TCity* city, short resourceType,
 }
 
 // FUNCTION: IMPERIALISM 0x004b8dd0
-undefined TCapacityOrder::CommitIfPending() {
+void TCapacityOrder::Produce() {
   TCity* city = this->cityField08;
   short slotIndex = this->resourceTypeIndex48;
   short newValue;
   short deltaToAccum;
 
   if (this->quantityField04 == 0) {
-    return 0;
+    return;
   }
   if (slotIndex == 0xe) {
     const short currentCap = static_cast<short>(city->GetOwnerNeedCapA6());
@@ -254,7 +254,7 @@ undefined TCapacityOrder::CommitIfPending() {
   }
   if (slotIndex == 0xf) {
     TGreatPower* owner = city->ownerNationAc;
-    if (*reinterpret_cast<char*>(reinterpret_cast<unsigned char*>(owner) + 0x8d1) < '3') {
+    if (owner->field8d1 < '3') {
       int laborPool = owner->ownedRegionList->GetSize();
       if ((laborPool + ((laborPool < 0) ? 3 : 0)) >> 2 < 2) {
         newValue = 1;
@@ -285,5 +285,4 @@ apply_done:
   this->trackingSlots10[this->primaryInputResourceId] = 0;
   this->trackingSlots10[this->secondaryInputResourceId] = 0;
   this->field3e = 0;
-  return 0;
 }

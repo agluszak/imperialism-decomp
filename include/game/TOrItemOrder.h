@@ -16,12 +16,12 @@ public:
   // slot 0x07 Free inherited unchanged (0x4798b0)
   // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
-  // slot 0x0a InitializeBasicCityOrderContext inherited unchanged (0x4b4f70)
+  // slot 0x0a IProductionOrder inherited unchanged (0x4b4f70)
   virtual bool SetQuantity(short param_1) override; // slot 0x0b 0x4b5990
   virtual short MaxOrder() override;                // slot 0x0c 0x4b58f0
-  // slot 0x0d CommitIfPending inherited unchanged (0x4b5580)
-  // slot 0x0e ResetCityOrderItemDerivedStateNoop inherited unchanged (0x4b5620)
-  // slot 0x0f Produce inherited unchanged (0x4b5180)
+  // slot 0x0d Produce inherited unchanged (0x4b5580)
+  // slot 0x0e Restock inherited unchanged (0x4b5620)
+  // slot 0x0f ResetOrderSheet inherited unchanged (0x4b5180)
   // slot 0x10 FillOrderSheet inherited unchanged (0x4b5510)
   // slot 0x11 InitializeItemOrderContext inherited unchanged (0x4b5290)
   virtual undefined OrItemOrderSlot12(int param_1, undefined2 param_2, undefined2 param_3,

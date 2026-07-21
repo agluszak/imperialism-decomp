@@ -191,11 +191,10 @@ bool TShipOrder::SetQuantity(short quantity) {
 }
 
 // FUNCTION: IMPERIALISM 0x004b8970
-undefined TShipOrder::CommitIfPending() {
+void TShipOrder::Produce() {
   if (this->resourceTypeIndex48 != 0 && this->quantityField04 != 0) {
     this->CommitQueuedNavyOrdersAndUpdateTierByCapability();
   }
-  return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004b89a0
@@ -299,7 +298,7 @@ tier_six:
 void TShipOrder::FillOrderSheet(OrderSheet* orderSheet, short quantity) {
   short value;
 
-  this->InitializeCityOrderItemWorkingBuffers(orderSheet);
+  this->ResetOrderSheet(orderSheet);
 
   value = static_cast<short>(
       ReadWeight(g_industryActionCostWeightResCode09, this->resourceTypeIndex48) * quantity);

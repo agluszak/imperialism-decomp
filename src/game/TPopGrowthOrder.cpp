@@ -1,5 +1,6 @@
 #include "game/TPopGrowthOrder.h"
 #include "game/TCity.h"
+#include "game/TGreatPower.h"
 
 // Matches TCapacityOrder's own ZeroTrackingSlots helper: zeroes the 0x2e-byte
 // trackingSlots10 array (0x17 shorts) via the same 11x-4-byte-then-1x-2-byte write
@@ -51,16 +52,39 @@ bool TPopGrowthOrder::SetQuantity(short param_1) {
 }
 
 // FUNCTION: IMPERIALISM 0x004b82f0
-undefined TPopGrowthOrder::CommitIfPending() {
-  return 0;
+void TPopGrowthOrder::Produce() {
+  short quantity = quantityField04;
+  TPopulationMgr* population = cityField08->productionSummary1d8;
+  population->baselineSlots10->valueAt4 += quantity;
+  population->productionSlots14->valueAt4 += quantity;
+  population->fieldAt8 += quantity;
+
+  TCity* city = cityField08;
+  TGreatPower* owner = city->ownerNationAc;
+  if (owner->field8d1 >= '3') {
+    int regionCount = owner->ownedRegionList->GetSize();
+    if (regionCount / 3 > 1) {
+      city->productionAccum1fc[0x0f] = static_cast<short>(owner->ownedRegionList->GetSize() / 3);
+    } else {
+      city->productionAccum1fc[0x0f] = 1;
+    }
+  } else {
+    int regionCount = owner->ownedRegionList->GetSize();
+    if (regionCount / 4 > 1) {
+      city->productionAccum1fc[0x0f] = static_cast<short>(owner->ownedRegionList->GetSize() / 4);
+    } else {
+      city->productionAccum1fc[0x0f] = 1;
+    }
+  }
+  quantityField04 = 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004b8420
-void TPopGrowthOrder::ResetCityOrderItemDerivedStateNoop() {}
+void TPopGrowthOrder::Restock() {}
 
 // FUNCTION: IMPERIALISM 0x004b8440
 void TPopGrowthOrder::FillOrderSheet(OrderSheet* orderSheet, short quantity) {
-  this->InitializeCityOrderItemWorkingBuffers(orderSheet);
+  this->ResetOrderSheet(orderSheet);
   orderSheet->slotByResourceCode[0x0d] = quantity;
   orderSheet->slotByResourceCode[0x0e] = quantity;
   orderSheet->slotByResourceCode[0x07] = quantity;
