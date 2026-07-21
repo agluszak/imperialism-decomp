@@ -112,7 +112,7 @@ void TMapUberPicture::Free() {
     g_pUiAnimator->mapUberPicture2c = 0;
   }
   static_cast<TAmbitApplication*>(g_pGlobalUiRootController)->edgeScrollTarget48 = 0;
-  g_pGlobalUiRootController->field28 = 0;
+  g_pGlobalUiRootController->cursorRegionInvalid = FALSE;
   TOffLimitsPicture::Free();
 }
 

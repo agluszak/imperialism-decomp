@@ -1,6 +1,7 @@
 // TDiplomacyMapView QuickDraw legend rendering slice.
 
 #include "decomp_types.h"
+#include "game/TAmbitApplication.h"
 #include "game/TDiplomacyMapView.h"
 #include "game/global_data_tables.h"
 #include "game/TView.h"
@@ -174,10 +175,7 @@ TDiplomacyMapView::TDiplomacyMapView() : TPicture() {
   regionAt9c = 0;
   legendSurfaceModeAt524 = 6;
   stateFlagAtB8 = 0;
-  // cursorTable is a shared void* scratch array; slot 5 (0x14 + 5*4 = 0x28) holds a plain
-  // flag value (1) here. That is consistent with the array's void* element typing -- each
-  // consumer interprets its own slot -- not one field carrying two overlaid meanings.
-  g_pUiRuntimeContext->cursorTable[5] = reinterpret_cast<void*>(1);
+  g_pGlobalUiRootController->cursorRegionInvalid = TRUE;
 }
 
 // FUNCTION: IMPERIALISM 0x004f3c70
@@ -216,7 +214,8 @@ void TDiplomacyMapView::DoPostCreate(int arg) {
 
 // FUNCTION: IMPERIALISM 0x004f3e30
 void TDiplomacyMapView::Close() {
-  stateFlagAtB8 = 0;
+  g_pGlobalUiRootController->cursorRegionInvalid = FALSE;
+  TView::Close();
 }
 
 // FUNCTION: IMPERIALISM 0x004f3e60
@@ -750,23 +749,23 @@ void TDiplomacyMapView::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoi
   localPoint.x = clickPoint->x;
   localPoint.y = clickPoint->y;
 
-  short cursorTable[16];
-  cursorTable[0] = 0x41b;
-  cursorTable[1] = 0x41b;
-  cursorTable[2] = 0x408;
-  cursorTable[3] = 0x407;
-  cursorTable[4] = 0x406;
-  cursorTable[5] = 0x404;
-  cursorTable[6] = 0x405;
-  cursorTable[7] = 0x411;
-  cursorTable[8] = 0x415;
-  cursorTable[9] = 0x409;
-  cursorTable[10] = 0x41b;
-  cursorTable[11] = 0x40f;
-  cursorTable[12] = 0x410;
-  cursorTable[13] = 0x3f3;
-  cursorTable[14] = 0x419;
-  cursorTable[15] = 0x41a;
+  short cursorIdsByAction[16];
+  cursorIdsByAction[0] = 0x41b;
+  cursorIdsByAction[1] = 0x41b;
+  cursorIdsByAction[2] = 0x408;
+  cursorIdsByAction[3] = 0x407;
+  cursorIdsByAction[4] = 0x406;
+  cursorIdsByAction[5] = 0x404;
+  cursorIdsByAction[6] = 0x405;
+  cursorIdsByAction[7] = 0x411;
+  cursorIdsByAction[8] = 0x415;
+  cursorIdsByAction[9] = 0x409;
+  cursorIdsByAction[10] = 0x41b;
+  cursorIdsByAction[11] = 0x40f;
+  cursorIdsByAction[12] = 0x410;
+  cursorIdsByAction[13] = 0x3f3;
+  cursorIdsByAction[14] = 0x419;
+  cursorIdsByAction[15] = 0x41a;
 
   void** terrainDescriptors = reinterpret_cast<void**>(kAddrTerrainTypeDescriptorTable);
   int hitIndex = 0;
@@ -794,17 +793,17 @@ void TDiplomacyMapView::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoi
     if (valid == 0) {
       cursorId = 0x41b;
     } else {
-      cursorId = cursorTable[actionCode];
+      cursorId = cursorIdsByAction[actionCode];
       if (actionCode == 9 || actionCode == 7 || actionCode == 8) {
         cursorId = static_cast<short>(cursorId + *reinterpret_cast<short*>(self + 0xc0));
       }
     }
     *reinterpret_cast<short*>(self + 0x52a) = cursorId;
-    hCursor = g_pUiRuntimeContext->cursorTable[cursorId - TViewMgr::kCursorResourceIdBase];
+    hCursor = g_pUiRuntimeContext->turnEventCursors[cursorId - TViewMgr::kCursorResourceIdBase];
     applyCursor = true;
   } else if (*reinterpret_cast<short*>(self + 0x52a) != 0x41b) {
     *reinterpret_cast<short*>(self + 0x52a) = 0x41b;
-    hCursor = g_pUiRuntimeContext->cursorTable[0x41b - TViewMgr::kCursorResourceIdBase];
+    hCursor = g_pUiRuntimeContext->turnEventCursors[0x41b - TViewMgr::kCursorResourceIdBase];
     applyCursor = true;
   }
 

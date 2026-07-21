@@ -145,7 +145,7 @@ TViewMgr::~TViewMgr() {}
 // FUNCTION: IMPERIALISM 0x005d5100
 void TViewMgr::LoadTurnEventCursorTable() {
   for (int i = 0; i < 0x36; i++) {
-    this->cursorTable[i] = LoadTurnEventCursorByResourceIdOffset1000(i + 1000);
+    turnEventCursors[i] = LoadTurnEventCursorByResourceIdOffset1000(i + 1000);
   }
 }
 

@@ -81,15 +81,16 @@ void TAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache() {
 
   this->QueryBounds(&frameBounds);
 
-  this->TranslatePointToParentChain4E();
+  CPoint translatedOrigin(g_nOverlayClipCacheParamX, g_nOverlayClipCacheParamY);
+  this->TranslatePointToParentChain4E(&translatedOrigin);
 
   controlWidth = (short)this->frameWidth34;
   controlHeight = (short)this->frameHeight38;
 
-  panelRect.left = frameBounds.left;
-  panelRect.top = frameBounds.top;
-  panelRect.right = frameBounds.left + (int)controlWidth;
-  panelRect.bottom = frameBounds.top + (int)controlHeight;
+  panelRect.left = translatedOrigin.x;
+  panelRect.top = translatedOrigin.y;
+  panelRect.right = translatedOrigin.x + (int)controlWidth;
+  panelRect.bottom = translatedOrigin.y + (int)controlHeight;
 
   contentRect.left = contentBounds.left;
   contentRect.top = contentBounds.top;

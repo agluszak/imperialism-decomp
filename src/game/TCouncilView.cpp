@@ -249,7 +249,7 @@ void TCouncilView::InitializeDiplomacyCouncilViewControlsAndTicker() {
     }
   }
 
-  SetCursor(static_cast<HCURSOR>(g_pUiRuntimeContext->cursorTable[26]));
+  SetCursor(g_pUiRuntimeContext->turnEventCursors[26]);
 
   TControl* endControl = static_cast<TControl*>(hostPanel->ResolveControlByTag(kControlTagEnd));
   if (endControl != nullptr) {
@@ -330,6 +330,6 @@ void TCouncilView::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* p
                                                                        RgnHandle hitArg) {
   TView::HandleCursorHoverSelectionByChildHitTestAndFallback(point, hitArg);
   if ((int)visibleVoteTier528 < councilNationCount24c8 + 2) {
-    SetCursor((HCURSOR)g_pUiRuntimeContext->cursorTable[26]);
+    SetCursor(g_pUiRuntimeContext->turnEventCursors[26]);
   }
 }

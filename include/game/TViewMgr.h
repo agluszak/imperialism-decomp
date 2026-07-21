@@ -17,7 +17,7 @@ class TNavyRoster;
 // VTABLE: IMPERIALISM 0x0066f120
 class TViewMgr : public TObject {
 public:
-  // Base Windows cursor resource ID for cursorTable's indexing scheme (see below).
+  // Base Windows cursor resource ID for turnEventCursors' indexing scheme (see below).
   enum { kCursorResourceIdBase = 1000 };
 
   DECLARE_DYNCREATE(TViewMgr)
@@ -231,10 +231,10 @@ public:
   unsigned char field10;        // +0x10
   unsigned char pad11[3];       // +0x11
   // +0x14 .. 0xeb (54 turn-event cursor handles). Indexed as
-  // cursorTable[resourceCursorId - kCursorResourceIdBase] -- confirmed against
+  // turnEventCursors[resourceCursorId - kCursorResourceIdBase] -- confirmed against
   // TDiplomacyMapView::HandleCursorHoverSelectionByChildHitTestAndFallback's ground-truth
   // `[EAX + EDX*4 + 0xfffff074]` (0xfffff074 == -0xf8c == 0x14 - kCursorResourceIdBase*4).
-  void* cursorTable[0x36];
+  HCURSOR turnEventCursors[0x36];
   short fieldEc;                           // +0xec
   short padEe;                             // +0xee
   class TMapUberPicture* mapUberPictureF0; // +0xf0

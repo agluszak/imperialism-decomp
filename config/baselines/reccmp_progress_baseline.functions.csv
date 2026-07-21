@@ -607,7 +607,7 @@ address|matching|name
 0x486650|1.0|TCommandHandler::ConstructTCommandHandlerBaseState
 0x486680|0.47058823529411764|TApplication::CreateObject
 0x486740|1.0|TApplication::GetRuntimeClass
-0x486760|0.8648648648648649|TApplication::TApplication
+0x486760|0.8888888888888888|TApplication::TApplication
 0x4867b0|1.0|TApplication::`scalar deleting destructor'
 0x4867e0|0.9|TApplication::~TApplication
 0x486880|1.0|TApplication::SetTarget
@@ -2725,12 +2725,12 @@ address|matching|name
 0x4f3a50|0.2978723404255319|ClampRectWithinBoundsPreservingSize
 0x4f3ae0|1.0|TDiplomacyMapView::CreateObject
 0x4f3b60|1.0|TDiplomacyMapView::GetRuntimeClass
-0x4f3b80|0.9318181818181818|TDiplomacyMapView::TDiplomacyMapView
+0x4f3b80|0.9545454545454546|TDiplomacyMapView::TDiplomacyMapView
 0x4f3c70|1.0|DiplomacyMaskBufferRun::DiplomacyMaskBufferRun
 0x4f3c90|1.0|TDiplomacyMapView::`scalar deleting destructor'
 0x4f3cc0|0.9841269841269841|TDiplomacyMapView::~TDiplomacyMapView
 0x4f3d60|0.9380530973451328|TDiplomacyMapView::DoPostCreate
-0x4f3e30|0.0|TDiplomacyMapView::Close
+0x4f3e30|1.0|TDiplomacyMapView::Close
 0x4f3e60|1.0|TDiplomacyMapView::Free
 0x4f3ea0|0.22195985832349469|TDiplomacyMapView::BuildDiplomacyNationOverlayGeometryAndHitMasks
 0x4f4620|0.8553459119496856|TDiplomacyMapView::InitializeDiplomacyMinisterActionControlsAndLabels
@@ -4922,7 +4922,7 @@ address|matching|name
 0x588610|1.0|TAmtBar::DoPostCreate
 0x588630|0.8666666666666667|TAmtBar::UpdateBarValuesAndRefresh
 0x588670|0.4|TAmtBar::Draw
-0x588690|0.5370370370370371|TAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache
+0x588690|0.5349544072948328|TAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache
 0x588950|0.058823529411764705|TAmtBar::BeginMouseCaptureAndStartRepeatTimer
 0x588a30|0.5818181818181818|TIndustryCluster::CreateObject
 0x588ad0|1.0|TIndustryCluster::GetRuntimeClass
@@ -4938,8 +4938,8 @@ address|matching|name
 0x5891d0|0.6|TIndustryAmtBar::TIndustryAmtBar
 0x589210|0.9090909090909091|TIndustryAmtBar::`scalar deleting destructor'
 0x589260|0.3225806451612903|TIndustryAmtBar::DoPostCreate
-0x589340|0.4954954954954955|TIndustryAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache
-0x589540|0.41935483870967744|TIndustryAmtBar::RenderQuickDrawOverlayWithHitRegion
+0x589340|0.4845814977973568|TIndustryAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache
+0x589540|0.46774193548387094|TIndustryAmtBar::RenderQuickDrawOverlayWithHitRegion
 0x589660|0.5714285714285714|TRailCluster::CreateObject
 0x589700|1.0|TRailCluster::GetRuntimeClass
 0x589720|1.0|TRailCluster::TRailCluster
@@ -4954,8 +4954,8 @@ address|matching|name
 0x589f90|0.631578947368421|TRailAmtBar::TRailAmtBar
 0x589fd0|0.9090909090909091|TRailAmtBar::`scalar deleting destructor'
 0x58a020|0.45685279187817257|TRailAmtBar::DoPostCreate
-0x58a1b0|0.4954954954954955|TRailAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache
-0x58a3b0|0.4|TRailAmtBar::RenderQuickDrawOverlayWithHitRegion
+0x58a1b0|0.4845814977973568|TRailAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache
+0x58a3b0|0.46774193548387094|TRailAmtBar::RenderQuickDrawOverlayWithHitRegion
 0x58a4d0|0.5818181818181818|TShipyardCluster::CreateObject
 0x58a570|1.0|TShipyardCluster::GetRuntimeClass
 0x58a590|0.7368421052631579|TShipyardCluster::TShipyardCluster
@@ -4968,7 +4968,7 @@ address|matching|name
 0x58ab60|0.9166666666666666|TShipAmtBar::TShipAmtBar
 0x58aba0|0.9090909090909091|TShipAmtBar::`scalar deleting destructor'
 0x58abf0|0.9122807017543859|TShipAmtBar::DoPostCreate
-0x58ac80|0.5073170731707317|TShipAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache
+0x58ac80|0.45714285714285713|TShipAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache
 0x58ae30|0.5161290322580645|TTraderAmtBar::CreateObject
 0x58aed0|1.0|TTraderAmtBar::GetRuntimeClass
 0x58aef0|0.631578947368421|TTraderAmtBar::TTraderAmtBar
@@ -4976,7 +4976,7 @@ address|matching|name
 0x58af80|0.4251968503937008|TTraderAmtBar::DoPostCreate
 0x58b040|0.0|TTraderAmtBar::UpdateFromScaleOrRatio
 0x58b070|0.5573770491803278|TTraderAmtBar::ApplyMoveClamp
-0x58b0f0|0.43946188340807174|TTraderAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache
+0x58b0f0|0.3930131004366812|TTraderAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache
 0x58b340|0.52|TCivilianButton::CreateObject
 0x58b3c0|1.0|TCivilianButton::GetRuntimeClass
 0x58b3e0|1.0|TCivilianButton::TCivilianButton

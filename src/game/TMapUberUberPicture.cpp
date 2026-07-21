@@ -34,6 +34,6 @@ void TMapUberUberPicture::DoPostCreate(int arg) {
 // FUNCTION: IMPERIALISM 0x00596840
 void TMapUberUberPicture::Free() {
   static_cast<TAmbitApplication*>(g_pGlobalUiRootController)->edgeScrollTarget48 = 0;
-  g_pGlobalUiRootController->field28 = 0;
+  g_pGlobalUiRootController->cursorRegionInvalid = FALSE;
   TOffLimitsPicture::Free();
 }
