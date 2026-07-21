@@ -1105,6 +1105,18 @@ extern const float g_MissionResourceWeightScale_0065A8FC = 1.1f;
 extern const float g_BlockadePortMissionThreatFloor_0065A900 = 10.0f;
 // GLOBAL: IMPERIALISM 0x0065a904
 extern const float g_BlockadePortMissionThreatScale_0065A904 = 0.5f;
+// GLOBAL: IMPERIALISM 0x0065a958
+extern const float g_NavyMissionQueuedWeightDeficitScale_0065A958 = 1.0f;
+// GLOBAL: IMPERIALISM 0x0065a960
+extern const float g_NavyMissionSimilarityExcessBlend_0065A960 = 0.25f;
+// GLOBAL: IMPERIALISM 0x0065a968
+// Difficulty-row / fort-level-column resource scaling for attack-province missions.
+extern const float g_AttackProvinceMissionResourceScaleByDifficultyAndFortLevel_0065A968[5][4] = {
+    {1.9f, 2.3f, 2.5f, 2.7f},
+    {1.9f, 2.3f, 2.5f, 2.7f},
+    {2.0f, 2.3f, 2.5f, 2.7f},
+    {2.1f, 2.3f, 2.5f, 2.7f},
+    {2.3f, 2.5f, 2.7f, 2.9f}};
 // GLOBAL: IMPERIALISM 0x0065a9bc
 extern const float g_Recompute_Nation_Order_LookupTable_0065A9BC = 0.05f;
 // GLOBAL: IMPERIALISM 0x0065a9c4
@@ -1117,6 +1129,10 @@ extern const double g_Recompute_Nation_Order_LookupTable_0065A9F0 = 0.0;
 double g_Recompute_Nation_Order_LookupTable_0065A9F8 = 0.01;
 double g_Recompute_Nation_Order_LookupTable_0065AA00 = 0.5;
 double g_Recompute_Nation_Order_LookupTable_0065AA08 = 1.0;
+// GLOBAL: IMPERIALISM 0x0065aa10
+extern const double g_PortZoneFriendlyMissionScoreMultiplier_0065AA10 = 1.5;
+// GLOBAL: IMPERIALISM 0x0065aa18
+extern const double g_PortZoneForeignMissionScoreMultiplier_0065AA18 = 1.25;
 // GLOBAL: IMPERIALISM 0x0065aa20
 extern const float g_Recompute_Nation_Order_LookupTable_0065AA20 = 139069760.0f;
 // GLOBAL: IMPERIALISM 0x0065aa24
@@ -2121,6 +2137,15 @@ int g_mapActionContextDisplayNameCacheStep_006984bc = 7;
 // Empty content: reccmp pairs by the // GLOBAL address marker, not by value. ===
 // GLOBAL: IMPERIALISM 0x00695794
 char s_szSpaceSeparator_00695794[] = " ";
+// Separator used by TViewMgr::ShowUnitHistory to build "Turn N: count message".
+// The original symbol's eight-byte comparison extent includes the aligned NUL and
+// the first four bytes of the adjacent pooled "Losses\n" literal.
+// GLOBAL: IMPERIALISM 0x00699320
+char s_szTurnHistorySeparator_00699320[8] = {':', ' ', 0, 0, 'L', 'o', 's', 's'};
+// GLOBAL: IMPERIALISM 0x00699324
+char s_szCombatLossesHeading_00699324[] = "Losses\n";
+// GLOBAL: IMPERIALISM 0x0069b71c
+char s_szTurnHistoryPrefix_0069b71c[] = "Turn ";
 // "Adm. " prefix for the assigned-admiral name line (TShipView::Draw,
 // 0x5654e0).
 // GLOBAL: IMPERIALISM 0x0069578c
@@ -3382,6 +3407,8 @@ short g_creditsPlaybackActive_006a4084 = 0;
 // C-array-index offset baked into the instruction displacement, so only the leading
 // zero run at this exact address is meaningfully checked.
 short g_offerDeskSelectionIndexTable_00668568[8] = {0};
+// GLOBAL: IMPERIALISM 0x006a2fe0
+int g_diplomacyWarOfferSheetPosition_006a2fe0[2] = {0};
 // GLOBAL: IMPERIALISM 0x006a3020
 int g_diplomacyPopupLayoutPosition_006a3020[2] = {0};
 

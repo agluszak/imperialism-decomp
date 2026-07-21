@@ -129,8 +129,10 @@ public:
   // Resolves the active dialog's 'GOLD' control and configures its value-cell grid
   // (0x14 x 0x14) via the control's slot-0x79 virtual (0x5dc3f0).
   virtual void
-  HandleTurnEventTable66F220_Slot0C_InvokeGoldViewSlots0C_1E4_14x14();        // 0x10c 0x5dc3f0
-  virtual void HandleTurnEventF3D_PopulateRecentTurnMessages(int nationSlot); // 0x110
+  HandleTurnEventTable66F220_Slot0C_InvokeGoldViewSlots0C_1E4_14x14(); // 0x10c 0x5dc3f0
+  // Mac CodeWarrior oracle: TViewMgr::ShowUnitHistory(short). Populates the
+  // Transport.rsrc:3901 `txtA`..`txtT` controls from the nation's turn-summary queue.
+  virtual void ShowUnitHistory(short nationSlot); // 0x110 0x5dc690
 
   void ApplyLegendSplitSlot34(int split) {
     SetForeColor(static_cast<short>(split));

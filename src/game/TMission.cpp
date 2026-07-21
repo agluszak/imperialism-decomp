@@ -166,6 +166,16 @@ TMission::TMission() {
 // FUNCTION: IMPERIALISM 0x00535080
 TMission::~TMission() {}
 
+// Sets the common mission owner and path sentinel, then dispatches the concrete
+// mission's initialization hook. TInvadeMission uses this to initialize its
+// owned beachhead mission with the same nation.
+// FUNCTION: IMPERIALISM 0x005350a0
+void TMission::InitializeMissionWithNationIdAndResetPathMarker(short nationId) {
+  nationId04 = nationId;
+  pathMarker06 = -1;
+  Call30();
+}
+
 // Mission factory: allocates and constructs the concrete mission subtype selected by
 // missionKind, then stamps the common owner/marker fields and runs the mission's
 // Call30 initializer. Each arm is real construction (new T(...)); the compiler emits

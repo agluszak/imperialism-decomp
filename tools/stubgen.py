@@ -243,14 +243,10 @@ def render_chunk(
     return "".join(out)
 
 
-def clean_output_dir(output_dir: Path) -> None:
-    if not output_dir.is_dir():
+def _write_if_changed(path: Path, content: str) -> None:
+    if path.is_file() and path.read_text(encoding="utf-8") == content:
         return
-    for path in output_dir.glob("*.cpp"):  # any prefix — stale copies must not linger
-        path.unlink()
-    manifest = output_dir / "_manifest.json"
-    if manifest.is_file():
-        manifest.unlink()
+    path.write_text(content, encoding="utf-8")
 
 
 def write_stubs(
@@ -283,13 +279,13 @@ def write_stubs(
     )
 
     output_dir.mkdir(parents=True, exist_ok=True)
-    clean_output_dir(output_dir)
 
     seen_idents: set[str] = set()
     generated_files: list[str] = []
     for idx, chunk in enumerate(chunked_rows(function_rows, max_functions_per_file), start=1):
         relpath = "{}{:03d}.cpp".format(chunk_prefix, idx)
-        (output_dir / relpath).write_text(
+        _write_if_changed(
+            output_dir / relpath,
             render_chunk(
                 chunk_rows=chunk,
                 seen_idents=seen_idents,
@@ -297,9 +293,13 @@ def write_stubs(
                 annotation_kind=annotation_kind,
                 use_prototypes=use_prototypes,
             ),
-            encoding="utf-8",
         )
         generated_files.append(relpath)
+
+    generated_set = set(generated_files)
+    for path in output_dir.glob("*.cpp"):
+        if path.name not in generated_set:
+            path.unlink()
 
     manifest_payload = {
         "generated_cpp_files": generated_files,
@@ -308,9 +308,9 @@ def write_stubs(
         "target": target,
         "max_functions_per_file": max_functions_per_file,
     }
-    (output_dir / "_manifest.json").write_text(
+    _write_if_changed(
+        output_dir / "_manifest.json",
         json.dumps(manifest_payload, indent=2, sort_keys=True) + "\n",
-        encoding="utf-8",
     )
     print(
         "Wrote {} chunk file(s) in {} ({} stubs)".format(

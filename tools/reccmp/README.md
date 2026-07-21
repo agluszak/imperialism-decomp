@@ -24,7 +24,12 @@ spaces.
   address, effective score, and name needed by regression checks and candidate tools.
 
 The full structured `build-msvc500/reccmp_report.json` is disposable live evidence
-for triage; it is not committed as a baseline.
+for triage; it is not committed as a baseline. Full progress reports are reused only
+when `reccmp_report.inputs.json` proves identical hashes for both binaries, the PDB,
+reccmp configuration and version lock, generated data sources, and every configured
+source-root file, and also proves that the roadmap/report outputs are untampered.
+This lets the immediately following `stats-baseline-update` reuse accepted live
+evidence without making stale reports authoritative.
 
 Progress reports deliberately include functions listed under
 `report.ignore_functions`. That setting only suppresses library/framework noise in

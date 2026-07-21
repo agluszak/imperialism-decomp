@@ -162,6 +162,7 @@ def merge_curated_symbols_csv(
 
 def write_symbols_csv(path: Path, fieldnames: list[str], rows: list[dict[str, str]]) -> None:
     import csv
+    import io
 
     fieldnames = list(fieldnames)
     for required in ("address", "name", "size", "type", "prototype"):
@@ -178,10 +179,16 @@ def write_symbols_csv(path: Path, fieldnames: list[str], rows: list[dict[str, st
         for field in fieldnames:
             row.setdefault(field, "")
 
-    with path.open("w", encoding="utf-8", newline="") as fd:
-        writer = csv.DictWriter(fd, fieldnames=fieldnames, delimiter="|", lineterminator="\n")
-        writer.writeheader()
-        writer.writerows(rows)
+    stream = io.StringIO(newline="")
+    writer = csv.DictWriter(
+        stream, fieldnames=fieldnames, delimiter="|", lineterminator="\n"
+    )
+    writer.writeheader()
+    writer.writerows(rows)
+    content = stream.getvalue()
+    if path.is_file() and path.read_text(encoding="utf-8") == content:
+        return
+    path.write_text(content, encoding="utf-8", newline="")
 
 
 def function_names_from_symbols_rows(rows: list[dict[str, str]]) -> dict[int, str]:

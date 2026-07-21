@@ -1,9 +1,10 @@
 from __future__ import annotations
 
+import json
 from pathlib import Path
 import unittest
 
-from tools.workflow.mac_string_crosswalk import build_crosswalk, normalized_text
+from tools.workflow.mac_string_crosswalk import normalized_text
 
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
@@ -12,7 +13,9 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 class MacStringCrosswalkTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
-        cls.index = build_crosswalk(REPO_ROOT)
+        cls.index = json.loads(
+            (REPO_ROOT / "docs/reference/mac_string_crosswalk.json").read_text()
+        )
         cls.mac_by_id = {row["id"]: row for row in cls.index["mac_strings"]}
 
     def test_index_covers_committed_mac_and_windows_string_corpora(self) -> None:

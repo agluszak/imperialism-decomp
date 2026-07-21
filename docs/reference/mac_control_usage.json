@@ -4560,7 +4560,15 @@
       "nodes": [
         "Diplo.rsrc:2008@0x10a4"
       ],
-      "original_modules": [],
+      "original_modules": [
+        {
+          "functions": [
+            "0x004f9a60"
+          ],
+          "module": "UDiplomacyViews.cpp",
+          "status": "confirmed"
+        }
+      ],
       "parent_classes": {
         "TDiplomacyMapView": 1
       },
@@ -8466,7 +8474,8 @@
       "original_modules": [
         {
           "classes": [
-            "TDiplomacyMapView"
+            "TDiplomacyMapView",
+            "TOffersPanelView"
           ],
           "events": [
             "0x07d8"
@@ -153854,7 +153863,8 @@
       "original_modules": [
         {
           "classes": [
-            "TDiplomacyMapView"
+            "TDiplomacyMapView",
+            "TOffersPanelView"
           ],
           "module": "UDiplomacyViews.cpp",
           "status": "candidate"
@@ -158008,6 +158018,25 @@
         "owner_class": "TDiplomacyMapView",
         "recovered_source": "src/game/TDiplomacyMapView.cpp"
       },
+      "0x004f9a60": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "definition_source": "src/game/global_data_tables.cpp",
+                "kind": "source_path_global_reference",
+                "path": "D:\\Ambit\\Cross\\UDiplomacyViews.cpp",
+                "symbol": "s_SourcePathUDiplomacyViews_00696AE0"
+              }
+            ],
+            "module": "UDiplomacyViews.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "TOffersPanelView::PoseWarOffer",
+        "owner_class": "TOffersPanelView",
+        "recovered_source": "src/game/TOffersPanelView.cpp"
+      },
       "0x004fe840": {
         "modules": [
           {
@@ -159644,11 +159673,13 @@
       "UDiplomacyViews.cpp": {
         "classes": [
           "TDiplomacyMapView",
-          "TMinisterView"
+          "TMinisterView",
+          "TOffersPanelView"
         ],
         "functions": [
           "0x004f2d10",
-          "0x004f3ea0"
+          "0x004f3ea0",
+          "0x004f9a60"
         ]
       },
       "UDisplayMgr.cpp": {
@@ -159901,10 +159932,10 @@
   "summary": {
     "ambiguous_tags": 153,
     "classes": 162,
-    "classes_with_source_module_evidence": 15,
+    "classes_with_source_module_evidence": 16,
     "declared_classes": 152,
     "factories_with_source_module_candidates": 9,
-    "functions_with_source_module_evidence": 104,
+    "functions_with_source_module_evidence": 105,
     "nodes": 3263,
     "screens": 121,
     "screens_with_source_module_candidates": 26,

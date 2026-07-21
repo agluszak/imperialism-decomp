@@ -15,10 +15,9 @@ library-shaped targets) library-identify, writing everything into
 build-msvc500/agent-task.json.
 
 `agent-check` inspects the actual git diff and derives the workflow from it:
-build inputs (source index + stubs) are always regenerated (cheap, no committed
-churn); generated/config files edited without marker changes -> hard error; touched
-C++ -> format-check; then build, detect, batch compare of every touched address,
-triage for below-100% functions, gates, tests, stats.
+generated/config files edited without marker changes -> hard error; touched C++ ->
+format-check; then build (which regenerates its inputs), detect, gates (including
+one full progress report), score extraction, targeted triage, and tests.
 
 `agent-finish` renders the receipt + diff into a summary suitable for a PR body.
 The receipt is guidance for the agent and reviewers — CI recomputes the checks
@@ -34,6 +33,7 @@ import os
 import re
 import subprocess
 import sys
+import time
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
@@ -223,13 +223,17 @@ def _drop_claim(addr: str) -> bool:
 
 def _step(name: str, cmd: list[str], results: dict, *, tolerate: bool = False) -> subprocess.CompletedProcess:
     print(f"[agent-task] {name}: {' '.join(cmd)}")
+    started = time.monotonic()
     proc = _run(cmd)
+    duration = time.monotonic() - started
     ok = proc.returncode == 0
     results[name] = {
         "cmd": " ".join(cmd),
         "ok": ok,
+        "duration_seconds": round(duration, 3),
         "tail": "\n".join((proc.stdout + proc.stderr).splitlines()[-12:]),
     }
+    print(f"[agent-task] {name}: {duration:.2f}s")
     if not ok and not tolerate:
         print(f"[agent-task] FAILED: {name} (exit {proc.returncode})")
         print(results[name]["tail"])
@@ -415,6 +419,21 @@ def _diff_paths(base: str) -> list[str]:
 
 def cmd_check(args: argparse.Namespace) -> int:
     task = _load_task()
+    branch = _git("rev-parse", "--abbrev-ref", "HEAD")
+    receipt_branch = task.get("branch")
+    if receipt_branch and receipt_branch != branch:
+        print(
+            f"[agent-check] ignoring receipt from branch {receipt_branch!r}; "
+            f"checking {branch!r} against origin/main"
+        )
+        task = {
+            "created_utc": _now(),
+            "mode": "fix",
+            "branch": branch,
+            "base_commit": _merge_base(),
+            "claimed": [],
+            "targets": {},
+        }
     base = task.get("base_commit") or _merge_base()
     paths = _diff_paths(base)
     if not paths:
@@ -425,11 +444,8 @@ def cmd_check(args: argparse.Namespace) -> int:
     results: dict = {}
     failures: list[str] = []
 
-    # Generated build inputs are disposable — always regenerate (cheap, no
-    # committed churn; `just generate` also rejects stale legacy generated trees).
+    # `just build` regenerates disposable build inputs under the MSVC build lock.
     diff_text = _git("diff", base, "--", "src", "include") + "\n" + _git("diff", "--", "src", "include")
-    if _step("generate", ["just", "generate"], results).returncode != 0:
-        failures.append("generate")
 
     # Format check on touched manual C++.
     cpp = [p for p in paths
@@ -463,11 +479,22 @@ def cmd_check(args: argparse.Namespace) -> int:
             m = re.search(r"//\s*(?:FUNCTION|SYNTHETIC|TEMPLATE):\s*\w+\s+(0x[0-9a-fA-F]+)", line)
             if m:
                 addrs.add(_norm_addr(m.group(1)))
+    # Gates create one fresh full-corpus progress report. Reuse its function scores
+    # instead of running a second reccmp comparison solely to parse percentages.
+    gates_ok = _step("gates", ["just", "gates"], results).returncode == 0
+    if not gates_ok:
+        failures.append("gates")
+
     scores: dict[str, float] = {}
-    if addrs:
-        proc = _step("compare-touched", ["just", "compare", *sorted(addrs)], results,
-                     tolerate=True)
-        scores = _parse_scores(proc.stdout)
+    if addrs and gates_ok:
+        from tools.reccmp.progress_stats import parse_report_functions
+
+        report = parse_report_functions(REPO_ROOT / "build-msvc500" / "reccmp_report.json")
+        scores = {
+            addr: float(report[hex(int(addr, 16))]["m"]) * 100.0
+            for addr in sorted(addrs)
+            if hex(int(addr, 16)) in report
+        }
         below = [a for a, s in scores.items() if s < 100.0]
         triage_addrs = sorted(below)[: args.max_triage]
         if triage_addrs:
@@ -478,12 +505,8 @@ def cmd_check(args: argparse.Namespace) -> int:
                 tolerate=True,
             )
 
-    # Gates, tests, stats.
-    if _step("gates", ["just", "gates"], results).returncode != 0:
-        failures.append("gates")
     if _step("test", ["just", "test"], results).returncode != 0:
         failures.append("test")
-    _step("stats", ["just", "stats"], results, tolerate=True)
 
     task.setdefault("check", {})
     task["check"] = {

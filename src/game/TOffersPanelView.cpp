@@ -1,8 +1,11 @@
 #include "game/TOffersPanelView.h"
 
 #include "game/TDeluxeText.h"
+#include "game/TCountry.h"
+#include "game/TDiplomacyMgr.h"
 #include "game/TSimMgr.h"
 #include "game/global_data_tables.h"
+#include "game/mapped_flavor_text.h"
 #include "game/quickdraw_rendering.h"
 #include "game/ui_control_tags.h"
 #include "game/ui_invalidation_guard.h"
@@ -134,5 +137,94 @@ char TOffersPanelView::PoseOffer(short sourceNation, short targetNation, short o
   }
   (void)sourceNation;
   (void)targetNation;
+  return lastNegotiationResponseTag64 == static_cast<int>(kControlTagAcce);
+}
+
+// FUNCTION: IMPERIALISM 0x004f9a60
+char TOffersPanelView::PoseWarOffer(short sourceNationSlot, int minorNationSlot,
+                                    int enemyNationSlot, int promptCode) {
+  CString formattedMessage;
+  CString templateText(g_szEmptyString);
+  CString minorNationName;
+  CString enemyNationName;
+
+  TDeluxeText* proposalText = static_cast<TDeluxeText*>(ResolveControlByTag(kControlTagProp));
+  if (proposalText == 0) {
+    MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUDiplomacyViews_00696AE0, 0xca0);
+  }
+
+  g_apTerrainTypeDescriptorTable[minorNationSlot]->FormatOverlayTerrainLabelText(&minorNationName);
+  g_apTerrainTypeDescriptorTable[enemyNationSlot]->FormatOverlayTerrainLabelText(&enemyNationName);
+
+  bool addsEntanglements = false;
+  int nationSlot;
+  if (promptCode == 0x0a) {
+    for (nationSlot = 0; nationSlot < 7 && !addsEntanglements; ++nationSlot) {
+      if (nationSlot != enemyNationSlot &&
+          g_pDiplomacyTurnStateManager->IsNationPairAtWar(nationSlot, minorNationSlot) != 0 &&
+          g_pDiplomacyTurnStateManager->IsNationPairAtWar(nationSlot, sourceNationSlot) == 0) {
+        addsEntanglements = true;
+      }
+    }
+    g_pSimMgr->GetString(0x2729, addsEntanglements ? 4 : 0, &templateText);
+    scanBracketExpressions(g_pSimMgr, &formattedMessage, static_cast<LPCSTR>(templateText),
+                           static_cast<LPCSTR>(enemyNationName),
+                           static_cast<LPCSTR>(minorNationName),
+                           static_cast<LPCSTR>(enemyNationName));
+  } else if (promptCode == 0x14) {
+    for (nationSlot = 0; nationSlot < 7 && !addsEntanglements; ++nationSlot) {
+      if (g_pDiplomacyTurnStateManager->GetNationPairDiplomacyRelationCode(
+              static_cast<short>(enemyNationSlot), static_cast<short>(nationSlot)) == 2 &&
+          g_pDiplomacyTurnStateManager->IsNationPairAtWar(nationSlot, sourceNationSlot) == 0) {
+        addsEntanglements = true;
+      }
+    }
+    g_pSimMgr->GetString(0x2729, addsEntanglements ? 5 : 1, &templateText);
+    scanBracketExpressions(
+        g_pSimMgr, &formattedMessage, static_cast<LPCSTR>(templateText),
+        static_cast<LPCSTR>(enemyNationName), static_cast<LPCSTR>(minorNationName),
+        static_cast<LPCSTR>(minorNationName), static_cast<LPCSTR>(enemyNationName));
+  } else if (promptCode == 0x0b) {
+    for (nationSlot = 0; nationSlot < 7 && !addsEntanglements; ++nationSlot) {
+      if (nationSlot != enemyNationSlot &&
+          g_pDiplomacyTurnStateManager->IsNationPairAtWar(nationSlot, minorNationSlot) != 0 &&
+          g_pDiplomacyTurnStateManager->IsNationPairAtWar(nationSlot, sourceNationSlot) == 0) {
+        addsEntanglements = true;
+      }
+    }
+    g_pSimMgr->GetString(0x2729, addsEntanglements ? 8 : 3, &templateText);
+    scanBracketExpressions(
+        g_pSimMgr, &formattedMessage, static_cast<LPCSTR>(templateText),
+        static_cast<LPCSTR>(minorNationName), static_cast<LPCSTR>(enemyNationName),
+        static_cast<LPCSTR>(minorNationName), static_cast<LPCSTR>(minorNationName));
+  } else {
+    for (nationSlot = 0; nationSlot < 7 && !addsEntanglements; ++nationSlot) {
+      if (g_pDiplomacyTurnStateManager->GetNationPairDiplomacyRelationCode(
+              static_cast<short>(minorNationSlot), static_cast<short>(nationSlot)) == 2 &&
+          g_pDiplomacyTurnStateManager->IsNationPairAtWar(nationSlot, sourceNationSlot) == 0) {
+        addsEntanglements = true;
+      }
+    }
+    g_pSimMgr->GetString(0x2729, 2, &templateText);
+    scanBracketExpressions(
+        g_pSimMgr, &formattedMessage, static_cast<LPCSTR>(templateText),
+        static_cast<LPCSTR>(enemyNationName), static_cast<LPCSTR>(minorNationName),
+        static_cast<LPCSTR>(enemyNationName), static_cast<LPCSTR>(minorNationName));
+  }
+
+  TView* sheet = ResolveControlByTag('shee');
+  TView* wait = ResolveControlByTag('wait');
+  wait->CaptureLayoutF0(g_diplomacyPopupLayoutPosition_006a3020, 0);
+  sheet->CaptureLayoutF0(g_diplomacyWarOfferSheetPosition_006a2fe0, 1);
+  proposalText->UpdateTextEntrySharedStringAndMaybeNotify(&formattedMessage, 1);
+  proposalText->RecenterTextFromMeasuredWidthAndMaybeInvalidate(1);
+  RefreshControl();
+  ForceRedraw();
+
+  lastNegotiationResponseTag64 = 0;
+  while (lastNegotiationResponseTag64 == 0) {
+    PumpUiMessagesAndBackgroundTasks(1);
+  }
   return lastNegotiationResponseTag64 == static_cast<int>(kControlTagAcce);
 }

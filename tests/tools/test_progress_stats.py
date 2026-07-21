@@ -18,7 +18,9 @@ from tools.reccmp.progress_stats import (
     build_progress_report,
     parse_report_counts,
     parse_report_functions,
+    report_cache_is_current,
     run_progress_report,
+    write_report_cache,
 )
 
 
@@ -142,6 +144,38 @@ class ProgressStatsTests(unittest.TestCase):
         self.assertEqual(
             set(parse_report_functions(self.report_path)),
             {"0x401000", "0x402000"},
+        )
+
+    def test_report_cache_requires_matching_inputs_and_untampered_outputs(self) -> None:
+        cache_path = Path(self.tempdir.name) / "inputs.json"
+        roadmap_path = Path(self.tempdir.name) / "roadmap.csv"
+        log_path = Path(self.tempdir.name) / "report.log"
+        roadmap_path.write_text("roadmap", encoding="utf-8")
+        self.report_path.write_text('{"data": []}', encoding="utf-8")
+        log_path.write_text("log", encoding="utf-8")
+        outputs = {
+            "roadmap_csv": roadmap_path,
+            "report_json": self.report_path,
+            "report_log": log_path,
+        }
+        inputs = {"Imperialism.exe": "original-hash", "src/TView.cpp": "source-hash"}
+
+        write_report_cache(cache_path, "IMPERIALISM", inputs, outputs)
+        self.assertTrue(
+            report_cache_is_current(cache_path, "IMPERIALISM", inputs, outputs)
+        )
+        self.assertFalse(
+            report_cache_is_current(
+                cache_path,
+                "IMPERIALISM",
+                {**inputs, "src/TView.cpp": "changed"},
+                outputs,
+            )
+        )
+
+        self.report_path.write_text('{"data": ["tampered"]}', encoding="utf-8")
+        self.assertFalse(
+            report_cache_is_current(cache_path, "IMPERIALISM", inputs, outputs)
         )
 
 

@@ -119,8 +119,8 @@ public:
   // Builds the ledger roster pages into the owning view context and tracks the
   // running dialog through pOutDialogView (verified 3-arg thiscall, RET 0xC; the
   // old ConstructTSuperCivRosterBaseState name was a misread — this is not a ctor).
-  virtual undefined InitializeLedgerRosterPages(TView* pOwnerContext, int* pBoundsRect,
-                                                TView** pOutDialogView); // slot 0x6e 0x4ab470
+  virtual void InitializeLedgerRosterPages(TView* pOwnerContext, int* pBoundsRect,
+                                           TView** pOutDialogView); // slot 0x6e 0x4ab470
 
   // Object slice from the inline-expanded ctor at 0x5ddde1 (inside
   // TViewMgr::ShowCivilianLedgerDialogAndSelectUnit): base TPageView ctor, own vptr,

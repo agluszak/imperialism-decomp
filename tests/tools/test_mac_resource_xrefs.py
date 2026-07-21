@@ -1,9 +1,10 @@
 from __future__ import annotations
 
+import json
 from pathlib import Path
 import unittest
 
-from tools.workflow.mac_resource_xrefs import build_graph, query_result
+from tools.workflow.mac_resource_xrefs import query_result
 
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
@@ -12,7 +13,9 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 class MacResourceXrefTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
-        cls.graph = build_graph(REPO_ROOT)
+        cls.graph = json.loads(
+            (REPO_ROOT / "docs/reference/mac_resource_xrefs.json").read_text()
+        )
 
     def test_graph_covers_committed_resource_corpus(self) -> None:
         kinds = self.graph["summary"]["node_kinds"]

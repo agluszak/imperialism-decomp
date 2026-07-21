@@ -31,6 +31,7 @@
 #include "game/TSimMgr.h"
 #include "game/TPanelView.h"
 #include "game/TOffersPanelView.h"
+#include "game/mapped_flavor_text.h"
 #include "game/ui_text_label_helpers_decls.h"
 
 // Defined below in address order (0x4d5d30).
@@ -40,8 +41,6 @@ void __cdecl BuildDiplomacyOverlayHitMaskOpcodeStream(DiplomacyMaskBufferRun* ru
 
 undefined4 FrameRegionOnHdcAndReleaseBrushState(void);
 undefined4 BlitMonochromeMaskBytePatternToSurface(void);
-undefined4 RunDiplomacyWaitSheetPopupAndAwaitResponse(void);
-
 namespace {
 const unsigned int kAddrTerrainTypeDescriptorTable = 0x006A4310;
 const unsigned int kAddrDiplomacyTurnStateManager = 0x006A43D0;
@@ -1281,11 +1280,11 @@ void TDiplomacyMapView::ChangeSelectedActionTopic(int topicIndex) {
 }
 
 // FUNCTION: IMPERIALISM 0x004f7040
-void TDiplomacyMapView::InvalidateAndRunChildWaitSheet(void* arg1, void* arg2, void* arg3,
-                                                       void* arg4) {
+char TDiplomacyMapView::PoseWarOffer(short sourceNationSlot, int minorNationSlot,
+                                     int enemyNationSlot, int promptCode) {
   ChangeSelectedActionTopic(5);
-  reinterpret_cast<void(__fastcall*)(void*, int, void*, void*, void*, void*)>(
-      RunDiplomacyWaitSheetPopupAndAwaitResponse)(actionButtonsA0[5], 0, arg1, arg2, arg3, arg4);
+  return static_cast<TOffersPanelView*>(actionButtonsA0[5])
+      ->PoseWarOffer(sourceNationSlot, minorNationSlot, enemyNationSlot, promptCode);
 }
 
 // FUNCTION: IMPERIALISM 0x004f7080
@@ -1388,6 +1387,44 @@ void TDiplomacyMapView::DrawVoteNuggets() {
   } while (policyIndex < 0x180);
 
   UpdatePaletteIndexWithDefaultFallback(0x13);
+}
+
+// FUNCTION: IMPERIALISM 0x004f74f0
+char TDiplomacyMapView::CheckEntanglements(int targetNationSlot, eDipAction action) {
+  if (g_pDiplomacyTurnStateManager->HasAllianceGuardSlot60(targetNationSlot,
+                                                           selectedTerrainIndexAt90) != 0) {
+    CString formattedIntro;
+    CString entangledNations;
+    CString unusedSuffix;
+    CString templateText;
+    CString targetName;
+    CString title;
+
+    g_apTerrainTypeDescriptorTable[targetNationSlot]->FormatOverlayTerrainLabelText(&targetName);
+    int introStringIndex = 0;
+    if (action != kDipActionAlliance) {
+      introStringIndex = 4;
+    }
+    g_pSimMgr->GetString(0x275d, introStringIndex, &templateText);
+    scanBracketExpressions(g_pSimMgr, &formattedIntro, static_cast<LPCSTR>(templateText),
+                           static_cast<LPCSTR>(targetName));
+
+    entangledNations = CString(g_pDiplomacyPanelEmptyText_00654ec8);
+    for (int nationSlot = 0; nationSlot < 7; ++nationSlot) {
+      if (g_pDiplomacyTurnStateManager->IsNationPairAtWar(static_cast<short>(targetNationSlot),
+                                                          static_cast<short>(nationSlot)) != 0) {
+        CString nationName;
+        g_apTerrainTypeDescriptorTable[nationSlot]->FormatOverlayTerrainLabelText(&nationName);
+        entangledNations += "   " + nationName + "\n";
+      }
+    }
+
+    templateText = formattedIntro + "\n" + entangledNations + unusedSuffix;
+    g_pSimMgr->GetString(0x275d, 5, &title);
+    return g_pUiRuntimeContext->ModalMessage(3, title, templateText,
+                                             g_ptDiplomacyNoticeModalMessage, 0, 0);
+  }
+  return 1;
 }
 
 // 0x005DA040 and 0x005DA180 moved to TViewMgr::HandleTurnEventVtableSlot60ActivateMainDialog

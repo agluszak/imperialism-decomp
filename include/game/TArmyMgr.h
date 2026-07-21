@@ -35,8 +35,8 @@ struct MapContextActionRecord {
   // real serialized byte rather than compiler padding, even though no reader has been
   // found for it yet.
   unsigned char reservedByte03;
-  int actionType04;                 // +0x04 (0..4; 2 widens the marker sprite code)
-  MapContextTarget tileOrObject08;  // +0x08 (tagged by actionType04 -- see MapContextTarget)
+  int actionType04;                // +0x04 (0..4; 2 widens the marker sprite code)
+  MapContextTarget tileOrObject08; // +0x08 (tagged by actionType04 -- see MapContextTarget)
   // +0xc..+0x24f -- per-side (0/1) working state, laid out exactly like the tail of
   // MapOrderBattleSnapshot (map_order_battle_snapshot.h): a fixed name buffer, a fixed
   // overlay-label buffer, a child-record count, then (after a 2-byte alignment pad) the
@@ -254,6 +254,14 @@ public:
   // classes on the g_pMapContextActionManager singleton (e.g. the map-interaction-mode
   // and province-cycling handlers).
   void SetActiveProvinceSelection(short tileIndex);
+  // Clear pending military highlights for one nation and reset the province cursor.
+  // The nation's militaryUnitList44 contains the same TUnit-derived entries walked by
+  // SetActiveProvinceSelection. 0x004a46d0, __thiscall.
+  void ClearProvinceSelectionHighlightsForNation(short nationId);
+  // Starting at pendingMapActionIndex (or zero when it is -1), find the next owned/allied
+  // province containing an idle mobile military unit. Returns -1 after city record 383.
+  // 0x004a4760, __thiscall.
+  short FindNextSelectableProvinceForNation(short nationId);
 
   // Cursor-resource lookups for the two map-click state classifiers. Both are real
   // __thiscall members on the global army/map-context manager; their bodies only use

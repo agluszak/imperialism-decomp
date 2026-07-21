@@ -33,6 +33,13 @@ public:
   // TCivMgr instance (same 0xc-byte object, same selectedEntry slot, and its vtable
   // dispatches match the slots declared above).
   void SetActiveCivilianSelection(class TCivUnit* entryContext, char refreshCommandPanel);
+  // Clear highlighted (mode 3) civilian entries in the nation's tracked-object list.
+  // 0x004d20e0, __thiscall.
+  void ClearCivilianSelectionHighlightsForNation(short nationId);
+  // Select the first idle civilian entry in the nation's tracked-object list, dispatch it
+  // to the map state, and consume any pending completion sound/advisor marker.
+  // 0x004d2160, __thiscall.
+  class TCivUnit* SelectFirstAvailableCivilianForNation(short nationId);
   void QueueImmediateCivilianCommandAndCycleSelection(int commandType);
   void ShowDisbandCivilianConfirmationDialog();
 
@@ -88,4 +95,11 @@ public:
   // pause, completion marker, immediate treasury deduction); otherwise shows a localized
   // "can't afford" message built from NumToCurrency + GetString(0x2745, 8).
   bool QueueCivilianWorkOrderWithCostCheck(short nTileIndex);
+
+  // Mac Strings.rsrc kStrCivMgr identifies the group 0x274d prompt as "Purchase Land
+  // to Develop". Confirms the city/cost-formatted purchase, queues order type 13,
+  // deducts the calculated tile cost, and refreshes the nation indicator. 0x004d3610.
+  // The original TCivToolbar attribution was wrong: this+4 is selectedEntry and the
+  // receiver's virtual slot 0x0c is RelinkCivilianOrderTileAndInvalidateMapTiles.
+  bool PromptAndQueueDeveloperTilePurchaseOrder(short nTileIndex);
 };

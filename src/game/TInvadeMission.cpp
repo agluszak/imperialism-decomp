@@ -103,16 +103,11 @@ char TInvadeMission::ReturnFalseSlot98() {
 
 // FUNCTION: IMPERIALISM 0x0053f580
 void TInvadeMission::Call30() {
-  // InitializeInvadeMissionFromNationAndTargetTile: resets pathMarker06 (not
-  // TAttackProvinceMission::Call30's owner-nation lookup).
-  pathMarker06 = static_cast<short>(0xffff);
+  beachhead34->InitializeMissionWithNationIdAndResetPathMarker(nationId04);
   marker11 = 1;
   if (targetProvince30 != -1) {
-    // Byte at cityScoreTable[targetProvince30]+0x10 -- not yet a named field
-    // on TGlobalMapCityScoreRecord; read via raw offset pending recovery.
-    const char* recordBytes =
-        reinterpret_cast<const char*>(&g_pGlobalMapState->cityScoreTable[targetProvince30]);
-    pathMarker06 = static_cast<short>(recordBytes[0x10]);
+    pathMarker06 =
+        static_cast<short>(g_pGlobalMapState->cityScoreTable[targetProvince30].ownerNationCode00);
   }
   marker11 = 3;
 }
@@ -140,10 +135,15 @@ void TInvadeMission::WriteTo(TStream* stream) {
 
 // FUNCTION: IMPERIALISM 0x0053f690
 void TInvadeMission::ReadFrom(TStream* stream) {
-  TAttackProvinceMission::ReadFrom(stream);
+  TArmyMission::ReadFrom(stream);
+  stream->ReadBytes(&targetProvince30, 2);
+  stream->ReadBytes(&amassingProvince32, 2);
   if (beachhead34 != nullptr) {
-    beachhead34->ReadFrom(stream);
+    beachhead34->Free();
   }
+  beachhead34 = new TBeachheadMission();
+  beachhead34->parentMission3c = this;
+  beachhead34->ReadFrom(stream);
 }
 
 // FUNCTION: IMPERIALISM 0x0053f780
