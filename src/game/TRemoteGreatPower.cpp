@@ -84,10 +84,10 @@ IMPLEMENT_DYNCREATE(TRemoteGreatPower, TGreatPower)
 // FUNCTION: IMPERIALISM 0x00541b40
 void TRemoteGreatPower::SetNationSelectedRegionAndMapCellLabel(short selectedRegion,
                                                                char* mapCellLabel) {
-  homeRegionIndex = selectedRegion;
+  homeTileIndex = selectedRegion;
   CString label(mapCellLabel);
   short cityRecordIndex =
-      g_pGlobalMapState->terrainStateTable[static_cast<short>(homeRegionIndex)].cityRecordIndex;
+      g_pGlobalMapState->terrainStateTable[static_cast<short>(homeTileIndex)].cityRecordIndex;
   g_pGlobalMapState->SetGlobalMapCellSharedLabel(cityRecordIndex, &label);
 }
 

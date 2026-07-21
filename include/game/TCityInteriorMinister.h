@@ -102,12 +102,15 @@ public:
   virtual undefined
   ReconcileCityProductionQueueAgainstTargetsAndAdjustOrders(int* arg1,
                                                             int unusedArg2); // slot 0x2f 0x4c0e50
-  virtual int GetHomeCityRecordIndexSlotC0();                                // slot 0x30 0x4c11c0
-  virtual undefined RebuildMapTileNeighborBucketsForInteriorMinister();      // slot 0x31 0x4c1ac0
-  virtual undefined GetTEventHandlerClassNamePointer_32();                   // slot 0x32 0x4c2010
-  virtual undefined AutoAssignProspectingOrdersByTileHeuristics();           // slot 0x33 0x4c2120
-  virtual undefined AutoAssignProspectingOrdersFromSeedTileNeighbors();      // slot 0x34 0x4c2a30
-  virtual void CallD4();                                                     // slot 0x35 0x4c1510
+  // Scores every valid owned tile through a temporary TTown resource projection and
+  // returns the best home-city TILE index. An existing capital-site flag wins with a
+  // score of 32000. Mac/curated name: SelectBestSecondaryHomeTileByFrogCityScore.
+  virtual int SelectBestSecondaryHomeTileByFrogCityScore();             // slot 0x30 0x4c11c0
+  virtual undefined RebuildMapTileNeighborBucketsForInteriorMinister(); // slot 0x31 0x4c1ac0
+  virtual undefined GetTEventHandlerClassNamePointer_32();              // slot 0x32 0x4c2010
+  virtual undefined AutoAssignProspectingOrdersByTileHeuristics();      // slot 0x33 0x4c2120
+  virtual undefined AutoAssignProspectingOrdersFromSeedTileNeighbors(); // slot 0x34 0x4c2a30
+  virtual void CallD4();                                                // slot 0x35 0x4c1510
   virtual undefined IterateLinkedListCursorEntries_004c2d50(int arg1,
                                                             int arg2); // slot 0x36 0x4c2d50
   virtual undefined HandleFrogCityTileSelectionAndDispatchOrders(int* arg1, int arg2,

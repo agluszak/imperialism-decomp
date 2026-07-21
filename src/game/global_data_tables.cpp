@@ -1039,6 +1039,10 @@ int g_aCategoryMetricBaselineAverage[4] = {0};
 // GLOBAL: IMPERIALISM 0x0065a9c0
 float g_fMissionScoreNormalizationDivisor = 5000.0f;
 
+// Initial/reset score for TScatteredShipsMission.
+// GLOBAL: IMPERIALISM 0x0065a9c8
+float g_fScatteredShipsMissionDefaultScore = 0.001f;
+
 // Per-nation output caches for RecomputeNationOrderPriorityMetrics (0x53fe30).
 // GLOBAL: IMPERIALISM 0x006a3a88
 float g_afNationOrderQueueDivergence_006a3a88[7] = {0};
@@ -1659,6 +1663,9 @@ extern "C" const int g_anNationStartingTreasuryByLocale[6] = {50000, 10000, 1000
 
 // GLOBAL: IMPERIALISM 0x006a2318
 POINT g_ptArmyOrderModalMessage = {0, 0};
+// Modal-message placement used when no eligible secondary home-city tile exists.
+// GLOBAL: IMPERIALISM 0x006a2c18
+POINT g_ptCityInteriorMinisterModalMessage = {0, 0};
 // GLOBAL: IMPERIALISM 0x006a3180
 POINT g_ptNationComparisonModalMessage = {0, 0};
 // GLOBAL: IMPERIALISM 0x006a5820

@@ -504,7 +504,7 @@ struct TurnEventFResumeAckPacketM : TimelyNetMessagePrefix {
 struct TurnEventACityAnnouncePacketM : TimelyNetMessagePrefix {
   unsigned char nationId1C; // +0x1c
   unsigned char pad1d;
-  short homeRegion1E;    // +0x1e
+  short homeTile1E;      // +0x1e
   char cityName20[0x24]; // +0x20, total 0x44
 };
 
@@ -515,7 +515,7 @@ struct TurnEventBNationDirectoryPacketM : NetMessage {
   unsigned char pad15[3];
   short pendingNationSlot; // +0x18
   unsigned char pad1a[2];
-  short homeRegionBySlot[0x17];      // +0x1c
+  short homeTileBySlot[0x17];        // +0x1c
   char cityNameBySlot[0x17][0x17];   // +0x4a
   unsigned char pad25b[0xe6];        // reserve to 0x17 * 0x21
   char nationNameBySlot[0x17][0x17]; // +0x341
@@ -921,10 +921,10 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     // A resuming nation announces its home region and city name.
     TurnEventACityAnnouncePacketM* announce = static_cast<TurnEventACityAnnouncePacketM*>(packet);
     if (g_pSimMgr->scenarioMapIndexPlusOne == 0) {
-      g_pGlobalMapState->SetTileTransportFlagsTo0x37AndRefreshNeighbors(announce->homeRegion1E,
+      g_pGlobalMapState->SetTileTransportFlagsTo0x37AndRefreshNeighbors(announce->homeTile1E,
                                                                         (char)announce->nationId1C);
       g_apNationStates[(char)announce->nationId1C]->SetHomeCityTileAndDisplayName(
-          announce->homeRegion1E, announce->cityName20);
+          announce->homeTile1E, announce->cityName20);
     }
     pendingNationBitmask &= ~(1 << (char)announce->nationId1C);
     unsigned char hostingA = g_pSimMgr->multiplayerSessionRole == 1;
@@ -957,7 +957,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
       if (dirSlot != g_pSimMgr->GetActiveNationId() &&
           g_apTerrainTypeDescriptorTable[dirSlot]->ShouldDispatchImmediatelySlot28() != 0) {
         g_apTerrainTypeDescriptorTable[dirSlot]->SetNationSelectedRegionAndMapCellLabel(
-            directory->homeRegionBySlot[dirSlot], directory->cityNameBySlot[dirSlot]);
+            directory->homeTileBySlot[dirSlot], directory->cityNameBySlot[dirSlot]);
         {
           CString nationName(directory->nationNameBySlot[dirSlot]);
           g_apTerrainTypeDescriptorTable[dirSlot]->SetNationDisplayNameAndLocalizationSlotRef(
@@ -969,7 +969,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
         }
         if (g_pSimMgr->scenarioMapIndexPlusOne == 0) {
           g_pGlobalMapState->SetTileTransportFlagsTo0x37AndRefreshNeighbors(
-              directory->homeRegionBySlot[dirSlot], (short)dirSlot);
+              directory->homeTileBySlot[dirSlot], (short)dirSlot);
         }
       }
       TZone* portZone =

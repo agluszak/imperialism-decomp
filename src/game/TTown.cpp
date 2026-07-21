@@ -37,11 +37,11 @@ IMPLEMENT_DYNCREATE(TTown, TObject)
 TTown::TTown() {}
 
 // FUNCTION: IMPERIALISM 0x005b6cd0
-void TTown::InitializeTownMarker(const char* markerName, short regionId, char enabledFlag,
+void TTown::InitializeTownMarker(const char* markerName, short tileIndex, char enabledFlag,
                                  short ownerNation) {
   strcpy(this->name, markerName);
   this->ownerNation1c = ownerNation;
-  this->regionId14 = regionId;
+  this->tileIndex14 = tileIndex;
   this->enabledFlag4d = enabledFlag;
   this->activeFlag4f = enabledFlag == 0;
   this->flags16[0] = 0;
@@ -57,7 +57,7 @@ void TTown::InitializeTownMarker(const char* markerName, short regionId, char en
 void TTown::ReadFrom(TStream* stream) {
   TObject::ReadFrom(stream);
   stream->ReadBytes(name, sizeof(name));
-  stream->ReadBytes(&regionId14, 2);
+  stream->ReadBytes(&tileIndex14, 2);
   stream->ReadBytes(flags16, sizeof(flags16));
   stream->ReadBytes(&createdTurnTick1a, 2);
   stream->ReadBytes(&ownerNation1c, 2);
@@ -73,7 +73,7 @@ void TTown::ReadFrom(TStream* stream) {
 void TTown::WriteTo(TStream* stream) {
   TObject::WriteTo(stream);
   stream->WriteBytesSlot78(name, sizeof(name));
-  stream->WriteBytesSlot78(&regionId14, 2);
+  stream->WriteBytesSlot78(&tileIndex14, 2);
   stream->WriteBytesSlot78(flags16, sizeof(flags16));
   stream->WriteBytesSlot78(&createdTurnTick1a, 2);
   stream->WriteBytesSlot78(&ownerNation1c, 2);
@@ -86,10 +86,10 @@ void TTown::WriteTo(TStream* stream) {
 
 static __inline short TownNeighborTile(TTown* town, int direction) {
   if (direction < 6) {
-    return TMapMgr::GetWrappedHexNeighborTileIndexByDirection(town->regionId14,
+    return TMapMgr::GetWrappedHexNeighborTileIndexByDirection(town->tileIndex14,
                                                               static_cast<short>(direction));
   }
-  return town->regionId14;
+  return town->tileIndex14;
 }
 
 static __inline void AddAdjacentCityDevelopment(TTown* town, short tileIndex) {
@@ -112,7 +112,8 @@ void TTown::CalculateRawResources() {
   hasAdjacentCity4e = false;
   memset(resourceYieldByType, 0, sizeof(resourceYieldByType));
 
-  signed char townRegionClass = g_pGlobalMapState->terrainStateTable[regionId14].regionSubtypeTag05;
+  signed char townRegionClass =
+      g_pGlobalMapState->terrainStateTable[tileIndex14].regionSubtypeTag05;
   for (int direction = 0; direction < 7; ++direction) {
     short tileIndex = TownNeighborTile(this, direction);
     if (tileIndex == -1) {
@@ -146,7 +147,8 @@ void TTown::CalculateResources() {
   hasAdjacentCity4e = false;
   memset(resourceYieldByType, 0, sizeof(resourceYieldByType));
 
-  signed char townRegionClass = g_pGlobalMapState->terrainStateTable[regionId14].regionSubtypeTag05;
+  signed char townRegionClass =
+      g_pGlobalMapState->terrainStateTable[tileIndex14].regionSubtypeTag05;
   for (int direction = 0; direction < 7; ++direction) {
     short tileIndex = TownNeighborTile(this, direction);
     if (tileIndex == -1) {
@@ -292,7 +294,7 @@ TTown::~TTown() {}
 int TTown::IsUnblockedPort(void) const {
   if (this->enabledFlag4d != 0) {
     if (g_pGlobalMapState->HasReachableSeaTileOutsideActiveType3Or4DiplomaticMask(
-            this->regionId14) != 0) {
+            this->tileIndex14) != 0) {
       return 1;
     }
   }

@@ -11633,6 +11633,18 @@
       ],
       "source_file": "src/game/TCityInteriorMinister.cpp"
     },
+    "0x004c11c0": {
+      "references": [
+        {
+          "group": 10039,
+          "index": 53,
+          "kind": "windows_gob",
+          "load_string_id": 20913,
+          "text": "Select the correct gender form for your country:"
+        }
+      ],
+      "source_file": "src/game/TCityInteriorMinister.cpp"
+    },
     "0x004c6b60": {
       "references": [
         {
@@ -179309,7 +179321,7 @@
   "summary": {
     "embedded_globals": 766,
     "formula_matches": 2356,
-    "functions_with_references": 275,
+    "functions_with_references": 276,
     "mac_strings": 3821,
     "mac_strings_with_candidates": 3091,
     "text_resources": 0,

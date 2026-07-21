@@ -779,7 +779,7 @@ void TSimMgr::RebuildSecondaryNationStateForSlot(int slotIndex) {
       minor->SeedInitialMilitaryAndNavyOrdersForOwnedRegions();
 
       short cityRecordIndex =
-          g_pGlobalMapState->terrainStateTable[static_cast<short>(minor->homeRegionIndex)]
+          g_pGlobalMapState->terrainStateTable[static_cast<short>(minor->homeTileIndex)]
               .cityRecordIndex;
       int remainingOrders = 2;
       do {

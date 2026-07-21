@@ -1998,7 +1998,7 @@ address|name|symbol|size|type|prototype|provenance
 4c0d90|TCityInteriorMinister::NoOpForeignMinisterUtilityStub||58|function|undefined OrphanLeaf_NoCall_Ins07_004d8920(void)|
 4c0de0|TCityInteriorMinister::SetForeignMinisterReadyFlag14_2e||73|function|undefined SetForeignMinisterReadyFlag14(void)|
 4c0e50|TCityInteriorMinister::ReconcileCityProductionQueueAgainstTargetsAndAdjustOrders||697|function|undefined ReconcileCityProductionQueueAgainstTargetsAndAdjustOrders()|
-4c11c0|TCityInteriorMinister::SelectBestSecondaryHomeTileByFrogCityScore||643|function|undefined SelectBestSecondaryHomeTileByFrogCityScore()|
+4c11c0|TCityInteriorMinister::SelectBestSecondaryHomeTileByFrogCityScore||643|function|int __thiscall SelectBestSecondaryHomeTileByFrogCityScore()|
 4c1510|TCityInteriorMinister::BuildNationTileDevelopmentScoreListForTerrainClass||706|function|undefined BuildNationTileDevelopmentScoreListForTerrainClass()|
 4c18a0|AppendInteriorMinisterValueGrowShortBuffer||131|function|undefined AppendInteriorMinisterValueGrowShortBuffer()|
 4c1990|WrapperFor_ComputeBestNationTileDevelopmentScore_At004c1990||238|function|undefined WrapperFor_ComputeBestNationTileDevelopmentScore_At004c1990()|
@@ -2453,7 +2453,7 @@ address|name|symbol|size|type|prototype|provenance
 4df810|TGreatPower::ApplyScenarioRelationPresetAndSpawnFrogCity||403|function|void ApplyScenarioRelationPresetAndSpawnFrogCity()|
 4dfa20|TGreatPower::DeserializeRecruitScenarioAndInstantiateOrders_3a||139|function|undefined __thiscall DeserializeRecruitScenarioAndInstantiateOrders(int * param_1)|
 4dfae0|TGreatPower::CreateFrogCityAtHomeRegionAndAttach||449|function|void __thiscall CreateFrogCityAtHomeRegionAndAttach(void * receiver)|
-4dfd30|TGreatPower::SetHomeCityTileAndDisplayName||723|function|undefined RefreshNationCivilianWorkOrdersForTurn()|
+4dfd30|TGreatPower::SetHomeCityTileAndDisplayName||723|function|void __thiscall SetHomeCityTileAndDisplayName(short homeTileIndex, char * cityName)|
 4e00d0|TGreatPower::DispatchGreatPowerQuarterlyStatusMessageLevel2||65|function|undefined DispatchGreatPowerQuarterlyStatusMessageLevel2()|
 4e0140|TGreatPower::DispatchGreatPowerQuarterlyStatusMessageLevel1||65|function|undefined DispatchGreatPowerQuarterlyStatusMessageLevel1()|
 4e01b0|TGreatPower::DispatchGreatPowerQuarterlyStatusMessageLevel0||65|function|undefined DispatchGreatPowerQuarterlyStatusMessageLevel0()|
@@ -2595,8 +2595,8 @@ address|name|symbol|size|type|prototype|provenance
 4e7cc0|TAutoGreatPower::ExecuteAdvisoryPromptAndApplyActionType1||397|function|undefined CheckTransitionSlot27C()|
 4e7ec0|TAutoGreatPower::ExecuteAdvisoryPromptAndApplyActionType2OrFallback||300|function|undefined PropagateWarTransitionSlot280()|
 4e8040|TAutoGreatPower::VTableSlot9D||554|function|undefined ReturnZeroSlot9D(void)|
-4e83d0|QueueMapActionMissionsForPortZoneCandidates||287|function|undefined QueueMapActionMissionsForPortZoneCandidates()|
-4e8540|TGreatPower::QueueMapActionMissionFromCandidateAndMarkState||248|function|undefined QueueMapActionMissionFromCandidateAndMarkState()|
+4e83d0|TAutoGreatPower::QueueMapActionMissionsForPortZoneCandidates||287|function|void __thiscall QueueMapActionMissionsForPortZoneCandidates(void)|
+4e8540|TAutoGreatPower::QueueMapActionMissionFromCandidateAndMarkState||248|function|void __thiscall QueueMapActionMissionFromCandidateAndMarkState(eMissionType missionType,int mapNodeIndex,TZone* zoneContext,int relatedMapNodeIndex)|
 4e8680|TAutoGreatPower::DispatchToFirstMatchingListNodeAndRemove||157|function|undefined DispatchToFirstMatchingListNodeAndRemove()|
 4e8750|TGreatPower::ComputeAdvisoryMapNodeScoreFactorByCaseMetric||785|function|float __thiscall ComputeAdvisoryMapNodeScoreFactorByCaseMetric(int metricCase,int cityIndex,TZone* zone,int selectedNationSlot)|
 4e8b50|TAttackProvinceMission::SetMapStateByteFlag970WithRuntimeGate||56|function|undefined SetMapStateByteFlag970WithRuntimeGate()|
@@ -3146,7 +3146,7 @@ address|name|symbol|size|type|prototype|provenance
 50f6b0|TMapMgr::SetMapRecordFlagA3AndPropagateToChildren||110|function|void __thiscall SetMapRecordFlagA3AndPropagateToChildren(int recordIndex, int classCode)|
 50f740|RefreshMapContextRotatingStatusStrings||221|function|undefined RefreshMapContextRotatingStatusStrings()|
 50f860|TMapMgr::RebuildTileOwnerNeighborCachesAndFallbackAssignments||858|function|void __thiscall RebuildTileOwnerNeighborCachesAndFallbackAssignments()|
-50fca0|TMapMgr::UpdateTilePrimaryAndSecondaryNeighborLinksByPriority||285|function|undefined UpdateTilePrimaryAndSecondaryNeighborLinksByPriority()|
+50fca0|TMapMgr::UpdateTilePrimaryAndSecondaryNeighborLinksByPriority||285|function|void __thiscall UpdateTilePrimaryAndSecondaryNeighborLinksByPriority(int cityRecordIndex)|
 50fe10|TMapMgr::UpdateTileNeighborBorderInfluenceCounters||812|function|undefined UpdateTileNeighborBorderInfluenceCounters()|
 510210|TMapMgr::UpdateMapTileAdjacencyMasksAndVariantForTile||1177|function|uchar * __thiscall UpdateMapTileAdjacencyMasksAndVariantForTile(short tileIndex)|
 5107e0|TMapMgr::InitializeTileNeighborConnectionMaskIfNeeded||190|function|void __thiscall InitializeTileNeighborConnectionMaskIfNeeded(int tileIndex)|
@@ -3215,7 +3215,7 @@ address|name|symbol|size|type|prototype|provenance
 5148d8|deduct_cash_for_bit04_order|||global||
 5148df|set_tile_flag_bit04|||global||
 5149d0|TMapMgr::SetProvinceCapitalTileFlagBit08||56|function|void __thiscall SetProvinceCapitalTileFlagBit08(short nProvinceId)|
-514a20|TMapMgr::SetTileTransportFlagsTo0x37AndRefreshNeighbors||475|function|void __thiscall SetTileTransportFlagsTo0x37AndRefreshNeighbors(short nTileIndex)|
+514a20|TMapMgr::SetTileTransportFlagsTo0x37AndRefreshNeighbors||475|function|void __thiscall SetTileTransportFlagsTo0x37AndRefreshNeighbors(short nTileIndex, short nOwnerNationId)|
 514c80|FindReachableRecruitSpawnTileWithVisitedReset||61|function|undefined FindReachableRecruitSpawnTileWithVisitedReset()|
 514cd0|FindReachableRecruitSpawnTileRecursive||178|function|undefined FindReachableRecruitSpawnTileRecursive()|
 514dc0|TMapMgr::MapMgrSlot1F||81|function|undefined WrapperFor_IsValidSecondaryNationHomeTileCandidate_At00514dc0(short param_1)|
@@ -8159,6 +8159,7 @@ address|name|symbol|size|type|prototype|provenance
 659b40|TSortByPriceList::classTSortByPriceList|||global||
 659b58|TIndexAndRankList::classTIndexAndRankList|||global||
 65a468|g_MissionDefaultScore_0065a468|||global||
+65a9c8|g_fScatteredShipsMissionDefaultScore|||global||
 65a9e8|g_Recompute_Nation_Order_LookupTable_0065A9E8|||global||
 65a9f0|g_Recompute_Nation_Order_LookupTable_0065A9F0|||global||
 65a9f8|g_Recompute_Nation_Order_LookupTable_0065A9F8|||global||

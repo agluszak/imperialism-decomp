@@ -340,8 +340,8 @@ void TDiplomacyMapView::BuildDiplomacyNationOverlayGeometryAndHitMasks() {
         // been written to the record in this session.
         ClampRectWithinBoundsPreservingSize(labelRect,
                                             &packedColorRuns[nationIndex].scratchBounds08);
-        int markerX = (static_cast<short>(nation->homeRegionIndex) % 0x6c) * 5;
-        int markerY = (static_cast<short>(nation->homeRegionIndex) / 0x6c + 9) * 5;
+        int markerX = (static_cast<short>(nation->homeTileIndex) % 0x6c) * 5;
+        int markerY = (static_cast<short>(nation->homeTileIndex) / 0x6c + 9) * 5;
         RECT* anchorRect = &nationAnchorRects3A4[nationIndex];
         anchorRect->left = markerX + 0x29;
         anchorRect->top = markerY - 8;

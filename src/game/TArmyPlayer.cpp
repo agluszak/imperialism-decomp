@@ -632,7 +632,7 @@ void TArmyPlayer::SelectAndApplyTacticalCursorModeProfile(int cursorProfileMode)
       battle14->battleSiteIndex38 ==
       g_pGlobalMapState
           ->terrainStateTable[static_cast<short>(
-              g_apTerrainTypeDescriptorTable[nationIndex1C]->homeRegionIndex)]
+              g_apTerrainTypeDescriptorTable[nationIndex1C]->homeTileIndex)]
           .cityRecordIndex;
 
   // Army battles always pair two TArmyPlayers; the +0x2c metric slice lives on the

@@ -42,7 +42,7 @@ char TScatteredShipsMission::ReturnFalseSlot28() {
 // FUNCTION: IMPERIALISM 0x0053bb90
 void TScatteredShipsMission::Call30() {
   marker11 = 0;
-  value0c = *reinterpret_cast<const float*>(0x0065a9c8);
+  value0c = g_fScatteredShipsMissionDefaultScore;
 }
 
 // FUNCTION: IMPERIALISM 0x0053bbb0
@@ -64,7 +64,7 @@ void TScatteredShipsMission::SetStateByte8To2() {
 
 // FUNCTION: IMPERIALISM 0x0053bc20
 void TScatteredShipsMission::ResetValue0CToZero() {
-  value0c = *reinterpret_cast<const float*>(0x0065a9c8);
+  value0c = g_fScatteredShipsMissionDefaultScore;
 }
 
 // Spreads the fixed g_Populate_Beachhead_Mission_LookupTable_00697958 percentages across

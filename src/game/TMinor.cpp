@@ -139,11 +139,11 @@ void TMinor::InitializeSecondaryNationStateAndSelectHomeTile(short nationSlot) {
       CString unusedTextA;
       CString unusedTextB;
       g_pGlobalMapState->ResetTileToBaseTransportFlag(selectedTile);
-      homeRegionIndex = selectedTile;
+      homeTileIndex = selectedTile;
       if (candidateTiles != 0) {
         candidateTiles->Free();
       }
-      g_pActiveMapOrderContext->EnsurePortZoneForTile(static_cast<short>(homeRegionIndex));
+      g_pActiveMapOrderContext->EnsurePortZoneForTile(static_cast<short>(homeTileIndex));
     }
   }
 
@@ -959,15 +959,15 @@ void TMinor::HandleNetworkPortConstructionOrder(int nationId) {
   char* terrainTileBytes =
       *reinterpret_cast<char**>(reinterpret_cast<unsigned char*>(g_pGlobalMapState) + 0xc);
   unsigned char nationTileFlags =
-      terrainTileBytes[0x1c + static_cast<short>(this->homeRegionIndex) * 0x24];
+      terrainTileBytes[0x1c + static_cast<short>(this->homeTileIndex) * 0x24];
   if ((nationTileFlags >> 2 & 1) != 0) {
     return;
   }
 
   TTown* marker = new TTown();
-  marker->InitializeTownMarker("", this->homeRegionIndex, 1, static_cast<short>(nationId));
+  marker->InitializeTownMarker("", this->homeTileIndex, 1, static_cast<short>(nationId));
   marker->activeFlag4f = 1;
-  g_pGlobalMapState->SetTileTransportFlags(static_cast<short>(this->homeRegionIndex), 0x15);
+  g_pGlobalMapState->SetTileTransportFlags(static_cast<short>(this->homeTileIndex), 0x15);
   TGreatPower* targetNation = g_apNationStates[nationId];
   if (targetNation != 0 && targetNation->townMarkerList != 0) {
     targetNation->townMarkerList->AddTail(marker);
@@ -1217,10 +1217,10 @@ void RetargetUnitOrderForAllowedNation(TUnit* orderNode) {
   if (ownerNation == 0) {
     return;
   }
-  short homeRegionIndex =
+  short homeTileIndex =
       *reinterpret_cast<short*>(reinterpret_cast<unsigned char*>(ownerNation) + 0x88);
   short spawnTile =
-      g_pGlobalMapState->FindReachableRecruitSpawnTileWithVisitedReset(homeRegionIndex, 0);
+      g_pGlobalMapState->FindReachableRecruitSpawnTileWithVisitedReset(homeTileIndex, 0);
   if (spawnTile == -1) {
     orderNode->DetachUnitOrderFromOwnerAndReset();
     orderNode->Free();
@@ -1235,10 +1235,10 @@ void RetargetUnitOrderForAllowedNationWithModeReset(TUnit* orderNode) {
   if (ownerNation == 0) {
     return;
   }
-  short homeRegionIndex =
+  short homeTileIndex =
       *reinterpret_cast<short*>(reinterpret_cast<unsigned char*>(ownerNation) + 0x88);
   short spawnTile =
-      g_pGlobalMapState->FindReachableRecruitSpawnTileWithVisitedReset(homeRegionIndex, 0);
+      g_pGlobalMapState->FindReachableRecruitSpawnTileWithVisitedReset(homeTileIndex, 0);
   if (spawnTile == -1) {
     orderNode->DetachUnitOrderFromOwnerAndReset();
     orderNode->Free();

@@ -101,7 +101,7 @@ TCountry::~TCountry() {}
 // FUNCTION: IMPERIALISM 0x004d68f0
 void TCountry::InitializeNationStateIdentityAndOwnedRegionList(short nationSlot) {
   this->nationSlot = nationSlot;
-  this->homeRegionIndex = -1;
+  this->homeTileIndex = -1;
   this->overlayAnchorTileCache8c = -1;
   this->encodedNationSlot = -1;
 
@@ -170,7 +170,7 @@ void TCountry::ReadFrom(TStream* stream) {
 
   stream->ReadBytes(&this->unitNameCounter84, 2);
   stream->ReadBytes(&this->treasuryValue10, 4);
-  stream->ReadBytes(&this->homeRegionIndex, 4);
+  stream->ReadBytes(&this->homeTileIndex, 4);
   stream->ReadBytes(&this->overlayAnchorTileCache8c, 4);
   stream->ReadBytes(this->needLevelByNation, 0x2e);
   SwapAdjacentBytesInShortArray(this->needLevelByNation, 0x17);
@@ -227,7 +227,7 @@ void TCountry::WriteTo(TStream* stream) {
   WriteShortArrayElems(stream, this->unitNameOrdinalByType, 0x1e);
   stream->WriteBytesSlot78(&this->unitNameCounter84, 2);
   stream->WriteBytesSlot78(&this->treasuryValue10, 4);
-  stream->WriteBytesSlot78(&this->homeRegionIndex, 4);
+  stream->WriteBytesSlot78(&this->homeTileIndex, 4);
   stream->WriteBytesSlot78(&this->overlayAnchorTileCache8c, 4);
   WriteShortArrayElems(stream, this->needLevelByNation, 0x17);
 
@@ -240,7 +240,7 @@ void TCountry::ReadCoreFieldsFromStream(TStream* stream, int unusedArg) {
   (void)unusedArg;
   stream->ReadBytes(&this->encodedNationSlot, 2);
   stream->ReadBytes(&this->treasuryValue10, 4);
-  stream->ReadBytes(&this->homeRegionIndex, 4);
+  stream->ReadBytes(&this->homeTileIndex, 4);
   stream->ReadBytes(&this->overlayAnchorTileCache8c, 4);
 }
 
@@ -248,7 +248,7 @@ void TCountry::ReadCoreFieldsFromStream(TStream* stream, int unusedArg) {
 void TCountry::WriteCoreFieldsToStream(TStream* stream) {
   stream->WriteBytesSlot78(&this->encodedNationSlot, 2);
   stream->WriteBytesSlot78(&this->treasuryValue10, 4);
-  stream->WriteBytesSlot78(&this->homeRegionIndex, 4);
+  stream->WriteBytesSlot78(&this->homeTileIndex, 4);
   stream->WriteBytesSlot78(&this->overlayAnchorTileCache8c, 4);
 }
 
@@ -271,7 +271,7 @@ void TCountry::SeedInitialMilitaryAndNavyOrdersForOwnedRegions(void) {
   TSimMgr* localization = g_pSimMgr;
   if (localization->scenarioMapIndexPlusOne > 0) {
     g_pGlobalMapState->NotifyCityRecordSlot12C(
-        g_pGlobalMapState->terrainStateTable[static_cast<short>(this->homeRegionIndex)]
+        g_pGlobalMapState->terrainStateTable[static_cast<short>(this->homeTileIndex)]
             .cityRecordIndex);
     return;
   }
@@ -668,7 +668,7 @@ int TCountry::ComputeSelectedMilitaryPowerScore() {
 
 // FUNCTION: IMPERIALISM 0x004d87b0
 int TCountry::GetHomeRegionCityRecordIndex(void) {
-  return g_pGlobalMapState->terrainStateTable[static_cast<short>(this->homeRegionIndex)]
+  return g_pGlobalMapState->terrainStateTable[static_cast<short>(this->homeTileIndex)]
       .cityRecordIndex;
 }
 
