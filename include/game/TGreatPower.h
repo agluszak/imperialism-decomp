@@ -422,7 +422,22 @@ public:
   int field910;
   int aidAllocationTotal;
   unsigned char colonyBoycottFlags[0x17];
-  unsigned char pad_92f[0x960 - 0x92f];
+  unsigned char pad_92f;
+  // 0x930..0x95c — per-turn economy/diplomacy summary snapshot rebuilt wholesale by
+  // RecomputeNationEconomyAndDiplomacySummaryMetrics (0x4e32a0); interior meaning
+  // still mostly unmapped beyond the two aliased copies noted below.
+  int economySummaryBaseline930;             // 0x930 — from city->population baseline bucket
+  int economySummaryNeedCapSnapshot934;      // 0x934 — copy of needCapA6
+  int economySummaryBuildingTypeSum938;      // 0x938 — sum of city GetBuildingType(0..5)
+  int economySummaryRegionScore93c;          // 0x93c — owned-region counts (this + qualifying minors) * 10
+  int economySummaryMilitaryOrderCostSum940; // 0x940 — sum over militaryUnitList44 of unit order cost table col 2
+  int economySummaryNavyOrderPriority944;    // 0x944 — SumNavyOrderPriorityForNationSlot86()
+  int economySummaryAvgRelationScore948;     // 0x948 — average relation-matrix score vs other live nations
+  int economySummaryTradeCapacitySnapshot94c; // 0x94c — copy of tradeCapacity
+  int economySummarySeasonCountdown950;      // 0x950 — (100 - currentQuarter) * 10
+  int economySummaryTotal954;                // 0x954 — sum of the 9 fields above (930..950)
+  int economySummarySeasonPercent958;        // 0x958 — seasonPercentTable[g_pSimMgr->redrawEnabled]
+  int economySummaryWeightedTotal95c;        // 0x95c — economySummaryTotal954 * economySummarySeasonPercent958 / 10
   int pendingAidTotal;
   // Object ends here at 0x964 (== CRuntimeClass::m_nObjectSize for TGreatPower and
   // for TProxyGreatPower/TClientGreatPower/TRemoteGreatPower; THostGreatPower adds one
@@ -446,6 +461,13 @@ public:
   // ((w8*2+w6)*2+w4) plus extraAt1e; 0 when the nation has no city. Curated name kept
   // from symbols.csv (advisory case-6 metric); exact game meaning still tentative.
   short ComputeNationRuntimeAdvisoryMetricCase6();
+
+  // 0x4d84b0 — classifies this nation's military power (sum of
+  // g_aUnitOrderCostProfileByAbilityId[unitType][2] over militaryUnitList44, plus
+  // SumNavyOrderPriorityForNationSlot86() plus 4) against the mean/stddev of the same
+  // metric across every eligible nation: 4 (> mean+2*sd), 3 (> mean+sd), 2 (<= mean-sd,
+  // or fewer than 2 eligible nations to compare against), 1 (>= mean-2*sd), else 0.
+  int ClassifyNationMilitaryPowerBandAgainstGlobalMean();
 
   TGreatPower();
   TGreatPower(int arg1, int arg2);
@@ -491,6 +513,14 @@ public:
   void HandleTurnInstruction_Civi_DeserializeAndCreateWorkOrder(void* pInstructionRaw);
   void QueueInterNationEventType0FForNationPairContext(short targetNationSlot,
                                                        short sourceNationSlot);
+
+  // 0x004e32a0. Rebuilds the economySummary930.. snapshot block wholesale: population
+  // baseline, summed city building types, owned-region score (this nation plus any
+  // minor nation whose encoded slot matches), militaryUnitList44 order-cost sum, navy
+  // order priority, average diplomatic relation standing, trade capacity, and a
+  // season-weighted countdown total. Called once per turn to refresh the cached
+  // metrics consumed elsewhere (advisory scoring, UI summaries).
+  void RecomputeNationEconomyAndDiplomacySummaryMetrics(void);
 
   TCity* GetCityState(void) {
     return city;

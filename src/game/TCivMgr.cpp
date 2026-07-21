@@ -360,6 +360,61 @@ void TCivMgr::HandleCivilianReportDecision(TCivUnit* pCivilianOrderEntry) {
   }
 }
 
+// FUNCTION: IMPERIALISM 0x004d3310
+bool TCivMgr::QueueCivilianWorkOrderWithCostCheck(short nTileIndex) {
+  TGreatPower* activeNation = g_apNationStates[g_pSimMgr->GetActiveNationId()];
+  int budget = activeNation->diplomacyBudgetBase / 10 + activeNation->treasuryValue10;
+  if (budget < 0) {
+    budget = 0;
+  }
+
+  char useHighNibble = (selectedEntry->orderType == 0 || selectedEntry->orderType == 8) ? 1 : 0;
+  unsigned char costClass =
+      g_pGlobalMapState->GetTileCivilianWorkOrderCostClassNibble(nTileIndex, useHighNibble);
+  int cost = g_adwCivilianWorkOrderCostByClass[costClass];
+
+  if (budget < cost) {
+    CString costText;
+    g_pSimMgr->FormatIntegerString(cost, &costText);
+    CString templateText;
+    g_pSimMgr->GetString(0x2745, 8, &templateText);
+    CString finalMessage;
+    scanBracketExpressions(g_pSimMgr, &finalMessage, static_cast<LPCSTR>(templateText),
+                           static_cast<LPCSTR>(costText));
+    g_pUiRuntimeContext->DispatchLocalizedUiMessageWithTemplateA13A0(
+        finalMessage, &g_cstrCivilianOrderMessageStore, 2, 0);
+    return false;
+  }
+
+  selectedEntry->SetOrderModeSlot34(10, selectedEntry->tileIndex06);
+  this->RelinkCivilianOrderTileAndInvalidateMapTiles(nTileIndex,
+                                                     g_pSelectedCivilianOrderState->selectedEntry);
+
+  static const short kOrderQueuedSfxByOrderType[9] = {0x232d, 0,      0x2332, 0x2331, 0,
+                                                       0x2333, 0,      0x2335, 0x2339};
+  short sfxCode = kOrderQueuedSfxByOrderType[selectedEntry->orderType];
+  if (sfxCode != 0) {
+    g_pSfxPlaybackSystem->PlaySoundEffect(sfxCode, 0, 1);
+  }
+
+  unsigned int feedbackStartTick = GetTickCountDiv16();
+  while (true) {
+    PumpUiMessagesAndBackgroundTasks(1);
+    unsigned int feedbackNowTick = GetTickCountDiv16();
+    if (feedbackNowTick < feedbackStartTick) {
+      break;
+    }
+    if (feedbackNowTick - feedbackStartTick >= 0x1e) {
+      break;
+    }
+  }
+
+  selectedEntry->completionMarker26 = sfxCode;
+  g_apNationStates[g_pSimMgr->GetActiveNationId()]->AddToNationMetricAtField10(-cost);
+  g_pUiRuntimeContext->RefreshMainViewNationIndicatorForCurrentTurnEvent();
+  return true;
+}
+
 // FUNCTION: IMPERIALISM 0x004d3a60
 bool TCivMgr::HandleEngineerConstructionAction(short nTileIndex) {
   TCivUnit* pCiv = this->selectedEntry;

@@ -73,4 +73,11 @@ public:
   // order type, credits the owner nation's treasury, clears the queued order, and rebinds
   // selection. Same mis-attribution as the functions above.
   void HandleCivilianReportDecision(class TCivUnit* pCivilianOrderEntry);
+
+  // 0x004d3310. Checks the active nation's civilian work-order budget
+  // (diplomacyBudgetBase/10 + treasuryValue10, floored at 0) against the tile's cost class,
+  // and if affordable queues the order on selectedEntry (sound cue, ~0.5s message-pumped
+  // pause, completion marker, immediate treasury deduction); otherwise shows a localized
+  // "can't afford" message built from FormatIntegerString + GetString(0x2745, 8).
+  bool QueueCivilianWorkOrderWithCostCheck(short nTileIndex);
 };
