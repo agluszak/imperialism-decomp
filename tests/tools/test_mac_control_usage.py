@@ -1,9 +1,10 @@
 from __future__ import annotations
 
+import json
 from pathlib import Path
 import unittest
 
-from tools.workflow.mac_control_usage import build_index, source_module_hints, tag_hints
+from tools.workflow.mac_control_usage import source_module_hints, tag_hints
 
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
@@ -12,7 +13,9 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 class MacControlUsageTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
-        cls.index = build_index(REPO_ROOT)
+        cls.index = json.loads(
+            (REPO_ROOT / "docs/reference/mac_control_usage.json").read_text()
+        )
 
     def test_index_covers_the_complete_view_corpus(self) -> None:
         self.assertEqual(self.index["summary"]["screens"], 121)

@@ -499,8 +499,8 @@ stackcmp-triage *args:
   uv run python -m tools.reccmp.stackcmp_triage --target "{{target}}" --build-dir "{{build_dir}}" {{args}}
 
 [group('compare')]
-stats:
-  uv run python -m tools.reccmp.progress_stats --target "{{target}}" --build-dir "{{build_dir}}" --detect-recompiled
+stats *args:
+  uv run python -m tools.reccmp.progress_stats --target "{{target}}" --build-dir "{{build_dir}}" --detect-recompiled {{args}}
 
 [group('compare')]
 inventory:
@@ -1191,7 +1191,6 @@ precommit:
   just build
   just gates
   just test
-  just stats
 
 # Run all mechanical source-policy gates (the pre-commit check).
 # Run `just format-check <touched paths>` separately on files you edited; the tree
@@ -1200,7 +1199,7 @@ precommit:
 [group('gates')]
 gates:
   just source-gates
-  just ui-codegen-match-gate
+  just stats --ui-codegen-gate
   just vtable
   just datacmp-gate
   just decomplint
@@ -1209,12 +1208,6 @@ gates:
 [group('gates')]
 tooling-check:
   uv run python -m tools.workflow.check_tooling_surface
-
-# Generated UI factories must remain paired and may not fall below the
-# committed per-function baseline. This runs one shared reccmp report parse.
-[group('gates')]
-ui-codegen-match-gate:
-  uv run python -m tools.workflow.check_ui_codegen_matching --target "{{target}}" --build-dir "{{build_dir}}"
 
 # Generated stub count vs baseline (ratchet down). A rise is the un-claiming
 # tell: a real owner lost its marker and would be re-stubbed, breaking vtables.
@@ -1477,38 +1470,11 @@ agent-rules-gate:
 [group('gates')]
 source-gates:
   just generate
-  just ui-codegen-check
-  just ui-view-coverage-check
-  just mac-control-usage-check
-  just mac-resource-xrefs-check
-  just mac-payload-diff-check
-  just mac-string-crosswalk-check
-  just ui-platform-diff-check
-  just tooling-check
-  just vtable-gate
-  just antipattern-gate
-  just tgreatpower-gate
-  just marker-gate
-  just generated-marker-gate
-  just dual-use-gate
-  just geometry-type-gate
-  just ilt-ossification-gate
-  just vtable-annotation-gate
-  just vtable-collision-gate
-  just synthetic-gate
-  just symbols-integrity-gate
-  just library-identity-gate
-  just global-location-gate
-  just manual-cruntimeclass-gate
-  just stub-count-gate
-  just class-size-gate
-  just noop-gate
-  just typedef-cast-gate
-  just typedef-args-gate
-  just global-redeclaration-gate
-  just boundary-gate
-  just agent-rules-gate
-  just vtable-abi-gate
+  just --jobs 4 _source-gates-parallel
+
+[private]
+[parallel]
+_source-gates-parallel: ui-codegen-check ui-view-coverage-check mac-control-usage-check mac-resource-xrefs-check mac-payload-diff-check mac-string-crosswalk-check ui-platform-diff-check tooling-check vtable-gate antipattern-gate tgreatpower-gate marker-gate generated-marker-gate dual-use-gate geometry-type-gate ilt-ossification-gate vtable-annotation-gate vtable-collision-gate synthetic-gate symbols-integrity-gate library-identity-gate global-location-gate manual-cruntimeclass-gate stub-count-gate class-size-gate noop-gate typedef-cast-gate typedef-args-gate global-redeclaration-gate boundary-gate agent-rules-gate vtable-abi-gate
 
 [doc('Mine reccmp asm diffs for orig-address<->recomp-symbol global pairs (read-only report)')]
 [group('compare')]

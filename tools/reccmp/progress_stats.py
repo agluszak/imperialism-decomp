@@ -73,6 +73,11 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--detect-recompiled", action="store_true")
     parser.add_argument("--no-run", action="store_true", help="Parse existing report files only.")
     parser.add_argument(
+        "--ui-codegen-gate",
+        action="store_true",
+        help="Fail if a generated UI factory is unpaired or below its baseline.",
+    )
+    parser.add_argument(
         "--baseline-file",
         default=str(repo_root / "config" / "baselines" / "reccmp_progress_baseline.json"),
         help="Committed baseline JSON. Relative paths resolve from the repo root.",
@@ -308,6 +313,29 @@ def parse_report_functions(path: Path) -> dict[str, dict[str, Any]]:
             continue
         funcs[address] = {"m": effective_matching(row), "n": row.get("name", "")}
     return funcs
+
+
+def ui_codegen_regressions(
+    addresses: Iterable[int],
+    current: dict[str, dict[str, Any]],
+    baseline: dict[str, dict[str, Any]],
+) -> list[str]:
+    errors: list[str] = []
+    for address in addresses:
+        key = hex(address)
+        label = f"0x{address:08x}"
+        before = baseline.get(key)
+        after = current.get(key)
+        if before is None:
+            errors.append(f"{label}: missing from committed baseline")
+        elif after is None:
+            errors.append(f"{label}: generated function is not paired")
+        elif float(after["m"]) < float(before["m"]) - FUNCTION_CHANGE_EPS:
+            errors.append(
+                f"{label}: similarity regressed "
+                f"{float(before['m']) * 100:.4f}% -> {float(after['m']) * 100:.4f}%"
+            )
+    return errors
 
 
 def function_baseline_path(baseline_file: Path) -> Path:
@@ -624,13 +652,34 @@ def main() -> int:
         print_summary(entry, baseline, baseline_file)
         print_function_changes(curr_funcs, func_baseline)
 
+        ui_errors: list[str] = []
+        if args.ui_codegen_gate:
+            if func_baseline is None:
+                raise FileNotFoundError(func_baseline_file)
+            from tools.ui_codegen import load_recipes
+
+            recipes = load_recipes(repo_root)
+            ui_errors = ui_codegen_regressions(
+                (recipe.address for recipe in recipes), curr_funcs, func_baseline
+            )
+            print("")
+            if ui_errors:
+                print("Generated UI matching gate failed:")
+                for error in ui_errors:
+                    print(f"  - {error}")
+            else:
+                print(
+                    f"Generated UI matching gate passed: {len(recipes)} paired, "
+                    "no regressions"
+                )
+
         if args.commit_baseline:
             write_json_atomic(baseline_file, entry)
             write_function_baseline_atomic(func_baseline_file, curr_funcs)
             print("")
             print(f"Committed stats baseline: {baseline_file}")
             print(f"Committed function baseline: {func_baseline_file}")
-        return 0
+        return 1 if ui_errors else 0
     except Exception as exc:  # pragma: no cover - CLI error path
         print(f"ERROR: {exc}", file=__import__("sys").stderr)
         return 1
