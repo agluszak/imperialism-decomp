@@ -11916,6 +11916,25 @@
       ],
       "source_file": "src/game/TCivMgr.cpp"
     },
+    "0x004d3610": {
+      "references": [
+        {
+          "group": 10061,
+          "index": 1,
+          "kind": "windows_gob",
+          "load_string_id": 23061,
+          "text": "Purchase Land to Develop"
+        },
+        {
+          "group": 10061,
+          "index": 2,
+          "kind": "windows_gob",
+          "load_string_id": 23062,
+          "text": "Your Excellency, the governor of [1] will sell us this land for [2], which will entitle us to develop it.  Do you agree?"
+        }
+      ],
+      "source_file": "src/game/TCivMgr.cpp"
+    },
     "0x004d3a60": {
       "references": [
         {
@@ -179491,7 +179510,7 @@
   "summary": {
     "embedded_globals": 769,
     "formula_matches": 2356,
-    "functions_with_references": 284,
+    "functions_with_references": 285,
     "mac_strings": 3821,
     "mac_strings_with_candidates": 3091,
     "text_resources": 0,

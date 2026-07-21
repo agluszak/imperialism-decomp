@@ -95,4 +95,11 @@ public:
   // pause, completion marker, immediate treasury deduction); otherwise shows a localized
   // "can't afford" message built from NumToCurrency + GetString(0x2745, 8).
   bool QueueCivilianWorkOrderWithCostCheck(short nTileIndex);
+
+  // Mac Strings.rsrc kStrCivMgr identifies the group 0x274d prompt as "Purchase Land
+  // to Develop". Confirms the city/cost-formatted purchase, queues order type 13,
+  // deducts the calculated tile cost, and refreshes the nation indicator. 0x004d3610.
+  // The original TCivToolbar attribution was wrong: this+4 is selectedEntry and the
+  // receiver's virtual slot 0x0c is RelinkCivilianOrderTileAndInvalidateMapTiles.
+  bool PromptAndQueueDeveloperTilePurchaseOrder(short nTileIndex);
 };

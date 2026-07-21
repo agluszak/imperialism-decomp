@@ -2182,7 +2182,7 @@ address|matching|name
 0x4d2f60|0.4566929133858268|TCivMgr::CanAssignCivilianOrderToTile
 0x4d3070|0.5096774193548387|TCivMgr::HandleCivilianReportDecision
 0x4d3310|0.3202416918429003|TCivMgr::QueueCivilianWorkOrderWithCostCheck
-0x4d3610|0.0|TCivToolbar::PromptAndQueueDeveloperTilePurchaseOrder
+0x4d3610|0.5133928571428571|TCivMgr::PromptAndQueueDeveloperTilePurchaseOrder
 0x4d39d0|0.0|QueueProspectingOrderAndPlayFeedback
 0x4d3a60|0.5654885654885655|TCivMgr::HandleEngineerConstructionAction
 0x4d4310|0.06666666666666667|TCivMgr::RelinkCivilianOrderTileAndInvalidateMapTiles

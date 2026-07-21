@@ -462,6 +462,60 @@ bool TCivMgr::QueueCivilianWorkOrderWithCostCheck(short nTileIndex) {
   return true;
 }
 
+// FUNCTION: IMPERIALISM 0x004d3610
+bool TCivMgr::PromptAndQueueDeveloperTilePurchaseOrder(short nTileIndex) {
+  TGreatPower* activeNation = g_apNationStates[g_pSimMgr->GetActiveNationId()];
+  int availableCash = activeNation->diplomacyBudgetBase / 100 + activeNation->treasuryValue10;
+  if (availableCash < 0) {
+    availableCash = 0;
+  }
+  int purchaseCost = g_pGlobalMapState->CalculateDeveloperTilePurchaseCost(nTileIndex);
+
+  CString titleText;
+  CString templateText;
+  CString formattedText;
+  CString costText;
+  CString cityName;
+  short cityRecordIndex = g_pGlobalMapState->terrainStateTable[nTileIndex].cityRecordIndex;
+  g_pGlobalMapState->AssignCityRecordDisplayName(cityRecordIndex, &cityName);
+  g_pSimMgr->GetString(0x274d, 0, &titleText);
+  g_pSimMgr->NumToCurrency(purchaseCost, &costText);
+
+  if (availableCash >= purchaseCost) {
+    // Mac Strings.rsrc: "the governor of [1] will sell us this land for [2]".
+    g_pSimMgr->GetString(0x274d, 1, &templateText);
+    scanBracketExpressions(g_pSimMgr, &formattedText, static_cast<LPCSTR>(templateText),
+                           static_cast<LPCSTR>(cityName), static_cast<LPCSTR>(costText));
+    if (g_pUiRuntimeContext->ModalMessage(4, titleText, formattedText,
+                                          g_ptCivilianOrderModalMessage, 0, 1) != 0) {
+      selectedEntry->SetOrderModeSlot34(13, selectedEntry->tileIndex06);
+      this->RelinkCivilianOrderTileAndInvalidateMapTiles(
+          nTileIndex, g_pSelectedCivilianOrderState->selectedEntry);
+      g_pSfxPlaybackSystem->PlaySoundEffect(0x2335, 0, 1);
+      g_apNationStates[g_pSimMgr->GetActiveNationId()]->AddToNationMetricAtField10(-purchaseCost);
+      g_pUiRuntimeContext->RefreshMainViewNationIndicatorForCurrentTurnEvent();
+
+      unsigned int feedbackStartTick = GetTickCountDiv16();
+      while (true) {
+        PumpUiMessagesAndBackgroundTasks(1);
+        unsigned int feedbackNowTick = GetTickCountDiv16();
+        if (feedbackNowTick < feedbackStartTick || feedbackNowTick - feedbackStartTick >= 0x1e) {
+          break;
+        }
+      }
+      return true;
+    }
+  } else {
+    // Mac Strings.rsrc: "the governor of [1] has set the price ... we cannot afford".
+    g_pSimMgr->GetString(0x274d, 2, &templateText);
+    scanBracketExpressions(g_pSimMgr, &formattedText, static_cast<LPCSTR>(templateText),
+                           static_cast<LPCSTR>(cityName), static_cast<LPCSTR>(costText));
+    g_pUiRuntimeContext->ModalMessage(3, titleText, formattedText, g_ptCivilianOrderModalMessage, 0,
+                                      0);
+  }
+  return false;
+}
+
 // FUNCTION: IMPERIALISM 0x004d3a60
 bool TCivMgr::HandleEngineerConstructionAction(short nTileIndex) {
   TCivUnit* pCiv = this->selectedEntry;
