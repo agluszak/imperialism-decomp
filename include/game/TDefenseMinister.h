@@ -50,8 +50,14 @@ public:
   // +1 to each of its neighbors that CheckTileProspectingDiscoveryCandidate accepts.
   // Caller owns the returned buffer (operator new[]/delete[]).
   virtual unsigned char*
-  BuildTileRingPriorityMapForNationTileList(TLongintList* ownedRegions);    // 0x54 (0x4ecbb0)
-  virtual undefined BuildStrategicTilePriorityHeatmap();                    // 0x58 (0x4ecf20)
+  BuildTileRingPriorityMapForNationTileList(TLongintList* ownedRegions); // 0x54 (0x4ecbb0)
+  // Per-tile strategic priority heatmap (one int per map tile, 0x1950 tiles): for
+  // every tile this nation owns with a qualifying activeFlags1c/gateFlag combination,
+  // adds 300 to the tile itself, 200 to each of its 6 immediate hex neighbors, and 100
+  // to each of the 12 tiles in the radius-2 ring; every unowned tile with a nonzero
+  // adjacencyBits06 gets a flat +100. Caller owns the returned buffer (operator
+  // new[]/delete[]).
+  virtual int* BuildStrategicTilePriorityHeatmap();                         // 0x58 (0x4ecf20)
   virtual undefined BuildHexAreaTileIndexListIntoAllocatedBuffer(char arg); // 0x5c (0x4ed050)
   // One stack arg (RET 0x4 across the base and all five personality overrides).
   // Not a factory despite the old Ghidra 'Create*Instance' names: every body

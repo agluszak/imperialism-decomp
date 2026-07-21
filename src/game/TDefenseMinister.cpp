@@ -359,8 +359,36 @@ TDefenseMinister::BuildTileRingPriorityMapForNationTileList(TLongintList* ownedR
 }
 
 // FUNCTION: IMPERIALISM 0x004ecf20
-undefined TDefenseMinister::BuildStrategicTilePriorityHeatmap() {
-  return 0;
+int* TDefenseMinister::BuildStrategicTilePriorityHeatmap() {
+  short ownNationSlot = ownerContextAt04->nationSlot;
+
+  int* heatmap = new int[0x1950];
+  memset(heatmap, 0, 0x1950 * sizeof(int));
+
+  for (int tile = 0; tile < 0x1950; ++tile) {
+    TTerrainStateRecordView* record = &g_pGlobalMapState->terrainStateTable[tile];
+    if (record->ownerNationTag04 == ownNationSlot) {
+      if ((record->activeFlags1c & 3) != 0 && record->gateFlag != 0) {
+        heatmap[tile] += 300;
+
+        short* ring1 = BuildHexAreaTileIndexList(static_cast<short>(tile), 1);
+        for (int dir = 0; dir < 6; ++dir) {
+          heatmap[ring1[dir]] += 200;
+        }
+        delete[] ring1;
+
+        short* ring2 = BuildHexAreaTileIndexList(static_cast<short>(tile), 2);
+        for (int dir2 = 0; dir2 < 12; ++dir2) {
+          heatmap[ring2[dir2]] += 100;
+        }
+        delete[] ring2;
+      }
+    } else if (record->adjacencyBits06 != 0) {
+      heatmap[tile] += 100;
+    }
+  }
+
+  return heatmap;
 }
 
 // FUNCTION: IMPERIALISM 0x004ed050
