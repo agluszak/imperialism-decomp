@@ -8159,6 +8159,7 @@ address|name|symbol|size|type|prototype|provenance
 659b40|TSortByPriceList::classTSortByPriceList|||global||
 659b58|TIndexAndRankList::classTIndexAndRankList|||global||
 65a468|g_MissionDefaultScore_0065a468|||global||
+65a8f0|g_AttackProvinceMissionReadinessThreshold_0065A8F0|||global||
 65a8fc|g_MissionResourceWeightScale_0065A8FC|||global||
 65a900|g_BlockadePortMissionThreatFloor_0065A900|||global||
 65a904|g_BlockadePortMissionThreatScale_0065A904|||global||
@@ -8169,6 +8170,7 @@ address|name|symbol|size|type|prototype|provenance
 65aa00|g_Recompute_Nation_Order_LookupTable_0065AA00|||global||
 65aa08|g_Recompute_Nation_Order_LookupTable_0065AA08|||global||
 65aa24|g_MissionEmptyResourceWeight_0065AA24|||global||
+65aa48|g_ArmyMissionEligibleUnitStrengthScale_0065AA48|||global||
 65afc0|TProxyGreatPower::classTProxyGreatPower|||global||
 65afd8|THostGreatPower::classTHostGreatPower|||global||
 65aff0|TClientGreatPower::classTClientGreatPower|||global||

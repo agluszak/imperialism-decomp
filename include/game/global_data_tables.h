@@ -940,6 +940,7 @@ extern TUiTextStyleDescriptor g_UiResourceEntryDefaultTextStyle;
 
 // TControlSeaZoneMission.cpp / TDefendProvinceMission.cpp / TNavyMission.cpp —
 // defend-province / mission priority-vector normalization constants.
+extern const float g_AttackProvinceMissionReadinessThreshold_0065A8F0;
 extern const float g_Recompute_Nation_Order_LookupTable_0065A9BC;
 extern const float g_Recompute_Nation_Order_LookupTable_0065A9C4;
 extern const float g_Recompute_Nation_Order_LookupTable_0065A9E8;
@@ -949,6 +950,7 @@ extern double g_Recompute_Nation_Order_LookupTable_0065A9F8;
 extern double g_Recompute_Nation_Order_LookupTable_0065AA00;
 extern double g_Recompute_Nation_Order_LookupTable_0065AA08;
 extern const float g_Recompute_Nation_Order_LookupTable_0065AA20;
+extern const double g_ArmyMissionEligibleUnitStrengthScale_0065AA48;
 extern const float g_MissionResourceWeightScale_0065A8FC;
 extern const float g_BlockadePortMissionThreatFloor_0065A900;
 extern const float g_BlockadePortMissionThreatScale_0065A904;
