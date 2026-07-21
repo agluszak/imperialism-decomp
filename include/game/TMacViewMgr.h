@@ -37,10 +37,9 @@ public:
                                             short nationIndex); // slot 0x10 0x50bc50
   virtual undefined
   RefreshCityProductionDetailPanelAndArrowWidgets(word param_1); // slot 0x11 0x50bea0
-  // Arity corrected against RET-imm evidence (the imported Ghidra prototypes undercounted
-  // the callee-cleaned stack args): RET 0x4 = 1 dword. Body ignores the arg (vestigial).
-  virtual undefined
-  ResolveTurnEventDialogOrFailAndInvokeSlot9C(int unusedArg); // slot 0x12 0x50be30
+  // Resolves the requested turn-event View through the factory registry, opens it through
+  // TView slot 0x27 (vtable byte 0x9c), and returns the resolved View. RET 0x4 = 1 dword.
+  virtual TView* ResolveTurnEventDialogOrFailAndInvokeSlot9C(int dialogId); // slot 0x12 0x50be30
   // RET 0x8 = 2 dwords; body waits on this->field04, args vestigial.
   virtual void DispatchTurnEvent3B8AndWaitForCompletionFlag(int unusedArg1,
                                                             int unusedArg2); // slot 0x13 0x50d310

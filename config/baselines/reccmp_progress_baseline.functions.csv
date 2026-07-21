@@ -152,7 +152,7 @@ address|matching|name
 0x435690|0.9090909090909091|TTradeBookView::`scalar deleting destructor'
 0x435710|0.9090909090909091|TNewspaperView::`scalar deleting destructor'
 0x435760|1.0|TControl::ShallowClone
-0x4357b0|0.5139142799106236|BuildTurnEventDialogUiByCode
+0x4357b0|0.4798337338442554|BuildTurnEventDialogUiByCode
 0x43d590|1.0|TMapPreviewView::TMapPreviewView
 0x43d5c0|0.9090909090909091|TMapPreviewView::`scalar deleting destructor'
 0x43d650|0.9090909090909091|TTwoPicSlider::`scalar deleting destructor'
@@ -188,7 +188,7 @@ address|matching|name
 0x44fbc0|0.2761181434599156|BuildUiResourceTreeByTemplateIdAndBindScreenContext
 0x453800|1.0|TOverlayRadioButton::TOverlayRadioButton
 0x453830|0.9090909090909091|TOverlayRadioButton::`scalar deleting destructor'
-0x4538a0|0.2505841121495327|InitializeGameSetupScreenControlsAndModeTags
+0x4538a0|0.24|InitializeGameSetupScreenControlsAndModeTags
 0x456ba3|0.002366863905325444|BuildDifficultyAndNamesSetupUiResources
 0x45762e|0.00558659217877095|BuildUiResourceTreeWithPlanetListAndCursorEntries_0045762e
 0x457af2|0.0013477088948787063|BuildMainStatsScoreboardAndDoneUiResourceTree
@@ -227,7 +227,7 @@ address|matching|name
 0x460140|0.9090909090909091|TTechHistoryView::`scalar deleting destructor'
 0x4601b0|0.5448594392115503|InitializeTradeScreenBitmapControls
 0x46baa7|0.00322061191626409|BuildTradeBoardDialogUiLayoutVariantB
-0x46fd10|0.2499023818820773|BuildTurnEventDialogResourcesForEvent7DE
+0x46fd10|0.21087314662273476|BuildTurnEventDialogResourcesForEvent7DE
 0x4749a0|0.19512858892366308|BuildUniversityDialogShell
 0x4793c0|1.0|CAmbitDocument::CreateObject
 0x479440|0.5|CAmbitDocument::GetRuntimeClass
@@ -2822,8 +2822,8 @@ address|matching|name
 0x50bad0|0.6616541353383458|TMacViewMgr::RebuildNationClipRegionsAndDispatchMapEvent
 0x50bbc0|0.8888888888888888|TMacViewMgr::OrphanCallChain_C4_I35_0050bbc0
 0x50bc50|0.6026200873362445|TMacViewMgr::SyncSellTaggedChildControlWithNationState
-0x50be30|0.6666666666666666|TMacViewMgr::ResolveTurnEventDialogOrFailAndInvokeSlot9C
-0x50bea0|0.20354384370740572|TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets
+0x50be30|1.0|TMacViewMgr::ResolveTurnEventDialogOrFailAndInvokeSlot9C
+0x50bea0|0.21263062244434347|TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets
 0x50d310|0.5625|TMacViewMgr::DispatchTurnEvent3B8AndWaitForCompletionFlag
 0x50d360|0.46551724137931033|TMacViewMgr::CreateCityBuildingDialogBySlot
 0x50d470|0.3880597014925373|TMacViewMgr::OrphanCallChain_C10_I80_0050d470
@@ -2836,7 +2836,7 @@ address|matching|name
 0x50d920|0.7619047619047619|TMacViewMgr::OrphanCallChain_C1_I10_0050d920
 0x50d950|0.75|TMacViewMgr::MacViewMgrSlot1B
 0x50d9e0|0.1981981981981982|TMacViewMgr::CopySpriteSurfaceToStrideBuffer
-0x50da80|0.2857142857142857|TMacViewMgr::BlitMapOverlayGlyphStrip32x24SkipMask10
+0x50da80|0.30666666666666664|TMacViewMgr::BlitMapOverlayGlyphStrip32x24SkipMask10
 0x50dd40|0.32450331125827814|TMacViewMgr::DrawStrategicMapUnitIcon
 0x50df40|0.2727272727272727|TMacViewMgr::DrawStrategicMapUnitIconOverlay
 0x50e070|0.0|BlitStrategicMapUnitActivityOverlayFrame

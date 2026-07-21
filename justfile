@@ -590,6 +590,16 @@ ui-codegen *args:
 ui-codegen-check:
   uv run python -m tools.ui_codegen --check
 
+[doc('Account for every committed Mac View in the Windows source model')]
+[group('gates')]
+ui-view-coverage *args:
+  uv run python -m tools.workflow.ui_view_coverage {{args}}
+
+[doc('Reject unclassified Mac Views and a stale committed coverage report')]
+[group('gates')]
+ui-view-coverage-check:
+  uv run python -m tools.workflow.ui_view_coverage --check
+
 [doc('Print one scoped Mac View resource from committed UI IR (FILE:ID)')]
 [group('ghidra-inspect')]
 ui-resource-show resource:
@@ -1369,6 +1379,7 @@ agent-rules-gate:
 source-gates:
   just generate
   just ui-codegen-check
+  just ui-view-coverage-check
   just tooling-check
   just vtable-gate
   just antipattern-gate

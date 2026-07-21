@@ -32,7 +32,7 @@ class UiCodegenTests(unittest.TestCase):
 
     def test_committed_manifest_and_resource_ir_validate(self) -> None:
         self.assertEqual(len(self.recipes), 17)
-        self.assertEqual(sum(len(recipe.cases) for recipe in self.recipes), 82)
+        self.assertEqual(sum(len(recipe.cases) for recipe in self.recipes), 85)
         self.assertEqual(
             validate(
                 REPO_ROOT,
@@ -218,6 +218,31 @@ class UiCodegenTests(unittest.TestCase):
         self.assertIn("new TMultiMessagePicture()", case_text)
         self.assertEqual(case_text.count("new TCzechBox()"), 7)
         self.assertIn("evidence 0x0044e466", case_text)
+
+    def test_functional_parity_cases_emit_nonempty_mac_trees_with_provenance(self) -> None:
+        expected = {
+            0x07E5: "Windows request 0x005d57ce",
+            0x03C5: "Windows request 0x0051dd0b",
+            0x0F3D: "Windows request 0x0057e984",
+        }
+        cases = {
+            case.event: (recipe, case)
+            for recipe in self.recipes
+            for case in recipe.cases
+            if case.event in expected
+        }
+
+        self.assertEqual(set(cases), set(expected))
+        for event, evidence in expected.items():
+            recipe, case = cases[event]
+            self.assertIsNotNone(case.resource)
+            self.assertIn(evidence, case.evidence)
+            text = render_factory(
+                recipe, self.views, self.text_resources, self.windows_views
+            )
+            case_text = text[text.index(f"case 0x{event:x}:") :]
+            self.assertIn("// FUNCTIONAL_PARITY:", case_text)
+            self.assertIn("RegisterUiResourceEntry", case_text)
         self.assertNotIn("WINDOWS_ONLY", case_text)
         windows_view_text = (
             REPO_ROOT / "config/ui_factory_windows_views.yml"
@@ -287,7 +312,7 @@ class UiCodegenTests(unittest.TestCase):
                         self.assertLessEqual(end, len(generated_lines))
                         self.assertIn(node["source"], generated_lines[start])
                         node_count += 1
-            self.assertEqual(case_count, 82)
+            self.assertEqual(case_count, 85)
             self.assertGreater(node_count, 1700)
 
 

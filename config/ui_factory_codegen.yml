@@ -65,6 +65,7 @@ functions:
       - {event: 0x07d1, resource: Linger.rsrc:2001}
       - {event: 0x07d2, resource: Linger.rsrc:2002}
       - {event: 0x07e4, resource: Linger.rsrc:2020}
+      - {event: 0x07e5, resource: Linger.rsrc:2021, evidence: "Windows request 0x005d57ce; functional-parity case absent from original builder"}
       - {event: 0x0bb8, resource: Linger.rsrc:3000}
       - {event: 0x0bbd, resource: Linger.rsrc:3005}
       - {event: 0x101a, resource: Linger.rsrc:4122}
@@ -121,6 +122,7 @@ functions:
     cases:
       - {event: 0x03b8, resource: Startup.rsrc:952}
       - {event: 0x03b9, resource: Startup.rsrc:953}
+      - {event: 0x03c5, resource: Startup.rsrc:965, evidence: "Windows request 0x0051dd0b; functional-parity case absent from original builder"}
       - {event: 0x03c6, resource: Startup.rsrc:966}
       - {event: 0x05dc, resource: Startup.rsrc:1500}
       - {event: 0x05dd, resource: Startup.rsrc:1501}
@@ -164,6 +166,7 @@ functions:
     prototype: TView* __cdecl BuildTurnEventDialogResourcesForEvent7DE(CWnd* pHostWindow, int nEventCode)
     cases:
       - {event: 0x07de, resource: Transport.rsrc:2014}
+      - {event: 0x0f3d, resource: Transport.rsrc:3901, evidence: "Windows request 0x0057e984; functional-parity case absent from original builder"}
 
   - address: 0x004749a0
     name: BuildUniversityDialogShell

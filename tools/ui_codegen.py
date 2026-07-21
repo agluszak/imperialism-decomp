@@ -953,6 +953,8 @@ def _render_factory_with_map(
         indent = "  " if len(recipe.cases) == 1 else "    "
         if len(recipe.cases) > 1:
             body.append(f"  case {_hex(case.event)}: {{")
+        if case.evidence and not case.rejected:
+            body.append(f"{indent}// FUNCTIONAL_PARITY: {case.evidence}.")
         if case.resource is not None:
             view = normalize_resource_view(
                 case.resource, views[case.resource], text_resources
@@ -972,6 +974,7 @@ def _render_factory_with_map(
             classes.update(case_classes)
             case_maps[f"0x{case.event:04x}"] = {
                 "source": view.source,
+                "evidence": case.evidence,
                 "nodes": node_map,
             }
         if len(recipe.cases) > 1:

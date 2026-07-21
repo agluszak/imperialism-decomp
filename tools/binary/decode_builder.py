@@ -95,35 +95,188 @@ def _find_equality_jump(insns, start: int):
     return None
 
 
-def extract_cases(insns) -> dict[int, set[int]]:
-    """Map case-body address -> eventCode values, from cmp/je, cmp/jne (incl.
-    cmp-then-range-jump-then-je binary-search ladders) and sub/dec equality
-    ladders on eax."""
+def _immediate(text: str) -> int | None:
+    if not re.fullmatch(r"-?(?:0x)?[0-9a-f]+", text):
+        return None
+    return int(text, 0)
+
+
+def _jump_target(ins) -> int | None:
+    if not ins.op_str.startswith("0x"):
+        return None
+    return int(ins.op_str, 16)
+
+
+def _signed32(value: int) -> int:
+    return value - 0x100000000 if value >= 0x80000000 else value
+
+
+def extract_cases(insns, image: OriginalImage | None = None) -> dict[int, set[int]]:
+    """Map case-body address to normalized event codes.
+
+    Follow only the entry dispatch while EAX is an affine form of the incoming
+    event (``event + offset``).  This preserves the accumulated offset across
+    MSVC's chained SUB/DEC ladders, follows binary-search range branches, and
+    stops at the first case-body call so body-local EAX comparisons cannot be
+    misreported as more cases.
+    """
+    if not insns:
+        return {}
+
     cases: dict[int, set[int]] = {}
-    ladder_base: int | None = None
+
+    # Small one-case factories compare the word parameter in memory and never
+    # load it into EAX (for example 0x0046fd10). Limit this recognition to the
+    # prologue before the first call so body-local stack comparisons are ignored.
     for i, ins in enumerate(insns[:-1]):
-        text = f"{ins.mnemonic} {ins.op_str}"
-        nxt = insns[i + 1]
-        m = re.fullmatch(r"cmp eax, (-?(?:0x)?[0-9a-f]+)", text)
-        if m:
-            value = int(m.group(1), 0)
-            ladder_base = None
-            hit = _find_equality_jump(insns, i + 1)
-            if hit is not None:
-                cases.setdefault(hit[0], set()).add(value)
+        if ins.mnemonic == "call":
+            break
+        match = re.fullmatch(
+            r"word ptr \[esp \+ 0x[0-9a-f]+\], (-?(?:0x)?[0-9a-f]+)",
+            ins.op_str,
+        )
+        if ins.mnemonic != "cmp" or match is None:
             continue
-        m = re.fullmatch(r"sub eax, ((?:0x)?[0-9a-f]+)", text)
-        if m:
-            ladder_base = int(m.group(1), 0)
-            if nxt.mnemonic == "je":
-                cases.setdefault(int(nxt.op_str, 16), set()).add(ladder_base)
-            continue
-        if text == "dec eax" and ladder_base is not None:
-            ladder_base += 1
-            if nxt.mnemonic == "je":
-                cases.setdefault(int(nxt.op_str, 16), set()).add(ladder_base)
-            elif nxt.mnemonic == "jne" and i + 2 < len(insns):
-                cases.setdefault(insns[i + 2].address, set()).add(ladder_base)
+        hit = _find_equality_jump(insns, i + 1)
+        if hit is not None:
+            cases.setdefault(hit[0], set()).add(int(match.group(1), 0))
+
+    address_to_index = {ins.address: index for index, ins in enumerate(insns)}
+    event_load = next(
+        (
+            index
+            for index, ins in enumerate(insns)
+            if ins.mnemonic == "movsx"
+            and re.fullmatch(r"eax, word ptr \[esp \+ 0x[0-9a-f]+\]", ins.op_str)
+        ),
+        None,
+    )
+    start_index = event_load + 1 if event_load is not None else 0
+    worklist: list[tuple[int, int, int | None, int | None, int | None]] = [
+        (start_index, 0, None, None, None)
+    ]
+    visited: set[tuple[int, int, int | None, int | None, int | None]] = set()
+
+    while worklist:
+        index, offset, equal_event, index_maximum, default_target = worklist.pop()
+        while 0 <= index < len(insns):
+            state = (index, offset, equal_event, index_maximum, default_target)
+            if state in visited:
+                break
+            visited.add(state)
+
+            ins = insns[index]
+            mnemonic = ins.mnemonic
+            operands = [part.strip() for part in ins.op_str.split(",", 1)]
+
+            if mnemonic == "cmp" and len(operands) == 2 and operands[0] in ("eax", "ax"):
+                value = _immediate(operands[1])
+                if value is None:
+                    break
+                equal_event = value - offset
+                index_maximum = value if value >= 0 else None
+                index += 1
+                continue
+
+            if mnemonic in ("sub", "add") and len(operands) == 2 and operands[0] == "eax":
+                value = _immediate(operands[1])
+                if value is None:
+                    break
+                value = _signed32(value)
+                offset += -value if mnemonic == "sub" else value
+                equal_event = -offset
+                index_maximum = None
+                default_target = None
+                index += 1
+                continue
+
+            if mnemonic == "dec" and ins.op_str == "eax":
+                offset -= 1
+                equal_event = -offset
+                index_maximum = None
+                default_target = None
+                index += 1
+                continue
+
+            if mnemonic in ("je", "jz"):
+                target = _jump_target(ins)
+                if equal_event is not None and target is not None:
+                    cases.setdefault(target, set()).add(equal_event)
+                equal_event = None
+                index_maximum = None
+                index += 1
+                continue
+
+            if mnemonic in ("jne", "jnz"):
+                target = _jump_target(ins)
+                if equal_event is not None and index + 1 < len(insns):
+                    cases.setdefault(insns[index + 1].address, set()).add(equal_event)
+                if target is not None and target in address_to_index:
+                    worklist.append((address_to_index[target], offset, None, None, None))
+                break
+
+            if mnemonic in _RANGE_JUMPS:
+                target = _jump_target(ins)
+                if target is not None and target in address_to_index:
+                    worklist.append(
+                        (address_to_index[target], offset, equal_event, index_maximum, None)
+                    )
+                if mnemonic in ("ja", "jae") and index_maximum is not None:
+                    default_target = target
+                index += 1
+                continue
+
+            if mnemonic == "jmp":
+                target = _jump_target(ins)
+                if target is not None and target in address_to_index:
+                    index = address_to_index[target]
+                    continue
+                table_match = re.fullmatch(
+                    r"dword ptr \[eax\*4 \+ (0x[0-9a-f]+)\]", ins.op_str
+                )
+                if image is not None and table_match is not None and index_maximum is not None:
+                    table_address = int(table_match.group(1), 16)
+                    raw_targets = struct.unpack(
+                        f"<{index_maximum + 1}I",
+                        image.read_va(table_address, (index_maximum + 1) * 4),
+                    )
+                    for table_index, case_target in enumerate(raw_targets):
+                        if case_target == default_target:
+                            continue
+                        cases.setdefault(case_target, set()).add(table_index - offset)
+                break
+
+            if mnemonic in ("call", "ret"):
+                break
+
+            if mnemonic == "mov" and operands and operands[0] in ("eax", "ax", "al", "ah"):
+                break
+            if mnemonic == "movsx" and operands and operands[0] == "eax":
+                if re.fullmatch(r"word ptr \[esp \+ 0x[0-9a-f]+\]", operands[1]):
+                    offset = 0
+                    equal_event = None
+                    index_maximum = None
+                    default_target = None
+                    index += 1
+                    continue
+                break
+            if mnemonic == "xor" and operands and operands[0] in ("eax", "ax", "al", "ah"):
+                break
+
+            # These instructions preserve the compare flags and event expression.
+            if mnemonic in ("mov", "push", "pop", "nop", "lea"):
+                index += 1
+                continue
+
+            # Unknown arithmetic/tests invalidate the equality relation. Keep
+            # scanning only while EAX itself remains untouched.
+            equal_event = None
+            index_maximum = None
+            default_target = None
+            if operands and operands[0] in ("eax", "ax", "al", "ah"):
+                break
+            index += 1
+
     return cases
 
 
@@ -152,7 +305,7 @@ def main() -> int:
         return f"{name}@{target:#x}" if name else f"sub_{target:x}"
 
     insns = disasm_function(image, start, length)
-    cases = extract_cases(insns)
+    cases = extract_cases(insns, image)
 
     print(f"== {names.get(start, '?')} {start:#x} len {length:#x}: {len(cases)} equality cases ==")
     for target in sorted(cases):

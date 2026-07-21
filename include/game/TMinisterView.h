@@ -123,7 +123,7 @@ public:
   // strategic-map turn-event dialog identified by dialogId. Called after every
   // minister-topic button click (the per-topic ids each HandleEvent override passes
   // are turn-event/help-dialog resource identifiers). 0x4f2ec0.
-  virtual undefined ShowMinisterHelpDialog(int dialogId); // slot 0x6a 0x4f2ec0
+  virtual TView* ShowMinisterHelpDialog(int dialogId); // slot 0x6a 0x4f2ec0
   // Forwards to g_pDisplayMgr->DispatchUiWindowStatusTickForClass99Windows(); called
   // right before a minister dialog is dismissed ('back'/'okay'). 0x4f2ea0.
   virtual undefined NotifyWindowStatusTick(); // slot 0x6b 0x4f2ea0
