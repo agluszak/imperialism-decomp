@@ -40,13 +40,8 @@ public:
   // immediately after the CWnd subobject (CWnd ends at +0x3c in this build).
   TWindow* m_pOwnerWindow;
 
-  // Message handlers (original message map: 14 entries, AFX_MSGMAP_ENTRY table at
-  // 0x0064b5f0, AFX_MSGMAP at 0x0064b5e8 chaining to CWnd's at 0x670868). Still
-  // unported: WM_CTLCOLOR (0x493b70) — needs the
-  // module-library-cache color methods (0x4995c0 arg shape, 0x49ace0, 0x47e930);
-  // WM_CHAR (0x493ce0) — function-static object of the 0x14-byte class with vtable
-  // 0x648590 (ctor 0x4845a0) + cleanup registration; and message 0x36a (0x493d50) —
-  // dispatches slot 0x1a on the unidentified global object at 0x6a1348.
+  // Message handlers (original message map: 13 entries, AFX_MSGMAP_ENTRY table at
+  // 0x0064b5f0, AFX_MSGMAP at 0x0064b5e8 chaining to CWnd's at 0x670868).
 
   // 0x468 — window-state command sent by TWindow (Open
   // sends wParam=0, Close sends wParam=1 — both no-ops here; 2=show,
@@ -66,8 +61,14 @@ public:
   afx_msg void OnClose();
   afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
   afx_msg void OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags);
+  // WM_CTLCOLOR: select the shared indexed palette for native edits and apply the
+  // owning TControl's resource-derived text color.
+  afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor); // 0x00493b70
   afx_msg BOOL OnQueryNewPalette();
   afx_msg void OnPaletteChanged(CWnd* pFocusWnd);
+  afx_msg void OnChar(UINT nChar, UINT nRepCnt, UINT nFlags); // 0x00493ce0
+  // MFC idle-update message: forward lParam to the application OnIdle override.
+  afx_msg LRESULT OnIdleUpdateMsg36A(WPARAM wParam, LPARAM lParam); // 0x00493d50
 
   DECLARE_MESSAGE_MAP()
 };

@@ -3,6 +3,10 @@
 #include "game/TLineData.h"
 #include "game/mfc.h"
 
+class TMapOrderChildLinkNode;
+class TShip;
+class TTaskForce;
+
 // VTABLE: IMPERIALISM 0x0065cde8
 class TShipLine : public TLineData {
 public:
@@ -21,8 +25,11 @@ public:
 
   TShipLine();
 
-  // Original object size is 0x1c (CRuntimeClass m_nObjectSize); the source class ended at 0x10. Trailing 12 byte(s) not yet semantically recovered — declared so sizeof and the recomp's allocation size match the original.
-  int field10;
-  int field14;
-  int field18;
+  // Source ship, its task-force child-link cell (for checkbox state), and the owning
+  // task force used by the row's TShipView event path.
+  TShip* shipNode10;
+  TMapOrderChildLinkNode* childLink14;
+  TTaskForce* taskForce18;
 };
+
+ASSERT_SIZE(TShipLine, 0x1c);

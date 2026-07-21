@@ -5,6 +5,7 @@
 #include "game/TShip.h"
 #include "game/TSimMgr.h"
 #include "game/TTaskForce.h"
+#include "game/TSuperNavyRoster.h"
 #include "game/global_data_tables.h"
 #include "game/navy_order.h"
 #include "game/quickdraw_rendering.h"
@@ -121,4 +122,18 @@ void TMiniShipView::Draw(RECT* rectBuffer) {
 
 // FUNCTION: IMPERIALISM 0x0056a330
 void TMiniShipView::BeginMouseCaptureAndStartRepeatTimer(const CPoint& point, TToolboxEvent* event,
-                                                         CPoint origin) {}
+                                                         CPoint origin) {
+  TSuperNavyRoster* roster = static_cast<TSuperNavyRoster*>(ownerContext);
+  roster->AssertValid();
+
+  TTaskForce* taskForce = shipNode84->ownerOrderEntry0c;
+  if (taskForce != 0) {
+    roster->selectedTaskForce88 = taskForce;
+    roster->selectedZone84 = 0;
+  } else {
+    roster->selectedTaskForce88 = 0;
+    roster->selectedZone84 = shipNode84->field08;
+  }
+
+  TControl::BeginMouseCaptureAndStartRepeatTimer(point, event, origin);
+}

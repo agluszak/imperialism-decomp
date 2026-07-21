@@ -18,8 +18,6 @@ TSuperArmyRoster::~TSuperArmyRoster() {}
 
 IMPLEMENT_DYNCREATE(TSuperArmyRoster, TPageView)
 
-TSuperArmyRoster::TSuperArmyRoster() {}
-
 // FUNCTION: IMPERIALISM 0x004aa540
 void TSuperArmyRoster::PopulateArmyOrderPageEntries(TView* panel, int* offsetLayout,
                                                     int* sizeLayout) {

@@ -440,6 +440,9 @@ extern char g_szCmdSwitchLangQuit_00694254[];
 extern ImperialismApp* g_pImperialismApp;
 extern int DAT_006a1350;
 extern _PNH g_pfnPreviousNewHandler;
+// Read only by ImperialismApp's developer assert command; no writer exists in the retail
+// image, so the command deliberately exercises the nil-pointer assert path.
+extern void* g_pAmbitDeveloperAssertProbe_006A1358;
 extern short g_industryActionCostWeightResCode09[16];
 extern short g_industryActionCostWeightResCode08[16];
 extern short g_industryActionCostWeightResCode10[16];
@@ -508,6 +511,8 @@ extern char g_szCountryNameProfileKey00698AE0[];
 // string pool (GetString group 0x2760, one status line per naval order state);
 // -1 = no status line for that resource type.
 extern const int g_ShipOrderStatusStringIndexByResourceType_0065c7f8[14];
+// Horizontal source offsets for each naval resource type in the 0xdba roster atlas.
+extern const short g_ShipRosterAtlasHorizontalOffsetByResourceType_006985E8[14];
 extern TInfoBarText* g_pCursorControlPanel;
 extern POINT g_ptControlStringModalMessage;
 extern TTradeMgr* g_pNationInteractionStateManager;
