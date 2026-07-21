@@ -2,6 +2,8 @@
 
 #include "game/TMinister.h"
 
+class TLongintList;
+
 // VTABLE: IMPERIALISM 0x006549b0
 class TDefenseMinister : public TMinister {
 public:
@@ -37,10 +39,18 @@ public:
   short DispatchNationStateEventCode10(short nationSlot) override; // 0x0a (0x4ec3d0)
 
   // New virtuals introduced by TDefenseMinister (vtable 0x6549b0, bytes 0x48-0x60).
-  virtual void MinisterSlot12();                                            // 0x48 (0x4ec450)
-  virtual void Call4C();                                                    // 0x4c (0x4ec4c0)
-  virtual void MinisterSlot14();                                            // 0x50 (0x4ec540)
-  virtual undefined BuildTileRingPriorityMapForNationTileList(int* arg);    // 0x54 (0x4ecbb0)
+  virtual void MinisterSlot12(); // 0x48 (0x4ec450)
+  virtual void Call4C();         // 0x4c (0x4ec4c0)
+  virtual void MinisterSlot14(); // 0x50 (0x4ec540)
+  // Builds a per-tile priority map (one byte per map tile, 0x1950 tiles): for every
+  // region in ownedRegions, examines the 6 hex neighbors and scores border proximity
+  // (4 = borders foreign territory, 3 = borders a 4-tile, 2 = borders a 3-tile or a
+  // terrainType00==5 neighbor, 1 = borders a 2-tile), then a final pass adds +3 to
+  // any region with a qualifying activeFlags1c/resourceTypeByEdge[1] combination and
+  // +1 to each of its neighbors that CheckTileProspectingDiscoveryCandidate accepts.
+  // Caller owns the returned buffer (operator new[]/delete[]).
+  virtual unsigned char*
+  BuildTileRingPriorityMapForNationTileList(TLongintList* ownedRegions);    // 0x54 (0x4ecbb0)
   virtual undefined BuildStrategicTilePriorityHeatmap();                    // 0x58 (0x4ecf20)
   virtual undefined BuildHexAreaTileIndexListIntoAllocatedBuffer(char arg); // 0x5c (0x4ed050)
   // One stack arg (RET 0x4 across the base and all five personality overrides).

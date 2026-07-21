@@ -1349,6 +1349,104 @@ void TArmyMgr::CreateTacticalBattleViewAndInitializeBattleSetup(TArmyStack* ourS
   newBattle->StartBattle();
 }
 
+// FUNCTION: IMPERIALISM 0x004a5ca0
+void TArmyMgr::ApplyPostBattleStackOutcomeAndGrowUnitMeters(TArmyStack* ourStack,
+                                                            TArmyStack* enemyStack,
+                                                            int sideWonFlag, int battleSiteIndex) {
+  BuildArmyContextActionRecordsAndDispatchLabel(ourStack, enemyStack, sideWonFlag, battleSiteIndex,
+                                                1);
+
+  if (sideWonFlag != 0) {
+    this->RedistributeUnitOrderQueueToRandomAdjacentRegion(
+        enemyStack, static_cast<short>(battleSiteIndex));
+
+    // Winning stack: settle every unit into its tile (raw head14/cursor18 walk -- no
+    // calls emitted, matching TryCreateTacticalBattleViewForTileArmies's peaceful path).
+    TArmyStackUnitNode* node = ourStack->head14;
+    ourStack->cursor18 = node;
+    TUnit* unit = (node != 0) ? node->unit : 0;
+    while (unit != 0) {
+      unit->VTableSlot10(unit->field_C);
+      unit->SetOrderModeSlot34(0, -1);
+      node = ourStack->cursor18;
+      if (node != 0) {
+        node = node->next;
+        ourStack->cursor18 = node;
+        unit = (node != 0) ? node->unit : 0;
+      } else {
+        unit = 0;
+      }
+    }
+
+    this->perTileOwnerNationCodeCache1c[battleSiteIndex] = ourStack->categoryFlag8;
+
+    // Boosted quality growth for the winner (raw walk, duplicates
+    // TArmyStack::ApplyMeterGrowthToEligibleUnits(true)'s body inline).
+    node = ourStack->head14;
+    ourStack->cursor18 = node;
+    unit = (node != 0) ? node->unit : 0;
+    while (unit != 0) {
+      TMilitaryUnit* milUnit = static_cast<TMilitaryUnit*>(unit);
+      if (milUnit->field_34 > 0) {
+        milUnit->field_38 = static_cast<short>(milUnit->field_38 + 0x23);
+        if (milUnit->field_38 > 0x190) {
+          milUnit->field_38 = 0x190;
+        }
+      }
+      node = ourStack->cursor18;
+      if (node != 0) {
+        node = node->next;
+        ourStack->cursor18 = node;
+        unit = (node != 0) ? node->unit : 0;
+      } else {
+        unit = 0;
+      }
+    }
+
+    // Non-boosted quality growth for the loser (same raw walk, +20 instead of +35).
+    node = enemyStack->head14;
+    enemyStack->cursor18 = node;
+    unit = (node != 0) ? node->unit : 0;
+    while (unit != 0) {
+      TMilitaryUnit* milUnit = static_cast<TMilitaryUnit*>(unit);
+      if (milUnit->field_34 > 0) {
+        milUnit->field_38 = static_cast<short>(milUnit->field_38 + 0x14);
+        if (milUnit->field_38 > 0x190) {
+          milUnit->field_38 = 0x190;
+        }
+      }
+      node = enemyStack->cursor18;
+      if (node != 0) {
+        node = node->next;
+        enemyStack->cursor18 = node;
+        unit = (node != 0) ? node->unit : 0;
+      } else {
+        unit = 0;
+      }
+    }
+
+    this->ProcessPendingArmyStacksForBattleOrRelocation();
+  } else {
+    this->ResetAndRelocateUnitOrderQueue_004a37b0(ourStack);
+
+    // Non-boosted quality growth for the loser (ourStack), via the real accessors --
+    // ground truth emits real calls for this walk (only the growth loops above inline).
+    for (TUnit* unit = ourStack->ResetCursorAndGetHeadUnit(); unit != 0;
+         unit = ourStack->AdvanceCursorAndGetUnit()) {
+      TMilitaryUnit* milUnit = static_cast<TMilitaryUnit*>(unit);
+      if (milUnit->field_34 > 0) {
+        milUnit->field_38 = static_cast<short>(milUnit->field_38 + 0x14);
+        if (milUnit->field_38 > 0x190) {
+          milUnit->field_38 = 0x190;
+        }
+      }
+    }
+
+    enemyStack->ApplyMeterGrowthToEligibleUnits(true);
+    this->ProcessPendingArmyStacksForBattleOrRelocation();
+  }
+}
+
 // FUNCTION: IMPERIALISM 0x004a5ec0
 bool TArmyMgr::BuildMapOrderContextSummaryStringForNation(short cityRecordIndex,
                                                           CString* outDefenderSummary,

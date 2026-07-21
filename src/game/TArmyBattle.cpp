@@ -7,6 +7,7 @@
 #include "game/CIterator.h"
 #include "game/CString.h"
 #include "game/TAssetMgr.h"
+#include "game/TArmyMgr.h"
 #include "game/TArmyPlayer.h"
 #include "game/TArmyStack.h"
 #include "game/TArmyTacUnit.h"
@@ -375,6 +376,22 @@ void TArmyBattle::DeployTacticalUnitToTile(TTacticalUnit* unit, int tileIndex) {
 }
 
 // FUNCTION: IMPERIALISM 0x005a5320
-undefined TArmyBattle::CreateTTacticalBattleInstance(int) {
+undefined TArmyBattle::FinalizeTacticalBattleOutcome(int sideWonFlag) {
+  battleOutcomeCode44 = 1;
+  tacticalPlayer14->AssertValid();
+  tacticalPlayer18->AssertValid();
+  g_pSfxPlaybackSystem->HandleBlinkStateAndScheduleTimerTick(0);
+
+  if (battleView8 != 0) {
+    TTacticalToolbar* toolbar = static_cast<TTacticalToolbar*>(
+        battleView8->ownerContext->ResolveControlByTag(0x746f6f6c /* 'tool' */));
+    toolbar->AssertValid();
+    toolbar->TacticalToolbarSlot74(0);
+    toolbar->UpdateTacticalCurrentUnitControlAndDialogLabel(0);
+  }
+
+  g_pMapContextActionManager->ApplyPostBattleStackOutcomeAndGrowUnitMeters(
+      static_cast<TArmyPlayer*>(tacticalPlayer14)->armyStack28,
+      static_cast<TArmyPlayer*>(tacticalPlayer18)->armyStack28, sideWonFlag, battleSiteIndex38);
   return 0;
 }

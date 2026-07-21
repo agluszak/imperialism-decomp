@@ -113,6 +113,10 @@ public:
   void ConstructCityOrderCapabilityStateVtable();
   void InitializeCityOrderCapabilityStateDefaults();
   void GenerateRandomCapabilityPrioritySlots();
+  // Turn-instruction handler body ("Tech"): unlocks techId globally, then stamps the
+  // completion year + applies the per-nation ability unlock for every AI-ineligible nation
+  // plus forcedNationSlot. 0x5afb10, __thiscall, RET 0x8.
+  void ApplyTechUnlockAndQueueNationAbilityNotices(int techId, int forcedNationSlot);
   void ApplyCityOrderCapabilityUnlockByTechId(int nTechId);
   // Purchase / refund a tech-item slot for a nation (spends/refunds the slot cost, sets or
   // clears the orderCapRows277 state byte + capRowsE4a6 tick word). 0x5b0b30 / 0x5b0bb0.

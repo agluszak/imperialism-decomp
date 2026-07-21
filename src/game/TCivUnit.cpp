@@ -1,6 +1,8 @@
 #include "game/TCivUnit.h"
 #include "game/TUnit.h"
+#include "game/TMapMgr.h"
 #include "game/TStream.h"
+#include "game/global_data_tables.h"
 
 // SYNTHETIC: IMPERIALISM 0x005c2860
 // TCivUnit::CreateObject
@@ -38,8 +40,10 @@ int TCivUnit::IsInIdleSelectionState() {
 
 // FUNCTION: IMPERIALISM 0x005c29f0
 void TCivUnit::SetOrderModeSlot34(int mode, int payload) {
-  (void)mode;
-  (void)payload;
+  const short kRemainingTurnsByMode[14] = {0, 0, 0, 0, 0, 1, 3, 3, 1, 0, 3, 3, 4, 1};
+  field_8 = mode;
+  field_C = static_cast<short>(payload);
+  remainingTurns24 = kRemainingTurnsByMode[mode];
 }
 
 // FUNCTION: IMPERIALISM 0x005c2a90
@@ -57,9 +61,40 @@ void TCivUnit::WriteTo(TStream* stream) {
   stream->WriteBytesSlot78(&remainingTurns24, 2);
 }
 
+// Moves this unit between two tiles' civilian-order chains (terrainStateTable[tile-
+// Index06].firstCivilianOrder20, threaded via nextOnTile/field_10): detaches from the
+// current tile (if any) unlinking via field_10's prev-pointer role, then prepends to
+// the new tile's chain (if pOwnerContext isn't -1 = none).
 // FUNCTION: IMPERIALISM 0x005c2b70
 void TCivUnit::VTableSlot10(int pOwnerContext) {
-  (void)pOwnerContext;
+  short newTileIndex = static_cast<short>(pOwnerContext);
+
+  if (tileIndex06 != -1) {
+    if (field_10 == 0) {
+      g_pGlobalMapState->terrainStateTable[tileIndex06].firstCivilianOrder20 =
+          static_cast<TCivUnit*>(nextOnTile);
+    } else {
+      field_10->nextOnTile = nextOnTile;
+    }
+    if (nextOnTile != 0) {
+      nextOnTile->field_10 = field_10;
+    }
+  }
+
+  if (newTileIndex != -1) {
+    TCivUnit* oldHead = g_pGlobalMapState->terrainStateTable[newTileIndex].firstCivilianOrder20;
+    field_10 = 0;
+    nextOnTile = oldHead;
+    g_pGlobalMapState->terrainStateTable[newTileIndex].firstCivilianOrder20 = this;
+    if (nextOnTile != 0) {
+      nextOnTile->field_10 = this;
+    }
+  } else {
+    field_10 = 0;
+    nextOnTile = 0;
+  }
+
+  tileIndex06 = newTileIndex;
 }
 
 // FUNCTION: IMPERIALISM 0x005c2c40

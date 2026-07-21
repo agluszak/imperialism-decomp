@@ -356,6 +356,9 @@ extern double g_dTacticalCursorArtilleryParityThreshold_00669520;
 extern double g_dTacticalCursorArtillerySuperiorityThreshold_00669528;
 extern double g_dTacticalCursorAssaultRatioThreshold_00669530;
 extern double g_dTacticalCursorRetreatRatioThreshold_00669538;
+extern float g_afTacticalNavyDamageScaleByUnitType[8];
+extern float g_afTacticalNavyBaseAttackPowerByUnitType[8];
+extern float g_fTacticalRetreatQualityWeightDefault_00669EC0;
 extern double g_dTacticalQualityFactorStep_00669EC8;
 extern double g_dTacticalQualityFactorBase_00669ED0;
 extern float g_fTacticalStrengthProjectionScale_00669F0C;
@@ -834,6 +837,8 @@ extern "C" const char s_SourcePathUNavy_006983C8[];
 extern "C" const char s_SourcePathUTacViews_00699FF4[];
 extern "C" const char s_SourcePathUViewMgrMore_0069B740[];
 extern "C" const char s_SourcePathUHelpMgr_00696C58[];
+// Assert source-path string for the UDefenseMinister TU.
+extern "C" const char s_SourcePathUDefenseMinister_00696860[];
 // Assert source-path string for the UArmyMgr TU.
 extern "C" const char s_SourcePathUArmyMgr_0069573C[];
 extern "C" const char s_SourcePathUCityViews_00696650[];
@@ -1772,3 +1777,18 @@ extern short g_offerDeskSelectionIndexTable_00668568[8];
 extern int g_diplomacyPopupLayoutPosition_006a3020[2];
 extern "C" const char s_SourcePathUDiplomacyViews_00696AE0[];
 extern short g_MapOrderResourceRollWeightTable_0064c5d8[6][6];
+// Need-type indices (into TGreatPower::needCurrentByType/needTargetByType), in priority
+// order, that TInteriorMinister::MinisterSlot14 (0x4be520) tops up each turn while the
+// nation still has need-cap headroom (needCapA6 - needsOverCapFlag).
+extern short g_aInteriorMinisterNeedPriorityOrder_00696408[10];
+// Naval combat damage-split ratios (TNavyTacUnit::ApplyTacticalDamageAndDeathState, 0x5a63c0):
+// the two shares a hit's damage is divided between strength4 (hull) and crewStrength38
+// depending on the attacker's ship-panel aim mode.
+extern double g_dNavyDamageSplitRatioA_00669f10; // 0.25
+extern double g_dNavyDamageSplitRatioB_00669f18; // 0.75
+// Naval gunnery hit-chance formula constants (TNavyBattle::EvaluateAndResolveTactical-
+// ActionAgainstTileOccupant, 0x5a5730): hitThreshold = quality*5 + 80/(ratio^3 + 1) where
+// ratio = hexDistance / (range * 0.5).
+extern double g_dNavyHitChanceRangeScale_00669ef8; // 0.5
+extern float g_fNavyHitChanceCubeOffset_00669f00;  // -1.0
+extern float g_fNavyHitChanceNumerator_00669f04;   // 80.0

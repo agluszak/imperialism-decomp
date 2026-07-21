@@ -6,6 +6,7 @@
 #include "game/TTaskForce.h"
 #include "game/global_data_tables.h"
 #include "game/TMinor.h"
+#include "game/TStream.h"
 extern "C" TAdmiral* g_pNavySecondaryOrderListHead = 0;
 
 #include "game/CString.h"
@@ -86,12 +87,50 @@ void TAdmiral::Free() {
 
 // FUNCTION: IMPERIALISM 0x00551670
 void TAdmiral::WriteTo(TStream* stream) {
-  (void)stream;
+  TObject::WriteTo(stream);
+  stream->WriteBytesSlot78(&terrainType, 2);
+  stream->streamSlotAc(&displayName);
+  stream->WriteBytesSlot78(&field_10, 2);
+
+  int index = 0;
+  TShip* node = g_pNavyPrimaryOrderListHead;
+  if (node != 0) {
+    while (node != primaryOrderNode08) {
+      node = node->nextOlder24;
+      ++index;
+      if (node == 0) {
+        break;
+      }
+    }
+  }
+  stream->WriteBytesSlot78(&index, 2);
 }
 
 // FUNCTION: IMPERIALISM 0x00551700
 void TAdmiral::ReadFrom(TStream* stream) {
-  (void)stream;
+  TObject::ReadFrom(stream);
+  stream->ReadBytes(&terrainType, 2);
+  stream->streamSlot70(&displayName, 0x20);
+  stream->ReadBytes(&field_10, 2);
+  short index;
+  stream->ReadBytes(&index, 2);
+
+  TShip* node = g_pNavyPrimaryOrderListHead;
+  while (node != 0 && index != 0) {
+    node = node->nextOlder24;
+    --index;
+  }
+
+  if (primaryOrderNode08 != 0) {
+    primaryOrderNode08->admiralBacklink20 = 0;
+    RecomputeMapOrderOwnerActiveSelection(primaryOrderNode08->ownerOrderEntry0c);
+  }
+
+  primaryOrderNode08 = node;
+  if (node != 0) {
+    node->admiralBacklink20 = this;
+    RecomputeMapOrderOwnerActiveSelection(node->ownerOrderEntry0c);
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x00551850

@@ -338,6 +338,18 @@ public:
   // (g_pMapContextActionManager->GetByteFlagAtOffset8()). 0x4a6dd0.
   unsigned char GetByteFlagAtOffset8();
 
+  // Called by TArmyBattle::FinalizeTacticalBattleOutcome once a tactical battle's
+  // outcome is decided (sideWonFlag = whether ourStack's side won). Dispatches the
+  // army-context report, then applies the win/loss aftermath to both stacks: the
+  // winning stack's units settle into their tile (VTableSlot10 + SetOrderModeSlot34)
+  // while the losing stack is redistributed to a random adjacent region (sideWonFlag
+  // != 0) or relocated back to its origin tile (sideWonFlag == 0, via
+  // ResetAndRelocateUnitOrderQueue_004a37b0); both stacks then grow unit quality
+  // (field_38, capped at 400) -- +35 for the winner, +20 for the loser -- before
+  // re-running the pending-army-stack pass (slot 0x0c). 0x004a5ca0, __thiscall, ret 0x10.
+  void ApplyPostBattleStackOutcomeAndGrowUnitMeters(TArmyStack* ourStack, TArmyStack* enemyStack,
+                                                    int sideWonFlag, int battleSiteIndex);
+
   // Appends the built map-context battle record to mapContextActionRecordList04 (via its
   // sorted-insert virtual, slot 0x0f), clears the record's scratch working fields, and
   // marks flag8. `unusedArg2` is present only for stack-cleanup fidelity (RET 8) -- the

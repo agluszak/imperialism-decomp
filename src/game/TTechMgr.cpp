@@ -209,6 +209,27 @@ void TTechMgr::WriteTo(TStream* stream) {
   (void)stream;
 }
 
+// Turn-instruction handler body ("Tech"): unlocks techId on the city-order capability state,
+// then for every nation that is either AI-ineligible (diplomacyEligibilityA0 == 0) or the
+// forced target nation, stamps this tech's completion year (current quarter tick / 4) and
+// applies its per-nation ability unlock.
+// FUNCTION: IMPERIALISM 0x005afb10
+void TTechMgr::ApplyTechUnlockAndQueueNationAbilityNotices(int techId, int forcedNationSlot) {
+  this->ApplyCityOrderCapabilityUnlockByTechId(techId);
+  TGreatPower** nationCursor = g_apNationStates;
+  int nationSlot = 0;
+  do {
+    TGreatPower* nation = *nationCursor;
+    if (nation->diplomacyEligibilityA0 == 0 || nationSlot == forcedNationSlot) {
+      this->capRowsE4a6[nationSlot].completionYearOffsetByTechId[techId] =
+          static_cast<short>(g_pSimMgr->quarterGateTick2c / 4);
+      this->HandleAbilityUnlock(techId, nationSlot);
+    }
+    ++nationCursor;
+    ++nationSlot;
+  } while (reinterpret_cast<int>(nationCursor) < reinterpret_cast<int>(&g_apNationStates_End));
+}
+
 // Applies a technology-unlock id to the city-order capability state: records the active tech
 // marker, sets the per-tech unlock flag, then toggles the dependent capability flags/selector
 // shorts for the milestone techs. Ids 0x0b/0x16 swap the rule-table pointer at +0x264.

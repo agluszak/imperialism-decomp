@@ -3,6 +3,7 @@
 
 #include <cstring>
 #include <ctime>
+#include <stdio.h>
 #include <stdlib.h>
 
 #include "decomp_types.h"
@@ -23,6 +24,7 @@
 #include "game/TMapMgr.h"
 #include "game/TTechMgr.h"
 #include "game/TCity.h"
+#include "game/TCityInteriorMinister.h"
 #include "game/TCivMgr.h"
 #include "game/TTurnInstructionCursor.h"
 #include "game/TNewsMgr.h"
@@ -1104,6 +1106,57 @@ void TSimMgr::InitializeOrLoadEntryArray14AndClampLimits(bool writeBack) {
   preferenceValues[1] = 0;
 }
 
+// FUNCTION: IMPERIALISM 0x00581510
+void TSimMgr::UpdatePersistentTopTenNationScores() {
+  CString path;
+  CString ownNationName;
+  GetString(0x2737, 0xd, &ownNationName);
+
+  AssignScoresDatPathToSharedString(&path);
+  FILE* file = fopen(path, "rb");
+
+  int scoreValues[10];
+  char scoreRecords[10][0x20];
+  for (int i = 0; i < 10; ++i) {
+    if (file != 0 && fread(&scoreValues[i], 4, 1, file) != 0) {
+      fread(scoreRecords[i], 0x20, 1, file);
+    } else {
+      scoreValues[i] = 0;
+      strcpy(scoreRecords[i], ownNationName);
+    }
+  }
+  if (file != 0) {
+    fclose(file);
+  }
+
+  g_apNationStates[activeNationSlot]->RecomputeNationEconomyAndDiplomacySummaryMetrics();
+  int score = g_apNationStates[activeNationSlot]->economySummaryWeightedTotal95c;
+
+  int insertIndex = 0;
+  while (insertIndex < 10 && score <= scoreValues[insertIndex]) {
+    ++insertIndex;
+  }
+
+  if (insertIndex < 10) {
+    for (int j = 9; j > insertIndex; --j) {
+      scoreValues[j] = scoreValues[j - 1];
+      strcpy(scoreRecords[j], scoreRecords[j - 1]);
+    }
+    scoreValues[insertIndex] = score;
+
+    CString recordName;
+    g_apNationStates[activeNationSlot]->FormatOverlayTerrainLabelText(&recordName);
+    strcpy(scoreRecords[insertIndex], recordName);
+
+    FILE* writeFile = fopen(path, "wb");
+    for (int i = 0; i < 10; ++i) {
+      fwrite(&scoreValues[i], 4, 1, writeFile);
+      fwrite(scoreRecords[i], 0x20, 1, writeFile);
+    }
+    fclose(writeFile);
+  }
+}
+
 // The "Done/advance" turn-flow bootstrap primitive (free __cdecl in the TSimMgr TU): the
 // single writer of g_bTurnFlowBootstrapComplete and the funnel every menu/score-screen advance routes
 // through. eventCode 0x5dd is the "start new game" scenario-setup path: it soft-resets
@@ -1167,6 +1220,54 @@ CString TSimMgr::LoadNormalizedCredentialName(short slot) {
 // FUNCTION: IMPERIALISM 0x00581bc0
 CString TSimMgr::AssignSharedStringFromIndexedSlot7C(short slot) {
   return sharedTextSlots[slot];
+}
+
+// Reads a big-endian 32-bit nation index and three big-endian 16-bit tokens (three labor
+// tier counts). Applies them to the nation's city population summary (baseline/production
+// tier buckets, need totals), kicks off a resource-yield rebuild, and notifies the nation's
+// defense minister (if any) via its slot-0x14 hook.
+// FUNCTION: IMPERIALISM 0x00582120
+void TSimMgr::HandleTurnInstruction_Labo_SetNationLaborTierCounts(void* pInstructionRaw) {
+  STurnInstructionCursor* instruction = static_cast<STurnInstructionCursor*>(pInstructionRaw);
+
+  unsigned int ownerToken = *instruction->tokenCursor;
+  instruction->tokenCursor = instruction->tokenCursor + 1;
+  unsigned char* oraw = reinterpret_cast<unsigned char*>(&ownerToken);
+  unsigned char ot = oraw[0];
+  oraw[0] = oraw[3];
+  oraw[3] = ot;
+  ot = oraw[1];
+  oraw[1] = oraw[2];
+  oraw[2] = ot;
+
+  unsigned int tierAToken = *instruction->tokenCursor;
+  instruction->tokenCursor = instruction->tokenCursor + 1;
+  unsigned char* araw = reinterpret_cast<unsigned char*>(&tierAToken);
+  araw[0] = araw[3];
+  araw[1] = araw[2];
+
+  unsigned int tierBToken = *instruction->tokenCursor;
+  instruction->tokenCursor = instruction->tokenCursor + 1;
+  unsigned char* braw = reinterpret_cast<unsigned char*>(&tierBToken);
+  braw[0] = braw[3];
+  braw[1] = braw[2];
+
+  unsigned int tierCToken = *instruction->tokenCursor;
+  instruction->tokenCursor = instruction->tokenCursor + 1;
+  unsigned char* craw = reinterpret_cast<unsigned char*>(&tierCToken);
+  craw[0] = craw[3];
+  craw[1] = craw[2];
+
+  TGreatPower* nation = g_apNationStates[ownerToken];
+  TCity* city = (nation != nullptr) ? nation->city : nullptr;
+  city->productionSummary1d8->NotifyProductionPresetSlot2C(
+      static_cast<int>(tierAToken), static_cast<int>(tierBToken), static_cast<int>(tierCToken));
+
+  g_apNationStates[ownerToken]->RebuildNationResourceYieldCountersAndDevelopmentTargets();
+
+  if (g_apNationStates[ownerToken]->interiorMinister != nullptr) {
+    g_apNationStates[ownerToken]->interiorMinister->MinisterSlot14();
+  }
 }
 
 // Reads a big-endian 32-bit nation slot, a big-endian short production-order index, and a
@@ -1356,6 +1457,64 @@ void TSimMgr::HandleTurnInstruction_Port_ApplyPortPlacementAndCashBonus(void* pI
   }
 }
 
+// Reads two big-endian 32-bit tokens (forced nation slot, then tech id) and applies the
+// tech unlock via the city-order capability state singleton.
+// FUNCTION: IMPERIALISM 0x00582ad0
+void TSimMgr::HandleTurnInstruction_Tech_ApplyTechUnlockAndNotifyNations(void* pInstructionRaw) {
+  STurnInstructionCursor* instruction = static_cast<STurnInstructionCursor*>(pInstructionRaw);
+  unsigned int* cursor = instruction->tokenCursor;
+
+  unsigned int nationToken = *cursor;
+  cursor = cursor + 1;
+  instruction->tokenCursor = cursor;
+  unsigned char* nraw = reinterpret_cast<unsigned char*>(&nationToken);
+  unsigned char nt = nraw[0];
+  nraw[0] = nraw[3];
+  nraw[3] = nt;
+  nt = nraw[1];
+  nraw[1] = nraw[2];
+  nraw[2] = nt;
+
+  unsigned int techToken = *cursor;
+  cursor = cursor + 1;
+  instruction->tokenCursor = cursor;
+  unsigned char* traw = reinterpret_cast<unsigned char*>(&techToken);
+  unsigned char tt = traw[0];
+  traw[0] = traw[3];
+  traw[3] = tt;
+  tt = traw[1];
+  traw[1] = traw[2];
+  traw[2] = tt;
+
+  g_pCityOrderCapabilityState->ApplyTechUnlockAndQueueNationAbilityNotices(
+      static_cast<int>(techToken), static_cast<int>(nationToken));
+}
+
+// Reads two big-endian 16-bit tokens (metric category, then value) and applies the value
+// via the trade manager's per-nation metric cell setter.
+// FUNCTION: IMPERIALISM 0x00582b70
+void TSimMgr::HandleTurnInstruction_Pric_ApplyDiplomacyPriceEntry(void* pInstructionRaw) {
+  STurnInstructionCursor* instruction = static_cast<STurnInstructionCursor*>(pInstructionRaw);
+  unsigned int* cursor = instruction->tokenCursor;
+
+  unsigned int categoryToken = *cursor;
+  cursor = cursor + 1;
+  instruction->tokenCursor = cursor;
+  unsigned char* craw = reinterpret_cast<unsigned char*>(&categoryToken);
+  craw[0] = craw[3];
+  craw[1] = craw[2];
+
+  unsigned int valueToken = *cursor;
+  cursor = cursor + 1;
+  instruction->tokenCursor = cursor;
+  unsigned char* vraw = reinterpret_cast<unsigned char*>(&valueToken);
+  vraw[0] = vraw[3];
+  vraw[1] = vraw[2];
+
+  g_pNationInteractionStateManager->SetNationMetricCellValueByIndex(
+      static_cast<short>(categoryToken), static_cast<short>(valueToken));
+}
+
 // Reads two big-endian 32-bit nation slots and a big-endian short relation value, then
 // writes the value symmetrically into both [A][B] and [B][A] of the diplomacy manager's
 // side-effect relation matrix.
@@ -1401,6 +1560,38 @@ void TSimMgr::HandleTurnInstruction_Emba_SetEmbassyRelationFlags(void* pInstruct
   diplomacy->relationSideEffectMatrix1402[nationB * 0x17 + nationA] = value;
 }
 
+// Reads a big-endian 32-bit owner-nation index plus two big-endian 16-bit tokens (target
+// nation slot, then reset level) and applies them via the owner's diplomacy-level resetter.
+// FUNCTION: IMPERIALISM 0x00582ce0
+void TSimMgr::HandleTurnInstruction_Subs_ApplyNationSubsidyEntry(void* pInstructionRaw) {
+  STurnInstructionCursor* instruction = static_cast<STurnInstructionCursor*>(pInstructionRaw);
+
+  unsigned int ownerToken = *instruction->tokenCursor;
+  instruction->tokenCursor = instruction->tokenCursor + 1;
+  unsigned char* oraw = reinterpret_cast<unsigned char*>(&ownerToken);
+  unsigned char ot = oraw[0];
+  oraw[0] = oraw[3];
+  oraw[3] = ot;
+  ot = oraw[1];
+  oraw[1] = oraw[2];
+  oraw[2] = ot;
+
+  unsigned int targetToken = *instruction->tokenCursor;
+  instruction->tokenCursor = instruction->tokenCursor + 1;
+  unsigned char* traw = reinterpret_cast<unsigned char*>(&targetToken);
+  traw[0] = traw[3];
+  traw[1] = traw[2];
+
+  unsigned int levelToken = *instruction->tokenCursor;
+  instruction->tokenCursor = instruction->tokenCursor + 1;
+  unsigned char* lraw = reinterpret_cast<unsigned char*>(&levelToken);
+  lraw[0] = lraw[3];
+  lraw[1] = lraw[2];
+
+  g_apNationStates[ownerToken]->ResetDiplomacyLevelForNationSlot12(
+      static_cast<NationSlot>(targetToken), static_cast<int>(levelToken));
+}
+
 // Reads one big-endian short token (the scenario year) and stores it, scaled to quarter
 // ticks (year * 4), into the turn-flow tick field at +0x2c.
 // FUNCTION: IMPERIALISM 0x00582ed0
@@ -1438,6 +1629,58 @@ void TSimMgr::HandleTurnInstruction_Prov_ApplyProvinceAssignmentEntry(void* pIns
 
   g_pGlobalMapState->DispatchFormationEntryActionsAndMaybeCreateTurnEvent12(
       static_cast<short>(cityToken), static_cast<int>(nationToken));
+}
+
+// Reads three big-endian 16-bit tokens (source nation, target nation, then relation
+// score) and applies them via the diplomacy manager's standing-score setter.
+// FUNCTION: IMPERIALISM 0x005831d0
+void TSimMgr::HandleTurnInstruction_Rela_SetNationRelationValue(void* pInstructionRaw) {
+  STurnInstructionCursor* instruction = static_cast<STurnInstructionCursor*>(pInstructionRaw);
+
+  unsigned int sourceToken = *instruction->tokenCursor;
+  instruction->tokenCursor = instruction->tokenCursor + 1;
+  unsigned char* sraw = reinterpret_cast<unsigned char*>(&sourceToken);
+  sraw[0] = sraw[3];
+  sraw[1] = sraw[2];
+
+  unsigned int targetToken = *instruction->tokenCursor;
+  instruction->tokenCursor = instruction->tokenCursor + 1;
+  unsigned char* traw = reinterpret_cast<unsigned char*>(&targetToken);
+  traw[0] = traw[3];
+  traw[1] = traw[2];
+
+  unsigned int scoreToken = *instruction->tokenCursor;
+  instruction->tokenCursor = instruction->tokenCursor + 1;
+  unsigned char* vraw = reinterpret_cast<unsigned char*>(&scoreToken);
+  vraw[0] = vraw[3];
+  vraw[1] = vraw[2];
+
+  g_pDiplomacyTurnStateManager->SetStandingScoreSlot28(
+      static_cast<int>(sourceToken), static_cast<int>(targetToken), static_cast<int>(scoreToken));
+}
+
+// Reads a big-endian 32-bit tile-index token followed by a fixed 64-byte inline C-string
+// (the province name) and applies it via the global map state's shared-label setter.
+// FUNCTION: IMPERIALISM 0x00583270
+void TSimMgr::HandleTurnInstruction_Pnam_AssignProvinceName(void* pInstructionRaw) {
+  STurnInstructionCursor* instruction = static_cast<STurnInstructionCursor*>(pInstructionRaw);
+
+  unsigned int tileToken = *instruction->tokenCursor;
+  const char* rawName = reinterpret_cast<const char*>(instruction->tokenCursor + 1);
+  instruction->tokenCursor = instruction->tokenCursor + 1;
+  unsigned char* traw = reinterpret_cast<unsigned char*>(&tileToken);
+  unsigned char tt = traw[0];
+  traw[0] = traw[3];
+  traw[3] = tt;
+  tt = traw[1];
+  traw[1] = traw[2];
+  traw[2] = tt;
+
+  CString rawText(rawName);
+  instruction->tokenCursor =
+      reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(instruction->tokenCursor) + 0x40);
+  CString name(rawText);
+  g_pGlobalMapState->SetGlobalMapCellSharedLabel(static_cast<int>(tileToken), &name);
 }
 
 // Reads two big-endian 32-bit tokens (nation slot, then cash amount) and writes the amount
@@ -1488,6 +1731,98 @@ void TSimMgr::HandleTurnInstruction_Flag_SetNationFlagAndRefresh(void* pInstruct
   field6a = index;
   g_pUiViewManager->EnsurePictWvDataGobLoadedBySlot(index);
   g_pStrategicMapViewSystem->ReloadBitmap244AndRefreshUiCaches();
+}
+
+// Reads two big-endian 32-bit tokens (priority-slot index, then value) and applies the
+// value (offset by 1) via the city-order capability state's tier setter.
+// FUNCTION: IMPERIALISM 0x00583470
+void TSimMgr::HandleTurnInstruction_Tyer_SetCityOrderCapabilityTierValue(void* pInstructionRaw) {
+  STurnInstructionCursor* instruction = static_cast<STurnInstructionCursor*>(pInstructionRaw);
+
+  unsigned int indexToken = *instruction->tokenCursor;
+  instruction->tokenCursor = instruction->tokenCursor + 1;
+  unsigned char* iraw = reinterpret_cast<unsigned char*>(&indexToken);
+  unsigned char it = iraw[0];
+  iraw[0] = iraw[3];
+  iraw[3] = it;
+  it = iraw[1];
+  iraw[1] = iraw[2];
+  iraw[2] = it;
+
+  unsigned int valueToken = *instruction->tokenCursor;
+  instruction->tokenCursor = instruction->tokenCursor + 1;
+  unsigned char* vraw = reinterpret_cast<unsigned char*>(&valueToken);
+  unsigned char vt = vraw[0];
+  vraw[0] = vraw[3];
+  vraw[3] = vt;
+  vt = vraw[1];
+  vraw[1] = vraw[2];
+  vraw[2] = vt;
+
+  g_pCityOrderCapabilityState->SetCityOrderCapabilityTierScaledValueByIndex(
+      static_cast<int>(indexToken), static_cast<int>(valueToken + 1));
+}
+
+// Reads a big-endian 32-bit owner-nation index and two more big-endian 32-bit tokens (a
+// relation-bar type selector, then a value). If the nation's current need for that type is
+// below the value, kicks off a resource-yield rebuild; type 0/0x14 first remaps to a fixed
+// need slot (1 or 0x13) and tops that need up to its current value before the value used
+// below is replaced by the (now-capped) current reading; finally applies the value (needIndex
+// = the type selector, or the capped current reading for the 0/0x14 case) via the need
+// target/over-cap accumulator.
+// FUNCTION: IMPERIALISM 0x00583510
+void TSimMgr::HandleTurnInstruction_Tbar_SetNationRelationBarValue(void* pInstructionRaw) {
+  STurnInstructionCursor* instruction = static_cast<STurnInstructionCursor*>(pInstructionRaw);
+
+  unsigned int ownerToken = *instruction->tokenCursor;
+  instruction->tokenCursor = instruction->tokenCursor + 1;
+  unsigned char* oraw = reinterpret_cast<unsigned char*>(&ownerToken);
+  unsigned char ot = oraw[0];
+  oraw[0] = oraw[3];
+  oraw[3] = ot;
+  ot = oraw[1];
+  oraw[1] = oraw[2];
+  oraw[2] = ot;
+
+  unsigned int typeToken = *instruction->tokenCursor;
+  instruction->tokenCursor = instruction->tokenCursor + 1;
+  unsigned char* traw = reinterpret_cast<unsigned char*>(&typeToken);
+  unsigned char tt = traw[0];
+  traw[0] = traw[3];
+  traw[3] = tt;
+  tt = traw[1];
+  traw[1] = traw[2];
+  traw[2] = tt;
+
+  unsigned int valueToken = *instruction->tokenCursor;
+  instruction->tokenCursor = instruction->tokenCursor + 1;
+  unsigned char* vraw = reinterpret_cast<unsigned char*>(&valueToken);
+  unsigned char vt = vraw[0];
+  vraw[0] = vraw[3];
+  vraw[3] = vt;
+  vt = vraw[1];
+  vraw[1] = vraw[2];
+  vraw[2] = vt;
+
+  short needIndex = static_cast<short>(typeToken);
+  int value = static_cast<int>(valueToken);
+
+  if (g_apNationStates[ownerToken]->needCurrentByType[needIndex] < value) {
+    g_apNationStates[ownerToken]->RebuildNationResourceYieldCountersAndDevelopmentTargets();
+  }
+
+  if (typeToken == 0 || typeToken == 0x14) {
+    short mappedIndex = (typeToken != 0) ? 0x13 : 1;
+    unsigned short currentRaw = g_apNationStates[ownerToken]->needCurrentByType[needIndex];
+    if (static_cast<short>(currentRaw) < value) {
+      g_apNationStates[ownerToken]->UpdateNeedTargetAndAccumulateOverCap(
+          mappedIndex, static_cast<short>(value - currentRaw));
+      value = static_cast<short>(currentRaw);
+    }
+  }
+
+  g_apNationStates[ownerToken]->UpdateNeedTargetAndAccumulateOverCap(needIndex,
+                                                                     static_cast<short>(value));
 }
 
 // Reads a big-endian 32-bit nation slot, then rebuilds that nation's resource-yield /

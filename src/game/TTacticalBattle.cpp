@@ -5,6 +5,7 @@
 
 #include "game/CIterator.h"
 #include "game/CString.h"
+#include "game/hex_tile_distance.h"
 #include "game/TAssetMgr.h"
 #include "game/TControl.h"
 #include "game/TCountry.h"
@@ -74,7 +75,7 @@ void TTacticalBattle::DeployTacticalUnitToTile(TTacticalUnit* unit, int tileInde
 }
 
 // FUNCTION: IMPERIALISM 0x0059f730
-undefined TTacticalBattle::CreateTTacticalBattleInstance(int) {
+undefined TTacticalBattle::FinalizeTacticalBattleOutcome(int) {
   return 0;
 }
 
@@ -547,6 +548,60 @@ void TTacticalBattle::QueueTacticalEventPacket232A() {
   g_pGlobalUiRootController->DispatchUiSelectionToHandler(command);
 }
 
+// FUNCTION: IMPERIALISM 0x005a0ea0
+void TTacticalBattle::AdvanceToNextTacticalUnitTurnStep() {
+  int position;
+  if (selectedUnit1c == 0) {
+    position = 1;
+  } else {
+    position = 1;
+    CIterator cursor(recordList20);
+    for (TTacticalUnit* unit = static_cast<TTacticalUnit*>(cursor.Reset()); cursor.More();
+         unit = static_cast<TTacticalUnit*>(cursor.Advance())) {
+      unit->AssertValid();
+      if (unit == selectedUnit1c) {
+        break;
+      }
+      ++position;
+    }
+  }
+
+  TTacticalUnit* candidateUnit;
+  for (;;) {
+    int totalCount = recordList20->GetCount();
+    if (position == totalCount) {
+      ++roundCounter74;
+      if (roundCounter74 >= 0x23) {
+        EvaluateTacticalSideStateAndShowBattleSummaryDialog();
+        QueueTacticalEventPacket232A();
+        return;
+      }
+      position = 1;
+    } else {
+      ++position;
+    }
+    candidateUnit = static_cast<TTacticalUnit*>(recordList20->GetEntryByOrdinal(position));
+    candidateUnit->AssertValid();
+    if (candidateUnit->state1c != 3) {
+      break;
+    }
+  }
+
+  candidateUnit->AssertValid();
+  SetCurrentTacticalUnitSelection(candidateUnit, 0);
+  if (candidateUnit->state1c == 1) {
+    ProcessTacticalUnitState1TurnStep(candidateUnit);
+    return;
+  }
+  if (g_awTacticalUnitCategoryCodeBySlot[candidateUnit->unitTypeC] == 8 &&
+      static_cast<TArmyTacUnit*>(candidateUnit)->sapTargetTileIndex40 != -1) {
+    AdvanceOrResetTacticalTileStateRunAndMaybeDispatchPacket(
+        static_cast<TArmyTacUnit*>(candidateUnit));
+    return;
+  }
+  (&tacticalPlayer14)[currentSideC]->AdvanceTacticalTurnPulse();
+}
+
 // Tactical command family: each handler echoes the command to multiplayer when it
 // originates locally (remoteFlag == 0), then applies it to the battle state. The
 // 0x545940 turn-event dispatcher re-enters these with remoteFlag = 1.
@@ -578,6 +633,76 @@ void TTacticalBattle::SetCurrentTacticalUnitSelection(TTacticalUnit* unit, char 
   unit->selectedFlag18 = 1;
   ApplyTacticalDoneSelectionAndRefreshUi(unit);
 }
+
+// FUNCTION: IMPERIALISM 0x005a10e0
+void TTacticalBattle::ProcessTacticalUnitState1TurnStep(TTacticalUnit* unit) {
+  int bestDistance = 999;
+  int originalTile = unit->tileIndex8;
+  BuildTacticalDistanceFieldForSide(unit->side20 == 0);
+
+  int bestTile = originalTile;
+  for (int i = 0; i < tacticalTileCount3c; ++i) {
+    if (tileMoveCostArray24[i] != -1 && tileIntArray30[i] != -1 &&
+        (tileIntArray30[i] < bestDistance ||
+         (tileIntArray30[i] == bestDistance && (rand() & 1) != 0))) {
+      bestDistance = tileIntArray30[i];
+      bestTile = i;
+    }
+  }
+  if (bestTile != unit->tileIndex8) {
+    MoveTacticalUnitTowardTile(unit, bestTile);
+  }
+
+  if (unit->state1c == 1) {
+    TList* sideUnitList =
+        (unit->side20 == 0) ? tacticalPlayer18->unitList4 : tacticalPlayer14->unitList4;
+
+    int nearbyThreshold = 0;
+    CIterator cursor(sideUnitList);
+    for (TTacticalUnit* candidate = static_cast<TTacticalUnit*>(cursor.Reset()); cursor.More();
+         candidate = static_cast<TTacticalUnit*>(cursor.Advance())) {
+      if (candidate->state1c != 0) {
+        continue;
+      }
+      int distance = ComputeHexTileDistanceFromIndices(unit->tileIndex8, candidate->tileIndex8);
+      if (distance < 3) {
+        nearbyThreshold =
+            static_cast<int>(candidate->GetBaseAttackPower() * candidate->strength4 + nearbyThreshold);
+      }
+    }
+
+    int ownThreshold = static_cast<int>(unit->GetBaseAttackPower() * (unit->strength4 * 3));
+    if (nearbyThreshold > ownThreshold) {
+      nearbyThreshold = ownThreshold;
+    }
+
+    bool shouldDestroy = true;
+    if (unit->tileIndex8 != originalTile) {
+      shouldDestroy = false;
+      if (nearbyThreshold > 0) {
+        int remainder = rand() % nearbyThreshold;
+        if (unit->GetBaseAttackPower() * unit->strength4 < static_cast<float>(remainder)) {
+          shouldDestroy = true;
+        }
+      }
+    }
+
+    if (shouldDestroy) {
+      if (battleView8 != 0) {
+        battleView8->PlayTacticalTileEffect(unit->tileIndex8, 0xf8c, 10);
+      }
+      unit->ApplyTacticalDamage(unit->strength4, 0);
+      tileGrid4[unit->tileIndex8].occupant4 = 0;
+      unit->tileIndex8 = -1;
+      if (battleView8 != 0) {
+        battleView8->InvalidateTacticalUnitTileRect(unit);
+      }
+      EvaluateTacticalSideStateAndShowBattleSummaryDialog();
+    }
+  }
+  QueueTacticalEventPacket232A();
+}
+
 // FUNCTION: IMPERIALISM 0x005a1400
 unsigned char TTacticalBattle::HasEnemyUnitOnTilesFlankingHexDirection(int tileIndex,
                                                                        int hexDirection,

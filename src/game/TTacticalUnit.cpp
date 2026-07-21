@@ -1,5 +1,7 @@
 #include "game/TTacticalUnit.h"
 
+#include "game/global_data_tables.h"
+
 // FUNCTION: IMPERIALISM 0x005a5d40
 int TTacticalUnit::GetBaseActionPoints() {
   return 0;
@@ -11,13 +13,13 @@ int TTacticalUnit::GetUnitRange() {
 }
 
 // FUNCTION: IMPERIALISM 0x005a5d80
-undefined TTacticalUnit::OrphanLeaf_NoCall_Ins02_005a5d80() {
-  return 0;
+float TTacticalUnit::GetBaseAttackPower() {
+  return g_fTacticalRetreatQualityWeightDefault_00669EC0;
 }
 
 // FUNCTION: IMPERIALISM 0x005a5da0
-undefined TTacticalUnit::OrphanLeaf_NoCall_Ins02_005a5da0() {
-  return 0;
+float TTacticalUnit::GetDamageScale() {
+  return g_fTacticalRetreatQualityWeightDefault_00669EC0;
 }
 
 // SYNTHETIC: IMPERIALISM 0x005a5dc0

@@ -31,7 +31,9 @@ public:
   virtual void EvaluateAndResolveTacticalActionAgainstTileOccupant(
       TTacticalUnit* attackerUnit, int targetTileIndex) override; // slot 0x10 0x5a5730
   // slot 0x11 TransferTacticalUnitToOpposingSide inherited unchanged (0x5a2700)
-  virtual undefined CreateTTacticalBattleInstance(int) override; // slot 0x12 0x5a5b70
+  // Simply re-resolves the navy order manager's map-order chains; the int param is
+  // unused (RET 0x4 cleans the stack without reading it).
+  virtual undefined FinalizeTacticalBattleOutcome(int) override; // slot 0x12 0x5a5b70
   // slot 0x13 MarkTacticalTileStateQueuedAndMaybeDispatchPacket inherited unchanged (0x5a3190)
   // slot 0x14 AdvanceOrResetTacticalTileStateRunAndMaybeDispatchPacket inherited unchanged (0x5a3210)
   // slot 0x15 ClearTacticalTileStateRunByStride inherited unchanged (0x5a3320)

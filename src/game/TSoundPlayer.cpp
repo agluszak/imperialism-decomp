@@ -202,6 +202,74 @@ void TSoundPlayer::RequestAudioPresetChangeWithDeferredApply(int presetId, bool 
   this->stateByte78 = 1;
 }
 
+// FUNCTION: IMPERIALISM 0x00593a10
+void TSoundPlayer::SetActiveAudioCueAndResetQueue(int cueId, bool flag) {
+  if (cueId == static_cast<short>(this->fieldShort74)) {
+    return;
+  }
+
+  if (this->stateByte80 != 0 && this->stateDword7c == 0) {
+    int pending = this->runtimePeerAt6c->GetSize();
+    if (pending > 0) {
+      this->ResetDualAudioCuePools();
+    }
+    if (this->stateByte78 != 0) {
+      this->ForwardMciCommand808ToDevice();
+      this->stateByte78 = 0;
+      this->fieldShort74 = 0;
+    }
+    this->stateByte80 = 0;
+  } else if (this->fieldShort76 != 0 && this->stateDword7c == 0) {
+    this->RequestAudioPresetChangeWithDeferredApply(this->fieldShort76, false);
+    this->fieldShort76 = 0;
+  } else {
+    int rotating = this->runtimePeerAt6c->GetSize();
+    if (rotating > 0) {
+      DAT_006a4520 = static_cast<short>(DAT_006a4520 + 1);
+      if (DAT_006a4520 > 4) {
+        DAT_006a4520 = 0;
+        if (static_cast<char>(this->ForwardMciStatusCommand814IgnoreFailure()) == 0) {
+          this->SelectAndScheduleRandomAudioCue();
+        }
+      }
+    }
+  }
+
+  this->runtimePeerAt6c->RemoveAll();
+  this->runtimePeerAt70->RemoveAll();
+  this->runtimePeerAt6c->InsertLast(cueId);
+  this->runtimePeerAt70->InsertLast(cueId);
+
+  if (g_pSimMgr->preferenceValues[3] == 0) {
+    return;
+  }
+  if (IsTurnCooldownCounterActiveOrResetFlag() != 0) {
+    return;
+  }
+  if (ReturnTrueStub() == 0) {
+    g_pSimMgr->preferenceValues[3] = 0;
+    return;
+  }
+  if (cueId == static_cast<short>(this->fieldShort74)) {
+    return;
+  }
+
+  if (flag && static_cast<short>(this->fieldShort74) > 0) {
+    this->fieldShort76 = static_cast<unsigned short>(cueId);
+    if (this->stateDword7c != 0) {
+      return;
+    }
+    this->stateDword7c = GetTickCountDiv16();
+    ScheduleTimerSlotCallbackWithInterval(&Function_00593210, 6, 0);
+    return;
+  }
+
+  this->fieldShort74 = static_cast<unsigned short>(cueId);
+  g_cdAudioDevice.ApplyMciPlaybackRangeFromAudioManager(static_cast<short>(cueId));
+  ApplyAuxOutputVolumeFromScalar(static_cast<int>(g_pSimMgr->preferenceValues[3]) << 8);
+  this->stateByte78 = 1;
+}
+
 // FUNCTION: IMPERIALISM 0x00593c10
 void TSoundPlayer::HandleBlinkStateAndScheduleTimerTick(char enabled) {
   int pendingCount = runtimePeerAt6c->GetSize();
