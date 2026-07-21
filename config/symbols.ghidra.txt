@@ -2158,7 +2158,7 @@ TArmyMgr::BuildMapOrderContextSummaryStringForNation 4A5EC0 f
 TArmyMgr::BuildMapHintOverlayTextAndDispatchUiMessages 4A6680 f
 TArmyMgr::ScanMapContextActionEntriesForCodeMatch 4A6D40 f
 TArmyMgr::GetByteFlagAtOffset8 4A6DD0 f
-WrapperFor_FreeHeapBufferIfNotNull_At004a6df0 4A6DF0 f
+TArmyMgr::CleanUpStacks 4A6DF0 f
 TArmyMgr::AppendMapContextActionRecordAndResetWorkingFields 4A6E80 f
 TArmyMgr::TrimExcessNavyOrderSupportAndRebuildOrderBuffer 4A6EF0 f
 ValidateOrderSupportDeltaAndMarkDirectionalOverlays 4A7370 f
@@ -2890,7 +2890,7 @@ branch_adjacent_rail_cost_check 4D3FA6 l
 finalize_engineer_action_and_refresh 4D40DD l
 TCivMgr::RelinkCivilianOrderTileAndInvalidateMapTiles 4D4310 f
 ApplyCompletedCivWorkOrderToMapState 4D4390 f
-ResolveCompetingDeveloperTilePurchaseOrders 4D4740 f
+TCivMgr::ResolveCivilianDisputes 4D4740 f
 TLandSaleEvent::'scalar_deleting_destructor' 4D49A0 f
 DestructLandSaleEventToBase 4D49D0 f
 HandleMapHotkeyW_ResetSelectedActionableObjects 4D49F0 f
@@ -3154,7 +3154,7 @@ TGreatPower::BuildGreatPowerTurnMessageSummaryAndDispatch 4E2B70 f
 TGreatPower::ComputeNationNavyOrderWeightedMovementScore 4E3060 f
 TGreatPower::RecomputeNationComparativePowerMetrics_Impl 4E3220 f
 RecomputeNationEconomyAndDiplomacySummaryMetrics 4E32A0 f
-RefreshMapSystemsAndPrepareOrderExecution_Impl 4E3560 f
+TGreatPower::PayForMilitary 4E3560 f
 TGreatPower::SumDiplomacyGrantEntriesMaskedToValueBits 4E3620 f
 TMinor::CreateObject 4E3660 f
 TMinor::GetRuntimeClass 4E36F0 f
@@ -4652,7 +4652,7 @@ TPoseMessageDialog::GetRuntimeClass 54B0D0 f
 DispatchSimpleTurnEventEsopWithParam 54B0F0 f
 TMultiplayerMgr::RefreshPoseMessageDialogNationSelectionControls 54B1B0 f
 TMultiplayerMgr::DispatchTurnEventCode9WithTwoTextTokens 54B4C0 f
-DispatchTurnEventCode32NoPayload 54B5B0 f
+TMultiplayerMgr::SendTradeBook 54B5B0 f
 TMultiplayerMgr::EmitNationDiplomacyNeedStateSnapshotEvent15 54B5D0 f
 SetNationStatusCodeForSlotOrActiveAndEmitEvent25 54B7E0 f
 TMultiplayerMgr::GetNationStatusCodeForSlotOrActiveNation 54B8C0 f
@@ -5462,10 +5462,10 @@ TSimMgr::EnterOptionalPhase 57D990 f
 TSimMgr::AdvanceGlobalTurnStateMachine 57DA70 f
 TCountry::IsNationProfileInMinorRange100To199 57F0E0 f
 TSimMgr::IsTurnFlowPhaseOutsideRange4To5 57F110 f
-TSimMgr::RefreshEligibleNationTurnPhaseHandlers 57F140 f
-TSimMgr::DispatchEligibleNationTurnCallback158 57F200 f
-TSimMgr::RefreshMapSystemsAndPrepareOrderExecution 57F280 f
-TSimMgr::DispatchTurnEvent2134AndRefreshNationPanels 57F3C0 f
+TSimMgr::DoCityAndTransport 57F140 f
+TSimMgr::DoCivilians 57F200 f
+TSimMgr::DoMilitary 57F280 f
+TSimMgr::DoTrade 57F3C0 f
 TSimMgr::ReturnZeroSlot6c 57F490 f
 TSimMgr::SetFlags 57F4B0 f
 TSimMgr::TestTurnFlowStatusFlagMask 57F4D0 f
@@ -5483,7 +5483,7 @@ AppendInterNationEventSummaryTextEntry_Impl 580280 f
 TResizableByteSink::AppendByteToResizableBuffer 580460 f
 ExpandBracketMappedStringToSinkCallback 5804F0 f
 TSimMgr::GetString 580760 f
-TSimMgr::FormatDiplomacyNoticeTextByPolicyOrGrantCode 580790 f
+TSimMgr::DiplomacyNoticeString 580790 f
 TSimMgr::GetNumGPs 5811E0 f
 TSimMgr::ReduceNumGPs 581200 f
 TSimMgr::GetNumCountries 581240 f
@@ -8231,7 +8231,7 @@ CWinApp::HideApplication 61846B f
 CWinApp::DoWaitCursor 61849D f
 CWinApp::EnableModeless 6184FC f
 CWinApp::DoMessageBox 61852A f
-?AfxMessageBox@@YGHPBDII@Z 6185E4 f
+AfxMessageBox 6185E4 f
 AfxMessageBox 618605 f
 CWinApp::SaveAllModified 6186A4 f
 CWinApp::AddToRecentFileList 6186B7 f

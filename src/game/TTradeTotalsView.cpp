@@ -64,8 +64,8 @@ void TTradeTotalsView::ApplyRectSlot110(RECT* rectBuffer) {
   g_pSimMgr->GetString(0x2740, 0x1d, &strA);
   SetQuickDrawTextOriginWithContextOffset(8, 0x36);
   DrawTextWithCachedQuickDrawStyleState(&strA);
-  g_pSimMgr->FormatIntegerString(-nation->pendingAidTotal, &strA);
-  SetQuickDrawTextOriginWithContextOffset(nation->pendingAidTotal <= 0 ? 0x80 : 0x7c, 0x36);
+  g_pSimMgr->FormatIntegerString(-nation->militaryExpenses960, &strA);
+  SetQuickDrawTextOriginWithContextOffset(nation->militaryExpenses960 <= 0 ? 0x80 : 0x7c, 0x36);
   DrawTextWithCachedQuickDrawStyleState(&strA);
 
   g_pSimMgr->GetString(0x2740, 0x1a, &strA);

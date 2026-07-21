@@ -22,6 +22,15 @@ struct GameSetup {
 
 ASSERT_SIZE(GameSetup, 0x3e);
 
+// Mac oracle: DiplomacyNotice. Windows consumes this exact two-short payload when
+// formatting the turn's diplomacy-notice text.
+struct DiplomacyNotice {
+  short policyOrGrantCode;
+  short nationSlot;
+};
+
+ASSERT_SIZE(DiplomacyNotice, 4);
+
 // TSimMgr — the global turn-flow / simulation manager (historically reached through the
 // `g_pSimMgr` singleton @ 0x6a20f8; it also owns the UI string/format helpers,
 // which is why callers treat it as a "localization table"). It drives the per-turn state
@@ -62,16 +71,16 @@ public:
   virtual void StartNextPhase(); // 0x44  0x0057d970
   // Mac oracle: EnterOptionalPhase(eGamePhaseNewStyle). The Windows phase enum is not
   // yet named, so retain its ABI-equivalent int representation.
-  virtual void EnterOptionalPhase(int gamePhase);             // 0x48  0x0057d990
-  virtual void AdvanceGlobalTurnStateMachine();               // 0x4c  0x0057da70
-  virtual int IsTurnFlowPhaseOutsideRange4To5();              // 0x50  0x0057f110
-  virtual void RefreshEligibleNationTurnPhaseHandlers();      // 0x54  0x0057f140
-  virtual void DispatchEligibleNationTurnCallback158();       // 0x58  0x0057f200
-  virtual void RefreshMapSystemsAndPrepareOrderExecution();   // 0x5c  0x0057f280
-  virtual void DispatchTurnEvent2134AndRefreshNationPanels(); // 0x60  0x0057f3c0
-  virtual int AreAllActiveNationsReady();                     // 0x64  0x0057f4f0
-  virtual void ClearActiveNationReadyFlags();                 // 0x68  0x0057f530
-  virtual int ReturnZeroSlot6c();                             // 0x6c  0x0057f490
+  virtual void EnterOptionalPhase(int gamePhase); // 0x48  0x0057d990
+  virtual void AdvanceGlobalTurnStateMachine();   // 0x4c  0x0057da70
+  virtual int IsTurnFlowPhaseOutsideRange4To5();  // 0x50  0x0057f110
+  virtual void DoCityAndTransport();              // 0x54  0x0057f140, Mac oracle
+  virtual void DoCivilians();                     // 0x58  0x0057f200, Mac oracle
+  virtual void DoMilitary();                      // 0x5c  0x0057f280, Mac oracle
+  virtual void DoTrade();                         // 0x60  0x0057f3c0, Mac oracle
+  virtual int AreAllActiveNationsReady();         // 0x64  0x0057f4f0
+  virtual void ClearActiveNationReadyFlags();     // 0x68  0x0057f530
+  virtual int ReturnZeroSlot6c();                 // 0x6c  0x0057f490
   // Mac oracle: SetFlags(short). Windows reads and merges the full pushed dword.
   virtual void SetFlags(unsigned int flags);                        // 0x70  0x0057f4b0
   virtual void FormatIntegerString(int value, CString* destString); // 0x74  0x0057f5b0
@@ -88,8 +97,8 @@ public:
   // Return a by-value copy of sharedTextSlots[slot] (the copy-constructed hidden-return
   // sibling of LoadNormalizedCredentialName). 0x00581bc0.
   CString AssignSharedStringFromIndexedSlot7C(short slot);
-  virtual void FormatDiplomacyNoticeTextByPolicyOrGrantCode(CString* dest,
-                                                            short* codes); // 0x88 0x00580790
+  virtual CString
+  DiplomacyNoticeString(const DiplomacyNotice* notice); // 0x88 0x00580790, Mac oracle
 
   // 0x57f4d0 — out-of-line in the original build; do not define in-class or MSVC
   // inlines it at every callsite and mismatches all 11 original call instructions.

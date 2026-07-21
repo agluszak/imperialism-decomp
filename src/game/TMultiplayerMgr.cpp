@@ -2842,6 +2842,11 @@ void TMultiplayerMgr::DispatchTurnEventCode9WithTwoTextTokens(int reasonCode, in
   g_pNetMgr006a6014->Send(&packet, 0);
 }
 
+// FUNCTION: IMPERIALISM 0x0054b5b0
+void TMultiplayerMgr::SendTradeBook() {
+  DispatchTurnEventPacketWithCodeAndPayloadBuffer(0x32, -2, 0);
+}
+
 // FUNCTION: IMPERIALISM 0x0054b5d0
 void TMultiplayerMgr::EmitNationDiplomacyNeedStateSnapshotEvent15(char broadcastFlag,
                                                                   int nationSlot) {
