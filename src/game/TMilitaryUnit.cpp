@@ -4,6 +4,7 @@
 #include "game/TAdmiral.h"
 #include "game/TCountry.h"
 #include "game/TGreatPower.h"
+#include "game/TMission.h"
 #include "game/TTechMgr.h"
 #include "game/TStream.h"
 #include "game/global_data_tables.h"
@@ -122,8 +123,19 @@ void TMilitaryUnit::CopyUnitCurrentTileIntoOrderTargets() {
 }
 
 // FUNCTION: IMPERIALISM 0x005c31c0
-void TMilitaryUnit::DetachUnitOrderFromOwnerAndReset() {}
+void TMilitaryUnit::DetachUnitOrderFromOwnerAndReset() {
+  if (ownerMission40 != 0) {
+    ownerMission40->NoOpSlot88(this, 1);
+  }
+  VTableSlot10(-1);
+  CopyUnitCurrentTileIntoOrderTargets();
+}
 
+// TODO(big-function): moves this unit between two regions' priority-ordered
+// stationed-unit chains (cityScoreTable[region]+0x98, a doubly-linked list via
+// TUnit::field_10/nextOnTile ordered by g_awTacticalUnitCategoryCodeBySlot-style
+// priority at 0x695528). Flagged as an in-progress investigation; left as a stub
+// rather than a rushed/unverified port.
 // FUNCTION: IMPERIALISM 0x005c3200
 void TMilitaryUnit::VTableSlot10(int pOwnerContext) {
   (void)pOwnerContext;
