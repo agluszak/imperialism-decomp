@@ -258,7 +258,58 @@ void TTaskForce::RemoveTaskForceOrderNodesByNationAndClearSelectionState(int nat
 
 // FUNCTION: IMPERIALISM 0x00552b90
 void TTaskForce::WriteTo(TStream* stream) {
-  (void)stream;
+  TObject::WriteTo(stream);
+  stream->WriteBytesSlot78(&order_type, 4);
+  stream->WriteBytesSlot78(&attachment, 4);
+
+  short ownerOrdinal;
+  if (attachment == 5) {
+    short index = 0;
+    while (&g_pGlobalMapState->cityScoreTable[index] != owner.asCityTarget && index < 0x180) {
+      ++index;
+    }
+    ownerOrdinal = index;
+  } else {
+    ownerOrdinal = owner.asZone->GetContextOrdinalOrInvalid();
+  }
+  stream->WriteBytesSlot78(&ownerOrdinal, 2);
+
+  short contextOrdinal = contextAnchor->GetContextOrdinalOrInvalid();
+  stream->WriteBytesSlot78(&contextOrdinal, 2);
+
+  stream->WriteBytesSlot78(&required_count, 2);
+  stream->WriteBytesSlot78(&eliminatedFlag26, 1);
+  stream->WriteBytesSlot78(&tiebreak_strength, 2);
+
+  int childCount = 0;
+  TMapOrderChildLinkNode* link = childOrderList;
+  if (link != 0) {
+    do {
+      ++childCount;
+      link = link->next;
+    } while (link != 0);
+  }
+  stream->WriteBytesSlot78(&childCount, 2);
+
+  link = childOrderList;
+  while (link != 0) {
+    short shipIndex = 0;
+    TShip* candidate = g_pNavyPrimaryOrderListHead;
+    TShip* target = static_cast<TShip*>(link->payload);
+    if (candidate != 0) {
+      while (candidate != target) {
+        candidate = candidate->nextOlder24;
+        ++shipIndex;
+        if (candidate == 0) {
+          break;
+        }
+      }
+    }
+    stream->WriteBytesSlot78(&shipIndex, 2);
+    short activeFlag = link->active;
+    stream->WriteBytesSlot78(&activeFlag, 2);
+    link = link->next;
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x00552d10

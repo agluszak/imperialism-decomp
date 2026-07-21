@@ -1,8 +1,12 @@
 #include "game/TUnitOrder.h"
 
+#include <string.h>
+
 #include "game/CString.h"
+#include "game/TCity.h"
 #include "game/TCivUnit.h"
 #include "game/TSimMgr.h"
+#include "game/TStream.h"
 #include "game/global_data_tables.h"
 
 // SYNTHETIC: IMPERIALISM 0x004b6f20
@@ -21,9 +25,25 @@ TUnitOrder::~TUnitOrder() {}
 
 // FUNCTION: IMPERIALISM 0x004b6fe0
 void TUnitOrder::InitializeCityRecruitmentOrderContext(
-    void* pCityState, short nEntryId, short nPrimaryInputResourceId, short nPrimaryInputPerUnit,
+    TCity* city, short nEntryId, short nPrimaryInputResourceId, short nPrimaryInputPerUnit,
     short nSecondaryInputResourceId, short nSecondaryInputPerUnit, short nCashCostPerUnit,
-    short nWorkforceMode, byte bSpecialistMode) {}
+    short nWorkforceMode, byte bSpecialistMode) {
+  cityField08 = city;
+  summaryField0c = city->productionSummary1d8;
+  resourceTypeIndex48 = nEntryId;
+  quantityField04 = 0;
+  memset(trackingSlots10, 0, sizeof(trackingSlots10));
+  primaryInputResourceId = nPrimaryInputResourceId;
+  primaryInputPerUnit = nPrimaryInputPerUnit;
+  secondaryInputResourceId = nSecondaryInputResourceId;
+  secondaryInputPerUnit = nSecondaryInputPerUnit;
+  accumulatedValue = 0;
+  cashCostPerUnit = nCashCostPerUnit;
+  field40 = 0;
+  field3e = 0;
+  workforceMode = nWorkforceMode;
+  specialistMode = bSpecialistMode;
+}
 
 // FUNCTION: IMPERIALISM 0x004b7080
 short TUnitOrder::MaxOrder() {
@@ -120,7 +140,37 @@ void TUnitOrder::SetOrderCostProfile(short resourceTypeIndex, short nPrimaryInpu
 }
 
 // FUNCTION: IMPERIALISM 0x004b7850
-void TUnitOrder::WriteTo(TStream* stream) {}
+void TUnitOrder::WriteTo(TStream* stream) {
+  TObject::WriteTo(stream);
+  stream->WriteBytesSlot78(&resourceTypeIndex48, 2);
+  stream->WriteBytesSlot78(&quantityField04, 2);
+  stream->WriteBytesSlot78(&field40, 2);
+  stream->WriteBytesSlot78(&resourceTypeIndex48, 2);
+  stream->WriteBytesSlot78(trackingSlots10, 0x2e);
+  stream->WriteBytesSlot78(&accumulatedValue, 4);
+  stream->WriteBytesSlot78(&primaryInputResourceId, 2);
+  stream->WriteBytesSlot78(&secondaryInputResourceId, 2);
+  stream->WriteBytesSlot78(&primaryInputPerUnit, 2);
+  stream->WriteBytesSlot78(&secondaryInputPerUnit, 2);
+  stream->WriteBytesSlot78(&cashCostPerUnit, 2);
+  stream->WriteBytesSlot78(&workforceMode, 2);
+  stream->WriteBytesSlot78(&specialistMode, 1);
+}
 
 // FUNCTION: IMPERIALISM 0x004b7920
-void TUnitOrder::ReadFrom(TStream* stream) {}
+void TUnitOrder::ReadFrom(TStream* stream) {
+  TObject::ReadFrom(stream);
+  stream->ReadBytes(&resourceTypeIndex48, 2);
+  stream->ReadBytes(&quantityField04, 2);
+  stream->ReadBytes(&field40, 2);
+  stream->ReadBytes(&resourceTypeIndex48, 2);
+  stream->ReadBytes(trackingSlots10, 0x2e);
+  stream->ReadBytes(&accumulatedValue, 4);
+  stream->ReadBytes(&primaryInputResourceId, 2);
+  stream->ReadBytes(&secondaryInputResourceId, 2);
+  stream->ReadBytes(&primaryInputPerUnit, 2);
+  stream->ReadBytes(&secondaryInputPerUnit, 2);
+  stream->ReadBytes(&cashCostPerUnit, 2);
+  stream->ReadBytes(&workforceMode, 2);
+  stream->ReadBytes(&specialistMode, 1);
+}

@@ -1297,6 +1297,9 @@ extern "C" const char s_SourcePathUTacViews_00699FF4[] = "D:\\Ambit\\Cross\\UTac
 extern "C" const char s_SourcePathUViewMgrMore_0069B740[] = "D:\\Ambit\\Cross\\UViewMgr.more.cpp";
 // GLOBAL: IMPERIALISM 0x00696c58
 extern "C" const char s_SourcePathUHelpMgr_00696C58[] = "D:\\Ambit\\Cross\\UHelpMgr.cpp";
+// GLOBAL: IMPERIALISM 0x00696860
+extern "C" const char s_SourcePathUDefenseMinister_00696860[] =
+    "D:\\Ambit\\Cross\\UDefenseMinister.cpp";
 // GLOBAL: IMPERIALISM 0x0069573c
 extern "C" const char s_SourcePathUArmyMgr_0069573C[] = "D:\\Ambit\\Cross\\UArmyMgr.cpp";
 extern "C" const char s_SourcePathUCityViews_00696650[] = "D:\\Ambit\\Cross\\UCityViews.cpp";
@@ -1693,6 +1696,22 @@ double g_dTacticalCursorArtillerySuperiorityThreshold_00669528 = 1.8;
 double g_dTacticalCursorAssaultRatioThreshold_00669530 = 2.5;
 // GLOBAL: IMPERIALISM 0x00669538
 double g_dTacticalCursorRetreatRatioThreshold_00669538 = 0.8;
+// Base-class default for TTacticalUnit::GetBaseAttackPower/GetDamageScale; derived unit
+// types (TArmyTacUnit/TNavyTacUnit) override with real per-unit-type table lookups.
+// KNOWN RESIDUAL: this value is genuinely 0.0f in the original. A zero-valued scalar
+// global lands in .bss under this toolchain, which just datacmp flags as
+// "(uninitialized)" against the original's on-disk 0.0 -- a data-section placement
+// quirk, not a source defect (see the data-modeling skill's BSS field note). Tried and
+// rejected: a literal `return 0.0f;` (moves the constant into the compiler's
+// CRuntimeClass structure instead, a real call-target mismatch, strictly worse) and a
+// raw `reinterpret_cast<const float*>(0x00669ec0)` address read (same established
+// technique as TDefendProvinceMission.cpp's p_neg_one_/p_1_0_ locals, but reccmp still
+// can't resolve the bare address to a clean symbol here). This named-global form is the
+// only one of the three giving a 100% exact match on all four affected functions
+// (TTacticalUnit/TArmyTacUnit/TNavyTacUnit x2); the residual is isolated to
+// just datacmp-gate, which needs a maintainer-approved baseline update to clear.
+// GLOBAL: IMPERIALISM 0x00669ec0
+float g_fTacticalRetreatQualityWeightDefault_00669EC0 = 0.0f;
 // GLOBAL: IMPERIALISM 0x00669ec8
 double g_dTacticalQualityFactorStep_00669EC8 = -0.1;
 // GLOBAL: IMPERIALISM 0x00669ed0
@@ -1768,6 +1787,16 @@ float g_afTacticalDamageScaleByUnitType[30] = {
     0.0025f, 0.0015f, 0.002f,  0.002f,  0.0015f, 0.002f,  0.004f, 0.005f,  0.0025f, 0.0015f,
     0.0015f, 0.0015f, 0.0015f, 0.002f,  0.003f,  0.0035f, 0.001f, 0.0005f, 0.0005f, 0.0005f,
     0.001f,  0.0005f, 0.0005f, 0.0005f, 0.003f,  0.0025f, 0.001f, 0.002f,  0.0015f, 0.0005f};
+
+// Incoming-damage scale per defender navy unit type (.rdata floats).
+// GLOBAL: IMPERIALISM 0x00669d28
+float g_afTacticalNavyDamageScaleByUnitType[8] = {0.045f, 0.04f,  0.04f,  0.022f,
+                                                  0.02f,  0.025f, 0.015f, 0.022f};
+
+// Base attack power per navy unit type (.rdata floats).
+// GLOBAL: IMPERIALISM 0x00669d48
+float g_afTacticalNavyBaseAttackPowerByUnitType[8] = {3.0f, 3.5f, 4.0f,  4.0f,
+                                                      8.0f, 8.0f, 15.0f, 15.0f};
 
 // Attack-power terrain modifier [category * 5 + tile terrainType0] (.rdata floats).
 // GLOBAL: IMPERIALISM 0x00669ac8
@@ -3262,3 +3291,18 @@ short g_MapOrderResourceRollWeightTable_0064c5d8[6][6] = {
     {50, 20, 30, 40, 30, 30}, {50, 20, 30, 50, 30, 20}, {40, 35, 25, 55, 30, 15},
     {30, 50, 20, 65, 20, 15}, {20, 65, 15, 70, 20, 10}, {10, 80, 10, 80, 10, 10},
 };
+
+// GLOBAL: IMPERIALISM 0x00696408
+short g_aInteriorMinisterNeedPriorityOrder_00696408[10] = {17, 18, 20, 19, 2, 3, 4, 0, 1, 5};
+
+// GLOBAL: IMPERIALISM 0x00669f10
+double g_dNavyDamageSplitRatioA_00669f10 = 0.25;
+// GLOBAL: IMPERIALISM 0x00669f18
+double g_dNavyDamageSplitRatioB_00669f18 = 0.75;
+
+// GLOBAL: IMPERIALISM 0x00669ef8
+double g_dNavyHitChanceRangeScale_00669ef8 = 0.5;
+// GLOBAL: IMPERIALISM 0x00669f00
+float g_fNavyHitChanceCubeOffset_00669f00 = -1.0f;
+// GLOBAL: IMPERIALISM 0x00669f04
+float g_fNavyHitChanceNumerator_00669f04 = 80.0f;

@@ -53,7 +53,9 @@ public:
   unsigned char pad04[0x08 - 0x04];
   short fieldAt8; // +0x08 — snapshotted by the turn-event-0x2c packet
   unsigned char pad0a[2];
-  int fieldAtC;                                 // +0x0c — snapshotted by the turn-event-0x2c packet
+  // +0x0c — snapshotted by the turn-event-0x2c packet. Genuinely float: written via FSTP in
+  // OrphanLeaf_NoCall_Ins47_004b5dc0 (0x4b5dc0), not an int.
+  float fieldAtC;
   TPopulationMetricBucket* baselineSlots10;     // +0x10
   TPopulationMetricBucket* productionSlots14;   // +0x14
   TPopulationMetricBucket* pendingDeltaSlots18; // +0x18

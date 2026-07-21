@@ -72,7 +72,7 @@ struct TurnEvent2CPacket : NetMessage {
   int orderAccumulatedValues[0x17]; // +0x110
   short popFieldAt8;                // +0x16c
   unsigned char pad16e[2];
-  int popFieldAtC;         // +0x170
+  float popFieldAtC;       // +0x170 — mirrors TPopulationMgr::fieldAtC (genuinely float)
   short popStockLevel;     // +0x174
   short popExtraAt1e;      // +0x176
   short popFieldAt20;      // +0x178

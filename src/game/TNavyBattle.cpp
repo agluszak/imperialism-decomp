@@ -1,10 +1,16 @@
 #include "game/TNavyBattle.h"
 
+#include "game/TNavyMgr.h"
+#include "game/TNavyPlayer.h"
+#include "game/TNavyTacUnit.h"
 #include "game/TTacticalBattleView.h"
 #include "game/TTacticalPlayer.h"
 #include "game/TTacticalToolbar.h"
 #include "game/TTacticalUnit.h"
+#include "game/global_data_tables.h"
 #include "game/ui_control_tags.h"
+
+#include <stdlib.h>
 // SYNTHETIC: IMPERIALISM 0x005a5480
 // TNavyBattle::CreateObject
 
@@ -80,11 +86,74 @@ void TNavyBattle::DeployTacticalUnitToTile(TTacticalUnit* unit, int tileIndex) {
   (&tacticalPlayer14)[currentSideC]->StartBattle();
 }
 
+// Resolves a naval gun action against the target tile's occupant: computes the hex
+// distance to the attacker, derives a hit-chance threshold from the attacker's quality,
+// range, and that distance, plays the muzzle-flash effect at the attacker's tile, then
+// rolls against the threshold. On a hit, applies scaled damage via
+// TNavyTacUnit::ApplyTacticalDamageAndDeathState (damage mode = the attacker side's
+// ship-panel toggle), invalidates the defender's tile, and if destroyed clears it from
+// the grid and plays the sinking effect; on a miss, plays the splash effect instead.
 // FUNCTION: IMPERIALISM 0x005a5730
 void TNavyBattle::EvaluateAndResolveTacticalActionAgainstTileOccupant(TTacticalUnit* attackerUnit,
                                                                       int targetTileIndex) {
-  (void)attackerUnit;
-  (void)targetTileIndex;
+  TNavyTacUnit* defenderUnit = static_cast<TNavyTacUnit*>(tileGrid4[targetTileIndex].occupant4);
+  defenderUnit->AssertValid();
+
+  int attackerRow = attackerUnit->tileIndex8 / 29;
+  int attackerX = (attackerRow & 1) + attackerUnit->tileIndex8 % 29 * 2;
+  unsigned int targetRow;
+  int targetX;
+  ConvertHexTileIndexToRowAndDoubleColumn(targetTileIndex, &targetRow, &targetX);
+  if (targetX < attackerX) {
+    targetX = attackerX * 2 - targetX;
+  }
+  int targetRowSigned = static_cast<int>(targetRow);
+  if (targetRowSigned < attackerRow) {
+    targetRowSigned = attackerRow * 2 - targetRowSigned;
+  }
+  int rowDelta = targetRowSigned - attackerRow;
+  int extraColumns = targetX - rowDelta - attackerX;
+  int hexDistance = (extraColumns > 0) ? rowDelta + extraColumns / 2 : rowDelta;
+
+  int range = attackerUnit->GetUnitRange();
+  double ratio = hexDistance / (range * g_dNavyHitChanceRangeScale_00669ef8);
+  double ratioCubed = ratio * ratio * ratio;
+  double denominator = ratioCubed - g_fNavyHitChanceCubeOffset_00669f00;
+  float hitThreshold = static_cast<float>(attackerUnit->qualityLevel10 * 5 +
+                                          g_fNavyHitChanceNumerator_00669f04 / denominator);
+
+  if (battleView8 != 0) {
+    battleView8->PlayTacticalTileEffect(attackerUnit->tileIndex8, attackerUnit->unitTypeC + 0xf5a,
+                                        1);
+  }
+
+  if (static_cast<float>(rand() % 100) < hitThreshold) {
+    TTacticalPlayer* attackerSidePlayer = (&tacticalPlayer14)[currentSideC];
+    attackerSidePlayer->AssertValid();
+    int damageMode = static_cast<TNavyPlayer*>(attackerSidePlayer)->shipDisplayMode2c;
+    float attackPower = attackerUnit->GetBaseAttackPower();
+    float scaledStrength = attackerUnit->strength4 * attackPower;
+    float damageScale = defenderUnit->GetDamageScale();
+    float damageAmount = damageScale * scaledStrength;
+    defenderUnit->ApplyTacticalDamageAndDeathState(damageAmount, damageMode);
+    if (battleView8 != 0) {
+      battleView8->InvalidateTacticalUnitTileRect(defenderUnit);
+    }
+    if (defenderUnit->state1c == 3) {
+      tileGrid4[defenderUnit->tileIndex8].occupant4 = 0;
+      defenderUnit->tileIndex8 = -1;
+      if (battleView8 != 0) {
+        battleView8->PlayTacticalTileEffect(targetTileIndex, 0xf42, 12);
+      }
+    }
+  } else {
+    if (battleView8 != 0) {
+      battleView8->PlayTacticalTileEffect(targetTileIndex, 0xf3c, 6);
+    }
+  }
+
+  attackerUnit->selectedFlag18 = 0;
+  EvaluateTacticalSideStateAndShowBattleSummaryDialog();
 }
 
 // FUNCTION: IMPERIALISM 0x005a59a0
@@ -100,7 +169,8 @@ void TNavyBattle::ComputeTacticalReachableTileCostsByUnitCategory(TTacticalUnit*
 }
 
 // FUNCTION: IMPERIALISM 0x005a5b70
-undefined TNavyBattle::CreateTTacticalBattleInstance(int) {
+undefined TNavyBattle::FinalizeTacticalBattleOutcome(int) {
+  g_pNavyOrderManager->ResolveMapOrderChainsForTurnPhase();
   return 0;
 }
 

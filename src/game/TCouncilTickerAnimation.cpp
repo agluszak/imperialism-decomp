@@ -3,6 +3,7 @@
 #include "game/TAnimator.h"
 #include "game/TCivAnimation2.h"
 #include "game/TControl.h"
+#include "game/TCouncilView.h"
 #include "game/TGreatPower.h"
 #include "game/TMapMgr.h"
 #include "game/TPicture.h"
@@ -30,23 +31,28 @@ IMPLEMENT_DYNCREATE(TCouncilTickerAnimation, TAnimation)
 TCouncilTickerAnimation::TCouncilTickerAnimation() {}
 
 // FUNCTION: IMPERIALISM 0x0049ff90
-void TCouncilTickerAnimation::ConstructTCouncilTickerAnimationBaseState(void* hostPanel,
-                                                                        int tickMode) {
-  char* objectBytes = reinterpret_cast<char*>(this);
-  *reinterpret_cast<void**>(objectBytes + 0x4) = hostPanel;
-  *reinterpret_cast<unsigned short*>(objectBytes + 0x8) = 0;
-  *reinterpret_cast<unsigned short*>(objectBytes + 0xa) = 0;
-  *reinterpret_cast<unsigned short*>(objectBytes + 0xc) = 0;
-  *reinterpret_cast<unsigned int*>(objectBytes + 0x10) = 0;
-  *reinterpret_cast<unsigned int*>(objectBytes + 0x14) = static_cast<unsigned int>(tickMode);
-  *reinterpret_cast<unsigned int*>(objectBytes + 0x18) = 0;
-  *reinterpret_cast<unsigned int*>(objectBytes + 0x1c) = 0;
-  *reinterpret_cast<unsigned int*>(objectBytes + 0x20) = 0;
-  *reinterpret_cast<unsigned int*>(objectBytes + 0x24) = 0;
-  *reinterpret_cast<unsigned int*>(objectBytes + 0x28) = 0;
+void TCouncilTickerAnimation::ConstructTCouncilTickerAnimationBaseState(TCouncilView* hostPanel,
+                                                                        int tickInterval) {
+  ownerView04 = hostPanel;
+  frameIndex08 = 0;
+  frameCount0A = 0;
+  field0C = 0;
+  tickCounter10 = 0;
+  ticksPerFrame14 = tickInterval;
+  registryTag18 = 0;
+  screenRect1C.left = 0;
+  screenRect1C.top = 0;
+  screenRect1C.right = 0;
+  screenRect1C.bottom = 0;
 }
 
 // FUNCTION: IMPERIALISM 0x0049ffe0
 undefined TCouncilTickerAnimation::AdvanceAnimationTickAndInvalidateOnFrameFlip() {
-  return 0;
+  int tick = tickCounter10 + 1;
+  tickCounter10 = tick;
+  if (tick == ticksPerFrame14) {
+    static_cast<TCouncilView*>(ownerView04)->AdvanceCivilianTerrainSelectionStep();
+    tickCounter10 = 0;
+  }
+  return static_cast<undefined>(tick);
 }

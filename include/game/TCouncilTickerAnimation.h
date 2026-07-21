@@ -3,6 +3,8 @@
 #include "game/TAnimation.h"
 #include "game/mfc.h"
 
+class TCouncilView;
+
 // VTABLE: IMPERIALISM 0x0064c410
 class TCouncilTickerAnimation : public TAnimation {
 public:
@@ -20,7 +22,10 @@ public:
   // slot 0x0b RenderBattleReportInsetWithPaletteShift inherited unchanged (0x49f190)
   // slot 0x0c RenderBattleReportViewSurfaceSpriteWithResourceHandle inherited unchanged (0x49f2d0)
 
-  void ConstructTCouncilTickerAnimationBaseState(void* hostPanel, int tickMode);
+  // Initializes the inherited TAnimation fields directly (inline duplicate of
+  // TAnimation::ConstructTAnimationBaseState's pattern, not a call to it): owner view,
+  // zeroed frame/tag state, the tick interval, and a zeroed screen rect.
+  void ConstructTCouncilTickerAnimationBaseState(TCouncilView* hostPanel, int tickInterval);
 
   TCouncilTickerAnimation();
 };

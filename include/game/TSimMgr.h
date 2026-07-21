@@ -103,6 +103,12 @@ public:
   void DecrementField30Value();
   void InitializeTurnFlowStateDefaults();
   void InitializeOrLoadEntryArray14AndClampLimits(bool writeBack);
+  // 0x581510. Loads the 10-entry {score, name} table from scores.dat (defaulting each
+  // slot to {0, this nation's own name} when the file/entry is missing), recomputes the
+  // active nation's economy/diplomacy summary, and if its score beats one of the ten
+  // entries, shifts the lower entries down and inserts {score, active nation's overlay
+  // label} at that position, rewriting the whole table back to scores.dat.
+  void UpdatePersistentTopTenNationScores();
   // 0x57c3b0. Verified against AdvanceGlobalTurnStateMachine's case-3 callsite
   // (0x0057db25): a real __thiscall on TSimMgr (receiver g_pSimMgr), not a
   // free function -- writes into the scenarioSetupRows regions at +0xe8 on `this`.
@@ -128,20 +134,30 @@ public:
   //     0x698b50 inside ProcessTurnInstructionStreamAndFinalizePhase; each reads one or
   //     more big-endian tokens from the cursor and mutates this manager / global state) ---
   void
-  HandleTurnInstruction_Year_UpdateScenarioYearFieldScaledBy4(void* pInstructionRaw);  // 0x582ed0
-  void HandleTurnInstruction_Flag_SetNationFlagAndRefresh(void* pInstructionRaw);      // 0x583400
+  HandleTurnInstruction_Year_UpdateScenarioYearFieldScaledBy4(void* pInstructionRaw); // 0x582ed0
+  void HandleTurnInstruction_Flag_SetNationFlagAndRefresh(void* pInstructionRaw);     // 0x583400
+  void
+  HandleTurnInstruction_Tyer_SetCityOrderCapabilityTierValue(void* pInstructionRaw);   // 0x583470
+  void HandleTurnInstruction_Tbar_SetNationRelationBarValue(void* pInstructionRaw);    // 0x583510
   void HandleTurnInstruction_Cash_SetNationCash(void* pInstructionRaw);                // 0x583360
   void HandleTurnInstruction_Tran_SetNationTransportStat(void* pInstructionRaw);       // 0x582860
   void HandleTurnInstruction_Tclr_ResetNationRelationBars(void* pInstructionRaw);      // 0x583670
   void HandleTurnInstruction_Prov_ApplyProvinceAssignmentEntry(void* pInstructionRaw); // 0x582f20
+  void HandleTurnInstruction_Rela_SetNationRelationValue(void* pInstructionRaw);       // 0x5831d0
+  void HandleTurnInstruction_Pnam_AssignProvinceName(void* pInstructionRaw);           // 0x583270
   void HandleTurnInstruction_Coun_SetCountrySlotState(void* pInstructionRaw);          // 0x583700
   void HandleTurnInstruction_Emba_SetEmbassyRelationFlags(void* pInstructionRaw);      // 0x582bf0
   void
   HandleTurnInstruction_Ware_ApplyNationIndexedShortAndRefresh(void* pInstructionRaw);   // 0x5823e0
   void HandleTurnInstruction_Capa_ApplyNationSlotValueWithDelta(void* pInstructionRaw);  // 0x5822c0
+  void HandleTurnInstruction_Labo_SetNationLaborTierCounts(void* pInstructionRaw);       // 0x582120
   void HandleTurnInstruction_Rail_ApplyRailPlacementAndCashBonus(void* pInstructionRaw); // 0x5829b0
   void HandleTurnInstruction_Port_ApplyPortPlacementAndCashBonus(void* pInstructionRaw); // 0x582a40
   void HandleTurnInstruction_Deve_ApplyMapDevelopmentEntry(void* pInstructionRaw);       // 0x5828f0
+  void
+  HandleTurnInstruction_Tech_ApplyTechUnlockAndNotifyNations(void* pInstructionRaw); // 0x582ad0
+  void HandleTurnInstruction_Pric_ApplyDiplomacyPriceEntry(void* pInstructionRaw);   // 0x582b70
+  void HandleTurnInstruction_Subs_ApplyNationSubsidyEntry(void* pInstructionRaw);    // 0x582ce0
 
   // --- fields (offsets are load-bearing: referenced from many other classes via
   //     g_pSimMgr; do not rename or move) ---

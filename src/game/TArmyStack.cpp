@@ -2,7 +2,11 @@
 
 #include <stdlib.h>
 
+#include "game/CIterator.h"
+#include "game/TCountry.h"
 #include "game/TMilitaryUnit.h"
+#include "game/TSortedList.h"
+#include "game/TStream.h"
 #include "game/global_data_tables.h"
 #include "game/ui_invalidation_guard.h"
 
@@ -62,10 +66,74 @@ void TArmyStack::InitializeSideAndTile(char ownerNationIndex, short ownerNationC
 }
 
 // FUNCTION: IMPERIALISM 0x004a77b0
-void TArmyStack::ReadFrom(TStream* stream) {}
+void TArmyStack::ReadFrom(TStream* stream) {
+  stream->ReadBytes(&field4, 2);
+  stream->ReadBytes(&field6, 2);
+  stream->ReadBytes(&categoryFlag8, 1);
+  stream->ReadBytes(&fortLevelAttackerPenaltyCache9, 1);
+  short unitCount;
+  stream->ReadBytes(&unitCount, 2);
+  stream->ReadBytes(&fieldC, 1);
+  stream->ReadBytes(&ownerNationCodeE, 2);
+  stream->ReadBytes(&tileIndex10, 2);
+
+  for (short i = 0; i < unitCount; ++i) {
+    short unitTag;
+    stream->ReadBytes(&unitTag, 2);
+
+    TSortedList* unitList = g_apTerrainTypeDescriptorTable[categoryFlag8]->militaryUnitList44;
+    TUnit* foundUnit = 0;
+    CIterator cursor(unitList);
+    for (TUnit* unit = static_cast<TUnit*>(cursor.Reset()); cursor.More();
+         unit = static_cast<TUnit*>(cursor.Advance())) {
+      if (unit->field_1A == unitTag) {
+        foundUnit = unit;
+        break;
+      }
+    }
+
+    if (foundUnit != 0) {
+      TArmyStackUnitNode* node = new TArmyStackUnitNode();
+      if (node == 0) {
+        MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+        TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUArmyMgr_0069573C, 0xbeb);
+      }
+      node->unit = foundUnit;
+      node->next = head14;
+      ++fieldA;
+      head14 = node;
+    }
+  }
+  cursor18 = 0;
+}
 
 // FUNCTION: IMPERIALISM 0x004a7960
-void TArmyStack::WriteTo(TStream* stream) {}
+void TArmyStack::WriteTo(TStream* stream) {
+  stream->WriteBytesSlot78(&field4, 2);
+  stream->WriteBytesSlot78(&field6, 2);
+  stream->WriteBytesSlot78(&categoryFlag8, 1);
+  stream->WriteBytesSlot78(&fortLevelAttackerPenaltyCache9, 1);
+  stream->WriteBytesSlot78(&fieldA, 2);
+  stream->WriteBytesSlot78(&fieldC, 1);
+  stream->WriteBytesSlot78(&ownerNationCodeE, 2);
+  stream->WriteBytesSlot78(&tileIndex10, 2);
+
+  TArmyStackUnitNode* node = head14;
+  cursor18 = node;
+  TUnit* unit = (node != 0) ? node->unit : 0;
+  while (unit != 0) {
+    stream->WriteBytesSlot78(&unit->field_1A, 2);
+    node = cursor18;
+    if (node != 0) {
+      node = node->next;
+      cursor18 = node;
+      unit = (node != 0) ? node->unit : 0;
+    } else {
+      unit = 0;
+    }
+  }
+  cursor18 = 0;
+}
 
 // FUNCTION: IMPERIALISM 0x004a7b20
 void TArmyStack::AddUnitToChainHead(TUnit* unit) {

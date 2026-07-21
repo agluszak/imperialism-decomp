@@ -71,13 +71,13 @@ int TArmyTacUnit::GetUnitRange() {
 }
 
 // FUNCTION: IMPERIALISM 0x005a6180
-undefined TArmyTacUnit::OrphanLeaf_NoCall_Ins02_005a5d80() {
-  return 0;
+float TArmyTacUnit::GetBaseAttackPower() {
+  return g_afTacticalBaseAttackPowerByUnitType[unitTypeC];
 }
 
 // FUNCTION: IMPERIALISM 0x005a61a0
-undefined TArmyTacUnit::OrphanLeaf_NoCall_Ins02_005a5da0() {
-  return 0;
+float TArmyTacUnit::GetDamageScale() {
+  return g_afTacticalDamageScaleByUnitType[unitTypeC];
 }
 
 // FUNCTION: IMPERIALISM 0x005a61c0

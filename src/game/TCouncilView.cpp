@@ -20,6 +20,7 @@
 #include "game/mapped_flavor_text.h"
 #include "game/mfc.h"
 #include "game/quickdraw_rendering.h"
+#include "game/ScopedMapQuickDrawContext.h"
 #include "game/ui_control_tags.h"
 #include "game/ui_text_label_helpers_decls.h"
 
@@ -179,7 +180,7 @@ void TCouncilView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEve
 // them out of line as below; a faithful match needs those inlined. TODO: inline helpers.
 // FUNCTION: IMPERIALISM 0x004fc2e0
 void TCouncilView::InitializeDiplomacyCouncilViewControlsAndTicker() {
-  TView* hostPanel = this;
+  TCouncilView* hostPanel = this;
 
   TUiTextStyleDescriptor councilTextStyle;
   councilTextStyle.fontFamily = 0;
@@ -254,6 +255,71 @@ void TCouncilView::InitializeDiplomacyCouncilViewControlsAndTicker() {
   if (endControl != nullptr) {
     endControl->AssertValid();
     endControl->SetState(0, 0);
+  }
+}
+
+// FUNCTION: IMPERIALISM 0x004fc630
+void TCouncilView::AdvanceCivilianTerrainSelectionStep() {
+  CString unusedMsg;  // constructed/destructed; never populated in the observed binary
+  ++visibleVoteTier528;
+
+  for (int idx = 0; idx < kDiplomacyPairMatrixEntries; ++idx) {
+    short tier = g_pDiplomacyTurnStateManager->pendingPolicyTierMatrix484[idx];
+    if (tier != -1 && (tier == visibleVoteTier528 || tier == visibleVoteTier528 - 1)) {
+      RECT* tileRect = &tileMarkerRects6AC[idx];
+      RECT inflated = {tileRect->left - 1, tileRect->top - 1, tileRect->right + 2,
+                        tileRect->bottom + 2};
+      InvalidateCityDialogRectRegion(&inflated, 1);
+    }
+  }
+
+  {
+    ScopedMapQuickDrawContextGuard quickDraw(this);
+    Refresh();
+    DrawVoteNuggets();
+    RECT rect = {0, 0, frameWidth34, 300};
+    ValidateControlRectIfWindowActive(&rect);
+  }
+
+  bool unusedFlag = false;  // never set true in the observed binary
+  if (unusedFlag) {
+    g_pSfxPlaybackSystem->PlaySoundEffect(0x1f41, 0, 1);
+  }
+
+  if (visibleVoteTier528 == councilNationCount24c8 + 2) {
+    SetCursor(LoadCursorA(nullptr, IDC_ARROW));
+    TView* endControlTarget = ResolveControlByTag(0x656e6420);
+    endControlTarget->AssertValid();
+    endControlTarget->SetState(1, 0);
+
+    if (g_pDiplomacyTurnStateManager->lastProcessedNationSlot78e == -1) {
+      g_pSfxPlaybackSystem->PlaySoundEffect(0x1f42, 0, 1);
+    } else {
+      bool allowAdvance = false;
+      short activeNation = g_pSimMgr->GetActiveNationId();
+      if (g_pDiplomacyTurnStateManager->lastProcessedNationSlot78e == activeNation &&
+          g_pSimMgr->field44 == 0) {
+        short tick = g_pSimMgr->GetTurnTickSlot3C();
+        unsigned char* phaseTable = &g_pSimMgr->field6e;
+        if (phaseTable[tick / 40] != 2) {
+          allowAdvance =
+              g_pUiRuntimeContext->ShowLocalizedUiPromptByGroupAndIndex(0x275d, 7, 0, 1) == 0;
+        }
+      }
+      if (!allowAdvance) {
+        g_pSimMgr->PostMainWindowCommand100ForTurnFlow();
+      } else {
+        g_pDiplomacyTurnStateManager->lastProcessedNationSlot78e = -1;
+        g_pSimMgr->turnStateCode = 0x10;
+        g_pSfxPlaybackSystem->PlaySoundEffect(0x1f42, 0, 1);
+      }
+    }
+    // 0x4fbdf0 (1005 bytes) -- rebuilds the diplomacy-map hint-overlay text: classifies
+    // every diplomacy-matrix entry against the two selected nations into 8 buckets over a
+    // TMapMgr-side per-region table, then formats 5 named number controls ('num0'..'num4')
+    // plus a conditional 'scr0' summary control via CString::Format. Return value unused.
+    // Deliberately not ported here (UI hint-text/formatting construction, not game logic);
+    // the matrix/state mutations above are unaffected by this omission.
   }
 }
 

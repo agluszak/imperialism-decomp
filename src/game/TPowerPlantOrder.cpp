@@ -1,5 +1,7 @@
 #include "game/TPowerPlantOrder.h"
 
+#include "game/TStream.h"
+
 // SYNTHETIC: IMPERIALISM 0x004b79f0
 // TPowerPlantOrder::CreateObject
 
@@ -57,7 +59,25 @@ void TPowerPlantOrder::FillOrderSheet(OrderSheet* orderSheet, short quantity) {
 }
 
 // FUNCTION: IMPERIALISM 0x004b7cc0
-void TPowerPlantOrder::WriteTo(TStream* stream) {}
+void TPowerPlantOrder::WriteTo(TStream* stream) {
+  TObject::WriteTo(stream);
+  stream->WriteBytesSlot78(&resourceTypeIndex48, 2);
+  stream->WriteBytesSlot78(&quantityField04, 2);
+  stream->WriteBytesSlot78(&field40, 2);
+  stream->WriteBytesSlot78(&resourceTypeIndex48, 2);
+  stream->WriteBytesSlot78(trackingSlots10, 0x2e);
+  stream->WriteBytesSlot78(&accumulatedValue, 4);
+  stream->WriteBytesSlot78(&field4c, 2);
+}
 
 // FUNCTION: IMPERIALISM 0x004b7d40
-void TPowerPlantOrder::ReadFrom(TStream* stream) {}
+void TPowerPlantOrder::ReadFrom(TStream* stream) {
+  TObject::ReadFrom(stream);
+  stream->ReadBytes(&resourceTypeIndex48, 2);
+  stream->ReadBytes(&quantityField04, 2);
+  stream->ReadBytes(&field40, 2);
+  stream->ReadBytes(&resourceTypeIndex48, 2);
+  stream->ReadBytes(trackingSlots10, 0x2e);
+  stream->ReadBytes(&accumulatedValue, 4);
+  stream->ReadBytes(&field4c, 2);
+}

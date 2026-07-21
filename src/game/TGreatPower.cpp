@@ -59,9 +59,6 @@
 #include "game/ui_invalidation_guard.h"
 #include "game/UiRuntimeContext.h"
 
-// Remaining autogen-stub extern. Retire by porting the real body.
-undefined4 RebuildMinorNationDispositionLookupTables(void);
-
 // Real body ported at 0x005b7f50 (file end, ascending-address order). Genuine __stdcall
 // predicate: returns 1 when the resource index is in [13,16].
 char __stdcall IsSpecialNationInteractionResource(short resourceIndex);
@@ -102,8 +99,68 @@ TG_LAYOUT_ASSERT(TGreatPower_Offset_diplomacyPolicyByNation_0xB2,
 TG_LAYOUT_ASSERT(TGreatPower_Offset_aidAllocationMatrix_0x280,
                  offsetof(TGreatPower, aidAllocationMatrix) == 0x280);
 TG_LAYOUT_ASSERT(TGreatPower_Offset_city_0x894, offsetof(TGreatPower, city) == 0x894);
+TG_LAYOUT_ASSERT(TGreatPower_Offset_economySummaryBaseline930_0x930,
+                 offsetof(TGreatPower, economySummaryBaseline930) == 0x930);
+TG_LAYOUT_ASSERT(TGreatPower_Offset_economySummaryWeightedTotal95c_0x95c,
+                 offsetof(TGreatPower, economySummaryWeightedTotal95c) == 0x95c);
 TG_LAYOUT_ASSERT(TGreatPower_Size_Exactly_0x964, sizeof(TGreatPower) == 0x964);
 #undef TG_LAYOUT_ASSERT
+
+// FUNCTION: IMPERIALISM 0x004d84b0
+int TGreatPower::ClassifyNationMilitaryPowerBandAgainstGlobalMean() {
+  float count = 0.0f;
+  float sumPower = 0.0f;
+  float sumPowerSq = 0.0f;
+
+  for (int nationSlot = 0; nationSlot < 7; ++nationSlot) {
+    if (!g_pSimMgr->IsNationSlotEligibleForEventProcessing(static_cast<short>(nationSlot))) {
+      continue;
+    }
+
+    TGreatPower* nation = g_apNationStates[nationSlot];
+    int weightSum = 0;
+    CIterator unitIter(nation->militaryUnitList44);
+    for (TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(unitIter.Reset()); unitIter.More();
+         unit = static_cast<TMilitaryUnit*>(unitIter.Advance())) {
+      weightSum += g_aUnitOrderCostProfileByAbilityId[unit->orderType][2];
+    }
+
+    int power = weightSum + nation->SumNavyOrderPriorityForNationSlot86() + 4;
+    sumPower += static_cast<float>(power);
+    sumPowerSq += static_cast<float>(power * power);
+    count += 1.0f;
+  }
+
+  if (count < 2.0f) {
+    return 2;
+  }
+
+  float mean = sumPower / count;
+  float stddev =
+      sqrtf((sumPowerSq - 2.0f * mean * sumPower + mean * mean * count) / (count - 1.0f));
+
+  int myWeightSum = 0;
+  CIterator myUnitIter(this->militaryUnitList44);
+  for (TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(myUnitIter.Reset()); myUnitIter.More();
+       unit = static_cast<TMilitaryUnit*>(myUnitIter.Advance())) {
+    myWeightSum += g_aUnitOrderCostProfileByAbilityId[unit->orderType][2];
+  }
+  float myPower = static_cast<float>(myWeightSum + this->SumNavyOrderPriorityForNationSlot86() + 4);
+
+  if (myPower > mean + 2.0f * stddev) {
+    return 4;
+  }
+  if (myPower > mean + stddev) {
+    return 3;
+  }
+  if (myPower <= mean - stddev) {
+    return 2;
+  }
+  if (myPower >= mean - 2.0f * stddev) {
+    return 1;
+  }
+  return 0;
+}
 
 // SYNTHETIC: IMPERIALISM 0x004d8950
 // TGreatPower::CreateObject
@@ -1757,13 +1814,14 @@ void TGreatPower::TryIncrementNationResourceNeedTargetTowardCurrent(int needType
 }
 
 // FUNCTION: IMPERIALISM 0x004dcf10
-void TGreatPower::IsNationResourceNeedCurrentSumExceedingCapA6(void) {
+bool TGreatPower::IsNationResourceNeedCurrentSumExceedingCapA6(void) {
   int sumCurrentNeeds = 0;
   for (int needIndex = 0; needIndex < kNationSlotCount; ++needIndex) {
     sumCurrentNeeds += static_cast<int>(this->needCurrentByType[needIndex]);
   }
 
   this->needsOverCapFlag = (sumCurrentNeeds > static_cast<int>(this->needCapA6)) ? 1 : 0;
+  return this->needsOverCapFlag != 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004dcf60
@@ -2638,7 +2696,7 @@ void TGreatPower::SetNationTransferTargetCodeAndNotifyEligiblePeers(int arg1) {
     g_pInterNationEventQueueManager->QueueInterNationEventRecordDeduped(0x1D, this->nationSlot, 7,
                                                                         '\0');
   }
-  RebuildMinorNationDispositionLookupTables();
+  g_pDiplomacyTurnStateManager->RebuildMinorNationDispositionLookupTables(this->nationSlot);
 
   this->encodedNationSlot = static_cast<short>(arg1 + 100);
 
@@ -4385,6 +4443,69 @@ int TGreatPower::RecomputeNationComparativePowerMetrics_Impl() {
     count++;
   }
   return sum / count;
+}
+
+// FUNCTION: IMPERIALISM 0x004e32a0
+void TGreatPower::RecomputeNationEconomyAndDiplomacySummaryMetrics() {
+  int seasonPercentTable[5] = {10, 15, 20, 25, 30};
+
+  TPopulationMetricBucket* baseline = city->productionSummary1d8->baselineSlots10;
+  economySummaryBaseline930 =
+      baseline->valueAt4 + (baseline->valueAt6 + baseline->valueAt8 * 2) * 2;
+  economySummaryNeedCapSnapshot934 = needCapA6;
+
+  economySummaryBuildingTypeSum938 = 0;
+  for (int buildingSlot = 0; buildingSlot < 6; ++buildingSlot) {
+    economySummaryBuildingTypeSum938 += city->GetBuildingType(static_cast<short>(buildingSlot));
+  }
+
+  economySummaryRegionScore93c = ownedRegionList->GetSize();
+  for (int minorSlot = 0; minorSlot < 16; ++minorSlot) {
+    TMinor* candidate = g_apNationAuxRuntimeStateSlots[minorSlot];
+    if (candidate->IsEncodedNationSlotMinus200Equal(nationSlot)) {
+      economySummaryRegionScore93c += candidate->ownedRegionList->GetSize();
+    }
+  }
+  economySummaryRegionScore93c *= 10;
+
+  int militaryOrderCostSum = 0;
+  CIterator unitIter(militaryUnitList44);
+  for (TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(unitIter.Reset()); unitIter.More();
+       unit = static_cast<TMilitaryUnit*>(unitIter.Advance())) {
+    militaryOrderCostSum += g_aUnitOrderCostProfileByAbilityId[unit->orderType][2];
+  }
+  economySummaryMilitaryOrderCostSum940 = militaryOrderCostSum;
+
+  economySummaryNavyOrderPriority944 = SumNavyOrderPriorityForNationSlot86();
+
+  TDiplomacyMgr* diplomacy = g_pDiplomacyTurnStateManager;
+  int relationSum = 0;
+  int relationCount = 0;
+  for (int otherSlot = 0; otherSlot < kTerrainTypeDescriptorTableCount; otherSlot++) {
+    if (g_apTerrainTypeDescriptorTable[otherSlot] == 0) {
+      continue;
+    }
+    if (otherSlot == nationSlot) {
+      continue;
+    }
+    relationSum +=
+        diplomacy->relationStandingScoreMatrix79c[nationSlot * 0x17 + static_cast<short>(otherSlot)];
+    relationCount++;
+  }
+  economySummaryAvgRelationScore948 = relationSum / relationCount;
+
+  economySummaryTradeCapacitySnapshot94c = tradeCapacity;
+  int currentQuarter = g_pSimMgr->quarterGateTick2c / 4;
+  economySummarySeasonCountdown950 = (100 - currentQuarter) * 10;
+
+  economySummaryTotal954 = 0;
+  int* summaryFields = &economySummaryBaseline930;
+  for (int fieldIndex = 0; fieldIndex < 9; ++fieldIndex) {
+    economySummaryTotal954 += summaryFields[fieldIndex];
+  }
+
+  economySummarySeasonPercent958 = seasonPercentTable[g_pSimMgr->redrawEnabled];
+  economySummaryWeightedTotal95c = economySummaryTotal954 * economySummarySeasonPercent958 / 10;
 }
 
 // Sums the encoded diplomacyGrantByNation entries (masking off the top 2 flag bits),
