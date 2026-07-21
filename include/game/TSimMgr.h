@@ -140,6 +140,7 @@ public:
   void HandleTurnInstruction_Tran_SetNationTransportStat(void* pInstructionRaw);       // 0x582860
   void HandleTurnInstruction_Tclr_ResetNationRelationBars(void* pInstructionRaw);      // 0x583670
   void HandleTurnInstruction_Prov_ApplyProvinceAssignmentEntry(void* pInstructionRaw); // 0x582f20
+  void HandleTurnInstruction_Rela_SetNationRelationValue(void* pInstructionRaw);       // 0x5831d0
   void HandleTurnInstruction_Coun_SetCountrySlotState(void* pInstructionRaw);          // 0x583700
   void HandleTurnInstruction_Emba_SetEmbassyRelationFlags(void* pInstructionRaw);      // 0x582bf0
   void

@@ -1550,6 +1550,34 @@ void TSimMgr::HandleTurnInstruction_Prov_ApplyProvinceAssignmentEntry(void* pIns
       static_cast<short>(cityToken), static_cast<int>(nationToken));
 }
 
+// Reads three big-endian 16-bit tokens (source nation, target nation, then relation
+// score) and applies them via the diplomacy manager's standing-score setter.
+// FUNCTION: IMPERIALISM 0x005831d0
+void TSimMgr::HandleTurnInstruction_Rela_SetNationRelationValue(void* pInstructionRaw) {
+  STurnInstructionCursor* instruction = static_cast<STurnInstructionCursor*>(pInstructionRaw);
+
+  unsigned int sourceToken = *instruction->tokenCursor;
+  instruction->tokenCursor = instruction->tokenCursor + 1;
+  unsigned char* sraw = reinterpret_cast<unsigned char*>(&sourceToken);
+  sraw[0] = sraw[3];
+  sraw[1] = sraw[2];
+
+  unsigned int targetToken = *instruction->tokenCursor;
+  instruction->tokenCursor = instruction->tokenCursor + 1;
+  unsigned char* traw = reinterpret_cast<unsigned char*>(&targetToken);
+  traw[0] = traw[3];
+  traw[1] = traw[2];
+
+  unsigned int scoreToken = *instruction->tokenCursor;
+  instruction->tokenCursor = instruction->tokenCursor + 1;
+  unsigned char* vraw = reinterpret_cast<unsigned char*>(&scoreToken);
+  vraw[0] = vraw[3];
+  vraw[1] = vraw[2];
+
+  g_pDiplomacyTurnStateManager->SetStandingScoreSlot28(
+      static_cast<int>(sourceToken), static_cast<int>(targetToken), static_cast<int>(scoreToken));
+}
+
 // Reads two big-endian 32-bit tokens (nation slot, then cash amount) and writes the amount
 // into that nation's treasury field.
 // FUNCTION: IMPERIALISM 0x00583360
