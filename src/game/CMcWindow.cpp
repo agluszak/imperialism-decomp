@@ -1,5 +1,6 @@
 #include "game/CMcWindow.h"
 
+#include "game/CIncludeView.h"
 #include "game/ImperialismApp.h"
 #include "game/TAmbitApplication.h"
 #include "game/TControl.h"
@@ -71,6 +72,12 @@ CMcWindow::CMcWindow(TWindow* descriptor) : CWnd() {
   rect.top = descriptor->ownerLocalY;
   rect.right = rect.left + descriptor->frameWidth34;
   rect.bottom = rect.top + descriptor->frameHeight38;
+
+  CIncludeView* gameView = GetMainViewHostFromActiveThread();
+  WINDOWPLACEMENT gameViewPlacement;
+  gameView->GetWindowPlacement(&gameViewPlacement);
+  OffsetRect(&rect, gameViewPlacement.rcNormalPosition.left,
+             gameViewPlacement.rcNormalPosition.top);
   ::AdjustWindowRectEx(&rect, dwStyle, FALSE, dwExStyle);
 
   CWnd* mainWnd = AfxGetMainWnd();
@@ -199,7 +206,7 @@ void CMcWindow::OnLButtonUp(UINT nFlags, CPoint point) {
 void CMcWindow::OnMouseMove(UINT nFlags, CPoint point) {
   Default();
   g_McAppMouseCaptureState.NotifyCaptureOwnerState1AndMaybeUpdateCoords(nFlags, point.x, point.y);
-  static_cast<TAmbitApplication*>(g_pGlobalUiRootController)->HandleCursor(point.x, point.y, 0);
+  g_pGlobalUiRootController->HandleCursor(point.x, point.y, 0);
   if (m_pOwnerWindow != NULL && GetMcAppUiActiveFlag() != 0) {
     CPoint pt(point);
     m_pOwnerWindow->HandleCursorHoverSelectionByChildHitTestAndFallback(&pt, 0);

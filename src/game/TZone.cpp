@@ -636,7 +636,7 @@ void TZone::SetMapActionContextTargetTileAndRefreshMarkers(int nationSeedId, int
   unsigned short resolvedTile = static_cast<unsigned short>(tileIndex);
   if (resolvedTile == 0xffff) {
     resolvedTile = static_cast<unsigned short>(
-        g_pGlobalMapState->ComputeRepresentativeTileIndexForTerrainTypeWithWrapBias(
+        g_pGlobalMapState->ComputeRepresentativeTileIndexForNationWithWrapBias(
             static_cast<short>(nationSeedId), 0));
   }
   tileOrTerrainId0c = static_cast<int>(static_cast<short>(resolvedTile));

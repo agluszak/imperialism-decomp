@@ -142,11 +142,11 @@ public:
   // active land/ocean map view and keeps the land cache or mini-map in sync.
   virtual void RedrawTile(short tileIndex); // slot 0x77 0x5988c0
   // Windows consumes promoted stack dwords at these virtual boundaries.
-  virtual void CenterOn(int tileIndex);                                  // slot 0x78 0x598990
-  virtual void SetUpperLeft(int tileX, int tileY);                       // slot 0x79 0x5989d0
-  virtual void NoticeTile(int tileIndex);                                // slot 0x7a 0x598a20
-  virtual bool OrphanLeaf_NoCall_Ins23_00597a10();                       // slot 0x7b 0x597a10
-  virtual undefined OrphanCallChain_C2_I11_00598910(undefined4 param_1); // slot 0x7c 0x598910
+  virtual void CenterOn(int tileIndex);                                   // slot 0x78 0x598990
+  virtual void SetUpperLeft(int tileX, int tileY);                        // slot 0x79 0x5989d0
+  virtual void NoticeTile(int tileIndex);                                 // slot 0x7a 0x598a20
+  virtual bool OrphanLeaf_NoCall_Ins23_00597a10();                        // slot 0x7b 0x597a10
+  virtual void PrepareAndRenderMapOverlayMode(unsigned char overlayMode); // slot 0x7c 0x598910
   // Ground truth (final RET has no operand) proves the previous 1-arg
   // __fastcall(astruct_20*)/void-return declaration was a poison-pill: real signature is
   // thiscall, 0 explicit args; the caller-visible "return value" is just SetTrade-

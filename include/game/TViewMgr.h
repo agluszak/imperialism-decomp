@@ -93,11 +93,11 @@ public:
   // (0x5dc430).
   virtual void HandleTurnEventDialogFactorySlotB8(int a, int b, int c);            // 0xb8 0x5dc430
   virtual void HandleTurnEvent7DD_RefreshOrderStatusPanelsAndIcons(int eventCode); // 0xbc
-  virtual undefined InvokeStrategicMapViewMethod68();                              // 0xc0 0x5dc180
-  virtual undefined InvokeStrategicMapViewMethod70();                              // 0xc4 0x5dc1c0
-  virtual undefined InvokeStrategicMapViewMethod74();                              // 0xc8 0x5dc1a0
+  virtual void ForwardBuildStrategicMapRenderAtlasesAndTileMaskCaches();           // 0xc0 0x5dc180
+  virtual void InvokeStrategicMapViewMethod70();                                   // 0xc4 0x5dc1c0
+  virtual void InvokeStrategicMapViewMethod74();                                   // 0xc8 0x5dc1a0
   virtual void InvokeStrategicMapViewMethod6C();                                   // 0xcc 0x5dc160
-  virtual void UiRuntimeSlotD0(int eventCode);                                     // 0xd0
+  virtual void InitializeCitySiteSelectionScreenForNation(int nationSlot);         // 0xd0
   virtual void UiRuntimeSlotD4(int arg);                                           // 0xd4
   // Resolves the active dialog's 'GOLD' panel, notifies it of the current turn-event
   // code, then resolves+shows+refreshes the 0x546 factory dialog's own 'GOLD' child
@@ -128,8 +128,7 @@ public:
   virtual void UiRuntimeSlot108();                   // 0x108
   // Resolves the active dialog's 'GOLD' control and configures its value-cell grid
   // (0x14 x 0x14) via the control's slot-0x79 virtual (0x5dc3f0).
-  virtual void
-  HandleTurnEventTable66F220_Slot0C_InvokeGoldViewSlots0C_1E4_14x14();        // 0x10c 0x5dc3f0
+  virtual void ConfigureActiveDialogGoldValueGridForTurnEvent3C0();           // 0x10c 0x5dc3f0
   virtual void HandleTurnEventF3D_PopulateRecentTurnMessages(int nationSlot); // 0x110
 
   void ApplyLegendSplitSlot34(int split) {
@@ -224,12 +223,11 @@ public:
   // Object layout recovered from ctor 0x5d5060 / ReadFrom 0x5d5200 /
   // LoadTurnEventCursorTable 0x5d5100. Field names past the event code are
   // provisional. Total size 0xfc, base TObject = 0x4.
-  short currentTurnEventCode;   // +0x04 (turn-event dispatch code)
-  short pad06;                  // +0x06
-  unsigned int turnStateSeedLo; // +0x08 (seeded from g_dat_006a5b58)
-  unsigned int turnStateSeedHi; // +0x0c (seeded from g_dat_006a5b5c)
-  unsigned char field10;        // +0x10
-  unsigned char pad11[3];       // +0x11
+  short currentTurnEventCode;         // +0x04 (turn-event dispatch code)
+  short currentTurnEventNationSlot06; // +0x06
+  POINT dialogPlacement08;            // +0x08 (seeded from g_ptCitySiteSelectionDialogPlacement)
+  unsigned char field10;              // +0x10
+  unsigned char pad11[3];             // +0x11
   // +0x14 .. 0xeb (54 turn-event cursor handles). Indexed as
   // cursorTable[resourceCursorId - kCursorResourceIdBase] -- confirmed against
   // TDiplomacyMapView::HandleCursorHoverSelectionByChildHitTestAndFallback's ground-truth

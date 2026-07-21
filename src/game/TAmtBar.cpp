@@ -103,7 +103,7 @@ void TAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache() {
   if (barRange > 0) {
     SetQuickDrawTextOriginWithContextOffset(0, 1);
     g_pUiRuntimeContext->ApplyLegendSplitSlot34(auxValueB);
-    SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty(1, 7);
+    SetQuickDrawPenSizeAndMarkDirty(1, 7);
     guideValue = stepOrCurrentValue < barRange ? stepOrCurrentValue : barRange;
     DrawCenteredGuideLineOnMapDc((short)(guideValue - 1), 1);
     ResetQuickDrawStrokeState();
@@ -112,7 +112,7 @@ void TAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache() {
   fillOrigin = guideValue > 0 ? (short)(guideValue + 1) : 0;
   SetQuickDrawTextOriginWithContextOffset(fillOrigin, 4);
   SetQuickDrawFillColor(0);
-  SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty(1, 1);
+  SetQuickDrawPenSizeAndMarkDirty(1, 1);
   DrawCenteredGuideLineOnMapDc(controlWidth, 4);
   SetQuickDrawTextOriginWithContextOffset(stepOrCurrentValue, 0);
   ResetQuickDrawStrokeState();

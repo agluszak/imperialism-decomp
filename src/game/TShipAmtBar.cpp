@@ -60,7 +60,7 @@ void TShipAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache() {
       if (rangeOrMaxValue > 0) {
         SetQuickDrawTextOriginWithContextOffset(0, 1);
         g_pUiRuntimeContext->ApplyLegendSplitSlot34(auxValueB);
-        SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty(1, 4);
+        SetQuickDrawPenSizeAndMarkDirty(1, 4);
         DrawCenteredGuideLineOnMapDc((short)(rangeOrMaxValue - 1), 1);
         ResetQuickDrawStrokeState();
       }

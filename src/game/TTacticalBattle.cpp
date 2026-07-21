@@ -1614,7 +1614,7 @@ void TTacticalBattle::EvaluateTacticalSideStateAndShowBattleSummaryDialog() {
         CString(side0CasualtyLine + s_szDoubleNewline_00699438 + side1CasualtyLine);
     infoControl->ApplyTextStyleDescriptorAndMaybeRefresh(&styleDescriptor, 0);
     infoControl->UpdateTextEntrySharedStringAndMaybeNotify(&combinedCasualtyText, 0);
-    infoControl->RecenterTextFromMeasuredWidthAndMaybeInvalidate(0);
+    infoControl->RecenterTextVerticallyFromMeasuredHeightAndMaybeInvalidate(0);
   }
 
   dialog->ShowTurnEventDialog(1);

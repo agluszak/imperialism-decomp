@@ -111,7 +111,7 @@ void TRailAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache() {
       if (styleValueAt60 > 0) {
         SetQuickDrawTextOriginWithContextOffset(0, 1);
         g_pUiRuntimeContext->ApplyLegendSplitSlot34(0);
-        SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty(1, 4);
+        SetQuickDrawPenSizeAndMarkDirty(1, 4);
         DrawCenteredGuideLineOnMapDc((short)(styleValueAt60 - 1), 1);
         ResetQuickDrawStrokeState();
       }

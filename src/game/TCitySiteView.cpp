@@ -5,6 +5,7 @@
 #include "game/TInfoBarText.h"
 #include "game/TMapMgr.h"
 #include "game/TMapUberPicture.h"
+#include "game/TQuickDrawSurfaceContext.h"
 #include "game/TSimMgr.h"
 #include "game/global_data_tables.h"
 #include "game/ui_control_tags.h"
@@ -95,7 +96,10 @@ void TCitySiteView::DoPostCreate(int arg) {
 
 // FUNCTION: IMPERIALISM 0x0051c2a0
 void TCitySiteView::SetMapViewTileIndex(int arg1) {
-  (void)arg1;
+  int col;
+  SplitTileIndexToRowAndColumn(static_cast<short>(arg1), reinterpret_cast<short*>(&arg1),
+                               reinterpret_cast<short*>(&col));
+  SetMapViewCellCoordinates(col, arg1);
 }
 
 // FUNCTION: IMPERIALISM 0x0051c2f0
@@ -125,7 +129,76 @@ void TCitySiteView::SetMapDialogCellCoordinatesAndRefresh(int col, int row, int 
 }
 
 // FUNCTION: IMPERIALISM 0x0051c3b0
-void TCitySiteView::RenderStrategicTileSelectionAndNeighborHighlights() {}
+void TCitySiteView::RenderStrategicTileSelectionAndNeighborHighlights() {
+  short neighborTiles[6] = {-1, -1, -1, -1, -1, -1};
+  bool updateNeighborHighlights = false;
+  short currentTile = static_cast<short>(field6c);
+
+  if (g_pGlobalMapState->terrainStateTable[currentTile].recruitSearchVisited0e == 0) {
+    updateNeighborHighlights = true;
+    TMapMgr::ComputeHexNeighborTileIndices(currentTile, neighborTiles,
+                                           g_pGlobalMapState->hexNeighborWrapHorizontally20);
+    short activeNation = g_pSimMgr->GetActiveNationId();
+    for (int i = 0; i < 6; ++i) {
+      short neighbor = neighborTiles[i];
+      if (neighbor != -1 &&
+          g_pGlobalMapState->terrainStateTable[neighbor].ownerNationTag04 != activeNation &&
+          g_pGlobalMapState->terrainStateTable[neighbor].terrainType00 != 5) {
+        neighborTiles[i] = -1;
+      }
+    }
+  }
+
+  short previousTile = static_cast<short>(field6e);
+  signed char previousMarker = g_pGlobalMapState->terrainStateTable[previousTile].markerSlotIndex10;
+  if (previousMarker != -1 && tileMarkers7c[previousMarker].flag != 0) {
+    short projectedY;
+    short projectedX;
+    ProjectTileIndexToWrappedScreenOffsetByScale(
+        previousTile, reinterpret_cast<short*>(&viewportOffsetX), &projectedY, &projectedX, 1);
+    RECT sourceRect = {projectedX + 0x40, projectedY + 0x40, projectedX + 0x80, projectedY + 0x80};
+    RECT destinationRect = {projectedX, projectedY, projectedX + 0x40, projectedY + 0x40};
+    BlitRectWithOptionalTransparency(g_pCitySiteCachedPrimaryRenderSurfaceContext->GetBlitSurface(),
+                                     g_pActiveQuickDrawSurfaceContext->GetBlitSurface(),
+                                     &sourceRect, &destinationRect, 0, 0);
+  }
+
+  for (int oldIndex = 0; oldIndex < 6; ++oldIndex) {
+    short oldNeighbor = g_aCitySiteNeighborHighlightTiles_00697320[oldIndex];
+    if (oldNeighbor == -1) {
+      continue;
+    }
+    signed char oldMarker = g_pGlobalMapState->terrainStateTable[oldNeighbor].markerSlotIndex10;
+    if (oldMarker == -1 || tileMarkers7c[oldMarker].flag == 0) {
+      continue;
+    }
+
+    short projectedY;
+    short projectedX;
+    ProjectTileIndexToWrappedScreenOffsetByScale(
+        oldNeighbor, reinterpret_cast<short*>(&viewportOffsetX), &projectedY, &projectedX, 1);
+    RECT sourceRect = {projectedX + 0x40, projectedY + 0x40, projectedX + 0x80, projectedY + 0x80};
+    RECT destinationRect = {projectedX, projectedY, projectedX + 0x40, projectedY + 0x40};
+    BlitRectWithOptionalTransparency(g_pCitySiteCachedPrimaryRenderSurfaceContext->GetBlitSurface(),
+                                     g_pActiveQuickDrawSurfaceContext->GetBlitSurface(),
+                                     &sourceRect, &destinationRect, 0, 0);
+  }
+
+  if (updateNeighborHighlights) {
+    short projectedY;
+    short projectedX;
+    ProjectTileIndexToWrappedScreenOffsetByScale(
+        currentTile, reinterpret_cast<short*>(&viewportOffsetX), &projectedY, &projectedX, 1);
+    RECT currentTileRect = {projectedX, projectedY, projectedX + 0x40, projectedY + 0x40};
+    QDFrameRect(&currentTileRect);
+    DrawHexNeighborOutlineFromTileArray(neighborTiles);
+  }
+
+  for (int newIndex = 0; newIndex < 6; ++newIndex) {
+    g_aCitySiteNeighborHighlightTiles_00697320[newIndex] =
+        updateNeighborHighlights ? neighborTiles[newIndex] : -1;
+  }
+}
 
 // FUNCTION: IMPERIALISM 0x0051c760
 void TCitySiteView::HandleMapClickByInteractionMode(short nTileIndex, int nInputFlags) {}

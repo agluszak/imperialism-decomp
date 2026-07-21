@@ -288,8 +288,8 @@ extern int g_Reset_Quick_Draw_Value_0064B8F0;
 extern int g_Reset_Quick_Draw_Value_0064B8F4;
 extern const short g_Reset_Quick_Draw_WordState_0064B8F8;
 extern short g_Reset_Quick_Draw_State_006A1D10;
-extern int g_nQuickDrawStrokeStylePrimary;
-extern int g_nQuickDrawStrokeStyleSecondary;
+extern int g_nQuickDrawPenHorizontalSize;
+extern int g_nQuickDrawPenVerticalSize;
 extern int g_bQuickDrawStrokePairDirty;
 // The cached QuickDraw clip region — a heap CRgn built by the CRT static-init ctor
 // at 0x494040 (ported in quickdraw_rendering.cpp as TQuickDrawClipStateInitializer).
@@ -325,6 +325,14 @@ extern TQuickDrawSurfaceContext* g_pActiveQuickDrawSurfaceContextHead;
 extern TQuickDrawSurfaceContext* g_pActiveQuickDrawSurfaceContext;
 extern TQuickDrawSurfaceContext* g_pPrimaryRenderSurfaceContext;
 extern TQuickDrawSurfaceContext* g_pCitySiteCachedPrimaryRenderSurfaceContext;
+// TCitySiteView's currently painted six-neighbor highlight set. Each entry is a map tile
+// index or -1; the paint pass restores the previous cells before replacing this cache.
+extern short g_aCitySiteNeighborHighlightTiles_00697320[6];
+// Strategic-map preview cursor and the two half-cell parity remainders maintained while
+// converting its point into a viewport cell.
+extern CPoint g_MapInteractionPreviewPoint_006a3370;
+extern int g_MapInteractionPreviewRowParity_006a33b4;
+extern int g_MapInteractionPreviewColumnParity_006a33b8;
 extern CDC* g_pQuickDrawMemoryDc;
 extern HGDIOBJ g_hQuickDrawSavedBitmap;
 extern int g_nActiveQuickDrawSurfaceFlags;
@@ -775,6 +783,7 @@ extern POINT g_ptNationAwolModalMessage;           // @ 0x6a3d08
 extern POINT g_ptMapModeModalMessage;              // @ 0x6a45c0
 extern POINT g_ptTechCapabilityModalMessage;       // @ 0x6a57c8
 extern POINT g_ptUiPromptModalMessage;             // @ 0x6a5be0
+extern POINT g_ptCitySiteSelectionDialogPlacement; // @ 0x6a5b58
 extern POINT g_ptQueryFloaterModalMessage;         // @ 0x6a4048
 extern POINT g_ptDiplomacyNoticeModalMessage;      // @ 0x6a2fc0
 extern POINT g_ptGameSetupModalMessage;            // @ 0x6a4218
@@ -1198,6 +1207,7 @@ extern char g_szFmtLabo_00697268[];
 extern char g_szFmtEmba_00697254[];
 extern char g_szFmtYear_00697248[];
 extern char s_mcflavor_006976e0[];
+
 extern char s_mcflavor_00698b0c[];
 extern char s_mcflavor_0069ab00[];
 extern char s_mcflavor_0069ab04[];

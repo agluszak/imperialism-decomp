@@ -58,7 +58,7 @@ TMapUberPicture::~TMapUberPicture() {}
 void TMapUberPicture::DoPostCreate(int arg) {
   TOffLimitsPicture::DoPostCreate(arg);
 
-  static_cast<TAmbitApplication*>(g_pGlobalUiRootController)->edgeScrollTarget48 = this;
+  g_pGlobalUiRootController->edgeScrollTarget48 = this;
 
   subview2A8 = static_cast<TMapDialog*>(ResolveControlByTag(kControlTagGold));
   subview2A8->AssertValid();
@@ -111,7 +111,7 @@ void TMapUberPicture::Free() {
   if (g_pUiAnimator != 0) {
     g_pUiAnimator->mapUberPicture2c = 0;
   }
-  static_cast<TAmbitApplication*>(g_pGlobalUiRootController)->edgeScrollTarget48 = 0;
+  g_pGlobalUiRootController->edgeScrollTarget48 = 0;
   g_pGlobalUiRootController->field28 = 0;
   TOffLimitsPicture::Free();
 }
@@ -286,8 +286,8 @@ void TMapUberPicture::DoMenuCommand(int command) {
     return;
 
   case 3:
-    CenterOn(g_pGlobalMapState->ForwardComputeRepresentativeTileIndexForTerrainTypeWithWrapBias(
-        g_pSimMgr->GetActiveNationId()));
+    CenterOn(
+        g_pGlobalMapState->ComputeRepresentativeTileIndexForNation(g_pSimMgr->GetActiveNationId()));
     return;
   }
 }
@@ -534,18 +534,9 @@ void TMapUberPicture::RedrawTile(short tileIndex) {
 }
 
 // FUNCTION: IMPERIALISM 0x00598910
-undefined TMapUberPicture::OrphanCallChain_C2_I11_00598910(undefined4 param_1) {
+void TMapUberPicture::PrepareAndRenderMapOverlayMode(unsigned char overlayMode) {
   this->PrepareForDrawing();
-  // Ground truth also calls subviewAc->vtable[0x1a0](param_1) here -- that slot lands on
-  // TMapUberPicture's own (inherited-from-TControl) DispatchPictureResourceCommand, whose
-  // real arity is independently established elsewhere (TControl.cpp/TMiniMapView's own
-  // override, both RET 0x14 = 5 args) as far larger than the single argument this
-  // callsite pushes. That contradiction means either the slot attribution or the
-  // 5-argument finding is wrong; rather than guess, this dispatch is left undone (see the
-  // same DispatchPictureResourceCommand arity caveat noted where TMiniMapView's override
-  // is declared).
-  (void)param_1;
-  return 0;
+  subviewAc->SetMapOverlayModeAndRenderPreview(overlayMode);
 }
 
 // FUNCTION: IMPERIALISM 0x00598950

@@ -548,12 +548,11 @@ void TMacViewMgr::BuildStrategicMapTileOverlayStripSurfaces800To807() {
 }
 
 // FUNCTION: IMPERIALISM 0x0050a9f0
-undefined TMacViewMgr::RenderOffscreenBitmapGridStripAndRestoreContext() {
+void TMacViewMgr::BuildStrategicMapRenderAtlasesAndTileMaskCaches() {
   RECT atlasBounds;
   TQuickDrawSurfaceContext* savedContext;
   int savedFlags;
   int dstX;
-  int dstY;
   int resourceId;
   int index;
   atlasBounds.left = 0;
@@ -565,54 +564,48 @@ undefined TMacViewMgr::RenderOffscreenBitmapGridStripAndRestoreContext() {
   SetActiveQuickDrawSurfaceContext(atlas668, savedFlags);
   ReturnConstantTrueQuickDrawFlag(GetSurfaceNodeSlot(atlas668));
   ResetQuickDrawStrokeState();
+  // atlas668 is a single 51-cell horizontal strip. The returned tile offsets are byte
+  // offsets into this row, so wrapping the resources into multiple rows corrupts every
+  // lookup after the second cell.
   dstX = 0;
-  dstY = 0;
   index = 0;
   while (index < 0x2a) {
     RECT blitRect;
     blitRect.left = dstX;
-    blitRect.top = dstY;
+    blitRect.top = 0;
     blitRect.right = dstX + 0x40;
-    blitRect.bottom = dstY + 0x40;
+    blitRect.bottom = 0x40;
     ResolveAndBlitBitmapResourceToActiveAtlas(10000 + index, &blitRect);
     dstX = dstX + 0x40;
-    if (dstX >= 0x80) {
-      dstX = 0;
-      dstY = dstY + 0x40;
-    }
     index = index + 1;
   }
-  dstX = 0;
-  dstY = 0;
   index = 0;
   while (index < 4) {
     RECT blitRect;
     blitRect.left = dstX;
-    blitRect.top = dstY;
+    blitRect.top = 0;
     blitRect.right = dstX + 0x40;
-    blitRect.bottom = dstY + 0x40;
+    blitRect.bottom = 0x40;
     ResolveAndBlitBitmapResourceToActiveAtlas(0x276e + index, &blitRect);
     dstX = dstX + 0x40;
     index = index + 1;
   }
-  dstX = 0;
-  dstY = 0;
   index = 0;
   while (index < 4) {
     RECT blitRect;
     blitRect.left = dstX;
-    blitRect.top = dstY;
+    blitRect.top = 0;
     blitRect.right = dstX + 0x40;
-    blitRect.bottom = dstY + 0x40;
+    blitRect.bottom = 0x40;
     ResolveAndBlitBitmapResourceToActiveAtlas(0x2774 + index, &blitRect);
     dstX = dstX + 0x40;
     index = index + 1;
   }
   {
     RECT blitRect;
-    blitRect.left = 0;
+    blitRect.left = dstX;
     blitRect.top = 0;
-    blitRect.right = 0x40;
+    blitRect.right = dstX + 0x40;
     blitRect.bottom = 0x40;
     ResolveAndBlitBitmapResourceToActiveAtlas(0x277e, &blitRect);
   }
@@ -625,7 +618,7 @@ undefined TMacViewMgr::RenderOffscreenBitmapGridStripAndRestoreContext() {
   SetActiveQuickDrawSurfaceContext(atlas66c, savedFlags);
   ReturnConstantTrueQuickDrawFlag(GetSurfaceNodeSlot(atlas66c));
   ResetQuickDrawStrokeState();
-  dstX = 0x40;
+  dstX = 0;
   resourceId = 0x190;
   while (resourceId < 0x1ab) {
     if (resourceId != 0x195 && resourceId != 0x19e && resourceId != 0x1a7) {
@@ -635,8 +628,8 @@ undefined TMacViewMgr::RenderOffscreenBitmapGridStripAndRestoreContext() {
       blitRect.right = dstX + 0x40;
       blitRect.bottom = 0x40;
       ResolveAndBlitBitmapResourceToActiveAtlas(resourceId, &blitRect);
-      dstX = dstX + 0x40;
     }
+    dstX = dstX + 0x40;
     resourceId = resourceId + 1;
   }
   resourceId = 0x226;
@@ -702,10 +695,10 @@ undefined TMacViewMgr::RenderOffscreenBitmapGridStripAndRestoreContext() {
     RECT blitRect;
     blitRect.left = dstX;
     blitRect.top = 0;
-    blitRect.right = dstX + 2;
+    blitRect.right = dstX + 0x12;
     blitRect.bottom = 0x26;
     ResolveAndBlitBitmapResourceToActiveAtlas(resourceId, &blitRect);
-    dstX = dstX + 2;
+    dstX = dstX + 0x12;
     resourceId = resourceId + 1;
   }
   NoOpQuickDrawLifecycleHookB(GetSurfaceNodeSlot(atlas6b4));
@@ -716,8 +709,8 @@ undefined TMacViewMgr::RenderOffscreenBitmapGridStripAndRestoreContext() {
   }
   atlasBounds.left = 0;
   atlasBounds.top = 0;
-  atlasBounds.right = 0;
-  atlasBounds.bottom = 0;
+  atlasBounds.right = 0x48;
+  atlasBounds.bottom = 6;
   g_pDisplayMgr->MakeNewGWorld(atlas6b8, 8, atlasBounds);
   GetActiveQuickDrawSurfaceContextAndFlags(&savedContext, &savedFlags);
   SetActiveQuickDrawSurfaceContext(atlas6b8, savedFlags);
@@ -747,7 +740,6 @@ undefined TMacViewMgr::RenderOffscreenBitmapGridStripAndRestoreContext() {
                                                                    0x1680, 0x10);
     index = index + 1;
   }
-  return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x0050b5b0
@@ -764,7 +756,7 @@ void TMacViewMgr::ReloadBitmap244AndRefreshUiCaches() {
 }
 
 // FUNCTION: IMPERIALISM 0x0050b640
-undefined TMacViewMgr::RenderTurnEventPalettePreviewSurfaceAndProgress() {
+void TMacViewMgr::RenderTurnEventPalettePreviewSurfaceAndProgress() {
   RECT fillRect;
   TQuickDrawSurfaceContext* savedContext;
   int savedFlags;
@@ -788,7 +780,7 @@ undefined TMacViewMgr::RenderTurnEventPalettePreviewSurfaceAndProgress() {
   pixelBase = reinterpret_cast<int>(GetSurfaceNodePixelBits(surfaceObject));
   strideBytes = static_cast<ushort>((*surfaceObject)->stride) & 0x3fff;
   SetQuickDrawStrokeColor(0xffffff);
-  g_pUiRuntimeContext->ApplyLegendSplitSlot34(0x32);
+  g_pUiRuntimeContext->SetForeColor(0x32);
   FillRectWithQuickDrawBrushAndContextOffset(&fillRect);
   colOffset = 0;
   tileIndex = 0;
@@ -887,12 +879,11 @@ undefined TMacViewMgr::RenderTurnEventPalettePreviewSurfaceAndProgress() {
   NoOpQuickDrawLifecycleHookB(GetSurfaceNodeSlot(atlas670));
   SetActiveQuickDrawSurfaceContext(savedContext, savedFlags);
   RebuildSurfaceRowsWithTemporaryRowBuffer();
-  reinterpret_cast<unsigned char*>(g_pGlobalMapState)[4] = 1;
-  return 0;
+  g_pGlobalMapState->strategicMapPalettePreviewReady04 = 1;
 }
 
 // FUNCTION: IMPERIALISM 0x0050b9e0
-undefined TMacViewMgr::RebuildMapTileNeighborHighlightPolygonsForAllTiles() {
+void TMacViewMgr::RebuildMapTileNeighborHighlightPolygonsForAllTiles() {
   int tileIndex = 0;
   int tileByteOffset = 0;
   RgnHandle* tileSlot = tileStateSlots;
@@ -923,7 +914,6 @@ undefined TMacViewMgr::RebuildMapTileNeighborHighlightPolygonsForAllTiles() {
     tileSlot = tileSlot + 1;
   }
   RebuildNationClipRegionsAndDispatchMapEvent();
-  return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x0050bad0

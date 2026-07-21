@@ -37,7 +37,7 @@ ilt_addr,thunk_name,target_addr,target_name,category,notes
 0x00402a7c,thunk_InitializeUiTextStyleDescriptor,0x005c3f50,InitializeUiTextStyleDescriptor,calls-via-thunk,refs:TTradeCluster.cpp
 0x00402aa4,thunk_SetUiResourceContextTagWord,0x004270e0,SetUiResourceContextTagWord,calls-via-thunk,refs:TDiplomacyMapView.cpp
 0x00402d1a,thunk_AdvanceSeason_At00402d1a,0x0057d950,TSimMgr::AdvanceSeason,claimed-ilt,owned:TSimMgr.cpp
-0x00402e73,thunk_SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty,0x00495310,SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty,calls-via-thunk,refs:TTraderAmtBar.cpp
+0x00402e73,thunk_SetQuickDrawPenSizeAndMarkDirty,0x00495310,SetQuickDrawPenSizeAndMarkDirty,calls-via-thunk,refs:TTraderAmtBar.cpp
 0x00402eeb,thunk_RegisterUnitOrderWithOwnerManager,0x005c2530,TUnitOrderState::RegisterUnitOrderWithOwnerManager,claimed-ilt,owned:TUnit.cpp; marker:TUnit.cpp; refs:TUnit.cpp
 0x00403044,thunk_ConstructFrogCityMarker,0x005b6c60,TTown::ConstructFrogCityMarker,retired-ilt,real ctor; new TTown() in TGreatPower/TMinor
 0x00403049,thunk_InitializeUiResourceEntryBaseHeaderDefaults,0x0048a100,InitializeUiResourceEntryBaseHeaderDefaults,retired-ilt,real method @ 0x48a100 in TEventHandler.cpp
