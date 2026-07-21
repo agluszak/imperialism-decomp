@@ -72,7 +72,7 @@ void TPicture::InitializePictureEntryBaseAndRefresh(TView* panel, int* offsetLay
   if (panel != 0) {
     panel->AttachChildControl(this, 0);
   }
-  uiResourceContext40 = 0;
+  resourceContext = 0;
   SetPictureResourceIdAndRefresh(pictureId, 0);
 }
 

@@ -294,7 +294,7 @@ int TNewspaperView::AppendInterNationEventSummaryTextEntry(int column, int y, in
   text->UpdateTextEntrySharedString(&textEntry);
   free(formatted);
 
-  int consumedHeight = text->MeasureCurrentTextWidthInLayoutRect() + 8;
+  int consumedHeight = text->MeasureCurrentTextHeightInLayoutRect() + 8;
   CRect bounds;
   text->QueryBounds(&bounds);
   bounds.bottom = consumedHeight + bounds.top;

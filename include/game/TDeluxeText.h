@@ -146,11 +146,10 @@ public:
   // Helper_Uses_ConstructSharedStringFromCStrOrResourceId_At005b6360).
   virtual void SetTextEntryFromChars(const char* textChars,
                                      int textLength); // slot 0x7d 0x5b6360
-  // Real return is undefined4 (packs two shorts via CONCAT22) with an
-  // unresolved measure-width helper (func_0x004065e1) feeding it — kept as
-  // `undefined` rather than guessing a real return type.
+  // Vertically centers the wrapped text when its measured height is smaller than the
+  // control frame, then optionally invalidates the control.
   virtual int
-  RecenterTextFromMeasuredWidthAndMaybeInvalidate(char refreshNow); // slot 0x7e 0x5b63e0
+  RecenterTextVerticallyFromMeasuredHeightAndMaybeInvalidate(char refreshNow); // slot 0x7e 0x5b63e0
   // field94/field95/padding96 moved to the base TTEView (its RTTI object size is
   // 0x98; TDeluxeText's own fields start at 0x98 — see TTEView.h).
   int textColor98;            // +0x98

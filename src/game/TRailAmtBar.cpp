@@ -105,13 +105,14 @@ void TRailAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache() {
       control->QueryBounds(&boundsRect);
       ClipRect(&boundsRect);
       control->QueryBounds(&boundsRect);
-      control->TranslatePointToParentChain4E();
+      CPoint translatedOrigin(g_nOverlayClipCacheParamX, g_nOverlayClipCacheParamY);
+      control->TranslatePointToParentChain4E(&translatedOrigin);
 
       short styleValueAt60 = *reinterpret_cast<short*>(reinterpret_cast<char*>(control) + 0x60);
       if (styleValueAt60 > 0) {
         SetQuickDrawTextOriginWithContextOffset(0, 1);
         g_pUiRuntimeContext->ApplyLegendSplitSlot34(0);
-        SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty(1, 4);
+        SetQuickDrawPenSizeAndMarkDirty(1, 4);
         DrawCenteredGuideLineOnMapDc((short)(styleValueAt60 - 1), 1);
         ResetQuickDrawStrokeState();
       }
@@ -141,15 +142,14 @@ void TRailAmtBar::RenderQuickDrawOverlayWithHitRegion(short selectedValue) {
   if (IsActionable() != 0) {
     PrepareForDrawing();
     if (IsActionable() != 0) {
-      CRect boundsRect(0, 0, 0, 0);
-      QueryBounds(&boundsRect);
-      TranslatePointToParentChain4E();
+      CPoint translatedOrigin(g_nOverlayClipCacheParamX, g_nOverlayClipCacheParamY);
+      TranslatePointToParentChain4E(&translatedOrigin);
 
       RECT invalidRect;
-      invalidRect.left = boundsRect.left;
-      invalidRect.top = boundsRect.top;
-      invalidRect.right = boundsRect.left + (int)(short)frameWidth34;
-      invalidRect.bottom = boundsRect.top + (int)(short)frameHeight38;
+      invalidRect.left = translatedOrigin.x;
+      invalidRect.top = translatedOrigin.y;
+      invalidRect.right = translatedOrigin.x + (int)(short)frameWidth34;
+      invalidRect.bottom = translatedOrigin.y + (int)(short)frameHeight38;
       InvalidateCityDialogRectRegion(&invalidRect, 1);
     }
   }

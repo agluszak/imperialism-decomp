@@ -218,7 +218,7 @@ char TOffersPanelView::PoseWarOffer(short sourceNationSlot, int minorNationSlot,
   wait->CaptureLayoutF0(g_diplomacyPopupLayoutPosition_006a3020, 0);
   sheet->CaptureLayoutF0(g_diplomacyWarOfferSheetPosition_006a2fe0, 1);
   proposalText->UpdateTextEntrySharedStringAndMaybeNotify(&formattedMessage, 1);
-  proposalText->RecenterTextFromMeasuredWidthAndMaybeInvalidate(1);
+  proposalText->RecenterTextVerticallyFromMeasuredHeightAndMaybeInvalidate(1);
   RefreshControl();
   ForceRedraw();
 

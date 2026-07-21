@@ -125,14 +125,15 @@ void TTraderAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache() {
       control->QueryBounds(&boundsRect);
       control->ApplyBounds(&boundsRect, 1);
       control->QueryBounds(&boundsRect);
-      control->TranslatePointToParentChain4E();
+      CPoint translatedOrigin(g_nOverlayClipCacheParamX, g_nOverlayClipCacheParamY);
+      control->TranslatePointToParentChain4E(&translatedOrigin);
 
       short styleValueAt60 = rangeOrMaxValue;
       if (styleValueAt60 > 0) {
         short styleValueAt66 = auxValueB;
         SetQuickDrawTextOriginWithContextOffset(0, 0);
         g_pUiRuntimeContext->ApplyLegendSplitSlot34(styleValueAt66);
-        SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty(1, 5);
+        SetQuickDrawPenSizeAndMarkDirty(1, 5);
         DrawCenteredGuideLineOnMapDc((short)(styleValueAt60 - 1), 0);
         ResetQuickDrawStrokeState();
       }

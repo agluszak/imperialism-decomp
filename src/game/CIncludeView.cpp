@@ -32,8 +32,7 @@ static void CALLBACK UiCursorTickTimerProc(HWND hWnd, UINT uMsg, UINT idEvent, D
     CWnd* foreground = CWnd::FromHandle(GetForegroundWindow());
     CWnd* mainWnd = (AfxGetThread() != 0) ? AfxGetThread()->GetMainWnd() : 0;
     if (foreground == mainWnd) {
-      static_cast<TAmbitApplication*>(g_pGlobalUiRootController)
-          ->HandleCursor(cursorPos.x, cursorPos.y, 0);
+      g_pGlobalUiRootController->HandleCursor(cursorPos.x, cursorPos.y, 0);
     }
   }
 }
@@ -286,7 +285,7 @@ void CIncludeView::OnMouseMove(UINT nFlags, CPoint point) {
     m_capturedControl74->DispatchPictureResourceCommand(
         1, &m_captureStartPoint78, &m_captureLastPoint80, &m_captureCurrentPoint88, 1);
   }
-  static_cast<TAmbitApplication*>(g_pGlobalUiRootController)->HandleCursor(point.x, point.y, 0);
+  g_pGlobalUiRootController->HandleCursor(point.x, point.y, 0);
   if (m_activeDialogContext != 0 && GetMcAppUiActiveFlag() != 0) {
     CPoint pt(point);
     m_activeDialogContext->HandleCursorHoverSelectionByChildHitTestAndFallback(&pt, 0);

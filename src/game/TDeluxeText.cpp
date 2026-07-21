@@ -91,20 +91,20 @@ void TDeluxeText::SetTextEntryFromChars(const char* textChars, int textLength) {
 }
 
 // FUNCTION: IMPERIALISM 0x005b63e0
-int TDeluxeText::RecenterTextFromMeasuredWidthAndMaybeInvalidate(char refreshNow) {
+int TDeluxeText::RecenterTextVerticallyFromMeasuredHeightAndMaybeInvalidate(char refreshNow) {
   contentInsets68.bottom = 0;
   contentInsets68.top = 0;
-  int measuredWidth = MeasureCurrentTextWidthInLayoutRect();
+  int measuredHeight = MeasureCurrentTextHeightInLayoutRect();
   int inset = 0;
-  if (measuredWidth < frameHeight38) {
-    inset = (frameHeight38 - measuredWidth) / 2;
+  if (measuredHeight < frameHeight38) {
+    inset = (frameHeight38 - measuredHeight) / 2;
   }
   contentInsets68.bottom = static_cast<short>(inset);
   contentInsets68.top = static_cast<short>(inset);
   if (refreshNow != 0) {
     RefreshControl();
   }
-  return measuredWidth;
+  return measuredHeight;
 }
 
 // FUNCTION: IMPERIALISM 0x005b6480

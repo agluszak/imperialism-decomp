@@ -81,15 +81,16 @@ void TAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache() {
 
   this->QueryBounds(&frameBounds);
 
-  this->TranslatePointToParentChain4E();
+  CPoint translatedOrigin(g_nOverlayClipCacheParamX, g_nOverlayClipCacheParamY);
+  this->TranslatePointToParentChain4E(&translatedOrigin);
 
   controlWidth = (short)this->frameWidth34;
   controlHeight = (short)this->frameHeight38;
 
-  panelRect.left = frameBounds.left;
-  panelRect.top = frameBounds.top;
-  panelRect.right = frameBounds.left + (int)controlWidth;
-  panelRect.bottom = frameBounds.top + (int)controlHeight;
+  panelRect.left = translatedOrigin.x;
+  panelRect.top = translatedOrigin.y;
+  panelRect.right = translatedOrigin.x + (int)controlWidth;
+  panelRect.bottom = translatedOrigin.y + (int)controlHeight;
 
   contentRect.left = contentBounds.left;
   contentRect.top = contentBounds.top;
@@ -103,7 +104,7 @@ void TAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache() {
   if (barRange > 0) {
     SetQuickDrawTextOriginWithContextOffset(0, 1);
     g_pUiRuntimeContext->ApplyLegendSplitSlot34(auxValueB);
-    SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty(1, 7);
+    SetQuickDrawPenSizeAndMarkDirty(1, 7);
     guideValue = stepOrCurrentValue < barRange ? stepOrCurrentValue : barRange;
     DrawCenteredGuideLineOnMapDc((short)(guideValue - 1), 1);
     ResetQuickDrawStrokeState();
@@ -112,7 +113,7 @@ void TAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache() {
   fillOrigin = guideValue > 0 ? (short)(guideValue + 1) : 0;
   SetQuickDrawTextOriginWithContextOffset(fillOrigin, 4);
   SetQuickDrawFillColor(0);
-  SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty(1, 1);
+  SetQuickDrawPenSizeAndMarkDirty(1, 1);
   DrawCenteredGuideLineOnMapDc(controlWidth, 4);
   SetQuickDrawTextOriginWithContextOffset(stepOrCurrentValue, 0);
   ResetQuickDrawStrokeState();

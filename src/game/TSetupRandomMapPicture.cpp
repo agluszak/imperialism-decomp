@@ -396,7 +396,7 @@ void TSetupRandomMapPicture::MajorTomToGroundControl(unsigned char mode) {
   CString generatingText;
   g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&generatingText, 0x2758, 7);
   infoBar->UpdateTextEntrySharedStringAndMaybeNotify(&generatingText, 1);
-  infoBar->RecenterTextFromMeasuredWidthAndMaybeInvalidate(1);
+  infoBar->RecenterTextVerticallyFromMeasuredHeightAndMaybeInvalidate(1);
 
   TEditText* countryControl = static_cast<TEditText*>(ResolveControlByTag(kControlTagCoun));
   countryControl->AssertValid();

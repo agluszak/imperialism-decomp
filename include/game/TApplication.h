@@ -84,7 +84,9 @@ public:
 
   TEventHandler* currentTarget; // 0x20
   int screenModeAt24;           // 0x24
-  int field28;                  // 0x28
+  // MacApp fCursorRgnInvalid, exposed by IsCursorRgnInvalid()/InvalidateCursorRgn().
+  // Windows accesses the BOOL directly when map views open and close.
+  BOOL cursorRegionInvalid; // 0x28
   // 0x2c — MacApp fCohandlers: TEventHandlers given idle time by Idle(). Kept as the
   // original CList<void*, void*> instantiation (vtable 0x00648ca8).
   CList<void*, void*> cohandlers;

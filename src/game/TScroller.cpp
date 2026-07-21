@@ -18,9 +18,9 @@ TScroller::~TScroller() {}
 
 // FUNCTION: IMPERIALISM 0x0048cbb0
 void TScroller::InitializeScrollerPlacement(TView* owner, int* offsetLayout, int* sizeLayout) {
-  TView* resourceContext = 0;
+  TView* inheritedResourceContext = 0;
   if (owner != 0) {
-    resourceContext = owner->uiResourceContext40;
+    inheritedResourceContext = owner->resourceContext;
     if (owner != 0) {
       nativeWindow50 = owner->nativeWindow50;
     }
@@ -36,5 +36,5 @@ void TScroller::InitializeScrollerPlacement(TView* owner, int* offsetLayout, int
   if (owner != 0) {
     owner->AttachChildControl(this, 0);
   }
-  uiResourceContext40 = resourceContext;
+  resourceContext = inheritedResourceContext;
 }

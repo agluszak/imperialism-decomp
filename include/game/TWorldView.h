@@ -29,7 +29,7 @@ public:
   // (verified: same receiver, same offset), and the click's explicit 1..4 wrap fixes
   // the field's domain.
   short activeRegionBand72;
-  // Written by SetFlagByteAndInvokeVslot1A4 (this+0x74=flagByte), read as a byte gate by
+  // Written by SetMapOverlayModeAndRenderPreview (this+0x74=flagByte), read as a byte gate by
   // TMapDialog::RenderMapDialogTerrainOverlayFrameByTileOwner (selects the overlay style:
   // 0 = terrain-frame overlay, nonzero = the alternate palette-index blit).
   unsigned char overlayFlagByte74;
@@ -58,7 +58,7 @@ public:
   virtual void DoPostCreate(int arg) override;
   virtual char HandleMouseDown(const CPoint& point, TToolboxEvent* event, CPoint origin) override;
 
-  virtual void SetFlagByteAndInvokeVslot1A4(unsigned char flagByte);
+  virtual void SetMapOverlayModeAndRenderPreview(unsigned char overlayMode);
   virtual void RenderMapContextOverlayWithScopedClipAndSurface();
   // Five stack args, proven by the body's bare `RET 0x14` (a 5-arg no-op in this
   // class) and the 0x595c70 self-virtual call site's five pushes -- the previous

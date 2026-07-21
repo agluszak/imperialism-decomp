@@ -513,7 +513,7 @@ void TMacViewMgr_OnCommand_ID_800C_ShowCityViewSelectionDialog(void) {
   HWND hSlider = dialog.slider.m_hWnd;
   HWND hList = dialog.listbox.m_hWnd;
 
-  ::SendMessageA(hSlider, TBM_SETPOS, 1, g_pUiRuntimeContext->pad06);
+  ::SendMessageA(hSlider, TBM_SETPOS, 1, g_pUiRuntimeContext->currentTurnEventNationSlot06);
 
   ::SendMessageA(hList, LB_ADDSTRING, 0, 0x694e18);
   ::SendMessageA(hList, LB_ADDSTRING, 0, 0x694e08);
