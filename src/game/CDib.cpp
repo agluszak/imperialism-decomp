@@ -526,6 +526,55 @@ int CDib::LoadBitmapResourceAndInitializeSurfaceState(LPCSTR resourceName, HMODU
   return 1;
 }
 
+// Convert a 1-bpp bitmap into the one-pixel outline around its set pixels. The byte-level
+// scan is intentional: neighboring rows use the DWORD-aligned DIB stride, while horizontal
+// neighbors carry across adjacent bytes only when both bytes belong to the same row.
+// FUNCTION: IMPERIALISM 0x0047c1f0
+int CDib::BuildMonochromeOutlineMaskInPlace() {
+  if (m_pInfoHeader->bmiHeader.biBitCount != 1) {
+    return 0;
+  }
+
+  int rowStride = ((m_pInfoHeader->bmiHeader.biWidth + 31) / 32) * 4;
+  int height = m_pInfoHeader->bmiHeader.biHeight;
+  if (height < 1) {
+    height = -height;
+  }
+  int byteCount = rowStride * height;
+  unsigned char* outline = new unsigned char[byteCount];
+  unsigned char* pixels = static_cast<unsigned char*>(m_dibBits);
+  memset(outline, 0, m_pixelBytes);
+
+  for (int offset = 0; offset < byteCount; ++offset) {
+    unsigned char outside = static_cast<unsigned char>(~pixels[offset]);
+    if (offset - rowStride >= 0) {
+      outline[offset] =
+          static_cast<unsigned char>(outline[offset] | (pixels[offset - rowStride] & outside));
+    }
+    if (offset + rowStride < byteCount) {
+      outline[offset] =
+          static_cast<unsigned char>(outline[offset] | (pixels[offset + rowStride] & outside));
+    }
+
+    outline[offset] =
+        static_cast<unsigned char>(outline[offset] | ((pixels[offset] << 1) & outside));
+    if (offset / rowStride == (offset - 1) / rowStride) {
+      outline[offset] =
+          static_cast<unsigned char>(outline[offset] | ((pixels[offset - 1] << 7) & outside));
+    }
+    outline[offset] =
+        static_cast<unsigned char>(outline[offset] | ((pixels[offset] >> 1) & outside));
+    if (offset / rowStride == (offset + 1) / rowStride) {
+      outline[offset] =
+          static_cast<unsigned char>(outline[offset] | ((pixels[offset + 1] >> 7) & outside));
+    }
+  }
+
+  memcpy(m_dibBits, outline, byteCount);
+  delete[] outline;
+  return 1;
+}
+
 // Outline-polygon scanner behind BitMapToRegion (see the header comment). The
 // heavy local reuse mirrors the original codegen: phase 1 counts every second
 // row containing a non-transparent pixel, phase 2 emits the left edge top-down

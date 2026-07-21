@@ -70,6 +70,9 @@ public:
                                            int srcWidth, int srcHeight);
   // Load an RT_BITMAP resource from a module into the DIB state. 0x0047c080
   int LoadBitmapResourceAndInitializeSurfaceState(LPCSTR resourceName, HMODULE module);
+  // For a 1-bpp DIB, replace every set pixel with the one-pixel ring immediately outside
+  // the original bitmap. Used by the diagnostic DIB preview dialog. 0x0047c1f0
+  int BuildMonochromeOutlineMaskInPlace();
   // Software-blit a `width`x`height` rect from this DIB's pixel buffer (top-left at
   // srcX/srcY) into destDib's pixel buffer (top-left at destX/destY), skipping any
   // source byte equal to transparentColor (a straight block copy when

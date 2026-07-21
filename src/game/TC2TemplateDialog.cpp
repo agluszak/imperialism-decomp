@@ -245,7 +245,8 @@ void TDDTemplateDialog::OnLButtonDblClk(UINT nFlags, CPoint point) {
 
 // FUNCTION: IMPERIALISM 0x0047dba0
 TDETemplateDialog::TDETemplateDialog(void* initParam)
-    : TModalDialogBase(0xde, static_cast<CWnd*>(initParam)), slider(), valueB0(0), valueB4(0) {}
+    : TModalDialogBase(0xde, static_cast<CWnd*>(initParam)), slider(), populationAdjustmentB0(0),
+      commodityAdjustmentB4(0) {}
 
 // SYNTHETIC: IMPERIALISM 0x0047dc40
 // TDETemplateDialog::`scalar deleting destructor'
@@ -253,8 +254,8 @@ TDETemplateDialog::TDETemplateDialog(void* initParam)
 // FUNCTION: IMPERIALISM 0x0047dc70
 void TDETemplateDialog::DoDataExchange(CDataExchange* pDX) {
   DDX_Control(pDX, 0x3f8, slider);
-  DDX_Text(pDX, 0x422, valueB0);
-  DDX_Text(pDX, 0x421, valueB4);
+  DDX_Text(pDX, 0x422, populationAdjustmentB0);
+  DDX_Text(pDX, 0x421, commodityAdjustmentB4);
 }
 
 // SYNTHETIC: IMPERIALISM 0x0047dcc0

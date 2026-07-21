@@ -201,6 +201,8 @@ int DAT_006a1350 = 0;
 // Previous CRT new-handler returned by _set_new_handler at startup (write-only).
 // GLOBAL: IMPERIALISM 0x006a1354
 _PNH g_pfnPreviousNewHandler = 0;
+// GLOBAL: IMPERIALISM 0x006a1358
+void* g_pAmbitDeveloperAssertProbe_006A1358 = 0;
 
 // McAppUI.cpp module globals referenced by TView/TControl widget code. See
 // include/game/global_data_tables.h.
@@ -1593,6 +1595,12 @@ int g_bCityDialogLegendSelectionInitialized = 0;
 // GLOBAL: IMPERIALISM 0x0065c7f8
 const int g_ShipOrderStatusStringIndexByResourceType_0065c7f8[14] = {
     -1, -1, -1, 0, 1, -1, -1, 2, 3, 4, -1, 5, 6, 7,
+};
+
+// Per-resourceType04 horizontal source offset in TNavyRoster's 0xdba bitmap atlas.
+// GLOBAL: IMPERIALISM 0x006985e8
+const short g_ShipRosterAtlasHorizontalOffsetByResourceType_006985E8[14] = {
+    0, 0, 0, 0, 160, 0, 0, 320, 480, 640, 0, 800, 960, 1120,
 };
 
 // GLOBAL: IMPERIALISM 0x006a590c

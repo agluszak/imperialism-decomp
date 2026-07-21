@@ -38,15 +38,16 @@ address|name|symbol|size|type|prototype|provenance
 413c00|TModalDialogBase::`scalar deleting destructor'|??_GTModalDialogBase@@UAEPAXI@Z|30|function|undefined ScalarDeletingDestructor()|
 413c30|TDDTemplateDialog::~TDDTemplateDialog|??1TDDTemplateDialog@@UAE@XZ|117|function|public: virtual __thiscall TDDTemplateDialog::~TDDTemplateDialog(void)|
 413cd0|TDDTemplateDialog::`scalar deleting destructor'|??_GTDDTemplateDialog@@UAEPAXI@Z|30|function|undefined ScalarDeletingDestructor()|
-413d20|ShowNationSelectDialogAndRedispatchCurrentTurnEvent||328|function|undefined ShowNationSelectDialogAndRedispatchCurrentTurnEvent()|
+413d20|ImperialismApp::OnSelectActiveNation||328|function|void OnSelectActiveNation()|
 413ed0|WrapperFor_FreeHeapBufferIfNotNull_At0047d3f0_Impl||104|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At0047d3f0_Impl()|
-413f60|HandleDialogResultAndPostCommand100||208|function|undefined HandleDialogResultAndPostCommand100()|
+413f60|ImperialismApp::OnApplyTurnCooldownOverride||208|function|void OnApplyTurnCooldownOverride()|
 414070|WrapperFor_CDialog_At00414070||86|function|undefined WrapperFor_CDialog_At00414070()|
-4140f0|ApplyDialogSelectionToNationState||444|function|undefined ApplyDialogSelectionToNationState()|
+4140f0|ImperialismApp::OnAdjustNationResourcesAndPopulation||444|function|void OnAdjustNationResourcesAndPopulation()|
 414320|WrapperFor_FreeHeapBufferIfNotNull_At0047dc40_Impl||104|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At0047dc40_Impl()|
-4143b0|LoadAndPreviewDibFromDialogInput||428|function|undefined LoadAndPreviewDibFromDialogInput()|
+4143b0|ImperialismApp::OnPreviewDibResource||428|function|void OnPreviewDibResource()|
 4145f0|ImperialismApp::OnIdle|?OnIdle@ImperialismApp@@UAEHJ@Z|55|function|public: virtual int __thiscall ImperialismApp::OnIdle(long)|
-414640|AssertAmbitSubsystemReadyOrFailWithBmp3B6||28|function|undefined AssertAmbitSubsystemReadyOrFailWithBmp3B6()|
+414640|ImperialismApp::OnRunAmbitDeveloperAssert||28|function|void OnRunAmbitDeveloperAssert()|
+414670|ImperialismApp::OnUpdateAmbitDeveloperAssert||13|function|void OnUpdateAmbitDeveloperAssert(CCmdUI * commandUi)|
 4146d0|PostWmCloseToMainThreadWindow||55|function|undefined PostWmCloseToMainThreadWindow()|
 414720|TApplication::PostTurnEventCodeMessage2420||51|function|undefined PostTurnEventCodeMessage2420()|
 414770|TAmbitApplication::DoSetupMenus||1|function|undefined DoSetupMenus()|
@@ -334,7 +335,7 @@ address|name|symbol|size|type|prototype|provenance
 47bde0|BlitSurfaceRectSkippingTransparentColor||331|function|undefined BlitSurfaceRectSkippingTransparentColor()|
 47bf90|LoadBmpResourceByIdCached_Impl||73|function|undefined LoadBmpResourceByIdCached_Impl()|
 47c080|CDib::LoadBitmapResourceAndInitializeSurfaceState||224|function|int LoadBitmapResourceAndInitializeSurfaceState(LPCSTR resourceName, HMODULE module)|
-47c1f0|LoadAndPreviewDibFromDialogInput_Impl||384|function|undefined LoadAndPreviewDibFromDialogInput_Impl()|
+47c1f0|CDib::BuildMonochromeOutlineMaskInPlace||384|function|int BuildMonochromeOutlineMaskInPlace()|
 47c3d0|CDib::BuildNonTransparentOutlinePolygon||898|function|int * __thiscall Sprite__CollectNonTransparentPixels(uint this_ptr)|
 47c980|RebuildSurfaceRowsWithTemporaryRowBuffer||203|function|undefined RebuildSurfaceRowsWithTemporaryRowBuffer()|
 47cac0|WrapperFor_DeleteRegionHandleFromClipState_At0047cac0||70|function|undefined WrapperFor_DeleteRegionHandleFromClipState_At0047cac0()|
@@ -1141,7 +1142,6 @@ address|name|symbol|size|type|prototype|provenance
 493c30|CMcWindow::OnCommand|?OnCommand@CMcWindow@@MAEHIJ@Z|74|function|protected: virtual int __thiscall CMcWindow::OnCommand(unsigned int,long)|
 493cc0|CMcWindow::OnPaletteChanged||8|function|undefined OnPaletteChanged()|
 493ce0|AppendStatusPointerAndDispatchMessageFallback||59|function|undefined AppendStatusPointerAndDispatchMessageFallback()|
-493d30|thunk_WrapperFor_FreeHeapBufferIfNotNull_At00483ad0_Impl_At00493d30||10|function|undefined thunk_WrapperFor_FreeHeapBufferIfNotNull_At00483ad0_Impl_At00493d30()|
 493d80|CMcWindow::PreCreateWindow|?PreCreateWindow@CMcWindow@@MAEHAAUtagCREATESTRUCTA@@@Z|91|function|protected: virtual int __thiscall CMcWindow::PreCreateWindow(struct tagCREATESTRUCTA &)|
 493f30|WrapperFor_ftol_At00493f30||30|function|undefined WrapperFor_ftol_At00493f30()|
 493f90|InitializeDefaultQuickDrawSurfaceContextAndRegisterAtExit||24|function|undefined InitializeDefaultQuickDrawSurfaceContextAndRegisterAtExit()|
@@ -1809,7 +1809,7 @@ address|name|symbol|size|type|prototype|provenance
 4b63e0|TPopulationMgr::OrphanLeaf_NoCall_Ins50_004b63e0||168|function|undefined OrphanLeaf_NoCall_Ins50_004b63e0(void)|
 4b64c0|TPopulationMgr::OrphanLeaf_NoCall_Ins63_004b64c0||178|function|undefined OrphanLeaf_NoCall_Ins63_004b64c0(void)|
 4b65b0|TPopulationMgr::OrphanCallChain_C2_I61_004b65b0||179|function|undefined OrphanCallChain_C2_I61_004b65b0(void)|
-4b66a0|TPopulationMgr::OrphanLeaf_NoCall_Ins87_004b66a0||248|function|undefined OrphanLeaf_NoCall_Ins87_004b66a0(short param_1, short param_2)|
+4b66a0|TPopulationMgr::RemovePopulation||248|function|void RemovePopulation(short startingSkillBand, short amount)|
 4b67e0|TPopulationMgr::OrphanLeaf_NoCall_Ins26_004b67e0||79|function|undefined OrphanLeaf_NoCall_Ins26_004b67e0(short param_1, short param_2)|
 4b6850|TPopulationMgr::WriteTo||113|function|undefined WrapperFor_HandleCityDialogNoOpSlot14_At004b6850(int * param_1)|
 4b68f0|TPopulationMgr::ReadFrom||113|function|undefined WrapperFor_HandleCityDialogNoOpSlot18_At004b68f0(int * param_1)|
@@ -6104,11 +6104,11 @@ address|name|symbol|size|type|prototype|provenance
 5dd0a0|TViewMgr::ExecuteUiFactoryModalDialogAndReturnResultTag||169|function|undefined ExecuteUiFactoryModalDialogAndReturnResultTag()|
 5dd180|TViewMgr::HandleGlobalMapNationContextSelection||120|function|undefined HandleGlobalMapNationContextSelection()|
 5dd220|TViewMgr::HandleTurnEventDialogFactorySlotE4||218|function|undefined HandleTurnEventDialogFactorySlotE4(int stringCode)|
-5dd340|TViewMgr::HandleTurnEventDialogFactorySlotF0||203|function|undefined HandleTurnEventDialogFactorySlotF0()|
-5dd450|RunMapOrderPageSelectionDialogAndApplyResult||635|function|undefined RunMapOrderPageSelectionDialogAndApplyResult()|
+5dd340|TViewMgr::MakeNavyRosterDialog||203|function|TNavyRoster * MakeNavyRosterDialog(TTaskForce * activeMapOrderEntry)|macos-name-oracle:MakeNavyRosterDialog(TTaskForce*)
+5dd450|TViewMgr::ShowNavyRosterDialogAndApplySelection||635|function|void ShowNavyRosterDialogAndApplySelection()|
 5dd770|TViewMgr::HandleTurnEventDialogFactorySlotE8||315|function|undefined HandleTurnEventDialogFactorySlotE8()|
 5dd900|TLineData::HandleTurnEventDialogFactorySlotEC||239|function|undefined HandleTurnEventDialogFactorySlotEC()|
-5dda30|OpenSuperArmyRosterPageAndActivateProvinceSelection||587|function|undefined OpenSuperArmyRosterPageAndActivateProvinceSelection()|
+5dda30|TViewMgr::ShowArmyRosterDialogAndActivateProvinceSelection||587|function|void ShowArmyRosterDialogAndActivateProvinceSelection()|
 5ddd20|TViewMgr::ShowCivilianLedgerDialogAndSelectUnit||585|function|void __thiscall ShowCivilianLedgerDialogAndSelectUnit(void)|
 5de010|TViewMgr::MakePlanetSeedDialog||992|function|int __thiscall MakePlanetSeedDialog(const char* instruction,CString& planetSeed,const char* firstChoice,const char* secondChoice,int initialChoice,unsigned char showCancel) const|
 5de4f0|ShowCivilianReportDialogAndReturnConfirm||176|function|bool __fastcall ShowCivilianReportDialogAndReturnConfirm(int * pCivilianOrderEntry)|
@@ -8562,6 +8562,7 @@ address|name|symbol|size|type|prototype|provenance
 6a134c|g_pModuleLibraryCacheState|||global||
 6a1350|DAT_006a1350|||global||
 6a1354|g_pfnPreviousNewHandler|||global||
+6a1358|g_pAmbitDeveloperAssertProbe_006A1358|||global||
 6a13a0|g_szEmptyString|||global||
 6a141c|g_pUiResourceHead|||global||
 6a1420|g_pUiResourceContext|||global||
