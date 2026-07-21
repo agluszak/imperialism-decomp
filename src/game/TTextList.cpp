@@ -82,13 +82,12 @@ void TTextList::ApplyRectSlot110(RECT* rectBuffer) {
 }
 
 // FUNCTION: IMPERIALISM 0x0057af20
-void TTextList::BeginMouseCaptureAndStartRepeatTimer(CPoint* point, int arg2, int arg3, int arg4) {
-  (void)arg2;
-  (void)arg3;
-  (void)arg4;
+void TTextList::BeginMouseCaptureAndStartRepeatTimer(const CPoint& point, TToolboxEvent* event,
+                                                     CPoint origin) {
+  (void)event;
+  (void)origin;
 
-  int* pScrollData = reinterpret_cast<int*>(point);
-  int index = (pScrollData[1] / itemHeight) + scrollOffset;
+  int index = (point.y / itemHeight) + scrollOffset;
   if (index < totalItems) {
     selectedIndex = index;
 

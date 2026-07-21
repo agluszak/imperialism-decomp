@@ -15,10 +15,9 @@ IMPLEMENT_DYNCREATE(TPageCorner, TColorKeyPicture)
 TPageCorner::TPageCorner() {}
 
 // FUNCTION: IMPERIALISM 0x0056f850
-char TPageCorner::DispatchUiMouseMoveToChildren(CPoint* point, int arg2, int arg3, int arg4) {
+char TPageCorner::HandleMouseDown(const CPoint& point, TToolboxEvent* event, CPoint origin) {
   (void)point;
-  (void)arg2;
-  (void)arg3;
-  (void)arg4;
+  (void)event;
+  (void)origin;
   return 0;
 }

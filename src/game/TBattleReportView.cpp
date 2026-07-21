@@ -277,12 +277,11 @@ void TBattleReportView::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoi
 }
 
 // FUNCTION: IMPERIALISM 0x004adcb0
-void TBattleReportView::BeginMouseCaptureAndStartRepeatTimer(CPoint* point, int arg2, int arg3,
-                                                             int arg4) {
+void TBattleReportView::BeginMouseCaptureAndStartRepeatTimer(const CPoint& point,
+                                                             TToolboxEvent* event, CPoint origin) {
   (void)point;
-  (void)arg2;
-  (void)arg3;
-  (void)arg4;
+  (void)event;
+  (void)origin;
 }
 
 // FUNCTION: IMPERIALISM 0x004ade00

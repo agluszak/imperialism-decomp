@@ -56,17 +56,16 @@ void TMapPreviewView::Free() {
 }
 
 // FUNCTION: IMPERIALISM 0x005789e0
-void TMapPreviewView::BeginMouseCaptureAndStartRepeatTimer(CPoint* point, int arg2, int arg3,
-                                                           int arg4) {
-  (void)arg2;
-  (void)arg3;
-  (void)arg4;
+void TMapPreviewView::BeginMouseCaptureAndStartRepeatTimer(const CPoint& point,
+                                                           TToolboxEvent* event, CPoint origin) {
+  (void)event;
+  (void)origin;
 
   TBitmapSurfaceNode** surfaceObject =
       static_cast<TBitmapSurfaceNode**>(GetSurfaceNodeSlot(previewSurface60));
   unsigned char* pixels = static_cast<unsigned char*>(GetSurfaceNodePixelBits(surfaceObject));
   int stride = static_cast<unsigned short>((*surfaceObject)->stride) & 0x3fff;
-  unsigned short clickedPalette = pixels[point->y * stride + point->x];
+  unsigned short clickedPalette = pixels[point.y * stride + point.x];
 
   for (int nation = 0; nation < 7; ++nation) {
     unsigned short nationPalette =

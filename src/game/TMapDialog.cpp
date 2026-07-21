@@ -239,41 +239,38 @@ void TMapDialog::InvalidateTile(short tileIndex) {
 }
 
 // FUNCTION: IMPERIALISM 0x0051a990
-void TMapDialog::ComputeWrappedMapCellAndRegionBandFromScreenCoord(int overlayRecord, short* outRow,
-                                                                   unsigned short* outCol,
-                                                                   short* outBand) {
-  int* tileOffset = reinterpret_cast<int*>(overlayRecord);
-  *outCol = static_cast<unsigned short>(
-      static_cast<int>((viewportOffsetY + tileOffset[1]) * g_mapCellColumnScale_006a3388));
+void TMapDialog::ConvertPoint(const CPoint& point, short& outRow, short& outCol, short& outBand) {
+  outCol = static_cast<short>(
+      static_cast<int>((viewportOffsetY + point.y) * g_mapCellColumnScale_006a3388));
   short rowValue;
-  if ((*outCol & 1) != 0) {
+  if ((outCol & 1) != 0) {
     rowValue = static_cast<short>(
-        static_cast<int>((tileOffset[0] + viewportOffsetX + 0x20) * g_mapCellRowScale_006a3360));
+        static_cast<int>((point.x + viewportOffsetX + 0x20) * g_mapCellRowScale_006a3360));
     --rowValue;
   } else {
     rowValue = static_cast<short>(
-        static_cast<int>((tileOffset[0] + viewportOffsetX) * g_mapCellRowScale_006a3360));
+        static_cast<int>((point.x + viewportOffsetX) * g_mapCellRowScale_006a3360));
   }
-  *outRow = rowValue;
-  NormalizeWrappedMapCoord108x60(outRow, reinterpret_cast<short*>(outCol));
+  outRow = rowValue;
+  NormalizeWrappedMapCoord108x60(&outRow, &outCol);
 
-  int wrappedY = viewportOffsetY + tileOffset[1];
+  int wrappedY = viewportOffsetY + point.y;
   short bandRow = static_cast<short>(wrappedY % 0x40);
 
   short bandCol = 0;
-  if ((*outCol & 1) != 0) {
-    int wrappedX = tileOffset[0] + 0x20 + viewportOffsetX;
+  if ((outCol & 1) != 0) {
+    int wrappedX = point.x + 0x20 + viewportOffsetX;
     bandCol = static_cast<short>(wrappedX % 0x40 - 1);
   } else {
-    int wrappedX = tileOffset[0] + viewportOffsetX;
+    int wrappedX = point.x + viewportOffsetX;
     bandCol = static_cast<short>(wrappedX % 0x40);
   }
 
   if (bandCol < 0x20) {
-    *outBand = static_cast<short>((bandRow < 0x20) + 1);
+    outBand = static_cast<short>((bandRow < 0x20) + 1);
     return;
   }
-  *outBand = static_cast<short>((bandRow >= 0x20) + 3);
+  outBand = static_cast<short>((bandRow >= 0x20) + 3);
 }
 
 // FUNCTION: IMPERIALISM 0x0051aad0

@@ -131,11 +131,10 @@ void TCivDescription::UpdateCivilianOrderClassAndRefreshTargetCounts(TCivUnit* o
 /* Handles civ-description click hit-test and selects matching terrain/entry descriptor. */
 
 // FUNCTION: IMPERIALISM 0x0058f1a0
-void TCivDescription::BeginMouseCaptureAndStartRepeatTimer(CPoint* point, int arg2, int arg3,
-                                                           int arg4) {
-  (void)arg2;
-  (void)arg3;
-  (void)arg4;
+void TCivDescription::BeginMouseCaptureAndStartRepeatTimer(const CPoint& point,
+                                                           TToolboxEvent* event, CPoint origin) {
+  (void)event;
+  (void)origin;
   int candidateOrdinal = 0;
   int provinceCount;
   int provinceOrdinal;
@@ -143,13 +142,12 @@ void TCivDescription::BeginMouseCaptureAndStartRepeatTimer(CPoint* point, int ar
   int provinceTileCount;
   int provinceTileOrdinal;
   short tileIndex;
-  Rect32* legendRect = &this->legendRects[0];
+  RECT* legendRect = &this->legendRects[0];
   unsigned short* currentLegendSelectionCounter = g_awCivilianLegendSelectionCountsBySlot;
   int slotIndex = 0;
 
   do {
-    if (PtInRect(reinterpret_cast<const RECT*>(legendRect), *reinterpret_cast<POINT*>(point)) !=
-        0) {
+    if (PtInRect(legendRect, point) != 0) {
       TLongintList* ownerNationProvinceCollection =
           g_apTerrainTypeDescriptorTable[this->ownerNationId]->ownedRegionList;
       provinceCount = ownerNationProvinceCollection->GetSize();
@@ -287,8 +285,8 @@ void TCivDescription::ApplyRectSlot110(RECT* rectBuffer) {
 
   if (this->legendInitialized == 0) {
     legendSelectionCountsBySlot = g_awCivilianLegendSelectionCountsBySlot;
-    Rect32* legendRect = &this->legendRects[0];
-    Rect32 zeroRect = {0, 0, 0, 0};
+    RECT* legendRect = &this->legendRects[0];
+    RECT zeroRect = {0, 0, 0, 0};
     do {
       *legendRect = zeroRect;
       legendRect++;

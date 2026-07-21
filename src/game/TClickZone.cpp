@@ -18,5 +18,5 @@ TClickZone::TClickZone() : TControl(), clickSoundId84(0x1b58) {}
 TClickZone::~TClickZone() {}
 
 // FUNCTION: IMPERIALISM 0x00572490
-void TClickZone::BeginMouseCaptureAndStartRepeatTimer(CPoint* point, int arg2, int arg3, int arg4) {
-}
+void TClickZone::BeginMouseCaptureAndStartRepeatTimer(const CPoint& point, TToolboxEvent* event,
+                                                      CPoint origin) {}

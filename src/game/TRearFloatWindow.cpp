@@ -19,23 +19,23 @@ TRearFloatWindow::TRearFloatWindow() : TFloatWindow() {
 TRearFloatWindow::~TRearFloatWindow() {}
 
 // FUNCTION: IMPERIALISM 0x004f3960
-char TRearFloatWindow::DispatchUiMouseMoveToChildren(CPoint* point, int arg2, int arg3, int arg4) {
-  int inBounds = TestPointInBounds(point);
-  switch (static_cast<short>(inBounds)) {
+char TRearFloatWindow::HandleMouseDown(const CPoint& point, TToolboxEvent* event, CPoint origin) {
+  short partCode = ContainsMouse(point);
+  switch (partCode) {
   case 3:
-    return TFloatWindow::DispatchUiMouseMoveToChildren(point, arg2, arg3, arg4);
+    return TFloatWindow::HandleMouseDown(point, event, origin);
   case 4:
-    ReturnFromUiSlot61(reinterpret_cast<int>(point));
+    MoveByUser(point);
     return 1;
   case 5:
-    ReturnFromUiSlot62(reinterpret_cast<int>(point));
+    ResizeByUser(point);
     return 1;
   case 6:
-    ReturnFromUiSlot60(reinterpret_cast<int>(point));
+    GoAwayByUser(point);
     return 1;
   case 7:
   case 8:
-    ReturnFromUiSlot63(reinterpret_cast<int>(point), inBounds);
+    ZoomByUser(point, partCode);
     return 1;
   }
   return 1;

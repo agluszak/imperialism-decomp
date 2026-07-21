@@ -82,7 +82,7 @@ public:
   // slot 0x43 PaintVisibleChildrenIntersectingClipRect inherited unchanged (0x48b8d0)
   // slot 0x44 ApplyRectSlot110 inherited unchanged (0x430bf0)
   // slot 0x45 vmethod_0048 inherited unchanged (0x48b860)
-  // slot 0x46 DispatchUiMouseMoveToChildren inherited unchanged (0x48c450)
+  // slot 0x46 HandleMouseDown inherited unchanged (0x48c450)
   // slot 0x47 BeginMouseCaptureAndStartRepeatTimer inherited unchanged (0x430c10)
   // slot 0x48 HandleMouseUp inherited unchanged (0x48c590)
   // slot 0x49 vmethod_0071 inherited unchanged (0x427240)
@@ -107,11 +107,11 @@ public:
   // slot 0x5c vmethod_0092 inherited unchanged (0x48abe0)
   // slot 0x5d DetachUiElementFromOwnerListAndClearBackref inherited unchanged (0x48ae60)
   // slot 0x5e CtrlSlot94_GetWordField54_Impl inherited unchanged (0x48c970)
-  virtual char TestPointInBounds(CPoint* point) override;       // slot 0x5f 0x48e1c0
-  virtual void ReturnFromUiSlot60(int arg) override;            // slot 0x60 0x48e1e0
-  virtual void ReturnFromUiSlot61(int arg) override;            // slot 0x61 0x48e210
-  virtual void ReturnFromUiSlot62(int arg) override;            // slot 0x62 0x48e240
-  virtual void ReturnFromUiSlot63(int arg1, int arg2) override; // slot 0x63 0x48e270
+  virtual short ContainsMouse(const CPoint& point) override;             // slot 0x5f 0x48e1c0
+  virtual void GoAwayByUser(const CPoint& point) override;               // slot 0x60 0x48e1e0
+  virtual void MoveByUser(const CPoint& point) override;                 // slot 0x61 0x48e210
+  virtual void ResizeByUser(const CPoint& point) override;               // slot 0x62 0x48e240
+  virtual void ZoomByUser(const CPoint& point, short partCode) override; // slot 0x63 0x48e270
   // slot 0x64 DrawRectangleInCurrentUiContext inherited unchanged (0x48c750)
   // slot 0x65 AssertMcAppUILine1914 inherited unchanged (0x48c7a0)
   // slot 0x66 AssertMcAppUILine1922 inherited unchanged (0x48c7d0)

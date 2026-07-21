@@ -55,18 +55,6 @@ static void PopulateKeyCommandBlock(TKeyCommandEvent& block, UINT nChar, UINT nR
   block.modifierFlags = mods;
 }
 
-// Local mouse event the click handlers forward into the dialog tree: a TUiEvent header
-// followed by the click coordinates (a separate stack-local instance from the persistent
-// keyboard command event above, but the same underlying class @ vtable 0x648590).
-struct UiMouseEventBlock {
-  TUiEvent event; // 0x00 TEvent-derived header (0x14; installs vtable 0x648590)
-  int x;          // 0x14
-  int y;          // 0x18
-  int pad1c;      // 0x1c
-  int pad20;      // 0x20
-  int pad24;      // 0x24
-};
-
 // Active-window/native-host accessors used by OnKeyDown; defined below in address order
 // (their bodies live at 0x48dxxx, past this file's other markers).
 static CWnd* GetModalStackTopHostView();
@@ -277,19 +265,19 @@ void CIncludeView::OnMouseMove(UINT nFlags, CPoint point) {
 }
 
 // WM_LBUTTONDOWN: forward the click into the hosted dialog tree as a mouse event
-// (TView slot 0x46). For a playing movie this reaches TMovieView::DispatchUiMouseMoveToChildren,
+// (TView slot 0x46). For a playing movie this reaches TMovieView::HandleMouseDown,
 // which stops (skips) the movie. Clicking the view outside the centered movie lands here;
 // clicking the movie window itself arrives via OnParentNotify.
 // FUNCTION: IMPERIALISM 0x004839e0
 void CIncludeView::OnLButtonDown(UINT nFlags, CPoint point) {
   (void)nFlags;
   if (m_uiInteractiveFlag90 != 0 && m_activeDialogContext != 0) {
-    UiMouseEventBlock evt;
-    evt.x = point.x;
-    evt.y = point.y;
-    evt.pad1c = 0;
-    evt.pad24 = 0;
-    m_activeDialogContext->DispatchUiMouseMoveToChildren(&point, reinterpret_cast<int>(&evt), 0, 0);
+    TToolboxEvent event;
+    event.mouseX = point.x;
+    event.mouseY = point.y;
+    event.mouseMetadata1c = 0;
+    event.mouseButton24 = 0;
+    m_activeDialogContext->HandleMouseDown(point, &event, CPoint(0, 0));
   }
 }
 

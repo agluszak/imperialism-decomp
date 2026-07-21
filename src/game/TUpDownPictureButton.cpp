@@ -39,8 +39,9 @@ bool TUpDownPictureButton::IsSelected() {
 }
 
 // FUNCTION: IMPERIALISM 0x005716b0
-void TUpDownPictureButton::BeginMouseCaptureAndStartRepeatTimer(CPoint* point, int arg2, int arg3,
-                                                                int arg4) {
+void TUpDownPictureButton::BeginMouseCaptureAndStartRepeatTimer(const CPoint& point,
+                                                                TToolboxEvent* event,
+                                                                CPoint origin) {
   g_pSfxPlaybackSystem->PlaySoundEffect(timingWord92, 0, 1);
-  TControl::BeginMouseCaptureAndStartRepeatTimer(point, arg2, arg3, arg4);
+  TControl::BeginMouseCaptureAndStartRepeatTimer(point, event, origin);
 }

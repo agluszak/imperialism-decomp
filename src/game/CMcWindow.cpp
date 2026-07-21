@@ -171,7 +171,7 @@ void CMcWindow::OnLButtonDown(UINT nFlags, CPoint point) {
   Default();
   ::BringWindowToTop(m_hWnd);
   CPoint pt(point);
-  m_pOwnerWindow->DispatchUiMouseMoveToChildren(&pt, 0, 0, 0);
+  m_pOwnerWindow->HandleMouseDown(pt, 0, CPoint(0, 0));
 }
 
 // Click completion: default processing, forward the point to the owner tree's slot-0x48

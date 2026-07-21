@@ -56,7 +56,7 @@ public:
   virtual void HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* point,
                                                                    RgnHandle hitArg) override;
   virtual void DoPostCreate(int arg) override;
-  virtual char DispatchUiMouseMoveToChildren(CPoint* point, int arg2, int arg3, int arg4) override;
+  virtual char HandleMouseDown(const CPoint& point, TToolboxEvent* event, CPoint origin) override;
 
   virtual void SetFlagByteAndInvokeVslot1A4(unsigned char flagByte);
   virtual void RenderMapContextOverlayWithScopedClipAndSurface();
@@ -77,9 +77,7 @@ public:
   // One ignored stack arg (body is `OR AX,0xffff; RET 0x4`) -- present only for
   // stack-cleanup fidelity; the previous 0-arg declaration purged 4 bytes short.
   virtual short QueryMinusOneWordSlot1BC(int unusedArg);
-  virtual void ComputeWrappedMapCellAndRegionBandFromScreenCoord(int overlayRecord, short* outRow,
-                                                                 unsigned short* outCol,
-                                                                 short* outBand);
+  virtual void ConvertPoint(const CPoint& point, short& outRow, short& outCol, short& outBand);
   virtual void InvokeDialogHooks1D8ThenE4(int stridedRecord, int dispatchContext);
   virtual void HandleMapTileClickSetOrderContextAndDispatchEvent79(int arg1, int arg2);
   virtual void DispatchOverlayEvent78FromStridedRecord(int stridedRecord, int dispatchContext);

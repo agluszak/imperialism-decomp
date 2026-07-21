@@ -131,14 +131,13 @@ void TEditText::Free() {
 }
 
 // FUNCTION: IMPERIALISM 0x00490bc0
-char TEditText::DispatchUiMouseMoveToChildren(CPoint* point, int arg2, int arg3, int arg4) {
-  // The retail body forwards to the base TView mouse-move dispatch and, on success, fires a
+char TEditText::HandleMouseDown(const CPoint& point, TToolboxEvent* event, CPoint origin) {
+  // The retail body forwards to the base TView mouse-down dispatch and, on success, fires a
   // command event through a receiver/slot that is not yet recovered. This fallback remains an
   // incomplete stub rather than guessing that dispatch.
   (void)point;
-  (void)arg2;
-  (void)arg3;
-  (void)arg4;
+  (void)event;
+  (void)origin;
   return 0;
 }
 

@@ -926,12 +926,12 @@ void TTacticalBattleView::DoPostCreate(int arg) {
 void TTacticalBattleView::ForwardParam(int param) {}
 
 // FUNCTION: IMPERIALISM 0x005a8660
-void TTacticalBattleView::BeginMouseCaptureAndStartRepeatTimer(CPoint* point, int arg2, int arg3,
-                                                               int arg4) {
+void TTacticalBattleView::BeginMouseCaptureAndStartRepeatTimer(const CPoint& point,
+                                                               TToolboxEvent* event,
+                                                               CPoint origin) {
   (void)point;
-  (void)arg2;
-  (void)arg3;
-  (void)arg4;
+  (void)event;
+  (void)origin;
 }
 
 // Converts a screen point to a clamped hex grid (row, col) for this battle: row from the

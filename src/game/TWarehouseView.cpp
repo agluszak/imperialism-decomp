@@ -18,9 +18,9 @@ TWarehouseView::TWarehouseView() : TBuildingView() {}
 TWarehouseView::~TWarehouseView() {}
 
 // FUNCTION: IMPERIALISM 0x004c7330
-void TWarehouseView::BeginMouseCaptureAndStartRepeatTimer(CPoint* point, int arg2, int arg3,
-                                                          int arg4) {
-  TControl::BeginMouseCaptureAndStartRepeatTimer(point, arg2, arg3, arg4);
+void TWarehouseView::BeginMouseCaptureAndStartRepeatTimer(const CPoint& point, TToolboxEvent* event,
+                                                          CPoint origin) {
+  TControl::BeginMouseCaptureAndStartRepeatTimer(point, event, origin);
 }
 
 // FUNCTION: IMPERIALISM 0x004c7360

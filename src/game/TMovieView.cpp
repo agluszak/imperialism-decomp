@@ -106,11 +106,11 @@ void TMovieView::StopMovieIfActive() {
 }
 
 // FUNCTION: IMPERIALISM 0x005e2520
-char TMovieView::DispatchUiMouseMoveToChildren(CPoint* point, int arg2, int arg3, int arg4) {
+char TMovieView::HandleMouseDown(const CPoint& point, TToolboxEvent* event, CPoint origin) {
   if (movieWindowState != 0) {
     movieWindowState->Stop();
   }
-  return TPicture::DispatchUiMouseMoveToChildren(point, arg2, arg3, arg4);
+  return TPicture::HandleMouseDown(point, event, origin);
 }
 
 // SYNTHETIC: IMPERIALISM 0x005e2210

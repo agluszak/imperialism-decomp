@@ -59,9 +59,8 @@ public:
   virtual void RenderStrategicTileSelectionAndNeighborHighlights() override;
   virtual void ForwardProjectTileIndexToWrappedScreenOffsetByScale(int arg1, int arg2, int arg3,
                                                                    int arg4, int arg5) override;
-  virtual void ComputeWrappedMapCellAndRegionBandFromScreenCoord(int overlayRecord, short* outRow,
-                                                                 unsigned short* outCol,
-                                                                 short* outBand) override;
+  virtual void ConvertPoint(const CPoint& point, short& outRow, short& outCol,
+                            short& outBand) override;
   virtual void CenterOn(int tileIndex) override;
 
   // Fills the map-context info panel's 'titl' / 'info' / 'loca' text controls for the
