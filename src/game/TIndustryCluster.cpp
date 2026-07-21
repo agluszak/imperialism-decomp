@@ -37,7 +37,7 @@ static __inline void UpdateTradeBarFromSelectedMetricRatio(TIndustryCluster* con
   TAmtBar* barLayout = reinterpret_cast<TAmtBar*>(barControl);
   if (barLayout->auxValueA != 0) {
     int ratioValue =
-        ((int)context->selectedMetricControl->QueryStepValue() * barLayout->frameWidth34) /
+        ((int)context->selectedMetricControl->GetNextHandler() * barLayout->frameWidth34) /
         (int)barLayout->auxValueA;
     barControl->SetBarMetricRatio(ratioValue);
   }
@@ -73,7 +73,7 @@ void TIndustryCluster::DoPostCreate(int styleSeed) {
 
   TProductionOrder* selectedMetricRecord = cityState->tradeCommodityRecordPtrs[tagIndex];
   // `selectedMetricControl` is declared TAmtBar* but this control's vtable
-  // slot 0x30 (QueryStepValue, see UpdateTradeBarFromSelectedMetricRatio
+  // slot 0x30 (GetNextHandler, see UpdateTradeBarFromSelectedMetricRatio
   // above) and TProductionOrder's slot 0x30 (MaxOrder) are the same "return a
   // short value" shape the original exploits at this one call site — the
   // pointer genuinely is a TProductionOrder, not a TAmtBar.
@@ -101,7 +101,7 @@ int TIndustryCluster::NotifyControlSelectionChange(void* dragValuePtr, int updat
   TAmtBar* selectedControl = this->selectedMetricControl;
   short previousValue = ReadControlValueFieldPlus4(selectedControl);
   if (selectedControl != 0) {
-    selectedControl->SetControlValue(dragValue);
+    selectedControl->SetEnable(static_cast<unsigned char>(dragValue));
   }
 
   if (((char)updateFlag == 0) && (ReadControlValueFieldPlus4(selectedControl) == previousValue)) {
@@ -151,7 +151,7 @@ void TIndustryCluster::RefreshBarFromSelectedMetric() {
 }
 
 // FUNCTION: IMPERIALISM 0x00588ff0
-void TIndustryCluster::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+void TIndustryCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId == 100) {
     TAmtBar* moveControl = reinterpret_cast<TAmtBar*>(this->ResolveControlByTag(kControlTagMove));
     if (moveControl == 0) {

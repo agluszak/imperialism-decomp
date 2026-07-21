@@ -44,8 +44,8 @@ void TUpDownView::DispatchPictureResourceCommand(int nEventType, void* pEventSen
   }
 
   if (point->y <= this->frameHeight38 / 2) {
-    this->DispatchEvent(100, this, nullptr);
+    this->HandleEvent(100, this, nullptr);
   } else {
-    this->DispatchEvent(101, this, nullptr);
+    this->HandleEvent(101, this, nullptr);
   }
 }

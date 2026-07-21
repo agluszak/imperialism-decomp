@@ -7,6 +7,7 @@
 #include "game/TModuleLibraryCacheTableStateB.h"
 #include "game/TQuickDrawSurfaceContext.h"
 #include "game/TStaticText.h"
+#include "game/ui_invalidation_guard.h"
 #include <cstring>
 
 // The QuickDraw clip/surface module state is seeded by a file-scope C++ object
@@ -234,7 +235,7 @@ void __cdecl DrawTextWithCachedQuickDrawStyleState(const CString* text) {
 // Draws one text cell into a rect with the cached QuickDraw measure-font/color state, the
 // same font-rebuild + SelectObject/SetTextColor idiom as DrawTextWithCachedQuickDrawStyleState
 // (0x494a90) but using CDC::DrawText into a caller rect; styleSel selects the DrawText format
-// flags. Only called by TTradeScreenPicture::ApplyRectSlot110.
+// flags. Only called by TTradeScreenPicture::Draw.
 // FUNCTION: IMPERIALISM 0x00494bf0
 void __cdecl RenderTradeScreenCommoditySummaryRows_Impl(CString* text, RECT* rect, short styleSel,
                                                         int unused) {
@@ -761,6 +762,23 @@ void FillRectWithQuickDrawBrushAndContextOffset(RECT* rect) {
   }
 }
 
+// FUNCTION: IMPERIALISM 0x00498b50
+void __cdecl SetQuickDrawCursor(const QuickDrawCursor* cursor) {
+  (void)cursor;
+  if (g_QuickDrawSetCursorAssertGate == 0) {
+    TemporarilyClearAndRestoreUiInvalidationFlag(g_szQuickDrawSourcePath_00695168, 0x984);
+  }
+}
+
+// FUNCTION: IMPERIALISM 0x00498b80
+QuickDrawCursorHandle __cdecl GetQuickDrawCursor(short cursorId) {
+  (void)cursorId;
+  if (g_QuickDrawGetCursorAssertGate == 0) {
+    TemporarilyClearAndRestoreUiInvalidationFlag(g_szQuickDrawSourcePath_00695168, 0x988);
+  }
+  return 0;
+}
+
 // FUNCTION: IMPERIALISM 0x00498ca0
 void HiliteColor(const RGBQUAD*) {}
 
@@ -768,7 +786,7 @@ void HiliteColor(const RGBQUAD*) {}
 void TruncateTextToFitWidthWithEllipsis(CString* text, short maxWidth) {
   // Shrinks *text one character at a time, appending "...", until it (plus the
   // ellipsis) measures within maxWidth -- the reusable form of the loop
-  // TMiniArmyView::ApplyRectSlot110 (0x4aaeb0) inlines by hand for its own name
+  // TMiniArmyView::Draw (0x4aaeb0) inlines by hand for its own name
   // label. Bails out to an empty string if truncation would leave fewer than 5
   // characters.
   if (MeasureTextExtentWithCachedQuickDrawStyle(text) > maxWidth) {

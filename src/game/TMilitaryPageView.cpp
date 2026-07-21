@@ -44,7 +44,7 @@ void TMilitaryPageView::AfterStuffValues() {
 
   TBook* book = static_cast<TBook*>(ownerContext);
   book->AssertValid();
-  book->UpdatePagedListNavigationButtonState(currentPage);
+  book->ShowPage(currentPage);
 }
 
 // FUNCTION: IMPERIALISM 0x00564a60

@@ -696,6 +696,13 @@
       "text": "System"
     },
     {
+      "address": "0x00695168",
+      "placeholders": [],
+      "source": "embedded_global",
+      "symbol": "g_szQuickDrawSourcePath_00695168",
+      "text": "D:\\Ambit\\QuickDraw.cpp"
+    },
+    {
       "address": "0x00695188",
       "placeholders": [
         "printf"
@@ -11033,6 +11040,28 @@
         }
       ],
       "source_file": "src/game/CMcWindow.cpp"
+    },
+    "0x00498b50": {
+      "references": [
+        {
+          "address": "0x00695168",
+          "kind": "embedded_global",
+          "symbol": "g_szQuickDrawSourcePath_00695168",
+          "text": "D:\\Ambit\\QuickDraw.cpp"
+        }
+      ],
+      "source_file": "src/game/quickdraw_rendering.cpp"
+    },
+    "0x00498b80": {
+      "references": [
+        {
+          "address": "0x00695168",
+          "kind": "embedded_global",
+          "symbol": "g_szQuickDrawSourcePath_00695168",
+          "text": "D:\\Ambit\\QuickDraw.cpp"
+        }
+      ],
+      "source_file": "src/game/quickdraw_rendering.cpp"
     },
     "0x004992a0": {
       "references": [
@@ -179307,9 +179336,9 @@
     "windows_strings": "docs/reference/strenu-strings.tsv"
   },
   "summary": {
-    "embedded_globals": 766,
+    "embedded_globals": 767,
     "formula_matches": 2356,
-    "functions_with_references": 275,
+    "functions_with_references": 277,
     "mac_strings": 3821,
     "mac_strings_with_candidates": 3091,
     "text_resources": 0,

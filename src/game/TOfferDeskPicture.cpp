@@ -61,7 +61,7 @@ void TOfferDeskPicture::PoseOfferSheet(short sourceNation, short targetNation, s
   TNumberText* purchaseControl = static_cast<TNumberText*>(ResolveControlByTag('purc'));
   purchaseControl->AssertValid();
   purchaseControl->maximumValue = maxAmount;
-  purchaseControl->SetControlValue(proposedAmount);
+  purchaseControl->SetControlValue(proposedAmount, 0);
 
   acceptButtonA0 = static_cast<TControl*>(ResolveControlByTag('acce'));
   acceptButtonA0->AssertValid();
@@ -84,7 +84,7 @@ void TOfferDeskPicture::PoseOfferSheet(short sourceNation, short targetNation, s
 }
 
 // FUNCTION: IMPERIALISM 0x005bf740
-void TOfferDeskPicture::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+void TOfferDeskPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   int tag = sourceHandler->controlTag;
   if (commandId >= 0x2af8) {
     short selectionIndex =
@@ -108,7 +108,7 @@ void TOfferDeskPicture::HandleEvent(int commandId, TEventHandler* sourceHandler,
   } else if (commandId == 0x14 && tag == kTagDone) {
     UpdateTradeSelectionStateAndRefreshUiIfChanged(0);
   }
-  TControl::HandleEvent(commandId, sourceHandler, event);
+  TControl::DoEvent(commandId, sourceHandler, event);
 }
 
 // FUNCTION: IMPERIALISM 0x005bf860

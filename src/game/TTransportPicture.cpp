@@ -24,7 +24,7 @@ TTransportPicture::TTransportPicture()
 // TTransportPicture::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x00591f10
-void TTransportPicture::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+void TTransportPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId >= 100 && commandId <= 0x65) {
     short nationId = g_pSimMgr->GetActiveNationId();
     TGreatPower* nation = g_apNationStates[nationId];
@@ -61,7 +61,7 @@ void TTransportPicture::HandleEvent(int commandId, TEventHandler* sourceHandler,
     }
     return;
   }
-  TControl::HandleEvent(commandId, sourceHandler, event);
+  TControl::DoEvent(commandId, sourceHandler, event);
 }
 
 // FUNCTION: IMPERIALISM 0x005921c0
@@ -122,9 +122,9 @@ void TTransportPicture::Refresh() {
 }
 
 // FUNCTION: IMPERIALISM 0x00592830
-void TTransportPicture::ApplyRectSlot110(RECT* rectBuffer) {
-  TPicture::ApplyRectSlot110(rectBuffer);
-  InvokeSlot13C();
+void TTransportPicture::Draw(RECT* rectBuffer) {
+  TPicture::Draw(rectBuffer);
+  ForceRedraw();
 }
 
 TTransportPicture::~TTransportPicture() {}

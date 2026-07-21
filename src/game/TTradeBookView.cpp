@@ -1,10 +1,11 @@
 #include "game/TTradeBookView.h"
 
-#include "game/TControl.h"
 #include "game/TDropShadowText.h"
 #include "game/TEventHandler.h"
 #include "game/TSimMgr.h"
 #include "game/TStaticText.h"
+#include "game/TTradePageBuyView.h"
+#include "game/TTradePageSellView.h"
 #include "game/global_data_tables.h"
 #include "game/ui_control_tags.h"
 #include "game/ui_text_label_helpers_decls.h"
@@ -28,8 +29,8 @@ void TTradeBookView::DoPostCreate(int arg) {
 
   previousPageButton = static_cast<TControl*>(ResolveControlByTag(kControlTagLcor));
   nextPageButton = static_cast<TControl*>(ResolveControlByTag(kControlTagRcor));
-  buyPanel = static_cast<TControl*>(ResolveControlByTag(kControlTagTbou));
-  sellPanel = static_cast<TControl*>(ResolveControlByTag(kControlTagTsol));
+  buyPanel = static_cast<TTradePageBuyView*>(ResolveControlByTag(kControlTagTbou));
+  sellPanel = static_cast<TTradePageSellView*>(ResolveControlByTag(kControlTagTsol));
 
   TStaticText* rtilControl = static_cast<TStaticText*>(ResolveControlByTag(kControlTagRtil));
   rtilControl->AssertValid();
@@ -54,24 +55,24 @@ void TTradeBookView::DoPostCreate(int arg) {
 }
 
 // FUNCTION: IMPERIALISM 0x005be370
-void TTradeBookView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+void TTradeBookView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId == 0xa) {
     if (sourceHandler->controlTag == kControlTagRcor) {
-      UpdatePagerButtonStatesAndRefreshPanels(currentPage + 1);
+      ShowPage(currentPage + 1);
     } else if (sourceHandler->controlTag == kControlTagLcor) {
-      UpdatePagerButtonStatesAndRefreshPanels(currentPage - 1);
+      ShowPage(currentPage - 1);
     }
   }
-  TEventHandler::HandleEvent(commandId, sourceHandler, event);
+  TEventHandler::DoEvent(commandId, sourceHandler, event);
 }
 
 // FUNCTION: IMPERIALISM 0x005be3e0
-void TTradeBookView::UpdatePagerButtonStatesAndRefreshPanels(int page) {
+void TTradeBookView::ShowPage(int page) {
   previousPageButton->SetState(page != 1, 0);
   previousPageButton->SetEnabled(page != 1, 1);
   bool hasMore = page + 2 <= pageCount;
   nextPageButton->SetState(hasMore, 0);
   nextPageButton->SetEnabled(hasMore, 1);
-  buyPanel->ReturnZeroFromUiSlot6C(page);
-  sellPanel->ReturnZeroFromUiSlot6C(page);
+  buyPanel->ShowPage(static_cast<short>(page));
+  sellPanel->ShowPage(static_cast<short>(page));
 }

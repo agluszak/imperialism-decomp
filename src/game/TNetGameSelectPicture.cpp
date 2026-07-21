@@ -26,8 +26,7 @@ void TNetGameSelectPicture::DoPostCreate(int arg) {
 }
 
 // FUNCTION: IMPERIALISM 0x00576bc0
-void TNetGameSelectPicture::HandleEvent(int commandId, TEventHandler* sourceHandler,
-                                        TEvent* event) {
+void TNetGameSelectPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId == 0x14 || commandId == 0xa || commandId == 0x22) {
     if (sourceHandler->controlTag == kControlTagCncl) {
       g_pGameFlowState->ResetGameFlowStateAndPostTurnEvent5DCAlt();
@@ -42,5 +41,5 @@ void TNetGameSelectPicture::HandleEvent(int commandId, TEventHandler* sourceHand
           selectedGameOption->controlValue3c);
     }
   }
-  TControl::HandleEvent(commandId, sourceHandler, event);
+  TControl::DoEvent(commandId, sourceHandler, event);
 }

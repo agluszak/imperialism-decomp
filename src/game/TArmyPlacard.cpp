@@ -45,10 +45,10 @@ void TArmyPlacard::SetValue(short value, unsigned char refreshNow) {
 }
 
 // FUNCTION: IMPERIALISM 0x0058bfe0
-void TArmyPlacard::ApplyRectSlot110(RECT* rectBuffer) {
+void TArmyPlacard::Draw(RECT* rectBuffer) {
   CString countText;
 
-  TPicture::ApplyRectSlot110(rectBuffer);
+  TPicture::Draw(rectBuffer);
 
   if (this->glyph90 != 0) {
     // Original (0x58bfe0): style (0, 10, 0x2b67) for the main pass and
@@ -71,7 +71,7 @@ void TArmyPlacard::ApplyRectSlot110(RECT* rectBuffer) {
 }
 
 // FUNCTION: IMPERIALISM 0x0058c140
-void TArmyPlacard::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+void TArmyPlacard::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   (void)commandId;
   (void)event;
   if (sourceHandler->controlTag == 0x706c7573) { // "plus"

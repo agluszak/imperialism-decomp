@@ -24,11 +24,11 @@ TDropShadowNumberText::TDropShadowNumberText() : TPictureNumberText() {
 // TDropShadowNumberText::`scalar deleting destructor'
 TDropShadowNumberText::~TDropShadowNumberText() {}
 
-// slot 0x44 — ApplyRectSlot110 override: shadow pass in shadowColorAc, then the regular
+// slot 0x44 — Draw override: shadow pass in shadowColorAc, then the regular
 // value-text render.
 // FUNCTION: IMPERIALISM 0x005b59b0
-void TDropShadowNumberText::ApplyRectSlot110(RECT* rectBuffer) {
-  TEditText::ApplyRectSlot110(rectBuffer);
+void TDropShadowNumberText::Draw(RECT* rectBuffer) {
+  TEditText::Draw(rectBuffer);
   // TODO(partial 0x5b59b0): the original then sets the quickdraw color to shadowColorAc
   // (0x495030), formats the value CString via the text virtuals, and draws it offset by
   // one pixel before the normal pass. Ported as an honest partial pending the cached

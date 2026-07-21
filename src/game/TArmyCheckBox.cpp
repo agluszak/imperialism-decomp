@@ -51,7 +51,7 @@ void TArmyCheckBox::CheckTheLook(unsigned char drawImmediate) {
 }
 
 // FUNCTION: IMPERIALISM 0x004aa100
-void TArmyCheckBox::ApplyRectSlot110(RECT* rectBuffer) {
+void TArmyCheckBox::Draw(RECT* rectBuffer) {
   RECT contentRect;
   contentRect.left = rectBuffer->left;
   contentRect.top = rectBuffer->top;
@@ -97,19 +97,19 @@ void TArmyCheckBox::ApplyRectSlot110(RECT* rectBuffer) {
 }
 
 // FUNCTION: IMPERIALISM 0x004aa280
-void TArmyCheckBox::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+void TArmyCheckBox::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId == 0x21) {
     if ((GetAsyncKeyState(0x11) & 0x8000) != 0 || isOn84 != 0) {
       Toggle(1);
     }
   }
-  TControl::HandleEvent(commandId, sourceHandler, event);
+  TControl::DoEvent(commandId, sourceHandler, event);
 }
 
 // FUNCTION: IMPERIALISM 0x004aa2f0
 void TArmyCheckBox::DoPostCreate(int arg) {
   (void)arg;
-  frameStyle60 = 4;
+  eventNumber60 = 4;
 }
 
 // FUNCTION: IMPERIALISM 0x004aa310
@@ -147,5 +147,5 @@ void TArmyCheckBox::ToggleIf(unsigned char expectedState, unsigned char drawImme
 
 // FUNCTION: IMPERIALISM 0x004aa430
 void TArmyCheckBox::DrawImmediate() {
-  OwnerPanel()->InvokeSlot13C();
+  GetWindow()->ForceRedraw();
 }

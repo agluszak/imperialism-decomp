@@ -99,7 +99,7 @@ char TLoungeDialog::DoIdle(int action) {
 }
 
 // FUNCTION: IMPERIALISM 0x0054e1f0
-void TLoungeDialog::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+void TLoungeDialog::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId == 0x29a) {
     TView* okayControl = ResolveControlByTag(kControlTagOkay);
     okayControl->AssertValid();

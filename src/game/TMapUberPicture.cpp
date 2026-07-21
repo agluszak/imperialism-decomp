@@ -6,6 +6,7 @@
 #include "game/TArmyMgr.h"
 #include "game/TAdmiral.h"
 #include "game/TCivMgr.h"
+#include "game/TCivUnit.h"
 #include "game/TMapDialog.h"
 #include "game/TMapMgr.h"
 #include "game/TMiniMapView.h"
@@ -138,7 +139,7 @@ void TMapUberPicture::SetMapInteractionMode(short nMode) {
     // Mac MapView.rsrc:2013 identifies 'tbr1' as TToolBarCluster and its 'seas' child as
     // TDropShadowText. Windows reuses that child as 'forc' while army mode is active.
     TToolBarCluster* toolbar =
-        static_cast<TToolBarCluster*>(OwnerPanel()->ResolveControlByTag(0x74627231)); // 'tbr1'
+        static_cast<TToolBarCluster*>(GetWindow()->ResolveControlByTag(0x74627231)); // 'tbr1'
     if (toolbar != nullptr) {
       if (previousMode == 1) {
         TView* caption = toolbar->ResolveControlByTag(0x666f7263); // 'forc'
@@ -212,7 +213,7 @@ void ComposeAndDispatchTurnSummaryLocalizedMessage() {
 }
 
 // FUNCTION: IMPERIALISM 0x00597340
-void TMapUberPicture::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+void TMapUberPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId == 10) {
     bool ctrlHeld = (GetAsyncKeyState(VK_CONTROL) & 0x8000) != 0;
     unsigned int tag = sourceHandler->controlTag;
@@ -255,14 +256,48 @@ void TMapUberPicture::HandleEvent(int commandId, TEventHandler* sourceHandler, T
       }
     }
   }
-  TControl::HandleEvent(commandId, sourceHandler, event);
+  TControl::DoEvent(commandId, sourceHandler, event);
 }
 
 // FUNCTION: IMPERIALISM 0x00597600
-void TMapUberPicture::vmethod_0017(int param) {}
+void TMapUberPicture::DoMenuCommand(int command) {
+  if (command != 0x406) {
+    return;
+  }
+
+  switch (activeUnitCategoryIndex96) {
+  case 0:
+    if (g_pSelectedCivilianOrderState->selectedEntry != 0) {
+      CenterOn(g_pSelectedCivilianOrderState->selectedEntry->tileIndex06);
+    }
+    return;
+
+  case 1:
+    if (g_pMapContextActionManager->pendingMapActionIndex != -1) {
+      CenterOn(g_pGlobalMapState->cityScoreTable[g_pMapContextActionManager->pendingMapActionIndex]
+                   .cityTileIndex04);
+    }
+    return;
+
+  case 2:
+    if (orderEntryContext98 != 0) {
+      CenterOn(orderEntryContext98->tileOrTerrainId0c);
+    }
+    return;
+
+  case 3:
+    CenterOn(g_pGlobalMapState->ForwardComputeRepresentativeTileIndexForTerrainTypeWithWrapBias(
+        g_pSimMgr->GetActiveNationId()));
+    return;
+  }
+}
 
 // FUNCTION: IMPERIALISM 0x00597770
-void TMapUberPicture::ForwardParam(int param) {}
+void TMapUberPicture::ForwardParam(int param) {
+  if (subviewAc != 0) {
+    subviewAc->ForwardParam(param);
+  }
+}
 
 // FUNCTION: IMPERIALISM 0x005977a0
 void TMapUberPicture::AutoScrollByEdgeMask(short edgeMask) {

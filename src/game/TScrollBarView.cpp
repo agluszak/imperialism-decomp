@@ -19,7 +19,7 @@ void TScrollBarView::RefreshCityDialogScrollableViewportWithQuickDrawContext() {
   ScopedMapQuickDrawContext quickDrawContext(this);
   PrepareForDrawing();
   RECT rect = {0, word88, frameWidth34, static_cast<int>(word8a) + 0x12};
-  ApplyRectSlot110(&rect);
+  Draw(&rect);
 }
 // SYNTHETIC: IMPERIALISM 0x005743f0
 // TScrollBarView::CreateObject
@@ -107,7 +107,7 @@ void TScrollBarView::DoPostCreate(int arg) {
 }
 
 // FUNCTION: IMPERIALISM 0x005747c0
-void TScrollBarView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+void TScrollBarView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId == 0xa) {
     if (sourceHandler->controlTag == 0x73637570) { // 'scup'
       ownerView84->AdjustCityDialogScrollRangeByDeltaAndClamp(0, 0xc);
@@ -115,7 +115,7 @@ void TScrollBarView::HandleEvent(int commandId, TEventHandler* sourceHandler, TE
       ownerView84->AdjustCityDialogScrollRangeByDeltaAndClamp(0, -0xc);
     }
   }
-  TControl::HandleEvent(commandId, sourceHandler, event);
+  TControl::DoEvent(commandId, sourceHandler, event);
 }
 
 // FUNCTION: IMPERIALISM 0x00574830
@@ -144,7 +144,7 @@ void TScrollBarView::BeginMouseCaptureAndStartRepeatTimer(const CPoint& point, T
 }
 
 // FUNCTION: IMPERIALISM 0x00574970
-void TScrollBarView::ApplyRectSlot110(RECT* rectBuffer) {
+void TScrollBarView::Draw(RECT* rectBuffer) {
   ResetQuickDrawStrokeState();
   SetQuickDrawFillColor(0);
   SetQuickDrawStrokeColor(0xffffff);

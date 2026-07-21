@@ -29,7 +29,7 @@ TCouncilPanelView::TCouncilPanelView() {}
 // Every label/value is drawn twice (theme 0x2b68 color at +1,+1 then theme 0x2b6b
 // color at +0,+0), matching the drop-shadow idiom used across this UI family.
 // FUNCTION: IMPERIALISM 0x004fb030
-void TCouncilPanelView::ApplyRectSlot110(RECT* rectBuffer) {
+void TCouncilPanelView::Draw(RECT* rectBuffer) {
   (void)rectBuffer;
   CString titleTemplate;
   CString scratchText;

@@ -15,17 +15,17 @@ TCzechBox::TCzechBox() {}
 TCzechBox::~TCzechBox() {}
 
 // FUNCTION: IMPERIALISM 0x00571cb0
-void TCzechBox::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+void TCzechBox::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId == 0x21) {
     OrphanCallChain_C2_I16_00571e40(1);
   }
-  TUpDownPictureButton::HandleEvent(commandId, sourceHandler, event);
+  TUpDownPictureButton::DoEvent(commandId, sourceHandler, event);
 }
 
 // FUNCTION: IMPERIALISM 0x00571cf0
 void TCzechBox::DoPostCreate(int arg) {
   (void)arg;
-  frameStyle60 = 4;
+  eventNumber60 = 4;
 }
 
 // FUNCTION: IMPERIALISM 0x00571d10

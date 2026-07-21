@@ -15,7 +15,7 @@ public:
 
   TArmyToolbar* ConstructTArmyToolbarBaseState();
   DECLARE_DYNCREATE(TArmyToolbar)
-  void HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override;
+  void DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override;
 };
 
 ASSERT_SIZE(TArmyToolbar, 0x8c);

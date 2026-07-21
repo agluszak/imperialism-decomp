@@ -12,7 +12,7 @@ public:
   virtual ~TIconSlider() override;
 
   virtual void DoPostCreate(int arg) override;
-  virtual void ApplyRectSlot110(RECT* rectBuffer) override;
+  virtual void Draw(RECT* rectBuffer) override;
   virtual char HandleMouseDown(const CPoint& point, TToolboxEvent* event, CPoint origin) override;
   virtual void DispatchPictureResourceCommand(int nEventType, void* pEventSender, void* pEventDataA,
                                               void* pEventDataB, int nCommandFlag) override;

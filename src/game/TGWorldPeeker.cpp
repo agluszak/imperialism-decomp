@@ -18,7 +18,7 @@ IMPLEMENT_DYNCREATE(TGWorldPeeker, TView)
 TGWorldPeeker::TGWorldPeeker() : field60(nullptr) {}
 
 // FUNCTION: IMPERIALISM 0x004ff2f0
-void TGWorldPeeker::ApplyRectSlot110(RECT* rectBuffer) {
+void TGWorldPeeker::Draw(RECT* rectBuffer) {
   if (field60 != nullptr) {
     ResetQuickDrawStrokeState();
     BlitRectWithOptionalTransparency(field60->GetBlitSurface(),

@@ -15,6 +15,7 @@
 #include "game/TTacticalPlayer.h"
 #include "game/TTacticalUnit.h"
 #include "game/TQuickDrawSurfaceContext.h"
+#include "game/TViewMgr.h"
 #include "game/global_data_tables.h"
 #include "game/quickdraw_rendering.h"
 #include "game/TAmbitApplication.h"
@@ -913,13 +914,13 @@ void TTacticalBattleView::DoPostCreate(int arg) {
   TView::DoPostCreate(arg);
 
   TInfoBarText* cursorPanel =
-      static_cast<TInfoBarText*>(OwnerPanel()->ResolveControlByTag(kControlTagCurs));
-  cursorPanel->QueryStepValue();
+      static_cast<TInfoBarText*>(GetWindow()->ResolveControlByTag(kControlTagCurs));
+  cursorPanel->GetNextHandler();
   g_pCursorControlPanel = cursorPanel;
   g_pCursorControlPanel->InitializeMapHintTextStyleAndThemeFlags(0x2b6c, 0x2b67);
 
-  static_cast<TControl*>(OwnerPanel())->contentInsets68.left = controlTag;
-  ActivateCityProductionViewIfAllowed();
+  static_cast<TControl*>(GetWindow())->contentInsets68.left = controlTag;
+  BecomeTarget();
 }
 
 // FUNCTION: IMPERIALISM 0x005a8550
@@ -1098,7 +1099,18 @@ void TTacticalBattleView::AdjustTacticalUnitVerticalOffsetAndRefreshMarker(short
 }
 
 // FUNCTION: IMPERIALISM 0x005a8ca0
-void TTacticalBattleView::HandleCursorHoverFallback(CPoint* point, RgnHandle hitArg) {}
+void TTacticalBattleView::DoSetCursor(CPoint* point, RgnHandle hitArg) {
+  short cursorId = static_cast<short>(GetCursorID());
+  if (cursorId != -1) {
+    CPoint mappedPoint = ViewToQDPt(point);
+    if (PtInRgn(&mappedPoint, hitArg) != 0) {
+      SetCursor(static_cast<HCURSOR>(
+          g_pUiRuntimeContext->cursorTable[cursorId - TViewMgr::kCursorResourceIdBase]));
+      return;
+    }
+  }
+  SetCursor(LoadCursorA(0, IDC_ARROW));
+}
 
 // FUNCTION: IMPERIALISM 0x005a8d40
 void TTacticalBattleView::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* point,
@@ -1232,7 +1244,7 @@ undefined TTacticalBattleView::AnimateTacticalUnitMoveBetweenTiles(TTacticalUnit
   fromTileRect.bottom = fromTileRect.top + rowHeight2;
   InvalidateCityDialogRectRegion(&fromTileRect, 1);
 
-  InvokeSlot13C();
+  ForceRedraw();
   moveAnimUnitOffsetXA4 = -1;
   return 0;
 }

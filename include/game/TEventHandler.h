@@ -17,8 +17,8 @@ class TBehavior;
 // diverge at +0x20 (TView::ownerContext vs TApplication::activeView) and
 // each introduces its own virtuals at slot 0x25+. Proven by vtable comparison: TView
 // (0x649858) and TApplication (0x648bd8) share the same body addresses for
-// most of slots 0x02-0x24, overriding only a handful. Methods kept with their TView-era
-// vmethod_* / semantic names so existing by-name callers/overrides keep resolving.
+// most of slots 0x02-0x24, overriding only a handful. The recovered method names below
+// are shared by both branches and must remain signature-identical across overrides.
 // VTABLE: IMPERIALISM 0x006497a0
 class TEventHandler : public TObject {
 public:
@@ -56,38 +56,38 @@ public:
   // to return its own CRuntimeClass descriptor. See CRuntimeClass chain
   // CObject<-TObject<-TEventHandler<-TView<-TControl<-...
   DECLARE_DYNCREATE(TEventHandler)
-  virtual ~TEventHandler() override;       // 0x01
-  void Free() override;                    // 0x07 0x48a1b0
-  TObject* ShallowClone() override;        // 0x08 0x48a7c0 base; TView override 0x48bfd0
-  virtual char GetBoolSlot28();            // 0x0a 0x48a240 GetCityDialogFlagByte4
-  virtual void SetControlValue(int value); // 0x0b 0x48a260 SetCityDialogFlagByte4
-  virtual TEventHandler* QueryStepValue(); // 0x0c 0x48a2c0 GetCityDialogValueDwordC
+  virtual ~TEventHandler() override;             // 0x01
+  void Free() override;                          // 0x07 0x48a1b0
+  TObject* ShallowClone() override;              // 0x08 0x48a7c0 base; TView override 0x48bfd0
+  virtual char IsEnabled();                      // 0x0a 0x48a240
+  virtual void SetEnable(unsigned char enabled); // 0x0b 0x48a260
+  virtual TEventHandler* GetNextHandler();       // 0x0c 0x48a2c0 GetCityDialogValueDwordC
   virtual void DispatchQueuedUiCommandAndRelease(void* payload); // 0x0d 0x48a3b0
   virtual void DispatchUiSelectionToHandler(void* payload);      // 0x0e 0x48a3f0
+  virtual void DoEvent(int commandId, TEventHandler* sourceHandler,
+                       TEvent* event); // 0x0f 0x48a280
   virtual void HandleEvent(int commandId, TEventHandler* sourceHandler,
-                           TEvent* event); // 0x0f 0x48a280
-  virtual void DispatchEvent(int commandId, TEventHandler* sourceHandler,
-                             TEvent* event);          // 0x10 0x48a2e0 DoEvent
-  virtual void vmethod_0017(int param);               // 0x11 0x48a310
-  virtual void ForwardParam(int param);               // 0x12 0x48a380
-  virtual char DoIdle(int action);                    // 0x13 0x48a480 (MacApp DoIdle)
-  virtual int GetCityDialogValueDword10();            // 0x14 0x415d50 field10
-  virtual void SetCityDialogValueDword10(int value);  // 0x15 0x415d70
-  virtual class TView* OwnerPanel();                  // 0x16
-  virtual char vmethod_0023();                        // 0x17 0x48a530
-  virtual char GetDeactivateVetoCode();               // 0x18 0x48a550
-  virtual void OnDeactivated();                       // 0x19 0x48a690
-  virtual void OnDeactivateVetoed(int gate);          // 0x1a 0x48a6b0
-  virtual void HandleCityProductionNoOp();            // 0x1b 0x48a650
-  virtual void DispatchUiCommand19ToParent();         // 0x1c 0x48a6d0
-  virtual void DispatchCityProductionAction1A();      // 0x1d 0x48a670
-  virtual bool ContinueModal();                       // 0x1e 0x48a6f0
-  virtual char ActivateCityProductionViewIfAllowed(); // 0x1f 0x48a570
-  virtual char TryDeactivateActiveView();             // 0x20 0x48a5e0
-  virtual void vmethod_0081(int param);               // 0x21 0x48a710
-  virtual char IsActiveView();                        // 0x22 0x48a500
-  virtual void RemoveBehavior(TBehavior* behavior);   // 0x23 0x48a4a0
-  virtual void AddBehavior(TBehavior* behavior);      // 0x24 0x48a4d0
+                           TEvent* event);          // 0x10 0x48a2e0 DoEvent
+  virtual void DoMenuCommand(int command);          // 0x11 0x48a310
+  virtual void ForwardParam(int param);             // 0x12 0x48a380
+  virtual char DoIdle(int action);                  // 0x13 0x48a480 (MacApp DoIdle)
+  virtual int GetIdleFreq();                        // 0x14 0x415d50
+  virtual void SetIdleFreq(int frequency);          // 0x15 0x415d70
+  virtual class TView* GetWindow();                 // 0x16
+  virtual char WantsToBeTarget();                   // 0x17 0x48a530
+  virtual char WillingToResignTarget();             // 0x18 0x48a550
+  virtual void ResignedTarget();                    // 0x19 0x48a690
+  virtual void TargetValidationFailed(int reason);  // 0x1a 0x48a6b0
+  virtual void TargetValidationSucceeded();         // 0x1b 0x48a650
+  virtual void BecameWindowTarget();                // 0x1c 0x48a6d0
+  virtual void ResignedWindowTarget();              // 0x1d 0x48a670
+  virtual void BecameTarget();                      // 0x1e 0x48a6f0
+  virtual char BecomeTarget();                      // 0x1f 0x48a570
+  virtual char ResignTarget();                      // 0x20 0x48a5e0
+  virtual void SelectOwner(unsigned char select);   // 0x21 0x48a710
+  virtual char IsTarget();                          // 0x22 0x48a500
+  virtual void RemoveBehavior(TBehavior* behavior); // 0x23 0x48a4a0
+  virtual void AddBehavior(TBehavior* behavior);    // 0x24 0x48a4d0
 };
 
 // Builds a TEvent (commandNumber = dispatchMessage = commandId, sourceHandler = control,

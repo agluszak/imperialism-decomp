@@ -95,7 +95,7 @@ void TShipyardCluster::ApplyMoveValue(int value) {
 }
 
 // FUNCTION: IMPERIALISM 0x0058a940
-void TShipyardCluster::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+void TShipyardCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   TAmtBar* sourceControl = reinterpret_cast<TAmtBar*>(sourceHandler);
   int eventExtra = reinterpret_cast<int>(event);
   if (commandId == 10) {

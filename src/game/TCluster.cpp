@@ -26,7 +26,7 @@ IMPLEMENT_DYNCREATE(TCluster, TControl)
 
 // FUNCTION: IMPERIALISM 0x00491400
 TCluster::TCluster() {
-  this->frameStyle60 = 5;
+  this->eventNumber60 = 5;
   this->selectedChildTag = 0x20202020;
 }
 
@@ -35,7 +35,7 @@ TCluster::TCluster() {
 TCluster::~TCluster() {}
 
 // FUNCTION: IMPERIALISM 0x00491650
-void TCluster::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+void TCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId == 0xc &&
       reinterpret_cast<TView*>(sourceHandler)->ownerContext == reinterpret_cast<TView*>(this)) {
     POSITION pos = childList44 != 0 ? childList44->GetHeadPosition() : NULL;
@@ -45,7 +45,7 @@ void TCluster::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* 
         break;
       }
       if (reinterpret_cast<TEventHandler*>(sibling) != sourceHandler) {
-        sibling->DispatchEvent(0x20, this, 0);
+        sibling->HandleEvent(0x20, this, 0);
       }
     }
     selectedChildTag = sourceHandler->controlTag;
@@ -63,9 +63,9 @@ void TCluster::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* 
     HiliteState(controlState64 == 0, true);
     return;
   }
-  TView* child = static_cast<TView*>(QueryStepValue());
+  TView* child = static_cast<TView*>(GetNextHandler());
   if (child != 0) {
-    child->DispatchEvent(commandId, sourceHandler, event);
+    child->HandleEvent(commandId, sourceHandler, event);
   }
 }
 
@@ -85,9 +85,9 @@ void TCluster::SetSelectedChildTagAndRefresh(int childTag) {
     TControl* child = reinterpret_cast<TControl*>(childList44->GetNext(pos));
     if (child != 0) {
       if (child->controlTag == static_cast<unsigned int>(childTag)) {
-        child->HandleEvent(0x1f, this, 0);
+        child->DoEvent(0x1f, this, 0);
       } else {
-        child->HandleEvent(0x20, this, 0);
+        child->DoEvent(0x20, this, 0);
       }
     }
   }

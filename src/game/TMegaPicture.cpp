@@ -23,9 +23,9 @@ TMegaPicture::~TMegaPicture() {}
 // contentSubRect9c instead (optionally filling the transformed rect white first when
 // flags98&1 is clear), and applies transparent-color blitting (flags98&1).
 // FUNCTION: IMPERIALISM 0x00573270
-void TMegaPicture::ApplyRectSlot110(RECT* rectBuffer) {
+void TMegaPicture::Draw(RECT* rectBuffer) {
   CRect contentRect(*rectBuffer);
-  CRect screenRect = TransformRectViaSlot148(&contentRect);
+  CRect screenRect = ViewToQDRect(&contentRect);
   if (surfaceContext94 == nullptr) {
     return;
   }
@@ -40,7 +40,7 @@ void TMegaPicture::ApplyRectSlot110(RECT* rectBuffer) {
       FillRectWithQuickDrawBrushAndContextOffset(&screenRect);
     }
     srcRect = contentSubRect9c;
-    screenRect = TransformRectViaSlot148(&contentSubRect9c);
+    screenRect = ViewToQDRect(&contentSubRect9c);
   }
 
   unsigned char blitFlags = 0;

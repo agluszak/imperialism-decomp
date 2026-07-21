@@ -34,8 +34,8 @@ void TDealTabControl::Setup(short bitmapResourceId, unsigned char useAlternatePa
 // for exactly one row's height at the selected row, empty strip below (only drawn if
 // there's room left). No selection (selectedRow84 < 0) draws the whole area empty.
 // FUNCTION: IMPERIALISM 0x005bc7f0
-void TDealTabControl::ApplyRectSlot110(RECT* rectBuffer) {
-  (void)rectBuffer; // dead parameter in this override, like the other ApplyRectSlot110s
+void TDealTabControl::Draw(RECT* rectBuffer) {
+  (void)rectBuffer; // dead parameter in this override, like the other Draws
   if (filledRowStrip8c == nullptr) {
     return;
   }

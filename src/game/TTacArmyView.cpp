@@ -183,7 +183,7 @@ void TTacArmyView::ConstructTTacArmyViewBaseState(int compositionClass, TArmyBat
     overlayBounds.bottom = unitSpriteCellHeight94 * 3;
     g_pDisplayMgr->MakeNewGWorld(unitSpriteScratchSurfaceBC, 8, overlayBounds);
     RefreshControl();
-    OwnerPanel()->InvokeSlot13C();
+    GetWindow()->ForceRedraw();
   }
 }
 
@@ -192,7 +192,7 @@ void TTacArmyView::ConstructTTacArmyViewBaseState(int compositionClass, TArmyBat
 // a saved/restored QuickDraw clip, presents to the restored active surface, then
 // draws the UI overlay.
 // FUNCTION: IMPERIALISM 0x005aa2e0
-void TTacArmyView::ApplyRectSlot110(RECT* rectBuffer) {
+void TTacArmyView::Draw(RECT* rectBuffer) {
   int savedFlags = 0;
   RECT clipRect;
   clipRect = *rectBuffer;

@@ -49,18 +49,18 @@ void TDialogBehavior::DoEvent(long commandId, TEventHandler* sourceHandler, TEve
   (void)event;
   if (commandId == 0x22) {
     unsigned long commandCode = sourceHandler->controlTag;
-    Dismiss(commandCode, commandCode != static_cast<unsigned long>(cancelCommandCode));
+    Dismiss(commandCode, commandCode != cancelCommandCode);
   }
 }
 
 // FUNCTION: IMPERIALISM 0x004874b0
 void TDialogBehavior::DoKeyEvent(TToolboxEvent* event) {
   TView* ownerView = static_cast<TView*>(owner);
-  if (ownerView == 0 || ownerView->GetBoolSlot28() == 0) {
+  if (ownerView == 0 || ownerView->IsEnabled() == 0) {
     return;
   }
 
-  int commandCode;
+  unsigned long commandCode;
   int fallbackCommand;
   if (event->commandCode == 3 || event->commandCode == 0x0d) {
     commandCode = defaultCommandCode;
@@ -77,25 +77,25 @@ void TDialogBehavior::DoKeyEvent(TToolboxEvent* event) {
 
   TView* control = ownerView->ResolveControlByTag(commandCode);
   if (control == 0) {
-    ownerView->DispatchEvent(fallbackCommand, ownerView, 0);
-  } else if (control->GetBoolSlot28() != 0) {
-    control->DispatchEvent(control->QuerySelectedIndexSlotBC(), ownerView, 0);
+    ownerView->HandleEvent(fallbackCommand, ownerView, 0);
+  } else if (control->IsEnabled() != 0) {
+    control->HandleEvent(control->GetEventNumber(), ownerView, 0);
   }
 }
 
 // FUNCTION: IMPERIALISM 0x004875d0
 void TDialogBehavior::DoCommandKeyEvent(TToolboxEvent* event) {
   TView* ownerView = static_cast<TView*>(owner);
-  if (ownerView == 0 || ownerView->GetBoolSlot28() == 0 || event->commandCode != 0x2e ||
+  if (ownerView == 0 || ownerView->IsEnabled() == 0 || event->commandCode != 0x2e ||
       cancelCommandCode == 0x20202020) {
     return;
   }
 
   TView* control = ownerView->ResolveControlByTag(cancelCommandCode);
   if (control == 0) {
-    ownerView->DispatchEvent(0x15, ownerView, 0);
-  } else if (control->GetBoolSlot28() != 0) {
-    control->DispatchEvent(control->QuerySelectedIndexSlotBC(), ownerView, 0);
+    ownerView->HandleEvent(0x15, ownerView, 0);
+  } else if (control->IsEnabled() != 0) {
+    control->HandleEvent(control->GetEventNumber(), ownerView, 0);
   }
 }
 
@@ -104,9 +104,9 @@ void TDialogBehavior::PoseModally() {
   CIncludeView* mainView = GetMainViewHostFromActiveThread();
   int wasInteractive = mainView->SetUiInteractiveFlag90(0);
 
-  TView* ownerPanel = owner->OwnerPanel();
+  TView* ownerPanel = owner->GetWindow();
   ownerPanel->Open();
-  ownerPanel = owner->OwnerPanel();
+  ownerPanel = owner->GetWindow();
   CWnd* nativeWindow = ownerPanel->nativeWindow50;
   dismissPending = 0;
   armedCommandCode = 0x20202020;

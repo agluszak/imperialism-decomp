@@ -1503,8 +1503,9 @@ void TMapMgr::DispatchTurnEvent7DDForActiveNation() {
 }
 
 // FUNCTION: IMPERIALISM 0x00511f10
-void TMapMgr::ForwardComputeRepresentativeTileIndexForTerrainTypeWithWrapBias(undefined4 param_1) {
-  ComputeRepresentativeTileIndexForTerrainTypeWithWrapBias(static_cast<short>(param_1), 1);
+short TMapMgr::ForwardComputeRepresentativeTileIndexForTerrainTypeWithWrapBias(int terrainType) {
+  return ComputeRepresentativeTileIndexForTerrainTypeWithWrapBias(static_cast<short>(terrainType),
+                                                                  1);
 }
 
 namespace {

@@ -42,14 +42,3 @@ typedef unsigned long long u64;
 #define __thiscall
 #endif
 #endif
-
-#ifdef __cplusplus
-class CPoint;
-extern "C" {
-#endif
-void* __cdecl AssertQuickDrawFlag6A1DCCNonZero(int index);
-void __cdecl AssertQuickDrawFlag6A1DC8NonZero(void* ptr);
-#ifdef __cplusplus
-}
-#endif
-

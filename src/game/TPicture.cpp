@@ -81,7 +81,7 @@ void TPicture::InitializePictureEntryBaseAndRefresh(TView* panel, int* offsetLay
 // palette and StretchDIBits-es to the active DC at the control's cached position.
 
 // FUNCTION: IMPERIALISM 0x0048f3c0
-void TPicture::ApplyRectSlot110(RECT* rectBuffer) {
+void TPicture::Draw(RECT* rectBuffer) {
   if (GetAsyncKeyState(VK_CONTROL) & 0x8000) {
     CRect bounds;
     this->GetQDExtent(&bounds);
@@ -158,7 +158,7 @@ void PictureFallbackSizeScratch::Set(int newWidth, int newHeight) {
 TObject* TPicture::ShallowClone() {
   TPicture* clone = static_cast<TPicture*>(ShallowFree());
   clone->CopyViewStateFromSource(this);
-  clone->frameStyle60 = frameStyle60;
+  clone->eventNumber60 = eventNumber60;
   clone->controlState64 = controlState64;
   clone->contentInsets68 = contentInsets68;
   clone->textStyle78 = textStyle78;

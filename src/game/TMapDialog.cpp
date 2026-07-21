@@ -519,8 +519,8 @@ void TMapDialog::ReleaseTileMarkerForTile(short tileIndex) {
 }
 
 // FUNCTION: IMPERIALISM 0x0051e260
-void TMapDialog::ApplyRectSlot110(RECT* rectBuffer) {
-  TView::ApplyRectSlot110(rectBuffer);
+void TMapDialog::Draw(RECT* rectBuffer) {
+  TView::Draw(rectBuffer);
 }
 
 // FUNCTION: IMPERIALISM 0x0051EB40

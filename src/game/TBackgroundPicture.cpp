@@ -17,6 +17,6 @@ TBackgroundPicture::TBackgroundPicture() {}
 TBackgroundPicture::~TBackgroundPicture() {}
 
 // FUNCTION: IMPERIALISM 0x00572d00
-void TBackgroundPicture::ApplyRectSlot110(RECT* rectBuffer) {
-  TPicture::ApplyRectSlot110(rectBuffer);
+void TBackgroundPicture::Draw(RECT* rectBuffer) {
+  TPicture::Draw(rectBuffer);
 }

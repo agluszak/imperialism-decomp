@@ -141,10 +141,10 @@ void TCouncilView::DoPostCreate(int arg) {
   }
 }
 
-// slot 0x0f — HandleEvent override: routes council-control events by the source
-// handler's 4-char control tag; everything else falls through to TControl::HandleEvent.
+// slot 0x0f — DoEvent override: routes council-control events by the source
+// handler's 4-char control tag; everything else falls through to TControl::DoEvent.
 // FUNCTION: IMPERIALISM 0x004fbd60
-void TCouncilView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+void TCouncilView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId == 10) {
     if (sourceHandler->controlTag == 0x73746172) { // "star"
       // Rebuild council controls + restart the vote ticker. 0x4fc2e0's receiver is a
@@ -170,7 +170,7 @@ void TCouncilView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEve
       return;
     }
   } else {
-    TControl::HandleEvent(commandId, sourceHandler, event);
+    TControl::DoEvent(commandId, sourceHandler, event);
   }
 }
 
