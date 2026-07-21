@@ -23,6 +23,7 @@
 #include "game/TNavyMgr.h"
 #include "game/TShip.h"
 #include "game/TSimMgr.h"
+#include "game/TStream.h"
 #include "game/TSortedList.h"
 #include "game/TSoundPlayer.h"
 #include "game/TViewMgr.h"
@@ -50,6 +51,62 @@ IMPLEMENT_DYNCREATE(TArmyMgr, TObject)
 // (click accepted). Defined below (0x4a4960) in address order; forward-declared here
 // for HandleMapClickByComputedCursorState's use.
 static int __stdcall ComputeMapCursorStateIndex(short tileIndex, short mode);
+
+// Reads one action-record from `stream`: the fixed header fields (nationIds[0] and
+// reservedByte03/actionType04/tileOrObject08 read up front; nationIds[1] is read later,
+// interleaved into the per-side loop below alongside nationIds[0]), resolving
+// tileOrObject08 either as a raw tile/record index (actionType04 in {0,3,4}) or, via
+// FindMapActionContextByNodeId, a live TZone* -- mirrors the port-zone/context-array
+// two-way match idiom used throughout TZone.cpp. Then for each side (0/1), reads the
+// nation-id byte, the fixed name/overlay buffers (a version-gated legacy string read
+// pre-0x2c, plain fixed-size reads from 0x2c on), the child-record count, and
+// (re)allocates + reads that many MapOrderBattleSideChildRecord entries.
+// FUNCTION: IMPERIALISM 0x004a13c0
+void MapContextActionRecord::ReadFrom(TStream* stream) {
+  stream->ReadBytes(&participantIndex02, 1);
+  stream->ReadBytes(&reservedByte03, 1);
+  stream->ReadBytes(&actionType04, 4);
+  short nodeId;
+  stream->ReadBytes(&nodeId, 2);
+  if (actionType04 == 0 || actionType04 == 3 || actionType04 == 4) {
+    tileOrObject08.tileIndex = nodeId;
+  } else {
+    tileOrObject08.object = FindMapActionContextByNodeId(nodeId);
+  }
+
+  for (int side = 0; side < 2; ++side) {
+    stream->ReadBytes(&nationIds[side], 1);
+    if (g_nSaveFormatVersion < 0x2c) {
+      stream->streamSlot6c(&overlayLabel4c[side], 0x20);
+      stream->streamSlot6c(&overlayLabel4c[side], 0xff);
+    } else {
+      stream->ReadBytes(&nameBuffer0c[side], 0x20);
+      stream->ReadBytes(&overlayLabel4c[side], 0xff);
+    }
+    stream->ReadBytes(&childCount24a[side], 2);
+
+    delete[] sideChildRecords250[side];
+    short count = childCount24a[side];
+    MapOrderBattleSideChildRecord* newArray = new MapOrderBattleSideChildRecord[count];
+    for (int k = 0; k < count; ++k) {
+      newArray[k].nameBuffer[0] = 0;
+    }
+    sideChildRecords250[side] = newArray;
+
+    for (int j = 0; j < childCount24a[side]; ++j) {
+      MapOrderBattleSideChildRecord& elem = sideChildRecords250[side][j];
+      stream->ReadBytes(&elem.resourceType, 2);
+      stream->ReadBytes(&elem.stockOrRequired, 2);
+      if (g_nSaveFormatVersion < 0x2c) {
+        stream->streamSlot6c(&elem.nameBuffer, 0x20);
+      } else {
+        stream->ReadBytes(&elem.nameBuffer, 0x20);
+      }
+      stream->ReadBytes(&elem.strengthBucket, 2);
+      stream->ReadBytes(&elem.childPtr, 4);
+    }
+  }
+}
 
 // FUNCTION: IMPERIALISM 0x004a1870
 TArmyMgr::TArmyMgr() {
@@ -79,7 +136,50 @@ void TArmyMgr::InitializeMapContextActionManager() {
 void TArmyMgr::Free() {}
 
 // FUNCTION: IMPERIALISM 0x004a1b80
-void TArmyMgr::ReadFrom(TStream* stream) {}
+void TArmyMgr::ReadFrom(TStream* stream) {
+  TObject::ReadFrom(stream);
+  if (mapContextActionRecordList04 != 0) {
+    for (int ordinal = mapContextActionRecordList04->GetSize(); ordinal > 0; --ordinal) {
+      MapContextActionRecord* record = static_cast<MapContextActionRecord*>(
+          mapContextActionRecordList04->GetPtrListEntryByOneBasedIndex(ordinal));
+      delete[] record->sideChildRecords250[0];
+      delete[] record->sideChildRecords250[1];
+      record->sideChildRecords250[1] = 0;
+      record->sideChildRecords250[0] = 0;
+    }
+    mapContextActionRecordList04->ClearAndFreeAllPtrListRecords();
+  }
+  flag8 = 0;
+  if (g_nSaveFormatVersion > 0x24) {
+    for (short count = stream->ReadShort(); count != 0; --count) {
+      MapContextActionRecord record;
+      record.nameBuffer0c[0][0] = 0;
+      record.nameBuffer0c[1][0] = 0;
+      record.overlayLabel4c[0][0] = 0;
+      record.overlayLabel4c[1][0] = 0;
+      record.childCount24a[0] = 0;
+      record.childCount24a[1] = 0;
+      record.sideChildRecords250[0] = 0;
+      record.sideChildRecords250[1] = 0;
+
+      record.ReadFrom(stream);
+      mapContextActionRecordList04->AppendCopiedRecordToPtrList(&record);
+      flag8 = 1;
+      // Redundant re-store (both branches write the same 1); preserved to match codegen
+      // (same idiom as AppendMapContextActionRecordAndResetWorkingFields).
+      if (g_apSecondaryNationStateSlots[0x17] != 0) {
+        flag8 = 1;
+      }
+
+      // The copied record in the list now owns these arrays; reset our local's copies
+      // (ground truth re-zeroes them here too, matching the ctor-time defaults).
+      record.sideChildRecords250[1] = 0;
+      record.sideChildRecords250[0] = 0;
+      record.childCount24a[1] = 0;
+      record.childCount24a[0] = 0;
+    }
+  }
+}
 
 // FUNCTION: IMPERIALISM 0x004a1dd0
 void TArmyMgr::WriteTo(TStream* stream) {}
