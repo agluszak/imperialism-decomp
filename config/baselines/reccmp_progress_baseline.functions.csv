@@ -3167,7 +3167,7 @@ address|matching|name
 0x5177d0|1.0|TMapMgr::GetMapImprovementTileOffsetFromClass
 0x5177f0|0.25806451612903225|TMapMgr::GetMapImprovementTileSpriteOffset
 0x5178c0|0.2222222222222222|TMapMgr::ResetAllTileSpriteVariantIndexToSentinel
-0x5178f0|0.3446601941747573|TMapMgr::ComputeRepresentativeTileIndexForTerrainTypeWithWrapBias
+0x5178f0|0.3260340632603406|TMapMgr::ComputeRepresentativeTileIndexForTerrainTypeWithWrapBias
 0x517c30|0.358974358974359|TMapMgr::AreNationsBorderLinked
 0x517d40|0.0|OrphanDeadLeaf_NoRefs_00517d40
 0x517dd0|0.40963855421686746|TMapMgr::HasDirectOrFallbackLinkedNodeType
@@ -4044,8 +4044,8 @@ address|matching|name
 0x553840|0.6697247706422018|TTaskForce::SetMapOrderType5AndQueue
 0x5539c0|1.0|TTaskForce::RefreshTaskForceSelectionFlagsForCurrentNationOrders
 0x553a50|1.0|TTaskForce::ApplyTaskForceSelectionModeForCurrentNationOrders
-0x553b10|0.41379310344827586|TTaskForce::HasNoMapOrderEntryChildrenQueued
-0x553b50|0.5454545454545454|TTaskForce::HasActiveMapOrderEntryChildren
+0x553b10|0.4827586206896552|TTaskForce::HasNoMapOrderEntryChildrenQueued
+0x553b50|0.5818181818181818|TTaskForce::HasActiveMapOrderEntryChildren
 0x553bc0|0.6536585365853659|TTaskForce::FindOrCreateChildOrderLink
 0x553d40|0.02857142857142857|ObjectPool::RemoveTaskForceOrderNodeById
 0x553e30|1.0|TTaskForce::RecomputeMapOrderChildAggregateMetric
@@ -5153,7 +5153,7 @@ address|matching|name
 0x598a20|1.0|TMapUberPicture::NoticeTile
 0x598a50|0.01015228426395939|PromptAndQueueMilitaryProvincePurgeOrders
 0x598d70|0.05128205128205128|CreateCivilianWorkOrderAndRegisterSelection
-0x598e10|0.0|RunNavyPrimaryOrderCreationDialogAndApplyResults
+0x598e10|0.9309309309309309|TMapUberPicture::RunNavyPrimaryOrderCreationDialogAndApplyResults
 0x599090|0.6425902864259029|TMapUberPicture::NavalIntelligenceDialog
 0x599770|0.0|TBuildingConstructionView::SelectNextValidMapOrderEntryFromCursor
 0x5998a0|0.0|TToolBarCluster::TrySelectNextValidMapOrderEntry

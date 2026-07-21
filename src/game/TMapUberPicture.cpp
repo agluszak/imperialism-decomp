@@ -10,6 +10,7 @@
 #include "game/TMapMgr.h"
 #include "game/TMiniMapView.h"
 #include "game/TAssetMgr.h"
+#include "game/TDisplayMgr.h"
 #include "game/TMultiplayerMgr.h"
 #include "game/TOcean.h"
 #include "game/TOceanDialog.h"
@@ -19,8 +20,10 @@
 #include "game/TViewMgr.h"
 #include "game/TWindow.h"
 #include "game/TModuleLibraryCacheTableStateB.h"
+#include "game/TNumberText.h"
 #include "game/global_data_tables.h"
 #include "game/mapped_flavor_text.h"
+#include "game/navy_order.h"
 #include "game/ui_control_tags.h"
 #include "game/ui_invalidation_guard.h"
 #include "game/ui_text_label_helpers_decls.h"
@@ -520,6 +523,85 @@ void TMapUberPicture::SetUpperLeft(int tileX, int tileY) {
 // FUNCTION: IMPERIALISM 0x00598a20
 void TMapUberPicture::NoticeTile(int tileIndex) {
   this->subviewAc->OrphanCallChain_C6_I29_00596700(tileIndex);
+}
+
+// Windows uses the Mac MapView.rsrc:9462 "Navy Maker II" tree for this dialog.
+// The resource exposes one 'num?' control per ship type that is available in the
+// current ruleset; absent controls are intentionally skipped by both versions.
+// FUNCTION: IMPERIALISM 0x00598e10
+void TMapUberPicture::RunNavyPrimaryOrderCreationDialogAndApplyResults(TZone* portZone) {
+  if (portZone == 0) {
+    MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUSuperMap_0069943C, 0x8bf);
+  }
+
+  RGBQUAD highlightColor = {0xff, 0xff, 0xff, 0};
+  g_pDisplayMgr->SetHiliteColor(&highlightColor);
+
+  TWindow* dialog =
+      static_cast<TWindow*>(g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(0x24f6));
+  if (dialog == 0) {
+    MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUSuperMap_0069943C, 0x8cc);
+  }
+  dialog->SetModality(1);
+
+  short index;
+  for (index = 0; index < 29; ++index) {
+    TStaticText* nameControl =
+        static_cast<TStaticText*>(dialog->ResolveControlByTag(0x6e616d61u + index)); // 'nama'
+    if (nameControl != 0) {
+      nameControl->SetTextFromStringResource(0x2716, static_cast<short>(index + 1), 1);
+    }
+  }
+
+  dialog->PoseModally();
+
+  TNumberText* ownerControl =
+      static_cast<TNumberText*>(dialog->ResolveControlByTag(0x6f776e65u)); // 'owne'
+  ownerControl->AssertValid();
+  int ownerNation = ownerControl->UpdateControlCachedIntFromWindowText();
+
+  unsigned char createdOrders = 0;
+  for (index = 0; index < 14; ++index) {
+    TNumberText* countControl =
+        static_cast<TNumberText*>(dialog->ResolveControlByTag(0x6e756d61u + index)); // 'numa'
+    if (countControl != 0) {
+      short count = static_cast<short>(countControl->UpdateControlCachedIntFromWindowText());
+      if (count != 0) {
+        while (count > 0) {
+          CreateNavyPrimaryOrderNodeAndAssignDisplayName(static_cast<short>(index), portZone,
+                                                         ownerNation, 0);
+          --count;
+        }
+        createdOrders = 1;
+      }
+    }
+  }
+
+  dialog->Close();
+  dialog->Free();
+
+  if (createdOrders != 0) {
+    g_pActiveMapOrderContext->RefreshMapActionContextNationOverlaysAndOrderRanks();
+  }
+
+  SetMapInteractionMode(2);
+  if (invalidationFlag94 == 0) {
+    goodGoldTagControlA4->InvalidateZone(orderEntryContext98);
+  }
+  orderEntryContext98 = portZone;
+  if (invalidationFlag94 == 0) {
+    goodGoldTagControlA4->InvalidateZone(portZone);
+  }
+
+  if (portZone == 0) {
+    RefreshMapOrderEntryPanel(0);
+    return;
+  }
+  TTaskForce* taskForce =
+      g_pActiveMapOrderContext->EnsureSelectedTaskForceForOrderOwnerAndRefresh(portZone);
+  RefreshMapOrderEntryPanel(taskForce);
 }
 
 // FUNCTION: IMPERIALISM 0x00599090

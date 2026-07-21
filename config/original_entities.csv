@@ -5265,7 +5265,7 @@ address|name|symbol|size|type|prototype|provenance
 598a20|TMapUberPicture::OrphanCallChain_C1_I06_00598a20||22|function|undefined OrphanCallChain_C1_I06_00598a20(short entryIndex)|
 598a50|PromptAndQueueMilitaryProvincePurgeOrders||625|function|undefined PromptAndQueueMilitaryProvincePurgeOrders()|
 598d70|CreateCivilianWorkOrderAndRegisterSelection||117|function|undefined CreateCivilianWorkOrderAndRegisterSelection()|
-598e10|RunNavyPrimaryOrderCreationDialogAndApplyResults||509|function|undefined RunNavyPrimaryOrderCreationDialogAndApplyResults()|
+598e10|TMapUberPicture::RunNavyPrimaryOrderCreationDialogAndApplyResults||509|function|void __thiscall RunNavyPrimaryOrderCreationDialogAndApplyResults(TZone * portZone)|
 599090|TMapUberPicture::NavalIntelligenceDialog||1405|function|void __thiscall NavalIntelligenceDialog(TZone * zone, short nation, TTaskForce * cachedTaskForce)|
 599770|TBuildingConstructionView::SelectNextValidMapOrderEntryFromCursor||227|function|void __thiscall SelectNextValidMapOrderEntryFromCursor(void * pMapInteractionState, byte fStartAfterCurrent)|
 5998a0|TToolBarCluster::TrySelectNextValidMapOrderEntry||217|function|byte __thiscall TrySelectNextValidMapOrderEntry(void * pMapInteractionState, byte fStartAfterCurrent)|

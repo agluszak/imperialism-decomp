@@ -267,4 +267,7 @@ public:
   // Mac oracle: InspectTaskForceDialog(TTaskForce*). Opens MapView.rsrc:9474,
   // event 0x2502 ("Friendly Fleet Report"), and cancels the order when requested.
   void InspectTaskForceDialog(TTaskForce* taskForce);
+  // Windows navy-order creation dialog backed by Mac MapView.rsrc:9462 (event 0x24f6,
+  // "Navy Maker II"). Applies the fourteen per-ship counts to the selected port zone.
+  void RunNavyPrimaryOrderCreationDialogAndApplyResults(TZone* portZone);
 };

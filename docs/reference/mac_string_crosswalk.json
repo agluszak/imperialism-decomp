@@ -14549,6 +14549,29 @@
       ],
       "source_file": "src/game/TMapUberPicture.cpp"
     },
+    "0x00598e10": {
+      "references": [
+        {
+          "address": "0x00694fd8",
+          "kind": "embedded_global",
+          "symbol": "g_szUiFailureMessage",
+          "text": "Failure"
+        },
+        {
+          "address": "0x00694fc8",
+          "kind": "embedded_global",
+          "symbol": "g_szUiNilPointerMessage",
+          "text": "Nil Pointer"
+        },
+        {
+          "address": "0x0069943c",
+          "kind": "embedded_global",
+          "symbol": "s_SourcePathUSuperMap_0069943C",
+          "text": "D:\\Ambit\\Cross\\USuperMap.cpp"
+        }
+      ],
+      "source_file": "src/game/TMapUberPicture.cpp"
+    },
     "0x00599090": {
       "references": [
         {
@@ -179254,7 +179277,7 @@
   "summary": {
     "embedded_globals": 766,
     "formula_matches": 2356,
-    "functions_with_references": 273,
+    "functions_with_references": 274,
     "mac_strings": 3821,
     "mac_strings_with_candidates": 3091,
     "text_resources": 0,
