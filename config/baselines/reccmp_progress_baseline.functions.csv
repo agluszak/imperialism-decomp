@@ -1211,11 +1211,11 @@ address|matching|name
 0x4a18f0|0.8245614035087719|TArmyMgr::InitializeMapContextActionManager
 0x4a1b80|0.017857142857142856|TArmyMgr::ReadFrom
 0x4a1dd0|0.058823529411764705|TArmyMgr::WriteTo
-0x4a1e40|0.7843137254901961|TArmyMgr::OrphanCallChain_C4_I26_004a1e40
-0x4a1eb0|0.98|TArmyMgr::ReleaseThreeLinkedObjectsAndResetTerrainDescriptorFlags
-0x4a1f80|0.56640625|TArmyMgr::ProcessTileUnitListsAndApplyRandomStatusUpdates
-0x4a2390|0.8230088495575221|TArmyMgr::ProcessPendingArmyStacksForBattleOrRelocation
-0x4a2500|0.9767441860465116|TArmyMgr::IterateLinkedListCursorAndClearPerTileByte0F
+0x4a1e40|0.8163265306122449|TArmyMgr::DoCombatMoves
+0x4a1eb0|0.98|TArmyMgr::EndBattlePhase
+0x4a1f80|0.5675146771037182|TArmyMgr::FormStacks
+0x4a2390|0.8266666666666667|TArmyMgr::ResolveNextMove
+0x4a2500|0.984375|TArmyMgr::ClearPendingStacksAndFinalizeMilitaryUnits
 0x4a2610|0.011976047904191617|BuildArmyActionLabelFromLocalizationAndCounts
 0x4a2900|0.13374805598755832|BuildArmyContextActionRecordsAndDispatchLabel
 0x4a31c0|0.4|OrphanVtableAssignStub_004a31c0
@@ -1227,7 +1227,7 @@ address|matching|name
 0x4a3b30|1.0|TMilitaryUnit::SetOrClearWordMaskBits3a
 0x4a3b70|1.0|TArmyStack::ResetCursorAndGetHeadUnit
 0x4a3b90|1.0|TArmyStack::AdvanceCursorAndGetUnit
-0x4a3bc0|0.26666666666666666|TArmyMgr::ArmyMgrSlot12
+0x4a3bc0|0.26785714285714285|TArmyMgr::DoOwnershipChanges
 0x4a3d90|0.5849056603773585|TArmyMgr::DispatchTileActionByKind_004a3d90
 0x4a3f30|0.5745454545454546|TArmyMgr::CommitCityActionGateCostIfAffordable
 0x4a4190|1.0|TMapMgr::ValidateGridIndexRange0To17F
@@ -2399,8 +2399,8 @@ address|matching|name
 0x4f3ea0|0.22195985832349469|TDiplomacyMapView::BuildDiplomacyNationOverlayGeometryAndHitMasks
 0x4f4620|0.8553459119496856|TDiplomacyMapView::InitializeDiplomacyMinisterActionControlsAndLabels
 0x4f48c0|0.6274509803921569|TDiplomacyMapView::ApplyRectSlot110
-0x4f4a30|0.4918032786885246|TDiplomacyMapView::RenderTerrainAndMinorNationLegendLabels
-0x4f4ec0|0.1692573402417962|TDiplomacyMapView::RenderDiplomacyMatrixRowStatusIcons
+0x4f4a30|0.34108527131782945|TDiplomacyMapView::DrawNames
+0x4f4ec0|0.5482233502538071|TDiplomacyMapView::DrawIcons
 0x4f5410|0.015625|TDiplomacyMapView::BeginMouseCaptureAndStartRepeatTimer
 0x4f5e00|0.56353591160221|TDiplomacyMapView::ResolveDiplomacyActionFromClickAndUpdateTarget
 0x4f5f90|1.0|TDiplomacyMapView::HandleCursorHoverFallback
@@ -4272,7 +4272,7 @@ address|matching|name
 0x57d950|1.0|TSimMgr::AdvanceSeason
 0x57d970|1.0|TSimMgr::StartNextPhase
 0x57d990|0.2803738317757009|TSimMgr::EnterOptionalPhase
-0x57da70|0.1986754966887417|TSimMgr::AdvanceGlobalTurnStateMachine
+0x57da70|0.19672131147540983|TSimMgr::AdvanceGlobalTurnStateMachine
 0x57f0e0|1.0|TCountry::IsNationProfileInMinorRange100To199
 0x57f110|0.3333333333333333|TSimMgr::InLinearPhase
 0x57f140|0.7663551401869159|TSimMgr::DoCityAndTransport
@@ -5500,15 +5500,15 @@ address|matching|name
 0x5df300|0.9090909090909091|TAssetMgr::`scalar deleting destructor'
 0x5df3a0|1.0|TAssetMgr::ForwardEnsurePictWvDataGobLoadedBySlot
 0x5df3c0|1.0|TAssetMgr::ResolveTurnEventDialogNodeByMessageContext
-0x5df3f0|1.0|TAssetMgr::NoOpRuntimeUiCallback_005df3f0
-0x5df410|1.0|TAssetMgr::NoOpRuntimeUiCallback_005df410
+0x5df3f0|1.0|TAssetMgr::OpenFilesFor
+0x5df410|1.0|TAssetMgr::CloseFilesFor
 0x5df430|0.7168141592920354|TAssetMgr::LoadTableResourceStreamByName
 0x5df610|0.5|InitializeRuntimeClassVtablePointer_0066FEC4
 0x5df6d0|1.0|TAssetMgr::ReleaseResourceStreamIfNotNull
 0x5df700|1.0|TAssetMgr::ReadResourceStreamIntoBufferAndAdvance
 0x5df730|1.0|TAssetMgr::InvokeVtableSlot30OnTargetObject
 0x5df760|1.0|TAssetMgr::GetResourceStreamSize
-0x5df780|1.0|TAssetMgr::NoOpRuntimeUiCallback_005df780
+0x5df780|1.0|TAssetMgr::OpenFilesForView
 0x5df7a0|0.3106796116504854|QueryVolumeInformationForDriveIndex
 0x5df890|0.27586206896551724|QueryDriveTypeByDriveIndex
 0x5df8d0|1.0|ReturnTrueStub
