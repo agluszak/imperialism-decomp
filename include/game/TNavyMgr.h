@@ -160,6 +160,9 @@ public:
   // g_pNavyOrderManager (this manager).
   int TryQueueMapOrderFromTileAction(short nTileIndex, int nInputFlags);
 
+  // Mac name oracle: INavyMgr. Initializes the three global navy-order priority tables.
+  void INavyMgr();
+
   TNavyMgr();
 };
 

@@ -148,10 +148,6 @@ TSimMgr::TSimMgr() : sharedTextSlots() {
 // TSimMgr::`scalar deleting destructor'
 TSimMgr::~TSimMgr() {}
 
-// TODO: port teardown of the global map/order-manager singletons and nation-state tables
-// (overrides TObject::Free; releases g_pNationInteractionStateManager,
-// g_pDiplomacyTurnStateManager, g_pMapContextActionManager, ... via their own vtables).
-
 // FUNCTION: IMPERIALISM 0x0057bbf0
 void TSimMgr::InitializeTurnFlowStateDefaults() {
   quarterGateTick2c = 0;
@@ -224,19 +220,23 @@ void TSimMgr::Free() {
     g_pNavyOrderManager = nullptr;
   }
 
-  for (i = 0; i < 0x17; ++i) {
-    if (g_apTerrainTypeDescriptorTable[i] != nullptr) {
-      g_apTerrainTypeDescriptorTable[i]->Free();
+  TCountry** descriptorCursor = g_apTerrainTypeDescriptorTable;
+  for (i = 0x17; i != 0; --i) {
+    TCountry* descriptor = *descriptorCursor;
+    if (descriptor != nullptr) {
+      descriptor->Free();
+      descriptor = nullptr;
     }
-    g_apTerrainTypeDescriptorTable[i] = nullptr;
+    *descriptorCursor = descriptor;
+    ++descriptorCursor;
   }
 
   for (i = 0; i < 7; ++i) {
     g_apNationStates[i] = nullptr;
   }
 
-  for (i = 7; i < 0x17; ++i) {
-    g_apSecondaryNationStateSlots[i] = nullptr;
+  for (i = 0; i < 0x10; ++i) {
+    g_apNationAuxRuntimeStateSlots[i] = nullptr;
   }
 
   if (this != nullptr) {
@@ -385,14 +385,14 @@ void TSimMgr::RebuildGlobalOrderManagersAndCapabilityState(char flag) {
     if (flag != 0) {
       short* destCursor = scenarioSetupRows1;
       const short* srcCursor = g_anScenarioNationSetupTable_00698B1A;
-      for (i = 0; i < 7; ++i) {
+      do {
         destCursor[-7] = srcCursor[-1];
         destCursor[0] = srcCursor[0];
         destCursor[7] = srcCursor[1];
         destCursor[14] = srcCursor[2];
         destCursor += 1;
         srcCursor += 4;
-      }
+      } while (srcCursor < g_anScenarioNationSetupTable_00698B1A + 28);
       fieldd8 = 0;
       field112 = 0;
     }
@@ -416,51 +416,62 @@ void TSimMgr::RebuildGlobalOrderManagersAndCapabilityState(char flag) {
       g_pUiAnimator->Free();
       g_pUiAnimator = nullptr;
     }
-    g_pUiAnimator = new TAnimator();
-    g_pUiAnimator->InitializeUiTransientObjectRegistry(0x7fffffff);
+    TAnimator* animator = new TAnimator();
+    animator->InitializeUiTransientObjectRegistry(0x7fffffff);
+    animator->OrphanCallChain_C2_I13_004a0c00();
+    g_pUiAnimator = animator;
 
     if (g_pDiplomacyTurnStateManager != nullptr) {
       g_pDiplomacyTurnStateManager->Free();
       g_pDiplomacyTurnStateManager = nullptr;
     }
-    g_pDiplomacyTurnStateManager = new TDiplomacyMgr();
+    TDiplomacyMgr* diplomacyManager = new TDiplomacyMgr();
+    diplomacyManager->InitializeTDiplomacyTurnStateManagerDefaults();
+    g_pDiplomacyTurnStateManager = diplomacyManager;
 
     if (g_pNationInteractionStateManager != nullptr) {
       g_pNationInteractionStateManager->Free();
       g_pNationInteractionStateManager = nullptr;
     }
-    g_pNationInteractionStateManager = new TTradeMgr();
+    TTradeMgr* tradeManager = new TTradeMgr();
+    tradeManager->InitializeNationInteractionStateManagerDefaults();
+    g_pNationInteractionStateManager = tradeManager;
 
     if (g_pInterNationEventQueueManager != nullptr) {
       g_pInterNationEventQueueManager->Free();
       g_pInterNationEventQueueManager = nullptr;
     }
-    g_pInterNationEventQueueManager = new TNewsMgr();
-    g_pInterNationEventQueueManager->InitializeInterNationEventQueueManager();
+    TNewsMgr* newsManager = new TNewsMgr();
+    newsManager->InitializeInterNationEventQueueManager();
+    g_pInterNationEventQueueManager = newsManager;
 
     if (g_pMapContextActionManager != nullptr) {
       g_pMapContextActionManager->Free();
       g_pMapContextActionManager = nullptr;
     }
-    g_pMapContextActionManager = new TArmyMgr();
+    TArmyMgr* armyManager = new TArmyMgr();
+    armyManager->InitializeMapContextActionManager();
+    g_pMapContextActionManager = armyManager;
 
     if (g_pSelectedCivilianOrderState != nullptr) {
       g_pSelectedCivilianOrderState->Free();
       g_pSelectedCivilianOrderState = nullptr;
     }
-    g_pSelectedCivilianOrderState = new TCivMgr();
+    TCivMgr* civilianManager = new TCivMgr();
+    civilianManager->ICivMgr();
+    g_pSelectedCivilianOrderState = civilianManager;
 
     if (g_pNavyOrderManager != nullptr) {
       g_pNavyOrderManager->Free();
-      g_pNavyOrderManager = nullptr;
     }
     g_pNavyOrderManager = new TNavyMgr();
+    g_pNavyOrderManager->INavyMgr();
 
     if (g_pCityOrderCapabilityState != nullptr) {
       g_pCityOrderCapabilityState->Free();
-      g_pCityOrderCapabilityState = nullptr;
     }
     g_pCityOrderCapabilityState = new TTechMgr();
+    g_pCityOrderCapabilityState->InitializeCityOrderCapabilityStateDefaults();
   }
 }
 
@@ -475,34 +486,32 @@ void TSimMgr::RebuildMapContextAndGlobalMapState(int arg1, const char* arg2, int
     }
   }
 
-  if (arg1 != 0) {
-    if (g_bMultiplayerScenarioSetupActive != 0) {
-      return;
+  char rebuildFlag = static_cast<char>(arg1);
+  if (((rebuildFlag != 0) && (g_bMultiplayerScenarioSetupActive == 0)) ||
+      ((rebuildFlag == 0) && (g_bMultiplayerScenarioSetupActive != 0))) {
+    if (g_pActiveMapOrderContext != nullptr) {
+      g_pActiveMapOrderContext->Free();
+      g_pActiveMapOrderContext = nullptr;
     }
-  }
 
-  if (g_pActiveMapOrderContext != nullptr) {
-    g_pActiveMapOrderContext->Free();
-    g_pActiveMapOrderContext = nullptr;
-  }
+    g_pActiveMapOrderContext = new TOcean();
 
-  g_pActiveMapOrderContext = new TOcean();
+    ResetPortZoneGlobalContextCounters();
 
-  ResetPortZoneGlobalContextCounters();
+    if (g_pGlobalMapState != nullptr) {
+      g_pGlobalMapState->Free();
+      g_pGlobalMapState = nullptr;
+    }
 
-  if (g_pGlobalMapState != nullptr) {
-    g_pGlobalMapState->Free();
-    g_pGlobalMapState = nullptr;
-  }
+    g_pGlobalMapState = new TMapMgr();
+    g_pGlobalMapState->InitializeGlobalMapState();
 
-  g_pGlobalMapState = new TMapMgr();
-  g_pGlobalMapState->InitializeGlobalMapState();
-
-  if (g_bMultiplayerScenarioSetupActive == 0) {
-    g_pGlobalMapState->hexNeighborWrapHorizontally20 = static_cast<char>(arg3);
-    g_pGlobalMapState->BuildOrLoadGlobalMapStateForSession(nullptr, const_cast<char*>(arg2));
-  } else {
-    g_pGlobalMapState->AllocateAndResetTerrainAndCityScoreTables();
+    if (g_bMultiplayerScenarioSetupActive == 0) {
+      g_pGlobalMapState->hexNeighborWrapHorizontally20 = static_cast<char>(arg3);
+      g_pGlobalMapState->BuildOrLoadGlobalMapStateForSession(nullptr, const_cast<char*>(arg2));
+    } else {
+      g_pGlobalMapState->AllocateAndResetTerrainAndCityScoreTables();
+    }
   }
 }
 

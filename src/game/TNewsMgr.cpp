@@ -24,8 +24,6 @@ TNewsMgr::~TNewsMgr() {}
 
 IMPLEMENT_DYNCREATE(TNewsMgr, TObject)
 
-TNewsMgr::TNewsMgr() {}
-
 // FUNCTION: IMPERIALISM 0x0055b710
 void TNewsMgr::InitializeInterNationEventQueueManager() {
   for (int i = 0; i < 7; i++) {

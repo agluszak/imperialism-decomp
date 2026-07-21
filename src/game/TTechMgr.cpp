@@ -54,12 +54,10 @@ short GetEnabledIndustryCapabilitySlotByClass(short classId) {
 
 IMPLEMENT_DYNCREATE(TTechMgr, TObject)
 
-TTechMgr::TTechMgr() {}
-
 TTechMgr::~TTechMgr() {}
 
 // FUNCTION: IMPERIALISM 0x005aef80
-void TTechMgr::ConstructCityOrderCapabilityStateVtable(void) {}
+TTechMgr::TTechMgr() {}
 
 // SYNTHETIC: IMPERIALISM 0x005aefa0
 // TTechMgr::`scalar deleting destructor'

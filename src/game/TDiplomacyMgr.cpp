@@ -79,16 +79,11 @@ int TDiplomacyMgr::IsNationSlotEligibleForEventProcessing(int nationSlot) {
 IMPLEMENT_DYNCREATE(TDiplomacyMgr, TObject)
 
 // FUNCTION: IMPERIALISM 0x004ee6c0
-TDiplomacyMgr* TDiplomacyMgr::ConstructTDiplomacyTurnStateManager_Vtbl00654d90() {
-  int zero = 0;
-  relationMatrixBaselineCopy794 = reinterpret_cast<short*>(zero);
-  relationMatrixBaselineSize798 = zero;
-  proposalDispatchCounter790 = static_cast<short>(zero);
-  lastProcessedNationSlot78e = static_cast<short>(-1);
-  return this;
+TDiplomacyMgr::TDiplomacyMgr()
+    : relationMatrixBaselineCopy794(0), relationMatrixBaselineSize798(0) {
+  proposalDispatchCounter790 = 0;
+  lastProcessedNationSlot78e = -1;
 }
-
-TDiplomacyMgr::TDiplomacyMgr() {}
 
 // SYNTHETIC: IMPERIALISM 0x004ee700
 // TDiplomacyMgr::`scalar deleting destructor'
@@ -1566,8 +1561,10 @@ void TDiplomacyMgr::RebuildMinorNationDispositionLookupTables(int nationCode) {
       }
       relationStandingScoreMatrix79c[otherMinorSlot * kNationSlotCount + minorSlot] = standingValue;
       relationStandingScoreMatrix79c[minorSlot * kNationSlotCount + otherMinorSlot] = standingValue;
-      relationPropagationMatrixBbe[otherMinorSlot * kNationSlotCount + minorSlot] = propagationValue;
-      relationPropagationMatrixBbe[minorSlot * kNationSlotCount + otherMinorSlot] = propagationValue;
+      relationPropagationMatrixBbe[otherMinorSlot * kNationSlotCount + minorSlot] =
+          propagationValue;
+      relationPropagationMatrixBbe[minorSlot * kNationSlotCount + otherMinorSlot] =
+          propagationValue;
     }
 
     for (int notifySlot = 0; notifySlot < 7; ++notifySlot) {

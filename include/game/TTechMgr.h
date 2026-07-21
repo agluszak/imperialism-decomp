@@ -110,7 +110,6 @@ public:
   };
   CapRowE capRowsE4a6[7];
 
-  void ConstructCityOrderCapabilityStateVtable();
   void InitializeCityOrderCapabilityStateDefaults();
   void GenerateRandomCapabilityPrioritySlots();
   // Turn-instruction handler body ("Tech"): unlocks techId globally, then stamps the

@@ -776,7 +776,7 @@ int g_ResetStateDword6A1F38;
 int g_ResetStateDword6A1F3C;
 
 // Order-type index rankings (0..13) sorted by descending descriptor weight, rebuilt by
-// InitializeNavyOrderPriorityTables (0x556610): by resolveWeight, calculateWeight, and
+// TNavyMgr::INavyMgr (0x556610): by resolveWeight, calculateWeight, and
 // navyPriorityWeight respectively. Runtime-filled, so zero in the on-disk image.
 // GLOBAL: IMPERIALISM 0x006a3e28
 short g_NavyResolveOrderRanking[14];
