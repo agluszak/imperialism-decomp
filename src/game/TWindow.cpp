@@ -380,12 +380,12 @@ void TWindow::Free() {
 }
 
 // FUNCTION: IMPERIALISM 0x00492cc0
-class TView* TWindow::GetWindow() {
+TWindow* TWindow::GetWindow() {
   return this;
 }
 
 // FUNCTION: IMPERIALISM 0x00492ce0
-class TView* TWindow::QueryOwnerContextPanel() {
+TView* TWindow::GetRootView() {
   return this;
 }
 

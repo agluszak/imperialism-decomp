@@ -1,4 +1,5 @@
 #include "game/TShipFractionCluster.h"
+#include "game/TWindow.h"
 
 #include "game/TOcean.h"
 #include "game/TTaskForce.h"

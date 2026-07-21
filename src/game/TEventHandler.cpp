@@ -4,6 +4,7 @@
 // TView/AppRoot override only the few slots where their vtable bodies differ.
 
 #include "game/TEventHandler.h"
+#include "game/TWindow.h"
 
 #include "game/TBehavior.h"
 #include "game/TEvent.h"
@@ -16,16 +17,6 @@
 #include "game/ui_invalidation_guard.h"
 #include <string.h>
 
-namespace {
-
-struct TEventHandlerRawQueueNode {
-  TEventHandlerRawQueueNode* next;
-  TEventHandlerRawQueueNode* previous;
-  void* payload;
-};
-
-} // namespace
-
 // FUNCTION: IMPERIALISM 0x00415d50
 int TEventHandler::GetIdleFreq() {
   return field10;
@@ -36,15 +27,6 @@ void TEventHandler::SetIdleFreq(int value) {
   field10 = value;
 }
 
-// Drain the linked command/event list rooted at handler+0x04 until field0c reaches zero.
-// FUNCTION: IMPERIALISM 0x0048a070
-void TEventHandler::CreateTEventHandlerInstance() {
-  while (field0c != 0) {
-    TEventHandlerRawQueueNode* recordHead = reinterpret_cast<TEventHandlerRawQueueNode*>(field04);
-    TEventHandler* entry = static_cast<TEventHandler*>(recordHead->payload);
-    entry->Free();
-  }
-}
 // SYNTHETIC: IMPERIALISM 0x0048a0a0
 // TEventHandler::CreateObject
 
@@ -309,7 +291,7 @@ void TEventHandler::SelectOwner(unsigned char) {}
 
 // Slot 0x16: base implementation (TView overrides with the owner-chain walk).
 // FUNCTION: IMPERIALISM 0x0048a730
-class TView* TEventHandler::GetWindow() {
+TWindow* TEventHandler::GetWindow() {
   return 0;
 }
 

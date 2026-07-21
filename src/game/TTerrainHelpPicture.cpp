@@ -1,4 +1,5 @@
 #include "game/TTerrainHelpPicture.h"
+#include "game/TWindow.h"
 
 #include "game/TDeluxeText.h"
 #include "game/TLonelyTileView.h"

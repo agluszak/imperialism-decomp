@@ -32,7 +32,7 @@ void TInteriorMinisterView::DoEvent(int commandId, TEventHandler* sourceHandler,
       return;
     } else if (tag == kControlTagOkay) {
       CloseBooks();
-      TWindow* owner = static_cast<TWindow*>(GetWindow());
+      TWindow* owner = GetWindow();
       g_pGlobalUiRootController->CloseAndFreeWindow(owner);
       return;
     }
@@ -41,7 +41,7 @@ void TInteriorMinisterView::DoEvent(int commandId, TEventHandler* sourceHandler,
       OpenBook(0x25ee);
     } else if (tag == kControlTagTran) {
       if (g_pSimMgr->field14 == 0) {
-        TWindow* owner = static_cast<TWindow*>(GetWindow());
+        TWindow* owner = GetWindow();
         g_pGlobalUiRootController->CloseAndFreeWindow(owner);
       }
     } else if (tag == kControlTagTrea) {

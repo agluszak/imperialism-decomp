@@ -1,4 +1,5 @@
 #include "game/TBuildingView.h"
+#include "game/TWindow.h"
 #include "game/TCity.h"
 #include "game/TCityProductionView.h"
 #include "game/TViewMgr.h"

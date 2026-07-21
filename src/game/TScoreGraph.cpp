@@ -1,4 +1,5 @@
 #include "game/TScoreGraph.h"
+#include "game/TWindow.h"
 
 #include "game/TDiplomacyMgr.h"
 #include "game/TGreatPower.h"

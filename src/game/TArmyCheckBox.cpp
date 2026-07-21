@@ -1,4 +1,5 @@
 #include "game/TArmyCheckBox.h"
+#include "game/TWindow.h"
 
 #include "game/CDib.h"
 #include "game/global_data_tables.h"

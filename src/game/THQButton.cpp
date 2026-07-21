@@ -1,4 +1,5 @@
 #include "game/TAmtBar.h"
+#include "game/TWindow.h"
 // UI wrapper class quads extracted from trade_screen.
 
 #include "game/THQButton.h"
@@ -54,7 +55,7 @@ void THQButton::HiliteState(unsigned char enabledState, unsigned char refreshNow
     }
     reinterpret_cast<TAmtBar*>(this)->SetBitmap(bitmapId, 1);
     if (refreshNow) {
-      TAmtBar* owner = reinterpret_cast<TAmtBar*>(GetWindow());
+      TWindow* owner = GetWindow();
       if (owner != 0) {
         owner->ForceRedraw();
       }

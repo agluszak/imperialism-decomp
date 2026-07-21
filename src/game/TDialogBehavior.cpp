@@ -1,4 +1,5 @@
 #include "game/TDialogBehavior.h"
+#include "game/TWindow.h"
 
 #include "game/CIncludeView.h"
 #include "game/ImperialismApp.h"

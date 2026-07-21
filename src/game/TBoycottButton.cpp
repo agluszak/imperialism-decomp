@@ -1,4 +1,5 @@
 #include "game/TBoycottButton.h"
+#include "game/TWindow.h"
 #include "game/TCluster.h"
 #include "game/GameAssert.h"
 #include "game/mfc.h"

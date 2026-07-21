@@ -52,7 +52,17 @@ public:
   };
 };
 
-typedef CList<TView*, TView*> TViewChildList;
+// Typed MFC child list used by TView::childList44. The two non-virtual helpers are
+// carried by the retail binary immediately before TEventHandler's RTTI factory;
+// their receiver layout and element access prove they belong to this list, not to
+// TEventHandler itself.
+class TViewChildList : public CList<TView*, TView*> {
+public:
+  void RemoveByTag(unsigned int tag);
+  void FreeAll();
+};
+
+ASSERT_SIZE(TViewChildList, 0x1c);
 
 // VTABLE: IMPERIALISM 0x649858
 class TView : public TEventHandler {
@@ -105,9 +115,9 @@ public:
 
   // Base-slot overrides (vtable bodies differ from TEventHandler's).
   DECLARE_DYNCREATE(TView)
-  void Free() override;                      // 0x07
-  TObject* ShallowClone() override;          // 0x08 0x48bfd0
-  virtual class TView* GetWindow() override; // 0x16 0x48b180
+  void Free() override;                  // 0x07
+  TObject* ShallowClone() override;      // 0x08 0x48bfd0
+  virtual TWindow* GetWindow() override; // 0x16 0x48b180
 
   // TView-introduced virtuals (slots 0x25-0x67), in exact vtable slot order. Slot
   // assignments are pinned by FUNCTION-marker addresses, original-binary call offsets,
@@ -135,7 +145,7 @@ public:
   virtual void DoPostCreate(int arg);                                    // 0x37 0x48ab70
   virtual void NoOpUiCallback();                                         // 0x38 0x48abc0
   virtual void RefreshControl();                                         // 0x39 0x48b6d0
-  virtual class TView* QueryOwnerContextPanel();                         // 0x3a 0x48b1a0
+  virtual TView* GetRootView();                                          // 0x3a 0x48b1a0
   virtual char IsActionable();                                           // 0x3b 0x48b200
   virtual void CaptureLayoutF0(int* buffer, int modeFlag);               // 0x3c 0x48b250
   virtual void CaptureLayout(int* buffer, int modeFlag);                 // 0x3d 0x48b3f0

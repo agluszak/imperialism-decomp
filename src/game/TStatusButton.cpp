@@ -1,4 +1,5 @@
 #include "game/TStatusButton.h"
+#include "game/TWindow.h"
 #include "game/global_data_tables.h"
 #include "game/mfc.h"
 // SYNTHETIC: IMPERIALISM 0x00586280

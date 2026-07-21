@@ -10875,6 +10875,17 @@
       ],
       "source_file": "src/game/global_data_tables.cpp"
     },
+    "0x00489f90": {
+      "references": [
+        {
+          "address": "0x006950b0",
+          "kind": "embedded_global",
+          "symbol": "g_szMcAppUiSourcePath_006950B0",
+          "text": "D:\\Ambit\\McAppUI.cpp"
+        }
+      ],
+      "source_file": "src/game/TView.cpp"
+    },
     "0x0048ae60": {
       "references": [
         {
@@ -179338,7 +179349,7 @@
   "summary": {
     "embedded_globals": 767,
     "formula_matches": 2356,
-    "functions_with_references": 277,
+    "functions_with_references": 278,
     "mac_strings": 3821,
     "mac_strings_with_candidates": 3091,
     "text_resources": 0,

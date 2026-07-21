@@ -33,15 +33,15 @@ void TFlagOptionsPicture::DoEvent(int commandId, TEventHandler* sourceHandler, T
     CString text;
     unsigned int tag = sourceHandler->controlTag;
     if (tag == kControlTagGowy) {
-      TWindow* owner = static_cast<TWindow*>(GetWindow());
+      TWindow* owner = GetWindow();
       owner->Dismiss(tag, 0);
     } else if (tag == kControlTagCred) {
-      TWindow* owner = static_cast<TWindow*>(GetWindow());
+      TWindow* owner = GetWindow();
       owner->Dismiss(kControlTagOkay, 0);
       g_pSimMgr->EnterOptionalPhase(0x71);
     } else if (tag == kControlTagNewg || tag == kControlTagQuit) {
       if (g_pUiRuntimeContext->DispatchGameStateEventIfLocalizedPromptAccepted(tag)) {
-        TWindow* owner = static_cast<TWindow*>(GetWindow());
+        TWindow* owner = GetWindow();
         owner->Dismiss(tag, 0);
         if (g_pSimMgr->multiplayerSessionRole == 1) {
           int saveResult = 0;
@@ -59,16 +59,16 @@ void TFlagOptionsPicture::DoEvent(int commandId, TEventHandler* sourceHandler, T
       if (g_pSimMgr->multiplayerSessionRole != 0) {
         g_pUiRuntimeContext->ShowLocalizedUiPromptByGroupAndIndex(0x2737, 0x34, 0, 0);
       } else {
-        TWindow* owner = static_cast<TWindow*>(GetWindow());
+        TWindow* owner = GetWindow();
         owner->Dismiss(tag, 0);
         g_pSimMgr->EnterOptionalPhase(0x70);
       }
     } else if (tag == kControlTagPref) {
-      TWindow* owner = static_cast<TWindow*>(GetWindow());
+      TWindow* owner = GetWindow();
       owner->Dismiss(tag, 0);
       g_pSimMgr->EnterOptionalPhase(0x6b);
     } else if (tag == kControlTagSave) {
-      TWindow* owner = static_cast<TWindow*>(GetWindow());
+      TWindow* owner = GetWindow();
       owner->Dismiss(tag, 0);
       if (g_pSimMgr->multiplayerSessionRole == 2) {
         g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&text, 0x2742, 0x13);

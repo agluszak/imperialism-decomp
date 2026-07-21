@@ -1,4 +1,5 @@
 #include "game/TNavyToolbarCluster.h"
+#include "game/TWindow.h"
 
 #include "game/CSubViewIterator.h"
 #include "game/TCluster.h"

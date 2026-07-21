@@ -1,4 +1,5 @@
 #include "game/TTacticalAdiosPicture.h"
+#include "game/TWindow.h"
 
 #include "game/TControl.h"
 #include "game/TDeluxeText.h"
@@ -55,9 +56,7 @@ void TTacticalAdiosPicture::DoPostCreate(int arg) {
 // FUNCTION: IMPERIALISM 0x005ad650
 void TTacticalAdiosPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId == 0xa && sourceHandler->controlTag == kControlTagOkay) {
-    static_cast<TControl*>(GetWindow())
-        ->SetTextStyleAndMaybeRefresh(
-            reinterpret_cast<const TUiTextStyleDescriptor*>(sourceHandler->controlTag), 1);
+    GetWindow()->Dismiss(sourceHandler->controlTag, 1);
   }
   TControl::DoEvent(commandId, sourceHandler, event);
 }

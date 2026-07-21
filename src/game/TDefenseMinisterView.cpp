@@ -34,7 +34,7 @@ void TDefenseMinisterView::DoEvent(int commandId, TEventHandler* sourceHandler, 
       return;
     } else if (tag == kControlTagOkay) {
       CloseBooks();
-      TWindow* owner = static_cast<TWindow*>(GetWindow());
+      TWindow* owner = GetWindow();
       g_pGlobalUiRootController->CloseAndFreeWindow(owner);
       return;
     }
@@ -43,7 +43,7 @@ void TDefenseMinisterView::DoEvent(int commandId, TEventHandler* sourceHandler, 
       short activeNationId = g_pSimMgr->GetActiveNationId();
       if (g_pMapContextActionManager->ScanMapContextActionEntriesForCodeMatch(activeNationId)) {
         if (g_pSimMgr->field14 == 0) {
-          TWindow* owner = static_cast<TWindow*>(GetWindow());
+          TWindow* owner = GetWindow();
           g_pGlobalUiRootController->CloseAndFreeWindow(owner);
           g_pSimMgr->EnterOptionalPhase(0x65);
         }

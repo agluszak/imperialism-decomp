@@ -64,7 +64,7 @@ public:
   virtual void DoPostCreate(int arg) override; // slot 0x37 0x4fcac0
   // slot 0x38 NoOpUiCallback inherited unchanged (0x48abc0)
   // slot 0x39 RefreshControl inherited unchanged (0x48b6d0)
-  // slot 0x3a QueryOwnerContextPanel inherited unchanged (0x48b1a0)
+  // slot 0x3a GetRootView inherited unchanged (0x48b1a0)
   // slot 0x3b IsActionable inherited unchanged (0x48b200)
   // slot 0x3c CaptureLayoutF0 inherited unchanged (0x48b250)
   // slot 0x3d CaptureLayout inherited unchanged (0x48b3f0)

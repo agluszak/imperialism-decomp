@@ -34,7 +34,7 @@ public:
   // slot 0x13 DoIdle inherited unchanged (0x48a480)
   // slot 0x14 GetIdleFreq inherited unchanged (0x415d50)
   // slot 0x15 SetIdleFreq inherited unchanged (0x415d70)
-  virtual class TView* GetWindow() override; // slot 0x16 0x492cc0
+  virtual TWindow* GetWindow() override; // slot 0x16 0x492cc0
   // slot 0x17 WantsToBeTarget inherited unchanged (0x48a530)
   // slot 0x18 WillingToResignTarget inherited unchanged (0x48a550)
   // slot 0x19 ResignedTarget inherited unchanged (0x48a690)
@@ -70,8 +70,8 @@ public:
   // slot 0x37 DoPostCreate inherited unchanged (0x48ab70)
   // slot 0x38 NoOpUiCallback inherited unchanged (0x48abc0)
   // slot 0x39 RefreshControl inherited unchanged (0x48b6d0)
-  virtual class TView* QueryOwnerContextPanel() override; // slot 0x3a 0x492ce0
-  virtual char IsActionable() override;                   // slot 0x3b 0x48d980
+  virtual TView* GetRootView() override; // slot 0x3a 0x492ce0
+  virtual char IsActionable() override;  // slot 0x3b 0x48d980
   // slot 0x3c CaptureLayoutF0 inherited unchanged (0x48b250)
   // slot 0x3d CaptureLayout inherited unchanged (0x48b3f0)
   // slot 0x3e Refresh inherited unchanged (0x48b770)
@@ -151,7 +151,7 @@ public:
   // 0x64 — the currently-active linked window (init = this); switching targets
   // notifies the previous one via BecameWindowTarget.
   TEventHandler* activeLinkedWindow64;
-  unsigned char padding_68_to_6b[0x04]; // 0x68
+  int activeViewTag68; // 0x68 — child controlTag installed by tactical views
   // 0x6c-0x71 — style/behavior booleans written by the UI resource builders. The names
   // remain offset-qualified where no Windows reader has established the exact behavior.
   bool resourceFlag6c; // 0x6c

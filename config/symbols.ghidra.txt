@@ -484,7 +484,6 @@ thunk_ApplyProductionDistributionToCitySlots 407B4E l
 thunk_HandleGlobalMapNationContextSelection 407BDA l
 thunk_QueueCityProductionOrderCommand 407BEE l
 thunk_SetSelectedTextOptionByTag 407C07 l
-thunk_GetCityDialogValueViaChildSlot58 407C16 l
 TSimMgr::thunk_LoadUiStringByCodeGroupAndOffset_At00407c1b 407C1B l
 thunk_ResolveMapOrderPairConflictStep 407C34 l
 thunk_ConstructUiWindowResourceEntryBase 407C43 l
@@ -1451,8 +1450,8 @@ RenderMapOrderEntryTilePreview_Impl 489E40 f
 TEvent::CreateTEventInstance 489EE0 f
 TEvent::CreateObject 489F00 f
 TEvent::GetRuntimeClass 489F40 f
-RemoveUiListEntryByOwnerIdAndRecycleStorage 489F90 f
-TEventHandler::CreateTEventHandlerInstance 48A070 f
+TViewChildList::RemoveByTag 489F90 f
+TViewChildList::FreeAll 48A070 f
 TEventHandler::CreateObject 48A0A0 f
 TEventHandler::GetRuntimeClass 48A0E0 f
 TEventHandler::InitializeUiResourceEntryBaseHeaderDefaults 48A100 f
@@ -1506,7 +1505,7 @@ TView::ResolveControlByTag 48AFD0 f
 TView::SetState 48B070 f
 TView::Free 48B0B0 f
 TView::GetWindow 48B180 f
-TView::QueryOwnerContextPanel 48B1A0 f
+TView::GetRootView 48B1A0 f
 TView::SetEnabled 48B1C0 f
 TView::IsActionable 48B200 f
 TView::CaptureLayoutF0 48B250 f
@@ -1736,7 +1735,7 @@ WrapperFor_StringSharedRef_AssignFromPtr_At00492b70 492B70 f
 TEvent::'scalar_deleting_destructor' 492C70 f
 WrapperFor_FreeHeapBufferIfNotNull_At00492c70_Impl 492CA0 f
 TWindow::GetWindow 492CC0 f
-TWindow::QueryOwnerContextPanel 492CE0 f
+TWindow::GetRootView 492CE0 f
 TWindow::TranslatePointToParentChain4E 492D00 f
 TWindow::TranslatePointToParentChain4D 492D20 f
 TWindow::TranslateRectToWindow 492D40 f

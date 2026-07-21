@@ -1,4 +1,5 @@
 #include "game/TTacArmyView.h"
+#include "game/TWindow.h"
 
 #include "game/CDib.h"
 #include "game/TEventHandler.h"
