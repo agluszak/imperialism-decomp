@@ -150,6 +150,7 @@ public:
   void HandleTurnInstruction_Deve_ApplyMapDevelopmentEntry(void* pInstructionRaw);       // 0x5828f0
   void
   HandleTurnInstruction_Tech_ApplyTechUnlockAndNotifyNations(void* pInstructionRaw); // 0x582ad0
+  void HandleTurnInstruction_Pric_ApplyDiplomacyPriceEntry(void* pInstructionRaw);   // 0x582b70
 
   // --- fields (offsets are load-bearing: referenced from many other classes via
   //     g_pSimMgr; do not rename or move) ---

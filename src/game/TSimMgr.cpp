@@ -1441,6 +1441,31 @@ void TSimMgr::HandleTurnInstruction_Tech_ApplyTechUnlockAndNotifyNations(void* p
       static_cast<int>(techToken), static_cast<int>(nationToken));
 }
 
+// Reads two big-endian 16-bit tokens (metric category, then value) and applies the value
+// via the trade manager's per-nation metric cell setter.
+// FUNCTION: IMPERIALISM 0x00582b70
+void TSimMgr::HandleTurnInstruction_Pric_ApplyDiplomacyPriceEntry(void* pInstructionRaw) {
+  STurnInstructionCursor* instruction = static_cast<STurnInstructionCursor*>(pInstructionRaw);
+  unsigned int* cursor = instruction->tokenCursor;
+
+  unsigned int categoryToken = *cursor;
+  cursor = cursor + 1;
+  instruction->tokenCursor = cursor;
+  unsigned char* craw = reinterpret_cast<unsigned char*>(&categoryToken);
+  craw[0] = craw[3];
+  craw[1] = craw[2];
+
+  unsigned int valueToken = *cursor;
+  cursor = cursor + 1;
+  instruction->tokenCursor = cursor;
+  unsigned char* vraw = reinterpret_cast<unsigned char*>(&valueToken);
+  vraw[0] = vraw[3];
+  vraw[1] = vraw[2];
+
+  g_pNationInteractionStateManager->SetNationMetricCellValueByIndex(
+      static_cast<short>(categoryToken), static_cast<short>(valueToken));
+}
+
 // Reads two big-endian 32-bit nation slots and a big-endian short relation value, then
 // writes the value symmetrically into both [A][B] and [B][A] of the diplomacy manager's
 // side-effect relation matrix.
