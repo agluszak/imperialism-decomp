@@ -65,9 +65,9 @@ void TRailAmtBar::DoPostCreate(int arg) {
   short productionOrCapValue = 0;
   if (recordIndex == 0x33 || recordIndex == 7) {
     TPopulationMgr* scenario = cityState->productionSummary1d8;
-    TPopulationMetricBucket* slots = scenario->productionSlots14;
-    productionOrCapValue = (short)(((slots->valueAt8 * 2 + slots->valueAt6) * 2 +
-                                    scenario->extraAt1e + slots->valueAt4) /
+    TLaborPool* slots = scenario->productionSlots14;
+    productionOrCapValue = (short)(((slots->highSkillCount08 * 2 + slots->mediumSkillCount06) * 2 +
+                                    scenario->extraAt1e + slots->lowSkillCount04) /
                                    2);
   } else {
     productionOrCapValue = selectedMetricRecord->MaxOrder();

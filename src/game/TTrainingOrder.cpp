@@ -59,23 +59,23 @@ void TTrainingOrder::Produce() {
     return;
   }
 
-  TPopulationMetricBucket* population = summaryField0c->baselineSlots10;
+  TLaborPool* population = summaryField0c->baselineSlots10;
   if (resourceTypeIndex48 == 1) {
-    population->valueAt4 -= quantity;
-    population->valueAt6 += quantityField04;
+    population->lowSkillCount04 -= quantity;
+    population->mediumSkillCount06 += quantityField04;
     quantityField04 = 0;
     return;
   }
 
-  int newLevel = static_cast<int>(population->valueAt8) + quantity;
+  int newLevel = static_cast<int>(population->highSkillCount08) + quantity;
   TGreatPower* owner = cityField08->ownerNationAc;
   if (newLevel >= 10 && owner->serializedStatusFlags[7] < '2') {
     owner->SetNationPendingActionStateAndPayload(7, 2);
   } else if (newLevel >= 30 && owner->serializedStatusFlags[7] <= '3') {
     owner->SetNationPendingActionStateAndPayload(7, 3);
   }
-  population->valueAt6 -= quantityField04;
-  population->valueAt8 += quantityField04;
+  population->mediumSkillCount06 -= quantityField04;
+  population->highSkillCount08 += quantityField04;
   quantityField04 = 0;
 }
 

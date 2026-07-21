@@ -1,4 +1,8 @@
 #include "game/TPopulationMgr.h"
+
+#include <string.h>
+
+#include "game/TCity.h"
 // SYNTHETIC: IMPERIALISM 0x004b5b40
 // TPopulationMgr::CreateObject
 
@@ -13,6 +17,18 @@ TPopulationMgr::TPopulationMgr() {}
 // TPopulationMgr::`scalar deleting destructor'
 TPopulationMgr::~TPopulationMgr() {}
 
+// FUNCTION: IMPERIALISM 0x004b5c00
+void TPopulationMgr::InitializePopulationState(TCity* city) {
+  city04 = city;
+  baselineSlots10 = new TLaborPool();
+  productionSlots14 = new TLaborPool();
+  pendingDeltaSlots18 = new TLaborPool();
+  fieldAt8 = 0;
+  fieldAtC = 0.0f;
+  extraAt1e = 0;
+  memset(pad22, 0, sizeof(pad22));
+}
+
 // FUNCTION: IMPERIALISM 0x004b5d10
 undefined TPopulationMgr::OrphanLeaf_NoCall_Ins09_004b5d10(int param_1, int param_2) {
   return 0;
@@ -26,23 +42,23 @@ undefined TPopulationMgr::OrphanLeaf_NoCall_Ins20_004b5d50(short param_1) {
 // FUNCTION: IMPERIALISM 0x004b5dc0
 undefined TPopulationMgr::OrphanLeaf_NoCall_Ins47_004b5dc0(short param_1, short param_2,
                                                            short param_3) {
-  baselineSlots10->valueAt4 = param_1;
-  productionSlots14->valueAt4 = param_1;
-  baselineSlots10->valueAt6 = param_2;
-  productionSlots14->valueAt6 = param_2;
-  baselineSlots10->valueAt8 = param_3;
-  productionSlots14->valueAt8 = param_3;
+  baselineSlots10->lowSkillCount04 = param_1;
+  productionSlots14->lowSkillCount04 = param_1;
+  baselineSlots10->mediumSkillCount06 = param_2;
+  productionSlots14->mediumSkillCount06 = param_2;
+  baselineSlots10->highSkillCount08 = param_3;
+  productionSlots14->highSkillCount08 = param_3;
 
-  stockLevel1c =
-      static_cast<short>(productionSlots14->valueAt4 +
-                         (productionSlots14->valueAt6 + productionSlots14->valueAt8 * 2) * 2);
+  stockLevel1c = static_cast<short>(
+      productionSlots14->lowSkillCount04 +
+      (productionSlots14->mediumSkillCount06 + productionSlots14->highSkillCount08 * 2) * 2);
   short total = static_cast<short>(param_2 + param_3 + param_1);
   fieldAt8 = total;
   fieldAtC = static_cast<float>(total);
 
-  pendingDeltaSlots18->valueAt8 = 0;
-  pendingDeltaSlots18->valueAt6 = 0;
-  pendingDeltaSlots18->valueAt4 = 0;
+  pendingDeltaSlots18->highSkillCount08 = 0;
+  pendingDeltaSlots18->mediumSkillCount06 = 0;
+  pendingDeltaSlots18->lowSkillCount04 = 0;
   fieldAt20 = 0;
   return 0;
 }

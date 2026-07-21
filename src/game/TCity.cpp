@@ -4,8 +4,17 @@
 #include <stdlib.h>
 
 #include "game/TGreatPower.h"
+#include "game/TCapacityOrder.h"
+#include "game/TExpansionOrder.h"
+#include "game/TFoodProcessingOrder.h"
+#include "game/TItemOrder.h"
+#include "game/TOrItemOrder.h"
+#include "game/TPopGrowthOrder.h"
+#include "game/TPowerPlantOrder.h"
 #include "game/TProductionOrder.h"
 #include "game/TShipOrder.h"
+#include "game/TSortedList.h"
+#include "game/TTrainingOrder.h"
 #include "game/TTown.h"
 #include "game/TUnitOrder.h"
 #include "game/TSimMgr.h"
@@ -46,12 +55,157 @@ TCity::TCity() {
 // FUNCTION: IMPERIALISM 0x004b2550
 TCity::~TCity() {}
 
-// Body not yet ported (2210B production/building-table init); declared real so the
-// TGreatPower ctor dispatches it as a real __thiscall member instead of a fake
-// __fastcall bridge over the ILT thunk.
 // FUNCTION: IMPERIALISM 0x004b2570
-void TCity::InitializeCityProductionState(int initialProductionMode) {
-  (void)initialProductionMode;
+void TCity::InitializeCityProductionState(TGreatPower* ownerNation) {
+  ownerNationAc = ownerNation;
+  powerPlantUpgradeQueuedFlag04 = 0;
+  memset(reservedByType7e, 0, sizeof(reservedByType7e));
+  memset(&cityStockCottonB6, 0, sizeof(short) * 0x17);
+  memset(pad278, 0, sizeof(pad278));
+
+  for (int productionSlot = 0; productionSlot < 0x10; ++productionSlot) {
+    productionAccum1fc[productionSlot] = static_cast<short>(
+        productionAccum1fc[productionSlot] - productionOrderTable1dc[productionSlot]);
+    productionOrderTable1dc[productionSlot] = 0;
+    productionFlags21c[productionSlot] = 0;
+    production22c[productionSlot] = 0;
+    production24c[productionSlot] = 0;
+  }
+
+  int regionCount = ownerNation->ownedRegionList->GetSize();
+  int regionsPerCapacity = ownerNation->field8d1 >= '3' ? 3 : 4;
+  short capacity = static_cast<short>(regionCount / regionsPerCapacity);
+  productionAccum1fc[0x0f] = capacity > 1 ? capacity : 1;
+
+  if (g_pSimMgr->difficultyLevel < 2 && ownerNation->diplomacyEligibilityA0 != 0) {
+    static const short kInitialProductionBySlot[6] = {2, 1, 2, 1, 2, 1};
+    for (int productionSlot = 0; productionSlot < 6; ++productionSlot) {
+      short initialProduction = kInitialProductionBySlot[productionSlot];
+      productionAccum1fc[productionSlot] =
+          static_cast<short>(productionAccum1fc[productionSlot] +
+                             (initialProduction - productionOrderTable1dc[productionSlot]));
+      productionOrderTable1dc[productionSlot] = initialProduction;
+    }
+  }
+
+  lowProductionFlag7c = 0;
+  lowStockFlag7d = 0;
+  serializedState0a = 0;
+  powerAvailableB4 = 0;
+
+  productionSummary1d8 = new TPopulationMgr();
+  productionSummary1d8->InitializePopulationState(this);
+  memset(orderSlotsE4, 0, sizeof(orderSlotsE4));
+
+  TItemOrder* itemOrder = new TItemOrder();
+  itemOrder->InitializeItemOrderContext(this, 0x0b, 4, 3, 2);
+  orderSlotsE4[0x0b] = itemOrder;
+
+  itemOrder = new TItemOrder();
+  itemOrder->InitializeItemOrderContext(this, 0x0f, 0x0b, -1, 3);
+  orderSlotsE4[0x0f] = itemOrder;
+
+  itemOrder = new TItemOrder();
+  itemOrder->InitializeItemOrderContext(this, 0x10, 0x0b, -1, 3);
+  orderSlotsE4[0x10] = itemOrder;
+
+  itemOrder = new TItemOrder();
+  itemOrder->InitializeItemOrderContext(this, 9, 2, -1, 4);
+  orderSlotsE4[9] = itemOrder;
+
+  itemOrder = new TItemOrder();
+  itemOrder->InitializeItemOrderContext(this, 10, 2, -1, 4);
+  orderSlotsE4[10] = itemOrder;
+
+  itemOrder = new TItemOrder();
+  itemOrder->InitializeItemOrderContext(this, 0x0c, 6, -1, 6);
+  orderSlotsE4[0x0c] = itemOrder;
+
+  itemOrder = new TItemOrder();
+  itemOrder->InitializeItemOrderContext(this, 0x0d, 8, -1, 1);
+  orderSlotsE4[0x0d] = itemOrder;
+
+  itemOrder = new TItemOrder();
+  itemOrder->InitializeItemOrderContext(this, 0x0e, 9, -1, 5);
+  orderSlotsE4[0x0e] = itemOrder;
+
+  TOrItemOrder* orItemOrder = new TOrItemOrder();
+  orItemOrder->IOrItemOrder(this, 8, 1, 0, 0);
+  orderSlotsE4[8] = orItemOrder;
+
+  int profileIndex;
+  for (profileIndex = 0; profileIndex < 9; ++profileIndex) {
+    short* profile = g_aInitialCityRecruitmentOrderProfiles[profileIndex];
+    TUnitOrder* unitOrder = new TUnitOrder();
+    unitOrder->InitializeCityRecruitmentOrderContext(this, profile[0], profile[1], profile[2],
+                                                     profile[3], profile[4], profile[5], profile[6],
+                                                     0);
+    orderSlotsE4[0x22 + profileIndex] = unitOrder;
+  }
+
+  TUnitOrder* unitOrder = new TUnitOrder();
+  unitOrder->InitializeCityRecruitmentOrderContext(this, 0x18, 0x10, 2, -1, 0, 5000, 4, 1);
+  orderSlotsE4[0x20] = unitOrder;
+
+  for (profileIndex = 1; profileIndex <= 7; ++profileIndex) {
+    short* profile = g_aUnitOrderCostProfileByAbilityId[profileIndex];
+    unitOrder = new TUnitOrder();
+    unitOrder->InitializeCityRecruitmentOrderContext(this, profile[0], profile[1], profile[2],
+                                                     profile[3], profile[4], profile[5], profile[6],
+                                                     1);
+    orderSlotsE4[0x18 + profileIndex] = unitOrder;
+  }
+
+  TPowerPlantOrder* powerPlantOrder = new TPowerPlantOrder();
+  powerPlantOrder->IPowerPlantOrder(this);
+  orderSlotsE4[0x34] = powerPlantOrder;
+
+  TFoodProcessingOrder* foodOrder = new TFoodProcessingOrder();
+  foodOrder->IFoodProcessingOrder(this);
+  orderSlotsE4[7] = foodOrder;
+
+  TTrainingOrder* trainingOrder = new TTrainingOrder();
+  trainingOrder->ITrainingOrder(this, 1);
+  orderSlotsE4[0x17] = trainingOrder;
+
+  trainingOrder = new TTrainingOrder();
+  trainingOrder->ITrainingOrder(this, 2);
+  orderSlotsE4[0x18] = trainingOrder;
+
+  for (int shipSlot = 0; shipSlot < 8; ++shipSlot) {
+    TShipOrder* shipOrder = new TShipOrder();
+    shipOrder->IProductionOrder(this, 0);
+    orderSlotsE4[0x2b + shipSlot] = shipOrder;
+  }
+  shipOrderSlots[0]->resourceTypeIndex48 = 1;
+  shipOrderSlots[1]->resourceTypeIndex48 = 2;
+  shipOrderSlots[4]->resourceTypeIndex48 = 3;
+  shipOrderSlots[5]->resourceTypeIndex48 = 4;
+
+  for (int expansionSlot = 0; expansionSlot < 7; ++expansionSlot) {
+    TExpansionOrder* expansionOrder = new TExpansionOrder();
+    expansionOrder->IExpansionOrder(this, static_cast<short>(expansionSlot), 9, 0x0b, 0x0e);
+    orderSlotsE4[0x35 + expansionSlot] = expansionOrder;
+  }
+
+  TCapacityOrder* capacityOrder = new TCapacityOrder();
+  capacityOrder->ICapacityOrder(this, 0x0e, 9, 0x0b, 0x0e);
+  orderSlotsE4[0x33] = capacityOrder;
+
+  TPopGrowthOrder* populationGrowthOrder = new TPopGrowthOrder();
+  populationGrowthOrder->ConstructTPopGrowthOrderBaseState(this);
+  orderSlotsE4[0x3c] = populationGrowthOrder;
+
+  trackedOrderList270 = new TSortedList();
+  eventQueue274 = new TPtrList();
+  eventQueue274->recordSize14 = 4;
+
+  pad0c[0] = 0;
+  pad0c[1] = 0;
+  memset(cityMetricsBlock0E, 0, sizeof(cityMetricsBlock0E));
+  memset(cityMetricsBlock4A, 0, sizeof(cityMetricsBlock4A));
+  memset(orderCountByType5c, 0, sizeof(orderCountByType5c));
+  field78 = 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004b30a0
