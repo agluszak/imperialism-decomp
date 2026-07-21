@@ -3780,8 +3780,8 @@ address|matching|name
 0x551550|1.0|TAdmiral::`scalar deleting destructor'
 0x551580|0.9696969696969697|TAdmiral::~TAdmiral
 0x5515d0|0.6046511627906976|TAdmiral::Free
-0x551670|0.0425531914893617|TAdmiral::WriteTo
-0x551700|0.022222222222222223|TAdmiral::ReadFrom
+0x551670|0.8421052631578947|TAdmiral::WriteTo
+0x551700|0.7005649717514124|TAdmiral::ReadFrom
 0x551850|0.7291666666666666|TAdmiral::SelectNavyPrimaryOrderByNationAndRecomputePreferredChild
 0x5519d0|1.0|FindCumulativeWeightBucketIndex
 0x551a00|0.0|AccumulateRandomizedNavyOrderResourceDeltasByNationAndOwner
