@@ -146,7 +146,7 @@ void TDefenseMinister::Call4C() {
   CIterator missionCursor(owner->missionQueue);
   TMission* mission = static_cast<TMission*>(missionCursor.Reset());
   while (missionCursor.More() != 0) {
-    mission->MissionSlot44();
+    mission->GiveOrders();
     mission = static_cast<TMission*>(missionCursor.Advance());
   }
 }

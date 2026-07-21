@@ -20,12 +20,12 @@ IMPLEMENT_SERIAL(TInvadeMission, TAttackProvinceMission, 1)
 // TInvadeMission::CreateObject
 
 // FUNCTION: IMPERIALISM 0x0053f120
-TMission* TInvadeMission::ReturnZeroSlot5C() {
+TMission* TInvadeMission::GetNavyMission() {
   return beachhead34;
 }
 
 // FUNCTION: IMPERIALISM 0x0053f140
-char TInvadeMission::ReturnFalseSlot54() {
+char TInvadeMission::IsNavyMission() const {
   return 1;
 }
 
@@ -56,7 +56,7 @@ float TInvadeMission::ReturnZeroFloatSlot6C() {
 }
 
 // FUNCTION: IMPERIALISM 0x0053f240
-char TInvadeMission::ReturnFalseSlot64() {
+char TInvadeMission::IsHospitalMission() const {
   return 0;
 }
 
@@ -102,7 +102,7 @@ char TInvadeMission::ReturnFalseSlot98() {
 }
 
 // FUNCTION: IMPERIALISM 0x0053f580
-void TInvadeMission::Call30() {
+void TInvadeMission::Initialize() {
   beachhead34->InitializeMissionWithNationIdAndResetPathMarker(nationId04);
   marker11 = 1;
   if (targetProvince30 != -1) {
@@ -118,10 +118,10 @@ void TInvadeMission::SetStateByte8To2() {
 }
 
 // FUNCTION: IMPERIALISM 0x0053f610
-void TInvadeMission::NoOpSlot3C() {
-  TAttackProvinceMission::NoOpSlot3C();
+void TInvadeMission::CalculateNeeds() {
+  TAttackProvinceMission::CalculateNeeds();
   if (beachhead34 != nullptr) {
-    beachhead34->NoOpSlot3C();
+    beachhead34->CalculateNeeds();
   }
 }
 
@@ -147,9 +147,9 @@ void TInvadeMission::ReadFrom(TStream* stream) {
 }
 
 // FUNCTION: IMPERIALISM 0x0053f780
-void TInvadeMission::MissionSlot44() {
+void TInvadeMission::GiveOrders() {
   if (beachhead34 != nullptr) {
-    beachhead34->MissionSlot44();
+    beachhead34->GiveOrders();
   }
   // Per-region, per-nation dispatch-dirty bitmask gate (byte at record+0xa1,
   // bit index nationId04) -- pending exact TGlobalMapCityScoreRecord field
@@ -157,16 +157,16 @@ void TInvadeMission::MissionSlot44() {
   const unsigned char* recordBytes =
       reinterpret_cast<const unsigned char*>(&g_pGlobalMapState->cityScoreTable[targetProvince30]);
   if (recordBytes[0xa1] & (1 << (nationId04 & 0x1f))) {
-    TAttackProvinceMission::MissionSlot44();
+    TAttackProvinceMission::GiveOrders();
   }
 }
 
 // FUNCTION: IMPERIALISM 0x0053f7d0
-void TInvadeMission::RefreshSlot40() {
-  beachhead34->RefreshSlot40();
+void TInvadeMission::Reassess() {
+  beachhead34->Reassess();
   SetStateByte8To2();
-  ResetValue0CToZero();
-  NoOpSlot3C();
+  CalculateImportance();
+  CalculateNeeds();
 }
 
 // FUNCTION: IMPERIALISM 0x0053f800
@@ -197,8 +197,8 @@ float TInvadeMission::CalculatePriority() {
 
   for (int resourceIndex = 0; resourceIndex < 5; ++resourceIndex) {
     resourcePools[resourceIndex] =
-        static_cast<int>(resourceWeights[resourceIndex] - committedResources[resourceIndex] +
-                         resourcePools[resourceIndex]);
+        static_cast<int>(requiredEquipageByClass[resourceIndex] -
+                         committedResources[resourceIndex] + resourcePools[resourceIndex]);
     totalResourceDemand += resourcePools[resourceIndex];
   }
 
@@ -221,12 +221,12 @@ float TInvadeMission::CalculatePriority() {
 }
 
 // FUNCTION: IMPERIALISM 0x0053faa0
-char TInvadeMission::ReturnFalseSlot50() {
+char TInvadeMission::IsArmyMission() const {
   return 1;
 }
 
 // Same shape as TArmyMission::ReturnZeroFloatSlot70, but the "not this mission's own unit"
-// branch is scaled down by 0.1 unless ReturnFalseSlot50() says otherwise (TInvadeMission's
+// branch is scaled down by 0.1 unless IsArmyMission() says otherwise (TInvadeMission's
 // own override always returns true, so the scale-down never actually triggers here -- kept
 // as a real virtual dispatch to match the original rather than hardcoding).
 // FUNCTION: IMPERIALISM 0x0053fac0
@@ -241,7 +241,7 @@ float TInvadeMission::ReturnZeroFloatSlot70(TMilitaryUnit* candidateUnit) {
     delta = ComputeArmyMissionScoreDeltaWithCandidateUnit(candidateUnit) - ReturnZeroFloatSlot68();
   }
 
-  if (!ReturnFalseSlot50()) {
+  if (!IsArmyMission()) {
     delta *= 0.1f;
   }
   return delta;
@@ -264,63 +264,70 @@ void TInvadeMission::SetFlag10FromArgSlot94(unsigned char value) {
 }
 
 // FUNCTION: IMPERIALISM 0x0053fbc0
-char TInvadeMission::MatchesMissionKeySlot4C(int kind, int key, int mode) {
+char TInvadeMission::Matches(int kind, int key, int mode) const {
   if (kind == 2 && key == targetProvince30 && beachhead34 != nullptr) {
-    if (beachhead34->MatchesMissionKeySlot4C(2, key, mode) != 0) {
+    if (beachhead34->Matches(2, key, mode) != 0) {
       return 1;
     }
   }
   return 0;
 }
 
-// Same vector-accumulation + truncate-to-outBuffer shape as TArmyMission::ReturnZeroSlot2C
-// (inlined here rather than calling the shared helper, matching this file's established
-// per-callsite-inlining pattern), plus this override's own addition: the running total also
-// folds in beachhead34->ReturnZeroSlot2C(outBuffer, unused) (vtable slot 0x2c, same slot).
-// NOTE: the original's per-element rounding is a custom FPU round-half rule, not plain
-// truncation (0x53fce9-0x53fd1c); approximated here as truncation pending that recovery.
+// Builds the order-list contribution vector, then subtracts it from this mission's desired
+// resource profile. When includePriorContributions is set, an existing output component is
+// carried into the difference unless the desired component is already at or below the new
+// contribution; that exhausted case uses the original's address-distinct zero carry scale.
+// Each resulting float is converted through VC5's _ftol path before the beachhead child's
+// own slot-0x2c contribution is added to the returned total.
 // FUNCTION: IMPERIALISM 0x0053fc10
-int TInvadeMission::ReturnZeroSlot2C(int* outBuffer, int unused) {
-  float vector[5] = {0.0f, 0.0f, 0.0f, 0.0f, 0.0f};
-  if (orderListAt18 != nullptr) {
-    CIterator iter(orderListAt18);
-    for (void* item = iter.Reset(); iter.More(); item = iter.Advance()) {
-      TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(item);
-      unit->AssertValid();
-      short weightIndex = unit->IsNotStationedInProvince(GetPresentLocation());
-      if (weightIndex > 5) {
-        weightIndex = 5;
-      }
-      AccumulateUnitOrderPriorityVectorContribution(
-          unit, vector, g_MissionOrderDistanceDecayWeightTable_006978c8[weightIndex],
-          static_cast<float>(g_pGlobalMapState->GetProvinceUnitOrderWeight(GetPresentLocation())));
+int TInvadeMission::AccumulateLack(int* accumulatedLack, unsigned char includeExistingLack) const {
+  float vector[5] = {0};
+  int total = 0;
+  CIterator iter(orderListAt18);
+  for (void* item = iter.Reset(); iter.More(); item = iter.Advance()) {
+    TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(item);
+    unit->AssertValid();
+    short weightIndex = unit->IsNotStationedInProvince(GetPresentLocation());
+    if (weightIndex > 5) {
+      weightIndex = 5;
     }
+    float distanceWeight = g_MissionOrderDistanceDecayWeightTable_006978c8[weightIndex];
+    AccumulateUnitOrderPriorityVectorContribution(
+        unit, vector, distanceWeight,
+        static_cast<float>(g_pGlobalMapState->GetProvinceUnitOrderWeight(GetPresentLocation())));
   }
 
-  int total = 0;
   for (int i = 0; i < 5; ++i) {
-    int rounded = static_cast<int>(vector[i]);
-    outBuffer[i] = rounded;
+    float value;
+    if (includeExistingLack != 0 && requiredEquipageByClass[i] <= vector[i]) {
+      float difference = requiredEquipageByClass[i] - vector[i];
+      value = difference + static_cast<float>(accumulatedLack[i]) *
+                               g_InvadeMissionSuppressedPriorContributionScale_0065A95C;
+    } else {
+      value = requiredEquipageByClass[i] - vector[i] + static_cast<float>(accumulatedLack[i]);
+    }
+    int rounded = static_cast<int>(value);
+    accumulatedLack[i] = rounded;
     total += rounded;
   }
 
-  return total + beachhead34->ReturnZeroSlot2C(outBuffer, unused);
+  return total + beachhead34->AccumulateLack(accumulatedLack, includeExistingLack);
 }
 
 // FUNCTION: IMPERIALISM 0x0053fdc0
 char TInvadeMission::TryResolveTargetTerrainClass() {
-  field_14 = static_cast<short>(0xffff);
+  presentLocation14 = static_cast<short>(0xffff);
   if (TAttackProvinceMission::TryResolveTargetTerrainClass() != 0) {
-    field_14 = static_cast<short>(0xffff);
+    presentLocation14 = static_cast<short>(0xffff);
     return 0;
   }
-  field_14 = static_cast<short>(
+  presentLocation14 = static_cast<short>(
       g_apTerrainTypeDescriptorTable[nationId04]->GetHomeRegionCityRecordIndex());
   return 1;
 }
 
 // FUNCTION: IMPERIALISM 0x0053fe10
 TMission* TInvadeMission::GetReplacementSlot48() {
-  field_14 = static_cast<short>(0xffff);
+  presentLocation14 = static_cast<short>(0xffff);
   return TAttackProvinceMission::GetReplacementSlot48();
 }

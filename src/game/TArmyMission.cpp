@@ -15,32 +15,32 @@
 IMPLEMENT_SERIAL(TArmyMission, TMission, 1)
 
 // FUNCTION: IMPERIALISM 0x005356f0
-char TArmyMission::ReturnFalseSlot50() {
+char TArmyMission::IsArmyMission() const {
   return 1;
 }
 
 // FUNCTION: IMPERIALISM 0x00535710
-int TArmyMission::ReturnZeroSlot58() {
-  return reinterpret_cast<int>(this);
+TMission* TArmyMission::GetArmyMission() {
+  return this;
 }
 
 // FUNCTION: IMPERIALISM 0x00535730
-TMission* TArmyMission::ReturnZeroSlot5C() {
+TMission* TArmyMission::GetNavyMission() {
   return nullptr;
 }
 
 // FUNCTION: IMPERIALISM 0x00535750
 short TArmyMission::GetPresentLocation() const {
-  return field_14;
+  return presentLocation14;
 }
 
 // Default constructor
 TArmyMission::TArmyMission() : TMission() {
-  field_14 = 0;
+  presentLocation14 = 0;
   padding_16 = 0;
   orderListAt18 = nullptr;
   for (int i = 0; i < 5; ++i) {
-    resourceWeights[i] = 0.0f;
+    requiredEquipageByClass[i] = 0.0f;
   }
 }
 
@@ -54,7 +54,7 @@ TArmyMission::TArmyMission() : TMission() {
 TArmyMission::TArmyMission(int nodeKey) : TMission() {
   nationId04 = 0xffff;
   pathMarker06 = 0xffff;
-  field_14 = static_cast<short>(nodeKey);
+  presentLocation14 = static_cast<short>(nodeKey);
   padding_16 = static_cast<short>(0xffff);
 
   TList* list = static_cast<TList*>(TList::CreateObject());
@@ -65,12 +65,12 @@ TArmyMission::TArmyMission(int nodeKey) : TMission() {
   }
 
   for (int i = 0; i < 5; ++i) {
-    resourceWeights[i] = 0.0f;
+    requiredEquipageByClass[i] = 0.0f;
   }
 }
 
 // FUNCTION: IMPERIALISM 0x0053c1b0
-char TArmyMission::ReturnFalseSlot28() {
+char TArmyMission::IsANoBrainer() const {
   return 0;
 }
 // SYNTHETIC: IMPERIALISM 0x0053c1d0
@@ -94,7 +94,7 @@ static inline float SwapFloat(float val) {
 // 0x53fc10 all repeat this exact per-unit vector-contribution pattern -- kept `inline` and
 // TU-local: giving it real external linkage (tried during bd 1uj.16.7) changed this TU's own
 // inlining decisions at its two callers below and regressed 4 sibling functions by 8-25pp, so
-// TInvadeMission::ReturnZeroSlot2C duplicates the loop body instead of calling this, matching
+// TInvadeMission::AccumulateLack duplicates the loop body instead of calling this, matching
 // the original's own apparent per-callsite inlining).
 inline void TArmyMission::AccumulateOrderPriorityVector(float* vector) const {
   CIterator iter(orderListAt18);
@@ -134,9 +134,9 @@ void TArmyMission::Free() {
 // FUNCTION: IMPERIALISM 0x0053c2b0
 void TArmyMission::WriteTo(TStream* stream) {
   TMission::WriteTo(stream);
-  stream->WriteBytesSlot78(&field_14, 2);
+  stream->WriteBytesSlot78(&presentLocation14, 2);
   for (int i = 0; i < 5; ++i) {
-    float swapped = SwapFloat(resourceWeights[i]);
+    float swapped = SwapFloat(requiredEquipageByClass[i]);
     stream->WriteBytesSlot78(&swapped, 4);
   }
 
@@ -169,14 +169,14 @@ void TArmyMission::ReadFrom(TStream* stream) {
   int saveFormatVersion = g_nSaveFormatVersion;
 
   TMission::ReadFrom(stream);
-  stream->ReadBytes(&field_14, 2);
+  stream->ReadBytes(&presentLocation14, 2);
   if (saveFormatVersion < 0xb) {
-    stream->ReadBytes(&resourceWeights[0], 0x10);
-    resourceWeights[4] = 0.0f;
+    stream->ReadBytes(&requiredEquipageByClass[0], 0x10);
+    requiredEquipageByClass[4] = 0.0f;
   } else {
-    stream->ReadBytes(&resourceWeights[0], 0x14);
+    stream->ReadBytes(&requiredEquipageByClass[0], 0x14);
     for (int i = 0; i < 5; ++i) {
-      resourceWeights[i] = SwapFloat(resourceWeights[i]);
+      requiredEquipageByClass[i] = SwapFloat(requiredEquipageByClass[i]);
     }
   }
 
@@ -220,7 +220,7 @@ void TArmyMission::NoOpSlot80(TMilitaryUnit* unit, int notify) {
   unit->ownerMission40 = this;
   orderListAt18->AddHead(unit);
   if (static_cast<char>(notify) != 0) {
-    RefreshSlot40();
+    Reassess();
   }
 }
 
@@ -237,15 +237,34 @@ void TArmyMission::NoOpSlot88(TMilitaryUnit* unit, int unused) {
 }
 
 // FUNCTION: IMPERIALISM 0x0053c620
-int TArmyMission::ReturnZeroSlot2C(int* outBuffer, int unused) {
-  (void)unused;
+int TArmyMission::AccumulateLack(int* accumulatedLack, unsigned char includeExistingLack) const {
   float vector[5] = {0.0f, 0.0f, 0.0f, 0.0f, 0.0f};
-  AccumulateOrderPriorityVector(vector);
+  CIterator iter(orderListAt18);
+  for (void* item = iter.Reset(); iter.More(); item = iter.Advance()) {
+    TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(item);
+    unit->AssertValid();
+    short weightIndex = unit->IsNotStationedInProvince(GetPresentLocation());
+    if (weightIndex > 5) {
+      weightIndex = 5;
+    }
+    float distanceWeight = g_MissionOrderDistanceDecayWeightTable_006978c8[weightIndex];
+    AccumulateUnitOrderPriorityVectorContribution(
+        unit, vector, distanceWeight,
+        static_cast<float>(g_pGlobalMapState->GetProvinceUnitOrderWeight(GetPresentLocation())));
+  }
 
   int total = 0;
   for (int i = 0; i < 5; ++i) {
-    int rounded = static_cast<int>(vector[i]);
-    outBuffer[i] = rounded;
+    float value;
+    if (includeExistingLack != 0 && requiredEquipageByClass[i] <= vector[i]) {
+      float difference = requiredEquipageByClass[i] - vector[i];
+      value = difference + static_cast<float>(accumulatedLack[i]) *
+                               g_InvadeMissionSuppressedPriorContributionScale_0065A95C;
+    } else {
+      value = requiredEquipageByClass[i] - vector[i] + static_cast<float>(accumulatedLack[i]);
+    }
+    int rounded = static_cast<int>(value);
+    accumulatedLack[i] = rounded;
     total += rounded;
   }
   return total;
@@ -276,8 +295,8 @@ float TArmyMission::ProjectSatisfaction(short bypassTileFilter) const {
   float numerator = 0.0f;
   float denominator = 0.0f;
   for (int i = 0; i < 5; ++i) {
-    numerator += sqrtf(resourceWeights[i] * vector[i]);
-    denominator += resourceWeights[i];
+    numerator += sqrtf(requiredEquipageByClass[i] * vector[i]);
+    denominator += requiredEquipageByClass[i];
   }
   return numerator / denominator;
 }
@@ -343,7 +362,7 @@ float TArmyMission::ReturnZeroFloatSlot68() {
   double numerator = 0.0;
   double denominator = 0.0;
   for (int i = 0; i < 5; ++i) {
-    float target = resourceWeights[i];
+    float target = requiredEquipageByClass[i];
     float v = vector[i];
     if (target < v) {
       v = (v - target) * 0.25f + target;
@@ -370,7 +389,7 @@ float TArmyMission::ComputeArmyMissionScoreDeltaWithCandidateUnit(TMilitaryUnit*
   double numerator = 0.0;
   double denominator = 0.0;
   for (int i = 0; i < 5; ++i) {
-    float target = resourceWeights[i];
+    float target = requiredEquipageByClass[i];
     float v = vector[i];
     if (target < v) {
       v = (v - target) * 0.25f + target;
@@ -398,7 +417,7 @@ float TArmyMission::ComputeArmyMissionScoreDeltaWithScaledCandidateUnit(
   double numerator = 0.0;
   double denominator = 0.0;
   for (int i = 0; i < 5; ++i) {
-    float target = resourceWeights[i];
+    float target = requiredEquipageByClass[i];
     float v = vector[i];
     if (target < v) {
       v = (v - target) * 0.25f + target;
@@ -413,7 +432,7 @@ float TArmyMission::ComputeArmyMissionScoreDeltaWithScaledCandidateUnit(
 float TArmyMission::ReturnZeroFloatSlot6C() {
   double total = 0.0;
   for (int i = 0; i < 5; ++i) {
-    total += static_cast<double>(resourceWeights[i]) *
+    total += static_cast<double>(requiredEquipageByClass[i]) *
              static_cast<double>(g_ArmyMissionDotProductWeights_00697980[i]);
   }
   return static_cast<float>(total);
@@ -436,7 +455,7 @@ float TArmyMission::ReturnZeroFloatSlot70(TMilitaryUnit* candidateUnit) {
 // FUNCTION: IMPERIALISM 0x0053d4a0
 float TArmyMission::ReturnZeroFloatSlot78(TMilitaryUnit* candidateUnit, float* referenceVector) {
   if (static_cast<double>(candidateUnit->field_34) * 0.002 < 139069760.0) {
-    if (!ReturnFalseSlot28()) {
+    if (!IsANoBrainer()) {
       return -1000.0f;
     }
   }
@@ -470,6 +489,7 @@ float TArmyMission::ReturnZeroFloatSlot78(TMilitaryUnit* candidateUnit, float* r
 
 // FUNCTION: IMPERIALISM 0x0053d630
 TMission* TArmyMission::GetReplacementSlot48() {
-  short tileOwnerNationCode = g_pGlobalMapState->ResolveTileOwnerNationCodeNormalized(field_14);
+  short tileOwnerNationCode =
+      g_pGlobalMapState->ResolveTileOwnerNationCodeNormalized(presentLocation14);
   return (tileOwnerNationCode == nationId04) ? this : nullptr;
 }

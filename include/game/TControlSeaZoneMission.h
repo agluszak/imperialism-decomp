@@ -18,25 +18,23 @@ public:
 
   // Slots 0x0c-0x0f: TMission's own virtuals, overridden here.
   virtual void
-  Call30() override; // slot 0x0c 0x5387f0 -- port-zone-context score recompute (shared)
+  Initialize() override; // slot 0x0c 0x5387f0 -- port-zone-context score recompute (shared)
   virtual void
   SetStateByte8To2() override; // slot 0x0d 0x538fe0 -- state update from target navy similarity
   virtual void
-  ResetValue0CToZero() override; // slot 0x0e 0x539290 -- port-zone-context average score (shared)
+  CalculateImportance() override; // slot 0x0e 0x539290 -- port-zone-context average score (shared)
   virtual void
-  NoOpSlot3C() override; // slot 0x0f 0x5393a0 -- resource weights from allied navy pressure
+  CalculateNeeds() override; // slot 0x0f 0x5393a0 -- resource weights from allied navy pressure
 
   virtual TMission* GetReplacementSlot48()
       override; // slot 0x12 0x538900 -- validate terrain coverage / refresh target (shared)
-  virtual char MatchesMissionKeySlot4C(int kind, int key, int mode) override; // slot 0x13 0x539600
+  virtual char Matches(int kind, int key, int mode) const override; // slot 0x13 0x539600
 
-  virtual char ReturnFalseSlot60() override; // slot 0x18 0x5355d0
-  virtual char ReturnFalseSlot64() override; // slot 0x19 0x5355b0
+  virtual char IsDefensiveSeaZoneMission() const override; // slot 0x18 0x5355d0
+  virtual char IsHospitalMission() const override;         // slot 0x19 0x5355b0
 
-  // pMapOrderEntry is the TTaskForce map-order entry passed by MissionSlot44's dispatch
-  // (taskForce20); see the TNavyMission::NoOpSlot9C declaration comment.
-  virtual void NoOpSlot9C(
-      void* pMapOrderEntry) override; // slot 0x27 0x539640 -- resolve+queue port-zone map order
+  virtual void GiveActionOrders(TTaskForce* mapOrderEntry)
+      override; // slot 0x27 0x539640 -- resolve+queue port-zone map order
   // Returns the resolved port-zone context TZone* (GetReplacementSlot48 consumes it,
   // storing the result back into targetZone18 -- confirmed by 0x538900's disassembly,
   // which calls this virtual and assigns EAX into targetZone18); base TNavyMission
