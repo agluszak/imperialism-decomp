@@ -42,7 +42,14 @@ public:
   virtual short InteriorSlot1E(int arg) override;  // slot 0x1e 0x4be7d0
   virtual void InteriorSlot1F(int arg) override;   // slot 0x1f 0x4be7f0
   virtual void CityInteriorSlot20();               // slot 0x20 0x4bed60
-  virtual undefined VTableSlot21(int arg);         // slot 0x21 0x4bf8a0
+  // Reports orderMetricTable40 deltas to the owner's foreign minister (index 0 as a
+  // 25%-chance roll gated on either of the paired trigger slots [0]/[1], indices 2..6
+  // forwarded directly when nonzero), then picks a (resultCode, magnitude) pair from
+  // the city's population-vs-stock shortage state (TPopulationMgr's
+  // OrphanLeaf_NoCall_Ins111_004b6260 pair, else cityStockSteelCC/cityStockLumberC8/
+  // cityStockCannedFoodC4 vs TPopulationMgr::fieldAt8) and reports it via
+  // SetForeignMinisterPrimaryAndSecondaryTargets, unless no condition qualified.
+  virtual undefined VTableSlot21(TCity* city); // slot 0x21 0x4bf8a0
   // Dispatches production-order-queueing helpers for `city`: exactly one of
   // QueueCityProductionCommand17Or18FromSupportRatio (lowProductionFlag7c set,
   // lowStockFlag7d clear) / DistributeCityProductionCommandBudgetAndQueueOrders
@@ -131,21 +138,24 @@ public:
   // InteriorSlot1D/1E/1F (0x4be7b0/0x4be7d0/0x4be7f0) index short arrays inside it at
   // +0x12a and +0x158 via raw this+offset access (callers pass order-type codes up to
   // 6 -- TAutoGreatPower.cpp ~L1035/1049), not yet promoted to named array fields.
-  TLongintList* list28;        // +0x28  (new TLongintList, vtable 0x650a08)
-  TLongintList* list2c;        // +0x2c  (new TLongintList)
-  short field30;               // +0x30  set to 1 by InitializeCityInteriorState
-  short field32;               // +0x32
-  short field34;               // +0x34
-  short field36;               // +0x36  init -1
-  short field38;               // +0x38  init -1
-  short field3a;               // +0x3a  init 50
-  short field3c;               // +0x3c  init -1
-  short field3e;               // +0x3e
-  int orderMetricTable40[30];  // +0x40..0xb8  city-order metric table (zeroed on init)
-  short fieldB8;               // +0xb8
-  short orderShortTableBA[16]; // +0xba..0xda
-  short fieldDA;               // +0xda
-  short orderShortTableDC[16]; // +0xdc..0xfc
+  TLongintList* list28; // +0x28  (new TLongintList, vtable 0x650a08)
+  TLongintList* list2c; // +0x2c  (new TLongintList)
+  short field30;        // +0x30  set to 1 by InitializeCityInteriorState
+  short field32;        // +0x32
+  short field34;        // +0x34
+  short field36;        // +0x36  init -1
+  short field38;        // +0x38  init -1
+  short field3a;        // +0x3a  init 50
+  short field3c;        // +0x3c  init -1
+  short field3e;        // +0x3e
+  // +0x40..0xb8 -- per-resource-index foreign-minister counter deltas, read/written
+  // one short at a time (VTableSlot21 reads orderMetricTable40[0]/[1] as a paired
+  // "any nonzero" trigger and [2]..[6] individually), not as packed ints.
+  short orderMetricTable40[60]; // +0x40..0xb8  (zeroed on init)
+  short fieldB8;                // +0xb8
+  short orderShortTableBA[16];  // +0xba..0xda
+  short fieldDA;                // +0xda
+  short orderShortTableDC[16];  // +0xdc..0xfc
   // Three parallel short[23] order-type tables (InteriorSlot1D/1E/1F index +0x12a/+0x158
   // by order-type code); all cleared together by InitializeCityInteriorState.
   short orderTypeTableFC[23];                        // +0xfc..0x12a
