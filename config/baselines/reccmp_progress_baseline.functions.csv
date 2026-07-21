@@ -4741,8 +4741,8 @@ address|matching|name
 0x58c8b0|1.0|TCombatReportView::GetRuntimeClass
 0x58c8d0|1.0|TCombatReportView::TCombatReportView
 0x58c900|0.9090909090909091|TCombatReportView::`scalar deleting destructor'
-0x58c950|0.06143344709897611|TCombatReportView::StuffValues
-0x58d2b0|0.3659217877094972|TCombatReportView::ApplyRectSlot110
+0x58c950|0.4074074074074074|TCombatReportView::StuffValues
+0x58d2b0|0.3697478991596639|TCombatReportView::ApplyRectSlot110
 0x58d950|0.6575342465753424|TCombatReportView::HandleEvent
 0x58de40|0.4897959183673469|TArmyToolbar::CreateObject
 0x58dec0|1.0|TArmyToolbar::GetRuntimeClass
