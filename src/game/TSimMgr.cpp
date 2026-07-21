@@ -141,7 +141,7 @@ TSimMgr::TSimMgr() : sharedTextSlots() {
   fieldd8 = 0;
   field112 = 0;
   stateFlag114 = 0;
-  field44 = 0;
+  multiplayerSessionRole = 0;
 }
 
 // SYNTHETIC: IMPERIALISM 0x0057bb50
@@ -169,7 +169,7 @@ void TSimMgr::InitializeTurnFlowStateDefaults() {
   CFile::GetStatus(g_szConanCheatFileName_00698BEC, conanFileStatus);
   g_bRandomMapDeveloperCheatFlag = 0;
   ReseedThreadLocalRandom();
-  redrawEnabled = 0;
+  difficultyLevel = 0;
   InitializeOrLoadEntryArray14AndClampLimits(false);
   field6a = 0;
   field6c = 0x77a;
@@ -247,6 +247,8 @@ void TSimMgr::Free() {
 // FUNCTION: IMPERIALISM 0x0057bea0
 void TSimMgr::ReadFrom(TStream* stream) {
   int i;
+  TObject::ReadFrom(stream);
+
   if (g_nSaveFormatVersion < 0x38) {
     short quarters;
     short years;
@@ -265,10 +267,10 @@ void TSimMgr::ReadFrom(TStream* stream) {
   stream->ReadBytes(&field14, 1);
   stream->ReadBytes(&field30, 4);
   stream->ReadBytes(&field34, 4);
-  stream->ReadBytes(&alertsPendingFlag38, 4);
+  stream->ReadBytes(&turnFlowStatusFlags, 4);
 
   if (g_nSaveFormatVersion >= 0x20) {
-    turnFlowStatusFlags = stream->ReadInteger() & 0xff;
+    difficultyLevel = stream->ReadInteger() & 0xff;
   }
 
   if (g_nSaveFormatVersion < 0x2d) {
@@ -289,7 +291,8 @@ void TSimMgr::ReadFrom(TStream* stream) {
   int dummy;
   stream->ReadBytes(&dummy, 4);
 
-  if (field44 != 0) {
+  unsigned char hasGameFlowState = multiplayerSessionRole != 0;
+  if (hasGameFlowState) {
     g_pGameFlowState->ReadFrom(stream);
   }
 
@@ -297,15 +300,16 @@ void TSimMgr::ReadFrom(TStream* stream) {
     stream->ReadBytes(&preferenceValues[10], 2);
   }
 
-  short temp_6a = 0;
-  if (g_nSaveFormatVersion >= 0x34) {
-    stream->ReadBytes(&temp_6a, 2);
-    field6a = temp_6a;
+  if (g_nSaveFormatVersion > 0x33) {
+    short selectedIndex;
+    stream->ReadBytes(&selectedIndex, 2);
+    field6a = selectedIndex;
+    g_pUiViewManager->EnsurePictWvDataGobLoadedBySlot(selectedIndex);
   } else {
     field6a = (stateFlag114 != 0) ? 1 : 0;
+    g_pUiViewManager->EnsurePictWvDataGobLoadedBySlot(field6a);
   }
 
-  g_pUiViewManager->EnsurePictWvDataGobLoadedBySlot(field6a);
   g_pStrategicMapViewSystem->ReloadBitmap244AndRefreshUiCaches();
 
   if (g_nSaveFormatVersion >= 0x36) {
@@ -313,7 +317,6 @@ void TSimMgr::ReadFrom(TStream* stream) {
   }
 
   if (g_nSaveFormatVersion < 0x3b) {
-    field6e = 0;
     memset(phaseFlags, 0x01, 10);
     field79 = 1;
     field6e = 0;
@@ -323,7 +326,8 @@ void TSimMgr::ReadFrom(TStream* stream) {
   }
 
   for (i = 0; i < 0x17; ++i) {
-    sharedTextSlots[i] = g_szEmptyString;
+    CString emptyString(g_szEmptyString);
+    sharedTextSlots[i] = emptyString;
   }
 
   if (g_nSaveFormatVersion >= 0x3c) {
@@ -337,13 +341,15 @@ void TSimMgr::ReadFrom(TStream* stream) {
   RebuildMapContextAndGlobalMapState(0, nullptr, 0);
   RebuildNationStateSlotsAndAvailability(0);
 
-  field14 = 4;
-  RebuildNationStateSlotsNoOp();
+  turnStateCode = 4;
+  PostMainWindowCommand100ForTurnFlow();
 }
 
 // FUNCTION: IMPERIALISM 0x0057c230
 void TSimMgr::WriteTo(TStream* stream) {
   int i;
+  TObject::WriteTo(stream);
+
   stream->WriteBytesSlot78(&quarterGateTick2c, 2);
   stream->WriteBytesSlot78(&activeNationSlot, 2);
   stream->WriteBytesSlot78(&turnStateCode, 2);
@@ -353,14 +359,15 @@ void TSimMgr::WriteTo(TStream* stream) {
   stream->WriteBytesSlot78(&field14, 1);
   stream->WriteBytesSlot78(&field30, 4);
   stream->WriteBytesSlot78(&field34, 4);
-  stream->WriteBytesSlot78(&alertsPendingFlag38, 4);
-  stream->streamSlot7c(static_cast<unsigned char>(turnFlowStatusFlags));
+  stream->WriteBytesSlot78(&turnFlowStatusFlags, 4);
+  stream->streamSlot7c(static_cast<unsigned char>(difficultyLevel));
   stream->WriteBytesSlot78(&fieldd8, 0x3e);
   stream->WriteBytesSlot78(&field_64, 4);
   stream->WriteBytesSlot78(&field15, 0x17);
-  stream->WriteBytesSlot78(&field44, 4);
+  stream->WriteBytesSlot78(&multiplayerSessionRole, 4);
 
-  if (field44 != 0) {
+  unsigned char hasGameFlowState = multiplayerSessionRole != 0;
+  if (hasGameFlowState) {
     g_pGameFlowState->WriteTo(stream);
   }
 
@@ -398,7 +405,7 @@ void TSimMgr::RebuildGlobalOrderManagersAndCapabilityState(char flag) {
     }
 
     field30 = 0;
-    fieldd8 = (field44 != 0) ? 1 : 0;
+    fieldd8 = (multiplayerSessionRole != 0) ? 1 : 0;
     for (i = 0; i < 7; ++i) {
       if (field15[i] != 0) {
         field30++;
@@ -552,13 +559,13 @@ void TSimMgr::RebuildNationStateSlotsAndAvailability(int activate) {
     }
   }
 
-  if (field44 != 0) {
+  if (multiplayerSessionRole != 0) {
     for (i = 0; i < 7; ++i) {
       int activeSessionId = g_pGameFlowState->nationSessionIds[i];
       int activeNationId = TouchSessionActiveNationId();
       if (activeSessionId == activeNationId) {
         scenarioSetupRows0[i] = 1;
-      } else if (field44 == 2) {
+      } else if (multiplayerSessionRole == 2) {
         scenarioSetupRows0[i] = 4;
       } else {
         scenarioSetupRows0[i] = (activeSessionId != 0) ? 3 : 2;
@@ -617,12 +624,12 @@ void TSimMgr::RebuildPrimaryNationStateForSlot(int slotIndex, char activate) {
 
   short setupMode = scenarioSetupRows0[nationIndex];
   if (setupMode == 1) {
-    unsigned char useClientNation = field44 == 2;
+    unsigned char useClientNation = multiplayerSessionRole == 2;
     if (useClientNation != 0) {
       TGreatPower* pTVar5 = (TGreatPower*)new TClientGreatPower();
       g_apNationStates[nationIndex] = pTVar5;
     } else {
-      unsigned char useHostNation = field44 == 1;
+      unsigned char useHostNation = multiplayerSessionRole == 1;
       if (useHostNation != 0) {
         TGreatPower* pTVar5 = (TGreatPower*)new THostGreatPower();
         g_apNationStates[nationIndex] = pTVar5;
@@ -638,7 +645,7 @@ void TSimMgr::RebuildPrimaryNationStateForSlot(int slotIndex, char activate) {
       g_pStrategicMapViewSystem->RefreshCityCapabilityUiHandlesForActiveNation();
     }
     if (g_bMultiplayerScenarioSetupActive == 0) {
-      unsigned char suspendPrimaryEventQueue = field44 != 0;
+      unsigned char suspendPrimaryEventQueue = multiplayerSessionRole != 0;
       if (suspendPrimaryEventQueue != 0) {
         g_pGameFlowState->processPrimaryEventQueue = 0;
       }
@@ -647,7 +654,7 @@ void TSimMgr::RebuildPrimaryNationStateForSlot(int slotIndex, char activate) {
         TCity* city = nationState != nullptr ? nationState->city : nullptr;
         nationState->ApplyScenarioRelationPresetAndSpawnFrogCity(city);
       }
-      unsigned char resumePrimaryEventQueue = field44 != 0;
+      unsigned char resumePrimaryEventQueue = multiplayerSessionRole != 0;
       if (resumePrimaryEventQueue != 0) {
         g_pGameFlowState->processPrimaryEventQueue = 1;
       }
@@ -720,7 +727,7 @@ void TSimMgr::RebuildPrimaryNationStateForSlot(int slotIndex, char activate) {
   }
 
   if (nationSlot == activeNationSlot) {
-    unsigned char useSessionDisplayName = field44 != 0;
+    unsigned char useSessionDisplayName = multiplayerSessionRole != 0;
     if (useSessionDisplayName != 0) {
       {
         CString nationName(g_pGameFlowState->nationDisplayNameSlots[nationIndex]);
@@ -755,7 +762,7 @@ void TSimMgr::RebuildSecondaryNationStateForSlot(int slotIndex) {
 
   int nationIndex = nationSlot;
   TMinor* minor = nullptr;
-  if (nationIndex < field34 + 7 && field44 == 2) {
+  if (nationIndex < field34 + 7 && multiplayerSessionRole == 2) {
     if (g_apSecondaryNationStateSlots[nationIndex] != nullptr) {
       g_apSecondaryNationStateSlots[nationIndex]->Free();
     }
@@ -810,11 +817,11 @@ void TSimMgr::FormatSeasonName(CString* destString) {
 }
 
 // FUNCTION: IMPERIALISM 0x0057d870
-void TSimMgr::SetStateCodeAndUpdateZeroOrOutOfRangeFlag(int stateCode) {
+void TSimMgr::SetDifficultyLevel(int difficulty) {
   char zeroFlag = 0;
-  this->redrawEnabled = stateCode;
-  if (stateCode != 0) {
-    if (0 < stateCode && stateCode <= 4) {
+  difficultyLevel = difficulty;
+  if (difficulty != 0) {
+    if (0 < difficulty && difficulty <= 4) {
       this->preferenceValues[10] = 0;
       return;
     }
@@ -1206,7 +1213,7 @@ void ReinitializeGameFlowAndPostTurnEventCode(int eventCode) {
   if (g_pHelpMgr != 0) {
     g_pHelpMgr->HandlePendingEventActivationByCode(0x5dc);
   }
-  if (g_pSimMgr->field44 != 0) {
+  if (g_pSimMgr->multiplayerSessionRole != 0) {
     g_pGameFlowState->Free();
     g_pGameFlowState = new TMultiplayerMgr();
     g_pGameFlowState->InitializeMultiplayerManagerForSessionContext(0);

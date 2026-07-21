@@ -158,7 +158,7 @@ void TTechMgr::GenerateRandomCapabilityPrioritySlots() {
   prioritySlots04[0] = 0;
 
   unsigned int seed;
-  if (g_pSimMgr->field44 == 0 ||
+  if (g_pSimMgr->multiplayerSessionRole == 0 ||
       (seed = static_cast<unsigned int>(g_pGameFlowState->queueSyncDword)) == 0) {
     // Genuine __cdecl free function declared (void); the guardrail-sanctioned arg-adjust cast
     // pushes the ignored 0 argument the original passes.
@@ -281,7 +281,7 @@ void TTechMgr::HandleAbilityUnlock(int techId, int nationSlot) {
 
   // Late-era arms bonus scale: only for AI-eligible nations once the sim level passes 2.
   short eraOffset = 0;
-  int simLevel = g_pSimMgr->redrawEnabled;
+  int simLevel = g_pSimMgr->difficultyLevel;
   if (simLevel >= 3 && g_apNationStates[nationSlot]->diplomacyEligibilityA0 == 0) {
     eraOffset = static_cast<short>(simLevel - 2);
   }

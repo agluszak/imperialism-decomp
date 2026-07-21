@@ -684,7 +684,7 @@ void TNavyMgr::PrepareMapOrdersForExecutionPhase(short phaseId) {
     TGlobalMapCityScoreRecord* record = &g_pGlobalMapState->cityScoreTable[provinceIndex];
     if (record->exploredByNationMaskA1 != 0) {
       record->exploredByNationMaskA1 = 0;
-      if (g_pSimMgr->field44 == 1) {
+      if (g_pSimMgr->multiplayerSessionRole == 1) {
         g_pGameFlowState->DispatchCityRedrawInvalidateEvent(static_cast<short>(provinceIndex));
       }
     }

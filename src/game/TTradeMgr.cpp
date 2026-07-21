@@ -795,13 +795,13 @@ void TTradeMgr::RebuildNationMetricPassesAndClampRowsByBaseline() {
 void TTradeMgr::DispatchProposalAmountSlot60(short ownerNation, int sourceContext, int amount,
                                              int maxAmount, int targetNation, char emitEventFlag,
                                              char skipLocalizationBranch) {
-  if ((skipLocalizationBranch == 0) && (g_pSimMgr->redrawEnabled == 2)) {
+  if ((skipLocalizationBranch == 0) && (g_pSimMgr->difficultyLevel == 2)) {
     g_pGameFlowState->CreateAndSendTurnEvent1C_BoolAndSixShorts(
         true, ownerNation, static_cast<short>(sourceContext), static_cast<short>(amount),
         static_cast<short>(maxAmount), static_cast<short>(targetNation), emitEventFlag);
     return;
   }
-  if (g_pSimMgr->redrawEnabled == 1) {
+  if (g_pSimMgr->difficultyLevel == 1) {
     g_pGameFlowState->CreateAndSendTurnEvent1C_BoolAndSixShorts(
         false, ownerNation, static_cast<short>(sourceContext), static_cast<short>(amount),
         static_cast<short>(maxAmount), static_cast<short>(targetNation), emitEventFlag);

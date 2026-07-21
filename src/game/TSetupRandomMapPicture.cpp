@@ -51,7 +51,7 @@ TSetupRandomMapPicture::~TSetupRandomMapPicture() {}
 // FUNCTION: IMPERIALISM 0x00576fe0
 void TSetupRandomMapPicture::RecheckCountryName() {
   if (countryControlReadyA4 == 0) {
-    bool sessionInactive = g_pSimMgr->field44 == 0;
+    bool sessionInactive = g_pSimMgr->multiplayerSessionRole == 0;
     if (sessionInactive) {
       TEditText* countryControl = static_cast<TEditText*>(ResolveControlByTag(kControlTagCoun));
       countryControl->AssertValid();
@@ -105,7 +105,7 @@ void TSetupRandomMapPicture::DoPostCreate(int arg) {
 
   LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2758, 0x1e, kControlTagName);
   LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2737, 0x13, kControlTagGlob);
-  short cancelStringIndex = g_pSimMgr->field44 != 0 ? 0x2e : 0x14;
+  short cancelStringIndex = g_pSimMgr->multiplayerSessionRole != 0 ? 0x2e : 0x14;
   LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2737, cancelStringIndex, kControlTagCanc);
   LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2737, cancelStringIndex, kControlTagCncl);
   LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2737, 0x15, kControlTagOkay);
@@ -136,7 +136,7 @@ void TSetupRandomMapPicture::DoPostCreate(int arg) {
   flagView->sourceRect64.right = (selectedNationSlot9A + 1) * flagView->frameWidth34;
   flagView->sourceRect64.bottom = flagView->frameHeight38;
 
-  if (g_pSimMgr->field44 != 0) {
+  if (g_pSimMgr->multiplayerSessionRole != 0) {
     g_cstrCountryNameSettingValue006A4220 =
         g_pLanguageMgr->NormalizeRuntimeCredentialNameToken(&g_pGameFlowState->playerNameMirror);
   } else {
@@ -321,7 +321,7 @@ void TSetupRandomMapPicture::StartGame() {
       static_cast<TControl*>(ResolveControlByTag(difficultyCluster->selectedTag88));
   selectedDifficulty->AssertValid();
   int difficulty = selectedDifficulty->controlValue3c;
-  g_pSimMgr->SetStateCodeAndUpdateZeroOrOutOfRangeFlag(difficulty);
+  g_pSimMgr->SetDifficultyLevel(difficulty);
   g_pSimMgr->preferenceValues[11] = static_cast<short>(difficulty);
 
   TRadioTextCluster* nameCluster =
@@ -332,7 +332,7 @@ void TSetupRandomMapPicture::StartGame() {
   g_pSimMgr->InitializeOrLoadEntryArray14AndClampLimits(true);
 
   g_nRandomMapSelectedNationSlot00698AB0 = selectedNationSlot9A;
-  if (g_pSimMgr->field44 != 0) {
+  if (g_pSimMgr->multiplayerSessionRole != 0) {
     g_pGlobalUiRootController->PostTurnEventCodeMessage2420(0x5e4);
     g_pGameFlowState->playerNameMirror = g_cstrCountryNameSettingValue006A4220;
     g_pGameFlowState->playerNameString = g_cstrCountryNameSettingValue006A4220;
@@ -352,7 +352,7 @@ void TSetupRandomMapPicture::StartGame() {
 
 // FUNCTION: IMPERIALISM 0x005781f0
 void TSetupRandomMapPicture::ExitScreen() {
-  unsigned char multiplayerSessionActive = g_pSimMgr->field44 != 0;
+  unsigned char multiplayerSessionActive = g_pSimMgr->multiplayerSessionRole != 0;
   if (multiplayerSessionActive != 0) {
     g_pGameFlowState->ResetLocalUiStateAndPostTurnEvent5E5();
     return;

@@ -4824,7 +4824,7 @@ address|name|symbol|size|type|prototype|provenance
 57cda0|TSimMgr::RebuildPrimaryNationStateForSlot||1532|function|undefined RebuildPrimaryNationStateForSlot()|
 57d520|TSimMgr::RebuildSecondaryNationStateForSlot||499|function|undefined RebuildSecondaryNationStateForSlot()|
 57d830|TSimMgr::ApplyScenarioVariantSeedForNationSetup||40|function|undefined ApplyScenarioVariantSeedForNationSetup()|
-57d870|SetStateCodeAndUpdateZeroOrOutOfRangeFlag||44|function|undefined SetStateCodeAndUpdateZeroOrOutOfRangeFlag()|
+57d870|TSimMgr::SetDifficultyLevel||44|function|void __thiscall SetDifficultyLevel(int difficulty)|mac_symbol_oracle
 57d8b0|TSimMgr::GetTurnFlowStateCounter2C||5|function|undefined GetTurnFlowStateCounter2C()|
 57d8d0|TSimMgr::CopyScenarioNationSetupIntoFlowState||89|function|undefined CopyScenarioNationSetupIntoFlowState()|
 57d950|TSimMgr::IncrementTurnFlowStateCounter2C||5|function|undefined IncrementTurnFlowStateCounter2C()|

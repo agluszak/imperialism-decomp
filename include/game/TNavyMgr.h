@@ -47,7 +47,7 @@ public:
 
   // Clears every cityScoreTable record's exploredByNationMaskA1 flag (dispatching a
   // per-province redraw-invalidate event through g_pGameFlowState while g_pSimMgr's
-  // multiplayer/session-mode field44 == 1, for each record found dirty), stores
+  // multiplayerSessionRole == 1, for each record found dirty), stores
   // `phaseId` into field08, revalidates/requeues the map-order queue for the new turn
   // phase, then clears eliminatedFlag26 across the whole orderListHead04 chain
   // (directly on the head, via ClearMapOrderProcessedFlagsChain for the rest). 0x5577b0.

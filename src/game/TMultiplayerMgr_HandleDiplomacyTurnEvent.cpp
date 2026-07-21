@@ -166,7 +166,7 @@ static __inline void EmitTurnEvent3TickCompleteLoopback() {
 // defaults).
 // FUNCTION: IMPERIALISM 0x00543280
 void TMultiplayerMgr::HandleTurnResumeStateTelemetry() {
-  unsigned char hosting = g_pSimMgr->field44 == 1;
+  unsigned char hosting = g_pSimMgr->multiplayerSessionRole == 1;
   if (hosting != 0) {
     for (int slot = 0; slot < 7; ++slot) {
       TGreatPower* nation = g_apNationStates[slot];
@@ -175,7 +175,7 @@ void TMultiplayerMgr::HandleTurnResumeStateTelemetry() {
       }
     }
     pendingNationBitmask &= ~(1 << g_pSimMgr->GetActiveNationId());
-    unsigned char stillHosting = g_pSimMgr->field44 == 1;
+    unsigned char stillHosting = g_pSimMgr->multiplayerSessionRole == 1;
     if (stillHosting != 0) {
       TurnEvent1PendingMaskPacket2 packet;
       packet.InitializeEmitEventHeaderWithActiveNation();
@@ -576,9 +576,9 @@ void TMultiplayerMgr::HandleTurnEventCodes28_2E_2F_30_31_32(TStream* stream) {
   header.messageTag = 0x74696d65;
   header.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
   stream->ReadBytes(&header, 0x1c);
-  unsigned char sessionTornDown = g_pSimMgr->field44 == 2;
+  unsigned char isClientSession = g_pSimMgr->multiplayerSessionRole == 2;
   short nation;
-  if (sessionTornDown != 0) {
+  if (isClientSession != 0) {
     nation = -1;
   } else {
     nation = static_cast<char>(header.activeNationId);
@@ -712,10 +712,10 @@ void TMultiplayerMgr::CreateCivilianWorkOrdersForSelectedNations(TStream* stream
 // FUNCTION: IMPERIALISM 0x0054bd20
 void TMultiplayerMgr::ReplaceNationStateForSlotAndRefreshStatus(int nationSlot) {
   unsigned char isLocalNation = nationSlot == g_pSimMgr->GetActiveNationId();
-  int gameFlowMode = g_pSimMgr->field44;
-  unsigned char sessionTornDown = gameFlowMode == 2;
-  if (sessionTornDown == 0) {
-    unsigned char hosting = gameFlowMode == 1;
+  int sessionRole = g_pSimMgr->multiplayerSessionRole;
+  unsigned char isClientSession = sessionRole == 2;
+  if (isClientSession == 0) {
+    unsigned char hosting = sessionRole == 1;
     if (hosting != 0) {
       TurnEvent1FNationUnheadedPacket packet;
       packet.messageTag = 0x74696d65;
@@ -833,12 +833,12 @@ void TMultiplayerMgr::ReplaceNationStateForSlotAndRefreshStatus(int nationSlot) 
       g_pSimMgr->scenarioSetupRows0[nationSlot] = 2;
       oldNation->Free();
     }
-    unsigned char stillHosting = g_pSimMgr->field44 == 1;
+    unsigned char stillHosting = g_pSimMgr->multiplayerSessionRole == 1;
     if (stillHosting != 0 && isLocalNation == 0) {
       g_pNetMgr006a6014->NotifyIfNationMatchesSessionActiveNation(nationSessionIds[nationSlot]);
     }
   }
-  unsigned char tornDownNow = g_pSimMgr->field44 == 2;
+  unsigned char tornDownNow = g_pSimMgr->multiplayerSessionRole == 2;
   if (tornDownNow != 0) {
     TGreatPower* nation = g_apNationStates[nationSlot];
     if (nation != 0) {
@@ -848,10 +848,10 @@ void TMultiplayerMgr::ReplaceNationStateForSlotAndRefreshStatus(int nationSlot) 
   nationSessionIds[nationSlot] = 0;
   nationStatusTags[nationSlot] = 0x756e6173; // 'suna'
   RefreshNationStatusLabelsAndCodesForSlotOrAll(nationSlot);
-  unsigned char hostingMask = g_pSimMgr->field44 == 1;
+  unsigned char hostingMask = g_pSimMgr->multiplayerSessionRole == 1;
   if (hostingMask != 0) {
     pendingNationBitmask &= ~(1 << nationSlot);
-    unsigned char hostingBroadcast = g_pSimMgr->field44 == 1;
+    unsigned char hostingBroadcast = g_pSimMgr->multiplayerSessionRole == 1;
     if (hostingBroadcast != 0) {
       TurnEvent1PendingMaskPacket2 packet;
       packet.messageTag = 0x74696d65;

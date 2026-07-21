@@ -438,7 +438,7 @@ public:
   int economySummaryTradeCapacitySnapshot94c; // 0x94c — copy of tradeCapacity
   int economySummarySeasonCountdown950;       // 0x950 — (100 - currentQuarter) * 10
   int economySummaryTotal954;                 // 0x954 — sum of the 9 fields above (930..950)
-  int economySummarySeasonPercent958; // 0x958 — seasonPercentTable[g_pSimMgr->redrawEnabled]
+  int economySummarySeasonPercent958; // 0x958 — seasonPercentTable[g_pSimMgr->difficultyLevel]
   int economySummaryWeightedTotal95c; // 0x95c — economySummaryTotal954 * economySummarySeasonPercent958 / 10
   int pendingAidTotal;
   // Object ends here at 0x964 (== CRuntimeClass::m_nObjectSize for TGreatPower and

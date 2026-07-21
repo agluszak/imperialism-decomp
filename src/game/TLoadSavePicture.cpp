@@ -193,16 +193,16 @@ void TLoadSavePicture::ForwardParam(int param) {}
 
 namespace {
 
-// The whole save flow tests g_pSimMgr->field44 through Boolean-returning inline
+// The whole save flow tests g_pSimMgr->multiplayerSessionRole through Boolean-returning inline
 // helpers: every original site materializes the comparison into a byte register
 // (sete/setne + test al,al) before branching, the Mac-style unsigned-char Boolean shape
 // under /Ob1.
 static __inline unsigned char IsMultiplayerFlowHosting() {
-  return g_pSimMgr->field44 == 1;
+  return g_pSimMgr->multiplayerSessionRole == 1;
 }
 
 static __inline unsigned char IsMultiplayerFlowActive() {
-  return g_pSimMgr->field44 != 0;
+  return g_pSimMgr->multiplayerSessionRole != 0;
 }
 
 } // namespace
@@ -302,7 +302,8 @@ int __cdecl ReadScenarioIndexFromSaveHeader(const char* path) {
 }
 
 // Top-level save-game driver. mode 0xa1 = autosave slot "A"; 0xa2 = autosave without
-// marking the document saved; 0..7 = numbered slot. In multiplayer (field44 == 1) an
+// marking the document saved; 0..7 = numbered slot. When hosting
+// (multiplayerSessionRole == 1) an
 // autosave first rebinds to the numbered slot whose save file carries the current
 // scenario id, and the scenario display name (resource 0x2758/9) is published to
 // g_ScenarioSaveNameBuffer_006A2178 for the slot picker. After a successful manual save
