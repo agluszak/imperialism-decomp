@@ -38,7 +38,7 @@ void TUniversityView::DoStartup() {}
 void TUniversityView::SetUnit(short recruitmentCategory) {}
 
 // FUNCTION: IMPERIALISM 0x004cb8a0
-void TUniversityView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+void TUniversityView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId == 0xc) {
     short index =
         static_cast<short>(sourceHandler->controlTag) - 0x7630; // 'rec0'-'rec8' low 16 bits
@@ -64,7 +64,7 @@ void TUniversityView::HandleEvent(int commandId, TEventHandler* sourceHandler, T
       // invalidate/refresh sequence -- not yet ported.
     }
   }
-  TControl::HandleEvent(commandId, sourceHandler, event);
+  TControl::DoEvent(commandId, sourceHandler, event);
 }
 
 // FUNCTION: IMPERIALISM 0x004cbb20
@@ -141,8 +141,8 @@ void TUniversityView::Free() {
 // calls in a way that could not be fully untangled) but every call and its arguments
 // are faithfully reproduced.
 // FUNCTION: IMPERIALISM 0x004cbf70
-void TUniversityView::ApplyRectSlot110(RECT* rectBuffer) {
-  TPicture::ApplyRectSlot110(rectBuffer);
+void TUniversityView::Draw(RECT* rectBuffer) {
+  TPicture::Draw(rectBuffer);
 
   int nHighestRequirementLevel = 0;
   short baseOffset =

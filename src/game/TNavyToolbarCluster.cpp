@@ -24,12 +24,12 @@ TNavyToolbarCluster::TNavyToolbarCluster() {}
 TNavyToolbarCluster::~TNavyToolbarCluster() {}
 
 // FUNCTION: IMPERIALISM 0x00569550
-void TNavyToolbarCluster::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+void TNavyToolbarCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId == 0xc) {
     unsigned int idx = sourceHandler->controlTag - kControlTagAgr0;
     if (idx < 3) {
-      TView* main = OwnerPanel()->ResolveControlByTag(kControlTagMain);
-      main->QueryStepValue();
+      TView* main = GetWindow()->ResolveControlByTag(kControlTagMain);
+      main->GetNextHandler();
       TTaskForce* order = GetActiveMapOrderEntry();
       if (order != nullptr) {
         order->ResetOrderTypeAndStrengthDword(idx);
@@ -73,7 +73,7 @@ void TNavyToolbarCluster::HandleEvent(int commandId, TEventHandler* sourceHandle
       break;
     }
   }
-  TCluster::HandleEvent(commandId, sourceHandler, event);
+  TCluster::DoEvent(commandId, sourceHandler, event);
 }
 
 // FUNCTION: IMPERIALISM 0x005696d0

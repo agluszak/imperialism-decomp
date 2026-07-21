@@ -25,10 +25,10 @@ void TOffLimitsPicture::DoPostCreate(int arg) {
 }
 
 // FUNCTION: IMPERIALISM 0x00573890
-void TOffLimitsPicture::ApplyRectSlot110(RECT* rectBuffer) {
+void TOffLimitsPicture::Draw(RECT* rectBuffer) {
   if (ownClipRegion90 != nullptr) {
     GetActiveQuickDrawDc()->SelectClipRgn(&(*ownClipRegion90)->rgn, RGN_DIFF);
-    TPicture::ApplyRectSlot110(rectBuffer);
+    TPicture::Draw(rectBuffer);
     GetActiveQuickDrawDc()->SelectClipRgn(0, RGN_COPY);
   }
 }

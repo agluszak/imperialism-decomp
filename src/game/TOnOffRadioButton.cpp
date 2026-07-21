@@ -17,13 +17,13 @@ TOnOffRadioButton::TOnOffRadioButton() {}
 TOnOffRadioButton::~TOnOffRadioButton() {}
 
 // FUNCTION: IMPERIALISM 0x00571a80
-void TOnOffRadioButton::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+void TOnOffRadioButton::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   switch (commandId) {
   case 0xc:
     if (controlState64 == 0) {
       SetState(static_cast<unsigned char>(1), static_cast<unsigned char>(1));
     }
-    TControl::HandleEvent(commandId, sourceHandler, event);
+    TControl::DoEvent(commandId, sourceHandler, event);
     return;
   case 0x1f:
     SetState(static_cast<unsigned char>(1), static_cast<unsigned char>(1));
@@ -32,14 +32,14 @@ void TOnOffRadioButton::HandleEvent(int commandId, TEventHandler* sourceHandler,
     SetState(static_cast<unsigned char>(0), static_cast<unsigned char>(1));
     return;
   default:
-    TControl::HandleEvent(commandId, sourceHandler, event);
+    TControl::DoEvent(commandId, sourceHandler, event);
     return;
   }
 }
 
 // FUNCTION: IMPERIALISM 0x00571b20
 void TOnOffRadioButton::SetState(unsigned char on, unsigned char drawImmediate) {
-  if (GetBoolSlot28() != 0) {
+  if (IsEnabled() != 0) {
     HiliteState(on, drawImmediate);
   }
 }

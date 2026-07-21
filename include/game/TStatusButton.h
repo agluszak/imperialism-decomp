@@ -9,7 +9,7 @@ class TStatusButton : public TButton {
 public:
   TStatusButton();
   DECLARE_DYNCREATE(TStatusButton)
-  void HandleEvent(int selectedIndex, TEventHandler* sourceHandler, TEvent* event) override;
+  void DoEvent(int selectedIndex, TEventHandler* sourceHandler, TEvent* event) override;
 };
 
 TStatusButton* __cdecl CreateTStatusButtonInstance(void);

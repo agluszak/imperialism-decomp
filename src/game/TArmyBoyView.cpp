@@ -20,8 +20,8 @@ IMPLEMENT_DYNCREATE(TArmyBoyView, TView)
 TArmyBoyView::TArmyBoyView() {}
 
 // FUNCTION: IMPERIALISM 0x004aebc0
-void TArmyBoyView::ApplyRectSlot110(RECT* rectBuffer) {
-  (void)rectBuffer; // dead parameter in this override, like the other ApplyRectSlot110s
+void TArmyBoyView::Draw(RECT* rectBuffer) {
+  (void)rectBuffer; // dead parameter in this override, like the other Draws
   char* context = static_cast<char*>(field60);
   short level = *reinterpret_cast<short*>(context + 2);
 

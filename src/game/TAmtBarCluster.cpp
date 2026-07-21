@@ -31,7 +31,7 @@ void TAmtBarCluster::DoPostCreate(int styleSeed) {
 }
 
 // FUNCTION: IMPERIALISM 0x00586e70
-void TAmtBarCluster::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+void TAmtBarCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   this->HandleTradeMoveControlAdjustment(commandId, sourceHandler, reinterpret_cast<int>(event));
 }
 

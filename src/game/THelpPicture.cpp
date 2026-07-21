@@ -3,6 +3,7 @@
 #include "game/THelpMgr.h"
 #include "game/TSortedPtrList.h"
 #include "game/TDeluxeText.h"
+#include "game/TStaticText.h"
 #include "game/global_data_tables.h"
 
 namespace {
@@ -46,7 +47,7 @@ THelpPicture::~THelpPicture() {}
 void THelpPicture::DoPostCreate(int arg) {}
 
 // FUNCTION: IMPERIALISM 0x00503ed0
-void THelpPicture::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {}
+void THelpPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {}
 
 // FUNCTION: IMPERIALISM 0x00504120
 void THelpPicture::ShowNextHelpSet() {
@@ -68,8 +69,8 @@ void THelpPicture::ShowPreviousHelpSet() {
 
 // FUNCTION: IMPERIALISM 0x00504220
 void THelpPicture::ShowTopic(short topic) {
-  TView* subject = ResolveControlByTag(0x7375626a); // 'subj'
-  subject->SetControlValue(currentHelpSet90->helpSetIdA);
+  TStaticText* subject = static_cast<TStaticText*>(ResolveControlByTag(0x7375626a)); // 'subj'
+  subject->SetTextFromStringResource(currentHelpSet90->helpSetIdA, topic + 1, 1);
   subject->SetEnabled(1, 1);
   subject->SetState(0, 1);
 
@@ -89,18 +90,20 @@ void THelpPicture::ShowTopic(short topic) {
 
 // FUNCTION: IMPERIALISM 0x005046c0
 void THelpPicture::ShowTopicList() {
-  TView* subject = ResolveControlByTag(0x7375626a); // 'subj'
-  subject->SetControlValue(currentHelpSet90->helpSetIdA);
+  TStaticText* subject = static_cast<TStaticText*>(ResolveControlByTag(0x7375626a)); // 'subj'
+  subject->SetTextFromStringResource(currentHelpSet90->helpSetIdA, 1, 1);
   subject->SetEnabled(1, 1);
   subject->SetState(0, 1);
 
-  TView* toggle = ResolveControlByTag(0x746f676c); // 'togl'
+  TStaticText* toggle = static_cast<TStaticText*>(ResolveControlByTag(0x746f676c)); // 'togl'
   toggle->SetEnabled(1, 0);
   toggle->SetState(1, 1);
+  toggle->SetTextFromStringResource(0x2749, 9, 1);
   for (int index = 0; index < 5; ++index) {
-    TView* topicName = ResolveControlByTag(0x6e616d31 + index); // 'nam1'..'nam5'
+    TStaticText* topicName =
+        static_cast<TStaticText*>(ResolveControlByTag(0x6e616d31 + index)); // 'nam1'..'nam5'
     bool enabled = index < currentHelpSet90->category;
-    topicName->SetControlValue(currentHelpSet90->helpSetIdA + index + 2);
+    topicName->SetTextFromStringResource(currentHelpSet90->helpSetIdA, index + 2, 1);
     topicName->SetEnabled(enabled ? 1 : 0, 1);
     topicName->SetState(0, 0);
   }

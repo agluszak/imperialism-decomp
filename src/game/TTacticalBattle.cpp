@@ -236,7 +236,7 @@ void TTacticalBattle::HandleTacticalCommandTag_retr() {
         battleView8->ownerContext->ResolveControlByTag(kControlTagTool));
     toolbar->AssertValid();
     toolbar->UpdateTacticalCurrentUnitControlAndDialogLabel(selectedUnit1c);
-    toolbar->InvokeSlot13C();
+    toolbar->ForceRedraw();
   }
   TTacticalPlayer* incomingPlayer = (&tacticalPlayer14)[currentSideC];
   if (incomingPlayer->sideReadyFlag10 != 0) {
@@ -893,7 +893,7 @@ void TTacticalBattle::MoveTacticalUnitTowardTile(TTacticalUnit* unit, int target
     battleView8->InvalidateTacticalUnitTileRect(unit);
   }
   if (battleView8 != 0) {
-    battleView8->InvokeSlot13C();
+    battleView8->ForceRedraw();
   }
 
   // Logical column on the doubled-x hex grid (odd rows are staggered half a tile).
@@ -1625,7 +1625,7 @@ void TTacticalBattle::EvaluateTacticalSideStateAndShowBattleSummaryDialog() {
   dialog->RefreshTurnEventDialog();
   dialog->Close();
   dialog->Free();
-  battleView8->InvokeSlot13C();
+  battleView8->ForceRedraw();
 }
 
 // Queues a sap/mine run for the unit: stamps the unit's own tile with run state 2,

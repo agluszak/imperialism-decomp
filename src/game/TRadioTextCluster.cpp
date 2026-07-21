@@ -35,11 +35,11 @@ void TRadioTextCluster::DoPostCreate(int arg) {
 }
 
 // FUNCTION: IMPERIALISM 0x00579770
-void TRadioTextCluster::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+void TRadioTextCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId == 0xd) {
     SetSelectedTextOptionByTag(sourceHandler->controlTag, true);
   }
-  TCluster::HandleEvent(commandId, sourceHandler, event);
+  TCluster::DoEvent(commandId, sourceHandler, event);
 }
 
 // Syncs selectedTag88 to `tag`, then walks childList44 marking the TRadioText child whose
@@ -109,12 +109,12 @@ TRadioText* TRadioTextCluster::AddItem(unsigned long tag, int value, const char*
   item->controlValue3c = value;
   CString itemText(text);
   item->SetTextAndMaybeRefresh(&itemText, 1);
-  item->SetControlValue(1);
+  item->SetEnable(1);
   return item;
 }
 
 // FUNCTION: IMPERIALISM 0x00579a60
-void TRadioTextCluster::ApplyRectSlot110(RECT* rectBuffer) {
+void TRadioTextCluster::Draw(RECT* rectBuffer) {
   (void)rectBuffer;
   if (frameThemeCode90 > -1) {
     RECT frame = {0, 0, frameWidth34, frameHeight38};

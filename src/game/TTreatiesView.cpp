@@ -37,15 +37,15 @@ void TTreatiesView::DoPostCreate(int arg) {
 
 // Draws the treaties screen's header label plus 7 horizontally-centered nation
 // labels, each in a theme-0x2b68 color at +1,+1 then a theme-0x2b6b color at +0,+0
-// (the same drop-shadow idiom as TGrantsView::ApplyRectSlot110 and
-// TCouncilPanelView::ApplyRectSlot110).
+// (the same drop-shadow idiom as TGrantsView::Draw and
+// TCouncilPanelView::Draw).
 // FUNCTION: IMPERIALISM 0x004f7c00
-void TTreatiesView::ApplyRectSlot110(RECT* rectBuffer) {
+void TTreatiesView::Draw(RECT* rectBuffer) {
   (void)rectBuffer;
   CString labelText;
   // Constructed and destroyed here (EH state tracked) but never touched in the body
   // -- a dead local in the original, kept for the exact EH/codegen shape (same
-  // pattern as TDiplomacyMapView::ApplyRectSlot110's unusedScratch).
+  // pattern as TDiplomacyMapView::Draw's unusedScratch).
   CString unusedScratch;
 
   InitializeUiTextStyleDescriptorAndApplyQuickDraw(0, 0xe, 0x2b68, 1);
@@ -96,7 +96,7 @@ void TTreatiesView::Setup() {
 }
 
 // FUNCTION: IMPERIALISM 0x004f7f80
-void TTreatiesView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+void TTreatiesView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId == 0xc) {
     unsigned int tag = sourceHandler->controlTag;
     TDiplomacyMapView* mapView = diplomacyMapView60;
@@ -106,5 +106,5 @@ void TTreatiesView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEv
       mapView->actionCodeBC = (tag - kControlTagScr0) + 9;
     }
   }
-  TEventHandler::HandleEvent(commandId, sourceHandler, event);
+  TEventHandler::DoEvent(commandId, sourceHandler, event);
 }

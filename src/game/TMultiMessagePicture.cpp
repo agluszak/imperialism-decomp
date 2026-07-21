@@ -14,4 +14,4 @@ IMPLEMENT_DYNCREATE(TMultiMessagePicture, TPicture)
 TMultiMessagePicture::TMultiMessagePicture() {}
 
 // FUNCTION: IMPERIALISM 0x0054ecc0
-void TMultiMessagePicture::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) { }
+void TMultiMessagePicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {}

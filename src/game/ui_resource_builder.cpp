@@ -71,10 +71,10 @@ TUiStyleBytes* TUiStyleBytes::Reset() {
 }
 
 // FUNCTION: IMPERIALISM 0x0041b450
-void __cdecl SetUiResourceLayoutValues(int frameStyle, int rectLeft, int rectTop, int rectRight,
-                                       int rectBottom) {
+void __cdecl SetUiResourceEventNumberAndInsets(int eventNumber, int rectLeft, int rectTop,
+                                               int rectRight, int rectBottom) {
   TControl* context = static_cast<TControl*>(g_pUiResourceContext);
-  context->frameStyle60 = frameStyle;
+  context->eventNumber60 = eventNumber;
   context->contentInsets68.left = rectLeft;
   context->contentInsets68.top = rectTop;
   context->contentInsets68.right = rectRight;

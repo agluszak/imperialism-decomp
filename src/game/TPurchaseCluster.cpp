@@ -31,16 +31,16 @@ void TPurchaseCluster::BeginMouseCaptureAndStartRepeatTimer(const CPoint& point,
                                                             TToolboxEvent* event, CPoint origin) {}
 
 // FUNCTION: IMPERIALISM 0x004cc490
-void TPurchaseCluster::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+void TPurchaseCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId == 10) {
     if (sourceHandler->controlTag == kControlTagLaro) {
-      field88->SetControlValue(UpdateCityViewValueControl() - 1);
+      field88->SetEnable(static_cast<unsigned char>(UpdateCityViewValueControl() - 1));
     } else if (sourceHandler->controlTag == kControlTagRaro) {
-      field88->SetControlValue(UpdateCityViewValueControl() + 1);
+      field88->SetEnable(static_cast<unsigned char>(UpdateCityViewValueControl() + 1));
     }
     SetCityViewValueControlAmount(static_cast<short>(field88->field04), 1);
   }
-  TCluster::HandleEvent(commandId, sourceHandler, event);
+  TCluster::DoEvent(commandId, sourceHandler, event);
 }
 
 // FUNCTION: IMPERIALISM 0x004cc550
@@ -71,7 +71,7 @@ void TPurchaseCluster::SetCityViewValueControlAmount(short nValue, char redrawFl
   // ownerContext is a TBuildingView (TArmoryView/TUniversityView/TShipyardView, the city-view
   // dialogs that host a TPurchaseCluster): confirmed by arity -- TBuildingView::
   // UpdateFields() at slot 0x76 (byte 0x1d8) takes zero args, matching this
-  // callsite exactly, unlike the byte-coincident TWindow::GetWindowText(CString*) which
+  // callsite exactly, unlike the byte-coincident TWindow::GetTitle(CString*) which
   // takes one.
   static_cast<TBuildingView*>(ownerContext)->UpdateFields();
 }

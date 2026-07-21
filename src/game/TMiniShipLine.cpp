@@ -20,5 +20,5 @@ void TMiniShipLine::CreateLineItemView(TView* panel, int* offsetLayout) {
   TMiniShipView* view = new TMiniShipView();
   view->InitializeUiResourceEntryFrameAndParent(nullptr, panel, offsetLayout, &field08, 5, 5, 0);
   view->shipNode84 = field10;
-  view->frameStyle60 = 0x22;
+  view->eventNumber60 = 0x22;
 }

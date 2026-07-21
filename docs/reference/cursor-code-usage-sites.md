@@ -76,8 +76,8 @@ Scope: code/memory locations used to load and apply cursor handles for mapped cu
 - `0x00497320` -> `AcquireReusableQuickDrawSurface`
 - `0x00497390` -> `ReleaseOrCacheQuickDrawSurface`
 - `0x005a99e0` -> `DrawHexSelectionOutlineSegments`
-- `0x00498b50` -> `AssertQuickDrawFlag6A1DC8NonZero`
-- `0x00498b80` -> `AssertQuickDrawFlag6A1DCCNonZero`
+- `0x00498b50` -> `SetQuickDrawCursor`
+- `0x00498b80` -> `GetQuickDrawCursor`
 
 ### Shared string helper used in cursor control path
 

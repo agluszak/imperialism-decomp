@@ -17,7 +17,7 @@ IMPLEMENT_DYNCREATE(TFrameRadioView, TControl)
 TFrameRadioView::TFrameRadioView() {}
 
 // FUNCTION: IMPERIALISM 0x004fdfc0
-void TFrameRadioView::ApplyRectSlot110(RECT* rectBuffer) {
+void TFrameRadioView::Draw(RECT* rectBuffer) {
   (void)rectBuffer;
   if (controlState64 != 0) {
     RECT frame = {1, 1, frameWidth34, frameHeight38};
@@ -30,33 +30,33 @@ void TFrameRadioView::ApplyRectSlot110(RECT* rectBuffer) {
 }
 
 // FUNCTION: IMPERIALISM 0x004fe060
-void TFrameRadioView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+void TFrameRadioView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   switch (commandId) {
   case 0xa:
-    DispatchEvent(0x1f, this, nullptr);
+    HandleEvent(0x1f, this, nullptr);
     return;
   case 0xc:
     if (controlState64 == 0) {
-      if (GetBoolSlot28() != 0) {
+      if (IsEnabled() != 0) {
         HiliteState(1, 0);
       }
     }
-    TControl::HandleEvent(commandId, sourceHandler, event);
+    TControl::DoEvent(commandId, sourceHandler, event);
     return;
   case 0x1f:
-    if (GetBoolSlot28() != 0) {
+    if (IsEnabled() != 0) {
       HiliteState(1, 1);
       return;
     }
     break;
   case 0x20:
-    if (GetBoolSlot28() != 0) {
+    if (IsEnabled() != 0) {
       HiliteState(0, 1);
       return;
     }
     break;
   default:
-    TControl::HandleEvent(commandId, sourceHandler, event);
+    TControl::DoEvent(commandId, sourceHandler, event);
     return;
   }
 }
@@ -67,7 +67,7 @@ void TFrameRadioView::HiliteState(unsigned char fEnabledState, unsigned char fRe
     controlState64 = static_cast<unsigned char>(fEnabledState);
     if (fRefreshNow) {
       RefreshControl();
-      InvokeSlot13C();
+      ForceRedraw();
     }
   }
 }

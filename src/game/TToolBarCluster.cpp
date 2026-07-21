@@ -279,8 +279,8 @@ TToolBarCluster::~TToolBarCluster() {}
 // computes its placement, and refreshes it. Standalone helper (no `this`) -- matches the
 
 // FUNCTION: IMPERIALISM 0x00584ea0
-void TToolBarCluster::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
-  TCluster::HandleEvent(commandId, sourceHandler, event);
+void TToolBarCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+  TCluster::DoEvent(commandId, sourceHandler, event);
 
   bool eligible = g_pApplicationUiRootController->InModalState() == 0;
   if (g_pApplicationUiRootController->screenModeAt24 > 1) {

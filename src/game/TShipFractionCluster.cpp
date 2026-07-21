@@ -25,7 +25,7 @@ IMPLEMENT_DYNCREATE(TShipFractionCluster, TCluster)
 void TShipFractionCluster::DoPostCreate(int arg) {
   TCluster::DoPostCreate(arg);
 
-  mainSelectionView8c = OwnerPanel()->ResolveControlByTag(kControlTagMain);
+  mainSelectionView8c = GetWindow()->ResolveControlByTag(kControlTagMain);
   mainSelectionView8c->AssertValid();
 
   TView* shipControl = ResolveControlByTag(kControlTagShip);
@@ -50,7 +50,7 @@ void TShipFractionCluster::DoPostCreate(int arg) {
 }
 
 // FUNCTION: IMPERIALISM 0x00568eb0
-void TShipFractionCluster::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+void TShipFractionCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId == 0x64) {
     if (selectedShipCount94 < availableShipCount88) {
       selectedShipCount94 = static_cast<short>(selectedShipCount94 + 1);
@@ -64,7 +64,7 @@ void TShipFractionCluster::HandleEvent(int commandId, TEventHandler* sourceHandl
       SelectTaskForceOrderForActiveNationClass(0);
     }
   } else {
-    TCluster::HandleEvent(commandId, sourceHandler, event);
+    TCluster::DoEvent(commandId, sourceHandler, event);
   }
 }
 

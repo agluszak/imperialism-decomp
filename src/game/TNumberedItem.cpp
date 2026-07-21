@@ -34,8 +34,8 @@ TNumberedItem::~TNumberedItem() {}
 // then the badge count as decimal text, positioned to clear more digits' worth of
 // space as the count grows past 1/2/3 digits.
 // FUNCTION: IMPERIALISM 0x005078a0
-void TNumberedItem::ApplyRectSlot110(RECT* rectBuffer) {
-  (void)rectBuffer; // dead parameter in this override, like the other ApplyRectSlot110s
+void TNumberedItem::Draw(RECT* rectBuffer) {
+  (void)rectBuffer; // dead parameter in this override, like the other Draws
   RECT srcRect = {iconRowIndexAc * 0x20, 0, iconRowIndexAc * 0x20 + 0x1f, 0x17};
   RECT dstRect = {0, 0, 0x1f, 0x17};
   ResetQuickDrawStrokeState();

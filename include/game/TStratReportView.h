@@ -24,5 +24,5 @@ public:
 
   // slot 0x110 0x58e460 -- renders the battle-outcome header winner/loser
   // score lines; body not yet fully ported (CString/QuickDraw table render).
-  virtual void ApplyRectSlot110(RECT* rectBuffer) override;
+  virtual void Draw(RECT* rectBuffer) override;
 };

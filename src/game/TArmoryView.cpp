@@ -31,7 +31,7 @@ TArmoryView::~TArmoryView() {}
 void TArmoryView::DoStartup() {}
 
 // FUNCTION: IMPERIALISM 0x004cf350
-void TArmoryView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+void TArmoryView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId == 0xc) {
     short index = static_cast<short>(sourceHandler->controlTag) - 0x7630; // 'rec0'..'rec8'
     if (index >= 0 && index < 9) {
@@ -46,7 +46,7 @@ void TArmoryView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEven
         selectedRowIndexA4 = index;
         RefreshCityViewProductionDetails(index);
 
-        // 'sele' is a TCluster (see TUniversityView::HandleEvent's identical tail).
+        // 'sele' is a TCluster (see TUniversityView::DoEvent's identical tail).
         TCluster* sele = static_cast<TCluster*>(ResolveControlByTag(0x73656c65u)); // 'sele'
         sele->AssertValid();
         sele->SetSelectedChildTagAndRefresh(0x63697630 + index); // 'civ0'+index
@@ -82,7 +82,7 @@ void TArmoryView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEven
       }
     }
   }
-  TControl::HandleEvent(commandId, sourceHandler, event);
+  TControl::DoEvent(commandId, sourceHandler, event);
 }
 
 // FUNCTION: IMPERIALISM 0x004cf5c0

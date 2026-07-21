@@ -60,7 +60,7 @@ HELPERS: dict[int, tuple[str, int]] = {
     0x41B3A0: ("SetUiResourceStateFlags", 2),
     0x41B3D0: ("SetUiResourceContextPictureId", 1),
     0x41B400: ("SetUiResourceContextStringCode", 1),
-    0x41B450: ("SetUiResourceLayoutValues", 5),
+    0x41B450: ("SetUiResourceEventNumberAndInsets", 5),
     0x41B570: ("SetUiResourceContextMaxCharCount", 1),
     0x41B5A0: ("SetUiResourceContextNumberValueAndRange", 3),
     0x427060: ("ReplaceUiResourceContextPairBuffer", 2),

@@ -32,8 +32,8 @@ public:
 
   DECLARE_DYNCREATE(TStaticText)
 
-  TObject* ShallowClone() override;                 // 0x20 0x48fc00
-  void ApplyRectSlot110(RECT* rectBuffer) override; // 0x110 0x48ffb0
+  TObject* ShallowClone() override;     // 0x20 0x48fc00
+  void Draw(RECT* rectBuffer) override; // 0x110 0x48ffb0
 
   // 0x486290 — non-virtual convenience: qualified forward to
   // SetTextAndMaybeRefresh(text, 0).

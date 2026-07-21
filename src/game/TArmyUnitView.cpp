@@ -33,8 +33,8 @@ TArmyUnitView::TArmyUnitView() : TView() {}
 TArmyUnitView::~TArmyUnitView() {}
 
 // FUNCTION: IMPERIALISM 0x004a95b0
-void TArmyUnitView::ApplyRectSlot110(RECT* rectBuffer) {
-  (void)rectBuffer; // dead parameter in this override, like the other ApplyRectSlot110s
+void TArmyUnitView::Draw(RECT* rectBuffer) {
+  (void)rectBuffer; // dead parameter in this override, like the other Draws
 
   CString unitTypeName;
   CString descriptor;
@@ -102,7 +102,7 @@ void TArmyUnitView::ApplyRectSlot110(RECT* rectBuffer) {
 }
 
 // FUNCTION: IMPERIALISM 0x004a9990
-void TArmyUnitView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+void TArmyUnitView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (sourceHandler->controlTag == kControlTagChec) {
     if ((GetAsyncKeyState(VK_CONTROL) & 0x8000) != 0) {
       // Ctrl held: force the unit into escort-order mode (0xe) unless already there.
@@ -142,7 +142,7 @@ void TArmyUnitView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEv
 
       TStaticText* tbr1 = static_cast<TStaticText*>(
           g_pDisplayMgr->activeDialog->ResolveControlByTag(kControlTagTbr1));
-      tbr1->QueryStepValue();
+      tbr1->GetNextHandler();
       tbr1->SetTextAlignmentAndMaybeRefresh(static_cast<short>(g_pSimMgr->GetActiveNationId()), 0);
     } else {
       CString msg;
@@ -152,11 +152,11 @@ void TArmyUnitView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEv
   } else if (sourceHandler->controlTag == kControlTagName) {
     HandleCrossUArmyViewsNameCommand();
   }
-  TView::HandleEvent(commandId, sourceHandler, event);
+  TView::DoEvent(commandId, sourceHandler, event);
 }
 
 // TArmyUnitView-only despite the generic Ghidra symbol name (0x4a9ca0) -- confirmed by the
-// caller: TShipView::HandleEvent's 'name' branch actually calls a different function
+// caller: TShipView::DoEvent's 'name' branch actually calls a different function
 // (RunEngineerOrderNameEditDialogAndApply, 0x565a40), not this one, so there is no
 // cross-class field60 ambiguity to resolve here. Runs the unit-rename dialog: seeds an edit
 // box with field60's current name, runs it modally, and (unless cancelled) commits the

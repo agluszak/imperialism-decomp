@@ -77,8 +77,8 @@ void TMapKey::DoPostCreate(int arg) {
 }
 
 // FUNCTION: IMPERIALISM 0x004fcf80
-void TMapKey::ApplyRectSlot110(RECT* rectBuffer) {
-  TPicture::ApplyRectSlot110(rectBuffer);
+void TMapKey::Draw(RECT* rectBuffer) {
+  TPicture::Draw(rectBuffer);
   switch (this->viewMode90) {
   case 0:
     RenderMapHintOverlayMode0();

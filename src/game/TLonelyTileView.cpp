@@ -23,8 +23,8 @@ TLonelyTileView::TLonelyTileView() : TView() {}
 TLonelyTileView::~TLonelyTileView() {}
 
 // FUNCTION: IMPERIALISM 0x00505b60
-void TLonelyTileView::ApplyRectSlot110(RECT* rectBuffer) {
-  (void)rectBuffer; // dead parameter in this override, like the other ApplyRectSlot110s
+void TLonelyTileView::Draw(RECT* rectBuffer) {
+  (void)rectBuffer; // dead parameter in this override, like the other Draws
   CRect destRect;
   QueryContentBounds(&destRect);
 

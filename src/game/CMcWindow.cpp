@@ -238,7 +238,7 @@ BOOL CMcWindow::OnCommand(WPARAM wParam, LPARAM lParam) {
         reinterpret_cast<TView*>(::GetWindowLong(reinterpret_cast<HWND>(lParam), GWL_USERDATA));
     if (controlView != NULL) {
       controlView->RefreshControl();
-      m_pOwnerWindow->InvokeSlot13C();
+      m_pOwnerWindow->ForceRedraw();
     }
   }
   return CWnd::OnCommand(wParam, lParam);

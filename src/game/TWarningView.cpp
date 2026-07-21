@@ -19,16 +19,16 @@ TWarningView::TWarningView() : TPicture() {}
 TWarningView::~TWarningView() {}
 
 // FUNCTION: IMPERIALISM 0x00592980
-void TWarningView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+void TWarningView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId == 0x22 && event != 0) {
     unsigned int controlTag =
         *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(event) + 0x1c);
     if (controlTag >= 0x70696331 && controlTag <= 0x70696335) {
-      TControl::HandleEvent(commandId, sourceHandler, event);
+      TControl::DoEvent(commandId, sourceHandler, event);
       return;
     }
   }
-  TControl::HandleEvent(commandId, sourceHandler, event);
+  TControl::DoEvent(commandId, sourceHandler, event);
 }
 
 // FUNCTION: IMPERIALISM 0x00592a70

@@ -11,7 +11,7 @@ public:
   DECLARE_DYNCREATE(TCivDescription)
   virtual ~TCivDescription() override;
 
-  virtual void ApplyRectSlot110(RECT* rectBuffer) override; // slot 0x44 0x58f550
+  virtual void Draw(RECT* rectBuffer) override; // slot 0x44 0x58f550
   virtual void BeginMouseCaptureAndStartRepeatTimer(const CPoint& point, TToolboxEvent* event,
                                                     CPoint origin) override; // slot 0x47 0x58f1a0
   virtual void DrawProspector(RECT* bounds);                                 // slot 0x68 0x58fec0

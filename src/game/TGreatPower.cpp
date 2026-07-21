@@ -1315,7 +1315,7 @@ void TGreatPower::RebuildNationResourceYieldCountersAndDevelopmentTargets(void) 
 // Advances per-region development counters and emits diplomacy/map events when stage changes.
 
 // FUNCTION: IMPERIALISM 0x004dbf00
-void TGreatPower::AdvanceOwnedRegionDevelopmentCountersAndDispatchEvents(void) {
+void TGreatPower::AdvanceOwnedRegionDevelopmentCountersAndHandleEvents(void) {
   TLongintList* regionList = this->ownedRegionList;
   if (regionList == 0) {
     return;
@@ -1652,7 +1652,7 @@ void TGreatPower::RefreshGreatPowerRelationPanelsAndDispatchDeltaSummary(void) {
   }
 
   this->RebuildNationResourceYieldCountersAndDevelopmentTargets();
-  this->AdvanceOwnedRegionDevelopmentCountersAndDispatchEvents();
+  this->AdvanceOwnedRegionDevelopmentCountersAndHandleEvents();
   this->ApplyNationResourceNeedTargetsToOrderState();
   this->CompileGreatPowerRelationshipDeltaLinesAndDispatchMessage();
   this->city->EndCityPhase();
@@ -4517,7 +4517,7 @@ void TGreatPower::PayForMilitary() {
 
 // Sums the encoded diplomacyGrantByNation entries (masking off the top 2 flag bits),
 // skipping the 0xffff "no grant" sentinel. Used by the grants/aid screen's "Total"
-// row (TGrantsView::ApplyRectSlot110).
+// row (TGrantsView::Draw).
 // FUNCTION: IMPERIALISM 0x004e3620
 int TGreatPower::SumDiplomacyGrantEntriesMaskedToValueBits() {
   int total = 0;

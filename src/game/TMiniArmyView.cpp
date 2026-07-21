@@ -31,8 +31,8 @@ IMPLEMENT_DYNCREATE(TMiniArmyView, TControl)
 TMiniArmyView::TMiniArmyView() {}
 
 // FUNCTION: IMPERIALISM 0x004aaeb0
-void TMiniArmyView::ApplyRectSlot110(RECT* rectBuffer) {
-  (void)rectBuffer; // dead parameter in this override, like the other ApplyRectSlot110s
+void TMiniArmyView::Draw(RECT* rectBuffer) {
+  (void)rectBuffer; // dead parameter in this override, like the other Draws
   CString name = field84->name24;
   CString displayName = name;
 
@@ -77,7 +77,7 @@ void TMiniArmyView::ApplyRectSlot110(RECT* rectBuffer) {
 }
 
 // FUNCTION: IMPERIALISM 0x004ab1d0
-void TMiniArmyView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+void TMiniArmyView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (sourceHandler->controlTag == kControlTagUpgr) {
     if (field84->ApplyEraCapabilityCostAndSetSelection()) {
       TView* sourceView = static_cast<TView*>(sourceHandler);
@@ -85,7 +85,7 @@ void TMiniArmyView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEv
       SetControlHoverHelpTextAltEntry(CString(g_pMiniCivSharedText_0064cb18), sourceView);
       TStaticText* tbr1 = static_cast<TStaticText*>(
           g_pDisplayMgr->activeDialog->ResolveControlByTag(kControlTagTbr1));
-      tbr1->QueryStepValue();
+      tbr1->GetNextHandler();
       tbr1->SetTextAlignmentAndMaybeRefresh(static_cast<short>(g_pSimMgr->GetActiveNationId()), 0);
     } else {
       CString msg;
@@ -93,11 +93,11 @@ void TMiniArmyView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEv
       g_pUiRuntimeContext->ModalMessage(msg, g_ptArmyOrderModalMessage, 2, 0);
     }
   } else if (sourceHandler == this) {
-    ownerContext->QueryStepValue();
+    ownerContext->GetNextHandler();
     // The original writes field84->tileIndex06 into a short field at the same +0x84 offset
     // on ownerContext's concrete (unrecovered) class -- distinct from this class's own
     // field84 (a TMilitaryUnit*) despite the matching offset. Left unresolved pending that
     // class's recovery rather than guessing its layout.
   }
-  TControl::HandleEvent(commandId, sourceHandler, event);
+  TControl::DoEvent(commandId, sourceHandler, event);
 }

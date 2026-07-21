@@ -11,7 +11,7 @@ IMPLEMENT_DYNCREATE(TEditText, TStaticText)
 
 // FUNCTION: IMPERIALISM 0x004903a0
 TEditText::TEditText() : TStaticText() {
-  this->frameStyle60 = 13;
+  this->eventNumber60 = 13;
   this->editWindow = nullptr;
   this->editFont = nullptr;
   this->maxCharacterCount = 0xff;
@@ -47,7 +47,7 @@ void TEditText::Close() {
 }
 
 // FUNCTION: IMPERIALISM 0x004906a0
-void TEditText::ApplyRectSlot110(RECT* rectBuffer) {
+void TEditText::Draw(RECT* rectBuffer) {
   // The retail body calls Open() (which lazily constructs the
   // live-edit CWnd into editWindow the first time this control paints) and falls back to
   // the static text draw only while that CWnd doesn't exist yet. Open
@@ -55,20 +55,20 @@ void TEditText::ApplyRectSlot110(RECT* rectBuffer) {
   // never gets constructed here -- this always takes the static-text fallback for now, which
   // is still strictly better than drawing nothing.
   if (Open() == nullptr) {
-    TStaticText::ApplyRectSlot110(rectBuffer);
+    TStaticText::Draw(rectBuffer);
   }
 }
 
 // FUNCTION: IMPERIALISM 0x004906d0
-char TEditText::GetBoolSlot28() {
+char TEditText::IsEnabled() {
   return static_cast<char>(field04);
 }
 
 // FUNCTION: IMPERIALISM 0x004906f0
-void TEditText::SetControlValue(int value) {
-  field04 = value;
+void TEditText::SetEnable(unsigned char enabled) {
+  field04 = enabled;
   if (editWindow != nullptr) {
-    editWindow->EnableWindow(value);
+    editWindow->EnableWindow(enabled);
     return;
   }
   TEditText::Open();
@@ -107,7 +107,7 @@ void TEditText::SetEditSelectionAndScrollCaret(short selStart, short selEnd, int
 }
 
 // FUNCTION: IMPERIALISM 0x00490aa0
-char TEditText::ActivateCityProductionViewIfAllowed() {
+char TEditText::BecomeTarget() {
   if (editWindow != nullptr) {
     editWindow->SetFocus();
   }
@@ -142,18 +142,18 @@ char TEditText::HandleMouseDown(const CPoint& point, TToolboxEvent* event, CPoin
 }
 
 // FUNCTION: IMPERIALISM 0x00490c10
-void TEditText::HandleCityProductionNoOp() {
+void TEditText::TargetValidationSucceeded() {
   if (editWindow != nullptr) {
     editWindow->SetFocus();
   }
 }
 
 // FUNCTION: IMPERIALISM 0x00490c30
-void TEditText::vmethod_0081(int param_1) {
+void TEditText::SelectOwner(unsigned char select) {
   if (editWindow != nullptr) {
     editWindow->SetFocus();
   }
-  SetEditSelectionAndScrollCaret(0, 0x7fff, param_1);
+  SetEditSelectionAndScrollCaret(0, 0x7fff, select);
 }
 
 // FUNCTION: IMPERIALISM 0x00490c70
@@ -184,7 +184,7 @@ void TEditText::InitDialogWindowAndSyncTitleIfChanged(CString* newText, int refr
 }
 
 // FUNCTION: IMPERIALISM 0x00490e50
-void TEditText::RecomputeAbsolutePositionRecursive() {
+void TEditText::UpdateCoordinates() {
   TView::Open();
   if (editWindow != nullptr) {
     RECT clientRect;

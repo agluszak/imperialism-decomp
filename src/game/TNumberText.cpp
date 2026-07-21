@@ -26,7 +26,7 @@ void TNumberText::ConstructTNumberTextBaseState(TControl* panel, int* offsetLayo
   this->InitializeTextEntryBaseAndOptionalStringResource(panel, offsetLayout, sizeLayout, 5, 5, -1,
                                                          0);
   this->maxCharacterCount = 0xff;
-  this->SetControlValue(1);
+  this->SetEnable(1);
   this->maximumValue = maximumValue;
   this->minimumValue = minimumValue;
   this->SetControlValue(value, 0);

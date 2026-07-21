@@ -3738,7 +3738,7 @@
         }
       },
       "generated_file": "turn_event_dialog_factory_00415fe0.cpp",
-      "generated_sha256": "34b95e5d83ddca3f1ad7450410c03baa151d286bcfd789cef2c0583773151b20",
+      "generated_sha256": "811eb98445680a2829aa09bfef97d4943225c2cbf0288183e1558f89958e6f2a",
       "name": "BuildTradeSchoolDialogControls"
     },
     "0x0041b6d0": {
@@ -15857,7 +15857,7 @@
         }
       },
       "generated_file": "turn_event_dialog_factory_0041b6d0.cpp",
-      "generated_sha256": "30b149baf29adc6b5d93703f5987faaa4a82403a087a91dae81283b42714de97",
+      "generated_sha256": "f3108bc5196689f0ea4e24005d1cf96044168ed6cfda4c70fa6677c4218be705",
       "name": "InitializeIndustryViewTradeMoveControlsAndCommodityRows"
     },
     "0x00427360": {
@@ -17123,7 +17123,7 @@
         }
       },
       "generated_file": "turn_event_dialog_factory_00427360.cpp",
-      "generated_sha256": "875fe99d1d55861e8f16887670b084b8eb73ce4f08203bbf03c16345fb3d349c",
+      "generated_sha256": "8ffa8b673914bf9c2aa6d50758059125551bb2e228c73970aac21702d2db3503",
       "name": "InitializeIndustryOverviewPlacardsAndTradeStatusTags"
     },
     "0x004295a0": {
@@ -23283,7 +23283,7 @@
         }
       },
       "generated_file": "turn_event_dialog_factory_004295a0.cpp",
-      "generated_sha256": "8d95a5b920054634f1e1ac89ce5754271aae94a4f678f47ada519653cfaafed9",
+      "generated_sha256": "851512f9b95200e178680d4d0aaed087c56d8cae1c5118737d0ab0ce32793062",
       "name": "BuildTurnEventDialogResourcesForEvent547Or7D8"
     },
     "0x00430c50": {
@@ -26461,7 +26461,7 @@
         }
       },
       "generated_file": "turn_event_dialog_factory_00430c50.cpp",
-      "generated_sha256": "a53df818e0012a31c51d4de86b18162930274091424af2a1b5d7b390bbb23a60",
+      "generated_sha256": "73397d80b7ec111c78b2c5563d6e5a4e07a4f17c13d48871bd3d59410be05575",
       "name": "InitializeDealBookScreenControlsAndCommandTags"
     },
     "0x004357b0": {
@@ -34802,7 +34802,7 @@
         }
       },
       "generated_file": "turn_event_dialog_factory_004357b0.cpp",
-      "generated_sha256": "d285029a169423fbe6ffbcf572745f65757f15dc0454ee4c8f79a0536a6a52de",
+      "generated_sha256": "ceab4ffc5a6cf1cc494980cc88632ad48c02af51eda88f700b1ab38d7f1253f8",
       "name": "BuildTurnEventDialogUiByCode"
     },
     "0x0043dbc0": {
@@ -48188,7 +48188,7 @@
         }
       },
       "generated_file": "turn_event_dialog_factory_0043dbc0.cpp",
-      "generated_sha256": "9a1bef9c759f3b362f42220fbec299ac84b4629e49f975bd2a39f45a27687345",
+      "generated_sha256": "135668ac5e17939ba296f2a0cc4e514d023bbcdbbf428ff6f3a4a29465b12d34",
       "name": "InitializeArmyNavyReportViewsAndCommandTags"
     },
     "0x0044a810": {
@@ -50139,7 +50139,7 @@
         }
       },
       "generated_file": "turn_event_dialog_factory_0044a810.cpp",
-      "generated_sha256": "b8450914648477e7753fd9032fbe694e64dee0052f0ea78ba7a2e0dcaec6e62e",
+      "generated_sha256": "5684c52f412d2fa893f84a3d4a30655bf23d133fae96c1ff12101a8131516934",
       "name": "BuildTurnEventDialogResources_2508"
     },
     "0x0044af90": {
@@ -53322,7 +53322,7 @@
         }
       },
       "generated_file": "turn_event_dialog_factory_0044af90.cpp",
-      "generated_sha256": "c3ad56eee86dceab73e82e9ce4fcacbd0929941c9563831d9107b87776bd210d",
+      "generated_sha256": "2f25ae73a52e8236e6158777cccd9146f55b630c0547521fcf4dba915d9dd7d4",
       "name": "InitializeJoinSelectorDialogControlsAndNationSlots"
     },
     "0x0044fbc0": {
@@ -55762,7 +55762,7 @@
         }
       },
       "generated_file": "turn_event_dialog_factory_0044fbc0.cpp",
-      "generated_sha256": "f0d0503a2f0e57dcafeb69159affe81e0bc6ab4333cc9b24a5c9cc67dab172ba",
+      "generated_sha256": "2ccdd526cb7132fa267322adf85b2e95b038b220df73f9e9ab7d0aab8bd9a275",
       "name": "BuildUiResourceTreeByTemplateIdAndBindScreenContext"
     },
     "0x004538a0": {
@@ -65221,7 +65221,7 @@
         }
       },
       "generated_file": "turn_event_dialog_factory_004538a0.cpp",
-      "generated_sha256": "68688440418ab2372e151f3573e49c05406458d12ccd671d8b93304c62b97805",
+      "generated_sha256": "1c26cd9719c54f5b7dc90af24cc6425d58ed98a60e94255a2f7e3e9c8d2326aa",
       "name": "InitializeGameSetupScreenControlsAndModeTags"
     },
     "0x0045b100": {
@@ -66613,7 +66613,7 @@
         }
       },
       "generated_file": "turn_event_dialog_factory_0045b100.cpp",
-      "generated_sha256": "5e7ba28e4d54eab0963c803781c80d4efe81f065c18df6cd91f62398cae9db40",
+      "generated_sha256": "8c3053281999f13f126c3a2230d9c2a0bc0cc74f5611337f3fd5e0ae7e1c30a2",
       "name": "InitializeTacticalBattleViewToolbarAndDialogControls"
     },
     "0x0045d520": {
@@ -67061,7 +67061,7 @@
         }
       },
       "generated_file": "turn_event_dialog_factory_0045d520.cpp",
-      "generated_sha256": "8c4b1217aed72eb3cd21d04a1b83db8df519fa8188cb45d4f49765697a88f825",
+      "generated_sha256": "ffc1790ea1dfa5cef730fb9dd383dabc8c6788101ade874d05d63f43201a81e4",
       "name": "BuildTurnEventDialogResourcesForEvent898"
     },
     "0x0045e0b0": {
@@ -68369,7 +68369,7 @@
         }
       },
       "generated_file": "turn_event_dialog_factory_0045e0b0.cpp",
-      "generated_sha256": "5df780f4ab83a211cb31f16d12475dfe7fc25ccb0a02a4aa9b293f0903b8c788",
+      "generated_sha256": "1d6c188035b011e41b8e1f9dada45e58cfd78b64c581188f78d78e96c89dbca3",
       "name": "BuildTurnEventDialogResourcesForEvent8FC"
     },
     "0x004601b0": {
@@ -84351,7 +84351,7 @@
         }
       },
       "generated_file": "turn_event_dialog_factory_004601b0.cpp",
-      "generated_sha256": "1a3c8c70820fedfd1162e8546f68c1762a4ca24932546ec46ae5dbe997dcca8f",
+      "generated_sha256": "892e5ddea3a0c91cc32279ea1964665b830a563e0bee907c00d71b57077a3779",
       "name": "InitializeTradeScreenBitmapControls"
     },
     "0x0046fd10": {
@@ -89170,7 +89170,7 @@
         }
       },
       "generated_file": "turn_event_dialog_factory_0046fd10.cpp",
-      "generated_sha256": "7efbb2e482f75972905aa71c60efc721985ecd750ccc857f98b7295404559073",
+      "generated_sha256": "2fd07fc06b6ec52983e411ccd9d6fa93bc7cfa5c58626f51a0ca73506dfe47e4",
       "name": "BuildTurnEventDialogResourcesForEvent7DE"
     },
     "0x004749a0": {
@@ -92162,7 +92162,7 @@
         }
       },
       "generated_file": "turn_event_dialog_factory_004749a0.cpp",
-      "generated_sha256": "397f5bde592a7bc792a5cde0728d258dd59c31f2af3339ba6f9abcb84f788f6c",
+      "generated_sha256": "8ddb073787532235333ed0838efa5f3719ceb063afb7d9cae0a4edf9da519a19",
       "name": "BuildUniversityDialogShell"
     }
   },

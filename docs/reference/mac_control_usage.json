@@ -157768,7 +157768,7 @@
             "status": "confirmed"
           }
         ],
-        "name": "TIndustryView::HandleEvent",
+        "name": "TIndustryView::DoEvent",
         "owner_class": "TIndustryView",
         "recovered_source": "src/game/TIndustryView.cpp"
       },
@@ -157825,7 +157825,7 @@
             "status": "confirmed"
           }
         ],
-        "name": "TArmoryView::HandleEvent",
+        "name": "TArmoryView::DoEvent",
         "owner_class": "TArmoryView",
         "recovered_source": "src/game/TArmoryView.cpp"
       },
@@ -158224,7 +158224,7 @@
             "status": "confirmed"
           }
         ],
-        "name": "TOrderView::HandleEvent",
+        "name": "TOrderView::DoEvent",
         "owner_class": "TOrderView",
         "recovered_source": "src/game/TOrderView.cpp"
       },
@@ -158613,7 +158613,7 @@
             "status": "confirmed"
           }
         ],
-        "name": "TNetSelectPicture::HandleEvent",
+        "name": "TNetSelectPicture::DoEvent",
         "owner_class": "TNetSelectPicture",
         "recovered_source": "src/game/TNetSelectPicture.cpp"
       },
@@ -158630,7 +158630,7 @@
             "status": "confirmed"
           }
         ],
-        "name": "TTradePolicyCluster::HandleEvent",
+        "name": "TTradePolicyCluster::DoEvent",
         "owner_class": "TTradePolicyCluster",
         "recovered_source": "src/game/TTradePolicyCluster.cpp"
       },
@@ -158692,7 +158692,7 @@
             "status": "confirmed"
           }
         ],
-        "name": "TCombatReportView::HandleEvent",
+        "name": "TCombatReportView::DoEvent",
         "owner_class": "TCombatReportView",
         "recovered_source": "src/game/TCombatReportView.cpp"
       },
@@ -158896,7 +158896,7 @@
             "status": "confirmed"
           }
         ],
-        "name": "TTradeScreenPicture::ApplyRectSlot110",
+        "name": "TTradeScreenPicture::Draw",
         "owner_class": "TTradeScreenPicture",
         "recovered_source": "src/game/TTradeScreenPicture.cpp"
       },

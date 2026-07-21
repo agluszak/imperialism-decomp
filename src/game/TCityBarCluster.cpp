@@ -4,6 +4,7 @@
 #include "game/TTradeCluster.h"
 #include "game/quickdraw_rendering.h"
 #include "game/TGreatPower.h"
+#include "game/TNumberText.h"
 #include "game/ui_invalidation_guard.h"
 #include "game/mfc.h"
 #include "game/UiRuntimeContext.h"
@@ -39,29 +40,29 @@ void TCityBarCluster::ApplyMoveValue(int value) {
   int metricContext = *reinterpret_cast<int*>(recordContext + 0x1d8);
   int metrics = *reinterpret_cast<int*>(metricContext + 0x10);
 
-  TControl* areaControl = static_cast<TControl*>(this->ResolveControlByTag(0x74726561));
+  TNumberText* areaControl = static_cast<TNumberText*>(this->ResolveControlByTag(0x74726561));
   if (areaControl != 0) {
-    areaControl->SetControlValue(*reinterpret_cast<int*>(recordNode + 0x10));
+    areaControl->SetControlValue(*reinterpret_cast<int*>(recordNode + 0x10), 1);
     areaControl->SetEnabled(0, 1);
   }
 
-  TControl* returnControl = static_cast<TControl*>(this->ResolveControlByTag(0x756e7472));
+  TNumberText* returnControl = static_cast<TNumberText*>(this->ResolveControlByTag(0x756e7472));
   if (returnControl == 0) {
     FailNilPointerInUSmallViews(kAssertLineTradeSummaryRtnu);
   }
-  returnControl->SetControlValue((int)*reinterpret_cast<short*>(metrics + 4));
+  returnControl->SetControlValue((int)*reinterpret_cast<short*>(metrics + 4), 1);
 
-  TControl* airControl = static_cast<TControl*>(this->ResolveControlByTag(0x74726169));
+  TNumberText* airControl = static_cast<TNumberText*>(this->ResolveControlByTag(0x74726169));
   if (airControl == 0) {
     FailNilPointerInUSmallViews(kAssertLineTradeSummaryIart);
   }
-  airControl->SetControlValue((int)*reinterpret_cast<short*>(metrics + 6));
+  airControl->SetControlValue((int)*reinterpret_cast<short*>(metrics + 6), 1);
 
-  TControl* profControl = static_cast<TControl*>(this->ResolveControlByTag(0x70726f66));
+  TNumberText* profControl = static_cast<TNumberText*>(this->ResolveControlByTag(0x70726f66));
   if (profControl == 0) {
     FailNilPointerInUSmallViews(kAssertLineTradeSummaryProf);
   }
-  profControl->SetControlValue((int)*reinterpret_cast<short*>(metrics + 8));
+  profControl->SetControlValue((int)*reinterpret_cast<short*>(metrics + 8), 1);
 }
 
 void TCityBarCluster::UpdateTradeSummaryMetricControlsFromRecord(int recordContext) {

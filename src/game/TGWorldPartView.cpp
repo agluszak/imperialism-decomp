@@ -21,7 +21,7 @@ TGWorldPartView::TGWorldPartView() : TView() {
 }
 
 // FUNCTION: IMPERIALISM 0x004ac880
-void TGWorldPartView::ApplyRectSlot110(RECT* rectBuffer) {
+void TGWorldPartView::Draw(RECT* rectBuffer) {
   (void)rectBuffer;
   if (sourceSurface60 != 0) {
     CRect destRect;

@@ -62,7 +62,7 @@ void TStatusPicture::DoPostCreate(int arg) {
   RefreshControl();
   g_pDiplomacyTurnStateManager->RecomputeNationComparativePowerMetrics();
 
-  // Same per-nation average as HandleEvent's commandId==10/newIndex==0 branch (identical
+  // Same per-nation average as DoEvent's commandId==10/newIndex==0 branch (identical
   // instruction sequence): sums 4 dip[0x1824+i*0x10] dwords; the *400/40 magic-number scale
   // cancels to a plain 16-bit truncation, verified by simulation.
   {
@@ -92,7 +92,7 @@ void TStatusPicture::DoPostCreate(int arg) {
 }
 
 // FUNCTION: IMPERIALISM 0x005942f0
-void TStatusPicture::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+void TStatusPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId == 10) {
     unsigned int tag = sourceHandler->controlTag;
     if (tag >= 0x74616230u /* 'tab0' */ && tag <= 0x74616239u /* 'tab9' */) {
@@ -148,12 +148,12 @@ void TStatusPicture::HandleEvent(int commandId, TEventHandler* sourceHandler, TE
       }
     }
   }
-  TPicture::HandleEvent(commandId, sourceHandler, event);
+  TPicture::DoEvent(commandId, sourceHandler, event);
 }
 
 // FUNCTION: IMPERIALISM 0x00594540
-void TStatusPicture::ApplyRectSlot110(RECT* rectBuffer) {
-  TPicture::ApplyRectSlot110(rectBuffer);
+void TStatusPicture::Draw(RECT* rectBuffer) {
+  TPicture::Draw(rectBuffer);
 
   CString title;
   g_pSimMgr->GetString(0x2757, static_cast<short>(comparisonMode90) + 8, &title);

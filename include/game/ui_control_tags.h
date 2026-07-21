@@ -42,7 +42,7 @@ const unsigned int kControlTagRcor = 0x72636f72u; // 'rcor' — right-column con
 const unsigned int kControlTagLaro = 0x6c61726fu; // 'laro' — purchase-amount decrement arrow
 const unsigned int kControlTagRaro = 0x7261726fu; // 'raro' — purchase-amount increment arrow
 // Capitalized variants distinct from kControlTagFlag ('flag') / kTagDone ('done') --
-// TToolBarCluster::HandleEvent compares against these exact byte values.
+// TToolBarCluster::DoEvent compares against these exact byte values.
 const unsigned int kControlTagFlagCaps = 0x466c6167u; // 'Flag'
 const unsigned int kControlTagDoneCaps = 0x444f4e45u; // 'DONE'
 const unsigned int kControlTagZmIn = 0x5a6d496eu;     // 'ZmIn' — map zoom-in hotspot

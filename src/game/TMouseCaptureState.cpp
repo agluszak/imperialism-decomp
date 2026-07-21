@@ -15,7 +15,7 @@ VOID CALLBACK NotifyGlobalCaptureOwnerState1WithCachedCoords(HWND hwnd, UINT mes
     // Ground truth passes a zeroed stack point through the owner-relative conversion and
     // discards it; only the dispatch side effects matter on the repeat tick.
     CPoint scratchPoint(0, 0);
-    captured->SubtractPosAndDispatchToOwnerSlot19C(&scratchPoint);
+    captured->WindowToLocal(&scratchPoint);
     g_McAppMouseCaptureState.lastPoint = g_McAppMouseCaptureState.currentPoint;
     captured->DispatchPictureResourceCommand(1, &g_McAppMouseCaptureState.startPoint,
                                              &g_McAppMouseCaptureState.lastPoint,
@@ -50,7 +50,7 @@ void TMouseCaptureState::NotifyCaptureOwnerState1AndMaybeUpdateCoords(unsigned i
     return;
   }
   CPoint ownerRelativePoint(x, y);
-  capturedControl->SubtractPosAndDispatchToOwnerSlot19C(&ownerRelativePoint);
+  capturedControl->WindowToLocal(&ownerRelativePoint);
   lastPoint = currentPoint;
   // Ground truth gates this on bit 0x20 of nFlags (MK_XBUTTON1 in the standard WM_MOUSEMOVE
   // flag set); the exact intent of skipping the coordinate update on that bit isn't recovered.
@@ -75,7 +75,7 @@ void TMouseCaptureState::EndMouseCaptureAndStopRepeatTimer(unsigned int nFlags, 
   }
   ::ReleaseCapture();
   CPoint ownerRelativePoint(x, y);
-  capturedControl->SubtractPosAndDispatchToOwnerSlot19C(&ownerRelativePoint);
+  capturedControl->WindowToLocal(&ownerRelativePoint);
   lastPoint = currentPoint;
   // Owner-relative, as in Notify... above (0x489db2 reloads the converted stack local).
   currentPoint = ownerRelativePoint;

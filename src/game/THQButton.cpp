@@ -28,7 +28,7 @@ void THQButton::DoPostCreate(int arg) {
   TView::DoPostCreate(arg);
   glyph98 = 0;
   glyph90 = glyph;
-  frameStyle60 = 0xc;
+  eventNumber60 = 0xc;
   timingWord92 = (short)(glyph + 1);
   glyph94 = (short)(glyph + 2);
   glyph96 = (short)(glyph + 3);
@@ -54,27 +54,27 @@ void THQButton::HiliteState(unsigned char enabledState, unsigned char refreshNow
     }
     reinterpret_cast<TAmtBar*>(this)->SetBitmap(bitmapId, 1);
     if (refreshNow) {
-      TAmtBar* owner = reinterpret_cast<TAmtBar*>(OwnerPanel());
+      TAmtBar* owner = reinterpret_cast<TAmtBar*>(GetWindow());
       if (owner != 0) {
-        owner->InvokeSlot13C();
+        owner->ForceRedraw();
       }
     }
   }
 }
 
 // FUNCTION: IMPERIALISM 0x0058b7f0
-void THQButton::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+void THQButton::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   TAmtBar* control = reinterpret_cast<TAmtBar*>(this);
   if (commandId == 0xc) {
     if (controlState64 == 0) {
       control->InvokeSlot1CC(1, 1);
     }
-    TControl::HandleEvent(commandId, sourceHandler, event);
+    TControl::DoEvent(commandId, sourceHandler, event);
     return;
   }
   if (commandId != 0x1f) {
     if (commandId != 0x20) {
-      TControl::HandleEvent(commandId, sourceHandler, event);
+      TControl::DoEvent(commandId, sourceHandler, event);
       return;
     }
     control->InvokeSlot1CC(0, 1);
@@ -85,7 +85,7 @@ void THQButton::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent*
 
 // FUNCTION: IMPERIALISM 0x0058b890
 bool THQButton::IsSelected(short value, bool refreshNow) {
-  if (GetBoolSlot28()) {
+  if (IsEnabled()) {
     HiliteState(value != 0, refreshNow);
   }
   return controlState64 != 0;

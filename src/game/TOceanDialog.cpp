@@ -131,7 +131,7 @@ void TOceanDialog::OrphanRetStub_005966c0(short arg1) {
 }
 
 // FUNCTION: IMPERIALISM 0x005667f0
-void TOceanDialog::ApplyRectSlot110(RECT* rectBuffer) {
+void TOceanDialog::Draw(RECT* rectBuffer) {
   (void)rectBuffer;
 }
 
@@ -211,7 +211,7 @@ void TOceanDialog::ApplyDirectionalNudgeAndRefreshDisplay(unsigned char directio
     col -= 4;
   }
   SetMapViewCellCoordinates(col, row);
-  g_pDisplayMgr->activeDialog->InvokeSlot13C();
+  g_pDisplayMgr->activeDialog->ForceRedraw();
 }
 
 // FUNCTION: IMPERIALISM 0x00568ab0

@@ -47,7 +47,7 @@ void TNumberedArrowButton::SetState(short value86Arg, unsigned char refreshFlag)
 }
 
 // FUNCTION: IMPERIALISM 0x0058c3d0
-void TNumberedArrowButton::ApplyRectSlot110(RECT* rectBuffer) {
+void TNumberedArrowButton::Draw(RECT* rectBuffer) {
   (void)rectBuffer;
   const unsigned int kAddrStrategicMapViewSystem = 0x006A21A8;
   UpdatePaletteIndexWithDefaultFallback(0x10);

@@ -37,8 +37,8 @@ void TTextPictureButton::InitializeTextPictureButtonAndTextStyle(TView* panel, i
 // themeCode9A. Both passes center the text in the button's frame, nudged by 1px when
 // the button is pressed (controlState64 != 0, TControl's mode byte).
 // FUNCTION: IMPERIALISM 0x00572790
-void TTextPictureButton::ApplyRectSlot110(RECT* rectBuffer) {
-  TPicture::ApplyRectSlot110(rectBuffer);
+void TTextPictureButton::Draw(RECT* rectBuffer) {
+  TPicture::Draw(rectBuffer);
   int pressedOffset = (controlState64 != 0) ? 1 : 0;
 
   ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, pointSize98, themeCode9C);

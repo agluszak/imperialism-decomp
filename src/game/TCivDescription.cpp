@@ -272,7 +272,7 @@ void TCivDescription::UpdateCivilianOrderTargetTileCountsForOwnerNation(TCivUnit
 }
 
 // FUNCTION: IMPERIALISM 0x0058f550
-void TCivDescription::ApplyRectSlot110(RECT* rectBuffer) {
+void TCivDescription::Draw(RECT* rectBuffer) {
   (void)rectBuffer;
   // ORIG_CALLCONV: __thiscall
   unsigned short* legendSelectionCountsBySlot;
