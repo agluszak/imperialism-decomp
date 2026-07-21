@@ -37,8 +37,6 @@ TProxyGreatPower::~TProxyGreatPower() {}
 
 IMPLEMENT_DYNCREATE(TProxyGreatPower, TGreatPower)
 
-TProxyGreatPower::TProxyGreatPower() {}
-
 // FUNCTION: IMPERIALISM 0x00540a00
 void TProxyGreatPower::AddToNationMetricAtField10(int amount) {}
 

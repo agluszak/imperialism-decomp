@@ -81,8 +81,6 @@ TRemoteGreatPower::~TRemoteGreatPower() {}
 
 IMPLEMENT_DYNCREATE(TRemoteGreatPower, TGreatPower)
 
-TRemoteGreatPower::TRemoteGreatPower() {}
-
 // FUNCTION: IMPERIALISM 0x00541b40
 void TRemoteGreatPower::SetNationSelectedRegionAndMapCellLabel(short selectedRegion,
                                                                char* mapCellLabel) {
