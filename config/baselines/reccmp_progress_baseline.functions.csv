@@ -1335,7 +1335,7 @@ address|matching|name
 0x4a2390|0.8230088495575221|TArmyMgr::ProcessPendingArmyStacksForBattleOrRelocation
 0x4a2500|0.9767441860465116|TArmyMgr::IterateLinkedListCursorAndClearPerTileByte0F
 0x4a2610|0.011976047904191617|BuildArmyActionLabelFromLocalizationAndCounts
-0x4a2900|0.13374805598755832|BuildArmyContextActionRecordsAndDispatchLabel
+0x4a2900|0.13063763608087092|BuildArmyContextActionRecordsAndDispatchLabel
 0x4a31c0|0.4|OrphanVtableAssignStub_004a31c0
 0x4a31e0|0.4|OrphanVtableAssignStub_004a31e0
 0x4a3200|0.7047244094488189|TArmyMgr::TryCreateTacticalBattleViewForTileArmies
@@ -1365,12 +1365,12 @@ address|matching|name
 0x4a4c80|0.33640552995391704|TArmyMgr::ComputeCivilianMapCursorStateIndex
 0x4a4fc0|0.0|TArmyMgr::OrphanCallChain_C2_I54_004a4fc0
 0x4a5080|0.2768166089965398|TArmyMgr::ValidateOrderPlacementPrerequisitesForSelectedTile
-0x4a5760|0.6034063260340633|TArmyMgr::SetActiveProvinceAndBuildDirectionalOrderOverlays
+0x4a5760|0.5985401459854015|TArmyMgr::SetActiveProvinceAndBuildDirectionalOrderOverlays
 0x4a5aa0|1.0|TArmyMgr::ComputeWeightedNeighborLinkScoreForNodeIndex
 0x4a5b10|0.7114093959731543|TArmyMgr::CreateTacticalBattleViewAndInitializeBattleSetup
 0x4a5c50|0.9090909090909091|TArmyBattle::`scalar deleting destructor'
 0x4a5ca0|0.5432098765432098|TArmyMgr::ApplyPostBattleStackOutcomeAndGrowUnitMeters
-0x4a5ec0|0.41555555555555557|TArmyMgr::BuildMapOrderContextSummaryStringForNation
+0x4a5ec0|0.41333333333333333|TArmyMgr::BuildMapOrderContextSummaryStringForNation
 0x4a6680|0.16806722689075632|TArmyMgr::BuildMapHintOverlayTextAndDispatchUiMessages
 0x4a6d40|0.38202247191011235|TArmyMgr::ScanMapContextActionEntriesForCodeMatch
 0x4a6dd0|1.0|TArmyMgr::GetByteFlagAtOffset8
@@ -2148,7 +2148,7 @@ address|matching|name
 0x4dd340|0.6222222222222222|TGreatPower::AddAmountToAidAllocationMatrixCellAndTotal
 0x4dd3b0|1.0|TGreatPower::SumAidAllocationMatrixColumnForTarget
 0x4dd3f0|1.0|TGreatPower::SumAidAllocationMatrixAllCells
-0x4dd430|0.5142857142857142|TGreatPower::ComputeRemainingDiplomacyAidBudget
+0x4dd430|0.5714285714285714|TGreatPower::ComputeRemainingDiplomacyAidBudget
 0x4dd470|1.0|TGreatPower::ResetDiplomacyNeedSlots7012AndRefreshIfModeGateMatches
 0x4dd4e0|0.4585987261146497|TGreatPower::AssignFallbackNationsToUnfilledDiplomacyNeedSlots
 0x4dd740|1.0|TGreatPower::GetDiplomacyExternalStateByTarget
@@ -2225,7 +2225,7 @@ address|matching|name
 0x4e0610|1.0|TGreatPower::ComputeMinisterSkillFloatSlot8A
 0x4e0650|1.0|TGreatPower::ComputeMinisterSkillFloatSlot8B
 0x4e0690|1.0|TGreatPower::ComputeMinisterSkillFloatSlot8C
-0x4e06d0|1.0|TGreatPower::SumCommodityRecordAccumulatedValues
+0x4e06d0|0.7619047619047619|TGreatPower::SumCommodityRecordAccumulatedValues
 0x4e0740|1.0|TGreatPower::GetCityBuildingProductionSlot8D
 0x4e0770|1.0|TGreatPower::ComputeNationRuntimeAdvisoryMetricCase6
 0x4e07b0|0.35294117647058826|TGreatPower::ComputeArmyCommitBudgetSlot8E
@@ -3465,9 +3465,9 @@ address|matching|name
 0x53cb50|0.8695652173913043|TArmyMission::AccumulateMissionUnitPriorityContributionWithScaleMode
 0x53cc10|0.4731182795698925|AccumulateUnitOrderPriorityVectorContribution
 0x53cda0|0.02857142857142857|AccumulateMissionUnitPriorityVector
-0x53ceb0|0.450261780104712|TArmyMission::ReturnZeroFloatSlot68
-0x53d020|0.38095238095238093|TArmyMission::ComputeArmyMissionScoreDeltaWithCandidateUnit
-0x53d200|0.3700787401574803|TArmyMission::ComputeArmyMissionScoreDeltaWithScaledCandidateUnit
+0x53ceb0|0.4479166666666667|TArmyMission::ReturnZeroFloatSlot68
+0x53d020|0.38247011952191234|TArmyMission::ComputeArmyMissionScoreDeltaWithCandidateUnit
+0x53d200|0.3686274509803922|TArmyMission::ComputeArmyMissionScoreDeltaWithScaledCandidateUnit
 0x53d3e0|0.7272727272727273|TArmyMission::ReturnZeroFloatSlot6C
 0x53d420|1.0|TArmyMission::ReturnZeroFloatSlot70
 0x53d4a0|0.6923076923076923|TArmyMission::ReturnZeroFloatSlot78
@@ -5505,11 +5505,11 @@ address|matching|name
 0x5c2940|1.0|TCivUnit::InitializeCivWorkOrderState
 0x5c2980|0.6363636363636364|TCivUnit::IsInIdleSelectionState
 0x5c29b0|0.15384615384615385|TickCivWorkOrderCountdownAndComplete
-0x5c29f0|0.07692307692307693|TCivUnit::SetOrderModeSlot34
+0x5c29f0|1.0|TCivUnit::SetOrderModeSlot34
 0x5c2a90|0.10526315789473684|TCivUnit::DispatchSlot2C
 0x5c2b10|1.0|TCivUnit::ReadFrom
 0x5c2b40|1.0|TCivUnit::WriteTo
-0x5c2b70|0.041666666666666664|TCivUnit::VTableSlot10
+0x5c2b70|0.9787234042553191|TCivUnit::VTableSlot10
 0x5c2c40|0.4|TCivUnit::DetachUnitOrderFromOwnerAndReset
 0x5c2c60|0.08695652173913043|TCivUnit::ResetCivWorkOrderAndRefreshCounters
 0x5c2cb0|0.3023255813953488|TMilitaryUnit::CreateObject

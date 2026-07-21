@@ -38,7 +38,11 @@ public:
   int field_8;            // 0x08
   short field_C;          // 0x0c
   short field_E;          // 0x0e
-  int field_10;           // 0x10
+  // Doubly-linked-list back-pointer for the tile's civilian-order chain (terrainState-
+  // Table[tileIndex06].firstCivilianOrder20, threaded via nextOnTile); null when this is
+  // the chain head. Recovered from TCivUnit::VTableSlot10 (0x5c2b70), which dereferences
+  // it at +0x14 (TUnit::nextOnTile's own offset).
+  TUnit* field_10;        // 0x10
   TUnit* nextOnTile;      // 0x14
   short field_18;         // 0x18
   short field_1A;         // 0x1a
