@@ -3595,7 +3595,7 @@ address|matching|name
 0x541b20|1.0|TRemoteGreatPower::GetRuntimeClass
 0x541b40|1.0|TRemoteGreatPower::SetNationSelectedRegionAndMapCellLabel
 0x541be0|1.0|TRemoteGreatPower::HandleNationLost
-0x541c10|0.4897959183673469|TRemoteMinor::CreateObject
+0x541c10|1.0|TRemoteMinor::CreateObject
 0x541c90|1.0|TRemoteMinor::ShouldDispatchImmediatelySlot28
 0x541cb0|1.0|TRemoteMinor::ApplyIndexedResourceDeltaAndAdjustNationTotals
 0x541cd0|1.0|TRemoteMinor::`scalar deleting destructor'
@@ -4443,7 +4443,7 @@ address|matching|name
 0x57c9a0|0.6031746031746031|TSimMgr::RecreateActiveMapContextAndInitializeGlobalMapState
 0x57cad0|0.7278481012658228|TSimMgr::RebuildNationStateSlotsAndAvailability
 0x57cda0|0.532319391634981|TSimMgr::RebuildPrimaryNationStateForSlot
-0x57d520|0.5151515151515151|TSimMgr::RebuildSecondaryNationStateForSlot
+0x57d520|0.797153024911032|TSimMgr::RebuildSecondaryNationStateForSlot
 0x57d830|1.0|TSimMgr::FormatSeasonName
 0x57d870|0.5517241379310345|TSimMgr::SetStateCodeAndUpdateZeroOrOutOfRangeFlag
 0x57d8b0|1.0|TSimMgr::GetTurnTickSlot3C

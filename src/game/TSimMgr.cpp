@@ -730,48 +730,53 @@ void TSimMgr::RebuildSecondaryNationStateForSlot(int slotIndex) {
   }
 
   int nationIndex = nationSlot;
-  if (nationIndex >= field34 + 7) {
+  TMinor* minor = nullptr;
+  if (nationIndex < field34 + 7 && field44 == 2) {
     if (g_apSecondaryNationStateSlots[nationIndex] != nullptr) {
       g_apSecondaryNationStateSlots[nationIndex]->Free();
     }
     g_apSecondaryNationStateSlots[nationIndex] = nullptr;
     g_apTerrainTypeDescriptorTable[nationIndex] = nullptr;
-    return;
-  }
-
-  if (g_apSecondaryNationStateSlots[nationIndex] != nullptr) {
-    g_apSecondaryNationStateSlots[nationIndex]->Free();
-  }
-  g_apSecondaryNationStateSlots[nationIndex] = nullptr;
-  g_apTerrainTypeDescriptorTable[nationIndex] = nullptr;
-
-  TMinor* minor;
-  if (field44 == 2) {
     minor = new TRemoteMinor();
-  } else {
+    minor->InitializeSecondaryNationStateAndSelectHomeTile(slotIndex);
+  } else if (nationIndex < field34 + 7) {
+    if (g_apSecondaryNationStateSlots[nationIndex] != nullptr) {
+      g_apSecondaryNationStateSlots[nationIndex]->Free();
+    }
+    g_apSecondaryNationStateSlots[nationIndex] = nullptr;
+    g_apTerrainTypeDescriptorTable[nationIndex] = nullptr;
+
     minor = new TMinor();
+    minor->InitializeSecondaryNationStateAndSelectHomeTile(slotIndex);
+
+    g_apSecondaryNationStateSlots[nationIndex] = minor;
+    g_apTerrainTypeDescriptorTable[nationIndex] = minor;
+
+    if (g_bMultiplayerScenarioSetupActive == 0) {
+      minor->SeedInitialMilitaryAndNavyOrdersForOwnedRegions();
+
+      short cityRecordIndex =
+          g_pGlobalMapState->terrainStateTable[static_cast<short>(minor->homeRegionIndex)]
+              .cityRecordIndex;
+      int remainingOrders = 2;
+      do {
+        TMilitaryUnit* order = new TMilitaryUnit();
+        order->InitializeRecruitOrderState(2, cityRecordIndex, slotIndex, 0);
+        order->SetOrderModeSlot34(2, -1);
+        --remainingOrders;
+      } while (remainingOrders != 0);
+
+      minor->AssignDisplayNamesToUnnamedMilitaryUnits();
+    }
+    return;
+  } else {
+    if (g_apSecondaryNationStateSlots[nationIndex] != nullptr) {
+      g_apSecondaryNationStateSlots[nationIndex]->Free();
+    }
   }
-  minor->InitializeSecondaryNationStateAndSelectHomeTile(nationSlot);
 
   g_apSecondaryNationStateSlots[nationIndex] = minor;
   g_apTerrainTypeDescriptorTable[nationIndex] = minor;
-
-  if (field44 != 2 && g_bMultiplayerScenarioSetupActive == 0) {
-    minor->SeedInitialMilitaryAndNavyOrdersForOwnedRegions();
-
-    short cityRecordIndex =
-        g_pGlobalMapState->terrainStateTable[static_cast<short>(minor->homeRegionIndex)]
-            .cityRecordIndex;
-    int remainingOrders = 2;
-    do {
-      TMilitaryUnit* order = new TMilitaryUnit();
-      order->InitializeRecruitOrderState(2, cityRecordIndex, nationSlot, 0);
-      order->SetOrderModeSlot34(2, -1);
-      --remainingOrders;
-    } while (remainingOrders != 0);
-
-    minor->AssignDisplayNamesToUnnamedMilitaryUnits();
-  }
 }
 
 // FUNCTION: IMPERIALISM 0x0057d830

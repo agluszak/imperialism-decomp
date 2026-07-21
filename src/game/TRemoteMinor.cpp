@@ -33,8 +33,6 @@ void TRemoteMinor::ApplyIndexedResourceDeltaAndAdjustNationTotals(int resourceIn
 // FUNCTION: IMPERIALISM 0x00541d00
 TRemoteMinor::~TRemoteMinor() {}
 
-TRemoteMinor::TRemoteMinor() : TMinor() {}
-
 // FUNCTION: IMPERIALISM 0x00541d90
 void TRemoteMinor::SetNationSelectedRegionAndMapCellLabel(short selectedRegion,
                                                           char* mapCellLabel) {
