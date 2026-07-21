@@ -1,7 +1,11 @@
 #include "game/TCityInteriorMinister.h"
 
+#include <stdlib.h>
+
 #include "game/TCity.h"
+#include "game/TForeignMinister.h"
 #include "game/TFuzzySet.h"
+#include "game/TGreatPower.h"
 #include "game/TList.h"
 #include "game/TLongintList.h"
 #include "game/global_data_tables.h"
@@ -91,7 +95,7 @@ void TCityInteriorMinister::InitializeCityInteriorState(TGreatPower* owner) {
     orderTypeTable12A[i] = 0;
     orderTypeTable158[i] = 0;
   }
-  for (short j = 0; j < 30; ++j) {
+  for (short j = 0; j < 60; ++j) {
     orderMetricTable40[j] = 0;
   }
   fieldB8 = 0;
@@ -158,7 +162,53 @@ void TCityInteriorMinister::ReadFrom(TStream* stream) {
 void TCityInteriorMinister::Call54() {}
 
 // FUNCTION: IMPERIALISM 0x004bf8a0
-undefined TCityInteriorMinister::VTableSlot21(int) {
+undefined TCityInteriorMinister::VTableSlot21(TCity* city) {
+  if (orderMetricTable40[0] != 0 || orderMetricTable40[1] != 0) {
+    bool roll = (rand() % 100) >= 75;
+    ownerContextAt04->foreignMinister->AddToForeignMinisterCounterAtIndex(0, roll);
+  }
+
+  for (short i = 2; i <= 6; ++i) {
+    short delta = orderMetricTable40[i];
+    if (delta != 0) {
+      ownerContextAt04->foreignMinister->AddToForeignMinisterCounterAtIndex(i, delta);
+    }
+  }
+
+  short localB;
+  unsigned short localA;
+  city->productionSummary1d8->OrphanLeaf_NoCall_Ins111_004b6260(&localB, &localA);
+
+  short resultCode;
+  short magnitude;
+
+  if (localB != 0 || localA != 0) {
+    resultCode = 7;
+    magnitude = static_cast<short>(localA + localB);
+  } else if (city->cityStockSteelCC == 0) {
+    resultCode = 11;
+    magnitude = 4;
+  } else if (city->cityStockLumberC8 == 0) {
+    resultCode = 9;
+    magnitude = 4;
+  } else {
+    resultCode = -1;
+    magnitude = 0;
+
+    short popHalfNeed = city->productionSummary1d8->fieldAt8 / 2;
+    if (city->cityStockCannedFoodC4 < popHalfNeed) {
+      resultCode = 7;
+      magnitude = city->productionSummary1d8->fieldAt8 - city->cityStockCannedFoodC4;
+      if (magnitude > 6) {
+        magnitude = 6;
+      }
+    }
+  }
+
+  if (resultCode != -1) {
+    ownerContextAt04->foreignMinister->SetForeignMinisterPrimaryAndSecondaryTargets(resultCode,
+                                                                                    magnitude);
+  }
   return 0;
 }
 
