@@ -343,8 +343,7 @@ BOOL TWNetSessionManager::OnEnumerateServiceProvider(LPGUID providerGuid, LPSTR 
 BOOL TWNetSessionManager::ShowJoinGameSelectionDialogAndCaptureChoice(GUID* selectedSessionGuid) {
   if (g_WNetSerializedPtrArrayB006a5f28.GetSize() < 1) {
     CString message("No games found to join.");
-    g_pUiRuntimeContext->DispatchLocalizedUiMessageWithTemplateA13A0(
-        message, &g_WNetJoinGameMessageStore006a5ed8, 0, 0);
+    g_pUiRuntimeContext->ModalMessage(message, g_ptNetworkModalMessage006a5ed8, 0, 0);
     return FALSE;
   }
 

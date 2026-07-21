@@ -39,7 +39,7 @@ void TGameSetupPicture::DoPostCreate(int arg) {
 // Note on 'load'/'scen'/'rand' (normal path): the retail binary's own confirmation-
 // dialog retry loop here is dead code -- its guard (0x408594, unconditionally
 // `return 1;`) always reports "accepted", so the loop body (format + show a confirm
-// messagebox via TViewMgr::DispatchLocalizedUiMessageWithTemplateA13A0) never runs.
+// messagebox via TViewMgr::ModalMessage) never runs.
 // Omitted below since it can never execute; only the loop's post-condition is kept.
 // FUNCTION: IMPERIALISM 0x00575900
 void TGameSetupPicture::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {

@@ -50,8 +50,7 @@ void TDefenseMinisterView::HandleEvent(int commandId, TEventHandler* sourceHandl
       } else {
         CString message;
         g_pSimMgr->GetString(0x273d, 0x12, &message);
-        g_pUiRuntimeContext->DispatchLocalizedUiMessageWithTemplateA13A0(
-            message, &g_cstrDiplomacyNoticeMessageStore, 1, 0);
+        g_pUiRuntimeContext->ModalMessage(message, g_ptDiplomacyNoticeModalMessage, 1, 0);
       }
     } else if (tag == kControlTagRecc) {
       ShowMinisterHelpDialog(0x258a);

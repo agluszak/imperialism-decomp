@@ -170,8 +170,7 @@ void TTechItemView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEv
         if (g_anTechItemResearchCostByTechId[techId64] > availableBudget) {
           CString msg;
           g_pSimMgr->GetString(0x2745, 3, &msg);
-          g_pUiRuntimeContext->DispatchLocalizedUiMessageWithTemplateA13A0(
-              msg, &g_cstrTechItemMessageStore, 2, 0);
+          g_pUiRuntimeContext->ModalMessage(msg, g_ptTechItemModalMessage, 2, 0);
         } else {
           CString label;
           g_pSimMgr->GetString(0x274f, 3, &label);

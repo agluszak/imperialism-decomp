@@ -582,8 +582,7 @@ void TTechMgr::UpdateSelectionAndRecalculateScores(int resourceType, int nationS
       scanBracketExpressions(g_pSimMgr, &formattedMessage, static_cast<LPCSTR>(templateText),
                              static_cast<LPCSTR>(countString));
     }
-    g_pUiRuntimeContext->DispatchLocalizedUiMessageWithTemplateA13A0(
-        formattedMessage, &g_cstrTechCapabilityMessageStore, 2, 0);
+    g_pUiRuntimeContext->ModalMessage(formattedMessage, g_ptTechCapabilityModalMessage, 2, 0);
   }
 
   for (node = GetNavyPrimaryOrderListHead(); node != 0; node = node->nextOlder24) {

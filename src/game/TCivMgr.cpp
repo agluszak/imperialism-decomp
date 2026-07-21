@@ -223,8 +223,8 @@ void TCivMgr::ShowDisbandCivilianConfirmationDialog() {
   }
   g_pSimMgr->GetString(0x274d, confirmStringOffset, &confirmText);
 
-  char confirmed = g_pUiRuntimeContext->DispatchLocalizedUiMessageWithTemplate(
-      4, titleText, confirmText, &g_cstrCivilianOrderMessageStore, 2, 1);
+  char confirmed = g_pUiRuntimeContext->ModalMessage(4, titleText, confirmText,
+                                                     g_ptCivilianOrderModalMessage, 2, 1);
   if (confirmed == 0) {
     return;
   }
@@ -387,8 +387,7 @@ bool TCivMgr::QueueCivilianWorkOrderWithCostCheck(short nTileIndex) {
     CString finalMessage;
     scanBracketExpressions(g_pSimMgr, &finalMessage, static_cast<LPCSTR>(templateText),
                            static_cast<LPCSTR>(costText));
-    g_pUiRuntimeContext->DispatchLocalizedUiMessageWithTemplateA13A0(
-        finalMessage, &g_cstrCivilianOrderMessageStore, 2, 0);
+    g_pUiRuntimeContext->ModalMessage(finalMessage, g_ptCivilianOrderModalMessage, 2, 0);
     return false;
   }
 
@@ -453,8 +452,7 @@ bool TCivMgr::HandleEngineerConstructionAction(short nTileIndex) {
         scanBracketExpressions(g_pSimMgr, &pszFormattedText, static_cast<LPCSTR>(pszTemplateText),
                                static_cast<LPCSTR>(costString));
 
-        g_pUiRuntimeContext->DispatchLocalizedUiMessageWithTemplateA13A0(
-            pszFormattedText, &g_cstrCivilianOrderMessageStore, 2, 0);
+        g_pUiRuntimeContext->ModalMessage(pszFormattedText, g_ptCivilianOrderModalMessage, 2, 0);
       } else {
         short nationId = g_pSimMgr->GetActiveNationId();
         g_apNationStates[nationId]->treasuryValue10 -= cost;
@@ -478,8 +476,7 @@ bool TCivMgr::HandleEngineerConstructionAction(short nTileIndex) {
         scanBracketExpressions(g_pSimMgr, &pszFormattedText, static_cast<LPCSTR>(pszTemplateText),
                                static_cast<LPCSTR>(costString));
 
-        g_pUiRuntimeContext->DispatchLocalizedUiMessageWithTemplateA13A0(
-            pszFormattedText, &g_cstrCivilianOrderMessageStore, 2, 0);
+        g_pUiRuntimeContext->ModalMessage(pszFormattedText, g_ptCivilianOrderModalMessage, 2, 0);
       } else {
         short nationId = g_pSimMgr->GetActiveNationId();
         g_apNationStates[nationId]->treasuryValue10 -= 3000;
@@ -506,8 +503,7 @@ bool TCivMgr::HandleEngineerConstructionAction(short nTileIndex) {
         scanBracketExpressions(g_pSimMgr, &pszFormattedText, static_cast<LPCSTR>(pszTemplateText),
                                static_cast<LPCSTR>(costString));
 
-        g_pUiRuntimeContext->DispatchLocalizedUiMessageWithTemplateA13A0(
-            pszFormattedText, &g_cstrCivilianOrderMessageStore, 2, 0);
+        g_pUiRuntimeContext->ModalMessage(pszFormattedText, g_ptCivilianOrderModalMessage, 2, 0);
       } else {
         short nationId = g_pSimMgr->GetActiveNationId();
         g_apNationStates[nationId]->treasuryValue10 -= 2000;
@@ -538,8 +534,7 @@ bool TCivMgr::HandleEngineerConstructionAction(short nTileIndex) {
       scanBracketExpressions(g_pSimMgr, &pszFormattedText, static_cast<LPCSTR>(pszTemplateText),
                              static_cast<LPCSTR>(costString));
 
-      g_pUiRuntimeContext->DispatchLocalizedUiMessageWithTemplateA13A0(
-          pszFormattedText, &g_cstrCivilianOrderMessageStore, 2, 0);
+      g_pUiRuntimeContext->ModalMessage(pszFormattedText, g_ptCivilianOrderModalMessage, 2, 0);
     } else {
       short nationId = g_pSimMgr->GetActiveNationId();
       g_apNationStates[nationId]->treasuryValue10 -= cost;

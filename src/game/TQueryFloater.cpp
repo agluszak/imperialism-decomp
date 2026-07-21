@@ -70,8 +70,7 @@ void TQueryFloater::HandleEvent(int commandId, TEventHandler* sourceHandler, TEv
       } else {
         g_pSimMgr->GetString(0x273d, 0x12, &text);
       }
-      g_pUiRuntimeContext->DispatchLocalizedUiMessageWithTemplateA13A0(
-          text, &g_cstrQueryFloaterMessageStore, 1, 0);
+      g_pUiRuntimeContext->ModalMessage(text, g_ptQueryFloaterModalMessage, 1, 0);
     } else {
       TWindow* owner = static_cast<TWindow*>(OwnerPanel());
       owner->Dismiss(kControlTagOkay, 0);
@@ -87,8 +86,7 @@ void TQueryFloater::HandleEvent(int commandId, TEventHandler* sourceHandler, TEv
   } else if (tag == kControlTagDeal) {
     if (g_pSimMgr->GetEconomicTurn() == 1) {
       g_pSimMgr->GetString(0x2741, 9, &text);
-      g_pUiRuntimeContext->DispatchLocalizedUiMessageWithTemplateA13A0(
-          text, &g_cstrQueryFloaterMessageStore, 1, 0);
+      g_pUiRuntimeContext->ModalMessage(text, g_ptQueryFloaterModalMessage, 1, 0);
     } else {
       TWindow* owner = static_cast<TWindow*>(OwnerPanel());
       owner->Dismiss(kControlTagOkay, 0);

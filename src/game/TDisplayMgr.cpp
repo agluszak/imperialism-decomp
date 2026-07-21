@@ -174,9 +174,8 @@ undefined TDisplayMgr::AssertUDisplayMgrLine495(int unusedArg) {
 
 // FUNCTION: IMPERIALISM 0x004fec80
 void TDisplayMgr::DispatchDisplayManagerControlStringMessage(CString message,
-                                                             CString* messageStoreRef) {
-  g_pUiRuntimeContext->RunControlStringProviderAndDispatchLocalizedMessage(message,
-                                                                           messageStoreRef);
+                                                             const POINT& messagePosition) {
+  g_pUiRuntimeContext->ModalMessage(message, messagePosition);
 }
 
 // FUNCTION: IMPERIALISM 0x004fed00

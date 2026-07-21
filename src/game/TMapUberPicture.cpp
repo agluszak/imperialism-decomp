@@ -179,8 +179,7 @@ void ComposeAndDispatchTurnSummaryLocalizedMessage() {
   }
 
   if (strcmp(g_szEmptyString, static_cast<LPCSTR>(summary)) != 0) {
-    g_pUiRuntimeContext->DispatchLocalizedUiMessageWithTemplateA13A0(
-        summary, &g_cstrMapModeMessageStore, 0, 0);
+    g_pUiRuntimeContext->ModalMessage(summary, g_ptMapModeModalMessage, 0, 0);
   }
 }
 
@@ -203,8 +202,7 @@ void TMapUberPicture::HandleEvent(int commandId, TEventHandler* sourceHandler, T
       if (g_pSimMgr->multiplayerSessionRole != 0) {
         CString msg;
         g_pSimMgr->GetString(0x2742, 0x25, &msg);
-        g_pUiRuntimeContext->DispatchLocalizedUiMessageWithTemplateA13A0(
-            msg, &g_cstrMapModeMessageStore, 0, 0);
+        g_pUiRuntimeContext->ModalMessage(msg, g_ptMapModeModalMessage, 0, 0);
       } else {
         ReinitializeGameFlowAndPostTurnEventCode(0x5dd);
       }

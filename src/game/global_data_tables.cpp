@@ -1425,11 +1425,12 @@ const char* g_cstrTradeTotalsBalanceSubstitution0066DB50 = g_szEmptyString;
 // GLOBAL: IMPERIALISM 0x006a13e0
 CList<TView*, TView*> g_UiWidgetBuildStack006a13e0;
 
-// WNetMgr.cpp file-scope template statics; g_WNetPendingPacketList006a5f40 is the
+// WNetMgr.cpp file-scope statics; g_ptNetworkModalMessage006a5ed8 is the POINT passed
+// to TViewMgr::ModalMessage, while g_WNetPendingPacketList006a5f40 is the
 // local-player pending-packet queue that TNetMgr::Send appends heap packet copies to
 // (block size 10, per the original static-init at 0x5e26d0).
 // GLOBAL: IMPERIALISM 0x006a5ed8
-CString g_WNetJoinGameMessageStore006a5ed8;
+POINT g_ptNetworkModalMessage006a5ed8 = {0, 0};
 // GLOBAL: IMPERIALISM 0x006a5f10
 CArray<void*, void*> g_WNetSerializedPtrArrayA006a5f10;
 // GLOBAL: IMPERIALISM 0x006a5f28
@@ -1531,11 +1532,10 @@ const int g_ShipOrderStatusStringIndexByResourceType_0065c7f8[14] = {
 // GLOBAL: IMPERIALISM 0x006a590c
 TInfoBarText* g_pCursorControlPanel = nullptr;
 
-// Shared scratch destination for TDisplayMgr::DispatchDisplayManagerControlStringMessage's
-// messageStoreRef out-parameter (TOfferDeskPicture::CreateNextTradeCommandAndFormatPrompt's
-// out-of-range-quantity error path is the first confirmed writer).
+// Modal-message placement point used by TDisplayMgr's forwarding slot. The original
+// static initializer zeroes both coordinates independently.
 // GLOBAL: IMPERIALISM 0x006a59e0
-CString g_cstrControlStringMessageStore;
+POINT g_ptControlStringModalMessage = {0, 0};
 
 // GLOBAL: IMPERIALISM 0x006a1ab0
 int g_turnEventDialogAnchorPoint[2] = {0, 0};
@@ -1598,27 +1598,26 @@ extern "C" const int g_anGreatPowerPressureHardAlertThresholdByLocale[6] = {6, 6
 extern "C" const int g_anNationStartingTreasuryByLocale[6] = {50000, 10000, 10000, 5000, 5000, 0};
 
 // GLOBAL: IMPERIALISM 0x006a2318
-CString g_cstrArmyOrderMessageStore;
+POINT g_ptArmyOrderModalMessage = {0, 0};
 // GLOBAL: IMPERIALISM 0x006a3180
-CString g_cstrNationComparisonMessageStore;
+POINT g_ptNationComparisonModalMessage = {0, 0};
 // GLOBAL: IMPERIALISM 0x006a5820
-CString g_cstrTechItemMessageStore;
+POINT g_ptTechItemModalMessage = {0, 0};
 // GLOBAL: IMPERIALISM 0x006a3d08
-CString g_cstrNationAwolMessageStore;
+POINT g_ptNationAwolModalMessage = {0, 0};
 // GLOBAL: IMPERIALISM 0x006a45c0
-CString g_cstrMapModeMessageStore;
+POINT g_ptMapModeModalMessage = {0, 0};
 // GLOBAL: IMPERIALISM 0x006a57c8
-CString g_cstrTechCapabilityMessageStore;
-// Message-store slot the TViewMgr prompt helpers (0x5de990/0x5deb40) pass to the
-// localized-message dispatch.
+POINT g_ptTechCapabilityModalMessage = {0, 0};
+// Modal-message placement point used by the TViewMgr prompt helpers (0x5de990/0x5deb40).
 // GLOBAL: IMPERIALISM 0x006a5be0
-CString g_cstrUiPromptMessageStore;
+POINT g_ptUiPromptModalMessage = {0, 0};
 // GLOBAL: IMPERIALISM 0x006a4048
-CString g_cstrQueryFloaterMessageStore;
+POINT g_ptQueryFloaterModalMessage = {0, 0};
 // GLOBAL: IMPERIALISM 0x006a2fc0
-CString g_cstrDiplomacyNoticeMessageStore;
+POINT g_ptDiplomacyNoticeModalMessage = {0, 0};
 // GLOBAL: IMPERIALISM 0x006a4218
-CString g_cstrGameSetupMessageStore;
+POINT g_ptGameSetupModalMessage = {0, 0};
 
 // Last turn tick for which ShowTurnAlertsForActiveNation (0x502b60) ran; the alert
 // pass is skipped until the tick advances.
@@ -1922,9 +1921,9 @@ char g_szUiCloseParen_006973C8[] = ")";
 // GLOBAL: IMPERIALISM 0x0069806c
 char g_szUiOpenParen_0069806C[] = "(";
 // GLOBAL: IMPERIALISM 0x006a2d40
-CString g_cstrCivilianOrderMessageStore;
+POINT g_ptCivilianOrderModalMessage = {0, 0};
 // GLOBAL: IMPERIALISM 0x006a2df0
-CString g_cstrGreatPowerPressureMessage;
+POINT g_ptGreatPowerModalMessage = {0, 0};
 // GLOBAL: IMPERIALISM 0x006a3060
 CString g_cstrUiFontBelweLight;
 // GLOBAL: IMPERIALISM 0x006a3080

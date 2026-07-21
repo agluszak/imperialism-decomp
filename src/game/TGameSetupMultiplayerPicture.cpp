@@ -113,8 +113,7 @@ void TGameSetupMultiplayerPicture::HandleEvent(int commandId, TEventHandler* sou
       if (!accepted) {
         CString errorMsg;
         g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&errorMsg, 0x2737, 0x28);
-        g_pUiRuntimeContext->DispatchLocalizedUiMessageWithTemplateA13A0(
-            errorMsg, &g_cstrGameSetupMessageStore, 0, 0);
+        g_pUiRuntimeContext->ModalMessage(errorMsg, g_ptGameSetupModalMessage, 0, 0);
         g_pGameFlowState->ResetGameFlowStateAndPostTurnEvent5DC();
         return;
       }
@@ -160,8 +159,7 @@ void TGameSetupMultiplayerPicture::HandleEvent(int commandId, TEventHandler* sou
         CString formattedMessage;
         scanBracketExpressions(g_pSimMgr, &formattedMessage, static_cast<LPCSTR>(message),
                                deletedCount);
-        g_pUiRuntimeContext->DispatchLocalizedUiMessageWithTemplateA13A0(
-            formattedMessage, &g_cstrGameSetupMessageStore, 0, 0);
+        g_pUiRuntimeContext->ModalMessage(formattedMessage, g_ptGameSetupModalMessage, 0, 0);
 
         TView* spitControl = ResolveControlByTag(kControlTagSpit);
         spitControl->AssertValid();
