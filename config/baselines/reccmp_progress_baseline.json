@@ -12,8 +12,8 @@
   "flo_orig_only_count": 225,
   "flo_recomp_only_count": 0,
   "git_branch": "fight-undefined",
-  "git_commit": "3fc00c67deee986995156dc54bee73660d0a2041",
-  "git_commit_date": "2026-07-21T19:32:29+02:00",
+  "git_commit": "5947d90d0a2722103e71a48c27c0c1d5b909be1f",
+  "git_commit_date": "2026-07-21T19:37:09+02:00",
   "global_coverage_pct": 23.606223374699017,
   "global_orig_only_count": 8249,
   "global_recomp_only_count": 7011,
@@ -61,7 +61,7 @@
   "target": "IMPERIALISM",
   "template_alias_recognized_count": 4,
   "template_canonical_paired_count": 4,
-  "timestamp_utc": "2026-07-21T17:35:56+00:00",
+  "timestamp_utc": "2026-07-21T17:39:12+00:00",
   "wid_orig_only_count": 0,
   "wid_recomp_only_count": 2
 }
