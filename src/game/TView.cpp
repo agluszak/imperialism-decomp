@@ -72,11 +72,10 @@ void AssertQuickDrawFlag6A1DC8NonZero(void* ptr);
 void TView::PostRenderSlotFC() {}
 
 // FUNCTION: IMPERIALISM 0x00427240
-char TView::HandleMouseCommandToSelf(CPoint* point, int arg2, int arg3, int arg4) {
+char TView::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoint origin) {
   (void)point;
-  (void)arg2;
-  (void)arg3;
-  (void)arg4;
+  (void)event;
+  (void)origin;
   return 0;
 }
 
@@ -843,25 +842,25 @@ char TView::DispatchUiMouseMoveToChildren(CPoint* point, int arg2, int arg3, int
 }
 
 // FUNCTION: IMPERIALISM 0x0048c590
-char TView::DispatchUiMouseEventToChildrenOrSelf_Impl(CPoint* point, int arg2, int arg3, int arg4) {
+char TView::HandleMouseUp(const CPoint& point, TToolboxEvent* event, CPoint origin) {
   if (childList44 != 0) {
     POSITION pos = childList44->GetTailPosition();
     while (pos != NULL) {
       TView* child = static_cast<TView*>(childList44->GetPrev(pos));
 
-      CPoint childPoint = *point;
+      CPoint childPoint = point;
       child->UpdateAfterBitmapChange(&childPoint);
       if (child->PointInBoundsAndActionable(&childPoint) != 0 &&
-          child->DispatchUiMouseEventToChildrenOrSelf_Impl(&childPoint, arg2, arg3, arg4) != 0) {
+          child->HandleMouseUp(childPoint, event, origin) != 0) {
         return 1;
       }
     }
   }
 
   if (PrepareForDrawing() != 0) {
-    CPoint localPoint = *point;
+    CPoint localPoint = point;
     if (GetBoolSlot28() != 0) {
-      return HandleMouseCommandToSelf(&localPoint, arg2, arg3, arg4) != 0;
+      return DoMouseCommand(localPoint, event, origin) != 0;
     }
   }
   return 0;

@@ -101,9 +101,8 @@ char TGameWindow::DispatchUiMouseMoveToChildren(CPoint* point, int arg2, int arg
 }
 
 // FUNCTION: IMPERIALISM 0x004ffd40
-char TGameWindow::DispatchUiMouseEventToChildrenOrSelf_Impl(CPoint* point, int arg2, int arg3,
-                                                            int arg4) {
-  return TView::DispatchUiMouseEventToChildrenOrSelf_Impl(point, arg2, arg3, arg4);
+char TGameWindow::HandleMouseUp(const CPoint& point, TToolboxEvent* event, CPoint origin) {
+  return TView::HandleMouseUp(point, event, origin);
 }
 
 // FUNCTION: IMPERIALISM 0x004ffd70

@@ -29,24 +29,24 @@ void TInteriorMinisterView::HandleEvent(int commandId, TEventHandler* sourceHand
   unsigned int tag = sourceHandler->controlTag;
   if (commandId == 0xa) {
     if (tag == kControlTagBack) {
-      NotifyWindowStatusTick();
+      CloseBooks();
       return;
     } else if (tag == kControlTagOkay) {
-      NotifyWindowStatusTick();
+      CloseBooks();
       TWindow* owner = static_cast<TWindow*>(OwnerPanel());
       g_pGlobalUiRootController->CloseAndFreeWindow(owner);
       return;
     }
   } else if (commandId == 0x14) {
     if (tag == kControlTagRecc) {
-      ShowMinisterHelpDialog(0x25ee);
+      OpenBook(0x25ee);
     } else if (tag == kControlTagTran) {
       if (g_pSimMgr->field14 == 0) {
         TWindow* owner = static_cast<TWindow*>(OwnerPanel());
         g_pGlobalUiRootController->CloseAndFreeWindow(owner);
       }
     } else if (tag == kControlTagTrea) {
-      ShowMinisterHelpDialog(0x25f8);
+      OpenBook(0x25f8);
     }
     return;
   }

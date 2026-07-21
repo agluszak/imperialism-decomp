@@ -30,10 +30,10 @@ void TDefenseMinisterView::HandleEvent(int commandId, TEventHandler* sourceHandl
   unsigned int tag = sourceHandler->controlTag;
   if (commandId == 0xa) {
     if (tag == kControlTagBack) {
-      NotifyWindowStatusTick();
+      CloseBooks();
       return;
     } else if (tag == kControlTagOkay) {
-      NotifyWindowStatusTick();
+      CloseBooks();
       TWindow* owner = static_cast<TWindow*>(OwnerPanel());
       g_pGlobalUiRootController->CloseAndFreeWindow(owner);
       return;
@@ -53,7 +53,7 @@ void TDefenseMinisterView::HandleEvent(int commandId, TEventHandler* sourceHandl
         g_pUiRuntimeContext->ModalMessage(message, g_ptDiplomacyNoticeModalMessage, 1, 0);
       }
     } else if (tag == kControlTagRecc) {
-      ShowMinisterHelpDialog(0x258a);
+      OpenBook(0x258a);
     }
     return;
   }

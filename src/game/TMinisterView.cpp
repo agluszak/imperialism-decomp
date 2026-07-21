@@ -6,6 +6,7 @@
 #include "game/TMacViewMgr.h"
 #include "game/TWindow.h"
 #include "game/global_data_tables.h"
+#include "game/ui_invalidation_guard.h"
 #include "game/ui_control_tags.h"
 // SYNTHETIC: IMPERIALISM 0x004f2bb0
 // TMinisterView::CreateObject
@@ -23,19 +24,28 @@ TMinisterView::TMinisterView() : TView(), field60(0) {}
 TMinisterView::~TMinisterView() {}
 
 // FUNCTION: IMPERIALISM 0x004f2ce0
-undefined TMinisterView::SetAuxNationStateSlot(short nationSlot) {
-  field64 = g_apTerrainTypeDescriptorTable[nationSlot];
-  return 0;
+void TMinisterView::StuffValues(short nationSlot) {
+  selectedCountry = g_apTerrainTypeDescriptorTable[nationSlot];
 }
 
 // FUNCTION: IMPERIALISM 0x004f2d10
-char TMinisterView::DispatchUiMouseEventToChildrenOrSelf_Impl(CPoint* point, int arg2, int arg3,
-                                                              int arg4) {
-  (void)point;
-  (void)arg2;
-  (void)arg3;
-  (void)arg4;
-  return 0;
+char TMinisterView::HandleMouseUp(const CPoint& point, TToolboxEvent* event, CPoint origin) {
+  TView* backControl = ResolveControlByTag(kControlTagBack);
+  if (backControl == 0) {
+    MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUDiplomacyViews_00696AE0, 0xb7);
+  }
+
+  TView* okayControl = backControl->ResolveControlByTag(kControlTagOkay);
+  if (okayControl == 0) {
+    MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUDiplomacyViews_00696AE0, 0xb9);
+  }
+
+  if (okayControl->IsActionable() != 0) {
+    okayControl->SetEnabled(0, 1);
+  }
+  return TView::HandleMouseUp(point, event, origin);
 }
 
 // FUNCTION: IMPERIALISM 0x004f2e00
@@ -43,13 +53,13 @@ void TMinisterView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEv
   int tag = sourceHandler->controlTag;
   if (commandId == 0xa) {
     if (tag == kControlTagOkay) {
-      NotifyWindowStatusTick();
+      CloseBooks();
       TWindow* owner = static_cast<TWindow*>(OwnerPanel());
       g_pGlobalUiRootController->CloseAndFreeWindow(owner);
       return;
     }
     if (tag == kControlTagBack) {
-      NotifyWindowStatusTick();
+      CloseBooks();
       return;
     }
   }
@@ -57,21 +67,20 @@ void TMinisterView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEv
 }
 
 // FUNCTION: IMPERIALISM 0x004f2ea0
-void TMinisterView::NotifyWindowStatusTick() {
+void TMinisterView::CloseBooks() {
   g_pDisplayMgr->CloseFloaters();
 }
 
 // FUNCTION: IMPERIALISM 0x004f2ec0
-TView* TMinisterView::ShowMinisterHelpDialog(int dialogId) {
-  NotifyWindowStatusTick();
-  return g_pStrategicMapViewSystem->ResolveTurnEventDialogOrFailAndInvokeSlot9C(dialogId);
+TView* TMinisterView::OpenBook(int bookId) {
+  CloseBooks();
+  return g_pStrategicMapViewSystem->MakeBookDialog(bookId);
 }
 
 // FUNCTION: IMPERIALISM 0x004f2ef0
-undefined TMinisterView::FreeDisplayHelpControl() {
+void TMinisterView::FreeDisplayArea() {
   TView* dispControl = ResolveControlByTag(kControlTagDisp);
   if (dispControl != nullptr) {
     dispControl->Free();
   }
-  return 0;
 }

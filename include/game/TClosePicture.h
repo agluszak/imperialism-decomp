@@ -124,8 +124,7 @@ public:
   virtual ~TClosePicture() override;
 
   DECLARE_DYNCREATE(TClosePicture)
-  virtual char DispatchUiMouseEventToChildrenOrSelf_Impl(CPoint* point, int arg2, int arg3,
-                                                         int arg4) override;
+  virtual char HandleMouseUp(const CPoint& point, TToolboxEvent* event, CPoint origin) override;
 };
 
 ASSERT_SIZE(TClosePicture, 0x94);
