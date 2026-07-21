@@ -176,16 +176,25 @@ public:
   void HandleTurnInstruction_Coun_SetCountrySlotState(void* pInstructionRaw);          // 0x583700
   void HandleTurnInstruction_Emba_SetEmbassyRelationFlags(void* pInstructionRaw);      // 0x582bf0
   void
-  HandleTurnInstruction_Ware_ApplyNationIndexedShortAndRefresh(void* pInstructionRaw);   // 0x5823e0
-  void HandleTurnInstruction_Capa_ApplyNationSlotValueWithDelta(void* pInstructionRaw);  // 0x5822c0
-  void HandleTurnInstruction_Labo_SetNationLaborTierCounts(void* pInstructionRaw);       // 0x582120
+  HandleTurnInstruction_Ware_ApplyNationIndexedShortAndRefresh(void* pInstructionRaw);  // 0x5823e0
+  void HandleTurnInstruction_Capa_ApplyNationSlotValueWithDelta(void* pInstructionRaw); // 0x5822c0
+  void HandleTurnInstruction_Labo_SetNationLaborTierCounts(void* pInstructionRaw);      // 0x582120
+  void
+  HandleTurnInstruction_Army_DeserializeAndCreateRecruitOrders(void* pInstructionRaw);  // 0x5824c0
+  void HandleTurnInstruction_Civi_DeserializeAndCreateWorkOrder(void* pInstructionRaw); // 0x582630
+  void
+  HandleTurnInstruction_Ship_DeserializeAndCreatePrimaryOrders(void* pInstructionRaw);   // 0x582720
   void HandleTurnInstruction_Rail_ApplyRailPlacementAndCashBonus(void* pInstructionRaw); // 0x5829b0
   void HandleTurnInstruction_Port_ApplyPortPlacementAndCashBonus(void* pInstructionRaw); // 0x582a40
   void HandleTurnInstruction_Deve_ApplyMapDevelopmentEntry(void* pInstructionRaw);       // 0x5828f0
   void
-  HandleTurnInstruction_Tech_ApplyTechUnlockAndNotifyNations(void* pInstructionRaw); // 0x582ad0
-  void HandleTurnInstruction_Pric_ApplyDiplomacyPriceEntry(void* pInstructionRaw);   // 0x582b70
-  void HandleTurnInstruction_Subs_ApplyNationSubsidyEntry(void* pInstructionRaw);    // 0x582ce0
+  HandleTurnInstruction_Tech_ApplyTechUnlockAndNotifyNations(void* pInstructionRaw);  // 0x582ad0
+  void HandleTurnInstruction_Pric_ApplyDiplomacyPriceEntry(void* pInstructionRaw);    // 0x582b70
+  void HandleTurnInstruction_Subs_ApplyNationSubsidyEntry(void* pInstructionRaw);     // 0x582ce0
+  void HandleTurnInstruction_Trea_ApplyTreatyAndRelationEntry(void* pInstructionRaw); // 0x582da0
+  void
+  HandleTurnInstruction_Zone_AssignMapActionContextNameByNodeId(void* pInstructionRaw); // 0x582fa0
+  void HandleTurnInstruction_Cnam_AssignCountryName(void* pInstructionRaw);             // 0x583070
 
   // --- fields (offsets and declaration order are load-bearing) ---
   int turnStateCode;

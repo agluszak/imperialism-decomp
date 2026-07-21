@@ -16,6 +16,7 @@
 #include "game/TMacViewMgr.h"
 #include "game/TMultiplayerMgr.h"
 #include "game/TModuleLibraryCacheTableStateB.h"
+#include "game/navy_order.h"
 #include "game/TViewMgr.h"
 #include "game/TTradeMgr.h"
 #include "game/TDiplomacyMgr.h"
@@ -26,6 +27,7 @@
 #include "game/TCity.h"
 #include "game/TCityInteriorMinister.h"
 #include "game/TCivMgr.h"
+#include "game/TCivUnit.h"
 #include "game/TTurnInstructionCursor.h"
 #include "game/TNewsMgr.h"
 #include "game/TNetMgr.h"
@@ -41,6 +43,7 @@
 #include "game/TRemoteMinor.h"
 #include "game/TAnimator.h"
 #include "game/TLanguageMgr.h"
+#include "game/TZone.h"
 #include "game/global_data_tables.h"
 #include "game/mapped_flavor_text.h"
 
@@ -1442,13 +1445,65 @@ void TSimMgr::NameCapitals() {
 
 // FUNCTION: IMPERIALISM 0x00581e60
 void TSimMgr::ProcessScenarioScript() {
+  CString scenarioPath;
   gateFlag7a = 1;
   g_nSaveFormatVersion = -3;
+  g_bScenarioScriptTerminationRequested = 0;
+  g_nScenarioScriptInstructionCount = 0;
 
-  for (int nationSlot = 0; nationSlot < 7; ++nationSlot) {
-    TGreatPower* nation = g_apNationStates[nationSlot];
-    nation->AssignDisplayNamesToUnnamedMilitaryUnits();
-    nation->MarkStatusFlag5HandledIfCapabilityActive();
+  g_pUiViewManager->BuildScenarioPathForModeAndIndex(
+      static_cast<short>(scenarioMapIndexPlusOne) - 1, 2, &scenarioPath);
+
+  for (TZone* zone = g_pMapActionContextListHead; zone != 0; zone = zone->prev18) {
+    CString ordinalText;
+    ordinalText.Format(g_szDecimalFormat, zone->GetContextOrdinalOrInvalid());
+    zone->displayName = ordinalText;
+  }
+
+  CFile_Virtuals* stream = g_pUiViewManager->LoadTableResourceStreamByName(scenarioPath);
+  int resourceSize = g_pUiViewManager->GetResourceStreamSize(stream);
+  unsigned char* buffer = new unsigned char[resourceSize];
+  g_pUiViewManager->ReadResourceStreamIntoBufferAndAdvance(stream, buffer, &resourceSize);
+  g_pUiViewManager->ReleaseResourceStreamIfNotNull(stream);
+
+  STurnInstructionCursor instruction;
+  instruction.tokenCursor = reinterpret_cast<unsigned int*>(buffer);
+  unsigned int instructionTag = 0;
+  while (reinterpret_cast<unsigned char*>(instruction.tokenCursor) < buffer + resourceSize &&
+         instructionTag != 0x5445524d && g_bScenarioScriptTerminationRequested == 0) {
+    instructionTag = *instruction.tokenCursor;
+    int instructionCount = g_nScenarioScriptInstructionCount;
+    unsigned char* raw = reinterpret_cast<unsigned char*>(&instructionTag);
+    unsigned char temp = raw[0];
+    raw[0] = raw[3];
+    raw[3] = temp;
+    temp = raw[1];
+    raw[1] = raw[2];
+    raw[2] = temp;
+    instruction.tokenCursor = instruction.tokenCursor + 1;
+    ++instructionCount;
+    g_nScenarioScriptInstructionCount = instructionCount;
+
+    if (instructionTag != 0x5445524d) {
+      int handlerIndex = 0;
+      while (handlerIndex < 27 &&
+             g_anScenarioScriptInstructionTags[handlerIndex] != instructionTag) {
+        ++handlerIndex;
+      }
+      (this->*g_apfnScenarioScriptInstructionHandlers[handlerIndex])(&instruction);
+    }
+  }
+
+  delete[] buffer;
+  if (g_bScenarioScriptTerminationRequested != 0) {
+    PostWmCloseToMainThreadWindow();
+  }
+
+  TGreatPower** nationCursor = g_apNationStates;
+  while (nationCursor < reinterpret_cast<TGreatPower**>(&g_apNationStates_End)) {
+    (*nationCursor)->AssignDisplayNamesToUnnamedMilitaryUnits();
+    (*nationCursor)->MarkStatusFlag5HandledIfCapabilityActive();
+    ++nationCursor;
   }
 
   gateFlag7a = 0;
@@ -1590,6 +1645,133 @@ void TSimMgr::HandleTurnInstruction_Ware_ApplyNationIndexedShortAndRefresh(void*
   }
   (&city->cityStockCottonB6)[static_cast<short>(indexToken)] = static_cast<short>(valueToken);
   city->VerifyStocks();
+}
+
+// Reads a region index, a recruit-order type, and a repeat count. The region owner is
+// taken from the map-state city-score row; each requested order is registered there and
+// put into order mode 2 with the original -1 payload.
+// FUNCTION: IMPERIALISM 0x005824c0
+void TSimMgr::HandleTurnInstruction_Army_DeserializeAndCreateRecruitOrders(void* pInstructionRaw) {
+  STurnInstructionCursor* instruction = static_cast<STurnInstructionCursor*>(pInstructionRaw);
+
+  unsigned int regionToken = *instruction->tokenCursor;
+  instruction->tokenCursor = instruction->tokenCursor + 1;
+  unsigned char* regionRaw = reinterpret_cast<unsigned char*>(&regionToken);
+  unsigned char temp = regionRaw[0];
+  regionRaw[0] = regionRaw[3];
+  regionRaw[3] = temp;
+  temp = regionRaw[1];
+  regionRaw[1] = regionRaw[2];
+  regionRaw[2] = temp;
+
+  unsigned int orderTypeToken = *instruction->tokenCursor;
+  instruction->tokenCursor = instruction->tokenCursor + 1;
+  unsigned char* orderTypeRaw = reinterpret_cast<unsigned char*>(&orderTypeToken);
+  orderTypeRaw[0] = orderTypeRaw[3];
+  orderTypeRaw[1] = orderTypeRaw[2];
+
+  unsigned int countToken = *instruction->tokenCursor;
+  instruction->tokenCursor = instruction->tokenCursor + 1;
+  unsigned char* countRaw = reinterpret_cast<unsigned char*>(&countToken);
+  temp = countRaw[0];
+  countRaw[0] = countRaw[3];
+  countRaw[3] = temp;
+  temp = countRaw[1];
+  countRaw[1] = countRaw[2];
+  countRaw[2] = temp;
+
+  int remaining = static_cast<int>(countToken);
+  int ownerNationCode =
+      g_pGlobalMapState->cityScoreTable[static_cast<int>(regionToken)].ownerNationCode00;
+  while (remaining > 0) {
+    TMilitaryUnit* order = new TMilitaryUnit();
+    order->InitializeRecruitOrderState(static_cast<short>(orderTypeToken),
+                                       static_cast<int>(regionToken), ownerNationCode, 0);
+    order->SetOrderModeSlot34(2, -1);
+    --remaining;
+  }
+}
+
+// Reads a civilian work-order type and terrain row, resolves the row's owner tag, then
+// constructs and registers the corresponding civilian order. The dispatch receiver is
+// TSimMgr; the previous TGreatPower ownership was a Ghidra-attribution error.
+// FUNCTION: IMPERIALISM 0x00582630
+void TSimMgr::HandleTurnInstruction_Civi_DeserializeAndCreateWorkOrder(void* pInstructionRaw) {
+  STurnInstructionCursor* instruction = static_cast<STurnInstructionCursor*>(pInstructionRaw);
+
+  unsigned int orderTypeToken = *instruction->tokenCursor;
+  instruction->tokenCursor = instruction->tokenCursor + 1;
+  unsigned char* orderTypeRaw = reinterpret_cast<unsigned char*>(&orderTypeToken);
+  orderTypeRaw[0] = orderTypeRaw[3];
+  orderTypeRaw[1] = orderTypeRaw[2];
+
+  unsigned int terrainToken = *instruction->tokenCursor;
+  instruction->tokenCursor = instruction->tokenCursor + 1;
+  unsigned char* terrainRaw = reinterpret_cast<unsigned char*>(&terrainToken);
+  terrainRaw[0] = terrainRaw[3];
+  terrainRaw[1] = terrainRaw[2];
+
+  int ownerNationTag =
+      g_pGlobalMapState->terrainStateTable[static_cast<short>(terrainToken)].ownerNationTag04;
+  TCivUnit* order = new TCivUnit();
+  order->InitializeCivWorkOrderState(orderTypeToken, terrainToken, ownerNationTag);
+}
+
+// Reads nation, navy-order type, map-action-context id, and count. It updates the
+// nation's parallel city count then creates that many primary navy-order nodes.
+// FUNCTION: IMPERIALISM 0x00582720
+void TSimMgr::HandleTurnInstruction_Ship_DeserializeAndCreatePrimaryOrders(void* pInstructionRaw) {
+  STurnInstructionCursor* instruction = static_cast<STurnInstructionCursor*>(pInstructionRaw);
+
+  unsigned int nationToken = *instruction->tokenCursor;
+  instruction->tokenCursor = instruction->tokenCursor + 1;
+  unsigned char* nationRaw = reinterpret_cast<unsigned char*>(&nationToken);
+  unsigned char temp = nationRaw[0];
+  nationRaw[0] = nationRaw[3];
+  nationRaw[3] = temp;
+  temp = nationRaw[1];
+  nationRaw[1] = nationRaw[2];
+  nationRaw[2] = temp;
+
+  unsigned int orderTypeToken = *instruction->tokenCursor;
+  instruction->tokenCursor = instruction->tokenCursor + 1;
+  unsigned char* orderTypeRaw = reinterpret_cast<unsigned char*>(&orderTypeToken);
+  orderTypeRaw[0] = orderTypeRaw[3];
+  orderTypeRaw[1] = orderTypeRaw[2];
+
+  unsigned int contextToken = *instruction->tokenCursor;
+  instruction->tokenCursor = instruction->tokenCursor + 1;
+  unsigned char* contextRaw = reinterpret_cast<unsigned char*>(&contextToken);
+  contextRaw[0] = contextRaw[3];
+  contextRaw[1] = contextRaw[2];
+
+  unsigned int countToken = *instruction->tokenCursor;
+  instruction->tokenCursor = instruction->tokenCursor + 1;
+  unsigned char* countRaw = reinterpret_cast<unsigned char*>(&countToken);
+  temp = countRaw[0];
+  countRaw[0] = countRaw[3];
+  countRaw[3] = temp;
+  temp = countRaw[1];
+  countRaw[1] = countRaw[2];
+  countRaw[2] = temp;
+
+  short orderType = static_cast<short>(orderTypeToken);
+  int nationSlot = static_cast<int>(nationToken);
+  TZone* context = FindMapActionContextByNodeId(static_cast<short>(contextToken));
+  TCity* city;
+  if (g_apNationStates[nationSlot] == 0) {
+    city = 0;
+  } else {
+    city = g_apNationStates[nationSlot]->city;
+  }
+  city->orderCountByType5c[orderType] =
+      static_cast<short>(city->orderCountByType5c[orderType] + static_cast<short>(countToken));
+
+  int remaining = static_cast<int>(countToken);
+  while (remaining != 0) {
+    CreateNavyPrimaryOrderNodeAndAssignDisplayName(orderType, context, nationSlot, 0);
+    --remaining;
+  }
 }
 
 // Reads a big-endian 32-bit nation slot then a big-endian short transport-capacity value,
@@ -1825,6 +2007,59 @@ void TSimMgr::HandleTurnInstruction_Subs_ApplyNationSubsidyEntry(void* pInstruct
       static_cast<NationSlot>(targetToken), static_cast<int>(levelToken));
 }
 
+// Reads source nation, target nation, and relation code, applies the diplomacy entry,
+// and performs the symmetric relation-side-effect update used by code 5.
+// FUNCTION: IMPERIALISM 0x00582da0
+void TSimMgr::HandleTurnInstruction_Trea_ApplyTreatyAndRelationEntry(void* pInstructionRaw) {
+  STurnInstructionCursor* instruction = static_cast<STurnInstructionCursor*>(pInstructionRaw);
+
+  unsigned int sourceToken = *instruction->tokenCursor;
+  instruction->tokenCursor = instruction->tokenCursor + 1;
+  unsigned char* sourceRaw = reinterpret_cast<unsigned char*>(&sourceToken);
+  unsigned char temp = sourceRaw[0];
+  sourceRaw[0] = sourceRaw[3];
+  sourceRaw[3] = temp;
+  temp = sourceRaw[1];
+  sourceRaw[1] = sourceRaw[2];
+  sourceRaw[2] = temp;
+
+  unsigned int targetToken = *instruction->tokenCursor;
+  instruction->tokenCursor = instruction->tokenCursor + 1;
+  unsigned char* targetRaw = reinterpret_cast<unsigned char*>(&targetToken);
+  temp = targetRaw[0];
+  targetRaw[0] = targetRaw[3];
+  targetRaw[3] = temp;
+  temp = targetRaw[1];
+  targetRaw[1] = targetRaw[2];
+  targetRaw[2] = temp;
+
+  unsigned int relationToken = *instruction->tokenCursor;
+  instruction->tokenCursor = instruction->tokenCursor + 1;
+  unsigned char* relationRaw = reinterpret_cast<unsigned char*>(&relationToken);
+  temp = relationRaw[0];
+  relationRaw[0] = relationRaw[3];
+  relationRaw[3] = temp;
+  temp = relationRaw[1];
+  relationRaw[1] = relationRaw[2];
+  relationRaw[2] = temp;
+
+  int sourceNation = static_cast<int>(sourceToken);
+  int targetNation = static_cast<int>(targetToken);
+  int relationCode = static_cast<int>(relationToken);
+  g_pDiplomacyTurnStateManager->SetNationPairDiplomacyRelationCodeFinal(sourceNation, targetNation,
+                                                                        relationCode);
+  if (relationCode == 5) {
+    TDiplomacyMgr* diplomacy = g_pDiplomacyTurnStateManager;
+    short relationSideEffect = 2;
+    diplomacy->relationSideEffectMatrix1402[sourceNation * kNationSlotCount + targetNation] =
+        relationSideEffect;
+    diplomacy->relationSideEffectMatrix1402[targetNation * kNationSlotCount + sourceNation] =
+        relationSideEffect;
+    g_apTerrainTypeDescriptorTable[targetNation]->ApplyJoinEmpireMode1TargetTransition(
+        sourceNation);
+  }
+}
+
 // Reads one big-endian short token (the scenario year) and stores it, scaled to quarter
 // ticks (year * 4), into the turn-flow tick field at +0x2c.
 // FUNCTION: IMPERIALISM 0x00582ed0
@@ -1862,6 +2097,60 @@ void TSimMgr::HandleTurnInstruction_Prov_ApplyProvinceAssignmentEntry(void* pIns
 
   g_pGlobalMapState->DispatchFormationEntryActionsAndMaybeCreateTurnEvent12(
       static_cast<short>(cityToken), static_cast<int>(nationToken));
+}
+
+// Reads a map-action-context id and a fixed 64-byte inline name, then updates the
+// matching context's display name.
+// FUNCTION: IMPERIALISM 0x00582fa0
+void TSimMgr::HandleTurnInstruction_Zone_AssignMapActionContextNameByNodeId(void* pInstructionRaw) {
+  STurnInstructionCursor* instruction = static_cast<STurnInstructionCursor*>(pInstructionRaw);
+
+  unsigned int contextToken = *instruction->tokenCursor;
+  const char* rawName = reinterpret_cast<const char*>(instruction->tokenCursor + 1);
+  instruction->tokenCursor = instruction->tokenCursor + 1;
+  unsigned char* contextRaw = reinterpret_cast<unsigned char*>(&contextToken);
+  contextRaw[0] = contextRaw[3];
+  contextRaw[1] = contextRaw[2];
+
+  CString contextName(rawName);
+  instruction->tokenCursor =
+      reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(instruction->tokenCursor) + 0x40);
+  short contextId = static_cast<short>(contextToken);
+  if (FindMapActionContextByNodeId(contextId) != 0) {
+    TZone* context = FindMapActionContextByNodeId(contextId);
+    context->displayName = contextName;
+  }
+}
+
+// Reads a country slot and fixed 64-byte inline display name. The three otherwise-empty
+// CString locals are present in the original body and are kept so VC5 emits the same EH
+// construction/destruction shape.
+// FUNCTION: IMPERIALISM 0x00583070
+void TSimMgr::HandleTurnInstruction_Cnam_AssignCountryName(void* pInstructionRaw) {
+  STurnInstructionCursor* instruction = static_cast<STurnInstructionCursor*>(pInstructionRaw);
+
+  unsigned int countryToken = *instruction->tokenCursor;
+  const char* rawName = reinterpret_cast<const char*>(instruction->tokenCursor + 1);
+  instruction->tokenCursor = instruction->tokenCursor + 1;
+  unsigned char* countryRaw = reinterpret_cast<unsigned char*>(&countryToken);
+  unsigned char temp = countryRaw[0];
+  countryRaw[0] = countryRaw[3];
+  countryRaw[3] = temp;
+  temp = countryRaw[1];
+  countryRaw[1] = countryRaw[2];
+  countryRaw[2] = temp;
+
+  CString countryName(rawName);
+  instruction->tokenCursor =
+      reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(instruction->tokenCursor) + 0x40);
+  CString unusedNamePartA;
+  CString unusedNamePartB;
+  CString unusedNamePartC;
+
+  int countryIndex = static_cast<int>(countryToken);
+  g_apTerrainTypeDescriptorTable[countryIndex]->SetNationDisplayNameAndLocalizationSlotRef(
+      countryName);
+  g_apTerrainTypeDescriptorTable[countryIndex]->identitySharedString1 = countryName;
 }
 
 // Reads three big-endian 16-bit tokens (source nation, target nation, then relation

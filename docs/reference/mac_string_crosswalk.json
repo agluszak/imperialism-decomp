@@ -14127,6 +14127,17 @@
       ],
       "source_file": "src/game/TSimMgr.cpp"
     },
+    "0x00581e60": {
+      "references": [
+        {
+          "address": "0x0069430c",
+          "kind": "embedded_global",
+          "symbol": "g_szDecimalFormat",
+          "text": "%d"
+        }
+      ],
+      "source_file": "src/game/TSimMgr.cpp"
+    },
     "0x00585ba0": {
       "references": [
         {
@@ -179013,7 +179024,7 @@
   "summary": {
     "embedded_globals": 766,
     "formula_matches": 2356,
-    "functions_with_references": 266,
+    "functions_with_references": 267,
     "mac_strings": 3821,
     "mac_strings_with_candidates": 3091,
     "text_resources": 0,
