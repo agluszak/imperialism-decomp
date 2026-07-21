@@ -2729,8 +2729,7 @@ address|matching|name
 0x5113d0|1.0|TMapMgr::CheckTileVariantCodeMembershipSetC
 0x511440|1.0|TMapMgr::CheckTileVariantCodeMembershipSetD
 0x5114b0|0.025|CheckTilePatternMaskAllowedByModeFlag
-0x511610|0.0|TMapMgr::UpdateStrategicMapTileIconVariantState
-0x511614|0.0|UpdateStrategicMapTileIconVariantState
+0x511610|0.2504970178926441|TMapMgr::UpdateStrategicMapTileIconVariantState
 0x511a70|0.23433242506811988|TMapMgr::TMapMaker_EnsureRegionClassHasSubtype3And4AssignmentsWithRng
 0x511e80|1.0|TMapMgr::TMapMaker_EnsureMapDataStreamOpenedAndMaybeTickUiProgress
 0x511ed0|0.6666666666666666|TMapMgr::DispatchTurnEvent7DDForActiveNation
@@ -3501,7 +3500,7 @@ address|matching|name
 0x545660|1.0|TMultiplayerMgr::ResetLocalUiStateAndPostTurnEvent5E5
 0x5456a0|0.14814814814814814|ResetDialogContextField40AndEmitTurnEvent3Mode18
 0x545730|0.016666666666666666|TMultiplayerMgr::RouteAndProcessDiplomacyTurnStateEventQueue
-0x545940|0.4218346253229974|TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine
+0x545940|0.4231266149870801|TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine
 0x549240|0.6666666666666666|TouchSessionActiveNationId
 0x549280|1.0|TMultiplayerMgr::AppendNodeToTurnEventLinkedListAt6C
 0x5493c0|0.3516483516483517|TMultiplayerMgr::CreateAndSendTurnEvent11_MapOffsetAndFlags
@@ -4589,8 +4588,8 @@ address|matching|name
 0x58f110|0.782608695652174|TCivDescription::UpdateCivilianOrderClassAndRefreshTargetCounts
 0x58f1a0|0.22310756972111553|TCivDescription::BeginMouseCaptureAndStartRepeatTimer
 0x58f3c0|1.0|TCivDescription::UpdateCivilianOrderTargetTileCountsForOwnerNation
-0x58f550|0.4825174825174825|TCivDescription::ApplyRectSlot110
-0x58f7b0|0.004962779156327543|TCivDescription::DrawEngineer
+0x58f550|0.5664335664335665|TCivDescription::ApplyRectSlot110
+0x58f7b0|0.5983827493261455|TCivDescription::DrawEngineer
 0x58fec0|0.007067137809187279|TCivDescription::DrawProspector
 0x5903c0|0.004514672686230248|TCivDescription::DrawDeveloper
 0x590b90|0.4897959183673469|TCivReport::CreateObject
@@ -4822,7 +4821,7 @@ address|matching|name
 0x5a02e0|0.17616580310880828|TTacticalBattle::PropagateTileAccessibilityStrengthLevels
 0x5a0420|1.0|TTacticalBattle::ComputeHexNeighborTileIndices_005A0420
 0x5a0550|0.08695652173913043|IsHexNeighborTileIndex
-0x5a05a0|0.005847953216374269|ComputeTacticalHoverCursorStateIndex
+0x5a05a0|0.39285714285714285|TTacticalBattle::ComputeTacticalHoverCursorStateIndex
 0x5a0a90|0.0|ResolveTacticalHoverCursorToken
 0x5a0c50|1.0|TTacticalBattle::HandleTacticalBattleCommandTag
 0x5a0d60|1.0|TTacticalBattle::QueueTacticalEventPacket232A
@@ -4830,7 +4829,7 @@ address|matching|name
 0x5a1010|1.0|TTacticalBattle::SetCurrentTacticalUnitSelection
 0x5a10e0|0.28125|TTacticalBattle::ProcessTacticalUnitState1TurnStep
 0x5a1400|1.0|TTacticalBattle::HasEnemyUnitOnTilesFlankingHexDirection
-0x5a1520|0.5259259259259259|TTacticalBattle::MoveTacticalUnitTowardTile
+0x5a1520|0.48148148148148145|TTacticalBattle::MoveTacticalUnitTowardTile
 0x5a16e0|0.7192429022082019|TTacticalBattle::BuildPathToTargetByDistanceField
 0x5a1910|1.0|TTacticalBattle::MoveTacticalUnitBetweenTiles
 0x5a1a20|0.7931034482758621|TTacticalBattle::ResolveTacticalReactionChecksForTile
@@ -4878,7 +4877,7 @@ address|matching|name
 0x5a5500|0.5|TNavyBattle::CreateTNavyBattleInstance
 0x5a5520|1.0|TNavyBattle::GetRuntimeClass
 0x5a55c0|1.0|TNavyBattle::DeployTacticalUnitToTile
-0x5a5730|0.6744186046511628|TNavyBattle::EvaluateAndResolveTacticalActionAgainstTileOccupant
+0x5a5730|0.6686046511627907|TNavyBattle::EvaluateAndResolveTacticalActionAgainstTileOccupant
 0x5a59a0|1.0|ConvertHexTileIndexToRowAndDoubleColumn
 0x5a59f0|0.020618556701030927|TNavyBattle::ComputeTacticalReachableTileCostsByUnitCategory
 0x5a5b70|0.8571428571428571|TNavyBattle::FinalizeTacticalBattleOutcome
@@ -4917,7 +4916,7 @@ address|matching|name
 0x5a6560|0.2222222222222222|TNextMoveCommand::ConstructTNextMoveCommandBaseState
 0x5a6590|0.9090909090909091|TNextMoveCommand::`scalar deleting destructor'
 0x5a6620|0.43478260869565216|TNextMoveCommand::DoIt
-0x5a6940|0.819672131147541|ClipSrcRectToBoundsAndOffsetDstRect
+0x5a6940|0.8360655737704918|ClipSrcRectToBoundsAndOffsetDstRect
 0x5a6a20|0.927933293627159|InitializeTacticalUnitFacingOffsetTable
 0x5a82b0|1.0|TTacticalBattleView::CreateObject
 0x5a8330|1.0|TTacticalBattleView::GetRuntimeClass
@@ -4940,7 +4939,7 @@ address|matching|name
 0x5a8d40|0.009950248756218905|TTacticalBattleView::HandleCursorHoverSelectionByChildHitTestAndFallback
 0x5a9090|0.8208955223880597|TTacticalBattleView::PlayTacticalTileEffect
 0x5a9170|0.9454545454545454|TTacticalBattleView::RunOneTimeAnimationModalWaitAndInvalidateCityDialog
-0x5a9240|0.563855421686747|TTacticalBattleView::AnimateTacticalUnitMoveBetweenTiles
+0x5a9240|0.5397590361445783|TTacticalBattleView::AnimateTacticalUnitMoveBetweenTiles
 0x5a9550|0.22984562607204118|TTacticalBattleView::DrawUiTilesAndOverlay
 0x5a99e0|1.0|DrawHexSelectionOutlineSegments
 0x5a9b40|0.92|TTacticalBattleView::UpdateTacticalActionControlBitmapForCurrentUnit
