@@ -25934,6 +25934,25 @@
       ],
       "source_file": "src/game/TViewMgr.cpp"
     },
+    "0x005dc1e0": {
+      "references": [
+        {
+          "group": 10047,
+          "index": 3,
+          "kind": "windows_gob",
+          "load_string_id": 21663,
+          "text": "Your excellency, select your city site. Like any port or depot, your city will draw in resources from the surrounding countryside. Your city will be the hub of your transport network and your industrial command center.\\n"
+        },
+        {
+          "group": 10047,
+          "index": 4,
+          "kind": "windows_gob",
+          "load_string_id": 21664,
+          "text": "Select City Site"
+        }
+      ],
+      "source_file": "src/game/TViewMgr.cpp"
+    },
     "0x005dc430": {
       "references": [
         {
@@ -179552,7 +179571,7 @@
   "summary": {
     "embedded_globals": 769,
     "formula_matches": 2356,
-    "functions_with_references": 287,
+    "functions_with_references": 288,
     "mac_strings": 3821,
     "mac_strings_with_candidates": 3091,
     "text_resources": 0,

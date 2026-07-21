@@ -22,7 +22,7 @@ public:
   // No standalone address: VC5 inlines this constructor at both allocation sites,
   // including TSimMgr::RebuildMapContextAndGlobalMapState (0x57c7c0).
   TOcean()
-      : TObject(), nationCount(0), contextArray(0), routeNodeCount(0), routeRects(0),
+      : TObject(), nationCount(0), contextArray(0), routeNodeCount(0), routeSegments(0),
         selectedTaskForce14(0) {}
   DECLARE_DYNCREATE(TOcean)
   virtual ~TOcean() override; // slot 0x01 (scalar deleting destructor)
@@ -36,14 +36,14 @@ public:
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
   short nationCount;    // +0x04
   TZone* contextArray;  // +0x08
-  short routeNodeCount; // +0x0c number of route records in routeRects
+  short routeNodeCount; // +0x0c number of route records in routeSegments
   char pad0e[2];        // +0x0e
-  CRect* routeRects;    // +0x10 heap buffer of routeNodeCount 0x10-byte route records
+  CRect* routeSegments; // +0x10 heap buffer of routeNodeCount map-route line segments
   // +0x14: the currently-selected task force cached for the active map-order entry
   // (maintained by EnsureSelectedTaskForceForOrderOwnerAndRefresh); zeroed in the ctor.
   TTaskForce* selectedTaskForce14; // +0x14
 
-  // Reallocate routeRects to hold `count` 0x10-byte route records. 0x0052e7b0.
+  // Reallocate routeSegments to hold `count` 0x10-byte route records. 0x0052e7b0.
   void AllocateRouteNodeStateBufferByCount(short count);
 
   // Map-action context (TZone, stride 0x48) at the given index in contextArray. 0x00563330.
@@ -115,9 +115,9 @@ ASSERT_SIZE(TOcean, 0x18);
 void NotifyMapUberPictureTileMarker(short tileIndex);
 
 // Map-action-context maintenance passes (bodies in TZone.cpp).
-void PopulatePortZoneAdjacencyToNearbyCityContexts();       // 0x00563da0
-void RefreshPortZoneNeighborContextLinksAndFallbacks();     // 0x00563f50
-void RegenerateAllMapActionContextStatusCodes();            // 0x00563220
+void PopulatePortZoneAdjacencyToNearbyCityContexts();   // 0x00563da0
+void RefreshPortZoneNeighborContextLinksAndFallbacks(); // 0x00563f50
+void RegenerateAllMapActionContextStatusCodes();        // 0x00563220
 
 void SetMapTileStateByteAndNotifyObserver(int tileIndex, int stateByte);
 

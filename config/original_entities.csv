@@ -1178,7 +1178,7 @@ address|name|symbol|size|type|prototype|provenance
 495230|SetQuickDrawTextFont||28|function|undefined SetQuickDrawTextFont()|
 495260|SetQuickDrawTextSize||28|function|undefined SetQuickDrawTextSize()|
 495290|SetQuickDrawTextFace||28|function|undefined SetQuickDrawTextFace()|
-495310|SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty||32|function|undefined SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty()|
+495310|SetQuickDrawPenSizeAndMarkDirty||32|function|void __cdecl SetQuickDrawPenSizeAndMarkDirty(short horizontalSize, short verticalSize)|listing
 4953a0|ResetQuickDrawStrokeState||47|function|undefined ResetQuickDrawStrokeState()|
 4953e0|RenderUiBitmapOnRuntimeSurfaceContext_Impl||10|function|undefined RenderUiBitmapOnRuntimeSurfaceContext_Impl()|
 495400|RenderUiBitmapOnRuntimeSurfaceContext_Impl_At00495400||38|function|undefined RenderUiBitmapOnRuntimeSurfaceContext_Impl_At00495400()|
@@ -3097,10 +3097,10 @@ address|name|symbol|size|type|prototype|provenance
 50a470|TMacViewMgr::BuildStrategicMapGaugeAtlasFrom1422And1423||436|function|void BuildStrategicMapGaugeAtlasFrom1422And1423()|
 50a6a0|TMacViewMgr::RefreshCityCapabilityUiHandlesForActiveNation||298|function|void RefreshCityCapabilityUiHandlesForActiveNation()|
 50a820|TMacViewMgr::BuildStrategicMapTileOverlayStripSurfaces800To807||360|function|void BuildStrategicMapTileOverlayStripSurfaces800To807()|
-50a9f0|TMacViewMgr::RenderOffscreenBitmapGridStripAndRestoreContext||2394|function|undefined RenderOffscreenBitmapGridStripAndRestoreContext()|
+50a9f0|TMacViewMgr::BuildStrategicMapRenderAtlasesAndTileMaskCaches||2394|function|void BuildStrategicMapRenderAtlasesAndTileMaskCaches()|
 50b5b0|TMacViewMgr::ReloadBitmap244AndRefreshUiCaches||98|function|void ReloadBitmap244AndRefreshUiCaches()|
-50b640|TMacViewMgr::RenderTurnEventPalettePreviewSurfaceAndProgress||730|function|undefined RenderTurnEventPalettePreviewSurfaceAndProgress()|
-50b9e0|TMacViewMgr::RebuildMapTileNeighborHighlightPolygonsForAllTiles||179|function|undefined RebuildMapTileNeighborHighlightPolygonsForAllTiles()|
+50b640|TMacViewMgr::RenderTurnEventPalettePreviewSurfaceAndProgress||730|function|void RenderTurnEventPalettePreviewSurfaceAndProgress()|listing
+50b9e0|TMacViewMgr::RebuildMapTileNeighborHighlightPolygonsForAllTiles||179|function|void RebuildMapTileNeighborHighlightPolygonsForAllTiles()|listing
 50bad0|TMacViewMgr::RebuildNationClipRegionsAndDispatchMapEvent||187|function|undefined RebuildNationClipRegionsAndDispatchMapEvent()|
 50bbc0|TMacViewMgr::OrphanCallChain_C4_I35_0050bbc0||102|function|undefined OrphanCallChain_C4_I35_0050bbc0(int * param_1, undefined4 param_2, short param_3)|
 50bc50|TMacViewMgr::SyncSellTaggedChildControlWithNationState||369|function|undefined SyncSellTaggedChildControlWithNationState()|
@@ -3358,29 +3358,29 @@ address|name|symbol|size|type|prototype|provenance
 5211c0|TMapDialog::DrawMapDialogGuidePatternSetG_005211c0||303|function|undefined DrawMapDialogGuidePatternSetG_005211c0()|
 521340|TMapDialog::DrawMapDialogGuidePatternSetH_00521340||386|function|undefined DrawMapDialogGuidePatternSetH_00521340()|
 521540|TMapDialog::DrawMapDialogGuidePatternSetI_00521540||249|function|undefined DrawMapDialogGuidePatternSetI_00521540()|
-521680|TMapDialog::DrawHexEdgeConnectionGlyphsByMask||754|function|undefined DrawHexEdgeConnectionGlyphsByMask()|
-521a40|TMapDialog::EmitHexAdjacencyTransitionEventsByBitmask||1163|function|undefined EmitHexAdjacencyTransitionEventsByBitmask()|
+521680|TMapDialog::DrawCityBorderSegmentsByMask||754|function|void __thiscall DrawCityBorderSegmentsByMask(unsigned char borderMask, int screenX, int screenY, short tileIndex)|listing
+521a40|TMapDialog::DrawNationBorderSegmentsByMask||1163|function|void __thiscall DrawNationBorderSegmentsByMask(unsigned char borderMask, int screenX, int screenY, short tileIndex)|listing
 522000|TMapDialog::DrawMapDialogOwnershipMarkerForNation_00522000||179|function|undefined DrawMapDialogOwnershipMarkerForNation_00522000()|
-5220f0|TMapDialog::RenderMapDialogDiplomacyNeighborRelationHints||2267|function|undefined RenderMapDialogDiplomacyNeighborRelationHints()|
-522c10|TMapDialog::DrawMapDialogWrappedTileConnectionMarker_00522c10||171|function|undefined DrawMapDialogWrappedTileConnectionMarker_00522c10()|
+5220f0|TMapDialog::RenderMapDialogDiplomacyNeighborRelationHints||2267|function|void __thiscall RenderMapDialogDiplomacyNeighborRelationHints(int arg1, int arg2, short arg3)|listing
+522c10|TMapDialog::DrawWrappedMapRouteSegment||171|function|void __thiscall DrawWrappedMapRouteSegment(short col1, int row1, short col2, int row2)|listing
 522cf0|TMapDialog::DrawHexNeighborConnectionMask||692|function|undefined DrawHexNeighborConnectionMask()|
-523060|TMapDialog::MapDialogSetFillColor||201|function|undefined WrapperFor_SetQuickDrawFillColor_At00523060(void)|
-523170|TMapDialog::UpdateMapOrderEntryTilePreviewSlot||948|function|undefined UpdateMapOrderEntryTilePreviewSlot()|
+523060|TMapDialog::DrawGeneratedMapRouteSegmentsAndResetFillColor||201|function|void __thiscall DrawGeneratedMapRouteSegmentsAndResetFillColor(void)|listing
+523170|TMapDialog::RenderMapTileAtScreenPositionUsingCache||948|function|void __thiscall RenderMapTileAtScreenPositionUsingCache(short tileIndex, short screenX, short screenY)|listing
 523640|TMapDialog::OrphanTiny_ReturnZero_0048a730||1044|function|undefined RenderMapOrderEntryTilePreview()|
 523b70|TMapDialog::RenderTacticalStackCountIndicatorAndUnitBadge||910|function|void __thiscall RenderTacticalStackCountIndicatorAndUnitBadge(short tileIndex, CRect* dstRect, int flag)|listing
 523ff0|TMapDialog::RenderMapDialogTerrainOverlayFrameByTileOwner||351|function|void __thiscall RenderMapDialogTerrainOverlayFrameByTileOwner(short tileIndex, CRect* dstRect, unsigned char altOverlay)|listing
-5241b0|TMapDialog::CopyCenteredMaskNarrowingBlockKernel||251|function|void __thiscall CopyCenteredMaskNarrowingBlockKernel(unsigned char* src, unsigned char* dest, short srcStride, short destStride)|listing
-5242f0|TMapDialog::GetTEventHandlerClassNamePointer||457|function|undefined GetTEventHandlerClassNamePointer(void)|
-524540|TMapDialog::VTableSlot97||229|function|undefined 'scalar_deleting_destructor'(void)|
-524670|TMapDialog::InitializeForeignMinisterStateFlags||234|function|undefined InitializeForeignMinisterStateFlags(void)|
-5247a0|TMapDialog::AddToForeignMinisterCounterAtIndex||452|function|undefined AddToForeignMinisterCounterAtIndex(void)|
-5249f0|TMapDialog::SetForeignMinisterReadyFlag14||242|function|undefined SetForeignMinisterReadyFlag14(void)|
-524b30|TMapDialog::SelectCandidateTilesWithLowGroundUnitCount||239|function|undefined SelectCandidateTilesWithLowGroundUnitCount(void)|
-524c60|TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920_9c||401|function|undefined OrphanLeaf_NoCall_Ins07_004d8920(void)|
-524e70|TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920_9d||442|function|undefined OrphanLeaf_NoCall_Ins07_004d8920(void)|
-5250a0|TMapDialog::CopyDiamondMaskBlockKernel||439|function|undefined CopyDiamondMaskBlockKernel()|
-5252d0|TMapDialog::CopyDiagonalMaskNarrowingBlockKernel||362|function|undefined CopyDiagonalMaskNarrowingBlockKernel()|
-5254a0|TMapDialog::CopyDiagonalMaskWideningBlockKernel||354|function|undefined CopyDiagonalMaskWideningBlockKernel()|
+5241b0|TMapDialog::CopyTerrainTransitionMaskDirection2||251|function|void __thiscall CopyTerrainTransitionMaskDirection2(unsigned char* src, unsigned char* dest, short srcStride, short destStride)|listing
+5242f0|TMapDialog::CopyTerrainTransitionMaskDirection1||457|function|void __thiscall CopyTerrainTransitionMaskDirection1(unsigned char* src, unsigned char* dest, short srcStride, short destStride)|listing
+524540|TMapDialog::CopyTerrainTransitionMaskDirection0||229|function|void __thiscall CopyTerrainTransitionMaskDirection0(unsigned char* src, unsigned char* dest, short srcStride, short destStride)|listing
+524670|TMapDialog::CopyTerrainTransitionMaskDirection5||234|function|void __thiscall CopyTerrainTransitionMaskDirection5(unsigned char* src, unsigned char* dest, short srcStride, short destStride)|listing
+5247a0|TMapDialog::CopyTerrainTransitionMaskDirection4||452|function|void __thiscall CopyTerrainTransitionMaskDirection4(unsigned char* src, unsigned char* dest, short srcStride, short destStride)|listing
+5249f0|TMapDialog::CopyTerrainTransitionMaskDirection3||242|function|void __thiscall CopyTerrainTransitionMaskDirection3(unsigned char* src, unsigned char* dest, short srcStride, short destStride)|listing
+524b30|TMapDialog::CopyCoastCornerMaskBetweenDirections1And2||239|function|void __thiscall CopyCoastCornerMaskBetweenDirections1And2(unsigned char* src, unsigned char* dest, short srcStride, short destStride)|listing
+524c60|TMapDialog::CopyCoastCornerMaskBetweenDirections0And1||401|function|void __thiscall CopyCoastCornerMaskBetweenDirections0And1(unsigned char* src, unsigned char* dest, short srcStride, short destStride)|listing
+524e70|TMapDialog::CopyCoastCornerMaskBetweenDirections2And3||442|function|void __thiscall CopyCoastCornerMaskBetweenDirections2And3(unsigned char* src, unsigned char* dest, short srcStride, short destStride)|listing
+5250a0|TMapDialog::CopyCoastCornerMaskBetweenDirections5And0||439|function|void __thiscall CopyCoastCornerMaskBetweenDirections5And0(unsigned char* src, unsigned char* dest, short srcStride, short destStride)|listing
+5252d0|TMapDialog::CopyCoastCornerMaskBetweenDirections4And5||362|function|void __thiscall CopyCoastCornerMaskBetweenDirections4And5(unsigned char* src, unsigned char* dest, short srcStride, short destStride)|listing
+5254a0|TMapDialog::CopyCoastCornerMaskBetweenDirections3And4||354|function|void __thiscall CopyCoastCornerMaskBetweenDirections3And4(unsigned char* src, unsigned char* dest, short srcStride, short destStride)|listing
 525670|TMapDialog::Copy64x64TileBlockWithStrideAdjustment||131|function|undefined Copy64x64TileBlockWithStrideAdjustment()|
 525730|TMapDialog::OrphanRetStub_005960e0||36|function|undefined ForwardProjectTileIndexToWrappedScreenOffsetByScale()|
 5258c0|WrapperFor_ftol_At005258c0||30|function|undefined WrapperFor_ftol_At005258c0()|
@@ -4268,10 +4268,10 @@ address|name|symbol|size|type|prototype|provenance
 55e880|TZone::ReturnFalseForZoneCapabilityFlagD||5|function|undefined ReturnFalseForZoneCapabilityFlagD()|
 55e8a0|TZone::ReturnFalseForZoneCapabilityFlagE||5|function|undefined ReturnFalseForZoneCapabilityFlagE()|
 55e8c0|TZone::HasZoneActiveChildCount||12|function|undefined HasZoneActiveChildCount()|
-55e8e0|TZone::GetOrAppendUniqueZonePointerInPrimaryArray||167|function|undefined GetOrAppendUniqueZonePointerInPrimaryArray()|
-55e9c0|TZone::GetOrAppendUniqueZonePointerInSecondaryArray||167|function|undefined GetOrAppendUniqueZonePointerInSecondaryArray()|
-55ead0|TZone::AppendZonePointerToPrimaryArray||124|function|undefined AppendZonePointerToPrimaryArray()|
-55eba0|TZone::AppendZonePointerToSecondaryArray||124|function|undefined AppendZonePointerToSecondaryArray()|
+55e8e0|TZonePrimaryNeighborStretch::GetOrAppendUnique||167|function|TZone** __thiscall GetOrAppendUnique(TZone* zone)|
+55e9c0|TZoneSecondaryNeighborStretch::GetOrAppendUnique||167|function|TGlobalMapCityScoreRecord** __thiscall GetOrAppendUnique(TGlobalMapCityScoreRecord* entry)|
+55ead0|TZonePrimaryNeighborStretch::Add||124|function|void __thiscall Add(TZone* zone)|
+55eba0|TZoneSecondaryNeighborStretch::Add||124|function|void __thiscall Add(TGlobalMapCityScoreRecord* entry)|
 55ec60|TZone::Free||65|function|undefined RemoveZoneFromGlobalListAndRelease()|
 55ed20|TZone::ReadFrom||564|function|undefined DeserializeZoneFromBinaryStream()|
 55eff0|TZone::WriteTo||88|function|undefined SerializeZoneToBinaryStream()|
@@ -5258,7 +5258,7 @@ address|name|symbol|size|type|prototype|provenance
 598840|TToolBarCluster::InvalidateMapRegionForEntryIfUiPassive||29|function|undefined InvalidateMapRegionForEntryIfUiPassive()|
 598870|TMapUberPicture::WrapperFor_InvalidateCityDialogRectRegionChain_At00598870||51|function|undefined WrapperFor_InvalidateCityDialogRectRegionChain_At00598870(undefined4 param_1)|
 5988c0|TMapUberPicture::OrphanCallChain_C2_I18_005988c0||53|function|undefined OrphanCallChain_C2_I18_005988c0(void)|
-598910|TMapUberPicture::OrphanCallChain_C2_I11_00598910||34|function|undefined OrphanCallChain_C2_I11_00598910(undefined4 param_1)|
+598910|TMapUberPicture::PrepareAndRenderMapOverlayMode||34|function|void __thiscall PrepareAndRenderMapOverlayMode(unsigned char overlayMode)|listing
 598950|TMapUberPicture::OrphanLeaf_NoCall_Ins09_00598950||38|function|undefined OrphanLeaf_NoCall_Ins09_00598950(void)|
 598990|TMapUberPicture::OrphanCallChain_C2_I14_00598990||44|function|undefined OrphanCallChain_C2_I14_00598990(void)|
 5989d0|TMapUberPicture::OrphanCallChain_C2_I16_005989d0||49|function|undefined OrphanCallChain_C2_I16_005989d0(void)|
@@ -6084,11 +6084,11 @@ address|name|symbol|size|type|prototype|provenance
 5dbe10|HandleTurnEventTable66F220_Slot08_InvokeMainViewSlots0C_E4||43|function|undefined HandleTurnEventTable66F220_Slot08_InvokeMainViewSlots0C_E4()|
 5dbe50|BuildTurnStateStyledTextAndDispatchMainRoutine||618|function|undefined BuildTurnStateStyledTextAndDispatchMainRoutine()|
 5dc160|InvokeStrategicMapViewMethod6C||11|function|undefined InvokeStrategicMapViewMethod6C()|
-5dc180|InvokeStrategicMapViewMethod68||11|function|undefined InvokeStrategicMapViewMethod68()|
-5dc1a0|InvokeStrategicMapViewMethod74||11|function|undefined InvokeStrategicMapViewMethod74()|
-5dc1c0|TViewMgr::UiRuntimeSlotC4||11|function|undefined UiRuntimeSlotC4()|
-5dc1e0|TViewMgr::HandleTurnEventDialogFactorySlotD0||407|function|undefined HandleTurnEventDialogFactorySlotD0()|
-5dc3f0|HandleTurnEventTable66F220_Slot0C_InvokeGoldViewSlots0C_1E4_14x14||47|function|undefined HandleTurnEventTable66F220_Slot0C_InvokeGoldViewSlots0C_1E4_14x14()|
+5dc180|TViewMgr::ForwardBuildStrategicMapRenderAtlasesAndTileMaskCaches||11|function|void ForwardBuildStrategicMapRenderAtlasesAndTileMaskCaches()|
+5dc1a0|TViewMgr::InvokeStrategicMapViewMethod74||11|function|void InvokeStrategicMapViewMethod74()|listing
+5dc1c0|TViewMgr::InvokeStrategicMapViewMethod70||11|function|void InvokeStrategicMapViewMethod70()|listing
+5dc1e0|TViewMgr::InitializeCitySiteSelectionScreenForNation||407|function|void __thiscall InitializeCitySiteSelectionScreenForNation(int nationSlot)|listing
+5dc3f0|TViewMgr::ConfigureActiveDialogGoldValueGridForTurnEvent3C0||47|function|void ConfigureActiveDialogGoldValueGridForTurnEvent3C0()|listing
 5dc430|HandleTurnEventDialogFactorySlotB8||238|function|undefined HandleTurnEventDialogFactorySlotB8()|
 5dc560|DispatchUiRuntimeMessage102CAndRefreshActiveView||125|function|undefined DispatchUiRuntimeMessage102CAndRefreshActiveView()|
 5dc690|TViewMgr::HandleTurnEventF3D_PopulateRecentTurnMessages||751|function|void __thiscall HandleTurnEventF3D_PopulateRecentTurnMessages(int nationSlot)|
@@ -8608,8 +8608,8 @@ address|name|symbol|size|type|prototype|provenance
 6a1ca0|g_defaultQuickDrawSurfaceSentinel|||global||
 6a1d00|g_nQuickDrawResolvedTextOriginX|||global||
 6a1d04|g_nQuickDrawResolvedTextOriginY|||global||
-6a1d08|g_nQuickDrawStrokeStylePrimary|||global||
-6a1d0c|g_nQuickDrawStrokeStyleSecondary|||global||
+6a1d08|g_nQuickDrawPenHorizontalSize|||global||
+6a1d0c|g_nQuickDrawPenVerticalSize|||global||
 6a1d10|g_Reset_Quick_Draw_State_006A1D10|||global||
 6a1d18|g_globalViewportRectDefaultsRecord|||global||
 6a1d52|g_uQuickDrawCurrentColor|||global||

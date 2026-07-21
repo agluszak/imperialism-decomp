@@ -262,7 +262,7 @@ void TCombatReportView::Draw(RECT* rectBuffer) {
       // Two guide-line ticks positioned from the record's fieldAt18/fieldAt1c ratios
       // (magic-number /7 division reproduces the original's IMUL-based division).
       SetQuickDrawTextOriginWithContextOffset(7, static_cast<short>(y + 3));
-      SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty(1, 4);
+      SetQuickDrawPenSizeAndMarkDirty(1, 4);
       g_pUiRuntimeContext->ApplyLegendSplitSlot34(0x34);
       int guideX = (record->fieldAt18 * 3) / 7 + 7;
       DrawCenteredGuideLineOnMapDc(static_cast<short>(guideX), static_cast<short>(y + 3));

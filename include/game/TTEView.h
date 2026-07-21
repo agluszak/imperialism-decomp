@@ -125,7 +125,9 @@ public:
   // slot 0x73 SetTextFromStringResource inherited unchanged (0x48fed0)
   // slot 0x74 CopyTextTo inherited unchanged (0x4294d0)
   // slot 0x75 DrawTextAligned inherited unchanged (0x4900a0)
-  int MeasureCurrentTextWidthInLayoutRect();
+  // Measures the wrapped text height produced by DrawText(DT_CALCRECT) inside the
+  // inset content rectangle. The original returns bounds.bottom - bounds.top.
+  int MeasureCurrentTextHeightInLayoutRect();
   // Mac-style second-phase init (not the ctor — no vtable store): runs the TStaticText
   // base init, copies the 0x68-0x74 inset rect and the packed text-style descriptor,
   // and seeds textAlignmentCode. Args 1, 10 and 11 are never read (TDeluxeText passes

@@ -274,14 +274,14 @@ public:
   virtual void TMapMaker_EnsureRegionClassHasSubtype3And4AssignmentsWithRng(); // slot 0x11
                                                                                // 0x511a70
   // If field8 is idle: forces hexNeighborWrapHorizontally20 and (re)opens the "mapdata"
-  // session stream via BuildOrLoadGlobalMapStateForSession. If field4 is idle: ticks the
-  // strategic map view's UI-progress method. Called from
+  // session stream via BuildOrLoadGlobalMapStateForSession. If the strategic-map palette
+  // preview is not ready, renders it through the strategic map view. Called from
   // DispatchTurnEvent7DDForActiveNation.
   virtual void TMapMaker_EnsureMapDataStreamOpenedAndMaybeTickUiProgress(); // slot 0x12 0x511e80
   // Ensures the map data stream is ready (slot 0x12), then dispatches turn-event 0x7dd
   // (a UI refresh notification) to g_pUiRuntimeContext for the active nation.
-  virtual void DispatchTurnEvent7DDForActiveNation();      // slot 0x13 0x511ed0
-  virtual void ResetAllTileSpriteVariantIndexToSentinel(); // slot 0x14 0x5178c0
+  virtual void DispatchTurnEvent7DDForActiveNation();     // slot 0x13 0x511ed0
+  virtual void ResetAllTileMarkerSlotIndicesToSentinel(); // slot 0x14 0x5178c0
   void RefreshMapContextRotatingStatusStrings();
   // Builds the set of region classes (TGlobalMapCityScoreRecord::regionClassA3) present in
   // nationA's owned regions (plus every minor nation tied to nationA per
@@ -302,8 +302,7 @@ public:
                                                        short nationTag); // slot 0x16 0x5121d0
   virtual int IsShiftKeyDown();                                          // slot 0x17 0x5122b0
   virtual int IsAltKeyDown();                                            // slot 0x18 0x5122d0
-  virtual short ForwardComputeRepresentativeTileIndexForTerrainTypeWithWrapBias(
-      int terrainType); // slot 0x19 0x511f10
+  virtual int ComputeRepresentativeTileIndexForNation(int nationSlot);   // slot 0x19 0x511f10
   // OR's the hex-direction bit (g_hexDirectionBitMasksAlt_00696ea8) for the direction from
   // sourceTile to destTile into sourceTile's adjacencyBits06, and the opposite direction's
   // bit into destTile's adjacencyBits06. Real signature has 3 stack slots (RET 0xc); the
@@ -331,7 +330,7 @@ public:
   // Seeds recruitSearchVisited0e like the SeedRecruitSearchVisitedState* family: eligible
   // only if the tile is owned by nationTag and its terrainType00 isn't 2/3/4, gated further
   // by IsValidSecondaryNationHomeTileCandidate (0x513980, not yet ported).
-  virtual void MapMgrSlot1F(short nationTag); // slot 0x1f 0x514dc0
+  virtual void SeedValidCitySiteCandidateTilesForNation(short nationTag); // slot 0x1f 0x514dc0
   // Resets recruitSearchVisited0e to 0 across all tiles and clears field9 back to idle.
   virtual void ResetRecruitSearchVisitedState(); // slot 0x20 0x514ef0
   // Seeds recruitSearchVisited0e excluding terrainStateTable[pCivilianOrderEntry->tileIndex06]'s
@@ -632,12 +631,14 @@ public:
   // Only ever written, and only as a single byte (MOV byte ptr [this+4],0 in ReadFrom's
   // decompile) -- not a genuine short; a real 2-byte field there would leave its high byte
   // unaccounted for.
-  unsigned char field4;   // +0x04 -- zeroed unconditionally near the end of ReadFrom
-  unsigned char pad5;     // +0x05
-  short field6;           // +0x06 -- 2-byte stream read
-  unsigned char field8;   // +0x08 -- 1-byte stream read
-  unsigned char field9;   // +0x09 -- 1-byte stream read
-  unsigned char pad0a[2]; // +0x0a -- alignment gap before the +0x0c pointer
+  // Set after the strategic-map palette preview surface has been rendered; cleared by
+  // construction/stream load so the map-data readiness path rebuilds it once.
+  unsigned char strategicMapPalettePreviewReady04; // +0x04
+  unsigned char pad5;                              // +0x05
+  short field6;                                    // +0x06 -- 2-byte stream read
+  unsigned char field8;                            // +0x08 -- 1-byte stream read
+  unsigned char field9;                            // +0x09 -- 1-byte stream read
+  unsigned char pad0a[2];                     // +0x0a -- alignment gap before the +0x0c pointer
   TTerrainStateRecordView* terrainStateTable; // +0x0c
   TGlobalMapCityScoreRecord* cityScoreTable;  // +0x10
   // Per-tile ownership/region table (0x24-byte records, one per map tile: terrain/region
@@ -662,7 +663,7 @@ public:
   static void AdvanceSpiralSearchStateAndStepHexCoordinates(struct HexSpiralSearchState* state);
   static short TileIndexFromRowCol(int row, int col);
 
-  short ComputeRepresentativeTileIndexForTerrainTypeWithWrapBias(short terrainType, char wrapBias);
+  int ComputeRepresentativeTileIndexForNationWithWrapBias(short nationSlot, char wrapBias);
 
   char AreNationsBorderLinked(int nationA, int nationB);
   // 0x517dd0. True if any of cityRecordIndex's adjacent regions is owned by nationCode.
@@ -751,7 +752,7 @@ public:
   TCivUnit* GetTileUnitEntryByOwner(short tileIndex, short nationId);
 
   // 0x513980, 632 bytes, __thiscall, 1 arg (tileIndex), returns bool. Called by
-  // MapMgrSlot1F. TODO stub: large body not
+  // SeedValidCitySiteCandidateTilesForNation. TODO stub: large body not
   // yet ported.
   bool IsValidSecondaryNationHomeTileCandidate(short tileIndex);
 
@@ -818,7 +819,7 @@ public:
   void ClearPerTileByte0FForAllMapTiles();
 
   // Marks field6 ready and, on first call (g_pStrategicMapViewSystem->atlas668 still
-  // null), tail-calls TMacViewMgr::RenderOffscreenBitmapGridStripAndRestoreContext to
+  // null), tail-calls TMacViewMgr::BuildStrategicMapRenderAtlasesAndTileMaskCaches to
   // build it. 0x0050e4e0, __thiscall.
   void InitializeGlobalMapState();
 

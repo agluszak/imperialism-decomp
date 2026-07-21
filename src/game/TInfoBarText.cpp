@@ -30,7 +30,7 @@ void TInfoBarText::SetTextAndLayoutRect(CString text, RECT* layoutRect) {
     layoutRectA4.right = layoutRect->right;
     layoutRectA4.bottom = layoutRect->bottom;
     UpdateTextEntrySharedString(&text);
-    RecenterTextFromMeasuredWidthAndMaybeInvalidate(1);
+    RecenterTextVerticallyFromMeasuredHeightAndMaybeInvalidate(1);
   }
 }
 
@@ -43,7 +43,7 @@ void TInfoBarText::ClearTextAndLayoutRect(int) {
   layoutRectA4.right = 0;
   layoutRectA4.bottom = 0;
   UpdateTextEntrySharedString(&text);
-  RecenterTextFromMeasuredWidthAndMaybeInvalidate(1);
+  RecenterTextVerticallyFromMeasuredHeightAndMaybeInvalidate(1);
 }
 
 // FUNCTION: IMPERIALISM 0x005b6810

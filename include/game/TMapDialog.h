@@ -85,12 +85,13 @@ public:
   // Mac CodeWarrior identity: TMapDialog::InvalidateTile(short). Projects the tile into
   // the current viewport, releases its cached marker, and invalidates its 64x64 cell.
   virtual void InvalidateTile(short tileIndex);
-  virtual undefined RenderStrategicMapTileCell(short tileIndex, short arg2, short arg3);
-  virtual undefined EmitHexAdjacencyTransitionEventsByBitmask(unsigned char connectionMask,
-                                                              int screenX, int screenY,
-                                                              short tileIndex);
-  virtual undefined DrawHexEdgeConnectionGlyphsByMask(unsigned char connectionMask, int screenX,
-                                                      int screenY, short tileIndex);
+  // Renders one 64x64 strategic-map cell into the tile-cache surface. The final two
+  // arguments are destination Y/X respectively (the original callers push X, then Y).
+  virtual void RenderStrategicMapTileCell(short tileIndex, short screenY, short screenX);
+  virtual void DrawNationBorderSegmentsByMask(unsigned char borderMask, int screenX, int screenY,
+                                              short tileIndex);
+  virtual void DrawCityBorderSegmentsByMask(unsigned char borderMask, int screenX, int screenY,
+                                            short tileIndex);
   // Draws a two-toned bilateral-relation marker: the guide pattern selected by
   // relationLevel (0-9) is drawn twice at (originX, originY) — variant 1 tinted for
   // nationA, variant 2 for nationB (0x35 = minor-nation fallback color).
@@ -108,37 +109,47 @@ public:
   virtual void DrawMapDialogGuidePatternSetI_00521540(int originX, int originY, short variant);
   virtual void DrawMapDialogOwnershipMarkerForNation_00522000(unsigned char edgeMask, int screenX,
                                                               int screenY, short tileIndex);
-  virtual undefined RenderMapDialogDiplomacyNeighborRelationHints(int arg1, int arg2, short arg3);
-  virtual void DrawMapDialogWrappedTileConnectionMarker_00522c10(short col1, int row1, short col2,
-                                                                 int row2);
+  virtual void RenderMapDialogDiplomacyNeighborRelationHints(int arg1, int arg2, short arg3);
+  virtual void DrawWrappedMapRouteSegment(short col1, int row1, short col2, int row2);
   virtual void DrawHexNeighborConnectionMask(unsigned char connectionMask, int screenX, int screenY,
                                              short tileIndex);
-  virtual undefined MapDialogSetFillColor();
-  virtual undefined UpdateMapOrderEntryTilePreviewSlot(int arg1, short arg2, short arg3);
-  virtual void CopyCenteredMaskNarrowingBlockKernel(unsigned char* src, unsigned char* dest,
-                                                    short srcStride, short destStride);
-  virtual undefined GetTEventHandlerClassNamePointer(int arg1, int arg2, short arg3, short arg4);
-  virtual undefined VTableSlot97(int arg1, int arg2, short arg3, short arg4);
-  virtual undefined InitializeForeignMinisterStateFlags(int arg1, int arg2, short arg3, short arg4);
-  virtual undefined AddToForeignMinisterCounterAtIndex(int* arg1, int* arg2, short arg3,
-                                                       short arg4);
-  virtual undefined SetForeignMinisterReadyFlag14(int* arg1, int* arg2, short arg3, short arg4);
-  virtual undefined SelectCandidateTilesWithLowGroundUnitCount(unsigned int arg1, int arg2,
-                                                               short arg3, short arg4);
-  virtual undefined OrphanLeaf_NoCall_Ins07_004d8920_9c(int arg1, int arg2, short arg3, short arg4);
-  virtual undefined OrphanLeaf_NoCall_Ins07_004d8920_9d(int arg1, int arg2, short arg3, short arg4);
-  virtual undefined CopyDiamondMaskBlockKernel(int* src, int* dest, short srcStride,
-                                               short destStride);
-  virtual undefined CopyDiagonalMaskNarrowingBlockKernel(int* src, int* dest, short srcStride,
-                                                         short destStride);
-  virtual undefined CopyDiagonalMaskWideningBlockKernel(int* src, int* dest, short srcStride,
-                                                        short destStride);
+  // Draws every generated inter-region route segment in viewport-relative coordinates,
+  // then restores the QuickDraw fill color to black.
+  virtual void DrawGeneratedMapRouteSegmentsAndResetFillColor();
+  virtual void RenderMapTileAtScreenPositionUsingCache(short tileIndex, short screenX,
+                                                       short screenY);
+  // Exact 64x64 pixel wedges used to blend a neighboring terrain sprite into the base tile.
+  virtual void CopyTerrainTransitionMaskDirection2(unsigned char* src, unsigned char* dest,
+                                                   short srcStride, short destStride);
+  virtual void CopyTerrainTransitionMaskDirection1(unsigned char* src, unsigned char* dest,
+                                                   short srcStride, short destStride);
+  virtual void CopyTerrainTransitionMaskDirection0(unsigned char* src, unsigned char* dest,
+                                                   short srcStride, short destStride);
+  virtual void CopyTerrainTransitionMaskDirection5(unsigned char* src, unsigned char* dest,
+                                                   short srcStride, short destStride);
+  virtual void CopyTerrainTransitionMaskDirection4(unsigned char* src, unsigned char* dest,
+                                                   short srcStride, short destStride);
+  virtual void CopyTerrainTransitionMaskDirection3(unsigned char* src, unsigned char* dest,
+                                                   short srcStride, short destStride);
+  // Coast joins occupy the corner between two adjacent hex directions.
+  virtual void CopyCoastCornerMaskBetweenDirections1And2(unsigned char* src, unsigned char* dest,
+                                                         short srcStride, short destStride);
+  virtual void CopyCoastCornerMaskBetweenDirections0And1(unsigned char* src, unsigned char* dest,
+                                                         short srcStride, short destStride);
+  virtual void CopyCoastCornerMaskBetweenDirections2And3(unsigned char* src, unsigned char* dest,
+                                                         short srcStride, short destStride);
+  virtual void CopyCoastCornerMaskBetweenDirections5And0(unsigned char* src, unsigned char* dest,
+                                                         short srcStride, short destStride);
+  virtual void CopyCoastCornerMaskBetweenDirections4And5(unsigned char* src, unsigned char* dest,
+                                                         short srcStride, short destStride);
+  virtual void CopyCoastCornerMaskBetweenDirections3And4(unsigned char* src, unsigned char* dest,
+                                                         short srcStride, short destStride);
   virtual void Copy64x64TileBlockWithStrideAdjustment(int* src, int* dest, short srcStride,
                                                       short destStride);
   // Mac CodeWarrior identity: TMapDialog::GetCenterTile() const.
   virtual int GetCenterTile() const;
   virtual void SetMapDialogCellCoordinatesAndRefresh(int col, int row, int mode);
-  virtual undefined UpdateMapInteractionPreviewParityAndRenderTransientSprites(int unusedArg);
+  virtual void UpdateMapInteractionPreviewParityAndRenderTransientSprites(int unusedArg);
 };
 
 ASSERT_SIZE(TMapDialog, 0x364);

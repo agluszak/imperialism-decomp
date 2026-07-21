@@ -35,7 +35,7 @@ void TTEView::ConstructTTEViewBaseState(int unusedA, TView* panel, int* offsetLa
 }
 
 // FUNCTION: IMPERIALISM 0x004860e0
-int TTEView::MeasureCurrentTextWidthInLayoutRect() {
+int TTEView::MeasureCurrentTextHeightInLayoutRect() {
   CDC dc;
   dc.Attach(CreateCompatibleDC(static_cast<HDC>(0)));
   CFont* font = UpdateGlobalFontPresetAndRebuildCachedFontIfDirty(&textStyle78);
@@ -45,5 +45,5 @@ int TTEView::MeasureCurrentTextWidthInLayoutRect() {
   bounds.DeflateRect(&contentInsets68);
   dc.DrawText(*text, text->GetLength(), &bounds, 0xd10);
   dc.SelectObject(oldFont);
-  return bounds.right - bounds.left;
+  return bounds.bottom - bounds.top;
 }

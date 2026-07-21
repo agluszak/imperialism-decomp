@@ -261,7 +261,7 @@ void TCountry::SetSerializedField8c(short value) {
 short TCountry::GetOrComputeOverlayAnchorTileIndex() {
   if (overlayAnchorTileCache8c == -1) {
     overlayAnchorTileCache8c =
-        g_pGlobalMapState->ComputeRepresentativeTileIndexForTerrainTypeWithWrapBias(nationSlot, 1);
+        g_pGlobalMapState->ComputeRepresentativeTileIndexForNationWithWrapBias(nationSlot, 1);
   }
   return static_cast<short>(overlayAnchorTileCache8c);
 }

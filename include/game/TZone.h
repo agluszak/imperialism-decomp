@@ -9,6 +9,7 @@
 #include "game/global_data_tables.h"
 
 struct CRuntimeClass;
+struct TGlobalMapCityScoreRecord;
 class TStream;
 class TZone;
 class TTaskForce;
@@ -53,50 +54,21 @@ public:
   TZone** EnsureSlotAllocatedAndReturnPointer(unsigned int index);
 };
 
-// UNRESOLVED_FIELD_ATTRIBUTION: secondaryNeighbors mixes two unrelated pointer types
-// with no in-memory discriminator, and the mix is not merely suspected -- it is proven
-// by two independent, evidenced writer families that can both legally target the same
-// live zone object (a TPortZone matched by tile, or any nation-context TZone matched by
-// GetMapActionContextEntryByNationCodeOffset17; see the shared context-resolution idiom
-// in both writers below):
-//   - TZone* port-context links: TZone::AppendZonePointerToSecondaryArray (this header)
-//     is called from TOcean::EnsurePortZoneForTile (0x005635e0, TOcean.cpp) at live
-//     port-founding time; the pre-0xd save format's TZone::ReadFrom loader (TZone.cpp,
-//     ~line 322) confirms this is the field's original/older semantic by streaming raw
-//     TZone* entries into the same slots.
-//   - TGlobalMapCityScoreRecord* city-adjacency entries: PopulatePortZoneAdjacencyTo-
-//     NearbyCityContexts (0x00563da0, TZone.cpp) appends these via GetOrAppendUnique;
-//     it runs at map-generation time from TMapMaker_RebuildRoute.cpp, i.e. strictly
-//     before any TOcean::EnsurePortZoneForTile founding pass can run on the same map.
-// Because writes are phase-separated (map-gen vs. live play) but the array itself is
-// not re-created between phases, a zone that already carries city-record entries from
-// map generation can still receive a TZone* port link later, and vice versa for any
-// port zone pre-placed by the scenario. No count boundary, tag byte, or other in-memory
-// discriminator marks which entries are which. Of the readers, only
-// ComputeMapActionContextNodeValueAverage (0x0055f140) guards on QueryPortZoneCapability
-// before treating entries as TGlobalMapCityScoreRecord*; HasSecondaryNeighborWithNation-
-// Tag (0x0055f4d0), IsZoneMaskOrArrayEntryPresentForKey (0x0055f540),
-// GenerateMapActionContextDisplayNameAndHeadline (0x0055f780), and
-// TZone::HandleKeyDown (0x0055fc40) dereference byte 0 (or a field) of every entry as a
-// nation code / city record unconditionally, and
-// ContainsCityStatePointerInZoneArrayByCityIndex (0x0055f440) /
-// TOcean::FindMapActionContextContainingNodeByIndex (0x00564570) compare entries by raw
-// pointer identity, which is type-safe regardless of which family stored the entry. This
-// appears to be a genuine property of the original binary (the two writer call sites are
-// real, distinct, and both reachable on the same object) rather than a wrong-receiver or
-// wrong-offset modeling defect, so it is kept as an opaque `void*` payload rather than a
-// union/variant -- there is no discriminator to key a variant on. Each reader
-// static_casts to the type its own path expects; do not add a "clean" discriminator that
-// doesn't exist in the binary.
+// City/province records adjacent to a map-action context. Every reader treats each entry
+// as a TGlobalMapCityScoreRecord*, and both map-generation writers append that type.
+// EnsurePortZoneForTile (0x005635e0) links a newly founded port to its owning context via
+// the PRIMARY stretch at +0x24 in both directions; writing the port into this +0x34 stretch
+// is a receiver-offset error and corrupts the city-record index calculation at 0x0055f23a.
 // VTABLE: IMPERIALISM 0x0065c748
-class TZoneSecondaryNeighborStretch : public stretch<void*, TZoneSecondaryNeighborTag> {
+class TZoneSecondaryNeighborStretch
+    : public stretch<TGlobalMapCityScoreRecord*, TZoneSecondaryNeighborTag> {
 public:
   // Linear scan for `value`; returns the matching slot or null. Always inlined
   // (ground truth: TOcean::FindMapActionContextContainingNodeByIndex, 0x00564570,
   // where the index/count comparisons are unsigned and the hit materializes as a
   // slot pointer). Lives here rather than on stretch<> because MSVC500 eagerly
   // instantiates template members for element types without operator==.
-  void** FindEntry(void* value) {
+  TGlobalMapCityScoreRecord** FindEntry(TGlobalMapCityScoreRecord* value) {
     unsigned int count = Count();
     for (unsigned int index = 0; index < count; ++index) {
       if (Data()[index] == value) {
@@ -105,15 +77,16 @@ public:
     }
     return 0;
   }
-  bool ContainsEntry(void* value) {
+  bool ContainsEntry(TGlobalMapCityScoreRecord* value) {
     return FindEntry(value) != 0;
   }
 
 public:
-  void** GetOrAppendUnique(void* entry) override; // 0x55e9c0
+  TGlobalMapCityScoreRecord**
+  GetOrAppendUnique(TGlobalMapCityScoreRecord* entry) override; // 0x55e9c0
   // Not a vtable slot (see stretch.h); called only on the concrete type. The orig
   // vtable at 0x0065c748 is confirmed exactly 1 slot long (GetOrAppendUnique only).
-  void Add(void* entry); // 0x55eba0
+  void Add(TGlobalMapCityScoreRecord* entry); // 0x55eba0
   // Unconditionally reallocate `data` to hold `count` entries (double-or-exact grow),
   // updating capacity. 0x55fae0.
   void ResizePointerArrayCapacityByRequestedCount(int count);
@@ -159,13 +132,6 @@ public:
 
   // The original table group continues with two embedded stretch<TZone*> member vtables
   // at +0x24/+0x34, then TPortZone. Those stretch bodies are implemented in TZone.cpp.
-  void AppendZonePointerToPrimaryArray(TZone* zone) {
-    primaryNeighbors.Add(zone);
-  }
-  void AppendZonePointerToSecondaryArray(TZone* zone) {
-    secondaryNeighbors.Add(zone);
-  }
-
   // Non-virtual helpers (real bodies in TZone.cpp; not TZone vtable slots).
   // 0x55f0b0 — null-tolerant: the original calls this on possibly-null TZone*
   // (mov ecx, zone; test ecx,ecx inside), so keep the `this == 0` guard.
@@ -192,19 +158,13 @@ public:
   // via PropagateMapActionContextDistanceLevelsRecursive and repopulates every
   // (this, node) pair (both directions -- distance is symmetric).
   short GetCachedMapActionContextDistanceOrRecompute(TZone* other); // 0x5610b0
-  // 0x0055f4d0 — true when any secondaryNeighbors entry (read unconditionally as a
-  // TGlobalMapCityScoreRecord*; see the UNRESOLVED_FIELD_ATTRIBUTION note above -- this
-  // reader has no port-zone guard) has byte 0 (ownerNationCode00) == nationTag.
+  // 0x0055f4d0 — true when any adjacent city record's ownerNationCode00 == nationTag.
   char HasSecondaryNeighborWithNationTag(short nationTag);
   // 0x0055f540 — true when key's bit is set in nationKeyMask10's low byte, or any
-  // secondaryNeighbors entry (unconditional TGlobalMapCityScoreRecord* read, same
-  // UNRESOLVED_FIELD_ATTRIBUTION caveat as HasSecondaryNeighborWithNationTag) has byte 0
-  // == key.
+  // secondaryNeighbors entry has ownerNationCode00 == key.
   char IsZoneMaskOrArrayEntryPresentForKey(short key);
   // 0x0055f440 — true when any secondaryNeighbors entry points at
-  // &g_pGlobalMapState->cityScoreTable[cityIndex]; a raw pointer-identity compare, so it
-  // stays correct regardless of which UNRESOLVED_FIELD_ATTRIBUTION writer populated the
-  // entry.
+  // &g_pGlobalMapState->cityScoreTable[cityIndex].
   char ContainsCityStatePointerInZoneArrayByCityIndex(short cityIndex);
   // 0x560b00: whether this map-order context has a displayable primary navy order for
   // `nation` (-1 = active nation): nationKeyMask10 bit set and a g_pNavyPrimaryOrderListHead
