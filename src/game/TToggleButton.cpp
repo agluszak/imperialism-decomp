@@ -74,11 +74,10 @@ void TToggleButton::HandleEvent(int commandId, TEventHandler* sourceHandler, TEv
 }
 
 // FUNCTION: IMPERIALISM 0x005712a0
-char TToggleButton::DispatchUiMouseMoveToChildren(CPoint* point, int arg2, int arg3, int arg4) {
+char TToggleButton::HandleMouseDown(const CPoint& point, TToolboxEvent* event, CPoint origin) {
   (void)point;
-  (void)arg2;
-  (void)arg3;
-  (void)arg4;
+  (void)event;
+  (void)origin;
   if (!this->GetBoolSlot28()) {
     return 0;
   }

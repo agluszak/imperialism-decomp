@@ -119,15 +119,15 @@ void TScrollBarView::HandleEvent(int commandId, TEventHandler* sourceHandler, TE
 }
 
 // FUNCTION: IMPERIALISM 0x00574830
-void TScrollBarView::BeginMouseCaptureAndStartRepeatTimer(CPoint* point, int arg2, int arg3,
-                                                          int arg4) {
+void TScrollBarView::BeginMouseCaptureAndStartRepeatTimer(const CPoint& point, TToolboxEvent* event,
+                                                          CPoint origin) {
   RECT thumbRect = {0, word8c, frameWidth34, static_cast<int>(word8c) + 0x12};
-  if (PtInRect(&thumbRect, *point)) {
-    TControl::BeginMouseCaptureAndStartRepeatTimer(point, 0, 0, 0);
+  if (PtInRect(&thumbRect, point)) {
+    TControl::BeginMouseCaptureAndStartRepeatTimer(point, event, origin);
     return;
   }
 
-  int y = point->y;
+  int y = point.y;
   if (y >= word88 && y < word8c) {
     g_pSfxPlaybackSystem->PlaySoundEffect(0x1b58);
     ownerView84->AdjustCityDialogScrollRangeByDeltaAndClamp(

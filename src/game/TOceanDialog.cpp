@@ -106,11 +106,8 @@ void TOceanDialog::ComputeTileClassBoundsInViewport(int* outRect, int entry) {
 }
 
 // FUNCTION: IMPERIALISM 0x005661d0
-void TOceanDialog::ComputeWrappedMapCellAndRegionBandFromScreenCoord(int overlayRecord,
-                                                                     short* outRow,
-                                                                     unsigned short* outCol,
-                                                                     short* outBand) {
-  (void)overlayRecord;
+void TOceanDialog::ConvertPoint(const CPoint& point, short& outRow, short& outCol, short& outBand) {
+  (void)point;
   (void)outRow;
   (void)outCol;
   (void)outBand;

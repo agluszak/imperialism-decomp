@@ -679,9 +679,9 @@ void TDiplomacyMapView::DrawIcons(RECT* presentRect) {
 }
 
 // FUNCTION: IMPERIALISM 0x004f5410
-void TDiplomacyMapView::BeginMouseCaptureAndStartRepeatTimer(CPoint* point, int arg2, int arg3,
-                                                             int arg4) {
-  TPicture::BeginMouseCaptureAndStartRepeatTimer(point, arg2, arg3, arg4);
+void TDiplomacyMapView::BeginMouseCaptureAndStartRepeatTimer(const CPoint& point,
+                                                             TToolboxEvent* event, CPoint origin) {
+  TPicture::BeginMouseCaptureAndStartRepeatTimer(point, event, origin);
 }
 
 // FUNCTION: IMPERIALISM 0x004f5e00

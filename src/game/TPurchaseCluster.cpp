@@ -27,8 +27,8 @@ undefined TPurchaseCluster::OrphanCallChain_C1_I08_004cc440(int param_1) {
 }
 
 // FUNCTION: IMPERIALISM 0x004cc470
-void TPurchaseCluster::BeginMouseCaptureAndStartRepeatTimer(CPoint* point, int arg2, int arg3,
-                                                            int arg4) {}
+void TPurchaseCluster::BeginMouseCaptureAndStartRepeatTimer(const CPoint& point,
+                                                            TToolboxEvent* event, CPoint origin) {}
 
 // FUNCTION: IMPERIALISM 0x004cc490
 void TPurchaseCluster::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {

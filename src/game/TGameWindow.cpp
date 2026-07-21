@@ -96,8 +96,8 @@ CMcWindow* TGameWindow::Open() {
 }
 
 // FUNCTION: IMPERIALISM 0x004ffd10
-char TGameWindow::DispatchUiMouseMoveToChildren(CPoint* point, int arg2, int arg3, int arg4) {
-  return TView::DispatchUiMouseMoveToChildren(point, arg2, arg3, arg4);
+char TGameWindow::HandleMouseDown(const CPoint& point, TToolboxEvent* event, CPoint origin) {
+  return TView::HandleMouseDown(point, event, origin);
 }
 
 // FUNCTION: IMPERIALISM 0x004ffd40

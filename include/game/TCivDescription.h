@@ -5,13 +5,6 @@
 
 struct CRuntimeClass;
 
-struct Rect32 {
-  int left;
-  int top;
-  int right;
-  int bottom;
-};
-
 // VTABLE: IMPERIALISM 0x6431B0
 class TCivDescription : public TView {
 public:
@@ -19,9 +12,9 @@ public:
   virtual ~TCivDescription() override;
 
   virtual void ApplyRectSlot110(RECT* rectBuffer) override; // slot 0x44 0x58f550
-  virtual void BeginMouseCaptureAndStartRepeatTimer(CPoint* point, int arg2, int arg3,
-                                                    int arg4) override; // slot 0x47 0x58f1a0
-  virtual void DrawProspector(RECT* bounds);                            // slot 0x68 0x58fec0
+  virtual void BeginMouseCaptureAndStartRepeatTimer(const CPoint& point, TToolboxEvent* event,
+                                                    CPoint origin) override; // slot 0x47 0x58f1a0
+  virtual void DrawProspector(RECT* bounds);                                 // slot 0x68 0x58fec0
   // Mac CodeWarrior names this DrawEngineer(const VRect&). The Windows override ignores
   // the dirty rect and renders the Engineer's Depot/Port/Fort costs plus terrain legend.
   virtual void DrawEngineer(RECT* bounds);  // slot 0x69 0x58f7b0
@@ -36,7 +29,7 @@ public:
       unsigned char pad_6d;
     };
   };
-  Rect32 legendRects[16];
+  RECT legendRects[16];
 
   TCivDescription();
 

@@ -120,18 +120,18 @@ void TAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache() {
 }
 
 // FUNCTION: IMPERIALISM 0x00588950
-void TAmtBar::BeginMouseCaptureAndStartRepeatTimer(CPoint* point, int arg2, int arg3, int arg4) {
-  (void)arg2;
-  (void)arg3;
-  (void)arg4;
-  ClampAndApplyTradeMoveValue(reinterpret_cast<int*>(point));
+void TAmtBar::BeginMouseCaptureAndStartRepeatTimer(const CPoint& point, TToolboxEvent* event,
+                                                   CPoint origin) {
+  (void)event;
+  (void)origin;
+  ClampAndApplyTradeMoveValue(point.x);
 }
 
-void TAmtBar::ClampAndApplyTradeMoveValue(int* requestedValuePtr) {
+void TAmtBar::ClampAndApplyTradeMoveValue(int requestedValue) {
   int baseValue;
   if (auxValueA < 1 ||
-      static_cast<int>(frameWidth34) / (static_cast<int>(auxValueA) << 1) <= *requestedValuePtr) {
-    int fildRequested = *requestedValuePtr;
+      static_cast<int>(frameWidth34) / (static_cast<int>(auxValueA) << 1) <= requestedValue) {
+    int fildRequested = requestedValue;
     int fildField34 = static_cast<int>(frameWidth34);
     int fildAux = static_cast<int>(auxValueA);
     double ratio = static_cast<double>(fildRequested) /
@@ -146,9 +146,9 @@ void TAmtBar::ClampAndApplyTradeMoveValue(int* requestedValuePtr) {
     baseValue = 0;
   }
 
-  int appliedValue = ApplyMoveClamp(baseValue, *requestedValuePtr);
+  int appliedValue = ApplyMoveClamp(baseValue, requestedValue);
   TView* owner = OwnerPanel();
-  if (((short)appliedValue == 0) && *requestedValuePtr != 0) {
+  if (((short)appliedValue == 0) && requestedValue != 0) {
     TAmtBar* fallbackControl =
         reinterpret_cast<TAmtBar*>(owner->ResolveControlByTag(kControlTagMove));
     if (fallbackControl == 0) {

@@ -146,12 +146,12 @@ void TCityProductionView::HandleEvent(int commandId, TEventHandler* sourceHandle
 }
 
 // FUNCTION: IMPERIALISM 0x004bc660
-void TCityProductionView::BeginMouseCaptureAndStartRepeatTimer(CPoint* point, int arg2, int arg3,
-                                                               int arg4) {
+void TCityProductionView::BeginMouseCaptureAndStartRepeatTimer(const CPoint& point,
+                                                               TToolboxEvent* event,
+                                                               CPoint origin) {
   (void)point;
-  (void)arg2;
-  (void)arg3;
-  (void)arg4;
+  (void)event;
+  (void)origin;
 }
 
 // FUNCTION: IMPERIALISM 0x004bc870
