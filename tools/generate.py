@@ -13,6 +13,8 @@ between steps:
 
 Exit is nonzero on duplicate claims. Secondary builds (lint) pass
 --annotation-kind none and a distinct --chunk-prefix, same as stubgen's own CLI.
+Identical outputs preserve their mtimes so generation does not force a no-op build
+to recompile stub chunks and relink the executable.
 """
 
 from __future__ import annotations
@@ -52,8 +54,9 @@ def main() -> int:
     import json
 
     model_path = gen_dir / "source_model.json"
-    model_path.write_text(json.dumps(model_to_json(model), indent=1) + "\n",
-                          encoding="utf-8")
+    model_text = json.dumps(model_to_json(model), indent=1) + "\n"
+    if not model_path.is_file() or model_path.read_text(encoding="utf-8") != model_text:
+        model_path.write_text(model_text, encoding="utf-8")
     marker_fns = sum(1 for c in model.functions.values() if c.origin == "marker")
     generated_fns = sum(1 for c in model.functions.values() if c.origin == "generated")
     print(f"Wrote {model_path} ({marker_fns} marker claims, "

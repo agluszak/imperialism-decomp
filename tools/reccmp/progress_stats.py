@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import csv
+import hashlib
 import json
 import logging
 import subprocess
@@ -29,6 +30,8 @@ from tools.common.report_score import effective_matching
 from tools.common.template_aliases import load_aliases
 
 FUNCTION_ROW_TYPE = "fun"
+REPORT_CACHE_VERSION = 1
+REPORT_CACHE_FILE = "reccmp_report.inputs.json"
 GLOBAL_ROW_TYPES = ("dat", "lab", "str", "flo", "wid")
 AUX_NON_FUNCTION_ROW_TYPES = ("imp",)
 TRACKED_NON_FUNCTION_ROW_TYPES = GLOBAL_ROW_TYPES + AUX_NON_FUNCTION_ROW_TYPES
@@ -469,6 +472,87 @@ def write_json_atomic(path: Path, data: dict[str, Any]) -> None:
     tmp_path.replace(path)
 
 
+def _file_sha256(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as stream:
+        for chunk in iter(lambda: stream.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
+def _cache_path_label(repo_root: Path, path: Path) -> str:
+    resolved = path.resolve()
+    try:
+        return resolved.relative_to(repo_root).as_posix()
+    except ValueError:
+        return str(resolved)
+
+
+def report_input_hashes(
+    repo_root: Path, build_dir: Path, target_id: str
+) -> dict[str, str]:
+    project = RecCmpProject.from_directory(build_dir)
+    target = project.get(target_id)
+    paths = {
+        repo_root / "pyproject.toml",
+        repo_root / "uv.lock",
+        repo_root / "reccmp-project.yml",
+        repo_root / "reccmp-user.yml",
+        build_dir / "reccmp-build.yml",
+        Path(__file__),
+        target.original_path,
+        target.recompiled_path,
+        target.recompiled_pdb,
+        *target.data_sources,
+    }
+    for source_root in target.source_paths:
+        paths.update(path for path in source_root.rglob("*") if path.is_file())
+    return {
+        _cache_path_label(repo_root, path): _file_sha256(path)
+        for path in sorted(paths, key=lambda item: str(item.resolve()))
+    }
+
+
+def report_cache_is_current(
+    cache_path: Path,
+    target_id: str,
+    inputs: dict[str, str],
+    outputs: dict[str, Path],
+) -> bool:
+    if not cache_path.is_file() or any(not path.is_file() for path in outputs.values()):
+        return False
+    try:
+        cache = json.loads(cache_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return False
+    if (
+        cache.get("format_version") != REPORT_CACHE_VERSION
+        or cache.get("target") != target_id
+        or cache.get("inputs") != inputs
+    ):
+        return False
+    return cache.get("outputs") == {
+        name: _file_sha256(path) for name, path in outputs.items()
+    }
+
+
+def write_report_cache(
+    cache_path: Path,
+    target_id: str,
+    inputs: dict[str, str],
+    outputs: dict[str, Path],
+) -> None:
+    write_json_atomic(
+        cache_path,
+        {
+            "format_version": REPORT_CACHE_VERSION,
+            "target": target_id,
+            "inputs": inputs,
+            "outputs": {name: _file_sha256(path) for name, path in outputs.items()},
+        },
+    )
+
+
 def build_entry(args: argparse.Namespace, build_dir: Path) -> dict[str, Any]:
     roadmap_csv = resolve_build_path(build_dir, args.roadmap_csv)
     report_json = resolve_build_path(build_dir, args.report_json)
@@ -481,12 +565,32 @@ def build_entry(args: argparse.Namespace, build_dir: Path) -> dict[str, Any]:
                 cwd=build_dir,
                 log_path=build_dir / "reccmp_detect.log",
             )
-        run_logged(
-            ["uv", "run", "reccmp-roadmap", "--target", args.target, "--csv", str(roadmap_csv)],
-            cwd=build_dir,
-            log_path=build_dir / "reccmp_roadmap.log",
-        )
-        run_progress_report(args.target, build_dir, report_json, report_log)
+        repo_root = repo_root_from_file(__file__)
+        inputs = report_input_hashes(repo_root, build_dir, args.target)
+        outputs = {
+            "roadmap_csv": roadmap_csv,
+            "report_json": report_json,
+            "report_log": report_log,
+        }
+        cache_path = build_dir / REPORT_CACHE_FILE
+        if report_cache_is_current(cache_path, args.target, inputs, outputs):
+            print("Reusing full reccmp progress report: verified input and output hashes")
+        else:
+            run_logged(
+                [
+                    "uv",
+                    "run",
+                    "reccmp-roadmap",
+                    "--target",
+                    args.target,
+                    "--csv",
+                    str(roadmap_csv),
+                ],
+                cwd=build_dir,
+                log_path=build_dir / "reccmp_roadmap.log",
+            )
+            run_progress_report(args.target, build_dir, report_json, report_log)
+            write_report_cache(cache_path, args.target, inputs, outputs)
 
     noise_log = report_log
     legacy_log = build_dir / "reccmp_run.log"
