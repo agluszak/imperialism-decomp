@@ -164,7 +164,8 @@ void THelpMgr::Free() {}
 void THelpMgr::SelectAndActivatePendingEventForCurrentView() {
   HelpSetRecord* best = nullptr;             // lowest-rank unflagged match
   HelpSetRecord* flaggedCandidate = nullptr; // context match with flagByte set
-  HelpSetRecord* zeroIdCandidate = nullptr;  // context match, rank>=threshold, helpSetIdB==0
+  HelpSetRecord* zeroIdCandidate =
+      nullptr; // context match, rank>=threshold, previousHelpResourceBaseId==0
   short threshold = g_pSimMgr->GetEconomicTurn();
   short contextId = g_pUiRuntimeContext->currentTurnEventCode;
   for (int index = 1; index <= GetSortedPtrListEntryCount(indexList); ++index) {
@@ -174,7 +175,7 @@ void THelpMgr::SelectAndActivatePendingEventForCurrentView() {
       if (record->flagByte != 0) {
         flaggedCandidate = record;
       } else if (record->rank >= threshold) {
-        if (record->helpSetIdB == 0) {
+        if (record->previousHelpResourceBaseId == 0) {
           zeroIdCandidate = record;
         }
       } else {

@@ -105154,7 +105154,25 @@
       "from": "windows_function:0x00504220",
       "relation": "resolves_control_tag",
       "status": "resolved",
+      "to": "control_tag:0x6e657874"
+    },
+    {
+      "from": "windows_function:0x00504220",
+      "relation": "resolves_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x70726576"
+    },
+    {
+      "from": "windows_function:0x00504220",
+      "relation": "resolves_control_tag",
+      "status": "resolved",
       "to": "control_tag:0x7375626a"
+    },
+    {
+      "from": "windows_function:0x00504220",
+      "relation": "resolves_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x7377696e"
     },
     {
       "from": "windows_function:0x00504220",
@@ -204786,9 +204804,9 @@
       "references_picture": 909,
       "references_string": 1451,
       "references_text_style": 1784,
-      "resolves_control_tag": 241
+      "resolves_control_tag": 244
     },
-    "edges": 17592,
+    "edges": 17595,
     "mac_classes_without_windows_header": 18,
     "node_kinds": {
       "control_tag": 813,
