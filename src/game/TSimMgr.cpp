@@ -486,34 +486,32 @@ void TSimMgr::RebuildMapContextAndGlobalMapState(int arg1, const char* arg2, int
     }
   }
 
-  if (arg1 != 0) {
-    if (g_bMultiplayerScenarioSetupActive != 0) {
-      return;
+  char rebuildFlag = static_cast<char>(arg1);
+  if (((rebuildFlag != 0) && (g_bMultiplayerScenarioSetupActive == 0)) ||
+      ((rebuildFlag == 0) && (g_bMultiplayerScenarioSetupActive != 0))) {
+    if (g_pActiveMapOrderContext != nullptr) {
+      g_pActiveMapOrderContext->Free();
+      g_pActiveMapOrderContext = nullptr;
     }
-  }
 
-  if (g_pActiveMapOrderContext != nullptr) {
-    g_pActiveMapOrderContext->Free();
-    g_pActiveMapOrderContext = nullptr;
-  }
+    g_pActiveMapOrderContext = new TOcean();
 
-  g_pActiveMapOrderContext = new TOcean();
+    ResetPortZoneGlobalContextCounters();
 
-  ResetPortZoneGlobalContextCounters();
+    if (g_pGlobalMapState != nullptr) {
+      g_pGlobalMapState->Free();
+      g_pGlobalMapState = nullptr;
+    }
 
-  if (g_pGlobalMapState != nullptr) {
-    g_pGlobalMapState->Free();
-    g_pGlobalMapState = nullptr;
-  }
+    g_pGlobalMapState = new TMapMgr();
+    g_pGlobalMapState->InitializeGlobalMapState();
 
-  g_pGlobalMapState = new TMapMgr();
-  g_pGlobalMapState->InitializeGlobalMapState();
-
-  if (g_bMultiplayerScenarioSetupActive == 0) {
-    g_pGlobalMapState->hexNeighborWrapHorizontally20 = static_cast<char>(arg3);
-    g_pGlobalMapState->BuildOrLoadGlobalMapStateForSession(nullptr, const_cast<char*>(arg2));
-  } else {
-    g_pGlobalMapState->AllocateAndResetTerrainAndCityScoreTables();
+    if (g_bMultiplayerScenarioSetupActive == 0) {
+      g_pGlobalMapState->hexNeighborWrapHorizontally20 = static_cast<char>(arg3);
+      g_pGlobalMapState->BuildOrLoadGlobalMapStateForSession(nullptr, const_cast<char*>(arg2));
+    } else {
+      g_pGlobalMapState->AllocateAndResetTerrainAndCityScoreTables();
+    }
   }
 }
 
