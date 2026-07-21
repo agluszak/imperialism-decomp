@@ -151,7 +151,9 @@ public:
   virtual bool IsNeedTargetEqualCurrent(short needIndex);                          // slot 0x46
   virtual short GetNeedTargetByType(short needIndex);                              // slot 0x47
   virtual void TryIncrementNationResourceNeedTargetTowardCurrent(int needType);
-  virtual void IsNationResourceNeedCurrentSumExceedingCapA6(void);
+  // Ground truth leaves the just-stored needsOverCapFlag value in AL at return (the
+  // ternary's SETcc result); TInteriorMinister::Call54 (0x4be5b0) reads it as bool.
+  virtual bool IsNationResourceNeedCurrentSumExceedingCapA6(void);
   virtual short TryDecayRelationNeedScores9AndB(void); // slot 0x4a
   virtual short TryDecayRelationNeedScores9And8(void); // slot 0x4b
   // slot 0x4c — body 0x004e0220: invokes [vt+0x2c] on every tracked order.

@@ -1814,13 +1814,14 @@ void TGreatPower::TryIncrementNationResourceNeedTargetTowardCurrent(int needType
 }
 
 // FUNCTION: IMPERIALISM 0x004dcf10
-void TGreatPower::IsNationResourceNeedCurrentSumExceedingCapA6(void) {
+bool TGreatPower::IsNationResourceNeedCurrentSumExceedingCapA6(void) {
   int sumCurrentNeeds = 0;
   for (int needIndex = 0; needIndex < kNationSlotCount; ++needIndex) {
     sumCurrentNeeds += static_cast<int>(this->needCurrentByType[needIndex]);
   }
 
   this->needsOverCapFlag = (sumCurrentNeeds > static_cast<int>(this->needCapA6)) ? 1 : 0;
+  return this->needsOverCapFlag != 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004dcf60
