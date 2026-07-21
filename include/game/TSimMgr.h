@@ -149,6 +149,7 @@ public:
   void
   HandleTurnInstruction_Ware_ApplyNationIndexedShortAndRefresh(void* pInstructionRaw);   // 0x5823e0
   void HandleTurnInstruction_Capa_ApplyNationSlotValueWithDelta(void* pInstructionRaw);  // 0x5822c0
+  void HandleTurnInstruction_Labo_SetNationLaborTierCounts(void* pInstructionRaw);       // 0x582120
   void HandleTurnInstruction_Rail_ApplyRailPlacementAndCashBonus(void* pInstructionRaw); // 0x5829b0
   void HandleTurnInstruction_Port_ApplyPortPlacementAndCashBonus(void* pInstructionRaw); // 0x582a40
   void HandleTurnInstruction_Deve_ApplyMapDevelopmentEntry(void* pInstructionRaw);       // 0x5828f0

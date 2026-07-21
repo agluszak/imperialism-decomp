@@ -1775,3 +1775,7 @@ extern short g_offerDeskSelectionIndexTable_00668568[8];
 extern int g_diplomacyPopupLayoutPosition_006a3020[2];
 extern "C" const char s_SourcePathUDiplomacyViews_00696AE0[];
 extern short g_MapOrderResourceRollWeightTable_0064c5d8[6][6];
+// Need-type indices (into TGreatPower::needCurrentByType/needTargetByType), in priority
+// order, that TInteriorMinister::MinisterSlot14 (0x4be520) tops up each turn while the
+// nation still has need-cap headroom (needCapA6 - needsOverCapFlag).
+extern short g_aInteriorMinisterNeedPriorityOrder_00696408[10];

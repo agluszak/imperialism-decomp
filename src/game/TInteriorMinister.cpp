@@ -1,6 +1,8 @@
 #include "game/TInteriorMinister.h"
 
+#include "game/TGreatPower.h"
 #include "game/TStream.h"
+#include "game/global_data_tables.h"
 
 // Slots 0x16-0x1f own bodies (honest stubs; slot ownership drives vtable matching).
 // FUNCTION: IMPERIALISM 0x004be150
@@ -80,8 +82,30 @@ void TInteriorMinister::InteriorSlot17() {}
 // FUNCTION: IMPERIALISM 0x004be4f0
 void TInteriorMinister::Call4C() {}
 
+// Tops up up to 10 of the nation's needs (in the fixed priority order
+// g_aInteriorMinisterNeedPriorityOrder_00696408) toward their current reading, stopping as
+// soon as the nation's need-cap headroom (needCapA6 - needsOverCapFlag) hits zero. NOTE:
+// TInteriorMinister::Call4C (0x4be4f0) and Call54 (0x4be5b0), plus
+// TDefenseMinister::MinisterSlot14 (0x4b5dc0's sibling override at 0x4ec540, ~1.3KB with EH
+// scaffolding), were discovered to be similarly wrongly stubbed as no-ops while
+// investigating this slot; they are out of scope for this port and are left as a flagged
+// follow-up rather than a silent no-op regression.
 // FUNCTION: IMPERIALISM 0x004be520
-void TInteriorMinister::MinisterSlot14() {}
+void TInteriorMinister::MinisterSlot14() {
+  short i = 0;
+  do {
+    short capRemaining =
+        static_cast<short>(ownerContextAt04->needCapA6 - ownerContextAt04->needsOverCapFlag);
+    if (capRemaining == 0) {
+      break;
+    }
+    short needIndex = g_aInteriorMinisterNeedPriorityOrder_00696408[i];
+    ++i;
+    short current = ownerContextAt04->needCurrentByType[needIndex];
+    short value = (current <= capRemaining) ? current : capRemaining;
+    ownerContextAt04->UpdateNeedTargetAndAccumulateOverCap(needIndex, value);
+  } while (i < 10);
+}
 
 // FUNCTION: IMPERIALISM 0x004be5b0
 void TInteriorMinister::Call54() {}

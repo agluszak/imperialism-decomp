@@ -357,11 +357,11 @@ public:
     return availableBudget & (static_cast<int>(availableBudget <= 0) - 1);
   }
 
-  // 0x04..0x90 (identity strings, nation-slot metrics, militaryUnitList44,
-  // unitNameOrdinalByType, ownedRegionList) now live on the TCountry base.
-  TForeignMinister* foreignMinister;
-  TCityInteriorMinister* interiorMinister;
-  TDefenseMinister* defenseMinister;
+  // 0x04..0x94 (identity strings, nation-slot metrics, militaryUnitList44,
+  // unitNameOrdinalByType, ownedRegionList) now live on the TCountry base (ASSERT_SIZE 0x94).
+  TForeignMinister* foreignMinister;       // +0x94
+  TCityInteriorMinister* interiorMinister; // +0x98
+  TDefenseMinister* defenseMinister;       // +0x9c
   unsigned char diplomacyEligibilityA0;
   unsigned char pad_a1;
   short diplomacyCounterA2;
@@ -426,18 +426,18 @@ public:
   // 0x930..0x95c — per-turn economy/diplomacy summary snapshot rebuilt wholesale by
   // RecomputeNationEconomyAndDiplomacySummaryMetrics (0x4e32a0); interior meaning
   // still mostly unmapped beyond the two aliased copies noted below.
-  int economySummaryBaseline930;             // 0x930 — from city->population baseline bucket
-  int economySummaryNeedCapSnapshot934;      // 0x934 — copy of needCapA6
-  int economySummaryBuildingTypeSum938;      // 0x938 — sum of city GetBuildingType(0..5)
-  int economySummaryRegionScore93c;          // 0x93c — owned-region counts (this + qualifying minors) * 10
+  int economySummaryBaseline930;        // 0x930 — from city->population baseline bucket
+  int economySummaryNeedCapSnapshot934; // 0x934 — copy of needCapA6
+  int economySummaryBuildingTypeSum938; // 0x938 — sum of city GetBuildingType(0..5)
+  int economySummaryRegionScore93c; // 0x93c — owned-region counts (this + qualifying minors) * 10
   int economySummaryMilitaryOrderCostSum940; // 0x940 — sum over militaryUnitList44 of unit order cost table col 2
-  int economySummaryNavyOrderPriority944;    // 0x944 — SumNavyOrderPriorityForNationSlot86()
-  int economySummaryAvgRelationScore948;     // 0x948 — average relation-matrix score vs other live nations
+  int economySummaryNavyOrderPriority944; // 0x944 — SumNavyOrderPriorityForNationSlot86()
+  int economySummaryAvgRelationScore948; // 0x948 — average relation-matrix score vs other live nations
   int economySummaryTradeCapacitySnapshot94c; // 0x94c — copy of tradeCapacity
-  int economySummarySeasonCountdown950;      // 0x950 — (100 - currentQuarter) * 10
-  int economySummaryTotal954;                // 0x954 — sum of the 9 fields above (930..950)
-  int economySummarySeasonPercent958;        // 0x958 — seasonPercentTable[g_pSimMgr->redrawEnabled]
-  int economySummaryWeightedTotal95c;        // 0x95c — economySummaryTotal954 * economySummarySeasonPercent958 / 10
+  int economySummarySeasonCountdown950;       // 0x950 — (100 - currentQuarter) * 10
+  int economySummaryTotal954;                 // 0x954 — sum of the 9 fields above (930..950)
+  int economySummarySeasonPercent958; // 0x958 — seasonPercentTable[g_pSimMgr->redrawEnabled]
+  int economySummaryWeightedTotal95c; // 0x95c — economySummaryTotal954 * economySummarySeasonPercent958 / 10
   int pendingAidTotal;
   // Object ends here at 0x964 (== CRuntimeClass::m_nObjectSize for TGreatPower and
   // for TProxyGreatPower/TClientGreatPower/TRemoteGreatPower; THostGreatPower adds one

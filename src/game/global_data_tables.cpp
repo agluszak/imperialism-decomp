@@ -1787,7 +1787,7 @@ float g_afTacticalDamageScaleByUnitType[30] = {
 
 // Incoming-damage scale per defender navy unit type (.rdata floats).
 // GLOBAL: IMPERIALISM 0x00669d28
-float g_afTacticalNavyDamageScaleByUnitType[8] = {0.045f, 0.04f, 0.04f,  0.022f,
+float g_afTacticalNavyDamageScaleByUnitType[8] = {0.045f, 0.04f,  0.04f,  0.022f,
                                                   0.02f,  0.025f, 0.015f, 0.022f};
 
 // Base attack power per navy unit type (.rdata floats).
@@ -3288,3 +3288,6 @@ short g_MapOrderResourceRollWeightTable_0064c5d8[6][6] = {
     {50, 20, 30, 40, 30, 30}, {50, 20, 30, 50, 30, 20}, {40, 35, 25, 55, 30, 15},
     {30, 50, 20, 65, 20, 15}, {20, 65, 15, 70, 20, 10}, {10, 80, 10, 80, 10, 10},
 };
+
+// GLOBAL: IMPERIALISM 0x00696408
+short g_aInteriorMinisterNeedPriorityOrder_00696408[10] = {17, 18, 20, 19, 2, 3, 4, 0, 1, 5};

@@ -24,6 +24,7 @@
 #include "game/TMapMgr.h"
 #include "game/TTechMgr.h"
 #include "game/TCity.h"
+#include "game/TCityInteriorMinister.h"
 #include "game/TCivMgr.h"
 #include "game/TTurnInstructionCursor.h"
 #include "game/TNewsMgr.h"
@@ -1219,6 +1220,54 @@ CString TSimMgr::LoadNormalizedCredentialName(short slot) {
 // FUNCTION: IMPERIALISM 0x00581bc0
 CString TSimMgr::AssignSharedStringFromIndexedSlot7C(short slot) {
   return sharedTextSlots[slot];
+}
+
+// Reads a big-endian 32-bit nation index and three big-endian 16-bit tokens (three labor
+// tier counts). Applies them to the nation's city population summary (baseline/production
+// tier buckets, need totals), kicks off a resource-yield rebuild, and notifies the nation's
+// defense minister (if any) via its slot-0x14 hook.
+// FUNCTION: IMPERIALISM 0x00582120
+void TSimMgr::HandleTurnInstruction_Labo_SetNationLaborTierCounts(void* pInstructionRaw) {
+  STurnInstructionCursor* instruction = static_cast<STurnInstructionCursor*>(pInstructionRaw);
+
+  unsigned int ownerToken = *instruction->tokenCursor;
+  instruction->tokenCursor = instruction->tokenCursor + 1;
+  unsigned char* oraw = reinterpret_cast<unsigned char*>(&ownerToken);
+  unsigned char ot = oraw[0];
+  oraw[0] = oraw[3];
+  oraw[3] = ot;
+  ot = oraw[1];
+  oraw[1] = oraw[2];
+  oraw[2] = ot;
+
+  unsigned int tierAToken = *instruction->tokenCursor;
+  instruction->tokenCursor = instruction->tokenCursor + 1;
+  unsigned char* araw = reinterpret_cast<unsigned char*>(&tierAToken);
+  araw[0] = araw[3];
+  araw[1] = araw[2];
+
+  unsigned int tierBToken = *instruction->tokenCursor;
+  instruction->tokenCursor = instruction->tokenCursor + 1;
+  unsigned char* braw = reinterpret_cast<unsigned char*>(&tierBToken);
+  braw[0] = braw[3];
+  braw[1] = braw[2];
+
+  unsigned int tierCToken = *instruction->tokenCursor;
+  instruction->tokenCursor = instruction->tokenCursor + 1;
+  unsigned char* craw = reinterpret_cast<unsigned char*>(&tierCToken);
+  craw[0] = craw[3];
+  craw[1] = craw[2];
+
+  TGreatPower* nation = g_apNationStates[ownerToken];
+  TCity* city = (nation != nullptr) ? nation->city : nullptr;
+  city->productionSummary1d8->NotifyProductionPresetSlot2C(
+      static_cast<int>(tierAToken), static_cast<int>(tierBToken), static_cast<int>(tierCToken));
+
+  g_apNationStates[ownerToken]->RebuildNationResourceYieldCountersAndDevelopmentTargets();
+
+  if (g_apNationStates[ownerToken]->interiorMinister != nullptr) {
+    g_apNationStates[ownerToken]->interiorMinister->MinisterSlot14();
+  }
 }
 
 // Reads a big-endian 32-bit nation slot, a big-endian short production-order index, and a
