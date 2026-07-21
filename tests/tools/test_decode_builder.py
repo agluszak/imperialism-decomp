@@ -35,6 +35,17 @@ class _Image:
         return self.data
 
 
+class _TablesImage:
+    def __init__(self, tables: dict[int, bytes]) -> None:
+        self.tables = tables
+
+    def read_va(self, address: int, size: int) -> bytes:
+        data = self.tables.get(address)
+        if data is None or size != len(data):
+            raise AssertionError((address, size))
+        return data
+
+
 def _seq(rows: list[tuple[str, str]], base: int = 0x1000) -> list[_Insn]:
     insns: list[_Insn] = []
     addr = base
@@ -157,6 +168,39 @@ class ExtractCasesTests(unittest.TestCase):
                 0x2400: {0x5E0},
                 0x2600: {0x5E2},
                 0x2900: {0x5E5},
+            },
+        )
+
+    def test_sparse_byte_index_jump_table_reports_original_event_codes(self) -> None:
+        default = 0x9000
+        index_table = 0x6000
+        target_table = 0x6100
+        indices = bytes([0, 1, 2, 3, 2])
+        targets = [0x2000, default, 0x2200, 0x2300]
+        image = _TablesImage(
+            {
+                index_table: indices,
+                target_table: struct.pack(f"<{len(targets)}I", *targets),
+            }
+        )
+        insns = _seq(
+            [
+                ("add", "eax, 0xffffdb0a"),
+                ("cmp", "eax, 0x4"),
+                ("ja", hex(default)),
+                ("xor", "ecx, ecx"),
+                ("mov", f"cl, byte ptr [eax + {index_table:#x}]"),
+                ("jmp", f"dword ptr [ecx*4 + {target_table:#x}]"),
+                ("ret", ""),
+            ]
+        )
+
+        self.assertEqual(
+            extract_cases(insns, image),
+            {
+                0x2000: {0x24F6},
+                0x2200: {0x24F8, 0x24FA},
+                0x2300: {0x24F9},
             },
         )
 

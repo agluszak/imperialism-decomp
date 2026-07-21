@@ -573,6 +573,11 @@ const-stores *args:
 decode-builder *args:
   uv run python -m tools.binary.decode_builder {{args}}
 
+[doc('Check all original UI builder dispatches against the semantic manifest')]
+[group('ghidra-inspect')]
+ui-builder-dispatch-check:
+  uv run python -m tools.binary.decode_builder --check-manifest
+
 # Generate resource-driven UI factory TUs from committed semantic Mac View IR
 # plus the one evidenced Windows-only tree. Normal generation never reads the
 # original binary or retail Mac files.

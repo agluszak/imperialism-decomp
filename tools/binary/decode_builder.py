@@ -9,6 +9,7 @@ sub/dec ladders), and prints per-case call sequences with pushed arguments
 (4-char control tags decoded, e.g. 0x57494e44 -> 'WIND').
 
 usage: uv run python -m tools.binary.decode_builder 0xADDR [--len N]
+       uv run python -m tools.binary.decode_builder --check-manifest
        (or `just decode-builder 0xADDR`)
 
 The output is a porting aid: each `call helper(args...)` line corresponds to one
@@ -25,8 +26,14 @@ import struct
 import sys
 
 import capstone
+import yaml
 
 from tools.binary.pe import OriginalImage, load_symbol_names, load_symbol_sizes
+from tools.common.repo import repo_root_from_file
+
+
+REPO_ROOT = repo_root_from_file(__file__)
+MANIFEST_PATH = REPO_ROOT / "config" / "ui_factory_codegen.yml"
 
 
 def decode_tag(value: int) -> str:
@@ -53,6 +60,19 @@ def disasm_function(image: OriginalImage, start: int, length: int):
         insns += more
         covered = more[-1].address + more[-1].size
     return insns
+
+
+def _disasm_window(image: OriginalImage, start: int, length: int = 0x80):
+    """Decode a small dispatch fragment outside the recorded owner extent.
+
+    Several original builders have discontinuous Ghidra bodies: the entry
+    range jumps over adjacent helper functions to a final comparison or jump
+    table.  The symbol size is the sum of the owner's body ranges, not a
+    contiguous byte extent, so following those branches requires decoding the
+    target fragment explicitly.
+    """
+    md = capstone.Cs(capstone.CS_ARCH_X86, capstone.CS_MODE_32)
+    return list(md.disasm(image.read_va(start, length), start))
 
 
 # Range/sign conditional jumps MSVC500 emits between a `cmp eax, N` and the
@@ -141,7 +161,26 @@ def extract_cases(insns, image: OriginalImage | None = None) -> dict[int, set[in
         if hit is not None:
             cases.setdefault(hit[0], set()).add(int(match.group(1), 0))
 
+    # Work on a private list because reachable dispatch fragments can be added
+    # when a range branch leaves the owner's recorded (discontinuous) extent.
+    insns = list(insns)
     address_to_index = {ins.address: index for index, ins in enumerate(insns)}
+
+    def ensure_target(target: int) -> int | None:
+        existing = address_to_index.get(target)
+        if existing is not None or image is None:
+            return existing
+        try:
+            fragment = _disasm_window(image, target)
+        except (AssertionError, ValueError, struct.error):
+            return None
+        first_index = len(insns)
+        for fragment_insn in fragment:
+            if fragment_insn.address in address_to_index:
+                continue
+            address_to_index[fragment_insn.address] = len(insns)
+            insns.append(fragment_insn)
+        return address_to_index.get(target, first_index if fragment else None)
     event_load = next(
         (
             index
@@ -211,15 +250,17 @@ def extract_cases(insns, image: OriginalImage | None = None) -> dict[int, set[in
                 target = _jump_target(ins)
                 if equal_event is not None and index + 1 < len(insns):
                     cases.setdefault(insns[index + 1].address, set()).add(equal_event)
-                if target is not None and target in address_to_index:
-                    worklist.append((address_to_index[target], offset, None, None, None))
+                target_index = ensure_target(target) if target is not None else None
+                if target_index is not None:
+                    worklist.append((target_index, offset, None, None, None))
                 break
 
             if mnemonic in _RANGE_JUMPS:
                 target = _jump_target(ins)
-                if target is not None and target in address_to_index:
+                target_index = ensure_target(target) if target is not None else None
+                if target_index is not None:
                     worklist.append(
-                        (address_to_index[target], offset, equal_event, index_maximum, None)
+                        (target_index, offset, equal_event, index_maximum, None)
                     )
                 if mnemonic in ("ja", "jae") and index_maximum is not None:
                     default_target = target
@@ -228,8 +269,9 @@ def extract_cases(insns, image: OriginalImage | None = None) -> dict[int, set[in
 
             if mnemonic == "jmp":
                 target = _jump_target(ins)
-                if target is not None and target in address_to_index:
-                    index = address_to_index[target]
+                target_index = ensure_target(target) if target is not None else None
+                if target_index is not None:
+                    index = target_index
                     continue
                 table_match = re.fullmatch(
                     r"dword ptr \[eax\*4 \+ (0x[0-9a-f]+)\]", ins.op_str
@@ -244,6 +286,46 @@ def extract_cases(insns, image: OriginalImage | None = None) -> dict[int, set[in
                         if case_target == default_target:
                             continue
                         cases.setdefault(case_target, set()).add(table_index - offset)
+                    break
+
+                # VC5 also lowers sparse bounded switches through a byte index
+                # table followed by a target table:
+                #   mov cl, byte ptr [eax + INDEX_TABLE]
+                #   jmp dword ptr [ecx*4 + TARGET_TABLE]
+                indexed_match = re.fullmatch(
+                    r"dword ptr \[(e[abcd]x)\*4 \+ (0x[0-9a-f]+)\]", ins.op_str
+                )
+                if image is not None and indexed_match is not None and index_maximum is not None:
+                    index_register = indexed_match.group(1)
+                    low_register = {
+                        "eax": "al",
+                        "ebx": "bl",
+                        "ecx": "cl",
+                        "edx": "dl",
+                    }[index_register]
+                    preceding = insns[index - 1] if index > 0 else None
+                    index_match = (
+                        re.fullmatch(
+                            rf"{low_register}, byte ptr \[eax \+ (0x[0-9a-f]+)\]",
+                            preceding.op_str,
+                        )
+                        if preceding is not None and preceding.mnemonic == "mov"
+                        else None
+                    )
+                    if index_match is not None:
+                        index_table = int(index_match.group(1), 16)
+                        target_table = int(indexed_match.group(2), 16)
+                        indices = image.read_va(index_table, index_maximum + 1)
+                        target_count = max(indices) + 1
+                        targets = struct.unpack(
+                            f"<{target_count}I",
+                            image.read_va(target_table, target_count * 4),
+                        )
+                        for table_index, target_index_value in enumerate(indices):
+                            case_target = targets[target_index_value]
+                            if case_target == default_target:
+                                continue
+                            cases.setdefault(case_target, set()).add(table_index - offset)
                 break
 
             if mnemonic in ("call", "ret"):
@@ -268,11 +350,9 @@ def extract_cases(insns, image: OriginalImage | None = None) -> dict[int, set[in
                 index += 1
                 continue
 
-            # Unknown arithmetic/tests invalidate the equality relation. Keep
-            # scanning only while EAX itself remains untouched.
+            # Unknown arithmetic/tests invalidate equality flags, but the
+            # bounded index relation survives while EAX itself is untouched.
             equal_event = None
-            index_maximum = None
-            default_target = None
             if operands and operands[0] in ("eax", "ax", "al", "ah"):
                 break
             index += 1
@@ -280,11 +360,54 @@ def extract_cases(insns, image: OriginalImage | None = None) -> dict[int, set[in
     return cases
 
 
+def _manifest_check() -> int:
+    manifest = yaml.safe_load(MANIFEST_PATH.read_text())
+    image = OriginalImage()
+    sizes = load_symbol_sizes()
+    failures: list[str] = []
+
+    for function in manifest["functions"]:
+        address = function["address"]
+        expected = {
+            case["event"]
+            for case in function["cases"]
+            if "functional-parity case absent from original builder"
+            not in case.get("evidence", "")
+        }
+        decoded_by_target = extract_cases(
+            disasm_function(image, address, sizes[address]), image
+        )
+        decoded = {event for events in decoded_by_target.values() for event in events}
+        missing = expected - decoded
+        extra = decoded - expected
+        print(
+            f"{address:#010x}: decoded {len(decoded):2d}, "
+            f"manifest-original {len(expected):2d}"
+        )
+        if missing or extra:
+            details = []
+            if missing:
+                details.append("missing " + ", ".join(map(hex, sorted(missing))))
+            if extra:
+                details.append("extra " + ", ".join(map(hex, sorted(extra))))
+            failures.append(f"{address:#010x}: {'; '.join(details)}")
+
+    if failures:
+        print("dispatch manifest drift:", file=sys.stderr)
+        for failure in failures:
+            print(f"  {failure}", file=sys.stderr)
+        return 1
+    print("all 17 original builder dispatch summaries agree with the semantic manifest")
+    return 0
+
+
 def main() -> int:
     argv = sys.argv[1:]
     if not argv:
         print(__doc__, file=sys.stderr)
         return 2
+    if argv == ["--check-manifest"]:
+        return _manifest_check()
     start = int(argv[0], 16)
     length = None
     for i, a in enumerate(argv):
