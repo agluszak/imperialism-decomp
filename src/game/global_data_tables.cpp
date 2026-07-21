@@ -1341,11 +1341,20 @@ unsigned char g_bRandomMapDeveloperCheatFlag = 0;
 // GLOBAL: IMPERIALISM 0x00698bec
 char g_szConanCheatFileName_00698BEC[] = "Conan";
 
-// Metric-slot dispatch-order lookup consumed by
+// Trade-item dispatch order consumed by
 // TTradeMgr::ProcessPendingDiplomacyTransferEntriesUntilBlockedWrapper (0x5b9190). Values
-// are the original rdata table; kept zero-initialized here (function pairing is by address).
+// are read directly from the original rdata table.
 // GLOBAL: IMPERIALISM 0x0066d810
-short g_nationMetricSlotDispatchOrder006d810[0x11] = {0};
+short g_aTradeDealCategoryOrder_0066D810[0x11] = {13, 14, 15, 16, 7, 8, 9, 10, 11,
+                                                  12, 0,  1,  2,  3, 4, 5, 6};
+// Multiplicative identity used by TTradeMgr::Power.
+// GLOBAL: IMPERIALISM 0x0066d8e0
+extern const double g_TradePowerIdentity_0066D8E0 = 1.0;
+
+// Initial price for each of the 17 trade-item categories.
+// GLOBAL: IMPERIALISM 0x0069a910
+extern const short g_aTradeItemBasePriceByCategory_0069A910[0x11] = {
+    100, 100, 100, 100, 100, 300, 100, 100, 300, 300, 300, 300, 300, 900, 900, 900, 900};
 
 // 17 four-char control tags (space + digit + 2-letter category: "sr" raw materials 0-6,
 // "am" manufactured 0-5, "dg" 0-3), walked by TTradeScreenPicture::Draw to
@@ -3421,10 +3430,11 @@ int g_diplomacyPopupLayoutPosition_006a3020[2] = {0};
 // GLOBAL: IMPERIALISM 0x006a2410
 int g_InfoBarDummyOrigin_006A2410[2] = {0};
 
-// Per-strength-tier probability-split table for BuildMapOrderContextSummaryStringForNation's
+// Per-strength-tier probability-split table for TArmyMgr::GenerateSpyReport's
 // per-garrisoned-unit resource roll: each 3-short half sums to 100. The first half picks a
-// 0-2 "point cost" for the unit; the second half picks how that cost gets bucketed (the
-// unit's own movement class, a fixed "misc" bucket, or a uniform random bucket). Indexed by
+// 0-2 "point cost" for the unit; the second result is biased by 3, with selector 4 choosing
+// a fixed "misc" bucket, selector 5 choosing a uniform random bucket, and every other
+// selector choosing the unit's own movement class. Indexed by
 // the function's winning strength tier (unclamped, matching the original -- tiers beyond
 // row 5 read past this table in the original too). table[tier]+3 is the second half (at
 // original address 0x0064c5de, 6 bytes/3 shorts into this same row-major table).
