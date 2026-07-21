@@ -86,7 +86,7 @@ void __cdecl SetUiResourceLayoutValues(int frameStyle, int rectLeft, int rectTop
 // nVariant are present at every call site but unused by the body (signature fidelity,
 // like RegisterUiResourceEntry's tags).
 // FUNCTION: IMPERIALISM 0x0041b490
-void __cdecl BindUiResourceTextAndStyle(int nGroupId, int nVariant, char* szText, short nMode,
+void __cdecl BindUiResourceTextAndStyle(int nGroupId, int nVariant, const char* szText, short nMode,
                                         short nFlag, short nPointSize, TUiStyleRef styleRef,
                                         short nThemeCode) {
   (void)nGroupId;
@@ -146,3 +146,6 @@ void __cdecl PopUiResourcePoolNode(unsigned int nameTag) {
 
 // TEMPLATE: IMPERIALISM 0x00479b00
 // ?AddTail@?$CList@PAVTView@@PAV1@@@QAEPAU__POSITION@@PAVTView@@@Z
+
+template TView* CList<TView*, TView*>::RemoveTail();
+template POSITION CList<TView*, TView*>::AddTail(TView*);

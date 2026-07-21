@@ -573,9 +573,9 @@ const-stores *args:
 decode-builder *args:
   uv run python -m tools.binary.decode_builder {{args}}
 
-# Generate resource-driven UI factory TUs from committed Mac View IR and the
-# reviewed Windows dispatch/emission manifest.  Normal generation never reads
-# the original binary or retail Mac files.
+# Generate resource-driven UI factory TUs from committed semantic Mac View IR
+# plus the one evidenced Windows-only tree. Normal generation never reads the
+# original binary or retail Mac files.
 [group('build')]
 gen-builder *args:
   uv run python -m tools.ui_codegen {{args}}
@@ -585,7 +585,7 @@ gen-builder *args:
 ui-codegen *args:
   uv run python -m tools.ui_codegen --gen-dir "{{build_dir}}/generated/ui" {{args}}
 
-[doc('Validate committed UI resource IR, Windows recipes, and class bindings')]
+[doc('Validate committed UI semantics, structural invariants, and class bindings')]
 [group('gates')]
 ui-codegen-check:
   uv run python -m tools.ui_codegen --check
@@ -594,6 +594,16 @@ ui-codegen-check:
 [group('ghidra-inspect')]
 ui-resource-show resource:
   uv run python -m tools.ui_codegen --view "{{resource}}"
+
+[doc('Explain generated lines and evidence for FUNCTION EVENT [NODE-OFFSET-OR-TAG]')]
+[group('ghidra-inspect')]
+ui-codegen-explain *args:
+  uv run python -m tools.ui_codegen --gen-dir "{{build_dir}}/generated/ui" --explain {{args}}
+
+[doc('Summarize per-case and per-node source-map coverage for one UI factory')]
+[group('ghidra-inspect')]
+ui-codegen-triage function:
+  uv run python -m tools.ui_codegen --gen-dir "{{build_dir}}/generated/ui" --triage-map "{{function}}"
 
 # Evidence-only predecessor: disassemble a Windows region into a draft.  It is
 # intentionally outside the build/codegen pipeline.

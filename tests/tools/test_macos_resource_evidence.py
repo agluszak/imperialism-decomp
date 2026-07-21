@@ -1,12 +1,16 @@
 from __future__ import annotations
 
 import csv
+import json
 import struct
 import tempfile
 import unittest
 from pathlib import Path
 
 from tools.workflow import macos_resource_evidence as oracle
+
+
+REPO_ROOT = Path(__file__).resolve().parents[2]
 
 
 def _pascal(text: str) -> bytes:
@@ -94,6 +98,8 @@ def _widget_record(
     height: int,
     children: bytes = b"",
 ) -> bytes:
+    family_size = oracle.FAMILY_MINIMUM_SIZES[type_code]
+    family = type_code.encode("ascii") + bytes(family_size - 4)
     payload = b"".join(
         [
             _pascal(class_name),
@@ -102,7 +108,8 @@ def _widget_record(
             b"\x7f\xff\xff\xff",
             b"\0\0\x03\0",
             struct.pack(">iiii", y, x, height, width),
-            bytes(4),
+            bytes(22),
+            family,
             children,
         ]
     )
@@ -196,6 +203,32 @@ class MacosResourceEvidenceTests(unittest.TestCase):
         self.assertEqual(child["parent_offset"], root["offset"])
         self.assertIsInstance(child["type_value"], int)
         self.assertIsInstance(child["tag_value"], int)
+        self.assertEqual(child["decoder_confidence"], "high")
+        self.assertEqual(oracle.validate_ui_ir_structure(ui_ir), [])
+
+    def test_rejects_overlapping_siblings(self) -> None:
+        resources = [
+            oracle.ResourceEntry(
+                "Startup.rsrc", "View", 1500, "Startup", 0, _startup_view()
+            )
+        ]
+        ui_ir = oracle.build_ui_ir(resources, oracle.decode_widgets(resources))
+        nodes = ui_ir["views"][0]["nodes"]
+        nodes[1]["record_end"] = nodes[2]["offset"] + 1
+
+        errors = oracle.validate_ui_ir_structure(ui_ir)
+
+        self.assertTrue(any("sibling records" in error for error in errors))
+
+    def test_committed_real_resource_sentinels(self) -> None:
+        ui_ir = json.loads(
+            (
+                REPO_ROOT
+                / "vendor/macos_codewarrior/evidence/resources/ui_views.json"
+            ).read_text(encoding="utf-8")
+        )
+
+        self.assertEqual(oracle.validate_real_ui_sentinels(ui_ir), [])
 
     def test_writes_deterministic_metadata_only_evidence(self) -> None:
         strings = struct.pack(">H", 2) + _pascal("New Game") + _pascal("Quit")

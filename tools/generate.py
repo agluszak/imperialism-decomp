@@ -26,8 +26,8 @@ from tools.source_model import build_model, model_to_json
 from tools.stubgen import write_stubs
 from tools.ui_codegen import (
     load_recipes,
+    load_text_resources,
     load_ui_views,
-    load_windows_recipes,
     load_windows_views,
     validate as validate_ui_codegen,
 )
@@ -67,16 +67,16 @@ def main() -> int:
                 print("  0x{:08x} {} {}:{}".format(addr, c.kind, c.file, c.line))
         return 1
 
-    # 2. Resource-driven UI factory TUs, from committed IR + Windows recipes.
+    # 2. Semantic UI factory TUs, from committed Mac IR + Windows-only trees.
     ui_recipes = load_recipes(repo_root)
     ui_views = load_ui_views(repo_root)
-    ui_windows_recipes = load_windows_recipes(repo_root)
+    ui_text_resources = load_text_resources(repo_root)
     ui_windows_views = load_windows_views(repo_root)
     ui_errors = validate_ui_codegen(
         repo_root,
         ui_recipes,
         ui_views,
-        ui_windows_recipes,
+        ui_text_resources,
         ui_windows_views,
     )
     if ui_errors:
@@ -89,7 +89,7 @@ def main() -> int:
         gen_dir / "ui",
         ui_recipes,
         ui_views,
-        ui_windows_recipes,
+        ui_text_resources,
         ui_windows_views,
         annotation_kind=args.annotation_kind,
     )

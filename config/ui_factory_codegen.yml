@@ -12,7 +12,6 @@ functions:
 
   - address: 0x0041b6d0
     name: InitializeIndustryViewTradeMoveControlsAndCommodityRows
-    emission: compact
     prototype: TView* __cdecl InitializeIndustryViewTradeMoveControlsAndCommodityRows(CWnd* pHostWindow, int nEventCode)
     cases:
       - {event: 0x23f0, resource: Citydlog.rsrc:9200}
@@ -39,7 +38,6 @@ functions:
 
   - address: 0x004295a0
     name: BuildTurnEventDialogResourcesForEvent547Or7D8
-    emission: compact
     prototype: TView* __cdecl BuildTurnEventDialogResourcesForEvent547Or7D8(CWnd* pHostWindow, int nEventCode)
     cases:
       - {event: 0x0547, resource: Diplo.rsrc:1351}
@@ -58,7 +56,6 @@ functions:
 
   - address: 0x004357b0
     name: BuildTurnEventDialogUiByCode
-    emission: compact
     prototype: TView* __cdecl BuildTurnEventDialogUiByCode(CWnd* pHostWindow, int nEventCode)
     cases:
       - {event: 0x03b6, resource: Linger.rsrc:950}
@@ -80,7 +77,6 @@ functions:
 
   - address: 0x0043dbc0
     name: InitializeArmyNavyReportViewsAndCommandTags
-    emission: resource_recipe
     prototype: TView* __cdecl InitializeArmyNavyReportViewsAndCommandTags(CWnd* pHostWindow, int nEventCode)
     cases:
       - {event: 0x0546, resource: MapView.rsrc:1350}
@@ -100,7 +96,6 @@ functions:
 
   - address: 0x0044a810
     name: BuildTurnEventDialogResources_2508
-    emission: resource_recipe
     prototype: TView* __cdecl BuildTurnEventDialogResources_2508(CWnd* pHostWindow, int nEventCode)
     cases:
       - {event: 0x2508, resource: Minister.rsrc:9480}
@@ -122,7 +117,6 @@ functions:
 
   - address: 0x004538a0
     name: InitializeGameSetupScreenControlsAndModeTags
-    emission: resource_recipe
     prototype: TView* __cdecl InitializeGameSetupScreenControlsAndModeTags(CWnd* pHostWindow, int nEventCode)
     cases:
       - {event: 0x03b8, resource: Startup.rsrc:952}
@@ -147,14 +141,12 @@ functions:
 
   - address: 0x0045d520
     name: BuildTurnEventDialogResourcesForEvent898
-    emission: resource_recipe
     prototype: TView* __cdecl BuildTurnEventDialogResourcesForEvent898(CWnd* pHostWindow, int nEventCode)
     cases:
       - {event: 0x0898, resource: Tech.rsrc:2200}
 
   - address: 0x0045e0b0
     name: BuildTurnEventDialogResourcesForEvent8FC
-    emission: resource_recipe
     prototype: TView* __cdecl BuildTurnEventDialogResourcesForEvent8FC(CWnd* pHostWindow, int nEventCode)
     cases:
       - {event: 0x08fc, resource: TechStore.rsrc:2300}
@@ -162,7 +154,6 @@ functions:
 
   - address: 0x004601b0
     name: InitializeTradeScreenBitmapControls
-    emission: resource_recipe
     prototype: TView* __cdecl InitializeTradeScreenBitmapControls(CWnd* pHostWindow, int nEventCode)
     cases:
       - {event: 0x07d9, resource: Trade.rsrc:2009}
@@ -170,7 +161,6 @@ functions:
 
   - address: 0x0046fd10
     name: BuildTurnEventDialogResourcesForEvent7DE
-    emission: compact
     prototype: TView* __cdecl BuildTurnEventDialogResourcesForEvent7DE(CWnd* pHostWindow, int nEventCode)
     cases:
       - {event: 0x07de, resource: Transport.rsrc:2014}

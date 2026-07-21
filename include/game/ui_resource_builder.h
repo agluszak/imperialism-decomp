@@ -38,7 +38,7 @@ void __cdecl SetUiResourceStateFlags(bool inputGateFlag4c, bool childHitTestFlag
 
 // Assign text + packed style descriptor + theme code onto the current
 // g_pUiResourceContext text control (a TStaticText-family widget).
-void __cdecl BindUiResourceTextAndStyle(int nGroupId, int nVariant, char* szText, short nMode,
+void __cdecl BindUiResourceTextAndStyle(int nGroupId, int nVariant, const char* szText, short nMode,
                                         short nFlag, short nPointSize, TUiStyleRef styleRef,
                                         short nThemeCode);
 
