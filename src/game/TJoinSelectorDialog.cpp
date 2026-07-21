@@ -1,4 +1,5 @@
 #include "game/TJoinSelectorDialog.h"
+#include "game/TWindow.h"
 
 #include "game/CMcWindow.h"
 #include "game/TEditText.h"
@@ -77,14 +78,12 @@ RuntimeSelectionRecord* TJoinSelectorDialog::GetSelectedJoinableGame() {
 }
 
 // FUNCTION: IMPERIALISM 0x0054e9a0
-void TJoinSelectorDialog::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+void TJoinSelectorDialog::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if ((commandId == 0x14 || commandId == 0xa || commandId == 0x22 || commandId == 0xd) &&
       (sourceHandler->controlTag == kControlTagCanc ||
        sourceHandler->controlTag == kControlTagCncl ||
        sourceHandler->controlTag == kControlTagOkay)) {
-    static_cast<TControl*>(OwnerPanel())
-        ->SetTextStyleAndMaybeRefresh(
-            reinterpret_cast<TUiTextStyleDescriptor*>(sourceHandler->controlTag), 1);
+    GetWindow()->Dismiss(sourceHandler->controlTag, 1);
   }
-  TControl::HandleEvent(commandId, sourceHandler, event);
+  TControl::DoEvent(commandId, sourceHandler, event);
 }

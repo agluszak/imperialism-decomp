@@ -205,7 +205,7 @@ void TBattleReportView::DoPostCreate(int arg) {
   RefreshMapContextSelectionPanelAndInfoLabels(
       g_pMapContextActionManager->mapContextActionRecordList04->GetPtrListEntryByOneBasedIndex(
           selectedOrdinal));
-  SetCityDialogValueDword10(2);
+  SetIdleFreq(2);
 
   TIdleMeAnimation* animation = new TIdleMeAnimation();
   transientRegistryObject24cc = animation;
@@ -263,7 +263,7 @@ char TBattleReportView::DoIdle(int action) {
 }
 
 // FUNCTION: IMPERIALISM 0x004ad7a0
-void TBattleReportView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+void TBattleReportView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   (void)commandId;
   (void)sourceHandler;
   (void)event;
@@ -285,8 +285,8 @@ void TBattleReportView::BeginMouseCaptureAndStartRepeatTimer(const CPoint& point
 }
 
 // FUNCTION: IMPERIALISM 0x004ade00
-void TBattleReportView::ApplyRectSlot110(RECT* rectBuffer) {
-  TDiplomacyMapView::ApplyRectSlot110(rectBuffer);
+void TBattleReportView::Draw(RECT* rectBuffer) {
+  TDiplomacyMapView::Draw(rectBuffer);
   RenderMapContextActionMarkers(rectBuffer);
 }
 

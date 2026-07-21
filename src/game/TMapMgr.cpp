@@ -1503,8 +1503,9 @@ void TMapMgr::DispatchTurnEvent7DDForActiveNation() {
 }
 
 // FUNCTION: IMPERIALISM 0x00511f10
-void TMapMgr::ForwardComputeRepresentativeTileIndexForTerrainTypeWithWrapBias(undefined4 param_1) {
-  ComputeRepresentativeTileIndexForTerrainTypeWithWrapBias(static_cast<short>(param_1), 1);
+short TMapMgr::ForwardComputeRepresentativeTileIndexForTerrainTypeWithWrapBias(int terrainType) {
+  return ComputeRepresentativeTileIndexForTerrainTypeWithWrapBias(static_cast<short>(terrainType),
+                                                                  1);
 }
 
 namespace {
@@ -3662,7 +3663,7 @@ void TMapMgr::ApplyJoinEmpireMode0GlobalDiplomacyReset(int nationSlot) {
 }
 
 // FUNCTION: IMPERIALISM 0x005184e0
-short __stdcall GetProvinceUnitOrderWeight(short provinceId) {
+short TMapMgr::GetProvinceUnitOrderWeight(short provinceId) {
   // Retail body ignores the province and returns the constant weight 0x21 (33);
   // mission scoring converts it to float for the accumulate dampening factor.
   (void)provinceId;

@@ -431,7 +431,7 @@ void TDiplomacyMapView::InitializeDiplomacyMinisterActionControlsAndLabels() {
 }
 
 // FUNCTION: IMPERIALISM 0x004f48c0
-void TDiplomacyMapView::ApplyRectSlot110(RECT* rectBuffer) {
+void TDiplomacyMapView::Draw(RECT* rectBuffer) {
   // Constructed and destroyed here (EH state 0 while alive) but never touched in the
   // body -- a dead local in the original, kept for the exact EH/codegen shape.
   CString unusedScratch;
@@ -707,7 +707,7 @@ int TDiplomacyMapView::ResolveDiplomacyActionFromClickAndUpdateTarget(CPoint* cl
     return 0;
   }
 
-  CPoint localPoint = this->TransformPointViaSlot138(clickPoint);
+  CPoint localPoint = this->ViewToQDPt(clickPoint);
 
   int terrainIndex = 0;
   int* terrainDescriptors = reinterpret_cast<int*>(kAddrTerrainTypeDescriptorTable);
@@ -737,7 +737,7 @@ int TDiplomacyMapView::ResolveDiplomacyActionFromClickAndUpdateTarget(CPoint* cl
 }
 
 // FUNCTION: IMPERIALISM 0x004f5f90
-void TDiplomacyMapView::HandleCursorHoverFallback(CPoint* point, RgnHandle hitArg) {
+void TDiplomacyMapView::DoSetCursor(CPoint* point, RgnHandle hitArg) {
   (void)point;
   (void)hitArg;
 }
@@ -837,7 +837,7 @@ void TDiplomacyMapView::RenderDiplomacyLegendSurfaceAndPresent(RECT* presentRect
 
     // Original passes the present rect here (mov ecx,[esp+0x58]; thiscall 0x48f3c0),
     // not a null rect.
-    ApplyRectSlot110(presentRect);
+    Draw(presentRect);
 
     void** terrainDescriptors = reinterpret_cast<void**>(kAddrTerrainTypeDescriptorTable);
     short terrainIndex = 0;
@@ -1242,7 +1242,7 @@ void TDiplomacyMapView::ChangeSelectedActionTopic(int topicIndex) {
     }
   }
 
-  this->InvokeSlot13C();
+  this->ForceRedraw();
   stateFlagAtB8 = newTopic;
 
   switch (newTopic) {
@@ -1297,7 +1297,7 @@ void TDiplomacyMapView::PoseOffer(short sourceNation, short targetNation, short 
 }
 
 // FUNCTION: IMPERIALISM 0x004f70c0
-void TDiplomacyMapView::HandleEvent(int commandId, TEventHandler* panelEvent, TEvent* extra) {
+void TDiplomacyMapView::DoEvent(int commandId, TEventHandler* panelEvent, TEvent* extra) {
   if (commandId == 0x14) {
     int tabIndex = 0;
     int* tagTable = reinterpret_cast<int*>(0x00696978);
@@ -1313,7 +1313,7 @@ void TDiplomacyMapView::HandleEvent(int commandId, TEventHandler* panelEvent, TE
       return;
     }
   } else {
-    TControl::HandleEvent(commandId, panelEvent, extra);
+    TControl::DoEvent(commandId, panelEvent, extra);
   }
 }
 

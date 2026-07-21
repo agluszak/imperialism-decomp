@@ -26,7 +26,7 @@ TForeignMinisterView::TForeignMinisterView() : TMinisterView() {}
 TForeignMinisterView::~TForeignMinisterView() {}
 
 // FUNCTION: IMPERIALISM 0x004f3050
-void TForeignMinisterView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+void TForeignMinisterView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   unsigned int tag = sourceHandler->controlTag;
   if (commandId == 0xa) {
     if (tag == kControlTagBack) {
@@ -34,7 +34,7 @@ void TForeignMinisterView::HandleEvent(int commandId, TEventHandler* sourceHandl
       return;
     } else if (tag == kControlTagOkay) {
       CloseBooks();
-      TWindow* owner = static_cast<TWindow*>(OwnerPanel());
+      TWindow* owner = GetWindow();
       g_pGlobalUiRootController->CloseAndFreeWindow(owner);
       return;
     }
@@ -63,13 +63,13 @@ void TForeignMinisterView::HandleEvent(int commandId, TEventHandler* sourceHandl
     }
     return;
   }
-  TEventHandler::HandleEvent(commandId, sourceHandler, event);
+  TEventHandler::DoEvent(commandId, sourceHandler, event);
 }
 
 // FUNCTION: IMPERIALISM 0x004f31d0
 void TForeignMinisterView::ShowWorldMap() {
   if (g_pSimMgr->field14 == 0) {
-    TWindow* owner = static_cast<TWindow*>(OwnerPanel());
+    TWindow* owner = GetWindow();
     CloseBooks();
     g_pGlobalUiRootController->CloseAndFreeWindow(owner);
   }

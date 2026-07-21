@@ -179,11 +179,10 @@ TTaskForce::TTaskForce()
 }
 
 // FUNCTION: IMPERIALISM 0x00552800
-TTaskForce::TTaskForce(int contextAnchorArg, short requiredCountArg)
+TTaskForce::TTaskForce(TZone* contextAnchorArg, short requiredCountArg)
     : order_type(1), order_strength(0), attachment(0), owner(), childOrderList(nullptr),
-      activeChildEntry(nullptr), contextAnchor(reinterpret_cast<TZone*>(contextAnchorArg)),
-      required_count(requiredCountArg), queue_prev(nullptr), queue_next(nullptr),
-      tiebreak_strength(-1) {
+      activeChildEntry(nullptr), contextAnchor(contextAnchorArg), required_count(requiredCountArg),
+      queue_prev(nullptr), queue_next(nullptr), tiebreak_strength(-1) {
   memset(shipCountsByClass, 0, sizeof(shipCountsByClass));
 }
 

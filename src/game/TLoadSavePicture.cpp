@@ -1,4 +1,5 @@
 #include "game/TLoadSavePicture.h"
+#include "game/TWindow.h"
 
 #include "game/global_data_tables.h"
 #include "game/TSimMgr.h"
@@ -103,8 +104,8 @@ struct SaveFileHeader {
 } // namespace
 
 // FUNCTION: IMPERIALISM 0x0056cd10
-void TLoadSavePicture::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
-  // The original never calls a base-class HandleEvent in any path, so none is modeled here
+void TLoadSavePicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+  // The original never calls a base-class DoEvent in any path, so none is modeled here
   // either.
   bool reachedCommonTail = false;
   if (commandId == 0xd) {
@@ -142,12 +143,12 @@ void TLoadSavePicture::HandleEvent(int commandId, TEventHandler* sourceHandler, 
         editControl->InitializeTextEntryBaseAndOptionalStringResource(this, offsetLayout,
                                                                       sizeLayout, 5, 5, -1, 0);
         editControl->maxCharacterCount = 0x1f;
-        editControl->SetControlValue(1);
+        editControl->SetEnable(1);
 
         editControl->SetTextStyleAndMaybeRefresh(&styleAt9e, 0);
         editControl->InitDialogWindowAndSyncTitleIfChanged(&slotText, 0);
         editControl->PrepareForDrawing();
-        editControl->ActivateCityProductionViewIfAllowed();
+        editControl->BecomeTarget();
         editControl->SetEditSelectionAndScrollCaret(0, static_cast<short>(slotText.GetLength()), 0);
         editControl->controlTag = 0x736c6f74u; // 'slot'
         g_pUiRuntimeContext->SetBackColor(0x10);
@@ -226,7 +227,7 @@ undefined TLoadSavePicture::HandleSaveGameSlotSelectionAndPromptFlow() {
   if (loadModeFlag90 != 0) {
     if (g_pSimMgr->mode == 1 ||
         g_pUiRuntimeContext->DispatchGameStateEventIfLocalizedPromptAccepted(0x6c6f6164) != 0) {
-      OwnerPanel()->InvokeSlot13C();
+      GetWindow()->ForceRedraw();
       char* prefix = (char*)g_pszMultiplayerSavePrefix_0065DDD4;
       if (!IsMultiplayerFlowActive()) {
         prefix = (char*)g_pszSingleSlotSavePrefix_0065DDD0;
@@ -246,7 +247,7 @@ undefined TLoadSavePicture::HandleSaveGameSlotSelectionAndPromptFlow() {
     if (strcmp(enteredName, g_szEmptyString) == 0) {
       enteredName = BuildSharedStringFromMappedFlavorTextIndex(0xd);
       slotNameControl->InitDialogWindowAndSyncTitleIfChanged(&enteredName, 1);
-      slotNameControl->InvokeSlot13C();
+      slotNameControl->ForceRedraw();
     }
     strcpy(g_ScenarioSaveNameBuffer_006A2178, enteredName);
     if (IsMultiplayerFlowActive()) {

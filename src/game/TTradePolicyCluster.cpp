@@ -1,4 +1,5 @@
 #include "game/TTradePolicyCluster.h"
+#include "game/TWindow.h"
 
 #include "game/TCluster.h"
 #include "game/ui_control_tags.h"
@@ -19,12 +20,12 @@ TTradePolicyCluster::TTradePolicyCluster() {}
 TTradePolicyCluster::~TTradePolicyCluster() {}
 
 // FUNCTION: IMPERIALISM 0x00584320
-void TTradePolicyCluster::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+void TTradePolicyCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId != 0x67) {
-    TCluster::HandleEvent(commandId, sourceHandler, event);
+    TCluster::DoEvent(commandId, sourceHandler, event);
     return;
   }
-  TView* owner = OwnerPanel();
+  TView* owner = GetWindow();
   SetSelectedChildTagAndRefresh(0x20202020);
   TView* clusControl = owner->ResolveControlByTag(kControlTagClus);
   if (clusControl == nullptr) {

@@ -44,7 +44,7 @@ public:
   // TAnimation::ConstructTAnimationBaseState with frameCount pinned to 0 (this class
   // overrides Tick itself, so the inherited
   // frame-index scheme is unused). Confirmed against both call sites
-  // (OrphanTiny_ReturnZero_0048a730 and ApplyRectSlot110): param_1 is the enclosing
+  // (OrphanTiny_ReturnZero_0048a730 and Draw): param_1 is the enclosing
   // TView, param_2 a RECT computed from a (x,y) origin, param_3 the kind index read
   // from another object's +0x4 field, param_4 an opaque tag forwarded verbatim.
   TCivAnimation2(TView* ownerView, RECT* rect, int kind, int tag);

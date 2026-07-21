@@ -1,4 +1,5 @@
 #include "game/TScoreGraph.h"
+#include "game/TWindow.h"
 
 #include "game/TDiplomacyMgr.h"
 #include "game/TGreatPower.h"
@@ -34,7 +35,7 @@ void TScoreGraph::DoPostCreate(int arg) {
 
   SetControlHoverHelpText(CString(g_szEmptyString), ownerContext);
 
-  TView* owner = OwnerPanel();
+  TView* owner = GetWindow();
   g_pCursorControlPanel = static_cast<TInfoBarText*>(owner->ResolveControlByTag(kControlTagCurs));
   g_pCursorControlPanel->AssertValid();
   g_pCursorControlPanel->InitializeMapHintTextStyleAndThemeFlags(0x2b6c, 0x2b67);
@@ -47,7 +48,7 @@ void TScoreGraph::DoPostCreate(int arg) {
 // carries over as (this row's total bar width + 0x34) -- ported verbatim from the
 // original, including that apparent quirk.
 // FUNCTION: IMPERIALISM 0x004fe390
-void TScoreGraph::ApplyRectSlot110(RECT* rectBuffer) {
+void TScoreGraph::Draw(RECT* rectBuffer) {
   (void)rectBuffer;
   ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 0xc, 0x2b67);
 

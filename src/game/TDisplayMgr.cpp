@@ -155,7 +155,7 @@ void TDisplayMgr::ExamineGWorld() {
 // FUNCTION: IMPERIALISM 0x004febd0
 void TDisplayMgr::AboutToLoseControl(unsigned char) {
   if (dialogActiveFlag != 0 && activeDialog != 0) {
-    activeDialog->RefreshCityProductionViewStateFromContext(0);
+    activeDialog->GetDrawableRegion(0);
   }
   SetMenuHeight(1);
   HiliteColor(&savedHiliteColor);
@@ -184,7 +184,7 @@ void TDisplayMgr::ModalMessage(CString message, const POINT& messagePosition) {
 void TDisplayMgr::RegainControl(unsigned char) {
   if (dialogActiveFlag != 0 && activeDialog != 0) {
     activeDialog->InvalidateOffsetRegionUsingChildClipRect(0);
-    activeDialog->InvokeSlot13C();
+    activeDialog->ForceRedraw();
   }
   SetMenuHeight(0);
   HiliteColor(&hiliteColor);
@@ -238,7 +238,7 @@ void TDisplayMgr::UpdateTheGWorld(short eventCode) {
   SetGlobalQuickDrawOrigin(static_cast<short>(mainView->ownerLocalX),
                            static_cast<short>(mainView->ownerLocalY));
   ClipRect(&clipRect);
-  mainView->ApplyRectSlot110(&queryBounds);
+  mainView->Draw(&queryBounds);
 
   NoOpQuickDrawLifecycleHookB(GetSurfaceNodeSlot(g_pPrimaryRenderSurfaceContext));
   SetActiveQuickDrawSurfaceContext(savedContext, savedFlags);

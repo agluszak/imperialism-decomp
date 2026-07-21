@@ -58,9 +58,9 @@ TWindow::~TWindow() {
 }
 
 // FUNCTION: IMPERIALISM 0x0048d8a0
-void TWindow::SetField88And8c(int param_1, int param_2) {
-  dialogBehavior.defaultCommandCode = param_1;
-  dialogBehavior.cancelCommandCode = param_2;
+void TWindow::SetDialogItems(unsigned long defaultCommandCode, unsigned long cancelCommandCode) {
+  dialogBehavior.defaultCommandCode = defaultCommandCode;
+  dialogBehavior.cancelCommandCode = cancelCommandCode;
 }
 
 // FUNCTION: IMPERIALISM 0x0048d8d0
@@ -71,18 +71,17 @@ void TWindow::AssertMcAppUILine2358(int) {
 }
 
 // FUNCTION: IMPERIALISM 0x0048d900
-undefined TWindow::OrphanCallChain_C2_I39_0048d900(char param_1, char param_2) {
+void TWindow::Show(unsigned char show, unsigned char refresh) {
   if (nativeWindow50 != 0 && nativeWindow50->m_hWnd != 0) {
-    WPARAM wParam = (param_1 == '\0') ? 3 : 2;
-    SendMessageA(reinterpret_cast<HWND>(nativeWindow50->m_hWnd), 0x468, wParam, controlTag);
+    WPARAM wParam = show == 0 ? 3 : 2;
+    SendMessageA(nativeWindow50->m_hWnd, 0x468, wParam, controlTag);
   }
-  if ((int)param_1 != field08) {
-    field08 = (int)param_1;
-    if (param_2 != '\0') {
+  if ((int)show != field08) {
+    field08 = (int)show;
+    if (refresh != 0) {
       RefreshControl();
     }
   }
-  return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x0048d980
@@ -92,15 +91,13 @@ char TWindow::IsActionable() {
 }
 
 // FUNCTION: IMPERIALISM 0x0048d9c0
-undefined TWindow::SetWindowText(CString* param_1) {
-  nativeWindow50->SetWindowText(*param_1);
-  return 0;
+void TWindow::SetTitle(const CString* title) {
+  nativeWindow50->SetWindowText(*title);
 }
 
 // FUNCTION: IMPERIALISM 0x0048d9f0
-undefined TWindow::GetWindowText(CString* param_1) {
-  nativeWindow50->GetWindowText(*param_1);
-  return 0;
+void TWindow::GetTitle(CString* title) {
+  nativeWindow50->GetWindowText(*title);
 }
 
 // FUNCTION: IMPERIALISM 0x0048da10
@@ -188,24 +185,24 @@ void TWindow::AssertMcAppUILine2554() {
 }
 
 // FUNCTION: IMPERIALISM 0x0048dd10
-void TWindow::DispatchEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+void TWindow::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   // Direct access to the embedded TDialogBehavior (the original reads its vptr straight from
-  // +0x74), then bubble to HandleEvent.
+  // +0x74), then bubble to DoEvent.
   dialogBehavior.DoEvent(commandId, sourceHandler, event);
-  HandleEvent(commandId, sourceHandler, event);
+  DoEvent(commandId, sourceHandler, event);
 }
 
 // FUNCTION: IMPERIALISM 0x0048dd50
-void TWindow::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+void TWindow::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId == 0x1a) {
     if (g_McAppUiFlag_006A1B0C == 0) {
       AssertMcAppUiInvalidation(g_szMcAppUiSourcePath_006950B0, 0xa1a);
     }
     return;
   }
-  TView* child = static_cast<TView*>(QueryStepValue());
+  TView* child = static_cast<TView*>(GetNextHandler());
   if (child != 0) {
-    child->DispatchEvent(commandId, sourceHandler, event);
+    child->HandleEvent(commandId, sourceHandler, event);
   }
 }
 
@@ -215,9 +212,9 @@ void TWindow::SetWindowTarget(TEventHandler* target) {
     target = this;
   }
   if (target != activeLinkedWindow64) {
-    activeLinkedWindow64->DispatchUiCommand19ToParent();
+    activeLinkedWindow64->BecameWindowTarget();
     activeLinkedWindow64 = target;
-    target->HandleCityProductionNoOp();
+    target->TargetValidationSucceeded();
   }
 }
 
@@ -241,9 +238,9 @@ CMcWindow* TWindow::Open() {
   if (IsActionable() == 0) {
     busyFlag98 = 1;
     if (activeLinkedWindow64 != 0) {
-      activeLinkedWindow64->vmethod_0081(0);
+      activeLinkedWindow64->SelectOwner(0);
     }
-    OrphanCallChain_C2_I39_0048d900(1, 1);
+    Show(1, 1);
   }
   if (childList44 != 0) {
     POSITION pos = childList44->GetHeadPosition();
@@ -261,7 +258,7 @@ CMcWindow* TWindow::Open() {
 void TWindow::Close() {
   busyFlag98 = 0;
   if (nativeWindow50 != 0 && nativeWindow50->m_hWnd != 0) {
-    SendMessageA(reinterpret_cast<HWND>(nativeWindow50->m_hWnd), 0x468, 1, controlTag);
+    SendMessageA(nativeWindow50->m_hWnd, 0x468, 1, controlTag);
   }
   if (childList44 != 0) {
     POSITION pos = childList44->GetHeadPosition();
@@ -270,7 +267,7 @@ void TWindow::Close() {
       child->Close();
     }
   }
-  OrphanCallChain_C2_I39_0048d900(0, 1);
+  Show(0, 1);
 }
 
 // FUNCTION: IMPERIALISM 0x0048e120
@@ -280,11 +277,11 @@ void TWindow::CloseAndFree() {
 }
 
 // FUNCTION: IMPERIALISM 0x0048e150
-undefined TWindow::CenterWindowOrPositionWithinWorkArea(char centerX, char centerY,
-                                                        int unusedArg3) {
+void TWindow::Center(unsigned char centerX, unsigned char centerY, unsigned char unused) {
+  (void)unused;
   if (nativeWindow50 != 0) {
     nativeWindow50->CenterWindow(0);
-    return 0;
+    return;
   }
   if (centerX != 0) {
     ownerLocalX = (0x280 - frameWidth34) / 2;
@@ -292,7 +289,6 @@ undefined TWindow::CenterWindowOrPositionWithinWorkArea(char centerX, char cente
   if (centerY != 0) {
     ownerLocalY = (0x1e0 - frameHeight38) / 2;
   }
-  return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x0048e1c0
@@ -335,7 +331,7 @@ void TWindow::ZoomByUser(const CPoint& point, short partCode) {
 }
 
 // Object teardown: destroy/notify the host CMcWindow, free all child controls, detach from
-// the owner, hand off the active-view slot, release the linked resource-owner target, then delete
+// the owner, hand off the target slot, release the linked resource-owner target, then delete
 // self. Uses the real MFC CWnd/CObject surface (IsKindOf/AssertValid/dtor) directly.
 // FUNCTION: IMPERIALISM 0x0048e2a0
 void TWindow::Free() {
@@ -364,14 +360,14 @@ void TWindow::Free() {
     ownerContext = 0;
   }
   if (g_pApplicationUiRootController != 0 &&
-      g_pApplicationUiRootController != reinterpret_cast<TApplication*>(this)) {
-    if (g_pApplicationUiRootController->GetActiveView() == reinterpret_cast<TView*>(this)) {
-      TView* replacement = static_cast<TView*>(QueryStepValue());
+      static_cast<TEventHandler*>(g_pApplicationUiRootController) !=
+          static_cast<TEventHandler*>(this)) {
+    if (g_pApplicationUiRootController->GetTarget() == this) {
+      TEventHandler* replacement = GetNextHandler();
       if (replacement == 0) {
-        g_pApplicationUiRootController->SetActiveView(
-            reinterpret_cast<TView*>(g_pApplicationUiRootController));
+        g_pApplicationUiRootController->SetTarget(g_pApplicationUiRootController);
       } else {
-        g_pApplicationUiRootController->SetActiveView(replacement);
+        g_pApplicationUiRootController->SetTarget(replacement);
       }
     }
   }
@@ -384,12 +380,12 @@ void TWindow::Free() {
 }
 
 // FUNCTION: IMPERIALISM 0x00492cc0
-class TView* TWindow::OwnerPanel() {
+TWindow* TWindow::GetWindow() {
   return this;
 }
 
 // FUNCTION: IMPERIALISM 0x00492ce0
-class TView* TWindow::QueryOwnerContextPanel() {
+TView* TWindow::GetRootView() {
   return this;
 }
 
@@ -403,7 +399,9 @@ void TWindow::TranslatePointToParentChain4D(CPoint* point) {}
 void TWindow::TranslateRectToWindow(CRect* rect) {}
 
 // FUNCTION: IMPERIALISM 0x00492d60
-void TWindow::SubtractPosAndDispatchToOwnerSlot19C(CPoint* point) {}
+void TWindow::WindowToLocal(CPoint* point) {
+  (void)point;
+}
 
 // FUNCTION: IMPERIALISM 0x00492d80
 TObject* TWindow::ShallowClone() {

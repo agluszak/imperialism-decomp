@@ -887,7 +887,7 @@ def _emit_semantic_view(
         family = node.family
         if family.frame_style is not None and family.content_insets is not None:
             lines.append(
-                f"{indent}SetUiResourceLayoutValues({_hex(family.frame_style)}, "
+                f"{indent}SetUiResourceEventNumberAndInsets({_hex(family.frame_style)}, "
                 f"{_cpp_args(family.content_insets)});"
             )
         if family.picture_id is not None:

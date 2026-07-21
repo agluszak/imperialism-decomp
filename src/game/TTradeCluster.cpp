@@ -1,4 +1,5 @@
 #include "game/TIndustryCluster.h"
+#include "game/TWindow.h"
 #include "game/TSimMgr.h"
 #include "game/TRailCluster.h"
 #include "game/TShipyardCluster.h"
@@ -155,8 +156,8 @@ void TTradeCluster::DoPostCreate(int styleSeed) {
 }
 
 // FUNCTION: IMPERIALISM 0x005873e0
-void TTradeCluster::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
-  TView* ownerPanel = this->OwnerPanel();
+void TTradeCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+  TView* ownerPanel = this->GetWindow();
 
   switch (commandId) {
   case 100: {

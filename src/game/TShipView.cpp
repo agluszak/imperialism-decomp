@@ -33,8 +33,8 @@ IMPLEMENT_DYNCREATE(TShipView, TView)
 TShipView::TShipView() {}
 
 // FUNCTION: IMPERIALISM 0x005654e0
-void TShipView::ApplyRectSlot110(RECT* rectBuffer) {
-  (void)rectBuffer; // dead parameter in this override, like the other ApplyRectSlot110s
+void TShipView::Draw(RECT* rectBuffer) {
+  (void)rectBuffer; // dead parameter in this override, like the other Draws
 
   ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 0xa, 0x2b6a);
 
@@ -70,7 +70,7 @@ void TShipView::ApplyRectSlot110(RECT* rectBuffer) {
     DrawTextWithCachedQuickDrawStyleState(&label);
   }
 
-  short normBase = GetNavyOrderNormalizationBaseByResourceType(shipNode60->resourceType04);
+  short normBase = shipNode60->GetNavyOrderNormalizationBaseByNationType();
   short levelBucket = static_cast<short>(shipNode60->stockLevel1c * 20 / normBase) + 1;
   if (levelBucket > 0x14) {
     levelBucket = 0x14;
@@ -97,7 +97,7 @@ void TShipView::ApplyRectSlot110(RECT* rectBuffer) {
 }
 
 // FUNCTION: IMPERIALISM 0x005658d0
-void TShipView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+void TShipView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (sourceHandler->controlTag == kControlTagChec) {
     TMapOrderChildLinkNode* node = field64->childOrderList->FindNodeMatching(shipNode60);
     int delta;
@@ -130,7 +130,7 @@ void TShipView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent*
   } else if (sourceHandler->controlTag == kControlTagName) {
     RunEngineerOrderNameEditDialogAndApply();
   }
-  TEventHandler::HandleEvent(commandId, sourceHandler, event);
+  TEventHandler::DoEvent(commandId, sourceHandler, event);
 }
 
 // Same dialog (message context 0xdb4) and control shape as TArmyUnitView::

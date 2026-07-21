@@ -32,7 +32,7 @@ void TMiniCivView::ConstructTMiniCivViewBaseState(TView* panel, int* offsetLayou
                                                   TCivUnit* civUnit) {
   InitializeUiResourceEntryFrameAndParent(0, panel, offsetLayout, sizeLayout, 5, 5, 0);
   civUnit84 = civUnit;
-  frameStyle60 = 0x22;
+  eventNumber60 = 0x22;
   SetControlHoverHelpText(g_pMiniCivSharedText_0064cb18, this);
 
   CString assembled;
@@ -111,8 +111,8 @@ void TMiniCivView::ConstructTMiniCivViewBaseState(TView* panel, int* offsetLayou
 }
 
 // FUNCTION: IMPERIALISM 0x004ac000
-void TMiniCivView::ApplyRectSlot110(RECT* rectBuffer) {
-  (void)rectBuffer; // dead parameter, like the other ApplyRectSlot110s
+void TMiniCivView::Draw(RECT* rectBuffer) {
+  (void)rectBuffer; // dead parameter, like the other Draws
 
   InitializeUiTextStyleDescriptorAndApplyQuickDraw(0, 0xc, 0x2b67, 3);
 
@@ -162,14 +162,14 @@ void TMiniCivView::ApplyRectSlot110(RECT* rectBuffer) {
 }
 
 // FUNCTION: IMPERIALISM 0x004ac320
-void TMiniCivView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+void TMiniCivView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (sourceHandler == this) {
-    ownerContext->QueryStepValue();
+    ownerContext->GetNextHandler();
     // The original also writes civUnit84->tileIndex06 into a short field at the same
     // +0x84 offset on ownerContext's concrete (unrecovered) class -- distinct from this
     // class's own field84 (unitText88, a CString) despite the matching offset. Left
     // unresolved pending that class's recovery rather than guessing its layout (same
-    // pattern as TMiniArmyView::HandleEvent's own ownerContext->field84 write).
+    // pattern as TMiniArmyView::DoEvent's own ownerContext->field84 write).
   }
-  TControl::HandleEvent(commandId, sourceHandler, event);
+  TControl::DoEvent(commandId, sourceHandler, event);
 }

@@ -21,7 +21,7 @@ TDropShadowText::~TDropShadowText() {}
 // paint the base text through it, then draw the shadow-colored copy offset by (-1,-1)
 // before restoring the DC's clip region.
 // FUNCTION: IMPERIALISM 0x005b5650
-void TDropShadowText::ApplyRectSlot110(RECT* rectBuffer) {
+void TDropShadowText::Draw(RECT* rectBuffer) {
   CRect clipRect;
   GetQDExtent(&clipRect);
   clipRect.left--;
@@ -35,7 +35,7 @@ void TDropShadowText::ApplyRectSlot110(RECT* rectBuffer) {
     clipRgn.DeleteObject();
   }
 
-  TStaticText::ApplyRectSlot110(rectBuffer);
+  TStaticText::Draw(rectBuffer);
 
   SetQuickDrawColorAndSyncGlobals(shadowThemeCode94);
   CString textBuffer;

@@ -1,4 +1,5 @@
 #include "game/TNewTownView.h"
+#include "game/TWindow.h"
 
 #include "game/TEditText.h"
 #include "game/TIconBar.h"
@@ -33,7 +34,7 @@ void TNewTownView::StuffValues(TTown* town) {
   }
   int extraHeight = visibleResourceCount * 0x20;
 
-  TView* owner = OwnerPanel();
+  TView* owner = GetWindow();
   if (owner == 0) {
     FailNilPointerWithAssert(s_SourcePathUCityDialogs_006962E8, 0x7fa);
   }
@@ -80,7 +81,7 @@ void TNewTownView::StuffValues(TTown* town) {
   if (name == 0) {
     FailNilPointerWithAssert(s_SourcePathUCityDialogs_006962E8, 0x821);
   }
-  name->ActivateCityProductionViewIfAllowed();
+  name->BecomeTarget();
   name->GetCurrentText(&townName);
   name->SetEditSelectionAndScrollCaret(0, static_cast<short>(townName.GetLength()), 1);
 }

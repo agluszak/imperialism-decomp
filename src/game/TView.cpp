@@ -63,13 +63,8 @@ TUiStyleRef::TUiStyleRef(int value) {
 unsigned short TView::GetCursorID() {
   return cursorId4e;
 }
-extern "C" {
-void* AssertQuickDrawFlag6A1DCCNonZero(int index);
-void AssertQuickDrawFlag6A1DC8NonZero(void* ptr);
-}
-
 // FUNCTION: IMPERIALISM 0x00427220
-void TView::PostRenderSlotFC() {}
+void TView::PostRender() {}
 
 // FUNCTION: IMPERIALISM 0x00427240
 char TView::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoint origin) {
@@ -104,7 +99,7 @@ void TView::TranslateRectToWindow(CRect* rect) {
 }
 
 // FUNCTION: IMPERIALISM 0x00427330
-void TView::UpdateAfterBitmapChange(CPoint* point) {
+void TView::SuperToLocal(CPoint* point) {
   point->x -= ownerLocalX;
   point->y -= ownerLocalY;
 }
@@ -114,12 +109,12 @@ void TView::GetDrawableQDRect(CRect* rectOut) {
   GetQDExtent(rectOut);
 }
 // FUNCTION: IMPERIALISM 0x00430bd0
-int TView::QuerySelectedIndexSlotBC() {
+int TView::GetEventNumber() {
   return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x00430bf0
-void TView::ApplyRectSlot110(RECT* rectBuffer) {
+void TView::Draw(RECT* rectBuffer) {
   (void)rectBuffer;
 }
 
@@ -144,13 +139,28 @@ void TView::BeginMouseCaptureAndStartRepeatTimer(const CPoint& point, TToolboxEv
 // TEMPLATE: IMPERIALISM 0x00479d80
 // ??1?$CList@PAVTView@@PAV1@@@UAE@XZ
 
-// TEMPLATE: IMPERIALISM 0x0048ada0
-// ??_G?$CList@PAVTView@@PAV1@@@UAEPAXI@Z
+// FUNCTION: IMPERIALISM 0x00489f90
+void TViewChildList::RemoveByTag(unsigned int tag) {
+  POSITION position = GetHeadPosition();
+  while (position != 0) {
+    POSITION current = position;
+    TView* child = GetNext(position);
+    if (static_cast<unsigned int>(child->controlTag) == tag) {
+      RemoveAt(current);
+      return;
+    }
+  }
+  if (g_McAppUiFlag_006A1AE0 == 0) {
+    TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiSourcePath_006950B0, 0x152);
+  }
+}
 
-// TEMPLATE: IMPERIALISM 0x0048add0
-// ??1?$CList@PAVTView@@PAV1@@@UAE@XZ
-
-// IMPLEMENT_DYNCREATE also emits `TView::CreateObject` (`return new TView;`).
+// FUNCTION: IMPERIALISM 0x0048a070
+void TViewChildList::FreeAll() {
+  while (!IsEmpty()) {
+    GetHead()->Free();
+  }
+}
 // SYNTHETIC: IMPERIALISM 0x0048a840
 // TView::CreateObject
 
@@ -238,8 +248,15 @@ void TView::AttachChildControl(class TView* child, int flag) {
     childList44->AddHead(child);
   }
 
-  child->RecomputeAbsolutePositionRecursive();
+  child->UpdateCoordinates();
 }
+// TEMPLATE: IMPERIALISM 0x0048ada0
+// ??_G?$CList@PAVTView@@PAV1@@@UAEPAXI@Z
+
+// TEMPLATE: IMPERIALISM 0x0048add0
+// ??1?$CList@PAVTView@@PAV1@@@UAE@XZ
+
+// IMPLEMENT_DYNCREATE also emits `TView::CreateObject` (`return new TView;`).
 
 // Inlines CList<TView*,TView*>::RemoveAt (frees the list's block chain once empty).
 // FUNCTION: IMPERIALISM 0x0048ae60
@@ -313,7 +330,7 @@ class TView* TView::ResolveControlByTag(unsigned int controlTag) {
 // FUNCTION: IMPERIALISM 0x0048b070
 void TView::SetState(int state, int refreshFlag) {
   (void)refreshFlag;
-  SetControlValue(state);
+  SetEnable(state);
   if (state != 0) {
     RefreshControl();
   }
@@ -332,13 +349,13 @@ void TView::Free() {
   if (g_pApplicationUiRootController != 0 &&
       static_cast<TEventHandler*>(g_pApplicationUiRootController) !=
           static_cast<TEventHandler*>(this)) {
-    TEventHandler* activeView = g_pApplicationUiRootController->GetActiveView();
-    if (activeView == this) {
-      TEventHandler* replacement = QueryStepValue();
+    TEventHandler* currentTarget = g_pApplicationUiRootController->GetTarget();
+    if (currentTarget == this) {
+      TEventHandler* replacement = GetNextHandler();
       if (replacement == 0) {
-        g_pApplicationUiRootController->SetActiveView(g_pApplicationUiRootController);
+        g_pApplicationUiRootController->SetTarget(g_pApplicationUiRootController);
       } else {
-        g_pApplicationUiRootController->SetActiveView(replacement);
+        g_pApplicationUiRootController->SetTarget(replacement);
       }
     }
   }
@@ -350,21 +367,19 @@ void TView::Free() {
   delete this;
 }
 
-// Recurses to the root owner. QueryOwnerContextPanel below looks almost identical but
-// only hops one level (via this method) instead of recursing.
 // FUNCTION: IMPERIALISM 0x0048b180
-TView* TView::OwnerPanel() {
-  if (ownerContext == 0) {
-    return 0;
+TWindow* TView::GetWindow() {
+  if (ownerContext != 0) {
+    return ownerContext->GetWindow();
   }
-  return ownerContext->OwnerPanel();
+  return 0;
 }
 // FUNCTION: IMPERIALISM 0x0048b1a0
-TView* TView::QueryOwnerContextPanel() {
-  if (ownerContext == 0) {
-    return 0;
+TView* TView::GetRootView() {
+  if (ownerContext != 0) {
+    return ownerContext->GetWindow();
   }
-  return ownerContext->OwnerPanel();
+  return 0;
 }
 // FUNCTION: IMPERIALISM 0x0048b1c0
 void TView::SetEnabled(int enabledState, int refreshFlag) {
@@ -387,14 +402,14 @@ void TView::CaptureLayoutF0(int* buffer, int modeFlag) {
   }
   ownerLocalX = buffer[0];
   ownerLocalY = buffer[1];
-  RecomputeAbsolutePositionRecursive();
+  UpdateCoordinates();
   if (modeFlag != 0 && IsActionable() != 0) {
     InvalidateCityDialogRectRegion(0, 0);
   }
 }
 
 // FUNCTION: IMPERIALISM 0x0048b2d0
-void TView::RecomputeAbsolutePositionRecursive() {
+void TView::UpdateCoordinates() {
   TView* owner = ownerContext;
   int oldX = absoluteX;
   int oldY = absoluteY;
@@ -411,7 +426,7 @@ void TView::RecomputeAbsolutePositionRecursive() {
       POSITION pos = childList44->GetHeadPosition();
       while (pos != NULL) {
         TView* child = static_cast<TView*>(childList44->GetNext(pos));
-        child->RecomputeAbsolutePositionRecursive();
+        child->UpdateCoordinates();
       }
     }
   }
@@ -499,9 +514,9 @@ void TView::RefreshControl() {
 }
 
 // FUNCTION: IMPERIALISM 0x0048b700
-void TView::InvokeSlot13C() {
+void TView::ForceRedraw() {
   if (ownerContext != 0) {
-    ownerContext->InvokeSlot13C();
+    ownerContext->ForceRedraw();
     return;
   }
   if (g_McAppUiUpdateWindowRecursionGuard_006A1AF0 == 0) {
@@ -560,7 +575,7 @@ void TView::PaintVisibleChildrenIntersectingClipRect(RECT* clipRect, CDC* paintD
   }
 
   if (BindMapQuickDrawDc(paintDc) != 0) {
-    ApplyRectSlot110(&clippedRect);
+    Draw(&clippedRect);
     if (firstBehavior != 0) {
       firstBehavior->Draw(&clippedRect);
     }
@@ -598,16 +613,18 @@ void TView::TranslatePointToParentChain4D(CPoint* point) {
 }
 // Mirror of TranslatePointToParentChain4D/4E above, but subtracts instead of adding.
 // FUNCTION: IMPERIALISM 0x0048bac0
-void TView::SubtractPosAndDispatchToOwnerSlot19C(CPoint* point) {
+void TView::WindowToLocal(CPoint* point) {
   int offY = ownerLocalY;
   point->x = point->x - ownerLocalX;
   point->y = point->y - offY;
-  ownerContext->SubtractPosAndDispatchToOwnerSlot19C(point);
+  ownerContext->WindowToLocal(point);
 }
 
 // FUNCTION: IMPERIALISM 0x0048bb00
-void TView::OffsetRectByControlPosition(CRect* rect) {
-  OffsetRect(rect, ownerLocalX, ownerLocalY);
+void TView::LocalToSuperVRect(CRect* rect) {
+  int offsetX = ownerLocalX;
+  int offsetY = ownerLocalY;
+  OffsetRect(rect, offsetX, offsetY);
 }
 
 // FUNCTION: IMPERIALISM 0x0048bb30
@@ -619,7 +636,7 @@ CPoint* TView::GetAbsolutePosition(CPoint* outPoint) {
 }
 
 // FUNCTION: IMPERIALISM 0x0048bb60
-CPoint TView::TransformPointViaSlot138(CPoint* inPoint) {
+CPoint TView::ViewToQDPt(CPoint* inPoint) {
   CPoint local;
   local.x = inPoint->x;
   local.y = inPoint->y;
@@ -628,19 +645,14 @@ CPoint TView::TransformPointViaSlot138(CPoint* inPoint) {
 }
 
 // FUNCTION: IMPERIALISM 0x0048bbb0
-CRect TView::TransformRectViaSlot148(CRect* inRect) {
+CRect TView::ViewToQDRect(CRect* inRect) {
   int width = inRect->right - inRect->left;
   int height = inRect->bottom - inRect->top;
   CPoint corner;
   corner.x = inRect->left;
   corner.y = inRect->top;
-  CPoint mapped = TransformPointViaSlot138(&corner);
-  CRect result;
-  result.left = mapped.x;
-  result.top = mapped.y;
-  result.right = mapped.x + width;
-  result.bottom = mapped.y + height;
-  return result;
+  CPoint mapped = ViewToQDPt(&corner);
+  return CRect(mapped.x, mapped.y, mapped.x + width, mapped.y + height);
 }
 // FUNCTION: IMPERIALISM 0x0048bc30
 void TView::AddControlPosToPoint(int x, int y, CPoint* outPoint) {
@@ -716,7 +728,7 @@ TObject* TView::ShallowClone() {
 // FUNCTION: IMPERIALISM 0x0048c000
 char TView::EvaluateControlInputGate() {
   if (hoverHelpEnabled5c == 0) {
-    if ((char)inputGateFlag4c != 0 && GetBoolSlot28() != 0) {
+    if ((char)inputGateFlag4c != 0 && IsEnabled() != 0) {
       return 1;
     }
     if (HasRenderableParentAndContent() == 0) {
@@ -743,7 +755,7 @@ void TView::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* point, R
         TView* child = static_cast<TView*>(childList44->GetNext(pos));
 
         CPoint childPoint = *point;
-        child->UpdateAfterBitmapChange(&childPoint);
+        child->SuperToLocal(&childPoint);
         if (child->PointInBoundsAndActionable(&childPoint) != 0 &&
             child->EvaluateControlInputGate() != 0) {
           child->HandleCursorHoverSelectionByChildHitTestAndFallback(&childPoint, hitArg);
@@ -754,15 +766,18 @@ void TView::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* point, R
   }
 
   if (EmptyRgn(hitArg) != 0 && PrepareForDrawing() != 0) {
-    HandleCursorHoverFallback(point, hitArg);
+    DoSetCursor(point, hitArg);
   }
 }
 
 // FUNCTION: IMPERIALISM 0x0048c1c0
-void TView::NoOpClipRegionSlot2D(int arg1, int arg2) {}
+void TView::HandleHelp(const CPoint* point, RgnHandle helpRegion) {
+  (void)point;
+  (void)helpRegion;
+}
 
 // FUNCTION: IMPERIALISM 0x0048c1e0
-void TView::RefreshCityProductionViewStateFromContext(RgnHandle clipRegion) {
+void TView::GetDrawableRegion(RgnHandle clipRegion) {
   CRect rect;
   GetDrawableQDRect(&rect);
   RectRgn(clipRegion, &rect);
@@ -775,7 +790,7 @@ void TView::SetHoverHelpText(CString sharedString) {
 }
 
 // FUNCTION: IMPERIALISM 0x0048c250
-void TView::HandleCursorHoverFallback(CPoint* point, RgnHandle hitArg) {
+void TView::DoSetCursor(CPoint* point, RgnHandle hitArg) {
   if (hoverHelpEnabled5c != 0) {
     CRect rect;
     GetQDExtent(&rect);
@@ -786,10 +801,10 @@ void TView::HandleCursorHoverFallback(CPoint* point, RgnHandle hitArg) {
     }
   }
   if (GetCursorID() != 0xffff) {
-    CPoint transformedPoint = TransformPointViaSlot138(point);
+    CPoint transformedPoint = ViewToQDPt(point);
     if (PtInRgn(&transformedPoint, hitArg)) {
-      void* ptr = AssertQuickDrawFlag6A1DCCNonZero(GetCursorID());
-      AssertQuickDrawFlag6A1DC8NonZero(*reinterpret_cast<void**>(ptr));
+      QuickDrawCursorHandle cursorHandle = GetQuickDrawCursor(static_cast<short>(GetCursorID()));
+      SetQuickDrawCursor(*cursorHandle);
       return;
     }
   }
@@ -808,7 +823,7 @@ void TView::ApplyBounds(CRect* newBounds, int modeFlag) {
     ownerLocalY = newBounds->top;
     frameWidth34 = newBounds->right - newBounds->left;
     frameHeight38 = newBounds->bottom - newBounds->top;
-    RecomputeAbsolutePositionRecursive();
+    UpdateCoordinates();
     if (modeFlag != 0 && IsActionable() != 0) {
       InvalidateCityDialogRectRegion(0, 0);
     }
@@ -823,7 +838,7 @@ char TView::HandleMouseDown(const CPoint& point, TToolboxEvent* event, CPoint or
       TView* child = static_cast<TView*>(childList44->GetPrev(pos));
 
       CPoint childPoint = point;
-      child->UpdateAfterBitmapChange(&childPoint);
+      child->SuperToLocal(&childPoint);
       if (child->PointInBoundsAndActionable(&childPoint) != 0 &&
           child->HandleMouseDown(childPoint, event, origin) != 0) {
         return 1;
@@ -831,7 +846,7 @@ char TView::HandleMouseDown(const CPoint& point, TToolboxEvent* event, CPoint or
     }
   }
 
-  if (PrepareForDrawing() != 0 && GetBoolSlot28() != 0) {
+  if (PrepareForDrawing() != 0 && IsEnabled() != 0) {
     CPoint localPoint = point;
     BeginMouseCaptureAndStartRepeatTimer(localPoint, event, origin);
     return 1;
@@ -847,7 +862,7 @@ char TView::HandleMouseUp(const CPoint& point, TToolboxEvent* event, CPoint orig
       TView* child = static_cast<TView*>(childList44->GetPrev(pos));
 
       CPoint childPoint = point;
-      child->UpdateAfterBitmapChange(&childPoint);
+      child->SuperToLocal(&childPoint);
       if (child->PointInBoundsAndActionable(&childPoint) != 0 &&
           child->HandleMouseUp(childPoint, event, origin) != 0) {
         return 1;
@@ -857,7 +872,7 @@ char TView::HandleMouseUp(const CPoint& point, TToolboxEvent* event, CPoint orig
 
   if (PrepareForDrawing() != 0) {
     CPoint localPoint = point;
-    if (GetBoolSlot28() != 0) {
+    if (IsEnabled() != 0) {
       return DoMouseCommand(localPoint, event, origin) != 0;
     }
   }
@@ -879,12 +894,12 @@ char TView::PointInBoundsAndActionable(CPoint* point) {
   return 0;
 }
 // FUNCTION: IMPERIALISM 0x0048c750
-void TView::DrawRectangleInCurrentUiContext(int* rect) {
+void TView::DrawRectangleInCurrentUiContext(const RECT* rect) {
   if (g_McAppUiDrawGate_006A1AF8 == 0) {
     TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiSourcePath_006950B0, 0x772);
   }
   CDC* context = GetActiveQuickDrawDc();
-  Rectangle(context->m_hDC, rect[0], rect[1], rect[2], rect[3]);
+  Rectangle(context->m_hDC, rect->left, rect->top, rect->right, rect->bottom);
 }
 // FUNCTION: IMPERIALISM 0x0048c7a0
 void TView::AssertMcAppUiLine1914(int unusedArg) {

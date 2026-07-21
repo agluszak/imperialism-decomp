@@ -9,9 +9,9 @@ public:
   DECLARE_DYNCREATE(TCreditsPicture)
   virtual ~TCreditsPicture() override;
 
-  virtual void HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override;
+  virtual void DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override;
   virtual void DoPostCreate(int arg) override;
-  virtual void ApplyRectSlot110(RECT* rectBuffer) override;
+  virtual void Draw(RECT* rectBuffer) override;
   virtual undefined OrphanRetStub_0043d9f0();
 
   TCreditsPicture();

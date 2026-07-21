@@ -159,7 +159,7 @@ public:
   // slot 0x4c — body 0x004e0220: invokes [vt+0x2c] on every tracked order.
   virtual void DispatchTrackedOrderSlot2CCallbacks(void); // slot 0x4c
   virtual void RebuildNationResourceYieldCountersAndDevelopmentTargets(void);
-  virtual void AdvanceOwnedRegionDevelopmentCountersAndDispatchEvents(void);
+  virtual void AdvanceOwnedRegionDevelopmentCountersAndHandleEvents(void);
   virtual char AnyNeedCurrentExceedsTargetWhenCapMismatch(void); // slot 0x4f
   // slot 0x50 — body 0x004dc440: true when any city commodity record 8..0xc has its
   // control value below the record's step value (gated on scenario cap >= 2).
@@ -483,7 +483,7 @@ public:
   void RevokeDiplomacyGrantForTargetAndAdjustInfluence(int arg1);
   // 0x004e3620 — sums the encoded diplomacyGrantByNation entries (masking off the
   // top 2 flag bits), skipping the 0xffff "no grant" sentinel. Used by the grants/aid
-  // screen's "Total" row (TGrantsView::ApplyRectSlot110).
+  // screen's "Total" row (TGrantsView::Draw).
   int SumDiplomacyGrantEntriesMaskedToValueBits();
   // 0x004e9060 — composite advisory score for the nation selected from
   // candidateNationFlags (or from the diplomacy standing list when no flag is set):

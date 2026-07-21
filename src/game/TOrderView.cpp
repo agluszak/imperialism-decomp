@@ -151,7 +151,7 @@ void TOrderView::UpdateFields() {
 }
 
 // FUNCTION: IMPERIALISM 0x00507240
-void TOrderView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+void TOrderView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId == 0x6c) {
     TIconSlider* slider = static_cast<TIconSlider*>(ResolveControlByTag(kControlTagSlid));
     if (slider == nullptr) {
@@ -161,5 +161,5 @@ void TOrderView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent
     UpdateFields();
     return;
   }
-  TEventHandler::HandleEvent(commandId, sourceHandler, event);
+  TEventHandler::DoEvent(commandId, sourceHandler, event);
 }

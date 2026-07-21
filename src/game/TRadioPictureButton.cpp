@@ -12,7 +12,7 @@ IMPLEMENT_DYNCREATE(TRadioPictureButton, TUpDownPictureButton)
 // FUNCTION: IMPERIALISM 0x005717c0
 TRadioPictureButton::TRadioPictureButton() : TUpDownPictureButton() {
   this->timingWord92 = 7000;
-  this->frameStyle60 = 0xc;
+  this->eventNumber60 = 0xc;
   this->reserved94 = 0;
 }
 
@@ -24,17 +24,17 @@ TRadioPictureButton::TRadioPictureButton() : TUpDownPictureButton() {
 TRadioPictureButton::~TRadioPictureButton() {}
 
 // FUNCTION: IMPERIALISM 0x00571850
-void TRadioPictureButton::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+void TRadioPictureButton::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId == 0xc) {
     if (controlState64 == 0) {
       reinterpret_cast<TAmtBar*>(this)->InvokeSlot1CC(1, 0);
     }
-    TControl::HandleEvent(commandId, sourceHandler, event);
+    TControl::DoEvent(commandId, sourceHandler, event);
     return;
   }
   if (commandId != 0x1f) {
     if (commandId != 0x20) {
-      TControl::HandleEvent(commandId, sourceHandler, event);
+      TControl::DoEvent(commandId, sourceHandler, event);
       return;
     }
     reinterpret_cast<TAmtBar*>(this)->InvokeSlot1CC(0, 0);

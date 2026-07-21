@@ -64,10 +64,10 @@ void TNominationView::DoPostCreate(int arg) {
 }
 
 // FUNCTION: IMPERIALISM 0x004fb990
-void TNominationView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+void TNominationView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId == 0xa) {
     g_pGlobalUiRootController->PostTurnEventCodeMessage2420(0x7e0);
     return;
   }
-  TControl::HandleEvent(commandId, sourceHandler, event);
+  TControl::DoEvent(commandId, sourceHandler, event);
 }

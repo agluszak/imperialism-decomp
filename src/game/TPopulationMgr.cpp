@@ -94,8 +94,62 @@ undefined TPopulationMgr::OrphanCallChain_C2_I61_004b65b0() {
 }
 
 // FUNCTION: IMPERIALISM 0x004b66a0
-undefined TPopulationMgr::OrphanLeaf_NoCall_Ins87_004b66a0(short param_1, short param_2) {
-  return 0;
+void TPopulationMgr::RemovePopulation(short startingSkillBand, short amount) {
+  short remaining = amount;
+
+  if (startingSkillBand == 1) {
+    short available = baselineSlots10->lowSkillCount04;
+    if (available < remaining) {
+      remaining = static_cast<short>(remaining - available);
+      baselineSlots10->lowSkillCount04 = 0;
+      productionSlots14->lowSkillCount04 = 0;
+      startingSkillBand = 2;
+      stockLevel1c = static_cast<short>(stockLevel1c - remaining);
+    } else {
+      baselineSlots10->lowSkillCount04 = static_cast<short>(available - remaining);
+      productionSlots14->lowSkillCount04 =
+          static_cast<short>(productionSlots14->lowSkillCount04 - remaining);
+      stockLevel1c = static_cast<short>(stockLevel1c - remaining);
+      remaining = 0;
+    }
+  }
+
+  if (startingSkillBand == 2) {
+    short available = baselineSlots10->mediumSkillCount06;
+    if (available < remaining) {
+      remaining = static_cast<short>(remaining - available);
+      baselineSlots10->mediumSkillCount06 = 0;
+      productionSlots14->mediumSkillCount06 = 0;
+      startingSkillBand = 4;
+      stockLevel1c = static_cast<short>(stockLevel1c - remaining * 2);
+    } else {
+      baselineSlots10->mediumSkillCount06 = static_cast<short>(available - remaining);
+      productionSlots14->mediumSkillCount06 =
+          static_cast<short>(productionSlots14->mediumSkillCount06 - remaining);
+      stockLevel1c = static_cast<short>(stockLevel1c - remaining * 2);
+      remaining = 0;
+    }
+  }
+
+  if (startingSkillBand == 4) {
+    short available = baselineSlots10->highSkillCount08;
+    if (available < remaining) {
+      remaining = static_cast<short>(remaining - available);
+      baselineSlots10->highSkillCount08 = 0;
+      productionSlots14->highSkillCount08 = 0;
+      stockLevel1c = static_cast<short>(stockLevel1c - remaining * 4);
+    } else {
+      baselineSlots10->highSkillCount08 = static_cast<short>(available - remaining);
+      productionSlots14->highSkillCount08 =
+          static_cast<short>(productionSlots14->highSkillCount08 - remaining);
+      stockLevel1c = static_cast<short>(stockLevel1c - remaining * 4);
+      remaining = 0;
+    }
+  }
+
+  short removed = static_cast<short>(amount - remaining);
+  fieldAt8 = static_cast<short>(fieldAt8 - removed);
+  fieldAtC -= static_cast<float>(removed);
 }
 
 // FUNCTION: IMPERIALISM 0x004b67e0

@@ -67,12 +67,12 @@ void TOffersPanelView::DoPostCreate(int arg) {
 }
 
 // FUNCTION: IMPERIALISM 0x004f9300
-void TOffersPanelView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+void TOffersPanelView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   int tag = sourceHandler->controlTag;
   if (commandId == 5 || (commandId == 0xa && (tag == kControlTagAcce || tag == kControlTagReje))) {
     lastNegotiationResponseTag64 = tag;
   }
-  TEventHandler::HandleEvent(commandId, sourceHandler, event);
+  TEventHandler::DoEvent(commandId, sourceHandler, event);
 }
 
 // FUNCTION: IMPERIALISM 0x004f9350
@@ -124,7 +124,7 @@ char TOffersPanelView::PoseOffer(short sourceNation, short targetNation, short o
   sheet->RefreshControl();
   wait->RefreshControl();
 
-  // The original blocks only for interactive offers. HandleEvent writes the selected
+  // The original blocks only for interactive offers. DoEvent writes the selected
   // FourCC into this field when the accept/reject hotspot is activated.
   if (offerType != 0x29a) {
     lastNegotiationResponseTag64 = 0;

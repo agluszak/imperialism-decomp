@@ -11,8 +11,6 @@
 #include "game/mfc.h"
 #include "game/ui_control_tags.h"
 
-undefined4 OpenSuperArmyRosterPageAndActivateProvinceSelection(void);
-
 namespace {
 
 static __inline void DispatchUiRuntimeSlot48() {
@@ -68,7 +66,7 @@ TArmyToolbar* TArmyToolbar::ConstructTArmyToolbarBaseState() {
 TArmyToolbar::~TArmyToolbar() {}
 
 // FUNCTION: IMPERIALISM 0x0058e1c0
-void TArmyToolbar::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+void TArmyToolbar::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   (void)event;
   unsigned int controlTag = sourceHandler->controlTag;
 
@@ -92,7 +90,7 @@ void TArmyToolbar::HandleEvent(int commandId, TEventHandler* sourceHandler, TEve
   if (controlTag == kTagArmyModeGarrison) {
     unsigned short ctrlState = (unsigned short)GetAsyncKeyState(0x11);
     if ((ctrlState & 0x8000) != 0) {
-      OpenSuperArmyRosterPageAndActivateProvinceSelection();
+      g_pUiRuntimeContext->ShowArmyRosterDialogAndActivateProvinceSelection();
       return;
     }
 

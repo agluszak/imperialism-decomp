@@ -24,8 +24,8 @@ TSidewaysArrow::TSidewaysArrow() : TUpDownPictureButton() {
 void TSidewaysArrow::DispatchPictureResourceCommand(int eventType, void* eventSender,
                                                     void* eventDataA, void* eventDataB,
                                                     int commandFlag) {
-  TUpDownPictureButton::DispatchPictureResourceCommand(eventType, eventSender, eventDataA, eventDataB,
-                                                       commandFlag);
+  TUpDownPictureButton::DispatchPictureResourceCommand(eventType, eventSender, eventDataA,
+                                                       eventDataB, commandFlag);
 
   if (eventType == 2) {
     return;
@@ -48,11 +48,11 @@ void TSidewaysArrow::DispatchPictureResourceCommand(int eventType, void* eventSe
   }
 
   if (this->controlTag == kControlTagRght) {
-    this->DispatchEvent(100, this, nullptr);
+    this->HandleEvent(100, this, nullptr);
     return;
   }
 
-  this->DispatchEvent(101, this, nullptr);
+  this->HandleEvent(101, this, nullptr);
 }
 
 // SYNTHETIC: IMPERIALISM 0x00583b80

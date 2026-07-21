@@ -1,4 +1,5 @@
 #include "game/TPlaceCityDialog.h"
+#include "game/TWindow.h"
 
 #include "game/TNumberedItem.h"
 #include "game/TPicture.h"
@@ -40,7 +41,7 @@ void TPlaceCityDialog::StuffValues(TTown* town) {
   int extraHeight =
       static_cast<short>(((visibleResourceCount * 0x2c) / (frameWidth34 - 0x20) + 1) * 0x20);
 
-  TView* owner = OwnerPanel();
+  TView* owner = GetWindow();
   if (owner == 0) {
     FailNilPointerWithAssert(s_SourcePathUCityViews_00696650, 0xdd6);
   } else {
@@ -136,8 +137,8 @@ void TPlaceCityDialog::StuffValues(TTown* town) {
 }
 
 // FUNCTION: IMPERIALISM 0x004d1e40
-void TPlaceCityDialog::ApplyRectSlot110(RECT* rectBuffer) {
-  TPicture::ApplyRectSlot110(rectBuffer);
+void TPlaceCityDialog::Draw(RECT* rectBuffer) {
+  TPicture::Draw(rectBuffer);
 }
 
 // FUNCTION: IMPERIALISM 0x004d1e60

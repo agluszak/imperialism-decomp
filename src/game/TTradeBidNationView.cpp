@@ -20,7 +20,7 @@ IMPLEMENT_DYNCREATE(TTradeBidNationView, TView)
 TTradeBidNationView::TTradeBidNationView() {}
 
 // FUNCTION: IMPERIALISM 0x005bdc20
-void TTradeBidNationView::ApplyRectSlot110(RECT* rectBuffer) {
+void TTradeBidNationView::Draw(RECT* rectBuffer) {
   UpdatePaletteIndexWithDefaultFallback(0x10);
   short iconLeft = static_cast<short>(nationSlot62 << 5);
   RECT srcRect = {iconLeft, 0, iconLeft + 0x20, 0x18};

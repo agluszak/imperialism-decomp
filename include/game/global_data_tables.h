@@ -328,6 +328,8 @@ extern TQuickDrawSurfaceContext* g_pCitySiteCachedPrimaryRenderSurfaceContext;
 extern CDC* g_pQuickDrawMemoryDc;
 extern HGDIOBJ g_hQuickDrawSavedBitmap;
 extern int g_nActiveQuickDrawSurfaceFlags;
+extern int g_QuickDrawSetCursorAssertGate;
+extern int g_QuickDrawGetCursorAssertGate;
 extern const int g_pTradeSummarySelectionMap[23];
 extern const int kTradeSellPropagationTags[17];
 
@@ -439,6 +441,9 @@ extern char g_szCmdSwitchLangQuit_00694254[];
 extern ImperialismApp* g_pImperialismApp;
 extern int DAT_006a1350;
 extern _PNH g_pfnPreviousNewHandler;
+// Read only by ImperialismApp's developer assert command; no writer exists in the retail
+// image, so the command deliberately exercises the nil-pointer assert path.
+extern void* g_pAmbitDeveloperAssertProbe_006A1358;
 extern short g_industryActionCostWeightResCode09[16];
 extern short g_industryActionCostWeightResCode08[16];
 extern short g_industryActionCostWeightResCode10[16];
@@ -503,10 +508,12 @@ extern char g_szCountryNameProfileKey00698AE0[];
 }
 
 // Typed C++ linkage — see typed-recovered-globals.mdc (not inside extern "C").
-// Per-resourceType04 index into TShipView::ApplyRectSlot110's 8-entry order-status
+// Per-resourceType04 index into TShipView::Draw's 8-entry order-status
 // string pool (GetString group 0x2760, one status line per naval order state);
 // -1 = no status line for that resource type.
 extern const int g_ShipOrderStatusStringIndexByResourceType_0065c7f8[14];
+// Horizontal source offsets for each naval resource type in the 0xdba roster atlas.
+extern const short g_ShipRosterAtlasHorizontalOffsetByResourceType_006985E8[14];
 extern TInfoBarText* g_pCursorControlPanel;
 extern POINT g_ptControlStringModalMessage;
 extern TTradeMgr* g_pNationInteractionStateManager;
@@ -514,7 +521,7 @@ extern CString g_cstrCountryNameSettingValue006A4220;
 extern TSetupRandomMapPicture* g_pActiveRandomMapSetupPicture006A4268;
 extern "C" short g_nationMetricSlotDispatchOrder006d810[0x11];
 extern "C" const unsigned int g_tradeCommodityRowTagTable[17];
-// Shared substitution value read by TTradeTotalsView::ApplyRectSlot110 (0x5c1bd0) as
+// Shared substitution value read by TTradeTotalsView::Draw (0x5c1bd0) as
 // the sole scanBracketExpressions() argument for its "balance" row template (GetString
 // group 0x2740 idx 0x1b). The original's raw bytes are a compile-time-constant pointer
 // to an empty string (not a deferred-construction CString), so this is modeled as a
@@ -619,6 +626,7 @@ extern unsigned int g_McAppUiMouseCaptureTimerId_006A1ADC; // 0x6a1adc
 // Source-file path string ("D:\\Ambit\\McAppUI.cpp") passed with a line number to the
 // UI invalidation-flag assert/log helper.
 extern char g_szMcAppUiSourcePath_006950B0[];
+extern char g_szQuickDrawSourcePath_00695168[];
 
 // Source-file path string ("D:\\Ambit\\McWindow.cpp") for CMcWindow's one-shot asserts,
 // and the gate read before the unknown-wParam 0x468 assert fires.
@@ -729,7 +737,7 @@ extern char g_szUCountrySourcePath_00696728[];
 extern int g_McAppUiFlag_006A143C;
 
 // Source path/gate for the USetupScreens.cpp line-0x2e6 assert in
-// TNetSelectPicture::HandleEvent (and siblings in that TU).
+// TNetSelectPicture::DoEvent (and siblings in that TU).
 extern char g_szSetupScreensSourcePath_00698AB8[];
 extern int g_SetupScreensAssertFlag_006A4264;
 
@@ -909,8 +917,9 @@ extern const char* const g_pRegistryLanguageKey_0063E04C;
 extern char g_szEmptyString[];
 extern const char* const g_pszEmptyTextPointer_00656f60; // = g_szEmptyString @ 0x656f60
 
-// TArmyMission.cpp / TNavyMission.cpp — army-mission order-priority tables.
-extern float g_ArmyMissionOrderWeightTable_006978c8[6];
+// TArmyMission.cpp / TNavyMission.cpp — shared per-hop/per-province distance decay
+// weights (1.0, 0.8, ...), used by both army and navy mission scoring.
+extern const float g_MissionOrderDistanceDecayWeightTable_006978c8[6];
 extern float g_ArmyMissionDotProductWeights_00697980[5];
 extern float g_ArmyMissionCandidateScoreTable_006978f8[];
 
@@ -940,20 +949,24 @@ extern double g_Recompute_Nation_Order_LookupTable_0065A9F8;
 extern double g_Recompute_Nation_Order_LookupTable_0065AA00;
 extern double g_Recompute_Nation_Order_LookupTable_0065AA08;
 extern const float g_Recompute_Nation_Order_LookupTable_0065AA20;
-extern unsigned short g_awTacticalCompositionReferenceProfiles_00697870[];
-extern unsigned short g_Populate_Beachhead_Mission_LookupTable_00697958[];
+extern const float g_MissionResourceWeightScale_0065A8FC;
+extern const float g_BlockadePortMissionThreatFloor_0065A900;
+extern const float g_BlockadePortMissionThreatScale_0065A904;
+extern const float g_MissionEmptyResourceWeight_0065AA24;
+extern short g_awTacticalCompositionReferenceProfiles_00697870[];
+extern short g_Populate_Beachhead_Mission_LookupTable_00697958[];
 // TShip.cpp — per-category target-percentage weights (40/30/30/0) used by
 // ComputeNavyOrderDistributionScoreForNation's divergence-score formula. Read via
 // sign-extend (movsx) in the original despite being small positive values, so the
 // storage type must be signed short to match the codegen.
 extern const short g_NavyOrderDistributionCategoryWeights_00697978[4];
-// TNavyMission.cpp — per-hop distance decay weight (0.8^index, clamped index 0..5) used
-// by ComputeMissionOrderMatchScoreWithCandidateNavyOrder's per-ship accumulation.
-extern const float g_NavyOrderDistanceDecayWeightTable_006978c8[6];
+// TBeachheadMission.cpp — normalization base for the parent invade mission's
+// calculated priority contribution.
+extern const double g_BeachheadMissionPriorityNormalization_0065AA30;
 
 // TMapMgr.cpp — per-resourceType requirement level table (0x513610).
 extern unsigned char g_abUniversityRequirementLevelById[24][4];
-// TUniversityView.cpp — TUniversityView::ApplyRectSlot110 (0x4cbf70) reads
+// TUniversityView.cpp — TUniversityView::Draw (0x4cbf70) reads
 // table[row + fielda4*4] (row 0-4, only the low 16 bits used, -1 = empty slot) to pick
 // which resource's requirement row to draw for the selected recruitment category
 // (fielda4). Real category boundaries/count not otherwise recovered; declared to the

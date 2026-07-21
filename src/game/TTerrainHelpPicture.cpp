@@ -1,4 +1,5 @@
 #include "game/TTerrainHelpPicture.h"
+#include "game/TWindow.h"
 
 #include "game/TDeluxeText.h"
 #include "game/TLonelyTileView.h"
@@ -203,7 +204,7 @@ void TTerrainHelpPicture::BuildMapTileActionContextMenu(short nTileIndex) {
 
 // FUNCTION: IMPERIALISM 0x005057a0
 void TTerrainHelpPicture::HighlightSelectedMenuItemAndRefreshDetailText(int selectedIndex) {
-  OwnerPanel();
+  GetWindow();
   TUiTextStyleDescriptor normalStyle;
   TUiTextStyleDescriptor highlightStyle;
   TUiTextStyleDescriptor captionStyle;
@@ -235,8 +236,8 @@ void TTerrainHelpPicture::HighlightSelectedMenuItemAndRefreshDetailText(int sele
 }
 
 // FUNCTION: IMPERIALISM 0x005059d0
-void TTerrainHelpPicture::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
-  TControl::HandleEvent(commandId, sourceHandler, event);
+void TTerrainHelpPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+  TControl::DoEvent(commandId, sourceHandler, event);
   if (commandId == 0xd) {
     unsigned int tag = sourceHandler->controlTag;
     if (tag >= kControlTagI00a && tag < kControlTagI00m) {

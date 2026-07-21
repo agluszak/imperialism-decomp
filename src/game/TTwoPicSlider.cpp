@@ -88,7 +88,7 @@ static __inline int SliderScaledValue(TTwoPicSlider* slider, int scale) {
 } // namespace
 
 // FUNCTION: IMPERIALISM 0x0056e370
-void TTwoPicSlider::ApplyRectSlot110(RECT* rectBuffer) {
+void TTwoPicSlider::Draw(RECT* rectBuffer) {
   (void)rectBuffer;
   TTwoPicSlider* slider = this;
   // ORIG_CALLCONV: __thiscall; Mac CodeWarrior evidence calls this TTwoPicSlider::Draw.
@@ -172,7 +172,7 @@ void TTwoPicSlider::DispatchPictureResourceCommand(int nEventType, void* pEventS
       sliderRect.top = 0;
       sliderRect.right = slider->frameWidth34;
       sliderRect.bottom = slider->frameHeight38;
-      slider->ApplyRectSlot110(&sliderRect);
+      slider->Draw(&sliderRect);
 
       if (slider->mode == 1) {
         int volumeScalar = SliderScaledValue(slider, 0xff);

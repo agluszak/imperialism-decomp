@@ -1,4 +1,5 @@
 #include "game/TAmbitApplication.h"
+#include "game/TWindow.h"
 #include "game/TSetupRandomMapPicture.h"
 
 #include "game/TApplication.h"
@@ -223,8 +224,7 @@ void TSetupRandomMapPicture::DoPostCreate(int arg) {
 }
 
 // FUNCTION: IMPERIALISM 0x005779c0
-void TSetupRandomMapPicture::HandleEvent(int commandId, TEventHandler* sourceHandler,
-                                         TEvent* event) {
+void TSetupRandomMapPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId == 0x7069636b /* 'pick' */) {
     TMapPreviewView* mapPreview = static_cast<TMapPreviewView*>(sourceHandler);
     mapPreview->AssertValid();
@@ -248,7 +248,7 @@ void TSetupRandomMapPicture::HandleEvent(int commandId, TEventHandler* sourceHan
     CRect previewBounds;
     mapPreview->QueryContentBounds(&previewBounds);
     ScopedMapQuickDrawContext mapContext(mapPreview);
-    mapPreview->ApplyRectSlot110(&previewBounds);
+    mapPreview->Draw(&previewBounds);
   }
 
   unsigned int controlTag = static_cast<unsigned int>(sourceHandler->controlTag);
@@ -291,7 +291,7 @@ void TSetupRandomMapPicture::HandleEvent(int commandId, TEventHandler* sourceHan
     }
   }
 
-  TNoHilitePicture::HandleEvent(commandId, sourceHandler, event);
+  TNoHilitePicture::DoEvent(commandId, sourceHandler, event);
 }
 
 // FUNCTION: IMPERIALISM 0x00577e40
@@ -414,7 +414,7 @@ void TSetupRandomMapPicture::MajorTomToGroundControl(unsigned char mode) {
   coatView->SetPictureResourceIdAndRefresh(0x11cd, true);
 
   if (mode != 0) {
-    OwnerPanel()->InvokeSlot13C();
+    GetWindow()->ForceRedraw();
   }
 
   g_pActiveRandomMapSetupPicture006A4268 = this;
@@ -463,5 +463,5 @@ void TSetupRandomMapPicture::SpinYourGlobe() {
   globe->PrepareForDrawing();
   CRect bounds;
   globe->QueryBounds(&bounds);
-  globe->ApplyRectSlot110(&bounds);
+  globe->Draw(&bounds);
 }

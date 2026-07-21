@@ -1,4 +1,5 @@
 #include "game/TStatusButton.h"
+#include "game/TWindow.h"
 #include "game/global_data_tables.h"
 #include "game/mfc.h"
 // SYNTHETIC: IMPERIALISM 0x00586280
@@ -20,13 +21,13 @@ const int kControlTagArms = 0x41726d73; // 'arms'
 const int kControlTagClos = 0x436c6f73; // 'Clos'
 
 // FUNCTION: IMPERIALISM 0x00586400
-void TStatusButton::HandleEvent(int selectedIndex, TEventHandler* sourceHandler, TEvent* event) {
+void TStatusButton::DoEvent(int selectedIndex, TEventHandler* sourceHandler, TEvent* event) {
   // Two CString scratch locals the original constructs on entry and destroys on exit;
   // unused in the body but required to reproduce the prologue/epilogue.
   CString scratchA;
   CString scratchB;
 
-  if (selectedIndex == QuerySelectedIndexSlotBC() && GetBoolSlot28() != '\0') {
+  if (selectedIndex == GetEventNumber() && IsEnabled() != '\0') {
     if (LogUnhandledDialogMethodAndReturnFalse() != '\0') {
       return;
     }
@@ -50,12 +51,12 @@ void TStatusButton::HandleEvent(int selectedIndex, TEventHandler* sourceHandler,
         g_pActiveCityDialogLegendSelectionOwner = nullptr;
       }
       g_bCityDialogLegendSelectionInitialized = 0;
-      OwnerPanel()->Close();
+      GetWindow()->Close();
     }
 
-    TControl::HandleEvent(selectedIndex, this, event);
+    TControl::DoEvent(selectedIndex, this, event);
     return;
   }
 
-  TControl::HandleEvent(selectedIndex, sourceHandler, event);
+  TControl::DoEvent(selectedIndex, sourceHandler, event);
 }

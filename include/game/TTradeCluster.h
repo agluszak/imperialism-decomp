@@ -17,7 +17,7 @@ public:
   TTradeCluster();
   // Destructor is compiler-generated (implicit virtual dtor from TUberCluster).
 
-  void HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override;
+  void DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override;
 
   void DoPostCreate(int styleSeed) override; // 0xdc 0x587130
   virtual int IsTradeControlAtMinimum() override;

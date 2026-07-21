@@ -150,7 +150,7 @@ void TCivToolbar::RefreshCivilianStackButtonsForTile(short tileIndex) {
 }
 
 // FUNCTION: IMPERIALISM 0x0058eed0
-void TCivToolbar::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+void TCivToolbar::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   // ORIG_CALLCONV: __thiscall
 
   TCivMgr* selectedCivilianOrderState = g_pSelectedCivilianOrderState;
@@ -165,7 +165,7 @@ void TCivToolbar::HandleEvent(int commandId, TEventHandler* sourceHandler, TEven
       TCivUnit* boundStackEntry =
           *reinterpret_cast<TCivUnit**>(reinterpret_cast<unsigned char*>(sourceHandler) + 0x9c);
       selectedCivilianOrderState->SetActiveCivilianSelection(boundStackEntry, 0);
-      this->TCluster::HandleEvent(0xc, sourceHandler, event);
+      this->TCluster::DoEvent(0xc, sourceHandler, event);
       return;
     }
   } else if (commandId == 10) {
@@ -173,12 +173,12 @@ void TCivToolbar::HandleEvent(int commandId, TEventHandler* sourceHandler, TEven
     if (controlTag < 0x646f6e6f) {
       if (controlTag == kTagDone) {
         selectedCivilianOrderState->QueueImmediateCivilianCommandAndCycleSelection(4);
-        this->TCluster::HandleEvent(10, sourceHandler, event);
+        this->TCluster::DoEvent(10, sourceHandler, event);
         return;
       }
       if (controlTag == kTagDefend) {
         selectedCivilianOrderState->QueueImmediateCivilianCommandAndCycleSelection(2);
-        this->TCluster::HandleEvent(10, sourceHandler, event);
+        this->TCluster::DoEvent(10, sourceHandler, event);
         return;
       }
     } else {
@@ -186,18 +186,18 @@ void TCivToolbar::HandleEvent(int commandId, TEventHandler* sourceHandler, TEven
         unsigned short ctrlState = (unsigned short)GetAsyncKeyState(0x11);
         if ((ctrlState & 0x8000) != 0) {
           g_pUiRuntimeContext->ShowCivilianLedgerDialogAndSelectUnit();
-          this->TCluster::HandleEvent(10, sourceHandler, event);
+          this->TCluster::DoEvent(10, sourceHandler, event);
           return;
         }
         selectedCivilianOrderState->ShowDisbandCivilianConfirmationDialog();
       } else if (controlTag == kTagLater) {
         selectedCivilianOrderState->QueueImmediateCivilianCommandAndCycleSelection(3);
-        this->TCluster::HandleEvent(10, sourceHandler, event);
+        this->TCluster::DoEvent(10, sourceHandler, event);
         return;
       }
     }
   }
-  this->TCluster::HandleEvent(commandId, sourceHandler, event);
+  this->TCluster::DoEvent(commandId, sourceHandler, event);
 }
 
 TCivToolbar::~TCivToolbar() {}

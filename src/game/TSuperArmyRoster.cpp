@@ -18,8 +18,6 @@ TSuperArmyRoster::~TSuperArmyRoster() {}
 
 IMPLEMENT_DYNCREATE(TSuperArmyRoster, TPageView)
 
-TSuperArmyRoster::TSuperArmyRoster() {}
-
 // FUNCTION: IMPERIALISM 0x004aa540
 void TSuperArmyRoster::PopulateArmyOrderPageEntries(TView* panel, int* offsetLayout,
                                                     int* sizeLayout) {
@@ -46,5 +44,5 @@ void TSuperArmyRoster::PopulateArmyOrderPageEntries(TView* panel, int* offsetLay
   BuildPageLayout();
   ShowPage(1);
   ownerContext->AssertValid();
-  static_cast<TBook*>(ownerContext)->UpdatePagedListNavigationButtonState(currentPage);
+  static_cast<TBook*>(ownerContext)->ShowPage(currentPage);
 }

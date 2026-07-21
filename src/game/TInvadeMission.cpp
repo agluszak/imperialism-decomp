@@ -1,14 +1,18 @@
 // TInvadeMission implementations.
 
+#include <string.h>
+
 #include "game/TInvadeMission.h"
 
-#include "game/global_data_tables.h"
 #include "game/CIterator.h"
+#include "game/TAutoGreatPower.h"
 #include "game/TBeachheadMission.h"
 #include "game/TCountry.h"
 #include "game/TGlobalMapState.h"
+#include "game/TMapMgr.h"
 #include "game/TMilitaryUnit.h"
 #include "game/TStream.h"
+#include "game/global_data_tables.h"
 
 IMPLEMENT_SERIAL(TInvadeMission, TAttackProvinceMission, 1)
 
@@ -165,6 +169,57 @@ void TInvadeMission::RefreshSlot40() {
   NoOpSlot3C();
 }
 
+// FUNCTION: IMPERIALISM 0x0053f800
+float TInvadeMission::CalculatePriority() {
+  float currentUnitCost = 0.0f;
+  CIterator costIterator(orderListAt18);
+  for (TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(costIterator.Reset()); costIterator.More();
+       unit = static_cast<TMilitaryUnit*>(costIterator.Advance())) {
+    currentUnitCost += static_cast<float>(unit->GetUnitTypeCostPoints());
+  }
+
+  int resourcePools[9] = {0, 0, 0, 0, 0, 0, 0, 0, 0};
+  float committedResources[5] = {0.0f, 0.0f, 0.0f, 0.0f, 0.0f};
+  int totalResourceDemand = 0;
+  CIterator unitIterator(orderListAt18);
+  for (TMilitaryUnit* selectedUnit = static_cast<TMilitaryUnit*>(unitIterator.Reset());
+       unitIterator.More(); selectedUnit = static_cast<TMilitaryUnit*>(unitIterator.Advance())) {
+    selectedUnit->AssertValid();
+    short weightIndex = selectedUnit->IsNotStationedInProvince(GetPresentLocation());
+    if (weightIndex > 5) {
+      weightIndex = 5;
+    }
+    float distanceWeight = g_MissionOrderDistanceDecayWeightTable_006978c8[weightIndex];
+    AccumulateUnitOrderPriorityVectorContribution(
+        selectedUnit, committedResources, distanceWeight,
+        static_cast<float>(g_pGlobalMapState->GetProvinceUnitOrderWeight(GetPresentLocation())));
+  }
+
+  for (int resourceIndex = 0; resourceIndex < 5; ++resourceIndex) {
+    resourcePools[resourceIndex] =
+        static_cast<int>(resourceWeights[resourceIndex] - committedResources[resourceIndex] +
+                         resourcePools[resourceIndex]);
+    totalResourceDemand += resourcePools[resourceIndex];
+  }
+
+  TMilitaryUnit* bestUnitByType[30];
+  memset(bestUnitByType, 0, sizeof(bestUnitByType));
+  char selectedIsIndustry;
+  char selectedIsUpgrade;
+  int selectedSlot;
+  float cityActionCost = 0.0f;
+  while (SelectBestCityDevelopmentFromResourcePools(nationId04, resourcePools, bestUnitByType,
+                                                    &selectedIsIndustry, &selectedIsUpgrade,
+                                                    &selectedSlot, 0, 0)) {
+    cityActionCost += static_cast<float>(GetCityActionGateValueBySlot(selectedSlot));
+  }
+
+  if (cityActionCost > currentUnitCost) {
+    return cityActionCost;
+  }
+  return currentUnitCost;
+}
+
 // FUNCTION: IMPERIALISM 0x0053faa0
 char TInvadeMission::ReturnFalseSlot50() {
   return 1;
@@ -232,13 +287,13 @@ int TInvadeMission::ReturnZeroSlot2C(int* outBuffer, int unused) {
     for (void* item = iter.Reset(); iter.More(); item = iter.Advance()) {
       TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(item);
       unit->AssertValid();
-      short weightIndex = unit->IsNotStationedInProvince(GetMissionTargetContextIdFromField14());
+      short weightIndex = unit->IsNotStationedInProvince(GetPresentLocation());
       if (weightIndex > 5) {
         weightIndex = 5;
       }
       AccumulateUnitOrderPriorityVectorContribution(
-          unit, vector, g_ArmyMissionOrderWeightTable_006978c8[weightIndex],
-          static_cast<float>(GetProvinceUnitOrderWeight(GetMissionTargetContextIdFromField14())));
+          unit, vector, g_MissionOrderDistanceDecayWeightTable_006978c8[weightIndex],
+          static_cast<float>(g_pGlobalMapState->GetProvinceUnitOrderWeight(GetPresentLocation())));
     }
   }
 

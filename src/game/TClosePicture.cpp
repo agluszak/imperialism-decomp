@@ -1,4 +1,5 @@
 #include "game/TAmtBar.h"
+#include "game/TWindow.h"
 #include "game/TClosePicture.h"
 
 // SYNTHETIC: IMPERIALISM 0x00586ad0
@@ -23,9 +24,9 @@ TClosePicture::~TClosePicture() {}
 // FUNCTION: IMPERIALISM 0x00586bf0
 char TClosePicture::HandleMouseUp(const CPoint& point, TToolboxEvent* event, CPoint origin) {
   char result = TControl::HandleMouseUp(point, event, origin);
-  TAmtBar* control = reinterpret_cast<TAmtBar*>(OwnerPanel());
-  if (control != 0) {
-    control->ApplyStyleDescriptor(reinterpret_cast<void*>(controlTag), 1);
+  TWindow* window = GetWindow();
+  if (window != 0) {
+    window->Dismiss(controlTag, 1);
   }
   return result;
 }

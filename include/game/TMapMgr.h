@@ -212,6 +212,9 @@ extern "C" short* __cdecl BuildHexAreaTileIndexList(short centerTileIndex, short
 // VTABLE: IMPERIALISM 0x006587e0
 class TMapMgr : public TObject {
 public:
+  // Retail callers pass g_pGlobalMapState in ECX; the body intentionally does not
+  // inspect the receiver and returns the constant province-order weight.
+  short GetProvinceUnitOrderWeight(short provinceId); // 0x5184e0
   DECLARE_DYNCREATE(TMapMgr)
   virtual ~TMapMgr() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -299,8 +302,8 @@ public:
                                                        short nationTag); // slot 0x16 0x5121d0
   virtual int IsShiftKeyDown();                                          // slot 0x17 0x5122b0
   virtual int IsAltKeyDown();                                            // slot 0x18 0x5122d0
-  virtual void ForwardComputeRepresentativeTileIndexForTerrainTypeWithWrapBias(
-      undefined4 param_1); // slot 0x19 0x511f10
+  virtual short ForwardComputeRepresentativeTileIndexForTerrainTypeWithWrapBias(
+      int terrainType); // slot 0x19 0x511f10
   // OR's the hex-direction bit (g_hexDirectionBitMasksAlt_00696ea8) for the direction from
   // sourceTile to destTile into sourceTile's adjacencyBits06, and the opposite direction's
   // bit into destTile's adjacencyBits06. Real signature has 3 stack slots (RET 0xc); the
@@ -571,7 +574,7 @@ public:
   virtual short GetMapImprovementSpriteBaseOffset(short param_1, char param_2,
                                                   char param_3); // slot 0x45 0x517780
   // Looks up and returns the improvement sprite base offset for civUnit's own order
-  // type/idle state via the slot above. TMiniCivView::ApplyRectSlot110 (0x4ac000) is a
+  // type/idle state via the slot above. TMiniCivView::Draw (0x4ac000) is a
   // real external caller that consumes the returned short (AX) to position an icon-strip
   // blit rect, so despite the name this is a getter, not a pure state mutator.
   virtual short ApplyMapImprovementSelectionState(class TCivUnit* civUnit); // slot 0x46 0x517710
@@ -821,7 +824,3 @@ public:
 
   TMapMgr();
 };
-
-// Retail body ignores provinceId and returns the constant weight 0x21 (33); the
-// mission-scoring family converts it to float for the accumulate dampening factor.
-short __stdcall GetProvinceUnitOrderWeight(short provinceId); // 0x5184e0

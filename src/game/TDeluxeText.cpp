@@ -52,7 +52,7 @@ void TDeluxeText::SetTextFromUiStringResourceId(short stringId) {
 }
 
 // FUNCTION: IMPERIALISM 0x005b6170
-void TDeluxeText::ApplyRectSlot110(RECT* rectBuffer) {
+void TDeluxeText::Draw(RECT* rectBuffer) {
   (void)rectBuffer;
   CString textBuffer;
   CopyTextTo(&textBuffer);

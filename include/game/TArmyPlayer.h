@@ -139,4 +139,4 @@ typedef int (TArmyPlayer::*TacticalTileHeuristicScorerFn)(TTacticalUnit* unit, i
 // profile row (movsx short reads). Owned alongside its only tactical
 // caller. 0x005362c0, __cdecl.
 float __cdecl ComputeDistributionSimilarityScoreFromVectorAndReferenceProfile(
-    float* vector, unsigned short* referenceProfile, int count);
+    float* vector, const short* referenceProfile, int count);

@@ -1,4 +1,5 @@
 #include "game/TMovieView.h"
+#include "game/TWindow.h"
 
 #include "game/CMainFrame.h"
 #include "game/TSoundPlayer.h"
@@ -60,7 +61,7 @@ TMovieView::~TMovieView() {
 void TMovieView::DoPostCreate(int arg) {
   TPicture::DoPostCreate(arg);
 
-  TView* owner = OwnerPanel();
+  TView* owner = GetWindow();
   CWnd* nativeWindow = owner->nativeWindow50;
   HWND parentHwnd = 0;
   if (nativeWindow != 0) {
@@ -71,7 +72,7 @@ void TMovieView::DoPostCreate(int arg) {
 }
 
 // FUNCTION: IMPERIALISM 0x005e2490
-void TMovieView::ApplyRectSlot110(RECT* rectBuffer) {
+void TMovieView::Draw(RECT* rectBuffer) {
   (void)rectBuffer;
 }
 

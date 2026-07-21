@@ -1,4 +1,5 @@
 #include "game/TIndustryCluster.h"
+#include "game/TWindow.h"
 #include "game/TRailCluster.h"
 #include "game/TShipyardCluster.h"
 #include "game/TTradeCluster.h"
@@ -37,22 +38,22 @@ TUnitToolbarCluster::TUnitToolbarCluster() : TUberCluster() {}
 // TUnitToolbarCluster::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x00586090
-void TUnitToolbarCluster::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
-  this->TCluster::HandleEvent(commandId, sourceHandler, event);
+void TUnitToolbarCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+  this->TCluster::DoEvent(commandId, sourceHandler, event);
 
   if (!(((g_pApplicationUiRootController->screenModeAt24 == 1) && (commandId == 0x68)) ||
         (commandId == 0x67) || (commandId == 10) || (commandId == 0x0c))) {
     return;
   }
 
-  void* ownerPanel = this->OwnerPanel();
+  void* ownerPanel = this->GetWindow();
   TView* mainControl = reinterpret_cast<TView*>(ownerPanel)->ResolveControlByTag(0x6d61696e);
   if (mainControl == 0) {
     GAME_FAIL_NIL_POINTER();
     return;
   }
 
-  mainControl->HandleEvent(0, 0, 0);
+  mainControl->DoEvent(0, 0, 0);
 }
 
 // FUNCTION: IMPERIALISM 0x00586150
@@ -71,7 +72,7 @@ void TUnitToolbarCluster::SetSelectedChildTagAndRefresh(int childTag) {
     return;
   }
 
-  resourceControl->HandleEvent(0, 0, 0);
+  resourceControl->DoEvent(0, 0, 0);
 }
 
 TUnitToolbarCluster::~TUnitToolbarCluster() {}

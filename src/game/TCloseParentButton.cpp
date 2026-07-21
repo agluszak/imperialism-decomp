@@ -1,4 +1,5 @@
 #include "game/TCloseParentButton.h"
+#include "game/TWindow.h"
 // SYNTHETIC: IMPERIALISM 0x00584bb0
 // TCloseParentButton::CreateObject
 
@@ -15,12 +16,12 @@ TCloseParentButton::TCloseParentButton() {}
 TCloseParentButton::~TCloseParentButton() {}
 
 // FUNCTION: IMPERIALISM 0x00584d30
-void TCloseParentButton::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+void TCloseParentButton::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   (void)sourceHandler;
   (void)event;
-  if (commandId == QuerySelectedIndexSlotBC()) {
-    if (GetBoolSlot28() != 0 && LogUnhandledDialogMethodAndReturnFalse() == 0) {
-      OwnerPanel()->Close();
+  if (commandId == GetEventNumber()) {
+    if (IsEnabled() != 0 && LogUnhandledDialogMethodAndReturnFalse() == 0) {
+      GetWindow()->Close();
     }
   }
 }

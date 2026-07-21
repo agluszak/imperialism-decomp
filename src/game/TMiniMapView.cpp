@@ -21,7 +21,7 @@ TMiniMapView::TMiniMapView()
 TMiniMapView::~TMiniMapView() {}
 
 // FUNCTION: IMPERIALISM 0x0059a540
-void TMiniMapView::ApplyRectSlot110(RECT* rectBuffer) {}
+void TMiniMapView::Draw(RECT* rectBuffer) {}
 
 // FUNCTION: IMPERIALISM 0x0059a920
 void TMiniMapView::DispatchPictureResourceCommand(int nEventType, void* pEventSender,

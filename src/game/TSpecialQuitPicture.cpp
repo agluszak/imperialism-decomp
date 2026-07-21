@@ -61,7 +61,7 @@ void TSpecialQuitPicture::DoPostCreate(int arg) {
 }
 
 // FUNCTION: IMPERIALISM 0x005b4a10
-void TSpecialQuitPicture::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+void TSpecialQuitPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   CString titlText;
   if (commandId == 10) {
     if (sourceHandler->controlTag == kControlTagQuit) {
@@ -102,5 +102,5 @@ void TSpecialQuitPicture::HandleEvent(int commandId, TEventHandler* sourceHandle
       }
     }
   }
-  TPicture::HandleEvent(commandId, sourceHandler, event);
+  TPicture::DoEvent(commandId, sourceHandler, event);
 }

@@ -279,7 +279,7 @@ void TAutoGreatPower::HandleNationLost(void) {
 void TAutoGreatPower::RefreshGreatPowerRelationPanelsAndDispatchDeltaSummary(void) {
   if (this->city != 0) {
     this->RebuildNationResourceYieldCountersAndDevelopmentTargets();
-    this->AdvanceOwnedRegionDevelopmentCountersAndDispatchEvents();
+    this->AdvanceOwnedRegionDevelopmentCountersAndHandleEvents();
   }
 }
 
@@ -1758,7 +1758,7 @@ void TAutoGreatPower::UpdateTrackedEntryEligibilityByClassMaskAndRatio(int unuse
 }
 
 // FUNCTION: IMPERIALISM 0x00535b00
-bool SelectBestCityDevelopmentFromResourcePools(short nationSlot, int* resourcePools,
+bool SelectBestCityDevelopmentFromResourcePools(int nationSlot, int* resourcePools,
                                                 TMilitaryUnit** bestUnitByType,
                                                 char* selectedIsIndustry, char* selectedIsUpgrade,
                                                 int* selectedSlot, int unused,

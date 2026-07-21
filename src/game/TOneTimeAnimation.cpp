@@ -56,7 +56,7 @@ void TOneTimeAnimation::Tick() {
 
       RECT renderRect;
       CopyRect(&renderRect, &screenRect1C);
-      ownerView04->ApplyRectSlot110(&renderRect);
+      ownerView04->Draw(&renderRect);
 
       tickCounter10 = 0;
       if (frameIndex08 < frameCount0A - 1) {

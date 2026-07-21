@@ -21,7 +21,7 @@ using turn_event_dialog::TurnEventDialogNode;
 
 // FUNCTION: IMPERIALISM 0x005362c0
 float __cdecl ComputeDistributionSimilarityScoreFromVectorAndReferenceProfile(
-    float* vector, unsigned short* referenceProfile, int count) {
+    float* vector, const short* referenceProfile, int count) {
   // Locals are double: the original keeps the whole computation on the FP stack with
   // no intermediate float rounding stores.
   double vectorSum = g_Recompute_Nation_Order_LookupTable_0065A9E8;
@@ -35,8 +35,8 @@ float __cdecl ComputeDistributionSimilarityScoreFromVectorAndReferenceProfile(
   }
   double absoluteDifferenceSum = g_Recompute_Nation_Order_LookupTable_0065A9E8;
   for (i = 0; i < count; ++i) {
-    difference = vector[i] / vectorSum -
-                 (short)referenceProfile[i] * g_Recompute_Nation_Order_LookupTable_0065A9F8;
+    difference =
+        vector[i] / vectorSum - referenceProfile[i] * g_Recompute_Nation_Order_LookupTable_0065A9F8;
     if (difference <= g_Recompute_Nation_Order_LookupTable_0065A9F0) {
       difference = -difference;
     }

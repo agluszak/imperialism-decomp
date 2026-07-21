@@ -34,12 +34,12 @@ void TGWorldButton::HiliteState(unsigned char fEnabledState, unsigned char fRefr
   }
   RefreshControl();
   if (fRefreshNow) {
-    InvokeSlot13C();
+    ForceRedraw();
   }
 }
 
 // FUNCTION: IMPERIALISM 0x00572270
-void TGWorldButton::ApplyRectSlot110(RECT* rectBuffer) {
+void TGWorldButton::Draw(RECT* rectBuffer) {
   (void)rectBuffer;
   if (field88 != 0) {
     CRect destRect;

@@ -129,12 +129,12 @@ void TShipyardView::UpdateFields() {
 }
 
 // FUNCTION: IMPERIALISM 0x004c8ac0
-void TShipyardView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+void TShipyardView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   // The original dispatches on city94's order receiver via a lookup keyed by
   // city94+0xe4+idx*4 -- its only assignment site, RefreshCityViewProductionDetails
   // (0x4cfbd0, 1748 bytes), is itself unported, so the receiver class is unresolved here
   // too -- not yet ported.
-  TControl::HandleEvent(commandId, sourceHandler, event);
+  TControl::DoEvent(commandId, sourceHandler, event);
 }
 
 // FUNCTION: IMPERIALISM 0x004c8d70
@@ -150,9 +150,9 @@ void TShipyardView::SetShip(short shipType) {}
 // stores; their last few entries land in gaps the original never explicitly
 // initializes (an apparent original-binary quirk), ported as 0 rather than guessed.
 // FUNCTION: IMPERIALISM 0x004c9150
-void TShipyardView::ApplyRectSlot110(RECT* rectBuffer) {
+void TShipyardView::Draw(RECT* rectBuffer) {
   CString text;
-  TPicture::ApplyRectSlot110(rectBuffer);
+  TPicture::Draw(rectBuffer);
   UpdatePaletteIndexWithDefaultFallback(0x10);
 
   RECT commodityStripRegion = {0x16, 0x82, 0xe5, 0xc4};

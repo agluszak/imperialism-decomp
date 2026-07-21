@@ -50,9 +50,9 @@ public:
   TWorldView();
   virtual ~TWorldView() override;
 
-  virtual void HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override;
+  virtual void DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override;
   virtual void ForwardParam(int param) override;
-  virtual void HandleCursorHoverFallback(CPoint* point, RgnHandle hitArg) override;
+  virtual void DoSetCursor(CPoint* point, RgnHandle hitArg) override;
   virtual void HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* point,
                                                                    RgnHandle hitArg) override;
   virtual void DoPostCreate(int arg) override;
@@ -79,7 +79,7 @@ public:
   virtual short QueryMinusOneWordSlot1BC(int unusedArg);
   virtual void ConvertPoint(const CPoint& point, short& outRow, short& outCol, short& outBand);
   virtual void InvokeDialogHooks1D8ThenE4(int stridedRecord, int dispatchContext);
-  virtual void HandleMapTileClickSetOrderContextAndDispatchEvent79(int arg1, int arg2);
+  virtual void HandleMapTileClickSetOrderContextAndHandleEvent79(int arg1, int arg2);
   virtual void DispatchOverlayEvent78FromStridedRecord(int stridedRecord, int dispatchContext);
   virtual void DispatchOverlayEvent78RootHighFromStridedRecord(int stridedRecord,
                                                                int dispatchContext);

@@ -696,6 +696,13 @@
       "text": "System"
     },
     {
+      "address": "0x00695168",
+      "placeholders": [],
+      "source": "embedded_global",
+      "symbol": "g_szQuickDrawSourcePath_00695168",
+      "text": "D:\\Ambit\\QuickDraw.cpp"
+    },
+    {
       "address": "0x00695188",
       "placeholders": [
         "printf"
@@ -10868,6 +10875,17 @@
       ],
       "source_file": "src/game/global_data_tables.cpp"
     },
+    "0x00489f90": {
+      "references": [
+        {
+          "address": "0x006950b0",
+          "kind": "embedded_global",
+          "symbol": "g_szMcAppUiSourcePath_006950B0",
+          "text": "D:\\Ambit\\McAppUI.cpp"
+        }
+      ],
+      "source_file": "src/game/TView.cpp"
+    },
     "0x0048ae60": {
       "references": [
         {
@@ -11033,6 +11051,28 @@
         }
       ],
       "source_file": "src/game/CMcWindow.cpp"
+    },
+    "0x00498b50": {
+      "references": [
+        {
+          "address": "0x00695168",
+          "kind": "embedded_global",
+          "symbol": "g_szQuickDrawSourcePath_00695168",
+          "text": "D:\\Ambit\\QuickDraw.cpp"
+        }
+      ],
+      "source_file": "src/game/quickdraw_rendering.cpp"
+    },
+    "0x00498b80": {
+      "references": [
+        {
+          "address": "0x00695168",
+          "kind": "embedded_global",
+          "symbol": "g_szQuickDrawSourcePath_00695168",
+          "text": "D:\\Ambit\\QuickDraw.cpp"
+        }
+      ],
+      "source_file": "src/game/quickdraw_rendering.cpp"
     },
     "0x004992a0": {
       "references": [
@@ -13712,6 +13752,35 @@
         }
       ],
       "source_file": "src/game/TMilitaryPageView.cpp"
+    },
+    "0x00564dc0": {
+      "references": [
+        {
+          "address": "0x00694fd8",
+          "kind": "embedded_global",
+          "symbol": "g_szUiFailureMessage",
+          "text": "Failure"
+        },
+        {
+          "address": "0x00694fc8",
+          "kind": "embedded_global",
+          "symbol": "g_szUiNilPointerMessage",
+          "text": "Nil Pointer"
+        }
+      ],
+      "source_file": "src/game/TNavyRoster.cpp"
+    },
+    "0x00565100": {
+      "references": [
+        {
+          "group": 10054,
+          "index": 4,
+          "kind": "windows_gob",
+          "load_string_id": 22364,
+          "text": "Rename Ship To:"
+        }
+      ],
+      "source_file": "src/game/TShipLine.cpp"
     },
     "0x005654e0": {
       "references": [
@@ -25956,6 +26025,29 @@
       ],
       "source_file": "src/game/TViewMgr.cpp"
     },
+    "0x005dd450": {
+      "references": [
+        {
+          "address": "0x00694fd8",
+          "kind": "embedded_global",
+          "symbol": "g_szUiFailureMessage",
+          "text": "Failure"
+        },
+        {
+          "address": "0x00694fc8",
+          "kind": "embedded_global",
+          "symbol": "g_szUiNilPointerMessage",
+          "text": "Nil Pointer"
+        },
+        {
+          "address": "0x0069b740",
+          "kind": "embedded_global",
+          "symbol": "s_SourcePathUViewMgrMore_0069B740",
+          "text": "D:\\Ambit\\Cross\\UViewMgr.more.cpp"
+        }
+      ],
+      "source_file": "src/game/TViewMgr.cpp"
+    },
     "0x005dd770": {
       "references": [
         {
@@ -25980,6 +26072,29 @@
       "source_file": "src/game/TViewMgr.cpp"
     },
     "0x005dd900": {
+      "references": [
+        {
+          "address": "0x00694fd8",
+          "kind": "embedded_global",
+          "symbol": "g_szUiFailureMessage",
+          "text": "Failure"
+        },
+        {
+          "address": "0x00694fc8",
+          "kind": "embedded_global",
+          "symbol": "g_szUiNilPointerMessage",
+          "text": "Nil Pointer"
+        },
+        {
+          "address": "0x0069b740",
+          "kind": "embedded_global",
+          "symbol": "s_SourcePathUViewMgrMore_0069B740",
+          "text": "D:\\Ambit\\Cross\\UViewMgr.more.cpp"
+        }
+      ],
+      "source_file": "src/game/TViewMgr.cpp"
+    },
+    "0x005dda30": {
       "references": [
         {
           "address": "0x00694fd8",
@@ -179319,9 +179434,9 @@
     "windows_strings": "docs/reference/strenu-strings.tsv"
   },
   "summary": {
-    "embedded_globals": 766,
+    "embedded_globals": 767,
     "formula_matches": 2356,
-    "functions_with_references": 276,
+    "functions_with_references": 283,
     "mac_strings": 3821,
     "mac_strings_with_candidates": 3091,
     "text_resources": 0,

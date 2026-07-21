@@ -17,6 +17,6 @@ TSliderPicture::TSliderPicture() {}
 TSliderPicture::~TSliderPicture() {}
 
 // FUNCTION: IMPERIALISM 0x00573aa0
-void TSliderPicture::ApplyRectSlot110(RECT* rectBuffer) {
-  TPicture::ApplyRectSlot110(rectBuffer);
+void TSliderPicture::Draw(RECT* rectBuffer) {
+  TPicture::Draw(rectBuffer);
 }

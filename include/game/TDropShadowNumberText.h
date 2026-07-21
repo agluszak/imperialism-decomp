@@ -13,7 +13,7 @@ public:
   TDropShadowNumberText();
   virtual ~TDropShadowNumberText() override; // slot 0x01 (scalar deleting destructor 0x5b5960)
 
-  void ApplyRectSlot110(RECT* rectBuffer) override; // slot 0x44 0x5b59b0
+  void Draw(RECT* rectBuffer) override; // slot 0x44 0x5b59b0
 
   int shadowColorAc; // +0xac — quickdraw color used for the shadow pass
 };

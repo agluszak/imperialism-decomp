@@ -162,7 +162,7 @@ void TEscortMission::NoOpSlot3C() {
       result = 0.0f;
     } else {
       float delta = 0.0f;
-      const unsigned short* weights = &g_Populate_Beachhead_Mission_LookupTable_00697958[4];
+      const short* weights = &g_Populate_Beachhead_Mission_LookupTable_00697958[4];
       for (int c = 0; c < 4; ++c) {
         float diff = vector[c] / sum - static_cast<float>(static_cast<short>(weights[c])) * 0.01f;
         if (diff <= 0.0f) {
@@ -196,5 +196,5 @@ void TEscortMission::MissionSlot44() {
     orderList24->active = 0;
     orderList24->next->SetChainActiveFlag(0);
   }
-  ConsolidateMissionOrderEntriesByTargetAndQueue(reinterpret_cast<int*>(targetZone14));
+  ConsolidateMissionOrderEntriesByTargetAndQueue(targetZone14);
 }

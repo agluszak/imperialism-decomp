@@ -19,8 +19,6 @@ TSuperNavyRoster::~TSuperNavyRoster() {}
 
 IMPLEMENT_DYNCREATE(TSuperNavyRoster, TPageView)
 
-TSuperNavyRoster::TSuperNavyRoster() {}
-
 // FUNCTION: IMPERIALISM 0x005698e0
 void TSuperNavyRoster::PopulateNavyOrderPageEntriesByMapContext(TView* panel, int* offsetLayout,
                                                                 int* sizeLayout) {
@@ -46,5 +44,5 @@ void TSuperNavyRoster::PopulateNavyOrderPageEntriesByMapContext(TView* panel, in
   BuildPageLayout();
   ShowPage(1);
   ownerContext->AssertValid();
-  static_cast<TBook*>(ownerContext)->UpdatePagedListNavigationButtonState(currentPage);
+  static_cast<TBook*>(ownerContext)->ShowPage(currentPage);
 }

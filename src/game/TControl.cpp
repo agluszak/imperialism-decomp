@@ -14,8 +14,8 @@
 #include <new>
 
 // FUNCTION: IMPERIALISM 0x00429450
-int TControl::QuerySelectedIndexSlotBC() {
-  return frameStyle60;
+int TControl::GetEventNumber() {
+  return eventNumber60;
 }
 
 // FUNCTION: IMPERIALISM 0x00429470
@@ -53,7 +53,7 @@ IMPLEMENT_DYNCREATE(TControl, TView)
 
 // FUNCTION: IMPERIALISM 0x0048e520
 TControl::TControl()
-    : TView(), frameStyle60(1), controlState64(0), contentInsets68(0, 0, 0, 0),
+    : TView(), eventNumber60(1), controlState64(0), contentInsets68(0, 0, 0, 0),
       textStyle78(g_UiResourceEntryDefaultTextStyle) {}
 
 // Destructors are compiler-generated (implicit) from real inheritance.
@@ -86,7 +86,7 @@ void TControl::BeginMouseCaptureAndStartRepeatTimer(const CPoint& point, TToolbo
 }
 
 // FUNCTION: IMPERIALISM 0x0048e710
-void TControl::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+void TControl::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId == 0x1f) {
     HiliteState(1, 1);
     return;
@@ -99,9 +99,9 @@ void TControl::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* 
     HiliteState(controlState64 == 0, 1);
     return;
   }
-  TEventHandler* child = QueryStepValue();
+  TEventHandler* child = GetNextHandler();
   if (child != 0) {
-    child->DispatchEvent(commandId, sourceHandler, event);
+    child->HandleEvent(commandId, sourceHandler, event);
   }
 }
 
@@ -146,18 +146,18 @@ void TControl::DispatchPictureResourceCommand(int eventType, void* eventSender, 
     return;
   }
   if (eventType == 2 && PointInBoundsAndActionable(static_cast<CPoint*>(eventDataB)) != 0) {
-    if (frameStyle60 == 4) {
-      DispatchEvent(0x21, this, 0);
-      DispatchEvent(frameStyle60, this, 0);
+    if (eventNumber60 == 4) {
+      HandleEvent(0x21, this, 0);
+      HandleEvent(eventNumber60, this, 0);
       return;
     }
-    if (frameStyle60 != 0xc) {
-      DispatchEvent(0x20, this, 0);
-      DispatchEvent(frameStyle60, this, 0);
+    if (eventNumber60 != 0xc) {
+      HandleEvent(0x20, this, 0);
+      HandleEvent(eventNumber60, this, 0);
       return;
     }
-    DispatchEvent(0x1f, this, 0);
-    DispatchEvent(frameStyle60, this, 0);
+    HandleEvent(0x1f, this, 0);
+    HandleEvent(eventNumber60, this, 0);
   }
 }
 
@@ -184,9 +184,7 @@ void TControl::NoOpUiViewSlotHandler(int arg1, int arg2) {
 }
 
 // FUNCTION: IMPERIALISM 0x0048e9e0
-undefined TControl::ReturnZeroFromUiSlot6C(int) {
-  return 0;
-}
+void TControl::NoOpControlAction(int) {}
 
 // The template-dialog modal helpers (PrepareAndCreateModalFromTemplate 0x0049d360 and
 // FinalizeModalDialogAndRestoreOwnerFocus 0x0049d450) and the CDialog constructor
@@ -219,8 +217,8 @@ void TControl::SetDiplomacyNationSelectionFilterAndRefreshRows(short selectedNat
 // Real ctor: TControl::TControl @ 0x0048e520 (base via : TView()).
 
 // FUNCTION: IMPERIALISM 0x0058e440
-void TControl::SetFrameStyle60(int value) {
-  frameStyle60 = value;
+void TControl::SetEventNumber(int value) {
+  eventNumber60 = value;
 }
 
 // FUNCTION: IMPERIALISM 0x005be150

@@ -28,20 +28,20 @@ IMPLEMENT_DYNCREATE(TFlagOptionsPicture, TPicture)
 TFlagOptionsPicture::TFlagOptionsPicture() {}
 
 // FUNCTION: IMPERIALISM 0x0056b2b0
-void TFlagOptionsPicture::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+void TFlagOptionsPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId == 0xa) {
     CString text;
     unsigned int tag = sourceHandler->controlTag;
     if (tag == kControlTagGowy) {
-      TWindow* owner = static_cast<TWindow*>(OwnerPanel());
+      TWindow* owner = GetWindow();
       owner->Dismiss(tag, 0);
     } else if (tag == kControlTagCred) {
-      TWindow* owner = static_cast<TWindow*>(OwnerPanel());
+      TWindow* owner = GetWindow();
       owner->Dismiss(kControlTagOkay, 0);
       g_pSimMgr->EnterOptionalPhase(0x71);
     } else if (tag == kControlTagNewg || tag == kControlTagQuit) {
       if (g_pUiRuntimeContext->DispatchGameStateEventIfLocalizedPromptAccepted(tag)) {
-        TWindow* owner = static_cast<TWindow*>(OwnerPanel());
+        TWindow* owner = GetWindow();
         owner->Dismiss(tag, 0);
         if (g_pSimMgr->multiplayerSessionRole == 1) {
           int saveResult = 0;
@@ -59,16 +59,16 @@ void TFlagOptionsPicture::HandleEvent(int commandId, TEventHandler* sourceHandle
       if (g_pSimMgr->multiplayerSessionRole != 0) {
         g_pUiRuntimeContext->ShowLocalizedUiPromptByGroupAndIndex(0x2737, 0x34, 0, 0);
       } else {
-        TWindow* owner = static_cast<TWindow*>(OwnerPanel());
+        TWindow* owner = GetWindow();
         owner->Dismiss(tag, 0);
         g_pSimMgr->EnterOptionalPhase(0x70);
       }
     } else if (tag == kControlTagPref) {
-      TWindow* owner = static_cast<TWindow*>(OwnerPanel());
+      TWindow* owner = GetWindow();
       owner->Dismiss(tag, 0);
       g_pSimMgr->EnterOptionalPhase(0x6b);
     } else if (tag == kControlTagSave) {
-      TWindow* owner = static_cast<TWindow*>(OwnerPanel());
+      TWindow* owner = GetWindow();
       owner->Dismiss(tag, 0);
       if (g_pSimMgr->multiplayerSessionRole == 2) {
         g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&text, 0x2742, 0x13);
@@ -77,10 +77,10 @@ void TFlagOptionsPicture::HandleEvent(int commandId, TEventHandler* sourceHandle
         g_pSimMgr->EnterOptionalPhase(0x6f);
       }
     } else {
-      TControl::HandleEvent(commandId, sourceHandler, event);
+      TControl::DoEvent(commandId, sourceHandler, event);
     }
   } else {
-    TControl::HandleEvent(commandId, sourceHandler, event);
+    TControl::DoEvent(commandId, sourceHandler, event);
   }
 }
 
@@ -93,7 +93,7 @@ void TFlagOptionsPicture::DoPostCreate(int arg) {
     g_pSimMgr->GetString(0x2743, static_cast<short>(i), &text);
     TDropShadowText* control =
         static_cast<TDropShadowText*>(ResolveControlByTag(kControlTagTxt0 + i));
-    control->QueryStepValue();
+    control->GetNextHandler();
     if (i == 0) {
       ApplyUiTextStyleAndThemeFlags(control, 0, 0xc, 0x2b6c, 0x2b6a);
     } else {

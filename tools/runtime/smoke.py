@@ -44,7 +44,7 @@ STARTUP_MILESTONES = [
     ("mcwindow-ctor", 0x493470, "CMcWindow constructed — native paint host exists"),
     ("view-init", 0x483750, "CIncludeView::OnInitialUpdate — CDib + tick timer created"),
     ("on-draw", 0x482C90, "CIncludeView::OnDraw — paint recursion runs"),
-    ("picture-blit", 0x48F3C0, "TPicture::ApplyRectSlot110 — picture blit reached"),
+    ("picture-blit", 0x48F3C0, "TPicture::Draw — picture blit reached"),
     ("dib-blit", 0x47BDE0, "CDib::BlitSurfaceRectSkippingTransparentColor — pixels copied"),
 ]
 

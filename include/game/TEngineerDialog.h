@@ -20,6 +20,6 @@ public:
   virtual ~TEngineerDialog() override;
 
   DECLARE_DYNCREATE(TEngineerDialog)
-  void Free() override;                             // 0x1c 0x4d05e0
-  void ApplyRectSlot110(RECT* rectBuffer) override; // 0x110 0x4d0650
+  void Free() override;                 // 0x1c 0x4d05e0
+  void Draw(RECT* rectBuffer) override; // 0x110 0x4d0650
 };

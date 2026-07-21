@@ -24,7 +24,7 @@ IMPLEMENT_DYNCREATE(TTradeOfferNationView, TView)
 TTradeOfferNationView::TTradeOfferNationView() {}
 
 // FUNCTION: IMPERIALISM 0x005bd2d0
-void TTradeOfferNationView::ApplyRectSlot110(RECT* rectBuffer) {
+void TTradeOfferNationView::Draw(RECT* rectBuffer) {
   CString finalText;
   CString templateText;
   CString valueText;

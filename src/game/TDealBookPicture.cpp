@@ -240,7 +240,7 @@ void TDealBookPicture::CalculatePages() {
 }
 
 // FUNCTION: IMPERIALISM 0x005bbc30
-void TDealBookPicture::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+void TDealBookPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId >= 0x2af8) {
     // The real table is much larger than the declared 8-entry span (the original indexes
     // it with commandId + hasProductionOrder193*17, which can run far past 8) -- the
@@ -282,7 +282,7 @@ void TDealBookPicture::HandleEvent(int commandId, TEventHandler* sourceHandler, 
       }
     }
   }
-  TControl::HandleEvent(commandId, sourceHandler, event);
+  TControl::DoEvent(commandId, sourceHandler, event);
 }
 
 // FUNCTION: IMPERIALISM 0x005bc0d0

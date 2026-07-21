@@ -73,15 +73,15 @@ char TIconSlider::HandleMouseDown(const CPoint& point, TToolboxEvent* event, CPo
   }
   value9c = static_cast<short>(nextValue) / iconSpacing98;
   RefreshControl();
-  ownerContext->DispatchEvent(0x6c, this, 0);
+  ownerContext->HandleEvent(0x6c, this, 0);
   return 1;
 }
 
 // Draws the inherited tick strip, then lets the slider resolve/refresh its thumb
 // bitmap resource (slot 0x78, DrawKnob).
 // FUNCTION: IMPERIALISM 0x00506690
-void TIconSlider::ApplyRectSlot110(RECT* rectBuffer) {
-  TIconBar::ApplyRectSlot110(rectBuffer);
+void TIconSlider::Draw(RECT* rectBuffer) {
+  TIconBar::Draw(rectBuffer);
   DrawKnob();
 }
 
@@ -153,7 +153,7 @@ void TIconSlider::DispatchPictureResourceCommand(int nEventType, void* pEventSen
 
   CRect barRect;
   OffsetRectByCachedPos(&redrawRect, &barRect);
-  TIconBar::ApplyRectSlot110(&barRect);
+  TIconBar::Draw(&barRect);
 
   SetClip(savedClip);
   DisposeRgn(savedClip);
@@ -161,6 +161,6 @@ void TIconSlider::DispatchPictureResourceCommand(int nEventType, void* pEventSen
   QDLoadResource(knobBitmapA0);
   BlitBitmapResourceLoaderToActiveDc(knobBitmapA0, &currentKnobRect);
   if (nEventType == 2) {
-    ownerContext->DispatchEvent(0x6c, this, 0);
+    ownerContext->HandleEvent(0x6c, this, 0);
   }
 }

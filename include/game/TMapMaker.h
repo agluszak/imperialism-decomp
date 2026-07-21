@@ -16,7 +16,7 @@ public:
 
   // Draws two LCG values into out-pointers: *outColumn = rng % 27, *outRow = rng % 15
   // (a random cell of regionClassGrid10[15][27]). Verified RET 0x8 (2 stack pointer args,
-  // void return) -- the header's previous 0-arg `char GetBoolSlot28()` was templated off
+  // void return) -- the header's previous 0-arg `char IsEnabled()` was templated off
   // TView/TEventHandler's real slot-10 virtual of that name and does not describe this
   // slot (TMapMaker derives from TObject, not TView, so the shared ordinal is a
   // coincidence). slot 10 / 0x28
@@ -27,7 +27,7 @@ public:
   virtual void RunMapGenerationAttempt();
   // Verified RET 0x10 (4 stack args) from both the caller (0x526c20, which pushes 4
   // explicit ints) and the callee's own frame layout -- the header's previous 0-arg
-  // "QueryStepValue() -> TEventHandler*" was templated off TEventHandler's real
+  // "GetNextHandler() -> TEventHandler*" was templated off TEventHandler's real
   // virtual of the same name/slot position and does not describe this class's real
   // slot. Recursively assigns a region class to a coarse grid cell and its
   // best-scoring hex neighbour, retrying up to `retryBudget` times; returns the
@@ -49,12 +49,12 @@ public:
   // Map-gen pass dispatched right after city-region ids are assigned (was junk-named
   // DispatchUiSelectionToHandler; 0-arg __thiscall, verified RET 0). slot 14 / 0x38
   virtual void MapGenPassSlot0E();
-  // Map-gen pass (was junk-named HandleEvent with 3 phantom args; 0-arg __thiscall).
+  // Map-gen pass (was junk-named DoEvent with 3 phantom args; 0-arg __thiscall).
   // slot 15 / 0x3c
   virtual void MapGenPassSlot0F();
   // Verified 2 stack int args + char return, same call site/args as slot 0x34 above
   // (tried for every class, not just majors) -- the header's previous 3-arg
-  // TEventHandler-shaped DispatchEvent signature does not describe this class's real
+  // TEventHandler-shaped HandleEvent signature does not describe this class's real
   // slot. Same union-find neighbor-merge as slot 0x34 above but WITHOUT the +0x1a8
   // group-membership bookkeeping: a class with an existing group can only merge by
   // adopting a neighbour's group (or forming a new one when neither has one yet) --
@@ -84,18 +84,18 @@ public:
   // Walks the city-region tile ring starting at `coarseIndex`, converting empty tiles
   // ('\0') to '6' with probability `percentChance`/100; returns the number marked.
   // Verified RET 0x8 (2 stack int args, int return) -- the previous 0-arg
-  // `GetCityDialogValueDword10()` was templated off TView's real slot-20 virtual and
+  // `GetIdleFreq()` was templated off TView's real slot-20 virtual and
   // does not describe this slot. slot 20 / 0x50
   virtual int TundraBand(int row, int percentChance);
   // Same city-region ring probabilistic marking as slot 0x50 but also marks a hex
   // neighbour of each converted tile. Verified RET 0x8 (2 stack int args, int return) --
-  // the previous 1-arg `SetCityDialogValueDword10(int)` was templated off TView's real
+  // the previous 1-arg `SetIdleFreq(int)` was templated off TView's real
   // slot-21 virtual and does not describe this slot. slot 21 / 0x54
   virtual int DesertBand(int row, int percentChance);
   // Verified RET 0xc (3 stack args), from both Ghidra's own (correct) signature
   // recovery and the self-recursive call inside the callee itself -- the header's
   // previous 0-arg `TView*`-returning form was templated off TView's real
-  // OwnerPanel and does not describe this slot. Claims `tileIndex` (marking it 1,
+  // GetWindow and does not describe this slot. Claims `tileIndex` (marking it 1,
   // plus a variant byte at +0x13 selected by `markerVariant`), refuses if any hex
   // neighbor is already a marker (byte 6), then recursively spreads to neighbors
   // (46% chance each) until `retryBudget` spreads land. Returns the spread count.
@@ -104,27 +104,27 @@ public:
   virtual void CreateRivers(); // slot 23 / 0x5c
   // Region-template state transform over the tile record at `coarseIndex` (branches on
   // terrain-state bytes 2/3/5 and mirrors a 36-byte template block). Verified RET 0x14
-  // (5 stack dwords) -- the previous 0-arg `char GetDeactivateVetoCode()` was templated
+  // (5 stack dwords) -- the previous 0-arg `char WillingToResignTarget()` was templated
   // off TEventHandler's real slot-24 virtual and does not describe this slot. Arg types
   // beyond the dword count are Ghidra-inferred and provisional (body still a stub).
   // slot 24 / 0x60
   virtual char GrowRiver(long tileIndex, long incomingDirection, long outgoingDirection, long depth,
                          unsigned char startedOnHills);
-  // Map-gen finalize pass (was junk-named OnDeactivated; takes one mode arg the
+  // Map-gen finalize pass (was junk-named ResignedTarget; takes one mode arg the
   // driver passes as 0 -- verified RET 4). slot 25 / 0x64
   virtual void MapGenFinalizePassSlot19(int mode);
   // Post-attempt validity probe: nonzero means the attempt failed and the driver
-  // regenerates (was junk-named OnDeactivateVetoed(int); really a 0-arg __thiscall
+  // regenerates (was junk-named TargetValidationFailed(int); really a 0-arg __thiscall
   // returning AL). slot 26 / 0x68
   virtual char ErrorCheck();
-  virtual void HandleCityProductionNoOp(); // slot 27 / 0x6c
+  virtual void TargetValidationSucceeded(); // slot 27 / 0x6c
   // Marks the region record of tile `tileIndex` (byte 0xf7) then visits its six hex
   // neighbours via slots 0x1d/0x1c. Verified RET 0x4 (1 stack short arg, void return) --
-  // the previous 0-arg `DispatchUiCommand19ToParent()` was templated off TEventHandler's
+  // the previous 0-arg `BecameWindowTarget()` was templated off TEventHandler's
   // real slot-28 virtual and does not describe this slot. slot 28 / 0x70
   virtual void EraseZones(long coarseIndex);
   // Resolves the region-grid cell adjacent to `cell` in hex `direction` 0..5 (was
-  // junk-named DispatchCityProductionAction1A; verified two-arg __thiscall returning
+  // junk-named ResignedWindowTarget; verified two-arg __thiscall returning
   // the neighbour cell index). slot 29 / 0x74
   virtual int GetAdjacentRegionGridCell(int cell, int direction);
   // Map-gen pass run between MapGenPassSlot0E and MapGenPassSlot0F (was junk-named
@@ -132,14 +132,14 @@ public:
   virtual void MapGenPassSlot1E();
   // Copies a 36-byte (9-dword) region-template bank between fine-grid cells (resolved
   // via slot 0x21), selecting the source variant by LCG randomness. Verified RET 0x14
-  // (5 stack dwords) -- the previous 0-arg `char ActivateCityProductionViewIfAllowed()`
+  // (5 stack dwords) -- the previous 0-arg `char BecomeTarget()`
   // was templated off TView's real slot-31 virtual and does not describe this slot. Arg
   // types beyond the dword count are Ghidra-inferred and provisional. slot 31 / 0x7c
   virtual void CopyRegionTemplateBankWithRandomVariant(int coarseIndex, int arg2, int arg3,
                                                        int arg4, int arg5);
   // Copies a 36-byte region-template bank to a neighbouring cell (slots 0x1d/0x21) with
   // an LCG-gated second copy. Verified RET 0x14 (5 stack dwords) -- the previous 0-arg
-  // `char TryDeactivateActiveView()` was templated off TView's real slot-32 virtual and
+  // `char ResignTarget()` was templated off TView's real slot-32 virtual and
   // does not describe this slot. Arg types beyond the dword count are provisional.
   // slot 32 / 0x80
   virtual void CopyRegionTemplateBankToNeighborCell(int coarseIndex, int arg2, int arg3, int arg4,
@@ -147,7 +147,7 @@ public:
   virtual int GetFineGridCellBasePointerFromCoarseIndex(int coarseIndex); // slot 33 / 0x84
 
   // TMapMaker's real vtable (0x006598f8) ends at its last reachable slot (0x21 /
-  // vmethod_0081 above); slots 0x22..0x28 are a literal NULL tail (matching the
+  // SelectOwner above); slots 0x22..0x28 are a literal NULL tail (matching the
   // TZone::vtable convention, see TZone.h). The two non-NULL pointers the extractor lists
   // beyond that run (slots 0x29/0x2a → 0x0052a760/0x0052c0a0) are NOT TMapMaker methods:
   // they are the single vtable slots of two adjacent stretch<T> tables laid out right after

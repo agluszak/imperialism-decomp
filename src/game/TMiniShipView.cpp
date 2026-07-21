@@ -5,6 +5,7 @@
 #include "game/TShip.h"
 #include "game/TSimMgr.h"
 #include "game/TTaskForce.h"
+#include "game/TSuperNavyRoster.h"
 #include "game/global_data_tables.h"
 #include "game/navy_order.h"
 #include "game/quickdraw_rendering.h"
@@ -29,8 +30,8 @@ IMPLEMENT_DYNCREATE(TMiniShipView, TControl)
 TMiniShipView::TMiniShipView() {}
 
 // FUNCTION: IMPERIALISM 0x00569eb0
-void TMiniShipView::ApplyRectSlot110(RECT* rectBuffer) {
-  (void)rectBuffer; // dead parameter in this override, like the other ApplyRectSlot110s
+void TMiniShipView::Draw(RECT* rectBuffer) {
+  (void)rectBuffer; // dead parameter in this override, like the other Draws
 
   InitializeUiTextStyleDescriptorAndApplyQuickDraw(2, 0xc, 0x2b6a, 3);
 
@@ -50,7 +51,7 @@ void TMiniShipView::ApplyRectSlot110(RECT* rectBuffer) {
   SetQuickDrawTextOriginWithContextOffset(0xa, 0xc);
   DrawTextWithCachedQuickDrawStyleState(&statusLine);
 
-  short normBase = GetNavyOrderNormalizationBaseByResourceType(shipNode84->resourceType04);
+  short normBase = shipNode84->GetNavyOrderNormalizationBaseByNationType();
   short levelBucket = static_cast<short>(shipNode84->stockLevel1c * 20 / normBase) + 1;
   if (levelBucket > 0x14) {
     levelBucket = 0x14;
@@ -121,4 +122,18 @@ void TMiniShipView::ApplyRectSlot110(RECT* rectBuffer) {
 
 // FUNCTION: IMPERIALISM 0x0056a330
 void TMiniShipView::BeginMouseCaptureAndStartRepeatTimer(const CPoint& point, TToolboxEvent* event,
-                                                         CPoint origin) {}
+                                                         CPoint origin) {
+  TSuperNavyRoster* roster = static_cast<TSuperNavyRoster*>(ownerContext);
+  roster->AssertValid();
+
+  TTaskForce* taskForce = shipNode84->ownerOrderEntry0c;
+  if (taskForce != 0) {
+    roster->selectedTaskForce88 = taskForce;
+    roster->selectedZone84 = 0;
+  } else {
+    roster->selectedTaskForce88 = 0;
+    roster->selectedZone84 = shipNode84->field08;
+  }
+
+  TControl::BeginMouseCaptureAndStartRepeatTimer(point, event, origin);
+}

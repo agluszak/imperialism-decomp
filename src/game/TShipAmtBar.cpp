@@ -1,4 +1,5 @@
 #include "game/TAmtBar.h"
+#include "game/TWindow.h"
 #include "game/TShipAmtBar.h"
 #include "game/TShipOrder.h"
 #include "game/TCity.h"
@@ -70,9 +71,9 @@ void TShipAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache() {
       DrawCenteredGuideLineOnMapDc(stepOrCurrentValue, (short)(frameHeight38 - 2));
 
       SetClip(surface.tempRgn);
-      TView* owner = control->OwnerPanel();
+      TView* owner = control->GetWindow();
       if (owner != 0) {
-        owner->InvokeSlot13C();
+        owner->ForceRedraw();
       }
     }
   }
