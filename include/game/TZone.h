@@ -22,6 +22,23 @@ IMPERIALISM_BEGIN_INTENTIONAL_NON_VIRTUAL_DTOR
 // VTABLE: IMPERIALISM 0x0065c74c
 class TZonePrimaryNeighborStretch : public stretch<TZone*, TZonePrimaryNeighborTag> {
 public:
+  // Linear scan for `value`; returns the matching slot or null. Mirrors
+  // TZoneSecondaryNeighborStretch::FindEntry (ground truth:
+  // RefreshPortZoneNeighborContextLinksAndFallbacks, 0x00563f50, which pre-checks
+  // membership before calling GetOrAppendUnique).
+  TZone** FindEntry(TZone* value) {
+    unsigned int count = Count();
+    for (unsigned int index = 0; index < count; ++index) {
+      if (Data()[index] == value) {
+        return &Data()[index];
+      }
+    }
+    return 0;
+  }
+  bool ContainsEntry(TZone* value) {
+    return FindEntry(value) != 0;
+  }
+
   TZone** GetOrAppendUnique(TZone* zone) override; // 0x55e8e0
   // Not a vtable slot (see stretch.h); called only on the concrete type.
   void Add(TZone* zone); // 0x55ead0
