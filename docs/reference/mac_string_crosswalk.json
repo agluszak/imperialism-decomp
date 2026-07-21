@@ -14190,6 +14190,46 @@
       ],
       "source_file": "src/game/TStratReportView.cpp"
     },
+    "0x0058f7b0": {
+      "references": [
+        {
+          "group": 10029,
+          "index": 6,
+          "kind": "windows_gob",
+          "load_string_id": 19866,
+          "text": "Search In:"
+        },
+        {
+          "group": 10029,
+          "index": 7,
+          "kind": "windows_gob",
+          "load_string_id": 19867,
+          "text": "Can Build"
+        },
+        {
+          "group": 10029,
+          "index": 8,
+          "kind": "windows_gob",
+          "load_string_id": 19868,
+          "text": "Depot"
+        },
+        {
+          "group": 10029,
+          "index": 9,
+          "kind": "windows_gob",
+          "load_string_id": 19869,
+          "text": "Port"
+        },
+        {
+          "group": 10029,
+          "index": 10,
+          "kind": "windows_gob",
+          "load_string_id": 19870,
+          "text": "Fort"
+        }
+      ],
+      "source_file": "src/game/TCivDescription.cpp"
+    },
     "0x005921c0": {
       "references": [
         {
@@ -178950,7 +178990,7 @@
   "summary": {
     "embedded_globals": 766,
     "formula_matches": 2356,
-    "functions_with_references": 264,
+    "functions_with_references": 265,
     "mac_strings": 3821,
     "mac_strings_with_candidates": 3091,
     "text_resources": 0,
