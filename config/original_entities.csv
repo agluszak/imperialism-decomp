@@ -3126,10 +3126,10 @@ address|name|symbol|size|type|prototype|provenance
 50e2c0|GetCityIndexFromCityStatePointer||30|function|int __fastcall GetCityIndexFromCityStatePointer(TGlobalMapCityScoreRecord* cityState)|
 50e2f0|TMapMgr::CreateObject|?CreateObject@TMapMgr@@SGPAVCObject@@XZ|138|function|undefined CreateObject()|rtti
 50e3b0|TMapMgr::GetRuntimeClass||6|function|undefined GetTMapMgrClassNamePointer()|rtti
-50e3d0|ConstructGlobalMapState||100|function|void * __fastcall ConstructGlobalMapState(void * pGlobalMapState)|
+50e3d0|TMapMgr::TMapMgr|??0TMapMgr@@QAE@XZ|100|function|TMapMgr* __thiscall TMapMgr(void)|
 50e460|TMapMgr::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 50e490|WrapperFor_ReleaseSharedStringRefIfNotEmpty_At0050e490||62|function|undefined WrapperFor_ReleaseSharedStringRefIfNotEmpty_At0050e490()|
-50e4e0|InitializeGlobalMapState||28|function|void __fastcall InitializeGlobalMapState(int * pGlobalMapState)|
+50e4e0|TMapMgr::InitializeGlobalMapState|?InitializeGlobalMapState@TMapMgr@@QAEXXZ|28|function|void __thiscall InitializeGlobalMapState(void)|
 50e510|TMapMgr::Free||75|function|undefined Helper_Uses_FreeHeapBufferIfNotNull_At0050e510(void)|
 50e600|OrphanTiny_ThisAdjustJump_a4_0050e600||11|function|undefined OrphanTiny_ThisAdjustJump_a4_0050e600()|
 50e620|TMapMgr::ReadFrom||293|function|undefined WrapperFor_HandleCityDialogNoOpSlot18_At0050e620(int * param_1)|

@@ -2223,12 +2223,12 @@ address|matching|name
 0x4e0610|1.0|TGreatPower::ComputeMinisterSkillFloatSlot8A
 0x4e0650|1.0|TGreatPower::ComputeMinisterSkillFloatSlot8B
 0x4e0690|1.0|TGreatPower::ComputeMinisterSkillFloatSlot8C
-0x4e06d0|0.7619047619047619|TGreatPower::SumCommodityRecordAccumulatedValues
+0x4e06d0|0.8095238095238095|TGreatPower::SumCommodityRecordAccumulatedValues
 0x4e0740|1.0|TGreatPower::GetCityBuildingProductionSlot8D
 0x4e0770|1.0|TGreatPower::ComputeNationRuntimeAdvisoryMetricCase6
 0x4e07b0|0.35294117647058826|TGreatPower::ComputeArmyCommitBudgetSlot8E
 0x4e0890|0.26262626262626265|TGreatPower::GetScoreFactorSlot23C
-0x4e09a0|0.5783132530120482|TGreatPower::GetScoreFactorSlot240
+0x4e09a0|0.5542168674698795|TGreatPower::GetScoreFactorSlot240
 0x4e0b20|0.43902439024390244|TGreatPower::ComputeArmyScoreRatioVsNation
 0x4e0c10|0.24806201550387597|TGreatPower::ComputeArmyScoreStandingRatioVsNation
 0x4e0d80|0.43902439024390244|TGreatPower::ComputeNavyScoreRatioVsNation
@@ -2889,7 +2889,7 @@ address|matching|name
 0x5127e0|0.6551724137931034|SplitTileIndexToHexRasterColumnX2AndRow
 0x512850|0.5555555555555556|ComputeTileIndexFromHexColumnX2AndRow
 0x5128f0|1.0|LookupHexNeighborRowDeltaByDirection
-0x512930|0.26334519572953735|BuildHexAreaTileIndexList
+0x512930|0.25622775800711745|BuildHexAreaTileIndexList
 0x512b50|0.4375|TMapMgr::ComputeHexNeighborTileIndices
 0x512cc0|0.4647887323943662|TMapMgr::GetWrappedHexNeighborTileIndexByDirection
 0x512dd0|0.5435897435897435|GetHexDirectionBetweenTiles
@@ -3342,7 +3342,7 @@ address|matching|name
 0x5358a0|1.0|TMission::ReadFrom
 0x535940|1.0|FindFirstTrackedHandlerMatchingModeAndShortKey
 0x5359e0|0.4470588235294118|IsMapTileCompatibleWithCurrentTerrainOrActionContext
-0x535b00|0.4798657718120805|SelectBestCityDevelopmentFromResourcePools
+0x535b00|0.3596638655462185|SelectBestCityDevelopmentFromResourcePools
 0x535f80|0.4074074074074074|CompareMissionOrderEntriesByMovementClassThenEfficiency
 0x536090|0.6567164179104478|CompareMissionOrderEntriesByPriorityScore
 0x5362c0|0.9504950495049505|ComputeDistributionSimilarityScoreFromVectorAndReferenceProfile
@@ -3813,8 +3813,8 @@ address|matching|name
 0x553840|0.6697247706422018|TTaskForce::SetMapOrderType5AndQueue
 0x5539c0|1.0|TTaskForce::RefreshTaskForceSelectionFlagsForCurrentNationOrders
 0x553a50|1.0|TTaskForce::ApplyTaskForceSelectionModeForCurrentNationOrders
-0x553b10|0.41379310344827586|TTaskForce::HasNoMapOrderEntryChildrenQueued
-0x553b50|0.5454545454545454|TTaskForce::HasActiveMapOrderEntryChildren
+0x553b10|0.4827586206896552|TTaskForce::HasNoMapOrderEntryChildrenQueued
+0x553b50|0.5818181818181818|TTaskForce::HasActiveMapOrderEntryChildren
 0x553bc0|0.6536585365853659|TTaskForce::FindOrCreateChildOrderLink
 0x553d40|0.02857142857142857|ObjectPool::RemoveTaskForceOrderNodeById
 0x553e30|1.0|TTaskForce::RecomputeMapOrderChildAggregateMetric
@@ -3823,7 +3823,7 @@ address|matching|name
 0x5540b0|0.0|TScatteredShipsMission::ApplyMapOrderTypeAndQueue
 0x554300|0.5416666666666666|TTaskForce::ResolveMapOrderCommandFromActionContext
 0x554460|0.8125|TTaskForce::ResolveMapOrderCommandFromProvinceContext
-0x554590|0.5822784810126582|TTaskForce::CanQueueMapOrderForProvinceContext
+0x554590|0.5569620253164557|TTaskForce::CanQueueMapOrderForProvinceContext
 0x554660|0.9026548672566371|TTaskForce::RequeueMapOrderEntry
 0x5547d0|0.02702702702702703|CancelMapOrderEntryAndRestoreActive
 0x5548e0|0.9565217391304348|TTaskForce::RecomputeTaskForceAverageOrderScore
@@ -3874,7 +3874,7 @@ address|matching|name
 0x557560|0.9866666666666667|RevalidateAndRequeueMapOrdersForTurn
 0x5577b0|0.7333333333333333|TNavyMgr::PrepareMapOrdersForExecutionPhase
 0x557870|1.0|TTaskForce::ClearMapOrderProcessedFlagsChain
-0x5578a0|0.44594594594594594|TNavyMgr::ResolveMapOrderChainsForTurnPhase
+0x5578a0|0.44324324324324327|TNavyMgr::ResolveMapOrderChainsForTurnPhase
 0x557e10|0.6078431372549019|TNavyMgr::UpdateType7NavyOrderChildSelectionByChanceThreshold
 0x557f10|0.20558659217877095|TNavyMgr::SelectEligibleMapOrderInteractionForNationAndContext
 0x558860|0.7126436781609196|TZonePrimaryNeighborStretch::EnsureSlotAllocatedAndReturnPointer
@@ -3983,7 +3983,7 @@ address|matching|name
 0x561dc0|0.0625|TPortZone::HasZoneActiveChildCount
 0x561e40|0.011363636363636364|TPortZone::FindNearestActiveSeaContextTileFromOffset216
 0x5620c0|0.0|ReallocatePortZoneContextArrayBuffer
-0x562100|0.3076923076923077|TOcean::CreateObject
+0x562100|1.0|TOcean::CreateObject
 0x562140|0.9090909090909091|TOcean::`scalar deleting destructor'
 0x562170|0.5|ResetTPortZoneManagerToSentinelVtable
 0x562190|1.0|TOcean::GetRuntimeClass
@@ -4353,7 +4353,7 @@ address|matching|name
 0x575860|1.0|TGameSetupPicture::TGameSetupPicture
 0x575890|0.9090909090909091|TGameSetupPicture::`scalar deleting destructor'
 0x5758e0|1.0|TGameSetupPicture::DoPostCreate
-0x575900|0.37375745526838966|TGameSetupPicture::HandleEvent
+0x575900|0.40476190476190477|TGameSetupPicture::HandleEvent
 0x575e90|0.4897959183673469|TGameSetupMultiplayerPicture::CreateObject
 0x575f10|1.0|TGameSetupMultiplayerPicture::GetRuntimeClass
 0x575f30|1.0|TGameSetupMultiplayerPicture::TGameSetupMultiplayerPicture
@@ -4440,8 +4440,8 @@ address|matching|name
 0x57c230|0.8366533864541833|TSimMgr::WriteTo
 0x57c390|1.0|TSimMgr::RebuildNationStateSlotsNoOp
 0x57c3b0|0.9873949579831933|TSimMgr::RebuildGlobalOrderManagersAndCapabilityState
-0x57c7c0|0.5405405405405406|TSimMgr::RebuildMapContextAndGlobalMapState
-0x57c9a0|0.6031746031746031|TSimMgr::RecreateActiveMapContextAndInitializeGlobalMapState
+0x57c7c0|0.8744588744588745|TSimMgr::RebuildMapContextAndGlobalMapState
+0x57c9a0|0.9230769230769231|TSimMgr::RecreateActiveMapContextAndInitializeGlobalMapState
 0x57cad0|0.7278481012658228|TSimMgr::RebuildNationStateSlotsAndAvailability
 0x57cda0|0.532319391634981|TSimMgr::RebuildPrimaryNationStateForSlot
 0x57d520|0.797153024911032|TSimMgr::RebuildSecondaryNationStateForSlot
