@@ -25,16 +25,6 @@ IMPLEMENT_SERIAL(TBeachheadMission, TControlSeaZoneMission, 1)
 // SYNTHETIC: IMPERIALISM 0x0053a2d0
 // TBeachheadMission::CreateObject
 
-// SYNTHETIC: IMPERIALISM 0x0053a420
-// TBeachheadMission::GetRuntimeClass
-// SYNTHETIC: IMPERIALISM 0x0053a3d0 (approx -- see symbols.csv)
-// TBeachheadMission::`scalar deleting destructor'
-
-TBeachheadMission::TBeachheadMission() : TControlSeaZoneMission(), parentMission3c(nullptr) {}
-
-TBeachheadMission::TBeachheadMission(TZone* targetZone, TAttackProvinceMission* parentMission)
-    : TControlSeaZoneMission(targetZone), parentMission3c(parentMission) {}
-
 // FUNCTION: IMPERIALISM 0x0053a390
 char TBeachheadMission::ReturnFalseSlot64() {
   return 0;
@@ -44,6 +34,18 @@ char TBeachheadMission::ReturnFalseSlot64() {
 char TBeachheadMission::ReturnFalseSlot60() {
   return 0;
 }
+
+// SYNTHETIC: IMPERIALISM 0x0053a3d0 (approx -- see symbols.csv)
+// TBeachheadMission::`scalar deleting destructor'
+
+TBeachheadMission::TBeachheadMission() : TControlSeaZoneMission(), parentMission3c(nullptr) {}
+
+// SYNTHETIC: IMPERIALISM 0x0053a420
+// TBeachheadMission::GetRuntimeClass
+
+// FUNCTION: IMPERIALISM 0x0053a490
+TBeachheadMission::TBeachheadMission(TZone* targetZone, TAttackProvinceMission* parentMission)
+    : TControlSeaZoneMission(targetZone), parentMission3c(parentMission) {}
 
 // Reproduces the base TControlSeaZoneMission::NoOpSlot3C's targetZone14-tagged base score
 // inline -- the two classes are separate translation units with no LTO, so a qualified
@@ -107,9 +109,9 @@ void TBeachheadMission::NoOpSlot3C() {
 
 // FUNCTION: IMPERIALISM 0x0053a7b0
 char TBeachheadMission::MatchesMissionKeySlot4C(int kind, int key, int mode) {
-  (void)mode;
   if (kind == 2 && key != -1 && parentMission3c != nullptr &&
-      static_cast<short>(key) == parentMission3c->targetProvince30) {
+      static_cast<short>(key) == parentMission3c->targetProvince30 &&
+      mode == reinterpret_cast<int>(targetZone14)) {
     return 1;
   }
   return 0;

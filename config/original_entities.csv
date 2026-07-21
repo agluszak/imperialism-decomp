@@ -3678,8 +3678,8 @@ address|name|symbol|size|type|prototype|provenance
 536fc0|TNavyMission::EnsureMissionCurrentTargetContextIsValid||60|function|undefined EnsureMissionCurrentTargetContextIsValid()|
 537060|TNavyMission::GetActiveTargetZoneByState28||25|function|undefined GetMissionOrderBudgetByMode()|
 537090|TScatteredShipsMission::QueueMissionOrdersByPriorityForContext||100|function|void __thiscall QueueMissionOrdersByPriorityForContext(int pContextAnchor, int * ppSelectedChildNode)|
-5370f0|QueueMissionOrderEntriesAcrossSelectionRange||91|function|undefined QueueMissionOrderEntriesAcrossSelectionRange()|
-53714f|QueueMissionOrderEntryAndPropagateSelectionRange||62|function|undefined QueueMissionOrderEntryAndPropagateSelectionRange()|
+5370f0|QueueMissionOrderEntriesAcrossSelectionRange|||global||
+53714f|QueueMissionOrderEntryAndPropagateSelectionRange|||global||
 5371d0|ConsolidateMissionOrderEntriesByTargetAndQueue||115|function|undefined ConsolidateMissionOrderEntriesByTargetAndQueue()|
 537270|TNavyMission::ComputeMissionOrderMatchDeltaWithCandidateNavyOrder||724|function|undefined ComputeMissionOrderMatchDeltaWithCandidateNavyOrder()|
 537610|TNavyMission::ComputeMissionOrderPenaltyForCandidateAgainstTargetProfile||530|function|undefined ComputeMissionOrderPenaltyForCandidateAgainstTargetProfile()|

@@ -249,22 +249,36 @@ void TNavyMission::NoOpSlot90(void* a) {
 }
 // FUNCTION: IMPERIALISM 0x00536840
 int TNavyMission::ReturnZeroSlot2C(int* outBuffer, int unused) {
-  (void)unused;
+  float vector[4] = {0.0f, 0.0f, 0.0f, 0.0f};
   for (TMapOrderChildLinkNode* node = orderList24; node != nullptr; node = node->next) {
-    // The orderList24 payload is a TShip primary-order node: ComputeNavy... is its own
-    // method, while order_type reads the shared order-node field at +0x04.
-    TObject* entry = node->payload;
-    for (int category = 0; category < 4; ++category) {
-      static_cast<TShip*>(entry)->ComputeNavyOrderPriorityContributionPercentByCategory(category);
+    TShip* ship = static_cast<TShip*>(node->payload);
+    short distance = 0;
+    if (GetActiveTargetZoneByState28() != nullptr) {
+      distance =
+          ship->ComputeOrderNodeDistanceQuotientByDescriptorWord24(GetActiveTargetZoneByState28());
     }
-    static_cast<TShip*>(entry)->GetNavyOrderNormalizationBaseByNationType();
+    if (distance > 5) {
+      distance = 5;
+    }
+    float scale =
+        g_MissionOrderDistanceDecayWeightTable_006978c8[distance] *
+        static_cast<float>(ship->stockLevel1c / ship->GetNavyOrderNormalizationBaseByNationType());
+    for (int category = 0; category < 4; ++category) {
+      vector[category] +=
+          static_cast<float>(
+              ship->ComputeNavyOrderPriorityContributionPercentByCategory(category)) *
+          scale;
+    }
   }
 
   int total = 0;
   for (int i = 0; i < 4; ++i) {
-    int rounded = static_cast<int>(resourceWeights2c[i]);
-    outBuffer[i] = rounded;
-    total += rounded;
+    float delta = resourceWeights2c[i] - vector[i];
+    if (unused != 0 && resourceWeights2c[i] < vector[i]) {
+      delta *= g_NavyMissionQueuedWeightDeficitScale_0065A958;
+    }
+    outBuffer[i + 5] = static_cast<int>(static_cast<float>(outBuffer[i + 5]) + delta);
+    total += outBuffer[i + 5];
   }
   return total;
 }
@@ -401,8 +415,8 @@ void TNavyMission::QueueMissionOrdersByPriorityForContext(TZone* contextAnchor,
     *selectedOrder = nullptr;
   }
 
-  void* topOrder = nullptr;
   int maxScore = -1;
+  TShip* topOrder = nullptr;
 
   // Was bridged through a mis-targeted "CompareMissionOrderEntriesByPriorityScore" cdecl
   // stub cast (a name collision with the unrelated real function at 0x536090); the actual
@@ -411,52 +425,41 @@ void TNavyMission::QueueMissionOrdersByPriorityForContext(TZone* contextAnchor,
   for (TMapOrderChildLinkNode* node = orderList24; node != nullptr; node = node->next) {
     int score = static_cast<TShip*>(node->payload)->CalculateMissionOrderPriorityScore(3);
     if (maxScore < score) {
-      topOrder = node->payload;
+      topOrder = static_cast<TShip*>(node->payload);
       maxScore = score;
     }
   }
 
-  TShip* currentSelection = *selectedOrder;
-
   if (topOrder != nullptr) {
-    if (topOrder == currentSelection) {
+    if (topOrder == *selectedOrder) {
       topOrder = nullptr;
     } else {
-      if (currentSelection != nullptr) {
+      if (*selectedOrder != nullptr) {
         // Ground truth (0x537090): the original compares the *existing selection's*
         // zone-distance against the *candidate's* zone-distance, both to targetZone14 --
         // the prior port dropped this argument and used targetZone14 itself as a fake
         // receiver for target1 instead of selectedOrder.
         short target1 =
-            currentSelection->ComputeOrderNodeDistanceQuotientByDescriptorWord24(targetZone14);
-        short target2 =
-            static_cast<TShip*>(topOrder)->ComputeOrderNodeDistanceQuotientByDescriptorWord24(
-                targetZone14);
+            (*selectedOrder)->ComputeOrderNodeDistanceQuotientByDescriptorWord24(targetZone14);
+        short target2 = topOrder->ComputeOrderNodeDistanceQuotientByDescriptorWord24(targetZone14);
         if (target1 < target2) {
           goto LAB_0053711a;
         }
       }
-      *selectedOrder = static_cast<TShip*>(topOrder);
+      *selectedOrder = topOrder;
       topOrder = nullptr;
     }
   }
 
 LAB_0053711a:
-  void* startOrder = *selectedOrder;
-  void* orders[2] = {startOrder, topOrder};
-
-  for (int i = 0; i < 2; ++i) {
-    void* orderObj = orders[i];
-    if (orderObj == nullptr)
-      continue;
-    if (i == 1 && orderObj == startOrder)
-      continue;
-
-    TMapOrderChildLinkNode* node = orderList24->FindNodeMatching(static_cast<TObject*>(orderObj));
+  TShip* startOrder = *selectedOrder;
+  for (TShip* order = startOrder; (order == startOrder || order == topOrder) && order != nullptr;
+       order += topOrder - startOrder) {
+    TMapOrderChildLinkNode* node = orderList24->FindNodeMatching(order);
     node->active = 1;
-    TTaskForce* entry = static_cast<TShip*>(orderObj)->GetOrCreateMissionOrderEntryForNode();
+    TTaskForce* entry = order->GetOrCreateMissionOrderEntryForNode();
 
-    if (static_cast<TShip*>(orderObj)->field08 == contextAnchor) {
+    if (order->field08 == contextAnchor) {
       entry->SetMapOrderType9AndQueue();
     } else {
       entry->PromoteMapOrderChainAndQueue(contextAnchor);
@@ -812,7 +815,40 @@ float TNavyMission::ComputeMissionQueuedOrderSimilarityForTargetNation(short dis
 
 // FUNCTION: IMPERIALISM 0x00537f40
 float TNavyMission::ReturnZeroFloatSlot68() {
-  return 0.0f;
+  float vector[4] = {0.0f, 0.0f, 0.0f, 0.0f};
+  for (TMapOrderChildLinkNode* node = orderList24; node != nullptr; node = node->next) {
+    TShip* ship = static_cast<TShip*>(node->payload);
+    short distance = 0;
+    if (GetActiveTargetZoneByState28() != nullptr) {
+      distance =
+          ship->ComputeOrderNodeDistanceQuotientByDescriptorWord24(GetActiveTargetZoneByState28());
+    }
+    if (distance > 5) {
+      distance = 5;
+    }
+    float scale =
+        g_MissionOrderDistanceDecayWeightTable_006978c8[distance] *
+        static_cast<float>(ship->stockLevel1c / ship->GetNavyOrderNormalizationBaseByNationType());
+    for (int categoryIndex = 0; categoryIndex < 4; ++categoryIndex) {
+      vector[categoryIndex] +=
+          static_cast<float>(
+              ship->ComputeNavyOrderPriorityContributionPercentByCategory(categoryIndex)) *
+          scale;
+    }
+  }
+
+  float numerator = 0.0f;
+  float denominator = 0.0f;
+  for (int scoreIndex = 0; scoreIndex < 4; ++scoreIndex) {
+    if (resourceWeights2c[scoreIndex] < vector[scoreIndex]) {
+      vector[scoreIndex] =
+          resourceWeights2c[scoreIndex] + (vector[scoreIndex] - resourceWeights2c[scoreIndex]) *
+                                              g_NavyMissionSimilarityExcessBlend_0065A960;
+    }
+    numerator += sqrtf(resourceWeights2c[scoreIndex] * vector[scoreIndex]);
+    denominator += resourceWeights2c[scoreIndex];
+  }
+  return numerator / denominator;
 }
 // Weights all 4 categories uniformly by (stockLevel1c/normalizationBase) * a
 // distance-decay factor (0.8^hopDistance, clamped to index 5) from a per-ship

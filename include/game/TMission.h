@@ -102,6 +102,8 @@ public:
     NoOpSlot80(unit, flag);
   }
 
+  void InitializeMissionWithNationIdAndResetPathMarker(short nationId);
+
   // Slots 0x27-0x2f are NULL in the base table (abstract: filled only by derived
   // classes). Not declared here — C++ pure virtuals would emit _purecall, not NULL,
   // and the next derived class (TNavyMission/TArmyMission) appends its own virtuals
