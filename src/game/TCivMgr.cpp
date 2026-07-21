@@ -36,11 +36,16 @@ static bool IsMappedShortcutKeyPressed(short keyCode) {
 
 IMPLEMENT_DYNCREATE(TCivMgr, TObject)
 
+// FUNCTION: IMPERIALISM 0x004d2050
 TCivMgr::TCivMgr() {}
 
 // SYNTHETIC: IMPERIALISM 0x004d2070
 // TCivMgr::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x004d20a0
 TCivMgr::~TCivMgr() {}
+
+// FUNCTION: IMPERIALISM 0x004d20c0
+void TCivMgr::ICivMgr() {}
 
 // FUNCTION: IMPERIALISM 0x004d2270
 void TCivMgr::DispatchSelectedUnitToGlobalMapStateHandler(TCivUnit* pUnitOrderEntry) {}
@@ -390,8 +395,8 @@ bool TCivMgr::QueueCivilianWorkOrderWithCostCheck(short nTileIndex) {
   this->RelinkCivilianOrderTileAndInvalidateMapTiles(nTileIndex,
                                                      g_pSelectedCivilianOrderState->selectedEntry);
 
-  static const short kOrderQueuedSfxByOrderType[9] = {0x232d, 0,      0x2332, 0x2331, 0,
-                                                       0x2333, 0,      0x2335, 0x2339};
+  static const short kOrderQueuedSfxByOrderType[9] = {0x232d, 0, 0x2332, 0x2331, 0,
+                                                      0x2333, 0, 0x2335, 0x2339};
   short sfxCode = kOrderQueuedSfxByOrderType[selectedEntry->orderType];
   if (sfxCode != 0) {
     g_pSfxPlaybackSystem->PlaySoundEffect(sfxCode, 0, 1);

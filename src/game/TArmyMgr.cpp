@@ -51,7 +51,11 @@ IMPLEMENT_DYNCREATE(TArmyMgr, TObject)
 // for HandleMapClickByComputedCursorState's use.
 static int __stdcall ComputeMapCursorStateIndex(short tileIndex, short mode);
 
-TArmyMgr::TArmyMgr() {}
+// FUNCTION: IMPERIALISM 0x004a1870
+TArmyMgr::TArmyMgr() {
+  pendingMapActionIndex = -1;
+  mapContextActionRecordList04 = 0;
+}
 
 // SYNTHETIC: IMPERIALISM 0x004a18a0
 // TArmyMgr::`scalar deleting destructor'
@@ -1351,14 +1355,14 @@ void TArmyMgr::CreateTacticalBattleViewAndInitializeBattleSetup(TArmyStack* ourS
 
 // FUNCTION: IMPERIALISM 0x004a5ca0
 void TArmyMgr::ApplyPostBattleStackOutcomeAndGrowUnitMeters(TArmyStack* ourStack,
-                                                            TArmyStack* enemyStack,
-                                                            int sideWonFlag, int battleSiteIndex) {
+                                                            TArmyStack* enemyStack, int sideWonFlag,
+                                                            int battleSiteIndex) {
   BuildArmyContextActionRecordsAndDispatchLabel(ourStack, enemyStack, sideWonFlag, battleSiteIndex,
                                                 1);
 
   if (sideWonFlag != 0) {
-    this->RedistributeUnitOrderQueueToRandomAdjacentRegion(
-        enemyStack, static_cast<short>(battleSiteIndex));
+    this->RedistributeUnitOrderQueueToRandomAdjacentRegion(enemyStack,
+                                                           static_cast<short>(battleSiteIndex));
 
     // Winning stack: settle every unit into its tile (raw head14/cursor18 walk -- no
     // calls emitted, matching TryCreateTacticalBattleViewForTileArmies's peaceful path).

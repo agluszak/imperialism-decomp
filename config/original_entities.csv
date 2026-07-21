@@ -1465,7 +1465,7 @@ address|name|symbol|size|type|prototype|provenance
 4a1640|TArmyMgr::CreateTArmyMgrInstance||354|function|undefined CreateTArmyMgrInstance()|
 4a1810|TArmyMgr::CreateObject|?CreateObject@TArmyMgr@@SGPAVCObject@@XZ|43|function|undefined CreateObject()|rtti
 4a1850|TArmyMgr::GetRuntimeClass||6|function|undefined GetTArmyMgrClassNamePointer()|rtti
-4a1870|ConstructMapContextActionManager||25|function|void __thiscall ConstructMapContextActionManager(void)|
+4a1870|TArmyMgr::TArmyMgr|??0TArmyMgr@@QAE@XZ|25|function|TArmyMgr* __thiscall TArmyMgr(void)|
 4a18a0|TArmyMgr::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4a18d0|DestructTArmyMgrAndMaybeFree_Impl||7|function|undefined DestructTArmyMgrAndMaybeFree_Impl()|
 4a18f0|TArmyMgr::InitializeMapContextActionManager||208|function|void __thiscall InitializeMapContextActionManager(void)|
@@ -2219,10 +2219,10 @@ address|name|symbol|size|type|prototype|provenance
 4d1fb0|WrapperFor_ftol_At004d1fb0||30|function|undefined WrapperFor_ftol_At004d1fb0()|
 4d2000|TCivMgr::CreateObject|?CreateObject@TCivMgr@@SGPAVCObject@@XZ|24|function|undefined CreateObject()|rtti
 4d2030|TCivMgr::GetRuntimeClass||6|function|undefined GetTCivMgrClassNamePointer()|rtti
-4d2050|CivilianMapInteractionManager::InitializeCivilianMapInteractionManagerVtable||9|function|undefined InitializeCivilianMapInteractionManagerVtable()|
+4d2050|TCivMgr::TCivMgr|??0TCivMgr@@QAE@XZ|9|function|TCivMgr* __thiscall TCivMgr(void)|
 4d2070|TCivMgr::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
-4d20a0|InitializeCivilianMapInteractionManagerBaseVtable||7|function|undefined InitializeCivilianMapInteractionManagerBaseVtable()|
-4d20c0|NoOpCivilianMapInteractionManagerVirtualHook||1|function|undefined NoOpCivilianMapInteractionManagerVirtualHook()|
+4d20a0|TCivMgr::~TCivMgr|??1TCivMgr@@UAE@XZ|7|function|void __thiscall ~TCivMgr(void)|
+4d20c0|TCivMgr::ICivMgr||1|function|void __thiscall ICivMgr(void)|
 4d20e0|ClearCivilianSelectionHighlightsForNation||92|function|undefined ClearCivilianSelectionHighlightsForNation()|
 4d2160|SelectFirstAvailableCivilianForNation||207|function|void * __thiscall SelectFirstAvailableCivilianForNation(short nNationId)|
 4d2270|TCivMgr::DispatchSelectedUnitToGlobalMapStateHandler||170|function|void __thiscall DispatchSelectedUnitToGlobalMapStateHandler(int * pUnitOrderEntry)|
@@ -2697,7 +2697,7 @@ address|name|symbol|size|type|prototype|provenance
 4ee5e0|TSortedByRelationshipList::Compare||65|function|undefined CreateTDiplomacyMgrInstance()|
 4ee650|TDiplomacyMgr::CreateObject|?CreateObject@TDiplomacyMgr@@SGPAVCObject@@XZ|57|function|undefined CreateObject()|rtti
 4ee6a0|TDiplomacyMgr::GetRuntimeClass||6|function|undefined GetTDiplomacyMgrClassNamePointer()|rtti
-4ee6c0|ConstructDiplomacyTurnStateManager_Vtbl00654d90||39|function|undefined ConstructDiplomacyTurnStateManager_Vtbl00654d90()|
+4ee6c0|TDiplomacyMgr::TDiplomacyMgr|??0TDiplomacyMgr@@QAE@XZ|39|function|TDiplomacyMgr* __thiscall TDiplomacyMgr(void)|
 4ee700|TDiplomacyMgr::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4ee730|WrapperFor_FreeHeapBufferIfNotNull_At004ee730||73|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At004ee730()|
 4ee7a0|TDiplomacyMgr::InitializeTDiplomacyTurnStateManagerDefaults||220|function|undefined InitializeDiplomacyTurnStateManagerDefaults()|
@@ -4186,10 +4186,10 @@ address|name|symbol|size|type|prototype|provenance
 5564f0|ClearNavyOrderMapMarker||35|function|undefined ClearNavyOrderMapMarker()|
 556530|TNavyMgr::CreateObject|?CreateObject@TNavyMgr@@SGPAVCObject@@XZ|38|function|undefined CreateObject()|rtti
 556570|TNavyMgr::GetRuntimeClass||6|function|undefined GetTNavyMgrClassNamePointer()|rtti
-556590|ConstructNavyManager||23|function|undefined ConstructNavyManager()|
+556590|TNavyMgr::TNavyMgr|??0TNavyMgr@@QAE@XZ|23|function|TNavyMgr* __thiscall TNavyMgr(void)|
 5565c0|TNavyMgr::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 5565f0|ResetNavyManagerVtable||7|function|undefined ResetNavyManagerVtable()|
-556610|InitializeNavyOrderPriorityTables||308|function|undefined InitializeNavyOrderPriorityTables()|
+556610|TNavyMgr::INavyMgr||308|function|void __thiscall INavyMgr(void)|
 5567a0|TNavyMgr::Free||92|function|undefined ClearNavyOrderLists()|
 556820|DestroyNavyOrderAndChildren||24|function|undefined DestroyNavyOrderAndChildren()|
 556850|ResetNavyOrderListsAndManagerOwner||77|function|undefined ResetNavyOrderListsAndManagerOwner()|
@@ -5616,7 +5616,7 @@ address|name|symbol|size|type|prototype|provenance
 5aef00|WrapperFor_ftol_At005aef00||30|function|undefined WrapperFor_ftol_At005aef00()|
 5aef30|TTechMgr::CreateObject|?CreateObject@TTechMgr@@SGPAVCObject@@XZ|27|function|undefined CreateObject()|rtti
 5aef60|TTechMgr::GetRuntimeClass||6|function|undefined GetTTechMgrClassNamePointer()|rtti
-5aef80|ConstructCityOrderCapabilityStateVtable||9|function|undefined ConstructCityOrderCapabilityStateVtable()|
+5aef80|TTechMgr::TTechMgr|??0TTechMgr@@QAE@XZ|9|function|TTechMgr* __thiscall TTechMgr(void)|
 5aefa0|TTechMgr::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 5aefd0|DestructTTechMgrAndMaybeFree_Impl||7|function|undefined DestructTTechMgrAndMaybeFree_Impl()|
 5aeff0|InitializeCityOrderCapabilityStateDefaults||651|function|undefined InitializeCityOrderCapabilityStateDefaults()|
@@ -5775,7 +5775,7 @@ address|name|symbol|size|type|prototype|provenance
 5b79a0|WrapperFor_ftol_At005b79a0||30|function|undefined WrapperFor_ftol_At005b79a0()|
 5b79d0|TTradeMgr::CreateObject|?CreateObject@TTradeMgr@@SGPAVCObject@@XZ|27|function|undefined CreateObject()|rtti
 5b7a00|TTradeMgr::GetRuntimeClass|?GetRuntimeClass@TTradeMgr@@UBEPAUCRuntimeClass@@XZ|6|function|undefined __thiscall GetRuntimeClass(void)|rtti
-5b7a20|ConstructNationInteractionStateManager_Vtbl0066d990||9|function|undefined ConstructNationInteractionStateManager_Vtbl0066d990()|
+5b7a20|TTradeMgr::TTradeMgr|??0TTradeMgr@@QAE@XZ|9|function|TTradeMgr* __thiscall TTradeMgr(void)|
 5b7a40|TTradeMgr::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 5b7a70|TTradeMgr::DestructTTradeMgrAndMaybeFree_Impl||7|function|undefined DestructTTradeMgrAndMaybeFree_Impl()|
 5b7a90|TDealList::InitializeNationInteractionStateManagerDefaults||234|function|undefined InitializeNationInteractionStateManagerDefaults()|

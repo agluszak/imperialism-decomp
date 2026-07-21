@@ -155,7 +155,7 @@ public:
   short proposalArrayMode18d8;
   unsigned char pad18da[2];
 
-  TDiplomacyMgr* ConstructTDiplomacyTurnStateManager_Vtbl00654d90();
+  TDiplomacyMgr();
   void InitializeTDiplomacyTurnStateManagerDefaults();
   void RebuildCivilianOrderCompatibilityMatrices();
   void QueueNationPairWarTransition(int sourceNationSlot, int targetNationSlot);
@@ -178,8 +178,6 @@ public:
   // requesting nation's ReturnFalseNationStateCapabilityFlag90 capability check), and
   // finally notifies every eligible major power via ResetDiplomacyLevelForNationSlot12.
   void RebuildMinorNationDispositionLookupTables(int nationCode);
-
-  TDiplomacyMgr();
 };
 
 #include "game/global_data_tables.h"

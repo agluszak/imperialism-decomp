@@ -73,7 +73,9 @@ public:
   // StartNewsPhase); drives the least-recently-used filler-story pick.
   short* perNationStoryLastUsedTick[7]; // +0xef4
 
-  TNewsMgr();
+  // The Windows build inlines this trivial constructor at allocation sites.
+  // NOOP: verified empty at original inlined allocation site 0x0057c58f (vptr store only).
+  TNewsMgr() {}
 
   // Mac-style second-phase init (Mac: INewsMgr): creates the buckets/queue and nulls
   // the tick arrays. 0x55b710.
