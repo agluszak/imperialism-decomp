@@ -5,6 +5,8 @@
 #include "game/TWorldView.h"
 #include "game/mfc.h"
 
+class TZone;
+
 // VTABLE: IMPERIALISM 0x0065d020
 class TOceanDialog : public TWorldView {
 public:
@@ -43,7 +45,10 @@ public:
   // 0x00565fc0 -- Mac CodeWarrior identity: TOceanDialog::InvalidateTile(short).
   // Invalidates the tile's 16x16 cell in the wrapped ocean viewport.
   void InvalidateTile(short tileIndex);
-  void ComputeTileClassBoundsInViewport(int* outRect, int entry); // 0x566060
+  // Mac oracle: InvalidateZone / BoundingRect. BoundingRect's CRect return is the
+  // hidden output pointer seen as the first stack argument in the Windows listing.
+  void InvalidateZone(TZone* zone); // 0x565f80
+  CRect BoundingRect(TZone* zone);  // 0x566060
 
   // Nudges scrollRowOffset7c/scrollColOffset7e by +-4 per set bit in directionFlags
   // (bit0/1 adjust the row offset, bit2/3 the column offset), forwards the new (col, row)

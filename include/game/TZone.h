@@ -12,6 +12,7 @@ struct CRuntimeClass;
 class TStream;
 class TZone;
 class TTaskForce;
+class TAdmiral;
 struct TZonePrimaryNeighborTag;
 struct TZoneSecondaryNeighborTag;
 
@@ -193,6 +194,11 @@ public:
   // ship with field08 == this, matching owner, field0c == 0 (and field34 == 0 unless
   // skipField34Check). Ghidra's TCivToolbar attribution is junk.
   char CanDisplayMapOrderEntryInCurrentContext(short nation, char skipField34Check);
+  // Naval-intelligence helpers used by TMapUberPicture::NavalIntelligenceDialog.
+  // They fold the primary ship list for this zone/nation using the same preference
+  // rule as the order UI, then expose its reporting admiral/source label.
+  TAdmiral* FindReportingAdmiralForNation(short nation);
+  void BuildNavalIntelligenceSourceDescription(CString* out, short nation);
   void InvokeObjectVtableMethod24();
   void* HandleTurnEventVtableSlot24CopyPayloadBuffer();
   // 0x0055f140 — average node value of this context. Port zones (QueryPortZone-
@@ -209,7 +215,7 @@ public:
   char pad06[2];                                // +0x06
   CString displayName;                          // +0x08
   int tileOrTerrainId0c;                        // +0x0c tile / terrain id storage
-  unsigned short nationKeyMask10;                // +0x10 (key mask in nation context slices)
+  unsigned short nationKeyMask10;               // +0x10 (key mask in nation context slices)
   short seedNationId12;                         // +0x12 seed nation id arg
   short contextOrdinal14;                       // +0x14 context ordinal
   char pad16[2];                                // +0x16
@@ -221,7 +227,7 @@ public:
   TZoneSecondaryNeighborStretch secondaryNeighbors; // +0x34
   // distanceLevel44: BFS "hops" distance written by
   // PropagateMapActionContextDistanceLevelsRecursive; 0x29a is the "unreached" sentinel.
-  short distanceLevel44;                             // +0x44
+  short distanceLevel44; // +0x44
 
   TZone();
   void SetMapActionContextTargetTileAndRefreshMarkers(int nationSeedId, int tileIndex);
