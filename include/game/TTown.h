@@ -5,7 +5,7 @@
 
 struct CRuntimeClass;
 
-// Town/region marker record (0x50 bytes) kept on TGreatPower::townMarkerList.
+// Town marker record (0x50 bytes) kept on TGreatPower::townMarkerList.
 // VTABLE: IMPERIALISM 0x0066d7c8
 class TTown : public TObject {
 public:
@@ -21,7 +21,7 @@ public:
   virtual void SetName(const char* townName); // slot 0x0e 0x5b77e0
 
   char name[0x10];                 // 0x04 — strcpy'd marker name
-  short regionId14;                // 0x14
+  short tileIndex14;               // 0x14
   unsigned char flags16[4];        // 0x16..0x19 — cleared on init
   short createdTurnTick1a;         // 0x1a — localization tick at creation
   short ownerNation1c;             // 0x1c
@@ -32,7 +32,7 @@ public:
   bool activeFlag4f;               // 0x4f
 
   TTown();
-  void InitializeTownMarker(const char* markerName, short regionId, char enabledFlag,
+  void InitializeTownMarker(const char* markerName, short tileIndex, char enabledFlag,
                             short ownerNation);
   int IsUnblockedPort(void) const; // 0x5b7830: Mac name; full-EAX 0/1 return
 

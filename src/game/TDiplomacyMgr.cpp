@@ -970,7 +970,7 @@ void TDiplomacyMgr::RebuildDiplomacyStandingAndInfluenceMatrices(char forceOrMod
            secondPower) /
           2;
     } else {
-      short homeTile = static_cast<short>(descriptor->homeRegionIndex);
+      short homeTile = static_cast<short>(descriptor->homeTileIndex);
       int ownerNation = g_pGlobalMapState->terrainStateTable[homeTile].ownerNationTag04;
       topSideScore[nationSlot] = (ownerNation == topNationSlot) ? 1 : rand() % 50 + 50;
       secondSideScore[nationSlot] = (ownerNation == secondNationSlot) ? 1 : rand() % 50 + 50;

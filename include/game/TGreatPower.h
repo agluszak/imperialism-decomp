@@ -91,10 +91,10 @@ public:
   // index 0x32 / vtable+0x0c8. Per-nation pending-action state machine that
   // constructs queued land/navy/civ order objects (body 0x004dab20).
   virtual void ExecuteNationPendingActionStateMachine(void);
-  // 0x4dfd30 — update the capital-city record: homeRegionTile != -1 restamps the city's
+  // 0x4dfd30 — update the capital-city record: homeTileIndex != -1 restamps the city's
   // tile ordinal, cityName != 0 reassigns its display name (renamed from the misleading
   // Ghidra 'RefreshNationCivilianWorkOrdersForTurn'; body walks this->city subobject).
-  void SetHomeCityTileAndDisplayName(short homeRegionTile, char* cityName);
+  void SetHomeCityTileAndDisplayName(short homeTileIndex, char* cityName);
   // slot 0x33 — body 0x004dae70: scans trackedObjectList for an order with
   // orderType == 7.
   virtual char HasTrackedOrderOfType7(void);

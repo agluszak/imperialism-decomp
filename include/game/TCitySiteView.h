@@ -8,7 +8,7 @@ class TTown;
 // VTABLE: IMPERIALISM 0x006591d0
 class TCitySiteView : public TMapDialog {
 public:
-  // HandleMapClickByInteractionMode writes the selected region id at TTown::regionId14,
+  // HandleMapClickByInteractionMode writes the selected region id at TTown::tileIndex14,
   // names the marker, and submits it through UiRuntimeContext.
   TTown* pendingTown364;
   // Viewport clamp box consumed by SetMapDialogCellCoordinatesAndRefresh (0x51c320).

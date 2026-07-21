@@ -136,8 +136,8 @@ public:
   float ComputeAiCityActionCostFromSlotAndMode(short actionSlot, char skipContextBias);
   float GetCachedAiCityActionContextBias(short selector);
 
-  void QueueMapActionMissionFromCandidateAndMarkState(eMissionType arg1, int arg2,
-                                                      TZone* portZoneContext, int arg4);
+  void QueueMapActionMissionFromCandidateAndMarkState(eMissionType missionType, int mapNodeIndex,
+                                                      TZone* zoneContext, int relatedMapNodeIndex);
   // For every unassigned (ownerMission40 == nullptr) non-naval (GetUnitMovementClassId()
   // == 0) unit in militaryUnitList44, finds the queued mission (kind 3, keyed by the
   // unit's own tileIndex06) in missionQueue and adopts the unit into it. 0x4eafa0.

@@ -89,8 +89,8 @@ struct TrackedSlotEntryPacket {
 // not automatically a correctness bug, unless it breaks a proven-stable core contract.
 #define TG_LAYOUT_ASSERT(name, expr) typedef char name[(expr) ? 1 : -1]
 TG_LAYOUT_ASSERT(TGreatPower_Offset_nationSlot_0x0C, offsetof(TGreatPower, nationSlot) == 0x0C);
-TG_LAYOUT_ASSERT(TGreatPower_Offset_homeRegionIndex_0x88,
-                 offsetof(TGreatPower, homeRegionIndex) == 0x88);
+TG_LAYOUT_ASSERT(TGreatPower_Offset_homeTileIndex_0x88,
+                 offsetof(TGreatPower, homeTileIndex) == 0x88);
 TG_LAYOUT_ASSERT(TGreatPower_Offset_ownedRegionList_0x90,
                  offsetof(TGreatPower, ownedRegionList) == 0x90);
 TG_LAYOUT_ASSERT(TGreatPower_Offset_diplomacyPolicyByNation_0xB2,
@@ -184,7 +184,7 @@ TGreatPower::TGreatPower()
   this->treasuryValue10 = 0;
   this->field42 = 0;
   this->militaryUnitList44 = 0;
-  this->homeRegionIndex = 0;
+  this->homeTileIndex = 0;
   this->ownedRegionList = 0;
 
   int localeIndex = 0;
@@ -1138,17 +1138,16 @@ void TGreatPower::BuildTransportLinkedInfluenceMap(char** outInfluenceMap) {
 
   CIterator markerCursor(this->townMarkerList);
   TTown* marker = static_cast<TTown*>(markerCursor.Reset());
-  while (markerCursor.More() != 0 &&
-         static_cast<int>(marker->regionId14) != this->homeRegionIndex) {
+  while (markerCursor.More() != 0 && static_cast<int>(marker->tileIndex14) != this->homeTileIndex) {
     marker = static_cast<TTown*>(markerCursor.Advance());
   }
   int homeLinked = marker->IsUnblockedPort();
   if (homeLinked == 0) {
     this->MarkConnectedOwnedRegionsFrom(reinterpret_cast<unsigned char*>(influenceMap),
-                                        marker->regionId14);
+                                        marker->tileIndex14);
     marker = static_cast<TTown*>(markerCursor.Reset());
     while (markerCursor.More() != 0 && homeLinked == 0) {
-      if (influenceMap[marker->regionId14] != 0 && marker->IsUnblockedPort() != 0) {
+      if (influenceMap[marker->tileIndex14] != 0 && marker->IsUnblockedPort() != 0) {
         homeLinked = 1;
       }
       marker = static_cast<TTown*>(markerCursor.Advance());
@@ -1157,15 +1156,15 @@ void TGreatPower::BuildTransportLinkedInfluenceMap(char** outInfluenceMap) {
   marker = static_cast<TTown*>(markerCursor.Reset());
   while (markerCursor.More() != 0) {
     if (marker->IsUnblockedPort() != 0 && homeLinked != 0 && marker->activeFlag4f != 0 &&
-        influenceMap[marker->regionId14] == 0) {
+        influenceMap[marker->tileIndex14] == 0) {
       this->MarkConnectedOwnedRegionsFrom(reinterpret_cast<unsigned char*>(influenceMap),
-                                          marker->regionId14);
+                                          marker->tileIndex14);
     }
     marker = static_cast<TTown*>(markerCursor.Advance());
   }
   marker = static_cast<TTown*>(markerCursor.Reset());
   while (markerCursor.More() != 0) {
-    if ((influenceMap[marker->regionId14] == 0 || marker->activeFlag4f == 0) &&
+    if ((influenceMap[marker->tileIndex14] == 0 || marker->activeFlag4f == 0) &&
         (marker->IsUnblockedPort() == 0 || homeLinked == 0)) {
       marker->transportLinkedFlag4c = 0;
     } else {
@@ -1177,7 +1176,7 @@ void TGreatPower::BuildTransportLinkedInfluenceMap(char** outInfluenceMap) {
     marker = static_cast<TTown*>(markerCursor.Reset());
     while (markerCursor.More() != 0) {
       if (marker->IsUnblockedPort() != 0 && homeLinked != 0) {
-        influenceMap[marker->regionId14] = 1;
+        influenceMap[marker->tileIndex14] = 1;
       }
       marker = static_cast<TTown*>(markerCursor.Advance());
     }
@@ -1226,10 +1225,10 @@ char* TGreatPower::BuildCityInfluenceLevelMap() {
        town = static_cast<TTown*>(townIter.Advance())) {
     if (town != nullptr && town->transportLinkedFlag4c != 0) {
       char influence = static_cast<char>((town->enabledFlag4d != 0) + 1);
-      influenceByTile[town->regionId14] = influence;
+      influenceByTile[town->tileIndex14] = influence;
 
       short neighbors[6];
-      TMapMgr::ComputeHexNeighborTileIndices(town->regionId14, neighbors,
+      TMapMgr::ComputeHexNeighborTileIndices(town->tileIndex14, neighbors,
                                              g_pGlobalMapState->hexNeighborWrapHorizontally20);
       for (int direction = 0; direction < 6; ++direction) {
         short neighbor = neighbors[direction];
@@ -1335,8 +1334,8 @@ void TGreatPower::AdvanceOwnedRegionDevelopmentCountersAndHandleEvents(void) {
       TGlobalMapCityScoreRecord* cityTable = globalMapState->cityScoreTable;
       TTerrainStateRecordView* terrainTable = globalMapState->terrainStateTable;
       TGlobalMapCityScoreRecord* cityRecord = cityTable + regionId;
-      short homeRegionId = static_cast<short>(this->homeRegionIndex);
-      if (cityRecord->cityTileIndex04 != homeRegionId) {
+      short homeTileIndex = static_cast<short>(this->homeTileIndex);
+      if (cityRecord->cityTileIndex04 != homeTileIndex) {
         unsigned int turnDelta =
             static_cast<unsigned int>(static_cast<int>(localizationRuntime->GetEconomicTurn()) -
                                       static_cast<int>(cityRecord->lastTurnTick));
@@ -1636,7 +1635,7 @@ char TGreatPower::BuildGreatPowerEligibleNationEventMessagesFromLinkedList(
         anyMessage = 1;
         CString townName;
         g_pGlobalMapState->AssignCityRecordDisplayName(
-            g_pGlobalMapState->terrainStateTable[town->regionId14].cityRecordIndex, &townName);
+            g_pGlobalMapState->terrainStateTable[town->tileIndex14].cityRecordIndex, &townName);
         *outMessageText += "\n     " + townName;
       }
       town = static_cast<TTown*>(cursor.Advance());
@@ -3277,19 +3276,19 @@ void TGreatPower::CreateFrogCityTownMarkerAndAttach(void* receiver) {
 // FUNCTION: IMPERIALISM 0x004dfae0
 void TGreatPower::CreateFrogCityAtHomeRegionAndAttach(void* receiver) {
   TSimMgr* localization = g_pSimMgr;
-  int homeRegionIndex = -1;
+  int homeTileIndex = -1;
   if (localization->scenarioMapIndexPlusOne == 0) {
-    homeRegionIndex = this->interiorMinister->GetHomeCityRecordIndexSlotC0();
+    homeTileIndex = this->interiorMinister->SelectBestSecondaryHomeTileByFrogCityScore();
   } else {
     TTerrainStateRecordView* terrainTable = g_pGlobalMapState->terrainStateTable;
-    for (int regionId = 0; regionId < 0x1950; ++regionId) {
-      if (static_cast<short>(terrainTable[static_cast<short>(regionId)].ownerNationTag04) ==
+    for (int tileIndex = 0; tileIndex < 0x1950; ++tileIndex) {
+      if (static_cast<short>(terrainTable[static_cast<short>(tileIndex)].ownerNationTag04) ==
               this->nationSlot &&
-          (terrainTable[static_cast<short>(regionId)].activeFlags1c & 1) != 0) {
-        homeRegionIndex = regionId;
+          (terrainTable[static_cast<short>(tileIndex)].activeFlags1c & 1) != 0) {
+        homeTileIndex = tileIndex;
       }
     }
-    if (static_cast<short>(homeRegionIndex) == -1) {
+    if (static_cast<short>(homeTileIndex) == -1) {
       CString message;
       {
         CString prefix("GP#");
@@ -3300,25 +3299,26 @@ void TGreatPower::CreateFrogCityAtHomeRegionAndAttach(void* receiver) {
       g_pUiRuntimeContext->ModalMessage(message, g_ptGreatPowerModalMessage);
     }
   }
-  this->homeRegionIndex = static_cast<short>(homeRegionIndex);
+  this->homeTileIndex = static_cast<short>(homeTileIndex);
   TTown* marker = new TTown();
-  marker->InitializeTownMarker("FrogCity", homeRegionIndex, 1, this->nationSlot);
+  marker->InitializeTownMarker("FrogCity", homeTileIndex, 1, this->nationSlot);
   static_cast<TCity*>(receiver)->SetSelectedTownMarker(marker);
   marker->activeFlag4f = 1;
   this->townMarkerList->AddTail(marker);
-  g_pGlobalMapState->LinkRegionToNationSlot134(marker->regionId14, this->nationSlot);
+  g_pGlobalMapState->SetTileTransportFlagsTo0x37AndRefreshNeighbors(marker->tileIndex14,
+                                                                    this->nationSlot);
   if (this->diplomacyEligibilityA0 == 0 && this->interiorMinister != 0) {
     this->interiorMinister->NoOpForeignMinisterUtilityStub(receiver);
   }
 }
 
 // FUNCTION: IMPERIALISM 0x004dfd30
-void TGreatPower::SetHomeCityTileAndDisplayName(short homeRegionTile, char* cityName) {
+void TGreatPower::SetHomeCityTileAndDisplayName(short homeTileIndex, char* cityName) {
   TCity* city = this ? this->city : 0;
   void* selectedOrder = city->selectedOrderB0;
 
-  if (homeRegionTile != -1) {
-    *(short*)((char*)selectedOrder + 0x14) = homeRegionTile;
+  if (homeTileIndex != -1) {
+    *(short*)((char*)selectedOrder + 0x14) = homeTileIndex;
   }
 
   short regionIndex;
@@ -3327,7 +3327,7 @@ void TGreatPower::SetHomeCityTileAndDisplayName(short homeRegionTile, char* city
   } else {
     regionIndex = 1;
   }
-  this->homeRegionIndex = regionIndex;
+  this->homeTileIndex = regionIndex;
 
   if (cityName) {
     CString nameStr(cityName);
@@ -3344,12 +3344,12 @@ void TGreatPower::SetHomeCityTileAndDisplayName(short homeRegionTile, char* city
 
   if (g_pSimMgr->scenarioMapIndexPlusOne == 0) {
     short result1 =
-        g_pGlobalMapState->FindReachableRecruitSpawnTileWithVisitedReset(this->homeRegionIndex, 0);
+        g_pGlobalMapState->FindReachableRecruitSpawnTileWithVisitedReset(this->homeTileIndex, 0);
     TCivUnit* civ1 = new TCivUnit();
     civ1->InitializeCivWorkOrderState(1, result1, this->nationSlot);
 
     short result2 =
-        g_pGlobalMapState->FindReachableRecruitSpawnTileWithVisitedReset(this->homeRegionIndex, 1);
+        g_pGlobalMapState->FindReachableRecruitSpawnTileWithVisitedReset(this->homeTileIndex, 1);
     TCivUnit* civ2 = new TCivUnit();
     civ2->InitializeCivWorkOrderState(4, result2, this->nationSlot);
 
@@ -3358,18 +3358,18 @@ void TGreatPower::SetHomeCityTileAndDisplayName(short homeRegionTile, char* city
     if (g_pSimMgr->difficultyLevel == 0 && this->diplomacyEligibilityA0) {
       city->orderCountByType5c[1] += 6;
 
-      short result3 = g_pGlobalMapState->FindReachableRecruitSpawnTileWithVisitedReset(
-          this->homeRegionIndex, 0);
+      short result3 =
+          g_pGlobalMapState->FindReachableRecruitSpawnTileWithVisitedReset(this->homeTileIndex, 0);
       TCivUnit* civ3 = new TCivUnit();
       civ3->InitializeCivWorkOrderState(1, result3, this->nationSlot);
 
-      short result4 = g_pGlobalMapState->FindReachableRecruitSpawnTileWithVisitedReset(
-          this->homeRegionIndex, 0);
+      short result4 =
+          g_pGlobalMapState->FindReachableRecruitSpawnTileWithVisitedReset(this->homeTileIndex, 0);
       TCivUnit* civ4 = new TCivUnit();
       civ4->InitializeCivWorkOrderState(0, result4, this->nationSlot);
 
-      short result5 = g_pGlobalMapState->FindReachableRecruitSpawnTileWithVisitedReset(
-          this->homeRegionIndex, 0);
+      short result5 =
+          g_pGlobalMapState->FindReachableRecruitSpawnTileWithVisitedReset(this->homeTileIndex, 0);
       TCivUnit* civ5 = new TCivUnit();
       civ5->InitializeCivWorkOrderState(2, result5, this->nationSlot);
     }

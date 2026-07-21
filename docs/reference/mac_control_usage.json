@@ -157909,8 +157909,8 @@
             "status": "confirmed"
           }
         ],
-        "name": "TGreatPower::QueueMapActionMissionFromCandidateAndMarkState",
-        "owner_class": "TGreatPower",
+        "name": "TAutoGreatPower::QueueMapActionMissionFromCandidateAndMarkState",
+        "owner_class": "TAutoGreatPower",
         "recovered_source": "src/game/TAutoGreatPower.cpp"
       },
       "0x004ec540": {
@@ -159625,7 +159625,7 @@
       },
       "UCountryAuto.cpp": {
         "classes": [
-          "TGreatPower"
+          "TAutoGreatPower"
         ],
         "functions": [
           "0x004e8540"
