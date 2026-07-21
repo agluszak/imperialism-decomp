@@ -59,10 +59,11 @@ collisions explicit.
 ## Generate the Windows UI factories
 
 `config/ui_factory_codegen.yml` maps Windows factory addresses and event cases to
-resource-file-scoped `View` IDs. `config/ui_factory_windows.json` describes the
-Windows emission dialect and platform-specific overrides as structured data. Normal
-generation consumes only those two configs and the committed `ui_views.json`; it never
-reads either retail binary:
+resource-file-scoped `View` IDs. A genuinely Windows-only screen is represented as a
+semantic tree in `config/ui_factory_windows_views.yml`; that file records widget classes,
+hierarchy, geometry, state, typed family properties, and binary evidence, but never
+allocation shape, helper selection, variable names, or explicit stack pops. Normal
+generation consumes committed evidence only and never reads either retail binary:
 
 ```sh
 just ui-codegen-check
@@ -78,12 +79,15 @@ source model, symbol projection, stub suppression, CMake, and diff-aware agent c
 The former manually owned `src/game/turn_event_dialog_factory_*.cpp` files are therefore
 absent; their 17 addresses have exactly one generated owner.
 
-The manifest supports two direct resource emission shapes because the Windows binary
-used both expanded member calls and compact builder helpers. Six mature factories use
-the structured `resource_recipe` shape: Mac IR still owns their pane hierarchy, FourCCs,
-rectangles, state, picture/string IDs, number ranges, and control values, while the
-Windows recipe selects compact versus expanded calls, specialized Windows classes,
-stack-pop shape, and genuine platform overrides. There are no C++ body templates and no
-retail inputs in the normal generation path. The generated manifest hashes all three
-committed inputs, and `just ui-codegen-match-gate` protects pairing and the accepted
-similarity floor.
+The semantic Windows-tree emitter chooses one stable VC5-compatible source shape and
+derives variable names and hierarchy closure from the tree. Event `0x05e7` is the first
+screen using that path because no matching Mac `View` resource exists.
+
+The older resource paths remain transitional: the manifest still has direct compact and
+expanded emitters, and six factories still use `config/ui_factory_windows.json` to select
+per-node source choreography. Mac IR owns the semantics in those paths, but the Windows
+recipe still contains implementation detail that should disappear as factories migrate
+to the canonical semantic emitter. There are no C++ body templates or retail inputs in
+the normal generation path. The generated manifest hashes all committed inputs, and
+`just ui-codegen-match-gate` protects pairing and the accepted similarity floor while the
+migration proceeds.

@@ -181,7 +181,7 @@ address|matching|name
 0x44a770|1.0|TCivDescription::TCivDescription
 0x44a7a0|0.9090909090909091|TCivDescription::`scalar deleting destructor'
 0x44a810|0.5838084378563284|BuildTurnEventDialogResources_2508
-0x44af90|0.33117932148626816|InitializeJoinSelectorDialogControlsAndNationSlots
+0x44af90|0.4119435396308361|InitializeJoinSelectorDialogControlsAndNationSlots
 0x44fab0|0.9090909090909091|TJoinSelectorDialog::`scalar deleting destructor'
 0x44fae0|0.9090909090909091|TLoungeDialog::`scalar deleting destructor'
 0x44fb10|0.9090909090909091|TMultiMessagePicture::`scalar deleting destructor'

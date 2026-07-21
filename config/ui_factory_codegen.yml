@@ -112,7 +112,7 @@ functions:
       - {event: 0x05e3, resource: Multiplayer.rsrc:1507}
       - {event: 0x05e4, resource: Multiplayer.rsrc:1508}
       - {event: 0x05e6, resource: Multiplayer.rsrc:1510}
-      - {event: 0x05e7, windows_only: true, evidence: 0x0044e466}
+      - {event: 0x05e7, windows_view: join_selector_message}
 
   - address: 0x0044fbc0
     name: BuildUiResourceTreeByTemplateIdAndBindScreenContext

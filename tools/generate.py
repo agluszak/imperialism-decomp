@@ -28,6 +28,7 @@ from tools.ui_codegen import (
     load_recipes,
     load_ui_views,
     load_windows_recipes,
+    load_windows_views,
     validate as validate_ui_codegen,
 )
 from tools.ui_codegen import write_generated as write_generated_ui
@@ -70,8 +71,13 @@ def main() -> int:
     ui_recipes = load_recipes(repo_root)
     ui_views = load_ui_views(repo_root)
     ui_windows_recipes = load_windows_recipes(repo_root)
+    ui_windows_views = load_windows_views(repo_root)
     ui_errors = validate_ui_codegen(
-        repo_root, ui_recipes, ui_views, ui_windows_recipes
+        repo_root,
+        ui_recipes,
+        ui_views,
+        ui_windows_recipes,
+        ui_windows_views,
     )
     if ui_errors:
         print("generate FAILED: UI codegen validation:")
@@ -84,6 +90,7 @@ def main() -> int:
         ui_recipes,
         ui_views,
         ui_windows_recipes,
+        ui_windows_views,
         annotation_kind=args.annotation_kind,
     )
     print(f"Wrote {len(ui_manifest['files'])} resource-driven UI factory TUs")

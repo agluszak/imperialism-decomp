@@ -1,0 +1,181 @@
+format_version: 1
+
+# Semantic UI trees that genuinely have no Mac View resource counterpart.
+# These records describe visible/runtime behavior only. Allocation shape, helper
+# selection, variable names, and build-stack closure are generator decisions.
+views:
+  join_selector_message:
+    event: 0x05e7
+    evidence:
+      start: 0x0044e466
+      end: 0x0044eb27
+    defaults:
+      state: 1
+      enabled: 1
+      input_gate: 1
+      child_hit_test: 1
+      control_value: 0
+    nodes:
+      - id: window
+        type: fwnd
+        class: TFloatWindow
+        tag: WIND
+        parent:
+        geometry: [0x7d, 0xa9, 0x150, 0x7b]
+        evidence: 0x0044e466
+        family:
+          window:
+            flags: 0x80
+            style_type: 0x1f40
+            topmost: 1
+            resource_6f: 1
+            resource_6e: 1
+            captioned_frame: 0
+            resource_6c: 0
+            resource_71: 1
+            color:
+              behavior_flag: 1
+              triplet_flag: 0
+              foreground: 0x20202020
+              background: 0x20202020
+
+      - id: dialog
+        type: pict
+        class: TMultiMessagePicture
+        tag: DLOG
+        parent: window
+        geometry: [0, 0, 0x150, 0x7b]
+        state: 0
+        evidence: 0x0044e500
+        family:
+          frame_style: 0x0a
+          content_insets: [0, 0, 0, 0]
+          picture_id: 0x122a
+
+      - id: okay
+        type: pict
+        class: TUpDownPictureButton
+        tag: okay
+        parent: dialog
+        geometry: [0xf9, 0x59, 0x3d, 0x18]
+        evidence: 0x0044e57a
+        family:
+          frame_style: 0x22
+          content_insets: [0, 0, 0, 0]
+          picture_id: 0x24c2
+
+      - id: cancel
+        type: pict
+        class: TUpDownPictureButton
+        tag: cncl
+        parent: dialog
+        geometry: [0x1a, 0x5a, 0x3d, 0x18]
+        evidence: 0x0044e60b
+        family:
+          frame_style: 0x22
+          content_insets: [0, 0, 0, 0]
+          picture_id: 0x24c4
+
+      - id: message
+        type: edit
+        class: TEditText
+        tag: mesg
+        parent: dialog
+        geometry: [7, 8, 0x142, 0x32]
+        child_hit_test: 0
+        evidence: 0x0044e691
+        family:
+          frame_style: 6
+          content_insets: [3, 3, 3, 3]
+          style:
+            word: 0
+            packed_color: 0x7debe8
+          text:
+            resource_id: 0x05e5
+            resource_index: -1
+            source: g_szEmptyString
+          max_chars: 0xff
+
+      - id: nation_0
+        type: pict
+        class: TCzechBox
+        tag: box0
+        parent: dialog
+        geometry: [0x1d, 0x3e, 0x1d, 0x16]
+        evidence: 0x0044e750
+        family:
+          frame_style: 4
+          content_insets: [0, 0, 0, 0]
+          picture_id: 0x122b
+
+      - id: nation_1
+        type: pict
+        class: TCzechBox
+        tag: box1
+        parent: dialog
+        geometry: [0x46, 0x3e, 0x1d, 0x16]
+        evidence: 0x0044e7d7
+        family:
+          frame_style: 4
+          content_insets: [0, 0, 0, 0]
+          picture_id: 0x1230
+
+      - id: nation_2
+        type: pict
+        class: TCzechBox
+        tag: box2
+        parent: dialog
+        geometry: [0x6f, 0x3e, 0x1d, 0x16]
+        evidence: 0x0044e85e
+        family:
+          frame_style: 4
+          content_insets: [0, 0, 0, 0]
+          picture_id: 0x1235
+
+      - id: nation_3
+        type: pict
+        class: TCzechBox
+        tag: box3
+        parent: dialog
+        geometry: [0x98, 0x3e, 0x1d, 0x16]
+        evidence: 0x0044e8e5
+        family:
+          frame_style: 4
+          content_insets: [0, 0, 0, 0]
+          picture_id: 0x123a
+
+      - id: nation_4
+        type: pict
+        class: TCzechBox
+        tag: box4
+        parent: dialog
+        geometry: [0xc1, 0x3e, 0x1d, 0x16]
+        evidence: 0x0044e96f
+        family:
+          frame_style: 4
+          content_insets: [0, 0, 0, 0]
+          picture_id: 0x123f
+
+      - id: nation_5
+        type: pict
+        class: TCzechBox
+        tag: box5
+        parent: dialog
+        geometry: [0xea, 0x3e, 0x1d, 0x16]
+        evidence: 0x0044e9f9
+        family:
+          frame_style: 4
+          content_insets: [0, 0, 0, 0]
+          picture_id: 0x1244
+
+      - id: nation_6
+        type: pict
+        class: TCzechBox
+        tag: box6
+        parent: dialog
+        geometry: [0x113, 0x3e, 0x1d, 0x16]
+        evidence: 0x0044ea83
+        family:
+          frame_style: 4
+          content_insets: [0, 0, 0, 0]
+          picture_id: 0x1249

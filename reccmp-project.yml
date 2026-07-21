@@ -4,6 +4,7 @@ targets:
     source_root:
     - src
     - include
+    - build-msvc500/generated/ui
     - build-msvc500/generated/stubs
     hash:
       sha256: 6afab8495db715fd9e719cffa74abe5ede4dd763428ff65d73be4edf16c9e691

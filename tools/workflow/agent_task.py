@@ -60,6 +60,7 @@ UI_CODEGEN_INPUTS = frozenset(
     (
         "config/ui_factory_codegen.yml",
         "config/ui_factory_windows.json",
+        "config/ui_factory_windows_views.yml",
         "tools/ui_codegen.py",
         "tools/workflow/macos_resource_evidence.py",
         "vendor/macos_codewarrior/evidence/resources/ui_views.json",
