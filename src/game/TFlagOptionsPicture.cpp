@@ -43,7 +43,7 @@ void TFlagOptionsPicture::HandleEvent(int commandId, TEventHandler* sourceHandle
       if (g_pUiRuntimeContext->DispatchGameStateEventIfLocalizedPromptAccepted(tag)) {
         TWindow* owner = static_cast<TWindow*>(OwnerPanel());
         owner->NotifyDialogBehaviorCommandArmed(tag, 0);
-        if (g_pSimMgr->field44 == 1) {
+        if (g_pSimMgr->multiplayerSessionRole == 1) {
           int saveResult = 0;
           if (g_pGameFlowState->fieldF4 != 0) {
             saveResult = g_pGameFlowState->TrySaveGameAndMaybeShowFailureDialog(0xa1, nullptr, 0);
@@ -56,7 +56,7 @@ void TFlagOptionsPicture::HandleEvent(int commandId, TEventHandler* sourceHandle
         }
       }
     } else if (tag == kControlTagLoad) {
-      if (g_pSimMgr->field44 != 0) {
+      if (g_pSimMgr->multiplayerSessionRole != 0) {
         g_pUiRuntimeContext->ShowLocalizedUiPromptByGroupAndIndex(0x2737, 0x34, 0, 0);
       } else {
         TWindow* owner = static_cast<TWindow*>(OwnerPanel());
@@ -70,7 +70,7 @@ void TFlagOptionsPicture::HandleEvent(int commandId, TEventHandler* sourceHandle
     } else if (tag == kControlTagSave) {
       TWindow* owner = static_cast<TWindow*>(OwnerPanel());
       owner->NotifyDialogBehaviorCommandArmed(tag, 0);
-      if (g_pSimMgr->field44 == 2) {
+      if (g_pSimMgr->multiplayerSessionRole == 2) {
         g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&text, 0x2742, 0x13);
         g_pUiRuntimeContext->DispatchLocalizedUiMessageWithTemplateA13A0(
             text, &g_cstrQueryFloaterMessageStore, 0, 0);

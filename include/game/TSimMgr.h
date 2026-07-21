@@ -97,9 +97,10 @@ public:
   // clears its state/descriptor slots and the per-slot flag byte, decrements the active
   // count, then resets its diplomacy relation matrices via g_pDiplomacyTurnStateManager.
   void RemoveNationSlotAndNotifyPeers(short nationSlot);
-  // Store a state code into +0x40 and set the +0x5c short flag to 1 only when the
-  // code is exactly zero (codes 1..4 and out-of-range codes clear it). 0x57d870.
-  void SetStateCodeAndUpdateZeroOrOutOfRangeFlag(int stateCode);
+  // Mac symbol oracle: SetDifficultyLevel(eDifficulty). Store the selected difficulty
+  // into +0x40 and set the +0x5c short flag only for the zero-valued level; values 1..4
+  // and out-of-range values clear it. Windows 0x57d870.
+  void SetDifficultyLevel(int difficulty);
   void DecrementField30Value();
   void InitializeTurnFlowStateDefaults();
   void InitializeOrLoadEntryArray14AndClampLimits(bool writeBack);
@@ -172,28 +173,30 @@ public:
   int field30;
   int field34;
   // +0x38 — sign-extended char result of ShowTurnAlertsForActiveNation stored by
-  // AdvanceGlobalTurnStateMachine (0x57dcd5); serialized whole (4 bytes).
+  // AdvanceGlobalTurnStateMachine (0x57dcd5). The save stream deliberately skips
+  // this transient alert result.
   unsigned int alertsPendingFlag38;
   // +0x3c — session/turn-flow flag word: zeroed by the ctor, OR'd with 0x40 by
   // AdvanceGlobalTurnStateMachine, masked by Merge/TestTurnFlowStatusFlagMask
-  // (0x57f4b0/0x57f4d0 both use [ecx+0x3c]), and serialized as a byte. NOT the mode
-  // index below — reader code comparing to 0/1/2/4 wants redrawEnabled (+0x40).
+  // (0x57f4b0/0x57f4d0 both use [ecx+0x3c]), and serialized as a full dword.
   unsigned int turnFlowStatusFlags;
-  // +0x40 — mode/scenario/localization index (0/1/2/4); read all over TCountry/TGreatPower/
-  // TDiplomacyMgr/etc. (the "redrawEnabled" name is a misnomer kept for churn reasons).
-  int redrawEnabled;
-  // +0x44 — the multiplayer/session-mode dword: zeroed by the constructor (0x57bae7),
-  // compared against 1 and 2 all over TMultiplayerMgr/TMapMgr/TArmyMgr, and tested
-  // whole by ReinitializeGameFlowAndPostTurnEventCode (0x5818ad), which tears down and
-  // recreates g_pGameFlowState when it is nonzero. Nonzero writer not yet ported.
-  int field44;
+  // +0x40 — difficulty level (Mac eDifficulty; normally 0..4), consumed throughout
+  // TCountry/TGreatPower/TDiplomacyMgr balancing logic. Save streams encode it through
+  // the integer-byte slot.
+  int difficultyLevel;
+  // +0x44 — multiplayer role: 0 standalone, 1 host, 2 client. The setup UI writes
+  // these values directly, and TMultiplayerMgr/TMapMgr/TArmyMgr branch on the host/client
+  // distinction. ReinitializeGameFlowAndPostTurnEventCode recreates g_pGameFlowState
+  // whenever the role is nonzero.
+  int multiplayerSessionRole;
   // +0x48 — settings-preference slots. Ground truth: InitializeOrLoadEntryArray14AndClampLimits
   // (0x581412 `[this + i*2 + 0x48]`) anchors the array at +0x48, not +0x44 (the earlier
-  // +0x44 base — bd 1uj.4's -4 shift — folded field44 into the array and skewed every
-  // index by one slot). 14 shorts end at +0x63, so field_64 lands at its literal +0x64
-  // with no padding gap. Known slots: [2] clamped 0..100, [3] master volume 0..0xff
+  // +0x44 base — bd 1uj.4's -4 shift — folded multiplayerSessionRole into the array
+  // and skewed every index by one slot). 14 shorts end at +0x63, so field_64 lands at
+  // its literal +0x64 with no padding gap. Known slots: [2] clamped 0..100, [3] master
+  // volume 0..0xff
   // (TTwoPicSlider writes +0x4e), [8] = the +0x58 turn-gate flag, [10] = the +0x5c
-  // pending-event gate (SetStateCodeAndUpdateZeroOrOutOfRangeFlag writes +0x5c).
+  // difficulty-zero gate (SetDifficultyLevel writes +0x5c).
   short preferenceValues[14];
   int field_64;
   // +0x68 — nonzero: city/nation names come from the localized string table
@@ -235,8 +238,9 @@ void __cdecl DeleteFileWithErrorReporting(CString* path);
 
 // 0x581870 — the "Done/advance" turn-flow bootstrap primitive (free __cdecl, TSimMgr TU).
 // Optionally activates the pending help event (0x5dc), recreates g_pGameFlowState when a
-// game flow was active (field44), then either soft-resets the existing TSimMgr for the
-// scenario-setup path (eventCode 0x5dd: shared reset prefix, turnStateCode = 3) or
+// game flow was active (multiplayerSessionRole != 0), then either soft-resets the existing
+// TSimMgr for the scenario-setup path (eventCode 0x5dd: shared reset prefix,
+// turnStateCode = 3) or
 // replaces g_pSimMgr with a fresh TSimMgr and reinitializes its turn-flow defaults.
 // Posts eventCode to the main frame (message 0x2420) unless it is 0, and latches the
 // bootstrap-complete flag DAT_006a43c0 the turn state machine's case 1 keys off.

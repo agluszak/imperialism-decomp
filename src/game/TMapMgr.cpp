@@ -57,7 +57,7 @@ TMilitaryUnit* TMapMgr::ValidateGridIndexRange0To17F(short index) {
 // specific completion kind: 5=rail section, 6=depot, 7=port, 8=discovery/prospecting,
 // 10=development-tier advance, 12=city/building completion, 13=tile activity byte), then
 // dispatches redraw invalidation for the affected tiles/cities when the localized map UI
-// is active (g_pSimMgr->field44 != 0).
+// is active (g_pSimMgr->multiplayerSessionRole != 0).
 // FUNCTION: IMPERIALISM 0x004d4390
 void __cdecl ApplyCompletedCivWorkOrderToMapState(TCivUnit* order) {
   // Case bodies are written in the original's physical block layout (5, 8, 3, 1, 2, 0, 7 --
@@ -111,7 +111,7 @@ void __cdecl ApplyCompletedCivWorkOrderToMapState(TCivUnit* order) {
     break;
   }
 
-  if (g_pSimMgr->field44 == 0) {
+  if (g_pSimMgr->multiplayerSessionRole == 0) {
     return;
   }
 
@@ -1963,10 +1963,10 @@ void TMapMgr::DispatchFormationEntryActionsAndMaybeCreateTurnEvent12(short cityR
       static_cast<short>(newNationTag);
 
   bool isPrimary = g_pDiplomacyTurnStateManager->IsPrimaryNationSlotIndex(newNationTag) != 0;
-  if (isPrimary && g_pSimMgr->field44 != 2) {
+  if (isPrimary && g_pSimMgr->multiplayerSessionRole != 2) {
     g_apNationStates[newNationTag]->NotifyActionSlot94(oldNationCode, 0x135);
   }
-  if (g_pSimMgr->field44 == 1) {
+  if (g_pSimMgr->multiplayerSessionRole == 1) {
     g_pGameFlowState->CreateAndSendTurnEvent12_TwoShorts(static_cast<short>(newNationTag),
                                                          static_cast<short>(newNationTag));
   }
@@ -2422,11 +2422,11 @@ void TMapMgr::FloodFillTileRegionMarker(short nTileIndex, short nOwnerNationId) 
         cityScoreTable[cityIdx].lastTurnTick = g_pSimMgr->GetTurnTickSlot3C();
         if (g_nSaveFormatVersion == -3) {
           skipRedraw = true;
-        } else if (g_pSimMgr->field44 == 1) {
+        } else if (g_pSimMgr->multiplayerSessionRole == 1) {
           g_pGameFlowState->DispatchCityRedrawInvalidateEvent(cityIdx);
         }
       }
-      if (!skipRedraw && g_nSaveFormatVersion != -3 && g_pSimMgr->field44 == 1) {
+      if (!skipRedraw && g_nSaveFormatVersion != -3 && g_pSimMgr->multiplayerSessionRole == 1) {
         DispatchTileRedrawInvalidateEvent(neighborTile);
       }
     }

@@ -86,9 +86,9 @@ void TArmyMgr::WriteTo(TStream* stream) {}
 
 // FUNCTION: IMPERIALISM 0x004a1e40
 undefined TArmyMgr::OrphanCallChain_C4_I26_004a1e40() {
-  // g_pSimMgr->field44 is the multiplayer-mode dword (compared against 1/2 throughout
+  // g_pSimMgr->multiplayerSessionRole is the multiplayer-mode dword (compared against 1/2 throughout
   // TMultiplayerMgr.cpp); == 2 selects the alternate branch here.
-  if (g_pSimMgr->field44 == 2) {
+  if (g_pSimMgr->multiplayerSessionRole == 2) {
     this->IterateLinkedListCursorAndClearPerTileByte0F();
     g_pSimMgr->PostMainWindowCommand100ForTurnFlow();
   } else {
@@ -1347,7 +1347,7 @@ void TArmyMgr::CreateTacticalBattleViewAndInitializeBattleSetup(TArmyStack* ourS
   this->enemyStackBattle3a0 = enemyStack;
   this->activeBattleView3a4 = newBattle;
 
-  if (g_pSimMgr->field44 == 1) {
+  if (g_pSimMgr->multiplayerSessionRole == 1) {
     g_pGameFlowState->NoOpCallbackRet4(newBattle);
   }
   newBattle->StartBattle();

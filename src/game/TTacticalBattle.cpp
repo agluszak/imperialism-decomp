@@ -612,7 +612,7 @@ void TTacticalBattle::AdvanceToNextTacticalUnitTurnStep() {
 // FUNCTION: IMPERIALISM 0x005a1010
 void TTacticalBattle::SetCurrentTacticalUnitSelection(TTacticalUnit* unit, char remoteFlag) {
   if (remoteFlag == 0) {
-    unsigned char multiplayerActive = g_pSimMgr->field44 != 0;
+    unsigned char multiplayerActive = g_pSimMgr->multiplayerSessionRole != 0;
     if (multiplayerActive != 0) {
       g_pGameFlowState->EmitTacticalCommandPacket(0x73656c65 /* 'sele' */, unit, 0, 0);
     }
@@ -666,8 +666,8 @@ void TTacticalBattle::ProcessTacticalUnitState1TurnStep(TTacticalUnit* unit) {
       }
       int distance = ComputeHexTileDistanceFromIndices(unit->tileIndex8, candidate->tileIndex8);
       if (distance < 3) {
-        nearbyThreshold =
-            static_cast<int>(candidate->GetBaseAttackPower() * candidate->strength4 + nearbyThreshold);
+        nearbyThreshold = static_cast<int>(candidate->GetBaseAttackPower() * candidate->strength4 +
+                                           nearbyThreshold);
       }
     }
 
@@ -889,7 +889,7 @@ int TTacticalBattle::BuildPathToTargetByDistanceField(int walkTileIndex, int pat
 void TTacticalBattle::MoveTacticalUnitBetweenTiles(TTacticalUnit* unit, int fromTileIndex,
                                                    int toTileIndex, char remoteFlag) {
   if (remoteFlag == 0) {
-    unsigned char multiplayerActive = g_pSimMgr->field44 != 0;
+    unsigned char multiplayerActive = g_pSimMgr->multiplayerSessionRole != 0;
     if (multiplayerActive != 0) {
       g_pGameFlowState->EmitTacticalCommandPacket(0x6d6f7665 /* 'move' */, unit, fromTileIndex,
                                                   toTileIndex);
@@ -1259,7 +1259,7 @@ void TTacticalBattle::ApplyTacticalActionEffectsAndMaybeRemoveUnit(TTacticalUnit
                                                                    int damageB, char effectCode2C,
                                                                    char remoteFlag) {
   if (remoteFlag == 0) {
-    unsigned char multiplayerActive = g_pSimMgr->field44 != 0;
+    unsigned char multiplayerActive = g_pSimMgr->multiplayerSessionRole != 0;
     if (multiplayerActive != 0) {
       g_pGameFlowState->EmitTacticalFireCommandPacket(0x66697265 /* 'fire' */, attackerUnit,
                                                       targetUnit, damageA, damageB, effectCode2C);
@@ -1590,7 +1590,7 @@ void TTacticalBattle::ClearTacticalTileStateRunByStride(int tileIndex) {
 void TTacticalBattle::ExecuteTacticalMineActionAndQueuePacket(TTacticalUnit* unit, int tileIndex) {
   int unitType = unit->unitTypeC;
   int amount = static_cast<int>(rand()) % 400 + unitType * 250 - 5600;
-  unsigned char multiplayerActive = g_pSimMgr->field44 != 0;
+  unsigned char multiplayerActive = g_pSimMgr->multiplayerSessionRole != 0;
   if (multiplayerActive != 0) {
     g_pGameFlowState->EmitTacticalCommandPacket(0x6d696e65 /* 'mine' */, 0, tileIndex, amount);
   }
@@ -1607,7 +1607,7 @@ void TTacticalBattle::ExecuteTacticalMineActionAndQueuePacket(TTacticalUnit* uni
 // FUNCTION: IMPERIALISM 0x005a35a0
 void TTacticalBattle::HandleTacticalCommandTag_mine(int tileIndex, int amount, char remoteFlag) {
   if (remoteFlag == 0) {
-    unsigned char multiplayerActive = g_pSimMgr->field44 != 0;
+    unsigned char multiplayerActive = g_pSimMgr->multiplayerSessionRole != 0;
     if (multiplayerActive != 0) {
       g_pGameFlowState->EmitTacticalCommandPacket(0x6d696e65 /* 'mine' */, 0, tileIndex, amount);
     }
@@ -1646,7 +1646,7 @@ void TTacticalBattle::HandleTacticalCommandTag_digg(TTacticalUnit* unit, int tar
                                                     char remoteFlag) {
   int neighborTiles[6];
   if (remoteFlag == 0) {
-    unsigned char multiplayerActive = g_pSimMgr->field44 != 0;
+    unsigned char multiplayerActive = g_pSimMgr->multiplayerSessionRole != 0;
     if (multiplayerActive != 0) {
       g_pGameFlowState->EmitTacticalCommandPacket(0x64696767 /* 'digg' */, unit, targetTileIndex,
                                                   0);
@@ -1714,7 +1714,7 @@ TTacticalBattle::ComputeRallyStrengthAndQueueTacticalRallyCommand(TTacticalUnit*
 void TTacticalBattle::HandleTacticalCommandTag_raly(TArmyTacUnit* unit, int newMorale, int newState,
                                                     char remoteFlag) {
   if (remoteFlag == 0) {
-    unsigned char multiplayerActive = g_pSimMgr->field44 != 0;
+    unsigned char multiplayerActive = g_pSimMgr->multiplayerSessionRole != 0;
     if (multiplayerActive != 0) {
       g_pGameFlowState->EmitTacticalCommandPacket(0x72616c79 /* 'raly' */, unit, newMorale,
                                                   newState);
@@ -2053,7 +2053,7 @@ void TTacticalBattle::HandleTacticalCommandTag_depl(TArmyTacUnit* unit, int tile
                                                     char remoteFlag) {
   int neighborTiles[6];
   if (remoteFlag == 0) {
-    unsigned char multiplayerActive = g_pSimMgr->field44 != 0;
+    unsigned char multiplayerActive = g_pSimMgr->multiplayerSessionRole != 0;
     if (multiplayerActive != 0) {
       g_pGameFlowState->EmitTacticalCommandPacket(0x6465706c /* 'depl' */, unit, tileIndex, 0);
     }

@@ -4436,8 +4436,8 @@ address|matching|name
 0x57bb50|0.9090909090909091|TSimMgr::`scalar deleting destructor'
 0x57bbf0|0.7368421052631579|TSimMgr::InitializeTurnFlowStateDefaults
 0x57bd20|1.0|TSimMgr::Free
-0x57bea0|0.7181628392484343|TSimMgr::ReadFrom
-0x57c230|0.8366533864541833|TSimMgr::WriteTo
+0x57bea0|0.9138276553106213|TSimMgr::ReadFrom
+0x57c230|0.875|TSimMgr::WriteTo
 0x57c390|1.0|TSimMgr::RebuildNationStateSlotsNoOp
 0x57c3b0|0.9873949579831933|TSimMgr::RebuildGlobalOrderManagersAndCapabilityState
 0x57c7c0|0.8744588744588745|TSimMgr::RebuildMapContextAndGlobalMapState
@@ -4446,7 +4446,7 @@ address|matching|name
 0x57cda0|0.532319391634981|TSimMgr::RebuildPrimaryNationStateForSlot
 0x57d520|0.797153024911032|TSimMgr::RebuildSecondaryNationStateForSlot
 0x57d830|1.0|TSimMgr::FormatSeasonName
-0x57d870|0.5517241379310345|TSimMgr::SetStateCodeAndUpdateZeroOrOutOfRangeFlag
+0x57d870|0.5517241379310345|TSimMgr::SetDifficultyLevel
 0x57d8b0|1.0|TSimMgr::GetTurnTickSlot3C
 0x57d8d0|1.0|TSimMgr::CopyScenarioNationSetupIntoFlowState
 0x57d950|1.0|TSimMgr::IncrementQuarterGateTick2C
