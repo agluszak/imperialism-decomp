@@ -94411,6 +94411,12 @@
       "to": "control_tag:0x73706563"
     },
     {
+      "from": "windows_function:0x005696f0",
+      "relation": "resolves_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x444f4f47"
+    },
+    {
       "from": "windows_function:0x0056c740",
       "relation": "resolves_control_tag",
       "status": "resolved",
@@ -185685,6 +185691,11 @@
       "kind": "windows_function",
       "source": "src/game/TNewspaperView.cpp"
     },
+    "windows_function:0x005696f0": {
+      "address": "0x005696f0",
+      "kind": "windows_function",
+      "source": "src/game/TNavyToolbarCluster.cpp"
+    },
     "windows_function:0x0056c740": {
       "address": "0x0056c740",
       "kind": "windows_function",
@@ -186002,9 +186013,9 @@
       "references_picture": 909,
       "references_string": 1441,
       "references_text_style": 58,
-      "resolves_control_tag": 235
+      "resolves_control_tag": 236
     },
-    "edges": 15761,
+    "edges": 15762,
     "mac_classes_without_windows_header": 18,
     "node_kinds": {
       "control_tag": 813,
@@ -186016,9 +186027,9 @@
       "view_node": 3263,
       "windows_event": 94,
       "windows_factory": 17,
-      "windows_function": 95
+      "windows_function": 96
     },
-    "nodes": 10999,
+    "nodes": 11000,
     "unreferenced_resources": {
       "pict": 1998,
       "str_entry": 3623,

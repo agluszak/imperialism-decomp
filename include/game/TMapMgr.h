@@ -148,7 +148,10 @@ struct TGlobalMapCityScoreRecord {
   unsigned char pad96[2];
   TMilitaryUnit* stationedUnitChain98; // 0x98
   int cityScoreValue;
-  unsigned char padA0;
+  // Transient navy-order reachability marker. Reset before refreshing the map-order
+  // panel, set for city records adjacent to the selected context, and consumed by
+  // TNavyMgr when deciding whether a province action can be offered.
+  unsigned char navyOrderReachableA0;
   // Per-nation-slot bitmask (bit N = nation slot N), tested by
   // TArmyMgr::ComputeCivilianMapCursorStateIndex to gate an enemy-city order when the
   // pending nation has previously been adjacent/hostile here. Exact set-site not yet

@@ -1,5 +1,6 @@
 #include "game/TNavyToolbarCluster.h"
 
+#include "game/CSubViewIterator.h"
 #include "game/TCluster.h"
 #include "game/TEventHandler.h"
 #include "game/TMapUberPicture.h"
@@ -83,5 +84,23 @@ int TNavyToolbarCluster::IsTradeControlAtMinimum() {
 
 // FUNCTION: IMPERIALISM 0x005696f0
 void TNavyToolbarCluster::SetSelectedChildTagAndRefresh(int childTag) {
-  (void)childTag;
+  CSubViewIterator iterator(this);
+  TView* selectedChild = 0;
+  TView* child = iterator.FirstSubView();
+  while (iterator.MoreSubViews()) {
+    if (child->controlTag == childTag) {
+      child->HandleEvent(0x1f, this, 0);
+      selectedChild = child;
+    } else {
+      child->HandleEvent(0x20, this, 0);
+    }
+    child = iterator.NextSubView();
+  }
+
+  selectedChildTag = childTag;
+  if (selectedChild != 0) {
+    TView* oceanDialog = OwnerPanel()->ResolveControlByTag(0x444f4f47); // 'DOOG'
+    oceanDialog->AssertValid();
+    oceanDialog->HandleEvent(0xc, selectedChild, 0);
+  }
 }

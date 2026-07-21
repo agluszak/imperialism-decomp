@@ -12,10 +12,12 @@
 #include "game/TAssetMgr.h"
 #include "game/TDisplayMgr.h"
 #include "game/TMultiplayerMgr.h"
+#include "game/TNavyToolbarCluster.h"
 #include "game/TOcean.h"
 #include "game/TOceanDialog.h"
 #include "game/TSimMgr.h"
 #include "game/TStaticText.h"
+#include "game/TShipFractionCluster.h"
 #include "game/TTaskForce.h"
 #include "game/TViewMgr.h"
 #include "game/TWindow.h"
@@ -259,39 +261,36 @@ void TMapUberPicture::AutoScrollByEdgeMask(short edgeMask) {
 // FUNCTION: IMPERIALISM 0x00597810
 void TMapUberPicture::RefreshMapOrderEntryPanel(TTaskForce* pMapOrderEntry) {
   this->SetMapInteractionMode(2);
-  // Ground truth also calls ResetMapActionContextActivityAndNationFlags() here and
-  // branches on its result; that helper's own role isn't recovered, so this always takes
-  // the path matching pMapOrderEntry's null-ness (its real gate).
-  //
-  // The per-slot dispatches below (GetMinActionThresholdFromEntryChildren,
-  // ExpandTaskForceTraversalDepthAndMarkDeferredNodes, CountTaskForceSelectedOrders-
-  // ByNationClass -- all thiscall on pMapOrderEntry/its command descriptor --, and
-  // SetAvailableAndSelectedShipCounts -- thiscall on the resolved
-  // TShipFractionCluster) still depends on TTaskForce fields and child methods not yet
-  // recovered beyond what TOcean.cpp established, so the chain is left as a documented
-  // gap rather than using fake calling conventions; the real control-resolution/
-  // AssertValid structure and quota-field reads are reproduced.
+  ResetMapActionContextActivityAndNationFlags();
+
   if (pMapOrderEntry == nullptr) {
     for (int i = 0; i < 4; ++i) {
-      TView* slider = this->ResolveControlByTag(0x636c7330 + i); // "0slc".."3slc"
-      slider->AssertValid();
+      TShipFractionCluster* shipClass =
+          static_cast<TShipFractionCluster*>(ResolveControlByTag(0x636c7330 + i)); // 'cls0'..'cls3'
+      shipClass->AssertValid();
+      shipClass->SetAvailableAndSelectedShipCounts(0, -1);
     }
     return;
   }
 
-  char* entry = reinterpret_cast<char*>(pMapOrderEntry);
-  TView* commandDescriptor = *reinterpret_cast<TView**>(entry + 0x18);
-  short commandCode = *reinterpret_cast<short*>(reinterpret_cast<char*>(commandDescriptor) + 0xc);
-  this->CenterOn(commandCode);
+  TZone* context = pMapOrderEntry->contextAnchor;
+  context->ExpandTaskForceTraversalDepthAndMarkDeferredNodes(
+      pMapOrderEntry->GetMinActionThresholdFromEntryChildren(), 1);
+  CenterOn(static_cast<short>(context->tileOrTerrainId0c));
 
   for (int i = 0; i < 4; ++i) {
-    TView* slider = this->ResolveControlByTag(0x636c7330 + i); // "0slc".."3slc"
-    slider->AssertValid();
-    (void)*reinterpret_cast<short*>(entry + 0x1e + i * 2); // per-category order quota
+    TShipFractionCluster* shipClass =
+        static_cast<TShipFractionCluster*>(ResolveControlByTag(0x636c7330 + i)); // 'cls0'..'cls3'
+    shipClass->AssertValid();
+    shipClass->SetAvailableAndSelectedShipCounts(
+        pMapOrderEntry->shipCountsByClass[i],
+        pMapOrderEntry->CountTaskForceSelectedOrdersByNationClass(static_cast<short>(i)));
   }
 
-  TView* navyControl = this->ResolveControlByTag(0x756e6176); // "unav"
-  navyControl->AssertValid();
+  TNavyToolbarCluster* navyToolbar =
+      static_cast<TNavyToolbarCluster*>(ResolveControlByTag(0x756e6176)); // 'unav'
+  navyToolbar->AssertValid();
+  navyToolbar->SetSelectedChildTagAndRefresh(kControlTagAgr0 + pMapOrderEntry->order_type);
 }
 
 // FUNCTION: IMPERIALISM 0x00597950

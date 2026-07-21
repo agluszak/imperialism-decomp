@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <string.h>
 
 #include "game/TTaskForce.h"
 #include "game/TAdmiral.h"
@@ -172,15 +173,19 @@ IMPLEMENT_DYNCREATE(TTaskForce, TObject)
 
 TTaskForce::TTaskForce()
     : order_type(1), order_strength(0), attachment(0), owner(), childOrderList(nullptr),
-      activeChildEntry(nullptr), contextAnchor(nullptr), required_count(-1), attached_entity(0),
-      queue_prev(nullptr), queue_next(nullptr), tiebreak_strength(-1) {}
+      activeChildEntry(nullptr), contextAnchor(nullptr), required_count(-1), queue_prev(nullptr),
+      queue_next(nullptr), tiebreak_strength(-1) {
+  memset(shipCountsByClass, 0, sizeof(shipCountsByClass));
+}
 
 // FUNCTION: IMPERIALISM 0x00552800
 TTaskForce::TTaskForce(int contextAnchorArg, short requiredCountArg)
     : order_type(1), order_strength(0), attachment(0), owner(), childOrderList(nullptr),
       activeChildEntry(nullptr), contextAnchor(reinterpret_cast<TZone*>(contextAnchorArg)),
-      required_count(requiredCountArg), attached_entity(0), queue_prev(nullptr),
-      queue_next(nullptr), tiebreak_strength(-1) {}
+      required_count(requiredCountArg), queue_prev(nullptr), queue_next(nullptr),
+      tiebreak_strength(-1) {
+  memset(shipCountsByClass, 0, sizeof(shipCountsByClass));
+}
 
 // SYNTHETIC: IMPERIALISM 0x00552870
 // TTaskForce::`scalar deleting destructor'
@@ -409,7 +414,7 @@ void TTaskForce::SetMapOrderType9AndQueue() {
 
     short bucketIndex = static_cast<short>(
         g_NavyOrderResourceDescriptorTable[child->resourceType04].enabledFlagOrBucketOffset);
-    short* bucketCounter = reinterpret_cast<short*>(pad_1e) + bucketIndex;
+    short* bucketCounter = &shipCountsByClass[bucketIndex];
     --*bucketCounter;
 
     if (node == childOrderList) {
@@ -487,7 +492,7 @@ void TTaskForce::SetMapOrderType3Or4AndQueue(char fUseType4) {
 
     short bucketIndex = static_cast<short>(
         g_NavyOrderResourceDescriptorTable[child->resourceType04].enabledFlagOrBucketOffset);
-    short* bucketCounter = reinterpret_cast<short*>(pad_1e) + bucketIndex;
+    short* bucketCounter = &shipCountsByClass[bucketIndex];
     --*bucketCounter;
 
     if (node == childOrderList) {
@@ -611,7 +616,7 @@ void TTaskForce::PromoteMapOrderChainAndQueue(TZone* pContextAnchor) {
 
     short bucketIndex = static_cast<short>(
         g_NavyOrderResourceDescriptorTable[child->resourceType04].enabledFlagOrBucketOffset);
-    short* bucketCounter = reinterpret_cast<short*>(pad_1e) + bucketIndex;
+    short* bucketCounter = &shipCountsByClass[bucketIndex];
     --*bucketCounter;
 
     if (pruneNode == childOrderList) {
@@ -649,7 +654,7 @@ void TTaskForce::SetMapOrderType6AndQueue(int nOrderTarget) {
 
     short bucketIndex = static_cast<short>(
         g_NavyOrderResourceDescriptorTable[child->resourceType04].enabledFlagOrBucketOffset);
-    short* bucketCounter = reinterpret_cast<short*>(pad_1e) + bucketIndex;
+    short* bucketCounter = &shipCountsByClass[bucketIndex];
     --*bucketCounter;
 
     if (node == childOrderList) {
@@ -730,7 +735,7 @@ void TTaskForce::SetMapOrderType5AndQueue(int nOrderTarget) {
 
     short bucketIndex = static_cast<short>(
         g_NavyOrderResourceDescriptorTable[child->resourceType04].enabledFlagOrBucketOffset);
-    short* bucketCounter = reinterpret_cast<short*>(pad_1e) + bucketIndex;
+    short* bucketCounter = &shipCountsByClass[bucketIndex];
     --*bucketCounter;
 
     if (node == childOrderList) {
@@ -912,7 +917,7 @@ void TTaskForce::FindOrCreateChildOrderLink(TShip* node) {
 
   short bucketIndex = static_cast<short>(
       g_NavyOrderResourceDescriptorTable[node->resourceType04].enabledFlagOrBucketOffset);
-  ++*(reinterpret_cast<short*>(pad_1e) + bucketIndex);
+  ++shipCountsByClass[bucketIndex];
 
   node->ownerOrderEntry0c = this;
 
@@ -954,7 +959,7 @@ void TTaskForce::RebuildMapOrderEntryChildren() {
 
       short bucketIndex = static_cast<short>(
           g_NavyOrderResourceDescriptorTable[entry->resourceType04].enabledFlagOrBucketOffset);
-      short* bucketCounter = reinterpret_cast<short*>(pad_1e) + bucketIndex;
+      short* bucketCounter = &shipCountsByClass[bucketIndex];
       --*bucketCounter;
 
       if (node == childOrderList) {
@@ -1111,7 +1116,7 @@ void TTaskForce::RequeueMapOrderEntry() {
       short bucketIndex = static_cast<short>(
           g_NavyOrderResourceDescriptorTable[static_cast<TShip*>(node->payload)->resourceType04]
               .enabledFlagOrBucketOffset);
-      short* bucketCounter = reinterpret_cast<short*>(pad_1e) + bucketIndex;
+      short* bucketCounter = &shipCountsByClass[bucketIndex];
       --*bucketCounter;
       if (node == childOrderList) {
         childOrderList = node->next;
