@@ -52,7 +52,7 @@ public:
   // slot 0x22 IsTarget inherited unchanged (0x48a500)
   // slot 0x23 RemoveBehavior inherited unchanged (0x48a4a0)
   // slot 0x24 AddBehavior inherited unchanged (0x48a4d0)
-  // slot 0x25 ConstructTCommandHandlerBaseState inherited unchanged (0x486650)
+  // slot 0x25 PerformCommand inherited unchanged (0x486650)
   virtual void SetTarget(TEventHandler* view); // slot 0x26 0x486880
   virtual TEventHandler* GetTarget();          // slot 0x27 0x4868a0
   // MacApp TApplication::GetDefaultCursorRegion(CPoint, Region**); no-op on Windows.

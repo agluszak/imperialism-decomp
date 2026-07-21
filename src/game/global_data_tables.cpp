@@ -573,12 +573,33 @@ const int g_pTradeSummarySelectionMap[23] = {
     0x61726d61, 0x67726169, 0x70726f64, 0x66697368, 0x6c697665, 0x67656d73, 0x676f6c64,
 };
 
-// Trade sell propagation tags
+// Trade sell propagation tags.
 const int kTradeSellPropagationTags[17] = {
     0x72733020, 0x72733120, 0x72733220, 0x72733320, 0x72733420, 0x72733520,
     0x72733620, 0x6d613020, 0x6d613120, 0x6d613220, 0x6d613320, 0x6d613420,
     0x6d613520, 0x67643020, 0x67643120, 0x67643220, 0x67643320,
 };
+
+// TMinorTradeBidsDialog's typed view of the control-tag run. The first 17 entries are
+// the commodity controls; the trailing values are the exact sentinel words adjacent to
+// the 23 slots read by the retail loop (the 24th word pins the original data extent).
+// GLOBAL: IMPERIALISM 0x0066b1a0
+const int g_tradeBidNationMetricControlTags[24] = {
+    0x72733020, 0x72733120, 0x72733220, 0x72733320, 0x72733420, 0x72733520, 0x72733620, 0x6d613020,
+    0x6d613120, 0x6d613220, 0x6d613320, 0x6d613420, 0x6d613520, 0x67643020, 0x67643120, 0x67643220,
+    0x67643320, 0,          -1,         -1,         -1,         0,          1,          -1};
+
+// Treaty-dialog panel and cell tags, stored as packed four-character control IDs.
+// GLOBAL: IMPERIALISM 0x0066b100
+const unsigned int g_majorTreatyPanelTags[7] = {0x47503020, 0x47503120, 0x47503220, 0x47503320,
+                                                0x47503420, 0x47503520, 0x47503620};
+// GLOBAL: IMPERIALISM 0x0066b13c
+const unsigned int g_minorTreatyPanelTags[16] = {
+    0x6d372020, 0x6d382020, 0x6d392020, 0x6d313020, 0x6d313120, 0x6d313220, 0x6d313320, 0x6d313420,
+    0x6d313520, 0x6d313620, 0x6d313720, 0x6d313820, 0x6d313920, 0x6d323020, 0x6d323120, 0x6d323220};
+// GLOBAL: IMPERIALISM 0x0066b180
+const unsigned int g_majorTreatyCellTags[7] = {0x72475030, 0x72475031, 0x72475032, 0x72475033,
+                                               0x72475034, 0x72475035, 0x72475036};
 
 // Industry action cost weight tables
 // GLOBAL: IMPERIALISM 0x00650758
@@ -1439,6 +1460,8 @@ extern "C" const char s_SourcePathUDefenseMinister_00696860[] =
 extern "C" const char s_SourcePathUArmyMgr_0069573C[] = "D:\\Ambit\\Cross\\UArmyMgr.cpp";
 // GLOBAL: IMPERIALISM 0x006962e8
 extern "C" const char s_SourcePathUCityDialogs_006962E8[] = "D:\\Ambit\\Cross\\UCityDialogs.cpp";
+// GLOBAL: IMPERIALISM 0x0069a7f8
+extern "C" const char s_SourcePathUTestDialogs_0069A7F8[] = "D:\\Ambit\\Cross\\UTestDialogs.cpp";
 extern "C" const char s_SourcePathUCityViews_00696650[] = "D:\\Ambit\\Cross\\UCityViews.cpp";
 extern "C" const char s_SourcePathUArmyViews_00695858[] = "D:\\Ambit\\Cross\\UArmyViews.cpp";
 extern "C" const char s_SourcePathUOceanViews_00698650[] = "D:\\Ambit\\Cross\\UOceanViews.cpp";
