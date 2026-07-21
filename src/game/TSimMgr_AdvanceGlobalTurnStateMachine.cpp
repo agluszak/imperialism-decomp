@@ -401,7 +401,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
       g_nTurnCooldownSideFlag00698B10 = 1;
       HandleTurnEndSavePaths(this);
     } else {
-      const int phaseFlags = IsTurnFlowPhaseOutsideRange4To5();
+      const int phaseFlags = InLinearPhase();
       if ((phaseFlags & 0xf) == 10) {
         HandleTurnEndSavePaths(this);
       }

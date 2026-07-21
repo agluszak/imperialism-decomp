@@ -1110,7 +1110,7 @@ undefined TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nati
   case 2:
     needTarget = nation->needTargetByType[2];
     needCurrent = nation->needCurrentByType[2];
-    g_pSimMgr->FormatOrdinalString(static_cast<int>(nationSlot), &formatTarget);
+    g_pSimMgr->NumToOrdinal(static_cast<int>(nationSlot), &formatTarget);
     {
       int production = city->GetBuildingType(4);
       deficitCount = static_cast<short>(production * 2 - city->cityStockTimberBA);
@@ -1127,7 +1127,7 @@ undefined TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nati
   case 4:
     needTarget = nation->needTargetByType[nationSlot];
     needCurrent = nation->needCurrentByType[nationSlot];
-    g_pSimMgr->FormatOrdinalString(static_cast<int>(nationSlot), &formatTarget);
+    g_pSimMgr->NumToOrdinal(static_cast<int>(nationSlot), &formatTarget);
     {
       int production = city->GetBuildingType(2);
       deficitCount = static_cast<short>(production - (&city->cityStockCottonB6)[nationSlot]);
@@ -1143,7 +1143,7 @@ undefined TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nati
   case 5:
     needTarget = nation->needTargetByType[5];
     needCurrent = nation->needCurrentByType[5];
-    g_pSimMgr->FormatOrdinalString(static_cast<int>(nationSlot), &formatTarget);
+    g_pSimMgr->NumToOrdinal(static_cast<int>(nationSlot), &formatTarget);
     formatCurrent.Format(reinterpret_cast<const char*>(kAddrDecimalFormat),
                          static_cast<int>(needCurrent));
     formatTarget.Format(reinterpret_cast<const char*>(kAddrDecimalFormat),
@@ -1155,7 +1155,7 @@ undefined TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nati
   case 6:
     needTarget = nation->needTargetByType[6];
     needCurrent = nation->needCurrentByType[6];
-    g_pSimMgr->FormatOrdinalString(static_cast<int>(nationSlot), &formatTarget);
+    g_pSimMgr->NumToOrdinal(static_cast<int>(nationSlot), &formatTarget);
     {
       int production = city->GetBuildingType(6);
       deficitCount = static_cast<short>(production * 2 - city->cityStockOilC2);
@@ -1171,7 +1171,7 @@ undefined TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nati
   case 8:
     needTarget = nation->needTargetByType[8];
     needCurrent = nation->needCurrentByType[8];
-    g_pSimMgr->FormatOrdinalString(static_cast<int>(nationSlot), &formatTarget);
+    g_pSimMgr->NumToOrdinal(static_cast<int>(nationSlot), &formatTarget);
     {
       int production = city->GetBuildingType(1);
       deficitCount = static_cast<short>(production * 2 - city->cityStockFabricC6);
@@ -1187,7 +1187,7 @@ undefined TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nati
   case 9:
     needTarget = nation->needTargetByType[9];
     needCurrent = nation->needCurrentByType[9];
-    g_pSimMgr->FormatOrdinalString(static_cast<int>(nationSlot), &formatTarget);
+    g_pSimMgr->NumToOrdinal(static_cast<int>(nationSlot), &formatTarget);
     {
       int production = city->GetBuildingType(5);
       deficitCount = static_cast<short>(production * 2 - city->cityStockLumberC8);
@@ -1203,7 +1203,7 @@ undefined TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nati
   case 0xb:
     needTarget = nation->needTargetByType[0xb];
     needCurrent = nation->needCurrentByType[0xb];
-    g_pSimMgr->FormatOrdinalString(static_cast<int>(nationSlot), &formatTarget);
+    g_pSimMgr->NumToOrdinal(static_cast<int>(nationSlot), &formatTarget);
     {
       int production = city->GetBuildingType(3);
       deficitCount = static_cast<short>(production * 2 - city->cityStockSteelCC);
@@ -1219,7 +1219,7 @@ undefined TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nati
   case 0xc:
     needTarget = nation->needTargetByType[0xc];
     needCurrent = nation->needCurrentByType[0xc];
-    g_pSimMgr->FormatOrdinalString(static_cast<int>(nationSlot), &formatTarget);
+    g_pSimMgr->NumToOrdinal(static_cast<int>(nationSlot), &formatTarget);
     {
       int production = city->GetBuildingType(0xb);
       deficitCount = static_cast<short>(production * 2 - city->cityStockFuelCE);
@@ -1237,7 +1237,7 @@ undefined TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nati
   case 0xf:
     needTarget = nation->needTargetByType[nationSlot];
     needCurrent = nation->needCurrentByType[nationSlot];
-    g_pSimMgr->FormatOrdinalString(static_cast<int>(nationSlot), &formatTarget);
+    g_pSimMgr->NumToOrdinal(static_cast<int>(nationSlot), &formatTarget);
     formatCurrent.Format(reinterpret_cast<const char*>(kAddrDecimalFormat),
                          static_cast<int>(needCurrent));
     formatTarget.Format(reinterpret_cast<const char*>(kAddrDecimalFormat),
@@ -1250,7 +1250,7 @@ undefined TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nati
   case 0x12:
     needTarget = nation->needTargetByType[nationSlot];
     needCurrent = nation->needCurrentByType[nationSlot];
-    g_pSimMgr->FormatOrdinalString(static_cast<int>(nationSlot), &formatTarget);
+    g_pSimMgr->NumToOrdinal(static_cast<int>(nationSlot), &formatTarget);
     {
       short* summary = city->GetCitySummaryRecordSlot74();
       short summaryValue = summary[nationSlot];
@@ -1287,7 +1287,7 @@ undefined TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nati
   case 0x15:
     needTarget = nation->needTargetByType[0x15];
     needCurrent = nation->needCurrentByType[0x15];
-    g_pSimMgr->FormatOrdinalString(static_cast<int>(nationSlot), &formatTarget);
+    g_pSimMgr->NumToOrdinal(static_cast<int>(nationSlot), &formatTarget);
     g_pSimMgr->GetString(500, 0, &formatCurrent);
     g_pSimMgr->GetString(0x2735, 9, &displayText);
     ScanBracketExpressionsInto(&bracketScratch, displayText);
@@ -1296,7 +1296,7 @@ undefined TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nati
   case 0x16:
     needTarget = nation->needTargetByType[0x16];
     needCurrent = nation->needCurrentByType[0x16];
-    g_pSimMgr->FormatOrdinalString(static_cast<int>(nationSlot), &formatTarget);
+    g_pSimMgr->NumToOrdinal(static_cast<int>(nationSlot), &formatTarget);
     g_pSimMgr->GetString(200, 0, &formatCurrent);
     g_pSimMgr->GetString(0x2735, 9, &displayText);
     ScanBracketExpressionsInto(&bracketScratch, displayText);

@@ -93,7 +93,7 @@ void TTradeScreenPicture::ApplyRectSlot110(RECT* rectBuffer) {
       cellRect.right = cellRect.left + 0x26;
       short weight =
           g_pNationInteractionStateManager->QueryProposalWeightSlot4C(static_cast<short>(i));
-      g_pSimMgr->FormatIntegerString(weight, &cellText);
+      g_pSimMgr->NumToCurrency(weight, &cellText);
       cellRect.top -= 5;
       cellRect.bottom -= 5;
       RenderTradeScreenCommoditySummaryRows_Impl(&cellText, &cellRect, -1, 0);

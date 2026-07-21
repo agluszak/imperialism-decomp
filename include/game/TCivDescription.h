@@ -39,9 +39,9 @@ public:
   //   `*(reinterpret_cast<unsigned char*>(g_pCityOrderCapabilityState) + off +
   //   nationId*0x1d)` read matches the ground truth.
   // - Header/title block: repeated { g_pSimMgr->GetString(0x272d, N, &buf) or
-  //   g_pSimMgr->FormatIntegerString(value, &buf) (slot 0x74) ; SetQuickDrawTextOrigin-
+  //   g_pSimMgr->NumToCurrency(value, &buf) (slot 0x74) ; SetQuickDrawTextOrigin-
   //   WithContextOffset(x, y) ; DrawTextWithCachedStyle(&buf) } blocks for N=6..10, plus
-  //   one FormatIntegerString(0x7d0/2000, ...), one FormatIntegerString(0xbb8/3000, ...),
+  //   one NumToCurrency(0x7d0/2000, ...), one NumToCurrency(0xbb8/3000, ...),
   //   and one keyed off the word at 0x662b52 -- all already-ported helpers. The final
   //   title line is centered via MeasureTextExtentWithCachedQuickDrawStyle(&buf) against
   //   this->frameWidth34 (same pattern as ApplyRectSlot110).

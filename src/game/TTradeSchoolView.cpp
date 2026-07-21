@@ -89,7 +89,7 @@ void TTradeSchoolView::DoStartup() {
       FailNilPointerWithAssert(s_SourcePathUCityViews_00696650, costIndex == 0 ? 0x9c0 : 0x9c7);
       continue;
     }
-    g_pSimMgr->FormatIntegerString(costs[costIndex], &text);
+    g_pSimMgr->NumToCurrency(costs[costIndex], &text);
     costText->SetTextStyleAndMaybeRefresh(&costStyle, 0);
     costText->SetTextAndMaybeRefresh(&text, 0);
   }

@@ -130,7 +130,7 @@ void TArmoryView::UpdateFields() {
   availabilityPanel->InvalidateCityDialogRectRegion(&invalidRect, 1);
 
   int treasury = city94->ownerNationAc->treasuryValue10;
-  g_pSimMgr->FormatIntegerString(treasury, &treasuryText);
+  g_pSimMgr->NumToCurrency(treasury, &treasuryText);
   TStaticText* treasuryAvailable =
       static_cast<TStaticText*>(ResolveControlByTag(0x61766133u)); // 'ava3'
   treasuryAvailable->AssertValid();

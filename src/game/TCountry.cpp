@@ -594,7 +594,7 @@ void TCountry::AssignDisplayNamesToUnnamedMilitaryUnits(void) {
         short unitType = unit->orderType;
         TSimMgr* localization = g_pSimMgr;
         short* nameOrdinalCounter = &this->unitNameOrdinalByType[unitType];
-        localization->FormatOrdinalString(*nameOrdinalCounter, &ordinalText);
+        localization->NumToOrdinal(*nameOrdinalCounter, &ordinalText);
         localization->GetString(0x2717, unitType, &typeName);
         CString withSeparator = ordinalText + CString(" ");
         CString fullName = withSeparator + typeName;
