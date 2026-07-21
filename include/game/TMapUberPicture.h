@@ -6,6 +6,7 @@
 // Forward declarations for types referenced by generated signatures.
 class TTaskForce;
 class TZone;
+class TWorldView;
 class TMiniMapView;
 class TMapDialog;
 class TOceanDialog;
@@ -131,24 +132,19 @@ public:
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
   // slot 0x73 ForwardCombineOptionalSourceRegionIntoDestinationAndUpdateBox inherited unchanged (0x573940)
   virtual void AutoScrollByEdgeMask(short edgeMask) override; // slot 0x74 0x5977a0
-  virtual undefined RefreshAfterSelectionChange();            // slot 0x75 0x598950
-  virtual void InvalidateTileMarkerChain(short tileIndex);    // slot 0x76 0x598870
-  // Ground truth (RET 0x4) proves the previous 0-arg declaration was a poison-pill:
-  // forwards entryIndex to subviewAc's NotifySubviewOfSelectedTile, then (only before
-  // entering overlay mode) syncs subview2A8's trade-tool enabled state to the same value.
-  virtual undefined
-  DispatchSelectedTileToSubviewsAndSyncTradeToolState(short entryIndex); // slot 0x77 0x5988c0
-  // Ground truth (RET 0x4) proves the previous 0-arg declaration was a poison-pill arity
-  // mismatch. Forwards param to subviewAc's InvalidateTileMarkerChain, then refreshes
-  // miniMapViewC0 if present.
-  virtual undefined InvalidateTileMarkerAndRefreshLinkedControl(short param); // slot 0x78 0x598990
-  // TMiniMapView::DispatchPictureResourceCommand's own ground truth calls this slot as
-  // ownerPicture84->vtable[0x1e4](tileX, tileY) with 2 explicit int args (clamped tile
-  // coordinates) -- the previous 0-arg declaration was a poison-pill.
-  virtual undefined OrphanCallChain_C2_I16_005989d0(int tileX, int tileY); // slot 0x79 0x5989d0
-  // Forwards entryIndex to the +0xac subview's byte-0x1f0 virtual (verified 1-arg
-  // thiscall, RET 4; the previous declaration had dropped the argument).
-  virtual undefined NotifySubviewOfSelectedTile(short entryIndex);       // slot 0x7a 0x598a20
+  // Mac CodeWarrior identity: TMapUberPicture::InvalidateMap(). Refreshes whichever
+  // concrete map dialog is active.
+  virtual void InvalidateMap(); // slot 0x75 0x598950
+  // Mac CodeWarrior identity: TMapUberPicture::InvalidateTile(short). Dispatches to the
+  // active land or ocean map dialog.
+  virtual void InvalidateTile(short tileIndex); // slot 0x76 0x598870
+  // Mac CodeWarrior identities for the navigation/redraw virtuals. Each forwards to the
+  // active land/ocean map view and keeps the land cache or mini-map in sync.
+  virtual void RedrawTile(short tileIndex); // slot 0x77 0x5988c0
+  // Windows consumes promoted stack dwords at these virtual boundaries.
+  virtual void CenterOn(int tileIndex);                                  // slot 0x78 0x598990
+  virtual void SetUpperLeft(int tileX, int tileY);                       // slot 0x79 0x5989d0
+  virtual void NoticeTile(int tileIndex);                                // slot 0x7a 0x598a20
   virtual bool OrphanLeaf_NoCall_Ins23_00597a10();                       // slot 0x7b 0x597a10
   virtual undefined OrphanCallChain_C2_I11_00598910(undefined4 param_1); // slot 0x7c 0x598910
   // Ground truth (final RET has no operand) proves the previous 1-arg
@@ -189,9 +185,9 @@ public:
   // AutoScrollByEdgeMask resolves to
   // TMapDialog::UpdateMapInteractionPreviewParityAndRenderTransientSprites.
   TMapDialog* subview2A8;
-  // Active strategic-map dialog; initialized from subview2A8 and restored to it when
-  // leaving the alternate ocean-map mode.
-  TMapDialog* subviewAc;
+  // Active strategic-map dialog. Both TMapDialog and TOceanDialog derive from TWorldView;
+  // this common-base type allows the original land/ocean switch without a cast.
+  TWorldView* subviewAc;
   // 0xb0..0xbf: per-category ('uciv'/'uarm'/'unav'/unused) sub-controls resolved by
   // DoPostCreate via ResolveControlByTag. NOT a homogeneous TMapUberPicture array
   // (that was the old theory): bd 4yz's evidence disproves it two ways. (a) TCivMgr's

@@ -976,7 +976,7 @@ void TArmyMgr::SetActiveProvinceSelection(short tileIndex) {
     // receiver's own vtable isn't reconstructed yet (see bd 1uj.61.3), so this one dispatch
     // stays undone rather than faked with a downcast.
   }
-  g_pUiRuntimeContext->mapUberPictureF0->RefreshAfterSelectionChange();
+  g_pUiRuntimeContext->mapUberPictureF0->InvalidateMap();
 }
 
 // FUNCTION: IMPERIALISM 0x004a4870
@@ -1222,7 +1222,7 @@ bool TArmyMgr::ValidateOrderPlacementPrerequisitesForSelectedTile(short cityReco
 
   if (g_pUiRuntimeContext->mapUberPictureF0 != nullptr) {
     g_pSfxPlaybackSystem->PlaySoundEffect(0x3aa7, 0, 1);
-    g_pUiRuntimeContext->mapUberPictureF0->NotifySubviewOfSelectedTile(
+    g_pUiRuntimeContext->mapUberPictureF0->NoticeTile(
         g_pGlobalMapState->cityScoreTable[cityRecordIndex].cityTileIndex04);
   }
   return true;
@@ -1294,7 +1294,7 @@ void TArmyMgr::SetActiveProvinceAndBuildDirectionalOrderOverlays(short tileIndex
       }
       g_pGlobalMapState->terrainStateTable[nt].perTileVisitedFlag0f = 0;
       if (g_pUiRuntimeContext->mapUberPictureF0 != nullptr) {
-        g_pUiRuntimeContext->mapUberPictureF0->InvalidateTileMarkerChain(nt);
+        g_pUiRuntimeContext->mapUberPictureF0->InvalidateTile(nt);
       }
     }
 

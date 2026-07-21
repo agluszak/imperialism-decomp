@@ -774,7 +774,7 @@ public:
   // the wrapped map grid, and -- if the resulting tile is on-map -- stamps its
   // perTileVisitedFlag0f with a direction-overlay code ((direction+3)%6+1, or +7 when
   // `flag` is set) and forwards it through mapUberPictureF0's slot-0x76
-  // InvalidateTileMarkerChain.
+  // InvalidateTile.
   void MarkAdjacentHexOrderDirectionAndSelectTile(int tileIndex, int contextArg, char flag);
 
   // Resolves cityScoreTable[tileIndex].ownerNationCode00, following one level of

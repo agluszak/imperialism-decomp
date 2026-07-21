@@ -275,7 +275,7 @@ void TMapUberPicture::RefreshMapOrderEntryPanel(TTaskForce* pMapOrderEntry) {
   char* entry = reinterpret_cast<char*>(pMapOrderEntry);
   TView* commandDescriptor = *reinterpret_cast<TView**>(entry + 0x18);
   short commandCode = *reinterpret_cast<short*>(reinterpret_cast<char*>(commandDescriptor) + 0xc);
-  this->InvalidateTileMarkerAndRefreshLinkedControl(commandCode);
+  this->CenterOn(commandCode);
 
   for (int i = 0; i < 4; ++i) {
     TView* slider = this->ResolveControlByTag(0x636c7330 + i); // "0slc".."3slc"
@@ -342,17 +342,20 @@ void TMapUberPicture::OpenMapEntryOrderDialog(TTaskForce* pMapOrderEntry) {
 }
 
 // FUNCTION: IMPERIALISM 0x00598870
-void TMapUberPicture::InvalidateTileMarkerChain(short tileIndex) {
-  (void)tileIndex;
+void TMapUberPicture::InvalidateTile(short tileIndex) {
+  if (invalidationFlag94 != 0) {
+    subview2A8->InvalidateTile(tileIndex);
+  } else {
+    goodGoldTagControlA4->InvalidateTile(tileIndex);
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x005988c0
-undefined TMapUberPicture::DispatchSelectedTileToSubviewsAndSyncTradeToolState(short entryIndex) {
-  this->subviewAc->OrphanRetStub_005966c0(entryIndex);
+void TMapUberPicture::RedrawTile(short tileIndex) {
+  this->subviewAc->OrphanRetStub_005966c0(tileIndex);
   if (this->invalidationFlag94 == 0) {
-    this->subview2A8->ReleaseTileMarkerForTile(entryIndex);
+    this->subview2A8->ReleaseTileMarkerForTile(tileIndex);
   }
-  return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x00598910
@@ -371,30 +374,33 @@ undefined TMapUberPicture::OrphanCallChain_C2_I11_00598910(undefined4 param_1) {
 }
 
 // FUNCTION: IMPERIALISM 0x00598950
-undefined TMapUberPicture::RefreshAfterSelectionChange() {
-  return 0;
+void TMapUberPicture::InvalidateMap() {
+  if (invalidationFlag94 != 0) {
+    subview2A8->RefreshControl();
+  } else {
+    goodGoldTagControlA4->RefreshControl();
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x00598990
-undefined TMapUberPicture::InvalidateTileMarkerAndRefreshLinkedControl(short param) {
-  this->subviewAc->UpdateMapDialogTileRowColumnMarkerAndInvalidate(param);
+void TMapUberPicture::CenterOn(int tileIndex) {
+  this->subviewAc->CenterOn(tileIndex);
   if (this->miniMapViewC0 != nullptr) {
     this->miniMapViewC0->RefreshControl();
   }
-  return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x005989d0
-undefined TMapUberPicture::OrphanCallChain_C2_I16_005989d0(int tileX, int tileY) {
-  (void)tileX;
-  (void)tileY;
-  return 0;
+void TMapUberPicture::SetUpperLeft(int tileX, int tileY) {
+  this->subviewAc->SetMapViewCellCoordinates(tileX, tileY);
+  if (this->miniMapViewC0 != nullptr) {
+    this->miniMapViewC0->RefreshControl();
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x00598a20
-undefined TMapUberPicture::NotifySubviewOfSelectedTile(short entryIndex) {
-  this->subviewAc->OrphanCallChain_C6_I29_00596700(entryIndex);
-  return 0;
+void TMapUberPicture::NoticeTile(int tileIndex) {
+  this->subviewAc->OrphanCallChain_C6_I29_00596700(tileIndex);
 }
 
 // TODO: body not yet ported (1405-byte dialog-construction routine). Real receiver and
@@ -435,7 +441,7 @@ void TMapUberPicture::EnterMapInteractionOverlayMode(TView* controlOverride) {
   this->invalidationFlag94 = 1;
 
   int selectedTile = goodGoldTagControlA4->ComputeWrappedTileIndexFromObjectOffset7C7E();
-  subview2A8->UpdateMapDialogTileRowColumnMarkerAndInvalidate(selectedTile);
+  subview2A8->CenterOn(selectedTile);
 
   this->goodGoldTagControlA4->CaptureLayoutF0(g_MapUberModeLayoutScratch_006a45e8, 0);
   this->subview2A8->CaptureLayoutF0(g_MapUberModeSecondaryLayoutScratch_006a45b8, 1);
@@ -467,13 +473,21 @@ void TMapUberPicture::CommitPendingUiModeChangeAndRefreshViews(TView* controlOve
       zoomControl->controlTag = kControlTagZmIn;
     }
     invalidationFlag94 = 0;
-    // The original also dispatches subview2A8/goodGoldTagControlA4's own vtable slots
-    // 0x288/0x1d8/0xf0 here (beyond either class's currently-declared extent), then writes
-    // goodGoldTagControlA4's raw pointer value into subviewAc -- but goodGoldTagControlA4
-    // is TOceanDialog* (TWorldView-derived) while subviewAc is declared TMapDialog*, an
-    // unrelated type per the existing class hierarchy, so that assignment is left
-    // unmodeled pending resolution of the mismatch, along with refreshing miniMapViewC0's
-    // rect cache.
+    short centerTile = static_cast<short>(subview2A8->GetCenterTile());
+    goodGoldTagControlA4->CenterOn(centerTile);
+    subview2A8->CaptureLayoutF0(g_MapUberModeLayoutScratch_006a45e8, 0);
+    goodGoldTagControlA4->CaptureLayoutF0(g_MapUberModeSecondaryLayoutScratch_006a45b8, 1);
+    subviewAc = goodGoldTagControlA4;
+
+    if (miniMapViewC0 != nullptr) {
+      miniMapViewC0->markerBoxWidth98 = 0x20;
+      miniMapViewC0->markerBoxHeight9c = 0x1c;
+      miniMapViewC0->markerBoxX90 =
+          miniMapViewC0->frameWidth34 / 2 - miniMapViewC0->markerBoxWidth98 - 2;
+      miniMapViewC0->markerBoxY94 =
+          miniMapViewC0->frameHeight38 / 2 - miniMapViewC0->markerBoxHeight9c - 2;
+      miniMapViewC0->RefreshControl();
+    }
   }
 }
 
