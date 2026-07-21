@@ -174,7 +174,7 @@ IMPLEMENT_DYNCREATE(TMapMgr, TObject)
 // FUNCTION: IMPERIALISM 0x0050e3d0
 TMapMgr::TMapMgr() : TObject(), cityScoreTable(0), scenarioTagText1c() {
   field8 = 0;
-  field4 = 0;
+  strategicMapPalettePreviewReady04 = 0;
   terrainStateTable = 0;
   field9 = 1;
   field24 = 0;
@@ -191,7 +191,7 @@ TMapMgr::~TMapMgr() {}
 void TMapMgr::InitializeGlobalMapState() {
   field6 = 1;
   if (g_pStrategicMapViewSystem->atlas668 == 0) {
-    g_pStrategicMapViewSystem->RenderOffscreenBitmapGridStripAndRestoreContext();
+    g_pStrategicMapViewSystem->BuildStrategicMapRenderAtlasesAndTileMaskCaches();
   }
 }
 
@@ -224,7 +224,7 @@ void TMapMgr::ReadFrom(TStream* stream) {
   for (i = 0; i < 0x180; ++i) {
     cityScoreTable[i].stationedUnitChain98 = nullptr;
   }
-  field4 = 0;
+  strategicMapPalettePreviewReady04 = 0;
   if (g_nSaveFormatVersion < 0x32) {
     for (i = 0; i < 0x1950; ++i) {
       terrainStateTable[i].perTileVisitedFlag0f = 0;
@@ -1490,7 +1490,7 @@ void TMapMgr::TMapMaker_EnsureMapDataStreamOpenedAndMaybeTickUiProgress() {
     hexNeighborWrapHorizontally20 = 1;
     BuildOrLoadGlobalMapStateForSession("mapdata", nullptr);
   }
-  if (field4 == 0) {
+  if (strategicMapPalettePreviewReady04 == 0) {
     g_pUiRuntimeContext->InvokeStrategicMapViewMethod70();
   }
 }
@@ -1503,9 +1503,8 @@ void TMapMgr::DispatchTurnEvent7DDForActiveNation() {
 }
 
 // FUNCTION: IMPERIALISM 0x00511f10
-short TMapMgr::ForwardComputeRepresentativeTileIndexForTerrainTypeWithWrapBias(int terrainType) {
-  return ComputeRepresentativeTileIndexForTerrainTypeWithWrapBias(static_cast<short>(terrainType),
-                                                                  1);
+int TMapMgr::ComputeRepresentativeTileIndexForNation(int nationSlot) {
+  return ComputeRepresentativeTileIndexForNationWithWrapBias(static_cast<short>(nationSlot), 1);
 }
 
 namespace {
@@ -2566,7 +2565,7 @@ short TMapMgr::FindReachableRecruitSpawnTileWithVisitedReset(short startTileInde
 }
 
 // FUNCTION: IMPERIALISM 0x00514dc0
-void TMapMgr::MapMgrSlot1F(short nationTag) {
+void TMapMgr::SeedValidCitySiteCandidateTilesForNation(short nationTag) {
   field9 = 1;
   for (int tileIndex = 0; tileIndex < 0x1950; ++tileIndex) {
     TTerrainStateRecordView* tile = &terrainStateTable[tileIndex];
@@ -3339,15 +3338,16 @@ short TMapMgr::GetMapImprovementTileSpriteOffset(short tileIndex) {
 }
 
 // FUNCTION: IMPERIALISM 0x005178c0
-void TMapMgr::ResetAllTileSpriteVariantIndexToSentinel() {
-  for (int tileIndex = 0; tileIndex < 0x1950; ++tileIndex) {
-    terrainStateTable[tileIndex].spriteVariantIndex01 = (signed char)0xff;
+void TMapMgr::ResetAllTileMarkerSlotIndicesToSentinel() {
+  signed char* markerSlot = &terrainStateTable[0].markerSlotIndex10;
+  for (int tileCount = 0x1950; tileCount != 0; --tileCount) {
+    *markerSlot = -1;
+    markerSlot += sizeof(TTerrainStateRecordView);
   }
 }
 
 // FUNCTION: IMPERIALISM 0x005178f0
-short TMapMgr::ComputeRepresentativeTileIndexForTerrainTypeWithWrapBias(short terrainType,
-                                                                        char wrapBias) {
+int TMapMgr::ComputeRepresentativeTileIndexForNationWithWrapBias(short nationSlot, char wrapBias) {
   char* tileTable = reinterpret_cast<char*>(terrainStateTable);
   char* cityTable = reinterpret_cast<char*>(cityScoreTable);
   unsigned int colSum = 0;
@@ -3358,15 +3358,15 @@ short TMapMgr::ComputeRepresentativeTileIndexForTerrainTypeWithWrapBias(short te
 
   for (int tileIndex = 0; tileIndex < 0x1950; ++tileIndex) {
     int tileByteOffset = tileIndex * 0x24;
-    char terrainTag = tileTable[tileByteOffset + 4];
-    if (terrainTag != terrainType) {
+    char ownerNationTag = tileTable[tileByteOffset + 4];
+    if (ownerNationTag != nationSlot) {
       continue;
     }
     char includeTile = 1;
-    if (terrainType < 0x17 && g_apTerrainTypeDescriptorTable[terrainType] != 0 &&
-        g_apTerrainTypeDescriptorTable[terrainType]->homeTileIndex != -1) {
+    if (nationSlot < 0x17 && g_apTerrainTypeDescriptorTable[nationSlot] != 0 &&
+        g_apTerrainTypeDescriptorTable[nationSlot]->homeTileIndex != -1) {
       short nationHomeTile =
-          static_cast<short>(g_apTerrainTypeDescriptorTable[terrainType]->homeTileIndex);
+          static_cast<short>(g_apTerrainTypeDescriptorTable[nationSlot]->homeTileIndex);
       short tileCityLink = *reinterpret_cast<short*>(tileTable + tileByteOffset + 0x14);
       char tileCityByte = cityTable[0xa3 + static_cast<int>(tileCityLink) * 0xa8];
       short nationTileCityLink =
@@ -3399,7 +3399,7 @@ short TMapMgr::ComputeRepresentativeTileIndexForTerrainTypeWithWrapBias(short te
       rowSum = 0;
       colSum = 0;
       for (int tileIndex = 0; tileIndex < 0x1950; ++tileIndex) {
-        if (tileTable[tileIndex * 0x24 + 4] != terrainType) {
+        if (tileTable[tileIndex * 0x24 + 4] != nationSlot) {
           continue;
         }
         int tileCol = tileIndex % 0x6c;
@@ -3424,12 +3424,12 @@ short TMapMgr::ComputeRepresentativeTileIndexForTerrainTypeWithWrapBias(short te
   }
 
   short fallbackTile = -1;
-  if (terrainType < 0x17 && g_apTerrainTypeDescriptorTable[terrainType] != 0) {
-    TLongintList* ownedRegions = g_apTerrainTypeDescriptorTable[terrainType]->ownedRegionList;
+  if (nationSlot < 0x17 && g_apTerrainTypeDescriptorTable[nationSlot] != 0) {
+    TLongintList* ownedRegions = g_apTerrainTypeDescriptorTable[nationSlot]->ownedRegionList;
     if (ownedRegions != 0 && ownedRegions->GetSize() > 0) {
       int lastMatch = -1;
       for (int tileIndex = 0; tileIndex < 0x1950; ++tileIndex) {
-        if (static_cast<signed char>(tileTable[tileIndex * 0x24 + 4]) == terrainType) {
+        if (static_cast<signed char>(tileTable[tileIndex * 0x24 + 4]) == nationSlot) {
           lastMatch = tileIndex;
         }
       }

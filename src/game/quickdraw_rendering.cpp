@@ -430,16 +430,16 @@ void SetQuickDrawTextFace(short value) {
 }
 
 // FUNCTION: IMPERIALISM 0x00495310
-void SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty(short styleParamA, short styleParamB) {
-  g_nQuickDrawStrokeStylePrimary = (int)styleParamA;
-  g_nQuickDrawStrokeStyleSecondary = (int)styleParamB;
+void SetQuickDrawPenSizeAndMarkDirty(short horizontalSize, short verticalSize) {
+  g_nQuickDrawPenHorizontalSize = static_cast<int>(horizontalSize);
+  g_nQuickDrawPenVerticalSize = static_cast<int>(verticalSize);
   g_bQuickDrawStrokePairDirty = 1;
 }
 
 // FUNCTION: IMPERIALISM 0x004953a0
 void ResetQuickDrawStrokeState() {
-  g_nQuickDrawStrokeStylePrimary = g_Reset_Quick_Draw_Value_0064B8F0;
-  g_nQuickDrawStrokeStyleSecondary = g_Reset_Quick_Draw_Value_0064B8F4;
+  g_nQuickDrawPenHorizontalSize = g_Reset_Quick_Draw_Value_0064B8F0;
+  g_nQuickDrawPenVerticalSize = g_Reset_Quick_Draw_Value_0064B8F4;
   g_Reset_Quick_Draw_State_006A1D10 = g_Reset_Quick_Draw_WordState_0064B8F8;
   g_bQuickDrawStrokePairDirty = 1;
 }
@@ -683,9 +683,9 @@ void DrawCenteredGuideLineOnMapDc(short x, short y) {
   if (!GetMcAppUiActiveFlag()) {
     return;
   }
-  int penWidth = g_nQuickDrawStrokeStylePrimary;
-  if (penWidth <= g_nQuickDrawStrokeStyleSecondary) {
-    penWidth = g_nQuickDrawStrokeStyleSecondary;
+  int penWidth = g_nQuickDrawPenHorizontalSize;
+  if (penWidth <= g_nQuickDrawPenVerticalSize) {
+    penWidth = g_nQuickDrawPenVerticalSize;
   }
   CPen pen(PS_SOLID, penWidth, static_cast<COLORREF>(g_Quick_Draw_Color_State_006950FC));
 
@@ -703,8 +703,8 @@ void DrawCenteredGuideLineOnMapDc(short x, short y) {
   if (dc == nullptr) {
     dc = g_pScopedMapQuickDrawDcHandleObject;
   }
-  dc->OffsetWindowOrg(g_nQuickDrawStrokeStylePrimary / 2 + g_nQuickDrawResolvedTextOriginX,
-                      g_nQuickDrawStrokeStyleSecondary / 2 + g_nQuickDrawResolvedTextOriginY);
+  dc->OffsetWindowOrg(g_nQuickDrawPenHorizontalSize / 2 + g_nQuickDrawResolvedTextOriginX,
+                      g_nQuickDrawPenVerticalSize / 2 + g_nQuickDrawResolvedTextOriginY);
 
   int resolvedX = x;
   int resolvedY = y;
@@ -719,8 +719,8 @@ void DrawCenteredGuideLineOnMapDc(short x, short y) {
   if (dc == nullptr) {
     dc = g_pScopedMapQuickDrawDcHandleObject;
   }
-  dc->LineTo(g_nQuickDrawStrokeStylePrimary / 2 + resolvedX,
-             g_nQuickDrawStrokeStyleSecondary / 2 + resolvedY);
+  dc->LineTo(g_nQuickDrawPenHorizontalSize / 2 + resolvedX,
+             g_nQuickDrawPenVerticalSize / 2 + resolvedY);
 
   dc = g_pQuickDrawMemoryDc;
   if (dc == nullptr) {

@@ -461,9 +461,9 @@ extern const short g_Reset_Quick_Draw_WordState_0064B8F8 = 0;
 // GLOBAL: IMPERIALISM 0x006a1d10
 short g_Reset_Quick_Draw_State_006A1D10 = 0;
 // GLOBAL: IMPERIALISM 0x006a1d08
-int g_nQuickDrawStrokeStylePrimary = 0;
+int g_nQuickDrawPenHorizontalSize = 0;
 // GLOBAL: IMPERIALISM 0x006a1d0c
-int g_nQuickDrawStrokeStyleSecondary = 0;
+int g_nQuickDrawPenVerticalSize = 0;
 // GLOBAL: IMPERIALISM 0x006a1db4
 int g_bQuickDrawStrokePairDirty = 0;
 // GLOBAL: IMPERIALISM 0x006a1da8
@@ -530,6 +530,16 @@ TQuickDrawSurfaceContext* g_pPrimaryRenderSurfaceContext = 0;
 // TCitySiteView::DoPostCreate after allocating its own surface.
 // GLOBAL: IMPERIALISM 0x006a3450
 TQuickDrawSurfaceContext* g_pCitySiteCachedPrimaryRenderSurfaceContext = 0;
+
+// GLOBAL: IMPERIALISM 0x00697320
+short g_aCitySiteNeighborHighlightTiles_00697320[6] = {-1, -1, -1, -1, -1, -1};
+
+// GLOBAL: IMPERIALISM 0x006a3370
+CPoint g_MapInteractionPreviewPoint_006a3370(0, 0);
+// GLOBAL: IMPERIALISM 0x006a33b4
+int g_MapInteractionPreviewRowParity_006a33b4 = 0;
+// GLOBAL: IMPERIALISM 0x006a33b8
+int g_MapInteractionPreviewColumnParity_006a33b8 = 0;
 // GLOBAL: IMPERIALISM 0x006a1da0
 CDC* g_pQuickDrawMemoryDc = nullptr;
 // GLOBAL: IMPERIALISM 0x006a1dbc
@@ -1741,6 +1751,9 @@ POINT g_ptTechCapabilityModalMessage = {0, 0};
 // Modal-message placement point used by the TViewMgr prompt helpers (0x5de990/0x5deb40).
 // GLOBAL: IMPERIALISM 0x006a5be0
 POINT g_ptUiPromptModalMessage = {0, 0};
+// City-site selection warning placement and TViewMgr's initial dialog-placement seed.
+// GLOBAL: IMPERIALISM 0x006a5b58
+POINT g_ptCitySiteSelectionDialogPlacement = {0, 0};
 // GLOBAL: IMPERIALISM 0x006a4048
 POINT g_ptQueryFloaterModalMessage = {0, 0};
 // GLOBAL: IMPERIALISM 0x006a2fc0

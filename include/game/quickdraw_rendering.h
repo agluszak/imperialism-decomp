@@ -9,7 +9,7 @@ void SetQuickDrawStrokeColor(int strokeColor);
 void SetQuickDrawColorAndSyncGlobals(int color);
 void SetGlobalBlitTransparentColorRaw(int transparentColor);
 void SetGlobalQuickDrawOrigin(short originX, short originY);
-void SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty(short styleParamA, short styleParamB);
+void SetQuickDrawPenSizeAndMarkDirty(short horizontalSize, short verticalSize);
 void ResetQuickDrawStrokeState();
 void FillRectWithQuickDrawBrushAndContextOffset(RECT* rect);
 

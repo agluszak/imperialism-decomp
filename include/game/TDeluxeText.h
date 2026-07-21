@@ -147,7 +147,9 @@ public:
   // unused by the body (ret 8 proves the two-arg shape; renamed from the provisional
   // Helper_Uses_ConstructSharedStringFromCStrOrResourceId_At005b6360).
   virtual void SetTextEntryFromChars(const char* textChars,
-                                     int textLength);       // slot 0x7d 0x5b6360
+                                     int textLength); // slot 0x7d 0x5b6360
+  // Vertically centers the wrapped text when its measured height is smaller than the
+  // control frame, then optionally invalidates the control.
   virtual short CenterVertically(unsigned char refreshNow); // slot 0x7e 0x5b63e0
   // field94/field95/padding96 moved to the base TTEView (its RTTI object size is
   // 0x98; TDeluxeText's own fields start at 0x98 — see TTEView.h).

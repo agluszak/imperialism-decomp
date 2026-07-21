@@ -95,10 +95,10 @@ void TDeluxeText::SetTextEntryFromChars(const char* textChars, int textLength) {
 short TDeluxeText::CenterVertically(unsigned char refreshNow) {
   contentInsets68.bottom = 0;
   contentInsets68.top = 0;
-  int measuredWidth = MeasureCurrentTextWidthInLayoutRect();
+  int measuredHeight = MeasureCurrentTextHeightInLayoutRect();
   short inset;
-  if (measuredWidth < frameHeight38) {
-    inset = static_cast<short>((frameHeight38 - measuredWidth) / 2);
+  if (measuredHeight < frameHeight38) {
+    inset = static_cast<short>((frameHeight38 - measuredHeight) / 2);
   } else {
     inset = 0;
   }
@@ -109,7 +109,7 @@ short TDeluxeText::CenterVertically(unsigned char refreshNow) {
   if (refreshNow != 0) {
     RefreshControl();
   }
-  return static_cast<short>(measuredWidth);
+  return measuredHeight;
 }
 
 // FUNCTION: IMPERIALISM 0x005b6480

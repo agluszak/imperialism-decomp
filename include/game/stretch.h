@@ -14,11 +14,9 @@
 //
 // Only GetOrAppendUnique is a real vtable slot: TZoneSecondaryNeighborStretch's orig
 // vtable (0x0065c748) is confirmed exactly 1 slot long (the very next vtable,
-// TZonePrimaryNeighborStretch's at 0x0065c74c, starts 4 bytes later). Add is always
-// called on the concrete `TZone{Primary,Secondary}NeighborStretch` type directly
-// (TZone.h: primaryNeighbors.Add(...)/secondaryNeighbors.Add(...)), never through a
-// `stretch<T,Tag>*` base pointer, so it is declared here as an ordinary (non-virtual,
-// unimplemented) member that each instantiation hides with its own definition.
+// TZonePrimaryNeighborStretch's at 0x0065c74c, starts 4 bytes later). The two recovered
+// Add bodies are ordinary non-virtual members on the concrete specializations; they are
+// not extra dispatch slots.
 // Confirmed 1-slot vtable (TZoneSecondaryNeighborStretch's orig vtable at 0x0065c748 is
 // exactly 1 slot; see below) — no destructor slot in any instantiation.
 IMPERIALISM_BEGIN_INTENTIONAL_NON_VIRTUAL_DTOR

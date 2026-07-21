@@ -129,7 +129,9 @@ public:
   void SetOneStyle(short start, short end, short styleMask, const TextStyle& style,
                    unsigned char refreshNow);
   void StuffTERects(const CRect& textRect);
-  int MeasureCurrentTextWidthInLayoutRect();
+  // Measures the wrapped text height produced by DrawText(DT_CALCRECT) inside the
+  // inset content rectangle. The original returns bounds.bottom - bounds.top.
+  int MeasureCurrentTextHeightInLayoutRect();
   // Mac-style second-phase init (not the ctor — no vtable store): runs the TStaticText
   // base init, copies the 0x68-0x74 inset rect and the packed text-style descriptor,
   // and seeds textAlignmentCode. Args 1, 10 and 11 are never read (TDeluxeText passes

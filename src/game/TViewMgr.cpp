@@ -62,6 +62,8 @@
 #include "game/TDeluxeText.h"
 #include "game/TCivMgr.h"
 #include "game/TCivUnit.h"
+#include "game/TCity.h"
+#include "game/TCitySiteView.h"
 #include "game/TMapUberPicture.h"
 #include "game/TTurnEventDialogFactoryRegistry.h"
 #include "game/quickdraw_rendering.h" // ApplyControlThemeStyleAndOptionalCaption
@@ -105,8 +107,6 @@ const unsigned int kAddrDefaultGameSetupPoliciesEnd = 0x00698b52;
 
 namespace {
 const unsigned int kAddrClassDescTViewMgr = 0x0066f0b8;
-const unsigned int kAddrTurnStateSeedLo = 0x006a5b58;
-const unsigned int kAddrTurnStateSeedHi = 0x006a5b5c;
 } // namespace
 
 HCURSOR LoadTurnEventCursorByResourceIdOffset1000(int cursorResourceId);
@@ -128,8 +128,7 @@ IMPLEMENT_DYNCREATE(TViewMgr, TObject)
 TViewMgr::TViewMgr() : TObject() {
   this->fieldEc = 0;
   this->currentTurnEventCode = 0;
-  this->turnStateSeedLo = *reinterpret_cast<unsigned int*>(kAddrTurnStateSeedLo);
-  this->turnStateSeedHi = *reinterpret_cast<unsigned int*>(kAddrTurnStateSeedHi);
+  this->dialogPlacement08 = g_ptCitySiteSelectionDialogPlacement;
   this->field10 = 0;
   this->mapUberPictureF0 = 0;
   this->activeMovieViewF4 = 0;
@@ -168,8 +167,7 @@ void TViewMgr::ReadFrom(TStream* stream) {
   TObject::ReadFrom(stream);
   this->fieldEc = 0;
   this->currentTurnEventCode = 0;
-  this->turnStateSeedLo = *reinterpret_cast<unsigned int*>(kAddrTurnStateSeedLo);
-  this->turnStateSeedHi = *reinterpret_cast<unsigned int*>(kAddrTurnStateSeedHi);
+  this->dialogPlacement08 = g_ptCitySiteSelectionDialogPlacement;
   this->field10 = 0;
   this->mapUberPictureF0 = 0;
 }
@@ -557,7 +555,7 @@ bool TViewMgr::RunNationInfoModalAndReturnNonCancel(int messageKind, CString tit
   info->AssertValid();
   info->SetTextEntryFromChars(messageChars, messageLength);
   info->SetTextStyle(styleDescriptor, 0);
-  int measuredHeight = static_cast<short>(info->MeasureCurrentTextWidthInLayoutRect());
+  int measuredHeight = static_cast<short>(info->MeasureCurrentTextHeightInLayoutRect());
   if (measuredHeight > info->frameHeight38) {
     info->QueryBounds(&bounds);
     bounds.right = bounds.top - 10;
@@ -814,7 +812,7 @@ void TViewMgr::UiRuntimeSlot58() {
   static const char kStatusIconTagBytes[] =
       " 0sr 1sr 2sr 3sr 4sr 5sr 6sr 0am 1am 2am 3am 4am 5am 0dg 1dg 2dg 3dg";
   TView* mainView = g_pDisplayMgr->activeDialog;
-  const short nationId = this->pad06;
+  const short nationId = this->currentTurnEventNationSlot06;
   for (short iconIndex = 0; iconIndex < 0x12; ++iconIndex) {
     const unsigned int tag =
         *reinterpret_cast<const unsigned int*>(kStatusIconTagBytes + iconIndex * 4);
@@ -1166,7 +1164,7 @@ void TViewMgr::DispatchTurnEventSlot4C(short eventCode, int payload) {
 
   // Code 0 = rebuild every registered UI window node.
   if (newCode == 0) {
-    static_cast<TAmbitApplication*>(g_pGlobalUiRootController)->dispatchBusyFlag4c = 0;
+    g_pGlobalUiRootController->dispatchBusyFlag4c = 0;
     this->currentTurnEventCode = 0;
     g_pDisplayMgr->clipSnapshotEvent = 0;
     mainView->Close();
@@ -1186,7 +1184,7 @@ void TViewMgr::DispatchTurnEventSlot4C(short eventCode, int payload) {
   // Same-code refresh: refresh the main view, then run the per-code hook.
   if (newCode == this->currentTurnEventCode) {
     if (secondary != -1) {
-      this->pad06 = secondary;
+      this->currentTurnEventNationSlot06 = secondary;
     }
     if (newCode == 0x5e4) {
       QueueDeferredUiEventPacket(mainView, 0x29a, mainView);
@@ -1236,6 +1234,9 @@ void TViewMgr::DispatchTurnEventSlot4C(short eventCode, int payload) {
     inclControl->AssertValid();
     inclControl->RefreshControl();
     inclControl->Free();
+  }
+  if (newCode != 0x898) {
+    this->currentTurnEventNationSlot06 = secondary;
   }
 
   TIncludeView* packet = ::new TIncludeView();
@@ -1318,9 +1319,11 @@ void TViewMgr::DispatchTurnEventSlot4C(short eventCode, int payload) {
       }
     }
   } else if (newCode == 0x3c0) {
-    this->HandleTurnEventTable66F220_Slot0C_InvokeGoldViewSlots0C_1E4_14x14();
+    this->ConfigureActiveDialogGoldValueGridForTurnEvent3C0();
+    g_pGlobalUiRootController->dispatchBusyFlag4c = 0;
   } else if (newCode == 0x3b8) {
-    this->UiRuntimeSlotD0(newCode);
+    this->InitializeCitySiteSelectionScreenForNation(static_cast<int>(secondary));
+    g_pGlobalUiRootController->dispatchBusyFlag4c = 0;
   }
   DispatchPostTurnStateUpdatesTail();
 }
@@ -1831,35 +1834,53 @@ void TViewMgr::InvokeStrategicMapViewMethod6C() {
 }
 
 // FUNCTION: IMPERIALISM 0x005dc180
-undefined TViewMgr::InvokeStrategicMapViewMethod68() {
-  return g_pStrategicMapViewSystem->RenderOffscreenBitmapGridStripAndRestoreContext();
+void TViewMgr::ForwardBuildStrategicMapRenderAtlasesAndTileMaskCaches() {
+  g_pStrategicMapViewSystem->BuildStrategicMapRenderAtlasesAndTileMaskCaches();
 }
 
 // FUNCTION: IMPERIALISM 0x005dc1a0
-undefined TViewMgr::InvokeStrategicMapViewMethod74() {
-  return g_pStrategicMapViewSystem->RebuildMapTileNeighborHighlightPolygonsForAllTiles();
+void TViewMgr::InvokeStrategicMapViewMethod74() {
+  g_pStrategicMapViewSystem->RebuildMapTileNeighborHighlightPolygonsForAllTiles();
 }
 
 // FUNCTION: IMPERIALISM 0x005dc1c0
-undefined TViewMgr::InvokeStrategicMapViewMethod70() {
-  return g_pStrategicMapViewSystem->RenderTurnEventPalettePreviewSurfaceAndProgress();
+void TViewMgr::InvokeStrategicMapViewMethod70() {
+  g_pStrategicMapViewSystem->RenderTurnEventPalettePreviewSurfaceAndProgress();
 }
 
 // FUNCTION: IMPERIALISM 0x005dc1e0
-void TViewMgr::UiRuntimeSlotD0(int) {
-  turn_event_ui_refresh::RefreshToolBarClusterByTag(kControlTagTool);
+void TViewMgr::InitializeCitySiteSelectionScreenForNation(int nationSlot) {
+  TView* activeDialog = g_pDisplayMgr->activeDialog;
 
-  TControl* goldControl = turn_event_ui_refresh::ResolveMainTaggedControl(kControlTagGold);
-  if (goldControl != nullptr) {
-    goldControl->AssertValid();
-    goldControl->RefreshControl();
-  }
+  TToolBarCluster* toolbar =
+      static_cast<TToolBarCluster*>(activeDialog->ResolveControlByTag(kControlTagTool));
+  toolbar->AssertValid();
+  toolbar->UpdateControlTagTreaTextFromNationAndMapContext(static_cast<short>(nationSlot));
 
-  turn_event_ui_refresh::RefreshMainCouncilTickerPanel();
+  TCitySiteView* citySiteView =
+      static_cast<TCitySiteView*>(activeDialog->ResolveControlByTag(kControlTagGold));
+  citySiteView->AssertValid();
+  g_pGlobalMapState->SeedValidCitySiteCandidateTilesForNation(static_cast<short>(nationSlot));
+  TGreatPower* nation = g_apNationStates[static_cast<short>(nationSlot)];
+  TCity* city = nation != nullptr ? nation->city : nullptr;
+  citySiteView->pendingTown364 = static_cast<TTown*>(city->selectedOrderB0);
+  citySiteView->SetMapViewTileIndex(
+      g_pGlobalMapState->ComputeRepresentativeTileIndexForNation(nationSlot));
+
+  TMapUberPicture* mainPicture =
+      static_cast<TMapUberPicture*>(activeDialog->ResolveControlByTag(kControlTagMain));
+  mainPicture->AssertValid();
+  mainPicture->DisplayMiniMap();
+
+  CString formatText;
+  CString messageText;
+  g_pSimMgr->GetString(0x273f, 4, &formatText);
+  g_pSimMgr->GetString(0x273f, 3, &messageText);
+  ModalMessage(4, formatText, messageText, g_ptCitySiteSelectionDialogPlacement, 2, 0);
 }
 
 // FUNCTION: IMPERIALISM 0x005dc3f0
-void TViewMgr::HandleTurnEventTable66F220_Slot0C_InvokeGoldViewSlots0C_1E4_14x14() {
+void TViewMgr::ConfigureActiveDialogGoldValueGridForTurnEvent3C0() {
   GoldCommitControl* gold = static_cast<GoldCommitControl*>(
       static_cast<TView*>(g_pDisplayMgr->activeDialog->ResolveControlByTag(0x444c4f47))); // 'GOLD'
   gold->AssertValid();
