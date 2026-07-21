@@ -7,6 +7,7 @@
 #include "game/TObject.h"
 
 class TShip;
+class TZone;
 
 // Navy task-force secondary order node (vtable 0x0065c498, eight slots).
 // VTABLE: IMPERIALISM 0x0065c498
@@ -45,4 +46,11 @@ public:
                                                                      CString* dest);
 
   void RemoveDuplicateNavySecondaryOrdersByDisplayName();
+
+  // Mac oracle: EstimateEnemyForces / GetFleetReport. The report intentionally
+  // perturbs observed ship counts and classes according to this admiral's skill.
+  short EstimateEnemyForces(short* estimatedCounts, TZone* zone, short nation) const;
+  void GetFleetReport(CString* out, TZone* zone, short nation) const;
 };
+
+CString GetLocalizedNavalReportShipType(short category, char plural);

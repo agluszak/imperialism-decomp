@@ -1,11 +1,13 @@
 #include <stdlib.h>
 
 #include "game/TTaskForce.h"
+#include "game/TAdmiral.h"
 #include "game/TMission.h"
 
 #include "game/CString.h"
 #include "game/TDiplomacyMgr.h"
 #include "game/TMapMgr.h"
+#include "game/TMapUberPicture.h"
 #include "game/TModuleLibraryCacheTableStateB.h"
 #include "game/TMultiplayerMgr.h"
 #include "game/TNavyMgr.h"
@@ -14,6 +16,7 @@
 #include "game/navy_order.h"
 #include "game/TSimMgr.h"
 #include "game/TZone.h"
+#include "game/UiRuntimeContext.h"
 #include "game/global_data_tables.h"
 #include "game/mapped_flavor_text.h"
 #include "game/ui_invalidation_guard.h"
@@ -1175,6 +1178,41 @@ void TTaskForce::RequeueMapOrderEntry() {
   g_pActiveMapOrderContext->FinalizeQueuedMapOrderEntry(this);
 }
 
+// Mac oracle: TTaskForce::CancelOrders(unsigned char).
+// FUNCTION: IMPERIALISM 0x005547d0
+void TTaskForce::CancelOrders(unsigned char cancellationMode) {
+  (void)cancellationMode;
+  bool cancelsBeachhead = attachment == 5;
+  short cityIndex = cancelsBeachhead
+                        ? static_cast<short>(GetCityIndexFromCityStatePointer(owner.asCityTarget))
+                        : static_cast<short>(-1);
+
+  if (g_pNavyOrderManager != 0 && g_pNavyOrderManager->orderListHead04 == this) {
+    g_pNavyOrderManager->orderListHead04 = queue_next;
+  }
+  if (queue_prev != 0) {
+    queue_prev->queue_next = queue_next;
+  }
+  if (queue_next != 0) {
+    queue_next->queue_prev = queue_prev;
+  }
+  queue_prev = 0;
+  queue_next = 0;
+  for (TMapOrderChildLinkNode* link = childOrderList; link != 0; link = link->next) {
+    static_cast<TShip*>(link->payload)->ownerOrderEntry0c = 0;
+  }
+
+  g_pActiveMapOrderContext->ForgetForce(this);
+  TZone* previousContext = contextAnchor;
+  Free();
+
+  // The original's beachhead-only tail also revalidates supporting land orders for
+  // cityIndex. Cancellation itself must not depend on that secondary UI warning path.
+  (void)cancelsBeachhead;
+  (void)cityIndex;
+  g_pUiRuntimeContext->mapUberPictureF0->SetActiveMapOrderEntry(previousContext);
+}
+
 // FUNCTION: IMPERIALISM 0x005548e0
 void TTaskForce::RecomputeTaskForceAverageOrderScore() {
   int sum = 0;
@@ -1280,13 +1318,32 @@ int TTaskForce::CalculateMapOrderEntryAverageChildRatingX10() {
   return (sum * 10) / count;
 }
 
-namespace {
-// Per-order-type priority weight used by both IsTaskForceOrderMixWithinPriorityThresholds
-// and ResolveTaskForceOrderConflictAndPickCandidate; indexed by order_type (only 0-2 are
-// meaningful -- the original indexes the same 3-entry stack array unconditionally, so an
-// out-of-range order_type reads original stack garbage there too).
-const int kOrderTypePriorityWeight[3] = {200, 100, 50};
-} // namespace
+// Mac oracle: TTaskForce::GetCompositionDescription(CStr255&) const.
+// FUNCTION: IMPERIALISM 0x00554b20
+void TTaskForce::GetCompositionDescription(CString* out) const {
+  *out = g_szEmptyString;
+
+  int counts[14];
+  int i;
+  for (i = 0; i < 14; ++i) {
+    counts[i] = 0;
+  }
+  for (TMapOrderChildLinkNode* link = childOrderList; link != 0; link = link->next) {
+    TShip* ship = static_cast<TShip*>(link->payload);
+    ++counts[ship->resourceType04];
+  }
+
+  for (i = 0; i < 14; ++i) {
+    if (counts[i] > 0) {
+      CString label;
+      FormatLocalizedCommodityCountLabelByIndex(&label, i, static_cast<short>(counts[i]));
+      if (*out != g_szEmptyString) {
+        *out += g_szListSeparator_00695760;
+      }
+      *out += label;
+    }
+  }
+}
 
 // FUNCTION: IMPERIALISM 0x00554c90
 void TTaskForce::BuildTaskForceSelectionOverlayLabelText(CString* out) {
@@ -1382,6 +1439,39 @@ TTaskForce* TTaskForce::PruneNavyOrderIfUnserviceableOrNoChildren() {
   Free();
   return result;
 }
+
+// Mac oracle: TTaskForce::GetAuthority(CStr255&) const.
+// FUNCTION: IMPERIALISM 0x005551d0
+void TTaskForce::GetAuthority(CString* out) const {
+  if (this == 0 || activeChildEntry == 0) {
+    g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(out, 0x2762, 0xd);
+    return;
+  }
+
+  CString authorityTemplate;
+  CString shipName = activeChildEntry->displayName18;
+  if (activeChildEntry->admiralBacklink20 != 0) {
+    CString admiralName =
+        CString(s_szAdmiralPrefix_0069578c) + activeChildEntry->admiralBacklink20->displayName;
+    g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&authorityTemplate, 0x2762,
+                                                                    0xe);
+    scanBracketExpressions(g_pSimMgr, out, static_cast<LPCSTR>(authorityTemplate),
+                           static_cast<LPCSTR>(admiralName), static_cast<LPCSTR>(shipName));
+  } else {
+    g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&authorityTemplate, 0x2762,
+                                                                    0xf);
+    scanBracketExpressions(g_pSimMgr, out, static_cast<LPCSTR>(authorityTemplate),
+                           static_cast<LPCSTR>(shipName));
+  }
+}
+
+namespace {
+// Per-order-type priority weight used by both IsTaskForceOrderMixWithinPriorityThresholds
+// and ResolveTaskForceOrderConflictAndPickCandidate; indexed by order_type (only 0-2 are
+// meaningful -- the original indexes the same 3-entry stack array unconditionally, so an
+// out-of-range order_type reads original stack garbage there too).
+const int kOrderTypePriorityWeight[3] = {200, 100, 50};
+} // namespace
 
 // FUNCTION: IMPERIALISM 0x00555420
 char TTaskForce::ResolveTaskForceOrderConflictAndPickCandidate(TTaskForce* other) {

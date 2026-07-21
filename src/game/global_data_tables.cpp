@@ -1027,6 +1027,15 @@ IndustryCapabilityClassSlotEntry g_aIndustryCapabilityClassSlotTable[14] = {
     {2, {0x6, 0x4, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0}},
 };
 
+// GLOBAL: IMPERIALISM 0x0065c25e
+short g_aNavalIntelligenceAccuracyProfiles[6][6] = {
+    {0, 50, 20, 30, 40, 30},  {30, 50, 20, 30, 50, 30}, {20, 40, 35, 25, 55, 30},
+    {15, 30, 50, 20, 65, 20}, {15, 20, 65, 15, 70, 20}, {10, 10, 80, 10, 80, 10},
+};
+
+// GLOBAL: IMPERIALISM 0x006a43f4
+unsigned char g_bPerfectNavalIntelligenceCheat = 0;
+
 MappedFlavorTextNationVariantEntry g_MappedFlavorTextNationVariantTable_0066EF30[32] = {0};
 
 // Defend-province / mission priority-vector normalization (0x53e6e0 / 0x53ea70 family).

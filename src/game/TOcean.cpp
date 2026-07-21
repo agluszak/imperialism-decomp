@@ -610,6 +610,42 @@ void TOcean::FinalizeQueuedMapOrderEntry(TTaskForce* entry) {
   }
 }
 
+// Mac oracle: TOcean::ForgetForce(TTaskForce*).
+// FUNCTION: IMPERIALISM 0x00564400
+void TOcean::ForgetForce(TTaskForce* entry) {
+  if (this == 0) {
+    return;
+  }
+  if (selectedTaskForce14 == entry) {
+    selectedTaskForce14 = 0;
+  }
+  short nation = g_pSimMgr->GetActiveNationId();
+  if (entry->required_count != nation) {
+    return;
+  }
+
+  entry->ClearNavyOrderMapMarker();
+  TZone* zone = entry->contextAnchor;
+  if (zone == 0) {
+    return;
+  }
+  if (nation == -1) {
+    nation = g_pSimMgr->GetActiveNationId();
+  }
+
+  int hasUnassignedShip = 0;
+  if ((zone->nationKeyMask10 & static_cast<unsigned char>(1 << nation)) != 0) {
+    for (TShip* ship = GetNavyPrimaryOrderListHead(); ship != 0; ship = ship->nextOlder24) {
+      if (ship->field08 == zone && ship->ownerNationSlot14 == nation &&
+          ship->ownerOrderEntry0c == 0) {
+        hasUnassignedShip = 1;
+        break;
+      }
+    }
+  }
+  zone->SetMapOrderUiFlag(hasUnassignedShip);
+}
+
 // FUNCTION: IMPERIALISM 0x00564530
 int TOcean::ComputeGlobalMapActionContextNodeValueAverage() {
   int sum = 0;

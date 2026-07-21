@@ -13406,6 +13406,45 @@
       ],
       "source_file": "src/game/TNavyMgr.cpp"
     },
+    "0x00551be0": {
+      "references": [
+        {
+          "address": "0x0069430c",
+          "kind": "embedded_global",
+          "symbol": "g_szDecimalFormat",
+          "text": "%d"
+        },
+        {
+          "group": 10082,
+          "index": 30,
+          "kind": "windows_gob",
+          "load_string_id": 25190,
+          "text": "Forces of unknown type, apparently few in number"
+        },
+        {
+          "group": 10082,
+          "index": 31,
+          "kind": "windows_gob",
+          "load_string_id": 25191,
+          "text": ", "
+        },
+        {
+          "group": 10082,
+          "index": 32,
+          "kind": "windows_gob",
+          "load_string_id": 25192,
+          "text": ", and "
+        },
+        {
+          "group": 10082,
+          "index": 33,
+          "kind": "windows_gob",
+          "load_string_id": 25193,
+          "text": "[1: number] [2:ship type]"
+        }
+      ],
+      "source_file": "src/game/TAdmiral.cpp"
+    },
     "0x00552650": {
       "references": [
         {
@@ -13440,6 +13479,17 @@
       ],
       "source_file": "src/game/TTaskForce.cpp"
     },
+    "0x00554b20": {
+      "references": [
+        {
+          "address": "0x00695760",
+          "kind": "embedded_global",
+          "symbol": "g_szListSeparator_00695760",
+          "text": ", "
+        }
+      ],
+      "source_file": "src/game/TTaskForce.cpp"
+    },
     "0x00554c90": {
       "references": [
         {
@@ -13447,6 +13497,38 @@
           "kind": "embedded_global",
           "symbol": "g_szDecimalFormat",
           "text": "%d"
+        }
+      ],
+      "source_file": "src/game/TTaskForce.cpp"
+    },
+    "0x005551d0": {
+      "references": [
+        {
+          "address": "0x0069578c",
+          "kind": "embedded_global",
+          "symbol": "s_szAdmiralPrefix_0069578c",
+          "text": "Adm. "
+        },
+        {
+          "group": 10082,
+          "index": 13,
+          "kind": "windows_gob",
+          "load_string_id": 25173,
+          "text": "a democratically elected council of seamen"
+        },
+        {
+          "group": 10082,
+          "index": 14,
+          "kind": "windows_gob",
+          "load_string_id": 25174,
+          "text": "[1:admiral name] of the [2: ship name]"
+        },
+        {
+          "group": 10082,
+          "index": 15,
+          "kind": "windows_gob",
+          "load_string_id": 25175,
+          "text": "the Captain of the [1: ship name]"
         }
       ],
       "source_file": "src/game/TTaskForce.cpp"
@@ -13563,6 +13645,38 @@
         }
       ],
       "source_file": "src/game/TNewspaperView.cpp"
+    },
+    "0x005606f0": {
+      "references": [
+        {
+          "address": "0x0069578c",
+          "kind": "embedded_global",
+          "symbol": "s_szAdmiralPrefix_0069578c",
+          "text": "Adm. "
+        },
+        {
+          "group": 10082,
+          "index": 14,
+          "kind": "windows_gob",
+          "load_string_id": 25174,
+          "text": "[1:admiral name] of the [2: ship name]"
+        },
+        {
+          "group": 10082,
+          "index": 15,
+          "kind": "windows_gob",
+          "load_string_id": 25175,
+          "text": "the Captain of the [1: ship name]"
+        },
+        {
+          "group": 10082,
+          "index": 16,
+          "kind": "windows_gob",
+          "load_string_id": 25176,
+          "text": "anonymous phone call"
+        }
+      ],
+      "source_file": "src/game/TZone.cpp"
     },
     "0x005635e0": {
       "references": [
@@ -14334,6 +14448,122 @@
           "kind": "windows_gob",
           "load_string_id": 21997,
           "text": "\\n\\nNetwork game name is [1:]"
+        }
+      ],
+      "source_file": "src/game/TMapUberPicture.cpp"
+    },
+    "0x00597f80": {
+      "references": [
+        {
+          "address": "0x00694fd8",
+          "kind": "embedded_global",
+          "symbol": "g_szUiFailureMessage",
+          "text": "Failure"
+        },
+        {
+          "address": "0x00694fc8",
+          "kind": "embedded_global",
+          "symbol": "g_szUiNilPointerMessage",
+          "text": "Nil Pointer"
+        },
+        {
+          "address": "0x0069943c",
+          "kind": "embedded_global",
+          "symbol": "s_SourcePathUSuperMap_0069943C",
+          "text": "D:\\Ambit\\Cross\\USuperMap.cpp"
+        },
+        {
+          "group": 10082,
+          "index": 1,
+          "kind": "windows_gob",
+          "load_string_id": 25161,
+          "text": "[1:admiralName] commanding"
+        },
+        {
+          "group": 10082,
+          "index": 2,
+          "kind": "windows_gob",
+          "load_string_id": 25162,
+          "text": "Patrol the waters of the [1:seaName]"
+        },
+        {
+          "group": 10082,
+          "index": 3,
+          "kind": "windows_gob",
+          "load_string_id": 25163,
+          "text": "Send in the troops."
+        },
+        {
+          "group": 10082,
+          "index": 7,
+          "kind": "windows_gob",
+          "load_string_id": 25167,
+          "text": "If it floats and it doesn't say 'quack', sink it"
+        },
+        {
+          "group": 10082,
+          "index": 8,
+          "kind": "windows_gob",
+          "load_string_id": 25168,
+          "text": "Task Force Report"
+        },
+        {
+          "group": 10082,
+          "index": 9,
+          "kind": "windows_gob",
+          "load_string_id": 25169,
+          "text": "Force currently located in"
+        },
+        {
+          "group": 10082,
+          "index": 10,
+          "kind": "windows_gob",
+          "load_string_id": 25170,
+          "text": "Composition"
+        },
+        {
+          "group": 10082,
+          "index": 11,
+          "kind": "windows_gob",
+          "load_string_id": 25171,
+          "text": "Orders"
+        },
+        {
+          "group": 10082,
+          "index": 57,
+          "kind": "windows_gob",
+          "load_string_id": 25217,
+          "text": "Blockade the [1: the Port of Calais]"
+        }
+      ],
+      "source_file": "src/game/TMapUberPicture.cpp"
+    },
+    "0x00599090": {
+      "references": [
+        {
+          "address": "0x00694fd8",
+          "kind": "embedded_global",
+          "symbol": "g_szUiFailureMessage",
+          "text": "Failure"
+        },
+        {
+          "address": "0x00694fc8",
+          "kind": "embedded_global",
+          "symbol": "g_szUiNilPointerMessage",
+          "text": "Nil Pointer"
+        },
+        {
+          "address": "0x0069943c",
+          "kind": "embedded_global",
+          "symbol": "s_SourcePathUSuperMap_0069943C",
+          "text": "D:\\Ambit\\Cross\\USuperMap.cpp"
+        },
+        {
+          "group": 10082,
+          "index": 52,
+          "kind": "windows_gob",
+          "load_string_id": 25212,
+          "text": "Coastwatchers in [1: province]"
         }
       ],
       "source_file": "src/game/TMapUberPicture.cpp"
@@ -179013,7 +179243,7 @@
   "summary": {
     "embedded_globals": 766,
     "formula_matches": 2356,
-    "functions_with_references": 266,
+    "functions_with_references": 272,
     "mac_strings": 3821,
     "mac_strings_with_candidates": 3091,
     "text_resources": 0,

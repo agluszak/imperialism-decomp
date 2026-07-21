@@ -4,6 +4,7 @@
 #include "game/TAmbitApplication.h"
 #include "game/TAnimator.h"
 #include "game/TArmyMgr.h"
+#include "game/TAdmiral.h"
 #include "game/TCivMgr.h"
 #include "game/TMapDialog.h"
 #include "game/TMapMgr.h"
@@ -13,8 +14,11 @@
 #include "game/TOcean.h"
 #include "game/TOceanDialog.h"
 #include "game/TSimMgr.h"
+#include "game/TStaticText.h"
 #include "game/TTaskForce.h"
 #include "game/TViewMgr.h"
+#include "game/TWindow.h"
+#include "game/TModuleLibraryCacheTableStateB.h"
 #include "game/global_data_tables.h"
 #include "game/mapped_flavor_text.h"
 #include "game/ui_control_tags.h"
@@ -290,11 +294,9 @@ void TMapUberPicture::RefreshMapOrderEntryPanel(TTaskForce* pMapOrderEntry) {
 // FUNCTION: IMPERIALISM 0x00597950
 void TMapUberPicture::SetActiveMapOrderEntry(TZone* pMapOrderContextZone) {
   this->SetMapInteractionMode(2);
-  // Ground truth also calls InvalidateMapRegionForOrderEntry (thiscall on
-  // goodGoldTagControlA4, an unrecovered control class) around the write below, once for
-  // the old orderEntryContext98 value and once for the new one; left undone rather than
-  // faked.
+  goodGoldTagControlA4->InvalidateZone(orderEntryContext98);
   this->orderEntryContext98 = pMapOrderContextZone;
+  goodGoldTagControlA4->InvalidateZone(pMapOrderContextZone);
   if (pMapOrderContextZone == nullptr) {
     this->RefreshMapOrderEntryPanel(nullptr);
     return;
@@ -329,16 +331,133 @@ bool TMapUberPicture::OrphanLeaf_NoCall_Ins23_00597a10() {
 // FUNCTION: IMPERIALISM 0x00597a80
 void TMapUberPicture::CycleMapInteractionSelectionAfterHandledClick() {}
 
-// TODO: body not yet ported (1761-byte dialog-construction routine). Real receiver and
-// arity confirmed from TToolBarCluster::TryHandleMapContextAction's case-11 call site
-// (ecx = mapUberPictureF0 immediately before the call); pMapOrderEntry is the TTaskForce
-// queue entry located by matching tiebreak_strength against the clicked tile index.
 // FUNCTION: IMPERIALISM 0x00597f80
-void TMapUberPicture::OpenMapEntryOrderDialog(TTaskForce* pMapOrderEntry) {
-  // BLOCKED (still a stub): same shape as OpenMapContextActionDialogByType -- a 1761-byte
-  // dialog-construction routine driving an unrecovered 100+-slot dialog-builder class via its
-  // vtable. Deferred pending recovery of that builder class (see the note at 0x599090).
-  (void)pMapOrderEntry;
+void TMapUberPicture::InspectTaskForceDialog(TTaskForce* taskForce) {
+  TUiTextStyleDescriptor titleStyle;
+  TUiTextStyleDescriptor bodyStyle;
+  TUiTextStyleDescriptor detailStyle;
+  TUiTextStyleDescriptor attributionStyle;
+  InitializeUiTextStyleDescriptor(&titleStyle, 0, 14, 0x2b67, 1);
+  BuildUiTextStyleDescriptor(&bodyStyle, 0, 12, 0x2b67);
+  InitializeUiTextStyleDescriptor(&detailStyle, 0, 10, 0x2b67, 3);
+  InitializeUiTextStyleDescriptor(&attributionStyle, 2, 10, 0x2b67, 3);
+
+  // Mac resource oracle: MapView.rsrc:9474, event 0x2502, "Friendly Fleet Report".
+  TWindow* dialog =
+      static_cast<TWindow*>(g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(0x2502));
+  if (dialog == 0) {
+    MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUSuperMap_0069943C, 0x728);
+  }
+  dialog->SetModality(1);
+
+  CString text;
+  CString value;
+  CString reportTemplate;
+  TStaticText* control = static_cast<TStaticText*>(dialog->ResolveControlByTag(0x7a6f6e65)); // zone
+  control->AssertValid();
+  taskForce->contextAnchor->AssignZoneDisplayNameToOutputRef(&text);
+  control->SetTextAndMaybeRefresh(&text, 0);
+  control->SetTextStyleAndMaybeRefresh(&bodyStyle, 0);
+
+  control = static_cast<TStaticText*>(dialog->ResolveControlByTag(0x6164616d)); // adam
+  control->AssertValid();
+  taskForce->GetAuthority(&value);
+  g_pSimMgr->GetString(0x2762, 0, &reportTemplate);
+  scanBracketExpressions(g_pSimMgr, &text, static_cast<LPCSTR>(reportTemplate),
+                         static_cast<LPCSTR>(value));
+  control->SetTextAndMaybeRefresh(&text, 0);
+  control->SetTextStyleAndMaybeRefresh(&detailStyle, 0);
+
+  control = static_cast<TStaticText*>(dialog->ResolveControlByTag(0x77686f6d)); // whom
+  control->AssertValid();
+  taskForce->GetCompositionDescription(&text);
+  control->SetTextAndMaybeRefresh(&text, 0);
+  control->SetTextStyleAndMaybeRefresh(&detailStyle, 0);
+
+  control = static_cast<TStaticText*>(dialog->ResolveControlByTag(0x6f726473)); // ords
+  control->AssertValid();
+  switch (taskForce->attachment) {
+  case 1:
+    taskForce->owner.asZone->AssignZoneDisplayNameToOutputRef(&value);
+    g_pSimMgr->GetString(0x2762, 0xb, &reportTemplate);
+    scanBracketExpressions(g_pSimMgr, &text, static_cast<LPCSTR>(reportTemplate),
+                           static_cast<LPCSTR>(value));
+    break;
+  case 3:
+    taskForce->contextAnchor->AssignZoneDisplayNameToOutputRef(&value);
+    g_pSimMgr->GetString(0x2762, 1, &reportTemplate);
+    scanBracketExpressions(g_pSimMgr, &text, static_cast<LPCSTR>(reportTemplate),
+                           static_cast<LPCSTR>(value));
+    break;
+  case 5:
+    g_pSimMgr->GetString(0x2762, 2, &text);
+    break;
+  case 6:
+    taskForce->owner.asZone->AssignZoneDisplayNameToOutputRef(&value);
+    g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&reportTemplate, 0x2762, 0x39);
+    scanBracketExpressions(g_pSimMgr, &text, static_cast<LPCSTR>(reportTemplate),
+                           static_cast<LPCSTR>(value));
+    break;
+  default:
+    g_pSimMgr->GetString(0x2762, 3, &text);
+    break;
+  }
+  control->SetTextAndMaybeRefresh(&text, 0);
+  control->SetTextStyleAndMaybeRefresh(&detailStyle, 0);
+
+  control = static_cast<TStaticText*>(dialog->ResolveControlByTag(0x6167726f)); // agro
+  control->AssertValid();
+  g_pSimMgr->GetString(0x2762, static_cast<short>(taskForce->order_type + 4), &text);
+  control->SetTextAndMaybeRefresh(&text, 0);
+  control->SetTextStyleAndMaybeRefresh(&attributionStyle, 0);
+
+  control = static_cast<TStaticText*>(dialog->ResolveControlByTag(0x7469746c)); // titl
+  control->AssertValid();
+  g_pSimMgr->GetString(0x2762, 7, &text);
+  control->SetTextAndMaybeRefresh(&text, 0);
+  control->SetTextStyleAndMaybeRefresh(&titleStyle, 0);
+
+  control = static_cast<TStaticText*>(dialog->ResolveControlByTag(0x6c616231)); // lab1
+  control->AssertValid();
+  g_pSimMgr->GetString(0x2762, 8, &text);
+  control->SetTextAndMaybeRefresh(&text, 0);
+  control->SetTextStyleAndMaybeRefresh(&detailStyle, 0);
+
+  control = static_cast<TStaticText*>(dialog->ResolveControlByTag(0x6c616232)); // lab2
+  control->AssertValid();
+  g_pSimMgr->GetString(0x2762, 9, &text);
+  control->SetTextAndMaybeRefresh(&text, 0);
+  control->SetTextStyleAndMaybeRefresh(&bodyStyle, 0);
+
+  control = static_cast<TStaticText*>(dialog->ResolveControlByTag(0x6c616233)); // lab3
+  control->AssertValid();
+  g_pSimMgr->GetString(0x2762, 0xa, &text);
+  control->SetTextAndMaybeRefresh(&text, 0);
+  control->SetTextStyleAndMaybeRefresh(&bodyStyle, 0);
+
+  TDialogBehavior* behavior = dialog->GetDialogBehavior();
+  if (behavior != 0) {
+    behavior->defaultCommandCode = 0x6f6b6179; // 'okay'
+  }
+  int result = dialog->PoseModally();
+  dialog->Close();
+  dialog->Free();
+
+  if (result == 0x63616e63) { // 'canc'
+    TZone* previousContext = taskForce->contextAnchor;
+    taskForce->CancelOrders(0);
+    SetMapInteractionMode(2);
+    goodGoldTagControlA4->InvalidateZone(orderEntryContext98);
+    orderEntryContext98 = previousContext;
+    goodGoldTagControlA4->InvalidateZone(previousContext);
+    TTaskForce* refreshed =
+        previousContext != 0
+            ? g_pActiveMapOrderContext->EnsureSelectedTaskForceForOrderOwnerAndRefresh(
+                  previousContext)
+            : 0;
+    RefreshMapOrderEntryPanel(refreshed);
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x00598870
@@ -403,22 +522,102 @@ void TMapUberPicture::NoticeTile(int tileIndex) {
   this->subviewAc->OrphanCallChain_C6_I29_00596700(tileIndex);
 }
 
-// TODO: body not yet ported (1405-byte dialog-construction routine). Real receiver and
-// arity confirmed from TToolBarCluster::TryHandleMapContextAction's case-2..8 call site
-// (ecx = mapUberPictureF0 immediately before the call); actionType is the map-context
-// action code minus 2 (range 0..6), cachedContext is the caller's cached map-action-
-// context pointer (g_pCachedMapActionContext) forwarded for dialog continuity.
 // FUNCTION: IMPERIALISM 0x00599090
-void TMapUberPicture::OpenMapContextActionDialogByType(TZone* zone, int actionType,
-                                                       TTaskForce* cachedContext) {
-  // BLOCKED (still a stub): the body builds a dialog by loading localized "titl"/"lab1".."lab4"
-  // strings via g_pSimMgr's UI-string virtual (slot 0x10) and driving a dialog-builder object
-  // through a large vtable (slots 0x6d, 0x72, 0x1ac, 0x1b4, 0x1b8, 0x1c8 => a 100+-slot class).
-  // That builder class is not recovered; porting faithfully without it would require banned
-  // fake-callconv casts, so this is deferred pending recovery of the dialog-builder class.
-  (void)zone;
-  (void)actionType;
-  (void)cachedContext;
+void TMapUberPicture::NavalIntelligenceDialog(TZone* zone, short nation,
+                                              TTaskForce* cachedTaskForce) {
+  TUiTextStyleDescriptor titleStyle;
+  TUiTextStyleDescriptor bodyStyle;
+  TUiTextStyleDescriptor detailStyle;
+  TUiTextStyleDescriptor attributionStyle;
+  InitializeUiTextStyleDescriptor(&titleStyle, 0, 14, 0x2b67, 1);
+  BuildUiTextStyleDescriptor(&bodyStyle, 0, 12, 0x2b67);
+  InitializeUiTextStyleDescriptor(&detailStyle, 0, 10, 0x2b67, 3);
+  InitializeUiTextStyleDescriptor(&attributionStyle, 2, 10, 0x2b67, 3);
+
+  // Mac resource oracle: MapView.rsrc:9475, event 0x2503, "Enemy Fleet Report".
+  TWindow* dialog =
+      static_cast<TWindow*>(g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(0x2503));
+  if (dialog == 0) {
+    MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUSuperMap_0069943C, 0x923);
+  }
+  dialog->SetModality(1);
+
+  CString text;
+  CString reportTemplate;
+  TStaticText* control = static_cast<TStaticText*>(dialog->ResolveControlByTag(0x67706565)); // gpee
+  control->AssertValid();
+  g_apTerrainTypeDescriptorTable[nation]->FormatOverlayTerrainLabelText(&text);
+  control->SetTextAndMaybeRefresh(&text, 0);
+  control->SetTextStyleAndMaybeRefresh(&bodyStyle, 0);
+
+  control = static_cast<TStaticText*>(dialog->ResolveControlByTag(0x7a6f6e65)); // zone
+  control->AssertValid();
+  zone->AssignZoneDisplayNameToOutputRef(&text);
+  control->SetTextAndMaybeRefresh(&text, 0);
+  control->SetTextStyleAndMaybeRefresh(&bodyStyle, 0);
+
+  control = static_cast<TStaticText*>(dialog->ResolveControlByTag(0x6164616d)); // adam
+  control->AssertValid();
+  if (cachedTaskForce != 0) {
+    g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&reportTemplate, 0x2762, 0x34);
+    scanBracketExpressions(g_pSimMgr, &text, static_cast<LPCSTR>(reportTemplate),
+                           static_cast<LPCSTR>(cachedTaskForce->owner.asCityTarget->cityNameA4));
+  } else {
+    zone->BuildNavalIntelligenceSourceDescription(&text, g_pSimMgr->GetActiveNationId());
+  }
+  control->SetTextAndMaybeRefresh(&text, 0);
+  control->SetTextStyleAndMaybeRefresh(&attributionStyle, 0);
+
+  control = static_cast<TStaticText*>(dialog->ResolveControlByTag(0x73686970)); // ship
+  control->AssertValid();
+  if (cachedTaskForce != 0) {
+    cachedTaskForce->GetCompositionDescription(&text);
+  } else {
+    TAdmiral* observer = zone->FindReportingAdmiralForNation(g_pSimMgr->GetActiveNationId());
+    observer->GetFleetReport(&text, zone, nation);
+  }
+  control->SetTextAndMaybeRefresh(&text, 0);
+  control->SetTextStyleAndMaybeRefresh(&detailStyle, 0);
+
+  int stringIndex = cachedTaskForce != 0 ? 0x2e : 0x29;
+  control = static_cast<TStaticText*>(dialog->ResolveControlByTag(0x7469746c)); // titl
+  control->AssertValid();
+  g_pSimMgr->GetString(0x2762, static_cast<short>(stringIndex++), &text);
+  control->SetTextAndMaybeRefresh(&text, 0);
+  control->SetTextStyleAndMaybeRefresh(&titleStyle, 0);
+
+  control = static_cast<TStaticText*>(dialog->ResolveControlByTag(0x6c616231)); // lab1
+  control->AssertValid();
+  g_pSimMgr->GetString(0x2762, static_cast<short>(stringIndex++), &text);
+  control->SetTextAndMaybeRefresh(&text, 0);
+  control->SetTextStyleAndMaybeRefresh(&detailStyle, 0);
+
+  control = static_cast<TStaticText*>(dialog->ResolveControlByTag(0x6c616232)); // lab2
+  control->AssertValid();
+  g_pSimMgr->GetString(0x2762, static_cast<short>(stringIndex++), &text);
+  control->SetTextAndMaybeRefresh(&text, 0);
+  control->SetTextStyleAndMaybeRefresh(&detailStyle, 0);
+
+  control = static_cast<TStaticText*>(dialog->ResolveControlByTag(0x6c616233)); // lab3
+  control->AssertValid();
+  g_pSimMgr->GetString(0x2762, static_cast<short>(stringIndex++), &text);
+  control->SetTextAndMaybeRefresh(&text, 0);
+  control->SetTextStyleAndMaybeRefresh(&bodyStyle, 0);
+
+  control = static_cast<TStaticText*>(dialog->ResolveControlByTag(0x6c616234)); // lab4
+  control->AssertValid();
+  g_pSimMgr->GetString(0x2762, static_cast<short>(stringIndex), &text);
+  control->SetTextAndMaybeRefresh(&text, 0);
+  control->SetTextStyleAndMaybeRefresh(&attributionStyle, 0);
+
+  TDialogBehavior* behavior = dialog->GetDialogBehavior();
+  if (behavior != 0) {
+    behavior->defaultCommandCode = 0x6f6b6179; // 'okay'
+  }
+  dialog->PoseModally();
+  dialog->Close();
+  dialog->Free();
 }
 
 // FUNCTION: IMPERIALISM 0x005999f0

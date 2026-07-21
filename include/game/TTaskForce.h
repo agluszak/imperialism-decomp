@@ -192,6 +192,14 @@ public:
   // Used by BuildMapOrderBattleSideSnapshot for its overlay label field.
   void BuildTaskForceSelectionOverlayLabelText(CString* out); // 0x554c90
 
+  // Mac oracle: TTaskForce::GetCompositionDescription(CStr255&) const. Counts the
+  // child ships by resource type and joins the localized, pluralized labels.
+  void GetCompositionDescription(CString* out) const; // 0x554b20
+  // Mac oracle: GetAuthority / CancelOrders. GetAuthority names the admiral or
+  // captain commanding activeChildEntry; CancelOrders removes this queue entry.
+  void GetAuthority(CString* out) const;             // 0x5551d0
+  void CancelOrders(unsigned char cancellationMode); // 0x5547d0
+
   // Null-safe tail-recursive queue_next walk used by ResolveMapOrderChainsForTurnPhase
   // to rebuild the order queue head: prunes (Free()s) any entry with no active children,
   // or a live entry whose order_type is 0/1/4/7/8, or (order_type == 5) whose target

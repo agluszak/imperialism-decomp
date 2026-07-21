@@ -260,16 +260,11 @@ public:
   // candidate walkers) that need their own raw-listing recovery pass before this can be
   // ported faithfully.
   void CycleMapInteractionSelectionAfterHandledClick();
-  // Opens a context-action dialog for actionType (0..6, i.e. map-context action code - 2)
-  // against the resolved tile zone, forwarding the caller's cached map-action-context
-  // pointer for dialog continuity. Called from TToolBarCluster::TryHandleMapContextAction
-  // for action codes 2..8. 0x00599090, __thiscall, 1405 bytes. TODO: body not yet ported
-  // (large dialog-construction routine).
-  void OpenMapContextActionDialogByType(TZone* zone, int actionType, TTaskForce* cachedContext);
-  // Opens the entry-order dialog for a specific TTaskForce queue entry. Called from
-  // TToolBarCluster::TryHandleMapContextAction for action code 11 (entry located by
-  // walking the queue_next chain rooted at TToolBarCluster's inherited TEventHandler::
-  // field04 for a tiebreak_strength == tile index match). 0x00597f80, __thiscall, 1761
-  // bytes. TODO: body not yet ported (large dialog-construction routine).
-  void OpenMapEntryOrderDialog(TTaskForce* pMapOrderEntry);
+  // Mac oracle: NavalIntelligenceDialog(TZone*, short, TTaskForce*). Opens the
+  // MapView.rsrc:9475 "Enemy Fleet Report" tree (event 0x2503); nation selects the
+  // foreign power and cachedTaskForce switches between direct and estimated reports.
+  void NavalIntelligenceDialog(TZone* zone, short nation, TTaskForce* cachedTaskForce);
+  // Mac oracle: InspectTaskForceDialog(TTaskForce*). Opens MapView.rsrc:9474,
+  // event 0x2502 ("Friendly Fleet Report"), and cancels the order when requested.
+  void InspectTaskForceDialog(TTaskForce* taskForce);
 };
