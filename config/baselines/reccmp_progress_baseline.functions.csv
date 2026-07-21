@@ -4435,7 +4435,7 @@ address|matching|name
 0x57b9e0|0.7261146496815286|TSimMgr::TSimMgr
 0x57bb50|0.9090909090909091|TSimMgr::`scalar deleting destructor'
 0x57bbf0|0.7368421052631579|TSimMgr::InitializeTurnFlowStateDefaults
-0x57bd20|0.9368421052631579|TSimMgr::Free
+0x57bd20|1.0|TSimMgr::Free
 0x57bea0|0.7181628392484343|TSimMgr::ReadFrom
 0x57c230|0.8366533864541833|TSimMgr::WriteTo
 0x57c390|1.0|TSimMgr::RebuildNationStateSlotsNoOp

@@ -148,10 +148,6 @@ TSimMgr::TSimMgr() : sharedTextSlots() {
 // TSimMgr::`scalar deleting destructor'
 TSimMgr::~TSimMgr() {}
 
-// TODO: port teardown of the global map/order-manager singletons and nation-state tables
-// (overrides TObject::Free; releases g_pNationInteractionStateManager,
-// g_pDiplomacyTurnStateManager, g_pMapContextActionManager, ... via their own vtables).
-
 // FUNCTION: IMPERIALISM 0x0057bbf0
 void TSimMgr::InitializeTurnFlowStateDefaults() {
   quarterGateTick2c = 0;
@@ -224,19 +220,23 @@ void TSimMgr::Free() {
     g_pNavyOrderManager = nullptr;
   }
 
-  for (i = 0; i < 0x17; ++i) {
-    if (g_apTerrainTypeDescriptorTable[i] != nullptr) {
-      g_apTerrainTypeDescriptorTable[i]->Free();
+  TCountry** descriptorCursor = g_apTerrainTypeDescriptorTable;
+  for (i = 0x17; i != 0; --i) {
+    TCountry* descriptor = *descriptorCursor;
+    if (descriptor != nullptr) {
+      descriptor->Free();
+      descriptor = nullptr;
     }
-    g_apTerrainTypeDescriptorTable[i] = nullptr;
+    *descriptorCursor = descriptor;
+    ++descriptorCursor;
   }
 
   for (i = 0; i < 7; ++i) {
     g_apNationStates[i] = nullptr;
   }
 
-  for (i = 7; i < 0x17; ++i) {
-    g_apSecondaryNationStateSlots[i] = nullptr;
+  for (i = 0; i < 0x10; ++i) {
+    g_apNationAuxRuntimeStateSlots[i] = nullptr;
   }
 
   if (this != nullptr) {
