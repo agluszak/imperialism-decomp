@@ -162,7 +162,7 @@ void TCityInteriorMinister::ReadFrom(TStream* stream) {
 void TCityInteriorMinister::Call54() {}
 
 // FUNCTION: IMPERIALISM 0x004bf8a0
-undefined TCityInteriorMinister::VTableSlot21(TCity* city) {
+undefined TCityInteriorMinister::EvaluateCityShortagesAndNotifyForeignMinister(TCity* city) {
   if (orderMetricTable40[0] != 0 || orderMetricTable40[1] != 0) {
     bool roll = (rand() % 100) >= 75;
     ownerContextAt04->foreignMinister->AddToForeignMinisterCounterAtIndex(0, roll);
@@ -177,7 +177,7 @@ undefined TCityInteriorMinister::VTableSlot21(TCity* city) {
 
   short localB;
   unsigned short localA;
-  city->productionSummary1d8->OrphanLeaf_NoCall_Ins111_004b6260(&localB, &localA);
+  city->productionSummary1d8->GetRecentStormImpactMetrics(&localB, &localA);
 
   short resultCode;
   short magnitude;
@@ -243,9 +243,7 @@ undefined TCityInteriorMinister::QueueCityProductionRebalanceCommandsByThreshold
 }
 
 // FUNCTION: IMPERIALISM 0x004bff60
-undefined TCityInteriorMinister::GetTEventHandlerClassNamePointer_24(int, int) {
-  return 0;
-}
+void TCityInteriorMinister::NoOpProductionCommandHook24(int, int) {}
 
 // FUNCTION: IMPERIALISM 0x004bff80
 undefined TCityInteriorMinister::QueueCityProductionCommand33FromAccumulatedDeficit(int*, int) {

@@ -154,7 +154,7 @@ void TDefenseMinister::Call4C() {
 // Slot 20 override (0x4ec540).
 
 // FUNCTION: IMPERIALISM 0x004ec540
-void TDefenseMinister::MinisterSlot14() {
+void TDefenseMinister::AssignDefenseUnitsToHomeAndBorderRegions() {
   TGreatPower* owner = ownerContextAt04;
   int totalUnitCount = owner->militaryUnitList44->GetCount();
 
