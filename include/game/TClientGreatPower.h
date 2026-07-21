@@ -26,5 +26,5 @@ public:
   // slot 0xab — 0x00541790
   void HandleNationLost(void) override;
 
-  TClientGreatPower();
+  TClientGreatPower() : TGreatPower() {}
 };

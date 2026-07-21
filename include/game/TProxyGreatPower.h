@@ -192,5 +192,5 @@ public:
   // slot 0xb0 SetNationTransferTargetCodeAndNotifyEligiblePeers_b0 inherited unchanged (0x4e2b00)
   // slot 0xb1 BuildGreatPowerTurnMessageSummaryAndDispatch inherited unchanged (0x4e2b70)
 
-  TProxyGreatPower();
+  TProxyGreatPower() : TGreatPower() {}
 };

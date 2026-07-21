@@ -19,7 +19,7 @@ public:
   void ProcessPendingDiplomacyProposalQueue(void) override;
   void HandleNationLost(void) override;
 
-  THostGreatPower();
+  THostGreatPower() : nationLostEventDispatched(0) {}
 
   // +0x964 — serialized from save format 0x3d onward. The host sends the tagged
   // nation-loss event only once, then sets this byte.

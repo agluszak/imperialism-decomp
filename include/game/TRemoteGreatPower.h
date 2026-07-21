@@ -30,5 +30,5 @@ public:
   char UpdateGreatPowerPressureStateAndDispatchEscalationMessage(void) override;
   virtual void OrphanRetStub_005418e0(void);
 
-  TRemoteGreatPower();
+  TRemoteGreatPower() : TGreatPower() {}
 };

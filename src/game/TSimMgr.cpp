@@ -48,6 +48,21 @@ int __cdecl TouchSessionActiveNationId(void);
 void __cdecl ResetPortZoneGlobalContextCounters(void);
 void RegenerateAllMapActionContextStatusCodes();
 
+static inline bool IsNationTerrainEligible(short nationSlot) {
+  if (nationSlot == -1) {
+    return false;
+  }
+  TCountry* terrain = g_apTerrainTypeDescriptorTable[nationSlot];
+  if (terrain == nullptr) {
+    return false;
+  }
+  if (nationSlot > 6) {
+    return true;
+  }
+  const short code = terrain->encodedNationSlot;
+  return code < 100 || code >= 200;
+}
+
 // FUNCTION: IMPERIALISM 0x004153a0
 int ReadSettingsPrefIntByIndex(int index, int defaultValue) {
   CString key;
@@ -582,101 +597,141 @@ void TSimMgr::RebuildNationStateSlotsAndAvailability(int activate) {
 
 // FUNCTION: IMPERIALISM 0x0057cda0
 void TSimMgr::RebuildPrimaryNationStateForSlot(int slotIndex, char activate) {
-  if (g_apNationStates[slotIndex] != nullptr) {
-    g_apNationStates[slotIndex]->Free();
+  short nationSlot = static_cast<short>(slotIndex);
+  int nationIndex = nationSlot;
+
+  if (g_apNationStates[nationIndex] != nullptr) {
+    g_apNationStates[nationIndex]->Free();
   }
-  g_apNationStates[slotIndex] = nullptr;
-  g_apTerrainTypeDescriptorTable[slotIndex] = nullptr;
+  g_apNationStates[nationIndex] = nullptr;
+  g_apTerrainTypeDescriptorTable[nationIndex] = nullptr;
 
-  short sVar1 = scenarioSetupRows0[slotIndex];
-  if (sVar1 != 1) {
-    if (sVar1 == 4) {
-      TGreatPower* pTVar5 = (TGreatPower*)new TRemoteGreatPower();
-      g_apNationStates[slotIndex] = pTVar5;
-      pTVar5->InitializeNationStateRuntimeSubsystems(
-          g_pGameFlowState->nationSessionIds[slotIndex] != 0, 1);
-      g_apTerrainTypeDescriptorTable[slotIndex] = pTVar5;
-
-      g_apTerrainTypeDescriptorTable[slotIndex]->identitySharedString1 =
-          g_pGameFlowState->nationDisplayNameSlots[slotIndex];
-
-      if (activate != 0 && stateFlag114 != 0) {
-        pTVar5->ApplyScenarioRelationPresetAndSpawnFrogCity(pTVar5->city);
-      }
-    } else if (sVar1 == 3) {
-      TGreatPower* pTVar5 = (TGreatPower*)new TProxyGreatPower();
-      pTVar5->InitializeNationStateRuntimeSubsystems(1, 1);
-      g_apNationStates[slotIndex] = pTVar5;
-      g_apTerrainTypeDescriptorTable[slotIndex] = pTVar5;
-
-      if (g_bMultiplayerScenarioSetupActive == 0) {
-        if (activate != 0) {
-          pTVar5->ApplyScenarioRelationPresetAndSpawnFrogCity(pTVar5->city);
-        }
-        g_pDiplomacyTurnStateManager->SetStandingScoreSlot28(slotIndex, slotIndex, 0x100);
-      }
-      g_apTerrainTypeDescriptorTable[slotIndex]->identitySharedString1 =
-          g_pGameFlowState->nationDisplayNameSlots[slotIndex];
-    } else if (sVar1 == 2) {
-      // Real allocation is operator_new(0xb70) followed by TAutoGreatPower::TAutoGreatPower()
-      // (ctor thunk 0x407a31 -> 0x4e6b50) -- this slot is genuinely a TAutoGreatPower, not a
-      // bare TGreatPower (whose object size is 0x964, too small for the tail AI state block).
-      TAutoGreatPower* pTVar5 = new TAutoGreatPower();
-      pTVar5->InitializeNationMinisterSubsystemsByPolicyIds(
-          slotIndex, 2, scenarioSetupRows1[slotIndex], scenarioSetupRows2[slotIndex],
-          scenarioSetupRows3[slotIndex]);
-      g_apNationStates[slotIndex] = pTVar5;
-      g_apTerrainTypeDescriptorTable[slotIndex] = pTVar5;
-
-      if (g_bMultiplayerScenarioSetupActive == 0) {
-        if (activate != 0) {
-          pTVar5->ApplyScenarioRelationPresetAndSpawnFrogCity(pTVar5->city);
-        }
-        pTVar5->QueueMapActionMissionsForPortZoneCandidates();
-        pTVar5->AssignDisplayNamesToUnnamedMilitaryUnits();
-      }
-    } else {
-      g_apNationStates[slotIndex] = nullptr;
-      g_apTerrainTypeDescriptorTable[slotIndex] = nullptr;
-    }
-  } else {
-    if (field44 == 2) {
+  short setupMode = scenarioSetupRows0[nationIndex];
+  if (setupMode == 1) {
+    unsigned char useClientNation = field44 == 2;
+    if (useClientNation != 0) {
       TGreatPower* pTVar5 = (TGreatPower*)new TClientGreatPower();
-      g_apNationStates[slotIndex] = pTVar5;
-    } else if (field44 == 1) {
-      TGreatPower* pTVar5 = (TGreatPower*)new THostGreatPower();
-      g_apNationStates[slotIndex] = pTVar5;
+      g_apNationStates[nationIndex] = pTVar5;
     } else {
-      TGreatPower* pTVar5 = new TGreatPower();
-      g_apNationStates[slotIndex] = pTVar5;
+      unsigned char useHostNation = field44 == 1;
+      if (useHostNation != 0) {
+        TGreatPower* pTVar5 = (TGreatPower*)new THostGreatPower();
+        g_apNationStates[nationIndex] = pTVar5;
+      } else {
+        TGreatPower* pTVar5 = new TGreatPower();
+        g_apNationStates[nationIndex] = pTVar5;
+      }
     }
-    g_apNationStates[slotIndex]->InitializeNationStateRuntimeSubsystems(1, 1);
-    g_apTerrainTypeDescriptorTable[slotIndex] = g_apNationStates[slotIndex];
+    g_apNationStates[nationIndex]->InitializeNationStateRuntimeSubsystems(slotIndex, 1);
+    g_apTerrainTypeDescriptorTable[nationIndex] = g_apNationStates[nationIndex];
     if (g_bMultiplayerScenarioSetupActive == 0) {
-      activeNationSlot = static_cast<short>(slotIndex);
+      activeNationSlot = nationSlot;
       g_pStrategicMapViewSystem->RefreshCityCapabilityUiHandlesForActiveNation();
     }
     if (g_bMultiplayerScenarioSetupActive == 0) {
-      if (field44 != 0) {
+      unsigned char suspendPrimaryEventQueue = field44 != 0;
+      if (suspendPrimaryEventQueue != 0) {
         g_pGameFlowState->processPrimaryEventQueue = 0;
       }
       if (activate != 0) {
-        g_apNationStates[slotIndex]->ApplyScenarioRelationPresetAndSpawnFrogCity(
-            g_apNationStates[slotIndex]->city);
+        TGreatPower* nationState = g_apNationStates[nationIndex];
+        TCity* city = nationState != nullptr ? nationState->city : nullptr;
+        nationState->ApplyScenarioRelationPresetAndSpawnFrogCity(city);
       }
-      if (field44 != 0) {
+      unsigned char resumePrimaryEventQueue = field44 != 0;
+      if (resumePrimaryEventQueue != 0) {
         g_pGameFlowState->processPrimaryEventQueue = 1;
       }
     }
+  } else if (setupMode == 4) {
+    TGreatPower* pTVar5 = (TGreatPower*)new TRemoteGreatPower();
+    g_apNationStates[nationIndex] = pTVar5;
+    pTVar5->InitializeNationStateRuntimeSubsystems(
+        slotIndex, g_pGameFlowState->nationSessionIds[nationIndex] != 0);
+    g_apTerrainTypeDescriptorTable[nationIndex] = pTVar5;
+
+    {
+      CString nationName(g_pGameFlowState->nationDisplayNameSlots[nationIndex]);
+      g_apTerrainTypeDescriptorTable[nationIndex]->SetNationDisplayNameAndLocalizationSlotRef(
+          nationName);
+    }
+    {
+      CString nationName(g_pGameFlowState->nationDisplayNameSlots[nationIndex]);
+      g_apTerrainTypeDescriptorTable[nationIndex]->identitySharedString1 = nationName;
+    }
+
+    if (activate != 0 && stateFlag114 != 0) {
+      TCity* city = pTVar5 != nullptr ? pTVar5->city : nullptr;
+      pTVar5->ApplyScenarioRelationPresetAndSpawnFrogCity(city);
+    }
+  } else if (setupMode == 3) {
+    TGreatPower* pTVar5 = (TGreatPower*)new TProxyGreatPower();
+    pTVar5->InitializeNationStateRuntimeSubsystems(slotIndex, 1);
+    g_apNationStates[nationIndex] = pTVar5;
+    g_apTerrainTypeDescriptorTable[nationIndex] = pTVar5;
+
+    if (g_bMultiplayerScenarioSetupActive == 0) {
+      if (activate != 0) {
+        TCity* city = pTVar5 != nullptr ? pTVar5->city : nullptr;
+        pTVar5->ApplyScenarioRelationPresetAndSpawnFrogCity(city);
+      }
+      g_pDiplomacyTurnStateManager->SetStandingScoreSlot28(slotIndex, slotIndex, 0x100);
+    }
+    {
+      CString nationName(g_pGameFlowState->nationDisplayNameSlots[nationIndex]);
+      g_apTerrainTypeDescriptorTable[nationIndex]->SetNationDisplayNameAndLocalizationSlotRef(
+          nationName);
+    }
+    {
+      CString nationName(g_pGameFlowState->nationDisplayNameSlots[nationIndex]);
+      g_apTerrainTypeDescriptorTable[nationIndex]->identitySharedString1 = nationName;
+    }
+  } else if (setupMode == 2) {
+    // Real allocation is operator_new(0xb70) followed by TAutoGreatPower::TAutoGreatPower()
+    // (ctor thunk 0x407a31 -> 0x4e6b50) -- this slot is genuinely a TAutoGreatPower, not a
+    // bare TGreatPower (whose object size is 0x964, too small for the tail AI state block).
+    TAutoGreatPower* pTVar5 = new TAutoGreatPower();
+    pTVar5->InitializeNationMinisterSubsystemsByPolicyIds(
+        slotIndex, 2, scenarioSetupRows1[nationIndex], scenarioSetupRows2[nationIndex],
+        scenarioSetupRows3[nationIndex]);
+    g_apNationStates[nationIndex] = pTVar5;
+    g_apTerrainTypeDescriptorTable[nationIndex] = pTVar5;
+
+    if (g_bMultiplayerScenarioSetupActive == 0) {
+      if (activate != 0) {
+        TCity* city = pTVar5 != nullptr ? pTVar5->city : nullptr;
+        pTVar5->ApplyScenarioRelationPresetAndSpawnFrogCity(city);
+      }
+      pTVar5->QueueMapActionMissionsForPortZoneCandidates();
+      pTVar5->AssignDisplayNamesToUnnamedMilitaryUnits();
+    }
+  } else {
+    g_apNationStates[nationIndex] = nullptr;
+    g_apTerrainTypeDescriptorTable[nationIndex] = nullptr;
   }
 
-  if (slotIndex == activeNationSlot) {
-    if (field44 == 0) {
-      g_apTerrainTypeDescriptorTable[slotIndex]->identitySharedString1 =
-          g_cstrCountryNameSettingValue006A4220;
+  if (nationSlot == activeNationSlot) {
+    unsigned char useSessionDisplayName = field44 != 0;
+    if (useSessionDisplayName != 0) {
+      {
+        CString nationName(g_pGameFlowState->nationDisplayNameSlots[nationIndex]);
+        g_apTerrainTypeDescriptorTable[nationIndex]->SetNationDisplayNameAndLocalizationSlotRef(
+            nationName);
+      }
+      {
+        CString nationName(g_pGameFlowState->nationDisplayNameSlots[nationIndex]);
+        g_apTerrainTypeDescriptorTable[nationIndex]->identitySharedString1 = nationName;
+      }
     } else {
-      g_apTerrainTypeDescriptorTable[slotIndex]->identitySharedString1 =
-          g_pGameFlowState->nationDisplayNameSlots[slotIndex];
+      {
+        CString nationName(g_cstrCountryNameSettingValue006A4220);
+        g_apTerrainTypeDescriptorTable[nationIndex]->SetNationDisplayNameAndLocalizationSlotRef(
+            nationName);
+      }
+      {
+        CString nationName(g_cstrCountryNameSettingValue006A4220);
+        g_apTerrainTypeDescriptorTable[nationIndex]->identitySharedString1 = nationName;
+      }
     }
   }
 }
@@ -690,48 +745,53 @@ void TSimMgr::RebuildSecondaryNationStateForSlot(int slotIndex) {
   }
 
   int nationIndex = nationSlot;
-  if (nationIndex >= field34 + 7) {
+  TMinor* minor = nullptr;
+  if (nationIndex < field34 + 7 && field44 == 2) {
     if (g_apSecondaryNationStateSlots[nationIndex] != nullptr) {
       g_apSecondaryNationStateSlots[nationIndex]->Free();
     }
     g_apSecondaryNationStateSlots[nationIndex] = nullptr;
     g_apTerrainTypeDescriptorTable[nationIndex] = nullptr;
-    return;
-  }
-
-  if (g_apSecondaryNationStateSlots[nationIndex] != nullptr) {
-    g_apSecondaryNationStateSlots[nationIndex]->Free();
-  }
-  g_apSecondaryNationStateSlots[nationIndex] = nullptr;
-  g_apTerrainTypeDescriptorTable[nationIndex] = nullptr;
-
-  TMinor* minor;
-  if (field44 == 2) {
     minor = new TRemoteMinor();
-  } else {
+    minor->InitializeSecondaryNationStateAndSelectHomeTile(slotIndex);
+  } else if (nationIndex < field34 + 7) {
+    if (g_apSecondaryNationStateSlots[nationIndex] != nullptr) {
+      g_apSecondaryNationStateSlots[nationIndex]->Free();
+    }
+    g_apSecondaryNationStateSlots[nationIndex] = nullptr;
+    g_apTerrainTypeDescriptorTable[nationIndex] = nullptr;
+
     minor = new TMinor();
+    minor->InitializeSecondaryNationStateAndSelectHomeTile(slotIndex);
+
+    g_apSecondaryNationStateSlots[nationIndex] = minor;
+    g_apTerrainTypeDescriptorTable[nationIndex] = minor;
+
+    if (g_bMultiplayerScenarioSetupActive == 0) {
+      minor->SeedInitialMilitaryAndNavyOrdersForOwnedRegions();
+
+      short cityRecordIndex =
+          g_pGlobalMapState->terrainStateTable[static_cast<short>(minor->homeRegionIndex)]
+              .cityRecordIndex;
+      int remainingOrders = 2;
+      do {
+        TMilitaryUnit* order = new TMilitaryUnit();
+        order->InitializeRecruitOrderState(2, cityRecordIndex, slotIndex, 0);
+        order->SetOrderModeSlot34(2, -1);
+        --remainingOrders;
+      } while (remainingOrders != 0);
+
+      minor->AssignDisplayNamesToUnnamedMilitaryUnits();
+    }
+    return;
+  } else {
+    if (g_apSecondaryNationStateSlots[nationIndex] != nullptr) {
+      g_apSecondaryNationStateSlots[nationIndex]->Free();
+    }
   }
-  minor->InitializeSecondaryNationStateAndSelectHomeTile(nationSlot);
 
   g_apSecondaryNationStateSlots[nationIndex] = minor;
   g_apTerrainTypeDescriptorTable[nationIndex] = minor;
-
-  if (field44 != 2 && g_bMultiplayerScenarioSetupActive == 0) {
-    minor->SeedInitialMilitaryAndNavyOrdersForOwnedRegions();
-
-    short cityRecordIndex =
-        g_pGlobalMapState->terrainStateTable[static_cast<short>(minor->homeRegionIndex)]
-            .cityRecordIndex;
-    int remainingOrders = 2;
-    do {
-      TMilitaryUnit* order = new TMilitaryUnit();
-      order->InitializeRecruitOrderState(2, cityRecordIndex, nationSlot, 0);
-      order->SetOrderModeSlot34(2, -1);
-      --remainingOrders;
-    } while (remainingOrders != 0);
-
-    minor->AssignDisplayNamesToUnnamedMilitaryUnits();
-  }
 }
 
 // FUNCTION: IMPERIALISM 0x0057d830
@@ -795,32 +855,8 @@ void TSimMgr::PostMainWindowCommand100ForTurnFlow() {
 
 // FUNCTION: IMPERIALISM 0x0057d990
 void TSimMgr::SetGlobalTurnStateCodeIfAllowed(int turnStateCode) {
-  short nationSlot = activeNationSlot;
-  bool allowStateChange;
-  if (nationSlot == -1) {
-    allowStateChange = false;
-  } else {
-    TCountry* terrainDescriptor = g_apTerrainTypeDescriptorTable[nationSlot];
-    if (terrainDescriptor == 0) {
-      allowStateChange = false;
-    } else {
-      if (nationSlot < 7) {
-        short field0e = terrainDescriptor->encodedNationSlot;
-        if (terrainDescriptor == 0 || field0e < 100 || field0e > 199) {
-          allowStateChange = false;
-        } else {
-          allowStateChange = true;
-        }
-        if (allowStateChange) {
-          allowStateChange = false;
-          goto check_turn_state_code;
-        }
-      }
-      allowStateChange = true;
-    }
-  }
-check_turn_state_code:
-  if (!allowStateChange) {
+  bool allowStateChange = IsNationTerrainEligible(activeNationSlot);
+  if (allowStateChange == false) {
     switch (turnStateCode) {
     case 100:
     case 0x67:

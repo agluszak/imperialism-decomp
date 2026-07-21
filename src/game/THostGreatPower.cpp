@@ -22,8 +22,6 @@ THostGreatPower::~THostGreatPower() {}
 
 IMPLEMENT_DYNCREATE(THostGreatPower, TGreatPower)
 
-THostGreatPower::THostGreatPower() : nationLostEventDispatched(0) {}
-
 // FUNCTION: IMPERIALISM 0x00541000
 void THostGreatPower::ReadFrom(TStream* stream) {
   TGreatPower::ReadFrom(stream);
