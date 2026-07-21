@@ -27,6 +27,14 @@ public:
   // 0x4fc2e0, __thiscall.
   void InitializeDiplomacyCouncilViewControlsAndTicker();
 
+  // 0x4fc630. Per-tick step driven by TCouncilTickerAnimation: advances the visible vote
+  // tier, invalidates every tile marker whose pending-policy tier just became visible,
+  // redraws the vote nuggets, and once the tier has swept every candidate nation,
+  // resolves the 'end ' control and either re-enables it (prompting the player) or
+  // silently advances the council turn state, depending on eligibility/localization
+  // checks against the active nation.
+  void AdvanceCivilianTerrainSelectionStep();
+
   short councilNationCount24c8; // +0x24c8 — compared (+2) against visibleVoteTier528 on hover
   short tickerSlots24ca[10];    // +0x24ca — zeroed by the slot-0x37 rebuild
   short pad24de;

@@ -1285,7 +1285,7 @@ address|matching|name
 0x49ff50|0.5|TCouncilTickerAnimation::CreateTCouncilTickerAnimationInstance
 0x49ff70|1.0|TCouncilTickerAnimation::GetRuntimeClass
 0x49ff90|0.4|TCouncilTickerAnimation::ConstructTCouncilTickerAnimationBaseState
-0x49ffe0|0.125|TCouncilTickerAnimation::AdvanceAnimationTickAndInvalidateOnFrameFlip
+0x49ffe0|0.5333333333333333|TCouncilTickerAnimation::AdvanceAnimationTickAndInvalidateOnFrameFlip
 0x4a0020|0.4117647058823529|TFocusAnimation::CreateObject
 0x4a0050|0.9090909090909091|TFocusAnimation::`scalar deleting destructor'
 0x4a0080|0.5|TFocusAnimation::CreateTFocusAnimationInstance
@@ -2610,7 +2610,7 @@ address|matching|name
 0x4fbd60|0.5569620253164557|TCouncilView::HandleEvent
 0x4fbdf0|0.013468013468013467|BuildDiplomacyMapHintOverlayTextAndMetrics
 0x4fc2e0|0.32432432432432434|TCouncilView::InitializeDiplomacyCouncilViewControlsAndTicker
-0x4fc630|0.01092896174863388|AdvanceCivilianTerrainSelectionStep
+0x4fc630|0.4046920821114369|TCouncilView::AdvanceCivilianTerrainSelectionStep
 0x4fc950|1.0|TCouncilView::HandleCursorHoverSelectionByChildHitTestAndFallback
 0x4fc9c0|0.5818181818181818|TMapKey::CreateObject
 0x4fca70|1.0|TMapKey::GetRuntimeClass
