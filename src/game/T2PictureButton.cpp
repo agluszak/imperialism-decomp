@@ -1,7 +1,6 @@
 #include "game/T2PictureButton.h"
 #include "game/mfc.h"
 
-
 // SYNTHETIC: IMPERIALISM 0x00570b10
 // T2PictureButton::CreateObject
 // SYNTHETIC: IMPERIALISM 0x00570b90
@@ -20,6 +19,14 @@ T2PictureButton::T2PictureButton() : TPictureButton() {}
 T2PictureButton::~T2PictureButton() {}
 
 // FUNCTION: IMPERIALISM 0x00570c30
-undefined T2PictureButton::OrphanCallChain_C3_I43_00570c30() {
-  return 0;
+void T2PictureButton::SetAvailability(char isAvailable, char refreshNow) {
+  short pictureId = glyphBase84;
+  short alternatePictureId = static_cast<short>(controlValue3c);
+  if ((isAvailable == 1 && pictureId > controlValue3c) ||
+      (isAvailable == 0 && pictureId < controlValue3c)) {
+    SetPictureResourceIdAndRefresh(alternatePictureId, false);
+    controlValue3c = pictureId;
+    SetState(isAvailable, false);
+    SetEnabled(!isAvailable, refreshNow);
+  }
 }

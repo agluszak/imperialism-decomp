@@ -3531,7 +3531,7 @@ address|matching|name
 0x53fe10|1.0|TInvadeMission::GetReplacementSlot48
 0x53fe30|0.34421364985163205|RecomputeNationOrderPriorityMetrics
 0x540440|0.012578616352201259|ComputeBestNationTileDevelopmentScore
-0x540840|0.4897959183673469|TProxyGreatPower::CreateObject
+0x540840|1.0|TProxyGreatPower::CreateObject
 0x5408c0|0.5|TProxyGreatPower::ReturnFalseNationStateCapabilityFlag98
 0x5408e0|0.5|TProxyGreatPower::ShouldDispatchImmediatelySlot28
 0x540900|0.0|TProxyGreatPower::ProcessPendingDiplomacyProposalQueue
@@ -3549,7 +3549,7 @@ address|matching|name
 0x540cb0|0.13333333333333333|TProxyGreatPower::HandleNationLost
 0x540cf0|0.10810810810810811|TProxyGreatPower::CheckTransitionSlot27C
 0x540dc0|0.10256410256410256|TProxyGreatPower::PropagateWarTransitionSlot280
-0x540e90|0.5818181818181818|THostGreatPower::CreateObject
+0x540e90|1.0|THostGreatPower::CreateObject
 0x540f20|0.5|THostGreatPower::ReturnFalseNationStateCapabilityFlag9C
 0x540f40|0.9090909090909091|THostGreatPower::`scalar deleting destructor'
 0x540f70|0.08695652173913043|THostGreatPower::DestructTHostGreatPower
@@ -3559,7 +3559,7 @@ address|matching|name
 0x541080|0.05128205128205128|THostGreatPower::TryDispatchNationActionViaUiContextOrFallback
 0x5410f0|0.06060606060606061|THostGreatPower::ProcessPendingDiplomacyProposalQueue
 0x541170|1.0|THostGreatPower::HandleNationLost
-0x541230|0.4897959183673469|TClientGreatPower::CreateObject
+0x541230|1.0|TClientGreatPower::CreateObject
 0x5412b0|0.5|TClientGreatPower::ReturnFalseNationStateCapabilityFlag98
 0x5412d0|1.0|TClientGreatPower::ShouldDispatchImmediatelySlot28
 0x5412f0|0.9090909090909091|TClientGreatPower::`scalar deleting destructor'
@@ -3571,7 +3571,7 @@ address|matching|name
 0x5415c0|0.14285714285714285|TClientGreatPower::PropagateWarTransitionSlot280
 0x5416b0|0.6746987951807228|TClientGreatPower::CheckTransitionSlot27C
 0x541790|0.25|TClientGreatPower::HandleNationLost
-0x5417c0|0.4897959183673469|TRemoteGreatPower::CreateObject
+0x5417c0|1.0|TRemoteGreatPower::CreateObject
 0x541840|0.5|TRemoteGreatPower::ShouldDispatchImmediatelySlot28
 0x541860|1.0|TRemoteGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage
 0x541880|1.0|TRemoteGreatPower::RefreshGreatPowerRelationPanelsAndDispatchDeltaSummary
@@ -3595,7 +3595,7 @@ address|matching|name
 0x541b20|1.0|TRemoteGreatPower::GetRuntimeClass
 0x541b40|1.0|TRemoteGreatPower::SetNationSelectedRegionAndMapCellLabel
 0x541be0|1.0|TRemoteGreatPower::HandleNationLost
-0x541c10|0.4897959183673469|TRemoteMinor::CreateObject
+0x541c10|1.0|TRemoteMinor::CreateObject
 0x541c90|1.0|TRemoteMinor::ShouldDispatchImmediatelySlot28
 0x541cb0|1.0|TRemoteMinor::ApplyIndexedResourceDeltaAndAdjustNationTotals
 0x541cd0|1.0|TRemoteMinor::`scalar deleting destructor'
@@ -4197,13 +4197,13 @@ address|matching|name
 0x570b90|1.0|T2PictureButton::GetRuntimeClass
 0x570bb0|0.8|T2PictureButton::T2PictureButton
 0x570be0|0.9090909090909091|T2PictureButton::`scalar deleting destructor'
-0x570c30|0.0|T2PictureButton::OrphanCallChain_C3_I43_00570c30
+0x570c30|1.0|T2PictureButton::SetAvailability
 0x570cc0|0.52|TPictureRadioButton::CreateObject
 0x570d40|1.0|TPictureRadioButton::GetRuntimeClass
 0x570d60|0.8|TPictureRadioButton::TPictureRadioButton
 0x570d90|0.9090909090909091|TPictureRadioButton::`scalar deleting destructor'
-0x570de0|0.0|TPictureRadioButton::PictureRadioButtonSlot75
-0x570ea0|0.0|TPictureRadioButton::PictureRadioButtonSlot76
+0x570de0|1.0|TPictureRadioButton::ViewEnable
+0x570ea0|0.5057471264367817|TPictureRadioButton::DefaultSize
 0x570f40|0.0625|TPictureRadioButton::Select
 0x570fb0|0.031746031746031744|TPictureRadioButton::DispatchUiMouseMoveToChildren
 0x571050|0.4897959183673469|TToggleButton::CreateObject
@@ -4442,15 +4442,15 @@ address|matching|name
 0x57c7c0|0.5405405405405406|TSimMgr::RebuildMapContextAndGlobalMapState
 0x57c9a0|0.6031746031746031|TSimMgr::RecreateActiveMapContextAndInitializeGlobalMapState
 0x57cad0|0.7278481012658228|TSimMgr::RebuildNationStateSlotsAndAvailability
-0x57cda0|0.1526479750778816|TSimMgr::RebuildPrimaryNationStateForSlot
-0x57d520|0.5151515151515151|TSimMgr::RebuildSecondaryNationStateForSlot
+0x57cda0|0.532319391634981|TSimMgr::RebuildPrimaryNationStateForSlot
+0x57d520|0.797153024911032|TSimMgr::RebuildSecondaryNationStateForSlot
 0x57d830|1.0|TSimMgr::FormatSeasonName
 0x57d870|0.5517241379310345|TSimMgr::SetStateCodeAndUpdateZeroOrOutOfRangeFlag
 0x57d8b0|1.0|TSimMgr::GetTurnTickSlot3C
 0x57d8d0|1.0|TSimMgr::CopyScenarioNationSetupIntoFlowState
 0x57d950|1.0|TSimMgr::IncrementQuarterGateTick2C
 0x57d970|1.0|TSimMgr::PostMainWindowCommand100ForTurnFlow
-0x57d990|0.1941747572815534|TSimMgr::SetGlobalTurnStateCodeIfAllowed
+0x57d990|0.2803738317757009|TSimMgr::SetGlobalTurnStateCodeIfAllowed
 0x57da70|0.1986754966887417|TSimMgr::AdvanceGlobalTurnStateMachine
 0x57f0e0|1.0|TCountry::IsNationProfileInMinorRange100To199
 0x57f110|0.3333333333333333|TSimMgr::IsTurnFlowPhaseOutsideRange4To5
