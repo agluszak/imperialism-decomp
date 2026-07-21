@@ -1937,7 +1937,7 @@ address|matching|name
 0x4cc440|0.2|TPurchaseCluster::OrphanCallChain_C1_I08_004cc440
 0x4cc470|1.0|TPurchaseCluster::BeginMouseCaptureAndStartRepeatTimer
 0x4cc490|0.35051546391752575|TPurchaseCluster::HandleEvent
-0x4cc550|0.6666666666666666|TPurchaseCluster::SetCityViewValueControlAmount
+0x4cc550|0.6495726495726496|TPurchaseCluster::SetCityViewValueControlAmount
 0x4cc640|0.08695652173913043|TPurchaseCluster::UpdateCityViewValueControl
 0x4cc6b0|0.5614035087719298|TIndustryView::CreateObject
 0x4cc770|1.0|TIndustryView::GetRuntimeClass
@@ -2749,29 +2749,29 @@ address|matching|name
 0x506020|0.9090909090909091|TIconBar::`scalar deleting destructor'
 0x506070|0.0|AddCityCommodityIconControl
 0x5060c0|1.0|TIconBar::SetPictureResourceIdAndRefresh
-0x5060f0|0.4|TIconBar::OrphanTiny_SetWordEcxOffset_96_005060f0
-0x506110|0.0|TIconBar::OrphanCallChain_C2_I15_00506110
+0x5060f0|1.0|TIconBar::SetNumIcons(short)
+0x506110|1.0|TIconBar::SetNumIcons(short, unsigned char)
 0x506150|0.5316455696202531|TIconBar::ApplyRectSlot110
 0x5062d0|0.4444444444444444|TIconSlider::CreateObject
 0x5063a0|1.0|TIconSlider::GetRuntimeClass
 0x5063c0|0.5|TIconSlider::TIconSlider
 0x506430|0.9090909090909091|TIconSlider::`scalar deleting destructor'
 0x506480|0.4883720930232558|TIconSlider::DoPostCreate
-0x506560|0.3333333333333333|TIconSlider::OrphanLeaf_NoCall_Ins04_00506560
-0x506590|0.4|TIconSlider::OrphanTiny_SetWordEcxOffset_96_005060f0
-0x5065b0|0.0|TIconSlider::OrphanCallChain_C2_I15_005065b0
-0x5065f0|0.04081632653061224|TIconSlider::DispatchUiMouseMoveToChildren
+0x506560|1.0|TIconSlider::SetMax
+0x506590|1.0|TIconSlider::SetNumIcons
+0x5065b0|0.7333333333333333|TIconSlider::KnobContainsMouse
+0x5065f0|1.0|TIconSlider::DispatchUiMouseMoveToChildren
 0x506690|1.0|TIconSlider::ApplyRectSlot110
-0x5066c0|0.08695652173913043|TIconSlider::IconSliderResolveBmpResource
-0x506710|0.05263157894736842|TIconSlider::OrphanCallChain_C1_I36_00506710
-0x5067a0|0.013245033112582781|TIconSlider::DispatchPictureResourceCommand
+0x5066c0|1.0|TIconSlider::DrawKnob
+0x506710|1.0|TIconSlider::GetKnobRect
+0x5067a0|0.5454545454545454|TIconSlider::DispatchPictureResourceCommand
 0x5069d0|0.5818181818181818|TOrderView::CreateObject
 0x506a60|1.0|TOrderView::GetRuntimeClass
 0x506a80|1.0|TOrderView::TOrderView
 0x506ab0|0.9090909090909091|TOrderView::`scalar deleting destructor'
-0x506b00|0.0|TOrderView::PopulateDialogControlsFromSelectedProductionEntry
-0x506f90|0.012121212121212121|TOrderView::RefreshOrderViewSupplyAndUseControlValues
-0x507240|0.9523809523809523|TOrderView::HandleEvent
+0x506b00|0.6654676258992805|TOrderView::StuffValues
+0x506f90|1.0|TOrderView::UpdateFields
+0x507240|1.0|TOrderView::HandleEvent
 0x5072e0|0.5818181818181818|TNumberedIcon::CreateObject
 0x507380|1.0|TNumberedIcon::GetRuntimeClass
 0x5073a0|1.0|TNumberedIcon::TNumberedIcon
@@ -2824,7 +2824,7 @@ address|matching|name
 0x50bbc0|0.8888888888888888|TMacViewMgr::OrphanCallChain_C4_I35_0050bbc0
 0x50bc50|0.6026200873362445|TMacViewMgr::SyncSellTaggedChildControlWithNationState
 0x50be30|1.0|TMacViewMgr::ResolveTurnEventDialogOrFailAndInvokeSlot9C
-0x50bea0|0.21444797819173103|TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets
+0x50bea0|0.21263062244434347|TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets
 0x50d310|0.5625|TMacViewMgr::DispatchTurnEvent3B8AndWaitForCompletionFlag
 0x50d360|0.46551724137931033|TMacViewMgr::CreateCityBuildingDialogBySlot
 0x50d470|0.3880597014925373|TMacViewMgr::OrphanCallChain_C10_I80_0050d470
@@ -3646,7 +3646,7 @@ address|matching|name
 0x545660|1.0|TMultiplayerMgr::ResetLocalUiStateAndPostTurnEvent5E5
 0x5456a0|0.14814814814814814|ResetDialogContextField40AndEmitTurnEvent3Mode18
 0x545730|0.016666666666666666|TMultiplayerMgr::RouteAndProcessDiplomacyTurnStateEventQueue
-0x545940|0.433855596834114|TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine
+0x545940|0.4325633984816669|TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine
 0x549240|0.6666666666666666|TouchSessionActiveNationId
 0x549280|1.0|TMultiplayerMgr::AppendNodeToTurnEventLinkedListAt6C
 0x5493c0|0.3516483516483517|TMultiplayerMgr::CreateAndSendTurnEvent11_MapOffsetAndFlags
@@ -4405,7 +4405,7 @@ address|matching|name
 0x579740|1.0|TRadioTextCluster::DoPostCreate
 0x579770|1.0|TRadioTextCluster::HandleEvent
 0x5797c0|1.0|TRadioTextCluster::SetSelectedTextOptionByTag
-0x5798a0|0.5865384615384616|TRadioTextCluster::AddItem
+0x5798a0|0.5673076923076923|TRadioTextCluster::AddItem
 0x579a60|0.5957446808510638|TRadioTextCluster::ApplyRectSlot110
 0x579ae0|0.4897959183673469|TScenarioChooser::CreateObject
 0x579b60|1.0|TScenarioChooser::GetRuntimeClass
@@ -4675,7 +4675,7 @@ address|matching|name
 0x589f70|0.5|TRailAmtBar::GetRuntimeClass
 0x589f90|0.631578947368421|TRailAmtBar::TRailAmtBar
 0x589fd0|0.9090909090909091|TRailAmtBar::`scalar deleting destructor'
-0x58a020|0.45685279187817257|TRailAmtBar::DoPostCreate
+0x58a020|0.47715736040609136|TRailAmtBar::DoPostCreate
 0x58a1b0|0.4954954954954955|TRailAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache
 0x58a3b0|0.4|TRailAmtBar::RenderQuickDrawOverlayWithHitRegion
 0x58a4d0|0.5818181818181818|TShipyardCluster::CreateObject
@@ -5039,12 +5039,12 @@ address|matching|name
 0x5a35a0|1.0|TTacticalBattle::HandleTacticalCommandTag_mine
 0x5a3640|1.0|TTacticalBattle::ExecuteTacticalDigActionAndConsumeUnitActionPoints
 0x5a36d0|0.8342245989304813|TTacticalBattle::HandleTacticalCommandTag_digg
-0x5a3810|0.7107438016528925|TTacticalBattle::ComputeRallyStrengthAndQueueTacticalRallyCommand
+0x5a3810|0.8571428571428571|TTacticalBattle::ComputeRallyStrengthAndQueueTacticalRallyCommand
 0x5a38e0|1.0|TTacticalBattle::HandleTacticalCommandTag_raly
 0x5a39a0|0.9393939393939394|ComputeHexTileDistanceFromIndices
 0x5a3a70|0.4|TTacticalBattle::FindFortWallTileCrossedByFiringLine
 0x5a3c20|0.8723404255319149|TTacticalBattle::ConsumeFortStrengthPointsAndInvalidateIfDepleted
-0x5a3d30|0.8104956268221575|TTacticalBattle::IsTacticalTargetTileReachableForAction
+0x5a3d30|0.8163265306122449|TTacticalBattle::IsTacticalTargetTileReachableForAction
 0x5a3f10|0.3389830508474576|TTacticalBattle::HandleTacticalCommandTag_targ
 0x5a41c0|0.6|TTacticalBattle::ApplyGridColumnSelectionGuard
 0x5a4240|0.48695652173913045|TTacticalBattle::CountFreeDeploymentZoneTilesForCurrentSide
@@ -5067,7 +5067,7 @@ address|matching|name
 0x5a5500|0.5|TNavyBattle::CreateTNavyBattleInstance
 0x5a5520|1.0|TNavyBattle::GetRuntimeClass
 0x5a55c0|1.0|TNavyBattle::DeployTacticalUnitToTile
-0x5a5730|0.6744186046511628|TNavyBattle::EvaluateAndResolveTacticalActionAgainstTileOccupant
+0x5a5730|0.6686046511627907|TNavyBattle::EvaluateAndResolveTacticalActionAgainstTileOccupant
 0x5a59a0|1.0|ConvertHexTileIndexToRowAndDoubleColumn
 0x5a59f0|0.020618556701030927|TNavyBattle::ComputeTacticalReachableTileCostsByUnitCategory
 0x5a5b70|0.8571428571428571|TNavyBattle::FinalizeTacticalBattleOutcome
@@ -5106,7 +5106,7 @@ address|matching|name
 0x5a6560|0.2222222222222222|TNextMoveCommand::ConstructTNextMoveCommandBaseState
 0x5a6590|0.9090909090909091|TNextMoveCommand::`scalar deleting destructor'
 0x5a6620|0.43478260869565216|TNextMoveCommand::DoIt
-0x5a6940|0.8360655737704918|ClipSrcRectToBoundsAndOffsetDstRect
+0x5a6940|0.819672131147541|ClipSrcRectToBoundsAndOffsetDstRect
 0x5a6a20|0.927933293627159|InitializeTacticalUnitFacingOffsetTable
 0x5a82b0|1.0|TTacticalBattleView::CreateObject
 0x5a8330|1.0|TTacticalBattleView::GetRuntimeClass
@@ -5124,7 +5124,7 @@ address|matching|name
 0x5a8900|0.0425531914893617|TTacticalBattleView::TacticalBattleViewSlot68
 0x5a89a0|1.0|TTacticalBattleView::InvalidateTacticalUnitTileRect
 0x5a89f0|0.42105263157894735|TTacticalBattleView::ComputeTacticalUnitTileScreenRect
-0x5a8ac0|0.6867469879518072|TTacticalBattleView::CenterViewportAroundGridIndexAndSnap
+0x5a8ac0|0.6086956521739131|TTacticalBattleView::CenterViewportAroundGridIndexAndSnap
 0x5a8be0|1.0|TTacticalBattleView::AdjustTacticalUnitVerticalOffsetAndRefreshMarker
 0x5a8ca0|0.044444444444444446|TTacticalBattleView::HandleCursorHoverFallback
 0x5a8d40|0.009950248756218905|TTacticalBattleView::HandleCursorHoverSelectionByChildHitTestAndFallback
@@ -5458,7 +5458,7 @@ address|matching|name
 0x5bea00|0.0|TOfferDeskPicture::InitializeTradeScreenControlsLabelsAndNationContext
 0x5bf740|0.6442953020134228|TOfferDeskPicture::HandleEvent
 0x5bf860|0.03636363636363636|TOfferDeskPicture::ForwardParam
-0x5bf930|0.7956989247311828|TOfferDeskPicture::RefreshSelectedNationOrderCompatibilityInfo
+0x5bf930|0.7411083540115798|TOfferDeskPicture::RefreshSelectedNationOrderCompatibilityInfo
 0x5c04f0|0.8066528066528067|TOfferDeskPicture::CreateNextTradeCommandAndFormatPrompt
 0x5c0930|0.05|TOfferDeskPicture::DispatchUiMouseEventToChildrenOrSelf_Impl
 0x5c09d0|0.010309278350515464|TOfferDeskPicture::UpdateTradeSelectionStateAndRefreshUiIfChanged
