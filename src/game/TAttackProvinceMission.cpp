@@ -102,7 +102,46 @@ void TAttackProvinceMission::Free() {
 
 // FUNCTION: IMPERIALISM 0x0053d950
 char TAttackProvinceMission::ReturnFalseSlot98() {
-  return TArmyMission::ReturnFalseSlot98();
+  if (flag10 == 0) {
+    float vector[5];
+    float total = 0.0f;
+    float weighted = 0.0f;
+    ProjectEquipage(vector, GetPresentLocation(), 0);
+
+    for (int i = 0; i < 5; ++i) {
+      weighted += sqrtf(vector[i] * resourceWeights[i]);
+      total += resourceWeights[i];
+    }
+
+    if (weighted / total > g_AttackProvinceMissionReadinessThreshold_0065A8F0) {
+      CIterator eligibilityIter(orderListAt18);
+      TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(eligibilityIter.Reset());
+      while (eligibilityIter.More()) {
+        if (static_cast<double>(unit->field_34) * g_ArmyMissionEligibleUnitStrengthScale_0065AA48 <
+            g_Recompute_Nation_Order_LookupTable_0065AA20) {
+          CIterator queueIter(orderListAt18);
+          for (unit = static_cast<TMilitaryUnit*>(queueIter.Reset()); queueIter.More();
+               unit = static_cast<TMilitaryUnit*>(queueIter.Advance())) {
+            if (unit->GetUnitMovementClassId() != 0) {
+              NoOpSlot88(unit, 1);
+            }
+          }
+          return 1;
+        }
+        unit = static_cast<TMilitaryUnit*>(eligibilityIter.Advance());
+      }
+      return 0;
+    }
+  }
+
+  CIterator queueIter(orderListAt18);
+  for (TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(queueIter.Reset()); queueIter.More();
+       unit = static_cast<TMilitaryUnit*>(queueIter.Advance())) {
+    if (unit->GetUnitMovementClassId() != 0) {
+      NoOpSlot88(unit, 1);
+    }
+  }
+  return 1;
 }
 
 // FUNCTION: IMPERIALISM 0x0053db60
@@ -113,38 +152,67 @@ char TAttackProvinceMission::TryResolveTargetTerrainClass() {
   const TGlobalMapCityScoreRecord& targetRecord =
       g_pGlobalMapState->cityScoreTable[targetProvince30];
 
-  for (int i = 0; i < targetRecord.adjacentRegionCount08; ++i) {
-    short candidateTile = targetRecord.adjacentRegionIds0A[i];
+  int candidateIndex = 0;
+  const short* candidateCursor = targetRecord.adjacentRegionIds0A;
+  for (; candidateIndex < targetRecord.adjacentRegionCount08; candidateIndex++, candidateCursor++) {
+    short candidateTile = *candidateCursor;
     short tileOwnerNationCode =
         g_pGlobalMapState->ResolveTileOwnerNationCodeNormalized(candidateTile);
-    if (tileOwnerNationCode != nationId04) {
-      continue;
-    }
+    if (tileOwnerNationCode == nationId04) {
+      if (field_14 != -1) {
+        const TGlobalMapCityScoreRecord& candidateRecord =
+            g_pGlobalMapState->cityScoreTable[candidateTile];
+        float candidateScore = static_cast<float>(candidateRecord.cityScoreValue);
+        int matchCount = 0;
+        int adjacentIndex = 0;
+        const short* adjacentCursor = candidateRecord.adjacentRegionIds0A;
+        while (adjacentIndex < candidateRecord.adjacentRegionCount08) {
+          short adjOwnerNationCode =
+              g_pGlobalMapState->ResolveTileOwnerNationCodeNormalized(*adjacentCursor);
+          if (adjOwnerNationCode == nationId04) {
+            matchCount++;
+          }
+          adjacentIndex++;
+          adjacentCursor++;
+        }
+        if (candidateRecord.adjacentRegionCount08 > 0) {
+          candidateScore = (static_cast<float>(matchCount) /
+                                static_cast<float>(candidateRecord.adjacentRegionCount08) -
+                            g_Recompute_Nation_Order_LookupTable_0065A9E0) *
+                           candidateScore;
+        }
+        candidateScore = candidateScore / g_fMissionScoreNormalizationDivisor;
 
-    const TGlobalMapCityScoreRecord& candidateRecord =
-        g_pGlobalMapState->cityScoreTable[candidateTile];
-    float candidateScore = static_cast<float>(candidateRecord.cityScoreValue);
-    int matchCount = 0;
-    int adjacentCount = candidateRecord.adjacentRegionCount08;
-    for (int j = 0; j < adjacentCount; ++j) {
-      short adjOwnerNationCode = g_pGlobalMapState->ResolveTileOwnerNationCodeNormalized(
-          candidateRecord.adjacentRegionIds0A[j]);
-      if (adjOwnerNationCode == nationId04) {
-        matchCount++;
+        if (candidateScore <= bestScore) {
+          continue;
+        }
       }
-    }
-    if (adjacentCount > 0) {
-      candidateScore = (static_cast<float>(matchCount) / static_cast<float>(adjacentCount) -
-                        *reinterpret_cast<const float*>(0x0065a9e0)) *
-                       candidateScore;
-    }
-    candidateScore = candidateScore / g_fMissionScoreNormalizationDivisor;
 
-    if (field_14 != -1 && candidateScore <= bestScore) {
-      continue;
+      field_14 = candidateTile;
+
+      const TGlobalMapCityScoreRecord& candidateRecord =
+          g_pGlobalMapState->cityScoreTable[candidateTile];
+      float candidateScore = static_cast<float>(candidateRecord.cityScoreValue);
+      int matchCount = 0;
+      int adjacentIndex = 0;
+      const short* adjacentCursor = candidateRecord.adjacentRegionIds0A;
+      while (adjacentIndex < candidateRecord.adjacentRegionCount08) {
+        short adjOwnerNationCode =
+            g_pGlobalMapState->ResolveTileOwnerNationCodeNormalized(*adjacentCursor);
+        if (adjOwnerNationCode == nationId04) {
+          matchCount++;
+        }
+        adjacentIndex++;
+        adjacentCursor++;
+      }
+      if (candidateRecord.adjacentRegionCount08 > 0) {
+        candidateScore = (static_cast<float>(matchCount) /
+                              static_cast<float>(candidateRecord.adjacentRegionCount08) -
+                          g_Recompute_Nation_Order_LookupTable_0065A9E0) *
+                         candidateScore;
+      }
+      bestScore = candidateScore / g_fMissionScoreNormalizationDivisor;
     }
-    field_14 = candidateTile;
-    bestScore = candidateScore;
   }
 
   return field_14 != -1;
@@ -152,41 +220,58 @@ char TAttackProvinceMission::TryResolveTargetTerrainClass() {
 
 // FUNCTION: IMPERIALISM 0x0053de00
 void TAttackProvinceMission::MissionSlot44() {
+  CIterator targetIter(orderListAt18);
   if (field_14 == -1) {
     TryResolveTargetTerrainClass();
   }
 
-  short contextId = GetPresentLocation();
-  float vector[5];
-  ProjectEquipage(vector, contextId, 0);
+  {
+    float vector[5];
+    float total = 0.0f;
+    float weighted = 0.0f;
+    ProjectEquipage(vector, GetPresentLocation(), 0);
 
-  float total = 0.0f;
-  float weighted = 0.0f;
-  for (int i = 0; i < 5; ++i) {
-    total += resourceWeights[i];
-    weighted += sqrtf(vector[i] * resourceWeights[i]);
-  }
+    float* projectedCursor = vector;
+    float* weightCursor = resourceWeights;
+    int remainingWeights = 5;
+    do {
+      weighted += sqrtf(*weightCursor * *projectedCursor);
+      projectedCursor++;
+      weightCursor++;
+      total += weightCursor[-1];
+      remainingWeights--;
+    } while (remainingWeights != 0);
 
-  if (*reinterpret_cast<const float*>(0x0065a8f0) < weighted / total) {
-    short targetOwnerNation = g_pGlobalMapState->cityScoreTable[targetProvince30].ownerNationCode00;
-    if (g_pDiplomacyTurnStateManager->HasOutdatedWarRelationSlot48(targetOwnerNation, nationId04)) {
-      // Original also walks a global "queued mission" cursor here, updating
-      // every sibling mission whose context matches field_14 via a vtable
-      // slot on a not-yet-recovered node type (distinct field layout from
-      // TMission -- pending further class recovery of that queue).
-    } else if (!g_pDiplomacyTurnStateManager->HasPolicyWithNationSlot44(targetOwnerNation,
-                                                                        nationId04)) {
-      // Original also gates on a per-nation "need already queued" cache
-      // (needCurrentByType) before dispatching; omitted pending recovery of
-      // that table's real index range.
-      g_apNationStates[nationId04]->ApplyDiplomacyPolicyStateForTargetWithCostChecks(
-          targetOwnerNation, 0x131);
+    if (weighted / total > g_AttackProvinceMissionReadinessThreshold_0065A8F0) {
+      if (g_pDiplomacyTurnStateManager->HasOutdatedWarRelationSlot48(
+              nationId04, g_pGlobalMapState->cityScoreTable[targetProvince30].ownerNationCode00)) {
+        for (TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(targetIter.Reset());
+             targetIter.More(); unit = static_cast<TMilitaryUnit*>(targetIter.Advance())) {
+          if (unit->tileIndex06 == field_14) {
+            unit->SetOrderModeSlot34(1, targetProvince30);
+          }
+        }
+      } else if (!g_pDiplomacyTurnStateManager->HasPolicyWithNationSlot44(
+                     nationId04,
+                     g_pGlobalMapState->cityScoreTable[targetProvince30].ownerNationCode00)) {
+        signed char targetOwnerNation =
+            g_pGlobalMapState->cityScoreTable[targetProvince30].ownerNationCode00;
+        if (g_apNationStates[nationId04]->diplomacyPolicyByNation[targetOwnerNation] != 0x131) {
+          g_apNationStates[nationId04]->ApplyDiplomacyPolicyStateForTargetWithCostChecks(
+              targetOwnerNation, 0x131);
+        }
+      }
     }
   }
 
-  // See note above -- the trailing cursor pass (retargeting every other
-  // queued sibling mission to field_14) is pending recovery of that queue's
-  // owning class.
+  short resolvedTarget = field_14;
+  CIterator retargetIter(orderListAt18);
+  for (TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(retargetIter.Reset()); retargetIter.More();
+       unit = static_cast<TMilitaryUnit*>(retargetIter.Advance())) {
+    if (unit->tileIndex06 != resolvedTarget) {
+      unit->SetOrderModeSlot34(1, resolvedTarget);
+    }
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x0053e050
@@ -241,23 +326,31 @@ void TAttackProvinceMission::SetStateByte8To2() {
 // redeclare a `// FUNCTION:` marker for this address, see TInvadeMission.cpp).
 // FUNCTION: IMPERIALISM 0x0053e1a0
 void TAttackProvinceMission::ResetValue0CToZero() {
-  const TGlobalMapCityScoreRecord& targetRecord =
-      g_pGlobalMapState->cityScoreTable[targetProvince30];
+  short targetProvince = targetProvince30;
+  short missionNation = nationId04;
+  int matchCount = 0;
+  int adjacentIndex = 0;
+  const TGlobalMapCityScoreRecord& targetRecord = g_pGlobalMapState->cityScoreTable[targetProvince];
   float score = static_cast<float>(targetRecord.cityScoreValue);
 
-  int matchCount = 0;
-  int adjacentCount = targetRecord.adjacentRegionCount08;
-  if (adjacentCount > 0) {
-    for (int i = 0; i < adjacentCount; ++i) {
-      short tileOwnerNationCode = g_pGlobalMapState->ResolveTileOwnerNationCodeNormalized(
-          targetRecord.adjacentRegionIds0A[i]);
-      if (tileOwnerNationCode == nationId04) {
+  if (targetRecord.adjacentRegionCount08 > 0) {
+    const short* adjacentCursor = targetRecord.adjacentRegionIds0A;
+    do {
+      short tileOwnerNationCode =
+          g_pGlobalMapState->ResolveTileOwnerNationCodeNormalized(*adjacentCursor);
+      if (tileOwnerNationCode == missionNation) {
         matchCount++;
       }
-    }
-    score = (static_cast<float>(matchCount) / static_cast<float>(adjacentCount) -
-             *reinterpret_cast<const float*>(0x0065a9e0)) *
-            score;
+      adjacentIndex++;
+      adjacentCursor++;
+    } while (adjacentIndex < targetRecord.adjacentRegionCount08);
+  }
+
+  if (targetRecord.adjacentRegionCount08 > 0) {
+    score =
+        (static_cast<float>(matchCount) / static_cast<float>(targetRecord.adjacentRegionCount08) -
+         g_Recompute_Nation_Order_LookupTable_0065A9E0) *
+        score;
   }
   value0c = score / g_fMissionScoreNormalizationDivisor;
 }
