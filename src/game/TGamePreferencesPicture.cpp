@@ -96,7 +96,7 @@ void TGamePreferencesPicture::DoEvent(int commandId, TEventHandler* sourceHandle
       TDeluxeText* tooltip = static_cast<TDeluxeText*>(ResolveControlByTag(kControlTagTxta + idx));
       tooltip->AssertValid();
       tooltip->UpdateTextEntrySharedStringAndMaybeNotify(&text, 1);
-      tooltip->RecenterTextVerticallyFromMeasuredHeightAndMaybeInvalidate(1);
+      tooltip->CenterVertically(1);
     }
   }
 }

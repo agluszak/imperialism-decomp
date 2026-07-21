@@ -33,7 +33,7 @@ void TSpecialQuitPicture::DoPostCreate(int arg) {
   TDeluxeText* saleControl = static_cast<TDeluxeText*>(ResolveControlByTag(kControlTagSale));
   saleControl->AssertValid();
   saleControl->SetTextFromUiStringResourceId(0x4e20);
-  saleControl->BuildAndApplyTextStyleDescriptor(0, 0x18, 0x2b6c);
+  saleControl->SetTextStyle(0, 0x18, 0x2b6c);
   CRect saleBounds;
   saleControl->QueryBounds(&saleBounds);
   saleBounds.right = 0x28;
@@ -56,7 +56,7 @@ void TSpecialQuitPicture::DoPostCreate(int arg) {
 
   TDeluxeText* titlControl = static_cast<TDeluxeText*>(ResolveControlByTag(kControlTagTitl));
   titlControl->AssertValid();
-  titlControl->BuildAndApplyTextStyleDescriptor(0, 0xe, 0x2b6c);
+  titlControl->SetTextStyle(0, 0xe, 0x2b6c);
   titlControl->SetTextAlignmentAndMaybeRefresh(1, 1);
 }
 

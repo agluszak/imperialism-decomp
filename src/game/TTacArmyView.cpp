@@ -49,10 +49,6 @@ IMPLEMENT_DYNCREATE(TTacArmyView, TTacticalBattleView)
 
 TTacArmyView::TTacArmyView() {}
 
-// Legacy free-function bridge for the palette fill-color setter (autogen stub
-// 0x4950f0); same pattern as TTransFocusAnimation.cpp / TViewMgr.cpp.
-extern undefined4 SetQuickDrawFillColorFromPaletteIndex(void);
-
 // Live battle-view initializer (not a real constructor despite the symbols.csv name):
 // caches the tactical tile / sprite metric globals, (re)allocates the offscreen
 // battlefield surface and renders the per-composition backdrop bitmap

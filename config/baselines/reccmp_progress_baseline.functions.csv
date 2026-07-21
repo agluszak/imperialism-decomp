@@ -587,9 +587,9 @@ address|matching|name
 0x4860e0|0.8360655737704918|TTEView::MeasureCurrentTextHeightInLayoutRect
 0x4861f0|0.0|AssignTextFromResourceIdAndMaybeInvalidate
 0x486290|1.0|TStaticText::SetText
-0x4862b0|0.5|NoOpUiStyleBridge_004862b0
-0x4862d0|0.0|CallThisVslot1B4NoArgs
-0x486300|0.0|NoOpTextPostLayoutHook
+0x4862b0|1.0|TTEView::GetNumberOfChars
+0x4862d0|1.0|TTEView::SetOneStyle
+0x486300|1.0|TTEView::StuffTERects
 0x486320|0.42424242424242425|TDocument::CreateObject
 0x486350|0.9090909090909091|TDocument::`scalar deleting destructor'
 0x486380|0.5|TDocument::CreateTDocumentInstance
@@ -866,7 +866,7 @@ address|matching|name
 0x48b1c0|1.0|TView::SetEnabled
 0x48b200|1.0|TView::IsActionable
 0x48b250|0.918918918918919|TView::CaptureLayoutF0
-0x48b2d0|0.2033898305084746|TView::UpdateCoordinates
+0x48b2d0|0.19130434782608696|TView::UpdateCoordinates
 0x48b3f0|0.75|TView::CaptureLayout
 0x48b4b0|0.2814814814814815|TView::InvalidateOffsetRegionUsingChildClipRect
 0x48b5f0|0.4819277108433735|TView::InvalidateCityDialogRectRegion
@@ -971,7 +971,7 @@ address|matching|name
 0x48e640|0.8372093023255814|TControl::BeginMouseCaptureAndStartRepeatTimer
 0x48e710|0.3469387755102041|TControl::DoEvent
 0x48e7a0|1.0|TControl::SetTextColorAndMaybeRefresh
-0x48e7d0|1.0|TControl::SetTextStyleAndMaybeRefresh
+0x48e7d0|1.0|TControl::InstallTextStyle
 0x48e810|1.0|TControl::HiliteState
 0x48e850|0.4457831325301205|TControl::DispatchPictureResourceCommand
 0x48e940|1.0|TControl::PointInBoundsAndActionable
@@ -1158,8 +1158,8 @@ address|matching|name
 0x495070|0.6666666666666666|SetQuickDrawStrokeColor
 0x4950a0|0.8333333333333334|SetQuickDrawColorAndSyncGlobals
 0x4950d0|1.0|SetGlobalBlitTransparentColorRaw
-0x4950f0|0.275|SetQuickDrawFillColorFromPaletteIndex
-0x4951e0|0.5555555555555556|UpdatePaletteIndexWithDefaultFallback
+0x4950f0|0.6972477064220184|SetQuickDrawFillColorFromPaletteIndex
+0x4951e0|1.0|UpdatePaletteIndexWithDefaultFallback
 0x495230|1.0|SetQuickDrawTextFont
 0x495260|1.0|SetQuickDrawTextSize
 0x495290|1.0|SetQuickDrawTextFace
@@ -1198,7 +1198,7 @@ address|matching|name
 0x496450|1.0|TransparentBlitBitmapUsingMaskedRasterOps
 0x4967e0|1.0|TransparentBlitBitmapRegionUsingMaskedRasterOps
 0x496b80|0.03333333333333333|BlitBitmapResourceToTemporaryCompatibleDcAndPresent
-0x496d40|0.1833616298811545|BlitRectWithOptionalTransparency
+0x496d40|0.5803571428571429|BlitRectWithOptionalTransparency
 0x497230|0.27586206896551724|InitializeGlobalRectDefaultsIfUninitialized
 0x4972a0|1.0|InitializeTurnOrderNavigationDialogByViewportSize_Impl
 0x4972c0|1.0|ReturnConstantTrueQuickDrawFlag
@@ -3884,7 +3884,7 @@ address|matching|name
 0x545660|1.0|TMultiplayerMgr::ResetLocalUiStateAndPostTurnEvent5E5
 0x5456a0|0.14814814814814814|ResetDialogContextField40AndEmitTurnEvent3Mode18
 0x545730|0.016666666666666666|TMultiplayerMgr::RouteAndProcessDiplomacyTurnStateEventQueue
-0x545940|0.4257105943152455|TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine
+0x545940|0.4246044559250888|TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine
 0x549240|0.6666666666666666|TouchSessionActiveNationId
 0x549280|1.0|TMultiplayerMgr::AppendNodeToTurnEventLinkedListAt6C
 0x5493c0|0.3516483516483517|TMultiplayerMgr::CreateAndSendTurnEvent11_MapOffsetAndFlags
@@ -5324,12 +5324,12 @@ address|matching|name
 0x5a35a0|1.0|TTacticalBattle::HandleTacticalCommandTag_mine
 0x5a3640|1.0|TTacticalBattle::ExecuteTacticalDigActionAndConsumeUnitActionPoints
 0x5a36d0|0.8342245989304813|TTacticalBattle::HandleTacticalCommandTag_digg
-0x5a3810|0.7107438016528925|TTacticalBattle::ComputeRallyStrengthAndQueueTacticalRallyCommand
+0x5a3810|0.8571428571428571|TTacticalBattle::ComputeRallyStrengthAndQueueTacticalRallyCommand
 0x5a38e0|1.0|TTacticalBattle::HandleTacticalCommandTag_raly
 0x5a39a0|0.9393939393939394|ComputeHexTileDistanceFromIndices
 0x5a3a70|0.4|TTacticalBattle::FindFortWallTileCrossedByFiringLine
 0x5a3c20|0.8723404255319149|TTacticalBattle::ConsumeFortStrengthPointsAndInvalidateIfDepleted
-0x5a3d30|0.8104956268221575|TTacticalBattle::IsTacticalTargetTileReachableForAction
+0x5a3d30|0.8163265306122449|TTacticalBattle::IsTacticalTargetTileReachableForAction
 0x5a3f10|0.3389830508474576|TTacticalBattle::HandleTacticalCommandTag_targ
 0x5a41c0|0.6|TTacticalBattle::ApplyGridColumnSelectionGuard
 0x5a4240|0.48695652173913045|TTacticalBattle::CountFreeDeploymentZoneTilesForCurrentSide
@@ -5419,7 +5419,7 @@ address|matching|name
 0x5a8d40|0.009950248756218905|TTacticalBattleView::HandleCursorHoverSelectionByChildHitTestAndFallback
 0x5a9090|0.8208955223880597|TTacticalBattleView::PlayTacticalTileEffect
 0x5a9170|0.9454545454545454|TTacticalBattleView::RunOneTimeAnimationModalWaitAndInvalidateCityDialog
-0x5a9240|0.563855421686747|TTacticalBattleView::AnimateTacticalUnitMoveBetweenTiles
+0x5a9240|0.5397590361445783|TTacticalBattleView::AnimateTacticalUnitMoveBetweenTiles
 0x5a9550|0.23429541595925296|TTacticalBattleView::DrawUiTilesAndOverlay
 0x5a99e0|1.0|DrawHexSelectionOutlineSegments
 0x5a9b40|0.92|TTacticalBattleView::UpdateTacticalActionControlBitmapForCurrentUnit
@@ -5621,10 +5621,10 @@ address|matching|name
 0x5b60a0|1.0|TDeluxeText::SetSelectedFlagAndState
 0x5b60d0|1.0|TDeluxeText::SetTextFromUiStringResourceId
 0x5b6170|1.0|TDeluxeText::Draw
-0x5b62a0|0.35714285714285715|TDeluxeText::ApplyTextStyleDescriptorAndMaybeRefresh
-0x5b62e0|0.4838709677419355|TDeluxeText::BuildAndApplyTextStyleDescriptor
+0x5b62a0|1.0|TDeluxeText::SetTextStyle(struct TextStyle const &, unsigned char)
+0x5b62e0|0.71875|TDeluxeText::SetTextStyle(int, int, int)
 0x5b6360|1.0|TDeluxeText::SetTextEntryFromChars
-0x5b63e0|0.647887323943662|TDeluxeText::RecenterTextVerticallyFromMeasuredHeightAndMaybeInvalidate
+0x5b63e0|1.0|TDeluxeText::CenterVertically
 0x5b6480|1.0|TDeluxeText::UpdateTextEntrySharedString
 0x5b64a0|1.0|TDeluxeText::UpdateTextEntrySharedStringAndMaybeNotify
 0x5b64e0|1.0|TDeluxeText::BuildCityViewProductionControls_Impl

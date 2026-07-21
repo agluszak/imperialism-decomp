@@ -28,7 +28,7 @@ TGreatPower* GetActiveNationState(void);
 int GetTradeSummarySelectionTagByIndex(short index);
 
 struct NationState;
-struct TUiTextStyleDescriptor;
+struct TextStyle;
 struct TQuickDrawSurfaceContext;
 struct TCdAudioDevice;
 class TArmyMgr;
@@ -297,7 +297,7 @@ extern int g_bQuickDrawStrokePairDirty;
 extern CRgn* g_pGlobalClipRegionHandleObject;
 extern int g_Quick_Draw_Color_State_006950FC;
 extern CFont* g_pQuickDrawCachedUiFont;
-extern TUiTextStyleDescriptor g_QuickDrawCachedFontPreset;
+extern TextStyle g_QuickDrawCachedFontPreset;
 extern unsigned char g_bQuickDrawCachedFontDirty;
 extern char g_szQuickDrawFontFaceSystem[];
 extern char g_szQuickDrawFontFaceBookAntiqua[];
@@ -307,9 +307,9 @@ extern const char* const g_apszQuickDrawFontFaceNames[5];
 // cluster above. The preset's styleRef6 field IS the current text color (written by
 // SetQuickDrawFillColor, read as COLORREF by the paint paths; the original PDB labels
 // those 4 bytes g_uQuickDrawCurrentColor — it's the same field, not a separate global).
-extern CFont* g_pQuickDrawCachedMeasureFont;                // 0x6a1d48
-extern TUiTextStyleDescriptor g_QuickDrawMeasureFontPreset; // 0x6a1d4c
-extern unsigned char g_bQuickDrawMeasureFontDirty;          // 0x6a1d56
+extern CFont* g_pQuickDrawCachedMeasureFont;       // 0x6a1d48
+extern TextStyle g_QuickDrawMeasureFontPreset;     // 0x6a1d4c
+extern unsigned char g_bQuickDrawMeasureFontDirty; // 0x6a1d56
 extern int g_uQuickDrawStrokeColor;
 extern int g_nQuickDrawOriginX;
 extern int g_nQuickDrawOriginY;
@@ -952,7 +952,7 @@ extern int g_adwCivilianWorkOrderCostByClass[16];
 
 // TControl.cpp — UI resource entry default text-style/command-param block (also
 // TMyStaticText.cpp/TStaticText.cpp).
-extern TUiTextStyleDescriptor g_UiResourceEntryDefaultTextStyle;
+extern TextStyle g_UiResourceEntryDefaultTextStyle;
 
 // TControlSeaZoneMission.cpp / TDefendProvinceMission.cpp / TNavyMission.cpp —
 // defend-province / mission priority-vector normalization constants.

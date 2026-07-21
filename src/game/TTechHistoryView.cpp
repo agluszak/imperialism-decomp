@@ -27,7 +27,7 @@ void TTechHistoryView::ConstructTTechHistoryViewBaseState(short techId) {
   int shadowStyle = 0;
   MapUiThemeCodeToStyleFlags(0x2b6a, &mainStyle);
   MapUiThemeCodeToStyleFlags(0x2b68, &shadowStyle);
-  TUiTextStyleDescriptor style;
+  TextStyle style;
   BuildUiTextStyleDescriptor(&style, 0, 0xc, 0x2b6a);
 
   TDropShadowText* titleControl =

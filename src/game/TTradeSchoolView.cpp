@@ -33,14 +33,14 @@ TTradeSchoolView::~TTradeSchoolView() {}
 void TTradeSchoolView::DoStartup() {
   SetState(0, 0);
 
-  TUiTextStyleDescriptor titleStyle;
+  TextStyle titleStyle;
   BuildUiTextStyleDescriptor(&titleStyle, 0, 0x18, 0x2b67);
 
   CString text;
   TStaticText* nameText = static_cast<TStaticText*>(ResolveControlByTag(0x6e616d65u)); // 'name'
   if (nameText != 0) {
     g_pSimMgr->GetString(0x2719, embeddedPageIndex9E, &text);
-    nameText->SetTextStyleAndMaybeRefresh(&titleStyle, 0);
+    nameText->InstallTextStyle(titleStyle, 0);
     nameText->SetTextAlignmentAndMaybeRefresh(1, 0);
     nameText->SetTextAndMaybeRefresh(&text, 0);
   }
@@ -61,7 +61,7 @@ void TTradeSchoolView::DoStartup() {
   LoadUiStringByGroupAndIndexToControlObject(0x2738, 0x20,
                                              ResolveControlByTag(0x65717535u)); // 'equ5'
 
-  TUiTextStyleDescriptor valueStyle;
+  TextStyle valueStyle;
   BuildUiTextStyleDescriptor(&valueStyle, 0, 9, 0x2b69);
   CString mappedValueText(s_mcflavor_00696674);
   const unsigned int valueTags[6] = {
@@ -75,11 +75,11 @@ void TTradeSchoolView::DoStartup() {
                                static_cast<int>(0x99e + valueIndex * 5));
       continue;
     }
-    valueText->SetTextStyleAndMaybeRefresh(&valueStyle, 0);
+    valueText->InstallTextStyle(valueStyle, 0);
     valueText->SetTextAndMaybeRefresh(&mappedValueText, 0);
   }
 
-  TUiTextStyleDescriptor costStyle;
+  TextStyle costStyle;
   BuildUiTextStyleDescriptor(&costStyle, 0, 0xe, 0x2b67);
   const unsigned int costTags[2] = {0x636f7331u, 0x636f7332u}; // 'cos1', 'cos2'
   const int costs[2] = {100, 1000};
@@ -90,7 +90,7 @@ void TTradeSchoolView::DoStartup() {
       continue;
     }
     g_pSimMgr->NumToCurrency(costs[costIndex], &text);
-    costText->SetTextStyleAndMaybeRefresh(&costStyle, 0);
+    costText->InstallTextStyle(costStyle, 0);
     costText->SetTextAndMaybeRefresh(&text, 0);
   }
 }

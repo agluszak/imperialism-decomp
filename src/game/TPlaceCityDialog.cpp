@@ -124,14 +124,14 @@ void TPlaceCityDialog::StuffValues(TTown* town) {
   TStaticText* sustainability =
       static_cast<TStaticText*>(ResolveControlByTag(0x73757374u)); // 'sust'
   sustainability->SetTextAndMaybeRefresh(&summaryText, 1);
-  TUiTextStyleDescriptor style;
+  TextStyle style;
   BuildUiTextStyleDescriptor(&style, 0, 0xc, 0x2b6a);
-  sustainability->SetTextStyleAndMaybeRefresh(&style, 0);
+  sustainability->InstallTextStyle(style, 0);
 
   TStaticText* title = static_cast<TStaticText*>(ResolveControlByTag(0x7469746cu)); // 'titl'
   title->AssertValid();
   BuildUiTextStyleDescriptor(&style, 0, 0xe, 0x2b6a);
-  title->SetTextStyleAndMaybeRefresh(&style, 0);
+  title->InstallTextStyle(style, 0);
   g_pSimMgr->GetString(0x273f, 7, &templateText);
   title->SetTextAndMaybeRefresh(&templateText, 1);
 }

@@ -42,7 +42,7 @@ void TTradePageSellView::RebuildNationOfferRowsForCategory(short categorySlot) {
     headerBounds[0] = 0x30;
     headerRow->SetTextLineRowBoundsAndStyle(0, 0, headerBounds, 0x2741, 2);
     headerRow->SetField1E(1);
-    TUiTextStyleDescriptor headerStyle;
+    TextStyle headerStyle;
     BuildUiTextStyleDescriptor(&headerStyle, 4, 0xc, 0x2b6a);
     headerRow->SetTextLineStyleDescriptor(&headerStyle);
     orderedEntries->AddTail(headerRow);
@@ -63,7 +63,7 @@ void TTradePageSellView::RebuildNationOfferRowsForCategory(short categorySlot) {
     fallbackBounds[0] = 0x30;
     fallbackHeaderRow->SetTextLineRowBoundsAndStyle(0, 0, fallbackBounds, 0x2741, 5);
     fallbackHeaderRow->SetField1E(1);
-    TUiTextStyleDescriptor fallbackStyle;
+    TextStyle fallbackStyle;
     BuildUiTextStyleDescriptor(&fallbackStyle, 0, 0xe, 0x2b6a);
     fallbackHeaderRow->SetTextLineStyleDescriptor(&fallbackStyle);
     orderedEntries->AddTail(fallbackHeaderRow);

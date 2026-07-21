@@ -1039,9 +1039,9 @@ undefined TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nati
     textEntry->InitializeTextEntryBaseAndOptionalStringResource(panel, &layoutAnchor, &layoutHeight,
                                                                 5, 5, -1, 0);
 
-    TUiTextStyleDescriptor styleDescriptor;
+    TextStyle styleDescriptor;
     BuildUiTextStyleDescriptor(&styleDescriptor, 0, 0xa, 0x2b67);
-    textEntry->SetTextStyleAndMaybeRefresh(&styleDescriptor, 0);
+    textEntry->InstallTextStyle(styleDescriptor, 0);
     textEntry->SetTextAlignmentAndMaybeRefresh(0, 0);
     textEntry->controlTag = kTagDetailText;
 
@@ -1361,9 +1361,9 @@ undefined TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nati
   textEntry->InitializeTextEntryBaseAndOptionalStringResource(panel, &textPos, &textHeight, 5, 5,
                                                               -1, 0);
 
-  TUiTextStyleDescriptor styleDescriptor;
+  TextStyle styleDescriptor;
   BuildUiTextStyleDescriptor(&styleDescriptor, 0, 0xa, 0x2b67);
-  textEntry->SetTextStyleAndMaybeRefresh(&styleDescriptor, 0);
+  textEntry->InstallTextStyle(styleDescriptor, 0);
   textEntry->SetTextAlignmentAndMaybeRefresh(0, 0);
   textEntry->controlTag = kTagDetailText;
 
@@ -1379,7 +1379,7 @@ undefined TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nati
     int valueAnchor = 0x32;
     valueEntry->InitializeTextEntryBaseAndOptionalStringResource(panel, &valuePos, &valueHeight, 5,
                                                                  5, -1, 0);
-    valueEntry->SetTextStyleAndMaybeRefresh(&styleDescriptor, 0);
+    valueEntry->InstallTextStyle(styleDescriptor, 0);
     valueEntry->SetTextAlignmentAndMaybeRefresh(0, 0);
     valueEntry->controlTag = kTagDetailValue;
   }

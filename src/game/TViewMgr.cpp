@@ -456,7 +456,7 @@ bool TViewMgr::RunNationInfoModalAndReturnNonCancel(int messageKind, CString tit
                                                     const POINT& messagePosition, int contextTag,
                                                     char showCancel) {
   CString titleText;
-  TUiTextStyleDescriptor styleDescriptor;
+  TextStyle styleDescriptor;
   CRect bounds;            // function-scope like the original (0x38): not overlapped with the
   short overlaySfxIds[13]; // sfx table (0x48), so the frame keeps both live regions
   // The payload is a {-1000 sentinel, resource word} pair; the word is only read
@@ -541,7 +541,7 @@ bool TViewMgr::RunNationInfoModalAndReturnNonCancel(int messageKind, CString tit
       MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
       TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgr_0069B6BC, 0x31a);
     }
-    title->SetTextStyleAndMaybeRefresh(&styleDescriptor, 0);
+    title->InstallTextStyle(styleDescriptor, 0);
     title->SetTextAlignmentAndMaybeRefresh(1, 0);
     BuildUiMessageTextFromBracketTemplate(g_pSimMgr, &titleText, 0x2749, messageKind, 0x2749,
                                           contextTagSx);
@@ -554,7 +554,7 @@ bool TViewMgr::RunNationInfoModalAndReturnNonCancel(int messageKind, CString tit
   TDeluxeText* info = static_cast<TDeluxeText*>(dialog->ResolveControlByTag(0x696e666f)); // 'info'
   info->AssertValid();
   info->SetTextEntryFromChars(messageChars, messageLength);
-  info->ApplyTextStyleDescriptorAndMaybeRefresh(&styleDescriptor, 0);
+  info->SetTextStyle(styleDescriptor, 0);
   int measuredHeight = static_cast<short>(info->MeasureCurrentTextHeightInLayoutRect());
   if (measuredHeight > info->frameHeight38) {
     info->QueryBounds(&bounds);
@@ -1059,13 +1059,13 @@ void ApplyThemeToTaggedTextControl(unsigned int controlTag, int styleWidth, int 
     return;
   }
   control->AssertValid();
-  TUiTextStyleDescriptor styleDescriptor;
+  TextStyle styleDescriptor;
   styleDescriptor.fontFamily = 0;
   styleDescriptor.fontStyleFlags = 0;
   styleDescriptor.fontSize = 0;
   styleDescriptor.textColor = 0;
   BuildUiTextStyleDescriptor(&styleDescriptor, 0, styleWidth, styleSecondary);
-  control->SetTextStyleAndMaybeRefresh(&styleDescriptor, 0);
+  control->InstallTextStyle(styleDescriptor, 0);
   (void)stylePrimary;
 }
 
@@ -1444,7 +1444,7 @@ void TViewMgr::UiRuntimeSlot84(int) {
 // FUNCTION: IMPERIALISM 0x005d8980
 void TViewMgr::UiRuntimeSlot88(int abilityIndex) {
   TView* activeDialog = g_pDisplayMgr->activeDialog;
-  TUiTextStyleDescriptor style;
+  TextStyle style;
   char* styleRefBytes = reinterpret_cast<char*>(&style.textColor);
   styleRefBytes[0] = 0;
   styleRefBytes[1] = 0;
@@ -1490,7 +1490,7 @@ void TViewMgr::UiRuntimeSlot88(int abilityIndex) {
   textControl->SetTextAndMaybeRefresh(&statusText, 1);
 
   BuildUiTextStyleDescriptor(&style, 0, 0xc, 0x2b6b);
-  textControl->SetTextStyleAndMaybeRefresh(&style, 0);
+  textControl->InstallTextStyle(style, 0);
   textControl->SetTextAlignmentAndMaybeRefresh(-2, 0);
   activeDialog->ForceRedraw();
 }
@@ -1556,7 +1556,7 @@ void TViewMgr::UiRuntimeSlot5C(int) {
   turn_event_ui_refresh::RefreshTaggedControlWithLocalizedString(kControlTagFood, 0x2730, 0);
   turn_event_ui_refresh::RefreshTaggedControlWithLocalizedString(kControlTagFood, 0x2731, 0);
 
-  TUiTextStyleDescriptor foodStyle;
+  TextStyle foodStyle;
   foodStyle.fontFamily = 0;
   foodStyle.fontStyleFlags = 0;
   foodStyle.fontSize = 0;
@@ -1565,11 +1565,11 @@ void TViewMgr::UiRuntimeSlot5C(int) {
   TControl* foodControl = turn_event_ui_refresh::ResolveMainTaggedControl(kControlTagFood);
   if (foodControl != nullptr) {
     foodControl->AssertValid();
-    foodControl->SetTextStyleAndMaybeRefresh(&foodStyle, 0);
+    foodControl->InstallTextStyle(foodStyle, 0);
     turn_event_ui_refresh::RefreshTaggedControlWithLocalizedString(kControlTagFood, 0x2730, 0);
-    foodControl->SetTextStyleAndMaybeRefresh(&foodStyle, 0);
+    foodControl->InstallTextStyle(foodStyle, 0);
     turn_event_ui_refresh::RefreshTaggedControlWithLocalizedString(kControlTagFood, 0x2730, 0);
-    foodControl->SetTextStyleAndMaybeRefresh(&foodStyle, 0);
+    foodControl->InstallTextStyle(foodStyle, 0);
     turn_event_ui_refresh::RefreshTaggedControlWithLocalizedString(kControlTagFood, 0x2730, 0);
   }
 
@@ -1773,9 +1773,9 @@ void TViewMgr::UiRuntimeSlotF8() {
 
   g_pCursorControlPanel->InitializeMapHintTextStyleAndThemeFlags(0x2b6b, 0x2b6c);
 
-  TUiTextStyleDescriptor styleDescriptor = {0, 0, 0, 0};
+  TextStyle styleDescriptor = {0, 0, 0, 0};
   BuildUiTextStyleDescriptor(&styleDescriptor, 0, 0xe, 0x2b6c);
-  g_pCursorControlPanel->ApplyTextStyleDescriptorAndMaybeRefresh(&styleDescriptor, 1);
+  g_pCursorControlPanel->SetTextStyle(styleDescriptor, 1);
   g_pCursorControlPanel->SetTextAlignmentAndMaybeRefresh(1, 0);
 
   int mappedStyleFlags = 0;
@@ -2407,10 +2407,10 @@ int TViewMgr::MakePlanetSeedDialog(const char* instruction, CString& planetSeed,
   TStaticText* instructionText =
       static_cast<TStaticText*>(dialog->ResolveControlByTag(0x696e7374 /* 'inst' */));
   instructionText->AssertValid();
-  TUiTextStyleDescriptor instructionStyle;
+  TextStyle instructionStyle;
   instructionStyle.textColor = 0;
   BuildUiTextStyleDescriptor(&instructionStyle, 0, 0xe, 0);
-  instructionText->SetTextStyleAndMaybeRefresh(&instructionStyle, 0);
+  instructionText->InstallTextStyle(instructionStyle, 0);
   CString instructionString(instruction);
   instructionText->SetTextAndMaybeRefresh(&instructionString, 0);
 
@@ -2418,10 +2418,10 @@ int TViewMgr::MakePlanetSeedDialog(const char* instruction, CString& planetSeed,
       static_cast<TEditText*>(dialog->ResolveControlByTag(0x706c616e /* 'plan' */));
   planetEdit->AssertValid();
   CString editText(planetSeed);
-  TUiTextStyleDescriptor editStyle;
+  TextStyle editStyle;
   editStyle.textColor = 0;
   BuildUiTextStyleDescriptor(&editStyle, 0, 0xc, 0);
-  planetEdit->SetTextStyleAndMaybeRefresh(&editStyle, 0);
+  planetEdit->InstallTextStyle(editStyle, 0);
   planetEdit->InitDialogWindowAndSyncTitleIfChanged(&editText, 0);
   planetEdit->BecomeTarget();
   planetEdit->SetEditSelectionAndScrollCaret(0, static_cast<short>(editText.GetLength()), 1);

@@ -47,14 +47,14 @@ void TIndustryView::DoStartup() {
     selectedIndustryUnitTypeA4 = industryUnitTypesByPage[embeddedPageIndex9E];
   }
 
-  TUiTextStyleDescriptor headingStyle;
+  TextStyle headingStyle;
   BuildUiTextStyleDescriptor(&headingStyle, 0, 0xc, 0x2b67);
 
   CString displayText;
   TStaticText* nameText = static_cast<TStaticText*>(ResolveControlByTag(0x6e616d65u)); // 'name'
   if (nameText != 0) {
     g_pSimMgr->GetString(0x2719, embeddedPageIndex9E, &displayText);
-    nameText->SetTextStyleAndMaybeRefresh(&headingStyle, 0);
+    nameText->InstallTextStyle(headingStyle, 0);
     nameText->SetTextAlignmentAndMaybeRefresh(-2, 0);
     nameText->SetTextAndMaybeRefresh(&displayText, 0);
   }
@@ -67,7 +67,7 @@ void TIndustryView::DoStartup() {
     g_pSimMgr->GetString(0x2738, 0x10, &templateText);
     scanBracketExpressions(g_pSimMgr, &displayText, static_cast<LPCSTR>(templateText),
                            static_cast<LPCSTR>(numberText));
-    capacityText->SetTextStyleAndMaybeRefresh(&headingStyle, 0);
+    capacityText->InstallTextStyle(headingStyle, 0);
     capacityText->SetTextAlignmentAndMaybeRefresh(-2, 0);
     capacityText->SetTextAndMaybeRefresh(&displayText, 0);
   }
@@ -80,7 +80,7 @@ void TIndustryView::DoStartup() {
     g_pSimMgr->GetString(0x2738, 0x1d, &templateText);
     scanBracketExpressions(g_pSimMgr, &displayText, static_cast<LPCSTR>(templateText),
                            static_cast<LPCSTR>(numberText));
-    provinceText->SetTextStyleAndMaybeRefresh(&headingStyle, 0);
+    provinceText->InstallTextStyle(headingStyle, 0);
     provinceText->SetTextAlignmentAndMaybeRefresh(-2, 0);
     provinceText->SetTextAndMaybeRefresh(&displayText, 0);
   }
@@ -89,7 +89,7 @@ void TIndustryView::DoStartup() {
       static_cast<TStaticText*>(ResolveControlByTag(0x6f722020u)); // 'or  '
   if (conjunctionText != 0) {
     g_pSimMgr->GetString(0x2738, 0x11, &displayText);
-    conjunctionText->SetTextStyleAndMaybeRefresh(&headingStyle, 0);
+    conjunctionText->InstallTextStyle(headingStyle, 0);
     conjunctionText->SetTextAlignmentAndMaybeRefresh(1, 0);
     conjunctionText->SetTextAndMaybeRefresh(&displayText, 0);
   }
@@ -118,14 +118,14 @@ void TIndustryView::DoStartup() {
     SetControlHoverHelpText(displayText, equationControl);
   }
 
-  TUiTextStyleDescriptor valueStyle;
+  TextStyle valueStyle;
   BuildUiTextStyleDescriptor(&valueStyle, 0, 9, 0x2b69);
   CString mappedValueText(s_mcflavor_00696674);
 
   TStaticText* valueBalanceText =
       static_cast<TStaticText*>(ResolveControlByTag(0x6c616256u)); // 'Vbal'
   if (valueBalanceText != 0) {
-    valueBalanceText->SetTextStyleAndMaybeRefresh(&valueStyle, 0);
+    valueBalanceText->InstallTextStyle(valueStyle, 0);
     valueBalanceText->SetTextAndMaybeRefresh(&mappedValueText, 0);
   }
 
@@ -136,7 +136,7 @@ void TIndustryView::DoStartup() {
       for (short resource = 0; resource < 0x17; ++resource) {
         if (child->controlTag == g_pTradeSummarySelectionMap[resource]) {
           TStaticText* resourceText = static_cast<TStaticText*>(child);
-          resourceText->SetTextStyleAndMaybeRefresh(&valueStyle, 0);
+          resourceText->InstallTextStyle(valueStyle, 0);
           resourceText->SetTextAndMaybeRefresh(&mappedValueText, 0);
           break;
         }

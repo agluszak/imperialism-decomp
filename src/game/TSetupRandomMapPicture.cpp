@@ -105,7 +105,7 @@ void TSetupRandomMapPicture::DoPostCreate(int arg) {
 
   g_pCursorControlPanel = static_cast<TInfoBarText*>(ResolveControlByTag(kControlTagHot));
   g_pCursorControlPanel->AssertValid();
-  g_pCursorControlPanel->BuildAndApplyTextStyleDescriptor(0, 0xe, 0x2b6b);
+  g_pCursorControlPanel->SetTextStyle(0, 0xe, 0x2b6b);
   g_pCursorControlPanel->InitializeMapHintTextStyleAndThemeFlags(0x2b6b, 0x2b6c);
   g_pCursorControlPanel->SetTextAlignmentAndMaybeRefresh(1, 0);
 
@@ -396,7 +396,7 @@ void TSetupRandomMapPicture::MajorTomToGroundControl(unsigned char mode) {
   CString generatingText;
   g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&generatingText, 0x2758, 7);
   infoBar->UpdateTextEntrySharedStringAndMaybeNotify(&generatingText, 1);
-  infoBar->RecenterTextVerticallyFromMeasuredHeightAndMaybeInvalidate(1);
+  infoBar->CenterVertically(1);
 
   TEditText* countryControl = static_cast<TEditText*>(ResolveControlByTag(kControlTagCoun));
   countryControl->AssertValid();

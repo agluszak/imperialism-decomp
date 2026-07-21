@@ -30,8 +30,8 @@ const short kCouncilTickerIntervalMapMode = 0x2710;
 const unsigned int kEndControlTagReselect = 0x52655374u;    // mode 0x17
 const unsigned int kEndControlTagReselectAlt = 0x53636f72u; // mode 0x16
 
-void ApplyCouncilCandidateTextStyle(TStaticText* textControl, const TUiTextStyleDescriptor* style) {
-  textControl->SetTextStyleAndMaybeRefresh(const_cast<TUiTextStyleDescriptor*>(style), 0);
+void ApplyCouncilCandidateTextStyle(TStaticText* textControl, const TextStyle* style) {
+  textControl->InstallTextStyle(*style, 0);
 }
 
 void RefreshCouncilCandidateNameText(TView* hostPanel, unsigned int controlTag, short nationSlot) {
@@ -182,7 +182,7 @@ void TCouncilView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* 
 void TCouncilView::InitializeDiplomacyCouncilViewControlsAndTicker() {
   TCouncilView* hostPanel = this;
 
-  TUiTextStyleDescriptor councilTextStyle;
+  TextStyle councilTextStyle;
   councilTextStyle.fontFamily = 0;
   councilTextStyle.fontStyleFlags = 0;
   councilTextStyle.fontSize = 0;

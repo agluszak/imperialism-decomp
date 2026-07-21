@@ -481,7 +481,7 @@ int g_uQuickDrawStrokeColor = 0x01000000;
 // GLOBAL: IMPERIALISM 0x006a1ce8
 CFont* g_pQuickDrawCachedUiFont = 0;
 // GLOBAL: IMPERIALISM 0x006a1cec
-TUiTextStyleDescriptor g_QuickDrawCachedFontPreset = {0, 0, 0, 0};
+TextStyle g_QuickDrawCachedFontPreset = {0, 0, 0, 0};
 // GLOBAL: IMPERIALISM 0x006a1cf6
 unsigned char g_bQuickDrawCachedFontDirty = 0;
 
@@ -494,7 +494,7 @@ unsigned char g_bQuickDrawCachedFontDirty = 0;
 // GLOBAL: IMPERIALISM 0x006a1d48
 CFont* g_pQuickDrawCachedMeasureFont = 0;
 // GLOBAL: IMPERIALISM 0x006a1d4c
-TUiTextStyleDescriptor g_QuickDrawMeasureFontPreset = {0, 0, 0, 0};
+TextStyle g_QuickDrawMeasureFontPreset = {0, 0, 0, 0};
 // GLOBAL: IMPERIALISM 0x006a1d56
 unsigned char g_bQuickDrawMeasureFontDirty = 0;
 // GLOBAL: IMPERIALISM 0x006a1d80
@@ -1559,9 +1559,9 @@ extern "C" short g_aDefaultNationSetupPolicyProfiles[7][4] = {
 extern "C" const char s_Chunk_00698C0C[] = "Chunk";
 
 // UI default text-style/command-param block copied into every TControl (the 10-byte
-// dual-view region at offsets 0x78-0x81); same TUiTextStyleDescriptor shape the
+// dual-view region at offsets 0x78-0x81); same TextStyle shape the
 // widgets carry. Named so reccmp pairs the direct absolute loads in the TControl ctor.
-TUiTextStyleDescriptor g_UiResourceEntryDefaultTextStyle = {0, 0, 0, 0};
+TextStyle g_UiResourceEntryDefaultTextStyle = {0, 0, 0, 0};
 
 } // extern "C"
 

@@ -48,7 +48,7 @@ THelpPicture::~THelpPicture() {}
 void THelpPicture::DoPostCreate(int arg) {
   TView::DoPostCreate(arg);
 
-  TUiTextStyleDescriptor textStyle;
+  TextStyle textStyle;
   InitializeUiTextStyleDescriptor(&textStyle, 0, 12, 0x2b67, 3);
 
   // Mac Linger.rsrc:3000 identifies 'swin' as the help dialog's TScrollView.
