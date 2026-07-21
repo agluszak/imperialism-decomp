@@ -92,6 +92,15 @@ class UiCodegenTests(unittest.TestCase):
         )
         text = self.rendered[recipe.address]
         self.assertIn('BindUiResourceTextAndStyle(0xce4, 4, "Winter, 1888"', text)
+        self.assertIn(
+            'BindUiResourceTextAndStyle(0x5e5, 2, "Skirmish Report", 3, 4, 0xc, 0, 1)',
+            text,
+        )
+        self.assertIn(
+            'BindUiResourceTextAndStyle(0x5e5, 0x12, "One hen,\\rtwo ducks, '
+            '\\rthree quacking geese.", 3, 0, 0xc, 0, -2)',
+            text,
+        )
         self.assertNotIn("SetUiResourceLayoutValues(6, 0, 0x300", text)
 
     def test_generated_factories_use_recovered_member_names(self) -> None:

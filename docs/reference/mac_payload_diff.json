@@ -4086,6 +4086,24 @@
                   "byte_order": "big",
                   "confidence": "low",
                   "distinct_values": 2,
+                  "end": 29,
+                  "field": "family.text_style_id",
+                  "start": 25,
+                  "width": 4
+                },
+                {
+                  "byte_order": "big",
+                  "confidence": "low",
+                  "distinct_values": 2,
+                  "end": 29,
+                  "field": "family.text_style_id",
+                  "start": 27,
+                  "width": 2
+                },
+                {
+                  "byte_order": "big",
+                  "confidence": "low",
+                  "distinct_values": 2,
                   "end": 36,
                   "field": "family.text_resource_id",
                   "start": 34,
@@ -4594,8 +4612,44 @@
           },
           "partitions": [
             {
-              "correlated_varying_byte_count": 4,
+              "correlated_varying_byte_count": 8,
               "correlations": [
+                {
+                  "byte_order": "big",
+                  "confidence": "high",
+                  "distinct_values": 15,
+                  "end": 29,
+                  "field": "family.text_style_id",
+                  "start": 25,
+                  "width": 4
+                },
+                {
+                  "byte_order": "big",
+                  "confidence": "high",
+                  "distinct_values": 15,
+                  "end": 29,
+                  "field": "family.text_style_id",
+                  "start": 27,
+                  "width": 2
+                },
+                {
+                  "byte_order": "big",
+                  "confidence": "high",
+                  "distinct_values": 4,
+                  "end": 34,
+                  "field": "family.text_alignment",
+                  "start": 32,
+                  "width": 2
+                },
+                {
+                  "byte_order": "big",
+                  "confidence": "low",
+                  "distinct_values": 4,
+                  "end": 34,
+                  "field": "family.text_alignment",
+                  "start": 33,
+                  "width": 1
+                },
                 {
                   "byte_order": "big",
                   "confidence": "high",
@@ -4729,37 +4783,8 @@
               ],
               "length": 40,
               "type_code": "stat",
-              "unexplained_varying_byte_count": 4,
-              "unexplained_varying_ranges": [
-                {
-                  "end": 29,
-                  "observed_count": 15,
-                  "observed_hex": [
-                    "03e8",
-                    "03e9",
-                    "03ea",
-                    "03eb",
-                    "03ec",
-                    "0514",
-                    "0523",
-                    "0532"
-                  ],
-                  "observed_truncated": true,
-                  "start": 27
-                },
-                {
-                  "end": 34,
-                  "observed_count": 4,
-                  "observed_hex": [
-                    "0000",
-                    "0001",
-                    "fffe",
-                    "ffff"
-                  ],
-                  "observed_truncated": false,
-                  "start": 32
-                }
-              ],
+              "unexplained_varying_byte_count": 0,
+              "unexplained_varying_ranges": [],
               "varying_byte_count": 8
             }
           ],
@@ -5090,7 +5115,7 @@
           },
           "partitions": [
             {
-              "correlated_varying_byte_count": 0,
+              "correlated_varying_byte_count": 5,
               "correlations": [
                 {
                   "byte_order": "big",
@@ -5127,6 +5152,51 @@
                   "field": "family.text_style_id",
                   "start": 26,
                   "width": 2
+                },
+                {
+                  "byte_order": "big",
+                  "confidence": "high",
+                  "distinct_values": 5,
+                  "end": 36,
+                  "field": "family.text_resource_id",
+                  "start": 34,
+                  "width": 2
+                },
+                {
+                  "byte_order": "big",
+                  "confidence": "high",
+                  "distinct_values": 8,
+                  "end": 38,
+                  "field": "family.text_resource_index",
+                  "start": 36,
+                  "width": 2
+                },
+                {
+                  "byte_order": "big",
+                  "confidence": "low",
+                  "distinct_values": 8,
+                  "end": 38,
+                  "field": "family.text_resource_index",
+                  "start": 37,
+                  "width": 1
+                },
+                {
+                  "byte_order": "big",
+                  "confidence": "high",
+                  "distinct_values": 5,
+                  "end": 40,
+                  "field": "family.max_char_count",
+                  "start": 38,
+                  "width": 2
+                },
+                {
+                  "byte_order": "big",
+                  "confidence": "low",
+                  "distinct_values": 5,
+                  "end": 40,
+                  "field": "family.max_char_count",
+                  "start": 39,
+                  "width": 1
                 }
               ],
               "instance_count": 10,
@@ -5177,7 +5247,7 @@
               ],
               "length": 46,
               "type_code": "edit",
-              "unexplained_varying_byte_count": 10,
+              "unexplained_varying_byte_count": 5,
               "unexplained_varying_ranges": [
                 {
                   "end": 11,
@@ -5204,33 +5274,14 @@
                   "start": 27
                 },
                 {
-                  "end": 38,
-                  "observed_count": 10,
+                  "end": 34,
+                  "observed_count": 2,
                   "observed_hex": [
-                    "0003250007",
-                    "000325000b",
-                    "0003e9ffff",
-                    "0005140010",
-                    "000514ffff",
-                    "0005e50015",
-                    "0005e5001c",
-                    "0005e5ffff"
-                  ],
-                  "observed_truncated": true,
-                  "start": 33
-                },
-                {
-                  "end": 40,
-                  "observed_count": 5,
-                  "observed_hex": [
-                    "0a",
-                    "10",
-                    "1e",
-                    "20",
-                    "ff"
+                    "00",
+                    "01"
                   ],
                   "observed_truncated": false,
-                  "start": 39
+                  "start": 33
                 },
                 {
                   "end": 43,
@@ -8322,6 +8373,42 @@
                   "byte_order": "big",
                   "confidence": "low",
                   "distinct_values": 2,
+                  "end": 29,
+                  "field": "family.text_style_id",
+                  "start": 25,
+                  "width": 4
+                },
+                {
+                  "byte_order": "big",
+                  "confidence": "low",
+                  "distinct_values": 2,
+                  "end": 29,
+                  "field": "family.text_style_id",
+                  "start": 27,
+                  "width": 2
+                },
+                {
+                  "byte_order": "big",
+                  "confidence": "low",
+                  "distinct_values": 2,
+                  "end": 34,
+                  "field": "family.text_alignment",
+                  "start": 32,
+                  "width": 2
+                },
+                {
+                  "byte_order": "big",
+                  "confidence": "low",
+                  "distinct_values": 2,
+                  "end": 34,
+                  "field": "family.text_alignment",
+                  "start": 33,
+                  "width": 1
+                },
+                {
+                  "byte_order": "big",
+                  "confidence": "low",
+                  "distinct_values": 2,
                   "end": 36,
                   "field": "family.text_resource_id",
                   "start": 34,
@@ -8810,8 +8897,44 @@
           },
           "partitions": [
             {
-              "correlated_varying_byte_count": 4,
+              "correlated_varying_byte_count": 8,
               "correlations": [
+                {
+                  "byte_order": "big",
+                  "confidence": "high",
+                  "distinct_values": 6,
+                  "end": 29,
+                  "field": "family.text_style_id",
+                  "start": 25,
+                  "width": 4
+                },
+                {
+                  "byte_order": "big",
+                  "confidence": "high",
+                  "distinct_values": 6,
+                  "end": 29,
+                  "field": "family.text_style_id",
+                  "start": 27,
+                  "width": 2
+                },
+                {
+                  "byte_order": "big",
+                  "confidence": "high",
+                  "distinct_values": 4,
+                  "end": 34,
+                  "field": "family.text_alignment",
+                  "start": 32,
+                  "width": 2
+                },
+                {
+                  "byte_order": "big",
+                  "confidence": "low",
+                  "distinct_values": 4,
+                  "end": 34,
+                  "field": "family.text_alignment",
+                  "start": 33,
+                  "width": 1
+                },
                 {
                   "byte_order": "big",
                   "confidence": "high",
@@ -8876,35 +8999,8 @@
               ],
               "length": 40,
               "type_code": "stat",
-              "unexplained_varying_byte_count": 4,
-              "unexplained_varying_ranges": [
-                {
-                  "end": 29,
-                  "observed_count": 6,
-                  "observed_hex": [
-                    "03e8",
-                    "03ea",
-                    "0514",
-                    "0526",
-                    "0527",
-                    "0c1c"
-                  ],
-                  "observed_truncated": false,
-                  "start": 27
-                },
-                {
-                  "end": 34,
-                  "observed_count": 4,
-                  "observed_hex": [
-                    "0000",
-                    "0001",
-                    "fffe",
-                    "ffff"
-                  ],
-                  "observed_truncated": false,
-                  "start": 32
-                }
-              ],
+              "unexplained_varying_byte_count": 0,
+              "unexplained_varying_ranges": [],
               "varying_byte_count": 8
             }
           ],
@@ -9562,8 +9658,44 @@
           },
           "partitions": [
             {
-              "correlated_varying_byte_count": 1,
+              "correlated_varying_byte_count": 5,
               "correlations": [
+                {
+                  "byte_order": "big",
+                  "confidence": "high",
+                  "distinct_values": 9,
+                  "end": 29,
+                  "field": "family.text_style_id",
+                  "start": 25,
+                  "width": 4
+                },
+                {
+                  "byte_order": "big",
+                  "confidence": "high",
+                  "distinct_values": 9,
+                  "end": 29,
+                  "field": "family.text_style_id",
+                  "start": 27,
+                  "width": 2
+                },
+                {
+                  "byte_order": "big",
+                  "confidence": "medium",
+                  "distinct_values": 3,
+                  "end": 34,
+                  "field": "family.text_alignment",
+                  "start": 32,
+                  "width": 2
+                },
+                {
+                  "byte_order": "big",
+                  "confidence": "low",
+                  "distinct_values": 3,
+                  "end": 34,
+                  "field": "family.text_alignment",
+                  "start": 33,
+                  "width": 1
+                },
                 {
                   "byte_order": "big",
                   "confidence": "high",
@@ -9640,36 +9772,8 @@
               ],
               "length": 40,
               "type_code": "stat",
-              "unexplained_varying_byte_count": 4,
-              "unexplained_varying_ranges": [
-                {
-                  "end": 29,
-                  "observed_count": 9,
-                  "observed_hex": [
-                    "03ec",
-                    "05f4",
-                    "05f5",
-                    "05f6",
-                    "05f7",
-                    "05f8",
-                    "05f9",
-                    "05fa"
-                  ],
-                  "observed_truncated": true,
-                  "start": 27
-                },
-                {
-                  "end": 34,
-                  "observed_count": 3,
-                  "observed_hex": [
-                    "0000",
-                    "fffe",
-                    "ffff"
-                  ],
-                  "observed_truncated": false,
-                  "start": 32
-                }
-              ],
+              "unexplained_varying_byte_count": 0,
+              "unexplained_varying_ranges": [],
               "varying_byte_count": 5
             }
           ],
@@ -11943,7 +12047,7 @@
           },
           "partitions": [
             {
-              "correlated_varying_byte_count": 15,
+              "correlated_varying_byte_count": 19,
               "correlations": [
                 {
                   "byte_order": "big",
@@ -11967,6 +12071,15 @@
                   "byte_order": "big",
                   "confidence": "low",
                   "distinct_values": 2,
+                  "end": 15,
+                  "field": "family.text_flags[2]",
+                  "start": 11,
+                  "width": 4
+                },
+                {
+                  "byte_order": "big",
+                  "confidence": "low",
+                  "distinct_values": 2,
                   "end": 16,
                   "field": "family.content_insets[1]",
                   "start": 12,
@@ -11989,6 +12102,15 @@
                   "field": "family.content_insets[3]",
                   "start": 12,
                   "width": 4
+                },
+                {
+                  "byte_order": "big",
+                  "confidence": "low",
+                  "distinct_values": 2,
+                  "end": 15,
+                  "field": "family.text_flags[2]",
+                  "start": 13,
+                  "width": 2
                 },
                 {
                   "byte_order": "big",
@@ -12021,6 +12143,24 @@
                   "byte_order": "big",
                   "confidence": "low",
                   "distinct_values": 2,
+                  "end": 15,
+                  "field": "family.text_flags[2]",
+                  "start": 14,
+                  "width": 1
+                },
+                {
+                  "byte_order": "big",
+                  "confidence": "low",
+                  "distinct_values": 2,
+                  "end": 19,
+                  "field": "family.text_flags[2]",
+                  "start": 15,
+                  "width": 4
+                },
+                {
+                  "byte_order": "big",
+                  "confidence": "low",
+                  "distinct_values": 2,
                   "end": 20,
                   "field": "family.content_insets[1]",
                   "start": 16,
@@ -12043,6 +12183,15 @@
                   "field": "family.content_insets[3]",
                   "start": 16,
                   "width": 4
+                },
+                {
+                  "byte_order": "big",
+                  "confidence": "low",
+                  "distinct_values": 2,
+                  "end": 19,
+                  "field": "family.text_flags[2]",
+                  "start": 17,
+                  "width": 2
                 },
                 {
                   "byte_order": "big",
@@ -12075,6 +12224,24 @@
                   "byte_order": "big",
                   "confidence": "low",
                   "distinct_values": 2,
+                  "end": 19,
+                  "field": "family.text_flags[2]",
+                  "start": 18,
+                  "width": 1
+                },
+                {
+                  "byte_order": "big",
+                  "confidence": "low",
+                  "distinct_values": 2,
+                  "end": 23,
+                  "field": "family.text_flags[2]",
+                  "start": 19,
+                  "width": 4
+                },
+                {
+                  "byte_order": "big",
+                  "confidence": "low",
+                  "distinct_values": 2,
                   "end": 24,
                   "field": "family.content_insets[1]",
                   "start": 20,
@@ -12102,6 +12269,15 @@
                   "byte_order": "big",
                   "confidence": "low",
                   "distinct_values": 2,
+                  "end": 23,
+                  "field": "family.text_flags[2]",
+                  "start": 21,
+                  "width": 2
+                },
+                {
+                  "byte_order": "big",
+                  "confidence": "low",
+                  "distinct_values": 2,
                   "end": 24,
                   "field": "family.content_insets[1]",
                   "start": 22,
@@ -12124,6 +12300,87 @@
                   "field": "family.content_insets[3]",
                   "start": 22,
                   "width": 2
+                },
+                {
+                  "byte_order": "big",
+                  "confidence": "low",
+                  "distinct_values": 2,
+                  "end": 23,
+                  "field": "family.text_flags[2]",
+                  "start": 22,
+                  "width": 1
+                },
+                {
+                  "byte_order": "big",
+                  "confidence": "low",
+                  "distinct_values": 2,
+                  "end": 27,
+                  "field": "family.text_flags[2]",
+                  "start": 23,
+                  "width": 4
+                },
+                {
+                  "byte_order": "big",
+                  "confidence": "low",
+                  "distinct_values": 2,
+                  "end": 27,
+                  "field": "family.text_flags[2]",
+                  "start": 25,
+                  "width": 2
+                },
+                {
+                  "byte_order": "big",
+                  "confidence": "low",
+                  "distinct_values": 2,
+                  "end": 27,
+                  "field": "family.text_flags[2]",
+                  "start": 26,
+                  "width": 1
+                },
+                {
+                  "byte_order": "big",
+                  "confidence": "high",
+                  "distinct_values": 11,
+                  "end": 29,
+                  "field": "family.text_style_id",
+                  "start": 27,
+                  "width": 2
+                },
+                {
+                  "byte_order": "big",
+                  "confidence": "low",
+                  "distinct_values": 2,
+                  "end": 31,
+                  "field": "family.text_line_spacing",
+                  "start": 29,
+                  "width": 2
+                },
+                {
+                  "byte_order": "big",
+                  "confidence": "low",
+                  "distinct_values": 2,
+                  "end": 31,
+                  "field": "family.text_line_spacing",
+                  "start": 30,
+                  "width": 1
+                },
+                {
+                  "byte_order": "big",
+                  "confidence": "high",
+                  "distinct_values": 4,
+                  "end": 34,
+                  "field": "family.text_alignment",
+                  "start": 32,
+                  "width": 2
+                },
+                {
+                  "byte_order": "big",
+                  "confidence": "low",
+                  "distinct_values": 4,
+                  "end": 34,
+                  "field": "family.text_alignment",
+                  "start": 33,
+                  "width": 1
                 },
                 {
                   "byte_order": "big",
@@ -13250,7 +13507,7 @@
               ],
               "length": 58,
               "type_code": "nmbr",
-              "unexplained_varying_byte_count": 10,
+              "unexplained_varying_byte_count": 6,
               "unexplained_varying_ranges": [
                 {
                   "end": 11,
@@ -13293,19 +13550,13 @@
                   "start": 22
                 },
                 {
-                  "end": 29,
-                  "observed_count": 12,
+                  "end": 27,
+                  "observed_count": 2,
                   "observed_hex": [
-                    "0003e8",
-                    "0003e9",
-                    "0003ef",
-                    "030321",
-                    "0303e8",
-                    "0303eb",
-                    "0303f7",
-                    "030516"
+                    "00",
+                    "03"
                   ],
-                  "observed_truncated": true,
+                  "observed_truncated": false,
                   "start": 26
                 },
                 {
@@ -13317,18 +13568,6 @@
                   ],
                   "observed_truncated": false,
                   "start": 30
-                },
-                {
-                  "end": 34,
-                  "observed_count": 4,
-                  "observed_hex": [
-                    "0000",
-                    "0001",
-                    "fffe",
-                    "ffff"
-                  ],
-                  "observed_truncated": false,
-                  "start": 32
                 }
               ],
               "varying_byte_count": 25
@@ -16628,7 +16867,17 @@
           "partitions": [
             {
               "correlated_varying_byte_count": 0,
-              "correlations": [],
+              "correlations": [
+                {
+                  "byte_order": "big",
+                  "confidence": "low",
+                  "distinct_values": 2,
+                  "end": 29,
+                  "field": "family.text_style_id",
+                  "start": 27,
+                  "width": 2
+                }
+              ],
               "instance_count": 22,
               "instances": [
                 "Citydlog.rsrc:View:9213@0x00ee",
@@ -17930,8 +18179,26 @@
           },
           "partitions": [
             {
-              "correlated_varying_byte_count": 2,
+              "correlated_varying_byte_count": 3,
               "correlations": [
+                {
+                  "byte_order": "big",
+                  "confidence": "medium",
+                  "distinct_values": 3,
+                  "end": 29,
+                  "field": "family.text_style_id",
+                  "start": 25,
+                  "width": 4
+                },
+                {
+                  "byte_order": "big",
+                  "confidence": "medium",
+                  "distinct_values": 3,
+                  "end": 29,
+                  "field": "family.text_style_id",
+                  "start": 27,
+                  "width": 2
+                },
                 {
                   "byte_order": "big",
                   "confidence": "high",
@@ -17976,20 +18243,8 @@
               ],
               "length": 40,
               "type_code": "stat",
-              "unexplained_varying_byte_count": 1,
-              "unexplained_varying_ranges": [
-                {
-                  "end": 29,
-                  "observed_count": 3,
-                  "observed_hex": [
-                    "e8",
-                    "ec",
-                    "ed"
-                  ],
-                  "observed_truncated": false,
-                  "start": 28
-                }
-              ],
+              "unexplained_varying_byte_count": 0,
+              "unexplained_varying_ranges": [],
               "varying_byte_count": 3
             }
           ],
@@ -21623,7 +21878,7 @@
           },
           "partitions": [
             {
-              "correlated_varying_byte_count": 4,
+              "correlated_varying_byte_count": 8,
               "correlations": [
                 {
                   "byte_order": "big",
@@ -21642,6 +21897,42 @@
                   "field": "family.content_insets[0]",
                   "start": 10,
                   "width": 2
+                },
+                {
+                  "byte_order": "big",
+                  "confidence": "high",
+                  "distinct_values": 38,
+                  "end": 29,
+                  "field": "family.text_style_id",
+                  "start": 25,
+                  "width": 4
+                },
+                {
+                  "byte_order": "big",
+                  "confidence": "high",
+                  "distinct_values": 38,
+                  "end": 29,
+                  "field": "family.text_style_id",
+                  "start": 27,
+                  "width": 2
+                },
+                {
+                  "byte_order": "big",
+                  "confidence": "high",
+                  "distinct_values": 4,
+                  "end": 34,
+                  "field": "family.text_alignment",
+                  "start": 32,
+                  "width": 2
+                },
+                {
+                  "byte_order": "big",
+                  "confidence": "low",
+                  "distinct_values": 4,
+                  "end": 34,
+                  "field": "family.text_alignment",
+                  "start": 33,
+                  "width": 1
                 },
                 {
                   "byte_order": "big",
@@ -22209,7 +22500,7 @@
               ],
               "length": 40,
               "type_code": "stat",
-              "unexplained_varying_byte_count": 5,
+              "unexplained_varying_byte_count": 1,
               "unexplained_varying_ranges": [
                 {
                   "end": 11,
@@ -22220,34 +22511,6 @@
                   ],
                   "observed_truncated": false,
                   "start": 10
-                },
-                {
-                  "end": 29,
-                  "observed_count": 38,
-                  "observed_hex": [
-                    "02bc",
-                    "0321",
-                    "0322",
-                    "03e8",
-                    "03e9",
-                    "03ea",
-                    "03eb",
-                    "03ec"
-                  ],
-                  "observed_truncated": true,
-                  "start": 27
-                },
-                {
-                  "end": 34,
-                  "observed_count": 4,
-                  "observed_hex": [
-                    "0000",
-                    "0001",
-                    "fffe",
-                    "ffff"
-                  ],
-                  "observed_truncated": false,
-                  "start": 32
                 }
               ],
               "varying_byte_count": 9
@@ -27894,12 +28157,12 @@
   "summary": {
     "classes": 162,
     "classes_with_multiple_instances": 62,
-    "correlations": 223,
+    "correlations": 270,
     "exact_appended_suffix_patterns": 4,
-    "high_confidence_correlations": 60,
+    "high_confidence_correlations": 76,
     "partitions": 274,
     "records": 3263,
     "single_instance_classes": 100,
-    "unexplained_varying_bytes_across_partitions": 297
+    "unexplained_varying_bytes_across_partitions": 271
   }
 }

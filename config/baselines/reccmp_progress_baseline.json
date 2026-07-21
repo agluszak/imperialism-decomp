@@ -1,5 +1,5 @@
 {
-  "avg_matching_pct": 70.05285306742219,
+  "avg_matching_pct": 70.05396331613515,
   "compared_fun_count": 7599,
   "coverage_pct": 97.31079523626585,
   "dat_orig_only_count": 1602,
@@ -11,9 +11,9 @@
   "failed_to_match_function_count": 0,
   "flo_orig_only_count": 212,
   "flo_recomp_only_count": 0,
-  "git_branch": "agent/mission-recovery-agent3-sixth-batch",
-  "git_commit": "e3c6cb4622b73875e23dfc3bacdb73d2d0a44eac",
-  "git_commit_date": "2026-07-22T00:15:31+02:00",
+  "git_branch": "agent/mac-text-style-decode",
+  "git_commit": "1571a9532070709a71f5e81d0e0f2016c889ba7f",
+  "git_commit_date": "2026-07-22T00:28:38+02:00",
   "global_coverage_pct": 23.86458236980853,
   "global_orig_only_count": 8231,
   "global_recomp_only_count": 7159,
@@ -61,7 +61,7 @@
   "target": "IMPERIALISM",
   "template_alias_recognized_count": 4,
   "template_canonical_paired_count": 4,
-  "timestamp_utc": "2026-07-21T22:26:38+00:00",
+  "timestamp_utc": "2026-07-21T23:18:25+00:00",
   "wid_orig_only_count": 0,
   "wid_recomp_only_count": 2
 }

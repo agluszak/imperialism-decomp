@@ -4,8 +4,9 @@
 The retail Mac build stores its UI descriptions in custom ``View`` resources,
 not PowerPlant ``PPob`` resources.  This tool reads resource-only MacBinary files
 directly, or uses hfsutils to copy them from the HFS side of the retail CD image.
-It never writes resource payloads to the repository: only deterministic CSV/JSON
-inventories are retained as evidence.
+It never writes the retail image or bitmap/audio payloads to the repository.  The
+deterministic evidence retains decoded text and the small raw text-style records needed
+to audit their named fields.
 """
 
 from __future__ import annotations
@@ -29,7 +30,7 @@ from tools.common.repo import repo_root_from_file, resolve_repo_path
 
 
 DEFAULT_SOURCE = os.environ.get("MACOS_IMPERIALISM_DUMP", "")
-EVIDENCE_VERSION = 3
+EVIDENCE_VERSION = 4
 UI_TYPES = {
     b"view",
     b"pict",
@@ -77,6 +78,154 @@ class WidgetRecord:
     parent_offset: int | None
     parent_tag: str
     depth: int
+
+
+QUICKDRAW_FACE_FLAGS = (
+    (0x01, "bold"),
+    (0x02, "italic"),
+    (0x04, "underline"),
+    (0x08, "outline"),
+    (0x10, "shadow"),
+    (0x20, "condense"),
+    (0x40, "extend"),
+)
+
+
+def _face_flag_names(value: int) -> list[str]:
+    return [name for bit, name in QUICKDRAW_FACE_FLAGS if value & bit]
+
+
+def _alignment_name(value: int) -> str:
+    return {-2: "left", -1: "right", 0: "default", 1: "center"}.get(
+        value, "unknown"
+    )
+
+
+def _rgb_color(data: bytes, offset: int, context: str) -> dict[str, int | str]:
+    _need(data, offset, 6, context)
+    red, green, blue = struct.unpack_from(">HHH", data, offset)
+    return {
+        "red": red,
+        "green": green,
+        "blue": blue,
+        "hex": f"#{red:04x}{green:04x}{blue:04x}",
+    }
+
+
+def decode_txst(resource: ResourceEntry) -> dict[str, object]:
+    """Decode Imperialism's streamed PowerPlant TextStyle resource."""
+
+    data = resource.data
+    label = f"{resource.resource_file} TxSt {resource.resource_id}"
+    _need(data, 0, 11, label)
+    font_name_length = data[10]
+    expected_size = 11 + font_name_length
+    if len(data) != expected_size:
+        raise ResourceFormatError(
+            f"{label}: Pascal font name requires {expected_size} bytes, got {len(data)}"
+        )
+    face_flags = data[0]
+    known_face_mask = sum(bit for bit, _ in QUICKDRAW_FACE_FLAGS)
+    return {
+        "resource_file": resource.resource_file,
+        "resource_id": resource.resource_id,
+        "name": resource.name,
+        "size": len(data),
+        "sha256": _sha256(data),
+        "raw_hex": data.hex(),
+        "font_name": _decode_mac_text(data[11:]),
+        "point_size": _s16(data, 2, f"{label} point size"),
+        "face_flags": face_flags,
+        "face_flag_names": _face_flag_names(face_flags),
+        "unknown_face_flags": face_flags & ~known_face_mask,
+        "foreground_color": _rgb_color(data, 4, f"{label} foreground color"),
+        "unexplained_bytes": [
+            {
+                "offset": 1,
+                "size": 1,
+                "raw_hex": data[1:2].hex(),
+                "reason": (
+                    "serialized TextStyle alignment byte; copied resources retain "
+                    "nonzero values but no semantic reader is established"
+                ),
+            }
+        ],
+        "decoder_confidence": "high",
+    }
+
+
+def decode_styl(resource: ResourceEntry, text: ResourceEntry | None) -> dict[str, object]:
+    """Decode a TextEdit StScrpRec: count followed by 20-byte ScrpSTElement runs."""
+
+    data = resource.data
+    label = f"{resource.resource_file} styl {resource.resource_id}"
+    run_count = _u16(data, 0, f"{label} run count")
+    expected_size = 2 + run_count * 20
+    if len(data) != expected_size:
+        raise ResourceFormatError(
+            f"{label}: {run_count} style runs require {expected_size} bytes, got {len(data)}"
+        )
+    starts = [
+        _u32(data, 2 + index * 20, f"{label} run {index} start")
+        for index in range(run_count)
+    ]
+    if starts != sorted(starts) or len(starts) != len(set(starts)):
+        raise ResourceFormatError(f"{label}: style-run starts are not strictly increasing")
+    if starts and starts[0] != 0:
+        raise ResourceFormatError(f"{label}: first style run starts at {starts[0]}, not zero")
+    if text is not None and any(start > len(text.data) for start in starts):
+        raise ResourceFormatError(
+            f"{label}: style-run start exceeds TEXT length {len(text.data)}"
+        )
+
+    runs: list[dict[str, object]] = []
+    for index, start in enumerate(starts):
+        offset = 2 + index * 20
+        raw = data[offset : offset + 20]
+        face_flags = raw[10]
+        height = _s16(raw, 4, f"{label} run {index} height")
+        ascent = _s16(raw, 6, f"{label} run {index} ascent")
+        runs.append(
+            {
+                "index": index,
+                "start": start,
+                "end": (
+                    starts[index + 1]
+                    if index + 1 < len(starts)
+                    else (len(text.data) if text is not None else None)
+                ),
+                "line_height": height,
+                "ascent": ascent,
+                "leading": height - ascent,
+                "font_id": _s16(raw, 8, f"{label} run {index} font ID"),
+                "face_flags": face_flags,
+                "face_flag_names": _face_flag_names(face_flags),
+                "point_size": _s16(raw, 12, f"{label} run {index} point size"),
+                "foreground_color": _rgb_color(
+                    raw, 14, f"{label} run {index} foreground color"
+                ),
+                "raw_hex": raw.hex(),
+                "unexplained_bytes": [
+                    {
+                        "offset": 11,
+                        "size": 1,
+                        "raw_hex": raw[11:12].hex(),
+                        "reason": "ScrpSTElement alignment byte; not a style field",
+                    }
+                ],
+            }
+        )
+    return {
+        "resource_file": resource.resource_file,
+        "resource_id": resource.resource_id,
+        "name": resource.name,
+        "size": len(data),
+        "sha256": _sha256(data),
+        "raw_hex": data.hex(),
+        "run_count": run_count,
+        "runs": runs,
+        "decoder_confidence": "high",
+    }
 
 
 EXPECTED_STARTUP_1500 = [
@@ -156,7 +305,14 @@ REAL_UI_SENTINELS: tuple[dict[str, object], ...] = (
             7699: {
                 "type_code": "stat",
                 "class_name": "TDropShadowText",
-                "family": {"text_resource_id": 3300, "text_resource_index": 4},
+                "family": {
+                    "text_resource_id": 3300,
+                    "text_resource_index": 4,
+                    "text_style_id": 1503,
+                    "text_line_spacing": 1,
+                    "text_alignment": 1,
+                    "text_alignment_name": "center",
+                },
             },
         },
     },
@@ -170,7 +326,14 @@ REAL_UI_SENTINELS: tuple[dict[str, object], ...] = (
                 "tag": "name",
                 "parent_offset": 128,
                 "geometry": {"x": 18, "y": 39, "width": 270, "height": 21},
-                "family": {"frame_style": 6, "text_style_id": 771},
+                "family": {
+                    "frame_style": 6,
+                    "text_style_id": 771,
+                    "text_line_spacing": 1,
+                    "text_alignment": 0,
+                    "text_alignment_name": "default",
+                    "max_char_count": 30,
+                },
             }
         },
     },
@@ -191,8 +354,27 @@ REAL_UI_SENTINELS: tuple[dict[str, object], ...] = (
                     "text_view_mode": 1,
                     "text_view_limit": 32767,
                     "text_style_id": 1000,
+                    "text_alignment": 0,
+                    "text_alignment_name": "default",
                 },
             },
+        },
+    },
+    {
+        "resource_file": "Linger.rsrc",
+        "view_id": 2020,
+        "sha256": "ab5d772af88594904cd5938e69e7a4d1d5ddcbc37d40cca280a75b2115e60c0d",
+        "nodes": {
+            654: {
+                "type_code": "tevw",
+                "class_name": "TDeluxeText",
+                "tag": "info",
+                "family": {
+                    "text_style_id": 1502,
+                    "text_alignment": 0,
+                    "text_alignment_name": "default",
+                },
+            }
         },
     },
     {
@@ -245,6 +427,64 @@ REAL_UI_SENTINELS: tuple[dict[str, object], ...] = (
                     "number_maximum": 255,
                 },
             },
+        },
+    },
+)
+
+REAL_TEXT_RESOURCE_SENTINELS: tuple[dict[str, object], ...] = (
+    {
+        "collection": "text_styles",
+        "key": ("Armory.rsrc", 1312),
+        "expected": {
+            "sha256": "fbf8df1263bd84d176d174fe75f5ff3bf62dfb2d09f935ef6bc5ea7366a3d7a8",
+            "font_name": "A",
+            "point_size": 9,
+            "face_flags": 1,
+            "face_flag_names": ["bold"],
+            "foreground_color": {
+                "red": 0,
+                "green": 0,
+                "blue": 0,
+                "hex": "#000000000000",
+            },
+            "decoder_confidence": "high",
+        },
+    },
+    {
+        "collection": "text_styles",
+        "key": ("Armory.rsrc", 1008),
+        "expected": {
+            "sha256": "d302fbf771286a71fa0d8edfd412b98932d8eab8c2449e1c59373ff0ab105cfe",
+            "point_size": 36,
+            "foreground_color": {
+                "red": 28456,
+                "green": 10711,
+                "blue": 977,
+                "hex": "#6f2829d703d1",
+            },
+        },
+    },
+    {
+        "collection": "style_scraps",
+        "key": ("Strings.rsrc", 3012),
+        "expected": {
+            "sha256": "58faf1bcc392944cff241b44a3f1c8b9f3e523ea6971a2cf18d5a2d67e9924b1",
+            "run_count": 3,
+            "runs": [
+                {"start": 0, "end": 1, "line_height": 16, "ascent": 12, "leading": 4},
+                {"start": 1, "end": 130, "line_height": 16, "ascent": 12, "leading": 4},
+                {"start": 130, "end": 917, "line_height": 16, "ascent": 12, "leading": 4},
+            ],
+        },
+    },
+    {
+        "collection": "texts",
+        "key": ("Strings.rsrc", 3012),
+        "expected": {
+            "sha256": "0186b0f160bf0f17180dd747382b82fa934449dc1126acc2e5aa7a7745133304",
+            "size": 917,
+            "style_run_count": 3,
+            "decoder_confidence": "high",
         },
     },
 )
@@ -678,6 +918,19 @@ def _widget_ir(view: ResourceEntry, record: WidgetRecord, records: Sequence[Widg
         family["control_value"] = _s16(family_payload, 33, "button control value")
         family["control_tail_hex"] = family_payload[35:].hex()
     if record.type_code == "stat" and len(family_payload) >= 40:
+        family["text_flags"] = list(family_payload[24:27])
+        family["text_style_id"] = _u16(
+            family_payload, 27, "static text style id"
+        )
+        family["text_line_spacing"] = _u16(
+            family_payload, 29, "static text line spacing"
+        )
+        family["text_alignment"] = _s16(
+            family_payload, 32, "static text alignment"
+        )
+        family["text_alignment_name"] = _alignment_name(
+            int(family["text_alignment"])
+        )
         family["text_resource_id"] = _u16(
             family_payload, 34, "static text resource id"
         )
@@ -700,12 +953,52 @@ def _widget_ir(view: ResourceEntry, record: WidgetRecord, records: Sequence[Widg
         family["text_view_extent"] = _u32(family_payload, 8, "text view extent")
         family["text_view_limit"] = _s16(family_payload, 12, "text view limit")
         family["text_view_attributes_hex"] = family_payload[14:32].hex()
+        family["text_alignment"] = _s16(
+            family_payload, 30, "text view alignment"
+        )
+        family["text_alignment_name"] = _alignment_name(
+            int(family["text_alignment"])
+        )
         family["text_style_id"] = _u16(family_payload, 32, "text view style id")
         family["text_view_tail_hex"] = family_payload[34:].hex()
     if record.type_code == "edit" and len(family_payload) >= 32:
         family["edit_attributes_hex"] = family_payload[24:].hex()
+        family["text_flags"] = list(family_payload[24:26])
         family["text_style_id"] = _u16(family_payload, 26, "edit text style id")
+        family["text_style_padding_hex"] = family_payload[28:29].hex()
+        family["text_line_spacing"] = _u16(
+            family_payload, 29, "edit text line spacing"
+        )
+        family["text_alignment"] = _s16(
+            family_payload, 31, "edit text alignment"
+        )
+        family["text_alignment_name"] = _alignment_name(
+            int(family["text_alignment"])
+        )
+        if len(family_payload) >= 40:
+            family["text_resource_id"] = _u16(
+                family_payload, 34, "edit text resource id"
+            )
+            family["text_resource_index"] = _s16(
+                family_payload, 36, "edit text resource index"
+            )
+            family["max_char_count"] = _u16(
+                family_payload, 38, "edit maximum character count"
+            )
     if record.type_code == "nmbr" and len(family_payload) >= 58:
+        family["text_flags"] = list(family_payload[24:27])
+        family["text_style_id"] = _u16(
+            family_payload, 27, "number text style id"
+        )
+        family["text_line_spacing"] = _u16(
+            family_payload, 29, "number text line spacing"
+        )
+        family["text_alignment"] = _s16(
+            family_payload, 32, "number text alignment"
+        )
+        family["text_alignment_name"] = _alignment_name(
+            int(family["text_alignment"])
+        )
         family["text_attributes_hex"] = family_payload[24:34].hex()
         family["text_resource_id"] = _u16(
             family_payload, 34, "number text resource id"
@@ -785,6 +1078,7 @@ def build_ui_ir(resources: Sequence[ResourceEntry], widgets: Sequence[WidgetReco
         key=_resource_sort_key,
     ):
         records = by_view.get((resource.resource_file, resource.resource_id), [])
+        nodes = [_widget_ir(resource, record, records) for record in records]
         views.append(
             {
                 "resource_file": resource.resource_file,
@@ -792,7 +1086,7 @@ def build_ui_ir(resources: Sequence[ResourceEntry], widgets: Sequence[WidgetReco
                 "view_name": resource.name,
                 "size": len(resource.data),
                 "sha256": _sha256(resource.data),
-                "nodes": [_widget_ir(resource, record, records) for record in records],
+                "nodes": nodes,
             }
         )
     return {
@@ -927,6 +1221,13 @@ def _validate_expected_subset(
             else:
                 _validate_expected_subset(actual[key], value, f"{path}/{key}", errors)
         return
+    if isinstance(expected, list):
+        if not isinstance(actual, list) or len(actual) != len(expected):
+            errors.append(f"{path}: expected a {len(expected)}-element list, got {actual!r}")
+            return
+        for index, value in enumerate(expected):
+            _validate_expected_subset(actual[index], value, f"{path}/{index}", errors)
+        return
     if actual != expected:
         errors.append(f"{path}: expected {expected!r}, got {actual!r}")
 
@@ -959,6 +1260,29 @@ def validate_real_ui_sentinels(ui_ir: dict) -> list[str]:
             _validate_expected_subset(
                 node, expected, f"{label}/node 0x{int(offset):04x}", errors
             )
+    return errors
+
+
+def validate_real_text_resource_sentinels(evidence: dict) -> list[str]:
+    """Check SHA-pinned decoded TxSt/TEXT/styl properties from the retail corpus."""
+
+    indexes = {
+        collection: {
+            (str(row["resource_file"]), int(row["resource_id"])): row
+            for row in evidence.get(collection, [])
+        }
+        for collection in ("text_styles", "texts", "style_scraps")
+    }
+    errors: list[str] = []
+    for sentinel in REAL_TEXT_RESOURCE_SENTINELS:
+        collection = str(sentinel["collection"])
+        key = sentinel["key"]
+        label = f"{key[0]} {collection} {key[1]} sentinel"
+        row = indexes[collection].get(key)
+        if row is None:
+            errors.append(f"{label}: resource is absent")
+            continue
+        _validate_expected_subset(row, sentinel["expected"], label, errors)
     return errors
 
 
@@ -1045,6 +1369,8 @@ def write_outputs(output_dir: Path, resources: Sequence[ResourceEntry]) -> dict[
     pictures = [resource for resource in resources if resource.type_code == "PICT"]
     string_groups = [resource for resource in resources if resource.type_code == "STR#"]
     text_styles = [resource for resource in resources if resource.type_code == "TxSt"]
+    texts = [resource for resource in resources if resource.type_code == "TEXT"]
+    style_scraps = [resource for resource in resources if resource.type_code == "styl"]
     widget_counts: dict[tuple[str, int], int] = {}
     for widget in widgets:
         key = (widget.resource_file, widget.view_id)
@@ -1163,20 +1489,95 @@ def write_outputs(output_dir: Path, resources: Sequence[ResourceEntry]) -> dict[
         string_rows,
         quoting=csv.QUOTE_ALL,
     )
+    decoded_text_styles = [decode_txst(resource) for resource in text_styles]
     _write_csv(
         output_dir / "text_styles.csv",
-        ["resource_file", "resource_id", "resource_id_hex", "name", "size", "sha256"],
+        [
+            "resource_file",
+            "resource_id",
+            "resource_id_hex",
+            "name",
+            "font_name",
+            "point_size",
+            "face_flags",
+            "face_flag_names",
+            "foreground_color",
+            "alignment_padding_hex",
+            "raw_hex",
+            "decoder_confidence",
+            "size",
+            "sha256",
+        ],
         [
             {
-                "resource_file": resource.resource_file,
-                "resource_id": resource.resource_id,
-                "resource_id_hex": f"0x{resource.resource_id & 0xFFFF:04x}",
-                "name": resource.name,
-                "size": len(resource.data),
-                "sha256": _sha256(resource.data),
+                "resource_file": style["resource_file"],
+                "resource_id": style["resource_id"],
+                "resource_id_hex": f"0x{int(style['resource_id']) & 0xFFFF:04x}",
+                "name": style["name"],
+                "font_name": style["font_name"],
+                "point_size": style["point_size"],
+                "face_flags": style["face_flags"],
+                "face_flag_names": ";".join(style["face_flag_names"]),
+                "foreground_color": style["foreground_color"]["hex"],
+                "alignment_padding_hex": style["unexplained_bytes"][0]["raw_hex"],
+                "raw_hex": style["raw_hex"],
+                "decoder_confidence": style["decoder_confidence"],
+                "size": style["size"],
+                "sha256": style["sha256"],
             }
-            for resource in text_styles
+            for style in decoded_text_styles
         ],
+    )
+
+    text_by_key = {
+        (resource.resource_file, resource.resource_id): resource for resource in texts
+    }
+    decoded_style_scraps = [
+        decode_styl(
+            resource,
+            text_by_key.get((resource.resource_file, resource.resource_id)),
+        )
+        for resource in style_scraps
+    ]
+    style_scrap_by_key = {
+        (str(style["resource_file"]), int(style["resource_id"])): style
+        for style in decoded_style_scraps
+    }
+    decoded_texts: list[dict[str, object]] = []
+    for resource in texts:
+        key = (resource.resource_file, resource.resource_id)
+        text_row: dict[str, object] = {
+            "resource_file": resource.resource_file,
+            "resource_id": resource.resource_id,
+            "name": resource.name,
+            "size": len(resource.data),
+            "sha256": _sha256(resource.data),
+            "encoding": "mac_roman",
+            "text": _decode_mac_text(resource.data),
+            "decoder_confidence": "high",
+        }
+        style_scrap = style_scrap_by_key.get(key)
+        if style_scrap is not None:
+            text_row["style_resource"] = (
+                f"{resource.resource_file}:styl:{resource.resource_id}"
+            )
+            text_row["style_run_count"] = style_scrap["run_count"]
+        decoded_texts.append(text_row)
+    text_resource_evidence = {
+        "format_version": EVIDENCE_VERSION,
+        "resource_set_sha256": _resource_set_sha256(resources),
+        "policy": (
+            "Mac text/style resources are a semantic oracle only; they do not establish "
+            "Windows addresses, ABI, font substitution, or object layout."
+        ),
+        "text_styles": decoded_text_styles,
+        "texts": decoded_texts,
+        "style_scraps": decoded_style_scraps,
+    }
+    (output_dir / "text_resources.json").write_text(
+        json.dumps(text_resource_evidence, indent=2, sort_keys=True, ensure_ascii=False)
+        + "\n",
+        encoding="utf-8",
     )
 
     by_scoped_id: dict[tuple[str, int], list[ResourceEntry]] = {}
@@ -1225,6 +1626,15 @@ def write_outputs(output_dir: Path, resources: Sequence[ResourceEntry]) -> dict[
         "string_groups": len(string_groups),
         "strings": len(string_rows),
         "text_styles": len(text_styles),
+        "text_resources": len(texts),
+        "styled_text_resources": len(decoded_style_scraps),
+        "text_style_runs": sum(
+            int(style["run_count"]) for style in decoded_style_scraps
+        ),
+        "orphan_style_scraps": sum(
+            (str(style["resource_file"]), int(style["resource_id"])) not in text_by_key
+            for style in decoded_style_scraps
+        ),
         "scoped_id_collisions": len(collisions),
         "windows_builder_crosscheck": {
             "resource_file": "Startup.rsrc",
@@ -1241,6 +1651,80 @@ def write_outputs(output_dir: Path, resources: Sequence[ResourceEntry]) -> dict[
     return summary
 
 
+def validate_text_resource_evidence(evidence: dict, summary: dict) -> list[str]:
+    errors: list[str] = []
+    if evidence.get("format_version") != EVIDENCE_VERSION:
+        errors.append("text_resources.json format version does not match the resource oracle")
+    if evidence.get("resource_set_sha256") != summary.get("resource_set_sha256"):
+        errors.append("text_resources.json resource-set hash does not match summary.json")
+    expected_counts = {
+        "text_styles": "text_styles",
+        "texts": "text_resources",
+        "style_scraps": "styled_text_resources",
+    }
+    for collection, summary_field in expected_counts.items():
+        rows = evidence.get(collection, [])
+        if not isinstance(rows, list):
+            errors.append(f"text_resources.json {collection} is not a list")
+            continue
+        if len(rows) != summary.get(summary_field):
+            errors.append(
+                f"text_resources.json {collection} count {len(rows)} does not match "
+                f"summary {summary_field}={summary.get(summary_field)!r}"
+            )
+
+    for style in evidence.get("text_styles", []):
+        label = f"{style.get('resource_file')} TxSt {style.get('resource_id')}"
+        try:
+            raw = bytes.fromhex(str(style["raw_hex"]))
+        except (KeyError, ValueError):
+            errors.append(f"{label}: invalid raw_hex")
+            continue
+        if len(raw) != style.get("size") or len(raw) != 11 + raw[10]:
+            errors.append(f"{label}: raw size does not match its Pascal font name")
+        if style.get("decoder_confidence") != "high":
+            errors.append(f"{label}: decoder confidence is not high")
+        unexplained = style.get("unexplained_bytes", [])
+        if not unexplained or unexplained[0].get("offset") != 1:
+            errors.append(f"{label}: serialized alignment byte is not reported")
+
+    text_lengths = {
+        (str(text["resource_file"]), int(text["resource_id"])): int(text["size"])
+        for text in evidence.get("texts", [])
+    }
+    total_runs = 0
+    orphans = 0
+    for scrap in evidence.get("style_scraps", []):
+        key = (str(scrap["resource_file"]), int(scrap["resource_id"]))
+        label = f"{key[0]} styl {key[1]}"
+        runs = scrap.get("runs", [])
+        total_runs += len(runs)
+        if len(runs) != scrap.get("run_count"):
+            errors.append(f"{label}: decoded run count does not match")
+        starts = [int(run["start"]) for run in runs]
+        if starts and (starts[0] != 0 or starts != sorted(set(starts))):
+            errors.append(f"{label}: decoded run starts are not strictly ordered from zero")
+        text_length = text_lengths.get(key)
+        if text_length is None:
+            orphans += 1
+        elif runs and runs[-1].get("end") != text_length:
+            errors.append(f"{label}: final run does not end at TEXT length {text_length}")
+        for run in runs:
+            if not run.get("unexplained_bytes"):
+                errors.append(f"{label} run {run.get('index')}: alignment byte not reported")
+    if total_runs != summary.get("text_style_runs"):
+        errors.append(
+            f"decoded style-run count {total_runs} does not match "
+            f"summary text_style_runs={summary.get('text_style_runs')!r}"
+        )
+    if orphans != summary.get("orphan_style_scraps"):
+        errors.append(
+            f"orphan style-scrap count {orphans} does not match "
+            f"summary orphan_style_scraps={summary.get('orphan_style_scraps')!r}"
+        )
+    return errors
+
+
 def check_outputs(output_dir: Path) -> int:
     required = [
         "summary.json",
@@ -1249,6 +1733,7 @@ def check_outputs(output_dir: Path) -> int:
         "pictures.csv",
         "strings.csv",
         "text_styles.csv",
+        "text_resources.json",
         "id_collisions.csv",
         "ui_views.json",
     ]
@@ -1271,6 +1756,8 @@ def check_outputs(output_dir: Path) -> int:
         "string_groups": 280,
         "strings": 3800,
         "text_styles": 300,
+        "text_resources": 180,
+        "styled_text_resources": 80,
     }
     for field, minimum in minimums.items():
         actual = int(summary.get(field, 0))
@@ -1296,6 +1783,11 @@ def check_outputs(output_dir: Path) -> int:
         )
     )
     errors.extend(validate_real_ui_sentinels(ui_ir))
+    text_resource_evidence = json.loads(
+        (output_dir / "text_resources.json").read_text(encoding="utf-8")
+    )
+    errors.extend(validate_text_resource_evidence(text_resource_evidence, summary))
+    errors.extend(validate_real_text_resource_sentinels(text_resource_evidence))
 
     csv_rows: dict[str, list[dict[str, str]]] = {}
     for name in required[1:]:
