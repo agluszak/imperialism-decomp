@@ -32,7 +32,7 @@ class UiCodegenTests(unittest.TestCase):
 
     def test_committed_manifest_and_resource_ir_validate(self) -> None:
         self.assertEqual(len(self.recipes), 17)
-        self.assertEqual(sum(len(recipe.cases) for recipe in self.recipes), 85)
+        self.assertEqual(sum(len(recipe.cases) for recipe in self.recipes), 86)
         self.assertEqual(
             validate(
                 REPO_ROOT,
@@ -312,7 +312,7 @@ class UiCodegenTests(unittest.TestCase):
                         self.assertLessEqual(end, len(generated_lines))
                         self.assertIn(node["source"], generated_lines[start])
                         node_count += 1
-            self.assertEqual(case_count, 85)
+            self.assertEqual(case_count, 86)
             self.assertGreater(node_count, 1700)
 
 

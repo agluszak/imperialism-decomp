@@ -39,6 +39,8 @@ DEFAULT_CLASSES = {
     "tevw": "TTEView",
     "edit": "TEditText",
     "nmbr": "TNumberText",
+    "radb": "TRadioPictureButton",
+    "chkb": "TCzechBox",
     "wind": "TWindow",
     "fwnd": "TFloatWindow",
 }
@@ -48,7 +50,9 @@ CLASS_ALIASES = {
     "TMyWindow": "TWindow",
 }
 
-LAYOUT_FAMILIES = frozenset(("pict", "cntl", "stat", "clus", "edit", "nmbr"))
+LAYOUT_FAMILIES = frozenset(
+    ("pict", "cntl", "stat", "clus", "edit", "nmbr", "radb", "chkb")
+)
 
 
 @dataclass(frozen=True)
@@ -140,6 +144,7 @@ class UiSemanticFamily:
     frame_style: int | None = None
     content_insets: tuple[int, int, int, int] | None = None
     picture_id: int | None = None
+    control_state: int | None = None
     style: UiStylePayload | None = None
     text: UiTextPayload | None = None
     max_chars: int | None = None
@@ -295,6 +300,7 @@ def _validate_windows_family(family: dict, context: str) -> None:
         "frame_style",
         "content_insets",
         "picture_id",
+        "control_state",
         "style",
         "text",
         "max_chars",
@@ -416,6 +422,9 @@ def _parse_windows_family(family: dict, context: str) -> UiSemanticFamily:
             else None
         ),
         picture_id=(int(family["picture_id"]) if "picture_id" in family else None),
+        control_state=(
+            int(family["control_state"]) if "control_state" in family else None
+        ),
         style=style,
         text=text,
         max_chars=(int(family["max_chars"]) if "max_chars" in family else None),
@@ -571,7 +580,14 @@ def normalize_resource_view(
         raw_picture_id = raw_family.get("picture_id")
         picture_id = (
             int(raw_picture_id)
-            if type_code == "pict" and isinstance(raw_picture_id, int)
+            if type_code in ("pict", "radb", "chkb")
+            and isinstance(raw_picture_id, int)
+            else None
+        )
+        raw_control_state = raw_family.get("control_state")
+        control_state = (
+            int(raw_control_state)
+            if type_code in ("radb", "chkb") and isinstance(raw_control_state, int)
             else None
         )
         text: UiTextPayload | None = None
@@ -619,6 +635,7 @@ def normalize_resource_view(
             frame_style=frame_style,
             content_insets=content_insets,
             picture_id=picture_id,
+            control_state=control_state,
             text=text,
             max_chars=max_chars,
             number=number,
@@ -868,6 +885,11 @@ def _emit_semantic_view(
         if family.picture_id is not None:
             lines.append(
                 f"{indent}SetUiResourceContextPictureId({_hex(family.picture_id)});"
+            )
+        if family.control_state is not None:
+            lines.append(
+                f"{indent}{variable}->SetControlStateFlagAndMaybeRefresh("
+                f"{_hex(family.control_state)}, 0);"
             )
         if family.style is not None:
             lines.append(
