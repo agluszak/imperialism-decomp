@@ -187,12 +187,12 @@ void TArmyUnitView::HandleCrossUArmyViewsNameCommand() {
   nameControl->InitDialogWindowAndSyncTitleIfChanged(&editedName, 1);
   nameControl->textStyle78 = style;
 
-  node->SetField84(1);
-  TDialogBehavior* behavior = node->GetEmbeddedDialogBehavior();
+  node->SetModality(1);
+  TDialogBehavior* behavior = node->GetDialogBehavior();
   if (behavior != nullptr) {
     behavior->defaultCommandCode = 0x6f6b6179; // 'okay'
   }
-  int modalResult = node->ExecuteViewModalStateWithPushPopChain();
+  int modalResult = node->PoseModally();
   nameControl->GetCurrentText(&editedName);
   if (modalResult != 0x636e636c /* 'cncl' */) {
     field60->name24 = editedName;

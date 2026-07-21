@@ -320,7 +320,8 @@ public:
   // sentinel-inited to 0xffff) is nonzero, every tile is marked 1 (blocked); only when
   // tileIndex06 == 0 does it fall back to seeding per-tile from activeFlags1c bit 4 (an
   // otherwise-unused bit of that byte -- not otherwise cross-referenced in this codebase).
-  virtual void SeedRecruitSearchVisitedStateFromSelectedCivilianOrder(); // slot 0x1e 0x514e80
+  virtual void SeedRecruitSearchVisitedStateFromSelectedCivilianOrder(
+      class TCivUnit* unusedOrder); // slot 0x1e 0x514e80
   // Seeds recruitSearchVisited0e like the SeedRecruitSearchVisitedState* family: eligible
   // only if the tile is owned by nationTag and its terrainType00 isn't 2/3/4, gated further
   // by IsValidSecondaryNationHomeTileCandidate (0x513980, not yet ported).

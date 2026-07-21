@@ -20,7 +20,7 @@ TWindow::TWindow() : TView(), dialogBehavior(), busyFlag98(0) {
   g_LiveViewRegistry.AddHead(this);
   dialogBehavior.SetUiColorDescriptorGoldTriplet(1, 0x20202020, 0x20202020);
   activeLinkedWindow64 = this;
-  dialogBehavior.SetDword08(reinterpret_cast<int>(this));
+  dialogBehavior.SetOwner(this);
 }
 // IMPLEMENT_DYNCREATE also emits `TWindow::CreateObject`; the original copy at
 // 0x48d090 has the TWindow ctor (including the inlined g_LiveViewRegistry AddHead
@@ -104,17 +104,17 @@ undefined TWindow::GetWindowText(CString* param_1) {
 }
 
 // FUNCTION: IMPERIALISM 0x0048da10
-undefined TWindow::GetDialogBehaviorByte10() {
-  TDialogBehavior* behavior = GetEmbeddedDialogBehavior();
+unsigned char TWindow::IsModal() {
+  TDialogBehavior* behavior = GetDialogBehavior();
   if (behavior != 0) {
-    return behavior->field10;
+    return behavior->armed;
   }
   return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x0048da40
-void TWindow::SetField84(unsigned char param_1) {
-  dialogBehavior.field10 = param_1;
+void TWindow::SetModality(unsigned char modal) {
+  dialogBehavior.armed = modal;
 }
 
 // Run this window as a modal: optionally arm the dialog-state flag, disable the window
@@ -122,11 +122,11 @@ void TWindow::SetField84(unsigned char param_1) {
 // loop, then pop self and re-enable the window beneath. Returns the command the dialog
 // armed during the loop.
 // FUNCTION: IMPERIALISM 0x0048da60
-int TWindow::ExecuteViewModalStateWithPushPopChain() {
-  TDialogBehavior* behavior = GetEmbeddedDialogBehavior();
-  unsigned char wasArmed = behavior->field10;
+int TWindow::PoseModally() {
+  TDialogBehavior* behavior = GetDialogBehavior();
+  unsigned char wasArmed = behavior->armed;
   if (wasArmed == 0) {
-    SetField84(1);
+    SetModality(1);
   }
   if (!g_ModalViewStack.IsEmpty()) {
     TWindow* top = static_cast<TWindow*>(g_ModalViewStack.GetHead());
@@ -136,7 +136,7 @@ int TWindow::ExecuteViewModalStateWithPushPopChain() {
     }
   }
   g_ModalViewStack.AddHead(this);
-  behavior->CreateTCommandInstance(); // slot 0x12: run the modal message loop
+  behavior->PoseModally(); // slot 0x12: run the modal message loop
   int armedCommand = behavior->armedCommandCode;
   POSITION pos = g_ModalViewStack.Find(this);
   if (pos != NULL) {
@@ -150,34 +150,33 @@ int TWindow::ExecuteViewModalStateWithPushPopChain() {
     }
   }
   if (wasArmed == 0) {
-    SetField84(0);
+    SetModality(0);
   }
   g_pImperialismApp->RestoreWaitCursorIfStartupBusy();
   return armedCommand;
 }
 
 // FUNCTION: IMPERIALISM 0x0048dc60
-undefined TWindow::GetDialogBehaviorByte20() {
-  TDialogBehavior* behavior = GetEmbeddedDialogBehavior();
+unsigned char TWindow::IsDismissed() {
+  TDialogBehavior* behavior = GetDialogBehavior();
   if (behavior != 0) {
-    return behavior->field20;
+    return behavior->dismissPending;
   }
   return 1;
 }
 
 // FUNCTION: IMPERIALISM 0x0048dc90
-undefined TWindow::NotifyDialogBehaviorCommandArmed(undefined4 param_1, undefined4 param_2) {
-  TDialogBehavior* behavior = GetEmbeddedDialogBehavior();
+void TWindow::Dismiss(unsigned long commandCode, unsigned char accepted) {
+  TDialogBehavior* behavior = GetDialogBehavior();
   if (behavior != 0) {
-    behavior->OrphanCallChain_C1_I13_00487430(param_1, param_2);
+    behavior->Dismiss(commandCode, accepted);
   }
-  return 0;
 }
 
 // The 0x74 region is constructed as a real TDialogBehavior (ConstructTDialogBehaviorBaseState
 // writes its vptr at +0x74); expose it through its real type so callers dispatch real virtuals.
 // FUNCTION: IMPERIALISM 0x0048dcc0
-TDialogBehavior* TWindow::GetEmbeddedDialogBehavior() {
+TDialogBehavior* TWindow::GetDialogBehavior() {
   return &dialogBehavior;
 }
 
@@ -192,7 +191,7 @@ void TWindow::AssertMcAppUILine2554() {
 void TWindow::DispatchEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   // Direct access to the embedded TDialogBehavior (the original reads its vptr straight from
   // +0x74), then bubble to HandleEvent.
-  dialogBehavior.OrphanCallChain_C1_I17_00487470(commandId, reinterpret_cast<int>(event));
+  dialogBehavior.DoEvent(commandId, sourceHandler, event);
   HandleEvent(commandId, sourceHandler, event);
 }
 
@@ -376,10 +375,10 @@ void TWindow::Free() {
     }
   }
   field0c = 0;
-  if (linkedResourceOwner != 0) {
-    linkedResourceOwner->Free();
+  if (firstBehavior != 0) {
+    firstBehavior->Free();
   }
-  linkedResourceOwner = 0;
+  firstBehavior = 0;
   delete this;
 }
 

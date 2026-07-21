@@ -79,7 +79,7 @@ void TTransFocusAnimation::Free() {
 }
 
 // FUNCTION: IMPERIALISM 0x004a05c0
-void TTransFocusAnimation::BlitTransientSurfaceToPrimaryRenderContextWithClip() {
+void TTransFocusAnimation::UpdateBackground() {
   CTemporaryRegion surface;
   GetClip(surface.tempRgn);
 
@@ -125,10 +125,10 @@ void TTransFocusAnimation::BlitTransientSurfaceToPrimaryRenderContextWithClip() 
 }
 
 // FUNCTION: IMPERIALISM 0x004a0770
-void TTransFocusAnimation::VTableSlot0D() {}
+void TTransFocusAnimation::IdleDraw() {}
 
 // FUNCTION: IMPERIALISM 0x004a0810
-undefined TTransFocusAnimation::RenderBattleReportInsetWithPaletteShift(POINT* offset) {
+void TTransFocusAnimation::DrawNextFrame(POINT* offset) {
   short width = screenRect1C.right - screenRect1C.left;
   int height = screenRect1C.bottom - screenRect1C.top;
 
@@ -170,16 +170,14 @@ undefined TTransFocusAnimation::RenderBattleReportInsetWithPaletteShift(POINT* o
                           &overlayRect, &clipRect, 0x24);
   }
 
-  FocusAnimationSlot0E();
+  ClipAndPaste();
 
   TQuickDrawSurfaceContext* activeContext;
   int activeFlags;
   GetActiveQuickDrawSurfaceContextAndFlags(&activeContext, &activeFlags);
   SetActiveQuickDrawSurfaceContext(g_pPrimaryRenderSurfaceContext, activeFlags);
-  FocusAnimationSlot0E();
+  ClipAndPaste();
   SetActiveQuickDrawSurfaceContext(activeContext, activeFlags);
-
-  return 0;
 }
 
 // SYNTHETIC: IMPERIALISM 0x004a0480

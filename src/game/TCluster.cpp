@@ -52,15 +52,15 @@ void TCluster::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* 
   }
 
   if (commandId == 0x1f) {
-    SetControlStateFlagAndMaybeRefresh(true, true);
+    HiliteState(true, true);
     return;
   }
   if (commandId == 0x20) {
-    SetControlStateFlagAndMaybeRefresh(false, true);
+    HiliteState(false, true);
     return;
   }
   if (commandId == 0x21) {
-    SetControlStateFlagAndMaybeRefresh(controlState64 == 0, true);
+    HiliteState(controlState64 == 0, true);
     return;
   }
   TView* child = static_cast<TView*>(QueryStepValue());

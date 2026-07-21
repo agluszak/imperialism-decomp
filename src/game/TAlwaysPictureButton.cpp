@@ -1,7 +1,6 @@
 #include "game/TAlwaysPictureButton.h"
 #include "game/mfc.h"
 
-
 // SYNTHETIC: IMPERIALISM 0x00570950
 // TAlwaysPictureButton::CreateObject
 // SYNTHETIC: IMPERIALISM 0x005709d0
@@ -19,7 +18,7 @@ TAlwaysPictureButton::TAlwaysPictureButton() : TPictureButton() {}
 TAlwaysPictureButton::~TAlwaysPictureButton() {}
 
 // FUNCTION: IMPERIALISM 0x00570a70
-void TAlwaysPictureButton::SetControlStateFlagAndMaybeRefresh(bool enabledState, bool refreshNow) {
+void TAlwaysPictureButton::HiliteState(unsigned char enabledState, unsigned char refreshNow) {
   if (static_cast<unsigned char>(enabledState) != this->controlState64) {
     this->controlState64 = enabledState;
     short pictureId;

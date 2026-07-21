@@ -609,7 +609,7 @@ undefined TTacArmyView::DrawTacticalTileInClipRect(int tileIndex, RECT* clipRect
   TAnimation* selectionAnim = g_pUiAnimator->FindRegisteredAnimationByTag(0x13);
   if (selectionAnim != 0) {
     POINT offset = {0, 0};
-    selectionAnim->RenderBattleReportInsetWithPaletteShift(&offset);
+    selectionAnim->DrawNextFrame(&offset);
   }
 
   // Neighbor units bleeding into this tile from the row-adjacent tiles.

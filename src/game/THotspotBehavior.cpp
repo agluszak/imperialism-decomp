@@ -1,4 +1,7 @@
 #include "game/THotspotBehavior.h"
+
+#include "game/TEvent.h"
+#include "game/TView.h"
 // SYNTHETIC: IMPERIALISM 0x004b0af0
 // THotspotBehavior::CreateObject
 
@@ -15,6 +18,19 @@ THotspotBehavior::THotspotBehavior() : TBehavior() {}
 THotspotBehavior::~THotspotBehavior() {}
 
 // FUNCTION: IMPERIALISM 0x004b0c00
-undefined THotspotBehavior::HotspotBehaviorSlot0E() {
+unsigned char THotspotBehavior::DoSetCursor(CPoint* point, RgnHandle region) {
+  (void)point;
+  (void)region;
+  TView* target = static_cast<TView*>(owner);
+  if (target->controlTag != 0x444c4f47 && target->controlTag != 0x6d61696e) {
+    target = target->ownerContext;
+  }
+
+  TEvent* event = new TEvent();
+  event->commandNumber = 0x6b;
+  event->dispatchMessage = 0x6b;
+  event->sourceHandler = owner;
+  event->targetHandler = target;
+  target->DispatchQueuedUiCommandAndRelease(event);
   return 0;
 }

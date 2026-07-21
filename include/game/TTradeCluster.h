@@ -23,7 +23,7 @@ public:
   virtual int IsTradeControlAtMinimum() override;
   virtual void ApplyMoveValue(int value);
   virtual int NotifyControlSelectionChange(void* boundEntry, int arg2 = 0);
-  virtual int GetControlFlag(int arg1 = 0, int arg2 = 0);
+  virtual unsigned char IsSelectionAllowed();
   virtual int GetBoolSlot1DC();
   virtual void DoControlAction();
   virtual void SetTradeBidControlBitmap();

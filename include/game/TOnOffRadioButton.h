@@ -3,6 +3,11 @@
 #include "game/TPictureButton.h"
 #include "game/mfc.h"
 
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Woverloaded-virtual"
+#endif
+
 // VTABLE: IMPERIALISM 0x0065f8a8
 class TOnOffRadioButton : public TPictureButton {
 public:
@@ -119,15 +124,19 @@ public:
   // slot 0x6d SetTextStyleAndMaybeRefresh inherited unchanged (0x48e7d0)
   // slot 0x6e SetTextColorAndMaybeRefresh inherited unchanged (0x48e7a0)
   // slot 0x6f LogUnhandledDialogMethodAndReturnFalse inherited unchanged (0x4294a0)
-  // slot 0x70 SetControlStateFlagAndMaybeRefresh inherited unchanged (0x570870)
+  // slot 0x70 HiliteState inherited unchanged (0x570870)
   // slot 0x71 ResetPictureResourceEntry inherited unchanged (0x48f520)
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
   // slot 0x73 IsSelected inherited unchanged (0x5708c0)
-  virtual undefined OrphanCallChain_C2_I16_00571b20(undefined4 param_1,
-                                                    undefined4 param_2); // slot 0x74 0x571b20
+  virtual void SetState(unsigned char on,
+                        unsigned char drawImmediate); // slot 0x74 0x571b20
 
   TOnOffRadioButton();
 
   // Original object size is 0x98 (CRuntimeClass m_nObjectSize); the source class ended at 0x94. Trailing 4 byte(s) not yet semantically recovered — declared so sizeof and the recomp's allocation size match the original.
   int field94;
 };
+
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif

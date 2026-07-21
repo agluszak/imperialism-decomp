@@ -30,9 +30,24 @@ TArmyCheckBox::TArmyCheckBox(TView* panel, int* offsetLayout, int* sizeLayout, i
 }
 
 // FUNCTION: IMPERIALISM 0x004aa030
-undefined TArmyCheckBox::VTableSlot73(char param_1) {
-  (void)param_1;
-  return 0;
+void TArmyCheckBox::CheckTheLook(unsigned char drawImmediate) {
+  if (isOn84 == 0 && controlState64 == 0) {
+    if (checkedGlyphOffsetApplied8c != 0) {
+      field88 -= frameWidth34;
+      checkedGlyphOffsetApplied8c = 0;
+      RefreshControl();
+      if (drawImmediate != 0) {
+        DrawImmediate();
+      }
+    }
+  } else if (checkedGlyphOffsetApplied8c == 0) {
+    field88 += frameWidth34;
+    checkedGlyphOffsetApplied8c = 1;
+    RefreshControl();
+    if (drawImmediate != 0) {
+      DrawImmediate();
+    }
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x004aa100
@@ -83,8 +98,8 @@ void TArmyCheckBox::ApplyRectSlot110(RECT* rectBuffer) {
 // FUNCTION: IMPERIALISM 0x004aa280
 void TArmyCheckBox::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId == 0x21) {
-    if ((GetAsyncKeyState(0x11) & 0x8000) != 0 || field84 != 0) {
-      OrphanCallChain_C2_I16_004aa3a0(1);
+    if ((GetAsyncKeyState(0x11) & 0x8000) != 0 || isOn84 != 0) {
+      Toggle(1);
     }
   }
   TControl::HandleEvent(commandId, sourceHandler, event);
@@ -97,30 +112,39 @@ void TArmyCheckBox::DoPostCreate(int arg) {
 }
 
 // FUNCTION: IMPERIALISM 0x004aa310
-void TArmyCheckBox::SetControlStateFlagAndMaybeRefresh(bool fEnabledState, bool fRefreshNow) {}
+void TArmyCheckBox::HiliteState(unsigned char hilited, unsigned char drawImmediate) {
+  if (controlState64 != hilited) {
+    controlState64 = hilited;
+    CheckTheLook(drawImmediate);
+  }
+}
 
 // FUNCTION: IMPERIALISM 0x004aa340
-undefined TArmyCheckBox::OrphanLeaf_NoCall_Ins02_004aa340() {
-  return 0;
+unsigned char TArmyCheckBox::IsOn() {
+  return isOn84;
 }
 
 // FUNCTION: IMPERIALISM 0x004aa360
-undefined TArmyCheckBox::SetArmyUnitLineActiveFlagAndNotify() {
-  return 0;
+void TArmyCheckBox::SetState(unsigned char on, unsigned char drawImmediate) {
+  if (isOn84 != on) {
+    isOn84 = on;
+    CheckTheLook(drawImmediate);
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x004aa3a0
-undefined TArmyCheckBox::OrphanCallChain_C2_I16_004aa3a0(int unused) {
-  (void)unused;
-  return 0;
+void TArmyCheckBox::Toggle(unsigned char drawImmediate) {
+  SetState(static_cast<unsigned char>(IsOn() == 0), drawImmediate);
 }
 
 // FUNCTION: IMPERIALISM 0x004aa3e0
-undefined TArmyCheckBox::OrphanCallChain_C3_I23_004aa3e0(char param_1, undefined4 param_2) {
-  return 0;
+void TArmyCheckBox::ToggleIf(unsigned char expectedState, unsigned char drawImmediate) {
+  if (IsOn() == expectedState) {
+    SetState(static_cast<unsigned char>(IsOn() == 0), drawImmediate);
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x004aa430
-undefined TArmyCheckBox::OrphanCallChain_C1_I05_004aa430() {
-  return 0;
+void TArmyCheckBox::DrawImmediate() {
+  OwnerPanel()->InvokeSlot13C();
 }

@@ -122,7 +122,7 @@ public:
   // slot 0x6d SetTextStyleAndMaybeRefresh inherited unchanged (0x48e7d0)
   // slot 0x6e SetTextColorAndMaybeRefresh inherited unchanged (0x48e7a0)
   // slot 0x6f LogUnhandledDialogMethodAndReturnFalse inherited unchanged (0x4294a0)
-  // slot 0x70 SetControlStateFlagAndMaybeRefresh inherited unchanged (0x48e810)
+  // slot 0x70 HiliteState inherited unchanged (0x48e810)
 
   // Layout past TControl (0x84): allocation size 0x94 (`new` at 0x573d15). The three
   // words at 0x88..0x8c are the bounded-value triple seeded by
@@ -154,7 +154,7 @@ public:
   void ConstructTScrollBarViewBaseState(class TScrollView* panel, int* offsetLayout,
                                         int* sizeLayout);
 
-  // 0x005740a0 — RAII-scoped map QuickDraw context around a Refresh() + viewport rect
+  // 0x005740a0 — RAII-scoped map QuickDraw context around a PrepareForDrawing() + viewport rect
   // rebuild (ApplyRectSlot110): rect = {0, word88, frameWidth34, word8a + 0x12}.
   void RefreshCityDialogScrollableViewportWithQuickDrawContext();
 };

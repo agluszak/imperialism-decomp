@@ -450,7 +450,7 @@ void TSetupRandomMapPicture::SpinYourGlobe() {
   globe->SetPictureResourceIdAndRefresh(static_cast<short>(globeFrameA0 + 0x11d0), false);
 
   ScopedMapQuickDrawContext globeContext(globe);
-  globe->Refresh();
+  globe->PrepareForDrawing();
   RECT bounds;
   globe->QueryBounds(&bounds);
   globe->ApplyRectSlot110(&bounds);

@@ -18,7 +18,7 @@ public:
   DECLARE_DYNCREATE(TTransportPicture)
   void HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override;
   void ApplyRectSlot110(RECT* rectBuffer) override;
-  virtual bool IsSelected(short value = -1, bool refreshNow = true);
+  virtual void Refresh();
 };
 
 ASSERT_SIZE(TTransportPicture, 0x9c);

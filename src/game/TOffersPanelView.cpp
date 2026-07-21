@@ -5,6 +5,7 @@
 #include "game/global_data_tables.h"
 #include "game/quickdraw_rendering.h"
 #include "game/ui_control_tags.h"
+#include "game/ui_invalidation_guard.h"
 #include "game/ui_text_label_helpers_decls.h"
 // SYNTHETIC: IMPERIALISM 0x004f8ec0
 // TOffersPanelView::CreateObject
@@ -88,6 +89,52 @@ char TOffersPanelView::DispatchUiMouseEventToChildrenOrSelf_Impl(CPoint* point, 
 }
 
 // FUNCTION: IMPERIALISM 0x004f9450
-undefined TOffersPanelView::RunDiplomacyNegotiationPopupAndAwaitResponse() {
-  return 0;
+char TOffersPanelView::PoseOffer(short sourceNation, short targetNation, short offerType) {
+  CString proposalText;
+
+  if (offerType == 0x29a) {
+    g_pSimMgr->GetString(0x2742, 0, &proposalText);
+  } else {
+    short stringIndex = 0;
+    switch (offerType) {
+    case 0x12d:
+      stringIndex = 0;
+      break;
+    case 0x12e:
+      stringIndex = 1;
+      break;
+    case 0x12f:
+      stringIndex = 2;
+      break;
+    case 0x130:
+      stringIndex = 3;
+      break;
+    case 0x132:
+      stringIndex = 4;
+      break;
+    }
+    g_pSimMgr->GetString(0x274a, stringIndex, &proposalText);
+  }
+
+  TView* sheet = ResolveControlByTag('shee');
+  TView* wait = ResolveControlByTag('wait');
+  TDeluxeText* message = static_cast<TDeluxeText*>(
+      ResolveControlByTag(offerType == 0x29a ? kControlTagText : kControlTagProp));
+  message->AssertValid();
+  message->UpdateTextEntrySharedStringAndMaybeNotify(&proposalText, 1);
+  message->RefreshControl();
+  sheet->RefreshControl();
+  wait->RefreshControl();
+
+  // The original blocks only for interactive offers. HandleEvent writes the selected
+  // FourCC into this field when the accept/reject hotspot is activated.
+  if (offerType != 0x29a) {
+    lastNegotiationResponseTag64 = 0;
+    while (lastNegotiationResponseTag64 == 0) {
+      PumpUiMessagesAndBackgroundTasks(1);
+    }
+  }
+  (void)sourceNation;
+  (void)targetNation;
+  return lastNegotiationResponseTag64 == static_cast<int>(kControlTagAcce);
 }

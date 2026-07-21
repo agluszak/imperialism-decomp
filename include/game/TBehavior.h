@@ -4,6 +4,8 @@
 #include "decomp_types.h"
 #include "game/TObject.h"
 
+class TEventHandler;
+
 // VTABLE: IMPERIALISM 0x00648d60
 class TBehavior : public TObject {
 public:
@@ -16,22 +18,20 @@ public:
   // slot 0x07 Free inherited unchanged (0x4798b0)
   // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
-  // slots 0x0a-0x0d (bytes 0x28-0x34) are the typed virtuals declared below
-  // (SetDword08/GetFlag0C/SetFlag0C/NoOpSlot34); the generated Orphan*
-  // placeholders were duplicates of these slots and were removed.
+  // slots 0x0a-0x0d (bytes 0x28-0x34) are the behavior-owner contract recovered
+  // from the Mac symbols and the Windows field accesses.
   TBehavior();
 
   DECLARE_DYNCREATE(TBehavior)
-  virtual void SetDword08(undefined4 value);     // slot 0x0a byte 0x28 0x487280
-  virtual unsigned char GetFlag0C();             // slot 0x0b byte 0x2c 0x4872a0
-  virtual void SetFlag0C(unsigned char value);   // slot 0x0c byte 0x30 0x4872c0
-  virtual void NoOpSlot34(undefined4 value);     // slot 0x0d byte 0x34 0x4872e0
+  virtual void SetOwner(TEventHandler* owner);    // slot 0x0a byte 0x28 0x487280
+  virtual unsigned char IsEnabled();              // slot 0x0b byte 0x2c 0x4872a0
+  virtual void SetEnabled(unsigned char enabled); // slot 0x0c byte 0x30 0x4872c0
+  virtual void Draw(RECT* bounds);                // slot 0x0d byte 0x34 0x4872e0
 
-  undefined4 field_0x4;
-  undefined4 field_0x8;
-  unsigned char field_0xc;
-  unsigned char padding_0xd[3];
+  unsigned long behaviorTag;
+  TEventHandler* owner;
+  unsigned char enabled;
+  unsigned char padding0d[3];
 };
 
 ASSERT_SIZE(TBehavior, 0x10);
-

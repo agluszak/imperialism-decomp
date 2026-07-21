@@ -61,7 +61,7 @@ ScopedMapQuickDrawContext::ScopedMapQuickDrawContext(TView* renderTargetArg)
     : clientDc(renderTargetArg != 0 ? renderTargetArg->nativeWindow50 : 0),
       renderTarget(renderTargetArg) {
   if (renderTarget != 0) {
-    renderTarget->Refresh();
+    renderTarget->PrepareForDrawing();
     RECT clipRect;
     renderTarget->ApplyBounds(&clipRect, 0);
     clientDc.IntersectClipRect(&clipRect);
@@ -83,7 +83,7 @@ ScopedMapQuickDrawContext::ScopedMapQuickDrawContext(TView* renderTargetArg)
 // FUNCTION: IMPERIALISM 0x004947e0
 ScopedMapQuickDrawContext::ScopedMapQuickDrawContext(TView* renderTargetArg, RECT* clipRect)
     : clientDc(renderTargetArg->nativeWindow50), renderTarget(renderTargetArg) {
-  renderTarget->Refresh();
+  renderTarget->PrepareForDrawing();
   clientDc.IntersectClipRect(clipRect);
   g_pScopedMapQuickDrawViewContext = renderTarget;
   if (this != 0) {

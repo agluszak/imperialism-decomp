@@ -6,6 +6,7 @@
 #include "game/TGreatPower.h"
 #include "game/TProductionOrder.h"
 #include "game/TShipOrder.h"
+#include "game/TTown.h"
 #include "game/TUnitOrder.h"
 #include "game/TSimMgr.h"
 #include "game/TPtrList.h"
@@ -379,7 +380,21 @@ void TCity::AddTransportRequest(short low, short high) {
 }
 
 // FUNCTION: IMPERIALISM 0x004b4580
-void TCity::MakeTown() {}
+void TCity::MakeTown(short selectedResourceType) {
+  (void)selectedResourceType;
+  if (ownerNationAc->townMarkerList == 0) {
+    FailNilPointerWithAssert(kUCityCppPath, 0x53a);
+  }
+
+  TTown* town = new TTown();
+  if (town == 0) {
+    FailNilPointerWithAssert(kUCityCppPath, 0x53c);
+  }
+  town->InitializeTownMarker("Altown", 0, 0, ownerNationAc->nationSlot);
+  town->Free();
+  ownerNationAc->RebuildNationResourceYieldCountersAndDevelopmentTargets();
+  ownerNationAc->treasuryValue10 = ownerNationAc->treasuryValue10;
+}
 
 // FUNCTION: IMPERIALISM 0x004b46c0
 void TCity::TransferTransportRequests(void*) {

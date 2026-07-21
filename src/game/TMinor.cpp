@@ -824,7 +824,7 @@ void TMinor::NotifyActionSlot94(int sourceNation, int actionCode) {
 
 // FUNCTION: IMPERIALISM 0x004e5340
 void TMinor::SetNationTransferTargetCodeAndNotifyEligiblePeers(int targetNationSlot) {
-  this->SetNationRowDisplayValueByDiplomacyPredicate(static_cast<short>(targetNationSlot), 0);
+  this->SetNationRowDisplayValueByDiplomacyPredicate(static_cast<short>(targetNationSlot));
 
   if (this->encodedNationSlot < 200) {
     this->encodedNationSlot = static_cast<short>(targetNationSlot + 100);
@@ -985,16 +985,14 @@ void TMinor::ApplyJoinEmpireMode1TargetTransition(int targetNationSlot) {
 void TMinor::ApplyJoinEmpireMode2FinalizeNationNameState(void) {
   short decodedSlot = DecodeTerrainNationSlotFromEncoded(this->encodedNationSlot, this->nationSlot);
   this->encodedNationSlot = -1;
-  this->SetNationRowDisplayValueByDiplomacyPredicate(decodedSlot, 0);
+  this->SetNationRowDisplayValueByDiplomacyPredicate(decodedSlot);
   for (int nationSlot = 0; nationSlot < kNationSlotCount; ++nationSlot) {
     this->SetDiplomacyStandingSlot48(nationSlot, 100);
   }
 }
 
 // FUNCTION: IMPERIALISM 0x004e5a40
-void TMinor::SetNationRowDisplayValueByDiplomacyPredicate(short targetNationSlot,
-                                                          short predicateCode) {
-  (void)predicateCode;
+void TMinor::SetNationRowDisplayValueByDiplomacyPredicate(short targetNationSlot) {
   for (int nationSlot = 0; nationSlot < kNationSlotCount; ++nationSlot) {
     if (g_pDiplomacyTurnStateManager->HasPolicyWithNationSlot44(targetNationSlot, nationSlot) ==
             0 &&

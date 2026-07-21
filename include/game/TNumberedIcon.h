@@ -118,17 +118,17 @@ public:
   // slot 0x6d SetTextStyleAndMaybeRefresh inherited unchanged (0x48e7d0)
   // slot 0x6e SetTextColorAndMaybeRefresh inherited unchanged (0x48e7a0)
   // slot 0x6f LogUnhandledDialogMethodAndReturnFalse inherited unchanged (0x4294a0)
-  // slot 0x70 SetControlStateFlagAndMaybeRefresh inherited unchanged (0x48e810)
+  // slot 0x70 HiliteState inherited unchanged (0x48e810)
   // slot 0x71 ResetPictureResourceEntry inherited unchanged (0x48f520)
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x573430)
   // slot 0x73 NoOpUiVirtualSlot73 inherited unchanged (0x572bb0)
   // slot 0x74 ClearOrSubtractFlags98AndMaybeRefresh inherited unchanged (0x5736c0)
   // slot 0x75 AssignFlags98AndMaybeRefresh inherited unchanged (0x573690)
-  virtual undefined OrphanCallChain_C1_I10_005076d0(short param_1); // slot 0x76 0x5076d0
-  virtual undefined NumberedIconSlot77();                           // slot 0x77 0x507570
+  virtual void SetValue(short value, unsigned char refresh); // slot 0x76 0x5076d0
+  virtual void InstallNumberText();                          // slot 0x77 0x507570
   // TMegaPicture ends exactly at 0xac (ASSERT_SIZE); zeroed by the ctor. DoPostCreate
   // dereferences it through a vtable (ApplyBounds, slot 0x5a) when non-null.
-  class TView* fieldAc; // +0xac
+  class TNumberText* numberTextAc; // +0xac
 
   TNumberedIcon();
 };

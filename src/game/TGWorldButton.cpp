@@ -22,7 +22,7 @@ TGWorldButton::TGWorldButton() {
 TGWorldButton::~TGWorldButton() {}
 
 // FUNCTION: IMPERIALISM 0x00572200
-void TGWorldButton::SetControlStateFlagAndMaybeRefresh(bool fEnabledState, bool fRefreshNow) {
+void TGWorldButton::HiliteState(unsigned char fEnabledState, unsigned char fRefreshNow) {
   if (static_cast<unsigned char>(fEnabledState) == controlState64) {
     return;
   }

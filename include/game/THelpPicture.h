@@ -122,13 +122,13 @@ public:
   // slot 0x6d SetTextStyleAndMaybeRefresh inherited unchanged (0x48e7d0)
   // slot 0x6e SetTextColorAndMaybeRefresh inherited unchanged (0x48e7a0)
   // slot 0x6f LogUnhandledDialogMethodAndReturnFalse inherited unchanged (0x4294a0)
-  // slot 0x70 SetControlStateFlagAndMaybeRefresh inherited unchanged (0x48e810)
+  // slot 0x70 HiliteState inherited unchanged (0x48e810)
   // slot 0x71 ResetPictureResourceEntry inherited unchanged (0x48f520)
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
-  virtual undefined OrphanCallChain_C2_I34_00504120();            // slot 0x73 0x504120
-  virtual undefined OrphanCallChain_C2_I34_005041a0();            // slot 0x74 0x5041a0
-  virtual undefined RefreshHelpSubjectListControlsWithPrevNext(); // slot 0x75 0x5046c0
-  virtual undefined BuildHelpSubjectListControlsWithPrevNext();   // slot 0x76 0x504220
+  virtual void ShowNextHelpSet();      // slot 0x73 0x504120
+  virtual void ShowPreviousHelpSet();  // slot 0x74 0x5041a0
+  virtual void ShowTopicList();        // slot 0x75 0x5046c0
+  virtual void ShowTopic(short topic); // slot 0x76 0x504220
 
   THelpPicture();
 

@@ -49,7 +49,7 @@ public:
   // must be declared before the no-arg overload to land in vtable slots 0x0f / 0x0e.
   virtual void AddTransportedItems();
   // slot 0x10 — body 0x004b4580 (247B, unported): create the Altown city object.
-  virtual void MakeTown();
+  virtual void MakeTown(short selectedResourceType);
   // slot 0x11 — body 0x004b3b20: adopt the selected order/marker (TGreatPower slots
   // 0x3a/0x3b hand the new Frog City marker through this).
   virtual void SetSelectedTownMarker(void* order);
@@ -109,7 +109,8 @@ public:
   unsigned char pad05;
   short field06; // +0x06 — zeroed by the ctor
   short field08; // +0x08 — zeroed by the ctor
-  unsigned char pad0a[0x0e - 0x0a];
+  short serializedState0a;
+  unsigned char pad0c[0x0e - 0x0c];
   // +0x0e..+0x4a and +0x4a..+0x5c — city metric blocks snapshotted wholesale by the
   // turn-event-0x2c composite packet (0x54ce80); interior meaning still unmapped.
   short cityMetricsBlock0E[0x1e];

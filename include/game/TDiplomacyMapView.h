@@ -51,7 +51,7 @@ public:
   virtual void BuildCombinedTerrainTypeRegionMaskAndDispatch();                 // slot 0x74
   virtual void RebuildDiplomacyLegendPaletteMode4AndBlit(int activeNationSlot,
                                                          const RECT* presentRect); // slot 0x75
-  virtual void OrphanLeaf_NoCall_Ins05_004f6820();                                 // slot 0x76
+  virtual void VisitNationSlotsForOverlay(int unusedMode);                         // slot 0x76
   virtual void RebuildDiplomacyLegendPaletteMode1AndBlit(int activeNationSlot,
                                                          const RECT* presentRect); // slot 0x77
   virtual void BlitDiplomacyMapEventPaletteMaskToSurface(short maskIndex,

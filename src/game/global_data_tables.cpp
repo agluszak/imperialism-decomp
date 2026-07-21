@@ -1309,6 +1309,8 @@ extern "C" const char s_SourcePathUDefenseMinister_00696860[] =
     "D:\\Ambit\\Cross\\UDefenseMinister.cpp";
 // GLOBAL: IMPERIALISM 0x0069573c
 extern "C" const char s_SourcePathUArmyMgr_0069573C[] = "D:\\Ambit\\Cross\\UArmyMgr.cpp";
+// GLOBAL: IMPERIALISM 0x006962e8
+extern "C" const char s_SourcePathUCityDialogs_006962E8[] = "D:\\Ambit\\Cross\\UCityDialogs.cpp";
 extern "C" const char s_SourcePathUCityViews_00696650[] = "D:\\Ambit\\Cross\\UCityViews.cpp";
 extern "C" const char s_SourcePathUArmyViews_00695858[] = "D:\\Ambit\\Cross\\UArmyViews.cpp";
 extern "C" const char s_SourcePathUOceanViews_00698650[] = "D:\\Ambit\\Cross\\UOceanViews.cpp";
@@ -3285,6 +3287,9 @@ short g_creditsPlaybackActive_006a4084 = 0;
 short g_offerDeskSelectionIndexTable_00668568[8] = {0};
 // GLOBAL: IMPERIALISM 0x006a3020
 int g_diplomacyPopupLayoutPosition_006a3020[2] = {0};
+
+// GLOBAL: IMPERIALISM 0x006a2410
+int g_InfoBarDummyOrigin_006A2410[2] = {0};
 
 // Per-strength-tier probability-split table for BuildMapOrderContextSummaryStringForNation's
 // per-garrisoned-unit resource roll: each 3-short half sums to 100. The first half picks a

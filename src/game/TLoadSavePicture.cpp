@@ -146,7 +146,7 @@ void TLoadSavePicture::HandleEvent(int commandId, TEventHandler* sourceHandler, 
 
         editControl->SetTextStyleAndMaybeRefresh(&styleAt9e, 0);
         editControl->InitDialogWindowAndSyncTitleIfChanged(&slotText, 0);
-        editControl->Refresh();
+        editControl->PrepareForDrawing();
         editControl->ActivateCityProductionViewIfAllowed();
         editControl->SetEditSelectionAndScrollCaret(0, static_cast<short>(slotText.GetLength()), 0);
         editControl->controlTag = 0x736c6f74u; // 'slot'

@@ -17,7 +17,7 @@ TScrollBarView::~TScrollBarView() {}
 // FUNCTION: IMPERIALISM 0x005740a0
 void TScrollBarView::RefreshCityDialogScrollableViewportWithQuickDrawContext() {
   ScopedMapQuickDrawContext quickDrawContext(this);
-  Refresh();
+  PrepareForDrawing();
   RECT rect = {0, word88, frameWidth34, static_cast<int>(word8a) + 0x12};
   ApplyRectSlot110(&rect);
 }

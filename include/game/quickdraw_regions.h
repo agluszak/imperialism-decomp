@@ -36,9 +36,11 @@ void SetClip(RgnHandle rgn);                                  // 0x00495a30
 void ClipRect(RECT* rect);                                    // 0x00495a80
 void UnionRgn(RgnHandle srcA, RgnHandle srcB, RgnHandle dst); // 0x004977a0
 void SetEmptyRgn(RgnHandle rgn);                              // 0x00497810
-void CopyRgn(RgnHandle src, RgnHandle dst);                   // 0x00497bb0
-void OpenRgn(void);                                           // 0x00497f60
-void CloseRgn(RgnHandle dst);                                 // 0x00497f90
+void SetRectRgn(RgnHandle rgn, short left, short top, short right,
+                short bottom);                   // 0x00498be0
+void CopyRgn(RgnHandle src, RgnHandle dst);      // 0x00497bb0
+void OpenRgn(void);                              // 0x00497f60
+void CloseRgn(RgnHandle dst);                    // 0x00497f90
 void QDFrameRect(RECT* rect);                    // 0x00498180 (Win32 ::FrameRect collides)
 unsigned char EmptyRgn(RgnHandle rgn);           // 0x00498aa0
 int PtInRgn(CPoint* point, RgnHandle rgn);       // 0x00495650

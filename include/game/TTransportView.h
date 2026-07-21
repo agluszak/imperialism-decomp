@@ -3,6 +3,8 @@
 #include "game/TView.h"
 #include "game/mfc.h"
 
+class TGreatPower;
+
 // VTABLE: IMPERIALISM 0x00650078
 class TTransportView : public TView {
 public:
@@ -110,10 +112,10 @@ public:
   // slot 0x65 AssertMcAppUILine1914 inherited unchanged (0x48c7a0)
   // slot 0x66 AssertMcAppUILine1922 inherited unchanged (0x48c7d0)
   // slot 0x67 CtrlSlot103_SubtractPosAndDispatchSlot19C_Impl inherited unchanged (0x48bac0)
-  virtual undefined ApplyCityDialogMinisterValues(); // slot 0x68 0x4bd3e0
+  virtual void StuffValues(TGreatPower* nation); // slot 0x68 0x4bd3e0
 
   TTransportView();
 
   // Original object size is 0x64 (CRuntimeClass m_nObjectSize); the source class ended at 0x60. Trailing 4 byte(s) not yet semantically recovered — declared so sizeof and the recomp's allocation size match the original.
-  int field60;
+  TGreatPower* nation60;
 };

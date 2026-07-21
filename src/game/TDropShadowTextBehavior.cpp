@@ -16,6 +16,6 @@ TDropShadowTextBehavior::TDropShadowTextBehavior()
 TDropShadowTextBehavior::~TDropShadowTextBehavior() {}
 
 // FUNCTION: IMPERIALISM 0x004b1150
-void TDropShadowTextBehavior::NoOpSlot34(undefined4 value) {
-  (void)value;
+void TDropShadowTextBehavior::Draw(RECT* bounds) {
+  (void)bounds;
 }

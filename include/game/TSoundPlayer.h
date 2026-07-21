@@ -44,8 +44,8 @@ public:
   virtual void StopAllSoundChannels();                                       // 0x2a -> 0x5e4ff0
   // Converts a 0-100 percent into log-taper DirectSound attenuation (clamped to
   // [-9999, 0] millibels) and applies it when DirectSound init succeeded.
-  virtual void SetMasterVolumeFromPercent(short percent); // 0x2b -> 0x5e5020
-  virtual void NoOpAudioTickCallback_005e50a0();          // 0x2c -> 0x5e50a0
+  virtual void SetMasterVolumeFromPercent(short percent);                        // 0x2b -> 0x5e5020
+  virtual void PriorityOverride(short currentPriority, short requestedPriority); // 0x2c -> 0x5e50a0
   // sfxToken is short-typed: the body reads it via `movsx ecx, word ptr [esp+8]`
   // (0x5e50f0) and PlaySoundEffect forwards its own short token without extension.
   virtual int UpdateLocalizationAudioSlotAndMaybeRefreshVoiceState(

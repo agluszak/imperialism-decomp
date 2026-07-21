@@ -139,7 +139,7 @@ public:
   virtual char IsActionable();                                           // 0x3b 0x48b200
   virtual void CaptureLayoutF0(int* buffer, int modeFlag);               // 0x3c 0x48b250
   virtual void CaptureLayout(int* buffer, int modeFlag);                 // 0x3d 0x48b3f0
-  virtual char Refresh();                                                // 0x3e 0x48b770
+  virtual char PrepareForDrawing();                                      // 0x3e 0x48b770
   virtual void PostRenderSlotFC();                                       // 0x3f
   // The "DC handle" flowing through slots 0x40/0x41/0x43/0x45 is a caller-supplied MFC
   // CDC* (or null = bind a fresh window DC): CMcWindow::OnPaint (0x4938c0) passes its

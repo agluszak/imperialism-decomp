@@ -275,7 +275,7 @@ void TCouncilView::AdvanceCivilianTerrainSelectionStep() {
 
   {
     ScopedMapQuickDrawContextGuard quickDraw(this);
-    Refresh();
+    PrepareForDrawing();
     DrawVoteNuggets();
     RECT rect = {0, 0, frameWidth34, 300};
     ValidateControlRectIfWindowActive(&rect);

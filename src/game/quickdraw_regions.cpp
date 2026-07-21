@@ -215,3 +215,8 @@ int ProbeRectEmptyAfterCopyToLocal(RECT* rect) {
 int SectRect(RECT* src1, RECT* src2, RECT* dst) {
   return IntersectRect(dst, src1, src2);
 }
+
+// FUNCTION: IMPERIALISM 0x00498be0
+void SetRectRgn(RgnHandle rgn, short left, short top, short right, short bottom) {
+  (*rgn)->rgn.Attach(::CreateRectRgn(left, top, right, bottom));
+}
