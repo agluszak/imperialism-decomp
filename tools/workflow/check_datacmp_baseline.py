@@ -2,8 +2,8 @@
 """Gate global-data drift: reccmp-datacmp results vs a checked-in baseline.
 
 `reccmp-datacmp` reports per-variable value differences between the original
-and recompiled binaries but always exits 0, so data regressions only surface
-when someone reads the output. This wraps it in the standard ratchet: parse
+and recompiled binaries and exits 1 when it finds an issue. This wraps it in
+the standard ratchet: preserve valid mismatch output from exit 1, parse
 the report into per-variable fingerprints (status + number of differing-byte
 detail lines) and compare against config/baselines/datacmp_baseline.csv:
 
@@ -103,8 +103,22 @@ def run_datacmp(target: str, build_dir: Path) -> str:
         cwd=build_dir,
         capture_output=True,
         text=True,
-        check=True,
+        check=False,
     )
+    # reccmp-datacmp uses 1 for a completed comparison with mismatches.  That
+    # report is exactly what both the ratchet and --write-baseline must parse.
+    # Reject status 1 when the normal summary is absent so actual invocation or
+    # analysis failures cannot be mistaken for valid mismatch evidence.
+    valid_mismatch_report = proc.returncode == 1 and re.search(
+        r" - Variables: \d+\. Issues: \d+\s*$", proc.stdout
+    )
+    if proc.returncode != 0 and not valid_mismatch_report:
+        raise subprocess.CalledProcessError(
+            proc.returncode,
+            proc.args,
+            output=proc.stdout,
+            stderr=proc.stderr,
+        )
     return proc.stdout
 
 

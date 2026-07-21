@@ -1482,6 +1482,7 @@ boundary-gate-update:
 # MUTATES: config/baselines/datacmp_baseline.csv.
 [group('baseline-update')]
 datacmp-gate-update:
+  @test "${ALLOW_POLICY_BASELINE_UPDATE:-}" = "1" || { echo "REFUSED: this rewrites an architecture-policy baseline (blessing new debt)."; echo "If a human approved the exception, rerun with ALLOW_POLICY_BASELINE_UPDATE=1."; exit 2; }
   uv run python -m tools.workflow.check_datacmp_baseline --target "{{target}}" --build-dir "{{build_dir}}" --write-baseline
 
 # MUTATES: config/baselines/empty_body_baseline.csv.

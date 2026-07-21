@@ -18,9 +18,10 @@ g_adwEngineerRailBuildCostByTerrainType|0x6531d8|WARN|64
 g_anResourceTypeRequiredOrderType|0x696ed8|WARN|8
 g_anScenarioNationSetupTable_00698B1A|0x698b1a|WARN|43
 g_apFontFiles|0x694150|WARN|12
-g_apszQuickDrawFontFaceNames|0x695108|WARN|15
+g_apszQuickDrawFontFaceNames|0x695108|WARN|14
 g_awEngineerFortBuildCostByLevel|0x65318a|WARN|16
 g_awTileSpriteVariantOffsetTable3b|0x697000|WARN|16
+g_fTacticalRetreatQualityWeightDefault_00669EC0|0x669ec0|DIFF|1
 g_nationMetricSlotDispatchOrder006d810|0x66d810|WARN|36
 g_pActiveQuickDrawSurfaceContextHead|0x6950f8|WARN|3
 g_pRegistryAppKey_0063E03C|0x63e03c|WARN|3

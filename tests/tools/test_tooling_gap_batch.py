@@ -5,10 +5,13 @@ from __future__ import annotations
 
 import tempfile
 import unittest
+from subprocess import CalledProcessError, CompletedProcess
 from pathlib import Path
+from unittest.mock import patch
 
 from tools.workflow.check_datacmp_baseline import compare as datacmp_compare
 from tools.workflow.check_datacmp_baseline import parse_report
+from tools.workflow.check_datacmp_baseline import run_datacmp
 from tools.workflow.check_empty_bodies import classify_finding, scan_file
 from tools.workflow.check_stub_count import compare_counts
 from tools.workflow.check_typedef_ghidra_args import arg_dwords, classify
@@ -150,6 +153,18 @@ class DatacmpGateTests(unittest.TestCase):
         self.assertEqual(len(violations), 1)
         self.assertIn("g_Foo", violations[0])
         self.assertEqual(improved, 1)
+
+    @patch("tools.workflow.check_datacmp_baseline.subprocess.run")
+    def test_run_accepts_exit_one_with_completed_mismatch_report(self, run) -> None:
+        report = self.REPORT + "Imperialism.exe - Variables: 2. Issues: 1\n"
+        run.return_value = CompletedProcess(["reccmp-datacmp"], 1, report, "")
+        self.assertEqual(run_datacmp("IMPERIALISM", Path("build")), report)
+
+    @patch("tools.workflow.check_datacmp_baseline.subprocess.run")
+    def test_run_rejects_exit_one_without_completed_report(self, run) -> None:
+        run.return_value = CompletedProcess(["reccmp-datacmp"], 1, "", "analysis failed")
+        with self.assertRaises(CalledProcessError):
+            run_datacmp("IMPERIALISM", Path("build"))
 
 
 class TypedefArgsTests(unittest.TestCase):
