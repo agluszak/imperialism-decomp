@@ -14,8 +14,7 @@ public:
   virtual void ForwardParam(int param) override;
   virtual CMcWindow* Open() override;
   virtual char DispatchUiMouseMoveToChildren(CPoint* point, int arg2, int arg3, int arg4) override;
-  virtual char DispatchUiMouseEventToChildrenOrSelf_Impl(CPoint* point, int arg2, int arg3,
-                                                         int arg4) override;
+  virtual char HandleMouseUp(const CPoint& point, TToolboxEvent* event, CPoint origin) override;
   virtual void UpdateTurnOrderNavigationWindowLayout();
   virtual void NoOpTurnOrderNavigationVtableSlotA();
   virtual void NoOpTurnOrderNavigationVtableSlotB();

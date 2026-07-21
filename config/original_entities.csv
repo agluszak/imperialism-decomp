@@ -104,9 +104,9 @@ address|name|symbol|size|type|prototype|provenance
 427100|SetUiResourcePairValues||18|function|undefined SetUiResourcePairValues()|
 427200|TView::GetCursorID||5|function|unsigned short GetCursorID()|
 427220|TView::VTableSlotC3||1|function|undefined 'scalar_deleting_destructor'(void)|
-427240|TView::HandleMouseCommandToSelf_cd||3|function|char __thiscall HandleMouseCommandToSelf(CPoint * point, int arg2, int arg3, int arg4)|
-427260|TView::BuildRectFromControlDimensions_Impl_ce||32|function|undefined BuildRectFromControlDimensions_Impl()|
-427290|TView::BuildRectFromControlPositionAndSizeFields_cf||38|function|undefined BuildRectFromControlPositionAndSizeFields()|
+427240|TView::DoMouseCommand||3|function|char DoMouseCommand(CPoint &point, TToolboxEvent *event, CPoint origin)|
+427260|TView::QueryContentBounds||32|function|void __thiscall QueryContentBounds(RECT *boundsOut)|
+427290|TView::QueryBounds||38|function|void __thiscall QueryBounds(RECT *boundsOut)|
 4272d0|TView::DispatchVslot134WithRectAndRectPlus8_Impl_d0||34|function|undefined DispatchVslot134WithRectAndRectPlus8_Impl()|
 427330|TView::UpdateAfterBitmapChange_d5||29|function|void __thiscall UpdateAfterBitmapChange(int unknownFlag)|
 427360|InitializeIndustryOverviewPlacardsAndTradeStatusTags||6510|function|undefined InitializeIndustryOverviewPlacardsAndTradeStatusTags()|
@@ -914,7 +914,7 @@ address|name|symbol|size|type|prototype|provenance
 48c250|TView::HandleCursorHoverFallback_b0||233|function|void __thiscall HandleCursorHoverFallback(CPoint* point, int hitArg)|
 48c380|TView::UpdateRectCacheIfChangedAndInvalidateCityDialog_de||150|function|undefined UpdateRectCacheIfChangedAndInvalidateCityDialog()|
 48c450|TView::DispatchUiMouseMoveToChildren_ca||250|function|undefined DispatchUiMouseMoveToChildren()|
-48c590|TView::DispatchUiMouseEventToChildrenOrSelf_Impl_cc||250|function|undefined DispatchUiMouseEventToChildrenOrSelf_Impl()|
+48c590|TView::HandleMouseUp||250|function|char HandleMouseUp(const CPoint &point, TToolboxEvent *event, CPoint origin)|
 48c6d0|TView::VTableSlotDF||81|function|undefined 'scalar_deleting_destructor'(void)|
 48c750|TView::DrawRectangleInCurrentUiContext_e8||64|function|undefined DrawRectangleInCurrentUiContext()|
 48c7a0|TView::AssertMcAppUILine1914_e9||30|function|undefined AssertMcAppUILine1914()|
@@ -2761,31 +2761,31 @@ address|name|symbol|size|type|prototype|provenance
 4f2b10|WrapperFor_ftol_At004f2b10||30|function|undefined WrapperFor_ftol_At004f2b10()|
 4f2bb0|TMinisterView::CreateObject|?CreateObject@TMinisterView@@SGPAVCObject@@XZ|107|function|undefined CreateObject()|rtti
 4f2c40|TMinisterView::GetRuntimeClass||6|function|undefined GetTMinisterViewClassNamePointer()|rtti
-4f2c60|TMinisterView::ConstructTMinisterViewBaseState||25|function|undefined ConstructTMinisterViewBaseState()|
+4f2c60|TMinisterView::TMinisterView||25|function|void TMinisterView(void)|
 4f2c90|TMinisterView::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
-4f2ce0|TMinisterView::OrphanLeaf_NoCall_Ins04_004f2ce0||18|function|undefined OrphanLeaf_NoCall_Ins04_004f2ce0(short param_1)|
-4f2d10|TMinisterView::DispatchUiMouseEventToChildrenOrSelf_Impl||177|function|undefined HandleDiplomacyBackOkayButtonsAndForwardMouseEvent()|
-4f2e00|TMinisterView::HandleEvent||125|function|undefined HandleDialogEvent10BackOkayAndForward()|
-4f2ea0|TMinisterView::NotifyWindowStatusTick||11|function|void NotifyWindowStatusTick(void)|
-4f2ec0|TMinisterView::OrphanCallChain_C2_I08_004f2ec0||27|function|undefined OrphanCallChain_C2_I08_004f2ec0(undefined4 param_1)|
-4f2ef0|TMinisterView::OrphanCallChain_C1_I09_004f2ef0||25|function|undefined OrphanCallChain_C1_I09_004f2ef0(void)|
+4f2ce0|TMinisterView::StuffValues||18|function|void StuffValues(short nationSlot)|
+4f2d10|TMinisterView::HandleMouseUp||177|function|char HandleMouseUp(const CPoint &point, TToolboxEvent *event, CPoint origin)|
+4f2e00|TMinisterView::HandleEvent||125|function|void HandleEvent(int commandId, TEventHandler *sourceHandler, TEvent *event)|
+4f2ea0|TMinisterView::CloseBooks||11|function|void CloseBooks(void)|
+4f2ec0|TMinisterView::OpenBook||27|function|TView *OpenBook(int bookId)|
+4f2ef0|TMinisterView::FreeDisplayArea||25|function|void FreeDisplayArea(void)|
 4f2f20|TForeignMinisterView::CreateObject|?CreateObject@TForeignMinisterView@@SGPAVCObject@@XZ|107|function|undefined CreateObject()|rtti
 4f2fb0|TForeignMinisterView::GetRuntimeClass||6|function|undefined GetTForeignMinisterViewClassNamePointer()|rtti
-4f2fd0|TForeignMinisterView::ConstructTForeignMinisterViewBaseState||25|function|undefined ConstructTForeignMinisterViewBaseState()|
+4f2fd0|TForeignMinisterView::TForeignMinisterView||25|function|void TForeignMinisterView(void)|
 4f3000|TForeignMinisterView::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
-4f3050|TForeignMinisterView::HandleEvent||292|function|undefined HandleDialogEvent14ActionTagsAndEvent10BackOkay()|
-4f31d0|TForeignMinisterView::OrphanCallChain_C3_I22_004f31d0||53|function|undefined OrphanCallChain_C3_I22_004f31d0(void)|
-4f3220|TForeignMinisterView::OrphanRetStub_004f3220||1|function|undefined OrphanRetStub_004f3220(void)|
+4f3050|TForeignMinisterView::HandleEvent||292|function|void HandleEvent(int commandId, TEventHandler *sourceHandler, TEvent *event)|
+4f31d0|TForeignMinisterView::ShowWorldMap||53|function|void ShowWorldMap(void)|
+4f3220|TForeignMinisterView::ShowWorldExports||1|function|void ShowWorldExports(void)|
 4f3240|TDefenseMinisterView::CreateObject|?CreateObject@TDefenseMinisterView@@SGPAVCObject@@XZ|107|function|undefined CreateObject()|rtti
 4f32d0|TDefenseMinisterView::GetRuntimeClass||6|function|undefined GetTDefenseMinisterViewClassNamePointer()|rtti
-4f32f0|TDefenseMinisterView::ConstructTDefenseMinisterViewBaseState||25|function|undefined ConstructTDefenseMinisterViewBaseState()|
+4f32f0|TDefenseMinisterView::TDefenseMinisterView||25|function|void TDefenseMinisterView(void)|
 4f3320|TDefenseMinisterView::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
-4f3370|TDefenseMinisterView::HandleEvent||481|function|undefined DispatchEngineerDialogCommandTagsByEventCode()|
+4f3370|TDefenseMinisterView::HandleEvent||481|function|void HandleEvent(int commandId, TEventHandler *sourceHandler, TEvent *event)|
 4f35e0|TInteriorMinisterView::CreateObject|?CreateObject@TInteriorMinisterView@@SGPAVCObject@@XZ|107|function|undefined CreateObject()|rtti
 4f3670|TInteriorMinisterView::GetRuntimeClass||6|function|undefined GetTInteriorMinisterViewClassNamePointer()|rtti
-4f3690|TInteriorMinisterView::ConstructTInteriorMinisterViewBaseState||25|function|undefined ConstructTInteriorMinisterViewBaseState()|
+4f3690|TInteriorMinisterView::TInteriorMinisterView||25|function|void TInteriorMinisterView(void)|
 4f36c0|TInteriorMinisterView::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
-4f3710|TInteriorMinisterView::HandleEvent||234|function|undefined HandleDialogEvent14TranTreaAndEvent10BackOkay()|
+4f3710|TInteriorMinisterView::HandleEvent||234|function|void HandleEvent(int commandId, TEventHandler *sourceHandler, TEvent *event)|
 4f3840|TRearFloatWindow::CreateObject|?CreateObject@TRearFloatWindow@@SGPAVCObject@@XZ|83|function|undefined CreateObject()|rtti
 4f38c0|TRearFloatWindow::GetRuntimeClass||6|function|undefined GetTRearFloatWindowClassNamePointer()|rtti
 4f38e0|TRearFloatWindow::ConstructTRearFloatWindowBaseState||18|function|undefined ConstructTRearFloatWindowBaseState()|
@@ -2855,7 +2855,7 @@ address|name|symbol|size|type|prototype|provenance
 4f8ff0|TOffersPanelView::DoPostCreate||617|function|undefined OrphanCallChain_C6_I49_004875d0(void)|
 4f9300|TOffersPanelView::HandleEvent||55|function|undefined OrphanRetStub_0059add0(int param_1, int param_2, undefined4 param_3)|
 4f9350|TOffersPanelView::ForwardParam||153|function|undefined HandleDialogAcceptRejectShortcutAndQueueUiEvent()|
-4f9420|TOffersPanelView::DispatchUiMouseEventToChildrenOrSelf_Impl||28|function|undefined InvalidateWindowRectFromHandleField1C(undefined4 * param_1, undefined4 param_2, undefined4 param_3, undefined4 param_4)|
+4f9420|TOffersPanelView::HandleMouseUp||28|function|char HandleMouseUp(const CPoint &point, TToolboxEvent *event, CPoint origin)|
 4f9450|TOffersPanelView::PoseOffer||1194|function|char __thiscall PoseOffer(short sourceNation, short targetNation, short offerType)|listing+mac-symbol
 4f9a60|TToolBarCluster::RunDiplomacyWaitSheetPopupAndAwaitResponse||1014|function|undefined RunDiplomacyWaitSheetPopupAndAwaitResponse()|
 4f9f60|TInfoPanelView::CreateObject|?CreateObject@TInfoPanelView@@SGPAVCObject@@XZ|107|function|undefined CreateObject()|rtti
@@ -2952,7 +2952,7 @@ address|name|symbol|size|type|prototype|provenance
 4ffc60|TGameWindow::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4ffcb0|TGameWindow::Open||34|function|CMcWindow* Open()|macos-name-oracle:Open()
 4ffd10|TGameWindow::DispatchUiMouseMoveToChildren||28|function|undefined SetForeignMinisterReadyFlag14(undefined4 * param_1, undefined4 param_2, undefined4 param_3, undefined4 param_4)|
-4ffd40|TGameWindow::DispatchUiMouseEventToChildrenOrSelf_Impl||28|function|undefined InvalidateWindowRectFromHandleField1C(undefined4 * param_1, undefined4 param_2, undefined4 param_3, undefined4 param_4)|
+4ffd40|TGameWindow::HandleMouseUp||28|function|char HandleMouseUp(const CPoint &point, TToolboxEvent *event, CPoint origin)|
 4ffd70|TGameWindow::ForwardParam||776|function|undefined HandleTurnOrderNavigationCommand()|
 500160|TGameWindow::UpdateTurnOrderNavigationWindowLayout||120|function|undefined UpdateTurnOrderNavigationWindowLayout()|
 500200|TGameWindow::NoOpTurnOrderNavigationVtableSlotA||1|function|undefined NoOpTurnOrderNavigationVtableSlotA(void)|
@@ -3104,7 +3104,7 @@ address|name|symbol|size|type|prototype|provenance
 50bad0|TMacViewMgr::RebuildNationClipRegionsAndDispatchMapEvent||187|function|undefined RebuildNationClipRegionsAndDispatchMapEvent()|
 50bbc0|TMacViewMgr::OrphanCallChain_C4_I35_0050bbc0||102|function|undefined OrphanCallChain_C4_I35_0050bbc0(int * param_1, undefined4 param_2, short param_3)|
 50bc50|TMacViewMgr::SyncSellTaggedChildControlWithNationState||369|function|undefined SyncSellTaggedChildControlWithNationState()|
-50be30|TMacViewMgr::ResolveTurnEventDialogOrFailAndInvokeSlot9C||78|function|undefined ResolveTurnEventDialogOrFailAndInvokeSlot9C()|
+50be30|TMacViewMgr::MakeBookDialog||78|function|TView * __thiscall MakeBookDialog(int dialogId)|
 50bea0|TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets||4080|function|undefined RefreshCityProductionDetailPanelAndArrowWidgets()|
 50d310|TMacViewMgr::DispatchTurnEvent3B8AndWaitForCompletionFlag||57|function|undefined DispatchTurnEvent3B8AndWaitForCompletionFlag()|
 50d360|TMacViewMgr::CreateCityBuildingDialogBySlot||200|function|undefined CreateCityBuildingDialogBySlot()|
@@ -4993,7 +4993,7 @@ address|name|symbol|size|type|prototype|provenance
 586b50|TClosePicture::GetRuntimeClass||6|function|undefined GetTClosePictureClassNamePointer()|rtti
 586b70|TClosePicture::ConstructTClosePictureBaseState||18|function|undefined ConstructTClosePictureBaseState()|
 586ba0|TClosePicture::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
-586bf0|TClosePicture::DispatchUiMouseEventToChildrenOrSelf_Impl||63|function|undefined InvalidateWindowRectFromHandleField1C(void)|
+586bf0|TClosePicture::HandleMouseUp||63|function|char HandleMouseUp(const CPoint &point, TToolboxEvent *event, CPoint origin)|
 586c40|TAmtBarCluster::CreateObject|?CreateObject@TAmtBarCluster@@SGPAVCObject@@XZ|83|function|undefined CreateObject()|rtti
 586cc0|TAmtBarCluster::GetRuntimeClass||6|function|undefined GetRuntimeClass()|rtti
 586ce0|TAmtBarCluster::ConstructTradeMoveControlPanelBasic||18|function|undefined ConstructTradeMoveControlPanelBasic()|
@@ -5882,7 +5882,7 @@ address|name|symbol|size|type|prototype|provenance
 5bf860|TOfferDeskPicture::ForwardParam||153|function|undefined HandleDialogAcceptRejectShortcutAndQueueUiEventAlt()|
 5bf930|RefreshSelectedNationOrderCompatibilityInfo||2386|function|undefined RefreshSelectedNationOrderCompatibilityInfo()|
 5c04f0|TNextTradeCommand::CreateNextTradeCommandAndFormatPrompt||852|function|undefined CreateNextTradeCommandAndFormatPrompt()|
-5c0930|TOfferDeskPicture::DispatchUiMouseEventToChildrenOrSelf_Impl||114|function|undefined UpdateControlCachedIntFromWindowText(undefined4 * param_1, undefined4 param_2, undefined4 param_3, undefined4 param_4)|
+5c0930|TOfferDeskPicture::HandleMouseUp||114|function|char HandleMouseUp(const CPoint &point, TToolboxEvent *event, CPoint origin)|
 5c09d0|TToolBarCluster::UpdateTradeSelectionStateAndRefreshUiIfChanged||634|function|undefined UpdateTradeSelectionStateAndRefreshUiIfChanged()|
 5c0cf0|TDealLine::CreateObject|?CreateObject@TDealLine@@SGPAVCObject@@XZ|80|function|undefined CreateObject()|rtti
 5c0d60|TDealLine::GetRuntimeClass||6|function|undefined GetTDealLineClassNamePointer()|rtti

@@ -301,7 +301,7 @@ void CIncludeView::OnLButtonUp(UINT nFlags, CPoint point) {
   if (m_uiInteractiveFlag90 != 0) {
     if (m_activeDialogContext != 0) {
       CPoint pt(point);
-      m_activeDialogContext->DispatchUiMouseEventToChildrenOrSelf_Impl(&pt, 0, 0, 0);
+      m_activeDialogContext->HandleMouseUp(pt, 0, CPoint(0, 0));
     }
     g_McAppMouseCaptureState.EndMouseCaptureAndStopRepeatTimer(nFlags, point.x, point.y);
   }
@@ -408,7 +408,7 @@ void CIncludeView::OnParentNotify(UINT message, LPARAM lParam) {
     if (m_uiInteractiveFlag90 != 0) {
       if (m_activeDialogContext != 0) {
         CPoint pt(point);
-        m_activeDialogContext->DispatchUiMouseEventToChildrenOrSelf_Impl(&pt, 0, 0, 0);
+        m_activeDialogContext->HandleMouseUp(pt, 0, CPoint(0, 0));
       }
       g_McAppMouseCaptureState.EndMouseCaptureAndStopRepeatTimer(0, point.x, point.y);
     }

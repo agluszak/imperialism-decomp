@@ -182,7 +182,7 @@ void CMcWindow::OnLButtonDown(UINT nFlags, CPoint point) {
 void CMcWindow::OnLButtonUp(UINT nFlags, CPoint point) {
   Default();
   CPoint pt(point);
-  m_pOwnerWindow->DispatchUiMouseEventToChildrenOrSelf_Impl(&pt, 0, 0, 0);
+  m_pOwnerWindow->HandleMouseUp(pt, 0, CPoint(0, 0));
   g_McAppMouseCaptureState.EndMouseCaptureAndStopRepeatTimer(nFlags, point.x, point.y);
 }
 

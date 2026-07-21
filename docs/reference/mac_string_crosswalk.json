@@ -11943,6 +11943,29 @@
       ],
       "source_file": "src/game/TDefenseMinister.cpp"
     },
+    "0x004f2d10": {
+      "references": [
+        {
+          "address": "0x00694fd8",
+          "kind": "embedded_global",
+          "symbol": "g_szUiFailureMessage",
+          "text": "Failure"
+        },
+        {
+          "address": "0x00694fc8",
+          "kind": "embedded_global",
+          "symbol": "g_szUiNilPointerMessage",
+          "text": "Nil Pointer"
+        },
+        {
+          "address": "0x00696ae0",
+          "kind": "embedded_global",
+          "symbol": "s_SourcePathUDiplomacyViews_00696AE0",
+          "text": "D:\\Ambit\\Cross\\UDiplomacyViews.cpp"
+        }
+      ],
+      "source_file": "src/game/TMinisterView.cpp"
+    },
     "0x004f3370": {
       "references": [
         {
@@ -178990,7 +179013,7 @@
   "summary": {
     "embedded_globals": 766,
     "formula_matches": 2356,
-    "functions_with_references": 265,
+    "functions_with_references": 266,
     "mac_strings": 3821,
     "mac_strings_with_candidates": 3091,
     "text_resources": 0,

@@ -157938,6 +157938,25 @@
         "owner_class": "TDefenseMinister",
         "recovered_source": "src/game/TDefenseMinister.cpp"
       },
+      "0x004f2d10": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "definition_source": "src/game/global_data_tables.cpp",
+                "kind": "source_path_global_reference",
+                "path": "D:\\Ambit\\Cross\\UDiplomacyViews.cpp",
+                "symbol": "s_SourcePathUDiplomacyViews_00696AE0"
+              }
+            ],
+            "module": "UDiplomacyViews.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "TMinisterView::HandleMouseUp",
+        "owner_class": "TMinisterView",
+        "recovered_source": "src/game/TMinisterView.cpp"
+      },
       "0x004f3ea0": {
         "modules": [
           {
@@ -158219,7 +158238,7 @@
             "status": "confirmed"
           }
         ],
-        "name": "TMacViewMgr::ResolveTurnEventDialogOrFailAndInvokeSlot9C",
+        "name": "TMacViewMgr::MakeBookDialog",
         "owner_class": "TMacViewMgr",
         "recovered_source": "src/game/TMacViewMgr.cpp"
       },
@@ -159444,9 +159463,11 @@
       },
       "UDiplomacyViews.cpp": {
         "classes": [
-          "TDiplomacyMapView"
+          "TDiplomacyMapView",
+          "TMinisterView"
         ],
         "functions": [
+          "0x004f2d10",
           "0x004f3ea0"
         ]
       },
@@ -159693,7 +159714,7 @@
     "classes_with_source_module_evidence": 14,
     "declared_classes": 152,
     "factories_with_source_module_candidates": 9,
-    "functions_with_source_module_evidence": 95,
+    "functions_with_source_module_evidence": 96,
     "nodes": 3263,
     "screens": 121,
     "screens_with_source_module_candidates": 25,

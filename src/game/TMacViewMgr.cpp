@@ -1019,7 +1019,7 @@ undefined TMacViewMgr::SyncSellTaggedChildControlWithNationState(TView* view, sh
 }
 
 // FUNCTION: IMPERIALISM 0x0050be30
-TView* TMacViewMgr::ResolveTurnEventDialogOrFailAndInvokeSlot9C(int dialogId) {
+TView* TMacViewMgr::MakeBookDialog(int dialogId) {
   TView* dialog = g_pTurnEventDialogFactoryRegistry->ResolveDialogNodeByMessageContext(dialogId, 0);
   if (dialog == 0) {
     FailNilPointerWithAssert("D:\\Ambit\\Cross\\UMacViewMgr.cpp", 0x917);

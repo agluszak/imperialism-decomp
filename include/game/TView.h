@@ -10,6 +10,7 @@
 #include "game/mfc.h"
 
 class CMcWindow;
+struct TToolboxEvent;
 
 //
 // TView inherits the 37-slot shared interface (slots 0x00-0x24) and fields through +0x1c
@@ -155,10 +156,10 @@ public:
                                              int arg4); // 0x46 0x48c450
   virtual void BeginMouseCaptureAndStartRepeatTimer(CPoint* point, int arg2, int arg3,
                                                     int arg4); // 0x47
-  virtual char DispatchUiMouseEventToChildrenOrSelf_Impl(CPoint* point, int arg2, int arg3,
-                                                         int arg4); // 0x48 0x48c590
-  virtual char HandleMouseCommandToSelf(CPoint* point, int arg2, int arg3,
-                                        int arg4);                    // 0x49
+  virtual char HandleMouseUp(const CPoint& point, TToolboxEvent* event,
+                             CPoint origin); // 0x48 0x48c590
+  virtual char DoMouseCommand(CPoint& point, TToolboxEvent* event,
+                              CPoint origin);                         // 0x49
   virtual void QueryContentBounds(RECT* boundsOut);                   // 0x4a 0x427260
   virtual void QueryBounds(RECT* boundsOut);                          // 0x4b 0x427290
   virtual void DispatchVslot134WithRectAndRectPlus8_Impl(RECT* rect); // 0x4c 0x4272d0

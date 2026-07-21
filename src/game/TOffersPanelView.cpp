@@ -79,12 +79,10 @@ void TOffersPanelView::HandleEvent(int commandId, TEventHandler* sourceHandler, 
 void TOffersPanelView::ForwardParam(int param) {}
 
 // FUNCTION: IMPERIALISM 0x004f9420
-char TOffersPanelView::DispatchUiMouseEventToChildrenOrSelf_Impl(CPoint* point, int arg2, int arg3,
-                                                                 int arg4) {
+char TOffersPanelView::HandleMouseUp(const CPoint& point, TToolboxEvent* event, CPoint origin) {
   (void)point;
-  (void)arg2;
-  (void)arg3;
-  (void)arg4;
+  (void)event;
+  (void)origin;
   return 0;
 }
 

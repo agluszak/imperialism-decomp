@@ -81,8 +81,8 @@ public:
   // slot 0x45 vmethod_0048 inherited unchanged (0x48b860)
   // slot 0x46 DispatchUiMouseMoveToChildren inherited unchanged (0x48c450)
   // slot 0x47 BeginMouseCaptureAndStartRepeatTimer inherited unchanged (0x430c10)
-  virtual char DispatchUiMouseEventToChildrenOrSelf_Impl(CPoint* point, int arg2, int arg3,
-                                                         int arg4) override; // slot 0x48 0x4f2d10
+  virtual char HandleMouseUp(const CPoint& point, TToolboxEvent* event,
+                             CPoint origin) override; // slot 0x48 0x4f2d10
   // slot 0x49 vmethod_0071 inherited unchanged (0x427240)
   // slot 0x4a QueryContentBounds inherited unchanged (0x427260)
   // slot 0x4b QueryBounds inherited unchanged (0x427290)
@@ -114,19 +114,14 @@ public:
   // slot 0x65 AssertMcAppUILine1914 inherited unchanged (0x48c7a0)
   // slot 0x66 AssertMcAppUILine1922 inherited unchanged (0x48c7d0)
   // slot 0x67 CtrlSlot103_SubtractPosAndDispatchSlot19C_Impl inherited unchanged (0x48bac0)
-  // Stores the TCountry/terrain-descriptor pointer for the given nation slot, indexed
-  // into g_apTerrainTypeDescriptorTable. 0x4f2ce0.
-  virtual undefined SetAuxNationStateSlot(short nationSlot); // slot 0x68 0x4f2ce0
+  // Stores the country descriptor for the selected nation slot. 0x4f2ce0.
+  virtual void StuffValues(short nationSlot); // slot 0x68 0x4f2ce0
   // Resolves the 'disp' sub-picture (if present) and frees it. 0x4f2ef0.
-  virtual undefined FreeDisplayHelpControl(); // slot 0x69 0x4f2ef0
-  // Ticks the display manager's window-status refresh, then opens/refreshes the
-  // strategic-map turn-event dialog identified by dialogId. Called after every
-  // minister-topic button click (the per-topic ids each HandleEvent override passes
-  // are turn-event/help-dialog resource identifiers). 0x4f2ec0.
-  virtual TView* ShowMinisterHelpDialog(int dialogId); // slot 0x6a 0x4f2ec0
-  // Forwards to g_pDisplayMgr->CloseFloaters(); called
-  // right before a minister dialog is dismissed ('back'/'okay'). 0x4f2ea0.
-  virtual void NotifyWindowStatusTick(); // slot 0x6b 0x4f2ea0
+  virtual void FreeDisplayArea(); // slot 0x69 0x4f2ef0
+  // Closes floating books, then opens the turn-event help book identified by bookId.
+  virtual TView* OpenBook(int bookId); // slot 0x6a 0x4f2ec0
+  // Forwards to TDisplayMgr::CloseFloaters before minister navigation. 0x4f2ea0.
+  virtual void CloseBooks(); // slot 0x6b 0x4f2ea0
   // TView's own fields end exactly at 0x60 (see TWorldView's identically-placed
   // viewportOffsetX); zeroed by the ctor, no other reader/writer found yet.
   int field60; // +0x60
@@ -134,6 +129,6 @@ public:
   TMinisterView();
 
   // Original object size is 0x68 (CRuntimeClass m_nObjectSize); the source class ended
-  // at 0x64. Written by SetAuxNationStateSlot from g_apTerrainTypeDescriptorTable.
-  TCountry* field64;
+  // at 0x64. Written by StuffValues from g_apTerrainTypeDescriptorTable.
+  TCountry* selectedCountry;
 };
