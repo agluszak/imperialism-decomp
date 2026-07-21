@@ -989,6 +989,43 @@ char TZone::CanDisplayMapOrderEntryInCurrentContext(short nation, char skipField
   return 0;
 }
 
+// FUNCTION: IMPERIALISM 0x00560ba0
+void TZone::ExpandTaskForceTraversalDepthAndMarkDeferredNodes(int remainingDepth,
+                                                              char markAdjacentCities) {
+  short depth = static_cast<short>(remainingDepth);
+  if (distanceLevel44 > depth) {
+    return;
+  }
+
+  distanceLevel44 = static_cast<short>(depth + 1);
+  if (depth > 0) {
+    for (int i = primaryNeighbors.Count() - 1; i >= 0; --i) {
+      TZone* neighbor = primaryNeighbors.GetAt(i);
+      if (markAdjacentCities != 0 || neighbor->QueryZoneCapabilityFlagA()) {
+        neighbor->ExpandTaskForceTraversalDepthAndMarkDeferredNodes(depth - 1, 0);
+      }
+    }
+  }
+
+  if (depth > 0 && markAdjacentCities != 0) {
+    for (int i = secondaryNeighbors.Count() - 1; i >= 0; --i) {
+      TGlobalMapCityScoreRecord* city =
+          static_cast<TGlobalMapCityScoreRecord*>(secondaryNeighbors.Data()[i]);
+      city->navyOrderReachableA0 = 1;
+    }
+  }
+}
+
+// FUNCTION: IMPERIALISM 0x00560e20
+void ResetMapActionContextActivityAndNationFlags() {
+  for (TZone* zone = g_pMapActionContextListHead; zone != 0; zone = zone->prev18) {
+    zone->distanceLevel44 = 0;
+  }
+  for (int cityIndex = 0; cityIndex < 0x180; ++cityIndex) {
+    g_pGlobalMapState->cityScoreTable[cityIndex].navyOrderReachableA0 = 0;
+  }
+}
+
 // FUNCTION: IMPERIALISM 0x00560e70
 TZone* TZone::SelectBestPrimaryNeighborForNationDiplomacyMask(int nationSlot) {
   TZone* bestNeighbor = 0;

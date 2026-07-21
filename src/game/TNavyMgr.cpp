@@ -664,7 +664,7 @@ void RevalidateAndRequeueMapOrdersForTurn() {
                 g_NavyOrderResourceDescriptorTable[static_cast<TShip*>(node->payload)
                                                        ->resourceType04]
                     .enabledFlagOrBucketOffset);
-            short* bucketCounter = reinterpret_cast<short*>(entry->pad_1e) + bucketIndex;
+            short* bucketCounter = &entry->shipCountsByClass[bucketIndex];
             --*bucketCounter;
             if (node == entry->childOrderList) {
               entry->childOrderList = node->next;
@@ -1225,12 +1225,12 @@ unsigned short TNavyMgr::GetMapContextActionLabelToken(short nTileIndex, int nIn
     TGlobalMapCityScoreRecord* province = GetProvinceByTileIndex(nTileIndex);
     bool canResolve = false;
     if (province != nullptr) {
-      short* queuedCounts = reinterpret_cast<short*>(&entry->pad_1e[0]);
+      short* queuedCounts = entry->shipCountsByClass;
       if (queuedCounts[0] + queuedCounts[1] + queuedCounts[2] + queuedCounts[3] != 0) {
         for (TMapOrderChildLinkNode* node = entry->childOrderList; node != nullptr;
              node = node->next) {
           if (node->active != 0) {
-            canResolve = province->padA0 != 0;
+            canResolve = province->navyOrderReachableA0 != 0;
             break;
           }
         }

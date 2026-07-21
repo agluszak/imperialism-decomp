@@ -97,9 +97,11 @@ public:
   // takes it as an opaque int and stores it verbatim.
   TZone* contextAnchor; // +0x18
   s16 required_count;
-  char pad_1e[0x02];
-  int attached_entity;
-  char pad_24[0x02];
+  // +0x1e..+0x25: total ships available in each of the four UI classes. Every writer
+  // indexes this region with the resource descriptor's bucket and every reader treats
+  // it as the same flat four-short array; RefreshMapOrderEntryPanel feeds these values
+  // to the Mac-evidenced cls0..cls3 TShipFractionCluster controls.
+  short shipCountsByClass[4];
   // Set to 1 by ComputeTaskForceOrderTieBreakScore (0x555c20) when this entry loses a
   // tie-break against a competing entry; checked by
   // ResolveTaskForceOrderConflictAndPickCandidate (0x555420) to short-circuit an
@@ -149,9 +151,7 @@ public:
   // finalizes through g_pActiveMapOrderContext.
   void RequeueMapOrderEntry();
 
-  // Null-safe (returns true on null `this`). Sums 4 consecutive shorts spanning
-  // pad_1e, attached_entity's two halves, and pad_24 -- the original reads this whole
-  // +0x1e..+0x25 region as a flat 4-short block rather than per individual field.
+  // Null-safe (returns true on null `this`). Sums shipCountsByClass.
   bool HasNoMapOrderEntryChildrenQueued(); // 0x553b10
   // Null-safe (returns true on null `this`). Same +0x1e..+0x25 sum check as
   // HasNoMapOrderEntryChildrenQueued short-circuits to true; otherwise scans

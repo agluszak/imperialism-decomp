@@ -4,6 +4,7 @@
 #include "game/TAmbitApplication.h"
 #include "game/TControl.h"
 #include "game/TEvent.h"
+#include "game/TModuleLibraryCacheTableStateB.h"
 #include "game/TUiEvent.h"
 #include "game/TView.h"
 #include "game/TViewMgr.h"
@@ -68,10 +69,7 @@ static CWnd* GetLiveRegistryHeadHostView();
 
 IMPLEMENT_DYNCREATE(CIncludeView, CView)
 
-// Original AFX_MSGMAP_ENTRY order (entries @ 0x6489e8). Still unported:
-// WM_LBUTTONDBLCLK 0x483b70, WM_COMMAND id 0x8011/0x8012 0x483d60/0x483d90,
-// WM_SETCURSOR 0x483ef0, WM_RBUTTONDOWN 0x483f10, WM_RBUTTONUP 0x483ff0,
-// WM_CTLCOLOR 0x483660.
+// Original AFX_MSGMAP_ENTRY order (entries @ 0x6489e8).
 //
 // clang-cl's lint build rejects the MFC message-map macros' unqualified `&OnPaint`-style
 // address-of-member-function (a long-standing MSVC extension clang doesn't implement for
@@ -88,9 +86,16 @@ ON_WM_ERASEBKGND()
 ON_WM_LBUTTONDOWN()
 ON_WM_LBUTTONUP()
 ON_WM_MOUSEMOVE()
-ON_WM_PARENTNOTIFY()
-ON_WM_KEYDOWN()
+ON_WM_LBUTTONDBLCLK()
+ON_COMMAND(0x8011, OnRefreshWaitCursorCommand)
+ON_COMMAND(0x8012, OnUpdateWindowCommand)
+ON_WM_SETCURSOR()
+ON_WM_RBUTTONDOWN()
+ON_WM_RBUTTONUP()
 ON_WM_CHAR()
+ON_WM_PARENTNOTIFY()
+ON_WM_CTLCOLOR()
+ON_WM_KEYDOWN()
 ON_MESSAGE(0x4ef, OnDialogTreeHostMsg4EF)
 ON_MESSAGE(0x4c8, OnMciNotifyMode) // MCIWNDM_NOTIFYMODE
 END_MESSAGE_MAP()
@@ -208,6 +213,30 @@ BOOL CIncludeView::OnEraseBkgnd(CDC* pDC) {
   return 1;
 }
 
+// Native edit controls store their owning TControl in GWL_USERDATA. Select the game's
+// indexed palette into the supplied DC, use the fixed edit background key, and resolve
+// the control's resource-derived text color (the style override when present, otherwise
+// TControl::textStyle78). Other native child types keep MFC's default coloring.
+// FUNCTION: IMPERIALISM 0x00483660
+HBRUSH CIncludeView::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor) {
+  CWnd::OnCtlColor(pDC, pWnd, nCtlColor);
+  if (nCtlColor == CTLCOLOR_EDIT) {
+    HWND controlWindow = pWnd != NULL ? pWnd->m_hWnd : NULL;
+    TControl* control = reinterpret_cast<TControl*>(::GetWindowLong(controlWindow, GWL_USERDATA));
+    if (control != NULL) {
+      g_pModuleLibraryCacheState->EnsureDefaultDibPalette()->SelectIntoDcAndRealize(pDC, FALSE);
+      pDC->SetBkColor(0x0000ff00);
+      unsigned int packedTextColor =
+          control->stylePayload48 != NULL
+              ? static_cast<unsigned int>(control->stylePayload48->styleWord)
+              : static_cast<unsigned int>(control->textStyle78.textColor);
+      pDC->SetTextColor(g_pModuleLibraryCacheState->ResolvePaletteIndexColor(packedTextColor));
+    }
+  }
+  pDC->SetMapperFlags(1);
+  return reinterpret_cast<HBRUSH>(::GetStockObject(NULL_BRUSH));
+}
+
 // FUNCTION: IMPERIALISM 0x00483720
 void CIncludeView::OnActivateView(BOOL bActivate, CView* pActivateView, CView* pDeactiveView) {
   CView::OnActivateView(bActivate, pActivateView, pDeactiveView);
@@ -295,6 +324,31 @@ void CIncludeView::OnLButtonUp(UINT nFlags, CPoint point) {
   }
 }
 
+// Double-clicks have no separate game action. While input is enabled, forward the
+// original message to MFC's default window procedure; modal/input-gated periods swallow it.
+// FUNCTION: IMPERIALISM 0x00483b70
+void CIncludeView::OnLButtonDblClk(UINT nFlags, CPoint point) {
+  (void)nFlags;
+  (void)point;
+  if (m_uiInteractiveFlag90 != 0) {
+    Default();
+  }
+}
+
+// Command 0x8011 momentarily enters and leaves MFC's wait-cursor state. This forces the
+// application cursor to refresh without retaining a busy-cursor nesting level.
+// FUNCTION: IMPERIALISM 0x00483d60
+void CIncludeView::OnRefreshWaitCursorCommand() {
+  AfxGetApp()->BeginWaitCursor();
+  AfxGetApp()->EndWaitCursor();
+}
+
+// Command 0x8012 synchronously flushes this host view's pending paint.
+// FUNCTION: IMPERIALISM 0x00483d90
+void CIncludeView::OnUpdateWindowCommand() {
+  UpdateWindow();
+}
+
 // Overrides CWnd::PreCreateWindow (vtable slot 0x64): register a private "AmbitGameWindow"
 // window class (3 = CS_VREDRAW|CS_HREDRAW, DefWindowProc, app icon 0x7a02, background
 // value 5) and force cs.lpszClass + the WS_CHILD|WS_VISIBLE style bits (0x06000000) before
@@ -334,6 +388,42 @@ BOOL CIncludeView::OnCommand(WPARAM wParam, LPARAM lParam) {
     }
   }
   return CWnd::OnCommand(wParam, lParam);
+}
+
+// Keep cursor selection in the standard MFC/default-window path.
+// FUNCTION: IMPERIALISM 0x00483ef0
+BOOL CIncludeView::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message) {
+  (void)pWnd;
+  (void)nHitTest;
+  (void)message;
+  return static_cast<BOOL>(Default());
+}
+
+// Right-button clicks follow the same hosted-dialog path as left-button clicks. The
+// TToolboxEvent button field distinguishes the two down events; mouse-up uses the shared
+// tree dispatch and capture teardown.
+// FUNCTION: IMPERIALISM 0x00483f10
+void CIncludeView::OnRButtonDown(UINT nFlags, CPoint point) {
+  (void)nFlags;
+  if (m_uiInteractiveFlag90 != 0 && m_activeDialogContext != 0) {
+    TToolboxEvent event;
+    event.mouseX = point.x;
+    event.mouseY = point.y;
+    event.mouseMetadata1c = 0;
+    event.mouseButton24 = 1;
+    m_activeDialogContext->HandleMouseDown(point, &event, CPoint(0, 0));
+  }
+}
+
+// FUNCTION: IMPERIALISM 0x00483ff0
+void CIncludeView::OnRButtonUp(UINT nFlags, CPoint point) {
+  if (m_uiInteractiveFlag90 != 0) {
+    if (m_activeDialogContext != 0) {
+      CPoint pt(point);
+      m_activeDialogContext->HandleMouseUp(pt, 0, CPoint(0, 0));
+    }
+    g_McAppMouseCaptureState.EndMouseCaptureAndStopRepeatTimer(nFlags, point.x, point.y);
+  }
 }
 
 // Everything the hosted activeDialog TView tree ever draws on screen flows through

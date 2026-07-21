@@ -46,7 +46,7 @@ struct NationStateRecordA8 {
   // never read back out of this wire copy.
   int reservedUnitChainSlot98;
   int reservedCityScoreSlot9C;
-  unsigned char padA0;
+  unsigned char navyOrderReachableA0;
   unsigned char exploredByNationMaskA1;
   unsigned char resourcePresenceMaskA2;
   unsigned char regionClassA3;

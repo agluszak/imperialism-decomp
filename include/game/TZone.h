@@ -194,6 +194,11 @@ public:
   // ship with field08 == this, matching owner, field0c == 0 (and field34 == 0 unless
   // skipField34Check). Ghidra's TCivToolbar attribution is junk.
   char CanDisplayMapOrderEntryInCurrentContext(short nation, char skipField34Check);
+  // RefreshMapOrderEntryPanel's reachability expansion. A higher remaining depth wins;
+  // eligible primary neighbors recurse with depth-1, while the initial call also marks
+  // this context's adjacent city records as actionable for TNavyMgr.
+  void ExpandTaskForceTraversalDepthAndMarkDeferredNodes(int remainingDepth,
+                                                         char markAdjacentCities); // 0x560ba0
   // Naval-intelligence helpers used by TMapUberPicture::NavalIntelligenceDialog.
   // They fold the primary ship list for this zone/nation using the same preference
   // rule as the order UI, then expose its reporting admiral/source label.
@@ -287,6 +292,10 @@ ASSERT_SIZE(TZone, 0x48);
 // Walks g_pMapActionContextListHead (via prev18) for the zone whose contextOrdinal14
 // context ordinal matches nodeId; -1 and misses return 0. Used by mission deserialization.
 TZone* FindMapActionContextByNodeId(short nodeId); // 0x55f100
+
+// Clears the traversal level on every live map-action context and the transient navy-order
+// reachability marker on all 0x180 city records before RefreshMapOrderEntryPanel expands it.
+void ResetMapActionContextActivityAndNationFlags(); // 0x560e20
 
 // 0x564570 moved to TOcean::FindMapActionContextContainingNodeByIndex — every original
 // callsite loads ecx = g_pActiveMapOrderContext before the call (thiscall, this unused).

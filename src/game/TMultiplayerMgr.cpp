@@ -2746,7 +2746,7 @@ void TMultiplayerMgr::DispatchCityRedrawInvalidateEvent(short cityId) {
 
   packet.stationedUnitChain98 = src->stationedUnitChain98;
   packet.cityScoreValue9C = src->cityScoreValue;
-  packet.cityBytesA0[0] = src->padA0;
+  packet.cityBytesA0[0] = src->navyOrderReachableA0;
   packet.cityBytesA0[1] = src->exploredByNationMaskA1;
   packet.cityBytesA0[2] = src->resourcePresenceMaskA2;
   packet.cityBytesA0[3] = src->regionClassA3;
@@ -2783,7 +2783,7 @@ NationStateRecordA8& NationStateRecordA8::operator=(const NationStateRecordA8& s
   }
   reservedUnitChainSlot98 = source.reservedUnitChainSlot98;
   reservedCityScoreSlot9C = source.reservedCityScoreSlot9C;
-  padA0 = source.padA0;
+  navyOrderReachableA0 = source.navyOrderReachableA0;
   exploredByNationMaskA1 = source.exploredByNationMaskA1;
   resourcePresenceMaskA2 = source.resourcePresenceMaskA2;
   regionClassA3 = source.regionClassA3;
