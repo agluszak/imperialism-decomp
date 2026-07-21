@@ -52,9 +52,9 @@ public:
 
   virtual void RenderMapOrderEntryTilePreview(TCivUnit* orderEntry, int projectedX, int projectedY,
                                               int flag, short tileIndex) override;
-  virtual void RenderTacticalStackCountIndicatorAndUnitBadge(short tileIndex, void* dstRect,
+  virtual void RenderTacticalStackCountIndicatorAndUnitBadge(short tileIndex, CRect* dstRect,
                                                              int flag) override;
-  virtual void RenderMapDialogTerrainOverlayFrameByTileOwner(short tileIndex, void* dstRect,
+  virtual void RenderMapDialogTerrainOverlayFrameByTileOwner(short tileIndex, CRect* dstRect,
                                                              unsigned char altOverlay) override;
   virtual void RenderStrategicTileSelectionAndNeighborHighlights() override;
   virtual void ForwardProjectTileIndexToWrappedScreenOffsetByScale(int arg1, int arg2, int arg3,
@@ -115,7 +115,8 @@ public:
                                              short tileIndex);
   virtual undefined MapDialogSetFillColor();
   virtual undefined UpdateMapOrderEntryTilePreviewSlot(int arg1, short arg2, short arg3);
-  virtual undefined OrphanLeaf_NoCall_Ins100_005241b0(int arg1, int arg2, short arg3, short arg4);
+  virtual void CopyCenteredMaskNarrowingBlockKernel(unsigned char* src, unsigned char* dest,
+                                                    short srcStride, short destStride);
   virtual undefined GetTEventHandlerClassNamePointer(int arg1, int arg2, short arg3, short arg4);
   virtual undefined VTableSlot97(int arg1, int arg2, short arg3, short arg4);
   virtual undefined InitializeForeignMinisterStateFlags(int arg1, int arg2, short arg3, short arg4);

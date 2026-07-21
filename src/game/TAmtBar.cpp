@@ -60,8 +60,8 @@ void TAmtBar::ApplyRectSlot110(RECT* rectBuffer) {
 void TAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache() {
   CTemporaryRegion surface;
   short barRange = rangeOrMaxValue;
-  RECT contentBounds;
-  RECT frameBounds;
+  CRect contentBounds;
+  CRect frameBounds;
   short controlWidth;
   short controlHeight;
   RECT panelRect;

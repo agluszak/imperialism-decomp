@@ -52,7 +52,7 @@ void TTechHistoryView::ConstructTTechHistoryViewBaseState(short techId) {
   descText->SetTextFromUiStringResourceId(static_cast<short>(techId + 0x8fc));
 
   int measuredWidth = descText->MeasureCurrentTextWidthInLayoutRect();
-  RECT descBounds;
+  CRect descBounds;
   descText->QueryBounds(&descBounds);
   descBounds.bottom = descBounds.top + static_cast<short>(measuredWidth);
   descText->ApplyBounds(&descBounds, 1);

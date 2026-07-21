@@ -17,8 +17,8 @@ TInfoBarPictureText::~TInfoBarPictureText() {}
 void TInfoBarPictureText::SetTextAndLayoutRect(CString text, RECT* layoutRect) {
   if (EqualRect(layoutRect, &layoutRectA4) == 0) {
     CopyRect(&layoutRectA4, layoutRect);
-    RECT clipRect;
-    CopyRectFromBuildRectFromSlot158(&clipRect);
+    CRect clipRect;
+    GetDrawableQDRect(&clipRect);
     InvalidateCityDialogRectRegion(&clipRect, 1);
     UpdateTextEntrySharedString(&text);
     RefreshControl();
@@ -32,9 +32,9 @@ void TInfoBarPictureText::ClearTextAndLayoutRect(int) {
   layoutRectA4.right = 0;
   layoutRectA4.bottom = 0;
 
-  RECT bounds;
+  CRect bounds;
   QueryBounds(&bounds);
-  RECT clipRect;
+  CRect clipRect;
   CopyRect(&clipRect, &bounds);
   ownerContext->InvalidateCityDialogRectRegion(&clipRect, 1);
 

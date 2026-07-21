@@ -83,15 +83,15 @@ void TPicture::InitializePictureEntryBaseAndRefresh(TView* panel, int* offsetLay
 // FUNCTION: IMPERIALISM 0x0048f3c0
 void TPicture::ApplyRectSlot110(RECT* rectBuffer) {
   if (GetAsyncKeyState(VK_CONTROL) & 0x8000) {
-    RECT bounds;
-    this->BuildRectFromSlot158(&bounds);
+    CRect bounds;
+    this->GetQDExtent(&bounds);
   }
 
   if (GetActiveQuickDrawSurfaceDib() != 0 &&
       this->cachedBitmap->m_pInfoHeader->bmiHeader.biBitCount == 8 &&
       this->cachedBitmap->m_pInfoHeader->bmiHeader.biCompression == 0) {
-    RECT bounds;
-    this->BuildRectFromSlot158(&bounds);
+    CRect bounds;
+    this->GetQDExtent(&bounds);
     int width = bounds.right - bounds.left;
     int height = bounds.bottom - bounds.top;
     CDib* surface = GetActiveQuickDrawSurfaceDib();
@@ -111,8 +111,8 @@ void TPicture::ApplyRectSlot110(RECT* rectBuffer) {
     CPoint posForX;
     CPoint posForY;
     this->cachedBitmap->StretchDibitsRectToDc(
-        GetActiveQuickDrawDc(), this->GetCachedPosPoint(&posForX)->x,
-        this->GetCachedPosPoint(&posForY)->y, this->frameWidth34, this->frameHeight38, 0, 0,
+        GetActiveQuickDrawDc(), this->GetAbsolutePosition(&posForX)->x,
+        this->GetAbsolutePosition(&posForY)->y, this->frameWidth34, this->frameHeight38, 0, 0,
         this->cachedBitmap->m_pInfoHeader->bmiHeader.biWidth, srcHeight);
   }
 }

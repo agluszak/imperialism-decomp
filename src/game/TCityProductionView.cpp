@@ -174,7 +174,7 @@ void TCityProductionView::RenderViewIntoPrimaryRenderContextWithTemporaryClip(in
   (void)arg2;
   CTemporaryRegion surface;
 
-  RECT boundsRecord;
+  CRect boundsRecord;
   this->QueryBounds(&boundsRecord);
 
   RECT clipRect;

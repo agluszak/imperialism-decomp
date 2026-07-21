@@ -87,9 +87,7 @@ void TMapMaker::RebuildUMapperRouteRecordsAndActiveMapRects() {
     if (!LinkIsEmpty(LinkAt(i))) {
       SeaSegment* rec = LinkReserve(i);
       CRect rect(rec->x0, rec->y0, rec->x1, rec->y1);
-      CRect* dest = reinterpret_cast<CRect*>(
-          static_cast<char*>(g_pActiveMapOrderContext->routeNodeBuffer) + routeIndex * 0x10);
-      *dest = rect;
+      g_pActiveMapOrderContext->routeRects[routeIndex] = rect;
       routeIndex = routeIndex + 1;
     }
   }

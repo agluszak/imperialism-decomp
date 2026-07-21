@@ -147,7 +147,7 @@ void TStaticText::ApplyRectSlot110(RECT* rectBuffer) {
   CDC* dc = GetActiveQuickDrawDc();
   dc->SetBkMode(TRANSPARENT);
   CRect bounds;
-  BuildRectFromSlot158(&bounds);
+  GetQDExtent(&bounds);
   bounds.DeflateRect(&contentInsets68);
   CFont* font = UpdateGlobalFontPresetAndRebuildCachedFontIfDirty(&textStyle78);
   CFont* oldFont = dc->SelectObject(font);

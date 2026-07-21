@@ -80,14 +80,14 @@ char TView::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoint origin) {
 }
 
 // FUNCTION: IMPERIALISM 0x00427260
-void TView::QueryContentBounds(RECT* boundsOut) {
+void TView::QueryContentBounds(CRect* boundsOut) {
   boundsOut->left = 0;
   boundsOut->top = 0;
   boundsOut->right = frameWidth34;
   boundsOut->bottom = frameHeight38;
 }
 // FUNCTION: IMPERIALISM 0x00427290
-void TView::QueryBounds(RECT* boundsOut) {
+void TView::QueryBounds(CRect* boundsOut) {
   int width = frameWidth34;
   int left = ownerLocalX;
   int height = frameHeight38;
@@ -98,11 +98,9 @@ void TView::QueryBounds(RECT* boundsOut) {
   boundsOut->bottom = height + top;
 }
 // FUNCTION: IMPERIALISM 0x004272d0
-void TView::DispatchVslot134WithRectAndRectPlus8_Impl(RECT* rect) {
-  // RECT's four LONGs are two adjacent POINTs (left,top) and (right,bottom) — the
-  // standard MFC/Win32 idiom for treating a RECT as a pair of POINTs in place.
-  TranslatePointToParentChain4D(reinterpret_cast<CPoint*>(&rect->left));
-  TranslatePointToParentChain4D(reinterpret_cast<CPoint*>(&rect->right));
+void TView::TranslateRectToWindow(CRect* rect) {
+  TranslatePointToParentChain4D(&rect->TopLeft());
+  TranslatePointToParentChain4D(&rect->BottomRight());
 }
 
 // FUNCTION: IMPERIALISM 0x00427330
@@ -112,8 +110,8 @@ void TView::UpdateAfterBitmapChange(CPoint* point) {
 }
 
 // FUNCTION: IMPERIALISM 0x00429410
-void TView::CopyRectFromBuildRectFromSlot158(RECT* rectOut) {
-  BuildRectFromSlot158(rectOut);
+void TView::GetDrawableQDRect(CRect* rectOut) {
+  GetQDExtent(rectOut);
 }
 // FUNCTION: IMPERIALISM 0x00430bd0
 int TView::QuerySelectedIndexSlotBC() {
@@ -421,12 +419,12 @@ void TView::RecomputeAbsolutePositionRecursive() {
 // FUNCTION: IMPERIALISM 0x0048b3f0
 void TView::CaptureLayout(int* buffer, int modeFlag) {
   if (modeFlag != 0) {
-    RECT oldRect;
-    CopyRectFromBuildRectFromSlot158(&oldRect);
+    CRect oldRect;
+    GetDrawableQDRect(&oldRect);
     frameWidth34 = buffer[0];
     frameHeight38 = buffer[1];
-    RECT newRect;
-    CopyRectFromBuildRectFromSlot158(&newRect);
+    CRect newRect;
+    GetDrawableQDRect(&newRect);
     RECT unionRect;
     UnionRect(&unionRect, &newRect, &oldRect);
     if (g_McAppUiActiveFlag_006950AC != 0) {
@@ -459,7 +457,7 @@ void TView::InvalidateOffsetRegionUsingChildClipRect(RgnHandle region) {
   CombineRgn(destRegion, sourceRegion, nullptr, RGN_COPY);
 
   CPoint cachedPos;
-  GetCachedPosPoint(&cachedPos);
+  GetAbsolutePosition(&cachedPos);
   OffsetRgn(destRegion, -cachedPos.x, -cachedPos.y);
 
   if (g_McAppUiActiveFlag_006950AC != 0) {
@@ -475,12 +473,12 @@ void TView::InvalidateCityDialogRectRegion(RECT* rect, int flag) {
   if (nativeWindow50 == 0 || nativeWindow50->m_hWnd == 0) {
     return;
   }
-  RECT localRect;
+  CRect localRect;
   if (rect == 0) {
-    CopyRectFromBuildRectFromSlot158(&localRect);
+    GetDrawableQDRect(&localRect);
   } else {
     CopyRect(&localRect, rect);
-    DispatchVslot134WithRectAndRectPlus8_Impl(&localRect);
+    TranslateRectToWindow(&localRect);
   }
   if (g_McAppUiActiveFlag_006950AC != 0) {
     InvalidateRect(nativeWindow50->m_hWnd, &localRect, 0);
@@ -541,7 +539,7 @@ void TView::EnsureField48Buffer() {
 // FUNCTION: IMPERIALISM 0x0048b860
 void TView::PaintOrInvalidateControl(CDC* paintDc) {
   if (paintDc != 0) {
-    RECT rect;
+    CRect rect;
     QueryContentBounds(&rect);
     PaintVisibleChildrenIntersectingClipRect(&rect, paintDc);
     return;
@@ -555,7 +553,7 @@ void TView::PaintVisibleChildrenIntersectingClipRect(RECT* clipRect, CDC* paintD
     return;
   }
 
-  RECT clippedRect;
+  CRect clippedRect;
   QueryContentBounds(&clippedRect);
   if (IntersectRect(&clippedRect, &clippedRect, clipRect) == 0) {
     return;
@@ -608,12 +606,12 @@ void TView::SubtractPosAndDispatchToOwnerSlot19C(CPoint* point) {
 }
 
 // FUNCTION: IMPERIALISM 0x0048bb00
-void TView::OffsetRectByControlPosition(RECT* rect) {
+void TView::OffsetRectByControlPosition(CRect* rect) {
   OffsetRect(rect, ownerLocalX, ownerLocalY);
 }
 
 // FUNCTION: IMPERIALISM 0x0048bb30
-CPoint* TView::GetCachedPosPoint(CPoint* outPoint) {
+CPoint* TView::GetAbsolutePosition(CPoint* outPoint) {
   int posY = absoluteY;
   outPoint->x = absoluteX;
   outPoint->y = posY;
@@ -630,14 +628,14 @@ CPoint TView::TransformPointViaSlot138(CPoint* inPoint) {
 }
 
 // FUNCTION: IMPERIALISM 0x0048bbb0
-RECT TView::TransformRectViaSlot148(RECT* inRect) {
+CRect TView::TransformRectViaSlot148(CRect* inRect) {
   int width = inRect->right - inRect->left;
   int height = inRect->bottom - inRect->top;
   CPoint corner;
   corner.x = inRect->left;
   corner.y = inRect->top;
   CPoint mapped = TransformPointViaSlot138(&corner);
-  RECT result;
+  CRect result;
   result.left = mapped.x;
   result.top = mapped.y;
   result.right = mapped.x + width;
@@ -645,16 +643,16 @@ RECT TView::TransformRectViaSlot148(RECT* inRect) {
   return result;
 }
 // FUNCTION: IMPERIALISM 0x0048bc30
-void TView::AddControlPosToPoint(int x, int y, int* outPoint) {
+void TView::AddControlPosToPoint(int x, int y, CPoint* outPoint) {
   x = x + absoluteX;
   y = absoluteY + y;
-  outPoint[0] = x;
-  outPoint[1] = y;
+  outPoint->x = x;
+  outPoint->y = y;
 }
 
 // FUNCTION: IMPERIALISM 0x0048bc60
-void TView::OffsetRectByCachedPos(RECT* inRect, RECT* outRect) {
-  RECT local;
+void TView::OffsetRectByCachedPos(CRect* inRect, CRect* outRect) {
+  CRect local;
   local.left = inRect->left;
   local.top = inRect->top;
   local.right = inRect->right;
@@ -667,11 +665,11 @@ void TView::OffsetRectByCachedPos(RECT* inRect, RECT* outRect) {
 }
 
 // FUNCTION: IMPERIALISM 0x0048bce0
-RECT* TView::BuildRectFromSlot158(RECT* rectOut) {
+CRect* TView::GetQDExtent(CRect* rectOut) {
   int width = frameWidth34;
   int height = frameHeight38;
   CPoint pos;
-  GetCachedPosPoint(&pos);
+  GetAbsolutePosition(&pos);
   rectOut->left = pos.x;
   rectOut->top = pos.y;
   rectOut->right = width + pos.x;
@@ -765,8 +763,8 @@ void TView::NoOpClipRegionSlot2D(int arg1, int arg2) {}
 
 // FUNCTION: IMPERIALISM 0x0048c1e0
 void TView::RefreshCityProductionViewStateFromContext(RgnHandle clipRegion) {
-  RECT rect;
-  CopyRectFromBuildRectFromSlot158(&rect);
+  CRect rect;
+  GetDrawableQDRect(&rect);
   RectRgn(clipRegion, &rect);
 }
 
@@ -779,8 +777,8 @@ void TView::SetHoverHelpText(CString sharedString) {
 // FUNCTION: IMPERIALISM 0x0048c250
 void TView::HandleCursorHoverFallback(CPoint* point, RgnHandle hitArg) {
   if (hoverHelpEnabled5c != 0) {
-    RECT rect;
-    BuildRectFromSlot158(&rect);
+    CRect rect;
+    GetQDExtent(&rect);
     RECT parentRect;
     CopyRect(&parentRect, &rect);
     if (g_pCursorControlPanel != nullptr) {
@@ -799,8 +797,8 @@ void TView::HandleCursorHoverFallback(CPoint* point, RgnHandle hitArg) {
   SetCursor(hCursor);
 }
 // FUNCTION: IMPERIALISM 0x0048c380
-void TView::ApplyBounds(RECT* newBounds, int modeFlag) {
-  RECT current;
+void TView::ApplyBounds(CRect* newBounds, int modeFlag) {
+  CRect current;
   QueryBounds(&current);
   if (EqualRect(newBounds, &current) == 0) {
     if (modeFlag != 0 && IsActionable() != 0) {
@@ -868,7 +866,7 @@ char TView::HandleMouseUp(const CPoint& point, TToolboxEvent* event, CPoint orig
 
 // FUNCTION: IMPERIALISM 0x0048c6d0
 char TView::PointInBoundsAndActionable(CPoint* point) {
-  RECT bounds;
+  CRect bounds;
   QueryContentBounds(&bounds);
   if (IsActionable() != 0) {
     POINT p;
@@ -901,8 +899,8 @@ void TView::AssertMcAppUiLine1922() {
   if (g_McAppUiFlag_006A1B00 == 0) {
     TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiSourcePath_006950B0, 0x782);
   }
-  RECT rectStorage;
-  CopyRectFromBuildRectFromSlot158(&rectStorage);
+  CRect rectStorage;
+  GetDrawableQDRect(&rectStorage);
 }
 
 // FUNCTION: IMPERIALISM 0x0048c820
@@ -945,7 +943,7 @@ unsigned short TView::GetHelpState() {
 }
 // FUNCTION: IMPERIALISM 0x0048c990
 short TView::ContainsMouse(const CPoint& point) {
-  RECT bounds;
+  CRect bounds;
   QueryContentBounds(&bounds);
   POINT p;
   p.x = point.x;

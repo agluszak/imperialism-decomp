@@ -53,7 +53,7 @@ void TIconBar::SetNumIcons(short numIcons, unsigned char refreshNow) {
 // FUNCTION: IMPERIALISM 0x00506150
 void TIconBar::ApplyRectSlot110(RECT* rectBuffer) {
   (void)rectBuffer; // dead parameter in this override, like the other ApplyRectSlot110s
-  RECT contentRect;
+  CRect contentRect;
   BuildInsetContentRect(&contentRect);
 
   short slotWidth = static_cast<short>(contentRect.right - contentRect.left) / (numIcons96 + 1);

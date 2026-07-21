@@ -42,7 +42,7 @@ void TGWorldButton::HiliteState(unsigned char fEnabledState, unsigned char fRefr
 void TGWorldButton::ApplyRectSlot110(RECT* rectBuffer) {
   (void)rectBuffer;
   if (field88 != 0) {
-    RECT destRect;
+    CRect destRect;
     QueryContentBounds(&destRect);
     RECT srcRect = {field84, 0, static_cast<int>(field84 + frameWidth34), frameHeight38};
     UpdatePaletteIndexWithDefaultFallback(0x10);

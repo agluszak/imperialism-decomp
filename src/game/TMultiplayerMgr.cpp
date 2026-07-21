@@ -1139,7 +1139,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
           mapControl->AssertValid();
           mapControl->selectedNation68 = mySlot;
           mapControl->EnhancePhoto();
-          RECT mapRect;
+          CRect mapRect;
           mapControl->QueryContentBounds(&mapRect);
           {
             ScopedMapQuickDrawContext quickDraw(mapControl);

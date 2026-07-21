@@ -58,12 +58,12 @@ void TDeluxeText::ApplyRectSlot110(RECT* rectBuffer) {
   CopyTextTo(&textBuffer);
   if (dropShadowEnabledA0) {
     SetQuickDrawColorAndPropagateIfChanged(shadowTextColor9C);
-    RECT shadowRect;
+    CRect shadowRect;
     BuildInsetContentRect(&shadowRect);
     OffsetRect(&shadowRect, 1, 1);
     DrawTextAligned((LPCSTR)textBuffer, textBuffer.GetLength(), &shadowRect, textAlignmentCode);
   }
-  RECT mainRect;
+  CRect mainRect;
   BuildInsetContentRect(&mainRect);
   SetQuickDrawColorAndPropagateIfChanged(textColor98);
   DrawTextAligned((LPCSTR)textBuffer, textBuffer.GetLength(), &mainRect, textAlignmentCode);

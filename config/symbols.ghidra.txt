@@ -739,7 +739,7 @@ TView::UpdateAfterBitmapChange 427330 f
 InitializeIndustryOverviewPlacardsAndTradeStatusTags 427360 f
 TInfoBarText::TInfoBarText 429330 f
 TInfoBarText::'scalar_deleting_destructor' 4293C0 f
-TView::CopyRectFromBuildRectFromSlot158 429410 f
+TView::GetDrawableQDRect 429410 f
 TControl::QuerySelectedIndexSlotBC 429450 f
 TControl::AssertCityProductionGlobalStateInitialized 429470 f
 TControl::LogUnhandledDialogMethodAndReturnFalse 4294A0 f
@@ -1528,12 +1528,12 @@ TView::TranslatePointToParentChain4E 48BA40 f
 TView::TranslatePointToParentChain4D 48BA80 f
 TView::SubtractPosAndDispatchToOwnerSlot19C 48BAC0 f
 TView::OffsetRectByControlPosition 48BB00 f
-TView::GetCachedPosPoint 48BB30 f
+TView::GetAbsolutePosition 48BB30 f
 TView::TransformPointViaSlot138 48BB60 f
 TView::TransformRectViaSlot148 48BBB0 f
 TView::AddControlPosToPoint 48BC30 f
 TView::OffsetRectByCachedPos 48BC60 f
-TView::BuildRectFromSlot158 48BCE0 f
+TView::GetQDExtent 48BCE0 f
 TCityDialogModalState_00649A50::CopyCityDialogStateFromSourceAndCloneChildLinks 48BD30 f
 TView::CopyViewStateFromSource 48BEF0 f
 TView::ShallowClone 48BFD0 f
@@ -4012,7 +4012,7 @@ TMapDialog::UpdateMapOrderEntryTilePreviewSlot 523170 f
 TMapDialog::RenderMapOrderEntryTilePreview 523640 f
 TMapDialog::RenderTacticalStackCountIndicatorAndUnitBadge 523B70 f
 TMapDialog::RenderMapDialogTerrainOverlayFrameByTileOwner 523FF0 f
-TMapDialog::OrphanLeaf_NoCall_Ins100_005241b0 5241B0 f
+TMapDialog::CopyCenteredMaskNarrowingBlockKernel 5241B0 f
 TMapDialog::GetTEventHandlerClassNamePointer 5242F0 f
 TMapDialog::VTableSlot97 524540 f
 TMapDialog::InitializeForeignMinisterStateFlags 524670 f

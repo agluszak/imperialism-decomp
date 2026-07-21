@@ -204,11 +204,13 @@ void TDDTemplateDialog::OnPaint() {
   if (drawOutline != 0) {
     CPen pen(PS_SOLID, 1, RGB(0xff, 0, 0));
     CPen* oldPen = dc.SelectObject(&pen);
+    // GEOMETRY_RAW_BUFFER: two-int header followed by packed POINT records.
     dc.Polyline(reinterpret_cast<POINT*>(outlinePolygon + 2), outlinePolygon[0]);
     dc.SelectObject(oldPen);
   }
   if (fillPolygon != 0) {
     CRgn region;
+    // GEOMETRY_RAW_BUFFER: two-int header followed by packed POINT records.
     region.CreatePolygonRgn(reinterpret_cast<POINT*>(outlinePolygon + 2), outlinePolygon[0],
                             ALTERNATE);
     CBrush brush(RGB(0xff, 0, 0));

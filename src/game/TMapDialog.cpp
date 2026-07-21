@@ -1032,7 +1032,7 @@ void TMapDialog::RenderMapOrderEntryTilePreview(TCivUnit* orderEntry, int projec
 }
 
 // FUNCTION: IMPERIALISM 0x00523b70
-void TMapDialog::RenderTacticalStackCountIndicatorAndUnitBadge(short tileIndex, void* dstRect,
+void TMapDialog::RenderTacticalStackCountIndicatorAndUnitBadge(short tileIndex, CRect* dstRect,
                                                                int flag) {
   (void)tileIndex;
   (void)dstRect;
@@ -1040,7 +1040,7 @@ void TMapDialog::RenderTacticalStackCountIndicatorAndUnitBadge(short tileIndex, 
 }
 
 // FUNCTION: IMPERIALISM 0x00523ff0
-void TMapDialog::RenderMapDialogTerrainOverlayFrameByTileOwner(short tileIndex, void* dstRect,
+void TMapDialog::RenderMapDialogTerrainOverlayFrameByTileOwner(short tileIndex, CRect* dstRect,
                                                                unsigned char altOverlay) {
   void* surfaceContext = reinterpret_cast<void*>(g_pActiveQuickDrawSurfaceContext);
   char* tileRecord =
@@ -1103,8 +1103,67 @@ void TMapDialog::RenderMapDialogTerrainOverlayFrameByTileOwner(short tileIndex, 
 }
 
 // FUNCTION: IMPERIALISM 0x005241B0
-undefined TMapDialog::OrphanLeaf_NoCall_Ins100_005241b0(int, int, short, short) {
-  return 0;
+void TMapDialog::CopyCenteredMaskNarrowingBlockKernel(unsigned char* src, unsigned char* dest,
+                                                      short srcStride, short destStride) {
+  union MaskCopyCursor {
+    unsigned char* bytes;
+    unsigned long* dwords;
+  };
+
+  MaskCopyCursor srcCursor;
+  MaskCopyCursor destCursor;
+  srcCursor.bytes = src + 0x20;
+  destCursor.bytes = dest + 0x20;
+
+  short srcStrideDwords = static_cast<short>(srcStride / 4);
+  short destStrideDwords = static_cast<short>(destStride / 4);
+  int dwordCount = 7;
+  int groupCount = 8;
+  do {
+    int copyCount = dwordCount + 1;
+    while (copyCount > 0) {
+      *destCursor.dwords++ = *srcCursor.dwords++;
+      --copyCount;
+    }
+
+    short srcAdvanceDwords = static_cast<short>(srcStrideDwords - dwordCount);
+    short destAdvanceDwords = static_cast<short>(destStrideDwords - dwordCount);
+    srcCursor.dwords += srcAdvanceDwords - 1;
+    destCursor.dwords += destAdvanceDwords - 1;
+
+    copyCount = dwordCount;
+    while (copyCount > 0) {
+      *destCursor.dwords++ = *srcCursor.dwords++;
+      --copyCount;
+    }
+    destCursor.bytes[0] = srcCursor.bytes[0];
+    destCursor.bytes[1] = srcCursor.bytes[1];
+    destCursor.bytes[2] = srcCursor.bytes[2];
+    srcCursor.dwords += srcAdvanceDwords;
+    destCursor.dwords += destAdvanceDwords;
+
+    copyCount = dwordCount;
+    while (copyCount > 0) {
+      *destCursor.dwords++ = *srcCursor.dwords++;
+      --copyCount;
+    }
+    destCursor.bytes[0] = srcCursor.bytes[0];
+    destCursor.bytes[1] = srcCursor.bytes[1];
+    srcCursor.dwords += srcAdvanceDwords;
+    destCursor.dwords += destAdvanceDwords;
+
+    copyCount = dwordCount;
+    while (copyCount > 0) {
+      *destCursor.dwords++ = *srcCursor.dwords++;
+      --copyCount;
+    }
+    destCursor.bytes[0] = srcCursor.bytes[0];
+    srcCursor.dwords += srcAdvanceDwords;
+    destCursor.dwords += destAdvanceDwords;
+
+    --dwordCount;
+    --groupCount;
+  } while (groupCount != 0);
 }
 
 // FUNCTION: IMPERIALISM 0x005242F0

@@ -141,6 +141,7 @@ void CopyRgn(RgnHandle src, RgnHandle dst) {
 int BitMapToRegion(RgnHandle rgn, TBitmapSurfaceNode* surface) {
   int* polygonPoints = surface->dib->BuildNonTransparentOutlinePolygon(0xffffffff);
   (*rgn)->rgn.DeleteObject();
+  // GEOMETRY_RAW_BUFFER: two-int header followed by packed POINT records.
   HRGN polygonRegion =
       ::CreatePolygonRgn(reinterpret_cast<POINT*>(polygonPoints + 2), polygonPoints[0], WINDING);
   int attached = (*rgn)->rgn.Attach(polygonRegion);

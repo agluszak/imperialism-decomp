@@ -142,10 +142,10 @@ void TControl::DispatchPictureResourceCommand(int eventType, void* eventSender, 
     return;
   }
   if (eventType == 1) {
-    HiliteState(PointInBoundsAndActionable(reinterpret_cast<CPoint*>(eventDataB)), 1);
+    HiliteState(PointInBoundsAndActionable(static_cast<CPoint*>(eventDataB)), 1);
     return;
   }
-  if (eventType == 2 && PointInBoundsAndActionable(reinterpret_cast<CPoint*>(eventDataB)) != 0) {
+  if (eventType == 2 && PointInBoundsAndActionable(static_cast<CPoint*>(eventDataB)) != 0) {
     if (frameStyle60 == 4) {
       DispatchEvent(0x21, this, 0);
       DispatchEvent(frameStyle60, this, 0);
@@ -163,7 +163,7 @@ void TControl::DispatchPictureResourceCommand(int eventType, void* eventSender, 
 
 // FUNCTION: IMPERIALISM 0x0048e940
 char TControl::PointInBoundsAndActionable(CPoint* point) {
-  RECT rect;
+  CRect rect;
   QueryContentBounds(&rect);
   POINT p;
   p.x = point->x;
@@ -172,9 +172,9 @@ char TControl::PointInBoundsAndActionable(CPoint* point) {
 }
 
 // FUNCTION: IMPERIALISM 0x0048e980
-void TControl::BuildInsetContentRect(RECT* boundsBuffer) {
+void TControl::BuildInsetContentRect(CRect* boundsBuffer) {
   QueryContentBounds(boundsBuffer);
-  reinterpret_cast<CRect*>(boundsBuffer)->DeflateRect(&contentInsets68);
+  boundsBuffer->DeflateRect(&contentInsets68);
 }
 
 // FUNCTION: IMPERIALISM 0x0048e9c0

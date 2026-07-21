@@ -49,7 +49,7 @@ void TTextList::ApplyRectSlot110(RECT* rectBuffer) {
       if (idx == selectedIndex) {
         g_pUiRuntimeContext->ApplyLegendSplitSlot34(5);
 
-        RECT rect;
+        CRect rect;
         rect.left = 0;
         rect.top = currentY;
         rect.right = frameWidth34;
@@ -93,7 +93,7 @@ void TTextList::BeginMouseCaptureAndStartRepeatTimer(const CPoint& point, TToolb
 
     RefreshControl(); // slot 0x39 (was facade OnSelectionChangeSlotE4)
 
-    RECT rect;
+    CRect rect;
     QueryBounds(&rect); // slot 0x4b (was facade GetRectSlot12C)
 
     RECT localRect;

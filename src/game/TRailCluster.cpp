@@ -164,7 +164,7 @@ void TRailCluster::SetMoveAmount(short dragValue, unsigned char updateFlag) {
 
   moveControl->SetControlValueSlot1E4((int)ReadControlValueFieldPlus4(selectedControl), 0);
 
-  RECT moveBoundsRect;
+  CRect moveBoundsRect;
   RECT moveInvalidRect;
   moveControl->QueryBounds(&moveBoundsRect);
   OffsetRect(&moveBoundsRect, ctx->ownerLocalX, ctx->ownerLocalY);

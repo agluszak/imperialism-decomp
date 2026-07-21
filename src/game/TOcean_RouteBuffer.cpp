@@ -12,12 +12,12 @@
 // FUNCTION: IMPERIALISM 0x0052e7b0
 void TOcean::AllocateRouteNodeStateBufferByCount(short count) {
   routeNodeCount = count;
-  ::operator delete(routeNodeBuffer);
-  routeNodeBuffer = ::operator new(count << 4);
-  if (routeNodeBuffer == nullptr) {
-    routeNodeBuffer = nullptr;
+  ::operator delete(routeRects);
+  routeRects = static_cast<CRect*>(::operator new(count << 4));
+  if (routeRects == nullptr) {
+    routeRects = nullptr;
   }
-  if (routeNodeBuffer == nullptr) {
+  if (routeRects == nullptr) {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UOcean.h", 0x1e7);
   }

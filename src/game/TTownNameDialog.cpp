@@ -49,7 +49,7 @@ void TTownNameDialog::ApplyRectSlot110(RECT* rectBuffer) {
   TPicture::ApplyRectSlot110(rectBuffer);
   TView* nameControl = ResolveControlByTag(kControlTagName);
   if (nameControl != nullptr) {
-    RECT bounds;
+    CRect bounds;
     nameControl->QueryBounds(&bounds);
     g_pUiRuntimeContext->ApplyLegendSplitSlot34(0xf);
     FillRectWithQuickDrawBrushAndContextOffset(&bounds);
