@@ -134,13 +134,13 @@ void TArmyCheckBox::SetState(unsigned char on, unsigned char drawImmediate) {
 
 // FUNCTION: IMPERIALISM 0x004aa3a0
 void TArmyCheckBox::Toggle(unsigned char drawImmediate) {
-  SetState(IsOn() == 0, drawImmediate);
+  SetState(static_cast<unsigned char>(IsOn() == 0), drawImmediate);
 }
 
 // FUNCTION: IMPERIALISM 0x004aa3e0
 void TArmyCheckBox::ToggleIf(unsigned char expectedState, unsigned char drawImmediate) {
   if (IsOn() == expectedState) {
-    SetState(IsOn() == 0, drawImmediate);
+    SetState(static_cast<unsigned char>(IsOn() == 0), drawImmediate);
   }
 }
 

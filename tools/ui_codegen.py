@@ -896,7 +896,7 @@ def _emit_semantic_view(
             )
         if family.control_state is not None:
             lines.append(
-                f"{indent}{variable}->SetControlStateFlagAndMaybeRefresh("
+                f"{indent}{variable}->HiliteState("
                 f"{_hex(family.control_state)}, 0);"
             )
         if family.style is not None:

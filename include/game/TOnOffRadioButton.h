@@ -3,6 +3,11 @@
 #include "game/TPictureButton.h"
 #include "game/mfc.h"
 
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Woverloaded-virtual"
+#endif
+
 // VTABLE: IMPERIALISM 0x0065f8a8
 class TOnOffRadioButton : public TPictureButton {
 public:
@@ -131,3 +136,7 @@ public:
   // Original object size is 0x98 (CRuntimeClass m_nObjectSize); the source class ended at 0x94. Trailing 4 byte(s) not yet semantically recovered — declared so sizeof and the recomp's allocation size match the original.
   int field94;
 };
+
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif

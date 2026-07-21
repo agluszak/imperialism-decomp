@@ -66,6 +66,16 @@ class UiCodegenTests(unittest.TestCase):
         self.assertIn("RegisterUiResourceEntry", first_text)
         self.assertIn("RegisterUiResourceEntry", second_text)
 
+    def test_control_state_uses_recovered_control_api(self) -> None:
+        rendered = "\n".join(
+            render_factory(
+                recipe, self.views, self.text_resources, self.windows_views
+            )
+            for recipe in self.recipes
+        )
+        self.assertIn("->HiliteState(", rendered)
+        self.assertNotIn("SetControlStateFlagAndMaybeRefresh", rendered)
+
     def test_all_factories_use_the_canonical_semantic_emitter(self) -> None:
         manifest_text = (REPO_ROOT / "config/ui_factory_codegen.yml").read_text()
         self.assertNotIn("emission:", manifest_text)

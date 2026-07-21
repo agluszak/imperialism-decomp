@@ -5,6 +5,11 @@
 #include "game/TQuickDrawSurfaceContext.h"
 #include "game/mfc.h"
 
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Woverloaded-virtual"
+#endif
+
 // VTABLE: IMPERIALISM 0x0064cec0
 class TArmyCheckBox : public TControl {
 public:
@@ -158,3 +163,7 @@ public:
 };
 
 ASSERT_SIZE(TArmyCheckBox, 0x94);
+
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif

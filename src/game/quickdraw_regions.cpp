@@ -202,11 +202,6 @@ unsigned char EmptyRgn(RgnHandle rgn) {
   return 1;
 }
 
-// FUNCTION: IMPERIALISM 0x00498be0
-void SetRectRgn(RgnHandle rgn, short left, short top, short right, short bottom) {
-  (*rgn)->rgn.Attach(::CreateRectRgn(left, top, right, bottom));
-}
-
 // FUNCTION: IMPERIALISM 0x00498b10
 int ProbeRectEmptyAfterCopyToLocal(RECT* rect) {
   tagRECT localRect;
@@ -219,4 +214,9 @@ int ProbeRectEmptyAfterCopyToLocal(RECT* rect) {
 // FUNCTION: IMPERIALISM 0x00498bb0
 int SectRect(RECT* src1, RECT* src2, RECT* dst) {
   return IntersectRect(dst, src1, src2);
+}
+
+// FUNCTION: IMPERIALISM 0x00498be0
+void SetRectRgn(RgnHandle rgn, short left, short top, short right, short bottom) {
+  (*rgn)->rgn.Attach(::CreateRectRgn(left, top, right, bottom));
 }

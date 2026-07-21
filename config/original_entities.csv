@@ -5612,7 +5612,7 @@ address|name|symbol|size|type|prototype|provenance
 5aec80|InitializeCityProductionState_Impl_At005aec80||1|function|undefined InitializeCityProductionState_Impl_At005aec80()|
 5aeca0|DispatchCityProductionQueueCommand||13|function|void __thiscall DispatchCityProductionQueueCommand(void * pCommandQueue)|
 5aecc0|OrphanCallChain_C6_I47_005aecc0||98|function|undefined OrphanCallChain_C6_I47_005aecc0()|
-5aed50|TTaskList::ContainsTask||92|function|unsigned char __thiscall ContainsTask(short taskType)|
+5aed50|TTaskList::ContainsTask||92|function|unsigned char __thiscall ContainsTask(short citySlotIndex)|listing+mac-symbol
 5aef00|WrapperFor_ftol_At005aef00||30|function|undefined WrapperFor_ftol_At005aef00()|
 5aef30|TTechMgr::CreateObject|?CreateObject@TTechMgr@@SGPAVCObject@@XZ|27|function|undefined CreateObject()|rtti
 5aef60|TTechMgr::GetRuntimeClass||6|function|undefined GetTTechMgrClassNamePointer()|rtti
