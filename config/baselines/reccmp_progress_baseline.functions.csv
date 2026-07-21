@@ -2390,7 +2390,7 @@ address|matching|name
 0x4ec4c0|1.0|TDefenseMinister::Call4C
 0x4ec540|0.5104895104895105|TDefenseMinister::MinisterSlot14
 0x4ecbb0|0.3755274261603376|TDefenseMinister::BuildTileRingPriorityMapForNationTileList
-0x4ecf20|0.024096385542168676|TDefenseMinister::BuildStrategicTilePriorityHeatmap
+0x4ecf20|0.5212121212121212|TDefenseMinister::BuildStrategicTilePriorityHeatmap
 0x4ed050|0.00847457627118644|TDefenseMinister::BuildHexAreaTileIndexListIntoAllocatedBuffer
 0x4ed400|0.5818181818181818|TNapoleonMinister::CreateObject
 0x4ed490|1.0|TNapoleonMinister::GetPersonalityWeightByFlag
