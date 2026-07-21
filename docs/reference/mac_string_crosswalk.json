@@ -12840,6 +12840,25 @@
       ],
       "source_file": "src/game/THelpPicture.cpp"
     },
+    "0x005046c0": {
+      "references": [
+        {
+          "group": 10057,
+          "index": 13,
+          "kind": "windows_gob",
+          "load_string_id": 22673,
+          "text": "Another ruler has won the election!  We had better start groveling."
+        },
+        {
+          "group": 10057,
+          "index": 14,
+          "kind": "windows_gob",
+          "load_string_id": 22674,
+          "text": "Previous Briefing"
+        }
+      ],
+      "source_file": "src/game/THelpPicture.cpp"
+    },
     "0x00504e90": {
       "references": [
         {
@@ -190438,7 +190457,7 @@
   "summary": {
     "embedded_globals": 769,
     "formula_matches": 2356,
-    "functions_with_references": 289,
+    "functions_with_references": 290,
     "mac_strings": 3821,
     "mac_strings_with_candidates": 3272,
     "text_resources": 182,

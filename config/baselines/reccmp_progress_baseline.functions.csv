@@ -2929,7 +2929,7 @@ address|matching|name
 0x504120|0.12244897959183673|THelpPicture::ShowNextHelpSet
 0x5041a0|0.12244897959183673|THelpPicture::ShowPreviousHelpSet
 0x504220|0.8428571428571429|THelpPicture::ShowTopic
-0x5046c0|0.20654911838790932|THelpPicture::ShowTopicList
+0x5046c0|0.7107142857142857|THelpPicture::ShowTopicList
 0x504b50|0.4897959183673469|THelpWindow::CreateObject
 0x504bd0|1.0|THelpWindow::GetRuntimeClass
 0x504bf0|1.0|THelpWindow::THelpWindow
@@ -6175,7 +6175,7 @@ address|matching|name
 0x5e55ee|0.6607142857142857|CDragListBox::Dropped
 0x5e5661|0.0|MoveListBoxEntryPreserveItemData
 0x5e56cd|1.0|CDragListBox::DrawInsert
-0x5e56f2|0.9466666666666667|CDragListBox::DrawSingle
+0x5e56f2|0.96|CDragListBox::DrawSingle
 0x5e57e9|0.9871794871794872|CDragListBox::OnChildNotify
 0x5e58ab|1.0|CToolBarCtrl::Create
 0x5e58e4|0.9411764705882353|CProgressCtrl::~CProgressCtrl(void)
@@ -7455,7 +7455,7 @@ address|matching|name
 0x61ed3c|1.0|CDC::LPtoHIMETRIC
 0x61ed57|1.0|CDC::HIMETRICtoLP
 0x61ed72|1.0|CDC::GetHalftoneBrush
-0x61ede5|0.966789667896679|CDC::DrawDragRect
+0x61ede5|0.974169741697417|CDC::DrawDragRect
 0x61f0fa|1.0|CDC::FillSolidRect(struct tagRECT const *, unsigned long)
 0x61f124|1.0|CDC::FillSolidRect(int, int, int, int, unsigned long)
 0x61f19b|1.0|CDC::Draw3dRect(int, int, int, int, unsigned long, unsigned long)

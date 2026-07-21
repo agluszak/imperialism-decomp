@@ -24,12 +24,6 @@ HelpSetRecord* FindHelpSetById(short helpSetId) {
   return 0;
 }
 
-void SetHelpNavigationControlState(THelpPicture* picture, unsigned int tag, bool enabled) {
-  TView* control = picture->ResolveControlByTag(tag);
-  control->SetEnabled(enabled ? 1 : 0, 1);
-  control->SetState(enabled ? 0 : 1, 0);
-}
-
 } // namespace
 // SYNTHETIC: IMPERIALISM 0x00503bd0
 // THelpPicture::CreateObject
@@ -219,27 +213,73 @@ void THelpPicture::ShowTopic(short topic) {
 
 // FUNCTION: IMPERIALISM 0x005046c0
 void THelpPicture::ShowTopicList() {
+  TView* helpDialog = g_pHelpMgr->pendingDialogView8;
+  TUiTextStyleDescriptor normalStyle;
+  TUiTextStyleDescriptor highlightStyle;
+  TUiTextStyleDescriptor captionStyle;
+  normalStyle.textColor = 0;
+  highlightStyle.textColor = 0;
+  captionStyle.textColor = 0;
+  CString navigationText;
+
+  InitializeUiTextStyleDescriptor(&normalStyle, 4, 12, 0x2b6d, 3);
+  InitializeUiTextStyleDescriptor(&highlightStyle, 4, 12, 0x2b69, 3);
+  InitializeUiTextStyleDescriptor(&captionStyle, 0, 12, 0x2b67, 1);
+
   TStaticText* subject = static_cast<TStaticText*>(ResolveControlByTag(0x7375626a)); // 'subj'
   subject->SetTextFromStringResource(currentHelpSet90->helpResourceBaseId, 1, 1);
   subject->SetEnabled(1, 1);
   subject->SetState(0, 1);
+  subject->SetTextAlignmentAndMaybeRefresh(1, 0);
+  subject->SetTextStyleAndMaybeRefresh(&captionStyle, 0);
 
   TStaticText* toggle = static_cast<TStaticText*>(ResolveControlByTag(0x746f676c)); // 'togl'
-  toggle->SetEnabled(1, 0);
-  toggle->SetState(1, 1);
+  toggle->SetEnabled(0, 1);
+  toggle->SetState(0, 1);
   toggle->SetTextFromStringResource(0x2749, 9, 1);
-  for (int index = 0; index < 5; ++index) {
+
+  int topicIndex;
+  for (topicIndex = 0; topicIndex < currentHelpSet90->topicCount; ++topicIndex) {
     TStaticText* topicName =
-        static_cast<TStaticText*>(ResolveControlByTag(0x6e616d31 + index)); // 'nam1'..'nam5'
-    bool enabled = index < currentHelpSet90->topicCount;
-    topicName->SetTextFromStringResource(currentHelpSet90->helpResourceBaseId, index + 2, 1);
-    topicName->SetEnabled(enabled ? 1 : 0, 1);
-    topicName->SetState(0, 0);
+        static_cast<TStaticText*>(ResolveControlByTag(0x6e616d31 + topicIndex)); // 'nam1'..
+    topicName->SetTextFromStringResource(currentHelpSet90->helpResourceBaseId,
+                                         static_cast<short>(topicIndex + 2), 1);
+    topicName->SetEnabled(1, 1);
+    topicName->SetState(1, 1);
+    topicName->SetTextAlignmentAndMaybeRefresh(-2, 0);
+    topicName->SetTextStyleAndMaybeRefresh(&normalStyle, 0);
   }
-  SetHelpNavigationControlState(this, 0x70726576,
-                                currentHelpSet90->previousHelpResourceBaseId != 0); // 'prev'
-  SetHelpNavigationControlState(this, 0x6e657874,
-                                currentHelpSet90->nextHelpResourceBaseId != 0); // 'next'
+
+  for (int unusedTopicTag = currentHelpSet90->topicCount + 0x6e616d31; unusedTopicTag < 0x6e616d36;
+       ++unusedTopicTag) { // 'nam1'..'nam5'
+    TView* topicName = ResolveControlByTag(unusedTopicTag);
+    topicName->SetEnabled(0, 1);
+    topicName->SetState(0, 1);
+  }
+
+  char navigationAvailable = currentHelpSet90->previousHelpResourceBaseId != 0;
+  TStaticText* previous = static_cast<TStaticText*>(ResolveControlByTag(0x70726576)); // 'prev'
+  g_pSimMgr->GetString(0x2749, 0xd, &navigationText);
+  previous->SetTextAndMaybeRefresh(&navigationText, 1);
+  previous->SetEnabled(navigationAvailable, 1);
+  previous->SetState(navigationAvailable, 1);
+  previous->SetTextAlignmentAndMaybeRefresh(-1, 0);
+  previous->SetTextStyleAndMaybeRefresh(&normalStyle, 0);
+
+  navigationAvailable = currentHelpSet90->nextHelpResourceBaseId != 0;
+  TStaticText* next = static_cast<TStaticText*>(ResolveControlByTag(0x6e657874)); // 'next'
+  g_pSimMgr->GetString(0x2749, 0xe, &navigationText);
+  next->SetTextAndMaybeRefresh(&navigationText, 1);
+  next->SetEnabled(navigationAvailable, 1);
+  next->SetState(navigationAvailable, 1);
+  next->SetTextAlignmentAndMaybeRefresh(-1, 0);
+  next->SetTextStyleAndMaybeRefresh(&normalStyle, 0);
+
   topicListText94->SetEnabled(0, 1);
+
+  TScrollView* scrollView = static_cast<TScrollView*>(ResolveControlByTag(0x7377696e)); // 'swin'
+  scrollView->AssertValid();
+  scrollView->SetEnabled(0, 1);
   RefreshControl();
+  helpDialog->ForceRedraw();
 }
