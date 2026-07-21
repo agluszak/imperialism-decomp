@@ -2914,8 +2914,8 @@ address|matching|name
 0x503c70|1.0|THelpPicture::GetRuntimeClass
 0x503c90|0.3333333333333333|THelpPicture::ConstructPictureResourceEntryType57080
 0x503cc0|0.9090909090909091|THelpPicture::`scalar deleting destructor'
-0x503d10|0.0196078431372549|THelpPicture::DoPostCreate
-0x503ed0|0.013605442176870748|THelpPicture::HandleEvent
+0x503d10|0.4|THelpPicture::DoPostCreate
+0x503ed0|0.9261744966442953|THelpPicture::HandleEvent
 0x504120|0.12244897959183673|THelpPicture::ShowNextHelpSet
 0x5041a0|0.12244897959183673|THelpPicture::ShowPreviousHelpSet
 0x504220|0.14948453608247422|THelpPicture::ShowTopic
