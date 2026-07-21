@@ -2970,7 +2970,7 @@ address|name|symbol|size|type|prototype|provenance
 500630|THelpMgr::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 500660|DestructTHelpMgrAndMaybeFree_Impl||7|function|undefined DestructTHelpMgrAndMaybeFree_Impl()|
 500680|THelpMgr::InitializeHelpManagerIndexArrayAndState||1741|function|undefined InitializeHelpManagerIndexArrayAndState()|
-500f10|THelpMgr::OrphanCallChain_C1_I22_00500f10||46|function|undefined OrphanCallChain_C1_I22_00500f10(void)|
+500f10|THelpMgr::ResetHelpSetRanksAndFlags||46|function|void ResetHelpSetRanksAndFlags(void)|
 500f50|THelpMgr::ReadFrom||107|function|undefined WrapperFor_HandleCityDialogNoOpSlot18_At00500f50(int * param_1)|
 500fe0|THelpMgr::WriteTo||105|function|undefined WrapperFor_HandleCityDialogNoOpSlot14_At00500fe0(int * param_1)|
 501070|THelpMgr::Free||37|function|undefined OrphanCallChain_C2_I16_00501070(void)|
@@ -4198,7 +4198,7 @@ address|name|symbol|size|type|prototype|provenance
 556ad0|TNavyMgr::DeserializeNavyOrderListsByNation||915|function|void DeserializeNavyOrderListsByNation(TStream* stream, short nationFilter)|
 556f60|CancelNationOrdersAndResetPrimaryFlags||79|function|undefined CancelNationOrdersAndResetPrimaryFlags()|
 556fd0|ResetPrimaryOrderActiveFlagsAndClearManagerState||67|function|undefined ResetPrimaryOrderActiveFlagsAndClearManagerState()|
-557040|RefreshNavyOrderCycleAndClearReadyFlags||47|function|undefined RefreshNavyOrderCycleAndClearReadyFlags()|
+557040|TNavyMgr::ClearAllTransientOrders||47|function|void ClearAllTransientOrders(void)|mac-oracle
 557080|TNavyMgr::MoveMapOrderEntryToQueueHeadIfValid||123|function|unsigned char __thiscall MoveMapOrderEntryToQueueHeadIfValid(TTaskForce* entry)|
 557170|ComputeAggregateWeightedChildCostForMatchingType5NavyOrders||120|function|undefined ComputeAggregateWeightedChildCostForMatchingType5NavyOrders()|
 557210|RemoveOrdersByNationFromPrimarySecondaryAndTaskForceLists||140|function|undefined RemoveOrdersByNationFromPrimarySecondaryAndTaskForceLists()|
@@ -4866,8 +4866,8 @@ address|name|symbol|size|type|prototype|provenance
 581ae0|SetSelectedIndex6AAndTriggerRefresh||38|function|undefined SetSelectedIndex6AAndTriggerRefresh()|
 581b20|TSimMgr::LoadNormalizedCredentialName||123|function|undefined AssignNormalizedCredentialTokenToIndexedSlot()|
 581bc0|AssignSharedStringFromIndexedSlot7C||38|function|undefined AssignSharedStringFromIndexedSlot7C()|
-581c00|RefreshNationAdvisorLabelStrings||477|function|undefined RefreshNationAdvisorLabelStrings()|
-581e60|ProcessTurnInstructionStreamAndFinalizePhase||549|function|undefined ProcessTurnInstructionStreamAndFinalizePhase()|
+581c00|TSimMgr::NameCapitals||477|function|void NameCapitals(void)|mac-oracle
+581e60|TSimMgr::ProcessScenarioScript||549|function|void ProcessScenarioScript(void)|mac-oracle
 582120|HandleTurnInstruction_Labo_SetNationLaborTierCounts||231|function|undefined HandleTurnInstruction_Labo_SetNationLaborTierCounts()|
 5822c0|HandleTurnInstruction_Capa_ApplyNationSlotValueWithDelta||178|function|undefined HandleTurnInstruction_Capa_ApplyNationSlotValueWithDelta()|
 5823e0|HandleTurnInstruction_Ware_ApplyNationIndexedShortAndRefresh||167|function|undefined HandleTurnInstruction_Ware_ApplyNationIndexedShortAndRefresh()|
@@ -5625,7 +5625,7 @@ address|name|symbol|size|type|prototype|provenance
 5af3de|scan_existing_slots_for_duplicate|||global||
 5af460|TTechMgr::ReadFrom||537|function|undefined DeserializeCityOrderCapabilityState()|
 5af710|TTechMgr::WriteTo||493|function|undefined SerializeCityOrderCapabilityState()|
-5af980|UpdateCityOrderCapabilityUnlockProgress||315|function|undefined UpdateCityOrderCapabilityUnlockProgress()|
+5af980|TTechMgr::CheckForAdvances||315|function|void CheckForAdvances(void)|mac-oracle
 5afb10|ApplyTechUnlockAndQueueNationAbilityNotices||105|function|undefined ApplyTechUnlockAndQueueNationAbilityNotices()|
 5afba0|ApplyCityOrderCapabilityUnlockByTechId||211|function|void __thiscall ApplyCityOrderCapabilityUnlockByTechId(int nTechId)|
 5afd00|TTechMgr::HandleAbilityUnlock||1160|function|void __thiscall HandleAbilityUnlock(int techId, int nationSlot)|

@@ -300,7 +300,7 @@ void TCouncilView::AdvanceCivilianTerrainSelectionStep() {
       if (g_pDiplomacyTurnStateManager->lastProcessedNationSlot78e == activeNation &&
           g_pSimMgr->multiplayerSessionRole == 0) {
         short tick = g_pSimMgr->GetEconomicTurn();
-        unsigned char* phaseTable = &g_pSimMgr->field6e;
+        unsigned char* phaseTable = g_pSimMgr->phaseStateByDecade;
         if (phaseTable[tick / 40] != 2) {
           allowAdvance =
               g_pUiRuntimeContext->ShowLocalizedUiPromptByGroupAndIndex(0x275d, 7, 0, 1) == 0;

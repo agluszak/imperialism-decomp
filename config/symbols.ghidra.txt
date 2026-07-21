@@ -400,7 +400,7 @@ TControl::thunk_WrapperFor_thunk_InvalidateCityDialogRectRegion_At0048b6d0 40660
 thunk_ComputeTurnEventDialogPlacementByCode 40666D l
 thunk_QueuePortConstructionOrder 4066A9 l
 thunk_InitializeTMinisterBaseOrderArray 40670D l
-thunk_ProcessTurnInstructionStreamAndFinalizePhase 406730 l
+thunk_TSimMgr::ProcessScenarioScript 406730 l
 TCountry::thunk_QueueInterNationEventRecordDeduped 406758 l
 thunk_ConstructArmoryView 40677B l
 thunk_InitializeNationStateIdentityAndOwnedRegionList 40678A l
@@ -465,7 +465,7 @@ thunk_ReturnConstantTrueQuickDrawFlag 40761C l
 thunk_IsCivilianOrderInIdleSelectionState 40765D l
 thunk_FindFirstPortZoneContextByNation 4076A8 l
 thunk_AssignStringSharedRefAndReturnThis 4076B7 l
-thunk_RefreshNavyOrderCycleAndClearReadyFlags 4076D0 l
+thunk_TNavyMgr::ClearAllTransientOrders 4076D0 l
 thunk_InitializeMapContextActionManager 4076E9 l
 thunk_DispatchGlobalTurnEventCode 407702 l
 thunk_HandleTurnEvent7D8_ActivateDiplomacyMapView 40771B l
@@ -621,7 +621,7 @@ thunk_HandleTurnResumeStateTelemetry 40980E l
 thunk_DeserializeCityProductionQueueCommand 409886 l
 thunk_InvokeStrategicMapViewMethod70 4098B8 l
 thunk_HandleCrossUArmyViewsCommandTagDispatch 409903 l
-thunk_RefreshNationAdvisorLabelStrings 40993F l
+thunk_TSimMgr::NameCapitals 40993F l
 thunk_ConstructDiplomacyTurnStateManager_Vtbl00654d90 409944 l
 TCivilianButton::thunk_ConstructUiClickablePictureResourceEntry 409980 l
 thunk_InitializeCivUnitOrderObject 409985 l
@@ -3612,7 +3612,7 @@ THelpMgr::THelpMgr 5005E0 f
 THelpMgr::'scalar_deleting_destructor' 500630 f
 DestructTHelpMgrAndMaybeFree_Impl 500660 f
 THelpMgr::InitializeHelpManagerIndexArrayAndState 500680 f
-THelpMgr::OrphanCallChain_C1_I22_00500f10 500F10 f
+THelpMgr::ResetHelpSetRanksAndFlags 500F10 f
 THelpMgr::ReadFrom 500F50 f
 THelpMgr::WriteTo 500FE0 f
 THelpMgr::Free 501070 f
@@ -4836,7 +4836,7 @@ TNavyMgr::ReadFrom 556AA0 f
 TNavyMgr::DeserializeNavyOrderListsByNation 556AD0 f
 CancelNationOrdersAndResetPrimaryFlags 556F60 f
 TNavyMgr::ResetPrimaryOrderActiveFlagsAndClearManagerState 556FD0 f
-RefreshNavyOrderCycleAndClearReadyFlags 557040 f
+TNavyMgr::ClearAllTransientOrders 557040 f
 TNavyMgr::MoveMapOrderEntryToQueueHeadIfValid 557080 f
 TNavyMgr::ComputeAggregateWeightedChildCostForMatchingType5NavyOrders 557170 f
 TNavyMgr::RemoveOrdersByNationFromPrimarySecondaryAndTaskForceLists 557210 f
@@ -5496,8 +5496,8 @@ ReinitializeGameFlowAndPostTurnEventCode 581870 f
 TSimMgr::SetSelectedIndex6AAndTriggerRefresh 581AE0 f
 TSimMgr::LoadNormalizedCredentialName 581B20 f
 TSimMgr::AssignSharedStringFromIndexedSlot7C 581BC0 f
-RefreshNationAdvisorLabelStrings 581C00 f
-ProcessTurnInstructionStreamAndFinalizePhase 581E60 f
+TSimMgr::NameCapitals 581C00 f
+TSimMgr::ProcessScenarioScript 581E60 f
 HandleTurnInstruction_Labo_SetNationLaborTierCounts 582120 f
 TSimMgr::HandleTurnInstruction_Capa_ApplyNationSlotValueWithDelta 5822C0 f
 TSimMgr::HandleTurnInstruction_Ware_ApplyNationIndexedShortAndRefresh 5823E0 f
@@ -6276,7 +6276,7 @@ generate_unique_candidate_slot 5AF3AF l
 scan_existing_slots_for_duplicate 5AF3DE l
 TTechMgr::ReadFrom 5AF460 f
 TTechMgr::WriteTo 5AF710 f
-UpdateCityOrderCapabilityUnlockProgress 5AF980 f
+TTechMgr::CheckForAdvances 5AF980 f
 ApplyTechUnlockAndQueueNationAbilityNotices 5AFB10 f
 TTechMgr::ApplyCityOrderCapabilityUnlockByTechId 5AFBA0 f
 TTechMgr::HandleAbilityUnlock 5AFD00 f

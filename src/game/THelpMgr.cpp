@@ -137,8 +137,13 @@ __inline short ReadLocalizationPendingEventGate5c() {
 } // namespace
 
 // FUNCTION: IMPERIALISM 0x00500f10
-undefined THelpMgr::OrphanCallChain_C1_I22_00500f10() {
-  return 0;
+void THelpMgr::ResetHelpSetRanksAndFlags() {
+  for (int index = 1; index <= indexList->GetSize(); ++index) {
+    HelpSetRecord* record =
+        static_cast<HelpSetRecord*>(indexList->GetPtrListEntryByOneBasedIndex(index));
+    record->rank = 0;
+    record->flagByte = 0;
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x00500f50

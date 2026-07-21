@@ -125,7 +125,7 @@ confirmed from Ghidra disassembly, not guessed):
   `AreTechItemPrerequisitePairCompleted`) and has explicit `case` arms for techId
   4, 9, 0xb, 0xf, 0x15, 0x16, 0x18, 0x1b that write specific bytes at `+0x1a3..+0x1aa`
   and selector shorts at `+0x1d2`/`+0x1d4`. Traced its callers
-  (`UpdateCityOrderCapabilityUnlockProgress` 0x5af980, `ApplyTechUnlockAndQueueNation-
+  (`TTechMgr::CheckForAdvances` 0x5af980, `ApplyTechUnlockAndQueueNation-
   AbilityNotices` 0x5afb10): confirmed this bitmask is **not** indexed by nation and is
   **not** the same array `OrphanRetStub_004c6fd0` reads -- it does not write
   `TTechMgr+0x467`. The `+0x1a3..+0x1aa` bytes it does write look ship/navy-related
