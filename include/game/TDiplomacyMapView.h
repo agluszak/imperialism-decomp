@@ -68,17 +68,19 @@ public:
   void BuildTurnEventMonochromeMaskBuffers(int maskIndex, int eventCode);
   void InvalidateAndRunChildWaitSheet(void* arg1, void* arg2, void* arg3, void* arg4);
   void DrawVoteNuggets();
-  // 0x4f4a30 -- draws the per-nation legend labels over nationLabelRects234: great
-  // powers 0..6 (text only), then minors 7..22 (text + palette-selected flag icons).
+  // 0x4f4a30 -- Mac CodeWarrior names this TDiplomacyMapView::DrawNames(const VRect&).
+  // Draws the per-nation map labels over nationLabelRects234: great powers 0..6,
+  // then minors 7..22 with the default DIB palette selected for their theme colors.
   // presentRect is an ignored stack arg the original threads through.
-  void RenderTerrainAndMinorNationLegendLabels(RECT* presentRect);
-  // 0x4f4ec0 -- called unconditionally from ApplyRectSlot110 for interactionModeAt94 in
+  void DrawNames(RECT* presentRect);
+  // 0x4f4ec0 -- Mac CodeWarrior names this TDiplomacyMapView::DrawIcons(const VRect&).
+  // Called unconditionally from ApplyRectSlot110 for interactionModeAt94 in
   // {1,2,4}: for every terrain-descriptor slot whose hit rect intersects presentRect,
   // draws a diplomacy-compatibility highlight (LookupOrderCompatibilityMatrixValue) into
   // nationAnchorRects3A4, a mode-specific status icon into nationTextHitRectsC4 (need/
   // grant level for mode 1, relation tier for mode 2, policy level for mode 4), and an
   // optional colony-boycott overlay. presentRect is only read, never threaded onward.
-  void RenderDiplomacyMatrixRowStatusIcons(RECT* presentRect);
+  void DrawIcons(RECT* presentRect);
 
   // 0x4f4620 -- resolves the 6 minister action-topic buttons (info/trty/gran/trad/
   // coun/offr), refreshes the info button's nation-slot selection, and (re)assigns

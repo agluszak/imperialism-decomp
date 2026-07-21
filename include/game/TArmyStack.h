@@ -26,8 +26,8 @@ public:
   virtual void Free() override;                    // slot 0x07 0x4a7c20
   // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
-  // Field layout from ProcessTileUnitListsAndApplyRandomStatusUpdates's construction site
-  // (0x4a1f80, `new TArmyStack()` + scatter-init) and OrphanCallChain_C12_I108_004a2390's
+  // Field layout from FormStacks's construction site (0x4a1f80, `new TArmyStack()` +
+  // scatter-init) and ResolveNextMove's
   // (0x4a2390) reads. TObject's own vptr occupies the first 4 bytes.
   short field4; // +0x04 -- zeroed at construction
   short field6; // +0x06 -- zeroed at construction

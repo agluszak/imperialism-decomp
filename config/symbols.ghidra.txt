@@ -2111,11 +2111,11 @@ TArmyMgr::Free 4A1A00 f
 TArmyMgr::ReadFrom 4A1B80 f
 WrapperFor_FreeHeapBufferIfNotNull_At004a1d90 4A1D90 f
 TArmyMgr::WriteTo 4A1DD0 f
-TArmyMgr::OrphanCallChain_C4_I26_004a1e40 4A1E40 f
-TArmyMgr::ReleaseThreeLinkedObjectsAndResetTerrainDescriptorFlags 4A1EB0 f
-TArmyMgr::ProcessTileUnitListsAndApplyRandomStatusUpdates 4A1F80 f
-TArmyMgr::ProcessPendingArmyStacksForBattleOrRelocation 4A2390 f
-TArmyMgr::IterateLinkedListCursorAndClearPerTileByte0F 4A2500 f
+TArmyMgr::DoCombatMoves 4A1E40 f
+TArmyMgr::EndBattlePhase 4A1EB0 f
+TArmyMgr::FormStacks 4A1F80 f
+TArmyMgr::ResolveNextMove 4A2390 f
+TArmyMgr::ClearPendingStacksAndFinalizeMilitaryUnits 4A2500 f
 BuildArmyActionLabelFromLocalizationAndCounts 4A2610 f
 BuildArmyContextActionRecordsAndDispatchLabel 4A2900 f
 OrphanVtableAssignStub_004a31c0 4A31C0 f
@@ -2127,7 +2127,7 @@ TArmyMgr::UpdateDualLinkedEntryMetersAndBlinkState 4A3830 f
 TMilitaryUnit::SetOrClearWordMaskBits3a 4A3B30 f
 TArmyStack::ResetCursorAndGetHeadUnit 4A3B70 f
 TArmyStack::AdvanceCursorAndGetUnit 4A3B90 f
-TArmyMgr::ArmyMgrSlot12 4A3BC0 f
+TArmyMgr::DoOwnershipChanges 4A3BC0 f
 TArmyMgr::DispatchTileActionByKind_004a3d90 4A3D90 f
 TArmyMgr::SelectMovableUnitOnCurrentTileAndPlaySfx 4A3E50 f
 TArmyMgr::CommitCityActionGateCostIfAffordable 4A3F30 f
@@ -6791,8 +6791,8 @@ TAssetMgr::'scalar_deleting_destructor' 5DF300 f
 TAssetMgr::WrapperFor_InvokeCallbackNTimesWithSehGuard_At005df330 5DF330 f
 TAssetMgr::ForwardEnsurePictWvDataGobLoadedBySlot 5DF3A0 f
 TAssetMgr::ResolveTurnEventDialogNodeByMessageContext 5DF3C0 f
-TAssetMgr::NoOpRuntimeUiCallback_005df3f0 5DF3F0 f
-TAssetMgr::NoOpRuntimeUiCallback_005df410 5DF410 f
+TAssetMgr::OpenFilesFor 5DF3F0 f
+TAssetMgr::CloseFilesFor 5DF410 f
 TAssetMgr::LoadTableResourceStreamByName 5DF430 f
 InitializeRuntimeClassVtablePointer_0066FEC4 5DF610 f
 WrapperFor_FreeHeapBufferIfNotNull_At005df630 5DF630 f
@@ -6801,7 +6801,7 @@ TAssetMgr::ReleaseResourceStreamIfNotNull 5DF6D0 f
 TAssetMgr::ReadResourceStreamIntoBufferAndAdvance 5DF700 f
 TAssetMgr::InvokeVtableSlot30OnTargetObject 5DF730 f
 TAssetMgr::GetResourceStreamSize 5DF760 f
-TAssetMgr::NoOpRuntimeUiCallback_005df780 5DF780 f
+TAssetMgr::OpenFilesForView 5DF780 f
 QueryVolumeInformationForDriveIndex 5DF7A0 f
 QueryDriveTypeByDriveIndex 5DF890 f
 ReturnTrueStub 5DF8D0 f

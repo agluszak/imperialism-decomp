@@ -13,6 +13,7 @@
 
 #include "decomp_types.h"
 #include "game/TArmyMgr.h"
+#include "game/TAssetMgr.h"
 #include "game/TCountry.h"
 #include "game/TDiplomacyMgr.h"
 #include "game/TGreatPower.h"
@@ -383,7 +384,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
   case 0xf: {
     turnStateCode = 0x12;
     if (g_pUiViewManager != nullptr) {
-      // TODO: port TAssetMgr/TViewMgr slot used at 0x005df3f0.
+      g_pUiViewManager->OpenFilesFor(0xa);
     }
     g_pInterNationEventQueueManager->StartNewsPhase();
     DispatchUiSlot4C();
@@ -462,7 +463,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
   case 0x12: {
     turnStateCode = 5;
     if (g_pUiViewManager != nullptr) {
-      // TODO: port TAssetMgr/TViewMgr slot used at 0x005df3f0.
+      g_pUiViewManager->OpenFilesFor(0x13);
     }
     if (g_pGlobalMapState != nullptr) {
       g_pGlobalMapState->DispatchTurnEvent7DDForActiveNation();
@@ -505,7 +506,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
   case 0x14: {
     turnStateCode = 0x15;
     if (g_pMapContextActionManager != nullptr) {
-      // TODO: port map-context slot at 0x004a1e40.
+      g_pMapContextActionManager->DoCombatMoves();
     }
     if (difficultyLevel != 0) {
       g_pGameFlowState->ConfigureTurnResumeStateAndNationMask(previousTurnStateCode, turnStateCode);
@@ -532,11 +533,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
         }
         TGreatPower* nation = g_apNationStates[nationSlot];
         if (nation != nullptr) {
-          // TODO: port TGreatPower vtable slot 0xae (0x2b8), which resolves to a near-empty
-          // stub at 0x4d8be0 (RET 4) -- the real per-nation override(s), if any, are not yet
-          // identified. (A prior version of this TODO cited 0x4d8920 --
-          // TCountry::ResetDiplomacyLevelForNationSlot12 at unrelated vtable slot 0x12/0x48 --
-          // which was a mistaken address; corrected here.)
+          nation->RefreshTrackedEntriesAndReplanAiDevelopment(0);
         }
       }
     }

@@ -157520,7 +157520,7 @@
             "status": "confirmed"
           }
         ],
-        "name": "TArmyMgr::ProcessTileUnitListsAndApplyRandomStatusUpdates",
+        "name": "TArmyMgr::FormStacks",
         "owner_class": "TArmyMgr",
         "recovered_source": "src/game/TArmyMgr.cpp"
       },
@@ -157539,7 +157539,7 @@
             "status": "confirmed"
           }
         ],
-        "name": "TArmyMgr::IterateLinkedListCursorAndClearPerTileByte0F",
+        "name": "TArmyMgr::ClearPendingStacksAndFinalizeMilitaryUnits",
         "owner_class": "TArmyMgr",
         "recovered_source": "src/game/TArmyMgr.cpp"
       },

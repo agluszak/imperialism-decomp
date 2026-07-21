@@ -126,7 +126,7 @@ void TUniversityView::UpdateFields() {
 void TUniversityView::Free() {
   TView::Free();
   if (g_nSaveFormatVersion != 0x4d6f696c) { // 'Moil'
-    g_pUiViewManager->NoOpRuntimeUiCallback_005df410(0x23fa);
+    g_pUiViewManager->CloseFilesFor(0x23fa);
   }
 }
 

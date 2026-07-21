@@ -231,7 +231,7 @@ extern int g_nTacticalUnitSpriteCellWidth_006A5498;
 extern int g_nTacticalUnitSpriteCellHeight_006A549C;
 
 // Per-unit-type combat/composition class (0x695380), read by
-// ProcessTileUnitListsAndApplyRandomStatusUpdates when building a TArmyStack's
+// FormStacks when building a TArmyStack's
 // field4/field6 composition code.
 extern short g_awUnitCombatClassBySlot[32];
 // Stack composition class lookup (0x6953c0), indexed [minClass + maxClass*4]; true
