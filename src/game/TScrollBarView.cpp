@@ -159,12 +159,12 @@ void TScrollBarView::ApplyRectSlot110(RECT* rectBuffer) {
   dstRect.top = 0;
   dstRect.right = srcRect.right;
   dstRect.bottom = srcRect.bottom;
-  if (g_pStrategicMapViewSystem->atlas694[5]->surfaceDib != nullptr) {
-    int h = g_pStrategicMapViewSystem->atlas694[5]->surfaceDib->GetAbsoluteHeight();
+  if (g_pStrategicMapViewSystem->atlas694[5]->blitSurface.surfaceDib != nullptr) {
+    int h = g_pStrategicMapViewSystem->atlas694[5]->blitSurface.surfaceDib->GetAbsoluteHeight();
     OffsetRect(&srcRect, 0, (h - srcRect.top) - srcRect.bottom);
   }
-  if (surfaceContext90->surfaceDib != nullptr) {
-    int h = surfaceContext90->surfaceDib->GetAbsoluteHeight();
+  if (surfaceContext90->blitSurface.surfaceDib != nullptr) {
+    int h = surfaceContext90->blitSurface.surfaceDib->GetAbsoluteHeight();
     OffsetRect(&dstRect, 0, (h - dstRect.top) - dstRect.bottom);
   }
   BlitRectWithOptionalTransparency(g_pStrategicMapViewSystem->atlas694[5]->GetBlitSurface(),
@@ -179,12 +179,12 @@ void TScrollBarView::ApplyRectSlot110(RECT* rectBuffer) {
   dstRect.left = 0;
   dstRect.bottom = dstRect.top + 0x12;
   dstRect.right = srcRect.right;
-  if (g_pStrategicMapViewSystem->atlas694[5]->surfaceDib != nullptr) {
-    int h = g_pStrategicMapViewSystem->atlas694[5]->surfaceDib->GetAbsoluteHeight();
+  if (g_pStrategicMapViewSystem->atlas694[5]->blitSurface.surfaceDib != nullptr) {
+    int h = g_pStrategicMapViewSystem->atlas694[5]->blitSurface.surfaceDib->GetAbsoluteHeight();
     OffsetRect(&srcRect, 0, h - 0x26a);
   }
-  if (surfaceContext90->surfaceDib != nullptr) {
-    int h = surfaceContext90->surfaceDib->GetAbsoluteHeight();
+  if (surfaceContext90->blitSurface.surfaceDib != nullptr) {
+    int h = surfaceContext90->blitSurface.surfaceDib->GetAbsoluteHeight();
     OffsetRect(&dstRect, 0, (h - dstRect.top) - dstRect.bottom);
   }
   BlitRectWithOptionalTransparency(g_pStrategicMapViewSystem->atlas694[5]->GetBlitSurface(),
@@ -199,12 +199,12 @@ void TScrollBarView::ApplyRectSlot110(RECT* rectBuffer) {
   srcRect.left = 0;
   dstRect.left = 0;
   dstRect.right = srcRect.right;
-  if (g_pStrategicMapViewSystem->atlas694[5]->surfaceDib != nullptr) {
-    int h = g_pStrategicMapViewSystem->atlas694[5]->surfaceDib->GetAbsoluteHeight();
+  if (g_pStrategicMapViewSystem->atlas694[5]->blitSurface.surfaceDib != nullptr) {
+    int h = g_pStrategicMapViewSystem->atlas694[5]->blitSurface.surfaceDib->GetAbsoluteHeight();
     OffsetRect(&srcRect, 0, (h - srcRect.top) - 300);
   }
-  if (surfaceContext90->surfaceDib != nullptr) {
-    int h = surfaceContext90->surfaceDib->GetAbsoluteHeight();
+  if (surfaceContext90->blitSurface.surfaceDib != nullptr) {
+    int h = surfaceContext90->blitSurface.surfaceDib->GetAbsoluteHeight();
     OffsetRect(&dstRect, 0, (h - dstRect.top) - dstRect.bottom);
   }
   BlitRectWithOptionalTransparency(g_pStrategicMapViewSystem->atlas694[5]->GetBlitSurface(),

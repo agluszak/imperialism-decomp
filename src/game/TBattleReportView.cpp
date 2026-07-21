@@ -311,7 +311,7 @@ void TBattleReportView::RenderMapContextActionMarkers(RECT* rectBuffer) {
         destRect.right = destRect.left + 0x12;
         destRect.bottom = destRect.top + 0x12;
 
-        CDib* activeDib = g_pActiveQuickDrawSurfaceContext->surfaceDib;
+        CDib* activeDib = g_pActiveQuickDrawSurfaceContext->blitSurface.surfaceDib;
         if (activeDib != 0) {
           int surfaceHeight = activeDib->m_pInfoHeader->bmiHeader.biHeight;
           if (surfaceHeight < 1) {

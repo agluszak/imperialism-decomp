@@ -73,15 +73,16 @@ void TArmyCheckBox::ApplyRectSlot110(RECT* rectBuffer) {
     // Both source and destination rects get flipped for a negative-height
     // (bottom-up) backing DIB -- the same idiom, applied to two different
     // surfaces (surfaceContext90's icon strip, then the active draw surface).
-    if (surfaceContext90->surfaceDib != 0) {
-      int height = surfaceContext90->surfaceDib->m_pInfoHeader->bmiHeader.biHeight;
+    if (surfaceContext90->blitSurface.surfaceDib != 0) {
+      int height = surfaceContext90->blitSurface.surfaceDib->m_pInfoHeader->bmiHeader.biHeight;
       if (height < 1) {
         height = -height;
       }
       OffsetRect(&srcRect, 0, height - srcRect.top - srcRect.bottom);
     }
-    if (g_pActiveQuickDrawSurfaceContext->surfaceDib != 0) {
-      int height = g_pActiveQuickDrawSurfaceContext->surfaceDib->m_pInfoHeader->bmiHeader.biHeight;
+    if (g_pActiveQuickDrawSurfaceContext->blitSurface.surfaceDib != 0) {
+      int height = g_pActiveQuickDrawSurfaceContext->blitSurface.surfaceDib->m_pInfoHeader
+                       ->bmiHeader.biHeight;
       if (height < 1) {
         height = -height;
       }
