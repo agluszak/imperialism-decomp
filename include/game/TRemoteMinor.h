@@ -8,7 +8,7 @@
 class TRemoteMinor : public TMinor {
 public:
   DECLARE_DYNCREATE(TRemoteMinor)
-  TRemoteMinor();
+  TRemoteMinor() : TMinor() {}
 
   void ApplyIndexedResourceDeltaAndAdjustNationTotals(int resourceIndex, int delta,
                                                       int multiplier) override;

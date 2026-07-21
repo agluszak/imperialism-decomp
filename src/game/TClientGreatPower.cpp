@@ -79,5 +79,3 @@ int TClientGreatPower::CheckTransitionSlot27C(int targetNation, int sourceNation
 
 // FUNCTION: IMPERIALISM 0x00541790
 void TClientGreatPower::HandleNationLost(void) {}
-
-TClientGreatPower::TClientGreatPower() : TGreatPower() {}
