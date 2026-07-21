@@ -2825,7 +2825,7 @@ address|name|symbol|size|type|prototype|provenance
 4f7130|TDiplomacyMapView::WrapperFor_thunk_ForwardCityDialogParamToChildSlot48_At004f7130||41|function|undefined WrapperFor_thunk_ForwardCityDialogParamToChildSlot48_At004f7130()|
 4f71a0|TDiplomacyMapView::DrawVoteNuggets||475|function|undefined DrawVoteNuggets()|
 4f7400|ShowDiplomacyActionRejectedNotice||179|function|undefined ShowDiplomacyActionRejectedNotice()|
-4f74f0|TToolBarCluster::ValidateDiplomacyProposalTargetAndShowBlockedDetails||787|function|undefined ValidateDiplomacyProposalTargetAndShowBlockedDetails()|
+4f74f0|TDiplomacyMapView::CheckEntanglements||787|function|char CheckEntanglements(int targetNationSlot, eDipAction action)|
 4f78e0|TPanelView::CreateObject|?CreateObject@TPanelView@@SGPAVCObject@@XZ|107|function|undefined CreateObject()|rtti
 4f7970|TPanelView::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4f79c0|TPanelView::GetRuntimeClass||6|function|undefined GetTPanelViewClassNamePointer()|rtti

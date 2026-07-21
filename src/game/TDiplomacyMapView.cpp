@@ -30,6 +30,7 @@
 #include "game/TSimMgr.h"
 #include "game/TPanelView.h"
 #include "game/TOffersPanelView.h"
+#include "game/mapped_flavor_text.h"
 #include "game/ui_text_label_helpers_decls.h"
 
 // Defined below in address order (0x4d5d30).
@@ -1389,6 +1390,44 @@ void TDiplomacyMapView::DrawVoteNuggets() {
   } while (policyIndex < 0x180);
 
   UpdatePaletteIndexWithDefaultFallback(0x13);
+}
+
+// FUNCTION: IMPERIALISM 0x004f74f0
+char TDiplomacyMapView::CheckEntanglements(int targetNationSlot, eDipAction action) {
+  if (g_pDiplomacyTurnStateManager->HasAllianceGuardSlot60(targetNationSlot,
+                                                           selectedTerrainIndexAt90) != 0) {
+    CString formattedIntro;
+    CString entangledNations;
+    CString unusedSuffix;
+    CString templateText;
+    CString targetName;
+    CString title;
+
+    g_apTerrainTypeDescriptorTable[targetNationSlot]->FormatOverlayTerrainLabelText(&targetName);
+    int introStringIndex = 0;
+    if (action != kDipActionAlliance) {
+      introStringIndex = 4;
+    }
+    g_pSimMgr->GetString(0x275d, introStringIndex, &templateText);
+    scanBracketExpressions(g_pSimMgr, &formattedIntro, static_cast<LPCSTR>(templateText),
+                           static_cast<LPCSTR>(targetName));
+
+    entangledNations = CString(g_pDiplomacyPanelEmptyText_00654ec8);
+    for (int nationSlot = 0; nationSlot < 7; ++nationSlot) {
+      if (g_pDiplomacyTurnStateManager->IsNationPairAtWar(static_cast<short>(targetNationSlot),
+                                                          static_cast<short>(nationSlot)) != 0) {
+        CString nationName;
+        g_apTerrainTypeDescriptorTable[nationSlot]->FormatOverlayTerrainLabelText(&nationName);
+        entangledNations += "   " + nationName + "\n";
+      }
+    }
+
+    templateText = formattedIntro + "\n" + entangledNations + unusedSuffix;
+    g_pSimMgr->GetString(0x275d, 5, &title);
+    return g_pUiRuntimeContext->ModalMessage(3, title, templateText,
+                                             g_ptDiplomacyNoticeModalMessage, 0, 0);
+  }
+  return 1;
 }
 
 // 0x005DA040 and 0x005DA180 moved to TViewMgr::HandleTurnEventVtableSlot60ActivateMainDialog

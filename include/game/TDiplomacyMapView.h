@@ -19,6 +19,11 @@ struct DiplomacyMaskBufferRun {
 
 ASSERT_SIZE(DiplomacyMaskBufferRun, 0x14);
 
+// Mac CodeWarrior names the action parameter eDipAction. Only the two values used by
+// CheckEntanglements are named here; the diplomacy-map click handler uses the wider
+// action range for unrelated offer types.
+enum eDipAction { kDipActionJoinEmpire = 2, kDipActionAlliance = 3 };
+
 // Constructor evidence calls TPicture::TPicture at 0x0048efc0, then writes the
 // complete-object vfptr at 0x00655b68. The table at 0x0066f16c is separate
 // turn-event dispatch/data, not an object vtable.
@@ -84,6 +89,10 @@ public:
   // each button's hover-help text; called from DoPostCreate. Real body,
   // previously misattributed to TToolBarCluster in the generated symbol table.
   void InitializeDiplomacyMinisterActionControlsAndLabels();
+
+  // Mac CodeWarrior: TDiplomacyMapView::CheckEntanglements(int, eDipAction).
+  // Confirms alliance/annexation offers that would inherit the target's wars. 0x4f74f0.
+  char CheckEntanglements(int targetNationSlot, eDipAction action);
 
   // 0x4f6d90 -- selects a minister action topic: repositions the old/new topic buttons
   // via CaptureLayoutF0, toggles the 'ltab'/'rtab' bracket TPicture controls around the

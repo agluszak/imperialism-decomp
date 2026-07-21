@@ -12110,6 +12110,18 @@
       ],
       "source_file": "src/game/TDiplomacyMapView.cpp"
     },
+    "0x004f74f0": {
+      "references": [
+        {
+          "group": 10077,
+          "index": 5,
+          "kind": "windows_gob",
+          "load_string_id": 24665,
+          "text": "Your Excellency, bringing [1: country] into our Empire would force us into war with the following nations:"
+        }
+      ],
+      "source_file": "src/game/TDiplomacyMapView.cpp"
+    },
     "0x004f7c00": {
       "references": [
         {
@@ -179510,7 +179522,7 @@
   "summary": {
     "embedded_globals": 769,
     "formula_matches": 2356,
-    "functions_with_references": 285,
+    "functions_with_references": 286,
     "mac_strings": 3821,
     "mac_strings_with_candidates": 3091,
     "text_resources": 0,
