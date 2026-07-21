@@ -54,20 +54,20 @@ void TIconSlider::SetNumIcons(short numIcons) {
 }
 
 // FUNCTION: IMPERIALISM 0x005065b0
-char TIconSlider::KnobContainsMouse(const CPoint* point) {
+char TIconSlider::KnobContainsMouse(const CPoint& point) {
   RECT knobRect;
   GetKnobRect(knobRect);
-  return static_cast<char>(PtInRect(&knobRect, *point));
+  return static_cast<char>(PtInRect(&knobRect, point));
 }
 
 // FUNCTION: IMPERIALISM 0x005065f0
-char TIconSlider::DispatchUiMouseMoveToChildren(CPoint* point, int arg2, int arg3, int arg4) {
+char TIconSlider::HandleMouseDown(const CPoint& point, TToolboxEvent* event, CPoint origin) {
   if (KnobContainsMouse(point) != 0) {
-    TIconBar::DispatchUiMouseMoveToChildren(point, arg2, arg3, arg4);
+    TIconBar::HandleMouseDown(point, event, origin);
     return 1;
   }
 
-  int nextValue = point->x;
+  int nextValue = point.x;
   if (maxTrackOffsetB6 < nextValue) {
     nextValue = maxTrackOffsetB6;
   }

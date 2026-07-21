@@ -19,8 +19,8 @@ public:
       RgnHandle hitArg) override;                   // slot 0x35 0x4bafa0
   void DoPostCreate(int arg) override;              // slot 0x37 0x4ba3b0
   void ApplyRectSlot110(RECT* rectBuffer) override; // slot 0x44 0x4ba7b0
-  void BeginMouseCaptureAndStartRepeatTimer(CPoint* point, int arg2, int arg3,
-                                            int arg4) override; // slot 0x47 0x4bc660
+  void BeginMouseCaptureAndStartRepeatTimer(const CPoint& point, TToolboxEvent* event,
+                                            CPoint origin) override; // slot 0x47 0x4bc660
   void DispatchPictureResourceCommand(int eventType, void* eventSender, void* eventDataA,
                                       void* eventDataB,
                                       int commandFlag) override; // slot 0x68 0x4bc870

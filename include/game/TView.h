@@ -152,10 +152,10 @@ public:
                                                         CDC* paintDc); // 0x43 0x48b8d0
   virtual void ApplyRectSlot110(RECT* rectBuffer);                     // 0x44
   virtual void PaintOrInvalidateControl(CDC* paintDc = 0);             // 0x45
-  virtual char DispatchUiMouseMoveToChildren(CPoint* point, int arg2, int arg3,
-                                             int arg4); // 0x46 0x48c450
-  virtual void BeginMouseCaptureAndStartRepeatTimer(CPoint* point, int arg2, int arg3,
-                                                    int arg4); // 0x47
+  virtual char HandleMouseDown(const CPoint& point, TToolboxEvent* event,
+                               CPoint origin); // 0x46 0x48c450
+  virtual void BeginMouseCaptureAndStartRepeatTimer(const CPoint& point, TToolboxEvent* event,
+                                                    CPoint origin); // 0x47
   virtual char HandleMouseUp(const CPoint& point, TToolboxEvent* event,
                              CPoint origin); // 0x48 0x48c590
   virtual char DoMouseCommand(CPoint& point, TToolboxEvent* event,
@@ -181,11 +181,11 @@ public:
   virtual void AttachChildControl(class TView* child, int flag); // 0x5c 0x48abe0
   virtual void DetachChildFromOwnerList(class TView* child);
   virtual unsigned short GetHelpState();
-  virtual char TestPointInBounds(CPoint* point);
-  virtual void ReturnFromUiSlot60(int arg);
-  virtual void ReturnFromUiSlot61(int arg);
-  virtual void ReturnFromUiSlot62(int arg);
-  virtual void ReturnFromUiSlot63(int arg1, int arg2);
+  virtual short ContainsMouse(const CPoint& point);
+  virtual void GoAwayByUser(const CPoint& point);
+  virtual void MoveByUser(const CPoint& point);
+  virtual void ResizeByUser(const CPoint& point);
+  virtual void ZoomByUser(const CPoint& point, short partCode);
   virtual void DrawRectangleInCurrentUiContext(int* rect);
   // One ignored stack arg (body ends `RET 0x4`; sibling Line1922 is a bare RET)
   // -- present only for stack-cleanup fidelity.

@@ -13,12 +13,12 @@ public:
 
   virtual void DoPostCreate(int arg) override;
   virtual void ApplyRectSlot110(RECT* rectBuffer) override;
-  virtual char DispatchUiMouseMoveToChildren(CPoint* point, int arg2, int arg3, int arg4) override;
+  virtual char HandleMouseDown(const CPoint& point, TToolboxEvent* event, CPoint origin) override;
   virtual void DispatchPictureResourceCommand(int nEventType, void* pEventSender, void* pEventDataA,
                                               void* pEventDataB, int nCommandFlag) override;
   virtual void SetNumIcons(short numIcons) override;
   virtual void SetMax(short maxValue);
-  virtual char KnobContainsMouse(const CPoint* point);
+  virtual char KnobContainsMouse(const CPoint& point);
   virtual void DrawKnob();
   virtual void GetKnobRect(RECT& knobRect);
 

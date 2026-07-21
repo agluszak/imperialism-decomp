@@ -44,8 +44,8 @@ public:
                                                            RgnHandle hitArg) override; // slot 0x35
   void DoPostCreate(int arg) override;                                                 // slot 0x37
   void ApplyRectSlot110(RECT* rectBuffer) override;                                    // slot 0x44
-  void BeginMouseCaptureAndStartRepeatTimer(CPoint* point, int arg2, int arg3,
-                                            int arg4) override; // slot 0x47 0x4f5410
+  void BeginMouseCaptureAndStartRepeatTimer(const CPoint& point, TToolboxEvent* event,
+                                            CPoint origin) override; // slot 0x47 0x4f5410
 
   virtual void RenderDiplomacyLegendSurfaceAndPresent(const RECT* presentRect); // slot 0x73
   virtual void BuildCombinedTerrainTypeRegionMaskAndDispatch();                 // slot 0x74

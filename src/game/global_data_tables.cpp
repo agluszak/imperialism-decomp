@@ -137,6 +137,50 @@ char g_vtblTSortedByRelationshipList = 0;
 int g_lastEdgeAutoScrollTick16 = 0;
 // GLOBAL: IMPERIALISM 0x00695278
 int g_nSaveFormatVersion = -1;
+// FourCC tags and their parallel TSimMgr member-handler table used by
+// ProcessScenarioScript. Single-inheritance MSVC5 member pointers are plain code
+// pointers, matching the original 27-entry dispatch table.
+// GLOBAL: IMPERIALISM 0x00662978
+extern const unsigned int g_anScenarioScriptInstructionTags[27] = {
+    0x6c61626f, 0x63617061, 0x77617265, 0x61726d79, 0x63697669, 0x73686970, 0x7472616e,
+    0x64657665, 0x7261696c, 0x706f7274, 0x74656368, 0x70726963, 0x656d6261, 0x73756273,
+    0x74726561, 0x79656172, 0x70726f76, 0x7a6f6e65, 0x636e616d, 0x72656c61, 0x706e616d,
+    0x63617368, 0x666c6167, 0x74796572, 0x74626172, 0x74636c72, 0x636f756e,
+};
+// GLOBAL: IMPERIALISM 0x00698b50
+void (TSimMgr::* g_apfnScenarioScriptInstructionHandlers[27])(void*) = {
+    &TSimMgr::HandleTurnInstruction_Labo_SetNationLaborTierCounts,
+    &TSimMgr::HandleTurnInstruction_Capa_ApplyNationSlotValueWithDelta,
+    &TSimMgr::HandleTurnInstruction_Ware_ApplyNationIndexedShortAndRefresh,
+    &TSimMgr::HandleTurnInstruction_Army_DeserializeAndCreateRecruitOrders,
+    &TSimMgr::HandleTurnInstruction_Civi_DeserializeAndCreateWorkOrder,
+    &TSimMgr::HandleTurnInstruction_Ship_DeserializeAndCreatePrimaryOrders,
+    &TSimMgr::HandleTurnInstruction_Tran_SetNationTransportStat,
+    &TSimMgr::HandleTurnInstruction_Deve_ApplyMapDevelopmentEntry,
+    &TSimMgr::HandleTurnInstruction_Rail_ApplyRailPlacementAndCashBonus,
+    &TSimMgr::HandleTurnInstruction_Port_ApplyPortPlacementAndCashBonus,
+    &TSimMgr::HandleTurnInstruction_Tech_ApplyTechUnlockAndNotifyNations,
+    &TSimMgr::HandleTurnInstruction_Pric_ApplyDiplomacyPriceEntry,
+    &TSimMgr::HandleTurnInstruction_Emba_SetEmbassyRelationFlags,
+    &TSimMgr::HandleTurnInstruction_Subs_ApplyNationSubsidyEntry,
+    &TSimMgr::HandleTurnInstruction_Trea_ApplyTreatyAndRelationEntry,
+    &TSimMgr::HandleTurnInstruction_Year_UpdateScenarioYearFieldScaledBy4,
+    &TSimMgr::HandleTurnInstruction_Prov_ApplyProvinceAssignmentEntry,
+    &TSimMgr::HandleTurnInstruction_Zone_AssignMapActionContextNameByNodeId,
+    &TSimMgr::HandleTurnInstruction_Cnam_AssignCountryName,
+    &TSimMgr::HandleTurnInstruction_Rela_SetNationRelationValue,
+    &TSimMgr::HandleTurnInstruction_Pnam_AssignProvinceName,
+    &TSimMgr::HandleTurnInstruction_Cash_SetNationCash,
+    &TSimMgr::HandleTurnInstruction_Flag_SetNationFlagAndRefresh,
+    &TSimMgr::HandleTurnInstruction_Tyer_SetCityOrderCapabilityTierValue,
+    &TSimMgr::HandleTurnInstruction_Tbar_SetNationRelationBarValue,
+    &TSimMgr::HandleTurnInstruction_Tclr_ResetNationRelationBars,
+    &TSimMgr::HandleTurnInstruction_Coun_SetCountrySlotState,
+};
+// GLOBAL: IMPERIALISM 0x006a4398
+unsigned char g_bScenarioScriptTerminationRequested = 0;
+// GLOBAL: IMPERIALISM 0x006a43b8
+int g_nScenarioScriptInstructionCount = 0;
 // GLOBAL: IMPERIALISM 0x006a3ee0
 int g_UnknownMapOrderExecutionGuard_006a3ee0 = 0;
 // GLOBAL: IMPERIALISM 0x006a30b4

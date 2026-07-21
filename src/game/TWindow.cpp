@@ -296,38 +296,39 @@ undefined TWindow::CenterWindowOrPositionWithinWorkArea(char centerX, char cente
 }
 
 // FUNCTION: IMPERIALISM 0x0048e1c0
-char TWindow::TestPointInBounds(CPoint* point) {
+short TWindow::ContainsMouse(const CPoint& point) {
+  (void)point;
   return 3;
 }
 
 // FUNCTION: IMPERIALISM 0x0048e1e0
-void TWindow::ReturnFromUiSlot60(int arg) {
-  (void)arg;
+void TWindow::GoAwayByUser(const CPoint& point) {
+  (void)point;
   if (g_McAppUiFlag_006A1B10 == 0) {
     AssertMcAppUiInvalidation(g_szMcAppUiSourcePath_006950B0, 0xac4);
   }
 }
 
 // FUNCTION: IMPERIALISM 0x0048e210
-void TWindow::ReturnFromUiSlot61(int arg) {
-  (void)arg;
+void TWindow::MoveByUser(const CPoint& point) {
+  (void)point;
   if (g_McAppUiFlag_006A1B14 == 0) {
     AssertMcAppUiInvalidation(g_szMcAppUiSourcePath_006950B0, 0xad9);
   }
 }
 
 // FUNCTION: IMPERIALISM 0x0048e240
-void TWindow::ReturnFromUiSlot62(int arg) {
-  (void)arg;
+void TWindow::ResizeByUser(const CPoint& point) {
+  (void)point;
   if (g_McAppUiFlag_006A1B18 == 0) {
     AssertMcAppUiInvalidation(g_szMcAppUiSourcePath_006950B0, 0xaee);
   }
 }
 
 // FUNCTION: IMPERIALISM 0x0048e270
-void TWindow::ReturnFromUiSlot63(int arg1, int arg2) {
-  (void)arg1;
-  (void)arg2;
+void TWindow::ZoomByUser(const CPoint& point, short partCode) {
+  (void)point;
+  (void)partCode;
   if (g_McAppUiFlag_006A1B1C == 0) {
     AssertMcAppUiInvalidation(g_szMcAppUiSourcePath_006950B0, 0xaff);
   }

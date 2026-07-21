@@ -15,10 +15,9 @@ TCloseButton::TCloseButton() {}
 TCloseButton::~TCloseButton() {}
 
 // FUNCTION: IMPERIALISM 0x00584b70
-char TCloseButton::DispatchUiMouseMoveToChildren(CPoint* point, int arg2, int arg3, int arg4) {
+char TCloseButton::HandleMouseDown(const CPoint& point, TToolboxEvent* event, CPoint origin) {
   (void)point;
-  (void)arg2;
-  (void)arg3;
-  (void)arg4;
+  (void)event;
+  (void)origin;
   return 0;
 }

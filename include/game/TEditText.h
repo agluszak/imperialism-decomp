@@ -28,7 +28,7 @@ public:
   void Close() override;
   void SetEnabled(int enabledState, int refreshFlag) override;
   void ApplyRectSlot110(RECT* rectBuffer) override;
-  char DispatchUiMouseMoveToChildren(CPoint* point, int arg2, int arg3, int arg4) override;
+  char HandleMouseDown(const CPoint& point, TToolboxEvent* event, CPoint origin) override;
   void RecomputeAbsolutePositionRecursive() override;
   void SetTextAlignmentAndMaybeRefresh(short alignmentCode, char refreshFlag) override;
   // Third param is pushed by callers (e.g. vmethod_0081) but unused by this

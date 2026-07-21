@@ -128,11 +128,11 @@ void TView::ApplyRectSlot110(RECT* rectBuffer) {
 // Base TView slot 0x47: orphan RET 0x10 stub (real capture on TControl 0x48e640).
 
 // FUNCTION: IMPERIALISM 0x00430c10
-void TView::BeginMouseCaptureAndStartRepeatTimer(CPoint* point, int arg2, int arg3, int arg4) {
+void TView::BeginMouseCaptureAndStartRepeatTimer(const CPoint& point, TToolboxEvent* event,
+                                                 CPoint origin) {
   (void)point;
-  (void)arg2;
-  (void)arg3;
-  (void)arg4;
+  (void)event;
+  (void)origin;
 }
 
 // TViewChildList's compiler-emitted CList<TView*,TView*>::Serialize body. The real source is
@@ -818,24 +818,24 @@ void TView::ApplyBounds(RECT* newBounds, int modeFlag) {
 }
 
 // FUNCTION: IMPERIALISM 0x0048c450
-char TView::DispatchUiMouseMoveToChildren(CPoint* point, int arg2, int arg3, int arg4) {
+char TView::HandleMouseDown(const CPoint& point, TToolboxEvent* event, CPoint origin) {
   if (childList44 != 0) {
     POSITION pos = childList44->GetTailPosition();
     while (pos != NULL) {
       TView* child = static_cast<TView*>(childList44->GetPrev(pos));
 
-      CPoint childPoint = *point;
+      CPoint childPoint = point;
       child->UpdateAfterBitmapChange(&childPoint);
       if (child->PointInBoundsAndActionable(&childPoint) != 0 &&
-          child->DispatchUiMouseMoveToChildren(&childPoint, arg2, arg3, arg4) != 0) {
+          child->HandleMouseDown(childPoint, event, origin) != 0) {
         return 1;
       }
     }
   }
 
   if (PrepareForDrawing() != 0 && GetBoolSlot28() != 0) {
-    CPoint localPoint = *point;
-    BeginMouseCaptureAndStartRepeatTimer(&localPoint, arg2, arg3, arg4);
+    CPoint localPoint = point;
+    BeginMouseCaptureAndStartRepeatTimer(localPoint, event, origin);
     return 1;
   }
   return 0;
@@ -944,31 +944,31 @@ unsigned short TView::GetHelpState() {
   return helpState54;
 }
 // FUNCTION: IMPERIALISM 0x0048c990
-char TView::TestPointInBounds(CPoint* point) {
+short TView::ContainsMouse(const CPoint& point) {
   RECT bounds;
   QueryContentBounds(&bounds);
   POINT p;
-  p.x = point->x;
-  p.y = point->y;
+  p.x = point.x;
+  p.y = point.y;
   // Returns 3 (not 1) on hit, unlike PointInBoundsAndActionable's near-identical body above.
-  return -(PtInRect(&bounds, p) != 0) & 3;
+  return static_cast<short>(-(PtInRect(&bounds, p) != 0) & 3);
 }
 // FUNCTION: IMPERIALISM 0x0048c9e0
-void TView::ReturnFromUiSlot60(int arg) {
-  (void)arg;
+void TView::GoAwayByUser(const CPoint& point) {
+  (void)point;
 }
 // FUNCTION: IMPERIALISM 0x0048ca00
-void TView::ReturnFromUiSlot61(int arg) {
-  (void)arg;
+void TView::MoveByUser(const CPoint& point) {
+  (void)point;
 }
 // FUNCTION: IMPERIALISM 0x0048ca20
-void TView::ReturnFromUiSlot62(int arg) {
-  (void)arg;
+void TView::ResizeByUser(const CPoint& point) {
+  (void)point;
 }
 // FUNCTION: IMPERIALISM 0x0048ca40
-void TView::ReturnFromUiSlot63(int arg1, int arg2) {
-  (void)arg1;
-  (void)arg2;
+void TView::ZoomByUser(const CPoint& point, short partCode) {
+  (void)point;
+  (void)partCode;
 }
 
 // MSVC500 emitted a fresh out-of-line copy of the (header-inline) `TView::~TView` in

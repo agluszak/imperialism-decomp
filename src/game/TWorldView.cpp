@@ -14,6 +14,7 @@
 #include "game/TNavyMgr.h"
 #include "game/TOcean.h"
 #include "game/TToolBarCluster.h"
+#include "game/TUiEvent.h"
 #include "game/TViewMgr.h"
 #include "game/ScopedMapQuickDrawContext.h"
 #include "game/TTaskForce.h"
@@ -78,10 +79,9 @@ void TWorldView::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* poi
 
   short cursorToken = -1;
   short tileRow = 0;
-  unsigned short tileColumn = 0;
+  short tileColumn = 0;
   short* hoverBand = &hoverRegionBand70;
-  ComputeWrappedMapCellAndRegionBandFromScreenCoord(reinterpret_cast<int>(point), &tileRow,
-                                                    &tileColumn, hoverBand);
+  ConvertPoint(*point, tileRow, tileColumn, *hoverBand);
   field6c = static_cast<unsigned short>(
       ComputeStridedRecordAddress6C(static_cast<int>(tileRow), static_cast<int>(tileColumn)));
 
@@ -333,10 +333,8 @@ short TWorldView::QueryMinusOneWordSlot1BC(int unusedArg) {
 }
 
 // FUNCTION: IMPERIALISM 0x005960c0
-void TWorldView::ComputeWrappedMapCellAndRegionBandFromScreenCoord(int overlayRecord, short* outRow,
-                                                                   unsigned short* outCol,
-                                                                   short* outBand) {
-  (void)overlayRecord;
+void TWorldView::ConvertPoint(const CPoint& point, short& outRow, short& outCol, short& outBand) {
+  (void)point;
   (void)outRow;
   (void)outCol;
   (void)outBand;
@@ -353,22 +351,19 @@ void TWorldView::ForwardProjectTileIndexToWrappedScreenOffsetByScale(int arg1, i
 }
 
 // FUNCTION: IMPERIALISM 0x00596100
-char TWorldView::DispatchUiMouseMoveToChildren(CPoint* point, int arg2, int arg3, int arg4) {
-  int overlayRecord = reinterpret_cast<int>(point);
-  (void)arg2;
-  (void)arg3;
-  (void)arg4;
+char TWorldView::HandleMouseDown(const CPoint& point, TToolboxEvent* event, CPoint origin) {
+  (void)origin;
 
   CTemporaryRegion surface;
 
   short tileRow = 0;
-  unsigned short tileCol = 0;
+  short tileCol = 0;
   short regionBand = 0;
-  ComputeWrappedMapCellAndRegionBandFromScreenCoord(overlayRecord, &tileRow, &tileCol, &regionBand);
-  NormalizeWrappedMapCoord108x60(&tileRow, reinterpret_cast<short*>(&tileCol));
+  ConvertPoint(point, tileRow, tileCol, regionBand);
+  NormalizeWrappedMapCoord108x60(&tileRow, &tileCol);
 
   int stridedRecord = ComputeStridedRecordAddress6C((int)tileRow, (int)tileCol);
-  if (*reinterpret_cast<int*>(overlayRecord + 0x24) == 1) {
+  if (event->mouseButton24 == 1) {
     DispatchOverlayEvent78FromStridedRecord(stridedRecord, regionBand);
     return 1;
   }

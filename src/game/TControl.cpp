@@ -62,12 +62,12 @@ TControl::TControl()
 // TControl::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x0048e640
-void TControl::BeginMouseCaptureAndStartRepeatTimer(CPoint* point, int arg2, int arg3, int arg4) {
-  (void)arg2;
-  (void)arg3;
-  (void)arg4;
-  int startX = point->x;
-  int startY = point->y;
+void TControl::BeginMouseCaptureAndStartRepeatTimer(const CPoint& point, TToolboxEvent* event,
+                                                    CPoint origin) {
+  (void)event;
+  (void)origin;
+  int startX = point.x;
+  int startY = point.y;
   g_McAppMouseCaptureState.capturedControl = this;
   CWnd::FromHandle(::SetCapture(nativeWindow50->m_hWnd));
   g_McAppMouseCaptureState.startPoint.x = startX;

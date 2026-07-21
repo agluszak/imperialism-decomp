@@ -158,7 +158,7 @@ address|name|symbol|size|type|prototype|provenance
 430b80|TBattleUnitsView::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 430bd0|TView::ReturnZeroStatus_b3||3|function|undefined ReturnZeroStatus()|
 430bf0|TView::ApplyRectSlot110_c8||3|function|void __thiscall ApplyRectSlot110(RECT * rectBuffer)|
-430c10|TView::BeginMouseCaptureAndStartRepeatTimer_cb||3|function|void __thiscall BeginMouseCaptureAndStartRepeatTimer(CPoint * point)|
+430c10|TView::BeginMouseCaptureAndStartRepeatTimer||3|function|void __thiscall BeginMouseCaptureAndStartRepeatTimer(const CPoint &point, TToolboxEvent *event, CPoint origin)|
 430c50|InitializeDealBookScreenControlsAndCommandTags||14917|function|undefined InitializeDealBookScreenControlsAndCommandTags()|
 435540|TDealTabControl::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 435590|TPageView::WrapperFor_ConstructTPageViewBaseState_At00435590||27|function|undefined WrapperFor_ConstructTPageViewBaseState_At00435590()|
@@ -535,7 +535,7 @@ address|name|symbol|size|type|prototype|provenance
 483720|CIncludeView::OnActivateView||23|function|void OnActivateView(BOOL bActivate, CView* pActivateView, CView* pDeactiveView)|
 483750|CIncludeView::OnInitialUpdate||268|function|void OnInitialUpdate()|
 4838b0|CIncludeView::OnMouseMove||232|function|undefined HandleIncludeViewPointerUpdateAndNotifyChildren()|
-4839e0|WrapperFor_InitializeRefCountedObjectBaseVtable_At004839e0||157|function|undefined WrapperFor_InitializeRefCountedObjectBaseVtable_At004839e0()|
+4839e0|CIncludeView::OnLButtonDown||157|function|void __thiscall OnLButtonDown(unsigned int nFlags, CPoint point)|
 483ab0|WrapperFor_FreeHeapBufferIfNotNull_At00483ad0_Impl||7|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At00483ad0_Impl()|
 483ad0|TUiEvent::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 483ba0|WrapperFor_AllocateAndLinkBlockHead_At00483ba0||284|function|undefined WrapperFor_AllocateAndLinkBlockHead_At00483ba0()|
@@ -913,7 +913,7 @@ address|name|symbol|size|type|prototype|provenance
 48c220|TView::EnableAndProcessFlag||23|function|void __thiscall EnableAndProcessFlag(CString sharedString)|
 48c250|TView::HandleCursorHoverFallback_b0||233|function|void __thiscall HandleCursorHoverFallback(CPoint* point, int hitArg)|
 48c380|TView::UpdateRectCacheIfChangedAndInvalidateCityDialog_de||150|function|undefined UpdateRectCacheIfChangedAndInvalidateCityDialog()|
-48c450|TView::DispatchUiMouseMoveToChildren_ca||250|function|undefined DispatchUiMouseMoveToChildren()|
+48c450|TView::HandleMouseDown||250|function|char __thiscall HandleMouseDown(const CPoint &point, TToolboxEvent *event, CPoint origin)|macos-name-oracle:HandleMouseDown(const VPoint&, TToolboxEvent*, CPoint)
 48c590|TView::HandleMouseUp||250|function|char HandleMouseUp(const CPoint &point, TToolboxEvent *event, CPoint origin)|
 48c6d0|TView::VTableSlotDF||81|function|undefined 'scalar_deleting_destructor'(void)|
 48c750|TView::DrawRectangleInCurrentUiContext_e8||64|function|undefined DrawRectangleInCurrentUiContext()|
@@ -923,11 +923,11 @@ address|name|symbol|size|type|prototype|provenance
 48c890|TView::Close||71|function|void Close()|macos-name-oracle:Close()
 48c900|PropagateUiResourceContextRecursive||80|function|undefined PropagateUiResourceContextRecursive()|
 48c970|TView::GetHelpState||5|function|unsigned short GetHelpState()|
-48c990|TView::CtrlSlot95_TestPointInBoundsFromSlot128_Impl_e3||51|function|undefined CtrlSlot95_TestPointInBoundsFromSlot128_Impl()|
-48c9e0|TView::OrphanCallChain_C11_I88_004874b0_e4||3|function|undefined OrphanCallChain_C11_I88_004874b0(void)|
-48ca00|TView::OrphanLeaf_NoCall_Ins07_004d8920_e5||3|function|undefined OrphanLeaf_NoCall_Ins07_004d8920(void)|
-48ca20|TView::OrphanCallChain_C11_I88_004874b0_e6||3|function|undefined OrphanCallChain_C11_I88_004874b0(void)|
-48ca40|TView::GetTEventHandlerClassNamePointer_e7||3|function|undefined GetTEventHandlerClassNamePointer(void)|
+48c990|TView::ContainsMouse||51|function|short __thiscall ContainsMouse(const CPoint &point)|macos-name-oracle:ContainsMouse(const VPoint&)
+48c9e0|TView::GoAwayByUser||3|function|void __thiscall GoAwayByUser(const CPoint &point)|macos-name-oracle:GoAwayByUser(const VPoint&)
+48ca00|TView::MoveByUser||3|function|void __thiscall MoveByUser(const CPoint &point)|macos-name-oracle:MoveByUser(const VPoint&)
+48ca20|TView::ResizeByUser||3|function|void __thiscall ResizeByUser(const CPoint &point)|macos-name-oracle:ResizeByUser(const VPoint&)
+48ca40|TView::ZoomByUser||3|function|void __thiscall ZoomByUser(const CPoint &point, short partCode)|macos-name-oracle:ZoomByUser(const VPoint&, short)
 48ca60|TScroller::CreateObject|?CreateObject@TScroller@@SGPAVCObject@@XZ|80|function|undefined CreateObject()|rtti
 48cad0|TScroller::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 48cb00|TView::~TView||104|function|undefined CreateTScrollerInstance()|
@@ -969,17 +969,17 @@ address|name|symbol|size|type|prototype|provenance
 48e060|TWindow::Close||140|function|void Close()|macos-name-oracle:Close()
 48e120|TWindow::CloseAndFree||20|function|void __thiscall CloseAndFree()|
 48e150|TWindow::WrapperFor_CenterWindowWithinOwnerOrWorkArea_At0048e150||74|function|undefined WrapperFor_CenterWindowWithinOwnerOrWorkArea_At0048e150(char param_1, char param_2)|
-48e1c0|TWindow::CtrlSlot95_TestPointInBoundsFromSlot128_Impl||7|function|undefined 'scalar_deleting_destructor'(void)|
-48e1e0|TWindow::OrphanCallChain_C11_I88_004874b0_60||30|function|undefined GetTEventHandlerClassNamePointer(void)|
-48e210|TWindow::OrphanLeaf_NoCall_Ins07_004d8920||30|function|undefined 'scalar_deleting_destructor'(void)|
-48e240|TWindow::OrphanCallChain_C11_I88_004874b0_62||30|function|undefined GetTEventHandlerClassNamePointer(void)|
-48e270|TWindow::GetTEventHandlerClassNamePointer||30|function|undefined AssertMcAppUILine2815()|
+48e1c0|TWindow::ContainsMouse||7|function|short __thiscall ContainsMouse(const CPoint &point)|macos-name-oracle:ContainsMouse(const VPoint&)
+48e1e0|TWindow::GoAwayByUser||30|function|void __thiscall GoAwayByUser(const CPoint &point)|macos-name-oracle:GoAwayByUser(const VPoint&)
+48e210|TWindow::MoveByUser||30|function|void __thiscall MoveByUser(const CPoint &point)|macos-name-oracle:MoveByUser(const VPoint&)
+48e240|TWindow::ResizeByUser||30|function|void __thiscall ResizeByUser(const CPoint &point)|macos-name-oracle:ResizeByUser(const VPoint&)
+48e270|TWindow::ZoomByUser||30|function|void __thiscall ZoomByUser(const CPoint &point, short partCode)|macos-name-oracle:ZoomByUser(const VPoint&, short)
 48e2a0|TWindow::Free||268|function|undefined DestroyChildResourceWindowAndDetach()|
 48e430|TControl::CreateObject|?CreateObject@TControl@@SGPAVCObject@@XZ|158|function|undefined CreateTControlInstance()|rtti
 48e500|TControl::GetRuntimeClass||6|function|undefined GetTControlClassNamePointer()|rtti
 48e520|TControl::TControl||74|function|undefined TControl()|
 48e590|TControl::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
-48e640|TControl::BeginMouseCaptureAndStartRepeatTimer||149|function|void __thiscall BeginMouseCaptureAndStartRepeatTimer(CPoint * point, int arg2, int arg3, int arg4)|
+48e640|TControl::BeginMouseCaptureAndStartRepeatTimer||149|function|void __thiscall BeginMouseCaptureAndStartRepeatTimer(const CPoint &point, TToolboxEvent *event, CPoint origin)|
 48e710|TControl::HandleEvent||111|function|undefined HandleCityDialogToggleCommandOrForward()|
 48e7a0|TControl::SetControlPictureEntryAndMaybeRefresh||30|function|void __thiscall SetControlPictureEntryAndMaybeRefresh(int * pPictureEntryRef, bool fRefreshNow)|
 48e7d0|TControl::SetCityProductionDialogPictureRectAndMaybeRefresh||48|function|undefined SetCityProductionDialogPictureRectAndMaybeRefresh()|
@@ -1039,7 +1039,7 @@ address|name|symbol|size|type|prototype|provenance
 490a50|TEditText::SetEditSelectionAndScrollCaret||61|function|undefined SetEditSelectionAndScrollCaret()|
 490aa0|TEditText::ActivateCityProductionViewIfAllowed||18|function|undefined NumericEntryMethod_00401e6f()|
 490ad0|TEditText::Free||185|function|undefined NumericEntryMethod_00407cca()|
-490bc0|TEditText::DispatchUiMouseMoveToChildren||60|function|undefined SetForeignMinisterReadyFlag14(undefined4 * param_1, undefined4 param_2, undefined4 param_3, undefined4 param_4)|
+490bc0|TEditText::HandleMouseDown||60|function|char __thiscall HandleMouseDown(const CPoint &point, TToolboxEvent *event, CPoint origin)|macos-name-oracle:HandleMouseDown(const VPoint&, TToolboxEvent*, CPoint)
 490c10|TEditText::HandleCityProductionNoOp||16|function|undefined OrphanRetStub_0059add0(void)|
 490c30|TEditText::vmethod_0081||44|function|undefined ApplyControlFocusIfEnabledAndNotifySelectionRange()|
 490c70|TEditText::WrapperFor_StringShared_AssignFromPtr_At00490c70||44|function|undefined WrapperFor_StringShared_AssignFromPtr_At00490c70(CString * param_1)|
@@ -1132,7 +1132,7 @@ address|name|symbol|size|type|prototype|provenance
 493829|WrapperFor_ShowWindowOrForwardToSite_At00493829||16|function|undefined WrapperFor_ShowWindowOrForwardToSite_At00493829()|
 493839|DestructObjectAndReleaseWithFlag_Field0F||39|function|undefined DestructObjectAndReleaseWithFlag_Field0F()|
 4938c0|CMcWindow::OnPaint|?OnPaint@CMcWindow@@IAEXXZ|145|function|undefined OnPaint()|
-493990|CMcWindow::OnLButtonDown|?OnLButtonDown@CMcWindow@@IAEXIVCPoint@@@Z|67|function|undefined OnLButtonDown()|
+493990|CMcWindow::OnLButtonDown|?OnLButtonDown@CMcWindow@@IAEXIVCPoint@@@Z|67|function|void __thiscall OnLButtonDown(unsigned int nFlags, CPoint point)|
 493a00|WrapperFor_InvokeCurrentMessageFallbackHandler_At00493a00||78|function|undefined WrapperFor_InvokeCurrentMessageFallbackHandler_At00493a00()|
 493a70|DispatchMessageFallbackAndUpdateCaptureState||101|function|undefined DispatchMessageFallbackAndUpdateCaptureState()|
 493b00|CMcWindow::OnClose|?OnClose@CMcWindow@@IAEXXZ|25|function|undefined OnClose()|
@@ -1639,7 +1639,7 @@ address|name|symbol|size|type|prototype|provenance
 4ad7a0|TBattleReportView::HandleEvent||937|function|void HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event)|
 4adc40|InitializeOutSharedStringWithEmptyRefAndCopyBuffer||42|function|undefined InitializeOutSharedStringWithEmptyRefAndCopyBuffer()|
 4adc80|TBattleReportView::HandleCursorHoverSelectionByChildHitTestAndFallback||18|function|void HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* point, int hitArg)|
-4adcb0|TBattleReportView::BeginMouseCaptureAndStartRepeatTimer||117|function|void BeginMouseCaptureAndStartRepeatTimer(CPoint* point, int arg2, int arg3, int arg4)|
+4adcb0|TBattleReportView::BeginMouseCaptureAndStartRepeatTimer||117|function|void __thiscall BeginMouseCaptureAndStartRepeatTimer(const CPoint &point, TToolboxEvent *event, CPoint origin)|
 4ade00|TBattleReportView::ApplyRectSlot110||27|function|void ApplyRectSlot110(RECT* rectBuffer)|
 4ade30|TDiplomacyMapView::WrapperFor_thunk_RenderDiplomacyMatrixRowWithStatusIconsAndFill_At004ade00_Impl||311|function|undefined WrapperFor_thunk_RenderDiplomacyMatrixRowWithStatusIconsAndFill_At004ade00_Impl()|
 4adfc0|TBattleReportView::RefreshMapContextSelectionPanelAndInfoLabels||1973|function|void RefreshMapContextSelectionPanelAndInfoLabels(void* mapContextRecord)|
@@ -2084,7 +2084,7 @@ address|name|symbol|size|type|prototype|provenance
 4c7290|TWarehouseView::GetRuntimeClass||6|function|undefined GetTWarehouseViewClassNamePointer()|rtti
 4c72b0|TWarehouseView::ConstructTWarehouseViewBaseState||28|function|undefined ConstructTWarehouseViewBaseState()|
 4c72e0|TWarehouseView::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
-4c7330|TWarehouseView::BeginMouseCaptureAndStartRepeatTimer||28|function|undefined ForwardBeginMouseCaptureAndStartRepeatTimer()|
+4c7330|TWarehouseView::BeginMouseCaptureAndStartRepeatTimer||28|function|void __thiscall BeginMouseCaptureAndStartRepeatTimer(const CPoint &point, TToolboxEvent *event, CPoint origin)|
 4c7360|TWarehouseView::DoStartup||2022|function|void DoStartup()|
 4c7d90|TWarehouseView::UpdateFields||297|function|void UpdateFields()|
 4c7f10|TUnitsView::CreateObject|?CreateObject@TUnitsView@@SGPAVCObject@@XZ|113|function|undefined CreateObject()|rtti
@@ -2154,7 +2154,7 @@ address|name|symbol|size|type|prototype|provenance
 4cc3c0|TPurchaseCluster::ConstructTPurchaseClusterBaseState||28|function|undefined ConstructTPurchaseClusterBaseState()|
 4cc3f0|TPurchaseCluster::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4cc440|TPurchaseCluster::OrphanCallChain_C1_I08_004cc440||28|function|undefined OrphanCallChain_C1_I08_004cc440(int param_1)|
-4cc470|TPurchaseCluster::BeginMouseCaptureAndStartRepeatTimer||3|function|undefined 'scalar_deleting_destructor'(void)|
+4cc470|TPurchaseCluster::BeginMouseCaptureAndStartRepeatTimer||3|function|void __thiscall BeginMouseCaptureAndStartRepeatTimer(const CPoint &point, TToolboxEvent *event, CPoint origin)|
 4cc490|TPurchaseCluster::HandleEvent||132|function|undefined OrphanRetStub_0059add0(int param_1, void * param_2, int param_3)|
 4cc550|TPurchaseCluster::SetCityViewValueControlAmount||181|function|void __fastcall SetCityViewValueControlAmount(int * pCityViewDialog, short nValue)|
 4cc640|TPurchaseCluster::UpdateCityViewValueControl||69|function|undefined UpdateCityViewValueControl()|
@@ -2790,7 +2790,7 @@ address|name|symbol|size|type|prototype|provenance
 4f38c0|TRearFloatWindow::GetRuntimeClass||6|function|undefined GetTRearFloatWindowClassNamePointer()|rtti
 4f38e0|TRearFloatWindow::ConstructTRearFloatWindowBaseState||18|function|undefined ConstructTRearFloatWindowBaseState()|
 4f3910|TRearFloatWindow::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
-4f3960|TRearFloatWindow::DispatchUiMouseMoveToChildren||141|function|undefined WrapperFor_thunk_DispatchUiMouseMoveToChildren_At004f3960()|
+4f3960|TRearFloatWindow::HandleMouseDown||141|function|char __thiscall HandleMouseDown(const CPoint &point, TToolboxEvent *event, CPoint origin)|macos-name-oracle:HandleMouseDown(const VPoint&, TToolboxEvent*, CPoint)
 4f3a50|ClampRectWithinBoundsPreservingSize||110|function|undefined BuildDiplomacyNationOverlayGeometryAndHitMasks_Impl_At004f3a50()|
 4f3ae0|TDiplomacyMapView::CreateObject|?CreateObject@TDiplomacyMapView@@SGPAVCObject@@XZ|90|function|undefined CreateObject()|rtti
 4f3b60|TDiplomacyMapView::GetRuntimeClass||6|function|undefined GetTDiplomacyMapViewClassNamePointer()|rtti
@@ -2951,7 +2951,7 @@ address|name|symbol|size|type|prototype|provenance
 4ffc10|TGameWindow::TGameWindow||53|function|TGameWindow::TGameWindow()|
 4ffc60|TGameWindow::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4ffcb0|TGameWindow::Open||34|function|CMcWindow* Open()|macos-name-oracle:Open()
-4ffd10|TGameWindow::DispatchUiMouseMoveToChildren||28|function|undefined SetForeignMinisterReadyFlag14(undefined4 * param_1, undefined4 param_2, undefined4 param_3, undefined4 param_4)|
+4ffd10|TGameWindow::HandleMouseDown||28|function|char __thiscall HandleMouseDown(const CPoint &point, TToolboxEvent *event, CPoint origin)|macos-name-oracle:HandleMouseDown(const VPoint&, TToolboxEvent*, CPoint)
 4ffd40|TGameWindow::HandleMouseUp||28|function|char HandleMouseUp(const CPoint &point, TToolboxEvent *event, CPoint origin)|
 4ffd70|TGameWindow::ForwardParam||776|function|undefined HandleTurnOrderNavigationCommand()|
 500160|TGameWindow::UpdateTurnOrderNavigationWindowLayout||120|function|undefined UpdateTurnOrderNavigationWindowLayout()|
@@ -3036,8 +3036,8 @@ address|name|symbol|size|type|prototype|provenance
 506480|TIconSlider::DoPostCreate||162|function|undefined OrphanCallChain_C6_I49_004875d0(void)|
 506560|TIconSlider::OrphanLeaf_NoCall_Ins04_00506560||23|function|undefined OrphanLeaf_NoCall_Ins04_00506560(short param_1)|
 506590|TIconSlider::OrphanTiny_SetWordEcxOffset_96_005060f0||15|function|undefined OrphanTiny_SetWordEcxOffset_96_005060f0(undefined2 param_1)|
-5065b0|TIconSlider::OrphanCallChain_C2_I15_005065b0||44|function|undefined OrphanCallChain_C2_I15_005065b0(void)|
-5065f0|TIconSlider::DispatchUiMouseMoveToChildren||117|function|undefined SetForeignMinisterReadyFlag14(int * param_1, undefined4 param_2, undefined4 param_3)|
+5065b0|TIconSlider::KnobContainsMouse||44|function|char __thiscall KnobContainsMouse(const CPoint &point)|
+5065f0|TIconSlider::HandleMouseDown||117|function|char __thiscall HandleMouseDown(const CPoint &point, TToolboxEvent *event, CPoint origin)|macos-name-oracle:HandleMouseDown(const VPoint&, TToolboxEvent*, CPoint)
 506690|TIconSlider::ApplyRectSlot110||27|function|undefined OrphanTiny_ReturnZero_0048a730(void)|
 5066c0|TIconSlider::IconSliderResolveBmpResource||61|function|undefined Helper_Uses_WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At00495c_At005066c0(void)|
 506710|TIconSlider::OrphanCallChain_C1_I36_00506710||98|function|undefined OrphanCallChain_C1_I36_00506710(LPRECT param_1)|
@@ -3292,7 +3292,7 @@ address|name|symbol|size|type|prototype|provenance
 519e00|TMapDialog::OrphanRetStub_00596080||930|function|undefined RenderStrategicTileSelectionAndNeighborHighlights()|
 51a2a0|TMapDialog::DrawHexNeighborOutlineFromTileArray||1290|function|undefined DrawHexNeighborOutlineFromTileArray()|
 51a900|TMapDialog::UpdateMapDialogProjectedTileMarkerAndInvalidate||103|function|undefined UpdateMapDialogProjectedTileMarkerAndInvalidate()|
-51a990|TMapDialog::OrphanRetStub_005960c0||242|function|undefined ComputeWrappedMapCellAndRegionBandFromScreenCoord()|
+51a990|TMapDialog::ConvertPoint||242|function|void __thiscall ConvertPoint(const CPoint &point, short &outRow, short &outCol, short &outBand)|macos-name-oracle:ConvertPoint(const VPoint&, short&, short&, short&)
 51aad0|TMapDialog::OrphanRetStub_005966c0||111|function|undefined OrphanRetStub_005966c0(void)|
 51ab60|TMapDialog::OrphanLeaf_NoCall_Ins02_005966e0||168|function|undefined ComputeMapDialogProjectedTileClipIntersection()|
 51ac40|TMapDialog::UpdateMapViewTileMarker||115|function|undefined UpdateMapDialogTileRowColumnMarkerAndInvalidate()|
@@ -4398,7 +4398,7 @@ address|name|symbol|size|type|prototype|provenance
 565f80|InvalidateMapRegionForOrderEntry||42|function|undefined InvalidateMapRegionForOrderEntry()|
 565fc0|WrapperFor_InvalidateCityDialogRectRegion_At00565fc0||122|function|undefined WrapperFor_InvalidateCityDialogRectRegion_At00565fc0()|
 566060|ComputeTileClassBoundsInViewport||285|function|undefined ComputeTileClassBoundsInViewport()|
-5661d0|TOceanDialog::OrphanRetStub_005960c0||200|function|undefined OrphanRetStub_005960c0(int * param_1, short * param_2, ushort * param_3, undefined2 * param_4)|
+5661d0|TOceanDialog::ConvertPoint||200|function|void __thiscall ConvertPoint(const CPoint &point, short &outRow, short &outCol, short &outBand)|macos-name-oracle:ConvertPoint(const VPoint&, short&, short&, short&)
 5663c0|Helper_Uses_thunk_DrawCenteredGuideLineOnMapDc_At005663c0||422|function|undefined Helper_Uses_thunk_DrawCenteredGuideLineOnMapDc_At005663c0()|
 5665e0|TOceanDialog::OrphanRetStub_00596080||283|function|undefined OrphanRetStub_00596080(void)|
 566750|TOceanDialog::OrphanRetStub_005966c0||122|function|undefined OrphanRetStub_005966c0(short param_1)|
@@ -4451,7 +4451,7 @@ address|name|symbol|size|type|prototype|provenance
 569dc0|TMiniShipView::CreateObject|?CreateObject@TMiniShipView@@SGPAVCObject@@XZ|83|function|undefined CreateObject()|rtti
 569e40|TMiniShipView::GetRuntimeClass||6|function|undefined GetTMiniShipViewClassNamePointer()|rtti
 569eb0|TMiniShipView::ApplyRectSlot110||901|function|undefined RenderNavyOrderNormalizationGaugeAndNationMarker()|
-56a330|TMiniShipView::BeginMouseCaptureAndStartRepeatTimer||96|function|undefined DestructTMiniShipViewAndMaybeFree()|
+56a330|TMiniShipView::BeginMouseCaptureAndStartRepeatTimer||96|function|void __thiscall BeginMouseCaptureAndStartRepeatTimer(const CPoint &point, TToolboxEvent *event, CPoint origin)|
 56a4e0|WrapperFor_ftol_At0056a4e0||30|function|undefined WrapperFor_ftol_At0056a4e0()|
 56a510|TGamePreferencesPicture::CreateObject|?CreateObject@TGamePreferencesPicture@@SGPAVCObject@@XZ|83|function|undefined CreateObject()|rtti
 56a590|TGamePreferencesPicture::GetRuntimeClass||6|function|undefined GetTGamePreferencesPictureClassNamePointer()|rtti
@@ -4513,7 +4513,7 @@ address|name|symbol|size|type|prototype|provenance
 56f6c0|UpdatePagedListNavigationButtonState||185|function|undefined UpdatePagedListNavigationButtonState()|
 56f7b0|TPageCorner::CreateObject|?CreateObject@TPageCorner@@SGPAVCObject@@XZ|83|function|undefined CreateObject()|rtti
 56f830|TPageCorner::GetRuntimeClass||6|function|undefined GetTPageCornerClassNamePointer()|rtti
-56f850|TPageCorner::DispatchUiMouseMoveToChildren||98|function|undefined ConstructTPageCornerBaseState()|
+56f850|TPageCorner::HandleMouseDown||98|function|char __thiscall HandleMouseDown(const CPoint &point, TToolboxEvent *event, CPoint origin)|macos-name-oracle:HandleMouseDown(const VPoint&, TToolboxEvent*, CPoint)
 56f8e0|TPageView::CreateObject|?CreateObject@TPageView@@SGPAVCObject@@XZ|132|function|undefined CreateObject()|rtti
 56f9a0|TPageView::GetRuntimeClass||6|function|undefined GetTPageViewClassNamePointer()|rtti
 56f9c0|TPageView::ConstructTPageViewBaseState||41|function|undefined ConstructTPageViewBaseState()|
@@ -4548,7 +4548,7 @@ address|name|symbol|size|type|prototype|provenance
 570820|TPictureButton::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 570870|TPictureButton::HiliteState||59|function|void __thiscall HiliteState(bool enabledState, bool refreshNow)|
 5708c0|TPictureButton::IsSelected||47|function|bool __thiscall IsSelected()|
-570900|TPictureButton::BeginMouseCaptureAndStartRepeatTimer||60|function|void __thiscall BeginMouseCaptureAndStartRepeatTimer(CPoint * point, int arg2, int arg3, int arg4)|
+570900|TPictureButton::BeginMouseCaptureAndStartRepeatTimer||60|function|void __thiscall BeginMouseCaptureAndStartRepeatTimer(const CPoint &point, TToolboxEvent *event, CPoint origin)|
 570950|TAlwaysPictureButton::CreateObject|?CreateObject@TAlwaysPictureButton@@SGPAVCObject@@XZ|92|function|undefined CreateObject()|rtti
 5709d0|TAlwaysPictureButton::GetRuntimeClass||6|function|undefined GetRuntimeClass()|rtti
 5709f0|TAlwaysPictureButton::ConstructTAlwaysPictureButtonBaseState||27|function|undefined ConstructTAlwaysPictureButtonBaseState()|
@@ -4567,13 +4567,13 @@ address|name|symbol|size|type|prototype|provenance
 570de0|TPictureRadioButton::PictureRadioButtonSlot75||135|function|undefined WrapperFor_thunk_SetUiControlVisibleFlagAndMaybeRefreshWindow_At00570de0(char param_1)|
 570ea0|TPictureRadioButton::PictureRadioButtonSlot76||124|function|undefined WrapperFor_CopyOffset10PointPairToOutOrZero_At00570ea0(void)|
 570f40|TPictureRadioButton::HandleToggleButtonStateChangeAndRefresh||79|function|undefined HandleToggleButtonStateChangeAndRefresh(char param_1, char param_2)|
-570fb0|TPictureRadioButton::DispatchUiMouseMoveToChildren||125|function|undefined SetForeignMinisterReadyFlag14(void)|
+570fb0|TPictureRadioButton::HandleMouseDown||125|function|char __thiscall HandleMouseDown(const CPoint &point, TToolboxEvent *event, CPoint origin)|macos-name-oracle:HandleMouseDown(const VPoint&, TToolboxEvent*, CPoint)
 571050|TToggleButton::CreateObject|?CreateObject@TToggleButton@@SGPAVCObject@@XZ|83|function|undefined CreateObject()|rtti
 5710d0|TToggleButton::GetRuntimeClass||6|function|undefined GetRuntimeClass()|rtti
 5710f0|TToggleButton::ConstructTToggleButtonBaseState||18|function|undefined ConstructTToggleButtonBaseState()|
 571120|TToggleButton::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 571170|TToggleButton::HandleEvent||240|function|void __thiscall HandleEvent(int commandId, TEventHandler * sourceHandler, TEvent * event)|
-5712a0|TToggleButton::DispatchUiMouseMoveToChildren||111|function|char __thiscall DispatchUiMouseMoveToChildren(CPoint * point, int arg2, int arg3, int arg4)|
+5712a0|TToggleButton::HandleMouseDown||111|function|char __thiscall HandleMouseDown(const CPoint &point, TToolboxEvent *event, CPoint origin)|macos-name-oracle:HandleMouseDown(const VPoint&, TToolboxEvent*, CPoint)
 571330|TToggleButton::IsSelected||8|function|bool __thiscall IsSelected(short value, bool refreshNow)|
 571350|TToggleButton::Select||72|function|void __thiscall Select(bool isPressed, bool notifyParent)|
 5713c0|TUberCluster::CreateObject|?CreateObject@TUberCluster@@SGPAVCObject@@XZ|83|function|undefined CreateObject()|rtti
@@ -4587,7 +4587,7 @@ address|name|symbol|size|type|prototype|provenance
 5715d0|TUpDownPictureButton::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 571620|SetPressedStateAdjustPictureBitmapByOne||75|function|undefined SetPressedStateAdjustPictureBitmapByOne()|
 571690|TUpDownPictureButton::IsSelected||15|function|bool __thiscall IsSelected()|
-5716b0|TCivilianButton::BeginMouseCaptureAndStartRepeatTimer||60|function|void __thiscall BeginMouseCaptureAndStartRepeatTimer(CPoint * point, int arg2, int arg3, int arg4)|
+5716b0|TCivilianButton::BeginMouseCaptureAndStartRepeatTimer||60|function|void __thiscall BeginMouseCaptureAndStartRepeatTimer(const CPoint &point, TToolboxEvent *event, CPoint origin)|
 571700|TRadioPictureButton::CreateObject|?CreateObject@TRadioPictureButton@@SGPAVCObject@@XZ|126|function|undefined CreateObject()|rtti
 5717a0|TRadioPictureButton::GetRuntimeClass||6|function|undefined GetTRadioPictureButtonClassNamePointer()|rtti
 5717c0|TRadioPictureButton::TRadioPictureButton||41|function|undefined TRadioPictureButton()|
@@ -4630,7 +4630,7 @@ address|name|symbol|size|type|prototype|provenance
 5723f0|TClickZone::GetRuntimeClass||6|function|undefined GetTClickZoneClassNamePointer()|rtti
 572410|TClickZone::ConstructUiCommandTagResourceEntry||27|function|undefined ConstructUiCommandTagResourceEntry()|
 572440|TClickZone::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
-572490|TClickZone::BeginMouseCaptureAndStartRepeatTimer||60|function|undefined PlayControlSoundAndBeginMouseCapture_Field84()|
+572490|TClickZone::BeginMouseCaptureAndStartRepeatTimer||60|function|void __thiscall BeginMouseCaptureAndStartRepeatTimer(const CPoint &point, TToolboxEvent *event, CPoint origin)|
 5724e0|TTextPictureButton::CreateObject|?CreateObject@TTextPictureButton@@SGPAVCObject@@XZ|156|function|undefined CreateObject()|rtti
 5725b0|TTextPictureButton::GetRuntimeClass||6|function|undefined GetTTextPictureButtonClassNamePointer()|rtti
 5725d0|TLineData::ConstructPictureScreenVariantEntry||113|function|undefined ConstructPictureScreenVariantEntry()|
@@ -4702,7 +4702,7 @@ address|name|symbol|size|type|prototype|provenance
 5746e0|TScrollBarView::Free||40|function|undefined DestructTScrollBarViewAndMaybeFree()|
 574720|TScrollBarView::DoPostCreate||120|function|undefined OrphanLeaf_NoCall_Ins07_004d8920(void)|
 5747c0|TScrollBarView::HandleEvent||80|function|undefined ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1, int param_2)|
-574830|TScrollBarView::BeginMouseCaptureAndStartRepeatTimer||243|function|undefined 'scalar_deleting_destructor'(POINT * param_1)|
+574830|TScrollBarView::BeginMouseCaptureAndStartRepeatTimer||243|function|void __thiscall BeginMouseCaptureAndStartRepeatTimer(const CPoint &point, TToolboxEvent *event, CPoint origin)|
 574970|TScrollBarView::ApplyRectSlot110||724|function|undefined RenderStrategicMapViewportBandsAndBlit()|
 574d10|TScrollBarView::DispatchPictureResourceCommand||208|function|undefined QueueCityRecruitmentSupportCommandsIfDeficit(int param_1, int param_2)|
 574ea0|TScrollerButton::CreateObject|?CreateObject@TScrollerButton@@SGPAVCObject@@XZ|83|function|undefined CreateObject()|rtti
@@ -4764,7 +4764,7 @@ address|name|symbol|size|type|prototype|provenance
 578830|TMapPreviewView::GetRuntimeClass||6|function|undefined GetTMapPreviewViewClassNamePointer()|rtti
 578850|TMapPreviewView::DoPostCreate||258|function|void __thiscall DoPostCreate(int arg)|
 5789b0|TMapPreviewView::Free||27|function|undefined DestructTMapPreviewViewAndMaybeFree()|
-5789e0|TMapPreviewView::BeginMouseCaptureAndStartRepeatTimer||122|function|void __thiscall BeginMouseCaptureAndStartRepeatTimer(CPoint* point,int arg2,int arg3,int arg4)|
+5789e0|TMapPreviewView::BeginMouseCaptureAndStartRepeatTimer||122|function|void __thiscall BeginMouseCaptureAndStartRepeatTimer(const CPoint &point, TToolboxEvent *event, CPoint origin)|
 578a80|TMapPreviewView::ApplyRectSlot110||307|function|void __thiscall ApplyRectSlot110(RECT* rectBuffer)|
 578c10|TMapPreviewView::TakeSatellitePhoto||1295|function|void __thiscall TakeSatellitePhoto(char* tileOwnerTagTable)|
 579270|TMapPreviewView::EnhancePhoto||299|function|void __thiscall EnhancePhoto()|
@@ -4794,7 +4794,7 @@ address|name|symbol|size|type|prototype|provenance
 57ab70|TTextList::CreateObject|?CreateObject@TTextList@@SGPAVCObject@@XZ|142|function|undefined CreateObject()|rtti
 57ac30|TTextList::GetRuntimeClass||6|function|undefined GetRuntimeClass()|rtti
 57acc0|TTextList::ApplyRectSlot110||478|function|undefined ApplyRectSlot110(RECT * rectBuffer)|
-57af20|TTextList::BeginMouseCaptureAndStartRepeatTimer||166|function|undefined BeginMouseCaptureAndStartRepeatTimer(CPoint * point, int arg2, int arg3, int arg4)|
+57af20|TTextList::BeginMouseCaptureAndStartRepeatTimer||166|function|void __thiscall BeginMouseCaptureAndStartRepeatTimer(const CPoint &point, TToolboxEvent *event, CPoint origin)|
 57b000|TGameScorePicture::CreateObject|?CreateObject@TGameScorePicture@@SGPAVCObject@@XZ|83|function|undefined CreateObject()|rtti
 57b080|TGameScorePicture::GetRuntimeClass||6|function|undefined GetTGameScorePictureClassNamePointer()|rtti
 57b0a0|TGameScorePicture::DoPostCreate||1108|function|undefined OrphanLeaf_NoCall_Ins07_004d8920(void)|
@@ -4868,33 +4868,33 @@ address|name|symbol|size|type|prototype|provenance
 581bc0|AssignSharedStringFromIndexedSlot7C||38|function|undefined AssignSharedStringFromIndexedSlot7C()|
 581c00|TSimMgr::NameCapitals||477|function|void NameCapitals(void)|mac-oracle
 581e60|TSimMgr::ProcessScenarioScript||549|function|void ProcessScenarioScript(void)|mac-oracle
-582120|HandleTurnInstruction_Labo_SetNationLaborTierCounts||231|function|undefined HandleTurnInstruction_Labo_SetNationLaborTierCounts()|
-5822c0|HandleTurnInstruction_Capa_ApplyNationSlotValueWithDelta||178|function|undefined HandleTurnInstruction_Capa_ApplyNationSlotValueWithDelta()|
-5823e0|HandleTurnInstruction_Ware_ApplyNationIndexedShortAndRefresh||167|function|undefined HandleTurnInstruction_Ware_ApplyNationIndexedShortAndRefresh()|
-5824c0|HandleTurnInstruction_Army_DeserializeAndCreateRecruitOrders||274|function|undefined HandleTurnInstruction_Army_DeserializeAndCreateRecruitOrders()|
-582630|HandleTurnInstruction_Civi_DeserializeAndCreateWorkOrder||187|function|undefined HandleTurnInstruction_Civi_DeserializeAndCreateWorkOrder()|
-582720|HandleTurnInstruction_Ship_DeserializeAndCreatePrimaryOrders||250|function|undefined HandleTurnInstruction_Ship_DeserializeAndCreatePrimaryOrders()|
-582860|HandleTurnInstruction_Tran_SetNationTransportStat||106|function|undefined HandleTurnInstruction_Tran_SetNationTransportStat()|
-5828f0|HandleTurnInstruction_Deve_ApplyMapDevelopmentEntry||135|function|undefined HandleTurnInstruction_Deve_ApplyMapDevelopmentEntry()|
-5829b0|HandleTurnInstruction_Rail_ApplyRailPlacementAndCashBonus||98|function|undefined HandleTurnInstruction_Rail_ApplyRailPlacementAndCashBonus()|
-582a40|HandleTurnInstruction_Port_ApplyPortPlacementAndCashBonus||98|function|undefined HandleTurnInstruction_Port_ApplyPortPlacementAndCashBonus()|
-582ad0|HandleTurnInstruction_Tech_ApplyTechUnlockAndNotifyNations||120|function|undefined HandleTurnInstruction_Tech_ApplyTechUnlockAndNotifyNations()|
-582b70|HandleTurnInstruction_Pric_ApplyDiplomacyPriceEntry||86|function|undefined HandleTurnInstruction_Pric_ApplyDiplomacyPriceEntry()|
-582bf0|HandleTurnInstruction_Emba_SetEmbassyRelationFlags||189|function|undefined HandleTurnInstruction_Emba_SetEmbassyRelationFlags()|
-582ce0|HandleTurnInstruction_Subs_ApplyNationSubsidyEntry||140|function|undefined HandleTurnInstruction_Subs_ApplyNationSubsidyEntry()|
-582da0|HandleTurnInstruction_Trea_ApplyTreatyAndRelationEntry||240|function|undefined HandleTurnInstruction_Trea_ApplyTreatyAndRelationEntry()|
-582ed0|HandleTurnInstruction_Year_UpdateScenarioYearFieldScaledBy4||53|function|undefined HandleTurnInstruction_Year_UpdateScenarioYearFieldScaledBy4()|
-582f20|HandleTurnInstruction_Prov_ApplyProvinceAssignmentEntry||89|function|undefined HandleTurnInstruction_Prov_ApplyProvinceAssignmentEntry()|
-582fa0|HandleTurnInstruction_Zone_AssignMapActionContextNameByNodeId||155|function|undefined HandleTurnInstruction_Zone_AssignMapActionContextNameByNodeId()|
-583070|HandleTurnInstruction_Cnam_AssignCountryName||259|function|undefined HandleTurnInstruction_Cnam_AssignCountryName()|
-5831d0|HandleTurnInstruction_Rela_SetNationRelationValue||122|function|undefined HandleTurnInstruction_Rela_SetNationRelationValue()|
-583270|TToolBarCluster::HandleTurnInstruction_Pnam_AssignProvinceName||188|function|undefined HandleTurnInstruction_Pnam_AssignProvinceName()|
-583360|HandleTurnInstruction_Cash_SetNationCash||117|function|undefined HandleTurnInstruction_Cash_SetNationCash()|
-583400|HandleTurnInstruction_Flag_SetNationFlagAndRefresh||73|function|undefined HandleTurnInstruction_Flag_SetNationFlagAndRefresh()|
-583470|HandleTurnInstruction_Tyer_SetCityOrderCapabilityTierValue||121|function|undefined HandleTurnInstruction_Tyer_SetCityOrderCapabilityTierValue()|
-583510|HandleTurnInstruction_Tbar_SetNationRelationBarValue||271|function|undefined HandleTurnInstruction_Tbar_SetNationRelationBarValue()|
-583670|HandleTurnInstruction_Tclr_ResetNationRelationBars||101|function|undefined HandleTurnInstruction_Tclr_ResetNationRelationBars()|
-583700|HandleTurnInstruction_Coun_SetCountrySlotState||134|function|undefined HandleTurnInstruction_Coun_SetCountrySlotState()|
+582120|TSimMgr::HandleTurnInstruction_Labo_SetNationLaborTierCounts||231|function|void __thiscall HandleTurnInstruction_Labo_SetNationLaborTierCounts(void *)|
+5822c0|TSimMgr::HandleTurnInstruction_Capa_ApplyNationSlotValueWithDelta||178|function|void __thiscall HandleTurnInstruction_Capa_ApplyNationSlotValueWithDelta(void *)|
+5823e0|TSimMgr::HandleTurnInstruction_Ware_ApplyNationIndexedShortAndRefresh||167|function|void __thiscall HandleTurnInstruction_Ware_ApplyNationIndexedShortAndRefresh(void *)|
+5824c0|TSimMgr::HandleTurnInstruction_Army_DeserializeAndCreateRecruitOrders||274|function|void __thiscall HandleTurnInstruction_Army_DeserializeAndCreateRecruitOrders(void *)|
+582630|TSimMgr::HandleTurnInstruction_Civi_DeserializeAndCreateWorkOrder||187|function|void __thiscall HandleTurnInstruction_Civi_DeserializeAndCreateWorkOrder(void *)|
+582720|TSimMgr::HandleTurnInstruction_Ship_DeserializeAndCreatePrimaryOrders||250|function|void __thiscall HandleTurnInstruction_Ship_DeserializeAndCreatePrimaryOrders(void *)|
+582860|TSimMgr::HandleTurnInstruction_Tran_SetNationTransportStat||106|function|void __thiscall HandleTurnInstruction_Tran_SetNationTransportStat(void *)|
+5828f0|TSimMgr::HandleTurnInstruction_Deve_ApplyMapDevelopmentEntry||135|function|void __thiscall HandleTurnInstruction_Deve_ApplyMapDevelopmentEntry(void *)|
+5829b0|TSimMgr::HandleTurnInstruction_Rail_ApplyRailPlacementAndCashBonus||98|function|void __thiscall HandleTurnInstruction_Rail_ApplyRailPlacementAndCashBonus(void *)|
+582a40|TSimMgr::HandleTurnInstruction_Port_ApplyPortPlacementAndCashBonus||98|function|void __thiscall HandleTurnInstruction_Port_ApplyPortPlacementAndCashBonus(void *)|
+582ad0|TSimMgr::HandleTurnInstruction_Tech_ApplyTechUnlockAndNotifyNations||120|function|void __thiscall HandleTurnInstruction_Tech_ApplyTechUnlockAndNotifyNations(void *)|
+582b70|TSimMgr::HandleTurnInstruction_Pric_ApplyDiplomacyPriceEntry||86|function|void __thiscall HandleTurnInstruction_Pric_ApplyDiplomacyPriceEntry(void *)|
+582bf0|TSimMgr::HandleTurnInstruction_Emba_SetEmbassyRelationFlags||189|function|void __thiscall HandleTurnInstruction_Emba_SetEmbassyRelationFlags(void *)|
+582ce0|TSimMgr::HandleTurnInstruction_Subs_ApplyNationSubsidyEntry||140|function|void __thiscall HandleTurnInstruction_Subs_ApplyNationSubsidyEntry(void *)|
+582da0|TSimMgr::HandleTurnInstruction_Trea_ApplyTreatyAndRelationEntry||240|function|void __thiscall HandleTurnInstruction_Trea_ApplyTreatyAndRelationEntry(void *)|
+582ed0|TSimMgr::HandleTurnInstruction_Year_UpdateScenarioYearFieldScaledBy4||53|function|void __thiscall HandleTurnInstruction_Year_UpdateScenarioYearFieldScaledBy4(void *)|
+582f20|TSimMgr::HandleTurnInstruction_Prov_ApplyProvinceAssignmentEntry||89|function|void __thiscall HandleTurnInstruction_Prov_ApplyProvinceAssignmentEntry(void *)|
+582fa0|TSimMgr::HandleTurnInstruction_Zone_AssignMapActionContextNameByNodeId||155|function|void __thiscall HandleTurnInstruction_Zone_AssignMapActionContextNameByNodeId(void *)|
+583070|TSimMgr::HandleTurnInstruction_Cnam_AssignCountryName||259|function|void __thiscall HandleTurnInstruction_Cnam_AssignCountryName(void *)|
+5831d0|TSimMgr::HandleTurnInstruction_Rela_SetNationRelationValue||122|function|void __thiscall HandleTurnInstruction_Rela_SetNationRelationValue(void *)|
+583270|TSimMgr::HandleTurnInstruction_Pnam_AssignProvinceName||188|function|void __thiscall HandleTurnInstruction_Pnam_AssignProvinceName(void *)|
+583360|TSimMgr::HandleTurnInstruction_Cash_SetNationCash||117|function|void __thiscall HandleTurnInstruction_Cash_SetNationCash(void *)|
+583400|TSimMgr::HandleTurnInstruction_Flag_SetNationFlagAndRefresh||73|function|void __thiscall HandleTurnInstruction_Flag_SetNationFlagAndRefresh(void *)|
+583470|TSimMgr::HandleTurnInstruction_Tyer_SetCityOrderCapabilityTierValue||121|function|void __thiscall HandleTurnInstruction_Tyer_SetCityOrderCapabilityTierValue(void *)|
+583510|TSimMgr::HandleTurnInstruction_Tbar_SetNationRelationBarValue||271|function|void __thiscall HandleTurnInstruction_Tbar_SetNationRelationBarValue(void *)|
+583670|TSimMgr::HandleTurnInstruction_Tclr_ResetNationRelationBars||101|function|void __thiscall HandleTurnInstruction_Tclr_ResetNationRelationBars(void *)|
+583700|TSimMgr::HandleTurnInstruction_Coun_SetCountrySlotState||134|function|void __thiscall HandleTurnInstruction_Coun_SetCountrySlotState(void *)|
 5837c0|WrapperFor_thunk_RefreshCityCapabilityUiHandlesForActiveNation_At005837c0||23|function|undefined WrapperFor_thunk_RefreshCityCapabilityUiHandlesForActiveNation_At005837c0()|
 583880|WrapperFor_ftol_At00583880||30|function|undefined WrapperFor_ftol_At00583880()|
 5838b0|TArrowsControl::CreateObject|?CreateObject@TArrowsControl@@SGPAVCObject@@XZ|113|function|undefined CreateObject()|rtti
@@ -4932,7 +4932,7 @@ address|name|symbol|size|type|prototype|provenance
 584480|TTradeOrderPicture::TTradeOrderPicture||18|function|void __thiscall TTradeOrderPicture(void)|
 5844b0|TTradeOrderPicture::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 584500|TTradeOrderPicture::DoPostCreate||15|function|undefined OrphanLeaf_NoCall_Ins07_004d8920(void)|
-584520|TTradeOrderPicture::BeginMouseCaptureAndStartRepeatTimer||349|function|undefined HandleCardOrOfferTagClickAndDispatchTradeActions()|
+584520|TTradeOrderPicture::BeginMouseCaptureAndStartRepeatTimer||349|function|void __thiscall BeginMouseCaptureAndStartRepeatTimer(const CPoint &point, TToolboxEvent *event, CPoint origin)|
 5846e0|TBoycottButton::CreateObject|?CreateObject@TBoycottButton@@SGPAVCObject@@XZ|83|function|undefined CreateObject()|rtti
 584760|TBoycottButton::GetRuntimeClass||6|function|undefined GetRuntimeClass()|rtti
 584780|TBoycottButton::ConstructTBoycottButtonBaseState||18|function|undefined ConstructTBoycottButtonBaseState()|
@@ -4948,7 +4948,7 @@ address|name|symbol|size|type|prototype|provenance
 584ad0|TCloseButton::GetRuntimeClass||6|function|undefined GetTCloseButtonClassNamePointer()|rtti
 584af0|TCloseButton::ConstructTCloseButtonBaseState||18|function|undefined ConstructTCloseButtonBaseState()|
 584b20|TCloseButton::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
-584b70|TCloseButton::DispatchUiMouseMoveToChildren||45|function|undefined DispatchUiMouseMoveThenClearTurnEvent()|
+584b70|TCloseButton::HandleMouseDown||45|function|char __thiscall HandleMouseDown(const CPoint &point, TToolboxEvent *event, CPoint origin)|macos-name-oracle:HandleMouseDown(const VPoint&, TToolboxEvent*, VPoint)
 584bb0|TCloseParentButton::CreateObject|?CreateObject@TCloseParentButton@@SGPAVCObject@@XZ|112|function|undefined CreateObject()|rtti
 584c40|TCloseParentButton::GetRuntimeClass||6|function|undefined GetTCloseParentButtonClassNamePointer()|rtti
 584c60|TCloseParentButton::ConstructTCloseParentButtonBaseState||90|function|undefined ConstructTCloseParentButtonBaseState()|
@@ -5025,7 +5025,7 @@ address|name|symbol|size|type|prototype|provenance
 588630|TAmtBar::UpdateBarValuesAndRefresh||45|function|undefined UpdateBarValuesAndRefresh()|
 588670|TAmtBar::ApplyRectSlot110||11|function|undefined InvokeSlot1A8NoArg()|
 588690|TAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache||549|function|undefined RenderPrimarySurfaceOverlayPanelWithClipCache()|
-588950|TAmtBar::BeginMouseCaptureAndStartRepeatTimer||173|function|undefined ClampAndApplyTradeMoveValue()|
+588950|TAmtBar::BeginMouseCaptureAndStartRepeatTimer||173|function|void __thiscall BeginMouseCaptureAndStartRepeatTimer(const CPoint &point, TToolboxEvent *event, CPoint origin)|
 588a30|TIndustryCluster::CreateObject|?CreateObject@TIndustryCluster@@SGPAVCObject@@XZ|113|function|undefined CreateObject()|rtti
 588ad0|TIndustryCluster::GetRuntimeClass||6|function|undefined GetRuntimeClass()|rtti
 588af0|TIndustryCluster::ConstructTradeMoveStepControlPanel||28|function|undefined ConstructTradeMoveStepControlPanel()|
@@ -5146,7 +5146,7 @@ address|name|symbol|size|type|prototype|provenance
 58f050|TCivDescription::CreateObject|?CreateObject@TCivDescription@@SGPAVCObject@@XZ|113|function|undefined CreateObject()|rtti
 58f0f0|TCivDescription::GetRuntimeClass||6|function|undefined GetRuntimeClass()|rtti
 58f110|TCivDescription::UpdateCivilianOrderClassAndRefreshTargetCounts||84|function|undefined UpdateCivilianOrderClassAndRefreshTargetCounts()|
-58f1a0|TCivDescription::BeginMouseCaptureAndStartRepeatTimer||420|function|undefined HandleCivilianLegendHitTestAndSelectOrder()|
+58f1a0|TCivDescription::BeginMouseCaptureAndStartRepeatTimer||420|function|void __thiscall BeginMouseCaptureAndStartRepeatTimer(const CPoint &point, TToolboxEvent *event, CPoint origin)|
 58f3c0|TCivDescription::UpdateCivilianOrderTargetTileCountsForOwnerNation||317|function|void __thiscall UpdateCivilianOrderTargetTileCountsForOwnerNation(int * pCivilianOrderEntry)|
 58f550|TCivDescription::ApplyRectSlot110||469|function|undefined RefreshCivilianTargetLegendBySelectedClass()|
 58f7b0|TCivDescription::DrawEngineer||1438|function|void __thiscall DrawEngineer(RECT * bounds)|
@@ -5219,9 +5219,9 @@ address|name|symbol|size|type|prototype|provenance
 596060|TWorldView::OrphanRetStub_00596060||3|function|undefined OrphanRetStub_00596060(void)|
 596080|TWorldView::OrphanRetStub_00596080||1|function|undefined OrphanRetStub_00596080(void)|
 5960a0|TWorldView::OrphanTiny_ReturnMinusOneWord_005960a0||7|function|undefined OrphanTiny_ReturnMinusOneWord_005960a0(void)|
-5960c0|TWorldView::OrphanRetStub_005960c0||3|function|undefined OrphanRetStub_005960c0(void)|
+5960c0|TWorldView::ConvertPoint||3|function|void __thiscall ConvertPoint(const CPoint &point, short &outRow, short &outCol, short &outBand)|macos-name-oracle:ConvertPoint(const VPoint&, short&, short&, short&)
 5960e0|TWorldView::OrphanRetStub_005960e0||3|function|undefined OrphanRetStub_005960e0(void)|
-596100|RenderWrappedMapQuickDrawOverlayFromStridedRecords||278|function|undefined RenderWrappedMapQuickDrawOverlayFromStridedRecords()|
+596100|TWorldView::HandleMouseDown||278|function|char __thiscall HandleMouseDown(const CPoint &point, TToolboxEvent *event, CPoint origin)|macos-name-oracle:HandleMouseDown(const VPoint&, TToolboxEvent*, CPoint)
 596270|TWorldView::InvokeDialogHooks1D8ThenE4||30|function|undefined InvokeDialogHooks1D8ThenE4()|
 5962a0|TWorldView::HandleMapTileClickSetOrderContextAndDispatchEvent79||228|function|undefined HandleMapTileClickSetOrderContextAndDispatchEvent79()|
 5963d0|TWorldView::WrapperFor_AllocateWithFallbackHandler_At005963d0||79|function|undefined WrapperFor_AllocateWithFallbackHandler_At005963d0(void)|
@@ -5518,7 +5518,7 @@ address|name|symbol|size|type|prototype|provenance
 5a8430|TTacticalBattleView::Free||116|function|undefined OrphanLeaf_NoCall_Ins07_004d8920(void)|
 5a84d0|TTacticalBattleView::DoPostCreate||96|function|undefined OrphanLeaf_NoCall_Ins07_004d8920(void)|
 5a8550|TTacticalBattleView::ForwardParam||88|function|undefined HandleTacticalInputCommandKeyAndTagDispatch()|
-5a8660|TTacticalBattleView::BeginMouseCaptureAndStartRepeatTimer||67|function|undefined DispatchTacticalActionFromHoverHexUnderCursor()|
+5a8660|TTacticalBattleView::BeginMouseCaptureAndStartRepeatTimer||67|function|void __thiscall BeginMouseCaptureAndStartRepeatTimer(const CPoint &point, TToolboxEvent *event, CPoint origin)|
 5a86d0|ConvertScreenPointToHexGridCoordClamped||130|function|undefined ConvertScreenPointToHexGridCoordClamped()|
 5a8790|HandleTurnEventVtableSlotA0SyncStatusPanel_Impl||44|function|undefined HandleTurnEventVtableSlotA0SyncStatusPanel_Impl()|
 5a87d0|TTacticalBattleView::ComputeTacticalHexTileScreenRect||108|function|undefined EvaluateAndResolveTacticalActionAgainstTileOccupant_Impl()|
@@ -6199,7 +6199,7 @@ address|name|symbol|size|type|prototype|provenance
 5e24b0|TMovieView::OpenMoviePathAndDetachOnSuccess||28|function|bool __thiscall OpenMoviePathAndDetachOnSuccess(LPCSTR moviePath)|
 5e24e0|TMovieView::SendMessage806IfSelectionStateActive||16|function|bool __thiscall SendMessage806IfSelectionStateActive(void)|
 5e2500|TMovieView::SendMessage808IfSelectionStateActive||16|function|bool __thiscall SendMessage808IfSelectionStateActive(void)|
-5e2520|TMovieView::DispatchUiMouseMoveToChildren||49|function|undefined SendMessage808IfActiveThenDispatchMouseMove()|
+5e2520|TMovieView::HandleMouseDown||49|function|char __thiscall HandleMouseDown(const CPoint &point, TToolboxEvent *event, CPoint origin)|macos-name-oracle:HandleMouseDown(const VPoint&, TToolboxEvent*, CPoint)
 5e26a0|WrapperFor_ftol_At005e26a0||30|function|undefined WrapperFor_ftol_At005e26a0()|
 5e26d0|InitializeRuntimeClassState_0066FA50_AndRegisterAtExit||26|function|undefined InitializeRuntimeClassState_0066FA50_AndRegisterAtExit()|
 5e2700|DestroyRuntimeClassState_0066FA50_AtExit||5|function|undefined DestroyRuntimeClassState_0066FA50_AtExit()|
@@ -8249,6 +8249,7 @@ address|name|symbol|size|type|prototype|provenance
 661a70|TGameScorePicture::classTGameScorePicture|||global||
 661a88|TSelectoText::classTSelectoText|||global||
 662960|TSimMgr::classTSimMgr|||global||
+662978|g_anScenarioScriptInstructionTags|||global||
 662db8|TArrowsControl::classTArrowsControl|||global||
 662dd0|TSidewaysArrow::classTSidewaysArrow|||global||
 662de8|TUpDownView::classTUpDownView|||global||
@@ -8545,6 +8546,7 @@ address|name|symbol|size|type|prototype|provenance
 698ae0|g_szCountryNameProfileKey00698AE0|||global||
 698b10|g_nTurnCooldownSideFlag00698B10|||global||
 698b1a|g_anScenarioNationSetupTable_00698B1A|||global||
+698b50|g_apfnScenarioScriptInstructionHandlers|||global||
 698bf4|s_PictWvGobPathFormat_00698BF4|||global||
 698c0c|s_Chunk_00698C0C|||global||
 698f58|g_anTargetTileProfileByCivilianClassAndSlot|||global||
@@ -8660,6 +8662,8 @@ address|name|symbol|size|type|prototype|provenance
 6a432c|g_apMinorNationCapabilityObjects|||global||
 6a4370|g_apNationStates|||global||
 6a438c|g_apNationStates_End|||global||
+6a4398|g_bScenarioScriptTerminationRequested|||global||
+6a43b8|g_nScenarioScriptInstructionCount|||global||
 6a43c0|g_bTurnFlowBootstrapComplete|||global||
 6a43c4|g_nTurnCooldownDeferCounter006A43C4|||global||
 6a43c8|g_pGameFlowState|||global||
