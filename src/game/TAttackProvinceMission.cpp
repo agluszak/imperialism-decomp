@@ -10,6 +10,7 @@
 #include "game/TGreatPower.h"
 #include "game/TMapMgr.h"
 #include "game/TMilitaryUnit.h"
+#include "game/TSimMgr.h"
 #include "game/TStream.h"
 #include "game/global_data_tables.h"
 
@@ -370,13 +371,41 @@ void TAttackProvinceMission::NoOpSlot3C() {
     }
   }
 
-  // NOTE: the original also re-weights this vector against a per-resource-type
-  // lookup table selected by the target province's development-stage byte
-  // (fortLevel03 in TGlobalMapCityScoreRecord) before storing it; that lookup table
-  // is not yet catalogued in global_data_tables, so the accumulated priority
-  // vector is stored directly pending further recovery.
+  unsigned char fortLevel = g_pGlobalMapState->cityScoreTable[targetProvince30].fortLevel03;
+  float total = 0.0f;
   for (int i = 0; i < 5; ++i) {
-    resourceWeights[i] = vector[i];
+    total += vector[i];
+  }
+
+  float similarity = 0.0f;
+  if (total != 0.0f) {
+    const short* reference =
+        &g_awTacticalCompositionReferenceProfiles_00697870[(fortLevel > 0) ? 15 : 0];
+    float divergence = 0.0f;
+    for (int referenceIndex = 0; referenceIndex < 5; ++referenceIndex) {
+      float delta =
+          vector[referenceIndex] / total - static_cast<float>(reference[referenceIndex]) *
+                                               g_Recompute_Nation_Order_LookupTable_0065A9F8;
+      if (delta <= 0.0f) {
+        delta = -delta;
+      }
+      divergence += delta;
+    }
+    similarity = total * (g_Recompute_Nation_Order_LookupTable_0065AA08 -
+                          divergence * g_Recompute_Nation_Order_LookupTable_0065AA00);
+  }
+  if (similarity == 0.0f) {
+    similarity = 1.0f;
+  }
+
+  float scale = g_AttackProvinceMissionResourceScaleByDifficultyAndFortLevel_0065A968
+                    [g_pSimMgr->difficultyLevel][fortLevel] *
+                similarity;
+  const short* outputProfile =
+      &g_awTacticalCompositionReferenceProfiles_00697870[(fortLevel > 0) ? 10 : 5];
+  for (int outputIndex = 0; outputIndex < 5; ++outputIndex) {
+    resourceWeights[outputIndex] = static_cast<float>(outputProfile[outputIndex]) * scale *
+                                   g_Recompute_Nation_Order_LookupTable_0065A9F8;
   }
 }
 

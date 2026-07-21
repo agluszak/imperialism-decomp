@@ -57,10 +57,12 @@ void TControlSeaZoneMission::Call30() {
   float score = static_cast<float>(targetZone14->ComputeMapActionContextNodeValueAverage());
 
   for (TZone* zone = TZone::GetFirstPortZone(); zone != nullptr; zone = zone->GetNextPortZone()) {
-    // NOTE: original also refreshes a lazily-allocated per-zone owner cache
-    // here (TZone field_0x28/0x2c/0x30); pending TZone recovery of that cache,
-    // the owner-nation gate below is approximated as always-false.
-    (void)zone;
+    TZone** ownerSlot = zone->primaryNeighbors.EnsureSlotAllocatedAndReturnPointer(0);
+    if (*ownerSlot == targetZone14) {
+      score *= (zone->GetPortZoneOwnerNationCodeFromMissionField48() == nationId04)
+                   ? g_PortZoneFriendlyMissionScoreMultiplier_0065AA10
+                   : g_PortZoneForeignMissionScoreMultiplier_0065AA18;
+    }
   }
 
   marker11 = 0;
@@ -112,7 +114,53 @@ TMission* TControlSeaZoneMission::GetReplacementSlot48() {
 // Inherited unchanged by TBeachheadMission (real base class relationship).
 // FUNCTION: IMPERIALISM 0x00538fe0
 void TControlSeaZoneMission::SetStateByte8To2() {
-  state08 = 3;
+  TZone* homePort = g_pActiveMapOrderContext->FindFirstPortZoneContextByNation(nationId04);
+  TZone** ownerSlot = homePort->primaryNeighbors.EnsureSlotAllocatedAndReturnPointer(0);
+  if (*ownerSlot == targetZone14) {
+    float vector[4] = {0.0f, 0.0f, 0.0f, 0.0f};
+    for (TShip* ship = GetNavyPrimaryOrderListHead(); ship != nullptr; ship = ship->nextOlder24) {
+      if (ship->field08 != targetZone14 || !g_pDiplomacyTurnStateManager->HasPolicyWithNationSlot44(
+                                               nationId04, ship->ownerNationSlot14)) {
+        continue;
+      }
+
+      short normalizationBase = ship->GetNavyOrderNormalizationBaseByNationType();
+      float scale = static_cast<float>(ship->stockLevel1c / normalizationBase);
+      vector[0] +=
+          static_cast<float>(ship->ComputeNavyOrderPriorityContributionPercentByCategory(0)) *
+          scale;
+      vector[1] +=
+          static_cast<float>(ship->ComputeNavyOrderPriorityContributionPercentByCategory(1)) *
+          scale;
+      vector[2] +=
+          static_cast<float>(ship->ComputeNavyOrderPriorityContributionPercentByCategory(2)) *
+          scale;
+      vector[3] +=
+          static_cast<float>(ship->ComputeNavyOrderPriorityContributionPercentByCategory(3));
+    }
+
+    float total = vector[0] + vector[1] + vector[2] + vector[3];
+    float similarity = 0.0f;
+    if (total != 0.0f) {
+      float divergence = 0.0f;
+      for (int i = 0; i < 4; ++i) {
+        float delta = vector[i] / total -
+                      static_cast<float>(g_Populate_Beachhead_Mission_LookupTable_00697958[i]) *
+                          g_Recompute_Nation_Order_LookupTable_0065A9F8;
+        if (delta <= 0.0f) {
+          delta = -delta;
+        }
+        divergence += delta;
+      }
+      similarity = total * (g_Recompute_Nation_Order_LookupTable_0065AA08 -
+                            divergence * g_Recompute_Nation_Order_LookupTable_0065AA00);
+    }
+    if (similarity > 0.0f) {
+      state08 = 1;
+      return;
+    }
+  }
+  state08 = 2;
 }
 
 // Inherited unchanged by TBeachheadMission and TBlockadePortMission (real base class relationship).
@@ -121,8 +169,12 @@ void TControlSeaZoneMission::ResetValue0CToZero() {
   float score = static_cast<float>(targetZone14->ComputeMapActionContextNodeValueAverage());
 
   for (TZone* zone = TZone::GetFirstPortZone(); zone != nullptr; zone = zone->GetNextPortZone()) {
-    // See Call30 note above re: the per-zone owner cache.
-    (void)zone;
+    TZone** ownerSlot = zone->primaryNeighbors.EnsureSlotAllocatedAndReturnPointer(0);
+    if (*ownerSlot == targetZone14) {
+      score *= (zone->GetPortZoneOwnerNationCodeFromMissionField48() == nationId04)
+                   ? g_PortZoneFriendlyMissionScoreMultiplier_0065AA10
+                   : g_PortZoneForeignMissionScoreMultiplier_0065AA18;
+    }
   }
 
   value0c = score / g_fMissionScoreNormalizationDivisor;

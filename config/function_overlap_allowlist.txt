@@ -21,7 +21,6 @@
 4dd7f0:4dd880  # GetCityProductionValueTimesTwoCallbackF starts inside TGreatPower::OrphanCallChain_C1_I42_004dd7f0
 4dd7f0:4dd893  # GetCityProductionValueTimesTwoCallbackG starts inside TGreatPower::OrphanCallChain_C1_I42_004dd7f0
 50ec90:50ed4d  # RebuildGlobalMapStateAndMaybeDispatchTurnEvent3C0 starts inside TMapMgr::BuildOrLoadGlobalMapStateForSession
-537090:5370f0  # QueueMissionOrderEntriesAcrossSelectionRange starts inside TScatteredShipsMission::QueueMissionOrdersByPriorityForContext
 56ae10:56af74  # HandleOptionsTagApplyFragmentAndMaybePostTurnEvent5DC starts inside TGamePreferencesPicture::DoEvent (case-body split)
 597340:5974a4  # CString-copy case-body split starts inside TMapUberPicture::DoEvent
 597340:5974eb  # ReinitializeGameFlowAndPostTurnEvent5DD starts inside TMapUberPicture::DoEvent (case-body split)
