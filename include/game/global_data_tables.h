@@ -237,6 +237,10 @@ extern short g_awUnitCombatClassBySlot[32];
 // Stack composition class lookup (0x6953c0), indexed [minClass + maxClass*4]; true
 // bound unconfirmed beyond the observed min/max class range (1..5-ish).
 extern unsigned char g_abStackCompositionClassTable[16];
+// Per-unit-type strength-weighting percent (0x6953e8), read by TDefenseMinister::
+// BuildHexAreaTileIndexListIntoAllocatedBuffer as weightPercent * TMilitaryUnit::field_34
+// / 100.
+extern short g_anUnitStrengthWeightPercentBySlot[32];
 
 // Per-civilian-order-type map-improvement sprite class (0x697040), read by
 // TMapMgr::GetMapImprovementSpriteBaseOffset via TCivUnit::orderType; only indices 0-8 are

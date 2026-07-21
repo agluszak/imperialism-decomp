@@ -57,8 +57,22 @@ public:
   // to each of the 12 tiles in the radius-2 ring; every unowned tile with a nonzero
   // adjacencyBits06 gets a flat +100. Caller owns the returned buffer (operator
   // new[]/delete[]).
-  virtual int* BuildStrategicTilePriorityHeatmap();                         // 0x58 (0x4ecf20)
-  virtual undefined BuildHexAreaTileIndexListIntoAllocatedBuffer(char arg); // 0x5c (0x4ed050)
+  virtual int* BuildStrategicTilePriorityHeatmap(); // 0x58 (0x4ecf20)
+  // Per-tile stationed-unit-strength heatmap (one int per map tile): for every tile
+  // this nation owns (or, when excludeEnemyTiles == 0, that a nation we're at war
+  // with owns) whose stationed-unit chain head's field_18 differs from our nation
+  // slot, walks the chain accumulating a per-hex-ring (own tile / radius 1 / 2 / 3)
+  // weighted strength score (g_anUnitStrengthWeightPercentBySlot[orderType] *
+  // TMilitaryUnit::field_34 / 100, cumulative up to g_awUnitCombatClassBySlot's
+  // combat class) and a parallel "flag" value (2 for orderType 6/7 units, else the
+  // default 1), then spreads both onto weightSum/maxWeight over the matching ring via
+  // the already-ported BuildHexAreaTileIndexList. Faithfully reproduces two original
+  // quirks: the second allocation's null-check tests the FIRST buffer again (not the
+  // second), and the closing normalization loop multiplies weightSum[0] itself by every
+  // maxWeight[i] > 1 rather than weightSum[i] (the per-ring maxWeight buffer is freed;
+  // the per-tile hex-ring buffers are never freed, matching the original leak).
+  virtual int* BuildHexAreaTileIndexListIntoAllocatedBuffer(char excludeEnemyTiles); // 0x5c
+                                                                                     // (0x4ed050)
   // One stack arg (RET 0x4 across the base and all five personality overrides).
   // Not a factory despite the old Ghidra 'Create*Instance' names: every body
   // FLDs a per-personality FP weight constant (base 0.0f; the flag selects

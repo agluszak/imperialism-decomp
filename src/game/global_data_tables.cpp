@@ -879,6 +879,13 @@ short g_awUnitCombatClassBySlot[32] = {1, 2, 1, 1, 3, 2, 2, 1, 1, 2, 1, 1, 3, 2,
 // Stack composition class lookup (byte table at 0x6953c0); indexed [minClass + maxClass*4].
 // GLOBAL: IMPERIALISM 0x006953c0
 unsigned char g_abStackCompositionClassTable[16] = {0, 0, 0, 0, 0, 1, 0, 0, 0, 2, 3, 0, 0, 3, 4, 5};
+// Per-unit-type strength-weighting percent (short table at 0x6953e8, 30 unit types + 2
+// pad), read by TDefenseMinister::BuildHexAreaTileIndexListIntoAllocatedBuffer as
+// weightPercent * TMilitaryUnit::field_34 / 100.
+// GLOBAL: IMPERIALISM 0x006953e8
+short g_anUnitStrengthWeightPercentBySlot[32] = {
+    50,  50,  100, 125, 75,  150, 0, 0, 75, 100, 150, 175, 100, 200, 0, 0,
+    100, 150, 225, 250, 225, 600, 0, 0, 0,  0,   0,   0,   0,   0,   0, 0};
 
 // Per-civilian-order-type map-improvement sprite class (short table at 0x697040).
 short g_anMapImprovementSpriteClassByOrderType[9] = {2, 3, 1, 6, 0, 7, 5, 4, 8};
