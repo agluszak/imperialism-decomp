@@ -25,18 +25,20 @@
 // is found, restore the `// FUNCTION: IMPERIALISM 0x00494010` marker here.
 class TQuickDrawClipStateInitializer {
 public:
+  TQuickDrawClipStateInitializer();
+
   ~TQuickDrawClipStateInitializer() {
     g_pGlobalClipRegionHandleObject->DeleteObject();
     delete g_pGlobalClipRegionHandleObject;
   }
-
-  // FUNCTION: IMPERIALISM 0x00494040
-  TQuickDrawClipStateInitializer() {
-    g_pActiveQuickDrawSurfaceContext = &g_defaultQuickDrawSurfaceSentinel;
-    g_pGlobalClipRegionHandleObject = new CRgn;
-    g_pGlobalClipRegionHandleObject->Attach(::CreateRectRgn(0, 0, 0, 0));
-  }
 };
+
+// FUNCTION: IMPERIALISM 0x00494040
+TQuickDrawClipStateInitializer::TQuickDrawClipStateInitializer() {
+  g_pActiveQuickDrawSurfaceContext = &g_defaultQuickDrawSurfaceSentinel;
+  g_pGlobalClipRegionHandleObject = new CRgn;
+  g_pGlobalClipRegionHandleObject->Attach(::CreateRectRgn(0, 0, 0, 0));
+}
 
 static TQuickDrawClipStateInitializer g_quickDrawClipStateInitializer;
 

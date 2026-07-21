@@ -11,11 +11,14 @@ import unittest
 
 from tools.ghidra.apply_source_signatures import (
     _classify_projection,
+    _cstring_sret_overdeclaration_is_proven,
     _flattened_by_value_storage_matches,
+    _in_stack_offsets_are_only_slot_padding,
     _is_placeholder_return,
-    _parameterless_overdeclaration_is_proven,
     _param_type_only,
     _queue_out_for_mode,
+    _source_arity_is_proven_by_ret_cleanup,
+    _source_convention_is_proven_by_abi,
     classify_convergence,
     default_convention,
     parse_prototype,
@@ -330,26 +333,103 @@ class FlattenedByValueStorageTest(unittest.TestCase):
         self.assertFalse(_flattened_by_value_storage_matches([4, None], [4, 4]))
 
 
-class ParameterlessOverdeclarationTest(unittest.TestCase):
+class RetCleanupSourceArityTest(unittest.TestCase):
     def test_thiscall_plain_ret_proves_zero_explicit_parameters(self):
-        self.assertTrue(_parameterless_overdeclaration_is_proven(
-            "__thiscall", 0, True, "__thiscall", 1, True, 0))
+        self.assertTrue(_source_arity_is_proven_by_ret_cleanup(
+            "__thiscall", 0, [], True, "__thiscall", 1, True, 0))
 
     def test_stdcall_plain_ret_proves_zero_explicit_parameters(self):
-        self.assertTrue(_parameterless_overdeclaration_is_proven(
-            "__stdcall", 0, False, "__stdcall", 2, False, 0))
+        self.assertTrue(_source_arity_is_proven_by_ret_cleanup(
+            "__stdcall", 0, [], False, "__stdcall", 2, False, 0))
+
+    def test_thiscall_ret_proves_one_short_stack_parameter(self):
+        self.assertTrue(_source_arity_is_proven_by_ret_cleanup(
+            "__thiscall", 1, [2], True, "__thiscall", 2, True, 4))
 
     def test_cdecl_cleanup_cannot_prove_parameter_count(self):
-        self.assertFalse(_parameterless_overdeclaration_is_proven(
-            "__cdecl", 0, False, "__cdecl", 1, False, 0))
+        self.assertFalse(_source_arity_is_proven_by_ret_cleanup(
+            "__cdecl", 0, [], False, "__cdecl", 1, False, 0))
 
-    def test_nonzero_cleanup_rejects_parameterless_source(self):
-        self.assertFalse(_parameterless_overdeclaration_is_proven(
-            "__thiscall", 0, True, "__thiscall", 1, True, 4))
+    def test_wrong_cleanup_rejects_source_arity(self):
+        self.assertFalse(_source_arity_is_proven_by_ret_cleanup(
+            "__thiscall", 1, [4], True, "__thiscall", 2, True, 8))
 
     def test_receiver_mismatch_is_not_safe(self):
-        self.assertFalse(_parameterless_overdeclaration_is_proven(
-            "__thiscall", 0, True, "__thiscall", 1, False, 0))
+        self.assertFalse(_source_arity_is_proven_by_ret_cleanup(
+            "__thiscall", 0, [], True, "__thiscall", 1, False, 0))
+
+    def test_unresolved_source_storage_is_not_proof(self):
+        self.assertFalse(_source_arity_is_proven_by_ret_cleanup(
+            "__thiscall", 1, [None], True, "__thiscall", 2, True, 4))
+
+    def test_unresolved_size_list_cannot_masquerade_as_zero_arguments(self):
+        self.assertFalse(_source_arity_is_proven_by_ret_cleanup(
+            "__thiscall", 1, [], True, "__thiscall", 1, True, 0))
+
+
+class StackSlotPaddingTest(unittest.TestCase):
+    def test_short_high_half_is_slot_padding(self):
+        self.assertTrue(_in_stack_offsets_are_only_slot_padding([2], {6}))
+
+    def test_residual_at_next_slot_is_not_padding(self):
+        self.assertFalse(_in_stack_offsets_are_only_slot_padding([2], {8}))
+
+    def test_multiple_subdword_slots_have_separate_padding(self):
+        self.assertTrue(_in_stack_offsets_are_only_slot_padding([1, 2], {5, 10}))
+
+    def test_full_dword_has_no_padding(self):
+        self.assertFalse(_in_stack_offsets_are_only_slot_padding([4], {6}))
+
+
+class CStringSretOverdeclarationTest(unittest.TestCase):
+    def test_thiscall_hidden_cstring_result_pointer_is_proven(self):
+        self.assertTrue(_cstring_sret_overdeclaration_is_proven(
+            "CString", "__thiscall", 1, [4], True,
+            "__thiscall", 2, True, 8, True))
+
+    def test_cleanup_must_include_result_and_explicit_argument(self):
+        self.assertFalse(_cstring_sret_overdeclaration_is_proven(
+            "CString", "__thiscall", 1, [4], True,
+            "__thiscall", 2, True, 4, True))
+
+    def test_db_leading_parameter_must_point_to_cstring(self):
+        self.assertFalse(_cstring_sret_overdeclaration_is_proven(
+            "CString", "__thiscall", 1, [4], True,
+            "__thiscall", 2, True, 8, False))
+
+    def test_other_four_byte_return_is_not_assumed_nontrivial(self):
+        self.assertFalse(_cstring_sret_overdeclaration_is_proven(
+            "int", "__thiscall", 1, [4], True,
+            "__thiscall", 2, True, 8, True))
+
+
+class SourceConventionAbiProofTest(unittest.TestCase):
+    def test_cdecl_requires_plain_ret_and_no_incoming_ecx(self):
+        self.assertTrue(_source_convention_is_proven_by_abi(
+            "__cdecl", 2, [4, 4], False, "__stdcall", 0, "no_ecx"))
+        self.assertFalse(_source_convention_is_proven_by_abi(
+            "__cdecl", 2, [4, 4], False, "__stdcall", 8, "no_ecx"))
+
+    def test_stdcall_cleanup_covers_all_stack_arguments(self):
+        self.assertTrue(_source_convention_is_proven_by_abi(
+            "__stdcall", 2, [2, 4], False, "__cdecl", 8, "no_ecx"))
+
+    def test_thiscall_accepts_used_or_recovered_unused_receiver(self):
+        for verdict in ("ecx_this", "no_ecx"):
+            self.assertTrue(_source_convention_is_proven_by_abi(
+                "__thiscall", 1, [4], True, "__stdcall", 4, verdict))
+
+    def test_fastcall_single_pointer_uses_ecx_and_no_stack_cleanup(self):
+        self.assertTrue(_source_convention_is_proven_by_abi(
+            "__fastcall", 1, [4], False, "__thiscall", 0, "ecx_this"))
+        self.assertFalse(_source_convention_is_proven_by_abi(
+            "__fastcall", 1, [4], False, "__thiscall", 0, "no_ecx"))
+
+    def test_unresolved_sizes_and_unchanged_convention_are_not_proof(self):
+        self.assertFalse(_source_convention_is_proven_by_abi(
+            "__stdcall", 1, [], False, "__cdecl", 4, "no_ecx"))
+        self.assertFalse(_source_convention_is_proven_by_abi(
+            "__stdcall", 1, [4], False, "__stdcall", 4, "no_ecx"))
 
 
 class ClassifyConvergenceTest(unittest.TestCase):

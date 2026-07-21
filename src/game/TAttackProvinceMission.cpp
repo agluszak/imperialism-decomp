@@ -42,14 +42,12 @@ char TAttackProvinceMission::ReturnFalseSlot64() {
   return 0;
 }
 
-// FUNCTION: IMPERIALISM 0x0053d780
 TAttackProvinceMission::TAttackProvinceMission() : TArmyMission(0xffff) {
   targetProvince30 = static_cast<short>(0xffff);
   amassingProvince32 = static_cast<short>(0xffff);
 }
 
-// Same address as the default ctor above (0x0053d780 owns that marker);
-// this overload is not separately exposed in the original binary.
+// FUNCTION: IMPERIALISM 0x0053d780
 TAttackProvinceMission::TAttackProvinceMission(short targetProvince, short amassingProvince)
     : TArmyMission(0xffff) {
   targetProvince30 = targetProvince;
