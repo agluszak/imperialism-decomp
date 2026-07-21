@@ -71,8 +71,12 @@ void TBlockadePortMission::Call30() {
   float score = static_cast<float>(targetZone14->ComputeMapActionContextNodeValueAverage());
 
   for (TZone* zone = TZone::GetFirstPortZone(); zone != nullptr; zone = zone->GetNextPortZone()) {
-    // See TControlSeaZoneMission::Call30 -- per-zone owner cache not yet modeled.
-    (void)zone;
+    TZone** ownerSlot = zone->primaryNeighbors.EnsureSlotAllocatedAndReturnPointer(0);
+    if (*ownerSlot == targetZone14) {
+      score *= (zone->GetPortZoneOwnerNationCodeFromMissionField48() == nationId04)
+                   ? g_PortZoneFriendlyMissionScoreMultiplier_0065AA10
+                   : g_PortZoneForeignMissionScoreMultiplier_0065AA18;
+    }
   }
 
   marker11 = 0;
