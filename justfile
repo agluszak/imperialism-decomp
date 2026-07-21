@@ -180,9 +180,16 @@ prune-ilt-thunks *args:
 [doc('Docker MSVC500 build into build-msvc500/ (runs vtable-gate + generate first)')]
 [group('build')]
 build:
+  mkdir -p "{{build_dir}}"
+  uv run python -m tools.workflow.msvc_build_lock \
+    --lock "{{build_dir}}/.msvc-build.lock" -- just _build-msvc500-unlocked
+
+# The public `build` target is the only caller. Keeping generation and compilation
+# under one lock prevents concurrent agents in this worktree from racing on either.
+[private]
+_build-msvc500-unlocked:
   just vtable-gate
   just generate
-  mkdir -p "{{build_dir}}"
   docker run --rm --network none \
     -e CMAKE_FLAGS="{{cmake_flags}}" \
     -v "$PWD":/imperialism \
