@@ -14052,6 +14052,35 @@
       ],
       "source_file": "src/game/TArmyPlacard.cpp"
     },
+    "0x0058c950": {
+      "references": [
+        {
+          "address": "0x0069430c",
+          "kind": "embedded_global",
+          "symbol": "g_szDecimalFormat",
+          "text": "%d"
+        },
+        {
+          "address": "0x00694fd8",
+          "kind": "embedded_global",
+          "symbol": "g_szUiFailureMessage",
+          "text": "Failure"
+        },
+        {
+          "address": "0x00694fc8",
+          "kind": "embedded_global",
+          "symbol": "g_szUiNilPointerMessage",
+          "text": "Nil Pointer"
+        },
+        {
+          "address": "0x00695794",
+          "kind": "embedded_global",
+          "symbol": "s_szSpaceSeparator_00695794",
+          "text": " "
+        }
+      ],
+      "source_file": "src/game/TCombatReportView.cpp"
+    },
     "0x0058d950": {
       "references": [
         {
@@ -178829,7 +178858,7 @@
   "summary": {
     "embedded_globals": 765,
     "formula_matches": 2356,
-    "functions_with_references": 257,
+    "functions_with_references": 258,
     "mac_strings": 3821,
     "mac_strings_with_candidates": 3091,
     "text_resources": 0,

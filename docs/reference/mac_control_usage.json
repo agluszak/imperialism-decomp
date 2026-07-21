@@ -908,6 +908,7 @@
       "original_modules": [
         {
           "functions": [
+            "0x0058c950",
             "0x0058d950"
           ],
           "module": "USmallViews.cpp",
@@ -154724,6 +154725,31 @@
         "owner_class": "TTradePolicyCluster",
         "recovered_source": "src/game/TTradePolicyCluster.cpp"
       },
+      "0x0058c950": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "kind": "inline_source_path_literal",
+                "path": "D:\\Ambit\\Cross\\USmallViews.cpp"
+              },
+              {
+                "kind": "inline_source_path_literal",
+                "path": "D:\\Ambit\\Cross\\USmallViews.cpp"
+              },
+              {
+                "kind": "inline_source_path_literal",
+                "path": "D:\\Ambit\\Cross\\USmallViews.cpp"
+              }
+            ],
+            "module": "USmallViews.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "TCombatReportView::StuffValues",
+        "owner_class": "TCombatReportView",
+        "recovered_source": "src/game/TCombatReportView.cpp"
+      },
       "0x0058d950": {
         "modules": [
           {
@@ -155659,6 +155685,7 @@
         "functions": [
           "0x0049d620",
           "0x00584320",
+          "0x0058c950",
           "0x0058d950",
           "0x0058ec50"
         ]
@@ -155758,7 +155785,7 @@
     "classes_with_source_module_evidence": 14,
     "declared_classes": 152,
     "factories_with_source_module_candidates": 9,
-    "functions_with_source_module_evidence": 89,
+    "functions_with_source_module_evidence": 90,
     "nodes": 3173,
     "screens": 121,
     "screens_with_source_module_candidates": 25,

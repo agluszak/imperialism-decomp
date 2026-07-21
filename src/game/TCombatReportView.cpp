@@ -11,6 +11,28 @@
 #include "game/TViewMgr.h"
 #include "game/quickdraw_rendering.h"
 #include "game/ui_invalidation_guard.h"
+
+#include <stdlib.h>
+
+static inline short GetCombatLossDescriptionIndex(int percentage) {
+  if (percentage <= 5) {
+    return 0;
+  }
+  if (percentage <= 15) {
+    return 1;
+  }
+  if (percentage <= 30) {
+    return 2;
+  }
+  if (percentage <= 50) {
+    return 3;
+  }
+  if (percentage <= 99) {
+    return 4;
+  }
+  return 5;
+}
+
 // SYNTHETIC: IMPERIALISM 0x0058c830
 // TCombatReportView::CreateObject
 // SYNTHETIC: IMPERIALISM 0x0058c8b0
@@ -28,26 +50,141 @@ TCombatReportView::TCombatReportView() : TPicture() {}
 
 // FUNCTION: IMPERIALISM 0x0058c950
 void TCombatReportView::StuffValues(TCombatReportContext* reportContext) {
+  CString reportText;
+  CString scratchText;
+
   m_reportContext = reportContext;
 
   short participantAUnitCount = 0;
+  int participantAField18Total = 0;
+  int participantAField1cTotal = 0;
   while (reportContext->unitsA[participantAUnitCount].statusStringIndex14 != -1) {
+    participantAField18Total += reportContext->unitsA[participantAUnitCount].fieldAt18;
+    participantAField1cTotal += reportContext->unitsA[participantAUnitCount].fieldAt1c;
     participantAUnitCount++;
   }
   participantAUnitCount98 = participantAUnitCount;
   participantBFirstPage9C = static_cast<short>((participantAUnitCount + 3) / 4 + 1);
+  int participantAMinimumTotal = participantAField1cTotal;
+  if (participantAField18Total < participantAMinimumTotal) {
+    participantAMinimumTotal = participantAField18Total;
+  }
 
   short participantBUnitCount = 0;
+  int participantBField18Total = 0;
+  int participantBField1cTotal = 0;
   while (reportContext->unitsB[participantBUnitCount].statusStringIndex14 != -1) {
+    participantBField18Total += reportContext->unitsB[participantBUnitCount].fieldAt18;
+    participantBField1cTotal += reportContext->unitsB[participantBUnitCount].fieldAt1c;
     participantBUnitCount++;
   }
   participantBUnitCount9A = participantBUnitCount;
   totalPages = static_cast<short>((participantBUnitCount + 2) / 4 + participantBFirstPage9C);
-  reportValue = 0;
+  int participantBMinimumTotal = participantBField1cTotal;
+  if (participantBField18Total < participantBMinimumTotal) {
+    participantBMinimumTotal = participantBField18Total;
+  }
 
-  // The persistent report/page state above is the listing-grounded first recovery pass.
-  // The resource-backed title, report summary, loss summary, and page controls remain in
-  // imperialism-decomp-1uj.51.11.
+  int sharedForceTotal = participantBField18Total;
+  if (participantAField18Total < sharedForceTotal) {
+    sharedForceTotal = participantAField18Total;
+  }
+  int reportTitleIndex = sharedForceTotal / 2000;
+  if (reportTitleIndex > 4) {
+    reportTitleIndex = 4;
+  }
+  g_pSimMgr->GetString(0x271d, static_cast<short>(reportTitleIndex), &reportText);
+  reportText += " Report";
+
+  TStaticText* titleControl = static_cast<TStaticText*>(ResolveControlByTag(0x7469746c)); // 'titl'
+  if (titleControl == NULL) {
+    MessageBoxA(NULL, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\USmallViews.cpp", 0x1349);
+  }
+  titleControl->SetTextAndMaybeRefresh(&reportText, 1);
+
+  g_apTerrainTypeDescriptorTable[reportContext->nationIdA]->FormatOverlayTerrainLabelText(
+      &reportText);
+  reportText += "'s ";
+  g_pSimMgr->GetString(static_cast<short>(reportContext->nationIdA != g_pSimMgr->GetActiveNationId()
+                                              ? 0x2722
+                                              : 0x2721),
+                       static_cast<short>(rand() % 6), &scratchText);
+  reportText += scratchText + s_szSpaceSeparator_00695794;
+  g_pSimMgr->GetString(0x2720, static_cast<short>(rand() % 6), &scratchText);
+  reportText += scratchText;
+  reportText += '\n';
+
+  if (participantAMinimumTotal == 0) {
+    participantAMinimumTotal = 1;
+  }
+  short reportComparisonIndex = 0;
+  double forceRatio =
+      static_cast<double>(participantBMinimumTotal) / static_cast<double>(participantAMinimumTotal);
+  if (forceRatio >= 1.5) {
+    reportComparisonIndex = static_cast<short>(forceRatio);
+    if (reportComparisonIndex > 6) {
+      reportComparisonIndex = 6;
+    }
+  }
+  g_pSimMgr->GetString(0x271e, reportComparisonIndex, &scratchText);
+  reportText += scratchText;
+  reportText += '\n';
+
+  g_apTerrainTypeDescriptorTable[reportContext->nationIdB]->FormatOverlayTerrainLabelText(
+      &scratchText);
+  reportText += scratchText + "'s ";
+  g_pSimMgr->GetString(static_cast<short>(reportContext->nationIdB != g_pSimMgr->GetActiveNationId()
+                                              ? 0x2722
+                                              : 0x2721),
+                       static_cast<short>(rand() % 6), &scratchText);
+  reportText += scratchText + s_szSpaceSeparator_00695794;
+  g_pSimMgr->GetString(0x2720, static_cast<short>(rand() % 6), &scratchText);
+  reportText += scratchText;
+
+  TStaticText* reportControl = static_cast<TStaticText*>(ResolveControlByTag(0x7265706f)); // 'repo'
+  if (reportControl == NULL) {
+    MessageBoxA(NULL, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\USmallViews.cpp", 0x137c);
+  }
+  reportControl->SetTextAndMaybeRefresh(&reportText, 1);
+
+  reportText = CString("Losses\n");
+  g_apTerrainTypeDescriptorTable[reportContext->nationIdA]->FormatOverlayTerrainLabelText(
+      &scratchText);
+  reportText += scratchText + ": ";
+
+  int participantAPercentage = participantAMinimumTotal * 100 / participantAField18Total;
+  g_pSimMgr->GetString(0x271f, GetCombatLossDescriptionIndex(participantAPercentage), &scratchText);
+  scratchText += '\n';
+  reportText += scratchText;
+
+  g_apTerrainTypeDescriptorTable[reportContext->nationIdB]->FormatOverlayTerrainLabelText(
+      &scratchText);
+  reportText += scratchText + ": ";
+  int participantBPercentage = participantBMinimumTotal * 100 / participantBField18Total;
+  g_pSimMgr->GetString(0x271f, GetCombatLossDescriptionIndex(participantBPercentage), &scratchText);
+  scratchText += '\n';
+  reportText += scratchText;
+
+  TStaticText* lossControl = static_cast<TStaticText*>(ResolveControlByTag(0x6c6f7373)); // 'loss'
+  if (lossControl == NULL) {
+    MessageBoxA(NULL, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\USmallViews.cpp", 0x1394);
+  }
+  lossControl->SetTextAndMaybeRefresh(&reportText, 1);
+
+  reportValue = 0;
+  TStaticText* pageControl = static_cast<TStaticText*>(ResolveControlByTag(0x70616765)); // 'page'
+  if (pageControl != NULL) {
+    CString pageText;
+    CString pageNumber;
+    pageNumber.Format(g_szDecimalFormat, reportValue + 1);
+    pageText = "Page " + pageNumber + " of ";
+    pageNumber.Format(g_szDecimalFormat, totalPages + 1);
+    pageText += pageNumber;
+    pageControl->SetTextAndMaybeRefresh(&pageText, 1);
+  }
 }
 
 // Draws the combat-report participant page: a header line naming the active
