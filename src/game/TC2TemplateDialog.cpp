@@ -470,30 +470,21 @@ BEGIN_MESSAGE_MAP(TB1TemplateDialog, CDialog)
 END_MESSAGE_MAP()
 #endif
 
-// Selection state behind TA1TemplateDialog::state118 (+0x118): an array of 0xe-byte records,
-// of which only the leading short of each is used here (mode + the three slider positions).
-struct TA1TripleSelectionState {
-  short field00;  // +0x00 (unobserved)
-  short mode;     // +0x02 selection mode: read (== 1) on init, written 2-(check!=0) on OK
-  char gap04[12]; // +0x04
-  short pos5c;    // +0x10 slider5c value (0..5)
-  char gap12[12]; // +0x12
-  short pos98;    // +0x1e slider98 value (0..5)
-  char gap20[12]; // +0x20
-  short posD4;    // +0x2c sliderD4 value (0..5)
-};
+// FUNCTION: IMPERIALISM 0x004821d0
+void TA1TemplateDialog::SetGameSetupValues(GameSetup* setup) {
+  state118 = setup;
+}
 
 // FUNCTION: IMPERIALISM 0x004821f0
 BOOL TA1TemplateDialog::OnInitDialog() {
   CDialog::OnInitDialog();
-  TA1TripleSelectionState* state = static_cast<TA1TripleSelectionState*>(state118);
-  check110 = (state->mode == 1);
+  check110 = (state118->nationControlModes[0] == 1);
   slider5c.SetRange(0, 5, FALSE);
   slider98.SetRange(0, 5, FALSE);
   sliderD4.SetRange(0, 5, FALSE);
-  slider5c.SetPos(state->pos5c);
-  slider98.SetPos(state->pos98);
-  sliderD4.SetPos(state->posD4);
+  slider5c.SetPos(state118->cityMinisterPolicyIds[0]);
+  slider98.SetPos(state118->foreignMinisterPolicyIds[0]);
+  sliderD4.SetPos(state118->defenseMinisterPolicyIds[0]);
   UpdateData(FALSE);
   return TRUE;
 }
@@ -501,11 +492,10 @@ BOOL TA1TemplateDialog::OnInitDialog() {
 // FUNCTION: IMPERIALISM 0x00482300
 void TA1TemplateDialog::OnOK() {
   CDialog::OnOK();
-  TA1TripleSelectionState* state = static_cast<TA1TripleSelectionState*>(state118);
-  state->mode = static_cast<short>(2 - (check110 != 0));
-  state->pos5c = static_cast<short>(slider5c.GetPos());
-  state->pos98 = static_cast<short>(slider98.GetPos());
-  state->posD4 = static_cast<short>(sliderD4.GetPos());
+  state118->nationControlModes[0] = static_cast<short>(2 - (check110 != 0));
+  state118->cityMinisterPolicyIds[0] = static_cast<short>(slider5c.GetPos());
+  state118->foreignMinisterPolicyIds[0] = static_cast<short>(slider98.GetPos());
+  state118->defenseMinisterPolicyIds[0] = static_cast<short>(sliderD4.GetPos());
 }
 
 // The ID_800C command: put up the C2 template dialog with a 0..6 city-view slider and a

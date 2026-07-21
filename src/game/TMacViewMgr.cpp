@@ -929,7 +929,7 @@ undefined TMacViewMgr::RebuildMapTileNeighborHighlightPolygonsForAllTiles() {
 
 // FUNCTION: IMPERIALISM 0x0050bad0
 undefined TMacViewMgr::RebuildNationClipRegionsAndDispatchMapEvent() {
-  if (g_pSimMgr->field30 == 1) {
+  if (g_pSimMgr->numGreatPowers == 1) {
     g_pGameFlowState->DispatchTaggedGameStateEvent1F20(0x72656765, 0, 0xfffffffd);
   }
   if (tileStateSlots[0] != 0) {

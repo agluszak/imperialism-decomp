@@ -43,9 +43,9 @@ void TTradeBookView::DoPostCreate(int arg) {
 
   CString quarterText;
   CString formattedText;
-  short quarterValue = static_cast<short>(g_pSimMgr->quarterGateTick2c / 4 + 0x717);
+  short quarterValue = static_cast<short>(g_pSimMgr->economicTurn / 4 + 0x717);
   formattedText.Format(g_szDecimalFormat, quarterValue);
-  g_pSimMgr->FormatSeasonName(&quarterText);
+  g_pSimMgr->GetSeason(&quarterText);
 
   CString combined;
   combined = quarterText + s_szSpaceSeparator_00695794 + formattedText;

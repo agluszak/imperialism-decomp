@@ -920,7 +920,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
   case 0xa: {
     // A resuming nation announces its home region and city name.
     TurnEventACityAnnouncePacketM* announce = static_cast<TurnEventACityAnnouncePacketM*>(packet);
-    if (g_pSimMgr->stateFlag114 == 0) {
+    if (g_pSimMgr->scenarioMapIndexPlusOne == 0) {
       g_pGlobalMapState->SetTileTransportFlagsTo0x37AndRefreshNeighbors(announce->homeRegion1E,
                                                                         (char)announce->nationId1C);
       g_apNationStates[(char)announce->nationId1C]->SetHomeCityTileAndDisplayName(
@@ -967,7 +967,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
           CString nationName2(directory->nationNameBySlot[dirSlot]);
           g_apTerrainTypeDescriptorTable[dirSlot]->identitySharedString1 = nationName2;
         }
-        if (g_pSimMgr->stateFlag114 == 0) {
+        if (g_pSimMgr->scenarioMapIndexPlusOne == 0) {
           g_pGlobalMapState->SetTileTransportFlagsTo0x37AndRefreshNeighbors(
               directory->homeRegionBySlot[dirSlot], (short)dirSlot);
         }
@@ -1437,11 +1437,11 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     statusPacket.toNetworkId = 0;
     statusPacket.statusTags[tagSlot] = 0x62757379; // 'busy'
     g_pNetMgr006a6014->Send(&statusPacket, 0);
-    g_pSimMgr->PostMainWindowCommand100ForTurnFlow();
+    g_pSimMgr->StartNextPhase();
     break;
   }
   case 0x10:
-    g_pSimMgr->PostMainWindowCommand100ForTurnFlow();
+    g_pSimMgr->StartNextPhase();
     break;
   case 0x11: {
     // Masked byte/word/dword poke into a global map table; the host rebroadcasts.

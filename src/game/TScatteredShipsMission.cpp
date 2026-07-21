@@ -96,7 +96,7 @@ char TScatteredShipsMission::MatchesMissionKeySlot4C(int kind, int key, int mode
 // HasSecondaryNeighborWithNationTag(nationId04), same eligibility pair the whole
 // TControlSeaZoneMission family's NoOpSlot3C/NoOpSlot9C use elsewhere) -- first to confirm
 // at least one exists at all (walking g_pMapActionContextListHead via prev18), then re-walks
-// from the head, stepped forward g_pSimMgr->GetTurnTickSlot3C() % 50 times (wrapping to the
+// from the head, stepped forward g_pSimMgr->GetEconomicTurn() % 50 times (wrapping to the
 // head on a null prev18), as the starting point for an unbounded sweep: for every eligible
 // zone visited (wrapping forever via prev18), picks the first still-inactive orderList24
 // node, then scans the remaining inactive nodes for the one whose (TZone*) reading of
@@ -111,7 +111,7 @@ void TScatteredShipsMission::MissionSlot44() {
     orderList24->next->SetChainActiveFlag(0);
   }
 
-  short stepCount = static_cast<short>(g_pSimMgr->GetTurnTickSlot3C() % 50);
+  short stepCount = static_cast<short>(g_pSimMgr->GetEconomicTurn() % 50);
 
   TZone* zone = g_pMapActionContextListHead;
   while (zone != nullptr) {

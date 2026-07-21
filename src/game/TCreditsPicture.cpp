@@ -58,7 +58,7 @@ void TCreditsPicture::DoPostCreate(int arg) {
 void TCreditsPicture::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId == 0xa && sourceHandler == this) {
     if (g_creditsPlaybackActive_006a4084 != 0) {
-      g_pSimMgr->PostMainWindowCommand100ForTurnFlow();
+      g_pSimMgr->StartNextPhase();
       g_creditsPlaybackActive_006a4084 = 0;
       g_pSfxPlaybackSystem->ResetDualAudioCuePools();
       g_pSfxPlaybackSystem->PushCueToDualAudioCuePools(2);

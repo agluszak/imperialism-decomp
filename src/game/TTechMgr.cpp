@@ -220,7 +220,7 @@ void TTechMgr::ApplyTechUnlockAndQueueNationAbilityNotices(int techId, int force
     TGreatPower* nation = *nationCursor;
     if (nation->diplomacyEligibilityA0 == 0 || nationSlot == forcedNationSlot) {
       this->capRowsE4a6[nationSlot].completionYearOffsetByTechId[techId] =
-          static_cast<short>(g_pSimMgr->quarterGateTick2c / 4);
+          static_cast<short>(g_pSimMgr->economicTurn / 4);
       this->HandleAbilityUnlock(techId, nationSlot);
     }
     ++nationCursor;
@@ -631,7 +631,7 @@ void TTechMgr::ApplyTechItemPurchaseCostAndState(int slot, int nationIndex) {
       -g_anTechItemPurchaseCostBySlot_0066aae8[slot]);
   orderCapRows277[nationIndex].techStatusByTechId[slot] = 1;
   capRowsE4a6[nationIndex].completionYearOffsetByTechId[slot] =
-      static_cast<short>(g_pSimMgr->quarterGateTick2c / 4);
+      static_cast<short>(g_pSimMgr->economicTurn / 4);
 }
 
 // Inverse of ApplyTechItemPurchaseCostAndState: refunds the slot's cost back to the

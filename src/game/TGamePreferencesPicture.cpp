@@ -41,7 +41,7 @@ void TGamePreferencesPicture::HandleEvent(int commandId, TEventHandler* sourceHa
       if (g_pSimMgr->mode == 1) {
         g_pGlobalUiRootController->PostTurnEventCodeMessage2420(0x5dc);
       } else {
-        g_pSimMgr->PostMainWindowCommand100ForTurnFlow();
+        g_pSimMgr->StartNextPhase();
       }
     } else if (tag == kControlTagOkay) {
       for (int i = 0; i < 5; ++i) {
@@ -65,7 +65,7 @@ void TGamePreferencesPicture::HandleEvent(int commandId, TEventHandler* sourceHa
       if (g_pSimMgr->mode == 1 || g_pSimMgr->mode == 3) {
         g_pGlobalUiRootController->PostTurnEventCodeMessage2420(0x5dc);
       } else {
-        g_pSimMgr->PostMainWindowCommand100ForTurnFlow();
+        g_pSimMgr->StartNextPhase();
       }
 
       // TODO: the original also resolves the 'opca' auto-resolution checkbox here and

@@ -35,7 +35,7 @@ Common conventions in every ratio body:
   `GetNthAlliedMajorNationSlot90(i, target)`.
 - "standing" = `g_pDiplomacyTurnStateManager->relationStandingScoreMatrix79c[mySlot * 0x17 + x]`
   with `movsx` short indices.
-- "yearTerm" = `min((short)(TSimMgr::quarterGateTick2c / 4), 0x3c)` —
+- "yearTerm" = `min((short)(TSimMgr::economicTurn / 4), 0x3c)` —
   elapsed quarters/4, capped at 60.
 - Division guarded by `denominator == 0.0f` → return the numerator unchanged.
 
