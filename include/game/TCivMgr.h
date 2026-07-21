@@ -77,10 +77,15 @@ public:
   // selection. Same mis-attribution as the functions above.
   void HandleCivilianReportDecision(class TCivUnit* pCivilianOrderEntry);
 
+  // Mac oracle: ResolveCivilianDisputes. For each tile with competing developer purchase
+  // orders, picks the entrant with the best standing toward the tile owner (random tie
+  // break), cancels/refunds the others, and queues land-sale notices. 0x004d4740.
+  void ResolveCivilianDisputes();
+
   // 0x004d3310. Checks the active nation's civilian work-order budget
   // (diplomacyBudgetBase/10 + treasuryValue10, floored at 0) against the tile's cost class,
   // and if affordable queues the order on selectedEntry (sound cue, ~0.5s message-pumped
   // pause, completion marker, immediate treasury deduction); otherwise shows a localized
-  // "can't afford" message built from FormatIntegerString + GetString(0x2745, 8).
+  // "can't afford" message built from NumToCurrency + GetString(0x2745, 8).
   bool QueueCivilianWorkOrderWithCostCheck(short nTileIndex);
 };

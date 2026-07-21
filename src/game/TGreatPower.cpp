@@ -178,7 +178,7 @@ TGreatPower::TGreatPower()
       proposalQueue(0), city(0), townMarkerList(0), trackedObjectList(0), scenarioInitFlag(0),
       diplomacyBudgetBase(0), escalationCounter(0), pendingCommitmentCost(0), pressureCounter(0),
       field900(0), turnSummaryQueue(0), missionNodeQueue(0), field910(0), aidAllocationTotal(0),
-      pendingAidTotal(0) {
+      militaryExpenses960(0) {
   // TCountry base scalars (identity strings constructed by the TCountry ctor).
   this->nationSlot = 0;
   this->encodedNationSlot = 0;
@@ -341,7 +341,7 @@ void TGreatPower::InitializeNationStateRuntimeSubsystems(int arg1, int arg2) {
   }
 
   this->missionNodeQueue = new TSortedList();
-  this->pendingAidTotal = 0;
+  this->militaryExpenses960 = 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004d9160
@@ -640,7 +640,7 @@ void TGreatPower::ReadFrom(TStream* stream) {
     stream->ReadBytes(this->colonyBoycottFlags, kNationSlotCount);
   }
   if (g_nSaveFormatVersion > 0x34) {
-    stream->ReadBytes(&this->pendingAidTotal, 4);
+    stream->ReadBytes(&this->militaryExpenses960, 4);
   }
 }
 
@@ -748,7 +748,7 @@ void TGreatPower::WriteTo(TStream* stream) {
   stream->WriteBytesSlot78(&this->field910, 4);
   stream->WriteBytesSlot78(&this->aidAllocationTotal, 4);
   stream->WriteBytesSlot78(this->colonyBoycottFlags, 0x17);
-  stream->WriteBytesSlot78(&this->pendingAidTotal, 4);
+  stream->WriteBytesSlot78(&this->militaryExpenses960, 4);
 }
 
 // FUNCTION: IMPERIALISM 0x004da3e0
@@ -1986,9 +1986,9 @@ int TGreatPower::SumAidAllocationMatrixAllCells(void) {
 // FUNCTION: IMPERIALISM 0x004dd430
 int TGreatPower::ComputeRemainingDiplomacyAidBudget(void) {
   int outstandingCommitments = this->pendingCommitmentCost;
-  int pendingAdjustments = this->pendingAidTotal;
+  int militaryExpenses = this->militaryExpenses960;
   int baseBudget = this->SumAidAllocationMatrixAllCells();
-  return baseBudget + this->budgetPoolBase + this->budgetPoolDelta - pendingAdjustments -
+  return baseBudget + this->budgetPoolBase + this->budgetPoolDelta - militaryExpenses -
          outstandingCommitments;
 }
 
@@ -4499,6 +4499,21 @@ void TGreatPower::RecomputeNationEconomyAndDiplomacySummaryMetrics() {
 
   economySummarySeasonPercent958 = seasonPercentTable[g_pSimMgr->difficultyLevel];
   economySummaryWeightedTotal95c = economySummaryTotal954 * economySummarySeasonPercent958 / 10;
+}
+
+// FUNCTION: IMPERIALISM 0x004e3560
+void TGreatPower::PayForMilitary() {
+  int maintenanceMultiplier = g_pCityOrderCapabilityState->packedRulePair264;
+  int militaryUnitCost = 0;
+  CIterator unitIter(militaryUnitList44);
+  for (TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(unitIter.Reset()); unitIter.More();
+       unit = static_cast<TMilitaryUnit*>(unitIter.Advance())) {
+    militaryUnitCost += g_aUnitOrderCostProfileByAbilityId[unit->orderType][2];
+  }
+
+  int charge = (militaryUnitCost + SumNavyOrderPriorityForNationSlot86()) * maintenanceMultiplier;
+  militaryExpenses960 = charge;
+  treasuryValue10 -= charge;
 }
 
 // Sums the encoded diplomacyGrantByNation entries (masking off the top 2 flag bits),

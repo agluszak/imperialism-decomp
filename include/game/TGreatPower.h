@@ -440,7 +440,10 @@ public:
   int economySummaryTotal954;                 // 0x954 — sum of the 9 fields above (930..950)
   int economySummarySeasonPercent958; // 0x958 — seasonPercentTable[g_pSimMgr->difficultyLevel]
   int economySummaryWeightedTotal95c; // 0x95c — economySummaryTotal954 * economySummarySeasonPercent958 / 10
-  int pendingAidTotal;
+  // Mac PayForMilitary writes this turn's army+navy maintenance charge here before
+  // deducting it from treasury. The trade totals / remaining-budget views present the
+  // same charge as an expense; the old pendingAidTotal name was misleading.
+  int militaryExpenses960;
   // Object ends here at 0x964 (== CRuntimeClass::m_nObjectSize for TGreatPower and
   // for TProxyGreatPower/TClientGreatPower/TRemoteGreatPower; THostGreatPower adds one
   // more dword). The AI-only tail block (actionMetricByQuarter/mapNodeStateFlags/
@@ -523,6 +526,11 @@ public:
   // season-weighted countdown total. Called once per turn to refresh the cached
   // metrics consumed elsewhere (advisory scoring, UI summaries).
   void RecomputeNationEconomyAndDiplomacySummaryMetrics(void);
+
+  // Mac oracle: PayForMilitary. Computes the army and navy maintenance charge using the
+  // current scenario multiplier, stores it in militaryExpenses960, and deducts it from
+  // treasury. 0x004e3560.
+  void PayForMilitary();
 
   TCity* GetCityState(void) {
     return city;

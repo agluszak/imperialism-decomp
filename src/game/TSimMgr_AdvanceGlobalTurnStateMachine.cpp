@@ -278,14 +278,14 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
       }
     }
     if (difficultyLevel != 2) {
-      DispatchTurnEvent2134AndRefreshNationPanels();
+      DoTrade();
     }
     break;
   }
 
   case 8: {
     turnStateCode = 0xb;
-    RefreshMapSystemsAndPrepareOrderExecution();
+    DoMilitary();
     if (difficultyLevel != 0) {
       g_pGameFlowState->ConfigureTurnResumeStateAndNationMask(previousTurnStateCode, turnStateCode);
       turnStateCode = 0x13;
@@ -299,7 +299,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
   case 9: {
     turnStateCode = 10;
     if (difficultyLevel != 2) {
-      DispatchEligibleNationTurnCallback158();
+      DoCivilians();
       StartNextPhase();
       break;
     }
@@ -401,7 +401,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
       g_nTurnCooldownSideFlag00698B10 = 1;
       HandleTurnEndSavePaths(this);
     } else {
-      const int phaseFlags = IsTurnFlowPhaseOutsideRange4To5();
+      const int phaseFlags = InLinearPhase();
       if ((phaseFlags & 0xf) == 10) {
         HandleTurnEndSavePaths(this);
       }

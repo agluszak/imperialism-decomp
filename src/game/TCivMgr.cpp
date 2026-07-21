@@ -13,6 +13,7 @@
 #include "game/TSimMgr.h"
 #include "game/TSoundPlayer.h"
 #include "game/TGreatPower.h"
+#include "game/TLandSaleEvent.h"
 #include "game/TCivToolbar.h"
 #include "game/TNewsMgr.h"
 #include "game/TMapUberPicture.h"
@@ -380,7 +381,7 @@ bool TCivMgr::QueueCivilianWorkOrderWithCostCheck(short nTileIndex) {
 
   if (budget < cost) {
     CString costText;
-    g_pSimMgr->FormatIntegerString(cost, &costText);
+    g_pSimMgr->NumToCurrency(cost, &costText);
     CString templateText;
     g_pSimMgr->GetString(0x2745, 8, &templateText);
     CString finalMessage;
@@ -446,7 +447,7 @@ bool TCivMgr::HandleEngineerConstructionAction(short nTileIndex) {
         CString pszTemplateText;
         CString costString;
 
-        g_pSimMgr->FormatIntegerString(cost, &costString);
+        g_pSimMgr->NumToCurrency(cost, &costString);
         g_pSimMgr->GetString(0x2745, 8, &pszTemplateText);
         scanBracketExpressions(g_pSimMgr, &pszFormattedText, static_cast<LPCSTR>(pszTemplateText),
                                static_cast<LPCSTR>(costString));
@@ -470,7 +471,7 @@ bool TCivMgr::HandleEngineerConstructionAction(short nTileIndex) {
         CString pszTemplateText;
         CString costString;
 
-        g_pSimMgr->FormatIntegerString(3000, &costString);
+        g_pSimMgr->NumToCurrency(3000, &costString);
         g_pSimMgr->GetString(0x2745, 8, &pszTemplateText);
         scanBracketExpressions(g_pSimMgr, &pszFormattedText, static_cast<LPCSTR>(pszTemplateText),
                                static_cast<LPCSTR>(costString));
@@ -497,7 +498,7 @@ bool TCivMgr::HandleEngineerConstructionAction(short nTileIndex) {
         CString pszTemplateText;
         CString costString;
 
-        g_pSimMgr->FormatIntegerString(2000, &costString);
+        g_pSimMgr->NumToCurrency(2000, &costString);
         g_pSimMgr->GetString(0x2745, 8, &pszTemplateText);
         scanBracketExpressions(g_pSimMgr, &pszFormattedText, static_cast<LPCSTR>(pszTemplateText),
                                static_cast<LPCSTR>(costString));
@@ -528,7 +529,7 @@ bool TCivMgr::HandleEngineerConstructionAction(short nTileIndex) {
       CString pszTemplateText;
       CString costString;
 
-      g_pSimMgr->FormatIntegerString(cost, &costString);
+      g_pSimMgr->NumToCurrency(cost, &costString);
       g_pSimMgr->GetString(0x2745, 8, &pszTemplateText);
       scanBracketExpressions(g_pSimMgr, &pszFormattedText, static_cast<LPCSTR>(pszTemplateText),
                              static_cast<LPCSTR>(costString));
@@ -572,3 +573,61 @@ bool TCivMgr::HandleEngineerConstructionAction(short nTileIndex) {
 // FUNCTION: IMPERIALISM 0x004d4310
 void TCivMgr::RelinkCivilianOrderTileAndInvalidateMapTiles(short nNewTileIndex,
                                                            TCivUnit* pCivOrderEntry) {}
+
+// FUNCTION: IMPERIALISM 0x004d4740
+void TCivMgr::ResolveCivilianDisputes() {
+  for (int tileIndex = 0; tileIndex < 0x1950; ++tileIndex) {
+    TTerrainStateRecordView& tile = g_pGlobalMapState->terrainStateTable[tileIndex];
+    TCivUnit* order = tile.firstCivilianOrder20;
+    if (order == 0 || order->nextOnTile == 0) {
+      continue;
+    }
+
+    TCivUnit* competingOrders[7] = {0};
+    int competingCount = 0;
+    while (order != 0) {
+      if (order->orderType == 7 && order->field_8 == 0xd) {
+        competingOrders[competingCount++] = order;
+      }
+      order = static_cast<TCivUnit*>(order->nextOnTile);
+    }
+    if (competingCount <= 1) {
+      continue;
+    }
+
+    int ownerNationSlot = static_cast<signed char>(tile.ownerNationTag04);
+    TCivUnit* winningOrder = competingOrders[0];
+    short winningStanding =
+        g_pDiplomacyTurnStateManager
+            ->relationStandingScoreMatrix79c[winningOrder->field_18 * 0x17 + ownerNationSlot];
+    for (int candidateIndex = 1; candidateIndex < competingCount; ++candidateIndex) {
+      TCivUnit* candidate = competingOrders[candidateIndex];
+      short candidateStanding =
+          g_pDiplomacyTurnStateManager
+              ->relationStandingScoreMatrix79c[candidate->field_18 * 0x17 + ownerNationSlot];
+      if (candidateStanding > winningStanding ||
+          (candidateStanding == winningStanding && (rand() & 1) != 0)) {
+        winningOrder = candidate;
+        winningStanding = candidateStanding;
+      }
+    }
+
+    for (int orderIndex = 0; orderIndex < competingCount; ++orderIndex) {
+      TCivUnit* losingOrder = competingOrders[orderIndex];
+      if (losingOrder == winningOrder) {
+        continue;
+      }
+
+      short losingNationSlot = losingOrder->field_18;
+      losingOrder->SetOrderModeSlot34(0, -1);
+      g_apNationStates[losingNationSlot]->treasuryValue10 +=
+          g_pGlobalMapState->CalculateDeveloperTilePurchaseCost(static_cast<short>(tileIndex));
+
+      if (g_apNationStates[losingNationSlot]->diplomacyEligibilityA0 != 0) {
+        TLandSaleEvent* event = new TLandSaleEvent();
+        event->ILandSaleEvent(static_cast<short>(tileIndex), winningOrder->field_18);
+        g_apNationStates[losingNationSlot]->AddNodeToMissionNodeQueue(event);
+      }
+    }
+  }
+}

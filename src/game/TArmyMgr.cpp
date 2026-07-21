@@ -851,7 +851,7 @@ bool TArmyMgr::CommitCityActionGateCostIfAffordable(int contextArg) {
 
   // Insufficient funds: compose and dispatch a localized message with the current
   // budget and the required cost (ground truth builds both via a direct
-  // CString::Format("%d", ...) rather than TSimMgr::FormatIntegerString).
+  // CString::Format("%d", ...) rather than TSimMgr::NumToCurrency).
   CString currentAmountString;
   currentAmountString.Format("%d", nation->field900);
   CString costString;
@@ -1662,6 +1662,25 @@ bool TArmyMgr::ScanMapContextActionEntriesForCodeMatch(short activeNationId) {
 // FUNCTION: IMPERIALISM 0x004a6dd0
 unsigned char TArmyMgr::GetByteFlagAtOffset8() {
   return flag8;
+}
+
+// FUNCTION: IMPERIALISM 0x004a6df0
+void TArmyMgr::CleanUpStacks() {
+  if (mapContextActionRecordList04 != 0) {
+    int ordinal = g_pMapContextActionManager->mapContextActionRecordList04->GetSize();
+    while (ordinal > 0) {
+      MapContextActionRecord* record = static_cast<MapContextActionRecord*>(
+          g_pMapContextActionManager->mapContextActionRecordList04->GetPtrListEntryByOneBasedIndex(
+              ordinal));
+      delete[] record->sideChildRecords250[0];
+      delete[] record->sideChildRecords250[1];
+      record->sideChildRecords250[1] = 0;
+      record->sideChildRecords250[0] = 0;
+      --ordinal;
+    }
+    mapContextActionRecordList04->ClearAndFreeAllPtrListRecords();
+  }
+  flag8 = 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004a6e80

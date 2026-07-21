@@ -447,7 +447,7 @@ char TMapMgr::BuildOrLoadGlobalMapStateForSession(const char* mapStreamName, cha
     g_pActiveRandomMapSetupPicture006A4268->SpinYourGlobe();
   }
   mapMaker->RebuildUMapperRouteRecordsAndActiveMapRects();
-  g_pSimMgr->ReseedThreadLocalRandom();
+  g_pSimMgr->ReinitializeRandomSeed();
   g_zoneStatusCodePrngSeed_006a5aec = 0;
   g_zoneStatusCodePrngSeed_006a5aec = time(0);
   if (g_pActiveRandomMapSetupPicture006A4268 != 0) {

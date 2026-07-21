@@ -117,7 +117,7 @@ void TTechItemView::ConstructTTechItemViewBaseState(TView* panel, int* offsetLay
       g_pSimMgr->GetString(0x274f, 3, &labelText);
       labelIndex = 0xa;
     } else {
-      g_pSimMgr->FormatIntegerString(g_anTechItemResearchCostByTechId[techId], &labelText);
+      g_pSimMgr->NumToCurrency(g_anTechItemResearchCostByTechId[techId], &labelText);
       labelIndex = 9;
     }
     TTextPictureButton* buyButton = new TTextPictureButton();
@@ -182,7 +182,7 @@ void TTechItemView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEv
       } else {
         techMgr->RefundTechItemPurchaseCostAndClearState(techId64, nationSlot60);
         CString label;
-        g_pSimMgr->FormatIntegerString(g_anTechItemResearchCostByTechId[techId64], &label);
+        g_pSimMgr->NumToCurrency(g_anTechItemResearchCostByTechId[techId64], &label);
         purchaseButton->buttonText = label;
         purchaseButton->RefreshControl();
         LoadUiStringAndDispatchSharedMessageCommand(0x274f, 9, purchaseButton);

@@ -50,29 +50,29 @@ void TTradeTotalsView::ApplyRectSlot110(RECT* rectBuffer) {
   g_pSimMgr->GetString(0x2740, 0x18, &strA);
   SetQuickDrawTextOriginWithContextOffset(8, 0x1e);
   DrawTextWithCachedQuickDrawStyleState(&strA);
-  g_pSimMgr->FormatIntegerString(nation->budgetPoolBase, &strA);
+  g_pSimMgr->NumToCurrency(nation->budgetPoolBase, &strA);
   SetQuickDrawTextOriginWithContextOffset(0x80, 0x1e);
   DrawTextWithCachedQuickDrawStyleState(&strA);
 
   g_pSimMgr->GetString(0x2740, 0x19, &strA);
   SetQuickDrawTextOriginWithContextOffset(8, 0x2a);
   DrawTextWithCachedQuickDrawStyleState(&strA);
-  g_pSimMgr->FormatIntegerString(nation->budgetPoolDelta, &strA);
+  g_pSimMgr->NumToCurrency(nation->budgetPoolDelta, &strA);
   SetQuickDrawTextOriginWithContextOffset(nation->budgetPoolDelta >= 0 ? 0x80 : 0x7c, 0x2a);
   DrawTextWithCachedQuickDrawStyleState(&strA);
 
   g_pSimMgr->GetString(0x2740, 0x1d, &strA);
   SetQuickDrawTextOriginWithContextOffset(8, 0x36);
   DrawTextWithCachedQuickDrawStyleState(&strA);
-  g_pSimMgr->FormatIntegerString(-nation->pendingAidTotal, &strA);
-  SetQuickDrawTextOriginWithContextOffset(nation->pendingAidTotal <= 0 ? 0x80 : 0x7c, 0x36);
+  g_pSimMgr->NumToCurrency(-nation->militaryExpenses960, &strA);
+  SetQuickDrawTextOriginWithContextOffset(nation->militaryExpenses960 <= 0 ? 0x80 : 0x7c, 0x36);
   DrawTextWithCachedQuickDrawStyleState(&strA);
 
   g_pSimMgr->GetString(0x2740, 0x1a, &strA);
   int y = 0x42;
   SetQuickDrawTextOriginWithContextOffset(8, y);
   DrawTextWithCachedQuickDrawStyleState(&strA);
-  g_pSimMgr->FormatIntegerString(nation->SumAidAllocationMatrixAllCells(), &strA);
+  g_pSimMgr->NumToCurrency(nation->SumAidAllocationMatrixAllCells(), &strA);
   SetQuickDrawTextOriginWithContextOffset(0x80, y);
   DrawTextWithCachedQuickDrawStyleState(&strA);
 
@@ -83,7 +83,7 @@ void TTradeTotalsView::ApplyRectSlot110(RECT* rectBuffer) {
     y = 0x4e;
     SetQuickDrawTextOriginWithContextOffset(8, y);
     DrawTextWithCachedQuickDrawStyleState(&strA);
-    g_pSimMgr->FormatIntegerString(-nation->pendingCommitmentCost, &strA);
+    g_pSimMgr->NumToCurrency(-nation->pendingCommitmentCost, &strA);
     SetQuickDrawTextOriginWithContextOffset(nation->pendingCommitmentCost <= 0 ? 0x80 : 0x7c, y);
     DrawTextWithCachedQuickDrawStyleState(&strA);
   }
@@ -92,7 +92,7 @@ void TTradeTotalsView::ApplyRectSlot110(RECT* rectBuffer) {
   SetQuickDrawTextOriginWithContextOffset(8, y);
   DrawCenteredGuideLineOnMapDc(static_cast<short>(frameWidth34 - 8), static_cast<short>(y));
 
-  g_pSimMgr->FormatIntegerString(nation->ComputeRemainingDiplomacyAidBudget(), &strA);
+  g_pSimMgr->NumToCurrency(nation->ComputeRemainingDiplomacyAidBudget(), &strA);
   short remainingX;
   if (nation->ComputeRemainingDiplomacyAidBudget() < 0) {
     g_pUiRuntimeContext->ApplyLegendSplitSlot34(0x33);
@@ -107,7 +107,7 @@ void TTradeTotalsView::ApplyRectSlot110(RECT* rectBuffer) {
 
   ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 0xc, 0x2b6a);
   g_pSimMgr->GetString(0x2740, 0x1b, &strB);
-  g_pSimMgr->FormatIntegerString(nation->diplomacyBudgetBase / 100, &strC);
+  g_pSimMgr->NumToCurrency(nation->diplomacyBudgetBase / 100, &strC);
   scanBracketExpressions(g_pSimMgr, &strA, static_cast<LPCSTR>(strB),
                          g_cstrTradeTotalsBalanceSubstitution0066DB50);
 
