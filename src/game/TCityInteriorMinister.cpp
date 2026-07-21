@@ -1,5 +1,6 @@
 #include "game/TCityInteriorMinister.h"
 
+#include "game/TCity.h"
 #include "game/TFuzzySet.h"
 #include "game/TList.h"
 #include "game/TLongintList.h"
@@ -134,12 +135,14 @@ void TCityInteriorMinister::InteriorSlot1A(short) {}
 void TCityInteriorMinister::InteriorSlot1B(short) {}
 
 // FUNCTION: IMPERIALISM 0x004bef10
-undefined TCityInteriorMinister::VTableSlot2D(short) {
-  return 0;
+void TCityInteriorMinister::VTableSlot2D(short arg) {
+  field36 = arg;
 }
 
 // FUNCTION: IMPERIALISM 0x004bef30
-void TCityInteriorMinister::InteriorSlot1C(short) {}
+void TCityInteriorMinister::InteriorSlot1C(short arg) {
+  list190->InsertLast(arg);
+}
 
 // FUNCTION: IMPERIALISM 0x004bef60
 void TCityInteriorMinister::WriteTo(TStream* stream) {
@@ -160,8 +163,28 @@ undefined TCityInteriorMinister::VTableSlot21(int) {
 }
 
 // FUNCTION: IMPERIALISM 0x004bfa50
-undefined TCityInteriorMinister::GetTEventHandlerClassNamePointer_22(int, int) {
-  return 0;
+undefined TCityInteriorMinister::GetTEventHandlerClassNamePointer_22(TCity* city, int* arg2) {
+  if (city->lowProductionFlag7c != 0 && city->lowStockFlag7d == 0) {
+    QueueCityProductionCommand17Or18FromSupportRatio(city, arg2);
+  } else if (city->lowProductionFlag7c == 0 && city->lowStockFlag7d != 0) {
+    DistributeCityProductionCommandBudgetAndQueueOrders(city, arg2);
+  }
+
+  if (field3e != 0) {
+    QueueCityProductionCommand33FromAccumulatedDeficit(reinterpret_cast<int*>(city),
+                                                       reinterpret_cast<int>(arg2));
+  }
+  if (field32 != 0) {
+    QueueCityProductionCommand2BIfMissingAndResetValue(reinterpret_cast<int>(city), arg2);
+  }
+  if (field36 > -1) {
+    QueueSingleCityProductionCommandFromField36(city, arg2);
+  }
+  if (field38 > -1) {
+    QueueSingleCityProductionCommandFromField38(city, arg2);
+  }
+
+  return QueueCityProductionRebalanceCommandsByThresholds(city, arg2);
 }
 
 // FUNCTION: IMPERIALISM 0x004bfb20
