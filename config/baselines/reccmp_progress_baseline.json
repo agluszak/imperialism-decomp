@@ -11,9 +11,9 @@
   "failed_to_match_function_count": 0,
   "flo_orig_only_count": 225,
   "flo_recomp_only_count": 0,
-  "git_branch": "agent/tsimmgr-turn-phase-batch",
-  "git_commit": "3beb4f2cda989f8123e335e2d912b1ef374b295d",
-  "git_commit_date": "2026-07-21T16:10:55+02:00",
+  "git_branch": "agent/tsimmgr-scenario-serialization-tail",
+  "git_commit": "4a9693d61efae3b1c91fda04b666d600f5c64ebd",
+  "git_commit_date": "2026-07-21T16:17:15+02:00",
   "global_coverage_pct": 23.552302418234042,
   "global_orig_only_count": 8251,
   "global_recomp_only_count": 6953,
@@ -61,7 +61,7 @@
   "target": "IMPERIALISM",
   "template_alias_recognized_count": 4,
   "template_canonical_paired_count": 4,
-  "timestamp_utc": "2026-07-21T14:12:36+00:00",
+  "timestamp_utc": "2026-07-21T14:25:32+00:00",
   "wid_orig_only_count": 0,
   "wid_recomp_only_count": 2
 }

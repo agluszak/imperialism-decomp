@@ -107,7 +107,7 @@ void TUniversityView::UpdateFields() {
 
   CString treasuryText;
   int treasury = city94->ownerNationAc->treasuryValue10;
-  g_pSimMgr->FormatIntegerString(treasury, &treasuryText);
+  g_pSimMgr->NumToCurrency(treasury, &treasuryText);
 
   TStaticText* treasuryAvailable =
       static_cast<TStaticText*>(ResolveControlByTag(0x74726561u)); // 'trea'

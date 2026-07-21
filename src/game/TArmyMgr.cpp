@@ -851,7 +851,7 @@ bool TArmyMgr::CommitCityActionGateCostIfAffordable(int contextArg) {
 
   // Insufficient funds: compose and dispatch a localized message with the current
   // budget and the required cost (ground truth builds both via a direct
-  // CString::Format("%d", ...) rather than TSimMgr::FormatIntegerString).
+  // CString::Format("%d", ...) rather than TSimMgr::NumToCurrency).
   CString currentAmountString;
   currentAmountString.Format("%d", nation->field900);
   CString costString;

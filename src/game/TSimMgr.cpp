@@ -168,7 +168,7 @@ void TSimMgr::InitializeTurnFlowStateDefaults() {
   CFileStatus conanFileStatus;
   CFile::GetStatus(g_szConanCheatFileName_00698BEC, conanFileStatus);
   g_bRandomMapDeveloperCheatFlag = 0;
-  ReseedThreadLocalRandom();
+  ReinitializeRandomSeed();
   difficultyLevel = 0;
   InitializeOrLoadEntryArray14AndClampLimits(false);
   field6a = 0;
@@ -888,7 +888,7 @@ void TSimMgr::EnterOptionalPhase(int gamePhase) {
 // perturb the codegen of the methods in this file.
 
 // FUNCTION: IMPERIALISM 0x0057f110
-int TSimMgr::IsTurnFlowPhaseOutsideRange4To5() {
+int TSimMgr::InLinearPhase() {
   int phase = turnStateCode;
   return (phase <= 3) || (phase >= 6);
 }
@@ -1004,7 +1004,7 @@ unsigned char TSimMgr::TestTurnFlowStatusFlagMask(unsigned int mask) {
 }
 
 // FUNCTION: IMPERIALISM 0x0057f4f0
-int TSimMgr::AreAllActiveNationsReady() {
+int TSimMgr::AllHumansFinished() {
   for (TGreatPower** nation = g_apNationStates; nation < (TGreatPower**)&g_apNationStates_End;
        ++nation) {
     if ((*nation)->field904 == 0) {
@@ -1015,7 +1015,7 @@ int TSimMgr::AreAllActiveNationsReady() {
 }
 
 // FUNCTION: IMPERIALISM 0x0057f530
-void TSimMgr::ClearActiveNationReadyFlags() {
+void TSimMgr::ResetTurnFlags() {
   TGreatPower** nation = g_apNationStates;
   do {
     if ((*nation)->diplomacyEligibilityA0 != 0) {
@@ -1026,7 +1026,7 @@ void TSimMgr::ClearActiveNationReadyFlags() {
 }
 
 // FUNCTION: IMPERIALISM 0x0057f5b0
-void TSimMgr::FormatIntegerString(int value, CString* destString) {
+void TSimMgr::NumToCurrency(int value, CString* destString) {
   CString thousandsSep(",");
 
   int absValue = value;
@@ -1056,7 +1056,7 @@ void TSimMgr::FormatIntegerString(int value, CString* destString) {
 }
 
 // FUNCTION: IMPERIALISM 0x0057f8f0
-void TSimMgr::FormatOrdinalString(int value, CString* destString) {
+void TSimMgr::NumToOrdinal(int value, CString* destString) {
   CString numberStr;
   numberStr.Format(g_szDecimalFormat, value);
 
@@ -1085,7 +1085,7 @@ void TSimMgr::GetStringPrelude(short offset, CString* destString) {
 }
 
 // FUNCTION: IMPERIALISM 0x0057fec0
-void TSimMgr::ReseedThreadLocalRandom() {
+void TSimMgr::ReinitializeRandomSeed() {
   srand(static_cast<unsigned int>(time(0)));
 }
 
@@ -1170,7 +1170,7 @@ CString TSimMgr::DiplomacyNoticeString(const DiplomacyNotice* notice) {
   case 3000:
   case 5000:
   case 10000:
-    g_pSimMgr->FormatIntegerString(code, &formattedValue);
+    g_pSimMgr->NumToCurrency(code, &formattedValue);
     {
       CString noticeText = countryName + " grants us " + formattedValue + ".";
       result = noticeText;
@@ -1388,7 +1388,7 @@ void ReinitializeGameFlowAndPostTurnEventCode(int eventCode) {
     CFileStatus conanFileStatus;
     CFile::GetStatus(g_szConanCheatFileName_00698BEC, conanFileStatus);
     g_bRandomMapDeveloperCheatFlag = 0;
-    simMgr->ReseedThreadLocalRandom();
+    simMgr->ReinitializeRandomSeed();
     g_pSimMgr->turnStateCode = 3;
     g_pGlobalUiRootController->PostTurnEventCodeMessage2420(static_cast<short>(eventCode));
   } else {

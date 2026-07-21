@@ -80,7 +80,7 @@ void TGrantsView::ApplyRectSlot110(RECT* rectBuffer) {
   g_pSimMgr->GetString(0x2733, 0x25, &labelText);
   TGreatPower* activeNation = g_apNationStates[g_pSimMgr->GetActiveNationId()];
   int grantSum = activeNation->SumDiplomacyGrantEntriesMaskedToValueBits();
-  g_pSimMgr->FormatIntegerString(grantSum, &sumText);
+  g_pSimMgr->NumToCurrency(grantSum, &sumText);
   labelText += s_szSpaceSeparator_00695794 + sumText;
 
   short totalY = static_cast<short>(kGrantColumnY[3] - ownerLocalY);

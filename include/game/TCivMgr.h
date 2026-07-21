@@ -86,6 +86,6 @@ public:
   // (diplomacyBudgetBase/10 + treasuryValue10, floored at 0) against the tile's cost class,
   // and if affordable queues the order on selectedEntry (sound cue, ~0.5s message-pumped
   // pause, completion marker, immediate treasury deduction); otherwise shows a localized
-  // "can't afford" message built from FormatIntegerString + GetString(0x2745, 8).
+  // "can't afford" message built from NumToCurrency + GetString(0x2745, 8).
   bool QueueCivilianWorkOrderWithCostCheck(short nTileIndex);
 };

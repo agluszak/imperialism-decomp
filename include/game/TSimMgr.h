@@ -73,21 +73,21 @@ public:
   // yet named, so retain its ABI-equivalent int representation.
   virtual void EnterOptionalPhase(int gamePhase); // 0x48  0x0057d990
   virtual void AdvanceGlobalTurnStateMachine();   // 0x4c  0x0057da70
-  virtual int IsTurnFlowPhaseOutsideRange4To5();  // 0x50  0x0057f110
+  virtual int InLinearPhase();                    // 0x50  0x0057f110
   virtual void DoCityAndTransport();              // 0x54  0x0057f140, Mac oracle
   virtual void DoCivilians();                     // 0x58  0x0057f200, Mac oracle
   virtual void DoMilitary();                      // 0x5c  0x0057f280, Mac oracle
   virtual void DoTrade();                         // 0x60  0x0057f3c0, Mac oracle
-  virtual int AreAllActiveNationsReady();         // 0x64  0x0057f4f0
-  virtual void ClearActiveNationReadyFlags();     // 0x68  0x0057f530
+  virtual int AllHumansFinished();                // 0x64  0x0057f4f0
+  virtual void ResetTurnFlags();                  // 0x68  0x0057f530
   virtual int ReturnZeroSlot6c();                 // 0x6c  0x0057f490
   // Mac oracle: SetFlags(short). Windows reads and merges the full pushed dword.
-  virtual void SetFlags(unsigned int flags);                        // 0x70  0x0057f4b0
-  virtual void FormatIntegerString(int value, CString* destString); // 0x74  0x0057f5b0
-  virtual void FormatOrdinalString(int value, CString* destString); // 0x78  0x0057f8f0
+  virtual void SetFlags(unsigned int flags);                  // 0x70  0x0057f4b0
+  virtual void NumToCurrency(int value, CString* destString); // 0x74  0x0057f5b0
+  virtual void NumToOrdinal(int value, CString* destString);  // 0x78  0x0057f8f0
   // Copy string-resource group 0x2711 (commodity names) entry `offset` into dest.
   virtual void GetStringPrelude(short offset, CString* destString);           // 0x7c  0x0057fe90
-  virtual void ReseedThreadLocalRandom();                                     // 0x80  0x0057fec0
+  virtual void ReinitializeRandomSeed();                                      // 0x80  0x0057fec0
   virtual void GetString(short codeGroup, short offset, CString* destString); // 0x84 0x00580760
   // Copy the per-slot shared credential/name text (sharedTextSlots[slot]) into out and
   // return out. 0x00581b20.

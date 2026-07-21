@@ -4832,7 +4832,7 @@ address|name|symbol|size|type|prototype|provenance
 57d990|TSimMgr::EnterOptionalPhase||134|function|void __thiscall EnterOptionalPhase(int gamePhase)|mac_symbol_oracle
 57da70|TSimMgr::AdvanceGlobalTurnStateMachine||4314|function|void __fastcall AdvanceGlobalTurnStateMachine(astruct_24 * ctx)|
 57f0e0|IsNationProfileInMinorRange100To199||26|function|undefined IsNationProfileInMinorRange100To199()|
-57f110|TSimMgr::IsTurnFlowPhaseOutsideRange4To5||19|function|undefined IsTurnFlowPhaseOutsideRange4To5()|
+57f110|TSimMgr::InLinearPhase||19|function|int __thiscall InLinearPhase(void)|mac_symbol_oracle
 57f140|TSimMgr::DoCityAndTransport||142|function|void __thiscall DoCityAndTransport()|
 57f200|TSimMgr::DoCivilians||91|function|void __thiscall DoCivilians()|
 57f280|TSimMgr::DoMilitary||249|function|void __thiscall DoMilitary()|
@@ -4840,14 +4840,14 @@ address|name|symbol|size|type|prototype|provenance
 57f490|TSimMgr::OrphanTiny_ReturnZero_0057f490||3|function|undefined OrphanTiny_ReturnZero_0057f490(void)|
 57f4b0|TSimMgr::SetFlags||15|function|void __thiscall SetFlags(unsigned int flags)|mac_symbol_oracle
 57f4d0|TestTurnFlowStatusFlagMask||15|function|undefined TestTurnFlowStatusFlagMask()|
-57f4f0|TSimMgr::OrphanLeaf_NoCall_Ins15_0057f4f0||37|function|undefined OrphanLeaf_NoCall_Ins15_0057f4f0(void)|
-57f530|TSimMgr::OrphanLeaf_NoCall_Ins10_0057f530||35|function|undefined OrphanLeaf_NoCall_Ins10_0057f530(void)|
+57f4f0|TSimMgr::AllHumansFinished||37|function|int __thiscall AllHumansFinished(void)|mac_symbol_oracle
+57f530|TSimMgr::ResetTurnFlags||35|function|void __thiscall ResetTurnFlags(void)|mac_symbol_oracle
 57f570|WrapperFor_ConfigureTurnResumeStateAndNationMask_At0057f570||45|function|undefined WrapperFor_ConfigureTurnResumeStateAndNationMask_At0057f570()|
-57f5b0|TSimMgr::FormatSignedIntWithSingleThousandsSeparator||655|function|undefined FormatSignedIntWithSingleThousandsSeparator(CString param_1, CString param_2)|
-57f8f0|TSimMgr::FormatSharedStringFromBracketExpression||247|function|undefined FormatSharedStringFromBracketExpression()|
+57f5b0|TSimMgr::NumToCurrency||655|function|void __thiscall NumToCurrency(int value, CString* destString)|mac_symbol_oracle
+57f8f0|TSimMgr::NumToOrdinal||247|function|void __thiscall NumToOrdinal(int value, CString* destString)|mac_symbol_oracle
 57fa30|FormatFloatToLocalizedSharedString||883|function|undefined FormatFloatToLocalizedSharedString()|
 57fe90|TSimMgr::GetStringPrelude||26|function|undefined OrphanCallChain_C1_I08_0057fe90(void)|
-57fec0|TSimMgr::OrphanCallChain_C2_I07_0057fec0||20|function|undefined OrphanCallChain_C2_I07_0057fec0(void)|
+57fec0|TSimMgr::ReinitializeRandomSeed||20|function|void __thiscall ReinitializeRandomSeed(void)|mac_symbol_oracle
 57fef0|scanBracketExpressions||286|function|void __cdecl scanBracketExpressions(void * ctx, void * out_or_state, const char * input_str, ...)|
 580060|BuildUiMessageTextFromBracketTemplate||424|function|undefined BuildUiMessageTextFromBracketTemplate()|
 580280|AppendInterNationEventSummaryTextEntry_Impl||335|function|undefined AppendInterNationEventSummaryTextEntry_Impl()|

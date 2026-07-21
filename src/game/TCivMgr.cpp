@@ -381,7 +381,7 @@ bool TCivMgr::QueueCivilianWorkOrderWithCostCheck(short nTileIndex) {
 
   if (budget < cost) {
     CString costText;
-    g_pSimMgr->FormatIntegerString(cost, &costText);
+    g_pSimMgr->NumToCurrency(cost, &costText);
     CString templateText;
     g_pSimMgr->GetString(0x2745, 8, &templateText);
     CString finalMessage;
@@ -448,7 +448,7 @@ bool TCivMgr::HandleEngineerConstructionAction(short nTileIndex) {
         CString pszTemplateText;
         CString costString;
 
-        g_pSimMgr->FormatIntegerString(cost, &costString);
+        g_pSimMgr->NumToCurrency(cost, &costString);
         g_pSimMgr->GetString(0x2745, 8, &pszTemplateText);
         scanBracketExpressions(g_pSimMgr, &pszFormattedText, static_cast<LPCSTR>(pszTemplateText),
                                static_cast<LPCSTR>(costString));
@@ -473,7 +473,7 @@ bool TCivMgr::HandleEngineerConstructionAction(short nTileIndex) {
         CString pszTemplateText;
         CString costString;
 
-        g_pSimMgr->FormatIntegerString(3000, &costString);
+        g_pSimMgr->NumToCurrency(3000, &costString);
         g_pSimMgr->GetString(0x2745, 8, &pszTemplateText);
         scanBracketExpressions(g_pSimMgr, &pszFormattedText, static_cast<LPCSTR>(pszTemplateText),
                                static_cast<LPCSTR>(costString));
@@ -501,7 +501,7 @@ bool TCivMgr::HandleEngineerConstructionAction(short nTileIndex) {
         CString pszTemplateText;
         CString costString;
 
-        g_pSimMgr->FormatIntegerString(2000, &costString);
+        g_pSimMgr->NumToCurrency(2000, &costString);
         g_pSimMgr->GetString(0x2745, 8, &pszTemplateText);
         scanBracketExpressions(g_pSimMgr, &pszFormattedText, static_cast<LPCSTR>(pszTemplateText),
                                static_cast<LPCSTR>(costString));
@@ -533,7 +533,7 @@ bool TCivMgr::HandleEngineerConstructionAction(short nTileIndex) {
       CString pszTemplateText;
       CString costString;
 
-      g_pSimMgr->FormatIntegerString(cost, &costString);
+      g_pSimMgr->NumToCurrency(cost, &costString);
       g_pSimMgr->GetString(0x2745, 8, &pszTemplateText);
       scanBracketExpressions(g_pSimMgr, &pszFormattedText, static_cast<LPCSTR>(pszTemplateText),
                              static_cast<LPCSTR>(costString));

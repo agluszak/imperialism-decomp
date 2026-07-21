@@ -318,7 +318,7 @@ void TToolBarCluster::UpdateControlTagTreaTextFromNationAndMapContext(short nati
   // major-slot/profile-band gate).
   CString treaText;
   if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(nationId)) {
-    g_pSimMgr->FormatIntegerString(g_apNationStates[nationId]->treasuryValue10, &treaText);
+    g_pSimMgr->NumToCurrency(g_apNationStates[nationId]->treasuryValue10, &treaText);
   }
   TView* treaControl = this->ResolveControlByTag(0x74726561); // 'trea'
   if (treaControl != nullptr) {
