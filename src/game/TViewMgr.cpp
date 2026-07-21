@@ -9,6 +9,7 @@
 
 #include "game/ImperialismApp.h"
 #include "game/TAmbitApplication.h"
+#include "game/TArmyMgr.h"
 #include "game/TAssetMgr.h"
 #include "game/TSoundPlayer.h"        // g_pSfxPlaybackSystem
 #include "game/TMacViewMgr.h"         // g_pStrategicMapViewSystem
@@ -46,6 +47,7 @@
 #include "game/TModalMessageCommand.h"
 #include "game/TApplication.h"
 #include "game/TSuperCivRoster.h"
+#include "game/TSuperArmyRoster.h"
 #include "game/TTacticalBattleView.h"
 #include "game/TScrollView.h" // nation-info modal overflow scroll wrapper
 #include "game/TStaticText.h"
@@ -2140,6 +2142,54 @@ void TViewMgr::HandleTurnEventDialogFactorySlotEC(int mapSelection) {
   // but categoryPages' concrete element class isn't recovered yet -- left undone (Hard Rule
   // 12) rather than fake that dispatch too.
   (void)mapSelection;
+}
+
+// Replace the factory dialog's generic 'page' child with the resource-backed army roster.
+// The selected roster row is a city/province record index; after the modal closes, make it
+// the army manager's active province and center the strategic map on that record's tile.
+// FUNCTION: IMPERIALISM 0x005dda30
+void TViewMgr::ShowArmyRosterDialogAndActivateProvinceSelection() {
+  TurnEventDialogNode* node = static_cast<TurnEventDialogNode*>(
+      g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(0xdac));
+  if (node == nullptr) {
+    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgrMore_0069B740, 0x202);
+  }
+  TControl* page = static_cast<TControl*>(node->ResolveControlByTag(0x70616765)); // 'page'
+  if (page == nullptr) {
+    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgrMore_0069B740, 0x203);
+  }
+  TView* pageOwner = page->ownerContext;
+  page->Free();
+
+  TSuperArmyRoster* roster = ::new TSuperArmyRoster();
+  int rosterOffset[2] = {0x1ca, 0x136};
+  int rosterSize[2] = {0xd, 0x2e};
+  roster->PopulateArmyOrderPageEntries(pageOwner, rosterOffset, rosterSize);
+  roster->controlTag = 0x70616765; // 'page'
+
+  TStaticText* textEntry = ::new TStaticText();
+  int textOffset[2] = {0x4d, 0x11};
+  int textSize[2] = {0x80, 0x12};
+  textEntry->InitializeTextEntryBaseAndOptionalStringResource(
+      static_cast<TControl*>(pageOwner), textOffset, textSize, 5, 5, 0x2746, 0xb);
+  ApplyControlThemeStyleAndOptionalCaption(textEntry, 0, 0xe, 0x2b6a, -2, 0);
+
+  POINT placement;
+  this->ComputeTurnEventDialogPlacementByCode(node, &placement);
+  node->CaptureLayoutF0(reinterpret_cast<int*>(&placement), 0);
+  node->ShowTurnEventDialog(1);
+  node->RefreshTurnEventDialog();
+  short selectedIndex = roster->selectedIndex84;
+  node->Close();
+  node->Free();
+
+  if (selectedIndex != -1) {
+    mapUberPictureF0->SetMapInteractionMode(1);
+    g_pMapContextActionManager->SetActiveProvinceSelection(selectedIndex);
+    mapUberPictureF0->NoticeTile(g_pGlobalMapState->cityScoreTable[selectedIndex].cityTileIndex04);
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x005ddd20

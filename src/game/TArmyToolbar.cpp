@@ -11,8 +11,6 @@
 #include "game/mfc.h"
 #include "game/ui_control_tags.h"
 
-undefined4 OpenSuperArmyRosterPageAndActivateProvinceSelection(void);
-
 namespace {
 
 static __inline void DispatchUiRuntimeSlot48() {
@@ -92,7 +90,7 @@ void TArmyToolbar::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* 
   if (controlTag == kTagArmyModeGarrison) {
     unsigned short ctrlState = (unsigned short)GetAsyncKeyState(0x11);
     if ((ctrlState & 0x8000) != 0) {
-      OpenSuperArmyRosterPageAndActivateProvinceSelection();
+      g_pUiRuntimeContext->ShowArmyRosterDialogAndActivateProvinceSelection();
       return;
     }
 

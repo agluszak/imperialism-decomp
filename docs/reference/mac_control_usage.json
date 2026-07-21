@@ -159388,6 +159388,25 @@
         "owner_class": "TLineData",
         "recovered_source": "src/game/TViewMgr.cpp"
       },
+      "0x005dda30": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "definition_source": "src/game/global_data_tables.cpp",
+                "kind": "source_path_global_reference",
+                "path": "D:\\Ambit\\Cross\\UViewMgr.more.cpp",
+                "symbol": "s_SourcePathUViewMgrMore_0069B740"
+              }
+            ],
+            "module": "UViewMgr.more.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "TViewMgr::ShowArmyRosterDialogAndActivateProvinceSelection",
+        "owner_class": "TViewMgr",
+        "recovered_source": "src/game/TViewMgr.cpp"
+      },
       "0x005ddd20": {
         "modules": [
           {
@@ -159798,6 +159817,7 @@
           "0x005dd340",
           "0x005dd770",
           "0x005dd900",
+          "0x005dda30",
           "0x005ddd20",
           "0x005de010",
           "0x005de4f0",
@@ -159813,7 +159833,7 @@
     "classes_with_source_module_evidence": 14,
     "declared_classes": 152,
     "factories_with_source_module_candidates": 9,
-    "functions_with_source_module_evidence": 101,
+    "functions_with_source_module_evidence": 102,
     "nodes": 3263,
     "screens": 121,
     "screens_with_source_module_candidates": 25,

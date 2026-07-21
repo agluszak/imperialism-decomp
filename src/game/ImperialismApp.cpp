@@ -483,6 +483,19 @@ void ImperialismApp::OnPreviewDibResource() {
   }
 }
 
+// CWinThread::OnIdle override (vtable slot +0x68): after the base idle work, give the game
+// UI root controller its per-phase Idle ticks (phase 0 only on the first idle pass, phase 1
+// every pass), and keep requesting idle time.
+// FUNCTION: IMPERIALISM 0x004145f0
+BOOL ImperialismApp::OnIdle(LONG lCount) {
+  CWinApp::OnIdle(lCount);
+  if (lCount == 0) {
+    g_pGlobalUiRootController->Idle(0);
+  }
+  g_pGlobalUiRootController->Idle(1);
+  return TRUE;
+}
+
 // The retail debug menu retains this explicit assert probe. Its backing pointer has no
 // writer in the image, and the paired update handler keeps the command disabled in normal
 // menus; preserving both behaviors makes the dormant command safe and structurally honest.
@@ -496,19 +509,6 @@ void ImperialismApp::OnRunAmbitDeveloperAssert() {
 // FUNCTION: IMPERIALISM 0x00414670
 void ImperialismApp::OnUpdateAmbitDeveloperAssert(CCmdUI* commandUi) {
   commandUi->Enable(FALSE);
-}
-
-// CWinThread::OnIdle override (vtable slot +0x68): after the base idle work, give the game
-// UI root controller its per-phase Idle ticks (phase 0 only on the first idle pass, phase 1
-// every pass), and keep requesting idle time.
-// FUNCTION: IMPERIALISM 0x004145f0
-BOOL ImperialismApp::OnIdle(LONG lCount) {
-  CWinApp::OnIdle(lCount);
-  if (lCount == 0) {
-    g_pGlobalUiRootController->Idle(0);
-  }
-  g_pGlobalUiRootController->Idle(1);
-  return TRUE;
 }
 
 // Post WM_CLOSE to the main thread's window. Faithful to the original: when

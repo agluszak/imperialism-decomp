@@ -153,6 +153,9 @@ public:
   // 0xdac, runs it modally via the show/refresh chain, then applies the selected
   // civilian as the active map selection.
   void ShowCivilianLedgerDialogAndSelectUnit();
+  // 0x5dda30 — army-roster sibling of the civilian ledger: replace the factory page with
+  // TSuperArmyRoster, then activate and center the selected province.
+  void ShowArmyRosterDialogAndActivateProvinceSelection();
 
   // 0x5dea60 — allocates a TModalMessageCommand carrying `message`/`payload`, seeds
   // it with dispatch code 'Hey!' targeting the global UI root controller, and posts

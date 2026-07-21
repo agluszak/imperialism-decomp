@@ -6108,7 +6108,7 @@ address|name|symbol|size|type|prototype|provenance
 5dd450|RunMapOrderPageSelectionDialogAndApplyResult||635|function|undefined RunMapOrderPageSelectionDialogAndApplyResult()|
 5dd770|TViewMgr::HandleTurnEventDialogFactorySlotE8||315|function|undefined HandleTurnEventDialogFactorySlotE8()|
 5dd900|TLineData::HandleTurnEventDialogFactorySlotEC||239|function|undefined HandleTurnEventDialogFactorySlotEC()|
-5dda30|OpenSuperArmyRosterPageAndActivateProvinceSelection||587|function|undefined OpenSuperArmyRosterPageAndActivateProvinceSelection()|
+5dda30|TViewMgr::ShowArmyRosterDialogAndActivateProvinceSelection||587|function|void ShowArmyRosterDialogAndActivateProvinceSelection()|
 5ddd20|TViewMgr::ShowCivilianLedgerDialogAndSelectUnit||585|function|void __thiscall ShowCivilianLedgerDialogAndSelectUnit(void)|
 5de010|TViewMgr::MakePlanetSeedDialog||992|function|int __thiscall MakePlanetSeedDialog(const char* instruction,CString& planetSeed,const char* firstChoice,const char* secondChoice,int initialChoice,unsigned char showCancel) const|
 5de4f0|ShowCivilianReportDialogAndReturnConfirm||176|function|bool __fastcall ShowCivilianReportDialogAndReturnConfirm(int * pCivilianOrderEntry)|
