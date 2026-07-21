@@ -1141,7 +1141,6 @@ address|name|symbol|size|type|prototype|provenance
 493c30|CMcWindow::OnCommand|?OnCommand@CMcWindow@@MAEHIJ@Z|74|function|protected: virtual int __thiscall CMcWindow::OnCommand(unsigned int,long)|
 493cc0|CMcWindow::OnPaletteChanged||8|function|undefined OnPaletteChanged()|
 493ce0|AppendStatusPointerAndDispatchMessageFallback||59|function|undefined AppendStatusPointerAndDispatchMessageFallback()|
-493d30|thunk_WrapperFor_FreeHeapBufferIfNotNull_At00483ad0_Impl_At00493d30||10|function|undefined thunk_WrapperFor_FreeHeapBufferIfNotNull_At00483ad0_Impl_At00493d30()|
 493d80|CMcWindow::PreCreateWindow|?PreCreateWindow@CMcWindow@@MAEHAAUtagCREATESTRUCTA@@@Z|91|function|protected: virtual int __thiscall CMcWindow::PreCreateWindow(struct tagCREATESTRUCTA &)|
 493f30|WrapperFor_ftol_At00493f30||30|function|undefined WrapperFor_ftol_At00493f30()|
 493f90|InitializeDefaultQuickDrawSurfaceContextAndRegisterAtExit||24|function|undefined InitializeDefaultQuickDrawSurfaceContextAndRegisterAtExit()|

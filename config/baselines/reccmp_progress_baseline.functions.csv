@@ -1125,11 +1125,12 @@ address|matching|name
 0x493b00|1.0|CMcWindow::OnClose
 0x493b30|1.0|CMcWindow::OnKeyDown
 0x493b50|1.0|CMcWindow::OnKeyUp
+0x493b70|0.8623853211009175|CMcWindow::OnCtlColor
 0x493c30|1.0|CMcWindow::OnCommand
 0x493ca0|1.0|CMcWindow::OnQueryNewPalette
 0x493cc0|1.0|CMcWindow::OnPaletteChanged
-0x493ce0|0.0|AppendStatusPointerAndDispatchMessageFallback
-0x493d30|0.0|thunk_WrapperFor_FreeHeapBufferIfNotNull_At00483ad0_Impl_At00493d30
+0x493ce0|0.7777777777777778|CMcWindow::OnChar
+0x493d50|1.0|CMcWindow::OnIdleUpdateMsg36A
 0x493d80|1.0|CMcWindow::PreCreateWindow
 0x493f30|0.25|WrapperFor_ftol_At00493f30
 0x493f90|0.25|InitializeDefaultQuickDrawSurfaceContextAndRegisterAtExit

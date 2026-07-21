@@ -1,6 +1,10 @@
 #include "game/CMcWindow.h"
 
+#include "game/ImperialismApp.h"
 #include "game/TAmbitApplication.h"
+#include "game/TControl.h"
+#include "game/TModuleLibraryCacheTableStateB.h"
+#include "game/TUiEvent.h"
 #include "game/TView.h"
 #include "game/TWindow.h"
 #include "game/global_data_tables.h"
@@ -82,9 +86,7 @@ CMcWindow::CMcWindow(TWindow* descriptor) : CWnd() {
 
 IMPLEMENT_DYNCREATE(CMcWindow, CWnd)
 
-// Original AFX_MSGMAP_ENTRY order (0x0064b5f0). WM_CTLCOLOR (before QUERYNEWPALETTE),
-// WM_CHAR (after PALETTECHANGED) and message 0x36a (last) are still unported
-// (see CMcWindow.h).
+// Original AFX_MSGMAP_ENTRY order (0x0064b5f0).
 // clang-cl's lint build rejects the MFC message-map macros' unqualified `&OnPaint`-style
 // address-of-member-function (a long-standing MSVC extension clang doesn't implement for
 // this context); this is MFC dispatch-table plumbing, not game logic, so it's skipped in
@@ -98,9 +100,12 @@ ON_WM_MOUSEMOVE()
 ON_WM_CLOSE()
 ON_WM_KEYDOWN()
 ON_WM_KEYUP()
+ON_WM_CTLCOLOR()
 ON_WM_QUERYNEWPALETTE()
 ON_WM_PALETTECHANGED()
+ON_WM_CHAR()
 ON_MESSAGE(0x468, OnWindowStateMsg468)
+ON_MESSAGE(0x36a, OnIdleUpdateMsg36A)
 END_MESSAGE_MAP()
 #endif
 
@@ -228,6 +233,29 @@ void CMcWindow::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags) {
   Default();
 }
 
+// Native edits carry their owning TControl in GWL_USERDATA. Select the game palette,
+// set the window-host edit background, and derive the foreground from the resource style
+// override (or TControl::textStyle78 when no override exists).
+// FUNCTION: IMPERIALISM 0x00493b70
+HBRUSH CMcWindow::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor) {
+  CWnd::OnCtlColor(pDC, pWnd, nCtlColor);
+  if (nCtlColor == CTLCOLOR_EDIT) {
+    HWND controlWindow = pWnd != NULL ? pWnd->m_hWnd : NULL;
+    TControl* control = reinterpret_cast<TControl*>(::GetWindowLong(controlWindow, GWL_USERDATA));
+    if (control != NULL) {
+      g_pModuleLibraryCacheState->EnsureDefaultDibPalette()->SelectIntoDcAndRealize(pDC, FALSE);
+      pDC->SetBkColor(0x000000ff);
+      unsigned int packedTextColor =
+          control->stylePayload48 != NULL
+              ? static_cast<unsigned int>(control->stylePayload48->styleWord)
+              : static_cast<unsigned int>(control->textStyle78.textColor);
+      pDC->SetTextColor(g_pModuleLibraryCacheState->ResolvePaletteIndexColor(packedTextColor));
+    }
+  }
+  pDC->SetMapperFlags(1);
+  return reinterpret_cast<HBRUSH>(::GetStockObject(NULL_BRUSH));
+}
+
 // Overrides CWnd::OnCommand (vtable slot 0x80): custom notify code 0x400 from a child
 // control refreshes the control's owning TView (recovered from GWL_USERDATA) and re-arms the
 // owning TWindow's input capture, then default-routes. Mirrors CIncludeView::OnCommand.
@@ -253,6 +281,27 @@ BOOL CMcWindow::OnQueryNewPalette() {
 void CMcWindow::OnPaletteChanged(CWnd* pFocusWnd) {
   (void)pFocusWnd;
   Default();
+}
+
+// The original keeps one function-static TUiEvent alive for this handler, then lets the
+// standard window procedure process the character message. The event's non-trivial
+// lifetime emits the one-time construction guard and registered cleanup automatically.
+// FUNCTION: IMPERIALISM 0x00493ce0
+void CMcWindow::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags) {
+  (void)nChar;
+  (void)nRepCnt;
+  (void)nFlags;
+  static TUiEvent s_charEvent;
+  (void)s_charEvent;
+  Default();
+}
+
+// Message 0x36a is MFC's idle-update hook for this native host. Its wParam is ignored;
+// lParam is the idle count forwarded through ImperialismApp's real OnIdle virtual.
+// FUNCTION: IMPERIALISM 0x00493d50
+LRESULT CMcWindow::OnIdleUpdateMsg36A(WPARAM wParam, LPARAM lParam) {
+  (void)wParam;
+  return g_pImperialismApp->OnIdle(static_cast<LONG>(lParam));
 }
 
 // Overrides CWnd::PreCreateWindow (vtable slot 0x64): register a private "AmbitMcWindow"
