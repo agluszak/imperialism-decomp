@@ -615,6 +615,31 @@ mac-control-usage *args:
 mac-control-usage-check:
   uv run python -m tools.workflow.mac_control_usage --check
 
+[doc('Search file-scoped Mac STR# text and show ranked Windows candidates')]
+[group('ghidra-inspect')]
+mac-string-search query:
+  uv run python -m tools.workflow.mac_string_crosswalk search "{{query}}"
+
+[doc('Crosswalk one Mac STR# group/index; add --resource-file through direct tool query when ambiguous')]
+[group('ghidra-inspect')]
+string-crosswalk group index:
+  uv run python -m tools.workflow.mac_string_crosswalk crosswalk "{{group}}" "{{index}}"
+
+[doc('Show statically resolved string references for a Windows function address')]
+[group('ghidra-inspect')]
+strings-for-function address:
+  uv run python -m tools.workflow.mac_string_crosswalk function "{{address}}"
+
+[doc('MUTATES: regenerate the committed Mac-to-Windows string crosswalk')]
+[group('recovery')]
+mac-string-crosswalk-update:
+  uv run python -m tools.workflow.mac_string_crosswalk --write
+
+[doc('Reject stale Mac-to-Windows string crosswalk metadata')]
+[group('gates')]
+mac-string-crosswalk-check:
+  uv run python -m tools.workflow.mac_string_crosswalk --check
+
 [doc('Print one scoped Mac View resource from committed UI IR (FILE:ID)')]
 [group('ghidra-inspect')]
 ui-resource-show resource:
@@ -1396,6 +1421,7 @@ source-gates:
   just ui-codegen-check
   just ui-view-coverage-check
   just mac-control-usage-check
+  just mac-string-crosswalk-check
   just tooling-check
   just vtable-gate
   just antipattern-gate
