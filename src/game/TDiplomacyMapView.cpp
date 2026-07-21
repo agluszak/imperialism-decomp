@@ -14,6 +14,7 @@
 #include "game/quickdraw_regions.h"
 #include "game/TDiplomacyMgr.h"
 #include "game/TStrategicMapViewSystem.h"
+#include "game/ScopedMapQuickDrawContext.h"
 #include "game/TControl.h"
 #include "game/TGlobalMapState.h"
 #include "game/TModuleLibraryCacheTableStateB.h"
@@ -46,6 +47,29 @@ const unsigned int kAddrDiplomacyRelationPaletteMap = 0x00696990;
 const unsigned int kAddrDiplomacyHitRectInitialized = 0x006A2FBC;
 const unsigned int kAddrDiplomacyHitBounds = 0x006A3008;
 const unsigned int kAddrResolveDiplomacyActionValue = 0x004F5F70;
+
+// The Windows port brackets minor-nation label drawing with the palette built from
+// bitmap 0x3b6. The original uses an 8-byte compiler-generated guard around
+// CDC::SelectPalette; keep that lifetime explicit and exception-safe here.
+class ScopedDefaultDibPaletteSelection {
+public:
+  explicit ScopedDefaultDibPaletteSelection(CDC* dc) : m_dc(dc), m_previousPalette(NULL) {
+    if (m_dc != NULL) {
+      m_previousPalette =
+          m_dc->SelectPalette(g_pModuleLibraryCacheState->EnsureDefaultDibPalette(), FALSE);
+    }
+  }
+
+  ~ScopedDefaultDibPaletteSelection() {
+    if (m_dc != NULL) {
+      m_dc->SelectPalette(m_previousPalette, FALSE);
+    }
+  }
+
+private:
+  CDC* m_dc;
+  CPalette* m_previousPalette;
+};
 } // namespace
 
 // FUNCTION: IMPERIALISM 0x00430730
@@ -436,7 +460,7 @@ void TDiplomacyMapView::ApplyRectSlot110(RECT* rectBuffer) {
   if (interactionModeAt94 == 5) {
     DrawVoteNuggets();
   }
-  RenderDiplomacyMatrixRowStatusIcons(rectBuffer);
+  DrawIcons(rectBuffer);
 }
 
 // Relation-percentage -> icon-row lookup for interactionModeAt94 == 2 (0x00696950).
@@ -445,7 +469,7 @@ const short kRelationTierThresholds[7] = {95, 90, 75, 50, 25, 0, 300};
 } // namespace
 
 // FUNCTION: IMPERIALISM 0x004f4a30
-void TDiplomacyMapView::RenderTerrainAndMinorNationLegendLabels(RECT* presentRect) {
+void TDiplomacyMapView::DrawNames(RECT* presentRect) {
   (void)presentRect; // ignored stack arg threaded through by the caller
   int styleForeground = 0;
   int styleShadow = 0;
@@ -467,11 +491,11 @@ void TDiplomacyMapView::RenderTerrainAndMinorNationLegendLabels(RECT* presentRec
     CString label;
     short code = terrain->encodedNationSlot;
     if (code < 100 || code > 199) {
-      terrain->LoadNationDisplayNameSharedRefFromField8(&label);
+      terrain->FormatOverlayTerrainLabelText(&label);
       MapUiThemeCodeToStyleFlags(0x2b68, &styleForeground);
       MapUiThemeCodeToStyleFlags(0x2b6b, &styleShadow);
     } else {
-      terrain->FormatOverlayTerrainLabelText(&label);
+      terrain->LoadNationDisplayNameSharedRefFromField8(&label);
       MapUiThemeCodeToStyleFlags(0x2b67, &styleForeground);
       MapUiThemeCodeToStyleFlags(0x2b6f, &styleShadow);
     }
@@ -500,11 +524,11 @@ void TDiplomacyMapView::RenderTerrainAndMinorNationLegendLabels(RECT* presentRec
     CString label;
     short code = terrain->encodedNationSlot;
     if (code == -1) {
-      terrain->LoadNationDisplayNameSharedRefFromField8(&label);
+      terrain->FormatOverlayTerrainLabelText(&label);
       MapUiThemeCodeToStyleFlags(0x2b6b, &styleForeground);
       MapUiThemeCodeToStyleFlags(0x2b68, &styleShadow);
     } else if (code >= 100 && code < 200) {
-      terrain->FormatOverlayTerrainLabelText(&label);
+      terrain->LoadNationDisplayNameSharedRefFromField8(&label);
       MapUiThemeCodeToStyleFlags(0x2b67, &styleForeground);
       MapUiThemeCodeToStyleFlags(0x2b6f, &styleShadow);
     } else {
@@ -518,8 +542,10 @@ void TDiplomacyMapView::RenderTerrainAndMinorNationLegendLabels(RECT* presentRec
       }
       MapUiThemeCodeToStyleFlags(kMinorThemeByBand[band], &styleForeground);
       MapUiThemeCodeToStyleFlags(0x2b68, &styleShadow);
-      terrain->LoadNationDisplayNameSharedRefFromField8(&label);
+      terrain->FormatOverlayTerrainLabelText(&label);
     }
+
+    ScopedDefaultDibPaletteSelection paletteSelection(GetActiveQuickDrawDc());
     short x = static_cast<short>(labelRect->left);
     short y = static_cast<short>(labelRect->bottom);
     SetQuickDrawColorAndSyncGlobals(styleShadow);
@@ -528,15 +554,13 @@ void TDiplomacyMapView::RenderTerrainAndMinorNationLegendLabels(RECT* presentRec
     SetQuickDrawColorAndSyncGlobals(styleForeground);
     SetQuickDrawTextOriginWithContextOffset(x, y);
     DrawTextWithCachedQuickDrawStyleState(&label);
-    // The original also brackets each minor label with a bitmap-palette resolve
-    // (WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6, 0x498e00) and a
-    // CDC::SelectPalette over a local rendering-context struct that is not yet recovered;
-    // the label text matches, the flag-palette bracket is left for that recovery.
   }
 }
 
 // FUNCTION: IMPERIALISM 0x004f4ec0
-void TDiplomacyMapView::RenderDiplomacyMatrixRowStatusIcons(RECT* presentRect) {
+void TDiplomacyMapView::DrawIcons(RECT* presentRect) {
+  const short policyIconColumns[5] = {4, 3, 2, 0, 1};
+
   if (interactionModeAt94 != 1 && interactionModeAt94 != 4 && interactionModeAt94 != 2) {
     return;
   }
@@ -571,26 +595,16 @@ void TDiplomacyMapView::RenderDiplomacyMatrixRowStatusIcons(RECT* presentRect) {
       UpdatePaletteIndexWithDefaultFallback(0x13);
     }
 
-    if (interactionModeAt94 == 1) {
+    if (interactionModeAt94 == 4) {
       if (g_pDiplomacyTurnStateManager->IsPrimaryNationSlotIndex(frameRegionSelectorAt98)) {
         short need =
-            g_apNationStates[frameRegionSelectorAt98]->diplomacyGrantByNation[terrainIndex];
-        if (need == 1000) {
-          iconOffset = 0xd0;
-        } else if (need == 3000) {
-          iconOffset = 0xe0;
-        } else if (need == 5000) {
-          iconOffset = 0xf0;
-        } else if (need == 10000) {
-          iconOffset = 0x100;
-        } else if (need == 0x43e8) {
-          iconOffset = 0x110;
-        } else if (need == 0x4bb8) {
-          iconOffset = 0x120;
-        } else if (need == 0x5388) {
-          iconOffset = 0x130;
-        } else if (need == 0x6710) {
-          iconOffset = 0x140;
+            g_apNationStates[frameRegionSelectorAt98]->diplomacyPolicyByNation[terrainIndex];
+        if (need == 0x133) {
+          iconOffset = 0x150;
+        } else if (need == 0x134) {
+          iconOffset = 0x160;
+        } else if (need != -1) {
+          iconOffset = static_cast<short>(policyIconColumns[need] << 4);
         }
       }
     } else if (interactionModeAt94 == 2) {
@@ -614,20 +628,27 @@ void TDiplomacyMapView::RenderDiplomacyMatrixRowStatusIcons(RECT* presentRect) {
           }
         }
       }
-    } else { // interactionModeAt94 == 4
+    } else { // interactionModeAt94 == 1
       if (g_pDiplomacyTurnStateManager->IsPrimaryNationSlotIndex(frameRegionSelectorAt98)) {
         short need =
-            g_apNationStates[frameRegionSelectorAt98]->diplomacyPolicyByNation[terrainIndex];
-        if (need == 0x133) {
-          iconOffset = 0x150;
-        } else if (need == 0x134) {
-          iconOffset = 0x160;
+            g_apNationStates[frameRegionSelectorAt98]->diplomacyGrantByNation[terrainIndex];
+        if (need == 1000) {
+          iconOffset = 0xd0;
+        } else if (need == 3000) {
+          iconOffset = 0xe0;
+        } else if (need == 5000) {
+          iconOffset = 0xf0;
+        } else if (need == 10000) {
+          iconOffset = 0x100;
+        } else if (need == 0x43e8) {
+          iconOffset = 0x110;
+        } else if (need == 0x4bb8) {
+          iconOffset = 0x120;
+        } else if (need == 0x5388) {
+          iconOffset = 0x130;
+        } else if (need == 0x6710) {
+          iconOffset = 0x140;
         }
-        // UNRESOLVED: for every other `need` value the original indexes a
-        // ~0x133-entry table (`asStackY_2c6[need] << 4`) that Ghidra renders as a
-        // stack-relative read far outside this function's own frame -- almost
-        // certainly a global lookup table it failed to recognize as such. Left
-        // unmapped (no icon drawn) pending recovery of that table's real address.
       }
     }
 
@@ -842,7 +863,7 @@ void TDiplomacyMapView::RenderDiplomacyLegendSurfaceAndPresent(const RECT* prese
     } while (terrainIndex < 0x17);
 
     SetQuickDrawFillColor(0);
-    RenderTerrainAndMinorNationLegendLabels(const_cast<RECT*>(presentRect));
+    DrawNames(const_cast<RECT*>(presentRect));
 
     if (previousSurface != g_pPrimaryRenderSurfaceContext) {
       NoOpQuickDrawLifecycleHookB(GetSurfaceNodeSlot(g_pPrimaryRenderSurfaceContext));
@@ -941,7 +962,7 @@ void TDiplomacyMapView::RebuildDiplomacyLegendPaletteMode4AndBlit(int activeNati
       nationIndex = static_cast<short>(nationIndex + 1);
     } while (nationIndex < 0x17);
 
-    RenderTerrainAndMinorNationLegendLabels(const_cast<RECT*>(presentRect));
+    DrawNames(const_cast<RECT*>(presentRect));
     legendSurfaceModeAt524 = 4;
     NoOpQuickDrawLifecycleHookB(GetSurfaceNodeSlot(g_pPrimaryRenderSurfaceContext));
     SetActiveQuickDrawSurfaceContext(previousSurface, contextFlags);
@@ -1075,7 +1096,7 @@ void TDiplomacyMapView::RebuildDiplomacyLegendPaletteMode1AndBlit(int activeNati
       terrainDescriptors++;
     } while (terrainIndex < 0x17);
 
-    RenderTerrainAndMinorNationLegendLabels(const_cast<RECT*>(presentRect));
+    DrawNames(const_cast<RECT*>(presentRect));
     legendSurfaceModeAt524 = 1;
     NoOpQuickDrawLifecycleHookB(GetSurfaceNodeSlot(g_pPrimaryRenderSurfaceContext));
     SetActiveQuickDrawSurfaceContext(previousSurface, contextFlags);
