@@ -1,6 +1,7 @@
 #pragma once
 
 #include "game/TObject.h"
+#include "game/map_order_battle_snapshot.h"
 #include "game/mfc.h"
 
 // Forward declarations for types referenced by generated signatures.
@@ -8,7 +9,6 @@ class TStream;
 class TSortedList;
 class TArmyStack;
 struct TUiTextStyleDescriptor;
-struct MapOrderBattleSideChildRecord;
 
 // 0x268-byte POD record copied into the TSortedPtrList pointed to by
 // TArmyMgr::mapContextActionRecordList04.
@@ -31,10 +31,20 @@ union MapContextTarget {
 struct MapContextActionRecord {
   unsigned char nationIds[2];       // +0x00
   unsigned char participantIndex02; // +0x02
-  unsigned char pad03;              // +0x03
+  // +0x03 -- read/written by ReadFrom/WriteTo like every other field here, so it is a
+  // real serialized byte rather than compiler padding, even though no reader has been
+  // found for it yet.
+  unsigned char reservedByte03;
   int actionType04;                 // +0x04 (0..4; 2 widens the marker sprite code)
   MapContextTarget tileOrObject08;  // +0x08 (tagged by actionType04 -- see MapContextTarget)
-  unsigned char pad0c[0x250 - 0x0c];
+  // +0xc..+0x24f -- per-side (0/1) working state, laid out exactly like the tail of
+  // MapOrderBattleSnapshot (map_order_battle_snapshot.h): a fixed name buffer, a fixed
+  // overlay-label buffer, a child-record count, then (after a 2-byte alignment pad) the
+  // child-record array pointer. Ground truth: MapContextActionRecord::ReadFrom (0x4a13c0).
+  char nameBuffer0c[2][0x20];   // +0x0c/+0x2c
+  char overlayLabel4c[2][0xff]; // +0x4c/+0x14b
+  short childCount24a[2];       // +0x24a/+0x24c
+  unsigned char pad24e[2];      // +0x24e (alignment pad before the pointer array)
   // Per-side heap arrays built while resolving an army/navy order conflict. The copied
   // report record owns both buffers until CleanUpStacks releases the arrays.
   MapOrderBattleSideChildRecord* sideChildRecords250[2]; // +0x250/+0x254
@@ -45,6 +55,21 @@ struct MapContextActionRecord {
   short markerSpriteCode262;                             // +0x262
   short listOrdinal264;                                  // +0x264
   unsigned char pad266[0x268 - 0x266];
+
+  // Frees the per-side child-record arrays; ground truth for this is the EH unwind frame
+  // TArmyMgr::ReadFrom (0x4a1b80) wraps around its per-iteration stack-local record --
+  // the local always transfers array ownership into mapContextActionRecordList04 and
+  // nulls its own copies before falling out of scope, so this normally deletes null.
+  ~MapContextActionRecord() {
+    delete[] sideChildRecords250[0];
+    delete[] sideChildRecords250[1];
+  }
+
+  // 0x4a13c0 -- reads one record from `stream`: the fixed header fields, resolving
+  // tileOrObject08 either as a raw tile/record index or (via FindMapActionContextByNodeId)
+  // a live TZone* depending on actionType04, then for each side allocates and reads its
+  // MapOrderBattleSideChildRecord array.
+  void ReadFrom(TStream* stream);
 };
 
 // VTABLE: IMPERIALISM 0x0064c928
