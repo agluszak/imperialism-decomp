@@ -3805,7 +3805,7 @@ address|matching|name
 0x5528e0|0.7142857142857143|TTaskForce::RelinkMapOrderQueueNodeBetween
 0x552930|0.5205479452054794|TTaskForce::Free
 0x552a70|0.024390243902439025|TTaskForce::RemoveTaskForceOrderNodesByNationAndClearSelectionState
-0x552b90|0.015748031496062992|TTaskForce::WriteTo
+0x552b90|0.611764705882353|TTaskForce::WriteTo
 0x552d10|0.011494252873563218|TTaskForce::ReadFrom
 0x552f60|1.0|TTaskForce::ResetOrderTypeAndStrengthDword
 0x552f80|0.6572769953051644|TTaskForce::SetMapOrderType9AndQueue
@@ -3815,8 +3815,8 @@ address|matching|name
 0x553840|0.6697247706422018|TTaskForce::SetMapOrderType5AndQueue
 0x5539c0|1.0|TTaskForce::RefreshTaskForceSelectionFlagsForCurrentNationOrders
 0x553a50|1.0|TTaskForce::ApplyTaskForceSelectionModeForCurrentNationOrders
-0x553b10|0.4827586206896552|TTaskForce::HasNoMapOrderEntryChildrenQueued
-0x553b50|0.5818181818181818|TTaskForce::HasActiveMapOrderEntryChildren
+0x553b10|0.41379310344827586|TTaskForce::HasNoMapOrderEntryChildrenQueued
+0x553b50|0.5454545454545454|TTaskForce::HasActiveMapOrderEntryChildren
 0x553bc0|0.6536585365853659|TTaskForce::FindOrCreateChildOrderLink
 0x553d40|0.02857142857142857|ObjectPool::RemoveTaskForceOrderNodeById
 0x553e30|1.0|TTaskForce::RecomputeMapOrderChildAggregateMetric
@@ -3825,7 +3825,7 @@ address|matching|name
 0x5540b0|0.0|TScatteredShipsMission::ApplyMapOrderTypeAndQueue
 0x554300|0.5416666666666666|TTaskForce::ResolveMapOrderCommandFromActionContext
 0x554460|0.8125|TTaskForce::ResolveMapOrderCommandFromProvinceContext
-0x554590|0.5569620253164557|TTaskForce::CanQueueMapOrderForProvinceContext
+0x554590|0.5822784810126582|TTaskForce::CanQueueMapOrderForProvinceContext
 0x554660|0.9026548672566371|TTaskForce::RequeueMapOrderEntry
 0x5547d0|0.02702702702702703|CancelMapOrderEntryAndRestoreActive
 0x5548e0|0.9565217391304348|TTaskForce::RecomputeTaskForceAverageOrderScore
