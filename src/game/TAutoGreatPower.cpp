@@ -1253,7 +1253,7 @@ void TAutoGreatPower::RemoveRegionIdFromNationOwnedRegionList(int regionId) {
   CIterator missionCursor(this->missionQueue);
   TMission* mission = static_cast<TMission*>(missionCursor.Reset());
   while (missionCursor.More() != 0) {
-    if (mission->MatchesMissionKeySlot4C(3, regionId, 0) != 0) {
+    if (mission->Matches(3, regionId, 0) != 0) {
       CPtrList* listState = &this->missionQueue->listState;
       POSITION pos = listState->Find(mission, 0);
       if (pos != 0) {
@@ -1442,7 +1442,7 @@ void TAutoGreatPower::RecomputeAiExpansionAndMissionPressureScores(void) {
   TMission* mission = static_cast<TMission*>(missionIterator.Reset());
   while (missionIterator.More()) {
     mission->AssertValid();
-    if (mission->ReturnFalseSlot60() != 0) {
+    if (mission->IsDefensiveSeaZoneMission() != 0) {
       ++activeMissionCount;
     }
     mission = static_cast<TMission*>(missionIterator.Advance());
@@ -1556,7 +1556,7 @@ void TAutoGreatPower::RefreshTrackedEntriesAndReplanAiDevelopment(int unused) {
   CIterator missionIter(missionQueue);
   for (TMission* mission = static_cast<TMission*>(missionIter.Reset()); missionIter.More();
        mission = static_cast<TMission*>(missionIter.Advance())) {
-    mission->RefreshSlot40();
+    mission->Reassess();
   }
 
   PruneInvalidTrackedEntriesAndNotifyOwner();
@@ -1640,7 +1640,7 @@ void TAutoGreatPower::PlanAiDevelopmentActionsFromResourcePools(int unused) {
        mission = static_cast<TMission*>(missionIter.Advance())) {
     mission->AssertValid();
     if (mission->flag10 == 0) {
-      mission->ReturnZeroSlot2C(resourcePools + 1, 1);
+      mission->AccumulateLack(resourcePools + 1, 1);
     }
   }
 
@@ -1739,14 +1739,14 @@ void TAutoGreatPower::UpdateTrackedEntryEligibilityByClassMaskAndRatio(int unuse
 
     unsigned char eligible =
         classMask == 0 || (classMask & availableClassMask) == classMask || mission->state08 != 0;
-    if (eligible && (classMask & 1) != 0 && !mission->ReturnFalseSlot50()) {
+    if (eligible && (classMask & 1) != 0 && !mission->IsArmyMission()) {
       eligible = 0;
     }
     if (eligible && classMask != 0) {
       TMission* nextMission = nextByClass[classMask];
       if (nextMission != nullptr &&
-          mission->value0c / mission->ReturnZeroFloatSlot6C() <
-              (nextMission->value0c / nextMission->ReturnZeroFloatSlot6C()) *
+          mission->importanceScore0c / mission->ReturnZeroFloatSlot6C() <
+              (nextMission->importanceScore0c / nextMission->ReturnZeroFloatSlot6C()) *
                   g_MissionEligibilityRatioMargin_006545f8) {
         eligible = 0;
       } else {

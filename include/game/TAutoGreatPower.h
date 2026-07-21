@@ -113,12 +113,12 @@ public:
 
   // 0x4eb8b0 — repeatedly assigns the highest-priority tracked mission's action to a
   // matching order/unit. Resets every missionQueue entry (ReturnFalseSlot98), then loops:
-  // (1) pick the best-scoring TNavyMission (ReturnZeroSlot5C identity filter — army
+  // (1) pick the best-scoring TNavyMission (GetNavyMission identity filter — army
   // entries return null there); if found, build its 9-category weight profile
-  // (ReturnZeroSlot2C) and pair it with the best same-nation, unassigned
+  // (AccumulateLack) and pair it with the best same-nation, unassigned
   // (field2c == nullptr) TShip primary-order node (ReturnZeroFloatSlot7C), dispatching
   // via NoOpSlot84 and restarting. (2) Otherwise pick the best-scoring TArmyMission
-  // (ReturnZeroSlot58 identity filter, with a state08/marker11 tie-break against a
+  // (GetArmyMission identity filter, with a state08/marker11 tie-break against a
   // runner-up candidate), build its weight profile, and pair it with the best unassigned
   // (ownerMission40 == nullptr) militaryUnitList44 unit (ReturnZeroFloatSlot78),
   // dispatching via AdoptUnitSlot80 and restarting. Stops when neither pass finds a

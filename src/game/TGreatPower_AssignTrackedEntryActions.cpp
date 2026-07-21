@@ -16,8 +16,8 @@ namespace {
 // conceptual constants.
 inline float ComputeMissionRemainingPriorityScore(TMission* mission) {
   float diff = g_MissionScoreOneConstant_006545d8 - mission->ReturnZeroFloatSlot68();
-  return (diff >= g_MissionDefaultScore_006545d0) ? diff * mission->value0c
-                                                  : diff / mission->value0c;
+  return (diff >= g_MissionDefaultScore_006545d0) ? diff * mission->importanceScore0c
+                                                  : diff / mission->importanceScore0c;
 }
 
 } // namespace
@@ -42,7 +42,7 @@ void TAutoGreatPower::AssignTrackedEntryActionsByProfileToOrdersOrUnits(int unus
       CIterator navyIter(missionQueue);
       for (TMission* entry = static_cast<TMission*>(navyIter.Reset()); navyIter.More();
            entry = static_cast<TMission*>(navyIter.Advance())) {
-        TMission* candidate = entry->ReturnZeroSlot5C();
+        TMission* candidate = entry->GetNavyMission();
         if (candidate == nullptr || candidate->flag10 != 0) {
           continue;
         }
@@ -72,7 +72,7 @@ void TAutoGreatPower::AssignTrackedEntryActionsByProfileToOrdersOrUnits(int unus
       for (int navyZeroIdx = 0; navyZeroIdx < 9; ++navyZeroIdx) {
         weights[navyZeroIdx] = 0;
       }
-      total = bestNavy->ReturnZeroSlot2C(weights, 0);
+      total = bestNavy->AccumulateLack(weights, 0);
       for (int navyWeightIdx = 0; navyWeightIdx < 9; ++navyWeightIdx) {
         weightFractions[navyWeightIdx] =
             static_cast<float>(weights[navyWeightIdx]) / static_cast<float>(total);
@@ -103,7 +103,7 @@ void TAutoGreatPower::AssignTrackedEntryActionsByProfileToOrdersOrUnits(int unus
       CIterator armyIter(missionQueue);
       for (TMission* entry = static_cast<TMission*>(armyIter.Reset()); armyIter.More();
            entry = static_cast<TMission*>(armyIter.Advance())) {
-        TMission* candidate = reinterpret_cast<TMission*>(entry->ReturnZeroSlot58());
+        TMission* candidate = entry->GetArmyMission();
         if (candidate == nullptr || candidate->flag10 != 0) {
           continue;
         }
@@ -138,8 +138,9 @@ void TAutoGreatPower::AssignTrackedEntryActionsByProfileToOrdersOrUnits(int unus
     if (eligibleRunnerUp != nullptr &&
         static_cast<char>(eligibleRunnerUp->state08) <= static_cast<char>(bestArmy->state08) &&
         (bestArmy->marker11 & 1) == 0) {
-      float bestArmyRatio = bestArmy->value0c / bestArmy->ReturnZeroFloatSlot6C();
-      float runnerUpRatio = eligibleRunnerUp->value0c / eligibleRunnerUp->ReturnZeroFloatSlot6C();
+      float bestArmyRatio = bestArmy->importanceScore0c / bestArmy->ReturnZeroFloatSlot6C();
+      float runnerUpRatio =
+          eligibleRunnerUp->importanceScore0c / eligibleRunnerUp->ReturnZeroFloatSlot6C();
       if (bestArmyRatio < runnerUpRatio) {
         bestArmy = eligibleRunnerUp;
       }
@@ -148,7 +149,7 @@ void TAutoGreatPower::AssignTrackedEntryActionsByProfileToOrdersOrUnits(int unus
     for (int armyZeroIdx = 0; armyZeroIdx < 9; ++armyZeroIdx) {
       weights[armyZeroIdx] = 0;
     }
-    bestArmy->ReturnZeroSlot2C(weights, 0);
+    bestArmy->AccumulateLack(weights, 0);
     total = 0;
     for (int armyClampIdx = 0; armyClampIdx < 9; ++armyClampIdx) {
       if (weights[armyClampIdx] < 0) {

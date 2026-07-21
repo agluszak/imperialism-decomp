@@ -39,7 +39,7 @@ TMission*& OwnerOf(TMission* item) {
 } // namespace
 
 // FUNCTION: IMPERIALISM 0x0053d6f0
-char TAttackProvinceMission::ReturnFalseSlot64() {
+char TAttackProvinceMission::IsHospitalMission() const {
   return 0;
 }
 
@@ -110,8 +110,8 @@ char TAttackProvinceMission::ReturnFalseSlot98() {
     ProjectEquipage(vector, GetPresentLocation(), 0);
 
     for (int i = 0; i < 5; ++i) {
-      weighted += sqrtf(vector[i] * resourceWeights[i]);
-      total += resourceWeights[i];
+      weighted += sqrtf(vector[i] * requiredEquipageByClass[i]);
+      total += requiredEquipageByClass[i];
     }
 
     if (weighted / total > g_AttackProvinceMissionReadinessThreshold_0065A8F0) {
@@ -147,7 +147,7 @@ char TAttackProvinceMission::ReturnFalseSlot98() {
 
 // FUNCTION: IMPERIALISM 0x0053db60
 char TAttackProvinceMission::TryResolveTargetTerrainClass() {
-  field_14 = static_cast<short>(0xffff);
+  presentLocation14 = static_cast<short>(0xffff);
   float bestScore = 0.0f;
 
   const TGlobalMapCityScoreRecord& targetRecord =
@@ -160,7 +160,7 @@ char TAttackProvinceMission::TryResolveTargetTerrainClass() {
     short tileOwnerNationCode =
         g_pGlobalMapState->ResolveTileOwnerNationCodeNormalized(candidateTile);
     if (tileOwnerNationCode == nationId04) {
-      if (field_14 != -1) {
+      if (presentLocation14 != -1) {
         const TGlobalMapCityScoreRecord& candidateRecord =
             g_pGlobalMapState->cityScoreTable[candidateTile];
         float candidateScore = static_cast<float>(candidateRecord.cityScoreValue);
@@ -189,7 +189,7 @@ char TAttackProvinceMission::TryResolveTargetTerrainClass() {
         }
       }
 
-      field_14 = candidateTile;
+      presentLocation14 = candidateTile;
 
       const TGlobalMapCityScoreRecord& candidateRecord =
           g_pGlobalMapState->cityScoreTable[candidateTile];
@@ -216,13 +216,13 @@ char TAttackProvinceMission::TryResolveTargetTerrainClass() {
     }
   }
 
-  return field_14 != -1;
+  return presentLocation14 != -1;
 }
 
 // FUNCTION: IMPERIALISM 0x0053de00
-void TAttackProvinceMission::MissionSlot44() {
+void TAttackProvinceMission::GiveOrders() {
   CIterator targetIter(orderListAt18);
-  if (field_14 == -1) {
+  if (presentLocation14 == -1) {
     TryResolveTargetTerrainClass();
   }
 
@@ -233,7 +233,7 @@ void TAttackProvinceMission::MissionSlot44() {
     ProjectEquipage(vector, GetPresentLocation(), 0);
 
     float* projectedCursor = vector;
-    float* weightCursor = resourceWeights;
+    float* weightCursor = requiredEquipageByClass;
     int remainingWeights = 5;
     do {
       weighted += sqrtf(*weightCursor * *projectedCursor);
@@ -248,7 +248,7 @@ void TAttackProvinceMission::MissionSlot44() {
               nationId04, g_pGlobalMapState->cityScoreTable[targetProvince30].ownerNationCode00)) {
         for (TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(targetIter.Reset());
              targetIter.More(); unit = static_cast<TMilitaryUnit*>(targetIter.Advance())) {
-          if (unit->tileIndex06 == field_14) {
+          if (unit->tileIndex06 == presentLocation14) {
             unit->SetOrderModeSlot34(1, targetProvince30);
           }
         }
@@ -265,7 +265,7 @@ void TAttackProvinceMission::MissionSlot44() {
     }
   }
 
-  short resolvedTarget = field_14;
+  short resolvedTarget = presentLocation14;
   CIterator retargetIter(orderListAt18);
   for (TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(retargetIter.Reset()); retargetIter.More();
        unit = static_cast<TMilitaryUnit*>(retargetIter.Advance())) {
@@ -277,10 +277,10 @@ void TAttackProvinceMission::MissionSlot44() {
 
 // FUNCTION: IMPERIALISM 0x0053e050
 TMission* TAttackProvinceMission::GetReplacementSlot48() {
-  if (field_14 == -1) {
+  if (presentLocation14 == -1) {
     TryResolveTargetTerrainClass();
   }
-  if (field_14 == -1) {
+  if (presentLocation14 == -1) {
     return nullptr;
   }
 
@@ -299,7 +299,8 @@ TMission* TAttackProvinceMission::GetReplacementSlot48() {
       }
     }
   } else if (targetOwnerNation == nationId04) {
-    short tileOwnerNationCode = g_pGlobalMapState->ResolveTileOwnerNationCodeNormalized(field_14);
+    short tileOwnerNationCode =
+        g_pGlobalMapState->ResolveTileOwnerNationCodeNormalized(presentLocation14);
     if (tileOwnerNationCode == pathMarker06) {
       retarget = true;
     } else {
@@ -326,7 +327,7 @@ void TAttackProvinceMission::SetStateByte8To2() {
 // Shared with TInvadeMission (COMDAT-folded body; TInvadeMission does not
 // redeclare a `// FUNCTION:` marker for this address, see TInvadeMission.cpp).
 // FUNCTION: IMPERIALISM 0x0053e1a0
-void TAttackProvinceMission::ResetValue0CToZero() {
+void TAttackProvinceMission::CalculateImportance() {
   short targetProvince = targetProvince30;
   short missionNation = nationId04;
   int matchCount = 0;
@@ -353,12 +354,12 @@ void TAttackProvinceMission::ResetValue0CToZero() {
          g_Recompute_Nation_Order_LookupTable_0065A9E0) *
         score;
   }
-  value0c = score / g_fMissionScoreNormalizationDivisor;
+  importanceScore0c = score / g_fMissionScoreNormalizationDivisor;
 }
 
 // Shared with TInvadeMission (COMDAT-folded body).
 // FUNCTION: IMPERIALISM 0x0053e290
-void TAttackProvinceMission::NoOpSlot3C() {
+void TAttackProvinceMission::CalculateNeeds() {
   short unitOrderWeight = g_pGlobalMapState->GetProvinceUnitOrderWeight(targetProvince30);
 
   float vector[5] = {0.0f, 0.0f, 0.0f, 0.0f, 0.0f};
@@ -404,8 +405,8 @@ void TAttackProvinceMission::NoOpSlot3C() {
   const short* outputProfile =
       &g_awTacticalCompositionReferenceProfiles_00697870[(fortLevel > 0) ? 10 : 5];
   for (int outputIndex = 0; outputIndex < 5; ++outputIndex) {
-    resourceWeights[outputIndex] = static_cast<float>(outputProfile[outputIndex]) * scale *
-                                   g_Recompute_Nation_Order_LookupTable_0065A9F8;
+    requiredEquipageByClass[outputIndex] = static_cast<float>(outputProfile[outputIndex]) * scale *
+                                           g_Recompute_Nation_Order_LookupTable_0065A9F8;
   }
 }
 
@@ -422,7 +423,7 @@ float TAttackProvinceMission::ReturnZeroFloatSlot78(TMilitaryUnit* candidateUnit
 }
 
 // FUNCTION: IMPERIALISM 0x0053e570
-void TAttackProvinceMission::Call30() {
+void TAttackProvinceMission::Initialize() {
   flag10 = 1;
   if (targetProvince30 != -1) {
     pathMarker06 =
@@ -431,7 +432,7 @@ void TAttackProvinceMission::Call30() {
 }
 
 // FUNCTION: IMPERIALISM 0x0053e5b0
-char TAttackProvinceMission::MatchesMissionKeySlot4C(int kind, int key, int mode) {
+char TAttackProvinceMission::Matches(int kind, int key, int mode) const {
   (void)mode;
   if ((kind == 0 || kind == 1) && key == static_cast<int>(targetProvince30)) {
     return 1;

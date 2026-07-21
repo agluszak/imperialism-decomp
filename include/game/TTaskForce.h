@@ -140,7 +140,7 @@ public:
   // returns 1 (marking this entry eliminated) when no child survives.
   char PruneInactiveTaskForceOrderHead();
   // Real target is the packed order_type/order_strength dword, not an owner pointer
-  // despite the Ghidra-guessed name; only known caller (MissionSlot44's mode-1 branch)
+  // despite the Ghidra-guessed name; only known caller (GiveOrders's mode-1 branch)
   // passes 0, resetting both fields to a fresh-order state.
   void ResetOrderTypeAndStrengthDword(int packedValue); // 0x552f60
   // 0x554660 -- drops inactive children (owner cleared, bucket counter decremented,
@@ -369,8 +369,8 @@ public:
   // self-Free-or-queue tail as SetMapOrderType9AndQueue. Ghidra/symbols.csv mis-attribute
   // this to TControlSeaZoneMission, but its body only ever reads TTaskForce's own field
   // offsets (owner/attachment/childOrderList/activeChildEntry/bucket-count region) --
-  // real owner is TTaskForce, called from TControlSeaZoneMission::NoOpSlot9C (0x539640)
-  // and TBlockadePortMission::NoOpSlot9C (0x53ba40, "QueueMapOrderType6FromContext
+  // real owner is TTaskForce, called from TControlSeaZoneMission::GiveActionOrders (0x539640)
+  // and TBlockadePortMission::GiveActionOrders (0x53ba40, "QueueMapOrderType6FromContext
   // Pointer") on the map-order entry passed to that virtual slot.
   void SetMapOrderType6AndQueue(int nOrderTarget); // 0x5536c0
 
@@ -384,7 +384,7 @@ public:
   // bd 1uj.16.2 target: another SetMapOrderType9AndQueue sibling, for map-order kind 3
   // (fUseType4 == 0) or 4 (fUseType4 != 0); does not touch `owner`. Same mis-attribution
   // to a free function as SetMapOrderType6AndQueue -- real owner is TTaskForce (body only
-  // reads this class's own field offsets). Called from TControlSeaZoneMission::NoOpSlot9C
+  // reads this class's own field offsets). Called from TControlSeaZoneMission::GiveActionOrders
   // when no matching port-zone context was found.
   void SetMapOrderType3Or4AndQueue(char fUseType4); // 0x5530f0
 

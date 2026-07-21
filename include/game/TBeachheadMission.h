@@ -23,23 +23,21 @@ public:
   TBeachheadMission();
   TBeachheadMission(TZone* targetZone, TAttackProvinceMission* parentMission);
 
-  virtual char MatchesMissionKeySlot4C(int kind, int key, int mode) override; // slot 0x13 0x53a7b0
+  virtual char Matches(int kind, int key, int mode) const override; // slot 0x13 0x53a7b0
 
-  virtual int
-  ReturnZeroSlot58() override; // slot 0x16 0x53a920 -- returns parentMission3c (not `this`)
-  virtual char ReturnFalseSlot60() override; // slot 0x18 0x53a3b0
-  virtual char ReturnFalseSlot64() override; // slot 0x19 0x53a390
+  virtual TMission*
+  GetArmyMission() override; // slot 0x16 0x53a920 -- returns parentMission3c (not `this`)
+  virtual char IsDefensiveSeaZoneMission() const override; // slot 0x18 0x53a3b0
+  virtual char IsHospitalMission() const override;         // slot 0x19 0x53a390
 
   virtual char ReturnFalseSlot98()
       override; // slot 0x26 0x53a940 -- clears blockade-port child order links if ready
 
-  // pMapOrderEntry is the TTaskForce map-order entry MissionSlot44's dispatch passed; see
-  // the TNavyMission::NoOpSlot9C declaration comment.
-  virtual void NoOpSlot9C(void* pMapOrderEntry)
+  virtual void GiveActionOrders(TTaskForce* mapOrderEntry)
       override; // slot 0x27 0x53a800 -- try-queue province order from context message
 
   // slot 0x0f 0x53a500 -- resource weights from navy context (own override; not shared)
-  virtual void NoOpSlot3C() override;
+  virtual void CalculateNeeds() override;
 };
 
 ASSERT_SIZE(TBeachheadMission, 0x40);
