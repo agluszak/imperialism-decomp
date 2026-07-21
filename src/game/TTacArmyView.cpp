@@ -26,8 +26,8 @@
 // The original repeats this DIB vertical-flip adjustment before every atlas blit;
 // defined inline so MSVC5 (/Ob1) inlines it back to the original's straight-line form.
 static inline void OffsetRectForSurfaceDibFlip(TQuickDrawSurfaceContext* ctx, RECT* r) {
-  if (ctx->surfaceDib != 0) {
-    int height = ctx->surfaceDib->m_pInfoHeader->bmiHeader.biHeight;
+  if (ctx->blitSurface.surfaceDib != 0) {
+    int height = ctx->blitSurface.surfaceDib->m_pInfoHeader->bmiHeader.biHeight;
     if (height < 1) {
       height = -height;
     }
@@ -231,17 +231,18 @@ void TTacArmyView::ApplyRectSlot110(RECT* rectBuffer) {
   backdropDstRect.bottom = clipRect.bottom;
 
   // Bottom-up DIB flip, same idiom as TFocusAnimation.cpp.
-  if (battlefieldSurface64->surfaceDib != 0) {
-    int backdropHeight = battlefieldSurface64->surfaceDib->m_pInfoHeader->bmiHeader.biHeight;
+  if (battlefieldSurface64->blitSurface.surfaceDib != 0) {
+    int backdropHeight =
+        battlefieldSurface64->blitSurface.surfaceDib->m_pInfoHeader->bmiHeader.biHeight;
     if (backdropHeight < 1) {
       backdropHeight = -backdropHeight;
     }
     OffsetRect(&backdropSrcRect, 0,
                (backdropHeight - backdropSrcRect.top) - backdropSrcRect.bottom);
   }
-  if (g_pPrimaryRenderSurfaceContext->surfaceDib != 0) {
+  if (g_pPrimaryRenderSurfaceContext->blitSurface.surfaceDib != 0) {
     int primaryHeight =
-        g_pPrimaryRenderSurfaceContext->surfaceDib->m_pInfoHeader->bmiHeader.biHeight;
+        g_pPrimaryRenderSurfaceContext->blitSurface.surfaceDib->m_pInfoHeader->bmiHeader.biHeight;
     if (primaryHeight < 1) {
       primaryHeight = -primaryHeight;
     }

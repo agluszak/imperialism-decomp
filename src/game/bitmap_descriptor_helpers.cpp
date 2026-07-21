@@ -41,15 +41,15 @@ static void ResetBitmapSurfaceContextDescriptor(TBitmapSurfaceContextDescriptor*
   descriptor->blitSurface.pixelBits = 0;
   descriptor->blitSurface.stride = 0;
   descriptor->blitSurface.pad06 = 0;
-  descriptor->field1c = 0;
-  descriptor->surfaceDib = 0;
-  descriptor->clipRect.left = 0;
-  descriptor->clipRect.top = 0;
-  descriptor->clipRect.right = 0;
-  descriptor->clipRect.bottom = 0;
+  descriptor->blitSurface.field18 = 0;
+  descriptor->blitSurface.surfaceDib = 0;
+  descriptor->blitSurface.clipRect.left = 0;
+  descriptor->blitSurface.clipRect.top = 0;
+  descriptor->blitSurface.clipRect.right = 0;
+  descriptor->blitSurface.clipRect.bottom = 0;
   descriptor->SetSurfaceNodeSlot(nullptr);
-  descriptor->quickDrawColor = 0;
-  descriptor->transparentBlitColor = 0;
+  descriptor->blitSurface.quickDrawColor = 0;
+  descriptor->blitSurface.transparentBlitColor = 0;
   descriptor->debugSourcePath = kQuickDrawDebugSourcePath;
 }
 
@@ -116,11 +116,11 @@ bool TBitmapSurfaceContextDescriptor::InitializeSurfaceNode(int width, int heigh
       static_cast<short>(((*GetSurfaceNodeSlot())->dib->m_pInfoHeader->bmiHeader.biWidth + 3) & ~3);
   CPoint dims;
   CPoint* d = (*GetSurfaceNodeSlot())->dib->CopyBitmapDimensionsToPoint(&dims);
-  clipRect.left = 0;
-  clipRect.top = 0;
-  clipRect.right = d->x;
-  clipRect.bottom = d->y;
-  surfaceDib = (*GetSurfaceNodeSlot())->dib;
+  blitSurface.clipRect.left = 0;
+  blitSurface.clipRect.top = 0;
+  blitSurface.clipRect.right = d->x;
+  blitSurface.clipRect.bottom = d->y;
+  blitSurface.surfaceDib = (*GetSurfaceNodeSlot())->dib;
   return *GetSurfaceNodeSlot() != nullptr;
 }
 
@@ -139,7 +139,7 @@ void TBitmapSurfaceContextDescriptor::ReleaseSurfaceNode() {
   blitSurface.pixelBits = 0;
   blitSurface.stride = 0;
   blitSurface.pad06 = 0;
-  surfaceDib = 0;
+  blitSurface.surfaceDib = 0;
 }
 
 // FUNCTION: IMPERIALISM 0x00496090
@@ -196,7 +196,7 @@ void GetActiveQuickDrawSurfaceContextAndFlags(TQuickDrawSurfaceContext** outCont
 
 // FUNCTION: IMPERIALISM 0x004962a0
 void* GetSurfaceNodeSlot(TQuickDrawSurfaceContext* context) {
-  return context->surfaceObject;
+  return context->blitSurface.surfaceObject;
 }
 
 // FUNCTION: IMPERIALISM 0x004962c0

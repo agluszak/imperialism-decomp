@@ -40,7 +40,8 @@ CDib* GetActiveQuickDrawSurfaceDib() {
   if (head == &g_defaultQuickDrawSurfaceSentinel) {
     return 0;
   }
-  TBitmapSurfaceNode** nodeSlot = static_cast<TBitmapSurfaceNode**>(head->surfaceObject);
+  TBitmapSurfaceNode** nodeSlot =
+      static_cast<TBitmapSurfaceNode**>(head->blitSurface.surfaceObject);
   return (*nodeSlot)->dib;
 }
 
@@ -63,8 +64,7 @@ ScopedMapQuickDrawContext::ScopedMapQuickDrawContext(TView* renderTargetArg)
   if (renderTarget != 0) {
     renderTarget->PrepareForDrawing();
     CRect clipRect;
-    renderTarget->ApplyBounds(&clipRect, 0);
-    clientDc.IntersectClipRect(&clipRect);
+    clientDc.IntersectClipRect(renderTarget->BuildRectFromSlot158(&clipRect));
   }
   g_pScopedMapQuickDrawViewContext = this->renderTarget;
   if (this != 0) {
