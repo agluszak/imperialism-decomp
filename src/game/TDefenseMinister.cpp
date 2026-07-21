@@ -10,8 +10,10 @@
 #include "game/TCity.h"
 #include "game/TGreatPower.h"
 #include "game/TList.h"
+#include "game/TDiplomacyMgr.h"
 #include "game/TLongintList.h"
 #include "game/TMapMgr.h"
+#include "game/TMilitaryUnit.h"
 #include "game/TStream.h"
 #include "game/TMission.h"
 #include "game/TUnit.h"
@@ -392,8 +394,94 @@ int* TDefenseMinister::BuildStrategicTilePriorityHeatmap() {
 }
 
 // FUNCTION: IMPERIALISM 0x004ed050
-undefined TDefenseMinister::BuildHexAreaTileIndexListIntoAllocatedBuffer(char) {
-  return 0;
+int* TDefenseMinister::BuildHexAreaTileIndexListIntoAllocatedBuffer(char excludeEnemyTiles) {
+  short ownNationSlot = ownerContextAt04->nationSlot;
+
+  bool atWarWithNation[0x17];
+  for (int nation = 0; nation < 0x17; ++nation) {
+    atWarWithNation[nation] = g_pDiplomacyTurnStateManager->IsNationPairAtWar(
+                                  ownNationSlot, static_cast<short>(nation)) != 0;
+  }
+
+  int* weightSum = new int[0x1950];
+  if (weightSum == nullptr) {
+    FailNilPointerWithAssert(s_SourcePathUDefenseMinister_00696860, 0x24a);
+  }
+
+  int* maxWeight = new int[0x1950];
+  if (weightSum == nullptr) {
+    FailNilPointerWithAssert(s_SourcePathUDefenseMinister_00696860, 0x24e);
+  }
+
+  for (int fillIdx = 0; fillIdx < 0x1950; ++fillIdx) {
+    weightSum[fillIdx] = 0;
+    maxWeight[fillIdx] = 1;
+  }
+
+  for (int tile = 0; tile < 0x1950; ++tile) {
+    TTerrainStateRecordView* record = &g_pGlobalMapState->terrainStateTable[tile];
+    short ownerTag = record->ownerNationTag04;
+    if ((atWarWithNation[ownerTag] && excludeEnemyTiles == 0) || ownerTag == ownNationSlot) {
+      TMilitaryUnit* unit;
+      if (tile >= 0 && tile < 0x180) {
+        unit = static_cast<TMilitaryUnit*>(
+            g_pGlobalMapState->cityScoreTable[tile].stationedUnitChain98);
+      } else {
+        unit = 0;
+      }
+
+      if (unit->field_18 != ownNationSlot) {
+        int categoryScores[4] = {0, 0, 0, 0};
+        int categoryFlags[4] = {1, 1, 1, 1};
+
+        for (; unit != 0; unit = static_cast<TMilitaryUnit*>(unit->nextOnTile)) {
+          short combatClass = g_awUnitCombatClassBySlot[unit->orderType];
+          if (unit->orderType == 6 || unit->orderType == 7) {
+            if (combatClass >= 0) {
+              for (int k = 0; k <= combatClass; ++k) {
+                categoryFlags[k] = 2;
+              }
+            }
+          } else {
+            int weightedValue =
+                g_anUnitStrengthWeightPercentBySlot[unit->orderType] * unit->field_34 / 100;
+            if (combatClass >= 0) {
+              for (int k = 0; k <= combatClass; ++k) {
+                categoryScores[k] += weightedValue;
+              }
+            }
+          }
+        }
+
+        weightSum[tile] += categoryScores[0];
+        if (maxWeight[tile] < categoryFlags[0]) {
+          maxWeight[tile] = categoryFlags[0];
+        }
+
+        for (int radius = 1; radius <= 3; ++radius) {
+          short* ring =
+              BuildHexAreaTileIndexList(static_cast<short>(tile), static_cast<short>(radius));
+          int weightVal = categoryScores[radius];
+          int flagVal = categoryFlags[radius];
+          for (int dir = 0; dir < radius * 6; ++dir) {
+            weightSum[ring[dir]] += weightVal;
+            if (maxWeight[ring[dir]] < flagVal) {
+              maxWeight[ring[dir]] = flagVal;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  for (int i = 0; i < 0x1950; ++i) {
+    if (weightSum[0] != 0 && maxWeight[i] > 1) {
+      weightSum[0] = maxWeight[i] * weightSum[0];
+    }
+  }
+
+  delete[] maxWeight;
+  return weightSum;
 }
 
 // Five personality-specific order-array initializers (0x4ed560/0x4ed890/0x4edb80/
