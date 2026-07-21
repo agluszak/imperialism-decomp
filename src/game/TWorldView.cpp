@@ -33,8 +33,8 @@ short TWorldView::QueryMinusOneWordSlot77() {
 }
 
 // FUNCTION: IMPERIALISM 0x00594fc0
-void TWorldView::UpdateMapDialogTileRowColumnMarkerAndInvalidate(int arg1) {
-  (void)arg1;
+void TWorldView::CenterOn(int tileIndex) {
+  (void)tileIndex;
 }
 // SYNTHETIC: IMPERIALISM 0x00594f20
 // TWorldView::CreateObject
@@ -396,7 +396,7 @@ char TWorldView::DispatchUiMouseMoveToChildren(CPoint* point, int arg2, int arg3
 void TWorldView::InvokeDialogHooks1D8ThenE4(int stridedRecord, int dispatchContext) {
   (void)stridedRecord;
   (void)dispatchContext;
-  UpdateMapDialogTileRowColumnMarkerAndInvalidate(0);
+  CenterOn(0);
   reinterpret_cast<TView*>(this)->TView::RefreshControl();
 }
 
@@ -552,9 +552,9 @@ undefined TWorldView::OrphanLeaf_NoCall_Ins02_005966e0(short arg1) {
 // FUNCTION: IMPERIALISM 0x00596700
 void TWorldView::OrphanCallChain_C6_I29_00596700(int arg1) {
   if (OrphanLeaf_NoCall_Ins02_005966e0(static_cast<short>(arg1)) == 0) {
-    UpdateMapDialogTileRowColumnMarkerAndInvalidate(arg1);
+    CenterOn(arg1);
   }
-  static_cast<TWorldView*>(ownerContext)->UpdateMapDialogTileRowColumnMarkerAndInvalidate(arg1);
+  static_cast<TWorldView*>(ownerContext)->CenterOn(arg1);
   OwnerPanel()->InvokeSlot13C();
   reinterpret_cast<void(__cdecl*)(int)>(Function_005c3b40)(0x1e);
 }

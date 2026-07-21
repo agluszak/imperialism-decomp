@@ -62,7 +62,7 @@ public:
   virtual void ComputeWrappedMapCellAndRegionBandFromScreenCoord(int overlayRecord, short* outRow,
                                                                  unsigned short* outCol,
                                                                  short* outBand) override;
-  virtual void UpdateMapDialogTileRowColumnMarkerAndInvalidate(int arg1) override;
+  virtual void CenterOn(int tileIndex) override;
 
   // Fills the map-context info panel's 'titl' / 'info' / 'loca' text controls for the
   // selected tile (terrain title, city resource counters + edge-resource requirement
@@ -83,7 +83,9 @@ public:
   // Releases the transient tile-marker slot the given tile occupies (marks the tile's
   // terrain record slot 0xff and re-sentinels that marker). 0x0051e1f0
   virtual void ReleaseTileMarkerForTile(short tileIndex);
-  virtual void UpdateMapDialogProjectedTileMarkerAndInvalidate(int tileIndex);
+  // Mac CodeWarrior identity: TMapDialog::InvalidateTile(short). Projects the tile into
+  // the current viewport, releases its cached marker, and invalidates its 64x64 cell.
+  virtual void InvalidateTile(short tileIndex);
   virtual undefined RenderStrategicMapTileCell(short tileIndex, short arg2, short arg3);
   virtual undefined EmitHexAdjacencyTransitionEventsByBitmask(unsigned char connectionMask,
                                                               int screenX, int screenY,
@@ -133,7 +135,8 @@ public:
                                                         short destStride);
   virtual void Copy64x64TileBlockWithStrideAdjustment(int* src, int* dest, short srcStride,
                                                       short destStride);
-  virtual undefined HasRenderableParentAndContentSlotA2();
+  // Mac CodeWarrior identity: TMapDialog::GetCenterTile() const.
+  virtual int GetCenterTile() const;
   virtual void SetMapDialogCellCoordinatesAndRefresh(int col, int row, int mode);
   virtual undefined UpdateMapInteractionPreviewParityAndRenderTransientSprites(int unusedArg);
 };
