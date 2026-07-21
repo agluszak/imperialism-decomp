@@ -605,6 +605,16 @@ ui-view-coverage *args:
 ui-view-coverage-check:
   uv run python -m tools.workflow.ui_view_coverage --check
 
+[doc('Query the committed Mac control class/tag/screen semantic index')]
+[group('ghidra-inspect')]
+mac-control-usage *args:
+  uv run python -m tools.workflow.mac_control_usage {{args}}
+
+[doc('Reject stale Mac control class/tag/screen semantic metadata')]
+[group('gates')]
+mac-control-usage-check:
+  uv run python -m tools.workflow.mac_control_usage --check
+
 [doc('Print one scoped Mac View resource from committed UI IR (FILE:ID)')]
 [group('ghidra-inspect')]
 ui-resource-show resource:
@@ -1385,6 +1395,7 @@ source-gates:
   just generate
   just ui-codegen-check
   just ui-view-coverage-check
+  just mac-control-usage-check
   just tooling-check
   just vtable-gate
   just antipattern-gate
