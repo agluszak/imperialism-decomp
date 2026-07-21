@@ -322,6 +322,9 @@ public:
   // GlobalAlloc memory, stamp the real length, and send (loopback-suppressed for -3).
   void DispatchTurnEventPacketWithCodeAndPayloadBuffer(short eventTag, short destinationSlot,
                                                        void* payload);
+  // Mac oracle: SendTradeBook. Broadcasts the event-0x32 trade-book packet with no
+  // payload to destination -2. 0x54b5b0.
+  void SendTradeBook();
   // 0x54b930: for every session slot matching networkId - tag the nation 'awol',
   // broadcast the event-0x25 status packet, mark the session id -2 and the pending bit,
   // then either send the event-9 lobby-chat drop notice (session init) or show the

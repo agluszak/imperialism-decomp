@@ -56,7 +56,7 @@ static inline bool IsNationEligibleForOptionalPhase(short nationSlot) {
   if (country == nullptr) {
     return false;
   }
-  if (nationSlot > 6) {
+  if (nationSlot >= 7) {
     return true;
   }
   const short profileCode = country->encodedNationSlot;
@@ -893,25 +893,93 @@ int TSimMgr::IsTurnFlowPhaseOutsideRange4To5() {
   return (phase <= 3) || (phase >= 6);
 }
 
-// TODO: port refresh of the eligible-nation turn-phase handlers.
-
 // FUNCTION: IMPERIALISM 0x0057f140
-void TSimMgr::RefreshEligibleNationTurnPhaseHandlers() {}
-
-// TODO: port dispatch of the eligible-nation turn callback (+0x158).
+void TSimMgr::DoCityAndTransport() {
+  int nationSlot = 6;
+  TGreatPower** nation = &g_apNationStates[6];
+  do {
+    if (!IsNationEligibleForOptionalPhase(static_cast<short>(nationSlot))) {
+      --nation;
+      --nationSlot;
+      continue;
+    }
+    int shouldRunHandlers = !(*nation)->ShouldDispatchImmediatelySlot28();
+    if (shouldRunHandlers) {
+      (*nation)->OrphanRetStub_004dcc30();
+      (*nation)->NotifyCitySlot2C();
+      (*nation)->ExecuteNationPendingActionStateMachine();
+      (*nation)->RefreshGreatPowerRelationPanelsAndDispatchDeltaSummary();
+      (*nation)->RecomputeDiplomacyAidBudgetScoreFromResourceWeights();
+    }
+    --nation;
+    --nationSlot;
+  } while (nation >= g_apNationStates);
+}
 
 // FUNCTION: IMPERIALISM 0x0057f200
-void TSimMgr::DispatchEligibleNationTurnCallback158() {}
-
-// TODO: port refresh of map systems / order-execution preparation.
+void TSimMgr::DoCivilians() {
+  g_pSelectedCivilianOrderState->ResolveCivilianDisputes();
+  for (int nationSlot = 0; nationSlot < 7; ++nationSlot) {
+    if (IsNationEligibleForOptionalPhase(static_cast<short>(nationSlot))) {
+      g_apNationStates[nationSlot]->RunSlot4CThenSortTrackedOrders();
+    }
+  }
+}
 
 // FUNCTION: IMPERIALISM 0x0057f280
-void TSimMgr::RefreshMapSystemsAndPrepareOrderExecution() {}
+void TSimMgr::DoMilitary() {
+  int isClient = multiplayerSessionRole == 2;
+  if (!isClient) {
+    g_pGlobalMapState->RecomputeTileStrategicScoreHeatmap();
+  }
 
-// TODO: port dispatch of turn event 2134 and nation-panel refresh.
+  for (int terrainSlot = 0; terrainSlot < kTerrainTypeDescriptorTableCount; ++terrainSlot) {
+    if (IsNationEligibleForOptionalPhase(static_cast<short>(terrainSlot))) {
+      g_apTerrainTypeDescriptorTable[terrainSlot]->QueueRecruitOrdersForUndergarrisonedRegions();
+    }
+  }
+
+  for (int nationSlot = 0; nationSlot < 7; ++nationSlot) {
+    if (!IsNationEligibleForOptionalPhase(static_cast<short>(nationSlot))) {
+      continue;
+    }
+    TGreatPower* nation = g_apNationStates[nationSlot];
+    nation->PayForMilitary();
+    nation->SelectAndQueueAdvisoryMapMissionsCase16();
+    nation->ResetField900FromNeedCapA6();
+  }
+
+  g_pMapContextActionManager->CleanUpStacks();
+  isClient = multiplayerSessionRole == 2;
+  if (!isClient) {
+    g_pNavyOrderManager->PrepareMapOrdersForExecutionPhase(1);
+    g_pNavyOrderManager->ResolveMapOrderChainsForTurnPhase();
+  }
+}
 
 // FUNCTION: IMPERIALISM 0x0057f3c0
-void TSimMgr::DispatchTurnEvent2134AndRefreshNationPanels() {}
+void TSimMgr::DoTrade() {
+  g_pUiRuntimeContext->DispatchTurnEventSlot4C(0x2134, activeNationSlot);
+
+  for (int nationSlot = 6; nationSlot >= 0; --nationSlot) {
+    if (g_apNationStates[nationSlot] != 0) {
+      g_apNationStates[nationSlot]->ReleaseDiplomacyTrackedObjectSlots850();
+    }
+  }
+
+  g_pNationInteractionStateManager->OrphanCallChain_C3_I50_005b7fc0();
+  g_pNationInteractionStateManager->RunNationUpdatePassesAndResetTransitionFlags();
+  g_pNationInteractionStateManager->RunNationMetricPreUpdatePassAcrossSecondaryNations();
+  g_pNationInteractionStateManager->BuildEligibleNationMetricBucketsAndWeightedTrendScores();
+  g_pNationInteractionStateManager->DispatchNationMetricUpdatePassForAllSlots();
+  g_pNationInteractionStateManager->AccumulateDiplomacyRelationChangesAndQueueEvents();
+
+  int shouldSendTradeBook = multiplayerSessionRole != 0;
+  if (shouldSendTradeBook) {
+    g_pGameFlowState->SendTradeBook();
+  }
+  g_pNationInteractionStateManager->ProcessPendingDiplomacyTransferEntriesUntilBlockedWrapper();
+}
 
 // FUNCTION: IMPERIALISM 0x0057f490
 int TSimMgr::ReturnZeroSlot6c() {
@@ -1027,10 +1095,99 @@ void TSimMgr::GetString(short codeGroup, short offset, CString* destString) {
                                                                   offset + 1);
 }
 
-// TODO: port diplomacy-notice text formatting by policy / grant code.
-
 // FUNCTION: IMPERIALISM 0x00580790
-void TSimMgr::FormatDiplomacyNoticeTextByPolicyOrGrantCode(CString*, short*) {}
+CString TSimMgr::DiplomacyNoticeString(const DiplomacyNotice* notice) {
+  CString result;
+  CString countryName;
+  CString formattedValue;
+
+  short code = notice->policyOrGrantCode;
+  char rejected = 0;
+  if (code < 0) {
+    rejected = 1;
+    code = static_cast<short>(-code);
+  }
+
+  g_apTerrainTypeDescriptorTable[notice->nationSlot]->FormatOverlayTerrainLabelText(&countryName);
+
+  switch (code) {
+  case 5:
+  case 7:
+  case 8:
+  case 9:
+  case 10:
+  case 11:
+  case 12: {
+    CString commodityName;
+    g_pSimMgr->GetStringPrelude(code, &commodityName);
+    CString noticeText = "Shortage of " + commodityName + " in " + countryName + ".";
+    result = noticeText;
+    break;
+  }
+  case 0x12d:
+    if (rejected) {
+      CString noticeText = countryName + " has rejected our invitation to join our Empire!";
+      result = noticeText;
+    } else {
+      CString noticeText =
+          "Our power grows! " + countryName + " has accepted our invitation to join our Empire!";
+      result = noticeText;
+    }
+    break;
+  case 0x12e:
+    if (rejected) {
+      CString noticeText = countryName + " has rejected our offer of an alliance";
+      result = noticeText;
+    } else {
+      CString noticeText = countryName + " has accepted our offer of an alliance";
+      result = noticeText;
+    }
+    break;
+  case 0x12f:
+    if (rejected) {
+      CString noticeText = countryName + " has rejected our offer of a non-aggression pact";
+      result = noticeText;
+    } else {
+      CString noticeText = countryName + " has accepted our offer of a non-aggression pact";
+      result = noticeText;
+    }
+    break;
+  case 0x130:
+    if (rejected) {
+      CString noticeText = countryName + " has rejected our offer of a peace treaty.";
+      result = noticeText;
+    } else {
+      CString noticeText = countryName + " has accepted our offer of a peace treaty.";
+      result = noticeText;
+    }
+    break;
+  case 0x131: {
+    CString noticeText = "War! " + countryName + "declares war on us!";
+    result = noticeText;
+    break;
+  }
+  case 1000:
+  case 3000:
+  case 5000:
+  case 10000:
+    g_pSimMgr->FormatIntegerString(code, &formattedValue);
+    {
+      CString noticeText = countryName + " grants us " + formattedValue + ".";
+      result = noticeText;
+    }
+    break;
+  default:
+    formattedValue.Format(g_szDecimalFormat, static_cast<int>(code));
+    {
+      CString noticeText =
+          "TViewMgr::ShowDiplomacyNotices: " + countryName + " policy Num = " + formattedValue;
+      result = noticeText;
+    }
+    break;
+  }
+
+  return result;
+}
 
 // FUNCTION: IMPERIALISM 0x005811e0
 int TSimMgr::GetNumGPs(void) {

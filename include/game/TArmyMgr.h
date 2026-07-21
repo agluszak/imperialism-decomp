@@ -8,8 +8,10 @@ class TStream;
 class TSortedList;
 class TArmyStack;
 struct TUiTextStyleDescriptor;
+struct MapOrderBattleSideChildRecord;
 
-// 0x268-byte by-value POD record stored in TArmyMgr::mapContextActionRecordList04.
+// 0x268-byte POD record copied into the TSortedPtrList pointed to by
+// TArmyMgr::mapContextActionRecordList04.
 // Field evidence from the battle-report layout hook (0x4acb60): the first bytes are a
 // small nation-id array indexed by participantIndex02; actionType04 selects how
 // tileOrObject08 is interpreted (0/3/4 -> index into g_pGlobalMapState's stride-0xa8
@@ -32,13 +34,16 @@ struct MapContextActionRecord {
   unsigned char pad03;              // +0x03
   int actionType04;                 // +0x04 (0..4; 2 widens the marker sprite code)
   MapContextTarget tileOrObject08;  // +0x08 (tagged by actionType04 -- see MapContextTarget)
-  unsigned char pad0c[0x258 - 0x0c];
-  int markerPixelX258;         // +0x258
-  int markerPixelY25c;         // +0x25c
-  unsigned char placedFlag260; // +0x260
-  unsigned char pad261;        // +0x261
-  short markerSpriteCode262;   // +0x262
-  short listOrdinal264;        // +0x264
+  unsigned char pad0c[0x250 - 0x0c];
+  // Per-side heap arrays built while resolving an army/navy order conflict. The copied
+  // report record owns both buffers until CleanUpStacks releases the arrays.
+  MapOrderBattleSideChildRecord* sideChildRecords250[2]; // +0x250/+0x254
+  int markerPixelX258;                                   // +0x258
+  int markerPixelY25c;                                   // +0x25c
+  unsigned char placedFlag260;                           // +0x260
+  unsigned char pad261;                                  // +0x261
+  short markerSpriteCode262;                             // +0x262
+  short listOrdinal264;                                  // +0x264
   unsigned char pad266[0x268 - 0x266];
 };
 
@@ -146,10 +151,10 @@ public:
   // NOTE: TObject's own vptr occupies the object's first 4 bytes (ASSERT_SIZE(TObject,
   // 0x4)), so every "+0xNN" comment below is an absolute this-relative offset and this
   // pad must be 4 bytes short of its target to land the next field correctly.
-  // +0x04 -- by-value record list of map-context action records (battle markers etc.):
-  // a TSortedPtrList whose recordSize14 is set to sizeof(MapContextActionRecord) == 0x268
-  // by InitializeMapContextActionManager. Walked ordinally by the battle-report layout
-  // hook (0x4acb60).
+  // +0x04 -- pointer to a TSortedPtrList of copied map-context action records (battle
+  // markers etc.). Its recordSize14 is set to sizeof(MapContextActionRecord) == 0x268 by
+  // InitializeMapContextActionManager. Walked ordinally by the battle-report layout hook
+  // (0x4acb60).
   class TSortedPtrList* mapContextActionRecordList04;
   // +0x08 -- read by GetByteFlagAtOffset8 (0x4a6dd0, a bare `this+8` thiscall getter);
   // sole call site is TSimMgr::AdvanceGlobalTurnStateMachine case 0xd, gating whether the
@@ -337,6 +342,10 @@ public:
   // Bare `this+8` accessor; sole caller is TSimMgr::AdvanceGlobalTurnStateMachine
   // (g_pMapContextActionManager->GetByteFlagAtOffset8()). 0x4a6dd0.
   unsigned char GetByteFlagAtOffset8();
+
+  // Mac oracle: CleanUpStacks. Frees the two owned side-child buffers in every copied
+  // map-context action record, clears the record list, and resets flag8. 0x004a6df0.
+  void CleanUpStacks();
 
   // Called by TArmyBattle::FinalizeTacticalBattleOutcome once a tactical battle's
   // outcome is decided (sideWonFlag = whether ourStack's side won). Dispatches the
