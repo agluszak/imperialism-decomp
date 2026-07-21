@@ -1779,3 +1779,14 @@ extern short g_MapOrderResourceRollWeightTable_0064c5d8[6][6];
 // order, that TInteriorMinister::MinisterSlot14 (0x4be520) tops up each turn while the
 // nation still has need-cap headroom (needCapA6 - needsOverCapFlag).
 extern short g_aInteriorMinisterNeedPriorityOrder_00696408[10];
+// Naval combat damage-split ratios (TNavyTacUnit::ApplyTacticalDamageAndDeathState, 0x5a63c0):
+// the two shares a hit's damage is divided between strength4 (hull) and crewStrength38
+// depending on the attacker's ship-panel aim mode.
+extern double g_dNavyDamageSplitRatioA_00669f10; // 0.25
+extern double g_dNavyDamageSplitRatioB_00669f18; // 0.75
+// Naval gunnery hit-chance formula constants (TNavyBattle::EvaluateAndResolveTactical-
+// ActionAgainstTileOccupant, 0x5a5730): hitThreshold = quality*5 + 80/(ratio^3 + 1) where
+// ratio = hexDistance / (range * 0.5).
+extern double g_dNavyHitChanceRangeScale_00669ef8; // 0.5
+extern float g_fNavyHitChanceCubeOffset_00669f00;  // -1.0
+extern float g_fNavyHitChanceNumerator_00669f04;   // 80.0

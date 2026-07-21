@@ -3291,3 +3291,15 @@ short g_MapOrderResourceRollWeightTable_0064c5d8[6][6] = {
 
 // GLOBAL: IMPERIALISM 0x00696408
 short g_aInteriorMinisterNeedPriorityOrder_00696408[10] = {17, 18, 20, 19, 2, 3, 4, 0, 1, 5};
+
+// GLOBAL: IMPERIALISM 0x00669f10
+double g_dNavyDamageSplitRatioA_00669f10 = 0.25;
+// GLOBAL: IMPERIALISM 0x00669f18
+double g_dNavyDamageSplitRatioB_00669f18 = 0.75;
+
+// GLOBAL: IMPERIALISM 0x00669ef8
+double g_dNavyHitChanceRangeScale_00669ef8 = 0.5;
+// GLOBAL: IMPERIALISM 0x00669f00
+float g_fNavyHitChanceCubeOffset_00669f00 = -1.0f;
+// GLOBAL: IMPERIALISM 0x00669f04
+float g_fNavyHitChanceNumerator_00669f04 = 80.0f;
