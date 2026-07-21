@@ -14,10 +14,7 @@ struct DiplomacyMaskBufferRun {
                                               int flipVertical);
 
   unsigned char* maskBytesAt00;
-  int leftAt04;
-  int topAt08;
-  int rightAt0c;
-  int bottomAt10;
+  CRect boundsAt04;
 };
 
 ASSERT_SIZE(DiplomacyMaskBufferRun, 0x14);
@@ -47,8 +44,8 @@ public:
   void BeginMouseCaptureAndStartRepeatTimer(const CPoint& point, TToolboxEvent* event,
                                             CPoint origin) override; // slot 0x47 0x4f5410
 
-  virtual void RenderDiplomacyLegendSurfaceAndPresent(const RECT* presentRect); // slot 0x73
-  virtual void BuildCombinedTerrainTypeRegionMaskAndDispatch();                 // slot 0x74
+  virtual void RenderDiplomacyLegendSurfaceAndPresent(RECT* presentRect); // slot 0x73
+  virtual void BuildCombinedTerrainTypeRegionMaskAndDispatch();           // slot 0x74
   virtual void RebuildDiplomacyLegendPaletteMode4AndBlit(int activeNationSlot,
                                                          const RECT* presentRect); // slot 0x75
   virtual void VisitNationSlotsForOverlay(int unusedMode);                         // slot 0x76
@@ -56,8 +53,8 @@ public:
                                                          const RECT* presentRect); // slot 0x77
   virtual void BlitDiplomacyMapEventPaletteMaskToSurface(short maskIndex,
                                                          int bmpId); // slot 0x78
-  virtual void InvalidateAndForwardTabSwitchToChild(void* arg1, void* arg2,
-                                                    void* arg3); // slot 0x79
+  virtual void PoseOffer(short sourceNation, short targetNation,
+                         short offerType); // slot 0x79 0x4f7080
   // 0x4f3ea0 (1534 bytes) -- rebuilds the diplomacy-map nation overlay geometry and hit
   // masks; body not yet ported (claimed as a manual stub so derived views can call it).
   void BuildDiplomacyNationOverlayGeometryAndHitMasks();
@@ -72,7 +69,7 @@ public:
   // Draws the per-nation map labels over nationLabelRects234: great powers 0..6,
   // then minors 7..22 with the default DIB palette selected for their theme colors.
   // presentRect is an ignored stack arg the original threads through.
-  void DrawNames(RECT* presentRect);
+  void DrawNames(const RECT* presentRect);
   // 0x4f4ec0 -- Mac CodeWarrior names this TDiplomacyMapView::DrawIcons(const VRect&).
   // Called unconditionally from ApplyRectSlot110 for interactionModeAt94 in
   // {1,2,4}: for every terrain-descriptor slot whose hit rect intersects presentRect,
@@ -148,9 +145,9 @@ protected:
   // Three consecutive per-nation RECT arrays filling 0xc4..0x514 exactly (23 nations):
   // text hit rects, name-label rects ([entry+0x170] writes), anchor marker rects
   // ([entry+0x2e0] writes) -- all rebuilt by BuildDiplomacyNationOverlayGeometryAndHitMasks.
-  RECT nationTextHitRectsC4[23]; // 0x0c4..0x234
-  RECT nationLabelRects234[23];  // 0x234..0x3a4
-  RECT nationAnchorRects3A4[23]; // 0x3a4..0x514
+  CRect nationTextHitRectsC4[23]; // 0x0c4..0x234
+  CRect nationLabelRects234[23];  // 0x234..0x3a4
+  CRect nationAnchorRects3A4[23]; // 0x3a4..0x514
   // +0x514..+0x520 -- map origin/extents. Rendering reads the named components, while
   // TInfoPanelView::HandleEvent passes the same four dwords as an invalidation RECT.
   union {
@@ -170,7 +167,7 @@ protected:
   // 0x52c -- per-tile flag: owner byte in g_pDiplomacyTurnStateManager's table != -1.
   bool tileHasOwnerFlags52C[0x180];
   // 0x6ac -- per-tile 10x7 marker rect anchored at the tile's hex-raster position.
-  RECT tileMarkerRects6AC[0x180]; // 0x6ac..0x1eac
+  CRect tileMarkerRects6AC[0x180]; // 0x6ac..0x1eac
   // 0x1eac -- per-nation overlay hit-mask runs; 0x2078 -- per-nation label opcode
   // records (both rebuilt by BuildDiplomacyNationOverlayGeometryAndHitMasks).
   DiplomacyMaskBufferRun maskRuns[0x17];

@@ -64,10 +64,7 @@ class TModuleLibraryCacheTableStateB;
 
 struct GlobalViewportRectDefaultsRecord {
   int field0;
-  int left;
-  int top;
-  int right;
-  int bottom;
+  RECT viewportBounds;
 };
 
 // Per-resource-type navy-order descriptor (base 0x00698108, stride 0x24). Ghidra's
@@ -525,6 +522,7 @@ extern "C" const unsigned int g_tradeCommodityRowTagTable[17];
 extern const char* g_cstrTradeTotalsBalanceSubstitution0066DB50;
 extern GlobalViewportRectDefaultsRecord g_globalViewportRectDefaultsRecord;
 extern GlobalViewportRectDefaultsRecord* g_pGlobalViewportRectDefaultsRecord;
+extern CRect g_diplomacyHitBounds;
 extern TWNetSessionManager g_NetworkSessionManager006a5f60;
 extern const GUID g_ImperialismDirectPlayApplicationGuid0066f968;
 extern CArray<RuntimeSelectionRecord*, RuntimeSelectionRecord*> g_RuntimeSelectionRecords006a15e0;

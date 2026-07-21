@@ -84,7 +84,7 @@ void TLoadSavePicture::RefreshSlotPreviewFromSaveFile(short slotMode) {
   CString infoText = yearText + ", " + slotNationName;
   infoControl->SetTextAndMaybeRefresh(&infoText, 0);
 
-  RECT infoBounds;
+  CRect infoBounds;
   infoControl->QueryBounds(&infoBounds);
   InvalidateCityDialogRectRegion(&infoBounds, 1);
 }
@@ -116,14 +116,14 @@ void TLoadSavePicture::HandleEvent(int commandId, TEventHandler* sourceHandler, 
               static_cast<TControl*>(ResolveControlByTag(0x736c7430u + selectedSlot92));
           oldSlotControl->AssertValid();
           oldSlotControl->SetTextStyleAndMaybeRefresh(&styleAt9e, 0);
-          RECT oldBounds;
+          CRect oldBounds;
           oldSlotControl->QueryBounds(&oldBounds);
           InvalidateCityDialogRectRegion(&oldBounds, 1);
         }
         // sourceHandler is the newly-clicked slot control itself.
         TControl* newSlotControl = static_cast<TControl*>(sourceHandler);
         newSlotControl->SetTextStyleAndMaybeRefresh(&styleAt94, 0);
-        RECT newBounds;
+        CRect newBounds;
         newSlotControl->QueryBounds(&newBounds);
         InvalidateCityDialogRectRegion(&newBounds, 1);
         selectedSlot92 = newSlot;
@@ -164,7 +164,7 @@ void TLoadSavePicture::HandleEvent(int commandId, TEventHandler* sourceHandler, 
             static_cast<TControl*>(ResolveControlByTag(0x736c7430u + selectedSlot92));
         oldSlotControl->AssertValid();
         oldSlotControl->SetTextStyleAndMaybeRefresh(&styleAt9e, 0);
-        RECT oldBounds;
+        CRect oldBounds;
         oldSlotControl->QueryBounds(&oldBounds);
         InvalidateCityDialogRectRegion(&oldBounds, 1);
       }

@@ -1310,6 +1310,13 @@ generated-marker-gate:
 dual-use-gate:
   uv run python -m tools.workflow.check_dual_use
 
+# Enforce the recovered geometry boundary: game-owned APIs use CPoint/CRect, while
+# POINT/RECT remain at verified Win32/MFC boundaries. Reject cast bridges; only a
+# locally documented GEOMETRY_RAW_BUFFER packed payload may require one.
+[group('gates')]
+geometry-type-gate:
+  uv run python -m tools.workflow.check_geometry_types
+
 # MUTATES: config/baselines/dual_use_baseline.csv. Ratchet down after resolving a field's
 # attribution. Never run to silence a new offender.
 [group('gates')]
@@ -1484,6 +1491,7 @@ source-gates:
   just marker-gate
   just generated-marker-gate
   just dual-use-gate
+  just geometry-type-gate
   just ilt-ossification-gate
   just vtable-annotation-gate
   just vtable-collision-gate

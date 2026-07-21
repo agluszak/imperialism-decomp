@@ -37,7 +37,7 @@ void TNewTownView::StuffValues(TTown* town) {
   if (owner == 0) {
     FailNilPointerWithAssert(s_SourcePathUCityDialogs_006962E8, 0x7fa);
   }
-  RECT bounds;
+  CRect bounds;
   owner->QueryBounds(&bounds);
   bounds.bottom += extraHeight;
   owner->ApplyBounds(&bounds, 1);

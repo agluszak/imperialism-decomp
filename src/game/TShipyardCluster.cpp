@@ -62,7 +62,7 @@ void TShipyardCluster::ApplyMoveValue(int value) {
   moveControl->SetControlValueSlot1E4(0, 0);
 
   RECT invalidateRect;
-  RECT moveRect;
+  CRect moveRect;
   moveControl->QueryBounds(&moveRect);
   OffsetRect(&moveRect, this->ownerLocalX, this->ownerLocalY);
   CopyRect(&invalidateRect, &moveRect);

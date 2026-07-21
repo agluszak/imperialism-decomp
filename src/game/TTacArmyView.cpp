@@ -512,7 +512,7 @@ undefined TTacArmyView::DrawTacticalTileInClipRect(int tileIndex, RECT* clipRect
     ComputeTacticalUnitSpriteDrawRectAndApplyFacingOffset(occupant, &unitDst);
     ResetQuickDrawStrokeState();
     UpdatePaletteIndexWithDefaultFallback(0);
-    if (ClipSrcRectToBoundsAndOffsetDstRect(reinterpret_cast<RECT*>(corners), &unitDst, &unitSrc)) {
+    if (ClipSrcRectToBoundsAndOffsetDstRect(corners, &unitDst, &unitSrc)) {
       OffsetRectForSurfaceDibFlip(unitSpriteAtlasSurface68, &unitSrc);
       OffsetRectForSurfaceDibFlip(g_pActiveQuickDrawSurfaceContext, &unitDst);
       BlitRectWithOptionalTransparency(&unitSpriteAtlasSurface68->blitSurface,
@@ -631,7 +631,7 @@ undefined TTacArmyView::DrawTacticalTileInClipRect(int tileIndex, RECT* clipRect
     ComputeTacticalUnitSpriteDrawRectAndApplyFacingOffset(neighborUnit, &nDst);
     ResetQuickDrawStrokeState();
     UpdatePaletteIndexWithDefaultFallback(0);
-    if (ClipSrcRectToBoundsAndOffsetDstRect(reinterpret_cast<RECT*>(corners), &nDst, &nSrc)) {
+    if (ClipSrcRectToBoundsAndOffsetDstRect(corners, &nDst, &nSrc)) {
       OffsetRectForSurfaceDibFlip(unitSpriteAtlasSurface68, &nSrc);
       OffsetRectForSurfaceDibFlip(g_pActiveQuickDrawSurfaceContext, &nDst);
       BlitRectWithOptionalTransparency(&unitSpriteAtlasSurface68->blitSurface,

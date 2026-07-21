@@ -22,7 +22,7 @@ public:
   // No standalone address: VC5 inlines this constructor at both allocation sites,
   // including TSimMgr::RebuildMapContextAndGlobalMapState (0x57c7c0).
   TOcean()
-      : TObject(), nationCount(0), contextArray(0), routeNodeCount(0), routeNodeBuffer(0),
+      : TObject(), nationCount(0), contextArray(0), routeNodeCount(0), routeRects(0),
         selectedTaskForce14(0) {}
   DECLARE_DYNCREATE(TOcean)
   virtual ~TOcean() override; // slot 0x01 (scalar deleting destructor)
@@ -34,16 +34,16 @@ public:
   virtual void Free() override;                    // slot 0x07 0x5621e0
   // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
-  short nationCount;     // +0x04
-  TZone* contextArray;   // +0x08
-  short routeNodeCount;  // +0x0c number of route-node records in routeNodeBuffer
-  char pad0e[2];         // +0x0e
-  void* routeNodeBuffer; // +0x10 heap buffer of routeNodeCount 0x10-byte route records
+  short nationCount;    // +0x04
+  TZone* contextArray;  // +0x08
+  short routeNodeCount; // +0x0c number of route records in routeRects
+  char pad0e[2];        // +0x0e
+  CRect* routeRects;    // +0x10 heap buffer of routeNodeCount 0x10-byte route records
   // +0x14: the currently-selected task force cached for the active map-order entry
   // (maintained by EnsureSelectedTaskForceForOrderOwnerAndRefresh); zeroed in the ctor.
   TTaskForce* selectedTaskForce14; // +0x14
 
-  // Reallocate routeNodeBuffer to hold `count` 0x10-byte route records. 0x0052e7b0.
+  // Reallocate routeRects to hold `count` 0x10-byte route records. 0x0052e7b0.
   void AllocateRouteNodeStateBufferByCount(short count);
 
   // Map-action context (TZone, stride 0x48) at the given index in contextArray. 0x00563330.

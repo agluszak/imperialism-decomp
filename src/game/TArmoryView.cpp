@@ -72,7 +72,7 @@ void TArmoryView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEven
         }
         numbControl->SetControlValue(newValue, 0);
 
-        RECT bounds;
+        CRect bounds;
         numbControl->QueryBounds(&bounds);
         RECT boundsCopy;
         CopyRect(&boundsCopy, &bounds);
@@ -111,7 +111,7 @@ void TArmoryView::UpdateFields() {
         available < selectedUnitOrderA8->primaryInputPerUnit ? &warningTextColor : &normalTextColor,
         false);
   }
-  RECT invalidRect;
+  CRect invalidRect;
   primaryAvailable->QueryBounds(&invalidRect);
   availabilityPanel->InvalidateCityDialogRectRegion(&invalidRect, 1);
 

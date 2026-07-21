@@ -269,7 +269,7 @@ void TOfferDeskPicture::RefreshSelectedNationOrderCompatibilityInfo() {
     strFinal = strStatsIntro + strVerdict + strTypeClause;
   }
 
-  RECT bounds;
+  CRect bounds;
   info->QueryBounds(&bounds);
   bounds.left = bounds.left - 1;
   bounds.top = bounds.top - 1;

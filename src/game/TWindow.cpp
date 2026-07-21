@@ -400,7 +400,7 @@ void TWindow::TranslatePointToParentChain4E(CPoint* point) {}
 void TWindow::TranslatePointToParentChain4D(CPoint* point) {}
 
 // FUNCTION: IMPERIALISM 0x00492d40
-void TWindow::DispatchVslot134WithRectAndRectPlus8_Impl(RECT* rect) {}
+void TWindow::TranslateRectToWindow(CRect* rect) {}
 
 // FUNCTION: IMPERIALISM 0x00492d60
 void TWindow::SubtractPosAndDispatchToOwnerSlot19C(CPoint* point) {}

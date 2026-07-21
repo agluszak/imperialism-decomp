@@ -453,7 +453,7 @@ bool TViewMgr::RunNationInfoModalAndReturnNonCancel(int messageKind, CString tit
                                                     char showCancel) {
   CString titleText;
   TUiTextStyleDescriptor styleDescriptor;
-  RECT bounds;             // function-scope like the original (0x38): not overlapped with the
+  CRect bounds;            // function-scope like the original (0x38): not overlapped with the
   short overlaySfxIds[13]; // sfx table (0x48), so the frame keeps both live regions
   // The payload is a {-1000 sentinel, resource word} pair; the word is only read
   // through a short lvalue over the pre-zeroed int (word stores/compares, dword pass).
@@ -741,7 +741,7 @@ void TViewMgr::BuildAndShowTurnOverlayByMode(int overlayMode, int contextArg) {
 
 // FUNCTION: IMPERIALISM 0x005d69b0
 void TViewMgr::ComputeTurnEventDialogPlacementByCode(TView* dialogView, POINT* outPlacement) {
-  RECT mainBounds;
+  CRect mainBounds;
   g_pDisplayMgr->activeDialog->QueryBounds(&mainBounds);
   (void)mainBounds; // original makes the call but discards the result
 
@@ -749,7 +749,7 @@ void TViewMgr::ComputeTurnEventDialogPlacementByCode(TView* dialogView, POINT* o
   RECT clientRect;
   GetClientRect(mainView->m_hWnd, &clientRect);
 
-  RECT dialogBounds;
+  CRect dialogBounds;
   dialogView->QueryBounds(&dialogBounds);
   int dlgWidth = dialogBounds.right - dialogBounds.left;
   int dlgHeight = dialogBounds.bottom - dialogBounds.top;
@@ -935,9 +935,8 @@ char TViewMgr::RequestDiplomacyDecisionSlot90(int sourceNation, int targetNation
   TDiplomacyMapView* mainView =
       static_cast<TDiplomacyMapView*>(activeDialog->ResolveControlByTag(kControlTagMain));
   mainView->AssertValid();
-  mainView->InvalidateAndForwardTabSwitchToChild(reinterpret_cast<void*>(sourceNation),
-                                                 reinterpret_cast<void*>(targetNation),
-                                                 reinterpret_cast<void*>(proposalCode));
+  mainView->PoseOffer(static_cast<short>(sourceNation), static_cast<short>(targetNation),
+                      static_cast<short>(proposalCode));
   return 0;
 }
 
@@ -1517,7 +1516,7 @@ void TViewMgr::UiRuntimeSlotA0() {
       static_cast<turn_event_dialog::GoldSinglePayloadControl*>(goldControl->ownerContext);
   owner->AssertValid();
 
-  RECT bounds;
+  CRect bounds;
   goldControl->QueryBounds(&bounds);
   RECT regionBounds = bounds;
   RectRgn(temporaryRegion.tempRgn, &regionBounds);

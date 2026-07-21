@@ -81,7 +81,7 @@ who sets `ecx`/`edx`, who cleans the stack. See [[cdecl-thiscall-mislabel]],
 - MSVC500 returns structs (POINT/RECT) via a **hidden caller-allocated pointer** pushed
   as a stack arg, so `ret N` counts it. MFC fill methods are `T* Fill(T* out){...;
   return out;}` — they leave the out-ptr in EAX and callers chain on it. Model these as
-  struct-returning / out-ptr-returning, not `void(out*)` (`GetCachedPosPoint` 16.7%→100%).
+  struct-returning / out-ptr-returning, not `void(out*)` (`GetAbsolutePosition` 16.7%→100%).
 - A Ghidra `void` prototype can hide an intentional `AL` contract: if the body sets AL
   on the success/fallthrough path and a caller branches on it, model a `char`/flag
   return (`0x004ef700` reject=0/valid=1). `extraout_AL` after a call means that call

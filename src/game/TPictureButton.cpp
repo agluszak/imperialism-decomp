@@ -34,8 +34,8 @@ void TPictureButton::HiliteState(unsigned char enabledState, unsigned char refre
 
 // FUNCTION: IMPERIALISM 0x005708c0
 bool TPictureButton::IsSelected() {
-  RECT rect;
-  this->BuildRectFromSlot158(&rect);
+  CRect rect;
+  this->GetQDExtent(&rect);
   return RedrawWindow(reinterpret_cast<HWND>(this->nativeWindow50->m_hWnd), &rect, NULL,
                       RDW_INVALIDATE | RDW_UPDATENOW);
 }

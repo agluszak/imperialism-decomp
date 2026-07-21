@@ -140,7 +140,7 @@ void TIconSlider::DispatchPictureResourceCommand(int nEventType, void* pEventSen
     GetKnobRect(currentKnobRect);
   }
 
-  RECT redrawRect = previousKnobRect;
+  CRect redrawRect = previousKnobRect;
   if (previousKnobRect.right <= currentKnobRect.right) {
     redrawRect.right = currentKnobRect.right;
   } else if (currentKnobRect.left <= previousKnobRect.left) {
@@ -151,7 +151,7 @@ void TIconSlider::DispatchPictureResourceCommand(int nEventType, void* pEventSen
   GetClip(savedClip);
   ClipRect(&redrawRect);
 
-  RECT barRect;
+  CRect barRect;
   OffsetRectByCachedPos(&redrawRect, &barRect);
   TIconBar::ApplyRectSlot110(&barRect);
 

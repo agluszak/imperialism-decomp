@@ -248,3 +248,16 @@ accesses are codegen-neutral; confirm with the affected functions' baseline scor
      `*reinterpret_cast<short*>(&...)` copy hacks at snapshot sites.
 
   *(ex decomp-loop list-note 109)*
+
+### MFC geometry inside the model; native geometry at verified boundaries
+
+`CPoint` and `CRect` are the recovered game-owned geometry types for view methods,
+locals, fields, and heap records. VC5 defines them as layout-compatible subclasses of
+`tagPOINT` and `tagRECT`, so calls into Win32 or retail MFC APIs accept them through
+ordinary base conversion; a `reinterpret_cast<POINT*>` or `reinterpret_cast<RECT*>`
+means the source model is still wrong. Keep `POINT`/`RECT` only where the binary proves
+a native API boundary or where an explicitly documented packed byte/word buffer contains
+native records. Model temporary overlapping field use as an explicit `RECT` union arm,
+not as four integers plus a cast. `just geometry-type-gate` enforces cast-free geometry
+and the curated recovered `TView`/`TControl` API surface without guessing ownership for
+every native API signature.

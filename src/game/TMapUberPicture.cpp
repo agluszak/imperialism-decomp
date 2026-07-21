@@ -72,7 +72,7 @@ void TMapUberPicture::DoPostCreate(int arg) {
   categoryPages[2] = ResolveControlByTag(0x756e6176); // 'unav'
   categoryPages[3] = nullptr;
 
-  RECT mapBounds;
+  CRect mapBounds;
   subview2A8->QueryBounds(&mapBounds);
   RECT mapRegionBounds = mapBounds;
   RgnHandle mapRegion = NewRgn();
@@ -833,7 +833,7 @@ void TMapUberPicture::RemoveMiniMap() {
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUSuperMap_0069943C, 0xa97);
   }
 
-  RECT mapBounds;
+  CRect mapBounds;
   subviewAc->QueryBounds(&mapBounds);
   RgnHandle mapRegion = NewRgn();
   RectRgn(mapRegion, &mapBounds);

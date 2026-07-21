@@ -236,7 +236,7 @@ void TSetupRandomMapPicture::HandleEvent(int commandId, TEventHandler* sourceHan
     RecheckCountryName();
     mapPreview->EnhancePhoto();
 
-    RECT previewBounds;
+    CRect previewBounds;
     mapPreview->QueryContentBounds(&previewBounds);
     ScopedMapQuickDrawContext mapContext(mapPreview);
     mapPreview->ApplyRectSlot110(&previewBounds);
@@ -452,7 +452,7 @@ void TSetupRandomMapPicture::SpinYourGlobe() {
 
   ScopedMapQuickDrawContext globeContext(globe);
   globe->PrepareForDrawing();
-  RECT bounds;
+  CRect bounds;
   globe->QueryBounds(&bounds);
   globe->ApplyRectSlot110(&bounds);
 }

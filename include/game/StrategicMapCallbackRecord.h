@@ -1,6 +1,7 @@
 #pragma once
 
 #include "compat.h"
+#include "game/mfc.h"
 
 struct StrategicMapCallbackRecord {
   StrategicMapCallbackRecord();
@@ -31,16 +32,23 @@ struct StrategicMapCallbackRecord {
   // both compare against bufferCapacity08 before growing ownedBuffer04 via realloc/new, and
   // raise committedLength0c to index+1 whenever a touched index exceeds it (also used as the
   // memcpy length when the buffer grows) -- see 0x004d4e40, 0x004d5580.
-  int bufferCapacity08;
-  int committedLength0c;
-  // appendCursor10: AppendOpcodeByte's own private monotonically-incrementing write cursor
-  // (0x004d5580); distinct from committedLength0c, which EnsureOpcodeBufferByteAtIndex also
-  // advances via direct indexed writes.
-  int appendCursor10;
-  // alignmentCursor14: FinalizeOpcodeBufferAlignment's rolling mod-4 pad counter (0x004d5720);
-  // AppendPackedColorDword (0x004d4bf0) also reads it as the JIT entry-point offset into
-  // ownedBuffer04, since that call path never invokes FinalizeOpcodeBufferAlignment.
-  int alignmentCursor14;
+  union {
+    struct {
+      int bufferCapacity08;
+      int committedLength0c;
+      // appendCursor10: AppendOpcodeByte's own private monotonically-incrementing write cursor
+      // (0x004d5580); distinct from committedLength0c, which EnsureOpcodeBufferByteAtIndex also
+      // advances via direct indexed writes.
+      int appendCursor10;
+      // alignmentCursor14: FinalizeOpcodeBufferAlignment's rolling mod-4 pad counter (0x004d5720);
+      // AppendPackedColorDword (0x004d4bf0) also reads it as the JIT entry-point offset into
+      // ownedBuffer04, since that call path never invokes FinalizeOpcodeBufferAlignment.
+      int alignmentCursor14;
+    };
+    // BuildDiplomacyNationOverlayGeometryAndHitMasks temporarily uses this four-dword
+    // bookkeeping region as rectangle scratch before emitting any opcodes.
+    RECT scratchBounds08;
+  };
   // hadTrailingPadding18: set to 1 by FinalizeOpcodeBufferAlignment when alignmentCursor14 is
   // still nonzero at exit (0x004d5720).
   int hadTrailingPadding18;

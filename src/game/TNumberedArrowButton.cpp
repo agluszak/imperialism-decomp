@@ -36,7 +36,7 @@ void TNumberedArrowButton::SetValue(short value84Arg, unsigned char refreshFlag)
 
 // FUNCTION: IMPERIALISM 0x0058c360
 void TNumberedArrowButton::SetState(short value86Arg, unsigned char refreshFlag) {
-  RECT bounds;
+  CRect bounds;
   if (value86 != value86Arg) {
     if (refreshFlag != '\0') {
       RefreshControl();

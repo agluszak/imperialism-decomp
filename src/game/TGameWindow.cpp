@@ -219,13 +219,13 @@ void TGameWindow::ForwardParam(int param) {
 // FUNCTION: IMPERIALISM 0x00500160
 void TGameWindow::UpdateTurnOrderNavigationWindowLayout() {
   if (g_pDisplayMgr->eventCode0e == 0x7d1) {
-    RECT boundsRect;
+    CRect boundsRect;
     QueryBounds(&boundsRect);
     GlobalViewportRectDefaultsRecord** rectDefaultsHandle =
         InitializeGlobalRectDefaultsIfUninitialized();
     GlobalViewportRectDefaultsRecord* rectRecord = *rectDefaultsHandle;
     RECT globalRect;
-    CopyRect(&globalRect, reinterpret_cast<RECT*>(&rectRecord->left));
+    CopyRect(&globalRect, &rectRecord->viewportBounds);
     boundsRect.left = globalRect.left;
     boundsRect.top = globalRect.top;
     boundsRect.right = globalRect.right;
