@@ -96,6 +96,10 @@ public:
   // g_pActiveMapOrderContext that no order entry is selected anymore.
   void ResetPrimaryOrderActiveFlagsAndClearManagerState(); // 0x556fd0
 
+  // Mac oracle: ClearAllTransientOrders. Prunes the queued task-force chain and clears
+  // the transient ready flag on every primary ship. 0x557040.
+  void ClearAllTransientOrders();
+
   // 0x558960 (3485 bytes). Called twice in sequence from the map-order turn-phase
   // resolver (ResolveMapOrderChainsForTurnPhase, 0x5578a0) with `mode` = 1 then 2
   // -- confirmed __thiscall on this (TNavyMgr) via the `MOV ECX,EBP; PUSH mode;

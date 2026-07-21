@@ -500,6 +500,16 @@ void TNavyMgr::ResetPrimaryOrderActiveFlagsAndClearManagerState() {
   g_pActiveMapOrderContext->EnsureSelectedTaskForceForOrderOwnerAndRefresh(nullptr);
 }
 
+// FUNCTION: IMPERIALISM 0x00557040
+void TNavyMgr::ClearAllTransientOrders() {
+  orderListHead04 = orderListHead04->PruneNavyOrderIfUnserviceableOrNoChildren();
+  for (TShip* ship = g_pNavyPrimaryOrderListHead; ship != 0; ship = ship->nextOlder24) {
+    if (ship->field34 == 1) {
+      ship->field34 = 0;
+    }
+  }
+}
+
 // FUNCTION: IMPERIALISM 0x00557080
 bool TNavyMgr::MoveMapOrderEntryToQueueHeadIfValid(TTaskForce* entry) {
   for (TTaskForce* node = orderListHead04; node != nullptr; node = node->queue_next) {

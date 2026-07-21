@@ -26,6 +26,12 @@ spaces.
 The full structured `build-msvc500/reccmp_report.json` is disposable live evidence
 for triage; it is not committed as a baseline.
 
+Progress reports deliberately include functions listed under
+`report.ignore_functions`. That setting only suppresses library/framework noise in
+interactive reccmp output; changing a presentation filter must not change
+exact-function counts or average similarity. Progress metrics also exclude vtables and
+stubs.
+
 Bootstrap project metadata once:
 
 ```bash
