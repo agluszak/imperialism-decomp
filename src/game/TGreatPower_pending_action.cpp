@@ -92,8 +92,7 @@ void TGreatPower::ExecuteNationPendingActionStateMachine(void) {
       TCivUnit* civOrder = new TCivUnit();
       civOrder->InitializeCivWorkOrderState(
           7,
-          g_pGlobalMapState->FindReachableRecruitSpawnTileWithVisitedReset(this->homeRegionIndex,
-                                                                           0),
+          g_pGlobalMapState->FindReachableRecruitSpawnTileWithVisitedReset(this->homeTileIndex, 0),
           nationSlot);
       this->SetNationPendingActionStateAndPayload(2, -1);
     }

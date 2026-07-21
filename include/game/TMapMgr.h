@@ -115,7 +115,7 @@ struct TGlobalMapCityScoreRecord {
   signed char developmentStage;
   unsigned char fortLevel03; // fort level (indexes g_awEngineerFortBuildCostByLevel)
   // +0x04 — tile index this city record is anchored to (-1 = none); rebound by
-  // the 0x00516100-family setters and matched against TCountry::homeRegionIndex.
+  // the 0x00516100-family setters and matched against TCountry::homeTileIndex.
   short cityTileIndex04;
   short lastTurnTick;
   signed char adjacentRegionCount08;
@@ -340,7 +340,7 @@ public:
   // activeFlags1c/gateFlag or bit-2 gate passes, and (when the reference tile is owned by
   // pCivilianOrderEntry->field_18) its FindTownMarkerForTileByOwnerNation entry is
   // enabled: clears recruitSearchVisited0e for every not-at-war minor nation's
-  // TMinor::homeRegionIndex tile (via TDiplomacyMgr::IsNationPairAtWar) and every enabled
+  // TMinor::homeTileIndex tile (via TDiplomacyMgr::IsNationPairAtWar) and every enabled
   // TTown on the owning TGreatPower's townMarkerList.
   virtual void SeedRecruitSearchVisitedStateAndClearAlliedTerritory(
       class TCivUnit* pCivilianOrderEntry); // slot 0x21 0x514f20
@@ -408,14 +408,14 @@ public:
   // when its regionSubtypeTag05 is -1 or its city's fortLevel03 is below 3.
   virtual void MarkSeedNeighborTilesUnavailableByCapabilityMaskProfileB(
       class TCivUnit* pCivilianOrderEntry); // slot 0x29 0x515b10
-  // Picks up to 2 of cityRecordIndex's 6 hex neighbors as "linked" tiles, ranked by
+  // Picks 2 of cityRecordIndex's 6 hex neighbors as "linked" tiles, ranked by
   // g_anTerrainTypeNeighborLinkPriority[terrainType00] (same-cityRecordIndex neighbors get a
   // +0x14 bonus in the second pass): the top-ranked same-city neighbor becomes
   // primaryNeighborTileIndex40, then the next-best remaining neighbor (any city) becomes
-  // secondaryNeighborTileIndex3e. Faithfully reproduces the original's own out-of-bounds
-  // stack read (local_c[-1]) when a pass finds no eligible neighbor at all.
+  // secondaryNeighborTileIndex3e. The original assumes both passes find a direction;
+  // callers must provide a real city anchor with eligible neighbors.
   virtual void
-  UpdateTilePrimaryAndSecondaryNeighborLinksByPriority(short cityRecordIndex); // slot 0x2a 0x50fca0
+  UpdateTilePrimaryAndSecondaryNeighborLinksByPriority(int cityRecordIndex); // slot 0x2a 0x50fca0
   // Looks up whether tileIndex's region has an eligible stationed unit
   // (TArmyMgr::HasEligibleStationedUnitInRegion) but discards the result -- the original's
   // own call site never reads the return value either, so this is vestigial/dead code.
@@ -466,7 +466,7 @@ public:
   virtual short FindLinkedRegionIdForAdjacentRegion(int cityRecordIndex,
                                                     int regionId); // slot 0x2f 0x516090
   // If nationSlotParam < 7, marks that nation's capital-tile city (found via
-  // g_apTerrainTypeDescriptorTable[nationSlotParam]->homeRegionIndex used as a
+  // g_apTerrainTypeDescriptorTable[nationSlotParam]->homeTileIndex used as a
   // terrainStateTable index -- one index into tables keyed by the same tile/region domain
   // (cf. TGlobalMapCityScoreRecord::cityTileIndex04), not a re-typed slot) as
   // developmentStage 2. param_2 is unused
@@ -501,7 +501,7 @@ public:
                                                char resourceType); // slot 0x35 0x5135a0
   // Looks up the TTown marker for tileIndex on its owning nation's townMarkerList
   // (g_apNationStates[terrainStateTable[tileIndex].ownerNationTag04]->townMarkerList),
-  // matching TTown::regionId14 == tileIndex.
+  // matching TTown::tileIndex14 == tileIndex.
   virtual class TTown* FindTownMarkerForTileByOwnerNation(short tileIndex); // slot 0x36 0x513170
   // Updates terrainStateTable[regionId]'s owner nation, refreshes its own and its 6
   // neighbors' border-influence counters via UpdateTileNeighborBorderInfluenceCounters, and
@@ -764,7 +764,6 @@ public:
   char CallMetricSlotC4(int regionIndex, int edgeIndex);
   short QueryIconStripXSlot110(int iconCode);
   void NotifyCityRecordSlot12C(int cityRecordIndex);
-  void LinkRegionToNationSlot134(int regionId, int nationSlot);
   void AssignCityRecordDisplayName(int cityRecordIndex, CString* dest);
   void DumpAndResetMapScriptState(); // 0x00519140
 

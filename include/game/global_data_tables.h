@@ -110,6 +110,7 @@ extern "C" int g_aCategoryMetricBaselineAverage[4];
 // descriptor blends (rounded average across enabled types 1..13).
 void RecomputeGlobalCapabilityAverages(void);
 extern "C" float g_fMissionScoreNormalizationDivisor;
+extern "C" float g_fScatteredShipsMissionDefaultScore;
 
 // Per-nation (0..6) output caches written by RecomputeNationOrderPriorityMetrics
 // (0x53fe30): a queue-demand divergence score (blended from the 4-category
@@ -766,16 +767,17 @@ extern "C" const int g_anNationStartingTreasuryByLocale[6];
 extern POINT g_ptGreatPowerModalMessage; // @ 0x6a2df0
 // Per-subsystem VPoint equivalents passed to the ModalMessage overloads. The Mac
 // signatures provide the semantic type; Windows stores them as zero-initialized POINTs.
-extern POINT g_ptArmyOrderModalMessage;        // @ 0x6a2318
-extern POINT g_ptNationComparisonModalMessage; // @ 0x6a3180
-extern POINT g_ptTechItemModalMessage;         // @ 0x6a5820
-extern POINT g_ptNationAwolModalMessage;       // @ 0x6a3d08
-extern POINT g_ptMapModeModalMessage;          // @ 0x6a45c0
-extern POINT g_ptTechCapabilityModalMessage;   // @ 0x6a57c8
-extern POINT g_ptUiPromptModalMessage;         // @ 0x6a5be0
-extern POINT g_ptQueryFloaterModalMessage;     // @ 0x6a4048
-extern POINT g_ptDiplomacyNoticeModalMessage;  // @ 0x6a2fc0
-extern POINT g_ptGameSetupModalMessage;        // @ 0x6a4218
+extern POINT g_ptArmyOrderModalMessage;            // @ 0x6a2318
+extern POINT g_ptCityInteriorMinisterModalMessage; // @ 0x6a2c18
+extern POINT g_ptNationComparisonModalMessage;     // @ 0x6a3180
+extern POINT g_ptTechItemModalMessage;             // @ 0x6a5820
+extern POINT g_ptNationAwolModalMessage;           // @ 0x6a3d08
+extern POINT g_ptMapModeModalMessage;              // @ 0x6a45c0
+extern POINT g_ptTechCapabilityModalMessage;       // @ 0x6a57c8
+extern POINT g_ptUiPromptModalMessage;             // @ 0x6a5be0
+extern POINT g_ptQueryFloaterModalMessage;         // @ 0x6a4048
+extern POINT g_ptDiplomacyNoticeModalMessage;      // @ 0x6a2fc0
+extern POINT g_ptGameSetupModalMessage;            // @ 0x6a4218
 extern int g_nationInfoGoldResourceOverride_006a5bac;
 extern int g_lastTurnAlertTick_006a31c0;
 extern int g_lastClickedMapTileIndex_006a4608;

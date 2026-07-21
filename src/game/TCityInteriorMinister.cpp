@@ -8,6 +8,10 @@
 #include "game/TGreatPower.h"
 #include "game/TList.h"
 #include "game/TLongintList.h"
+#include "game/TMapMgr.h"
+#include "game/TSimMgr.h"
+#include "game/TTown.h"
+#include "game/TViewMgr.h"
 #include "game/global_data_tables.h"
 #include "game/mfc.h"
 #include "game/ui_invalidation_guard.h"
@@ -303,8 +307,97 @@ undefined TCityInteriorMinister::ReconcileCityProductionQueueAgainstTargetsAndAd
 }
 
 // FUNCTION: IMPERIALISM 0x004c11c0
-int TCityInteriorMinister::GetHomeCityRecordIndexSlotC0() {
-  return 0;
+int TCityInteriorMinister::SelectBestSecondaryHomeTileByFrogCityScore() {
+  short nationSlot = ownerContextAt04->nationSlot;
+  TTown* candidateTown = new TTown();
+  candidateTown->InitializeTownMarker("Bleah", 0, 1, nationSlot);
+
+  int bestScore = -1;
+  int bestTileIndex = -1;
+  int tileIndex = 0;
+  do {
+    TTerrainStateRecordView* tile = &g_pGlobalMapState->terrainStateTable[tileIndex];
+    if (static_cast<short>(tile->ownerNationTag04) == nationSlot &&
+        g_pGlobalMapState->IsValidSecondaryNationHomeTileCandidate(static_cast<short>(tileIndex))) {
+      short terrainType = tile->terrainType00;
+      if (terrainType == 0 || terrainType == 7 || terrainType == 1 || terrainType == 6) {
+        candidateTown->tileIndex14 = static_cast<short>(tileIndex);
+        candidateTown->CalculateCityResources();
+
+        short resource17 = candidateTown->resourceYieldByType[17];
+        short clamped17;
+        if (resource17 < 0) {
+          clamped17 = 0;
+        } else if (resource17 > 6) {
+          clamped17 = 6;
+        } else {
+          clamped17 = resource17;
+        }
+
+        short resource18 = candidateTown->resourceYieldByType[18];
+        short clamped18;
+        if (resource18 < 0) {
+          clamped18 = 0;
+        } else if (resource18 > 2) {
+          clamped18 = 2;
+        } else {
+          clamped18 = resource18;
+        }
+
+        short resource17Surplus = static_cast<short>(resource17 - 6);
+        if (resource17Surplus < 0) {
+          resource17Surplus = 0;
+        } else if (resource17Surplus > 3) {
+          resource17Surplus = 3;
+        }
+
+        short resource18Surplus = static_cast<short>(resource18 * 2 - 4);
+        if (resource18Surplus < 0) {
+          resource18Surplus = 0;
+        } else if (resource18Surplus > 4) {
+          resource18Surplus = 4;
+        }
+
+        short industrialBonus = static_cast<short>(
+            (candidateTown->resourceYieldByType[19] + candidateTown->resourceYieldByType[20]) * 2);
+        if (industrialBonus < 0) {
+          industrialBonus = 0;
+        } else if (industrialBonus > 4) {
+          industrialBonus = 4;
+        }
+
+        short rawMaterialBonus = static_cast<short>(candidateTown->resourceYieldByType[2] * 2);
+        if (rawMaterialBonus < 0) {
+          rawMaterialBonus = 0;
+        } else if (rawMaterialBonus > 12) {
+          rawMaterialBonus = 12;
+        }
+
+        int score = (candidateTown->resourceYieldByType[0] + candidateTown->resourceYieldByType[1] +
+                     candidateTown->resourceYieldByType[22]) *
+                        3 +
+                    candidateTown->resourceYieldByType[3] + candidateTown->resourceYieldByType[4] +
+                    rawMaterialBonus + clamped17 * 1000 + clamped18 * 1000 + resource17Surplus +
+                    resource18Surplus + industrialBonus;
+        if ((tile->activeFlags1c & 1) != 0) {
+          score = 32000;
+        }
+        if (static_cast<short>(bestScore) < score) {
+          bestScore = score;
+          bestTileIndex = tileIndex;
+        }
+      }
+    }
+    ++tileIndex;
+  } while (static_cast<short>(tileIndex) < 0x1950);
+
+  candidateTown->Free();
+  if (static_cast<short>(bestTileIndex) == -1) {
+    CString message;
+    g_pSimMgr->GetString(0x2737, 0x35, &message);
+    g_pUiRuntimeContext->ModalMessage(message, g_ptCityInteriorMinisterModalMessage, 2, 0);
+  }
+  return static_cast<short>(bestTileIndex);
 }
 
 // FUNCTION: IMPERIALISM 0x004c1510
