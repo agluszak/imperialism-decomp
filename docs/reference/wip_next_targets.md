@@ -160,7 +160,7 @@ weight columns (read as dwords). Also landed earlier this session: RecomputeTile
 (0x518130, 33.71% but FPU/vtable-exact), + the NormalizeWrappedMapCoord/hex-helper batch.
 
 ### NEXT (navy-order manager chain -- receiver = g_pNavyOrderManager @ 0x6a43e4, a TNavyMgr):
-- 0x557040 RefreshNavyOrderCycleAndClearReadyFlags: TNavyMgr method. `this->field4 =
+- 0x557040 TNavyMgr::ClearAllTransientOrders (Mac oracle): `this->field4 =
   PruneNavyOrderIfUnserviceableOrNoChildren(); for (TShip* s=g_pNavyPrimaryOrderListHead;
   s; s=s->next24) if (s->field34==1) s->field34=0;`. Called by AdvanceGlobalTurnStateMachine
   with `mov ecx,[0x6a43e4]`. BLOCKER: calls 0x555090 (still a stub) -- port both together.

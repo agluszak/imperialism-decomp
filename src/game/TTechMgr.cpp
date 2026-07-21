@@ -6,6 +6,7 @@
 #include "game/TGreatPower.h"
 #include "game/TSimMgr.h"
 #include "game/TMultiplayerMgr.h"
+#include "game/TNewsMgr.h"
 #include "game/global_data_tables.h"
 
 #include <string.h>
@@ -205,6 +206,32 @@ void TTechMgr::ReadFrom(TStream* stream) {
 // FUNCTION: IMPERIALISM 0x005af710
 void TTechMgr::WriteTo(TStream* stream) {
   (void)stream;
+}
+
+// FUNCTION: IMPERIALISM 0x005af980
+void TTechMgr::CheckForAdvances() {
+  const short economicTurn = g_pSimMgr->GetEconomicTurn();
+  for (int techId = 3; techId < 0x1d; ++techId) {
+    if (perTechUnlockFlag180[techId] == 0) {
+      if (prioritySlots04[techId] == economicTurn) {
+        ApplyCityOrderCapabilityUnlockByTechId(techId);
+        g_pInterNationEventQueueManager->QueueInterNationEventType11(999, techId, 1);
+      }
+      continue;
+    }
+
+    for (int nationSlot = 0; nationSlot < 7; ++nationSlot) {
+      TGreatPower* nation = g_apNationStates[nationSlot];
+      if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(static_cast<short>(nationSlot)) != 0 &&
+          nation->diplomacyEligibilityA0 == 0 &&
+          orderCapRows277[nationSlot].techStatusByTechId[techId] != 2) {
+        nation->AddToNationMetricAtField10(-g_anTechItemPurchaseCostBySlot_0066aae8[techId]);
+        orderCapRows277[nationSlot].techStatusByTechId[techId] = 1;
+        capRowsE4a6[nationSlot].completionYearOffsetByTechId[techId] =
+            static_cast<short>(g_pSimMgr->economicTurn / 4);
+      }
+    }
+  }
 }
 
 // Turn-instruction handler body ("Tech"): unlocks techId on the city-order capability state,
@@ -597,9 +624,11 @@ void TTechMgr::UpdateSelectionAndRecalculateScores(int resourceType, int nationS
 // FUNCTION: IMPERIALISM 0x005b0a20
 bool TTechMgr::AreTechItemPrerequisitePairCompleted(int techId, int nationSlot) {
   short p1 = g_aTechItemPrerequisitePairs[techId][0];
-  if (orderCapRows277[nationSlot].techStatusByTechId[p1] == 2) {
+  unsigned char* p1StatusByNation = &orderCapRows277[0].techStatusByTechId[p1];
+  if (p1StatusByNation[nationSlot * sizeof(OrderCapRow)] == 2) {
     short p2 = g_aTechItemPrerequisitePairs[techId][1];
-    if (orderCapRows277[nationSlot].techStatusByTechId[p2] == 2) {
+    unsigned char* p2StatusByNation = &orderCapRows277[0].techStatusByTechId[p2];
+    if (p2StatusByNation[nationSlot * sizeof(OrderCapRow)] == 2) {
       return true;
     }
   }

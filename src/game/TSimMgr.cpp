@@ -156,10 +156,10 @@ void TSimMgr::InitializeTurnFlowStateDefaults() {
   turnStateCode = 1;
   turnFlowStatusFlags = 0;
   field_64 = 0;
-  field6e = 0;
-  // Ten bytes 0x6f..0x78 (phaseFlags[9] + field78) are filled with 1 in one pass
-  // (dword/dword/word stores in the original); field78 is then overwritten with 2.
-  memset(phaseFlags, 0x01, sizeof(phaseFlags) + 1);
+  phaseStateByDecade[0] = 0;
+  // Ten bytes 0x6f..0x78 (phaseStateByDecade[1..9] + field78) are filled with 1 in one
+  // pass (dword/dword/word stores in the original); field78 is then overwritten with 2.
+  memset(&phaseStateByDecade[1], 0x01, sizeof(phaseStateByDecade));
   field79 = 1;
   field78 = 2;
   // Developer-cheat probe: stat a file literally named "Conan" in the working directory;
@@ -317,12 +317,12 @@ void TSimMgr::ReadFrom(TStream* stream) {
   }
 
   if (g_nSaveFormatVersion < 0x3b) {
-    memset(phaseFlags, 0x01, 10);
+    memset(phaseStateByDecade, 0x01, sizeof(phaseStateByDecade));
     field79 = 1;
-    field6e = 0;
-    (&field6e)[(field6c - 0x717) / 10] = 2;
+    phaseStateByDecade[0] = 0;
+    phaseStateByDecade[(field6c - 0x717) / 10] = 2;
   } else {
-    stream->ReadBytes(&field6e, 0xc);
+    stream->ReadBytes(phaseStateByDecade, 0xc);
   }
 
   for (i = 0; i < 0x17; ++i) {
@@ -374,7 +374,7 @@ void TSimMgr::WriteTo(TStream* stream) {
   stream->WriteBytesSlot78(&preferenceValues[10], 2);
   stream->WriteBytesSlot78(&field6a, 2);
   stream->WriteBytesSlot78(&field6c, 2);
-  stream->WriteBytesSlot78(&field6e, 0xc);
+  stream->WriteBytesSlot78(phaseStateByDecade, 0xc);
 
   for (i = 0; i < 0x17; ++i) {
     stream->streamSlotAc(&sharedTextSlots[i]);
@@ -1381,8 +1381,8 @@ void ReinitializeGameFlowAndPostTurnEventCode(int eventCode) {
     simMgr->turnStateCode = 1;
     simMgr->turnFlowStatusFlags = 0;
     simMgr->field_64 = 0;
-    simMgr->field6e = 0;
-    memset(simMgr->phaseFlags, 0x01, sizeof(simMgr->phaseFlags) + 1);
+    simMgr->phaseStateByDecade[0] = 0;
+    memset(&simMgr->phaseStateByDecade[1], 0x01, sizeof(simMgr->phaseStateByDecade));
     simMgr->field79 = 1;
     simMgr->field78 = 2;
     CFileStatus conanFileStatus;
@@ -1419,6 +1419,40 @@ CString TSimMgr::LoadNormalizedCredentialName(short slot) {
 // FUNCTION: IMPERIALISM 0x00581bc0
 CString TSimMgr::AssignSharedStringFromIndexedSlot7C(short slot) {
   return sharedTextSlots[slot];
+}
+
+// FUNCTION: IMPERIALISM 0x00581c00
+void TSimMgr::NameCapitals() {
+  for (short nationSlot = 0; nationSlot < kTerrainTypeDescriptorTableCount; ++nationSlot) {
+    TCountry* country = g_apTerrainTypeDescriptorTable[nationSlot];
+    if (country == 0) {
+      continue;
+    }
+
+    const short cityRecordIndex = static_cast<short>(country->GetHomeRegionCityRecordIndex());
+    CString capitalNameTemplate;
+    CString countryName = LoadNormalizedCredentialName(nationSlot);
+    CString capitalName;
+    GetString(0x272a, 0, &capitalNameTemplate);
+    scanBracketExpressions(this, &capitalName, static_cast<LPCSTR>(capitalNameTemplate),
+                           static_cast<LPCSTR>(countryName));
+    g_pGlobalMapState->SetGlobalMapCellSharedLabel(cityRecordIndex, &capitalName);
+  }
+}
+
+// FUNCTION: IMPERIALISM 0x00581e60
+void TSimMgr::ProcessScenarioScript() {
+  gateFlag7a = 1;
+  g_nSaveFormatVersion = -3;
+
+  for (int nationSlot = 0; nationSlot < 7; ++nationSlot) {
+    TGreatPower* nation = g_apNationStates[nationSlot];
+    nation->AssignDisplayNamesToUnnamedMilitaryUnits();
+    nation->MarkStatusFlag5HandledIfCapabilityActive();
+  }
+
+  gateFlag7a = 0;
+  g_nSaveFormatVersion = -1;
 }
 
 // Reads a big-endian 32-bit nation index and three big-endian 16-bit tokens (three labor
@@ -2051,7 +2085,7 @@ void TSimMgr::HandleTurnInstruction_Tclr_ResetNationRelationBars(void* pInstruct
 }
 
 // Reads a big-endian 32-bit country slot and a big-endian 32-bit state code. Stores the
-// state's low byte into the per-slot state array based at field6e, and when the state is
+// state's low byte into phaseStateByDecade, and when the state is
 // exactly 2 latches field6c to slot*10 + 0x717.
 // FUNCTION: IMPERIALISM 0x00583700
 void TSimMgr::HandleTurnInstruction_Coun_SetCountrySlotState(void* pInstructionRaw) {
@@ -2081,7 +2115,7 @@ void TSimMgr::HandleTurnInstruction_Coun_SetCountrySlotState(void* pInstructionR
   vraw[2] = vt;
 
   int slot = static_cast<int>(slotToken);
-  (&field6e)[slot] = static_cast<unsigned char>(stateToken);
+  phaseStateByDecade[slot] = static_cast<unsigned char>(stateToken);
   if (stateToken == 2) {
     field6c = static_cast<short>(static_cast<short>(slotToken) * 10 + 0x717);
   }

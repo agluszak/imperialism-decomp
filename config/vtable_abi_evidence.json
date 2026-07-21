@@ -339828,9 +339828,9 @@
    "cc": "__thiscall",
    "ecx": "ecx_this",
    "ghidra_params": 1,
-   "ghidra_proto": "undefined OrphanCallChain_C1_I22_00500f10(void)",
+   "ghidra_proto": "void ResetHelpSetRanksAndFlags(void)",
    "max_stack_arg_read": null,
-   "name": "OrphanCallChain_C1_I22_00500f10",
+   "name": "ResetHelpSetRanksAndFlags",
    "ret_imm": 0,
    "ret_kind": "plain",
    "size": 46

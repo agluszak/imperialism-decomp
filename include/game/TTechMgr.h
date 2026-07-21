@@ -112,6 +112,9 @@ public:
 
   void InitializeCityOrderCapabilityStateDefaults();
   void GenerateRandomCapabilityPrioritySlots();
+  // Mac oracle: CheckForAdvances. Advances eligible research rows and queues their
+  // nation-facing unlock notifications. 0x5af980.
+  void CheckForAdvances();
   // Turn-instruction handler body ("Tech"): unlocks techId globally, then stamps the
   // completion year + applies the per-nation ability unlock for every AI-ineligible nation
   // plus forcedNationSlot. 0x5afb10, __thiscall, RET 0x8.
