@@ -23,7 +23,7 @@ import re
 import sys
 
 from tools.ghidra import decompile_one
-from tools.workflow.mac_control_usage import load_committed_index, tag_hints
+from tools.workflow.mac_control_usage import load_committed_index, source_module_hints, tag_hints
 
 
 def _addr_int(addr) -> int | None:
@@ -273,6 +273,11 @@ def run(program, argv: list[str]) -> int:
 
   control_usage = load_committed_index()
   if control_usage is not None:
+    module_hints = source_module_hints(control_usage, entry_int, name)
+    if module_hints:
+      print("-- original source-module evidence (Mac joins are candidates only) --")
+      for line in module_hints:
+        print(line)
     hints = tag_hints(control_usage, fourcc_tags)
     if hints:
       print("-- Mac control-tag hints (semantic oracle only; no Windows ABI claim) --")

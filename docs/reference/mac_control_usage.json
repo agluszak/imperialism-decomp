@@ -11,6 +11,7 @@
         "Linger.rsrc:4122@0x02a8",
         "Linger.rsrc:4122@0x0317"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TQueryFloater": 5
       },
@@ -36,6 +37,15 @@
       "nodes": [
         "Armory.rsrc:9208@0x026f"
       ],
+      "original_modules": [
+        {
+          "functions": [
+            "0x004cf350"
+          ],
+          "module": "UCityViews.cpp",
+          "status": "confirmed"
+        }
+      ],
       "parent_classes": {
         "TFloatWindow": 1
       },
@@ -56,6 +66,7 @@
       "nodes": [
         "MapView.rsrc:3100@0x0080"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TWindow": 1
       },
@@ -82,6 +93,7 @@
         "MapView.rsrc:2013@0x188c",
         "MapView.rsrc:2013@0x18f8"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TArmyToolbar": 10
       },
@@ -112,6 +124,7 @@
       "nodes": [
         "MapView.rsrc:2013@0x0e7a"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TToolBarCluster": 1
       },
@@ -134,6 +147,7 @@
         "Minister.rsrc:9600@0x00e8",
         "Minister.rsrc:9700@0x00e9"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TDefenseMinisterView": 1,
         "TForeignMinisterView": 1,
@@ -161,6 +175,7 @@
       "nodes": [
         "Diplo.rsrc:1352@0x0080"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TWindow": 1
       },
@@ -185,6 +200,7 @@
       "nodes": [
         "Diplo.rsrc:1351@0x008c"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TView": 1
       },
@@ -203,6 +219,7 @@
         "Diplo.rsrc:1352@0x03df",
         "Diplo.rsrc:1352@0x0433"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TBattleDetailBook": 2
       },
@@ -234,6 +251,7 @@
         "MapView.rsrc:9478@0x026f",
         "TechStore.rsrc:2300@0x0048"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TView": 1,
         "TWindow": 2
@@ -257,6 +275,7 @@
       "nodes": [
         "Minister.rsrc:8990@0x0080"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TFloatWindow": 1
       },
@@ -277,6 +296,7 @@
       "nodes": [
         "Citydlog.rsrc:9220@0x029e"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TWindow": 1
       },
@@ -297,6 +317,7 @@
       "nodes": [
         "Citydlog.rsrc:9221@0x029e"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TWindow": 1
       },
@@ -316,6 +337,7 @@
       "nodes": [
         "Linger.rsrc:9285@0x0080"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TWindow": 1
       },
@@ -337,6 +359,7 @@
       "nodes": [
         "Citymain.rsrc:2011@0x0048"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TView": 1
       },
@@ -354,6 +377,7 @@
       "nodes": [
         "Startup.rsrc:952@0x023a"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TMapUberPicture": 1
       },
@@ -371,6 +395,7 @@
       "nodes": [
         "MapView.rsrc:2013@0x1aaf"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TCivToolbar": 1
       },
@@ -392,6 +417,7 @@
       "nodes": [
         "MapView.rsrc:3012@0x0083"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TWindow": 1
       },
@@ -412,6 +438,15 @@
       "instance_count": 1,
       "nodes": [
         "MapView.rsrc:2013@0x19d2"
+      ],
+      "original_modules": [
+        {
+          "functions": [
+            "0x0058ec50"
+          ],
+          "module": "USmallViews.cpp",
+          "status": "confirmed"
+        }
       ],
       "parent_classes": {
         "TToolBarCluster": 1
@@ -437,6 +472,7 @@
         "Linger.rsrc:1502@0x0450",
         "Startup.rsrc:1503@0x0380"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TDiplomacyMapView": 5,
         "TLoadSavePicture": 1,
@@ -467,6 +503,7 @@
       "nodes": [
         "Linger.rsrc:1000@0x0300"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TPicture": 1
       },
@@ -667,6 +704,7 @@
         "Univ.rsrc:9210@0x15ca",
         "Univ.rsrc:9210@0x1822"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TArmoryView": 1,
         "TCluster": 27,
@@ -813,6 +851,7 @@
         "Minister.rsrc:9720@0x00ef",
         "Minister.rsrc:9720@0x015f"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TBook": 2,
         "TBookView": 2,
@@ -866,6 +905,15 @@
       "nodes": [
         "MapView.rsrc:1350@0x026f"
       ],
+      "original_modules": [
+        {
+          "functions": [
+            "0x0058d950"
+          ],
+          "module": "USmallViews.cpp",
+          "status": "confirmed"
+        }
+      ],
       "parent_classes": {
         "TWindow": 1
       },
@@ -915,6 +963,7 @@
         "Startup.rsrc:1509@0x03f8",
         "Startup.rsrc:1509@0x0456"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TBackgroundPicture": 12,
         "TGameSetupMultiplayerPicture": 6,
@@ -968,6 +1017,7 @@
       "nodes": [
         "Diplo.rsrc:2008@0x1785"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TDiplomacyMapView": 1
       },
@@ -991,6 +1041,7 @@
       "nodes": [
         "Diplo.rsrc:2016@0x0048"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TView": 1
       },
@@ -1010,6 +1061,7 @@
       "nodes": [
         "Linger.rsrc:4175@0x0048"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TView": 1
       },
@@ -1028,6 +1080,7 @@
         "Linger.rsrc:4150@0x00bf",
         "Linger.rsrc:4150@0x0128"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TGamePreferencesPicture": 2
       },
@@ -1056,6 +1109,17 @@
       "nodes": [
         "FlagView.rsrc:8800@0x00d0"
       ],
+      "original_modules": [
+        {
+          "functions": [
+            "0x005bac50",
+            "0x005baf70",
+            "0x005bc0d0"
+          ],
+          "module": "UTradeViews.cpp",
+          "status": "confirmed"
+        }
+      ],
       "parent_classes": {
         "TView": 1
       },
@@ -1074,6 +1138,7 @@
         "FlagView.rsrc:8500@0x0214",
         "FlagView.rsrc:8800@0x04f8"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TDealBookPicture": 1,
         "TOfferDeskPicture": 1
@@ -1096,6 +1161,7 @@
       "nodes": [
         "Linger.rsrc:900@0x0083"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TWindow": 1
       },
@@ -1115,6 +1181,7 @@
       "nodes": [
         "Minister.rsrc:9600@0x0090"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TRearFloatWindow": 1
       },
@@ -1134,6 +1201,7 @@
       "nodes": [
         "Minister.rsrc:9610@0x0080"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TFloatWindow": 1
       },
@@ -1171,6 +1239,7 @@
         "Tactical.rsrc:3821@0x0169",
         "Tactical.rsrc:3865@0x01bb"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TCivReport": 1,
         "TCluster": 2,
@@ -1222,6 +1291,7 @@
       "nodes": [
         "Linger.rsrc:200@0x00f9"
       ],
+      "original_modules": [],
       "parent_classes": {},
       "screens": [
         "Linger.rsrc:200"
@@ -1237,6 +1307,7 @@
       "nodes": [
         "Linger.rsrc:300@0x0004"
       ],
+      "original_modules": [],
       "parent_classes": {},
       "screens": [
         "Linger.rsrc:300"
@@ -1257,6 +1328,7 @@
       "nodes": [
         "FlagView.rsrc:8450@0x0048"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TView": 1
       },
@@ -1285,6 +1357,15 @@
       "nodes": [
         "Diplo.rsrc:2008@0x0048"
       ],
+      "original_modules": [
+        {
+          "functions": [
+            "0x004f3ea0"
+          ],
+          "module": "UDiplomacyViews.cpp",
+          "status": "confirmed"
+        }
+      ],
       "parent_classes": {
         "TView": 1
       },
@@ -1304,6 +1385,15 @@
       "nodes": [
         "Linger.rsrc:950@0x0004"
       ],
+      "original_modules": [
+        {
+          "functions": [
+            "0x005003a0"
+          ],
+          "module": "UGameWindow.cpp",
+          "status": "confirmed"
+        }
+      ],
       "parent_classes": {},
       "screens": [
         "Linger.rsrc:950"
@@ -1321,6 +1411,7 @@
         "Trade.rsrc:2009@0x04fd",
         "Trade.rsrc:2010@0x4881"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TCluster": 1,
         "TTradeScreenPicture": 2
@@ -1431,6 +1522,7 @@
         "Transport.rsrc:2014@0x1d6c",
         "Transport.rsrc:2014@0x1de1"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TBattleDetailBook": 2,
         "TBook": 3,
@@ -1551,6 +1643,7 @@
         "Startup.rsrc:1506@0x07fb",
         "Startup.rsrc:965@0x00e0"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TCluster": 3,
         "TJoinSelectorDialog": 1,
@@ -1588,6 +1681,7 @@
       "nodes": [
         "MapView.rsrc:7200@0x026f"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TWindow": 1
       },
@@ -1607,6 +1701,7 @@
       "nodes": [
         "Minister.rsrc:8970@0x0080"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TFloatWindow": 1
       },
@@ -1626,6 +1721,7 @@
       "nodes": [
         "Minister.rsrc:8960@0x0080"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TFloatWindow": 1
       },
@@ -1646,6 +1742,7 @@
       "nodes": [
         "Linger.rsrc:4140@0x0080"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TWindow": 1
       },
@@ -1710,6 +1807,7 @@
         "Shipyard.rsrc:9207@0x0004",
         "Univ.rsrc:9210@0x0004"
       ],
+      "original_modules": [],
       "parent_classes": {},
       "screens": [
         "Armory.rsrc:9208",
@@ -1756,6 +1854,7 @@
       "nodes": [
         "Minister.rsrc:8900@0x0090"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TRearFloatWindow": 1
       },
@@ -1775,6 +1874,7 @@
       "nodes": [
         "Minister.rsrc:8930@0x0080"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TFloatWindow": 1
       },
@@ -1792,6 +1892,7 @@
       "nodes": [
         "Startup.rsrc:1501@0x02bc"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TCluster": 1
       },
@@ -1809,6 +1910,7 @@
       "nodes": [
         "Linger.rsrc:1060@0x02a5"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TFloatWindow": 1
       },
@@ -1834,6 +1936,7 @@
       "nodes": [
         "Linger.rsrc:4150@0x0048"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TView": 1
       },
@@ -1854,6 +1957,7 @@
       "nodes": [
         "Startup.rsrc:1515@0x008c"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TView": 1
       },
@@ -1876,6 +1980,7 @@
       "nodes": [
         "Startup.rsrc:1509@0x0048"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TView": 1
       },
@@ -1896,6 +2001,7 @@
       "nodes": [
         "Startup.rsrc:1500@0x0048"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TView": 1
       },
@@ -1914,6 +2020,7 @@
         "Linger.rsrc:2001@0x0004",
         "Linger.rsrc:2002@0x0004"
       ],
+      "original_modules": [],
       "parent_classes": {},
       "screens": [
         "Linger.rsrc:2001",
@@ -1930,6 +2037,7 @@
       "nodes": [
         "MapView.rsrc:3500@0x02d4"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TBook": 1
       },
@@ -1950,6 +2058,7 @@
       "nodes": [
         "Diplo.rsrc:2008@0x03d6"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TDiplomacyMapView": 1
       },
@@ -1972,6 +2081,7 @@
       "nodes": [
         "Linger.rsrc:3000@0x008b"
       ],
+      "original_modules": [],
       "parent_classes": {
         "THelpWindow": 1
       },
@@ -1991,6 +2101,7 @@
       "nodes": [
         "Linger.rsrc:3000@0x0004"
       ],
+      "original_modules": [],
       "parent_classes": {},
       "screens": [
         "Linger.rsrc:3000"
@@ -2008,6 +2119,7 @@
       "nodes": [
         "Startup.rsrc:1504@0x008c"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TView": 1
       },
@@ -2033,6 +2145,7 @@
         "Citydlog.rsrc:9205@0x054c",
         "Citydlog.rsrc:9206@0x054c"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TIndustryCluster": 9
       },
@@ -2068,6 +2181,7 @@
         "Citydlog.rsrc:9205@0x0386",
         "Citydlog.rsrc:9206@0x0386"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TIndustryView": 9
       },
@@ -2115,6 +2229,15 @@
         "Citydlog.rsrc:9212@0x026f",
         "Citydlog.rsrc:9214@0x026f",
         "Citydlog.rsrc:9215@0x026f"
+      ],
+      "original_modules": [
+        {
+          "functions": [
+            "0x004ccf30"
+          ],
+          "module": "UCityViews.cpp",
+          "status": "confirmed"
+        }
       ],
       "parent_classes": {
         "TFloatWindow": 11
@@ -2167,6 +2290,7 @@
         "Transport.rsrc:2014@0x1e56",
         "Transport.rsrc:3901@0x0b39"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TBattleReportView": 1,
         "TBook": 1,
@@ -2233,6 +2357,7 @@
       "nodes": [
         "Diplo.rsrc:2008@0x00ef"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TDiplomacyMapView": 1
       },
@@ -2252,6 +2377,7 @@
       "nodes": [
         "Minister.rsrc:9700@0x0090"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TRearFloatWindow": 1
       },
@@ -2271,6 +2397,7 @@
       "nodes": [
         "Minister.rsrc:9710@0x0080"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TFloatWindow": 1
       },
@@ -2293,6 +2420,7 @@
       "nodes": [
         "Multiplayer.rsrc:1507@0x0080"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TWindow": 1
       },
@@ -2316,6 +2444,7 @@
       "nodes": [
         "Linger.rsrc:1502@0x0048"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TView": 1
       },
@@ -2334,6 +2463,7 @@
         "Linger.rsrc:3005@0x076c",
         "Linger.rsrc:3005@0x07bf"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TTerrainHelpPicture": 2
       },
@@ -2361,6 +2491,7 @@
       "nodes": [
         "Multiplayer.rsrc:1508@0x0048"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TView": 1
       },
@@ -2385,6 +2516,7 @@
         "Multiplayer.rsrc:1510@0x04c9",
         "Multiplayer.rsrc:1510@0x0537"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TGamePreferencesPicture": 1,
         "TPicture": 7
@@ -2411,6 +2543,15 @@
       "nodes": [
         "MapView.rsrc:2013@0x00ed"
       ],
+      "original_modules": [
+        {
+          "functions": [
+            "0x0051b1c0"
+          ],
+          "module": "UMapDlog.cpp",
+          "status": "confirmed"
+        }
+      ],
       "parent_classes": {
         "TMapUberPicture": 1
       },
@@ -2432,6 +2573,7 @@
       "nodes": [
         "Startup.rsrc:960@0x015e"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TToolBarCluster": 1
       },
@@ -2449,6 +2591,7 @@
       "nodes": [
         "Startup.rsrc:960@0x1006"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TMapUberPicture": 1
       },
@@ -2466,6 +2609,7 @@
       "nodes": [
         "Diplo.rsrc:2008@0x0141"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TInfoPanelView": 1
       },
@@ -2487,6 +2631,7 @@
         "Startup.rsrc:1503@0x0132",
         "Tactical.rsrc:3865@0x00f4"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TCluster": 1,
         "TLoungeDialog": 1,
@@ -2523,6 +2668,17 @@
         "Startup.rsrc:952@0x0048",
         "Startup.rsrc:960@0x0048"
       ],
+      "original_modules": [
+        {
+          "functions": [
+            "0x00599cf0",
+            "0x00599fd0",
+            "0x0059a180"
+          ],
+          "module": "USuperMap.cpp",
+          "status": "confirmed"
+        }
+      ],
       "parent_classes": {
         "TView": 3
       },
@@ -2544,6 +2700,7 @@
       "nodes": [
         "Minister.rsrc:8940@0x0080"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TFloatWindow": 1
       },
@@ -2563,6 +2720,7 @@
       "nodes": [
         "Minister.rsrc:8950@0x0080"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TFloatWindow": 1
       },
@@ -2580,6 +2738,7 @@
       "nodes": [
         "Linger.rsrc:2050@0x0062"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TMiniMapWindow": 1
       },
@@ -2599,6 +2758,7 @@
       "nodes": [
         "Linger.rsrc:2050@0x0004"
       ],
+      "original_modules": [],
       "parent_classes": {},
       "screens": [
         "Linger.rsrc:2050"
@@ -2618,6 +2778,7 @@
       "nodes": [
         "Linger.rsrc:15001@0x015b"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TFloatWindow": 1
       },
@@ -2635,6 +2796,7 @@
       "nodes": [
         "Linger.rsrc:4600@0x00de"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TPicture": 1
       },
@@ -2686,6 +2848,7 @@
         "Trade.rsrc:2010@0x40a9",
         "Transport.rsrc:3901@0x0249"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TToolBarCluster": 1,
         "TTradeCluster": 34
@@ -2728,6 +2891,7 @@
         "Tactical.rsrc:3865@0x02cb",
         "Transport.rsrc:3901@0x02ce"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TBattleReportView": 6,
         "TCluster": 5,
@@ -2776,6 +2940,7 @@
       "nodes": [
         "Linger.rsrc:1000@0x0004"
       ],
+      "original_modules": [],
       "parent_classes": {},
       "screens": [
         "Linger.rsrc:1000"
@@ -2791,6 +2956,7 @@
       "nodes": [
         "MapView.rsrc:9478@0x0342"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TBook": 1
       },
@@ -2813,6 +2979,7 @@
       "nodes": [
         "MapView.rsrc:2013@0x051c"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TToolBarCluster": 1
       },
@@ -2838,6 +3005,15 @@
       "nodes": [
         "Startup.rsrc:1506@0x0048"
       ],
+      "original_modules": [
+        {
+          "functions": [
+            "0x005769c0"
+          ],
+          "module": "USetupScreens.cpp",
+          "status": "confirmed"
+        }
+      ],
       "parent_classes": {
         "TView": 1
       },
@@ -2858,6 +3034,7 @@
       "nodes": [
         "FlagView.rsrc:8451@0x0048"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TView": 1
       },
@@ -2907,6 +3084,7 @@
         "TechStore.rsrc:2300@0x068e",
         "Transport.rsrc:3901@0x0187"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TBook": 2,
         "TCivToolbar": 1,
@@ -2999,6 +3177,7 @@
         "Linger.rsrc:3005@0x0686",
         "Linger.rsrc:3005@0x06f9"
       ],
+      "original_modules": [],
       "parent_classes": {
         "THelpPicture": 9,
         "TLoadSavePicture": 8,
@@ -3050,6 +3229,7 @@
       "nodes": [
         "Diplo.rsrc:2017@0x0048"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TView": 1
       },
@@ -4060,6 +4240,7 @@
         "Univ.rsrc:9210@0x1aed",
         "Univ.rsrc:9210@0x1b65"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TCluster": 905,
         "TIndustryCluster": 9,
@@ -4228,6 +4409,7 @@
         "MapView.rsrc:2013@0x1278",
         "MapView.rsrc:2013@0x12ea"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TArmyToolbar": 10,
         "TShipFractionCluster": 4
@@ -4256,6 +4438,7 @@
       "nodes": [
         "MapView.rsrc:2013@0x013b"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TMapUberPicture": 1
       },
@@ -4281,6 +4464,7 @@
       "nodes": [
         "FlagView.rsrc:8500@0x0048"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TView": 1
       },
@@ -4300,6 +4484,7 @@
       "nodes": [
         "Diplo.rsrc:2008@0x10a4"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TDiplomacyMapView": 1
       },
@@ -4324,6 +4509,7 @@
         "Shipyard.rsrc:9207@0x107c",
         "Shipyard.rsrc:9207@0x12b1"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TCluster": 8
       },
@@ -4351,6 +4537,7 @@
         "MapView.rsrc:3500@0x0325",
         "MapView.rsrc:3500@0x0390"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TBattleDetailBook": 2,
         "TBook": 2
@@ -4372,6 +4559,7 @@
         "FlagView.rsrc:8800@0x03e9",
         "FlagView.rsrc:8800@0x0436"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TDealBookPicture": 2
       },
@@ -4507,6 +4695,7 @@
         "Univ.rsrc:9210@0x162c",
         "Univ.rsrc:9210@0x1884"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TArmoryView": 1,
         "TBattleDetailBook": 2,
@@ -4703,6 +4892,7 @@
         "Transport.rsrc:2014@0x0439",
         "Transport.rsrc:3901@0x0119"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TBackgroundPicture": 3,
         "TBattleDetailBook": 1,
@@ -4807,6 +4997,7 @@
         "Citydlog.rsrc:9213@0x0c1c",
         "Citydlog.rsrc:9213@0x0ca6"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TWarehouseView": 22
       },
@@ -4857,6 +5048,7 @@
         "Citymain.rsrc:2011@0x0569",
         "Citymain.rsrc:2011@0x05d1"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TCityProductionView": 13
       },
@@ -4889,6 +5081,15 @@
       "nodes": [
         "Startup.rsrc:953@0x026f"
       ],
+      "original_modules": [
+        {
+          "functions": [
+            "0x004d1880"
+          ],
+          "module": "UCityViews.cpp",
+          "status": "confirmed"
+        }
+      ],
       "parent_classes": {
         "TWindow": 1
       },
@@ -4910,6 +5111,7 @@
       "nodes": [
         "Linger.rsrc:4122@0x0080"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TWindow": 1
       },
@@ -4975,6 +5177,7 @@
         "Univ.rsrc:9210@0x1557",
         "Univ.rsrc:9210@0x1a7a"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TCluster": 46,
         "TNavyToolbarCluster": 3
@@ -5049,6 +5252,7 @@
         "Startup.rsrc:1501@0x0828",
         "Startup.rsrc:1501@0x0898"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TRadioTextCluster": 11
       },
@@ -5086,6 +5290,7 @@
         "Startup.rsrc:1509@0x0385",
         "Startup.rsrc:966@0x0146"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TCluster": 2,
         "TGamePreferencesPicture": 1,
@@ -5123,6 +5328,7 @@
         "Citydlog.rsrc:9214@0x0548",
         "Citydlog.rsrc:9215@0x05ae"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TRailCluster": 6
       },
@@ -5153,6 +5359,7 @@
         "Citydlog.rsrc:9214@0x0386",
         "Citydlog.rsrc:9215@0x03ec"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TIndustryView": 4,
         "TTradeSchoolView": 2
@@ -5186,6 +5393,7 @@
         "Minister.rsrc:9600@0x0004",
         "Minister.rsrc:9700@0x0004"
       ],
+      "original_modules": [],
       "parent_classes": {},
       "screens": [
         "Minister.rsrc:8900",
@@ -5211,6 +5419,7 @@
       "nodes": [
         "Startup.rsrc:1503@0x008c"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TView": 1
       },
@@ -5229,6 +5438,7 @@
         "Linger.rsrc:3000@0x00f7",
         "TechStore.rsrc:2370@0x0209"
       ],
+      "original_modules": [],
       "parent_classes": {
         "THelpPicture": 1,
         "TPicture": 1
@@ -5256,6 +5466,7 @@
       "nodes": [
         "Startup.rsrc:1501@0x0048"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TView": 1
       },
@@ -5279,6 +5490,7 @@
         "MapView.rsrc:2013@0x0a79",
         "MapView.rsrc:2013@0x0bcd"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TNavyToolbarCluster": 4
       },
@@ -5302,6 +5514,7 @@
         "MapView.rsrc:2013@0x0aef",
         "MapView.rsrc:2013@0x0c43"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TShipFractionCluster": 4
       },
@@ -5323,6 +5536,7 @@
       "nodes": [
         "Shipyard.rsrc:9207@0x026f"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TFloatWindow": 1
       },
@@ -5473,6 +5687,7 @@
         "Transport.rsrc:2014@0x1c90",
         "Transport.rsrc:2014@0x1cfe"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TIndustryCluster": 18,
         "TRailCluster": 12,
@@ -5541,6 +5756,7 @@
         "Trade.rsrc:2010@0x3ed7",
         "Trade.rsrc:2010@0x42b6"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TTradeCluster": 34
       },
@@ -5563,6 +5779,7 @@
       "nodes": [
         "Startup.rsrc:20000@0x008c"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TView": 1
       },
@@ -6098,6 +6315,7 @@
         "Univ.rsrc:9210@0x1bdd",
         "Univ.rsrc:9210@0x1c43"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TArmoryView": 3,
         "TArmyInfoView": 6,
@@ -6421,6 +6639,7 @@
       "nodes": [
         "Linger.rsrc:4300@0x0048"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TView": 1
       },
@@ -6438,6 +6657,7 @@
       "nodes": [
         "Linger.rsrc:15001@0x0528"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TMissionSnooperView": 1
       },
@@ -6454,6 +6674,15 @@
       "instance_count": 1,
       "nodes": [
         "Tactical.rsrc:3800@0x018e"
+      ],
+      "original_modules": [
+        {
+          "functions": [
+            "0x005a9d90"
+          ],
+          "module": "UTacViews.cpp",
+          "status": "confirmed"
+        }
       ],
       "parent_classes": {
         "TTacMapUberPicture": 1
@@ -6476,6 +6705,7 @@
       "nodes": [
         "Tactical.rsrc:3800@0x0048"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TView": 1
       },
@@ -6497,6 +6727,7 @@
       "nodes": [
         "Tactical.rsrc:3821@0x0080"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TWindow": 1
       },
@@ -6520,6 +6751,7 @@
       "nodes": [
         "Tactical.rsrc:3865@0x0080"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TWindow": 1
       },
@@ -6541,6 +6773,7 @@
       "nodes": [
         "Tactical.rsrc:3800@0x01de"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TTacMapUberPicture": 1
       },
@@ -6560,6 +6793,7 @@
       "nodes": [
         "TechStore.rsrc:2370@0x0080"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TWindow": 1
       },
@@ -6577,6 +6811,7 @@
       "nodes": [
         "TechStore.rsrc:2300@0x05cc"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TBook": 1
       },
@@ -6599,6 +6834,7 @@
       "nodes": [
         "Linger.rsrc:3005@0x0092"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TTerrainHelpWindow": 1
       },
@@ -6618,6 +6854,7 @@
       "nodes": [
         "Linger.rsrc:3005@0x0004"
       ],
+      "original_modules": [],
       "parent_classes": {},
       "screens": [
         "Linger.rsrc:3005"
@@ -6633,6 +6870,7 @@
       "nodes": [
         "Startup.rsrc:1503@0x0333"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TScenarioChooser": 1
       },
@@ -6650,6 +6888,7 @@
       "nodes": [
         "Multiplayer.rsrc:1508@0x00eb"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TLoungeDialog": 1
       },
@@ -6667,6 +6906,7 @@
       "nodes": [
         "FlagView.rsrc:8500@0x048c"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TUberCluster": 1
       },
@@ -6734,6 +6974,7 @@
         "Transport.rsrc:2014@0x03c8",
         "Transport.rsrc:3901@0x00a8"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TBattleReportView": 1,
         "TBook": 3,
@@ -6791,6 +7032,7 @@
       "nodes": [
         "FlagView.rsrc:8800@0x06f3"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TDealBookPicture": 1
       },
@@ -6815,6 +7057,7 @@
       "nodes": [
         "FlagView.rsrc:8500@0x0a0d"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TOfferDeskPicture": 1
       },
@@ -6871,6 +7114,7 @@
         "Trade.rsrc:2010@0x3c25",
         "Trade.rsrc:2010@0x4004"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TTradeScreenPicture": 34
       },
@@ -6972,6 +7216,7 @@
         "Trade.rsrc:2010@0x4164",
         "Trade.rsrc:2010@0x41d6"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TTradeCluster": 68
       },
@@ -6992,6 +7237,7 @@
         "FlagView.rsrc:8500@0x0c91",
         "FlagView.rsrc:8800@0x05bb"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TDealBookPicture": 1,
         "TTradeBookView": 1
@@ -7012,6 +7258,7 @@
         "FlagView.rsrc:8500@0x0ce6",
         "FlagView.rsrc:8800@0x0565"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TDealBookPicture": 1,
         "TTradeBookView": 1
@@ -7033,6 +7280,7 @@
       "nodes": [
         "Diplo.rsrc:2008@0x0c57"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TDiplomacyMapView": 1
       },
@@ -7053,6 +7301,16 @@
       "instance_count": 1,
       "nodes": [
         "Citydlog.rsrc:9209@0x026f"
+      ],
+      "original_modules": [
+        {
+          "functions": [
+            "0x004cd8d0",
+            "0x004ce070"
+          ],
+          "module": "UCityViews.cpp",
+          "status": "confirmed"
+        }
       ],
       "parent_classes": {
         "TFloatWindow": 1
@@ -7080,6 +7338,15 @@
       "nodes": [
         "Trade.rsrc:2009@0x0048",
         "Trade.rsrc:2010@0x008c"
+      ],
+      "original_modules": [
+        {
+          "functions": [
+            "0x005ba7a0"
+          ],
+          "module": "UTradeViews.cpp",
+          "status": "confirmed"
+        }
       ],
       "parent_classes": {
         "TView": 2
@@ -7132,6 +7399,7 @@
         "Trade.rsrc:2010@0x3fb3",
         "Trade.rsrc:2010@0x4392"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TTradeCluster": 34
       },
@@ -7170,6 +7438,7 @@
         "Transport.rsrc:2014@0x1ad2",
         "Transport.rsrc:2014@0x1c1f"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TPicture": 19
       },
@@ -7207,6 +7476,7 @@
       "nodes": [
         "Minister.rsrc:9720@0x0080"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TFloatWindow": 1
       },
@@ -7226,6 +7496,7 @@
       "nodes": [
         "Diplo.rsrc:2008@0x087f"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TDiplomacyMapView": 1
       },
@@ -7244,6 +7515,7 @@
         "Linger.rsrc:4150@0x01ff",
         "Linger.rsrc:4150@0x026a"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TGamePreferencesPicture": 2
       },
@@ -7264,6 +7536,7 @@
       "nodes": [
         "FlagView.rsrc:8500@0x041e"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TCluster": 1
       },
@@ -7285,6 +7558,7 @@
       "nodes": [
         "Univ.rsrc:9210@0x026f"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TFloatWindow": 1
       },
@@ -7460,6 +7734,7 @@
         "Univ.rsrc:9210@0x1992",
         "Univ.rsrc:9210@0x1a06"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TArmyInfoView": 2,
         "TArmyToolbar": 4,
@@ -7682,6 +7957,7 @@
         "Transport.rsrc:2014@0x0004",
         "Transport.rsrc:3901@0x0004"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TCluster": 1,
         "TIndustryView": 11,
@@ -7761,6 +8037,7 @@
       "nodes": [
         "Citydlog.rsrc:9213@0x0080"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TFloatWindow": 1
       },
@@ -7781,6 +8058,7 @@
       "nodes": [
         "Linger.rsrc:2021@0x0080"
       ],
+      "original_modules": [],
       "parent_classes": {
         "TWindow": 1
       },
@@ -7868,6 +8146,7 @@
         "Tactical.rsrc:3865@0x0004",
         "TechStore.rsrc:2370@0x0004"
       ],
+      "original_modules": [],
       "parent_classes": {},
       "screens": [
         "Citydlog.rsrc:9220",
@@ -7925,6 +8204,282 @@
         "main": 1,
         "wind": 2
       }
+    }
+  },
+  "factories": {
+    "0x00415fe0": {
+      "name": "BuildTradeSchoolDialogControls",
+      "original_modules": [
+        {
+          "classes": [
+            "TArmoryView"
+          ],
+          "events": [
+            "0x23f8"
+          ],
+          "module": "UCityViews.cpp",
+          "resources": [
+            "Armory.rsrc:9208"
+          ],
+          "status": "candidate"
+        }
+      ]
+    },
+    "0x0041b6d0": {
+      "name": "InitializeIndustryViewTradeMoveControlsAndCommodityRows",
+      "original_modules": [
+        {
+          "classes": [
+            "TIndustryView",
+            "TTradeSchoolView"
+          ],
+          "events": [
+            "0x23f0",
+            "0x23f1",
+            "0x23f2",
+            "0x23f3",
+            "0x23f4",
+            "0x23f5",
+            "0x23f6",
+            "0x23f9",
+            "0x23fb",
+            "0x23fc",
+            "0x23fe",
+            "0x23ff"
+          ],
+          "module": "UCityViews.cpp",
+          "resources": [
+            "Citydlog.rsrc:9200",
+            "Citydlog.rsrc:9201",
+            "Citydlog.rsrc:9202",
+            "Citydlog.rsrc:9203",
+            "Citydlog.rsrc:9204",
+            "Citydlog.rsrc:9205",
+            "Citydlog.rsrc:9206",
+            "Citydlog.rsrc:9209",
+            "Citydlog.rsrc:9211",
+            "Citydlog.rsrc:9212",
+            "Citydlog.rsrc:9214",
+            "Citydlog.rsrc:9215"
+          ],
+          "status": "candidate"
+        }
+      ]
+    },
+    "0x00427360": {
+      "name": "InitializeIndustryOverviewPlacardsAndTradeStatusTags",
+      "original_modules": []
+    },
+    "0x004295a0": {
+      "name": "BuildTurnEventDialogResourcesForEvent547Or7D8",
+      "original_modules": [
+        {
+          "classes": [
+            "TDiplomacyMapView"
+          ],
+          "events": [
+            "0x07d8"
+          ],
+          "module": "UDiplomacyViews.cpp",
+          "resources": [
+            "Diplo.rsrc:2008"
+          ],
+          "status": "candidate"
+        }
+      ]
+    },
+    "0x00430c50": {
+      "name": "InitializeDealBookScreenControlsAndCommandTags",
+      "original_modules": [
+        {
+          "classes": [
+            "TDealBookPicture"
+          ],
+          "events": [
+            "0x2260"
+          ],
+          "module": "UTradeViews.cpp",
+          "resources": [
+            "FlagView.rsrc:8800"
+          ],
+          "status": "candidate"
+        }
+      ]
+    },
+    "0x004357b0": {
+      "name": "BuildTurnEventDialogUiByCode",
+      "original_modules": [
+        {
+          "classes": [
+            "TDlgWindow"
+          ],
+          "events": [
+            "0x03b6"
+          ],
+          "module": "UGameWindow.cpp",
+          "resources": [
+            "Linger.rsrc:950"
+          ],
+          "status": "candidate"
+        }
+      ]
+    },
+    "0x0043dbc0": {
+      "name": "InitializeArmyNavyReportViewsAndCommandTags",
+      "original_modules": [
+        {
+          "classes": [
+            "TMapDialog"
+          ],
+          "events": [
+            "0x07dd"
+          ],
+          "module": "UMapDlog.cpp",
+          "resources": [
+            "MapView.rsrc:2013"
+          ],
+          "status": "candidate"
+        },
+        {
+          "classes": [
+            "TCivToolbar",
+            "TCombatReportView"
+          ],
+          "events": [
+            "0x0546",
+            "0x07dd"
+          ],
+          "module": "USmallViews.cpp",
+          "resources": [
+            "MapView.rsrc:1350",
+            "MapView.rsrc:2013"
+          ],
+          "status": "candidate"
+        },
+        {
+          "classes": [
+            "TMapUberPicture"
+          ],
+          "events": [
+            "0x07dd"
+          ],
+          "module": "USuperMap.cpp",
+          "resources": [
+            "MapView.rsrc:2013"
+          ],
+          "status": "candidate"
+        }
+      ]
+    },
+    "0x0044a810": {
+      "name": "BuildTurnEventDialogResources_2508",
+      "original_modules": []
+    },
+    "0x0044af90": {
+      "name": "InitializeJoinSelectorDialogControlsAndNationSlots",
+      "original_modules": []
+    },
+    "0x0044fbc0": {
+      "name": "BuildUiResourceTreeByTemplateIdAndBindScreenContext",
+      "original_modules": []
+    },
+    "0x004538a0": {
+      "name": "InitializeGameSetupScreenControlsAndModeTags",
+      "original_modules": [
+        {
+          "classes": [
+            "TPlaceCityDialog"
+          ],
+          "events": [
+            "0x03b9"
+          ],
+          "module": "UCityViews.cpp",
+          "resources": [
+            "Startup.rsrc:953"
+          ],
+          "status": "candidate"
+        },
+        {
+          "classes": [
+            "TNetSelectPicture"
+          ],
+          "events": [
+            "0x05e2"
+          ],
+          "module": "USetupScreens.cpp",
+          "resources": [
+            "Startup.rsrc:1506"
+          ],
+          "status": "candidate"
+        },
+        {
+          "classes": [
+            "TMapUberPicture"
+          ],
+          "events": [
+            "0x03b8"
+          ],
+          "module": "USuperMap.cpp",
+          "resources": [
+            "Startup.rsrc:952"
+          ],
+          "status": "candidate"
+        }
+      ]
+    },
+    "0x0045b100": {
+      "name": "InitializeTacticalBattleViewToolbarAndDialogControls",
+      "original_modules": [
+        {
+          "classes": [
+            "TTacArmyView"
+          ],
+          "events": [
+            "0x0ed8"
+          ],
+          "module": "UTacViews.cpp",
+          "resources": [
+            "Tactical.rsrc:3800"
+          ],
+          "status": "candidate"
+        }
+      ]
+    },
+    "0x0045d520": {
+      "name": "BuildTurnEventDialogResourcesForEvent898",
+      "original_modules": []
+    },
+    "0x0045e0b0": {
+      "name": "BuildTurnEventDialogResourcesForEvent8FC",
+      "original_modules": []
+    },
+    "0x004601b0": {
+      "name": "InitializeTradeScreenBitmapControls",
+      "original_modules": [
+        {
+          "classes": [
+            "TTradeScreenPicture"
+          ],
+          "events": [
+            "0x07d9",
+            "0x07da"
+          ],
+          "module": "UTradeViews.cpp",
+          "resources": [
+            "Trade.rsrc:2009",
+            "Trade.rsrc:2010"
+          ],
+          "status": "candidate"
+        }
+      ]
+    },
+    "0x0046fd10": {
+      "name": "BuildTurnEventDialogResourcesForEvent7DE",
+      "original_modules": []
+    },
+    "0x004749a0": {
+      "name": "BuildUniversityDialogShell",
+      "original_modules": []
     }
   },
   "format_version": 1,
@@ -148972,6 +149527,15 @@
         "Armory.rsrc:9208@0x2048",
         "Armory.rsrc:9208@0x20ae",
         "Armory.rsrc:9208@0x2114"
+      ],
+      "original_modules": [
+        {
+          "classes": [
+            "TArmoryView"
+          ],
+          "module": "UCityViews.cpp",
+          "status": "candidate"
+        }
       ]
     },
     "Citydlog.rsrc:9200": {
@@ -148994,6 +149558,15 @@
         "Citydlog.rsrc:9200@0x073f",
         "Citydlog.rsrc:9200@0x07a5",
         "Citydlog.rsrc:9200@0x080b"
+      ],
+      "original_modules": [
+        {
+          "classes": [
+            "TIndustryView"
+          ],
+          "module": "UCityViews.cpp",
+          "status": "candidate"
+        }
       ]
     },
     "Citydlog.rsrc:9201": {
@@ -149014,6 +149587,15 @@
         "Citydlog.rsrc:9201@0x0673",
         "Citydlog.rsrc:9201@0x06d9",
         "Citydlog.rsrc:9201@0x073f"
+      ],
+      "original_modules": [
+        {
+          "classes": [
+            "TIndustryView"
+          ],
+          "module": "UCityViews.cpp",
+          "status": "candidate"
+        }
       ]
     },
     "Citydlog.rsrc:9202": {
@@ -149035,6 +149617,15 @@
         "Citydlog.rsrc:9202@0x06d9",
         "Citydlog.rsrc:9202@0x073f",
         "Citydlog.rsrc:9202@0x07a5"
+      ],
+      "original_modules": [
+        {
+          "classes": [
+            "TIndustryView"
+          ],
+          "module": "UCityViews.cpp",
+          "status": "candidate"
+        }
       ]
     },
     "Citydlog.rsrc:9203": {
@@ -149061,6 +149652,15 @@
         "Citydlog.rsrc:9203@0x08f2",
         "Citydlog.rsrc:9203@0x0958",
         "Citydlog.rsrc:9203@0x09be"
+      ],
+      "original_modules": [
+        {
+          "classes": [
+            "TIndustryView"
+          ],
+          "module": "UCityViews.cpp",
+          "status": "candidate"
+        }
       ]
     },
     "Citydlog.rsrc:9204": {
@@ -149087,6 +149687,15 @@
         "Citydlog.rsrc:9204@0x08f2",
         "Citydlog.rsrc:9204@0x0958",
         "Citydlog.rsrc:9204@0x09be"
+      ],
+      "original_modules": [
+        {
+          "classes": [
+            "TIndustryView"
+          ],
+          "module": "UCityViews.cpp",
+          "status": "candidate"
+        }
       ]
     },
     "Citydlog.rsrc:9205": {
@@ -149107,6 +149716,15 @@
         "Citydlog.rsrc:9205@0x0673",
         "Citydlog.rsrc:9205@0x06d9",
         "Citydlog.rsrc:9205@0x073f"
+      ],
+      "original_modules": [
+        {
+          "classes": [
+            "TIndustryView"
+          ],
+          "module": "UCityViews.cpp",
+          "status": "candidate"
+        }
       ]
     },
     "Citydlog.rsrc:9206": {
@@ -149127,6 +149745,15 @@
         "Citydlog.rsrc:9206@0x0673",
         "Citydlog.rsrc:9206@0x06d9",
         "Citydlog.rsrc:9206@0x073f"
+      ],
+      "original_modules": [
+        {
+          "classes": [
+            "TIndustryView"
+          ],
+          "module": "UCityViews.cpp",
+          "status": "candidate"
+        }
       ]
     },
     "Citydlog.rsrc:9209": {
@@ -149159,6 +149786,15 @@
         "Citydlog.rsrc:9209@0x0afd",
         "Citydlog.rsrc:9209@0x0b63",
         "Citydlog.rsrc:9209@0x0ba7"
+      ],
+      "original_modules": [
+        {
+          "classes": [
+            "TTradeSchoolView"
+          ],
+          "module": "UCityViews.cpp",
+          "status": "candidate"
+        }
       ]
     },
     "Citydlog.rsrc:9211": {
@@ -149175,6 +149811,15 @@
         "Citydlog.rsrc:9211@0x04e2",
         "Citydlog.rsrc:9211@0x0531",
         "Citydlog.rsrc:9211@0x0597"
+      ],
+      "original_modules": [
+        {
+          "classes": [
+            "TIndustryView"
+          ],
+          "module": "UCityViews.cpp",
+          "status": "candidate"
+        }
       ]
     },
     "Citydlog.rsrc:9212": {
@@ -149195,6 +149840,15 @@
         "Citydlog.rsrc:9212@0x0663",
         "Citydlog.rsrc:9212@0x06c9",
         "Citydlog.rsrc:9212@0x072f"
+      ],
+      "original_modules": [
+        {
+          "classes": [
+            "TIndustryView"
+          ],
+          "module": "UCityViews.cpp",
+          "status": "candidate"
+        }
       ]
     },
     "Citydlog.rsrc:9213": {
@@ -149226,7 +149880,8 @@
         "Citydlog.rsrc:9213@0x0b92",
         "Citydlog.rsrc:9213@0x0c1c",
         "Citydlog.rsrc:9213@0x0ca6"
-      ]
+      ],
+      "original_modules": []
     },
     "Citydlog.rsrc:9214": {
       "name": "Railyard",
@@ -149244,6 +149899,15 @@
         "Citydlog.rsrc:9214@0x0597",
         "Citydlog.rsrc:9214@0x05fd",
         "Citydlog.rsrc:9214@0x0663"
+      ],
+      "original_modules": [
+        {
+          "classes": [
+            "TIndustryView"
+          ],
+          "module": "UCityViews.cpp",
+          "status": "candidate"
+        }
       ]
     },
     "Citydlog.rsrc:9215": {
@@ -149264,6 +149928,15 @@
         "Citydlog.rsrc:9215@0x0663",
         "Citydlog.rsrc:9215@0x06c9",
         "Citydlog.rsrc:9215@0x072f"
+      ],
+      "original_modules": [
+        {
+          "classes": [
+            "TIndustryView"
+          ],
+          "module": "UCityViews.cpp",
+          "status": "candidate"
+        }
       ]
     },
     "Citydlog.rsrc:9220": {
@@ -149282,7 +149955,8 @@
         "Citydlog.rsrc:9220@0x0633",
         "Citydlog.rsrc:9220@0x0699",
         "Citydlog.rsrc:9220@0x06ff"
-      ]
+      ],
+      "original_modules": []
     },
     "Citydlog.rsrc:9221": {
       "name": "Generic expander",
@@ -149296,7 +149970,8 @@
         "Citydlog.rsrc:9221@0x0462",
         "Citydlog.rsrc:9221@0x04c8",
         "Citydlog.rsrc:9221@0x052e"
-      ]
+      ],
+      "original_modules": []
     },
     "Citymain.rsrc:2011": {
       "name": "City Screen",
@@ -149329,7 +150004,8 @@
         "Citymain.rsrc:2011@0x0a43",
         "Citymain.rsrc:2011@0x0ab4",
         "Citymain.rsrc:2011@0x0b22"
-      ]
+      ],
+      "original_modules": []
     },
     "Diplo.rsrc:1351": {
       "name": "Battle Report-Diplomacy Style",
@@ -149353,7 +150029,8 @@
         "Diplo.rsrc:1351@0x069a",
         "Diplo.rsrc:1351@0x070d",
         "Diplo.rsrc:1351@0x077e"
-      ]
+      ],
+      "original_modules": []
     },
     "Diplo.rsrc:1352": {
       "name": "Detail Battle Report",
@@ -149370,7 +150047,8 @@
         "Diplo.rsrc:1352@0x036a",
         "Diplo.rsrc:1352@0x03df",
         "Diplo.rsrc:1352@0x0433"
-      ]
+      ],
+      "original_modules": []
     },
     "Diplo.rsrc:2008": {
       "name": "Diplomacy map",
@@ -149443,6 +150121,15 @@
         "Diplo.rsrc:2008@0x1b98",
         "Diplo.rsrc:2008@0x1c09",
         "Diplo.rsrc:2008@0x1c7e"
+      ],
+      "original_modules": [
+        {
+          "classes": [
+            "TDiplomacyMapView"
+          ],
+          "module": "UDiplomacyViews.cpp",
+          "status": "candidate"
+        }
       ]
     },
     "Diplo.rsrc:2016": {
@@ -149475,7 +150162,8 @@
         "Diplo.rsrc:2016@0x0991",
         "Diplo.rsrc:2016@0x0a06",
         "Diplo.rsrc:2016@0x0aa4"
-      ]
+      ],
+      "original_modules": []
     },
     "Diplo.rsrc:2017": {
       "name": "Council Nomination",
@@ -149487,7 +150175,8 @@
         "Diplo.rsrc:2017@0x0153",
         "Diplo.rsrc:2017@0x01b9",
         "Diplo.rsrc:2017@0x021f"
-      ]
+      ],
+      "original_modules": []
     },
     "FlagView.rsrc:8450": {
       "name": "Diplo Offer Desk",
@@ -149507,7 +150196,8 @@
         "FlagView.rsrc:8450@0x0498",
         "FlagView.rsrc:8450@0x0509",
         "FlagView.rsrc:8450@0x0577"
-      ]
+      ],
+      "original_modules": []
     },
     "FlagView.rsrc:8451": {
       "name": "New newspaper",
@@ -149522,7 +150212,8 @@
         "FlagView.rsrc:8451@0x0274",
         "FlagView.rsrc:8451@0x02da",
         "FlagView.rsrc:8451@0x0340"
-      ]
+      ],
+      "original_modules": []
     },
     "FlagView.rsrc:8500": {
       "name": "Offer Sheet Screen",
@@ -149564,7 +150255,8 @@
         "FlagView.rsrc:8500@0x0e1e",
         "FlagView.rsrc:8500@0x0e8f",
         "FlagView.rsrc:8500@0x0efd"
-      ]
+      ],
+      "original_modules": []
     },
     "FlagView.rsrc:8800": {
       "name": "Deal Book",
@@ -149591,6 +150283,15 @@
         "FlagView.rsrc:8800@0x06f3",
         "FlagView.rsrc:8800@0x0764",
         "FlagView.rsrc:8800@0x07d2"
+      ],
+      "original_modules": [
+        {
+          "classes": [
+            "TDealBookPicture"
+          ],
+          "module": "UTradeViews.cpp",
+          "status": "candidate"
+        }
       ]
     },
     "Linger.rsrc:1000": {
@@ -149607,14 +150308,16 @@
         "Linger.rsrc:1000@0x0300",
         "Linger.rsrc:1000@0x036d",
         "Linger.rsrc:1000@0x0474"
-      ]
+      ],
+      "original_modules": []
     },
     "Linger.rsrc:1002": {
       "name": "MA - kDefaultViewID",
       "node_count": 1,
       "nodes": [
         "Linger.rsrc:1002@0x0004"
-      ]
+      ],
+      "original_modules": []
     },
     "Linger.rsrc:1003": {
       "name": "test - Show GP Stockpiles",
@@ -149856,7 +150559,8 @@
         "Linger.rsrc:1003@0x95af",
         "Linger.rsrc:1003@0x9615",
         "Linger.rsrc:1003@0x967b"
-      ]
+      ],
+      "original_modules": []
     },
     "Linger.rsrc:1009": {
       "name": "test - cGPRelationshipTable",
@@ -149935,7 +150639,8 @@
         "Linger.rsrc:1009@0x2d7b",
         "Linger.rsrc:1009@0x2de1",
         "Linger.rsrc:1009@0x2e47"
-      ]
+      ],
+      "original_modules": []
     },
     "Linger.rsrc:1012": {
       "name": "test - cMinorsRelationshipTable",
@@ -150104,7 +150809,8 @@
         "Linger.rsrc:1012@0x6382",
         "Linger.rsrc:1012@0x63e8",
         "Linger.rsrc:1012@0x644e"
-      ]
+      ],
+      "original_modules": []
     },
     "Linger.rsrc:1014": {
       "name": "test - MinorStockpiles",
@@ -150279,7 +150985,8 @@
         "Linger.rsrc:1014@0x6c9e",
         "Linger.rsrc:1014@0x6d04",
         "Linger.rsrc:1014@0x6d6a"
-      ]
+      ],
+      "original_modules": []
     },
     "Linger.rsrc:1015": {
       "name": "test - MinorTradeBids",
@@ -150562,7 +151269,8 @@
         "Linger.rsrc:1015@0xb0e2",
         "Linger.rsrc:1015@0xb148",
         "Linger.rsrc:1015@0xb1ae"
-      ]
+      ],
+      "original_modules": []
     },
     "Linger.rsrc:1024": {
       "name": "test - cMinorsTreatyTable",
@@ -150732,7 +151440,8 @@
         "Linger.rsrc:1024@0x63e2",
         "Linger.rsrc:1024@0x6448",
         "Linger.rsrc:1024@0x64ae"
-      ]
+      ],
+      "original_modules": []
     },
     "Linger.rsrc:1025": {
       "name": "test - cGP Treaty Table",
@@ -150812,7 +151521,8 @@
         "Linger.rsrc:1025@0x2d7b",
         "Linger.rsrc:1025@0x2de1",
         "Linger.rsrc:1025@0x2f18"
-      ]
+      ],
+      "original_modules": []
     },
     "Linger.rsrc:1026": {
       "name": "test - Automated turns",
@@ -150821,7 +151531,8 @@
         "Linger.rsrc:1026@0x0004",
         "Linger.rsrc:1026@0x0405",
         "Linger.rsrc:1026@0x046b"
-      ]
+      ],
+      "original_modules": []
     },
     "Linger.rsrc:1050": {
       "name": "GWorld Menu",
@@ -150829,7 +151540,8 @@
       "nodes": [
         "Linger.rsrc:1050@0x0004",
         "Linger.rsrc:1050@0x03f8"
-      ]
+      ],
+      "original_modules": []
     },
     "Linger.rsrc:1060": {
       "name": "GWorld Peeker",
@@ -150837,14 +151549,16 @@
       "nodes": [
         "Linger.rsrc:1060@0x0004",
         "Linger.rsrc:1060@0x02a5"
-      ]
+      ],
+      "original_modules": []
     },
     "Linger.rsrc:15000": {
       "name": "Cheater base window",
       "node_count": 1,
       "nodes": [
         "Linger.rsrc:15000@0x0004"
-      ]
+      ],
+      "original_modules": []
     },
     "Linger.rsrc:15001": {
       "name": "Cheaty Mission Snooper",
@@ -150864,7 +151578,8 @@
         "Linger.rsrc:15001@0x05ba",
         "Linger.rsrc:15001@0x062e",
         "Linger.rsrc:15001@0x06a2"
-      ]
+      ],
+      "original_modules": []
     },
     "Linger.rsrc:1502": {
       "name": "Load / Save",
@@ -150887,28 +151602,32 @@
         "Linger.rsrc:1502@0x05df",
         "Linger.rsrc:1502@0x0645",
         "Linger.rsrc:1502@0x06a3"
-      ]
+      ],
+      "original_modules": []
     },
     "Linger.rsrc:200": {
       "name": "MA - IDClipWindow",
       "node_count": 1,
       "nodes": [
         "Linger.rsrc:200@0x00f9"
-      ]
+      ],
+      "original_modules": []
     },
     "Linger.rsrc:2001": {
       "name": "Sphere window",
       "node_count": 1,
       "nodes": [
         "Linger.rsrc:2001@0x0004"
-      ]
+      ],
+      "original_modules": []
     },
     "Linger.rsrc:2002": {
       "name": "moveable main window",
       "node_count": 1,
       "nodes": [
         "Linger.rsrc:2002@0x0004"
-      ]
+      ],
+      "original_modules": []
     },
     "Linger.rsrc:2005": {
       "name": "test - Diplomacy Notices",
@@ -150916,7 +151635,8 @@
       "nodes": [
         "Linger.rsrc:2005@0x0004",
         "Linger.rsrc:2005@0x0320"
-      ]
+      ],
+      "original_modules": []
     },
     "Linger.rsrc:2020": {
       "name": "Minister Message",
@@ -150929,7 +151649,8 @@
         "Linger.rsrc:2020@0x01ba",
         "Linger.rsrc:2020@0x022e",
         "Linger.rsrc:2020@0x028e"
-      ]
+      ],
+      "original_modules": []
     },
     "Linger.rsrc:2021": {
       "name": "Really End Turn?",
@@ -150948,7 +151669,8 @@
         "Linger.rsrc:2021@0x0454",
         "Linger.rsrc:2021@0x04c8",
         "Linger.rsrc:2021@0x052e"
-      ]
+      ],
+      "original_modules": []
     },
     "Linger.rsrc:2050": {
       "name": "Minimap",
@@ -150956,14 +151678,16 @@
       "nodes": [
         "Linger.rsrc:2050@0x0004",
         "Linger.rsrc:2050@0x0062"
-      ]
+      ],
+      "original_modules": []
     },
     "Linger.rsrc:300": {
       "name": "MA - kDialogTEViewID",
       "node_count": 1,
       "nodes": [
         "Linger.rsrc:300@0x0004"
-      ]
+      ],
+      "original_modules": []
     },
     "Linger.rsrc:3000": {
       "name": "Help Msg",
@@ -150984,7 +151708,8 @@
         "Linger.rsrc:3000@0x0544",
         "Linger.rsrc:3000@0x05b7",
         "Linger.rsrc:3000@0x0617"
-      ]
+      ],
+      "original_modules": []
     },
     "Linger.rsrc:3005": {
       "name": "Terrain Help",
@@ -151009,7 +151734,8 @@
         "Linger.rsrc:3005@0x076c",
         "Linger.rsrc:3005@0x07bf",
         "Linger.rsrc:3005@0x0812"
-      ]
+      ],
+      "original_modules": []
     },
     "Linger.rsrc:4122": {
       "name": "Query Floater",
@@ -151032,7 +151758,8 @@
         "Linger.rsrc:4122@0x05f2",
         "Linger.rsrc:4122@0x0658",
         "Linger.rsrc:4122@0x06be"
-      ]
+      ],
+      "original_modules": []
     },
     "Linger.rsrc:4140": {
       "name": "Flag button",
@@ -151055,7 +151782,8 @@
         "Linger.rsrc:4140@0x064c",
         "Linger.rsrc:4140@0x06ba",
         "Linger.rsrc:4140@0x0728"
-      ]
+      ],
+      "original_modules": []
     },
     "Linger.rsrc:4150": {
       "name": "Game preferences",
@@ -151082,7 +151810,8 @@
         "Linger.rsrc:4150@0x08b5",
         "Linger.rsrc:4150@0x0926",
         "Linger.rsrc:4150@0x0994"
-      ]
+      ],
+      "original_modules": []
     },
     "Linger.rsrc:4175": {
       "name": "Credits",
@@ -151092,7 +151821,8 @@
         "Linger.rsrc:4175@0x0048",
         "Linger.rsrc:4175@0x00b7",
         "Linger.rsrc:4175@0x0154"
-      ]
+      ],
+      "original_modules": []
     },
     "Linger.rsrc:4300": {
       "name": "Game status",
@@ -151115,7 +151845,8 @@
         "Linger.rsrc:4300@0x0623",
         "Linger.rsrc:4300@0x0693",
         "Linger.rsrc:4300@0x0704"
-      ]
+      ],
+      "original_modules": []
     },
     "Linger.rsrc:4600": {
       "name": "Opening Cinematic",
@@ -151124,7 +151855,8 @@
         "Linger.rsrc:4600@0x0004",
         "Linger.rsrc:4600@0x0048",
         "Linger.rsrc:4600@0x00de"
-      ]
+      ],
+      "original_modules": []
     },
     "Linger.rsrc:8155": {
       "name": "test - Naval Battle",
@@ -151205,7 +151937,8 @@
         "Linger.rsrc:8155@0x2d68",
         "Linger.rsrc:8155@0x2dce",
         "Linger.rsrc:8155@0x2f05"
-      ]
+      ],
+      "original_modules": []
     },
     "Linger.rsrc:900": {
       "name": "Debug Flags Window",
@@ -151219,7 +151952,8 @@
         "Linger.rsrc:900@0x0514",
         "Linger.rsrc:900@0x07c8",
         "Linger.rsrc:900@0x08f0"
-      ]
+      ],
+      "original_modules": []
     },
     "Linger.rsrc:901": {
       "name": "debug - Initialize PerfMon",
@@ -151247,7 +151981,8 @@
         "Linger.rsrc:901@0x0af4",
         "Linger.rsrc:901@0x0ba6",
         "Linger.rsrc:901@0x0d8c"
-      ]
+      ],
+      "original_modules": []
     },
     "Linger.rsrc:9285": {
       "name": "Brick court",
@@ -151256,7 +151991,8 @@
         "Linger.rsrc:9285@0x0004",
         "Linger.rsrc:9285@0x0080",
         "Linger.rsrc:9285@0x00eb"
-      ]
+      ],
+      "original_modules": []
     },
     "Linger.rsrc:950": {
       "name": "About Box",
@@ -151264,6 +152000,15 @@
       "nodes": [
         "Linger.rsrc:950@0x0004",
         "Linger.rsrc:950@0x02a8"
+      ],
+      "original_modules": [
+        {
+          "classes": [
+            "TDlgWindow"
+          ],
+          "module": "UGameWindow.cpp",
+          "status": "candidate"
+        }
       ]
     },
     "Linger.rsrc:954": {
@@ -151279,7 +152024,8 @@
         "Linger.rsrc:954@0x0299",
         "Linger.rsrc:954@0x033e",
         "Linger.rsrc:954@0x03b2"
-      ]
+      ],
+      "original_modules": []
     },
     "MapView.rsrc:1350": {
       "name": "CombatReport 2",
@@ -151297,6 +152043,15 @@
         "MapView.rsrc:1350@0x05d4",
         "MapView.rsrc:1350@0x063a",
         "MapView.rsrc:1350@0x06a0"
+      ],
+      "original_modules": [
+        {
+          "classes": [
+            "TCombatReportView"
+          ],
+          "module": "USmallViews.cpp",
+          "status": "candidate"
+        }
       ]
     },
     "MapView.rsrc:2013": {
@@ -151376,6 +152131,29 @@
         "MapView.rsrc:2013@0x1e88",
         "MapView.rsrc:2013@0x1efd",
         "MapView.rsrc:2013@0x1f9b"
+      ],
+      "original_modules": [
+        {
+          "classes": [
+            "TMapDialog"
+          ],
+          "module": "UMapDlog.cpp",
+          "status": "candidate"
+        },
+        {
+          "classes": [
+            "TCivToolbar"
+          ],
+          "module": "USmallViews.cpp",
+          "status": "candidate"
+        },
+        {
+          "classes": [
+            "TMapUberPicture"
+          ],
+          "module": "USuperMap.cpp",
+          "status": "candidate"
+        }
       ]
     },
     "MapView.rsrc:3012": {
@@ -151390,7 +152168,8 @@
         "MapView.rsrc:3012@0x022f",
         "MapView.rsrc:3012@0x02cc",
         "MapView.rsrc:3012@0x0332"
-      ]
+      ],
+      "original_modules": []
     },
     "MapView.rsrc:3100": {
       "name": "Friendly army report",
@@ -151406,7 +152185,8 @@
         "MapView.rsrc:3100@0x02f9",
         "MapView.rsrc:3100@0x036d",
         "MapView.rsrc:3100@0x03d3"
-      ]
+      ],
+      "original_modules": []
     },
     "MapView.rsrc:3500": {
       "name": "Garrison",
@@ -151418,7 +152198,8 @@
         "MapView.rsrc:3500@0x0325",
         "MapView.rsrc:3500@0x0390",
         "MapView.rsrc:3500@0x03fb"
-      ]
+      ],
+      "original_modules": []
     },
     "MapView.rsrc:3508": {
       "name": "Name unit",
@@ -151430,7 +152211,8 @@
         "MapView.rsrc:3508@0x0154",
         "MapView.rsrc:3508@0x01c8",
         "MapView.rsrc:3508@0x02a3"
-      ]
+      ],
+      "original_modules": []
     },
     "MapView.rsrc:7200": {
       "name": "Engineer Build Menu",
@@ -151439,7 +152221,8 @@
         "MapView.rsrc:7200@0x0004",
         "MapView.rsrc:7200@0x026f",
         "MapView.rsrc:7200@0x02c2"
-      ]
+      ],
+      "original_modules": []
     },
     "MapView.rsrc:9460": {
       "name": "Army Maker",
@@ -151510,7 +152293,8 @@
         "MapView.rsrc:9460@0x2344",
         "MapView.rsrc:9460@0x23f5",
         "MapView.rsrc:9460@0x245b"
-      ]
+      ],
+      "original_modules": []
     },
     "MapView.rsrc:9462": {
       "name": "Navy Maker II",
@@ -151534,7 +152318,8 @@
         "MapView.rsrc:9462@0x0a0a",
         "MapView.rsrc:9462@0x0a70",
         "MapView.rsrc:9462@0x0ae4"
-      ]
+      ],
+      "original_modules": []
     },
     "MapView.rsrc:9465": {
       "name": "Terrain Info Window /h",
@@ -151543,7 +152328,8 @@
         "MapView.rsrc:9465@0x0004",
         "MapView.rsrc:9465@0x026f",
         "MapView.rsrc:9465@0x02cf"
-      ]
+      ],
+      "original_modules": []
     },
     "MapView.rsrc:9470": {
       "name": "Civilian Maker",
@@ -151554,7 +152340,8 @@
         "MapView.rsrc:9470@0x02cf",
         "MapView.rsrc:9470@0x0335",
         "MapView.rsrc:9470@0x0774"
-      ]
+      ],
+      "original_modules": []
     },
     "MapView.rsrc:9474": {
       "name": "Friendly Fleet Report",
@@ -151573,7 +152360,8 @@
         "MapView.rsrc:9474@0x042c",
         "MapView.rsrc:9474@0x0492",
         "MapView.rsrc:9474@0x04f8"
-      ]
+      ],
+      "original_modules": []
     },
     "MapView.rsrc:9475": {
       "name": "Enemy Fleet Report",
@@ -151591,7 +152379,8 @@
         "MapView.rsrc:9475@0x03b8",
         "MapView.rsrc:9475@0x041e",
         "MapView.rsrc:9475@0x0484"
-      ]
+      ],
+      "original_modules": []
     },
     "MapView.rsrc:9476": {
       "name": "Navy Maker",
@@ -151605,7 +152394,8 @@
         "MapView.rsrc:9476@0x05d4",
         "MapView.rsrc:9476@0x0685",
         "MapView.rsrc:9476@0x06eb"
-      ]
+      ],
+      "original_modules": []
     },
     "MapView.rsrc:9477": {
       "name": "Merchant interception report",
@@ -151631,7 +152421,8 @@
         "MapView.rsrc:9477@0x06e8",
         "MapView.rsrc:9477@0x074e",
         "MapView.rsrc:9477@0x07b4"
-      ]
+      ],
+      "original_modules": []
     },
     "MapView.rsrc:9478": {
       "name": "Navy Roster",
@@ -151643,7 +152434,8 @@
         "MapView.rsrc:9478@0x0342",
         "MapView.rsrc:9478@0x0391",
         "MapView.rsrc:9478@0x0401"
-      ]
+      ],
+      "original_modules": []
     },
     "Minister.rsrc:8900": {
       "name": "Foreign Minister Dlog",
@@ -151659,7 +152451,8 @@
         "Minister.rsrc:8900@0x02e2",
         "Minister.rsrc:8900@0x0340",
         "Minister.rsrc:8900@0x039e"
-      ]
+      ],
+      "original_modules": []
     },
     "Minister.rsrc:8930": {
       "name": "FM Recco Book",
@@ -151669,7 +152462,8 @@
         "Minister.rsrc:8930@0x0080",
         "Minister.rsrc:8930@0x00f1",
         "Minister.rsrc:8930@0x0161"
-      ]
+      ],
+      "original_modules": []
     },
     "Minister.rsrc:8940": {
       "name": "MerMar Book",
@@ -151679,7 +152473,8 @@
         "Minister.rsrc:8940@0x0080",
         "Minister.rsrc:8940@0x00f3",
         "Minister.rsrc:8940@0x0163"
-      ]
+      ],
+      "original_modules": []
     },
     "Minister.rsrc:8950": {
       "name": "Mini Deal Book",
@@ -151689,7 +152484,8 @@
         "Minister.rsrc:8950@0x0080",
         "Minister.rsrc:8950@0x00f1",
         "Minister.rsrc:8950@0x0161"
-      ]
+      ],
+      "original_modules": []
     },
     "Minister.rsrc:8960": {
       "name": "Exports Book",
@@ -151699,7 +152495,8 @@
         "Minister.rsrc:8960@0x0080",
         "Minister.rsrc:8960@0x00ec",
         "Minister.rsrc:8960@0x015c"
-      ]
+      ],
+      "original_modules": []
     },
     "Minister.rsrc:8970": {
       "name": "Escorts Book - Can We kill this?",
@@ -151709,7 +152506,8 @@
         "Minister.rsrc:8970@0x0080",
         "Minister.rsrc:8970@0x00ef",
         "Minister.rsrc:8970@0x015f"
-      ]
+      ],
+      "original_modules": []
     },
     "Minister.rsrc:8990": {
       "name": "Price History Book",
@@ -151719,7 +152517,8 @@
         "Minister.rsrc:8990@0x0080",
         "Minister.rsrc:8990@0x00e9",
         "Minister.rsrc:8990@0x0159"
-      ]
+      ],
+      "original_modules": []
     },
     "Minister.rsrc:9480": {
       "name": "Minister Reward",
@@ -151731,7 +152530,8 @@
         "Minister.rsrc:9480@0x0154",
         "Minister.rsrc:9480@0x01b4",
         "Minister.rsrc:9480@0x0214"
-      ]
+      ],
+      "original_modules": []
     },
     "Minister.rsrc:9600": {
       "name": "Defense Minister shelf",
@@ -151744,7 +152544,8 @@
         "Minister.rsrc:9600@0x01c8",
         "Minister.rsrc:9600@0x0226",
         "Minister.rsrc:9600@0x0284"
-      ]
+      ],
+      "original_modules": []
     },
     "Minister.rsrc:9610": {
       "name": "DM Recco Book",
@@ -151754,7 +152555,8 @@
         "Minister.rsrc:9610@0x0080",
         "Minister.rsrc:9610@0x00f1",
         "Minister.rsrc:9610@0x0161"
-      ]
+      ],
+      "original_modules": []
     },
     "Minister.rsrc:9700": {
       "name": "Interior Minister shelf",
@@ -151767,7 +152569,8 @@
         "Minister.rsrc:9700@0x01c9",
         "Minister.rsrc:9700@0x0227",
         "Minister.rsrc:9700@0x0285"
-      ]
+      ],
+      "original_modules": []
     },
     "Minister.rsrc:9710": {
       "name": "IM Recco book",
@@ -151777,7 +152580,8 @@
         "Minister.rsrc:9710@0x0080",
         "Minister.rsrc:9710@0x00f2",
         "Minister.rsrc:9710@0x0162"
-      ]
+      ],
+      "original_modules": []
     },
     "Minister.rsrc:9720": {
       "name": "Treasuries Book",
@@ -151787,7 +152591,8 @@
         "Minister.rsrc:9720@0x0080",
         "Minister.rsrc:9720@0x00ef",
         "Minister.rsrc:9720@0x015f"
-      ]
+      ],
+      "original_modules": []
     },
     "Multiplayer.rsrc:1507": {
       "name": "kMultiplayerPickGameDialog",
@@ -151801,7 +152606,8 @@
         "Multiplayer.rsrc:1507@0x0264",
         "Multiplayer.rsrc:1507@0x02d7",
         "Multiplayer.rsrc:1507@0x034b"
-      ]
+      ],
+      "original_modules": []
     },
     "Multiplayer.rsrc:1508": {
       "name": "kGameSetupNetGameOptionsView",
@@ -151840,7 +152646,8 @@
         "Multiplayer.rsrc:1508@0x0cfa",
         "Multiplayer.rsrc:1508@0x0d58",
         "Multiplayer.rsrc:1508@0x0db6"
-      ]
+      ],
+      "original_modules": []
     },
     "Multiplayer.rsrc:1510": {
       "name": "kMultiplayerMessageSendWindow",
@@ -151858,7 +152665,8 @@
         "Multiplayer.rsrc:1510@0x045b",
         "Multiplayer.rsrc:1510@0x04c9",
         "Multiplayer.rsrc:1510@0x0537"
-      ]
+      ],
+      "original_modules": []
     },
     "Shipyard.rsrc:9207": {
       "name": "Shipyard 3",
@@ -151913,7 +152721,8 @@
         "Shipyard.rsrc:9207@0x1618",
         "Shipyard.rsrc:9207@0x167e",
         "Shipyard.rsrc:9207@0x16e4"
-      ]
+      ],
+      "original_modules": []
     },
     "Startup.rsrc:1500": {
       "name": "kGameSetupMainView",
@@ -151929,7 +152738,8 @@
         "Startup.rsrc:1500@0x02c5",
         "Startup.rsrc:1500@0x0363",
         "Startup.rsrc:1500@0x03c1"
-      ]
+      ],
+      "original_modules": []
     },
     "Startup.rsrc:1501": {
       "name": "kGameSetupRandomView",
@@ -151961,7 +152771,8 @@
         "Startup.rsrc:1501@0x0a2a",
         "Startup.rsrc:1501@0x0a88",
         "Startup.rsrc:1501@0x0ae8"
-      ]
+      ],
+      "original_modules": []
     },
     "Startup.rsrc:1503": {
       "name": "kGameSetupScenarioView",
@@ -151978,7 +152789,8 @@
         "Startup.rsrc:1503@0x0380",
         "Startup.rsrc:1503@0x03e8",
         "Startup.rsrc:1503@0x0486"
-      ]
+      ],
+      "original_modules": []
     },
     "Startup.rsrc:1504": {
       "name": "High Score",
@@ -151988,7 +152800,8 @@
         "Startup.rsrc:1504@0x0048",
         "Startup.rsrc:1504@0x008c",
         "Startup.rsrc:1504@0x0134"
-      ]
+      ],
+      "original_modules": []
     },
     "Startup.rsrc:1506": {
       "name": "kGameSetupNetworkSelectView",
@@ -152014,6 +152827,15 @@
         "Startup.rsrc:1506@0x0795",
         "Startup.rsrc:1506@0x07fb",
         "Startup.rsrc:1506@0x08a0"
+      ],
+      "original_modules": [
+        {
+          "classes": [
+            "TNetSelectPicture"
+          ],
+          "module": "USetupScreens.cpp",
+          "status": "candidate"
+        }
       ]
     },
     "Startup.rsrc:1509": {
@@ -152031,7 +152853,8 @@
         "Startup.rsrc:1509@0x0385",
         "Startup.rsrc:1509@0x03f8",
         "Startup.rsrc:1509@0x0456"
-      ]
+      ],
+      "original_modules": []
     },
     "Startup.rsrc:1515": {
       "name": "Game Score",
@@ -152067,7 +152890,8 @@
         "Startup.rsrc:1515@0x0c2b",
         "Startup.rsrc:1515@0x0ca0",
         "Startup.rsrc:1515@0x0d15"
-      ]
+      ],
+      "original_modules": []
     },
     "Startup.rsrc:20000": {
       "name": "Special Demo Quit",
@@ -152083,7 +152907,8 @@
         "Startup.rsrc:20000@0x034b",
         "Startup.rsrc:20000@0x03b1",
         "Startup.rsrc:20000@0x0417"
-      ]
+      ],
+      "original_modules": []
     },
     "Startup.rsrc:951": {
       "name": "test - Game Setup Dialog",
@@ -152097,7 +152922,8 @@
         "Startup.rsrc:951@0x0c89",
         "Startup.rsrc:951@0x0eab",
         "Startup.rsrc:951@0x10cd"
-      ]
+      ],
+      "original_modules": []
     },
     "Startup.rsrc:952": {
       "name": "City Site selector",
@@ -152111,6 +152937,15 @@
         "Startup.rsrc:952@0x023a",
         "Startup.rsrc:952@0x028b",
         "Startup.rsrc:952@0x02ff"
+      ],
+      "original_modules": [
+        {
+          "classes": [
+            "TMapUberPicture"
+          ],
+          "module": "USuperMap.cpp",
+          "status": "candidate"
+        }
       ]
     },
     "Startup.rsrc:953": {
@@ -152124,6 +152959,15 @@
         "Startup.rsrc:953@0x03b9",
         "Startup.rsrc:953@0x042d",
         "Startup.rsrc:953@0x0493"
+      ],
+      "original_modules": [
+        {
+          "classes": [
+            "TPlaceCityDialog"
+          ],
+          "module": "UCityViews.cpp",
+          "status": "candidate"
+        }
       ]
     },
     "Startup.rsrc:960": {
@@ -152141,6 +152985,15 @@
         "Startup.rsrc:960@0x0784",
         "Startup.rsrc:960@0x07e4",
         "Startup.rsrc:960@0x1006"
+      ],
+      "original_modules": [
+        {
+          "classes": [
+            "TMapUberPicture"
+          ],
+          "module": "USuperMap.cpp",
+          "status": "candidate"
+        }
       ]
     },
     "Startup.rsrc:965": {
@@ -152155,7 +153008,8 @@
         "Startup.rsrc:965@0x025f",
         "Startup.rsrc:965@0x0310",
         "Startup.rsrc:965@0x0376"
-      ]
+      ],
+      "original_modules": []
     },
     "Startup.rsrc:966": {
       "name": "Verb Form Dialog",
@@ -152166,7 +153020,8 @@
         "Startup.rsrc:966@0x00e0",
         "Startup.rsrc:966@0x0146",
         "Startup.rsrc:966@0x01b9"
-      ]
+      ],
+      "original_modules": []
     },
     "Tactical.rsrc:3800": {
       "name": "Tactical View",
@@ -152185,6 +153040,15 @@
         "Tactical.rsrc:3800@0x0480",
         "Tactical.rsrc:3800@0x04e0",
         "Tactical.rsrc:3800@0x054e"
+      ],
+      "original_modules": [
+        {
+          "classes": [
+            "TTacArmyView"
+          ],
+          "module": "UTacViews.cpp",
+          "status": "candidate"
+        }
       ]
     },
     "Tactical.rsrc:3821": {
@@ -152197,7 +153061,8 @@
         "Tactical.rsrc:3821@0x0169",
         "Tactical.rsrc:3821@0x0206",
         "Tactical.rsrc:3821@0x0279"
-      ]
+      ],
+      "original_modules": []
     },
     "Tactical.rsrc:3865": {
       "name": "Tac Deploy Choice",
@@ -152213,7 +153078,8 @@
         "Tactical.rsrc:3865@0x033e",
         "Tactical.rsrc:3865@0x03b2",
         "Tactical.rsrc:3865@0x0412"
-      ]
+      ],
+      "original_modules": []
     },
     "Tech.rsrc:2200": {
       "name": "Technology Advance",
@@ -152228,7 +153094,8 @@
         "Tech.rsrc:2200@0x0298",
         "Tech.rsrc:2200@0x030d",
         "Tech.rsrc:2200@0x03ab"
-      ]
+      ],
+      "original_modules": []
     },
     "TechStore.rsrc:2300": {
       "name": "Tech Store",
@@ -152254,7 +153121,8 @@
         "TechStore.rsrc:2300@0x0773",
         "TechStore.rsrc:2300@0x07e8",
         "TechStore.rsrc:2300@0x085d"
-      ]
+      ],
+      "original_modules": []
     },
     "TechStore.rsrc:2370": {
       "name": "history",
@@ -152267,7 +153135,8 @@
         "TechStore.rsrc:2370@0x01a9",
         "TechStore.rsrc:2370@0x0209",
         "TechStore.rsrc:2370@0x0258"
-      ]
+      ],
+      "original_modules": []
     },
     "Trade.rsrc:2009": {
       "name": "trade chalk & hooks",
@@ -152441,6 +153310,15 @@
         "Trade.rsrc:2009@0x4e49",
         "Trade.rsrc:2009@0x4ea9",
         "Trade.rsrc:2009@0x4f09"
+      ],
+      "original_modules": [
+        {
+          "classes": [
+            "TTradeScreenPicture"
+          ],
+          "module": "UTradeViews.cpp",
+          "status": "candidate"
+        }
       ]
     },
     "Trade.rsrc:2010": {
@@ -152616,6 +153494,15 @@
         "Trade.rsrc:2010@0x4e27",
         "Trade.rsrc:2010@0x4e9b",
         "Trade.rsrc:2010@0x4f0f"
+      ],
+      "original_modules": [
+        {
+          "classes": [
+            "TTradeScreenPicture"
+          ],
+          "module": "UTradeViews.cpp",
+          "status": "candidate"
+        }
       ]
     },
     "Transport.rsrc:2014": {
@@ -152693,7 +153580,8 @@
         "Transport.rsrc:2014@0x1d6c",
         "Transport.rsrc:2014@0x1de1",
         "Transport.rsrc:2014@0x1e56"
-      ]
+      ],
+      "original_modules": []
     },
     "Transport.rsrc:3901": {
       "name": "kShowUnitHistoryView",
@@ -152727,7 +153615,8 @@
         "Transport.rsrc:3901@0x0a6d",
         "Transport.rsrc:3901@0x0ad3",
         "Transport.rsrc:3901@0x0b39"
-      ]
+      ],
+      "original_modules": []
     },
     "Univ.rsrc:9210": {
       "name": "University",
@@ -152792,19 +153681,2088 @@
         "Univ.rsrc:9210@0x1b65",
         "Univ.rsrc:9210@0x1bdd",
         "Univ.rsrc:9210@0x1c43"
-      ]
+      ],
+      "original_modules": []
     }
   },
   "source": {
     "path": "vendor/macos_codewarrior/evidence/resources/ui_views.json",
     "resource_set_sha256": "1eae77e9f5180dc16800ad2d9f3773969b4225fb7398bfa08a89c9cf358d4ad6"
   },
+  "source_modules": {
+    "functions": {
+      "0x0049d620": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "definition_source": "src/game/ui_invalidation_guard.cpp",
+                "kind": "source_path_global_reference",
+                "path": "D:\\Ambit\\Cross\\USmallViews.cpp",
+                "symbol": "kUSmallViewsCppPath"
+              }
+            ],
+            "module": "USmallViews.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "TemporarilyClearAndRestoreUiInvalidationFlag",
+        "owner_class": null,
+        "recovered_source": "src/game/ui_invalidation_guard.cpp"
+      },
+      "0x004a1f80": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "definition_source": "src/game/global_data_tables.cpp",
+                "kind": "source_path_global_reference",
+                "path": "D:\\Ambit\\Cross\\UArmyMgr.cpp",
+                "symbol": "s_SourcePathUArmyMgr_0069573C"
+              }
+            ],
+            "module": "UArmyMgr.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "TArmyMgr::ProcessTileUnitListsAndApplyRandomStatusUpdates",
+        "owner_class": "TArmyMgr",
+        "recovered_source": "src/game/TArmyMgr.cpp"
+      },
+      "0x004a2500": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "definition_source": "src/game/global_data_tables.cpp",
+                "kind": "source_path_global_reference",
+                "path": "D:\\Ambit\\Cross\\UArmyMgr.cpp",
+                "symbol": "s_SourcePathUArmyMgr_0069573C"
+              }
+            ],
+            "module": "UArmyMgr.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "TArmyMgr::IterateLinkedListCursorAndClearPerTileByte0F",
+        "owner_class": "TArmyMgr",
+        "recovered_source": "src/game/TArmyMgr.cpp"
+      },
+      "0x004a3200": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "definition_source": "src/game/global_data_tables.cpp",
+                "kind": "source_path_global_reference",
+                "path": "D:\\Ambit\\Cross\\UArmyMgr.cpp",
+                "symbol": "s_SourcePathUArmyMgr_0069573C"
+              }
+            ],
+            "module": "UArmyMgr.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "TArmyMgr::TryCreateTacticalBattleViewForTileArmies",
+        "owner_class": "TArmyMgr",
+        "recovered_source": "src/game/TArmyMgr.cpp"
+      },
+      "0x004a77b0": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "definition_source": "src/game/global_data_tables.cpp",
+                "kind": "source_path_global_reference",
+                "path": "D:\\Ambit\\Cross\\UArmyMgr.cpp",
+                "symbol": "s_SourcePathUArmyMgr_0069573C"
+              }
+            ],
+            "module": "UArmyMgr.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "TArmyStack::ReadFrom",
+        "owner_class": "TArmyStack",
+        "recovered_source": "src/game/TArmyStack.cpp"
+      },
+      "0x004a7b20": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "definition_source": "src/game/global_data_tables.cpp",
+                "kind": "source_path_global_reference",
+                "path": "D:\\Ambit\\Cross\\UArmyMgr.cpp",
+                "symbol": "s_SourcePathUArmyMgr_0069573C"
+              }
+            ],
+            "module": "UArmyMgr.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "TArmyStack::AddUnitToChainHead",
+        "owner_class": "TArmyStack",
+        "recovered_source": "src/game/TArmyStack.cpp"
+      },
+      "0x004a9ca0": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "definition_source": "src/game/global_data_tables.cpp",
+                "kind": "source_path_global_reference",
+                "path": "D:\\Ambit\\Cross\\UArmyViews.cpp",
+                "symbol": "s_SourcePathUArmyViews_00695858"
+              }
+            ],
+            "module": "UArmyViews.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "HandleCrossUArmyViewsNameCommand",
+        "owner_class": null,
+        "recovered_source": "src/game/TArmyUnitView.cpp"
+      },
+      "0x004be8d0": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "definition_source": "src/game/global_data_tables.cpp",
+                "kind": "source_path_global_reference",
+                "path": "D:\\Ambit\\Cross\\UCityMinister.cpp",
+                "symbol": "s_SourcePathUCityMinister_006964B0"
+              }
+            ],
+            "module": "UCityMinister.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "InitializeCityInteriorMinister",
+        "owner_class": null,
+        "recovered_source": "src/game/TCityInteriorMinister.cpp"
+      },
+      "0x004cc550": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "definition_source": "src/game/global_data_tables.cpp",
+                "kind": "source_path_global_reference",
+                "path": "D:\\Ambit\\Cross\\UCityViews.cpp",
+                "symbol": "s_SourcePathUCityViews_00696650"
+              }
+            ],
+            "module": "UCityViews.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "TPurchaseCluster::SetCityViewValueControlAmount",
+        "owner_class": "TPurchaseCluster",
+        "recovered_source": "src/game/TPurchaseCluster.cpp"
+      },
+      "0x004ccf30": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "kind": "inline_source_path_literal",
+                "path": "D:\\Ambit\\Cross\\UCityViews.cpp"
+              }
+            ],
+            "module": "UCityViews.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "TIndustryView::HandleEvent",
+        "owner_class": "TIndustryView",
+        "recovered_source": "src/game/TIndustryView.cpp"
+      },
+      "0x004cd8d0": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "definition_source": "src/game/global_data_tables.cpp",
+                "kind": "source_path_global_reference",
+                "path": "D:\\Ambit\\Cross\\UCityViews.cpp",
+                "symbol": "s_SourcePathUCityViews_00696650"
+              }
+            ],
+            "module": "UCityViews.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "TTradeSchoolView::DoStartup",
+        "owner_class": "TTradeSchoolView",
+        "recovered_source": "src/game/TTradeSchoolView.cpp"
+      },
+      "0x004ce070": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "definition_source": "src/game/global_data_tables.cpp",
+                "kind": "source_path_global_reference",
+                "path": "D:\\Ambit\\Cross\\UCityViews.cpp",
+                "symbol": "s_SourcePathUCityViews_00696650"
+              }
+            ],
+            "module": "UCityViews.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "TTradeSchoolView::UpdateFields",
+        "owner_class": "TTradeSchoolView",
+        "recovered_source": "src/game/TTradeSchoolView.cpp"
+      },
+      "0x004cf350": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "definition_source": "src/game/global_data_tables.cpp",
+                "kind": "source_path_global_reference",
+                "path": "D:\\Ambit\\Cross\\UCityViews.cpp",
+                "symbol": "s_SourcePathUCityViews_00696650"
+              }
+            ],
+            "module": "UCityViews.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "TArmoryView::HandleEvent",
+        "owner_class": "TArmoryView",
+        "recovered_source": "src/game/TArmoryView.cpp"
+      },
+      "0x004d1880": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "definition_source": "src/game/global_data_tables.cpp",
+                "kind": "source_path_global_reference",
+                "path": "D:\\Ambit\\Cross\\UCityViews.cpp",
+                "symbol": "s_SourcePathUCityViews_00696650"
+              }
+            ],
+            "module": "UCityViews.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "TPlaceCityDialog::StuffValues",
+        "owner_class": "TPlaceCityDialog",
+        "recovered_source": "src/game/TPlaceCityDialog.cpp"
+      },
+      "0x004db7d0": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "definition_source": "src/game/global_data_tables.cpp",
+                "kind": "source_path_global_reference",
+                "path": "D:\\Ambit\\Cross\\UCountry.cpp",
+                "symbol": "g_szUCountrySourcePath_00696728"
+              }
+            ],
+            "module": "UCountry.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "TGreatPower::UpdateOrderEntryAvailabilityByConnectedRegionMask",
+        "owner_class": "TGreatPower",
+        "recovered_source": "src/game/TGreatPower.cpp"
+      },
+      "0x004e8540": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "kind": "inline_source_path_literal",
+                "path": "D:\\Ambit\\Cross\\UCountryAuto.cpp"
+              }
+            ],
+            "module": "UCountryAuto.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "TGreatPower::QueueMapActionMissionFromCandidateAndMarkState",
+        "owner_class": "TGreatPower",
+        "recovered_source": "src/game/TAutoGreatPower.cpp"
+      },
+      "0x004ec540": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "definition_source": "src/game/global_data_tables.cpp",
+                "kind": "source_path_global_reference",
+                "path": "D:\\Ambit\\Cross\\UDefenseMinister.cpp",
+                "symbol": "s_SourcePathUDefenseMinister_00696860"
+              }
+            ],
+            "module": "UDefenseMinister.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "TDefenseMinister::MinisterSlot14",
+        "owner_class": "TDefenseMinister",
+        "recovered_source": "src/game/TDefenseMinister.cpp"
+      },
+      "0x004ecbb0": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "definition_source": "src/game/global_data_tables.cpp",
+                "kind": "source_path_global_reference",
+                "path": "D:\\Ambit\\Cross\\UDefenseMinister.cpp",
+                "symbol": "s_SourcePathUDefenseMinister_00696860"
+              }
+            ],
+            "module": "UDefenseMinister.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "TDefenseMinister::BuildTileRingPriorityMapForNationTileList",
+        "owner_class": "TDefenseMinister",
+        "recovered_source": "src/game/TDefenseMinister.cpp"
+      },
+      "0x004ed050": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "definition_source": "src/game/global_data_tables.cpp",
+                "kind": "source_path_global_reference",
+                "path": "D:\\Ambit\\Cross\\UDefenseMinister.cpp",
+                "symbol": "s_SourcePathUDefenseMinister_00696860"
+              }
+            ],
+            "module": "UDefenseMinister.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "TDefenseMinister::BuildHexAreaTileIndexListIntoAllocatedBuffer",
+        "owner_class": "TDefenseMinister",
+        "recovered_source": "src/game/TDefenseMinister.cpp"
+      },
+      "0x004f3ea0": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "definition_source": "src/game/global_data_tables.cpp",
+                "kind": "source_path_global_reference",
+                "path": "D:\\Ambit\\Cross\\UDiplomacyViews.cpp",
+                "symbol": "s_SourcePathUDiplomacyViews_00696AE0"
+              }
+            ],
+            "module": "UDiplomacyViews.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "TDiplomacyMapView::BuildDiplomacyNationOverlayGeometryAndHitMasks",
+        "owner_class": "TDiplomacyMapView",
+        "recovered_source": "src/game/TDiplomacyMapView.cpp"
+      },
+      "0x004fe840": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "definition_source": "src/game/TDisplayMgr.cpp",
+                "kind": "source_path_global_reference",
+                "path": "D:\\Ambit\\Cross\\UDisplayMgr.cpp",
+                "symbol": "kSourceFileUDisplayMgr"
+              }
+            ],
+            "module": "UDisplayMgr.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "TDisplayMgr::InitializeTurnOrderNavigationDialogByViewportSize",
+        "owner_class": "TDisplayMgr",
+        "recovered_source": "src/game/TDisplayMgr.cpp"
+      },
+      "0x004fec20": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "definition_source": "src/game/TDisplayMgr.cpp",
+                "kind": "source_path_global_reference",
+                "path": "D:\\Ambit\\Cross\\UDisplayMgr.cpp",
+                "symbol": "kSourceFileUDisplayMgr"
+              }
+            ],
+            "module": "UDisplayMgr.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "TDisplayMgr::AssertUDisplayMgrLine471",
+        "owner_class": "TDisplayMgr",
+        "recovered_source": "src/game/TDisplayMgr.cpp"
+      },
+      "0x004fec50": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "definition_source": "src/game/TDisplayMgr.cpp",
+                "kind": "source_path_global_reference",
+                "path": "D:\\Ambit\\Cross\\UDisplayMgr.cpp",
+                "symbol": "kSourceFileUDisplayMgr"
+              }
+            ],
+            "module": "UDisplayMgr.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "TDisplayMgr::AssertUDisplayMgrLine495",
+        "owner_class": "TDisplayMgr",
+        "recovered_source": "src/game/TDisplayMgr.cpp"
+      },
+      "0x004fed70": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "definition_source": "src/game/TDisplayMgr.cpp",
+                "kind": "source_path_global_reference",
+                "path": "D:\\Ambit\\Cross\\UDisplayMgr.cpp",
+                "symbol": "kSourceFileUDisplayMgr"
+              }
+            ],
+            "module": "UDisplayMgr.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "TDisplayMgr::AssertUDisplayMgrLines614And616",
+        "owner_class": "TDisplayMgr",
+        "recovered_source": "src/game/TDisplayMgr.cpp"
+      },
+      "0x004fedc0": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "definition_source": "src/game/TDisplayMgr.cpp",
+                "kind": "source_path_global_reference",
+                "path": "D:\\Ambit\\Cross\\UDisplayMgr.cpp",
+                "symbol": "kSourceFileUDisplayMgr"
+              }
+            ],
+            "module": "UDisplayMgr.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "TDisplayMgr::LoadMainViewClipSnapshotIntoQuickDrawState",
+        "owner_class": "TDisplayMgr",
+        "recovered_source": "src/game/TDisplayMgr.cpp"
+      },
+      "0x004ff1c0": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "definition_source": "src/game/TDisplayMgr.cpp",
+                "kind": "source_path_global_reference",
+                "path": "D:\\Ambit\\Cross\\UDisplayMgr.cpp",
+                "symbol": "kSourceFileUDisplayMgr"
+              }
+            ],
+            "module": "UDisplayMgr.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "TColorFill::AdornerSlot0C",
+        "owner_class": "TColorFill",
+        "recovered_source": "src/game/TColorFill.cpp"
+      },
+      "0x005003a0": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "definition_source": "src/game/global_data_tables.cpp",
+                "kind": "source_path_global_reference",
+                "path": "D:\\Ambit\\Cross\\UGameWindow.cpp",
+                "symbol": "g_szUGameWindowSourcePath_00696bc0"
+              }
+            ],
+            "module": "UGameWindow.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "TDlgWindow::AssertMcAppUILine2358",
+        "owner_class": "TDlgWindow",
+        "recovered_source": "src/game/TDlgWindow.cpp"
+      },
+      "0x00503ac0": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "definition_source": "src/game/global_data_tables.cpp",
+                "kind": "source_path_global_reference",
+                "path": "D:\\Ambit\\Cross\\UHelpMgr.cpp",
+                "symbol": "s_SourcePathUHelpMgr_00696C58"
+              }
+            ],
+            "module": "UHelpMgr.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "EnsureMapActionContextViewAndBuildDefaultTileMenu",
+        "owner_class": null,
+        "recovered_source": "src/game/THelpMgr.cpp"
+      },
+      "0x00506b00": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "kind": "inline_source_path_literal",
+                "path": "D:\\Ambit\\Cross\\UIcon.cpp"
+              },
+              {
+                "kind": "inline_source_path_literal",
+                "path": "D:\\Ambit\\Cross\\UIcon.cpp"
+              },
+              {
+                "kind": "inline_source_path_literal",
+                "path": "D:\\Ambit\\Cross\\UIcon.cpp"
+              },
+              {
+                "kind": "inline_source_path_literal",
+                "path": "D:\\Ambit\\Cross\\UIcon.cpp"
+              },
+              {
+                "kind": "inline_source_path_literal",
+                "path": "D:\\Ambit\\Cross\\UIcon.cpp"
+              },
+              {
+                "kind": "inline_source_path_literal",
+                "path": "D:\\Ambit\\Cross\\UIcon.cpp"
+              },
+              {
+                "kind": "inline_source_path_literal",
+                "path": "D:\\Ambit\\Cross\\UIcon.cpp"
+              },
+              {
+                "kind": "inline_source_path_literal",
+                "path": "D:\\Ambit\\Cross\\UIcon.cpp"
+              }
+            ],
+            "module": "UIcon.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "TOrderView::PopulateDialogControlsFromSelectedProductionEntry",
+        "owner_class": "TOrderView",
+        "recovered_source": "src/game/TOrderView.cpp"
+      },
+      "0x00506f90": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "kind": "inline_source_path_literal",
+                "path": "D:\\Ambit\\Cross\\UIcon.cpp"
+              },
+              {
+                "kind": "inline_source_path_literal",
+                "path": "D:\\Ambit\\Cross\\UIcon.cpp"
+              },
+              {
+                "kind": "inline_source_path_literal",
+                "path": "D:\\Ambit\\Cross\\UIcon.cpp"
+              },
+              {
+                "kind": "inline_source_path_literal",
+                "path": "D:\\Ambit\\Cross\\UIcon.cpp"
+              },
+              {
+                "kind": "inline_source_path_literal",
+                "path": "D:\\Ambit\\Cross\\UIcon.cpp"
+              },
+              {
+                "kind": "inline_source_path_literal",
+                "path": "D:\\Ambit\\Cross\\UIcon.cpp"
+              }
+            ],
+            "module": "UIcon.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "TOrderView::RefreshOrderViewSupplyAndUseControlValues",
+        "owner_class": "TOrderView",
+        "recovered_source": "src/game/TOrderView.cpp"
+      },
+      "0x00507240": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "kind": "inline_source_path_literal",
+                "path": "D:\\Ambit\\Cross\\UIcon.cpp"
+              }
+            ],
+            "module": "UIcon.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "TOrderView::HandleEvent",
+        "owner_class": "TOrderView",
+        "recovered_source": "src/game/TOrderView.cpp"
+      },
+      "0x0050be30": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "kind": "inline_source_path_literal",
+                "path": "D:\\Ambit\\Cross\\UMacViewMgr.cpp"
+              }
+            ],
+            "module": "UMacViewMgr.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "TMacViewMgr::ResolveTurnEventDialogOrFailAndInvokeSlot9C",
+        "owner_class": "TMacViewMgr",
+        "recovered_source": "src/game/TMacViewMgr.cpp"
+      },
+      "0x0050e8b0": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "kind": "inline_source_path_literal",
+                "path": "D:\\Ambit\\Cross\\UMap.cpp"
+              },
+              {
+                "kind": "inline_source_path_literal",
+                "path": "D:\\Ambit\\Cross\\UMap.cpp"
+              }
+            ],
+            "module": "UMap.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "TMapMgr::WrapperFor_AllocateWithFallbackHandler_At0050e8b0",
+        "owner_class": "TMapMgr",
+        "recovered_source": "src/game/TMapMgr.cpp"
+      },
+      "0x00512930": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "kind": "inline_source_path_literal",
+                "path": "D:\\Ambit\\Cross\\UMap.cpp"
+              }
+            ],
+            "module": "UMap.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "BuildHexAreaTileIndexList",
+        "owner_class": null,
+        "recovered_source": "src/game/TMapMgr.cpp"
+      },
+      "0x0051b1c0": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "definition_source": "src/game/global_data_tables.cpp",
+                "kind": "source_path_global_reference",
+                "path": "D:\\Ambit\\Cross\\UMapDlog.cpp",
+                "symbol": "s_SourcePathUMapDlog_006973D0"
+              }
+            ],
+            "module": "UMapDlog.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "TMapDialog::PopulateMapContextInfoPanelStringsByTileSelection",
+        "owner_class": "TMapDialog",
+        "recovered_source": "src/game/TMapDialog.cpp"
+      },
+      "0x0051bb90": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "definition_source": "src/game/global_data_tables.cpp",
+                "kind": "source_path_global_reference",
+                "path": "D:\\Ambit\\Cross\\UMapDlog.cpp",
+                "symbol": "s_SourcePathUMapDlog_006973D0"
+              }
+            ],
+            "module": "UMapDlog.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "TTownNameDialog::DoPostCreate",
+        "owner_class": "TTownNameDialog",
+        "recovered_source": "src/game/TTownNameDialog.cpp"
+      },
+      "0x00529960": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "kind": "inline_source_path_literal",
+                "path": "D:\\Ambit\\Cross\\UMapper.cpp"
+              }
+            ],
+            "module": "UMapper.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "RotateMapColumnsByPeakCityTileDensity",
+        "owner_class": null,
+        "recovered_source": "src/game/TMapMaker_RotateMapColumns.cpp"
+      },
+      "0x0052b9b0": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "definition_source": "src/game/TMapMaker_RebuildRoute.cpp",
+                "kind": "source_path_global_reference",
+                "path": "D:\\Ambit\\Cross\\UMapper.cpp",
+                "symbol": "kUMapperPath"
+              }
+            ],
+            "module": "UMapper.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "AssignCityRegionIdsFromOverlayScanlineIntersections",
+        "owner_class": null,
+        "recovered_source": "src/game/TMapMaker_AssignRegionsScanline.cpp"
+      },
+      "0x0052d750": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "kind": "inline_source_path_literal",
+                "path": "D:\\Ambit\\Cross\\UMapper.cpp"
+              },
+              {
+                "kind": "inline_source_path_literal",
+                "path": "D:\\Ambit\\Cross\\UMapper.cpp"
+              }
+            ],
+            "module": "UMapper.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "MergeSmallCityRegionsAndCompactIds",
+        "owner_class": null,
+        "recovered_source": "src/game/TMapMaker_MergeSmallCityRegions.cpp"
+      },
+      "0x0052e350": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "definition_source": "src/game/TMapMaker_RebuildRoute.cpp",
+                "kind": "source_path_global_reference",
+                "path": "D:\\Ambit\\Cross\\UMapper.cpp",
+                "symbol": "kUMapperPath"
+              }
+            ],
+            "module": "UMapper.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "RebuildUMapperRouteRecordsAndActiveMapRects",
+        "owner_class": null,
+        "recovered_source": "src/game/TMapMaker_RebuildRoute.cpp"
+      },
+      "0x0053c0a0": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "kind": "inline_source_path_literal",
+                "path": "D:\\Ambit\\Cross\\UMissionSubs.cpp"
+              }
+            ],
+            "module": "UMissionSubs.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "TMission::ConstructTArmyMissionWithNodeKey",
+        "owner_class": "TMission",
+        "recovered_source": "src/game/TArmyMission.cpp"
+      },
+      "0x00545940": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "definition_source": "src/game/global_data_tables.cpp",
+                "kind": "source_path_global_reference",
+                "path": "D:\\Ambit\\Cross\\UMultiplayerMgr.cpp",
+                "symbol": "s_SourcePathUMultiplayerMgr_00698040"
+              }
+            ],
+            "module": "UMultiplayerMgr.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine",
+        "owner_class": "TMultiplayerMgr",
+        "recovered_source": "src/game/TMultiplayerMgr.cpp"
+      },
+      "0x0054f8e0": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "kind": "inline_source_path_literal",
+                "path": "D:\\Ambit\\Cross\\UNavy.cpp"
+              }
+            ],
+            "module": "UNavy.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "CreateNavyPrimaryOrderNodeAndAssignDisplayName",
+        "owner_class": null,
+        "recovered_source": "src/game/tship_navy_order_node.cpp"
+      },
+      "0x005503a0": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "kind": "inline_source_path_literal",
+                "path": "D:\\Ambit\\Cross\\UNavy.cpp"
+              }
+            ],
+            "module": "UNavy.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "TShip::GetOrCreateMissionOrderEntryForNode",
+        "owner_class": "TShip",
+        "recovered_source": "src/game/TShip.cpp"
+      },
+      "0x00552650": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "definition_source": "src/game/global_data_tables.cpp",
+                "kind": "source_path_global_reference",
+                "path": "D:\\Ambit\\Cross\\UNavy.cpp",
+                "symbol": "s_SourcePathUNavy_006983C8"
+              }
+            ],
+            "module": "UNavy.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "CreateLinkedOrderNode",
+        "owner_class": null,
+        "recovered_source": "src/game/TTaskForce.cpp"
+      },
+      "0x00553bc0": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "definition_source": "src/game/global_data_tables.cpp",
+                "kind": "source_path_global_reference",
+                "path": "D:\\Ambit\\Cross\\UNavy.cpp",
+                "symbol": "s_SourcePathUNavy_006983C8"
+              }
+            ],
+            "module": "UNavy.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "GetOrCreateTaskForceOrderNodeByTemplate",
+        "owner_class": null,
+        "recovered_source": "src/game/TTaskForce.cpp"
+      },
+      "0x00556100": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "kind": "inline_source_path_literal",
+                "path": "D:\\Ambit\\Cross\\UNavy.cpp"
+              }
+            ],
+            "module": "UNavy.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "ApplyMapOrderTypeExecutionEffects",
+        "owner_class": null,
+        "recovered_source": "src/game/TTaskForce.cpp"
+      },
+      "0x00556ad0": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "definition_source": "src/game/global_data_tables.cpp",
+                "kind": "source_path_global_reference",
+                "path": "D:\\Ambit\\Cross\\UNavy.cpp",
+                "symbol": "s_SourcePathUNavy_006983C8"
+              }
+            ],
+            "module": "UNavy.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "TNavyMgr::DeserializeNavyOrderListsByNation",
+        "owner_class": "TNavyMgr",
+        "recovered_source": "src/game/TNavyMgr.cpp"
+      },
+      "0x0055ba30": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "definition_source": "src/game/global_data_tables.cpp",
+                "kind": "source_path_global_reference",
+                "path": "D:\\Ambit\\Cross\\UNewspaper.cpp",
+                "symbol": "s_SourcePathUNewspaper_00698470"
+              }
+            ],
+            "module": "UNewspaper.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "TNewsMgr::LoadNewsTable",
+        "owner_class": "TNewsMgr",
+        "recovered_source": "src/game/TNewsMgr.cpp"
+      },
+      "0x005635e0": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "definition_source": "src/game/global_data_tables.cpp",
+                "kind": "source_path_global_reference",
+                "path": "D:\\Ambit\\Cross\\UOcean.cpp",
+                "symbol": "s_SourcePathUOcean_006984CC"
+              }
+            ],
+            "module": "UOcean.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "TOcean::EnsurePortZoneForTile",
+        "owner_class": "TOcean",
+        "recovered_source": "src/game/TOcean.cpp"
+      },
+      "0x00565a40": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "definition_source": "src/game/global_data_tables.cpp",
+                "kind": "source_path_global_reference",
+                "path": "D:\\Ambit\\Cross\\UOceanViews.cpp",
+                "symbol": "s_SourcePathUOceanViews_00698650"
+              }
+            ],
+            "module": "UOceanViews.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "RunEngineerOrderNameEditDialogAndApply",
+        "owner_class": null,
+        "recovered_source": "src/game/TShipView.cpp"
+      },
+      "0x005769c0": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "definition_source": "src/game/global_data_tables.cpp",
+                "kind": "source_path_global_reference",
+                "path": "D:\\Ambit\\Cross\\USetupScreens.cpp",
+                "symbol": "g_szSetupScreensSourcePath_00698AB8"
+              }
+            ],
+            "module": "USetupScreens.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "TNetSelectPicture::HandleEvent",
+        "owner_class": "TNetSelectPicture",
+        "recovered_source": "src/game/TNetSelectPicture.cpp"
+      },
+      "0x00584320": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "kind": "inline_source_path_literal",
+                "path": "D:\\Ambit\\Cross\\USmallViews.cpp"
+              }
+            ],
+            "module": "USmallViews.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "TTradePolicyCluster::HandleEvent",
+        "owner_class": "TTradePolicyCluster",
+        "recovered_source": "src/game/TTradePolicyCluster.cpp"
+      },
+      "0x0058d950": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "kind": "inline_source_path_literal",
+                "path": "D:\\Ambit\\Cross\\USmallViews.cpp"
+              },
+              {
+                "kind": "inline_source_path_literal",
+                "path": "D:\\Ambit\\Cross\\USmallViews.cpp"
+              },
+              {
+                "kind": "inline_source_path_literal",
+                "path": "D:\\Ambit\\Cross\\USmallViews.cpp"
+              },
+              {
+                "kind": "inline_source_path_literal",
+                "path": "D:\\Ambit\\Cross\\USmallViews.cpp"
+              },
+              {
+                "kind": "inline_source_path_literal",
+                "path": "D:\\Ambit\\Cross\\USmallViews.cpp"
+              },
+              {
+                "kind": "inline_source_path_literal",
+                "path": "D:\\Ambit\\Cross\\USmallViews.cpp"
+              }
+            ],
+            "module": "USmallViews.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "TCombatReportView::HandleEvent",
+        "owner_class": "TCombatReportView",
+        "recovered_source": "src/game/TCombatReportView.cpp"
+      },
+      "0x0058ec50": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "kind": "inline_source_path_literal",
+                "path": "D:\\Ambit\\Cross\\USmallViews.cpp"
+              },
+              {
+                "kind": "inline_source_path_literal",
+                "path": "D:\\Ambit\\Cross\\USmallViews.cpp"
+              },
+              {
+                "kind": "inline_source_path_literal",
+                "path": "D:\\Ambit\\Cross\\USmallViews.cpp"
+              },
+              {
+                "kind": "inline_source_path_literal",
+                "path": "D:\\Ambit\\Cross\\USmallViews.cpp"
+              },
+              {
+                "kind": "inline_source_path_literal",
+                "path": "D:\\Ambit\\Cross\\USmallViews.cpp"
+              }
+            ],
+            "module": "USmallViews.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "TCivToolbar::RefreshCivilianStackButtonsForTile",
+        "owner_class": "TCivToolbar",
+        "recovered_source": "src/game/TCivToolbar.cpp"
+      },
+      "0x00599cf0": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "definition_source": "src/game/global_data_tables.cpp",
+                "kind": "source_path_global_reference",
+                "path": "D:\\Ambit\\Cross\\USuperMap.cpp",
+                "symbol": "s_SourcePathUSuperMap_0069943C"
+              }
+            ],
+            "module": "USuperMap.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "TMapUberPicture::DisplayMiniMap",
+        "owner_class": "TMapUberPicture",
+        "recovered_source": "src/game/TMapUberPicture.cpp"
+      },
+      "0x00599fd0": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "definition_source": "src/game/global_data_tables.cpp",
+                "kind": "source_path_global_reference",
+                "path": "D:\\Ambit\\Cross\\USuperMap.cpp",
+                "symbol": "s_SourcePathUSuperMap_0069943C"
+              }
+            ],
+            "module": "USuperMap.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "TMapUberPicture::RemoveMiniMap",
+        "owner_class": "TMapUberPicture",
+        "recovered_source": "src/game/TMapUberPicture.cpp"
+      },
+      "0x0059a180": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "definition_source": "src/game/global_data_tables.cpp",
+                "kind": "source_path_global_reference",
+                "path": "D:\\Ambit\\Cross\\USuperMap.cpp",
+                "symbol": "s_SourcePathUSuperMap_0069943C"
+              }
+            ],
+            "module": "USuperMap.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "TMapUberPicture::SetTradeToolSubcontrolEnabledStateByFlag",
+        "owner_class": "TMapUberPicture",
+        "recovered_source": "src/game/TMapUberPicture.cpp"
+      },
+      "0x0059b830": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "definition_source": "src/game/global_data_tables.cpp",
+                "kind": "source_path_global_reference",
+                "path": "D:\\Ambit\\Cross\\UTacPlayer.cpp",
+                "symbol": "s_SourcePathUTacPlayer_00699D84"
+              }
+            ],
+            "module": "UTacPlayer.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "TArmyPlayer::StartBattle",
+        "owner_class": "TArmyPlayer",
+        "recovered_source": "src/game/TArmyPlayer.cpp"
+      },
+      "0x005a9d90": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "definition_source": "src/game/global_data_tables.cpp",
+                "kind": "source_path_global_reference",
+                "path": "D:\\Ambit\\Cross\\UTacViews.cpp",
+                "symbol": "s_SourcePathUTacViews_00699FF4"
+              }
+            ],
+            "module": "UTacViews.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "TTacArmyView::ConstructTTacArmyViewBaseState",
+        "owner_class": "TTacArmyView",
+        "recovered_source": "src/game/TTacArmyView.cpp"
+      },
+      "0x005ba7a0": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "definition_source": "src/game/global_data_tables.cpp",
+                "kind": "source_path_global_reference",
+                "path": "D:\\Ambit\\Cross\\UTradeViews.cpp",
+                "symbol": "s_SourcePathUTradeViews_0069AA94"
+              }
+            ],
+            "module": "UTradeViews.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "TTradeScreenPicture::ApplyRectSlot110",
+        "owner_class": "TTradeScreenPicture",
+        "recovered_source": "src/game/TTradeScreenPicture.cpp"
+      },
+      "0x005bac50": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "definition_source": "src/game/global_data_tables.cpp",
+                "kind": "source_path_global_reference",
+                "path": "D:\\Ambit\\Cross\\UTradeViews.cpp",
+                "symbol": "s_SourcePathUTradeViews_0069AA94"
+              }
+            ],
+            "module": "UTradeViews.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "TDealBookPicture::Startup",
+        "owner_class": "TDealBookPicture",
+        "recovered_source": "src/game/TDealBookPicture.cpp"
+      },
+      "0x005baf70": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "definition_source": "src/game/global_data_tables.cpp",
+                "kind": "source_path_global_reference",
+                "path": "D:\\Ambit\\Cross\\UTradeViews.cpp",
+                "symbol": "s_SourcePathUTradeViews_0069AA94"
+              }
+            ],
+            "module": "UTradeViews.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "TDealBookPicture::ShowPage",
+        "owner_class": "TDealBookPicture",
+        "recovered_source": "src/game/TDealBookPicture.cpp"
+      },
+      "0x005bc0d0": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "definition_source": "src/game/global_data_tables.cpp",
+                "kind": "source_path_global_reference",
+                "path": "D:\\Ambit\\Cross\\UTradeViews.cpp",
+                "symbol": "s_SourcePathUTradeViews_0069AA94"
+              }
+            ],
+            "module": "UTradeViews.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "TDealBookPicture::SwitchPages",
+        "owner_class": "TDealBookPicture",
+        "recovered_source": "src/game/TDealBookPicture.cpp"
+      },
+      "0x005c04f0": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "definition_source": "src/game/global_data_tables.cpp",
+                "kind": "source_path_global_reference",
+                "path": "D:\\Ambit\\Cross\\UTradeViews.cpp",
+                "symbol": "s_SourcePathUTradeViews_0069AA94"
+              }
+            ],
+            "module": "UTradeViews.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "TNextTradeCommand::CreateNextTradeCommandAndFormatPrompt",
+        "owner_class": "TNextTradeCommand",
+        "recovered_source": "src/game/TOfferDeskPicture.cpp"
+      },
+      "0x005c2530": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "kind": "inline_source_path_literal",
+                "path": "D:\\Ambit\\Cross\\UUnit.cpp"
+              }
+            ],
+            "module": "UUnit.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "TUnit::RegisterUnitOrderWithOwnerManager",
+        "owner_class": "TUnit",
+        "recovered_source": "src/game/TUnit.cpp"
+      },
+      "0x005d57b0": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "definition_source": "src/game/global_data_tables.cpp",
+                "kind": "source_path_global_reference",
+                "path": "D:\\Ambit\\Cross\\UViewMgr.cpp",
+                "symbol": "s_SourcePathUViewMgr_0069B6BC"
+              }
+            ],
+            "module": "UViewMgr.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "TViewMgr::HandleTurnEventVtableSlot40RefreshGoldDialog",
+        "owner_class": "TViewMgr",
+        "recovered_source": "src/game/TViewMgr.cpp"
+      },
+      "0x005d5d30": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "definition_source": "src/game/global_data_tables.cpp",
+                "kind": "source_path_global_reference",
+                "path": "D:\\Ambit\\Cross\\UViewMgr.cpp",
+                "symbol": "s_SourcePathUViewMgr_0069B6BC"
+              }
+            ],
+            "module": "UViewMgr.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "TViewMgr::RunNationInfoModalAndReturnNonCancel",
+        "owner_class": "TViewMgr",
+        "recovered_source": "src/game/TViewMgr.cpp"
+      },
+      "0x005d6cd0": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "definition_source": "src/game/global_data_tables.cpp",
+                "kind": "source_path_global_reference",
+                "path": "D:\\Ambit\\Cross\\UViewMgr.cpp",
+                "symbol": "s_SourcePathUViewMgr_0069B6BC"
+              }
+            ],
+            "module": "UViewMgr.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "HandleTurnEventDialogFactorySlot70",
+        "owner_class": null,
+        "recovered_source": "src/game/TViewMgr.cpp"
+      },
+      "0x005d6d70": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "definition_source": "src/game/global_data_tables.cpp",
+                "kind": "source_path_global_reference",
+                "path": "D:\\Ambit\\Cross\\UViewMgr.cpp",
+                "symbol": "s_SourcePathUViewMgr_0069B6BC"
+              }
+            ],
+            "module": "UViewMgr.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "HandleTurnEventDialogFactorySlot74",
+        "owner_class": null,
+        "recovered_source": "src/game/TViewMgr.cpp"
+      },
+      "0x005d6e50": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "definition_source": "src/game/global_data_tables.cpp",
+                "kind": "source_path_global_reference",
+                "path": "D:\\Ambit\\Cross\\UViewMgr.cpp",
+                "symbol": "s_SourcePathUViewMgr_0069B6BC"
+              }
+            ],
+            "module": "UViewMgr.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "TViewMgr::HandleTurnEventDialogFactorySlot78",
+        "owner_class": "TViewMgr",
+        "recovered_source": "src/game/TViewMgr.cpp"
+      },
+      "0x005d6f10": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "definition_source": "src/game/global_data_tables.cpp",
+                "kind": "source_path_global_reference",
+                "path": "D:\\Ambit\\Cross\\UViewMgr.cpp",
+                "symbol": "s_SourcePathUViewMgr_0069B6BC"
+              }
+            ],
+            "module": "UViewMgr.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "HandleTurnEventDialogFactorySlot7C",
+        "owner_class": null,
+        "recovered_source": "src/game/TViewMgr.cpp"
+      },
+      "0x005d6fd0": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "definition_source": "src/game/global_data_tables.cpp",
+                "kind": "source_path_global_reference",
+                "path": "D:\\Ambit\\Cross\\UViewMgr.cpp",
+                "symbol": "s_SourcePathUViewMgr_0069B6BC"
+              }
+            ],
+            "module": "UViewMgr.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "HandleTurnEventDialogFactorySlot80",
+        "owner_class": null,
+        "recovered_source": "src/game/TViewMgr.cpp"
+      },
+      "0x005d71b0": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "definition_source": "src/game/global_data_tables.cpp",
+                "kind": "source_path_global_reference",
+                "path": "D:\\Ambit\\Cross\\UViewMgr.cpp",
+                "symbol": "s_SourcePathUViewMgr_0069B6BC"
+              }
+            ],
+            "module": "UViewMgr.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "TViewMgr::InvokeMainWidgetMethod1CCWithArgs",
+        "owner_class": "TViewMgr",
+        "recovered_source": "src/game/TViewMgr.cpp"
+      },
+      "0x005db3b0": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "definition_source": "src/game/global_data_tables.cpp",
+                "kind": "source_path_global_reference",
+                "path": "D:\\Ambit\\Cross\\UViewMgr.cpp",
+                "symbol": "s_SourcePathUViewMgr_0069B6BC"
+              }
+            ],
+            "module": "UViewMgr.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "TViewMgr::HandleTurnEventDialogFactorySlotF4",
+        "owner_class": "TViewMgr",
+        "recovered_source": "src/game/TViewMgr.cpp"
+      },
+      "0x005dc430": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "definition_source": "src/game/global_data_tables.cpp",
+                "kind": "source_path_global_reference",
+                "path": "D:\\Ambit\\Cross\\UViewMgr.cpp",
+                "symbol": "s_SourcePathUViewMgr_0069B6BC"
+              }
+            ],
+            "module": "UViewMgr.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "HandleTurnEventDialogFactorySlotB8",
+        "owner_class": null,
+        "recovered_source": "src/game/TViewMgr.cpp"
+      },
+      "0x005dc560": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "definition_source": "src/game/global_data_tables.cpp",
+                "kind": "source_path_global_reference",
+                "path": "D:\\Ambit\\Cross\\UViewMgr.cpp",
+                "symbol": "s_SourcePathUViewMgr_0069B6BC"
+              }
+            ],
+            "module": "UViewMgr.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "DispatchUiRuntimeMessage102CAndRefreshActiveView",
+        "owner_class": null,
+        "recovered_source": "src/game/TToolBarCluster.cpp"
+      },
+      "0x005dcdf0": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "definition_source": "src/game/global_data_tables.cpp",
+                "kind": "source_path_global_reference",
+                "path": "D:\\Ambit\\Cross\\UViewMgr.more.cpp",
+                "symbol": "s_SourcePathUViewMgrMore_0069B740"
+              }
+            ],
+            "module": "UViewMgr.more.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "TViewMgr::HandleTurnEventDialogFactorySlotB4",
+        "owner_class": "TViewMgr",
+        "recovered_source": "src/game/TViewMgr.cpp"
+      },
+      "0x005dcf20": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "definition_source": "src/game/global_data_tables.cpp",
+                "kind": "source_path_global_reference",
+                "path": "D:\\Ambit\\Cross\\UViewMgr.more.cpp",
+                "symbol": "s_SourcePathUViewMgrMore_0069B740"
+              }
+            ],
+            "module": "UViewMgr.more.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "TViewMgr::HandleTurnEventDialogFactorySlotD8",
+        "owner_class": "TViewMgr",
+        "recovered_source": "src/game/TViewMgr.cpp"
+      },
+      "0x005dd0a0": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "definition_source": "src/game/global_data_tables.cpp",
+                "kind": "source_path_global_reference",
+                "path": "D:\\Ambit\\Cross\\UViewMgr.more.cpp",
+                "symbol": "s_SourcePathUViewMgrMore_0069B740"
+              }
+            ],
+            "module": "UViewMgr.more.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "TViewMgr::ExecuteUiFactoryModalDialogAndReturnResultTag",
+        "owner_class": "TViewMgr",
+        "recovered_source": "src/game/TViewMgr.cpp"
+      },
+      "0x005dd180": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "definition_source": "src/game/global_data_tables.cpp",
+                "kind": "source_path_global_reference",
+                "path": "D:\\Ambit\\Cross\\UViewMgr.more.cpp",
+                "symbol": "s_SourcePathUViewMgrMore_0069B740"
+              }
+            ],
+            "module": "UViewMgr.more.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "TViewMgr::HandleGlobalMapNationContextSelection",
+        "owner_class": "TViewMgr",
+        "recovered_source": "src/game/TViewMgr.cpp"
+      },
+      "0x005dd220": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "definition_source": "src/game/global_data_tables.cpp",
+                "kind": "source_path_global_reference",
+                "path": "D:\\Ambit\\Cross\\UViewMgr.more.cpp",
+                "symbol": "s_SourcePathUViewMgrMore_0069B740"
+              }
+            ],
+            "module": "UViewMgr.more.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "TViewMgr::HandleTurnEventDialogFactorySlotE4",
+        "owner_class": "TViewMgr",
+        "recovered_source": "src/game/TViewMgr.cpp"
+      },
+      "0x005dd340": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "definition_source": "src/game/global_data_tables.cpp",
+                "kind": "source_path_global_reference",
+                "path": "D:\\Ambit\\Cross\\UViewMgr.more.cpp",
+                "symbol": "s_SourcePathUViewMgrMore_0069B740"
+              }
+            ],
+            "module": "UViewMgr.more.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "TViewMgr::HandleTurnEventDialogFactorySlotF0",
+        "owner_class": "TViewMgr",
+        "recovered_source": "src/game/TViewMgr.cpp"
+      },
+      "0x005dd770": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "definition_source": "src/game/global_data_tables.cpp",
+                "kind": "source_path_global_reference",
+                "path": "D:\\Ambit\\Cross\\UViewMgr.more.cpp",
+                "symbol": "s_SourcePathUViewMgrMore_0069B740"
+              }
+            ],
+            "module": "UViewMgr.more.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "TViewMgr::HandleTurnEventDialogFactorySlotE8",
+        "owner_class": "TViewMgr",
+        "recovered_source": "src/game/TViewMgr.cpp"
+      },
+      "0x005dd900": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "definition_source": "src/game/global_data_tables.cpp",
+                "kind": "source_path_global_reference",
+                "path": "D:\\Ambit\\Cross\\UViewMgr.more.cpp",
+                "symbol": "s_SourcePathUViewMgrMore_0069B740"
+              }
+            ],
+            "module": "UViewMgr.more.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "TLineData::HandleTurnEventDialogFactorySlotEC",
+        "owner_class": "TLineData",
+        "recovered_source": "src/game/TViewMgr.cpp"
+      },
+      "0x005ddd20": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "definition_source": "src/game/global_data_tables.cpp",
+                "kind": "source_path_global_reference",
+                "path": "D:\\Ambit\\Cross\\UViewMgr.more.cpp",
+                "symbol": "s_SourcePathUViewMgrMore_0069B740"
+              }
+            ],
+            "module": "UViewMgr.more.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "TViewMgr::ShowCivilianLedgerDialogAndSelectUnit",
+        "owner_class": "TViewMgr",
+        "recovered_source": "src/game/TViewMgr.cpp"
+      },
+      "0x005de010": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "definition_source": "src/game/global_data_tables.cpp",
+                "kind": "source_path_global_reference",
+                "path": "D:\\Ambit\\Cross\\UViewMgr.more.cpp",
+                "symbol": "s_SourcePathUViewMgrMore_0069B740"
+              }
+            ],
+            "module": "UViewMgr.more.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "TViewMgr::MakePlanetSeedDialog",
+        "owner_class": "TViewMgr",
+        "recovered_source": "src/game/TViewMgr.cpp"
+      },
+      "0x005de4f0": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "definition_source": "src/game/global_data_tables.cpp",
+                "kind": "source_path_global_reference",
+                "path": "D:\\Ambit\\Cross\\UViewMgr.more.cpp",
+                "symbol": "s_SourcePathUViewMgrMore_0069B740"
+              }
+            ],
+            "module": "UViewMgr.more.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "ShowCivilianReportDialogAndReturnConfirm",
+        "owner_class": null,
+        "recovered_source": "src/game/TViewMgr.cpp"
+      },
+      "0x005de8f0": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "definition_source": "src/game/global_data_tables.cpp",
+                "kind": "source_path_global_reference",
+                "path": "D:\\Ambit\\Cross\\UViewMgr.more.cpp",
+                "symbol": "s_SourcePathUViewMgrMore_0069B740"
+              }
+            ],
+            "module": "UViewMgr.more.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "TViewMgr::DispatchUiRuntimeMessage101AAndRefreshActiveView",
+        "owner_class": "TViewMgr",
+        "recovered_source": "src/game/TViewMgr.cpp"
+      }
+    },
+    "modules": {
+      "UArmyMgr.cpp": {
+        "classes": [
+          "TArmyMgr",
+          "TArmyStack"
+        ],
+        "functions": [
+          "0x004a1f80",
+          "0x004a2500",
+          "0x004a3200",
+          "0x004a77b0",
+          "0x004a7b20"
+        ]
+      },
+      "UArmyViews.cpp": {
+        "classes": [],
+        "functions": [
+          "0x004a9ca0"
+        ]
+      },
+      "UCityMinister.cpp": {
+        "classes": [],
+        "functions": [
+          "0x004be8d0"
+        ]
+      },
+      "UCityViews.cpp": {
+        "classes": [
+          "TArmoryView",
+          "TIndustryView",
+          "TPlaceCityDialog",
+          "TPurchaseCluster",
+          "TTradeSchoolView"
+        ],
+        "functions": [
+          "0x004cc550",
+          "0x004ccf30",
+          "0x004cd8d0",
+          "0x004ce070",
+          "0x004cf350",
+          "0x004d1880"
+        ]
+      },
+      "UCountry.cpp": {
+        "classes": [
+          "TGreatPower"
+        ],
+        "functions": [
+          "0x004db7d0"
+        ]
+      },
+      "UCountryAuto.cpp": {
+        "classes": [
+          "TGreatPower"
+        ],
+        "functions": [
+          "0x004e8540"
+        ]
+      },
+      "UDefenseMinister.cpp": {
+        "classes": [
+          "TDefenseMinister"
+        ],
+        "functions": [
+          "0x004ec540",
+          "0x004ecbb0",
+          "0x004ed050"
+        ]
+      },
+      "UDiplomacyViews.cpp": {
+        "classes": [
+          "TDiplomacyMapView"
+        ],
+        "functions": [
+          "0x004f3ea0"
+        ]
+      },
+      "UDisplayMgr.cpp": {
+        "classes": [
+          "TColorFill",
+          "TDisplayMgr"
+        ],
+        "functions": [
+          "0x004fe840",
+          "0x004fec20",
+          "0x004fec50",
+          "0x004fed70",
+          "0x004fedc0",
+          "0x004ff1c0"
+        ]
+      },
+      "UGameWindow.cpp": {
+        "classes": [
+          "TDlgWindow"
+        ],
+        "functions": [
+          "0x005003a0"
+        ]
+      },
+      "UHelpMgr.cpp": {
+        "classes": [],
+        "functions": [
+          "0x00503ac0"
+        ]
+      },
+      "UIcon.cpp": {
+        "classes": [
+          "TOrderView"
+        ],
+        "functions": [
+          "0x00506b00",
+          "0x00506f90",
+          "0x00507240"
+        ]
+      },
+      "UMacViewMgr.cpp": {
+        "classes": [
+          "TMacViewMgr"
+        ],
+        "functions": [
+          "0x0050be30"
+        ]
+      },
+      "UMap.cpp": {
+        "classes": [
+          "TMapMgr"
+        ],
+        "functions": [
+          "0x0050e8b0",
+          "0x00512930"
+        ]
+      },
+      "UMapDlog.cpp": {
+        "classes": [
+          "TMapDialog",
+          "TTownNameDialog"
+        ],
+        "functions": [
+          "0x0051b1c0",
+          "0x0051bb90"
+        ]
+      },
+      "UMapper.cpp": {
+        "classes": [],
+        "functions": [
+          "0x00529960",
+          "0x0052b9b0",
+          "0x0052d750",
+          "0x0052e350"
+        ]
+      },
+      "UMissionSubs.cpp": {
+        "classes": [
+          "TMission"
+        ],
+        "functions": [
+          "0x0053c0a0"
+        ]
+      },
+      "UMultiplayerMgr.cpp": {
+        "classes": [
+          "TMultiplayerMgr"
+        ],
+        "functions": [
+          "0x00545940"
+        ]
+      },
+      "UNavy.cpp": {
+        "classes": [
+          "TNavyMgr",
+          "TShip"
+        ],
+        "functions": [
+          "0x0054f8e0",
+          "0x005503a0",
+          "0x00552650",
+          "0x00553bc0",
+          "0x00556100",
+          "0x00556ad0"
+        ]
+      },
+      "UNewspaper.cpp": {
+        "classes": [
+          "TNewsMgr"
+        ],
+        "functions": [
+          "0x0055ba30"
+        ]
+      },
+      "UOcean.cpp": {
+        "classes": [
+          "TOcean"
+        ],
+        "functions": [
+          "0x005635e0"
+        ]
+      },
+      "UOceanViews.cpp": {
+        "classes": [],
+        "functions": [
+          "0x00565a40"
+        ]
+      },
+      "USetupScreens.cpp": {
+        "classes": [
+          "TNetSelectPicture"
+        ],
+        "functions": [
+          "0x005769c0"
+        ]
+      },
+      "USmallViews.cpp": {
+        "classes": [
+          "TCivToolbar",
+          "TCombatReportView",
+          "TTradePolicyCluster"
+        ],
+        "functions": [
+          "0x0049d620",
+          "0x00584320",
+          "0x0058d950",
+          "0x0058ec50"
+        ]
+      },
+      "USuperMap.cpp": {
+        "classes": [
+          "TMapUberPicture"
+        ],
+        "functions": [
+          "0x00599cf0",
+          "0x00599fd0",
+          "0x0059a180"
+        ]
+      },
+      "UTacPlayer.cpp": {
+        "classes": [
+          "TArmyPlayer"
+        ],
+        "functions": [
+          "0x0059b830"
+        ]
+      },
+      "UTacViews.cpp": {
+        "classes": [
+          "TTacArmyView"
+        ],
+        "functions": [
+          "0x005a9d90"
+        ]
+      },
+      "UTradeViews.cpp": {
+        "classes": [
+          "TDealBookPicture",
+          "TNextTradeCommand",
+          "TTradeScreenPicture"
+        ],
+        "functions": [
+          "0x005ba7a0",
+          "0x005bac50",
+          "0x005baf70",
+          "0x005bc0d0",
+          "0x005c04f0"
+        ]
+      },
+      "UUnit.cpp": {
+        "classes": [
+          "TUnit"
+        ],
+        "functions": [
+          "0x005c2530"
+        ]
+      },
+      "UViewMgr.cpp": {
+        "classes": [
+          "TViewMgr"
+        ],
+        "functions": [
+          "0x005d57b0",
+          "0x005d5d30",
+          "0x005d6cd0",
+          "0x005d6d70",
+          "0x005d6e50",
+          "0x005d6f10",
+          "0x005d6fd0",
+          "0x005d71b0",
+          "0x005db3b0",
+          "0x005dc430",
+          "0x005dc560"
+        ]
+      },
+      "UViewMgr.more.cpp": {
+        "classes": [
+          "TLineData",
+          "TViewMgr"
+        ],
+        "functions": [
+          "0x005dcdf0",
+          "0x005dcf20",
+          "0x005dd0a0",
+          "0x005dd180",
+          "0x005dd220",
+          "0x005dd340",
+          "0x005dd770",
+          "0x005dd900",
+          "0x005ddd20",
+          "0x005de010",
+          "0x005de4f0",
+          "0x005de8f0"
+        ]
+      }
+    },
+    "policy": "Function and qualified-class associations are confirmed by direct Windows source-path use. Mac screen and generated-factory joins are candidates only; they do not prove Windows ownership or ABI."
+  },
   "summary": {
     "ambiguous_tags": 147,
     "classes": 162,
+    "classes_with_source_module_evidence": 14,
     "declared_classes": 152,
+    "factories_with_source_module_candidates": 9,
+    "functions_with_source_module_evidence": 89,
     "nodes": 3173,
     "screens": 121,
+    "screens_with_source_module_candidates": 25,
+    "source_modules": 31,
     "tags": 747
   },
   "tags": {

@@ -3,7 +3,7 @@ from __future__ import annotations
 from pathlib import Path
 import unittest
 
-from tools.workflow.mac_control_usage import build_index, tag_hints
+from tools.workflow.mac_control_usage import build_index, source_module_hints, tag_hints
 
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
@@ -44,6 +44,20 @@ class MacControlUsageTests(unittest.TestCase):
         hints = tag_hints(self.index, ["book"])
         self.assertTrue(hints)
         self.assertIn("Mac class", hints[0])
+
+    def test_source_module_evidence_reaches_portprep(self) -> None:
+        hints = source_module_hints(
+            self.index, 0x005769C0, "TNetSelectPicture::HandleEvent"
+        )
+        self.assertTrue(any("USetupScreens.cpp" in hint for hint in hints))
+        self.assertTrue(any("Startup.rsrc:1506" in hint for hint in hints))
+
+    def test_factory_module_join_remains_candidate(self) -> None:
+        factory = self.index["factories"]["0x004538a0"]
+        setup = next(
+            row for row in factory["original_modules"] if row["module"] == "USetupScreens.cpp"
+        )
+        self.assertEqual(setup["status"], "candidate")
 
 
 if __name__ == "__main__":
