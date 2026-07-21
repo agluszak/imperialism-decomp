@@ -23,8 +23,8 @@ ASSERT_SIZE(CombatReportUnitRecord, 0x20);
 // nation index and unit-record array. Only the fields ApplyRectSlot110 reads are
 // evidenced; the gap at +0x02..0x07 is unread by it.
 struct TCombatReportContext {
-  unsigned char nationIdA; // +0x00 index into g_apTerrainTypeDescriptorTable
-  unsigned char nationIdB; // +0x01 index into g_apTerrainTypeDescriptorTable
+  signed char nationIdA; // +0x00 index into g_apTerrainTypeDescriptorTable
+  signed char nationIdB; // +0x01 index into g_apTerrainTypeDescriptorTable
   unsigned char pad02[6];
   CombatReportUnitRecord* unitsA; // +0x08
   CombatReportUnitRecord* unitsB; // +0x0c
