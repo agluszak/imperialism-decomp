@@ -1601,7 +1601,7 @@ address|name|symbol|size|type|prototype|provenance
 4ab380|TSuperCivRoster::CreateObject|?CreateObject@TSuperCivRoster@@SGPAVCObject@@XZ|92|function|void * CreateObject(void)|rtti
 4ab400|TSuperCivRoster::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4ab450|TSuperCivRoster::GetRuntimeClass||6|function|undefined GetTSuperCivRosterClassNamePointer()|rtti
-4ab470|TSuperCivRoster::InitializeLedgerRosterPages||325|function|undefined InitializeLedgerRosterPages(class TView * pOwnerContext, int * pBoundsRect, class TView * * pOutDialogView)|
+4ab470|TSuperCivRoster::InitializeLedgerRosterPages||325|function|void InitializeLedgerRosterPages(class TView * pOwnerContext, int * pBoundsRect, class TView * * pOutDialogView)|
 4ab620|TMiniCivLine::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4ab650|DestructTSuperCivRosterAndMaybeFree_Impl||7|function|undefined DestructTSuperCivRosterAndMaybeFree_Impl()|
 4ab670|TMiniCivLine::CreateObject|?CreateObject@TMiniCivLine@@SGPAVCObject@@XZ|80|function|undefined CreateObject()|rtti

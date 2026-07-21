@@ -1584,7 +1584,7 @@ address|matching|name
 0x4ab380|1.0|TSuperCivRoster::CreateObject
 0x4ab400|0.9090909090909091|TSuperCivRoster::`scalar deleting destructor'
 0x4ab450|1.0|TSuperCivRoster::GetRuntimeClass
-0x4ab470|0.7525773195876289|TSuperCivRoster::InitializeLedgerRosterPages
+0x4ab470|0.7938144329896907|TSuperCivRoster::InitializeLedgerRosterPages
 0x4ab620|0.9090909090909091|TMiniCivLine::`scalar deleting destructor'
 0x4ab650|0.5|DestructTSuperCivRosterAndMaybeFree_Impl
 0x4ab670|0.4897959183673469|TMiniCivLine::CreateObject
