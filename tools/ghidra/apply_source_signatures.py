@@ -783,6 +783,28 @@ def _db_signature_full(fn):
     }
 
 
+def _flattened_by_value_storage_matches(exp_sizes, db_sizes):
+    """True when Ghidra split a wide source parameter into stack dword pieces.
+
+    VC5 passes an 8-byte value such as CPoint in two stack dwords while it remains
+    one logical C++ parameter. An untyped Ghidra signature can expose those dwords
+    as two separate undefined4 parameters. Only recognize that shape when the
+    source has fewer logical parameters, contains a genuinely wide value, and both
+    signatures occupy exactly the same number of x86 stack dwords.
+    """
+    if not exp_sizes or len(exp_sizes) >= len(db_sizes):
+        return False
+    if any(size is None or size <= 0 for size in exp_sizes + db_sizes):
+        return False
+    if not any(size > 4 for size in exp_sizes):
+        return False
+
+    def stack_dwords(sizes):
+        return sum(max(1, (size + 3) // 4) for size in sizes)
+
+    return stack_dwords(exp_sizes) == stack_dwords(db_sizes)
+
+
 # Type-resolution grades that count as genuinely SEMANTIC (not just ABI-storage
 # compatible pointer voodoo) — see TypeResolver.resolve_quality's docstring.
 _SEMANTIC_GRADES = {"exact_complete", "canonical_alias"}
@@ -1205,9 +1227,10 @@ def run_divergent(program, args, model):
       - db_signature_incomplete — DB `cc=unknown` or 0 params, source has a real
         signature (Ghidra never resolved it; invisible to the in_stack projector);
       - param_count_mismatch with source arity > DB arity and matching convention
-        (DB is missing trailing parameters).
-    Excluded here (delicate / handled elsewhere): DB over-declared (source arity <
-    DB, likely an MFC override), and convention_mismatch (bridges / ambiguity).
+        (DB is missing trailing parameters);
+      - DB over-declaration only when it is exactly the flattened storage of a
+        source by-value parameter wider than one dword (for example CPoint).
+    Other DB over-declarations and convention mismatches remain excluded.
 
     Acceptance is STRICTER than the in_stack path — these functions had no in_stack
     to clear, so `in_stack` clearing proves nothing. Commit only on FULL
@@ -1246,9 +1269,20 @@ def run_divergent(program, args, model):
         exp_this = entity_kind in ("constructor", "destructor", "instance_method")
         exp_n = len(param_strs)
 
-        db_cc, db_n, db_this, _ = _db_logical(fn)
+        db_cc, db_n, db_this, db_param_sizes = _db_logical(fn)
         incomplete = db_cc in ("", "unknown", "default") or (db_n == 0 and exp_n > 0)
         short = (db_cc == exp_cc and db_this == exp_this and exp_n > db_n)
+        flattened_by_value = False
+        if db_cc == exp_cc and db_this == exp_this and exp_n < db_n:
+            exp_param_sizes = []
+            for t in param_strs:
+                dt, _q = resolver.resolve_quality(t)
+                if dt is None:
+                    exp_param_sizes = []
+                    break
+                exp_param_sizes.append(dt.getLength())
+            flattened_by_value = _flattened_by_value_storage_matches(
+                exp_param_sizes, db_param_sizes)
         # Arity/cc can already match yet a param/return be a WRONG opaque-by-value
         # type (Ghidra typed a scalar arg as a game class by value). The arity check
         # misses those; catch them so the correct source types get projected.
@@ -1256,7 +1290,7 @@ def run_divergent(program, args, model):
                         for p in fn.getParameters()
                         if not p.isAutoParameter() and p.getName() != "this") \
             or TypeResolver.is_opaque(fn.getReturnType())
-        if not (incomplete or short or db_opaque):
+        if not (incomplete or short or flattened_by_value or db_opaque):
             continue  # not a broad-projection candidate
         if exp_n == 0 and not incomplete and not db_opaque:
             continue

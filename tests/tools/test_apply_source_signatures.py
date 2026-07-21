@@ -11,6 +11,7 @@ import unittest
 
 from tools.ghidra.apply_source_signatures import (
     _classify_projection,
+    _flattened_by_value_storage_matches,
     _is_placeholder_return,
     _param_type_only,
     _queue_out_for_mode,
@@ -308,6 +309,24 @@ class PlaceholderReturnTest(unittest.TestCase):
     def test_real_types_are_not_placeholders(self):
         for t in ("void", "int", "CPoint", "unsigned short"):
             self.assertFalse(_is_placeholder_return(t), t)
+
+
+class FlattenedByValueStorageTest(unittest.TestCase):
+    def test_cpoint_after_two_pointer_sized_params(self):
+        self.assertTrue(_flattened_by_value_storage_matches(
+            [4, 4, 8], [4, 4, 4, 4]))
+
+    def test_cpoint_after_scalar_param(self):
+        self.assertTrue(_flattened_by_value_storage_matches([4, 8], [4, 4, 4]))
+
+    def test_requires_wide_source_parameter(self):
+        self.assertFalse(_flattened_by_value_storage_matches([4, 4], [4, 4]))
+
+    def test_rejects_different_stack_storage(self):
+        self.assertFalse(_flattened_by_value_storage_matches([4, 8], [4, 4]))
+
+    def test_rejects_unknown_sizes(self):
+        self.assertFalse(_flattened_by_value_storage_matches([4, None], [4, 4]))
 
 
 class ClassifyConvergenceTest(unittest.TestCase):
