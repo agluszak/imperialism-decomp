@@ -46,10 +46,11 @@ public:
   // 25%-chance roll gated on either of the paired trigger slots [0]/[1], indices 2..6
   // forwarded directly when nonzero), then picks a (resultCode, magnitude) pair from
   // the city's population-vs-stock shortage state (TPopulationMgr's
-  // OrphanLeaf_NoCall_Ins111_004b6260 pair, else cityStockSteelCC/cityStockLumberC8/
+  // GetRecentStormImpactMetrics pair, else cityStockSteelCC/cityStockLumberC8/
   // cityStockCannedFoodC4 vs TPopulationMgr::fieldAt8) and reports it via
   // SetForeignMinisterPrimaryAndSecondaryTargets, unless no condition qualified.
-  virtual undefined VTableSlot21(TCity* city); // slot 0x21 0x4bf8a0
+  virtual undefined EvaluateCityShortagesAndNotifyForeignMinister(TCity* city); // slot 0x21
+                                                                                // 0x4bf8a0
   // Dispatches production-order-queueing helpers for `city`: exactly one of
   // QueueCityProductionCommand17Or18FromSupportRatio (lowProductionFlag7c set,
   // lowStockFlag7d clear) / DistributeCityProductionCommandBudgetAndQueueOrders
@@ -62,8 +63,10 @@ public:
                                                         int* arg2); // slot 0x22 0x4bfa50
   virtual undefined
   QueueCityProductionRebalanceCommandsByThresholds(TCity* city, int* arg2); // slot 0x23 0x4bfb20
-  virtual undefined GetTEventHandlerClassNamePointer_24(int unusedArg1,
-                                                        int unusedArg2); // slot 0x24 0x4bff60
+  // Verified empty in the original: `ret 8` only, no reads/writes. Ghidra's
+  // "GetTEventHandlerClassNamePointer" name is a misattribution shared by several
+  // no-op/near-no-op slots in this class; renamed to reflect the real (empty) body.
+  virtual void NoOpProductionCommandHook24(int unusedArg1, int unusedArg2); // slot 0x24 0x4bff60
   virtual undefined
   QueueCityProductionCommand17Or18FromSupportRatio(void* arg1, int* arg2); // slot 0x25 0x4c02c0
   virtual undefined
@@ -77,9 +80,20 @@ public:
                                                                 void* arg2); // slot 0x29 0x4c0690
   virtual undefined QueueSingleCityProductionCommandFromField38(void* arg1,
                                                                 void* arg2); // slot 0x2a 0x4c0730
+  // NOT YET PORTED (raw disassembly investigated): arg1 is TCity* (matches the ESP+0x20
+  // read, confirmed via lowProductionFlag7c-style offsets at the caller). arg2 is NOT an
+  // `int` -- it is dereferenced as a vtable pointer (`MOV EAX,[arg2]; CALL [EAX+0x7c]`
+  // with a pushed short constant, e.g. 0x33, and the bool return tested via TEST AL,AL).
+  // Checked TCity (slot 0x7c = MouseTrap, a real no-arg no-op -- wrong shape) and
+  // TSortedList (slot 0x7c is null, past its vtable end) -- arg2's real class is still
+  // unidentified. Needs its own class-recovery pass before this can be ported; the
+  // accumulated-deficit sum (23-entry loop over `field_0x10e`) and the
+  // the 0x14-byte heap allocation + TCityTask-shaped field stores later in the body are already
+  // understood (see TCityTask.h/.cpp), it's specifically this one vtable receiver that's
+  // blocking completion.
   virtual undefined
-  QueueCityProductionCommand33FromAccumulatedDeficit(int* arg1,
-                                                     int unusedArg2); // slot 0x2b 0x4bff80
+  QueueCityProductionCommand33FromAccumulatedDeficit(TCity* arg1,
+                                                     int* arg2); // slot 0x2b 0x4bff80
   virtual undefined DistributeCityProductionAcrossOrderTemplatesAndBackfillDeficits(
       TCity* city);                     // slot 0x2c 0x4c07d0
   virtual void VTableSlot2D(short arg); // slot 0x2d 0x4bef10
@@ -149,8 +163,9 @@ public:
   short field3c;        // +0x3c  init -1
   short field3e;        // +0x3e
   // +0x40..0xb8 -- per-resource-index foreign-minister counter deltas, read/written
-  // one short at a time (VTableSlot21 reads orderMetricTable40[0]/[1] as a paired
-  // "any nonzero" trigger and [2]..[6] individually), not as packed ints.
+  // one short at a time (EvaluateCityShortagesAndNotifyForeignMinister reads
+  // orderMetricTable40[0]/[1] as a paired "any nonzero" trigger and [2]..[6]
+  // individually), not as packed ints.
   short orderMetricTable40[60]; // +0x40..0xb8  (zeroed on init)
   short fieldB8;                // +0xb8
   short orderShortTableBA[16];  // +0xba..0xda

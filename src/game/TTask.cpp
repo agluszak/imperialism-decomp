@@ -1,4 +1,5 @@
 #include "game/TTask.h"
+#include "game/TStream.h"
 // SYNTHETIC: IMPERIALISM 0x005adb40
 // TTask::CreateObject
 
@@ -14,12 +15,20 @@ TTask::TTask() {}
 TTask::~TTask() {}
 
 // FUNCTION: IMPERIALISM 0x005adc30
-undefined TTask::OrphanLeaf_NoCall_Ins04_005adc30(int) {
-  return 0;
+bool TTask::Tick(TSortedList*) {
+  return --remainingAttempts == 0;
 }
 
 // FUNCTION: IMPERIALISM 0x005adc50
-void TTask::WriteTo(TStream* stream) {}
+void TTask::WriteTo(TStream* stream) {
+  TObject::WriteTo(stream);
+  stream->WriteBytesSlot78(&citySlotIndex, 2);
+  stream->WriteBytesSlot78(&remainingAttempts, 2);
+}
 
 // FUNCTION: IMPERIALISM 0x005adc90
-void TTask::ReadFrom(TStream* stream) {}
+void TTask::ReadFrom(TStream* stream) {
+  TObject::ReadFrom(stream);
+  stream->ReadBytes(&citySlotIndex, 2);
+  stream->ReadBytes(&remainingAttempts, 2);
+}

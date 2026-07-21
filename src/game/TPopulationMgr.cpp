@@ -58,7 +58,7 @@ undefined TPopulationMgr::PopulationMgrSlot0E() {
 }
 
 // FUNCTION: IMPERIALISM 0x004b6260
-undefined TPopulationMgr::OrphanLeaf_NoCall_Ins111_004b6260(short* param_1, ushort* param_2) {
+undefined TPopulationMgr::GetRecentStormImpactMetrics(short* damageOut, ushort* eventCountOut) {
   return 0;
 }
 

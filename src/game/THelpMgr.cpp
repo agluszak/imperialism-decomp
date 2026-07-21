@@ -682,7 +682,7 @@ char ShowTurnAlertsForActiveNation() {
         anyAlertShown = 1;
       }
     }
-    city->productionSummary1d8->OrphanLeaf_NoCall_Ins111_004b6260(
+    city->productionSummary1d8->GetRecentStormImpactMetrics(
         reinterpret_cast<short*>(&stormOutB), reinterpret_cast<unsigned short*>(&stormOutA));
     if (*reinterpret_cast<short*>(&stormOutA) != 0) {
       g_pSimMgr->GetString(0x2753, 0x20, &titleText);

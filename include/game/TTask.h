@@ -5,6 +5,7 @@
 
 // Forward declarations for types referenced by generated signatures.
 class TStream;
+class TSortedList;
 
 // VTABLE: IMPERIALISM 0x0066a970
 class TTask : public TObject {
@@ -19,10 +20,17 @@ public:
   // slot 0x07 Free inherited unchanged (0x4798b0)
   // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
-  virtual undefined OrphanLeaf_NoCall_Ins04_005adc30(int); // slot 0x0a 0x5adc30
+  // Base behavior: decrement remainingAttempts and report whether it just hit zero.
+  // TCityTask's override (0x5adde0) replaces this with real per-tick order-fulfillment
+  // logic but keeps the same "decrement counter, report expiry" tail. Renamed from the
+  // placeholder OrphanLeaf_NoCall_Ins04_005adc30.
+  virtual bool Tick(TSortedList* commandQueue); // slot 0x0a 0x5adc30
 
   TTask();
 
-  // Original object size is 0x8 (CRuntimeClass m_nObjectSize); the source class ended at 0x4. Trailing 4 byte(s) not yet semantically recovered — declared so sizeof and the recomp's allocation size match the original.
-  int field04;
+  // Fields recovered from TCityTask's Tick/WriteTo/ReadFrom overrides (0x5adde0/0x5ae570/
+  // 0x5ae5e0): both halves of the original single `field04` are accessed and serialized
+  // as independent 2-byte fields, matching the object's total size of 0x8.
+  short citySlotIndex;     // +0x04 — index into the owning TCity's order-slot table
+  short remainingAttempts; // +0x06 — retry countdown; Tick() forces completion at 0
 };

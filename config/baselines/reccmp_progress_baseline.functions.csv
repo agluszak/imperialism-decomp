@@ -1630,7 +1630,7 @@ address|matching|name
 0x4b5dc0|0.9263157894736842|TPopulationMgr::OrphanLeaf_NoCall_Ins47_004b5dc0
 0x4b5e80|0.07692307692307693|TPopulationMgr::OrphanCallChain_C2_I24_004b5e80
 0x4b5ed0|0.008264462809917356|TPopulationMgr::PopulationMgrSlot0E
-0x4b6260|0.017699115044247787|TPopulationMgr::OrphanLeaf_NoCall_Ins111_004b6260
+0x4b6260|0.017699115044247787|TPopulationMgr::GetRecentStormImpactMetrics
 0x4b63e0|0.038461538461538464|TPopulationMgr::OrphanLeaf_NoCall_Ins50_004b63e0
 0x4b64c0|0.03076923076923077|TPopulationMgr::OrphanLeaf_NoCall_Ins63_004b64c0
 0x4b65b0|0.031746031746031744|TPopulationMgr::OrphanCallChain_C2_I61_004b65b0
@@ -1794,10 +1794,10 @@ address|matching|name
 0x4bef60|0.006557377049180328|TCityInteriorMinister::WriteTo
 0x4bf390|0.006430868167202572|TCityInteriorMinister::ReadFrom
 0x4bf770|0.023809523809523808|TCityInteriorMinister::Call54
-0x4bf8a0|0.43564356435643564|TCityInteriorMinister::VTableSlot21
+0x4bf8a0|0.43564356435643564|TCityInteriorMinister::EvaluateCityShortagesAndNotifyForeignMinister
 0x4bfa50|1.0|TCityInteriorMinister::GetTEventHandlerClassNamePointer_22
 0x4bfb20|0.007017543859649123|TCityInteriorMinister::QueueCityProductionRebalanceCommandsByThresholds
-0x4bff60|0.6666666666666666|TCityInteriorMinister::GetTEventHandlerClassNamePointer_24
+0x4bff60|1.0|TCityInteriorMinister::NoOpProductionCommandHook24
 0x4bff80|0.02702702702702703|TCityInteriorMinister::QueueCityProductionCommand33FromAccumulatedDeficit
 0x4c0090|0.014492753623188406|TCityInteriorMinister::DistributeCityProductionCommandBudgetAndQueueOrders
 0x4c02c0|0.014084507042253521|TCityInteriorMinister::QueueCityProductionCommand17Or18FromSupportRatio
@@ -2389,7 +2389,7 @@ address|matching|name
 0x4ec3d0|0.05|TDefenseMinister::DispatchNationStateEventCode10
 0x4ec450|0.06666666666666667|TDefenseMinister::MinisterSlot12
 0x4ec4c0|1.0|TDefenseMinister::Call4C
-0x4ec540|0.5034965034965035|TDefenseMinister::MinisterSlot14
+0x4ec540|0.5034965034965035|TDefenseMinister::AssignDefenseUnitsToHomeAndBorderRegions
 0x4ecbb0|0.3755274261603376|TDefenseMinister::BuildTileRingPriorityMapForNationTileList
 0x4ecf20|0.5212121212121212|TDefenseMinister::BuildStrategicTilePriorityHeatmap
 0x4ed050|0.4092827004219409|TDefenseMinister::BuildHexAreaTileIndexListIntoAllocatedBuffer
@@ -5174,30 +5174,30 @@ address|matching|name
 0x5adb40|0.42424242424242425|TTask::CreateObject
 0x5adb70|1.0|TTask::GetRuntimeClass
 0x5adbb0|0.9090909090909091|TTask::`scalar deleting destructor'
-0x5adc30|0.3333333333333333|TTask::OrphanLeaf_NoCall_Ins04_005adc30
-0x5adc50|0.08333333333333333|TTask::WriteTo
-0x5adc90|0.08333333333333333|TTask::ReadFrom
+0x5adc30|0.6|TTask::Tick
+0x5adc50|1.0|TTask::WriteTo
+0x5adc90|1.0|TTask::ReadFrom
 0x5adcd0|0.42424242424242425|TCityTask::CreateObject
 0x5add00|1.0|TCityTask::GetRuntimeClass
-0x5add20|0.4|InitializeCityOrderCommandVtable
+0x5add20|0.2|TCityTask::TCityTask
 0x5add40|0.9090909090909091|TCityTask::`scalar deleting destructor'
 0x5add70|0.5|DestroyTCityTask_Impl
-0x5add90|0.0|InitializeCityProductionQueueCommand
-0x5adde0|0.012987012987012988|TCityTask::OrphanLeaf_NoCall_Ins04_005adc30
-0x5ae010|0.0392156862745098|TCityTask::QueueCityOrderType10CommandIfReady
-0x5ae0e0|0.024691358024691357|TCityTask::QueueCityRecruitmentSupportCommandsIfDeficit
-0x5ae240|0.018518518518518517|TCityTask::DeserializeCityProductionQueueCommand
-0x5ae420|0.045454545454545456|TCityTask::ApplyProductionDistributionToCitySlots
-0x5ae4b0|0.046511627906976744|TCityTask::OrphanRetStub_0059add0
-0x5ae570|0.05|TCityTask::WriteTo
-0x5ae5e0|0.058823529411764705|TCityTask::ReadFrom
+0x5add90|0.7692307692307693|TCityTask::InitializeCityProductionQueueCommand
+0x5adde0|0.673469387755102|TCityTask::Tick
+0x5ae010|0.5309734513274337|TCityTask::QueueCityOrderType10CommandIfReady
+0x5ae0e0|0.5348837209302325|TCityTask::QueueCityRecruitmentSupportCommandsIfDeficit
+0x5ae240|0.3125|TCityTask::QueueCityOrderInputDeltaCommands
+0x5ae420|0.4943820224719101|TCityTask::ApplyProductionDistributionToCitySlots
+0x5ae4b0|0.6391752577319587|TCityTask::QueueCityProductionOrderCommand
+0x5ae570|1.0|TCityTask::WriteTo
+0x5ae5e0|1.0|TCityTask::ReadFrom
 0x5ae650|0.42424242424242425|TShipBuildingTask::CreateObject
 0x5ae680|1.0|TShipBuildingTask::GetRuntimeClass
 0x5ae6a0|0.2|TShipBuildingTask::TShipBuildingTask
 0x5ae6c0|0.9090909090909091|TShipBuildingTask::`scalar deleting destructor'
 0x5ae6f0|0.5|DestroyTShipBuildingTask_Impl
 0x5ae710|0.0|InitializeOrderRecordFieldsFromArgs
-0x5ae780|0.027586206896551724|TShipBuildingTask::OrphanLeaf_NoCall_Ins04_005adc30
+0x5ae780|0.027586206896551724|TShipBuildingTask::Tick
 0x5ae9e0|0.04|TShipBuildingTask::WriteTo
 0x5aea70|0.045454545454545456|TShipBuildingTask::ReadFrom
 0x5aeaf0|0.46153846153846156|TTaskList::CreateObject
