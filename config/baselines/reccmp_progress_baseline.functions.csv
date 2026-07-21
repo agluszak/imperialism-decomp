@@ -1211,11 +1211,11 @@ address|matching|name
 0x4a18f0|0.8245614035087719|TArmyMgr::InitializeMapContextActionManager
 0x4a1b80|0.017857142857142856|TArmyMgr::ReadFrom
 0x4a1dd0|0.058823529411764705|TArmyMgr::WriteTo
-0x4a1e40|0.7843137254901961|TArmyMgr::OrphanCallChain_C4_I26_004a1e40
-0x4a1eb0|0.98|TArmyMgr::ReleaseThreeLinkedObjectsAndResetTerrainDescriptorFlags
-0x4a1f80|0.56640625|TArmyMgr::ProcessTileUnitListsAndApplyRandomStatusUpdates
-0x4a2390|0.8230088495575221|TArmyMgr::ProcessPendingArmyStacksForBattleOrRelocation
-0x4a2500|0.9767441860465116|TArmyMgr::IterateLinkedListCursorAndClearPerTileByte0F
+0x4a1e40|0.8163265306122449|TArmyMgr::DoCombatMoves
+0x4a1eb0|0.98|TArmyMgr::EndBattlePhase
+0x4a1f80|0.5675146771037182|TArmyMgr::FormStacks
+0x4a2390|0.8266666666666667|TArmyMgr::ResolveNextMove
+0x4a2500|0.984375|TArmyMgr::ClearPendingStacksAndFinalizeMilitaryUnits
 0x4a2610|0.011976047904191617|BuildArmyActionLabelFromLocalizationAndCounts
 0x4a2900|0.13063763608087092|BuildArmyContextActionRecordsAndDispatchLabel
 0x4a31c0|0.4|OrphanVtableAssignStub_004a31c0
@@ -1227,7 +1227,7 @@ address|matching|name
 0x4a3b30|1.0|TMilitaryUnit::SetOrClearWordMaskBits3a
 0x4a3b70|1.0|TArmyStack::ResetCursorAndGetHeadUnit
 0x4a3b90|1.0|TArmyStack::AdvanceCursorAndGetUnit
-0x4a3bc0|0.26666666666666666|TArmyMgr::ArmyMgrSlot12
+0x4a3bc0|0.26785714285714285|TArmyMgr::DoOwnershipChanges
 0x4a3d90|0.5849056603773585|TArmyMgr::DispatchTileActionByKind_004a3d90
 0x4a3f30|0.5745454545454546|TArmyMgr::CommitCityActionGateCostIfAffordable
 0x4a4190|1.0|TMapMgr::ValidateGridIndexRange0To17F
@@ -2729,8 +2729,7 @@ address|matching|name
 0x5113d0|1.0|TMapMgr::CheckTileVariantCodeMembershipSetC
 0x511440|1.0|TMapMgr::CheckTileVariantCodeMembershipSetD
 0x5114b0|0.025|CheckTilePatternMaskAllowedByModeFlag
-0x511610|0.0|TMapMgr::UpdateStrategicMapTileIconVariantState
-0x511614|0.0|UpdateStrategicMapTileIconVariantState
+0x511610|0.2504970178926441|TMapMgr::UpdateStrategicMapTileIconVariantState
 0x511a70|0.23433242506811988|TMapMgr::TMapMaker_EnsureRegionClassHasSubtype3And4AssignmentsWithRng
 0x511e80|1.0|TMapMgr::TMapMaker_EnsureMapDataStreamOpenedAndMaybeTickUiProgress
 0x511ed0|0.6666666666666666|TMapMgr::DispatchTurnEvent7DDForActiveNation
@@ -3501,7 +3500,7 @@ address|matching|name
 0x545660|1.0|TMultiplayerMgr::ResetLocalUiStateAndPostTurnEvent5E5
 0x5456a0|0.14814814814814814|ResetDialogContextField40AndEmitTurnEvent3Mode18
 0x545730|0.016666666666666666|TMultiplayerMgr::RouteAndProcessDiplomacyTurnStateEventQueue
-0x545940|0.4218346253229974|TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine
+0x545940|0.4231266149870801|TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine
 0x549240|0.6666666666666666|TouchSessionActiveNationId
 0x549280|1.0|TMultiplayerMgr::AppendNodeToTurnEventLinkedListAt6C
 0x5493c0|0.3516483516483517|TMultiplayerMgr::CreateAndSendTurnEvent11_MapOffsetAndFlags
@@ -4273,7 +4272,7 @@ address|matching|name
 0x57d950|1.0|TSimMgr::AdvanceSeason
 0x57d970|1.0|TSimMgr::StartNextPhase
 0x57d990|0.2803738317757009|TSimMgr::EnterOptionalPhase
-0x57da70|0.1986754966887417|TSimMgr::AdvanceGlobalTurnStateMachine
+0x57da70|0.19672131147540983|TSimMgr::AdvanceGlobalTurnStateMachine
 0x57f0e0|1.0|TCountry::IsNationProfileInMinorRange100To199
 0x57f110|0.3333333333333333|TSimMgr::InLinearPhase
 0x57f140|0.7663551401869159|TSimMgr::DoCityAndTransport
@@ -4822,7 +4821,7 @@ address|matching|name
 0x5a02e0|0.17616580310880828|TTacticalBattle::PropagateTileAccessibilityStrengthLevels
 0x5a0420|1.0|TTacticalBattle::ComputeHexNeighborTileIndices_005A0420
 0x5a0550|0.08695652173913043|IsHexNeighborTileIndex
-0x5a05a0|0.005847953216374269|ComputeTacticalHoverCursorStateIndex
+0x5a05a0|0.39285714285714285|TTacticalBattle::ComputeTacticalHoverCursorStateIndex
 0x5a0a90|0.0|ResolveTacticalHoverCursorToken
 0x5a0c50|1.0|TTacticalBattle::HandleTacticalBattleCommandTag
 0x5a0d60|1.0|TTacticalBattle::QueueTacticalEventPacket232A
@@ -4830,7 +4829,7 @@ address|matching|name
 0x5a1010|1.0|TTacticalBattle::SetCurrentTacticalUnitSelection
 0x5a10e0|0.28125|TTacticalBattle::ProcessTacticalUnitState1TurnStep
 0x5a1400|1.0|TTacticalBattle::HasEnemyUnitOnTilesFlankingHexDirection
-0x5a1520|0.5259259259259259|TTacticalBattle::MoveTacticalUnitTowardTile
+0x5a1520|0.48148148148148145|TTacticalBattle::MoveTacticalUnitTowardTile
 0x5a16e0|0.7192429022082019|TTacticalBattle::BuildPathToTargetByDistanceField
 0x5a1910|1.0|TTacticalBattle::MoveTacticalUnitBetweenTiles
 0x5a1a20|0.7931034482758621|TTacticalBattle::ResolveTacticalReactionChecksForTile
@@ -4878,7 +4877,7 @@ address|matching|name
 0x5a5500|0.5|TNavyBattle::CreateTNavyBattleInstance
 0x5a5520|1.0|TNavyBattle::GetRuntimeClass
 0x5a55c0|1.0|TNavyBattle::DeployTacticalUnitToTile
-0x5a5730|0.6744186046511628|TNavyBattle::EvaluateAndResolveTacticalActionAgainstTileOccupant
+0x5a5730|0.6686046511627907|TNavyBattle::EvaluateAndResolveTacticalActionAgainstTileOccupant
 0x5a59a0|1.0|ConvertHexTileIndexToRowAndDoubleColumn
 0x5a59f0|0.020618556701030927|TNavyBattle::ComputeTacticalReachableTileCostsByUnitCategory
 0x5a5b70|0.8571428571428571|TNavyBattle::FinalizeTacticalBattleOutcome
@@ -4917,7 +4916,7 @@ address|matching|name
 0x5a6560|0.2222222222222222|TNextMoveCommand::ConstructTNextMoveCommandBaseState
 0x5a6590|0.9090909090909091|TNextMoveCommand::`scalar deleting destructor'
 0x5a6620|0.43478260869565216|TNextMoveCommand::DoIt
-0x5a6940|0.819672131147541|ClipSrcRectToBoundsAndOffsetDstRect
+0x5a6940|0.8360655737704918|ClipSrcRectToBoundsAndOffsetDstRect
 0x5a6a20|0.927933293627159|InitializeTacticalUnitFacingOffsetTable
 0x5a82b0|1.0|TTacticalBattleView::CreateObject
 0x5a8330|1.0|TTacticalBattleView::GetRuntimeClass
@@ -4940,7 +4939,7 @@ address|matching|name
 0x5a8d40|0.009950248756218905|TTacticalBattleView::HandleCursorHoverSelectionByChildHitTestAndFallback
 0x5a9090|0.8208955223880597|TTacticalBattleView::PlayTacticalTileEffect
 0x5a9170|0.9454545454545454|TTacticalBattleView::RunOneTimeAnimationModalWaitAndInvalidateCityDialog
-0x5a9240|0.563855421686747|TTacticalBattleView::AnimateTacticalUnitMoveBetweenTiles
+0x5a9240|0.5397590361445783|TTacticalBattleView::AnimateTacticalUnitMoveBetweenTiles
 0x5a9550|0.22984562607204118|TTacticalBattleView::DrawUiTilesAndOverlay
 0x5a99e0|1.0|DrawHexSelectionOutlineSegments
 0x5a9b40|0.92|TTacticalBattleView::UpdateTacticalActionControlBitmapForCurrentUnit
@@ -5502,15 +5501,15 @@ address|matching|name
 0x5df300|0.9090909090909091|TAssetMgr::`scalar deleting destructor'
 0x5df3a0|1.0|TAssetMgr::ForwardEnsurePictWvDataGobLoadedBySlot
 0x5df3c0|1.0|TAssetMgr::ResolveTurnEventDialogNodeByMessageContext
-0x5df3f0|1.0|TAssetMgr::NoOpRuntimeUiCallback_005df3f0
-0x5df410|1.0|TAssetMgr::NoOpRuntimeUiCallback_005df410
+0x5df3f0|1.0|TAssetMgr::OpenFilesFor
+0x5df410|1.0|TAssetMgr::CloseFilesFor
 0x5df430|0.7168141592920354|TAssetMgr::LoadTableResourceStreamByName
 0x5df610|0.5|InitializeRuntimeClassVtablePointer_0066FEC4
 0x5df6d0|1.0|TAssetMgr::ReleaseResourceStreamIfNotNull
 0x5df700|1.0|TAssetMgr::ReadResourceStreamIntoBufferAndAdvance
 0x5df730|1.0|TAssetMgr::InvokeVtableSlot30OnTargetObject
 0x5df760|1.0|TAssetMgr::GetResourceStreamSize
-0x5df780|1.0|TAssetMgr::NoOpRuntimeUiCallback_005df780
+0x5df780|1.0|TAssetMgr::OpenFilesForView
 0x5df7a0|0.3106796116504854|QueryVolumeInformationForDriveIndex
 0x5df890|0.27586206896551724|QueryDriveTypeByDriveIndex
 0x5df8d0|1.0|ReturnTrueStub

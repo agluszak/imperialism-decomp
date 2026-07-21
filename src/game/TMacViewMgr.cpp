@@ -316,7 +316,7 @@ TMacViewMgr::~TMacViewMgr() {}
 
 // FUNCTION: IMPERIALISM 0x00509f20
 void TMacViewMgr::InitializeStrategicMapViewSystem() {
-  g_pUiViewManager->NoOpRuntimeUiCallback_005df3f0(3);
+  g_pUiViewManager->OpenFilesFor(3);
   BuildStrategicMapCommodityIconAtlasFrom700To722();
   LoadStrategicMapUnitIconAtlas750();
   LoadStrategicMapUnitOverlayAtlas751();
@@ -494,7 +494,7 @@ void TMacViewMgr::RefreshCityCapabilityUiHandlesForActiveNation() {
   if (nationId < 0) {
     return;
   }
-  g_pUiViewManager->NoOpRuntimeUiCallback_005df3f0(3);
+  g_pUiViewManager->OpenFilesFor(3);
   nationId = g_pSimMgr->GetActiveNationId();
   variant = g_pCityOrderCapabilityState->orderCapRows277[nationId].techStatusByTechId[0x0f] != 0;
   nationId = g_pSimMgr->GetActiveNationId();
@@ -753,7 +753,7 @@ undefined TMacViewMgr::RenderOffscreenBitmapGridStripAndRestoreContext() {
 
 // FUNCTION: IMPERIALISM 0x0050b5b0
 void TMacViewMgr::ReloadBitmap244AndRefreshUiCaches() {
-  g_pUiViewManager->NoOpRuntimeUiCallback_005df3f0(3);
+  g_pUiViewManager->OpenFilesFor(3);
   if (atlas6b8 != 0) {
     g_pDisplayMgr->FreeQuickDrawSurfaceContextSlot(&atlas6b8);
   }

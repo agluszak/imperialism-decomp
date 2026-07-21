@@ -107,7 +107,7 @@ void TGameSetupPicture::HandleEvent(int commandId, TEventHandler* sourceHandler,
     } else {
       g_pSfxPlaybackSystem->PlaySoundEffect(0x1b58, 0, 1);
       g_pSimMgr->SetSelectedIndex6AAndTriggerRefresh(0);
-      g_pUiViewManager->NoOpRuntimeUiCallback_005df3f0(1);
+      g_pUiViewManager->OpenFilesFor(1);
       postEventCode = 0x5dd;
     }
   } else if (controlTag == kControlTagScen) {

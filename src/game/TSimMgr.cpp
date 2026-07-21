@@ -336,7 +336,7 @@ void TSimMgr::ReadFrom(TStream* stream) {
     }
   }
 
-  g_pUiViewManager->NoOpRuntimeUiCallback_005df3f0(1);
+  g_pUiViewManager->OpenFilesFor(1);
   RebuildGlobalOrderManagersAndCapabilityState(0);
   RebuildMapContextAndGlobalMapState(0, nullptr, 0);
   RebuildNationStateSlotsAndAvailability(0);

@@ -1473,11 +1473,11 @@ address|name|symbol|size|type|prototype|provenance
 4a1b80|TArmyMgr::ReadFrom||403|function|undefined RebuildMapActionSelectionCachesAndContexts()|
 4a1d90|WrapperFor_FreeHeapBufferIfNotNull_At004a1d90||35|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At004a1d90()|
 4a1dd0|TArmyMgr::WriteTo||77|function|undefined DeserializeArmyManagerListFromStream()|
-4a1e40|TArmyMgr::OrphanCallChain_C4_I26_004a1e40||65|function|undefined OrphanCallChain_C4_I26_004a1e40(void)|
-4a1eb0|ReleaseThreeLinkedObjectsAndResetTerrainDescriptorFlags||151|function|undefined ReleaseThreeLinkedObjectsAndResetTerrainDescriptorFlags()|
-4a1f80|TArmyMgr::ProcessTileUnitListsAndApplyRandomStatusUpdates||832|function|undefined ProcessTileUnitListsAndApplyRandomStatusUpdates()|
-4a2390|TArmyMgr::OrphanCallChain_C12_I108_004a2390||285|function|undefined OrphanCallChain_C12_I108_004a2390(void)|
-4a2500|TArmyMgr::IterateLinkedListCursorAndClearPerTileByte0F||193|function|undefined IterateLinkedListCursorAndClearPerTileByte0F()|
+4a1e40|TArmyMgr::DoCombatMoves||65|function|void DoCombatMoves(void)|
+4a1eb0|TArmyMgr::EndBattlePhase||151|function|void EndBattlePhase(void)|
+4a1f80|TArmyMgr::FormStacks||832|function|void FormStacks(void)|
+4a2390|TArmyMgr::ResolveNextMove||285|function|void ResolveNextMove(void)|
+4a2500|TArmyMgr::ClearPendingStacksAndFinalizeMilitaryUnits||193|function|void ClearPendingStacksAndFinalizeMilitaryUnits(void)|
 4a2610|BuildArmyActionLabelFromLocalizationAndCounts||582|function|undefined BuildArmyActionLabelFromLocalizationAndCounts()|
 4a2900|BuildArmyContextActionRecordsAndDispatchLabel||1791|function|undefined BuildArmyContextActionRecordsAndDispatchLabel()|
 4a31c0|OrphanVtableAssignStub_004a31c0||6|function|undefined OrphanVtableAssignStub_004a31c0()|
@@ -1489,7 +1489,7 @@ address|name|symbol|size|type|prototype|provenance
 4a3b30|SetOrClearWordMaskBits3a||33|function|undefined SetOrClearWordMaskBits3a()|
 4a3b70|MirrorDword14To18||16|function|undefined MirrorDword14To18()|
 4a3b90|WrapperFor_HandleBlinkStateAndScheduleTimerTick_At005a5320_Impl_At004a3b90||23|function|undefined WrapperFor_HandleBlinkStateAndScheduleTimerTick_At005a5320_Impl_At004a3b90()|
-4a3bc0|TArmyMgr::ArmyMgrSlot12||355|function|undefined WrapperFor_IsNationSlotEligibleForEventProcessing_At004a3bc0(void)|
+4a3bc0|TArmyMgr::DoOwnershipChanges||355|function|void DoOwnershipChanges(void)|
 4a3d90|TArmyMgr::OrphanCallChain_C3_I52_004a3d90||136|function|undefined OrphanCallChain_C3_I52_004a3d90(short param_1)|
 4a3e50|TArmyMgr::SelectMovableUnitOnCurrentTileAndPlaySfx||166|function|undefined SelectMovableUnitOnCurrentTileAndPlaySfx()|
 4a3f30|TArmyMgr::CommitCityActionGateCostIfAffordable||476|function|undefined CommitCityActionGateCostIfAffordable()|
@@ -6133,8 +6133,8 @@ address|name|symbol|size|type|prototype|provenance
 5df330|TAssetMgr::WrapperFor_InvokeCallbackNTimesWithSehGuard_At005df330||72|function|undefined WrapperFor_InvokeCallbackNTimesWithSehGuard_At005df330()|
 5df3a0|ForwardEnsurePictWvDataGobLoadedBySlot||10|function|void __cdecl ForwardEnsurePictWvDataGobLoadedBySlot(int languageTag)|
 5df3c0|TAssetMgr::ResolveTurnEventDialogNodeByMessageContext||21|function|undefined ResolveTurnEventDialogNodeByMessageContext()|
-5df3f0|TAssetMgr::NoOpRuntimeUiCallback_005df3f0||3|function|undefined NoOpRuntimeUiCallback_005df3f0(void)|
-5df410|TAssetMgr::NoOpRuntimeUiCallback_005df410||3|function|undefined NoOpRuntimeUiCallback_005df410(void)|
+5df3f0|TAssetMgr::OpenFilesFor||3|function|void OpenFilesFor(short fileSet)|
+5df410|TAssetMgr::CloseFilesFor||3|function|void CloseFilesFor(short fileSet)|
 5df430|TAssetMgr::LoadTableResourceStreamByName||384|function|undefined LoadTableResourceStreamByName()|
 5df610|InitializeRuntimeClassVtablePointer_0066FEC4||7|function|undefined InitializeRuntimeClassVtablePointer_0066FEC4()|
 5df630|WrapperFor_FreeHeapBufferIfNotNull_At005df630||30|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At005df630()|
@@ -6143,7 +6143,7 @@ address|name|symbol|size|type|prototype|provenance
 5df700|TAssetMgr::ReadResourceStreamIntoBufferAndAdvance||30|function|undefined ReadResourceStreamIntoBufferAndAdvance()|
 5df730|TAssetMgr::InvokeVtableSlot30OnTargetObject||19|function|undefined InvokeVtableSlot30OnTargetObject()|
 5df760|TAssetMgr::GetResourceStreamSize||12|function|int GetResourceStreamSize(CFile_Virtuals* stream)|
-5df780|TAssetMgr::NoOpRuntimeUiCallback_005df780||3|function|undefined NoOpRuntimeUiCallback_005df780(void)|
+5df780|TAssetMgr::OpenFilesForView||3|function|void OpenFilesForView(short fileSet)|
 5df7a0|QueryVolumeInformationForDriveIndex||178|function|BOOL __cdecl QueryVolumeInformationForDriveIndex(char driveIndex,CString* volumeName,LPDWORD serial)|
 5df890|QueryDriveTypeByDriveIndex||44|function|bool __cdecl QueryDriveTypeByDriveIndex(char driveIndex)|
 5df8d0|ReturnTrueStub||6|function|undefined ReturnTrueStub()|

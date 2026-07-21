@@ -475,7 +475,7 @@ bool TViewMgr::RunNationInfoModalAndReturnNonCancel(int messageKind, CString tit
     dialog = static_cast<TurnEventDialogNode*>(
         g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(0x7e4));
   } else {
-    g_pUiViewManager->NoOpRuntimeUiCallback_005df3f0(0xb);
+    g_pUiViewManager->OpenFilesFor(0xb);
     dialog = static_cast<TurnEventDialogNode*>(
         g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(0x2508));
   }
@@ -1225,7 +1225,7 @@ void TViewMgr::DispatchTurnEventSlot4C(short eventCode, int payload) {
   }
 
   // Cross-code path: tear down the previous dialog, build the new turn-event UI packet.
-  g_pUiViewManager->NoOpRuntimeUiCallback_005df780(0);
+  g_pUiViewManager->OpenFilesForView(0);
   mainView->Open();
   if (this->field10 != 0) {
     ShowDialogTemplateE0ModalAndReleaseCapture();

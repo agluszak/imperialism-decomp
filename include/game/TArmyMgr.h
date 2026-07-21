@@ -60,9 +60,10 @@ public:
   virtual void Free() override;                    // slot 0x07 0x4a1a00
   // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
-  virtual undefined OrphanCallChain_C4_I26_004a1e40();                 // slot 0x0a 0x4a1e40
-  virtual undefined ProcessTileUnitListsAndApplyRandomStatusUpdates(); // slot 0x0b 0x4a1f80
-  // Walks pendingUnitPool0c's TArmyStack entries starting at pendingRebuildFlag10: for
+  // Retail Mac identities, confirmed against the Windows call chain and bodies.
+  virtual void DoCombatMoves(); // slot 0x0a 0x4a1e40
+  virtual void FormStacks();    // slot 0x0b 0x4a1f80
+  // Walks pendingUnitPool0c's TArmyStack entries starting at nextStackOrdinal10: for
   // each stack whose categoryFlag8 matches regionAffinityTable1c[ownerNationCodeE],
   // relocates every unit on its embedded chain (VTableSlot10 + SetOrderModeSlot34);
   // otherwise tries TryCreateTacticalBattleViewForTileArmies. Stops early on the first
@@ -70,10 +71,10 @@ public:
   // pass fully completes without creating one, via ReleaseThreeLinkedObjectsAndReset-
   // TerrainDescriptorFlags at the end (ground truth duplicates that release inline
   // rather than calling out to it, so this mirrors that instead of extracting a helper).
-  virtual undefined ProcessPendingArmyStacksForBattleOrRelocation(); // slot 0x0c 0x4a2390
-  virtual undefined IterateLinkedListCursorAndClearPerTileByte0F();  // slot 0x0d 0x4a2500
+  virtual void ResolveNextMove();                            // slot 0x0c 0x4a2390
+  virtual void ClearPendingStacksAndFinalizeMilitaryUnits(); // slot 0x0d 0x4a2500
   // Ground truth (RET 0x8, 2 stack args) proves the previous 0-arg declaration was a
-  // poison-pill arity mismatch. Called from ProcessPendingArmyStacksForBattleOrRelocation
+  // poison-pill arity mismatch. Called from ResolveNextMove
   // when a TArmyStack's categoryFlag8 doesn't match
   // TArmyMgr::perTileOwnerNationCodeCache1c[ownerNationCodeE]. Partitions stack's unit
   // chain into an "our stack" (units matching ownerNationCode) and, if any were found, an
@@ -84,7 +85,7 @@ public:
   TryCreateTacticalBattleViewForTileArmies(TArmyStack* stack,
                                            short ownerNationCode); // slot 0x0e 0x4a3200
   // stack is the same TArmyStack the tile-army-composition pass (0x4a1f80) builds and
-  // OrphanCallChain_C12_I108_004a2390 (0x4a2390) iterates. Picks a random adjacent region
+  // ResolveNextMove (0x4a2390) iterates. Picks a random adjacent region
   // matching the stack's head unit's field_18 tag and relocates every movable unit there
   // (TUnit::SetOrderModeSlot34), or resets them if none qualifies.
   virtual undefined
@@ -102,7 +103,7 @@ public:
   // instead. Returns whether any eligible pairing was ever found.
   virtual bool UpdateDualLinkedEntryMetersAndBlinkState(TArmyStack* stack1,
                                                         TArmyStack* stack2); // slot 0x11 0x4a3830
-  virtual undefined ArmyMgrSlot12();                                         // slot 0x12 0x4a3bc0
+  virtual void DoOwnershipChanges();                                         // slot 0x12 0x4a3bc0
   // Ground truth (RET 0x8, 2 stack args) proves the previous 1-arg declaration was a
   // poison-pill arity mismatch. actionKind selects between the slot-0x14/0x15 dispatch
   // (1/4 -> SelectMovableUnitOnCurrentTileAndPlaySfx, 7 -> CommitCityActionGateCostIfAffordable)
@@ -162,32 +163,32 @@ public:
   unsigned char flag8;
   unsigned char pad09[0x0c - 0x09];
   // +0x0c -- a TSortedList (GetCount/GetEntryByOrdinal evidence from
-  // ProcessTileUnitListsAndApplyRandomStatusUpdates's ground truth); freed at the top of
-  // IterateLinkedListCursorAndClearPerTileByte0F via FreePayloads.
+  // FormStacks's ground truth); freed at the top of
+  // ClearPendingStacksAndFinalizeMilitaryUnits via FreePayloads.
   TSortedList* pendingUnitPool0c;
-  // +0x10 -- set to 1 by OrphanCallChain_C4_I26_004a1e40's non-turn-3 branch right before
-  // calling OrphanCallChain_C12_I108_004a2390; role not pinned down beyond that write site.
-  int pendingRebuildFlag10;
+  // +0x10 -- one-based stack ordinal initialized by DoCombatMoves and advanced by
+  // ResolveNextMove as it walks pendingUnitPool0c.
+  int nextStackOrdinal10;
   // +0x14/+0x18 -- static lookup-table pointers installed by
   // InitializeMapContextActionManager (0x695448 / 0x695428); consumers not yet mapped.
   const void* staticTable14;
   const void* staticTable18;
   // +0x1c..+0x31b -- one entry per map tile (0x180 = 384 tiles, confirmed by
-  // ProcessTileUnitListsAndApplyRandomStatusUpdates's own fill loop at 0x4a1f80, which
+  // FormStacks's own fill loop at 0x4a1f80, which
   // writes exactly 0x180 consecutive shorts starting here via
   // TMapMgr::ResolveTileOwnerNationCodeNormalized) -- a per-tile owner-nation-code cache,
   // read elsewhere indexed by a region/order-target id rather than a literal tile index
-  // (RedistributeUnitOrderQueueToRandomAdjacentRegion, ProcessPendingArmyStacksFor-
-  // BattleOrRelocation) so its exact addressing convention isn't fully pinned down.
+  // (RedistributeUnitOrderQueueToRandomAdjacentRegion, ResolveNextMove) so its exact
+  // addressing convention isn't fully pinned down.
   short perTileOwnerNationCodeCache1c[0x180];
   short pendingMapActionIndex; // +0x31c
   unsigned char pad31e[0x39a - 0x31e];
   // +0x39a -- set when a terrain-descriptor refresh is pending; consumed and cleared by
-  // ReleaseThreeLinkedObjectsAndResetTerrainDescriptorFlags (0x4a1eb0).
+  // EndBattlePhase (0x4a1eb0).
   unsigned char needsTerrainRefreshFlag39a;
   unsigned char pad39b;
   // +0x39c/+0x3a0/+0x3a4 -- three cached objects released (TObject::Free) and cleared by
-  // ReleaseThreeLinkedObjectsAndResetTerrainDescriptorFlags. Typed from
+  // EndBattlePhase. Typed from
   // CreateTacticalBattleViewAndInitializeBattleSetup's own construction evidence (best-
   // effort argument order derived from calling-convention analysis, not yet confirmed by
   // a passing `just compare` on that function).
@@ -195,11 +196,10 @@ public:
   class TArmyStack* enemyStackBattle3a0;
   class TArmyBattle* activeBattleView3a4;
 
-  // Releases the 3 cached objects above, re-runs the per-tile-unit cleanup (slot 0x0d)
-  // and eligibility rebuild (slot 0x12), and -- when needsTerrainRefreshFlag39a is set --
-  // rebuilds the strategic map view's nation clip regions and resets every nation's
-  // serializedField8c to -1. 0x004a1eb0, __thiscall, no args.
-  void ReleaseThreeLinkedObjectsAndResetTerrainDescriptorFlags();
+  // Retail Mac EndBattlePhase. Releases the 3 cached battle objects, performs the
+  // slot-0x0d unit cleanup and DoOwnershipChanges, refreshes nation clip regions when
+  // needed, then advances the simulation phase. 0x004a1eb0, __thiscall, no args.
+  void EndBattlePhase();
 
   // Selects the first matching unit in the requested state at tileIndex and returns
   // the number of matching units left in the opposite toolbar state. Both methods are
