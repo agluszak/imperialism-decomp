@@ -79,7 +79,7 @@ void TDealBookPicture::Startup(short startupValue) {
   TStaticText* titLControl = static_cast<TStaticText*>(this->ResolveControlByTag(0x7469744c));
   titLControl->AssertValid();
   titLControl->SetTextFromStringResource(0x2740, 0x19, 0);
-  RECT titLBounds;
+  CRect titLBounds;
   titLControl->QueryBounds(&titLBounds);
   RECT titLInval;
   CopyRect(&titLInval, &titLBounds);
@@ -90,7 +90,7 @@ void TDealBookPicture::Startup(short startupValue) {
       static_cast<TDropShadowText*>(this->ResolveControlByTag(0x7274696c));
   rtilControl->AssertValid();
   rtilControl->SetTextFromStringResource(0x2740, 0x1a, 0);
-  RECT rtilBounds;
+  CRect rtilBounds;
   rtilControl->QueryBounds(&rtilBounds);
   RECT rtilInval;
   CopyRect(&rtilInval, &rtilBounds);
@@ -303,7 +303,7 @@ void TDealBookPicture::SwitchPages() {
     CString headerText = seasonName + s_szSpaceSeparator_00695794 + yearText;
     rtilControl->SetTextAndMaybeRefresh(&headerText, 0);
 
-    RECT titleBounds;
+    CRect titleBounds;
     rtilControl->QueryBounds(&titleBounds);
     InvalidateCityDialogRectRegion(&titleBounds, 1);
 
@@ -323,7 +323,7 @@ void TDealBookPicture::SwitchPages() {
         static_cast<TStaticText*>(ResolveControlByTag(0x7469744c /* 'titL' */));
     titLControl->AssertValid();
     titLControl->SetTextFromStringResource(0x2740, 0x19, 0);
-    RECT titLBounds;
+    CRect titLBounds;
     titLControl->QueryBounds(&titLBounds);
     InvalidateCityDialogRectRegion(&titLBounds, 1);
 
@@ -331,7 +331,7 @@ void TDealBookPicture::SwitchPages() {
         static_cast<TStaticText*>(ResolveControlByTag(0x7274696c /* 'rtil' */));
     rtilControl->AssertValid();
     rtilControl->SetTextFromStringResource(0x2740, 0x1a, 0);
-    RECT rtilBounds;
+    CRect rtilBounds;
     rtilControl->QueryBounds(&rtilBounds);
     InvalidateCityDialogRectRegion(&rtilBounds, 1);
 

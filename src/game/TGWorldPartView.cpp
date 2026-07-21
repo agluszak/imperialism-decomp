@@ -24,7 +24,7 @@ TGWorldPartView::TGWorldPartView() : TView() {
 void TGWorldPartView::ApplyRectSlot110(RECT* rectBuffer) {
   (void)rectBuffer;
   if (sourceSurface60 != 0) {
-    RECT destRect;
+    CRect destRect;
     QueryContentBounds(&destRect);
     UpdatePaletteIndexWithDefaultFallback(0x10);
     BlitRectWithOptionalTransparency(sourceSurface60->GetBlitSurface(),

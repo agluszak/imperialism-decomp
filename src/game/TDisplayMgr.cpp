@@ -34,10 +34,10 @@ static void AssignUiFontGlobalFromLiteral(CString& globalSlot, const char* liter
 GlobalViewportRectDefaultsRecord** InitializeGlobalRectDefaultsIfUninitialized() {
   if (g_pGlobalViewportRectDefaultsRecord == nullptr) {
     g_globalViewportRectDefaultsRecord.field0 = 0;
-    g_globalViewportRectDefaultsRecord.left = 0;
-    g_globalViewportRectDefaultsRecord.top = 0;
-    g_globalViewportRectDefaultsRecord.right = 0x280;
-    g_globalViewportRectDefaultsRecord.bottom = 0x1e0;
+    g_globalViewportRectDefaultsRecord.viewportBounds.left = 0;
+    g_globalViewportRectDefaultsRecord.viewportBounds.top = 0;
+    g_globalViewportRectDefaultsRecord.viewportBounds.right = 0x280;
+    g_globalViewportRectDefaultsRecord.viewportBounds.bottom = 0x1e0;
     g_pGlobalViewportRectDefaultsRecord = &g_globalViewportRectDefaultsRecord;
   }
   return &g_pGlobalViewportRectDefaultsRecord;
@@ -94,9 +94,9 @@ void TDisplayMgr::InitializeWindowAndMBarSize() {
       InitializeGlobalRectDefaultsIfUninitialized();
   GlobalViewportRectDefaultsRecord* rectRecord = *rectDefaultsHandle;
   RECT viewportRect;
-  CopyRect(&viewportRect, reinterpret_cast<RECT*>(&rectRecord->left));
-  int width = rectRecord->right - rectRecord->left;
-  int height = rectRecord->bottom - rectRecord->top;
+  CopyRect(&viewportRect, &rectRecord->viewportBounds);
+  int width = rectRecord->viewportBounds.right - rectRecord->viewportBounds.left;
+  int height = rectRecord->viewportBounds.bottom - rectRecord->viewportBounds.top;
   if (width < 0x281 && height < 0x1e1) {
     eventCode0e = 0x7d1;
   } else {
@@ -226,7 +226,7 @@ void TDisplayMgr::UpdateTheGWorld(short eventCode) {
   }
 
   TView* mainView = mainControl;
-  RECT queryBounds;
+  CRect queryBounds;
   mainView->QueryBounds(&queryBounds);
 
   RECT clipRect;

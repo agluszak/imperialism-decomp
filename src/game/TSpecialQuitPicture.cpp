@@ -34,7 +34,7 @@ void TSpecialQuitPicture::DoPostCreate(int arg) {
   saleControl->AssertValid();
   saleControl->SetTextFromUiStringResourceId(0x4e20);
   saleControl->BuildAndApplyTextStyleDescriptor(0, 0x18, 0x2b6c);
-  RECT saleBounds;
+  CRect saleBounds;
   saleControl->QueryBounds(&saleBounds);
   saleBounds.right = 0x28;
   saleBounds.bottom = 0x11;

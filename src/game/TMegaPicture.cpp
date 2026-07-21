@@ -24,7 +24,8 @@ TMegaPicture::~TMegaPicture() {}
 // flags98&1 is clear), and applies transparent-color blitting (flags98&1).
 // FUNCTION: IMPERIALISM 0x00573270
 void TMegaPicture::ApplyRectSlot110(RECT* rectBuffer) {
-  RECT screenRect = TransformRectViaSlot148(rectBuffer);
+  CRect contentRect(*rectBuffer);
+  CRect screenRect = TransformRectViaSlot148(&contentRect);
   if (surfaceContext94 == nullptr) {
     return;
   }

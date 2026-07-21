@@ -25,7 +25,7 @@ TLonelyTileView::~TLonelyTileView() {}
 // FUNCTION: IMPERIALISM 0x00505b60
 void TLonelyTileView::ApplyRectSlot110(RECT* rectBuffer) {
   (void)rectBuffer; // dead parameter in this override, like the other ApplyRectSlot110s
-  RECT destRect;
+  CRect destRect;
   QueryContentBounds(&destRect);
 
   TMapUberPicture* mapUberPicture = g_pUiRuntimeContext->mapUberPictureF0;

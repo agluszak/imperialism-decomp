@@ -31,7 +31,7 @@ public:
 
   TInfoBarBehavior();
 
-  RECT layoutRect;
+  CRect layoutRect;
 };
 
 ASSERT_SIZE(TInfoBarBehavior, 0x24);

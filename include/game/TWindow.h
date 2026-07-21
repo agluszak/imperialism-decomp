@@ -88,9 +88,9 @@ public:
   // slot 0x49 vmethod_0071 inherited unchanged (0x427240)
   // slot 0x4a QueryContentBounds inherited unchanged (0x427260)
   // slot 0x4b QueryBounds inherited unchanged (0x427290)
-  virtual void DispatchVslot134WithRectAndRectPlus8_Impl(RECT* rect) override; // slot 0x4c 0x492d40
-  virtual void TranslatePointToParentChain4D(CPoint* point = 0) override;      // slot 0x4d 0x492d20
-  virtual void TranslatePointToParentChain4E(CPoint* point = 0) override;      // slot 0x4e 0x492d00
+  virtual void TranslateRectToWindow(CRect* rect) override;               // slot 0x4c 0x492d40
+  virtual void TranslatePointToParentChain4D(CPoint* point = 0) override; // slot 0x4d 0x492d20
+  virtual void TranslatePointToParentChain4E(CPoint* point = 0) override; // slot 0x4e 0x492d00
   // slot 0x4f InvokeSlot13C inherited unchanged (0x48b700)
   // slot 0x50 OffsetRectByControlPosition inherited unchanged (0x48bb00)
   // slot 0x51 UpdateAfterBitmapChange inherited unchanged (0x427330)
@@ -98,9 +98,9 @@ public:
   // slot 0x53 CtrlSlot83_TransformRectViaSlot148_Impl inherited unchanged (0x48bbb0)
   // slot 0x54 CtrlSlot84_AddControlPosToPoint_Impl inherited unchanged (0x48bc30)
   // slot 0x55 CtrlSlot85_OffsetRectByCachedPos_Impl inherited unchanged (0x48bc60)
-  // slot 0x56 CtrlSlot86_GetCachedPosPoint_Impl inherited unchanged (0x48bb30)
-  // slot 0x57 CopyRectFromBuildRectFromSlot158 inherited unchanged (0x429410)
-  // slot 0x58 CtrlSlot88_BuildRectFromSlot158AndCachedSize_Impl inherited unchanged (0x48bce0)
+  // slot 0x56 CtrlSlot86_GetAbsolutePosition_Impl inherited unchanged (0x48bb30)
+  // slot 0x57 GetDrawableQDRect inherited unchanged (0x429410)
+  // slot 0x58 GetQDExtent inherited unchanged (0x48bce0)
   // slot 0x59 VTableSlot59 inherited unchanged (0x48b2d0)
   // slot 0x5a UpdateRectCacheIfChangedAndInvalidateCityDialog inherited unchanged (0x48c380)
   // slot 0x5b VTableSlot5B inherited unchanged (0x48c6d0)

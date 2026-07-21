@@ -33,7 +33,7 @@ void TMapPreviewView::DoPostCreate(int arg) {
   selectedNation68 = -1;
   field04 = 1;
 
-  RECT contentBounds;
+  CRect contentBounds;
   QueryContentBounds(&contentBounds);
   RECT surfaceBounds = contentBounds;
 

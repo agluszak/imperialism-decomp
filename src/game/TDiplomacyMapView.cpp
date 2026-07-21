@@ -29,6 +29,7 @@
 #include "game/TViewMgr.h"
 #include "game/TSimMgr.h"
 #include "game/TPanelView.h"
+#include "game/TOffersPanelView.h"
 #include "game/ui_text_label_helpers_decls.h"
 
 // Defined below in address order (0x4d5d30).
@@ -45,7 +46,6 @@ const unsigned int kAddrTerrainTypeDescriptorTable = 0x006A4310;
 const unsigned int kAddrDiplomacyTurnStateManager = 0x006A43D0;
 const unsigned int kAddrDiplomacyRelationPaletteMap = 0x00696990;
 const unsigned int kAddrDiplomacyHitRectInitialized = 0x006A2FBC;
-const unsigned int kAddrDiplomacyHitBounds = 0x006A3008;
 const unsigned int kAddrResolveDiplomacyActionValue = 0x004F5F70;
 
 // The Windows port brackets minor-nation label drawing with the palette built from
@@ -257,15 +257,16 @@ void TDiplomacyMapView::BuildDiplomacyNationOverlayGeometryAndHitMasks() {
   for (short nationIndex = 0; nationIndex < 0x17; ++nationIndex) {
     DiplomacyMaskBufferRun* run = &maskRuns[nationIndex];
     RgnHandle nationRgn = g_pStrategicMapViewSystem->GetClipRegionSlotByIndex(nationIndex);
-    CopyRect(reinterpret_cast<RECT*>(&run->leftAt04), &(*nationRgn)->rgnBBox);
+    CopyRect(&run->boundsAt04, &(*nationRgn)->rgnBBox);
     char* oldMask = reinterpret_cast<char*>(run->maskBytesAt00);
-    run->rightAt0c = run->leftAt04 + ((run->rightAt0c - run->leftAt04) + 7 >> 3) * 8;
+    run->boundsAt04.right =
+        run->boundsAt04.left + ((run->boundsAt04.right - run->boundsAt04.left) + 7 >> 3) * 8;
     operator delete(oldMask);
-    char* mask = static_cast<char*>(operator new((run->rightAt0c - run->leftAt04) *
-                                                 (run->bottomAt10 - run->topAt08)));
+    char* mask = static_cast<char*>(operator new((run->boundsAt04.right - run->boundsAt04.left) *
+                                                 (run->boundsAt04.bottom - run->boundsAt04.top)));
     run->maskBytesAt00 = reinterpret_cast<unsigned char*>(mask);
-    for (int y = run->topAt08; y < run->bottomAt10; ++y) {
-      for (int x = run->leftAt04; x < run->rightAt0c;) {
+    for (int y = run->boundsAt04.top; y < run->boundsAt04.bottom; ++y) {
+      for (int x = run->boundsAt04.left; x < run->boundsAt04.right;) {
         *mask = 0;
         for (int bit = 1; bit < 0x100; bit *= 2) {
           CPoint probe;
@@ -334,13 +335,10 @@ void TDiplomacyMapView::BuildDiplomacyNationOverlayGeometryAndHitMasks() {
         labelRect->top = labelY;
         labelRect->right = labelX + textWidth;
         labelRect->bottom = labelY + 0xc;
-        // Reuses this record's opcode-bookkeeping fields (offset 0x08..0x18: bufferCapacity08,
-        // committedLength0c, appendCursor10, alignmentCursor14) as scratch RECT storage here,
-        // before any opcode data has been written to this slot this session -- the same
-        // contiguous-fields-as-RECT idiom DiplomacyMaskBufferRun uses for leftAt04/topAt08/
-        // rightAt0c/bottomAt10 above.
-        ClampRectWithinBoundsPreservingSize(
-            labelRect, reinterpret_cast<RECT*>(&packedColorRuns[nationIndex].bufferCapacity08));
+        // This explicit union arm is scratch rectangle storage before any opcode data has
+        // been written to the record in this session.
+        ClampRectWithinBoundsPreservingSize(labelRect,
+                                            &packedColorRuns[nationIndex].scratchBounds08);
         int markerX = (static_cast<short>(nation->homeRegionIndex) % 0x6c) * 5;
         int markerY = (static_cast<short>(nation->homeRegionIndex) / 0x6c + 9) * 5;
         RECT* anchorRect = &nationAnchorRects3A4[nationIndex];
@@ -469,7 +467,7 @@ const short kRelationTierThresholds[7] = {95, 90, 75, 50, 25, 0, 300};
 } // namespace
 
 // FUNCTION: IMPERIALISM 0x004f4a30
-void TDiplomacyMapView::DrawNames(RECT* presentRect) {
+void TDiplomacyMapView::DrawNames(const RECT* presentRect) {
   (void)presentRect; // ignored stack arg threaded through by the caller
   int styleForeground = 0;
   int styleShadow = 0;
@@ -695,14 +693,13 @@ int TDiplomacyMapView::ResolveDiplomacyActionFromClickAndUpdateTarget(CPoint* cl
     initRect.top = 0x2d;
     initRect.right = 0x24d;
     initRect.bottom = 0x159;
-    CopyRect(reinterpret_cast<RECT*>(kAddrDiplomacyHitBounds), &initRect);
+    CopyRect(&g_diplomacyHitBounds, &initRect);
     // 0x5e7920 is the CRT atexit (libcmt onexit.obj, oracle-confirmed): the original
     // registers the static hit-rect cleanup at 0x4f5f70 as an exit handler.
     atexit(reinterpret_cast<void(__cdecl*)(void)>(kAddrResolveDiplomacyActionValue));
   }
 
-  if (PtInRect(reinterpret_cast<const RECT*>(kAddrDiplomacyHitBounds),
-               *reinterpret_cast<const POINT*>(clickPoint)) == 0) {
+  if (PtInRect(&g_diplomacyHitBounds, *clickPoint) == 0) {
     return 0;
   }
   if (interactionModeAt94 == 5) {
@@ -819,9 +816,10 @@ void TDiplomacyMapView::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoi
 }
 
 // FUNCTION: IMPERIALISM 0x004f6170
-void TDiplomacyMapView::RenderDiplomacyLegendSurfaceAndPresent(const RECT* presentRect) {
+void TDiplomacyMapView::RenderDiplomacyLegendSurfaceAndPresent(RECT* presentRect) {
   CTemporaryRegion surface;
-  QueryBounds(const_cast<RECT*>(presentRect));
+  CRect bounds;
+  QueryBounds(&bounds);
 
   if (legendSurfaceModeAt524 != 0) {
     int savedTransparentColor = g_pActiveQuickDrawSurfaceContext->transparentBlitColor;
@@ -838,7 +836,7 @@ void TDiplomacyMapView::RenderDiplomacyLegendSurfaceAndPresent(const RECT* prese
 
     // Original passes the present rect here (mov ecx,[esp+0x58]; thiscall 0x48f3c0),
     // not a null rect.
-    ApplyRectSlot110(const_cast<RECT*>(presentRect));
+    ApplyRectSlot110(presentRect);
 
     void** terrainDescriptors = reinterpret_cast<void**>(kAddrTerrainTypeDescriptorTable);
     short terrainIndex = 0;
@@ -863,7 +861,7 @@ void TDiplomacyMapView::RenderDiplomacyLegendSurfaceAndPresent(const RECT* prese
     } while (terrainIndex < 0x17);
 
     SetQuickDrawFillColor(0);
-    DrawNames(const_cast<RECT*>(presentRect));
+    DrawNames(presentRect);
 
     if (previousSurface != g_pPrimaryRenderSurfaceContext) {
       NoOpQuickDrawLifecycleHookB(GetSurfaceNodeSlot(g_pPrimaryRenderSurfaceContext));
@@ -962,7 +960,7 @@ void TDiplomacyMapView::RebuildDiplomacyLegendPaletteMode4AndBlit(int activeNati
       nationIndex = static_cast<short>(nationIndex + 1);
     } while (nationIndex < 0x17);
 
-    DrawNames(const_cast<RECT*>(presentRect));
+    DrawNames(presentRect);
     legendSurfaceModeAt524 = 4;
     NoOpQuickDrawLifecycleHookB(GetSurfaceNodeSlot(g_pPrimaryRenderSurfaceContext));
     SetActiveQuickDrawSurfaceContext(previousSurface, contextFlags);
@@ -983,14 +981,14 @@ void DiplomacyMaskBufferRun::BlitMonochromeMaskBytePatternToSurface(int surfaceC
   }
 
   int rowStride = *reinterpret_cast<short*>(surfaceContext + 4);
-  unsigned int row = topAt08;
+  unsigned int row = boundsAt04.top;
   unsigned char* destCursor;
   int rowAdvance;
   if (static_cast<char>(flipVertical) == 0) {
     destCursor =
         reinterpret_cast<unsigned char*>((origin[1] + row) * rowStride + origin[0] +
-                                         *reinterpret_cast<int*>(surfaceContext) + leftAt04);
-    rowAdvance = leftAt04 + (rowStride - rightAt0c);
+                                         *reinterpret_cast<int*>(surfaceContext) + boundsAt04.left);
+    rowAdvance = boundsAt04.left + (rowStride - boundsAt04.right);
   } else {
     int surfaceHeight = *reinterpret_cast<int*>(
         *reinterpret_cast<int*>(*reinterpret_cast<int*>(surfaceContext + 0x1c) + 0x10) + 8);
@@ -999,15 +997,15 @@ void DiplomacyMaskBufferRun::BlitMonochromeMaskBytePatternToSurface(int surfaceC
     }
     destCursor = reinterpret_cast<unsigned char*>(
         (((surfaceHeight - origin[1]) - row) - 1) * rowStride + origin[0] +
-        *reinterpret_cast<int*>(surfaceContext) + leftAt04);
-    rowAdvance = leftAt04 + (-rowStride - rightAt0c);
+        *reinterpret_cast<int*>(surfaceContext) + boundsAt04.left);
+    rowAdvance = boundsAt04.left + (-rowStride - boundsAt04.right);
   }
 
-  if (static_cast<int>(row) < bottomAt10) {
+  if (static_cast<int>(row) < boundsAt04.bottom) {
     do {
-      int x = leftAt04;
+      int x = boundsAt04.left;
       unsigned char* rowCursor = destCursor;
-      if (x < rightAt0c) {
+      if (x < boundsAt04.right) {
         do {
           if (*maskCursor == 0) {
             x += 8;
@@ -1034,11 +1032,11 @@ void DiplomacyMaskBufferRun::BlitMonochromeMaskBytePatternToSurface(int surfaceC
           }
           maskCursor += 1;
           rowCursor = destCursor;
-        } while (x < rightAt0c);
+        } while (x < boundsAt04.right);
       }
       row += 1;
       destCursor += rowAdvance;
-    } while (static_cast<int>(row) < bottomAt10);
+    } while (static_cast<int>(row) < boundsAt04.bottom);
   }
 }
 
@@ -1096,7 +1094,7 @@ void TDiplomacyMapView::RebuildDiplomacyLegendPaletteMode1AndBlit(int activeNati
       terrainDescriptors++;
     } while (terrainIndex < 0x17);
 
-    DrawNames(const_cast<RECT*>(presentRect));
+    DrawNames(presentRect);
     legendSurfaceModeAt524 = 1;
     NoOpQuickDrawLifecycleHookB(GetSurfaceNodeSlot(g_pPrimaryRenderSurfaceContext));
     SetActiveQuickDrawSurfaceContext(previousSurface, contextFlags);
@@ -1135,22 +1133,23 @@ void TDiplomacyMapView::BlitDiplomacyMapEventPaletteMaskToSurface(short maskInde
   unsigned char* maskCursor = maskRun->maskBytesAt00;
   if (maskCursor != 0) {
     int srcRowWidth = bmpHandle->m_pInfoHeader->bmiHeader.biWidth;
-    int srcRowAdvance = (((srcRowWidth + 3) & 0xfffffffc) - maskRun->rightAt0c) + maskRun->leftAt04;
+    int srcRowAdvance =
+        (((srcRowWidth + 3) & 0xfffffffc) - maskRun->boundsAt04.right) + maskRun->boundsAt04.left;
     int surfaceHeight = surface->surfaceDib->m_pInfoHeader->bmiHeader.biHeight;
     if (surfaceHeight < 1) {
       surfaceHeight = -surfaceHeight;
     }
-    int row = maskRun->topAt08;
+    int row = maskRun->boundsAt04.top;
     int rowStride = surface->blitSurface.stride;
     unsigned char* destCursor = static_cast<unsigned char*>(surface->blitSurface.pixelBits) +
-                                ((surfaceHeight - row) - 1) * rowStride + maskRun->leftAt04;
-    int destRowAdvance = (maskRun->leftAt04 - maskRun->rightAt0c) - rowStride;
+                                ((surfaceHeight - row) - 1) * rowStride + maskRun->boundsAt04.left;
+    int destRowAdvance = (maskRun->boundsAt04.left - maskRun->boundsAt04.right) - rowStride;
     unsigned char* srcCursor = static_cast<unsigned char*>(bmpHandle->m_dibBits);
 
-    if (row < maskRun->bottomAt10) {
+    if (row < maskRun->boundsAt04.bottom) {
       do {
-        int x = maskRun->leftAt04;
-        if (x < maskRun->rightAt0c) {
+        int x = maskRun->boundsAt04.left;
+        if (x < maskRun->boundsAt04.right) {
           do {
             if (*maskCursor == 0) {
               x += 8;
@@ -1178,12 +1177,12 @@ void TDiplomacyMapView::BlitDiplomacyMapEventPaletteMaskToSurface(short maskInde
               } while (bit < 0x100);
             }
             maskCursor += 1;
-          } while (x < maskRun->rightAt0c);
+          } while (x < maskRun->boundsAt04.right);
         }
         row += 1;
         srcCursor += srcRowAdvance;
         destCursor += destRowAdvance;
-      } while (row < maskRun->bottomAt10);
+      } while (row < maskRun->boundsAt04.bottom);
     }
   }
 
@@ -1278,7 +1277,7 @@ void TDiplomacyMapView::ChangeSelectedActionTopic(int topicIndex) {
     legendSurfaceModeAt524 = 6;
   }
 
-  InvalidateCityDialogRectRegion(reinterpret_cast<RECT*>(&mapOriginPixelX514), 1);
+  InvalidateCityDialogRectRegion(&mapViewportRect514, 1);
 }
 
 // FUNCTION: IMPERIALISM 0x004f7040
@@ -1290,9 +1289,10 @@ void TDiplomacyMapView::InvalidateAndRunChildWaitSheet(void* arg1, void* arg2, v
 }
 
 // FUNCTION: IMPERIALISM 0x004f7080
-void TDiplomacyMapView::InvalidateAndForwardTabSwitchToChild(void* arg1, void* arg2, void* arg3) {
+void TDiplomacyMapView::PoseOffer(short sourceNation, short targetNation, short offerType) {
   ChangeSelectedActionTopic(5);
-  static_cast<TControl*>(actionButtonsA0[5])->BuildInsetContentRect(reinterpret_cast<RECT*>(arg1));
+  static_cast<TOffersPanelView*>(actionButtonsA0[5])
+      ->PoseOffer(sourceNation, targetNation, offerType);
 }
 
 // FUNCTION: IMPERIALISM 0x004f70c0

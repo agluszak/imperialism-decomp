@@ -1598,9 +1598,11 @@ CPtrList g_LiveViewRegistry;
 TTurnEventDialogFactoryRegistry* g_pTurnEventDialogFactoryRegistry = nullptr;
 
 // GLOBAL: IMPERIALISM 0x006a1d18
-GlobalViewportRectDefaultsRecord g_globalViewportRectDefaultsRecord = {0, 0, 0, 0, 0};
+GlobalViewportRectDefaultsRecord g_globalViewportRectDefaultsRecord = {0, {0, 0, 0, 0}};
 // GLOBAL: IMPERIALISM 0x006a1dc0
 GlobalViewportRectDefaultsRecord* g_pGlobalViewportRectDefaultsRecord = nullptr;
+// GLOBAL: IMPERIALISM 0x006a3008
+CRect g_diplomacyHitBounds;
 
 // UDisplayMgr font-name literals and runtime CString slots (InitializeTurnOrderNavigationDialog).
 // GLOBAL: IMPERIALISM 0x00695150

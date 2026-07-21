@@ -110,7 +110,7 @@ void TTradeCluster::DoPostCreate(int styleSeed) {
                                     0xe, 0x2b68, 2);
     sellControl->ApplyStyleDescriptor(styleDescriptor, 0);
     sellControl->SetStyleState(-1, 0);
-    RECT boundsBuffer;
+    CRect boundsBuffer;
     boundsBuffer.left = 0;
     boundsBuffer.top = 0;
     sellControl->QueryBounds(&boundsBuffer);

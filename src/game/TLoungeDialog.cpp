@@ -144,7 +144,7 @@ void TLoungeDialog::RefreshMapAndMessageControlsForCurrentContext() {
   mapControl->AssertValid();
   mapControl->TakeSatellitePhoto(0);
   mapControl->EnhancePhoto();
-  RECT mapBounds;
+  CRect mapBounds;
   mapControl->QueryBounds(&mapBounds);
   RECT invalidBounds = mapBounds;
   InvalidateCityDialogRectRegion(&invalidBounds, 1);

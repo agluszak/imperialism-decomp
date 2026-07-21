@@ -159,24 +159,24 @@ public:
   virtual char HandleMouseUp(const CPoint& point, TToolboxEvent* event,
                              CPoint origin); // 0x48 0x48c590
   virtual char DoMouseCommand(CPoint& point, TToolboxEvent* event,
-                              CPoint origin);                         // 0x49
-  virtual void QueryContentBounds(RECT* boundsOut);                   // 0x4a 0x427260
-  virtual void QueryBounds(RECT* boundsOut);                          // 0x4b 0x427290
-  virtual void DispatchVslot134WithRectAndRectPlus8_Impl(RECT* rect); // 0x4c 0x4272d0
-  virtual void TranslatePointToParentChain4D(CPoint* point = 0);      // 0x4d 0x48ba80
-  virtual void TranslatePointToParentChain4E(CPoint* point = 0);      // 0x4e 0x48ba40
-  virtual void InvokeSlot13C();                                       // 0x4f 0x48b700
-  virtual void OffsetRectByControlPosition(RECT* rect);               // 0x50 0x48bb00
-  virtual void UpdateAfterBitmapChange(CPoint* point);                // 0x51
+                              CPoint origin);                    // 0x49
+  virtual void QueryContentBounds(CRect* boundsOut);             // 0x4a 0x427260
+  virtual void QueryBounds(CRect* boundsOut);                    // 0x4b 0x427290
+  virtual void TranslateRectToWindow(CRect* rect);               // 0x4c 0x4272d0
+  virtual void TranslatePointToParentChain4D(CPoint* point = 0); // 0x4d 0x48ba80
+  virtual void TranslatePointToParentChain4E(CPoint* point = 0); // 0x4e 0x48ba40
+  virtual void InvokeSlot13C();                                  // 0x4f 0x48b700
+  virtual void OffsetRectByControlPosition(CRect* rect);         // 0x50 0x48bb00
+  virtual void UpdateAfterBitmapChange(CPoint* point);           // 0x51
   virtual CPoint TransformPointViaSlot138(CPoint* inPoint);
-  virtual RECT TransformRectViaSlot148(RECT* inRect);
-  virtual void AddControlPosToPoint(int x, int y, int* outPoint);
-  virtual void OffsetRectByCachedPos(RECT* inRect, RECT* outRect);
-  virtual CPoint* GetCachedPosPoint(CPoint* outPoint);
-  virtual void CopyRectFromBuildRectFromSlot158(RECT* rectOut); // 0x57 0x429410
-  virtual RECT* BuildRectFromSlot158(RECT* rectOut);
+  virtual CRect TransformRectViaSlot148(CRect* inRect);
+  virtual void AddControlPosToPoint(int x, int y, CPoint* outPoint);
+  virtual void OffsetRectByCachedPos(CRect* inRect, CRect* outRect);
+  virtual CPoint* GetAbsolutePosition(CPoint* outPoint);
+  virtual void GetDrawableQDRect(CRect* rectOut); // 0x57 0x429410
+  virtual CRect* GetQDExtent(CRect* rectOut);
   virtual void RecomputeAbsolutePositionRecursive();
-  virtual void ApplyBounds(RECT* newBounds, int modeFlag);       // 0x5a 0x48c380
+  virtual void ApplyBounds(CRect* newBounds, int modeFlag);      // 0x5a 0x48c380
   virtual char PointInBoundsAndActionable(CPoint* point);        // 0x5b 0x48c6d0
   virtual void AttachChildControl(class TView* child, int flag); // 0x5c 0x48abe0
   virtual void DetachChildFromOwnerList(class TView* child);

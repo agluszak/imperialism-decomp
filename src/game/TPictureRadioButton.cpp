@@ -40,7 +40,7 @@ void TPictureRadioButton::DefaultSize(bool refreshNow) {
   CPoint bottomRight;
   bottomRight.x = ownerLocalX + dimensions->x;
   bottomRight.y = ownerLocalY + dimensions->y;
-  RECT bounds;
+  CRect bounds;
   QueryBounds(&bounds);
   bounds.right = bounds.left + bottomRight.x - ownerLocalX;
   bounds.bottom = bounds.top + bottomRight.y - ownerLocalY;

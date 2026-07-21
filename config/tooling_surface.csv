@@ -18,6 +18,7 @@ module|tools.migrations.annotate_vtables_from_symbols|direct|Vtable annotation p
 module|tools.migrations.annotate_strings_from_symbols|direct|String annotation pass (completed migration; run via uv)
 module|tools.workflow.check_no_raw_vtable_calls|just:vtable-gate|Raw-vtable policy gate
 module|tools.workflow.check_dual_use|just:dual-use-gate|Reject unresolved dual-use field modelling claims
+module|tools.workflow.check_geometry_types|just:geometry-type-gate|Enforce recovered MFC and native geometry boundaries
 module|tools.workflow.check_vtable_annotations|just:vtable-annotation-gate|Vtable annotation adjacency gate
 module|tools.workflow.check_vtable_address_collisions|just:vtable-collision-gate|Vtable/data address collision gate
 module|tools.workflow.check_synthetic_names|just:synthetic-gate|Synthetic symbol/source name agreement gate

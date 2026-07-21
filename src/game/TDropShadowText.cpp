@@ -22,8 +22,8 @@ TDropShadowText::~TDropShadowText() {}
 // before restoring the DC's clip region.
 // FUNCTION: IMPERIALISM 0x005b5650
 void TDropShadowText::ApplyRectSlot110(RECT* rectBuffer) {
-  RECT clipRect;
-  BuildRectFromSlot158(&clipRect);
+  CRect clipRect;
+  GetQDExtent(&clipRect);
   clipRect.left--;
   clipRect.top--;
 
@@ -40,7 +40,7 @@ void TDropShadowText::ApplyRectSlot110(RECT* rectBuffer) {
   SetQuickDrawColorAndSyncGlobals(shadowThemeCode94);
   CString textBuffer;
   CopyTextTo(&textBuffer);
-  RECT shadowRect;
+  CRect shadowRect;
   BuildInsetContentRect(&shadowRect);
   shadowRect.left--;
   shadowRect.top--;

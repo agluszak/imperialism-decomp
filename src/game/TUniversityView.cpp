@@ -86,7 +86,7 @@ void TUniversityView::UpdateFields() {
       city94->cityStockPaperCA < selectedRecruitmentOrderA8->primaryInputPerUnit ? &warningTextColor
                                                                                  : &normalTextColor,
       true);
-  RECT invalidRect;
+  CRect invalidRect;
   paperAvailable->QueryBounds(&invalidRect);
   InvalidateCityDialogRectRegion(&invalidRect, 1);
 

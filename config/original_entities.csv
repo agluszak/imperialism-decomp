@@ -105,14 +105,14 @@ address|name|symbol|size|type|prototype|provenance
 427200|TView::GetCursorID||5|function|unsigned short GetCursorID()|
 427220|TView::VTableSlotC3||1|function|undefined 'scalar_deleting_destructor'(void)|
 427240|TView::DoMouseCommand||3|function|char DoMouseCommand(CPoint &point, TToolboxEvent *event, CPoint origin)|
-427260|TView::QueryContentBounds||32|function|void __thiscall QueryContentBounds(RECT *boundsOut)|
-427290|TView::QueryBounds||38|function|void __thiscall QueryBounds(RECT *boundsOut)|
-4272d0|TView::DispatchVslot134WithRectAndRectPlus8_Impl_d0||34|function|undefined DispatchVslot134WithRectAndRectPlus8_Impl()|
+427260|TView::QueryContentBounds||32|function|void __thiscall QueryContentBounds(CRect *boundsOut)|
+427290|TView::QueryBounds||38|function|void __thiscall QueryBounds(CRect *boundsOut)|
+4272d0|TView::TranslateRectToWindow||34|function|void __thiscall TranslateRectToWindow(CRect* rect)|listing
 427330|TView::UpdateAfterBitmapChange_d5||29|function|void __thiscall UpdateAfterBitmapChange(int unknownFlag)|
 427360|InitializeIndustryOverviewPlacardsAndTradeStatusTags||6510|function|undefined InitializeIndustryOverviewPlacardsAndTradeStatusTags()|
 429330|ConstructUiCursorTextResourceEntry||102|function|undefined ConstructUiCursorTextResourceEntry()|
 4293c0|TInfoBarText::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
-429410|TView::CtrlSlot87_CopyRectFromSlot160_Impl_db||48|function|undefined CtrlSlot87_CopyRectFromSlot160_Impl()|
+429410|TView::GetDrawableQDRect||48|function|void __thiscall GetDrawableQDRect(CRect* rectOut)|listing
 429450|TControl::QuerySelectedIndexSlotBC||4|function|int __thiscall QuerySelectedIndexSlotBC()|
 429470|TControl::AssertCityProductionGlobalStateInitialized||30|function|undefined AssertCityProductionGlobalStateInitialized()|
 4294a0|TControl::LogUnhandledDialogMethodAndReturnFalse||21|function|bool __cdecl LogUnhandledDialogMethodAndReturnFalse(void)|
@@ -895,13 +895,13 @@ address|name|symbol|size|type|prototype|provenance
 48ba40|TView::OffsetRectByControlPositionAndDispatchVslot138_Impl_d2||41|function|undefined OffsetRectByControlPositionAndDispatchVslot138_Impl()|
 48ba80|TView::OffsetRectByControlPositionAndDispatchVslot138_EcxBridge_Impl_d1||43|function|undefined OffsetRectByControlPositionAndDispatchVslot138_EcxBridge_Impl()|
 48bac0|TView::CtrlSlot103_SubtractPosAndDispatchSlot19C_Impl_eb||43|function|undefined CtrlSlot103_SubtractPosAndDispatchSlot19C_Impl()|
-48bb00|TView::OffsetRectByControlPosition_Impl_d4||22|function|undefined OffsetRectByControlPosition_Impl()|
-48bb30|TView::CtrlSlot86_GetCachedPosPoint_Impl_da||18|function|undefined CtrlSlot86_GetCachedPosPoint_Impl()|
-48bb60|TView::CtrlSlot82_TransformPointViaSlot138_Impl_d6||56|function|undefined CtrlSlot82_TransformPointViaSlot138_Impl()|
-48bbb0|TView::CtrlSlot83_TransformRectViaSlot148_Impl_d7||91|function|undefined CtrlSlot83_TransformRectViaSlot148_Impl()|
-48bc30|TView::CtrlSlot84_AddControlPosToPoint_Impl_d8||30|function|undefined CtrlSlot84_AddControlPosToPoint_Impl()|
-48bc60|TView::CtrlSlot85_OffsetRectByCachedPos_Impl_d9||92|function|undefined CtrlSlot85_OffsetRectByCachedPos_Impl()|
-48bce0|TView::CtrlSlot88_BuildRectFromSlot158AndCachedSize_Impl_dc||56|function|undefined CtrlSlot88_BuildRectFromSlot158AndCachedSize_Impl()|
+48bb00|TView::OffsetRectByControlPosition||22|function|void __thiscall OffsetRectByControlPosition(CRect* rect)|listing
+48bb30|TView::GetAbsolutePosition||18|function|CPoint* __thiscall GetAbsolutePosition(CPoint* outPoint)|listing
+48bb60|TView::TransformPointViaSlot138||56|function|CPoint __thiscall TransformPointViaSlot138(CPoint* inPoint)|listing
+48bbb0|TView::TransformRectViaSlot148||91|function|CRect __thiscall TransformRectViaSlot148(CRect* inRect)|listing
+48bc30|TView::AddControlPosToPoint||30|function|void __thiscall AddControlPosToPoint(int x, int y, CPoint* outPoint)|listing
+48bc60|TView::OffsetRectByCachedPos||92|function|void __thiscall OffsetRectByCachedPos(CRect* inRect, CRect* outRect)|listing
+48bce0|TView::GetQDExtent||56|function|CRect* __thiscall GetQDExtent(CRect* rectOut)|listing
 48bd30|TCityDialogModalState_00649A50::CopyCityDialogStateFromSourceAndCloneChildLinks||350|function|undefined CopyCityDialogStateFromSourceAndCloneChildLinks()|
 48bef0|TView::CopyCityDialogStateFromSource||173|function|void __thiscall CopyCityDialogStateFromSource(TView * pSource)|
 48bfd0|TView::CloneEngineerDialogStateToNewInstance||24|function|undefined CloneEngineerDialogStateToNewInstance()|
@@ -912,7 +912,7 @@ address|name|symbol|size|type|prototype|provenance
 48c1e0|TView::RefreshCityProductionViewStateFromContext_b2||40|function|undefined RefreshCityProductionViewStateFromContext()|
 48c220|TView::EnableAndProcessFlag||23|function|void __thiscall EnableAndProcessFlag(CString sharedString)|
 48c250|TView::HandleCursorHoverFallback_b0||233|function|void __thiscall HandleCursorHoverFallback(CPoint* point, int hitArg)|
-48c380|TView::UpdateRectCacheIfChangedAndInvalidateCityDialog_de||150|function|undefined UpdateRectCacheIfChangedAndInvalidateCityDialog()|
+48c380|TView::ApplyBounds||150|function|void __thiscall ApplyBounds(CRect* newBounds, int modeFlag)|listing
 48c450|TView::HandleMouseDown||250|function|char __thiscall HandleMouseDown(const CPoint &point, TToolboxEvent *event, CPoint origin)|macos-name-oracle:HandleMouseDown(const VPoint&, TToolboxEvent*, CPoint)
 48c590|TView::HandleMouseUp||250|function|char HandleMouseUp(const CPoint &point, TToolboxEvent *event, CPoint origin)|
 48c6d0|TView::VTableSlotDF||81|function|undefined 'scalar_deleting_destructor'(void)|
@@ -986,7 +986,7 @@ address|name|symbol|size|type|prototype|provenance
 48e810|TControl::HiliteState||33|function|void __thiscall HiliteState(unsigned char hilited, unsigned char drawImmediate)|
 48e850|TControl::DispatchPictureResourceCommand||189|function|void __thiscall DispatchPictureResourceCommand(int nEventType, void * pEventSender, void * pEventDataA, void * pEventDataB)|
 48e940|TControl::PointInBoundsAndActionable||44|function|undefined 'scalar_deleting_destructor'(void)|
-48e980|TControl::BuildInsetContentRect||33|function|undefined BuildInsetContentRect(void)|
+48e980|TControl::BuildInsetContentRect||33|function|void __thiscall BuildInsetContentRect(CRect* boundsBuffer)|listing
 48e9c0|TControl::NoOpUiViewSlotHandler||3|function|undefined NoOpUiViewSlotHandler(void)|
 48e9e0|TControl::ReturnZeroFromUiSlot6C||3|function|undefined ReturnZeroFromUiSlot6C(void)|
 48ea00|TCtlMgr::CreateObject|?CreateObject@TCtlMgr@@SGPAVCObject@@XZ|181|function|undefined CreateObject()|rtti
@@ -1104,7 +1104,7 @@ address|name|symbol|size|type|prototype|provenance
 492ce0|TWindow::QueryOwnerContextPanel||3|function|undefined GetTEventHandlerClassNamePointer(void)|
 492d00|TWindow::vmethod_0078||3|function|undefined OrphanCallChain_C11_I88_004874b0(void)|
 492d20|TWindow::vmethod_0076||3|function|undefined 'scalar_deleting_destructor'(void)|
-492d40|TWindow::DispatchVslot134WithRectAndRectPlus8_Impl||3|function|undefined GetTEventHandlerClassNamePointer(void)|
+492d40|TWindow::TranslateRectToWindow||3|function|void __thiscall TranslateRectToWindow(CRect* rect)|listing
 492d60|TWindow::CtrlSlot103_SubtractPosAndDispatchSlot19C_Impl||3|function|undefined OrphanRetStub_0059ad90(void)|
 492d80|TWindow::ShallowClone||21|function|undefined OrphanCallChain_C11_I88_004874b0(void)|
 492db0|WrapperFor_thunk_TemporarilyClearAndRestoreUiInvalidationFlag_At00492db0||30|function|undefined WrapperFor_thunk_TemporarilyClearAndRestoreUiInvalidationFlag_At00492db0()|
@@ -2810,7 +2810,7 @@ address|name|symbol|size|type|prototype|provenance
 4f5e00|TCountry::ResolveDiplomacyActionFromClickAndUpdateTarget||281|function|undefined ResolveDiplomacyActionFromClickAndUpdateTarget()|
 4f5f90|OrphanRetStub_004f5f90||3|function|undefined OrphanRetStub_004f5f90()|
 4f5fb0|TDiplomacyMapView::UpdateDiplomacyMapHoverCursorFromActionSelection||349|function|undefined UpdateDiplomacyMapHoverCursorFromActionSelection()|
-4f6170|TDiplomacyMapView::RenderDiplomacyLegendSurfaceAndPresent||563|function|undefined RenderDiplomacyLegendSurfaceAndPresent()|
+4f6170|TDiplomacyMapView::RenderDiplomacyLegendSurfaceAndPresent||563|function|void __thiscall RenderDiplomacyLegendSurfaceAndPresent(RECT* presentRect)|listing
 4f6440|TDiplomacyMapViewLayout::BuildCombinedTerrainTypeRegionMaskAndDispatch||87|function|undefined BuildCombinedTerrainTypeRegionMaskAndDispatch()|
 4f64c0|TDiplomacyMapView::RebuildDiplomacyLegendPaletteMode4AndBlit||396|function|undefined RebuildDiplomacyLegendPaletteMode4AndBlit()|
 4f66c0|TDiplomacyMapView::BlitMonochromeMaskBytePatternToSurface||266|function|undefined BlitMonochromeMaskBytePatternToSurface()|
@@ -2820,7 +2820,7 @@ address|name|symbol|size|type|prototype|provenance
 4f6bd0|TDiplomacyMapView::BlitDiplomacyMapEventPaletteMaskToSurface||349|function|undefined BlitDiplomacyMapEventPaletteMaskToSurface()|
 4f6d90|Function_004f6d90||513|function|undefined4 Function_004f6d90(void)|
 4f7040|WrapperFor_thunk_WrapperFor_InvalidateCityDialogRectRegion_At004f6d90_At004f7040||45|function|undefined WrapperFor_thunk_WrapperFor_InvalidateCityDialogRectRegion_At004f6d90_At004f7040()|
-4f7080|WrapperFor_InvalidateCityDialogRectRegionChain_At004f7080||43|function|undefined WrapperFor_InvalidateCityDialogRectRegionChain_At004f7080()|
+4f7080|TDiplomacyMapView::PoseOffer||43|function|void __thiscall PoseOffer(short sourceNation, short targetNation, short offerType)|listing+mac-symbol
 4f70c0|TDiplomacyMapView::HandleDiplomacyMapControlTagToggleOrForward||74|function|undefined HandleDiplomacyMapControlTagToggleOrForward()|
 4f7130|TDiplomacyMapView::WrapperFor_thunk_ForwardCityDialogParamToChildSlot48_At004f7130||41|function|undefined WrapperFor_thunk_ForwardCityDialogParamToChildSlot48_At004f7130()|
 4f71a0|TDiplomacyMapView::DrawVoteNuggets||475|function|undefined DrawVoteNuggets()|
@@ -3289,7 +3289,7 @@ address|name|symbol|size|type|prototype|provenance
 519c40|TMapDialog::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 519c90|TMapDialog::Free||127|function|undefined CleanupMapInteractionModeBuffersAndChildDialog()|
 519d30|TMapDialog::DoPostCreate||145|function|undefined InitializeMapInteractionMode4BaseState()|
-519e00|TMapDialog::OrphanRetStub_00596080||930|function|undefined RenderStrategicTileSelectionAndNeighborHighlights()|
+519e00|TMapDialog::RenderStrategicTileSelectionAndNeighborHighlights||930|function|void __thiscall RenderStrategicTileSelectionAndNeighborHighlights()|listing
 51a2a0|TMapDialog::DrawHexNeighborOutlineFromTileArray||1290|function|undefined DrawHexNeighborOutlineFromTileArray()|
 51a900|TMapDialog::UpdateMapDialogProjectedTileMarkerAndInvalidate||103|function|undefined UpdateMapDialogProjectedTileMarkerAndInvalidate()|
 51a990|TMapDialog::ConvertPoint||242|function|void __thiscall ConvertPoint(const CPoint &point, short &outRow, short &outCol, short &outBand)|macos-name-oracle:ConvertPoint(const VPoint&, short&, short&, short&)
@@ -3320,7 +3320,7 @@ address|name|symbol|size|type|prototype|provenance
 51c2a0|TCitySiteView::SetMapViewTileIndex||52|function|undefined OrphanRetStub_005966a0(undefined4 param_1)|
 51c2f0|TCitySiteView::SetMapViewCellCoordinates||23|function|undefined OrphanRetStub_00596680(void)|
 51c320|TCitySiteView::SetMapDialogCellCoordinatesAndRefresh||107|function|undefined ClampTileCoordsToMapDialogBoundsAndRefresh()|
-51c3b0|TCitySiteView::OrphanRetStub_00596080||746|function|undefined OrphanRetStub_00596080(void)|
+51c3b0|TCitySiteView::RenderStrategicTileSelectionAndNeighborHighlights||746|function|void __thiscall RenderStrategicTileSelectionAndNeighborHighlights()|listing
 51c760|TCitySiteView::HandleMapClickByInteractionMode||669|function|undefined HandleTileClickForHomeSelectionOrPortBuild()|
 51cab0|TMapEditView::CreateObject|?CreateObject@TMapEditView@@SGPAVCObject@@XZ|250|function|undefined CreateObject()|rtti
 51cbf0|TMapEditView::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
@@ -3367,9 +3367,9 @@ address|name|symbol|size|type|prototype|provenance
 523060|TMapDialog::MapDialogSetFillColor||201|function|undefined WrapperFor_SetQuickDrawFillColor_At00523060(void)|
 523170|TMapDialog::UpdateMapOrderEntryTilePreviewSlot||948|function|undefined UpdateMapOrderEntryTilePreviewSlot()|
 523640|TMapDialog::OrphanTiny_ReturnZero_0048a730||1044|function|undefined RenderMapOrderEntryTilePreview()|
-523b70|TMapDialog::VTableSlot6B||910|function|undefined RenderTacticalStackCountIndicatorAndUnitBadge()|
-523ff0|TMapDialog::OrphanRetStub_00596060||351|function|undefined RenderMapDialogTerrainOverlayFrameByTileOwner_00523ff0()|
-5241b0|TMapDialog::OrphanLeaf_NoCall_Ins100_005241b0||251|function|undefined OrphanLeaf_NoCall_Ins100_005241b0(void)|
+523b70|TMapDialog::RenderTacticalStackCountIndicatorAndUnitBadge||910|function|void __thiscall RenderTacticalStackCountIndicatorAndUnitBadge(short tileIndex, CRect* dstRect, int flag)|listing
+523ff0|TMapDialog::RenderMapDialogTerrainOverlayFrameByTileOwner||351|function|void __thiscall RenderMapDialogTerrainOverlayFrameByTileOwner(short tileIndex, CRect* dstRect, unsigned char altOverlay)|listing
+5241b0|TMapDialog::CopyCenteredMaskNarrowingBlockKernel||251|function|void __thiscall CopyCenteredMaskNarrowingBlockKernel(unsigned char* src, unsigned char* dest, short srcStride, short destStride)|listing
 5242f0|TMapDialog::GetTEventHandlerClassNamePointer||457|function|undefined GetTEventHandlerClassNamePointer(void)|
 524540|TMapDialog::VTableSlot97||229|function|undefined 'scalar_deleting_destructor'(void)|
 524670|TMapDialog::InitializeForeignMinisterStateFlags||234|function|undefined InitializeForeignMinisterStateFlags(void)|
@@ -4400,7 +4400,7 @@ address|name|symbol|size|type|prototype|provenance
 566060|ComputeTileClassBoundsInViewport||285|function|undefined ComputeTileClassBoundsInViewport()|
 5661d0|TOceanDialog::ConvertPoint||200|function|void __thiscall ConvertPoint(const CPoint &point, short &outRow, short &outCol, short &outBand)|macos-name-oracle:ConvertPoint(const VPoint&, short&, short&, short&)
 5663c0|Helper_Uses_thunk_DrawCenteredGuideLineOnMapDc_At005663c0||422|function|undefined Helper_Uses_thunk_DrawCenteredGuideLineOnMapDc_At005663c0()|
-5665e0|TOceanDialog::OrphanRetStub_00596080||283|function|undefined OrphanRetStub_00596080(void)|
+5665e0|TOceanDialog::RenderStrategicTileSelectionAndNeighborHighlights||283|function|void __thiscall RenderStrategicTileSelectionAndNeighborHighlights()|listing
 566750|TOceanDialog::OrphanRetStub_005966c0||122|function|undefined OrphanRetStub_005966c0(short param_1)|
 5667f0|TOceanDialog::ApplyRectSlot110||4720|function|undefined RenderStrategicMapViewportAndOverlays()|
 567fa0|TOceanDialog::OrphanTiny_ReturnZero_0048a730||300|function|undefined OrphanTiny_ReturnZero_0048a730(int param_1, short param_2, short param_3)|
@@ -5215,9 +5215,9 @@ address|name|symbol|size|type|prototype|provenance
 595c40|TWorldView::SetFlagByteAndInvokeVslot1A4||18|function|undefined SetFlagByteAndInvokeVslot1A4()|
 595c70|TWorldView::RenderMapContextOverlayWithScopedClipAndSurface||748|function|undefined RenderMapContextOverlayWithScopedClipAndSurface()|
 596020|TWorldView::OrphanTiny_ReturnZero_0048a730||3|function|undefined OrphanTiny_ReturnZero_0048a730(void)|
-596040|TWorldView::VTableSlot6B||3|function|undefined 'scalar_deleting_destructor'(void)|
-596060|TWorldView::OrphanRetStub_00596060||3|function|undefined OrphanRetStub_00596060(void)|
-596080|TWorldView::OrphanRetStub_00596080||1|function|undefined OrphanRetStub_00596080(void)|
+596040|TWorldView::RenderTacticalStackCountIndicatorAndUnitBadge||3|function|void __thiscall RenderTacticalStackCountIndicatorAndUnitBadge(short tileIndex, CRect* dstRect, int flag)|listing
+596060|TWorldView::RenderMapDialogTerrainOverlayFrameByTileOwner||3|function|void __thiscall RenderMapDialogTerrainOverlayFrameByTileOwner(short tileIndex, CRect* dstRect, unsigned char altOverlay)|listing
+596080|TWorldView::RenderStrategicTileSelectionAndNeighborHighlights||1|function|void __thiscall RenderStrategicTileSelectionAndNeighborHighlights()|listing
 5960a0|TWorldView::OrphanTiny_ReturnMinusOneWord_005960a0||7|function|undefined OrphanTiny_ReturnMinusOneWord_005960a0(void)|
 5960c0|TWorldView::ConvertPoint||3|function|void __thiscall ConvertPoint(const CPoint &point, short &outRow, short &outCol, short &outBand)|macos-name-oracle:ConvertPoint(const VPoint&, short&, short&, short&)
 5960e0|TWorldView::OrphanRetStub_005960e0||3|function|undefined OrphanRetStub_005960e0(void)|

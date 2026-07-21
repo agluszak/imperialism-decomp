@@ -137,7 +137,7 @@ void TOceanDialog::RenderMapOrderEntryTilePreview(TCivUnit* orderEntry, int proj
 }
 
 // FUNCTION: IMPERIALISM 0x00568120
-void TOceanDialog::RenderTacticalStackCountIndicatorAndUnitBadge(short tileIndex, void* dstRect,
+void TOceanDialog::RenderTacticalStackCountIndicatorAndUnitBadge(short tileIndex, CRect* dstRect,
                                                                  int flag) {
   (void)tileIndex;
   (void)dstRect;
@@ -145,7 +145,7 @@ void TOceanDialog::RenderTacticalStackCountIndicatorAndUnitBadge(short tileIndex
 }
 
 // FUNCTION: IMPERIALISM 0x005682d0
-void TOceanDialog::RenderMapDialogTerrainOverlayFrameByTileOwner(short tileIndex, void* dstRect,
+void TOceanDialog::RenderMapDialogTerrainOverlayFrameByTileOwner(short tileIndex, CRect* dstRect,
                                                                  unsigned char altOverlay) {
   (void)tileIndex;
   (void)dstRect;

@@ -110,8 +110,8 @@ void TScrollView::PaintVisibleChildrenIntersectingClipRect(RECT* clipRect, CDC* 
   if (GetMcAppUiActiveFlag() == 0 || IsActionable() == 0 || PrepareForDrawing() == 0) {
     return;
   }
-  RECT bounds;
-  CopyRectFromBuildRectFromSlot158(&bounds);
+  CRect bounds;
+  GetDrawableQDRect(&bounds);
   {
     CRgn clipRgn;
     clipRgn.Attach(::CreateRectRgnIndirect(&bounds));

@@ -62,7 +62,7 @@ ScopedMapQuickDrawContext::ScopedMapQuickDrawContext(TView* renderTargetArg)
       renderTarget(renderTargetArg) {
   if (renderTarget != 0) {
     renderTarget->PrepareForDrawing();
-    RECT clipRect;
+    CRect clipRect;
     renderTarget->ApplyBounds(&clipRect, 0);
     clientDc.IntersectClipRect(&clipRect);
   }

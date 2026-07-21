@@ -100,7 +100,7 @@ void TRailAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache() {
   if (control != 0 && control->IsActionable() != 0) {
     control->PrepareForDrawing();
     if (control->IsActionable() != 0) {
-      RECT boundsRect = {0, 0, 0, 0};
+      CRect boundsRect(0, 0, 0, 0);
       control->QueryBounds(&boundsRect);
       ClipRect(&boundsRect);
       control->QueryBounds(&boundsRect);
@@ -140,7 +140,7 @@ void TRailAmtBar::RenderQuickDrawOverlayWithHitRegion(short selectedValue) {
   if (IsActionable() != 0) {
     PrepareForDrawing();
     if (IsActionable() != 0) {
-      RECT boundsRect = {0, 0, 0, 0};
+      CRect boundsRect(0, 0, 0, 0);
       QueryBounds(&boundsRect);
       TranslatePointToParentChain4E();
 

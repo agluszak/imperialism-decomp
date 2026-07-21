@@ -247,28 +247,18 @@ void TWorldView::RenderMapContextOverlayWithScopedClipAndSurface() {
   GetClip(reusableSurfaceA.tempRgn);
   SetGlobalQuickDrawOrigin(static_cast<short>(absoluteX), static_cast<short>(absoluteY));
 
-  // Preview square: the projected origin grown by previewSquareRadius78 on both axes
-  // (Mac Rect field order {top, left, bottom, right}; top/left = outY/outX).
-  struct MapOverlayRect {
-    long top;
-    long left;
-    long bottom;
-    long right;
-  } previewRect, contentBounds;
-  previewRect.top = outY;
-  previewRect.left = outX;
-  previewRect.bottom = outY + previewSquareRadius78;
-  previewRect.right = outX + previewSquareRadius78;
+  // Preserve the original stack order: the projection routine's first output occupies
+  // RECT::left and its second output occupies RECT::top.
+  CRect previewRect(outY, outX, outY + previewSquareRadius78, outX + previewSquareRadius78);
+  CRect contentBounds;
+  QueryContentBounds(&contentBounds);
+  SectRect(&previewRect, &contentBounds, &previewRect);
 
-  QueryContentBounds(reinterpret_cast<RECT*>(&contentBounds));
-  SectRect(reinterpret_cast<RECT*>(&previewRect), reinterpret_cast<RECT*>(&contentBounds),
-           reinterpret_cast<RECT*>(&previewRect));
+  CRect clipRect = previewRect;
+  OffsetRect(&clipRect, absoluteX, absoluteY);
 
-  MapOverlayRect clipRect = previewRect;
-  OffsetRect(reinterpret_cast<RECT*>(&clipRect), absoluteX, absoluteY);
-
-  ScopedMapQuickDrawContext scopedContext(this, reinterpret_cast<RECT*>(&clipRect));
-  RectRgn(reusableSurfaceB.tempRgn, reinterpret_cast<RECT*>(&previewRect));
+  ScopedMapQuickDrawContext scopedContext(this, &clipRect);
+  RectRgn(reusableSurfaceB.tempRgn, &previewRect);
   SetClip(reusableSurfaceB.tempRgn);
 
   char regionPresent = EmptyRgn(reusableSurfaceB.tempRgn);
@@ -276,20 +266,14 @@ void TWorldView::RenderMapContextOverlayWithScopedClipAndSurface() {
     // The mode-1/2 branches rebuild the projected square into one shared local
     // (the original recomputes it from outX/outY rather than reusing previewRect,
     // whose value SectRect clipped above).
-    MapOverlayRect badgeRect;
+    CRect badgeRect;
     if (interactionMode == 0) {
       RenderMapOrderEntryTilePreview(selectedOrder, outX, outY, 1, previewTile);
     } else if (interactionMode == 1) {
-      badgeRect.top = outY;
-      badgeRect.left = outX;
-      badgeRect.bottom = outY + previewSquareRadius78;
-      badgeRect.right = outX + previewSquareRadius78;
+      badgeRect.SetRect(outY, outX, outY + previewSquareRadius78, outX + previewSquareRadius78);
       RenderTacticalStackCountIndicatorAndUnitBadge(previewTile, &badgeRect, 1);
     } else if (interactionMode == 2) {
-      badgeRect.top = outY;
-      badgeRect.left = outX;
-      badgeRect.bottom = outY + previewSquareRadius78;
-      badgeRect.right = outX + previewSquareRadius78;
+      badgeRect.SetRect(outY, outX, outY + previewSquareRadius78, outX + previewSquareRadius78);
       RenderMapDialogTerrainOverlayFrameByTileOwner(previewTile, &badgeRect, 1);
     }
   }
@@ -308,7 +292,7 @@ void TWorldView::RenderMapOrderEntryTilePreview(TCivUnit* orderEntry, int projec
 }
 
 // FUNCTION: IMPERIALISM 0x00596040
-void TWorldView::RenderTacticalStackCountIndicatorAndUnitBadge(short tileIndex, void* dstRect,
+void TWorldView::RenderTacticalStackCountIndicatorAndUnitBadge(short tileIndex, CRect* dstRect,
                                                                int flag) {
   (void)tileIndex;
   (void)dstRect;
@@ -316,7 +300,7 @@ void TWorldView::RenderTacticalStackCountIndicatorAndUnitBadge(short tileIndex, 
 }
 
 // FUNCTION: IMPERIALISM 0x00596060
-void TWorldView::RenderMapDialogTerrainOverlayFrameByTileOwner(short tileIndex, void* dstRect,
+void TWorldView::RenderMapDialogTerrainOverlayFrameByTileOwner(short tileIndex, CRect* dstRect,
                                                                unsigned char altOverlay) {
   (void)tileIndex;
   (void)dstRect;

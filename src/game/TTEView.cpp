@@ -41,7 +41,7 @@ int TTEView::MeasureCurrentTextWidthInLayoutRect() {
   CFont* font = UpdateGlobalFontPresetAndRebuildCachedFontIfDirty(&textStyle78);
   CFont* oldFont = dc.SelectObject(font);
   CRect bounds;
-  BuildRectFromSlot158(&bounds);
+  GetQDExtent(&bounds);
   bounds.DeflateRect(&contentInsets68);
   dc.DrawText(*text, text->GetLength(), &bounds, 0xd10);
   dc.SelectObject(oldFont);

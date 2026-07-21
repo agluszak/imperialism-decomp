@@ -44,13 +44,13 @@ void TPlaceCityDialog::StuffValues(TTown* town) {
   if (owner == 0) {
     FailNilPointerWithAssert(s_SourcePathUCityViews_00696650, 0xdd6);
   } else {
-    RECT ownerBounds;
+    CRect ownerBounds;
     owner->QueryBounds(&ownerBounds);
     ownerBounds.bottom += extraHeight;
     owner->ApplyBounds(&ownerBounds, 1);
   }
 
-  RECT dialogBounds;
+  CRect dialogBounds;
   QueryBounds(&dialogBounds);
   dialogBounds.bottom += extraHeight;
   ApplyBounds(&dialogBounds, 1);
@@ -65,7 +65,7 @@ void TPlaceCityDialog::StuffValues(TTown* town) {
       FailNilPointerWithAssert(s_SourcePathUCityViews_00696650, buttonAssertLines[buttonIndex]);
       continue;
     }
-    RECT buttonBounds;
+    CRect buttonBounds;
     button->QueryBounds(&buttonBounds);
     OffsetRect(&buttonBounds, 0, extraHeight);
     button->ApplyBounds(&buttonBounds, 1);

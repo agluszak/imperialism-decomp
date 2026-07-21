@@ -67,9 +67,9 @@ public:
   // (always 1 there), and the entry's tile index.
   virtual void RenderMapOrderEntryTilePreview(TCivUnit* orderEntry, int projectedX, int projectedY,
                                               int flag, short tileIndex);
-  virtual void RenderTacticalStackCountIndicatorAndUnitBadge(short tileIndex, void* dstRect,
+  virtual void RenderTacticalStackCountIndicatorAndUnitBadge(short tileIndex, CRect* dstRect,
                                                              int flag);
-  virtual void RenderMapDialogTerrainOverlayFrameByTileOwner(short tileIndex, void* dstRect,
+  virtual void RenderMapDialogTerrainOverlayFrameByTileOwner(short tileIndex, CRect* dstRect,
                                                              unsigned char altOverlay);
   virtual void RenderStrategicTileSelectionAndNeighborHighlights();
   virtual void ForwardProjectTileIndexToWrappedScreenOffsetByScale(int arg1, int arg2, int arg3,
