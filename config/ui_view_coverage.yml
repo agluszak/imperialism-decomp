@@ -1,0 +1,330 @@
+format_version: 1
+
+# Explicit classification for every committed Mac View resource not yet owned by
+# config/ui_factory_codegen.yml. The coverage checker rejects omissions, stale
+# names, and overlap with generated resources.
+resources:
+  FlagView.rsrc:8450:
+    status: needs_windows_classification
+    name: Diplo Offer Desk
+    reason: Production-looking diplomacy desk with no confirmed Windows request site yet.
+    evidence:
+      - Mac View name and hierarchy in committed resources/ui_views.json
+      - Initial Windows immediate/xref audit found no construction request
+    bead: imperialism-decomp-1uj.58.7.2
+
+  Linger.rsrc:200:
+    status: excluded_mac_test_debug_or_framework
+    name: MA - IDClipWindow
+    reason: MacApp framework clip-window resource; no gameplay construction request is known.
+    evidence:
+      - Mac View name identifies the MA framework resource
+      - Initial Windows immediate/xref audit found no construction request
+    bead: imperialism-decomp-1uj.58.7.3
+
+  Linger.rsrc:300:
+    status: excluded_mac_test_debug_or_framework
+    name: MA - kDialogTEViewID
+    reason: MacApp framework dialog resource; no gameplay construction request is known.
+    evidence:
+      - Mac View name identifies the MA framework resource
+      - Initial Windows immediate/xref audit found no construction request
+    bead: imperialism-decomp-1uj.58.7.3
+
+  Linger.rsrc:900:
+    status: excluded_mac_test_debug_or_framework
+    name: Debug Flags Window
+    reason: Explicit debug-only window pending proof of its Windows disposition.
+    evidence:
+      - Mac View name identifies a debug resource
+      - Initial Windows immediate/xref audit found no construction request
+    bead: imperialism-decomp-1uj.58.7.3
+
+  Linger.rsrc:901:
+    status: excluded_mac_test_debug_or_framework
+    name: debug - Initialize PerfMon
+    reason: Explicit debug performance monitor pending proof of its Windows disposition.
+    evidence:
+      - Mac View name identifies a debug resource
+      - Initial Windows immediate/xref audit found no construction request
+    bead: imperialism-decomp-1uj.58.7.3
+
+  Linger.rsrc:1000:
+    status: excluded_mac_test_debug_or_framework
+    name: test - modal message-offscreen test
+    reason: Explicit Mac test view with no production Windows request site.
+    evidence:
+      - Mac View name identifies a test resource
+      - Initial Windows immediate/xref audit found no construction request
+    bead: imperialism-decomp-1uj.58.7.3
+
+  Linger.rsrc:1003:
+    status: excluded_mac_test_debug_or_framework
+    name: test - Show GP Stockpiles
+    reason: Explicit Mac test view with no production Windows request site.
+    evidence:
+      - Mac View name identifies a test resource
+      - Initial Windows immediate/xref audit found no construction request
+    bead: imperialism-decomp-1uj.58.7.3
+
+  Linger.rsrc:1009:
+    status: excluded_mac_test_debug_or_framework
+    name: test - cGPRelationshipTable
+    reason: Explicit Mac test view with no production Windows request site.
+    evidence:
+      - Mac View name identifies a test resource
+      - Initial Windows immediate/xref audit found no construction request
+    bead: imperialism-decomp-1uj.58.7.3
+
+  Linger.rsrc:1012:
+    status: excluded_mac_test_debug_or_framework
+    name: test - cMinorsRelationshipTable
+    reason: Explicit Mac test view with no production Windows request site.
+    evidence:
+      - Mac View name identifies a test resource
+      - Initial Windows immediate/xref audit found no construction request
+    bead: imperialism-decomp-1uj.58.7.3
+
+  Linger.rsrc:1014:
+    status: excluded_mac_test_debug_or_framework
+    name: test - MinorStockpiles
+    reason: Explicit Mac test view with no production Windows request site.
+    evidence:
+      - Mac View name identifies a test resource
+      - Initial Windows immediate/xref audit found no construction request
+    bead: imperialism-decomp-1uj.58.7.3
+
+  Linger.rsrc:1015:
+    status: excluded_mac_test_debug_or_framework
+    name: test - MinorTradeBids
+    reason: Explicit Mac test view with no production Windows request site.
+    evidence:
+      - Mac View name identifies a test resource
+      - Initial Windows immediate/xref audit found no construction request
+    bead: imperialism-decomp-1uj.58.7.3
+
+  Linger.rsrc:1024:
+    status: excluded_mac_test_debug_or_framework
+    name: test - cMinorsTreatyTable
+    reason: Explicit Mac test view with no production Windows request site.
+    evidence:
+      - Mac View name identifies a test resource
+      - Initial Windows immediate/xref audit found no construction request
+    bead: imperialism-decomp-1uj.58.7.3
+
+  Linger.rsrc:1025:
+    status: excluded_mac_test_debug_or_framework
+    name: test - cGP Treaty Table
+    reason: Explicit Mac test view with no production Windows request site.
+    evidence:
+      - Mac View name identifies a test resource
+      - Initial Windows immediate/xref audit found no construction request
+    bead: imperialism-decomp-1uj.58.7.3
+
+  Linger.rsrc:1026:
+    status: excluded_mac_test_debug_or_framework
+    name: test - Automated turns
+    reason: Explicit Mac test view with no production Windows request site.
+    evidence:
+      - Mac View name identifies a test resource
+      - Initial Windows immediate/xref audit found no construction request
+    bead: imperialism-decomp-1uj.58.7.3
+
+  Linger.rsrc:1050:
+    status: needs_windows_classification
+    name: GWorld Menu
+    reason: Mac graphics-world utility with no confirmed Windows construction path yet.
+    evidence:
+      - Mac View name and hierarchy in committed resources/ui_views.json
+      - Initial Windows immediate/xref audit found no construction request
+    bead: imperialism-decomp-1uj.58.7.2
+
+  Linger.rsrc:1060:
+    status: needs_windows_classification
+    name: GWorld Peeker
+    reason: Mac graphics-world utility with no confirmed Windows construction path yet.
+    evidence:
+      - Mac View name and hierarchy in committed resources/ui_views.json
+      - Initial Windows immediate/xref audit found no construction request
+    bead: imperialism-decomp-1uj.58.7.2
+
+  Linger.rsrc:2005:
+    status: excluded_mac_test_debug_or_framework
+    name: test - Diplomacy Notices
+    reason: Explicit Mac test view with no production Windows request site.
+    evidence:
+      - Mac View name identifies a test resource
+      - Initial Windows immediate/xref audit found no construction request
+    bead: imperialism-decomp-1uj.58.7.3
+
+  Linger.rsrc:2050:
+    status: needs_windows_classification
+    name: Minimap
+    reason: Production-looking minimap with no confirmed Windows construction request yet.
+    evidence:
+      - 0x005466f1 uses 0x802 as an assertion line number, not a View request
+      - Initial Windows immediate/xref audit found no other construction request
+    bead: imperialism-decomp-1uj.58.7.2
+
+  Linger.rsrc:8155:
+    status: excluded_mac_test_debug_or_framework
+    name: test - Naval Battle
+    reason: Explicit Mac test view with no production Windows request site.
+    evidence:
+      - Mac View name identifies a test resource
+      - Initial Windows immediate/xref audit found no construction request
+    bead: imperialism-decomp-1uj.58.7.3
+
+  Linger.rsrc:9285:
+    status: needs_windows_classification
+    name: Brick court
+    reason: Production-looking screen with no confirmed Windows construction path yet.
+    evidence:
+      - Mac View name and hierarchy in committed resources/ui_views.json
+      - Initial Windows immediate/xref audit found no construction request
+    bead: imperialism-decomp-1uj.58.7.2
+
+  Linger.rsrc:15001:
+    status: windows_runtime_gap
+    name: Cheaty Mission Snooper
+    reason: Windows requests event 0x3a99, but its dynamic Mac class has no recovered Windows model.
+    evidence:
+      - 0x005de83d pushes event 0x3a99 before TAssetMgr factory dispatch slot 0x28
+      - TMissionSnooperView owns dynamic population and event behavior
+    bead: imperialism-decomp-1uj.58.7.1.1
+
+  MapView.rsrc:9470:
+    status: needs_windows_classification
+    name: Civilian Maker
+    reason: Production-looking editor view with no confirmed Windows construction path yet.
+    evidence:
+      - Mac View name and hierarchy in committed resources/ui_views.json
+      - Initial Windows immediate/xref audit found no construction request
+    bead: imperialism-decomp-1uj.58.7.2
+
+  MapView.rsrc:9476:
+    status: needs_windows_classification
+    name: Navy Maker
+    reason: Production-looking editor view with no confirmed Windows construction path yet.
+    evidence:
+      - Mac View name and hierarchy in committed resources/ui_views.json
+      - Initial Windows immediate/xref audit found no construction request
+    bead: imperialism-decomp-1uj.58.7.2
+
+  Minister.rsrc:8900:
+    status: needs_windows_classification
+    name: Foreign Minister Dlog
+    reason: Production-looking minister shelf with no confirmed Windows construction path yet.
+    evidence:
+      - Mac View name and hierarchy in committed resources/ui_views.json
+      - Initial Windows immediate/xref audit found no construction request
+    bead: imperialism-decomp-1uj.58.7.2
+
+  Minister.rsrc:8930:
+    status: windows_runtime_gap
+    name: FM Recco Book
+    reason: Windows requests event 0x22e2, but its dynamic book class has no recovered Windows model.
+    evidence:
+      - 0x004f314e pushes event 0x22e2 before TMinisterView virtual dispatch slot 0x1a8
+    bead: imperialism-decomp-1uj.58.7.1.1
+
+  Minister.rsrc:8940:
+    status: windows_runtime_gap
+    name: MerMar Book
+    reason: Windows requests event 0x22ec, but its dynamic book class has no recovered Windows model.
+    evidence:
+      - 0x004f312c pushes event 0x22ec before TMinisterView virtual dispatch slot 0x1a8
+    bead: imperialism-decomp-1uj.58.7.1.1
+
+  Minister.rsrc:8950:
+    status: windows_runtime_gap
+    name: Mini Deal Book
+    reason: Windows requests event 0x22f6, but its dynamic book class has no recovered Windows model.
+    evidence:
+      - 0x004f30e5 pushes event 0x22f6 before TMinisterView virtual dispatch slot 0x1a8
+    bead: imperialism-decomp-1uj.58.7.1.1
+
+  Minister.rsrc:8960:
+    status: windows_runtime_gap
+    name: Exports Book
+    reason: Windows requests event 0x2300, but its dynamic book class has no recovered Windows model.
+    evidence:
+      - 0x004f30f9 pushes event 0x2300 before TMinisterView virtual dispatch slot 0x1a8
+    bead: imperialism-decomp-1uj.58.7.1.1
+
+  Minister.rsrc:8970:
+    status: needs_windows_classification
+    name: Escorts Book - Can We kill this?
+    reason: Production-looking minister book with no confirmed Windows construction path yet.
+    evidence:
+      - Mac View name questions whether the resource survived the Windows port
+      - Initial Windows immediate/xref audit found no construction request
+    bead: imperialism-decomp-1uj.58.7.2
+
+  Minister.rsrc:8990:
+    status: windows_runtime_gap
+    name: Price History Book
+    reason: Windows requests event 0x231e, but its dynamic book class has no recovered Windows model.
+    evidence:
+      - 0x004f3162 pushes event 0x231e before TMinisterView virtual dispatch slot 0x1a8
+    bead: imperialism-decomp-1uj.58.7.1.1
+
+  Minister.rsrc:9600:
+    status: needs_windows_classification
+    name: Defense Minister shelf
+    reason: Production-looking minister shelf with no confirmed Windows construction path yet.
+    evidence:
+      - Mac View name and hierarchy in committed resources/ui_views.json
+      - Initial Windows immediate/xref audit found no construction request
+    bead: imperialism-decomp-1uj.58.7.2
+
+  Minister.rsrc:9610:
+    status: windows_runtime_gap
+    name: DM Recco Book
+    reason: Windows requests event 0x258a, but its dynamic book class has no recovered Windows model.
+    evidence:
+      - 0x004f345d pushes event 0x258a before TMinisterView virtual dispatch slot 0x1a8
+    bead: imperialism-decomp-1uj.58.7.1.1
+
+  Minister.rsrc:9700:
+    status: needs_windows_classification
+    name: Interior Minister shelf
+    reason: Production-looking minister shelf with no confirmed Windows construction path yet.
+    evidence:
+      - Mac View name and hierarchy in committed resources/ui_views.json
+      - Initial Windows immediate/xref audit found no construction request
+    bead: imperialism-decomp-1uj.58.7.2
+
+  Minister.rsrc:9710:
+    status: windows_runtime_gap
+    name: IM Recco book
+    reason: Windows requests event 0x25ee, but its dynamic book class has no recovered Windows model.
+    evidence:
+      - 0x004f37e8 pushes event 0x25ee before TMinisterView virtual dispatch slot 0x1a8
+    bead: imperialism-decomp-1uj.58.7.1.1
+
+  Minister.rsrc:9720:
+    status: windows_runtime_gap
+    name: Treasuries Book
+    reason: Windows requests event 0x25f8, but its dynamic book class has no recovered Windows model.
+    evidence:
+      - 0x004f37ac pushes event 0x25f8 before TMinisterView virtual dispatch slot 0x1a8
+    bead: imperialism-decomp-1uj.58.7.1.1
+
+  Startup.rsrc:951:
+    status: excluded_mac_test_debug_or_framework
+    name: test - Game Setup Dialog
+    reason: Explicit Mac test view with no production Windows request site.
+    evidence:
+      - Mac View name identifies a test resource
+      - Initial Windows immediate/xref audit found no construction request
+    bead: imperialism-decomp-1uj.58.7.3
+
+  Startup.rsrc:960:
+    status: windows_runtime_gap
+    name: Map editor
+    reason: Windows requests event 0x03c0, but the committed Mac decoder omits 30 serialized children.
+    evidence:
+      - 0x0050ed78 pushes event 0x03c0 before TViewMgr virtual dispatch slot 0x4c
+      - Startup.rsrc:960 node 0x015e serializes 36 children but decodes only 6
+    bead: imperialism-decomp-1uj.58.7.1.2

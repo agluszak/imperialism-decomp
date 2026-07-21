@@ -573,9 +573,14 @@ const-stores *args:
 decode-builder *args:
   uv run python -m tools.binary.decode_builder {{args}}
 
-# Generate resource-driven UI factory TUs from committed Mac View IR and the
-# reviewed Windows dispatch/emission manifest.  Normal generation never reads
-# the original binary or retail Mac files.
+[doc('Check all original UI builder dispatches against the semantic manifest')]
+[group('ghidra-inspect')]
+ui-builder-dispatch-check:
+  uv run python -m tools.binary.decode_builder --check-manifest
+
+# Generate resource-driven UI factory TUs from committed semantic Mac View IR
+# plus the one evidenced Windows-only tree. Normal generation never reads the
+# original binary or retail Mac files.
 [group('build')]
 gen-builder *args:
   uv run python -m tools.ui_codegen {{args}}
@@ -585,15 +590,35 @@ gen-builder *args:
 ui-codegen *args:
   uv run python -m tools.ui_codegen --gen-dir "{{build_dir}}/generated/ui" {{args}}
 
-[doc('Validate committed UI resource IR, Windows recipes, and class bindings')]
+[doc('Validate committed UI semantics, structural invariants, and class bindings')]
 [group('gates')]
 ui-codegen-check:
   uv run python -m tools.ui_codegen --check
+
+[doc('Account for every committed Mac View in the Windows source model')]
+[group('gates')]
+ui-view-coverage *args:
+  uv run python -m tools.workflow.ui_view_coverage {{args}}
+
+[doc('Reject unclassified Mac Views and a stale committed coverage report')]
+[group('gates')]
+ui-view-coverage-check:
+  uv run python -m tools.workflow.ui_view_coverage --check
 
 [doc('Print one scoped Mac View resource from committed UI IR (FILE:ID)')]
 [group('ghidra-inspect')]
 ui-resource-show resource:
   uv run python -m tools.ui_codegen --view "{{resource}}"
+
+[doc('Explain generated lines and evidence for FUNCTION EVENT [NODE-OFFSET-OR-TAG]')]
+[group('ghidra-inspect')]
+ui-codegen-explain *args:
+  uv run python -m tools.ui_codegen --gen-dir "{{build_dir}}/generated/ui" --explain {{args}}
+
+[doc('Summarize per-case and per-node source-map coverage for one UI factory')]
+[group('ghidra-inspect')]
+ui-codegen-triage function:
+  uv run python -m tools.ui_codegen --gen-dir "{{build_dir}}/generated/ui" --triage-map "{{function}}"
 
 # Evidence-only predecessor: disassemble a Windows region into a draft.  It is
 # intentionally outside the build/codegen pipeline.
@@ -1359,6 +1384,7 @@ agent-rules-gate:
 source-gates:
   just generate
   just ui-codegen-check
+  just ui-view-coverage-check
   just tooling-check
   just vtable-gate
   just antipattern-gate
@@ -1456,6 +1482,7 @@ boundary-gate-update:
 # MUTATES: config/baselines/datacmp_baseline.csv.
 [group('baseline-update')]
 datacmp-gate-update:
+  @test "${ALLOW_POLICY_BASELINE_UPDATE:-}" = "1" || { echo "REFUSED: this rewrites an architecture-policy baseline (blessing new debt)."; echo "If a human approved the exception, rerun with ALLOW_POLICY_BASELINE_UPDATE=1."; exit 2; }
   uv run python -m tools.workflow.check_datacmp_baseline --target "{{target}}" --build-dir "{{build_dir}}" --write-baseline
 
 # MUTATES: config/baselines/empty_body_baseline.csv.

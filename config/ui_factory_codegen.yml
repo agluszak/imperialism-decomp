@@ -12,7 +12,6 @@ functions:
 
   - address: 0x0041b6d0
     name: InitializeIndustryViewTradeMoveControlsAndCommodityRows
-    emission: compact
     prototype: TView* __cdecl InitializeIndustryViewTradeMoveControlsAndCommodityRows(CWnd* pHostWindow, int nEventCode)
     cases:
       - {event: 0x23f0, resource: Citydlog.rsrc:9200}
@@ -39,7 +38,6 @@ functions:
 
   - address: 0x004295a0
     name: BuildTurnEventDialogResourcesForEvent547Or7D8
-    emission: compact
     prototype: TView* __cdecl BuildTurnEventDialogResourcesForEvent547Or7D8(CWnd* pHostWindow, int nEventCode)
     cases:
       - {event: 0x0547, resource: Diplo.rsrc:1351}
@@ -58,7 +56,6 @@ functions:
 
   - address: 0x004357b0
     name: BuildTurnEventDialogUiByCode
-    emission: compact
     prototype: TView* __cdecl BuildTurnEventDialogUiByCode(CWnd* pHostWindow, int nEventCode)
     cases:
       - {event: 0x03b6, resource: Linger.rsrc:950}
@@ -68,6 +65,7 @@ functions:
       - {event: 0x07d1, resource: Linger.rsrc:2001}
       - {event: 0x07d2, resource: Linger.rsrc:2002}
       - {event: 0x07e4, resource: Linger.rsrc:2020}
+      - {event: 0x07e5, resource: Linger.rsrc:2021, evidence: "Windows request 0x005d57ce; functional-parity case absent from original builder"}
       - {event: 0x0bb8, resource: Linger.rsrc:3000}
       - {event: 0x0bbd, resource: Linger.rsrc:3005}
       - {event: 0x101a, resource: Linger.rsrc:4122}
@@ -80,7 +78,6 @@ functions:
 
   - address: 0x0043dbc0
     name: InitializeArmyNavyReportViewsAndCommandTags
-    emission: resource_recipe
     prototype: TView* __cdecl InitializeArmyNavyReportViewsAndCommandTags(CWnd* pHostWindow, int nEventCode)
     cases:
       - {event: 0x0546, resource: MapView.rsrc:1350}
@@ -100,7 +97,6 @@ functions:
 
   - address: 0x0044a810
     name: BuildTurnEventDialogResources_2508
-    emission: resource_recipe
     prototype: TView* __cdecl BuildTurnEventDialogResources_2508(CWnd* pHostWindow, int nEventCode)
     cases:
       - {event: 0x2508, resource: Minister.rsrc:9480}
@@ -112,7 +108,7 @@ functions:
       - {event: 0x05e3, resource: Multiplayer.rsrc:1507}
       - {event: 0x05e4, resource: Multiplayer.rsrc:1508}
       - {event: 0x05e6, resource: Multiplayer.rsrc:1510}
-      - {event: 0x05e7, windows_only: true, evidence: 0x0044e466}
+      - {event: 0x05e7, windows_view: join_selector_message}
 
   - address: 0x0044fbc0
     name: BuildUiResourceTreeByTemplateIdAndBindScreenContext
@@ -122,11 +118,11 @@ functions:
 
   - address: 0x004538a0
     name: InitializeGameSetupScreenControlsAndModeTags
-    emission: resource_recipe
     prototype: TView* __cdecl InitializeGameSetupScreenControlsAndModeTags(CWnd* pHostWindow, int nEventCode)
     cases:
       - {event: 0x03b8, resource: Startup.rsrc:952}
       - {event: 0x03b9, resource: Startup.rsrc:953}
+      - {event: 0x03c5, resource: Startup.rsrc:965, evidence: "Windows request 0x0051dd0b; functional-parity case absent from original builder"}
       - {event: 0x03c6, resource: Startup.rsrc:966}
       - {event: 0x05dc, resource: Startup.rsrc:1500}
       - {event: 0x05dd, resource: Startup.rsrc:1501}
@@ -147,14 +143,12 @@ functions:
 
   - address: 0x0045d520
     name: BuildTurnEventDialogResourcesForEvent898
-    emission: resource_recipe
     prototype: TView* __cdecl BuildTurnEventDialogResourcesForEvent898(CWnd* pHostWindow, int nEventCode)
     cases:
       - {event: 0x0898, resource: Tech.rsrc:2200}
 
   - address: 0x0045e0b0
     name: BuildTurnEventDialogResourcesForEvent8FC
-    emission: resource_recipe
     prototype: TView* __cdecl BuildTurnEventDialogResourcesForEvent8FC(CWnd* pHostWindow, int nEventCode)
     cases:
       - {event: 0x08fc, resource: TechStore.rsrc:2300}
@@ -162,7 +156,6 @@ functions:
 
   - address: 0x004601b0
     name: InitializeTradeScreenBitmapControls
-    emission: resource_recipe
     prototype: TView* __cdecl InitializeTradeScreenBitmapControls(CWnd* pHostWindow, int nEventCode)
     cases:
       - {event: 0x07d9, resource: Trade.rsrc:2009}
@@ -170,10 +163,10 @@ functions:
 
   - address: 0x0046fd10
     name: BuildTurnEventDialogResourcesForEvent7DE
-    emission: compact
     prototype: TView* __cdecl BuildTurnEventDialogResourcesForEvent7DE(CWnd* pHostWindow, int nEventCode)
     cases:
       - {event: 0x07de, resource: Transport.rsrc:2014}
+      - {event: 0x0f3d, resource: Transport.rsrc:3901, evidence: "Windows request 0x0057e984; functional-parity case absent from original builder"}
 
   - address: 0x004749a0
     name: BuildUniversityDialogShell

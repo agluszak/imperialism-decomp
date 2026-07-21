@@ -22,6 +22,7 @@
 #include "game/TSimMgr.h"
 #include "game/TStaticText.h"
 #include "game/TTechMgr.h"
+#include "game/TTurnEventDialogFactoryRegistry.h"
 #include "game/TModuleLibraryCacheTableStateB.h"
 #include "game/TView.h"
 #include "game/ui_control_tags.h"
@@ -1019,15 +1020,13 @@ undefined TMacViewMgr::SyncSellTaggedChildControlWithNationState(TView* view, sh
 }
 
 // FUNCTION: IMPERIALISM 0x0050be30
-undefined TMacViewMgr::ResolveTurnEventDialogOrFailAndInvokeSlot9C(int unusedArg) {
-  TurnEventDialogNode* dialog = reinterpret_cast<TurnEventDialogNode*>(
-      g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(0));
+TView* TMacViewMgr::ResolveTurnEventDialogOrFailAndInvokeSlot9C(int dialogId) {
+  TView* dialog = g_pTurnEventDialogFactoryRegistry->ResolveDialogNodeByMessageContext(dialogId, 0);
   if (dialog == 0) {
-    MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag();
+    FailNilPointerWithAssert("D:\\Ambit\\Cross\\UMacViewMgr.cpp", 0x917);
   }
-  dialog->DispatchSlot9C();
-  return 0;
+  dialog->Open();
+  return dialog;
 }
 
 // FUNCTION: IMPERIALISM 0x0050bea0

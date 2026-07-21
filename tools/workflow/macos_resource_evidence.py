@@ -90,6 +90,134 @@ EXPECTED_STARTUP_1500 = [
     ("cntl", "pref", "", 540, 399, 100, 73),
 ]
 
+FAMILY_MINIMUM_SIZES = {
+    "view": 6,
+    "pict": 34,
+    "cntl": 32,
+    "stat": 40,
+    "clus": 36,
+    "tevw": 37,
+    "wind": 18,
+    "fwnd": 20,
+    "edit": 46,
+    "nmbr": 58,
+}
+
+# SHA-pinned properties from retail resources used by the Windows generator.
+# These deliberately cover hierarchy and every typed family on which codegen
+# relies, without making the retail resource files a build dependency.
+REAL_UI_SENTINELS: tuple[dict[str, object], ...] = (
+    {
+        "resource_file": "MapView.rsrc",
+        "view_id": 1350,
+        "sha256": "a6ab45cc352b0c6f7f54d57c46fc4d60cb8f820b29d127bab86ad9b0357ea3d4",
+        "nodes": {
+            4: {
+                "type_code": "wind",
+                "tag": "WIND",
+                "parent_offset": None,
+                "geometry": {"x": 23, "y": 42, "width": 230, "height": 360},
+                "family": {"content_tag": "DLOG", "serialized_child_count": 3},
+            },
+            623: {
+                "type_code": "pict",
+                "class_name": "TCombatReportView",
+                "parent_offset": 4,
+                "family": {"picture_id": 3506},
+            },
+        },
+    },
+    {
+        "resource_file": "MapView.rsrc",
+        "view_id": 2013,
+        "sha256": "9362313845685cf0843dc742d83bb1427337b93004a89dd68e76ef2edbcad9b3",
+        "nodes": {
+            72: {
+                "type_code": "pict",
+                "class_name": "TMapUberPicture",
+                "family": {"picture_id": 1031, "content_insets": [256, 0, 0, 0]},
+            },
+            395: {
+                "type_code": "clus",
+                "class_name": "TToolBarCluster",
+                "parent_offset": 72,
+                "family": {"serialized_child_count": 12},
+            },
+            2227: {
+                "type_code": "cntl",
+                "depth": 5,
+                "parent_offset": 2001,
+                "family": {"content_insets": [256, 0, 0, 0]},
+            },
+            7699: {
+                "type_code": "stat",
+                "class_name": "TDropShadowText",
+                "family": {"text_resource_id": 3300, "text_resource_index": 4},
+            },
+        },
+    },
+    {
+        "resource_file": "Multiplayer.rsrc",
+        "view_id": 1507,
+        "sha256": "b144d68aaa6fa89df98ce63ec257900bbca83916534516afd536f21a9b9e8d81",
+        "nodes": {
+            345: {
+                "type_code": "edit",
+                "tag": "name",
+                "parent_offset": 128,
+                "geometry": {"x": 18, "y": 39, "width": 270, "height": 21},
+                "family": {"frame_style": 6, "text_style_id": 771},
+            }
+        },
+    },
+    {
+        "resource_file": "Startup.rsrc",
+        "view_id": 1500,
+        "sha256": "fbb51eed479870d9744f913d6c573b7bae733e8d00274423f001fcc625ccd652",
+        "nodes": {
+            72: {
+                "type_code": "pict",
+                "class_name": "TGameSetupPicture",
+                "family": {"picture_id": 4500, "content_insets": [256, 0, 0, 0]},
+            },
+            709: {
+                "type_code": "tevw",
+                "class_name": "TInfoBarText",
+                "family": {
+                    "text_view_mode": 1,
+                    "text_view_limit": 32767,
+                    "text_style_id": 1000,
+                },
+            },
+        },
+    },
+    {
+        "resource_file": "Univ.rsrc",
+        "view_id": 9210,
+        "sha256": "56d26118a220d963b115d38da56705baff7b282c14e246ded982ab0991eb41ca",
+        "nodes": {
+            4: {"type_code": "fwnd", "tag": "WIND", "parent_offset": None},
+            1790: {
+                "type_code": "clus",
+                "depth": 2,
+                "family": {"serialized_child_count": 14},
+            },
+            2082: {
+                "type_code": "nmbr",
+                "depth": 5,
+                "parent_offset": 1986,
+                "family": {
+                    "content_insets": [0, 768, 768, 768],
+                    "max_char_count": 255,
+                    "number_value": 0,
+                    "number_minimum": 0,
+                    "number_maximum": 255,
+                },
+            },
+        },
+    },
+)
+
 
 def _need(data: bytes, offset: int, size: int, context: str) -> None:
     if offset < 0 or size < 0 or offset + size > len(data):
@@ -461,12 +589,31 @@ def _widget_ir(view: ResourceEntry, record: WidgetRecord, records: Sequence[Widg
     properties_end = min(direct_children, default=record.record_end)
     search_start = min(common_flags_offset + 22, properties_end)
     family_bytes = record.type_code.encode("ascii")
-    family_offset = data.find(family_bytes, search_start, properties_end)
-    if family_offset < 0:
-        family_offset = properties_end
+    family_offsets: list[int] = []
+    cursor = search_start
+    while cursor < properties_end:
+        family_offset = data.find(family_bytes, cursor, properties_end)
+        if family_offset < 0:
+            break
+        family_offsets.append(family_offset)
+        cursor = family_offset + 1
+    if len(family_offsets) != 1:
+        raise ResourceFormatError(
+            f"{record.resource_file} View {record.view_id} record 0x{record.offset:x}: "
+            f"expected one {record.type_code!r} family marker in "
+            f"0x{search_start:x}-0x{properties_end:x}, found {len(family_offsets)}"
+        )
+    family_offset = family_offsets[0]
 
     common_flags = data[common_flags_offset:min(common_flags_offset + 22, properties_end)]
     family_payload = data[family_offset:properties_end]
+    minimum_size = FAMILY_MINIMUM_SIZES[record.type_code]
+    if len(family_payload) < minimum_size:
+        raise ResourceFormatError(
+            f"{record.resource_file} View {record.view_id} record 0x{record.offset:x}: "
+            f"{record.type_code} family is {len(family_payload)} bytes, "
+            f"expected at least {minimum_size}"
+        )
     family: dict[str, object] = {
         "offset": family_offset,
         "size": len(family_payload),
@@ -474,7 +621,7 @@ def _widget_ir(view: ResourceEntry, record: WidgetRecord, records: Sequence[Widg
     }
     if len(family_payload) >= 8 and family_payload[:4] == family_bytes:
         family["frame_style"] = _u32(family_payload, 4, "widget frame style")
-    if len(family_payload) >= 24 and family_payload[:4] == family_bytes:
+    if record.type_code in ("pict", "cntl", "stat", "clus", "edit", "nmbr"):
         family["content_insets"] = list(struct.unpack_from(">iiii", family_payload, 8))
     if record.type_code == "pict" and len(family_payload) >= 32:
         family["picture_id"] = _u16(family_payload, 30, "picture resource id")
@@ -563,6 +710,12 @@ def _widget_ir(view: ResourceEntry, record: WidgetRecord, records: Sequence[Widg
         "window_prefix_hex": data[class_end + 9 : geometry_offset].hex(),
         "drawing_environment_hex": data[search_start:family_offset].hex(),
         "family": family,
+        "decoder_confidence": "high",
+        "decoder_notes": [
+            "record is reachable through the inferred containment tree",
+            "family marker is unique and its minimum payload length is satisfied",
+            "unparsed bytes are retained in the raw hex fields",
+        ],
     }
 
 
@@ -591,6 +744,166 @@ def build_ui_ir(resources: Sequence[ResourceEntry], widgets: Sequence[WidgetReco
         "resource_set_sha256": _resource_set_sha256(resources),
         "views": views,
     }
+
+
+def validate_view_structure(view: dict, require_cluster_counts: bool = False) -> list[str]:
+    """Validate the hierarchy and typed payload invariants for one decoded View."""
+
+    label = f"{view.get('resource_file')} View {view.get('view_id')}"
+    nodes = view.get("nodes", [])
+    if not isinstance(nodes, list) or not nodes:
+        return [f"{label}: no decoded nodes"]
+    errors: list[str] = []
+    offsets = [int(node["offset"]) for node in nodes]
+    if offsets != sorted(offsets):
+        errors.append(f"{label}: nodes are not ordered by record offset")
+    if len(offsets) != len(set(offsets)):
+        errors.append(f"{label}: duplicate record offsets")
+    by_offset = {int(node["offset"]): node for node in nodes}
+    roots = [node for node in nodes if node.get("parent_offset") is None]
+    if len(roots) != 1:
+        errors.append(f"{label}: expected exactly one reachable root, found {len(roots)}")
+
+    view_size = int(view.get("size", 0))
+    children: dict[int | None, list[dict]] = {}
+    for node in nodes:
+        offset = int(node["offset"])
+        record_end = int(node["record_end"])
+        node_label = f"{label} node 0x{offset:04x}"
+        if offset < 0 or record_end <= offset or record_end > view_size:
+            errors.append(
+                f"{node_label}: invalid record extent 0x{offset:x}-0x{record_end:x} "
+                f"for view size 0x{view_size:x}"
+            )
+        parent_offset = node.get("parent_offset")
+        parent_key = None if parent_offset is None else int(parent_offset)
+        children.setdefault(parent_key, []).append(node)
+        expected_depth = 0
+        if parent_key is not None:
+            parent = by_offset.get(parent_key)
+            if parent is None:
+                errors.append(f"{node_label}: missing parent 0x{parent_key:04x}")
+                continue
+            expected_depth = int(parent["depth"]) + 1
+            if not (
+                int(parent["offset"]) < offset
+                and record_end <= int(parent["record_end"])
+            ):
+                errors.append(f"{node_label}: record is not fully contained by its parent")
+        if int(node["depth"]) != expected_depth:
+            errors.append(
+                f"{node_label}: depth {node['depth']} does not match "
+                f"parent-derived depth {expected_depth}"
+            )
+        family = node.get("family", {})
+        raw_hex = str(family.get("raw_hex", ""))
+        marker = str(node["type_code"]).encode("ascii").hex()
+        family_size = int(family.get("size", 0))
+        minimum = FAMILY_MINIMUM_SIZES.get(str(node["type_code"]))
+        if not raw_hex.startswith(marker):
+            errors.append(f"{node_label}: family payload does not start with its FourCC")
+        if minimum is None or family_size < minimum:
+            errors.append(
+                f"{node_label}: family payload size {family_size} is below "
+                f"the {minimum!r} byte minimum"
+            )
+
+    reachable: set[int] = set()
+    pending = [int(root["offset"]) for root in roots]
+    while pending:
+        offset = pending.pop()
+        if offset in reachable:
+            errors.append(f"{label}: hierarchy cycle reaches 0x{offset:04x}")
+            continue
+        reachable.add(offset)
+        pending.extend(int(child["offset"]) for child in children.get(offset, []))
+    unreachable = sorted(set(offsets) - reachable)
+    if unreachable:
+        errors.append(
+            f"{label}: structurally unreachable records "
+            + ", ".join(f"0x{offset:04x}" for offset in unreachable)
+        )
+
+    for parent_offset, siblings in children.items():
+        if parent_offset is None:
+            continue
+        ordered = sorted(siblings, key=lambda node: int(node["offset"]))
+        for left, right in zip(ordered, ordered[1:]):
+            if int(left["record_end"]) > int(right["offset"]):
+                errors.append(
+                    f"{label}: sibling records 0x{int(left['offset']):04x} and "
+                    f"0x{int(right['offset']):04x} overlap"
+                )
+        parent = by_offset[parent_offset]
+        if require_cluster_counts and parent["type_code"] == "clus":
+            expected = int(parent.get("family", {}).get("serialized_child_count", 0))
+            if expected != len(ordered):
+                errors.append(
+                    f"{label} node 0x{parent_offset:04x}: serialized cluster child "
+                    f"count {expected} does not match {len(ordered)} decoded children"
+                )
+    return errors
+
+
+def validate_ui_ir_structure(
+    ui_ir: dict,
+    selected_keys: set[tuple[str, int]] | None = None,
+    require_cluster_counts: bool = False,
+) -> list[str]:
+    errors: list[str] = []
+    for view in ui_ir.get("views", []):
+        key = (str(view.get("resource_file")), int(view.get("view_id", -1)))
+        if selected_keys is None or key in selected_keys:
+            errors.extend(validate_view_structure(view, require_cluster_counts))
+    return errors
+
+
+def _validate_expected_subset(
+    actual: object, expected: object, path: str, errors: list[str]
+) -> None:
+    if isinstance(expected, dict):
+        if not isinstance(actual, dict):
+            errors.append(f"{path}: expected an object, got {actual!r}")
+            return
+        for key, value in expected.items():
+            if key not in actual:
+                errors.append(f"{path}: missing {key!r}")
+            else:
+                _validate_expected_subset(actual[key], value, f"{path}/{key}", errors)
+        return
+    if actual != expected:
+        errors.append(f"{path}: expected {expected!r}, got {actual!r}")
+
+
+def validate_real_ui_sentinels(ui_ir: dict) -> list[str]:
+    """Check the committed retail hashes and selected decoded family properties."""
+
+    views = {
+        (str(view["resource_file"]), int(view["view_id"])): view
+        for view in ui_ir.get("views", [])
+    }
+    errors: list[str] = []
+    for sentinel in REAL_UI_SENTINELS:
+        key = (str(sentinel["resource_file"]), int(sentinel["view_id"]))
+        label = f"{key[0]} View {key[1]} sentinel"
+        view = views.get(key)
+        if view is None:
+            errors.append(f"{label}: view is absent")
+            continue
+        if view.get("sha256") != sentinel["sha256"]:
+            errors.append(
+                f"{label}: expected SHA {sentinel['sha256']}, got {view.get('sha256')}"
+            )
+        nodes = {int(node["offset"]): node for node in view.get("nodes", [])}
+        for offset, expected in sentinel["nodes"].items():
+            node = nodes.get(int(offset))
+            if node is None:
+                errors.append(f"{label}: missing node 0x{int(offset):04x}")
+                continue
+            _validate_expected_subset(
+                node, expected, f"{label}/node 0x{int(offset):04x}", errors
+            )
+    return errors
 
 
 def decode_widgets(resources: Sequence[ResourceEntry]) -> list[WidgetRecord]:
@@ -918,6 +1231,8 @@ def check_outputs(output_dir: Path) -> int:
         errors.append("ui_views.json resource-set hash does not match summary.json")
     if len(ui_ir.get("views", [])) != summary.get("views"):
         errors.append("ui_views.json view count does not match summary.json")
+    errors.extend(validate_ui_ir_structure(ui_ir))
+    errors.extend(validate_real_ui_sentinels(ui_ir))
 
     csv_rows: dict[str, list[dict[str, str]]] = {}
     for name in required[1:]:

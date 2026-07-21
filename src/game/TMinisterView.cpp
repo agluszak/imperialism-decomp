@@ -62,7 +62,7 @@ undefined TMinisterView::NotifyWindowStatusTick() {
 }
 
 // FUNCTION: IMPERIALISM 0x004f2ec0
-undefined TMinisterView::ShowMinisterHelpDialog(int dialogId) {
+TView* TMinisterView::ShowMinisterHelpDialog(int dialogId) {
   NotifyWindowStatusTick();
   return g_pStrategicMapViewSystem->ResolveTurnEventDialogOrFailAndInvokeSlot9C(dialogId);
 }

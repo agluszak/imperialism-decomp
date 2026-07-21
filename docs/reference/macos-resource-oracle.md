@@ -43,10 +43,17 @@ deterministically sorted files:
 | `text_styles.csv` | `TxSt` ID/name and serialized size/hash; no payload |
 | `id_collisions.csv` | Same type/ID appearing in multiple resource files |
 
-`Startup.rsrc` `View` 1500 is a reproducibility sentinel: its ten decoded records must
-match the Windows startup builder selected by event `0x5dc`, including the `base`,
-`main`, `load`, `rand`, `mult`, `high`, `scen`, `curs`, `quit`, and `pref` tags and
-their rectangles. Generation and checking fail if that correspondence changes.
+The checker validates every decoded hierarchy for one reachable root, ordered and
+non-overlapping siblings, parent containment, family FourCC identity, and typed-family
+minimum lengths. Fresh extraction also rejects missing or ambiguous family markers and
+records per-node decoder confidence while preserving unparsed bytes as hex evidence.
+
+Real-resource sentinels pin both the resource SHA and selected decoded properties for
+`MapView.rsrc` 1350/2013, `Multiplayer.rsrc` 1507, `Startup.rsrc` 1500, and
+`Univ.rsrc` 9210. Together they cover nested clusters, window/float-window records,
+static text, edit and number controls, text views, nonzero picture/control insets, and
+the deeply nested university hierarchy. `Startup.rsrc` 1500 additionally retains its
+ten-record Windows event `0x5dc` correspondence check.
 
 ## Resource ID scope
 
@@ -59,15 +66,18 @@ collisions explicit.
 ## Generate the Windows UI factories
 
 `config/ui_factory_codegen.yml` maps Windows factory addresses and event cases to
-resource-file-scoped `View` IDs. `config/ui_factory_windows.json` describes the
-Windows emission dialect and platform-specific overrides as structured data. Normal
-generation consumes only those two configs and the committed `ui_views.json`; it never
-reads either retail binary:
+resource-file-scoped `View` IDs. A genuinely Windows-only screen is represented as a
+semantic tree in `config/ui_factory_windows_views.yml`; that file records widget classes,
+hierarchy, geometry, state, typed family properties, and binary evidence, but never
+allocation shape, helper selection, variable names, or explicit stack pops. Normal
+generation consumes committed evidence only and never reads either retail binary:
 
 ```sh
 just ui-codegen-check
 just ui-codegen
 just ui-resource-show Startup.rsrc:1500
+just ui-codegen-explain 0x43dbc0 0x07dd tool
+just ui-codegen-triage 0x43dbc0
 just build
 just ui-codegen-match-gate
 ```
@@ -78,12 +88,22 @@ source model, symbol projection, stub suppression, CMake, and diff-aware agent c
 The former manually owned `src/game/turn_event_dialog_factory_*.cpp` files are therefore
 absent; their 17 addresses have exactly one generated owner.
 
-The manifest supports two direct resource emission shapes because the Windows binary
-used both expanded member calls and compact builder helpers. Six mature factories use
-the structured `resource_recipe` shape: Mac IR still owns their pane hierarchy, FourCCs,
-rectangles, state, picture/string IDs, number ranges, and control values, while the
-Windows recipe selects compact versus expanded calls, specialized Windows classes,
-stack-pop shape, and genuine platform overrides. There are no C++ body templates and no
-retail inputs in the normal generation path. The generated manifest hashes all three
-committed inputs, and `just ui-codegen-match-gate` protects pairing and the accepted
-similarity floor.
+All 17 factories use the same canonical semantic emitter. Mac `View` IR supplies class,
+hierarchy, geometry, state, control values, strings, and typed family payloads. The
+generator derives VC5 source shape, helper calls, stable variable names, and hierarchy
+closure. There are no compact/expanded modes, per-node operation arrays, manual pop
+lists, class maps, string-symbol maps, or `config/ui_factory_windows.json`.
+
+Event `0x05e7` is represented by the small evidenced Windows-only tree because no Mac
+`View` counterpart exists. The Windows file is schema-checked to reject code-generation
+choreography; any future Windows-only case must provide a rooted semantic tree and an
+evidence range. Every declared case must emit exactly one rooted tree or carry an
+explicit rejection plus evidence.
+
+Generation writes `_source_map.json` beside the TUs. It maps every event/node to its
+tag, class, semantic evidence, confidence, and generated line span. The explain command
+selects a node by record offset or tag; the triage command summarizes case coverage and
+confidence before machine-level `just triage` work. There are no C++ body templates or
+retail inputs in the normal generation path. The generated manifest hashes every
+committed semantic input, and `just ui-codegen-match-gate` protects symbol pairing and
+the explicitly accepted similarity baseline rather than dictating source architecture.
