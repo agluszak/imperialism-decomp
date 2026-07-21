@@ -1,6 +1,7 @@
 #include "game/TItemOrder.h"
 
 #include "game/TCity.h"
+#include "game/TStream.h"
 
 TItemOrder::TItemOrder() {}
 // SYNTHETIC: IMPERIALISM 0x004b51d0
@@ -81,8 +82,35 @@ void TItemOrder::ResetCityOrderItemDerivedStateNoop() {
   }
 }
 
+// Duplicates TProductionOrder::WriteTo's field-write sequence inline (calling the
+// grandparent TObject::WriteTo directly, not TProductionOrder::WriteTo) before
+// appending its own four fields.
 // FUNCTION: IMPERIALISM 0x004b5670
-void TItemOrder::WriteTo(TStream* stream) {}
+void TItemOrder::WriteTo(TStream* stream) {
+  TObject::WriteTo(stream);
+  stream->WriteBytesSlot78(&resourceTypeIndex48, 2);
+  stream->WriteBytesSlot78(&quantityField04, 2);
+  stream->WriteBytesSlot78(&field40, 2);
+  stream->WriteBytesSlot78(&resourceTypeIndex48, 2);
+  stream->WriteBytesSlot78(trackingSlots10, 0x2e);
+  stream->WriteBytesSlot78(&accumulatedValue, 4);
+  stream->WriteBytesSlot78(&requestedQuantity4c, 2);
+  stream->WriteBytesSlot78(&primaryInputResourceId, 2);
+  stream->WriteBytesSlot78(&secondaryInputResourceId, 2);
+  stream->WriteBytesSlot78(&productionSlot, 2);
+}
 
 // FUNCTION: IMPERIALISM 0x004b5710
-void TItemOrder::ReadFrom(TStream* stream) {}
+void TItemOrder::ReadFrom(TStream* stream) {
+  TObject::ReadFrom(stream);
+  stream->ReadBytes(&resourceTypeIndex48, 2);
+  stream->ReadBytes(&quantityField04, 2);
+  stream->ReadBytes(&field40, 2);
+  stream->ReadBytes(&resourceTypeIndex48, 2);
+  stream->ReadBytes(trackingSlots10, 0x2e);
+  stream->ReadBytes(&accumulatedValue, 4);
+  stream->ReadBytes(&requestedQuantity4c, 2);
+  stream->ReadBytes(&primaryInputResourceId, 2);
+  stream->ReadBytes(&secondaryInputResourceId, 2);
+  stream->ReadBytes(&productionSlot, 2);
+}

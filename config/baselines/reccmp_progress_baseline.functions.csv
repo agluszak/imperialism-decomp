@@ -1600,8 +1600,8 @@ address|matching|name
 0x4b4f00|0.4|TProductionOrder::ConstructTProductionOrderBaseState
 0x4b4f20|0.9090909090909091|TProductionOrder::`scalar deleting destructor'
 0x4b4f70|0.08333333333333333|TProductionOrder::InitializeBasicCityOrderContext
-0x4b4fe0|0.044444444444444446|TProductionOrder::WriteTo
-0x4b5060|0.044444444444444446|TProductionOrder::ReadFrom
+0x4b4fe0|1.0|TProductionOrder::WriteTo
+0x4b5060|1.0|TProductionOrder::ReadFrom
 0x4b50e0|1.0|TProductionOrder::MaxOrder
 0x4b5100|0.1111111111111111|TProductionOrder::SetQuantity
 0x4b5140|1.0|TProductionOrder::ResetCityOrderItemDerivedStateNoop
@@ -1617,8 +1617,8 @@ address|matching|name
 0x4b5510|0.43636363636363634|TItemOrder::FillOrderSheet
 0x4b5580|0.05405405405405406|TItemOrder::CommitIfPending
 0x4b5620|1.0|TItemOrder::ResetCityOrderItemDerivedStateNoop
-0x4b5670|0.03076923076923077|TItemOrder::WriteTo
-0x4b5710|0.03076923076923077|TItemOrder::ReadFrom
+0x4b5670|1.0|TItemOrder::WriteTo
+0x4b5710|1.0|TItemOrder::ReadFrom
 0x4b57b0|0.4117647058823529|TOrItemOrder::CreateObject
 0x4b57e0|1.0|TOrItemOrder::GetRuntimeClass
 0x4b5820|0.9090909090909091|TOrItemOrder::`scalar deleting destructor'

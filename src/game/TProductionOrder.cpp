@@ -1,5 +1,7 @@
 #include "game/TProductionOrder.h"
 
+#include "game/TStream.h"
+
 TProductionOrder::TProductionOrder()
     : quantityField04(0), cityField08(0), summaryField0c(0), field3e(0), field40(0),
       accumulatedValue(0), resourceTypeIndex48(0), field4a(0) {
@@ -25,10 +27,26 @@ undefined TProductionOrder::InitializeBasicCityOrderContext(int param_1, undefin
 }
 
 // FUNCTION: IMPERIALISM 0x004b4fe0
-void TProductionOrder::WriteTo(TStream* stream) {}
+void TProductionOrder::WriteTo(TStream* stream) {
+  TObject::WriteTo(stream);
+  stream->WriteBytesSlot78(&resourceTypeIndex48, 2);
+  stream->WriteBytesSlot78(&quantityField04, 2);
+  stream->WriteBytesSlot78(&field40, 2);
+  stream->WriteBytesSlot78(&resourceTypeIndex48, 2);
+  stream->WriteBytesSlot78(trackingSlots10, 0x2e);
+  stream->WriteBytesSlot78(&accumulatedValue, 4);
+}
 
 // FUNCTION: IMPERIALISM 0x004b5060
-void TProductionOrder::ReadFrom(TStream* stream) {}
+void TProductionOrder::ReadFrom(TStream* stream) {
+  TObject::ReadFrom(stream);
+  stream->ReadBytes(&resourceTypeIndex48, 2);
+  stream->ReadBytes(&quantityField04, 2);
+  stream->ReadBytes(&field40, 2);
+  stream->ReadBytes(&resourceTypeIndex48, 2);
+  stream->ReadBytes(trackingSlots10, 0x2e);
+  stream->ReadBytes(&accumulatedValue, 4);
+}
 
 // FUNCTION: IMPERIALISM 0x004b50e0
 short TProductionOrder::MaxOrder() {
