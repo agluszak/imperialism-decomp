@@ -104869,6 +104869,12 @@
       "to": "control_tag:0x7472616e"
     },
     {
+      "from": "windows_function:0x004bd690",
+      "relation": "resolves_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x7472616e"
+    },
+    {
       "from": "windows_function:0x004bd880",
       "relation": "resolves_control_tag",
       "status": "resolved",
@@ -104885,6 +104891,12 @@
       "relation": "resolves_control_tag",
       "status": "resolved",
       "to": "control_tag:0x6f6b6179"
+    },
+    {
+      "from": "windows_function:0x004bdc10",
+      "relation": "resolves_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x6e616d65"
     },
     {
       "from": "windows_function:0x004c8390",
@@ -105971,6 +105983,12 @@
       "relation": "resolves_control_tag",
       "status": "resolved",
       "to": "control_tag:0x726f7732"
+    },
+    {
+      "from": "windows_function:0x005b46c0",
+      "relation": "resolves_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x6e756d20"
     },
     {
       "from": "windows_function:0x005bac50",
@@ -204403,8 +204421,18 @@
       "kind": "windows_function",
       "source": "src/game/TTransportView.cpp"
     },
+    "windows_function:0x004bd690": {
+      "address": "0x004bd690",
+      "kind": "windows_function",
+      "source": "src/game/TTransportView.cpp"
+    },
     "windows_function:0x004bd880": {
       "address": "0x004bd880",
+      "kind": "windows_function",
+      "source": "src/game/TNewTownView.cpp"
+    },
+    "windows_function:0x004bdc10": {
+      "address": "0x004bdc10",
       "kind": "windows_function",
       "source": "src/game/TNewTownView.cpp"
     },
@@ -204758,6 +204786,11 @@
       "kind": "windows_function",
       "source": "src/game/TMinorTreatyDialog.cpp"
     },
+    "windows_function:0x005b46c0": {
+      "address": "0x005b46c0",
+      "kind": "windows_function",
+      "source": "src/game/TAutomatedPlayDialog.cpp"
+    },
     "windows_function:0x005bac50": {
       "address": "0x005bac50",
       "kind": "windows_function",
@@ -204936,9 +204969,9 @@
       "references_picture": 909,
       "references_string": 1451,
       "references_text_style": 1784,
-      "resolves_control_tag": 261
+      "resolves_control_tag": 264
     },
-    "edges": 17612,
+    "edges": 17615,
     "mac_classes_without_windows_header": 18,
     "node_kinds": {
       "control_tag": 813,
@@ -204952,9 +204985,9 @@
       "view_node": 3263,
       "windows_event": 94,
       "windows_factory": 17,
-      "windows_function": 106
+      "windows_function": 109
     },
-    "nodes": 11281,
+    "nodes": 11284,
     "unreferenced_resources": {
       "pict": 1998,
       "str_entry": 3616,

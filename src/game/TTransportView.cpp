@@ -57,4 +57,20 @@ void TTransportView::StuffValues(TGreatPower* nation) {
 }
 
 // FUNCTION: IMPERIALISM 0x004bd690
-void TTransportView::Close() {}
+void TTransportView::Close() {
+  TView* transportPanel = ResolveControlByTag(0x7472616e); // 'tran'
+  if (transportPanel == 0) {
+    FailNilPointerWithAssert(s_SourcePathUCityDialogs_006962E8, 0x7a7);
+  }
+
+  for (int resourceType = 0; resourceType < 0x17; ++resourceType) {
+    TNumberText* amount = static_cast<TNumberText*>(
+        transportPanel->ResolveControlByTag(g_pTradeSummarySelectionMap[resourceType]));
+    if (amount == 0) {
+      FailNilPointerWithAssert(s_SourcePathUCityDialogs_006962E8, 0x7ab);
+    }
+    nation60->UpdateNeedTargetAndAccumulateOverCap(
+        static_cast<short>(resourceType),
+        static_cast<short>(amount->UpdateControlCachedIntFromWindowText()));
+  }
+}

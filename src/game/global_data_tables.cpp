@@ -2292,6 +2292,12 @@ int g_mapActionContextDisplayNameCacheStep_006984bc = 7;
 // Empty content: reccmp pairs by the // GLOBAL address marker, not by value. ===
 // GLOBAL: IMPERIALISM 0x00695794
 char s_szSpaceSeparator_00695794[] = " ";
+// Retail garrison-close easter-egg names. The three-byte gap after "Frog" is alignment
+// padding before the adjacent "Snidely" string.
+// GLOBAL: IMPERIALISM 0x00695844
+extern const char g_szGarrisonSecretNationNameFrog[] = "Frog";
+// GLOBAL: IMPERIALISM 0x0069584c
+extern const char g_szGarrisonSecretUnitNameSnidely[] = "Snidely";
 // Newline separator used by TNavyMgr's map-order interaction report builder. The
 // original symbol's eight-byte comparison extent includes two alignment NULs and the
 // first four bytes of the adjacent pooled "TBattleUnits" class-name literal.
