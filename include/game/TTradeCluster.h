@@ -1,7 +1,7 @@
 #include "compat.h"
 #pragma once
 
-#include "game/TUberCluster.h"
+#include "game/TAmtBarCluster.h"
 #include "game/mfc.h"
 
 class TAmtBar;
@@ -9,19 +9,19 @@ class TAmtBar;
 struct CRuntimeClass;
 
 // VTABLE: IMPERIALISM 0x665a70
-class TTradeCluster : public TUberCluster {
+class TTradeCluster : public TAmtBarCluster {
 public:
   short tradeMetricSlot; // 0x88
 
   DECLARE_DYNCREATE(TTradeCluster)
   TTradeCluster();
-  // Destructor is compiler-generated (implicit virtual dtor from TUberCluster).
+  // Destructor is compiler-generated (implicit virtual dtor from TAmtBarCluster).
 
   void DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override;
 
   void DoPostCreate(int styleSeed) override; // 0xdc 0x587130
   virtual int IsTradeControlAtMinimum() override;
-  virtual void ApplyMoveValue(int value);
+  void SetMoveAmount(short amount) override;
   virtual int NotifyControlSelectionChange(void* boundEntry, int arg2 = 0);
   virtual unsigned char IsSelectionAllowed();
   virtual int GetBoolSlot1DC();
