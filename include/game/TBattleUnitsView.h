@@ -1,8 +1,8 @@
 #pragma once
 
 #include "game/TMilitaryPageView.h"
+#include "game/battle_report_records.h"
 
-struct BattleRecord;
 #include "game/mfc.h"
 
 // VTABLE: IMPERIALISM 0x00640940

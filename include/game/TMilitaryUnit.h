@@ -87,6 +87,10 @@ public:
   // -1 when no upgrade applies. 0x5c35c0.
   short ResolveEraCapabilityFallbackSlot();
   bool HasEraCapabilityFallbackSlot();
+  // Returns the candidate unit type and its arms, cash and optional fuel costs.
+  // The optional resource is zero unless the candidate profile uses resource id 0xc.
+  void GetEraCapabilityFallbackCosts(short* candidateSlot, short* armsCost, short* cashCost,
+                                     short* fuelCost);
   // Pays the upgrade's resource/cash costs from the owner nation's stock counters and
   // treasury (fails without changing anything if any cost is unaffordable), then sets
   // the unit's type to the upgraded id. 0x5c3670.

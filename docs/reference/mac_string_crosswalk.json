@@ -11358,6 +11358,38 @@
       ],
       "source_file": "src/game/TArmyStack.cpp"
     },
+    "0x004a8df0": {
+      "references": [
+        {
+          "address": "0x0069430c",
+          "kind": "embedded_global",
+          "symbol": "g_szDecimalFormat",
+          "text": "%d"
+        },
+        {
+          "group": 10054,
+          "index": 1,
+          "kind": "windows_gob",
+          "load_string_id": 22361,
+          "text": "Rename Unit To:"
+        },
+        {
+          "group": 10054,
+          "index": 2,
+          "kind": "windows_gob",
+          "load_string_id": 22362,
+          "text": "Rename Unit"
+        },
+        {
+          "group": 10054,
+          "index": 6,
+          "kind": "windows_gob",
+          "load_string_id": 22366,
+          "text": "Dismiss"
+        }
+      ],
+      "source_file": "src/game/TArmyUnitLine.cpp"
+    },
     "0x004a95b0": {
       "references": [
         {
@@ -11398,6 +11430,31 @@
         }
       ],
       "source_file": "src/game/TArmyUnitView.cpp"
+    },
+    "0x004aa960": {
+      "references": [
+        {
+          "address": "0x0069430c",
+          "kind": "embedded_global",
+          "symbol": "g_szDecimalFormat",
+          "text": "%d"
+        },
+        {
+          "group": 10054,
+          "index": 2,
+          "kind": "windows_gob",
+          "load_string_id": 22362,
+          "text": "Rename Unit"
+        },
+        {
+          "group": 10054,
+          "index": 6,
+          "kind": "windows_gob",
+          "load_string_id": 22366,
+          "text": "Dismiss"
+        }
+      ],
+      "source_file": "src/game/TMiniArmyLine.cpp"
     },
     "0x004ab1d0": {
       "references": [
@@ -190579,7 +190636,7 @@
   "summary": {
     "embedded_globals": 770,
     "formula_matches": 2356,
-    "functions_with_references": 298,
+    "functions_with_references": 300,
     "mac_strings": 3821,
     "mac_strings_with_candidates": 3272,
     "text_resources": 182,

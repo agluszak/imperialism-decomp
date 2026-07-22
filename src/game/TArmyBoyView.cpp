@@ -1,5 +1,6 @@
 #include "game/TArmyBoyView.h"
 
+#include "game/battle_report_records.h"
 #include "game/TQuickDrawSurfaceContext.h"
 #include "game/TSimMgr.h"
 #include "game/global_data_tables.h"
@@ -22,13 +23,12 @@ TArmyBoyView::TArmyBoyView() {}
 // FUNCTION: IMPERIALISM 0x004aebc0
 void TArmyBoyView::Draw(RECT* rectBuffer) {
   (void)rectBuffer; // dead parameter in this override, like the other Draws
-  char* context = static_cast<char*>(field60);
-  short level = *reinterpret_cast<short*>(context + 2);
+  short level = battleDetail60->payload.army.trainingLevel02;
 
   ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 0xc, 0);
   SetQuickDrawColorAndSyncGlobals(0x1c474b);
   SetQuickDrawTextOriginWithContextOffset(0x40, 0x17);
-  CString nameString(context + 4);
+  CString nameString(battleDetail60->payload.army.unitName04);
   DrawTextWithCachedQuickDrawStyleState(&nameString);
   SetQuickDrawFillColor(0);
 
@@ -69,7 +69,7 @@ void TArmyBoyView::Draw(RECT* rectBuffer) {
   DrawCenteredGuideLineOnMapDc(0x93, 0x27);
   DrawCenteredGuideLineOnMapDc(0x93, 0x21);
 
-  short xpPercent = *reinterpret_cast<short*>(context + 0x24);
+  short xpPercent = battleDetail60->payload.army.experiencePercent24;
   short barWidth = xpPercent * 0xb;
   if (xpPercent % 100 > 0x31) {
     barWidth += 5;

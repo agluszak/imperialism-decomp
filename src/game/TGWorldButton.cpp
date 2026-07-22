@@ -3,6 +3,7 @@
 #include "game/global_data_tables.h"
 #include "game/quickdraw_rendering.h"
 #include "game/TQuickDrawSurfaceContext.h"
+#include "game/bitmap_descriptor_helpers.h"
 
 // SYNTHETIC: IMPERIALISM 0x00572080
 // TGWorldButton::CreateObject
@@ -15,6 +16,13 @@ IMPLEMENT_DYNCREATE(TGWorldButton, TControl)
 // FUNCTION: IMPERIALISM 0x00572130
 TGWorldButton::TGWorldButton() {
   field84 = 0;
+}
+
+// FUNCTION: IMPERIALISM 0x005721b0
+void TGWorldButton::InitializeWithBitmapResource(TView* panel, int* offsetLayout, int* sizeLayout,
+                                                 unsigned short bitmapResourceId) {
+  InitializeUiResourceEntryFrameAndParent(0, panel, offsetLayout, sizeLayout, 4, 4, 0);
+  field88 = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(bitmapResourceId);
 }
 
 // SYNTHETIC: IMPERIALISM 0x00572160

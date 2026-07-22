@@ -110,10 +110,7 @@ public:
   // slot 0x65 AssertMcAppUILine1914 inherited unchanged (0x48c7a0)
   // slot 0x66 AssertMcAppUILine1922 inherited unchanged (0x48c7d0)
   // slot 0x67 WindowToLocal inherited unchanged (0x48bac0)
-  // Unrecovered context object read by Draw: +2 veterancy level (short),
-  // +4 unit/nation name (c-string), +0x24 xp percent (short). Raw storage until the
-  // real pointee class is identified.
-  void* field60; // +0x60
+  struct BattleReportDetailRecord* battleDetail60; // +0x60
 
   TArmyBoyView();
 };

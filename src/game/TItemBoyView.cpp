@@ -1,5 +1,6 @@
 #include "game/TItemBoyView.h"
 
+#include "game/battle_report_records.h"
 #include "game/TQuickDrawSurfaceContext.h"
 #include "game/TSimMgr.h"
 #include "game/global_data_tables.h"
@@ -27,13 +28,10 @@ void TItemBoyView::Draw(RECT* rectBuffer) {
   CString kindText;
   CString countText;
 
-  // field60 is re-read fresh at each site here (not cached in a local) -- matches the
-  // original, which re-fetches `this->field60` for every access instead of keeping it
-  // live in a register across these calls.
-  short kindIdx = *reinterpret_cast<short*>(static_cast<char*>(field60));
+  short kindIdx = battleDetail60->payload.item.itemType00;
   g_pSimMgr->GetStringPrelude(kindIdx, &kindText);
 
-  short count = *reinterpret_cast<short*>(static_cast<char*>(field60) + 2);
+  short count = battleDetail60->payload.item.itemCount02;
   countText.Format(g_szDecimalFormat, count);
 
   CString templateText;
@@ -53,17 +51,16 @@ void TItemBoyView::DrawItemHeaderAndIconRows(CString* header) {
   SetQuickDrawTextOriginWithContextOffset(0x1a, 0x14);
   DrawTextWithCachedQuickDrawStyleState(header);
 
-  short* context = reinterpret_cast<short*>(field60);
-  int perRow = (frameWidth34 - 0x3a) / context[1];
+  int perRow = (frameWidth34 - 0x3a) / battleDetail60->payload.item.itemCount02;
   if (perRow > 0x20) {
     perRow = 0x20;
   }
 
   int i = 0;
   int y = 0x3a;
-  if (context[1] > 0) {
+  if (battleDetail60->payload.item.itemCount02 > 0) {
     do {
-      short kindIdx = context[0];
+      short kindIdx = battleDetail60->payload.item.itemType00;
       RECT srcRect = {kindIdx * 0x20, 0, (kindIdx + 1) * 0x20, 0x17};
       RECT dstRect = {y - 0x20, 0x19, y, 0x30};
       UpdatePaletteIndexWithDefaultFallback(0x10);
@@ -77,10 +74,7 @@ void TItemBoyView::DrawItemHeaderAndIconRows(CString* header) {
                                        &dstRect, 0x24, 0);
       ++i;
       y += perRow;
-      // Ground truth re-reads field60 from `this` every iteration rather than caching
-      // the context pointer/count across the (opaque) blit call.
-      context = reinterpret_cast<short*>(field60);
-    } while (i < context[1]);
+    } while (i < battleDetail60->payload.item.itemCount02);
   }
 
   SetQuickDrawStrokeColor(0x13);

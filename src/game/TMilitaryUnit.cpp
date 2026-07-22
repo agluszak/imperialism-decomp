@@ -334,6 +334,19 @@ bool TMilitaryUnit::ApplyEraCapabilityCostAndSetSelection() {
   return true;
 }
 
+// FUNCTION: IMPERIALISM 0x005c3840
+void TMilitaryUnit::GetEraCapabilityFallbackCosts(short* candidateSlot, short* armsCost,
+                                                  short* cashCost, short* fuelCost) {
+  *candidateSlot = ResolveEraCapabilityFallbackSlot();
+  *armsCost = g_aiCityActionCostProfiles[*candidateSlot].primaryMetricMultiplier;
+  *cashCost = g_aiCityActionCostProfiles[*candidateSlot].baseCost;
+  if (g_aiCityActionCostProfiles[*candidateSlot].secondaryMetricCode == 0xc) {
+    *fuelCost = g_aiCityActionCostProfiles[*candidateSlot].secondaryMetricMultiplier;
+  } else {
+    *fuelCost = 0;
+  }
+}
+
 // FUNCTION: IMPERIALISM 0x005c38e0
 TMilitaryUnit* FindMilitaryUnitByIdAcrossTerrainDescriptors(int unitId) {
   if (unitId == 0) {

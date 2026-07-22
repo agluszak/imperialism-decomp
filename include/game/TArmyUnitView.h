@@ -113,9 +113,9 @@ public:
   // slot 0x67 WindowToLocal inherited unchanged (0x48bac0)
   // Offsets read by Draw (+8 int, +0x24 CString, +0x34/+0x38 short)
   // match TMilitaryUnit::field_8/name24/field_34/field_38 exactly.
-  class TMilitaryUnit* field60; // +0x60
+  class TMilitaryUnit* militaryUnit60; // +0x60
 
-  // Non-virtual: runs the rename dialog for field60 in response to the 'name' command.
+  // Non-virtual: runs the rename dialog for militaryUnit60 in response to the 'name' command.
   void HandleCrossUArmyViewsNameCommand();
 
   TArmyUnitView();

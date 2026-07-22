@@ -43,7 +43,7 @@ void TArmyUnitView::Draw(RECT* rectBuffer) {
 
   ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 0xc, 0);
   SetQuickDrawColorAndSyncGlobals(0x1c474b);
-  unitTypeName = field60->name24;
+  unitTypeName = militaryUnit60->name24;
   SetQuickDrawTextOriginWithContextOffset(0x40, 0x10);
   DrawTextWithCachedQuickDrawStyleState(&unitTypeName);
 
@@ -51,7 +51,7 @@ void TArmyUnitView::Draw(RECT* rectBuffer) {
   // special-cased unit-type 0xe, otherwise group 0x272c substituting the unit-type code.
   ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(2, 9, 0);
   SetQuickDrawColorAndSyncGlobals(0x1c474b);
-  int unitTypeCode = field60->field_8;
+  int unitTypeCode = militaryUnit60->field_8;
   if (unitTypeCode == 0xe) {
     g_pSimMgr->GetString(0x2746, 7, &descriptor);
   } else {
@@ -61,7 +61,7 @@ void TArmyUnitView::Draw(RECT* rectBuffer) {
   DrawTextWithCachedQuickDrawStyleState(&descriptor);
   SetQuickDrawFillColor(0);
 
-  short level = field60->field_34;
+  short level = militaryUnit60->field_34;
   short sVar1 = level / 0x19 + 1;
   if (sVar1 > 0x14) {
     sVar1 = 0x14;
@@ -87,7 +87,7 @@ void TArmyUnitView::Draw(RECT* rectBuffer) {
   DrawCenteredGuideLineOnMapDc(0x93, 0x27);
   DrawCenteredGuideLineOnMapDc(0x93, 0x21);
 
-  short xpPercent = field60->field_38;
+  short xpPercent = militaryUnit60->field_38;
   short barWidth = (xpPercent / 100) * 0xb;
   if (xpPercent % 100 > 0x31) {
     barWidth += 5;
@@ -109,17 +109,17 @@ void TArmyUnitView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
     short availableCountDelta = 0;
     if ((GetAsyncKeyState(VK_CONTROL) & 0x8000) != 0) {
       // Ctrl held: force the unit into escort-order mode (0xe) unless already there.
-      if (field60->field_8 != 0xe) {
-        if (field60->field_8 == 0) {
+      if (militaryUnit60->field_8 != 0xe) {
+        if (militaryUnit60->field_8 == 0) {
           availableCountDelta = -1;
         }
-        field60->SetOrderModeSlot34(0xe, -1);
+        militaryUnit60->SetOrderModeSlot34(0xe, -1);
       }
-    } else if (field60->field_8 != 0) {
-      field60->SetOrderModeSlot34(0, -1);
+    } else if (militaryUnit60->field_8 != 0) {
+      militaryUnit60->SetOrderModeSlot34(0, -1);
       availableCountDelta = 1;
     } else {
-      field60->SetOrderModeSlot34(3, -1);
+      militaryUnit60->SetOrderModeSlot34(3, -1);
       availableCountDelta = -1;
     }
 
@@ -130,14 +130,14 @@ void TArmyUnitView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
     TView* activeToolbar = mapPicture->categoryPages[mapPicture->activeUnitCategoryIndex96];
     if (activeToolbar != nullptr) {
       unsigned int arrowTag =
-          kTagArmyRatioMin + g_awTacticalUnitCategoryCodeBySlot[field60->orderType];
+          kTagArmyRatioMin + g_awTacticalUnitCategoryCodeBySlot[militaryUnit60->orderType];
       TNumberedArrowButton* arrow =
           static_cast<TNumberedArrowButton*>(activeToolbar->ResolveControlByTag(arrowTag));
       arrow->SetValue(static_cast<short>(arrow->value84 + availableCountDelta), 1);
       g_pUiRuntimeContext->RefreshMainViewNationIndicatorForCurrentTurnEvent();
     }
   } else if (sourceHandler->controlTag == kControlTagUpgr) {
-    if (field60->ApplyEraCapabilityCostAndSetSelection()) {
+    if (militaryUnit60->ApplyEraCapabilityCostAndSetSelection()) {
       TView* sourceView = static_cast<TView*>(sourceHandler);
       sourceView->SetEnabled(0, 1);
       SetControlHoverHelpTextAltEntry(CString(g_pMiniCivSharedText_0064cb18), sourceView);
@@ -146,7 +146,7 @@ void TArmyUnitView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
           static_cast<TArmyCheckBox*>(ResolveControlByTag(kControlTagChec));
       checkControl->AssertValid();
       checkControl->iconStripHorizontalOffset88 =
-          (checkControl->checkedFrameOffsetApplied8c + field60->orderType * 2) << 6;
+          (checkControl->checkedFrameOffsetApplied8c + militaryUnit60->orderType * 2) << 6;
       checkControl->RefreshControl();
 
       TStaticText* tbr1 = static_cast<TStaticText*>(
@@ -167,9 +167,8 @@ void TArmyUnitView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
 // TArmyUnitView-only despite the generic Ghidra symbol name (0x4a9ca0) -- confirmed by the
 // caller: TShipView::DoEvent's 'name' branch actually calls a different function
 // (RunEngineerOrderNameEditDialogAndApply, 0x565a40), not this one, so there is no
-// cross-class field60 ambiguity to resolve here. Runs the unit-rename dialog: seeds an edit
-// box with field60's current name, runs it modally, and (unless cancelled) commits the
-// typed text back into field60->name24.
+// Runs the unit-rename dialog: seeds an edit box with militaryUnit60's current name, runs
+// it modally, and (unless cancelled) commits the typed text back to the represented unit.
 // FUNCTION: IMPERIALISM 0x004a9ca0
 void TArmyUnitView::HandleCrossUArmyViewsNameCommand() {
   TWindow* node =
@@ -191,7 +190,7 @@ void TArmyUnitView::HandleCrossUArmyViewsNameCommand() {
   nameControl->AssertValid();
   nameControl->maxCharacterCount = 0x18;
   CString editedName;
-  editedName = field60->name24;
+  editedName = militaryUnit60->name24;
   nameControl->InitDialogWindowAndSyncTitleIfChanged(&editedName, 1);
   nameControl->textStyle78 = style;
 
@@ -203,7 +202,7 @@ void TArmyUnitView::HandleCrossUArmyViewsNameCommand() {
   int modalResult = node->PoseModally();
   nameControl->GetCurrentText(&editedName);
   if (modalResult != 0x636e636c /* 'cncl' */) {
-    field60->name24 = editedName;
+    militaryUnit60->name24 = editedName;
   }
   RefreshControl();
 }

@@ -124,7 +124,7 @@ public:
   // slot 0x70 HiliteState inherited unchanged (0x48e810)
   virtual undefined OrphanRetStub_004aad20(); // slot 0x71 0x4aad20
   // The displayed unit: name24 (CString) and tileIndex06 read by Draw/DoEvent.
-  TMilitaryUnit* field84; // +0x84
+  TMilitaryUnit* militaryUnit84; // +0x84
 
   TMiniArmyView();
 };

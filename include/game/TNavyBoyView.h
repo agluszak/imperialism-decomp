@@ -113,10 +113,5 @@ public:
 
   TNavyBoyView();
 
-  // Unrecovered context object read by Draw: +0 ship "kind" id (short,
-  // indexes both a 14-slot localized class-name table and
-  // GetResourceDescriptorWord14ByType's per-kind level divisor), +2 veterancy level
-  // (short), +4 ship/unit name (raw c-string). Raw storage until the real pointee
-  // class is identified (same pattern as TArmyBoyView::field60).
-  void* field60; // +0x60
+  struct BattleReportDetailRecord* battleDetail60; // +0x60
 };
