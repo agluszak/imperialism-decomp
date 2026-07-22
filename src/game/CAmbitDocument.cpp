@@ -60,16 +60,16 @@ BOOL CAmbitDocument::OnNewDocument() {
 }
 
 // Drives the T-tree document adapter (fileBasedDocument50) through an ArchiveStreamAdapter:
-// storing branch calls the adapter's store slot (0x28), loading branch the load slot (0x2c);
+// loading calls DoRead (slot 0x28), storing calls DoWrite (slot 0x2c);
 // the adapter is then freed and the doc's modified flag re-armed, under a wait cursor.
 // FUNCTION: IMPERIALISM 0x004797d0
 void CAmbitDocument::Serialize(CArchive& ar) {
   CWaitCursor wait;
   ArchiveStreamAdapter* adapter = new ArchiveStreamAdapter(&ar);
   if (ar.IsStoring()) {
-    fileBasedDocument50->OrphanRetStub_00486530(adapter, 0);
+    fileBasedDocument50->DoWrite(adapter, 0);
   } else {
-    fileBasedDocument50->OrphanRetStub_00486550(adapter, 0);
+    fileBasedDocument50->DoRead(adapter, 0);
   }
   adapter->Free();
   SetModifiedFlag(TRUE);

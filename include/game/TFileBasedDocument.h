@@ -16,9 +16,7 @@ public:
   // slot 0x07 Free inherited unchanged (0x4798b0)
   // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
-  // slot 0x0a OrphanRetStub_00486530 inherited unchanged (0x486530)
-  // slot 0x0b OrphanRetStub_00486550 inherited unchanged (0x486550)
+  // slots 0x0a/0x0b DoRead/DoWrite inherited unchanged (0x486530/0x486550)
 
   TFileBasedDocument();
 };
-
