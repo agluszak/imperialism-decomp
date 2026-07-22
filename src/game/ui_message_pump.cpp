@@ -6,25 +6,21 @@
 int __stdcall PumpUiMessagesAndBackgroundTasks(int nTaskPumpMode) {
   (void)nTaskPumpMode;
   MSG msg;
-  bool continueIdle = true;
+  int continueIdle = 1;
   LONG idleCount = 0;
   do {
     if (PeekMessageA(&msg, nullptr, 0, 0, PM_NOREMOVE) != 0) {
       break;
     }
-    CWinThread* thread = AfxGetThread();
-    if (thread == nullptr || !thread->OnIdle(idleCount)) {
-      continueIdle = false;
+    LONG currentIdleCount = idleCount;
+    ++idleCount;
+    if (AfxGetApp()->OnIdle(currentIdleCount) == 0) {
+      continueIdle = 0;
     }
-    idleCount = idleCount + 1;
   } while (continueIdle);
 
-  CWinThread* thread = AfxGetThread();
-  if (thread == nullptr) {
-    return 0;
-  }
-  if (thread->IsIdleMessage(&msg)) {
+  if (AfxGetApp()->IsIdleMessage(&msg) != 0) {
     return 1;
   }
-  return static_cast<int>(thread->PumpMessage());
+  return static_cast<int>(AfxGetApp()->PumpMessage());
 }

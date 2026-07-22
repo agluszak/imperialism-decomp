@@ -516,7 +516,7 @@ TQuickDrawSurfaceContext g_defaultQuickDrawSurfaceSentinel;
 // Statically initialized to the sentinel address (the dword at 0x006950f8 holds
 // 0x006a1ca0 in the original), not null — the restore path in
 // BuildStrategicMapCommodityIconAtlasFrom700To722 captures this before the first
-// SetActiveQuickDrawSurfaceContext and would otherwise restore a null context.
+// SetGWorld and would otherwise restore a null context.
 // GLOBAL: IMPERIALISM 0x006950f8
 TQuickDrawSurfaceContext* g_pActiveQuickDrawSurfaceContextHead = &g_defaultQuickDrawSurfaceSentinel;
 // Zero in the raw .data image; the CRT static-init ctor 0x494040

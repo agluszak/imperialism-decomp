@@ -585,7 +585,7 @@ void TSimMgr::RebuildNationStateSlotsAndAvailability(int activate) {
 
   if (g_bMultiplayerScenarioSetupActive == 0) {
     g_pDiplomacyTurnStateManager->RebuildCivilianOrderCompatibilityMatrices();
-    g_pUiRuntimeContext->InvokeStrategicMapViewMethod74();
+    g_pUiRuntimeContext->RebuildMapTileNeighborHighlightPolygonsForAllTiles();
     g_pCityOrderCapabilityState->GenerateRandomCapabilityPrioritySlots();
     g_pGlobalMapState->RefreshMapContextRotatingStatusStrings();
     RegenerateAllMapActionContextStatusCodes();
@@ -951,7 +951,7 @@ void TSimMgr::DoMilitary() {
 
 // FUNCTION: IMPERIALISM 0x0057f3c0
 void TSimMgr::DoTrade() {
-  g_pUiRuntimeContext->DispatchTurnEventSlot4C(0x2134, activeNationSlot);
+  g_pUiRuntimeContext->DispatchTurnEvent(0x2134, activeNationSlot);
 
   for (int nationSlot = 6; nationSlot >= 0; --nationSlot) {
     if (g_apNationStates[nationSlot] != 0) {

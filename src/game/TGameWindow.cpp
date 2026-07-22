@@ -53,7 +53,7 @@ static void DispatchUiRuntimeAbilityUnlockSlot88Gate(int abilityIndex) {
   if (g_pUiRuntimeContext == nullptr) {
     return;
   }
-  g_pUiRuntimeContext->UiRuntimeSlot88(abilityIndex);
+  g_pUiRuntimeContext->ShowAbilityStatusReport(abilityIndex);
 }
 
 static void PlayClickSfx7000() {

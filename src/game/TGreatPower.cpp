@@ -948,7 +948,7 @@ char TGreatPower::HasTrackedOrderOfType7(void) {
 
 // FUNCTION: IMPERIALISM 0x004daf00
 void TGreatPower::HandleNationLost(void) {
-  g_pUiRuntimeContext->DispatchTurnEventSlot4C(0x11f8, 0);
+  g_pUiRuntimeContext->DispatchTurnEvent(0x11f8, 0);
 }
 
 // FUNCTION: IMPERIALISM 0x004daf30
@@ -2250,7 +2250,7 @@ char TGreatPower::TryDispatchNationActionViaUiContextOrFallback(int arg1, int ar
                                                                 int arg4) {
   if (this->IsDiplomacyState1C6UnsetAndCounterPositiveForTarget(static_cast<short>(arg4)) != 0) {
     TViewMgr* uiRuntimeContext = g_pUiRuntimeContext;
-    uiRuntimeContext->DispatchDecisionSlot98(this->nationSlot, arg1, arg2, arg3, arg4);
+    uiRuntimeContext->DispatchNationActionToMainControl(this->nationSlot, arg1, arg2, arg3, arg4);
     return 1;
   }
 
@@ -3150,7 +3150,7 @@ void TGreatPower::DispatchTurnEvent2103WithNationFromRecord(void) {
     return;
   }
 
-  uiRuntimeContext->DispatchTurnEventSlot4C(0x2103, this->nationSlot);
+  uiRuntimeContext->DispatchTurnEvent(0x2103, this->nationSlot);
 }
 
 // FUNCTION: IMPERIALISM 0x004df5f0
@@ -3184,12 +3184,12 @@ void TGreatPower::ProcessPendingDiplomacyProposalQueue(void) {
               4) {
             shouldApplyProposal = 0;
           } else {
-            shouldApplyProposal = uiRuntimeContext->RequestDiplomacyDecisionSlot90(
+            shouldApplyProposal = uiRuntimeContext->PoseDiplomacyOffer(
                 this->nationSlot, targetNation, kProposalTradeEmbargo);
           }
         } else {
-          shouldApplyProposal = uiRuntimeContext->RequestDiplomacyDecisionSlot90(
-              this->nationSlot, targetNation, proposalCode);
+          shouldApplyProposal =
+              uiRuntimeContext->PoseDiplomacyOffer(this->nationSlot, targetNation, proposalCode);
         }
 
         if (shouldApplyProposal == 0) {
@@ -3950,13 +3950,13 @@ int TGreatPower::CheckTransitionSlot27C(int arg1, int arg2) {
   result = g_pDiplomacyTurnStateManager->HasPolicyWithNationSlot44(this->nationSlot, arg2);
 
   if (result == 0) {
-    result = uiRuntimeContext->RequestDecisionSlot94(this->nationSlot, arg1, arg2, 0x0A);
+    result = uiRuntimeContext->PoseWarOfferIfTurnFlowReady(this->nationSlot, arg1, arg2, 0x0A);
     if (result != 0) {
       this->ApplyDiplomacyRelationCodeAndNotifyThirdPartySlot284(arg2, 1, arg1);
       return true;
     }
   } else {
-    result = uiRuntimeContext->RequestDecisionSlot94(this->nationSlot, arg1, arg2, 0x0B);
+    result = uiRuntimeContext->PoseWarOfferIfTurnFlowReady(this->nationSlot, arg1, arg2, 0x0B);
     if (result != 0) {
       TMinor* secondaryNationState = g_apSecondaryNationStateSlots[arg1];
       if (secondaryNationState != 0) {

@@ -174,10 +174,10 @@ void TTransFocusAnimation::DrawNextFrame(POINT* offset) {
 
   TQuickDrawSurfaceContext* activeContext;
   int activeFlags;
-  GetActiveQuickDrawSurfaceContextAndFlags(&activeContext, &activeFlags);
-  SetActiveQuickDrawSurfaceContext(g_pPrimaryRenderSurfaceContext, activeFlags);
+  GetGWorld(&activeContext, &activeFlags);
+  SetGWorld(g_pPrimaryRenderSurfaceContext, activeFlags);
   ClipAndPaste();
-  SetActiveQuickDrawSurfaceContext(activeContext, activeFlags);
+  SetGWorld(activeContext, activeFlags);
 }
 
 // SYNTHETIC: IMPERIALISM 0x004a0480

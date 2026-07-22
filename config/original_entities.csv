@@ -76,7 +76,6 @@ address|name|symbol|size|type|prototype|provenance
 415df0|WrapperFor_ftol_At00415df0||30|function|undefined WrapperFor_ftol_At00415df0()|
 415e20|InitializeUiResourcePoolStateAndRegisterAtExit||24|function|undefined InitializeUiResourcePoolStateAndRegisterAtExit()|
 415e50|DestroyUiResourcePoolStateAtExit||5|function|undefined DestroyUiResourcePoolStateAtExit()|
-415e55|TRuntimeLinkedBlockChainState_0063E880::thunk_DestructLinkedBlockChainState_0063E880_AndFreeChain_At00415e70|||global||
 415e70|CList<TView *,TView *>::~CList|??1?$CList@PAVTView@@PAV1@@@UAE@XZ|101|function|undefined ~CList()|template
 415f00|CObject::`scalar deleting destructor'||32|function|undefined ScalarDeletingDestructor()|
 415f50|InitializeUiResourcePoolRuntimeClassFields||33|function|undefined InitializeUiResourcePoolRuntimeClassFields()|
@@ -313,7 +312,7 @@ address|name|symbol|size|type|prototype|provenance
 47a8a0|Helper_Uses_BuildPaletteFromRgbQuadBuffer_At0047a8a0||209|function|undefined Helper_Uses_BuildPaletteFromRgbQuadBuffer_At0047a8a0()|
 47aa00|SelectAndRealizeDibPalette||79|function|undefined SelectAndRealizeDibPalette()|
 47aa70|StretchDibitsFromStoredBitmapToHdcSimple||80|function|undefined StretchDibitsFromStoredBitmapToHdcSimple()|
-47aae0|BlitDibBitsWithStretchDIBits||82|function|undefined BlitDibBitsWithStretchDIBits()|
+47aae0|CDib::StretchDibitsRectAtNaturalSize||82|function|BOOL StretchDibitsRectAtNaturalSize(int srcX, int srcY, CDC * dc, int destX, int destY, int width, int height)|
 47ab60|CDib::StretchDibitsFromStoredBitmapToHdc||81|function|int __thiscall StretchDibitsFromStoredBitmapToHdc(CDC * dc, tagPOINT * topLeft)|
 47abe0|CDib::StretchDibitsRectToDc||76|function|undefined StretchDibitsRectToDc()|
 47ac50|StretchDibitsWithCopiedPaletteTable||368|function|undefined StretchDibitsWithCopiedPaletteTable()|
@@ -323,10 +322,6 @@ address|name|symbol|size|type|prototype|provenance
 47b0c0|CopyRgbQuadTableToBitmapSurfacePalette||65|function|undefined CopyRgbQuadTableToBitmapSurfacePalette()|
 47b130|OrphanDeadLeaf_NoRefs_0047b130||82|function|undefined OrphanDeadLeaf_NoRefs_0047b130()|
 47b280|CreateDibBitmapFromStoredInfo||50|function|undefined CreateDibBitmapFromStoredInfo()|
-47b53b|thunk_WrapperFor_BuildPaletteFromRgbQuadBuffer_At0047b55d_At0047b53b||9|function|undefined thunk_WrapperFor_BuildPaletteFromRgbQuadBuffer_At0047b55d_At0047b53b()|
-47b544|thunk_WrapperFor_BuildPaletteFromRgbQuadBuffer_At0047b55d_At0047b544||9|function|undefined thunk_WrapperFor_BuildPaletteFromRgbQuadBuffer_At0047b55d_At0047b544()|
-47b54d|thunk_WrapperFor_BuildPaletteFromRgbQuadBuffer_At0047b55d_At0047b54d||9|function|undefined thunk_WrapperFor_BuildPaletteFromRgbQuadBuffer_At0047b55d_At0047b54d()|
-47b55d|WrapperFor_BuildPaletteFromRgbQuadBuffer_At0047b55d||93|function|undefined WrapperFor_BuildPaletteFromRgbQuadBuffer_At0047b55d()|
 47b6d0|ReadBitmapStreamIntoSurfaceState||517|function|undefined ReadBitmapStreamIntoSurfaceState()|
 47b9f0|WriteBmpHeaderAndDataOffsetToStreamWithSehGuard||160|function|undefined WriteBmpHeaderAndDataOffsetToStreamWithSehGuard()|
 47bb10|ReadBitmapStreamStateAndWriteBmpHeaderThunk||56|function|undefined ReadBitmapStreamStateAndWriteBmpHeaderThunk()|
@@ -337,7 +332,7 @@ address|name|symbol|size|type|prototype|provenance
 47c080|CDib::LoadBitmapResourceAndInitializeSurfaceState||224|function|int LoadBitmapResourceAndInitializeSurfaceState(LPCSTR resourceName, HMODULE module)|
 47c1f0|CDib::BuildMonochromeOutlineMaskInPlace||384|function|int BuildMonochromeOutlineMaskInPlace()|
 47c3d0|CDib::BuildNonTransparentOutlinePolygon||898|function|int * __thiscall Sprite__CollectNonTransparentPixels(uint this_ptr)|
-47c980|RebuildSurfaceRowsWithTemporaryRowBuffer||203|function|undefined RebuildSurfaceRowsWithTemporaryRowBuffer()|
+47c980|CDib::FlipScanlineOrder||203|function|void FlipScanlineOrder()|
 47cac0|WrapperFor_DeleteRegionHandleFromClipState_At0047cac0||70|function|undefined WrapperFor_DeleteRegionHandleFromClipState_At0047cac0()|
 47cb60|WrapperFor_DeleteRegionHandleFromClipState_At0047cb60||70|function|undefined WrapperFor_DeleteRegionHandleFromClipState_At0047cb60()|
 47cca0|ResetAndOpenCdAudioDeviceHandle||25|function|undefined ResetAndOpenCdAudioDeviceHandle()|
@@ -367,7 +362,7 @@ address|name|symbol|size|type|prototype|provenance
 47d4b0|TDCTemplateDialog::`scalar deleting destructor'|??_GTDCTemplateDialog@@UAEPAXI@Z|30|function|undefined ScalarDeletingDestructor()|
 47d4e0|WrapperFor_DDX_Text_At0047d4e0||42|function|undefined WrapperFor_DDX_Text_At0047d4e0()|
 47d520|TDCTemplateDialog::GetMessageMap|?GetMessageMap@TDCTemplateDialog@@MBEPBUAFX_MSGMAP@@XZ|6|function|undefined GetMessageMap()|
-47d540|InitializeDialogTemplateDDPictureState||65|function|undefined InitializeDialogTemplateDDPictureState()|
+47d540|TDDTemplateDialog::TDDTemplateDialog||65|function|TDDTemplateDialog(void * initParam)|
 47d5b0|OrphanRetStub_0047d5b0||3|function|undefined OrphanRetStub_0047d5b0()|
 47d5d0|TDDTemplateDialog::GetMessageMap|?GetMessageMap@TDDTemplateDialog@@MBEPBUAFX_MSGMAP@@XZ|6|function|undefined GetMessageMap()|
 47d5f0|RenderMapTileDibSurfaceWithClipRegionAndGdiPrimitives||699|function|undefined RenderMapTileDibSurfaceWithClipRegionAndGdiPrimitives()|
@@ -384,7 +379,7 @@ address|name|symbol|size|type|prototype|provenance
 47dd60|Helper_Uses_DDX_Text_618c5f_At0047dd60||103|function|undefined Helper_Uses_DDX_Text_618c5f_At0047dd60()|
 47ddf0|TDFTemplateDialog::GetMessageMap|?GetMessageMap@TDFTemplateDialog@@MBEPBUAFX_MSGMAP@@XZ|6|function|undefined GetMessageMap()|
 47de10|OrphanCallChain_C2_I09_0047de10||24|function|undefined OrphanCallChain_C2_I09_0047de10()|
-47de40|TControl::InitializeDialogTemplateFAWithTextState||109|function|undefined InitializeDialogTemplateFAWithTextState()|
+47de40|TFATemplateDialog::TFATemplateDialog||109|function|TFATemplateDialog(void * initParam)|
 47ded0|TFATemplateDialog::`scalar deleting destructor'|??_GTFATemplateDialog@@UAEPAXI@Z|30|function|undefined ScalarDeletingDestructor()|
 47df00|WrapperFor_FreeHeapBufferIfNotNull_At0047ded0_Impl||104|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At0047ded0_Impl()|
 47df90|OrphanRetStub_0047df90||3|function|undefined OrphanRetStub_0047df90()|
@@ -400,14 +395,14 @@ address|name|symbol|size|type|prototype|provenance
 47e440|CDibPal::BuildPaletteFromBitmapColorTable||199|function|int BuildPaletteFromBitmapColorTable(CDib * dib)|
 47e590|DrawPalettePreviewGridRectanglesToViewDc||406|function|undefined DrawPalettePreviewGridRectanglesToViewDc()|
 47e930|CDibPal::SelectIntoDcAndRealize||32|function|undefined SelectIntoDcAndRealize()|
-47e960|OpenPaletteFileDialogAndLoadPaletteFromMmio||519|function|undefined OpenPaletteFileDialogAndLoadPaletteFromMmio()|
+47e960|CDibPal::LoadPaletteFile||519|function|int LoadPaletteFile(LPCSTR fileName)|
 47ec00|WrapperFor_FreeHeapBufferIfNotNull_At005ff5c5_Impl||74|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At005ff5c5_Impl()|
-47ec70|Helper_Uses_thunk_Cluster_MapTileHint_0047ed70_At0047ec70||95|function|undefined Helper_Uses_thunk_Cluster_MapTileHint_0047ed70_At0047ec70()|
-47ecf0|Helper_Uses_thunk_Cluster_MapTileHint_0047ed70_At0047ecf0||92|function|undefined Helper_Uses_thunk_Cluster_MapTileHint_0047ed70_At0047ecf0()|
-47ed70|LoadPaletteChunkFromMmioAndRegisterPaletteHandle||237|function|undefined LoadPaletteChunkFromMmioAndRegisterPaletteHandle()|
-47eea0|Helper_Uses_thunk_WritePaletteChunkToMmioFromPaletteHandle_At0047eea0||95|function|undefined Helper_Uses_thunk_WritePaletteChunkToMmioFromPaletteHandle_At0047eea0()|
-47ef20|Helper_Uses_thunk_WritePaletteChunkToMmioFromPaletteHandle_At0047ef20||92|function|undefined Helper_Uses_thunk_WritePaletteChunkToMmioFromPaletteHandle_At0047ef20()|
-47efa0|WritePaletteChunkToMmioFromPaletteHandle||267|function|undefined WritePaletteChunkToMmioFromPaletteHandle()|
+47ec70|CDibPal::LoadPalette_CFile||95|function|int LoadPalette(CFile * file)|
+47ecf0|CDibPal::LoadPalette_FileHandle||92|function|int LoadPalette(UINT fileHandle)|
+47ed70|CDibPal::LoadPalette_Mmio||237|function|int LoadPalette(HMMIO mmioHandle)|
+47eea0|CDibPal::SavePalette_CFile||95|function|int SavePalette(CFile * file)|
+47ef20|CDibPal::SavePalette_FileHandle||92|function|int SavePalette(UINT fileHandle)|
+47efa0|CDibPal::SavePalette_Mmio||267|function|int SavePalette(HMMIO mmioHandle)|
 47f250|WrapperFor_ftol_At0047f250||30|function|undefined WrapperFor_ftol_At0047f250()|
 47f2b0|OrphanRetStub_0047f2b0||3|function|undefined OrphanRetStub_0047f2b0()|
 47f320|OrphanRetStub_0047f320||3|function|undefined OrphanRetStub_0047f320()|
@@ -415,12 +410,12 @@ address|name|symbol|size|type|prototype|provenance
 47f3e0|AssertDiplomacyDialogsLine61||27|function|undefined AssertDiplomacyDialogsLine61()|
 47f410|OrphanRetStub_0047f410||3|function|undefined OrphanRetStub_0047f410()|
 47f430|OrphanVtableAssignStub_0047f430||6|function|undefined OrphanVtableAssignStub_0047f430()|
-47f450|TControl::InitializeDialogTemplateADWithTextState||109|function|undefined InitializeDialogTemplateADWithTextState()|
+47f450|TADTemplateDialog::TADTemplateDialog||109|function|TADTemplateDialog(void * initParam)|
 47f4e0|TADTemplateDialog::`scalar deleting destructor'|??_GTADTemplateDialog@@UAEPAXI@Z|30|function|undefined ScalarDeletingDestructor()|
 47f510|WrapperFor_FreeHeapBufferIfNotNull_At0047f4e0_Impl||104|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At0047f4e0_Impl()|
 47f5d0|WrapperFor_EnsureWindowSubclassAndParentConsistency_At0047f5d0||22|function|undefined WrapperFor_EnsureWindowSubclassAndParentConsistency_At0047f5d0()|
 47f600|TADTemplateDialog::GetMessageMap|?GetMessageMap@TADTemplateDialog@@MBEPBUAFX_MSGMAP@@XZ|6|function|undefined GetMessageMap()|
-47f620|WrapperFor_UpdateCursorHelperWindowVisibilityFromControllerState_At0047f620||11|function|undefined WrapperFor_UpdateCursorHelperWindowVisibilityFromControllerState_At0047f620()|
+47f620|TADTemplateDialog::OnInitDialog||11|function|BOOL OnInitDialog()|
 47f710|InitializeRuntimeSelectionRecordArrayStateAndRegisterAtExit||24|function|undefined InitializeRuntimeSelectionRecordArrayStateAndRegisterAtExit()|
 47f740|DestroyRuntimeSelectionRecordArrayStateAtExit||5|function|undefined DestroyRuntimeSelectionRecordArrayStateAtExit()|
 47f7f0|ReleaseSharedStringRefOnly_0047f7f0||8|function|undefined ReleaseSharedStringRefOnly_0047f7f0()|
@@ -903,7 +898,7 @@ address|name|symbol|size|type|prototype|provenance
 48bc30|TView::AddControlPosToPoint||30|function|void __thiscall AddControlPosToPoint(int x, int y, CPoint* outPoint)|listing
 48bc60|TView::OffsetRectByCachedPos||92|function|void __thiscall OffsetRectByCachedPos(CRect* inRect, CRect* outRect)|listing
 48bce0|TView::GetQDExtent||56|function|CRect* __thiscall GetQDExtent(CRect* rectOut)|listing
-48bd30|TCityDialogModalState_00649A50::CopyCityDialogStateFromSourceAndCloneChildLinks||350|function|undefined CopyCityDialogStateFromSourceAndCloneChildLinks()|
+48bd30|TView::TView|??0TView@@QAE@ABV0@@Z|350|function|TView * __thiscall TView(TView const & source)|windows_copy_ctor_listing
 48bef0|TView::CopyCityDialogStateFromSource||173|function|void __thiscall CopyCityDialogStateFromSource(TView * pSource)|
 48bfd0|TView::CloneEngineerDialogStateToNewInstance||24|function|undefined CloneEngineerDialogStateToNewInstance()|
 48c000|TView::EvaluateControlInputGate_b7||51|function|undefined EvaluateControlInputGate()|
@@ -1200,15 +1195,15 @@ address|name|symbol|size|type|prototype|provenance
 495b70|TBitmapResourceLoader::EnsureBitmapResourceLoadedAndCopyRectSize||111|function|void EnsureBitmapResourceLoadedAndCopyRectSize()|
 495c00|TBitmapResourceLoader::ReleaseBitmapResource||35|function|void ReleaseBitmapResource(void)|
 495c40|BlitBitmapResourceLoaderToActiveDc||93|function|void BlitBitmapResourceLoaderToActiveDc(TBitmapResourceLoader **handle, RECT *bounds)|
-495d00|InitializeBitmapSurfaceFromResourceDescriptor||212|function|undefined InitializeBitmapSurfaceFromResourceDescriptor()|
-495e20|TBitmapSurfaceContextDescriptor::Reset||103|function|void Reset()|
+495d00|TBitmapSurfaceNode::TBitmapSurfaceNode|??0TBitmapSurfaceNode@@QAE@HHH@Z|212|function|TBitmapSurfaceNode * __thiscall TBitmapSurfaceNode(int width, int height, int bitDepth)|windows_ctor_listing
+495e20|TBitmapSurfaceContextDescriptor::TBitmapSurfaceContextDescriptor|??0TBitmapSurfaceContextDescriptor@@QAE@XZ|103|function|TBitmapSurfaceContextDescriptor * __thiscall TBitmapSurfaceContextDescriptor(void)|windows_ctor_listing
 495eb0|TBitmapSurfaceContextDescriptor::InitializeSurfaceNode||220|function|bool InitializeSurfaceNode(int width, int height, int bitDepth)|
 495fd0|TBitmapSurfaceContextDescriptor::ReleaseSurfaceNode||134|function|void ReleaseSurfaceNode()|
-496090|SetActiveQuickDrawSurfaceContext_Impl||146|function|undefined SetActiveQuickDrawSurfaceContext_Impl()|
-4961b0|SetActiveQuickDrawSurfaceContext||138|function|undefined SetActiveQuickDrawSurfaceContext()|
-496270|GetActiveQuickDrawSurfaceContextAndFlags||24|function|undefined GetActiveQuickDrawSurfaceContextAndFlags()|
-4962a0|GetSurfaceNodeSlot||8|function|void* GetSurfaceNodeSlot(TQuickDrawSurfaceContext* context)|
-4962c0|InitializeBitmapDescriptorRecordAndLoadSurfaceNode||264|function|undefined InitializeBitmapDescriptorRecordAndLoadSurfaceNode()|
+496090|BindGWorldSurfaceToMemoryDC||146|function|void __cdecl BindGWorldSurfaceToMemoryDC(CDib * dibSurface, HDC referenceDc)|windows_listing
+4961b0|SetGWorld||138|function|void __cdecl SetGWorld(TQuickDrawSurfaceContext * context, int flags)|quickdraw_toolbox_identity
+496270|GetGWorld||24|function|void __cdecl GetGWorld(TQuickDrawSurfaceContext ** outContext, int * outFlags)|quickdraw_toolbox_identity
+4962a0|GetGWorldPixMap||8|function|TBitmapSurfaceNode ** __cdecl GetGWorldPixMap(TQuickDrawSurfaceContext * context)|quickdraw_toolbox_identity
+4962c0|NewGWorld||264|function|short __cdecl NewGWorld(TQuickDrawSurfaceContext ** outContext, short bitDepth, RECT const * bounds, int unusedHint, int unusedArg4, int unusedArg5)|quickdraw_toolbox_identity
 496420|WrapperFor_FreeHeapBufferIfNotNull_At00496420||27|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At00496420()|
 496450|OrphanCallChain_C42_I283_00496450||719|function|undefined OrphanCallChain_C42_I283_00496450()|
 4967e0|OrphanCallChain_C42_I285_004967e0||729|function|undefined OrphanCallChain_C42_I285_004967e0()|
@@ -1216,9 +1211,9 @@ address|name|symbol|size|type|prototype|provenance
 496d40|BlitRectWithOptionalTransparency||1000|function|void __cdecl BlitRectWithOptionalTransparency(TQuickDrawBlitSurface * srcSurface, TQuickDrawBlitSurface * dstSurface, RECT * srcRect, RECT * dstRect, byte blitFlags, RgnHandle clipRegion)|
 497230|InitializeGlobalRectDefaultsIfUninitialized||70|function|undefined InitializeGlobalRectDefaultsIfUninitialized()|
 4972a0|InitializeTurnOrderNavigationDialogByViewportSize_Impl||3|function|undefined InitializeTurnOrderNavigationDialogByViewportSize_Impl()|
-4972c0|ReturnConstantTrueQuickDrawFlag||3|function|undefined ReturnConstantTrueQuickDrawFlag()|
-4972e0|NoOpQuickDrawLifecycleHookB||1|function|undefined NoOpQuickDrawLifecycleHookB()|
-497300|GetSurfaceNodePixelBits||9|function|void* GetSurfaceNodePixelBits(void* surfaceObject)|
+4972c0|LockPixels||3|function|unsigned char __cdecl LockPixels(TBitmapSurfaceNode ** pixMap)|quickdraw_toolbox_identity
+4972e0|UnlockPixels||1|function|void __cdecl UnlockPixels(TBitmapSurfaceNode ** pixMap)|quickdraw_toolbox_identity
+497300|GetPixBaseAddr||9|function|unsigned char * __cdecl GetPixBaseAddr(TBitmapSurfaceNode ** pixMap)|quickdraw_toolbox_identity
 497320|CTemporaryRegion::CTemporaryRegion||80|function|undefined AcquireReusableQuickDrawSurface()|
 497390|CTemporaryRegion::~CTemporaryRegion||76|function|undefined ReleaseOrCacheQuickDrawSurface()|
 4974f0|ReleaseGlobalClipRegionHandleListAndReset_006a1c98||56|function|undefined ReleaseGlobalClipRegionHandleListAndReset_006a1c98()|
@@ -1972,7 +1967,7 @@ address|name|symbol|size|type|prototype|provenance
 4be8b0|DestroyTCityInteriorMinister_Impl||7|function|undefined DestroyTCityInteriorMinister_Impl()|
 4be8d0|InitializeCityInteriorMinister||654|function|undefined InitializeCityInteriorMinister()|
 4bec10|TLongintList::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
-4bec40|TLinkedBlockChainState_00650A50::DestructLinkedBlockChainState_00650A50_AndFreeChain_At004bec40||101|function|undefined DestructLinkedBlockChainState_00650A50_AndFreeChain_At004bec40()|
+4bec40|CList<long,long>::~CList|??1?$CList@JJ@@UAE@XZ|101|function|undefined ~CList()|template
 4becd0|TCityInteriorMinister::Free||105|function|undefined 'scalar_deleting_destructor'(void)|
 4bed60|TCityInteriorMinister::GetTEventHandlerClassNamePointer_20||135|function|undefined GetTEventHandlerClassNamePointer(void)|
 4bee20|TCityInteriorMinister::DispatchNationStateEventCode10||99|function|undefined ComputeNationProductionCompositeScoreFromCityOutput()|
@@ -2066,7 +2061,7 @@ address|name|symbol|size|type|prototype|provenance
 4c69a0|TLongintList::RemoveAll||45|function|void __thiscall RemoveAll(void)|
 4c69e0|TLongintList::Delete||133|function|void __thiscall Delete(int value)|
 4c6aa0|WrapperFor_FreeHeapBufferIfNotNull_At004c6aa0||30|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At004c6aa0()|
-4c6ad0|TLinkedBlockChainState_00650A50::DestructLinkedBlockChainState_00650A50_AndFreeChain_At004c6ad0||101|function|undefined DestructLinkedBlockChainState_00650A50_AndFreeChain_At004c6ad0()|
+4c6ad0|CList<long,long>::~CList|??1?$CList@JJ@@UAE@XZ|101|function|undefined ~CList()|template
 4c6b60|TLongintList::Dump||99|function|void __thiscall Dump(CDumpContext & dc)|
 4c6bf0|TLongintList::Free||23|function|void __thiscall Free(void)|
 4c6cb0|WrapperFor_ftol_At004c6cb0||30|function|undefined WrapperFor_ftol_At004c6cb0()|
@@ -3113,10 +3108,10 @@ address|name|symbol|size|type|prototype|provenance
 50d680|TMacViewMgr::EnsureClipRegionWrapperAtSlotAndMergeSourceRegion||45|function|undefined EnsureClipRegionWrapperAtSlotAndMergeSourceRegion()|
 50d6c0|TMacViewMgr::MacViewMgrSlot24||35|function|undefined WrapperFor_IsPointInsideHitRegion_At0050d6c0(CPoint* point, short regionIndex)|
 50d700|TMacViewMgr::RenderOffscreenBitmapTileSpanAndRestoreContext||364|function|undefined RenderOffscreenBitmapTileSpanAndRestoreContext()|
-50d8d0|TMacViewMgr::OrphanLeaf_NoCall_Ins06_0050d8d0||16|function|undefined OrphanLeaf_NoCall_Ins06_0050d8d0(void)|
-50d8f0|TMacViewMgr::OrphanLeaf_NoCall_Ins06_0050d8f0||26|function|undefined OrphanLeaf_NoCall_Ins06_0050d8f0(short param_1)|
-50d920|TMacViewMgr::OrphanCallChain_C1_I10_0050d920||27|function|undefined OrphanCallChain_C1_I10_0050d920(void)|
-50d950|TMacViewMgr::MacViewMgrSlot1B||98|function|undefined WrapperFor_CallObjectOffset24Vslot54IfPresent_At0050d950(void)|
+50d8d0|TMacViewMgr::RefreshActiveCityBuildingActionAvailabilityIndicators||16|function|undefined RefreshActiveCityBuildingActionAvailabilityIndicators(void)|
+50d8f0|TMacViewMgr::ClearActiveCityBuildingViewSlot||26|function|undefined ClearActiveCityBuildingViewSlot(short param_1)|
+50d920|TMacViewMgr::ClearActiveCityProductionViewAndDiscardRegion||27|function|undefined ClearActiveCityProductionViewAndDiscardRegion(void)|
+50d950|TMacViewMgr::RefreshActiveGoldControlAndUiRuntimeState||98|function|undefined WrapperFor_CallObjectOffset24Vslot54IfPresent_At0050d950(void)|
 50d9e0|TMacViewMgr::CopySpriteSurfaceToStrideBuffer||117|function|undefined CopySpriteSurfaceToStrideBuffer()|
 50da80|TMacViewMgr::BlitMapOverlayGlyphStrip32x24SkipMask10||547|function|undefined BlitMapOverlayGlyphStrip32x24SkipMask10()|
 50dd40|TMacViewMgr::DrawStrategicMapUnitIcon||386|function|void __thiscall DrawStrategicMapUnitIcon(int * pDstSurface, short nIconVariant, short nDstX, short nYShift)|
@@ -5520,7 +5515,7 @@ address|name|symbol|size|type|prototype|provenance
 5a8550|TTacticalBattleView::ForwardParam||88|function|undefined HandleTacticalInputCommandKeyAndTagDispatch()|
 5a8660|TTacticalBattleView::BeginMouseCaptureAndStartRepeatTimer||67|function|void __thiscall BeginMouseCaptureAndStartRepeatTimer(const CPoint &point, TToolboxEvent *event, CPoint origin)|
 5a86d0|ConvertScreenPointToHexGridCoordClamped||130|function|undefined ConvertScreenPointToHexGridCoordClamped()|
-5a8790|HandleTurnEventVtableSlotA0SyncStatusPanel_Impl||44|function|undefined HandleTurnEventVtableSlotA0SyncStatusPanel_Impl()|
+5a8790|SyncTacticalStatusPanelRegion_Impl||44|function|undefined SyncTacticalStatusPanelRegion_Impl()|
 5a87d0|TTacticalBattleView::ComputeTacticalHexTileScreenRect||108|function|undefined EvaluateAndResolveTacticalActionAgainstTileOccupant_Impl()|
 5a8860|TTacticalBattleView::InvalidateTacticalHexTileRect||115|function|undefined InvalidateTacticalHexTileRect()|
 5a8900|TTacticalBattleView::TacticalBattleViewSlot68||115|function|undefined WrapperFor_InvalidateCityDialogRectRegion_At005a8900(int param_1)|
@@ -5962,7 +5957,7 @@ address|name|symbol|size|type|prototype|provenance
 5c3ad0|WrapperFor_ftol_At005c3ad0||30|function|undefined WrapperFor_ftol_At005c3ad0()|
 5c3b00|WrapperFor_thunk_GetTickCountDiv16_At005c3b00||15|function|undefined WrapperFor_thunk_GetTickCountDiv16_At005c3b00()|
 5c3b40|Function_005c3b40||19|function|undefined4 Function_005c3b40(void)|
-5c3b70|LoadBitmapResourceSurfaceAndRestoreQuickDrawContext||336|function|undefined LoadBitmapResourceSurfaceAndRestoreQuickDrawContext()|
+5c3b70|LoadBitmapResourceSurfaceAndRestoreQuickDrawContext||336|function|TQuickDrawSurfaceContext * __cdecl LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(unsigned short resourceId)|windows_listing
 5c3d20|MapUiThemeCodeToStyleFlags||201|function|undefined MapUiThemeCodeToStyleFlags()|
 5c3e80|BuildUiTextStyleDescriptor||151|function|void __cdecl BuildUiTextStyleDescriptor(void * styleDescriptor, int unused, int arg2, int arg3)|
 5c3f50|InitializeUiTextStyleDescriptor||146|function|undefined InitializeUiTextStyleDescriptor()|
@@ -6054,24 +6049,24 @@ address|name|symbol|size|type|prototype|provenance
 5d6e50|TViewMgr::HandleTurnEventDialogFactorySlot78||139|function|undefined HandleTurnEventDialogFactorySlot78(int eventCode)|
 5d6f10|HandleTurnEventDialogFactorySlot7C||139|function|undefined HandleTurnEventDialogFactorySlot7C()|
 5d6fd0|HandleTurnEventDialogFactorySlot80||139|function|undefined HandleTurnEventDialogFactorySlot80()|
-5d7090|TViewMgr::DispatchTurnEvent7D8AndUpdateMainViewSelection||75|function|undefined DispatchTurnEvent7D8AndUpdateMainViewSelection()|
-5d7100|TViewMgr::DispatchTurnEvent7D8IfTurnFlowIdle||98|function|undefined DispatchTurnEvent7D8IfTurnFlowIdle()|
+5d7090|TViewMgr::PoseDiplomacyOffer||75|function|char PoseDiplomacyOffer(int sourceNation, int targetNation, int proposalCode)|
+5d7100|TViewMgr::PoseWarOfferIfTurnFlowReady||98|function|char PoseWarOfferIfTurnFlowReady(int sourceNation, int arg1, int arg2, int promptCode)|
 5d7190|NoOpTurnEventStateVtableSlotD4||3|function|undefined NoOpTurnEventStateVtableSlotD4()|
-5d71b0|TViewMgr::InvokeMainWidgetMethod1CCWithArgs||111|function|undefined InvokeMainWidgetMethod1CCWithArgs()|
-5d7240|LinkedListQueryOwner::DispatchGlobalTurnEventCode||1933|function|undefined DispatchGlobalTurnEventCode()|
+5d71b0|TViewMgr::DispatchNationActionToMainControl||111|function|void DispatchNationActionToMainControl(int sourceNation, int arg1, int arg2, int arg3, int targetNation)|
+5d7240|TViewMgr::DispatchTurnEvent||1933|function|void DispatchTurnEvent(short eventCode, int payload)|
 5d7c40|DispatchTurnEvent3B8AndWaitForCompletion||72|function|undefined DispatchTurnEvent3B8AndWaitForCompletion()|
 5d7cb0|HandleTurnEvent7DB_SelectCityAndRefreshView||547|function|undefined HandleTurnEvent7DB_SelectCityAndRefreshView()|
-5d7f70|TViewMgr::RefreshCityProductionUiSlotAc||11|function|undefined RefreshCityProductionUiSlotAc()|
-5d7f90|InvokeStrategicMapViewMethod60||19|function|undefined InvokeStrategicMapViewMethod60()|
+5d7f70|TViewMgr::RefreshCityProductionUi||11|function|void RefreshCityProductionUi()|
+5d7f90|ClearActiveCityBuildingViewSlot||19|function|undefined ClearActiveCityBuildingViewSlot()|
 5d7fc0|SetCursorRangeAndRefreshMainPanel||93|function|undefined SetCursorRangeAndRefreshMainPanel()|
 5d8040|HandleTurnEvent7D8_ActivateDiplomacyMapView||561|function|undefined HandleTurnEvent7D8_ActivateDiplomacyMapView()|
 5d83b0|HandleTurnEvent7DE_RefreshTradeDiplomacyCityTransportSummary||728|function|undefined HandleTurnEvent7DE_RefreshTradeDiplomacyCityTransportSummary()|
 5d8750|HandleTurnEvent8FC_RebuildPageTabsAndTitles||433|function|undefined HandleTurnEvent8FC_RebuildPageTabsAndTitles()|
-5d8980|HandleTurnEventVtableSlot88BuildStatusText||560|function|undefined HandleTurnEventVtableSlot88BuildStatusText()|
+5d8980|TViewMgr::ShowAbilityStatusReport||560|function|void ShowAbilityStatusReport(int abilityIndex)|
 5d8c40|HandleTurnEvent2103_RunNationStatusReportUpdate||84|function|undefined HandleTurnEvent2103_RunNationStatusReportUpdate()|
-5d8cc0|HandleTurnEventVtableSlotA0SyncStatusPanel||206|function|undefined HandleTurnEventVtableSlotA0SyncStatusPanel()|
+5d8cc0|TViewMgr::SyncTacticalStatusPanelRegion||206|function|void SyncTacticalStatusPanelRegion()|
 5d8dd0|HandleTurnEvent7D9Or7DA_UpdateNationResourceAdvisor||3770|function|undefined HandleTurnEvent7D9Or7DA_UpdateNationResourceAdvisor()|
-5da040|HandleTurnEventVtableSlot60ActivateMainDialog||243|function|undefined HandleTurnEventVtableSlot60ActivateMainDialog()|
+5da040|TViewMgr::RefreshMainDialogAndCursorHelp||243|function|void RefreshMainDialogAndCursorHelp(int eventCode)|
 5da180|TViewMgr::HandleTurnEvent2260_RefreshMainHudTitles||370|function|void __thiscall HandleTurnEvent2260_RefreshMainHudTitles(int eventCode)|windows_listing
 5da360|TViewMgr::HandleTurnEvent7DD_RefreshOrderStatusPanelsAndIcons||3184|function|void __thiscall HandleTurnEvent7DD_RefreshOrderStatusPanelsAndIcons(int eventCode)|windows_listing
 5db2f0|CString::GetLength||6|function|int __thiscall GetLength()|
@@ -6081,12 +6076,12 @@ address|name|symbol|size|type|prototype|provenance
 5dbd10|NoOpTurnEventStateVtableSlotFC||1|function|undefined NoOpTurnEventStateVtableSlotFC()|
 5dbd30|TViewMgr::HandleTurnEvent5DE_RefreshMainView||115|function|undefined HandleTurnEvent5DE_RefreshMainView()|
 5dbdd0|TViewMgr::HandleTurnEvent5DF_RefreshMainView||43|function|undefined HandleTurnEvent5DF_RefreshMainView()|
-5dbe10|HandleTurnEventTable66F220_Slot08_InvokeMainViewSlots0C_E4||43|function|undefined HandleTurnEventTable66F220_Slot08_InvokeMainViewSlots0C_E4()|
+5dbe10|TViewMgr::RefreshMainViewForTurnEvent5DF||43|function|void RefreshMainViewForTurnEvent5DF()|
 5dbe50|BuildTurnStateStyledTextAndDispatchMainRoutine||618|function|undefined BuildTurnStateStyledTextAndDispatchMainRoutine()|
-5dc160|InvokeStrategicMapViewMethod6C||11|function|undefined InvokeStrategicMapViewMethod6C()|
+5dc160|RefreshActiveGoldControlAndUiRuntimeState||11|function|undefined RefreshActiveGoldControlAndUiRuntimeState()|
 5dc180|TViewMgr::ForwardBuildStrategicMapRenderAtlasesAndTileMaskCaches||11|function|void ForwardBuildStrategicMapRenderAtlasesAndTileMaskCaches()|
-5dc1a0|TViewMgr::InvokeStrategicMapViewMethod74||11|function|void InvokeStrategicMapViewMethod74()|listing
-5dc1c0|TViewMgr::InvokeStrategicMapViewMethod70||11|function|void InvokeStrategicMapViewMethod70()|listing
+5dc1a0|TViewMgr::RebuildMapTileNeighborHighlightPolygonsForAllTiles||11|function|void RebuildMapTileNeighborHighlightPolygonsForAllTiles()|listing
+5dc1c0|TViewMgr::RenderTurnEventPalettePreviewSurfaceAndProgress||11|function|void RenderTurnEventPalettePreviewSurfaceAndProgress()|listing
 5dc1e0|TViewMgr::InitializeCitySiteSelectionScreenForNation||407|function|void __thiscall InitializeCitySiteSelectionScreenForNation(int nationSlot)|listing
 5dc3f0|TViewMgr::ConfigureActiveDialogGoldValueGridForTurnEvent3C0||47|function|void ConfigureActiveDialogGoldValueGridForTurnEvent3C0()|listing
 5dc430|HandleTurnEventDialogFactorySlotB8||238|function|undefined HandleTurnEventDialogFactorySlotB8()|

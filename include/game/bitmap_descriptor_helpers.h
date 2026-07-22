@@ -6,16 +6,16 @@
 class CDib;
 class TBitmapResourceLoader;
 struct TQuickDrawSurfaceContext;
+struct TBitmapSurfaceNode;
 
-void GetActiveQuickDrawSurfaceContextAndFlags(TQuickDrawSurfaceContext** outContext, int* outFlags);
-void SetActiveQuickDrawSurfaceContext(TQuickDrawSurfaceContext* context, int flags);
-void* GetSurfaceNodeSlot(TQuickDrawSurfaceContext* context);
-void* GetSurfaceNodePixelBits(void* surfaceObject);
-short InitializeBitmapDescriptorRecordAndLoadSurfaceNode(TQuickDrawSurfaceContext** outContext,
-                                                         short bitDepth, const RECT* bounds,
-                                                         int hintField18, int arg4, int arg5);
-unsigned char ReturnConstantTrueQuickDrawFlag(void* surfaceObject);
-void NoOpQuickDrawLifecycleHookB(void* surfaceObject);
+void GetGWorld(TQuickDrawSurfaceContext** outContext, int* outFlags);
+void SetGWorld(TQuickDrawSurfaceContext* context, int flags);
+TBitmapSurfaceNode** GetGWorldPixMap(TQuickDrawSurfaceContext* context);
+unsigned char* GetPixBaseAddr(TBitmapSurfaceNode** pixMap);
+short NewGWorld(TQuickDrawSurfaceContext** outContext, short bitDepth, const RECT* bounds,
+                int unusedHint, int unusedArg4, int unusedArg5);
+unsigned char LockPixels(TBitmapSurfaceNode** pixMap);
+void UnlockPixels(TBitmapSurfaceNode** pixMap);
 void BlitBitmapResourceLoaderToActiveDc(TBitmapResourceLoader** handle, RECT* bounds);
 // Mac Resource Manager LoadResource emulation: a no-op returning noErr(0) — the
 // Windows "handles" are always resident. Callers invoke it before dereferencing a

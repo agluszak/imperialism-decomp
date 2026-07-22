@@ -8,6 +8,7 @@
 class TStream;
 class TBitmapResourceLoader;
 class TView;
+class TCityProductionView;
 struct TQuickDrawSurfaceContext;
 struct TBitmapSurfaceNode;
 
@@ -38,7 +39,7 @@ public:
   virtual undefined
   RefreshCityProductionDetailPanelAndArrowWidgets(word param_1); // slot 0x11 0x50bea0
   virtual TView* MakeBookDialog(int dialogId);                   // slot 0x12 0x50be30
-  // RET 0x8 = 2 dwords; body waits on this->field04, args vestigial.
+  // RET 0x8 = 2 dwords; body waits on this->activeCityProductionView04, args vestigial.
   virtual void DispatchTurnEvent3B8AndWaitForCompletionFlag(int unusedArg1,
                                                             int unusedArg2); // slot 0x13 0x50d310
   // RET 0x1c = 7 dwords (Ghidra recovered only 2); trailing args RET-derived, body partial.
@@ -51,15 +52,15 @@ public:
                                                    int arg5); // slot 0x15 0x50d360
   // RET 0xc = 3 dwords (Ghidra recovered only 1); trailing args RET-derived.
   virtual undefined OrphanCallChain_C9_I49_0050d5b0(int param_1, int arg2,
-                                                    int arg3);       // slot 0x16 0x50d5b0
-  virtual void OrphanLeaf_NoCall_Ins06_0050d8d0();                   // slot 0x17 0x50d8d0
-  virtual void OrphanLeaf_NoCall_Ins06_0050d8f0(short param_1);      // slot 0x18 0x50d8f0
-  virtual void OrphanCallChain_C1_I10_0050d920();                    // slot 0x19 0x50d920
-  virtual void BuildStrategicMapRenderAtlasesAndTileMaskCaches();    // slot 0x1a 0x50a9f0
-  virtual void MacViewMgrSlot1B();                                   // slot 0x1b 0x50d950
-  virtual void RenderTurnEventPalettePreviewSurfaceAndProgress();    // slot 0x1c 0x50b640
-  virtual void RebuildMapTileNeighborHighlightPolygonsForAllTiles(); // slot 0x1d 0x50b9e0
-  virtual undefined RebuildNationClipRegionsAndDispatchMapEvent();   // slot 0x1e 0x50bad0
+                                                    int arg3);          // slot 0x16 0x50d5b0
+  virtual void RefreshActiveCityBuildingActionAvailabilityIndicators(); // slot 0x17 0x50d8d0
+  virtual void ClearActiveCityBuildingViewSlot(short buildingSlot);     // slot 0x18 0x50d8f0
+  virtual void ClearActiveCityProductionViewAndDiscardRegion();         // slot 0x19 0x50d920
+  virtual void BuildStrategicMapRenderAtlasesAndTileMaskCaches();       // slot 0x1a 0x50a9f0
+  virtual void RefreshActiveGoldControlAndUiRuntimeState();             // slot 0x1b 0x50d950
+  virtual void RenderTurnEventPalettePreviewSurfaceAndProgress();       // slot 0x1c 0x50b640
+  virtual void RebuildMapTileNeighborHighlightPolygonsForAllTiles();    // slot 0x1d 0x50b9e0
+  virtual undefined RebuildNationClipRegionsAndDispatchMapEvent();      // slot 0x1e 0x50bad0
   virtual undefined BlitMapOverlayGlyphStrip32x24SkipMask10(TBitmapSurfaceNode** dstSurface,
                                                             short param_2, short param_3,
                                                             short param_4); // slot 0x1f 0x50da80
@@ -70,9 +71,9 @@ public:
                                                ushort wOverlayIconId, short nVariantRow,
                                                short nDstX,
                                                short nYShift); // slot 0x21 0x50df40
-  virtual undefined CopySpriteSurfaceToStrideBuffer(TBitmapResourceLoader** loaderHandle,
-                                                    undefined4* param_2,
-                                                    short param_3); // slot 0x22 0x50d9e0
+  virtual void CopySpriteSurfaceToStrideBuffer(TBitmapResourceLoader** loaderHandle,
+                                               unsigned char* destinationBits,
+                                               short destinationStride); // slot 0x22 0x50d9e0
   virtual undefined
   RenderOffscreenBitmapTileSpanAndRestoreContext(int param_1); // slot 0x23 0x50d700
   // RET 0x8 = 2 dwords. arg1 is the (transformed) hit-test point, arg2 the region-slot
@@ -85,7 +86,7 @@ public:
                                                     short param_2); // slot 0x25 0x50d680
   virtual RgnHandle GetClipRegionSlotByIndex(short index);          // slot 0x26 0x509e10
 
-  TView* field04;
+  TCityProductionView* activeCityProductionView04;
   RgnHandle regionSlots[0x17];
   RgnHandle tileStateSlots[0x180];
   int padding664;

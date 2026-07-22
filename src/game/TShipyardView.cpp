@@ -49,7 +49,7 @@ void TShipyardView::Free() {
 // button plus its embedded 'plus'/'minu' stepper controls to the disabled/off state.
 // FUNCTION: IMPERIALISM 0x004c8390
 void TShipyardView::DoStartup() {
-  productionView98 = static_cast<TCityProductionView*>(g_pStrategicMapViewSystem->field04);
+  productionView98 = g_pStrategicMapViewSystem->activeCityProductionView04;
   unresolvedZeroB4 = 0;
   iconSurfaceB8 = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0x264f);
 

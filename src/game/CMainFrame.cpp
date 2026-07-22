@@ -227,8 +227,8 @@ void CMainFrame::OnCommand800D() {
 // FUNCTION: IMPERIALISM 0x00485920
 LRESULT CMainFrame::HandleCustomMessage2420DispatchTurnEvent(WPARAM wParam, LPARAM lParam) {
   (void)lParam;
-  g_pUiRuntimeContext->DispatchTurnEventSlot4C(static_cast<short>(wParam),
-                                               g_pSimMgr->GetActiveNationId());
+  g_pUiRuntimeContext->DispatchTurnEvent(static_cast<short>(wParam),
+                                         g_pSimMgr->GetActiveNationId());
   return 0;
 }
 

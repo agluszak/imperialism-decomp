@@ -40,9 +40,8 @@ void TMapPreviewView::DoPostCreate(int arg) {
   ++g_nDibOrientationFlag_006A1890;
   g_pDisplayMgr->MakeNewGWorld(previewSurface60, 8, surfaceBounds);
 
-  TBitmapSurfaceNode** surfaceObject =
-      static_cast<TBitmapSurfaceNode**>(GetSurfaceNodeSlot(previewSurface60));
-  unsigned char* pixels = static_cast<unsigned char*>(GetSurfaceNodePixelBits(surfaceObject));
+  TBitmapSurfaceNode** surfaceObject = GetGWorldPixMap(previewSurface60);
+  unsigned char* pixels = GetPixBaseAddr(surfaceObject);
   int stride = static_cast<unsigned short>((*surfaceObject)->stride) & 0x3fff;
   int height = surfaceBounds.bottom - surfaceBounds.top;
   memset(pixels, 0x10, height * stride);
@@ -61,9 +60,8 @@ void TMapPreviewView::BeginMouseCaptureAndStartRepeatTimer(const CPoint& point,
   (void)event;
   (void)origin;
 
-  TBitmapSurfaceNode** surfaceObject =
-      static_cast<TBitmapSurfaceNode**>(GetSurfaceNodeSlot(previewSurface60));
-  unsigned char* pixels = static_cast<unsigned char*>(GetSurfaceNodePixelBits(surfaceObject));
+  TBitmapSurfaceNode** surfaceObject = GetGWorldPixMap(previewSurface60);
+  unsigned char* pixels = GetPixBaseAddr(surfaceObject);
   int stride = static_cast<unsigned short>((*surfaceObject)->stride) & 0x3fff;
   unsigned short clickedPalette = pixels[point.y * stride + point.x];
 
@@ -128,10 +126,8 @@ static __inline unsigned char ResolvePreviewMapOwnerTagPaletteByte(int ownerTag)
 
 // FUNCTION: IMPERIALISM 0x00578c10
 void TMapPreviewView::TakeSatellitePhoto(char* tileOwnerTagTable) {
-  unsigned char* tileBuffer =
-      static_cast<unsigned char*>(GetSurfaceNodePixelBits(GetSurfaceNodeSlot(previewSurface60)));
-  TBitmapSurfaceNode** surfaceObject =
-      static_cast<TBitmapSurfaceNode**>(GetSurfaceNodeSlot(previewSurface60));
+  unsigned char* tileBuffer = GetPixBaseAddr(GetGWorldPixMap(previewSurface60));
+  TBitmapSurfaceNode** surfaceObject = GetGWorldPixMap(previewSurface60);
   int strideBytes = static_cast<unsigned short>((*surfaceObject)->stride) & 0x3fff;
 
   for (int tileIndex = 0; tileIndex < 0x1950; ++tileIndex) {
@@ -218,9 +214,8 @@ void TMapPreviewView::EnhancePhoto() {
         g_pUiRuntimeContext->GetColor(static_cast<short>(selectedNation68)));
   }
 
-  TBitmapSurfaceNode** surfaceObject =
-      static_cast<TBitmapSurfaceNode**>(GetSurfaceNodeSlot(previewSurface60));
-  unsigned char* pixels = static_cast<unsigned char*>(GetSurfaceNodePixelBits(surfaceObject));
+  TBitmapSurfaceNode** surfaceObject = GetGWorldPixMap(previewSurface60);
+  unsigned char* pixels = GetPixBaseAddr(surfaceObject);
   int stride = static_cast<unsigned short>((*surfaceObject)->stride) & 0x3fff;
 
   unsigned char* rowStart = pixels + stride + 1;

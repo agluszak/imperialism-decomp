@@ -392,8 +392,8 @@ void ImperialismApp::OnSelectActiveNation() {
       g_apNationStates[g_pSimMgr->GetActiveNationId()]
           ->RebuildNationResourceYieldCountersAndDevelopmentTargets();
     }
-    g_pUiRuntimeContext->DispatchTurnEventSlot4C(g_pUiRuntimeContext->currentTurnEventCode,
-                                                 g_pSimMgr->GetActiveNationId());
+    g_pUiRuntimeContext->DispatchTurnEvent(g_pUiRuntimeContext->currentTurnEventCode,
+                                           g_pSimMgr->GetActiveNationId());
   }
 }
 

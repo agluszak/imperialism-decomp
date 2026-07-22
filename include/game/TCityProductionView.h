@@ -48,6 +48,7 @@ public:
 private:
   friend class TBuildingView;
   friend class TShipyardView;
+  friend class TMacViewMgr;
 
   TCity* city94;
   TView* dialogRoot98;

@@ -38,6 +38,12 @@ public:
   int controlTag; // 0x1c
 
   TEventHandler();
+  // CObject is intentionally non-copyable in MFC, but this MacApp-derived hierarchy
+  // has a real field-copying base constructor inlined into TView's 0x48bd30 copy ctor.
+  TEventHandler(const TEventHandler& source)
+      : TObject(), field04(source.field04), field08(source.field08), field0c(source.field0c),
+        field10(source.field10), field14(source.field14), firstBehavior(source.firstBehavior),
+        controlTag(source.controlTag) {}
 
   // 0x48a410 — MacApp TEventHandler::HandleIdle(IdlePhase); throttled idle dispatch
   // using field10 (idle frequency, 0x7fffffff = never) / field14 (last-idle stamp).

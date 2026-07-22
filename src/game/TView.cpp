@@ -688,6 +688,27 @@ CRect* TView::GetQDExtent(CRect* rectOut) {
   rectOut->bottom = height + pos.y;
   return rectOut;
 }
+
+// Base copy constructor used by the derived view copy constructors at 0x48e5c0,
+// 0x48f080, 0x48f9d0, and 0x491540. The source child list is cloned structurally;
+// it is not the invented 0x649a50 modal-state class previously assigned here.
+// FUNCTION: IMPERIALISM 0x0048bd30
+TView::TView(const TView& source)
+    : TEventHandler(source), ownerContext(0), ownerLocalX(source.ownerLocalX),
+      ownerLocalY(source.ownerLocalY), absoluteX(source.absoluteX), absoluteY(source.absoluteY),
+      frameWidth34(source.frameWidth34), frameHeight38(source.frameHeight38),
+      controlValue3c(source.controlValue3c), childList44(0), stylePayload48(0),
+      inputGateFlag4c(source.inputGateFlag4c), childHitTestFlag4d(source.childHitTestFlag4d),
+      nativeWindow50(source.nativeWindow50), helpState54(source.helpState54), hoverHelpText58(),
+      hoverHelpEnabled5c(0) {
+  if (source.childList44 != 0) {
+    POSITION position = source.childList44->GetHeadPosition();
+    while (position != 0) {
+      TView* child = source.childList44->GetNext(position);
+      AttachChildControl(static_cast<TView*>(child->ShallowClone()), 0);
+    }
+  }
+}
 // FUNCTION: IMPERIALISM 0x0048bef0
 void TView::CopyViewStateFromSource(TView* source) {
   field04 = source->field04;

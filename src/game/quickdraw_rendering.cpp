@@ -748,7 +748,7 @@ void FillRectWithQuickDrawBrushAndContextOffset(RECT* rect) {
   } else {
     TBitmapSurfaceContextDescriptor* descriptor =
         static_cast<TBitmapSurfaceContextDescriptor*>(g_pActiveQuickDrawSurfaceContextHead);
-    TBitmapSurfaceNode* node = descriptor->GetSurfaceNode();
+    TBitmapSurfaceNode* node = descriptor->GetPixMap();
     if (node != nullptr) {
       activeSurfaceDib = node->dib;
     }

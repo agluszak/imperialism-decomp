@@ -60,9 +60,9 @@ void TMilitaryPageView::PrepareUnitCache(int bitmapResourceId, int width, int he
 
   TQuickDrawSurfaceContext* savedContext;
   int savedFlags;
-  GetActiveQuickDrawSurfaceContextAndFlags(&savedContext, &savedFlags);
-  SetActiveQuickDrawSurfaceContext(primaryUnitAtlas84, savedFlags);
-  ReturnConstantTrueQuickDrawFlag(GetSurfaceNodeSlot(primaryUnitAtlas84));
+  GetGWorld(&savedContext, &savedFlags);
+  SetGWorld(primaryUnitAtlas84, savedFlags);
+  LockPixels(GetGWorldPixMap(primaryUnitAtlas84));
   QDLoadResource(loaderHandle);
 
   TBitmapResourceLoader* loader = *loaderHandle;
@@ -86,7 +86,7 @@ void TMilitaryPageView::PrepareUnitCache(int bitmapResourceId, int width, int he
   delete loader;
   delete loaderHandle;
 
-  SetActiveQuickDrawSurfaceContext(savedContext, savedFlags);
+  SetGWorld(savedContext, savedFlags);
 }
 
 // FUNCTION: IMPERIALISM 0x00564bf0

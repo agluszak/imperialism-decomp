@@ -17,25 +17,13 @@ static void ReleaseBitmapLoaderHandle(TBitmapResourceLoader** loaderHandle) {
   if (loaderHandle == nullptr) {
     return;
   }
-  delete *loaderHandle;
+  TBitmapResourceLoader* loader = *loaderHandle;
+  if (loader != 0) {
+    loader->ReleaseBitmapResource();
+    loader->flags &= static_cast<unsigned char>(~1);
+    delete loader;
+  }
   ::operator delete(loaderHandle);
-}
-
-static void ResetBitmapSurfaceContextDescriptor(TBitmapSurfaceContextDescriptor* descriptor) {
-  descriptor->field00 = 0;
-  descriptor->blitSurface.pixelBits = 0;
-  descriptor->blitSurface.stride = 0;
-  descriptor->blitSurface.pad06 = 0;
-  descriptor->blitSurface.field18 = 0;
-  descriptor->blitSurface.surfaceDib = 0;
-  descriptor->blitSurface.clipRect.left = 0;
-  descriptor->blitSurface.clipRect.top = 0;
-  descriptor->blitSurface.clipRect.right = 0;
-  descriptor->blitSurface.clipRect.bottom = 0;
-  descriptor->SetSurfaceNodeSlot(nullptr);
-  descriptor->blitSurface.quickDrawColor = 0;
-  descriptor->blitSurface.transparentBlitColor = 0;
-  descriptor->debugSourcePath = kQuickDrawDebugSourcePath;
 }
 
 } // namespace
@@ -69,7 +57,7 @@ TBitmapSurfaceNode::TBitmapSurfaceNode(int width, int height, int bitDepth) {
   dib->CopyRgbQuadTableFrom(g_pModuleLibraryCacheState->ResolveDefaultLogPalette());
   dib->BuildPaletteFromRgbQuadBuffer();
   dib->EnsureDibSectionCreated(nullptr);
-  pixelBits = dib->m_dibBits;
+  pixelBits = static_cast<unsigned char*>(dib->m_dibBits);
   stride = static_cast<short>((dib->m_pInfoHeader->bmiHeader.biWidth + 3) & ~3);
   CPoint dims;
   CPoint* d = dib->CopyBitmapDimensionsToPoint(&dims);
@@ -80,37 +68,60 @@ TBitmapSurfaceNode::TBitmapSurfaceNode(int width, int height, int bitDepth) {
   pixelHeight14 = d->y;
 }
 
+// The original is the real descriptor constructor: NewGWorld allocates 0x34 bytes and
+// invokes this entry under an EH construction state before publishing the GWorld.
 // FUNCTION: IMPERIALISM 0x00495e20
-void TBitmapSurfaceContextDescriptor::Reset() {
-  ResetBitmapSurfaceContextDescriptor(this);
+TBitmapSurfaceContextDescriptor::TBitmapSurfaceContextDescriptor() {
+  field00 = 0;
+  blitSurface.pixelBits = 0;
+  blitSurface.stride = 0;
+  blitSurface.clipRect.left = 0;
+  blitSurface.clipRect.top = 0;
+  blitSurface.clipRect.right = 0;
+  blitSurface.clipRect.bottom = 0;
+  blitSurface.field18 = 0;
+  blitSurface.surfaceDib = 0;
+  blitSurface.surfaceObject = 0;
+  blitSurface.quickDrawColor = 0;
+  blitSurface.transparentBlitColor = 0;
+
+  // The Windows QuickDraw constructor repeats the CGrafPort-facing defaults after
+  // initializing its PixMap-handle and color state.
+  blitSurface.clipRect.left = 0;
+  blitSurface.clipRect.top = 0;
+  blitSurface.clipRect.right = 0;
+  blitSurface.clipRect.bottom = 0;
+  blitSurface.pixelBits = 0;
+  blitSurface.stride = 0;
+  blitSurface.surfaceDib = 0;
+  debugSourcePath = kQuickDrawDebugSourcePath;
 }
 
 // FUNCTION: IMPERIALISM 0x00495eb0
 bool TBitmapSurfaceContextDescriptor::InitializeSurfaceNode(int width, int height, int bitDepth) {
-  SetSurfaceNodeSlot(
-      static_cast<TBitmapSurfaceNode**>(::operator new(sizeof(TBitmapSurfaceNode*))));
-  *GetSurfaceNodeSlot() = new TBitmapSurfaceNode(width, height, bitDepth);
+  SetPixMapHandle(static_cast<TBitmapSurfaceNode**>(::operator new(sizeof(TBitmapSurfaceNode*))));
+  *GetPixMapHandle() = new TBitmapSurfaceNode(width, height, bitDepth);
 
   // Original (0x495eb0): +0x4 = dib bits pointer, +0x8 = (biWidth + 3) & ~3 as a 16-bit
   // stride, clip rect = the CDib's own width/height (re-read through
   // CopyBitmapDimensionsToPoint, not the cached node fields), +0x20 = the CDib itself. The
   // node is re-read through the slot each time (no cached local), matching the original.
-  blitSurface.pixelBits = static_cast<unsigned char*>((*GetSurfaceNodeSlot())->dib->m_dibBits);
+  blitSurface.pixelBits = static_cast<unsigned char*>((*GetPixMapHandle())->dib->m_dibBits);
   blitSurface.stride =
-      static_cast<short>(((*GetSurfaceNodeSlot())->dib->m_pInfoHeader->bmiHeader.biWidth + 3) & ~3);
+      static_cast<short>(((*GetPixMapHandle())->dib->m_pInfoHeader->bmiHeader.biWidth + 3) & ~3);
   CPoint dims;
-  CPoint* d = (*GetSurfaceNodeSlot())->dib->CopyBitmapDimensionsToPoint(&dims);
+  CPoint* d = (*GetPixMapHandle())->dib->CopyBitmapDimensionsToPoint(&dims);
   blitSurface.clipRect.left = 0;
   blitSurface.clipRect.top = 0;
   blitSurface.clipRect.right = d->x;
   blitSurface.clipRect.bottom = d->y;
-  blitSurface.surfaceDib = (*GetSurfaceNodeSlot())->dib;
-  return *GetSurfaceNodeSlot() != nullptr;
+  blitSurface.surfaceDib = (*GetPixMapHandle())->dib;
+  return *GetPixMapHandle() != nullptr;
 }
 
 // FUNCTION: IMPERIALISM 0x00495fd0
 void TBitmapSurfaceContextDescriptor::ReleaseSurfaceNode() {
-  TBitmapSurfaceNode** slot = GetSurfaceNodeSlot();
+  TBitmapSurfaceNode** slot = GetPixMapHandle();
   if (slot != nullptr) {
     TBitmapSurfaceNode* node = *slot;
     if (node != nullptr) {
@@ -119,7 +130,7 @@ void TBitmapSurfaceContextDescriptor::ReleaseSurfaceNode() {
     }
     ::operator delete(slot);
   }
-  SetSurfaceNodeSlot(nullptr);
+  SetPixMapHandle(nullptr);
   blitSurface.pixelBits = 0;
   blitSurface.stride = 0;
   blitSurface.pad06 = 0;
@@ -127,7 +138,7 @@ void TBitmapSurfaceContextDescriptor::ReleaseSurfaceNode() {
 }
 
 // FUNCTION: IMPERIALISM 0x00496090
-void SetActiveQuickDrawSurfaceContext_Impl(CDib* dibSurface, HDC referenceDc) {
+void BindGWorldSurfaceToMemoryDC(CDib* dibSurface, HDC referenceDc) {
   if (g_pQuickDrawMemoryDc != nullptr) {
     delete g_pQuickDrawMemoryDc;
     g_pQuickDrawMemoryDc = nullptr;
@@ -142,7 +153,7 @@ void SetActiveQuickDrawSurfaceContext_Impl(CDib* dibSurface, HDC referenceDc) {
 }
 
 // FUNCTION: IMPERIALISM 0x004961b0
-void SetActiveQuickDrawSurfaceContext(TQuickDrawSurfaceContext* contextPtr, int flags) {
+void SetGWorld(TQuickDrawSurfaceContext* contextPtr, int flags) {
   if (g_pActiveQuickDrawSurfaceContextHead == contextPtr) {
     return;
   }
@@ -162,8 +173,8 @@ void SetActiveQuickDrawSurfaceContext(TQuickDrawSurfaceContext* contextPtr, int 
   if (contextPtr != &g_defaultQuickDrawSurfaceSentinel) {
     TBitmapSurfaceContextDescriptor* descriptor =
         static_cast<TBitmapSurfaceContextDescriptor*>(contextPtr);
-    TBitmapSurfaceNode* node = descriptor->GetSurfaceNode();
-    SetActiveQuickDrawSurfaceContext_Impl(node != nullptr ? node->dib : nullptr, nullptr);
+    TBitmapSurfaceNode* node = descriptor->GetPixMap();
+    BindGWorldSurfaceToMemoryDC(node != nullptr ? node->dib : nullptr, nullptr);
   }
 
   g_pActiveQuickDrawSurfaceContextHead = contextPtr;
@@ -172,51 +183,47 @@ void SetActiveQuickDrawSurfaceContext(TQuickDrawSurfaceContext* contextPtr, int 
 }
 
 // FUNCTION: IMPERIALISM 0x00496270
-void GetActiveQuickDrawSurfaceContextAndFlags(TQuickDrawSurfaceContext** outContext,
-                                              int* outFlags) {
+void GetGWorld(TQuickDrawSurfaceContext** outContext, int* outFlags) {
   *outContext = g_pActiveQuickDrawSurfaceContextHead;
   *outFlags = g_nActiveQuickDrawSurfaceFlags;
 }
 
 // FUNCTION: IMPERIALISM 0x004962a0
-void* GetSurfaceNodeSlot(TQuickDrawSurfaceContext* context) {
-  return context->blitSurface.surfaceObject;
+TBitmapSurfaceNode** GetGWorldPixMap(TQuickDrawSurfaceContext* context) {
+  return static_cast<TBitmapSurfaceNode**>(context->blitSurface.surfaceObject);
 }
 
 // FUNCTION: IMPERIALISM 0x004962c0
-short InitializeBitmapDescriptorRecordAndLoadSurfaceNode(TQuickDrawSurfaceContext** outContext,
-                                                         short bitDepth, const RECT* bounds,
-                                                         int hintField18, int arg4, int arg5) {
-  (void)hintField18;
-  (void)arg4;
-  (void)arg5;
+short NewGWorld(TQuickDrawSurfaceContext** outContext, short bitDepth, const RECT* bounds,
+                int unusedHint, int unusedArg4, int unusedArg5) {
+  (void)unusedHint;
+  (void)unusedArg4;
+  (void)unusedArg5;
 
-  TBitmapSurfaceContextDescriptor* descriptor = static_cast<TBitmapSurfaceContextDescriptor*>(
-      ::operator new(sizeof(TBitmapSurfaceContextDescriptor)));
-  ResetBitmapSurfaceContextDescriptor(descriptor);
-
+  TBitmapSurfaceContextDescriptor* descriptor = new TBitmapSurfaceContextDescriptor;
   *outContext = descriptor;
 
-  const int width = bounds->right - bounds->left;
-  const int height = bounds->bottom - bounds->top;
-  const bool loaded = descriptor->InitializeSurfaceNode(width, height, bitDepth);
-  return loaded ? 0 : static_cast<short>(-1);
+  RECT copiedBounds;
+  CopyRect(&copiedBounds, bounds);
+  descriptor->InitializeSurfaceNode(copiedBounds.right - copiedBounds.left,
+                                    copiedBounds.bottom - copiedBounds.top, bitDepth);
+  return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004972c0
-unsigned char ReturnConstantTrueQuickDrawFlag(void* surfaceObject) {
-  (void)surfaceObject;
+unsigned char LockPixels(TBitmapSurfaceNode** pixMap) {
+  (void)pixMap;
   return 1;
 }
 
 // FUNCTION: IMPERIALISM 0x004972e0
-void NoOpQuickDrawLifecycleHookB(void* surfaceObject) {
-  (void)surfaceObject;
+void UnlockPixels(TBitmapSurfaceNode** pixMap) {
+  (void)pixMap;
 }
 
 // FUNCTION: IMPERIALISM 0x00497300
-void* GetSurfaceNodePixelBits(void* surfaceObject) {
-  return **reinterpret_cast<void***>(surfaceObject);
+unsigned char* GetPixBaseAddr(TBitmapSurfaceNode** pixMap) {
+  return (*pixMap)->pixelBits;
 }
 
 // FUNCTION: IMPERIALISM 0x00497c00
@@ -230,16 +237,18 @@ TQuickDrawSurfaceContext*
 LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(unsigned short resourceId) {
   TQuickDrawSurfaceContext* savedContext = 0;
   int savedFlags = 0;
-  GetActiveQuickDrawSurfaceContextAndFlags(&savedContext, &savedFlags);
+  GetGWorld(&savedContext, &savedFlags);
 
   TBitmapResourceLoader** loaderHandle = CreateBitmapResourceLoaderHandle(resourceId);
+  QDLoadResource(loaderHandle);
   TBitmapResourceLoader* loader = loaderHandle != nullptr ? *loaderHandle : nullptr;
   if (loader == nullptr) {
     ::operator delete(loaderHandle);
     return 0;
   }
 
-  RECT bitmapRect = loader->bitmapRect;
+  RECT bitmapRect;
+  CopyRect(&bitmapRect, &loader->bitmapRect);
   TQuickDrawSurfaceContext* outContext = 0;
   if (g_pDisplayMgr != nullptr) {
     g_pDisplayMgr->MakeNewGWorld(outContext, 8, bitmapRect);
@@ -249,10 +258,12 @@ LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(unsigned short resourceId) {
     return 0;
   }
 
-  SetActiveQuickDrawSurfaceContext(outContext, savedFlags);
-  void* surfaceObject = GetSurfaceNodeSlot(outContext);
-  ReturnConstantTrueQuickDrawFlag(surfaceObject);
+  SetGWorld(outContext, savedFlags);
+  TBitmapSurfaceNode** pixMap = GetGWorldPixMap(outContext);
+  LockPixels(pixMap);
 
+  QDLoadResource(loaderHandle);
+  loader = *loaderHandle;
   loader->EnsureBitmapResourceLoadedAndCopyRectSize();
   loader->flags |= 1;
   ResetQuickDrawStrokeState();
@@ -260,7 +271,7 @@ LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(unsigned short resourceId) {
 
   ReleaseBitmapLoaderHandle(loaderHandle);
 
-  NoOpQuickDrawLifecycleHookB(surfaceObject);
-  SetActiveQuickDrawSurfaceContext(savedContext, savedFlags);
+  UnlockPixels(pixMap);
+  SetGWorld(savedContext, savedFlags);
   return outContext;
 }

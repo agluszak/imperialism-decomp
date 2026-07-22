@@ -808,7 +808,7 @@ short TViewMgr::GetPendingTurnOverlayCode() {
 }
 
 // FUNCTION: IMPERIALISM 0x005d6c30
-void TViewMgr::UiRuntimeSlot58() {
+void TViewMgr::RefreshStrategicMapStatusIconsForActiveNation() {
   static const char kStatusIconTagBytes[] =
       " 0sr 1sr 2sr 3sr 4sr 5sr 6sr 0am 1am 2am 3am 4am 5am 0dg 1dg 2dg 3dg";
   TView* mainView = g_pDisplayMgr->activeDialog;
@@ -867,7 +867,7 @@ void TViewMgr::HandleTurnEventDialogFactorySlot74(int eventCode) {
 }
 
 // FUNCTION: IMPERIALISM 0x005d6e30
-void TViewMgr::UiRuntimeSlot8C(int arg) {
+void TViewMgr::NoOpTurnEventStateVtableSlot8C(int arg) {
   (void)arg;
 }
 
@@ -932,10 +932,9 @@ void TViewMgr::HandleTurnEventDialogFactorySlot80(int eventCode) {
 }
 
 // FUNCTION: IMPERIALISM 0x005d7090
-char TViewMgr::RequestDiplomacyDecisionSlot90(int sourceNation, int targetNation,
-                                              int proposalCode) {
+char TViewMgr::PoseDiplomacyOffer(int sourceNation, int targetNation, int proposalCode) {
   TView* activeDialog = g_pDisplayMgr->activeDialog;
-  DispatchTurnEventSlot4C(0x7d8, sourceNation);
+  DispatchTurnEvent(0x7d8, sourceNation);
   TDiplomacyMapView* mainView =
       static_cast<TDiplomacyMapView*>(activeDialog->ResolveControlByTag(kControlTagMain));
   mainView->AssertValid();
@@ -945,12 +944,12 @@ char TViewMgr::RequestDiplomacyDecisionSlot90(int sourceNation, int targetNation
 }
 
 // FUNCTION: IMPERIALISM 0x005d7100
-char TViewMgr::RequestDecisionSlot94(int sourceNation, int arg1, int arg2, int promptCode) {
+char TViewMgr::PoseWarOfferIfTurnFlowReady(int sourceNation, int arg1, int arg2, int promptCode) {
   if (IsTurnCooldownCounterActiveOrResetFlag()) {
     return 1;
   }
   TView* activeDialog = g_pDisplayMgr->activeDialog;
-  DispatchTurnEventSlot4C(0x7d8, sourceNation);
+  DispatchTurnEvent(0x7d8, sourceNation);
   TDiplomacyMapView* mainView =
       static_cast<TDiplomacyMapView*>(activeDialog->ResolveControlByTag(kControlTagMain));
   mainView->AssertValid();
@@ -958,7 +957,7 @@ char TViewMgr::RequestDecisionSlot94(int sourceNation, int arg1, int arg2, int p
 }
 
 // FUNCTION: IMPERIALISM 0x005d7190
-void TViewMgr::UiRuntimeSlotD4(int arg) {
+void TViewMgr::NoOpTurnEventStateVtableSlotD4(int arg) {
   (void)arg;
 }
 
@@ -1097,8 +1096,8 @@ void DispatchPostTurnStateUpdatesTail() {
 } // namespace
 
 // FUNCTION: IMPERIALISM 0x005d71b0
-void TViewMgr::DispatchDecisionSlot98(int sourceNation, int arg1, int arg2, int arg3,
-                                      int targetNation) {
+void TViewMgr::DispatchNationActionToMainControl(int sourceNation, int arg1, int arg2, int arg3,
+                                                 int targetNation) {
   TView* activeDialog = g_pDisplayMgr->activeDialog;
   turn_event_dialog::MainActionControl* mainControl =
       static_cast<turn_event_dialog::MainActionControl*>(
@@ -1108,14 +1107,11 @@ void TViewMgr::DispatchDecisionSlot98(int sourceNation, int arg1, int arg2, int 
     MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgr_0069B6BC, 0x5c7);
   }
-  mainControl->InvokeMainAction(reinterpret_cast<void*>(sourceNation),
-                                reinterpret_cast<void*>(arg1), reinterpret_cast<void*>(arg2),
-                                reinterpret_cast<void*>(arg3),
-                                reinterpret_cast<void*>(targetNation));
+  mainControl->InvokeMainAction(sourceNation, arg1, arg2, arg3, targetNation);
 }
 
 // FUNCTION: IMPERIALISM 0x005d7240
-void TViewMgr::DispatchTurnEventSlot4C(short eventCode, int payload) {
+void TViewMgr::DispatchTurnEvent(short eventCode, int payload) {
   TView* mainView = g_pDisplayMgr->activeDialog;
   SetQuickDrawFillColor(0);
   SetQuickDrawStrokeColor(0xffffff);
@@ -1150,10 +1146,10 @@ void TViewMgr::DispatchTurnEventSlot4C(short eventCode, int payload) {
       switch (curCode) {
       case 0x7d9:
       case 0x7da:
-        this->UiRuntimeSlot58();
+        this->RefreshStrategicMapStatusIconsForActiveNation();
         break;
       case 0x7db:
-        g_pStrategicMapViewSystem->OrphanCallChain_C1_I10_0050d920();
+        g_pStrategicMapViewSystem->ClearActiveCityProductionViewAndDiscardRegion();
         break;
       case 0x7dd:
         this->mapUberPictureF0 = 0;
@@ -1197,22 +1193,22 @@ void TViewMgr::DispatchTurnEventSlot4C(short eventCode, int payload) {
     } else if (newCode == 0x7d8) {
       if (static_cast<short>(g_pSimMgr->mode) == 0x68) {
         mainView->RefreshControl();
-        this->UiRuntimeSlot6C(newCode);
+        this->HandleTurnEvent7D8_ActivateDiplomacyMapView(newCode);
       }
     } else if (newCode == 0x7d9 || newCode == 0x7da) {
       mainView->RefreshControl();
-      this->UiRuntimeSlot5C(newCode);
+      this->HandleTurnEvent7D9Or7DA_UpdateNationResourceAdvisor(newCode);
     } else if (newCode == 0x7db) {
       mainView->RefreshControl();
-      this->UiRuntimeSlotA8(newCode);
+      this->HandleTurnEvent7DB_SelectCityAndRefreshView(newCode);
     } else if (newCode == 0x7dd) {
       mainView->RefreshControl();
       this->HandleTurnEvent7DD_RefreshOrderStatusPanelsAndIcons(newCode);
     } else if (newCode == 0x7de) {
       mainView->RefreshControl();
-      this->UiRuntimeSlot84(newCode);
+      this->HandleTurnEvent7DE_RefreshTradeDiplomacyCityTransportSummary(newCode);
     } else if (newCode == 0x2103) {
-      this->UiRuntimeSlot9C();
+      this->HandleTurnEvent2103_RunNationStatusReportUpdate();
     } else if (newCode == 0x2260) {
       mainView->RefreshControl();
       this->HandleTurnEvent2260_RefreshMainHudTitles(newCode);
@@ -1256,9 +1252,9 @@ void TViewMgr::DispatchTurnEventSlot4C(short eventCode, int payload) {
   if (newCode > 0x3c0) {
     if (newCode < 0x5dd) {
       if (newCode == 0x5dc) {
-        this->UiRuntimeSlotF8();
+        this->HandleTurnEventDialogFactorySlotF8();
       } else if (newCode == 0x547) {
-        this->UiRuntimeSlot50(static_cast<int>(newCode));
+        this->SetCursorRangeAndRefreshMainPanel(static_cast<int>(newCode));
       }
     } else if (newCode < 0x7d9) {
       switch (newCode) {
@@ -1272,15 +1268,15 @@ void TViewMgr::DispatchTurnEventSlot4C(short eventCode, int payload) {
         this->HandleTurnEvent5DF_RefreshMainView();
         break;
       case 0x5e0:
-        this->UiRuntimeSlot108();
+        this->RefreshMainViewForTurnEvent5DF();
         break;
       case 0x7d8:
-        this->UiRuntimeSlot6C(newCode);
+        this->HandleTurnEvent7D8_ActivateDiplomacyMapView(newCode);
         break;
       }
     } else if (newCode > 0x898) {
       if (newCode == 0xed8 || newCode == 0xf3c) {
-        this->UiRuntimeSlotA0();
+        this->SyncTacticalStatusPanelRegion();
       } else if (newCode == 0x8fc) {
         HandleTurnEvent8FC_RebuildPageTabsAndTitles();
       } else if (newCode == 0x11f8) {
@@ -1290,9 +1286,9 @@ void TViewMgr::DispatchTurnEventSlot4C(short eventCode, int payload) {
       } else if (newCode == 0x2103) {
         this->HandleTurnEvent2260_RefreshMainHudTitles(newCode);
       } else if (newCode == 0x2134) {
-        this->HandleTurnEventVtableSlot60ActivateMainDialog(newCode);
+        this->RefreshMainDialogAndCursorHelp(newCode);
       } else if (newCode == 0x2260) {
-        this->UiRuntimeSlot9C();
+        this->HandleTurnEvent2103_RunNationStatusReportUpdate();
       }
     } else if (newCode == 0x898) {
       this->HandleTurnEvent7DD_RefreshOrderStatusPanelsAndIcons(newCode);
@@ -1302,19 +1298,19 @@ void TViewMgr::DispatchTurnEventSlot4C(short eventCode, int payload) {
         this->HandleTurnEvent7DD_RefreshOrderStatusPanelsAndIcons(newCode);
         break;
       case 0x7da:
-        this->UiRuntimeSlot5C(newCode);
+        this->HandleTurnEvent7D9Or7DA_UpdateNationResourceAdvisor(newCode);
         break;
       case 0x7db:
-        this->UiRuntimeSlotA8(newCode);
+        this->HandleTurnEvent7DB_SelectCityAndRefreshView(newCode);
         break;
       case 0x7dd:
-        this->UiRuntimeSlot50(static_cast<int>(secondary));
+        this->SetCursorRangeAndRefreshMainPanel(static_cast<int>(secondary));
         break;
       case 0x7de:
-        this->UiRuntimeSlot84(newCode);
+        this->HandleTurnEvent7DE_RefreshTradeDiplomacyCityTransportSummary(newCode);
         break;
       case 0x7e0:
-        this->UiRuntimeSlot50(static_cast<int>(secondary));
+        this->SetCursorRangeAndRefreshMainPanel(static_cast<int>(secondary));
         break;
       }
     }
@@ -1329,8 +1325,8 @@ void TViewMgr::DispatchTurnEventSlot4C(short eventCode, int payload) {
 }
 
 // FUNCTION: IMPERIALISM 0x005d7c40
-void TViewMgr::UiRuntimeSlotA4(int payload, TEventHandler* waitTarget) {
-  DispatchTurnEventSlot4C(0x3b8, payload);
+void TViewMgr::DispatchTurnEvent3B8AndWaitForCompletion(int payload, TEventHandler* waitTarget) {
+  DispatchTurnEvent(0x3b8, payload);
   while (static_cast<short>(waitTarget->field14) == 0) {
     if (PumpUiMessagesAndBackgroundTasks(1) == 0) {
       PostWmCloseToMainThreadWindow();
@@ -1339,7 +1335,7 @@ void TViewMgr::UiRuntimeSlotA4(int payload, TEventHandler* waitTarget) {
 }
 
 // FUNCTION: IMPERIALISM 0x005d7cb0
-void TViewMgr::UiRuntimeSlotA8(int) {
+void TViewMgr::HandleTurnEvent7DB_SelectCityAndRefreshView(int) {
   turn_event_ui_refresh::BindCursorPanelAndSetTurnEventCodeRange();
   TView* mainView = turn_event_ui_refresh::ActiveMainView();
   if (mainView == nullptr) {
@@ -1365,17 +1361,17 @@ void TViewMgr::UiRuntimeSlotA8(int) {
 }
 
 // FUNCTION: IMPERIALISM 0x005d7f70
-void TViewMgr::InvokeStrategicMapViewMethod5C() {
-  g_pStrategicMapViewSystem->OrphanLeaf_NoCall_Ins06_0050d8d0();
+void TViewMgr::RefreshCityProductionUi() {
+  g_pStrategicMapViewSystem->RefreshActiveCityBuildingActionAvailabilityIndicators();
 }
 
 // FUNCTION: IMPERIALISM 0x005d7f90
-void TViewMgr::InvokeStrategicMapViewMethod60(short param1) {
-  g_pStrategicMapViewSystem->OrphanLeaf_NoCall_Ins06_0050d8f0(param1);
+void TViewMgr::ClearActiveCityBuildingViewSlot(short param1) {
+  g_pStrategicMapViewSystem->ClearActiveCityBuildingViewSlot(param1);
 }
 
 // FUNCTION: IMPERIALISM 0x005d7fc0
-void TViewMgr::UiRuntimeSlot50(int payload) {
+void TViewMgr::SetCursorRangeAndRefreshMainPanel(int payload) {
   (void)payload;
   TView* mainView = g_pDisplayMgr->activeDialog;
   TControl* cursor = static_cast<TControl*>(mainView->ResolveControlByTag(kControlTagCurs));
@@ -1389,7 +1385,7 @@ void TViewMgr::UiRuntimeSlot50(int payload) {
 }
 
 // FUNCTION: IMPERIALISM 0x005d8040
-void TViewMgr::UiRuntimeSlot6C(int) {
+void TViewMgr::HandleTurnEvent7D8_ActivateDiplomacyMapView(int) {
   turn_event_ui_refresh::BindCursorPanelAndSetTurnEventCodeRange();
   TView* mainView = turn_event_ui_refresh::ActiveMainView();
   if (mainView == nullptr) {
@@ -1419,7 +1415,7 @@ void TViewMgr::UiRuntimeSlot6C(int) {
 }
 
 // FUNCTION: IMPERIALISM 0x005d83b0
-void TViewMgr::UiRuntimeSlot84(int) {
+void TViewMgr::HandleTurnEvent7DE_RefreshTradeDiplomacyCityTransportSummary(int) {
   turn_event_ui_refresh::RefreshMainCouncilTickerPanel();
   turn_event_ui_refresh::BindCursorPanelAndSetTurnEventCodeRange();
 
@@ -1442,7 +1438,7 @@ void TViewMgr::UiRuntimeSlot84(int) {
 }
 
 // FUNCTION: IMPERIALISM 0x005d8980
-void TViewMgr::UiRuntimeSlot88(int abilityIndex) {
+void TViewMgr::ShowAbilityStatusReport(int abilityIndex) {
   TView* activeDialog = g_pDisplayMgr->activeDialog;
   TextStyle style;
   char* styleRefBytes = reinterpret_cast<char*>(&style.textColor);
@@ -1496,7 +1492,7 @@ void TViewMgr::UiRuntimeSlot88(int abilityIndex) {
 }
 
 // FUNCTION: IMPERIALISM 0x005d8c40
-void TViewMgr::UiRuntimeSlot9C(int pageIndex) {
+void TViewMgr::HandleTurnEvent2103_RunNationStatusReportUpdate(int pageIndex) {
   TView* activeDialog = g_pDisplayMgr->activeDialog;
   TNewspaperView* mainControl =
       static_cast<TNewspaperView*>(activeDialog->ResolveControlByTag(kControlTagMain));
@@ -1507,7 +1503,7 @@ void TViewMgr::UiRuntimeSlot9C(int pageIndex) {
 }
 
 // FUNCTION: IMPERIALISM 0x005d8cc0
-void TViewMgr::UiRuntimeSlotA0() {
+void TViewMgr::SyncTacticalStatusPanelRegion() {
   TView* activeDialog = g_pDisplayMgr->activeDialog;
   CTemporaryRegion temporaryRegion;
   TTacticalBattleView* goldControl =
@@ -1528,7 +1524,7 @@ void TViewMgr::UiRuntimeSlotA0() {
 }
 
 // FUNCTION: IMPERIALISM 0x005d8dd0
-void TViewMgr::UiRuntimeSlot5C(int) {
+void TViewMgr::HandleTurnEvent7D9Or7DA_UpdateNationResourceAdvisor(int) {
   turn_event_ui_refresh::BindCursorPanelAndSetTurnEventCodeRange();
   turn_event_ui_refresh::RefreshTradClusterPictureAndHintText();
   turn_event_ui_refresh::RefreshToolBarClusterByTag(kControlTagBpot);
@@ -1575,11 +1571,11 @@ void TViewMgr::UiRuntimeSlot5C(int) {
 
   turn_event_ui_refresh::RefreshTaggedControlWithLocalizedString(kControlTagQuer, 0x2730, 0);
 
-  UiRuntimeSlot58();
+  RefreshStrategicMapStatusIconsForActiveNation();
 }
 
 // FUNCTION: IMPERIALISM 0x005da040
-void TViewMgr::HandleTurnEventVtableSlot60ActivateMainDialog(int) {
+void TViewMgr::RefreshMainDialogAndCursorHelp(int) {
   TView* mainControl =
       static_cast<TView*>(g_pDisplayMgr->activeDialog->ResolveControlByTag(kControlTagMain));
   mainControl->AssertValid();
@@ -1759,7 +1755,7 @@ void TViewMgr::HandleTurnStateExitAndPostFollowupEventCode(short followupState) 
 // configures the 'curs' cursor-info panel's style/theme and finally sets every menu button's
 // localized label (the 'main' council-ticker slot is cleared instead of labeled).
 // FUNCTION: IMPERIALISM 0x005db780
-void TViewMgr::UiRuntimeSlotF8() {
+void TViewMgr::HandleTurnEventDialogFactorySlotF8() {
   TView* mainView = g_pDisplayMgr->activeDialog;
 
   g_pSfxPlaybackSystem->ResetDualAudioCuePools();
@@ -1822,15 +1818,15 @@ void TViewMgr::HandleTurnEvent5DF_RefreshMainView() {
 // Twin of HandleTurnEvent5DF_RefreshMainView: re-assert and refresh the active dialog's
 // 'main' council-ticker panel.
 // FUNCTION: IMPERIALISM 0x005dbe10
-void TViewMgr::UiRuntimeSlot108() {
+void TViewMgr::RefreshMainViewForTurnEvent5DF() {
   TView* mainPanel = g_pDisplayMgr->activeDialog->ResolveControlByTag(kControlTagMain);
   mainPanel->AssertValid();
   mainPanel->RefreshControl();
 }
 
 // FUNCTION: IMPERIALISM 0x005dc160
-void TViewMgr::InvokeStrategicMapViewMethod6C() {
-  g_pStrategicMapViewSystem->MacViewMgrSlot1B();
+void TViewMgr::RefreshActiveGoldControlAndUiRuntimeState() {
+  g_pStrategicMapViewSystem->RefreshActiveGoldControlAndUiRuntimeState();
 }
 
 // FUNCTION: IMPERIALISM 0x005dc180
@@ -1839,12 +1835,12 @@ void TViewMgr::ForwardBuildStrategicMapRenderAtlasesAndTileMaskCaches() {
 }
 
 // FUNCTION: IMPERIALISM 0x005dc1a0
-void TViewMgr::InvokeStrategicMapViewMethod74() {
+void TViewMgr::RebuildMapTileNeighborHighlightPolygonsForAllTiles() {
   g_pStrategicMapViewSystem->RebuildMapTileNeighborHighlightPolygonsForAllTiles();
 }
 
 // FUNCTION: IMPERIALISM 0x005dc1c0
-void TViewMgr::InvokeStrategicMapViewMethod70() {
+void TViewMgr::RenderTurnEventPalettePreviewSurfaceAndProgress() {
   g_pStrategicMapViewSystem->RenderTurnEventPalettePreviewSurfaceAndProgress();
 }
 
@@ -2013,7 +2009,7 @@ void TViewMgr::MakeGameSetupDialog() {
 }
 
 // FUNCTION: IMPERIALISM 0x005dcdf0
-char TViewMgr::UiRuntimeSlotB4(void* payload) {
+char TViewMgr::HandleTurnEventDialogFactorySlotB4(void* payload) {
   turn_event_dialog::ThreeFlagDialogNode* node =
       static_cast<turn_event_dialog::ThreeFlagDialogNode*>(
           g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(0x3b9));
@@ -2096,7 +2092,7 @@ int TViewMgr::ShowConstructionOptionsDialog(int dialogValue) {
 }
 
 // FUNCTION: IMPERIALISM 0x005dd180
-void TViewMgr::UiRuntimeSlotE0(int nationSlot, int unused) {
+void TViewMgr::HandleGlobalMapNationContextSelection(int nationSlot, int unused) {
   (void)unused;
   if (static_cast<short>(nationSlot) == g_pGlobalMapState->pendingRiverMouthTile22) {
     TurnEventDialogNode* node = static_cast<TurnEventDialogNode*>(
@@ -2217,7 +2213,7 @@ void TViewMgr::ShowNavyRosterDialogAndApplySelection() {
 }
 
 // FUNCTION: IMPERIALISM 0x005dd770
-void TViewMgr::UiRuntimeSlotE8(void* selection) {
+void TViewMgr::HandleTurnEventDialogFactorySlotE8(void* selection) {
   // Only the +2 city-record index is established for this opaque event payload.
   struct TurnEventMapSelection {
     short unresolved0;
