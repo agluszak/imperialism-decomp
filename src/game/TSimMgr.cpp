@@ -788,7 +788,7 @@ void TSimMgr::RebuildSecondaryNationStateForSlot(int slotIndex) {
       int remainingOrders = 2;
       do {
         TMilitaryUnit* order = new TMilitaryUnit();
-        order->InitializeRecruitOrderState(2, cityRecordIndex, slotIndex, 0);
+        order->IMilitaryUnit(2, cityRecordIndex, slotIndex, 0);
         order->SetOrders(static_cast<UnitOrder>(2), -1);
         --remainingOrders;
       } while (remainingOrders != 0);
@@ -1681,8 +1681,8 @@ void TSimMgr::HandleTurnInstruction_Army_DeserializeAndCreateRecruitOrders(void*
       g_pGlobalMapState->cityScoreTable[static_cast<int>(regionToken)].ownerNationCode00;
   while (remaining > 0) {
     TMilitaryUnit* order = new TMilitaryUnit();
-    order->InitializeRecruitOrderState(static_cast<short>(orderTypeToken),
-                                       static_cast<int>(regionToken), ownerNationCode, 0);
+    order->IMilitaryUnit(static_cast<short>(orderTypeToken), static_cast<int>(regionToken),
+                         ownerNationCode, 0);
     order->SetOrders(static_cast<UnitOrder>(2), -1);
     --remaining;
   }

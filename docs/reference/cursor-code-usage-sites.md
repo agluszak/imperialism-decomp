@@ -98,8 +98,8 @@ Scope: code/memory locations used to load and apply cursor handles for mapped cu
 - `0x00402B1C` -> `thunk_GetTileNormalizedMovementClassId`
 - `0x00515E50` -> `TileHasMovementClassId`
 - `0x00403D78` -> `thunk_TileHasMovementClassId`
-- `0x005C3490` -> `GetUnitMovementClassId`
-- `0x00407E64` -> `thunk_GetUnitMovementClassId`
+- `0x005C3490` -> `TMilitaryUnit::GetCategory`
+- `0x00407E64` -> import lookup thunk for `TMilitaryUnit::GetCategory`
 - `0x005D5710` -> `UpdateTurnEventPaletteByCode`
 - `0x00407AE5` -> `thunk_UpdateTurnEventPaletteByCode`
 - `0x005A0550` -> `IsHexNeighborTileIndex`

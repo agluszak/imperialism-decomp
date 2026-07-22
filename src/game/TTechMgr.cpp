@@ -570,8 +570,8 @@ void TTechMgr::ActivateSlotAndUpdateUI(int abilityId, int nationSlot) {
       CIterator cursor(g_apTerrainTypeDescriptorTable[nationSlot]->militaryUnitList44);
       TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(cursor.Reset());
       while (cursor.More()) {
-        if (unit->GetUnitMovementClassId() == group) {
-          unit->ApplyEraCapabilityCostAndSetSelection();
+        if (unit->GetCategory() == group) {
+          unit->Upgrade();
         }
         unit = static_cast<TMilitaryUnit*>(cursor.Advance());
       }

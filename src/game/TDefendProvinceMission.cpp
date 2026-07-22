@@ -149,7 +149,7 @@ float TDefendProvinceMission::ComputeCrossNationSupportVectorScore(int nodeConte
             unit = g_pGlobalMapState->cityScoreTable[checkedRegion].stationedUnitChain98;
           }
           for (; unit != 0; unit = static_cast<TMilitaryUnit*>(unit->nextOnTile)) {
-            if (unit->GetUnitMovementClassId() > 0) {
+            if (unit->GetCategory() != EncodeArmyUnitCategory(kArmyUnitCategoryMilitia)) {
               AccumulateUnitOrderPriorityVectorContribution(unit, vector, 1.0f, unitOrderWeight);
             }
           }
@@ -161,8 +161,8 @@ float TDefendProvinceMission::ComputeCrossNationSupportVectorScore(int nodeConte
             unit = g_pGlobalMapState->cityScoreTable[checkedRegion].stationedUnitChain98;
           }
           for (; unit != 0; unit = static_cast<TMilitaryUnit*>(unit->nextOnTile)) {
-            short costPoints = unit->GetUnitTypeCostPoints();
-            if (unit->GetUnitMovementClassId() > 0) {
+            short costPoints = unit->GetArmsCarried();
+            if (unit->GetCategory() != EncodeArmyUnitCategory(kArmyUnitCategoryMilitia)) {
               int remainingBudget = remainingBudgetByNation[candidateNationIndex];
               if (costPoints < remainingBudget) {
                 AccumulateUnitOrderPriorityVectorContribution(unit, vector, 1.0f, unitOrderWeight);
@@ -317,11 +317,11 @@ void TDefendProvinceMission::CalculateNeeds() {
     int i;
     int sumCosts = 0;
     for (i = 0; i < 5; ++i) {
-      sumCosts += GetNormalizedCityActionResourceCostPercent(bVar8, static_cast<short>(i));
+      sumCosts += TMilitaryUnit::GetTypeAttribute(bVar8, static_cast<short>(i));
     }
 
     for (i = 0; i < 5; ++i) {
-      short cost = GetNormalizedCityActionResourceCostPercent(bVar8, static_cast<short>(i));
+      short cost = TMilitaryUnit::GetTypeAttribute(bVar8, static_cast<short>(i));
       requiredEquipageByClass[i] =
           (static_cast<float>(cost) * fStack_c) / static_cast<float>(sumCosts);
     }

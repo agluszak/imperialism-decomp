@@ -1564,7 +1564,8 @@ void TAutoGreatPower::RefreshTrackedEntriesAndReplanAiDevelopment(int unused) {
   CIterator unitIter(militaryUnitList44);
   for (TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(unitIter.Reset()); unitIter.More();
        unit = static_cast<TMilitaryUnit*>(unitIter.Advance())) {
-    if (unit->ownerMission40 == nullptr && unit->GetUnitMovementClassId() == 0) {
+    if (unit->ownerMission40 == nullptr &&
+        unit->GetCategory() == EncodeArmyUnitCategory(kArmyUnitCategoryMilitia)) {
       TMission* mission =
           TMission::Find(missionQueue, kMissionTypeDefendProvince, unit->tileIndex06, nullptr);
       mission->AdoptUnitSlot80(unit, 1);
@@ -1583,15 +1584,16 @@ void TAutoGreatPower::RefreshTrackedEntriesAndReplanAiDevelopment(int unused) {
   PlanAiDevelopmentActionsFromResourcePools(0);
 }
 
-// For every unassigned (ownerMission40 == nullptr) non-naval (GetUnitMovementClassId() ==
-// 0) unit in militaryUnitList44, finds the queued mission (kind 3, keyed by the unit's own
-// tileIndex06) in missionQueue and adopts the unit into it (AdoptUnitSlot80).
+// For every unassigned (ownerMission40 == nullptr) militia-category unit in
+// militaryUnitList44, finds the queued mission (kind 3, keyed by the unit's own tileIndex06)
+// in missionQueue and adopts the unit into it (AdoptUnitSlot80).
 // FUNCTION: IMPERIALISM 0x004eafa0
 void TAutoGreatPower::SeedTrackedEntryAssignmentsFromEligibleUnits() {
   CIterator iter(militaryUnitList44);
   for (TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(iter.Reset()); iter.More();
        unit = static_cast<TMilitaryUnit*>(iter.Advance())) {
-    if (unit->ownerMission40 == nullptr && unit->GetUnitMovementClassId() == 0) {
+    if (unit->ownerMission40 == nullptr &&
+        unit->GetCategory() == EncodeArmyUnitCategory(kArmyUnitCategoryMilitia)) {
       TMission* handler =
           TMission::Find(missionQueue, kMissionTypeDefendProvince, unit->tileIndex06, nullptr);
       handler->AdoptUnitSlot80(unit, 1);
@@ -1652,7 +1654,7 @@ void TAutoGreatPower::PlanAiDevelopmentActionsFromResourcePools(int unused) {
   CIterator unitIter(militaryUnitList44);
   for (TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(unitIter.Reset()); unitIter.More();
        unit = static_cast<TMilitaryUnit*>(unitIter.Advance())) {
-    if (unit->HasEraCapabilityFallbackSlot()) {
+    if (unit->CanUpgrade()) {
       int qualityLevel = unit->field_38 / 100;
       short unitType = unit->orderType;
       if (bestUnitByType[unitType] == 0 ||
@@ -1731,7 +1733,7 @@ void TAutoGreatPower::PlanAiDevelopmentActionsFromResourcePools(int unused) {
       developmentBudget -=
           ComputeAiCityActionCostFromSlotAndMode(static_cast<short>(selectedSlot), 0);
       for (int resourceIndex = 0; resourceIndex < 5; ++resourceIndex) {
-        resourcePools[resourceIndex] -= GetNormalizedCityActionResourceCostPercent(
+        resourcePools[resourceIndex] -= TMilitaryUnit::GetTypeAttribute(
             static_cast<short>(selectedSlot), static_cast<short>(resourceIndex));
       }
     }
@@ -1808,17 +1810,17 @@ bool SelectBestCityDevelopmentFromResourcePools(int nationSlot, int* resourcePoo
             .abilityActiveById[actionSlot] == 0) {
       continue;
     }
-    short category = GetCityActionCategoryCodeBySlot(actionSlot);
-    if (category == 0 || category == 9) {
+    ArmyUnitCategoryStorage category = TMilitaryUnit::GetTypeCategory(actionSlot);
+    if (category == EncodeArmyUnitCategory(kArmyUnitCategoryMilitia) ||
+        category == EncodeArmyUnitCategory(kArmyUnitCategoryGeneral)) {
       continue;
     }
 
     float weightedCost = 0.0f;
     for (short poolIndex = 0; poolIndex < 5; ++poolIndex) {
       if (resourcePools[poolIndex] > 0) {
-        weightedCost +=
-            static_cast<float>(GetNormalizedCityActionResourceCostPercent(actionSlot, poolIndex) *
-                               resourcePools[poolIndex]);
+        weightedCost += static_cast<float>(TMilitaryUnit::GetTypeAttribute(actionSlot, poolIndex) *
+                                           resourcePools[poolIndex]);
       }
     }
     float score = weightedCost / static_cast<TAutoGreatPower*>(g_apNationStates[nationSlot])
@@ -1835,17 +1837,19 @@ bool SelectBestCityDevelopmentFromResourcePools(int nationSlot, int* resourcePoo
   }
 
   for (short unitType = 0; unitType < 30; ++unitType) {
-    short category = GetCityActionCategoryCodeBySlot(unitType);
-    if (category == 0 || category == 9 || bestUnitByType[unitType] == 0) {
+    ArmyUnitCategoryStorage category = TMilitaryUnit::GetTypeCategory(unitType);
+    if (category == EncodeArmyUnitCategory(kArmyUnitCategoryMilitia) ||
+        category == EncodeArmyUnitCategory(kArmyUnitCategoryGeneral) ||
+        bestUnitByType[unitType] == 0) {
       continue;
     }
 
-    short upgradeSlot = bestUnitByType[unitType]->ResolveEraCapabilityFallbackSlot();
+    short upgradeSlot = bestUnitByType[unitType]->UpgradeType();
     float weightedCost = 0.0f;
     for (short poolIndex = 0; poolIndex < 5; ++poolIndex) {
       if (resourcePools[poolIndex] > 0) {
-        int costDelta = GetNormalizedCityActionResourceCostPercent(upgradeSlot, poolIndex) -
-                        GetNormalizedCityActionResourceCostPercent(unitType, poolIndex);
+        int costDelta = TMilitaryUnit::GetTypeAttribute(upgradeSlot, poolIndex) -
+                        TMilitaryUnit::GetTypeAttribute(unitType, poolIndex);
         weightedCost += static_cast<float>(costDelta * resourcePools[poolIndex]);
       }
     }
@@ -1903,7 +1907,7 @@ bool SelectBestCityDevelopmentFromResourcePools(int nationSlot, int* resourcePoo
   } else {
     for (short poolIndex = 0; poolIndex < 5; ++poolIndex) {
       resourcePools[poolIndex] -=
-          GetNormalizedCityActionResourceCostPercent(static_cast<short>(*selectedSlot), poolIndex);
+          TMilitaryUnit::GetTypeAttribute(static_cast<short>(*selectedSlot), poolIndex);
     }
   }
   return true;

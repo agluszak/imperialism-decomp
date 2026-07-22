@@ -2131,7 +2131,9 @@ void TMapDialog::RenderTacticalStackCountIndicatorAndUnitBadge(short tileIndex, 
   short displayedUnitCount = 0;
   for (TMilitaryUnit* current = unit; current != 0;
        current = static_cast<TMilitaryUnit*>(current->nextOnTile)) {
-    if (current->orderType != 0 && current->orderType != 8 && current->orderType != 0x10) {
+    if (current->orderType != EncodeMilitaryUnitKind(kMilitaryUnitMinutemen) &&
+        current->orderType != EncodeMilitaryUnitKind(kMilitaryUnitMilitia) &&
+        current->orderType != EncodeMilitaryUnitKind(kMilitaryUnitConscripts)) {
       ++displayedUnitCount;
     }
   }

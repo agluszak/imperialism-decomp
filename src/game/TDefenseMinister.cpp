@@ -190,11 +190,11 @@ void TDefenseMinister::AssignDefenseUnitsToHomeAndBorderRegions() {
   TSortedList* militaryUnitList = owner->militaryUnitList44;
   for (int unitOrdinal = 1; unitOrdinal <= totalUnitCount; ++unitOrdinal) {
     TUnit* unit = static_cast<TUnit*>(militaryUnitList->GetEntryByOrdinal(unitOrdinal));
-    if (unit->orderType == 2) {
+    if (unit->orderType == EncodeMilitaryUnitKind(kMilitaryUnitRegulars)) {
       bucket1->AddTail(unit);
-    } else if (unit->orderType == 7) {
+    } else if (unit->orderType == EncodeMilitaryUnitKind(kMilitaryUnitArtillery)) {
       bucket2->AddTail(unit);
-    } else if (unit->orderType == 6) {
+    } else if (unit->orderType == EncodeMilitaryUnitKind(kMilitaryUnitLightArtillery)) {
       bucket2->AddTail(unit);
     } else {
       bucket3->AddTail(unit);
@@ -437,7 +437,8 @@ int* TDefenseMinister::BuildHexAreaTileIndexListIntoAllocatedBuffer(char exclude
 
         for (; unit != 0; unit = static_cast<TMilitaryUnit*>(unit->nextOnTile)) {
           short combatClass = g_awUnitCombatClassBySlot[unit->orderType];
-          if (unit->orderType == 6 || unit->orderType == 7) {
+          if (unit->orderType == EncodeMilitaryUnitKind(kMilitaryUnitLightArtillery) ||
+              unit->orderType == EncodeMilitaryUnitKind(kMilitaryUnitArtillery)) {
             if (combatClass >= 0) {
               for (int k = 0; k <= combatClass; ++k) {
                 categoryFlags[k] = 2;

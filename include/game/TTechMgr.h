@@ -88,7 +88,7 @@ public:
   // Per-nation ability-activation row (byte[abilityId], ids 0..0x1d; true base 0x395,
   // tiling exactly between capRowsB333 and capRowsD467). ActivateSlotAndUpdateUI
   // (0x5b0340) sets [abilityId] on activation and clears the replaced slot's ability;
-  // ResolveEraCapabilityFallbackSlot (0x5c35c0) probes candidate upgrades dynamically.
+  // UpgradeType (0x5c35c0) probes candidate upgrades dynamically.
   // Defaults: ids 0..7 = 1 plus 0x18/0x1b = 1. Former per-flag names were specific ids:
   // [0x08] = recruit tier (0x39d gate), [0x10] = elite recruit (0x3a5 gate).
   struct MilitaryCapRow {

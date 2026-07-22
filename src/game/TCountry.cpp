@@ -183,7 +183,7 @@ void TCountry::ReadFrom(TStream* stream) {
     do {
       TMilitaryUnit* militaryOrder = new TMilitaryUnit();
       if (militaryOrder != nullptr) {
-        militaryOrder->InitializeRecruitOrderState(0, 0, this->nationSlot);
+        militaryOrder->IMilitaryUnit(0, 0, this->nationSlot);
         militaryOrder->ReadFrom(stream);
       }
       recruitIndex = recruitIndex + 1;
@@ -278,17 +278,17 @@ void TCountry::SeedInitialMilitaryAndNavyOrdersForOwnedRegions(void) {
       short regionTerrainId = g_pGlobalMapState->cityScoreTable[regionId].cityTileIndex04;
       if ((g_pGlobalMapState->terrainStateTable[regionTerrainId].activeFlags1c & 1) != 0) {
         TMilitaryUnit* order = new TMilitaryUnit();
-        order->InitializeRecruitOrderState(2, regionId, this->nationSlot);
+        order->IMilitaryUnit(2, regionId, this->nationSlot);
         if (g_pSimMgr->difficultyLevel < 2) {
           order->SetOrders(static_cast<UnitOrder>(2), -1);
         }
         order = new TMilitaryUnit();
-        order->InitializeRecruitOrderState(2, regionId, this->nationSlot);
+        order->IMilitaryUnit(2, regionId, this->nationSlot);
         if (g_pSimMgr->difficultyLevel < 2) {
           order->SetOrders(static_cast<UnitOrder>(2), -1);
         }
         order = new TMilitaryUnit();
-        order->InitializeRecruitOrderState(7, regionId, this->nationSlot);
+        order->IMilitaryUnit(7, regionId, this->nationSlot);
         if (g_pSimMgr->difficultyLevel < 2) {
           order->SetOrders(static_cast<UnitOrder>(2), -1);
         }
@@ -297,12 +297,12 @@ void TCountry::SeedInitialMilitaryAndNavyOrdersForOwnedRegions(void) {
             g_apNationStates[this->nationSlot]->diplomacyEligibilityA0 == 0 &&
             g_pSimMgr->difficultyLevel == 4) {
           order = new TMilitaryUnit();
-          order->InitializeRecruitOrderState(6, regionId, this->nationSlot);
+          order->IMilitaryUnit(6, regionId, this->nationSlot);
           if (g_pSimMgr->difficultyLevel < 2) {
             order->SetOrders(static_cast<UnitOrder>(2), -1);
           }
           order = new TMilitaryUnit();
-          order->InitializeRecruitOrderState(5, regionId, this->nationSlot);
+          order->IMilitaryUnit(5, regionId, this->nationSlot);
           if (g_pSimMgr->difficultyLevel < 2) {
             order->SetOrders(static_cast<UnitOrder>(2), -1);
           }
@@ -342,12 +342,12 @@ void TCountry::SeedInitialMilitaryAndNavyOrdersForOwnedRegions(void) {
         this->CreateMilitaryRecruitOrderForNode(regionId);
         if (this->nationSlot >= 7) {
           TMilitaryUnit* lateOrder = new TMilitaryUnit();
-          lateOrder->InitializeRecruitOrderState(7, regionId, this->nationSlot);
+          lateOrder->IMilitaryUnit(7, regionId, this->nationSlot);
         }
       }
       if (*g_pGlobalMapState->scenarioTagText1c == '+') {
         TMilitaryUnit* bonusOrder = new TMilitaryUnit();
-        bonusOrder->InitializeRecruitOrderState(2, regionId, this->nationSlot);
+        bonusOrder->IMilitaryUnit(2, regionId, this->nationSlot);
         bonusOrder->SetOrders(static_cast<UnitOrder>(2), -1);
       }
       ++ordinal;
@@ -590,7 +590,7 @@ void TCountry::AssignDisplayNamesToUnnamedMilitaryUnits(void) {
     TMilitaryUnit* unit =
         static_cast<TMilitaryUnit*>(this->militaryUnitList44->GetEntryByOrdinal(ordinal));
     if (unit->field_1A == 0) {
-      if (unit->orderType < 0x1b) {
+      if (unit->orderType < EncodeMilitaryUnitKind(kMilitaryUnitGeneralEra1)) {
         CString ordinalText;
         CString typeName;
         CString composedName;
@@ -705,7 +705,7 @@ void TCountry::QueueRecruitOrdersForUndergarrisonedRegions(void) {
           static_cast<int>(regionId) * 0xa8);
     }
     for (; unitChain != 0; unitChain = static_cast<TMilitaryUnit*>(unitChain->nextOnTile)) {
-      if (unitChain->GetUnitMovementClassId() == 0) {
+      if (unitChain->GetCategory() == EncodeArmyUnitCategory(kArmyUnitCategoryMilitia)) {
         garrisonCount = static_cast<short>(garrisonCount + 1);
       }
     }

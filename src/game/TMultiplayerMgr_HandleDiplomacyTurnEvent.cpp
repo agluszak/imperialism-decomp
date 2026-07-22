@@ -659,7 +659,7 @@ void TMultiplayerMgr::CreateMilitaryRecruitOrdersForSelectedTerrain(TStream* str
     short recruitOrderCount = stream->ReadShort();
     for (int recruitOrderIdx = recruitOrderCount; recruitOrderIdx != 0; --recruitOrderIdx) {
       TMilitaryUnit* recruitOrder = new TMilitaryUnit();
-      recruitOrder->InitializeRecruitOrderState(0, -1, static_cast<short>(terrainSlot), 0);
+      recruitOrder->IMilitaryUnit(0, -1, static_cast<short>(terrainSlot), 0);
       recruitOrder->ReadFrom(stream);
       recruitOrder->AssertValid();
     }

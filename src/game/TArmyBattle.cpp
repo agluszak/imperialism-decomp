@@ -125,7 +125,7 @@ void TArmyBattle::ReadFrom(TStream* stream) {
   while (static_cast<short>(unitRecordCount--) != 0) {
     int unitId;
     stream->ReadBytes(&unitId, 4);
-    TMilitaryUnit* sourceUnit = FindMilitaryUnitByIdAcrossTerrainDescriptors(unitId);
+    TMilitaryUnit* sourceUnit = TMilitaryUnit::FindUnitByUID(unitId);
     TArmyTacUnit* record = new TArmyTacUnit();
     // Field-fill mirrors the TArmyTacUnit base-state init (0x5a5f20) exactly (same
     // store order) -- the original duplicated this init here.

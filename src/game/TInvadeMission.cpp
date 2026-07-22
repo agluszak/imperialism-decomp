@@ -114,7 +114,7 @@ char TInvadeMission::SmokeEmIfYouGotEm() {
   CIterator iter(orderListAt18);
   for (void* item = iter.Reset(); iter.More(); item = iter.Advance()) {
     TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(item);
-    if (unit->GetUnitMovementClassId() != 0) {
+    if (unit->GetCategory() != EncodeArmyUnitCategory(kArmyUnitCategoryMilitia)) {
       RejectConstituent(unit, 1);
     }
   }
@@ -195,7 +195,7 @@ float TInvadeMission::CalculatePriority() {
   CIterator costIterator(orderListAt18);
   for (TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(costIterator.Reset()); costIterator.More();
        unit = static_cast<TMilitaryUnit*>(costIterator.Advance())) {
-    currentUnitCost += static_cast<float>(unit->GetUnitTypeCostPoints());
+    currentUnitCost += static_cast<float>(unit->GetArmsCarried());
   }
 
   int resourcePools[9] = {0, 0, 0, 0, 0, 0, 0, 0, 0};
@@ -205,7 +205,7 @@ float TInvadeMission::CalculatePriority() {
   for (TMilitaryUnit* selectedUnit = static_cast<TMilitaryUnit*>(unitIterator.Reset());
        unitIterator.More(); selectedUnit = static_cast<TMilitaryUnit*>(unitIterator.Advance())) {
     selectedUnit->AssertValid();
-    short weightIndex = selectedUnit->IsNotStationedInProvince(GetPresentLocation());
+    short weightIndex = selectedUnit->GetTurnDistanceTo(GetPresentLocation());
     if (weightIndex > 5) {
       weightIndex = 5;
     }
@@ -233,7 +233,7 @@ float TInvadeMission::CalculatePriority() {
   while (SelectBestCityDevelopmentFromResourcePools(nationId04, resourcePools, bestUnitByType,
                                                     &selectedIsIndustry, &selectedIsUpgrade,
                                                     &selectedSlot, 0, 0)) {
-    cityActionCost += static_cast<float>(GetCityActionGateValueBySlot(selectedSlot));
+    cityActionCost += static_cast<float>(TMilitaryUnit::GetTypeArmsCarried(selectedSlot));
   }
 
   if (cityActionCost > currentUnitCost) {
@@ -307,7 +307,7 @@ int TInvadeMission::AccumulateLack(int* accumulatedLack, unsigned char includeEx
   for (void* item = iter.Reset(); iter.More(); item = iter.Advance()) {
     TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(item);
     unit->AssertValid();
-    short weightIndex = unit->IsNotStationedInProvince(GetPresentLocation());
+    short weightIndex = unit->GetTurnDistanceTo(GetPresentLocation());
     if (weightIndex > 5) {
       weightIndex = 5;
     }

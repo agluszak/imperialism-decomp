@@ -100,7 +100,7 @@ inline void TArmyMission::AccumulateOrderPriorityVector(float* vector) const {
   for (void* item = iter.Reset(); iter.More(); item = iter.Advance()) {
     TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(item);
     unit->AssertValid();
-    short weightIndex = unit->IsNotStationedInProvince(GetPresentLocation());
+    short weightIndex = unit->GetTurnDistanceTo(GetPresentLocation());
     if (weightIndex > 5) {
       weightIndex = 5;
     }
@@ -184,8 +184,8 @@ char TArmyMission::SmokeEmIfYouGotEm() {
     void* item = iter.Reset();
     while (iter.More()) {
       TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(item);
-      short movementClass = unit->GetUnitMovementClassId();
-      if (movementClass != 0) {
+      ArmyUnitCategoryStorage category = unit->GetCategory();
+      if (category != EncodeArmyUnitCategory(kArmyUnitCategoryMilitia)) {
         RejectConstituent(unit, 1);
       }
       item = iter.Advance();
@@ -227,7 +227,7 @@ int TArmyMission::AccumulateLack(int* accumulatedLack, unsigned char includeExis
   for (void* item = iter.Reset(); iter.More(); item = iter.Advance()) {
     TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(item);
     unit->AssertValid();
-    short weightIndex = unit->IsNotStationedInProvince(GetPresentLocation());
+    short weightIndex = unit->GetTurnDistanceTo(GetPresentLocation());
     if (weightIndex > 5) {
       weightIndex = 5;
     }
@@ -263,7 +263,7 @@ void TArmyMission::ProjectEquipage(float* vector, short targetTile, short bypass
   for (void* item = iter.Reset(); iter.More(); item = iter.Advance()) {
     TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(item);
     unit->AssertValid();
-    if (targetTile == -1 || unit->MatchesTargetTileOrBypass(bypassTileFilter, targetTile)) {
+    if (targetTile == -1 || unit->IsWithinXTurnsOf(bypassTileFilter, targetTile)) {
       AccumulateUnitOrderPriorityVectorContribution(
           unit, vector, 1.0f,
           static_cast<float>(g_pGlobalMapState->GetProvinceUnitOrderWeight(GetPresentLocation())));
@@ -289,7 +289,7 @@ float TArmyMission::ProjectSatisfaction(short bypassTileFilter) const {
 void TArmyMission::AccumulateMissionUnitPriorityContributionWithScaleMode(TMilitaryUnit* unit,
                                                                           float* vector,
                                                                           bool scaleMode) {
-  short weightIndex = unit->IsNotStationedInProvince(GetPresentLocation());
+  short weightIndex = unit->GetTurnDistanceTo(GetPresentLocation());
   if (weightIndex > 5) {
     weightIndex = 5;
   }
@@ -305,17 +305,17 @@ void TArmyMission::AccumulateMissionUnitPriorityContributionWithScaleMode(TMilit
 void AccumulateUnitOrderPriorityVectorContribution(TMilitaryUnit* unit, float* vector, float scale,
                                                    float weight) {
   short quality = unit->field_38;
-  short stat5 = unit->GetUnitTypeStatPercent(5);
+  short stat5 = unit->GetAttribute(5);
   short strength = unit->field_34;
   float dampen = 1.0f - static_cast<float>(stat5) * weight * -0.0001f;
   scale = static_cast<float>(strength) * 0.002f *
           (1.0f - static_cast<float>(static_cast<short>(quality / 100)) * -0.1f) * scale;
   vector[0] = vector[0] - static_cast<float>(strength) * -0.002f *
-                              static_cast<float>(unit->GetUnitTypeStatPercent(0)) * scale * dampen;
-  vector[1] = static_cast<float>(unit->GetUnitTypeStatPercent(1)) * scale * dampen + vector[1];
-  vector[2] = static_cast<float>(unit->GetUnitTypeStatPercent(2)) * scale + vector[2];
-  vector[3] = static_cast<float>(unit->GetUnitTypeStatPercent(3)) * scale + vector[3];
-  vector[4] = static_cast<float>(unit->GetUnitTypeStatPercent(4)) * scale * dampen + vector[4];
+                              static_cast<float>(unit->GetAttribute(0)) * scale * dampen;
+  vector[1] = static_cast<float>(unit->GetAttribute(1)) * scale * dampen + vector[1];
+  vector[2] = static_cast<float>(unit->GetAttribute(2)) * scale + vector[2];
+  vector[3] = static_cast<float>(unit->GetAttribute(3)) * scale + vector[3];
+  vector[4] = static_cast<float>(unit->GetAttribute(4)) * scale * dampen + vector[4];
 }
 
 // FUNCTION: IMPERIALISM 0x0053cda0
@@ -328,7 +328,7 @@ void TArmyMission::GetWeightedEquipage(float* vector) const {
   for (TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(iter.Reset()); iter.More();
        unit = static_cast<TMilitaryUnit*>(iter.Advance())) {
     unit->AssertValid();
-    short weightIndex = unit->IsNotStationedInProvince(GetPresentLocation());
+    short weightIndex = unit->GetTurnDistanceTo(GetPresentLocation());
     if (weightIndex > 5) {
       weightIndex = 5;
     }
@@ -362,7 +362,7 @@ float TArmyMission::ComputeArmyMissionScoreDeltaWithCandidateUnit(TMilitaryUnit*
   float vector[5] = {0.0f, 0.0f, 0.0f, 0.0f, 0.0f};
   AccumulateOrderPriorityVector(vector);
 
-  short weightIndex = candidateUnit->IsNotStationedInProvince(GetPresentLocation());
+  short weightIndex = candidateUnit->GetTurnDistanceTo(GetPresentLocation());
   if (weightIndex > 5) {
     weightIndex = 5;
   }
@@ -390,7 +390,7 @@ float TArmyMission::ComputeArmyMissionScoreDeltaWithScaledCandidateUnit(
   float vector[5] = {0.0f, 0.0f, 0.0f, 0.0f, 0.0f};
   AccumulateOrderPriorityVector(vector);
 
-  short weightIndex = candidateUnit->IsNotStationedInProvince(GetPresentLocation());
+  short weightIndex = candidateUnit->GetTurnDistanceTo(GetPresentLocation());
   if (weightIndex > 5) {
     weightIndex = 5;
   }
@@ -444,7 +444,7 @@ float TArmyMission::FitnessOf(TMilitaryUnit* candidateUnit, float* referenceVect
     }
   }
 
-  short weightIndex = candidateUnit->IsNotStationedInProvince(GetPresentLocation());
+  short weightIndex = candidateUnit->GetTurnDistanceTo(GetPresentLocation());
   if (weightIndex > 5) {
     weightIndex = 5;
   }

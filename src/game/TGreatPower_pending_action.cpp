@@ -29,8 +29,7 @@ void TCountry::CreateMilitaryRecruitOrderForNode(int nodeContext) {
     }
   }
   TMilitaryUnit* militaryOrder = new TMilitaryUnit();
-  militaryOrder->InitializeRecruitOrderState(static_cast<short>(capabilityBonus), nodeContext,
-                                             this->nationSlot);
+  militaryOrder->IMilitaryUnit(static_cast<short>(capabilityBonus), nodeContext, this->nationSlot);
   militaryOrder->SetOrders(static_cast<UnitOrder>(2), -1);
 }
 
@@ -46,7 +45,7 @@ void TGreatPower::ExecuteNationPendingActionStateMachine(void) {
     TMilitaryUnit* militaryOrder = new TMilitaryUnit();
     int nodeContext = this->GetHomeRegionCityRecordIndex();
     short capValue = g_pCityOrderCapabilityState->nationCapRows1e8[nationSlot].slots[9];
-    militaryOrder->InitializeRecruitOrderState(capValue, nodeContext, nationSlot);
+    militaryOrder->IMilitaryUnit(capValue, nodeContext, nationSlot);
     this->DispatchTurnOrderActionSlotB0(3, capValue, 1);
   }
 

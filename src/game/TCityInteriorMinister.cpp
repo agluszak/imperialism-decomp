@@ -2544,15 +2544,15 @@ bool TCityInteriorMinister::TryApplyCityOrderCapabilitySelectionBySlot(short cap
   CIterator unitCursor(ownerContextAt04->militaryUnitList44);
   TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(unitCursor.Reset());
   while (unitCursor.More()) {
-    if (unit->ResolveEraCapabilityFallbackSlot() == capabilitySlot) {
-      if (unit->ApplyEraCapabilityCostAndSetSelection()) {
+    if (unit->UpgradeType() == capabilitySlot) {
+      if (unit->Upgrade()) {
         return true;
       }
       short candidateSlot;
       short armsCost;
       short cashCost;
       short fuelCost;
-      unit->GetEraCapabilityFallbackCosts(&candidateSlot, &armsCost, &cashCost, &fuelCost);
+      unit->UpgradeRequirements(candidateSlot, armsCost, cashCost, fuelCost);
       RequestResource(16, armsCost, 7);
       RequestResource(12, fuelCost, 7);
       return false;
@@ -2560,8 +2560,9 @@ bool TCityInteriorMinister::TryApplyCityOrderCapabilitySelectionBySlot(short cap
     unit = static_cast<TMilitaryUnit*>(unitCursor.Advance());
   }
 
-  short actionCategory = GetCityActionCategoryCodeBySlot(capabilitySlot);
-  if (actionCategory == 8 || actionCategory == 9) {
+  ArmyUnitCategoryStorage actionCategory = TMilitaryUnit::GetTypeCategory(capabilitySlot);
+  if (actionCategory == EncodeArmyUnitCategory(kArmyUnitCategoryDemolitionist) ||
+      actionCategory == EncodeArmyUnitCategory(kArmyUnitCategoryGeneral)) {
     return false;
   }
 
@@ -2569,15 +2570,16 @@ bool TCityInteriorMinister::TryApplyCityOrderCapabilitySelectionBySlot(short cap
   while (unitCursor.More()) {
     if (g_cityActionCapabilityGroupBySlot_00650670[unit->orderType] ==
             g_cityActionCapabilityGroupBySlot_00650670[capabilitySlot] &&
-        unit->GetUnitMovementClassId() != 0 && unit->ResolveEraCapabilityFallbackSlot() != -1) {
-      if (unit->ApplyEraCapabilityCostAndSetSelection()) {
+        unit->GetCategory() != EncodeArmyUnitCategory(kArmyUnitCategoryMilitia) &&
+        unit->UpgradeType() != -1) {
+      if (unit->Upgrade()) {
         return true;
       }
       short candidateSlot;
       short armsCost;
       short cashCost;
       short fuelCost;
-      unit->GetEraCapabilityFallbackCosts(&candidateSlot, &armsCost, &cashCost, &fuelCost);
+      unit->UpgradeRequirements(candidateSlot, armsCost, cashCost, fuelCost);
       RequestResource(16, armsCost, 7);
       RequestResource(12, fuelCost, 7);
       return false;

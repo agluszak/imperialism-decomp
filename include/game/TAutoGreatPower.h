@@ -142,8 +142,8 @@ public:
                      int relatedMapNodeIndex);
   void RemoveMission(eMissionType missionType, int key, TZone* zoneContext);
   void MReassess();
-  // For every unassigned (ownerMission40 == nullptr) non-naval (GetUnitMovementClassId()
-  // == 0) unit in militaryUnitList44, finds the queued mission (kind 3, keyed by the
+  // For every unassigned (ownerMission40 == nullptr) militia-category unit in
+  // militaryUnitList44, finds the queued mission (kind 3, keyed by the
   // unit's own tileIndex06) in missionQueue and adopts the unit into it. 0x4eafa0.
   void SeedTrackedEntryAssignmentsFromEligibleUnits();
   void QueueMapActionMissionsForPortZoneCandidates();

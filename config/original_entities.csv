@@ -1492,7 +1492,7 @@ address|name|symbol|size|type|prototype|provenance
 4a4260|TArmyMgr::OrphanCallChain_C1_I34_004a4260||90|function|undefined OrphanCallChain_C1_I34_004a4260(void)|
 4a43f0|TArmyMgr::ActivateFirstIdleTacticalUnitByCategoryAtTile||122|function|short __thiscall ActivateFirstIdleTacticalUnitByCategoryAtTile(short categoryId,short tileIndex)|
 4a4490|TArmyMgr::ActivateFirstActiveTacticalUnitByCategoryAtTile||135|function|short __thiscall ActivateFirstActiveTacticalUnitByCategoryAtTile(short categoryId,short tileIndex)|
-4a4550|ForwardGetUnitMovementClassId_At004a4550||104|function|undefined ForwardGetUnitMovementClassId_At004a4550()|
+4a4550|ForwardGetCategory_At004a4550||104|function|undefined ForwardGetCategory_At004a4550()|
 4a45e0|SetActiveProvinceSelection||180|function|undefined SetActiveProvinceSelection()|
 4a46d0|ClearProvinceSelectionHighlightsForNation||108|function|undefined ClearProvinceSelectionHighlightsForNation()|
 4a4760|FindNextSelectableProvinceForNation||195|function|undefined FindNextSelectableProvinceForNation()|
@@ -5930,25 +5930,25 @@ address|name|symbol|size|type|prototype|provenance
 5c2df0|TMilitaryUnit::TMilitaryUnit||175|function|undefined TMilitaryUnit()|
 5c2ed0|TMilitaryUnit::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 5c2f00|TMilitaryUnit::~TMilitaryUnit||62|function|void __thiscall ~TMilitaryUnit()|
-5c2f50|TMilitaryUnit::InitializeRecruitOrderState||96|function|void __thiscall InitializeRecruitOrderState(short capValue,int nodeContext,short nationSlot)|
+5c2f50|TMilitaryUnit::IMilitaryUnit||96|function|void __thiscall IMilitaryUnit(MilitaryUnitKindStorage unitKind, int nodeContext, short nationSlot, short registerArg3)|mac_oracle
 5c2fd0|TMilitaryUnit::ReadFrom||145|function|void __thiscall ReadFrom(TStream* stream)|
 5c30a0|TMilitaryUnit::WriteTo||190|function|void __thiscall WriteTo(TStream* stream)|
-5c3190|TMilitaryUnit::CopyUnitCurrentTileIntoOrderTargets||32|function|void __thiscall CopyUnitCurrentTileIntoOrderTargets(void)|
+5c3190|TMilitaryUnit::ClearPath||32|function|void __thiscall ClearPath(void)|mac_oracle
 5c31c0|TMilitaryUnit::DetachUnitOrderFromOwnerAndReset||39|function|void __thiscall DetachUnitOrderFromOwnerAndReset()|
 5c3200|TMilitaryUnit::VTableSlot10||395|function|void __thiscall VTableSlot10(int pOwnerContext)|
-5c3400|GetUnitTypeCostPoints||60|function|undefined GetUnitTypeCostPoints()|
-5c3450|GetCityActionGateValueBySlot||35|function|undefined GetCityActionGateValueBySlot()|
-5c3490|GetUnitMovementClassId||13|function|undefined GetUnitMovementClassId()|
-5c34b0|GetCityActionCategoryCodeBySlot||14|function|undefined GetCityActionCategoryCodeBySlot()|
-5c34d0|IsNotStationedInProvince||17|function|undefined IsNotStationedInProvince()|
-5c3500|AccumulateMissionUnitPriorityVectorWithOptionalFilter_Impl||30|function|undefined AccumulateMissionUnitPriorityVectorWithOptionalFilter_Impl()|
-5c3530|GetUnitTypeStatPercent||49|function|undefined GetUnitTypeStatPercent()|
-5c3580|GetNormalizedCityActionResourceCostPercent||48|function|undefined GetNormalizedCityActionResourceCostPercent()|
-5c35c0|TMilitaryUnit::ResolveEraCapabilityFallbackSlot||103|function|short ResolveEraCapabilityFallbackSlot()|
-5c3650|TMilitaryUnit::HasEraCapabilityFallbackSlot||13|function|bool HasEraCapabilityFallbackSlot(void)|
-5c3670|TMilitaryUnit::ApplyEraCapabilityCostAndSetSelection||357|function|bool ApplyEraCapabilityCostAndSetSelection()|
-5c3840|WrapperFor_ResolveEraCapabilityFallbackSlot_At005c3840||113|function|undefined WrapperFor_ResolveEraCapabilityFallbackSlot_At005c3840()|
-5c38e0|FindMilitaryUnitByIdAcrossTerrainDescriptors||133|function|undefined InitializeBattleSetupArmyStacksAndPopulateSelectionState_Impl()|
+5c3400|TMilitaryUnit::GetArmsCarried||60|function|short __thiscall GetArmsCarried(void) const|mac_oracle
+5c3450|TMilitaryUnit::GetTypeArmsCarried||35|function|short __cdecl GetTypeArmsCarried(int unitTypeSlot)|mac_oracle
+5c3490|TMilitaryUnit::GetCategory||13|function|ArmyUnitCategoryStorage __thiscall GetCategory(void) const|mac_oracle
+5c34b0|TMilitaryUnit::GetTypeCategory||14|function|ArmyUnitCategoryStorage __cdecl GetTypeCategory(MilitaryUnitKindStorage unitTypeSlot)|mac_oracle
+5c34d0|TMilitaryUnit::GetTurnDistanceTo||17|function|short __thiscall GetTurnDistanceTo(short provinceId) const|mac_oracle
+5c3500|TMilitaryUnit::IsWithinXTurnsOf||30|function|bool __thiscall IsWithinXTurnsOf(short turnLimit, short targetTile) const|mac_oracle
+5c3530|TMilitaryUnit::GetAttribute||49|function|short __thiscall GetAttribute(short statIndex) const|mac_oracle
+5c3580|TMilitaryUnit::GetTypeAttribute||48|function|short __cdecl GetTypeAttribute(MilitaryUnitKindStorage unitTypeSlot, short statIndex)|mac_oracle
+5c35c0|TMilitaryUnit::UpgradeType||103|function|MilitaryUnitKindStorage __thiscall UpgradeType(void)|mac_oracle
+5c3650|TMilitaryUnit::CanUpgrade||13|function|bool __thiscall CanUpgrade(void)|mac_oracle
+5c3670|TMilitaryUnit::Upgrade||357|function|bool __thiscall Upgrade(void)|mac_oracle
+5c3840|TMilitaryUnit::UpgradeRequirements||113|function|void __thiscall UpgradeRequirements(short& candidateSlot, short& armsCost, short& cashCost, short& fuelCost)|mac_oracle
+5c38e0|TMilitaryUnit::FindUnitByUID||133|function|TMilitaryUnit* __cdecl FindUnitByUID(int unitId)|mac_oracle
 5c3ad0|WrapperFor_ftol_At005c3ad0||30|function|undefined WrapperFor_ftol_At005c3ad0()|
 5c3b00|WrapperFor_thunk_GetTickCountDiv16_At005c3b00||15|function|undefined WrapperFor_thunk_GetTickCountDiv16_At005c3b00()|
 5c3b40|Function_005c3b40||19|function|undefined4 Function_005c3b40(void)|

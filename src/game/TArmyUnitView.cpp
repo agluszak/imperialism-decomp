@@ -137,7 +137,7 @@ void TArmyUnitView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
       g_pUiRuntimeContext->RefreshMainViewNationIndicatorForCurrentTurnEvent();
     }
   } else if (sourceHandler->controlTag == kControlTagUpgr) {
-    if (militaryUnit60->ApplyEraCapabilityCostAndSetSelection()) {
+    if (militaryUnit60->Upgrade()) {
       TView* sourceView = static_cast<TView*>(sourceHandler);
       sourceView->SetEnabled(0, 1);
       SetControlHoverHelpTextAltEntry(CString(g_pMiniCivSharedText_0064cb18), sourceView);

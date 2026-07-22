@@ -107,7 +107,7 @@ char TAttackProvinceMission::SmokeEmIfYouGotEm() {
           CIterator queueIter(orderListAt18);
           for (unit = static_cast<TMilitaryUnit*>(queueIter.Reset()); queueIter.More();
                unit = static_cast<TMilitaryUnit*>(queueIter.Advance())) {
-            if (unit->GetUnitMovementClassId() != 0) {
+            if (unit->GetCategory() != EncodeArmyUnitCategory(kArmyUnitCategoryMilitia)) {
               RejectConstituent(unit, 1);
             }
           }
@@ -122,7 +122,7 @@ char TAttackProvinceMission::SmokeEmIfYouGotEm() {
   CIterator queueIter(orderListAt18);
   for (TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(queueIter.Reset()); queueIter.More();
        unit = static_cast<TMilitaryUnit*>(queueIter.Advance())) {
-    if (unit->GetUnitMovementClassId() != 0) {
+    if (unit->GetCategory() != EncodeArmyUnitCategory(kArmyUnitCategoryMilitia)) {
       RejectConstituent(unit, 1);
     }
   }
@@ -395,7 +395,7 @@ void TAttackProvinceMission::CalculateNeeds() {
 // FUNCTION: IMPERIALISM 0x0053e500
 float TAttackProvinceMission::FitnessOf(TMilitaryUnit* candidateUnit, float* referenceVector) {
   if (referenceVector[2] > 0.0f) {
-    if (candidateUnit->GetUnitTypeStatPercent(2) < 10) {
+    if (candidateUnit->GetAttribute(2) < 10) {
       return -1000.0f;
     }
   }

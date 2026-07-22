@@ -59,7 +59,7 @@ void TArmyToolbar::SetProvince(short provinceIndex) {
         ++totalUnitCounts[g_anArmyToolbarCategoryByUnitType[unit->orderType]];
         break;
       }
-      if (unit->HasEraCapabilityFallbackSlot()) {
+      if (unit->CanUpgrade()) {
         hasUpgradeableUnit = 1;
       }
     }

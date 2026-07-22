@@ -63,7 +63,7 @@ public:
   float ProjectSatisfaction(short bypassTileFilter) const; // 0x53cac0
 
   // Adds one unit's contribution directly into `vector` (no accumulation loop): weight-
-  // table lookup by clamped IsNotStationedInProvince distance from GetPresentLocation,
+  // table lookup by clamped GetTurnDistanceTo distance from GetPresentLocation,
   // scaled by GetProvinceUnitOrderWeight, with an explicit sign
   // (true adds, false subtracts) instead of the fixed +1.0 the loop-based accumulators use.
   // 0x53cb50, __thiscall, RET 0xC.

@@ -10,6 +10,7 @@
 #include <new.h> // _PNH (CRT new-handler type)
 
 #include "game/mfc.h"
+#include "game/military_domain_types.h"
 #include <afxtempl.h>
 #include "game/app_init_globals.h"
 #include "game/TCountry.h"
@@ -131,7 +132,7 @@ extern "C" float g_fScatteredShipsMissionDefaultScore;
 // TShip navy-order contribution percentages, normalized against
 // g_Populate_Beachhead_Mission_LookupTable_00697958), a "mobile units"
 // divergence/score pair (from militaryUnitList44 entries with a nonzero
-// GetUnitMovementClassId, normalized against g_awTacticalCompositionReferenceProfiles_00697870),
+// GetCategory, normalized against g_awTacticalCompositionReferenceProfiles_00697870),
 // a "combined units" divergence (mobile + static units), and a final
 // military-power-weighted order score.
 extern "C" float g_afNationOrderQueueDivergence_006a3a88[7];
@@ -175,21 +176,15 @@ void FormatLocalizedCommodityCountLabelByIndex(CString* out, unsigned int commod
 
 // Per-unit-type military stat records (7 shorts per type, record base 0x695cd2):
 // column 0 = category flag (0x10 = counted toward power/cost), column 1 = power/cost
-// points. See TMilitaryUnit::GetUnitTypeCostPoints (0x5c3400).
+// points. See TMilitaryUnit::GetArmsCarried (0x5c3400).
 
 // Per-unit-type stat table (7 shorts per type; unit types 0x00-0x1d) and per-stat
-// divisor baseline used by TMilitaryUnit::GetUnitTypeStatPercent (0x5c3530).
+// divisor baseline used by TMilitaryUnit::GetAttribute (0x5c3530).
 extern "C" short g_UnitTypeStatTable_0066EB88[30][7];
 extern "C" short g_UnitTypeStatDivisorTable_0066ED30[7];
 
-// Standalone (slot-indexed) accessors over the two unit-type tables above; siblings of the
-// TMilitaryUnit::GetUnitTypeCostPoints / GetUnitTypeStatPercent methods but taking the index
-// directly. 0x5c3450 / 0x5c3580.
-short GetCityActionGateValueBySlot(int slot);
-short GetNormalizedCityActionResourceCostPercent(short unitType, short statIndex);
-// 0x5c34b0: g_awTacticalUnitCategoryCodeBySlot[slot] (standalone sibling of
-// TMilitaryUnit::GetUnitMovementClassId, which uses this->orderType).
-short GetCityActionCategoryCodeBySlot(short slot);
+// TMilitaryUnit exposes the listing-backed instance and static accessors over
+// these tables; their declarations live on the owning class.
 // 0x54fee0: g_aCategoryMetricBaselineAverage[index] (returns the int metric, not a pointer
 // despite Ghidra's placeholder name).
 int GetNavyContextPointerFromGlobalTableByIndex(int index);
@@ -242,7 +237,7 @@ extern short g_mapCursorTokenByStateIndex_00695668[12];
 extern short g_civilianMapCursorTokenByStateIndex_00695680[12];
 // Per-unit-type tactical category code (slot 0x11 garrison sweep).
 extern int g_anUnitTypeTacticalRangeByType_006699E8[30];
-extern short g_awTacticalUnitCategoryCodeBySlot[];
+extern ArmyUnitCategoryStorage g_awTacticalUnitCategoryCodeBySlot[];
 extern int g_nTacticalTileWidthPx_006A5430;
 extern int g_nTacticalTileRowHeightPx_006A5434;
 extern int g_nTacticalBattlefieldSurfaceWidth_006A5448;

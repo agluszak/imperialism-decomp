@@ -229,11 +229,11 @@ public:
 
   // Walks the region's stationed-unit chain (Province::stationedUnitChain98,
   // via TUnit::nextOnTile) for one whose unitOrder is idle and whose
-  // TMilitaryUnit::GetUnitMovementClassId() is nonzero. 0x004a4550, __thiscall (this unused --
+  // TMilitaryUnit::GetCategory() is nonzero. 0x004a4550, __thiscall (this unused --
   // operates purely off g_pGlobalMapState), 1 arg.
   bool HasEligibleStationedUnitInRegion(short regionId);
 
-  // Sums TMilitaryUnit::GetUnitTypeCostPoints() over the same eligible-unit walk as
+  // Sums TMilitaryUnit::GetArmsCarried() over the same eligible-unit walk as
   // CommitCityActionGateCostIfAffordable (idle unit, nonzero movement class) for
   // pendingMapActionIndex's tile, without the affordability/commit side effects --
   // used purely to display the pending action-gate cost. 0x004a41d0, __thiscall
@@ -300,7 +300,7 @@ public:
   // cityScoreTable[cityRecordIndex]'s adjacent regions (adjacentRegionIds0A[0..
   // adjacentRegionCount08)) owned by the active nation (TMapMgr::
   // ResolveTileOwnerNationCodeNormalized == TSimMgr::GetActiveNationId), and over their
-  // stationedUnitChain98 picks the highest-scoring TMilitaryUnit with orderType > 0x1a
+  // stationedUnitChain98 picks the highest-scoring General TMilitaryUnit
   // (score = field_38/100 + 1); ties keep the first found. If no adjacent region is
   // owned (or none qualifies), falls back to the region's own city display name
   // (TMapMgr::AssignCityRecordDisplayName). Phase 2 separately scans
@@ -319,7 +319,7 @@ public:
   // from cityRecordIndex+TSimMgr::GetEconomicTurn()+GetActiveNationId(): the first roll
   // picks a 0-2 "point cost". The second result is biased by 3: selector 4 uses the
   // fixed "misc" bucket, selector 5 rolls uniformly over buckets 0-9, and the default
-  // uses the unit's GetUnitMovementClassId(). Singular/plural localized names come from
+  // uses the unit's GetCategory(). Singular/plural localized names come from
   // string group 0x2726 (offset i vs i+11). Returns false only when Phase 1/2 found
   // nothing at all (bestScore == -1, i.e. zero adjacent regions AND no owned ship in
   // zone).
@@ -344,13 +344,13 @@ public:
   //    g_apNationStates[nationId]'s order list (TCountry::militaryUnitList44, a
   //    TSortedList* of TMilitaryUnit*), and AddTail()s every entry whose tileIndex06
   //    isn't a movement-class tile (TileHasMovementClassId) for cityIndex when its
-  //    field_C == cityIndex, summing GetUnitTypeCostPoints per entry into a budget.
+  //    field_C == cityIndex, summing GetArmsCarried per entry into a budget.
   //  - Subtracts g_pNavyOrderManager->GetInvasionCapacity(
   //    nationId, &g_pGlobalMapState->cityScoreTable[cityIndex], 0) from that
   //    budget; if the remainder is positive, randomly evicts entries from the TList
   //    (rand() % GetCount() + 1 via GetEntryByOrdinal) until the remainder is <= 0, each
   //    time looking the evicted TMilitaryUnit* up in the TList's underlying CPtrList via
-  //    CPtrList::Find/RemoveAt, re-subtracting its GetUnitTypeCostPoints, and stamping
+  //    CPtrList::Find/RemoveAt, re-subtracting its GetArmsCarried, and stamping
   //    TUnit::field_34 to 0xffaa as a scratch "evicted" marker (field_34 is otherwise a
   //    persisted strength scalar -- reused here since the unit is about to be destroyed).
   //  - Grows snapshot->childRecords[side] (MapOrderBattleSideChildRecord array,
