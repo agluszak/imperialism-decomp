@@ -27,6 +27,7 @@ from tools.workflow.macos_resource_evidence import validate_view_structure
 MANIFEST_PATH = "config/ui_factory_codegen.yml"
 IR_PATH = "vendor/macos_codewarrior/evidence/resources/ui_views.json"
 STRINGS_PATH = "vendor/macos_codewarrior/evidence/resources/strings.csv"
+TEXT_RESOURCES_PATH = "vendor/macos_codewarrior/evidence/resources/text_resources.json"
 WINDOWS_VIEW_PATH = "config/ui_factory_windows_views.yml"
 FORMAT_VERSION = 1
 
@@ -61,6 +62,19 @@ CLASS_ALIASES = {
 LAYOUT_FAMILIES = frozenset(
     ("pict", "cntl", "stat", "clus", "edit", "nmbr", "radb", "chkb")
 )
+
+# Font Manager IDs retained by the Windows builder ABI.  The historical
+# binary-backed recipes confirm A/Geneva -> 3 and Helvetica -> 21; the other
+# named entries are the corresponding classic system-font IDs.  An unknown or
+# inherited font stays zero instead of inventing a Windows substitution.
+MAC_FONT_FAMILY_IDS = {
+    "": 0,
+    "a": 3,
+    "chicago": 0,
+    "geneva": 3,
+    "helvetica": 21,
+    "palatino": 16,
+}
 
 
 @dataclass(frozen=True)
@@ -195,7 +209,13 @@ class UiSemanticView:
     source: str
 
 
-TextResources = dict[tuple[str, int, int], str]
+@dataclass(frozen=True)
+class TextResources:
+    strings: dict[tuple[str, int, int], str]
+    styles: dict[tuple[str, int], dict]
+
+    def __getitem__(self, key: tuple[str, int, int]) -> str:
+        return self.strings[key]
 
 
 def _sha256(path: Path) -> str:
@@ -289,7 +309,7 @@ def load_ui_views(repo_root: Path) -> dict[UiResourceKey, dict]:
 
 
 def load_text_resources(repo_root: Path) -> TextResources:
-    resources: TextResources = {}
+    strings: dict[tuple[str, int, int], str] = {}
     with (repo_root / STRINGS_PATH).open(encoding="utf-8", newline="") as stream:
         for row in csv.DictReader(stream):
             key = (
@@ -297,10 +317,17 @@ def load_text_resources(repo_root: Path) -> TextResources:
                 int(row["group_id"]),
                 int(row["string_index"]),
             )
-            if key in resources:
+            if key in strings:
                 raise ValueError(f"{STRINGS_PATH}: duplicate string key {key!r}")
-            resources[key] = str(row["text"])
-    return resources
+            strings[key] = str(row["text"])
+    text_resources = json.loads(
+        (repo_root / TEXT_RESOURCES_PATH).read_text(encoding="utf-8")
+    )
+    styles = {
+        (str(row["resource_file"]), int(row["resource_id"])): row
+        for row in text_resources["text_styles"]
+    }
+    return TextResources(strings, styles)
 
 
 def _validate_windows_family(family: dict, context: str) -> None:
@@ -599,6 +626,17 @@ def normalize_resource_view(
             else None
         )
         text: UiTextPayload | None = None
+        style_id = raw_family.get("text_style_id")
+        resolved_style = (
+            text_resources.styles.get((key.resource_file, int(style_id)), {})
+            if isinstance(style_id, int)
+            else {}
+        )
+        font_name = str(resolved_style.get("font_name", ""))
+        font_family = MAC_FONT_FAMILY_IDS.get(font_name.casefold(), 0)
+        face_flags = int(resolved_style.get("face_flags", 0))
+        point_size = int(resolved_style.get("point_size", 0))
+        alignment = int(raw_family.get("text_alignment", 1))
         if type_code in ("stat", "nmbr"):
             group_id = int(raw_family.get("text_resource_id", 0))
             index = int(raw_family.get("text_resource_index", -1))
@@ -607,15 +645,25 @@ def normalize_resource_view(
                 index,
                 _text_value(text_resources, key, group_id, index),
                 None,
+                font_family,
+                face_flags,
+                point_size,
                 0,
-                0,
-                0,
-                0,
-                1,
+                alignment,
             )
         max_chars: int | None = None
         if type_code == "edit":
-            text = UiTextPayload(0, -1, "", None, 0, 0, 0, 0, 1)
+            text = UiTextPayload(
+                0,
+                -1,
+                "",
+                None,
+                font_family,
+                face_flags,
+                point_size,
+                0,
+                alignment,
+            )
             max_chars = int(raw_family.get("max_char_count", 0xFF))
         number: UiNumberPayload | None = None
         if type_code == "nmbr":
@@ -943,13 +991,21 @@ def _emit_semantic_view(
                     f"{_cpp_args((color.behavior_flag, color.triplet_flag, color.foreground, color.background))});"
                 )
         lines.append(f"{indent}ClearUiResourceContext();")
-        source_map[node.node_id] = {
+        source_entry: dict[str, object] = {
             "tag": node.tag,
             "class": node.class_name,
             "source": node.source,
             "confidence": node.confidence,
             "generated_lines": [start_line, len(lines)],
         }
+        if family.text is not None:
+            source_entry["text_style"] = {
+                "font_family": family.text.mode,
+                "face_flags": family.text.flags,
+                "point_size": family.text.point_size,
+                "alignment": family.text.theme,
+            }
+        source_map[node.node_id] = source_entry
         stack.append(node)
     while stack:
         pop_node()

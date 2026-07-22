@@ -150,7 +150,7 @@ void TShipView::RunEngineerOrderNameEditDialogAndApply() {
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUOceanViews_00698650, 0x203);
   }
 
-  TUiTextStyleDescriptor style;
+  TextStyle style;
   BuildUiTextStyleDescriptor(&style, 0, 0xc, 0x2b6a);
 
   TStaticText* titleControl = static_cast<TStaticText*>(node->ResolveControlByTag(kControlTagTitl));

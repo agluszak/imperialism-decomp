@@ -28,21 +28,21 @@ void TTacticalAdiosPicture::DoPostCreate(int arg) {
 
   TStaticText* titleControl = static_cast<TStaticText*>(ResolveControlByTag(kControlTagTitl));
   titleControl->AssertValid();
-  TUiTextStyleDescriptor titleStyle;
+  TextStyle titleStyle;
   InitializeUiTextStyleDescriptor(&titleStyle, 0, 0xe, 0x2b6b, 1);
-  titleControl->SetTextStyleAndMaybeRefresh(&titleStyle, 0);
+  titleControl->InstallTextStyle(titleStyle, 0);
   titleControl->SetTextAlignmentAndMaybeRefresh(1, 0);
 
   TStaticText* locationControl = static_cast<TStaticText*>(ResolveControlByTag(kControlTagLoca));
   locationControl->AssertValid();
-  TUiTextStyleDescriptor locationStyle;
+  TextStyle locationStyle;
   InitializeUiTextStyleDescriptor(&locationStyle, 2, 0xc, 0x2b6b, 1);
-  locationControl->SetTextStyleAndMaybeRefresh(&locationStyle, 0);
+  locationControl->InstallTextStyle(locationStyle, 0);
   locationControl->SetTextAlignmentAndMaybeRefresh(1, 0);
 
   TDeluxeText* infoControl = static_cast<TDeluxeText*>(ResolveControlByTag(kControlTagInfo));
   infoControl->AssertValid();
-  infoControl->BuildAndApplyTextStyleDescriptor(0, 0xa, 0x2b6b);
+  infoControl->SetTextStyle(0, 0xa, 0x2b6b);
   infoControl->SetTextAlignmentAndMaybeRefresh(1, 0);
 
   TView* owner = GetWindow();

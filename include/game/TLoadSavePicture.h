@@ -116,7 +116,7 @@ public:
   // slot 0x6a AssertCityProductionGlobalStateInitialized inherited unchanged (0x429470)
   // slot 0x6b NoOpUiViewSlotHandler inherited unchanged (0x48e9c0)
   // slot 0x6c NoOpControlAction inherited unchanged (0x48e9e0)
-  // slot 0x6d SetTextStyleAndMaybeRefresh inherited unchanged (0x48e7d0)
+  // slot 0x6d InstallTextStyle inherited unchanged (0x48e7d0)
   // slot 0x6e SetTextColorAndMaybeRefresh inherited unchanged (0x48e7a0)
   // slot 0x6f LogUnhandledDialogMethodAndReturnFalse inherited unchanged (0x4294a0)
   // slot 0x70 HiliteState inherited unchanged (0x48e810)
@@ -135,15 +135,15 @@ public:
   unsigned char loadModeFlag90; // +0x90
   unsigned char pad91;
   short selectedSlot92; // +0x92 — currently selected save slot (-1 = none)
-  // +0x94..+0x9e: a second TUiTextStyleDescriptor (exactly 10 bytes, matching
-  // sizeof(TUiTextStyleDescriptor)) -- DoEvent's commandId==0xd branch passes
-  // &styleAt94 to the newly-selected slot control's SetTextStyleAndMaybeRefresh, and
+  // +0x94..+0x9e: a second TextStyle (exactly 10 bytes, matching
+  // sizeof(TextStyle)) -- DoEvent's commandId==0xd branch passes
+  // &styleAt94 to the newly-selected slot control's InstallTextStyle, and
   // &styleAt9e (below) to the previously-selected one: "selected" vs "unselected" style.
-  TUiTextStyleDescriptor styleAt94;
-  // Passed by address to TControl::SetTextStyleAndMaybeRefresh (byte offset 0x1b4, slot
+  TextStyle styleAt94;
+  // Passed by address to TControl::InstallTextStyle (byte offset 0x1b4, slot
   // 0x6d) on the previously-selected slot control in DoEvent's commandId==0xd branch;
-  // exactly fills the tail to ASSERT_SIZE's 0xa8 (0x9e + sizeof(TUiTextStyleDescriptor)).
-  TUiTextStyleDescriptor styleAt9e;
+  // exactly fills the tail to ASSERT_SIZE's 0xa8 (0x9e + sizeof(TextStyle)).
+  TextStyle styleAt9e;
 
   TLoadSavePicture();
 };

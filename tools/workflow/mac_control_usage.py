@@ -24,6 +24,7 @@ from tools.ui_codegen import IR_PATH, UiResourceKey, load_recipes, load_ui_views
 
 FORMAT_VERSION = 1
 INDEX_PATH = "docs/reference/mac_control_usage.json"
+TEXT_RESOURCES_PATH = "vendor/macos_codewarrior/evidence/resources/text_resources.json"
 
 TYPE_FAMILY_CLASSES = {
     "clus": "TCluster",
@@ -57,6 +58,26 @@ def _typed_family(node: dict) -> dict:
     if not isinstance(family, dict):
         return {}
     return {key: value for key, value in family.items() if key != "raw_hex"}
+
+
+def _decoded_style_summary(
+    text_styles: dict[tuple[str, int], dict], resource: str
+) -> dict | None:
+    resource_file, resource_id = resource.rsplit(":TxSt:", 1)
+    style = text_styles.get((resource_file, int(resource_id)))
+    if style is None:
+        return None
+    return {
+        name: style[name]
+        for name in (
+            "font_name",
+            "point_size",
+            "face_flags",
+            "face_flag_names",
+            "foreground_color",
+            "decoder_confidence",
+        )
+    }
 
 
 def _effective_class(node: dict) -> tuple[str, str]:
@@ -185,6 +206,13 @@ def build_index(repo_root: Path) -> dict:
     screens: dict[str, dict] = {}
     class_nodes: dict[str, list[str]] = defaultdict(list)
     tag_nodes: dict[str, list[str]] = defaultdict(list)
+    text_resource_evidence = json.loads(
+        (repo_root / TEXT_RESOURCES_PATH).read_text(encoding="utf-8")
+    )
+    text_styles = {
+        (str(row["resource_file"]), int(row["resource_id"])): row
+        for row in text_resource_evidence["text_styles"]
+    }
 
     for key, view in sorted(views.items(), key=lambda item: item[0].text()):
         screen = key.text()
@@ -206,6 +234,17 @@ def build_index(repo_root: Path) -> dict:
             parent = by_offset.get(int(parent_offset)) if parent_offset is not None else None
             parent_class, _ = _effective_class(parent) if parent is not None else ("", "")
             tag = str(node.get("tag", ""))
+            family = _typed_family(node)
+            style_id = family.get("text_style_id")
+            if isinstance(style_id, int):
+                style = text_styles.get((key.resource_file, style_id))
+                family["text_style_resource"] = (
+                    f"{key.resource_file}:TxSt:{style_id}"
+                )
+                if style is None:
+                    family["text_style_resolution"] = "missing_in_file_scope"
+                else:
+                    family["text_style_resolution"] = "resolved"
             record = {
                 "id": node_id,
                 "screen": screen,
@@ -233,7 +272,7 @@ def build_index(repo_root: Path) -> dict:
                 "input_gate": int(node.get("input_gate", 0)),
                 "child_hit_test": int(node.get("child_hit_test", 0)),
                 "control_value": int(node.get("control_value", 0)),
-                "family": _typed_family(node),
+                "family": family,
             }
             nodes.append(record)
             class_nodes[class_name].append(node_id)
@@ -259,6 +298,20 @@ def build_index(repo_root: Path) -> dict:
             "parent_classes": dict(
                 sorted(Counter(node["parent_class"] for node in instances if node["parent"]).items())
             ),
+            "text_styles": [
+                {
+                    "resource": resource,
+                    "instance_count": count,
+                    "decoded": _decoded_style_summary(text_styles, resource),
+                }
+                for resource, count in sorted(
+                    Counter(
+                        str(node["family"]["text_style_resource"])
+                        for node in instances
+                        if "text_style_resource" in node["family"]
+                    ).items()
+                )
+            ],
             "child_classes": dict(
                 sorted(
                     Counter(

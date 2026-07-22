@@ -8,7 +8,7 @@
 class TStream;
 class TSortedList;
 class TArmyStack;
-struct TUiTextStyleDescriptor;
+struct TextStyle;
 
 // 0x268-byte POD record copied into the TSortedPtrList pointed to by
 // TArmyMgr::mapContextActionRecordList04.
@@ -293,13 +293,13 @@ public:
   // returns false when there's nothing to show (both outputs untouched in that case).
   // 0x004a5ec0, __thiscall, 1580 bytes.
   //
-  // The previous 2-arg `TUiTextStyleDescriptor*` signature was never verified against
+  // The previous 2-arg `TextStyle*` signature was never verified against
   // the callee's body and is wrong: the caller (ShowSpyReport) constructs FOUR
-  // TUiTextStyleDescriptor locals (styleA-D) via
+  // TextStyle locals (styleA-D) via
   // InitializeUiTextStyleDescriptor/BuildUiTextStyleDescriptor, but the raw disassembly
   // of the call site (0x4a67b1, ILT thunk 0x408c79) pushes the addresses of two
   // separately-constructed CString locals (real `CString::CString()` calls at
-  // 0x4a678c/0x4a679a), not styleC/styleD -- those two TUiTextStyleDescriptor locals are
+  // 0x4a678c/0x4a679a), not styleC/styleD -- those two TextStyle locals are
   // consumed later, in the still-unported widget-dispatch tail of the caller.
   //
   // outDefenderSummary: "<leading unit/admiral name or city name>" -- Phase 1 scans

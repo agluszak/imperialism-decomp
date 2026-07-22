@@ -38,7 +38,7 @@ void TTextLine::SetTextLineRowBoundsAndStyle(short rowArg, short colArg, int* bo
 }
 
 // FUNCTION: IMPERIALISM 0x00570440
-void TTextLine::SetTextLineStyleDescriptor(const TUiTextStyleDescriptor* descriptor) {
+void TTextLine::SetTextLineStyleDescriptor(const TextStyle* descriptor) {
   styleDescriptor14 = *descriptor;
 }
 

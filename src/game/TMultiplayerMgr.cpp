@@ -1245,7 +1245,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     } else {
       BuildUiMessageTextFromBracketTemplate(g_pSimMgr, &titleText, 0x2749, 3, 0x2749, 0);
     }
-    TUiTextStyleDescriptor styleDescriptor;
+    TextStyle styleDescriptor;
     styleDescriptor.textColor = 0;
     BuildUiTextStyleDescriptor(&styleDescriptor, 0, 0xc, 0x2b67);
     TurnEventDialogNode* dialog = static_cast<TurnEventDialogNode*>(
@@ -1278,14 +1278,14 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     if (titleControl == 0) {
       FailNilPointerWithAssert(s_SourcePathUMultiplayerMgr_00698040, 0x807);
     }
-    titleControl->SetTextStyleAndMaybeRefresh(&styleDescriptor, 0);
+    titleControl->InstallTextStyle(styleDescriptor, 0);
     titleControl->SetTextAlignmentAndMaybeRefresh(1, 0);
     titleControl->SetTextAndMaybeRefresh(&titleText, 0);
     TDeluxeText* infoControl = static_cast<TDeluxeText*>(dialog->ResolveControlByTag(0x696e666f));
     infoControl->AssertValid();
     infoControl->SetTextEntryFromChars(static_cast<const char*>(messageTextC),
                                        messageTextC.GetLength());
-    infoControl->ApplyTextStyleDescriptorAndMaybeRefresh(&styleDescriptor, 0);
+    infoControl->SetTextStyle(styleDescriptor, 0);
     unsigned char savedProcessPrimary = g_pGameFlowState->processPrimaryEventQueue;
     g_pGameFlowState->processPrimaryEventQueue = 0;
     if (kickerNation != -1 || localSlot != -1) {

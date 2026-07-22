@@ -125,6 +125,24 @@ def _startup_view() -> bytes:
     return b"\x03\0\0\x03" + _widget_record(*root, children=children)
 
 
+def _txst(
+    face: int = 1,
+    point_size: int = 12,
+    color: tuple[int, int, int] = (0x1111, 0x2222, 0x3333),
+    font_name: str = "Geneva",
+) -> bytes:
+    return (
+        bytes((face, 0xA5))
+        + struct.pack(">hHHH", point_size, *color)
+        + _pascal(font_name)
+    )
+
+
+def _styl() -> bytes:
+    run = struct.pack(">IhhhBBhHHH", 0, 16, 12, 0, 1, 0x5A, 12, 0, 0, 0)
+    return struct.pack(">H", 1) + run
+
+
 class MacosResourceEvidenceTests(unittest.TestCase):
     def test_extracts_aligned_macbinary_resource_fork(self) -> None:
         resource_fork = b"resource-fork"
@@ -161,6 +179,26 @@ class MacosResourceEvidenceTests(unittest.TestCase):
 
         self.assertEqual(oracle.decode_string_list(strings), ["New Game", "Quit"])
         self.assertEqual(oracle.decode_picture_bounds(picture), (7, 4, 200, 100))
+
+    def test_decodes_txst_and_textedit_style_runs(self) -> None:
+        style = oracle.ResourceEntry("Fixture.rsrc", "TxSt", 7, "", 0, _txst())
+        text = oracle.ResourceEntry("Fixture.rsrc", "TEXT", 8, "", 0, b"Styled text")
+        scrap = oracle.ResourceEntry("Fixture.rsrc", "styl", 8, "", 0, _styl())
+
+        decoded_style = oracle.decode_txst(style)
+        decoded_scrap = oracle.decode_styl(scrap, text)
+
+        self.assertEqual(decoded_style["font_name"], "Geneva")
+        self.assertEqual(decoded_style["face_flag_names"], ["bold"])
+        self.assertEqual(decoded_style["foreground_color"]["hex"], "#111122223333")
+        run = decoded_scrap["runs"][0]
+        self.assertEqual((run["start"], run["end"]), (0, len(text.data)))
+        self.assertEqual((run["line_height"], run["ascent"], run["leading"]), (16, 12, 4))
+        with self.assertRaisesRegex(oracle.ResourceFormatError, "require"):
+            oracle.decode_styl(
+                oracle.ResourceEntry("Fixture.rsrc", "styl", 9, "", 0, b"\0\x01"),
+                text,
+            )
 
     def test_decodes_nested_startup_widgets(self) -> None:
         view = oracle.ResourceEntry(
@@ -228,9 +266,19 @@ class MacosResourceEvidenceTests(unittest.TestCase):
             ).read_text(encoding="utf-8")
         )
 
-        self.assertEqual(oracle.validate_real_ui_sentinels(ui_ir), [])
+        text_resources = json.loads(
+            (
+                REPO_ROOT
+                / "vendor/macos_codewarrior/evidence/resources/text_resources.json"
+            ).read_text(encoding="utf-8")
+        )
 
-    def test_writes_deterministic_metadata_only_evidence(self) -> None:
+        self.assertEqual(oracle.validate_real_ui_sentinels(ui_ir), [])
+        self.assertEqual(
+            oracle.validate_real_text_resource_sentinels(text_resources), []
+        )
+
+    def test_writes_deterministic_resource_evidence(self) -> None:
         strings = struct.pack(">H", 2) + _pascal("New Game") + _pascal("Quit")
         resources = [
             oracle.ResourceEntry(
@@ -245,7 +293,9 @@ class MacosResourceEvidenceTests(unittest.TestCase):
                 struct.pack(">Hhhhh", 10, 0, 0, 480, 640),
             ),
             oracle.ResourceEntry("Startup.rsrc", "STR#", 1500, "Setup", 0, strings),
-            oracle.ResourceEntry("Startup.rsrc", "TxSt", 1500, "Setup style", 0, b"style"),
+            oracle.ResourceEntry("Startup.rsrc", "TxSt", 1500, "Setup style", 0, _txst()),
+            oracle.ResourceEntry("Startup.rsrc", "TEXT", 1600, "Help", 0, b"Styled text"),
+            oracle.ResourceEntry("Startup.rsrc", "styl", 1600, "Help", 0, _styl()),
         ]
         with (
             tempfile.TemporaryDirectory() as first_dir,
@@ -268,6 +318,11 @@ class MacosResourceEvidenceTests(unittest.TestCase):
                 (picture["x"], picture["y"], picture["width"], picture["height"]),
                 ("0", "0", "640", "480"),
             )
+            text_resources = json.loads(
+                (first / "text_resources.json").read_text(encoding="utf-8")
+            )
+            self.assertEqual(text_resources["texts"][0]["text"], "Styled text")
+            self.assertEqual(text_resources["style_scraps"][0]["run_count"], 1)
 
 
 if __name__ == "__main__":

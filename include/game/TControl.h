@@ -8,7 +8,7 @@
 // TControl-specific storage -- TTextLine independently embeds the identical 10-byte
 // layout at its own +0x14 (styleDescriptor14).
 #pragma pack(push, 2)
-struct TUiTextStyleDescriptor {
+struct TextStyle {
   short fontFamily;     // 0x0 -- font-family index (CreateFontFromPresetAndAttachRegionHandle);
                         // 3 when fontSize < 12, else 1
   short fontStyleFlags; // 0x2 -- bold/italic/underline bits
@@ -134,8 +134,8 @@ public:
   // One ignored stack arg (bare RET 0x4). This TControl slot is unrelated to the
   // byte-coincident TPageView::ShowPage slot on the sibling TView hierarchy.
   virtual void NoOpControlAction(int unusedArg); // slot 0x6c 0x48e9e0
-  virtual void SetTextStyleAndMaybeRefresh(const TUiTextStyleDescriptor* style,
-                                           char refreshNow); // slot 0x6d 0x48e7d0
+  virtual void InstallTextStyle(const TextStyle& style,
+                                char refreshNow); // slot 0x6d 0x48e7d0
   virtual void SetTextColorAndMaybeRefresh(const int* textColor,
                                            bool refreshNow); // slot 0x6e 0x48e7a0
   virtual char LogUnhandledDialogMethodAndReturnFalse();     // slot 0x6f 0x4294a0
@@ -150,9 +150,9 @@ public:
   // THQButton/TUpDownPictureButton also drive a multi-valued "mode" through it.
   unsigned char controlState64;
   unsigned char padding_65_to_67[3];
-  CRect contentInsets68;              // 0x68-0x77 -- left/top/right/bottom content insets
-                                      // (BuildInsetContentRect, TStaticText/TTEView::Draw)
-  TUiTextStyleDescriptor textStyle78; // 0x78-0x81
+  CRect contentInsets68; // 0x68-0x77 -- left/top/right/bottom content insets
+                         // (BuildInsetContentRect, TStaticText/TTEView::Draw)
+  TextStyle textStyle78; // 0x78-0x81
 
   TControl();
   DECLARE_DYNCREATE(TControl)

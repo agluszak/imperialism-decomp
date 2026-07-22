@@ -1140,7 +1140,7 @@ void TDiplomacyMapView::BlitDiplomacyMapEventPaletteMaskToSurface(short maskInde
     }
     int row = maskRun->boundsAt04.top;
     int rowStride = surface->blitSurface.stride;
-    unsigned char* destCursor = static_cast<unsigned char*>(surface->blitSurface.pixelBits) +
+    unsigned char* destCursor = surface->blitSurface.pixelBits +
                                 ((surfaceHeight - row) - 1) * rowStride + maskRun->boundsAt04.left;
     int destRowAdvance = (maskRun->boundsAt04.left - maskRun->boundsAt04.right) - rowStride;
     unsigned char* srcCursor = static_cast<unsigned char*>(bmpHandle->m_dibBits);

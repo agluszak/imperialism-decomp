@@ -13,7 +13,7 @@ class CDib;
 // (0x495eb0) stores the DIB-section bits pointer and the dword-aligned 8bpp row stride
 // ((biWidth + 3) & ~3).
 struct TQuickDrawBlitSurface {
-  void* pixelBits;          // +0x00
+  unsigned char* pixelBits; // +0x00 — 8-bpp indexed pixels
   short stride;             // +0x04
   short pad06;              // +0x06
   RECT clipRect;            // +0x08

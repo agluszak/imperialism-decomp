@@ -75,7 +75,7 @@ void TShipyardView::DoStartup() {
   // original zeroes them once before the first Build call) -- same idiom as
   // TBattleReportView::DoPostCreate.
   struct {
-    TUiTextStyleDescriptor desc;
+    TextStyle desc;
     unsigned char tail[4];
   } style;
   style.tail[0] = 0;
@@ -86,7 +86,7 @@ void TShipyardView::DoStartup() {
   BuildUiTextStyleDescriptor(&style.desc, 0, 0xa, 0x2b6b);
   TStaticText* title = static_cast<TStaticText*>(ResolveControlByTag(0x7469746cu)); // 'titl'
   title->AssertValid();
-  title->SetTextStyleAndMaybeRefresh(&style.desc, 1);
+  title->InstallTextStyle(style.desc, 1);
   title->SetTextFromStringResource(0x2736, 0xe, 1);
 
   BuildUiTextStyleDescriptor(&style.desc, 0, 0xa, 0x2b6b);
@@ -94,19 +94,19 @@ void TShipyardView::DoStartup() {
     TStaticText* fixedLabel =
         static_cast<TStaticText*>(ResolveControlByTag(0x66697830u + i)); // 'fix0'/'fix1'
     fixedLabel->AssertValid();
-    fixedLabel->SetTextStyleAndMaybeRefresh(&style.desc, 1);
+    fixedLabel->InstallTextStyle(style.desc, 1);
     fixedLabel->SetTextFromStringResource(0x2736, static_cast<short>(i + 0xf), 1);
   }
 
   BuildUiTextStyleDescriptor(&style.desc, 0, 0xc, 0x2b6b);
   TControl* shipName = static_cast<TControl*>(ResolveControlByTag(0x736e616du)); // 'snam'
   shipName->AssertValid();
-  shipName->SetTextStyleAndMaybeRefresh(&style.desc, 1);
+  shipName->InstallTextStyle(style.desc, 1);
 
   BuildUiTextStyleDescriptor(&style.desc, 0, 0xa, 0x2b6b);
   TControl* description = static_cast<TControl*>(ResolveControlByTag(0x64657363u)); // 'desc'
   description->AssertValid();
-  description->SetTextStyleAndMaybeRefresh(&style.desc, 1);
+  description->InstallTextStyle(style.desc, 1);
 
   selectedRequirementRow = 0;
   selectedStatsRowA2 = 0;

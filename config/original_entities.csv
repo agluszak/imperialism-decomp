@@ -596,12 +596,12 @@ address|name|symbol|size|type|prototype|provenance
 485fb0|TTEView::CreateObject|?CreateObject@TTEView@@SGPAVCObject@@XZ|83|function|undefined CreateObject()|rtti
 486030|TTEView::GetRuntimeClass||6|function|undefined GetTTEViewClassNamePointer()|rtti
 486050|TTEView::ConstructTTEViewBaseState||109|function|undefined ConstructTTEViewBaseState()|
-4860e0|TTEView::MeasureCurrentTextWidthInLayoutRect||205|function|int MeasureCurrentTextWidthInLayoutRect()|
+4860e0|TTEView::MeasureCurrentTextHeightInLayoutRect||205|function|int __thiscall MeasureCurrentTextHeightInLayoutRect()|
 4861f0|AssignTextFromResourceIdAndMaybeInvalidate||127|function|undefined AssignTextFromResourceIdAndMaybeInvalidate()|
 486290|TStaticText::SetText||15|function|void __thiscall SetText(CString* text)|
-4862b0|NoOpUiStyleBridge_004862b0||5|function|undefined NoOpUiStyleBridge_004862b0()|
-4862d0|CallThisVslot1B4NoArgs||21|function|undefined CallThisVslot1B4NoArgs()|
-486300|NoOpTextPostLayoutHook||3|function|undefined NoOpTextPostLayoutHook()|
+4862b0|TTEView::GetNumberOfChars||5|function|short __thiscall GetNumberOfChars()|
+4862d0|TTEView::SetOneStyle||21|function|void __thiscall SetOneStyle(short start, short end, short styleMask, const TextStyle & style, unsigned char refreshNow)|
+486300|TTEView::StuffTERects||3|function|void __thiscall StuffTERects(const CRect & textRect)|
 486320|TDocument::CreateObject|?CreateObject@TDocument@@SGPAVCObject@@XZ|24|function|TDocument * __cdecl CreateObject(void)|rtti
 486350|TDocument::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 486380|TDocument::CreateTDocumentInstance||7|function|undefined CreateTDocumentInstance()|
@@ -983,7 +983,7 @@ address|name|symbol|size|type|prototype|provenance
 48e640|TControl::BeginMouseCaptureAndStartRepeatTimer||149|function|void __thiscall BeginMouseCaptureAndStartRepeatTimer(const CPoint &point, TToolboxEvent *event, CPoint origin)|
 48e710|TControl::DoEvent||111|function|undefined HandleCityDialogToggleCommandOrForward()|
 48e7a0|TControl::SetControlPictureEntryAndMaybeRefresh||30|function|void __thiscall SetControlPictureEntryAndMaybeRefresh(int * pPictureEntryRef, bool fRefreshNow)|
-48e7d0|TControl::SetCityProductionDialogPictureRectAndMaybeRefresh||48|function|undefined SetCityProductionDialogPictureRectAndMaybeRefresh()|
+48e7d0|TControl::InstallTextStyle||48|function|void __thiscall InstallTextStyle(const TextStyle & style, char refreshNow)|
 48e810|TControl::HiliteState||33|function|void __thiscall HiliteState(unsigned char hilited, unsigned char drawImmediate)|
 48e850|TControl::DispatchPictureResourceCommand||189|function|void __thiscall DispatchPictureResourceCommand(int nEventType, void * pEventSender, void * pEventDataA, void * pEventDataB)|
 48e940|TControl::PointInBoundsAndActionable||44|function|undefined 'scalar_deleting_destructor'(void)|
@@ -5736,10 +5736,10 @@ address|name|symbol|size|type|prototype|provenance
 5b60a0|TDeluxeText::SetSelectedFlagAndState||27|function|undefined SetSelectedFlagAndState(char param_1)|
 5b60d0|TDeluxeText::SetTextFromUiStringResourceId||116|function|undefined SetTextFromUiStringResourceId(short stringId)|
 5b6170|TDeluxeText::Draw||237|function|undefined OrphanTiny_ReturnZero_0048a730(void)|
-5b62a0|TDeluxeText::ApplyTextStyleDescriptorAndMaybeRefresh||45|function|void ApplyTextStyleDescriptorAndMaybeRefresh(TControlPictureRectState * styleDescriptor, int refreshFlag)|
-5b62e0|TDeluxeText::BuildAndApplyTextStyleDescriptor||96|function|void BuildAndApplyTextStyleDescriptor(int unused, int pointSize, int themeCode)|
+5b62a0|TDeluxeText::SetTextStyle||45|function|void __thiscall SetTextStyle(const TextStyle & style, unsigned char refreshNow)|
+5b62e0|TDeluxeText::SetTextStyle||96|function|void __thiscall SetTextStyle(int fontStyleFlags, int pointSize, int themeCode)|
 5b6360|TDeluxeText::SetTextEntryFromChars||96|function|void SetTextEntryFromChars(const char* textChars, int textLength)|
-5b63e0|TDeluxeText::RecenterTextFromMeasuredWidthAndMaybeInvalidate||123|function|undefined RecenterTextFromMeasuredWidthAndMaybeInvalidate(char param_1)|
+5b63e0|TDeluxeText::CenterVertically||123|function|short __thiscall CenterVertically(unsigned char refreshNow)|
 5b6480|TDeluxeText::UpdateTextEntrySharedString||13|function|void __thiscall UpdateTextEntrySharedString(CString* text)|
 5b64a0|TDeluxeText::UpdateTextEntrySharedStringAndMaybeNotify||35|function|void __thiscall UpdateTextEntrySharedStringAndMaybeNotify(CString* text, char notifyFlag)|
 5b64e0|TDeluxeText::BuildCityViewProductionControls_Impl||129|function|undefined BuildCityViewProductionControls_Impl()|
