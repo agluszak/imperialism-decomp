@@ -145,7 +145,7 @@ public:
   virtual void CenterOn(int tileIndex);                                   // slot 0x78 0x598990
   virtual void SetUpperLeft(int tileX, int tileY);                        // slot 0x79 0x5989d0
   virtual void NoticeTile(int tileIndex);                                 // slot 0x7a 0x598a20
-  virtual bool OrphanLeaf_NoCall_Ins23_00597a10();                        // slot 0x7b 0x597a10
+  virtual bool HasActiveMapInteractionSelection();                        // slot 0x7b 0x597a10
   virtual void PrepareAndRenderMapOverlayMode(unsigned char overlayMode); // slot 0x7c 0x598910
   // Ground truth (final RET has no operand) proves the previous 1-arg
   // __fastcall(astruct_20*)/void-return declaration was a poison-pill: real signature is

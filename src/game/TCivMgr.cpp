@@ -2,6 +2,7 @@
 
 #include "game/TAmbitApplication.h"
 #include "decomp_types.h"
+#include "game/CIterator.h"
 #include "game/TAnimator.h"
 #include "game/TCivUnit.h"
 #include "game/TCountry.h"
@@ -725,5 +726,22 @@ void TCivMgr::ResolveCivilianDisputes() {
         g_apNationStates[losingNationSlot]->AddTurnStartEvent(event);
       }
     }
+  }
+}
+
+// FUNCTION: IMPERIALISM 0x004d49f0
+void TCivMgr::ClearNationCivilianActionModesAndCycleSelection(int nationId) {
+  CIterator cursor(g_apNationStates[nationId]->trackedObjectList);
+  TCivUnit* civilian = static_cast<TCivUnit*>(cursor.Reset());
+  while (cursor.More() != 0) {
+    if (civilian->field_8 == 2 || civilian->field_8 == 3 || civilian->field_8 == 4) {
+      civilian->SetOrderModeSlot34(0, 0);
+    }
+    civilian = static_cast<TCivUnit*>(cursor.Advance());
+  }
+
+  TMapUberPicture* mapView = g_pUiRuntimeContext->mapUberPictureF0;
+  if (mapView != 0 && !mapView->HasActiveMapInteractionSelection()) {
+    mapView->CycleMapInteractionSelectionAfterHandledClick();
   }
 }
