@@ -122,8 +122,9 @@ public:
   // slot 0x6f LogUnhandledDialogMethodAndReturnFalse inherited unchanged (0x4294a0)
   // slot 0x70 HiliteState inherited unchanged (0x48e810)
   // slot 0x71 ResetPictureResourceEntry inherited unchanged (0x48f520)
-  virtual void SetPictureResourceIdAndRefresh(short nPictureId,
-                                              bool fRefreshNow) override; // slot 0x72 0x573040
+  virtual void
+  SetPictureResourceIdAndRefresh(short nPictureId,
+                                 unsigned char fRefreshNow) override; // slot 0x72 0x573040
   // slot 0x73 NoOpUiVirtualSlot73 inherited unchanged (0x572bb0)
 
   TColorKeyPicture();

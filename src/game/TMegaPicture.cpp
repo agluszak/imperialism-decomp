@@ -59,7 +59,7 @@ void TMegaPicture::Draw(RECT* rectBuffer) {
 }
 
 // FUNCTION: IMPERIALISM 0x00573430
-void TMegaPicture::SetPictureResourceIdAndRefresh(short nPictureId, bool fRefreshNow) {}
+void TMegaPicture::SetPictureResourceIdAndRefresh(short nPictureId, unsigned char fRefreshNow) {}
 
 // FUNCTION: IMPERIALISM 0x00573650
 void TMegaPicture::Free() {

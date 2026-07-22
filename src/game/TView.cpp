@@ -390,7 +390,7 @@ void TView::SetEnabled(int enabledState, int refreshFlag) {
   }
 }
 // FUNCTION: IMPERIALISM 0x0048b200
-char TView::IsActionable() {
+bool TView::IsActionable() {
   return g_McAppUiActiveFlag_006950AC != 0 && nativeWindow50 != 0 && field08 != 0 &&
          ownerContext != 0 && ownerContext->IsActionable() != 0;
 }
@@ -984,7 +984,7 @@ short TView::ContainsMouse(const CPoint& point) {
   p.x = point.x;
   p.y = point.y;
   // Returns 3 (not 1) on hit, unlike PointInBoundsAndActionable's near-identical body above.
-  return static_cast<short>(-(PtInRect(&bounds, p) != 0) & 3);
+  return static_cast<short>(-static_cast<int>(PtInRect(&bounds, p) != 0) & 3);
 }
 // FUNCTION: IMPERIALISM 0x0048c9e0
 void TView::GoAwayByUser(const CPoint& point) {

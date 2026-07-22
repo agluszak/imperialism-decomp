@@ -123,7 +123,7 @@ public:
                            unsigned char refreshNow) override; // slot 0x70 0x570870
   // slot 0x71 ResetPictureResourceEntry inherited unchanged (0x48f520)
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
-  virtual bool DrawImmediate(); // slot 0x73 0x5708c0
+  virtual void DrawImmediate(); // slot 0x73 0x5708c0
   short glyph90;
   short timingWord92;
 

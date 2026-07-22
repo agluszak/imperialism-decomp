@@ -873,7 +873,7 @@ address|name|symbol|size|type|prototype|provenance
 48b180|TView::GetWindow||15|function|TWindow * __thiscall GetWindow(void)|
 48b1a0|TView::GetRootView||15|function|TView * __thiscall GetRootView(void)|
 48b1c0|TView::SetControlActiveFlagAndRefreshIfChanged_ad||33|function|undefined SetControlActiveFlagAndRefreshIfChanged()|
-48b200|TView::CanProcessMapViewSlotECUnderWindowState_bf||51|function|undefined CanProcessMapViewSlotECUnderWindowState()|
+48b200|TView::IsActionable||51|function|bool __thiscall IsActionable()|listing
 48b250|TView::GetTEventHandlerClassNamePointer_c0||94|function|undefined GetTEventHandlerClassNamePointer(void)|
 48b2d0|TView::UpdateCoordinates||219|function|void UpdateCoordinates()|
 48b3f0|TView::UpdateControlPositionAndInvalidateUnionRect_c1||137|function|undefined UpdateControlPositionAndInvalidateUnionRect()|
@@ -948,7 +948,7 @@ address|name|symbol|size|type|prototype|provenance
 48d8a0|TWindow::SetDialogItems||23|function|void __thiscall SetDialogItems(unsigned long defaultCommandCode, unsigned long cancelCommandCode)|
 48d8d0|TWindow::AssertMcAppUILine2358||30|function|undefined AssertMcAppUILine2358()|
 48d900|TWindow::Show||95|function|void __thiscall Show(uchar show, uchar refresh)|
-48d980|TWindow::IsActionable||42|function|undefined ReleaseRuntimeSelectionOwnerAndDestroyObject(void)|
+48d980|TWindow::IsActionable||42|function|bool __thiscall IsActionable()|listing
 48d9c0|TWindow::SetTitle||18|function|void __thiscall SetTitle(CString const * title)|
 48d9f0|TWindow::GetTitle||16|function|void __thiscall GetTitle(CString * title)|
 48da10|TWindow::IsModal||19|function|unsigned char __thiscall IsModal(void)|
@@ -1004,7 +1004,7 @@ address|name|symbol|size|type|prototype|provenance
 48f330|InitializePictureEntryBaseAndRefresh||111|function|undefined InitializePictureEntryBaseAndRefresh()|
 48f3c0|TPicture::Draw||270|function|undefined Draw()|
 48f520|TPicture::ResetPictureResourceEntry||53|function|void __thiscall ResetPictureResourceEntry(void)|
-48f570|TPicture::SetPictureResourceIdAndRefresh||118|function|void __thiscall SetPictureResourceIdAndRefresh(short nPictureId, bool fRefreshNow)|
+48f570|TPicture::SetPictureResourceIdAndRefresh||118|function|void __thiscall SetPictureResourceIdAndRefresh(short nPictureId, unsigned char fRefreshNow)|listing
 48f610|SetPictureResourceIdAndRefresh_Impl||18|function|undefined SetPictureResourceIdAndRefresh_Impl()|
 48f640|CloneCityDialogExtendedStateToNewInstance||149|function|CityDialogController * __fastcall CloneCityDialogExtendedStateToNewInstance(CityDialogController * pSource)|
 48f710|TStaticText::CreateObject|?CreateObject@TStaticText@@SGPAVCObject@@XZ|268|function|undefined CreateObject()|rtti
@@ -3019,7 +3019,7 @@ address|name|symbol|size|type|prototype|provenance
 505ff0|TIconBar::ConstructTIconBarBaseState||18|function|undefined ConstructTIconBarBaseState()|
 506020|TIconBar::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 506070|TIconBar::IIconBar||59|function|void IIconBar(TView* panel, int* position, int* size, int layoutParam4, int layoutParam5, short pictureId, int numIcons)|
-5060c0|TIconBar::SetPictureResourceIdAndRefresh||31|function|undefined SetPictureResourceIdAndRefresh(short param_1, bool param_2)|
+5060c0|TIconBar::SetPictureResourceIdAndRefresh||31|function|void __thiscall SetPictureResourceIdAndRefresh(short nPictureId, unsigned char fRefreshNow)|listing
 5060f0|TIconBar::OrphanTiny_SetWordEcxOffset_96_005060f0||15|function|undefined OrphanTiny_SetWordEcxOffset_96_005060f0(undefined2 param_1)|
 506110|TIconBar::OrphanCallChain_C2_I15_00506110||38|function|undefined OrphanCallChain_C2_I15_00506110(char param_1)|
 506150|TIconBar::Draw||268|function|undefined RenderIconBarEntryStrip()|
@@ -4539,7 +4539,7 @@ address|name|symbol|size|type|prototype|provenance
 5707f0|TPictureButton::TPictureButton||27|function|undefined TPictureButton()|
 570820|TPictureButton::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 570870|TPictureButton::HiliteState||59|function|void __thiscall HiliteState(bool enabledState, bool refreshNow)|
-5708c0|TPictureButton::IsSelected||47|function|bool __thiscall IsSelected()|
+5708c0|TPictureButton::DrawImmediate||47|function|void __thiscall DrawImmediate()|listing+mac-symbol
 570900|TPictureButton::DoMouseCommand||60|function|void __thiscall DoMouseCommand(CPoint &point, TToolboxEvent *event, CPoint origin)|
 570950|TAlwaysPictureButton::CreateObject|?CreateObject@TAlwaysPictureButton@@SGPAVCObject@@XZ|92|function|undefined CreateObject()|rtti
 5709d0|TAlwaysPictureButton::GetRuntimeClass||6|function|undefined GetRuntimeClass()|rtti
@@ -4566,7 +4566,7 @@ address|name|symbol|size|type|prototype|provenance
 571120|TToggleButton::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 571170|TToggleButton::DoEvent||240|function|void __thiscall DoEvent(int commandId, TEventHandler * sourceHandler, TEvent * event)|
 5712a0|TToggleButton::HandleMouseDown||111|function|char __thiscall HandleMouseDown(const CPoint &point, TToolboxEvent *event, CPoint origin)|macos-name-oracle:HandleMouseDown(const VPoint&, TToolboxEvent*, CPoint)
-571330|TToggleButton::IsSelected||8|function|bool __thiscall IsSelected(short value, bool refreshNow)|
+571330|TToggleButton::IsSelected||8|function|bool __thiscall IsSelected()|listing
 571350|TToggleButton::Select||72|function|void __thiscall Select(bool isPressed, bool notifyParent)|
 5713c0|TUberCluster::CreateObject|?CreateObject@TUberCluster@@SGPAVCObject@@XZ|83|function|undefined CreateObject()|rtti
 571440|TUberCluster::GetRuntimeClass||6|function|undefined GetRuntimeClass()|rtti
@@ -4578,7 +4578,7 @@ address|name|symbol|size|type|prototype|provenance
 5715a0|TUpDownPictureButton::TUpDownPictureButton||27|function|void __thiscall TUpDownPictureButton(void)|
 5715d0|TUpDownPictureButton::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 571620|SetPressedStateAdjustPictureBitmapByOne||75|function|undefined SetPressedStateAdjustPictureBitmapByOne()|
-571690|TUpDownPictureButton::IsSelected||15|function|bool __thiscall IsSelected()|
+571690|TUpDownPictureButton::DrawImmediate||15|function|void __thiscall DrawImmediate()|listing+mac-symbol
 5716b0|TCivilianButton::DoMouseCommand||60|function|void __thiscall DoMouseCommand(CPoint &point, TToolboxEvent *event, CPoint origin)|
 571700|TRadioPictureButton::CreateObject|?CreateObject@TRadioPictureButton@@SGPAVCObject@@XZ|126|function|undefined CreateObject()|rtti
 5717a0|TRadioPictureButton::GetRuntimeClass||6|function|undefined GetTRadioPictureButtonClassNamePointer()|rtti
@@ -4599,7 +4599,7 @@ address|name|symbol|size|type|prototype|provenance
 571cb0|TCzechBox::DoEvent||46|function|undefined ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1)|
 571cf0|TCzechBox::DoPostCreate||10|function|undefined OrphanLeaf_NoCall_Ins07_004d8920(void)|
 571d10|TCzechBox::HiliteState||30|function|void __thiscall HiliteState(unsigned char enabledState, unsigned char refreshNow)|mac-symbol
-571d40|TCzechBox::OrphanCallChain_C4_I45_00571d40||114|function|undefined OrphanCallChain_C4_I45_00571d40(char param_1)|
+571d40|TCzechBox::CheckTheLook||114|function|void __thiscall CheckTheLook(unsigned char refreshNow)|listing
 571de0|TCzechBox::OrphanLeaf_NoCall_Ins02_00571de0||7|function|undefined OrphanLeaf_NoCall_Ins02_00571de0(void)|
 571e00|TCzechBox::OrphanCallChain_C1_I10_00571e00||36|function|undefined OrphanCallChain_C1_I10_00571e00(char param_1)|
 571e40|TCzechBox::OrphanCallChain_C2_I16_00571e40||36|function|undefined OrphanCallChain_C2_I16_00571e40(void)|
@@ -4646,14 +4646,14 @@ address|name|symbol|size|type|prototype|provenance
 572de0|TColorKeyPicture::ConstructPictureResourceEntry_Vtbl00660b48||32|function|undefined ConstructPictureResourceEntry_Vtbl00660b48()|
 572e10|TColorKeyPicture::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 572e60|TColorKeyPicture::Draw||383|function|undefined BlitPanelBitmapFromMainBackOrGoldTag()|
-573040|TColorKeyPicture::SetPictureResourceIdAndRefresh||60|function|undefined SetPictureResourceIdWithHandleReset()|
+573040|TColorKeyPicture::SetPictureResourceIdAndRefresh||60|function|void __thiscall SetPictureResourceIdAndRefresh(short nPictureId, unsigned char fRefreshNow)|listing
 573090|TColorKeyPicture::Free||48|function|void __thiscall Free(void)|
 5730d0|TMegaPicture::CreateObject|?CreateObject@TMegaPicture@@SGPAVCObject@@XZ|123|function|undefined CreateObject()|rtti
 573170|TMegaPicture::GetRuntimeClass||6|function|undefined GetTMegaPictureClassNamePointer()|rtti
 573190|TMegaPicture::ConstructTMegaPictureBaseState||39|function|undefined ConstructTMegaPictureBaseState()|
 5731d0|TMegaPicture::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 573270|TMegaPicture::Draw||340|function|undefined RenderControlRectWithPaletteAndOptionalBlit()|
-573430|TNumberedItem::LoadPictureResourceRegionAndRefresh||431|function|undefined LoadPictureResourceRegionAndRefresh()|
+573430|TMegaPicture::SetPictureResourceIdAndRefresh||431|function|void __thiscall SetPictureResourceIdAndRefresh(short nPictureId, unsigned char fRefreshNow)|listing
 573650|TMegaPicture::Free||48|function|void __thiscall Free(void)|
 573690|TNumberedItem::OrphanCallChain_C1_I08_00573690||31|function|undefined OrphanCallChain_C1_I08_00573690(undefined2 param_1, char param_2)|
 5736c0|TNumberedItem::OrphanCallChain_C1_I14_005736c0||53|function|undefined OrphanCallChain_C1_I14_005736c0(ushort param_1, char param_2, char param_3)|
@@ -4934,7 +4934,7 @@ address|name|symbol|size|type|prototype|provenance
 584910|T2PictToggleButton::GetRuntimeClass||6|function|undefined GetRuntimeClass()|rtti
 584930|T2PictToggleButton::ConstructT2PictToggleButtonBaseState||18|function|undefined ConstructT2PictToggleButtonBaseState()|
 584960|T2PictToggleButton::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
-5849b0|T2PictToggleButton::IsSelected||14|function|bool __thiscall IsSelected(short value, bool refreshNow)|
+5849b0|T2PictToggleButton::IsSelected||14|function|bool __thiscall IsSelected()|listing
 5849d0|T2PictToggleButton::Select||89|function|void __thiscall Select(bool isPressed, bool notifyParent)|
 584a50|TCloseButton::CreateObject|?CreateObject@TCloseButton@@SGPAVCObject@@XZ|83|function|undefined CreateObject()|rtti
 584ad0|TCloseButton::GetRuntimeClass||6|function|undefined GetTCloseButtonClassNamePointer()|rtti
@@ -5753,7 +5753,7 @@ address|name|symbol|size|type|prototype|provenance
 5b6c60|TTown::TTown||9|function|undefined __thiscall TTown(void)|
 5b6c80|TTown::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 5b6cb0|DestructTTownAndMaybeFree_Impl||7|function|undefined DestructTTownAndMaybeFree_Impl()|
-5b6cd0|InitializeFrogCityMarkerFields||127|function|undefined InitializeFrogCityMarkerFields()|
+5b6cd0|TTown::InitializeTownMarker||127|function|void __thiscall InitializeTownMarker(const char* markerName, short tileIndex, char enabledFlag, short ownerNation)|listing
 5b6d70|TTown::ReadFrom||187|function|undefined WrapperFor_HandleCityDialogNoOpSlot18_At005b6d70(int * param_1)|
 5b6e60|TTown::WriteTo||204|function|undefined WrapperFor_HandleCityDialogNoOpSlot14_At005b6e60(int * param_1)|
 5b6f70|TTown::CalculateRawResources||355|function|void CalculateRawResources()|

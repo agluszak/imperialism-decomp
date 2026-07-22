@@ -123,7 +123,7 @@ public:
   // slot 0x70 HiliteState inherited unchanged (0x48e810)
   // slot 0x71 ResetPictureResourceEntry inherited unchanged (0x48f520)
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
-  virtual bool IsSelected(); // slot 0x73 0x571330 (0-arg forwarder to IsActionable)
+  virtual bool IsSelected(); // slot 0x73 0x571330 (forwarder to the bool IsActionable slot)
   virtual void Select(bool isPressed, bool notifyParent); // slot 0x74 0x571350
   TToggleButton();
   DECLARE_DYNCREATE(TToggleButton)

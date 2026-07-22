@@ -4433,7 +4433,7 @@ address|matching|name
 0x5707f0|1.0|TPictureButton::TPictureButton
 0x570820|0.9090909090909091|TPictureButton::`scalar deleting destructor'
 0x570870|0.7555555555555555|TPictureButton::HiliteState
-0x5708c0|0.75|TPictureButton::DrawImmediate
+0x5708c0|0.8333333333333334|TPictureButton::DrawImmediate
 0x570900|1.0|TPictureButton::DoMouseCommand
 0x570950|0.48|TAlwaysPictureButton::CreateObject
 0x5709d0|1.0|TAlwaysPictureButton::GetRuntimeClass
@@ -4459,8 +4459,8 @@ address|matching|name
 0x5710f0|1.0|TToggleButton::TToggleButton
 0x571120|0.9090909090909091|TToggleButton::`scalar deleting destructor'
 0x571170|0.17777777777777778|TToggleButton::DoEvent
-0x5712a0|0.6915887850467289|TToggleButton::HandleMouseDown
-0x571330|0.25|TToggleButton::IsSelected
+0x5712a0|0.8269230769230769|TToggleButton::HandleMouseDown
+0x571330|1.0|TToggleButton::IsSelected
 0x571350|1.0|TToggleButton::Select
 0x5713c0|0.4897959183673469|TUberCluster::CreateObject
 0x571440|1.0|TUberCluster::GetRuntimeClass
@@ -4472,7 +4472,7 @@ address|matching|name
 0x5715a0|1.0|TUpDownPictureButton::TUpDownPictureButton
 0x5715d0|0.9090909090909091|TUpDownPictureButton::`scalar deleting destructor'
 0x571620|0.38596491228070173|TUpDownPictureButton::HiliteState
-0x571690|0.6666666666666666|TUpDownPictureButton::DrawImmediate
+0x571690|1.0|TUpDownPictureButton::DrawImmediate
 0x5716b0|1.0|TUpDownPictureButton::DoMouseCommand
 0x571700|0.5614035087719298|TRadioPictureButton::CreateObject
 0x5717a0|1.0|TRadioPictureButton::GetRuntimeClass
@@ -4493,7 +4493,7 @@ address|matching|name
 0x571cb0|1.0|TCzechBox::DoEvent
 0x571cf0|1.0|TCzechBox::DoPostCreate
 0x571d10|1.0|TCzechBox::HiliteState
-0x571d40|0.6730769230769231|TCzechBox::CheckTheLook
+0x571d40|0.8367346938775511|TCzechBox::CheckTheLook
 0x571de0|1.0|TCzechBox::IsOn
 0x571e00|1.0|TCzechBox::SetState
 0x571e40|1.0|TCzechBox::Toggle
@@ -4828,7 +4828,7 @@ address|matching|name
 0x584910|1.0|T2PictToggleButton::GetRuntimeClass
 0x584930|1.0|T2PictToggleButton::T2PictToggleButton
 0x584960|0.9090909090909091|T2PictToggleButton::`scalar deleting destructor'
-0x5849b0|0.3076923076923077|T2PictToggleButton::IsSelected
+0x5849b0|1.0|T2PictToggleButton::IsSelected
 0x5849d0|0.5538461538461539|T2PictToggleButton::Select
 0x584a50|0.4897959183673469|TCloseButton::CreateObject
 0x584ad0|1.0|TCloseButton::GetRuntimeClass
@@ -5636,7 +5636,7 @@ address|matching|name
 0x5b6c60|1.0|TTown::TTown
 0x5b6c80|0.9090909090909091|TTown::`scalar deleting destructor'
 0x5b6cb0|0.5|DestructTTownAndMaybeFree_Impl
-0x5b6cd0|0.5714285714285714|TTown::InitializeTownMarker
+0x5b6cd0|0.6736842105263158|TTown::InitializeTownMarker
 0x5b6d70|0.5897435897435898|TTown::ReadFrom
 0x5b6e60|0.36|TTown::WriteTo
 0x5b6f70|0.5132743362831859|TTown::CalculateRawResources

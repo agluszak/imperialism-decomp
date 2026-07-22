@@ -27,7 +27,7 @@ public:
   short ownerNation1c;             // 0x1c
   short resourceYieldByType[0x17]; // 0x1e..0x4b — one yield count per resource type
   bool transportLinkedFlag4c;      // 0x4c
-  bool enabledFlag4d;              // 0x4d
+  char enabledFlag4d;              // 0x4d — verbatim serialized/init byte, not normalized
   bool hasAdjacentCity4e;          // 0x4e
   bool activeFlag4f;               // 0x4f
 

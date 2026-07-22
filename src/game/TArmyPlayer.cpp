@@ -65,7 +65,8 @@ short __cdecl CompareTacticalCursorEntriesByActionClassPriority(void* a, void* b
   if (priorityA < priorityB) {
     return 1;
   }
-  return -(priorityA != priorityB); // neg/sbb idiom: -1 when priorityA > priorityB, else 0
+  // Explicitly cross from the logical comparison into the integer comparator domain.
+  return static_cast<short>(-static_cast<int>(priorityA != priorityB));
 }
 // SYNTHETIC: IMPERIALISM 0x0059b110
 // TArmyPlayer::CreateObject

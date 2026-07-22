@@ -95,8 +95,8 @@ void TCityProductionView::RenderNationHeaderDateLabelWithPeriodicRefresh() {
   }
   short sVar2_val = static_cast<TMinor*>(subObject)->HasMinorStandingLinkSlot5C(0xe);
 
-  int mask1 = -(sVar2_val == 2);
-  int mask2 = -(sVar2_val == 2);
+  int mask1 = -static_cast<int>(sVar2_val == 2);
+  int mask2 = -static_cast<int>(sVar2_val == 2);
   short originX = (mask1 & 0xffe9) + 0x213;
   short sVar2 = (mask2 & 0x14) + 0x6b;
 
