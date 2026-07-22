@@ -11,9 +11,9 @@
   "failed_to_match_function_count": 0,
   "flo_orig_only_count": 211,
   "flo_recomp_only_count": 0,
-  "git_branch": "agent/stub-port-batch-7",
-  "git_commit": "18fcb2e947b06281058f0cc0bf6d3247ec61cb8d",
-  "git_commit_date": "2026-07-22T06:26:15+02:00",
+  "git_branch": "agent/continue-modal-library-recovery",
+  "git_commit": "8d1c7f2898f2ab8e6c16d9e657c243c3d357d7b3",
+  "git_commit_date": "2026-07-22T06:53:34+02:00",
   "global_coverage_pct": 24.031795914594696,
   "global_orig_only_count": 8219,
   "global_recomp_only_count": 7323,
@@ -61,7 +61,7 @@
   "target": "IMPERIALISM",
   "template_alias_recognized_count": 4,
   "template_canonical_paired_count": 4,
-  "timestamp_utc": "2026-07-22T04:50:21+00:00",
+  "timestamp_utc": "2026-07-22T05:06:54+00:00",
   "wid_orig_only_count": 0,
   "wid_recomp_only_count": 2
 }

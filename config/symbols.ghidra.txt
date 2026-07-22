@@ -1484,7 +1484,7 @@ TEventHandler::DispatchCityProductionAction1A 48A670 f
 TEventHandler::OnDeactivated 48A690 f
 TEventHandler::OnDeactivateVetoed 48A6B0 f
 TEventHandler::DispatchUiCommand19ToParent 48A6D0 f
-TEventHandler::ContinueModal 48A6F0 f
+TEventHandler::BecameTarget 48A6F0 f
 TEventHandler::vmethod_0081 48A710 f
 TEventHandler::OwnerPanel 48A730 f
 TEventHandler::ShallowClone 48A7C0 f
