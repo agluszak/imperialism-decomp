@@ -873,9 +873,10 @@ void TMapDialog::Draw(RECT* rectBuffer) {
   UnlockPixels(GetGWorldPixMap(quickDrawSurface350));
 }
 
-static unsigned char ConvertGeneratedCoastMaskToLegacyRasterOrder(unsigned char mask) {
-  // Map generation numbers the diagonal neighbors in top-to-bottom world order. The
-  // bottom-up DIB coast compositor consumes the vertically reflected packed order.
+static unsigned char ReflectHexDirectionMaskForBottomUpSurface(unsigned char mask) {
+  // Hex-neighbor masks use top-to-bottom world directions. The transition-mask routines
+  // operate on the bottom-up DIB scanline order, so reflect both diagonal pairs before
+  // choosing a raster wedge. Horizontal directions 1 and 4 remain unchanged.
   return static_cast<unsigned char>(((mask & 0x01) << 2) | (mask & 0x02) | ((mask & 0x04) >> 2) |
                                     ((mask & 0x08) << 2) | (mask & 0x10) | ((mask & 0x20) >> 2));
 }
@@ -926,14 +927,18 @@ void TMapDialog::RenderStrategicMapTileCell(short tileIndex, short screenY, shor
                                            destinationStride);
 
     if (!isOcean) {
+      unsigned char adjacencyMaskA =
+          ReflectHexDirectionMaskForBottomUpSurface(terrain.adjacencyMaskA0a);
+      unsigned char adjacencyMaskB =
+          ReflectHexDirectionMaskForBottomUpSurface(terrain.adjacencyMaskB0b);
       for (int direction = 0; direction < 6; ++direction) {
         int directionBit = 1 << direction;
         unsigned char* transitionSource = 0;
-        if ((terrain.adjacencyMaskA0a & directionBit) != 0) {
+        if ((adjacencyMaskA & directionBit) != 0) {
           transitionSource =
               sourcePixels +
               g_pGlobalMapState->LookupTileSpriteVariantOffsetByGateAndVariant(tileIndex);
-        } else if ((terrain.adjacencyMaskB0b & directionBit) != 0 && terrain.terrainType00 != 6) {
+        } else if ((adjacencyMaskB & directionBit) != 0 && terrain.terrainType00 != 6) {
           transitionSource =
               sourcePixels +
               g_pGlobalMapState->LookupTileSpriteVariantOffsetByGateAndVariantAlt(tileIndex);
@@ -980,8 +985,8 @@ void TMapDialog::RenderStrategicMapTileCell(short tileIndex, short screenY, shor
       // loaded-map artwork.
       short roadType = terrain.roadFlag;
       if (roadType == 0) {
-        adjacencyMask = ConvertGeneratedCoastMaskToLegacyRasterOrder(adjacencyMask);
-        variantMask = ConvertGeneratedCoastMaskToLegacyRasterOrder(variantMask);
+        adjacencyMask = ReflectHexDirectionMaskForBottomUpSurface(adjacencyMask);
+        variantMask = ReflectHexDirectionMaskForBottomUpSurface(variantMask);
         roadType = adjacencyMask;
       }
       for (int corner = 0; corner < 6; ++corner) {

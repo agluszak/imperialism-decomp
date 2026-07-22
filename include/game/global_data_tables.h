@@ -1262,6 +1262,8 @@ extern char s_szSpaceSeparator_00695794[];
 extern "C" const char s_szLineBreak_00695880[8];
 extern char s_szTurnHistorySeparator_00699320[];
 extern char s_szCombatLossesHeading_00699324[];
+// Enables the clipped vertical offset used by TMiniMapView's viewport marker.
+extern unsigned char g_applyMiniMapVerticalClipOffset_006993e8;
 extern char s_szTurnHistoryPrefix_0069b71c[];
 extern char s_szAdmiralPrefix_0069578c[];
 extern char s_szColonSeparator_00696b10[];
