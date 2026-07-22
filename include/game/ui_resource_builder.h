@@ -2,6 +2,12 @@
 
 #include "game/TView.h"
 
+#ifdef IMPERIALISM_RUNTIME_TESTS
+// Test-build observer at the semantic factory boundary. The declaration and every
+// generated call disappear from the byte-matching build.
+void RuntimeTestObserveBuiltUiTree(int eventCode, TView* root);
+#endif
+
 // Global-state UI resource/widget builder (was misnamed "ui_resource_pool"): the
 // push-widget / attach-to-stack-tail / configure-layout+tags+state / clear-context
 // vocabulary used by the turn-event dialog factory (turn_event_dialog_factory.cpp) and the

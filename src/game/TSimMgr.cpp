@@ -1,6 +1,10 @@
 #include "game/TAmbitApplication.h"
 #include "game/TSimMgr.h"
 
+#ifdef IMPERIALISM_RUNTIME_TESTS
+#include "RuntimeTestDriver.h"
+#endif
+
 #include <cstring>
 #include <ctime>
 #include <stdio.h>
@@ -1077,7 +1081,11 @@ void TSimMgr::GetStringPrelude(short offset, CString* destString) {
 
 // FUNCTION: IMPERIALISM 0x0057fec0
 void TSimMgr::ReinitializeRandomSeed() {
+#ifdef IMPERIALISM_RUNTIME_TESTS
+  srand(RuntimeTestDriver::RandomSeed());
+#else
   srand(static_cast<unsigned int>(time(0)));
+#endif
 }
 
 // FUNCTION: IMPERIALISM 0x00580760

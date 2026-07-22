@@ -1,4 +1,8 @@
 #include "game/ImperialismApp.h"
+
+#ifdef IMPERIALISM_RUNTIME_TESTS
+#include "RuntimeTestDriver.h"
+#endif
 #include "game/ImperialismCommandLineInfo.h"
 #include "game/app_init_globals.h"
 #include "game/global_data_tables.h"
@@ -132,26 +136,16 @@ CString ReadOrCreateRegistryStringValueWithFallback(LPCSTR company, LPCSTR produ
   return CString(defaultValue);
 }
 
-namespace {
-CFrameWnd* GetMainFrameFromActiveThread() {
-  CWinThread* thread = AfxGetThread();
-  if (thread == nullptr) {
-    return nullptr;
-  }
-  // Original calls CWinThread vtable slot +0x7c; m_pMainWnd is the recovered host until that
-  // virtual is promoted onto CWinThread. The SDI main frame is always a CFrameWnd here.
-  return static_cast<CFrameWnd*>(thread->m_pMainWnd);
-}
-} // namespace
-
-// The main thread's CWinThread::m_pMainWnd (the SDI CMainFrame), via its real
-// CFrameWnd::GetActiveView(). Always a CIncludeView in this app (the only registered
-// document-template view class).
+// The main thread's virtual CWinThread::GetMainWnd() result (the SDI CMainFrame), via
+// its real CFrameWnd::GetActiveView(). Always a CIncludeView in this app (the only
+// registered document-template view class).
 // FUNCTION: IMPERIALISM 0x00412a70
 CIncludeView* GetMainViewHostFromActiveThread() {
-  CFrameWnd* mainFrame = GetMainFrameFromActiveThread();
-  if (mainFrame == nullptr) {
-    return nullptr;
+  CFrameWnd* mainFrame;
+  if (AfxGetThread() != nullptr) {
+    mainFrame = static_cast<CFrameWnd*>(AfxGetThread()->GetMainWnd());
+  } else {
+    mainFrame = nullptr;
   }
   return static_cast<CIncludeView*>(mainFrame->GetActiveView());
 }
@@ -488,6 +482,11 @@ BOOL ImperialismApp::OnIdle(LONG lCount) {
     g_pGlobalUiRootController->Idle(0);
   }
   g_pGlobalUiRootController->Idle(1);
+#ifdef IMPERIALISM_RUNTIME_TESTS
+  if (lCount == 0) {
+    RuntimeTestDriver::OnIdle();
+  }
+#endif
   return TRUE;
 }
 
