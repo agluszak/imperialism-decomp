@@ -11,9 +11,9 @@
   "failed_to_match_function_count": 0,
   "flo_orig_only_count": 211,
   "flo_recomp_only_count": 0,
-  "git_branch": "agent/library-region-residue",
-  "git_commit": "4d83927c9114b2d3384328163e64b9d10e7ce520",
-  "git_commit_date": "2026-07-22T07:15:49+02:00",
+  "git_branch": "agent/ratchet-gate-baselines",
+  "git_commit": "78559f4e3b36d409d889c2e4c9f966b1a6711eae",
+  "git_commit_date": "2026-07-22T07:18:15+02:00",
   "global_coverage_pct": 24.041038913023385,
   "global_orig_only_count": 8218,
   "global_recomp_only_count": 7337,
@@ -61,7 +61,7 @@
   "target": "IMPERIALISM",
   "template_alias_recognized_count": 4,
   "template_canonical_paired_count": 4,
-  "timestamp_utc": "2026-07-22T05:16:15+00:00",
+  "timestamp_utc": "2026-07-22T05:30:01+00:00",
   "wid_orig_only_count": 0,
   "wid_recomp_only_count": 2
 }
