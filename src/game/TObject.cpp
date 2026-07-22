@@ -39,9 +39,6 @@ TObject* TObject::ShallowClone() {
 // SYNTHETIC: IMPERIALISM 0x00484990
 // TObject::`scalar deleting destructor'
 
-// FUNCTION: IMPERIALISM 0x00485f50
-TObject::~TObject() {}
-
 // FUNCTION: IMPERIALISM 0x00485f70
 void TObject::WriteTo(TStream* stream) {
   (void)stream;

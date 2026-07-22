@@ -133,12 +133,6 @@ struct TurnEvent1FNationUnheadedPacket : TimelyMessageHeader {
   int nationSlot1C; // +0x1c, total 0x20
 };
 
-// Turn-event-0xF payload: per-nation turn-resume acknowledge.
-struct TurnEventFResumeAckPacket : TimelyNetMessagePrefix {
-  short nationSlot1C;     // +0x1c
-  unsigned char pad1e[2]; // total 0x20
-};
-
 // Build + send the event-3 tick acknowledge (loopback flag set). Expanded inline six
 // times inside HandleDiplomacyTurnEventPacketByCode; the out-of-line sibling
 // EmitTurnEvent3Mode18WithActiveNation (0x5446a0) serves the cross-TU callers.
@@ -330,7 +324,7 @@ void TMultiplayerMgr::HandleDiplomacyTurnEventPacketByCode() {
             ->BuildTurnEvent2ArraySyncPacketFromBufferAndRefreshBaselineCopy();
     syncPacket->toNetworkId = 0;
     g_pNetMgr006a6014->Send(syncPacket, 0);
-    delete syncPacket;
+    delete[] static_cast<unsigned char*>(static_cast<void*>(syncPacket));
     RefreshNationStatusLabelsAndCodesForSlotOrAll(-1);
 
     {
@@ -542,7 +536,7 @@ void TMultiplayerMgr::HandleDiplomacyTurnEventPacketByCode() {
             ->BuildTurnEvent2ArraySyncPacketFromBufferAndRefreshBaselineCopy();
     syncPacket->toNetworkId = 0;
     g_pNetMgr006a6014->Send(syncPacket, 0);
-    delete syncPacket;
+    delete[] static_cast<unsigned char*>(static_cast<void*>(syncPacket));
 
     TaggedSerializablePayload armyPayload;
     armyPayload.tag = 0x61726d79;

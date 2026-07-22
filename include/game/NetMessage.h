@@ -49,6 +49,12 @@ struct TimelyNetMessagePrefix : TimelyMessageHeader {
   void SetTimeEmitPacketGameFlowTurnId();
 };
 
+// Event-0xF per-nation turn-resume acknowledgement.
+struct TurnEventFResumeAckPacket : TimelyNetMessagePrefix {
+  short nationSlot1C;
+  unsigned char pad1e[2];
+};
+
 // Event-0x14 treasury delta for one nation.
 struct TurnEvent14NationMetricPacket : TimelyMessageHeader {
   short nationSlot18;

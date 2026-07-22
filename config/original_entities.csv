@@ -2514,7 +2514,7 @@ address|name|symbol|size|type|prototype|provenance
 4e36f0|TMinor::GetRuntimeClass||6|function|undefined GetTMinorClassNamePointer()|rtti
 4e3710|TMinor::TMinor||88|function|undefined TMinor()|
 4e3790|TMinor::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
-4e37c0|WrapperFor_ReleaseSharedStringRefIfNotEmpty_At004e37c0||80|function|undefined WrapperFor_ReleaseSharedStringRefIfNotEmpty_At004e37c0()|
+4e37c0|TMinor::~TMinor||80|function|undefined ~TMinor()|
 4e3830|TMinor::InitializeSecondaryNationStateAndSelectHomeTile||1888|function|void __thiscall InitializeSecondaryNationStateAndSelectHomeTile(short nationSlot)|
 4e41c0|TMinor::ReadFrom||360|function|undefined DeserializeDiplomacyNationStateFromStream()|
 4e4390|TMinor::WriteTo||476|function|undefined SerializeDiplomacyNationStateToStream()|
@@ -3896,7 +3896,7 @@ address|name|symbol|size|type|prototype|provenance
 541880|TRemoteGreatPower::RefreshGreatPowerRelationPanelsAndDispatchDeltaSummary||1|function|undefined DispatchNationStateEventCode10(void)|
 5418a0|TRemoteGreatPower::OrphanRetStub_0059add0||1|function|undefined OrphanRetStub_0059add0(void)|
 5418c0|TRemoteGreatPower::GetTEventHandlerClassNamePointer_38||1|function|undefined GetTEventHandlerClassNamePointer(void)|
-5418e0|TRemoteGreatPower::OrphanRetStub_005418e0||1|function|undefined OrphanRetStub_005418e0(void)|
+5418e0|TRemoteGreatPower::DoMovePhase||1|function|void DoMovePhase(void)|mac_oracle
 541900|TRemoteGreatPower::OrphanLeaf_NoCall_Ins02_004d7fc0||1|function|undefined OrphanLeaf_NoCall_Ins02_004d7fc0(void)|
 541920|TRemoteGreatPower::ClearFieldBlock1c6||1|function|undefined 'scalar_deleting_destructor'(void)|
 541940|TRemoteGreatPower::ClearDiplomacyState1c6ForTarget||3|function|undefined OrphanRetStub_0059add0(void)|
@@ -4992,7 +4992,7 @@ address|name|symbol|size|type|prototype|provenance
 586d10|TAmtBarCluster::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 586d60|TAmtBarCluster::DoPostCreate||186|function|void __thiscall DoPostCreate(int styleSeed)|
 586e50|TAmtBar::ApplyMoveClamp||8|function|undefined ApplyMoveClamp()|
-586e70|TAmtBarCluster::DoEvent||298|function|undefined HandleTradeMoveControlAdjustment()|
+586e70|TAmtBarCluster::DoEvent||298|function|void __thiscall DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event)|windows_listing
 586ff0|TAmtBarCluster::OrphanRetStub_00586ff0||3|function|undefined OrphanRetStub_00586ff0(void)|
 587010|TTradeCluster::CreateObject|?CreateObject@TTradeCluster@@SGPAVCObject@@XZ|83|function|undefined CreateObject()|rtti
 587090|TTradeCluster::GetRuntimeClass||6|function|undefined GetRuntimeClass()|rtti
