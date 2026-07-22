@@ -24,7 +24,7 @@ void TRemoteGreatPower::NotifyCitySlot2C(void) {}
 void TRemoteGreatPower::FillInteriorMinisterOrders(void) {}
 
 // FUNCTION: IMPERIALISM 0x005418e0
-void TRemoteGreatPower::OrphanRetStub_005418e0(void) {}
+void TRemoteGreatPower::DoMovePhase(void) {}
 
 // FUNCTION: IMPERIALISM 0x00541900
 void TRemoteGreatPower::SortTrackedOrdersByTypePriority(void) {}
@@ -50,7 +50,9 @@ void TRemoteGreatPower::ResetNationDiplomacyProposalQueue(void) {}
 void TRemoteGreatPower::ReleaseProposalQueueSlot7F(void) {}
 
 // FUNCTION: IMPERIALISM 0x005419e0
-void TRemoteGreatPower::ReplyToDiplomacyOffers(void) {}
+void TRemoteGreatPower::ReplyToDiplomacyOffers(void) {
+  ResetDiplomacyPolicyAndGrantEntriesPreserveRecurringGrants();
+}
 
 // FUNCTION: IMPERIALISM 0x00541a00
 void TRemoteGreatPower::SetCandidateNationFlagAndPortZoneState(int targetNation) {

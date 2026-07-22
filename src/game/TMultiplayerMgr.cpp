@@ -519,12 +519,6 @@ struct TurnEventESessionInitPacket : TimelyMessageHeader {
   unsigned char pad66[2];        // total 0x68
 };
 
-// Event-0xF per-nation turn-resume acknowledge (same shape as the dispatcher TU copy).
-struct TurnEventFResumeAckPacketM : TimelyNetMessagePrefix {
-  short nationSlot1C;     // +0x1c
-  unsigned char pad1e[2]; // total 0x20
-};
-
 // Event-0xA city announce (same shape as the dispatcher TU copy).
 struct TurnEventACityAnnouncePacketM : TimelyNetMessagePrefix {
   unsigned char nationId1C; // +0x1c
@@ -914,7 +908,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
   case 0xf: {
     // Clear the acknowledging nation's pending bit; when hosting, re-broadcast the mask
     // and flush the latched event code once the mask drains.
-    TurnEventFResumeAckPacketM* ack = static_cast<TurnEventFResumeAckPacketM*>(packet);
+    TurnEventFResumeAckPacket* ack = static_cast<TurnEventFResumeAckPacket*>(packet);
     pendingNationBitmask &= ~(1 << (char)ack->nationSlot1C);
     unsigned char hosting = g_pSimMgr->multiplayerSessionRole == 1;
     if (hosting == 0) {

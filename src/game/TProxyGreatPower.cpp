@@ -19,7 +19,9 @@ char TProxyGreatPower::IsRemote(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x00540900
-void TProxyGreatPower::ReplyToDiplomacyOffers() {}
+void TProxyGreatPower::ReplyToDiplomacyOffers() {
+  ResetDiplomacyPolicyAndGrantEntriesPreserveRecurringGrants();
+}
 
 // FUNCTION: IMPERIALISM 0x00540920
 char TProxyGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage() {
