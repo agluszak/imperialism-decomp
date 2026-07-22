@@ -1810,58 +1810,7 @@ int TMapMgr::SetTileTransportFlags(short nTileIndex, unsigned short wTileTranspo
   return reinterpret_cast<int>(&tile->activeFlags1c);
 }
 
-namespace {
-
 const int kGlobalMapTileCount = 0x1950;
-
-short FindReachableRecruitSpawnTileRecursiveImpl(TMapMgr* mapState, short tileIndex,
-                                                 short ownerNationTag, char allowActiveFlag2) {
-  TTerrainStateRecordView* tile = &mapState->terrainStateTable[tileIndex];
-  if (tile->recruitSearchVisited0e != 0) {
-    return -1;
-  }
-  tile->recruitSearchVisited0e = 1;
-  if (tile->ownerNationTag04 != ownerNationTag) {
-    return -1;
-  }
-
-  TUnit* civilianOrder = tile->firstCivilianOrder20;
-  bool noMatchingCivilian = civilianOrder == 0;
-  if (!noMatchingCivilian) {
-    while (civilianOrder->field_18 != ownerNationTag) {
-      civilianOrder = civilianOrder->nextOnTile;
-      if (civilianOrder == 0) {
-        noMatchingCivilian = true;
-        break;
-      }
-    }
-  }
-  if (noMatchingCivilian) {
-    if ((tile->activeFlags1c & 2) == 0) {
-      return tileIndex;
-    }
-    if (allowActiveFlag2 != 0) {
-      return tileIndex;
-    }
-  }
-
-  short neighborTiles[6];
-  TMapMgr::ComputeHexNeighborTileIndices(tileIndex, neighborTiles,
-                                         mapState->hexNeighborWrapHorizontally20);
-  for (short neighborIndex = 0; neighborIndex < 6; ++neighborIndex) {
-    if (neighborTiles[neighborIndex] == -1) {
-      continue;
-    }
-    short foundTile = FindReachableRecruitSpawnTileRecursiveImpl(
-        mapState, neighborTiles[neighborIndex], ownerNationTag, allowActiveFlag2);
-    if (foundTile != -1) {
-      return foundTile;
-    }
-  }
-  return -1;
-}
-
-} // namespace
 
 // FUNCTION: IMPERIALISM 0x00513290
 void TMapMgr::DispatchFormationEntryActionsAndMaybeCreateTurnEvent12(short cityRecordIndex,
@@ -2502,8 +2451,54 @@ short TMapMgr::FindReachableRecruitSpawnTileWithVisitedReset(short startTileInde
   for (int tileIndex = 0; tileIndex < kGlobalMapTileCount; ++tileIndex) {
     terrainStateTable[tileIndex].recruitSearchVisited0e = 0;
   }
-  return FindReachableRecruitSpawnTileRecursiveImpl(this, startTileIndex, ownerNationTag,
-                                                    allowActiveFlag2);
+  return FindReachableRecruitSpawnTileRecursive(startTileIndex, ownerNationTag, allowActiveFlag2);
+}
+
+// FUNCTION: IMPERIALISM 0x00514cd0
+short TMapMgr::FindReachableRecruitSpawnTileRecursive(short tileIndex, short ownerNationTag,
+                                                      char allowActiveFlag2) {
+  TTerrainStateRecordView* tile = &terrainStateTable[tileIndex];
+  if (tile->recruitSearchVisited0e != 0) {
+    return -1;
+  }
+  tile->recruitSearchVisited0e = 1;
+  if (tile->ownerNationTag04 != ownerNationTag) {
+    return -1;
+  }
+
+  TUnit* civilianOrder = tile->firstCivilianOrder20;
+  bool noMatchingCivilian = civilianOrder == 0;
+  if (!noMatchingCivilian) {
+    while (civilianOrder->field_18 != ownerNationTag) {
+      civilianOrder = civilianOrder->nextOnTile;
+      if (civilianOrder == 0) {
+        noMatchingCivilian = true;
+        break;
+      }
+    }
+  }
+  if (noMatchingCivilian) {
+    if ((tile->activeFlags1c & 2) == 0) {
+      return tileIndex;
+    }
+    if (allowActiveFlag2 != 0) {
+      return tileIndex;
+    }
+  }
+
+  short neighborTiles[6];
+  ComputeHexNeighborTileIndices(tileIndex, neighborTiles, hexNeighborWrapHorizontally20);
+  for (short neighborIndex = 0; neighborIndex < 6; ++neighborIndex) {
+    if (neighborTiles[neighborIndex] == -1) {
+      continue;
+    }
+    short foundTile = FindReachableRecruitSpawnTileRecursive(neighborTiles[neighborIndex],
+                                                             ownerNationTag, allowActiveFlag2);
+    if (foundTile != -1) {
+      return foundTile;
+    }
+  }
+  return -1;
 }
 
 // FUNCTION: IMPERIALISM 0x00514dc0

@@ -26,6 +26,9 @@ public:
   void BuildLocalizedTokenListFromBitmaskWithConjunction(CString* out, int bitmask);
   // 0x55dcd0: same shape over nation names (string group 0x2711).
   void BuildLocalizedNationListFromBitmaskWithConjunction(CString* out, int bitmask);
+  // Mac oracle: ProvinceParmList(CStr255&, long). Resolve a province/city record index
+  // through the global map's localized display-name table.
+  void ProvinceParmList(CString& out, int cityRecordIndex);
   // 0x55df50: build one TDeluxeText row (column grid x=0x18/0xe2/0x1ac) from the .tex
   // record, expand its bracket template with tokens, and return the consumed height.
   int AppendInterNationEventSummaryTextEntry(int column, int y, int recordId, int recordLength,

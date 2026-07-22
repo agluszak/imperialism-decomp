@@ -643,6 +643,38 @@ int TTacticalBattle::ComputeTacticalHoverCursorStateIndex(int tileIndex) {
   return state;
 }
 
+// Maps the hover-state classifier to the cursor resource used by the tactical view. Enemy
+// targets and intact fort sections refine the generic state with the actual reachability test.
+// FUNCTION: IMPERIALISM 0x005a0a90
+short TTacticalBattle::ResolveTacticalHoverCursorResourceId(int tileIndex) {
+  short cursorsByHoverState[13] = {0,     0x402, 0x3f0, 0x3ec, 0x3ed, 0x3fc, 0x3f0,
+                                   0x3ff, 0x41d, 0x3fe, 0x3fd, 0x403, 0x41c};
+  int hoverState = ComputeTacticalHoverCursorStateIndex(tileIndex);
+  TTacticalPlayer* player = (&tacticalPlayer14)[currentSideC];
+  if (player->notWatchedFlagE != 0) {
+    return 0x402;
+  }
+
+  if (selectedUnit1c != 0 && hoverState == 0) {
+    TacticalTileRecord* tile = &tileGrid4[tileIndex];
+    TTacticalUnit* occupant = tile->occupant4;
+    short category = g_awTacticalUnitCategoryCodeBySlot[selectedUnit1c->unitTypeC];
+    bool enemyTarget = occupant != 0 && occupant->side20 != currentSideC;
+    bool intactFortSection = g_afTacticalDirectFireFlagByCategory[category] ==
+                                 g_fTacticalRetreatQualityWeightDefault_00669EC0 &&
+                             tile->deployMark8 > 1 && fortStrengthPoints54[tileIndex / 58] > 0 &&
+                             selectedUnit1c->attackTarget30 == 0;
+    if (enemyTarget || intactFortSection) {
+      char directFire = static_cast<char>(g_afTacticalDirectFireFlagByCategory[category]);
+      return IsTacticalTargetTileReachableForAction(selectedUnit1c->tileIndex8, tileIndex,
+                                                    directFire, selectedUnit1c->GetUnitRange())
+                 ? 0x403
+                 : 0x400;
+    }
+  }
+  return cursorsByHoverState[hoverState];
+}
+
 // Top-level tactical toolbar command dispatch for the current side. Ignored unless the side
 // is human-watched; then routes the 4-char command tag to the matching handler.
 // FUNCTION: IMPERIALISM 0x005a0c50

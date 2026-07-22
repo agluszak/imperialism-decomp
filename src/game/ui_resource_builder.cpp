@@ -144,6 +144,9 @@ void __cdecl PopUiResourcePoolNode(unsigned int nameTag) {
 // TEMPLATE: IMPERIALISM 0x00479a80
 // ?RemoveTail@?$CList@PAVTView@@PAV1@@@QAEPAVTView@@XZ
 
+// The builder TU emits two identical AddTail COMDATs. 0x426ec0 is reached by the
+// early giant dialog builders; 0x479b00 is the later copy used by the shared stack helpers.
+// TEMPLATE: IMPERIALISM 0x00426ec0
 // TEMPLATE: IMPERIALISM 0x00479b00
 // ?AddTail@?$CList@PAVTView@@PAV1@@@QAEPAU__POSITION@@PAVTView@@@Z
 
