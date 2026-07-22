@@ -144,4 +144,11 @@ void TScenarioChooser::LoadScenarioMetadataByIndexIntoUiControlCore(short scenar
 }
 
 // FUNCTION: IMPERIALISM 0x0057ab30
-void TScenarioChooser::Free() {}
+void TScenarioChooser::Free() {
+  for (int i = 0; i < 7; ++i) {
+    if (nationDescriptionTextByMapSelection118[i] != 0) {
+      delete[] nationDescriptionTextByMapSelection118[i];
+    }
+  }
+  TView::Free();
+}

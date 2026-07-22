@@ -1,5 +1,6 @@
 #include "game/TMegaPicture.h"
 
+#include "game/TDisplayMgr.h"
 #include "game/TQuickDrawSurfaceContext.h"
 #include "game/global_data_tables.h"
 #include "game/quickdraw_rendering.h"
@@ -61,7 +62,13 @@ void TMegaPicture::Draw(RECT* rectBuffer) {
 void TMegaPicture::SetPictureResourceIdAndRefresh(short nPictureId, bool fRefreshNow) {}
 
 // FUNCTION: IMPERIALISM 0x00573650
-void TMegaPicture::Free() {}
+void TMegaPicture::Free() {
+  if (surfaceContext94 != 0) {
+    g_pDisplayMgr->RemoveGWorld(surfaceContext94);
+  }
+  surfaceContext94 = 0;
+  TView::Free();
+}
 
 // FUNCTION: IMPERIALISM 0x00573690
 void TMegaPicture::AssignFlags98AndMaybeRefresh(unsigned short value, char refreshNow) {

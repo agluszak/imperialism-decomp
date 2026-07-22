@@ -4,6 +4,8 @@
 
 #include <time.h>
 #include "game/TSimMgr.h"
+#include "game/TAnimator.h"
+#include "game/TAmbitApplication.h"
 #include "game/global_data_tables.h"
 #include "game/TGreatPower.h"
 #include "game/UiRuntimeContext.h"
@@ -45,7 +47,14 @@ void TCityProductionView::DoPostCreate(int arg) {
 }
 
 // FUNCTION: IMPERIALISM 0x004ba740
-void TCityProductionView::Free() {}
+void TCityProductionView::Free() {
+  g_pUiAnimator->FreeUiTransientRegistryPayloads();
+  for (int i = 0; i < 16; ++i) {
+    buildingClipRegionsEC[i] = DisposeRgn(buildingClipRegionsEC[i]);
+  }
+  g_pGlobalUiRootController->cursorRegionInvalid = 0;
+  TView::Free();
+}
 
 // FUNCTION: IMPERIALISM 0x004ba7b0
 void TCityProductionView::Draw(RECT* rectBuffer) {

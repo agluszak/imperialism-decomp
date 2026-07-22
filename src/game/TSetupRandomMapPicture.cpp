@@ -317,8 +317,10 @@ void TSetupRandomMapPicture::StartGame() {
     }
   }
 
-  CString emptyName(g_szEmptyString);
-  g_cstrCountryNameSettingValue006A4220 = emptyName;
+  {
+    CString emptyName(g_szEmptyString);
+    g_cstrCountryNameSettingValue006A4220 = emptyName;
+  }
   g_cstrCountryNameSettingValue006A4220 +=
       g_pLanguageMgr->PickGender(static_cast<LPCSTR>(countryText));
   g_cstrCountryNameSettingValue006A4220 += countryText;
@@ -350,8 +352,11 @@ void TSetupRandomMapPicture::StartGame() {
   }
 
   g_pSimMgr->SetActiveNationSlotAndRefreshCityCapabilityUiHandles(selectedNationSlot9A);
-  SaveSettingValueFromPointerByKey(&g_cstrCountryNameSettingValue006A4220,
-                                   g_szCountryNameProfileKey00698AE0);
+  {
+    CString countryName(g_cstrCountryNameSettingValue006A4220);
+    g_pUiViewManager->SaveSettingValueFromPointerByKey(&countryName,
+                                                       g_szCountryNameProfileKey00698AE0);
+  }
   for (int nationSlot = 0; nationSlot < 7; ++nationSlot) {
     g_pSimMgr->nationControlModes[nationSlot] = 2;
   }

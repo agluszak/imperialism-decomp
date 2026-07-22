@@ -29,7 +29,7 @@ typedef Region** RgnHandle;
 // Mac QuickDraw API surface (names follow Inside Macintosh; QD prefix only where
 // a Win32 name collides).
 RgnHandle NewRgn(void);                                       // 0x00495820
-undefined4 DisposeRgn(RgnHandle rgn);                         // 0x00495610
+RgnHandle DisposeRgn(RgnHandle rgn);                          // 0x00495610
 void RectRgn(RgnHandle rgn, RECT* rect);                      // 0x004958e0
 void GetClip(RgnHandle rgn);                                  // 0x00495920
 void SetClip(RgnHandle rgn);                                  // 0x00495a30

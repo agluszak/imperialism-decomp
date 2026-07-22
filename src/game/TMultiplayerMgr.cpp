@@ -6,6 +6,7 @@
 
 #include "decomp_types.h"
 #include "game/CString.h"
+#include "game/TAssetMgr.h"
 #include "game/mapped_flavor_text.h"
 #include "game/NetMessage.h"
 #include "game/nation_slot_eligibility.h"
@@ -273,7 +274,18 @@ undefined TMultiplayerMgr::InitializeMultiplayerManagerForSessionContext(int ses
 }
 
 // FUNCTION: IMPERIALISM 0x00542b10
-void TMultiplayerMgr::Free() {}
+void TMultiplayerMgr::Free() {
+  {
+    CString playerName(playerNameString);
+    g_pUiViewManager->SaveSettingValueFromPointerByKey(&playerName, s_PlayerName_0069801c);
+  }
+  g_pGlobalUiRootController->InstallCohandler(this, 0);
+  g_pGameFlowState = 0;
+  g_pNetMgr006a6014->Free();
+  g_pNetMgr006a6014 = 0;
+  diplomacyQueueContext = 0;
+  TEventHandler::Free();
+}
 
 // FUNCTION: IMPERIALISM 0x00542be0
 void TMultiplayerMgr::ReadFrom(TStream* stream) {
@@ -765,8 +777,9 @@ unsigned char TMultiplayerMgr::ValidateGameFlowNameAndSelectionContext(int proto
 
 // FUNCTION: IMPERIALISM 0x00544ff0
 unsigned char TMultiplayerMgr::ValidateAndPrepareGameFlowNameForDispatch() {
-  CString gameName = gameNameString;
-  SaveSettingValueFromPointerByKey(&gameName, "GameName");
+  CString gameName;
+  gameName = gameNameString;
+  g_pUiViewManager->SaveSettingValueFromPointerByKey(&gameName, s_GameName_00698010);
 
   int now;
   do {

@@ -7,10 +7,8 @@
 #include <new>
 
 #include "game/mfc.h"
-#include "game/mfc.h"
 #include "game/GameAssert.h"
 #include "game/ui_invalidation_guard.h"
-#include "game/mfc.h"
 #include "game/TCity.h"
 #include "game/TGlobalMapState.h"
 #include "game/TZone.h"
@@ -145,7 +143,52 @@ IMPLEMENT_DYNCREATE(TOcean, TObject)
 // deleted and this is confirmed a real override slot (raw memory at 0x65c7e4
 // reads TOcean::Free, followed by inherited TObject::ShallowClone/ShallowFree).
 // FUNCTION: IMPERIALISM 0x005621e0
-void TOcean::Free() {}
+void TOcean::Free() {
+  if (g_pNavyOrderManager != 0) {
+    g_pNavyOrderManager->ResetPrimaryOrderActiveFlagsAndClearManagerState();
+  }
+  if (g_pMapActionContextDistanceCache != 0) {
+    delete[] static_cast<char*>(g_pMapActionContextDistanceCache);
+    g_pMapActionContextDistanceCache = 0;
+    g_nMapActionContextDistanceCacheSizedFor = -1;
+    g_nMapActionContextCount = 0;
+  }
+
+  for (int i = 0; i < nationCount; ++i) {
+    TZone* zone = &contextArray[i];
+    if (g_pMapActionContextListHead == zone) {
+      g_pMapActionContextListHead = zone->prev18;
+    }
+    if (zone->prev18 != 0) {
+      zone->prev18->next1c = zone->next1c;
+    }
+    if (zone->next1c != 0) {
+      zone->next1c->prev18 = zone->prev18;
+    }
+    zone->next1c = 0;
+    zone->prev18 = 0;
+  }
+  delete[] contextArray;
+
+  for (;;) {
+    TZone* portZoneProbe = g_pMapActionContextListHead;
+    while (portZoneProbe != 0 && portZoneProbe->IsKindOf(RUNTIME_CLASS(TPortZone)) == 0) {
+      portZoneProbe = portZoneProbe->prev18;
+    }
+    if (portZoneProbe == 0) {
+      break;
+    }
+
+    TZone* portZone = g_pMapActionContextListHead;
+    while (portZone != 0 && portZone->IsKindOf(RUNTIME_CLASS(TPortZone)) == 0) {
+      portZone = portZone->prev18;
+    }
+    portZone->Free();
+  }
+
+  delete[] routeSegments;
+  delete this;
+}
 
 // FUNCTION: IMPERIALISM 0x00562340
 void TOcean::ReadFrom(TStream* stream) {

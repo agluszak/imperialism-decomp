@@ -143,7 +143,7 @@ public:
   // Per-nation-slot description text + length, passed to the 'desc' TDeluxeText's
   // SetTextEntryFromChars(textChars, textLength) in DoEvent's 'pick' branch, indexed
   // by TMapPreviewView::pendingNation6C.
-  const char* nationDescriptionTextByMapSelection118[(0x134 - 0x118) / 4];
+  char* nationDescriptionTextByMapSelection118[(0x134 - 0x118) / 4];
   short nationDescriptionLengthByMapSelection134[(0x142 - 0x134) / 2];
   // Selected scenario index (-1 = none); read by ApplyScenarioSelectionAndPostTurnEvent5E4
   // and PostTurnEvent5DCOrResetScenarioSelectionState. -1 also short-circuits the whole

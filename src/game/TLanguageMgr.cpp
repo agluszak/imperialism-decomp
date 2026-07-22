@@ -48,7 +48,10 @@ TLanguageMgr::TLanguageMgr() : TObject() {
 // TLanguageMgr::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x00507e20
-void TLanguageMgr::Free() {}
+void TLanguageMgr::Free() {
+  FreeNestedPointerTableRowsAndResetDimensions();
+  delete this;
+}
 
 // FUNCTION: IMPERIALISM 0x00507e50
 bool TLanguageMgr::LoadNewsTabTexResourcesAndBuildEntries(const char* basePath, int languageTag) {

@@ -1,4 +1,7 @@
 #include "game/TColorKeyPicture.h"
+
+#include "game/TDisplayMgr.h"
+#include "game/global_data_tables.h"
 // SYNTHETIC: IMPERIALISM 0x00572d20
 // TColorKeyPicture::CreateObject
 
@@ -21,4 +24,10 @@ void TColorKeyPicture::Draw(RECT* rectBuffer) {}
 void TColorKeyPicture::SetPictureResourceIdAndRefresh(short nPictureId, bool fRefreshNow) {}
 
 // FUNCTION: IMPERIALISM 0x00573090
-void TColorKeyPicture::Free() {}
+void TColorKeyPicture::Free() {
+  if (colorKeySurface94 != 0) {
+    g_pDisplayMgr->RemoveGWorld(colorKeySurface94);
+  }
+  colorKeySurface94 = 0;
+  TView::Free();
+}

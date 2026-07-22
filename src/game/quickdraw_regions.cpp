@@ -16,7 +16,7 @@ Region::~Region() {
 }
 
 // FUNCTION: IMPERIALISM 0x00495610
-undefined4 DisposeRgn(RgnHandle rgn) {
+RgnHandle DisposeRgn(RgnHandle rgn) {
   if (rgn != 0) {
     delete *rgn;
   }
