@@ -27,7 +27,7 @@ public:
   virtual void RenderStrategicTileSelectionAndNeighborHighlights() override;
   virtual void HandleMapClickByInteractionMode(short nTileIndex, int nInputFlags) override;
   virtual void SetMapViewTileIndex(int arg1) override;
-  virtual void SetMapViewCellCoordinates(int arg1, int arg2) override;
+  virtual void SetMapViewCellCoordinates(int column, int row) override;
   // Clamps the requested cell into the bounds box, then runs the base implementation.
   virtual void SetMapDialogCellCoordinatesAndRefresh(int col, int row, int mode) override;
 
