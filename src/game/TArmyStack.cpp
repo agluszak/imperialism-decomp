@@ -172,7 +172,15 @@ void TArmyStack::RemoveUnitFromChain(TUnit* unit) {
 }
 
 // FUNCTION: IMPERIALISM 0x004a7c20
-void TArmyStack::Free() {}
+void TArmyStack::Free() {
+  TArmyStackUnitNode* next = head14;
+  while (next != 0) {
+    TArmyStackUnitNode* node = next;
+    next = next->next;
+    delete node;
+  }
+  delete this;
+}
 
 // FUNCTION: IMPERIALISM 0x004a7e70
 void TArmyStack::AccumulateWeightedMeterAndCountFromEligibleLinkedEntries(int* outWeightedSum,

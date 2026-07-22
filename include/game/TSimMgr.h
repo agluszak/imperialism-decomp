@@ -282,4 +282,3 @@ void ReinitializeGameFlowAndPostTurnEventCode(int eventCode);
 
 void __stdcall LoadProfileStringAndAssignSharedRef(CString* outString, LPCTSTR key,
                                                    LPCTSTR defaultValue); // 0x5e01a0
-void SaveSettingValueFromPointerByKey(CString* value, const char* key);   // 0x5e0260

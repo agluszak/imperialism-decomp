@@ -218,6 +218,11 @@ unsigned char TAssetMgr::OpenMainDocumentFromPathAndMarkLoaded(const CString& lo
   return 1;
 }
 
+// FUNCTION: IMPERIALISM 0x005e0260
+void TAssetMgr::SaveSettingValueFromPointerByKey(CString* value, const char* key) {
+  g_pImperialismApp->SetSettingValueInSettingsSection(key, *value);
+}
+
 // FUNCTION: IMPERIALISM 0x005e0290
 void TAssetMgr::LoadSettingValueByKeyIntoOut(LPCSTR key, int defaultValue, int* out) {
   *out = g_pImperialismApp->GetProfileInt("Settings", key, defaultValue);

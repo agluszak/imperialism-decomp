@@ -2,6 +2,7 @@
 
 #include "compat.h"
 #include "game/TNoHilitePicture.h"
+#include "game/quickdraw_regions.h"
 
 class TBuildingView;
 class TCity;
@@ -62,7 +63,9 @@ private:
   // each constructed building page from +0xac through +0xe8. TBuildingView::Close clears
   // the indexed entry directly when the page is embedded.
   TBuildingView* buildingViewsAC[16];
-  unsigned char paddingEC[0xa0];
+  // One region handle per building slot, disposed by Free().
+  RgnHandle buildingClipRegionsEC[16];
+  unsigned char padding12C[0x60];
 };
 
 ASSERT_SIZE(TCityProductionView, 0x18c);

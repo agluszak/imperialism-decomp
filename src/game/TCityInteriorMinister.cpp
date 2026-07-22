@@ -125,7 +125,27 @@ void TCityInteriorMinister::InitializeCityInteriorState(TGreatPower* owner) {
 }
 
 // FUNCTION: IMPERIALISM 0x004becd0
-void TCityInteriorMinister::Free() {}
+void TCityInteriorMinister::Free() {
+  if (list28 != 0) {
+    list28->Free();
+  }
+  list28 = 0;
+  if (list2c != 0) {
+    list2c->Free();
+  }
+  list2c = 0;
+  if (cityPolicyFuzzySet != 0) {
+    cityPolicyFuzzySet->Free();
+  }
+  if (orderList18c != 0) {
+    orderList18c->FreePayloadsAndDestroy();
+  }
+  if (list190 != 0) {
+    list190->Free();
+  }
+  list190 = 0;
+  TMinister::Free();
+}
 
 // FUNCTION: IMPERIALISM 0x004bed60
 void TCityInteriorMinister::CityInteriorSlot20() {}

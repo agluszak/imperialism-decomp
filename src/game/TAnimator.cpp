@@ -124,6 +124,13 @@ void TAnimator::TranslateListRectsAndDropNonIntersectingEntries(int dx, int dy, 
   }
 }
 
+// FUNCTION: IMPERIALISM 0x004a0f80
+void TAnimator::FreeUiTransientRegistryPayloads() {
+  if (this != 0) {
+    registryList24->FreePayloads();
+  }
+}
+
 // The original inlines FindRegisteredAnimationByTag here (same loop, including the
 // receiver null-check); the recompile emits the real call instead.
 // FUNCTION: IMPERIALISM 0x004a0fa0

@@ -2424,8 +2424,3 @@ void __stdcall LoadProfileStringAndAssignSharedRef(CString* outString, LPCTSTR k
   GetProfileStringFromSettingsSection(&result, key, defaultValue);
   *outString = result;
 }
-
-// FUNCTION: IMPERIALISM 0x005e0260
-void SaveSettingValueFromPointerByKey(CString* value, const char* key) {
-  g_pImperialismApp->SetSettingValueInSettingsSection(key, *value);
-}

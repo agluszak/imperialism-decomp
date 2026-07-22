@@ -83,6 +83,9 @@ public:
   // path with the "__loaded" marker; returns whether a document was opened. `this` is
   // unused; callers dispatch through g_pUiViewManager. 0x005e0150.
   unsigned char OpenMainDocumentFromPathAndMarkLoaded(const CString& loadPath);
+  // Writes *value under key in the application's "Settings" profile section. `this`
+  // is unused, but all retail callsites dispatch through g_pUiViewManager. 0x5e0260.
+  void SaveSettingValueFromPointerByKey(CString* value, const char* key);
   // CWinApp::GetProfileInt(key, defaultValue) under the "Settings" section, stored
   // into *out. `this` is unused; callers dispatch through g_pUiViewManager. 0x5e0290.
   void LoadSettingValueByKeyIntoOut(LPCSTR key, int defaultValue, int* out);

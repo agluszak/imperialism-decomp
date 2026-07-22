@@ -27,7 +27,12 @@ IMPLEMENT_DYNCREATE(TLoungeDialog, TNoHilitePicture)
 TLoungeDialog::TLoungeDialog() {}
 
 // FUNCTION: IMPERIALISM 0x0054d6f0
-void TLoungeDialog::Free() {}
+void TLoungeDialog::Free() {
+  if (g_nSaveFormatVersion != 0x4d6f696c) { // 'Moil'
+    g_pGameFlowState->EnableDiplomacyQueueRoutingAndSetContextField44(this, 0);
+  }
+  TView::Free();
+}
 
 // FUNCTION: IMPERIALISM 0x0054d730
 void TLoungeDialog::DoPostCreate(int arg) {

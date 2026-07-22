@@ -31,7 +31,9 @@ TNetMgr::TNetMgr() : TObject() {}
 TNetMgr::~TNetMgr() {}
 
 // FUNCTION: IMPERIALISM 0x005e3470
-void TNetMgr::Free() {}
+void TNetMgr::Free() {
+  delete this;
+}
 
 static const char kDirectPlayErrorTitle[] = "DirectPlay Error";
 static const char kNetworkErrorGeneric[] = "A network error has occurred.";

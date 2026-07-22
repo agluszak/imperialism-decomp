@@ -11,6 +11,7 @@
 #include "game/TQuickDrawSurfaceContext.h"
 #include "game/quickdraw_regions.h"
 #include "game/TAnimation.h"
+#include "game/TAnimator.h"
 #include "game/TAssetMgr.h"
 #include "game/TBitmapResourceLoader.h"
 #include "game/CDib.h"
@@ -41,7 +42,6 @@
 #include "decomp_types.h"
 #include <string.h>
 
-undefined4 CallObjectOffset24Vslot54IfPresent(void);
 // Genuine __cdecl(void*, int) heap-block reallocator; cast at call sites (same pattern
 // as TAutoGreatPower.cpp/TCountry.cpp). Returns the new block, or 0 on failure.
 
@@ -93,11 +93,6 @@ static undefined4 QueryPointInsideHitRegion(short x, short y, RgnHandle region) 
 
 static void InvokeBuildHexNeighborHighlightPolygonForTile(short tileId, int tileIndex) {
   BuildHexNeighborHighlightPolygonForTile(tileId, tileIndex);
-}
-
-static void InvokeCallObjectOffset24Vslot54IfPresent(void) {
-  reinterpret_cast<void(__cdecl*)(void)>(
-      reinterpret_cast<void (*)()>(CallObjectOffset24Vslot54IfPresent))();
 }
 
 void ReleaseBitmapLoaderHandle(TBitmapResourceLoader** loaderHandle) {
@@ -1583,7 +1578,7 @@ void TMacViewMgr::RefreshActiveGoldControlAndUiRuntimeState() {
   }
   goldControl->gold71();
   goldControl->SetGoldControlStateByResource(0, 0);
-  InvokeCallObjectOffset24Vslot54IfPresent();
+  g_pUiAnimator->FreeUiTransientRegistryPayloads();
 }
 
 // FUNCTION: IMPERIALISM 0x0050d9e0

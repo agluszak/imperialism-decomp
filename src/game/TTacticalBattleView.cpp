@@ -10,6 +10,7 @@
 
 #include "game/TAnimation.h"
 #include "game/TAnimator.h"
+#include "game/TDisplayMgr.h"
 #include "game/TPicture.h"
 #include "game/TSimMgr.h"
 #include "game/TTacticalBattle.h"
@@ -908,7 +909,16 @@ undefined TTacticalBattleView::DrawTacticalTileInClipRect(int tileIndex, RECT* c
 TTacticalBattleView::~TTacticalBattleView() {}
 
 // FUNCTION: IMPERIALISM 0x005a8430
-void TTacticalBattleView::Free() {}
+void TTacticalBattleView::Free() {
+  g_pDisplayMgr->RemoveGWorld(battlefieldSurface64);
+  g_pDisplayMgr->RemoveGWorld(unitSpriteAtlasSurface68);
+  g_pDisplayMgr->RemoveGWorld(unitSpriteScratchSurfaceBC);
+  g_pDisplayMgr->RemoveGWorld(fortLevelAtlasSurface6C);
+  g_pDisplayMgr->RemoveGWorld(tileScratchSurface70);
+  g_pDisplayMgr->RemoveGWorld(effectAtlasSurface74);
+  g_pUiAnimator->FreeUiTransientRegistryPayloads();
+  TView::Free();
+}
 
 // FUNCTION: IMPERIALISM 0x005a84d0
 void TTacticalBattleView::DoPostCreate(int arg) {

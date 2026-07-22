@@ -1,6 +1,7 @@
 #include "game/TDealTabControl.h"
 
 #include "game/TQuickDrawSurfaceContext.h"
+#include "game/TDisplayMgr.h"
 #include "game/bitmap_descriptor_helpers.h"
 #include "game/global_data_tables.h"
 #include "game/quickdraw_rendering.h"
@@ -81,4 +82,12 @@ void TDealTabControl::DispatchPictureResourceCommand(int nEventType, void* pEven
 }
 
 // FUNCTION: IMPERIALISM 0x005bcb20
-void TDealTabControl::Free() {}
+void TDealTabControl::Free() {
+  if (filledRowStrip8c != 0) {
+    g_pDisplayMgr->RemoveGWorld(filledRowStrip8c);
+  }
+  if (emptyRowStrip90 != 0) {
+    g_pDisplayMgr->RemoveGWorld(emptyRowStrip90);
+  }
+  TView::Free();
+}

@@ -13352,6 +13352,28 @@
       ],
       "source_file": "src/game/TMultiplayerMgr.cpp"
     },
+    "0x00542b10": {
+      "references": [
+        {
+          "address": "0x0069801c",
+          "kind": "embedded_global",
+          "symbol": "s_PlayerName_0069801c",
+          "text": "PlayerName"
+        }
+      ],
+      "source_file": "src/game/TMultiplayerMgr.cpp"
+    },
+    "0x00544ff0": {
+      "references": [
+        {
+          "address": "0x00698010",
+          "kind": "embedded_global",
+          "symbol": "s_GameName_00698010",
+          "text": "GameName"
+        }
+      ],
+      "source_file": "src/game/TMultiplayerMgr.cpp"
+    },
     "0x005454b0": {
       "references": [
         {
@@ -190503,7 +190525,7 @@
   "summary": {
     "embedded_globals": 770,
     "formula_matches": 2356,
-    "functions_with_references": 293,
+    "functions_with_references": 295,
     "mac_strings": 3821,
     "mac_strings_with_candidates": 3272,
     "text_resources": 182,

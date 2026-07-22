@@ -2095,7 +2095,7 @@ TAnimator::Free 4A0DC0 f
 TAnimator::ReadFrom 4A0E10 f
 TAnimator::WriteTo 4A0E50 f
 TAnimator::TranslateListRectsAndDropNonIntersectingEntries 4A0E90 f
-CallObjectOffset24Vslot54IfPresent 4A0F80 f
+TAnimator::FreeUiTransientRegistryPayloads 4A0F80 f
 TAnimator::RemoveUiTransientRegistryObjectByTag 4A0FA0 f
 TBitmapResourceLoader::ReportUnimplementedResourceVirtualSlot02 4A1100 f
 CreateBitmapResourceLoaderHandle 4A1130 f
@@ -6827,7 +6827,7 @@ TAssetMgr::EnsurePictWvDataGobLoadedBySlot 5DFF20 f
 TAssetMgr::SaveMainDocumentToPathAndMarkSaved 5E0030 f
 TAssetMgr::OpenMainDocumentFromPathAndMarkLoaded 5E0150 f
 LoadProfileStringAndAssignSharedRef 5E01A0 f
-SaveSettingValueFromPointerByKey 5E0260 f
+TAssetMgr::SaveSettingValueFromPointerByKey 5E0260 f
 TAssetMgr::LoadSettingValueByKeyIntoOut 5E0290 f
 WrapperFor_WriteProfileInt_At005e02c0 5E02C0 f
 TAssetMgr::HasPendingClientSaveFile 5E02F0 f

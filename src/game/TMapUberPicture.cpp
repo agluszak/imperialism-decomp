@@ -962,11 +962,7 @@ void TMapUberPicture::EnterMapInteractionOverlayMode(TView* controlOverride) {
 // FUNCTION: IMPERIALISM 0x00599b90
 void TMapUberPicture::CommitPendingUiModeChangeAndRefreshViews(TView* controlOverride) {
   if (invalidationFlag94 != 0) {
-    if (g_pUiAnimator != nullptr) {
-      // The original also calls g_pUiAnimator->registryList24's own vtable slot 0x54 here
-      // (CallObjectOffset24Vslot54IfPresent) -- TList's real slot at that byte offset is
-      // unresolved, so left unmodeled.
-    }
+    g_pUiAnimator->FreeUiTransientRegistryPayloads();
     TView* zoomControl =
         (controlOverride != nullptr) ? controlOverride : ResolveControlByTag(kControlTagZmOt);
     zoomControl->AssertValid();
@@ -974,20 +970,18 @@ void TMapUberPicture::CommitPendingUiModeChangeAndRefreshViews(TView* controlOve
       zoomControl->controlTag = kControlTagZmIn;
     }
     invalidationFlag94 = 0;
-    short centerTile = static_cast<short>(subview2A8->GetCenterTile());
-    goodGoldTagControlA4->CenterOn(centerTile);
+    goodGoldTagControlA4->CenterOn(subview2A8->GetCenterTile());
     subview2A8->CaptureLayoutF0(g_MapUberModeLayoutScratch_006a45e8, 0);
     goodGoldTagControlA4->CaptureLayoutF0(g_MapUberModeSecondaryLayoutScratch_006a45b8, 1);
+    TMiniMapView* miniMap = miniMapViewC0;
     subviewAc = goodGoldTagControlA4;
 
-    if (miniMapViewC0 != nullptr) {
-      miniMapViewC0->markerBoxWidth98 = 0x20;
-      miniMapViewC0->markerBoxHeight9c = 0x1c;
-      miniMapViewC0->markerBoxX90 =
-          miniMapViewC0->frameWidth34 / 2 - miniMapViewC0->markerBoxWidth98 - 2;
-      miniMapViewC0->markerBoxY94 =
-          miniMapViewC0->frameHeight38 / 2 - miniMapViewC0->markerBoxHeight9c - 2;
-      miniMapViewC0->RefreshControl();
+    if (miniMap != nullptr) {
+      miniMap->markerBoxWidth98 = 0x20;
+      miniMap->markerBoxHeight9c = 0x1c;
+      miniMap->markerBoxX90 = miniMap->frameWidth34 / 2 - miniMap->markerBoxWidth98 - 2;
+      miniMap->markerBoxY94 = miniMap->frameHeight38 / 2 - miniMap->markerBoxHeight9c - 2;
+      miniMap->RefreshControl();
     }
   }
 }

@@ -72,6 +72,9 @@ public:
   // Walks the registry for the animation whose registryTag18 matches `tag`;
   // null if the animator is null, the list is empty, or nothing matches. 0x4a0d30.
   TAnimation* FindRegisteredAnimationByTag(int tag);
+  // Releases every payload owned by registryList24 while retaining the list itself.
+  // Null-receiver-safe because retail callers dispatch through g_pUiAnimator directly.
+  void FreeUiTransientRegistryPayloads(); // 0x4a0f80
   // Offsets every registered animation's screenRect1C by (dx, dy), then removes and
   // frees any entry whose translated rect no longer intersects clipRect (RECT passed
   // by value: 4 stack dwords). Null-receiver-safe like FindRegisteredAnimationByTag.
