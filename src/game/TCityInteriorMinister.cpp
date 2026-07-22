@@ -1318,7 +1318,8 @@ void TCityInteriorMinister::RequestMissingCivilianOrderTypes() {
   short nationSlot = ownerContextAt04->nationSlot;
   for (CivilianUnitKindStorage unitKindStorage = EncodeCivilianUnitKind(kCivilianUnitDriller);
        unitKindStorage >= EncodeCivilianUnitKind(kCivilianUnitMiner); --unitKindStorage) {
-    if (g_pCityOrderCapabilityState->capRowsD467[nationSlot].flags[unitKindStorage] != 0 &&
+    if (g_pCityOrderCapabilityState->universityRecruitmentAvailabilityByNation467[nationSlot]
+                .availableByCategory[unitKindStorage] != 0 &&
         !hasOrderType[unitKindStorage]) {
       bool needed = false;
       for (short resourceType = 0; resourceType < 23; ++resourceType) {

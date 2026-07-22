@@ -2068,13 +2068,13 @@ address|matching|name
 0x4c8390|0.16387959866220736|TShipyardView::DoStartup
 0x4c8a20|0.2|WrapperFor_thunk_LoadBitmapResourceSurfaceAndRestoreQuickDrawContext_At004c8a20
 0x4c8a50|1.0|TShipyardView::UpdateFields
-0x4c8ac0|0.04040404040404041|TShipyardView::DoEvent
+0x4c8ac0|0.314410480349345|TShipyardView::DoEvent
 0x4c8c09|0.0|UpdateCityViewCountControlAndRefreshSelection
 0x4c8c3f|0.0|UpdateCityViewCountControlAndRefreshSelectionAlt
-0x4c8d70|0.009708737864077669|TShipyardView::SetShip
-0x4c9150|0.46325878594249204|TShipyardView::Draw
-0x4c97c0|0.013333333333333334|TShipyardView::GetCostString
-0x4c9a60|0.012269938650306749|TShipyardView::SetStats(short)
+0x4c8d70|0.48333333333333334|TShipyardView::SetShip
+0x4c9150|0.5045045045045045|TShipyardView::Draw
+0x4c97c0|0.205761316872428|TShipyardView::GetCostString
+0x4c9a60|0.4244604316546763|TShipyardView::SetStats(short)
 0x4c9d20|1.0|TShipyardView::SetStats(class TView *)
 0x4c9d70|0.5714285714285714|TBuildingConstructionView::CreateObject
 0x4c9e10|1.0|TBuildingConstructionView::GetRuntimeClass
@@ -2089,14 +2089,14 @@ address|matching|name
 0x4cac40|1.0|TUniversityView::GetRuntimeClass
 0x4cac60|0.7058823529411765|TUniversityView::TUniversityView
 0x4cac90|0.9090909090909091|TUniversityView::`scalar deleting destructor'
-0x4cace0|0.0049382716049382715|TUniversityView::DoStartup
-0x4cb320|0.006269592476489028|TUniversityView::SetUnit
-0x4cb8a0|0.5138888888888888|TUniversityView::DoEvent
+0x4cace0|0.26778242677824265|TUniversityView::DoStartup
+0x4cb320|0.3894736842105263|TUniversityView::SetUnit
+0x4cb8a0|0.47715736040609136|TUniversityView::DoEvent
 0x4cb9cd|0.0|UpdateUniversityCountControlAndRefreshView
 0x4cba03|0.0|UpdateUniversityCountControlAndRefreshViewAlt
 0x4cbb20|0.3258145363408521|TUniversityView::UpdateFields
 0x4cbf30|1.0|TUniversityView::Free
-0x4cbf70|0.27906976744186046|TUniversityView::Draw
+0x4cbf70|0.5364583333333334|TUniversityView::Draw
 0x4cc300|0.5818181818181818|TPurchaseCluster::CreateObject
 0x4cc3a0|1.0|TPurchaseCluster::GetRuntimeClass
 0x4cc3c0|1.0|TPurchaseCluster::TPurchaseCluster

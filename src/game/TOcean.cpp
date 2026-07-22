@@ -127,9 +127,9 @@ TOcean::~TOcean() {}
 
 IMPLEMENT_DYNCREATE(TOcean, TObject)
 
-// Slot 0x07 (Free). Ghidra: DispatchNationPendingActionEventCodes (264 bytes) —
-// real body is a follow-up port; stub keeps the vtable slot owned/paired. The
-// address was briefly mis-modeled as non-virtual after a bad symbols.csv row
+// Slot 0x07 (Free): releases navy orders, map-action caches/zones, province-name state,
+// and reseeds the map status PRNG. The address was briefly mis-modeled as non-virtual
+// after a bad symbols.csv row
 // (65c7e4|TPortZone::vftable, a stale duplicate of TPortZone's real vtable at
 // 0x65c758) made TOcean's orig vtable boundary look 3 slots short; the row is
 // deleted and this is confirmed a real override slot (raw memory at 0x65c7e4

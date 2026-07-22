@@ -327,9 +327,8 @@ extern int g_nQuickDrawOriginX;
 extern int g_nQuickDrawOriginY;
 extern int g_nQuickDrawResolvedTextOriginX;
 extern int g_nQuickDrawResolvedTextOriginY;
-// TODO(hedge): only observed as the left/top of a view-frame clip bounds rect in
-// TTacticalBattleView::DrawUiTilesAndOverlay; sole writer (0x005ad9e2) not yet
-// identified/named. 0x6a5458/0x6a545c
+// Left/top of the view-frame clip bounds used by TTacticalBattleView. Reset together by
+// ResetUiFrameClipOrigin (0x005ad9e0). 0x6a5458/0x6a545c
 extern int g_nUiFrameClipOriginX;
 extern int g_nUiFrameClipOriginY;
 extern TQuickDrawSurfaceContext g_defaultQuickDrawSurfaceSentinel;
@@ -1039,13 +1038,9 @@ extern const double g_BeachheadMissionPriorityNormalization_0065AA30;
 
 // TMapMgr.cpp — per-resourceType requirement level table (0x513610).
 extern unsigned char g_abUniversityRequirementLevelById[24][4];
-// TUniversityView.cpp — TUniversityView::Draw (0x4cbf70) reads
-// table[row + fielda4*4] (row 0-4, only the low 16 bits used, -1 = empty slot) to pick
-// which resource's requirement row to draw for the selected recruitment category
-// (fielda4). Real category boundaries/count not otherwise recovered; declared to the
-// extent read (30 dwords @ 0x651030, raw-read from the binary since this region was
-// previously unclaimed).
-extern int g_UniversityRequirementResourceTypeTable[30];
+// TUniversityView.cpp — four requirement-resource rows for each of the nine recruitment
+// categories. A -1 entry leaves that row empty.
+extern int g_anUniversityRequirementIdByRecruitRow[9][4];
 extern unsigned char g_abResourceTypeUsesHighNibbleFlag[24];
 // TMapMgr.cpp — per-resourceType capability-category code, compared for equality against
 // a caller-supplied category code by FindMaxResourceCapabilityValueForTile (0x513720).

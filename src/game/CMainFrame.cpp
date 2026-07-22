@@ -49,9 +49,8 @@ CMainFrameRefTarget::~CMainFrameRefTarget() {}
 
 IMPLEMENT_DYNCREATE(CMainFrame, CFrameWnd)
 
-// Entry order follows the original map at 0x648648. The one original entry whose handler
-// is still not ported is ON_COMMAND(0x8013, 0x4855b0) (a large terrain-overlay dialog
-// builder).
+// Entry order follows the original map at 0x648648. ON_COMMAND(0x8013) dispatches to the
+// recovered 0x4855b0 terrain-overlay dialog builder owned by TC2TemplateDialog.cpp.
 //
 // clang-cl's lint build rejects the MFC message-map macros' unqualified `&OnPaint`-style
 // address-of-member-function (a long-standing MSVC extension clang doesn't implement for
