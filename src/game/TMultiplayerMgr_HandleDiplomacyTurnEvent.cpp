@@ -11,6 +11,7 @@
 #include <string.h>
 
 #include "game/NetMessage.h"
+#include "game/multiplayer_packets.h"
 #include "game/TArmyBattle.h"
 #include "game/CIterator.h"
 #include "game/TCivUnit.h"
@@ -39,44 +40,6 @@
 
 namespace {
 
-// Serializer tag+object pair for the 0x31 dispatch (same shape as the definition in
-// TMultiplayerMgr.cpp; the serializer reads it through void*).
-struct TaggedSerializablePayload {
-  int tag;
-  TObject* object;
-};
-
-// Turn-event-0xB payload: the full nation directory — home-region tile, city/nation
-// display names, and port-zone ordinals per terrain slot. The name rows are reserved
-// 0x21 bytes apiece in the struct (hence the pads) but the writer advances only 0x17
-// bytes per slot while still strncpy'ing 0x21 — original behavior, kept as-is.
-struct TurnEventBNationDirectoryPacket : NetMessage {
-  int packetTag;                // +0x10 'time'
-  unsigned char activeNationId; // +0x14
-  unsigned char pad15[3];
-  short pendingNationSlot; // +0x18
-  unsigned char pad1a[2];
-  short homeTileBySlot[0x17];        // +0x1c
-  char cityNameBySlot[0x17][0x17];   // +0x4a
-  unsigned char pad25b[0xe6];        // reserve to 0x17 * 0x21
-  char nationNameBySlot[0x17][0x17]; // +0x341
-  unsigned char pad552[0xe6];        // reserve to 0x17 * 0x21
-  short portZoneOrdinalBySlot[0x17]; // +0x638
-  unsigned char pad666[2];           // total 0x668
-};
-
-// Turn-event-0x23 payload: one map tile's 0x24-byte terrain state record.
-struct TurnEvent23TileStatePacket : NetMessage {
-  int packetTag;                // +0x10 'time'
-  unsigned char activeNationId; // +0x14
-  unsigned char pad15[3];
-  short pendingNationSlot; // +0x18
-  unsigned char pad1a[2];
-  short tileIndex; // +0x1c
-  unsigned char pad1e[2];
-  TTerrainStateRecordView record; // +0x20, total 0x44
-};
-
 // Turn-event-0x24 header: the 0xa8-byte city-score record payload is a separate
 // NationStateRecordA8 local constructed immediately after this header on the stack
 // (the original initializes the header, then constructs the record, and Send reads
@@ -84,53 +47,6 @@ struct TurnEvent23TileStatePacket : NetMessage {
 struct TurnEvent24CityRecordHeader : TimelyNetMessagePrefix {
   short cityRecordIndex;  // +0x1c
   unsigned char pad1e[2]; // header total 0x20
-};
-
-// Turn-event-0x2d payload: a minor nation's need-level array. Derives the timely
-// prefix so the header stamp helper (0x5438e0) is callable, as the original does.
-struct TurnEvent2DMinorNeedPacket : TimelyNetMessagePrefix {
-  short nationSlot;              // +0x1c
-  short needLevelByNation[0x17]; // +0x1e, total 0x4c
-};
-
-// Turn-event-0x18 payload: per-great-power diplomacy policy/grant/need arrays.
-struct TurnEvent18DiplomacyArraysPacket : NetMessage {
-  int packetTag;                // +0x10 'time'
-  unsigned char activeNationId; // +0x14
-  unsigned char pad15[3];
-  short pendingNationSlot; // +0x18
-  unsigned char pad1a[2];
-  short diplomacyPolicyByNation[7][0x17]; // +0x1c
-  short diplomacyGrantByNation[7][0x17];  // +0x15e
-  short needLevelByNation[7][0x17];       // +0x2a0
-  unsigned char pad3e2[2];                // total 0x3e4
-};
-
-// Turn-event-1 payload: the remaining turn-resume pending-nation bitmask (same shape
-// as the definition in TMultiplayerMgr.cpp).
-struct TurnEvent1PendingMaskPacket2 : TimelyMessageHeader {
-  int pendingMask; // +0x18, total 0x1c
-};
-
-// Turn-event-0xA payload: the resuming nation announces its home region and city name.
-struct TurnEventACityAnnouncePacket : TimelyNetMessagePrefix {
-  unsigned char nationId1C; // +0x1c
-  unsigned char pad1d;
-  short homeTile1E;      // +0x1e
-  char cityName20[0x24]; // +0x20 (strncpy'd 0x21), total 0x44
-};
-
-// Turn-event-0x25 status board (same shape as NationStatusEvent25Packet in
-// TMultiplayerMgr.cpp): seven per-nation four-cc status tags.
-struct NationStatusEvent25Packet2 : TimelyMessageHeader {
-  int statusTags[7]; // +0x18, total 0x34
-};
-
-// Turn-event-0x1F payload: nation-unheaded notice — the 'uhed' status tag plus the
-// vacated slot index (the +0x18 pair reuses the timely-header tail).
-struct TurnEvent1FNationUnheadedPacket : TimelyMessageHeader {
-  int statusTag18;  // +0x18 'uhed'
-  int nationSlot1C; // +0x1c, total 0x20
 };
 
 // Build + send the event-3 tick acknowledge (loopback flag set). Expanded inline six
@@ -171,7 +87,7 @@ void TMultiplayerMgr::HandleTurnResumeStateTelemetry() {
     pendingNationBitmask &= ~(1 << g_pSimMgr->GetActiveNationId());
     unsigned char stillHosting = g_pSimMgr->multiplayerSessionRole == 1;
     if (stillHosting != 0) {
-      TurnEvent1PendingMaskPacket2 packet;
+      TurnEvent1PendingMaskPacket packet;
       packet.InitializeEmitEventHeaderWithActiveNation();
       packet.eventCode = 0;
       packet.fromNetworkId = 0;
@@ -289,7 +205,7 @@ void TMultiplayerMgr::HandleTurnResumeStateTelemetry() {
     readySlot = static_cast<signed char>(activeNationTagIndex);
   }
   nationStatusTags[readySlot] = 0x72656479; // 'redy'
-  NationStatusEvent25Packet2 packet;
+  NationStatusEvent25Packet packet;
   packet.messageTag = 0x74696d65;
   packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
   packet.eventCode = 0;
@@ -713,7 +629,7 @@ void TMultiplayerMgr::ReplaceNationStateForSlotAndRefreshStatus(int nationSlot) 
   if (isClientSession == 0) {
     unsigned char hosting = sessionRole == 1;
     if (hosting != 0) {
-      TurnEvent1FNationUnheadedPacket packet;
+      TurnEvent1FStatusPacket packet;
       packet.messageTag = 0x74696d65;
       packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
       packet.eventCode = 0;
@@ -724,7 +640,7 @@ void TMultiplayerMgr::ReplaceNationStateForSlotAndRefreshStatus(int nationSlot) 
       packet.messageLength = 0x20;
       packet.DestinateTo(-2);
       packet.statusTag18 = 0x64656875; // 'uhed'
-      packet.nationSlot1C = nationSlot;
+      packet.value1C = nationSlot;
       g_pNetMgr006a6014->Send(&packet, 0);
     }
     TGreatPower* oldNation = g_apNationStates[nationSlot];
@@ -849,7 +765,7 @@ void TMultiplayerMgr::ReplaceNationStateForSlotAndRefreshStatus(int nationSlot) 
     pendingNationBitmask &= ~(1 << nationSlot);
     unsigned char hostingBroadcast = g_pSimMgr->multiplayerSessionRole == 1;
     if (hostingBroadcast != 0) {
-      TurnEvent1PendingMaskPacket2 packet;
+      TurnEvent1PendingMaskPacket packet;
       packet.messageTag = 0x74696d65;
       packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
       packet.eventCode = 0;
