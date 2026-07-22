@@ -290,6 +290,37 @@ void TModuleLibraryCacheTableStateB::ReleaseRecordByHandle(void* handle) {
   }
 }
 
+// FUNCTION: IMPERIALISM 0x0049a590
+CString TModuleLibraryCacheTableStateB::LoadLocalizedStringByPackedGroupAndIndex(
+    unsigned int packedGroupAndIndex) {
+  CString result;
+  char* buffer = result.GetBuffer(0x100);
+  int group = packedGroupAndIndex >> 8;
+  int index = packedGroupAndIndex & 0xff;
+  if (LoadStringA(m_primaryModule, group * 100 + index, buffer, 0x100) == 0) {
+    result.ReleaseBuffer(-1);
+    result = g_szEmptyString;
+  } else {
+    result.ReleaseBuffer(-1);
+  }
+  return result;
+}
+
+// Ghidra attributed this to TToolBarCluster, but the +0x4c receiver field is the module
+// cache's m_primaryModule and matches the packed-argument sibling immediately above.
+// FUNCTION: IMPERIALISM 0x0049a6c0
+CString TModuleLibraryCacheTableStateB::LoadLocalizedStringByGroupAndIndex(int group, int index) {
+  CString result;
+  char* buffer = result.GetBuffer(0x100);
+  if (LoadStringA(m_primaryModule, group * 100 + index, buffer, 0x100) == 0) {
+    result.ReleaseBuffer(-1);
+    result = g_szEmptyString;
+  } else {
+    result.ReleaseBuffer(-1);
+  }
+  return result;
+}
+
 // Windows COLORREF values with the PALETTEINDEX marker (0x01 in the high byte) name an
 // entry in the shared DIB palette. Native edit controls need an RGB-bearing palette color,
 // so resolve that entry and return PALETTERGB; ordinary COLORREF values pass through.

@@ -184,6 +184,16 @@ void TStatusPicture::Draw(RECT* rectBuffer) {
   }
 }
 
+// FUNCTION: IMPERIALISM 0x00594790
+void TStatusPicture::DrawBar(short rowY, short width, short nationSlot) {
+  RECT swatch = {0x98, rowY + 1, width + 0x98, rowY + 13};
+  SetQuickDrawFillColor(0);
+  FillRectWithQuickDrawBrushAndContextOffset(&swatch);
+  OffsetRect(&swatch, -1, -1);
+  g_pUiRuntimeContext->SetForeColor(nationSlot);
+  FillRectWithQuickDrawBrushAndContextOffset(&swatch);
+}
+
 // Fills values94[nation] with the per-nation metric selected by comparisonMode90 (and
 // pictureIds_b0[nation] with the nation slot, or -1 when the slot is ineligible), sorts the
 // seven entries, then rescales them so the largest is at most 400.
