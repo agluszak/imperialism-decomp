@@ -72,12 +72,12 @@ void TLongintList::Delete(long value) {
 
 // FUNCTION: IMPERIALISM 0x004c6b60
 void TLongintList::Dump(CDumpContext& dc) const {
-  dc << "\n";
+  dc << s_szLineBreak_00695880;
   TLongintList* self = const_cast<TLongintList*>(this);
   long ordinal;
   for (ordinal = 1; ordinal <= GetCount(); ++ordinal) {
     dc << static_cast<unsigned long>(ordinal) << s_szSpaceSeparator_00695794
-       << static_cast<unsigned int>(self->At(ordinal)) << "\n";
+       << static_cast<unsigned int>(self->At(ordinal)) << s_szLineBreak_00695880;
   }
 }
 

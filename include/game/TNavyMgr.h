@@ -129,13 +129,14 @@ public:
   // interaction slots, reading every queued entry via TGreatPower's tracked-slot
   // virtuals (GetTrackedSlotEntryCountLow @ slot 0x6d, ReadTrackedSlotEntryFields @
   // slot 0x6f). Each live entry builds a localized diplomacy/order-exchange event
-  // message and, gated by `mode` (1 = offer pass, 2 = accept pass) and flags derived
-  // from that message, applies the exchange outcome (resource transfers, capped-at-499
-  // order-node stat writes, per-nation counter deltas). The query skeleton is fully
-  // ported; the message/outcome spine is an unblocked (large) decomp-loop follow-up --
-  // the "g_pLocalizationTable" Ghidra shows in the body is g_pSimMgr itself (a modeled
-  // TSimMgr, vtable 0x662a58; the string calls are TSimMgr::GetStringPrelude/GetString),
-  // so no class recovery is required.
+  // message and, gated by `mode` (1 = offer pass, 2 = accept pass) and the selected
+  // interaction's direction flags, applies the full exchange outcome: resource and
+  // treasury transfers, capped-at-499 admiral/ship stat writes, per-nation counter
+  // deltas, localized report rows, map-context action enqueueing, and tracked-slot
+  // consumption. The tracked entry's payload is a treasury multiplier/value; the
+  // selected TTaskForce comes from SelectEligibleMapOrderInteractionForNationAndContext.
+  // The "g_pLocalizationTable" provisional Ghidra label in this body is g_pSimMgr itself
+  // (vtable 0x662a58; calls are TSimMgr::GetStringPrelude/GetString).
   // 0x557f10 (1901 bytes). Scans orderListHead04 for the first queued order entry
   // whose interaction is eligible to fire this turn for `nation`: gates the nation's
   // own type-7 entry children by a priority-vs-descriptor roll, then for each

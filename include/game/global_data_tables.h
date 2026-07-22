@@ -1240,6 +1240,7 @@ extern int g_streamLine596AssertGuard;
 
 // Map-context flavor-text string pool (see global_data_tables.cpp).
 extern char s_szSpaceSeparator_00695794[];
+extern "C" const char s_szLineBreak_00695880[8];
 extern char s_szTurnHistorySeparator_00699320[];
 extern char s_szCombatLossesHeading_00699324[];
 extern char s_szTurnHistoryPrefix_0069b71c[];
