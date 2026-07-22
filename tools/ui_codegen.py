@@ -1070,6 +1070,11 @@ def _render_factory_with_map(
     body.extend(
         (
             "",
+            "#ifdef IMPERIALISM_RUNTIME_TESTS",
+            "  RuntimeTestObserveBuiltUiTree(",
+            "      static_cast<unsigned short>(nEventCode), g_pUiResourceHead);",
+            "#endif",
+            "",
             "  if (g_pUiResourceHead != 0) {",
             "    g_pUiResourceHead->PropagateUiResourceContextRecursive(pHostWindow);",
             "  }",
