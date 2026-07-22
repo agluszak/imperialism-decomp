@@ -31,6 +31,10 @@ public:
 
   TNetMgr();
 
+  // Mac oracle: TNetMgr::StartMultiplayerSupport(). The Windows body is empty, but
+  // the caller dispatches it on the newly constructed global network manager.
+  void StartMultiplayerSupport(); // 0x5e3450
+
   // Queue the message for the local player and/or send it over DirectPlay
   // (message->toNetworkId == -1 broadcasts). `this` carries no state — the queue and
   // session-manager state are file-scope globals of the original WNetMgr.cpp TU.

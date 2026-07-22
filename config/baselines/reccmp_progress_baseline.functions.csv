@@ -58,7 +58,7 @@ address|matching|name
 0x415030|1.0|CWnd::DoDataExchange
 0x415050|1.0|CWnd::BeginModalState
 0x415070|1.0|CWnd::EndModalState
-0x415090|0.8910891089108911|ImperialismApp::ShowAutoResolutionDialogIfNeeded
+0x415090|0.900990099009901|ImperialismApp::ShowAutoResolutionDialogIfNeeded
 0x4152e0|0.1111111111111111|TModalTemplateDialog::DestroyListBoxAndHotKeyChildren
 0x415380|1.0|T64TemplateDialog::OnInitDialog
 0x4153a0|0.8857142857142857|ReadSettingsPrefIntByIndex
@@ -359,7 +359,7 @@ address|matching|name
 0x47dd30|0.9090909090909091|TDFTemplateDialog::`scalar deleting destructor'
 0x47dd60|1.0|TDFTemplateDialog::DoDataExchange
 0x47ddf0|0.5|TDFTemplateDialog::GetMessageMap
-0x47de10|0.8888888888888888|TDFTemplateDialog::OnInitDialog
+0x47de10|1.0|TDFTemplateDialog::OnInitDialog
 0x47de40|0.96875|TFATemplateDialog::TFATemplateDialog
 0x47ded0|0.9090909090909091|TFATemplateDialog::`scalar deleting destructor'
 0x47df00|0.06896551724137931|WrapperFor_FreeHeapBufferIfNotNull_At0047ded0_Impl
@@ -369,7 +369,7 @@ address|matching|name
 0x47e090|0.9090909090909091|TAutoResolutionDialog::`scalar deleting destructor'
 0x47e0c0|1.0|TAutoResolutionDialog::DoDataExchange
 0x47e100|0.5|TAutoResolutionDialog::GetMessageMap
-0x47e120|0.9772727272727273|TAutoResolutionDialog::OnInitDialog
+0x47e120|1.0|TAutoResolutionDialog::OnInitDialog
 0x47e360|1.0|CDibPal::CDibPal
 0x47e390|1.0|CDibPal::`scalar deleting destructor'
 0x47e3c0|0.9615384615384616|CDibPal::~CDibPal
@@ -481,7 +481,7 @@ address|matching|name
 0x482180|1.0|TB1TemplateDialog::DoDataExchange
 0x4821b0|0.5|TB1TemplateDialog::GetMessageMap
 0x4821d0|1.0|TA1TemplateDialog::SetGameSetupValues
-0x4821f0|0.9821428571428571|TA1TemplateDialog::OnInitDialog
+0x4821f0|1.0|TA1TemplateDialog::OnInitDialog
 0x4822e0|0.6666666666666666|OrphanRetStub_004822e0
 0x482300|0.7692307692307693|TA1TemplateDialog::OnOK
 0x482420|0.0|OrphanRetStub_00482420
@@ -3850,7 +3850,7 @@ address|matching|name
 0x5427c0|0.2222222222222222|FreePointerIfNotNull
 0x5427e0|1.0|TMultiplayerMgr::`scalar deleting destructor'
 0x542810|0.8686868686868687|TMultiplayerMgr::~TMultiplayerMgr
-0x542900|0.7671232876712328|TMultiplayerMgr::InitializeMultiplayerManagerForSessionContext
+0x542900|0.7727272727272727|TMultiplayerMgr::InitializeMultiplayerManagerForSessionContext
 0x542b10|1.0|TMultiplayerMgr::Free
 0x542be0|0.00904977375565611|TMultiplayerMgr::ReadFrom
 0x542ff0|0.03225806451612903|TMultiplayerMgr::WriteTo
@@ -6059,7 +6059,7 @@ address|matching|name
 0x5e17b0|0.6666666666666666|QueryMciStatusField8ViaCommand814
 0x5e1800|0.6666666666666666|QueryMciStatusField3ViaCommand814
 0x5e1850|0.9487179487179487|SetMciPlaybackRangeByTrackIndexAndDevice
-0x5e18f0|0.0547945205479452|OpenCdAudioAndProbeAuxOutputDevice
+0x5e18f0|0.6122448979591837|OpenCdAudioAndProbeAuxOutputDevice
 0x5e19e0|1.0|SendMciCommand804ToDevice
 0x5e1a10|0.0|SendMciCommand808ToDeviceWithParam
 0x5e1b90|0.25|WrapperFor_ftol_At005e1b90
@@ -6108,7 +6108,7 @@ address|matching|name
 0x5e33e0|1.0|TNetMgr::TNetMgr
 0x5e3400|0.9090909090909091|TNetMgr::`scalar deleting destructor'
 0x5e3430|0.5|InitializeRuntimeClassVtablePointer_0066FEC4_Secondary
-0x5e3450|0.6666666666666666|NoOpInitializeGlobalTurnEventQueueManager
+0x5e3450|1.0|TNetMgr::StartMultiplayerSupport
 0x5e3470|1.0|TNetMgr::Free
 0x5e3490|0.0|DefaultUnhandledTurnEventHookReturnsFalse
 0x5e34b0|1.0|ReturnTrueRuntimeCredentialInitStub
@@ -6612,7 +6612,7 @@ address|matching|name
 0x5ffe84|0.3333333333333333|RegisterCommdlgHelpMessage
 0x5ffe9a|0.3333333333333333|RegisterCommdlgSetRgbColorMessage
 0x5ffeb1|0.9375|_AfxCommDlgProc
-0x5fffe6|0.9|CCommonDialog::OnOK
+0x5fffe6|1.0|CCommonDialog::OnOK
 0x60000a|1.0|CTime::CTime(int, int, int, int, int, int, int)
 0x600056|1.0|CTime::CTime(unsigned short, unsigned short, int)
 0x6000bf|1.0|CTime::CTime(struct _SYSTEMTIME const &, int)
@@ -6691,8 +6691,8 @@ address|matching|name
 0x605366|1.0|CDialog::HandleInitDialog
 0x6053ee|1.0|AfxHelpEnabled
 0x605442|1.0|CDialog::OnSetFont
-0x605445|0.975609756097561|CDialog::OnInitDialog
-0x6054aa|0.9090909090909091|CDialog::OnOK
+0x605445|1.0|CDialog::OnInitDialog
+0x6054aa|1.0|CDialog::OnOK
 0x6054c3|1.0|CDialog::OnCancel
 0x6054cb|1.0|CDialog::CheckAutoCenter
 0x6055ae|1.0|CWinApp::Run
@@ -6934,7 +6934,7 @@ address|matching|name
 0x60a0bd|1.0|CWnd::OnCtlColor
 0x60a0e4|1.0|CWnd::OnGrayCtlColor
 0x60a147|1.0|CWnd::GrayCtlColor
-0x60a1c4|0.04878048780487805|UpdateData
+0x60a1c4|0.8478260869565217|CWnd::UpdateData
 0x60a267|1.0|CDataExchange::CDataExchange
 0x60a27d|1.0|CWnd::CenterWindow
 0x60a3f7|1.0|CWnd::CheckAutoCenter
@@ -7123,7 +7123,7 @@ address|matching|name
 0x61287e|0.125|CallDcCallbackIfPrimaryHdcDiffers
 0x612897|1.0|CDC::RestoreDC
 0x6128ec|1.0|CDC::SelectStockObject
-0x612931|0.04878048780487805|SelectObject
+0x612931|1.0|CDC::SelectObject(class CFont *)
 0x612984|1.0|CDC::SelectObject(class CBrush *)
 0x6129d7|1.0|CDC::SelectObject(class CPen *)
 0x612a78|0.5|CDC::SelectPalette
