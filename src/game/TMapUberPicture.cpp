@@ -541,7 +541,7 @@ void TMapUberPicture::InspectTaskForceDialog(TTaskForce* taskForce) {
 
   control = static_cast<TStaticText*>(dialog->ResolveControlByTag(0x6f726473)); // ords
   control->AssertValid();
-  switch (taskForce->attachment) {
+  switch (taskForce->shipOrders) {
   case 1:
     taskForce->owner.asZone->AssignZoneDisplayNameToOutputRef(&value);
     g_pSimMgr->GetString(0x2762, 0xb, &reportTemplate);

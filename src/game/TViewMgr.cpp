@@ -2241,7 +2241,7 @@ void TViewMgr::ShowNavyRosterDialogAndApplySelection() {
   node->Free();
 
   if (selectedTaskForce != 0) {
-    if (static_cast<short>(selectedTaskForce->attachment) == 0) {
+    if (static_cast<short>(selectedTaskForce->shipOrders) == 0) {
       mapUberPictureF0->SetActiveMapOrderEntry(selectedTaskForce->contextAnchor);
     } else {
       mapUberPictureF0->RefreshMapOrderEntryPanel(0);

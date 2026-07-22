@@ -180493,8 +180493,8 @@
             "status": "confirmed"
           }
         ],
-        "name": "ApplyMapOrderTypeExecutionEffects",
-        "owner_class": null,
+        "name": "TTaskForce::CarryOutOrders",
+        "owner_class": "TTaskForce",
         "recovered_source": "src/game/TTaskForce.cpp"
       },
       "0x00556ad0": {
@@ -181735,7 +181735,8 @@
         "classes": [
           "TAdmiral",
           "TNavyMgr",
-          "TShip"
+          "TShip",
+          "TTaskForce"
         ],
         "functions": [
           "0x0054f8e0",

@@ -100,9 +100,9 @@ void TMiniShipView::Draw(RECT* rectBuffer) {
 
   if (shipNode84->ownerOrderEntry0c != 0) {
     // Order-type badge row, keyed by the owning task force's order-kind tag
-    // (TTaskForce::attachment). 0 = no badge for that order kind.
+    // (TTaskForce::shipOrders). 0 = no badge for that order kind.
     short orderTypeBadgeRowTable[10] = {0, 4, 3, 5, 5, 6, 2, 3, 0, 0};
-    short orderKind = static_cast<short>(shipNode84->ownerOrderEntry0c->attachment);
+    short orderKind = static_cast<short>(shipNode84->ownerOrderEntry0c->shipOrders);
     short badgeRow = orderTypeBadgeRowTable[orderKind];
     if (badgeRow != 0) {
       TQuickDrawBlitSurface* badgeStripSurface = reinterpret_cast<TQuickDrawBlitSurface*>(

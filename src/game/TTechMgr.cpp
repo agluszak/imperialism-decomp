@@ -641,7 +641,7 @@ void TTechMgr::UpdateSelectionAndRecalculateScores(int resourceType, int nationS
   while (node != 0) {
     if (node->ownerNationSlot14 == nationSlot &&
         capRowsB333[nationSlot].selectedByResourceType[node->resourceType04] == 0) {
-      scoreSum += static_cast<short>(node->field30 / 100);
+      scoreSum += static_cast<short>(node->experiencePoints30 / 100);
       ++matchedCount;
       TAdmiral* admiral = node->admiralBacklink20;
       TShip* next = node->nextOlder24;
@@ -680,7 +680,7 @@ void TTechMgr::UpdateSelectionAndRecalculateScores(int resourceType, int nationS
 
   for (node = GetNavyPrimaryOrderListHead(); node != 0; node = node->nextOlder24) {
     if (node->ownerNationSlot14 == nationSlot) {
-      node->AdjustMapOrderNodeStatCapped499(static_cast<short>(scoreSum / remainingOwned));
+      node->Victory(static_cast<short>(scoreSum / remainingOwned));
     }
   }
 
