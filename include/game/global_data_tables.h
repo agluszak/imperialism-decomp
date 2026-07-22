@@ -1286,7 +1286,7 @@ extern char g_szFmtEmba_00697254[];
 extern char g_szFmtYear_00697248[];
 extern char s_mcflavor_006976e0[];
 
-extern char s_mcflavor_00698b0c[];
+extern char g_szLowercaseX[];
 extern char s_mcflavor_0069ab00[];
 extern char s_mcflavor_0069ab04[];
 extern char s_mcflavor_0069ab08[];

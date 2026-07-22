@@ -94,10 +94,10 @@ TG_LAYOUT_ASSERT(TGreatPower_Offset_diplomacyPolicyByNation_0xB2,
 TG_LAYOUT_ASSERT(TGreatPower_Offset_aidAllocationMatrix_0x280,
                  offsetof(TGreatPower, aidAllocationMatrix) == 0x280);
 TG_LAYOUT_ASSERT(TGreatPower_Offset_city_0x894, offsetof(TGreatPower, city) == 0x894);
-TG_LAYOUT_ASSERT(TGreatPower_Offset_economySummaryBaseline930_0x930,
-                 offsetof(TGreatPower, economySummaryBaseline930) == 0x930);
-TG_LAYOUT_ASSERT(TGreatPower_Offset_economySummaryWeightedTotal95c_0x95c,
-                 offsetof(TGreatPower, economySummaryWeightedTotal95c) == 0x95c);
+TG_LAYOUT_ASSERT(TGreatPower_Offset_gameScoreRows930_0x930,
+                 offsetof(TGreatPower, gameScoreRows930) == 0x930);
+TG_LAYOUT_ASSERT(TGreatPower_Offset_gameScoreTotal95c_0x95c,
+                 offsetof(TGreatPower, gameScoreTotal95c) == 0x95c);
 TG_LAYOUT_ASSERT(TGreatPower_Size_Exactly_0x964, sizeof(TGreatPower) == 0x964);
 #undef TG_LAYOUT_ASSERT
 
@@ -4428,27 +4428,27 @@ int TGreatPower::RecomputeNationComparativePowerMetrics_Impl() {
 }
 
 // FUNCTION: IMPERIALISM 0x004e32a0
-void TGreatPower::RecomputeNationEconomyAndDiplomacySummaryMetrics() {
+void TGreatPower::GenerateGameScore() {
   int seasonPercentTable[5] = {10, 15, 20, 25, 30};
 
   TLaborPool* baseline = city->productionSummary1d8->baselineSlots10;
-  economySummaryBaseline930 = baseline->lowSkillCount04 +
-                              (baseline->mediumSkillCount06 + baseline->highSkillCount08 * 2) * 2;
-  economySummaryNeedCapSnapshot934 = needCapA6;
+  gameScoreLabor930 = baseline->lowSkillCount04 +
+                      (baseline->mediumSkillCount06 + baseline->highSkillCount08 * 2) * 2;
+  gameScoreTransport934 = needCapA6;
 
-  economySummaryBuildingTypeSum938 = 0;
+  gameScoreIndustry938 = 0;
   for (int buildingSlot = 0; buildingSlot < 6; ++buildingSlot) {
-    economySummaryBuildingTypeSum938 += city->GetBuildingType(static_cast<short>(buildingSlot));
+    gameScoreIndustry938 += city->GetBuildingType(static_cast<short>(buildingSlot));
   }
 
-  economySummaryRegionScore93c = ownedRegionList->GetSize();
+  gameScoreProvinces93c = ownedRegionList->GetSize();
   for (int minorSlot = 0; minorSlot < 16; ++minorSlot) {
     TMinor* candidate = g_apNationAuxRuntimeStateSlots[minorSlot];
     if (candidate->IsEncodedNationSlotMinus200Equal(nationSlot)) {
-      economySummaryRegionScore93c += candidate->ownedRegionList->GetSize();
+      gameScoreProvinces93c += candidate->ownedRegionList->GetSize();
     }
   }
-  economySummaryRegionScore93c *= 10;
+  gameScoreProvinces93c *= 10;
 
   int militaryOrderCostSum = 0;
   CIterator unitIter(militaryUnitList44);
@@ -4456,9 +4456,9 @@ void TGreatPower::RecomputeNationEconomyAndDiplomacySummaryMetrics() {
        unit = static_cast<TMilitaryUnit*>(unitIter.Advance())) {
     militaryOrderCostSum += g_aUnitOrderCostProfileByAbilityId[unit->orderType][2];
   }
-  economySummaryMilitaryOrderCostSum940 = militaryOrderCostSum;
+  gameScoreMilitary940 = militaryOrderCostSum;
 
-  economySummaryNavyOrderPriority944 = SumNavyOrderPriorityForNationSlot86();
+  gameScoreNavy944 = SumNavyOrderPriorityForNationSlot86();
 
   TDiplomacyMgr* diplomacy = g_pDiplomacyTurnStateManager;
   int relationSum = 0;
@@ -4475,20 +4475,20 @@ void TGreatPower::RecomputeNationEconomyAndDiplomacySummaryMetrics() {
             ->relationStandingScoreMatrix79c[nationSlot * 0x17 + static_cast<short>(otherSlot)];
     relationCount++;
   }
-  economySummaryAvgRelationScore948 = relationSum / relationCount;
+  gameScoreDiplomacy948 = relationSum / relationCount;
 
-  economySummaryTradeCapacitySnapshot94c = tradeCapacity;
+  gameScoreMerchantMarine94c = tradeCapacity;
   int currentQuarter = g_pSimMgr->economicTurn / 4;
-  economySummarySeasonCountdown950 = (100 - currentQuarter) * 10;
+  gameScoreYear950 = (100 - currentQuarter) * 10;
 
-  economySummaryTotal954 = 0;
-  int* summaryFields = &economySummaryBaseline930;
+  gameScoreSubtotal954 = 0;
+  int* summaryFields = gameScoreRows930;
   for (int fieldIndex = 0; fieldIndex < 9; ++fieldIndex) {
-    economySummaryTotal954 += summaryFields[fieldIndex];
+    gameScoreSubtotal954 += summaryFields[fieldIndex];
   }
 
-  economySummarySeasonPercent958 = seasonPercentTable[g_pSimMgr->difficultyLevel];
-  economySummaryWeightedTotal95c = economySummaryTotal954 * economySummarySeasonPercent958 / 10;
+  gameScoreDifficultyPercent958 = seasonPercentTable[g_pSimMgr->difficultyLevel];
+  gameScoreTotal95c = gameScoreSubtotal954 * gameScoreDifficultyPercent958 / 10;
 }
 
 // FUNCTION: IMPERIALISM 0x004e3560

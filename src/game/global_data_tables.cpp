@@ -2385,7 +2385,7 @@ char g_szFmtYear_00697248[12] = "year %d\n";
 // GLOBAL: IMPERIALISM 0x006976e0
 char s_mcflavor_006976e0[] = "";
 // GLOBAL: IMPERIALISM 0x00698b0c
-char s_mcflavor_00698b0c[] = "";
+char g_szLowercaseX[] = "x";
 // GLOBAL: IMPERIALISM 0x0069ab00
 char s_mcflavor_0069ab00[] = "";
 // GLOBAL: IMPERIALISM 0x0069ab04
