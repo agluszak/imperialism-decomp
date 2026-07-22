@@ -1628,6 +1628,10 @@ CArray<RuntimeSelectionRecord*, RuntimeSelectionRecord*> g_WNetSerializedPtrArra
 // GLOBAL: IMPERIALISM 0x006a5f40
 CList<void*, void*> g_WNetPendingPacketList006a5f40(10);
 
+// Suppresses the WNetMgr.cpp assertion for an unknown DirectPlay system-message code.
+// GLOBAL: IMPERIALISM 0x006a6020
+int g_suppressUnexpectedDirectPlaySystemMessageAssert006a6020;
+
 // Compiler-emitted dtor copies for the g_UiWidgetBuildStack006a13e0
 // CList<TView*,TView*> template instantiation. These previously carried invented
 // vtable-address-suffixed placeholder class names.
