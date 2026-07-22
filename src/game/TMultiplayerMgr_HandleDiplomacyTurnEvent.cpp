@@ -324,7 +324,7 @@ void TMultiplayerMgr::HandleDiplomacyTurnEventPacketByCode() {
             ->BuildTurnEvent2ArraySyncPacketFromBufferAndRefreshBaselineCopy();
     syncPacket->toNetworkId = 0;
     g_pNetMgr006a6014->Send(syncPacket, 0);
-    delete syncPacket;
+    delete[] static_cast<unsigned char*>(static_cast<void*>(syncPacket));
     RefreshNationStatusLabelsAndCodesForSlotOrAll(-1);
 
     {
@@ -536,7 +536,7 @@ void TMultiplayerMgr::HandleDiplomacyTurnEventPacketByCode() {
             ->BuildTurnEvent2ArraySyncPacketFromBufferAndRefreshBaselineCopy();
     syncPacket->toNetworkId = 0;
     g_pNetMgr006a6014->Send(syncPacket, 0);
-    delete syncPacket;
+    delete[] static_cast<unsigned char*>(static_cast<void*>(syncPacket));
 
     TaggedSerializablePayload armyPayload;
     armyPayload.tag = 0x61726d79;

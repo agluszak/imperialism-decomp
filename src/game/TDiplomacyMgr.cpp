@@ -1657,7 +1657,8 @@ TurnEvent2SyncPacket* __cdecl BuildTurnEvent2ArraySyncPacketDeltaOrFull(unsigned
   }
   if (sendFull) {
     int packetSize = shortCount * 2 + 0x24;
-    TurnEvent2SyncPacket* packet = static_cast<TurnEvent2SyncPacket*>(::operator new(packetSize));
+    TurnEvent2SyncPacket* packet =
+        static_cast<TurnEvent2SyncPacket*>(static_cast<void*>(new unsigned char[packetSize]));
     packet->eventCode = 0;
     packet->fromNetworkId = 0;
     packet->toNetworkId = 0;
@@ -1672,7 +1673,8 @@ TurnEvent2SyncPacket* __cdecl BuildTurnEvent2ArraySyncPacketDeltaOrFull(unsigned
     return packet;
   }
   int packetSize = differing * 4 + 0x24;
-  TurnEvent2SyncPacket* packet = static_cast<TurnEvent2SyncPacket*>(::operator new(packetSize));
+  TurnEvent2SyncPacket* packet =
+      static_cast<TurnEvent2SyncPacket*>(static_cast<void*>(new unsigned char[packetSize]));
   packet->eventCode = 0;
   packet->fromNetworkId = 0;
   packet->toNetworkId = 0;
