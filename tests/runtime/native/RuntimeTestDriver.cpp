@@ -352,6 +352,10 @@ void Finish(const char* status, const char* failure) {
   if (!WriteResultFile(status, failure)) {
     OutputDebugStringA("Imperialism runtime test could not write its result file.\n");
   }
+  char holdOpen[2];
+  if (GetEnvironmentVariableA("IMPERIALISM_RUNTIME_TEST_HOLD", holdOpen, sizeof(holdOpen)) != 0) {
+    return;
+  }
   RequestGameClose();
 }
 
@@ -616,10 +620,20 @@ void RunDispatchingMapHotkey() {
   mapView->ForwardParam(reinterpret_cast<int>(&commandEvent));
 
   TMapDialog* mapDialog = mapView->subview2A8;
-  if (mapDialog != 0) {
-    mapDialog->TMapDialog::SetMapDialogCellCoordinatesAndRefresh(1, 1, 0);
+  if (mapDialog == 0) {
+    Fail("\"strategic map has no scrollable map dialog\"");
+    return;
   }
 
+  TCitySiteView* citySiteView = static_cast<TCitySiteView*>(mapDialog);
+  mapDialog->SetMapDialogCellCoordinatesAndRefresh(citySiteView->minColBound368 + 1,
+                                                   citySiteView->minRowBound370 + 1, 0);
+  int viewportXBeforeEdgeScroll = mapDialog->viewportOrigin60.x;
+  mapView->AutoScrollByEdgeMask(4);
+  if (mapDialog->viewportOrigin60.x == viewportXBeforeEdgeScroll) {
+    Fail("\"right-edge scrolling did not move the strategic map viewport\"");
+    return;
+  }
   if (g_pUiRuntimeContext->currentTurnEventCode != 0x3b8 ||
       !IsViewKindOf(MainView(), RUNTIME_CLASS(TMapUberPicture))) {
     Fail("\"map hotkey forwarding left the strategic map\"");
