@@ -52,6 +52,10 @@ public:
   // global admiral list.
   void NameThyself(); // 0x552450
 
+  // Allocate a linked admiral and report the original UNavy.cpp nil-pointer failure
+  // when allocation fails. 0x5573f0.
+  static TAdmiral* CreateForTerrainType(short terrainTypeIndex);
+
   // Mac oracle: EstimateEnemyForces / GetFleetReport. The report intentionally
   // perturbs observed ship counts and classes according to this admiral's skill.
   short EstimateEnemyForces(short* estimatedCounts, TZone* zone, short nation) const;

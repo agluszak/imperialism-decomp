@@ -13,6 +13,7 @@
 #include "game/global_data_tables.h"
 #include "game/TStream.h"
 #include "game/CString.h"
+#include "game/ui_invalidation_guard.h"
 
 // SYNTHETIC: IMPERIALISM 0x005512d0
 // TAdmiral::CreateObject
@@ -354,4 +355,14 @@ CString GetLocalizedNavalReportShipType(short category, char plural) {
   CString result;
   g_pSimMgr->GetString(plural != 0 ? 0x271a : 0x2716, resourceType, &result);
   return result;
+}
+
+// FUNCTION: IMPERIALISM 0x005573f0
+TAdmiral* TAdmiral::CreateForTerrainType(short terrainTypeIndex) {
+  TAdmiral* admiral = new TAdmiral(terrainTypeIndex);
+  if (admiral == 0) {
+    MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UNavy.cpp", 0xe21);
+  }
+  return admiral;
 }

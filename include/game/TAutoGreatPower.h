@@ -112,15 +112,15 @@ public:
   virtual undefined IterateLinkedListCursorAndRelinkNodeOwners_004ea990();
 
   // 0x4eb8b0 — repeatedly assigns the highest-priority tracked mission's action to a
-  // matching order/unit. Resets every missionQueue entry (ReturnFalseSlot98), then loops:
+  // matching order/unit. Resets every missionQueue entry (SmokeEmIfYouGotEm), then loops:
   // (1) pick the best-scoring TNavyMission (GetNavyMission identity filter — army
   // entries return null there); if found, build its 9-category weight profile
   // (AccumulateLack) and pair it with the best same-nation, unassigned
-  // (field2c == nullptr) TShip primary-order node (ReturnZeroFloatSlot7C), dispatching
-  // via NoOpSlot84 and restarting. (2) Otherwise pick the best-scoring TArmyMission
+  // (field2c == nullptr) TShip primary-order node (FitnessOf), dispatching
+  // via AcceptReenforcement and restarting. (2) Otherwise pick the best-scoring TArmyMission
   // (GetArmyMission identity filter, with a state08/marker11 tie-break against a
   // runner-up candidate), build its weight profile, and pair it with the best unassigned
-  // (ownerMission40 == nullptr) militaryUnitList44 unit (ReturnZeroFloatSlot78),
+  // (ownerMission40 == nullptr) militaryUnitList44 unit (FitnessOf),
   // dispatching via AdoptUnitSlot80 and restarting. Stops when neither pass finds a
   // candidate to act on.
   void AssignTrackedEntryActionsByProfileToOrdersOrUnits(int unused);

@@ -1,14 +1,20 @@
 #include "game/TLoungeDialog.h"
 
 #include "game/CString.h"
+#include "game/TAmbitApplication.h"
 #include "game/TDropShadowText.h"
+#include "game/TApplication.h"
+#include "game/TGreatPower.h"
 #include "game/TMapPreviewView.h"
 #include "game/TModuleLibraryCacheTableStateB.h"
 #include "game/TMultiplayerMgr.h"
+#include "game/TPoseMessageDialog.h"
 #include "game/TSimMgr.h"
 #include "game/TStaticText.h"
 #include "game/TInfoBarText.h"
+#include "game/TViewMgr.h"
 #include "game/global_data_tables.h"
+#include "game/mapped_flavor_text.h"
 #include "game/quickdraw_rendering.h"
 #include "game/ui_control_tags.h"
 #include "game/ui_text_label_helpers_decls.h"
@@ -103,6 +109,40 @@ char TLoungeDialog::DoIdle(int action) {
   return 0;
 }
 
+// FUNCTION: IMPERIALISM 0x0054dfc0
+void TLoungeDialog::TryReplaceRemoteNationSlot(int nationSlot) {
+  if (!g_pGameFlowState->IsSpecialNationDialogModeActive()) {
+    g_pGameFlowState->DispatchLobbyTextPairEvent8(static_cast<unsigned char>(nationSlot));
+    return;
+  }
+
+  TGreatPower* nation = g_apNationStates[nationSlot];
+  if (nation == 0 || nation->diplomacyEligibilityA0 == 0 || !nation->IsRemote()) {
+    return;
+  }
+
+  if ((static_cast<unsigned short>(GetAsyncKeyState(VK_CONTROL)) & 0x8000) == 0) {
+    QueuePoseMessageDialogForNationSlot(nationSlot);
+    return;
+  }
+  if (g_pSimMgr->multiplayerSessionRole != 1) {
+    return;
+  }
+
+  CString templateText;
+  CString formattedText;
+  CString nationName;
+  nation->FormatOverlayTerrainLabelText(&nationName);
+  g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&templateText, 0x2742, 0x1b);
+  scanBracketExpressions(g_pSimMgr, &formattedText, static_cast<LPCSTR>(templateText),
+                         static_cast<LPCSTR>(nationName));
+  if (g_pUiRuntimeContext->ModalMessage(formattedText, g_ptLoungeNationReplacementModalMessage, 0,
+                                        1)) {
+    g_pGameFlowState->DispatchTaggedGameStateEvent1F20(0x61636564, nationSlot, -2); // 'deca'
+    g_pGameFlowState->ReplaceNationStateForSlotAndRefreshStatus(nationSlot);
+  }
+}
+
 // FUNCTION: IMPERIALISM 0x0054e1f0
 void TLoungeDialog::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId == 0x29a) {
@@ -111,10 +151,55 @@ void TLoungeDialog::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
     okayControl->SetState(0, 0);
     okayControl->SetEnabled(0, 0);
   }
-  // The original also handles a 'pick' command (calling the currently-unowned 444-byte
-  // TryInvokeNationStateReplacementForSlot with sourceHandler's own +0x6c field), then a
-  // large control-tag dispatch table for commandId in {0xa, 0xd, 0x14, 0x22} -- not yet
-  // ported.
+
+  if (commandId == 0x7069636b) { // 'pick'
+    sourceHandler->AssertValid();
+    TryReplaceRemoteNationSlot(static_cast<TMapPreviewView*>(sourceHandler)->pendingNation6C);
+  }
+
+  if (commandId == 0x14 || commandId == 0x0a || commandId == 0x22 || commandId == 0x0d) {
+    unsigned int controlTag = sourceHandler->controlTag;
+    if (controlTag == 0x636e636c || controlTag == 0x63616e63) { // 'cncl' / 'canc'
+      if (g_pGameFlowState->IsSpecialNationDialogModeActive()) {
+        if (g_pGameFlowState->GetNationStatusCodeForSlotOrActiveNation(-1) == 0x62757379) {
+          g_pSimMgr->StartNextPhase(); // 'busy'
+        } else if (g_pUiRuntimeContext->DispatchGameStateEventIfLocalizedPromptAccepted(
+                       0x6e657767)) { // 'gwen'
+          g_pGlobalUiRootController->CreateAndQueueTurnEventPacketTagGWEN();
+        }
+      } else {
+        unsigned char hasOtherSession = 0;
+        for (int slot = 0; slot < TMultiplayerMgr::kNationSlotCount; ++slot) {
+          int sessionId = g_pGameFlowState->nationSessionIds[slot];
+          if (sessionId != 0 && sessionId != TouchSessionActiveNationId()) {
+            hasOtherSession = 1;
+          }
+        }
+        if (g_pSimMgr->multiplayerSessionRole != 1 || hasOtherSession == 0 ||
+            g_pUiRuntimeContext->DispatchGameStateEventIfLocalizedPromptAccepted(
+                0x6367616d)) { // 'magc'
+          if (g_pSimMgr->multiplayerSessionRole == 1) {
+            g_pGameFlowState->DispatchTaggedGameStateEvent1F20(0x6367616d, -1, -2);
+          }
+          g_pGameFlowState->ResetLocalUiStateAndPostTurnEvent5E5();
+        }
+      }
+    } else if (controlTag >= 0x72616430 && controlTag <= 0x72616436) { // 'rad0'..'rad6'
+      TryReplaceRemoteNationSlot(static_cast<int>(controlTag - 0x72616430));
+    } else if (controlTag >= 0x6e616d30 && controlTag <= 0x6e616d36) { // 'nam0'..'nam6'
+      TryReplaceRemoteNationSlot(static_cast<int>(controlTag - 0x6e616d30));
+    } else if (controlTag >= 0x70696b30 && controlTag <= 0x70696b36) { // 'pik0'..'pik6'
+      TryReplaceRemoteNationSlot(static_cast<int>(controlTag - 0x70696b30));
+    } else if (controlTag == 0x73656e64) { // 'send'
+      QueuePoseMessageDialogForNationSlot(-1);
+    } else if (controlTag == 0x6f6b6179) { // 'okay'
+      g_pGameFlowState->CloseLobbyDialogAndEmitTurnEvent3();
+    } else if (controlTag == 0x6a656469) { // 'jedi'
+      g_pGameFlowState->EmitTurnEvent10ForFlaggedNationSlots();
+    }
+  }
+
+  TControl::DoEvent(commandId, sourceHandler, event);
 }
 
 namespace {

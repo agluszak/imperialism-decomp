@@ -100,7 +100,7 @@ void TAttackProvinceMission::Free() {
 }
 
 // FUNCTION: IMPERIALISM 0x0053d950
-char TAttackProvinceMission::ReturnFalseSlot98() {
+char TAttackProvinceMission::SmokeEmIfYouGotEm() {
   if (flag10 == 0) {
     float vector[5];
     float total = 0.0f;
@@ -122,7 +122,7 @@ char TAttackProvinceMission::ReturnFalseSlot98() {
           for (unit = static_cast<TMilitaryUnit*>(queueIter.Reset()); queueIter.More();
                unit = static_cast<TMilitaryUnit*>(queueIter.Advance())) {
             if (unit->GetUnitMovementClassId() != 0) {
-              NoOpSlot88(unit, 1);
+              RejectConstituent(unit, 1);
             }
           }
           return 1;
@@ -137,7 +137,7 @@ char TAttackProvinceMission::ReturnFalseSlot98() {
   for (TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(queueIter.Reset()); queueIter.More();
        unit = static_cast<TMilitaryUnit*>(queueIter.Advance())) {
     if (unit->GetUnitMovementClassId() != 0) {
-      NoOpSlot88(unit, 1);
+      RejectConstituent(unit, 1);
     }
   }
   return 1;
@@ -410,14 +410,13 @@ void TAttackProvinceMission::CalculateNeeds() {
 
 // Shared with TInvadeMission (COMDAT-folded body).
 // FUNCTION: IMPERIALISM 0x0053e500
-float TAttackProvinceMission::ReturnZeroFloatSlot78(TMilitaryUnit* candidateUnit,
-                                                    float* referenceVector) {
+float TAttackProvinceMission::FitnessOf(TMilitaryUnit* candidateUnit, float* referenceVector) {
   if (referenceVector[2] > 0.0f) {
     if (candidateUnit->GetUnitTypeStatPercent(2) < 10) {
       return -1000.0f;
     }
   }
-  return TArmyMission::ReturnZeroFloatSlot78(candidateUnit, referenceVector);
+  return TArmyMission::FitnessOf(candidateUnit, referenceVector);
 }
 
 // FUNCTION: IMPERIALISM 0x0053e570

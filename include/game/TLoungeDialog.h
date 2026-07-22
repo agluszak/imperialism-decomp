@@ -131,5 +131,9 @@ public:
   // null `this`).
   void RefreshMapAndMessageControlsForCurrentContext();
 
+  // Offer to replace a remote human nation with an AI. Without Ctrl this queues the
+  // normal pose message; Ctrl+host opens the immediate replacement confirmation.
+  void TryReplaceRemoteNationSlot(int nationSlot); // 0x54dfc0
+
   int selectedNationSlot; // 0x94, initialized to -1 after the lounge controls are bound
 };

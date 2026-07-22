@@ -7,6 +7,8 @@
 
 class TZone;
 class TMilitaryUnit;
+class TShip;
+class TTaskForce;
 
 // Mac oracle: eMissionType -- the mission-kind selector passed to the mission factory
 // (CreateMissionObjectByKindAndNodeContext) and to TMission::Matches. The Windows
@@ -24,10 +26,9 @@ enum eMissionType {
 };
 
 // Mac: TMission — base AI-mission class. Real polymorphic MFC object rooted at
-// CObject<-TObject (slot 0x00 RTTI, dtor resets vptr to the CObject sentinel
-// 0x66fec4). Single-inheritance base of TNavyMission / TArmyMission (and through
-// them every concrete mission); proven by vtable prefix-sharing and ctor sequencing
-// (ConstructTArmyMissionWithNodeKey calls ConstructTMission then installs its vtable).
+// CObject<-TObject. Single-inheritance base of TNavyMission / TArmyMission (and through
+// them every concrete mission); proven by vtable prefix-sharing and constructor/
+// destructor sequencing.
 //
 // 48-slot vtable: slots 0x00-0x04 are the MFC CObject prefix (0x00 RTTI + 0x01 dtor
 // overridden here; 0x02 Serialize / 0x03 AssertValid / 0x04 Dump inherited). Slots
@@ -74,30 +75,27 @@ public:
   virtual TMission* GetNavyMission();                                  // 0x17 0x534db0
   virtual char IsDefensiveSeaZoneMission() const;                      // 0x18 0x534dd0
   virtual char IsHospitalMission() const;                              // 0x19 0x534df0
-  virtual float ReturnZeroFloatSlot68();                               // 0x1a 0x534e10
-  virtual float ReturnZeroFloatSlot6C();                               // 0x1b 0x534e30
-  virtual float ReturnZeroFloatSlot70(
-      TMilitaryUnit* candidateUnit); // 0x1c 0x534e70 (ret 4 -- verified against base stub)
-  virtual float ReturnZeroFloatSlot74(void* candidate); // 0x1d 0x534e50 (ret 4 -- navy
-                                                        // overrides read a TShip order node)
-  virtual float ReturnZeroFloatSlot78(
-      TMilitaryUnit* candidateUnit,
-      float* referenceVector); // 0x1e 0x534eb0 (ret 8 -- verified against base stub)
-  virtual float ReturnZeroFloatSlot7C(void* candidate,
-                                      void* targetProfile); // 0x1f 0x534e90 (ret 8)
-  virtual void NoOpSlot80(TMilitaryUnit* unit, int notify); // 0x20 0x534ef0 — AdoptUnitSlot80
-  // Slot 0x84/0x8c/0x90's first argument is an opaque order-node pointer: navy overrides
-  // interpret it as TTaskForce* (attach/detach) or TShip* (primary-order clear), so it stays
-  // void* here rather than picking one caller's type.
-  virtual void NoOpSlot84(void* a, int b);                  // 0x21 0x534ed0 (ret 8)
-  virtual void NoOpSlot88(TMilitaryUnit* unit, int unused); // 0x22 0x534f30
-  virtual void NoOpSlot8C(void* a, int b);                  // 0x23 0x534f10
-  virtual void NoOpSlot90(void* a);                         // 0x24 0x534f50
-  virtual void SetFlag10FromArgSlot94(unsigned char value); // 0x25 0x534f70
-  virtual char ReturnFalseSlot98();                         // 0x26 0x534f90
+  virtual float GetWeightedSatisfaction();                             // 0x1a 0x534e10
+  virtual float IndustrialCostOfNeeds();                               // 0x1b 0x534e30
+  virtual float ValueOf(TShip* candidate);                             // 0x1d 0x534e50
+  virtual float
+  ValueOf(TMilitaryUnit* candidateUnit); // 0x1c 0x534e70 (ret 4 -- verified against base stub)
+  virtual float FitnessOf(TShip* candidate, float* targetProfile); // 0x1f 0x534e90
+  virtual float
+  FitnessOf(TMilitaryUnit* candidateUnit,
+            float* referenceVector); // 0x1e 0x534eb0 (ret 8 -- verified against base stub)
+  virtual void AcceptReenforcement(TShip* ship, unsigned char notify); // 0x21 0x534ed0
+  virtual void AcceptReenforcement(TMilitaryUnit* unit,
+                                   unsigned char notify);            // 0x20 0x534ef0
+  virtual void RejectConstituent(TShip* ship, unsigned char notify); // 0x23 0x534f10
+  virtual void RejectConstituent(TMilitaryUnit* unit,
+                                 unsigned char notify); // 0x22 0x534f30
+  virtual void ForgetTaskForce(TTaskForce* taskForce);  // 0x24 0x534f50
+  virtual void Hold(unsigned char value);               // 0x25 0x534f70
+  virtual char SmokeEmIfYouGotEm();                     // 0x26 0x534f90
 
-  void AdoptUnitSlot80(TMilitaryUnit* unit, int flag) {
-    NoOpSlot80(unit, flag);
+  void AdoptUnitSlot80(TMilitaryUnit* unit, unsigned char flag) {
+    AcceptReenforcement(unit, flag);
   }
 
   void InitializeMissionWithNationIdAndResetPathMarker(short nationId);
