@@ -217,7 +217,7 @@ float TDefendProvinceMission::ComputeLocalSupportVectorScore(int nodeContext) {
 TDefendProvinceMission::TDefendProvinceMission() : TArmyMission() {}
 
 // Node-key constructor: delegates to TArmyMission(nodeKey) and stamps this class's
-// vtable. Inlined into the mission factory (CreateMissionObjectByKindAndNodeContext,
+// vtable. Inlined into the mission factory (TMission::CreateMission,
 // case 3, param_4 == 0); has no standalone address of its own.
 TDefendProvinceMission::TDefendProvinceMission(int nodeKey) : TArmyMission(nodeKey) {}
 
@@ -357,12 +357,9 @@ void TDefendProvinceMission::Initialize() {
 }
 
 // FUNCTION: IMPERIALISM 0x0053f010
-char TDefendProvinceMission::Matches(int kind, int key, int mode) const {
-  (void)mode;
-  if ((kind == 3) && (key == static_cast<int>(presentLocation14))) {
-    return 1;
-  }
-  return 0;
+char TDefendProvinceMission::Matches(eMissionType missionType, int key, TZone* zoneContext) const {
+  (void)zoneContext;
+  return missionType == kMissionTypeDefendProvince && key == static_cast<int>(presentLocation14);
 }
 
 // FUNCTION: IMPERIALISM 0x0053f040

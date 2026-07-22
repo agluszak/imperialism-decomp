@@ -418,10 +418,8 @@ void TAttackProvinceMission::Initialize() {
 }
 
 // FUNCTION: IMPERIALISM 0x0053e5b0
-char TAttackProvinceMission::Matches(int kind, int key, int mode) const {
-  (void)mode;
-  if ((kind == 0 || kind == 1) && key == static_cast<int>(targetProvince30)) {
-    return 1;
-  }
-  return 0;
+char TAttackProvinceMission::Matches(eMissionType missionType, int key, TZone* zoneContext) const {
+  (void)zoneContext;
+  return (missionType == kMissionTypeAttackProvince || missionType == kMissionTypeAmassProvince) &&
+         key == static_cast<int>(targetProvince30);
 }
