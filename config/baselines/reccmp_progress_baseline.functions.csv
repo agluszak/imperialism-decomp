@@ -1016,7 +1016,7 @@ address|matching|name
 0x490650|1.0|TEditText::Close
 0x4906a0|0.6956521739130435|TEditText::Draw
 0x4906d0|1.0|TEditText::IsEnabled
-0x4906f0|0.782608695652174|TEditText::SetEnable
+0x4906f0|1.0|TEditText::SetEnable
 0x490730|1.0|TEditText::SetEnabled
 0x4907a0|0.0136986301369863|TEditText::Open
 0x490a50|0.5|TEditText::SetEditSelectionAndScrollCaret
