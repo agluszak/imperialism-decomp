@@ -29,7 +29,7 @@ void TAlwaysPictureButton::HiliteState(unsigned char enabledState, unsigned char
     }
     this->SetPictureResourceIdAndRefresh(pictureId, true);
     if (refreshNow) {
-      this->IsSelected();
+      this->DrawImmediate();
     }
   }
 }

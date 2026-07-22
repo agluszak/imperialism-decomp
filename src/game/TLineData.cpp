@@ -23,7 +23,7 @@ void TLineData::SetLineDataRowAndBounds(short rowArg, short colArg, int* bounds)
 }
 
 // FUNCTION: IMPERIALISM 0x0056f460
-void TLineData::CreateLineItemView(TView* panel, int* offsetLayout) {
+void TLineData::InstallViews(TView* panel, int* offsetLayout) {
   (void)panel;
   (void)offsetLayout;
 }

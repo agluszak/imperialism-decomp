@@ -14,7 +14,7 @@ IMPLEMENT_DYNCREATE(TTradeBidNationLine, TLineData)
 TTradeBidNationLine::TTradeBidNationLine() {}
 
 // FUNCTION: IMPERIALISM 0x005bda20
-void TTradeBidNationLine::CreateLineItemView(TView* panel, int* offsetLayout) {
+void TTradeBidNationLine::InstallViews(TView* panel, int* offsetLayout) {
   (void)panel;
   (void)offsetLayout;
 }

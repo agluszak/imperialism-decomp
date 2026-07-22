@@ -121,7 +121,7 @@ public:
   // slot 0x70 HiliteState inherited unchanged (0x571620)
   // slot 0x71 ResetPictureResourceEntry inherited unchanged (0x48f520)
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
-  // slot 0x73 IsSelected inherited unchanged (0x571690)
+  // slot 0x73 DrawImmediate inherited unchanged (0x571690)
   virtual undefined OrphanCallChain_C2_I16_005718f0(int arg1, int arg2); // slot 0x74 0x5718f0
   short reserved94;
 

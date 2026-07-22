@@ -49,7 +49,7 @@ void TGamePreferencesPicture::DoEvent(int commandId, TEventHandler* sourceHandle
         TCzechBox* checkbox = static_cast<TCzechBox*>(ResolveControlByTag(kControlTagOpta + i));
         if (checkbox != nullptr) {
           checkbox->AssertValid();
-          g_pSimMgr->preferenceValues[i] = checkbox->GetCheckedStateByte();
+          g_pSimMgr->preferenceValues[i] = checkbox->IsOn();
         }
       }
 
@@ -103,7 +103,7 @@ void TGamePreferencesPicture::DoEvent(int commandId, TEventHandler* sourceHandle
     if (tag >= kControlTagOpta && tag <= kControlTagOpta + 0x19) {
       unsigned int idx = tag - kControlTagOpta;
       sourceHandler->AssertValid();
-      bool checked = static_cast<TCzechBox*>(sourceHandler)->GetCheckedStateByte() != 0;
+      bool checked = static_cast<TCzechBox*>(sourceHandler)->IsOn() != 0;
       CString text;
       g_pSimMgr->GetString(0x2743, static_cast<short>((checked ? 0 : 1) + idx * 2 + 0x10), &text);
       TDeluxeText* tooltip = static_cast<TDeluxeText*>(ResolveControlByTag(kControlTagTxta + idx));

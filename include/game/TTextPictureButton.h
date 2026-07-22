@@ -121,7 +121,7 @@ public:
   // slot 0x70 HiliteState inherited unchanged (0x571620)
   // slot 0x71 ResetPictureResourceEntry inherited unchanged (0x48f520)
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
-  // slot 0x73 IsSelected inherited unchanged (0x571690)
+  // slot 0x73 DrawImmediate inherited unchanged (0x571690)
   CString buttonText; // 0x94
   short pointSize98;  // 0x98
   short themeCode9A;  // 0x9A

@@ -3,6 +3,11 @@
 #include "game/TUpDownPictureButton.h"
 #include "game/mfc.h"
 
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Woverloaded-virtual"
+#endif
+
 // VTABLE: IMPERIALISM 0x0065fae0
 class TCzechBox : public TUpDownPictureButton {
 public:
@@ -123,20 +128,24 @@ public:
                            unsigned char fRefreshNow) override; // slot 0x70 0x571d10
   // slot 0x71 ResetPictureResourceEntry inherited unchanged (0x48f520)
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
-  // slot 0x73 IsSelected inherited unchanged (0x571690)
-  // Returns the low byte of checkedStateByte94 (the checkbox's current on/off value,
-  // read raw rather than through a bool-returning wrapper). 0x571de0.
-  virtual unsigned char GetCheckedStateByte(); // slot 0x74 0x571de0
-  virtual undefined OrphanCallChain_C1_I10_00571e00(char param_1,
-                                                    undefined4 param_2); // slot 0x75 0x571e00
-  virtual undefined OrphanCallChain_C4_I45_00571d40(char param_1);       // slot 0x76 0x571d40
-  virtual undefined OrphanCallChain_C2_I16_00571e40(undefined4 param_1); // slot 0x77 0x571e40
-  virtual undefined OrphanCallChain_C3_I23_00571e80(char param_1,
-                                                    undefined4 param_2); // slot 0x78 0x571e80
+  // slot 0x73 DrawImmediate inherited unchanged (0x571690)
+  // Mac CodeWarrior identifies these five state operations as IsOn, SetState,
+  // CheckTheLook, Toggle, and ToggleIf; the Windows slot order and byte widths agree.
+  virtual unsigned char IsOn();                                        // slot 0x74 0x571de0
+  virtual void SetState(unsigned char isOn, unsigned char refreshNow); // slot 0x75 0x571e00
+  virtual void CheckTheLook(unsigned char refreshNow);                 // slot 0x76 0x571d40
+  virtual void Toggle(unsigned char refreshNow);                       // slot 0x77 0x571e40
+  virtual void ToggleIf(unsigned char expectedState,
+                        unsigned char refreshNow); // slot 0x78 0x571e80
 
   TCzechBox();
 
-  // Original object size is 0x98 (CRuntimeClass m_nObjectSize); the source class ended
-  // at 0x94. Read (low byte only) by GetCheckedStateByte as the checkbox's on/off value.
-  int checkedStateByte94;
+  // Original object size is 0x98 (CRuntimeClass m_nObjectSize). Only the first byte at
+  // 0x94 is the on/off state; the remaining three bytes are layout padding.
+  unsigned char isOn94;
+  unsigned char padding95[3];
 };
+
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif

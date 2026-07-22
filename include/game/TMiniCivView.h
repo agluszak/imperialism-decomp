@@ -133,7 +133,7 @@ public:
   CString unitText88;
 
   // Trivial in-class ctor (heuristic 116): the factory's `new TMiniCivView()`
-  // (TMiniCivLine::CreateLineItemView 0x4ab740) inline-expands the TControl base
+  // (TMiniCivLine::InstallViews 0x4ab740) inline-expands the TControl base
   // ctor call, the unitText88 CString ctor, and the vptr store.
   TMiniCivView() {}
 

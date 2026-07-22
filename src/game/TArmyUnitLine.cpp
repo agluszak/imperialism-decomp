@@ -15,7 +15,7 @@ TArmyUnitLine::TArmyUnitLine() : TLineData() {}
 TArmyUnitLine::~TArmyUnitLine() {}
 
 // FUNCTION: IMPERIALISM 0x004a8df0
-void TArmyUnitLine::CreateLineItemView(TView* panel, int* offsetLayout) {
+void TArmyUnitLine::InstallViews(TView* panel, int* offsetLayout) {
   (void)panel;
   (void)offsetLayout;
 }

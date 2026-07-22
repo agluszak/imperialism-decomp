@@ -1,4 +1,5 @@
 #include "game/TMadnessButton.h"
+#include "game/ScopedMapQuickDrawContext.h"
 
 // SYNTHETIC: IMPERIALISM 0x0043d720
 // TMadnessButton::`scalar deleting destructor'
@@ -17,10 +18,30 @@ TMadnessButton::TMadnessButton() {}
 void TMadnessButton::DoPostCreate(int arg) {
   TCzechBox::DoPostCreate(arg);
   initialPictureId = glyphBase84;
-  OrphanCallChain_C1_I10_00571e00(1, 0);
+  TCzechBox::SetState(1, 0);
 }
 
 // FUNCTION: IMPERIALISM 0x0054eb30
-undefined TMadnessButton::OrphanCallChain_C4_I45_00571d40(char param_1) {
-  return 0;
+void TMadnessButton::CheckTheLook(unsigned char refreshNow) {
+  int pictureId = initialPictureId;
+  if (!IsEnabled()) {
+    pictureId += 4;
+  } else {
+    if (!IsOn()) {
+      pictureId += 2;
+    }
+    if (controlState64 != 0) {
+      pictureId++;
+    }
+  }
+
+  if (glyphBase84 != pictureId) {
+    SetPictureResourceIdAndRefresh(static_cast<short>(pictureId), false);
+    if (refreshNow) {
+      CRect bounds;
+      QueryContentBounds(&bounds);
+      ScopedMapQuickDrawContext drawContext(this);
+      Draw(&bounds);
+    }
+  }
 }

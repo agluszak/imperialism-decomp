@@ -25,7 +25,7 @@ IMPLEMENT_DYNCREATE(TShipLine, TLineData)
 TShipLine::TShipLine() {}
 
 // FUNCTION: IMPERIALISM 0x00565100
-void TShipLine::CreateLineItemView(TView* panel, int* offsetLayout) {
+void TShipLine::InstallViews(TView* panel, int* offsetLayout) {
   TShipView* shipView = new TShipView();
   shipView->InitializeUiResourceEntryFrameAndParent(0, panel, offsetLayout, &field08, 5, 5, 0);
   shipView->shipNode60 = shipNode10;

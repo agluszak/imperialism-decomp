@@ -120,7 +120,7 @@ public:
   // slot 0x70 HiliteState inherited unchanged (0x571620)
   // slot 0x71 ResetPictureResourceEntry inherited unchanged (0x48f520)
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
-  // slot 0x73 IsSelected inherited unchanged (0x571690)
+  // slot 0x73 DrawImmediate inherited unchanged (0x571690)
   // slot 0x74 OrphanCallChain_C2_I16_005718f0 inherited unchanged (0x5718f0)
   short mappedSelection98;
   short selectedValue9c;

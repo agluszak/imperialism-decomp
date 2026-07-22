@@ -121,12 +121,12 @@ public:
   // slot 0x70 HiliteState inherited unchanged (0x571d10)
   // slot 0x71 ResetPictureResourceEntry inherited unchanged (0x48f520)
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
-  // slot 0x73 IsSelected inherited unchanged (0x571690)
-  // slot 0x74 GetCheckedStateByte inherited unchanged (0x571de0)
-  // slot 0x75 OrphanCallChain_C1_I10_00571e00 inherited unchanged (0x571e00)
-  virtual undefined OrphanCallChain_C4_I45_00571d40(char param_1) override; // slot 0x76 0x54eb30
-  // slot 0x77 OrphanCallChain_C2_I16_00571e40 inherited unchanged (0x571e40)
-  // slot 0x78 OrphanCallChain_C3_I23_00571e80 inherited unchanged (0x571e80)
+  // slot 0x73 DrawImmediate inherited unchanged (0x571690)
+  // slot 0x74 IsOn inherited unchanged (0x571de0)
+  // slot 0x75 SetState inherited unchanged (0x571e00)
+  virtual void CheckTheLook(unsigned char refreshNow) override; // slot 0x76 0x54eb30
+  // slot 0x77 Toggle inherited unchanged (0x571e40)
+  // slot 0x78 ToggleIf inherited unchanged (0x571e80)
 
   TMadnessButton();
 

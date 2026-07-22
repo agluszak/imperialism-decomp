@@ -1,6 +1,7 @@
 #include "game/TPictureRadioButton.h"
 
 #include "game/CDib.h"
+#include "game/TCluster.h"
 // SYNTHETIC: IMPERIALISM 0x00570cc0
 // TPictureRadioButton::CreateObject
 
@@ -49,8 +50,14 @@ void TPictureRadioButton::DefaultSize(bool refreshNow) {
 
 // FUNCTION: IMPERIALISM 0x00570f40
 void TPictureRadioButton::Select(bool isPressed, bool notifyParent) {
-  (void)isPressed;
-  (void)notifyParent;
+  if (IsEnabled()) {
+    SetEnabled(isPressed, notifyParent);
+    if (isPressed) {
+      static_cast<TCluster*>(ownerContext)->SetSelectedChildTagAndRefresh(controlTag);
+    }
+    PrepareForDrawing();
+    PaintOrInvalidateControl(0);
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x00570fb0

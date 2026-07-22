@@ -17,7 +17,7 @@ TCzechBox::~TCzechBox() {}
 // FUNCTION: IMPERIALISM 0x00571cb0
 void TCzechBox::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId == 0x21) {
-    OrphanCallChain_C2_I16_00571e40(1);
+    Toggle(1);
   }
   TUpDownPictureButton::DoEvent(commandId, sourceHandler, event);
 }
@@ -29,29 +29,50 @@ void TCzechBox::DoPostCreate(int arg) {
 }
 
 // FUNCTION: IMPERIALISM 0x00571d10
-void TCzechBox::HiliteState(unsigned char fEnabledState, unsigned char fRefreshNow) {}
+void TCzechBox::HiliteState(unsigned char fEnabledState, unsigned char fRefreshNow) {
+  if (controlState64 != fEnabledState) {
+    controlState64 = fEnabledState;
+    CheckTheLook(fRefreshNow);
+  }
+}
 
 // FUNCTION: IMPERIALISM 0x00571d40
-undefined TCzechBox::OrphanCallChain_C4_I45_00571d40(char param_1) {
-  return 0;
+void TCzechBox::CheckTheLook(unsigned char refreshNow) {
+  bool useOddPicture = isOn94 != 0 || controlState64 != 0;
+  if (!useOddPicture && (glyphBase84 & 1) != 0) {
+    SetPictureResourceIdAndRefresh(static_cast<short>(glyphBase84 & ~1), refreshNow);
+    if (refreshNow) {
+      DrawImmediate();
+    }
+  } else if (useOddPicture && (glyphBase84 & 1) == 0) {
+    SetPictureResourceIdAndRefresh(static_cast<short>(glyphBase84 | 1), refreshNow);
+    if (refreshNow) {
+      DrawImmediate();
+    }
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x00571de0
-unsigned char TCzechBox::GetCheckedStateByte() {
-  return static_cast<unsigned char>(checkedStateByte94);
+unsigned char TCzechBox::IsOn() {
+  return isOn94;
 }
 
 // FUNCTION: IMPERIALISM 0x00571e00
-undefined TCzechBox::OrphanCallChain_C1_I10_00571e00(char param_1, undefined4 param_2) {
-  return 0;
+void TCzechBox::SetState(unsigned char isOn, unsigned char refreshNow) {
+  if (isOn94 != isOn) {
+    isOn94 = isOn;
+    CheckTheLook(refreshNow);
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x00571e40
-undefined TCzechBox::OrphanCallChain_C2_I16_00571e40(undefined4 param_1) {
-  return 0;
+void TCzechBox::Toggle(unsigned char refreshNow) {
+  SetState(static_cast<unsigned char>(IsOn() == 0), refreshNow);
 }
 
 // FUNCTION: IMPERIALISM 0x00571e80
-undefined TCzechBox::OrphanCallChain_C3_I23_00571e80(char param_1, undefined4 param_2) {
-  return 0;
+void TCzechBox::ToggleIf(unsigned char expectedState, unsigned char refreshNow) {
+  if (IsOn() == expectedState) {
+    SetState(static_cast<unsigned char>(IsOn() == 0), refreshNow);
+  }
 }

@@ -14,7 +14,7 @@ IMPLEMENT_DYNCREATE(TBatRepDetLine, TLineData)
 TBatRepDetLine::TBatRepDetLine() {}
 
 // FUNCTION: IMPERIALISM 0x004b0040
-void TBatRepDetLine::CreateLineItemView(TView* panel, int* offsetLayout) {
+void TBatRepDetLine::InstallViews(TView* panel, int* offsetLayout) {
   (void)panel;
   (void)offsetLayout;
 }

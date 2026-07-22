@@ -122,7 +122,7 @@ public:
                            unsigned char fRefreshNow) override; // slot 0x70 0x568c40
   // slot 0x71 ResetPictureResourceEntry inherited unchanged (0x48f520)
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
-  virtual undefined OrphanCallChain_C2_I18_00568c90(); // slot 0x73 0x568c90
+  virtual void DrawImmediate(); // slot 0x73 0x568c90
 
   TDisappearingButton();
 };

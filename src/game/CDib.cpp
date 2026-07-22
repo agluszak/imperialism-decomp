@@ -96,6 +96,38 @@ CDib::CDib(int width, int height, int bitDepth) : CObject() {
   }
 }
 
+// FUNCTION: IMPERIALISM 0x0047a200
+CDib::CDib(const CDib& source)
+    : CObject(), m_colorTablePixels(0), m_hBitmap(NULL), m_dibBits(0), m_pInfoHeader(0),
+      m_hGlobalInfo(NULL), m_infoOwnMode(1), m_dibBitsOwned(1), m_pixelBytes(source.m_pixelBytes),
+      m_paletteCount(source.m_paletteCount), m_hFileMapping(NULL), m_hFile(NULL), m_mappedView(0),
+      m_hPalette(NULL) {
+  unsigned int infoBytes =
+      static_cast<unsigned int>(m_paletteCount) * sizeof(RGBQUAD) + sizeof(BITMAPINFOHEADER);
+  m_pInfoHeader = reinterpret_cast<BITMAPINFO*>(new unsigned char[infoBytes]);
+  memcpy(m_pInfoHeader, source.m_pInfoHeader, infoBytes);
+
+  m_infoOwnMode = 1;
+  m_pixelBytes = m_pInfoHeader->bmiHeader.biSizeImage;
+  if (m_pixelBytes == 0) {
+    unsigned int rowBits = static_cast<unsigned int>(m_pInfoHeader->bmiHeader.biBitCount) *
+                           m_pInfoHeader->bmiHeader.biWidth;
+    unsigned int rowDwords = rowBits >> 5;
+    if ((rowBits & 0x1f) != 0) {
+      rowDwords++;
+    }
+    int rows = m_pInfoHeader->bmiHeader.biHeight;
+    if (rows < 1) {
+      rows = -rows;
+    }
+    m_pixelBytes = rowDwords * sizeof(int) * rows;
+  }
+
+  m_colorTablePixels = m_pInfoHeader->bmiColors;
+  m_dibBits = new unsigned char[m_pixelBytes];
+  memcpy(m_dibBits, source.m_dibBits, m_pixelBytes);
+}
+
 // FUNCTION: IMPERIALISM 0x0047a370
 CDib::~CDib() {
   Release();

@@ -61,6 +61,7 @@ class TNetMgr;
 class TTradeMgr;
 class TSoundResourceManager;
 class TModuleLibraryCacheTableStateB;
+class CDib;
 
 struct GlobalViewportRectDefaultsRecord {
   int field0;
@@ -325,6 +326,7 @@ extern TQuickDrawSurfaceContext* g_pActiveQuickDrawSurfaceContextHead;
 extern TQuickDrawSurfaceContext* g_pActiveQuickDrawSurfaceContext;
 extern TQuickDrawSurfaceContext* g_pPrimaryRenderSurfaceContext;
 extern TQuickDrawSurfaceContext* g_pCitySiteCachedPrimaryRenderSurfaceContext;
+extern CDib* g_pColorKeyCompositeDib;
 // TCitySiteView's currently painted six-neighbor highlight set. Each entry is a map tile
 // index or -1; the paint pass restores the previous cells before replacing this cache.
 extern short g_aCitySiteNeighborHighlightTiles_00697320[6];

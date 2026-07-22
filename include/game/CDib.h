@@ -31,6 +31,7 @@ public:
 
   CDib();                                    // 0x00479f40
   CDib(int width, int height, int bitDepth); // 0x00479fe0
+  CDib(const CDib& source);                  // 0x0047a200
 
   DECLARE_SERIAL(CDib) // slot 0x00 GetRuntimeClass 0x00479ed0; schema 0 in the binary descriptor
   virtual ~CDib() override;                   // slot 0x01 (real dtor 0x0047a370)
