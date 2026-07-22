@@ -50,8 +50,16 @@ public:
   // so order_type lands at +0x04, matching every `[this+4]` disassembly read
   // cited across this file, and the total size matches the RTTI-confirmed
   // 0x34 bytes (0x04 inherited + 0x30 own).
-  s16 order_type;
-  s16 order_strength;
+  // The conflict resolver indexes a three-float threshold table with one 32-bit load
+  // from +0x04, while all other users address the two component shorts separately.
+  // This is one packed record, not a pointer-cast alias.
+  union {
+    int packedOrderTypeAndStrength;
+    struct {
+      s16 order_type;
+      s16 order_strength;
+    };
+  };
   // Order/entry "kind" tag (was named `attachment`): TNavyMgr's
   // RemoveMatchingTaskForceOrders (0x557170 cluster) checks this == 5 for
   // "task force" queue entries; SetMapOrderType9AndQueue (0x552f80) sets it to

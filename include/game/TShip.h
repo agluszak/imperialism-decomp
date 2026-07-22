@@ -35,7 +35,7 @@ public:
   CString displayName18;
   short stockLevel1c;
   short pad1e;
-  // Backlink to the TAdmiral whose primaryOrderNode08 is this node (TAdmiral::
+  // Backlink to the TAdmiral whose assignedShip is this node (TAdmiral::
   // TAdmiral::AssignToShip writes `this` here).
   TAdmiral* admiralBacklink20;
   TShip* nextOlder24;
@@ -107,7 +107,7 @@ public:
   // is no owner; in both of those cases a fresh TTaskForce entry is created around
   // this ship (zone context = field08, nation = ownerNationSlot14) and returned.
   TTaskForce* GetOrCreateMissionOrderEntryForNode();
-  // 0x00550670 -- priority compare between two ships: admiral field_10 first,
+  // 0x00550670 -- priority compare between two ships: admiral experiencePoints first,
   // then resourceType04, then field30/100 buckets, then stockLevel1c; returns the
   // preferred node. With preferUnassignedFlag, an admiral-assigned receiver loses
   // to the candidate outright (and vice versa).

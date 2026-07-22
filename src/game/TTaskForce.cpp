@@ -932,7 +932,7 @@ void TTaskForce::FindOrCreateChildOrderLink(TShip* node) {
     // Copies this entry's own packed order_type/order_strength dword and applies the
     // same attachment-kind gate TShip::SetOwnerOrderEntryAndCacheType applies, just
     // with `this` playing the role of that method's `newEntry` argument.
-    node->quantityFlag10 = *reinterpret_cast<int*>(&order_type);
+    node->quantityFlag10 = packedOrderTypeAndStrength;
 
     short kind = static_cast<short>(attachment);
     if (kind != 0 && kind != 7 && kind != 8 && kind != 4) {
@@ -1336,10 +1336,10 @@ void TTaskForce::RecomputeTaskForceAverageOrderScore() {
   // The rounded average is written back as one 32-bit store spanning this entry's
   // order_type/order_strength pair (the original writes a dword at +0x04 in each branch).
   if (count != 0) {
-    *reinterpret_cast<int*>(&order_type) = (count / 2 + sum) / count;
+    packedOrderTypeAndStrength = (count / 2 + sum) / count;
     return;
   }
-  *reinterpret_cast<int*>(&order_type) = 0;
+  packedOrderTypeAndStrength = 0;
 }
 
 // FUNCTION: IMPERIALISM 0x00554930

@@ -1476,7 +1476,7 @@ address|name|symbol|size|type|prototype|provenance
 4a2610|BuildArmyActionLabelFromLocalizationAndCounts||582|function|undefined BuildArmyActionLabelFromLocalizationAndCounts()|
 4a2900|BuildArmyContextActionRecordsAndDispatchLabel||1791|function|undefined BuildArmyContextActionRecordsAndDispatchLabel()|
 4a31c0|OrphanVtableAssignStub_004a31c0||6|function|undefined OrphanVtableAssignStub_004a31c0()|
-4a31e0|OrphanVtableAssignStub_004a31e0||6|function|undefined OrphanVtableAssignStub_004a31e0()|
+4a31e0|CStr255::CStr255||6|function|CStr255 * __thiscall CStr255::CStr255(CStr255 * this)|
 4a3200|TArmyMgr::TryCreateTacticalBattleViewForTileArmies||784|function|undefined TryCreateTacticalBattleViewForTileArmies()|
 4a35e0|TArmyMgr::Helper_Uses_GenerateThreadLocalRandom15_At004a35e0||357|function|undefined Helper_Uses_GenerateThreadLocalRandom15_At004a35e0(int param_1, short param_2)|
 4a37b0|TArmyMgr::OrphanCallChain_C2_I40_004a37b0||87|function|undefined OrphanCallChain_C2_I40_004a37b0(int param_1)|
@@ -4219,7 +4219,7 @@ address|name|symbol|size|type|prototype|provenance
 55a292|commit_order_entry_to_global_queue|||global||
 55a2b5|set_order_type_6_from_context|||global||
 55a37e|set_order_type_5_from_province|||global||
-55a780|ResolveMapOrderPairConflictStep||2934|function|void __cdecl ResolveMapOrderPairConflictStep(int * pLeftOrderEntry, int * pRightOrderEntry)|
+55a780|TNavyMgr::ResolveMapOrderPairConflictStep||2934|function|void __thiscall TNavyMgr::ResolveMapOrderPairConflictStep(TNavyMgr * this, TTaskForce * leftEntry, TTaskForce * rightEntry)|
 55b640|WrapperFor_ftol_At0055b640||30|function|undefined WrapperFor_ftol_At0055b640()|
 55b670|TNewsMgr::CreateObject|?CreateObject@TNewsMgr@@SGPAVCObject@@XZ|27|function|undefined CreateObject()|rtti
 55b6a0|TNewsMgr::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
