@@ -1,6 +1,7 @@
 {
-  "format_version": 3,
+  "format_version": 4,
   "named_pictures": 2296,
+  "orphan_style_scraps": 0,
   "pictures": 2297,
   "resource_files": [
     "Armory.rsrc",
@@ -50,6 +51,9 @@
   "scoped_id_collisions": 393,
   "string_groups": 287,
   "strings": 3821,
+  "styled_text_resources": 89,
+  "text_resources": 182,
+  "text_style_runs": 103,
   "text_styles": 316,
   "ui_ir_views": 121,
   "unique_widget_classes": 152,

@@ -3997,7 +3997,7 @@ TMapDialog::ResetAllTileMarkersToSentinel 51E1A0 f
 TMapDialog::ReleaseTileMarkerForTile 51E1F0 f
 TMapDialog::ApplyRectSlot110 51E260 f
 TMapDialog::RenderStrategicMapTileCell 51EB40 f
-TMapDialog::RenderMapDialogBilateralRelationMarkers 520670 f
+TMapDialog::DrawBorder 520670 f
 TMapDialog::DrawMapDialogGuidePatternSetA_00520970 520970 f
 TMapDialog::DrawMapDialogGuidePatternSetB_00520a90 520A90 f
 TMapDialog::DrawMapDialogGuidePatternSetC_00520c10 520C10 f
@@ -4010,8 +4010,8 @@ TMapDialog::DrawMapDialogGuidePatternSetH_00521340 521340 f
 TMapDialog::DrawMapDialogGuidePatternSetI_00521540 521540 f
 TMapDialog::DrawCityBorderSegmentsByMask 521680 f
 TMapDialog::DrawNationBorderSegmentsByMask 521A40 f
-TMapDialog::DrawMapDialogOwnershipMarkerForNation_00522000 522000 f
-TMapDialog::RenderMapDialogDiplomacyNeighborRelationHints 5220F0 f
+TMapDialog::DrawSeaZoneBorders 522000 f
+TMapDialog::DrawSeaZoneBorders 5220F0 f
 TMapDialog::DrawWrappedMapRouteSegment 522C10 f
 TMapDialog::DrawHexNeighborConnectionMask 522CF0 f
 TMapDialog::DrawGeneratedMapRouteSegmentsAndResetFillColor 523060 f

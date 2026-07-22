@@ -3,6 +3,7 @@
 #include <string.h>
 
 #include "game/TCity.h"
+#include "game/TStream.h"
 // SYNTHETIC: IMPERIALISM 0x004b5b40
 // TPopulationMgr::CreateObject
 
@@ -23,10 +24,10 @@ void TPopulationMgr::InitializePopulationState(TCity* city) {
   baselineSlots10 = new TLaborPool();
   productionSlots14 = new TLaborPool();
   pendingDeltaSlots18 = new TLaborPool();
-  fieldAt8 = 0;
-  fieldAtC = 0.0f;
+  populationCount08 = 0;
+  populationCountFloat0c = 0.0f;
   extraAt1e = 0;
-  memset(pad22, 0, sizeof(pad22));
+  memset(serializedState22, 0, sizeof(serializedState22));
 }
 
 // FUNCTION: IMPERIALISM 0x004b5d10
@@ -53,8 +54,8 @@ undefined TPopulationMgr::OrphanLeaf_NoCall_Ins47_004b5dc0(short param_1, short 
       productionSlots14->lowSkillCount04 +
       (productionSlots14->mediumSkillCount06 + productionSlots14->highSkillCount08 * 2) * 2);
   short total = static_cast<short>(param_2 + param_3 + param_1);
-  fieldAt8 = total;
-  fieldAtC = static_cast<float>(total);
+  populationCount08 = total;
+  populationCountFloat0c = static_cast<float>(total);
 
   pendingDeltaSlots18->highSkillCount08 = 0;
   pendingDeltaSlots18->mediumSkillCount06 = 0;
@@ -148,8 +149,8 @@ void TPopulationMgr::RemovePopulation(short startingSkillBand, short amount) {
   }
 
   short removed = static_cast<short>(amount - remaining);
-  fieldAt8 = static_cast<short>(fieldAt8 - removed);
-  fieldAtC -= static_cast<float>(removed);
+  populationCount08 = static_cast<short>(populationCount08 - removed);
+  populationCountFloat0c -= static_cast<float>(removed);
 }
 
 // FUNCTION: IMPERIALISM 0x004b67e0
@@ -158,13 +159,49 @@ undefined TPopulationMgr::OrphanLeaf_NoCall_Ins26_004b67e0(short param_1, short 
 }
 
 // FUNCTION: IMPERIALISM 0x004b6850
-void TPopulationMgr::WriteTo(TStream* stream) {}
+void TPopulationMgr::WriteTo(TStream* stream) {
+  TObject::WriteTo(stream);
+  stream->WriteBytesSlot78(&populationCount08, 2);
+  stream->WriteBytesSlot78(&stockLevel1c, 2);
+  stream->WriteBytesSlot78(&extraAt1e, 2);
+  stream->WriteBytesSlot78(&fieldAt20, 2);
+  stream->WriteBytesSlot78(serializedState22, sizeof(serializedState22));
+  stream->WriteBytesSlot78(&populationCountFloat0c, 4);
+  baselineSlots10->WriteTo(stream);
+  productionSlots14->WriteTo(stream);
+  pendingDeltaSlots18->WriteTo(stream);
+}
 
 // FUNCTION: IMPERIALISM 0x004b68f0
-void TPopulationMgr::ReadFrom(TStream* stream) {}
+void TPopulationMgr::ReadFrom(TStream* stream) {
+  TObject::ReadFrom(stream);
+  stream->ReadBytes(&populationCount08, 2);
+  stream->ReadBytes(&stockLevel1c, 2);
+  stream->ReadBytes(&extraAt1e, 2);
+  stream->ReadBytes(&fieldAt20, 2);
+  stream->ReadBytes(serializedState22, sizeof(serializedState22));
+  stream->ReadBytes(&populationCountFloat0c, 4);
+  baselineSlots10->ReadFrom(stream);
+  productionSlots14->ReadFrom(stream);
+  pendingDeltaSlots18->ReadFrom(stream);
+}
 
 // FUNCTION: IMPERIALISM 0x004b6990
-void TPopulationMgr::Free() {}
+void TPopulationMgr::Free() {
+  if (baselineSlots10 != 0) {
+    baselineSlots10->Free();
+  }
+  baselineSlots10 = 0;
+  if (productionSlots14 != 0) {
+    productionSlots14->Free();
+  }
+  productionSlots14 = 0;
+  if (pendingDeltaSlots18 != 0) {
+    pendingDeltaSlots18->Free();
+  }
+  pendingDeltaSlots18 = 0;
+  delete this;
+}
 
 short* TPopulationMgr::GetSummaryArraySlot50() {
   return reinterpret_cast<short*>(OrphanLeaf_NoCall_Ins63_004b64c0());

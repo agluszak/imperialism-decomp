@@ -57,7 +57,7 @@ void TPopGrowthOrder::Produce() {
   TPopulationMgr* population = cityField08->productionSummary1d8;
   population->baselineSlots10->lowSkillCount04 += quantity;
   population->productionSlots14->lowSkillCount04 += quantity;
-  population->fieldAt8 += quantity;
+  population->populationCount08 += quantity;
 
   TCity* city = cityField08;
   TGreatPower* owner = city->ownerNationAc;

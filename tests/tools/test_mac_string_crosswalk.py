@@ -20,8 +20,16 @@ class MacStringCrosswalkTests(unittest.TestCase):
 
     def test_index_covers_committed_mac_and_windows_string_corpora(self) -> None:
         self.assertEqual(self.index["summary"]["mac_strings"], 3821)
+        self.assertEqual(self.index["summary"]["text_resources"], 182)
         self.assertEqual(self.index["summary"]["windows_gob_strings"], 2530)
         self.assertGreater(self.index["summary"]["embedded_globals"], 50)
+
+    def test_decoded_text_resources_participate_in_search_evidence(self) -> None:
+        row = self.mac_by_id["Strings.rsrc:TEXT:3012"]
+
+        self.assertEqual(row["resource_type"], "TEXT")
+        self.assertEqual(row["resource_name"], "Terrain map set 1 body 2")
+        self.assertIn("Whenever a civilian is selected", row["text"])
 
     def test_strings_resource_uses_runtime_load_string_id_formula(self) -> None:
         row = self.mac_by_id["Strings.rsrc:STR#:10045:6"]

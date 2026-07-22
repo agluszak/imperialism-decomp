@@ -2009,9 +2009,7 @@ unsigned char TTacticalBattle::IsTacticalTargetTileReachableForAction(int attack
 // "targ" command: cycles the selected unit's target to the next reachable enemy unit in the
 // opposing side's list, starting after the current target (which is recentered if still
 // valid), recentering the view on the first reachable candidate; sets the selected unit's
-// target field, or plays a "no target" cue if none was found. NOTE: the original also calls
-// the candidate's AssertValid (vtable slot 0x03, a retail no-op) each iteration; that call is
-// omitted here because AssertValid is not modeled as a callable TObject method.
+// target field, or plays a "no target" cue if none was found.
 // FUNCTION: IMPERIALISM 0x005a3f10
 void TTacticalBattle::HandleTacticalCommandTag_targ() {
   TTacticalUnit* selected = selectedUnit1c;
@@ -2065,6 +2063,7 @@ void TTacticalBattle::HandleTacticalCommandTag_targ() {
       next = 1;
     }
     TTacticalUnit* candidate = static_cast<TTacticalUnit*>(list->GetEntryByOrdinal(next));
+    candidate->AssertValid();
     if (candidate->state1c == 0) {
       char reachable;
       if (selectedUnit1c->selectedFlag18 == 0) {

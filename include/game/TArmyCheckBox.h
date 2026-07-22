@@ -143,9 +143,11 @@ public:
   unsigned char isOn84;
   unsigned char pad85[3];
   // Horizontal pixel offset added to the paint rect's left/right when blitting from
-  // surfaceContext90 (Draw, 0x4aa100).
-  int field88;
-  int checkedGlyphOffsetApplied8c;
+  // surfaceContext90 (Draw, 0x4aa100). The army-unit upgrade path selects the two-frame
+  // pair for the unit's order type; CheckTheLook then selects the unchecked/checked frame
+  // within that pair.
+  int iconStripHorizontalOffset88;
+  int checkedFrameOffsetApplied8c;
   // A second QuickDraw surface (icon strip) this checkbox blits its check-glyph from,
   // read at +0x4 (blit surface) and +0x20 (backing CDib, for the negative-height DIB
   // vertical-flip adjustment) -- the exact same TQuickDrawSurfaceContext shape used by
@@ -156,10 +158,12 @@ public:
   // Real ctor (0x4a9fe0): forwards panel/offsetLayout/sizeLayout to the already-ported
   // TView::InitializeUiResourceEntryFrameAndParent (resourceContext=null,
   // layoutParam6/7=4, attachFlag=0), then stores its own two trailing args into
-  // surfaceContext90/field88. unused1/unused2 (the 4th/5th real stack params) are never
+  // surfaceContext90/iconStripHorizontalOffset88. unused1/unused2 (the 4th/5th real stack
+  // params) are never
   // read by this ctor.
   TArmyCheckBox(TView* panel, int* offsetLayout, int* sizeLayout, int unused1, int unused2,
-                TQuickDrawSurfaceContext* surfaceContext90Value, int field88Value);
+                TQuickDrawSurfaceContext* surfaceContext90Value,
+                int iconStripHorizontalOffsetValue);
 };
 
 ASSERT_SIZE(TArmyCheckBox, 0x94);

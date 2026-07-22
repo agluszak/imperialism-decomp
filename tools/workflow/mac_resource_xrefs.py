@@ -26,6 +26,7 @@ RESOURCE_DIR = "vendor/macos_codewarrior/evidence/resources"
 PICTURES_PATH = f"{RESOURCE_DIR}/pictures.csv"
 STRINGS_PATH = f"{RESOURCE_DIR}/strings.csv"
 TEXT_STYLES_PATH = f"{RESOURCE_DIR}/text_styles.csv"
+TEXT_RESOURCES_PATH = f"{RESOURCE_DIR}/text_resources.json"
 MANIFEST_PATH = "config/ui_factory_codegen.yml"
 
 _FUNCTION_RE = re.compile(r"^// FUNCTION: IMPERIALISM (0x[0-9a-fA-F]+)$", re.MULTILINE)
@@ -43,9 +44,9 @@ DANGLING_OWNERS = {
         "imperialism-decomp-1uj.77.3",
     ),
     "references_text_style": (
-        "The file-scoped TxSt target is absent from committed metadata; style decoding "
-        "and resource-chain recovery remain pending.",
-        "imperialism-decomp-1uj.77.4",
+        "The file-scoped TxSt target is absent; the decoded style ID is retained without "
+        "guessing which other open resource file supplied the runtime fallback.",
+        "imperialism-decomp-1uj.77.9",
     ),
 }
 
@@ -73,6 +74,14 @@ def _string_id(resource_file: str, group_id: int, string_index: int) -> str:
 
 def _text_style_id(resource_file: str, resource_id: int) -> str:
     return f"{resource_file}:TxSt:{resource_id}"
+
+
+def _text_id(resource_file: str, resource_id: int) -> str:
+    return f"{resource_file}:TEXT:{resource_id}"
+
+
+def _style_scrap_id(resource_file: str, resource_id: int) -> str:
+    return f"{resource_file}:styl:{resource_id}"
 
 
 def _class_id(class_name: str) -> str:
@@ -200,8 +209,52 @@ def build_graph(repo_root: Path) -> dict:
             resource_file=row["resource_file"],
             resource_id=int(row["resource_id"]),
             name=row["name"],
+            font_name=row["font_name"],
+            point_size=int(row["point_size"]),
+            face_flags=int(row["face_flags"]),
+            face_flag_names=row["face_flag_names"].split(";") if row["face_flag_names"] else [],
+            foreground_color=row["foreground_color"],
+            decoder_confidence=row["decoder_confidence"],
             size=int(row["size"]),
             sha256=row["sha256"],
+        )
+
+    text_resources = json.loads((repo_root / TEXT_RESOURCES_PATH).read_text(encoding="utf-8"))
+    for row in text_resources["texts"]:
+        node_id = _text_id(str(row["resource_file"]), int(row["resource_id"]))
+        _add_node(
+            nodes,
+            node_id,
+            "text",
+            resource_file=row["resource_file"],
+            resource_id=int(row["resource_id"]),
+            name=row["name"],
+            size=int(row["size"]),
+            sha256=row["sha256"],
+            text=row["text"],
+            decoder_confidence=row["decoder_confidence"],
+        )
+    for row in text_resources["style_scraps"]:
+        node_id = _style_scrap_id(str(row["resource_file"]), int(row["resource_id"]))
+        _add_node(
+            nodes,
+            node_id,
+            "style_scrap",
+            resource_file=row["resource_file"],
+            resource_id=int(row["resource_id"]),
+            name=row["name"],
+            size=int(row["size"]),
+            sha256=row["sha256"],
+            run_count=int(row["run_count"]),
+            runs=row["runs"],
+            decoder_confidence=row["decoder_confidence"],
+        )
+        _add_edge(
+            edges,
+            nodes,
+            _text_id(str(row["resource_file"]), int(row["resource_id"])),
+            "has_style_scrap",
+            node_id,
         )
 
     control_index = build_control_index(repo_root)
@@ -347,7 +400,7 @@ def build_graph(repo_root: Path) -> dict:
             for node_id, node in nodes.items()
             if node["kind"] == kind and node_id not in referenced_targets
         )
-        for kind in ("pict", "str_entry", "txst")
+        for kind in ("pict", "str_entry", "txst", "text", "style_scrap")
     }
     dangling_by_relation: dict[str, int] = {}
     for edge in dangling:
@@ -369,12 +422,10 @@ def build_graph(repo_root: Path) -> dict:
             "pictures": PICTURES_PATH,
             "strings": STRINGS_PATH,
             "text_styles": TEXT_STYLES_PATH,
+            "text_resources": TEXT_RESOURCES_PATH,
             "control_usage": "docs/reference/mac_control_usage.json",
             "windows_ui_ownership": MANIFEST_PATH,
-            "text_and_styl": {
-                "status": "pending_decoder",
-                "bead": "imperialism-decomp-1uj.77.4",
-            },
+            "text_and_styl": {"status": "decoded"},
         },
         "summary": {
             "nodes": len(nodes),

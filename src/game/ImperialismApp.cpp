@@ -33,19 +33,14 @@
 
 namespace {
 
-LPCSTR SettingsSection() {
-  return g_pRegistrySettingsSection_0063E040;
-}
-
-LPCSTR AutoResValueName() {
-  return g_pRegistryAutoResKey_0063E048;
-}
-
-LPCSTR LanguageValueName() {
-  return g_pRegistryLanguageKey_0063E04C;
-}
-
 const int kAutoResPromptSentinel = 0x29a;
+
+// VC5 materializes this char result as neg/sbb/inc before testing it, matching the
+// retail language-name comparison while keeping the MBCS pointer conversion local.
+__inline char AreMbcsStringsEqual(LPCSTR left, LPCSTR right) {
+  return _mbscmp(const_cast<unsigned char*>(reinterpret_cast<const unsigned char*>(left)),
+                 const_cast<unsigned char*>(reinterpret_cast<const unsigned char*>(right))) == 0;
+}
 
 // Inlined at every _findfirst/_findnext site in LoadLanguageResourcesFromIrgFiles.
 __inline void CloseCrtFindHandleIfOpen(long& findHandle) {
@@ -561,8 +556,8 @@ LPCTSTR ImperialismApp::DetectImperialismInstallDriveAndSetPathPrefix() {
 
 // FUNCTION: IMPERIALISM 0x004149a0
 BOOL ImperialismApp::LoadLanguageResourcesFromIrgFiles() {
-  CString savedLanguage;
-  savedLanguage = GetProfileString(SettingsSection(), LanguageValueName(), 0);
+  CString savedLanguage =
+      GetProfileString(g_pRegistrySettingsSection_0063E040, g_pRegistryLanguageKey_0063E04C, 0);
 
   ImperialismCommandLineInfo cmdInfo(&savedLanguage);
   ParseCommandLine(cmdInfo);
@@ -612,11 +607,9 @@ BOOL ImperialismApp::LoadLanguageResourcesFromIrgFiles() {
     languageLabel.ReleaseBuffer(-1);
     languageLabel.MakeUpper();
 
-    if (_mbscmp(const_cast<unsigned char*>(
-                    reinterpret_cast<const unsigned char*>(static_cast<LPCSTR>(savedLanguage))),
-                const_cast<unsigned char*>(reinterpret_cast<const unsigned char*>(
-                    static_cast<LPCSTR>(languageLabel)))) == 0) {
-      WriteProfileString(SettingsSection(), LanguageValueName(), savedLanguage);
+    if (AreMbcsStringsEqual(savedLanguage, languageLabel)) {
+      WriteProfileString(g_pRegistrySettingsSection_0063E040, g_pRegistryLanguageKey_0063E04C,
+                         savedLanguage);
 
       LoadStringA(irgModule, 0x1e36, languageLabelCC.GetBufferSetLength(0x21), 0x20);
       languageLabelCC.ReleaseBuffer(-1);
@@ -653,7 +646,8 @@ BOOL ImperialismApp::LoadLanguageResourcesFromIrgFiles() {
 
 // FUNCTION: IMPERIALISM 0x00415090
 int ImperialismApp::ShowAutoResolutionDialogIfNeeded() {
-  int autoResMode = GetProfileInt(SettingsSection(), AutoResValueName(), kAutoResPromptSentinel);
+  int autoResMode = GetProfileInt(g_pRegistrySettingsSection_0063E040,
+                                  g_pRegistryAutoResKey_0063E048, kAutoResPromptSentinel);
 
   CString languageOverride;
   ImperialismCommandLineInfo cmdInfo(&languageOverride);
@@ -675,56 +669,56 @@ int ImperialismApp::ShowAutoResolutionDialogIfNeeded() {
     autoResMode = dialog.autoResolutionCheckState;
   }
 
-  WriteProfileInt(SettingsSection(), AutoResValueName(), autoResMode);
+  WriteProfileInt(g_pRegistrySettingsSection_0063E040, g_pRegistryAutoResKey_0063E048, autoResMode);
   return autoResMode;
 }
 
 // FUNCTION: IMPERIALISM 0x00415580
 BOOL ImperialismApp::SetSettingValueInSettingsSection(LPCTSTR key, LPCTSTR value) {
-  return WriteProfileString(SettingsSection(), key, value);
+  return WriteProfileString(g_pRegistrySettingsSectionAlt_0063E044, key, value);
 }
 
 // FUNCTION: IMPERIALISM 0x004155b0
 BOOL ImperialismApp::ApplyAutoResolutionModeAndPersist(int mode) {
-  if (appliedAutoResModeC8 == mode) {
-    return TRUE;
-  }
+  if (appliedAutoResModeC8 != mode) {
+    appliedAutoResModeC8 = mode;
+    if (mode == 0) {
+      ChangeDisplaySettingsA(nullptr, 0);
+    } else {
+      DEVMODEA devMode;
+      memset(&devMode, 0, sizeof(devMode));
+      LONG changeResult = -1;
+      DWORD modeIndex = 0;
+      devMode.dmBitsPerPel = 8;
+      devMode.dmPelsWidth = 0x280;
+      devMode.dmPelsHeight = 0x1e0;
+      devMode.dmFields = 0x180000;
 
-  appliedAutoResModeC8 = mode;
-  if (mode == 0) {
-    ChangeDisplaySettingsA(nullptr, 0);
-  } else {
-    DEVMODEA devMode;
-    memset(&devMode, 0, sizeof(devMode));
-    LONG changeResult = -1;
-    DWORD modeIndex = 0;
-    devMode.dmBitsPerPel = 8;
-    devMode.dmPelsWidth = 0x280;
-    devMode.dmPelsHeight = 0x1e0;
-    devMode.dmFields = 0x180000;
+      if (EnumDisplaySettingsA(nullptr, modeIndex, &devMode)) {
+        do {
+          if (devMode.dmPelsWidth == 0x280 && devMode.dmBitsPerPel > 7 &&
+              devMode.dmPelsHeight == 0x1e0) {
+            devMode.dmFields = 0x180000;
+            changeResult = ChangeDisplaySettingsA(&devMode, 0);
+            break;
+          }
+          ++modeIndex;
+        } while (EnumDisplaySettingsA(nullptr, modeIndex, &devMode));
+      }
 
-    if (EnumDisplaySettingsA(nullptr, modeIndex, &devMode)) {
-      do {
-        if (devMode.dmPelsWidth == 0x280 && devMode.dmBitsPerPel > 7 &&
-            devMode.dmPelsHeight == 0x1e0) {
-          devMode.dmFields = 0x180000;
-          changeResult = ChangeDisplaySettingsA(&devMode, 0);
-          break;
-        }
-        ++modeIndex;
-      } while (EnumDisplaySettingsA(nullptr, modeIndex, &devMode));
+      if (changeResult != 0) {
+        appliedAutoResModeC8 = 0;
+      }
     }
 
-    if (changeResult != 0) {
-      appliedAutoResModeC8 = 0;
+    if (appliedAutoResModeC8 == mode) {
+      WriteProfileInt(g_pRegistrySettingsSection_0063E040, g_pRegistryAutoResKey_0063E048,
+                      appliedAutoResModeC8);
+      return TRUE;
     }
+    return FALSE;
   }
-
-  if (appliedAutoResModeC8 == mode) {
-    WriteProfileInt(SettingsSection(), AutoResValueName(), appliedAutoResModeC8);
-    return TRUE;
-  }
-  return FALSE;
+  return TRUE;
 }
 
 namespace {

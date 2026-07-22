@@ -1,4 +1,6 @@
 #include "game/TLaborPool.h"
+
+#include "game/TStream.h"
 // SYNTHETIC: IMPERIALISM 0x004b20d0
 // TLaborPool::CreateObject
 
@@ -15,10 +17,20 @@ TLaborPool::TLaborPool()
 TLaborPool::~TLaborPool() {}
 
 // FUNCTION: IMPERIALISM 0x004b21d0
-void TLaborPool::WriteTo(TStream* stream) {}
+void TLaborPool::WriteTo(TStream* stream) {
+  TObject::WriteTo(stream);
+  stream->WriteBytesSlot78(&lowSkillCount04, 2);
+  stream->WriteBytesSlot78(&mediumSkillCount06, 2);
+  stream->WriteBytesSlot78(&highSkillCount08, 2);
+}
 
 // FUNCTION: IMPERIALISM 0x004b2220
-void TLaborPool::ReadFrom(TStream* stream) {}
+void TLaborPool::ReadFrom(TStream* stream) {
+  TObject::ReadFrom(stream);
+  stream->ReadBytes(&lowSkillCount04, 2);
+  stream->ReadBytes(&mediumSkillCount06, 2);
+  stream->ReadBytes(&highSkillCount08, 2);
+}
 
 // FUNCTION: IMPERIALISM 0x004b2270
 short TLaborPool::TransferToLowSkillFirst(TLaborPool* destination, short amount) {

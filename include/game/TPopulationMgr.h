@@ -56,11 +56,11 @@ public:
   void InitializePopulationState(TCity* city);
 
   TCity* city04;
-  short fieldAt8; // +0x08 — snapshotted by the turn-event-0x2c packet
+  short populationCount08; // +0x08 — total workers across the three skill bands
   unsigned char pad0a[2];
   // +0x0c — snapshotted by the turn-event-0x2c packet. Genuinely float: written via FSTP in
   // OrphanLeaf_NoCall_Ins47_004b5dc0 (0x4b5dc0), not an int.
-  float fieldAtC;
+  float populationCountFloat0c;
   TLaborPool* baselineSlots10;     // +0x10
   TLaborPool* productionSlots14;   // +0x14
   TLaborPool* pendingDeltaSlots18; // +0x18
@@ -68,11 +68,10 @@ public:
   short extraAt1e;                 // +0x1e
   short fieldAt20;                 // +0x20 — snapshotted by the turn-event-0x2c packet
 
-  // +0x24..+0x50 (padding to align the declared fields to a 4-byte boundary, then RTTI
-  // m_nObjectSize proves 0x50 total). CreateObject (0x4b5b40) only allocates and
-  // installs the vtable; every override past the ctor is currently a stub, so this
-  // tail is still fully unrecovered.
-  unsigned char pad22[0x50 - 0x22];
+  // +0x22..+0x4f is persistent state: ReadFrom/WriteTo serialize the region wholesale.
+  // Its internal fields are not yet individually interpreted, so retain one honest
+  // byte block instead of mislabeling live save-game data as padding.
+  unsigned char serializedState22[0x50 - 0x22];
 
   TPopulationMgr();
 };

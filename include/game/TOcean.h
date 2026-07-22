@@ -38,6 +38,8 @@ public:
   TZone* contextArray;  // +0x08
   short routeNodeCount; // +0x0c number of route records in routeSegments
   char pad0e[2];        // +0x0e
+  // Built through the retail CRect(int,int,int,int) constructor, then consumed as two
+  // CPoint-compatible endpoints by the strategic-map renderer.
   CRect* routeSegments; // +0x10 heap buffer of routeNodeCount map-route line segments
   // +0x14: the currently-selected task force cached for the active map-order entry
   // (maintained by EnsureSelectedTaskForceForOrderOwnerAndRefresh); zeroed in the ctor.

@@ -11,14 +11,17 @@ class TCivUnit;
 
 // Mac oracle: HelpSetRecord — 0xe bytes stored in TSortedPtrList (recordSize14 0xe).
 struct HelpSetRecord {
-  short helpSetIdA;
-  short helpSetIdB;
-  short helpSetIdC;
+  // The decoded Strings.rsrc corpus establishes one shared ID namespace: this is
+  // both the STR# group containing the set/topic labels and the base of the
+  // consecutive TEXT body resources selected by THelpPicture::ShowTopic.
+  short helpResourceBaseId;
+  short previousHelpResourceBaseId;
+  short nextHelpResourceBaseId;
   short contextId;
   short rank;
   unsigned char flagByte;
   unsigned char padByte;
-  short category;
+  short topicCount;
 };
 
 ASSERT_SIZE(HelpSetRecord, 0xe);
@@ -80,7 +83,7 @@ public:
   void ActivatePendingEventAndRefreshView(HelpSetRecord* pendingEntry);
   // 0x5010b0 — scans indexList for the pending event matching the active view's
   // currentTurnEventCode and activates one: the lowest-rank unflagged match wins;
-  // otherwise a flagged match, else a zero-helpSetIdB match, is activated.
+  // otherwise a flagged match, else a zero previousHelpResourceBaseId match, is activated.
   void SelectAndActivatePendingEventForCurrentView();
   // 0x503370 -- finds the first indexList record whose contextId is idx + 0x1a0b and
   // activates it. Used by TStatusPicture/TSpecialQuitPicture's shift+'tab1'/'tab2'/'tab3'
