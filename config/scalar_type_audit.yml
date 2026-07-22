@@ -1,0 +1,31 @@
+format_version: 1
+
+# Every emitted finding inherits a reviewed classification and durable owner from
+# this table. The committed fingerprint baseline makes newly introduced findings
+# fail the check instead of silently expanding the report.
+categories:
+  nested_integral_cast:
+    classification: width_or_bit_pattern_boundary
+    owner: imperialism-decomp-1uj.99.2
+    rationale: Preserve listing-required narrowing and sign extension; remove only redundant outer promotion.
+  predicate_storage_cast:
+    classification: predicate_boundary
+    owner: imperialism-decomp-1uj.99.7
+    rationale: Distinguish bool semantics from retail char, byte, and BOOL storage or return ABI.
+  raw_discriminant_literal:
+    classification: enum_candidate
+    owner: imperialism-decomp-1uj.99.8
+    rationale: A Type, Kind, Mode, State, or Code comparison needs a domain enum or explicit boundary classification.
+  native_integral_boundary:
+    classification: win32_mfc_boundary
+    owner: imperialism-decomp-1uj.99.9
+    rationale: Keep explicit conversion where game-owned values enter a Win32 or MFC scalar ABI.
+
+clang_tidy:
+  status: unavailable_in_lint_image
+  evaluated_checks:
+    - bugprone-narrowing-conversions
+    - cppcoreguidelines-narrowing-conversions
+    - readability-redundant-casting
+  decision: advisory_only
+  rationale: The lint image installs clang-cl but not clang-tidy; broad narrowing checks also require VC5-aware classification before gating.

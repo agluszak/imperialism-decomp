@@ -123,6 +123,7 @@ module|tools.ghidra.string_refs_oracle|dependency:tools.ghidra.query_registry|st
 module|tools.workflow.check_stub_count|just:stub-count-gate|Generated stub count ratchet (un-claiming tell)
 module|tools.workflow.boundary_audit|just:boundary-audit|Manual/autogen boundary report (stub refs classified for porting)
 module|tools.workflow.check_boundary_ratchet|just:boundary-gate|Boundary ratchet: manual->stub refs + fn-ptr casts must not rise
+module|tools.workflow.scalar_type_audit|just:scalar-type-audit|Classified scalar-conversion and enum-candidate source audit with fingerprint ratchet
 module|tools.workflow.check_datacmp_baseline|just:datacmp-gate|Global-data drift ratchet over reccmp-datacmp
 module|tools.workflow.check_empty_bodies|just:noop-gate|Silent no-op detector + empty-body ratchet
 module|tools.workflow.check_typedef_ghidra_args|just:typedef-args-audit|Typedef-cast arity/convention audit vs binary RET-imm
