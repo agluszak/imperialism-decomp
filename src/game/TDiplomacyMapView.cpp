@@ -300,7 +300,7 @@ void TDiplomacyMapView::BuildDiplomacyNationOverlayGeometryAndHitMasks() {
     RgnHandle nationRgn = g_pStrategicMapViewSystem->GetClipRegionSlotByIndex(nationIndex);
     CopyRect(&run->boundsAt04, &(*nationRgn)->rgnBBox);
     run->boundsAt04.right =
-        run->boundsAt04.left + ((run->boundsAt04.right - run->boundsAt04.left) + 7 >> 3) * 8;
+        run->boundsAt04.left + (((run->boundsAt04.right - run->boundsAt04.left) + 7) >> 3) * 8;
     delete[] run->maskBytesAt00;
     run->maskBytesAt00 = new unsigned char[(run->boundsAt04.right - run->boundsAt04.left) *
                                            (run->boundsAt04.bottom - run->boundsAt04.top)];

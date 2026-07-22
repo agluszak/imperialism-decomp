@@ -177,7 +177,7 @@ public:
   //              trailingOrderSlots — kept flat-typed as TProductionOrder* so
   //              that cross-band indexing stays type-consistent.
   union {
-    void* orderSlotsE4[0x3D];
+    TProductionOrder* orderSlotsE4[0x3D];
     struct {
       TProductionOrder* tradeCommodityRecordPtrs[0x19]; // 0x00..0x18
       TUnitOrder* buildOrderSlots[0x12];                // 0x19..0x2a

@@ -270,6 +270,33 @@ and let C++ emit member and base destruction.
 
 If the original destructor writes base vtables during teardown, that should normally come from real inheritance, not manual stores.
 
+#### Destructor declaration and definition placement is binary evidence, not style
+
+Do not move a destructor between a header and a `.cpp` merely to silence Clang, make a
+vtable emit, or improve one local comparison. Visibility changes VC5 inlining and COMDAT
+folding across every constructor, deleting destructor, derived destructor, and vtable that
+uses the class.
+
+Use this policy:
+
+* If the original has no ordinary destructor body and real members/bases already express
+  teardown, leave the destructor implicit. Do not add an empty body to claim a scalar
+  deleting destructor.
+* If the original has a standalone ordinary destructor address, declare it in the header
+  and define it in the owning `.cpp` with the `// FUNCTION:` marker.
+* Put the body inline in the header only when listings at real call sites prove the retail
+  compiler expanded that destructor there. Check multiple call sites before changing a
+  shared base.
+* A polymorphic class with a listing-proven vtable that has no destructor slot may have a
+  non-virtual destructor. Delete it only through the exact concrete type; deleting through
+  a base pointer is a source-model bug.
+* Scalar deleting destructors remain compiler-generated and `// SYNTHETIC:` regardless of
+  where the ordinary destructor lives.
+
+After any destructor visibility change, compare the ordinary destructor when it has an
+address and run `just vtable` for the class and its affected derived siblings. A local
+destructor score gain does not justify collateral COMDAT folding or vtable regressions.
+
 ### 15. Temporary scaffolding must be named and isolated
 
 If a helper is unavoidable because the hierarchy is not understood yet, name it as temporary and include a removal condition.
@@ -347,4 +374,3 @@ factory and not `operator new`.
 
 The existing `operator new`/`operator delete` sites are baseline-tracked so they ratchet
 down; new occurrences fail the gate.
-

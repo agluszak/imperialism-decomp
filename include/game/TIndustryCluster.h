@@ -5,6 +5,7 @@
 
 struct CRuntimeClass;
 class TAmtBar;
+class TProductionOrder;
 
 // VTABLE: IMPERIALISM 0x665ed0
 class TIndustryCluster : public TAmtBarCluster {
@@ -128,7 +129,7 @@ public:
   virtual void SetMoveAmount(short amount,
                              unsigned char updateControls); // slot 0x75 0x588c60
   virtual void UpdateMax();                                 // slot 0x76 0x588f60
-  TAmtBar* selectedMetricControl;                           // 0x88
+  TProductionOrder* selectedMetricOrder;                    // 0x88
   short selectedMetricValue;                                // 0x8c
   short selectedMetricStep;                                 // 0x8e
 

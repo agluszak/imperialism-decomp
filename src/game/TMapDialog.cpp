@@ -649,8 +649,10 @@ void TMapDialog::PopulateMapContextInfoPanelStringsByTileSelection(short tileInd
     }
     mainText = cityName + ", " + nameText;
 
-    char currentOwner = g_pGlobalMapState->terrainStateTable[tileIndex].ownerNationTag04;
-    char formerOwner = g_pGlobalMapState->terrainStateTable[tileIndex].formerOwnerNationTag03;
+    int currentOwner =
+        static_cast<char>(g_pGlobalMapState->terrainStateTable[tileIndex].ownerNationTag04);
+    int formerOwner =
+        static_cast<char>(g_pGlobalMapState->terrainStateTable[tileIndex].formerOwnerNationTag03);
     if (currentOwner != formerOwner) {
       if (formerOwner >= 0 && formerOwner <= 0x17 &&
           g_apTerrainTypeDescriptorTable[formerOwner] != 0) {

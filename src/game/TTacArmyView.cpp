@@ -57,6 +57,8 @@ TTacArmyView::TTacArmyView() {}
 // the 'tool' toolbar and 'coat' picture to the battle, and refreshes the view.
 // Everything past the backdrop-loader null test is skipped when the backdrop bitmap
 // is missing (the loader handle then leaks, as in the original).
+// Listing 0x005a9d90 inlines the loader's exact-type non-virtual destructor.
+IMPERIALISM_BEGIN_EXACT_TYPE_NON_VIRTUAL_DTOR_DELETE
 // FUNCTION: IMPERIALISM 0x005a9d90
 void TTacArmyView::ConstructTTacArmyViewBaseState(int compositionClass, TArmyBattle* battle) {
   int savedFlags = 0;
@@ -183,6 +185,7 @@ void TTacArmyView::ConstructTTacArmyViewBaseState(int compositionClass, TArmyBat
     GetWindow()->ForceRedraw();
   }
 }
+IMPERIALISM_END_EXACT_TYPE_NON_VIRTUAL_DTOR_DELETE
 
 // Presents the battle view: blits the scrolled backdrop slice from
 // battlefieldSurface64 into the primary render surface, draws all 0x1b3 tiles inside

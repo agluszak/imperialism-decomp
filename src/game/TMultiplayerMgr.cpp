@@ -1010,10 +1010,11 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     // A resuming nation announces its home region and city name.
     TurnEventACityAnnouncePacketM* announce = static_cast<TurnEventACityAnnouncePacketM*>(packet);
     if (g_pSimMgr->scenarioMapIndexPlusOne == 0) {
+      int announcedNation = static_cast<char>(announce->nationId1C);
       g_pGlobalMapState->SetTileTransportFlagsTo0x37AndRefreshNeighbors(announce->homeTile1E,
-                                                                        (char)announce->nationId1C);
-      g_apNationStates[(char)announce->nationId1C]->SetHomeCityTileAndDisplayName(
-          announce->homeTile1E, announce->cityName20);
+                                                                        (char)announcedNation);
+      g_apNationStates[announcedNation]->SetHomeCityTileAndDisplayName(announce->homeTile1E,
+                                                                       announce->cityName20);
     }
     pendingNationBitmask &= ~(1 << (char)announce->nationId1C);
     unsigned char hostingA = g_pSimMgr->multiplayerSessionRole == 1;
@@ -1166,7 +1167,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     // claim instead.
     LobbyChatEvent9Packet* chat = reinterpret_cast<LobbyChatEvent9Packet*>(packet);
     if (chat->nationSlot18 != 0xf3) {
-      char slot9 = (char)chat->nationSlot18;
+      int slot9 = static_cast<char>(chat->nationSlot18);
       int sessionId = chat->field1C;
       {
         CString senderName(chat->senderName);

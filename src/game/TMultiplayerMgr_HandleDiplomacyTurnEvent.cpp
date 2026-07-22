@@ -203,7 +203,7 @@ void TMultiplayerMgr::HandleTurnResumeStateTelemetry() {
       packet.messageLength = 0;
       packet.messageLength = 0x44;
       packet.uiTurnToken = static_cast<short>(g_pGameFlowState->pendingNationSlotIndex);
-      char nationId = static_cast<char>(g_pSimMgr->GetActiveNationId());
+      int nationId = static_cast<char>(g_pSimMgr->GetActiveNationId());
       packet.nationId1C = nationId;
       packet.homeTile1E = (short)g_apTerrainTypeDescriptorTable[nationId]->homeTileIndex;
       int cityRecordIndex =
@@ -563,6 +563,7 @@ void TMultiplayerMgr::HandleDiplomacyTurnEventPacketByCode() {
 // pre-stamped ('time' + active nation) and then immediately overwritten by the stream
 // read -- original behavior, kept as-is; the switch keys on the streamed event code and
 // the acting nation comes from the streamed header (-1 during session teardown).
+IMPERIALISM_BEGIN_RETAIL_POLYMORPHIC_BYTE_COPY
 // FUNCTION: IMPERIALISM 0x00549ff0
 void TMultiplayerMgr::HandleTurnEventCodes28_2E_2F_30_31_32(TStream* stream) {
   TimelyNetMessagePrefix header;
@@ -636,6 +637,7 @@ void TMultiplayerMgr::HandleTurnEventCodes28_2E_2F_30_31_32(TStream* stream) {
     break;
   }
 }
+IMPERIALISM_END_RETAIL_POLYMORPHIC_BYTE_COPY
 
 // FUNCTION: IMPERIALISM 0x0054a6d0
 void TMultiplayerMgr::CreateMilitaryRecruitOrdersForSelectedTerrain(TStream* stream,

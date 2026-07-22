@@ -1738,6 +1738,8 @@ void TAutoGreatPower::PlanAiDevelopmentActionsFromResourcePools(int unused) {
       }
     }
   }
+  // Listing 0x004eb190 stores and decrements this float but never consumes its value.
+  (void)developmentBudget;
 }
 
 // FUNCTION: IMPERIALISM 0x004eb6b0

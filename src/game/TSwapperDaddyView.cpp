@@ -3,8 +3,8 @@
 #include "game/CSubViewIterator.h"
 
 // FUNCTION: IMPERIALISM 0x004ac6c0
-TView* TSwapperDaddyView::SelectSwapperItemByTag(unsigned int tag) {
-  if (tag != static_cast<unsigned int>(selectedTag60)) {
+TView* TSwapperDaddyView::SelectSwapperItemByTag(int tag) {
+  if (tag != selectedTag60) {
     TView* matched = nullptr;
     CSubViewIterator iter(this);
     TView* child = iter.FirstSubView();
