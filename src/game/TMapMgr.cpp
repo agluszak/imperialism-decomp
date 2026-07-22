@@ -1163,6 +1163,34 @@ char TMapMgr::CheckTileVariantCodeMembershipSetD(short tileIndex) {
   return 0;
 }
 
+// FUNCTION: IMPERIALISM 0x005114b0
+short __stdcall ResolveRiverSpriteVariantForConnectionMask(unsigned char connectionMask,
+                                                           unsigned char waterTerrain) {
+  const unsigned char singleDirectionVariants[8] = {7, 0, 1, 2, 3, 4, 6, 5};
+  const unsigned char pairedDirectionMasks[16] = {0x12, 0x22, 0x82, 0x42, 0x24, 0x28, 0x84, 0x88,
+                                                  0x44, 0x48, 0x05, 0x09, 0x90, 0x50, 0x11, 0x21};
+
+  if (connectionMask == 0) {
+    return 0;
+  }
+
+  int index;
+  if (!waterTerrain) {
+    for (index = 0; index < 16; ++index) {
+      if (connectionMask == pairedDirectionMasks[index]) {
+        return static_cast<short>(index + 0x0b);
+      }
+    }
+  }
+
+  for (index = 0; index < 8; ++index) {
+    if (connectionMask == static_cast<unsigned char>(1 << index)) {
+      return static_cast<short>(singleDirectionVariants[index] + (waterTerrain ? 0x33 : 0x2b));
+    }
+  }
+  return -1;
+}
+
 // FUNCTION: IMPERIALISM 0x00511610
 short TMapMgr::UpdateStrategicMapTileIconVariantState(short tileIndex) {
   TTerrainStateRecordView* tile = &terrainStateTable[tileIndex];
