@@ -21,7 +21,6 @@ src/game/TArmoryView.cpp|2|0|1|0
 src/game/TArmyBoyView.cpp|0|0|1|0
 src/game/TArmyCheckBox.cpp|0|0|1|0
 src/game/TArmyPlacard.cpp|0|0|1|0
-src/game/TAutoGreatPower.cpp|0|1|0|0
 src/game/TAutomatedPlayDialog.cpp|1|0|1|0
 src/game/TBatRepDetLine.cpp|0|0|1|0
 src/game/TBattleDetailBook.cpp|0|0|1|0
@@ -33,9 +32,8 @@ src/game/TBuildingExpansionView.cpp|2|0|1|0
 src/game/TCancelGameOptionsCommand.cpp|1|0|0|0
 src/game/TCapacityOrder.cpp|0|0|1|0
 src/game/TCheater.cpp|0|0|1|0
-src/game/TCity.cpp|4|0|0|0
-src/game/TCityInteriorMinister.cpp|8|0|1|0
-src/game/TCityMinisterPersonalities.cpp|4|0|0|0
+src/game/TCity.cpp|2|0|0|0
+src/game/TCityInteriorMinister.cpp|0|0|1|0
 src/game/TCityOrderItem.cpp|0|0|3|0
 src/game/TCityProductionView.cpp|12|0|1|0
 src/game/TCitySiteView.cpp|1|0|0|0
@@ -65,7 +63,6 @@ src/game/TExpansionOrder.cpp|0|0|1|0
 src/game/TFileBasedDocument.cpp|0|0|1|0
 src/game/TFlagOptionsPicture.cpp|0|0|1|0
 src/game/TFoodProcessingOrder.cpp|0|0|1|0
-src/game/TForeignMinisterPersonalities.cpp|17|0|0|0
 src/game/TFrameRadioView.cpp|0|0|1|0
 src/game/TGPCheater.cpp|0|0|1|0
 src/game/TGPTreatyDialog.cpp|0|0|1|0
@@ -87,7 +84,6 @@ src/game/TLanguageMgr.cpp|0|0|1|0
 src/game/TLoadSavePicture.cpp|1|0|1|0
 src/game/TLoungeDialog.cpp|0|0|1|0
 src/game/TMadnessButton.cpp|0|0|1|0
-src/game/TMapDialog.cpp|4|0|0|0
 src/game/TMapEditCluster.cpp|0|0|1|0
 src/game/TMapEditView.cpp|6|0|1|0
 src/game/TMapKey.cpp|0|0|1|0
@@ -118,8 +114,6 @@ src/game/TNetGameSelectPicture.cpp|0|0|1|0
 src/game/TNewTownView.cpp|1|0|1|0
 src/game/TNewspaperView.cpp|0|0|1|0
 src/game/TNominationView.cpp|0|0|1|0
-src/game/TOcean.cpp|2|0|0|0
-src/game/TOceanDialog.cpp|9|0|0|0
 src/game/TOfferDeskPicture.cpp|2|0|0|0
 src/game/TOffersPanelView.cpp|1|0|0|0
 src/game/TOrItemOrder.cpp|0|0|1|0
@@ -154,11 +148,10 @@ src/game/TTacticalBattleView.cpp|3|0|0|0
 src/game/TTacticalHolaPicture.cpp|0|0|1|0
 src/game/TTacticalToolbar.cpp|0|0|1|0
 src/game/TTask.cpp|0|0|1|0
-src/game/TTaskForce.cpp|1|0|0|0
 src/game/TTechCheater.cpp|0|0|1|0
 src/game/TTechHistoryView.cpp|0|0|1|0
 src/game/TTechItemLine.cpp|0|0|1|0
-src/game/TTechMgr.cpp|2|0|1|0
+src/game/TTechMgr.cpp|0|0|1|0
 src/game/TTerrainHelpPicture.cpp|0|0|1|0
 src/game/TToggleButton.cpp|0|0|1|0
 src/game/TToolBarCluster.cpp|1|0|0|0
