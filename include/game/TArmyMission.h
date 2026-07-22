@@ -26,12 +26,12 @@ public:
   virtual void
   Free() override; // slot 0x1c (TObject) 0x53c220 -- releases orderListAt18 and deletes self
 
-  virtual char
+  virtual bool
   IsANoBrainer() const override; // slot 0x28 0x53c1b0 -- army attack/invade capability flag
   virtual int AccumulateLack(int* accumulatedLack, unsigned char includeExistingLack)
       const override; // slot 0x2c 0x53c620 -- accumulates remaining equipage lack, returns total
   virtual TMission* GetReplacementSlot48() override; // slot 0x48 0x53d630
-  virtual char
+  virtual bool
   IsArmyMission() const override; // slot 0x50 0x5356f0 -- army mission capability flag (true)
   virtual TMission* GetArmyMission() override; // slot 0x58 0x535710 -- returns this
   virtual TMission*

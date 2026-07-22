@@ -25,13 +25,13 @@ IMPLEMENT_SERIAL(TBlockadePortMission, TControlSeaZoneMission, 1)
 // TBlockadePortMission::CreateObject
 
 // FUNCTION: IMPERIALISM 0x0053aa50
-char TBlockadePortMission::IsHospitalMission() const {
-  return 0;
+bool TBlockadePortMission::IsHospitalMission() const {
+  return false;
 }
 
 // FUNCTION: IMPERIALISM 0x0053aa70
-char TBlockadePortMission::IsDefensiveSeaZoneMission() const {
-  return 0;
+bool TBlockadePortMission::IsDefensiveSeaZoneMission() const {
+  return false;
 }
 // SYNTHETIC: IMPERIALISM 0x0053aa90
 // TBlockadePortMission::`scalar deleting destructor'
@@ -253,7 +253,7 @@ void TBlockadePortMission::CalculateNeeds() {
 }
 
 // FUNCTION: IMPERIALISM 0x0053ba10
-char TBlockadePortMission::Matches(eMissionType missionType, int key, TZone* zoneContext) const {
+bool TBlockadePortMission::Matches(eMissionType missionType, int key, TZone* zoneContext) const {
   (void)key;
   return missionType == kMissionTypeBlockadePort && zoneContext == targetZone14;
 }

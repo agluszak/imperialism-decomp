@@ -23,13 +23,13 @@ void TDefendProvinceMission::GiveOrders() {
 }
 
 // FUNCTION: IMPERIALISM 0x00535790
-char TDefendProvinceMission::IsHospitalMission() const {
-  return 1;
+bool TDefendProvinceMission::IsHospitalMission() const {
+  return true;
 }
 
 // FUNCTION: IMPERIALISM 0x005357b0
-char TDefendProvinceMission::IsANoBrainer() const {
-  return 1;
+bool TDefendProvinceMission::IsANoBrainer() const {
+  return true;
 }
 // SYNTHETIC: IMPERIALISM 0x005357d0
 // TDefendProvinceMission::`scalar deleting destructor'
@@ -356,7 +356,7 @@ void TDefendProvinceMission::Initialize() {
 }
 
 // FUNCTION: IMPERIALISM 0x0053f010
-char TDefendProvinceMission::Matches(eMissionType missionType, int key, TZone* zoneContext) const {
+bool TDefendProvinceMission::Matches(eMissionType missionType, int key, TZone* zoneContext) const {
   (void)zoneContext;
   return missionType == kMissionTypeDefendProvince && key == static_cast<int>(presentLocation14);
 }

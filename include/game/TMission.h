@@ -62,7 +62,7 @@ public:
   // --- TMission's own virtuals, exact vtable slot order ---
   virtual void WriteTo(TStream* stream) override;  // slot 0x05 0x535820
   virtual void ReadFrom(TStream* stream) override; // slot 0x06 0x5358a0
-  virtual char IsANoBrainer() const;               // 0x0a 0x534c00
+  virtual bool IsANoBrainer() const;               // 0x0a 0x534c00
   virtual int AccumulateLack(int* accumulatedLack,
                              unsigned char includeExistingLack) const; // 0x0b 0x534c20
   virtual void Initialize();                                           // 0x0c 0x534c40
@@ -73,14 +73,14 @@ public:
   virtual void GiveOrders();                                           // 0x11 0x534cf0
   virtual TMission* GetReplacementSlot48();                            // 0x12 0x534d10
   // Mac: Matches(eMissionType, long, TZone*) const.
-  virtual char Matches(eMissionType missionType, int key,
+  virtual bool Matches(eMissionType missionType, int key,
                        TZone* zoneContext) const; // 0x13 0x534d30
-  virtual char IsArmyMission() const;             // 0x14 0x534d50
-  virtual char IsNavyMission() const;             // 0x15 0x534d70
+  virtual bool IsArmyMission() const;             // 0x14 0x534d50
+  virtual bool IsNavyMission() const;             // 0x15 0x534d70
   virtual TMission* GetArmyMission();             // 0x16 0x534d90
   virtual TMission* GetNavyMission();             // 0x17 0x534db0
-  virtual char IsDefensiveSeaZoneMission() const; // 0x18 0x534dd0
-  virtual char IsHospitalMission() const;         // 0x19 0x534df0
+  virtual bool IsDefensiveSeaZoneMission() const; // 0x18 0x534dd0
+  virtual bool IsHospitalMission() const;         // 0x19 0x534df0
   virtual float GetWeightedSatisfaction();        // 0x1a 0x534e10
   virtual float IndustrialCostOfNeeds();          // 0x1b 0x534e30
   virtual float ValueOf(TShip* candidate);        // 0x1d 0x534e50

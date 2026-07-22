@@ -39,13 +39,13 @@ TControlSeaZoneMission::TControlSeaZoneMission() : TNavyMission() {}
 TControlSeaZoneMission::TControlSeaZoneMission(TZone* targetZone) : TNavyMission(targetZone) {}
 
 // FUNCTION: IMPERIALISM 0x005355b0
-char TControlSeaZoneMission::IsHospitalMission() const {
-  return 1;
+bool TControlSeaZoneMission::IsHospitalMission() const {
+  return true;
 }
 
 // FUNCTION: IMPERIALISM 0x005355d0
-char TControlSeaZoneMission::IsDefensiveSeaZoneMission() const {
-  return 0;
+bool TControlSeaZoneMission::IsDefensiveSeaZoneMission() const {
+  return false;
 }
 
 // FUNCTION: IMPERIALISM 0x005387f0
@@ -223,7 +223,7 @@ void TControlSeaZoneMission::CalculateNeeds() {
 }
 
 // FUNCTION: IMPERIALISM 0x00539600
-char TControlSeaZoneMission::Matches(eMissionType missionType, int key, TZone* zoneContext) const {
+bool TControlSeaZoneMission::Matches(eMissionType missionType, int key, TZone* zoneContext) const {
   (void)key;
   return (missionType == kMissionTypeAttackProvince || missionType == kMissionTypeDefendProvince) &&
          zoneContext == targetZone14;

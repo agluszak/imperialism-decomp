@@ -23,13 +23,13 @@ TMission* TEscortMission::GetReplacementSlot48() {
 }
 
 // FUNCTION: IMPERIALISM 0x00539920
-char TEscortMission::IsHospitalMission() const {
-  return 1;
+bool TEscortMission::IsHospitalMission() const {
+  return true;
 }
 
 // FUNCTION: IMPERIALISM 0x00539940
-char TEscortMission::IsDefensiveSeaZoneMission() const {
-  return 0;
+bool TEscortMission::IsDefensiveSeaZoneMission() const {
+  return false;
 }
 // SYNTHETIC: IMPERIALISM 0x00539960
 // TEscortMission::`scalar deleting destructor'
@@ -190,7 +190,7 @@ void TEscortMission::CalculateNeeds() {
 }
 
 // FUNCTION: IMPERIALISM 0x0053a250
-char TEscortMission::Matches(eMissionType missionType, int key, TZone* zoneContext) const {
+bool TEscortMission::Matches(eMissionType missionType, int key, TZone* zoneContext) const {
   (void)key;
   return (missionType == kMissionTypeAttackProvince || missionType == kMissionTypeDefendProvince) &&
          zoneContext == targetZone14;

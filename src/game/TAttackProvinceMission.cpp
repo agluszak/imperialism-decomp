@@ -25,8 +25,8 @@ IMPLEMENT_SERIAL(TAttackProvinceMission, TArmyMission, 1)
 // TAttackProvinceMission::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x0053d6f0
-char TAttackProvinceMission::IsHospitalMission() const {
-  return 0;
+bool TAttackProvinceMission::IsHospitalMission() const {
+  return false;
 }
 
 TAttackProvinceMission::TAttackProvinceMission() : TArmyMission(0xffff) {
@@ -412,7 +412,7 @@ void TAttackProvinceMission::Initialize() {
 }
 
 // FUNCTION: IMPERIALISM 0x0053e5b0
-char TAttackProvinceMission::Matches(eMissionType missionType, int key, TZone* zoneContext) const {
+bool TAttackProvinceMission::Matches(eMissionType missionType, int key, TZone* zoneContext) const {
   (void)zoneContext;
   return (missionType == kMissionTypeAttackProvince || missionType == kMissionTypeAmassProvince) &&
          key == static_cast<int>(targetProvince30);

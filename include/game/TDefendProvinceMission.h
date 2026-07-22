@@ -16,12 +16,12 @@ public:
   virtual void
   Free() override; // slot 0x1c (TObject) 0x53ebe0 -- releases orderListAt18 and deletes self
 
-  virtual char IsANoBrainer() const override;      // slot 0x28 0x5357b0
-  virtual char IsHospitalMission() const override; // slot 0x64 0x535790
+  virtual bool IsANoBrainer() const override;      // slot 0x28 0x5357b0
+  virtual bool IsHospitalMission() const override; // slot 0x64 0x535790
   virtual void
   GiveOrders() override; // slot 0x44 0x535770 -- propagates target tile to linked units
   virtual TMission* GetReplacementSlot48() override; // slot 0x48 0x53f040
-  virtual char Matches(eMissionType missionType, int key,
+  virtual bool Matches(eMissionType missionType, int key,
                        TZone* zoneContext) const override; // slot 0x4c 0x53f010
 
   // These override TMission's own slots 0x0d/0x0e/0x0f (SetStateByte8To2 /

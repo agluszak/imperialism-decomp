@@ -25,8 +25,8 @@ TMission* TInvadeMission::GetNavyMission() {
 }
 
 // FUNCTION: IMPERIALISM 0x0053f140
-char TInvadeMission::IsNavyMission() const {
-  return 1;
+bool TInvadeMission::IsNavyMission() const {
+  return true;
 }
 
 // FUNCTION: IMPERIALISM 0x0053f160
@@ -56,8 +56,8 @@ float TInvadeMission::IndustrialCostOfNeeds() {
 }
 
 // FUNCTION: IMPERIALISM 0x0053f240
-char TInvadeMission::IsHospitalMission() const {
-  return 0;
+bool TInvadeMission::IsHospitalMission() const {
+  return false;
 }
 
 // SYNTHETIC: IMPERIALISM 0x0053f260
@@ -243,8 +243,8 @@ float TInvadeMission::CalculatePriority() {
 }
 
 // FUNCTION: IMPERIALISM 0x0053faa0
-char TInvadeMission::IsArmyMission() const {
-  return 1;
+bool TInvadeMission::IsArmyMission() const {
+  return true;
 }
 
 // Same shape as TArmyMission::ValueOf, but the "not this mission's own unit"
@@ -287,10 +287,10 @@ void TInvadeMission::Hold(unsigned char value) {
 }
 
 // FUNCTION: IMPERIALISM 0x0053fbc0
-char TInvadeMission::Matches(eMissionType missionType, int key, TZone* zoneContext) const {
+bool TInvadeMission::Matches(eMissionType missionType, int key, TZone* zoneContext) const {
   return missionType == kMissionTypeInvadeProvince && key == targetProvince30 &&
          beachhead34 != nullptr &&
-         beachhead34->Matches(kMissionTypeInvadeProvince, key, zoneContext) != 0;
+         beachhead34->Matches(kMissionTypeInvadeProvince, key, zoneContext);
 }
 
 // Builds the order-list contribution vector, then subtracts it from this mission's desired

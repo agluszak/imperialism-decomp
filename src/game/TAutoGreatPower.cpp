@@ -1259,7 +1259,7 @@ void TAutoGreatPower::RemoveRegionIdFromNationOwnedRegionList(int regionId) {
   CIterator missionCursor(this->missionQueue);
   TMission* mission = static_cast<TMission*>(missionCursor.Reset());
   while (missionCursor.More() != 0) {
-    if (mission->Matches(kMissionTypeDefendProvince, regionId, nullptr) != 0) {
+    if (mission->Matches(kMissionTypeDefendProvince, regionId, nullptr)) {
       CPtrList* listState = &this->missionQueue->listState;
       POSITION pos = listState->Find(mission, 0);
       if (pos != 0) {
@@ -1460,7 +1460,7 @@ void TAutoGreatPower::RecomputeAiExpansionAndMissionPressureScores(void) {
   TMission* mission = static_cast<TMission*>(missionIterator.Reset());
   while (missionIterator.More()) {
     mission->AssertValid();
-    if (mission->IsDefensiveSeaZoneMission() != 0) {
+    if (mission->IsDefensiveSeaZoneMission()) {
       ++activeMissionCount;
     }
     mission = static_cast<TMission*>(missionIterator.Advance());

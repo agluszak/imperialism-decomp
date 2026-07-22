@@ -51,13 +51,13 @@ void TNavyMission::GiveActionOrders(TTaskForce* mapOrderEntry) {
 }
 
 // FUNCTION: IMPERIALISM 0x005354e0
-char TNavyMission::IsNavyMission() const {
-  return 1;
+bool TNavyMission::IsNavyMission() const {
+  return true;
 }
 
 // FUNCTION: IMPERIALISM 0x00535500
-char TNavyMission::IsANoBrainer() const {
-  return 0;
+bool TNavyMission::IsANoBrainer() const {
+  return false;
 }
 
 // FUNCTION: IMPERIALISM 0x00535520

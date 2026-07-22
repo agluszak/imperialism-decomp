@@ -15,8 +15,8 @@
 IMPLEMENT_SERIAL(TArmyMission, TMission, 1)
 
 // FUNCTION: IMPERIALISM 0x005356f0
-char TArmyMission::IsArmyMission() const {
-  return 1;
+bool TArmyMission::IsArmyMission() const {
+  return true;
 }
 
 // FUNCTION: IMPERIALISM 0x00535710
@@ -67,8 +67,8 @@ TArmyMission::TArmyMission(int nodeKey) : TMission() {
 }
 
 // FUNCTION: IMPERIALISM 0x0053c1b0
-char TArmyMission::IsANoBrainer() const {
-  return 0;
+bool TArmyMission::IsANoBrainer() const {
+  return false;
 }
 // SYNTHETIC: IMPERIALISM 0x0053c1d0
 // TArmyMission::`scalar deleting destructor'

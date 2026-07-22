@@ -26,13 +26,13 @@ IMPLEMENT_SERIAL(TBeachheadMission, TControlSeaZoneMission, 1)
 // TBeachheadMission::CreateObject
 
 // FUNCTION: IMPERIALISM 0x0053a390
-char TBeachheadMission::IsHospitalMission() const {
-  return 0;
+bool TBeachheadMission::IsHospitalMission() const {
+  return false;
 }
 
 // FUNCTION: IMPERIALISM 0x0053a3b0
-char TBeachheadMission::IsDefensiveSeaZoneMission() const {
-  return 0;
+bool TBeachheadMission::IsDefensiveSeaZoneMission() const {
+  return false;
 }
 
 // SYNTHETIC: IMPERIALISM 0x0053a3d0 (approx -- see symbols.csv)
@@ -111,7 +111,7 @@ void TBeachheadMission::CalculateNeeds() {
 }
 
 // FUNCTION: IMPERIALISM 0x0053a7b0
-char TBeachheadMission::Matches(eMissionType missionType, int key, TZone* zoneContext) const {
+bool TBeachheadMission::Matches(eMissionType missionType, int key, TZone* zoneContext) const {
   return missionType == kMissionTypeInvadeProvince && key != -1 &&
          key == parentMission3c->targetProvince30 && zoneContext == targetZone14;
 }
