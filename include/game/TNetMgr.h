@@ -4,6 +4,7 @@
 #include "game/mfc.h"
 
 struct NetMessage;
+struct TurnEventQueuePacket;
 class TView;
 
 // Global turn-event queue manager handle (ConstructGlobalTurnEventQueueManager @ 0x005e33e0
@@ -40,6 +41,12 @@ public:
   // session-manager state are file-scope globals of the original WNetMgr.cpp TU.
   // Mac oracle: TNetMgr::Send(NSpMessageHeader*, unsigned char).
   unsigned char Send(NetMessage* message, unsigned char queueOnly);
+
+  unsigned char DefaultUnhandledTurnEventHookReturnsFalse(TurnEventQueuePacket* packet);
+  void FreeTurnEventPacketBuffer(TurnEventQueuePacket* packet);
+  TurnEventQueuePacket* PopNextTurnEventPacketOrProcessSpecialQueueRecords();
+  unsigned char CheckConnectivityOrShowLocalizedWarningAndReturnReady();
+  int GetSessionActiveNationId(); // 0x5e4280
 
   // 0x5e42c0 — destroy the DirectPlay player when `nationId` is the local session id
   // (name kept from Ghidra; the body destroys, it does not notify). Real __thiscall on
@@ -100,7 +107,3 @@ public:
   // Mac oracle: TNetMgr::HandleError(int). Asserts with D:\Ambit\WNetMgr.cpp line 451.
   void HandleError(int errorCode);
 };
-
-// WNetMgr.cpp free helpers over the file-scope session state.
-// Returns the local session id global 0x6a5fc0.
-int GetSessionActiveNationId(); // 0x5e4280

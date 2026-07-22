@@ -25,6 +25,13 @@ struct NetMessage {
   void DestinateTo(int nationSlot);
 };
 
+// Heap packet while it is parked in TMultiplayerMgr's two deferred-processing queues.
+// The queue link occupies +0x10; once a packet is dequeued, that slot is again available
+// to the concrete packet family (normally the timely-message tag).
+struct TurnEventQueuePacket : NetMessage {
+  TurnEventQueuePacket* nextQueuePacket;
+};
+
 // 'time'-tagged (0x74696d65) timely-message variant whose turn-token word sits at +0x18
 // (three-byte pad after the active-nation byte). Used by the advisory/diplomacy emitters
 // (0x540cf0..0x5416b0 band); 0x542120 writes word [this+0x18] from

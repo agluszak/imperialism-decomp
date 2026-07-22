@@ -26,7 +26,7 @@ public:
   // Linear scan for `value`; returns the matching slot or null. Mirrors
   // TZoneSecondaryNeighborStretch::FindEntry (ground truth:
   // RefreshPortZoneNeighborContextLinksAndFallbacks, 0x00563f50, which pre-checks
-  // membership before calling GetOrAppendUnique).
+  // membership before calling Add).
   TZone** FindEntry(TZone* value) {
     unsigned int count = Count();
     for (unsigned int index = 0; index < count; ++index) {
@@ -40,9 +40,9 @@ public:
     return FindEntry(value) != 0;
   }
 
-  TZone** GetOrAppendUnique(TZone* zone) override; // 0x55e8e0
+  TZone** Add(TZone* zone) override; // 0x55e8e0
   // Not a vtable slot (see stretch.h); called only on the concrete type.
-  void Add(TZone* zone); // 0x55ead0
+  void Append(TZone* zone); // 0x55ead0
   // Grows `data`/`capacity` to hold at least `count` elements (doubling capacity,
   // clamped to INT_MAX, with a same-size fallback realloc if the doubled request
   // fails). Only this one instantiation (primary neighbors) is evidenced; do not
@@ -81,10 +81,10 @@ public:
   }
 
 public:
-  Province** GetOrAppendUnique(Province* entry) override; // 0x55e9c0
+  Province** Add(Province* entry) override; // 0x55e9c0
   // Not a vtable slot (see stretch.h); called only on the concrete type. The orig
-  // vtable at 0x0065c748 is confirmed exactly 1 slot long (GetOrAppendUnique only).
-  void Add(Province* entry); // 0x55eba0
+  // vtable at 0x0065c748 is confirmed exactly 1 slot long (Add only).
+  void Append(Province* entry); // 0x55eba0
   // Unconditionally reallocate `data` to hold `count` entries (double-or-exact grow),
   // updating capacity. 0x55fae0.
   void ResizePointerArrayCapacityByRequestedCount(int count);
@@ -136,7 +136,7 @@ public:
   short GetContextOrdinalOrInvalid();
   void GenerateZoneStatusCodeIfUnset(); // 0x55f5c0
   // 0x55f300 — find-or-append `zone` to primaryNeighbors via the stretch's virtual
-  // GetOrAppendUnique (Ghidra: DispatchMapActionContextCallbackViaField24).
+  // Add (Ghidra: DispatchMapActionContextCallbackViaField24).
   void AppendUniquePrimaryNeighbor(TZone* zone);
   // Picks the primaryNeighbors entry most at war with nationSlot: a neighbor qualifies
   // if it isn't a port zone or `nationSlot` doesn't hold flag D there, then scores it by
@@ -239,7 +239,7 @@ public:
   // 0x005619e0. Bidirectionally links this zone with its owning nation's map-order
   // context: resolves the owner nation (terrainStateTable at the zone's active tile),
   // finds that nation's context in g_pActiveMapOrderContext->contextArray, and adds
-  // each to the other's primaryNeighbors (GetOrAppendUnique).
+  // each to the other's primaryNeighbors (Add).
   void ResolvePortZoneOwnerContextAndDispatch();
 
   // 0x005609e0. If `nation` has this map-order context zone flagged (nationKeyMask10 bit) and a

@@ -6,8 +6,8 @@
 #include <stdlib.h>
 
 // FUNCTION: IMPERIALISM 0x0059ed60
-TShip* TNavyTacUnit::GetSourceTaskForce() {
-  return sourceTaskForce34;
+TShip* TNavyTacUnit::GetSourceShip() {
+  return sourceShip34;
 }
 
 // SYNTHETIC: IMPERIALISM 0x0059ed80
@@ -26,6 +26,22 @@ IMPLEMENT_DYNCREATE(TNavyTacUnit, TTacticalUnit)
 
 TNavyTacUnit::TNavyTacUnit() {}
 
+// FUNCTION: IMPERIALISM 0x005a6290
+void TNavyTacUnit::InitializeFromSourceShip(TShip* sourceShip) {
+  tileIndex8 = -2;
+  unitTypeC = g_anTacticalNavyUnitTypeByShipType_00669D80[sourceShip->type];
+  selectedFlag18 = 0;
+  state1c = 0;
+  actionPoints28 = GetBaseActionPoints();
+  aiStateCode2c = 0;
+  attackTarget30 = 0;
+  strength4 = sourceShip->strength;
+  crewStrength38 = sourceShip->strength;
+  int speed = sourceShip->GetSpeed();
+  sourceShip34 = sourceShip;
+  baseActionPoints3c = speed * 10;
+}
+
 // FUNCTION: IMPERIALISM 0x005a6310
 int TNavyTacUnit::GetBaseActionPoints() {
   return baseActionPoints3c;
@@ -33,7 +49,7 @@ int TNavyTacUnit::GetBaseActionPoints() {
 
 // FUNCTION: IMPERIALISM 0x005a6330
 int TNavyTacUnit::GetUnitRange() {
-  return sourceTaskForce34->GetRange();
+  return sourceShip34->GetRange();
 }
 
 // FUNCTION: IMPERIALISM 0x005a6350

@@ -14,6 +14,8 @@
 #include "game/TAnimator.h"
 #include "game/TAssetMgr.h"
 #include "game/TBitmapResourceLoader.h"
+#include "game/TBuildingConstructionView.h"
+#include "game/TBuildingView.h"
 #include "game/CDib.h"
 #include "game/TCity.h"
 #include "game/TCityProductionView.h"
@@ -125,62 +127,10 @@ using turn_event_dialog::TurnEventDialogNode;
 
 } // namespace
 
-// FUNCTION: IMPERIALISM 0x00430750
-StrategicMapCallbackRecord::~StrategicMapCallbackRecord() {
-  subobjectDispatchTable1c = 0x006404a8;
-  if (ownedBuffer20 != 0) {
-    delete[] ownedBuffer20;
-  }
-  dispatchTable00 = 0x006404a4;
-  if (ownedBuffer04 != 0) {
-    delete[] ownedBuffer04;
-  }
-}
-
-// FUNCTION: IMPERIALISM 0x004d4b90
-StrategicMapCallbackRecord::StrategicMapCallbackRecord() {
-  ownedBuffer04 = 0;
-  bufferCapacity08 = 0;
-  committedLength0c = 0;
-  dispatchTable00 = 0x006404a4;
-  appendCursor10 = 0;
-  alignmentCursor14 = 0;
-  hadTrailingPadding18 = 0;
-  ownedBuffer20 = 0;
-  cursorBufferSize24 = 0;
-  cursorBufferInitialized28 = 0;
-  subobjectDispatchTable1c = 0x006404a8;
-  destinationRowStride2c = 0;
-}
-
-// FUNCTION: IMPERIALISM 0x004d4e40
-unsigned char* StrategicMapCallbackRecord::EnsureOpcodeBufferByteAtIndex(int index) {
-  if (index >= bufferCapacity08) {
-    int required = index + 1;
-    int newCapacity = required + required;
-    if (newCapacity < required) {
-      newCapacity = required;
-    }
-
-    unsigned char* newBuffer = new unsigned char[newCapacity];
-    if (ownedBuffer04 != 0 && committedLength0c > 0) {
-      memcpy(newBuffer, ownedBuffer04, committedLength0c);
-    }
-    delete[] ownedBuffer04;
-    ownedBuffer04 = newBuffer;
-    bufferCapacity08 = newCapacity;
-  }
-
-  if (index >= committedLength0c) {
-    committedLength0c = index + 1;
-  }
-  return ownedBuffer04 + index;
-}
-
 // FUNCTION: IMPERIALISM 0x004d4ff0
 void StrategicMapCallbackRecord::ApplyBitmapMaskToPixelBuffer(unsigned char* destinationPixels) {
-  unsigned char* instruction = ownedBuffer04;
-  unsigned char* end = instruction + committedLength0c;
+  unsigned char* instruction = opcodeBytes00.Data();
+  unsigned char* end = instruction + opcodeBytes00.Count();
   unsigned char* destinationBase = destinationPixels;
 
   while (instruction < end) {
@@ -233,9 +183,9 @@ void StrategicMapCallbackRecord::BuildBitmapMaskOpcodeBufferFromResourceRows(
   int sourceRowStride = (dib->m_pInfoHeader->bmiHeader.biWidth + 3) & 0xfffffffc;
   int generatedBaseOffset = 0;
 
-  appendCursor10 = 0;
-  committedLength0c = 0;
-  alignmentCursor14 = 0;
+  opcodeAppendCursor10 = 0;
+  opcodeBytes00.Count() = 0;
+  opcodeAlignmentOffset14 = 0;
   hadTrailingPadding18 = 0;
 
   int y = 0;
@@ -273,28 +223,29 @@ void StrategicMapCallbackRecord::BuildBitmapMaskOpcodeBufferFromResourceRows(
 
 // FUNCTION: IMPERIALISM 0x004d5580
 StrategicMapCallbackRecord* StrategicMapCallbackRecord::AppendOpcodeByte(int value) {
-  unsigned int index = static_cast<unsigned int>(appendCursor10);
+  unsigned int index = static_cast<unsigned int>(opcodeAppendCursor10);
   int newCount = index + 1;
-  appendCursor10 = newCount;
-  if (index >= static_cast<unsigned int>(bufferCapacity08)) {
+  opcodeAppendCursor10 = newCount;
+  if (index >= static_cast<unsigned int>(opcodeBytes00.Capacity())) {
     unsigned int grownCapacity = static_cast<unsigned int>(newCount) * 2;
     unsigned int clampedCapacity = grownCapacity;
     if (0x7fffffff < grownCapacity) {
       clampedCapacity = 0x7fffffff;
     }
-    unsigned char* grown = static_cast<unsigned char*>(realloc(ownedBuffer04, grownCapacity));
+    unsigned char* grown =
+        static_cast<unsigned char*>(realloc(opcodeBytes00.Data(), grownCapacity));
     if (grown == 0) {
-      ownedBuffer04 = static_cast<unsigned char*>(realloc(ownedBuffer04, newCount));
-      bufferCapacity08 = newCount;
+      opcodeBytes00.Data() = static_cast<unsigned char*>(realloc(opcodeBytes00.Data(), newCount));
+      opcodeBytes00.Capacity() = newCount;
     } else {
-      ownedBuffer04 = grown;
-      bufferCapacity08 = clampedCapacity;
+      opcodeBytes00.Data() = grown;
+      opcodeBytes00.Capacity() = clampedCapacity;
     }
   }
-  if (index >= static_cast<unsigned int>(committedLength0c)) {
-    committedLength0c = newCount;
+  if (index >= static_cast<unsigned int>(opcodeBytes00.Count())) {
+    opcodeBytes00.Count() = newCount;
   }
-  ownedBuffer04[index] = static_cast<unsigned char>(value);
+  opcodeBytes00.Data()[index] = static_cast<unsigned char>(value);
   return this;
 }
 
@@ -306,11 +257,15 @@ void StrategicMapCallbackRecord::AppendOpcodeBytePair(int value) {
 
 // FUNCTION: IMPERIALISM 0x004d5720
 void StrategicMapCallbackRecord::FinalizeOpcodeBufferAlignment() {
-  while (((reinterpret_cast<unsigned int>(ownedBuffer04) + alignmentCursor14) & 3) != 0) {
-    AppendOpcodeByte(0);
-    alignmentCursor14 = (alignmentCursor14 + 1) & 3;
+  opcodeBytes00[opcodeAlignmentOffset14];
+  opcodeAlignmentOffset14 =
+      reinterpret_cast<unsigned int>(opcodeBytes00.Data() + opcodeAlignmentOffset14) & 3;
+  if (opcodeAlignmentOffset14 != 0) {
+    opcodeBytes00.Add(0);
+    opcodeBytes00.Add(0);
+    opcodeBytes00.Add(0);
   }
-  if (alignmentCursor14 != 0) {
+  if (opcodeAlignmentOffset14 != 0) {
     hadTrailingPadding18 = 1;
   }
 }
@@ -1440,20 +1395,30 @@ void TMacViewMgr::DispatchTurnEvent3B8AndWaitForCompletionFlag(int unusedArg1, i
 }
 
 // FUNCTION: IMPERIALISM 0x0050d360
-undefined TMacViewMgr::CreateCityBuildingDialogBySlot(int param_1, undefined4 param_2,
-                                                      undefined4 param_3, int arg4, int arg5) {
+TBuildingView* TMacViewMgr::OpenBuildingWindow(short buildingSlot, TCity* city,
+                                               unsigned char closeAfterOpen,
+                                               unsigned char isEmbeddedPage,
+                                               TCityProductionView* productionView) {
   TurnEventDialogNode* dialog = reinterpret_cast<TurnEventDialogNode*>(
-      g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(param_1 + 0x23f0));
-  GoldDialogControl* goldControl =
-      reinterpret_cast<GoldDialogControl*>(dialog->ResolveControlByTag(0x444c4f47));
-  if (goldControl == 0) {
+      g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(buildingSlot + 0x23f0));
+  TBuildingView* buildingView =
+      static_cast<TBuildingView*>(dialog->ResolveControlByTag(0x444c4f47));
+  if (buildingView == 0) {
     MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag();
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUMacViewMgr_00696D68, 0xb4f);
   }
-  goldControl->InvokeSlot1D0FourParam(reinterpret_cast<int>(this), param_2, param_3, param_1);
+  buildingView->ApplyCityViewSelectionPayloadAndRefreshControls(city, isEmbeddedPage != 0,
+                                                                productionView, buildingSlot);
   dialog->controlValue3c = 0x65;
-  dialog->DispatchSlot9C();
-  return 0;
+  if (closeAfterOpen != 0) {
+    dialog->ShowTurnEventDialog(1);
+    dialog->RefreshTurnEventDialog();
+    dialog->Close();
+    dialog->Free();
+    return 0;
+  }
+  dialog->Open();
+  return buildingView;
 }
 
 // FUNCTION: IMPERIALISM 0x0050d470
@@ -1476,22 +1441,22 @@ undefined TMacViewMgr::OrphanCallChain_C10_I80_0050d470(int param_1, undefined4 
 }
 
 // FUNCTION: IMPERIALISM 0x0050d5b0
-undefined TMacViewMgr::OrphanCallChain_C9_I49_0050d5b0(int param_1, int arg2, int arg3) {
+void TMacViewMgr::OpenConstructionWindow(short buildingSlot, TCity* city,
+                                         TCityProductionView* productionView) {
   TurnEventDialogNode* dialog = reinterpret_cast<TurnEventDialogNode*>(
       g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(0x2404));
-  GoldDialogControl* goldControl =
-      reinterpret_cast<GoldDialogControl*>(dialog->ResolveControlByTag(0x444c4f47));
-  if (goldControl == 0) {
+  TBuildingConstructionView* constructionView =
+      static_cast<TBuildingConstructionView*>(dialog->ResolveControlByTag(0x444c4f47));
+  if (constructionView == 0) {
     MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag();
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUMacViewMgr_00696D68, 0xb98);
   }
-  goldControl->InvokeSlot1CC(reinterpret_cast<int>(this), static_cast<int>(param_1), param_1);
+  constructionView->StuffValues(buildingSlot, city, productionView);
   dialog->ShowTurnEventDialog(1);
-  dialog->RefreshTurnEventDialog();
-  dialog->InvokeSlotA0();
-  goldControl->InvokeSlot1D0OneParam(dialog->QueryTurnEventContentObject());
-  dialog->InvokeSlot1C();
-  return 0;
+  unsigned long dialogAction = dialog->RefreshTurnEventDialog();
+  dialog->Close();
+  constructionView->DoClosingAction(dialogAction);
+  dialog->Free();
 }
 
 // FUNCTION: IMPERIALISM 0x0050d680
@@ -1554,7 +1519,7 @@ undefined TMacViewMgr::RenderOffscreenBitmapTileSpanAndRestoreContext(int param_
 // FUNCTION: IMPERIALISM 0x0050d8d0
 void TMacViewMgr::RefreshActiveCityBuildingActionAvailabilityIndicators() {
   if (activeCityProductionView04 != 0) {
-    activeCityProductionView04->RefreshCityBuildingActionAvailabilityIndicators();
+    activeCityProductionView04->UpdateToolbar();
   }
 }
 

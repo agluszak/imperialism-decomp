@@ -139,8 +139,8 @@ public:
   // The +0x94 receiver is a TCity: derived readers land exactly on city stock +0xb6,
   // productionSummary1d8, and the production-order table at +0x1dc.
   TCity* city94;
-  // The city-production host: Shipyard UpdateFields calls its slot 0x77
-  // UpdateCityProductionDialogCommodityValueControls, and Close clears its 16-entry
+  // The city-production host: Shipyard UpdateFields calls its slot 0x77 UpdateUnits,
+  // and Close clears its 16-entry
   // buildingViewsAC array at +0xac.
   TCityProductionView* productionView98;
   bool isEmbeddedPage9C;

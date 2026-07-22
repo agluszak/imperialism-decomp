@@ -165,7 +165,44 @@ void __stdcall ConvertHexTileIndexToRowAndDoubleColumn(int tileIndex, unsigned i
 
 // FUNCTION: IMPERIALISM 0x005a59f0
 void TNavyBattle::ComputeTacticalReachableTileCostsByUnitCategory(TTacticalUnit* unit) {
-  (void)unit;
+  int actionPoints = unit->actionPoints28;
+  short* moveCosts = tileMoveCostArray24;
+  int tileIndex;
+  for (tileIndex = 0; tileIndex < tacticalTileCount3c; ++tileIndex) {
+    moveCosts[tileIndex] = -1;
+  }
+  moveCosts[unit->tileIndex8] = 0;
+
+  int costBand;
+  for (costBand = 0; costBand <= actionPoints; costBand += 10) {
+    short* moveCost = moveCosts;
+    for (tileIndex = 0; tileIndex < tacticalTileCount3c; ++tileIndex, ++moveCost) {
+      if (*moveCost < costBand) {
+        continue;
+      }
+
+      int neighborTiles[6];
+      ComputeHexNeighborTileIndices_005A0420(tileIndex, neighborTiles);
+      int direction;
+      for (direction = 0; direction < 6; ++direction) {
+        int neighborTile = neighborTiles[direction];
+        if (neighborTile == -1 || tileGrid4[neighborTile].occupant4 != 0) {
+          continue;
+        }
+
+        short nextCost;
+        if (unit->unitTypeC < 2) {
+          nextCost = static_cast<short>(*moveCost + neighborMoveCostByDirection7c[direction]);
+        } else {
+          nextCost = static_cast<short>(*moveCost + 10);
+        }
+        if (nextCost <= actionPoints &&
+            (moveCosts[neighborTile] == -1 || nextCost < moveCosts[neighborTile])) {
+          moveCosts[neighborTile] = nextCost;
+        }
+      }
+    }
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x005a5b70
@@ -177,13 +214,47 @@ undefined TNavyBattle::FinalizeTacticalBattleOutcome(int) {
 // FUNCTION: IMPERIALISM 0x005a5bc0
 void TNavyBattle::ExecuteTacticalActionAndQueueEventIfNoAdjacentValidTarget(TTacticalUnit* unit,
                                                                             int targetTileIndex) {
-  (void)unit;
-  (void)targetTileIndex;
+  EvaluateAndResolveTacticalActionAgainstTileOccupant(unit, targetTileIndex);
+  if (battleOutcomeCode44 == 0) {
+    int neighborTiles[6];
+    ComputeHexNeighborTileIndices_005A0420(selectedUnit1c->tileIndex8, neighborTiles);
+    int direction;
+    for (direction = 0; direction < 6; ++direction) {
+      int neighborTile = neighborTiles[direction];
+      if (neighborTile != -1) {
+        short moveCost = tileMoveCostArray24[neighborTile];
+        if (moveCost != -1 && moveCost <= selectedUnit1c->actionPoints28) {
+          return;
+        }
+      }
+    }
+  }
+  QueueTacticalEventPacket232A();
 }
 
 // FUNCTION: IMPERIALISM 0x005a5c50
 void TNavyBattle::MoveTacticalUnitAndQueueEvent232AIfNoAdjacentReachableTarget(
     TTacticalUnit* unit, int targetTileIndex) {
-  (void)unit;
-  (void)targetTileIndex;
+  MoveTacticalUnitTowardTile(unit, targetTileIndex);
+  if (unit->selectedFlag18 == 0) {
+    int neighborTiles[6];
+    ComputeHexNeighborTileIndices_005A0420(selectedUnit1c->tileIndex8, neighborTiles);
+    int direction;
+    for (direction = 0; direction < 6; ++direction) {
+      int neighborTile = neighborTiles[direction];
+      if (neighborTile != -1) {
+        short moveCost = tileMoveCostArray24[neighborTile];
+        if (moveCost != -1 && moveCost <= selectedUnit1c->actionPoints28) {
+          break;
+        }
+      }
+    }
+    if (direction == 6) {
+      QueueTacticalEventPacket232A();
+      return;
+    }
+  }
+  if (unit->state1c != 0 || battleOutcomeCode44 != 0) {
+    QueueTacticalEventPacket232A();
+  }
 }

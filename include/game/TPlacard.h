@@ -16,5 +16,5 @@ public:
   DECLARE_DYNCREATE(TPlacard)
   void DoPostCreate(int arg) override;
   void Draw(RECT* rectBuffer) override;
-  virtual bool IsSelected(short value = -1, bool refreshNow = true);
+  virtual bool SetValue(short value = -1, bool refreshNow = true);
 };

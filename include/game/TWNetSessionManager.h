@@ -80,6 +80,7 @@ public:
   // Returns nonzero on success (original callers test the full EAX).
   int TrySendNetworkPacket(int nationId, void* packet, unsigned int byteCount);
   int TryReceiveNetworkPacketIntoResizableBuffer(DWORD* fromId, DWORD* toId, void** bufferHandle);
+  unsigned char OpenCurrentSessionDescriptionForJoin(); // 0x4803d0
   // IDirectPlay2::DestroyPlayer + result capture (no interface null-check, unlike
   // TrySendNetworkPacket). Returns SUCCEEDED(result) in AL.
   unsigned char DestroyPlayerAndStoreResult(DWORD idPlayer);

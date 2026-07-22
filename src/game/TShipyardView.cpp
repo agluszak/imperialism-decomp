@@ -123,7 +123,7 @@ void TShipyardView::DoStartup() {
 
 // FUNCTION: IMPERIALISM 0x004c8a50
 void TShipyardView::UpdateFields() {
-  productionView98->UpdateCityProductionDialogCommodityValueControls();
+  productionView98->UpdateUnits();
   RECT refreshRect = {0x16, 0xb4, 0x124, 0xf0};
   InvalidateCityDialogRectRegion(&refreshRect, 1);
 }

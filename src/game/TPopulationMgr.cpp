@@ -4,6 +4,7 @@
 
 #include "game/TCity.h"
 #include "game/TStream.h"
+#include "game/global_data_tables.h"
 // SYNTHETIC: IMPERIALISM 0x004b5b40
 // TPopulationMgr::CreateObject
 
@@ -27,7 +28,7 @@ void TPopulationMgr::InitializePopulationState(TCity* city) {
   populationCount08 = 0;
   populationCountFloat0c = 0.0f;
   extraAt1e = 0;
-  memset(serializedState22, 0, sizeof(serializedState22));
+  memset(predictedNeedByResource22, 0, sizeof(predictedNeedByResource22));
 }
 
 // FUNCTION: IMPERIALISM 0x004b5d10
@@ -84,8 +85,31 @@ undefined TPopulationMgr::OrphanLeaf_NoCall_Ins50_004b63e0() {
 }
 
 // FUNCTION: IMPERIALISM 0x004b64c0
-undefined TPopulationMgr::OrphanLeaf_NoCall_Ins63_004b64c0() {
-  return 0;
+short* TPopulationMgr::PredictedNeeds() {
+  int skilledPopulation = baselineSlots10->mediumSkillCount06 + baselineSlots10->highSkillCount08;
+  short rotationCounts[4];
+  rotationCounts[0] = 0;
+  rotationCounts[1] = 0;
+  rotationCounts[2] = 0;
+
+  short cycles = static_cast<short>(skilledPopulation / 10);
+  short rotation = fieldAt20;
+  while (cycles != 0) {
+    ++rotationCounts[rotation];
+    rotation = rotation == 3 ? 0 : static_cast<short>(rotation + 1);
+    --cycles;
+  }
+
+  for (int i = 0; i < 3; ++i) {
+    predictedNeedByResource22[g_cityPredictedNeedResetResourceIds[i]] = 0;
+  }
+
+  short supportedPopulation =
+      static_cast<short>(populationCount08 + city04->trailingOrderSlots[9]->quantityField04);
+  predictedNeedByResource22[17] = static_cast<short>((supportedPopulation + 1) / 2);
+  predictedNeedByResource22[18] = static_cast<short>((supportedPopulation + 2) / 4);
+  predictedNeedByResource22[20] = static_cast<short>(supportedPopulation / 4);
+  return predictedNeedByResource22;
 }
 
 // FUNCTION: IMPERIALISM 0x004b65b0
@@ -164,7 +188,7 @@ void TPopulationMgr::WriteTo(TStream* stream) {
   stream->WriteBytesSlot78(&strength, 2);
   stream->WriteBytesSlot78(&extraAt1e, 2);
   stream->WriteBytesSlot78(&fieldAt20, 2);
-  stream->WriteBytesSlot78(serializedState22, sizeof(serializedState22));
+  stream->WriteBytesSlot78(predictedNeedByResource22, sizeof(predictedNeedByResource22));
   stream->WriteBytesSlot78(&populationCountFloat0c, 4);
   baselineSlots10->WriteTo(stream);
   productionSlots14->WriteTo(stream);
@@ -178,7 +202,7 @@ void TPopulationMgr::ReadFrom(TStream* stream) {
   stream->ReadBytes(&strength, 2);
   stream->ReadBytes(&extraAt1e, 2);
   stream->ReadBytes(&fieldAt20, 2);
-  stream->ReadBytes(serializedState22, sizeof(serializedState22));
+  stream->ReadBytes(predictedNeedByResource22, sizeof(predictedNeedByResource22));
   stream->ReadBytes(&populationCountFloat0c, 4);
   baselineSlots10->ReadFrom(stream);
   productionSlots14->ReadFrom(stream);
@@ -200,8 +224,4 @@ void TPopulationMgr::Free() {
   }
   pendingDeltaSlots18 = 0;
   delete this;
-}
-
-short* TPopulationMgr::GetSummaryArraySlot50() {
-  return reinterpret_cast<short*>(OrphanLeaf_NoCall_Ins63_004b64c0());
 }

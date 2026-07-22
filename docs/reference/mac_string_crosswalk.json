@@ -756,6 +756,20 @@
       "text": "D:\\Ambit\\Cross\\UCityDialogs.cpp"
     },
     {
+      "address": "0x00696310",
+      "placeholders": [],
+      "source": "embedded_global",
+      "symbol": "g_szCityProductionUniversityPrefix",
+      "text": "University: "
+    },
+    {
+      "address": "0x0069632c",
+      "placeholders": [],
+      "source": "embedded_global",
+      "symbol": "g_szCityProductionShipyardPrefix",
+      "text": "Shipyard: "
+    },
+    {
       "address": "0x006964b0",
       "placeholders": [],
       "source": "embedded_global",
@@ -831,6 +845,13 @@
       "source": "embedded_global",
       "symbol": "s_mcflavor_00696d10",
       "text": ""
+    },
+    {
+      "address": "0x00696d68",
+      "placeholders": [],
+      "source": "embedded_global",
+      "symbol": "s_SourcePathUMacViewMgr_00696D68",
+      "text": "D:\\Ambit\\Cross\\UMacViewMgr.cpp"
     },
     {
       "address": "0x00697238",
@@ -6842,6 +6863,18 @@
           "text": "data/%03d.tab"
         },
         {
+          "address": "0x0069632c",
+          "kind": "embedded_global",
+          "symbol": "g_szCityProductionShipyardPrefix",
+          "text": "Shipyard: "
+        },
+        {
+          "address": "0x00696310",
+          "kind": "embedded_global",
+          "symbol": "g_szCityProductionUniversityPrefix",
+          "text": "University: "
+        },
+        {
           "address": "0x00697cbc",
           "kind": "embedded_global",
           "symbol": "g_szClientSavePrefix_00697CBC",
@@ -7188,6 +7221,12 @@
           "kind": "embedded_global",
           "symbol": "s_SourcePathUHelpMgr_00696C58",
           "text": "D:\\Ambit\\Cross\\UHelpMgr.cpp"
+        },
+        {
+          "address": "0x00696d68",
+          "kind": "embedded_global",
+          "symbol": "s_SourcePathUMacViewMgr_00696D68",
+          "text": "D:\\Ambit\\Cross\\UMacViewMgr.cpp"
         },
         {
           "address": "0x006973d0",
@@ -11749,6 +11788,70 @@
       ],
       "source_file": "src/game/TInterruptusView.cpp"
     },
+    "0x004bc0b0": {
+      "references": [
+        {
+          "address": "0x00694fd8",
+          "kind": "embedded_global",
+          "symbol": "g_szUiFailureMessage",
+          "text": "Failure"
+        },
+        {
+          "address": "0x00694fc8",
+          "kind": "embedded_global",
+          "symbol": "g_szUiNilPointerMessage",
+          "text": "Nil Pointer"
+        },
+        {
+          "address": "0x006962e8",
+          "kind": "embedded_global",
+          "symbol": "s_SourcePathUCityDialogs_006962E8",
+          "text": "D:\\Ambit\\Cross\\UCityDialogs.cpp"
+        }
+      ],
+      "source_file": "src/game/TCityProductionView.cpp"
+    },
+    "0x004bcaf0": {
+      "references": [
+        {
+          "address": "0x0069632c",
+          "kind": "embedded_global",
+          "symbol": "g_szCityProductionShipyardPrefix",
+          "text": "Shipyard: "
+        },
+        {
+          "address": "0x00696310",
+          "kind": "embedded_global",
+          "symbol": "g_szCityProductionUniversityPrefix",
+          "text": "University: "
+        },
+        {
+          "address": "0x0069430c",
+          "kind": "embedded_global",
+          "symbol": "g_szDecimalFormat",
+          "text": "%d"
+        },
+        {
+          "address": "0x00694fd8",
+          "kind": "embedded_global",
+          "symbol": "g_szUiFailureMessage",
+          "text": "Failure"
+        },
+        {
+          "address": "0x00694fc8",
+          "kind": "embedded_global",
+          "symbol": "g_szUiNilPointerMessage",
+          "text": "Nil Pointer"
+        },
+        {
+          "address": "0x006962e8",
+          "kind": "embedded_global",
+          "symbol": "s_SourcePathUCityDialogs_006962E8",
+          "text": "D:\\Ambit\\Cross\\UCityDialogs.cpp"
+        }
+      ],
+      "source_file": "src/game/TCityProductionView.cpp"
+    },
     "0x004bd040": {
       "references": [
         {
@@ -13140,6 +13243,12 @@
           "kind": "embedded_global",
           "symbol": "g_szUiNilPointerMessage",
           "text": "Nil Pointer"
+        },
+        {
+          "address": "0x00696d68",
+          "kind": "embedded_global",
+          "symbol": "s_SourcePathUMacViewMgr_00696D68",
+          "text": "D:\\Ambit\\Cross\\UMacViewMgr.cpp"
         }
       ],
       "source_file": "src/game/TMacViewMgr.cpp"
@@ -13174,6 +13283,12 @@
           "kind": "embedded_global",
           "symbol": "g_szUiNilPointerMessage",
           "text": "Nil Pointer"
+        },
+        {
+          "address": "0x00696d68",
+          "kind": "embedded_global",
+          "symbol": "s_SourcePathUMacViewMgr_00696D68",
+          "text": "D:\\Ambit\\Cross\\UMacViewMgr.cpp"
         }
       ],
       "source_file": "src/game/TMacViewMgr.cpp"
@@ -26957,6 +27072,18 @@
         }
       ],
       "source_file": "src/game/TLowDiskWarningDialog.cpp"
+    },
+    "0x005e42f0": {
+      "references": [
+        {
+          "group": 10050,
+          "index": 25,
+          "kind": "windows_gob",
+          "load_string_id": 21985,
+          "text": "I am afraid we've lost our connection to the game."
+        }
+      ],
+      "source_file": "src/game/TNetMgr.cpp"
     }
   },
   "mac_strings": [
@@ -31480,7 +31607,7 @@
     },
     {
       "ambiguous": true,
-      "candidate_count": 4,
+      "candidate_count": 5,
       "candidates": [
         {
           "address": "0x00694b20",
@@ -31531,6 +31658,17 @@
           "score": 100,
           "source": "windows_gob",
           "text": "University"
+        },
+        {
+          "address": "0x00696310",
+          "placeholders": [],
+          "reasons": [
+            "punctuation_and_placeholder_structure"
+          ],
+          "score": 80,
+          "source": "embedded_global",
+          "symbol": "g_szCityProductionUniversityPrefix",
+          "text": "University: "
         }
       ],
       "group_id": 2011,
@@ -31677,7 +31815,7 @@
     },
     {
       "ambiguous": true,
-      "candidate_count": 3,
+      "candidate_count": 4,
       "candidates": [
         {
           "block": 1117,
@@ -31717,6 +31855,17 @@
           "score": 100,
           "source": "windows_gob",
           "text": "Shipyard"
+        },
+        {
+          "address": "0x0069632c",
+          "placeholders": [],
+          "reasons": [
+            "punctuation_and_placeholder_structure"
+          ],
+          "score": 80,
+          "source": "embedded_global",
+          "symbol": "g_szCityProductionShipyardPrefix",
+          "text": "Shipyard: "
         }
       ],
       "group_id": 2011,
@@ -55325,7 +55474,7 @@
     },
     {
       "ambiguous": true,
-      "candidate_count": 4,
+      "candidate_count": 5,
       "candidates": [
         {
           "address": "0x00694b20",
@@ -55376,6 +55525,17 @@
           "score": 100,
           "source": "windows_gob",
           "text": "University"
+        },
+        {
+          "address": "0x00696310",
+          "placeholders": [],
+          "reasons": [
+            "punctuation_and_placeholder_structure"
+          ],
+          "score": 80,
+          "source": "embedded_global",
+          "symbol": "g_szCityProductionUniversityPrefix",
+          "text": "University: "
         }
       ],
       "group_id": 2011,
@@ -55495,7 +55655,7 @@
     },
     {
       "ambiguous": true,
-      "candidate_count": 3,
+      "candidate_count": 4,
       "candidates": [
         {
           "block": 1117,
@@ -55535,6 +55695,17 @@
           "score": 100,
           "source": "windows_gob",
           "text": "Shipyard"
+        },
+        {
+          "address": "0x0069632c",
+          "placeholders": [],
+          "reasons": [
+            "punctuation_and_placeholder_structure"
+          ],
+          "score": 80,
+          "source": "embedded_global",
+          "symbol": "g_szCityProductionShipyardPrefix",
+          "text": "Shipyard: "
         }
       ],
       "group_id": 2011,
@@ -74676,7 +74847,7 @@
     },
     {
       "ambiguous": true,
-      "candidate_count": 4,
+      "candidate_count": 5,
       "candidates": [
         {
           "address": "0x00694b20",
@@ -74727,6 +74898,17 @@
           "score": 100,
           "source": "windows_gob",
           "text": "University"
+        },
+        {
+          "address": "0x00696310",
+          "placeholders": [],
+          "reasons": [
+            "punctuation_and_placeholder_structure"
+          ],
+          "score": 80,
+          "source": "embedded_global",
+          "symbol": "g_szCityProductionUniversityPrefix",
+          "text": "University: "
         }
       ],
       "group_id": 2011,
@@ -74846,7 +75028,7 @@
     },
     {
       "ambiguous": true,
-      "candidate_count": 3,
+      "candidate_count": 4,
       "candidates": [
         {
           "block": 1117,
@@ -74886,6 +75068,17 @@
           "score": 100,
           "source": "windows_gob",
           "text": "Shipyard"
+        },
+        {
+          "address": "0x0069632c",
+          "placeholders": [],
+          "reasons": [
+            "punctuation_and_placeholder_structure"
+          ],
+          "score": 80,
+          "source": "embedded_global",
+          "symbol": "g_szCityProductionShipyardPrefix",
+          "text": "Shipyard: "
         }
       ],
       "group_id": 2011,
@@ -75946,7 +76139,7 @@
     },
     {
       "ambiguous": true,
-      "candidate_count": 3,
+      "candidate_count": 4,
       "candidates": [
         {
           "block": 1117,
@@ -75986,6 +76179,17 @@
           "score": 100,
           "source": "windows_gob",
           "text": "Shipyard"
+        },
+        {
+          "address": "0x0069632c",
+          "placeholders": [],
+          "reasons": [
+            "punctuation_and_placeholder_structure"
+          ],
+          "score": 80,
+          "source": "embedded_global",
+          "symbol": "g_szCityProductionShipyardPrefix",
+          "text": "Shipyard: "
         }
       ],
       "group_id": 4000,
@@ -109305,7 +109509,7 @@
     },
     {
       "ambiguous": false,
-      "candidate_count": 3,
+      "candidate_count": 4,
       "candidates": [
         {
           "block": 1117,
@@ -109346,6 +109550,17 @@
           "score": 100,
           "source": "windows_gob",
           "text": "Shipyard"
+        },
+        {
+          "address": "0x0069632c",
+          "placeholders": [],
+          "reasons": [
+            "punctuation_and_placeholder_structure"
+          ],
+          "score": 80,
+          "source": "embedded_global",
+          "symbol": "g_szCityProductionShipyardPrefix",
+          "text": "Shipyard: "
         }
       ],
       "group_id": 10009,
@@ -109441,7 +109656,7 @@
     },
     {
       "ambiguous": false,
-      "candidate_count": 4,
+      "candidate_count": 5,
       "candidates": [
         {
           "block": 1117,
@@ -109493,6 +109708,17 @@
           "score": 100,
           "source": "windows_gob",
           "text": "University"
+        },
+        {
+          "address": "0x00696310",
+          "placeholders": [],
+          "reasons": [
+            "punctuation_and_placeholder_structure"
+          ],
+          "score": 80,
+          "source": "embedded_global",
+          "symbol": "g_szCityProductionUniversityPrefix",
+          "text": "University: "
         }
       ],
       "group_id": 10009,
@@ -116640,7 +116866,7 @@
     },
     {
       "ambiguous": false,
-      "candidate_count": 4,
+      "candidate_count": 5,
       "candidates": [
         {
           "block": 1180,
@@ -116692,6 +116918,17 @@
           "score": 100,
           "source": "windows_gob",
           "text": "University"
+        },
+        {
+          "address": "0x00696310",
+          "placeholders": [],
+          "reasons": [
+            "punctuation_and_placeholder_structure"
+          ],
+          "score": 80,
+          "source": "embedded_global",
+          "symbol": "g_szCityProductionUniversityPrefix",
+          "text": "University: "
         }
       ],
       "group_id": 10019,
@@ -130292,7 +130529,7 @@
     },
     {
       "ambiguous": false,
-      "candidate_count": 3,
+      "candidate_count": 4,
       "candidates": [
         {
           "block": 1299,
@@ -130333,6 +130570,17 @@
           "score": 100,
           "source": "windows_gob",
           "text": "Shipyard"
+        },
+        {
+          "address": "0x0069632c",
+          "placeholders": [],
+          "reasons": [
+            "punctuation_and_placeholder_structure"
+          ],
+          "score": 80,
+          "source": "embedded_global",
+          "symbol": "g_szCityProductionShipyardPrefix",
+          "text": "Shipyard: "
         }
       ],
       "group_id": 10038,
@@ -150936,7 +151184,7 @@
     },
     {
       "ambiguous": false,
-      "candidate_count": 4,
+      "candidate_count": 5,
       "candidates": [
         {
           "block": 1467,
@@ -150988,6 +151236,17 @@
           "score": 100,
           "source": "windows_gob",
           "text": "University"
+        },
+        {
+          "address": "0x00696310",
+          "placeholders": [],
+          "reasons": [
+            "punctuation_and_placeholder_structure"
+          ],
+          "score": 80,
+          "source": "embedded_global",
+          "symbol": "g_szCityProductionUniversityPrefix",
+          "text": "University: "
         }
       ],
       "group_id": 10065,
@@ -151690,7 +151949,7 @@
     },
     {
       "ambiguous": false,
-      "candidate_count": 3,
+      "candidate_count": 4,
       "candidates": [
         {
           "block": 1474,
@@ -151731,6 +151990,17 @@
           "score": 100,
           "source": "windows_gob",
           "text": "Shipyard"
+        },
+        {
+          "address": "0x0069632c",
+          "placeholders": [],
+          "reasons": [
+            "punctuation_and_placeholder_structure"
+          ],
+          "score": 80,
+          "source": "embedded_global",
+          "symbol": "g_szCityProductionShipyardPrefix",
+          "text": "Shipyard: "
         }
       ],
       "group_id": 10066,
@@ -182678,7 +182948,7 @@
     },
     {
       "ambiguous": true,
-      "candidate_count": 4,
+      "candidate_count": 5,
       "candidates": [
         {
           "address": "0x00694b20",
@@ -182729,6 +182999,17 @@
           "score": 100,
           "source": "windows_gob",
           "text": "University"
+        },
+        {
+          "address": "0x00696310",
+          "placeholders": [],
+          "reasons": [
+            "punctuation_and_placeholder_structure"
+          ],
+          "score": 80,
+          "source": "embedded_global",
+          "symbol": "g_szCityProductionUniversityPrefix",
+          "text": "University: "
         }
       ],
       "group_id": 2011,
@@ -182848,7 +183129,7 @@
     },
     {
       "ambiguous": true,
-      "candidate_count": 3,
+      "candidate_count": 4,
       "candidates": [
         {
           "block": 1117,
@@ -182888,6 +183169,17 @@
           "score": 100,
           "source": "windows_gob",
           "text": "Shipyard"
+        },
+        {
+          "address": "0x0069632c",
+          "placeholders": [],
+          "reasons": [
+            "punctuation_and_placeholder_structure"
+          ],
+          "score": 80,
+          "source": "embedded_global",
+          "symbol": "g_szCityProductionShipyardPrefix",
+          "text": "Shipyard: "
         }
       ],
       "group_id": 2011,
@@ -183794,7 +184086,7 @@
     },
     {
       "ambiguous": true,
-      "candidate_count": 4,
+      "candidate_count": 5,
       "candidates": [
         {
           "address": "0x00694b20",
@@ -183845,6 +184137,17 @@
           "score": 100,
           "source": "windows_gob",
           "text": "University"
+        },
+        {
+          "address": "0x00696310",
+          "placeholders": [],
+          "reasons": [
+            "punctuation_and_placeholder_structure"
+          ],
+          "score": 80,
+          "source": "embedded_global",
+          "symbol": "g_szCityProductionUniversityPrefix",
+          "text": "University: "
         }
       ],
       "group_id": 4000,
@@ -190865,9 +191168,9 @@
     "windows_strings": "docs/reference/strenu-strings.tsv"
   },
   "summary": {
-    "embedded_globals": 770,
+    "embedded_globals": 773,
     "formula_matches": 2356,
-    "functions_with_references": 309,
+    "functions_with_references": 312,
     "mac_strings": 3821,
     "mac_strings_with_candidates": 3272,
     "text_resources": 182,

@@ -169,7 +169,7 @@ void TArmoryView::UpdateFields() {
   workforceControl->QueryBounds(&invalidRect);
   availabilityPanel->InvalidateCityDialogRectRegion(&invalidRect, 1);
 
-  productionView98->UpdateCityProductionDialogCommodityValueControls();
+  productionView98->UpdateUnits();
 }
 
 // FUNCTION: IMPERIALISM 0x004cfbd0

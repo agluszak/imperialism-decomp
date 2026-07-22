@@ -6,17 +6,29 @@
 #include "game/TSimMgr.h"
 #include "game/TAnimator.h"
 #include "game/TAmbitApplication.h"
+#include "game/TBuildingView.h"
+#include "game/TCity.h"
+#include "game/TControl.h"
 #include "game/global_data_tables.h"
 #include "game/TGreatPower.h"
 #include "game/UiRuntimeContext.h"
 #include "game/TView.h"
 #include "game/TMinor.h"
+#include "game/TMacViewMgr.h"
+#include "game/TPlacard.h"
+#include "game/TPopulationMgr.h"
+#include "game/TSoundPlayer.h"
+#include "game/TStaticText.h"
+#include "game/TTechMgr.h"
+#include "game/TTransFocusAnimation.h"
+#include "game/TWindow.h"
 #include "game/UiRuntimeContext.h"
 #include "game/quickdraw_guards.h"
 #include "game/bitmap_descriptor_helpers.h"
 #include "game/quickdraw_rendering.h"
 #include "game/TQuickDrawSurfaceContext.h"
 #include "game/mfc.h"
+#include "game/ui_invalidation_guard.h"
 
 extern "C" short g_Render_Nation_Header_Value_006961E0[12] = {0, 1,  2,  2,  2,  1,
                                                               0, -2, -2, -2, -2, -1};
@@ -142,25 +154,146 @@ void TCityProductionView::InitializeCityProductionDialog(TCity* city, TView* dia
 }
 
 // FUNCTION: IMPERIALISM 0x004bc0b0
-void TCityProductionView::UpdateCityProductionDialogCommodityValueControls() {}
+void TCityProductionView::UpdateUnits() {
+  g_pUiRuntimeContext->RefreshMainViewNationIndicatorForCurrentTurnEvent();
+  TPopulationMgr* population = city94->productionSummary1d8;
+
+  TPlacard* placard = static_cast<TPlacard*>(ResolveControlByTag(0x756e7472)); // 'rtnu'
+  if (placard == 0) {
+    MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUCityDialogs_006962E8, 0x4b9);
+  }
+  placard->SetValue(population->baselineSlots10->lowSkillCount04, true);
+
+  placard = static_cast<TPlacard*>(ResolveControlByTag(0x74617269)); // 'iart'
+  if (placard == 0) {
+    MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUCityDialogs_006962E8, 0x4bc);
+  }
+  placard->SetValue(population->baselineSlots10->mediumSkillCount06, true);
+
+  placard = static_cast<TPlacard*>(ResolveControlByTag(0x70726f66)); // 'forp'
+  if (placard == 0) {
+    MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUCityDialogs_006962E8, 0x4bf);
+  }
+  placard->SetValue(population->baselineSlots10->highSkillCount08, true);
+
+  placard = static_cast<TPlacard*>(ResolveControlByTag(0x706f7765)); // 'ewop'
+  if (placard == 0) {
+    MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUCityDialogs_006962E8, 0x4c2);
+  }
+  placard->SetValue(city94->powerAvailableB4, true);
+
+  short* predictedNeeds = population->PredictedNeeds();
+  const unsigned int tags[6] = {0x67726169, 0x70726f64, 0x6d656174,
+                                0x68617264, 0x636c6f74, 0x6675726e};
+  const short resourceIds[6] = {17, 18, 20, 15, 13, 14};
+  const int assertionLines[6] = {0x4c8, 0x4cc, 0x4d0, 0x4d5, 0x4d8, 0x4db};
+  for (int i = 0; i < 6; ++i) {
+    placard = static_cast<TPlacard*>(ResolveControlByTag(tags[i]));
+    if (placard == 0) {
+      MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+      TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUCityDialogs_006962E8,
+                                                   assertionLines[i]);
+    }
+    placard->SetValue(predictedNeeds[resourceIds[i]], true);
+  }
+
+  placard = static_cast<TPlacard*>(ResolveControlByTag(0x6c616250)); // 'Pbal'
+  if (placard == 0) {
+    MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUCityDialogs_006962E8, 0x4e0);
+  }
+  placard->SetValue(population->strength, true);
+}
 
 // FUNCTION: IMPERIALISM 0x004bc500
-void TCityProductionView::RefreshCityBuildingActionAvailabilityIndicators() {}
+void TCityProductionView::UpdateToolbar() {
+  UpdateUnits();
+  for (int i = 0; i < 16; ++i) {
+    if (buildingViewsAC[i] != 0) {
+      buildingViewsAC[i]->UpdateFields();
+    }
+  }
+
+  for (int group = 0; group < 8; ++group) {
+    short buildingSlot = static_cast<short>(group < 7 ? group : 11);
+    bool enabled;
+    if (buildingSlot == 11) {
+      enabled = city94->powerPlantUpgradeQueuedFlag04 == 0 &&
+                city94->trailingOrderSlots[1]->quantityField04 > 0;
+    } else if (city94->trailingOrderSlots[buildingSlot + 2]->quantityField04 > 0) {
+      enabled = false;
+    } else {
+      enabled = city94->productionAccum1fc[buildingSlot] < city94->GetBuildingType(buildingSlot);
+    }
+    for (int animation = 0; animation < 3; ++animation) {
+      if (buildingActionAnimations12C[group][animation] != 0) {
+        buildingActionAnimations12C[group][animation]->enabledFlag = enabled;
+      }
+    }
+  }
+}
 
 // FUNCTION: IMPERIALISM 0x004bc610
 void TCityProductionView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
-  (void)commandId;
-  (void)sourceHandler;
-  (void)event;
+  if (commandId >= 10000) {
+    g_pStrategicMapViewSystem->OpenConstructionWindow(static_cast<short>(commandId - 10000), city94,
+                                                      this);
+    return;
+  }
+  TControl::DoEvent(commandId, sourceHandler, event);
 }
 
 // FUNCTION: IMPERIALISM 0x004bc660
 void TCityProductionView::BeginMouseCaptureAndStartRepeatTimer(const CPoint& point,
                                                                TToolboxEvent* event,
                                                                CPoint origin) {
-  (void)point;
   (void)event;
   (void)origin;
+  short buildingSlot = -1;
+  CPoint localPoint(point);
+  for (int priority = 15; priority >= 0; --priority) {
+    short candidate = g_cityBuildingHitTestOrder[priority];
+    if (PtInRgn(&localPoint, buildingClipRegionsEC[candidate])) {
+      buildingSlot = candidate;
+      break;
+    }
+  }
+  if (buildingSlot < 0) {
+    return;
+  }
+
+  if (buildingSlot == 15 && buildingViewsAC[15] == 0) {
+    g_pSfxPlaybackSystem->PlaySoundEffect(0xbdb, 0, 1);
+    buildingViewsAC[15] = g_pStrategicMapViewSystem->OpenBuildingWindow(15, city94, 0, 0, 0);
+    UpdateToolbar();
+    return;
+  }
+
+  if (buildingViewsAC[buildingSlot] == 0) {
+    if (city94->GetBuildingType(buildingSlot) == 0 && city94->IsCapacityCenter(buildingSlot)) {
+      bool available = true;
+      if (buildingSlot == 6 || buildingSlot == 11) {
+        short nationId = g_pSimMgr->GetActiveNationId();
+        available =
+            g_pCityOrderCapabilityState->orderCapRows277[nationId].techStatusByTechId[19] == 2;
+      }
+      if (available) {
+        DispatchPictureResourceCommand(2, &localPoint, &localPoint, &localPoint, 0);
+        UpdateToolbar();
+        return;
+      }
+    }
+
+    g_pSfxPlaybackSystem->PlaySoundEffect(
+        static_cast<short>(g_cityBuildingSoundCueOffsets[buildingSlot] + 3000), 0, 1);
+    buildingViewsAC[buildingSlot] =
+        g_pStrategicMapViewSystem->OpenBuildingWindow(buildingSlot, city94, 0, 0, 0);
+  }
+  UpdateToolbar();
 }
 
 // FUNCTION: IMPERIALISM 0x004bc870
@@ -168,14 +301,38 @@ void TCityProductionView::DispatchPictureResourceCommand(int eventType, void* ev
                                                          void* eventDataA, void* eventDataB,
                                                          int commandFlag) {
   (void)commandFlag;
-  (void)eventType;
   (void)eventSender;
   (void)eventDataA;
-  (void)eventDataB;
+  if (eventType != 2) {
+    return;
+  }
+
+  CPoint point(*static_cast<CPoint*>(eventDataB));
+  for (int priority = 15; priority >= 0; --priority) {
+    short buildingSlot = g_cityBuildingHitTestOrder[priority];
+    if (PtInRgn(&point, buildingClipRegionsEC[buildingSlot])) {
+      HandleEvent(buildingSlot + 10000, this, 0);
+      return;
+    }
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x004bc910
-void TCityProductionView::OrphanCallChain_C5_I49_004bc910() {}
+void TCityProductionView::CloseAndSaveWindows() {
+  for (short buildingSlot = 0; buildingSlot < 16; ++buildingSlot) {
+    TBuildingView* buildingView = buildingViewsAC[buildingSlot];
+    if (buildingView != 0) {
+      TWindow* window = buildingView->GetWindow();
+      city94->SetBuildingWindowState(buildingSlot, 1, static_cast<short>(window->ownerLocalX),
+                                     static_cast<short>(window->ownerLocalY));
+      window->Close();
+      window->Free();
+      buildingViewsAC[buildingSlot] = 0;
+    } else {
+      city94->SetBuildingWindowState(buildingSlot, 0, 0, 0);
+    }
+  }
+}
 
 // FUNCTION: IMPERIALISM 0x004bc9b0
 void TCityProductionView::RenderViewIntoPrimaryRenderContextWithTemporaryClip(int arg1, int arg2) {
@@ -211,4 +368,59 @@ void TCityProductionView::RenderViewIntoPrimaryRenderContextWithTemporaryClip(in
 }
 
 // FUNCTION: IMPERIALISM 0x004bcaf0
-void TCityProductionView::RefreshCityDialogSummaryValues() {}
+void TCityProductionView::UpdateFields() {
+  CString numberText;
+  CString summaryText;
+  int i;
+
+  short total = 0;
+  for (i = 0; i < 14; ++i) {
+    total = static_cast<short>(total + city94->orderCountByType5c[i]);
+  }
+  numberText.Format(g_szDecimalFormat, total);
+  summaryText = g_szCityProductionShipyardPrefix + numberText;
+  TStaticText* summary =
+      static_cast<TStaticText*>(ResolveControlByTag(0x75736869)); // shipyard summary
+  if (summary == 0) {
+    MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUCityDialogs_006962E8, 0x5ea);
+  }
+  summary->SetTextAndMaybeRefresh(&summaryText, 1);
+
+  total = 0;
+  for (i = 25; i < 29; ++i) {
+    TProductionOrder* order = static_cast<TProductionOrder*>(city94->orderSlotsE4[i]);
+    if (order == 0) {
+      MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+      TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUCityDialogs_006962E8, 0x5f2);
+    }
+    total = static_cast<short>(total + order->quantityField04);
+  }
+  numberText.Format(g_szDecimalFormat, total);
+  summaryText = g_szCityProductionArmoryPrefix + numberText;
+  summary = static_cast<TStaticText*>(ResolveControlByTag(0x7561726d)); // armory summary
+  if (summary == 0) {
+    MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUCityDialogs_006962E8, 0x5f8);
+  }
+  summary->SetTextAndMaybeRefresh(&summaryText, 1);
+
+  total = 0;
+  for (i = 34; i < 39; ++i) {
+    TProductionOrder* order = static_cast<TProductionOrder*>(city94->orderSlotsE4[i]);
+    if (order == 0) {
+      MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+      TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUCityDialogs_006962E8, 0x600);
+    }
+    total = static_cast<short>(total + order->quantityField04);
+  }
+  numberText.Format(g_szDecimalFormat, total);
+  summaryText = g_szCityProductionUniversityPrefix + numberText;
+  summary = static_cast<TStaticText*>(ResolveControlByTag(0x75756e69)); // university summary
+  if (summary == 0) {
+    MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUCityDialogs_006962E8, 0x606);
+  }
+  summary->SetTextAndMaybeRefresh(&summaryText, 1);
+  UpdateToolbar();
+}

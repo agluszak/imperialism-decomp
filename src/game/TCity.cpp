@@ -644,7 +644,7 @@ int TCity::AllocateRandomResourceCountsWithinWeightBudget(short maxWeight, short
 
 // FUNCTION: IMPERIALISM 0x004b44d0
 short* TCity::GetCitySummaryRecordSlot74() {
-  short* summary = this->productionSummary1d8->GetSummaryArraySlot50();
+  short* summary = this->productionSummary1d8->PredictedNeeds();
   for (short resourceType = 0; resourceType < 0x17; ++resourceType) {
     short remaining = summary[resourceType];
     if (remaining != 0) {

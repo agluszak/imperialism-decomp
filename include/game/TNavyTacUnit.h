@@ -3,6 +3,8 @@
 #include "game/TTacticalUnit.h"
 #include "game/mfc.h"
 
+class TShip;
+
 // VTABLE: IMPERIALISM 0x00669708
 class TNavyTacUnit : public TTacticalUnit {
 public:
@@ -24,7 +26,7 @@ public:
   // slot 0x0f FlipUnitSideAffiliation inherited unchanged (0x5a5eb0)
   // Navy-only added virtual: returns the unit's source fleet (the old
   // ConstructTNavyPlayerBaseState name was Ghidra junk).
-  virtual class TShip* GetSourceTaskForce(); // slot 0x10 0x59ed60
+  virtual TShip* GetSourceShip(); // slot 0x10 0x59ed60 (Mac: GetRealShip)
 
   // Non-virtual (TNavyBattle::EvaluateAndResolveTacticalActionAgainstTileOccupant, 0x5a5730,
   // calls it directly on a downcast occupant4 -- TNavyBattle only ever holds navy occupants).
@@ -38,7 +40,7 @@ public:
 
   // Navy slice (+0x34..): mostly unrecovered; +0x3c is the per-ship action-point
   // store read back by GetBaseActionPoints (0x5a6310).
-  class TShip* sourceTaskForce34; // +0x34 source ship order node (range delegate, 0x5a6330)
+  TShip* sourceShip34; // +0x34 source strategic ship (range delegate, 0x5a6330)
   // Second combat-resource pool alongside strength4 (TTacticalUnit); provisional name from
   // ApplyTacticalDamageAndDeathState's damage-mode split (see above) -- not yet cross-checked
   // against a UI reader.
@@ -46,4 +48,5 @@ public:
   int baseActionPoints3c; // +0x3c
 
   TNavyTacUnit();
+  void InitializeFromSourceShip(TShip* sourceShip); // 0x5a6290
 };
