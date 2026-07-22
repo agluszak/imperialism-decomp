@@ -37,7 +37,7 @@ static inline int DivideMapPixelOffsetBy64(int value) {
   return value >> 6;
 }
 
-static bool LandTilesHaveDifferentNationOwners(short firstTile, short secondTile) {
+static inline bool LandTilesHaveDifferentNationOwners(short firstTile, short secondTile) {
   if (firstTile == -1 || secondTile == -1) {
     return false;
   }
@@ -47,65 +47,12 @@ static bool LandTilesHaveDifferentNationOwners(short firstTile, short secondTile
          first.ownerNationTag04 != second.ownerNationTag04;
 }
 
-static void SetMapBorderColorForTileOwner(short tileIndex) {
-  short nation =
-      static_cast<short>(g_pGlobalMapState->terrainStateTable[tileIndex].ownerNationTag04);
+static inline void SetMapBorderColorForTileOwner(short tileIndex) {
+  short nation = g_pGlobalMapState->terrainStateTable[tileIndex].ownerNationTag04;
   if (g_pDiplomacyTurnStateManager->IsPrimaryNationSlotIndex(nation) == 0) {
     nation = 0x35;
   }
   g_pUiRuntimeContext->SetForeColor(nation);
-}
-
-static void DrawVerticalOceanNationBorder(short firstTile, short secondTile, int firstX,
-                                          int secondX, int centerX, int startY, int endY) {
-  if (!LandTilesHaveDifferentNationOwners(firstTile, secondTile)) {
-    return;
-  }
-  SetMapBorderColorForTileOwner(firstTile);
-  SetQuickDrawPenSizeAndMarkDirty(2, 2);
-  SetQuickDrawTextOriginWithContextOffset(firstX, startY);
-  DrawCenteredGuideLineOnMapDc(firstX, endY);
-
-  SetMapBorderColorForTileOwner(secondTile);
-  SetQuickDrawTextOriginWithContextOffset(secondX, startY);
-  DrawCenteredGuideLineOnMapDc(secondX, endY);
-
-  SetQuickDrawFillColor(0xffffff);
-  SetQuickDrawPenSizeAndMarkDirty(1, 1);
-  SetQuickDrawTextOriginWithContextOffset(centerX, startY);
-  DrawCenteredGuideLineOnMapDc(centerX, endY);
-}
-
-struct MapBorderPoint {
-  int x;
-  int y;
-};
-
-static void DrawDiagonalOceanNationBorder(short firstTile, short secondTile,
-                                          const MapBorderPoint* first, const MapBorderPoint* second,
-                                          const MapBorderPoint* center) {
-  if (!LandTilesHaveDifferentNationOwners(firstTile, secondTile)) {
-    return;
-  }
-  SetMapBorderColorForTileOwner(firstTile);
-  SetQuickDrawPenSizeAndMarkDirty(2, 2);
-  SetQuickDrawTextOriginWithContextOffset(static_cast<short>(first[0].x),
-                                          static_cast<short>(first[0].y));
-  DrawCenteredGuideLineOnMapDc(static_cast<short>(first[1].x), static_cast<short>(first[1].y));
-  DrawCenteredGuideLineOnMapDc(static_cast<short>(first[2].x), static_cast<short>(first[2].y));
-
-  SetMapBorderColorForTileOwner(secondTile);
-  SetQuickDrawTextOriginWithContextOffset(static_cast<short>(second[0].x),
-                                          static_cast<short>(second[0].y));
-  DrawCenteredGuideLineOnMapDc(static_cast<short>(second[1].x), static_cast<short>(second[1].y));
-  DrawCenteredGuideLineOnMapDc(static_cast<short>(second[2].x), static_cast<short>(second[2].y));
-
-  SetQuickDrawFillColor(0xffffff);
-  SetQuickDrawPenSizeAndMarkDirty(1, 1);
-  SetQuickDrawTextOriginWithContextOffset(static_cast<short>(center[0].x),
-                                          static_cast<short>(center[0].y));
-  DrawCenteredGuideLineOnMapDc(static_cast<short>(center[1].x), static_cast<short>(center[1].y));
-  DrawCenteredGuideLineOnMapDc(static_cast<short>(center[2].x), static_cast<short>(center[2].y));
 }
 
 double g_mapCellRowScale_006a3360 = DefaultMapCellScale();
@@ -579,12 +526,12 @@ void TMapDialog::PopulateMapContextInfoPanelStringsByTileSelection(short tileInd
     char currentOwner = g_pGlobalMapState->terrainStateTable[tileIndex].ownerNationTag04;
     char formerOwner = g_pGlobalMapState->terrainStateTable[tileIndex].formerOwnerNationTag03;
     if (currentOwner != formerOwner) {
-      if (static_cast<short>(formerOwner) >= 0 && static_cast<short>(formerOwner) <= 0x17 &&
+      if (formerOwner >= 0 && formerOwner <= 0x17 &&
           g_apTerrainTypeDescriptorTable[formerOwner] != 0) {
         static_cast<TGreatPower*>(g_apTerrainTypeDescriptorTable[formerOwner])
             ->LoadNationDisplayNameSharedRefFromField8(&nameText);
       } else {
-        nameText.Format(g_szDecimalFormat, static_cast<short>(formerOwner));
+        nameText.Format(g_szDecimalFormat, formerOwner);
         nameText = "#" + nameText;
       }
       mainText = mainText + " (formerly of " + nameText + g_szUiCloseParen_006973C8;
@@ -701,7 +648,7 @@ void TMapDialog::Draw(RECT* rectBuffer) {
           col += 108;
         }
 
-        short tileIndex = static_cast<short>(row * 108 + col);
+        short tileIndex = row * 108 + col;
         short projectedY;
         short projectedX;
         ProjectTileIndexToWrappedScreenOffsetByScale(
@@ -726,12 +673,12 @@ void TMapDialog::Draw(RECT* rectBuffer) {
             g_pGlobalMapState->terrainStateTable[marker.c].markerSlotIndex10 = -1;
           }
           marker.flag = 1;
-          marker.a = static_cast<short>(row);
-          marker.b = static_cast<short>(unwrappedCol);
+          marker.a = row;
+          marker.b = unwrappedCol;
           marker.c = tileIndex;
           g_pGlobalMapState->terrainStateTable[tileIndex].markerSlotIndex10 =
               static_cast<signed char>(markerIndex);
-          RenderStrategicMapTileCell(tileIndex, 0, static_cast<short>(markerIndex << 6));
+          RenderStrategicMapTileCell(tileIndex, 0, markerIndex << 6);
           cachedMarkerIndex = static_cast<signed char>(markerIndex);
         } else {
           TCivUnit* unit =
@@ -828,146 +775,176 @@ void TMapDialog::RenderStrategicMapTileCell(short tileIndex, short screenY, shor
 
   const TTerrainStateRecordView& terrain = g_pGlobalMapState->terrainStateTable[tileIndex];
   const bool isOcean = terrain.terrainType00 == 5;
-  short sourceOffset;
-  if (isOcean) {
-    sourceOffset = g_pGlobalMapState->LookupTileSpriteVariantOffsetByAdjacencyMaskB(tileIndex);
-  } else {
-    sourceOffset = g_pGlobalMapState->LookupTileSpriteVariantOffsetByTerrainAndGate(tileIndex);
+  bool usedWrappedSeamTile = false;
+  if (g_pGlobalMapState->hexNeighborWrapHorizontally20 != 0) {
+    int tileColumn = tileIndex % 108;
+    short centerTile = static_cast<short>(GetCenterTile());
+    int centerColumn = centerTile % 108;
+    if ((tileColumn == 0 && centerColumn > 54) || (tileColumn == 107 && centerColumn < 54)) {
+      short seamOffset = g_pGlobalMapState->GetFixedConstant0xc80();
+      Copy64x64TileBlockWithStrideAdjustment(reinterpret_cast<int*>(sourcePixels + seamOffset),
+                                             reinterpret_cast<int*>(destinationPixels),
+                                             sourceStride, destinationStride);
+      usedWrappedSeamTile = true;
+    }
   }
 
-  Copy64x64TileBlockWithStrideAdjustment(reinterpret_cast<int*>(sourcePixels + sourceOffset),
-                                         reinterpret_cast<int*>(destinationPixels), sourceStride,
-                                         destinationStride);
+  if (!usedWrappedSeamTile) {
+    short sourceOffset;
+    if (isOcean) {
+      sourceOffset = g_pGlobalMapState->LookupTileSpriteVariantOffsetByAdjacencyMaskB(tileIndex);
+    } else {
+      sourceOffset = g_pGlobalMapState->LookupTileSpriteVariantOffsetByTerrainAndGate(tileIndex);
+    }
 
-  if (!isOcean) {
-    for (int direction = 0; direction < 6; ++direction) {
-      int directionBit = 1 << direction;
-      unsigned char* transitionSource = 0;
-      if ((terrain.adjacencyMaskA0a & directionBit) != 0) {
-        transitionSource =
-            sourcePixels +
-            g_pGlobalMapState->LookupTileSpriteVariantOffsetByGateAndVariant(tileIndex);
-      } else if ((terrain.adjacencyMaskB0b & directionBit) != 0 && terrain.terrainType00 != 6) {
-        transitionSource =
-            sourcePixels +
-            g_pGlobalMapState->LookupTileSpriteVariantOffsetByGateAndVariantAlt(tileIndex);
+    Copy64x64TileBlockWithStrideAdjustment(reinterpret_cast<int*>(sourcePixels + sourceOffset),
+                                           reinterpret_cast<int*>(destinationPixels), sourceStride,
+                                           destinationStride);
+
+    if (!isOcean) {
+      for (int direction = 0; direction < 6; ++direction) {
+        int directionBit = 1 << direction;
+        unsigned char* transitionSource = 0;
+        if ((terrain.adjacencyMaskA0a & directionBit) != 0) {
+          transitionSource =
+              sourcePixels +
+              g_pGlobalMapState->LookupTileSpriteVariantOffsetByGateAndVariant(tileIndex);
+        } else if ((terrain.adjacencyMaskB0b & directionBit) != 0 && terrain.terrainType00 != 6) {
+          transitionSource =
+              sourcePixels +
+              g_pGlobalMapState->LookupTileSpriteVariantOffsetByGateAndVariantAlt(tileIndex);
+        }
+
+        if (transitionSource != 0) {
+          switch (direction) {
+          case 0:
+            CopyTerrainTransitionMaskDirection0(transitionSource, destinationPixels, sourceStride,
+                                                destinationStride);
+            break;
+          case 1:
+            CopyTerrainTransitionMaskDirection1(transitionSource, destinationPixels, sourceStride,
+                                                destinationStride);
+            break;
+          case 2:
+            CopyTerrainTransitionMaskDirection2(transitionSource, destinationPixels, sourceStride,
+                                                destinationStride);
+            break;
+          case 3:
+            CopyTerrainTransitionMaskDirection3(transitionSource, destinationPixels, sourceStride,
+                                                destinationStride);
+            break;
+          case 4:
+            CopyTerrainTransitionMaskDirection4(transitionSource, destinationPixels, sourceStride,
+                                                destinationStride);
+            break;
+          case 5:
+            CopyTerrainTransitionMaskDirection5(transitionSource, destinationPixels, sourceStride,
+                                                destinationStride);
+            break;
+          }
+        }
       }
+    }
 
-      if (transitionSource != 0) {
-        switch (direction) {
-        case 0:
-          CopyTerrainTransitionMaskDirection0(transitionSource, destinationPixels, sourceStride,
-                                              destinationStride);
-          break;
+    if (isOcean && terrain.adjacencyMaskB0b != 0) {
+      const unsigned char adjacencyMask = terrain.adjacencyMaskB0b;
+      const unsigned char variantMask = terrain.spriteVariantIndex01;
+      const short roadType = terrain.roadFlag;
+      for (int corner = 0; corner < 6; ++corner) {
+        int previousDirection = (corner + 5) % 6;
+        int cornerBits = (1 << previousDirection) | (1 << corner);
+        if ((adjacencyMask & cornerBits) == 0) {
+          continue;
+        }
+
+        bool useTripleOffset = false;
+        switch (corner) {
         case 1:
-          CopyTerrainTransitionMaskDirection1(transitionSource, destinationPixels, sourceStride,
-                                              destinationStride);
+          useTripleOffset = roadType == 0x33 || roadType == 0x34;
           break;
         case 2:
-          CopyTerrainTransitionMaskDirection2(transitionSource, destinationPixels, sourceStride,
-                                              destinationStride);
+          useTripleOffset = roadType == 0x35 || roadType == 0x36;
           break;
         case 3:
-          CopyTerrainTransitionMaskDirection3(transitionSource, destinationPixels, sourceStride,
-                                              destinationStride);
+          useTripleOffset = roadType == 0x36 || roadType == 0x37;
           break;
         case 4:
-          CopyTerrainTransitionMaskDirection4(transitionSource, destinationPixels, sourceStride,
-                                              destinationStride);
+          useTripleOffset = roadType == 0x37 || roadType == 0x39;
           break;
         case 5:
-          CopyTerrainTransitionMaskDirection5(transitionSource, destinationPixels, sourceStride,
-                                              destinationStride);
+          useTripleOffset = roadType == 0x38 || roadType == 0x3a;
+          break;
+        }
+        short coastOffset;
+        if (useTripleOffset) {
+          coastOffset = g_pGlobalMapState->MapImprovementOffsetFromAdjacencyVariantTriple(
+              static_cast<char>(roadType), static_cast<char>(corner + 1), roadType);
+        } else {
+          coastOffset = g_pGlobalMapState->MapImprovementOffsetFromAdjacencyVariant(
+              static_cast<char>(roadType), static_cast<char>(corner + 1),
+              static_cast<char>(variantMask & (1 << corner)));
+        }
+        if (coastOffset == 0) {
+          continue;
+        }
+
+        unsigned char* coastSource = sourcePixels + coastOffset;
+        switch (corner) {
+        case 0:
+          CopyCoastCornerMaskBetweenDirections5And0(coastSource, destinationPixels, sourceStride,
+                                                    destinationStride);
+          break;
+        case 1:
+          CopyCoastCornerMaskBetweenDirections0And1(coastSource, destinationPixels, sourceStride,
+                                                    destinationStride);
+          break;
+        case 2:
+          CopyCoastCornerMaskBetweenDirections1And2(coastSource, destinationPixels, sourceStride,
+                                                    destinationStride);
+          break;
+        case 3:
+          CopyCoastCornerMaskBetweenDirections2And3(coastSource, destinationPixels, sourceStride,
+                                                    destinationStride);
+          break;
+        case 4:
+          CopyCoastCornerMaskBetweenDirections3And4(coastSource, destinationPixels, sourceStride,
+                                                    destinationStride);
+          break;
+        case 5:
+          CopyCoastCornerMaskBetweenDirections4And5(coastSource, destinationPixels, sourceStride,
+                                                    destinationStride);
           break;
         }
       }
     }
-  }
 
-  if (isOcean && terrain.adjacencyMaskB0b != 0) {
-    const unsigned char adjacencyMask = terrain.adjacencyMaskB0b;
-    const unsigned char variantMask = terrain.spriteVariantIndex01;
-    const short roadType = static_cast<short>(terrain.roadFlag);
-    for (int corner = 0; corner < 6; ++corner) {
-      int previousDirection = (corner + 5) % 6;
-      int cornerBits = (1 << previousDirection) | (1 << corner);
-      if ((adjacencyMask & cornerBits) == 0) {
-        continue;
-      }
-
-      bool useTripleOffset = false;
-      switch (corner) {
-      case 1:
-        useTripleOffset = roadType == 0x33 || roadType == 0x34;
-        break;
-      case 2:
-        useTripleOffset = roadType == 0x35 || roadType == 0x36;
-        break;
-      case 3:
-        useTripleOffset = roadType == 0x36 || roadType == 0x37;
-        break;
-      case 4:
-        useTripleOffset = roadType == 0x37 || roadType == 0x39;
-        break;
-      case 5:
-        useTripleOffset = roadType == 0x38 || roadType == 0x3a;
-        break;
-      }
-      short coastOffset;
-      if (useTripleOffset) {
-        coastOffset = g_pGlobalMapState->MapImprovementOffsetFromAdjacencyVariantTriple(
-            static_cast<char>(roadType), static_cast<char>(corner + 1), roadType);
-      } else {
-        coastOffset =
-            static_cast<short>(g_pGlobalMapState->MapImprovementOffsetFromAdjacencyVariant(
-                static_cast<char>(roadType), static_cast<char>(corner + 1),
-                static_cast<char>(variantMask & (1 << corner))));
-      }
-      if (coastOffset == 0) {
-        continue;
-      }
-
-      unsigned char* coastSource = sourcePixels + coastOffset;
-      switch (corner) {
-      case 0:
-        CopyCoastCornerMaskBetweenDirections5And0(coastSource, destinationPixels, sourceStride,
-                                                  destinationStride);
-        break;
-      case 1:
-        CopyCoastCornerMaskBetweenDirections0And1(coastSource, destinationPixels, sourceStride,
-                                                  destinationStride);
-        break;
-      case 2:
-        CopyCoastCornerMaskBetweenDirections1And2(coastSource, destinationPixels, sourceStride,
-                                                  destinationStride);
-        break;
-      case 3:
-        CopyCoastCornerMaskBetweenDirections2And3(coastSource, destinationPixels, sourceStride,
-                                                  destinationStride);
-        break;
-      case 4:
-        CopyCoastCornerMaskBetweenDirections3And4(coastSource, destinationPixels, sourceStride,
-                                                  destinationStride);
-        break;
-      case 5:
-        CopyCoastCornerMaskBetweenDirections4And5(coastSource, destinationPixels, sourceStride,
-                                                  destinationStride);
-        break;
-      }
+    if (!isOcean && terrain.ownerBorderMask07 != 0) {
+      SetQuickDrawFillColor(0);
+      SetQuickDrawPenSizeAndMarkDirty(2, 2);
+      DrawNationBorderSegmentsByMask(terrain.ownerBorderMask07, screenX, screenY, tileIndex);
+      SetQuickDrawPenSizeAndMarkDirty(1, 1);
+      SetQuickDrawFillColor(0);
+    }
+    if (!isOcean && terrain.cityBorderMask08 != 0) {
+      SetQuickDrawFillColor(0xffffff);
+      DrawCityBorderSegmentsByMask(terrain.cityBorderMask08, screenX, screenY, tileIndex);
+      SetQuickDrawFillColor(0);
     }
   }
 
-  if (!isOcean && terrain.ownerBorderMask07 != 0) {
-    SetQuickDrawFillColor(0);
-    SetQuickDrawPenSizeAndMarkDirty(2, 2);
-    DrawNationBorderSegmentsByMask(terrain.ownerBorderMask07, screenX, screenY, tileIndex);
-    SetQuickDrawPenSizeAndMarkDirty(1, 1);
-    SetQuickDrawFillColor(0);
-  }
-  if (!isOcean && terrain.cityBorderMask08 != 0) {
-    SetQuickDrawFillColor(0xffffff);
-    DrawCityBorderSegmentsByMask(terrain.cityBorderMask08, screenX, screenY, tileIndex);
-    SetQuickDrawFillColor(0);
+  if (terrain.adjacencyBits06 != 0 || terrain.railFlags17 != 0) {
+    for (int direction = 0; direction < 6; ++direction) {
+      unsigned char directionBit = static_cast<unsigned char>(1 << direction);
+      StrategicMapCallbackRecord* routeMask = 0;
+      if ((static_cast<unsigned char>(terrain.adjacencyBits06) & directionBit) != 0) {
+        routeMask = &g_pStrategicMapViewSystem->callbackB3c[direction];
+      } else if ((terrain.railFlags17 & directionBit) != 0) {
+        routeMask = &g_pStrategicMapViewSystem->callbackC5c[direction];
+      }
+      if (routeMask != 0) {
+        routeMask->ApplyBitmapMaskToPixelBuffer(destinationPixels);
+      }
+    }
   }
 }
 
@@ -976,12 +953,12 @@ void TMapDialog::RenderStrategicMapTileCell(short tileIndex, short screenY, shor
 // (nationB's). Ghidra's decompile of this function is broken (phantom register args from
 // the deferred __cdecl stack cleanup); ported from the raw listing.
 // FUNCTION: IMPERIALISM 0x00520670
-void TMapDialog::RenderMapDialogBilateralRelationMarkers(short relationLevel, int originX,
-                                                         int originY, int nationA, int nationB) {
+void TMapDialog::DrawBorder(short relationLevel, int originX, int originY, int nationA,
+                            int nationB) {
   if (g_pDiplomacyTurnStateManager->IsPrimaryNationSlotIndex(nationA) == 0) {
     g_pUiRuntimeContext->SetForeColor(0x35);
   } else {
-    g_pUiRuntimeContext->SetForeColor(static_cast<short>(nationA));
+    g_pUiRuntimeContext->SetForeColor(nationA);
   }
   SetQuickDrawPenSizeAndMarkDirty(2, 2);
   switch (relationLevel) {
@@ -1019,7 +996,7 @@ void TMapDialog::RenderMapDialogBilateralRelationMarkers(short relationLevel, in
   if (g_pDiplomacyTurnStateManager->IsPrimaryNationSlotIndex(nationB) == 0) {
     g_pUiRuntimeContext->SetForeColor(0x35);
   } else {
-    g_pUiRuntimeContext->SetForeColor(static_cast<short>(nationB));
+    g_pUiRuntimeContext->SetForeColor(nationB);
   }
   switch (relationLevel) {
   case 0:
@@ -1403,58 +1380,51 @@ void TMapDialog::DrawCityBorderSegmentsByMask(unsigned char borderMask, int scre
 void TMapDialog::DrawNationBorderSegmentsByMask(unsigned char borderMask, int screenX, int screenY,
                                                 short tileIndex) {
   const bool direction1 = (borderMask & 2) != 0;
-  const short currentNation =
-      static_cast<short>(g_pGlobalMapState->terrainStateTable[tileIndex].ownerNationTag04);
+  const short currentNation = g_pGlobalMapState->terrainStateTable[tileIndex].ownerNationTag04;
   short neighborTile;
 
   if (direction1) {
     neighborTile = g_pGlobalMapState->GetWrappedHexNeighborTileIndexByDirection(tileIndex, 1);
-    short neighborNation =
-        static_cast<short>(g_pGlobalMapState->terrainStateTable[neighborTile].ownerNationTag04);
+    short neighborNation = g_pGlobalMapState->terrainStateTable[neighborTile].ownerNationTag04;
     if ((borderMask & 1) == 0) {
-      RenderMapDialogBilateralRelationMarkers(2, screenX, screenY, currentNation, neighborNation);
+      DrawBorder(2, screenX, screenY, currentNation, neighborNation);
     } else {
-      RenderMapDialogBilateralRelationMarkers(1, screenX, screenY, currentNation, neighborNation);
+      DrawBorder(1, screenX, screenY, currentNation, neighborNation);
       if ((borderMask & 0x40) != 0) {
         neighborTile = g_pGlobalMapState->GetWrappedHexNeighborTileIndexByDirection(tileIndex, 0);
-        neighborNation =
-            static_cast<short>(g_pGlobalMapState->terrainStateTable[neighborTile].ownerNationTag04);
-        RenderMapDialogBilateralRelationMarkers(3, screenX, screenY, currentNation, neighborNation);
+        neighborNation = g_pGlobalMapState->terrainStateTable[neighborTile].ownerNationTag04;
+        DrawBorder(3, screenX, screenY, currentNation, neighborNation);
       }
     }
 
     if ((borderMask & 4) == 0) {
       neighborTile = g_pGlobalMapState->GetWrappedHexNeighborTileIndexByDirection(tileIndex, 1);
-      neighborNation =
-          static_cast<short>(g_pGlobalMapState->terrainStateTable[neighborTile].ownerNationTag04);
-      RenderMapDialogBilateralRelationMarkers(6, screenX, screenY, currentNation, neighborNation);
+      neighborNation = g_pGlobalMapState->terrainStateTable[neighborTile].ownerNationTag04;
+      DrawBorder(6, screenX, screenY, currentNation, neighborNation);
     } else {
       neighborTile = g_pGlobalMapState->GetWrappedHexNeighborTileIndexByDirection(tileIndex, 2);
-      neighborNation =
-          static_cast<short>(g_pGlobalMapState->terrainStateTable[neighborTile].ownerNationTag04);
-      RenderMapDialogBilateralRelationMarkers(7, screenX, screenY, currentNation, neighborNation);
+      neighborNation = g_pGlobalMapState->terrainStateTable[neighborTile].ownerNationTag04;
+      DrawBorder(7, screenX, screenY, currentNation, neighborNation);
       if ((borderMask & 0x80) != 0) {
-        RenderMapDialogBilateralRelationMarkers(5, screenX, screenY, currentNation, neighborNation);
+        DrawBorder(5, screenX, screenY, currentNation, neighborNation);
       }
     }
   }
 
   if ((borderMask & 1) != 0) {
     neighborTile = g_pGlobalMapState->GetWrappedHexNeighborTileIndexByDirection(tileIndex, 0);
-    short neighborNation =
-        static_cast<short>(g_pGlobalMapState->terrainStateTable[neighborTile].ownerNationTag04);
-    RenderMapDialogBilateralRelationMarkers(0, screenX, screenY, currentNation, neighborNation);
+    short neighborNation = g_pGlobalMapState->terrainStateTable[neighborTile].ownerNationTag04;
+    DrawBorder(0, screenX, screenY, currentNation, neighborNation);
     if (!direction1) {
-      RenderMapDialogBilateralRelationMarkers(3, screenX, screenY, currentNation, neighborNation);
+      DrawBorder(3, screenX, screenY, currentNation, neighborNation);
     }
   }
   if ((borderMask & 4) != 0) {
     neighborTile = g_pGlobalMapState->GetWrappedHexNeighborTileIndexByDirection(tileIndex, 2);
-    short neighborNation =
-        static_cast<short>(g_pGlobalMapState->terrainStateTable[neighborTile].ownerNationTag04);
-    RenderMapDialogBilateralRelationMarkers(9, screenX, screenY, currentNation, neighborNation);
+    short neighborNation = g_pGlobalMapState->terrainStateTable[neighborTile].ownerNationTag04;
+    DrawBorder(9, screenX, screenY, currentNation, neighborNation);
     if (!direction1) {
-      RenderMapDialogBilateralRelationMarkers(5, screenX, screenY, currentNation, neighborNation);
+      DrawBorder(5, screenX, screenY, currentNation, neighborNation);
     }
   }
 
@@ -1464,10 +1434,9 @@ void TMapDialog::DrawNationBorderSegmentsByMask(unsigned char borderMask, int sc
         g_pGlobalMapState->terrainStateTable[neighborTile].terrainType00 == 5 &&
         (borderMask & 0x20) != 0 && !direction1) {
       neighborTile = g_pGlobalMapState->GetWrappedHexNeighborTileIndexByDirection(tileIndex, 5);
-      short neighborNation =
-          static_cast<short>(g_pGlobalMapState->terrainStateTable[neighborTile].ownerNationTag04);
-      RenderMapDialogBilateralRelationMarkers(0, screenX, screenY, currentNation, neighborNation);
-      RenderMapDialogBilateralRelationMarkers(3, screenX, screenY, currentNation, neighborNation);
+      short neighborNation = g_pGlobalMapState->terrainStateTable[neighborTile].ownerNationTag04;
+      DrawBorder(0, screenX, screenY, currentNation, neighborNation);
+      DrawBorder(3, screenX, screenY, currentNation, neighborNation);
     }
 
     neighborTile = g_pGlobalMapState->GetWrappedHexNeighborTileIndexByDirection(tileIndex, 2);
@@ -1475,19 +1444,18 @@ void TMapDialog::DrawNationBorderSegmentsByMask(unsigned char borderMask, int sc
         g_pGlobalMapState->terrainStateTable[neighborTile].terrainType00 == 5 &&
         (borderMask & 8) != 0 && !direction1) {
       neighborTile = g_pGlobalMapState->GetWrappedHexNeighborTileIndexByDirection(tileIndex, 3);
-      short neighborNation =
-          static_cast<short>(g_pGlobalMapState->terrainStateTable[neighborTile].ownerNationTag04);
-      RenderMapDialogBilateralRelationMarkers(5, screenX, screenY, currentNation, neighborNation);
-      RenderMapDialogBilateralRelationMarkers(9, screenX, screenY, currentNation, neighborNation);
+      short neighborNation = g_pGlobalMapState->terrainStateTable[neighborTile].ownerNationTag04;
+      DrawBorder(5, screenX, screenY, currentNation, neighborNation);
+      DrawBorder(9, screenX, screenY, currentNation, neighborNation);
     }
   }
 }
 
 // FUNCTION: IMPERIALISM 0x00522000
-void TMapDialog::DrawMapDialogOwnershipMarkerForNation_00522000(unsigned char edgeMask, int screenX,
-                                                                int screenY, short tileIndex) {
+void TMapDialog::DrawSeaZoneBorders(unsigned char edgeMask, int screenX, int screenY,
+                                    short tileIndex) {
   g_pUiRuntimeContext->SetForeColor(
-      static_cast<short>(g_pGlobalMapState->terrainStateTable[tileIndex].ownerNationTag04));
+      g_pGlobalMapState->terrainStateTable[tileIndex].ownerNationTag04);
   if ((edgeMask & 0x20) != 0) {
     SetQuickDrawTextOriginWithContextOffset(screenX + 8, screenY + 8);
     DrawCenteredGuideLineOnMapDc(screenX + 0xc, screenY + 8);
@@ -1505,35 +1473,109 @@ void TMapDialog::DrawMapDialogOwnershipMarkerForNation_00522000(unsigned char ed
 }
 
 // FUNCTION: IMPERIALISM 0x005220F0
-void TMapDialog::RenderMapDialogDiplomacyNeighborRelationHints(int screenX, int screenY,
-                                                               short tileIndex) {
+void TMapDialog::DrawSeaZoneBorders(int screenX, int screenY, short tileIndex) {
   short neighbors[6];
   TMapMgr::ComputeHexNeighborTileIndices(tileIndex, neighbors,
                                          g_pGlobalMapState->hexNeighborWrapHorizontally20);
 
-  DrawVerticalOceanNationBorder(neighbors[3], neighbors[2], screenX + 0x16, screenX + 0x1a,
-                                screenX + 0x18, screenY + 0x40, screenY + 0x38);
+  if (LandTilesHaveDifferentNationOwners(neighbors[3], neighbors[2])) {
+    SetMapBorderColorForTileOwner(neighbors[3]);
+    SetQuickDrawPenSizeAndMarkDirty(2, 2);
+    SetQuickDrawTextOriginWithContextOffset(screenX + 0x16, screenY + 0x40);
+    DrawCenteredGuideLineOnMapDc(screenX + 0x16, screenY + 0x38);
 
-  MapBorderPoint lowerRightFirst[3] = {{screenX + 0x36, screenY + 0x40},
-                                       {screenX + 0x36, screenY + 0x36},
-                                       {screenX + 0x31, screenY + 0x2e}};
-  MapBorderPoint lowerRightSecond[3] = {{screenX + 0x39, screenY + 0x40},
-                                        {screenX + 0x39, screenY + 0x36},
-                                        {screenX + 0x34, screenY + 0x2a}};
-  MapBorderPoint lowerRightCenter[3] = {{screenX + 0x38, screenY + 0x40},
-                                        {screenX + 0x38, screenY + 0x36},
-                                        {screenX + 0x33, screenY + 0x2c}};
-  DrawDiagonalOceanNationBorder(neighbors[2], neighbors[1], lowerRightFirst, lowerRightSecond,
-                                lowerRightCenter);
+    SetMapBorderColorForTileOwner(neighbors[2]);
+    SetQuickDrawTextOriginWithContextOffset(screenX + 0x1a, screenY + 0x40);
+    DrawCenteredGuideLineOnMapDc(screenX + 0x1a, screenY + 0x38);
 
-  DrawVerticalOceanNationBorder(neighbors[4], neighbors[3], screenX + 0x16, screenX + 0x19,
-                                screenX + 0x18, screenY + 0x40, screenY + 0x38);
-  DrawVerticalOceanNationBorder(neighbors[5], neighbors[0], screenX + 0x16, screenX + 0x1a,
-                                screenX + 0x18, screenY, screenY + 8);
-  DrawVerticalOceanNationBorder(neighbors[0], neighbors[1], screenX + 0x36, screenX + 0x3a,
-                                screenX + 0x38, screenY, screenY + 8);
-  DrawVerticalOceanNationBorder(neighbors[4], neighbors[5], screenX + 0x16, screenX + 0x1a,
-                                screenX + 0x18, screenY, screenY + 8);
+    SetQuickDrawFillColor(0xffffff);
+    SetQuickDrawPenSizeAndMarkDirty(1, 1);
+    SetQuickDrawTextOriginWithContextOffset(screenX + 0x18, screenY + 0x40);
+    DrawCenteredGuideLineOnMapDc(screenX + 0x18, screenY + 0x38);
+  }
+
+  if (LandTilesHaveDifferentNationOwners(neighbors[2], neighbors[1])) {
+    SetMapBorderColorForTileOwner(neighbors[2]);
+    SetQuickDrawPenSizeAndMarkDirty(2, 2);
+    SetQuickDrawTextOriginWithContextOffset(screenX + 0x36, screenY + 0x40);
+    DrawCenteredGuideLineOnMapDc(screenX + 0x36, screenY + 0x36);
+    DrawCenteredGuideLineOnMapDc(screenX + 0x31, screenY + 0x2e);
+
+    SetMapBorderColorForTileOwner(neighbors[1]);
+    SetQuickDrawTextOriginWithContextOffset(screenX + 0x39, screenY + 0x40);
+    DrawCenteredGuideLineOnMapDc(screenX + 0x39, screenY + 0x36);
+    DrawCenteredGuideLineOnMapDc(screenX + 0x34, screenY + 0x2a);
+
+    SetQuickDrawFillColor(0xffffff);
+    SetQuickDrawPenSizeAndMarkDirty(1, 1);
+    SetQuickDrawTextOriginWithContextOffset(screenX + 0x38, screenY + 0x40);
+    DrawCenteredGuideLineOnMapDc(screenX + 0x38, screenY + 0x36);
+    DrawCenteredGuideLineOnMapDc(screenX + 0x33, screenY + 0x2c);
+  }
+
+  if (LandTilesHaveDifferentNationOwners(neighbors[4], neighbors[3])) {
+    SetMapBorderColorForTileOwner(neighbors[4]);
+    SetQuickDrawPenSizeAndMarkDirty(2, 2);
+    SetQuickDrawTextOriginWithContextOffset(screenX + 0x16, screenY + 0x40);
+    DrawCenteredGuideLineOnMapDc(screenX + 0x16, screenY + 0x38);
+
+    SetMapBorderColorForTileOwner(neighbors[3]);
+    SetQuickDrawTextOriginWithContextOffset(screenX + 0x19, screenY + 0x40);
+    DrawCenteredGuideLineOnMapDc(screenX + 0x19, screenY + 0x38);
+
+    SetQuickDrawFillColor(0xffffff);
+    SetQuickDrawPenSizeAndMarkDirty(1, 1);
+    SetQuickDrawTextOriginWithContextOffset(screenX + 0x18, screenY + 0x40);
+    DrawCenteredGuideLineOnMapDc(screenX + 0x18, screenY + 0x38);
+  }
+
+  if (LandTilesHaveDifferentNationOwners(neighbors[5], neighbors[0])) {
+    SetMapBorderColorForTileOwner(neighbors[5]);
+    SetQuickDrawPenSizeAndMarkDirty(2, 2);
+    SetQuickDrawTextOriginWithContextOffset(screenX + 0x16, screenY);
+    DrawCenteredGuideLineOnMapDc(screenX + 0x16, screenY + 8);
+
+    SetMapBorderColorForTileOwner(neighbors[0]);
+    SetQuickDrawTextOriginWithContextOffset(screenX + 0x1a, screenY);
+    DrawCenteredGuideLineOnMapDc(screenX + 0x1a, screenY + 8);
+
+    SetQuickDrawFillColor(0xffffff);
+    SetQuickDrawPenSizeAndMarkDirty(1, 1);
+    SetQuickDrawTextOriginWithContextOffset(screenX + 0x18, screenY);
+    DrawCenteredGuideLineOnMapDc(screenX + 0x18, screenY + 8);
+  }
+
+  if (LandTilesHaveDifferentNationOwners(neighbors[0], neighbors[1])) {
+    SetMapBorderColorForTileOwner(neighbors[0]);
+    SetQuickDrawPenSizeAndMarkDirty(2, 2);
+    SetQuickDrawTextOriginWithContextOffset(screenX + 0x36, screenY);
+    DrawCenteredGuideLineOnMapDc(screenX + 0x36, screenY + 8);
+
+    SetMapBorderColorForTileOwner(neighbors[1]);
+    SetQuickDrawTextOriginWithContextOffset(screenX + 0x3a, screenY);
+    DrawCenteredGuideLineOnMapDc(screenX + 0x3a, screenY + 8);
+
+    SetQuickDrawFillColor(0xffffff);
+    SetQuickDrawPenSizeAndMarkDirty(1, 1);
+    SetQuickDrawTextOriginWithContextOffset(screenX + 0x38, screenY);
+    DrawCenteredGuideLineOnMapDc(screenX + 0x38, screenY + 8);
+  }
+
+  if (LandTilesHaveDifferentNationOwners(neighbors[4], neighbors[5])) {
+    SetMapBorderColorForTileOwner(neighbors[4]);
+    SetQuickDrawPenSizeAndMarkDirty(2, 2);
+    SetQuickDrawTextOriginWithContextOffset(screenX + 0x16, screenY);
+    DrawCenteredGuideLineOnMapDc(screenX + 0x16, screenY + 8);
+
+    SetMapBorderColorForTileOwner(neighbors[5]);
+    SetQuickDrawTextOriginWithContextOffset(screenX + 0x1a, screenY);
+    DrawCenteredGuideLineOnMapDc(screenX + 0x1a, screenY + 8);
+
+    SetQuickDrawFillColor(0xffffff);
+    SetQuickDrawPenSizeAndMarkDirty(1, 1);
+    SetQuickDrawTextOriginWithContextOffset(screenX + 0x18, screenY);
+    DrawCenteredGuideLineOnMapDc(screenX + 0x18, screenY + 8);
+  }
   SetQuickDrawFillColor(0);
 }
 
@@ -1640,24 +1682,28 @@ tail:
 void TMapDialog::DrawGeneratedMapRouteSegmentsAndResetFillColor() {
   g_pUiRuntimeContext->SetForeColor(0x3c);
 
-  int viewportRow = viewportOffsetY;
-  if (viewportRow < 0) {
-    viewportRow += 0x3f;
+  int viewportRowPixels = viewportOffsetY;
+  if (viewportRowPixels < 0) {
+    viewportRowPixels += 0x3f;
   }
-  viewportRow >>= 6;
+  short viewportRow = viewportRowPixels >> 6;
 
-  int viewportHalfColumn = viewportOffsetX;
-  if (viewportHalfColumn < 0) {
-    viewportHalfColumn += 0x1f;
+  int viewportColumnPixels = viewportOffsetX;
+  if (viewportColumnPixels < 0) {
+    viewportColumnPixels += 0x1f;
   }
-  viewportHalfColumn >>= 5;
+  short viewportHalfColumn = viewportColumnPixels >> 5;
 
   for (int i = 0; i < g_pActiveMapOrderContext->routeNodeCount; ++i) {
     const CRect& segment = g_pActiveMapOrderContext->routeSegments[i];
-    short firstColumn = static_cast<short>((segment.left - viewportHalfColumn + 0xd8) % 0xd8);
-    short firstRow = static_cast<short>(segment.top) - static_cast<short>(viewportRow);
-    short secondColumn = static_cast<short>((segment.right - viewportHalfColumn + 0xd8) % 0xd8);
-    short secondRow = static_cast<short>(segment.bottom) - static_cast<short>(viewportRow);
+    short firstColumn = (segment.left - viewportHalfColumn + 0xd8) % 0xd8;
+    // CRect stores Win32 long coordinates; DrawWrappedMapRouteSegment intentionally consumes
+    // the low word of each vertical endpoint, matching the retail MOV/SUB word sequence.
+    short firstRow = static_cast<short>(segment.top);
+    firstRow -= viewportRow;
+    short secondColumn = (segment.right - viewportHalfColumn + 0xd8) % 0xd8;
+    short secondRow = static_cast<short>(segment.bottom);
+    secondRow -= viewportRow;
     DrawWrappedMapRouteSegment(firstColumn, firstRow, secondColumn, secondRow);
   }
 
@@ -1699,7 +1745,7 @@ void TMapDialog::RenderMapTileAtScreenPositionUsingCache(short tileIndex, short 
   marker.c = tileIndex;
   g_pGlobalMapState->terrainStateTable[tileIndex].markerSlotIndex10 =
       static_cast<signed char>(markerIndex);
-  RenderStrategicMapTileCell(tileIndex, 0, static_cast<short>(markerIndex << 6));
+  RenderStrategicMapTileCell(tileIndex, 0, markerIndex << 6);
 
   RECT sourceRect = {markerIndex << 6, 0, (markerIndex + 1) << 6, 0x40};
   RECT cacheRect = {screenX + 0x40, screenY + 0x40, screenX + 0x80, screenY + 0x80};
@@ -1787,7 +1833,7 @@ void TMapDialog::RenderMapDialogTerrainOverlayFrameByTileOwner(short tileIndex, 
   }
 
   if (overlayFlagByte74 == 0) {
-    short terrainFrameIndex = static_cast<short>(tileRecord[0x10]);
+    short terrainFrameIndex = tileRecord[0x10];
     if (terrainFrameIndex == -1) {
       return;
     }

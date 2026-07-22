@@ -132,7 +132,7 @@ void TCitySiteView::SetMapDialogCellCoordinatesAndRefresh(int col, int row, int 
 void TCitySiteView::RenderStrategicTileSelectionAndNeighborHighlights() {
   short neighborTiles[6] = {-1, -1, -1, -1, -1, -1};
   bool updateNeighborHighlights = false;
-  short currentTile = static_cast<short>(field6c);
+  short currentTile = static_cast<short>(hoveredTileIndex6c);
 
   if (g_pGlobalMapState->terrainStateTable[currentTile].recruitSearchVisited0e == 0) {
     updateNeighborHighlights = true;
@@ -149,7 +149,7 @@ void TCitySiteView::RenderStrategicTileSelectionAndNeighborHighlights() {
     }
   }
 
-  short previousTile = static_cast<short>(field6e);
+  short previousTile = static_cast<short>(paintedHoverTileIndex6e);
   signed char previousMarker = g_pGlobalMapState->terrainStateTable[previousTile].markerSlotIndex10;
   if (previousMarker != -1 && tileMarkers7c[previousMarker].flag != 0) {
     short projectedY;

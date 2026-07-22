@@ -2262,8 +2262,8 @@ address|name|symbol|size|type|prototype|provenance
 4d4e40|StrategicMapCallbackRecord::EnsureOpcodeBufferByteAtIndex||102|function|unsigned char * __thiscall EnsureOpcodeBufferByteAtIndex(int index)|
 4d4ed0|WrapperFor_ReallocateHeapBlockWithAllocatorTracking_At004d4ed0||94|function|undefined WrapperFor_ReallocateHeapBlockWithAllocatorTracking_At004d4ed0()|
 4d4f50|WrapperFor_ReallocateHeapBlockWithAllocatorTracking_At004d4f50||117|function|undefined WrapperFor_ReallocateHeapBlockWithAllocatorTracking_At004d4f50()|
-4d4ff0|AppendCallbackGeneratedByteToGrowableBuffer||123|function|undefined AppendCallbackGeneratedByteToGrowableBuffer()|
-4d5090|StrategicMapCallbackRecord::BuildBitmapMaskOpcodeBufferFromResourceRows||996|function|void __thiscall BuildBitmapMaskOpcodeBufferFromResourceRows(int resourceId, int width, int height, int surface, int transparentPixel)|
+4d4ff0|StrategicMapCallbackRecord::ApplyBitmapMaskToPixelBuffer||123|function|void __thiscall ApplyBitmapMaskToPixelBuffer(unsigned char * destinationPixels)|
+4d5090|StrategicMapCallbackRecord::BuildBitmapMaskOpcodeBufferFromResourceRows||996|function|void __thiscall BuildBitmapMaskOpcodeBufferFromResourceRows(int resourceId, short width, short height, int destinationRowStride, unsigned char transparentPixel)|
 4d5580|StrategicMapCallbackRecord::AppendOpcodeByte||110|function|void __thiscall AppendOpcodeByte(int value)|
 4d5610|StrategicMapCallbackRecord::AppendOpcodeBytePair||208|function|void __thiscall AppendOpcodeBytePair(int value)|
 4d5720|StrategicMapCallbackRecord::FinalizeOpcodeBufferAlignment||449|function|void __thiscall FinalizeOpcodeBufferAlignment()|
@@ -3347,7 +3347,7 @@ address|name|symbol|size|type|prototype|provenance
 51e1f0|TMapDialog::ReleaseTileMarkerForTile||77|function|undefined OrphanLeaf_NoCall_Ins21_0051e1f0(void)|
 51e260|TMapDialog::Draw||1780|function|undefined RenderMapInteractionPreviewSlotsAndTransientSprites()|
 51eb40|TMapDialog::RenderStrategicMapTileCell||5443|function|undefined RenderStrategicMapTileCell()|
-520670|TMapDialog::RenderMapDialogBilateralRelationMarkers||527|function|undefined RenderMapDialogBilateralRelationMarkers()|
+520670|TMapDialog::DrawBorder||527|function|void __thiscall DrawBorder(short relationLevel, int originX, int originY, int nationA, int nationB)|listing
 520970|TMapDialog::DrawMapDialogGuidePatternSetA_00520970||214|function|undefined DrawMapDialogGuidePatternSetA_00520970()|
 520a90|TMapDialog::DrawMapDialogGuidePatternSetB_00520a90||303|function|undefined DrawMapDialogGuidePatternSetB_00520a90()|
 520c10|TMapDialog::DrawMapDialogGuidePatternSetC_00520c10||195|function|undefined DrawMapDialogGuidePatternSetC_00520c10()|
@@ -3360,8 +3360,8 @@ address|name|symbol|size|type|prototype|provenance
 521540|TMapDialog::DrawMapDialogGuidePatternSetI_00521540||249|function|undefined DrawMapDialogGuidePatternSetI_00521540()|
 521680|TMapDialog::DrawCityBorderSegmentsByMask||754|function|void __thiscall DrawCityBorderSegmentsByMask(unsigned char borderMask, int screenX, int screenY, short tileIndex)|listing
 521a40|TMapDialog::DrawNationBorderSegmentsByMask||1163|function|void __thiscall DrawNationBorderSegmentsByMask(unsigned char borderMask, int screenX, int screenY, short tileIndex)|listing
-522000|TMapDialog::DrawMapDialogOwnershipMarkerForNation_00522000||179|function|undefined DrawMapDialogOwnershipMarkerForNation_00522000()|
-5220f0|TMapDialog::RenderMapDialogDiplomacyNeighborRelationHints||2267|function|void __thiscall RenderMapDialogDiplomacyNeighborRelationHints(int arg1, int arg2, short arg3)|listing
+522000|TMapDialog::DrawSeaZoneBorders||179|function|void __thiscall DrawSeaZoneBorders(unsigned char edgeMask, int screenX, int screenY, short tileIndex)|listing
+5220f0|TMapDialog::DrawSeaZoneBorders||2267|function|void __thiscall DrawSeaZoneBorders(int screenX, int screenY, short tileIndex)|listing
 522c10|TMapDialog::DrawWrappedMapRouteSegment||171|function|void __thiscall DrawWrappedMapRouteSegment(short col1, int row1, short col2, int row2)|listing
 522cf0|TMapDialog::DrawHexNeighborConnectionMask||692|function|undefined DrawHexNeighborConnectionMask()|
 523060|TMapDialog::DrawGeneratedMapRouteSegmentsAndResetFillColor||201|function|void __thiscall DrawGeneratedMapRouteSegmentsAndResetFillColor(void)|listing

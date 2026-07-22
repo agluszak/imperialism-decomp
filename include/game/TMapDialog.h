@@ -95,8 +95,9 @@ public:
   // Draws a two-toned bilateral-relation marker: the guide pattern selected by
   // relationLevel (0-9) is drawn twice at (originX, originY) — variant 1 tinted for
   // nationA, variant 2 for nationB (0x35 = minor-nation fallback color).
-  virtual void RenderMapDialogBilateralRelationMarkers(short relationLevel, int originX,
-                                                       int originY, int nationA, int nationB);
+  // Mac CodeWarrior identity: TMapDialog::DrawBorder(short, short, short, short, short).
+  // The Windows body keeps the four coordinate/nation arguments as full stack dwords.
+  virtual void DrawBorder(short relationLevel, int originX, int originY, int nationA, int nationB);
   virtual void DrawMapDialogGuidePatternSetA_00520970(int originX, int originY, short variant);
   virtual void DrawMapDialogGuidePatternSetB_00520a90(int originX, int originY, short variant);
   virtual void DrawMapDialogGuidePatternSetC_00520c10(int originX, int originY, short variant);
@@ -107,9 +108,14 @@ public:
   virtual void DrawMapDialogGuidePatternSetG_005211c0(int originX, int originY, short variant);
   virtual void DrawMapDialogGuidePatternSetH_00521340(int originX, int originY, short variant);
   virtual void DrawMapDialogGuidePatternSetI_00521540(int originX, int originY, short variant);
-  virtual void DrawMapDialogOwnershipMarkerForNation_00522000(unsigned char edgeMask, int screenX,
-                                                              int screenY, short tileIndex);
-  virtual void RenderMapDialogDiplomacyNeighborRelationHints(int arg1, int arg2, short arg3);
+  // Mac CodeWarrior identity: TMapDialog::DrawSeaZoneBorders. Draws the colored ownership
+  // dividers between the six sea zones surrounding one map tile. VC5 emits same-name
+  // overloads in reverse declaration order in the vtable, so this declaration intentionally
+  // precedes the argument-taking overload whose retail slot comes first.
+  virtual void DrawSeaZoneBorders(int screenX, int screenY, short tileIndex);
+  // Mac CodeWarrior identity: the argument-taking TMapDialog::DrawSeaZoneBorders overload.
+  virtual void DrawSeaZoneBorders(unsigned char edgeMask, int screenX, int screenY,
+                                  short tileIndex);
   virtual void DrawWrappedMapRouteSegment(short col1, int row1, short col2, int row2);
   virtual void DrawHexNeighborConnectionMask(unsigned char connectionMask, int screenX, int screenY,
                                              short tileIndex);
