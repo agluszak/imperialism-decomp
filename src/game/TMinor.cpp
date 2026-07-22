@@ -363,11 +363,11 @@ void TMinor::InitializeSecondaryNationStateAndSelectHomeTile(short nationSlot) {
 // FUNCTION: IMPERIALISM 0x004e41c0
 void TMinor::ReadFrom(TStream* stream) {
   TCountry::ReadFrom(stream);
-  stream->ReadBytes(reinterpret_cast<char*>(this) + 0x94, 0x2e);
+  stream->ReadBytes(this->needCurrentByType, sizeof(this->needCurrentByType));
   SwapAdjacentBytesInShortArray(this->needCurrentByType, 0x17);
-  stream->ReadBytes(reinterpret_cast<char*>(this) + 0xc2, 0x2e);
+  stream->ReadBytes(this->diplomacyPolicyByNation, sizeof(this->diplomacyPolicyByNation));
   SwapAdjacentBytesInShortArray(this->diplomacyPolicyByNation, 0x17);
-  stream->ReadBytes(reinterpret_cast<char*>(this) + 0xf0, 0x2e);
+  stream->ReadBytes(this->diplomacyGrantByNation, sizeof(this->diplomacyGrantByNation));
   SwapAdjacentBytesInShortArray(this->diplomacyGrantByNation, 0x17);
   stream->ReadBytes(&this->diplomacyRandomThreshold11e, 2);
   stream->ReadBytes(&this->diplomacyRandomThreshold120, 2);
@@ -1011,8 +1011,7 @@ void DispatchCivilianOrderRelationMaskSlots(TUnit* orderNode) {
   if (orderNode->orderType == 7) {
     TGreatPower* ownerNation = g_apNationStates[orderNode->field_18];
     if (ownerNation != 0) {
-      short payload =
-          *reinterpret_cast<short*>(reinterpret_cast<unsigned char*>(ownerNation) + 0x88);
+      short payload = static_cast<short>(ownerNation->homeTileIndex);
       orderNode->VTableSlot10(static_cast<int>(payload));
     }
     return;
@@ -1215,8 +1214,7 @@ void RetargetUnitOrderForAllowedNation(TUnit* orderNode) {
   if (ownerNation == 0) {
     return;
   }
-  short homeTileIndex =
-      *reinterpret_cast<short*>(reinterpret_cast<unsigned char*>(ownerNation) + 0x88);
+  short homeTileIndex = static_cast<short>(ownerNation->homeTileIndex);
   short spawnTile =
       g_pGlobalMapState->FindReachableRecruitSpawnTileWithVisitedReset(homeTileIndex, 0);
   if (spawnTile == -1) {
@@ -1233,8 +1231,7 @@ void RetargetUnitOrderForAllowedNationWithModeReset(TUnit* orderNode) {
   if (ownerNation == 0) {
     return;
   }
-  short homeTileIndex =
-      *reinterpret_cast<short*>(reinterpret_cast<unsigned char*>(ownerNation) + 0x88);
+  short homeTileIndex = static_cast<short>(ownerNation->homeTileIndex);
   short spawnTile =
       g_pGlobalMapState->FindReachableRecruitSpawnTileWithVisitedReset(homeTileIndex, 0);
   if (spawnTile == -1) {

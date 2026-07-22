@@ -694,7 +694,7 @@ address|name|symbol|size|type|prototype|provenance
 488390|TSortedPtrList::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4883e0|TSortedPtrList::GetRuntimeClass||6|function|undefined GetRuntimeClass()|rtti
 488400|TPtrList::CreateObject|?CreateObject@TPtrList@@SGPAVCObject@@XZ|80|function|undefined CreateObject()|rtti
-488470|TPtrList::InsertCopiedRecordAtFrontOfPtrListAlt||60|function|undefined InsertCopiedRecordAtFrontOfPtrListAlt()|
+488470|TPtrList::PrependCopiedRecordToPtrList||60|function|undefined PrependCopiedRecordToPtrList()|
 4884c0|TPtrList::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 488510|TPtrList::GetRuntimeClass||6|function|undefined GetTPtrListClassNamePointer()|rtti
 4885d0|TPtrList::AddHeadSlot28||16|function|undefined AddHeadSlot28()|

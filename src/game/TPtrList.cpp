@@ -14,8 +14,8 @@ void* TPtrList::GetTPtrListClassNamePointer() {
 }
 
 // FUNCTION: IMPERIALISM 0x00488470
-void TPtrList::InsertCopiedRecordAtFrontOfPtrListAlt(void* record) {
-  void* copy = operator new(recordSize14);
+void TPtrList::PrependCopiedRecordToPtrList(void* record) {
+  unsigned char* copy = new unsigned char[recordSize14];
   memcpy(copy, record, recordSize14);
   InsertAt(0, copy, 1);
 }

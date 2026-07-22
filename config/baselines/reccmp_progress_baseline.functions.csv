@@ -683,7 +683,7 @@ address|matching|name
 0x488390|0.9090909090909091|TSortedPtrList::`scalar deleting destructor'
 0x4883e0|1.0|TSortedPtrList::GetRuntimeClass
 0x488400|0.4897959183673469|TPtrList::CreateObject
-0x488470|1.0|TPtrList::InsertCopiedRecordAtFrontOfPtrListAlt
+0x488470|1.0|TPtrList::PrependCopiedRecordToPtrList
 0x4884c0|0.9090909090909091|TPtrList::`scalar deleting destructor'
 0x488510|1.0|TPtrList::GetRuntimeClass
 0x4885d0|1.0|TSortedList::AddHead
@@ -3364,7 +3364,7 @@ address|matching|name
 0x52d750|0.22380952380952382|TMapMaker::MergeSmallCityRegionsAndCompactIds
 0x52e310|1.0|SeaSegmentStretch::ReallocExact
 0x52e350|0.4962121212121212|TMapMaker::RebuildUMapperRouteRecordsAndActiveMapRects
-0x52e7b0|0.6956521739130435|TOcean::AllocateRouteNodeStateBufferByCount
+0x52e7b0|0.8947368421052632|TOcean::AllocateRouteNodeStateBufferByCount
 0x52e840|0.46808510638297873|TMapMaker::ErrorCheck
 0x52e890|0.75|TMapMaker::EraseZones
 0x52e900|0.046511627906976744|TMapMaker::TargetValidationSucceeded

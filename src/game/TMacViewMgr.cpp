@@ -100,7 +100,7 @@ void ReleaseBitmapLoaderHandle(TBitmapResourceLoader** loaderHandle) {
     return;
   }
   delete *loaderHandle;
-  ::operator delete(loaderHandle);
+  delete loaderHandle;
 }
 
 void ResolveAndBlitBitmapResourceToActiveAtlas(int resourceId, RECT* dstRect) {
@@ -573,7 +573,7 @@ void TMacViewMgr::BuildStrategicMapTileOverlayStripSurfaces800To807() {
       loader->ReleaseBitmapResource();
       loader->flags &= 0xfe;
       delete loader;
-      ::operator delete(loaderHandle);
+      delete loaderHandle;
     }
     UnlockPixels(GetGWorldPixMap(atlas694[stripIndex]));
     stripIndex = stripIndex + 1;
