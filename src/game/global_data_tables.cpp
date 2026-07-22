@@ -449,6 +449,11 @@ unsigned int g_councilControlTagTable[6] = {0x696e6674, 0x74727474, 0x67726174,
 // The caller at 0x004f6568 uses a signed relation tier and a two-byte stride.
 // GLOBAL: IMPERIALISM 0x00696990
 short g_aDiplomacyRelationPaletteColorCodes[7] = {0x40, 0x40, 0x41, 0x42, 0x43, 0x40, 0x44};
+// TInfoPanelView::Draw label-column coordinates, in the panel's parent coordinate space.
+// GLOBAL: IMPERIALISM 0x006969b0
+short g_infoPanelLabelXByRow_006969b0[4] = {0x48, 0x48, 0x48, 0x48};
+// GLOBAL: IMPERIALISM 0x006969c0
+short g_infoPanelLabelYByRow_006969c0[4] = {0x198, 0x1a9, 0x1ba, 0x1cb};
 // GLOBAL: IMPERIALISM 0x006a143c
 int g_McAppUiFlag_006A143C = 0;
 // GLOBAL: IMPERIALISM 0x00698ab8

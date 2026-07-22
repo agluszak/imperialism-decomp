@@ -416,13 +416,18 @@ undefined TMacViewMgr::BuildStrategicMapCommodityIconAtlasFrom700To722() {
   pixelCount = (atlasBounds.right - atlasBounds.left) * (atlasBounds.bottom - atlasBounds.top);
   memset(pixelBuffer, 0, pixelCount);
   stridePixels = static_cast<short>(static_cast<ushort>((*atlasSurface)->stride) & 0x3fff);
-  dstCursor = pixelBuffer - 8;
+  dstCursor = pixelBuffer - 0x20;
   commodityIndex = 0;
   while (commodityIndex < 0x17) {
     TBitmapResourceLoader** loaderHandle = CreateBitmapResourceLoaderHandle(commodityIndex + 700);
     if (loaderHandle != nullptr && *loaderHandle != 0) {
-      dstCursor += 8;
+      TBitmapResourceLoader* loader = *loaderHandle;
+      loader->EnsureBitmapResourceLoadedAndCopyRectSize();
+      loader->flags |= 1;
+      dstCursor += 0x20;
       CopySpriteSurfaceToStrideBuffer(loaderHandle, dstCursor, static_cast<short>(stridePixels));
+      loader->ReleaseBitmapResource();
+      loader->flags &= static_cast<unsigned char>(~1);
     }
     ReleaseBitmapLoaderHandle(loaderHandle);
     commodityIndex = commodityIndex + 1;

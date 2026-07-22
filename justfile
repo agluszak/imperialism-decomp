@@ -1588,44 +1588,37 @@ tooling-surface-update:
 # MUTATES: config/baselines/vtable_gate_baseline.csv.
 [group('baseline-update')]
 vtable-gate-update:
-  @test "${ALLOW_POLICY_BASELINE_UPDATE:-}" = "1" || { echo "REFUSED: this rewrites an architecture-policy baseline (blessing new debt)."; echo "If a human approved the exception, rerun with ALLOW_POLICY_BASELINE_UPDATE=1."; exit 2; }
-  uv run python -m tools.workflow.check_no_raw_vtable_calls --baseline "{{vtable_gate_baseline}}" --write-baseline
+  uv run python -m tools.workflow.baseline_guard --wrap "{{vtable_gate_baseline}}" -- uv run python -m tools.workflow.check_no_raw_vtable_calls --baseline "{{vtable_gate_baseline}}" --write-baseline
 
 # MUTATES: config/baselines/construction_gate_baseline.csv.
 [group('baseline-update')]
 antipattern-gate-update:
-  @test "${ALLOW_POLICY_BASELINE_UPDATE:-}" = "1" || { echo "REFUSED: this rewrites an architecture-policy baseline (blessing new debt)."; echo "If a human approved the exception, rerun with ALLOW_POLICY_BASELINE_UPDATE=1."; exit 2; }
-  uv run python -m tools.workflow.check_construction_antipatterns --baseline "{{construction_gate_baseline}}" --write-baseline
+  uv run python -m tools.workflow.baseline_guard --wrap "{{construction_gate_baseline}}" -- uv run python -m tools.workflow.check_construction_antipatterns --baseline "{{construction_gate_baseline}}" --write-baseline
 
 # MUTATES: config/baselines/tgreatpower_gate_baseline.csv.
 [group('baseline-update')]
 tgreatpower-gate-update:
-  @test "${ALLOW_POLICY_BASELINE_UPDATE:-}" = "1" || { echo "REFUSED: this rewrites an architecture-policy baseline (blessing new debt)."; echo "If a human approved the exception, rerun with ALLOW_POLICY_BASELINE_UPDATE=1."; exit 2; }
-  uv run python -m tools.workflow.check_tgreatpower_hygiene --baseline "{{tgreatpower_gate_baseline}}" --write-baseline
+  uv run python -m tools.workflow.baseline_guard --wrap "{{tgreatpower_gate_baseline}}" -- uv run python -m tools.workflow.check_tgreatpower_hygiene --baseline "{{tgreatpower_gate_baseline}}" --write-baseline
 
 # MUTATES: config/baselines/stub_count_baseline.json.
 [group('baseline-update')]
 stub-count-gate-update:
-  @test "${ALLOW_POLICY_BASELINE_UPDATE:-}" = "1" || { echo "REFUSED: this rewrites an architecture-policy baseline (blessing new debt)."; echo "If a human approved the exception, rerun with ALLOW_POLICY_BASELINE_UPDATE=1."; exit 2; }
-  uv run python -m tools.workflow.check_stub_count --write-baseline
+  uv run python -m tools.workflow.baseline_guard --wrap "config/baselines/stub_count_baseline.json" -- uv run python -m tools.workflow.check_stub_count --write-baseline
 
 # MUTATES: config/baselines/boundary_baseline.json.
 [group('baseline-update')]
 boundary-gate-update:
-  @test "${ALLOW_POLICY_BASELINE_UPDATE:-}" = "1" || { echo "REFUSED: this rewrites an architecture-policy baseline (blessing new debt)."; echo "If a human approved the exception, rerun with ALLOW_POLICY_BASELINE_UPDATE=1."; exit 2; }
-  uv run python -m tools.workflow.check_boundary_ratchet --write-baseline
+  uv run python -m tools.workflow.baseline_guard --wrap "config/baselines/boundary_baseline.json" -- uv run python -m tools.workflow.check_boundary_ratchet --write-baseline
 
 # MUTATES: config/baselines/datacmp_baseline.csv.
 [group('baseline-update')]
 datacmp-gate-update:
-  @test "${ALLOW_POLICY_BASELINE_UPDATE:-}" = "1" || { echo "REFUSED: this rewrites an architecture-policy baseline (blessing new debt)."; echo "If a human approved the exception, rerun with ALLOW_POLICY_BASELINE_UPDATE=1."; exit 2; }
-  uv run python -m tools.workflow.check_datacmp_baseline --target "{{target}}" --build-dir "{{build_dir}}" --write-baseline
+  uv run python -m tools.workflow.baseline_guard --wrap "config/baselines/datacmp_baseline.csv" -- uv run python -m tools.workflow.check_datacmp_baseline --target "{{target}}" --build-dir "{{build_dir}}" --write-baseline
 
 # MUTATES: config/baselines/empty_body_baseline.csv.
 [group('baseline-update')]
 noop-gate-update:
-  @test "${ALLOW_POLICY_BASELINE_UPDATE:-}" = "1" || { echo "REFUSED: this rewrites an architecture-policy baseline (blessing new debt)."; echo "If a human approved the exception, rerun with ALLOW_POLICY_BASELINE_UPDATE=1."; exit 2; }
-  uv run python -m tools.workflow.check_empty_bodies --write-baseline config/baselines/empty_body_baseline.csv
+  uv run python -m tools.workflow.baseline_guard --wrap "config/baselines/empty_body_baseline.csv" -- uv run python -m tools.workflow.check_empty_bodies --write-baseline config/baselines/empty_body_baseline.csv
 
 # MUTATES: reccmp-project.yml ignore lists (Hard Rule 14).
 [group('baseline-update')]

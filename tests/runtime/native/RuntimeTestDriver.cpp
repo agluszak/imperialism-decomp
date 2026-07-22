@@ -73,6 +73,7 @@ RuntimeTestState g_runtimeTestState = {
     kRuntimeTestNone, kRuntimeTestNotStarted, 0, 0, -1, 0, "", ""};
 CString g_randomSetupUiSnapshot;
 CString g_strategicMapUiSnapshot;
+CString g_capitalConfirmationUiSnapshot;
 CString g_activatedEventSequence("[");
 
 const char* TestName() {
@@ -226,10 +227,11 @@ void AppendViewTreeNodes(CString& json, TView* view, const CString& parentPath, 
   json += ", \"class\": ";
   AppendJsonString(json, RuntimeClassName(view));
   CString fields;
-  fields.Format(", \"bounds\": [%d, %d, %d, %d], \"state\": %d, \"enabled\": %d, "
-                "\"control_value\": %d",
+  fields.Format(", \"bounds\": [%d, %d, %d, %d], \"absolute\": [%d, %d], \"state\": %d, "
+                "\"enabled\": %d, \"control_value\": %d",
                 view->ownerLocalX, view->ownerLocalY, view->frameWidth34, view->frameHeight38,
-                view->field04, view->field08, view->controlValue3c);
+                view->absoluteX, view->absoluteY, view->field04, view->field08,
+                view->controlValue3c);
   json += fields;
   if (view->IsKindOf(RUNTIME_CLASS(TPicture)) != 0) {
     TPicture* picture = static_cast<TPicture*>(view);
@@ -293,6 +295,10 @@ bool WriteResultFile(const char* status, const char* failure) {
     uiSnapshots += "\n  ";
   }
   uiSnapshots += "]";
+  CString capitalConfirmationSnapshot("null");
+  if (!g_capitalConfirmationUiSnapshot.IsEmpty()) {
+    capitalConfirmationSnapshot = g_capitalConfirmationUiSnapshot;
+  }
   CString json;
   json.Format("{\n"
               "  \"format_version\": 1,\n"
@@ -302,6 +308,7 @@ bool WriteResultFile(const char* status, const char* failure) {
               "  \"last_action\": \"%s\",\n"
               "  \"event_sequence\": %s,\n"
               "  \"ui_snapshots\": %s,\n"
+              "  \"capital_confirmation_snapshot\": %s,\n"
               "  \"state\": {\n"
               "    \"turn_event\": %d,\n"
               "    \"root_class\": \"%s\",\n"
@@ -324,6 +331,7 @@ bool WriteResultFile(const char* status, const char* failure) {
               "}\n",
               TestName(), status, g_runtimeTestState.idleTicks, g_runtimeTestState.lastAction,
               static_cast<LPCSTR>(eventSequence), static_cast<LPCSTR>(uiSnapshots),
+              static_cast<LPCSTR>(capitalConfirmationSnapshot),
               g_pUiRuntimeContext != 0 ? g_pUiRuntimeContext->currentTurnEventCode : -1,
               RuntimeClassName(mainView), g_pSimMgr != 0 ? g_pSimMgr->activeNationSlot : -1,
               g_runtimeTestState.selectedNationSlot,
@@ -623,7 +631,8 @@ void RunWaitingForModalDismissal() {
     Fail("\"strategic map did not create its mini-map view\"");
     return;
   }
-  if (getenv("IMPERIALISM_RUNTIME_TEST_HOLD") != 0) {
+  const char* holdPhase = getenv("IMPERIALISM_RUNTIME_TEST_HOLD");
+  if (holdPhase != 0 && lstrcmpiA(holdPhase, "capital") != 0) {
     RedrawWindow(mapView->nativeWindow50->m_hWnd, NULL, NULL, RDW_INVALIDATE | RDW_UPDATENOW);
     Finish("passed", "null");
     return;
@@ -878,9 +887,29 @@ void RunWaitingForCitySiteConfirmation() {
   }
 
   TWindow* modal = static_cast<TWindow*>(g_ModalViewStack.GetHead());
+  TView* dialog = modal->ResolveControlByTag(kControlTagDialog);
   TControl* okay = static_cast<TControl*>(modal->ResolveControlByTag(kControlTagOkay));
-  if (okay == 0) {
-    Fail("\"city-site confirmation has no okay control\"");
+  if (dialog == 0 || okay == 0) {
+    Fail("\"city-site confirmation tree is incomplete\"");
+    return;
+  }
+  if (modal->IsActionable() == 0 || dialog->IsActionable() == 0 || okay->IsActionable() == 0 ||
+      dialog->ownerContext != modal || okay->ownerContext != dialog || modal->nativeWindow50 == 0 ||
+      dialog->nativeWindow50 != modal->nativeWindow50 ||
+      okay->nativeWindow50 != modal->nativeWindow50) {
+    Fail("\"city-site confirmation tree is not attached to its active native host\"");
+    return;
+  }
+  g_capitalConfirmationUiSnapshot = CaptureUiSnapshot(0x3b9, modal);
+  if (g_pActiveQuickDrawSurfaceContextHead != &g_defaultQuickDrawSurfaceSentinel ||
+      g_pQuickDrawMemoryDc != 0) {
+    Fail("\"city-site confirmation inherited the strategic map QuickDraw surface\"");
+    return;
+  }
+  RedrawWindow(modal->nativeWindow50->m_hWnd, NULL, NULL, RDW_INVALIDATE | RDW_UPDATENOW);
+  const char* holdPhase = getenv("IMPERIALISM_RUNTIME_TEST_HOLD");
+  if (holdPhase != 0 && lstrcmpiA(holdPhase, "capital") == 0) {
+    Finish("passed", "null");
     return;
   }
   SetPhase(kRuntimeTestWaitingForCombinedMap, "accept_city_site_confirmation");

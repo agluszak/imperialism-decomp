@@ -19,7 +19,10 @@ CString BuildSharedStringFromMappedFlavorTextIndex(short variantIndex) {
 void scanBracketExpressions(TSimMgr* ctx, CString* out, const char* input, ...) {
   (void)ctx;
   CString* result = out;
-  const char* const* args = &input + 1; // first variadic argument
+  // Bracket tokens are one-based: [1] selects the first variadic string. The retail
+  // implementation indexes from the input parameter itself, so the digit is the direct
+  // stack-slot offset and [0] (though not used by game text) denotes the template.
+  const char* const* args = &input;
   *result = CString(g_szEmptyString);
 
   const char* p = input;

@@ -996,15 +996,11 @@ void TMapDialog::RenderStrategicMapTileCell(short tileIndex, short screenY, shor
     if (isOcean && terrain.adjacencyMaskB0b != 0) {
       unsigned char adjacencyMask = terrain.adjacencyMaskB0b;
       unsigned char variantMask = terrain.spriteVariantIndex01;
-      // Fixed maps carry a pre-resolved coastline/river-mouth shape in byte +2. Fresh random
-      // maps leave ordinary coast tiles at zero, even though adjacencyMaskB0b already contains
-      // the complete six-direction shoreline mask. Convert that semantic mask to the legacy
-      // raster order for ordinary coasts; preserve explicit +2 variants for river mouths and
-      // loaded-map artwork.
       short riverSpriteCode = terrain.riverSpriteCode;
+      // River mouths carry an explicit coastline shape in roadFlag. Ordinary random-map
+      // coast tiles leave it zero and already store the six-direction shoreline shape in
+      // adjacencyMaskB0b, in the atlas order consumed below.
       if (riverSpriteCode == kRiverSpriteCodeNone) {
-        adjacencyMask = ReflectHexDirectionMaskForBottomUpSurface(adjacencyMask);
-        variantMask = ReflectHexDirectionMaskForBottomUpSurface(variantMask);
         riverSpriteCode = adjacencyMask;
       }
       for (int corner = 0; corner < 6; ++corner) {
