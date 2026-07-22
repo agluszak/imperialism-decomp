@@ -1,7 +1,6 @@
 #pragma once
 
 #include "game/mfc.h"
-#include "game/global_data_tables.h"
 
 // The McAppUI live-view registry: every TWindow/TView links itself in on construction
 // (inline AddHead) and unlinks on teardown. An MFC CPtrList, base 0x006a1a40

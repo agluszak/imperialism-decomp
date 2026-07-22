@@ -160,8 +160,9 @@ def check_override(
     problems: list[str] = []
     tag = f"0x{ov.address:08x} ({ov.name})"
 
-    if not ov.symbol:
-        problems.append(f"{tag}: reviewed override has no linker symbol")
+    # An absent linker symbol is legal since bead 8mo.11: empty reviewed fields
+    # defer to the raw-inventory spelling (name-only and annotation-only migrated
+    # rows). The loader already rejects rows with no name, symbol, or evidence.
     # Identity is name+symbol; a reviewed row may omit the prototype (asserts
     # nothing about the signature — the inventory's advisory value stands).
     if ov.prototype and not prototype_declares_name(ov.prototype, ov.name):
@@ -173,9 +174,11 @@ def check_override(
     if row is None:
         problems.append(f"{tag}: no symbols.csv row (override not applied)")
     else:
-        if (row.get("name") or "") != ov.name:
+        # Empty reviewed fields defer to the raw-inventory spelling (annotation-only
+        # and symbol-only migrated rows, bead 8mo.11); only non-empty fields project.
+        if ov.name and (row.get("name") or "") != ov.name:
             problems.append(f"{tag}: symbols.csv name={row.get('name')!r} != {ov.name!r}")
-        if (row.get("symbol") or "") != ov.symbol:
+        if ov.symbol and (row.get("symbol") or "") != ov.symbol:
             problems.append(
                 f"{tag}: symbols.csv symbol={row.get('symbol')!r} != {ov.symbol!r}"
             )
@@ -187,8 +190,11 @@ def check_override(
             problems.append(f"{tag}: symbols.csv type={row.get('type')!r} != 'function'")
 
     owner = ownership.get(ov.address)
-    if owner != "library":
-        problems.append(f"{tag}: ownership={owner!r} != 'library' (marker missing?)")
+    expected_owner = "manual" if ov.kind == "SYNTHETIC" else "library"
+    if owner != expected_owner:
+        problems.append(
+            f"{tag}: ownership={owner!r} != {expected_owner!r} (marker missing?)"
+        )
 
     return problems
 

@@ -11,17 +11,11 @@
 class TCivUnit : public TUnit {
 public:
   DECLARE_DYNCREATE(TCivUnit)
-  virtual ~TCivUnit() override; // slot 0x01 (scalar deleting destructor)
-  // slot 0x02 Serialize inherited unchanged (0x485e90)
-  // slot 0x03 AssertValid inherited unchanged (0x412bf0)
-  // slot 0x04 Dump inherited unchanged (0x412c10)
-  virtual void WriteTo(TStream* stream) override;  // slot 0x05 0x5c2b40
-  virtual void ReadFrom(TStream* stream) override; // slot 0x06 0x5c2b10
-  // slot 0x07 Free inherited unchanged (0x5c2680)
-  // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
-  // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
-  virtual void VTableSlot10(int pOwnerContext) override;           // slot 0x0a 0x5c2b70
-  virtual void ContinueOrders() override;                          // slot 0x0b 0x5c2a90
+  virtual ~TCivUnit() override;                          // slot 0x01 (scalar deleting destructor)
+  virtual void WriteTo(TStream* stream) override;        // slot 0x05 0x5c2b40
+  virtual void ReadFrom(TStream* stream) override;       // slot 0x06 0x5c2b10
+  virtual void VTableSlot10(int pOwnerContext) override; // slot 0x0a 0x5c2b70
+  virtual void ContinueOrders() override;                // slot 0x0b 0x5c2a90
   virtual void DetachUnitOrderFromOwnerAndReset() override;        // slot 0x0c 0x5c2c40
   virtual void SetOrderModeSlot34(int mode, int payload) override; // slot 0x0d 0x5c29f0
   virtual void ResetCivWorkOrderAndRefreshCounters();              // slot 0x0e 0x5c2c60

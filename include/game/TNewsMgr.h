@@ -47,15 +47,10 @@ struct newsStory {
 class TNewsMgr : public TObject {
 public:
   DECLARE_DYNCREATE(TNewsMgr)
-  virtual ~TNewsMgr() override; // slot 0x01 (scalar deleting destructor)
-  // slot 0x02 Serialize inherited unchanged (0x485e90)
-  // slot 0x03 AssertValid inherited unchanged (0x412bf0)
-  // slot 0x04 Dump inherited unchanged (0x412c10)
+  virtual ~TNewsMgr() override;                    // slot 0x01 (scalar deleting destructor)
   virtual void WriteTo(TStream* stream) override;  // slot 0x05 0x55b8c0
   virtual void ReadFrom(TStream* stream) override; // slot 0x06 0x55b8a0
   virtual void Free() override;                    // slot 0x07 0x55b820
-  // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
-  // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
 
   // Transient story-template table loaded from Data/news.tab by LoadNewsTable and
   // freed at the end of StartNewsPhase — valid only during the news phase.

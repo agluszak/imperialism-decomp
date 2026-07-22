@@ -21,20 +21,15 @@ public:
   enum { kCursorResourceIdBase = 1000 };
 
   DECLARE_DYNCREATE(TViewMgr)
-  virtual ~TViewMgr() override; // slot 0x01 (scalar deleting destructor)
-  // slot 0x02 Serialize inherited unchanged (0x485e90)
-  // slot 0x03 AssertValid inherited unchanged (0x412bf0)
-  // slot 0x04 Dump inherited unchanged (0x412c10)
+  virtual ~TViewMgr() override;                    // slot 0x01 (scalar deleting destructor)
   virtual void WriteTo(TStream* stream) override;  // slot 0x05 0x5d5250
   virtual void ReadFrom(TStream* stream) override; // slot 0x06 0x5d5200
   virtual void Free() override;                    // slot 0x07 0x5d51e0
-  // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
-  // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
-  virtual void LoadTurnEventCursorTable();                                     // slot 0x0a 0x5d5100
-  virtual void MakeGameSetupDialog();                                          // slot 0x0b 0x5dcaa0
-  virtual void SetBackColor(short colorCode);                                  // slot 0x0c 0x5d5780
-  virtual void SetForeColor(short colorCode);                                  // slot 0x0d 0x5d5750
-  virtual int ClassifyTurnStateForOverlayMode();                               // slot 0x0e 0x5d5960
+  virtual void LoadTurnEventCursorTable();         // slot 0x0a 0x5d5100
+  virtual void MakeGameSetupDialog();              // slot 0x0b 0x5dcaa0
+  virtual void SetBackColor(short colorCode);      // slot 0x0c 0x5d5780
+  virtual void SetForeColor(short colorCode);      // slot 0x0d 0x5d5750
+  virtual int ClassifyTurnStateForOverlayMode();   // slot 0x0e 0x5d5960
   virtual void BuildAndShowTurnOverlayByMode(int overlayMode, int contextArg); // slot 0x0f 0x5d6480
   virtual void HandleTurnEventVtableSlot40RefreshGoldDialog();                 // slot 0x10 0x5d57b0
   virtual void ComputeTurnEventDialogPlacementByCode(TView* dialogView,

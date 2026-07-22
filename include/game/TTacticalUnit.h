@@ -12,14 +12,6 @@ class TTacticalUnit : public TObject {
 public:
   DECLARE_DYNCREATE(TTacticalUnit)
   virtual ~TTacticalUnit() override; // slot 0x01 (scalar deleting destructor)
-  // slot 0x02 Serialize inherited unchanged (0x485e90)
-  // slot 0x03 AssertValid inherited unchanged (0x412bf0)
-  // slot 0x04 Dump inherited unchanged (0x412c10)
-  // slot 0x05 WriteTo inherited unchanged (0x485f70)
-  // slot 0x06 ReadFrom inherited unchanged (0x485f90)
-  // slot 0x07 Free inherited unchanged (0x4798b0)
-  // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
-  // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
   virtual int GetBaseActionPoints(); // slot 0x0a 0x5a5d40
   // Fire/attack range in hex tiles -- the max distance at which this unit can engage a
   // target (NOT movement range; that derives from action points, slot 0x0a). Consumed by
@@ -27,15 +19,15 @@ public:
   // threat-field seed (GetUnitRange() + 1). Base returns 0; the army/navy overrides read
   // the per-unit-type 0x6699e8 range table (defending artillery gets +1). Mac oracle name
   // is TTacticalUnit::GetRange().
-  virtual int GetUnitRange();                                 // slot 0x0b 0x5a5d60
+  virtual int GetUnitRange(); // slot 0x0b 0x5a5d60
   // Per-unit-type base attack power / incoming-damage scale, indexed by unitTypeC on the
   // Army/Navy overrides (g_afTacticalBaseAttackPowerByUnitType / g_afTacticalDamageScaleByUnitType
   // / g_afTacticalNavyBaseAttackPowerByUnitType / g_afTacticalNavyDamageScaleByUnitType); also
   // reused generically by TTacticalBattle::ProcessTacticalUnitState1TurnStep to score
   // morale-break retreat/destruction odds. Base class returns the shared default constant.
   // Real x87 float return (FLD/RET), not an int -- verify any override matches.
-  virtual float GetBaseAttackPower(); // slot 0x0c 0x5a5d80
-  virtual float GetDamageScale();     // slot 0x0d 0x5a5da0
+  virtual float GetBaseAttackPower();                         // slot 0x0c 0x5a5d80
+  virtual float GetDamageScale();                             // slot 0x0d 0x5a5da0
   virtual void ApplyTacticalDamage(int damageA, int damageB); // slot 0x0e 0x5a5e70
   // Toggles side20 between 0 and 1; invoked when a unit is handed to the other
   // side's list (TTacticalPlayer::AddTacticalUnitToUnitListHead).

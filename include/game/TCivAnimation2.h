@@ -18,18 +18,9 @@
 class TCivAnimation2 : public TAnimation {
 public:
   DECLARE_DYNCREATE(TCivAnimation2)
-  virtual ~TCivAnimation2() override; // slot 0x01 (scalar deleting destructor)
-  // slot 0x02 Serialize inherited unchanged (0x485e90)
-  // slot 0x03 AssertValid inherited unchanged (0x412bf0)
-  // slot 0x04 Dump inherited unchanged (0x412c10)
-  // slot 0x05 WriteTo inherited unchanged (0x485f70)
-  // slot 0x06 ReadFrom inherited unchanged (0x485f90)
-  // slot 0x07 Free inherited unchanged (0x4798b0)
-  // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
-  // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
+  virtual ~TCivAnimation2() override;                 // slot 0x01 (scalar deleting destructor)
   virtual void Tick() override;                       // slot 0x0a 0x49f7c0
   virtual void DrawNextFrame(POINT* offset) override; // slot 0x0b 0x49f8e0
-  // slot 0x0c LoadFrameIntoBuffer inherited unchanged (0x49f2d0)
   // TAnimation's own slice ends at 0x2c (ASSERT_SIZE); RTTI oracle confirms
   // sizeof(TCivAnimation2) == 0x30. Caches the ctor's `kind` selector (see the ctor
   // below) for later reference; real reader not yet identified.

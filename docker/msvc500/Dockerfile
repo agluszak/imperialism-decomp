@@ -41,6 +41,14 @@ RUN wget -O /tmp/idx5sdk.exe https://archive.org/download/idx5sdk/idx5sdk.exe \
  && cp -r /tmp/dx5/cdrom/sdk/lib /root/.wine/drive_c/dxsdk/lib \
  && rm -rf /tmp/idx5sdk.exe /tmp/dx5sfx /tmp/dx5
 
+# JOM: Qt's parallel drop-in nmake clone, for the "NMake Makefiles JOM" generator.
+# VC5 predates /MP, so parallelism comes from the make layer. 1.1.3 is the last
+# 32-bit jom (1.1.4+ is x64, which the win32 wine prefix cannot run).
+RUN wget -O /tmp/jom.zip https://download.qt.io/official_releases/jom/jom_1_1_3.zip \
+ && mkdir -p /root/.wine/drive_c/jom \
+ && unzip /tmp/jom.zip -d /root/.wine/drive_c/jom \
+ && rm -f /tmp/jom.zip
+
 # Windows CMake for NMake generation.
 RUN wget -O /tmp/cmake.zip https://github.com/Kitware/CMake/releases/download/v3.26.6/cmake-3.26.6-windows-i386.zip \
  && unzip /tmp/cmake.zip -d /root/.wine/drive_c/ \

@@ -6,7 +6,6 @@
 #include "game/CString.h"
 #include "game/TObject.h"
 #include "game/stretch.h"
-#include "game/global_data_tables.h"
 
 struct CRuntimeClass;
 struct Province;

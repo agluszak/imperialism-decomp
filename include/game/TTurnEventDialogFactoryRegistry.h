@@ -3,7 +3,6 @@
 #include "compat.h"
 #include "game/TObject.h"
 #include "game/mfc.h"
-#include "game/global_data_tables.h"
 // Full TView definition required: MSVC500 instantiates DestructElements for the
 // factory-pointer CList and demands the pointee type be complete.
 #include "game/TView.h"
@@ -18,16 +17,8 @@ typedef TView*(__cdecl* TurnEventDialogFactoryProc)(CWnd* pHostWindow, int nEven
 // VTABLE: IMPERIALISM 0x0064b2e8
 class TTurnEventDialogFactoryRegistry : public TObject {
 public:
-  // slot 0x00 GetRuntimeClass inherited unchanged (0x485e20)
-  virtual ~TTurnEventDialogFactoryRegistry() override; // slot 0x01 0x491b10 (scalar deleting destructor)
-  // slot 0x02 Serialize inherited unchanged (0x485e90)
-  // slot 0x03 AssertValid inherited unchanged (0x412bf0)
-  // slot 0x04 Dump inherited unchanged (0x412c10)
-  // slot 0x05 WriteTo inherited unchanged (0x485f70)
-  // slot 0x06 ReadFrom inherited unchanged (0x485f90)
-  // slot 0x07 Free inherited unchanged (0x4798b0)
-  // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
-  // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
+  virtual ~TTurnEventDialogFactoryRegistry()
+      override; // slot 0x01 0x491b10 (scalar deleting destructor)
 
   virtual TView* ResolveDialogNodeByMessageContext(int messageContext,
                                                    int contextSlot); // slot 0x0a 0x491c80

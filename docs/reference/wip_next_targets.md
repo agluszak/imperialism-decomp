@@ -1,5 +1,8 @@
 # Next porting targets (survey 2026-07-12)
 
+> **Stale snapshot** — several rows have since been ported (e.g. 0x4d4390 lives in
+> `TCivMgr.cpp`). Verify each row with `just func-status 0xADDR` before claiming.
+
 Landed this session: DrawHexNeighborConnectionMask 0x522cf0 (0->64.6%, b5aeab1).
 
 ## Ready, tractable (all callees ported, recovered receivers)

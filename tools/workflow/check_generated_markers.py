@@ -21,6 +21,7 @@ Check-only; it never edits files.
 from __future__ import annotations
 
 import argparse
+import re
 
 from tools.common.file_scan import iter_files
 from tools.common.repo import normalize_repo_relative_path, repo_root_from_file
@@ -31,6 +32,19 @@ BANNED_SUBSTRINGS = (
     "END GENERATED DECLS",
     "refreshed by recover-class",
     "do not hand-edit",
+)
+
+# Comment relics banned as whole patterns. Inherited-slot listings ("// slot 0x09
+# ShallowFree inherited unchanged (0x415ce0)") duplicated the base class's vtable in
+# every derived header — 22k lines at peak — and drowned the real overrides;
+# `just vtable <Class>` is the inherited-slot view. Prose like "slots 0x14-0x40 are
+# inherited unchanged from TStream" stays legal: only the slot-by-slot listing form
+# (slot + hex + name + the phrase) is banned.
+BANNED_PATTERNS = (
+    (
+        re.compile(r"\bslot\s+0x[0-9A-Fa-f]+\s+\S+.*\binherited unchanged\b"),
+        "inherited-slot listing comment (use `just vtable` for the inherited view)",
+    ),
 )
 
 # A genuine machine-generated file (e.g. src/game/library_msvc500_oracle.cpp, produced
@@ -77,6 +91,9 @@ def main() -> int:
             for needle in BANNED_SUBSTRINGS:
                 if needle in line:
                     violations.append(f"{rel}:{idx + 1}: stale recover-class marker: {needle!r}")
+            for pattern, label in BANNED_PATTERNS:
+                if pattern.search(line):
+                    violations.append(f"{rel}:{idx + 1}: {label}")
 
     if not violations:
         print(f"Generated-marker gate passed ({scanned} manual source files scanned).")

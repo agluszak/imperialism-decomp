@@ -92,11 +92,24 @@ def main() -> int:
         configure_wine_env()
 
         generator = os.getenv("CMAKE_GENERATOR", "NMake Makefiles")
+        build_jobs = os.getenv("BUILD_JOBS", "")
         cmake_flags = shlex.split(os.getenv("CMAKE_FLAGS", ""))
 
         cmake_exe = r"C:\cmake\bin\cmake.exe"
         source_dir = r"Z:\imperialism"
         build_dir = r"Z:\build"
+
+        # A generator switch (NMake <-> NMake JOM) invalidates the cache; CMake
+        # hard-errors on the mismatch, so drop the stale cache first.
+        cache_path = "/build/CMakeCache.txt"
+        if os.path.exists(cache_path):
+            with open(cache_path, encoding="utf-8", errors="ignore") as fh:
+                cached = fh.read()
+            if f"CMAKE_GENERATOR:INTERNAL={generator}\n" not in cached:
+                os.remove(cache_path)
+
+        if generator == "NMake Makefiles JOM":
+            cmake_flags.append(r"-DCMAKE_MAKE_PROGRAM=C:\jom\jom.exe")
 
         configure_cmd = [
             "wine",
@@ -113,6 +126,8 @@ def main() -> int:
         run(configure_cmd)
 
         build_cmd = ["wine", cmake_exe, "--build", build_dir]
+        if build_jobs:
+            build_cmd += ["--", "-j", build_jobs]
         print("Build command:", " ".join(build_cmd))
         run(build_cmd)
         return 0

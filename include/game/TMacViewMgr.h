@@ -19,15 +19,10 @@ struct TBitmapSurfaceNode;
 class TMacViewMgr : public TObject {
 public:
   DECLARE_DYNCREATE(TMacViewMgr)
-  virtual ~TMacViewMgr() override; // slot 0x01 (scalar deleting destructor)
-  // slot 0x02 Serialize inherited unchanged (0x485e90)
-  // slot 0x03 AssertValid inherited unchanged (0x412bf0)
-  // slot 0x04 Dump inherited unchanged (0x412c10)
+  virtual ~TMacViewMgr() override;                 // slot 0x01 (scalar deleting destructor)
   virtual void WriteTo(TStream* stream) override;  // slot 0x05 0x50a180
   virtual void ReadFrom(TStream* stream) override; // slot 0x06 0x50a140
   virtual void Free() override;                    // slot 0x07 0x509f70
-  // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
-  // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
   virtual undefined BuildStrategicMapCommodityIconAtlasFrom700To722(); // slot 0x0a 0x50a1a0
   virtual void LoadStrategicMapUnitIconAtlas750();                     // slot 0x0b 0x50a3b0
   virtual void LoadStrategicMapUnitOverlayAtlas751();                  // slot 0x0c 0x50a3e0

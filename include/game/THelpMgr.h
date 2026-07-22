@@ -39,15 +39,10 @@ ASSERT_SIZE(THelpCompletionCounterPair, 4);
 class THelpMgr : public TObject {
 public:
   DECLARE_DYNCREATE(THelpMgr)
-  virtual ~THelpMgr() override; // slot 0x01 (scalar deleting destructor)
-  // slot 0x02 Serialize inherited unchanged (0x485e90)
-  // slot 0x03 AssertValid inherited unchanged (0x412bf0)
-  // slot 0x04 Dump inherited unchanged (0x412c10)
+  virtual ~THelpMgr() override;                    // slot 0x01 (scalar deleting destructor)
   virtual void WriteTo(TStream* stream) override;  // slot 0x05 0x500fe0
   virtual void ReadFrom(TStream* stream) override; // slot 0x06 0x500f50
   virtual void Free() override;                    // slot 0x07 0x501070
-  // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
-  // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
   virtual undefined InitializeHelpManagerIndexArrayAndState(); // slot 0x0a 0x500680
   // Clears the per-help-set rank and pending flag at the start of a new game/turn flow.
   virtual void ResetHelpSetRanksAndFlags(); // slot 0x0b 0x500f10

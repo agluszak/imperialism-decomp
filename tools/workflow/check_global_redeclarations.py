@@ -20,10 +20,12 @@ from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 HEADER = REPO_ROOT / "include" / "game" / "global_data_tables.h"
+GLOBALS_DIR = REPO_ROOT / "include" / "game" / "globals"
 SELF_FILES = (
     "include/game/global_data_tables.h",
     "src/game/global_data_tables.cpp",
 )
+SELF_DIRS = ("include/game/globals/",)
 GENERATED_MARKERS = ("/ghidra_autogen/", "/autogen/")
 EXTERN_RE = re.compile(
     r'^\s*extern\s+(?:"C"\s+)?(?:const\s+)?[\w:*&<> ]+?[\s*&](\w+)\s*(?:\[[^\]]*\])?\s*;',
@@ -32,7 +34,12 @@ EXTERN_RE = re.compile(
 
 
 def header_names() -> set[str]:
-    return set(EXTERN_RE.findall(HEADER.read_text(encoding="utf-8", errors="ignore")))
+    """Externs across the umbrella + the per-subsystem globals headers (8mo.2)."""
+    names = set(EXTERN_RE.findall(HEADER.read_text(encoding="utf-8", errors="ignore")))
+    if GLOBALS_DIR.is_dir():
+        for header in GLOBALS_DIR.glob("*.h"):
+            names |= set(EXTERN_RE.findall(header.read_text(encoding="utf-8", errors="ignore")))
+    return names
 
 
 def main() -> int:
@@ -47,7 +54,8 @@ def main() -> int:
             if path.suffix not in (".cpp", ".h", ".hpp", ".cc"):
                 continue
             rel = path.relative_to(REPO_ROOT).as_posix()
-            if rel in SELF_FILES or any(m in f"/{rel}" for m in GENERATED_MARKERS):
+            if (rel in SELF_FILES or rel.startswith(SELF_DIRS)
+                    or any(m in f"/{rel}" for m in GENERATED_MARKERS)):
                 continue
             text = path.read_text(encoding="utf-8", errors="ignore")
             for m in EXTERN_RE.finditer(text):
