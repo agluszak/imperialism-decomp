@@ -64,7 +64,7 @@ char TInvadeMission::IsHospitalMission() const {
 // TInvadeMission::GetRuntimeClass
 
 // FUNCTION: IMPERIALISM 0x0053f2d0
-TInvadeMission::TInvadeMission(short targetProvince, TZone* beachheadZone)
+TInvadeMission::TInvadeMission(TZone* beachheadZone, short targetProvince)
     : TAttackProvinceMission(targetProvince, -1), beachhead34(nullptr) {
   if (beachheadZone != nullptr) {
     beachhead34 = new TBeachheadMission(beachheadZone, this);

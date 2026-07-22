@@ -14,20 +14,6 @@
 
 IMPLEMENT_SERIAL(TNavyMission, TMission, 1)
 
-// Swaps float byte order (Big-Endian <-> Little-Endian)
-static inline float SwapFloat(float val) {
-  union {
-    float f;
-    unsigned char b[4];
-  } src, dst;
-  src.f = val;
-  dst.b[0] = src.b[3];
-  dst.b[1] = src.b[2];
-  dst.b[2] = src.b[1];
-  dst.b[3] = src.b[0];
-  return dst.f;
-}
-
 // The binary body inlines TMission() (state08/importanceScore0c/marker11) and does NOT touch
 // nationId04/pathMarker06; the vtable install lands mid-way through the zero stores.
 // FUNCTION: IMPERIALISM 0x00535470
@@ -41,6 +27,22 @@ TNavyMission::TNavyMission(TZone* targetZone) : TMission() {
   for (int i = 0; i < 4; ++i) {
     requiredShipEquipageByCategory[i] = 0.0f;
   }
+}
+
+// Swaps float byte order (Big-Endian <-> Little-Endian)
+static inline float SwapFloat(float val) {
+  union {
+    float f;
+    unsigned char b[4];
+  } swapped;
+  swapped.f = val;
+  unsigned char byte0 = swapped.b[0];
+  unsigned char byte1 = swapped.b[1];
+  swapped.b[0] = swapped.b[3];
+  swapped.b[1] = swapped.b[2];
+  swapped.b[2] = byte1;
+  swapped.b[3] = byte0;
+  return swapped.f;
 }
 
 // FUNCTION: IMPERIALISM 0x005354c0
@@ -142,16 +144,10 @@ void TNavyMission::Free() {
 void TNavyMission::WriteTo(TStream* stream) {
   TMission::WriteTo(stream);
 
-  int nodeIdx1 = -1;
-  if (targetZone14 != nullptr) {
-    nodeIdx1 = targetZone14->GetContextOrdinalOrInvalid();
-  }
+  int nodeIdx1 = targetZone14 != nullptr ? targetZone14->GetContextOrdinalOrInvalid() : -1;
   stream->WriteCountSlot88(nodeIdx1);
 
-  int nodeIdx2 = -1;
-  if (targetZone18 != nullptr) {
-    nodeIdx2 = targetZone18->GetContextOrdinalOrInvalid();
-  }
+  int nodeIdx2 = targetZone18 != nullptr ? targetZone18->GetContextOrdinalOrInvalid() : -1;
   stream->WriteCountSlot88(nodeIdx2);
 
   for (int i = 0; i < 4; ++i) {

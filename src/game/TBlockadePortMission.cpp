@@ -42,7 +42,7 @@ TBlockadePortMission::TBlockadePortMission()
 // SYNTHETIC: IMPERIALISM 0x0053aae0
 // TBlockadePortMission::GetRuntimeClass
 
-// The mission factory (CreateMissionObjectByKindAndNodeContext, case 4) builds a
+// The mission factory (TMission::CreateMission, case 4) builds a
 // blockade mission from a map-order context node (a TZone). It lazily ensures the
 // context's primaryNeighbors array has slot 0 allocated -- that first entry is the
 // target port zone -- constructs the TControlSeaZoneMission base on it, back-links

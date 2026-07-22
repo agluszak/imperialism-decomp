@@ -44,7 +44,7 @@ TBeachheadMission::TBeachheadMission() : TControlSeaZoneMission(), parentMission
 // TBeachheadMission::GetRuntimeClass
 
 // FUNCTION: IMPERIALISM 0x0053a490
-TBeachheadMission::TBeachheadMission(TZone* targetZone, TAttackProvinceMission* parentMission)
+TBeachheadMission::TBeachheadMission(TZone* targetZone, TInvadeMission* parentMission)
     : TControlSeaZoneMission(targetZone), parentMission3c(parentMission) {}
 
 // Reproduces the base TControlSeaZoneMission::CalculateNeeds's targetZone14-tagged base score
@@ -102,7 +102,7 @@ void TBeachheadMission::CalculateNeeds() {
 
   float invadePriority = static_cast<float>(g_BeachheadMissionPriorityNormalization_0065AA30 /
                                             GetNavyContextPointerFromGlobalTableByIndex(3)) *
-                         static_cast<TInvadeMission*>(parentMission3c)->CalculatePriority();
+                         parentMission3c->CalculatePriority();
   if (requiredShipEquipageByCategory[3] < invadePriority) {
     requiredShipEquipageByCategory[3] = invadePriority;
   }

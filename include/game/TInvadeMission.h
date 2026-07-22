@@ -17,7 +17,8 @@ public:
   TBeachheadMission* beachhead34; // +0x34 owned amphibious-landing child mission
 
   TInvadeMission();
-  TInvadeMission(short targetProvince, TZone* beachheadZone);
+  // Mac: TInvadeMission(TZone*, short).
+  TInvadeMission(TZone* beachheadZone, short targetProvince);
 
   // Mac: CalculatePriority(). Sums the current army cost, derives remaining
   // city-development resource demand, and returns the larger pressure score.

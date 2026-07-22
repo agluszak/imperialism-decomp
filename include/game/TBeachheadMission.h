@@ -2,7 +2,7 @@
 
 #include "game/TControlSeaZoneMission.h"
 
-class TAttackProvinceMission;
+class TInvadeMission;
 
 // Mac: TBeachheadMission — navy-mission child of TInvadeMission; ferries/
 // escorts an amphibious landing at a target coastal zone and reports back to
@@ -18,10 +18,10 @@ class TAttackProvinceMission;
 class TBeachheadMission : public TControlSeaZoneMission {
   DECLARE_SERIAL(TBeachheadMission)
 public:
-  TAttackProvinceMission* parentMission3c; // +0x3c owning TInvadeMission (typed as its base)
+  TInvadeMission* parentMission3c; // +0x3c owning composite invade mission
 
   TBeachheadMission();
-  TBeachheadMission(TZone* targetZone, TAttackProvinceMission* parentMission);
+  TBeachheadMission(TZone* targetZone, TInvadeMission* parentMission);
 
   virtual char Matches(int kind, int key, int mode) const override; // slot 0x13 0x53a7b0
 

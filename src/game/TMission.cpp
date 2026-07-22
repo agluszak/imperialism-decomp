@@ -183,47 +183,46 @@ void TMission::InitializeMissionWithNationIdAndResetPathMarker(short nationId) {
 // target port zone (a TZone) for the navy missions; nodeKey/keyArg carry the province
 // or amassing keys for the army missions.
 // FUNCTION: IMPERIALISM 0x005350d0
-TMission* CreateMissionObjectByKindAndNodeContext(int sourceNation, eMissionType missionKind,
-                                                  int nodeKey, int contextArg, int keyArg) {
+TMission* TMission::CreateMission(short sourceNation, eMissionType missionKind, int nodeKey,
+                                  TZone* zoneContext, int relatedNodeKey) {
   TMission* mission = nullptr;
   switch (missionKind) {
   case kMissionTypeAttackProvince:
-    if (contextArg == 0) {
+    if (zoneContext == 0) {
       mission = new TAttackProvinceMission(static_cast<short>(nodeKey), -1);
     } else {
-      mission = new TControlSeaZoneMission(reinterpret_cast<TZone*>(contextArg));
+      mission = new TControlSeaZoneMission(zoneContext);
     }
     break;
   case kMissionTypeAmassProvince:
-    mission = new TAttackProvinceMission(static_cast<short>(nodeKey), static_cast<short>(keyArg));
+    mission =
+        new TAttackProvinceMission(static_cast<short>(nodeKey), static_cast<short>(relatedNodeKey));
     break;
   case kMissionTypeInvadeProvince:
-    if (keyArg != -1) {
-      mission =
-          new TInvadeMission(static_cast<short>(contextArg), reinterpret_cast<TZone*>(keyArg));
+    if (relatedNodeKey != -1) {
+      mission = new TInvadeMission(zoneContext, static_cast<short>(relatedNodeKey));
     } else {
-      mission = new TControlSeaZoneMission(reinterpret_cast<TZone*>(contextArg));
+      mission = new TControlSeaZoneMission(zoneContext);
     }
     break;
   case kMissionTypeDefendProvince:
-    if (contextArg == 0) {
+    if (zoneContext == 0) {
       mission = new TDefendProvinceMission(nodeKey);
-    } else if (reinterpret_cast<TZone*>(contextArg) ==
-               g_pActiveMapOrderContext->FindFirstPortZoneContextByNation(
-                   static_cast<short>(sourceNation))) {
-      mission = new TEscortMission(reinterpret_cast<TZone*>(contextArg));
+    } else if (zoneContext ==
+               g_pActiveMapOrderContext->FindFirstPortZoneContextByNation(sourceNation)) {
+      mission = new TEscortMission(zoneContext);
     } else {
-      mission = new TControlSeaZoneMission(reinterpret_cast<TZone*>(contextArg));
+      mission = new TControlSeaZoneMission(zoneContext);
     }
     break;
   case kMissionTypeBlockadePort:
-    mission = new TBlockadePortMission(reinterpret_cast<TZone*>(contextArg));
+    mission = new TBlockadePortMission(zoneContext);
     break;
   case kMissionTypeScatteredShips:
     mission = new TScatteredShipsMission();
     break;
   }
-  mission->nationId04 = static_cast<short>(sourceNation);
+  mission->nationId04 = sourceNation;
   mission->pathMarker06 = -1;
   mission->Initialize();
   return mission;

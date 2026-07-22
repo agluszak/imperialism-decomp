@@ -24,6 +24,7 @@ public:
   void Free() override;
 
   int GetIntByOrdinal(int ordinal);
+  int FindOneBasedOrdinalOf(void* item);
 
   // Several lists store plain integer ids as payloads (ownedRegionList region ids,
   // TAutoGreatPower missionQueue stream markers); GetIntByOrdinal is the existing

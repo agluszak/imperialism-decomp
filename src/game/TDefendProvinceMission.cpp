@@ -217,7 +217,7 @@ float TDefendProvinceMission::ComputeLocalSupportVectorScore(int nodeContext) {
 TDefendProvinceMission::TDefendProvinceMission() : TArmyMission() {}
 
 // Node-key constructor: delegates to TArmyMission(nodeKey) and stamps this class's
-// vtable. Inlined into the mission factory (CreateMissionObjectByKindAndNodeContext,
+// vtable. Inlined into the mission factory (TMission::CreateMission,
 // case 3, param_4 == 0); has no standalone address of its own.
 TDefendProvinceMission::TDefendProvinceMission(int nodeKey) : TArmyMission(nodeKey) {}
 

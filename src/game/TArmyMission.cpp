@@ -52,15 +52,12 @@ TArmyMission::TArmyMission() : TMission() {
 
 // FUNCTION: IMPERIALISM 0x0053c0a0
 TArmyMission::TArmyMission(int nodeKey) : TMission() {
-  nationId04 = 0xffff;
-  pathMarker06 = 0xffff;
   presentLocation14 = static_cast<short>(nodeKey);
-  padding_16 = static_cast<short>(0xffff);
 
-  TList* list = static_cast<TList*>(TList::CreateObject());
+  TList* list = new TList;
   orderListAt18 = list;
   if (list == nullptr) {
-    MessageBoxA(nullptr, "Nil Pointer", "Failure", 0x30);
+    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UMissionSubs.cpp", 0x842);
   }
 
@@ -81,13 +78,15 @@ static inline float SwapFloat(float val) {
   union {
     float f;
     unsigned char b[4];
-  } src, dst;
-  src.f = val;
-  dst.b[0] = src.b[3];
-  dst.b[1] = src.b[2];
-  dst.b[2] = src.b[1];
-  dst.b[3] = src.b[0];
-  return dst.f;
+  } swapped;
+  swapped.f = val;
+  unsigned char byte0 = swapped.b[0];
+  unsigned char byte1 = swapped.b[1];
+  swapped.b[0] = swapped.b[3];
+  swapped.b[1] = swapped.b[2];
+  swapped.b[2] = byte1;
+  swapped.b[3] = byte0;
+  return swapped.f;
 }
 
 // Shared accumulation loop over orderListAt18 (0x53c620 / 0x53ceb0 / 0x53d020 / 0x53d200 /
@@ -140,27 +139,16 @@ void TArmyMission::WriteTo(TStream* stream) {
     stream->WriteBytesSlot78(&swapped, 4);
   }
 
-  int count = (orderListAt18 != nullptr) ? orderListAt18->GetCount() : 0;
-  stream->WriteCountSlot88(count);
+  stream->WriteCountSlot88(orderListAt18->GetCount());
 
   TGreatPower* nation = g_apNationStates[nationId04];
-  TSortedList* unitList = reinterpret_cast<TSortedList*>(nation->militaryUnitList44);
+  TSortedList* unitList = nation->militaryUnitList44;
 
-  if (orderListAt18 != nullptr) {
-    CIterator iter(orderListAt18);
-    void* currentUnit = iter.Reset();
-    while (iter.More()) {
-      int index = 1;
-      POSITION pos = unitList->listState.GetHeadPosition();
-      while (pos != nullptr) {
-        if (unitList->listState.GetNext(pos) == currentUnit) {
-          break;
-        }
-        index++;
-      }
-      stream->WriteCountSlot88(index);
-      currentUnit = iter.Advance();
-    }
+  CIterator iter(orderListAt18);
+  void* currentUnit = iter.Reset();
+  while (iter.More()) {
+    stream->WriteCountSlot88(unitList->FindOneBasedOrdinalOf(currentUnit));
+    currentUnit = iter.Advance();
   }
 }
 

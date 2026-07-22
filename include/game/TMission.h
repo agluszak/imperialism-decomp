@@ -11,7 +11,7 @@ class TShip;
 class TTaskForce;
 
 // Mac oracle: eMissionType -- the mission-kind selector passed to the mission factory
-// (CreateMissionObjectByKindAndNodeContext) and to TMission::Matches. The Windows
+// (TMission::CreateMission) and to TMission::Matches. The Windows
 // binary only exposes the integer values 0..5; enumerator names below are provisional,
 // taken from the mission each kind primarily constructs (several kinds fall back to a
 // TControlSeaZoneMission when their context/beachhead argument is absent).
@@ -100,6 +100,10 @@ public:
 
   void InitializeMissionWithNationIdAndResetPathMarker(short nationId);
 
+  // Mac: TMission::CreateMission(short, eMissionType, long, TZone*, long).
+  static TMission* CreateMission(short sourceNation, eMissionType missionKind, int nodeKey,
+                                 TZone* zoneContext, int relatedNodeKey);
+
   // Slots 0x27-0x2f are NULL in the base table (abstract: filled only by derived
   // classes). Not declared here — C++ pure virtuals would emit _purecall, not NULL,
   // and the next derived class (TNavyMission/TArmyMission) appends its own virtuals
@@ -107,13 +111,6 @@ public:
 };
 
 ASSERT_SIZE(TMission, 0x14);
-
-// Mission factory (0x5350d0, __cdecl): allocates and constructs the concrete mission
-// subtype selected by missionKind, stamps the common owner/marker fields, and runs the
-// mission's Initialize initializer. contextArg is the map-order context / target port zone
-// (a TZone) for the navy missions; nodeKey/keyArg carry province or amassing keys.
-TMission* CreateMissionObjectByKindAndNodeContext(int sourceNation, eMissionType missionKind,
-                                                  int nodeKey, int contextArg, int keyArg);
 
 // Three-way ordering used by TAutoGreatPower's mission-eligibility pass. The opaque
 // callback signature is the one required by TSortedList; both entries are TMission
