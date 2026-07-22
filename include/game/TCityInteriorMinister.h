@@ -6,6 +6,8 @@ class TCity;
 class TGreatPower;
 class TLongintList;
 class TList;
+class TShortintList;
+class TUnit;
 class TFuzzySet;
 
 // Player city interior minister — derives from TInteriorMinister (shares slots 0x48-0x50)
@@ -30,18 +32,18 @@ public:
   // slot 0x12 OrphanCallChain_C11_I88_004874b0 inherited unchanged (0x4be450)
   // slot 0x13 VTableSlot13 inherited unchanged (0x4be4f0)
   // slot 0x14 SetForeignMinisterReadyFlag14 inherited unchanged (0x4be520)
-  virtual void Call54() override; // slot 0x15 0x4bf770
+  virtual void FillOrders() override; // slot 0x15 0x4bf770
   // slot 0x16 GetTEventHandlerClassNamePointer inherited unchanged (0x4be480)
   // slot 0x17 VTableSlot17 inherited unchanged (0x4be4c0)
   // slot 0x18 OrphanCallChain_C11_I88_004874b0 inherited unchanged (0x4be650)
   // slot 0x19 OrphanLeaf_NoCall_Ins07_004d8920 inherited unchanged (0x4be690)
-  virtual void InteriorSlot1A(short arg) override; // slot 0x1a 0x4beeb0
-  virtual void InteriorSlot1B(short arg) override; // slot 0x1b 0x4beee0
-  virtual void InteriorSlot1C(short arg) override; // slot 0x1c 0x4bef30
-  virtual short InteriorSlot1D(int arg) override;  // slot 0x1d 0x4be7b0
-  virtual short InteriorSlot1E(int arg) override;  // slot 0x1e 0x4be7d0
-  virtual void InteriorSlot1F(int arg) override;   // slot 0x1f 0x4be7f0
-  virtual void CityInteriorSlot20();               // slot 0x20 0x4bed60
+  virtual void InteriorSlot1A(short arg) override;         // slot 0x1a 0x4beeb0
+  virtual void IndustryOrder(short industrySlot) override; // slot 0x1b 0x4beee0
+  virtual void InteriorSlot1C(short arg) override;         // slot 0x1c 0x4bef30
+  virtual short InteriorSlot1D(int arg) override;          // slot 0x1d 0x4be7b0
+  virtual short InteriorSlot1E(int arg) override;          // slot 0x1e 0x4be7d0
+  virtual void InteriorSlot1F(int arg) override;           // slot 0x1f 0x4be7f0
+  virtual void FillLists();                                // slot 0x20 0x4bed60
   // Reports orderMetricTable40 deltas to the owner's foreign minister (index 0 as a
   // 25%-chance roll gated on either of the paired trigger slots [0]/[1], indices 2..6
   // forwarded directly when nonzero), then picks a (resultCode, magnitude) pair from
@@ -110,20 +112,22 @@ public:
   virtual undefined GetTEventHandlerClassNamePointer_32();              // slot 0x32 0x4c2010
   virtual undefined AutoAssignProspectingOrdersByTileHeuristics();      // slot 0x33 0x4c2120
   virtual undefined AutoAssignProspectingOrdersFromSeedTileNeighbors(); // slot 0x34 0x4c2a30
-  virtual void CallD4();                                                // slot 0x35 0x4c1510
-  virtual undefined IterateLinkedListCursorEntries_004c2d50(int arg1,
-                                                            int arg2); // slot 0x36 0x4c2d50
-  virtual undefined HandleFrogCityTileSelectionAndDispatchOrders(int* arg1, int arg2,
-                                                                 int arg3); // slot 0x37 0x4c2e10
-  virtual undefined SelectBestFrogCityTileFromCandidateSet(short arg1, int arg2, int arg3,
-                                                           int arg4);      // slot 0x38 0x4c3170
+  virtual void ProcessUnitOrders(); // slot 0x35 0x4c1510; Mac oracle
+  virtual undefined SeekLostTowns(char* primaryDistanceMap,
+                                  char* secondaryDistanceMap); // slot 0x36 0x4c2d50
+  virtual undefined ContinueRailheadProject(TUnit* order, char* primaryDistanceMap,
+                                            char* secondaryDistanceMap); // slot 0x37 0x4c2e10
+  virtual undefined StartRailheadProject(short orderType, TShortintList* ownedTiles,
+                                         char* primaryDistanceMap,
+                                         char* secondaryDistanceMap);      // slot 0x38 0x4c3170
   virtual undefined ComputeFrogCityCandidateScoreFromNationNeeds(int arg); // slot 0x39 0x4c3490
   virtual undefined GetTEventHandlerClassNamePointer_3a(int arg1, int arg2,
                                                         int unusedArg3); // slot 0x3a 0x4c3620
-  virtual undefined BuildFrogCityDistanceMapFromPrimarySeedSet(int arg); // slot 0x3b 0x4c3640
-  virtual undefined
-  BuildFrogCityDistanceMapFromReachableSeaCandidates(int arg);               // slot 0x3c 0x4c3910
-  virtual undefined RebalanceCityOrderAllocationTargets(int* arg);           // slot 0x3d 0x4c3c00
+  virtual char* CreateSeaDistanceMap(TShortintList* ownedTiles);         // slot 0x3b 0x4c3640
+  virtual char*
+  BuildFrogCityDistanceMapFromReachableSeaCandidates(TShortintList* ownedTiles); // slot 0x3c
+                                                                                 // 0x4c3910
+  virtual undefined RebalanceCityOrderAllocationTargets(TCity* city);        // slot 0x3d 0x4c3c00
   virtual undefined ProcessCityOrderStateTickAndApplyCapabilitySelection();  // slot 0x3e 0x4c3d60
   virtual undefined RebalanceCitySupportAndLaborAllocations();               // slot 0x3f 0x4c40c0
   virtual undefined ChooseAndMarkNextCityProductionCommand();                // slot 0x40 0x4c4370
@@ -133,7 +137,9 @@ public:
   virtual undefined CityMinisterSlot44();                                    // slot 0x44 0x4c4d40
   virtual undefined CityMinisterSlot45();                                    // slot 0x45 0x4c4e60
   virtual undefined CityMinisterSlot46();                                    // slot 0x46 0x4c4fe0
-  virtual undefined BuildFrogCityTerrainCountsAndOverlayStats();             // slot 0x47 0x4c5240
+  virtual undefined SeekResources(TShortintList* ownedTiles,
+                                  char* primaryDistanceMap); // slot 0x47 0x4c5240
+  void DispatchBuilders();                                   // 0x4c1990
   TCityInteriorMinister();
   // 0x4be8d0: allocate and reset this minister's city-policy state -- the interior-minister
   // analogue of TForeignMinister::InitializeStateAndCounters(owner). Links the base order

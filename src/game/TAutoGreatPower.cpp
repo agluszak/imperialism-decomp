@@ -286,7 +286,7 @@ void TAutoGreatPower::RefreshGreatPowerRelationPanelsAndDispatchDeltaSummary(voi
 // FUNCTION: IMPERIALISM 0x004e7590
 void TAutoGreatPower::OrphanRetStub_004dcc30(void) {
   if (this->city != 0) {
-    this->interiorMinister->Call54();
+    this->interiorMinister->FillOrders();
   }
 }
 
@@ -369,7 +369,7 @@ void TAutoGreatPower::ResetDiplomacyNeedScoresAndClearAidAllocationMatrix(void) 
 
 // FUNCTION: IMPERIALISM 0x004e78d0
 void TAutoGreatPower::RunSlot4CThenSortTrackedOrders(void) {
-  static_cast<TCityInteriorMinister*>(this->interiorMinister)->CallD4();
+  static_cast<TCityInteriorMinister*>(this->interiorMinister)->ProcessUnitOrders();
 }
 
 // FUNCTION: IMPERIALISM 0x004e78f0
@@ -1678,7 +1678,7 @@ void TAutoGreatPower::PlanAiDevelopmentActionsFromResourcePools(int unused) {
 
     if (selectedIsIndustry != 0) {
       if (applyAction) {
-        interiorMinister->InteriorSlot1B(static_cast<short>(selectedSlot));
+        interiorMinister->IndustryOrder(static_cast<short>(selectedSlot));
       }
 
       int actionCost = g_pNationInteractionStateManager->QueryProposalWeightSlot4C(0x0b) *

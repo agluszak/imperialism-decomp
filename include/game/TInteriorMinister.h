@@ -23,7 +23,7 @@ public:
   // relation-need scores via the owner's TryDecayRelationNeedScores9AndB() once per
   // InteriorSlot16(), accumulating the results; finally runs InteriorSlot19() that
   // many times. 0x4be5b0, __thiscall, no args.
-  virtual void Call54();
+  virtual void FillOrders();
   // Slots 0x16-0x1f: TInteriorMinister's own new virtuals (real vtable 0x650808 is
   // 32 slots, 0x00-0x1f). TCityInteriorMinister inherits 0x16-0x19 and overrides
   // 0x1a-0x1f.
@@ -39,12 +39,12 @@ public:
   virtual void InteriorSlot19(); // 0x19 0x4be690
   // One stack arg each (base bodies are bare RET 0x4 no-ops; the
   // TCityInteriorMinister overrides read it as a short).
-  virtual void InteriorSlot1A(short arg); // 0x1a 0x4be3f0
-  virtual void InteriorSlot1B(short arg); // 0x1b 0x4be410
-  virtual void InteriorSlot1C(short arg); // 0x1c 0x4be430
-  virtual short InteriorSlot1D(int arg);  // 0x1d 0x4be150 — returns arg
-  virtual short InteriorSlot1E(int arg);  // 0x1e 0x4be170 — returns arg
-  virtual void InteriorSlot1F(int arg);   // 0x1f 0x4be190 — no-op
+  virtual void InteriorSlot1A(short arg);         // 0x1a 0x4be3f0
+  virtual void IndustryOrder(short industrySlot); // 0x1b 0x4be410
+  virtual void InteriorSlot1C(short arg);         // 0x1c 0x4be430
+  virtual short InteriorSlot1D(int arg);          // 0x1d 0x4be150 — returns arg
+  virtual short InteriorSlot1E(int arg);          // 0x1e 0x4be170 — returns arg
+  virtual void InteriorSlot1F(int arg);           // 0x1f 0x4be190 — no-op
 
   // Own fields at +0x10..+0x28 (RTTI m_nObjectSize proves this block is
   // TInteriorMinister-only, distinct from TForeignMinister's own +0x10..+0x48 block --

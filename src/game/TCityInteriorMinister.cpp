@@ -1,16 +1,23 @@
 #include "game/TCityInteriorMinister.h"
 
 #include <stdlib.h>
+#include <string.h>
 
+#include "game/TAutoGreatPower.h"
 #include "game/TCity.h"
+#include "game/TCivUnit.h"
 #include "game/TForeignMinister.h"
 #include "game/TFuzzySet.h"
 #include "game/TGreatPower.h"
+#include "game/TItemOrder.h"
 #include "game/TList.h"
 #include "game/TLongintList.h"
 #include "game/TMapMgr.h"
+#include "game/TShortintList.h"
 #include "game/TSimMgr.h"
+#include "game/TSortedList.h"
 #include "game/TTown.h"
+#include "game/TUnit.h"
 #include "game/TViewMgr.h"
 #include "game/global_data_tables.h"
 #include "game/mfc.h"
@@ -89,7 +96,7 @@ void TCityInteriorMinister::InitializeCityInteriorState(TGreatPower* owner) {
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUCityMinister_006964B0, 0x288);
   }
 
-  CityInteriorSlot20();
+  FillLists();
 
   field3c = -1;
   field3e = 0;
@@ -148,7 +155,22 @@ void TCityInteriorMinister::Free() {
 }
 
 // FUNCTION: IMPERIALISM 0x004bed60
-void TCityInteriorMinister::CityInteriorSlot20() {}
+void TCityInteriorMinister::FillLists() {
+  list28->InsertLast(16);
+  list28->InsertLast(15);
+  list28->InsertLast(13);
+  list28->InsertLast(9);
+  list28->InsertLast(11);
+  list28->InsertLast(8);
+
+  list2c->InsertLast(2);
+  list2c->InsertLast(4);
+  list2c->InsertLast(0);
+  list2c->InsertLast(3);
+  list2c->InsertLast(5);
+  list2c->InsertLast(1);
+  list2c->InsertLast(6);
+}
 
 // FUNCTION: IMPERIALISM 0x004bee20
 short TCityInteriorMinister::GetRankingCriterionForGP(short nationSlot) {
@@ -157,10 +179,16 @@ short TCityInteriorMinister::GetRankingCriterionForGP(short nationSlot) {
 }
 
 // FUNCTION: IMPERIALISM 0x004beeb0
-void TCityInteriorMinister::InteriorSlot1A(short) {}
+void TCityInteriorMinister::InteriorSlot1A(short orderKind) {
+  if (field32 == 0) {
+    field32 = static_cast<short>((orderKind == 2) + 1);
+  }
+}
 
 // FUNCTION: IMPERIALISM 0x004beee0
-void TCityInteriorMinister::InteriorSlot1B(short) {}
+void TCityInteriorMinister::IndustryOrder(short industrySlot) {
+  list190->InsertLast(static_cast<long>(industrySlot) + 30);
+}
 
 // FUNCTION: IMPERIALISM 0x004bef10
 void TCityInteriorMinister::VTableSlot2D(short arg) {
@@ -183,7 +211,48 @@ void TCityInteriorMinister::ReadFrom(TStream* stream) {
 }
 
 // FUNCTION: IMPERIALISM 0x004bf770
-void TCityInteriorMinister::Call54() {}
+void TCityInteriorMinister::FillOrders() {
+  TCity* city;
+  if (ownerContextAt04 != 0) {
+    city = ownerContextAt04->city;
+  } else {
+    city = 0;
+  }
+
+  for (int needIndex = 0; needIndex < 23; ++needIndex) {
+    ownerContextAt04->UpdateNeedTargetAndAccumulateOverCap(static_cast<short>(needIndex), 0);
+  }
+
+  RebalanceCityOrderAllocationTargets(city);
+  city->EndCityPhase();
+
+  for (short orderSlot = 7; orderSlot < 61; ++orderSlot) {
+    if (city->orderSlotsE4[orderSlot] != 0) {
+      static_cast<TProductionOrder*>(city->orderSlotsE4[orderSlot])->SetQuantity(0);
+    }
+  }
+
+  ProcessCityOrderStateTickAndApplyCapabilitySelection();
+  RebalanceCitySupportAndLaborAllocations();
+  ChooseAndMarkNextCityProductionCommand();
+  ComputeCityProductionCommandLimitsFromBuildingOutputs();
+  RebuildCityOrderCommandAvailabilityAndPriorityCycle();
+  CityMinisterSlot45();
+
+  memset(orderShortTableBA, 0, sizeof(orderShortTableBA));
+  for (short itemSlot = 0; itemSlot < 23; ++itemSlot) {
+    if (itemSlot == 7) {
+      continue;
+    }
+    if (city->orderSlotsE4[itemSlot] != 0) {
+      TItemOrder* itemOrder = static_cast<TItemOrder*>(city->orderSlotsE4[itemSlot]);
+      itemOrder->AssertValid();
+      orderShortTableBA[itemOrder->productionSlot] += itemOrder->quantityField04;
+    }
+  }
+
+  EvaluateCityShortagesAndNotifyForeignMinister(city);
+}
 
 // FUNCTION: IMPERIALISM 0x004bf8a0
 undefined TCityInteriorMinister::EvaluateCityShortagesAndNotifyForeignMinister(TCity* city) {
@@ -312,6 +381,13 @@ TCityInteriorMinister::DistributeCityProductionAcrossOrderTemplatesAndBackfillDe
 // FUNCTION: IMPERIALISM 0x004c0d90
 void TCityInteriorMinister::MakeNewCity(TCity* city) {
   (void)city;
+  if (ownerContextAt04->diplomacyEligibilityA0 == 0) {
+    ownerContextAt04->treasuryValue10 = 10000;
+    orderMetricTable40[53] = 2;
+    orderMetricTable40[55] = 2;
+    orderMetricTable40[57] = 2;
+    orderMetricTable40[54] = 1;
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x004c0de0
@@ -420,7 +496,117 @@ int TCityInteriorMinister::SelectBestSecondaryHomeTileByFrogCityScore() {
 }
 
 // FUNCTION: IMPERIALISM 0x004c1510
-void TCityInteriorMinister::CallD4() {}
+void TCityInteriorMinister::ProcessUnitOrders() {
+  TSortedList* trackedOrders = ownerContextAt04->trackedObjectList;
+  ownerContextAt04->DispatchTrackedOrderSlot2CCallbacks();
+
+  int ownedTileCount = 0;
+  short nationSlot = ownerContextAt04->nationSlot;
+  int tileIndex;
+  for (tileIndex = 0; tileIndex < 0x1950; ++tileIndex) {
+    if (g_pGlobalMapState->terrainStateTable[static_cast<short>(tileIndex)].ownerNationTag04 ==
+        nationSlot) {
+      ++ownedTileCount;
+    }
+  }
+
+  TShortintList ownedTiles;
+  ownedTiles.values = static_cast<short*>(realloc(0, ownedTileCount * sizeof(short)));
+  ownedTiles.capacity = ownedTileCount;
+  for (tileIndex = 0; tileIndex < 0x1950; ++tileIndex) {
+    if (g_pGlobalMapState->terrainStateTable[static_cast<short>(tileIndex)].ownerNationTag04 ==
+        nationSlot) {
+      ownedTiles.InsertLast(static_cast<short>(tileIndex));
+    }
+  }
+
+  char* primaryDistanceMap = CreateSeaDistanceMap(&ownedTiles);
+  char* secondaryDistanceMap = BuildFrogCityDistanceMapFromReachableSeaCandidates(&ownedTiles);
+  SeekResources(&ownedTiles, primaryDistanceMap);
+  if (field3c == -1) {
+    SeekLostTowns(primaryDistanceMap, secondaryDistanceMap);
+  }
+
+  short selectedOrderType = 0;
+  while (field3c == -1 && selectedOrderType != -1) {
+    selectedOrderType = -1;
+    for (short orderType = 0; orderType < 23; ++orderType) {
+      if (((orderType >= 0 && orderType <= 6) || (orderType >= 17 && orderType <= 22)) &&
+          orderTypeTableFC[orderType] != 0 &&
+          (selectedOrderType < 0 ||
+           orderTypeTableFC[selectedOrderType] < orderTypeTableFC[orderType])) {
+        selectedOrderType = orderType;
+      }
+    }
+
+    if (selectedOrderType != -1) {
+      StartRailheadProject(selectedOrderType, &ownedTiles, primaryDistanceMap,
+                           secondaryDistanceMap);
+      if (field3c == -1) {
+        orderTypeTableFC[selectedOrderType] = 0;
+      }
+    }
+  }
+
+  if (field3c == -1) {
+    DispatchBuilders();
+  } else if (g_pGlobalMapState->terrainStateTable[field3c].ownerNationTag04 != nationSlot) {
+    field3c = -1;
+  } else {
+    bool hasBuilderOrder = false;
+    TUnit* availableBuilderOrder = 0;
+    int orderCount = trackedOrders->GetCount();
+    for (int ordinal = 1; ordinal <= orderCount && availableBuilderOrder == 0; ++ordinal) {
+      TUnit* order = static_cast<TUnit*>(trackedOrders->GetEntryByOrdinal(ordinal));
+      if (order->orderType == 4) {
+        hasBuilderOrder = true;
+        if (order->field_8 == 0) {
+          availableBuilderOrder = order;
+        }
+      }
+    }
+    if (!hasBuilderOrder) {
+      VTableSlot2D(4);
+    }
+    if (availableBuilderOrder != 0) {
+      ContinueRailheadProject(availableBuilderOrder, primaryDistanceMap, secondaryDistanceMap);
+    }
+  }
+
+  RebuildMapTileNeighborBucketsForInteriorMinister();
+  AutoAssignProspectingOrdersByTileHeuristics();
+  delete secondaryDistanceMap;
+  delete primaryDistanceMap;
+}
+
+// FUNCTION: IMPERIALISM 0x004c1990
+void TCityInteriorMinister::DispatchBuilders() {
+  TSortedList* trackedOrders = ownerContextAt04->trackedObjectList;
+  TUnit* builderOrder = 0;
+  int orderCount = trackedOrders->GetCount();
+  for (int ordinal = 1; ordinal <= orderCount && builderOrder == 0; ++ordinal) {
+    TUnit* order = static_cast<TUnit*>(trackedOrders->GetEntryByOrdinal(ordinal));
+    if (order->orderType == 4 && order->field_8 == 0) {
+      builderOrder = order;
+    }
+  }
+
+  if (builderOrder != 0) {
+    int cityRecordIndex = ComputeBestNationTileDevelopmentScore(ownerContextAt04->nationSlot);
+    if (cityRecordIndex != -1) {
+      TGlobalMapCityScoreRecord* cityRecord = &g_pGlobalMapState->cityScoreTable[cityRecordIndex];
+      short cityTileIndex = cityRecord->cityTileIndex04;
+      TCivUnit* tileOrder =
+          g_pGlobalMapState->terrainStateTable[cityTileIndex].firstCivilianOrder20;
+      if ((tileOrder == 0 || tileOrder == builderOrder) &&
+          g_awEngineerFortBuildCostByLevel[cityRecord->fortLevel03] <=
+              ownerContextAt04->treasuryValue10) {
+        builderOrder->VTableSlot10(cityTileIndex);
+        builderOrder->SetOrderModeSlot34(12, cityTileIndex);
+      }
+    }
+  }
+}
 
 // FUNCTION: IMPERIALISM 0x004c1ac0
 undefined TCityInteriorMinister::RebuildMapTileNeighborBucketsForInteriorMinister() {
@@ -443,17 +629,17 @@ undefined TCityInteriorMinister::AutoAssignProspectingOrdersFromSeedTileNeighbor
 }
 
 // FUNCTION: IMPERIALISM 0x004c2d50
-undefined TCityInteriorMinister::IterateLinkedListCursorEntries_004c2d50(int, int) {
+undefined TCityInteriorMinister::SeekLostTowns(char*, char*) {
   return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004c2e10
-undefined TCityInteriorMinister::HandleFrogCityTileSelectionAndDispatchOrders(int*, int, int) {
+undefined TCityInteriorMinister::ContinueRailheadProject(TUnit*, char*, char*) {
   return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004c3170
-undefined TCityInteriorMinister::SelectBestFrogCityTileFromCandidateSet(short, int, int, int) {
+undefined TCityInteriorMinister::StartRailheadProject(short, TShortintList*, char*, char*) {
   return 0;
 }
 
@@ -468,17 +654,17 @@ undefined TCityInteriorMinister::GetTEventHandlerClassNamePointer_3a(int, int, i
 }
 
 // FUNCTION: IMPERIALISM 0x004c3640
-undefined TCityInteriorMinister::BuildFrogCityDistanceMapFromPrimarySeedSet(int) {
+char* TCityInteriorMinister::CreateSeaDistanceMap(TShortintList*) {
   return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004c3910
-undefined TCityInteriorMinister::BuildFrogCityDistanceMapFromReachableSeaCandidates(int) {
+char* TCityInteriorMinister::BuildFrogCityDistanceMapFromReachableSeaCandidates(TShortintList*) {
   return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004c3c00
-undefined TCityInteriorMinister::RebalanceCityOrderAllocationTargets(int*) {
+undefined TCityInteriorMinister::RebalanceCityOrderAllocationTargets(TCity*) {
   return 0;
 }
 
@@ -537,7 +723,7 @@ undefined TCityInteriorMinister::CityMinisterSlot46() {
 }
 
 // FUNCTION: IMPERIALISM 0x004c5240
-undefined TCityInteriorMinister::BuildFrogCityTerrainCountsAndOverlayStats() {
+undefined TCityInteriorMinister::SeekResources(TShortintList*, char*) {
   return 0;
 }
 

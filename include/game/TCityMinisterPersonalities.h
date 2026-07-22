@@ -8,7 +8,7 @@ public:
   DECLARE_DYNCREATE(TSteelCityMinister)
   TSteelCityMinister();
   void InitializeCityInteriorState(TGreatPower* owner);
-  void CityInteriorSlot20() override; // slot 0x20 (byte 0x80) priority preset
+  void FillLists() override; // slot 0x20 (byte 0x80) priority preset
 };
 
 // VTABLE: IMPERIALISM 0x00650bd0
@@ -17,7 +17,7 @@ public:
   DECLARE_DYNCREATE(TShipBuilderCityMinister)
   TShipBuilderCityMinister();
   void InitializeCityInteriorState(TGreatPower* owner);
-  void CityInteriorSlot20() override; // slot 0x20 (byte 0x80) priority preset
+  void FillLists() override; // slot 0x20 (byte 0x80) priority preset
 };
 
 // VTABLE: IMPERIALISM 0x00650d30
@@ -26,7 +26,7 @@ public:
   DECLARE_DYNCREATE(TEvenCityMinister)
   TEvenCityMinister();
   void InitializeCityInteriorState(TGreatPower* owner);
-  void CityInteriorSlot20() override; // slot 0x20 (byte 0x80) priority preset
+  void FillLists() override; // slot 0x20 (byte 0x80) priority preset
 };
 
 // VTABLE: IMPERIALISM 0x00650e90
@@ -35,5 +35,5 @@ public:
   DECLARE_DYNCREATE(TRailCityMinister)
   TRailCityMinister();
   void InitializeCityInteriorState(TGreatPower* owner);
-  void CityInteriorSlot20() override; // slot 0x20 (byte 0x80) priority preset
+  void FillLists() override; // slot 0x20 (byte 0x80) priority preset
 };

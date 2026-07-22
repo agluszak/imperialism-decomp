@@ -177,3 +177,7 @@ bool SelectBestCityDevelopmentFromResourcePools(int nationSlot, int* resourcePoo
                                                 char* selectedIsIndustry, char* selectedIsUpgrade,
                                                 int* selectedSlot, int unused,
                                                 float* selectedWeightedCost);
+
+// Scores the current AI nation's owned regions as city-development targets and returns the
+// best region id, or -1 when the nation is unavailable/ineligible. 0x00540440, __cdecl.
+int ComputeBestNationTileDevelopmentScore(short nationSlot);
