@@ -15,6 +15,7 @@
 #include "game/TStream.h"
 #include "game/TLongintList.h"
 #include "game/TMultiplayerMgr.h"
+#include "game/nation_stream_serialization.h"
 
 // SYNTHETIC: IMPERIALISM 0x005b79d0
 // TTradeMgr::CreateObject
@@ -37,25 +38,24 @@ TTradeMgr::~TTradeMgr() {}
 void TTradeMgr::InitializeNationInteractionStateManagerDefaults() {
   const short* presetCursor = g_aTradeItemBasePriceByCategory_0069A910;
   TDealList** rankListCursor = this->categoryRankLists;
-  char* rowCursor = reinterpret_cast<char*>(this) + 0x0e;
+  NationMetricCategoryRow* row = this->categoryRows;
   int rowCount = 0x11;
   do {
-    *reinterpret_cast<short*>(rowCursor - 0x02) = 0;
-    *reinterpret_cast<short*>(rowCursor + 0x00) = 0;
-    *reinterpret_cast<short*>(rowCursor + 0x0a) = 0;
-    *reinterpret_cast<int*>(rowCursor + 0x02) = 0;
-    *reinterpret_cast<int*>(rowCursor + 0x06) = 0;
+    row->field08 = 0;
+    row->field0a = 0;
+    row->capabilityActiveFlag14 = 0;
+    row->weightedScore0c = 0.0;
 
     short presetValue = *presetCursor;
-    *reinterpret_cast<short*>(rowCursor - 0x06) = presetValue;
-    *reinterpret_cast<short*>(rowCursor - 0x04) = presetValue;
-    *reinterpret_cast<short*>(rowCursor + 0x0c) = *reinterpret_cast<short*>(rowCursor - 0x06);
+    row->presetSeed04 = presetValue;
+    row->proposalWeightScale06 = presetValue;
+    row->field16 = row->presetSeed04;
 
     TDealList* list = new TDealList();
     list->recordSize14 = 0x10;
     *rankListCursor = list;
 
-    short* cellCursor = reinterpret_cast<short*>(rowCursor + 0x6a);
+    short* cellCursor = &row->cells18[46];
     int cellCount = 0x17;
     do {
       cellCursor[-0x2e] = 0;
@@ -67,7 +67,7 @@ void TTradeMgr::InitializeNationInteractionStateManagerDefaults() {
 
     rankListCursor = rankListCursor + 1;
     presetCursor = presetCursor + 1;
-    rowCursor = rowCursor + 0xa0;
+    row = row + 1;
     rowCount = rowCount + -1;
   } while (rowCount != 0);
 }
@@ -90,49 +90,25 @@ void TTradeMgr::Free() {
 // FUNCTION: IMPERIALISM 0x005b7c10
 void TTradeMgr::ReadFrom(TStream* stream) {
   if (g_nSaveFormatVersion < 0x27) {
-    stream->ReadBytes(reinterpret_cast<char*>(this) + 0x8, 0xaa0);
+    stream->ReadBytes(&categoryRows[0].presetSeed04, 0xaa0);
   } else {
-    char* rowCursor = reinterpret_cast<char*>(this) + 0xa;
+    NationMetricCategoryRow* row = categoryRows;
     int rows = 0x11;
     do {
-      stream->ReadBytes(rowCursor - 2, 2);
-      stream->ReadBytes(rowCursor, 2);
-      stream->ReadBytes(rowCursor + 2, 2);
-      stream->ReadBytes(rowCursor + 4, 2);
-      stream->ReadBytes(rowCursor + 6, 8);
-      stream->ReadBytes(rowCursor + 0xe, 2);
-      stream->ReadBytes(rowCursor + 0x10, 2);
-      char* cell = rowCursor + 0x12;
-      stream->ReadBytes(cell, 0x2e);
-      int c = 0x17;
-      do {
-        char t = cell[0];
-        cell[0] = cell[1];
-        cell[1] = t;
-        cell = cell + 2;
-        c = c + -1;
-      } while (c != 0);
-      cell = rowCursor + 0x40;
-      stream->ReadBytes(cell, 0x2e);
-      c = 0x17;
-      do {
-        char t = cell[0];
-        cell[0] = cell[1];
-        cell[1] = t;
-        cell = cell + 2;
-        c = c + -1;
-      } while (c != 0);
-      cell = rowCursor + 0x6e;
-      stream->ReadBytes(cell, 0x2e);
-      c = 0x17;
-      do {
-        char t = cell[0];
-        cell[0] = cell[1];
-        cell[1] = t;
-        cell = cell + 2;
-        c = c + -1;
-      } while (c != 0);
-      rowCursor = rowCursor + 0xa0;
+      stream->ReadBytes(&row->presetSeed04, 2);
+      stream->ReadBytes(&row->proposalWeightScale06, 2);
+      stream->ReadBytes(&row->field08, 2);
+      stream->ReadBytes(&row->field0a, 2);
+      stream->ReadBytes(&row->weightedScore0c, 8);
+      stream->ReadBytes(&row->capabilityActiveFlag14, 2);
+      stream->ReadBytes(&row->field16, 2);
+      stream->ReadBytes(&row->cells18[0], 0x2e);
+      SwapShortArrayBytes(&row->cells18[0], 0x17);
+      stream->ReadBytes(&row->cells18[23], 0x2e);
+      SwapShortArrayBytes(&row->cells18[23], 0x17);
+      stream->ReadBytes(&row->cells18[46], 0x2e);
+      SwapShortArrayBytes(&row->cells18[46], 0x17);
+      row = row + 1;
       rows = rows + -1;
     } while (rows != 0);
   }
@@ -148,41 +124,20 @@ void TTradeMgr::ReadFrom(TStream* stream) {
 
 // FUNCTION: IMPERIALISM 0x005b7d90
 void TTradeMgr::WriteTo(TStream* stream) {
-  char* rowCursor = reinterpret_cast<char*>(this) + 0xa;
+  NationMetricCategoryRow* row = categoryRows;
   int rows = 0x11;
   do {
-    stream->WriteBytesSlot78(rowCursor - 2, 2);
-    stream->WriteBytesSlot78(rowCursor, 2);
-    stream->WriteBytesSlot78(rowCursor + 2, 2);
-    stream->WriteBytesSlot78(rowCursor + 4, 2);
-    stream->WriteBytesSlot78(rowCursor + 6, 8);
-    stream->WriteBytesSlot78(rowCursor + 0xe, 2);
-    stream->WriteBytesSlot78(rowCursor + 0x10, 2);
-    char* cell = rowCursor + 0x12;
-    int c = 0x17;
-    do {
-      short swapped = static_cast<short>((cell[0] & 0xff) | (cell[1] << 8));
-      stream->WriteBytesSlot78(&swapped, 2);
-      cell = cell + 2;
-      c = c + -1;
-    } while (c != 0);
-    cell = rowCursor + 0x40;
-    c = 0x17;
-    do {
-      short swapped = static_cast<short>((cell[0] & 0xff) | (cell[1] << 8));
-      stream->WriteBytesSlot78(&swapped, 2);
-      cell = cell + 2;
-      c = c + -1;
-    } while (c != 0);
-    cell = rowCursor + 0x6e;
-    c = 0x17;
-    do {
-      short swapped = static_cast<short>((cell[0] & 0xff) | (cell[1] << 8));
-      stream->WriteBytesSlot78(&swapped, 2);
-      cell = cell + 2;
-      c = c + -1;
-    } while (c != 0);
-    rowCursor = rowCursor + 0xa0;
+    stream->WriteBytesSlot78(&row->presetSeed04, 2);
+    stream->WriteBytesSlot78(&row->proposalWeightScale06, 2);
+    stream->WriteBytesSlot78(&row->field08, 2);
+    stream->WriteBytesSlot78(&row->field0a, 2);
+    stream->WriteBytesSlot78(&row->weightedScore0c, 8);
+    stream->WriteBytesSlot78(&row->capabilityActiveFlag14, 2);
+    stream->WriteBytesSlot78(&row->field16, 2);
+    WriteShortArrayElems(stream, &row->cells18[0], 0x17);
+    WriteShortArrayElems(stream, &row->cells18[23], 0x17);
+    WriteShortArrayElems(stream, &row->cells18[46], 0x17);
+    row = row + 1;
     rows = rows + -1;
   } while (rows != 0);
 
@@ -198,16 +153,15 @@ void TTradeMgr::WriteTo(TStream* stream) {
 }
 
 // FUNCTION: IMPERIALISM 0x005b7fc0
-void TTradeMgr::OrphanCallChain_C3_I50_005b7fc0() {
-  short* rowCursor = reinterpret_cast<short*>(reinterpret_cast<char*>(this) + 0x0e);
+void TTradeMgr::ResetNationMetricRowsAndClearCategoryRankLists() {
+  NationMetricCategoryRow* row = categoryRows;
   int rows = 0x11;
   do {
-    NationMetricCategoryRow* row = reinterpret_cast<NationMetricCategoryRow*>(rowCursor - 5);
     row->field08 = 0;
     row->field0a = 0;
     row->capabilityActiveFlag14 = 0;
     row->weightedScore0c = 0.0;
-    short* cell = rowCursor + 0x1e;
+    short* cell = &row->cells18[23];
     int c = 0x17;
     do {
       cell[-0x17] = 0;
@@ -215,7 +169,7 @@ void TTradeMgr::OrphanCallChain_C3_I50_005b7fc0() {
       cell = cell + 1;
       c = c + -1;
     } while (c != 0);
-    rowCursor = rowCursor + 0x50;
+    row = row + 1;
     rows = rows + -1;
   } while (rows != 0);
 
@@ -264,12 +218,10 @@ void TTradeMgr::AccumulateDiplomacyRelationChangesAndQueueEvents() {
   // category row: [0..22] this-turn delta per nation slot, [23..45] running accumulated
   // total per nation slot (index target+23), [46..67(+1 overflow)] running max -- the
   // latter consumed by RefreshNationStateAndEmitTurnEvent3Mode18. Only the delta and
-  // accumulated sub-rows are touched here. self+0x1c/self+0x4a are those two sub-rows'
-  // bases (categoryRows[0].cells18[0] and categoryRows[0].cells18[23]), walked with a
-  // flat row*0x50 index -- matches the original's own flat short* addressing exactly.
-  char* self = reinterpret_cast<char*>(this);
-  short* cells = reinterpret_cast<short*>(self + 0x1c);
-  short* accum = reinterpret_cast<short*>(self + 0x4a);
+  // accumulated sub-rows are touched here. The original walks both as flat short arrays
+  // with the 0x50-short category-row stride.
+  short* cells = &categoryRows[0].cells18[0];
+  short* accum = &categoryRows[0].cells18[23];
 
   // Rows 0..6: primary-nation category rows get BOTH target ranges processed here --
   // primary targets (0..6) and secondary/minor targets (7..0x16).
@@ -640,20 +592,19 @@ void TTradeMgr::ApplyDiplomacyTransferEffectsAcrossNationMetricRoster(short slot
 }
 
 // FUNCTION: IMPERIALISM 0x005b9190
-void TTradeMgr::ProcessPendingDiplomacyTransferEntriesUntilBlockedWrapper() {
-  char* self = reinterpret_cast<char*>(this);
-  *reinterpret_cast<short*>(self + 0x6) = 1;
-  *reinterpret_cast<short*>(self + 0x4) = 0;
+void TTradeMgr::InitializePendingDiplomacyTransferCursorAndProcess() {
+  categoryRows[0].resetTransitionFlagB02 = 1;
+  categoryRows[0].resetTransitionFlagA00 = 0;
   short next = 0;
   do {
-    short i = *reinterpret_cast<short*>(self + 0x4);
+    short i = categoryRows[0].resetTransitionFlagA00;
     short idx = g_aTradeDealCategoryOrder_0066D810[i];
     TDealList* list = this->categoryRankLists[idx];
     if (list->GetSize() != 0) {
       break;
     }
-    next = *reinterpret_cast<short*>(self + 0x4) + 1;
-    *reinterpret_cast<short*>(self + 0x4) = next;
+    next = categoryRows[0].resetTransitionFlagA00 + 1;
+    categoryRows[0].resetTransitionFlagA00 = next;
   } while (next < 0x11);
   this->ProcessPendingDiplomacyTransferEntriesUntilBlocked();
 }
@@ -662,7 +613,7 @@ void TTradeMgr::ProcessPendingDiplomacyTransferEntriesUntilBlockedWrapper() {
 void TTradeMgr::ProcessPendingDiplomacyTransferEntriesUntilBlocked() {
   // Reuses categoryRows[0]'s resetTransitionFlagA00/B02 pair as persistent (row, ordinal)
   // cursor state across calls -- matches the wrapper's own this+4/this+6 use of the same
-  // pair (see ProcessPendingDiplomacyTransferEntriesUntilBlockedWrapper above).
+  // pair (see InitializePendingDiplomacyTransferCursorAndProcess above).
   bool blocked = false;
   do {
     if (categoryRows[0].resetTransitionFlagA00 > 0x10) {
@@ -776,7 +727,7 @@ void TTradeMgr::RebuildNationMetricPassesAndClampRowsByBaseline() {
     i = i + -1;
   } while (i != 0);
 
-  short* base = reinterpret_cast<short*>(reinterpret_cast<char*>(this) + 0x78);
+  short* base = &categoryRows[0].cells18[46];
   int rows = 0x11;
   do {
     short* q = base;
@@ -946,18 +897,16 @@ void TTradeMgr::BuildEligibleNationMetricBucketsAndWeightedTrendScores() {
   } while (static_cast<short>(nation) < 7);
 
   int metricRow = 0;
-  int cellBase = 0;
-  short* cursor = reinterpret_cast<short*>(reinterpret_cast<char*>(this) + 0xe);
+  NationMetricCategoryRow* row = categoryRows;
+  short* cells = &categoryRows[0].cells18[0];
   do {
-    NationMetricCategoryRow* row = reinterpret_cast<NationMetricCategoryRow*>(cursor - 5);
     int col = 0;
     np = g_apNationStates;
     int slot = 0;
     do {
       if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(static_cast<short>(slot)) != 0) {
         short metric = (*np)->QueryNationMetricBySlot7C(static_cast<short>(metricRow));
-        *reinterpret_cast<short*>(reinterpret_cast<char*>(this) + 0x1c + (cellBase + col) * 2) =
-            metric;
+        cells[metricRow * 0x50 + col] = metric;
         if (metric < 0) {
           row->field08 = row->field08 + 1;
         } else if (0 < metric) {
@@ -981,8 +930,7 @@ void TTradeMgr::BuildEligibleNationMetricBucketsAndWeightedTrendScores() {
       col = col + 1;
     } while (static_cast<short>(slot) < 7);
     metricRow = metricRow + 1;
-    cellBase = cellBase + 0x50;
-    cursor = cursor + 0x50;
+    row = row + 1;
   } while (static_cast<short>(metricRow) < 0x11);
 }
 
@@ -1014,11 +962,10 @@ void TTradeMgr::BuildSecondaryNationMetricBucketsAndWeightedTrendScores() {
     base = 1.01;
   }
 
-  char* self = reinterpret_cast<char*>(this);
-  short* psVar4 = reinterpret_cast<short*>(self + 0xe);
+  NationMetricCategoryRow* row = categoryRows;
   int metricRow = 0;
   do {
-    short* cellCursor = psVar4 + 0xe;
+    short* cellCursor = &row->cells18[7];
     TMinor** mp = g_apNationAuxRuntimeStateSlots;
     int remaining = 0x10;
     do {
@@ -1029,12 +976,12 @@ void TTradeMgr::BuildSecondaryNationMetricBucketsAndWeightedTrendScores() {
         if ((*mp)->GetDiplomacyExternalStateByTarget(static_cast<short>(metricRow)) < metric) {
           value = (*mp)->GetDiplomacyExternalStateByTarget(static_cast<short>(metricRow));
         }
-        *psVar4 = *psVar4 + 1;
+        row->field0a = row->field0a + 1;
         short sv = static_cast<short>(value);
-        psVar4[5] = psVar4[5] + sv;
+        row->capabilityActiveFlag14 = row->capabilityActiveFlag14 + sv;
         double factor;
         if (this->QueryProposalWeightSlot4C(static_cast<short>(metricRow)) <
-            *reinterpret_cast<short*>(reinterpret_cast<char*>(*mp) + 0x124)) {
+            (*mp)->GetDiplomacyRandomThreshold124()) {
           factor = 0.0;
         } else if (sv == 1) {
           factor = 1.0;
@@ -1042,26 +989,27 @@ void TTradeMgr::BuildSecondaryNationMetricBucketsAndWeightedTrendScores() {
           int exponent = (sv < 0x19) ? (value - 1) : 0x17;
           factor = this->Power(base, static_cast<short>(exponent));
         }
-        *reinterpret_cast<double*>(psVar4 + 1) = factor + *reinterpret_cast<double*>(psVar4 + 1);
+        row->weightedScore0c = factor + row->weightedScore0c;
       }
       cellCursor = cellCursor + 1;
       mp = mp + 1;
       remaining = remaining + -1;
     } while (remaining != 0);
-    psVar4 = psVar4 + 0x50;
+    row = row + 1;
     metricRow = metricRow + 1;
   } while (static_cast<short>(metricRow) < 7);
 
   TMinor** mp = g_apNationAuxRuntimeStateSlots;
-  short* aggCursor = reinterpret_cast<short*>(self + 0x48a);
+  NationMetricCategoryRow* aggregateRow = &categoryRows[7];
+  short* aggCursor = &aggregateRow->cells18[7];
   int count = 0x10;
   do {
     short metric = (*mp)->QueryNationMetricBySlot7C(7);
     *aggCursor = metric;
     if (0 < metric) {
-      *reinterpret_cast<short*>(self + 0x46e) = *reinterpret_cast<short*>(self + 0x46e) + 1;
-      *reinterpret_cast<short*>(self + 0x478) =
-          static_cast<short>(*reinterpret_cast<short*>(self + 0x478) + metric);
+      aggregateRow->field0a = aggregateRow->field0a + 1;
+      aggregateRow->capabilityActiveFlag14 =
+          static_cast<short>(aggregateRow->capabilityActiveFlag14 + metric);
       double factor;
       if (metric == 1) {
         factor = 1.0;
@@ -1069,16 +1017,15 @@ void TTradeMgr::BuildSecondaryNationMetricBucketsAndWeightedTrendScores() {
         int exponent = (metric < 0x19) ? (metric - 1) : 0x17;
         factor = this->Power(base, static_cast<short>(exponent));
       }
-      *reinterpret_cast<double*>(self + 0x470) = factor + *reinterpret_cast<double*>(self + 0x470);
+      aggregateRow->weightedScore0c = factor + aggregateRow->weightedScore0c;
     }
     aggCursor = aggCursor + 1;
     mp = mp + 1;
     count = count + -1;
   } while (count != 0);
 
-  short* negCursor = reinterpret_cast<short*>(self + 0x82c);
+  row = &categoryRows[0xd];
   int metricSlot = 0xd;
-  int cellBase = 0x410;
   do {
     int col = 7;
     mp = g_apNationAuxRuntimeStateSlots;
@@ -1086,9 +1033,9 @@ void TTradeMgr::BuildSecondaryNationMetricBucketsAndWeightedTrendScores() {
     do {
       if (*mp != 0) {
         short metric = (*mp)->QueryNationMetricBySlot7C(static_cast<short>(metricSlot));
-        *reinterpret_cast<short*>(self + 0x1c + (cellBase + col) * 2) = metric;
+        row->cells18[col] = metric;
         if (metric < 0) {
-          *negCursor = *negCursor + 1;
+          row->field08 = row->field08 + 1;
         }
       }
       col = col + 1;
@@ -1096,9 +1043,8 @@ void TTradeMgr::BuildSecondaryNationMetricBucketsAndWeightedTrendScores() {
       rem = rem + -1;
     } while (rem != 0);
     metricSlot = metricSlot + 1;
-    cellBase = cellBase + 0x50;
-    negCursor = negCursor + 0x50;
-  } while (static_cast<short>(metricSlot) < 0x19);
+    row = row + 1;
+  } while (static_cast<short>(metricSlot) < 0x11);
 }
 
 // FUNCTION: IMPERIALISM 0x005b9f30

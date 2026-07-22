@@ -35,7 +35,7 @@ public:
   // Introduced virtuals (slots 0x0a-0x22), declared in slot order so the compiler lays
   // out vtable 0x66d990 correctly. All carry real, ported bodies (dispatches resolved to
   // real virtuals on the recovered receiver classes).
-  virtual void OrphanCallChain_C3_I50_005b7fc0();                     // 0x0a 0x5b7fc0
+  virtual void ResetNationMetricRowsAndClearCategoryRankLists();      // 0x0a 0x5b7fc0
   virtual void AccumulateDiplomacyRelationChangesAndQueueEvents();    // 0x0b 0x5b8080
   virtual void DispatchNationMetricUpdatePassForAllSlots();           // 0x0c 0x5b8aa0
   virtual void ComputeNationMetricBaselineValueForSlot(short slot);   // 0x0d 0x5b8ad0
@@ -49,7 +49,7 @@ public:
   virtual short QueryProposalWeightSlot4C(short metricSlot);                      // 0x13 0x5b8fe0
   virtual short GetNationMetricBucketValueByIndex(short category);                // 0x14 0x5b9030
   virtual void ApplyDiplomacyTransferEffectsAcrossNationMetricRoster(short slot); // 0x15 0x5b9060
-  virtual void ProcessPendingDiplomacyTransferEntriesUntilBlockedWrapper();       // 0x16 0x5b9190
+  virtual void InitializePendingDiplomacyTransferCursorAndProcess();              // 0x16 0x5b9190
   virtual void RebuildNationMetricPassesAndClampRowsByBaseline();                 // 0x17 0x5b9410
   virtual void DispatchProposalAmountSlot60(short ownerNation, int sourceContext, int amount,
                                             int maxAmount, int targetNation, char emitEventFlag,
