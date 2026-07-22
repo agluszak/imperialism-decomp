@@ -503,6 +503,27 @@ void TNavyMgr::DeserializeNavyOrderListsByNation(TStream* stream, short nationFi
   }
 }
 
+// Mac oracle: TNavyMgr::FreeShipsOf(short).
+// FUNCTION: IMPERIALISM 0x00556f60
+void TNavyMgr::FreeShipsOf(short nation) {
+  while (orderListHead04 != 0) {
+    TTaskForce* matching = orderListHead04;
+    while (matching != 0 && matching->required_count != nation) {
+      matching = matching->queue_next;
+    }
+    if (matching == 0) {
+      break;
+    }
+    matching->CancelOrders(1);
+  }
+
+  for (TShip* ship = g_pNavyPrimaryOrderListHead; ship != 0; ship = ship->nextOlder24) {
+    if (ship->ownerNationSlot14 == nation) {
+      ship->field34 = 0;
+    }
+  }
+}
+
 // FUNCTION: IMPERIALISM 0x00556fd0
 void TNavyMgr::ResetPrimaryOrderActiveFlagsAndClearManagerState() {
   for (TShip* ship = g_pNavyPrimaryOrderListHead; ship != nullptr; ship = ship->nextOlder24) {

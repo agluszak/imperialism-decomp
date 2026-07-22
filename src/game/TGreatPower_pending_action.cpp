@@ -60,7 +60,7 @@ void TGreatPower::ExecuteNationPendingActionStateMachine(void) {
     ++cityPtr->orderCountByType5c[g_pCityOrderCapabilityState->activeZoneIndex1d4];
 
     TAdmiral* secondaryNode = new TAdmiral(nationSlot);
-    secondaryNode->SetTaskForcePrimaryOrderLinkAndRefreshChildBacklinks(primaryOrder);
+    secondaryNode->AssignToShip(primaryOrder);
 
     this->DispatchTurnOrderActionSlotB0(3, 0x2508, 1);
     this->DispatchTurnOrderActionSlotB0(0, g_pCityOrderCapabilityState->activeZoneIndex1d4, 1);

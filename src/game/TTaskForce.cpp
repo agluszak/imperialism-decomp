@@ -938,6 +938,37 @@ void TTaskForce::FindOrCreateChildOrderLink(TShip* node) {
   }
 }
 
+// Mac oracle: TTaskForce::Remove(TShip*).
+// FUNCTION: IMPERIALISM 0x00553d40
+void TTaskForce::Remove(TShip* ship) {
+  TMapOrderChildLinkNode* matchingLink;
+  if (childOrderList == 0) {
+    matchingLink = 0;
+  } else if (childOrderList->payload != ship) {
+    matchingLink = childOrderList->next->FindNodeMatching(ship);
+  } else {
+    matchingLink = childOrderList;
+  }
+
+  if (matchingLink != 0) {
+    if (childOrderList != 0) {
+      if (childOrderList->payload == ship) {
+        childOrderList = childOrderList->DeleteMapOrderChildLinkAndReturnNext();
+      } else {
+        childOrderList->next->RemoveLinkedOrderNodeByValueRecursive(ship);
+      }
+    }
+    short bucketIndex = static_cast<short>(
+        g_NavyOrderResourceDescriptorTable[ship->resourceType04].enabledFlagOrBucketOffset);
+    --shipCountsByClass[bucketIndex];
+  }
+
+  if (ship == activeChildEntry) {
+    RecomputeMapOrderChildAggregateMetric();
+  }
+  ship->ownerOrderEntry0c = 0;
+}
+
 // FUNCTION: IMPERIALISM 0x00553e30
 void TTaskForce::RecomputeMapOrderChildAggregateMetric() {
   activeChildEntry = nullptr;
@@ -1025,6 +1056,109 @@ char TTaskForce::PruneInactiveTaskForceOrderHead() {
     return 1;
   }
   return 0;
+}
+
+// Mac oracle: TTaskForce::SubmitOrders(eShipOrders, void*). The second argument is
+// stored in the attachment-keyed owner union for order kinds that carry a context.
+// FUNCTION: IMPERIALISM 0x005540b0
+void TTaskForce::SubmitOrders(int orderType, int orderArgument) {
+  switch (orderType) {
+  case 1:
+    attachment = 1;
+    owner.raw = orderArgument;
+    RebuildMapOrderEntryChildren();
+    AssertValid();
+    if (g_pNavyOrderManager->MoveMapOrderEntryToQueueHeadIfValid(this)) {
+      g_pActiveMapOrderContext->FinalizeQueuedMapOrderEntry(this);
+    }
+    return;
+
+  case 3:
+    attachment = 3;
+    RebuildMapOrderEntryChildren();
+    AssertValid();
+    if (g_pNavyOrderManager->MoveMapOrderEntryToQueueHeadIfValid(this)) {
+      g_pActiveMapOrderContext->FinalizeQueuedMapOrderEntry(this);
+    }
+    return;
+
+  case 5: {
+    attachment = 5;
+    owner.raw = orderArgument;
+    RebuildMapOrderEntryChildren();
+    AssertValid();
+
+    TTaskForce* cursor;
+    for (cursor = g_pNavyOrderManager->orderListHead04; cursor != 0; cursor = cursor->queue_next) {
+      if (cursor == this) {
+        break;
+      }
+    }
+
+    bool queued;
+    if (cursor != 0) {
+      queued = true;
+    } else if (static_cast<short>(GetMapOrderEntryChildCount()) < 1) {
+      Free();
+      queued = false;
+    } else {
+      RelinkMapOrderQueueNodeBetween(0, g_pNavyOrderManager->orderListHead04);
+      g_pNavyOrderManager->orderListHead04 = this;
+      queued = true;
+    }
+    if (queued) {
+      g_pActiveMapOrderContext->FinalizeQueuedMapOrderEntry(this);
+    }
+    return;
+  }
+
+  case 6:
+    attachment = 6;
+    owner.raw = orderArgument;
+    RebuildMapOrderEntryChildren();
+    AssertValid();
+    if (g_pNavyOrderManager->MoveMapOrderEntryToQueueHeadIfValid(this)) {
+      g_pActiveMapOrderContext->FinalizeQueuedMapOrderEntry(this);
+    }
+    return;
+
+  case 7:
+  case 8: {
+    attachment = orderType;
+    activeChildEntry = 0;
+    TMapOrderChildLinkNode* link = childOrderList;
+    while (link != 0) {
+      if (link->active == 0) {
+        TShip* ship = static_cast<TShip*>(link->payload);
+        ship->SetOwnerOrderEntryAndCacheType(0);
+        short bucketIndex = static_cast<short>(
+            g_NavyOrderResourceDescriptorTable[ship->resourceType04].enabledFlagOrBucketOffset);
+        --shipCountsByClass[bucketIndex];
+        if (link == childOrderList) {
+          childOrderList = link->next;
+        }
+        link = link->DeleteMapOrderChildLinkAndReturnNext();
+      } else {
+        link = link->next;
+      }
+    }
+    RecomputeMapOrderChildAggregateMetric();
+    AssertValid();
+    if (g_pNavyOrderManager->MoveMapOrderEntryToQueueHeadIfValid(this)) {
+      g_pActiveMapOrderContext->FinalizeQueuedMapOrderEntry(this);
+    }
+    return;
+  }
+
+  case 9:
+    attachment = 9;
+    RebuildMapOrderEntryChildren();
+    AssertValid();
+    if (g_pNavyOrderManager->MoveMapOrderEntryToQueueHeadIfValid(this)) {
+      g_pActiveMapOrderContext->FinalizeQueuedMapOrderEntry(this);
+    }
+    return;
+  }
 }
 
 // Resolves the action-context map-order command id from the entry's active order context
@@ -1384,6 +1518,48 @@ void TTaskForce::BuildTaskForceSelectionOverlayLabelText(CString* out) {
   scanBracketExpressions(g_pSimMgr, out, static_cast<LPCSTR>(unitCountTemplate),
                          static_cast<LPCSTR>(terrainOwnerLabel), static_cast<LPCSTR>(contextLabel),
                          static_cast<LPCSTR>(childCountText), static_cast<LPCSTR>(orderKindLabel));
+}
+
+// Mac oracle: TTaskForce::GetGeneralDescription(CStr255&) const.
+// FUNCTION: IMPERIALISM 0x00554e70
+void TTaskForce::GetGeneralDescription(CString* out) const {
+  *out = g_szEmptyString;
+
+  CString contextText;
+  *out += " of ";
+
+  int childCount = 0;
+  for (TMapOrderChildLinkNode* link = childOrderList; link != 0; link = link->next) {
+    ++childCount;
+  }
+
+  contextText.Format(g_szDecimalFormat, childCount);
+  *out += contextText + s_szSpaceSeparator_00695794;
+  contextText = g_szEmptyString;
+
+  switch (static_cast<short>(attachment)) {
+  case 1:
+    *out += "sailing to ";
+    owner.asZone->AssignZoneDisplayNameToOutputRef(&contextText);
+    break;
+  case 3:
+    *out += "patrolling";
+    break;
+  case 5:
+    *out += "invading ";
+    contextText = owner.asCityTarget->cityNameA4;
+    break;
+  case 6:
+    *out += "blockading";
+    break;
+  case 7:
+    *out += "escorting";
+    break;
+  default:
+    *out += "swabbing the decks";
+    break;
+  }
+  *out += contextText;
 }
 
 // Tail-recursive queue_next walk (ResolveMapOrderChainsForTurnPhase's rebuild-head
