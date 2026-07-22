@@ -68,6 +68,9 @@ public:
   // 0x556ad0 - receive-side twin of SerializeNavyOrderListsByNation: rebuild the three
   // navy order lists from the stream for `nationFilter` (-1 = all nations).
   void DeserializeNavyOrderListsByNation(TStream* stream, short nationFilter);
+  // Mac oracle: FreeShipsOf(short). Cancels every queued task force for the nation,
+  // then clears the transient primary-order flags on that nation's ships.
+  void FreeShipsOf(short nation); // 0x556f60
   // 0x557170. Walks orderListHead04 (the same raw task-force-order node list
   // RemoveMatchingTaskForceOrders in the .cpp already indexes via node[7]=
   // nationSlot@+0x1c, node[0xb]=next@+0x2c); matches nodes with orderType@+0x8==5,
