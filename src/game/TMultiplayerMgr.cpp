@@ -553,30 +553,6 @@ struct TurnEvent13NationPayloadPacket : TimelyMessageHeader {
   int payloadDwords1C[9]; // +0x1c, total 0x40
 };
 
-// Event-0x14 nation-metric delta.
-struct TurnEvent14NationMetricPacket : TimelyMessageHeader {
-  short nationSlot18; // +0x18
-  unsigned char pad1a[2];
-  int amount1C; // +0x1c, total 0x20
-};
-
-// Event-0x16 diplomacy proposal for one nation.
-struct TurnEvent16DiplomacyProposalPacket : TimelyMessageHeader {
-  short nationSlot18;     // +0x18
-  short proposalCode1A;   // +0x1a
-  short targetNationId1C; // +0x1c
-  unsigned char pad1e[2]; // total 0x20
-};
-
-// Event-0x17 proposal resolution (accept/decline).
-struct TurnEvent17ProposalResolutionPacket : TimelyMessageHeader {
-  short nationSlot18;           // +0x18
-  unsigned char acceptedFlag1A; // +0x1a
-  unsigned char pad1b;
-  short proposalIndex1C;  // +0x1c
-  unsigned char pad1e[2]; // total 0x20
-};
-
 // Event-0x18 host broadcast of all seven great powers' diplomacy arrays (same shape as
 // the dispatcher TU emit-side copy).
 struct TurnEvent18DiplomacyArraysPacketM : NetMessage {
@@ -968,7 +944,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
         static_cast<TurnEventBNationDirectoryPacketM*>(packet);
     for (int dirSlot = 0; dirSlot < 0x17; ++dirSlot) {
       if (dirSlot != g_pSimMgr->GetActiveNationId() &&
-          g_apTerrainTypeDescriptorTable[dirSlot]->ShouldDispatchImmediatelySlot28() != 0) {
+          g_apTerrainTypeDescriptorTable[dirSlot]->IsRemote() != 0) {
         g_apTerrainTypeDescriptorTable[dirSlot]->SetNationSelectedRegionAndMapCellLabel(
             directory->homeTileBySlot[dirSlot], directory->cityNameBySlot[dirSlot]);
         {
@@ -1660,8 +1636,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     // Add the amount to the terrain-slot nation's field-0x10 metric.
     TurnEvent14NationMetricPacket* metricDelta =
         static_cast<TurnEvent14NationMetricPacket*>(packet);
-    g_apTerrainTypeDescriptorTable[metricDelta->nationSlot18]->AddToNationMetricAtField10(
-        metricDelta->amount1C);
+    g_apTerrainTypeDescriptorTable[metricDelta->nationSlot18]->AddToTreasury(metricDelta->amount1C);
     break;
   }
   case 0x15: {
@@ -1807,11 +1782,9 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     TurnEvent17ProposalResolutionPacket* resolution =
         static_cast<TurnEvent17ProposalResolutionPacket*>(packet);
     if (resolution->acceptedFlag1A != 0) {
-      g_apNationStates[resolution->nationSlot18]->ApplyAcceptedDiplomacyProposalCode(
-          resolution->proposalIndex1C);
+      g_apNationStates[resolution->nationSlot18]->AcceptOffer(resolution->proposalIndex1C);
     } else {
-      g_apNationStates[resolution->nationSlot18]->QueueInterNationEventForProposalCode12D_130(
-          resolution->proposalIndex1C);
+      g_apNationStates[resolution->nationSlot18]->RejectOffer(resolution->proposalIndex1C);
     }
     break;
   }
@@ -1909,7 +1882,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
       return 1;
     }
     case 0x6c6f7365: // 'lose' - the named nation lost
-      g_apNationStates[gameState->value1C]->HandleNationLost();
+      g_apNationStates[gameState->value1C]->SorryYouLose();
       return 1;
     case 0x666f6666: { // 'foff' - seat refused: show string[value1C], post the cancel command
       CString messageFoff;
@@ -1987,10 +1960,9 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
         hostCanSeatEmptySlot = 1;
       }
       if (repoSlot >= 0 && repoSlot < 7 &&
-          (hostCanSeatEmptySlot != 0 ||
-           (g_apNationStates[repoSlot] != 0 &&
-            (packet->fromNetworkId == GetSessionActiveNationId() ||
-             g_apNationStates[repoSlot]->ShouldDispatchImmediatelySlot28() != 0)))) {
+          (hostCanSeatEmptySlot != 0 || (g_apNationStates[repoSlot] != 0 &&
+                                         (packet->fromNetworkId == GetSessionActiveNationId() ||
+                                          g_apNationStates[repoSlot]->IsRemote() != 0)))) {
         LobbyChatEvent9Packet seatAnnounce;
         seatAnnounce.messageTag = 0x74696d65; // 'time'
         seatAnnounce.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
@@ -2054,7 +2026,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
       return 1;
     case 0x74726164: { // 'trad' - reset diplomacy level: packed (nationSlot << 16 | level)
       int tradeCode = gameState->value1C;
-      g_apNationStates[g_pSimMgr->GetActiveNationId()]->ResetDiplomacyLevelForNationSlot12(
+      g_apNationStates[g_pSimMgr->GetActiveNationId()]->SetTradePolicyTo(
           static_cast<short>(static_cast<unsigned int>(tradeCode) >> 0x10),
           static_cast<short>(tradeCode));
       return 1;

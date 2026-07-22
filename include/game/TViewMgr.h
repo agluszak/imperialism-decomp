@@ -70,8 +70,8 @@ public:
   virtual void HandleTurnEvent7DE_RefreshTradeDiplomacyCityTransportSummary(int eventCode); // 0x84
   virtual void ShowAbilityStatusReport(int abilityIndex); // 0x88 0x5d8980 (ret 4)
   virtual void NoOpTurnEventStateVtableSlot8C(int arg);   // 0x8c
-  virtual char PoseDiplomacyOffer(int sourceNation, int targetNation,
-                                  int proposalCode); // 0x90
+  virtual char MakeDiplomacyOfferDialog(short sourceNation, short targetNation,
+                                        short proposalCode); // 0x90
   virtual char PoseWarOfferIfTurnFlowReady(int sourceNation, int arg1, int arg2,
                                            int promptCode); // 0x94
   virtual void DispatchNationActionToMainControl(int sourceNation, int arg1, int arg2, int arg3,

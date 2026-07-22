@@ -114,7 +114,7 @@ void TMinor::InitializeSecondaryNationStateAndSelectHomeTile(short nationSlot) {
   }
 
   if (g_bMultiplayerScenarioSetupActive == 0) {
-    char noImmediateDispatch = ShouldDispatchImmediatelySlot28() == 0;
+    char noImmediateDispatch = IsRemote() == 0;
     if (noImmediateDispatch || g_pSimMgr->scenarioMapIndexPlusOne != 0) {
       TLongintList* candidateTiles = new TLongintList();
       short selectedTile = -1;
@@ -667,9 +667,9 @@ char TMinor::TryDispatchNationActionViaUiContextOrFallback(int arg1, int arg2, i
 }
 
 // FUNCTION: IMPERIALISM 0x004e4fa0
-void TMinor::ResetDiplomacyLevelForNationSlot12(NationSlot nationSlot, int resetLevel) {
+void TMinor::SetTradePolicyTo(NationSlot nationSlot, short tradePolicy) {
   short targetNationSlot = static_cast<short>(nationSlot);
-  short policyValue = static_cast<short>(resetLevel);
+  short policyValue = tradePolicy;
   if (targetNationSlot != this->nationSlot) {
     if (policyValue != this->needLevelByNation[targetNationSlot]) {
       this->needLevelByNation[targetNationSlot] = policyValue;
@@ -681,7 +681,7 @@ void TMinor::ResetDiplomacyLevelForNationSlot12(NationSlot nationSlot, int reset
 }
 
 void TMinor::SetDiplomacyStandingSlot48(int targetNation, int standing) {
-  this->ResetDiplomacyLevelForNationSlot12(static_cast<NationSlot>(targetNation), standing);
+  this->SetTradePolicyTo(static_cast<NationSlot>(targetNation), standing);
 }
 
 char TMinor::HasMinorStandingLinkSlot5C(int sourceNation) {
@@ -769,7 +769,7 @@ void TMinor::QueueDiplomacyProposalCodeForTargetNation(short proposalCode, short
     if (canPropose != 0) {
       if (g_pDiplomacyTurnStateManager->HasAllianceGuardSlot60(this->nationSlot, targetNation) ==
           0) {
-        this->ResetDiplomacyLevelForNationSlot12(static_cast<NationSlot>(targetNation), 1);
+        this->SetTradePolicyTo(static_cast<NationSlot>(targetNation), 1);
         g_pInterNationEventQueueManager->QueueInterNationEventRecordDeduped(3, this->nationSlot,
                                                                             targetNation, 0);
         return;
@@ -932,16 +932,14 @@ void TMinor::SetNationTransferTargetCodeAndNotifyEligiblePeers(int targetNationS
       if (standingNationSlot == targetNationSlot) {
         this->SetDiplomacyStandingSlot48(standingNationSlot, 100);
         if (g_apNationStates[standingNationSlot] != 0) {
-          g_apNationStates[standingNationSlot]->ResetDiplomacyLevelForNationSlot12(this->nationSlot,
-                                                                                   100);
+          g_apNationStates[standingNationSlot]->SetTradePolicyTo(this->nationSlot, 100);
           g_apNationStates[standingNationSlot]->SetDiplomacyGrantEntryForTargetAndUpdateTreasury(
               this->nationSlot, static_cast<unsigned short>(-1));
         }
       } else {
         this->SetDiplomacyStandingSlot48(standingNationSlot, 300);
         if (g_apNationStates[standingNationSlot] != 0) {
-          g_apNationStates[standingNationSlot]->ResetDiplomacyLevelForNationSlot12(this->nationSlot,
-                                                                                   300);
+          g_apNationStates[standingNationSlot]->SetTradePolicyTo(this->nationSlot, 300);
         }
       }
     }
@@ -1000,9 +998,9 @@ void TMinor::SetNationRowDisplayValueByDiplomacyPredicate(short targetNationSlot
          (g_apNationStates[targetNationSlot] != 0 &&
           reinterpret_cast<unsigned char*>(
               g_apNationStates[targetNationSlot])[0x918 + nationSlot] == 0))) {
-      this->ResetDiplomacyLevelForNationSlot12(static_cast<NationSlot>(nationSlot), 100);
+      this->SetTradePolicyTo(static_cast<NationSlot>(nationSlot), 100);
     } else {
-      this->ResetDiplomacyLevelForNationSlot12(static_cast<NationSlot>(nationSlot), 300);
+      this->SetTradePolicyTo(static_cast<NationSlot>(nationSlot), 300);
     }
   }
 }

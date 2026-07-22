@@ -21,7 +21,7 @@ public:
   void WriteTo(TStream* stream) override;
   void ReadFrom(TStream* stream) override;
 
-  void ResetDiplomacyLevelForNationSlot12(NationSlot nationSlot, int resetLevel) override;
+  void SetTradePolicyTo(NationSlot nationSlot, short tradePolicy) override;
   void SetNationTransferTargetCodeAndNotifyEligiblePeers(int targetNationSlot) override;
   void ApplyJoinEmpireMode1TargetTransition(int targetNationSlot) override;
   void ApplyJoinEmpireMode2FinalizeNationNameState(void) override;

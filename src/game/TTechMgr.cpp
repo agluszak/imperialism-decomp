@@ -225,7 +225,7 @@ void TTechMgr::CheckForAdvances() {
       if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(static_cast<short>(nationSlot)) != 0 &&
           nation->diplomacyEligibilityA0 == 0 &&
           orderCapRows277[nationSlot].techStatusByTechId[techId] != 2) {
-        nation->AddToNationMetricAtField10(-g_anTechItemPurchaseCostBySlot_0066aae8[techId]);
+        nation->AddToTreasury(-g_anTechItemPurchaseCostBySlot_0066aae8[techId]);
         orderCapRows277[nationSlot].techStatusByTechId[techId] = 1;
         capRowsE4a6[nationSlot].completionYearOffsetByTechId[techId] =
             static_cast<short>(g_pSimMgr->economicTurn / 4);
@@ -252,7 +252,7 @@ void TTechMgr::ApplyTechUnlockAndQueueNationAbilityNotices(int techId, int force
     }
     ++nationCursor;
     ++nationSlot;
-  } while (reinterpret_cast<int>(nationCursor) < reinterpret_cast<int>(&g_apNationStates_End));
+  } while (nationCursor < &g_apNationStates_End);
 }
 
 // Applies a technology-unlock id to the city-order capability state: records the active tech
@@ -650,13 +650,12 @@ void TTechMgr::SelectMissingTechItemPrerequisitesFromPair(int techId, int nation
 }
 
 // Purchases a tech-item slot for a nation: spends the slot's cost from the nation's
-// field-0x10 metric (AddToNationMetricAtField10 with the negated cost), marks the slot
+// field-0x10 metric (AddToTreasury with the negated cost), marks the slot
 // status byte 1 in the nation's orderCapRows277 row, and stamps the current quarter
 // tick / 4 into the parallel capRowsE4a6 word.
 // FUNCTION: IMPERIALISM 0x005b0b30
 void TTechMgr::ApplyTechItemPurchaseCostAndState(int slot, int nationIndex) {
-  g_apNationStates[nationIndex]->AddToNationMetricAtField10(
-      -g_anTechItemPurchaseCostBySlot_0066aae8[slot]);
+  g_apNationStates[nationIndex]->AddToTreasury(-g_anTechItemPurchaseCostBySlot_0066aae8[slot]);
   orderCapRows277[nationIndex].techStatusByTechId[slot] = 1;
   capRowsE4a6[nationIndex].completionYearOffsetByTechId[slot] =
       static_cast<short>(g_pSimMgr->economicTurn / 4);
@@ -666,8 +665,7 @@ void TTechMgr::ApplyTechItemPurchaseCostAndState(int slot, int nationIndex) {
 // nation's field-0x10 metric and clears both the status byte and the capRowsE4a6 word.
 // FUNCTION: IMPERIALISM 0x005b0bb0
 void TTechMgr::RefundTechItemPurchaseCostAndClearState(int slot, int nationIndex) {
-  g_apNationStates[nationIndex]->AddToNationMetricAtField10(
-      g_anTechItemPurchaseCostBySlot_0066aae8[slot]);
+  g_apNationStates[nationIndex]->AddToTreasury(g_anTechItemPurchaseCostBySlot_0066aae8[slot]);
   orderCapRows277[nationIndex].techStatusByTechId[slot] = 0;
   capRowsE4a6[nationIndex].completionYearOffsetByTechId[slot] = 0;
 }

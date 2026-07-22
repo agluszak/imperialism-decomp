@@ -269,7 +269,7 @@ void TAutoGreatPower::WriteTo(TStream* stream) {
 }
 
 // FUNCTION: IMPERIALISM 0x004e7510
-void TAutoGreatPower::HandleNationLost(void) {
+void TAutoGreatPower::SorryYouLose(void) {
   if (g_pSimMgr->difficultyLevel != 0) {
     g_pGameFlowState->DispatchTaggedGameStateEvent1F20(0x6c6f7374, this->nationSlot, -3);
   }
@@ -477,7 +477,7 @@ void TAutoGreatPower::QueueDiplomacyProposalCodeForTargetNation(short proposalCo
 }
 
 // FUNCTION: IMPERIALISM 0x004e7be0
-void TAutoGreatPower::ProcessPendingDiplomacyProposalQueue(void) {
+void TAutoGreatPower::ReplyToDiplomacyOffers(void) {
   if (this->city == 0) {
     return;
   }

@@ -457,7 +457,7 @@ bool TCivMgr::QueueCivilianWorkOrderWithCostCheck(short nTileIndex) {
   }
 
   selectedEntry->completionMarker26 = sfxCode;
-  g_apNationStates[g_pSimMgr->GetActiveNationId()]->AddToNationMetricAtField10(-cost);
+  g_apNationStates[g_pSimMgr->GetActiveNationId()]->AddToTreasury(-cost);
   g_pUiRuntimeContext->RefreshMainViewNationIndicatorForCurrentTurnEvent();
   return true;
 }
@@ -492,7 +492,7 @@ bool TCivMgr::PromptAndQueueDeveloperTilePurchaseOrder(short nTileIndex) {
       this->RelinkCivilianOrderTileAndInvalidateMapTiles(
           nTileIndex, g_pSelectedCivilianOrderState->selectedEntry);
       g_pSfxPlaybackSystem->PlaySoundEffect(0x2335, 0, 1);
-      g_apNationStates[g_pSimMgr->GetActiveNationId()]->AddToNationMetricAtField10(-purchaseCost);
+      g_apNationStates[g_pSimMgr->GetActiveNationId()]->AddToTreasury(-purchaseCost);
       g_pUiRuntimeContext->RefreshMainViewNationIndicatorForCurrentTurnEvent();
 
       unsigned int feedbackStartTick = GetTickCountDiv16();
@@ -722,7 +722,7 @@ void TCivMgr::ResolveCivilianDisputes() {
       if (g_apNationStates[losingNationSlot]->diplomacyEligibilityA0 != 0) {
         TLandSaleEvent* event = new TLandSaleEvent();
         event->ILandSaleEvent(static_cast<short>(tileIndex), winningOrder->field_18);
-        g_apNationStates[losingNationSlot]->AddNodeToMissionNodeQueue(event);
+        g_apNationStates[losingNationSlot]->AddTurnStartEvent(event);
       }
     }
   }

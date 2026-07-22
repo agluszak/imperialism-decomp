@@ -34,11 +34,11 @@ public:
   virtual void ReadCoreFieldsFromStream(TStream* stream, int unusedArg);
   virtual void SeedInitialMilitaryAndNavyOrdersForOwnedRegions(void);
   virtual void CreateMilitaryRecruitOrderForNode(int nodeContext);
-  virtual void AddToNationMetricAtField10(int amount);
+  virtual void AddToTreasury(int amount);
   virtual void AssignDisplayNamesToUnnamedMilitaryUnits(void);
   virtual int GetHomeRegionCityRecordIndex(void);
   virtual void QueueRecruitOrdersForUndergarrisonedRegions(void);
-  virtual void ResetDiplomacyLevelForNationSlot12(NationSlot nationSlot, int resetLevel);
+  virtual void SetTradePolicyTo(NationSlot nationSlot, short tradePolicy);
   virtual void ApplyJoinEmpireModeForTargetNation(int targetNationSlot, int mode);
   virtual void SetNationTransferTargetCodeAndNotifyEligiblePeers(int targetNationSlot);
   virtual void ApplyJoinEmpireMode1TargetTransition(int targetNationSlot);
@@ -78,9 +78,9 @@ public:
   virtual void QueueDiplomacyProposalCodeForTargetNation(short proposalCode, short targetNationId);
   virtual char ReturnFalseNationStateCapabilityFlag90(short arg);
   virtual void NotifyActionSlot94(int sourceNation, int actionCode);
-  virtual char ReturnFalseNationStateCapabilityFlag98(void);
-  virtual char ReturnFalseNationStateCapabilityFlag9C(void);
-  virtual char ShouldDispatchImmediatelySlot28(void);
+  virtual char IsClient(void);
+  virtual char IsHost(void);
+  virtual char IsRemote(void);
   virtual void SetNationSelectedRegionAndMapCellLabel(short selectedRegion, char* mapCellLabel);
 
   int SumWeightedNeighborLinkScoreForLinkedNodes(void);

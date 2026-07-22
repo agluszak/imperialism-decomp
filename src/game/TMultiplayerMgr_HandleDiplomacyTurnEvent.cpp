@@ -170,7 +170,7 @@ void TMultiplayerMgr::HandleTurnResumeStateTelemetry() {
   if (hosting != 0) {
     for (int slot = 0; slot < 7; ++slot) {
       TGreatPower* nation = g_apNationStates[slot];
-      if (nation == 0 || nation->ReturnFalseNationStateCapabilityFlag98() == 0) {
+      if (nation == 0 || nation->IsClient() == 0) {
         pendingNationBitmask &= ~(1 << slot);
       }
     }
@@ -551,7 +551,7 @@ void TMultiplayerMgr::HandleDiplomacyTurnEventPacketByCode() {
 
     for (int snapshotSlot = 0; snapshotSlot < 7; ++snapshotSlot) {
       TGreatPower* nation = g_apNationStates[snapshotSlot];
-      if (nation != 0 && nation->ShouldDispatchImmediatelySlot28() != 0) {
+      if (nation != 0 && nation->IsRemote() != 0) {
         EmitNationDiplomacyNeedStateSnapshotEvent15(0, snapshotSlot);
       }
     }
@@ -618,8 +618,8 @@ void TMultiplayerMgr::HandleTurnEventCodes28_2E_2F_30_31_32(TStream* stream) {
           short nationCode = stream->ReadShort();
           TLandSaleEvent* saleEvent = new TLandSaleEvent();
           saleEvent->ILandSaleEvent(tileIndex, nationCode);
-          g_apNationStates[static_cast<short>(g_pSimMgr->GetActiveNationId())]
-              ->AddNodeToMissionNodeQueue(saleEvent);
+          g_apNationStates[static_cast<short>(g_pSimMgr->GetActiveNationId())]->AddTurnStartEvent(
+              saleEvent);
         }
       }
     } else {

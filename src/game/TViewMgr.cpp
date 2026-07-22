@@ -933,7 +933,8 @@ void TViewMgr::HandleTurnEventDialogFactorySlot80(int eventCode) {
 }
 
 // FUNCTION: IMPERIALISM 0x005d7090
-char TViewMgr::PoseDiplomacyOffer(int sourceNation, int targetNation, int proposalCode) {
+char TViewMgr::MakeDiplomacyOfferDialog(short sourceNation, short targetNation,
+                                        short proposalCode) {
   TView* activeDialog = g_pDisplayMgr->activeDialog;
   DispatchTurnEvent(0x7d8, sourceNation);
   TDiplomacyMapView* mainView =
@@ -1539,7 +1540,7 @@ void TViewMgr::HandleTurnEvent7D9Or7DA_UpdateNationResourceAdvisor(int) {
   }
 
   const short activeNationId = g_pSimMgr->GetActiveNationId();
-  g_apNationStates[activeNationId]->ReturnFalseNationStateCapabilityFlag9C();
+  g_apNationStates[activeNationId]->IsHost();
   this->fieldEc = 0;
   for (short metricSlot = 0; metricSlot < 0x11; ++metricSlot) {
     if (g_apNationStates[activeNationId]->QueryNationMetricBySlot7C(metricSlot) == -1) {

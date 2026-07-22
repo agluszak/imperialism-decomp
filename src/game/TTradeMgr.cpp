@@ -721,7 +721,7 @@ void TTradeMgr::RefreshNationStateAndEmitTurnEvent3Mode18() {
       (*nationCursor)->ClearDiplomacyState1c6Block();
     }
     ++nationCursor;
-  } while (nationCursor < reinterpret_cast<TGreatPower**>(&g_apNationStates_End));
+  } while (nationCursor < &g_apNationStates_End);
 
   short* rowCursor = &categoryRows[0].cells18[46];
   int rowCount = 0x11;

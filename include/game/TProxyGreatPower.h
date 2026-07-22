@@ -20,12 +20,12 @@ public:
   // slot 0x0b SelectCandidateTilesWithLowGroundUnitCount_0b inherited unchanged (0x4da3e0)
   // slot 0x0c SeedRecruitAndNavyOrdersForEligibleCoastalCities inherited unchanged (0x4d71b0)
   // slot 0x0d CreateAndDispatchMilitaryRecruitOrderForNationSlot inherited unchanged (0x4d7770)
-  virtual void AddToNationMetricAtField10(int amount) override; // slot 0x0e 0x540a00
+  virtual void AddToTreasury(int amount) override; // slot 0x0e 0x540a00
   // slot 0x0f PopulateSelectableEntryFlavorTextAndOrdinals inherited unchanged (0x4d8000)
   // slot 0x10 OrphanLeaf_NoCall_Ins06_004d87b0 inherited unchanged (0x4d87b0)
   // slot 0x11 SelectCandidateTilesWithLowGroundUnitCount_11 inherited unchanged (0x4d87e0)
-  void ResetDiplomacyLevelForNationSlot12(NationSlot nationSlot,
-                                          int resetLevel) override; // slot 0x12 0x540c20
+  void SetTradePolicyTo(NationSlot nationSlot,
+                        short tradePolicy) override; // slot 0x12 0x540c20
   // slot 0x13 ApplyJoinEmpireModeForTargetNation inherited unchanged (0x4e21b0)
   // slot 0x14 SetNationTransferTargetCodeAndNotifyEligiblePeers inherited unchanged (0x4de860)
   // slot 0x15 ApplyJoinEmpireMode1TargetTransition inherited unchanged (0x4d7c90)
@@ -48,16 +48,16 @@ public:
                                             short targetNationId) override; // slot 0x23 0x540ac0
   // slot 0x24 ReturnFalseNationStateCapabilityFlag90 inherited unchanged (0x4d7f60)
   // slot 0x25 OrphanRetStub_004d7f80 inherited unchanged (0x4dedf0)
-  virtual char ReturnFalseNationStateCapabilityFlag98() override; // slot 0x26 0x5408c0
-  // slot 0x27 ReturnFalseNationStateCapabilityFlag9C inherited unchanged (0x4d6750)
-  char ShouldDispatchImmediatelySlot28(void) override; // slot 0x28 0x5408e0
+  virtual char IsClient() override; // slot 0x26 0x5408c0
+  // slot 0x27 IsHost inherited unchanged (0x4d6750)
+  char IsRemote(void) override; // slot 0x28 0x5408e0
   // slot 0x29 NoOpNationSelectedRegionAndMapCellLabelHook inherited unchanged (0x4d6790)
   // slot 0x2a NoOpNationPendingActionHook inherited unchanged (0x4da5c0)
   // slot 0x2b PromoteNationPendingActionSlot5IfCapabilityActive inherited unchanged (0x4da860)
   // slot 0x2c AdvanceNationPendingActionStateMachine inherited unchanged (0x4da8a0)
   // slot 0x2d DispatchNationPendingActionEventCodes inherited unchanged (0x4da5e0)
   // slot 0x2e SetNationPendingActionStateAndPayload inherited unchanged (0x4daa10)
-  void AddNodeToMissionNodeQueue(void* node) override; // slot 0x2f 0x540c70
+  void AddTurnStartEvent(TTurnStartEvent* event) override; // slot 0x2f 0x540c70
   // slot 0x30 ClearQueuedNationOrdersAndResetOrderManager_30 inherited unchanged (0x4daa80)
   // slot 0x31 NoOpNationQueuedOrderHook inherited unchanged (0x4dab00)
   // slot 0x32 ExecuteNationPendingActionStateMachine inherited unchanged (0x4dab20)
@@ -134,13 +134,13 @@ public:
   // 0x78 OrphanLeaf_NoCall_Ins06_004d87b0 inherited unchanged (0x4de7e0) slot 0x79
   // SelectCandidateTilesWithLowGroundUnitCount_79 inherited unchanged (0x4deca0) slot 0x7a
   // CanAffordAdditionalDiplomacyCostAfterCommitments inherited unchanged (0x4de790) slot 0x7b
-  // ApplyAcceptedDiplomacyProposalCode inherited unchanged (0x4df010) slot 0x7c
-  // QueueInterNationEventForProposalCode12D_130 inherited unchanged (0x4df370) slot 0x7d
+  // AcceptOffer inherited unchanged (0x4df010) slot 0x7c
+  // RejectOffer inherited unchanged (0x4df370) slot 0x7d
   // ApplyJoinEmpireMode1TargetTransition inherited unchanged (0x4df4b0) slot 0x7e
   // ResetNationDiplomacyProposalQueue inherited unchanged (0x4df580) slot 0x7f
   // IsDiplomacyTargetClassCode200Match inherited unchanged (0x4df5a0)
   virtual void DispatchTurnEvent2103WithNationFromRecord() override; // slot 0x80 0x540aa0
-  virtual void ProcessPendingDiplomacyProposalQueue() override;      // slot 0x81 0x540900
+  virtual void ReplyToDiplomacyOffers() override;                    // slot 0x81 0x540900
   // slot 0x82 ClassifyNationProductionTotalAgainstGlobalDistribution inherited unchanged (0x4e2880)
   // slot 0x83 HasActiveCandidateNationSlots inherited unchanged (0x4e0400)
   // slot 0x84 OrphanLeaf_NoCall_Ins02_004d7ee0 inherited unchanged (0x4e0420)
@@ -183,7 +183,7 @@ public:
   // slot 0xa8 ApplyMinorNationCapabilityActionType6 inherited unchanged (0x4e2630)
   // slot 0xa9 ApplyMinorNationCapabilityActionType4 inherited unchanged (0x4e2720)
   // slot 0xaa DispatchNationDiplomacySlotActionByMode inherited unchanged (0x4e27b0)
-  virtual void HandleNationLost() override; // slot 0xab 0x540cb0
+  virtual void SorryYouLose() override; // slot 0xab 0x540cb0
   // slot 0xac SumNationRuntimeFiveBucketValue44 inherited unchanged (0x4e06d0)
   // slot 0xad SelectCandidateTilesWithLowGroundUnitCount_ad inherited unchanged (0x4d8bc0)
   // slot 0xae OrphanLeaf_NoCall_Ins07_004d8920 inherited unchanged (0x4d8be0)

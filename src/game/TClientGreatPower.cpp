@@ -8,12 +8,12 @@
 #include "game/TMultiplayerMgr.h"
 
 // FUNCTION: IMPERIALISM 0x005412b0
-char TClientGreatPower::ReturnFalseNationStateCapabilityFlag98(void) {
-  return 0;
+char TClientGreatPower::IsClient(void) {
+  return 1;
 }
 
 // FUNCTION: IMPERIALISM 0x005412d0
-char TClientGreatPower::ShouldDispatchImmediatelySlot28(void) {
+char TClientGreatPower::IsRemote(void) {
   return 0;
 }
 
@@ -29,19 +29,38 @@ TClientGreatPower::~TClientGreatPower() {}
 IMPLEMENT_DYNCREATE(TClientGreatPower, TGreatPower)
 
 // FUNCTION: IMPERIALISM 0x005413b0
-void TClientGreatPower::ApplyAcceptedDiplomacyProposalCode(short proposalIndex) {
-  (void)proposalIndex;
+void TClientGreatPower::AcceptOffer(short proposalIndex) {
+  TurnEvent17ProposalResolutionPacket packet;
+  packet.messageTag = 0x74696d65;
+  packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
+  packet.eventCode = 0x17;
+  packet.fromNetworkId = 0;
+  packet.toNetworkId = -1;
+  packet.messageLength = 0x20;
+  packet.nationSlot18 = this->nationSlot;
+  packet.acceptedFlag1A = 1;
+  packet.proposalIndex1C = proposalIndex;
+  g_pNetMgr006a6014->Send(&packet, 0);
 }
 
 // FUNCTION: IMPERIALISM 0x00541450
-void TClientGreatPower::QueueInterNationEventForProposalCode12D_130(
-    unsigned short proposalQueueIndex) {
-  (void)proposalQueueIndex;
+void TClientGreatPower::RejectOffer(unsigned short proposalQueueIndex) {
+  TurnEvent17ProposalResolutionPacket packet;
+  packet.messageTag = 0x74696d65;
+  packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
+  packet.eventCode = 0x17;
+  packet.fromNetworkId = 0;
+  packet.toNetworkId = -1;
+  packet.messageLength = 0x20;
+  packet.nationSlot18 = this->nationSlot;
+  packet.acceptedFlag1A = 0;
+  packet.proposalIndex1C = proposalQueueIndex;
+  g_pNetMgr006a6014->Send(&packet, 0);
 }
 
 // FUNCTION: IMPERIALISM 0x005414f0
-void TClientGreatPower::ProcessPendingDiplomacyProposalQueue(void) {
-  TGreatPower::ProcessPendingDiplomacyProposalQueue();
+void TClientGreatPower::ReplyToDiplomacyOffers(void) {
+  TGreatPower::ReplyToDiplomacyOffers();
 }
 
 // FUNCTION: IMPERIALISM 0x005415c0
@@ -78,4 +97,6 @@ int TClientGreatPower::CheckTransitionSlot27C(int targetNation, int sourceNation
 }
 
 // FUNCTION: IMPERIALISM 0x00541790
-void TClientGreatPower::HandleNationLost(void) {}
+void TClientGreatPower::SorryYouLose(void) {
+  g_pGameFlowState->DispatchTaggedGameStateEvent1F20(0x6c6f7365, this->nationSlot, -1);
+}

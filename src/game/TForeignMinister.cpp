@@ -782,14 +782,14 @@ void TForeignMinister::SetEmpirePolicies() {
         owner->needLevelByNation[minorNation] > 0x5f &&
         owner->needLevelByNation[minorNation] < 300 &&
         g_apTerrainTypeDescriptorTable[minorNation]->encodedNationSlot == -1) {
-      owner->ResetDiplomacyLevelForNationSlot12(static_cast<NationSlot>(minorNation), 0x5f);
+      owner->SetTradePolicyTo(static_cast<NationSlot>(minorNation), 0x5f);
     }
   }
 
   if (owner->treasuryValue10 < 0) {
     for (short minorNation = 7; minorNation < 0x17; ++minorNation) {
       if (owner->needLevelByNation[minorNation] < 0x4b) {
-        owner->ResetDiplomacyLevelForNationSlot12(static_cast<NationSlot>(minorNation), 0x4b);
+        owner->SetTradePolicyTo(static_cast<NationSlot>(minorNation), 0x4b);
       }
     }
   }
@@ -823,7 +823,7 @@ void TForeignMinister::ReplyToDiplomacyOffers(short queueIndex) {
     case 0x130:
       valid = gp->EvaluateJoinWarAgainstNationAndQueueEvent(targetNation);
       if (valid == 0) {
-        gp->QueueInterNationEventForProposalCode12D_130(queueIndex);
+        gp->RejectOffer(queueIndex);
         return;
       }
       g_pInterNationEventQueueManager->QueueInterNationEventRecordDeduped(0x1c, gp->nationSlot,
@@ -836,10 +836,10 @@ void TForeignMinister::ReplyToDiplomacyOffers(short queueIndex) {
     }
   }
   if (valid != 0) {
-    gp->ApplyAcceptedDiplomacyProposalCode(queueIndex);
+    gp->AcceptOffer(queueIndex);
     return;
   }
-  gp->QueueInterNationEventForProposalCode12D_130(queueIndex);
+  gp->RejectOffer(queueIndex);
 }
 
 // FUNCTION: IMPERIALISM 0x00531110

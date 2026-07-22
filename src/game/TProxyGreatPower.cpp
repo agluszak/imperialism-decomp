@@ -4,21 +4,22 @@
 #include "game/TNetMgr.h"
 #include "game/TSimMgr.h"
 #include "game/TMultiplayerMgr.h"
+#include "game/TTurnStartEvent.h"
 #include "game/TUiRuntimeContext.h"
 #include "game/UiRuntimeContext.h"
 
 // FUNCTION: IMPERIALISM 0x005408c0
-char TProxyGreatPower::ReturnFalseNationStateCapabilityFlag98() {
-  return 0;
+char TProxyGreatPower::IsClient() {
+  return 1;
 }
 
 // FUNCTION: IMPERIALISM 0x005408e0
-char TProxyGreatPower::ShouldDispatchImmediatelySlot28(void) {
-  return 0;
+char TProxyGreatPower::IsRemote(void) {
+  return 1;
 }
 
 // FUNCTION: IMPERIALISM 0x00540900
-void TProxyGreatPower::ProcessPendingDiplomacyProposalQueue() {}
+void TProxyGreatPower::ReplyToDiplomacyOffers() {}
 
 // FUNCTION: IMPERIALISM 0x00540920
 char TProxyGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage() {
@@ -38,7 +39,21 @@ TProxyGreatPower::~TProxyGreatPower() {}
 IMPLEMENT_DYNCREATE(TProxyGreatPower, TGreatPower)
 
 // FUNCTION: IMPERIALISM 0x00540a00
-void TProxyGreatPower::AddToNationMetricAtField10(int amount) {}
+void TProxyGreatPower::AddToTreasury(int amount) {
+  TGreatPower::AddToTreasury(amount);
+
+  TurnEvent14NationMetricPacket packet;
+  packet.messageTag = 0x74696d65;
+  packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
+  packet.eventCode = 0x14;
+  packet.fromNetworkId = 0;
+  packet.toNetworkId = 0;
+  packet.messageLength = 0x20;
+  packet.DestinateToGP(this->nationSlot);
+  packet.nationSlot18 = this->nationSlot;
+  packet.amount1C = amount;
+  g_pNetMgr006a6014->Send(&packet, 0);
+}
 
 // FUNCTION: IMPERIALISM 0x00540aa0
 void TProxyGreatPower::DispatchTurnEvent2103WithNationFromRecord() {}
@@ -46,25 +61,16 @@ void TProxyGreatPower::DispatchTurnEvent2103WithNationFromRecord() {}
 // FUNCTION: IMPERIALISM 0x00540ac0
 void TProxyGreatPower::QueueDiplomacyProposalCodeForTargetNation(short proposalCode,
                                                                  short targetNationId) {
-  struct TurnEvent16PacketPayload : NetMessage {
-    int packetTag;
-    unsigned char activeNationId;
-    unsigned char padAfterActiveNation;
-    short sourceNation;
-    short proposalCode;
-    short targetNationId;
-  };
-
   TGreatPower::QueueDiplomacyProposalCodeForTargetNation(proposalCode, targetNationId);
 
-  TurnEvent16PacketPayload packetPayload;
-  packetPayload.packetTag = 0x74696D65;
+  TurnEvent16DiplomacyProposalPacket packetPayload;
+  packetPayload.messageTag = 0x74696D65;
   packetPayload.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
-  packetPayload.sourceNation = this->nationSlot;
+  packetPayload.nationSlot18 = this->nationSlot;
   packetPayload.eventCode = 0x16;
   packetPayload.messageLength = 0x20;
-  packetPayload.proposalCode = proposalCode;
-  packetPayload.targetNationId = targetNationId;
+  packetPayload.proposalCode1A = proposalCode;
+  packetPayload.targetNationId1C = targetNationId;
 
   packetPayload.DestinateToGP(static_cast<int>(this->nationSlot));
   g_pNetMgr006a6014->Send(&packetPayload, 0);
@@ -80,13 +86,23 @@ char TProxyGreatPower::TryDispatchNationActionViaUiContextOrFallback(int arg1, i
 }
 
 // FUNCTION: IMPERIALISM 0x00540c20
-void TProxyGreatPower::ResetDiplomacyLevelForNationSlot12(NationSlot nationSlot, int resetLevel) {}
+void TProxyGreatPower::SetTradePolicyTo(NationSlot targetNation, short tradePolicy) {
+  int packedPolicy = static_cast<int>(targetNation) << 16 | static_cast<int>(tradePolicy);
+  g_pGameFlowState->DispatchTaggedGameStateEvent1F20(0x74726164, packedPolicy, this->nationSlot);
+  TGreatPower::SetTradePolicyTo(targetNation, tradePolicy);
+}
 
 // FUNCTION: IMPERIALISM 0x00540c70
-void TProxyGreatPower::AddNodeToMissionNodeQueue(void* node) {}
+void TProxyGreatPower::AddTurnStartEvent(TTurnStartEvent* event) {
+  g_pGameFlowState->DispatchTurnEvent31TaggedPayload(0x73746172, event, this->nationSlot);
+  event->Free();
+}
 
 // FUNCTION: IMPERIALISM 0x00540cb0
-void TProxyGreatPower::HandleNationLost() {}
+void TProxyGreatPower::SorryYouLose() {
+  g_pGameFlowState->DispatchTaggedGameStateEvent1F20(0x6c6f7374, this->nationSlot, -3);
+  g_pGameFlowState->ReplaceNationStateForSlotAndRefreshStatus(this->nationSlot);
+}
 
 // FUNCTION: IMPERIALISM 0x00540cf0
 int TProxyGreatPower::CheckTransitionSlot27C(int targetNation, int sourceNation) {
