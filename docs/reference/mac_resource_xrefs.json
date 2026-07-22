@@ -105127,6 +105127,12 @@
       "to": "control_tag:0x7363726f"
     },
     {
+      "from": "windows_function:0x004f8080",
+      "relation": "resolves_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x646f6330"
+    },
+    {
       "from": "windows_function:0x004f85d0",
       "relation": "resolves_control_tag",
       "status": "resolved",
@@ -105437,6 +105443,18 @@
       "relation": "resolves_control_tag",
       "status": "resolved",
       "to": "control_tag:0x6d657373"
+    },
+    {
+      "from": "windows_function:0x0054ecc0",
+      "relation": "resolves_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x626f7830"
+    },
+    {
+      "from": "windows_function:0x0054ecc0",
+      "relation": "resolves_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x6d657367"
     },
     {
       "from": "windows_function:0x0055d200",
@@ -204486,6 +204504,11 @@
       "kind": "windows_function",
       "source": "src/game/TTreatiesView.cpp"
     },
+    "windows_function:0x004f8080": {
+      "address": "0x004f8080",
+      "kind": "windows_function",
+      "source": "src/game/TGrantsView.cpp"
+    },
     "windows_function:0x004f85d0": {
       "address": "0x004f85d0",
       "kind": "windows_function",
@@ -204600,6 +204623,11 @@
       "address": "0x0054e4c0",
       "kind": "windows_function",
       "source": "src/game/TLoungeDialog.cpp"
+    },
+    "windows_function:0x0054ecc0": {
+      "address": "0x0054ecc0",
+      "kind": "windows_function",
+      "source": "src/game/TMultiMessagePicture.cpp"
     },
     "windows_function:0x0055d200": {
       "address": "0x0055d200",
@@ -204969,9 +204997,9 @@
       "references_picture": 909,
       "references_string": 1451,
       "references_text_style": 1784,
-      "resolves_control_tag": 264
+      "resolves_control_tag": 267
     },
-    "edges": 17615,
+    "edges": 17618,
     "mac_classes_without_windows_header": 18,
     "node_kinds": {
       "control_tag": 813,
@@ -204985,9 +205013,9 @@
       "view_node": 3263,
       "windows_event": 94,
       "windows_factory": 17,
-      "windows_function": 109
+      "windows_function": 111
     },
-    "nodes": 11284,
+    "nodes": 11286,
     "unreferenced_resources": {
       "pict": 1998,
       "str_entry": 3616,

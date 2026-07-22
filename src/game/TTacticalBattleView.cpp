@@ -11,6 +11,7 @@
 #include "game/TAnimation.h"
 #include "game/TAnimator.h"
 #include "game/TDisplayMgr.h"
+#include "game/THelpMgr.h"
 #include "game/TPicture.h"
 #include "game/TSimMgr.h"
 #include "game/TTacticalBattle.h"
@@ -18,6 +19,7 @@
 #include "game/TTacticalUnit.h"
 #include "game/TQuickDrawSurfaceContext.h"
 #include "game/TViewMgr.h"
+#include "game/TUiEvent.h"
 #include "game/global_data_tables.h"
 #include "game/quickdraw_rendering.h"
 #include "game/TAmbitApplication.h"
@@ -935,15 +937,37 @@ void TTacticalBattleView::DoPostCreate(int arg) {
 }
 
 // FUNCTION: IMPERIALISM 0x005a8550
-void TTacticalBattleView::ForwardParam(int param) {}
+void TTacticalBattleView::DoKeyEvent(TToolboxEvent* event) {
+  int commandCode = event->commandCode;
+  switch (commandCode) {
+  case 0x20:
+    tacticalBattle60->HandleTacticalCommandTag_targ();
+    break;
+  case 0x44:
+  case 0x64:
+    tacticalBattle60->HandleTacticalBattleCommandTag(0x646f6e65); // 'done'
+    break;
+  case 0x48:
+  case 0x68:
+    g_pHelpMgr->SelectAndActivatePendingEventForCurrentView();
+    break;
+  case 0x53:
+  case 0x73:
+    tacticalBattle60->HandleTacticalBattleCommandTag(0x736b6970); // 'skip'
+    break;
+  }
+}
 
 // FUNCTION: IMPERIALISM 0x005a8660
-void TTacticalBattleView::BeginMouseCaptureAndStartRepeatTimer(const CPoint& point,
-                                                               TToolboxEvent* event,
-                                                               CPoint origin) {
-  (void)point;
+void TTacticalBattleView::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoint origin) {
   (void)event;
   (void)origin;
+  if (modalAnimWaitDoneFlag98 != 0) {
+    int row;
+    int column;
+    ConvertScreenPointToHexGridCoordClamped(&point, &row, &column);
+    tacticalBattle60->DispatchTacticalActionByHoverStateIndex(row * tileColumnsPerRow80 + column);
+  }
 }
 
 // Converts a screen point to a clamped hex grid (row, col) for this battle: row from the

@@ -12,11 +12,13 @@
 #include "game/THelpMgr.h"
 #include "game/TNextTradeCommand.h"
 #include "game/TNumberText.h"
+#include "game/TPictureButton.h"
 #include "game/TSimMgr.h"
 #include "game/TSoundPlayer.h"
 #include "game/TStaticText.h"
 #include "game/TTechMgr.h"
 #include "game/TTradeMgr.h"
+#include "game/TUiEvent.h"
 #include "game/global_data_tables.h"
 #include "game/mapped_flavor_text.h"
 #include "game/ui_control_tags.h"
@@ -63,10 +65,10 @@ void TOfferDeskPicture::PoseOfferSheet(short sourceNation, short targetNation, s
   purchaseControl->maximumValue = maxAmount;
   purchaseControl->SetControlValue(proposedAmount, 0);
 
-  acceptButtonA0 = static_cast<TControl*>(ResolveControlByTag('acce'));
+  acceptButtonA0 = static_cast<TPictureButton*>(ResolveControlByTag('acce'));
   acceptButtonA0->AssertValid();
   acceptButtonA0->SetState(0, 0);
-  rejectButtonA4 = static_cast<TControl*>(ResolveControlByTag('reje'));
+  rejectButtonA4 = static_cast<TPictureButton*>(ResolveControlByTag('reje'));
   rejectButtonA4->AssertValid();
   rejectButtonA4->SetState(0, 0);
 
@@ -112,7 +114,24 @@ void TOfferDeskPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEv
 }
 
 // FUNCTION: IMPERIALISM 0x005bf860
-void TOfferDeskPicture::ForwardParam(int param) {}
+void TOfferDeskPicture::DoKeyEvent(TToolboxEvent* event) {
+  int commandCode = event->commandCode;
+  if (commandCode == 3 || commandCode == 0xd) {
+    TPictureButton* button = static_cast<TPictureButton*>(ResolveControlByTag(kControlTagAcce));
+    if (button == 0) {
+      return;
+    }
+    g_pSfxPlaybackSystem->PlaySoundEffect(button->timingWord92, 0, 1);
+    QueueDeferredUiEventPacket(this, 0xa, button);
+  } else if (commandCode == 0x1b) {
+    TPictureButton* button = static_cast<TPictureButton*>(ResolveControlByTag(kControlTagReje));
+    if (button == 0) {
+      return;
+    }
+    g_pSfxPlaybackSystem->PlaySoundEffect(button->timingWord92, 0, 1);
+    QueueDeferredUiEventPacket(this, 0xa, button);
+  }
+}
 
 // Rebuild the 'info' text control with the trade-compatibility explanation for the current
 // source nation (+0x90), target nation (+0x92) and commodity (+0x96), formatted at the

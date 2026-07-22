@@ -11975,6 +11975,23 @@
       ],
       "source_file": "src/game/TShipyardView.cpp"
     },
+    "0x004ca8f0": {
+      "references": [
+        {
+          "address": "0x00694fd8",
+          "kind": "embedded_global",
+          "symbol": "g_szUiFailureMessage",
+          "text": "Failure"
+        },
+        {
+          "address": "0x00694fc8",
+          "kind": "embedded_global",
+          "symbol": "g_szUiNilPointerMessage",
+          "text": "Nil Pointer"
+        }
+      ],
+      "source_file": "src/game/TBuildingConstructionView.cpp"
+    },
     "0x004cbf70": {
       "references": [
         {
@@ -12091,6 +12108,23 @@
         }
       ],
       "source_file": "src/game/TTradeSchoolView.cpp"
+    },
+    "0x004cebb0": {
+      "references": [
+        {
+          "address": "0x00694fd8",
+          "kind": "embedded_global",
+          "symbol": "g_szUiFailureMessage",
+          "text": "Failure"
+        },
+        {
+          "address": "0x00694fc8",
+          "kind": "embedded_global",
+          "symbol": "g_szUiNilPointerMessage",
+          "text": "Nil Pointer"
+        }
+      ],
+      "source_file": "src/game/TBuildingExpansionView.cpp"
     },
     "0x004cf350": {
       "references": [
@@ -14362,6 +14396,25 @@
         }
       ],
       "source_file": "src/game/TFlagOptionsPicture.cpp"
+    },
+    "0x0056b9b0": {
+      "references": [
+        {
+          "group": 10045,
+          "index": 18,
+          "kind": "windows_gob",
+          "load_string_id": 21478,
+          "text": "[1]: Defensive Muster"
+        },
+        {
+          "group": 10049,
+          "index": 9,
+          "kind": "windows_gob",
+          "load_string_id": 21869,
+          "text": "No deals were made this trade period"
+        }
+      ],
+      "source_file": "src/game/TGameInfoPicture.cpp"
     },
     "0x0056c740": {
       "references": [
@@ -191244,7 +191297,7 @@
   "summary": {
     "embedded_globals": 773,
     "formula_matches": 2356,
-    "functions_with_references": 318,
+    "functions_with_references": 321,
     "mac_strings": 3821,
     "mac_strings_with_candidates": 3272,
     "text_resources": 182,

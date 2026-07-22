@@ -60,7 +60,7 @@ void TMapUberPicture::DoPostCreate(int arg) {
 
   g_pGlobalUiRootController->edgeScrollTarget48 = this;
 
-  subview2A8 = static_cast<TMapDialog*>(ResolveControlByTag(kControlTagGold));
+  subview2A8 = static_cast<TMapDialog*>(ResolveControlByTag(kControlTagDialog));
   subview2A8->AssertValid();
 
   TOceanDialog* alternateMapDialog =
@@ -293,9 +293,9 @@ void TMapUberPicture::DoMenuCommand(int command) {
 }
 
 // FUNCTION: IMPERIALISM 0x00597770
-void TMapUberPicture::ForwardParam(int param) {
+void TMapUberPicture::DoKeyEvent(TToolboxEvent* event) {
   if (subviewAc != 0) {
-    subviewAc->ForwardParam(param);
+    subviewAc->DoKeyEvent(event);
   }
 }
 

@@ -15,7 +15,7 @@ void __cdecl CopyCurrentMouseCapturePoint(CPoint* outPoint);
 // real __thiscall methods (ecx = &g_McAppMouseCaptureState).
 class TMouseCaptureState {
 public:
-  CPoint startPoint;         // 0x00 point BeginMouseCaptureAndStartRepeatTimer latched
+  CPoint startPoint;         // 0x00 point DoMouseCommand latched
   CPoint lastPoint;          // 0x08 previous currentPoint, shifted down on each update
   CPoint currentPoint;       // 0x10 latest tracked point
   TControl* capturedControl; // 0x18 the control owning the capture; null when inactive
@@ -27,7 +27,7 @@ public:
 
 ASSERT_SIZE(TMouseCaptureState, 0x1c);
 
-// Repeat-timer TIMERPROC armed by TControl::BeginMouseCaptureAndStartRepeatTimer (timer id
+// Repeat-timer TIMERPROC armed by TControl::DoMouseCommand (timer id
 // 0xef, 17ms): while a control holds the mouse capture, re-dispatch the state-1
 // (hold/repeat) picture-resource command with the cached capture points each tick.
 VOID CALLBACK NotifyGlobalCaptureOwnerState1WithCachedCoords(HWND hwnd, UINT message, UINT timerId,

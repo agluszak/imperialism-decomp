@@ -23,7 +23,19 @@ IMPLEMENT_DYNCREATE(TGrantsView, TPanelView)
 TGrantsView::TGrantsView() {}
 
 // FUNCTION: IMPERIALISM 0x004f8080
-void TGrantsView::DoPostCreate(int arg) {}
+void TGrantsView::DoPostCreate(int arg) {
+  CString hoverText;
+  TView::DoPostCreate(arg);
+  diplomacyMapView60 = static_cast<TDiplomacyMapView*>(ownerContext);
+
+  for (int grantSlot = 0; grantSlot < 8; ++grantSlot) {
+    TView* grantControl = ResolveControlByTag(0x646f6330 + grantSlot); // 'doc0'..
+    g_pSimMgr->GetString(0x2733, static_cast<short>(grantSlot + 0x3e), &hoverText);
+    SetControlHoverHelpText(hoverText, grantControl);
+  }
+  hoverText = g_szEmptyString;
+  SetControlHoverHelpText(hoverText, this);
+}
 
 // Draws the grants/aid table's 7 category headers (column index 3 is reserved for
 // the row-label column, drawn separately below) plus a "Total" row summing this

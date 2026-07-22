@@ -130,8 +130,7 @@ void TCivDescription::UpdateCivilianOrderClassAndRefreshTargetCounts(TCivUnit* o
 /* Handles civ-description click hit-test and selects matching terrain/entry descriptor. */
 
 // FUNCTION: IMPERIALISM 0x0058f1a0
-void TCivDescription::BeginMouseCaptureAndStartRepeatTimer(const CPoint& point,
-                                                           TToolboxEvent* event, CPoint origin) {
+void TCivDescription::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoint origin) {
   (void)event;
   (void)origin;
   int candidateOrdinal = 0;

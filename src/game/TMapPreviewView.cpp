@@ -55,8 +55,7 @@ void TMapPreviewView::Free() {
 }
 
 // FUNCTION: IMPERIALISM 0x005789e0
-void TMapPreviewView::BeginMouseCaptureAndStartRepeatTimer(const CPoint& point,
-                                                           TToolboxEvent* event, CPoint origin) {
+void TMapPreviewView::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoint origin) {
   (void)event;
   (void)origin;
 

@@ -75,10 +75,43 @@ void TDealTabControl::Draw(RECT* rectBuffer) {
 }
 
 // FUNCTION: IMPERIALISM 0x005bc9f0
-void TDealTabControl::DispatchPictureResourceCommand(int nEventType, void* pEventSender,
-                                                     void* pEventDataA, void* pEventDataB,
-                                                     int nCommandFlag) {
-  (void)nCommandFlag;
+void TDealTabControl::TrackMouse(TrackPhase phase, CPoint& startPoint, CPoint& previousPoint,
+                                 CPoint& currentPoint, unsigned char commandFlag) {
+  (void)startPoint;
+  (void)previousPoint;
+  (void)commandFlag;
+
+  short hoveredRow = -1;
+  if (PointInBoundsAndActionable(&currentPoint) != 0) {
+    CRect contentRect;
+    BuildInsetContentRect(&contentRect);
+    hoveredRow = static_cast<short>(static_cast<short>(currentPoint.y) -
+                                    static_cast<short>(contentRect.top)) /
+                 rowHeightPx86;
+    if (hoveredRow < tabCount88) {
+      if (hoveredRow != selectedRow84) {
+        selectedRow84 = hoveredRow;
+      }
+    } else {
+      hoveredRow = selectedRow84;
+    }
+  }
+
+  if (phase >= kTrackPhaseBegin && phase <= kTrackPhaseUpdate) {
+    if (hoveredRow != -1) {
+      PaintOrInvalidateControl(0);
+    }
+    return;
+  }
+  if (phase == kTrackPhaseEnd) {
+    if (PointInBoundsAndActionable(&currentPoint) != 0) {
+      ownerContext->HandleEvent(selectedRow84 + 11000, this, 0);
+      PaintOrInvalidateControl(0);
+      return;
+    }
+    selectedRow84 = -1;
+    PaintOrInvalidateControl(0);
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x005bcb20

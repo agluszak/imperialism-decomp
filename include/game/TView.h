@@ -157,12 +157,12 @@ public:
   virtual void PaintOrInvalidateControl(CDC* paintDc = 0);             // 0x45
   virtual char HandleMouseDown(const CPoint& point, TToolboxEvent* event,
                                CPoint origin); // 0x46 0x48c450
-  virtual void BeginMouseCaptureAndStartRepeatTimer(const CPoint& point, TToolboxEvent* event,
-                                                    CPoint origin); // 0x47
+  virtual void DoMouseCommand(CPoint& point, TToolboxEvent* event,
+                              CPoint origin); // 0x47
   virtual char HandleMouseUp(const CPoint& point, TToolboxEvent* event,
                              CPoint origin); // 0x48 0x48c590
-  virtual char DoMouseCommand(CPoint& point, TToolboxEvent* event,
-                              CPoint origin);                    // 0x49
+  virtual char HandleMouseCommandToSelf(CPoint& point, TToolboxEvent* event,
+                                        CPoint origin);          // 0x49
   virtual void QueryContentBounds(CRect* boundsOut);             // 0x4a 0x427260
   virtual void QueryBounds(CRect* boundsOut);                    // 0x4b 0x427290
   virtual void TranslateRectToWindow(CRect* rect);               // 0x4c 0x4272d0

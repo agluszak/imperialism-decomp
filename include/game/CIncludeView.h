@@ -97,8 +97,8 @@ protected:
   // replay it as a full down+up click into the dialog tree. 0x00484190
   afx_msg void OnParentNotify(UINT message, LPARAM lParam); // 0x00484190
   // WM_KEYDOWN: translate the keystroke into the shared UI command event and forward it
-  // into the active window's TView tree (via ForwardParam). This is the entry point that
-  // lets ESC/Space/Enter reach TGameWindow::ForwardParam, e.g. to skip a playing movie.
+  // into the active window's TView tree (via DoKeyEvent). This is the entry point that
+  // lets ESC/Space/Enter reach TGameWindow::DoKeyEvent, e.g. to skip a playing movie.
   afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags); // 0x00484260
   // WM_CHAR: no game handling (defers to DefWindowProc), matching the original.
   afx_msg void OnChar(UINT nChar, UINT nRepCnt, UINT nFlags); // 0x004840b0

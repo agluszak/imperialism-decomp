@@ -26,7 +26,7 @@ public:
   // slot 0x0f DoEvent inherited unchanged (0x48a280)
   // slot 0x10 HandleEvent inherited unchanged (0x48a2e0)
   // slot 0x11 DoMenuCommand inherited unchanged (0x48a310)
-  // slot 0x12 ForwardParam inherited unchanged (0x48a380)
+  // slot 0x12 DoKeyEvent inherited unchanged (0x48a380)
   // slot 0x13 DoIdle inherited unchanged (0x48a480)
   // slot 0x14 GetIdleFreq inherited unchanged (0x415d50)
   // slot 0x15 SetIdleFreq inherited unchanged (0x415d70)

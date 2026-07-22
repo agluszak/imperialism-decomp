@@ -9,7 +9,7 @@ public:
   DECLARE_DYNCREATE(TMapEditView)
   virtual ~TMapEditView() override;
 
-  virtual void ForwardParam(int param) override;
+  virtual void DoKeyEvent(TToolboxEvent* event) override;
   virtual void DoPostCreate(int arg) override;
   virtual void InvokeDialogHooks1D8ThenE4(int stridedRecord, int dispatchContext) override;
   virtual void HandleMapTileClickSetOrderContextAndHandleEvent79(int arg1, int arg2) override;

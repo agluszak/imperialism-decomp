@@ -101,19 +101,14 @@ void TIconSlider::GetKnobRect(RECT& knobRect) {
 }
 
 // FUNCTION: IMPERIALISM 0x005067a0
-void TIconSlider::DispatchPictureResourceCommand(int nEventType, void* pEventSender,
-                                                 void* pEventDataA, void* pEventDataB,
-                                                 int nCommandFlag) {
-  (void)nCommandFlag;
-  CPoint* startPoint = static_cast<CPoint*>(pEventSender);
-  CPoint* previousPoint = static_cast<CPoint*>(pEventDataA);
-  CPoint* currentPoint = static_cast<CPoint*>(pEventDataB);
-
+void TIconSlider::TrackMouse(TrackPhase phase, CPoint& startPoint, CPoint& previousPoint,
+                             CPoint& currentPoint, unsigned char commandFlag) {
+  (void)commandFlag;
   RECT previousKnobRect;
   GetKnobRect(previousKnobRect);
   RECT currentKnobRect = previousKnobRect;
 
-  int previousOffset = previousPoint->x - startPoint->x;
+  int previousOffset = previousPoint.x - startPoint.x;
   int minOffset = minTrackOffsetB4 - previousKnobRect.left;
   if (previousOffset <= minOffset) {
     previousOffset = minOffset;
@@ -124,7 +119,7 @@ void TIconSlider::DispatchPictureResourceCommand(int nEventType, void* pEventSen
   }
   OffsetRect(&previousKnobRect, static_cast<short>(maxOffset), 0);
 
-  int currentOffset = currentPoint->x - startPoint->x;
+  int currentOffset = currentPoint.x - startPoint.x;
   minOffset = minTrackOffsetB4 - currentKnobRect.left;
   if (currentOffset <= minOffset) {
     currentOffset = minOffset;
@@ -135,7 +130,7 @@ void TIconSlider::DispatchPictureResourceCommand(int nEventType, void* pEventSen
   }
   OffsetRect(&currentKnobRect, static_cast<short>(currentOffset), 0);
 
-  if (nEventType == 2) {
+  if (phase == kTrackPhaseEnd) {
     value9c = static_cast<short>(knobWidthBA / 2 + currentKnobRect.left) / iconSpacing98;
     GetKnobRect(currentKnobRect);
   }
@@ -160,7 +155,7 @@ void TIconSlider::DispatchPictureResourceCommand(int nEventType, void* pEventSen
 
   QDLoadResource(knobBitmapA0);
   BlitBitmapResourceLoaderToActiveDc(knobBitmapA0, &currentKnobRect);
-  if (nEventType == 2) {
+  if (phase == kTrackPhaseEnd) {
     ownerContext->HandleEvent(0x6c, this, 0);
   }
 }

@@ -175,7 +175,7 @@ void TMapDialog::DoPostCreate(int arg) {
 
   g_pCitySiteCachedPrimaryRenderSurfaceContext = g_pPrimaryRenderSurfaceContext;
   ApplySharedStringToGlobalControlTag(CString(g_szEmptyString), kControlTagMain);
-  ApplySharedStringToGlobalControlTag(CString(g_szEmptyString), kControlTagGold);
+  ApplySharedStringToGlobalControlTag(CString(g_szEmptyString), kControlTagDialog);
 }
 
 // FUNCTION: IMPERIALISM 0x00519e00

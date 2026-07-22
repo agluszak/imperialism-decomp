@@ -1555,7 +1555,7 @@ void TViewMgr::SyncTacticalStatusPanelRegion() {
   TView* activeDialog = g_pDisplayMgr->activeDialog;
   CTemporaryRegion temporaryRegion;
   TTacticalBattleView* goldControl =
-      static_cast<TTacticalBattleView*>(activeDialog->ResolveControlByTag(kControlTagGold));
+      static_cast<TTacticalBattleView*>(activeDialog->ResolveControlByTag(kControlTagDialog));
   goldControl->AssertValid();
   goldControl->SyncStatusPanelBounds();
 
@@ -1902,7 +1902,7 @@ void TViewMgr::InitializeCitySiteSelectionScreenForNation(int nationSlot) {
   toolbar->UpdateControlTagTreaTextFromNationAndMapContext(static_cast<short>(nationSlot));
 
   TCitySiteView* citySiteView =
-      static_cast<TCitySiteView*>(activeDialog->ResolveControlByTag(kControlTagGold));
+      static_cast<TCitySiteView*>(activeDialog->ResolveControlByTag(kControlTagDialog));
   citySiteView->AssertValid();
   g_pGlobalMapState->SeedValidCitySiteCandidateTilesForNation(static_cast<short>(nationSlot));
   TGreatPower* nation = g_apNationStates[static_cast<short>(nationSlot)];
@@ -2067,7 +2067,7 @@ char TViewMgr::HandleTurnEventDialogFactorySlotB4(void* payload) {
   }
   turn_event_dialog::GoldSinglePayloadControl* gold =
       static_cast<turn_event_dialog::GoldSinglePayloadControl*>(
-          node->ResolveControlByTag(kControlTagGold));
+          node->ResolveControlByTag(kControlTagDialog));
   if (gold == 0) {
     MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgrMore_0069B740, 0xc0);
@@ -2087,7 +2087,7 @@ char TViewMgr::HandleTurnEventDialogFactorySlotB4(void* payload) {
 // FUNCTION: IMPERIALISM 0x005dcf20
 void TViewMgr::HandleTurnEventDialogFactorySlotD8(int) {
   GoldCommitControl* rootGold = static_cast<GoldCommitControl*>(
-      static_cast<TView*>(g_pDisplayMgr->activeDialog->ResolveControlByTag(kControlTagGold)));
+      static_cast<TView*>(g_pDisplayMgr->activeDialog->ResolveControlByTag(kControlTagDialog)));
   if (rootGold == nullptr) {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgrMore_0069B740, 0xe2);
@@ -2101,7 +2101,7 @@ void TViewMgr::HandleTurnEventDialogFactorySlotD8(int) {
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgrMore_0069B740, 0xe5);
   }
   GoldFactoryPanel* gold = static_cast<GoldFactoryPanel*>(
-      static_cast<TView*>(node->ResolveControlByTag(kControlTagGold)));
+      static_cast<TView*>(node->ResolveControlByTag(kControlTagDialog)));
   if (gold == nullptr) {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgrMore_0069B740, 0xe6);
@@ -2127,7 +2127,7 @@ int TViewMgr::ShowConstructionOptionsDialog(int dialogValue) {
   }
   turn_event_dialog::GoldDialogValueControl* gold =
       static_cast<turn_event_dialog::GoldDialogValueControl*>(
-          node->ResolveControlByTag(kControlTagGold));
+          node->ResolveControlByTag(kControlTagDialog));
   gold->ApplyDialogValue(reinterpret_cast<void*>(dialogValue));
   POINT placement;
   ComputeTurnEventDialogPlacementByCode(node, &placement);
@@ -2270,7 +2270,7 @@ void TViewMgr::HandleTurnEventDialogFactorySlotE8(void* selection) {
   TurnEventMapSelection* mapSelection = static_cast<TurnEventMapSelection*>(selection);
 
   GoldCommitControl* activeGold = static_cast<GoldCommitControl*>(
-      g_pDisplayMgr->activeDialog->ResolveControlByTag(kControlTagGold));
+      g_pDisplayMgr->activeDialog->ResolveControlByTag(kControlTagDialog));
   if (activeGold == 0) {
     MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgrMore_0069B740, 0x1c5);
@@ -2287,7 +2287,7 @@ void TViewMgr::HandleTurnEventDialogFactorySlotE8(void* selection) {
   }
   turn_event_dialog::GoldDialogValueControl* gold =
       static_cast<turn_event_dialog::GoldDialogValueControl*>(
-          node->ResolveControlByTag(kControlTagGold));
+          node->ResolveControlByTag(kControlTagDialog));
   if (gold == 0) {
     MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgrMore_0069B740, 0x1ca);

@@ -62,8 +62,7 @@ TControl::TControl()
 // TControl::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x0048e640
-void TControl::BeginMouseCaptureAndStartRepeatTimer(const CPoint& point, TToolboxEvent* event,
-                                                    CPoint origin) {
+void TControl::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoint origin) {
   (void)event;
   (void)origin;
   int startX = point.x;
@@ -76,9 +75,8 @@ void TControl::BeginMouseCaptureAndStartRepeatTimer(const CPoint& point, TToolbo
   g_McAppMouseCaptureState.lastPoint.y = startY;
   g_McAppMouseCaptureState.currentPoint.x = startX;
   g_McAppMouseCaptureState.currentPoint.y = startY;
-  DispatchPictureResourceCommand(0, &g_McAppMouseCaptureState.startPoint,
-                                 &g_McAppMouseCaptureState.lastPoint,
-                                 &g_McAppMouseCaptureState.currentPoint, 1);
+  TrackMouse(kTrackPhaseBegin, g_McAppMouseCaptureState.startPoint,
+             g_McAppMouseCaptureState.lastPoint, g_McAppMouseCaptureState.currentPoint, 1);
   if (g_McAppUiMouseCaptureTimerId_006A1ADC == 0) {
     g_McAppUiMouseCaptureTimerId_006A1ADC = SetTimer(
         nativeWindow50->m_hWnd, 0xef, 0x11, NotifyGlobalCaptureOwnerState1WithCachedCoords);
@@ -132,20 +130,20 @@ void TControl::HiliteState(unsigned char enabledState, unsigned char refreshNow)
 }
 
 // FUNCTION: IMPERIALISM 0x0048e850
-void TControl::DispatchPictureResourceCommand(int eventType, void* eventSender, void* eventDataA,
-                                              void* eventDataB, int commandFlag) {
-  (void)eventSender;
-  (void)eventDataA;
+void TControl::TrackMouse(TrackPhase phase, CPoint& startPoint, CPoint& previousPoint,
+                          CPoint& currentPoint, unsigned char commandFlag) {
+  (void)startPoint;
+  (void)previousPoint;
   (void)commandFlag;
-  if (eventType == 0) {
+  if (phase == kTrackPhaseBegin) {
     HiliteState(1, 1);
     return;
   }
-  if (eventType == 1) {
-    HiliteState(PointInBoundsAndActionable(static_cast<CPoint*>(eventDataB)), 1);
+  if (phase == kTrackPhaseUpdate) {
+    HiliteState(PointInBoundsAndActionable(&currentPoint), 1);
     return;
   }
-  if (eventType == 2 && PointInBoundsAndActionable(static_cast<CPoint*>(eventDataB)) != 0) {
+  if (phase == kTrackPhaseEnd && PointInBoundsAndActionable(&currentPoint) != 0) {
     if (eventNumber60 == 4) {
       HandleEvent(0x21, this, 0);
       HandleEvent(eventNumber60, this, 0);

@@ -2,6 +2,7 @@
 
 #include "game/TMacViewMgr.h"
 #include "game/TMapMgr.h"
+#include "game/TMapUberPicture.h"
 #include "game/ScopedMapQuickDrawContext.h"
 #include "game/TQuickDrawSurfaceContext.h"
 #include "game/global_data_tables.h"
@@ -111,6 +112,47 @@ void TMiniMapView::Draw(RECT* rectBuffer) {
 }
 
 // FUNCTION: IMPERIALISM 0x0059a920
-void TMiniMapView::DispatchPictureResourceCommand(int nEventType, void* pEventSender,
-                                                  void* pEventDataA, void* pEventDataB,
-                                                  int nCommandFlag) {}
+void TMiniMapView::TrackMouse(TrackPhase phase, CPoint& startPoint, CPoint& previousPoint,
+                              CPoint& currentPoint, unsigned char commandFlag) {
+  (void)startPoint;
+  (void)previousPoint;
+  (void)commandFlag;
+
+  if (phase >= kTrackPhaseBegin && phase <= kTrackPhaseUpdate) {
+    if (PointInBoundsAndActionable(&currentPoint) != 0) {
+      markerBoxX90 = currentPoint.x - markerBoxWidth98;
+      markerBoxY94 = currentPoint.y - markerBoxHeight9c;
+      g_applyMiniMapVerticalClipOffset_006993e8 = 0;
+      RefreshControl();
+      ForceRedraw();
+      g_applyMiniMapVerticalClipOffset_006993e8 = 1;
+    }
+    return;
+  }
+
+  if (phase == kTrackPhaseEnd) {
+    g_applyMiniMapVerticalClipOffset_006993e8 = 1;
+    int tileColumn = currentPoint.x / 2;
+    int tileRow = currentPoint.y / 2;
+    tileColumn = static_cast<short>(tileColumn) + static_cast<short>(scrollTileColumn88) -
+                 markerBoxWidth98 / 2;
+    tileRow =
+        static_cast<short>(tileRow) + static_cast<short>(scrollTileRow8c) - markerBoxHeight9c / 2;
+
+    if (static_cast<short>(tileColumn) < 0) {
+      tileColumn += 108;
+    } else if (static_cast<short>(tileColumn) >= 108) {
+      tileColumn -= 108;
+    }
+    if (static_cast<short>(tileRow) < 0) {
+      tileRow = 0;
+    } else if (static_cast<short>(tileRow) > 60) {
+      tileRow = 60;
+    }
+
+    ownerPicture84->SetUpperLeft(tileColumn, tileRow);
+    markerBoxX90 = frameWidth34 / 2 - markerBoxWidth98;
+    markerBoxY94 = frameHeight38 / 2 - markerBoxHeight9c;
+    RefreshControl();
+  }
+}

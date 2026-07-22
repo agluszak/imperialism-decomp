@@ -53,7 +53,7 @@ public:
   virtual ~TWorldView() override;
 
   virtual void DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override;
-  virtual void ForwardParam(int param) override;
+  virtual void DoKeyEvent(TToolboxEvent* event) override;
   virtual void DoSetCursor(CPoint* point, RgnHandle hitArg) override;
   virtual void HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* point,
                                                                    RgnHandle hitArg) override;
