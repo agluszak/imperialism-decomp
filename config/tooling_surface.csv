@@ -140,3 +140,4 @@ module|tools.ghidra.weak_pointer_type_inventory|just:weak-pointer-type-inventory
 module|tools.ghidra.original_module_map|registry:original-modules|Original .cpp module segmentation from assert-path strings (just original-module-map)
 module|tools.analysis.assign_subsystems|just:assign-subsystems|Join module map with source markers -> per-file subsystem assignment
 module|tools.analysis.split_globals|direct|One-shot god-header split into per-subsystem globals headers (bead 8mo.2)
+module|tools.workflow.baseline_guard|just:*-gate-update|Shrink-aware policy-baseline guard (pure shrinks pass; growth needs approval)
