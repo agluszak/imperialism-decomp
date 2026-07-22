@@ -10,6 +10,7 @@
 #include "game/ImperialismApp.h"
 #include "game/TAmbitApplication.h"
 #include "game/TArmyMgr.h"
+#include "game/TArmyToolbar.h"
 #include "game/TAssetMgr.h"
 #include "game/TSoundPlayer.h"        // g_pSfxPlaybackSystem
 #include "game/TMacViewMgr.h"         // g_pStrategicMapViewSystem
@@ -2279,12 +2280,9 @@ void TViewMgr::HandleTurnEventDialogFactorySlotEC(int mapSelection) {
   node->Close();
   node->Free();
 
-  // Ground truth then dispatches
-  // mapUberPictureF0->categoryPages[activeUnitCategoryIndex96]'s own slot-0x74 virtual with
-  // mapSelection (matching the arity fixed on TMapUberUberPicture::AutoScrollByEdgeMask),
-  // but categoryPages' concrete element class isn't recovered yet -- left undone (Hard Rule
-  // 12) rather than fake that dispatch too.
-  (void)mapSelection;
+  TMapUberPicture* mapView = mapUberPictureF0;
+  static_cast<TArmyToolbar*>(mapView->categoryPages[mapView->activeUnitCategoryIndex96])
+      ->SetProvince(static_cast<short>(mapSelection));
 }
 
 // Replace the factory dialog's generic 'page' child with the resource-backed army roster.

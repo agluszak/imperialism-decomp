@@ -126,6 +126,7 @@ const unsigned int kTagLater = 0x6C617472;        // 'latr'
 const unsigned int kTagGarrison = 0x67617272;     // 'garr'
 
 // Army toolbar control tags
+const unsigned int kTagArmyPlacardMin = 0x70696330;   // 'pic0'
 const unsigned int kTagArmyRatioMin = 0x61727230;     // 'arr0'
 const unsigned int kTagArmyRatioMax = 0x61727239;     // 'arr9'
 const unsigned int kTagArmyModeGarrison = 0x67617272; // 'garr'

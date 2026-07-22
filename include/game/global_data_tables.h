@@ -1132,6 +1132,10 @@ extern int g_bCityDialogLegendSelectionInitialized;
 extern short g_anTargetTileProfileByCivilianClassAndSlot[];
 extern unsigned short g_awCivilianLegendSelectionCountsBySlot[16];
 
+// TArmyToolbar.cpp — maps each of the 30 military-unit types to one of the ten
+// toolbar placard/arrow categories.
+extern int g_anArmyToolbarCategoryByUnitType[30];
+
 // TZone.cpp — zone-graph BFS distance cache (see bd 1uj.16).
 extern int g_nMapActionContextCount;
 extern void* g_pMapActionContextDistanceCache;

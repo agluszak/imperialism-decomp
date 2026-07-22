@@ -5791,9 +5791,9 @@ TCombatReportView::ApplyRectSlot110 58D2B0 f
 TCombatReportView::HandleEvent 58D950 f
 TArmyToolbar::CreateObject 58DE40 f
 TArmyToolbar::GetRuntimeClass 58DEC0 f
-TArmyToolbar::ConstructTArmyToolbarBaseState 58DEE0 f
+TArmyToolbar::TArmyToolbar 58DEE0 f
 TArmyToolbar::'scalar_deleting_destructor' 58DF10 f
-Helper_Uses_WrapperFor_ResolveEraCapabilityFallbackSlot_At005c3650_At0058df60 58DF60 f
+TArmyToolbar::SetProvince 58DF60 f
 TArmyToolbar::HandleEvent 58E1C0 f
 TStratReportView::CreateObject 58E330 f
 TStratReportView::GetRuntimeClass 58E3A0 f
@@ -11269,6 +11269,7 @@ g_anScenarioNationSetupTable_00698B1A 698B1A l
 g_szConanCheatFileName_00698BEC 698BEC l
 s_PictWvGobPathFormat_00698BF4 698BF4 l
 s_Chunk_00698C0C 698C0C l
+g_anArmyToolbarCategoryByUnitType 698EE0 l
 g_anTargetTileProfileByCivilianClassAndSlot 698F58 l
 s_szDoubleNewline_00699438 699438 l
 s_SourcePathUSuperMap_0069943C 69943C l

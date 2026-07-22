@@ -10,6 +10,7 @@
 #include "game/CIterator.h"
 #include "game/CString.h"
 #include "game/TArmyBattle.h"
+#include "game/TArmyToolbar.h"
 #include "game/TArmyStack.h"
 #include "game/TControl.h"
 #include "game/TCountry.h"
@@ -1146,24 +1147,22 @@ bool TArmyMgr::HasEligibleStationedUnitInRegion(short regionId) {
 void TArmyMgr::SetActiveProvinceSelection(short tileIndex) {
   this->pendingMapActionIndex = tileIndex;
   if (tileIndex != -1) {
-    TMilitaryUnit* unit = nullptr;
+    TMilitaryUnit* unit;
     if (tileIndex >= 0 && tileIndex < 0x180) {
       unit = g_pGlobalMapState->cityScoreTable[tileIndex].stationedUnitChain98;
+    } else {
+      unit = nullptr;
     }
     for (; unit != nullptr; unit = static_cast<TMilitaryUnit*>(unit->nextOnTile)) {
-      if ((unit->field_8 == 4 || unit->field_8 == 3) &&
+      int orderState = unit->field_8;
+      if ((static_cast<short>(orderState) == 4 || static_cast<short>(orderState) == 3) &&
           g_awTacticalUnitCategoryCodeBySlot[unit->orderType] != 0) {
         unit->SetOrderModeSlot34(0, -1);
       }
     }
-    // Ground truth also dispatches
-    // g_pUiRuntimeContext->mapUberPictureF0->categoryPages[activeUnitCategoryIndex96]'s
-    // slot 0x74 (AutoScrollByEdgeMask-shaped) virtual here, passing tileIndex (vtable byte
-    // offset +0x1d0). categoryPages[] is heterogeneous per index (bd 4yz evidence: civ/army
-    // entries are TCivToolbar/TArmyToolbar, not TMapUberPicture) and TView is their only
-    // recovered common ancestor, which doesn't declare this slot -- the army-category
-    // receiver's own vtable isn't reconstructed yet (see bd 1uj.61.3), so this one dispatch
-    // stays undone rather than faked with a downcast.
+    TMapUberPicture* mapView = g_pUiRuntimeContext->mapUberPictureF0;
+    static_cast<TArmyToolbar*>(mapView->categoryPages[mapView->activeUnitCategoryIndex96])
+        ->SetProvince(tileIndex);
   }
   g_pUiRuntimeContext->mapUberPictureF0->InvalidateMap();
 }
