@@ -167,12 +167,12 @@ public:
   short resource15ProductionPercent3a;    // +0x3a  init 50
   short field3c;                          // +0x3c  init -1
   short accumulatedUnmetNeed3e;           // +0x3e  queued via command 0x33
-  // +0x40..0xb8 -- per-resource-index foreign-minister counter deltas, read/written
+  // +0x40..0xba -- per-resource-index foreign-minister counter deltas, read/written
   // one short at a time (EvaluateCityShortagesAndNotifyForeignMinister reads
   // orderMetricTable40[0]/[1] as a paired "any nonzero" trigger and [2]..[6]
-  // individually), not as packed ints.
-  short orderMetricTable40[60];   // +0x40..0xb8  (zeroed on init)
-  short lowSkillLaborShortfallB8; // +0xb8
+  // individually). Index 60 is the low-skill labor shortfall; serialization proves
+  // this is one 61-entry table rather than a separate trailing field.
+  short orderMetricTable40[61];   // +0x40..0xba  (zeroed on init)
   short orderShortTableBA[16];    // +0xba..0xda
   short deferredLaborShortfallDA; // +0xda
   short orderShortTableDC[16];    // +0xdc..0xfc
@@ -189,4 +189,8 @@ public:
   // civilian order classes must be requested. One short per resource type.
   short civilianOrderDemandByResourceType194[23]; // +0x194
   short temporaryFurnitureSubstituteLumber1c2;    // +0x1c2
+
+  short& LowSkillLaborShortfall() {
+    return orderMetricTable40[60];
+  }
 };

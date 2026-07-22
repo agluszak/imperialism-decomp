@@ -1709,8 +1709,8 @@ address|matching|name
 0x4b2570|0.41839080459770117|TCity::InitializeCityProductionState
 0x4b3050|0.9090909090909091|TPopGrowthOrder::`scalar deleting destructor'
 0x4b3080|0.5|WrapperFor_FreeHeapBufferIfNotNull_At004b3050_Impl
-0x4b30a0|0.00516795865633075|TCity::ReadFrom
-0x4b35d0|0.006578947368421052|TCity::WriteTo
+0x4b30a0|0.8485639686684073|TCity::ReadFrom
+0x4b35d0|1.0|TCity::WriteTo
 0x4b3a60|0.9195402298850575|TCity::Free
 0x4b3b20|1.0|TCity::SetSelectedTownMarker
 0x4b3b40|0.012345679012345678|TCity::EndCityPhase
@@ -1943,7 +1943,7 @@ address|matching|name
 0x4be840|0.7272727272727273|TCityInteriorMinister::TCityInteriorMinister
 0x4be880|0.9090909090909091|TCityInteriorMinister::`scalar deleting destructor'
 0x4be8b0|0.5|DestroyTCityInteriorMinister_Impl
-0x4be8d0|0.95|TCityInteriorMinister::InitializeCityInteriorState
+0x4be8d0|0.9555555555555556|TCityInteriorMinister::InitializeCityInteriorState
 0x4bec10|0.9090909090909091|TLongintList::`scalar deleting destructor'
 0x4bec40|0.9696969696969697|CList<long,long>::~CList<long,long>
 0x4becd0|1.0|TCityInteriorMinister::Free
@@ -1953,8 +1953,8 @@ address|matching|name
 0x4beee0|1.0|TCityInteriorMinister::IndustryOrder
 0x4bef10|1.0|TCityInteriorMinister::SelectRecruitmentProductionCommand
 0x4bef30|1.0|TCityInteriorMinister::InteriorSlot1C
-0x4bef60|0.006557377049180328|TCityInteriorMinister::WriteTo
-0x4bf390|0.006430868167202572|TCityInteriorMinister::ReadFrom
+0x4bef60|0.7335526315789473|TCityInteriorMinister::WriteTo
+0x4bf390|0.8996763754045307|TCityInteriorMinister::ReadFrom
 0x4bf770|0.7017543859649122|TCityInteriorMinister::FillOrders
 0x4bf8a0|0.43564356435643564|TCityInteriorMinister::EvaluateCityShortagesAndNotifyForeignMinister
 0x4bfa50|1.0|TCityInteriorMinister::QueueCityProductionPolicyCommands
@@ -1962,7 +1962,7 @@ address|matching|name
 0x4bff60|1.0|TCityInteriorMinister::NoOpProductionCommandHook24
 0x4bff80|0.4217687074829932|TCityInteriorMinister::QueueCityProductionCommand33FromAccumulatedDeficit
 0x4c0090|0.35789473684210527|TCityInteriorMinister::DistributeCityProductionCommandBudgetAndQueueOrders
-0x4c02c0|0.4866920152091255|TCityInteriorMinister::QueueCityProductionCommand17Or18FromSupportRatio
+0x4c02c0|0.5399239543726235|TCityInteriorMinister::QueueCityProductionCommand17Or18FromSupportRatio
 0x4c04e0|0.9662921348314607|TCityInteriorMinister::QueueRandomCityProductionCommand19To1C
 0x4c05a0|0.5454545454545454|TCityInteriorMinister::QueueShipProductionCommandIfMissing
 0x4c0690|0.963855421686747|TCityInteriorMinister::QueuePendingRecruitmentProductionCommand
@@ -1978,24 +1978,24 @@ address|matching|name
 0x4c1ac0|0.2089041095890411|TCityInteriorMinister::RebuildMapTileNeighborBucketsForInteriorMinister
 0x4c1fc0|0.08333333333333333|WrapperFor_ReallocateHeapBlockWithAllocatorTracking_At004c1fc0
 0x4c2010|0.47368421052631576|TCityInteriorMinister::RequestMissingCivilianOrderTypes
-0x4c2120|0.2593984962406015|TCityInteriorMinister::AutoAssignProspectingOrdersByTileHeuristics
+0x4c2120|0.26127819548872183|TCityInteriorMinister::AutoAssignProspectingOrdersByTileHeuristics
 0x4c2a30|0.3541666666666667|TCityInteriorMinister::AutoAssignProspectingOrdersFromSeedTileNeighbors
 0x4c2d50|1.0|TCityInteriorMinister::SeekLostTowns
 0x4c2e10|0.8202247191011236|TCityInteriorMinister::ContinueRailheadProject
 0x4c30b0|0.5102040816326531|TraceDescendingTileScoreGradientToSource
 0x4c3170|0.37866666666666665|TCityInteriorMinister::StartRailheadProject
-0x4c3490|0.6116504854368932|TCityInteriorMinister::EvaluateResources
+0x4c3490|0.6019417475728155|TCityInteriorMinister::EvaluateResources
 0x4c3620|0.5714285714285714|TCityInteriorMinister::ScoreResource
 0x4c3640|0.37538461538461537|TCityInteriorMinister::CreateSeaDistanceMap
 0x4c3910|0.35398230088495575|TCityInteriorMinister::BuildFrogCityDistanceMapFromReachableSeaCandidates
 0x4c3c00|0.5959183673469388|TCityInteriorMinister::RebalanceCityOrderAllocationTargets
 0x4c3d60|0.5454545454545454|TCityInteriorMinister::ProcessCityOrderStateTickAndApplyCapabilitySelection
-0x4c40c0|0.4779874213836478|TCityInteriorMinister::RebalanceCitySupportAndLaborAllocations
+0x4c40c0|0.4716981132075472|TCityInteriorMinister::RebalanceCitySupportAndLaborAllocations
 0x4c4370|0.37628865979381443|TCityInteriorMinister::ChooseAndMarkNextCityProductionCommand
 0x4c4690|0.5872340425531914|TCityInteriorMinister::ComputeCityProductionCommandLimitsFromBuildingOutputs
 0x4c4840|0.8477366255144033|TCityInteriorMinister::RebuildCityOrderCommandAvailabilityAndPriorityCycle
-0x4c49f0|0.8103896103896104|TCityInteriorMinister::UpdateMinisterProductionMetricsForResourceIndex
-0x4c4d40|0.5507246376811594|TCityInteriorMinister::RaisePowerPlantOrderToReachLaborTarget
+0x4c49f0|0.8207792207792208|TCityInteriorMinister::UpdateMinisterProductionMetricsForResourceIndex
+0x4c4d40|0.6187050359712231|TCityInteriorMinister::RaisePowerPlantOrderToReachLaborTarget
 0x4c4e60|0.7973856209150327|TCityInteriorMinister::FillRemainingNeedCapacityAndReducePowerPlantOrder
 0x4c4f90|0.9473684210526315|TCityInteriorMinister::GetAverageDevelopmentOrderAllocation
 0x4c4fe0|0.10344827586206896|TCityInteriorMinister::RequestResource
@@ -2326,7 +2326,7 @@ address|matching|name
 0x4dd340|0.6222222222222222|TGreatPower::AddAmountToAidAllocationMatrixCellAndTotal
 0x4dd3b0|1.0|TGreatPower::SumAidAllocationMatrixColumnForTarget
 0x4dd3f0|1.0|TGreatPower::SumAidAllocationMatrixAllCells
-0x4dd430|0.5714285714285714|TGreatPower::ComputeRemainingDiplomacyAidBudget
+0x4dd430|0.5142857142857142|TGreatPower::ComputeRemainingDiplomacyAidBudget
 0x4dd470|1.0|TGreatPower::ResetDiplomacyNeedSlots7012AndRefreshIfModeGateMatches
 0x4dd4e0|0.4585987261146497|TGreatPower::AssignFallbackNationsToUnfilledDiplomacyNeedSlots
 0x4dd740|1.0|TGreatPower::GetDiplomacyExternalStateByTarget
@@ -2408,7 +2408,7 @@ address|matching|name
 0x4e0770|0.6666666666666666|TGreatPower::ComputeNationRuntimeAdvisoryMetricCase6
 0x4e07b0|0.35294117647058826|TGreatPower::ComputeArmyCommitBudgetSlot8E
 0x4e0890|0.2828282828282828|TGreatPower::GetScoreFactorSlot23C
-0x4e09a0|0.5662650602409639|TGreatPower::GetScoreFactorSlot240
+0x4e09a0|0.5903614457831325|TGreatPower::GetScoreFactorSlot240
 0x4e0b20|0.43902439024390244|TGreatPower::ComputeArmyScoreRatioVsNation
 0x4e0c10|0.24806201550387597|TGreatPower::ComputeArmyScoreStandingRatioVsNation
 0x4e0d80|0.43902439024390244|TGreatPower::ComputeNavyScoreRatioVsNation
@@ -3561,7 +3561,7 @@ address|matching|name
 0x5358a0|1.0|TMission::ReadFrom
 0x535940|1.0|FindFirstTrackedHandlerMatchingModeAndShortKey
 0x5359e0|0.4470588235294118|IsMapTileCompatibleWithCurrentTerrainOrActionContext
-0x535b00|0.31932773109243695|SelectBestCityDevelopmentFromResourcePools
+0x535b00|0.49328859060402686|SelectBestCityDevelopmentFromResourcePools
 0x535f80|0.4074074074074074|CompareMissionOrderEntriesByMovementClassThenEfficiency
 0x536090|0.6567164179104478|CompareMissionOrderEntriesByPriorityScore
 0x536290|0.25|WrapperFor_ftol_At00536290

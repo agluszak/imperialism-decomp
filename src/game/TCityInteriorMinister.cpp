@@ -33,6 +33,7 @@
 #include "game/TViewMgr.h"
 #include "game/global_data_tables.h"
 #include "game/mfc.h"
+#include "game/nation_stream_serialization.h"
 #include "game/ui_invalidation_guard.h"
 
 short __stdcall TraceDescendingTileScoreGradientToSource(short startTile, char* scoreMap,
@@ -141,10 +142,9 @@ void TCityInteriorMinister::InitializeCityInteriorState(TGreatPower* owner) {
     orderTypeTable12A[i] = 0;
     orderTypeTable158[i] = 0;
   }
-  for (short j = 0; j < 60; ++j) {
+  for (short j = 0; j < 61; ++j) {
     orderMetricTable40[j] = 0;
   }
-  lowSkillLaborShortfallB8 = 0;
   for (short k = 0; k < 16; ++k) {
     orderShortTableBA[k] = 0;
     orderShortTableDC[k] = 0;
@@ -237,12 +237,156 @@ void TCityInteriorMinister::InteriorSlot1C(short arg) {
 
 // FUNCTION: IMPERIALISM 0x004bef60
 void TCityInteriorMinister::WriteTo(TStream* stream) {
-  (void)stream;
+  TMinister::WriteTo(stream);
+  stream->WriteBytesSlot78(&field10, 2);
+  stream->WriteBytesSlot78(&field12, 2);
+  stream->WriteBytesSlot78(&capabilityFlag14, 2);
+  stream->WriteBytesSlot78(&capabilityFlag16, 2);
+  WriteShortArrayElems(stream, trailingTable, 7);
+  stream->WriteBytesSlot78(&nextProductionBuildingOrdinal30, 2);
+  stream->WriteBytesSlot78(&pendingShipType32, 2);
+  stream->WriteBytesSlot78(&field34, 2);
+  stream->WriteBytesSlot78(&pendingRecruitmentCommandIndex36, 2);
+  stream->WriteBytesSlot78(&pendingUnitCommandIndex38, 2);
+  stream->WriteBytesSlot78(&resource15ProductionPercent3a, 2);
+  stream->WriteBytesSlot78(&field3c, 2);
+  stream->WriteBytesSlot78(&accumulatedUnmetNeed3e, 2);
+  WriteShortArrayElems(stream, orderMetricTable40, 61);
+  stream->WriteBytesSlot78(&deferredLaborShortfallDA, 2);
+  WriteShortArrayElems(stream, orderShortTableDC, 16);
+  WriteShortArrayElems(stream, orderTypeTableFC, 23);
+  WriteShortArrayElems(stream, orderTypeTable12A, 23);
+  WriteShortArrayElems(stream, orderTypeTable158, 23);
+  stream->WriteBytesSlot78(&temporarilyReservedShipArms186, 2);
+
+  {
+    list28->NoOpWriteTo(stream);
+    int entryCount = list28->GetSize();
+    stream->WriteBytesSlot78(&entryCount, 4);
+    for (int ordinal = 1; ordinal <= entryCount; ++ordinal) {
+      int entryValue = list28->At(ordinal);
+      stream->WriteBytesSlot78(&entryValue, 4);
+    }
+  }
+
+  {
+    list2c->NoOpWriteTo(stream);
+    int entryCount = list2c->GetSize();
+    stream->WriteBytesSlot78(&entryCount, 4);
+    for (int ordinal = 1; ordinal <= entryCount; ++ordinal) {
+      int entryValue = list2c->At(ordinal);
+      stream->WriteBytesSlot78(&entryValue, 4);
+    }
+  }
+
+  {
+    list190->NoOpWriteTo(stream);
+    int entryCount = list190->GetSize();
+    stream->WriteBytesSlot78(&entryCount, 4);
+    for (int ordinal = 1; ordinal <= entryCount; ++ordinal) {
+      int entryValue = list190->At(ordinal);
+      stream->WriteBytesSlot78(&entryValue, 4);
+    }
+  }
+
+  {
+    short* demandCursor = civilianOrderDemandByResourceType194;
+    int remaining = 23;
+    do {
+      short element = *demandCursor;
+      unsigned char* elementBytes = reinterpret_cast<unsigned char*>(&element);
+      unsigned char low = elementBytes[0];
+      elementBytes[0] = elementBytes[1];
+      elementBytes[1] = low;
+      stream->WriteBytesSlot78(&element, 2);
+      ++demandCursor;
+      --remaining;
+    } while (remaining != 0);
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x004bf390
 void TCityInteriorMinister::ReadFrom(TStream* stream) {
-  (void)stream;
+  int shortTableCount = 16;
+  int metricCount = 61;
+  if (g_nSaveFormatVersion < 0x13) {
+    shortTableCount = 15;
+    metricCount = 60;
+  }
+
+  TMinister::ReadFrom(stream);
+  stream->ReadBytes(&field10, 2);
+  stream->ReadBytes(&field12, 2);
+  stream->ReadBytes(&capabilityFlag14, 2);
+  stream->ReadBytes(&capabilityFlag16, 2);
+  stream->ReadBytes(trailingTable, sizeof(trailingTable));
+  SwapShortArrayBytes(trailingTable, 7);
+  stream->ReadBytes(&nextProductionBuildingOrdinal30, 2);
+  stream->ReadBytes(&pendingShipType32, 2);
+  stream->ReadBytes(&field34, 2);
+  stream->ReadBytes(&pendingRecruitmentCommandIndex36, 2);
+  stream->ReadBytes(&pendingUnitCommandIndex38, 2);
+  stream->ReadBytes(&resource15ProductionPercent3a, 2);
+  stream->ReadBytes(&field3c, 2);
+  stream->ReadBytes(&accumulatedUnmetNeed3e, 2);
+  stream->ReadBytes(orderMetricTable40, metricCount * 2);
+  SwapShortArrayBytes(orderMetricTable40, metricCount);
+  stream->ReadBytes(&deferredLaborShortfallDA, 2);
+  stream->ReadBytes(orderShortTableDC, shortTableCount * 2);
+  SwapShortArrayBytes(orderShortTableDC, shortTableCount);
+  stream->ReadBytes(orderTypeTableFC, sizeof(orderTypeTableFC));
+  SwapShortArrayBytes(orderTypeTableFC, 23);
+  stream->ReadBytes(orderTypeTable12A, sizeof(orderTypeTable12A));
+  SwapShortArrayBytes(orderTypeTable12A, 23);
+  stream->ReadBytes(orderTypeTable158, sizeof(orderTypeTable158));
+  SwapShortArrayBytes(orderTypeTable158, 23);
+  stream->ReadBytes(&temporarilyReservedShipArms186, 2);
+  {
+    if (list28->GetSize() != 0) {
+      list28->RemoveAll();
+    }
+    list28->NoOpReadFrom(stream);
+    int entryCount;
+    stream->ReadBytes(&entryCount, 4);
+    for (int ordinal = 1; ordinal <= entryCount; ++ordinal) {
+      int entryValue;
+      stream->ReadBytes(&entryValue, 4);
+      list28->InsertLast(entryValue);
+    }
+  }
+
+  {
+    if (list2c->GetSize() != 0) {
+      list2c->RemoveAll();
+    }
+    list2c->NoOpReadFrom(stream);
+    int entryCount;
+    stream->ReadBytes(&entryCount, 4);
+    for (int ordinal = 1; ordinal <= entryCount; ++ordinal) {
+      int entryValue;
+      stream->ReadBytes(&entryValue, 4);
+      list2c->InsertLast(entryValue);
+    }
+  }
+
+  {
+    if (list190->GetSize() != 0) {
+      list190->RemoveAll();
+    }
+    list190->NoOpReadFrom(stream);
+    int entryCount;
+    stream->ReadBytes(&entryCount, 4);
+    for (int ordinal = 1; ordinal <= entryCount; ++ordinal) {
+      int entryValue;
+      stream->ReadBytes(&entryValue, 4);
+      list190->InsertLast(entryValue);
+    }
+  }
+  if (g_nSaveFormatVersion > 0x13) {
+    stream->ReadBytes(civilianOrderDemandByResourceType194,
+                      sizeof(civilianOrderDemandByResourceType194));
+    SwapShortArrayBytes(civilianOrderDemandByResourceType194, 23);
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x004bf770
@@ -841,7 +985,7 @@ short TCityInteriorMinister::RebuildNeedTargetsAndQueueProductionShortfalls(
     city->CityStockByType(inputResourceType) =
         static_cast<short>(city->CityStockByType(inputResourceType) - amount);
     city->VerifyStocks();
-    city->consumedProductionInputByType2c0[inputResourceType - 13] = amount;
+    city->consumedProductionInputByType2a6[inputResourceType] = amount;
   }
 
   int requestOrdinal = 1;
@@ -1798,8 +1942,8 @@ void TCityInteriorMinister::ProcessCityOrderStateTickAndApplyCapabilitySelection
   TCity* city = ownerContextAt04->city;
   bool recruitmentAllowed = true;
   if (city->productionSummary1d8->populationCount08 < 7) {
-    if (lowSkillLaborShortfallB8 == 0) {
-      lowSkillLaborShortfallB8 = 2;
+    if (LowSkillLaborShortfall() == 0) {
+      LowSkillLaborShortfall() = 2;
     }
     recruitmentAllowed = false;
   }
@@ -1914,11 +2058,11 @@ void TCityInteriorMinister::RebalanceCitySupportAndLaborAllocations() {
   short availableSupport = static_cast<short>(city->GetBuildingType(15));
   if (deferredLaborShortfallDA == 0) {
     if (lowSkillLabor < targetLabor) {
-      lowSkillLaborShortfallB8 = static_cast<short>(targetLabor - lowSkillLabor);
-      if (lowSkillLaborShortfallB8 > availableSupport) {
-        lowSkillLaborShortfallB8 = availableSupport;
+      LowSkillLaborShortfall() = static_cast<short>(targetLabor - lowSkillLabor);
+      if (LowSkillLaborShortfall() > availableSupport) {
+        LowSkillLaborShortfall() = availableSupport;
       }
-      availableSupport = static_cast<short>(availableSupport - lowSkillLaborShortfallB8);
+      availableSupport = static_cast<short>(availableSupport - LowSkillLaborShortfall());
     }
     if (mediumSkillLabor < targetLabor) {
       orderMetricTable40[23] = static_cast<short>(targetLabor - mediumSkillLabor);
@@ -1935,7 +2079,7 @@ void TCityInteriorMinister::RebalanceCitySupportAndLaborAllocations() {
         ++orderMetricTable40[24];
         --mediumSkillLabor;
       } else {
-        ++lowSkillLaborShortfallB8;
+        ++LowSkillLaborShortfall();
       }
       --availableSupport;
     }
@@ -1960,17 +2104,17 @@ void TCityInteriorMinister::RebalanceCitySupportAndLaborAllocations() {
   }
   city->cityStockClothingD0 = static_cast<short>(city->cityStockClothingD0 - clothingConsumed);
   city->VerifyStocks();
-  city->consumedProductionInputByType2c0[0] = clothingConsumed;
+  city->consumedProductionInputByType2a6[13] = clothingConsumed;
   city->cityStockFurnitureD2 = static_cast<short>(city->cityStockFurnitureD2 - furnitureConsumed);
   city->VerifyStocks();
-  city->consumedProductionInputByType2c0[1] = furnitureConsumed;
+  city->consumedProductionInputByType2a6[14] = furnitureConsumed;
   if (furnitureConsumed == 0 && city->cityStockLumberC8 > 1) {
     city->cityStockLumberC8 = static_cast<short>(city->cityStockLumberC8 - 2);
     city->VerifyStocks();
     temporaryFurnitureSubstituteLumber1c2 = 2;
   }
-  if (lowSkillLaborShortfallB8 > 4) {
-    lowSkillLaborShortfallB8 = 4;
+  if (LowSkillLaborShortfall() > 4) {
+    LowSkillLaborShortfall() = 4;
   }
 }
 
@@ -2132,7 +2276,7 @@ void TCityInteriorMinister::RebuildCityOrderCommandAvailabilityAndPriorityCycle(
     UpdateMinisterProductionMetricsForResourceIndex(12);
   }
   UpdateMinisterProductionMetricsForResourceIndex(7);
-  bool supportReady = lowSkillLaborShortfallB8 > 0 && orderMetricTable40[13] > 0;
+  bool supportReady = LowSkillLaborShortfall() > 0 && orderMetricTable40[13] > 0;
   if (supportReady) {
     UpdateMinisterProductionMetricsForResourceIndex(8);
   }
@@ -2164,8 +2308,8 @@ void TCityInteriorMinister::UpdateMinisterProductionMetricsForResourceIndex(shor
       orderMetricTable40[orderSlot] = productionLimit;
     }
   }
-  if (orderMetricTable40[7] > lowSkillLaborShortfallB8) {
-    orderMetricTable40[7] = lowSkillLaborShortfallB8;
+  if (orderMetricTable40[7] > LowSkillLaborShortfall()) {
+    orderMetricTable40[7] = LowSkillLaborShortfall();
   }
 
   short requestedQuantity = orderMetricTable40[orderSlot];
@@ -2198,7 +2342,7 @@ void TCityInteriorMinister::UpdateMinisterProductionMetricsForResourceIndex(shor
 
   TLaborPool* laborPool = population->baselineSlots10;
   if (orderSheet.ForResourceCode(60) > laborPool->lowSkillCount04) {
-    lowSkillLaborShortfallB8 =
+    LowSkillLaborShortfall() =
         static_cast<short>(orderSheet.ForResourceCode(60) - laborPool->lowSkillCount04);
   }
   if (orderSheet.ForResourceCode(23) > laborPool->mediumSkillCount06) {
