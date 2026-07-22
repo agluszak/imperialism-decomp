@@ -498,6 +498,19 @@ void TTacticalBattle::ComputeHexNeighborTileIndices_005A0420(int tileIndex,
   }
 }
 
+// FUNCTION: IMPERIALISM 0x005a0550
+unsigned char TTacticalBattle::IsHexNeighborTileIndex(int tileIndex, int candidateTileIndex) {
+  int neighbors[6];
+  ComputeHexNeighborTileIndices_005A0420(tileIndex, neighbors);
+  int direction;
+  for (direction = 0; direction < 6; ++direction) {
+    if (neighbors[direction] == candidateTileIndex) {
+      return 1;
+    }
+  }
+  return 0;
+}
+
 // Hover-cursor state for `tileIndex` relative to the current selection/side. Before the
 // battle goes live: hovering the current side's own unit returns 0xc; otherwise a per-side
 // deployment-zone column band (columns 3-5 for side 0, the mirrored band at the far edge for

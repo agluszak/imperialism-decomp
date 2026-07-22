@@ -30,7 +30,8 @@ public:
   virtual void AutoDeploySideUnitsAndMarkReady();            // slot 0x12 0x59bc80
   virtual void DeploymentClick(int tileIndex);               // slot 0x13 0x59c3c0
   virtual void RunTacticalAutoTurnControllerForActiveUnit(); // slot 0x14 0x59e4f0
-  virtual undefined TArmyTacUnit_VtblSlot09();               // slot 0x15 0x59ea60
+  // Mac oracle: SwitchToAutoPlay. Applies the side's confirmation gate before AI control.
+  virtual unsigned char SwitchToAutoPlay(); // slot 0x15 0x59ea60
 
   // Partial slice (object is 0x54): only the side's combatant stack is recovered so
   // far; stored by InitializeTacticalSideFromArmyUnitList and read back by
@@ -71,6 +72,8 @@ public:
   // Per-mode stance-profile appliers: set each record's aiStateCode2c by action class
   // for the matching cursor mode (mode number noted per address).
   void ApplyDefenderHoldLineStanceByActionClass(); // mode 0, 0x59caf0
+  // Assigns state 7 to category-0 units and state 12 to every other unit.
+  void AssignJobsByZeroCategory();                 // 0x59cc70
   void ApplyDefenderBombardStanceByActionClass();  // mode 2, 0x59cd00
   void ApplyAttackerSiegeStanceByActionClass();    // mode 3, 0x59ce90
   void ApplyAttackerAssaultStanceByActionClass();  // mode 4, 0x59d020
@@ -98,6 +101,12 @@ public:
                                                  int* heuristicWeights15); // 0x59d530
   int SelectBestTacticalTargetTileByActionHeuristics(TTacticalUnit* unit,
                                                      int flag); // 0x59e110
+  // Encodes the unit's action class, adjacency, deploy-mark, and battlefield-position
+  // properties into the bit mask consumed by the tactical action selector.
+  unsigned int BuildTacticalActionClassAndPositionFlags(int referenceTileIndex,
+                                                        TTacticalUnit* unit); // 0x59e8a0
+  // Minimum GetUnitRange among active units in AI states 2 or 4; 1000 if none.
+  int GetMinimumActiveUnitRangeForStates2Or4(); // 0x59e9c0
 
   // The fifteen per-tile heuristic scorers driven (via the 0x6994c0 member-function-
   // pointer table) by SelectBestTacticalTileByWeightedHeuristics; entry i pairs with

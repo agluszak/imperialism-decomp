@@ -5,6 +5,9 @@
 
 // SYNTHETIC: IMPERIALISM 0x0059b390
 // TArmyTacUnit::`scalar deleting destructor'
+
+// SYNTHETIC: IMPERIALISM 0x0059b3c0
+// TArmyTacUnit::~TArmyTacUnit
 TArmyTacUnit::~TArmyTacUnit() {}
 // SYNTHETIC: IMPERIALISM 0x005a5ed0
 // TArmyTacUnit::CreateObject

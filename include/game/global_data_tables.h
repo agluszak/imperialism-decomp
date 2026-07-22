@@ -790,6 +790,7 @@ extern POINT g_ptNationComparisonModalMessage;     // @ 0x6a3180
 extern POINT g_ptTechItemModalMessage;             // @ 0x6a5820
 extern POINT g_ptNationAwolModalMessage;           // @ 0x6a3d08
 extern POINT g_ptMapModeModalMessage;              // @ 0x6a45c0
+extern POINT g_ptTacticalAutoPlayModalMessage;     // @ 0x6a4650
 extern POINT g_ptTechCapabilityModalMessage;       // @ 0x6a57c8
 extern POINT g_ptUiPromptModalMessage;             // @ 0x6a5be0
 extern POINT g_ptCitySiteSelectionDialogPlacement; // @ 0x6a5b58
