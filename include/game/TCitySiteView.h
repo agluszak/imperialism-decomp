@@ -13,8 +13,8 @@ public:
   TTown* pendingTown364;
   // Viewport clamp box consumed by SetMapDialogCellCoordinatesAndRefresh (0x51c320).
   // Not initialized by the ctor (0x51beb0); initialized to an inverted (empty) box
-  // (+-1000) by DoPostCreate (0x51bff0), then presumably narrowed by whoever
-  // opens the city-site view.
+  // (+-1000) and then derived from the active nation's owned tiles by DoPostCreate
+  // (0x51bff0). This restriction belongs only to the capital-site selector.
   int minColBound368; // +0x368
   int maxColBound36c; // +0x36c
   int minRowBound370; // +0x370

@@ -7,6 +7,8 @@
 #include "game/TMapUberPicture.h"
 #include "game/TQuickDrawSurfaceContext.h"
 #include "game/TSimMgr.h"
+#include "game/TTown.h"
+#include "game/TViewMgr.h"
 #include "game/global_data_tables.h"
 #include "game/ui_control_tags.h"
 #include "game/ui_text_label_helpers_decls.h"
@@ -201,4 +203,46 @@ void TCitySiteView::RenderStrategicTileSelectionAndNeighborHighlights() {
 }
 
 // FUNCTION: IMPERIALISM 0x0051c760
-void TCitySiteView::HandleMapClickByInteractionMode(short nTileIndex, int nInputFlags) {}
+void TCitySiteView::HandleMapClickByInteractionMode(short nTileIndex, int nInputFlags) {
+  (void)nInputFlags;
+
+  TTerrainStateRecordView& tile = g_pGlobalMapState->terrainStateTable[nTileIndex];
+  signed char terrainType = tile.terrainType00;
+  signed char ownerNation = tile.ownerNationTag04;
+  short activeNation = g_pSimMgr->GetActiveNationId();
+
+  if (ownerNation != activeNation) {
+    PlayDefaultMessageBeep(1);
+    CString message;
+    g_pSimMgr->GetString(0x273b, terrainType == 5 ? 3 : 0, &message);
+    g_pDisplayMgr->ModalMessage(message, g_MapInteractionPreviewPoint_006a3370);
+    return;
+  }
+
+  bool supportsCitySite =
+      terrainType == 0 || terrainType == 7 || terrainType == 1 || terrainType == 6;
+  if (!supportsCitySite ||
+      !g_pGlobalMapState->IsValidSecondaryNationHomeTileCandidate(nTileIndex)) {
+    PlayDefaultMessageBeep(1);
+    CString message;
+    if (supportsCitySite && g_pGlobalMapState->CanBuildPortAtTile(nTileIndex)) {
+      g_pSimMgr->GetString(0x273b, 2, &message);
+    } else {
+      g_pSimMgr->GetString(0x273b, 1, &message);
+    }
+    g_pDisplayMgr->ModalMessage(message, g_MapInteractionPreviewPoint_006a3370);
+    return;
+  }
+
+  pendingTown364->tileIndex14 = nTileIndex;
+  CString cityName;
+  g_pGlobalMapState->AssignCityRecordDisplayName(tile.cityRecordIndex, &cityName);
+  pendingTown364->SetName(cityName);
+  if (!g_pUiRuntimeContext->HandleTurnEventDialogFactorySlotB4(pendingTown364)) {
+    pendingTown364->tileIndex14 = 0;
+    return;
+  }
+
+  g_pGlobalMapState->SetTileTransportFlagsTo0x37AndRefreshNeighbors(nTileIndex, activeNation);
+  g_pSimMgr->StartNextPhase();
+}

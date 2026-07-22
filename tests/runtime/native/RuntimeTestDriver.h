@@ -10,5 +10,6 @@ class RuntimeTestDriver {
 public:
   static void OnIdle();
   static void ObserveBuiltUiTree(int eventCode, TView* root);
+  static void ObserveActivatedTurnEvent(int eventCode);
   static unsigned int RandomSeed();
 };

@@ -13490,6 +13490,25 @@
       ],
       "source_file": "src/game/TCitySiteView.cpp"
     },
+    "0x0051c760": {
+      "references": [
+        {
+          "group": 10043,
+          "index": 1,
+          "kind": "windows_gob",
+          "load_string_id": 21261,
+          "text": "The city cannot be placed in a foreign country."
+        },
+        {
+          "group": 10043,
+          "index": 2,
+          "kind": "windows_gob",
+          "load_string_id": 21262,
+          "text": "Cities must be built on flat terrain (no hills or mountains). Cities must be built on the coast or on a river. If on a river, your country must control the entire river from the city to the sea."
+        }
+      ],
+      "source_file": "src/game/TCitySiteView.cpp"
+    },
     "0x00529960": {
       "references": [
         {
@@ -191225,7 +191244,7 @@
   "summary": {
     "embedded_globals": 773,
     "formula_matches": 2356,
-    "functions_with_references": 317,
+    "functions_with_references": 318,
     "mac_strings": 3821,
     "mac_strings_with_candidates": 3272,
     "text_resources": 182,

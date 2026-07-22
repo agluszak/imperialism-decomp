@@ -3233,7 +3233,7 @@ address|matching|name
 0x51c2f0|1.0|TCitySiteView::SetMapViewCellCoordinates
 0x51c320|0.8484848484848485|TCitySiteView::SetMapDialogCellCoordinatesAndRefresh
 0x51c3b0|0.3130841121495327|TCitySiteView::RenderStrategicTileSelectionAndNeighborHighlights
-0x51c760|0.01098901098901099|TCitySiteView::HandleMapClickByInteractionMode
+0x51c760|0.22740524781341107|TCitySiteView::HandleMapClickByInteractionMode
 0x51cab0|0.2857142857142857|TMapEditView::CreateObject
 0x51cbf0|0.9090909090909091|TMapEditView::`scalar deleting destructor'
 0x51cc40|1.0|TMapEditView::GetRuntimeClass
@@ -3312,7 +3312,7 @@ address|matching|name
 0x5274d0|0.3088235294117647|TMapMaker::TryMergeRegionGroupWithNeighbors
 0x5275a0|0.48623853211009177|TMapMaker::MapGenPassSlot0E
 0x527730|0.29577464788732394|TMapMaker::MapGenPassSlot0F
-0x527d00|0.4268774703557312|TMapMaker::CreateRivers
+0x527d00|0.43478260869565216|TMapMaker::CreateRivers
 0x527ed0|0.3742690058479532|TMapMaker::GrowRiver
 0x528140|0.32954545454545453|TMapMaker::PlaceCityMarkerAndSpreadNeighbors
 0x5283c0|0.296875|TMapMaker::ForwardParam

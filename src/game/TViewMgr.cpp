@@ -53,6 +53,10 @@
 #include "game/TSuperNavyRoster.h"
 #include "game/TNavyRoster.h"
 #include "game/TTaskForce.h"
+
+#ifdef IMPERIALISM_RUNTIME_TESTS
+#include "RuntimeTestDriver.h"
+#endif
 #include "game/TTacticalBattleView.h"
 #include "game/TScrollView.h" // nation-info modal overflow scroll wrapper
 #include "game/TStaticText.h"
@@ -1322,6 +1326,9 @@ void TViewMgr::DispatchTurnEvent(short eventCode, int payload) {
     this->InitializeCitySiteSelectionScreenForNation(static_cast<int>(secondary));
     g_pGlobalUiRootController->dispatchBusyFlag4c = 0;
   }
+#ifdef IMPERIALISM_RUNTIME_TESTS
+  RuntimeTestDriver::ObserveActivatedTurnEvent(newCode);
+#endif
   DispatchPostTurnStateUpdatesTail();
 }
 
