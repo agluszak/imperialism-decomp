@@ -2204,6 +2204,8 @@ int g_streamLine596AssertGuard = 0;
 // see global_data_tables.h. Runtime-initialized.
 // GLOBAL: IMPERIALISM 0x006a5aec
 unsigned int g_zoneStatusCodePrngSeed_006a5aec = 0;
+// GLOBAL: IMPERIALISM 0x006a5af0
+extern "C" short g_anProvinceNameOrdinalByNationSlot_006a5af0[23] = {0};
 // GLOBAL: IMPERIALISM 0x006984b8 (static init -1 in the original .data section)
 int g_mapActionContextDisplayNameCacheId_006984b8 = -1;
 // GLOBAL: IMPERIALISM 0x006984bc (static init 7 in the original .data section)

@@ -3138,7 +3138,7 @@ address|name|symbol|size|type|prototype|provenance
 50f3c0|VerifyMapDataAndWriteReport||434|function|void __fastcall VerifyMapDataAndWriteReport(int pMapDataContext)|
 50f5f0|WrapperFor_thunk_SetMapRecordFlagA3AndPropagateToChildren_At0050f5f0||139|function|undefined WrapperFor_thunk_SetMapRecordFlagA3AndPropagateToChildren_At0050f5f0()|
 50f6b0|TMapMgr::SetMapRecordFlagA3AndPropagateToChildren||110|function|void __thiscall SetMapRecordFlagA3AndPropagateToChildren(int recordIndex, int classCode)|
-50f740|RefreshMapContextRotatingStatusStrings||221|function|undefined RefreshMapContextRotatingStatusStrings()|
+50f740|TMapMgr::GenerateProvinceNames||221|function|void __thiscall GenerateProvinceNames()|
 50f860|TMapMgr::RebuildTileOwnerNeighborCachesAndFallbackAssignments||858|function|void __thiscall RebuildTileOwnerNeighborCachesAndFallbackAssignments()|
 50fca0|TMapMgr::UpdateTilePrimaryAndSecondaryNeighborLinksByPriority||285|function|void __thiscall UpdateTilePrimaryAndSecondaryNeighborLinksByPriority(int cityRecordIndex)|
 50fe10|TMapMgr::UpdateTileNeighborBorderInfluenceCounters||812|function|undefined UpdateTileNeighborBorderInfluenceCounters()|
@@ -3151,7 +3151,7 @@ address|name|symbol|size|type|prototype|provenance
 511440|CheckTileVariantCodeMembershipSetD||65|function|undefined CheckTileVariantCodeMembershipSetD()|
 5114b0|CheckTilePatternMaskAllowedByModeFlag||268|function|undefined CheckTilePatternMaskAllowedByModeFlag()|
 511610|TMapMgr::UpdateStrategicMapTileIconVariantState||864|function|short __thiscall UpdateStrategicMapTileIconVariantState(short param_1)|
-511a70|TMapMgr::TMapMaker_EnsureRegionClassHasSubtype3And4AssignmentsWithRng||830|function|undefined TMapMaker_EnsureRegionClassHasSubtype3And4AssignmentsWithRng()|
+511a70|TMapMgr::GuaranteeResources||830|function|void __thiscall GuaranteeResources()|
 511e80|TMapMgr::TMapMaker_EnsureMapDataStreamOpenedAndMaybeTickUiProgress||49|function|undefined TMapMaker_EnsureMapDataStreamOpenedAndMaybeTickUiProgress()|
 511ed0|TMapMgr::DispatchTurnEvent7DDForActiveNation||42|function|undefined DispatchTurnEvent7DDForActiveNation()|
 511f10|TMapMgr::ForwardComputeRepresentativeTileIndexForTerrainTypeWithWrapBias||15|function|short __thiscall ForwardComputeRepresentativeTileIndexForTerrainTypeWithWrapBias(int terrainType)|
@@ -6002,7 +6002,7 @@ address|name|symbol|size|type|prototype|provenance
 5d41a0|GenerateMappedFlavorTextVariantDToSharedString||119|function|undefined GenerateMappedFlavorTextVariantDToSharedString()|
 5d4240|ShouldRetryMappedFlavorTextGeneration||366|function|undefined ShouldRetryMappedFlavorTextGeneration()|
 5d4410|SetSharedStringFromMappedFlavorTextWithLengthClamp||253|function|void __fastcall SetSharedStringFromMappedFlavorTextWithLengthClamp(CString* sharedStr, int dummyEdx, int index)|
-5d4550|SetSharedStringFromRotatingFlavorTextBySlot||269|function|undefined SetSharedStringFromRotatingFlavorTextBySlot()|
+5d4550|AssignNextProvinceNameForNationSlot||269|function|void __cdecl AssignNextProvinceNameForNationSlot(CString* dest, short nationSlot)|
 5d46b0|GenerateMappedFlavorTextByTableSlot||28|function|undefined GenerateMappedFlavorTextByTableSlot()|
 5d46e0|GenerateMappedFlavorTextByCurrentContextNation||45|function|undefined GenerateMappedFlavorTextByCurrentContextNation()|
 5d4720|GenerateMappedFlavorTextUntilValidationPasses||205|function|undefined GenerateMappedFlavorTextUntilValidationPasses()|

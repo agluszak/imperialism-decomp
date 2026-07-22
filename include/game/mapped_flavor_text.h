@@ -66,6 +66,8 @@ CString BuildSharedStringFromMappedFlavorTextIndex(short variantIndex);
 char ShouldRetryMappedFlavorTextGeneration(CString* dest);
 void GenerateMappedFlavorTextUntilValidationPasses(CString* dest, short variantIndex);
 void SetSharedStringFromMappedFlavorTextWithLengthClamp(CString* dest, short tableSlot);
+// nationSlot == -1 resets the per-nation localized province-name ordinals.
+void __cdecl AssignNextProvinceNameForNationSlot(CString* dest, short nationSlot);
 
 // 0x5d4890: GetAsyncKeyState pressed-bit for a shortcut code (code 2 remaps to 0x44).
 bool IsMappedShortcutKeyPressed(short nShortcutCode);
