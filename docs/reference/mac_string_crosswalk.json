@@ -5421,7 +5421,7 @@
       "placeholders": [],
       "source": "embedded_global",
       "symbol": "s_Data_scores_dat_0069b7fc",
-      "text": "Data\\scores.dat"
+      "text": "Data/scores.dat"
     },
     {
       "address": "0x0069b810",
@@ -7088,7 +7088,7 @@
           "address": "0x0069b7fc",
           "kind": "embedded_global",
           "symbol": "s_Data_scores_dat_0069b7fc",
-          "text": "Data\\scores.dat"
+          "text": "Data/scores.dat"
         },
         {
           "address": "0x00694204",
@@ -27179,7 +27179,7 @@
           "address": "0x0069b7fc",
           "kind": "embedded_global",
           "symbol": "s_Data_scores_dat_0069b7fc",
-          "text": "Data\\scores.dat"
+          "text": "Data/scores.dat"
         },
         {
           "address": "0x0069b820",

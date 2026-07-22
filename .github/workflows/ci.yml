@@ -80,17 +80,20 @@ jobs:
         run: |
           git fetch origin "${{ github.base_ref }}" --quiet
           base="$(git merge-base HEAD "origin/${{ github.base_ref }}")"
-          changed="$(git diff --name-only "$base" -- \
-            config/vtable_gate_baseline.csv \
-            config/construction_gate_baseline.csv \
-            config/tgreatpower_gate_baseline.csv \
-            config/empty_body_baseline.csv \
-            config/stub_count_baseline.json \
-            config/library_identity_gate_baseline.json)"
-          if [ -n "$changed" ] && ! printf '%s\n' $LABELS | grep -qx 'policy-baseline-approved'; then
-            echo "Policy-baseline files changed without the 'policy-baseline-approved' label:"
-            echo "$changed"
-            echo "A human must approve ratchet-baseline rewrites (AGENTS.md: ALLOW_POLICY_BASELINE_UPDATE)."
+          # Baselines live under config/baselines/ (the old per-file list had
+          # gone stale and guarded nothing). Pure shrinks — the ratchet working
+          # as designed — pass without the label; only growth needs approval.
+          changed="$(git diff --name-only "$base" -- config/baselines/)"
+          grown=""
+          for f in $changed; do
+            git show "$base:$f" > /tmp/baseline_old 2>/dev/null || : > /tmp/baseline_old
+            if ! uv run python -m tools.workflow.baseline_guard --check-shrink /tmp/baseline_old "$f" >/dev/null; then
+              grown="$grown $f"
+            fi
+          done
+          if [ -n "$grown" ] && ! printf '%s\n' $LABELS | grep -qx 'policy-baseline-approved'; then
+            echo "Policy baselines GREW without the 'policy-baseline-approved' label:$grown"
+            echo "A human must approve debt-growing rewrites (AGENTS.md: ALLOW_POLICY_BASELINE_UPDATE)."
             exit 1
           fi
-          echo "Policy-baseline guard OK."
+          echo "Policy-baseline guard OK (changed:${changed:-<none>}; grown:${grown:-<none>})."
