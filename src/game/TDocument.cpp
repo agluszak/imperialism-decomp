@@ -14,15 +14,7 @@ IMPLEMENT_DYNCREATE(TDocument, TObject)
 TDocument::TDocument() {}
 
 // FUNCTION: IMPERIALISM 0x00486530
-undefined TDocument::OrphanRetStub_00486530(ArchiveStreamAdapter* stream, int flag) {
-  (void)stream;
-  (void)flag;
-  return 0;
-}
+void TDocument::DoRead(ArchiveStreamAdapter*, unsigned char) {}
 
 // FUNCTION: IMPERIALISM 0x00486550
-undefined TDocument::OrphanRetStub_00486550(ArchiveStreamAdapter* stream, int flag) {
-  (void)stream;
-  (void)flag;
-  return 0;
-}
+void TDocument::DoWrite(ArchiveStreamAdapter*, unsigned char) {}
