@@ -3849,7 +3849,7 @@ address|name|symbol|size|type|prototype|provenance
 53fdc0|TAttackProvinceMission::TryResolveInvadeMissionTargetTerrainClass||52|function|undefined TryResolveInvadeMissionTargetTerrainClass()|
 53fe10|TAttackProvinceMission::ResetInvadeMissionTargetTerrainClassAndRefresh||11|function|undefined ResetInvadeMissionTargetTerrainClassAndRefresh()|
 53fe30|RecomputeNationOrderPriorityMetrics||1217|function|undefined RecomputeNationOrderPriorityMetrics()|
-540440|ComputeBestNationTileDevelopmentScore||523|function|undefined ComputeBestNationTileDevelopmentScore()|
+540440|ComputeBestNationTileDevelopmentScore||523|function|int ComputeBestNationTileDevelopmentScore(short nationSlot)|
 540810|WrapperFor_ftol_At00540810||30|function|undefined WrapperFor_ftol_At00540810()|
 540840|TProxyGreatPower::CreateObject|?CreateObject@TProxyGreatPower@@SGPAVCObject@@XZ|83|function|undefined CreateObject()|rtti
 5408c0|TProxyGreatPower::ReturnFalseNationStateCapabilityFlag98||3|function|undefined ReturnTrueNationStateCapabilityFlag98()|
