@@ -16,7 +16,6 @@ public:
   TShipFractionCluster();
 
   void SetAvailableAndSelectedShipCounts(int availableCount, int selectedCount);
-  void SelectTaskForceOrderForActiveNationClass(char activeFlag);
 
   // Original object size is 0x98 (CRuntimeClass m_nObjectSize); the source class ended at
   // 0x88. Available ship count and upper bound for the selected count. The original
@@ -25,7 +24,7 @@ public:
   short availableShipCount88;
   short pad8a;
   // The 'main'-tagged control on GetWindow(), resolved by DoPostCreate.
-  class TView* mainSelectionView8c;
+  class TMapUberPicture* mainSelectionView8c;
   // The 'arro' TNumberedArrowButton, resolved by DoPostCreate. Windows calls its
   // TNumberedArrowButton::SetValue slot at vtable offset 0x1c4.
   TNumberedArrowButton* shipCountButton90;
