@@ -31,7 +31,7 @@ void TPlacard::DoPostCreate(int arg) {
 }
 
 // FUNCTION: IMPERIALISM 0x0058bb50
-bool TPlacard::IsSelected(short value, bool refreshNow) {
+bool TPlacard::SetValue(short value, bool refreshNow) {
   if (value != glyph90) {
     if (value == 0) {
       SetState(0, refreshNow);

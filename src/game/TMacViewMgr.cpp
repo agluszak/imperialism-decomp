@@ -14,6 +14,8 @@
 #include "game/TAnimator.h"
 #include "game/TAssetMgr.h"
 #include "game/TBitmapResourceLoader.h"
+#include "game/TBuildingConstructionView.h"
+#include "game/TBuildingView.h"
 #include "game/CDib.h"
 #include "game/TCity.h"
 #include "game/TCityProductionView.h"
@@ -1393,20 +1395,30 @@ void TMacViewMgr::DispatchTurnEvent3B8AndWaitForCompletionFlag(int unusedArg1, i
 }
 
 // FUNCTION: IMPERIALISM 0x0050d360
-undefined TMacViewMgr::CreateCityBuildingDialogBySlot(int param_1, undefined4 param_2,
-                                                      undefined4 param_3, int arg4, int arg5) {
+TBuildingView* TMacViewMgr::OpenBuildingWindow(short buildingSlot, TCity* city,
+                                               unsigned char closeAfterOpen,
+                                               unsigned char isEmbeddedPage,
+                                               TCityProductionView* productionView) {
   TurnEventDialogNode* dialog = reinterpret_cast<TurnEventDialogNode*>(
-      g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(param_1 + 0x23f0));
-  GoldDialogControl* goldControl =
-      reinterpret_cast<GoldDialogControl*>(dialog->ResolveControlByTag(0x444c4f47));
-  if (goldControl == 0) {
+      g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(buildingSlot + 0x23f0));
+  TBuildingView* buildingView =
+      static_cast<TBuildingView*>(dialog->ResolveControlByTag(0x444c4f47));
+  if (buildingView == 0) {
     MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag();
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUMacViewMgr_00696D68, 0xb4f);
   }
-  goldControl->InvokeSlot1D0FourParam(reinterpret_cast<int>(this), param_2, param_3, param_1);
+  buildingView->ApplyCityViewSelectionPayloadAndRefreshControls(city, isEmbeddedPage != 0,
+                                                                productionView, buildingSlot);
   dialog->controlValue3c = 0x65;
-  dialog->DispatchSlot9C();
-  return 0;
+  if (closeAfterOpen != 0) {
+    dialog->ShowTurnEventDialog(1);
+    dialog->RefreshTurnEventDialog();
+    dialog->Close();
+    dialog->Free();
+    return 0;
+  }
+  dialog->Open();
+  return buildingView;
 }
 
 // FUNCTION: IMPERIALISM 0x0050d470
@@ -1429,22 +1441,22 @@ undefined TMacViewMgr::OrphanCallChain_C10_I80_0050d470(int param_1, undefined4 
 }
 
 // FUNCTION: IMPERIALISM 0x0050d5b0
-undefined TMacViewMgr::OrphanCallChain_C9_I49_0050d5b0(int param_1, int arg2, int arg3) {
+void TMacViewMgr::OpenConstructionWindow(short buildingSlot, TCity* city,
+                                         TCityProductionView* productionView) {
   TurnEventDialogNode* dialog = reinterpret_cast<TurnEventDialogNode*>(
       g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(0x2404));
-  GoldDialogControl* goldControl =
-      reinterpret_cast<GoldDialogControl*>(dialog->ResolveControlByTag(0x444c4f47));
-  if (goldControl == 0) {
+  TBuildingConstructionView* constructionView =
+      static_cast<TBuildingConstructionView*>(dialog->ResolveControlByTag(0x444c4f47));
+  if (constructionView == 0) {
     MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag();
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUMacViewMgr_00696D68, 0xb98);
   }
-  goldControl->InvokeSlot1CC(reinterpret_cast<int>(this), static_cast<int>(param_1), param_1);
+  constructionView->StuffValues(buildingSlot, city, productionView);
   dialog->ShowTurnEventDialog(1);
-  dialog->RefreshTurnEventDialog();
-  dialog->InvokeSlotA0();
-  goldControl->InvokeSlot1D0OneParam(dialog->QueryTurnEventContentObject());
-  dialog->InvokeSlot1C();
-  return 0;
+  unsigned long dialogAction = dialog->RefreshTurnEventDialog();
+  dialog->Close();
+  constructionView->DoClosingAction(dialogAction);
+  dialog->Free();
 }
 
 // FUNCTION: IMPERIALISM 0x0050d680
@@ -1507,7 +1519,7 @@ undefined TMacViewMgr::RenderOffscreenBitmapTileSpanAndRestoreContext(int param_
 // FUNCTION: IMPERIALISM 0x0050d8d0
 void TMacViewMgr::RefreshActiveCityBuildingActionAvailabilityIndicators() {
   if (activeCityProductionView04 != 0) {
-    activeCityProductionView04->RefreshCityBuildingActionAvailabilityIndicators();
+    activeCityProductionView04->UpdateToolbar();
   }
 }
 

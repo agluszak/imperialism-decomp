@@ -1802,7 +1802,7 @@ address|name|symbol|size|type|prototype|provenance
 4b5ed0|TPopulationMgr::PopulationMgrSlot0E||716|function|undefined Helper_Uses_thunk_DeleteObjectIfNonNullViaVslot04_At004b5ed0(void)|
 4b6260|TPopulationMgr::OrphanLeaf_NoCall_Ins111_004b6260||299|function|undefined OrphanLeaf_NoCall_Ins111_004b6260(short * param_1, ushort * param_2)|
 4b63e0|TPopulationMgr::OrphanLeaf_NoCall_Ins50_004b63e0||168|function|undefined OrphanLeaf_NoCall_Ins50_004b63e0(void)|
-4b64c0|TPopulationMgr::OrphanLeaf_NoCall_Ins63_004b64c0||178|function|undefined OrphanLeaf_NoCall_Ins63_004b64c0(void)|
+4b64c0|TPopulationMgr::PredictedNeeds||178|function|short * __thiscall PredictedNeeds(void)|mac_oracle
 4b65b0|TPopulationMgr::OrphanCallChain_C2_I61_004b65b0||179|function|undefined OrphanCallChain_C2_I61_004b65b0(void)|
 4b66a0|TPopulationMgr::RemovePopulation||248|function|void RemovePopulation(short startingSkillBand, short amount)|
 4b67e0|TPopulationMgr::OrphanLeaf_NoCall_Ins26_004b67e0||79|function|undefined OrphanLeaf_NoCall_Ins26_004b67e0(short param_1, short param_2)|
@@ -1908,14 +1908,14 @@ address|name|symbol|size|type|prototype|provenance
 4badd0|TCityProductionView::RenderNationHeaderDateLabelWithPeriodicRefresh||356|function|undefined RenderNationHeaderDateLabelWithPeriodicRefresh()|
 4bafa0|TToolBarCluster::HandleCityBuildingHoverSelection||1629|function|void __thiscall HandleCityBuildingHoverSelection(int * pCursorPoint, int nEventFlags)|
 4bb7a0|TToolBarCluster::InitializeCityProductionDialog||1849|function|undefined InitializeCityProductionDialog(int arg1, int* arg2)|
-4bc0b0|UpdateCityProductionDialogCommodityValueControls||871|function|undefined UpdateCityProductionDialogCommodityValueControls()|
-4bc500|RefreshCityBuildingActionAvailabilityIndicators||199|function|undefined RefreshCityBuildingActionAvailabilityIndicators()|
-4bc610|WrapperFor_HandleCityDialogToggleCommandOrForward_At004bc610||62|function|undefined WrapperFor_HandleCityDialogToggleCommandOrForward_At004bc610()|
-4bc660|TCityProductionView::HandleCityBuildingSlotClickAndDispatchAction||411|function|undefined HandleCityBuildingSlotClickAndDispatchAction()|
-4bc870|WrapperFor_IsPointInsideHitRegion_At004bc870||121|function|undefined WrapperFor_IsPointInsideHitRegion_At004bc870()|
-4bc910|OrphanCallChain_C5_I49_004bc910||119|function|undefined OrphanCallChain_C5_I49_004bc910()|
+4bc0b0|TCityProductionView::UpdateUnits||871|function|void __thiscall UpdateUnits(void)|mac_oracle
+4bc500|TCityProductionView::UpdateToolbar||199|function|void __thiscall UpdateToolbar(void)|mac_oracle
+4bc610|TCityProductionView::DoEvent||62|function|void __thiscall DoEvent(int commandId, TEventHandler * sourceHandler, TEvent * event)|mac_oracle
+4bc660|TCityProductionView::BeginMouseCaptureAndStartRepeatTimer||411|function|void __thiscall BeginMouseCaptureAndStartRepeatTimer(CPoint const & point, TToolboxEvent * event, CPoint origin)|
+4bc870|TCityProductionView::DispatchPictureResourceCommand||121|function|void __thiscall DispatchPictureResourceCommand(int eventType, void * eventSender, void * eventDataA, void * eventDataB, int commandFlag)|
+4bc910|TCityProductionView::CloseAndSaveWindows||119|function|void __thiscall CloseAndSaveWindows(void)|mac_oracle
 4bc9b0|TCityProductionView::RenderViewIntoPrimaryRenderContextWithTemporaryClip||244|function|undefined RenderViewIntoPrimaryRenderContextWithTemporaryClip(int arg1, int arg2)|
-4bcaf0|RefreshCityDialogSummaryValues||874|function|undefined RefreshCityDialogSummaryValues()|
+4bcaf0|TCityProductionView::UpdateFields||874|function|void __thiscall UpdateFields(void)|mac_oracle
 4bcf40|TRailheadDialog::CreateObject|?CreateObject@TRailheadDialog@@SGPAVCObject@@XZ|106|function|undefined CreateObject()|rtti
 4bcfd0|TRailheadDialog::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4bd020|TRailheadDialog::GetRuntimeClass||6|function|undefined GetTRailheadDialogClassNamePointer()|rtti
@@ -3101,9 +3101,9 @@ address|name|symbol|size|type|prototype|provenance
 50be30|TMacViewMgr::MakeBookDialog||78|function|TView * __thiscall MakeBookDialog(int dialogId)|
 50bea0|TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets||4080|function|undefined RefreshCityProductionDetailPanelAndArrowWidgets()|
 50d310|TMacViewMgr::DispatchTurnEvent3B8AndWaitForCompletionFlag||57|function|undefined DispatchTurnEvent3B8AndWaitForCompletionFlag()|
-50d360|TMacViewMgr::CreateCityBuildingDialogBySlot||200|function|undefined CreateCityBuildingDialogBySlot()|
+50d360|TMacViewMgr::OpenBuildingWindow||200|function|TBuildingView * __thiscall OpenBuildingWindow(short buildingSlot, TCity * city, unsigned char closeAfterOpen, unsigned char isEmbeddedPage, TCityProductionView * productionView)|mac_oracle
 50d470|TMacViewMgr::OrphanCallChain_C10_I80_0050d470||243|function|undefined OrphanCallChain_C10_I80_0050d470(int param_1, undefined4 param_2, int arg3, int arg4, int arg5, int arg6, int arg7)|
-50d5b0|TMacViewMgr::OrphanCallChain_C9_I49_0050d5b0||160|function|undefined OrphanCallChain_C9_I49_0050d5b0(int param_1, int arg2, int arg3)|
+50d5b0|TMacViewMgr::OpenConstructionWindow||160|function|void __thiscall OpenConstructionWindow(short buildingSlot, TCity * city, TCityProductionView * productionView)|mac_oracle
 50d680|TMacViewMgr::EnsureClipRegionWrapperAtSlotAndMergeSourceRegion||45|function|undefined EnsureClipRegionWrapperAtSlotAndMergeSourceRegion()|
 50d6c0|TMacViewMgr::MacViewMgrSlot24||35|function|undefined WrapperFor_IsPointInsideHitRegion_At0050d6c0(CPoint* point, short regionIndex)|
 50d700|TMacViewMgr::RenderOffscreenBitmapTileSpanAndRestoreContext||364|function|undefined RenderOffscreenBitmapTileSpanAndRestoreContext()|
@@ -5091,7 +5091,7 @@ address|name|symbol|size|type|prototype|provenance
 58ba10|TPlacard::TPlacard||27|function|undefined TPlacard()|
 58ba40|TPlacard::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 58bab0|TPlacard::DoPostCreate||59|function|undefined OrphanLeaf_NoCall_Ins07_004d8920(void)|
-58bb50|TPlacard::IsSelected||167|function|bool __thiscall IsSelected(short value, bool refreshNow)|
+58bb50|TPlacard::SetValue||167|function|bool __thiscall SetValue(short value, bool refreshNow)|mac_oracle
 58bc60|TPlacard::Draw||360|function|undefined RenderPlacardValueTextWithShadow()|
 58be30|TArmyPlacard::CreateObject|?CreateObject@TArmyPlacard@@SGPAVCObject@@XZ|92|function|undefined CreateObject()|rtti
 58beb0|TArmyPlacard::GetRuntimeClass||6|function|undefined GetRuntimeClass()|rtti

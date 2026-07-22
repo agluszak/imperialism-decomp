@@ -64,7 +64,7 @@ struct GoldDialogControl : public TControl {
 // A distinct 'GOLD' concrete class from GoldDialogControl: dialog 0x546's 'GOLD' child
 // (HandleTurnEventDialogFactorySlotD8, 0x5dcf20) dispatches byte 0x1cc with a single
 // TViewMgr* argument, whereas GoldDialogControl's own 0x1cc override (verified at
-// TMacViewMgr::OrphanCallChain_C9_I49_0050d5b0, dialog 0x2404) takes three ints -- proof
+// TMacViewMgr::OpenConstructionWindow, dialog 0x2404) takes three arguments -- proof
 // these are two different runtime classes sharing the 'GOLD' tag and this byte offset,
 // not one type (see the Type-modeling guardrail's "never borrow a type" rule).
 struct GoldFactoryPanel : public TControl {

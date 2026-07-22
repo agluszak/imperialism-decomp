@@ -8,6 +8,8 @@
 class TStream;
 class TBitmapResourceLoader;
 class TView;
+class TCity;
+class TBuildingView;
 class TCityProductionView;
 struct TQuickDrawSurfaceContext;
 struct TBitmapSurfaceNode;
@@ -46,21 +48,22 @@ public:
   virtual undefined OrphanCallChain_C10_I80_0050d470(int param_1, undefined4 param_2, int arg3,
                                                      int arg4, int arg5, int arg6,
                                                      int arg7); // slot 0x14 0x50d470
-  // RET 0x14 = 5 dwords (Ghidra recovered only 3); trailing args RET-derived.
-  virtual undefined CreateCityBuildingDialogBySlot(int param_1, undefined4 param_2,
-                                                   undefined4 param_3, int arg4,
-                                                   int arg5); // slot 0x15 0x50d360
-  // RET 0xc = 3 dwords (Ghidra recovered only 1); trailing args RET-derived.
-  virtual undefined OrphanCallChain_C9_I49_0050d5b0(int param_1, int arg2,
-                                                    int arg3);          // slot 0x16 0x50d5b0
-  virtual void RefreshActiveCityBuildingActionAvailabilityIndicators(); // slot 0x17 0x50d8d0
-  virtual void ClearActiveCityBuildingViewSlot(short buildingSlot);     // slot 0x18 0x50d8f0
-  virtual void ClearActiveCityProductionViewAndDiscardRegion();         // slot 0x19 0x50d920
-  virtual void BuildStrategicMapRenderAtlasesAndTileMaskCaches();       // slot 0x1a 0x50a9f0
-  virtual void RefreshActiveGoldControlAndUiRuntimeState();             // slot 0x1b 0x50d950
-  virtual void RenderTurnEventPalettePreviewSurfaceAndProgress();       // slot 0x1c 0x50b640
-  virtual void RebuildMapTileNeighborHighlightPolygonsForAllTiles();    // slot 0x1d 0x50b9e0
-  virtual undefined RebuildNationClipRegionsAndDispatchMapEvent();      // slot 0x1e 0x50bad0
+  // Mac CodeWarrior oracle signatures. `closeAfterOpen` selects the modal path,
+  // which consumes the dialog and therefore returns null.
+  virtual TBuildingView*
+  OpenBuildingWindow(short buildingSlot, TCity* city, unsigned char closeAfterOpen,
+                     unsigned char isEmbeddedPage,
+                     TCityProductionView* productionView); // slot 0x15 0x50d360
+  virtual void OpenConstructionWindow(short buildingSlot, TCity* city,
+                                      TCityProductionView* productionView); // slot 0x16 0x50d5b0
+  virtual void RefreshActiveCityBuildingActionAvailabilityIndicators();     // slot 0x17 0x50d8d0
+  virtual void ClearActiveCityBuildingViewSlot(short buildingSlot);         // slot 0x18 0x50d8f0
+  virtual void ClearActiveCityProductionViewAndDiscardRegion();             // slot 0x19 0x50d920
+  virtual void BuildStrategicMapRenderAtlasesAndTileMaskCaches();           // slot 0x1a 0x50a9f0
+  virtual void RefreshActiveGoldControlAndUiRuntimeState();                 // slot 0x1b 0x50d950
+  virtual void RenderTurnEventPalettePreviewSurfaceAndProgress();           // slot 0x1c 0x50b640
+  virtual void RebuildMapTileNeighborHighlightPolygonsForAllTiles();        // slot 0x1d 0x50b9e0
+  virtual undefined RebuildNationClipRegionsAndDispatchMapEvent();          // slot 0x1e 0x50bad0
   virtual undefined BlitMapOverlayGlyphStrip32x24SkipMask10(TBitmapSurfaceNode** dstSurface,
                                                             short param_2, short param_3,
                                                             short param_4); // slot 0x1f 0x50da80

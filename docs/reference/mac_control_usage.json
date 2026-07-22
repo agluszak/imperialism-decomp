@@ -373,7 +373,16 @@
       "nodes": [
         "Citymain.rsrc:2011@0x0048"
       ],
-      "original_modules": [],
+      "original_modules": [
+        {
+          "functions": [
+            "0x004bc0b0",
+            "0x004bcaf0"
+          ],
+          "module": "UCityDialogs.cpp",
+          "status": "confirmed"
+        }
+      ],
       "parent_classes": {
         "TView": 1
       },
@@ -11042,7 +11051,21 @@
     },
     "0x00427360": {
       "name": "InitializeIndustryOverviewPlacardsAndTradeStatusTags",
-      "original_modules": []
+      "original_modules": [
+        {
+          "classes": [
+            "TCityProductionView"
+          ],
+          "events": [
+            "0x07db"
+          ],
+          "module": "UCityDialogs.cpp",
+          "resources": [
+            "Citymain.rsrc:2011"
+          ],
+          "status": "candidate"
+        }
+      ]
     },
     "0x004295a0": {
       "name": "BuildTurnEventDialogResourcesForEvent547Or7D8",
@@ -175626,7 +175649,15 @@
         "Citymain.rsrc:2011@0x0ab4",
         "Citymain.rsrc:2011@0x0b22"
       ],
-      "original_modules": []
+      "original_modules": [
+        {
+          "classes": [
+            "TCityProductionView"
+          ],
+          "module": "UCityDialogs.cpp",
+          "status": "candidate"
+        }
+      ]
     },
     "Diplo.rsrc:1351": {
       "name": "Battle Report-Diplomacy Style",
@@ -179620,6 +179651,44 @@
         "owner_class": "TCity",
         "recovered_source": "src/game/TCity.cpp"
       },
+      "0x004bc0b0": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "definition_source": "src/game/global_data_tables.cpp",
+                "kind": "source_path_global_reference",
+                "path": "D:\\Ambit\\Cross\\UCityDialogs.cpp",
+                "symbol": "s_SourcePathUCityDialogs_006962E8"
+              }
+            ],
+            "module": "UCityDialogs.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "TCityProductionView::UpdateUnits",
+        "owner_class": "TCityProductionView",
+        "recovered_source": "src/game/TCityProductionView.cpp"
+      },
+      "0x004bcaf0": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "definition_source": "src/game/global_data_tables.cpp",
+                "kind": "source_path_global_reference",
+                "path": "D:\\Ambit\\Cross\\UCityDialogs.cpp",
+                "symbol": "s_SourcePathUCityDialogs_006962E8"
+              }
+            ],
+            "module": "UCityDialogs.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "TCityProductionView::UpdateFields",
+        "owner_class": "TCityProductionView",
+        "recovered_source": "src/game/TCityProductionView.cpp"
+      },
       "0x004bd040": {
         "modules": [
           {
@@ -180240,6 +180309,44 @@
           }
         ],
         "name": "TMacViewMgr::MakeBookDialog",
+        "owner_class": "TMacViewMgr",
+        "recovered_source": "src/game/TMacViewMgr.cpp"
+      },
+      "0x0050d360": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "definition_source": "src/game/global_data_tables.cpp",
+                "kind": "source_path_global_reference",
+                "path": "D:\\Ambit\\Cross\\UMacViewMgr.cpp",
+                "symbol": "s_SourcePathUMacViewMgr_00696D68"
+              }
+            ],
+            "module": "UMacViewMgr.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "TMacViewMgr::OpenBuildingWindow",
+        "owner_class": "TMacViewMgr",
+        "recovered_source": "src/game/TMacViewMgr.cpp"
+      },
+      "0x0050d5b0": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "definition_source": "src/game/global_data_tables.cpp",
+                "kind": "source_path_global_reference",
+                "path": "D:\\Ambit\\Cross\\UMacViewMgr.cpp",
+                "symbol": "s_SourcePathUMacViewMgr_00696D68"
+              }
+            ],
+            "module": "UMacViewMgr.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "TMacViewMgr::OpenConstructionWindow",
         "owner_class": "TMacViewMgr",
         "recovered_source": "src/game/TMacViewMgr.cpp"
       },
@@ -181634,11 +181741,14 @@
       },
       "UCityDialogs.cpp": {
         "classes": [
+          "TCityProductionView",
           "TNewTownView",
           "TRailheadDialog",
           "TTransportView"
         ],
         "functions": [
+          "0x004bc0b0",
+          "0x004bcaf0",
           "0x004bd040",
           "0x004bd260",
           "0x004bd3e0",
@@ -181749,7 +181859,9 @@
           "TMacViewMgr"
         ],
         "functions": [
-          "0x0050be30"
+          "0x0050be30",
+          "0x0050d360",
+          "0x0050d5b0"
         ]
       },
       "UMap.cpp": {
@@ -181972,13 +182084,13 @@
   "summary": {
     "ambiguous_tags": 153,
     "classes": 162,
-    "classes_with_source_module_evidence": 16,
+    "classes_with_source_module_evidence": 17,
     "declared_classes": 152,
-    "factories_with_source_module_candidates": 9,
-    "functions_with_source_module_evidence": 112,
+    "factories_with_source_module_candidates": 10,
+    "functions_with_source_module_evidence": 116,
     "nodes": 3263,
     "screens": 121,
-    "screens_with_source_module_candidates": 26,
+    "screens_with_source_module_candidates": 27,
     "source_modules": 35,
     "tags": 813
   },
