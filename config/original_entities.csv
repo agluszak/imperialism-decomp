@@ -5264,7 +5264,7 @@ address|name|symbol|size|type|prototype|provenance
 5998a0|TToolBarCluster::TrySelectNextValidMapOrderEntry||217|function|byte __thiscall TrySelectNextValidMapOrderEntry(void * pMapInteractionState, byte fStartAfterCurrent)|
 5999f0|ResetMapInteractionToCivilianMode||21|function|void __thiscall ResetMapInteractionToCivilianMode(void * pMapInteractionState)|
 599a20|NotifyTaskForceSelectionListenerByWord62||24|function|undefined NotifyTaskForceSelectionListenerByWord62()|
-599a50|TacticalBattleView::EnterMapInteractionOverlayMode||252|function|undefined EnterMapInteractionOverlayMode()|
+599a50|TMapUberPicture::EnterMapInteractionOverlayMode||252|function|void __thiscall EnterMapInteractionOverlayMode(TView * controlOverride)|
 599b90|TMapUberPicture::CommitPendingUiModeChangeAndRefreshViews||263|function|void __thiscall CommitPendingUiModeChangeAndRefreshViews(void)|
 599cf0|TMapUberPicture::DisplayMiniMap||541|function|void DisplayMiniMap()|macos-name-oracle:DisplayMiniMap()
 599fa0|TMapUberPicture::InvalidateMiniMap||23|function|void InvalidateMiniMap()|macos-name-oracle:InvalidateMiniMap() const
@@ -5296,11 +5296,11 @@ address|name|symbol|size|type|prototype|provenance
 59b070|CompareTacticalCursorEntriesByActionClassPriority||119|function|undefined CompareTacticalCursorEntriesByActionClassPriority()|
 59b110|TArmyPlayer::CreateObject|?CreateObject@TArmyPlayer@@SGPAVCObject@@XZ|24|function|undefined CreateObject()|rtti
 59b140|TArmyPlayer::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
-59b170|TArmyPlayer::CreateTArmyPlayerInstance||7|function|undefined CreateTArmyPlayerInstance()|
+59b170|TArmyPlayer::~TArmyPlayer|??1TArmyPlayer@@UAE@XZ|7|function|void __thiscall ~TArmyPlayer()|
 59b190|TArmyPlayer::GetRuntimeClass||6|function|undefined GetTArmyPlayerClassNamePointer()|rtti
 59b1b0|TArmyPlayer::InitializeTacticalSideFromArmyUnitList||379|function|undefined InitializeTacticalSideFromArmyUnitList()|
 59b390|TArmyTacUnit::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
-59b3c0|DestructTArmyPlayerAndMaybeFree_Impl||7|function|undefined DestructTArmyPlayerAndMaybeFree_Impl()|
+59b3c0|TArmyTacUnit::~TArmyTacUnit|??1TArmyTacUnit@@UAE@XZ|7|function|void __thiscall ~TArmyTacUnit()|
 59b3e0|TArmyPlayer::CommitTacticalResultsToSourceUnits||193|function|undefined OrphanRetStub_0059add0(void)|
 59b4f0|TArmyPlayer::RemoveTacticalUnitFromUnitList||55|function|undefined TArmyTacUnit_VtblSlot02(int param_1)|
 59b540|TArmyPlayer::AddTacticalUnitToUnitListHead||73|function|undefined TArmyTacUnit_VtblSlot03(int * param_1)|
@@ -5327,7 +5327,7 @@ address|name|symbol|size|type|prototype|provenance
 59ca26|WrapperFor_thunk_ApplyTacticalCursorModeProfile6_DefaultByActionClass_At0059ca26|||global||
 59ca32|SetLinkedListEntryState2CTo13ForAllNodes|||global||
 59caf0|TArmyPlayer::ApplyDefenderHoldLineStanceByActionClass||276|function|undefined ApplyTacticalCursorModeProfile0_ByActionClassCounts()|
-59cc70|IterateLinkedListCursorEntries_0059cc70||100|function|undefined IterateLinkedListCursorEntries_0059cc70()|
+59cc70|TArmyPlayer::AssignJobsByZeroCategory||100|function|void __thiscall AssignJobsByZeroCategory()|
 59cd00|TArmyPlayer::ApplyDefenderBombardStanceByActionClass||296|function|undefined ApplyTacticalCursorModeProfile2_ByActionClassCounts()|
 59ce90|TArmyPlayer::ApplyAttackerSiegeStanceByActionClass||296|function|undefined ApplyTacticalCursorModeProfile3_ClassAware()|
 59d020|TArmyPlayer::ApplyAttackerAssaultStanceByActionClass||272|function|undefined ApplyTacticalCursorModeProfile4_ClassAware()|
@@ -5354,28 +5354,28 @@ address|name|symbol|size|type|prototype|provenance
 59e110|TArmyPlayer::SelectBestTacticalTargetTileByActionHeuristics||568|function|undefined SelectBestTacticalTargetTileByActionHeuristics()|
 59e3e0|TArmyPlayer::AdvanceTacticalTurnPulse||203|function|undefined OrphanRetStub_0059ad90(void)|
 59e4f0|TArmyPlayer::RunTacticalAutoTurnControllerForActiveUnit||752|function|undefined RunTacticalAutoTurnControllerForActiveUnit()|
-59e8a0|BuildTacticalActionClassAndPositionFlags||201|function|undefined BuildTacticalActionClassAndPositionFlags()|
-59e9c0|IterateLinkedListCursorEntries_0059e9c0||114|function|undefined IterateLinkedListCursorEntries_0059e9c0()|
-59ea60|TArmyPlayer::TArmyTacUnit_VtblSlot09||166|function|undefined TArmyTacUnit_VtblSlot09()|
+59e8a0|TArmyPlayer::BuildTacticalActionClassAndPositionFlags||201|function|unsigned int __thiscall BuildTacticalActionClassAndPositionFlags(int referenceTileIndex, TTacticalUnit * unit)|
+59e9c0|TArmyPlayer::GetMinimumActiveUnitRangeForStates2Or4||114|function|int __thiscall GetMinimumActiveUnitRangeForStates2Or4()|
+59ea60|TArmyPlayer::SwitchToAutoPlay||166|function|unsigned char __thiscall SwitchToAutoPlay()|mac-oracle
 59eb40|TArmyPlayer::ProceedAfterBattleIntroAccepted||46|function|undefined OrphanRetStub_0059ae10(void)|
 59eb80|TNavyPlayer::CreateObject|?CreateObject@TNavyPlayer@@SGPAVCObject@@XZ|24|function|undefined CreateObject()|rtti
 59ebb0|TNavyPlayer::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
-59ebe0|TNavyPlayer::CreateTNavyPlayerInstance||7|function|undefined CreateTNavyPlayerInstance()|
+59ebe0|TNavyPlayer::~TNavyPlayer|??1TNavyPlayer@@UAE@XZ|7|function|void __thiscall ~TNavyPlayer()|
 59ec00|TNavyPlayer::GetRuntimeClass||6|function|undefined GetTNavyPlayerClassNamePointer()|rtti
 59ed60|TNavyTacUnit::GetSourceTaskForce||4|function|undefined ConstructTNavyPlayerBaseState()|
 59ed80|TNavyTacUnit::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
-59edb0|DestructTNavyPlayerAndMaybeFree_Impl||7|function|undefined DestructTNavyPlayerAndMaybeFree_Impl()|
+59edb0|TNavyTacUnit::~TNavyTacUnit|??1TNavyTacUnit@@UAE@XZ|7|function|void __thiscall ~TNavyTacUnit()|
 59edd0|TNavyPlayer::CommitTacticalResultsToSourceUnits||110|function|undefined OrphanRetStub_0059add0(void)|
 59ee60|TNavyPlayer::RemoveTacticalUnitFromUnitList||37|function|undefined Helper_Uses_FindListNodeByKeyFromNodeOrHead_At0059ee60(void)|
 59eea0|TNavyPlayer::AddTacticalUnitToUnitListHead||51|function|undefined AddOrderNodeToHeadAndReassignNationCounters(int * param_1)|
 59eef0|TNavyHumanPlayer::CreateObject|?CreateObject@TNavyHumanPlayer@@SGPAVCObject@@XZ|24|function|undefined CreateObject()|rtti
 59ef20|TNavyHumanPlayer::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
-59ef50|TNavyHumanPlayer::CreateTNavyHumanPlayerInstance||7|function|undefined CreateTNavyHumanPlayerInstance()|
+59ef50|TNavyHumanPlayer::~TNavyHumanPlayer|??1TNavyHumanPlayer@@UAE@XZ|7|function|void __thiscall ~TNavyHumanPlayer()|
 59ef70|TNavyHumanPlayer::GetRuntimeClass||6|function|undefined GetTNavyHumanPlayerClassNamePointer()|rtti
 59efc0|TNavyHumanPlayer::DeploymentClick||89|function|void __thiscall DeploymentClick(int tileIndex)|
 59f040|TNavyAutoPlayer::CreateObject|?CreateObject@TNavyAutoPlayer@@SGPAVCObject@@XZ|24|function|undefined CreateObject()|rtti
 59f070|TNavyAutoPlayer::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
-59f0a0|TNavyAutoPlayer::CreateTNavyAutoPlayerInstance||7|function|undefined CreateTNavyAutoPlayerInstance()|
+59f0a0|TNavyAutoPlayer::~TNavyAutoPlayer|??1TNavyAutoPlayer@@UAE@XZ|7|function|void __thiscall ~TNavyAutoPlayer()|
 59f0c0|TNavyAutoPlayer::GetRuntimeClass||6|function|undefined GetTNavyAutoPlayerClassNamePointer()|rtti
 59f110|TNavyAutoPlayer::StartBattle||64|function|undefined StartBattle(void)|
 59f160|TNavyAutoPlayer::AdvanceTacticalTurnPulse||428|function|undefined OrphanRetStub_0059ad90(void)|
@@ -5400,7 +5400,7 @@ address|name|symbol|size|type|prototype|provenance
 59ff20|TTacticalBattle::ComputeTacticalReachableTileCostsByUnitCategory||765|function|undefined ComputeTacticalReachableTileCostsByUnitCategory()|
 5a02e0|TTacticalBattle::PropagateTileAccessibilityStrengthLevels||251|function|undefined PropagateTileAccessibilityStrengthLevels()|
 5a0420|TTacticalBattle::ComputeHexNeighborTileIndices_005A0420||225|function|undefined ComputeHexNeighborTileIndices_005A0420()|
-5a0550|IsHexNeighborTileIndex||57|function|undefined IsHexNeighborTileIndex()|
+5a0550|TTacticalBattle::IsHexNeighborTileIndex||57|function|unsigned char __thiscall IsHexNeighborTileIndex(int tileIndex, int candidateTileIndex)|
 5a05a0|ComputeTacticalHoverCursorStateIndex||1002|function|undefined ComputeTacticalHoverCursorStateIndex()|
 5a0a90|ResolveTacticalHoverCursorToken||348|function|undefined ResolveTacticalHoverCursorToken()|
 5a0c50|TTacticalBattle::HandleTacticalBattleCommandTag||193|function|void __thiscall HandleTacticalBattleCommandTag(int commandTag)|
@@ -5505,7 +5505,7 @@ address|name|symbol|size|type|prototype|provenance
 5a6a20|InitializeTacticalUnitFacingOffsetTable||5022|function|undefined OrphanLeaf_NoCall_Ins838_005a6a20()|
 5a82b0|TTacticalBattleView::CreateObject|?CreateObject@TTacticalBattleView@@SGPAVCObject@@XZ|90|function|undefined CreateObject()|rtti
 5a8330|TTacticalBattleView::GetRuntimeClass||6|function|undefined GetTacticalBattleViewClassNamePointer()|rtti
-5a8350|TacticalBattleView::ConstructTacticalBattleViewBaseState||71|function|undefined ConstructTacticalBattleViewBaseState()|
+5a8350|TTacticalBattleView::TTacticalBattleView||71|function|void __thiscall TTacticalBattleView()|
 5a83c0|TTacticalBattleView::DrawTacticalTileInClipRect||3|function|undefined OrphanRetStub_005a83c0(void)|
 5a83e0|TTacticalBattleView::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 5a8430|TTacticalBattleView::Free||116|function|void __thiscall Free(void)|
@@ -5536,7 +5536,7 @@ address|name|symbol|size|type|prototype|provenance
 5a9d90|TTacArmyView::ConstructTTacArmyViewBaseState||1074|function|undefined ConstructTTacArmyViewBaseState()|
 5aa2e0|TTacArmyView::Draw||718|function|undefined DestructTTacArmyViewAndMaybeFree()|
 5aa670|TCivDescription::ComputeTacticalUnitSpriteOrientationIndexByAdjacentType1Occupancy||257|function|undefined ComputeTacticalUnitSpriteOrientationIndexByAdjacentType1Occupancy()|
-5aa7d0|TacticalBattleView::ComputeTacticalUnitSpriteDrawRectAndApplyFacingOffset||231|function|undefined ComputeTacticalUnitSpriteDrawRectAndApplyFacingOffset()|
+5aa7d0|TTacticalBattleView::ComputeTacticalUnitSpriteDrawRectAndApplyFacingOffset||231|function|undefined ComputeTacticalUnitSpriteDrawRectAndApplyFacingOffset()|
 5aa900|TTacArmyView::DrawTacticalTileInClipRect||6235|function|undefined OrphanRetStub_005a83c0(int param_1)|
 5ac780|TTacticalToolbar::CreateObject|?CreateObject@TTacticalToolbar@@SGPAVCObject@@XZ|128|function|undefined CreateObject()|rtti
 5ac820|TTacticalToolbar::GetRuntimeClass||6|function|undefined GetTTacticalToolbarClassNamePointer()|rtti

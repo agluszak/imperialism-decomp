@@ -1780,6 +1780,8 @@ POINT g_ptTechItemModalMessage = {0, 0};
 POINT g_ptNationAwolModalMessage = {0, 0};
 // GLOBAL: IMPERIALISM 0x006a45c0
 POINT g_ptMapModeModalMessage = {0, 0};
+// GLOBAL: IMPERIALISM 0x006a4650
+POINT g_ptTacticalAutoPlayModalMessage = {0, 0};
 // GLOBAL: IMPERIALISM 0x006a57c8
 POINT g_ptTechCapabilityModalMessage = {0, 0};
 // Modal-message placement point used by the TViewMgr prompt helpers (0x5de990/0x5deb40).

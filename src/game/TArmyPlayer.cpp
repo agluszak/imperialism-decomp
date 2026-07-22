@@ -13,6 +13,8 @@
 #include "game/TMilitaryUnit.h"
 #include "game/TTacticalBattle.h"
 #include "game/TTacticalHolaPicture.h"
+#include "game/TSimMgr.h"
+#include "game/UiRuntimeContext.h"
 #include "game/global_data_tables.h"
 #include "game/turn_event_dialog_provisional.h"
 #include "game/ui_invalidation_guard.h"
@@ -70,6 +72,9 @@ short __cdecl CompareTacticalCursorEntriesByActionClassPriority(void* a, void* b
 
 // SYNTHETIC: IMPERIALISM 0x0059b140
 // TArmyPlayer::`scalar deleting destructor'
+
+// SYNTHETIC: IMPERIALISM 0x0059b170
+// TArmyPlayer::~TArmyPlayer
 TArmyPlayer::~TArmyPlayer() {}
 
 // SYNTHETIC: IMPERIALISM 0x0059b190
@@ -897,6 +902,21 @@ void TArmyPlayer::ApplyDefenderHoldLineStanceByActionClass() {
         record->aiStateCode2c = 0xc;
       }
       break;
+    }
+  }
+}
+
+// Assigns the retreat/fallback job code used by cursor-profile mode 1: category-0
+// units receive state 7, while every other tactical category receives state 12.
+// FUNCTION: IMPERIALISM 0x0059cc70
+void TArmyPlayer::AssignJobsByZeroCategory() {
+  CIterator iter(unitList4);
+  for (TTacticalUnit* unit = static_cast<TTacticalUnit*>(iter.Reset()); iter.More();
+       unit = static_cast<TTacticalUnit*>(iter.Advance())) {
+    if (g_awTacticalUnitCategoryCodeBySlot[unit->unitTypeC] != 0) {
+      unit->aiStateCode2c = 0xc;
+    } else {
+      unit->aiStateCode2c = 7;
     }
   }
 }
@@ -1800,9 +1820,74 @@ void TArmyPlayer::RunTacticalAutoTurnControllerForActiveUnit() {
   }
 }
 
+// Encodes the selected unit's AI class and tactical position into the action mask:
+// bits 0..2 identify the class family, 0x10 marks adjacency to the reference tile,
+// 0x20 marks deployed class-0 units (0x40 is its complement), 0x80 marks columns
+// beyond six, and 0x100 marks either of the last two battlefield rows.
+// FUNCTION: IMPERIALISM 0x0059e8a0
+unsigned int TArmyPlayer::BuildTacticalActionClassAndPositionFlags(int referenceTileIndex,
+                                                                   TTacticalUnit* unit) {
+  int tileIndex = unit->tileIndex8;
+  unsigned int flags = 0;
+  switch (g_awTacticalUnitAiClassByUnitType_006693B8[unit->unitTypeC]) {
+  case 0:
+    flags = 1;
+    break;
+  case 1:
+  case 3:
+    flags = 2;
+    break;
+  case 2:
+  case 4:
+    flags = 4;
+    break;
+  }
+
+  if (battle14->IsHexNeighborTileIndex(tileIndex, referenceTileIndex) != 0) {
+    flags |= 0x10;
+  }
+  if (g_awTacticalUnitAiClassByUnitType_006693B8[unit->unitTypeC] == 0 &&
+      battle14->tileGrid4[tileIndex].deployMark8 != 0) {
+    flags |= 0x20;
+  } else {
+    flags |= 0x40;
+  }
+
+  int row = tileIndex / 29;
+  int column = ((row & 1) + (tileIndex % 29) * 2) / 2;
+  if (column > 6) {
+    flags |= 0x80;
+  }
+  if (row == 14 || row == 13) {
+    flags |= 0x100;
+  }
+  return flags;
+}
+
+// FUNCTION: IMPERIALISM 0x0059e9c0
+int TArmyPlayer::GetMinimumActiveUnitRangeForStates2Or4() {
+  int minimumRange = 1000;
+  CIterator iter(unitList4);
+  for (TTacticalUnit* unit = static_cast<TTacticalUnit*>(iter.Reset()); iter.More();
+       unit = static_cast<TTacticalUnit*>(iter.Advance())) {
+    if (unit->state1c == 0 && (unit->aiStateCode2c == 4 || unit->aiStateCode2c == 2) &&
+        unit->GetUnitRange() < minimumRange) {
+      minimumRange = unit->GetUnitRange();
+    }
+  }
+  return minimumRange;
+}
+
+// Mac oracle: TArmyPlayer::SwitchToAutoPlay(). The side's +0x0e confirmation flag
+// selects the localized prompt path; otherwise switching is accepted immediately.
 // FUNCTION: IMPERIALISM 0x0059ea60
-undefined TArmyPlayer::TArmyTacUnit_VtblSlot09() {
-  return 0;
+unsigned char TArmyPlayer::SwitchToAutoPlay() {
+  if (notWatchedFlagE != 0) {
+    CString message;
+    g_pSimMgr->GetString(0x273d, 0, &message);
+    return g_pUiRuntimeContext->ModalMessage(message, g_ptTacticalAutoPlayModalMessage, 1, 1);
+  }
+  return 1;
 }
 
 // After the battle-intro dialog is accepted: auto-deploy if this side has not

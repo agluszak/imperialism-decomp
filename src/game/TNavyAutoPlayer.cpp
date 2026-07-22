@@ -8,6 +8,9 @@
 
 // SYNTHETIC: IMPERIALISM 0x0059f070
 // TNavyAutoPlayer::`scalar deleting destructor'
+
+// SYNTHETIC: IMPERIALISM 0x0059f0a0
+// TNavyAutoPlayer::~TNavyAutoPlayer
 TNavyAutoPlayer::~TNavyAutoPlayer() {}
 // SYNTHETIC: IMPERIALISM 0x0059f040
 // TNavyAutoPlayer::CreateObject
