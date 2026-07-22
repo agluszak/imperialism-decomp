@@ -76,7 +76,7 @@ struct TMultiplayerSlotHandle {
 class TMultiplayerMgr : public TEventHandler {
 public:
   DECLARE_DYNCREATE(TMultiplayerMgr)
-  enum { kNationSlotCount = 7 };
+  enum { kMajorNationSessionSlotCount = 7 };
 
   TMultiplayerSlotHandle nationStatusControlSlots[4]; // +0x20
   // +0x40 — the active lobby dialog view when one is open; the code-9 receive path
@@ -85,20 +85,20 @@ public:
   // +0x44 — child handler for queue routing. Opaque: TLoungeDialog::DoPostCreate
   // passes `this` (a TView-derived dialog) as the sole non-zero writer seen so far.
   void* diplomacyQueueContext;
-  int nationSessionIds[kNationSlotCount]; // +0x48
-  int queueSyncDword;                     // +0x64
-  char processPrimaryEventQueue;          // +0x68
-  char processSecondaryEventQueue;        // +0x69
+  int nationSessionIds[kMajorNationSessionSlotCount]; // +0x48
+  int queueSyncDword;                                 // +0x64
+  char processPrimaryEventQueue;                      // +0x68
+  char processSecondaryEventQueue;                    // +0x69
   unsigned char pad6a[2];
-  TurnEventQueuePacket* primaryTurnEventQueueHead;   // +0x6c
-  TurnEventQueuePacket* secondaryTurnEventQueueHead; // +0x70
-  CString gameNameString;                            // +0x74
-  CString defaultNationTextSlots[kNationSlotCount];  // +0x78
-  CString nationDisplayNameSlots[kNationSlotCount];  // +0x94
-  CString playerNameString;                          // +0xb0
-  CString playerNameMirror;                          // +0xb4
-  CString fieldb8;                                   // +0xb8
-  int nationStatusTags[kNationSlotCount];            // +0xbc — four-cc tags ('suna', 'lwoa', …)
+  TurnEventQueuePacket* primaryTurnEventQueueHead;              // +0x6c
+  TurnEventQueuePacket* secondaryTurnEventQueueHead;            // +0x70
+  CString gameNameString;                                       // +0x74
+  CString defaultNationTextSlots[kMajorNationSessionSlotCount]; // +0x78
+  CString nationDisplayNameSlots[kMajorNationSessionSlotCount]; // +0x94
+  CString playerNameString;                                     // +0xb0
+  CString playerNameMirror;                                     // +0xb4
+  CString fieldb8;                                              // +0xb8
+  int nationStatusTags[kMajorNationSessionSlotCount]; // +0xbc — four-cc tags ('suna', 'lwoa', …)
   int sessionPhaseTag;                // +0xd8 — four-cc phase tag ('adam', 'init', …)
   unsigned char activeNationTagIndex; // +0xdc
   unsigned char padDd[3];
@@ -267,7 +267,7 @@ public:
   void EnsureGameFlowStateAndPostTurnEvent5E5();
 
   // Stores the turn-state pair and recomputes pendingNationBitmask from which of the
-  // first kNationSlotCount terrain descriptor slots are populated. Every callsite
+  // first kMajorNationSessionSlotCount terrain descriptor slots are populated. Every callsite
   // (TSimMgr::AdvanceGlobalTurnStateMachine) loads ECX from g_pGameFlowState, so this is
   // a real TMultiplayerMgr method, not a free function. 0x543120.
   void ConfigureTurnResumeStateAndNationMask(int pendingNationSlot, int activeNationSlot);

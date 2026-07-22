@@ -52,16 +52,16 @@ public:
   // 100..199 -> tag - 100, else this nation's own slot. Header-inline: the original
   // bodies open-code this decode at each site. (Only TCountry fields; moved up from
   // TMinor so terrain-descriptor rows can decode without a downcast.)
-  short DecodeOwnerNationSlot() const {
-    short ownerNationSlot = encodedNationSlot;
+  NationSlot DecodeOwnerNationSlot() const {
+    NationSlot ownerNationSlot = encodedNationSlot;
     if (ownerNationSlot < 200) {
       if (ownerNationSlot < 100) {
         ownerNationSlot = nationSlot;
       } else {
-        ownerNationSlot = static_cast<short>(ownerNationSlot - 100);
+        ownerNationSlot = static_cast<NationSlot>(ownerNationSlot - 100);
       }
     } else {
-      ownerNationSlot = static_cast<short>(ownerNationSlot - 200);
+      ownerNationSlot = static_cast<NationSlot>(ownerNationSlot - 200);
     }
     return ownerNationSlot;
   }
@@ -134,8 +134,8 @@ public:
 
   CString identitySharedString0;
   CString identitySharedString1;
-  short nationSlot;
-  short encodedNationSlot;
+  NationSlot nationSlot;
+  EncodedNationSlot encodedNationSlot;
   int treasuryValue10;
   short needLevelByNation[0x17];
   short field42;
@@ -170,7 +170,8 @@ public:
 // g_apTerrainTypeDescriptorTable — see game/global_data_tables.h.
 
 // Nation-slot decode helpers (terrain table rows are TCountry*).
-int DecodeTerrainNationSlotFromDescriptor(const TCountry* terrain, short encodedNationSlot);
+int DecodeTerrainNationSlotFromDescriptor(const TCountry* terrain,
+                                          EncodedNationSlot encodedNationSlot);
 int ResolveTerrainNationSlotFromTarget(int targetNationSlot);
 // 0x004a5aa0 moved to TArmyMgr::ComputeWeightedNeighborLinkScoreForNodeIndex — both
 // original callsites load ecx = g_pMapContextActionManager (thiscall, this unused).

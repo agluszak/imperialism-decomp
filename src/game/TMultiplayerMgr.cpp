@@ -261,7 +261,7 @@ undefined TMultiplayerMgr::InitializeMultiplayerManagerForSessionContext(int ses
   CString loadedString;
   g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&loadedString, 0x2759, 1);
 
-  for (int i = 0; i < kNationSlotCount; ++i) {
+  for (int i = 0; i < kMajorNationSessionSlotCount; ++i) {
     nationSessionIds[i] = 0;
     nationStatusTags[i] = 0x756e6173;
     nationDisplayNameSlots[i] = loadedString;
@@ -328,7 +328,7 @@ void TMultiplayerMgr::ConfigureTurnResumeStateAndNationMask(int pendingNationSlo
   pendingNationSlotIndex = pendingNationSlot;
   activeNationSlotIndex = activeNationSlot;
   pendingNationBitmask = 0;
-  for (int nationSlot = 0; nationSlot < kNationSlotCount; ++nationSlot) {
+  for (int nationSlot = 0; nationSlot < kMajorNationSessionSlotCount; ++nationSlot) {
     if (g_apTerrainTypeDescriptorTable[nationSlot] != nullptr) {
       pendingNationBitmask |= 1 << nationSlot;
     }
@@ -422,7 +422,7 @@ void TMultiplayerMgr::EmitTurnEvent3Mode18WithActiveNation() {
 // slot that has both a live network session id and its pending-nation bit set.
 // FUNCTION: IMPERIALISM 0x00544720
 void TMultiplayerMgr::EmitTurnEvent10ForFlaggedNationSlots() {
-  for (int slot = 0; slot < kNationSlotCount; ++slot) {
+  for (int slot = 0; slot < kMajorNationSessionSlotCount; ++slot) {
     if (nationSessionIds[slot] != 0 && (pendingNationBitmask & (1 << slot)) != 0) {
       TurnEvent3Mode18Packet packet;
       packet.packetTag = 0x74696d65;
@@ -841,7 +841,7 @@ unsigned char TMultiplayerMgr::AssignStringAtB4FromB0AndResetState40() {
 unsigned char TMultiplayerMgr::ResetNationStatusSlotsAndInitializeNameControls(TView* panel) {
   lobbyDialogView40 = panel;
   CString loadedString;
-  for (int i = 0; i < kNationSlotCount; ++i) {
+  for (int i = 0; i < kMajorNationSessionSlotCount; ++i) {
     nationSessionIds[i] = 0;
     nationStatusTags[i] = 0x756e6173; // 'unas'
     g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&loadedString, 0x2759, 1);
@@ -3091,7 +3091,7 @@ void TMultiplayerMgr::SetNationStatusCodeAndEmitEvent25(int statusTag, int natio
   packet.eventCode = 0x25;
   packet.messageLength = 0;
   packet.messageLength = 0x34;
-  for (int slot = 0; slot < kNationSlotCount; ++slot) {
+  for (int slot = 0; slot < kMajorNationSessionSlotCount; ++slot) {
     packet.statusTags[slot] = 0x756e6b6e; // 'unkn'
   }
   packet.toNetworkId = 0;
@@ -3277,7 +3277,7 @@ void TMultiplayerMgr::EmitTacticalFireCommandPacket(int commandTag, TTacticalUni
 void TMultiplayerMgr::ResetNationStatusArraysAndTurnEventContext() {
   CString statusText;
   g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&statusText, 0x2759, 1);
-  for (int nationSlot = 0; nationSlot < kNationSlotCount; ++nationSlot) {
+  for (int nationSlot = 0; nationSlot < kMajorNationSessionSlotCount; ++nationSlot) {
     nationSessionIds[nationSlot] = 0;
     nationStatusTags[nationSlot] = 0x756e6173; // 'suna'
     nationDisplayNameSlots[nationSlot] = statusText;

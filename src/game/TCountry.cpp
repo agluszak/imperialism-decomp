@@ -625,7 +625,8 @@ void TCountry::AssignDisplayNamesToUnnamedMilitaryUnits(void) {
   } while (ordinal <= this->militaryUnitList44->GetCount());
 }
 
-int DecodeTerrainNationSlotFromDescriptor(const TCountry* terrain, short encodedNationSlot) {
+int DecodeTerrainNationSlotFromDescriptor(const TCountry* terrain,
+                                          EncodedNationSlot encodedNationSlot) {
   if (encodedNationSlot < 200) {
     if (encodedNationSlot < 100) {
       return terrain->nationSlot;
