@@ -331,7 +331,7 @@ extern TQuickDrawSurfaceContext* g_pCitySiteCachedPrimaryRenderSurfaceContext;
 extern CDib* g_pColorKeyCompositeDib;
 // TCitySiteView's currently painted six-neighbor highlight set. Each entry is a map tile
 // index or -1; the paint pass restores the previous cells before replacing this cache.
-extern short g_aCitySiteNeighborHighlightTiles_00697320[6];
+extern short g_aStrategicMapNeighborHighlightTiles_00697320[6];
 // Strategic-map preview cursor and the two half-cell parity remainders maintained while
 // converting its point into a viewport cell.
 extern CPoint g_MapInteractionPreviewPoint_006a3370;
@@ -340,6 +340,12 @@ extern int g_MapInteractionPreviewColumnParity_006a33b8;
 // Owner-nation tag (0..23) to the QuickDraw palette index used behind ocean-map
 // order previews and garrison badges.
 extern const unsigned char g_aOceanMapOwnerPaletteIndexByNationTag[24];
+// Per-owner outline palette used by the ocean overview's direct 16x16 neighbor-edge pass.
+extern const unsigned char g_aOceanMapBorderPaletteIndexByNationTag[24];
+extern const unsigned char g_bDrawOceanRouteOverlay;
+extern const unsigned char g_bTransferOceanViewportToActiveSurface;
+extern const unsigned char g_bDrawOceanZoneLabels;
+extern const unsigned char g_bDrawOceanNationLabels;
 extern CDC* g_pQuickDrawMemoryDc;
 extern HGDIOBJ g_hQuickDrawSavedBitmap;
 extern int g_nActiveQuickDrawSurfaceFlags;

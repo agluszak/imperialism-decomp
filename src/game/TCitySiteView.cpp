@@ -164,7 +164,7 @@ void TCitySiteView::RenderStrategicTileSelectionAndNeighborHighlights() {
   }
 
   for (int oldIndex = 0; oldIndex < 6; ++oldIndex) {
-    short oldNeighbor = g_aCitySiteNeighborHighlightTiles_00697320[oldIndex];
+    short oldNeighbor = g_aStrategicMapNeighborHighlightTiles_00697320[oldIndex];
     if (oldNeighbor == -1) {
       continue;
     }
@@ -195,7 +195,7 @@ void TCitySiteView::RenderStrategicTileSelectionAndNeighborHighlights() {
   }
 
   for (int newIndex = 0; newIndex < 6; ++newIndex) {
-    g_aCitySiteNeighborHighlightTiles_00697320[newIndex] =
+    g_aStrategicMapNeighborHighlightTiles_00697320[newIndex] =
         updateNeighborHighlights ? neighborTiles[newIndex] : -1;
   }
 }

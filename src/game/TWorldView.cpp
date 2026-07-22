@@ -648,13 +648,13 @@ void TWorldView::SetMapViewTileIndex(int arg1) {
 }
 
 // FUNCTION: IMPERIALISM 0x005966c0
-void TWorldView::OrphanRetStub_005966c0(short arg1) {
-  (void)arg1;
+void TWorldView::RefreshMapTile(short tileIndex) {
+  (void)tileIndex;
 }
 
 // FUNCTION: IMPERIALISM 0x005966e0
-undefined TWorldView::OrphanLeaf_NoCall_Ins02_005966e0(short arg1) {
-  (void)arg1;
+unsigned char TWorldView::IsTileVisible(short tileIndex) {
+  (void)tileIndex;
   return 0;
 }
 
@@ -667,7 +667,7 @@ undefined TWorldView::OrphanLeaf_NoCall_Ins02_005966e0(short arg1) {
 // and compiles to the identical `call [vtable+0x1d8]`.
 // FUNCTION: IMPERIALISM 0x00596700
 void TWorldView::OrphanCallChain_C6_I29_00596700(int arg1) {
-  if (OrphanLeaf_NoCall_Ins02_005966e0(static_cast<short>(arg1)) == 0) {
+  if (IsTileVisible(static_cast<short>(arg1)) == 0) {
     CenterOn(arg1);
   }
   static_cast<TWorldView*>(ownerContext)->CenterOn(arg1);

@@ -812,7 +812,7 @@ address|name|symbol|size|type|prototype|provenance
 489bf0|WrapperFor_GetOrCreateCWndFromHandle_At00489bf0||133|function|undefined WrapperFor_GetOrCreateCWndFromHandle_At00489bf0()|
 489cb0|TMouseCaptureState::NotifyCaptureOwnerState1AndMaybeUpdateCoords||108|function|undefined NotifyCaptureOwnerState1AndMaybeUpdateCoords()|
 489d40|TMouseCaptureState::EndMouseCaptureAndStopRepeatTimer||153|function|undefined EndMouseCaptureAndStopRepeatTimer()|
-489e40|RenderMapOrderEntryTilePreview_Impl||21|function|undefined RenderMapOrderEntryTilePreview_Impl()|
+489e40|CopyCurrentMouseCapturePoint||21|function|void __cdecl CopyCurrentMouseCapturePoint(CPoint * outPoint)|
 489ee0|TEvent::CreateTEventInstance||6|function|undefined CreateTEventInstance()|
 489f00|TEvent::CreateObject|?CreateObject@TEvent@@SGPAVCObject@@XZ|38|function|undefined CreateObject()|rtti
 489f40|TEvent::GetRuntimeClass||6|function|undefined GetTEventClassNamePointer()|rtti
@@ -3287,8 +3287,8 @@ address|name|symbol|size|type|prototype|provenance
 51a2a0|TMapDialog::DrawHexNeighborOutlineFromTileArray||1290|function|undefined DrawHexNeighborOutlineFromTileArray()|
 51a900|TMapDialog::UpdateMapDialogProjectedTileMarkerAndInvalidate||103|function|undefined UpdateMapDialogProjectedTileMarkerAndInvalidate()|
 51a990|TMapDialog::ConvertPoint||242|function|void __thiscall ConvertPoint(const CPoint &point, short &outRow, short &outCol, short &outBand)|macos-name-oracle:ConvertPoint(const VPoint&, short&, short&, short&)
-51aad0|TMapDialog::OrphanRetStub_005966c0||111|function|undefined OrphanRetStub_005966c0(void)|
-51ab60|TMapDialog::OrphanLeaf_NoCall_Ins02_005966e0||168|function|undefined ComputeMapDialogProjectedTileClipIntersection()|
+51aad0|TMapDialog::RefreshMapTile||111|function|void __thiscall RefreshMapTile(short tileIndex)|
+51ab60|TMapDialog::IsTileVisible||168|function|unsigned char __thiscall IsTileVisible(short tileIndex)|
 51ac40|TMapDialog::UpdateMapViewTileMarker||115|function|undefined UpdateMapDialogTileRowColumnMarkerAndInvalidate()|
 51ace0|TMapDialog::HasRenderableParentAndContent||97|function|undefined HasRenderableParentAndContent(void)|
 51ad70|TMapDialog::SetMapViewTileIndex||52|function|undefined OrphanRetStub_005966a0(void)|
@@ -4393,13 +4393,13 @@ address|name|symbol|size|type|prototype|provenance
 5661d0|TOceanDialog::ConvertPoint||200|function|void __thiscall ConvertPoint(const CPoint &point, short &outRow, short &outCol, short &outBand)|macos-name-oracle:ConvertPoint(const VPoint&, short&, short&, short&)
 5663c0|Helper_Uses_thunk_DrawCenteredGuideLineOnMapDc_At005663c0||422|function|undefined Helper_Uses_thunk_DrawCenteredGuideLineOnMapDc_At005663c0()|
 5665e0|TOceanDialog::RenderStrategicTileSelectionAndNeighborHighlights||283|function|void __thiscall RenderStrategicTileSelectionAndNeighborHighlights()|listing
-566750|TOceanDialog::OrphanRetStub_005966c0||122|function|undefined OrphanRetStub_005966c0(short param_1)|
+566750|TOceanDialog::RefreshMapTile||122|function|void __thiscall RefreshMapTile(short tileIndex)|
 5667f0|TOceanDialog::Draw||4720|function|undefined RenderStrategicMapViewportAndOverlays()|
 567fa0|TOceanDialog::OrphanTiny_ReturnZero_0048a730||300|function|undefined OrphanTiny_ReturnZero_0048a730(int param_1, short param_2, short param_3)|
 568120|TOceanDialog::VTableSlot6B||332|function|undefined DispatchReflectedControlMessageOrFallback(short param_1, RECT * param_2)|
 5682d0|TOceanDialog::OrphanRetStub_00596060||699|function|undefined OrphanRetStub_00596060(short param_1, RECT * param_2)|
 568640|TOceanDialog::OrphanRetStub_005960e0||101|function|undefined OrphanRetStub_005960e0(short param_1, short * param_2, short * param_3)|
-5687b0|TOceanDialog::OrphanLeaf_NoCall_Ins02_005966e0||98|function|undefined OrphanLeaf_NoCall_Ins02_005966e0(short param_1)|
+5687b0|TOceanDialog::IsTileVisible||98|function|unsigned char __thiscall IsTileVisible(short tileIndex)|
 5688d0|TOceanDialog::SetMapViewCellCoordinates||222|function|undefined OrphanRetStub_00596680(short param_1, short param_2)|
 5689f0|TOceanDialog::OrphanRetStub_00594fc0||57|function|undefined OrphanRetStub_00594fc0(short param_1)|
 568a40|TOceanDialog::ApplyDirectionalNudgeAndRefreshDisplay||79|function|undefined ApplyDirectionalNudgeAndRefreshDisplay()|
@@ -5221,8 +5221,8 @@ address|name|symbol|size|type|prototype|provenance
 5964b0|TWorldView::HandleMapClickByInteractionMode||339|function|void __thiscall HandleMapClickByInteractionMode(short nTileIndex, int nInputFlags)|
 596680|TWorldView::SetMapViewCellCoordinates||3|function|undefined OrphanRetStub_00596680(void)|
 5966a0|TWorldView::SetMapViewTileIndex||3|function|undefined OrphanRetStub_005966a0(void)|
-5966c0|TWorldView::OrphanRetStub_005966c0||3|function|undefined OrphanRetStub_005966c0(void)|
-5966e0|TWorldView::OrphanLeaf_NoCall_Ins02_005966e0||5|function|undefined OrphanLeaf_NoCall_Ins02_005966e0(void)|
+5966c0|TWorldView::RefreshMapTile||3|function|void __thiscall RefreshMapTile(short tileIndex)|
+5966e0|TWorldView::IsTileVisible||5|function|unsigned char __thiscall IsTileVisible(short tileIndex)|
 596700|TWorldView::OrphanCallChain_C6_I29_00596700||74|function|undefined OrphanCallChain_C6_I29_00596700(void)|
 596770|TMapUberUberPicture::CreateObject|?CreateObject@TMapUberUberPicture@@SGPAVCObject@@XZ|83|function|undefined CreateObject()|rtti
 5967f0|TMapUberUberPicture::GetRuntimeClass||6|function|undefined GetTMapUberUberPictureClassNamePointer()|rtti
