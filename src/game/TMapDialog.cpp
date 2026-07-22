@@ -775,145 +775,176 @@ void TMapDialog::RenderStrategicMapTileCell(short tileIndex, short screenY, shor
 
   const TTerrainStateRecordView& terrain = g_pGlobalMapState->terrainStateTable[tileIndex];
   const bool isOcean = terrain.terrainType00 == 5;
-  short sourceOffset;
-  if (isOcean) {
-    sourceOffset = g_pGlobalMapState->LookupTileSpriteVariantOffsetByAdjacencyMaskB(tileIndex);
-  } else {
-    sourceOffset = g_pGlobalMapState->LookupTileSpriteVariantOffsetByTerrainAndGate(tileIndex);
+  bool usedWrappedSeamTile = false;
+  if (g_pGlobalMapState->hexNeighborWrapHorizontally20 != 0) {
+    int tileColumn = tileIndex % 108;
+    short centerTile = static_cast<short>(GetCenterTile());
+    int centerColumn = centerTile % 108;
+    if ((tileColumn == 0 && centerColumn > 54) || (tileColumn == 107 && centerColumn < 54)) {
+      short seamOffset = g_pGlobalMapState->GetFixedConstant0xc80();
+      Copy64x64TileBlockWithStrideAdjustment(reinterpret_cast<int*>(sourcePixels + seamOffset),
+                                             reinterpret_cast<int*>(destinationPixels),
+                                             sourceStride, destinationStride);
+      usedWrappedSeamTile = true;
+    }
   }
 
-  Copy64x64TileBlockWithStrideAdjustment(reinterpret_cast<int*>(sourcePixels + sourceOffset),
-                                         reinterpret_cast<int*>(destinationPixels), sourceStride,
-                                         destinationStride);
+  if (!usedWrappedSeamTile) {
+    short sourceOffset;
+    if (isOcean) {
+      sourceOffset = g_pGlobalMapState->LookupTileSpriteVariantOffsetByAdjacencyMaskB(tileIndex);
+    } else {
+      sourceOffset = g_pGlobalMapState->LookupTileSpriteVariantOffsetByTerrainAndGate(tileIndex);
+    }
 
-  if (!isOcean) {
-    for (int direction = 0; direction < 6; ++direction) {
-      int directionBit = 1 << direction;
-      unsigned char* transitionSource = 0;
-      if ((terrain.adjacencyMaskA0a & directionBit) != 0) {
-        transitionSource =
-            sourcePixels +
-            g_pGlobalMapState->LookupTileSpriteVariantOffsetByGateAndVariant(tileIndex);
-      } else if ((terrain.adjacencyMaskB0b & directionBit) != 0 && terrain.terrainType00 != 6) {
-        transitionSource =
-            sourcePixels +
-            g_pGlobalMapState->LookupTileSpriteVariantOffsetByGateAndVariantAlt(tileIndex);
+    Copy64x64TileBlockWithStrideAdjustment(reinterpret_cast<int*>(sourcePixels + sourceOffset),
+                                           reinterpret_cast<int*>(destinationPixels), sourceStride,
+                                           destinationStride);
+
+    if (!isOcean) {
+      for (int direction = 0; direction < 6; ++direction) {
+        int directionBit = 1 << direction;
+        unsigned char* transitionSource = 0;
+        if ((terrain.adjacencyMaskA0a & directionBit) != 0) {
+          transitionSource =
+              sourcePixels +
+              g_pGlobalMapState->LookupTileSpriteVariantOffsetByGateAndVariant(tileIndex);
+        } else if ((terrain.adjacencyMaskB0b & directionBit) != 0 && terrain.terrainType00 != 6) {
+          transitionSource =
+              sourcePixels +
+              g_pGlobalMapState->LookupTileSpriteVariantOffsetByGateAndVariantAlt(tileIndex);
+        }
+
+        if (transitionSource != 0) {
+          switch (direction) {
+          case 0:
+            CopyTerrainTransitionMaskDirection0(transitionSource, destinationPixels, sourceStride,
+                                                destinationStride);
+            break;
+          case 1:
+            CopyTerrainTransitionMaskDirection1(transitionSource, destinationPixels, sourceStride,
+                                                destinationStride);
+            break;
+          case 2:
+            CopyTerrainTransitionMaskDirection2(transitionSource, destinationPixels, sourceStride,
+                                                destinationStride);
+            break;
+          case 3:
+            CopyTerrainTransitionMaskDirection3(transitionSource, destinationPixels, sourceStride,
+                                                destinationStride);
+            break;
+          case 4:
+            CopyTerrainTransitionMaskDirection4(transitionSource, destinationPixels, sourceStride,
+                                                destinationStride);
+            break;
+          case 5:
+            CopyTerrainTransitionMaskDirection5(transitionSource, destinationPixels, sourceStride,
+                                                destinationStride);
+            break;
+          }
+        }
       }
+    }
 
-      if (transitionSource != 0) {
-        switch (direction) {
-        case 0:
-          CopyTerrainTransitionMaskDirection0(transitionSource, destinationPixels, sourceStride,
-                                              destinationStride);
-          break;
+    if (isOcean && terrain.adjacencyMaskB0b != 0) {
+      const unsigned char adjacencyMask = terrain.adjacencyMaskB0b;
+      const unsigned char variantMask = terrain.spriteVariantIndex01;
+      const short roadType = terrain.roadFlag;
+      for (int corner = 0; corner < 6; ++corner) {
+        int previousDirection = (corner + 5) % 6;
+        int cornerBits = (1 << previousDirection) | (1 << corner);
+        if ((adjacencyMask & cornerBits) == 0) {
+          continue;
+        }
+
+        bool useTripleOffset = false;
+        switch (corner) {
         case 1:
-          CopyTerrainTransitionMaskDirection1(transitionSource, destinationPixels, sourceStride,
-                                              destinationStride);
+          useTripleOffset = roadType == 0x33 || roadType == 0x34;
           break;
         case 2:
-          CopyTerrainTransitionMaskDirection2(transitionSource, destinationPixels, sourceStride,
-                                              destinationStride);
+          useTripleOffset = roadType == 0x35 || roadType == 0x36;
           break;
         case 3:
-          CopyTerrainTransitionMaskDirection3(transitionSource, destinationPixels, sourceStride,
-                                              destinationStride);
+          useTripleOffset = roadType == 0x36 || roadType == 0x37;
           break;
         case 4:
-          CopyTerrainTransitionMaskDirection4(transitionSource, destinationPixels, sourceStride,
-                                              destinationStride);
+          useTripleOffset = roadType == 0x37 || roadType == 0x39;
           break;
         case 5:
-          CopyTerrainTransitionMaskDirection5(transitionSource, destinationPixels, sourceStride,
-                                              destinationStride);
+          useTripleOffset = roadType == 0x38 || roadType == 0x3a;
+          break;
+        }
+        short coastOffset;
+        if (useTripleOffset) {
+          coastOffset = g_pGlobalMapState->MapImprovementOffsetFromAdjacencyVariantTriple(
+              static_cast<char>(roadType), static_cast<char>(corner + 1), roadType);
+        } else {
+          coastOffset = g_pGlobalMapState->MapImprovementOffsetFromAdjacencyVariant(
+              static_cast<char>(roadType), static_cast<char>(corner + 1),
+              static_cast<char>(variantMask & (1 << corner)));
+        }
+        if (coastOffset == 0) {
+          continue;
+        }
+
+        unsigned char* coastSource = sourcePixels + coastOffset;
+        switch (corner) {
+        case 0:
+          CopyCoastCornerMaskBetweenDirections5And0(coastSource, destinationPixels, sourceStride,
+                                                    destinationStride);
+          break;
+        case 1:
+          CopyCoastCornerMaskBetweenDirections0And1(coastSource, destinationPixels, sourceStride,
+                                                    destinationStride);
+          break;
+        case 2:
+          CopyCoastCornerMaskBetweenDirections1And2(coastSource, destinationPixels, sourceStride,
+                                                    destinationStride);
+          break;
+        case 3:
+          CopyCoastCornerMaskBetweenDirections2And3(coastSource, destinationPixels, sourceStride,
+                                                    destinationStride);
+          break;
+        case 4:
+          CopyCoastCornerMaskBetweenDirections3And4(coastSource, destinationPixels, sourceStride,
+                                                    destinationStride);
+          break;
+        case 5:
+          CopyCoastCornerMaskBetweenDirections4And5(coastSource, destinationPixels, sourceStride,
+                                                    destinationStride);
           break;
         }
       }
     }
-  }
 
-  if (isOcean && terrain.adjacencyMaskB0b != 0) {
-    const unsigned char adjacencyMask = terrain.adjacencyMaskB0b;
-    const unsigned char variantMask = terrain.spriteVariantIndex01;
-    const short roadType = terrain.roadFlag;
-    for (int corner = 0; corner < 6; ++corner) {
-      int previousDirection = (corner + 5) % 6;
-      int cornerBits = (1 << previousDirection) | (1 << corner);
-      if ((adjacencyMask & cornerBits) == 0) {
-        continue;
-      }
-
-      bool useTripleOffset = false;
-      switch (corner) {
-      case 1:
-        useTripleOffset = roadType == 0x33 || roadType == 0x34;
-        break;
-      case 2:
-        useTripleOffset = roadType == 0x35 || roadType == 0x36;
-        break;
-      case 3:
-        useTripleOffset = roadType == 0x36 || roadType == 0x37;
-        break;
-      case 4:
-        useTripleOffset = roadType == 0x37 || roadType == 0x39;
-        break;
-      case 5:
-        useTripleOffset = roadType == 0x38 || roadType == 0x3a;
-        break;
-      }
-      short coastOffset;
-      if (useTripleOffset) {
-        coastOffset = g_pGlobalMapState->MapImprovementOffsetFromAdjacencyVariantTriple(
-            static_cast<char>(roadType), static_cast<char>(corner + 1), roadType);
-      } else {
-        coastOffset = g_pGlobalMapState->MapImprovementOffsetFromAdjacencyVariant(
-            static_cast<char>(roadType), static_cast<char>(corner + 1),
-            static_cast<char>(variantMask & (1 << corner)));
-      }
-      if (coastOffset == 0) {
-        continue;
-      }
-
-      unsigned char* coastSource = sourcePixels + coastOffset;
-      switch (corner) {
-      case 0:
-        CopyCoastCornerMaskBetweenDirections5And0(coastSource, destinationPixels, sourceStride,
-                                                  destinationStride);
-        break;
-      case 1:
-        CopyCoastCornerMaskBetweenDirections0And1(coastSource, destinationPixels, sourceStride,
-                                                  destinationStride);
-        break;
-      case 2:
-        CopyCoastCornerMaskBetweenDirections1And2(coastSource, destinationPixels, sourceStride,
-                                                  destinationStride);
-        break;
-      case 3:
-        CopyCoastCornerMaskBetweenDirections2And3(coastSource, destinationPixels, sourceStride,
-                                                  destinationStride);
-        break;
-      case 4:
-        CopyCoastCornerMaskBetweenDirections3And4(coastSource, destinationPixels, sourceStride,
-                                                  destinationStride);
-        break;
-      case 5:
-        CopyCoastCornerMaskBetweenDirections4And5(coastSource, destinationPixels, sourceStride,
-                                                  destinationStride);
-        break;
-      }
+    if (!isOcean && terrain.ownerBorderMask07 != 0) {
+      SetQuickDrawFillColor(0);
+      SetQuickDrawPenSizeAndMarkDirty(2, 2);
+      DrawNationBorderSegmentsByMask(terrain.ownerBorderMask07, screenX, screenY, tileIndex);
+      SetQuickDrawPenSizeAndMarkDirty(1, 1);
+      SetQuickDrawFillColor(0);
+    }
+    if (!isOcean && terrain.cityBorderMask08 != 0) {
+      SetQuickDrawFillColor(0xffffff);
+      DrawCityBorderSegmentsByMask(terrain.cityBorderMask08, screenX, screenY, tileIndex);
+      SetQuickDrawFillColor(0);
     }
   }
 
-  if (!isOcean && terrain.ownerBorderMask07 != 0) {
-    SetQuickDrawFillColor(0);
-    SetQuickDrawPenSizeAndMarkDirty(2, 2);
-    DrawNationBorderSegmentsByMask(terrain.ownerBorderMask07, screenX, screenY, tileIndex);
-    SetQuickDrawPenSizeAndMarkDirty(1, 1);
-    SetQuickDrawFillColor(0);
-  }
-  if (!isOcean && terrain.cityBorderMask08 != 0) {
-    SetQuickDrawFillColor(0xffffff);
-    DrawCityBorderSegmentsByMask(terrain.cityBorderMask08, screenX, screenY, tileIndex);
-    SetQuickDrawFillColor(0);
+  if (terrain.adjacencyBits06 != 0 || terrain.railFlags17 != 0) {
+    for (int direction = 0; direction < 6; ++direction) {
+      unsigned char directionBit = static_cast<unsigned char>(1 << direction);
+      StrategicMapCallbackRecord* routeMask = 0;
+      if ((static_cast<unsigned char>(terrain.adjacencyBits06) & directionBit) != 0) {
+        routeMask = &g_pStrategicMapViewSystem->callbackB3c[direction];
+      } else if ((terrain.railFlags17 & directionBit) != 0) {
+        routeMask = &g_pStrategicMapViewSystem->callbackC5c[direction];
+      }
+      if (routeMask != 0) {
+        routeMask->ApplyBitmapMaskToPixelBuffer(destinationPixels);
+      }
+    }
   }
 }
 

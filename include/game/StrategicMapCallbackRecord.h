@@ -12,8 +12,13 @@ struct StrategicMapCallbackRecord {
   StrategicMapCallbackRecord* AppendOpcodeByte(int value); // returns this (original mov eax,esi)
   void AppendOpcodeBytePair(int value);
   void FinalizeOpcodeBufferAlignment();
-  void BuildBitmapMaskOpcodeBufferFromResourceRows(int resourceId, int width, int height,
-                                                   int surface, int transparentPixel);
+  void BuildBitmapMaskOpcodeBufferFromResourceRows(int resourceId, short width, short height,
+                                                   int destinationRowStride,
+                                                   unsigned char transparentPixel);
+  // Apply the generated sparse bitmap writes to a destination tile. The retail build executes
+  // the generated x86 stream directly; interpreting the same opcodes keeps the recovered source
+  // portable and avoids inline assembly while preserving the mask semantics.
+  void ApplyBitmapMaskToPixelBuffer(unsigned char* destinationPixels);
 
   // dispatchTable00/subobjectDispatchTable1c (below) are NOT a C++ vfptr despite the ctor
   // writing a shared constant .rdata address into both, matching each dtor-restore before the
@@ -59,9 +64,9 @@ struct StrategicMapCallbackRecord {
   // cursorBufferSize24 is 0, then sets cursorBufferInitialized28 as a parallel init guard.
   int cursorBufferSize24;
   int cursorBufferInitialized28;
-  // lastBoundSurface2c: assigned from the destination surface handle in
-  // BuildBitmapMaskOpcodeBufferFromResourceRows (0x004d5090); no observed read site.
-  int lastBoundSurface2c;
+  // destinationRowStride2c: byte stride used when converting each resource pixel's (x,y)
+  // coordinate into its destination-tile offset. No read site outside mask construction.
+  int destinationRowStride2c;
 };
 
 ASSERT_SIZE(StrategicMapCallbackRecord, 0x30);

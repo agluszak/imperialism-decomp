@@ -14,15 +14,18 @@ public:
   int viewportOffsetY; // field_0x64
   unsigned short field68;
   unsigned short field6a;
-  unsigned short field6c;
-  unsigned short field6e;
+  // Hovered tile under the current cursor sample and the tile whose hover decoration is
+  // currently painted. TWorldView's constructor initializes both to tile zero; the hover
+  // path advances paintedHoverTileIndex6e after replacing the decoration.
+  unsigned short hoveredTileIndex6c;
+  unsigned short paintedHoverTileIndex6e;
   short hoverRegionBand70;
   // +0x72 active region-band index (1..4) the map cursor is currently rendered for --
   // one coherent field with a single meaning that two handlers cooperatively maintain
   // (an earlier note wrongly read the two accesses as unrelated). The hover handler
   // (HandleCursorHoverSelectionByChildHitTestAndFallback 0x5958b0) writes the hovered
   // band here and reads it to skip a redundant cursor re-render when neither the cell
-  // (field6c/field6e) nor the band changed. The click handler
+  // (hoveredTileIndex6c/paintedHoverTileIndex6e) nor the band changed. The click handler
   // (HandleMapClickByInteractionMode 0x5964b0) advances it 1..4 to cycle the tile's
   // action interpretation, which also invalidates the hover dedup so the cursor
   // refreshes on the next mouse-move. Both uses read/write [this+0x72] as one word

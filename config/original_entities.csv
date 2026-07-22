@@ -2262,8 +2262,8 @@ address|name|symbol|size|type|prototype|provenance
 4d4e40|StrategicMapCallbackRecord::EnsureOpcodeBufferByteAtIndex||102|function|unsigned char * __thiscall EnsureOpcodeBufferByteAtIndex(int index)|
 4d4ed0|WrapperFor_ReallocateHeapBlockWithAllocatorTracking_At004d4ed0||94|function|undefined WrapperFor_ReallocateHeapBlockWithAllocatorTracking_At004d4ed0()|
 4d4f50|WrapperFor_ReallocateHeapBlockWithAllocatorTracking_At004d4f50||117|function|undefined WrapperFor_ReallocateHeapBlockWithAllocatorTracking_At004d4f50()|
-4d4ff0|AppendCallbackGeneratedByteToGrowableBuffer||123|function|undefined AppendCallbackGeneratedByteToGrowableBuffer()|
-4d5090|StrategicMapCallbackRecord::BuildBitmapMaskOpcodeBufferFromResourceRows||996|function|void __thiscall BuildBitmapMaskOpcodeBufferFromResourceRows(int resourceId, int width, int height, int surface, int transparentPixel)|
+4d4ff0|StrategicMapCallbackRecord::ApplyBitmapMaskToPixelBuffer||123|function|void __thiscall ApplyBitmapMaskToPixelBuffer(unsigned char * destinationPixels)|
+4d5090|StrategicMapCallbackRecord::BuildBitmapMaskOpcodeBufferFromResourceRows||996|function|void __thiscall BuildBitmapMaskOpcodeBufferFromResourceRows(int resourceId, short width, short height, int destinationRowStride, unsigned char transparentPixel)|
 4d5580|StrategicMapCallbackRecord::AppendOpcodeByte||110|function|void __thiscall AppendOpcodeByte(int value)|
 4d5610|StrategicMapCallbackRecord::AppendOpcodeBytePair||208|function|void __thiscall AppendOpcodeBytePair(int value)|
 4d5720|StrategicMapCallbackRecord::FinalizeOpcodeBufferAlignment||449|function|void __thiscall FinalizeOpcodeBufferAlignment()|

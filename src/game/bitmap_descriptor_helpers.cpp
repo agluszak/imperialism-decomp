@@ -13,21 +13,6 @@ namespace {
 
 const char kQuickDrawDebugSourcePath[] = "D:\\Ambit\\QuickDraw.cpp";
 
-static void StretchDibitsFromCdibToDc(CDib* dib, CDC* dcWrapper, int x, int y) {
-  if (dib == nullptr || dib->m_pInfoHeader == nullptr || dcWrapper == nullptr) {
-    return;
-  }
-
-  HDC hdc = dcWrapper->GetSafeHdc();
-  int width = dib->m_pInfoHeader->bmiHeader.biWidth;
-  int height = dib->m_pInfoHeader->bmiHeader.biHeight;
-  if (height < 0) {
-    height = -height;
-  }
-  StretchDIBits(hdc, x, y, width, height, 0, 0, width, height, dib->m_dibBits, dib->m_pInfoHeader,
-                DIB_RGB_COLORS, SRCCOPY);
-}
-
 static void ReleaseBitmapLoaderHandle(TBitmapResourceLoader** loaderHandle) {
   if (loaderHandle == nullptr) {
     return;
@@ -57,20 +42,19 @@ static void ResetBitmapSurfaceContextDescriptor(TBitmapSurfaceContextDescriptor*
 
 // FUNCTION: IMPERIALISM 0x00495c40
 void BlitBitmapResourceLoaderToActiveDc(TBitmapResourceLoader** handle, RECT* bounds) {
-  CDC* dcTarget = g_pQuickDrawMemoryDc;
-  if (dcTarget == nullptr && g_pScopedMapQuickDrawDcHandleObject != nullptr) {
-    dcTarget = g_pScopedMapQuickDrawDcHandleObject;
-  }
-  if (handle == nullptr || bounds == nullptr) {
-    return;
+  CDC* targetDc = g_pQuickDrawMemoryDc;
+  if (targetDc == 0) {
+    targetDc = g_pScopedMapQuickDrawDcHandleObject;
   }
 
-  TBitmapResourceLoader* loader = *handle;
-  if (loader == nullptr || loader->bitmapResource == nullptr || dcTarget == nullptr) {
-    return;
-  }
+  g_pModuleLibraryCacheState->EnsureDefaultDibPalette()->SelectIntoDcAndRealize(targetDc, FALSE);
 
-  StretchDibitsFromCdibToDc(loader->bitmapResource, dcTarget, bounds->left, bounds->top);
+  POINT destination = {bounds->left, bounds->top};
+  targetDc = g_pQuickDrawMemoryDc;
+  if (targetDc == 0) {
+    targetDc = g_pScopedMapQuickDrawDcHandleObject;
+  }
+  (*handle)->bitmapResource->StretchDibitsFromStoredBitmapToHdc(targetDc, &destination);
 }
 
 // Constructor of the QuickDraw bitmap-surface node: `new`s a backing CDib(width, height,

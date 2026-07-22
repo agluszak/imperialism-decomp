@@ -147,7 +147,7 @@ StrategicMapCallbackRecord::StrategicMapCallbackRecord() {
   cursorBufferSize24 = 0;
   cursorBufferInitialized28 = 0;
   subobjectDispatchTable1c = 0x006404a8;
-  lastBoundSurface2c = 0;
+  destinationRowStride2c = 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004d4e40
@@ -174,38 +174,89 @@ unsigned char* StrategicMapCallbackRecord::EnsureOpcodeBufferByteAtIndex(int ind
   return reinterpret_cast<unsigned char*>(ownedBuffer04 + index);
 }
 
+// FUNCTION: IMPERIALISM 0x004d4ff0
+void StrategicMapCallbackRecord::ApplyBitmapMaskToPixelBuffer(unsigned char* destinationPixels) {
+  unsigned char* instruction = reinterpret_cast<unsigned char*>(ownedBuffer04);
+  unsigned char* end = instruction + committedLength0c;
+  unsigned char* destinationBase = destinationPixels;
+
+  while (instruction < end) {
+    unsigned char opcode = *instruction++;
+    if (opcode == 0xc3) {
+      return;
+    }
+    if (opcode == 0x05 && end - instruction >= 4) {
+      unsigned int advance = static_cast<unsigned int>(instruction[0]) |
+                             (static_cast<unsigned int>(instruction[1]) << 8) |
+                             (static_cast<unsigned int>(instruction[2]) << 16) |
+                             (static_cast<unsigned int>(instruction[3]) << 24);
+      destinationBase += advance;
+      instruction += 4;
+      continue;
+    }
+    if (opcode == 0xc6 && end - instruction >= 3 && instruction[0] == 0x40) {
+      signed char displacement = static_cast<signed char>(instruction[1]);
+      destinationBase[displacement] = instruction[2];
+      instruction += 3;
+      continue;
+    }
+    if (opcode == 0x66 && end - instruction >= 5 && instruction[0] == 0xc7 &&
+        instruction[1] == 0x40) {
+      signed char displacement = static_cast<signed char>(instruction[2]);
+      destinationBase[displacement] = instruction[3];
+      destinationBase[displacement + 1] = instruction[4];
+      instruction += 5;
+      continue;
+    }
+    if (opcode == 0xc7 && end - instruction >= 6 && instruction[0] == 0x40) {
+      signed char displacement = static_cast<signed char>(instruction[1]);
+      memcpy(destinationBase + displacement, instruction + 2, 4);
+      instruction += 6;
+      continue;
+    }
+    return;
+  }
+}
+
 // FUNCTION: IMPERIALISM 0x004d5090
-void StrategicMapCallbackRecord::BuildBitmapMaskOpcodeBufferFromResourceRows(int resourceId,
-                                                                             int width, int height,
-                                                                             int surface,
-                                                                             int transparentPixel) {
-  lastBoundSurface2c = surface;
+void StrategicMapCallbackRecord::BuildBitmapMaskOpcodeBufferFromResourceRows(
+    int resourceId, short width, short height, int destinationRowStride,
+    unsigned char transparentPixel) {
+  destinationRowStride2c = destinationRowStride;
 
   CDib* dib = g_pModuleLibraryCacheState->LoadBmpResourceByIdCached(
       static_cast<unsigned short>(resourceId));
   unsigned char* row = static_cast<unsigned char*>(dib->m_dibBits);
   int sourceRowStride = (dib->m_pInfoHeader->bmiHeader.biWidth + 3) & 0xfffffffc;
-  int skippedPixels = 0;
+  int generatedBaseOffset = 0;
+
+  appendCursor10 = 0;
+  committedLength0c = 0;
+  alignmentCursor14 = 0;
+  hadTrailingPadding18 = 0;
 
   int y = 0;
   while (y < height) {
     int x = 0;
     while (x < width) {
       unsigned char pixel = row[x];
-      if (pixel == static_cast<unsigned char>(transparentPixel)) {
-        skippedPixels = skippedPixels + 1;
-      } else {
-        if (skippedPixels > 0x7f) {
+      if (pixel != transparentPixel) {
+        int destinationOffset = y * destinationRowStride + x;
+        int displacement = destinationOffset - generatedBaseOffset;
+        if (displacement > 0x7f) {
+          int advance = displacement;
           AppendOpcodeByte(0x05);
-          AppendOpcodeBytePair(skippedPixels >> 0x10);
-          AppendOpcodeBytePair(skippedPixels);
-          skippedPixels = 0;
+          AppendOpcodeByte(advance);
+          AppendOpcodeByte(advance >> 8);
+          AppendOpcodeByte(advance >> 16);
+          AppendOpcodeByte(advance >> 24);
+          generatedBaseOffset = destinationOffset;
+          displacement = 0;
         }
         AppendOpcodeByte(0xc6);
         AppendOpcodeByte(0x40);
-        AppendOpcodeByte(skippedPixels);
+        AppendOpcodeByte(displacement);
         AppendOpcodeByte(pixel);
-        skippedPixels = 0;
       }
       x = x + 1;
     }
@@ -215,7 +266,6 @@ void StrategicMapCallbackRecord::BuildBitmapMaskOpcodeBufferFromResourceRows(int
 
   g_pModuleLibraryCacheState->ReleaseRecordById(static_cast<short>(resourceId));
   AppendOpcodeByte(0xc3);
-  FinalizeOpcodeBufferAlignment();
 }
 
 // FUNCTION: IMPERIALISM 0x004d5580

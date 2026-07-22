@@ -47,7 +47,13 @@ void TWorldView::CenterOn(int tileIndex) {
 IMPLEMENT_DYNCREATE(TWorldView, TView)
 
 // FUNCTION: IMPERIALISM 0x00595000
-TWorldView::TWorldView() {}
+TWorldView::TWorldView() {
+  hoveredTileIndex6c = 0;
+  paintedHoverTileIndex6e = 0;
+  field68 = 0;
+  field6a = 0;
+  stridedCellRecord7a = 0xffff;
+}
 
 // SYNTHETIC: IMPERIALISM 0x00595040
 // TWorldView::`scalar deleting destructor'
@@ -91,17 +97,17 @@ void TWorldView::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* poi
   short tileColumn = 0;
   short* hoverBand = &hoverRegionBand70;
   ConvertPoint(*point, tileRow, tileColumn, *hoverBand);
-  field6c = static_cast<unsigned short>(
+  hoveredTileIndex6c = static_cast<unsigned short>(
       ComputeStridedRecordAddress6C(static_cast<int>(tileRow), static_cast<int>(tileColumn)));
 
   // Skip the cursor recompute when neither the tile cell nor the region band changed
   // since the cursor was last rendered (activeRegionBand72 holds that last band; a click
   // cycles it out of range to force this dedup to miss and the cursor to refresh).
-  if (field6c == field6e && *hoverBand == activeRegionBand72) {
+  if (hoveredTileIndex6c == paintedHoverTileIndex6e && *hoverBand == activeRegionBand72) {
     return;
   }
 
-  short tileIndex = static_cast<short>(field6c);
+  short tileIndex = static_cast<short>(hoveredTileIndex6c);
   field68 =
       static_cast<unsigned short>(g_pGlobalMapState->terrainStateTable[tileIndex].cityRecordIndex);
   short interactionMode = static_cast<TMapUberPicture*>(ownerContext)->activeUnitCategoryIndex96;
@@ -190,12 +196,12 @@ void TWorldView::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* poi
 
   {
     ScopedMapQuickDrawContext scopedContext(this);
-    if (field6c != field6e) {
+    if (hoveredTileIndex6c != paintedHoverTileIndex6e) {
       RenderStrategicTileSelectionAndNeighborHighlights();
     }
   }
 
-  field6e = field6c;
+  paintedHoverTileIndex6e = hoveredTileIndex6c;
   field6a = field68;
   activeRegionBand72 = *hoverBand;
 }
