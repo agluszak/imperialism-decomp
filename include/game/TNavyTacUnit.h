@@ -9,21 +9,11 @@ class TShip;
 class TNavyTacUnit : public TTacticalUnit {
 public:
   DECLARE_DYNCREATE(TNavyTacUnit)
-  virtual ~TNavyTacUnit() override; // slot 0x01 (scalar deleting destructor)
-  // slot 0x02 Serialize inherited unchanged (0x485e90)
-  // slot 0x03 AssertValid inherited unchanged (0x412bf0)
-  // slot 0x04 Dump inherited unchanged (0x412c10)
-  // slot 0x05 WriteTo inherited unchanged (0x485f70)
-  // slot 0x06 ReadFrom inherited unchanged (0x485f90)
-  // slot 0x07 Free inherited unchanged (0x4798b0)
-  // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
-  // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
+  virtual ~TNavyTacUnit() override;            // slot 0x01 (scalar deleting destructor)
   virtual int GetBaseActionPoints() override;  // slot 0x0a 0x5a6310
   virtual int GetUnitRange() override;         // slot 0x0b 0x5a6330
   virtual float GetBaseAttackPower() override; // slot 0x0c 0x5a6350
   virtual float GetDamageScale() override;     // slot 0x0d 0x5a6370
-  // slot 0x0e ApplyTacticalDamage inherited unchanged (0x5a5e70)
-  // slot 0x0f FlipUnitSideAffiliation inherited unchanged (0x5a5eb0)
   // Navy-only added virtual: returns the unit's source fleet (the old
   // ConstructTNavyPlayerBaseState name was Ghidra junk).
   virtual TShip* GetSourceShip(); // slot 0x10 0x59ed60 (Mac: GetRealShip)

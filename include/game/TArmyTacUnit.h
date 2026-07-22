@@ -13,21 +13,12 @@ class TMilitaryUnit;
 class TArmyTacUnit : public TTacticalUnit {
 public:
   DECLARE_DYNCREATE(TArmyTacUnit)
-  virtual ~TArmyTacUnit() override; // slot 0x01 (scalar deleting destructor)
-  // slot 0x02 Serialize inherited unchanged (0x485e90)
-  // slot 0x03 AssertValid inherited unchanged (0x412bf0)
-  // slot 0x04 Dump inherited unchanged (0x412c10)
-  // slot 0x05 WriteTo inherited unchanged (0x485f70)
-  // slot 0x06 ReadFrom inherited unchanged (0x485f90)
-  // slot 0x07 Free inherited unchanged (0x4798b0)
-  // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
-  // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
-  virtual int GetBaseActionPoints() override;                          // slot 0x0a 0x5a6120
-  virtual int GetUnitRange() override;                                 // slot 0x0b 0x5a6140
+  virtual ~TArmyTacUnit() override;            // slot 0x01 (scalar deleting destructor)
+  virtual int GetBaseActionPoints() override;  // slot 0x0a 0x5a6120
+  virtual int GetUnitRange() override;         // slot 0x0b 0x5a6140
   virtual float GetBaseAttackPower() override; // slot 0x0c 0x5a6180
   virtual float GetDamageScale() override;     // slot 0x0d 0x5a61a0
   virtual void ApplyTacticalDamage(int damageA, int damageB) override; // slot 0x0e 0x5a61c0
-  // slot 0x0f FlipUnitSideAffiliation inherited unchanged (0x5a5eb0)
 
   // Army slice (+0x34..+0x54), from the duplicated init in TArmyBattle::ReadFrom
   // (0x5a4990), the base-state ctor 0x5a5f20, and the float writers at 0x5a5fe0.

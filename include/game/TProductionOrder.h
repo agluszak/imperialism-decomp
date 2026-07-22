@@ -18,15 +18,9 @@ class TPopulationMgr;
 class TProductionOrder : public TObject {
 public:
   DECLARE_DYNCREATE(TProductionOrder)
-  virtual ~TProductionOrder() override; // slot 0x01 (scalar deleting destructor)
-  // slot 0x02 Serialize inherited unchanged (0x485e90)
-  // slot 0x03 AssertValid inherited unchanged (0x412bf0)
-  // slot 0x04 Dump inherited unchanged (0x412c10)
+  virtual ~TProductionOrder() override;            // slot 0x01 (scalar deleting destructor)
   virtual void WriteTo(TStream* stream) override;  // slot 0x05 0x4b4fe0
   virtual void ReadFrom(TStream* stream) override; // slot 0x06 0x4b5060
-  // slot 0x07 Free inherited unchanged (0x4798b0)
-  // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
-  // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
   virtual void IProductionOrder(TCity* city, short resourceType);      // slot 0x0a 0x4b4f70
   virtual bool SetQuantity(short quantity);                            // slot 0x0b 0x4b5100
   virtual short MaxOrder();                                            // slot 0x0c 0x4b50e0

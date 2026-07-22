@@ -21,9 +21,6 @@ public:
   void ReadFrom(TStream* stream) override; // slot 0x18
   void Free() override;                    // slot 0x1c
 
-  // slot 0x20 ShallowClone is inherited unchanged (0x4798d0)
-  // slot 0x24 ShallowFree is inherited unchanged (0x415ce0)
-
   // --- TUnit virtual functions ---
   virtual void VTableSlot10(int pOwnerContext);           // slot 0x28
   virtual void ContinueOrders();                          // slot 0x2c, Mac oracle
