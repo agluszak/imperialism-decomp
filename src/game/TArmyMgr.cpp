@@ -108,6 +108,36 @@ void MapContextActionRecord::ReadFrom(TStream* stream) {
   }
 }
 
+// FUNCTION: IMPERIALISM 0x004a1640
+void MapContextActionRecord::WriteTo(TStream* stream) {
+  stream->WriteBytesSlot78(&participantIndex02, 1);
+  stream->WriteBytesSlot78(&reservedByte03, 1);
+  stream->WriteBytesSlot78(&actionType04, 4);
+
+  short nodeId;
+  if (actionType04 == 0 || actionType04 == 3 || actionType04 == 4) {
+    nodeId = static_cast<short>(tileOrObject08.tileIndex);
+  } else {
+    nodeId = static_cast<TZone*>(tileOrObject08.object)->GetContextOrdinalOrInvalid();
+  }
+  stream->WriteBytesSlot78(&nodeId, 2);
+
+  for (int side = 0; side < 2; ++side) {
+    stream->WriteBytesSlot78(&nationIds[side], 1);
+    stream->WriteBytesSlot78(nameBuffer0c[side], 0x20);
+    stream->WriteBytesSlot78(overlayLabel4c[side], 0xff);
+    stream->WriteBytesSlot78(&childCount24a[side], 2);
+    for (int i = 0; i < childCount24a[side]; ++i) {
+      MapOrderBattleSideChildRecord& child = sideChildRecords250[side][i];
+      stream->WriteBytesSlot78(&child.resourceType, 2);
+      stream->WriteBytesSlot78(&child.stockOrRequired, 2);
+      stream->WriteBytesSlot78(child.nameBuffer, 0x20);
+      stream->WriteBytesSlot78(&child.strengthBucket, 2);
+      stream->WriteBytesSlot78(&child.childPtr, 4);
+    }
+  }
+}
+
 // FUNCTION: IMPERIALISM 0x004a1870
 TArmyMgr::TArmyMgr() {
   pendingMapActionIndex = -1;
@@ -133,7 +163,57 @@ void TArmyMgr::InitializeMapContextActionManager() {
 }
 
 // FUNCTION: IMPERIALISM 0x004a1a00
-void TArmyMgr::Free() {}
+void TArmyMgr::Free() {
+  if (pendingUnitPool0c != 0) {
+    pendingUnitPool0c->FreePayloadsAndDestroy();
+  }
+  pendingUnitPool0c = 0;
+
+  if (mapContextActionRecordList04 != 0) {
+    int ordinal = g_pMapContextActionManager->mapContextActionRecordList04->GetSize();
+    while (ordinal > 0) {
+      MapContextActionRecord* record = static_cast<MapContextActionRecord*>(
+          g_pMapContextActionManager->mapContextActionRecordList04->GetPtrListEntryByOneBasedIndex(
+              ordinal));
+      delete[] record->sideChildRecords250[0];
+      delete[] record->sideChildRecords250[1];
+      record->sideChildRecords250[1] = 0;
+      record->sideChildRecords250[0] = 0;
+      --ordinal;
+    }
+    mapContextActionRecordList04->ClearAndFreeAllPtrListRecords();
+  }
+  flag8 = 0;
+
+  if (mapContextActionRecordList04 != 0) {
+    int ordinal = g_pMapContextActionManager->mapContextActionRecordList04->GetSize();
+    while (ordinal > 0) {
+      MapContextActionRecord* record = static_cast<MapContextActionRecord*>(
+          g_pMapContextActionManager->mapContextActionRecordList04->GetPtrListEntryByOneBasedIndex(
+              ordinal));
+      delete[] record->sideChildRecords250[0];
+      delete[] record->sideChildRecords250[1];
+      record->sideChildRecords250[1] = 0;
+      record->sideChildRecords250[0] = 0;
+      --ordinal;
+    }
+    mapContextActionRecordList04->ReleasePtrList();
+  }
+
+  if (ourStackBattle39c != 0) {
+    ourStackBattle39c->Free();
+  }
+  ourStackBattle39c = 0;
+  if (enemyStackBattle3a0 != 0) {
+    enemyStackBattle3a0->Free();
+  }
+  enemyStackBattle3a0 = 0;
+  if (activeBattleView3a4 != 0) {
+    activeBattleView3a4->Free();
+  }
+  activeBattleView3a4 = 0;
+  delete this;
+}
 
 // FUNCTION: IMPERIALISM 0x004a1b80
 void TArmyMgr::ReadFrom(TStream* stream) {
@@ -182,7 +262,16 @@ void TArmyMgr::ReadFrom(TStream* stream) {
 }
 
 // FUNCTION: IMPERIALISM 0x004a1dd0
-void TArmyMgr::WriteTo(TStream* stream) {}
+void TArmyMgr::WriteTo(TStream* stream) {
+  TObject::WriteTo(stream);
+  int count = mapContextActionRecordList04->GetSize();
+  stream->WriteCountSlot88(count);
+  for (int index = 0; index < mapContextActionRecordList04->GetSize(); ++index) {
+    MapContextActionRecord* record = static_cast<MapContextActionRecord*>(
+        mapContextActionRecordList04->GetPtrListEntryByOneBasedIndex(index + 1));
+    record->WriteTo(stream);
+  }
+}
 
 // FUNCTION: IMPERIALISM 0x004a1e40
 void TArmyMgr::DoCombatMoves() {

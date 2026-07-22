@@ -1204,6 +1204,10 @@ extern int g_regionSeedGridCols_006a38f0;
 extern int DAT_006a3910;
 extern int DAT_006a3914;
 
+// Private retail assert guards for TStream's McAppStream.cpp diagnostics.
+extern int g_streamLine304AssertGuard;
+extern int g_streamLine596AssertGuard;
+
 // Map-context flavor-text string pool (see global_data_tables.cpp).
 extern char s_szSpaceSeparator_00695794[];
 extern char s_szTurnHistorySeparator_00699320[];

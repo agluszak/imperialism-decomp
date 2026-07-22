@@ -723,11 +723,11 @@ address|name|symbol|size|type|prototype|provenance
 4889d0|TStream::GetRuntimeClass||6|function|undefined GetTStreamClassNamePointer()|rtti
 488a10|TStream::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 488a40|TStream::DestructTStreamAndMaybeFree||7|function|undefined DestructTStreamAndMaybeFree()|
-488a80|TStream::OrphanCallChain_C2_I15_00488a80||26|function|undefined OrphanCallChain_C2_I15_00488a80(void)|
+488a80|TStream::IsAtEnd||26|function|char __thiscall IsAtEnd()|
 488ab0|TStream::Free||12|function|void __thiscall streamSlot1c()|
-488ad0|TStream::OrphanTiny_ReturnZero_00488ad0||3|function|undefined OrphanTiny_ReturnZero_00488ad0(void)|
-488af0|TStream::OrphanTiny_ReturnZero_00488af0||3|function|undefined OrphanTiny_ReturnZero_00488af0(void)|
-488b10|TStream::AssertMcAppStreamLine304||32|function|undefined AssertMcAppStreamLine304()|
+488ad0|TStream::GetPosition||3|function|int __thiscall GetPosition()|
+488af0|TStream::GetLength||3|function|int __thiscall GetLength()|
+488b10|TStream::AssertMcAppStreamLine304||32|function|int __thiscall AssertMcAppStreamLine304(int unusedArg)|
 488b40|TStream::ReadBytes||3|function|void __thiscall ReadBytes(void * buffer, int sizeBytes)|
 488b60|TStream::ReadInteger||19|function|int __thiscall ReadInteger()|
 488b90|TStream::streamSlot44||19|function|void __thiscall streamSlot44()|
@@ -742,10 +742,10 @@ address|name|symbol|size|type|prototype|provenance
 488d60|TStream::OrphanCallChain_C1_I06_00488d60||15|function|undefined OrphanCallChain_C1_I06_00488d60(void)|
 488d80|TStream::OrphanCallChain_C1_I06_00488d80||15|function|undefined OrphanCallChain_C1_I06_00488d80(void)|
 488da0|TStream::OrphanCallChain_C1_I09_00488da0||19|function|undefined OrphanCallChain_C1_I09_00488da0(void)|
-488dd0|TStream::streamSlot74||30|function|void __thiscall streamSlot74()|
-488e00|TStream::AssertMcAppStreamLine596||30|function|undefined AssertMcAppStreamLine596()|
-488e30|TStream::OrphanRetStub_00488e30||3|function|undefined OrphanRetStub_00488e30(void)|
-488e50|TStream::OrphanRetStub_00488e50||3|function|undefined OrphanRetStub_00488e50(void)|
+488dd0|TStream::SkipPaddingToEvenByteBoundary||30|function|void __thiscall SkipPaddingToEvenByteBoundary()|
+488e00|TStream::AssertMcAppStreamLine596||30|function|void __thiscall AssertMcAppStreamLine596(int unusedArg1, int unusedArg2)|
+488e30|TStream::SetPosition||3|function|void __thiscall SetPosition(int position)|
+488e50|TStream::SetLength||3|function|void __thiscall SetLength(int length)|
 488e70|TStream::OrphanRetStub_00488e70||3|function|undefined OrphanRetStub_00488e70(void)|
 488e90|TStream::OrphanCallChain_C1_I06_00488e90||15|function|undefined OrphanCallChain_C1_I06_00488e90(void)|
 488eb0|TStream::OrphanCallChain_C1_I06_00488eb0||15|function|undefined OrphanCallChain_C1_I06_00488eb0(void)|
@@ -758,7 +758,7 @@ address|name|symbol|size|type|prototype|provenance
 488f90|TStream::OrphanCallChain_C1_I06_00488f90||15|function|undefined OrphanCallChain_C1_I06_00488f90(void)|
 488fb0|TStream::OrphanCallChain_C1_I06_00488fb0||15|function|undefined OrphanCallChain_C1_I06_00488fb0(void)|
 488fd0|TStream::OrphanCallChain_C1_I06_00488fd0||15|function|undefined OrphanCallChain_C1_I06_00488fd0(void)|
-488ff0|TStream::OrphanCallChain_C2_I18_00488ff0||35|function|undefined OrphanCallChain_C2_I18_00488ff0(void)|
+488ff0|TStream::WritePaddingToEvenByteBoundary||35|function|void __thiscall WritePaddingToEvenByteBoundary()|
 489030|OrphanCallChain_C2_I21_00489030||42|function|undefined OrphanCallChain_C2_I21_00489030()|
 489070|TFileStream::CreateTFileStreamInstance||49|function|undefined CreateTFileStreamInstance()|
 4890c0|TFileStream::CreateObject|?CreateObject@TFileStream@@SGPAVCObject@@XZ|1|function|undefined CreateObject()|rtti
@@ -766,10 +766,10 @@ address|name|symbol|size|type|prototype|provenance
 489110|TFileStream::ConstructTFileStreamBaseState||16|function|undefined ConstructTFileStreamBaseState()|
 489130|TFileStream::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 489160|TFileStream::SetBackingArchive||10|function|undefined SetBackingArchive()|
-489180|TFileStream::OrphanTiny_ReturnZero_00488ad0||14|function|undefined OrphanTiny_ReturnZero_00488ad0(void)|
-4891a0|TFileStream::OrphanTiny_ReturnZero_00488af0||14|function|undefined OrphanTiny_ReturnZero_00488af0(void)|
-4891c0|TFileStream::OrphanRetStub_00488e30||24|function|undefined OrphanRetStub_00488e30(void)|
-4891f0|TFileStream::OrphanRetStub_00488e50||22|function|undefined OrphanRetStub_00488e50(void)|
+489180|TFileStream::GetPosition||14|function|int __thiscall GetPosition()|
+4891a0|TFileStream::GetLength||14|function|int __thiscall GetLength()|
+4891c0|TFileStream::SetPosition||24|function|void __thiscall SetPosition(int position)|
+4891f0|TFileStream::SetLength||22|function|void __thiscall SetLength(int length)|
 489220|TFileStream::ReadBytes||73|function|void __thiscall ReadBytes(void * buffer, int sizeBytes)|
 489290|TFileStream::OrphanRetStub_00488e70||73|function|undefined OrphanRetStub_00488e70(void)|
 489300|TFileStream::OrphanLeaf_NoCall_Ins02_00489980||24|function|undefined OrphanLeaf_NoCall_Ins02_00489980(void)|
@@ -782,10 +782,10 @@ address|name|symbol|size|type|prototype|provenance
 489440|TCountingStream::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 489470|TCountingStream::~TCountingStream||7|function|undefined ~TCountingStream()|
 489490|TCountingStream::PrepareForUse||1|function|undefined DispatchTurnEventPacketWithCodeAndPayloadBuffer_Impl()|
-4894b0|TCountingStream::OrphanTiny_ReturnZero_00488ad0||4|function|undefined OrphanTiny_ReturnZero_00488ad0(void)|
-4894d0|TCountingStream::OrphanRetStub_00488e30||19|function|undefined OrphanRetStub_00488e30(void)|
-489500|TCountingStream::OrphanTiny_ReturnZero_00488af0||4|function|undefined OrphanTiny_ReturnZero_00488af0(void)|
-489520|TCountingStream::OrphanRetStub_00488e50||20|function|undefined OrphanRetStub_00488e50(void)|
+4894b0|TCountingStream::GetPosition||4|function|int __thiscall GetPosition()|
+4894d0|TCountingStream::SetPosition||19|function|void __thiscall SetPosition(int position)|
+489500|TCountingStream::GetLength||4|function|int __thiscall GetLength()|
+489520|TCountingStream::SetLength||20|function|void __thiscall SetLength(int length)|
 489550|THandleStream::CreateTHandleStreamInstance||25|function|undefined CreateTHandleStreamInstance()|
 489580|THandleStream::CreateObject|?CreateObject@THandleStream@@SGPAVCObject@@XZ|1|function|undefined CreateObject()|rtti
 4895c0|THandleStream::GetRuntimeClass||6|function|undefined GetTHandleStreamClassNamePointer()|rtti
@@ -794,11 +794,11 @@ address|name|symbol|size|type|prototype|provenance
 489640|THandleStream::~THandleStream||7|function|undefined ~THandleStream()|
 489660|AttachGlobalMemoryHandleAndResetPosition||44|function|undefined AttachGlobalMemoryHandleAndResetPosition()|
 4896a0|THandleStream::Free||38|function|void __thiscall streamSlot1c()|
-4896e0|THandleStream::OrphanTiny_ReturnZero_00488ad0||4|function|undefined OrphanTiny_ReturnZero_00488ad0(void)|
-489700|THandleStream::OrphanTiny_ReturnZero_00488af0||4|function|undefined OrphanTiny_ReturnZero_00488af0(void)|
+4896e0|THandleStream::GetPosition||4|function|int __thiscall GetPosition()|
+489700|THandleStream::GetLength||4|function|int __thiscall GetLength()|
 489720|THandleStream::GrowthSize||16|function|int __thiscall GrowthSize(int requestedSize)|
-489740|THandleStream::OrphanRetStub_00488e30||10|function|undefined OrphanRetStub_00488e30(void)|
-489760|THandleStream::OrphanRetStub_00488e50||37|function|undefined OrphanRetStub_00488e50(void)|
+489740|THandleStream::SetPosition||10|function|void __thiscall SetPosition(int position)|
+489760|THandleStream::SetLength||37|function|void __thiscall SetLength(int length)|
 4897a0|THandleStream::ReadBytes||74|function|void __thiscall ReadBytes(void * buffer, int sizeBytes)|
 489810|THandleStream::OrphanRetStub_00488e70||113|function|undefined OrphanRetStub_00488e70(void)|
 489980|TStream::OrphanLeaf_NoCall_Ins02_00489980||5|function|undefined OrphanLeaf_NoCall_Ins02_00489980(void)|
@@ -1457,7 +1457,7 @@ address|name|symbol|size|type|prototype|provenance
 4a1130|CreateBitmapResourceLoaderHandle||115|function|TBitmapResourceLoader **CreateBitmapResourceLoaderHandle(unsigned short resourceId)|
 4a1260|WrapperFor_ftol_At004a1260||30|function|undefined WrapperFor_ftol_At004a1260()|
 4a13c0|ResetMapActionSelectionAndLoadContextByNodeId||504|function|undefined ResetMapActionSelectionAndLoadContextByNodeId()|
-4a1640|TArmyMgr::CreateTArmyMgrInstance||354|function|undefined CreateTArmyMgrInstance()|
+4a1640|MapContextActionRecord::WriteTo||354|function|void __thiscall WriteTo(TStream* stream)|
 4a1810|TArmyMgr::CreateObject|?CreateObject@TArmyMgr@@SGPAVCObject@@XZ|43|function|undefined CreateObject()|rtti
 4a1850|TArmyMgr::GetRuntimeClass||6|function|undefined GetTArmyMgrClassNamePointer()|rtti
 4a1870|TArmyMgr::TArmyMgr|??0TArmyMgr@@QAE@XZ|25|function|TArmyMgr* __thiscall TArmyMgr(void)|
@@ -3229,7 +3229,7 @@ address|name|symbol|size|type|prototype|provenance
 515d60|TMapMgr::ApplyUnitMovementClassForTileIfValid||24|function|undefined ApplyUnitMovementClassForTileIfValid(int param_1)|
 515db0|ClearPerTileByte0FForAllMapTiles||27|function|undefined ClearPerTileByte0FForAllMapTiles()|
 515de0|TMapMgr::OrphanRetStub_00515de0||3|function|undefined OrphanRetStub_00515de0(void)|
-515e00|InputState::SetMapTileStateByteAndNotifyObserver||50|function|undefined SetMapTileStateByteAndNotifyObserver()|
+515e00|TMapMgr::SetMapTileStateByteAndNotifyObserver||50|function|void __thiscall SetMapTileStateByteAndNotifyObserver(short tileIndex, int stateByte)|
 515e50|TileHasMovementClassId||76|function|undefined TileHasMovementClassId()|
 515ec0|AssignCityRecordDisplayName||37|function|undefined AssignCityRecordDisplayName()|
 515f40|SetGlobalMapCellSharedLabel||37|function|undefined SetGlobalMapCellSharedLabel()|

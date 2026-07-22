@@ -1,5 +1,7 @@
 #include "game/THandleStream.h"
 
+#include <string.h>
+
 // SYNTHETIC: IMPERIALISM 0x00489580
 // THandleStream::CreateObject
 
@@ -35,15 +37,20 @@ void THandleStream::AttachGlobalMemoryHandleAndResetPosition(HGLOBAL memoryHandl
 }
 
 // FUNCTION: IMPERIALISM 0x004896a0
-void THandleStream::Free() {}
+void THandleStream::Free() {
+  if (attachedGlobalHandle != 0) {
+    SetLength(GetPosition());
+  }
+  delete this;
+}
 
 // FUNCTION: IMPERIALISM 0x004896e0
-int THandleStream::streamSlot28() {
+int THandleStream::GetPosition() {
   return streamPosition;
 }
 
 // FUNCTION: IMPERIALISM 0x00489700
-int THandleStream::streamSlot30() {
+int THandleStream::GetLength() {
   return attachedSizeBytes;
 }
 
@@ -57,21 +64,44 @@ int THandleStream::GrowthSize(int requestedSize) {
 
 // Seek: store the requested position directly (no clamp for the handle stream).
 // FUNCTION: IMPERIALISM 0x00489740
-void THandleStream::streamSlot2c(int position) {
+void THandleStream::SetPosition(int position) {
   streamPosition = position;
 }
 
 // FUNCTION: IMPERIALISM 0x00489760
-void THandleStream::streamSlot34(int) {}
+void THandleStream::SetLength(int length) {
+  GlobalReAlloc(attachedGlobalHandle, length, 0);
+  if (length < streamPosition) {
+    streamPosition = length;
+  }
+  attachedSizeBytes = length;
+}
 
 // FUNCTION: IMPERIALISM 0x004897a0
 void THandleStream::ReadBytes(void* buffer, int sizeBytes) {
-  (void)buffer;
-  (void)sizeBytes;
+  int available = attachedSizeBytes - streamPosition;
+  if (available < sizeBytes) {
+    sizeBytes = available;
+  }
+  if (sizeBytes > 0) {
+    char* bytes = static_cast<char*>(GlobalLock(attachedGlobalHandle));
+    memmove(buffer, bytes + streamPosition, sizeBytes);
+    GlobalUnlock(attachedGlobalHandle);
+    streamPosition += sizeBytes;
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x00489810
 void THandleStream::WriteBytesSlot78(void* data, int length) {
-  (void)data;
-  (void)length;
+  int available = attachedSizeBytes - streamPosition;
+  if (available < length) {
+    SetLength(attachedSizeBytes + GrowthSize(length - available));
+  }
+  char* bytes = static_cast<char*>(GlobalLock(attachedGlobalHandle));
+  memmove(bytes + streamPosition, data, length);
+  GlobalUnlock(attachedGlobalHandle);
+  streamPosition += length;
+  if (streamPosition > attachedSizeBytes) {
+    attachedSizeBytes = streamPosition;
+  }
 }

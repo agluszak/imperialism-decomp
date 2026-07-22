@@ -298,11 +298,25 @@ void TNavyMgr::INavyMgr() {
 }
 
 // FUNCTION: IMPERIALISM 0x005567a0
-void TNavyMgr::Free() {}
+void TNavyMgr::Free() {
+  while (g_pNavyPrimaryOrderListHead != 0) {
+    g_pNavyPrimaryOrderListHead->Free();
+  }
+  while (g_pNavySecondaryOrderListHead != 0) {
+    g_pNavySecondaryOrderListHead->Free();
+  }
+  TTaskForce* orderHead = orderListHead04;
+  if (orderHead != 0) {
+    orderHead->queue_next->DestroyNavyOrderAndChildren();
+    orderHead->Free();
+  }
+  delete this;
+}
 
 // FUNCTION: IMPERIALISM 0x005568c0
 void TNavyMgr::WriteTo(TStream* stream) {
-  (void)stream;
+  TObject::WriteTo(stream);
+  SerializeNavyOrderListsByNation(stream, -1);
 }
 
 // FUNCTION: IMPERIALISM 0x005568f0
@@ -362,7 +376,8 @@ void TNavyMgr::SerializeNavyOrderListsByNation(TStream* stream, short nationFilt
 
 // FUNCTION: IMPERIALISM 0x00556aa0
 void TNavyMgr::ReadFrom(TStream* stream) {
-  (void)stream;
+  TObject::ReadFrom(stream);
+  DeserializeNavyOrderListsByNation(stream, -1);
 }
 
 static void RemoveMatchingSecondaryOrders(short nationSlot) {

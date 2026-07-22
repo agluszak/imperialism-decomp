@@ -18,6 +18,7 @@
 #include "game/ui_invalidation_guard.h"
 #include "game/TMilitaryUnit.h"
 #include "game/TTechMgr.h"
+#include "game/TStream.h"
 #include "game/mapped_flavor_text.h"
 #include "game/nation_slot_eligibility.h"
 #include "game/ui_control_tags.h"
@@ -149,16 +150,48 @@ void THelpMgr::ResetHelpSetRanksAndFlags() {
 
 // FUNCTION: IMPERIALISM 0x00500f50
 void THelpMgr::ReadFrom(TStream* stream) {
-  (void)stream;
+  TObject::ReadFrom(stream);
+  indexList->InvokePtrListResetHook();
+  indexList->ReadFrom(stream);
+  if (g_nSaveFormatVersion >= 0x2b) {
+    short* counters = civilianCompletionCounters10.values;
+    stream->ReadBytes(counters, 10);
+    for (int i = 0; i < 5; ++i) {
+      unsigned char* bytes = reinterpret_cast<unsigned char*>(&counters[i]);
+      unsigned char first = bytes[0];
+      bytes[0] = bytes[1];
+      bytes[1] = first;
+    }
+  }
+  if (g_nSaveFormatVersion >= 0x37) {
+    stream->ReadBytes(&helpIndexReady, 2);
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x00500fe0
 void THelpMgr::WriteTo(TStream* stream) {
-  (void)stream;
+  TObject::WriteTo(stream);
+  indexList->WriteTo(stream);
+  short* counters = civilianCompletionCounters10.values;
+  for (int i = 0; i < 5; ++i) {
+    short swapped = counters[i];
+    unsigned char* bytes = reinterpret_cast<unsigned char*>(&swapped);
+    unsigned char first = bytes[0];
+    bytes[0] = bytes[1];
+    bytes[1] = first;
+    stream->WriteBytesSlot78(&swapped, 2);
+  }
+  stream->WriteBytesSlot78(&helpIndexReady, 2);
 }
 
 // FUNCTION: IMPERIALISM 0x00501070
-void THelpMgr::Free() {}
+void THelpMgr::Free() {
+  if (indexList != 0) {
+    indexList->ReleasePtrList();
+  }
+  indexList = 0;
+  delete this;
+}
 
 // FUNCTION: IMPERIALISM 0x005010b0
 void THelpMgr::SelectAndActivatePendingEventForCurrentView() {

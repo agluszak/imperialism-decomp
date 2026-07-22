@@ -3043,6 +3043,14 @@ void TMapMgr::NoOpVirtualSlot2D(int param_1, int param_2, int param_3) {
   (void)param_3;
 }
 
+// FUNCTION: IMPERIALISM 0x00515e00
+void TMapMgr::SetMapTileStateByteAndNotifyObserver(short tileIndex, int stateByte) {
+  terrainStateTable[tileIndex].tileActionClass16 = static_cast<unsigned char>(stateByte);
+  if (g_pUiRuntimeContext->mapUberPictureF0 != 0) {
+    g_pUiRuntimeContext->mapUberPictureF0->InvalidateTile(tileIndex);
+  }
+}
+
 // Verified against 0x0053e7bf's callsite (TDefendProvinceMission::
 // ComputeCrossNationSupportVectorScore): despite the Ghidra-provisional name, this
 // checks whether regionIndex appears in nodeContext's adjacent-region list, not

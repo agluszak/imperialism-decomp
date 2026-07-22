@@ -17,10 +17,7 @@ public:
   // slot 0x07 Free inherited unchanged (0x488ab0)
   // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
-  // slot 0x0a streamSlot28 owned by the hand declaration below (0x4894b0)
-  // slot 0x0b streamSlot2c owned by the hand declaration below (0x4894d0)
-  // slot 0x0c streamSlot30 owned by the hand declaration below (0x489500)
-  // slot 0x0d streamSlot34 owned by the hand declaration below (0x489520)
+  // slots 0x0a..0x0d: position/length accessors below
   // slot 0x0e OrphanCallChain_C2_I15_00488a80 inherited unchanged (0x488a80)
   // slot 0x0f ReadBytes inherited unchanged (0x488b40)
   // slot 0x10 ReadInteger inherited unchanged (0x488b60)
@@ -36,7 +33,7 @@ public:
   // slot 0x1a OrphanCallChain_C1_I09_00488da0 inherited unchanged (0x488da0)
   // slot 0x1b streamSlot6c inherited unchanged (0x488ca0)
   // slot 0x1c Helper_Uses_EnsureSharedStringCapacityPreserveLength_At00488c50 inherited unchanged (0x488c50)
-  // slot 0x1d streamSlot74 inherited unchanged (0x488dd0)
+  // slot 0x1d SkipPaddingToEvenByteBoundary inherited unchanged (0x488dd0)
   // slot 0x1e WriteBytesSlot78 owned by the hand declaration below (0x489550)
   // slot 0x1f OrphanCallChain_C1_I06_00488e90 inherited unchanged (0x488e90)
   // slot 0x20 OrphanCallChain_C1_I06_00488eb0 inherited unchanged (0x488eb0)
@@ -53,7 +50,7 @@ public:
   // slot 0x2b OrphanCallChain_C2_I21_00489030 inherited unchanged (0x489030)
   // slot 0x2c OrphanLeaf_NoCall_Ins02_00489980 inherited unchanged (0x489980)
   // slot 0x2d OrphanRetStub_004899a0 inherited unchanged (0x4899a0)
-  // slot 0x2e OrphanCallChain_C2_I18_00488ff0 inherited unchanged (0x488ff0)
+  // slot 0x2e WritePaddingToEvenByteBoundary inherited unchanged (0x488ff0)
   // slot 0x2f AssertMcAppStreamLine304 inherited unchanged (0x488b10)
   // slot 0x30 AssertMcAppStreamLine596 inherited unchanged (0x488e00)
   // clang-format on
@@ -64,13 +61,13 @@ public:
   TCountingStream();
   // Destructors are compiler-generated (implicit virtual dtor from TStream).
 
-  int streamSlot28() override;
+  int GetPosition() override;
   // NOOP: verified empty in original 0x00489490 (single ret; the packet dispatcher
   // calls it right after construction before measuring).
   void PrepareForUse();
-  void streamSlot2c(int) override;
-  int streamSlot30() override;
-  void streamSlot34(int) override;
+  void SetPosition(int position) override;
+  int GetLength() override;
+  void SetLength(int length) override;
   // ReadBytes (slot 0x3c) is inherited unchanged from TStream.
   void WriteBytesSlot78(void* data, int length) override;
 };

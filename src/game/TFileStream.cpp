@@ -44,20 +44,24 @@ void TFileStream::SetBackingArchive(ArchiveStreamAdapter* backingArchive) {
 }
 
 // FUNCTION: IMPERIALISM 0x00489180
-int TFileStream::streamSlot28() {
+int TFileStream::GetPosition() {
   return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004891a0
-int TFileStream::streamSlot30() {
+int TFileStream::GetLength() {
   return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004891c0
-void TFileStream::streamSlot2c(int) {}
+void TFileStream::SetPosition(int position) {
+  BackingArchive(backingArchiveOrStream)->GetFile()->Seek(position, CFile::begin);
+}
 
 // FUNCTION: IMPERIALISM 0x004891f0
-void TFileStream::streamSlot34(int) {}
+void TFileStream::SetLength(int length) {
+  BackingArchive(backingArchiveOrStream)->GetFile()->SetLength(length);
+}
 
 // FUNCTION: IMPERIALISM 0x00489220
 void TFileStream::ReadBytes(void* destination, int requestedCount) {
@@ -99,5 +103,5 @@ void TFileStream::streamSlot70(CString* dest, int maxLen) {
 
 // FUNCTION: IMPERIALISM 0x00489390
 void TFileStream::streamSlotAc(CString* sharedString) {
-  (void)sharedString;
+  *BackingArchive(this->backingArchiveOrStream) << *sharedString;
 }

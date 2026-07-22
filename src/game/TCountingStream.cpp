@@ -28,13 +28,13 @@ TCountingStream::~TCountingStream() {}
 void TCountingStream::PrepareForUse() {}
 
 // FUNCTION: IMPERIALISM 0x004894b0
-int TCountingStream::streamSlot28() {
+int TCountingStream::GetPosition() {
   return positionOrByteCount;
 }
 
 // Seek: clamp the requested position to the tracked extent, store as current.
 // FUNCTION: IMPERIALISM 0x004894d0
-void TCountingStream::streamSlot2c(int position) {
+void TCountingStream::SetPosition(int position) {
   if (position > maxExtentOrLimit) {
     position = maxExtentOrLimit;
   }
@@ -42,13 +42,13 @@ void TCountingStream::streamSlot2c(int position) {
 }
 
 // FUNCTION: IMPERIALISM 0x00489500
-int TCountingStream::streamSlot30() {
+int TCountingStream::GetLength() {
   return maxExtentOrLimit;
 }
 
 // Mark: lower the current position if the mark precedes it, then record the mark.
 // FUNCTION: IMPERIALISM 0x00489520
-void TCountingStream::streamSlot34(int position) {
+void TCountingStream::SetLength(int position) {
   if (position < positionOrByteCount) {
     positionOrByteCount = position;
   }

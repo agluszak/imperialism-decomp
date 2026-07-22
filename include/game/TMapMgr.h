@@ -212,6 +212,9 @@ extern "C" short* __cdecl BuildHexAreaTileIndexList(short centerTileIndex, short
 // VTABLE: IMPERIALISM 0x006587e0
 class TMapMgr : public TObject {
 public:
+  // Writes one tile's action/marker byte and invalidates that tile in the active map view.
+  // Ground truth receives this manager in ECX and returns with two stack args consumed.
+  void SetMapTileStateByteAndNotifyObserver(short tileIndex, int stateByte); // 0x515e00
   // Retail callers pass g_pGlobalMapState in ECX; the body intentionally does not
   // inspect the receiver and returns the constant province-order weight.
   short GetProvinceUnitOrderWeight(short provinceId); // 0x5184e0
