@@ -380,7 +380,7 @@ undefined TArmyBattle::FinalizeTacticalBattleOutcome(int sideWonFlag) {
   battleOutcomeCode44 = 1;
   tacticalPlayer14->AssertValid();
   tacticalPlayer18->AssertValid();
-  g_pSfxPlaybackSystem->HandleBlinkStateAndScheduleTimerTick(0);
+  g_pSfxPlaybackSystem->StopCdAudioPlayback(0);
 
   if (battleView8 != 0) {
     TTacticalToolbar* toolbar = static_cast<TTacticalToolbar*>(

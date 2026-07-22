@@ -21,7 +21,7 @@ IMPLEMENT_DYNCREATE(TMovieView, TPicture)
 // FUNCTION: IMPERIALISM 0x005e2230
 TMovieView::TMovieView() : TPicture() {
   g_pSfxPlaybackSystem->ClearDirectSoundInitPendingAndResetState();
-  g_pSfxPlaybackSystem->HandleBlinkStateAndScheduleTimerTick(1);
+  g_pSfxPlaybackSystem->StopCdAudioPlayback(1);
 
   CMainFrame* mainFrame;
   if (AfxGetThread() != 0) {

@@ -1361,6 +1361,8 @@ short g_aTechItemPrerequisitePairs[34][2] = {
 // GLOBAL: IMPERIALISM 0x006a3ed8
 TTaskForce* g_pCachedMapActionContext = 0;
 TSoundPlayer* g_pSfxPlaybackSystem = 0;
+// GLOBAL: IMPERIALISM 0x006a4520
+short g_randomAudioCuePollCounter = 0;
 // GLOBAL: IMPERIALISM 0x006a43cc
 TTradeMgr* g_pNationInteractionStateManager = 0;
 // GLOBAL: IMPERIALISM 0x006a4220
