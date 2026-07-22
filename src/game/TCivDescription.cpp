@@ -5,8 +5,10 @@
 #include "game/TCountry.h"
 #include "game/CString.h"
 #include "game/TCivUnit.h"
+#include "game/TAmbitApplication.h"
 #include "game/TGlobalMapState.h"
 #include "game/TMacViewMgr.h"
+#include "game/TMapUberPicture.h"
 #include "game/TQuickDrawSurfaceContext.h"
 #include "game/TSimMgr.h"
 #include "game/TTechMgr.h"
@@ -21,7 +23,6 @@
 namespace {
 const unsigned int kAddrTargetTileProfileByCivilianClassAndSlot = 0x00698F58;
 const unsigned int kAddrTerrainTypeDescriptorTable = 0x006A4310;
-const unsigned int kAddrGlobalUiRootController = 0x006A1344;
 const unsigned int kAddrLocalizationTable = 0x006A20F8;
 const unsigned int kAddrGlobalMapState = 0x006A43D4;
 const unsigned int kAddrCivilianLegendSelectionCountsBySlot = 0x006A4490;
@@ -48,8 +49,6 @@ struct CivilianClassCacheContext {
   unsigned char pad_6e_to_6f[0x02];
 };
 
-typedef void(__fastcall* UiRootOnLegendTileSelectedFn)(void* thisLegendSelectionOwner,
-                                                       int unusedEdx, int tileIndex);
 typedef void(__cdecl* LocalizationFormatFn)(int tokenId, int arg, void* outTextRef);
 
 } // namespace
@@ -171,13 +170,10 @@ void TCivDescription::BeginMouseCaptureAndStartRepeatTimer(const CPoint& point,
                        char*)(reinterpret_cast<char*>(g_pGlobalMapState->terrainStateTable) +
                               tileIndex * 0x24 + 0x13) == (unsigned short)slotIndex)) {
                 if ((int)(unsigned int)(*currentLegendSelectionCounter) <= candidateOrdinal) {
-                  void* uiRootController = *reinterpret_cast<void**>(kAddrGlobalUiRootController);
-                  void* legendSelectionOwner =
-                      *reinterpret_cast<void**>(reinterpret_cast<char*>(uiRootController) + 0x48);
-                  if (legendSelectionOwner != 0) {
-                    reinterpret_cast<UiRootOnLegendTileSelectedFn>(reinterpret_cast<int*>(
-                        *reinterpret_cast<void**>(legendSelectionOwner))[0x78])(
-                        legendSelectionOwner, 0, (int)tileIndex);
+                  TMapUberPicture* activeMapPicture =
+                      static_cast<TMapUberPicture*>(g_pGlobalUiRootController->edgeScrollTarget48);
+                  if (activeMapPicture != 0) {
+                    activeMapPicture->CenterOn(tileIndex);
                   }
                   *currentLegendSelectionCounter =
                       (unsigned short)((unsigned int)(*currentLegendSelectionCounter) + 1);

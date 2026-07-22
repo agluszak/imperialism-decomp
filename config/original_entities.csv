@@ -585,7 +585,7 @@ address|name|symbol|size|type|prototype|provenance
 485e20|TObject::GetRuntimeClass||6|function|undefined GetRuntimeClass()|rtti
 485e40|WrapperFor_AFX_CLASSINIT_At00485e40||16|function|undefined WrapperFor_AFX_CLASSINIT_At00485e40()|
 485e90|TObject::Serialize||143|function|void __thiscall Serialize(CArchive& archive)|
-485f50|TObject::RestoreConstructionSentinelVtable||7|function|void RestoreConstructionSentinelVtable()|
+485f50|TObject::~TObject||7|function|void __thiscall ~TObject()|windows_listing
 485f70|TObject::WriteTo||3|function|void __thiscall WriteTo(TStream* stream)|
 485f90|TObject::ReadFrom||3|function|void __thiscall ReadFrom(TStream* stream)|
 485fb0|TTEView::CreateObject|?CreateObject@TTEView@@SGPAVCObject@@XZ|83|function|undefined CreateObject()|rtti
@@ -3934,8 +3934,8 @@ address|name|symbol|size|type|prototype|provenance
 5425d0|TMultiplayerMgr::CreateObject|?CreateObject@TMultiplayerMgr@@SGPAVCObject@@XZ|90|function|undefined CreateObject()|rtti
 542650|TMultiplayerMgr::GetRuntimeClass||6|function|undefined GetTMultiplayerMgrClassNamePointer()|rtti
 542670|ConstructMultiplayerManager||234|function|undefined4 * __fastcall ConstructMultiplayerManager(astruct_11 * this_obj)|
-5427a0|InitializePointerPairToNull||16|function|undefined InitializePointerPairToNull()|
-5427c0|FreePointerIfNotNull||16|function|undefined FreePointerIfNotNull()|
+5427a0|TMultiplayerSlotHandle::TMultiplayerSlotHandle||16|function|void __thiscall TMultiplayerSlotHandle()|windows_listing
+5427c0|TMultiplayerSlotHandle::~TMultiplayerSlotHandle||16|function|void __thiscall ~TMultiplayerSlotHandle()|windows_listing
 5427e0|TMultiplayerMgr::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 542810|TMultiplayerMgr::~TMultiplayerMgr||187|function|undefined ~TMultiplayerMgr()|
 542900|TMultiplayerMgr::InitializeMultiplayerManagerForSessionContext||404|function|undefined InitializeMultiplayerManagerForSessionContext()|
