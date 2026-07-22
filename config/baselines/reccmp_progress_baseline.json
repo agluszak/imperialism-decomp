@@ -11,9 +11,9 @@
   "failed_to_match_function_count": 0,
   "flo_orig_only_count": 207,
   "flo_recomp_only_count": 0,
-  "git_branch": "agent/ui-interaction-debt-batch-97b",
-  "git_commit": "2b6bb903e0d6a7688329f35391c070658fa707c7",
-  "git_commit_date": "2026-07-23T00:23:44+02:00",
+  "git_branch": "agent/domain-discriminants",
+  "git_commit": "ab343f973c5aa31ab1867f2fec129f86e26ab3a2",
+  "git_commit_date": "2026-07-23T00:54:38+02:00",
   "global_coverage_pct": 24.451612903225804,
   "global_orig_only_count": 8197,
   "global_recomp_only_count": 7615,
@@ -61,7 +61,7 @@
   "target": "IMPERIALISM",
   "template_alias_recognized_count": 4,
   "template_canonical_paired_count": 4,
-  "timestamp_utc": "2026-07-22T22:40:56+00:00",
+  "timestamp_utc": "2026-07-22T22:55:06+00:00",
   "wid_orig_only_count": 0,
   "wid_recomp_only_count": 2
 }
