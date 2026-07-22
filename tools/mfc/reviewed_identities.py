@@ -32,6 +32,7 @@ class ReviewedIdentity:
     library_family: str
     object_member: str
     evidence: str
+    kind: str = "LIBRARY"  # LIBRARY | SYNTHETIC (annotation kind projected to reccmp)
 
 
 # Back-compat alias for the retired applier's class name.
@@ -59,9 +60,14 @@ def load_reviewed_identities(path: Path) -> list[ReviewedIdentity]:
         seen.add(address)
         name = (row.get("name") or "").strip()
         symbol = (row.get("symbol") or "").strip()
-        if not name or not symbol:
+        evidence_text = (row.get("evidence") or "").strip()
+        # Full identity rows carry name and/or symbol (either may be absent when
+        # the raw inventory spelling is already right). Annotation-only rows
+        # (migrated LIBRARY/SYNTHETIC marker carriers, bead 8mo.11) may carry
+        # neither, but must say where they came from.
+        if not name and not symbol and not evidence_text:
             raise SystemExit(
-                f"{path}: 0x{address:08x} needs non-empty name and symbol."
+                f"{path}: 0x{address:08x} needs a name, a symbol, or evidence."
             )
         out.append(ReviewedIdentity(
             address=address,
@@ -71,6 +77,7 @@ def load_reviewed_identities(path: Path) -> list[ReviewedIdentity]:
             library_family=(row.get("library_family") or "").strip(),
             object_member=(row.get("object_member") or "").strip(),
             evidence=(row.get("evidence") or "").strip(),
+            kind=(row.get("kind") or "LIBRARY").strip().upper() or "LIBRARY",
         ))
     return out
 
