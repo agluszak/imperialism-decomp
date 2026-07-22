@@ -97,7 +97,7 @@ struct TNavyOrderResourceDescriptor {
                                  // enabled/disabled gate)
   short descriptorWeight;        // +0x1c (was DAT_00698124)
   short pad1e;
-  // Per-order-type priority tier used by TNavyMgr::ResolveMapOrderPairConflictStep's
+  // Per-order-type priority tier used by TNavyMgr::ResolveStrategicBattle's
   // candidate-tier scan/scoring loop (was DAT_00698128).
   short priorityTier; // +0x20
   short pad22;
@@ -460,8 +460,8 @@ extern const unsigned int g_anScenarioScriptInstructionTags[27];
 extern void (TSimMgr::* g_apfnScenarioScriptInstructionHandlers[27])(void*);
 extern unsigned char g_bScenarioScriptTerminationRequested;
 extern int g_nScenarioScriptInstructionCount;
-// Gates the assert-messagebox in TTaskForce::ApplyMapOrderTypeExecutionEffects's default
-// (unhandled attachment/kind) case; not yet recovered beyond that one read site.
+// Gates the assert-messagebox in TTaskForce::CarryOutOrders' default
+// (unhandled ship-order kind) case; not yet recovered beyond that one read site.
 extern int g_UnknownMapOrderExecutionGuard_006a3ee0;
 // Guards the nil-pointer assert in TColorFill::Draw (0x004ff1c0, TColorFill.cpp);
 // no write site found anywhere in ported source, so this may be a debug/never-reached

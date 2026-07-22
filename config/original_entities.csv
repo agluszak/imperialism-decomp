@@ -4070,7 +4070,7 @@ address|name|symbol|size|type|prototype|provenance
 54ff00|TShip::ComputeNavyOrderPriorityContributionPercentByCategory||297|function|undefined ComputeNavyOrderPriorityContributionPercentByCategory()|
 550090|GetNormalizedIndustryActionResourceCostPercent||207|function|undefined GetNormalizedIndustryActionResourceCostPercent()|
 5501b0|TShip::CalculateMissionOrderPriorityScore||336|function|int __thiscall CalculateMissionOrderPriorityScore(int nScoreProfileId)|
-550370|TShip::AdjustMapOrderNodeStatCapped499||26|function|void __thiscall AdjustMapOrderNodeStatCapped499(short nDelta)|
+550370|TShip::Victory||26|function|void TShip::Victory(short experienceGain)|
 5503a0|TShip::GetOrCreateMissionOrderEntryForNode||285|function|void * __thiscall GetOrCreateMissionOrderEntryForNode(void)|
 550510|TShip::GetOrderNodeDescriptorWord20ByResourceType||16|function|undefined GetOrderNodeDescriptorWord20ByResourceType()|
 550550|TShip::ComputeOrderNodeDistanceQuotientByDescriptorWord24||51|function|undefined ComputeOrderNodeDistanceQuotientByDescriptorWord24()|
@@ -4083,7 +4083,7 @@ address|name|symbol|size|type|prototype|provenance
 550840|TShip::ComputeOrderNodeDerivedScoreFromQuantityAndWord18||67|function|undefined ComputeOrderNodeDerivedScoreFromQuantityAndWord18()|
 550970|GetIndustryActionCostWeightByResourceType||14|function|short __cdecl GetIndustryActionCostWeightByResourceType(short resourceType)|
 5509c0|PruneOrPromoteOrderNodeWhenChildCostDepleted||171|function|undefined PruneOrPromoteOrderNodeWhenChildCostDepleted()|
-550aa0|TShip::ComputeMapOrderEntryHeuristicScore||141|function|undefined ComputeMapOrderEntryHeuristicScore()|
+550aa0|TShip::GetBattleStrengthRating||141|function|int __thiscall TShip::GetBattleStrengthRating() const|
 550b60|ComputeOrderNodeCompositeEconomicScore||141|function|int __cdecl ComputeOrderNodeCompositeEconomicScore(TShip* node)|
 550c20|FormatLocalizedCommodityCountLabelByIndex||264|function|undefined FormatLocalizedCommodityCountLabelByIndex()|
 550d80|GetResourceTypeRandomDrawBlockFlag||17|function|short __cdecl GetResourceTypeRandomDrawBlockFlag(short resourceType)|
@@ -4161,7 +4161,7 @@ address|name|symbol|size|type|prototype|provenance
 554b20|BuildTaskForceOrderBreakdownSummaryText||273|function|undefined BuildTaskForceOrderBreakdownSummaryText()|
 554c90|BuildTaskForceSelectionOverlayLabelText||370|function|undefined BuildTaskForceSelectionOverlayLabelText()|
 554e70|TTaskForce::GetGeneralDescription||400|function|void __thiscall GetGeneralDescription(CString * out)|
-555090|PruneNavyOrderIfUnserviceableOrNoChildren||159|function|undefined PruneNavyOrderIfUnserviceableOrNoChildren()|
+555090|TTaskForce::PruneNavyOrderIfUnserviceableOrNoChildren||159|function|TTaskForce * __thiscall TTaskForce::PruneNavyOrderIfUnserviceableOrNoChildren()|
 5551d0|BuildTaskForcePrimaryObjectiveDescriptionText||450|function|undefined BuildTaskForcePrimaryObjectiveDescriptionText()|
 555420|ResolveTaskForceOrderConflictAndPickCandidate||608|function|undefined ResolveTaskForceOrderConflictAndPickCandidate()|
 555720|ShouldAttemptMapOrderPairResolution||400|function|undefined ShouldAttemptMapOrderPairResolution()|
@@ -4169,8 +4169,8 @@ address|name|symbol|size|type|prototype|provenance
 555c20|ComputeTaskForceOrderTieBreakScore||183|function|undefined ComputeTaskForceOrderTieBreakScore()|
 555d10|TryResolveMapOrderEntryPairExecution||151|function|undefined TryResolveMapOrderEntryPairExecution()|
 555de0|IsTaskForceOrderMixWithinPriorityThresholds||433|function|undefined IsTaskForceOrderMixWithinPriorityThresholds()|
-556010|ComputeTaskForceOrderAggregateScore||183|function|undefined ComputeTaskForceOrderAggregateScore()|
-556100|ApplyMapOrderTypeExecutionEffects||250|function|void __fastcall ApplyMapOrderTypeExecutionEffects(void * pMapOrderEntry)|
+556010|TTaskForce::GetBattleStrengthRating||183|function|int __thiscall TTaskForce::GetBattleStrengthRating() const|
+556100|TTaskForce::CarryOutOrders||250|function|void __thiscall TTaskForce::CarryOutOrders()|
 5562c0|GetMapOrderEntryChildCount||26|function|undefined GetMapOrderEntryChildCount()|
 5563d0|GetNavyOrderRankWithinNationBucket||46|function|undefined GetNavyOrderRankWithinNationBucket()|
 556410|UpdateNavyOrderMapMarkerByOrderType||137|function|undefined UpdateNavyOrderMapMarkerByOrderType()|
@@ -4191,18 +4191,18 @@ address|name|symbol|size|type|prototype|provenance
 556f60|TNavyMgr::FreeShipsOf||79|function|void __thiscall FreeShipsOf(short nation)|
 556fd0|ResetPrimaryOrderActiveFlagsAndClearManagerState||67|function|undefined ResetPrimaryOrderActiveFlagsAndClearManagerState()|
 557040|TNavyMgr::ClearAllTransientOrders||47|function|void ClearAllTransientOrders(void)|mac-oracle
-557080|TNavyMgr::MoveMapOrderEntryToQueueHeadIfValid||123|function|unsigned char __thiscall MoveMapOrderEntryToQueueHeadIfValid(TTaskForce* entry)|
-557170|ComputeAggregateWeightedChildCostForMatchingType5NavyOrders||120|function|undefined ComputeAggregateWeightedChildCostForMatchingType5NavyOrders()|
+557080|TNavyMgr::CommitForce||123|function|unsigned char __thiscall TNavyMgr::CommitForce(TTaskForce* entry)|
+557170|TNavyMgr::ComputeAggregateWeightedChildCostForMatchingType5NavyOrders||120|function|short TNavyMgr::ComputeAggregateWeightedChildCostForMatchingType5NavyOrders(short nationSlot, TGlobalMapCityScoreRecord* cityTarget, TZone* contextFilter)|
 557210|RemoveOrdersByNationFromPrimarySecondaryAndTaskForceLists||140|function|undefined RemoveOrdersByNationFromPrimarySecondaryAndTaskForceLists()|
 5572d0|GetEnabledIndustryCapabilitySlotByClass||58|function|undefined GetEnabledIndustryCapabilitySlotByClass()|
 557320|BuildNavyOrderPromptTextByLocalizationMode||150|function|undefined BuildNavyOrderPromptTextByLocalizationMode()|
 5573f0|TAdmiral::CreateForTerrainType||286|function|TAdmiral* CreateForTerrainType(short terrainTypeIndex)|
 557560|RevalidateAndRequeueMapOrdersForTurn||464|function|void RevalidateAndRequeueMapOrdersForTurn(void)|
-5577b0|PrepareMapOrdersForExecutionPhase||137|function|void __fastcall PrepareMapOrdersForExecutionPhase(int * pOrderManager, int nQueueDomain, short nPhaseId)|
-557870|ClearMapOrderProcessedFlagsChain||17|function|void __fastcall ClearMapOrderProcessedFlagsChain(int * pOrderNode)|
-5578a0|ResolveMapOrderChainsForTurnPhase||1102|function|void __fastcall ResolveMapOrderChainsForTurnPhase(int * pOrderManager)|
-557e10|UpdateType7NavyOrderChildSelectionByChanceThreshold||140|function|undefined UpdateType7NavyOrderChildSelectionByChanceThreshold()|
-557f10|SelectEligibleMapOrderInteractionForNationAndContext||1901|function|undefined SelectEligibleMapOrderInteractionForNationAndContext()|
+5577b0|TNavyMgr::PrepareToCarryOutAllOrders||137|function|void __thiscall TNavyMgr::PrepareToCarryOutAllOrders(short phaseId)|
+557870|TTaskForce::ClearMapOrderProcessedFlagsChain||17|function|void __thiscall TTaskForce::ClearMapOrderProcessedFlagsChain()|
+5578a0|TNavyMgr::CarryOutOrders||1102|function|void __thiscall TNavyMgr::CarryOutOrders()|
+557e10|TNavyMgr::AssignEscorts||140|function|TTaskForce * __thiscall TNavyMgr::AssignEscorts(short requiredCount, short chancePercent)|
+557f10|TNavyMgr::SelectEligibleMapOrderInteractionForNationAndContext||1901|function|char __thiscall TNavyMgr::SelectEligibleMapOrderInteractionForNationAndContext(TMapOrderInteractionSelection * outResult, TZone * portZoneContext, short nation, short offerAmount)|
 558860|EnsureDwordPointerArraySlotAndReturnPointer||117|function|undefined EnsureDwordPointerArraySlotAndReturnPointer()|
 558960|ProcessNationMapOrderInteractionsAndApplyOutcomes||3485|function|undefined ProcessNationMapOrderInteractionsAndApplyOutcomes()|
 559a70|GetMapContextActionCode||260|function|int __cdecl GetMapContextActionCode(short nTileIndex, int dwInputFlags)|
@@ -4219,7 +4219,7 @@ address|name|symbol|size|type|prototype|provenance
 55a292|commit_order_entry_to_global_queue|||global||
 55a2b5|set_order_type_6_from_context|||global||
 55a37e|set_order_type_5_from_province|||global||
-55a780|TNavyMgr::ResolveMapOrderPairConflictStep||2934|function|void __thiscall TNavyMgr::ResolveMapOrderPairConflictStep(TNavyMgr * this, TTaskForce * leftEntry, TTaskForce * rightEntry)|
+55a780|TNavyMgr::ResolveStrategicBattle||2934|function|void __thiscall TNavyMgr::ResolveStrategicBattle(TTaskForce * leftEntry, TTaskForce * rightEntry)|
 55b640|WrapperFor_ftol_At0055b640||30|function|undefined WrapperFor_ftol_At0055b640()|
 55b670|TNewsMgr::CreateObject|?CreateObject@TNewsMgr@@SGPAVCObject@@XZ|27|function|undefined CreateObject()|rtti
 55b6a0|TNewsMgr::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|

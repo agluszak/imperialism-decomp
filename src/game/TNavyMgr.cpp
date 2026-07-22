@@ -73,8 +73,8 @@ static inline void AppendCStringIntoFixedBuffer(char* dest, int destSize, const 
 }
 
 // Sum, over childOrderList entries whose resource-type priorityTier is >= minTier, of
-// (child->field30/100 + resolveWeight*10 + 5)/10 -- the per-child "combat power"
-// term ResolveMapOrderPairConflictStep's tier-scoring loop accumulates as a float.
+// (child experience/100 + resolveWeight*10 + 5)/10 -- the per-child "combat power"
+// term ResolveStrategicBattle's tier-scoring loop accumulates as a float.
 static inline float SumMapOrderChildPowerAtOrAboveTier(TMapOrderChildLinkNode* head, int minTier) {
   float total = 0.0f;
   for (TMapOrderChildLinkNode* node = head; node != nullptr; node = node->next) {
@@ -84,7 +84,7 @@ static inline float SumMapOrderChildPowerAtOrAboveTier(TMapOrderChildLinkNode* h
     if (descriptor.priorityTier < minTier) {
       continue;
     }
-    int power = (child->field30 / 100 + descriptor.resolveWeight * 10 + 5) / 10;
+    int power = (child->experiencePoints30 / 100 + descriptor.resolveWeight * 10 + 5) / 10;
     total += static_cast<float>(power);
   }
   return total;
@@ -124,6 +124,21 @@ static inline int CalculateActiveChildAverageDescriptorWeightX10(TMapOrderChildL
     return 0;
   }
   return (sum * 10) / count;
+}
+
+// The selector's non-hostile comparison branch expands this same integer score at both
+// child-list walks instead of calling TShip::GetBattleStrengthRating.
+static inline int CalculateMapOrderInteractionShipStrength(TShip* ship) {
+  const TNavyOrderResourceDescriptor& descriptor =
+      g_NavyOrderResourceDescriptorTable[ship->resourceType04];
+  short strengthBucket = static_cast<short>(ship->experiencePoints30 / 100);
+  short navyPriorityBucket =
+      static_cast<short>((strengthBucket + descriptor.navyPriorityWeight * 10 + 5) / 10);
+  short resolveBucket =
+      static_cast<short>((strengthBucket + descriptor.resolveWeight * 10 + 5) / 10);
+  return ((navyPriorityBucket + descriptor.calculateWeight) * 100 + resolveBucket +
+          ship->stockLevel1c) /
+         descriptor.taskForceWeight;
 }
 
 // Randomly applies a resource-weighted attrition roll (0x55ae70/0x55af36) to up to
@@ -219,7 +234,7 @@ void BuildMapOrderBattleSideSnapshot(MapOrderBattleSnapshot* snapshot, int side,
     rec.stockOrRequired = child->stockLevel1c;
     CopyCStringIntoFixedBuffer(rec.nameBuffer, 0x20, static_cast<LPCSTR>(child->displayName18));
     rec.detailIdentity.sourceObject = child;
-    rec.strengthBucket = static_cast<short>(child->field30 / 100);
+    rec.strengthBucket = static_cast<short>(child->experiencePoints30 / 100);
     ++idx;
   }
 }
@@ -235,7 +250,7 @@ void RefreshMapOrderBattleSideSnapshot(MapOrderBattleSnapshot* snapshot, int sid
                                                 reinterpret_cast<TTaskForce*>(child)) != nullptr;
     if (stillPresent) {
       rec.stockOrRequired = child->stockLevel1c;
-      rec.strengthBucket = static_cast<short>(child->field30 / 100);
+      rec.strengthBucket = static_cast<short>(child->experiencePoints30 / 100);
     } else {
       rec.stockOrRequired = 0;
     }
@@ -244,7 +259,7 @@ void RefreshMapOrderBattleSideSnapshot(MapOrderBattleSnapshot* snapshot, int sid
     rec.detailIdentity.categoryTag = 0x6e617679; // 'navy'
   }
 
-  if (entry != nullptr && entry->attachment == 5) {
+  if (entry != nullptr && entry->shipOrders == 5) {
     int cityIndex = GetCityIndexFromCityStatePointer(entry->owner.asCityTarget);
     g_pMapContextActionManager->TrimExcessNavyOrderSupportAndRebuildOrderBuffer(
         snapshot->nationIds[side], cityIndex, snapshot);
@@ -276,7 +291,7 @@ void FormatLocalizedCommodityCountLabelByIndex(CString* out, unsigned int commod
 IMPLEMENT_DYNCREATE(TNavyMgr, TObject)
 
 // FUNCTION: IMPERIALISM 0x00556590
-TNavyMgr::TNavyMgr() : orderListHead04(0), field08(-1), field0c(nullptr) {}
+TNavyMgr::TNavyMgr() : orderQueueHead(0), executionPhase(-1), pendingOrderEntry(nullptr) {}
 
 // SYNTHETIC: IMPERIALISM 0x005565c0
 // TNavyMgr::`scalar deleting destructor'
@@ -385,13 +400,13 @@ void TNavyMgr::SerializeNavyOrderListsByNation(TStream* stream, short nationFilt
   matchCount = 0;
   // +0x1c is required_count in TTaskForce.h but every navy-order reader (see
   // RemoveMatchingTaskForceOrders) treats it as the entry's nation slot.
-  for (TTaskForce* order = orderListHead04; order != 0; order = order->queue_next) {
+  for (TTaskForce* order = orderQueueHead; order != 0; order = order->queue_next) {
     if (nationFilter == -1 || nationFilter == order->required_count) {
       ++matchCount;
     }
   }
   stream->WriteBytesSlot78(&matchCount, 2);
-  for (TTaskForce* order2 = orderListHead04; order2 != 0; order2 = order2->queue_next) {
+  for (TTaskForce* order2 = orderQueueHead; order2 != 0; order2 = order2->queue_next) {
     if (nationFilter == -1 || nationFilter == order2->required_count) {
       order2->WriteTo(stream);
     }
@@ -416,11 +431,11 @@ static void RemoveMatchingSecondaryOrders(short nationSlot) {
 }
 
 static void RemoveMatchingTaskForceOrders(TNavyMgr* navyManager, short nationSlot) {
-  int* node = reinterpret_cast<int*>(navyManager->orderListHead04);
-  while (node != 0) {
-    int* nextNode = reinterpret_cast<int*>(node[0xb]);
-    if (static_cast<short>(node[7]) == nationSlot) {
-      reinterpret_cast<TObject*>(node)->Free();
+  TTaskForce* node = navyManager->orderQueueHead;
+  while (node != nullptr) {
+    TTaskForce* nextNode = node->queue_next;
+    if (node->required_count == nationSlot) {
+      node->Free();
     }
     node = nextNode;
   }
@@ -437,9 +452,9 @@ void TNavyMgr::DeserializeNavyOrderListsByNation(TStream* stream, short nationFi
     while (g_pNavySecondaryOrderListHead != 0) {
       g_pNavySecondaryOrderListHead->Free();
     }
-    if (orderListHead04 != 0) {
-      orderListHead04->queue_next->DestroyNavyOrderAndChildren();
-      orderListHead04->Free();
+    if (orderQueueHead != 0) {
+      orderQueueHead->queue_next->DestroyNavyOrderAndChildren();
+      orderQueueHead->Free();
     }
   } else {
     RemoveOrdersByNationFromPrimarySecondaryAndTaskForceLists(nationFilter);
@@ -476,7 +491,7 @@ void TNavyMgr::DeserializeNavyOrderListsByNation(TStream* stream, short nationFi
     }
   }
 
-  // orderListHead04 TTaskForce chain.
+  // orderQueueHead TTaskForce chain.
   stream->ReadBytes(&pendingCount, 2);
   while (static_cast<short>(pendingCount--) != 0) {
     TTaskForce* orderEntry = new TTaskForce();
@@ -487,11 +502,11 @@ void TNavyMgr::DeserializeNavyOrderListsByNation(TStream* stream, short nationFi
     if (nationFilter != -1 && orderEntry->required_count != nationFilter) {
       orderEntry->Free();
     }
-    // Open-coded MoveMapOrderEntryToQueueHeadIfValid (0x557080) - the original emits
+    // Open-coded CommitForce (0x557080) - the original emits
     // this logic inline here (registers carry across it), not as a call: if the entry
     // is not already queued, free it when it has no children, else unlink it and push
     // it to the queue head.
-    TTaskForce* queueHead = orderListHead04;
+    TTaskForce* queueHead = orderQueueHead;
     TTaskForce* queueCursor = queueHead;
     while (queueCursor != 0) {
       if (queueCursor == orderEntry) {
@@ -521,7 +536,7 @@ void TNavyMgr::DeserializeNavyOrderListsByNation(TStream* stream, short nationFi
         if (queueHead != 0) {
           queueHead->queue_prev = orderEntry;
         }
-        orderListHead04 = orderEntry;
+        orderQueueHead = orderEntry;
       }
     }
   }
@@ -530,8 +545,8 @@ void TNavyMgr::DeserializeNavyOrderListsByNation(TStream* stream, short nationFi
 // Mac oracle: TNavyMgr::FreeShipsOf(short).
 // FUNCTION: IMPERIALISM 0x00556f60
 void TNavyMgr::FreeShipsOf(short nation) {
-  while (orderListHead04 != 0) {
-    TTaskForce* matching = orderListHead04;
+  while (orderQueueHead != 0) {
+    TTaskForce* matching = orderQueueHead;
     while (matching != 0 && matching->required_count != nation) {
       matching = matching->queue_next;
     }
@@ -553,16 +568,16 @@ void TNavyMgr::ResetPrimaryOrderActiveFlagsAndClearManagerState() {
   for (TShip* ship = g_pNavyPrimaryOrderListHead; ship != nullptr; ship = ship->nextOlder24) {
     ship->ownerOrderEntry0c = 0;
   }
-  if (orderListHead04 != nullptr) {
-    orderListHead04->DestroyNavyOrderAndChildren();
+  if (orderQueueHead != nullptr) {
+    orderQueueHead->DestroyNavyOrderAndChildren();
   }
-  orderListHead04 = nullptr;
+  orderQueueHead = nullptr;
   g_pActiveMapOrderContext->EnsureSelectedTaskForceForOrderOwnerAndRefresh(nullptr);
 }
 
 // FUNCTION: IMPERIALISM 0x00557040
 void TNavyMgr::ClearAllTransientOrders() {
-  orderListHead04 = orderListHead04->PruneNavyOrderIfUnserviceableOrNoChildren();
+  orderQueueHead = orderQueueHead->PruneNavyOrderIfUnserviceableOrNoChildren();
   for (TShip* ship = g_pNavyPrimaryOrderListHead; ship != 0; ship = ship->nextOlder24) {
     if (ship->field34 == 1) {
       ship->field34 = 0;
@@ -571,8 +586,8 @@ void TNavyMgr::ClearAllTransientOrders() {
 }
 
 // FUNCTION: IMPERIALISM 0x00557080
-bool TNavyMgr::MoveMapOrderEntryToQueueHeadIfValid(TTaskForce* entry) {
-  for (TTaskForce* node = orderListHead04; node != nullptr; node = node->queue_next) {
+bool TNavyMgr::CommitForce(TTaskForce* entry) {
+  for (TTaskForce* node = orderQueueHead; node != nullptr; node = node->queue_next) {
     if (node == entry) {
       return true;
     }
@@ -597,38 +612,34 @@ bool TNavyMgr::MoveMapOrderEntryToQueueHeadIfValid(TTaskForce* entry) {
     entry->queue_next->queue_prev = entry->queue_prev;
   }
   entry->queue_prev = nullptr;
-  entry->queue_next = orderListHead04;
-  if (orderListHead04 != nullptr) {
-    orderListHead04->queue_prev = entry;
+  entry->queue_next = orderQueueHead;
+  if (orderQueueHead != nullptr) {
+    orderQueueHead->queue_prev = entry;
   }
-  orderListHead04 = entry;
+  orderQueueHead = entry;
   return true;
 }
 
 // FUNCTION: IMPERIALISM 0x00557170
-short TNavyMgr::ComputeAggregateWeightedChildCostForMatchingType5NavyOrders(short nationSlot,
-                                                                            void* cityRecordPtr,
-                                                                            int filterValue) {
+short TNavyMgr::ComputeAggregateWeightedChildCostForMatchingType5NavyOrders(
+    short nationSlot, TGlobalMapCityScoreRecord* cityTarget, TZone* contextFilter) {
   int total = 0;
-  int* node = reinterpret_cast<int*>(orderListHead04);
-  while (node != 0) {
-    if (static_cast<short>(node[7]) == nationSlot && node[2] == 5 &&
-        node[3] == reinterpret_cast<int>(cityRecordPtr) &&
-        (filterValue == 0 || node[6] == filterValue)) {
+  for (TTaskForce* order = orderQueueHead; order != nullptr; order = order->queue_next) {
+    if (order->required_count == nationSlot && order->shipOrders == 5 &&
+        order->owner.asCityTarget == cityTarget &&
+        (contextFilter == nullptr || order->contextAnchor == contextFilter)) {
       int sum = 0;
-      int* item = reinterpret_cast<int*>(node[4]);
-      while (item != 0) {
-        TShip* ship = reinterpret_cast<TShip*>(item[0]);
+      for (TMapOrderChildLinkNode* item = order->childOrderList; item != nullptr;
+           item = item->next) {
+        TShip* ship = static_cast<TShip*>(item->payload);
         short contribution = 0;
         if (ship->stockLevel1c > 0) {
           contribution = g_industryActionCostWeightResCode10[ship->resourceType04];
         }
         sum += contribution;
-        item = reinterpret_cast<int*>(item[1]);
       }
       total += sum;
     }
-    node = reinterpret_cast<int*>(node[0xb]);
   }
   return static_cast<short>(total);
 }
@@ -688,7 +699,7 @@ void RevalidateAndRequeueMapOrdersForTurn() {
             node = node->next;
           } while (node != 0);
         }
-        entry->attachment = 8;
+        entry->shipOrders = 8;
         entry->RequeueMapOrderEntry();
         entry = zone->CreateTaskForceFromNavyOrdersForNationIfEligible(nation);
       }
@@ -705,15 +716,15 @@ void RevalidateAndRequeueMapOrdersForTurn() {
       // contextAnchor (+0x18) is the entry's owning map-action context TZone* (see
       // TTaskForce.h); slot 0x54 is TZone::QueryPortZoneCapability.
       if (entry->contextAnchor->QueryPortZoneCapability()) {
-        entry->attachment = 7;
+        entry->shipOrders = 7;
         entry->RebuildMapOrderEntryChildren();
         entry->AssertValid();
-        if (g_pNavyOrderManager->MoveMapOrderEntryToQueueHeadIfValid(entry)) {
+        if (g_pNavyOrderManager->CommitForce(entry)) {
           g_pActiveMapOrderContext->FinalizeQueuedMapOrderEntry(entry);
         }
       } else {
         node = entry->childOrderList;
-        entry->attachment = 4;
+        entry->shipOrders = 4;
         entry->activeChildEntry = 0;
         while (node != 0) {
           if (node->active != 0) {
@@ -739,7 +750,7 @@ void RevalidateAndRequeueMapOrdersForTurn() {
                   ->SelectPreferredMapOrderEntryByPriorityRules(entry->activeChildEntry, 0);
         }
         entry->AssertValid();
-        if (g_pNavyOrderManager->MoveMapOrderEntryToQueueHeadIfValid(entry)) {
+        if (g_pNavyOrderManager->CommitForce(entry)) {
           g_pActiveMapOrderContext->FinalizeQueuedMapOrderEntry(entry);
         }
       }
@@ -749,29 +760,32 @@ void RevalidateAndRequeueMapOrdersForTurn() {
 }
 
 // FUNCTION: IMPERIALISM 0x005577b0
-void TNavyMgr::PrepareMapOrdersForExecutionPhase(short phaseId) {
+void TNavyMgr::PrepareToCarryOutAllOrders(short phaseId) {
   for (int provinceIndex = 0; provinceIndex < 0x180; ++provinceIndex) {
     TGlobalMapCityScoreRecord* record = &g_pGlobalMapState->cityScoreTable[provinceIndex];
     if (record->exploredByNationMaskA1 != 0) {
       record->exploredByNationMaskA1 = 0;
-      if (g_pSimMgr->multiplayerSessionRole == 1) {
+      bool shouldInvalidateCity = g_pSimMgr->multiplayerSessionRole == 1;
+      if (shouldInvalidateCity) {
         g_pGameFlowState->DispatchCityRedrawInvalidateEvent(static_cast<short>(provinceIndex));
       }
     }
   }
 
-  field08 = phaseId;
+  executionPhase = phaseId;
 
   RevalidateAndRequeueMapOrdersForTurn();
 
-  if (orderListHead04 != nullptr) {
-    orderListHead04->eliminatedFlag26 = 0;
-    orderListHead04->queue_next->ClearMapOrderProcessedFlagsChain();
+  TTaskForce* head = orderQueueHead;
+  if (head != nullptr) {
+    TTaskForce* following = head->queue_next;
+    head->eliminatedFlag26 = 0;
+    following->ClearMapOrderProcessedFlagsChain();
   }
 }
 
 // Per-turn-phase map-order conflict resolver. Six filter/inner-loop passes over
-// orderListHead04, each pairing an outer "kind" filter against an inner-loop match,
+// orderQueueHead, each pairing an outer "kind" filter against an inner-loop match,
 // then attempting a resolution chain (ShouldAttemptMapOrderPairResolution ->
 // TryMarkLosingMapOrderEntryFromForceBalance -> TryResolveMapOrderEntryPairExecution);
 // any pairwise resolution that reports a nonzero result ends the whole function
@@ -784,27 +798,27 @@ void TNavyMgr::PrepareMapOrdersForExecutionPhase(short phaseId) {
 // PruneNavyOrderIfUnserviceableOrNoChildren, a primary TShip list flag-clear pass, and an
 // overlay refresh.
 // FUNCTION: IMPERIALISM 0x005578a0
-void TNavyMgr::ResolveMapOrderChainsForTurnPhase() {
-  if (field0c != nullptr) {
-    field0c->Free();
-    field0c = nullptr;
+void TNavyMgr::CarryOutOrders() {
+  if (pendingOrderEntry != nullptr) {
+    pendingOrderEntry->Free();
+    pendingOrderEntry = nullptr;
   }
 
   // Pass A: 3/4-kind entries vs a matching-context 6-kind entry.
   {
-    for (TTaskForce* entry = orderListHead04; entry != nullptr; entry = entry->queue_next) {
-      if (!(entry->attachment == 3 || entry->attachment == 4))
+    for (TTaskForce* entry = orderQueueHead; entry != nullptr; entry = entry->queue_next) {
+      if (!(entry->shipOrders == 3 || entry->shipOrders == 4))
         continue;
       if (entry->eliminatedFlag26 != 0)
         continue;
-      for (TTaskForce* other = orderListHead04; other != nullptr; other = other->queue_next) {
+      for (TTaskForce* other = orderQueueHead; other != nullptr; other = other->queue_next) {
         if (other->contextAnchor != entry->contextAnchor)
           continue;
         if (!g_pDiplomacyTurnStateManager->IsNationPairRelationTurnStampOutOfDate(
                 other->required_count, entry->required_count)) {
           continue;
         }
-        if (other->attachment != 6)
+        if (other->shipOrders != 6)
           continue;
         char result = 0;
         if (entry->ShouldAttemptMapOrderPairResolution(other) &&
@@ -822,18 +836,18 @@ void TNavyMgr::ResolveMapOrderChainsForTurnPhase() {
 
   // Pass B: 6-kind entries vs a 1-kind entry sharing owner (via contextAnchor or owner).
   {
-    for (TTaskForce* entry = orderListHead04; entry != nullptr; entry = entry->queue_next) {
-      if (entry->attachment != 6)
+    for (TTaskForce* entry = orderQueueHead; entry != nullptr; entry = entry->queue_next) {
+      if (entry->shipOrders != 6)
         continue;
       if (entry->eliminatedFlag26 != 0)
         continue;
-      for (TTaskForce* other = orderListHead04; other != nullptr; other = other->queue_next) {
+      for (TTaskForce* other = orderQueueHead; other != nullptr; other = other->queue_next) {
         if (!g_pDiplomacyTurnStateManager->IsNationPairRelationTurnStampOutOfDate(
                 other->required_count, entry->required_count)) {
           continue;
         }
         bool ownerMatch =
-            (other->attachment == 1) &&
+            (other->shipOrders == 1) &&
             (other->contextAnchor == entry->owner.asZone || other->owner.raw == entry->owner.raw);
         if (!ownerMatch)
           continue;
@@ -853,30 +867,30 @@ void TNavyMgr::ResolveMapOrderChainsForTurnPhase() {
 
   // Pass C: apply type-1 execution effects directly.
   {
-    for (TTaskForce* entry = orderListHead04; entry != nullptr; entry = entry->queue_next) {
-      if (entry->attachment == 1 && entry->eliminatedFlag26 == 0) {
-        entry->ApplyMapOrderTypeExecutionEffects();
+    for (TTaskForce* entry = orderQueueHead; entry != nullptr; entry = entry->queue_next) {
+      if (entry->shipOrders == 1 && entry->eliminatedFlag26 == 0) {
+        entry->CarryOutOrders();
       }
     }
   }
 
   // Pass D: 3/4-kind entries vs a matching-context NON-6-kind entry. Same outer filter
   // as Pass A; the diplomacy/contextAnchor check order is swapped and the inner
-  // attachment check is inverted, matching the disassembly's distinct compiled shape.
+  // ship-order check is inverted, matching the disassembly's distinct compiled shape.
   {
-    for (TTaskForce* entry = orderListHead04; entry != nullptr; entry = entry->queue_next) {
-      if (!(entry->attachment == 3 || entry->attachment == 4))
+    for (TTaskForce* entry = orderQueueHead; entry != nullptr; entry = entry->queue_next) {
+      if (!(entry->shipOrders == 3 || entry->shipOrders == 4))
         continue;
       if (entry->eliminatedFlag26 != 0)
         continue;
-      for (TTaskForce* other = orderListHead04; other != nullptr; other = other->queue_next) {
+      for (TTaskForce* other = orderQueueHead; other != nullptr; other = other->queue_next) {
         if (!g_pDiplomacyTurnStateManager->IsNationPairRelationTurnStampOutOfDate(
                 other->required_count, entry->required_count)) {
           continue;
         }
         if (other->contextAnchor != entry->contextAnchor)
           continue;
-        if (other->attachment == 6)
+        if (other->shipOrders == 6)
           continue;
         char result = 0;
         if (entry->ShouldAttemptMapOrderPairResolution(other) &&
@@ -897,19 +911,19 @@ void TNavyMgr::ResolveMapOrderChainsForTurnPhase() {
   // it), feeding straight into TryMarkLosingMapOrderEntryFromForceBalance (no
   // ShouldAttempt call in this pass's chain).
   {
-    for (TTaskForce* entry = orderListHead04; entry != nullptr; entry = entry->queue_next) {
-      if (entry->attachment != 1)
+    for (TTaskForce* entry = orderQueueHead; entry != nullptr; entry = entry->queue_next) {
+      if (entry->shipOrders != 1)
         continue;
       if (entry->eliminatedFlag26 != 0)
         continue;
-      for (TTaskForce* other = orderListHead04; other != nullptr; other = other->queue_next) {
+      for (TTaskForce* other = orderQueueHead; other != nullptr; other = other->queue_next) {
         if (!g_pDiplomacyTurnStateManager->IsNationPairRelationTurnStampOutOfDate(
                 other->required_count, entry->required_count)) {
           continue;
         }
         if (other->contextAnchor != entry->contextAnchor)
           continue;
-        if (other->attachment != 5)
+        if (other->shipOrders != 5)
           continue;
 
         char proceed;
@@ -917,7 +931,7 @@ void TNavyMgr::ResolveMapOrderChainsForTurnPhase() {
           proceed = 0;
         } else if (other->GetMapOrderEntryChildCount() == 0) {
           proceed = 0;
-        } else if (entry->attachment == 6 || other->attachment == 6 || other->attachment == 5) {
+        } else if (entry->shipOrders == 6 || other->shipOrders == 6 || other->shipOrders == 5) {
           proceed = 1;
         } else {
           short threshold =
@@ -945,16 +959,16 @@ void TNavyMgr::ResolveMapOrderChainsForTurnPhase() {
 
   // Pass F: apply type-5/8 execution effects directly.
   {
-    for (TTaskForce* entry = orderListHead04; entry != nullptr; entry = entry->queue_next) {
-      if ((entry->attachment == 5 || entry->attachment == 8) && entry->eliminatedFlag26 == 0) {
-        entry->ApplyMapOrderTypeExecutionEffects();
+    for (TTaskForce* entry = orderQueueHead; entry != nullptr; entry = entry->queue_next) {
+      if ((entry->shipOrders == 5 || entry->shipOrders == 8) && entry->eliminatedFlag26 == 0) {
+        entry->CarryOutOrders();
       }
     }
   }
 
   ProcessNationMapOrderInteractionsAndApplyOutcomes(1);
   ProcessNationMapOrderInteractionsAndApplyOutcomes(2);
-  orderListHead04 = orderListHead04->PruneNavyOrderIfUnserviceableOrNoChildren();
+  orderQueueHead = orderQueueHead->PruneNavyOrderIfUnserviceableOrNoChildren();
 
   for (TShip* ship = g_pNavyPrimaryOrderListHead; ship != nullptr; ship = ship->nextOlder24) {
     if (ship->field34 == 1) {
@@ -966,11 +980,10 @@ void TNavyMgr::ResolveMapOrderChainsForTurnPhase() {
 }
 
 // FUNCTION: IMPERIALISM 0x00557e10
-TTaskForce* TNavyMgr::UpdateType7NavyOrderChildSelectionByChanceThreshold(short requiredCount,
-                                                                          short chancePercent) {
-  TTaskForce* entry = orderListHead04;
+TTaskForce* TNavyMgr::AssignEscorts(short requiredCount, short chancePercent) {
+  TTaskForce* entry = orderQueueHead;
   while (entry != nullptr) {
-    if (entry->required_count == requiredCount && entry->attachment == 7) {
+    if (entry->required_count == requiredCount && entry->shipOrders == 7) {
       break;
     }
     entry = entry->queue_next;
@@ -979,10 +992,15 @@ TTaskForce* TNavyMgr::UpdateType7NavyOrderChildSelectionByChanceThreshold(short 
   if (entry != nullptr) {
     for (TMapOrderChildLinkNode* node = entry->childOrderList; node != nullptr; node = node->next) {
       TShip* child = static_cast<TShip*>(node->payload);
-      bool notSelected = child->stockLevel1c <
-                             g_NavyOrderResourceDescriptorTable[child->resourceType04].stockCap ||
-                         chancePercent <= rand() % 100;
-      node->active = notSelected ? 0 : 1;
+      unsigned char active;
+      if (child->stockLevel1c <
+              g_NavyOrderResourceDescriptorTable[child->resourceType04].stockCap ||
+          chancePercent <= rand() % 100) {
+        active = 0;
+      } else {
+        active = 1;
+      }
+      node->active = active;
     }
   }
 
@@ -991,110 +1009,175 @@ TTaskForce* TNavyMgr::UpdateType7NavyOrderChildSelectionByChanceThreshold(short 
 
 // FUNCTION: IMPERIALISM 0x00557f10
 char TNavyMgr::SelectEligibleMapOrderInteractionForNationAndContext(
-    TMapOrderInteractionSelection* outResult, int portZoneContext, short nation,
+    TMapOrderInteractionSelection* outResult, TZone* portZoneContext, short nation,
     short offerAmount) {
-  // The port-zone context's owning nation code.
-  short ownerCode = 0;
-  if (portZoneContext != 0) {
-    ownerCode =
-        reinterpret_cast<TZone*>(portZoneContext)->GetPortZoneOwnerNationCodeFromMissionField48();
-  }
-
-  // Priority ratio: fraction of this nation's remaining diplomacy capacity the offered
-  // amount represents (x100).
+  short portOwnerNation = portZoneContext->GetPortZoneOwnerNationCodeFromMissionField48();
   TGreatPower* nationState = g_apNationStates[nation];
-  int capDiff = nationState->needCapA6 - nationState->diplomacyCounterA2;
-  short priorityRatio = (capDiff == 0) ? 0 : static_cast<short>((offerAmount * 100) / capDiff);
+  short remainingTradeCapacity =
+      static_cast<short>(nationState->tradeCapacity - nationState->diplomacyCounterA2);
+  short selectionChance = remainingTradeCapacity == 0
+                              ? 0
+                              : static_cast<short>((offerAmount * 100) / remainingTradeCapacity);
 
-  // Locate this nation's own type-7 order entry and gate each active child by a
-  // priority-vs-descriptor-stock roll.
-  TTaskForce* nationEntry = orderListHead04;
-  while (nationEntry != nullptr &&
-         !(nationEntry->required_count == nation && nationEntry->attachment == 7)) {
+  TTaskForce* nationEntry = orderQueueHead;
+  while (nationEntry != nullptr) {
+    if (nationEntry->required_count == nation) {
+      bool isEscortOrder = nationEntry->shipOrders == 7;
+      if (isEscortOrder) {
+        break;
+      }
+    }
     nationEntry = nationEntry->queue_next;
   }
   if (nationEntry != nullptr) {
     for (TMapOrderChildLinkNode* node = nationEntry->childOrderList; node != nullptr;
          node = node->next) {
       TShip* child = static_cast<TShip*>(node->payload);
-      char active = 1;
+      unsigned char active;
       if (child->stockLevel1c <
               g_NavyOrderResourceDescriptorTable[child->resourceType04].stockCap ||
-          static_cast<int>(priorityRatio) <= static_cast<int>(rand()) % 100) {
+          selectionChance <= rand() % 100) {
         active = 0;
+      } else {
+        active = 1;
       }
       node->active = active;
     }
   }
 
-  // Walk every queued order entry; return the first eligible interaction.
-  for (TTaskForce* entry = orderListHead04; entry != nullptr; entry = entry->queue_next) {
+  for (TTaskForce* entry = orderQueueHead; entry != nullptr; entry = entry->queue_next) {
     if (entry->eliminatedFlag26 != 0) {
       continue;
     }
-    if (entry->GetMapOrderEntryChildCount() <= 0) {
+    if (CountMapOrderChildren(entry->childOrderList) <= 0) {
       continue;
     }
 
-    short attachment = entry->attachment;
-    bool contextMatch = (attachment == 6 && entry->owner.raw == portZoneContext);
-    // attachment 3 matches when this entry's contextAnchor equals the port zone's first
-    // primary-neighbor slot (the active map-order context head).
+    short shipOrders = static_cast<short>(entry->shipOrders);
+    bool contextMatch = shipOrders == 6 && entry->owner.asZone == portZoneContext;
     bool activeContextMatch = false;
-    if (attachment == 3 && portZoneContext != 0) {
-      TZone** slot = reinterpret_cast<TZone*>(portZoneContext)
-                         ->primaryNeighbors.EnsureSlotAllocatedAndReturnPointer(0);
+    if (shipOrders == 3) {
+      TZone** slot = portZoneContext->primaryNeighbors.EnsureSlotAllocatedAndReturnPointer(0);
       activeContextMatch = (entry->contextAnchor == *slot);
     }
 
-    // Diplomacy eligibility: the entry's nation must relate to the port-zone owner or
-    // the querying nation.
-    bool relatedToOwner = (entry->required_count == ownerCode ||
+    bool relatedToNation = entry->required_count != nation &&
                            g_pDiplomacyTurnStateManager->IsNationPairRelationTurnStampOutOfDate(
-                               ownerCode, entry->required_count) != 0);
-    bool relatedToNation = (ownerCode >= 7 && entry->attachment == 6 &&
-                            g_pDiplomacyTurnStateManager->IsNationPairRelationTurnStampOutOfDate(
-                                entry->required_count, ownerCode) != 0);
+                               entry->required_count, nation) != 0;
+    bool relatedToPortOwner = portOwnerNation >= 7 && entry->shipOrders == 6 &&
+                              g_pDiplomacyTurnStateManager->IsNationPairRelationTurnStampOutOfDate(
+                                  entry->required_count, portOwnerNation) != 0;
 
-    if (!(contextMatch || activeContextMatch) || !(relatedToOwner || relatedToNation)) {
+    if (!(contextMatch || activeContextMatch) || !(relatedToNation || relatedToPortOwner)) {
       continue;
     }
 
-    // Aggregate this entry's active-child descriptorWeight rating (x10) and roll a
-    // gap-based threshold that also folds in the offer size relative to the entry's
-    // per-child heuristic score.
-    int ratingSum = 0;
-    int activeCount = 0;
-    for (TMapOrderChildLinkNode* node = entry->childOrderList; node != nullptr; node = node->next) {
-      if (node->active != 0) {
-        ratingSum +=
-            g_NavyOrderResourceDescriptorTable[static_cast<TShip*>(node->payload)->resourceType04]
-                .descriptorWeight;
-        ++activeCount;
+    int thresholdBase = shipOrders == 6 ? 0x32 : 0x14;
+    short activeChildRating =
+        static_cast<short>(CalculateActiveChildAverageDescriptorWeightX10(entry->childOrderList));
+    TCity* nationCity = nationState != nullptr ? nationState->city : nullptr;
+    short cityWeight1 =
+        static_cast<short>(nationCity->ComputeAverageWeightWord1TimesTenFromResourceCounts());
+    short cityWeight0 =
+        static_cast<short>(nationCity->ComputeAverageWeightWord0TimesTenFromResourceCounts());
+    short offerPerCityWeight = cityWeight0;
+    if (offerPerCityWeight > 0) {
+      offerPerCityWeight = static_cast<short>(offerAmount / offerPerCityWeight);
+    }
+
+    int activeNationChildren = 0;
+    if (nationEntry != nullptr) {
+      for (TMapOrderChildLinkNode* node = nationEntry->childOrderList; node != nullptr;
+           node = node->next) {
+        if (node->active != 0) {
+          ++activeNationChildren;
+        }
       }
     }
-    short rating = (activeCount == 0) ? 0 : static_cast<short>((ratingSum * 10) / activeCount);
-    // The original scores the entry's HEAD CHILD ship (ecx = [childOrderList->payload],
-    // 0x5582a2), not the entry itself; score stays 0 with no children.
-    short entryScore = 0;
-    if (entry->childOrderList != nullptr) {
-      entryScore = static_cast<short>(static_cast<TShip*>(entry->childOrderList->payload)
-                                          ->ComputeMapOrderEntryHeuristicScore());
-    }
-    short perChildOffer = static_cast<short>(entry->ComputeTaskForceOrderAggregateScore());
-    if (perChildOffer > 0) {
-      perChildOffer = static_cast<short>(offerAmount / perChildOffer);
-    }
-    int entryChildren = entry->GetMapOrderEntryChildCount();
-    int nationChildren = (nationEntry != nullptr) ? nationEntry->GetMapOrderEntryChildCount() : 0;
-    int threshold = entryChildren + nationChildren + (attachment != 6 ? -0x1e : 0) +
-                    (rating - entryScore) + 0x28 + perChildOffer;
-    if (static_cast<int>(rand()) % 100 >= threshold) {
+    int entryChildren = CountMapOrderChildren(entry->childOrderList);
+    int threshold = entryChildren + activeNationChildren + thresholdBase +
+                    (activeChildRating - cityWeight1) + offerPerCityWeight - 10;
+    if (rand() % 100 >= static_cast<short>(threshold)) {
       continue;
     }
 
-    // Eligible: publish the chosen entry and set the packed direction flags, then a
-    // final diplomacy relation + child-count roll decides the exchange direction bit.
+    bool eligible;
+    bool nationEntryUnavailable = nationEntry == nullptr;
+    if (!nationEntryUnavailable) {
+      int queuedShipCount = nationEntry->shipCountsByClass[0] + nationEntry->shipCountsByClass[1] +
+                            nationEntry->shipCountsByClass[2] + nationEntry->shipCountsByClass[3];
+      nationEntryUnavailable = queuedShipCount == 0;
+    }
+    if (!nationEntryUnavailable) {
+      TMapOrderChildLinkNode* activeNode = nationEntry->childOrderList;
+      while (activeNode != nullptr && activeNode->active == 0) {
+        activeNode = activeNode->next;
+      }
+      nationEntryUnavailable = activeNode == nullptr;
+    }
+
+    if (nationEntryUnavailable) {
+      eligible = true;
+    } else if (g_pDiplomacyTurnStateManager->IsNationPairRelationTurnStampOutOfDate(
+                   nation, entry->required_count) != 0) {
+      int candidateStrength = 0;
+      for (TMapOrderChildLinkNode* candidateNode = entry->childOrderList; candidateNode != nullptr;
+           candidateNode = candidateNode->next) {
+        candidateStrength += static_cast<TShip*>(candidateNode->payload)->GetBattleStrengthRating();
+      }
+      int orderTypePriority[3] = {200, 100, 50};
+      short nationStrength = static_cast<short>(nationEntry->GetBattleStrengthRating());
+      if (static_cast<short>(candidateStrength) * 100 <
+          orderTypePriority[entry->order_type] * nationStrength) {
+        eligible = false;
+        MapOrderBattleSnapshot snapshot;
+        snapshot.childCount[0] = 0;
+        snapshot.childCount[1] = 0;
+        snapshot.childRecords[0] = nullptr;
+        snapshot.childRecords[1] = nullptr;
+        snapshot.actionType04 = 1;
+        snapshot.targetContext08.object = entry->contextAnchor;
+        snapshot.reservedByte03 = 0;
+        snapshot.participantIndex02 = 1;
+        BuildMapOrderBattleSideSnapshot(&snapshot, 0, entry);
+        BuildMapOrderBattleSideSnapshot(&snapshot, 1, nationEntry);
+        RefreshMapOrderBattleSideSnapshot(&snapshot, 0, entry);
+        RefreshMapOrderBattleSideSnapshot(&snapshot, 1, nationEntry);
+        g_pMapContextActionManager->AppendMapContextActionRecordAndResetWorkingFields(&snapshot, 0);
+      } else {
+        TTaskForce* survivingEntry;
+        if (CountMapOrderChildren(entry->childOrderList) != 0 &&
+            nationEntry->GetMapOrderEntryChildCount() != 0 &&
+            (g_pSimMgr->preferenceValues[1] == 0 ||
+             (g_pSimMgr->GetActiveNationId() != entry->required_count &&
+              g_pSimMgr->GetActiveNationId() != nationEntry->required_count))) {
+          g_pNavyOrderManager->ResolveStrategicBattle(entry, nationEntry);
+          survivingEntry = nullptr;
+        }
+        // The retail body only initializes this temporary after resolving a battle;
+        // the untouched path compares the existing stack slot verbatim.
+        eligible = survivingEntry == entry;
+      }
+    } else {
+      int nationStrength = 0;
+      for (TMapOrderChildLinkNode* nationStrengthNode = nationEntry->childOrderList;
+           nationStrengthNode != nullptr; nationStrengthNode = nationStrengthNode->next) {
+        nationStrength += CalculateMapOrderInteractionShipStrength(
+            static_cast<TShip*>(nationStrengthNode->payload));
+      }
+      int candidateStrength = 0;
+      for (TMapOrderChildLinkNode* candidateStrengthNode = entry->childOrderList;
+           candidateStrengthNode != nullptr; candidateStrengthNode = candidateStrengthNode->next) {
+        candidateStrength += CalculateMapOrderInteractionShipStrength(
+            static_cast<TShip*>(candidateStrengthNode->payload));
+      }
+      eligible = nationStrength * 3 < candidateStrength;
+    }
+
+    if (!eligible) {
+      continue;
+    }
+
     unsigned int flags = outResult->directionFlags & 0xfffffffc;
     outResult->offerNationCode = entry->required_count;
     outResult->selectedEntry = entry;
@@ -1149,7 +1232,7 @@ void TNavyMgr::ProcessNationMapOrderInteractionsAndApplyOutcomes(short mode) {
             g_pActiveMapOrderContext->FindFirstPortZoneContextByNation(contextNation);
         TMapOrderInteractionSelection selection;
         char eligible = SelectEligibleMapOrderInteractionForNationAndContext(
-            &selection, reinterpret_cast<int>(portZoneContext), nation, entryValue);
+            &selection, portZoneContext, nation, entryValue);
         if (eligible == 0) {
           continue;
         }
@@ -1329,9 +1412,10 @@ void TNavyMgr::ProcessNationMapOrderInteractionsAndApplyOutcomes(short mode) {
           for (TMapOrderChildLinkNode* childNode = selection.selectedEntry->childOrderList;
                childNode != nullptr; childNode = childNode->next) {
             TShip* ship = static_cast<TShip*>(childNode->payload);
-            ship->field30 = static_cast<short>(ship->field30 + childStrengthDelta);
-            if (ship->field30 >= 500) {
-              ship->field30 = 499;
+            ship->experiencePoints30 =
+                static_cast<short>(ship->experiencePoints30 + childStrengthDelta);
+            if (ship->experiencePoints30 >= 500) {
+              ship->experiencePoints30 = 499;
             }
           }
         }
@@ -1358,7 +1442,7 @@ void TNavyMgr::ProcessNationMapOrderInteractionsAndApplyOutcomes(short mode) {
           detail.stockOrRequired = selectedShip->stockLevel1c;
           CopyCStringIntoFixedBuffer(detail.nameBuffer, 0x20,
                                      static_cast<LPCSTR>(selectedShip->displayName18));
-          detail.strengthBucket = static_cast<short>(selectedShip->field30 / 100);
+          detail.strengthBucket = static_cast<short>(selectedShip->experiencePoints30 / 100);
           detail.detailIdentity.categoryTag = 0x6e617679; // 'navy'
           ++selectedChildIndex;
         }
@@ -1509,7 +1593,7 @@ bool TNavyMgr::TryHandleMapContextAction(short nTileIndex, int nInputFlags) {
     return true;
   }
   case 11: {
-    TTaskForce* entry = this->orderListHead04;
+    TTaskForce* entry = this->orderQueueHead;
     while (entry != 0 && entry->tiebreak_strength != nTileIndex) {
       entry = entry->queue_next;
     }
@@ -1566,19 +1650,19 @@ int TNavyMgr::TryQueueMapOrderFromTileAction(short nTileIndex, int nInputFlags) 
     g_pUiRuntimeContext->MakeNavyRosterDialog(entry);
     break;
   case 0x0c:
-    entry->attachment = 3;
+    entry->shipOrders = 3;
     entry->RebuildMapOrderEntryChildren();
-    if (g_pNavyOrderManager->MoveMapOrderEntryToQueueHeadIfValid(entry)) {
+    if (g_pNavyOrderManager->CommitForce(entry)) {
       g_pActiveMapOrderContext->FinalizeQueuedMapOrderEntry(entry);
       return 1;
     }
     break;
   case 0x0d: {
     TZone* ctx = g_pActiveMapOrderContext->GetLinkedZoneForSeaTile(nTileIndex);
-    entry->attachment = 1;
+    entry->shipOrders = 1;
     entry->owner.asZone = ctx;
     entry->RebuildMapOrderEntryChildren();
-    if (g_pNavyOrderManager->MoveMapOrderEntryToQueueHeadIfValid(entry)) {
+    if (g_pNavyOrderManager->CommitForce(entry)) {
       g_pActiveMapOrderContext->FinalizeQueuedMapOrderEntry(entry);
       return 1;
     }
@@ -1586,10 +1670,10 @@ int TNavyMgr::TryQueueMapOrderFromTileAction(short nTileIndex, int nInputFlags) 
   }
   case 0x0e: {
     TZone* ctx = g_pActiveMapOrderContext->GetLinkedZoneForSeaTile(nTileIndex);
-    entry->attachment = 6;
+    entry->shipOrders = 6;
     entry->owner.asZone = ctx;
     entry->RebuildMapOrderEntryChildren();
-    if (g_pNavyOrderManager->MoveMapOrderEntryToQueueHeadIfValid(entry)) {
+    if (g_pNavyOrderManager->CommitForce(entry)) {
       g_pActiveMapOrderContext->FinalizeQueuedMapOrderEntry(entry);
       return 1;
     }
@@ -1597,11 +1681,11 @@ int TNavyMgr::TryQueueMapOrderFromTileAction(short nTileIndex, int nInputFlags) 
   }
   case 0x0f: {
     TZone* ctx = g_pActiveMapOrderContext->GetLinkedZoneForSeaTile(nTileIndex);
-    entry->attachment = 1;
+    entry->shipOrders = 1;
     entry->owner.asZone = ctx;
     entry->RebuildMapOrderEntryChildren();
     bool alreadyQueued = false;
-    for (TTaskForce* node = g_pNavyOrderManager->orderListHead04; node != nullptr;
+    for (TTaskForce* node = g_pNavyOrderManager->orderQueueHead; node != nullptr;
          node = node->queue_next) {
       if (node == entry) {
         alreadyQueued = true;
@@ -1615,8 +1699,8 @@ int TNavyMgr::TryQueueMapOrderFromTileAction(short nTileIndex, int nInputFlags) 
       entry->Free();
       committed = false;
     } else {
-      entry->RelinkMapOrderQueueNodeBetween(nullptr, g_pNavyOrderManager->orderListHead04);
-      g_pNavyOrderManager->orderListHead04 = entry;
+      entry->RelinkMapOrderQueueNodeBetween(nullptr, g_pNavyOrderManager->orderQueueHead);
+      g_pNavyOrderManager->orderQueueHead = entry;
       committed = true;
     }
     if (committed) {
@@ -1626,10 +1710,10 @@ int TNavyMgr::TryQueueMapOrderFromTileAction(short nTileIndex, int nInputFlags) 
     break;
   }
   case 0x10:
-    entry->attachment = 5;
+    entry->shipOrders = 5;
     entry->owner.asCityTarget = GetProvinceByTileIndex(nTileIndex);
     entry->RebuildMapOrderEntryChildren();
-    if (g_pNavyOrderManager->MoveMapOrderEntryToQueueHeadIfValid(entry)) {
+    if (g_pNavyOrderManager->CommitForce(entry)) {
       g_pActiveMapOrderContext->FinalizeQueuedMapOrderEntry(entry);
       return 1;
     }
@@ -1641,7 +1725,7 @@ int TNavyMgr::TryQueueMapOrderFromTileAction(short nTileIndex, int nInputFlags) 
 }
 
 // FUNCTION: IMPERIALISM 0x0055a780
-void TNavyMgr::ResolveMapOrderPairConflictStep(TTaskForce* leftEntry, TTaskForce* rightEntry) {
+void TNavyMgr::ResolveStrategicBattle(TTaskForce* leftEntry, TTaskForce* rightEntry) {
   MapOrderBattleSnapshot snapshot;
   snapshot.childCount[0] = 0;
   snapshot.childCount[1] = 0;
@@ -1673,7 +1757,7 @@ void TNavyMgr::ResolveMapOrderPairConflictStep(TTaskForce* leftEntry, TTaskForce
     }
   }
 
-  // Per-attachment "convergence tolerance" the winning-tier ratio must clear for that side
+  // Per-order-type "convergence tolerance" the winning-tier ratio must clear for that side
   // to be judged to have genuinely won the tier (the real {1.1,0.95,0.8} float table,
   // indexed by the (order_type, order_strength) short pair at +0x04/+0x06 read together as
   // one dword index here -- two adjacent shorts read as a bulk index, one meaning per short,
@@ -1812,8 +1896,7 @@ void TNavyMgr::ResolveMapOrderPairConflictStep(TTaskForce* leftEntry, TTaskForce
       }
       for (TMapOrderChildLinkNode* node = winner->childOrderList; node != nullptr;
            node = node->next) {
-        static_cast<TShip*>(node->payload)
-            ->AdjustMapOrderNodeStatCapped499(static_cast<short>((bump * 3) / winnerCount));
+        static_cast<TShip*>(node->payload)->Victory(static_cast<short>((bump * 3) / winnerCount));
       }
     }
     loser->eliminatedFlag26 = 1;
