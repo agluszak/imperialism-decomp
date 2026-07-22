@@ -103,8 +103,8 @@ void TCitySiteView::SetMapViewTileIndex(int arg1) {
 }
 
 // FUNCTION: IMPERIALISM 0x0051c2f0
-void TCitySiteView::SetMapViewCellCoordinates(int arg1, int arg2) {
-  SetMapDialogCellCoordinatesAndRefresh(arg1, arg2, 0);
+void TCitySiteView::SetMapViewCellCoordinates(int column, int row) {
+  SetMapDialogCellCoordinatesAndRefresh(column, row, 0);
 }
 
 // The original keeps col/row as word registers throughout (the clamp writes replace only
@@ -164,7 +164,7 @@ void TCitySiteView::RenderStrategicTileSelectionAndNeighborHighlights() {
   }
 
   for (int oldIndex = 0; oldIndex < 6; ++oldIndex) {
-    short oldNeighbor = g_aCitySiteNeighborHighlightTiles_00697320[oldIndex];
+    short oldNeighbor = g_aStrategicMapNeighborHighlightTiles_00697320[oldIndex];
     if (oldNeighbor == -1) {
       continue;
     }
@@ -195,7 +195,7 @@ void TCitySiteView::RenderStrategicTileSelectionAndNeighborHighlights() {
   }
 
   for (int newIndex = 0; newIndex < 6; ++newIndex) {
-    g_aCitySiteNeighborHighlightTiles_00697320[newIndex] =
+    g_aStrategicMapNeighborHighlightTiles_00697320[newIndex] =
         updateNeighborHighlights ? neighborTiles[newIndex] : -1;
   }
 }

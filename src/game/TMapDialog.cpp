@@ -4,12 +4,14 @@
 #include "game/TAnimator.h"
 #include "game/bitmap_descriptor_helpers.h"
 #include "game/TCivAnimation2.h"
+#include "game/TCivMgr.h"
 #include "game/TCivUnit.h"
 #include "game/TDisplayMgr.h"
 #include "game/TDiplomacyMgr.h"
 #include "game/TGreatPower.h"
 #include "game/TMapMgr.h"
 #include "game/TMapUberPicture.h"
+#include "game/TMouseCaptureState.h"
 #include "game/TMilitaryUnit.h"
 #include "game/TOcean.h"
 #include "game/TSimMgr.h"
@@ -20,6 +22,7 @@
 #include "game/TView.h"
 #include "game/TViewMgr.h"
 #include "game/global_data_tables.h"
+#include "game/quickdraw_regions.h"
 #include "game/quickdraw_rendering.h"
 #include "game/ui_control_tags.h"
 #include "game/ui_invalidation_guard.h"
@@ -162,7 +165,97 @@ void TMapDialog::DoPostCreate(int arg) {
 }
 
 // FUNCTION: IMPERIALISM 0x00519e00
-void TMapDialog::RenderStrategicTileSelectionAndNeighborHighlights() {}
+void TMapDialog::RenderStrategicTileSelectionAndNeighborHighlights() {
+  short neighborTiles[6] = {-1, -1, -1, -1, -1, -1};
+  bool updateNeighborHighlights = false;
+  bool frameHoveredTile = cursorId4e != 0xffff && cursorId4e != 0x3f0;
+  short activeUnitCategory = static_cast<TMapUberPicture*>(ownerContext)->activeUnitCategoryIndex96;
+
+  if (activeUnitCategory != 0 && activeUnitCategory != 3 && activeUnitCategory != 5) {
+    return;
+  }
+
+  short hoveredTile = static_cast<short>(hoveredTileIndex6c);
+  if (cursorId4e == 0x3eb) {
+    TCivUnit* selectedOrder = g_pSelectedCivilianOrderState->selectedEntry;
+    short orderType = selectedOrder != 0 ? selectedOrder->orderType : 9;
+    if (orderType == 4 &&
+        g_pGlobalMapState->terrainStateTable[hoveredTile].regionSubtypeTag05 == -1) {
+      updateNeighborHighlights = true;
+      TMapMgr::ComputeHexNeighborTileIndices(hoveredTile, neighborTiles,
+                                             g_pGlobalMapState->hexNeighborWrapHorizontally20);
+      short activeNation = g_pSimMgr->GetActiveNationId();
+      for (int i = 0; i < 6; ++i) {
+        short neighbor = neighborTiles[i];
+        if (neighbor != -1) {
+          const TTerrainStateRecordView& neighborState =
+              g_pGlobalMapState->terrainStateTable[neighbor];
+          if ((neighborState.ownerNationTag04 != activeNation &&
+               neighborState.terrainType00 != 5) ||
+              neighborState.regionSubtypeTag05 != -1) {
+            neighborTiles[i] = -1;
+          }
+        }
+      }
+    }
+  }
+
+  short paintedTile = static_cast<short>(paintedHoverTileIndex6e);
+  signed char paintedMarker = g_pGlobalMapState->terrainStateTable[paintedTile].markerSlotIndex10;
+  if (paintedMarker != -1 && tileMarkers7c[paintedMarker].flag != 0) {
+    short projectedY;
+    short projectedX;
+    ProjectTileIndexToWrappedScreenOffsetByScale(
+        paintedTile, reinterpret_cast<short*>(&viewportOffsetX), &projectedY, &projectedX, 1);
+    CRect sourceRect(projectedX + 0x40, projectedY + 0x40, projectedX + 0x80, projectedY + 0x80);
+    CRect destinationRect(projectedX, projectedY, projectedX + 0x40, projectedY + 0x40);
+    BlitRectWithOptionalTransparency(g_pCitySiteCachedPrimaryRenderSurfaceContext->GetBlitSurface(),
+                                     g_pActiveQuickDrawSurfaceContext->GetBlitSurface(),
+                                     &sourceRect, &destinationRect, 0, 0);
+  }
+
+  for (int i = 0; i < 6; ++i) {
+    short oldNeighbor = g_aStrategicMapNeighborHighlightTiles_00697320[i];
+    if (oldNeighbor == -1) {
+      continue;
+    }
+    signed char oldMarker = g_pGlobalMapState->terrainStateTable[oldNeighbor].markerSlotIndex10;
+    if (oldMarker == -1 || tileMarkers7c[oldMarker].flag == 0) {
+      continue;
+    }
+
+    short projectedY;
+    short projectedX;
+    ProjectTileIndexToWrappedScreenOffsetByScale(
+        oldNeighbor, reinterpret_cast<short*>(&viewportOffsetX), &projectedY, &projectedX, 1);
+    CRect sourceRect(projectedX + 0x40, projectedY + 0x40, projectedX + 0x80, projectedY + 0x80);
+    CRect destinationRect(projectedX, projectedY, projectedX + 0x40, projectedY + 0x40);
+    BlitRectWithOptionalTransparency(g_pCitySiteCachedPrimaryRenderSurfaceContext->GetBlitSurface(),
+                                     g_pActiveQuickDrawSurfaceContext->GetBlitSurface(),
+                                     &sourceRect, &destinationRect, 0, 0);
+  }
+
+  if (frameHoveredTile ||
+      ((GetAsyncKeyState(VK_SHIFT) & 0x8000) != 0 && g_bRandomMapDeveloperCheatFlag != 0) ||
+      activeUnitCategory == 5) {
+    short projectedY;
+    short projectedX;
+    ProjectTileIndexToWrappedScreenOffsetByScale(
+        hoveredTile, reinterpret_cast<short*>(&viewportOffsetX), &projectedY, &projectedX, 1);
+    CRect hoveredRect(projectedX, projectedY, projectedX + 0x40, projectedY + 0x40);
+    g_pUiRuntimeContext->ApplyLegendSplitSlot34(0x3f);
+    QDFrameRect(&hoveredRect);
+    SetQuickDrawFillColor(0);
+    if (updateNeighborHighlights) {
+      DrawHexNeighborOutlineFromTileArray(neighborTiles);
+    }
+  }
+
+  for (int cacheIndex = 0; cacheIndex < 6; ++cacheIndex) {
+    g_aStrategicMapNeighborHighlightTiles_00697320[cacheIndex] =
+        updateNeighborHighlights ? neighborTiles[cacheIndex] : -1;
+  }
+}
 
 // Draw the selection outline around a hex tile: for each of the six neighbor
 // tiles (neighborTiles[0..5], -1 = none), project it to screen and stroke the
@@ -316,14 +409,33 @@ void TMapDialog::ConvertPoint(const CPoint& point, short& outRow, short& outCol,
 }
 
 // FUNCTION: IMPERIALISM 0x0051aad0
-void TMapDialog::OrphanRetStub_005966c0(short arg1) {
-  (void)arg1;
+void TMapDialog::RefreshMapTile(short tileIndex) {
+  PrepareForDrawing();
+  ReleaseTileMarkerForTile(tileIndex);
+
+  short projectedY;
+  short projectedX;
+  ProjectTileIndexToWrappedScreenOffsetByScale(
+      tileIndex, reinterpret_cast<short*>(&viewportOffsetX), &projectedY, &projectedX, 1);
+  if (projectedY > -0x40 && projectedX > -0x40 && projectedX < 0x200 && projectedY < 0x1c0) {
+    InvalidateTile(tileIndex);
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x0051ab60
-undefined TMapDialog::OrphanLeaf_NoCall_Ins02_005966e0(short arg1) {
-  (void)arg1;
-  return 0;
+unsigned char TMapDialog::IsTileVisible(short tileIndex) {
+  short projectedY;
+  short projectedX;
+  ProjectTileIndexToWrappedScreenOffsetByScale(
+      tileIndex, reinterpret_cast<short*>(&viewportOffsetX), &projectedY, &projectedX, 1);
+  SetGlobalQuickDrawOrigin(static_cast<short>(absoluteX), static_cast<short>(absoluteY));
+
+  CRect tileRect(projectedX, projectedY, projectedX + 0x40, projectedY + 0x40);
+  CRect contentBounds;
+  QueryContentBounds(&contentBounds);
+  CRect drawableBounds = ViewToQDRect(&contentBounds);
+  SectRect(&tileRect, &drawableBounds, &tileRect);
+  return ProbeRectEmptyAfterCopyToLocal(&tileRect) == 0;
 }
 
 // Centers the map view on the given tile (column offset by half the viewport tile span,
@@ -361,8 +473,8 @@ void TMapDialog::SetMapViewTileIndex(int arg1) {
 }
 
 // FUNCTION: IMPERIALISM 0x0051adc0
-void TMapDialog::SetMapViewCellCoordinates(int arg1, int arg2) {
-  SetMapDialogCellCoordinatesAndRefresh(arg1, arg2, 0);
+void TMapDialog::SetMapViewCellCoordinates(int column, int row) {
+  SetMapDialogCellCoordinatesAndRefresh(column, row, 0);
 }
 
 // Clamps/wraps the requested viewport cell (108x54 tile map, viewport span from
@@ -1870,162 +1982,191 @@ void TMapDialog::RenderMapTileAtScreenPositionUsingCache(short tileIndex, short 
 // FUNCTION: IMPERIALISM 0x00523640
 void TMapDialog::RenderMapOrderEntryTilePreview(TCivUnit* orderEntry, int projectedX,
                                                 int projectedY, int flag, short tileIndex) {
-  (void)orderEntry;
-  (void)projectedX;
-  (void)projectedY;
-  (void)flag;
-  (void)tileIndex;
+  bool belongsToActiveNation = orderEntry->field_18 == g_pSimMgr->GetActiveNationId();
+  if (orderEntry->field_8 > 4 && belongsToActiveNation) {
+    int animationTag = reinterpret_cast<int>(orderEntry);
+    if (g_pUiAnimator->FindRegisteredAnimationByTag(animationTag) == 0) {
+      short animationY;
+      short animationX;
+      ProjectTileIndexToWrappedScreenOffsetByScale(
+          tileIndex, reinterpret_cast<short*>(&viewportOffsetX), &animationY, &animationX, 1);
+      CRect animationRect(animationX, animationY, animationX + 0x40, animationY + 0x40);
+      TCivAnimation2* animation =
+          new TCivAnimation2(this, &animationRect, orderEntry->orderType, animationTag);
+      g_pUiAnimator->AddObjectToUiTransientRegistry(animation);
+    }
+    return;
+  }
+
+  TQuickDrawSurfaceContext* destinationSurface =
+      flag == 0 ? quickDrawSurface350 : g_pActiveQuickDrawSurfaceContext;
+  CRect destinationRect(projectedY, projectedX, projectedY + 0x40, projectedX + 0x40);
+
+  if (flag != 0 && overlayFlagByte74 == 0) {
+    signed char markerIndex =
+        g_pGlobalMapState->terrainStateTable[orderEntry->tileIndex06].markerSlotIndex10;
+    if (markerIndex != -1) {
+      CRect sourceRect(markerIndex << 6, 0, (markerIndex + 1) << 6, 0x40);
+      BlitRectWithOptionalTransparency(quickDrawSurface350->GetBlitSurface(),
+                                       g_pActiveQuickDrawSurfaceContext->GetBlitSurface(),
+                                       &sourceRect, &destinationRect, 0, 0);
+    }
+    if (cursorId4e != 0xffff && cursorId4e != 0x3f0) {
+      CPoint currentMousePoint;
+      CopyCurrentMouseCapturePoint(&currentMousePoint);
+      if (destinationRect.PtInRect(currentMousePoint)) {
+        QDFrameRect(&destinationRect);
+      }
+    }
+    return;
+  }
+
+  short spriteOffset = g_pGlobalMapState->ApplyMapImprovementSelectionState(orderEntry);
+  if (flag != 0) {
+    spriteOffset = static_cast<short>(spriteOffset + 0x240);
+  }
+  CRect spriteSourceRect(spriteOffset, 0, spriteOffset + 0x40, 0x40);
+  UpdatePaletteIndexWithDefaultFallback(0x10);
+  BlitRectWithOptionalTransparency(g_pStrategicMapViewSystem->atlas66c->GetBlitSurface(),
+                                   destinationSurface->GetBlitSurface(), &spriteSourceRect,
+                                   &destinationRect, 0x24, 0);
+
+  if (flag == 0 && !belongsToActiveNation) {
+    short ownerBadgeX = g_pGlobalMapState->GetMapImprovementTierBucketOffset(orderEntry->field_18);
+    CRect ownerSourceRect(ownerBadgeX, 0, ownerBadgeX + 9, 6);
+    CRect ownerDestinationRect(destinationRect.left + 0x1c, destinationRect.bottom - 8,
+                               destinationRect.left + 0x25, destinationRect.bottom - 2);
+    if (destinationSurface->blitSurface.surfaceDib != 0) {
+      int surfaceHeight = destinationSurface->blitSurface.surfaceDib->GetAbsoluteHeight();
+      OffsetRect(&ownerDestinationRect, 0,
+                 (surfaceHeight - ownerDestinationRect.top) - ownerDestinationRect.bottom);
+    }
+    BlitRectWithOptionalTransparency(g_pStrategicMapViewSystem->atlas6b8->GetBlitSurface(),
+                                     destinationSurface->GetBlitSurface(), &ownerSourceRect,
+                                     &ownerDestinationRect, 0x24, 0);
+    destinationRect.InflateRect(1, 1);
+    SetQuickDrawFillColorFromPaletteIndex(0x13);
+    QDFrameRect(&destinationRect);
+  }
+  UpdatePaletteIndexWithDefaultFallback(0x13);
 }
 
 // FUNCTION: IMPERIALISM 0x00523b70
 void TMapDialog::RenderTacticalStackCountIndicatorAndUnitBadge(short tileIndex, CRect* dstRect,
                                                                int flag) {
-  TTerrainStateRecordView& terrain = g_pGlobalMapState->terrainStateTable[tileIndex];
-  if (terrain.cityRecordIndex < 0 || terrain.cityRecordIndex >= 0x180) {
-    return;
+  TTerrainStateRecordView& tile = g_pGlobalMapState->terrainStateTable[tileIndex];
+  short cityRecordIndex = tile.cityRecordIndex;
+  TMilitaryUnit* unit = 0;
+  if (cityRecordIndex >= 0 && cityRecordIndex < 0x180) {
+    unit = g_pGlobalMapState->cityScoreTable[cityRecordIndex].stationedUnitChain98;
   }
-
-  TUnit* unit = static_cast<TUnit*>(
-      g_pGlobalMapState->cityScoreTable[terrain.cityRecordIndex].stationedUnitChain98);
   if (unit == 0) {
     return;
   }
 
   if (flag != 0 && overlayFlagByte74 == 0) {
-    short markerIndex = terrain.markerSlotIndex10;
+    signed char markerIndex = tile.markerSlotIndex10;
     if (markerIndex == -1) {
       return;
     }
-    RECT sourceRect;
-    sourceRect.left = markerIndex << 6;
-    sourceRect.top = 0;
-    sourceRect.right = sourceRect.left + 0x40;
-    sourceRect.bottom = 0x40;
+    CRect sourceRect(markerIndex << 6, 0, (markerIndex + 1) << 6, 0x40);
     BlitRectWithOptionalTransparency(quickDrawSurface350->GetBlitSurface(),
                                      g_pActiveQuickDrawSurfaceContext->GetBlitSurface(),
                                      &sourceRect, dstRect, 0, 0);
     return;
   }
 
-  short visibleUnitCount = 0;
-  while (unit != 0) {
-    if (unit->orderType != 0 && unit->orderType != 8 && unit->orderType != 0x10) {
-      ++visibleUnitCount;
+  short displayedUnitCount = 0;
+  for (TMilitaryUnit* current = unit; current != 0;
+       current = static_cast<TMilitaryUnit*>(current->nextOnTile)) {
+    if (current->orderType != 0 && current->orderType != 8 && current->orderType != 0x10) {
+      ++displayedUnitCount;
     }
-    unit = unit->nextOnTile;
   }
-
-  int countClass = 0;
-  if (visibleUnitCount != 0) {
-    if (visibleUnitCount < 6) {
-      countClass = 1;
+  int countBucket = 0;
+  if (displayedUnitCount != 0) {
+    if (displayedUnitCount < 6) {
+      countBucket = 1;
     } else {
-      countClass = visibleUnitCount >= 11 ? 3 : 2;
+      countBucket = displayedUnitCount >= 0xb ? 3 : 2;
     }
   }
 
-  TQuickDrawSurfaceContext* destination =
-      flag != 0 ? g_pActiveQuickDrawSurfaceContext : quickDrawSurface350;
-  int sourceX = g_pGlobalMapState->ComputeTerrainRecordByteOffsetForIndex(countClass);
+  TQuickDrawSurfaceContext* destinationSurface =
+      flag == 0 ? quickDrawSurface350 : g_pActiveQuickDrawSurfaceContext;
+  short countSpriteX =
+      static_cast<short>(g_pGlobalMapState->ComputeTerrainRecordByteOffsetForIndex(countBucket));
   if (flag != 0) {
-    sourceX += 0x12;
+    countSpriteX = static_cast<short>(countSpriteX + 0x12);
   }
-  RECT sourceRect = {sourceX, 0, sourceX + 0x12, 0x26};
-  RECT countRect;
-  countRect.left = dstRect->left;
-  countRect.right = countRect.left + 0x12;
-  if (flag == 0 && quickDrawSurface350->blitSurface.surfaceDib != 0) {
-    countRect.bottom = dstRect->bottom;
-    countRect.top = countRect.bottom - 0x26;
+  CRect countSourceRect(countSpriteX, 0, countSpriteX + 0x12, 0x26);
+  CRect countDestinationRect;
+  if (destinationSurface->blitSurface.surfaceDib != 0) {
+    countDestinationRect.SetRect(dstRect->left, dstRect->bottom - 0x26, dstRect->left + 0x12,
+                                 dstRect->bottom);
   } else {
-    countRect.top = dstRect->top;
-    countRect.bottom = countRect.top + 0x26;
+    countDestinationRect.SetRect(dstRect->left, dstRect->top, dstRect->left + 0x12,
+                                 dstRect->top + 0x26);
   }
+
   UpdatePaletteIndexWithDefaultFallback(0x10);
   BlitRectWithOptionalTransparency(g_pStrategicMapViewSystem->atlas6b4->GetBlitSurface(),
-                                   destination->GetBlitSurface(), &sourceRect, &countRect, 0x24, 0);
+                                   destinationSurface->GetBlitSurface(), &countSourceRect,
+                                   &countDestinationRect, 0x24, 0);
 
-  int ownerBadgeX = g_pGlobalMapState->GetMapImprovementTierBucketOffset(terrain.ownerNationTag04);
-  sourceRect.left = ownerBadgeX;
-  sourceRect.top = 0;
-  sourceRect.right = ownerBadgeX + 9;
-  sourceRect.bottom = 6;
-  RECT ownerBadgeRect;
-  ownerBadgeRect.left = dstRect->left + 7;
-  ownerBadgeRect.right = dstRect->left + 0x10;
-  if (flag == 0 && quickDrawSurface350->blitSurface.surfaceDib != 0) {
-    ownerBadgeRect.top = dstRect->bottom - 8;
-    ownerBadgeRect.bottom = dstRect->bottom - 2;
+  short ownerBadgeX = g_pGlobalMapState->GetMapImprovementTierBucketOffset(tile.ownerNationTag04);
+  CRect ownerSourceRect(ownerBadgeX, 0, ownerBadgeX + 9, 6);
+  CRect ownerDestinationRect;
+  if (destinationSurface->blitSurface.surfaceDib != 0) {
+    ownerDestinationRect.SetRect(dstRect->left + 7, dstRect->bottom - 8, dstRect->left + 0x10,
+                                 dstRect->bottom - 2);
   } else {
-    ownerBadgeRect.top = dstRect->top + 2;
-    ownerBadgeRect.bottom = dstRect->top + 8;
+    ownerDestinationRect.SetRect(dstRect->left + 7, dstRect->top + 2, dstRect->left + 0x10,
+                                 dstRect->top + 8);
   }
   BlitRectWithOptionalTransparency(g_pStrategicMapViewSystem->atlas6b8->GetBlitSurface(),
-                                   destination->GetBlitSurface(), &sourceRect, &ownerBadgeRect,
-                                   0x24, 0);
+                                   destinationSurface->GetBlitSurface(), &ownerSourceRect,
+                                   &ownerDestinationRect, 0x24, 0);
   UpdatePaletteIndexWithDefaultFallback(0x13);
 }
 
 // FUNCTION: IMPERIALISM 0x00523ff0
 void TMapDialog::RenderMapDialogTerrainOverlayFrameByTileOwner(short tileIndex, CRect* dstRect,
                                                                unsigned char altOverlay) {
-  void* surfaceContext = reinterpret_cast<void*>(g_pActiveQuickDrawSurfaceContext);
-  char* tileRecord =
-      reinterpret_cast<char*>(g_pGlobalMapState->terrainStateTable) + tileIndex * 0x24;
-  char ownerPaletteIndex = tileRecord[0x16];
-  if ((ownerPaletteIndex < 0) || ('\x13' <= ownerPaletteIndex)) {
+  signed char tileActionClass = g_pGlobalMapState->terrainStateTable[tileIndex].tileActionClass16;
+  if (tileActionClass < 0 || tileActionClass >= 0x13) {
     return;
   }
 
-  struct {
-    long left;
-    long top;
-    long right;
-    long bottom;
-  } srcRect;
-
   if (altOverlay == 0) {
-    surfaceContext = quickDrawSurface350;
-    srcRect.left = static_cast<long>(static_cast<short>(ownerPaletteIndex * 0x40));
-    srcRect.right = srcRect.left + 0x40;
-    srcRect.top = 0;
-    srcRect.bottom = 0x40;
+    CRect sourceRect(tileActionClass << 6, 0, (tileActionClass + 1) << 6, 0x40);
     UpdatePaletteIndexWithDefaultFallback(0x10);
-    int strategicBlitSource = *reinterpret_cast<int*>(0x006a21a8 + 0x690);
-    reinterpret_cast<void(__stdcall*)(void*, void*, void*, void*, int, void*)>(
-        BlitRectWithOptionalTransparency)(reinterpret_cast<void*>(strategicBlitSource + 4),
-                                          reinterpret_cast<char*>(surfaceContext) + 4, &srcRect,
-                                          dstRect, 0x24, 0);
+    BlitRectWithOptionalTransparency(g_pStrategicMapViewSystem->atlas690->GetBlitSurface(),
+                                     quickDrawSurface350->GetBlitSurface(), &sourceRect, dstRect,
+                                     0x24, 0);
     UpdatePaletteIndexWithDefaultFallback(0x13);
     return;
   }
 
   if (overlayFlagByte74 == 0) {
-    short terrainFrameIndex = tileRecord[0x10];
+    signed char terrainFrameIndex =
+        g_pGlobalMapState->terrainStateTable[tileIndex].markerSlotIndex10;
     if (terrainFrameIndex == -1) {
       return;
     }
-    srcRect.left = static_cast<long>(terrainFrameIndex) << 6;
-    srcRect.right = (terrainFrameIndex + 1) * 0x40;
-    srcRect.top = 0;
-    srcRect.bottom = 0x40;
-    reinterpret_cast<void(__stdcall*)(void*, void*, void*, void*, int, void*)>(
-        BlitRectWithOptionalTransparency)(
-        reinterpret_cast<char*>(quickDrawSurface350) + 4,
-        reinterpret_cast<char*>(g_pActiveQuickDrawSurfaceContext) + 4, &srcRect, dstRect, 0, 0);
+    CRect sourceRect(terrainFrameIndex << 6, 0, (terrainFrameIndex + 1) << 6, 0x40);
+    BlitRectWithOptionalTransparency(quickDrawSurface350->GetBlitSurface(),
+                                     g_pActiveQuickDrawSurfaceContext->GetBlitSurface(),
+                                     &sourceRect, dstRect, 0, 0);
     return;
   }
 
-  srcRect.left = static_cast<long>(static_cast<short>(ownerPaletteIndex * 0x40 + 0x40));
-  srcRect.right = srcRect.left + 0x40;
-  srcRect.top = 0;
-  srcRect.bottom = 0x40;
+  int sourceX = (tileActionClass + 1) << 6;
+  CRect sourceRect(sourceX, 0, sourceX + 0x40, 0x40);
   UpdatePaletteIndexWithDefaultFallback(0x10);
-  int strategicBlitSource = *reinterpret_cast<int*>(0x006a21a8 + 0x690);
-  reinterpret_cast<void(__stdcall*)(void*, void*, void*, void*, int, void*)>(
-      BlitRectWithOptionalTransparency)(reinterpret_cast<void*>(strategicBlitSource + 4),
-                                        reinterpret_cast<char*>(surfaceContext) + 4, &srcRect,
-                                        dstRect, 0x24, 0);
+  BlitRectWithOptionalTransparency(g_pStrategicMapViewSystem->atlas690->GetBlitSurface(),
+                                   g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &sourceRect,
+                                   dstRect, 0x24, 0);
   UpdatePaletteIndexWithDefaultFallback(0x13);
 }
 
@@ -2202,9 +2343,12 @@ void TMapDialog::Copy64x64TileBlockWithStrideAdjustment(int* src, int* dest, sho
 }
 
 // FUNCTION: IMPERIALISM 0x00525730
-void TMapDialog::ForwardProjectTileIndexToWrappedScreenOffsetByScale(int arg1, int arg2, int arg3,
-                                                                     int arg4, int arg5) {
-  ProjectTileIndexToWrappedScreenOffsetByScale(
-      static_cast<short>(arg1), reinterpret_cast<short*>(arg2), reinterpret_cast<short*>(arg3),
-      reinterpret_cast<short*>(arg4), static_cast<short>(arg5));
+void TMapDialog::ForwardProjectTileIndexToWrappedScreenOffsetByScale(int tileIndex,
+                                                                     short* viewportOriginXY,
+                                                                     short* outVerticalOffset,
+                                                                     short* outHorizontalOffset,
+                                                                     int projectionScale) {
+  ProjectTileIndexToWrappedScreenOffsetByScale(static_cast<short>(tileIndex), viewportOriginXY,
+                                               outVerticalOffset, outHorizontalOffset,
+                                               static_cast<short>(projectionScale));
 }

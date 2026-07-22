@@ -103,6 +103,10 @@ TMultiplayerMgr* g_pGameFlowState = 0;
 TDiplomacyMgr* g_pDiplomacyTurnStateManager = 0;
 // GLOBAL: IMPERIALISM 0x006a43e4
 TNavyMgr* g_pNavyOrderManager = 0;
+// GLOBAL: IMPERIALISM 0x006a3ebc
+extern "C" TAdmiral* g_pNavySecondaryOrderListHead = 0;
+// GLOBAL: IMPERIALISM 0x006a3edc
+extern "C" TShip* g_pNavyPrimaryOrderListHead = 0;
 // GLOBAL: IMPERIALISM 0x006a3338
 TArmyMgr* g_pMapContextActionManager = 0;
 
@@ -539,7 +543,7 @@ TQuickDrawSurfaceContext* g_pCitySiteCachedPrimaryRenderSurfaceContext = 0;
 CDib* g_pColorKeyCompositeDib = 0;
 
 // GLOBAL: IMPERIALISM 0x00697320
-short g_aCitySiteNeighborHighlightTiles_00697320[6] = {-1, -1, -1, -1, -1, -1};
+short g_aStrategicMapNeighborHighlightTiles_00697320[6] = {-1, -1, -1, -1, -1, -1};
 
 // GLOBAL: IMPERIALISM 0x006a3370
 CPoint g_MapInteractionPreviewPoint_006a3370(0, 0);
@@ -1710,6 +1714,31 @@ const int g_ShipOrderStatusStringIndexByResourceType_0065c7f8[14] = {
 // GLOBAL: IMPERIALISM 0x006985e8
 const short g_ShipRosterAtlasHorizontalOffsetByResourceType_006985E8[14] = {
     0, 0, 0, 0, 160, 0, 0, 320, 480, 640, 0, 800, 960, 1120,
+};
+
+// Palette entries used to color ocean-map previews by their owning nation tag.
+// GLOBAL: IMPERIALISM 0x006985b8
+const unsigned char g_aOceanMapOwnerPaletteIndexByNationTag[24] = {
+    0xf3, 0x2a, 0x25, 0x1d, 0xf6, 0x8c, 0xbd, 0x0a, 0x0b, 0x0d, 0x29, 0xde,
+    0xdf, 0xfa, 0x2c, 0x31, 0x33, 0x41, 0x48, 0xd0, 0xcd, 0xce, 0xcf, 0x00,
+};
+
+// The four one-reader feature bytes bracket the ocean overview's optional route,
+// labeling, and final surface-transfer passes. All are enabled in the retail image.
+// GLOBAL: IMPERIALISM 0x0069859c
+const unsigned char g_bDrawOceanRouteOverlay = 1;
+// GLOBAL: IMPERIALISM 0x006985ac
+const unsigned char g_bTransferOceanViewportToActiveSurface = 1;
+// GLOBAL: IMPERIALISM 0x006985b0
+const unsigned char g_bDrawOceanZoneLabels = 1;
+// GLOBAL: IMPERIALISM 0x006985b4
+const unsigned char g_bDrawOceanNationLabels = 1;
+
+// Border/transition colors paired with the owner-fill table immediately above.
+// GLOBAL: IMPERIALISM 0x006985d0
+const unsigned char g_aOceanMapBorderPaletteIndexByNationTag[24] = {
+    0x15, 0x2d, 0x1e, 0x1c, 0x30, 0xae, 0xca, 0x7d, 0x7d, 0x7d, 0x7d, 0xe2,
+    0xe2, 0xe2, 0xe2, 0x51, 0x51, 0x51, 0x51, 0xf0, 0xf0, 0xf0, 0xf0, 0x00,
 };
 
 // GLOBAL: IMPERIALISM 0x006a590c

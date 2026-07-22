@@ -375,8 +375,7 @@ void TWorldView::RenderMapContextOverlayWithScopedClipAndSurface() {
   short outY = 0;
   short outX = 0;
   ForwardProjectTileIndexToWrappedScreenOffsetByScale(
-      previewTile, reinterpret_cast<int>(&viewportOffsetX), reinterpret_cast<int>(&outX),
-      reinterpret_cast<int>(&outY), projectionScale76);
+      previewTile, reinterpret_cast<short*>(&viewportOffsetX), &outX, &outY, projectionScale76);
 
   GetClip(reusableSurfaceA.tempRgn);
   SetGlobalQuickDrawOrigin(static_cast<short>(absoluteX), static_cast<short>(absoluteY));
@@ -451,21 +450,25 @@ short TWorldView::QueryMinusOneWordSlot1BC(int unusedArg) {
 }
 
 // FUNCTION: IMPERIALISM 0x005960c0
-void TWorldView::ConvertPoint(const CPoint& point, short& outRow, short& outCol, short& outBand) {
+void TWorldView::ConvertPoint(const CPoint& point, short& outColumn, short& outRow,
+                              short& outRegionBand) {
   (void)point;
+  (void)outColumn;
   (void)outRow;
-  (void)outCol;
-  (void)outBand;
+  (void)outRegionBand;
 }
 
 // FUNCTION: IMPERIALISM 0x005960e0
-void TWorldView::ForwardProjectTileIndexToWrappedScreenOffsetByScale(int arg1, int arg2, int arg3,
-                                                                     int arg4, int arg5) {
-  (void)arg1;
-  (void)arg2;
-  (void)arg3;
-  (void)arg4;
-  (void)arg5;
+void TWorldView::ForwardProjectTileIndexToWrappedScreenOffsetByScale(int tileIndex,
+                                                                     short* viewportOriginXY,
+                                                                     short* outVerticalOffset,
+                                                                     short* outHorizontalOffset,
+                                                                     int projectionScale) {
+  (void)tileIndex;
+  (void)viewportOriginXY;
+  (void)outVerticalOffset;
+  (void)outHorizontalOffset;
+  (void)projectionScale;
 }
 
 // FUNCTION: IMPERIALISM 0x00596100
@@ -634,9 +637,9 @@ tail:
 }
 
 // FUNCTION: IMPERIALISM 0x00596680
-void TWorldView::SetMapViewCellCoordinates(int arg1, int arg2) {
-  (void)arg1;
-  (void)arg2;
+void TWorldView::SetMapViewCellCoordinates(int column, int row) {
+  (void)column;
+  (void)row;
 }
 
 // FUNCTION: IMPERIALISM 0x005966a0
@@ -645,13 +648,13 @@ void TWorldView::SetMapViewTileIndex(int arg1) {
 }
 
 // FUNCTION: IMPERIALISM 0x005966c0
-void TWorldView::OrphanRetStub_005966c0(short arg1) {
-  (void)arg1;
+void TWorldView::RefreshMapTile(short tileIndex) {
+  (void)tileIndex;
 }
 
 // FUNCTION: IMPERIALISM 0x005966e0
-undefined TWorldView::OrphanLeaf_NoCall_Ins02_005966e0(short arg1) {
-  (void)arg1;
+unsigned char TWorldView::IsTileVisible(short tileIndex) {
+  (void)tileIndex;
   return 0;
 }
 
@@ -664,7 +667,7 @@ undefined TWorldView::OrphanLeaf_NoCall_Ins02_005966e0(short arg1) {
 // and compiles to the identical `call [vtable+0x1d8]`.
 // FUNCTION: IMPERIALISM 0x00596700
 void TWorldView::OrphanCallChain_C6_I29_00596700(int arg1) {
-  if (OrphanLeaf_NoCall_Ins02_005966e0(static_cast<short>(arg1)) == 0) {
+  if (IsTileVisible(static_cast<short>(arg1)) == 0) {
     CenterOn(arg1);
   }
   static_cast<TWorldView*>(ownerContext)->CenterOn(arg1);

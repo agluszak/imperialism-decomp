@@ -32,9 +32,6 @@
 // reattributed TryQueueMapOrderFromTileAction below.
 TGlobalMapCityScoreRecord* __stdcall GetProvinceByTileIndex(short nTileIndex);
 
-extern "C" TShip* g_pNavyPrimaryOrderListHead;
-extern "C" TAdmiral* g_pNavySecondaryOrderListHead;
-
 // Resolves a raw TGlobalMapCityScoreRecord* back into its index in
 // g_pGlobalMapState's cityScoreTable. Real __fastcall: the single arg arrives in ecx
 // and no original callsite pushes anything.
@@ -299,17 +296,7 @@ void TNavyMgr::INavyMgr() {
 
 // FUNCTION: IMPERIALISM 0x005567a0
 void TNavyMgr::Free() {
-  while (g_pNavyPrimaryOrderListHead != 0) {
-    g_pNavyPrimaryOrderListHead->Free();
-  }
-  while (g_pNavySecondaryOrderListHead != 0) {
-    g_pNavySecondaryOrderListHead->Free();
-  }
-  TTaskForce* orderHead = orderListHead04;
-  if (orderHead != 0) {
-    orderHead->queue_next->DestroyNavyOrderAndChildren();
-    orderHead->Free();
-  }
+  ClearAllOrders();
   delete this;
 }
 

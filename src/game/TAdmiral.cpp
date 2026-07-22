@@ -11,17 +11,8 @@
 #include "game/TTechMgr.h"
 #include "game/TZone.h"
 #include "game/global_data_tables.h"
-#include "game/TMinor.h"
 #include "game/TStream.h"
-extern "C" TAdmiral* g_pNavySecondaryOrderListHead = 0;
-
 #include "game/CString.h"
-
-// FUNCTION: IMPERIALISM 0x004d7eb0
-void __fastcall TAdmiral::GenerateMappedFlavorTextByNationSlotField0C(TMinor* terrainDescriptor,
-                                                                      CString* dest) {
-  GenerateMappedFlavorTextByTableSlot(dest, terrainDescriptor->nationSlot);
-}
 
 // SYNTHETIC: IMPERIALISM 0x005512d0
 // TAdmiral::CreateObject
@@ -40,16 +31,17 @@ TAdmiral::TAdmiral(short terrainTypeIndex)
     next->prev = this;
   }
   if (static_cast<unsigned short>(terrainType) != 0xffff) {
-    GenerateMappedFlavorTextByNationSlotField0C(
-        static_cast<TMinor*>(g_apTerrainTypeDescriptorTable[terrainType]), &displayName);
+    g_apTerrainTypeDescriptorTable[terrainType]->GenerateEthnicName(&displayName);
     for (TAdmiral* node = g_pNavySecondaryOrderListHead; node != 0; node = node->next) {
       if (node == this) {
         continue;
       }
-      if (_mbscmp(reinterpret_cast<unsigned char*>((char*)static_cast<LPCSTR>(node->displayName)),
+      if (static_cast<unsigned char>(
+              _mbscmp(
+                  reinterpret_cast<unsigned char*>((char*)static_cast<LPCSTR>(node->displayName)),
                   reinterpret_cast<unsigned char*>(
-                      (char*)static_cast<LPCSTR>(this->displayName))) == 0) {
-        this->Free();
+                      (char*)static_cast<LPCSTR>(this->displayName))) == 0)) {
+        this->NameThyself();
       }
     }
   }
@@ -328,18 +320,20 @@ void TAdmiral::ReassignToZone(TZone* zone) {
   }
 }
 
+// Mac oracle: TAdmiral::NameThyself(). Rebuilds this admiral's generated name and
+// repeats when it collides with another live admiral.
 // FUNCTION: IMPERIALISM 0x00552450
-void TAdmiral::RemoveDuplicateNavySecondaryOrdersByDisplayName() {
-  GenerateMappedFlavorTextByNationSlotField0C(
-      static_cast<TMinor*>(g_apTerrainTypeDescriptorTable[this->terrainType]), &this->displayName);
+void TAdmiral::NameThyself() {
+  g_apTerrainTypeDescriptorTable[this->terrainType]->GenerateEthnicName(&this->displayName);
   for (TAdmiral* node = g_pNavySecondaryOrderListHead; node != 0; node = node->next) {
     if (node == this) {
       continue;
     }
-    if (_mbscmp(reinterpret_cast<unsigned char*>((char*)static_cast<LPCSTR>(node->displayName)),
-                reinterpret_cast<unsigned char*>((char*)static_cast<LPCSTR>(this->displayName))) ==
-        0) {
-      this->RemoveDuplicateNavySecondaryOrdersByDisplayName();
+    if (static_cast<unsigned char>(
+            _mbscmp(reinterpret_cast<unsigned char*>((char*)static_cast<LPCSTR>(node->displayName)),
+                    reinterpret_cast<unsigned char*>(
+                        (char*)static_cast<LPCSTR>(this->displayName))) == 0)) {
+      this->NameThyself();
     }
   }
 }

@@ -32,8 +32,10 @@ struct TextStyle;
 struct TQuickDrawSurfaceContext;
 struct TCdAudioDevice;
 class TArmyMgr;
+class TAdmiral;
 class TDiplomacyMgr;
 class TNavyMgr;
+class TShip;
 class TSimMgr;
 class TAssetMgr;
 class TNewsMgr;
@@ -331,12 +333,21 @@ extern TQuickDrawSurfaceContext* g_pCitySiteCachedPrimaryRenderSurfaceContext;
 extern CDib* g_pColorKeyCompositeDib;
 // TCitySiteView's currently painted six-neighbor highlight set. Each entry is a map tile
 // index or -1; the paint pass restores the previous cells before replacing this cache.
-extern short g_aCitySiteNeighborHighlightTiles_00697320[6];
+extern short g_aStrategicMapNeighborHighlightTiles_00697320[6];
 // Strategic-map preview cursor and the two half-cell parity remainders maintained while
 // converting its point into a viewport cell.
 extern CPoint g_MapInteractionPreviewPoint_006a3370;
 extern int g_MapInteractionPreviewRowParity_006a33b4;
 extern int g_MapInteractionPreviewColumnParity_006a33b8;
+// Owner-nation tag (0..23) to the QuickDraw palette index used behind ocean-map
+// order previews and garrison badges.
+extern const unsigned char g_aOceanMapOwnerPaletteIndexByNationTag[24];
+// Per-owner outline palette used by the ocean overview's direct 16x16 neighbor-edge pass.
+extern const unsigned char g_aOceanMapBorderPaletteIndexByNationTag[24];
+extern const unsigned char g_bDrawOceanRouteOverlay;
+extern const unsigned char g_bTransferOceanViewportToActiveSurface;
+extern const unsigned char g_bDrawOceanZoneLabels;
+extern const unsigned char g_bDrawOceanNationLabels;
 extern CDC* g_pQuickDrawMemoryDc;
 extern HGDIOBJ g_hQuickDrawSavedBitmap;
 extern int g_nActiveQuickDrawSurfaceFlags;
@@ -425,6 +436,8 @@ extern const char s_OutOfMemoryText_006941F0[];
 extern const char s_ErrorCaption_00694204[];
 extern TDiplomacyMgr* g_pDiplomacyTurnStateManager;
 extern TNavyMgr* g_pNavyOrderManager;
+extern "C" TShip* g_pNavyPrimaryOrderListHead;
+extern "C" TAdmiral* g_pNavySecondaryOrderListHead;
 extern TArmyMgr* g_pMapContextActionManager;
 // Two 0x20-byte flag tables installed into TArmyMgr+0x14/+0x18 by
 // InitializeMapContextActionManager (0x4a18f0); 8 rows x 4 flag bytes.

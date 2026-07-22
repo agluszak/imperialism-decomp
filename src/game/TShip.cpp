@@ -14,8 +14,6 @@
 
 #include <new>
 
-extern "C" TShip* g_pNavyPrimaryOrderListHead = 0;
-
 static __inline short SignedDiv10(int value) {
   return static_cast<short>(value / 10);
 }
@@ -144,8 +142,7 @@ void TShip::ReadFrom(TStream* stream) {
 // FUNCTION: IMPERIALISM 0x0054fbf0
 void __fastcall RegenerateNavyPrimaryOrderDisplayNameUntilUnique(TShip* shipNode) {
   do {
-    TAdmiral::GenerateMappedFlavorTextByNationSlotField0C(
-        static_cast<TMinor*>(g_apTerrainTypeDescriptorTable[shipNode->resourceType04]),
+    g_apTerrainTypeDescriptorTable[shipNode->resourceType04]->GenerateEthnicName(
         &shipNode->displayName18);
     for (TShip* existing = g_pNavyPrimaryOrderListHead; existing != 0;
          existing = existing->nextOlder24) {
