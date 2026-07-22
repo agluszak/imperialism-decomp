@@ -20,9 +20,10 @@ void TNumberedIcon::DoPostCreate(int arg) {
   TMegaPicture::DoPostCreate(arg);
   AssignFlags98AndMaybeRefresh(5, 1);
   InstallNumberText();
-  // The original then, when fieldAc is set, builds a RECT from frameWidth34/frameHeight38
-  // (each offset by -0x10 for two of the four fields; the remaining two aren't resolved)
-  // and calls fieldAc->ApplyBounds(&rect, 1) -- left unmodeled pending the full rect shape.
+  if (numberTextAc != 0) {
+    CRect numberBounds(frameWidth34 - 0x10, frameHeight38 - 0x10, frameWidth34, frameHeight38);
+    numberTextAc->ApplyBounds(&numberBounds, 1);
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x00507570
