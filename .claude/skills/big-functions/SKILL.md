@@ -169,7 +169,7 @@ headers before splicing.
     (`reinterpret_cast<unsigned char*>(&token)[3]`), NOT a `>> 24` shift: the compiler
     passes it by loading the DWORD at the byte's address (garbage upper bytes on the push),
     which the pointer read reproduces and the shift does not. Both verified taking Deve
-    0x5828f0 from 40% -> 60% -> 100%. Also: `just reorder_marked_functions <file>` after
+    0x5828f0 from 40% -> 60% -> 100%. Also: `uv run python -m tools.workflow.reorder_marked_functions <file>` after
     inserting a new `// FUNCTION:` marker keeps address order (else decomplint
     function_out_of_order fails); and a genuinely wrong Ghidra virtual signature on a stub
     (QueueDepot/QueuePortConstructionOrder declared 4-arg; `RET 8` proves 2) is safe to

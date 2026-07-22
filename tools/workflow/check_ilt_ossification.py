@@ -8,8 +8,8 @@ hand-written game source, and both must shrink to zero:
    ``0x004xxxxx`` address) is a 5-byte ``jmp`` to the real body, never a source
    function. Manual code that declares or calls ``thunk_Foo`` keeps the generated
    stub row alive, which keeps the manual call compilable — a self-sustaining cycle.
-   The fix is to call the real target (resolve via ``docs/ilt_target_map.csv``) and
-   drop the thunk row.
+   The fix is to call the real target (resolve the jmp with ``just ghidra-listing
+   0xADDR`` or ``just ghidra-portprep``) and drop the thunk row.
 
 2. **History-encoded names.** A real body whose name is ``WrapperFor_thunk_Foo_At0049d900``
    or ``Foo_At004f6d90`` leaks the discovery path (an intermediate thunk name + the
@@ -129,7 +129,7 @@ def main() -> int:
 
     if new:
         print("ILT-ossification gate failed: new linker/thunk-name identifier(s) in manual source.")
-        print("Call the real target (docs/ilt_target_map.csv) or use a semantic/slot name;")
+        print("Call the real target (resolve the thunk via just ghidra-portprep) or use a semantic/slot name;")
         print("the address belongs only in the // FUNCTION: marker.")
         for rel, ident in new:
             print(f"    - {rel}: {ident}")

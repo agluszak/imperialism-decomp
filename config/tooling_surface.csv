@@ -14,8 +14,6 @@ module|tools.workflow.mac_resource_xrefs|just:mac-resource-xrefs/mac-resource-xr
 module|tools.workflow.mac_string_crosswalk|just:mac-string-search/string-crosswalk/strings-for-function/mac-string-crosswalk-check|File-scoped Mac STR# to Windows GOB/global/source semantic crosswalk
 module|tools.workflow.ui_platform_diff|just:ui-platform-diff/ui-platform-diff-check|Declared Mac-resource versus generated Windows UI semantic delta report
 module|tools.workflow.annotate_globals_from_symbols|just:annotate-globals|Global annotation pass
-module|tools.migrations.annotate_vtables_from_symbols|direct|Vtable annotation pass (completed migration; run via uv)
-module|tools.migrations.annotate_strings_from_symbols|direct|String annotation pass (completed migration; run via uv)
 module|tools.workflow.check_no_raw_vtable_calls|just:vtable-gate|Raw-vtable policy gate
 module|tools.workflow.check_dual_use|just:dual-use-gate|Reject unresolved dual-use field modelling claims
 module|tools.workflow.check_geometry_types|just:geometry-type-gate|Enforce recovered MFC and native geometry boundaries
@@ -61,7 +59,6 @@ module|tools.ghidra.vtable_slots|just:class-vtable-dump|Read-only vtable slot ev
 module|tools.ghidra.propagate_virtual_method_names|just:propagate-virtual-method-names|Propagate virtual method identities parent-first
 module|tools.ghidra.vtable_struct_check|just:ghidra-vtable-struct-check|Check Ghidra vtable struct field names
 module|tools.ghidra.in_stack_audit|just:in-stack-audit|Read-only audit of in_stack_* locals (classify, not patch)
-module|tools.ghidra.signature_probe|direct|Read-only per-address DB signature + in_stack capture (source-signature diagnosis)
 module|tools.ghidra.apply_source_signatures|just:apply-source-signatures|Project source-model C++ prototypes onto source-owned functions (verify-and-revert; PDB can't carry arg types)
 module|tools.clang_ast_index|just:clang-decl-index|Clang-AST declaration index (qualified name -> entity kind + types) for authoritative convention classification
 module|tools.class_model|just:record-model|Semantic class model: AST record walk (records/bases/fields; never host layout)
@@ -76,7 +73,6 @@ module|tools.ghidra.datatype_audit|just:ghidra-datatype-audit|Audit Ghidra datat
 module|tools.ghidra.restore_project|just:restore-project|Recreate the live Ghidra project from the vendored .gzf
 module|tools.ghidra.export_project|just:export-project|Repack the live Ghidra project into the vendored .gzf
 module|tools.workflow.prune_ilt_thunks|just:prune-ilt-thunks|Prune unannotated ILT jmp thunks from the reccmp report
-module|tools.migrations.mfc_runtime_macros|direct|Apply MFC runtime macro annotations to recovered classes (completed migration; run via uv)
 module|tools.workflow.pe_resources|just:resource-check|Check rebuilt PE resources for required UI assets
 module|tools.ghidra.class_owner_probe|just:class-owner-probe|Probe likely class owner for an address
 module|tools.ghidra.function_slice|query:function-slice|Read-only Ghidra function slice report (callers/callees/field offsets)

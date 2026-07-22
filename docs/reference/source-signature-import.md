@@ -11,7 +11,7 @@ them?
 
 ## Experiment (read-only)
 
-`tools/ghidra/signature_probe.py` captured the DB signature + `in_stack` for 16
+`tools/ghidra/signature_probe.py` (since removed; see git history) captured the DB signature + `in_stack` for 16
 representative source-owned functions (free / `__thiscall` / `__stdcall` /
 vtable override / MFC override / ctor / struct-return / packed-args / unknown-cc),
 **before and after a fresh `just import-ghidra`** against a matching build.
@@ -103,8 +103,9 @@ signature must be projected:
 
 PR #91 is diagnosis only — no committed DB change (the fresh import ran in the
 live project for observation; the vendored `.gzf` stays at the clean #90 state).
-`signature_probe.py` is retained; it becomes the basis of the
-`source-signature-audit` / convergence check in PR #92.
+`signature_probe.py` served as the basis of the `source-signature-audit` /
+convergence check in PR #92 (now `tools/ghidra/apply_source_signatures.py`) and
+has since been removed; see git history for the probe implementation.
 
 ## PR #92: the source-model signature projector (enforcement)
 

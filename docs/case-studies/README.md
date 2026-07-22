@@ -17,5 +17,5 @@ Conventions:
   actionable layer. When a study's lesson changes policy, update the rule/skill
   and link back — do not make agents read narratives to find requirements.
 
-There are no studies yet; migrate long anecdotes out of skill field notes here as
-they get rewritten into rules.
+Migrate long anecdotes out of skill field notes here as they get rewritten into
+rules (first study: `tnewspaperview-advisor-rows-dossier.md`).
