@@ -1622,8 +1622,8 @@ extern "C" StrategicTileIndex* __cdecl BuildHexAreaTileIndexList(StrategicTileIn
 void TMapMgr::GetNeighborTileIDArray(StrategicTileIndex tileIndex,
                                      StrategicTileIndex* neighborTiles,
                                      unsigned char wrapHorizontally) {
-  unsigned int row = static_cast<unsigned int>(static_cast<int>(tileIndex) / 0x6c);
-  int col = static_cast<int>(tileIndex) % 0x6c;
+  unsigned int row = static_cast<unsigned int>(tileIndex / 0x6c);
+  int col = tileIndex % 0x6c;
   unsigned int rowParity = row & 1U;
   short sVar4;
   if (rowParity == 0) {
@@ -1697,9 +1697,9 @@ StrategicTileIndex TMapMgr::GetNeighborTileID(StrategicTileIndex tileIndex,
   scaledCol += static_cast<int>(g_Build_Hex_Area_LookupTable_00696E70[dir]);
 
   if (static_cast<short>(direction) < 0) {
-    dir = static_cast<int>(static_cast<short>(direction)) + 6;
+    dir = static_cast<short>(direction) + 6;
   } else if (static_cast<short>(direction) > 5) {
-    dir = static_cast<int>(static_cast<short>(direction)) - 6;
+    dir = static_cast<short>(direction) - 6;
   }
 
   short wrappedRow = static_cast<short>(row);
@@ -4237,8 +4237,8 @@ void OrphanDeadLeaf_NoRefs_0051da60(StrategicTileIndex nTileIndex) {
 StrategicTileIndex
 TMapMgr::StepHexTileIndexByDirectionWithWrapRules(StrategicTileIndex tileIndex,
                                                   StrategicHexDirectionStorage direction) {
-  int col = static_cast<int>(tileIndex) % 0x6c;
-  unsigned int row = static_cast<unsigned int>(static_cast<int>(tileIndex) / 0x6c);
+  int col = tileIndex % 0x6c;
+  unsigned int row = static_cast<unsigned int>(tileIndex / 0x6c);
   if (direction == EncodeStrategicHexDirection(kStrategicHexDirectionWest) ||
       (direction > EncodeStrategicHexDirection(kStrategicHexDirectionSouthEast) &&
        (row & 1U) == 0U)) {

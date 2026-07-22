@@ -1171,7 +1171,7 @@ char TNavyMgr::SelectEligibleMapOrderInteractionForNationAndContext(
                                                                              entry->nation) == 0) {
       return 1;
     }
-    short roll = static_cast<short>(static_cast<int>(rand()) % 100);
+    short roll = static_cast<short>(rand() % 100);
     short bias = static_cast<short>(entryChildren + 10);
     if (roll >= bias) {
       if (roll < bias * 2) {

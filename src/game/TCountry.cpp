@@ -468,7 +468,7 @@ void TCountry::ApplyJoinEmpireMode1TargetTransition(int targetNationSlot) {
 
 // FUNCTION: IMPERIALISM 0x004d7d20
 char TCountry::IsEncodedNationSlotMinus200Equal(int nationCode) {
-  int adjusted = static_cast<int>(static_cast<short>(this->encodedNationSlot)) - 0xc8;
+  int adjusted = static_cast<short>(this->encodedNationSlot) - 0xc8;
   if (adjusted == nationCode) {
     return 1;
   }

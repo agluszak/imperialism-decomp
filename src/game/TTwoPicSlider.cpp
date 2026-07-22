@@ -82,8 +82,7 @@ static __inline int SliderScaledValue(TTwoPicSlider* slider, int scale) {
   if (slider->splitPosition >= 0x0c) {
     adjustedSplit = static_cast<short>(slider->splitPosition - 0x0c);
   }
-  return (adjustedSplit * scale) /
-         static_cast<int>(static_cast<short>(slider->frameHeight38 - 0x0c));
+  return (adjustedSplit * scale) / static_cast<short>(slider->frameHeight38 - 0x0c);
 }
 } // namespace
 

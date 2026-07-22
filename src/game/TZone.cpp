@@ -638,7 +638,7 @@ void TZone::SetMapActionContextTargetTileAndRefreshMarkers(int nationSeedId, int
         g_pGlobalMapState->ComputeRepresentativeTileIndexForNationWithWrapBias(
             static_cast<short>(nationSeedId), 0));
   }
-  tileOrTerrainId0c = static_cast<int>(static_cast<short>(resolvedTile));
+  tileOrTerrainId0c = static_cast<short>(resolvedTile);
   activeTileIndex20 = static_cast<short>(tileOrTerrainId0c);
   if (QueryPortZoneCapability() != 0) {
     SetMapTileStateByteAndNotifyObserver(activeTileIndex20,

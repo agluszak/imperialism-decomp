@@ -434,7 +434,7 @@ void TOcean::InitializeMapActionContextsForNationCountUsingCostField(int nationC
 
   nationCount = static_cast<short>(nationCountArg);
   delete[] contextArray;
-  contextBase = new TZone[static_cast<int>(static_cast<short>(nationCountArg))];
+  contextBase = new TZone[static_cast<short>(nationCountArg)];
   contextArray = contextBase;
   if (contextBase == 0) {
     GAME_FAIL_NIL_POINTER();
@@ -452,14 +452,14 @@ void TOcean::InitializeMapActionContextsForNationCountUsingCostField(int nationC
     relaxPassCount = RelaxMapTileCostFieldByNeighborTerrain(reinterpret_cast<short*>(costField));
   }
   nationIndex = 0;
-  if (0 < static_cast<int>(static_cast<short>(nationCountArg))) {
+  if (0 < static_cast<short>(nationCountArg)) {
     do {
       int seedTile = SelectBestSeedTileForNationFromCostField(
           reinterpret_cast<short*>(costField), static_cast<short>(nationIndex + 0x17));
       contextArray[nationIndex].SetMapActionContextTargetTileAndRefreshMarkers(nationIndex + 0x17,
                                                                                seedTile);
       nationIndex = nationIndex + 1;
-    } while (nationIndex < static_cast<int>(static_cast<short>(nationCountArg)));
+    } while (nationIndex < static_cast<short>(nationCountArg));
   }
   delete[] costField;
 }

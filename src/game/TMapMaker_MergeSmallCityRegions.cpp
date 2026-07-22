@@ -278,12 +278,12 @@ void TMapMaker::MergeSmallCityRegionsAndCompactIds() {
       for (unsigned int li = 0;
            li < static_cast<unsigned int>(g_regionBorderLinkTable_006a3900.Count()); ++li) {
         RegionBorderLink* link = LinkElementAt(li);
-        if (static_cast<int>(static_cast<short>(link->regionA)) == cityRegionCount2a4) {
+        if (static_cast<short>(link->regionA) == cityRegionCount2a4) {
           link = LinkElementAt(li);
           link->regionA = static_cast<unsigned short>(regionByte);
         }
         link = LinkElementAt(li);
-        if (static_cast<int>(static_cast<short>(link->regionB)) == cityRegionCount2a4) {
+        if (static_cast<short>(link->regionB) == cityRegionCount2a4) {
           link = LinkElementAt(li);
           link->regionB = static_cast<unsigned short>(regionByte);
         }

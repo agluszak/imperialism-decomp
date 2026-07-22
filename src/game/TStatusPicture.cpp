@@ -231,10 +231,10 @@ void TStatusPicture::RecomputeNationComparisonValuesAndNormalizeScale() {
         int stats = *reinterpret_cast<int*>(reinterpret_cast<char*>(city) + 0x1d8);
         int units = *reinterpret_cast<int*>(stats + 0x14);
         values94[i] =
-            static_cast<int>(static_cast<short>(
+            static_cast<short>(
                 (*reinterpret_cast<short*>(units + 8) * 2 + *reinterpret_cast<short*>(units + 6)) *
                     2 +
-                *reinterpret_cast<short*>(stats + 0x1e) + *reinterpret_cast<short*>(units + 4)))
+                *reinterpret_cast<short*>(stats + 0x1e) + *reinterpret_cast<short*>(units + 4))
             << 2;
         break;
       }

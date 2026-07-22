@@ -228,7 +228,7 @@ void TCivDescription::UpdateCivilianOrderTargetTileCountsForOwnerNation(TCivUnit
       do {
         provinceTileIndex = (short)*provinceTileIndices;
         tableBase = reinterpret_cast<char*>(g_pGlobalMapState->terrainStateTable) +
-                    (int)(short)provinceTileIndex * 0x24;
+                    static_cast<short>(provinceTileIndex) * 0x24;
         if (*(char*)(tableBase + 0xe) == '\0') {
           tileProfileId = (short)*(char*)(tableBase + 0x13);
           classSlotOrdinal = 0;

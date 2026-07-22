@@ -1043,9 +1043,9 @@ char TGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage(void
       this->pressureCounter = 1;
     } else if ((-pressureBand == treasuryValue10) || (-treasuryValue10 < pressureBand)) {
       if (this->pressureCounter > 1) {
-        int nextPressureValue = static_cast<int>(this->escalationCounter) +
-                                static_cast<int>(static_cast<signed char>(
-                                    g_anGreatPowerPressureRiseStepByLocale[localeIndex]));
+        int nextPressureValue =
+            this->escalationCounter +
+            static_cast<signed char>(g_anGreatPowerPressureRiseStepByLocale[localeIndex]);
         int pressureRiseCap = g_anGreatPowerPressureRiseCapByLocale[localeIndex];
         if (nextPressureValue > pressureRiseCap) {
           nextPressureValue = pressureRiseCap;
@@ -1055,9 +1055,9 @@ char TGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage(void
       this->pressureCounter = 2;
     } else {
       CString sharedMessageRef;
-      int nextPressureValue = static_cast<int>(this->escalationCounter) +
-                              static_cast<int>(static_cast<signed char>(
-                                  g_anGreatPowerPressureRiseStepByLocale[localeIndex]));
+      int nextPressureValue =
+          this->escalationCounter +
+          static_cast<signed char>(g_anGreatPowerPressureRiseStepByLocale[localeIndex]);
       int pressureRiseCap = g_anGreatPowerPressureRiseCapByLocale[localeIndex];
       if (nextPressureValue > pressureRiseCap) {
         nextPressureValue = pressureRiseCap;
@@ -1093,9 +1093,9 @@ char TGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage(void
     }
   } else {
     if (this->pressureCounter != 0) {
-      int nextPressureValue = static_cast<int>(this->escalationCounter) -
-                              static_cast<int>(static_cast<signed char>(
-                                  g_anGreatPowerPressureDecayStepByLocale[localeIndex]));
+      int nextPressureValue =
+          this->escalationCounter -
+          static_cast<signed char>(g_anGreatPowerPressureDecayStepByLocale[localeIndex]);
       int pressureMinFloor = g_anGreatPowerPressureMinFloorByLocale[localeIndex];
       if (nextPressureValue < pressureMinFloor) {
         nextPressureValue = pressureMinFloor;
@@ -2532,8 +2532,7 @@ bool TGreatPower::SetDiplomacyGrantEntryForTargetAndUpdateTreasury(int arg1, int
 
   if (this->diplomacyEligibilityA0 != 0) {
     g_pHelpMgr->NoOpDiplomacyPolicyStateChangedHook(
-        static_cast<int>(static_cast<short>(newGrantRaw)), static_cast<int>(targetNation),
-        accepted ? 1 : 0);
+        static_cast<short>(newGrantRaw), static_cast<int>(targetNation), accepted ? 1 : 0);
 
     if (accepted && newGrantRaw != kGrantClear && targetNation > 6) {
       bool shouldDispatchAlert = false;
@@ -3047,7 +3046,7 @@ void TGreatPower::RejectOffer(unsigned short proposalQueueIndex) {
     return;
   }
 
-  int queueOrdinal = static_cast<int>(static_cast<short>(proposalQueueIndex));
+  int queueOrdinal = static_cast<short>(proposalQueueIndex);
   if (queueOrdinal > queue->GetSize()) {
     return;
   }

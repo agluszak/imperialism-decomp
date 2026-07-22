@@ -2324,7 +2324,7 @@ address|matching|name
 0x4dd340|0.6222222222222222|TGreatPower::AddAmountToAidAllocationMatrixCellAndTotal
 0x4dd3b0|1.0|TGreatPower::SumAidAllocationMatrixColumnForTarget
 0x4dd3f0|1.0|TGreatPower::SumAidAllocationMatrixAllCells
-0x4dd430|0.5714285714285714|TGreatPower::ComputeRemainingDiplomacyAidBudget
+0x4dd430|0.5142857142857142|TGreatPower::ComputeRemainingDiplomacyAidBudget
 0x4dd470|1.0|TGreatPower::ResetDiplomacyNeedSlots7012AndRefreshIfModeGateMatches
 0x4dd4e0|0.4585987261146497|TGreatPower::AssignFallbackNationsToUnfilledDiplomacyNeedSlots
 0x4dd740|1.0|TGreatPower::GetDiplomacyExternalStateByTarget
@@ -2406,7 +2406,7 @@ address|matching|name
 0x4e0770|0.6666666666666666|TGreatPower::ComputeNationRuntimeAdvisoryMetricCase6
 0x4e07b0|0.35294117647058826|TGreatPower::ComputeArmyCommitBudgetSlot8E
 0x4e0890|0.2828282828282828|TGreatPower::GetScoreFactorSlot23C
-0x4e09a0|0.5542168674698795|TGreatPower::GetScoreFactorSlot240
+0x4e09a0|0.5662650602409639|TGreatPower::GetScoreFactorSlot240
 0x4e0b20|0.43902439024390244|TGreatPower::ComputeArmyScoreRatioVsNation
 0x4e0c10|0.24806201550387597|TGreatPower::ComputeArmyScoreStandingRatioVsNation
 0x4e0d80|0.43902439024390244|TGreatPower::ComputeNavyScoreRatioVsNation
@@ -2441,7 +2441,7 @@ address|matching|name
 0x4e2b70|0.08955223880597014|TGreatPower::BuildGreatPowerTurnMessageSummaryAndDispatch
 0x4e3060|0.9801980198019802|TGreatPower::ComputeNationNavyOrderWeightedMovementScore
 0x4e3220|0.972972972972973|TGreatPower::RecomputeNationComparativePowerMetrics_Impl
-0x4e32a0|0.7947882736156352|TGreatPower::RecomputeNationEconomyAndDiplomacySummaryMetrics
+0x4e32a0|0.8013029315960912|TGreatPower::RecomputeNationEconomyAndDiplomacySummaryMetrics
 0x4e3560|0.9347826086956522|TGreatPower::PayForMilitary
 0x4e3620|0.35714285714285715|TGreatPower::SumDiplomacyGrantEntriesMaskedToValueBits
 0x4e3660|0.4444444444444444|TMinor::CreateObject
@@ -3107,7 +3107,7 @@ address|matching|name
 0x5135a0|0.45614035087719296|TMapMgr::FindResourceCapabilityRequirementLevelByType
 0x513610|0.896551724137931|TMapMgr::FindResourceCapabilityRequirementLevel
 0x513660|0.7142857142857143|TMapMgr::GetTileCivilianWorkOrderCostClassNibble
-0x5136a0|0.8888888888888888|TMapMgr::SetCivilianDevelopmentClassNibble
+0x5136a0|1.0|TMapMgr::SetCivilianDevelopmentClassNibble
 0x513720|0.4155844155844156|TMapMgr::FindMaxResourceCapabilityValueForTile
 0x5137b0|0.18994413407821228|TMapMgr::CanBuildPortAtTile
 0x513980|0.5513784461152882|TMapMgr::IsValidSecondaryNationHomeTileCandidate
@@ -3169,7 +3169,7 @@ address|matching|name
 0x5177d0|1.0|TMapMgr::GetMapImprovementTileOffsetFromClass
 0x5177f0|0.25806451612903225|TMapMgr::GetMapImprovementTileSpriteOffset
 0x5178c0|0.75|TMapMgr::ResetAllTileMarkerSlotIndicesToSentinel
-0x5178f0|0.32038834951456313|TMapMgr::ComputeRepresentativeTileIndexForNationWithWrapBias
+0x5178f0|0.3389830508474576|TMapMgr::ComputeRepresentativeTileIndexForNationWithWrapBias
 0x517c30|0.358974358974359|TMapMgr::AreNationsBorderLinked
 0x517d40|0.0|OrphanDeadLeaf_NoRefs_00517d40
 0x517dd0|0.40963855421686746|TMapMgr::HasDirectOrFallbackLinkedNodeType
@@ -4882,7 +4882,7 @@ address|matching|name
 0x586ce0|1.0|TAmtBarCluster::TAmtBarCluster
 0x586d10|0.9090909090909091|TAmtBarCluster::`scalar deleting destructor'
 0x586d60|0.6333333333333333|TAmtBarCluster::DoPostCreate
-0x586e50|0.5|TAmtBar::ApplyMoveClamp
+0x586e50|1.0|TAmtBar::ApplyMoveClamp
 0x586e70|0.31952662721893493|TAmtBarCluster::DoEvent
 0x586ff0|1.0|TAmtBarCluster::SetMoveAmount
 0x587010|0.4897959183673469|TTradeCluster::CreateObject
@@ -4924,7 +4924,7 @@ address|matching|name
 0x589210|0.9090909090909091|TIndustryAmtBar::`scalar deleting destructor'
 0x589260|0.34146341463414637|TIndustryAmtBar::DoPostCreate
 0x589340|0.4845814977973568|TIndustryAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache
-0x589540|0.46774193548387094|TIndustryAmtBar::RenderQuickDrawOverlayWithHitRegion
+0x589540|0.4838709677419355|TIndustryAmtBar::RenderQuickDrawOverlayWithHitRegion
 0x589660|0.5714285714285714|TRailCluster::CreateObject
 0x589700|1.0|TRailCluster::GetRuntimeClass
 0x589720|0.9|TRailCluster::TRailCluster
@@ -4940,7 +4940,7 @@ address|matching|name
 0x589fd0|0.9090909090909091|TRailAmtBar::`scalar deleting destructor'
 0x58a020|0.45685279187817257|TRailAmtBar::DoPostCreate
 0x58a1b0|0.4845814977973568|TRailAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache
-0x58a3b0|0.46774193548387094|TRailAmtBar::RenderQuickDrawOverlayWithHitRegion
+0x58a3b0|0.4838709677419355|TRailAmtBar::RenderQuickDrawOverlayWithHitRegion
 0x58a4d0|0.5818181818181818|TShipyardCluster::CreateObject
 0x58a570|1.0|TShipyardCluster::GetRuntimeClass
 0x58a590|0.631578947368421|TShipyardCluster::TShipyardCluster
@@ -4960,7 +4960,7 @@ address|matching|name
 0x58af30|0.9090909090909091|TTraderAmtBar::`scalar deleting destructor'
 0x58af80|0.4251968503937008|TTraderAmtBar::DoPostCreate
 0x58b040|0.0|TTraderAmtBar::UpdateFromScaleOrRatio
-0x58b070|0.5573770491803278|TTraderAmtBar::ApplyMoveClamp
+0x58b070|0.5901639344262295|TTraderAmtBar::ApplyMoveClamp
 0x58b0f0|0.3930131004366812|TTraderAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache
 0x58b340|0.52|TCivilianButton::CreateObject
 0x58b3c0|1.0|TCivilianButton::GetRuntimeClass
