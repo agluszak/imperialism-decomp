@@ -604,6 +604,11 @@ original-module-map *args: _require-ghidra-install
 assign-subsystems *args:
   uv run python -m tools.analysis.assign_subsystems {{args}}
 
+[doc('Audit data/code function pointers and hidden callback registrations')]
+[group('ghidra-inspect')]
+data-function-pointers *args: _require-ghidra-install
+  uv run python -m tools.ghidra.query data-function-pointers {{args}}
+
 # Read-only vtable evidence dump: resolve each slot of one or more vtables to its real
 # body (ILT thunks chased) as JSON on stdout — target address, Ghidra name, size,
 # listing signature, optional decompile. Inspection only; never writes source/symbols.
@@ -667,6 +672,16 @@ ui-view-coverage *args:
 [group('gates')]
 ui-view-coverage-check:
   uv run python -m tools.workflow.ui_view_coverage --check
+
+[doc('Generate the source-only turn-event screen and callback coverage matrix')]
+[group('gates')]
+turn-event-coverage *args:
+  uv run python -m tools.workflow.turn_event_coverage {{args}}
+
+[doc('Reject a stale committed turn-event coverage matrix')]
+[group('gates')]
+turn-event-coverage-check:
+  uv run python -m tools.workflow.turn_event_coverage --check
 
 [doc('Query the committed Mac control class/tag/screen semantic index')]
 [group('ghidra-inspect')]
@@ -1552,7 +1567,7 @@ source-gates:
 
 [private]
 [parallel]
-_source-gates-parallel: ui-codegen-check ui-view-coverage-check mac-control-usage-check mac-resource-xrefs-check mac-payload-diff-check mac-string-crosswalk-check ui-platform-diff-check tooling-check vtable-gate antipattern-gate tgreatpower-gate marker-gate generated-marker-gate dual-use-gate geometry-type-gate ilt-ossification-gate vtable-annotation-gate vtable-collision-gate synthetic-gate symbols-integrity-gate library-identity-gate global-location-gate manual-cruntimeclass-gate stub-count-gate class-size-gate noop-gate typedef-cast-gate typedef-args-gate global-redeclaration-gate boundary-gate agent-rules-gate vtable-abi-gate
+_source-gates-parallel: ui-codegen-check ui-view-coverage-check turn-event-coverage-check mac-control-usage-check mac-resource-xrefs-check mac-payload-diff-check mac-string-crosswalk-check ui-platform-diff-check tooling-check vtable-gate antipattern-gate tgreatpower-gate marker-gate generated-marker-gate dual-use-gate geometry-type-gate ilt-ossification-gate vtable-annotation-gate vtable-collision-gate synthetic-gate symbols-integrity-gate library-identity-gate global-location-gate manual-cruntimeclass-gate stub-count-gate class-size-gate noop-gate typedef-cast-gate typedef-args-gate global-redeclaration-gate boundary-gate agent-rules-gate vtable-abi-gate
 
 [doc('Mine reccmp asm diffs for orig-address<->recomp-symbol global pairs (read-only report)')]
 [group('compare')]

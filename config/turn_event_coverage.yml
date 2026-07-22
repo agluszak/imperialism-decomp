@@ -1,0 +1,29 @@
+format_version: 1
+
+# Source-observed boot/new-random-game route.  The generated report validates
+# that each stage has a factory or an intentional internal dispatch path.
+boot_path:
+  0x11f8: {stage: title_movie, gap_bead: imperialism-decomp-1uj.57}
+  0x05dc: {stage: main_menu, gap_bead: imperialism-decomp-1uj.57}
+  0x03b8: {stage: random_game_setup, gap_bead: imperialism-decomp-1uj.57}
+  0x03c0: {stage: random_map_setup, gap_bead: imperialism-decomp-1uj.57}
+  0x05e4: {stage: game_session_transition, gap_bead: imperialism-decomp-1uj.57}
+  0x07dd: {stage: strategic_map, gap_bead: imperialism-decomp-1uj.57}
+
+screen_names:
+  0x0000: rebuild_registered_windows
+  0x0547: diplomacy_offer
+  0x05dc: main_menu
+  0x07d8: diplomacy_map
+  0x07d9: trade_overview
+  0x07da: industry_overview
+  0x07db: city_production
+  0x07dd: strategic_map
+  0x07de: transport
+  0x11f8: title_movie
+  0x2103: newspaper_status
+  0x2260: deal_book
+
+gap_owners:
+  0x0f0a: imperialism-decomp-1uj.58.13
+  0x1c52: imperialism-decomp-1uj.58.14
