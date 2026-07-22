@@ -207,7 +207,7 @@ void TIndustryView::UpdateFields() {
                               (secondaryMissing && secondaryResource == resource);
           SetIndustryControlEnabledIfChanged(child, shouldEnable);
         } else {
-          static_cast<TIndustryCluster*>(child)->RefreshBarFromSelectedMetric();
+          static_cast<TIndustryCluster*>(child)->UpdateMax();
         }
       }
     }

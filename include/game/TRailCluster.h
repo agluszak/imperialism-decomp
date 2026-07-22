@@ -1,13 +1,13 @@
 #pragma once
 
 #include "compat.h"
-#include "game/TUberCluster.h"
+#include "game/TAmtBarCluster.h"
 
 struct CRuntimeClass;
 class TAmtBar;
 
 // VTABLE: IMPERIALISM 0x666318
-class TRailCluster : public TUberCluster {
+class TRailCluster : public TAmtBarCluster {
 public:
   virtual ~TRailCluster() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -126,7 +126,7 @@ public:
   // slot 0x73 IsTradeControlAtMinimum inherited unchanged (0x5714e0)
   virtual void SetMoveAmount(short amount,
                              unsigned char updateControls); // slot 0x75 0x5899f0
-  virtual void SetMoveAmount(short amount);                 // slot 0x74 0x5899c0
+  void SetMoveAmount(short amount) override;                // slot 0x74 0x5899c0
   virtual void UpdateMax();                                 // slot 0x76 0x589d10
   TAmtBar* selectedMetricControl;                           // 0x88
   short selectedMetricValue;                                // 0x8c

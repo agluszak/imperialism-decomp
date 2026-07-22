@@ -11174,6 +11174,25 @@
       ],
       "source_file": "src/game/TModuleLibraryCacheTableStateB.cpp"
     },
+    "0x0049e6a0": {
+      "references": [
+        {
+          "group": 10039,
+          "index": 7,
+          "kind": "windows_gob",
+          "load_string_id": 20867,
+          "text": "Join a game"
+        },
+        {
+          "group": 10039,
+          "index": 8,
+          "kind": "windows_gob",
+          "load_string_id": 20868,
+          "text": "This is not a valid saved game."
+        }
+      ],
+      "source_file": "src/game/TAmbitFileBasedDocument.cpp"
+    },
     "0x004a1f80": {
       "references": [
         {
@@ -190848,7 +190867,7 @@
   "summary": {
     "embedded_globals": 770,
     "formula_matches": 2356,
-    "functions_with_references": 308,
+    "functions_with_references": 309,
     "mac_strings": 3821,
     "mac_strings_with_candidates": 3272,
     "text_resources": 182,

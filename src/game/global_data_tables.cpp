@@ -141,6 +141,13 @@ char g_vtblTSortedByRelationshipList = 0;
 int g_lastEdgeAutoScrollTick16 = 0;
 // GLOBAL: IMPERIALISM 0x00695278
 int g_nSaveFormatVersion = -1;
+// File header emitted by TAmbitFileBasedDocument::DoWrite and validated by DoRead.
+// GLOBAL: IMPERIALISM 0x0064c094
+extern const int g_nAmbitSaveFileMagic = 0x414d4249;
+// GLOBAL: IMPERIALISM 0x0064c098
+extern const int g_nCurrentAmbitSaveFormatVersion = 0x3e;
+// GLOBAL: IMPERIALISM 0x0069527c
+extern const char g_szUAmbitSourcePath[] = "D:\\Ambit\\Cross\\UAmbit.cpp";
 // Per-great-power quarter phase used to stagger the diplomacy planning pass.
 // GLOBAL: IMPERIALISM 0x00697818
 extern const short g_aDiplomacyPlanningQuarterPhaseByNation[7] = {0, 3, 1, 2, 1, 2, 0};
@@ -2137,6 +2144,12 @@ const char* const g_pszClientSavePrefix_0065BF5C = g_szClientSavePrefix_00697CBC
 // save-slot picker (0x56d2a0) and lifecycle hooks read it back. 0x30 bytes.
 // GLOBAL: IMPERIALISM 0x006a2178
 char g_ScenarioSaveNameBuffer_006A2178[0x30];
+// Modal placement used for invalid/cross-session save-file warnings.
+// GLOBAL: IMPERIALISM 0x006a2128
+POINT g_ptSaveLoadErrorModalMessage = {0, 0};
+// One-shot guard for TAmbitFileBasedDocument::SaveDocument's UAmbit.cpp assertion.
+// GLOBAL: IMPERIALISM 0x006a21c4
+int g_saveDocumentAssertGuard = 0;
 // Default text returned for a null nation descriptor (points at g_szEmptyString).
 // GLOBAL: IMPERIALISM 0x00653300
 char* g_pszDescriptorDefaultName_00653300 = g_szEmptyString;

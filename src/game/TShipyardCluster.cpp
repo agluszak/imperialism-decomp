@@ -3,7 +3,6 @@
 #include "game/TShipyardCluster.h"
 
 #include "game/TAmtBar.h"
-#include "game/TUberCluster.h"
 #include "game/TView.h"
 #include "game/TGreatPower.h"
 #include "game/TCity.h"
@@ -34,26 +33,25 @@ static __inline TCity* GetNationCityStateBySlot(short slotId) {
 // SYNTHETIC: IMPERIALISM 0x0058a570
 // TShipyardCluster::GetRuntimeClass
 
-IMPLEMENT_DYNCREATE(TShipyardCluster, TUberCluster)
+IMPLEMENT_DYNCREATE(TShipyardCluster, TAmtBarCluster)
 
 // FUNCTION: IMPERIALISM 0x0058a590
-TShipyardCluster::TShipyardCluster() : TUberCluster(), field_88(0), field_8c(0), field_8e(0) {}
+TShipyardCluster::TShipyardCluster() : TAmtBarCluster(), field_88(0), field_8c(0), field_8e(0) {}
 
 // SYNTHETIC: IMPERIALISM 0x0058a5c0
 // TShipyardCluster::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x0058a610
 void TShipyardCluster::DoPostCreate(int styleSeed) {
-  (void)styleSeed;
   TCity* province = GetNationCityStateBySlot(g_pSimMgr->GetActiveNationId());
   field_88 = province != 0 ? (int)province->shipOrderSlots[0] : 0;
   field_8c = 999;
-  this->InitializeTradeMoveAndBarControls();
-  this->ApplyMoveValue(0);
+  TAmtBarCluster::DoPostCreate(styleSeed);
+  this->SetMoveAmount(0);
 }
 
 // FUNCTION: IMPERIALISM 0x0058a690
-void TShipyardCluster::ApplyMoveValue(int value) {
+void TShipyardCluster::SetMoveAmount(short amount) {
   TAmtBar* moveControl = reinterpret_cast<TAmtBar*>(this->ResolveControlByTag(kControlTagMove));
   if (moveControl == 0) {
     GAME_FAIL_NIL_POINTER();
@@ -90,8 +88,8 @@ void TShipyardCluster::ApplyMoveValue(int value) {
     reinterpret_cast<TView*>(this)->InvalidateCityDialogRectRegion(&invalidateRect, 1);
   }
 
-  static_cast<TIndustryCluster*>(this->ownerContext)->RefreshBarFromSelectedMetric();
-  (void)value;
+  static_cast<TIndustryCluster*>(this->ownerContext)->UpdateMax();
+  (void)amount;
 }
 
 // FUNCTION: IMPERIALISM 0x0058a940
@@ -105,11 +103,12 @@ void TShipyardCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEve
         GAME_FAIL_NIL_POINTER();
       }
       int moveValue = moveControl->QueryValue();
-      this->ApplyMoveValue(moveValue + 1);
+      this->SetMoveAmount(static_cast<short>(moveValue + 1));
       return;
     }
     if (sourceControl->controlTag != (int)kControlTagLeft) {
-      this->HandleTradeMoveControlAdjustment(commandId, sourceControl, eventExtra);
+      TAmtBarCluster::DoEvent(commandId, static_cast<TEventHandler*>(sourceControl),
+                              reinterpret_cast<TEvent*>(eventExtra));
       return;
     }
     TAmtBar* moveControl = reinterpret_cast<TAmtBar*>(this->ResolveControlByTag(kControlTagMove));
@@ -118,11 +117,12 @@ void TShipyardCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEve
     }
     int moveValue = moveControl->QueryValue();
     if ((short)moveValue != 0) {
-      this->ApplyMoveValue(moveValue - 1);
+      this->SetMoveAmount(static_cast<short>(moveValue - 1));
       return;
     }
   } else {
-    this->HandleTradeMoveControlAdjustment(commandId, sourceControl, eventExtra);
+    TAmtBarCluster::DoEvent(commandId, static_cast<TEventHandler*>(sourceControl),
+                            reinterpret_cast<TEvent*>(eventExtra));
   }
 }
 

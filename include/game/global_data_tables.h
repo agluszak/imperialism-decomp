@@ -464,6 +464,9 @@ extern char* g_pStatusPictureMainSharedText_00668b88;
 extern char* g_pLoungeLocalPlayerNameSharedText_0065c160;
 extern int g_lastEdgeAutoScrollTick16;
 extern int g_nSaveFormatVersion;
+extern const int g_nAmbitSaveFileMagic;
+extern const int g_nCurrentAmbitSaveFormatVersion;
+extern const char g_szUAmbitSourcePath[];
 extern const short g_aDiplomacyPlanningQuarterPhaseByNation[7];
 extern const unsigned int g_anScenarioScriptInstructionTags[27];
 extern void (TSimMgr::* g_apfnScenarioScriptInstructionHandlers[27])(void*);
@@ -842,6 +845,8 @@ extern const char* const g_pszImpSaveExtension_0065DDD8;      // ".imp" @ 0x65dd
 extern "C" char g_szClientSavePrefix_00697CBC[];
 extern const char* const g_pszClientSavePrefix_0065BF5C; // "cli_" @ 0x65bf5c
 extern char g_ScenarioSaveNameBuffer_006A2178[0x30];     // scenario name for save flow
+extern POINT g_ptSaveLoadErrorModalMessage;
+extern int g_saveDocumentAssertGuard;
 extern char* g_pszDescriptorDefaultName_00653300;
 extern char g_szUiCloseParen_006973C8[];
 extern char g_szUiOpenParen_0069806C[];

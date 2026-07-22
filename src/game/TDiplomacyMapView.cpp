@@ -74,36 +74,82 @@ DiplomacyMaskBufferRun::~DiplomacyMaskBufferRun() {
   delete[] maskBytesAt00;
 }
 
-// Emits a "write this packed color dword" run into the primary JIT opcode buffer at the
-// cursor kept in the secondary buffer's first dword, then executes the assembled blit
-// opcodes against the destination surface. StrategicMapCallbackRecord is a game-specific
-// JIT blit-code builder (not an MFC collection): dispatchTable00/subobjectDispatchTable1c
-// point at game .rdata, the byte buffers are grown through the game's _realloc wrappers,
-// and the tail CALLs into the buffer itself.
+// Patches the generated packed-color write program and applies it to the destination pixels.
 // FUNCTION: IMPERIALISM 0x004d4bf0
-void StrategicMapCallbackRecord::AppendPackedColorDword(int surface, int packedColor) {
+void StrategicMapCallbackRecord::AppendPackedColorDword(unsigned char* destinationPixels,
+                                                        int packedColor) {
   const unsigned int packed = (packedColor & 0xff) * 0x01010101u;
 
-  // The secondary opcode buffer stores the primary-buffer write cursor in its first dword.
   if (cursorBufferSize24 == 0) {
-    ownedBuffer20 = new char[sizeof(int)];
-    cursorBufferSize24 = sizeof(int);
+    ownedBuffer20 = new int[1];
+    cursorBufferSize24 = 1;
   }
   if (cursorBufferInitialized28 == 0) {
     cursorBufferInitialized28 = 1;
   }
-  const int cursor = *reinterpret_cast<int*>(ownedBuffer20);
+  const int cursor = ownedBuffer20[0];
   *EnsureOpcodeBufferByteAtIndex(cursor) = static_cast<unsigned char>(packed);
   *EnsureOpcodeBufferByteAtIndex(cursor + 1) = static_cast<unsigned char>(packed >> 8);
   *EnsureOpcodeBufferByteAtIndex(cursor + 2) = static_cast<unsigned char>(packed >> 16);
   *EnsureOpcodeBufferByteAtIndex(cursor + 3) = static_cast<unsigned char>(packed >> 24);
 
-  // Grow the primary buffer to span the generated blit entry, then execute the opcodes.
-  // The original hands the destination surface to the generated code in eax, which has no
-  // standard C++ calling convention; this is an unavoidable low-level bridge (executing a
-  // JIT'd opcode buffer, not a normal-function convention fake).
-  unsigned char* entry = EnsureOpcodeBufferByteAtIndex(alignmentCursor14);
-  reinterpret_cast<void (*)(int)>(entry)(surface);
+  EnsureOpcodeBufferByteAtIndex(alignmentCursor14);
+  ApplyPackedColorToPixelBuffer(destinationPixels);
+}
+
+void StrategicMapCallbackRecord::ApplyPackedColorToPixelBuffer(unsigned char* destinationPixels) {
+  unsigned char* instruction = ownedBuffer04 + alignmentCursor14;
+  unsigned char* end = ownedBuffer04 + committedLength0c;
+  unsigned char* destinationBase = destinationPixels;
+  unsigned int packedColor = 0;
+
+  while (instruction < end) {
+    unsigned char opcode = *instruction++;
+    if (opcode == 0xc3) {
+      return;
+    }
+    if (opcode == 0xb9 && end - instruction >= 4) {
+      packedColor = static_cast<unsigned int>(instruction[0]) |
+                    (static_cast<unsigned int>(instruction[1]) << 8) |
+                    (static_cast<unsigned int>(instruction[2]) << 16) |
+                    (static_cast<unsigned int>(instruction[3]) << 24);
+      instruction += 4;
+      continue;
+    }
+    if (opcode == 0x05 && end - instruction >= 4) {
+      unsigned int advance = static_cast<unsigned int>(instruction[0]) |
+                             (static_cast<unsigned int>(instruction[1]) << 8) |
+                             (static_cast<unsigned int>(instruction[2]) << 16) |
+                             (static_cast<unsigned int>(instruction[3]) << 24);
+      destinationBase += advance;
+      instruction += 4;
+      continue;
+    }
+    if (opcode == 0x89 && end - instruction >= 2 && instruction[0] == 0x48) {
+      signed char displacement = static_cast<signed char>(instruction[1]);
+      destinationBase[displacement] = static_cast<unsigned char>(packedColor);
+      destinationBase[displacement + 1] = static_cast<unsigned char>(packedColor >> 8);
+      destinationBase[displacement + 2] = static_cast<unsigned char>(packedColor >> 16);
+      destinationBase[displacement + 3] = static_cast<unsigned char>(packedColor >> 24);
+      instruction += 2;
+      continue;
+    }
+    if (opcode == 0x66 && end - instruction >= 3 && instruction[0] == 0x89 &&
+        instruction[1] == 0x48) {
+      signed char displacement = static_cast<signed char>(instruction[2]);
+      destinationBase[displacement] = static_cast<unsigned char>(packedColor);
+      destinationBase[displacement + 1] = static_cast<unsigned char>(packedColor >> 8);
+      instruction += 3;
+      continue;
+    }
+    if (opcode == 0x88 && end - instruction >= 2 && instruction[0] == 0x48) {
+      signed char displacement = static_cast<signed char>(instruction[1]);
+      destinationBase[displacement] = static_cast<unsigned char>(packedColor);
+      instruction += 2;
+      continue;
+    }
+    return;
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x004d5cf0
@@ -930,8 +976,7 @@ void TDiplomacyMapView::RebuildDiplomacyLegendPaletteMode4AndBlit(int activeNati
 
       int packedColor = g_pUiRuntimeContext->GetColor(0x3f);
       packedColorRuns[nationIndex].AppendPackedColorDword(
-          reinterpret_cast<unsigned int>(g_pActiveQuickDrawSurfaceContext->GetBlitSurface()),
-          packedColor);
+          g_pActiveQuickDrawSurfaceContext->GetBlitSurface()->pixelBits, packedColor);
 
       nationIndex = static_cast<short>(nationIndex + 1);
     } while (nationIndex < 0x17);
@@ -1063,8 +1108,7 @@ void TDiplomacyMapView::RebuildDiplomacyLegendPaletteMode1AndBlit(int activeNati
 
         int packedColor = g_pUiRuntimeContext->GetColor(0x3f);
         packedColorRuns[terrainIndex].AppendPackedColorDword(
-            reinterpret_cast<unsigned int>(g_pActiveQuickDrawSurfaceContext->GetBlitSurface()),
-            packedColor);
+            g_pActiveQuickDrawSurfaceContext->GetBlitSurface()->pixelBits, packedColor);
       }
       terrainIndex++;
       terrainDescriptors++;
@@ -1095,8 +1139,8 @@ void TDiplomacyMapView::BuildTurnEventMonochromeMaskBuffers(int maskIndex, int e
 
   int packedColor = g_pUiRuntimeContext->GetColor(0x3f);
   StrategicMapCallbackRecord* packedRun = &packedColorRuns[maskIndex];
-  packedRun->AppendPackedColorDword(
-      reinterpret_cast<int>(g_pActiveQuickDrawSurfaceContext->GetBlitSurface()), packedColor);
+  packedRun->AppendPackedColorDword(g_pActiveQuickDrawSurfaceContext->GetBlitSurface()->pixelBits,
+                                    packedColor);
 }
 
 // FUNCTION: IMPERIALISM 0x004f6bd0
@@ -1165,7 +1209,7 @@ void TDiplomacyMapView::BlitDiplomacyMapEventPaletteMaskToSurface(short maskInde
   g_pModuleLibraryCacheState->ReleaseRecordByHandle(bmpHandle);
   int packedColor = g_pUiRuntimeContext->GetColor(0x3f);
   StrategicMapCallbackRecord* packedRun = &packedColorRuns[maskIndex];
-  packedRun->AppendPackedColorDword(reinterpret_cast<int>(surface->GetBlitSurface()), packedColor);
+  packedRun->AppendPackedColorDword(surface->GetBlitSurface()->pixelBits, packedColor);
 }
 
 // Selects a minister action topic: repositions the old/new topic buttons via

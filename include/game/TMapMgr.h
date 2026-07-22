@@ -185,6 +185,12 @@ void SplitTileIndexToHexRasterColumnX2AndRow(short tileIndex, short* outColX2,
 // 0x5125a0: tileIndex -> (row = tileIndex/0x6c, col = tileIndex%0x6c). Genuine __cdecl
 // free function (pure arithmetic); Ghidra's TMapDialog:: label is spurious (no `this`).
 void SplitTileIndexToRowAndColumn(short tileIndex, short* outRow, short* outCol);
+
+// 0x005114b0. Maps an editor river connection mask to the tile-sprite variant stored in
+// TTerrainStateRecordView::roadFlag. Water tiles accept only a single direction bit; land
+// tiles additionally accept the 16 supported two-direction masks. Returns -1 when invalid.
+short __stdcall ResolveRiverSpriteVariantForConnectionMask(unsigned char connectionMask,
+                                                           unsigned char waterTerrain);
 // 0x5123e0: recordBase + recordIndex * 0x6c (strided record address). __cdecl free function.
 int ComputeStridedRecordAddress6C(int recordBase, int recordIndex);
 // 0x563990 — walks the terrain-flow chain from tileIndex to the nearest sea tile.

@@ -179430,6 +179430,63 @@
         "owner_class": null,
         "recovered_source": "src/game/ui_invalidation_guard.cpp"
       },
+      "0x0049e6a0": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "definition_source": "src/game/global_data_tables.cpp",
+                "kind": "source_path_global_reference",
+                "path": "D:\\Ambit\\Cross\\UAmbit.cpp",
+                "symbol": "g_szUAmbitSourcePath"
+              }
+            ],
+            "module": "UAmbit.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "TAmbitFileBasedDocument::DoRead",
+        "owner_class": "TAmbitFileBasedDocument",
+        "recovered_source": "src/game/TAmbitFileBasedDocument.cpp"
+      },
+      "0x0049eb30": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "definition_source": "src/game/global_data_tables.cpp",
+                "kind": "source_path_global_reference",
+                "path": "D:\\Ambit\\Cross\\UAmbit.cpp",
+                "symbol": "g_szUAmbitSourcePath"
+              }
+            ],
+            "module": "UAmbit.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "TAmbitFileBasedDocument::DoWrite",
+        "owner_class": "TAmbitFileBasedDocument",
+        "recovered_source": "src/game/TAmbitFileBasedDocument.cpp"
+      },
+      "0x0049ee70": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "definition_source": "src/game/global_data_tables.cpp",
+                "kind": "source_path_global_reference",
+                "path": "D:\\Ambit\\Cross\\UAmbit.cpp",
+                "symbol": "g_szUAmbitSourcePath"
+              }
+            ],
+            "module": "UAmbit.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "TAmbitFileBasedDocument::SaveDocument",
+        "owner_class": "TAmbitFileBasedDocument",
+        "recovered_source": "src/game/TAmbitFileBasedDocument.cpp"
+      },
       "0x004a1f80": {
         "modules": [
           {
@@ -181538,6 +181595,16 @@
       }
     },
     "modules": {
+      "UAmbit.cpp": {
+        "classes": [
+          "TAmbitFileBasedDocument"
+        ],
+        "functions": [
+          "0x0049e6a0",
+          "0x0049eb30",
+          "0x0049ee70"
+        ]
+      },
       "UArmyMgr.cpp": {
         "classes": [
           "TArmyMgr",
@@ -181908,11 +181975,11 @@
     "classes_with_source_module_evidence": 16,
     "declared_classes": 152,
     "factories_with_source_module_candidates": 9,
-    "functions_with_source_module_evidence": 109,
+    "functions_with_source_module_evidence": 112,
     "nodes": 3263,
     "screens": 121,
     "screens_with_source_module_candidates": 26,
-    "source_modules": 34,
+    "source_modules": 35,
     "tags": 813
   },
   "tags": {
