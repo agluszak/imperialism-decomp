@@ -2,6 +2,7 @@
 
 #include "game/TObject.h"
 #include "game/mfc.h"
+#include "game/quickdraw_types.h"
 
 // Forward declarations for types referenced by generated signatures.
 class TStream;
@@ -140,7 +141,7 @@ public:
   // Mac CodeWarrior names/signatures identify this palette family as GetColor,
   // SetColor, SetForeColor, and SetBackColor. Windows listing supplies the
   // implementations and addresses.
-  int GetColor(short colorCode);
+  QuickDrawPaletteIndex GetColor(short colorCode);
   void SetColor(short colorCode, unsigned char foreground);
 
   // 0x5ddd20 — opens the civilian ledger (TSuperCivRoster) inside factory dialog

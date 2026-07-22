@@ -139,7 +139,8 @@ g_Build_Hex_Area_LookupTable_00696E70; rowDelta from LookupHexNeighborRowDeltaBy
 NormalizeWrappedMapCoord217x60; ComputeTileIndexFromHexColumnX2AndRow; clamp to [0,0x194f]).
 If a neighbor tile terrainType00==5, set result=1, then scan ITS 6 neighbors: if any
 neighbor2.ownerNationTag04 < 0x17 && != this tile's owner -> result=0. Also if
-neighbor.pad16 (offset 0x16) != -1 -> result=0. Fallback: if result==0 && tile.roadFlag
+neighbor.pad16 (offset 0x16) != -1 -> result=0. Fallback: if result==0 &&
+tile.riverSpriteCode
 (0x02) != 0 && EvaluateTerrainFlowCrossNationBoundaryToSea(idx)==0 -> result=1.
 All 3 hex helpers now ported (call directly, ignore ILT thunks 0x40676c/0x40907f/0x402338).
 **BLOCKER**: the fallback calls 0x563b70 (below), still a `(void)` stub -- must be ported

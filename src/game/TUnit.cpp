@@ -28,7 +28,7 @@ TUnit::TUnit() {
   field_10 = 0;
   nextOnTile = 0;
   tileIndex06 = static_cast<short>(0xffff);
-  field_8 = 0;
+  unitOrder = kUnitOrderIdle;
   field_1C = 0;
 }
 
@@ -42,7 +42,7 @@ TUnit::~TUnit() {}
 void TUnit::RegisterUnitOrderWithOwnerManager(short nOrderType, int pOwnerContext,
                                               short nOrderOwnerNationId, short arg3) {
   this->orderType = nOrderType;
-  this->field_8 = 0;
+  this->unitOrder = kUnitOrderIdle;
   this->VTableSlot10(pOwnerContext);
 
   // The order-owner "manager" is a real TSortedList: military units (field_1C != 0)
@@ -77,15 +77,15 @@ void TUnit::VTableSlot10(int pOwnerContext) {
 }
 
 // FUNCTION: IMPERIALISM 0x005c2630
-void TUnit::SetOrderModeSlot34(int mode, int payload) {
-  this->field_8 = mode;
+void TUnit::SetOrders(UnitOrder order, int payload) {
+  this->unitOrder = order;
   this->field_C = static_cast<short>(payload);
 }
 
 // FUNCTION: IMPERIALISM 0x005c2660
 void TUnit::ContinueOrders() {
-  if (this->field_8 - 2 != 0) {
-    this->field_8 = 0;
+  if (this->unitOrder - static_cast<UnitOrder>(2) != 0) {
+    this->unitOrder = kUnitOrderIdle;
   }
 }
 
@@ -120,7 +120,7 @@ void TUnit::ReadFrom(TStream* stream) {
   stream->ReadBytes(&field_18, 2);
   stream->ReadBytes(&field_1A, 2);
   stream->ReadBytes(&field_1C, 1);
-  stream->ReadBytes(&field_8, 4);
+  stream->ReadBytes(&unitOrder, 4);
   short savedTileIndex = tileIndex06;
   if (savedTileIndex != -1) {
     short savedField_C = field_C;
@@ -142,6 +142,6 @@ void TUnit::WriteTo(TStream* stream) {
   stream->WriteBytesSlot78(&field_18, 2);
   stream->WriteBytesSlot78(&field_1A, 2);
   stream->WriteBytesSlot78(&field_1C, 1);
-  stream->WriteBytesSlot78(&field_8, 4);
+  stream->WriteBytesSlot78(&unitOrder, 4);
   stream->WriteBytesSlot78(&field_20, 4);
 }

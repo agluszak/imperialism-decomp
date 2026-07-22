@@ -80,12 +80,12 @@ float TruncatedScoreFactorToFloat(float score) {
 //     g_Populate_Beachhead_Mission_LookupTable_00697958), cached in both
 //     g_afNationOrderQueueDivergence_006a3a88 and its mirror at 006a3ac0.
 //  2. Accumulates a per-unit-type weighted vector over the nation's militaryUnitList44
-//     entries with a nonzero GetUnitMovementClassId ("mobile" units), normalized
+//     entries with a nonzero GetCategory ("mobile" units), normalized
 //     against two different slices of g_awTacticalCompositionReferenceProfiles_00697870
 //     -- one cached as the "mobile unit score" (006a3b88), the other as a divergence
 //     figure (006a3ae0).
 //  3. Continues accumulating the same vector over the remaining ("static",
-//     GetUnitMovementClassId == 0) units without resetting it, then re-normalizes
+//     GetCategory == 0) units without resetting it, then re-normalizes
 //     the combined vector the same way into g_afNationCombinedUnitDivergence_006a3b50.
 //  4. Scales the mobile-unit score by the nation's military-power-to-navy-order-cost
 //     ratio (capped at 1.0) into g_afNationWeightedMilitaryOrderScore_006a3b20.
@@ -134,7 +134,7 @@ void RecomputeNationOrderPriorityMetrics() {
     CIterator mobileIter(nation->militaryUnitList44);
     for (TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(mobileIter.Reset()); mobileIter.More();
          unit = static_cast<TMilitaryUnit*>(mobileIter.Advance())) {
-      if (unit->GetUnitMovementClassId() != 0) {
+      if (unit->GetCategory() != EncodeArmyUnitCategory(kArmyUnitCategoryMilitia)) {
         AccumulateUnitOrderPriorityVectorContribution(unit, unitVector, 1.0f, 0.33f);
       }
     }
@@ -177,7 +177,7 @@ void RecomputeNationOrderPriorityMetrics() {
     CIterator staticIter(nation->militaryUnitList44);
     for (TMilitaryUnit* staticUnit = static_cast<TMilitaryUnit*>(staticIter.Reset());
          staticIter.More(); staticUnit = static_cast<TMilitaryUnit*>(staticIter.Advance())) {
-      if (staticUnit->GetUnitMovementClassId() == 0) {
+      if (staticUnit->GetCategory() == EncodeArmyUnitCategory(kArmyUnitCategoryMilitia)) {
         AccumulateUnitOrderPriorityVectorContribution(staticUnit, unitVector, 1.0f, 0.33f);
       }
     }

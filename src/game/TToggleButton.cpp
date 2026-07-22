@@ -82,18 +82,14 @@ char TToggleButton::HandleMouseDown(const CPoint& point, TToolboxEvent* event, C
     return 0;
   }
   bool isFieldWithinLimit = this->IsSelected();
-  bool isOwnerWithinLimit = false;
-  if (this->ownerContext != nullptr) {
-    isOwnerWithinLimit = static_cast<TToggleButton*>(this->ownerContext)->IsSelected();
-  }
-  if (!isFieldWithinLimit && !isOwnerWithinLimit) {
+  if (!isFieldWithinLimit && !static_cast<TToggleButton*>(this->ownerContext)->IsSelected()) {
     return 1;
   }
   this->Select(!isFieldWithinLimit, 1);
-  if (!isFieldWithinLimit) {
-    this->ownerContext->HandleEvent(0x68, this, nullptr);
-  } else {
+  if (isFieldWithinLimit) {
     this->ownerContext->HandleEvent(0x67, this, nullptr);
+  } else {
+    this->ownerContext->HandleEvent(0x68, this, nullptr);
   }
   return 1;
 }

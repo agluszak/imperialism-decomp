@@ -1,7 +1,7 @@
 // TMapMaker::RotateMapColumnsByPeakCityTileDensity (0x00529960) -- a UMapper.cpp pass that
 // rotates the 108-column tile map horizontally so the column band with the highest city-tile
-// density is recentred. It finds the peak of a 3-column sliding sum of city tiles
-// (tile[0]==5) over the 60 rows (row stride 0xf30 = 108*0x24), nudges an empty peak column to
+// density is recentred. It finds the peak of a 3-column sliding sum of water tiles over the
+// 60 rows (row stride 0xf30 = 108*0x24), nudges an empty peak column to
 // the midpoint of the nearest non-empty columns on either side, then copies the whole grid
 // into a scratch buffer and writes it back column-rotated by that amount. Own translation
 // unit (like the other UMapper routines).
@@ -15,12 +15,12 @@
 
 namespace {
 
-// City tiles (tile[0]==5) in one 60-row column, starting at byte pointer `column`.
+// Water tiles in one 60-row column, starting at byte pointer `column`.
 inline int CountCityTilesInColumn(char* column) {
   int count = 0;
   int rows = 0x3c;
   do {
-    if (*column == '\x05') {
+    if (*column == kStrategicTerrainWater) {
       count = count + 1;
     }
     column = column + 0xf30;

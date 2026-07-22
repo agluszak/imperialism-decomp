@@ -86,8 +86,7 @@ void TTown::WriteTo(TStream* stream) {
 
 static __inline short TownNeighborTile(TTown* town, int direction) {
   if (direction < 6) {
-    return TMapMgr::GetWrappedHexNeighborTileIndexByDirection(town->tileIndex14,
-                                                              static_cast<short>(direction));
+    return TMapMgr::GetNeighborTileID(town->tileIndex14, static_cast<short>(direction));
   }
   return town->tileIndex14;
 }
@@ -123,7 +122,7 @@ void TTown::CalculateRawResources() {
     TTerrainStateRecordView* tile = &g_pGlobalMapState->terrainStateTable[tileIndex];
     if (!((tile->ownerNationTag04 == ownerNation1c &&
            tile->regionSubtypeTag05 == townRegionClass) ||
-          tile->terrainType00 == 5)) {
+          tile->GetTerrainKind() == kStrategicTerrainWater)) {
       continue;
     }
 
@@ -135,7 +134,7 @@ void TTown::CalculateRawResources() {
         resourceYieldByType[resource] = static_cast<short>(resourceYieldByType[resource] + amount);
       }
     }
-    if (tile->roadFlag != 0 && enabledFlag4d) {
+    if (tile->riverSpriteCode != kRiverSpriteCodeNone && enabledFlag4d) {
       ++resourceYieldByType[0x13];
     }
     AddAdjacentCityDevelopment(this, tileIndex);
@@ -199,7 +198,8 @@ void TTown::CalculateCityResources() {
     }
 
     TTerrainStateRecordView* tile = &g_pGlobalMapState->terrainStateTable[tileIndex];
-    if (tile->ownerNationTag04 != ownerNation1c && tile->terrainType00 != 5) {
+    if (tile->ownerNationTag04 != ownerNation1c &&
+        tile->GetTerrainKind() != kStrategicTerrainWater) {
       continue;
     }
 
@@ -215,7 +215,7 @@ void TTown::CalculateCityResources() {
       resourceYieldByType[resource] = static_cast<short>(resourceYieldByType[resource] + amount);
     }
 
-    if (tile->roadFlag != 0 && enabledFlag4d) {
+    if (tile->riverSpriteCode != kRiverSpriteCodeNone && enabledFlag4d) {
       ++resourceYieldByType[0x13];
     }
   }

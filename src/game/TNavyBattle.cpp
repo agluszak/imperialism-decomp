@@ -26,7 +26,7 @@ IMPLEMENT_DYNCREATE(TNavyBattle, TTacticalBattle)
 TNavyBattle::TNavyBattle() {}
 
 // FUNCTION: IMPERIALISM 0x005a55c0
-void TNavyBattle::DeployTacticalUnitToTile(TTacticalUnit* unit, int tileIndex) {
+void TNavyBattle::DeployTacticalUnitToTile(TTacticalUnit* unit, TacticalTileIndex tileIndex) {
   // A ship may only deploy on its side's two deploy rows (side 0: rows
   // battlefieldColumnCount34-6..-5; side 1: rows 5..6 -- the field acts as a row
   // bound here) onto an empty tile. On success it places the ship, invalidates its
@@ -94,8 +94,8 @@ void TNavyBattle::DeployTacticalUnitToTile(TTacticalUnit* unit, int tileIndex) {
 // ship-panel toggle), invalidates the defender's tile, and if destroyed clears it from
 // the grid and plays the sinking effect; on a miss, plays the splash effect instead.
 // FUNCTION: IMPERIALISM 0x005a5730
-void TNavyBattle::EvaluateAndResolveTacticalActionAgainstTileOccupant(TTacticalUnit* attackerUnit,
-                                                                      int targetTileIndex) {
+void TNavyBattle::EvaluateAndResolveTacticalActionAgainstTileOccupant(
+    TTacticalUnit* attackerUnit, TacticalTileIndex targetTileIndex) {
   TNavyTacUnit* defenderUnit = static_cast<TNavyTacUnit*>(tileGrid4[targetTileIndex].occupant4);
   defenderUnit->AssertValid();
 
@@ -157,8 +157,8 @@ void TNavyBattle::EvaluateAndResolveTacticalActionAgainstTileOccupant(TTacticalU
 }
 
 // FUNCTION: IMPERIALISM 0x005a59a0
-void __stdcall ConvertHexTileIndexToRowAndDoubleColumn(int tileIndex, unsigned int* outRow,
-                                                       int* outCol2X) {
+void __stdcall ConvertHexTileIndexToRowAndDoubleColumn(TacticalTileIndex tileIndex,
+                                                       unsigned int* outRow, int* outCol2X) {
   *outRow = tileIndex / 0x1d;
   *outCol2X = (tileIndex / 0x1d & 1) + (tileIndex % 0x1d) * 2;
 }
@@ -167,7 +167,7 @@ void __stdcall ConvertHexTileIndexToRowAndDoubleColumn(int tileIndex, unsigned i
 void TNavyBattle::ComputeTacticalReachableTileCostsByUnitCategory(TTacticalUnit* unit) {
   int actionPoints = unit->actionPoints28;
   short* moveCosts = tileMoveCostArray24;
-  int tileIndex;
+  TacticalTileIndex tileIndex;
   for (tileIndex = 0; tileIndex < tacticalTileCount3c; ++tileIndex) {
     moveCosts[tileIndex] = -1;
   }
@@ -181,11 +181,11 @@ void TNavyBattle::ComputeTacticalReachableTileCostsByUnitCategory(TTacticalUnit*
         continue;
       }
 
-      int neighborTiles[6];
-      ComputeHexNeighborTileIndices_005A0420(tileIndex, neighborTiles);
+      TacticalTileIndex neighborTiles[6];
+      GetNeighborList(tileIndex, neighborTiles);
       int direction;
       for (direction = 0; direction < 6; ++direction) {
-        int neighborTile = neighborTiles[direction];
+        TacticalTileIndex neighborTile = neighborTiles[direction];
         if (neighborTile == -1 || tileGrid4[neighborTile].occupant4 != 0) {
           continue;
         }
@@ -212,15 +212,15 @@ undefined TNavyBattle::FinalizeTacticalBattleOutcome(int) {
 }
 
 // FUNCTION: IMPERIALISM 0x005a5bc0
-void TNavyBattle::ExecuteTacticalActionAndQueueEventIfNoAdjacentValidTarget(TTacticalUnit* unit,
-                                                                            int targetTileIndex) {
+void TNavyBattle::ExecuteTacticalActionAndQueueEventIfNoAdjacentValidTarget(
+    TTacticalUnit* unit, TacticalTileIndex targetTileIndex) {
   EvaluateAndResolveTacticalActionAgainstTileOccupant(unit, targetTileIndex);
   if (battleOutcomeCode44 == 0) {
-    int neighborTiles[6];
-    ComputeHexNeighborTileIndices_005A0420(selectedUnit1c->tileIndex8, neighborTiles);
+    TacticalTileIndex neighborTiles[6];
+    GetNeighborList(selectedUnit1c->tileIndex8, neighborTiles);
     int direction;
     for (direction = 0; direction < 6; ++direction) {
-      int neighborTile = neighborTiles[direction];
+      TacticalTileIndex neighborTile = neighborTiles[direction];
       if (neighborTile != -1) {
         short moveCost = tileMoveCostArray24[neighborTile];
         if (moveCost != -1 && moveCost <= selectedUnit1c->actionPoints28) {
@@ -234,14 +234,14 @@ void TNavyBattle::ExecuteTacticalActionAndQueueEventIfNoAdjacentValidTarget(TTac
 
 // FUNCTION: IMPERIALISM 0x005a5c50
 void TNavyBattle::MoveTacticalUnitAndQueueEvent232AIfNoAdjacentReachableTarget(
-    TTacticalUnit* unit, int targetTileIndex) {
+    TTacticalUnit* unit, TacticalTileIndex targetTileIndex) {
   MoveTacticalUnitTowardTile(unit, targetTileIndex);
   if (unit->selectedFlag18 == 0) {
-    int neighborTiles[6];
-    ComputeHexNeighborTileIndices_005A0420(selectedUnit1c->tileIndex8, neighborTiles);
+    TacticalTileIndex neighborTiles[6];
+    GetNeighborList(selectedUnit1c->tileIndex8, neighborTiles);
     int direction;
     for (direction = 0; direction < 6; ++direction) {
-      int neighborTile = neighborTiles[direction];
+      TacticalTileIndex neighborTile = neighborTiles[direction];
       if (neighborTile != -1) {
         short moveCost = tileMoveCostArray24[neighborTile];
         if (moveCost != -1 && moveCost <= selectedUnit1c->actionPoints28) {

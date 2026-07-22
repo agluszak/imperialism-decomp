@@ -9,13 +9,13 @@
 #include "game/UiRuntimeContext.h"
 
 // FUNCTION: IMPERIALISM 0x005408c0
-char TProxyGreatPower::IsClient() {
-  return 1;
+bool TProxyGreatPower::IsClient() {
+  return true;
 }
 
 // FUNCTION: IMPERIALISM 0x005408e0
-char TProxyGreatPower::IsRemote(void) {
-  return 1;
+bool TProxyGreatPower::IsRemote(void) {
+  return true;
 }
 
 // FUNCTION: IMPERIALISM 0x00540900
@@ -62,9 +62,9 @@ void TProxyGreatPower::AddToTreasury(int amount) {
 void TProxyGreatPower::DispatchTurnEvent2103WithNationFromRecord() {}
 
 // FUNCTION: IMPERIALISM 0x00540ac0
-void TProxyGreatPower::QueueDiplomacyProposalCodeForTargetNation(short proposalCode,
-                                                                 short targetNationId) {
-  TGreatPower::QueueDiplomacyProposalCodeForTargetNation(proposalCode, targetNationId);
+void TProxyGreatPower::QueueDiplomacyProposalCodeForTargetNation(
+    DiplomacyProposalCodeStorage proposalCode, NationSlot targetNationSlot) {
+  TGreatPower::QueueDiplomacyProposalCodeForTargetNation(proposalCode, targetNationSlot);
 
   TurnEvent16DiplomacyProposalPacket packetPayload;
   packetPayload.messageTag = 0x74696D65;
@@ -73,7 +73,7 @@ void TProxyGreatPower::QueueDiplomacyProposalCodeForTargetNation(short proposalC
   packetPayload.eventCode = 0x16;
   packetPayload.messageLength = 0x20;
   packetPayload.proposalCode1A = proposalCode;
-  packetPayload.targetNationId1C = targetNationId;
+  packetPayload.targetNationId1C = targetNationSlot;
 
   packetPayload.DestinateToGP(static_cast<int>(this->nationSlot));
   g_pNetMgr006a6014->Send(&packetPayload, 0);
@@ -108,11 +108,12 @@ void TProxyGreatPower::SorryYouLose() {
 }
 
 // FUNCTION: IMPERIALISM 0x00540cf0
-int TProxyGreatPower::CheckTransitionSlot27C(int targetNation, int sourceNation) {
+int TProxyGreatPower::HandleWarTransitionRequest(int targetNation, int sourceNation) {
   return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x00540dc0
-int TProxyGreatPower::PropagateWarTransitionSlot280(int targetNation, int sourceNation, int mode) {
+int TProxyGreatPower::HandleWarTransitionRequestWithRoleSwap(int targetNation, int sourceNation,
+                                                             char swapRoles) {
   return 0;
 }

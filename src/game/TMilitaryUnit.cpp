@@ -43,17 +43,17 @@ TMilitaryUnit::TMilitaryUnit()
 TMilitaryUnit::~TMilitaryUnit() {}
 
 // FUNCTION: IMPERIALISM 0x005c2f50
-void TMilitaryUnit::InitializeRecruitOrderState(short capValue, int nodeContext, short nationSlot,
-                                                short registerArg3) {
+void TMilitaryUnit::IMilitaryUnit(MilitaryUnitKindStorage unitKind, int nodeContext,
+                                  short nationSlot, short registerArg3) {
   field_1C = 1;
   tileIndex06 = static_cast<short>(-1);
-  RegisterUnitOrderWithOwnerManager(capValue, nodeContext, nationSlot, registerArg3);
+  RegisterUnitOrderWithOwnerManager(unitKind, nodeContext, nationSlot, registerArg3);
   field_36 = static_cast<short>(
-      (static_cast<int>(capValue) + (static_cast<int>(capValue) >> 31 & 7)) >> 3);
-  if (capValue >= 0x1b) {
+      (static_cast<int>(unitKind) + (static_cast<int>(unitKind) >> 31 & 7)) >> 3);
+  if (unitKind >= EncodeMilitaryUnitKind(kMilitaryUnitGeneralEra1)) {
     g_apTerrainTypeDescriptorTable[nationSlot]->GenerateEthnicName(&name24);
   }
-  CopyUnitCurrentTileIntoOrderTargets();
+  ClearPath();
 }
 
 static void SwapAdjacentBytesInShortArray(short* entries, int pairCount) {
@@ -109,7 +109,7 @@ void TMilitaryUnit::WriteTo(TStream* stream) {
 }
 
 // FUNCTION: IMPERIALISM 0x005c3190
-void TMilitaryUnit::CopyUnitCurrentTileIntoOrderTargets() {
+void TMilitaryUnit::ClearPath() {
   short tile = tileIndex06;
   short* cursor = orderTargetTilesMirror2E;
   int remaining = 3;
@@ -127,7 +127,7 @@ void TMilitaryUnit::DetachUnitOrderFromOwnerAndReset() {
     ownerMission40->RejectConstituent(this, 1);
   }
   VTableSlot10(-1);
-  CopyUnitCurrentTileIntoOrderTargets();
+  ClearPath();
 }
 
 // Moves this unit between two regions' priority-ordered stationed-unit chains
@@ -218,9 +218,11 @@ void TMilitaryUnit::VTableSlot10(int pOwnerContext) {
 }
 
 // FUNCTION: IMPERIALISM 0x005c3400
-short TMilitaryUnit::GetUnitTypeCostPoints() {
-  short unitType = orderType;
-  if (unitType == 0x1b || unitType == 0x1c || unitType == 0x1d) {
+short TMilitaryUnit::GetArmsCarried() const {
+  MilitaryUnitKindStorage unitType = orderType;
+  if (unitType == EncodeMilitaryUnitKind(kMilitaryUnitGeneralEra1) ||
+      unitType == EncodeMilitaryUnitKind(kMilitaryUnitGeneralEra2) ||
+      unitType == EncodeMilitaryUnitKind(kMilitaryUnitGeneralEra3)) {
     return 1;
   }
   if (g_aUnitOrderCostProfileByAbilityId[unitType][1] == 0x10) {
@@ -230,7 +232,7 @@ short TMilitaryUnit::GetUnitTypeCostPoints() {
 }
 
 // FUNCTION: IMPERIALISM 0x005c3450
-short GetCityActionGateValueBySlot(int slot) {
+short TMilitaryUnit::GetTypeArmsCarried(int slot) {
   if (g_aUnitOrderCostProfileByAbilityId[slot][1] == 0x10) {
     return g_aUnitOrderCostProfileByAbilityId[slot][2];
   }
@@ -238,47 +240,50 @@ short GetCityActionGateValueBySlot(int slot) {
 }
 
 // FUNCTION: IMPERIALISM 0x005c3490
-short TMilitaryUnit::GetUnitMovementClassId() {
+ArmyUnitCategoryStorage TMilitaryUnit::GetCategory() const {
   return g_awTacticalUnitCategoryCodeBySlot[this->orderType];
 }
 
 // FUNCTION: IMPERIALISM 0x005c34b0
-short GetCityActionCategoryCodeBySlot(short slot) {
+ArmyUnitCategoryStorage TMilitaryUnit::GetTypeCategory(MilitaryUnitKindStorage slot) {
   return g_awTacticalUnitCategoryCodeBySlot[slot];
 }
 
 // FUNCTION: IMPERIALISM 0x005c34d0
-short TMilitaryUnit::IsNotStationedInProvince(short provinceId) {
+short TMilitaryUnit::GetTurnDistanceTo(short provinceId) const {
   return tileIndex06 != provinceId;
 }
 
 // FUNCTION: IMPERIALISM 0x005c3500
-bool TMilitaryUnit::MatchesTargetTileOrBypass(short bypassTileFilter, short targetTile) {
-  if (bypassTileFilter == 0) {
+bool TMilitaryUnit::IsWithinXTurnsOf(short turnLimit, short targetTile) const {
+  if (turnLimit == 0) {
     return tileIndex06 == targetTile;
   }
   return true;
 }
 
 // FUNCTION: IMPERIALISM 0x005c3530
-short TMilitaryUnit::GetUnitTypeStatPercent(short statIndex) {
+short TMilitaryUnit::GetAttribute(short statIndex) const {
   return static_cast<short>((g_UnitTypeStatTable_0066EB88[orderType][statIndex] * 100) /
                             g_UnitTypeStatDivisorTable_0066ED30[statIndex]);
 }
 
 // FUNCTION: IMPERIALISM 0x005c3580
-short GetNormalizedCityActionResourceCostPercent(short unitType, short statIndex) {
+short TMilitaryUnit::GetTypeAttribute(MilitaryUnitKindStorage unitType, short statIndex) {
   return static_cast<short>((g_UnitTypeStatTable_0066EB88[unitType][statIndex] * 100) /
                             g_UnitTypeStatDivisorTable_0066ED30[statIndex]);
 }
 
 // FUNCTION: IMPERIALISM 0x005c35c0
-short TMilitaryUnit::ResolveEraCapabilityFallbackSlot() {
-  short unitType = orderType;
-  short candidate;
-  if (unitType < 0x10) {
+MilitaryUnitKindStorage TMilitaryUnit::UpgradeType() {
+  MilitaryUnitKindStorage unitType = orderType;
+  MilitaryUnitKindStorage candidate;
+  if (unitType < EncodeMilitaryUnitKind(kMilitaryUnitConscripts)) {
     candidate = static_cast<short>(unitType + 8);
-  } else if (unitType == 0x18 || unitType == 0x19 || unitType == 0x1b || unitType == 0x1c) {
+  } else if (unitType == EncodeMilitaryUnitKind(kMilitaryUnitSappers) ||
+             unitType == EncodeMilitaryUnitKind(kMilitaryUnitCombatEngineers) ||
+             unitType == EncodeMilitaryUnitKind(kMilitaryUnitGeneralEra1) ||
+             unitType == EncodeMilitaryUnitKind(kMilitaryUnitGeneralEra2)) {
     candidate = static_cast<short>(unitType + 1);
   } else {
     return -1;
@@ -293,16 +298,16 @@ short TMilitaryUnit::ResolveEraCapabilityFallbackSlot() {
 }
 
 // FUNCTION: IMPERIALISM 0x005c3650
-bool TMilitaryUnit::HasEraCapabilityFallbackSlot() {
-  return ResolveEraCapabilityFallbackSlot() != -1;
+bool TMilitaryUnit::CanUpgrade() {
+  return UpgradeType() != -1;
 }
 
 // FUNCTION: IMPERIALISM 0x005c3670
-bool TMilitaryUnit::ApplyEraCapabilityCostAndSetSelection() {
-  if (ResolveEraCapabilityFallbackSlot() == -1) {
+bool TMilitaryUnit::Upgrade() {
+  if (UpgradeType() == -1) {
     return false;
   }
-  short candidate = ResolveEraCapabilityFallbackSlot();
+  short candidate = UpgradeType();
   short primaryCost = g_aUnitOrderCostProfileByAbilityId[candidate][2];
   short cashCost = g_aUnitOrderCostProfileByAbilityId[candidate][5];
   short secondaryCost;
@@ -333,20 +338,20 @@ bool TMilitaryUnit::ApplyEraCapabilityCostAndSetSelection() {
 }
 
 // FUNCTION: IMPERIALISM 0x005c3840
-void TMilitaryUnit::GetEraCapabilityFallbackCosts(short* candidateSlot, short* armsCost,
-                                                  short* cashCost, short* fuelCost) {
-  *candidateSlot = ResolveEraCapabilityFallbackSlot();
-  *armsCost = g_aiCityActionCostProfiles[*candidateSlot].primaryMetricMultiplier;
-  *cashCost = g_aiCityActionCostProfiles[*candidateSlot].baseCost;
-  if (g_aiCityActionCostProfiles[*candidateSlot].secondaryMetricCode == 0xc) {
-    *fuelCost = g_aiCityActionCostProfiles[*candidateSlot].secondaryMetricMultiplier;
+void TMilitaryUnit::UpgradeRequirements(short& candidateSlot, short& armsCost, short& cashCost,
+                                        short& fuelCost) {
+  candidateSlot = UpgradeType();
+  armsCost = g_aiCityActionCostProfiles[candidateSlot].primaryMetricMultiplier;
+  cashCost = g_aiCityActionCostProfiles[candidateSlot].baseCost;
+  if (g_aiCityActionCostProfiles[candidateSlot].secondaryMetricCode == 0xc) {
+    fuelCost = g_aiCityActionCostProfiles[candidateSlot].secondaryMetricMultiplier;
   } else {
-    *fuelCost = 0;
+    fuelCost = 0;
   }
 }
 
 // FUNCTION: IMPERIALISM 0x005c38e0
-TMilitaryUnit* FindMilitaryUnitByIdAcrossTerrainDescriptors(int unitId) {
+TMilitaryUnit* TMilitaryUnit::FindUnitByUID(int unitId) {
   if (unitId == 0) {
     return 0;
   }

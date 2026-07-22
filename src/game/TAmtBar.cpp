@@ -13,9 +13,9 @@
 #include "game/mfc.h"
 
 // FUNCTION: IMPERIALISM 0x00586e50
-int TAmtBar::ApplyMoveClamp(int baseValue, int requestedValue) {
+short TAmtBar::ApplyMoveClamp(int baseValue, int requestedValue) {
   (void)requestedValue;
-  return (int)(short)baseValue;
+  return baseValue;
 }
 
 void TAmtBar::SetBarMetric(int value, int range) {
@@ -147,9 +147,9 @@ void TAmtBar::ClampAndApplyTradeMoveValue(int requestedValue) {
     baseValue = 0;
   }
 
-  int appliedValue = ApplyMoveClamp(baseValue, requestedValue);
+  short appliedValue = ApplyMoveClamp(baseValue, requestedValue);
   TView* owner = GetWindow();
-  if (((short)appliedValue == 0) && requestedValue != 0) {
+  if ((appliedValue == 0) && requestedValue != 0) {
     TAmtBar* fallbackControl =
         reinterpret_cast<TAmtBar*>(owner->ResolveControlByTag(kControlTagMove));
     if (fallbackControl == 0) {

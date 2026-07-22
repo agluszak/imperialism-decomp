@@ -185,17 +185,17 @@ void TAmbitApplication::HandleCursor(int x, int y, void* cursorRegion) {
             if (pt.y < height + 200) {
               char edgeMask = 0;
               if (pt.x <= 4) {
-                edgeMask = 8;
+                edgeMask = kMapScrollEdgeLeft;
               } else if (pt.x >= width - 4) {
-                edgeMask = 4;
+                edgeMask = kMapScrollEdgeRight;
               }
               if (pt.y <= 4) {
                 // The strategic-map backing surface is vertically reflected relative to
                 // the window coordinate system.  Feed the map's "down-row" bit at the
                 // top window edge so the visible viewport moves upward.
-                edgeMask |= 2;
+                edgeMask |= kMapScrollEdgeTop;
               } else if (pt.y >= height - 4) {
-                edgeMask |= 1;
+                edgeMask |= kMapScrollEdgeBottom;
               }
               if (edgeMask != 0) {
                 int ticks = GetTickCountDiv16();
@@ -205,7 +205,7 @@ void TAmbitApplication::HandleCursor(int x, int y, void* cursorRegion) {
                 // starving the wood frame and toolbar paints.
                 if (g_lastEdgeAutoScrollTick16 > ticks || g_lastEdgeAutoScrollTick16 + 12 < ticks) {
                   g_lastEdgeAutoScrollTick16 = ticks;
-                  edgeScrollTarget48->AutoScrollByEdgeMask(edgeMask);
+                  edgeScrollTarget48->Scroll(edgeMask);
                   return;
                 }
               }

@@ -41,7 +41,7 @@
 #include "game/TToolBarCluster.h"
 #include "game/TPicture.h"
 #include "game/nation_slot_eligibility.h"
-#include "game/turn_flow_cooldown.h" // IsTurnCooldownCounterActiveOrResetFlag
+#include "game/turn_flow_cooldown.h" // IsTurnFlowCooldownActiveAndResetExpiredState
 #include "game/ui_invalidation_guard.h"
 #include "game/TMultiplayerMgr.h"
 #include "game/TCluster.h"
@@ -182,7 +182,7 @@ void TViewMgr::WriteTo(TStream* stream) {
 }
 
 // FUNCTION: IMPERIALISM 0x005d5270
-int TViewMgr::GetColor(short eventCode) {
+QuickDrawPaletteIndex TViewMgr::GetColor(short eventCode) {
   if (200 < eventCode) {
     if (eventCode < 0x2b68) {
       if (eventCode == 0x2b67) {
@@ -342,7 +342,7 @@ int TViewMgr::GetColor(short eventCode) {
 
 // FUNCTION: IMPERIALISM 0x005d5710
 void TViewMgr::SetColor(short colorCode, unsigned char foreground) {
-  int paletteIndex = GetColor(colorCode);
+  QuickDrawPaletteIndex paletteIndex = GetColor(colorCode);
   if (foreground != 0) {
     SetQuickDrawFillColorFromPaletteIndex(static_cast<unsigned short>(paletteIndex));
   } else {
@@ -352,19 +352,19 @@ void TViewMgr::SetColor(short colorCode, unsigned char foreground) {
 
 // FUNCTION: IMPERIALISM 0x005d5750
 void TViewMgr::SetForeColor(short colorCode) {
-  int paletteIndex = GetColor(colorCode);
+  QuickDrawPaletteIndex paletteIndex = GetColor(colorCode);
   SetQuickDrawFillColorFromPaletteIndex(static_cast<unsigned short>(paletteIndex));
 }
 
 // FUNCTION: IMPERIALISM 0x005d5780
 void TViewMgr::SetBackColor(short colorCode) {
-  int paletteIndex = GetColor(colorCode);
+  QuickDrawPaletteIndex paletteIndex = GetColor(colorCode);
   UpdatePaletteIndexWithDefaultFallback(paletteIndex);
 }
 
 // FUNCTION: IMPERIALISM 0x005d57b0
 void TViewMgr::HandleTurnEventVtableSlot40RefreshGoldDialog() {
-  if (IsTurnCooldownCounterActiveOrResetFlag() != 0) {
+  if (IsTurnFlowCooldownActiveAndResetExpiredState() != 0) {
     return;
   }
   TurnEventDialogNode* node = static_cast<TurnEventDialogNode*>(
@@ -950,7 +950,7 @@ char TViewMgr::MakeDiplomacyOfferDialog(short sourceNation, short targetNation,
 
 // FUNCTION: IMPERIALISM 0x005d7100
 char TViewMgr::PoseWarOfferIfTurnFlowReady(int sourceNation, int arg1, int arg2, int promptCode) {
-  if (IsTurnCooldownCounterActiveOrResetFlag()) {
+  if (IsTurnFlowCooldownActiveAndResetExpiredState()) {
     return 1;
   }
   TView* activeDialog = g_pDisplayMgr->activeDialog;
@@ -1091,7 +1091,7 @@ void DispatchPostTurnStateUpdatesTail() {
   if (g_pHelpMgr == nullptr) {
     return;
   }
-  if (IsTurnCooldownCounterActiveOrResetFlag() != 0) {
+  if (IsTurnFlowCooldownActiveAndResetExpiredState() != 0) {
     return;
   }
   g_pHelpMgr->HandlePostDispatchTurnStateEventUpdates();
@@ -1820,8 +1820,8 @@ void TViewMgr::HandleTurnEventDialogFactorySlotF8() {
   g_pCursorControlPanel->SetTextStyle(styleDescriptor, 1);
   g_pCursorControlPanel->SetTextAlignmentAndMaybeRefresh(1, 0);
 
-  int mappedStyleFlags = 0;
-  MapUiThemeCodeToStyleFlags(0x2b6b, &mappedStyleFlags);
+  COLORREF mappedStyleFlags = 0;
+  ResolveUiThemeColor(0x2b6b, &mappedStyleFlags);
   g_pCursorControlPanel->shadowTextColor9C = mappedStyleFlags;
   g_pCursorControlPanel->dropShadowEnabledA0 = true;
 
@@ -2418,9 +2418,10 @@ void TViewMgr::ShowCivilianLedgerDialogAndSelectUnit() {
 
   if (selectedIndex != -1) {
     this->mapUberPictureF0->NoticeTile(selectedIndex);
-    int orderState =
-        g_pGlobalMapState->terrainStateTable[selectedIndex].firstCivilianOrder20->field_8;
-    if (orderState == 0 || orderState == 3 || orderState == 2) {
+    UnitOrder orderState =
+        g_pGlobalMapState->terrainStateTable[selectedIndex].firstCivilianOrder20->unitOrder;
+    if (orderState == kUnitOrderIdle || orderState == static_cast<UnitOrder>(3) ||
+        orderState == static_cast<UnitOrder>(2)) {
       g_pSelectedCivilianOrderState->HandleCivilianTileSelectionOrReportClick(selectedIndex, 2);
     }
   }
@@ -2466,8 +2467,8 @@ int TViewMgr::MakePlanetSeedDialog(const char* instruction, CString& planetSeed,
   planetEdit->SetEditSelectionAndScrollCaret(0, static_cast<short>(editText.GetLength()), 1);
   dialog->SetWindowTarget(planetEdit);
 
-  int mappedThemeValue = 0;
-  MapUiThemeCodeToStyleFlags(0x2b6c, &mappedThemeValue);
+  COLORREF mappedThemeValue = 0;
+  ResolveUiThemeColor(0x2b6c, &mappedThemeValue);
   RGBQUAD mappedTheme;
   mappedTheme.rgbBlue = static_cast<BYTE>(mappedThemeValue);
   mappedTheme.rgbGreen = static_cast<BYTE>(mappedThemeValue >> 8);

@@ -148,8 +148,8 @@ void TRailAmtBar::RenderQuickDrawOverlayWithHitRegion(short selectedValue) {
       RECT invalidRect;
       invalidRect.left = translatedOrigin.x;
       invalidRect.top = translatedOrigin.y;
-      invalidRect.right = translatedOrigin.x + (int)(short)frameWidth34;
-      invalidRect.bottom = translatedOrigin.y + (int)(short)frameHeight38;
+      invalidRect.right = translatedOrigin.x + frameWidth34;
+      invalidRect.bottom = translatedOrigin.y + frameHeight38;
       InvalidateCityDialogRectRegion(&invalidRect, 1);
     }
   }

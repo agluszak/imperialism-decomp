@@ -42,8 +42,8 @@ void TTextPictureButton::Draw(RECT* rectBuffer) {
   int pressedOffset = (controlState64 != 0) ? 1 : 0;
 
   ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, pointSize98, themeCode9C);
-  int shadowColor;
-  MapUiThemeCodeToStyleFlags(themeCode9C, &shadowColor);
+  COLORREF shadowColor;
+  ResolveUiThemeColor(themeCode9C, &shadowColor);
   SetQuickDrawColorAndSyncGlobals(shadowColor);
 
   short textWidth = MeasureTextExtentWithCachedQuickDrawStyle(&buttonText);
@@ -59,8 +59,8 @@ void TTextPictureButton::Draw(RECT* rectBuffer) {
       static_cast<short>(frameHeight38 / 2 + quarterHeight + 1 + pressedOffset));
   DrawTextWithCachedQuickDrawStyleState(&buttonText);
 
-  int textColor;
-  MapUiThemeCodeToStyleFlags(themeCode9A, &textColor);
+  COLORREF textColor;
+  ResolveUiThemeColor(themeCode9A, &textColor);
   SetQuickDrawColorAndSyncGlobals(textColor);
 
   SetQuickDrawTextOriginWithContextOffset(

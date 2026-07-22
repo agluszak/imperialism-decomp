@@ -95,7 +95,7 @@ TSimMgr* g_pSimMgr = 0;
 // GLOBAL: IMPERIALISM 0x006a21b8
 THelpMgr* g_pHelpMgr = 0;
 // GLOBAL: IMPERIALISM 0x006a43e8
-TNewsMgr* g_pInterNationEventQueueManager = 0;
+TNewsMgr* g_pNewsMgr = 0;
 // GLOBAL: IMPERIALISM 0x006a1344
 TAmbitApplication* g_pGlobalUiRootController = 0;
 // GLOBAL: IMPERIALISM 0x006a43c8
@@ -446,6 +446,10 @@ int g_diplomacyActionButtonTagTable_00696960[6] = {0x696e666f, 0x74727479, 0x677
 // GLOBAL: IMPERIALISM 0x00696978
 unsigned int g_councilControlTagTable[6] = {0x696e6674, 0x74727474, 0x67726174,
                                             0x74726174, 0x636f7574, 0x6f666672};
+// Relation-tier to QuickDraw palette color-code map used by the diplomacy legend.
+// The caller at 0x004f6568 uses a signed relation tier and a two-byte stride.
+// GLOBAL: IMPERIALISM 0x00696990
+short g_aDiplomacyRelationPaletteColorCodes[7] = {0x40, 0x40, 0x41, 0x42, 0x43, 0x40, 0x44};
 // TInfoPanelView::Draw label-column coordinates, in the panel's parent coordinate space.
 // GLOBAL: IMPERIALISM 0x006969b0
 short g_infoPanelLabelXByRow_006969b0[4] = {0x48, 0x48, 0x48, 0x48};
@@ -489,9 +493,9 @@ int g_bQuickDrawStrokePairDirty = 0;
 // GLOBAL: IMPERIALISM 0x006a1da8
 CRgn* g_pGlobalClipRegionHandleObject = nullptr;
 // GLOBAL: IMPERIALISM 0x006950fc
-int g_Quick_Draw_Color_State_006950FC = 0x010000FF;
+COLORREF g_QuickDrawForegroundColor = PALETTEINDEX(0xff);
 // GLOBAL: IMPERIALISM 0x00695100
-int g_uQuickDrawStrokeColor = 0x01000000;
+COLORREF g_QuickDrawBackgroundColor = PALETTEINDEX(0);
 // Cached UI CFont built from the last text-style preset (quickdraw_rendering.cpp,
 // 0x494130/0x4944e0). Left zero-initialized to match the original .data image: the
 // 0x494460 CRT static-init function seeds mode/flag2/pointSize/styleRef6 to 0xc and
@@ -949,17 +953,18 @@ float g_Compute_Advisory_Peer_LookupTable_00653724 = -0.5f;
 float g_ApplyIndexedResourceDeltaScale_00653728 = -1.0f / 255.0f;
 
 // Per-unit-type military stat records (0xe-byte records, 7 shorts each), rebased
-// from the earlier 0x695CD4 model: TMilitaryUnit::GetUnitTypeCostPoints (0x5c3400)
+// from the earlier 0x695CD4 model: TMilitaryUnit::GetArmsCarried (0x5c3400)
 // reads the category flag at record offset +0 (0x695cd2; 0x10 = counted) and the
 // power/cost points at +2 (0x695cd4, the short the slot 0x8e-0x9c score family sums).
 
 // Per-unit-type stat table (7 shorts per type; rows for unit types 0x00-0x1d) and
-// per-stat divisor baseline used by TMilitaryUnit::GetUnitTypeStatPercent (0x5c3530).
+// per-stat divisor baseline used by TMilitaryUnit::GetAttribute (0x5c3530).
 short g_UnitTypeStatTable_0066EB88[30][7] = {0};
 short g_UnitTypeStatDivisorTable_0066ED30[7] = {0};
 
 // Per-order-type sort priority (short table at 0x6966d0), used by the TGreatPower
-// slot 0x55 tracked-order selection sort (0x004e0290).
+// slot 0x55 tracked-order selection sort (0x004e0290). The following string begins at
+// 0x6966e8, fixing the table's extent at twelve shorts.
 short g_DAT_006966d0_Value_006966D0[12] = {2, 0, 4, 3, 1, 5, 0, 0, 0, 0, 0, 0};
 
 // Cursor resource id by civilian-tile-order action code (short table at 0x696678, 12
@@ -1001,8 +1006,8 @@ int g_anUnitTypeTacticalRangeByType_006699E8[30] = {5,  5,  5,  5,  3,  3,  9,  
                                                     10, 12, 15, 17, 5,  8,  10, 0,  0,  0};
 
 // GLOBAL: IMPERIALISM 0x00695528
-short g_awTacticalUnitCategoryCodeBySlot[32] = {0, 1, 2, 3, 4, 5, 6, 7, 0, 1, 2, 3, 4, 5, 6, 7,
-                                                0, 1, 2, 3, 4, 5, 6, 7, 8, 8, 8, 9, 9, 9, 0, 0};
+ArmyUnitCategoryStorage g_awTacticalUnitCategoryCodeBySlot[32] = {
+    0, 1, 2, 3, 4, 5, 6, 7, 0, 1, 2, 3, 4, 5, 6, 7, 0, 1, 2, 3, 4, 5, 6, 7, 8, 8, 8, 9, 9, 9, 0, 0};
 
 // Per-unit-type combat/composition class (short table at 0x695380, 30 unit types + 2
 // pad).
@@ -1047,8 +1052,8 @@ unsigned char g_abUniversityRequirementLevelById[24][4] = {
 int g_UniversityRequirementResourceTypeTable[30] = {3,  4,  21, 22, -1, -1, -1, -1, 0,  17,
                                                     18, -1, 2,  -1, -1, -1, -1, -1, -1, -1,
                                                     1,  20, -1, -1, 19, -1, -1, -1, -1, -1};
-// Per-resourceType "requires tiered nibble" boolean flag table. Read by the same function
-// above; only nonzero-ness is consumed there.
+// Per-resourceType "requires tiered nibble" byte table. Read by the same function above;
+// only nonzero-ness is consumed, but retail stores resource type 6 as 6 rather than bool 1.
 unsigned char g_abResourceTypeUsesHighNibbleFlag[24] = {0, 0, 0, 1, 1, 0, 6, 0, 0, 0, 0, 0,
                                                         0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0};
 // Per-resourceType capability-category code. Read by FindMaxResourceCapabilityValueForTile
@@ -1073,20 +1078,17 @@ unsigned char g_abGateFlagQualifies[24] = {
     0, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff};
 
 // Doubled-column and row hex-direction deltas (direction 0..5), read by
-// GetWrappedHexNeighborTileIndexByDirection and BuildHexAreaTileIndexList to step across the
+// GetNeighborTileID and BuildHexAreaTileIndexList to step across the
 // 0x6c(108)-wide hex grid. Confirmed via raw read of the original .rdata bytes.
 short g_Build_Hex_Area_LookupTable_00696E70[6] = {1, 2, 1, -1, -2, -1};
 short g_Build_Hex_Area_LookupTable_00696E80[6] = {-1, 0, 1, 1, 0, -1};
 
-unsigned char g_abTerrainTypeSeedGateProfileA[6] = {1, 1, 0, 0, 0, 0};
+unsigned char g_abStrategicTerrainSeedGateProfileA[kStrategicTerrainCount] = {1, 1, 0, 0,
+                                                                              0, 0, 1, 1};
 
-short g_anTerrainTypeNeighborLinkPriority[8] = {10, 4, 7, 6, 8, 0, 9, 5};
+short g_anStrategicTerrainNeighborLinkPriority[kStrategicTerrainCount] = {10, 4, 7, 6, 8, 0, 9, 5};
 
 int g_nNextRegionMarkerId = 1;
-
-unsigned char g_bSeedGateNotifyFlag_00696f0a = 0;
-unsigned char g_bSeedGateNotifyFlag_00696f0b = 0;
-unsigned char g_bSeedGateNotifyFlag_00696f0c = 0;
 
 // Per-tile sprite-variant bitmap-strip offset tables, indexed [gateFlag][spriteVariantIndex01]
 // (or, for the 39-suffixed table, by spriteVariantIndex01 alone). Read by
@@ -1266,7 +1268,7 @@ float g_ArmyMissionCandidateScoreTable_006978f8[48] = {0};
 // GLOBAL: IMPERIALISM 0x0065aa30
 extern const double g_BeachheadMissionPriorityNormalization_0065AA30 = 100.0;
 
-// Random-roll scaling constants for TAutoGreatPower::AssignNeedSlotFromSourceSlot19C
+// Random-roll scaling constants for TAutoGreatPower::SetTradeOffersFor
 // (0x004e7680): 1/255 and 32767.
 double g_DAT_00653fc0_Value_00653FC0 = 0.00392156862745098;
 double g_DAT_00653fc8_Value_00653FC8 = 32767.0;
@@ -1293,6 +1295,7 @@ double g_Compute_Advisory_OnePointFive_00654008 = 1.5;
 
 // Scenario-level relation preset rows (0x17 shorts per row, stride 0x2e), loaded into
 // the relation manager's city stock block by TGreatPower slot 0x39 (0x004df810).
+// difficultyLevel is 0..4; the runtime-class object at 0x653658 follows row four.
 short g_Rebuild_Primary_Nation_Value_00653570[5][0x17] = {
     {20, 20, 40, 30, 30, 10, 0, 20, 20, 20, 20, 20, 0, 10, 10, 10, 10, 10, 5, 0, 5, 0, 0},
     {5, 5, 10, 5, 5, 2, 0, 20, 10, 15, 8, 10, 0, 5, 5, 0, 0, 10, 5, 0, 5, 0, 0},
@@ -1420,8 +1423,11 @@ CString g_cstrCountryNameSettingValue006A4220;
 TSetupRandomMapPicture* g_pActiveRandomMapSetupPicture006A4268 = 0;
 
 extern "C" {
+// Five fort levels occupy 0x65318a..0x653193; the civilian cost table starts at 0x653194.
 short g_awEngineerFortBuildCostByLevel[5] = {5000, 7500, 10000, 0, 0};
-int g_adwEngineerRailBuildCostByTerrainType[8] = {100, 150, 200, 400, 300, 0, 150, 100};
+// One cost per StrategicTerrainKind; TCivMgr::classTCivMgr starts at 0x6531f8.
+int g_adwEngineerRailBuildCostByTerrainType[kStrategicTerrainCount] = {100, 150, 200, 400,
+                                                                       300, 0,   150, 100};
 // Civilian work-order rescind refund by cost class (nibble from
 // GetTileCivilianWorkOrderCostClassNibble); -1 entries are unused classes.
 int g_adwCivilianWorkOrderCostByClass[16] = {100, 1000, 5000, -1, -1, -1, 0, 1,
@@ -1465,7 +1471,7 @@ const unsigned int g_tradeCommodityRowTagTable[17] = {
     0x6d613520, 0x67643020, 0x67643120, 0x67643220, 0x67643320};
 
 // GLOBAL: IMPERIALISM 0x006a58c8
-int g_defaultDropShadowTextColor = 0;
+COLORREF g_defaultDropShadowTextColor = 0;
 // 26 (start, end) capability-priority range pairs walked by
 // TTechMgr::GenerateRandomCapabilityPrioritySlots. The reccmp symbol points at pair 0's END
 // value; pair 0's START value (1) lives one short earlier and is read via cursor[-1].
@@ -1617,7 +1623,7 @@ int g_nRandomMapSelectedNationSlot00698AB0 = -1;
 // GLOBAL: IMPERIALISM 0x00698ae0
 char g_szCountryNameProfileKey00698AE0[] = "CountryName";
 
-// Turn-flow cooldown defer counter and side flag (IsTurnCooldownCounterActiveOrResetFlag).
+// Turn-flow cooldown defer counter and side flag (IsTurnFlowCooldownActiveAndResetExpiredState).
 // GLOBAL: IMPERIALISM 0x006a43c4
 short g_nTurnCooldownDeferCounter006A43C4 = 0;
 // GLOBAL: IMPERIALISM 0x006a43c0 — set once scenario/turn-flow bootstrap completes.
@@ -3589,7 +3595,7 @@ char s_mcflavor_0069b638[] = "";
 // GLOBAL: IMPERIALISM 0x0069b640
 char s_mcflavor_0069b640[] = "";
 // GLOBAL: IMPERIALISM 0x0069b7fc
-char s_Data_scores_dat_0069b7fc[] = "Data/scores.dat"; // forward slash in the original binary
+char s_Data_scores_dat_0069b7fc[] = "Data/scores.dat";
 
 // Screen-offset scale (-0.3125 = -5/16) applied to a tile's isometric screen offset when
 // positioning the hex-neighbor highlight polygon (BuildHexNeighborHighlightPolygonForTile

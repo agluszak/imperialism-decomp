@@ -23,13 +23,13 @@ TMission* TEscortMission::GetReplacementSlot48() {
 }
 
 // FUNCTION: IMPERIALISM 0x00539920
-char TEscortMission::IsHospitalMission() const {
-  return 1;
+bool TEscortMission::IsHospitalMission() const {
+  return true;
 }
 
 // FUNCTION: IMPERIALISM 0x00539940
-char TEscortMission::IsDefensiveSeaZoneMission() const {
-  return 0;
+bool TEscortMission::IsDefensiveSeaZoneMission() const {
+  return false;
 }
 // SYNTHETIC: IMPERIALISM 0x00539960
 // TEscortMission::`scalar deleting destructor'
@@ -96,7 +96,7 @@ void TEscortMission::CalculateImportance() {
 // port zone's cached-owner context (FindFirstPortZoneContextByNation +
 // primaryNeighbors.EnsureSlotAllocatedAndReturnPointer(0), the same idiom
 // CalculateImportance above uses) and scores that context's tagged primary navy order-list
-// ships (gated by TDiplomacyMgr::HasPolicyWithNationSlot44) into a 4-category vector --
+// ships (gated by TDiplomacyMgr::IsNationPairAtWar) into a 4-category vector --
 // categories 0-2 scaled by strength/normalizationBase, category 3 unscaled -- via the
 // same per-ship math as AccumulateNavyOrderCategoryVectorWithScale, but inlined here rather
 // than calling out (no CALL to 0x537c60 in the raw listing; same inlining choice as
@@ -146,7 +146,7 @@ void TEscortMission::CalculateNeeds() {
       if (node->location != targetContext) {
         continue;
       }
-      if (!g_pDiplomacyTurnStateManager->HasPolicyWithNationSlot44(nationId04, node->nation)) {
+      if (!g_pDiplomacyTurnStateManager->IsNationPairAtWar(nationId04, node->nation)) {
         continue;
       }
       short normalizationBase = node->GetMaxStrength();
@@ -190,7 +190,7 @@ void TEscortMission::CalculateNeeds() {
 }
 
 // FUNCTION: IMPERIALISM 0x0053a250
-char TEscortMission::Matches(eMissionType missionType, int key, TZone* zoneContext) const {
+bool TEscortMission::Matches(eMissionType missionType, int key, TZone* zoneContext) const {
   (void)key;
   return (missionType == kMissionTypeAttackProvince || missionType == kMissionTypeDefendProvince) &&
          zoneContext == targetZone14;

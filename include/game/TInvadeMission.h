@@ -41,15 +41,15 @@ public:
   virtual void GiveOrders() override; // slot 0x11 0x53f780 -- refresh beachhead node / repath
   virtual TMission*
   GetReplacementSlot48() override; // slot 0x12 0x53fe10 -- reset target terrain class + refresh
-  virtual char Matches(eMissionType missionType, int key,
+  virtual bool Matches(eMissionType missionType, int key,
                        TZone* zoneContext) const override; // slot 0x13 0x53fbc0
 
-  virtual char IsArmyMission() const override; // slot 0x14 0x53faa0
-  virtual char IsNavyMission() const override; // slot 0x15 0x53f140
+  virtual bool IsArmyMission() const override; // slot 0x14 0x53faa0
+  virtual bool IsNavyMission() const override; // slot 0x15 0x53f140
 
   virtual TMission* GetNavyMission() override; // slot 0x17 0x53f120 -- returns beachhead34
 
-  virtual char IsHospitalMission() const override; // slot 0x19 0x53f240
+  virtual bool IsHospitalMission() const override; // slot 0x19 0x53f240
 
   virtual float
   IndustrialCostOfNeeds() override; // slot 0x1b 0x53f1f0 -- composite score with beachhead

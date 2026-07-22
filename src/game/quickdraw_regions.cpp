@@ -30,7 +30,7 @@ int PtInRgn(CPoint* point, RgnHandle rgn) {
   unsigned char empty = 1;
   if (rgn != 0) {
     Region* region = *rgn;
-    if ((HRGN)region->rgn != 0) {
+    if (static_cast<HRGN>(region->rgn) != 0) {
       ::GetRgnBox(static_cast<HRGN>(region->rgn.m_hObject), &region->rgnBBox);
       RECT box;
       ::CopyRect(&box, &region->rgnBBox);
@@ -72,7 +72,7 @@ void GetClip(RgnHandle rgn) {
   if (dc == 0) {
     dc = g_pScopedMapQuickDrawDcHandleObject;
   }
-  if (::GetClipRgn(dc->GetSafeHdc(), (HRGN)(*rgn)->rgn) == -1) {
+  if (::GetClipRgn(dc->GetSafeHdc(), static_cast<HRGN>((*rgn)->rgn)) == -1) {
     dc = g_pQuickDrawMemoryDc;
     if (dc == 0) {
       dc = g_pScopedMapQuickDrawDcHandleObject;
@@ -96,8 +96,8 @@ void GetClip(RgnHandle rgn) {
 void SetClip(RgnHandle rgn) {
   // Direct read of the static-initialized global (no null-guard on it, matching the
   // original -- the 0x494040 CRT init guarantees it is set before any SetClip call).
-  ::CombineRgn(static_cast<HRGN>(g_pGlobalClipRegionHandleObject->m_hObject), (HRGN)(*rgn)->rgn, 0,
-               RGN_COPY);
+  ::CombineRgn(static_cast<HRGN>(g_pGlobalClipRegionHandleObject->m_hObject),
+               static_cast<HRGN>((*rgn)->rgn), 0, RGN_COPY);
 }
 
 // ClipRect: vestigial in the Windows port — builds a rect region and immediately
@@ -126,7 +126,8 @@ void UnionRgn(RgnHandle srcA, RgnHandle srcB, RgnHandle dst) {
   CRgn* rgnB = &(*srcB)->rgn;
   CRgn* rgnA = &(*srcA)->rgn;
   CRgn* rgnDst = &(*dst)->rgn;
-  ::CombineRgn(static_cast<HRGN>(rgnDst->m_hObject), (HRGN)*rgnA, (HRGN)*rgnB, RGN_OR);
+  ::CombineRgn(static_cast<HRGN>(rgnDst->m_hObject), static_cast<HRGN>(*rgnA),
+               static_cast<HRGN>(*rgnB), RGN_OR);
   ::GetRgnBox(static_cast<HRGN>((*dst)->rgn.m_hObject), &(*dst)->rgnBBox);
 }
 
@@ -139,7 +140,7 @@ void SetEmptyRgn(RgnHandle rgn) {
 
 // FUNCTION: IMPERIALISM 0x00497860
 void QDFrameRgn(RgnHandle rgn) {
-  CBrush brush(static_cast<COLORREF>(g_Quick_Draw_Color_State_006950FC));
+  CBrush brush(g_QuickDrawForegroundColor);
   CDC* dc = g_pQuickDrawMemoryDc;
   if (dc == 0) {
     dc = g_pScopedMapQuickDrawDcHandleObject;
@@ -154,7 +155,7 @@ void QDFrameRgn(RgnHandle rgn) {
 void CopyRgn(RgnHandle src, RgnHandle dst) {
   CRgn* srcRgn = &(*src)->rgn;
   CRgn* dstRgn = &(*dst)->rgn;
-  ::CombineRgn(static_cast<HRGN>(dstRgn->m_hObject), (HRGN)*srcRgn, 0, RGN_COPY);
+  ::CombineRgn(static_cast<HRGN>(dstRgn->m_hObject), static_cast<HRGN>(*srcRgn), 0, RGN_COPY);
   ::GetRgnBox(static_cast<HRGN>((*dst)->rgn.m_hObject), &(*dst)->rgnBBox);
 }
 
@@ -193,12 +194,13 @@ void QDFrameRect(RECT* rect) {
   if (g_hOpenRgnAccumulator != 0) {
     CRgn rectRegion;
     rectRegion.Attach(::CreateRectRgnIndirect(rect));
-    ::CombineRgn(g_hOpenRgnAccumulator, g_hOpenRgnAccumulator, (HRGN)rectRegion, RGN_XOR);
+    ::CombineRgn(g_hOpenRgnAccumulator, g_hOpenRgnAccumulator, static_cast<HRGN>(rectRegion),
+                 RGN_XOR);
     rectRegion.DeleteObject();
     return;
   }
 
-  CBrush brush(static_cast<COLORREF>(g_Quick_Draw_Color_State_006950FC));
+  CBrush brush(g_QuickDrawForegroundColor);
   RECT frameRect;
   ::CopyRect(&frameRect, rect);
   if (g_pActiveQuickDrawSurfaceContextHead == &g_defaultQuickDrawSurfaceSentinel) {
@@ -208,7 +210,7 @@ void QDFrameRect(RECT* rect) {
   if (dc == 0) {
     dc = g_pScopedMapQuickDrawDcHandleObject;
   }
-  ::FrameRect(dc->m_hDC, &frameRect, (HBRUSH)brush);
+  ::FrameRect(dc->m_hDC, &frameRect, static_cast<HBRUSH>(brush));
 }
 
 // EmptyRgn: true when the handle carries no region or its bounding box is empty.
@@ -216,7 +218,7 @@ void QDFrameRect(RECT* rect) {
 unsigned char EmptyRgn(RgnHandle rgn) {
   if (rgn != 0) {
     Region* region = *rgn;
-    if ((HRGN)region->rgn != 0) {
+    if (static_cast<HRGN>(region->rgn) != 0) {
       ::GetRgnBox(static_cast<HRGN>(region->rgn.m_hObject), &region->rgnBBox);
       RECT box;
       ::CopyRect(&box, &region->rgnBBox);

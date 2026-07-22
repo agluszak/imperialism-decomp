@@ -11,7 +11,7 @@ public:
   virtual ~TIconBar() override;
 
   virtual void Draw(RECT* rectBuffer) override;
-  virtual void SetPictureResourceIdAndRefresh(short nPictureId, bool fRefreshNow) override;
+  virtual void SetPictureResourceIdAndRefresh(short nPictureId, unsigned char fRefreshNow) override;
   virtual void SetNumIcons(short numIcons);
   virtual void SetNumIcons(short numIcons, unsigned char refreshNow);
 

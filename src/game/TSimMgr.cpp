@@ -203,9 +203,9 @@ void TSimMgr::Free() {
     g_pCityOrderCapabilityState->Free();
     g_pCityOrderCapabilityState = nullptr;
   }
-  if (g_pInterNationEventQueueManager != nullptr) {
-    g_pInterNationEventQueueManager->Free();
-    g_pInterNationEventQueueManager = nullptr;
+  if (g_pNewsMgr != nullptr) {
+    g_pNewsMgr->Free();
+    g_pNewsMgr = nullptr;
   }
   if (g_pSelectedCivilianOrderState != nullptr) {
     g_pSelectedCivilianOrderState->Free();
@@ -440,13 +440,13 @@ void TSimMgr::RebuildGlobalOrderManagersAndCapabilityState(char flag) {
     tradeManager->InitializeNationInteractionStateManagerDefaults();
     g_pNationInteractionStateManager = tradeManager;
 
-    if (g_pInterNationEventQueueManager != nullptr) {
-      g_pInterNationEventQueueManager->Free();
-      g_pInterNationEventQueueManager = nullptr;
+    if (g_pNewsMgr != nullptr) {
+      g_pNewsMgr->Free();
+      g_pNewsMgr = nullptr;
     }
     TNewsMgr* newsManager = new TNewsMgr();
-    newsManager->InitializeInterNationEventQueueManager();
-    g_pInterNationEventQueueManager = newsManager;
+    newsManager->InitializeNewsManager();
+    g_pNewsMgr = newsManager;
 
     if (g_pMapContextActionManager != nullptr) {
       g_pMapContextActionManager->Free();
@@ -593,8 +593,8 @@ void TSimMgr::RebuildNationStateSlotsAndAvailability(int activate) {
     g_pCityOrderCapabilityState->GenerateRandomCapabilityPrioritySlots();
     g_pGlobalMapState->GenerateProvinceNames();
     RegenerateAllMapActionContextStatusCodes();
-    g_pInterNationEventQueueManager->QueueInterNationEventType11(999, 1, 1);
-    g_pInterNationEventQueueManager->QueueInterNationEventType11(999, 2, 1);
+    g_pNewsMgr->AddMiscEvent(999, 1, 1);
+    g_pNewsMgr->AddMiscEvent(999, 2, 1);
 
     const char* tagText = g_pGlobalMapState->scenarioTagText1c;
     if (tagText[0] == '.') {
@@ -765,7 +765,7 @@ void TSimMgr::RebuildSecondaryNationStateForSlot(int slotIndex) {
     g_apSecondaryNationStateSlots[nationIndex] = nullptr;
     g_apTerrainTypeDescriptorTable[nationIndex] = nullptr;
     minor = new TRemoteMinor();
-    minor->InitializeSecondaryNationStateAndSelectHomeTile(slotIndex);
+    minor->InitializeSecondaryNationStateAndSelectHomeTile(static_cast<NationSlot>(slotIndex));
   } else if (nationIndex < numMinorCountries + 7) {
     if (g_apSecondaryNationStateSlots[nationIndex] != nullptr) {
       g_apSecondaryNationStateSlots[nationIndex]->Free();
@@ -774,7 +774,7 @@ void TSimMgr::RebuildSecondaryNationStateForSlot(int slotIndex) {
     g_apTerrainTypeDescriptorTable[nationIndex] = nullptr;
 
     minor = new TMinor();
-    minor->InitializeSecondaryNationStateAndSelectHomeTile(slotIndex);
+    minor->InitializeSecondaryNationStateAndSelectHomeTile(static_cast<NationSlot>(slotIndex));
 
     g_apSecondaryNationStateSlots[nationIndex] = minor;
     g_apTerrainTypeDescriptorTable[nationIndex] = minor;
@@ -788,8 +788,8 @@ void TSimMgr::RebuildSecondaryNationStateForSlot(int slotIndex) {
       int remainingOrders = 2;
       do {
         TMilitaryUnit* order = new TMilitaryUnit();
-        order->InitializeRecruitOrderState(2, cityRecordIndex, slotIndex, 0);
-        order->SetOrderModeSlot34(2, -1);
+        order->IMilitaryUnit(2, cityRecordIndex, slotIndex, 0);
+        order->SetOrders(static_cast<UnitOrder>(2), -1);
         --remainingOrders;
       } while (remainingOrders != 0);
 
@@ -899,7 +899,7 @@ void TSimMgr::DoCityAndTransport() {
       --nationSlot;
       continue;
     }
-    int shouldRunHandlers = !(*nation)->IsRemote();
+    bool shouldRunHandlers = !(*nation)->IsRemote();
     if (shouldRunHandlers) {
       (*nation)->FillInteriorMinisterOrders();
       (*nation)->NotifyCitySlot2C();
@@ -1123,7 +1123,7 @@ CString TSimMgr::DiplomacyNoticeString(const DiplomacyNotice* notice) {
     result = noticeText;
     break;
   }
-  case 0x12d:
+  case kDiplomacyProposalJoinEmpire:
     if (rejected) {
       CString noticeText = countryName + " has rejected our invitation to join our Empire!";
       result = noticeText;
@@ -1133,7 +1133,7 @@ CString TSimMgr::DiplomacyNoticeString(const DiplomacyNotice* notice) {
       result = noticeText;
     }
     break;
-  case 0x12e:
+  case kDiplomacyProposalAlliance:
     if (rejected) {
       CString noticeText = countryName + " has rejected our offer of an alliance";
       result = noticeText;
@@ -1142,7 +1142,7 @@ CString TSimMgr::DiplomacyNoticeString(const DiplomacyNotice* notice) {
       result = noticeText;
     }
     break;
-  case 0x12f:
+  case kDiplomacyProposalNonAggressionPact:
     if (rejected) {
       CString noticeText = countryName + " has rejected our offer of a non-aggression pact";
       result = noticeText;
@@ -1151,7 +1151,7 @@ CString TSimMgr::DiplomacyNoticeString(const DiplomacyNotice* notice) {
       result = noticeText;
     }
     break;
-  case 0x130:
+  case kDiplomacyProposalPeaceTreaty:
     if (rejected) {
       CString noticeText = countryName + " has rejected our offer of a peace treaty.";
       result = noticeText;
@@ -1160,7 +1160,7 @@ CString TSimMgr::DiplomacyNoticeString(const DiplomacyNotice* notice) {
       result = noticeText;
     }
     break;
-  case 0x131: {
+  case kDiplomacyProposalDeclareWar: {
     CString noticeText = "War! " + countryName + "declares war on us!";
     result = noticeText;
     break;
@@ -1204,12 +1204,12 @@ int TSimMgr::GetNumCountries() {
 }
 
 // FUNCTION: IMPERIALISM 0x00581260
-short TSimMgr::GetActiveNationId() {
+NationSlot TSimMgr::GetActiveNationId() {
   return activeNationSlot;
 }
 
 // FUNCTION: IMPERIALISM 0x00581280
-char TSimMgr::IsNationSlotEligibleForEventProcessing(short nationSlot) {
+char TSimMgr::IsNationSlotEligibleForEventProcessing(NationSlot nationSlot) {
   if (nationSlot == -1) {
     return 0;
   }
@@ -1233,7 +1233,7 @@ char TSimMgr::IsNationSlotEligibleForEventProcessing(short nationSlot) {
 }
 
 // FUNCTION: IMPERIALISM 0x00581300
-void TSimMgr::RemoveNationSlotAndNotifyPeers(short nationSlot) {
+void TSimMgr::RemoveNationSlotAndNotifyPeers(NationSlot nationSlot) {
   // Neutralize the removed nation's diplomacy percent field on every other live slot. For
   // the seven great-power slots a nation whose terrain profile is in the reserved band
   // [100,200) is left alone; minor slots (i >= 7) and unreserved great powers are reset.
@@ -1681,9 +1681,9 @@ void TSimMgr::HandleTurnInstruction_Army_DeserializeAndCreateRecruitOrders(void*
       g_pGlobalMapState->cityScoreTable[static_cast<int>(regionToken)].ownerNationCode00;
   while (remaining > 0) {
     TMilitaryUnit* order = new TMilitaryUnit();
-    order->InitializeRecruitOrderState(static_cast<short>(orderTypeToken),
-                                       static_cast<int>(regionToken), ownerNationCode, 0);
-    order->SetOrderModeSlot34(2, -1);
+    order->IMilitaryUnit(static_cast<short>(orderTypeToken), static_cast<int>(regionToken),
+                         ownerNationCode, 0);
+    order->SetOrders(static_cast<UnitOrder>(2), -1);
     --remaining;
   }
 }
@@ -1710,7 +1710,7 @@ void TSimMgr::HandleTurnInstruction_Civi_DeserializeAndCreateWorkOrder(void* pIn
   int ownerNationTag =
       g_pGlobalMapState->terrainStateTable[static_cast<short>(terrainToken)].ownerNationTag04;
   TCivUnit* order = new TCivUnit();
-  order->InitializeCivWorkOrderState(orderTypeToken, terrainToken, ownerNationTag);
+  order->ICivUnit(static_cast<CivilianUnitKind>(orderTypeToken), terrainToken, ownerNationTag);
 }
 
 // Reads nation, navy-order type, map-action-context id, and count. It updates the
@@ -2041,10 +2041,10 @@ void TSimMgr::HandleTurnInstruction_Trea_ApplyTreatyAndRelationEntry(void* pInst
 
   int sourceNation = static_cast<int>(sourceToken);
   int targetNation = static_cast<int>(targetToken);
-  int relationCode = static_cast<int>(relationToken);
+  DiplomacyRelationship relationship = static_cast<DiplomacyRelationship>(relationToken);
   g_pDiplomacyTurnStateManager->SetNationPairDiplomacyRelationCodeFinal(sourceNation, targetNation,
-                                                                        relationCode);
-  if (relationCode == 5) {
+                                                                        relationship);
+  if (relationship == kDiplomacyRelationshipJoinedEmpire) {
     TDiplomacyMgr* diplomacy = g_pDiplomacyTurnStateManager;
     short relationSideEffect = 2;
     diplomacy->relationSideEffectMatrix1402[sourceNation * kNationSlotCount + targetNation] =
@@ -2407,7 +2407,7 @@ void TSimMgr::HandleTurnInstruction_Coun_SetCountrySlotState(void* pInstructionR
 }
 
 // FUNCTION: IMPERIALISM 0x005837c0
-void TSimMgr::SetActiveNationSlotAndRefreshCityCapabilityUiHandles(short nationSlot) {
+void TSimMgr::SetActiveNationSlotAndRefreshCityCapabilityUiHandles(NationSlot nationSlot) {
   activeNationSlot = nationSlot;
   g_pStrategicMapViewSystem->RefreshCityCapabilityUiHandlesForActiveNation();
 }

@@ -2,6 +2,7 @@
 #include "game/TSimMgr.h"
 
 #include "game/TAmtBar.h"
+#include "game/TBuildingView.h"
 #include "game/TView.h"
 #include "game/TGreatPower.h"
 #include "game/TCity.h"
@@ -24,16 +25,14 @@ const int kAssertLineRatioB = 0xb73;
 
 static __inline void UpdateTradeBarFromSelectedMetricRatio(TIndustryCluster* context,
                                                            int assertLine) {
-  TAmtBar* barControl = reinterpret_cast<TAmtBar*>(
-      reinterpret_cast<TView*>(context)->ResolveControlByTag(kControlTagBar));
+  TAmtBar* barControl = static_cast<TAmtBar*>(context->ResolveControlByTag(kControlTagBar));
   if (barControl == 0) {
     FailNilPointerInUSmallViews(assertLine);
   }
 
-  TAmtBar* barLayout = reinterpret_cast<TAmtBar*>(barControl);
-  if (barLayout->auxValueA != 0) {
-    int ratioValue = ((int)context->selectedMetricOrder->MaxOrder() * barLayout->frameWidth34) /
-                     (int)barLayout->auxValueA;
+  if (barControl->auxValueA != 0) {
+    int ratioValue = (context->selectedMetricOrder->MaxOrder() * barControl->frameWidth34) /
+                     barControl->auxValueA;
     barControl->SetBarMetricRatio(ratioValue);
   }
 }
@@ -96,7 +95,7 @@ void TIndustryCluster::SetMoveAmount(short dragValue, unsigned char updateContro
     return;
   }
 
-  TAmtBar* moveControl = reinterpret_cast<TAmtBar*>(this->ResolveControlByTag(kControlTagMove));
+  TAmtBar* moveControl = static_cast<TAmtBar*>(this->ResolveControlByTag(kControlTagMove));
   if (moveControl == 0) {
     FailNilPointerInUSmallViews(0xb42);
   }
@@ -108,16 +107,17 @@ void TIndustryCluster::SetMoveAmount(short dragValue, unsigned char updateContro
   moveControl->QueryBounds(&moveBoundsRect);
   OffsetRect(&moveBoundsRect, this->ownerLocalX, this->ownerLocalY);
   CopyRect(&moveInvalidRect, &moveBoundsRect);
-  reinterpret_cast<TView*>(this)->InvalidateCityDialogRectRegion(&moveInvalidRect, 1);
+  this->ownerContext->InvalidateCityDialogRectRegion(&moveInvalidRect, 1);
 
-  TAmtBar* barControl = reinterpret_cast<TAmtBar*>(this->ResolveControlByTag(kControlTagBar));
+  TAmtBar* barControl = static_cast<TAmtBar*>(this->ResolveControlByTag(kControlTagBar));
   if (barControl == 0) {
     FailNilPointerInUSmallViews(0xb49);
   }
 
   float barScale = 9999.0f;
-  if (barControl->frameWidth34 != 0) {
-    barScale = (float)barControl->frameHeight38 / (float)barControl->frameWidth34;
+  if (barControl->auxValueA != 0) {
+    barScale =
+        static_cast<float>(barControl->frameWidth34) / static_cast<float>(barControl->auxValueA);
   }
 
   if (selectedOrder->quantityField04 == this->selectedMetricValue) {
@@ -126,10 +126,21 @@ void TIndustryCluster::SetMoveAmount(short dragValue, unsigned char updateContro
     barControl->auxValueB = 0x3a;
   }
 
-  int scaledMetric = (int)((float)selectedOrder->MaxOrder() * barScale);
-  int scaledRange = (int)((float)selectedOrder->quantityField04 * barScale);
-  barControl->SetBarMetric(scaledMetric, scaledRange);
-  this->UpdateMax();
+  int scaledMoveAmount =
+      static_cast<int>(static_cast<float>(selectedOrder->quantityField04) * barScale);
+  int scaledMaximum = static_cast<int>(static_cast<float>(selectedOrder->MaxOrder()) * barScale);
+  barControl->SetBarMetric(scaledMoveAmount, scaledMaximum);
+
+  int moveControlPosition[2];
+  moveControlPosition[0] = barControl->ownerLocalX + static_cast<short>(scaledMoveAmount) - 2;
+  moveControlPosition[1] = barControl->ownerLocalY + barControl->frameHeight38;
+  moveControl->CaptureLayoutF0(moveControlPosition, 1);
+  moveControl->QueryBounds(&moveBoundsRect);
+  OffsetRect(&moveBoundsRect, this->ownerLocalX, this->ownerLocalY);
+  CopyRect(&moveInvalidRect, &moveBoundsRect);
+  this->ownerContext->InvalidateCityDialogRectRegion(&moveInvalidRect, 1);
+
+  static_cast<TBuildingView*>(this->ownerContext)->UpdateFields();
 }
 
 // FUNCTION: IMPERIALISM 0x00588f60
@@ -140,7 +151,7 @@ void TIndustryCluster::UpdateMax() {
 // FUNCTION: IMPERIALISM 0x00588ff0
 void TIndustryCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId == 100) {
-    TAmtBar* moveControl = reinterpret_cast<TAmtBar*>(this->ResolveControlByTag(kControlTagMove));
+    TAmtBar* moveControl = static_cast<TAmtBar*>(this->ResolveControlByTag(kControlTagMove));
     if (moveControl == 0) {
       GAME_FAIL_NIL_POINTER();
     }
@@ -152,7 +163,7 @@ void TIndustryCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEve
     TAmtBarCluster::DoEvent(commandId, sourceHandler, event);
     return;
   }
-  TAmtBar* moveControl = reinterpret_cast<TAmtBar*>(this->ResolveControlByTag(kControlTagMove));
+  TAmtBar* moveControl = static_cast<TAmtBar*>(this->ResolveControlByTag(kControlTagMove));
   if (moveControl == 0) {
     GAME_FAIL_NIL_POINTER();
   }

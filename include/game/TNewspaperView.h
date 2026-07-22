@@ -18,7 +18,7 @@ public:
   TNewspaperView();
 
   // 0x55d200: populate the nation-status advisor page — 'date'/'spec' children plus
-  // the 3x3 inter-nation event row grid from g_pInterNationEventQueueManager.
+  // the 3x3 inter-nation event row grid from g_pNewsMgr.
   void BuildInterNationEventSummaryRowsForAdvisorDialog(int pageIndex);
   // 0x55d910: fill tokens[0..3] from the story's {parmValue, parmKind} pairs.
   void FormatInterNationEventRowTokensToSharedStrings(newsStory* story, CString* tokens);

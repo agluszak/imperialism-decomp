@@ -62,19 +62,19 @@ static void SwapAdjacentBytesInShortArray(short* entries, int pairCount) {
 // TCountry::CreateObject
 
 // FUNCTION: IMPERIALISM 0x004d6730
-char TCountry::IsClient(void) {
-  return 0;
+bool TCountry::IsClient(void) {
+  return false;
 }
 
 // FUNCTION: IMPERIALISM 0x004d6750
-char TCountry::IsHost(void) {
-  return 0;
+bool TCountry::IsHost(void) {
+  return false;
 }
 
 // slot 0x28 — IsRemote (real body).
 // FUNCTION: IMPERIALISM 0x004d6770
-char TCountry::IsRemote(void) {
-  return 0;
+bool TCountry::IsRemote(void) {
+  return false;
 }
 
 // FUNCTION: IMPERIALISM 0x004d6790
@@ -95,7 +95,7 @@ TCountry::TCountry() {}
 // TCountry::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x004d68f0
-void TCountry::InitializeNationStateIdentityAndOwnedRegionList(short nationSlot) {
+void TCountry::InitializeNationStateIdentityAndOwnedRegionList(NationSlot nationSlot) {
   this->nationSlot = nationSlot;
   this->homeTileIndex = -1;
   this->overlayAnchorTileCache8c = -1;
@@ -183,7 +183,7 @@ void TCountry::ReadFrom(TStream* stream) {
     do {
       TMilitaryUnit* militaryOrder = new TMilitaryUnit();
       if (militaryOrder != nullptr) {
-        militaryOrder->InitializeRecruitOrderState(0, 0, this->nationSlot);
+        militaryOrder->IMilitaryUnit(0, 0, this->nationSlot);
         militaryOrder->ReadFrom(stream);
       }
       recruitIndex = recruitIndex + 1;
@@ -278,33 +278,33 @@ void TCountry::SeedInitialMilitaryAndNavyOrdersForOwnedRegions(void) {
       short regionTerrainId = g_pGlobalMapState->cityScoreTable[regionId].cityTileIndex04;
       if ((g_pGlobalMapState->terrainStateTable[regionTerrainId].activeFlags1c & 1) != 0) {
         TMilitaryUnit* order = new TMilitaryUnit();
-        order->InitializeRecruitOrderState(2, regionId, this->nationSlot);
+        order->IMilitaryUnit(2, regionId, this->nationSlot);
         if (g_pSimMgr->difficultyLevel < 2) {
-          order->SetOrderModeSlot34(2, -1);
+          order->SetOrders(static_cast<UnitOrder>(2), -1);
         }
         order = new TMilitaryUnit();
-        order->InitializeRecruitOrderState(2, regionId, this->nationSlot);
+        order->IMilitaryUnit(2, regionId, this->nationSlot);
         if (g_pSimMgr->difficultyLevel < 2) {
-          order->SetOrderModeSlot34(2, -1);
+          order->SetOrders(static_cast<UnitOrder>(2), -1);
         }
         order = new TMilitaryUnit();
-        order->InitializeRecruitOrderState(7, regionId, this->nationSlot);
+        order->IMilitaryUnit(7, regionId, this->nationSlot);
         if (g_pSimMgr->difficultyLevel < 2) {
-          order->SetOrderModeSlot34(2, -1);
+          order->SetOrders(static_cast<UnitOrder>(2), -1);
         }
         g_pGlobalMapState->NotifyCityRecordSlot12C(regionId);
         if (this->nationSlot < 7 &&
             g_apNationStates[this->nationSlot]->diplomacyEligibilityA0 == 0 &&
             g_pSimMgr->difficultyLevel == 4) {
           order = new TMilitaryUnit();
-          order->InitializeRecruitOrderState(6, regionId, this->nationSlot);
+          order->IMilitaryUnit(6, regionId, this->nationSlot);
           if (g_pSimMgr->difficultyLevel < 2) {
-            order->SetOrderModeSlot34(2, -1);
+            order->SetOrders(static_cast<UnitOrder>(2), -1);
           }
           order = new TMilitaryUnit();
-          order->InitializeRecruitOrderState(5, regionId, this->nationSlot);
+          order->IMilitaryUnit(5, regionId, this->nationSlot);
           if (g_pSimMgr->difficultyLevel < 2) {
-            order->SetOrderModeSlot34(2, -1);
+            order->SetOrders(static_cast<UnitOrder>(2), -1);
           }
           TGreatPower* nation = g_apNationStates[this->nationSlot];
           TCity* cityForPort = (nation != 0) ? nation->city : 0;
@@ -342,13 +342,13 @@ void TCountry::SeedInitialMilitaryAndNavyOrdersForOwnedRegions(void) {
         this->CreateMilitaryRecruitOrderForNode(regionId);
         if (this->nationSlot >= 7) {
           TMilitaryUnit* lateOrder = new TMilitaryUnit();
-          lateOrder->InitializeRecruitOrderState(7, regionId, this->nationSlot);
+          lateOrder->IMilitaryUnit(7, regionId, this->nationSlot);
         }
       }
       if (*g_pGlobalMapState->scenarioTagText1c == '+') {
         TMilitaryUnit* bonusOrder = new TMilitaryUnit();
-        bonusOrder->InitializeRecruitOrderState(2, regionId, this->nationSlot);
-        bonusOrder->SetOrderModeSlot34(2, -1);
+        bonusOrder->IMilitaryUnit(2, regionId, this->nationSlot);
+        bonusOrder->SetOrders(static_cast<UnitOrder>(2), -1);
       }
       ++ordinal;
     } while (ordinal <= this->ownedRegionList->GetSize());
@@ -412,8 +412,10 @@ void TCountry::ApplyJoinEmpireModeForTargetNation(int targetNationSlot, int mode
   }
 
   if (mode == 1) {
-    g_pDiplomacyTurnStateManager->SetRelationCodeSlot78Final(this->nationSlot, targetNationSlot, 5);
-    g_pDiplomacyTurnStateManager->SetRelationCodeSlot78Final(targetNationSlot, this->nationSlot, 5);
+    g_pDiplomacyTurnStateManager->SetNationPairDiplomacyRelationCodeFinal(
+        this->nationSlot, targetNationSlot, kDiplomacyRelationshipJoinedEmpire);
+    g_pDiplomacyTurnStateManager->SetNationPairDiplomacyRelationCodeFinal(
+        targetNationSlot, this->nationSlot, kDiplomacyRelationshipJoinedEmpire);
   }
 
   if (this->nationSlot < 7) {
@@ -468,7 +470,7 @@ void TCountry::ApplyJoinEmpireMode1TargetTransition(int targetNationSlot) {
 
 // FUNCTION: IMPERIALISM 0x004d7d20
 char TCountry::IsEncodedNationSlotMinus200Equal(int nationCode) {
-  int adjusted = static_cast<int>(static_cast<short>(this->encodedNationSlot)) - 0xc8;
+  int adjusted = static_cast<short>(this->encodedNationSlot) - 0xc8;
   if (adjusted == nationCode) {
     return 1;
   }
@@ -574,9 +576,10 @@ bool TCountry::IsDiplomacyState1C6UnsetAndCounterPositiveForTarget(short targetN
 }
 
 // FUNCTION: IMPERIALISM 0x004d7fe0
-void TCountry::QueueDiplomacyProposalCodeForTargetNation(short proposalCode, short targetNationId) {
+void TCountry::QueueDiplomacyProposalCodeForTargetNation(DiplomacyProposalCodeStorage proposalCode,
+                                                         NationSlot targetNationSlot) {
   (void)proposalCode;
-  (void)targetNationId;
+  (void)targetNationSlot;
 }
 
 // FUNCTION: IMPERIALISM 0x004d8000
@@ -589,7 +592,7 @@ void TCountry::AssignDisplayNamesToUnnamedMilitaryUnits(void) {
     TMilitaryUnit* unit =
         static_cast<TMilitaryUnit*>(this->militaryUnitList44->GetEntryByOrdinal(ordinal));
     if (unit->field_1A == 0) {
-      if (unit->orderType < 0x1b) {
+      if (unit->orderType < EncodeMilitaryUnitKind(kMilitaryUnitGeneralEra1)) {
         CString ordinalText;
         CString typeName;
         CString composedName;
@@ -625,7 +628,8 @@ void TCountry::AssignDisplayNamesToUnnamedMilitaryUnits(void) {
   } while (ordinal <= this->militaryUnitList44->GetCount());
 }
 
-int DecodeTerrainNationSlotFromDescriptor(const TCountry* terrain, short encodedNationSlot) {
+int DecodeTerrainNationSlotFromDescriptor(const TCountry* terrain,
+                                          EncodedNationSlot encodedNationSlot) {
   if (encodedNationSlot < 200) {
     if (encodedNationSlot < 100) {
       return terrain->nationSlot;
@@ -703,7 +707,7 @@ void TCountry::QueueRecruitOrdersForUndergarrisonedRegions(void) {
           static_cast<int>(regionId) * 0xa8);
     }
     for (; unitChain != 0; unitChain = static_cast<TMilitaryUnit*>(unitChain->nextOnTile)) {
-      if (unitChain->GetUnitMovementClassId() == 0) {
+      if (unitChain->GetCategory() == EncodeArmyUnitCategory(kArmyUnitCategoryMilitia)) {
         garrisonCount = static_cast<short>(garrisonCount + 1);
       }
     }
@@ -806,7 +810,7 @@ char OrphanCallChain_C2_I27_004e4f50(int arg1, int arg2, int arg3, int arg4) {
   return 0;
 }
 
-void TCountry::SetNationTradePolicyValueForTargetAndNotify(short targetNationSlot,
+void TCountry::SetNationTradePolicyValueForTargetAndNotify(NationSlot targetNationSlot,
                                                            short policyValue) {
   if (targetNationSlot != this->nationSlot) {
     if (policyValue != this->needLevelByNation[targetNationSlot]) {
@@ -825,8 +829,8 @@ void TriggerNationWarTransitionHandlersIfNeeded(int arg1, int arg2) {
 
 void TCountry::ApplyNationStateCode200AndQueueEvent1B(int targetNationSlot) {
   this->ApplyJoinEmpireMode1TargetTransition(targetNationSlot);
-  g_pInterNationEventQueueManager->QueueInterNationEventRecordDeduped(0x1b, this->nationSlot,
-                                                                      targetNationSlot, 0);
+  g_pNewsMgr->AddTreatyEvent(kInterNationEventNationJoinedEmpire, this->nationSlot,
+                             targetNationSlot, 0);
 }
 
 void OrphanCallChain_C2_I28_004e59d0(void) {}

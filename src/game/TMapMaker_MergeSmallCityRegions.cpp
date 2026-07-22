@@ -4,8 +4,8 @@
 // body (the build uses /Ob1) without perturbing neighbouring TMapMaker methods.
 //
 // Data it drives (subsystem only partially recovered -- accessed via typed views, documented):
-//  - the 108x60 = 6480-tile grid at this->mapTileGrid08 (stride 0x24; a "city region" tile has
-//    tile[0]==5, region id = tile[4]-0x17);
+//  - the 108x60 = 6480-tile grid at this->mapTileGrid08 (stride 0x24; a water tile carries
+//    a city-region id at tile[4]-0x17);
 //  - the global region-border-link table at 0x006a3900 (a stretch<SeaSegment>, i.e. the
 //    project's growable-array template, NOT an MFC CArray): each 0x18-byte record holds the
 //    shared-border bbox (int16 x0,y0,x1,y1 at +0/2/4/6) and the pair of region ids it
@@ -96,7 +96,7 @@ void TMapMaker::MergeSmallCityRegionsAndCompactIds() {
 
   // Phase 1: count city-region tiles per region id.
   for (int off = 0; off < kTileGridBytes; off += kTileStride) {
-    if (mapTileGrid08[off] == '\x05') {
+    if (mapTileGrid08[off] == kStrategicTerrainWater) {
       ++tileCounts[TileRegionId(mapTileGrid08, off)];
     }
   }
@@ -167,7 +167,7 @@ void TMapMaker::MergeSmallCityRegionsAndCompactIds() {
           for (int off = 0; off < kTileGridBytes && mergeTarget == -1;
                off += kTileStride, ++tileIdx) {
             char* grid = mapTileGrid08;
-            if (grid[off] != '\x05' || TileRegionId(grid, off) != region) {
+            if (grid[off] != kStrategicTerrainWater || TileRegionId(grid, off) != region) {
               continue;
             }
             for (int dir = 0; dir < 6; ++dir) {
@@ -192,7 +192,7 @@ void TMapMaker::MergeSmallCityRegionsAndCompactIds() {
                 continue;
               }
               char* nTile = grid + neighbor * kTileStride;
-              if (*nTile != '\x05') {
+              if (*nTile != kStrategicTerrainWater) {
                 continue;
               }
               if (TileRegionId(grid, off) != TileRegionId(grid, neighbor * kTileStride)) {
@@ -211,7 +211,8 @@ void TMapMaker::MergeSmallCityRegionsAndCompactIds() {
         tileCounts[region] = 0;
         mergedFlags[mergeTarget] = 1;
         for (int off = 0; off < kTileGridBytes; off += kTileStride) {
-          if (mapTileGrid08[off] == '\x05' && TileRegionId(mapTileGrid08, off) == region) {
+          if (mapTileGrid08[off] == kStrategicTerrainWater &&
+              TileRegionId(mapTileGrid08, off) == region) {
             mapTileGrid08[off + 4] = static_cast<char>(mergeTarget) + kRegionIdBias;
           }
         }
@@ -269,7 +270,7 @@ void TMapMaker::MergeSmallCityRegionsAndCompactIds() {
       tileCounts[region] = tileCounts[last];
       mergedFlags[region] = mergedFlags[cityRegionCount2a4];
       for (int off = 0; off < kTileGridBytes; off += kTileStride) {
-        if (mapTileGrid08[off] == '\x05' &&
+        if (mapTileGrid08[off] == kStrategicTerrainWater &&
             TileRegionId(mapTileGrid08, off) == cityRegionCount2a4) {
           mapTileGrid08[off + 4] = static_cast<char>(regionByte) + kRegionIdBias;
         }
@@ -277,12 +278,12 @@ void TMapMaker::MergeSmallCityRegionsAndCompactIds() {
       for (unsigned int li = 0;
            li < static_cast<unsigned int>(g_regionBorderLinkTable_006a3900.Count()); ++li) {
         RegionBorderLink* link = LinkElementAt(li);
-        if (static_cast<int>(static_cast<short>(link->regionA)) == cityRegionCount2a4) {
+        if (static_cast<short>(link->regionA) == cityRegionCount2a4) {
           link = LinkElementAt(li);
           link->regionA = static_cast<unsigned short>(regionByte);
         }
         link = LinkElementAt(li);
-        if (static_cast<int>(static_cast<short>(link->regionB)) == cityRegionCount2a4) {
+        if (static_cast<short>(link->regionB) == cityRegionCount2a4) {
           link = LinkElementAt(li);
           link->regionB = static_cast<unsigned short>(regionByte);
         }

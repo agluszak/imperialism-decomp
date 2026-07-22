@@ -34,7 +34,7 @@ void TRadioText::Draw(RECT* rectBuffer) {
     TRadioTextCluster* cluster = static_cast<TRadioTextCluster*>(ownerContext);
     cluster->AssertValid();
 
-    int savedColor = g_pActiveQuickDrawSurfaceContext->blitSurface.quickDrawColor;
+    COLORREF savedColor = g_pActiveQuickDrawSurfaceContext->blitSurface.foregroundColor;
     short colorCode = controlState64 != 0 ? cluster->word8C : cluster->word8E;
     g_pUiRuntimeContext->SetColor(colorCode, 1);
 

@@ -43,10 +43,10 @@ void TTradePanelView::Draw(RECT* rectBuffer) {
   CString strB; // constructed/destroyed only in the original; never otherwise touched.
 
   ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 0xe, 0x2b68);
-  int shadowStyle;
-  int foregroundStyle;
-  MapUiThemeCodeToStyleFlags(0x2b6b, &shadowStyle);
-  MapUiThemeCodeToStyleFlags(0x2b68, &foregroundStyle);
+  COLORREF shadowStyle;
+  COLORREF foregroundStyle;
+  ResolveUiThemeColor(0x2b6b, &shadowStyle);
+  ResolveUiThemeColor(0x2b68, &foregroundStyle);
 
   g_pSimMgr->GetString(0x2733, 0x2a, &strA);
   short baseX = static_cast<short>(0x48 - ownerLocalX);
@@ -94,24 +94,24 @@ void TTradePanelView::Setup() {
   SetControlHoverHelpText(CString(g_pDiplomacyPanelEmptyText_00654ec8), tradeCluster);
   tradeCluster->SetSelectedChildTagAndRefresh(0x74726161); // 'traa'
   diplomacyMapView60->selectedGrantRowC0 = 0;
-  diplomacyMapView60->actionCodeBC = 9;
+  diplomacyMapView60->actionCodeBC = kDipActionTradeSubsidy;
 }
 
 // FUNCTION: IMPERIALISM 0x004f8dd0
 void TTradePanelView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId == 0xc) {
     if (sourceHandler->controlTag == 0x6c696e6b) { // 'link'
-      diplomacyMapView60->actionCodeBC = 0xc;
+      diplomacyMapView60->actionCodeBC = kDipActionLinkTradePolicy;
     } else {
       int tradeRow = sourceHandler->controlTag - 0x74726161; // 'traa'
       diplomacyMapView60->selectedGrantRowC0 = static_cast<short>(tradeRow);
       short threshold = g_awDiplomacyTradePolicyIconValueTable[tradeRow];
       if (threshold == 300) {
-        diplomacyMapView60->actionCodeBC = 0xb;
+        diplomacyMapView60->actionCodeBC = kDipActionBoycott;
       } else if (threshold < 0x60) {
-        diplomacyMapView60->actionCodeBC = 9;
+        diplomacyMapView60->actionCodeBC = kDipActionTradeSubsidy;
       } else {
-        diplomacyMapView60->actionCodeBC = 0xa;
+        diplomacyMapView60->actionCodeBC = kDipActionTradePolicy;
       }
     }
   }

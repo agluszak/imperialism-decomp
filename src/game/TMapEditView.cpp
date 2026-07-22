@@ -30,7 +30,7 @@ TNumberText* ResolveProvinceNumberControl(TView* owner) {
 void ClearTileAdjacencyRenderCache(TTerrainStateRecordView& tile) {
   tile.adjacencyMaskA0a = 0;
   tile.adjacencyMaskB0b = 0;
-  tile.roadFlag |= 0x80;
+  tile.riverSpriteCode |= kRiverSpriteCodeNeedsResolution;
   tile.spriteVariantIndex01 = 0;
 }
 
@@ -81,7 +81,7 @@ void TMapEditView::DoPostCreate(int arg) {
                                               -1, -1, -1, -1, -1, 2,  -1};
   for (int tileIndex = 0; tileIndex < kMapTileCount; ++tileIndex) {
     TTerrainStateRecordView& tile = g_pGlobalMapState->terrainStateTable[tileIndex];
-    if (tile.terrainType00 != 5) {
+    if (tile.GetTerrainKind() != kStrategicTerrainWater) {
       tile.resourceTypeByEdge[0] = defaultResourceByProfile[tile.gateFlag];
       tile.resourceTypeByEdge[1] = -1;
     }
@@ -96,7 +96,7 @@ void TMapEditView::HandleMapClickByInteractionMode(short tileIndex, int inputFla
   ownerContext->ResolveControlByTag(kControlTagEcon)->AssertValid();
 
   TTerrainStateRecordView& tile = g_pGlobalMapState->terrainStateTable[tileIndex];
-  if (tile.terrainType00 == 5 && editorActionMode368 != 5) {
+  if (tile.GetTerrainKind() == kStrategicTerrainWater && editorActionMode368 != 5) {
     return;
   }
 
@@ -174,8 +174,8 @@ void TMapEditView::DispatchOverlayEvent78FromStridedRecord(int tileIndex, int di
     g_pGlobalMapState->UpdateTileNeighborBorderInfluenceCounters(static_cast<short>(index), 2);
     InvalidateTile(static_cast<short>(index));
     for (int direction = 0; direction < 6; ++direction) {
-      short neighbor = TMapMgr::GetWrappedHexNeighborTileIndexByDirection(
-          static_cast<short>(index), static_cast<short>(direction));
+      short neighbor =
+          TMapMgr::GetNeighborTileID(static_cast<short>(index), static_cast<short>(direction));
       g_pGlobalMapState->terrainStateTable[neighbor].ownerBorderMask07 = 0;
       g_pGlobalMapState->UpdateTileNeighborBorderInfluenceCounters(neighbor, 2);
       InvalidateTile(neighbor);
@@ -191,7 +191,7 @@ void TMapEditView::HandleMapTileClickSetOrderContextAndHandleEvent79(int arg1, i
 
   int index;
   for (index = 0; index < kMapTileCount; ++index) {
-    g_pGlobalMapState->terrainStateTable[index].tileActionClass16 = -1;
+    g_pGlobalMapState->terrainStateTable[index].tileActionState16 = kMapTileActionStateNone;
   }
 
   for (index = 0; index < kCityRecordCount; ++index) {
@@ -201,7 +201,7 @@ void TMapEditView::HandleMapTileClickSetOrderContextAndHandleEvent79(int arg1, i
     city.linkedRegionCount = 0;
     int entry;
     for (entry = 0; entry < 0x20; ++entry) {
-      city.linkedRegionIds[entry] = -1;
+      city.linkedTileIndices42[entry] = -1;
     }
     for (entry = 0; entry < 0x0c; ++entry) {
       city.adjacentRegionIds0A[entry] = -1;
@@ -211,17 +211,18 @@ void TMapEditView::HandleMapTileClickSetOrderContextAndHandleEvent79(int arg1, i
 
   for (index = 0; index < kMapTileCount; ++index) {
     TTerrainStateRecordView& tile = g_pGlobalMapState->terrainStateTable[index];
-    if (tile.terrainType00 != 5 || tile.ownerNationTag04 >= 0x17) {
+    if (tile.GetTerrainKind() != kStrategicTerrainWater || tile.ownerNationTag04 >= 0x17) {
       continue;
     }
 
     short neighbors[6];
-    TMapMgr::ComputeHexNeighborTileIndices(static_cast<short>(index), neighbors,
-                                           g_pGlobalMapState->hexNeighborWrapHorizontally20);
+    TMapMgr::GetNeighborTileIDArray(static_cast<short>(index), neighbors,
+                                    g_pGlobalMapState->hexNeighborWrapHorizontally20);
     for (int direction = 0; direction < 6; ++direction) {
       TTerrainStateRecordView& neighbor =
           g_pGlobalMapState->terrainStateTable[neighbors[direction]];
-      if (neighbor.terrainType00 == 5 && neighbor.ownerNationTag04 >= 0x17) {
+      if (neighbor.GetTerrainKind() == kStrategicTerrainWater &&
+          neighbor.ownerNationTag04 >= 0x17) {
         tile.ownerNationTag04 = neighbor.ownerNationTag04;
       }
     }
@@ -231,18 +232,18 @@ void TMapEditView::HandleMapTileClickSetOrderContextAndHandleEvent79(int arg1, i
 // FUNCTION: IMPERIALISM 0x0051d380
 void TMapEditView::PlaceTerrain(short tileIndex) {
   TTerrainStateRecordView& tile = g_pGlobalMapState->terrainStateTable[tileIndex];
-  tile.terrainType00 = static_cast<signed char>(editorActionValue36c);
+  tile.SetTerrainKind(static_cast<StrategicTerrainKind>(editorActionValue36c));
   ClearTileAdjacencyRenderCache(tile);
   g_pGlobalMapState->UpdateMapTileAdjacencyMasksAndVariantForTile(tileIndex);
   InvalidateTile(tileIndex);
 
   for (short direction = 0; direction < 6; ++direction) {
-    short neighborIndex = TMapMgr::GetWrappedHexNeighborTileIndexByDirection(tileIndex, direction);
+    short neighborIndex = TMapMgr::GetNeighborTileID(tileIndex, direction);
     if (neighborIndex != -1) {
       TTerrainStateRecordView& neighbor = g_pGlobalMapState->terrainStateTable[neighborIndex];
       neighbor.adjacencyMaskA0a = 0;
       neighbor.adjacencyMaskB0b = 0;
-      neighbor.roadFlag |= 0x80;
+      neighbor.riverSpriteCode |= kRiverSpriteCodeNeedsResolution;
       // The retail body clears the selected tile's byte here again, not the neighbor's.
       tile.spriteVariantIndex01 = 0;
       g_pGlobalMapState->UpdateMapTileAdjacencyMasksAndVariantForTile(neighborIndex);
@@ -266,7 +267,7 @@ void TMapEditView::DefaultResources(short tileIndex) {
 
   g_pSfxPlaybackSystem->PlaySoundEffect(4000);
   tile.gateFlag = static_cast<signed char>(editorActionValue36c);
-  tile.terrainType00 = static_cast<signed char>(terrainByProfile[editorActionValue36c]);
+  tile.SetTerrainKind(static_cast<StrategicTerrainKind>(terrainByProfile[editorActionValue36c]));
   ClearTileAdjacencyRenderCache(tile);
   tile.resourceTypeByEdge[0] = static_cast<signed char>(resourceByProfile[tile.gateFlag]);
   tile.resourceTypeByEdge[1] = -1;
@@ -274,7 +275,7 @@ void TMapEditView::DefaultResources(short tileIndex) {
   InvalidateTile(tileIndex);
 
   for (short direction = 0; direction < 6; ++direction) {
-    short neighborIndex = TMapMgr::GetWrappedHexNeighborTileIndexByDirection(tileIndex, direction);
+    short neighborIndex = TMapMgr::GetNeighborTileID(tileIndex, direction);
     if (neighborIndex != -1) {
       TTerrainStateRecordView& neighbor = g_pGlobalMapState->terrainStateTable[neighborIndex];
       ClearTileAdjacencyRenderCache(neighbor);
@@ -300,7 +301,7 @@ void TMapEditView::PlaceProvince(short tileIndex) {
   InvalidateTile(tileIndex);
 
   for (short direction = 0; direction < 6; ++direction) {
-    short neighborIndex = TMapMgr::GetWrappedHexNeighborTileIndexByDirection(tileIndex, direction);
+    short neighborIndex = TMapMgr::GetNeighborTileID(tileIndex, direction);
     if (neighborIndex != -1) {
       TTerrainStateRecordView& neighbor = g_pGlobalMapState->terrainStateTable[neighborIndex];
       ClearTileBorderMasks(neighbor);
@@ -340,15 +341,17 @@ void TMapEditView::PlaceRail(short tileIndex) {
 // FUNCTION: IMPERIALISM 0x0051dba0
 void TMapEditView::PlaceRiver(short tileIndex) {
   TTerrainStateRecordView& tile = g_pGlobalMapState->terrainStateTable[tileIndex];
-  short variant = ResolveRiverSpriteVariantForConnectionMask(
-      static_cast<unsigned char>(editorActionValue36c), tile.terrainType00 == 5);
+  short variant =
+      ResolveRiverSpriteVariantForConnectionMask(static_cast<unsigned char>(editorActionValue36c),
+                                                 tile.GetTerrainKind() == kStrategicTerrainWater);
   if (variant == -1) {
     g_pSfxPlaybackSystem->PlaySoundEffect(0x1b5a);
     return;
   }
 
   g_pSfxPlaybackSystem->PlaySoundEffect(4000);
-  tile.roadFlag = static_cast<unsigned char>(variant | 0x80);
+  tile.riverSpriteCode =
+      static_cast<RiverSpriteCodeStorage>(variant | kRiverSpriteCodeNeedsResolution);
   tile.adjacencyMaskA0a = 0;
   tile.adjacencyMaskB0b = 0;
   g_pGlobalMapState->UpdateMapTileAdjacencyMasksAndVariantForTile(tileIndex);
@@ -384,7 +387,7 @@ void TMapEditView::PlaceCountySeat(short tileIndex) {
     InvalidateTile(previousCountySeat);
   }
   InvalidateTile(tileIndex);
-  short neighbor = TMapMgr::GetWrappedHexNeighborTileIndexByDirection(tileIndex, 2);
+  short neighbor = TMapMgr::GetNeighborTileID(tileIndex, 2);
   if (neighbor != -1) {
     InvalidateTile(neighbor);
   }

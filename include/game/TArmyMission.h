@@ -26,12 +26,12 @@ public:
   virtual void
   Free() override; // slot 0x1c (TObject) 0x53c220 -- releases orderListAt18 and deletes self
 
-  virtual char
+  virtual bool
   IsANoBrainer() const override; // slot 0x28 0x53c1b0 -- army attack/invade capability flag
   virtual int AccumulateLack(int* accumulatedLack, unsigned char includeExistingLack)
       const override; // slot 0x2c 0x53c620 -- accumulates remaining equipage lack, returns total
   virtual TMission* GetReplacementSlot48() override; // slot 0x48 0x53d630
-  virtual char
+  virtual bool
   IsArmyMission() const override; // slot 0x50 0x5356f0 -- army mission capability flag (true)
   virtual TMission* GetArmyMission() override; // slot 0x58 0x535710 -- returns this
   virtual TMission*
@@ -63,7 +63,7 @@ public:
   float ProjectSatisfaction(short bypassTileFilter) const; // 0x53cac0
 
   // Adds one unit's contribution directly into `vector` (no accumulation loop): weight-
-  // table lookup by clamped IsNotStationedInProvince distance from GetPresentLocation,
+  // table lookup by clamped GetTurnDistanceTo distance from GetPresentLocation,
   // scaled by GetProvinceUnitOrderWeight, with an explicit sign
   // (true adds, false subtracts) instead of the fixed +1.0 the loop-based accumulators use.
   // 0x53cb50, __thiscall, RET 0xC.

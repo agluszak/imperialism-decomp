@@ -359,7 +359,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
   case 0xf: {
     turnStateCode = 0x12;
     g_pUiViewManager->OpenFilesFor(0xa);
-    g_pInterNationEventQueueManager->StartNewsPhase();
+    g_pNewsMgr->StartNewsPhase();
     g_pUiRuntimeContext->DispatchTurnEvent(0x2103, activeNationSlot);
     for (short nationSlot = 0; nationSlot < 7; ++nationSlot) {
       if (!IsNationTerrainEligible(nationSlot)) {
