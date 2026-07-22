@@ -3,7 +3,7 @@
 
 #include "game/mfc.h"
 
-// NOTE: NoOpForeignMinisterUtilityStub (slot 0x44, the InitializeRecruitQueuePattern* recruit-queue setup)
+// NOTE: MakeNewCity (slot 0x44, the InitializeRecruitQueuePattern* recruit-queue setup)
 // and DefenseSlot18 (slot 0x60, a per-personality float aggressiveness multiplier whose
 // real signature returns float) are promoted here as real virtual overrides owning their
 // original addresses (previously return-0 autogen stubs). Bodies are honest partial ports.
@@ -28,8 +28,8 @@ TNapoleonMinister::TNapoleonMinister() : TDefenseMinister() {}
 // TNapoleonMinister::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x004ed620
-void TNapoleonMinister::NoOpForeignMinisterUtilityStub(void* receiver) {
-  (void)receiver;
+void TNapoleonMinister::MakeNewCity(TCity* city) {
+  (void)city;
 }
 
 // FUNCTION: IMPERIALISM 0x004ed7c0
@@ -51,8 +51,8 @@ TBismarckMinister::TBismarckMinister() : TDefenseMinister() {}
 // TBismarckMinister::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x004ed950
-void TBismarckMinister::NoOpForeignMinisterUtilityStub(void* receiver) {
-  (void)receiver;
+void TBismarckMinister::MakeNewCity(TCity* city) {
+  (void)city;
 }
 
 // FUNCTION: IMPERIALISM 0x004edab0
@@ -74,8 +74,8 @@ TPirateMinister::TPirateMinister() : TDefenseMinister() {}
 // TPirateMinister::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x004edc40
-void TPirateMinister::NoOpForeignMinisterUtilityStub(void* receiver) {
-  (void)receiver;
+void TPirateMinister::MakeNewCity(TCity* city) {
+  (void)city;
 }
 
 // FUNCTION: IMPERIALISM 0x004edda0
@@ -97,8 +97,8 @@ TDefenderMinister::TDefenderMinister() : TDefenseMinister() {}
 // TDefenderMinister::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x004edf20
-void TDefenderMinister::NoOpForeignMinisterUtilityStub(void* receiver) {
-  (void)receiver;
+void TDefenderMinister::MakeNewCity(TCity* city) {
+  (void)city;
 }
 
 // FUNCTION: IMPERIALISM 0x004ee080
@@ -120,6 +120,6 @@ TBullyMinister::TBullyMinister() : TDefenseMinister() {}
 // TBullyMinister::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x004ee210
-void TBullyMinister::NoOpForeignMinisterUtilityStub(void* receiver) {
-  (void)receiver;
+void TBullyMinister::MakeNewCity(TCity* city) {
+  (void)city;
 }

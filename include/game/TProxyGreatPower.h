@@ -117,7 +117,7 @@ public:
   // slot 0x67 AssignNeedSlotFromSourceSlot19C inherited unchanged (0x4dda90)
   // slot 0x68 GetTCountryClassNamePointer inherited unchanged (0x4ddad0)
   // slot 0x69 VTableSlot69 inherited unchanged (0x4ddb40)
-  // slot 0x6a DispatchNationStateEventCode10 inherited unchanged (0x4ddb80)
+  // slot 0x6a GetRankingCriterionForGP inherited unchanged (0x4ddb80)
   // slot 0x6b ClearDiplomacyState1c6ForTarget inherited unchanged (0x4ddd20)
   // slot 0x6c GetTEventHandlerClassNamePointer_6c inherited unchanged (0x4ddd90)
   // slot 0x6d HandleCityDialogHintClusterUpdate inherited unchanged (0x4dde80)

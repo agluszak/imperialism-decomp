@@ -277,8 +277,9 @@ short THelpMgr::DispatchTurnStateSpecialAdvisoriesAndReturnCount() {
     short* eventRecord = static_cast<short*>(queue->GetPtrListEntryByOneBasedIndex(i));
     switch (eventRecord[0]) {
     case 0x13b: {
-      short standingNation = static_cast<short>(
-          g_pDiplomacyTurnStateManager->IsNationSlotEligibleForEventProcessing(eventRecord[1]));
+      short standingNation =
+          g_pDiplomacyTurnStateManager->SelectBestMajorNationForMinorByStandingAndNeed(
+              eventRecord[1]);
       if (standingNation != activeNation) {
         g_apNationStates[standingNation]->FormatOverlayTerrainLabelText(&nationNameText);
         g_apSecondaryNationStateSlots[eventRecord[1]]->FormatOverlayTerrainLabelText(

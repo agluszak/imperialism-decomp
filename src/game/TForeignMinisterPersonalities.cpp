@@ -1,9 +1,10 @@
 #include "game/TForeignMinisterPersonalities.h"
 
+#include "game/TCity.h"
 #include "game/mfc.h"
 
-// NOTE: The large slot bodies (MinisterSlot21 0x84, Call90 0x90, DispatchProposalSlot98
-// 0x98, and the MinisterSlot18 0x60 action queues) are dispatch-heavy and dispatch
+// NOTE: The large slot bodies (SetBuyPriorities 0x84, SetTradeBids 0x90, ReplyToTradeOffer
+// 0x98, and the DoFirstTurnDiplomacy 0x60 action queues) are dispatch-heavy and dispatch
 // through TGreatPower / TNationInteractionStateManager vtable slots whose method names
 // are not yet fully recovered. They are promoted here as real virtual overrides owning
 // their original addresses (previously return-0 autogen stubs); bodies are honest partial
@@ -31,17 +32,18 @@ TTedForeignMinister::TTedForeignMinister() : TForeignMinister() {
 // TTedForeignMinister::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x00531290
-void TTedForeignMinister::MinisterSlot21() {
+void TTedForeignMinister::SetBuyPriorities() {
   // Partial port (InitializeTedForeignMinisterOrderCandidates).
 }
 
 // FUNCTION: IMPERIALISM 0x00531550
-void TTedForeignMinister::Call90() {
+void TTedForeignMinister::SetTradeBids() {
   // Partial port (RunForeignMinisterVtableSlot90TedVariant).
 }
 
 // FUNCTION: IMPERIALISM 0x00531770
-void TTedForeignMinister::DispatchProposalSlot98(int arg1, int arg2, int arg3, int targetNation) {
+void TTedForeignMinister::ReplyToTradeOffer(short arg1, short arg2, short arg3,
+                                            short targetNation) {
   (void)arg1;
   (void)arg2;
   (void)arg3;
@@ -50,16 +52,16 @@ void TTedForeignMinister::DispatchProposalSlot98(int arg1, int arg2, int arg3, i
 }
 
 // FUNCTION: IMPERIALISM 0x00531a10
-void TTedForeignMinister::MinisterSlot18() {
+void TTedForeignMinister::DoFirstTurnDiplomacy() {
   // Partial port (QueueTedFourRandomAvailableTerrainActionsCode133).
 }
 
 // FUNCTION: IMPERIALISM 0x00531af0
-void TTedForeignMinister::MinisterSlot19() {}
+void TTedForeignMinister::DoSecondTurnDiplomacy() {}
 
 // FUNCTION: IMPERIALISM 0x00531b10
-void TTedForeignMinister::NoOpForeignMinisterUtilityStub(void* receiver) {
-  *reinterpret_cast<short*>(reinterpret_cast<char*>(receiver) + 0x60) = 3;
+void TTedForeignMinister::MakeNewCity(TCity* city) {
+  city->orderCountByType5c[2] = 3;
 }
 
 // ===================== TBillForeignMinister (0x659e30) =====================
@@ -92,17 +94,18 @@ void TBillForeignMinister::WriteTo(TStream* stream) {
 }
 
 // FUNCTION: IMPERIALISM 0x00531d20
-void TBillForeignMinister::MinisterSlot21() {
+void TBillForeignMinister::SetBuyPriorities() {
   // Partial port (InitializeBillForeignMinisterOrderCandidates).
 }
 
 // FUNCTION: IMPERIALISM 0x00531e50
-void TBillForeignMinister::Call90() {
+void TBillForeignMinister::SetTradeBids() {
   // Partial port (RunForeignMinisterVtableSlot90BillVariant).
 }
 
 // FUNCTION: IMPERIALISM 0x00532190
-void TBillForeignMinister::DispatchProposalSlot98(int arg1, int arg2, int arg3, int targetNation) {
+void TBillForeignMinister::ReplyToTradeOffer(short arg1, short arg2, short arg3,
+                                             short targetNation) {
   (void)arg1;
   (void)arg2;
   (void)arg3;
@@ -111,19 +114,19 @@ void TBillForeignMinister::DispatchProposalSlot98(int arg1, int arg2, int arg3, 
 }
 
 // FUNCTION: IMPERIALISM 0x00532520
-void TBillForeignMinister::MinisterSlot18() {
+void TBillForeignMinister::DoFirstTurnDiplomacy() {
   // Partial port (QueueDiplomatTwoRandomAvailableTerrainActionsCode133).
 }
 
 // FUNCTION: IMPERIALISM 0x005325e0
-void TBillForeignMinister::MinisterSlot19() {
+void TBillForeignMinister::DoSecondTurnDiplomacy() {
   // Partial port (QueueDiplomatTwoCompatibleMatrixActionsCode5A).
 }
 
 // FUNCTION: IMPERIALISM 0x00532650
-void TBillForeignMinister::NoOpForeignMinisterUtilityStub(void* receiver) {
+void TBillForeignMinister::MakeNewCity(TCity* city) {
   // Partial port (UpdateDiplomatProgressFromProductionSlots2And4).
-  *reinterpret_cast<short*>(reinterpret_cast<char*>(receiver) + 0x5e) = 3;
+  city->orderCountByType5c[1] = 3;
 }
 
 // ===================== TDiplomatForeignMinister (0x659f48) =====================
@@ -144,26 +147,26 @@ TDiplomatForeignMinister::TDiplomatForeignMinister() : TForeignMinister() {}
 // TDiplomatForeignMinister::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x00532840
-void TDiplomatForeignMinister::MinisterSlot18() {
+void TDiplomatForeignMinister::DoFirstTurnDiplomacy() {
   // Partial port (QueueDiplomatWeightedTerrainActionRunCode133).
 }
 
 // FUNCTION: IMPERIALISM 0x005328d0
-void TDiplomatForeignMinister::MinisterSlot19() {}
+void TDiplomatForeignMinister::DoSecondTurnDiplomacy() {}
 
 // FUNCTION: IMPERIALISM 0x005328f0
-void TDiplomatForeignMinister::MinisterSlot21() {
+void TDiplomatForeignMinister::SetBuyPriorities() {
   // Partial port (SelectNationInteractionModePriorityTriplet).
 }
 
 // FUNCTION: IMPERIALISM 0x00532c60
-void TDiplomatForeignMinister::Call90() {
+void TDiplomatForeignMinister::SetTradeBids() {
   // Partial port (RunForeignMinisterPolicySlot28VariantA).
 }
 
 // FUNCTION: IMPERIALISM 0x00532f70
-void TDiplomatForeignMinister::DispatchProposalSlot98(int arg1, int arg2, int arg3,
-                                                      int targetNation) {
+void TDiplomatForeignMinister::ReplyToTradeOffer(short arg1, short arg2, short arg3,
+                                                 short targetNation) {
   (void)arg1;
   (void)arg2;
   (void)arg3;
@@ -172,8 +175,8 @@ void TDiplomatForeignMinister::DispatchProposalSlot98(int arg1, int arg2, int ar
 }
 
 // FUNCTION: IMPERIALISM 0x00533050
-void TDiplomatForeignMinister::NoOpForeignMinisterUtilityStub(void* receiver) {
-  *reinterpret_cast<short*>(reinterpret_cast<char*>(receiver) + 0x5e) += 5;
+void TDiplomatForeignMinister::MakeNewCity(TCity* city) {
+  city->orderCountByType5c[1] += 5;
 }
 
 // ===================== TTextileForeignMinister (0x65a008) =====================
@@ -194,18 +197,18 @@ TTextileForeignMinister::TTextileForeignMinister() : TForeignMinister() {}
 // TTextileForeignMinister::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x005331d0
-void TTextileForeignMinister::MinisterSlot21() {
+void TTextileForeignMinister::SetBuyPriorities() {
   // Partial port (InitializeTextileForeignMinisterOrderCandidates).
 }
 
 // FUNCTION: IMPERIALISM 0x00533380
-void TTextileForeignMinister::Call90() {
+void TTextileForeignMinister::SetTradeBids() {
   // Partial port (RunForeignMinisterPolicySlot28VariantB).
 }
 
 // FUNCTION: IMPERIALISM 0x00533670
-void TTextileForeignMinister::DispatchProposalSlot98(int arg1, int arg2, int arg3,
-                                                     int targetNation) {
+void TTextileForeignMinister::ReplyToTradeOffer(short arg1, short arg2, short arg3,
+                                                short targetNation) {
   (void)arg1;
   (void)arg2;
   (void)arg3;
@@ -214,11 +217,10 @@ void TTextileForeignMinister::DispatchProposalSlot98(int arg1, int arg2, int arg
 }
 
 // FUNCTION: IMPERIALISM 0x00533780
-void TTextileForeignMinister::NoOpForeignMinisterUtilityStub(void* receiver) {
+void TTextileForeignMinister::MakeNewCity(TCity* city) {
   // Partial port (UpdateTextileProgressFromProductionSlots1And2).
-  char* city = reinterpret_cast<char*>(receiver);
-  *reinterpret_cast<short*>(city + 0x60) += 2;
-  *reinterpret_cast<short*>(city + 0x5e) += 1;
+  city->orderCountByType5c[2] += 2;
+  city->orderCountByType5c[1] += 1;
 }
 
 // ===================== TTraderForeignMinister (0x65a0c8) =====================
@@ -239,18 +241,18 @@ TTraderForeignMinister::TTraderForeignMinister() : TForeignMinister() {}
 // TTraderForeignMinister::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x00533960
-void TTraderForeignMinister::MinisterSlot21() {
+void TTraderForeignMinister::SetBuyPriorities() {
   // Partial port (InitializeTraderForeignMinisterOrderCandidates).
 }
 
 // FUNCTION: IMPERIALISM 0x00533b10
-void TTraderForeignMinister::Call90() {
+void TTraderForeignMinister::SetTradeBids() {
   // Partial port (RunForeignMinisterPolicySlot28VariantC).
 }
 
 // FUNCTION: IMPERIALISM 0x00533db0
-void TTraderForeignMinister::DispatchProposalSlot98(int arg1, int arg2, int arg3,
-                                                    int targetNation) {
+void TTraderForeignMinister::ReplyToTradeOffer(short arg1, short arg2, short arg3,
+                                               short targetNation) {
   (void)arg1;
   (void)arg2;
   (void)arg3;
@@ -259,13 +261,13 @@ void TTraderForeignMinister::DispatchProposalSlot98(int arg1, int arg2, int arg3
 }
 
 // FUNCTION: IMPERIALISM 0x00533e90
-void TTraderForeignMinister::MinisterSlot18() {
+void TTraderForeignMinister::DoFirstTurnDiplomacy() {
   // Partial port (QueueTraderFourRandomTerrainActionsCode133).
 }
 
 // FUNCTION: IMPERIALISM 0x00533f50
-void TTraderForeignMinister::NoOpForeignMinisterUtilityStub(void* receiver) {
-  *reinterpret_cast<short*>(reinterpret_cast<char*>(receiver) + 0x60) += 3;
+void TTraderForeignMinister::MakeNewCity(TCity* city) {
+  city->orderCountByType5c[2] += 3;
 }
 
 // ===================== TArmsForeignMinister (0x65a188) =====================
@@ -291,17 +293,18 @@ TArmsForeignMinister::TArmsForeignMinister() : TForeignMinister() {
 // TArmsForeignMinister::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x005340d0
-void TArmsForeignMinister::MinisterSlot21() {
+void TArmsForeignMinister::SetBuyPriorities() {
   // Partial port (InitializeArmsForeignMinisterOrderCandidates).
 }
 
 // FUNCTION: IMPERIALISM 0x00534190
-void TArmsForeignMinister::Call90() {
+void TArmsForeignMinister::SetTradeBids() {
   // Partial port (RunForeignMinisterVtableSlot90ArmsVariant).
 }
 
 // FUNCTION: IMPERIALISM 0x00534450
-void TArmsForeignMinister::DispatchProposalSlot98(int arg1, int arg2, int arg3, int targetNation) {
+void TArmsForeignMinister::ReplyToTradeOffer(short arg1, short arg2, short arg3,
+                                             short targetNation) {
   (void)arg1;
   (void)arg2;
   (void)arg3;
@@ -310,6 +313,6 @@ void TArmsForeignMinister::DispatchProposalSlot98(int arg1, int arg2, int arg3, 
 }
 
 // FUNCTION: IMPERIALISM 0x00534660
-void TArmsForeignMinister::NoOpForeignMinisterUtilityStub(void* receiver) {
-  *reinterpret_cast<short*>(reinterpret_cast<char*>(receiver) + 0x5e) += 5;
+void TArmsForeignMinister::MakeNewCity(TCity* city) {
+  city->orderCountByType5c[1] += 5;
 }

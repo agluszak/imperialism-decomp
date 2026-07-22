@@ -11,8 +11,8 @@ public:
   DECLARE_DYNCREATE(TInteriorMinister)
   void WriteTo(TStream* stream) override;
   void ReadFrom(TStream* stream) override;
-  short DispatchNationStateEventCode10(short nationSlot) override;
-  void NoOpForeignMinisterUtilityStub(void* receiver) override;
+  short GetRankingCriterionForGP(short nationSlot) override;
+  void MakeNewCity(TCity* city) override;
   // Two stack args (RET 0x8; Ghidra reads two shorts). slot 0x12 0x4be450
   virtual void MinisterSlot12(short arg1, short arg2);
   // Zeroes trailingTable (+0x18..0x25, 7 shorts). 0x4be4f0, __thiscall, no args.

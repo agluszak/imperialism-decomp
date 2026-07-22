@@ -55,7 +55,7 @@ void TInteriorMinister::WriteTo(TStream* stream) {
 }
 
 // FUNCTION: IMPERIALISM 0x004be3c0
-short TInteriorMinister::DispatchNationStateEventCode10(short nationSlot) {
+short TInteriorMinister::GetRankingCriterionForGP(short nationSlot) {
   (void)nationSlot;
   return 0;
 }
@@ -176,6 +176,6 @@ void TInteriorMinister::InteriorSlot19() {
 }
 
 // FUNCTION: IMPERIALISM 0x004be6d0
-void TInteriorMinister::NoOpForeignMinisterUtilityStub(void* receiver) {
-  (void)receiver;
+void TInteriorMinister::MakeNewCity(TCity* city) {
+  (void)city;
 }

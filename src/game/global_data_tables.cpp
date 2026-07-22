@@ -137,6 +137,9 @@ char g_vtblTSortedByRelationshipList = 0;
 int g_lastEdgeAutoScrollTick16 = 0;
 // GLOBAL: IMPERIALISM 0x00695278
 int g_nSaveFormatVersion = -1;
+// Per-great-power quarter phase used to stagger the diplomacy planning pass.
+// GLOBAL: IMPERIALISM 0x00697818
+extern const short g_aDiplomacyPlanningQuarterPhaseByNation[7] = {0, 3, 1, 2, 1, 2, 0};
 // FourCC tags and their parallel TSimMgr member-handler table used by
 // ProcessScenarioScript. Single-inheritance MSVC5 member pointers are plain code
 // pointers, matching the original 27-entry dispatch table.

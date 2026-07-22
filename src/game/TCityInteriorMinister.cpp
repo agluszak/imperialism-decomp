@@ -151,7 +151,7 @@ void TCityInteriorMinister::Free() {
 void TCityInteriorMinister::CityInteriorSlot20() {}
 
 // FUNCTION: IMPERIALISM 0x004bee20
-short TCityInteriorMinister::DispatchNationStateEventCode10(short nationSlot) {
+short TCityInteriorMinister::GetRankingCriterionForGP(short nationSlot) {
   (void)nationSlot;
   return 0;
 }
@@ -189,13 +189,13 @@ void TCityInteriorMinister::Call54() {}
 undefined TCityInteriorMinister::EvaluateCityShortagesAndNotifyForeignMinister(TCity* city) {
   if (orderMetricTable40[0] != 0 || orderMetricTable40[1] != 0) {
     bool roll = (rand() % 100) >= 75;
-    ownerContextAt04->foreignMinister->AddToForeignMinisterCounterAtIndex(0, roll);
+    ownerContextAt04->foreignMinister->PleaseBuy(0, roll);
   }
 
   for (short i = 2; i <= 6; ++i) {
     short delta = orderMetricTable40[i];
     if (delta != 0) {
-      ownerContextAt04->foreignMinister->AddToForeignMinisterCounterAtIndex(i, delta);
+      ownerContextAt04->foreignMinister->PleaseBuy(i, delta);
     }
   }
 
@@ -230,8 +230,7 @@ undefined TCityInteriorMinister::EvaluateCityShortagesAndNotifyForeignMinister(T
   }
 
   if (resultCode != -1) {
-    ownerContextAt04->foreignMinister->SetForeignMinisterPrimaryAndSecondaryTargets(resultCode,
-                                                                                    magnitude);
+    ownerContextAt04->foreignMinister->SetInteriorMinisterBid(resultCode, magnitude);
   }
   return 0;
 }
@@ -311,8 +310,8 @@ TCityInteriorMinister::DistributeCityProductionAcrossOrderTemplatesAndBackfillDe
 }
 
 // FUNCTION: IMPERIALISM 0x004c0d90
-void TCityInteriorMinister::NoOpForeignMinisterUtilityStub(void* receiver) {
-  (void)receiver;
+void TCityInteriorMinister::MakeNewCity(TCity* city) {
+  (void)city;
 }
 
 // FUNCTION: IMPERIALISM 0x004c0de0
