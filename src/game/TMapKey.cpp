@@ -27,6 +27,13 @@ TMapKey::TMapKey() {}
 void TMapKey::DoPostCreate(int arg) {
   TPicture::DoPostCreate(arg);
 
+  short legendX[8] = {0x171, 0x171, 0x171, 0x171, 0x1de, 0x1de, 0x1de, 0x1de};
+  // Retail declares only six Y entries but draws seven labels. VC5 places the loop's
+  // zeroed RECT immediately after this array, so index 6 reads that RECT's left member
+  // after it has been cleared. Preserve the original source/stack shape instead of an
+  // invented seventh table entry.
+  short legendY[6] = {0x1b8, 0x1d1, 0x187, 0x1a0, 0x1b8, 0x1d1};
+
   // The loop only walks the first 7 of g_apTerrainTypeDescriptorTable's 23 entries: the
   // array iterator is seeded with the array's own address (0x6a4310) and bounded by a
   // literal end address (0x6a432c) that is only 7*4 bytes past the start, not the full
@@ -38,24 +45,16 @@ void TMapKey::DoPostCreate(int arg) {
   short baseX = static_cast<short>(ownerLocalX + anchor->ownerLocalX);
   short baseY = static_cast<short>(ownerLocalY + anchor->ownerLocalY);
 
+  int sizeXY[2] = {0x46, 0x19};
+  CString label;
   COLORREF shadowStyleFlags = 0;
   ResolveUiThemeColor(0x2b68, &shadowStyleFlags);
   TextStyle style;
+  style.textColor = 0;
   InitializeUiTextStyleDescriptor(&style, 0, 0xa, 0x2b6b, 3);
-
-  static const short kLegendX[7] = {0x171, 0x171, 0x171, 0x171, 0x1de, 0x1de, 0x1de};
-  // TODO: the 7th entry (index 6) is read from a stack slot the original never explicitly
-  // writes anywhere in this function -- it doubles as a per-iteration CopyRect scratch
-  // source (0x4fccaa) that only 4 of its 4 RECT dwords get zeroed explicitly, leaving this
-  // one slot as whatever was on the stack at function entry. Modeled as 0 (a plausible
-  // "no vertical offset" default matching the other nearby entries' shape) rather than
-  // reproducing genuinely undefined original stack content.
-  static const short kLegendY[7] = {0x1b8, 0x1d1, 0x187, 0x1a0, 0x1b8, 0x1d1, 0};
-  int sizeXY[2] = {0x46, 0x19};
 
   for (int i = 0; i < 7; ++i) {
     TCountry* descriptor = g_apTerrainTypeDescriptorTable[i];
-    CString label;
     if (descriptor == nullptr) {
       g_pSimMgr->GetString(0x275d, 2, &label);
     } else {
@@ -63,8 +62,9 @@ void TMapKey::DoPostCreate(int arg) {
     }
 
     TDeluxeText* legendText = new TDeluxeText();
-    int offsetXY[2] = {kLegendX[i] - baseX, static_cast<short>(kLegendY[i] - baseY - 0xf)};
-    RECT zeroRect = {0, 0, 0, 0};
+    RECT emptyRect = {0, 0, 0, 0};
+    CRect zeroRect(&emptyRect);
+    int offsetXY[2] = {legendX[i] - baseX, static_cast<short>(legendY[i] - baseY - 0xf)};
     legendText->ConstructTDeluxeTextBaseState(this, offsetXY, sizeXY, &zeroRect, &style, -2);
     legendText->UpdateTextEntrySharedStringAndMaybeNotify(&label, 0);
     legendText->SetEnabled(0, 0);
