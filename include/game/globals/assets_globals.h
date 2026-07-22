@@ -1,0 +1,26 @@
+#pragma once
+// Split from global_data_tables.h by tools/analysis/split_globals.py
+// (bead 8mo.2). Definitions stay in src/game/global_data_tables.cpp;
+// assignment evidence: docs/reference/subsystem_assignment.csv.
+#include "game/globals/prelude.h"
+
+// CD-audio MCI device singleton (see game/cd_audio.h).
+extern TCdAudioDevice g_cdAudioDevice; // 0x006a60bc
+
+// Audio timer-slot registry (see game/timer_slots.h): 10 callbacks + 10 live timer ids.
+extern TimerSlotCallback g_timerSlotCallbacks[10]; // 0x006a5cf8
+
+extern UINT g_timerSlotIds[10];                    // 0x006a5c98
+
+extern int g_timerDispatchSuppressAssert;          // 0x006a5d24
+
+extern char g_szSavedDocumentMarker_0069B848[];
+
+extern char g_szLoadedDocumentMarker_0069B854[];
+
+extern char s_Data_scores_dat_0069b7fc[];
+
+extern "C" {
+extern int g_nAuxOutputDeviceIndex;
+
+} // extern "C"
