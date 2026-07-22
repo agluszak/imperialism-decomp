@@ -6,7 +6,10 @@
 // VTABLE: IMPERIALISM 0x00650808
 class TInteriorMinister : public TMinister {
 public:
-  TInteriorMinister();
+  // In-class so VC5 can inline the immediate TMinister construction into concrete
+  // city-minister constructors; it also emits the original standalone copy.
+  // FUNCTION: IMPERIALISM 0x004be1d0
+  TInteriorMinister() : TMinister(), capabilityFlag14(1), capabilityFlag16(1) {}
 
   DECLARE_DYNCREATE(TInteriorMinister)
   void WriteTo(TStream* stream) override;

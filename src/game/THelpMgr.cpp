@@ -3,7 +3,10 @@
 #include "game/TSimMgr.h"
 #include "game/TCivUnit.h"
 #include "game/TGreatPower.h"
+#include "game/THelpPicture.h"
+#include "game/TPicture.h"
 #include "game/TSortedPtrList.h"
+#include "game/TStaticText.h"
 #include "game/TCity.h"
 #include "game/TPopulationMgr.h"
 #include "game/TDiplomacyMgr.h"
@@ -22,6 +25,7 @@
 #include "game/mapped_flavor_text.h"
 #include "game/nation_slot_eligibility.h"
 #include "game/ui_control_tags.h"
+#include "game/ui_text_label_helpers_decls.h"
 
 namespace {
 
@@ -112,9 +116,9 @@ undefined THelpMgr::InitializeHelpManagerIndexArrayAndState() {
 
 namespace {
 
-void ReleasePendingHelpDialogView(TView** dialogView) {
+void ReleasePendingHelpDialogView(TWindow** dialogView) {
   if (*dialogView != 0) {
-    static_cast<TWindow*>(*dialogView)->CloseAndFree();
+    (*dialogView)->CloseAndFree();
     *dialogView = 0;
   }
 }
@@ -822,12 +826,68 @@ void THelpMgr::HandlePostPendingEventActivationNoOp(short eventCode) {
 
 // FUNCTION: IMPERIALISM 0x00503420
 void THelpMgr::ActivatePendingEventAndRefreshView(HelpSetRecord* pendingEntry) {
-  if (pendingEntry == 0) {
-    return;
-  }
+  CString titleText;
   pendingEntry->flagByte = 1;
   pendingEntry->rank = g_pSimMgr->GetActiveNationId();
-  // Full dialog refresh path deferred; mark the help-set entry seen/current-nation.
+
+  TextStyle titleStyle;
+  InitializeUiTextStyleDescriptor(&titleStyle, 0, 12, 0x2b67, 1);
+
+  if (pendingDialogView8 == 0) {
+    pendingDialogView8 =
+        static_cast<TWindow*>(g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(0xbb8));
+    if (pendingDialogView8 == 0) {
+      MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+      TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUHelpMgr_00696C58, 0x5cd);
+    }
+
+    POINT placement;
+    g_pUiRuntimeContext->ComputeTurnEventDialogPlacementByCode(pendingDialogView8, &placement);
+    pendingDialogView8->CaptureLayoutF0(reinterpret_cast<int*>(&placement), 0);
+    pendingDialogView8->Open();
+  }
+
+  THelpPicture* helpPicture =
+      static_cast<THelpPicture*>(pendingDialogView8->ResolveControlByTag(kControlTagDialog));
+  helpPicture->currentHelpSet90 = pendingEntry;
+
+  CString emptyTitle(g_pszEmptyTextPointer_00656f60);
+  pendingDialogView8->SetTitle(&emptyTitle);
+
+  int helpBookIndex = g_pUiRuntimeContext->ClassifyTurnStateForOverlayMode();
+  if (pendingEntry->contextId == 0x1a0b) {
+    helpBookIndex = 0;
+  } else if (pendingEntry->contextId == 0x1a0d) {
+    helpBookIndex = 2;
+  } else if (pendingEntry->contextId == 0x1a0c) {
+    helpBookIndex = 1;
+  }
+  helpPicture->SetPictureResourceIdAndRefresh(static_cast<short>(helpBookIndex + 0xbb8), 0);
+
+  TPicture* coatPicture =
+      static_cast<TPicture*>(pendingDialogView8->ResolveControlByTag(kControlTagCoat));
+  coatPicture->AssertValid();
+  if (coatPicture == 0) {
+    MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUHelpMgr_00696C58, 0x5f0);
+  }
+
+  short activeNation = g_pSimMgr->GetActiveNationId();
+  if (activeNation >= 0 && activeNation < 7) {
+    coatPicture->SetPictureResourceIdAndRefresh(static_cast<short>(activeNation + 0x251c), 0);
+  } else {
+    coatPicture->SetEnabled(0, 0);
+  }
+
+  TStaticText* title = static_cast<TStaticText*>(helpPicture->ResolveControlByTag(kControlTagTitl));
+  title->SetEnabled(1, 1);
+  title->SetState(0, 1);
+  title->SetTextAlignmentAndMaybeRefresh(1, 0);
+  title->InstallTextStyle(titleStyle, 0);
+  BuildUiMessageTextFromBracketTemplate(g_pSimMgr, &titleText, 0x2749, 6, 0x2749,
+                                        pendingEntry->contextId);
+  title->SetTextAndMaybeRefresh(&titleText, 0);
+  helpPicture->ShowTopicList();
 }
 
 // FUNCTION: IMPERIALISM 0x005038b0
@@ -880,7 +940,8 @@ void THelpMgr::TryShowCivilianCompletionMilestoneNotification(TCivUnit* civilian
 // FUNCTION: IMPERIALISM 0x00503ac0
 void THelpMgr::EnsureMapActionContextViewAndBuildDefaultTileMenu(int mapContextIndex) {
   if (pendingDialogViewC == 0) {
-    pendingDialogViewC = g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(0xbbd);
+    pendingDialogViewC =
+        static_cast<TWindow*>(g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(0xbbd));
     if (pendingDialogViewC == 0) {
       MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
       TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUHelpMgr_00696C58, 0x6c1);

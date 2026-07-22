@@ -132,13 +132,10 @@ public:
   void ReadFrom(TStream* stream) override; // slot 0x18
   void Free() override;                    // slot 0x1c
 
-  // Own fields at +0x28..+0x1c4 (RTTI m_nObjectSize proves the whole
-  // TCityInteriorMinister-family shares this size -- TSteelCityMinister/
-  // TShipBuilderCityMinister/TEvenCityMinister/TRailCityMinister add zero bytes of
-  // their own). Most of this block is still unrecovered city-production-order state;
-  // InteriorSlot1D/1E/1F (0x4be7b0/0x4be7d0/0x4be7f0) index short arrays inside it at
-  // +0x12a and +0x158 via raw this+offset access (callers pass order-type codes up to
-  // 6 -- TAutoGreatPower.cpp ~L1035/1049), not yet promoted to named array fields.
+  // Own fields at +0x28..+0x1c4. RTTI proves the whole TCityInteriorMinister family
+  // shares this size; serialization establishes the exact short widths and array
+  // extents below, while live readers establish the per-resource/per-production-slot
+  // indexing domains.
   TLongintList* list28;                   // +0x28  (new TLongintList, vtable 0x650a08)
   TLongintList* list2c;                   // +0x2c  (new TLongintList)
   short nextProductionBuildingOrdinal30;  // +0x30  1-based cursor into list2c
