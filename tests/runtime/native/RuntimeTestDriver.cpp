@@ -1,6 +1,7 @@
 #include "RuntimeTestDriver.h"
 
 #include "game/bitmap_descriptor_helpers.h"
+#include "game/CIncludeView.h"
 #include "game/TAmbitApplication.h"
 #include "game/TControl.h"
 #include "game/TCitySiteView.h"
@@ -45,6 +46,15 @@ enum RuntimeTestPhase {
   kRuntimeTestPrimingMapHover,
   kRuntimeTestDispatchingMapHotkey,
   kRuntimeTestExercisingMapHover,
+  kRuntimeTestReturningToRandomSetup,
+  kRuntimeTestReturningToMainMenu,
+  kRuntimeTestReenteringRandomSetup,
+  kRuntimeTestVerifyingReturnedRandomSetup,
+  kRuntimeTestWaitingForSecondCitySite,
+  kRuntimeTestWaitingForSecondPromptDismissal,
+  kRuntimeTestWaitingForCitySiteConfirmation,
+  kRuntimeTestWaitingForCombinedMap,
+  kRuntimeTestVerifyingCombinedMapExtents,
   kRuntimeTestFinished
 };
 
@@ -63,6 +73,7 @@ RuntimeTestState g_runtimeTestState = {
     kRuntimeTestNone, kRuntimeTestNotStarted, 0, 0, -1, 0, "", ""};
 CString g_randomSetupUiSnapshot;
 CString g_strategicMapUiSnapshot;
+CString g_activatedEventSequence("[");
 
 const char* TestName() {
   if (g_runtimeTestState.kind == kRuntimeTestRandomGame) {
@@ -255,11 +266,12 @@ CString CaptureUiSnapshot(int eventCode, TView* root) {
 
 bool WriteResultFile(const char* status, const char* failure) {
   TView* mainView = MainView();
-  const char* eventSequence = g_runtimeTestState.kind == kRuntimeTestRandomGame
-                                  ? "[\"0x05dc\", \"0x05dd\", \"0x03b8\"]"
-                                  : "[]";
+  CString eventSequence(g_activatedEventSequence);
+  eventSequence += ']';
   const char* handledModals =
-      g_runtimeTestState.kind == kRuntimeTestRandomGame ? "[\"city_site_prompt\"]" : "[]";
+      g_runtimeTestState.kind == kRuntimeTestRandomGame
+          ? "[\"city_site_prompt\", \"city_site_prompt\", \"city_site_confirmation\"]"
+          : "[]";
   if (g_runtimeTestState.kind == kRuntimeTestRandomGame &&
       (g_randomSetupUiSnapshot.IsEmpty() || g_strategicMapUiSnapshot.IsEmpty())) {
     status = "failed";
@@ -311,7 +323,7 @@ bool WriteResultFile(const char* status, const char* failure) {
               "  \"failure\": %s\n"
               "}\n",
               TestName(), status, g_runtimeTestState.idleTicks, g_runtimeTestState.lastAction,
-              eventSequence, static_cast<LPCSTR>(uiSnapshots),
+              static_cast<LPCSTR>(eventSequence), static_cast<LPCSTR>(uiSnapshots),
               g_pUiRuntimeContext != 0 ? g_pUiRuntimeContext->currentTurnEventCode : -1,
               RuntimeClassName(mainView), g_pSimMgr != 0 ? g_pSimMgr->activeNationSlot : -1,
               g_runtimeTestState.selectedNationSlot,
@@ -424,6 +436,22 @@ void RunWaitingForManagers() {
   RequestAnotherDriverTick();
 }
 
+bool ClickViewThroughNativeHost(TView* view) {
+  CIncludeView* host = GetMainViewHostFromActiveThread();
+  if (view == 0 || host == 0 || host->m_hWnd == 0) {
+    return false;
+  }
+
+  CPoint position;
+  view->GetAbsolutePosition(&position);
+  position.x += view->frameWidth34 / 2;
+  position.y += view->frameHeight38 / 2;
+  LPARAM mousePosition = MAKELPARAM(position.x, position.y);
+  SendMessageA(host->m_hWnd, WM_LBUTTONDOWN, MK_LBUTTON, mousePosition);
+  SendMessageA(host->m_hWnd, WM_LBUTTONUP, 0, mousePosition);
+  return true;
+}
+
 void RunWaitingForMainMenu() {
   TView* mainView = MainView();
   if (g_pUiRuntimeContext->currentTurnEventCode != 0x5dc ||
@@ -433,8 +461,12 @@ void RunWaitingForMainMenu() {
   }
 
   srand(RuntimeTestDriver::RandomSeed());
-  g_pGlobalUiRootController->PostTurnEventCodeMessage2420(0x5dd);
-  SetPhase(kRuntimeTestWaitingForRandomSetup, "post_turn_event_0x05dd");
+  TView* randomButton = mainView->ResolveControlByTag(kControlTagRand);
+  if (!ClickViewThroughNativeHost(randomButton)) {
+    Fail("\"main-menu random-game button or native host is missing\"");
+    return;
+  }
+  SetPhase(kRuntimeTestWaitingForRandomSetup, "click_main_menu_rand");
   RequestAnotherDriverTick();
 }
 
@@ -633,7 +665,7 @@ void RunDispatchingMapHotkey() {
   commandEvent.commandCode = 'x';
   commandEvent.keyFlags = 0;
   commandEvent.handledMarker = 0;
-  mapView->ForwardParam(reinterpret_cast<int>(&commandEvent));
+  mapView->DoKeyEvent(&commandEvent);
 
   TMapDialog* mapDialog = mapView->subview2A8;
   if (mapDialog == 0) {
@@ -642,12 +674,23 @@ void RunDispatchingMapHotkey() {
   }
 
   TCitySiteView* citySiteView = static_cast<TCitySiteView*>(mapDialog);
+  if (g_wMapDialogViewportTileSpan != 9) {
+    Fail("\"strategic-map viewport tile span was not initialized\"");
+    return;
+  }
   mapDialog->SetMapDialogCellCoordinatesAndRefresh(citySiteView->minColBound368 + 1,
                                                    citySiteView->minRowBound370 + 1, 0);
-  int viewportXBeforeEdgeScroll = mapDialog->viewportOrigin60.x;
+  for (int scroll = 0; scroll < 0x80; ++scroll) {
+    mapView->AutoScrollByEdgeMask(4);
+  }
+  int rightEdgeViewportX = mapDialog->viewportOrigin60.x;
+  if (rightEdgeViewportX != citySiteView->maxColBound36c * 0x40) {
+    Fail("\"right-edge scrolling stopped before the strategic map clamp\"");
+    return;
+  }
   mapView->AutoScrollByEdgeMask(4);
-  if (mapDialog->viewportOrigin60.x == viewportXBeforeEdgeScroll) {
-    Fail("\"right-edge scrolling did not move the strategic map viewport\"");
+  if (mapDialog->viewportOrigin60.x != rightEdgeViewportX) {
+    Fail("\"right-edge scrolling moved beyond the strategic map clamp\"");
     return;
   }
   int viewportYBeforeTopEdgeScroll = mapDialog->viewportOrigin60.y;
@@ -693,6 +736,206 @@ void RunExercisingMapHover() {
   SetGWorld(savedSurface, savedSurfaceFlags);
   mapView->RefreshControl();
   mapView->ForceRedraw();
+  TView* cancel = mapView->ResolveControlByTag(kControlTagCanc);
+  if (!ClickViewThroughNativeHost(cancel)) {
+    Fail("\"strategic-map return button or native host is missing\"");
+    return;
+  }
+  SetPhase(kRuntimeTestReturningToRandomSetup, "click_strategic_map_canc");
+  RequestAnotherDriverTick();
+}
+
+void RunReturningToRandomSetup() {
+  TView* mainView = MainView();
+  if (g_pUiRuntimeContext->currentTurnEventCode != 0x5dd ||
+      !IsViewKindOf(mainView, RUNTIME_CLASS(TSetupRandomMapPicture))) {
+    WaitForNextTickOrTimeout("\"random setup did not return after leaving the strategic map\"");
+    return;
+  }
+
+  TView* cancel = mainView->ResolveControlByTag(kControlTagCncl);
+  if (!ClickViewThroughNativeHost(cancel)) {
+    Fail("\"returned random setup main-menu button or native host is missing\"");
+    return;
+  }
+  SetPhase(kRuntimeTestReturningToMainMenu, "click_returned_setup_cncl");
+  RequestAnotherDriverTick();
+}
+
+void RunReturningToMainMenu() {
+  TView* mainView = MainView();
+  if (g_pUiRuntimeContext->currentTurnEventCode != 0x5dc ||
+      !IsViewKindOf(mainView, RUNTIME_CLASS(TGameSetupPicture))) {
+    WaitForNextTickOrTimeout("\"main menu did not return after leaving random setup\"");
+    return;
+  }
+
+  TView* randomButton = mainView->ResolveControlByTag(kControlTagRand);
+  if (!ClickViewThroughNativeHost(randomButton)) {
+    Fail("\"returned main-menu random-game button or native host is missing\"");
+    return;
+  }
+  SetPhase(kRuntimeTestReenteringRandomSetup, "click_returned_main_menu_rand");
+  RequestAnotherDriverTick();
+}
+
+void RunReenteringRandomSetup() {
+  TView* mainView = MainView();
+  if (g_pUiRuntimeContext->currentTurnEventCode != 0x5dd ||
+      !IsViewKindOf(mainView, RUNTIME_CLASS(TSetupRandomMapPicture))) {
+    WaitForNextTickOrTimeout("\"random setup did not reopen from the returned main menu\"");
+    return;
+  }
+
+  TView* hard = mainView->ResolveControlByTag(kControlTagDif3);
+  if (!ClickViewThroughNativeHost(hard)) {
+    Fail("\"reopened random setup difficulty control or native host is missing\"");
+    return;
+  }
+  SetPhase(kRuntimeTestVerifyingReturnedRandomSetup, "click_reopened_setup_dif3");
+  RequestAnotherDriverTick();
+}
+
+void RunVerifyingReturnedRandomSetup() {
+  TView* mainView = MainView();
+  TRadioTextCluster* difficulty =
+      mainView != 0
+          ? static_cast<TRadioTextCluster*>(mainView->ResolveControlByTag(kControlTagDiff))
+          : 0;
+  if (g_pUiRuntimeContext->currentTurnEventCode != 0x5dd || difficulty == 0 ||
+      difficulty->selectedTag88 != static_cast<int>(kControlTagDif3)) {
+    Fail("\"returned random setup did not accept the difficulty click\"");
+    return;
+  }
+
+  TControl* okay = static_cast<TControl*>(mainView->ResolveControlByTag(kControlTagOkay));
+  if (okay == 0) {
+    Fail("\"reopened random setup okay control is missing\"");
+    return;
+  }
+  okay->HandleEvent(okay->GetEventNumber(), okay, 0);
+  SetPhase(kRuntimeTestWaitingForSecondCitySite, "activate_reopened_setup_okay");
+  RequestAnotherDriverTick();
+}
+
+void RunWaitingForSecondCitySite() {
+  TView* mainView = MainView();
+  if (g_pUiRuntimeContext->currentTurnEventCode != 0x3b8 ||
+      !IsViewKindOf(mainView, RUNTIME_CLASS(TMapUberPicture)) || g_ModalViewStack.IsEmpty()) {
+    WaitForNextTickOrTimeout("\"second city-site selector or prompt did not become active\"");
+    return;
+  }
+
+  TWindow* modal = static_cast<TWindow*>(g_ModalViewStack.GetHead());
+  TControl* okay = static_cast<TControl*>(modal->ResolveControlByTag(kControlTagOkay));
+  if (okay == 0) {
+    Fail("\"second city-site prompt has no okay control\"");
+    return;
+  }
+  okay->HandleEvent(okay->GetEventNumber(), okay, 0);
+  SetPhase(kRuntimeTestWaitingForSecondPromptDismissal, "activate_second_city_site_prompt_okay");
+  RequestAnotherDriverTick();
+}
+
+void RunWaitingForSecondPromptDismissal() {
+  if (!g_ModalViewStack.IsEmpty()) {
+    WaitForNextTickOrTimeout("\"second city-site prompt did not dismiss\"");
+    return;
+  }
+
+  TMapUberPicture* mapView = g_pUiRuntimeContext->mapUberPictureF0;
+  TMapDialog* mapDialog = mapView != 0 ? mapView->subview2A8 : 0;
+  if (mapDialog == 0 || !IsViewKindOf(mapDialog, RUNTIME_CLASS(TCitySiteView))) {
+    Fail("\"second city-site selector has no TCitySiteView\"");
+    return;
+  }
+
+  short citySite = -1;
+  for (short tileIndex = 0; tileIndex < 0x1950; ++tileIndex) {
+    const TTerrainStateRecordView& tile = g_pGlobalMapState->terrainStateTable[tileIndex];
+    bool supportsCity = tile.terrainType00 == 0 || tile.terrainType00 == 7 ||
+                        tile.terrainType00 == 1 || tile.terrainType00 == 6;
+    if (supportsCity && tile.ownerNationTag04 == g_runtimeTestState.selectedNationSlot &&
+        tile.recruitSearchVisited0e == 0) {
+      citySite = tileIndex;
+      break;
+    }
+  }
+  if (citySite == -1) {
+    Fail("\"random map has no valid city-site candidate for the selected nation\"");
+    return;
+  }
+
+  SetPhase(kRuntimeTestWaitingForCitySiteConfirmation, "submit_valid_city_site");
+  static_cast<TCitySiteView*>(mapDialog)->HandleMapClickByInteractionMode(citySite, 0);
+  RequestAnotherDriverTick();
+}
+
+void RunWaitingForCitySiteConfirmation() {
+  if (g_ModalViewStack.IsEmpty()) {
+    WaitForNextTickOrTimeout("\"city-site confirmation did not become active\"");
+    return;
+  }
+
+  TWindow* modal = static_cast<TWindow*>(g_ModalViewStack.GetHead());
+  TControl* okay = static_cast<TControl*>(modal->ResolveControlByTag(kControlTagOkay));
+  if (okay == 0) {
+    Fail("\"city-site confirmation has no okay control\"");
+    return;
+  }
+  SetPhase(kRuntimeTestWaitingForCombinedMap, "accept_city_site_confirmation");
+  okay->HandleEvent(okay->GetEventNumber(), okay, 0);
+  RequestAnotherDriverTick();
+}
+
+void RunWaitingForCombinedMap() {
+  WaitForNextTickOrTimeout("\"accepted city site did not advance to the combined map\"");
+}
+
+void RunVerifyingCombinedMapExtents() {
+  TMapUberPicture* mapView = g_pUiRuntimeContext->mapUberPictureF0;
+  TMapDialog* mapDialog = mapView != 0 ? mapView->subview2A8 : 0;
+  if (mapDialog == 0 || IsViewKindOf(mapDialog, RUNTIME_CLASS(TCitySiteView))) {
+    Fail("\"combined map retained the country-bounded city-site view\"");
+    return;
+  }
+  g_MapInteractionPreviewPoint_006a3370 = CPoint(0, 0);
+  if (g_pGlobalMapState->hexNeighborWrapHorizontally20 == 0) {
+    mapDialog->SetMapDialogCellCoordinatesAndRefresh(0x6b, 0, 0);
+    mapView->AutoScrollByEdgeMask(4);
+    if (mapDialog->viewportOrigin60.x != 0) {
+      Fail("\"combined-map right-edge scrolling did not wrap to the left edge\"");
+      return;
+    }
+    mapView->AutoScrollByEdgeMask(8);
+    if (mapDialog->viewportOrigin60.x != 0x6b * 0x40) {
+      Fail("\"combined-map left-edge scrolling did not wrap to the right edge\"");
+      return;
+    }
+  } else {
+    int rightColumn = 0x6e - g_wMapDialogViewportTileSpan;
+    mapDialog->SetMapDialogCellCoordinatesAndRefresh(0x7fff, 0, 0);
+    if (mapDialog->viewportOrigin60.x != rightColumn * 0x40) {
+      Fail("\"combined-map scrolling stopped before the full right edge\"");
+      return;
+    }
+    mapDialog->SetMapDialogCellCoordinatesAndRefresh(-0x7fff, 0, 0);
+    if (mapDialog->viewportOrigin60.x != 0x40) {
+      Fail("\"combined-map scrolling stopped before the full left edge\"");
+      return;
+    }
+  }
+
+  mapDialog->SetMapDialogCellCoordinatesAndRefresh(1, 0x7fff, 0);
+  if (mapDialog->viewportOrigin60.y != 0x35 * 0x40) {
+    Fail("\"combined-map scrolling stopped before the full bottom edge\"");
+    return;
+  }
+  mapDialog->SetMapDialogCellCoordinatesAndRefresh(1, -0x7fff, 0);
+  if (mapDialog->viewportOrigin60.y != 0) {
+    Fail("\"combined-map scrolling stopped before the full top edge\"");
+    return;
+  }
   Finish("passed", "null");
 }
 
@@ -745,6 +988,33 @@ void RuntimeTestDriver::OnIdle() {
   case kRuntimeTestExercisingMapHover:
     RunExercisingMapHover();
     break;
+  case kRuntimeTestReturningToRandomSetup:
+    RunReturningToRandomSetup();
+    break;
+  case kRuntimeTestReturningToMainMenu:
+    RunReturningToMainMenu();
+    break;
+  case kRuntimeTestReenteringRandomSetup:
+    RunReenteringRandomSetup();
+    break;
+  case kRuntimeTestVerifyingReturnedRandomSetup:
+    RunVerifyingReturnedRandomSetup();
+    break;
+  case kRuntimeTestWaitingForSecondCitySite:
+    RunWaitingForSecondCitySite();
+    break;
+  case kRuntimeTestWaitingForSecondPromptDismissal:
+    RunWaitingForSecondPromptDismissal();
+    break;
+  case kRuntimeTestWaitingForCitySiteConfirmation:
+    RunWaitingForCitySiteConfirmation();
+    break;
+  case kRuntimeTestWaitingForCombinedMap:
+    RunWaitingForCombinedMap();
+    break;
+  case kRuntimeTestVerifyingCombinedMapExtents:
+    RunVerifyingCombinedMapExtents();
+    break;
   default:
     Fail("\"runtime-test driver entered an invalid phase\"");
     break;
@@ -760,6 +1030,30 @@ void RuntimeTestDriver::ObserveBuiltUiTree(int eventCode, TView* root) {
   } else if (eventCode == 0x3b8) {
     g_strategicMapUiSnapshot = CaptureUiSnapshot(eventCode, root);
   }
+}
+
+void RuntimeTestDriver::ObserveActivatedTurnEvent(int eventCode) {
+  if (g_runtimeTestState.kind == kRuntimeTestRandomGame) {
+    CString event;
+    event.Format("%s\"0x%04x\"", g_activatedEventSequence.GetLength() == 1 ? "" : ", ",
+                 static_cast<unsigned short>(eventCode));
+    g_activatedEventSequence += event;
+  }
+  if (g_runtimeTestState.kind != kRuntimeTestRandomGame ||
+      (g_runtimeTestState.phase != kRuntimeTestWaitingForCitySiteConfirmation &&
+       g_runtimeTestState.phase != kRuntimeTestWaitingForCombinedMap)) {
+    return;
+  }
+  if (eventCode == 0x5e4) {
+    SetPhase(kRuntimeTestWaitingForCombinedMap, "post_combined_map_after_city_setup");
+    g_pGlobalUiRootController->PostTurnEventCodeMessage2420(0x7dd);
+    return;
+  }
+  if (eventCode != 0x7dd) {
+    return;
+  }
+  SetPhase(kRuntimeTestVerifyingCombinedMapExtents, "observe_event_0x07dd");
+  RunVerifyingCombinedMapExtents();
 }
 
 unsigned int RuntimeTestDriver::RandomSeed() {

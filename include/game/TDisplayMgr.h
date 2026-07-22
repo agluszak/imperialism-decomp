@@ -70,4 +70,6 @@ struct GlobalViewportRectDefaultsRecord;
 GlobalViewportRectDefaultsRecord** InitializeGlobalRectDefaultsIfUninitialized();
 
 // 0x004931e0. Emits the default Win32 warning beep.
-void PlayDefaultMessageBeep();
+// The retail helper itself takes no arguments, but legacy call sites may leave a
+// source-level alert kind on the cdecl stack for it to ignore.
+void PlayDefaultMessageBeep(...);

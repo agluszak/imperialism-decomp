@@ -3028,7 +3028,7 @@ address|matching|name
 0x50bbc0|0.8888888888888888|TMacViewMgr::OrphanCallChain_C4_I35_0050bbc0
 0x50bc50|0.6026200873362445|TMacViewMgr::SyncSellTaggedChildControlWithNationState
 0x50be30|0.96|TMacViewMgr::MakeBookDialog
-0x50bea0|0.21444797819173103|TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets
+0x50bea0|0.20990458882326216|TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets
 0x50d310|0.5625|TMacViewMgr::DispatchTurnEvent3B8AndWaitForCompletionFlag
 0x50d360|0.6857142857142857|TMacViewMgr::OpenBuildingWindow
 0x50d470|0.3880597014925373|TMacViewMgr::OrphanCallChain_C10_I80_0050d470
@@ -3191,7 +3191,7 @@ address|matching|name
 0x519010|0.3821656050955414|TMapMgr::ClassifyCityGateTerrainComposition
 0x519140|0.5647058823529412|TMapMgr::DumpAndResetMapScriptState
 0x519610|0.4939759036144578|TMapMgr::ChooseNationSetupProfilesForOpenSlots
-0x519970|0.25|WrapperFor_ftol_At00519970
+0x519970|1.0|InitializeMapDialogViewportTileSpan
 0x5199c0|0.2988505747126437|TMapDialog::CreateObject
 0x519af0|1.0|TWorldView::QueryMinusOneWordSlot77
 0x519b30|1.0|TMapDialog::GetRuntimeClass
@@ -3231,7 +3231,7 @@ address|matching|name
 0x51c2f0|1.0|TCitySiteView::SetMapViewCellCoordinates
 0x51c320|0.8484848484848485|TCitySiteView::SetMapDialogCellCoordinatesAndRefresh
 0x51c3b0|0.3130841121495327|TCitySiteView::RenderStrategicTileSelectionAndNeighborHighlights
-0x51c760|0.01098901098901099|TCitySiteView::HandleMapClickByInteractionMode
+0x51c760|0.22740524781341107|TCitySiteView::HandleMapClickByInteractionMode
 0x51cab0|0.2857142857142857|TMapEditView::CreateObject
 0x51cbf0|0.9090909090909091|TMapEditView::`scalar deleting destructor'
 0x51cc40|1.0|TMapEditView::GetRuntimeClass
@@ -3288,7 +3288,7 @@ address|matching|name
 0x524b30|0.14388489208633093|TMapDialog::CopyCoastCornerMaskBetweenDirections1And2
 0x524c60|0.08080808080808081|TMapDialog::CopyCoastCornerMaskBetweenDirections0And1
 0x524e70|0.0639269406392694|TMapDialog::CopyCoastCornerMaskBetweenDirections2And3
-0x5250a0|0.0639269406392694|TMapDialog::CopyCoastCornerMaskBetweenDirections5And0
+0x5250a0|0.09090909090909091|TMapDialog::CopyCoastCornerMaskBetweenDirections5And0
 0x5252d0|0.061855670103092786|TMapDialog::CopyCoastCornerMaskBetweenDirections4And5
 0x5254a0|0.12631578947368421|TMapDialog::CopyCoastCornerMaskBetweenDirections3And4
 0x525670|0.29906542056074764|TMapDialog::Copy64x64TileBlockWithStrideAdjustment
@@ -3310,7 +3310,7 @@ address|matching|name
 0x5274d0|0.3088235294117647|TMapMaker::TryMergeRegionGroupWithNeighbors
 0x5275a0|0.48623853211009177|TMapMaker::MapGenPassSlot0E
 0x527730|0.29577464788732394|TMapMaker::MapGenPassSlot0F
-0x527d00|0.43478260869565216|TMapMaker::CreateRivers
+0x527d00|0.4268774703557312|TMapMaker::CreateRivers
 0x527ed0|0.3742690058479532|TMapMaker::GrowRiver
 0x528140|0.32954545454545453|TMapMaker::PlaceCityMarkerAndSpreadNeighbors
 0x5283c0|0.296875|TMapMaker::ForwardParam
@@ -5928,7 +5928,7 @@ address|matching|name
 0x5d7100|1.0|TViewMgr::PoseWarOfferIfTurnFlowReady
 0x5d7190|1.0|TViewMgr::NoOpTurnEventStateVtableSlotD4
 0x5d71b0|1.0|TViewMgr::DispatchNationActionToMainControl
-0x5d7240|0.14956855225311602|TViewMgr::DispatchTurnEvent
+0x5d7240|0.1491395793499044|TViewMgr::DispatchTurnEvent
 0x5d7c40|0.6666666666666666|TViewMgr::DispatchTurnEvent3B8AndWaitForCompletion
 0x5d7cb0|0.1471861471861472|TViewMgr::HandleTurnEvent7DB_SelectCityAndRefreshView
 0x5d7f70|1.0|TViewMgr::RefreshCityProductionUi
