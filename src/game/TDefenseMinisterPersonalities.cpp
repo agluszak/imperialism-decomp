@@ -1,12 +1,13 @@
 #include "game/TDefenseMinisterPersonalities.h"
 #include "game/global_data_tables.h"
 
+#include "game/TCity.h"
+#include "game/TGreatPower.h"
+#include "game/TMilitaryUnit.h"
 #include "game/mfc.h"
 
-// NOTE: MakeNewCity (slot 0x44, the InitializeRecruitQueuePattern* recruit-queue setup)
-// and DefenseSlot18 (slot 0x60, a per-personality float aggressiveness multiplier whose
-// real signature returns float) are promoted here as real virtual overrides owning their
-// original addresses (previously return-0 autogen stubs). Bodies are honest partial ports.
+// Each MakeNewCity override seeds the personality's opening population, production stock,
+// and military recruitment mix for a newly created city.
 
 // Slot 24 (0x60) override — factory hook on this minister variant.
 // FUNCTION: IMPERIALISM 0x004ed490
@@ -29,7 +30,24 @@ TNapoleonMinister::TNapoleonMinister() : TDefenseMinister() {}
 
 // FUNCTION: IMPERIALISM 0x004ed620
 void TNapoleonMinister::MakeNewCity(TCity* city) {
-  (void)city;
+  city->productionSummary1d8->SetPopulation(10, 4, 0);
+  city->orderCountByType5c[3] = 1;
+
+  int infantryOrdersRemaining = 3;
+  do {
+    TMilitaryUnit* recruitOrder = new TMilitaryUnit();
+    recruitOrder->InitializeRecruitOrderState(2, 0, ownerContextAt04->nationSlot, 0);
+    ++recruitOrderCountByType[2];
+    --infantryOrdersRemaining;
+  } while (infantryOrdersRemaining != 0);
+
+  int artilleryOrdersRemaining = 2;
+  do {
+    TMilitaryUnit* recruitOrder = new TMilitaryUnit();
+    recruitOrder->InitializeRecruitOrderState(4, 0, ownerContextAt04->nationSlot, 0);
+    ++recruitOrderCountByType[4];
+    --artilleryOrdersRemaining;
+  } while (artilleryOrdersRemaining != 0);
 }
 
 // FUNCTION: IMPERIALISM 0x004ed7c0
@@ -52,7 +70,19 @@ TBismarckMinister::TBismarckMinister() : TDefenseMinister() {}
 
 // FUNCTION: IMPERIALISM 0x004ed950
 void TBismarckMinister::MakeNewCity(TCity* city) {
-  (void)city;
+  city->productionSummary1d8->SetPopulation(9, 4, 1);
+  city->orderCountByType5c[3] = 1;
+
+  int recruitOrdersRemaining = 2;
+  do {
+    TMilitaryUnit* recruitOrder = new TMilitaryUnit();
+    recruitOrder->InitializeRecruitOrderState(2, 0, ownerContextAt04->nationSlot, 0);
+    ++recruitOrderCountByType[2];
+    --recruitOrdersRemaining;
+  } while (recruitOrdersRemaining != 0);
+
+  city->cityStockArmsD6 = static_cast<short>(city->cityStockArmsD6 + 5);
+  city->VerifyStocks();
 }
 
 // FUNCTION: IMPERIALISM 0x004edab0
@@ -75,7 +105,19 @@ TPirateMinister::TPirateMinister() : TDefenseMinister() {}
 
 // FUNCTION: IMPERIALISM 0x004edc40
 void TPirateMinister::MakeNewCity(TCity* city) {
-  (void)city;
+  city->productionSummary1d8->SetPopulation(8, 4, 1);
+  city->orderCountByType5c[3] = 2;
+
+  int recruitOrdersRemaining = 3;
+  do {
+    TMilitaryUnit* recruitOrder = new TMilitaryUnit();
+    recruitOrder->InitializeRecruitOrderState(2, 0, ownerContextAt04->nationSlot, 0);
+    ++recruitOrderCountByType[2];
+    --recruitOrdersRemaining;
+  } while (recruitOrdersRemaining != 0);
+
+  city->cityStockArmsD6 = static_cast<short>(city->cityStockArmsD6 + 2);
+  city->VerifyStocks();
 }
 
 // FUNCTION: IMPERIALISM 0x004edda0
@@ -98,7 +140,19 @@ TDefenderMinister::TDefenderMinister() : TDefenseMinister() {}
 
 // FUNCTION: IMPERIALISM 0x004edf20
 void TDefenderMinister::MakeNewCity(TCity* city) {
-  (void)city;
+  city->productionSummary1d8->SetPopulation(8, 4, 1);
+  city->orderCountByType5c[4] = 1;
+
+  int recruitOrdersRemaining = 3;
+  do {
+    TMilitaryUnit* recruitOrder = new TMilitaryUnit();
+    recruitOrder->InitializeRecruitOrderState(2, 0, ownerContextAt04->nationSlot, 0);
+    ++recruitOrderCountByType[2];
+    --recruitOrdersRemaining;
+  } while (recruitOrdersRemaining != 0);
+
+  city->cityStockArmsD6 = static_cast<short>(city->cityStockArmsD6 + 2);
+  city->VerifyStocks();
 }
 
 // FUNCTION: IMPERIALISM 0x004ee080
@@ -121,5 +175,25 @@ TBullyMinister::TBullyMinister() : TDefenseMinister() {}
 
 // FUNCTION: IMPERIALISM 0x004ee210
 void TBullyMinister::MakeNewCity(TCity* city) {
-  (void)city;
+  city->productionSummary1d8->SetPopulation(10, 4, 0);
+  city->orderCountByType5c[4] = 2;
+
+  int infantryOrdersRemaining = 2;
+  do {
+    TMilitaryUnit* recruitOrder = new TMilitaryUnit();
+    recruitOrder->InitializeRecruitOrderState(2, 0, ownerContextAt04->nationSlot, 0);
+    ++recruitOrderCountByType[2];
+    --infantryOrdersRemaining;
+  } while (infantryOrdersRemaining != 0);
+
+  int artilleryOrdersRemaining = 3;
+  do {
+    TMilitaryUnit* recruitOrder = new TMilitaryUnit();
+    recruitOrder->InitializeRecruitOrderState(4, 0, ownerContextAt04->nationSlot, 0);
+    ++recruitOrderCountByType[4];
+    --artilleryOrdersRemaining;
+  } while (artilleryOrdersRemaining != 0);
+
+  city->cityStockArmsD6 = 2;
+  city->VerifyStocks();
 }
